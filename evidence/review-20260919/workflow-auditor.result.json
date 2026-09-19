@@ -1,0 +1,37 @@
+{
+  "decision": "approve",
+  "reason": "The 2.0.16 recovery claims hold up under a read-only inspection. I did not run the checker or tests myself. The completion claim is backed by the runner's own acceptance run (see evidence). The 110 unsafe annotations were not hidden. They were all generic template instances, and they were replaced with ordinary per-type definitions that do the same work. The unmodified checker verifies these normally, including termination: each self-call recurses on a smaller part of its input. The proofs that use them were regenerated against the new definitions, and the five public theorems in END_TO_END.bend are unchanged in name and still defined as ordinary proven definitions. The new runtime loader compiles each imported .bend module with the pinned bend binary through its own page bundler and passes the compiled output through unchanged, so no Bend algorithm is reimplemented in the host. The spectest runner still covers all 5,440 cases. It still requires exact value, encoded bytes and 32-byte root, still treats backend errors and timeouts as failures, and still sends no expected outputs to the backend. The runner independently ran automation/acceptance.py on 2.0.16 and it exited 0. The 2.0.5 evidence is now labelled historical. My only findings are low-severity documentation issues.",
+  "evidence": [
+    "Runner record: automation/acceptance.py returned 0 after 2325s. The log shows PROOF.bend and END_TO_END.bend both printing 'All terms check.' and 'SSZ: 5440 passed, 0 failed, 5440 inventoried'. acceptance.py:25 rejects any nonzero unsafe count.",
+    "tools/unsafe-2.0.16/INVENTORY.md lists all 110 as instances of 5 templates in types/fulu.bend across 22 element types. The reproducer (template_count.bend with 2 unsafe vs mono.bend with 0, output in output.txt) supports the claim that the checker counts every template instance as unsafe. GUIDE.md:252-272 confirms each template instance is compiled as its own copy.",
+    "types/fulu.bend (e.g. lines 103-123, Node7.seq_*) holds the replacement definitions. seq_to_go recurses on the list tail t, and seq_from_go recurses on t from T.Items{h,t}. Both are structurally terminating and no longer templates.",
+    "A grep of all *.bend files for '(~', ', ~', @unsafe, hole and axiom matches only the reproducer tools/unsafe-2.0.16/template_count.bend.",
+    "proofs/fulu_adapter_inverse.bend states and proves lemmas directly over F.Node7.seq_to/seq_from_go/seq_step (e.g. lines 82-105), so the proof chain reaches the actual runtime definitions.",
+    "END_TO_END.bend:75-304 still contains the five laws (serialize_correct, deserialize_correct, deserialize_rejection_correct, hash_tree_root_correct, fulu_types_correct), each followed by its proof definition.",
+    "tools/bend_loader.ts checks the toolchain.json hashes, runs `bend page.html -o out` with the pinned binary, requires exit 0 and exactly one chunk, and re-exports the compiled module. The cache key covers the toolchain, every workspace .bend file and the entry file.",
+    "tools/run_runtime_tests.py requires file arguments and checks the pinned hashes. It fails on a bun nonzero exit, zero tests, any fail or error, a file-count mismatch, or loader/compile error text.",
+    "tools/spectests.py:39-60: a backend nonzero exit or timeout raises and marks the batch failed. Invalid cases pass only on {'kind':'rejected'}. Valid cases require an exact decoded value, the official bytes and a 32-byte root. Requests carry only the input bytes and the decoded official value to serialize or root, never the expected bytes or root.",
+    "tools/primitive_backend.ts and tools/generic_transport.ts import only src/*.bend and types/fulu.bend, so the backend runs actual compiled Bend.",
+    "Archived report tools/validation-bend-2.0.16-acceptance-3d57\u2026.json records bend_version 2.0.16 with bend/base hashes matching automation/toolchain.json, passed 5440, failed 0, complete true and expected_outputs_sent_to_backend false.",
+    "PROOF_STATUS.md:31-55 and VALIDATION.json:4 describe the current 2.0.16 state and label the 2.0.5 records historical. Remaining current/bend2 references appear only in historical VALIDATION.json entries and archived logs."
+  ],
+  "next_steps": [
+    "The orchestrator should independently confirm the completion review. That includes rechecking that tests/sha256.test.ts and tests/new/*.test.ts match their protected or pre-migration versions byte for byte.",
+    "Optionally label the pre-cache-fix standalone report tools/validation-bend-2.0.16-official-29a6\u2026.json as superseded by the acceptance report in VALIDATION.json.",
+    "Optionally tidy VALIDATION.json so the top-level 'iteration': 11 does not suggest the current evidence comes from the historical 0011 run."
+  ],
+  "findings": [
+    {
+      "severity": "low",
+      "location": "tools/validation-bend-2.0.16-official-29a6f06957b4f7e2558b2cdb28f4692894d2d6de505d38d89f748ab9433dcfa7.json",
+      "description": "This standalone 5,440-case run happened before the loader's cache key covered vendor/*.bend. The worker disclosed this. The acceptance report run afterwards on an empty cache is the authoritative evidence.",
+      "remediation": "Mark this report as superseded or preliminary in VALIDATION.json and PROOF_STATUS.md."
+    },
+    {
+      "severity": "low",
+      "location": "VALIDATION.json:3",
+      "description": "The top-level 'iteration': 11 sits beside 2.0.16 evidence from runner iteration 1 of the recovery run. This is potentially confusing, though evidence_scope explains it.",
+      "remediation": "Add a recovery-run identifier or clarify the iteration field."
+    }
+  ]
+}

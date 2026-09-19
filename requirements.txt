@@ -1,0 +1,2 @@
+python-snappy==0.7.3
+ruamel.yaml==0.18.15

@@ -1,0 +1,22 @@
+{
+  "case_0": {
+    "validators": 8,
+    "balances": 6
+  },
+  "case_1": {
+    "validators": 7,
+    "balances": 4
+  },
+  "case_2": {
+    "validators": 7,
+    "balances": 1
+  },
+  "case_3": {
+    "validators": 7,
+    "balances": 5
+  },
+  "case_4": {
+    "validators": 0,
+    "balances": 4
+  }
+}

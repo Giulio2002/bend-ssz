@@ -1,0 +1,41 @@
+{
+  "date": "2026-09-19T18:48:05.226950+00:00",
+  "proof_root": "All terms check; zero unsafe annotations",
+  "end_to_end_root": "All terms check; zero unsafe annotations",
+  "fresh_runtime_tests": {
+    "passed": 51,
+    "failed": 0,
+    "assertions": 20009
+  },
+  "schema_transcription": {
+    "compared": 109,
+    "differences": 0
+  },
+  "typed_container_fields": {
+    "compared": 59,
+    "differences": 0
+  },
+  "official_source_hashes": {
+    "compared": 136,
+    "differences": 0
+  },
+  "official_cases": {
+    "passed": 5440,
+    "failed": 0,
+    "evidence": "worker archive and independent workflow runner final gate (2325 seconds)"
+  },
+  "workflow_status": "complete for prior root-domain-qualified contract",
+  "transport_regression_rerun": {
+    "passed": 5,
+    "failed": 0,
+    "seconds": 813.393,
+    "log": "evidence/review-20260919/transport.log"
+  },
+  "run_evidence_regressions": {
+    "passed": 2
+  },
+  "publication": "User authorized private publication of this reviewed, root-domain-qualified snapshot and sequential-deserialization research; root-domain correction continues separately.",
+  "review": "REVIEW.md",
+  "comparison": "docs/SIZZLEAN_COMPARISON.md",
+  "scope": "Source/specification theorems; compiler/runtime and transport are trusted"
+}

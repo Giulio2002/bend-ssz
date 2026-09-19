@@ -1,0 +1,89 @@
+RUN: /Users/monkeair/.bun/bin/bun test --timeout 600000 --preload /Users/monkeair/work/bend-ssz/tools/bend_loader.ts ./tests/sha256.test.ts ./tests/new/bit_root.test.ts ./tests/new/bitfields.test.ts ./tests/new/byte_list.test.ts ./tests/new/bytes.test.ts ./tests/new/compatibility_spec.test.ts ./tests/new/composite.test.ts ./tests/new/fulu_inventory.test.ts ./tests/new/fulu_spec_inventory.test.ts ./tests/new/layout.test.ts ./tests/new/limits_byte_root.test.ts ./tests/new/mixing.test.ts ./tests/new/nat_bytes.test.ts ./tests/new/packing_tree.test.ts ./tests/new/primitives.test.ts
+bun test v1.4.2 (744846f84)
+
+tests/sha256.test.ts:
+(pass) actual SHA wrapper matches independent SHA for padding and chunk boundaries [9.67ms]
+
+tests/new/bit_root.test.ts:
+(pass) bitvector roots match independent packing and Merkleization at capacity boundaries [31.06ms]
+(pass) bitvector transport uses actual APIs and preserves errors as infrastructure failures [2.80ms]
+(pass) bitlist roots omit the delimiter and mix exact lengths independently [26.69ms]
+
+tests/new/bitfields.test.ts:
+(pass) bit packing agrees with positional arithmetic for every octet and partial octet [3.02ms]
+(pass) bit serializers preserve ordering, delimiter and capacity at byte/chunk boundaries [15.84ms]
+(pass) bitvector decoding rejects every noncanonical one-octet unused-bit pattern [11.58ms]
+(pass) bitlist delimiter decoding covers all final octets and capacities [12.06ms]
+(pass) bit decoders preserve values and canonical bytes across byte and chunk boundaries [9.34ms]
+
+tests/new/byte_list.test.ts:
+(pass) byte lists enforce capacity and canonical identity, with independent roots [312.35ms]
+(pass) frozen Transaction wrapper uses exact mainnet capacity and actual codec/root [116.73ms]
+
+tests/new/bytes.test.ts:
+(pass) every frozen fixed-byte alias preserves exact bytes and rejects malformed input [140.98ms]
+(pass) single-chunk pack appends zeros and rejects overflow or non-bytes [2.90ms]
+(pass) binary Merkle node uses exact chunks and independent SHA-256 [8.64ms]
+(pass) byte-vector serialized-size bound is strict uint32 without allocating enormous values [0.31ms]
+
+tests/new/compatibility_spec.test.ts:
+(pass) independent compatibility derivations require shared names to retain slots [4.09ms]
+(pass) compatible-union derivations compare every cross-option pair [0.40ms]
+(pass) ordinary union identity and basic aliases have distinct compatibility rules [0.46ms]
+(pass) identity compatibility keeps malformed public schemas rejected [35.86ms]
+
+tests/new/composite.test.ts:
+(pass) nested fixed and variable layout and canonical boundaries [13.13ms]
+(pass) variable element offset table accepts empty members and rejects gaps [2.17ms]
+(pass) unions selectors, null payloads and exact root composition [14.56ms]
+(pass) progressive empty and single chunk roots follow independent SHA composition [4.05ms]
+(pass) compatible progressive schemas preserve shared field positions [36.48ms]
+(pass) ordinary unions do not inherit compatibility of distinct progressive types [2.94ms]
+(pass) 65536-element vectors serialize and decode without recursive stack growth [1845.02ms]
+
+tests/new/fulu_inventory.test.ts:
+(pass) all 109 named schemas match frozen fields, order and bounds [11.46ms]
+(pass) named Fork requests invoke typed conversion, serialization and decoding [6.25ms]
+(pass) closed name index is exactly the frozen inventory and dispatches to the same schemas [86.23ms]
+
+tests/new/fulu_spec_inventory.test.ts:
+(pass) independent schema constants preserve all frozen names, fields and capacities [8.03ms]
+
+tests/new/layout.test.ts:
+(pass) layout decoder and independent semantics preserve field order and empty extents [31.28ms]
+(pass) layout rejects non-byte words, header gaps, backwards and out-of-range offsets [3.06ms]
+
+tests/new/limits_byte_root.test.ts:
+(pass) minimal depth and arbitrary-limit roots match independent power rounding [3598.12ms]
+(pass) large limits pad virtually and malformed chunks remain semantic rejection [100.44ms]
+(pass) all frozen fixed-byte names have exact bounds, roots and invalid-value rejection [696.43ms]
+(pass) byte vector transport preserves raw domains and distinguishes infrastructure errors [3.08ms]
+
+tests/new/mixing.test.ts:
+(pass) length mixing uses all 256 bits and exact little-endian encoding [15.17ms]
+(pass) length mixing rejects malformed roots semantically [0.42ms]
+(pass) virtual zero subtrees agree with independently hashed levels [251.40ms]
+(pass) selector mixing validates uint8 and uses a zero-padded selector chunk [39.23ms]
+(pass) selector chunk convention matches pinned compatible-union fixture [8.58ms]
+
+tests/new/nat_bytes.test.ts:
+(pass) exact-width natural encoding never narrows through U32 and rejects overflow [12.47ms]
+
+tests/new/packing_tree.test.ts:
+(pass) general packing independently partitions and pads all boundary lengths [225.76ms]
+(pass) depth trees match materialized independent trees and reject capacity overflow [154.58ms]
+(pass) trees reject malformed chunks, including residual malformed inputs [0.53ms]
+(pass) virtual padding handles depth 64 and full Blob-size packing [5429.21ms]
+
+tests/new/primitives.test.ts:
+(pass) integer boundaries and every individual bit agree with independent arithmetic [62.54ms]
+(pass) decoders reject wrong lengths and non-byte U32 inputs at every position [1.72ms]
+(pass) boolean canonical values and full byte rejection domain [1.01ms]
+(pass) all named Fulu primitive entry points are usable and enforce their ranges [5.72ms]
+(pass) Bend width constructor bridge preserves every width [0.13ms]
+
+ 51 pass
+ 0 fail
+ 20009 expect() calls
+Ran 51 tests across 15 files. [41.84s]
+runtime tests: 51/51 passed, 0 failed, 0 errors, 20009 assertions, 15/15 files (baseline 0011 (Bend 2.0.5, historical): 51 tests / 20009 assertions)

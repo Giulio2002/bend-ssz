@@ -1,0 +1,12 @@
+/build/
+/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+.agent/
+.nanocodex/
+.autoimplementer/
+.autoresearch/
+/benchmarks/fastssz/benchmark
+/benchmarks/inputs/

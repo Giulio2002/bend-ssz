@@ -1,0 +1,120 @@
+Benchmarking tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0: 2,740,473 bytes
+Running fastssz
+fastssz complete
+Running bend
+deserialize: 4736.70, 5933.66, 6668.34, 6921.71, 8032.91 ms
+serialize: 2202.22, 3118.17, 2564.08, 3647.80, 4827.28 ms
+hash_tree_root: 8616.91, 8707.45, 8014.76, 8207.39, 8573.35 ms
+{
+  "deserialize": {
+    "fastssz_ms": 0.18616410732009925,
+    "bend_ms": 6668.343541999999,
+    "bend_over_fastssz": 35819.7057316432
+  },
+  "serialize": {
+    "fastssz_ms": 0.18715489207735495,
+    "bend_ms": 3118.166250000002,
+    "bend_over_fastssz": 16660.885619336095
+  },
+  "hash_tree_root": {
+    "fastssz_ms": 8.232574324324325,
+    "bend_ms": 8573.346458999993,
+    "bend_over_fastssz": 1041.3931440216468
+  }
+}
+Benchmarking tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1: 2,740,934 bytes
+Running bend
+deserialize: 5717.52, 6165.28, 5442.15, 6647.33, 5383.05 ms
+serialize: 2678.86, 2707.65, 2452.50, 2823.47, 2899.87 ms
+hash_tree_root: 8633.91, 11461.39, 10778.44, 10677.28, 13345.80 ms
+Running fastssz
+fastssz complete
+{
+  "deserialize": {
+    "fastssz_ms": 0.2700313537353735,
+    "bend_ms": 5717.520333,
+    "bend_over_fastssz": 21173.542456862546
+  },
+  "serialize": {
+    "fastssz_ms": 0.22583480737396538,
+    "bend_ms": 2707.651917000003,
+    "bend_over_fastssz": 11989.524327471521
+  },
+  "hash_tree_root": {
+    "fastssz_ms": 8.231600243243243,
+    "bend_ms": 10778.436042000001,
+    "bend_over_fastssz": 1309.3974104059878
+  }
+}
+Benchmarking tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2: 2,741,095 bytes
+Running fastssz
+fastssz complete
+Running bend
+deserialize: 5712.47, 8277.80, 8388.64, 13668.00, 11027.73 ms
+serialize: 8653.43, 8040.26, 5380.57, 6982.27, 5067.78 ms
+hash_tree_root: 9892.07, 17223.36, 12750.57, 17095.55, 15831.07 ms
+{
+  "deserialize": {
+    "fastssz_ms": 0.2261726013564431,
+    "bend_ms": 8388.635624999995,
+    "bend_over_fastssz": 37089.530627008564
+  },
+  "serialize": {
+    "fastssz_ms": 0.21720643415340085,
+    "bend_ms": 6982.268125000002,
+    "bend_over_fastssz": 32145.770231045793
+  },
+  "hash_tree_root": {
+    "fastssz_ms": 8.226614864864866,
+    "bend_ms": 15831.073417000007,
+    "bend_over_fastssz": 1924.3727434735158
+  }
+}
+Benchmarking tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3: 2,739,794 bytes
+Running bend
+deserialize: 11259.49, 6088.71, 10111.71, 7060.26, 8621.91 ms
+serialize: 4717.42, 9673.07, 5603.69, 5408.69, 7995.30 ms
+hash_tree_root: 31148.11, 36318.76, 16627.93, 15106.53, 27942.16 ms
+Running fastssz
+fastssz complete
+{
+  "deserialize": {
+    "fastssz_ms": 0.4136565082644628,
+    "bend_ms": 8621.913082999992,
+    "bend_over_fastssz": 20843.17038591775
+  },
+  "serialize": {
+    "fastssz_ms": 0.40524257759784077,
+    "bend_ms": 5603.693916999997,
+    "bend_over_fastssz": 13827.998899368009
+  },
+  "hash_tree_root": {
+    "fastssz_ms": 12.949739583333335,
+    "bend_ms": 27942.158874999965,
+    "bend_over_fastssz": 2157.7390568504006
+  }
+}
+Benchmarking tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4: 2,738,771 bytes
+Running fastssz
+fastssz complete
+Running bend
+deserialize: 10185.08, 6079.66, 5551.64, 6243.22, 6933.43 ms
+serialize: 1964.74, 2048.77, 2112.42, 1795.83, 2004.25 ms
+hash_tree_root: 8134.71, 7754.48, 7391.26, 7528.93, 7663.14 ms
+{
+  "deserialize": {
+    "fastssz_ms": 0.37975437168141596,
+    "bend_ms": 6243.222875000007,
+    "bend_over_fastssz": 16440.160642146813
+  },
+  "serialize": {
+    "fastssz_ms": 0.43077289526542323,
+    "bend_ms": 2004.2450420000096,
+    "bend_over_fastssz": 4652.672124983821
+  },
+  "hash_tree_root": {
+    "fastssz_ms": 15.0659354,
+    "bend_ms": 7663.140458000009,
+    "bend_over_fastssz": 508.64020417876003
+  }
+}
