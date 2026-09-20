@@ -1,4 +1,4 @@
-> **Optimization progress snapshot:** proof-memory milestone achieved; runtime migration and performance acceptance remain incomplete. See [snapshot status and evidence](SNAPSHOT_STATUS.md).
+> **Optimization progress snapshot:** 5440 SSZ tests and 51 runtime tests pass; three proof roots check below 8 GB. Runtime array migration and native performance acceptance remain incomplete. See [snapshot status and evidence](SNAPSHOT_STATUS.md).
 
 # bend-ssz
 

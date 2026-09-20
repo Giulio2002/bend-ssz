@@ -3550,3 +3550,19 @@ real exit codes, `build/proof-memory.json`):
 
 `PROOF.bend` reports "All terms check." and exit 0 at 5.1 GB, i.e. 1.9 GB below
 the watchdog and 2.9 GB below the failure ceiling.
+
+## Conformance re-verified after the proof-memory repair (2026-09-20)
+
+Nothing in `src/`, `types/` or `spec/` was touched by the memory work, and the
+suites confirm it:
+
+* `python3 tools/run_runtime_tests.py tests/sha256.test.ts tests/new/*.test.ts`
+  - 51/51 tests, 20,009 assertions, 15/15 files, 115 s.
+* `python3 tools/spectests.py --report build/spectests.json` - 5440/5440
+  official cases passed, 0 failed (11,446 backend requests, all backend exits
+  0), 28 minutes. The report records the runtime and source hashes.
+
+Both still exercise the *list-based* public API. The compact-path checks the
+operator requires ("meaningful compact-path checks and exact-output
+comparisons") do not exist yet, because the compact primary API does not exist
+yet; see `docs/LAW_API_MAP.md`.

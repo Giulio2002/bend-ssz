@@ -21,6 +21,18 @@ independent audit of this exact commit. Earlier interrupted checks reached
 13.6–20.5 GB each. The measurement wrapper now captures output in files to avoid
 pipe deadlocks, records the actual exit status, and stops before 8 GB.
 
+## Fresh compatibility validation
+
+On 2026-09-20 at 22:02 UTC the official suite passed **5440/5440 cases**,
+with 159 backend batches and 11446 requests. Runtime tests passed **51/51**,
+with 20009 assertions. END_TO_END also checked at the end of this run.
+This suite uses the compatibility runtime through the Bend-to-JavaScript loader;
+it is not evidence that the optimized native-C path meets its speed target.
+Raw reports and the acceptance log are in `snapshot-evidence/`.
+
+Source hashes in the spectest report compared with this export: 0 mismatches.
+See `SNAPSHOT.json` for the exact list. These checks do not replace semantic audit.
+
 ## Runtime benchmarks and remaining work
 
 `BENCHMARKS.md` and `benchmarks/evidence/native-comparison.json` retain the
@@ -30,7 +42,7 @@ a speedup or a fresh performance pass. Native BeaconState decode overhead was
 about 12.9 MB in prior samples; proof-checking memory is a separate measurement.
 
 Complete the indexed-array runtime migration, compact encode/streaming root,
-all 109 Fulu mainnet types, fresh runtime/spectest validation, native decode
+all 109 Fulu mainnet types, native-path validation, native decode
 overhead <=32,000,000 bytes, encode/decode <=5x fastssz and root <=10x, and an
 independent semantic review. Preserve every required public law and its actual
 runtime connection. Older status/validation documents may describe earlier code.
