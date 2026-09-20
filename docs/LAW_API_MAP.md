@@ -6,6 +6,20 @@ is written first, as the orchestrator requires, so that every translation can be
 inspected for non-weakening *before* the representation changes. Rows are marked
 `planned` where the new form does not exist yet; none are marked `done`.
 
+Update, 2026-09-21: the starting point for the migration is now a *checked*
+base. `bend PROOF.bend` and `bend END_TO_END.bend` check with zero unsafe
+annotations (5.1 GB and 5.4 GB of physical footprint), and both frozen gates
+(`automation/root_domain_acceptance.py`, `automation/native_memory_acceptance.py`)
+exit 0, which also means the 29 END_TO_END propositions in section 2 below are
+currently proved in their original form. Every row in this map is therefore a
+change to a proposition that is presently checked, and the non-weakening
+argument for each has to be read against that, not against a broken base. See
+WORK_LOG.md for the measurements and for the two normalization blow-ups
+(exported case-split laws, and a literal depth in the root-domain witness) that
+had to be repaired to get there - both are worth knowing before writing the
+array development, because the same two mistakes are easy to repeat in an
+index-arithmetic proof.
+
 ## 0. What the pinned runtime actually offers (measured, not assumed)
 
 The migration target is constrained by facts about pinned Bend 2.0.16 that were

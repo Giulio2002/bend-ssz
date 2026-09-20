@@ -3566,3 +3566,44 @@ Both still exercise the *list-based* public API. The compact-path checks the
 operator requires ("meaningful compact-path checks and exact-output
 comparisons") do not exist yet, because the compact primary API does not exist
 yet; see `docs/LAW_API_MAP.md`.
+
+## Both frozen validators run and pass (2026-09-21)
+
+| validator | command | exit | what it covered |
+| --- | --- | --- | --- |
+| root-domain acceptance | `python3 automation/root_domain_acceptance.py` | 0 | `ROOT_DOMAIN.bend` law names, `bend PROOF.bend`, 51 runtime tests, 5440 official SSZ cases, `bend END_TO_END.bend` |
+| native memory acceptance | `python3 automation/native_memory_acceptance.py` | 0 | the 29-row law map against `memory_bench/law-statements.json`, the whole chain above again, a fresh native build and 15 Bend samples under the 32,000,000-byte decode-overhead cap |
+
+Logs: `build/root_domain_acceptance.log`, `build/native_memory_acceptance.log`.
+Fresh native report: `build/native/comparison.json`.
+
+Native decode overhead on this run (medians of three samples per fixture,
+worst single sample in brackets): 12,730,368 (12,763,136), 12,845,056
+(12,861,440), 12,812,288 (12,976,128), 12,697,600 (12,697,600), 12,730,368
+(12,763,136) bytes - worst 12,976,128, i.e. 41 % of the cap, against Go's
+3.3-3.4 MB. Root-phase peak 94.1-94.3 MB and whole-run 97.0-97.1 MB for Bend
+against 19.1-19.6 MB and 21.9-22.2 MB for Go; those phases are uncapped by the
+gate but are where the remaining native memory is, and they still run through
+`T.Value` and byte-per-cons lists.
+
+## What this iteration did NOT do
+
+Stated plainly so the next assignment is not misled:
+
+* **The array-indexed migration is still not implemented.** `src/packed.bend`
+  still stores input as `+List<Chunk>` and `src/cvalue.bend` still holds
+  sequence children in a cons spine, so the operator's "no linked-list
+  representation in the primary production path" requirement is unmet. The
+  design, the measured constraints of the pinned runtime and the exhaustive
+  old-to-new law/API map are in `docs/LAW_API_MAP.md`; every row there is still
+  `planned`.
+* **The compact API is still not the public API.** `src/ssz.bend` exposes only
+  the `+List<U32>` / `T.Value` entry points. `Decode.decode_packed` exists and
+  is what `native_bench/driver.bend` measures, but it is not exposed, has no
+  compact encode/root counterpart, and the compact-path conformance checks the
+  operator requires do not exist.
+* **The performance contract is not met and was not re-measured this
+  iteration.** The retained evidence in BENCHMARKS.md (978 workloads, 327
+  operations) has 5 workloads inside their limit, median ratio 85.8x. No
+  performance work was done here, so no fresh run was claimed; re-running it
+  unchanged would only reproduce that result.

@@ -1,4 +1,4 @@
-> **Optimization progress snapshot:** 5440 SSZ tests and 51 runtime tests pass; three proof roots check below 8 GB. Runtime array migration and native performance acceptance remain incomplete. See [snapshot status and evidence](SNAPSHOT_STATUS.md).
+> **Optimization progress snapshot:** proof-memory and native decode-memory gates pass; official SSZ tests pass. Indexed-array migration and codec/hash speed targets remain incomplete. See [snapshot status and evidence](SNAPSHOT_STATUS.md).
 
 # bend-ssz
 
@@ -30,15 +30,19 @@ Proof roots: [END_TO_END.bend](END_TO_END.bend), [PROOF.bend](PROOF.bend),
 [HASH_PROOF.bend](HASH_PROOF.bend). See [PROOF_STATUS.md](PROOF_STATUS.md) for the
 current obligation table; historical notes below it are not the current status.
 
-> **Status of this working copy.** The decoder is being replaced by a compact
-> cursor decoder over packed storage, for native memory. Its soundness half is
-> proved and checks; the completeness half (a well-formed encoding is never
-> refused) is not yet written for it, so `PROOF.bend` and `END_TO_END.bend` do
-> not check in this working copy. The table above describes the intended and
-> previously established guarantees, not what the checker accepts today - read
-> the "Current state" section of [PROOF_STATUS.md](PROOF_STATUS.md) first.
+> **Status of this working copy.** The decoder is a compact cursor decoder over
+> packed storage. Both halves are now written and checked: `bend PROOF.bend`
+> and `bend END_TO_END.bend` report "All terms check." with zero unsafe
+> annotations, and the frozen gate `automation/root_domain_acceptance.py`
+> (proofs + 51 runtime tests + all 5440 official SSZ cases + `END_TO_END.bend`)
+> exits 0 on this copy. Checking `PROOF.bend` costs 5.1 GB of physical
+> footprint and 50 s; the measurement method, the per-module numbers and the
+> two normalization blow-ups that were repaired are recorded in
+> [WORK_LOG.md](WORK_LOG.md) (`PROOF_STATUS.md` is frozen for this iteration
+> and its "Current state" section predates these runs).
 > Native memory results are in [MEMORY_REVIEW.md](MEMORY_REVIEW.md) and native
-> performance against Go fastssz in [BENCHMARKS.md](BENCHMARKS.md).
+> performance against Go fastssz in [BENCHMARKS.md](BENCHMARKS.md); the
+> performance contract is **not** met and that document says so.
 >
 > The runtime still stores input as a linked chunk list and sequence children
 > as a cons spine. Measurements of the pinned runtime (see

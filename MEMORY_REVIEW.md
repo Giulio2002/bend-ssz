@@ -11,10 +11,17 @@ python3 native_bench/run.py          # writes build/native/comparison.json
 python3 automation/native_memory_acceptance.py   # frozen operator gate
 ```
 
-The frozen gate currently exits 1, but not on these numbers: it runs the proof
-gate first and that fails on the decoder completeness induction that is still
-missing (see PROOF_STATUS.md). Its report-checking half - three or more Bend
-samples per fixture, integer measurements, `verified`, and
+The proof half of that gate now passes: `bend PROOF.bend` and
+`bend END_TO_END.bend` report "All terms check." with zero unsafe annotations,
+and `automation/root_domain_acceptance.py` (which runs the proofs, the 51
+runtime tests and all 5440 official SSZ cases) exits 0 on this copy. The
+checker peaks at 5.1 GB of physical footprint for `PROOF.bend`; see WORK_LOG.md
+for how that was measured and for the two normalization blow-ups that had to be
+repaired first. `PROOF_STATUS.md` is frozen for this iteration and its "Current
+state" section predates these runs.
+
+The report-checking half of the gate - three or more Bend samples per fixture,
+integer measurements, `verified`, and
 `decode_overhead_bytes == max(0, peak - baseline) <= 32,000,000` - passes over
 all 15 Bend samples.
 
@@ -69,20 +76,30 @@ Compilation is excluded and always rebuilt. The emitted C is retained at
 
 Five mainnet Fulu `BeaconState` fixtures, three Bend samples each (15 Bend
 samples), medians, Apple M4 / macOS 15.6, Bend 2.0.16 native C backend
-(`--threads 1 --gpu off`), Go 1.x with pinned fastssz via go-eth2-client:
+(`--threads 1 --gpu off`), Go 1.25.5 with pinned fastssz via go-eth2-client.
+Re-measured on 2026-09-21 by `automation/native_memory_acceptance.py`, which
+rebuilt both programs and exited 0:
 
 | fixture | input bytes | Bend baseline | Bend decode peak | **Bend decode overhead** | worst sample | Go baseline | Go decode peak | Go decode overhead |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| case_0 | 2,740,473 | 12,910,592 | 25,673,728 | **12,763,136** | 12,795,904 | 8,388,608 | 11,730,944 | 3,342,336 |
-| case_1 | 2,740,934 | 12,959,744 | 25,640,960 | **12,681,216** | 12,713,984 | 8,257,536 | 11,632,640 | 3,358,720 |
-| case_2 | 2,741,095 | 12,959,744 | 25,591,808 | **12,713,984** | 12,828,672 | 8,503,296 | 11,616,256 | 3,162,112 |
-| case_3 | 2,739,794 | 12,976,128 | 25,739,264 | **12,763,136** | 12,894,208 | 8,257,536 | 11,616,256 | 3,375,104 |
-| case_4 | 2,738,771 | 13,107,200 | 25,706,496 | **12,599,296** | 12,730,368 | 8,257,536 | 11,698,176 | 3,391,488 |
+| case_0 | 2,740,473 | 12,992,512 | 25,706,496 | **12,730,368** | 12,763,136 | 8,355,840 | 11,681,792 | 3,325,952 |
+| case_1 | 2,740,934 | 13,008,896 | 25,821,184 | **12,845,056** | 12,861,440 | 8,028,160 | 11,632,640 | 3,440,640 |
+| case_2 | 2,741,095 | 13,139,968 | 26,001,408 | **12,812,288** | 12,976,128 | 8,241,152 | 11,632,640 | 3,391,488 |
+| case_3 | 2,739,794 | 13,139,968 | 25,821,184 | **12,697,600** | 12,697,600 | 8,257,536 | 11,616,256 | 3,358,720 |
+| case_4 | 2,738,771 | 13,107,200 | 25,853,952 | **12,730,368** | 12,763,136 | 8,028,160 | 11,550,720 | 3,358,720 |
 
-Worst single Bend sample: **12,894,208 bytes**, 40 % of the 32,000,000-byte
+Worst single Bend sample: **12,976,128 bytes**, 41 % of the 32,000,000-byte
 requirement; all 15 Bend samples are under the cap and `verified`. The raw
-report is retained at `benchmarks/evidence/native-comparison.json` (the runner
-does not keep `build/`).
+report of this run is `build/native/comparison.json`; the previous run is
+retained at `benchmarks/evidence/native-comparison.json`.
+
+Bend decode overhead is 3.8x Go's on the same fixtures (12.7-13.0 MB against
+3.3-3.4 MB). Phase peaks from the same run, which the gate reports but does not
+cap: root phase 94.1-94.3 MB (Bend) against 19.1-19.6 MB (Go), serialize and
+whole-run 97.0-97.1 MB against 21.9-22.2 MB. The root and serialize phases are
+therefore where the remaining native memory is, and both still route through
+`T.Value` and byte-per-cons lists; that is the migration described in
+`docs/LAW_API_MAP.md`, which is not implemented.
 
 **Which function each number brackets.** `baseline_rss_bytes` is the kernel peak
 of a process that reads the fixture and packs it into the decoder's storage and
@@ -119,34 +136,33 @@ that boundary):
 
 | fixture | Bend root-phase peak | Bend serialize-phase peak | Bend whole run | Go whole run |
 |---|---:|---:|---:|---:|
-| case_0 | 94,191,616 | 96,829,440 | 96,829,440 | 22,216,704 |
-| case_1 | 94,257,152 | 96,894,976 | 96,894,976 | 22,183,936 |
-| case_2 | 94,109,696 | 96,813,056 | 96,813,056 | 22,216,704 |
-| case_3 | 94,060,544 | 96,927,744 | 96,927,744 | 22,167,552 |
-| case_4 | 94,126,080 | 96,845,824 | 96,845,824 | 22,200,320 |
+| case_0 | 94,076,928 | 96,927,744 | 96,927,744 | 22,216,704 |
+| case_1 | 94,273,536 | 97,026,048 | 97,026,048 | 21,905,408 |
+| case_2 | 94,257,152 | 97,107,968 | 97,107,968 | 22,183,936 |
+| case_3 | 94,175,232 | 97,042,432 | 97,042,432 | 22,183,936 |
+| case_4 | 94,142,464 | 97,026,048 | 97,026,048 | 21,905,408 |
 
 Latency on the same runs (medians, nanoseconds, one sequential thread; the
 Bend driver's clock has millisecond resolution, so its figures are quantised):
 
 | fixture | Bend decode | Go decode | Bend root | Go root | Bend serialize | Go serialize |
 |---|---:|---:|---:|---:|---:|---:|
-| case_0 | 20,000,000 | 3,081,125 | 621,000,000 | 15,286,792 | 337,000,000 | 635,666 |
-| case_1 | 27,000,000 | 2,403,250 | 619,000,000 | 12,328,792 | 347,000,000 | 678,250 |
-| case_2 | 18,000,000 | 4,246,833 | 609,000,000 | 11,940,666 | 344,000,000 | 817,708 |
-| case_3 | 21,000,000 | 2,620,417 | 613,000,000 | 12,115,500 | 339,000,000 | 911,750 |
-| case_4 | 22,000,000 | 2,348,792 | 619,000,000 | 12,683,084 | 334,000,000 | 719,834 |
+| case_0 | 19,000,000 | 1,276,000 | 609,000,000 | 7,567,541 | 349,000,000 | 292,709 |
+| case_1 | 20,000,000 | 1,430,458 | 613,000,000 | 7,644,833 | 362,000,000 | 282,250 |
+| case_2 | 18,000,000 | 1,300,875 | 621,000,000 | 7,585,916 | 367,000,000 | 299,750 |
+| case_3 | 19,000,000 | 1,368,125 | 609,000,000 | 7,736,541 | 357,000,000 | 321,250 |
+| case_4 | 19,000,000 | 1,373,000 | 611,000,000 | 7,615,542 | 354,000,000 | 331,417 |
 
-On this run that is roughly 7-9x Go on the compact decode, 45-50x on
-hash_tree_root and 400-530x on serialize, against contract limits of 5x, 10x
-and 5x. These ratios are **not a controlled measurement**: the Go side measured
-2.3-4.2 ms per decode here against 1.6-1.7 ms in the previous run on the same
-binary and fixtures, so the machine was busier, and the Bend driver's clock
-quantises to 1 ms. Treat the decode gap as "order 10x" and the serialize gap as
-"order 500x", and use BENCHMARKS.md - which calibrates batch sizes and takes
-five alternating samples per workload - for the numbers that the performance
-contract is judged on. Note also that the decode figure here is
+On this 2026-09-21 run that is roughly 14-15x Go on the compact decode, 79-82x
+on hash_tree_root and 1,070-1,300x on serialize, against contract limits of 5x,
+10x and 5x. These ratios are **not a controlled measurement**: the Bend driver's
+clock quantises to 1 ms, and the Go side has moved between runs on the same
+binary and fixtures (1.3-1.4 ms per decode here against 2.3-4.2 ms in the
+previous run), which is machine noise. Use BENCHMARKS.md - which calibrates
+batch sizes and takes five alternating samples per workload - for the numbers
+the performance contract is judged on. Note also that the decode figure here is
 `Decode.decode_packed`; BENCHMARKS.md measures the public `ssz.deserialize`,
-which is about ten times slower again because it materialises `T.Value`.
+which is far slower again because it materialises `T.Value`.
 
 Whole-process peak including startup, the packed input, hashing, serialization
 and output is ≈ 97 MB for Bend and ≈ 22 MB for Go; that number is **not** the
