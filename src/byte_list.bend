@@ -27,3 +27,12 @@ def root_gate(ok: Bool, capacity: Nat, +xs: +List<U32>) -> Maybe<&2, +List<U32>>
 
 def hash_tree_root(+capacity: Nat, +xs: +List<U32>) -> Maybe<&2, +List<U32>>:
   root_gate(valid(capacity, xs), capacity, xs)
+
+# Root-only domain for ByteList[capacity] inside the generic Merkleization
+# path: byte range and length <= capacity. The uint256 length mix is checked by
+# the mixer itself; the serializer's 4-byte size bound is not a root condition.
+def root_valid(+capacity: Nat, +xs: +List<U32>) -> Bool:
+  Bool.and(Pack.valid_go(xs, True{}), Nat.is_le(List.length(&2, U32, xs), capacity))
+
+def merkle_root(+capacity: Nat, +xs: +List<U32>) -> Maybe<&2, +List<U32>>:
+  root_gate(root_valid(capacity, xs), capacity, xs)

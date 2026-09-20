@@ -22,6 +22,26 @@ def right(children,values,end,i):
  return out
 def header(name):return ['law '+name+'_complete:','  for +original: T.Value','  for +valid: {S.shape(original, F.'+name+'.schema()) == True{} : Bool}','  {present(F.'+name+'(), F.'+name+'.from_value(original)) == True{} : Bool}','def '+name+'_complete(original, valid):','  match original:']
 lines=[]
+# One generic field-peeler, shared by every record adapter below. The previous
+# form inlined a refutation per (field position, wrong constructor) whose
+# pattern repeated the whole prefix and whose body re-derived the remaining
+# shape conjunct: cubic in the field count (BeaconStateValue_complete alone was
+# 8.4 MB of source). Peeling one field at a time through a continuation keeps
+# each record quadratic and the refutations shared.
+lines+=['law peel:','  for +goal: Bool','  for +rest: T.Value','  for +s: T.Schema','  for +ss: T.Schema',
+        '  for +valid: {S.shape(rest, T.Chain{s, ss}) == True{} : Bool}',
+        '  for k: @+h: T.Value -> @+head_ok: {S.shape(h, s) == True{} : Bool} -> @+t: T.Value -> @+tail_ok: {S.shape(t, ss) == True{} : Bool} -> @+shape: {rest == T.Items{h, t} : T.Value} -> {goal == True{} : Bool}',
+        '  {goal == True{} : Bool}',
+        'def peel(goal, rest, s, ss, valid, k):','  match rest:',
+        '    case T.Items{h, t}: k(h, V.and_left(S.shape(h, s), S.shape(t, ss), valid), t, V.and_right(S.shape(h, s), S.shape(t, ss), valid), {==})']
+lines+=['    case '+pattern(c)+': impossible(goal, valid)' for c in ctors if c!='Items']
+lines+=['','law finish:','  for +goal: Bool','  for +rest: T.Value',
+        '  for +valid: {S.shape(rest, T.End{}) == True{} : Bool}',
+        '  for k: @+shape: {rest == T.EmptyItems{} : T.Value} -> {goal == True{} : Bool}',
+        '  {goal == True{} : Bool}',
+        'def finish(goal, rest, valid, k):','  match rest:','    case T.EmptyItems{}: k({==})']
+lines+=['    case '+pattern(c)+': impossible(goal, valid)' for c in ctors if c!='EmptyItems']
+lines+=['']
 for match in re.finditer(r'^def (\w+)\(\) -> Data: (.+)$',source,re.M):
  name,typ=match.groups();decl=re.search(r'^def '+name+r'\.to_value\(.*$',source,re.M)
  if not decl:continue
@@ -63,15 +83,33 @@ def {name}_items_complete(original, acc, valid):
   lines+=['law '+name+'_assemble_complete:']+['  for +'+a+': Maybe<&2, F.'+c+'()>' for a,c in zip(rs,children)]+['  for p'+str(i)+': {present(F.'+c+'(), '+rs[i]+') == True{} : Bool}' for i,c in enumerate(children)]
   lines+=['  {present(F.'+name+'(), F.'+name+'.assemble('+', '.join(rs)+')) == True{} : Bool}','def '+name+'_assemble_complete('+', '.join(rs+['p'+str(i) for i in range(n)])+'):', '  match '+' '.join(rs)+':','    case '+' '.join('Some{v'+str(i)+'}' for i in range(n))+': {==}']
   lines+=['    case '+' '.join('Some{v'+str(j)+'}' if j<i else 'None{}' if j==i else '_' for j in range(n))+': impossible(False{}, p'+str(i)+')' for i in range(n)]
-  heads=[]
-  for i,c in enumerate(children):heads+=['V.and_left(S.shape('+vs[i]+', F.'+c+'.schema()), S.shape('+tree(vs[i+1:])+', '+schema(children[i+1:])+'), '+right(children,vs,'T.EmptyItems{}',i)+')']
-  lines+=['']+header(name)+['    case T.Sequence{'+tree(vs)+'}: '+name+'_assemble_complete('+', '.join(['F.'+c+'.from_value('+v+')' for c,v in zip(children,vs)]+[c+'_complete('+v+', '+h+')' for c,v,h in zip(children,vs,heads)])+')']
+  # Field walk through the shared peeler: one `peel` per field, each naming
+  # only that field's schema and the remaining chain.
+  chain=[schema(children[i:]) for i in range(n+1)]
+  # Goal and rewrite motive at depth i: the fields already peeled are spelled
+  # out, the remainder is still the bound variable (or the motive hole).
+  goal=lambda i,tail:'present(F.'+name+'(), F.'+name+'.from_value(T.Sequence{'+tree(vs[:i],tail)+'}))'
+  body=['law '+name+'_fields_complete:','  for +items: T.Value',
+        '  for +valid: {S.shape(items, '+chain[0]+') == True{} : Bool}',
+        '  {'+goal(0,'items')+' == True{} : Bool}',
+        'def '+name+'_fields_complete(items, valid):']
+  pad='  '
+  prev=('items','valid')
+  for i in range(n):
+    body+= [pad+'peel('+goal(i,prev[0])+', '+prev[0]+', F.'+children[i]+'.schema(), '+chain[i+1]+', '+prev[1]+
+            ', o'+str(i)+' => h'+str(i)+' => r'+str(i)+' => t'+str(i)+' => e'+str(i)+' =>']
+    pad+='  '
+    body+= [pad+'%Equal.sym(T.Value, '+prev[0]+', T.Items{o'+str(i)+', r'+str(i)+'}, e'+str(i)+') : {'+goal(i,'_')+' == True{} : Bool}']
+    prev=('r'+str(i),'t'+str(i))
+  body+= [pad+'finish('+goal(n,prev[0])+', '+prev[0]+', '+prev[1]+', e'+str(n)+' =>',
+          pad+'  %Equal.sym(T.Value, '+prev[0]+', T.EmptyItems{}, e'+str(n)+') : {'+goal(n,'_')+' == True{} : Bool}',
+          pad+'  '+name+'_assemble_complete('+
+          ', '.join(['F.'+c+'.from_value(o'+str(i)+')' for i,c in enumerate(children)]+
+                    [c+'_complete(o'+str(i)+', h'+str(i)+')' for i,c in enumerate(children)])+'))'+')'*n]
+  lines+=body+['']
+  lines+=header(name)+['    case T.Sequence{items}: '+name+'_fields_complete(items, valid)']
   lines+=['    case '+pattern(c)+': impossible(False{}, valid)' for c in ctors if c!='Sequence']
-  for i in range(n+1):
-   for c in ctors:
-    if c==('Items' if i<n else 'EmptyItems'):continue
-    bad=pattern(c);prefix=vs[:i]
-    lines+=['    case T.Sequence{'+tree(prefix,bad)+'}: impossible(False{}, '+right(children,prefix,bad,i)+')']
+
  lines+=['']
 count=0
 for line in source.splitlines():

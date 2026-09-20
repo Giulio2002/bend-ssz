@@ -1,5 +1,5 @@
 {
-  "status": "complete_claim_for_review",
+  "status": "unverified_candidate",
   "iteration": 11,
   "evidence_scope": "Current: Bend 2.0.16 evidence under bend_2_0_16 (checker, runtime tests via compiled Bend, 5,440 official cases, frozen acceptance exit 0). All Bend 2.0.5 records (iterations <= 0011, including current_worker) are historical.",
   "prior_worker_checkpoint": {
@@ -1966,5 +1966,9 @@
     "pre_cache_fix_standalone_report": "Historical/preliminary: superseded by full acceptance with vendor-aware cache key",
     "workflow_status": "complete",
     "review": "REVIEW.md"
+  },
+  "native_memory_objective": {
+    "status": "unverified",
+    "note": "Current candidate (cursor decoder src/decode.bend + src/walk.bend) has NOT rerun PROOF.bend, END_TO_END.bend, 51 runtime tests, 5440 spectests, or native_bench/run.py. Previous status \"complete_claim_for_review\" applied to earlier code only."
   }
 }

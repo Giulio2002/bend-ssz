@@ -1,4 +1,70 @@
-# Proof status — CURRENT obligation table (iteration 0011, rechecked on Bend 2.0.16)
+# Proof status
+
+## Current state (iteration 0002 of the native-memory work, Bend 2.0.16)
+
+The decoder was replaced by the compact cursor decoder over packed storage
+(`src/decode.bend` + `src/packed.bend` + `src/cvalue.bend`), which is what the
+native memory results measure. The proof development was rebuilt around it and
+is **partly restored**: the soundness half checks, the completeness half does
+not yet.
+
+Checks today (`bend <file>` reports "All terms check", zero unsafe):
+
+* the whole cursor-decoder soundness development:
+  proofs/cursor_leaves.bend, proofs/cursor_walk.bend, proofs/cursor_cases.bend,
+  proofs/cursor_legal.bend, proofs/cursor_sound.bend (`go_sound`),
+  proofs/packed_pack.bend (the packing round trip) and
+  proofs/packed_pack_acc.bend (the accumulating packing the decoder actually
+  calls computes exactly that specification),
+  proofs/decode_top.bend (`accepted_serializes`: anything the public list entry
+  point accepts re-encodes, under the frozen layout specification, to exactly
+  the input bytes), proofs/decode_canonical.bend, proofs/decode_soundness.bend,
+  proofs/cvalue_chain.bend;
+* the whole root development, after the schema-side lemmas it shares with the
+  decoder proofs were moved into proofs/schema_lookups.bend (no decoder is
+  mentioned there): root_sound, root_complete, root_total, root_total_steps,
+  root_public, root_domain_broader, root_domain_compat, root_domain_witness
+  (ROOT_DOMAIN.bend's own root-domain laws are exactly these three plus
+  root_public; the file itself does not check only because it imports
+  END_TO_END.bend);
+* everything else in proofs/ (152 of 157 files).
+
+Does NOT check, and therefore neither does PROOF.bend or END_TO_END.bend:
+
+* proofs/decode_goal.bend, decode_inverse.bend, decode_complete.bend,
+  decode_budget.bend, decode_monotone.bend, decode_stability.bend,
+  decode_congruence.bend, decode_inputs.bend, decode_count_bound.bend,
+  decode_layout_bound.bend. These are written against the **removed**
+  fuel-carrying `Decoder.decode_go` and its helpers (`I.decode_go`,
+  `I.sequence`, `I.nat_gate`, `I.accumulate`), so the checker reports those
+  names as undefined. They are retained, unmodified, because they contain the
+  statements END_TO_END.bend still refers to.
+
+Everything in that list reduces to ONE missing theorem, the converse of
+`go_sound`: for a legal schema, the specification's encoding of a value is
+**accepted** by the cursor decoder and decodes back to that value
+(`image_accepted` / `normative_image_accepted`, and with it `image_unique` and
+`valid_rejected_outside`). Soundness says an accepted input re-encodes to
+itself; completeness says a well-formed input is never refused, which needs
+the walk induction re-run with a non-trivial obligation in every refusal
+branch. That work is not done. END_TO_END.bend:146 (`reject_decide`) also
+still names `Decoder.decode_go` in its proof body and must be re-derived from
+the new entry point; its proposition is unchanged.
+
+No law proposition in END_TO_END.bend was changed; the propositions are
+byte-for-byte those of memory_bench/law-statements.json (the frozen gate in
+automation/native_memory_acceptance.py compares them).
+
+`root_with_valid` (memory_bench/law-statements-pre-root-correction.json) is
+subsumed by the current `root_accepted`: the two conclusions are identical and
+`root_accepted` additionally drops the `{Schema.valid(schema) == True{}}`
+premise, so it is the strictly stronger statement and anything derivable from
+`root_with_valid` is derivable from it.
+
+The table below describes the intended obligation structure. Rows whose
+"Checked theorems composed" column names decode_complete / decode_goal /
+decode_inverse / decode_budget are the ones currently blocked by the missing
+completeness induction above; the rest check.
 
 Everything below "Historical notes" is superseded. A green checker establishes
 only the propositions written; the propositions below are stated in

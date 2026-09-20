@@ -13,44 +13,46 @@ import ./byte_list.bend as PBL
 import ./bit_root.bend as PB
 import ./bit_list_root.bend as PBLBits
 import ./limits.bend as Limits
+import ../spec/root_relation.bend as R
+import ./root_domain_steps.bend as Steps
 
 law bytevector_sound:
   for +n: Nat
   for +xs: +List<U32>
   for +root: +List<U32>
-  for accepted: {BV.hash_tree_root(n, xs) == Some{root} : Maybe<&2, +List<U32>>}
+  for accepted: {BV.merkle_root(n, xs) == Some{root} : Maybe<&2, +List<U32>>}
   S.roots(T.BytesValue{xs}, T.ByteVector{n}, [root])
 def bytevector_sound(n, xs, root, accepted):
-  (PBV.witness(xs), (PBV.witness_valid(xs), Equal.trans(Maybe<&2, +List<U32>>, SBV.at_depth(n, PBV.witness(xs), xs), BV.hash_tree_root(n, xs), Some{root}, Equal.sym(Maybe<&2, +List<U32>>, BV.hash_tree_root(n, xs), SBV.at_depth(n, PBV.witness(xs), xs), PBV.hash_tree_root_correct(n, xs, PBV.witness(xs), PBV.witness_valid(xs))), accepted)))
+  (PBV.witness(xs), (PBV.witness_valid(xs), Equal.trans(Maybe<&2, +List<U32>>, R.bytevector_at_depth(n, PBV.witness(xs), xs), BV.merkle_root(n, xs), Some{root}, Equal.sym(Maybe<&2, +List<U32>>, BV.merkle_root(n, xs), R.bytevector_at_depth(n, PBV.witness(xs), xs), Steps.bytevector_root_correct(n, xs, PBV.witness(xs), PBV.witness_valid(xs))), accepted)))
 
 law bytevector_complete:
   for +n: Nat
   for +xs: +List<U32>
   for +root: +List<U32>
   for witness: S.roots(T.BytesValue{xs}, T.ByteVector{n}, [root])
-  {BV.hash_tree_root(n, xs) == Some{root} : Maybe<&2, +List<U32>>}
+  {BV.merkle_root(n, xs) == Some{root} : Maybe<&2, +List<U32>>}
 def bytevector_complete(n, xs, root, witness):
   (depth, (minimal, encoded)) = witness
-  Equal.trans(Maybe<&2, +List<U32>>, BV.hash_tree_root(n, xs), SBV.at_depth(n, depth, xs), Some{root}, PBV.hash_tree_root_correct(n, xs, depth, minimal), encoded)
+  Equal.trans(Maybe<&2, +List<U32>>, BV.merkle_root(n, xs), R.bytevector_at_depth(n, depth, xs), Some{root}, Steps.bytevector_root_correct(n, xs, depth, minimal), encoded)
 
 law bytelist_sound:
   for +n: Nat
   for +xs: +List<U32>
   for +root: +List<U32>
-  for accepted: {BL.hash_tree_root(n, xs) == Some{root} : Maybe<&2, +List<U32>>}
+  for accepted: {BL.merkle_root(n, xs) == Some{root} : Maybe<&2, +List<U32>>}
   S.roots(T.BytesValue{xs}, T.ByteList{n}, [root])
 def bytelist_sound(n, xs, root, accepted):
-  (Depth.depth(SBL.chunk_limit(n)), (Limits.depth_minimal(SBL.chunk_limit(n)), Equal.trans(Maybe<&2, +List<U32>>, SBL.at_depth(n, Depth.depth(SBL.chunk_limit(n)), xs), BL.hash_tree_root(n, xs), Some{root}, Equal.sym(Maybe<&2, +List<U32>>, BL.hash_tree_root(n, xs), SBL.at_depth(n, Depth.depth(SBL.chunk_limit(n)), xs), PBL.hash_tree_root_correct(n, Depth.depth(SBL.chunk_limit(n)), xs, Limits.depth_minimal(SBL.chunk_limit(n)))), accepted)))
+  (Depth.depth(SBL.chunk_limit(n)), (Limits.depth_minimal(SBL.chunk_limit(n)), Equal.trans(Maybe<&2, +List<U32>>, R.bytelist_at_depth(n, Depth.depth(SBL.chunk_limit(n)), xs), BL.merkle_root(n, xs), Some{root}, Equal.sym(Maybe<&2, +List<U32>>, BL.merkle_root(n, xs), R.bytelist_at_depth(n, Depth.depth(SBL.chunk_limit(n)), xs), Steps.bytelist_root_correct(n, Depth.depth(SBL.chunk_limit(n)), xs, Limits.depth_minimal(SBL.chunk_limit(n)))), accepted)))
 
 law bytelist_complete:
   for +n: Nat
   for +xs: +List<U32>
   for +root: +List<U32>
   for witness: S.roots(T.BytesValue{xs}, T.ByteList{n}, [root])
-  {BL.hash_tree_root(n, xs) == Some{root} : Maybe<&2, +List<U32>>}
+  {BL.merkle_root(n, xs) == Some{root} : Maybe<&2, +List<U32>>}
 def bytelist_complete(n, xs, root, witness):
   (depth, (minimal, encoded)) = witness
-  Equal.trans(Maybe<&2, +List<U32>>, BL.hash_tree_root(n, xs), SBL.at_depth(n, depth, xs), Some{root}, PBL.hash_tree_root_correct(n, depth, xs, minimal), encoded)
+  Equal.trans(Maybe<&2, +List<U32>>, BL.merkle_root(n, xs), R.bytelist_at_depth(n, depth, xs), Some{root}, Steps.bytelist_root_correct(n, depth, xs, minimal), encoded)
 
 law bitvector_sound:
   for +n: Nat

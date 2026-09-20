@@ -10,7 +10,7 @@ NAMED, PROG_REST, pat, absurd, union_forest_absurd, pick = gs.NAMED, gs.PROG_RES
 
 HEADER = gs.HEADER.replace("Every successful actual recursive root result satisfies the independent\n# relational root semantics spec/root_relation.bend, for every value and every\n# cache size, under actual schema validation.",
   "Completeness: whenever the independent relational root semantics holds, the\n# actual recursive root function (every cache size) returns exactly those roots.").replace(
-  "import ./root_steps.bend as G\n", "import ./root_steps.bend as G\nimport ../src/primitives.bend as IP\nimport ./root_complete_steps.bend as C\nimport ./root_sound.bend as RS\nimport ./byte_root.bend as PBV\nimport ./byte_list.bend as PBL\nimport ./bit_root.bend as PB\nimport ./bit_list_root.bend as PBLR\nimport ./integer_encoding.bend as IntegerRoot\n")
+  "import ./root_steps.bend as G\n", "import ./root_steps.bend as G\nimport ../src/primitives.bend as IP\nimport ./root_complete_steps.bend as C\nimport ./root_sound.bend as RS\nimport ./byte_root.bend as PBV\nimport ./byte_list.bend as PBL\nimport ./bit_root.bend as PB\nimport ./bit_list_root.bend as PBLR\nimport ./integer_encoding.bend as IntegerRoot\nimport ./root_domain_steps.bend as Steps\n")
 
 
 def main():
@@ -102,9 +102,9 @@ def complete(value, schema, acc, size, legal, outs, rel):
             elif vn == "UnsignedValue" and sn == "Unsigned":
                 proof = "C.single_complete(IP.uint_root(s0, v0), SP.uint_hash_tree_root(s0, v0), outs, IntegerRoot.uint_hash_tree_root_correct(s0, v0), rel)"
             elif vn == "BytesValue" and sn == "ByteVector":
-                lines = ["(+depth, (minimal, single)) = rel", "C.single_complete(IByteRoot.hash_tree_root(s0, v0), SByteRoot.at_depth(s0, depth, v0), outs, PBV.hash_tree_root_correct(s0, v0, depth, minimal), single)"]
+                lines = ["(+depth, (minimal, single)) = rel", "C.single_complete(IByteRoot.merkle_root(s0, v0), R.bytevector_at_depth(s0, depth, v0), outs, Steps.bytevector_root_correct(s0, v0, depth, minimal), single)"]
             elif vn == "BytesValue" and sn == "ByteList":
-                lines = ["(+depth, (minimal, single)) = rel", "C.single_complete(IByteList.hash_tree_root(s0, v0), SByteList.at_depth(s0, depth, v0), outs, PBL.hash_tree_root_correct(s0, depth, v0, minimal), single)"]
+                lines = ["(+depth, (minimal, single)) = rel", "C.single_complete(IByteList.merkle_root(s0, v0), R.bytelist_at_depth(s0, depth, v0), outs, Steps.bytelist_root_correct(s0, depth, v0, minimal), single)"]
             elif vn == "BitsValue" and sn == "BitVector":
                 lines = ["(+depth, (minimal, single)) = rel", "C.single_complete(IBits.bitvector_hash_tree_root(s0, v0), SBits.bitvector_at_depth(s0, depth, v0), outs, PB.bitvector_hash_tree_root_correct(s0, v0, depth, minimal), single)"]
             elif vn == "BitsValue" and sn == "BitList":
@@ -133,14 +133,12 @@ def complete(value, schema, acc, size, legal, outs, rel):
                     ve = "legal"; schema_expr = "T.ListOf{s0, s1}"; limit = "s1"; prog = "False{}"; length = "Some{SC.count(v0)}"; ilength = "Some{IC.count(v0)}"
                 else:
                     ve = "legal"; schema_expr = "T.ProgressiveList{s0}"; limit = "0n"; prog = "True{}"; length = "Some{SC.count(v0)}"; ilength = "Some{IC.count(v0)}"
-                enc = "u => IC.unwrap(IC.encode(T.Sequence{v0}, %s))" % schema_expr
+                enc = "u => IR.basic_bytes(v0, s0)"
                 comp = "u => IR.roots_go(v0, T.Repeat{s0}, [], %s)" % TABLE
-                enc_eq = ("Equal.trans(Maybe<&2, +List<U32>>, IC.unwrap(IC.encode(T.Sequence{v0}, %s)), SC.bytes(IC.encode(T.Sequence{v0}, %s)), SC.encoding_for_legal_type(%s, T.Sequence{v0}), "
-                          "G.unwrap_bytes(IC.encode(T.Sequence{v0}, %s)), Equal.cong(Maybe<&2, +List<T.Part>>, Maybe<&2, +List<U32>>, r => SC.bytes(r), IC.encode(T.Sequence{v0}, %s), SC.parts(T.Sequence{v0}, %s), "
-                          "Composition.parts_correct(T.Sequence{v0}, %s, Forest.valid_well_formed(%s, False{}, legal))))" % (schema_expr, schema_expr, schema_expr, schema_expr, schema_expr, schema_expr, schema_expr, schema_expr))
+                enc_eq = "Steps.basic_bytes_correct(v0, s0)"
                 comp_ok = "chunks => rc => complete(v0, T.Repeat{s0}, [], size, %s, chunks, rc)" % ve
-                seq = ("C.sequence_complete(R.basic_size(s0), %s, %s, SC.encoding_for_legal_type(%s, T.Sequence{v0}), chunks => R.roots(v0, T.Repeat{s0}, chunks), %s, %s, %s, size, %s, %s, outs, rel)"
-                       % (enc, comp, schema_expr, limit, prog, length, enc_eq, comp_ok))
+                seq = ("C.sequence_complete(R.basic_size(s0), %s, %s, R.basic_bytes(v0, s0), chunks => R.roots(v0, T.Repeat{s0}, chunks), %s, %s, %s, size, %s, %s, outs, rel)"
+                       % (enc, comp, limit, prog, length, enc_eq, comp_ok))
                 ilimit = "0n" if sn == "ProgressiveList" else "IR.count_limit(_, %s)" % limit
                 if ilength is None:
                     gt = "{IR.single(IR.merkle(IR.choose_chunks(_, %s, %s), %s, %s, %s)) == Some{outs} : Maybe<&2, +List<+List<U32>>>}" % (enc, comp, ilimit, prog, TABLE)

@@ -40,7 +40,7 @@ import ./bit_chunk_count.bend as Count
 import ./nat_order.bend as Order
 import ./nat_algebra.bend as A
 import ./decode_facts.bend as F
-import ./decode_goal.bend as DG
+import ./schema_lookups.bend as DG
 import ./layout_image_headers.bend as H
 
 # Presence (totality) building blocks for actual recursive roots.

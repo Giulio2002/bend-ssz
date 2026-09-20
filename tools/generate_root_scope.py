@@ -14,6 +14,7 @@ import ./byte_list.bend as ByteListLaws
 import ./bit_root.bend as BitRootLaws
 import ./bit_list_root.bend as BitListLaws
 '''
+if 'import ./root_domain_steps.bend as Steps' not in s:s=s.replace('import Base\n','import Base\nimport ./root_domain_steps.bend as Steps\n',1)
 if 'import ../src/schema.bend as Schema' not in s:s=s.replace('import Base\n','import Base\n'+extra,1)
 s+='''# Generated structural public scope composition.
 law boolean_scope:
@@ -41,11 +42,11 @@ def single(expr,proof):return f'single_scope({expr}, {proof})'
 def merkle(chunks,lim,prog='False{}'):return f'I.merkle({chunks}, {lim}, {prog}, {cache})'
 def single_merkle(chunks,lim):return single(merkle(chunks,lim),f'merkle_scope({chunks}, {lim}, False{{}}, size)')
 def length_mixed(expr,n):return single(f'I.length_mix({expr}, Some{{{n}}})', f'mix_scope({expr}, Length.encode(32n, {n}))')
-def sequence_chunks(ty):return f'I.choose_chunks(Schema.basic_size(x0), u => Codec.unwrap(Codec.encode(T.Sequence{{items}}, {ty})), u => {roots("items","T.Repeat{x0}")})'
+def sequence_chunks(ty):return f'I.choose_chunks(Schema.basic_size(x0), u => I.basic_bytes(items, x0), u => {roots("items","T.Repeat{x0}")})'
 branches={
  'T.BooleanValue{b}':{'Boolean':'V.and_true(SP.byte_scope(32n, P.boolean_root(b)), True{}, boolean_scope(b), {==})'},
  'T.UnsignedValue{v}':{'Unsigned':single('P.uint_root(x0, v)','integer_scope(x0, v)')},
- 'T.BytesValue{xs}':{'ByteVector':single('ByteRoot.hash_tree_root(x0, xs)','ByteRootLaws.hash_tree_root_scope(x0, xs)'), 'ByteList':single('ByteList.hash_tree_root(x0, xs)','ByteListLaws.root_scope(x0, xs)')},
+ 'T.BytesValue{xs}':{'ByteVector':single('ByteRoot.merkle_root(x0, xs)','Steps.bytevector_root_scope(x0, xs)'), 'ByteList':single('ByteList.merkle_root(x0, xs)','Steps.bytelist_root_scope(x0, xs)')},
  'T.BitsValue{bits}':{'BitVector':single('Bits.bitvector_hash_tree_root(x0, bits)','BitRootLaws.bitvector_root_scope(x0, bits)'), 'BitList':single('Bits.bitlist_hash_tree_root(x0, bits)','BitListLaws.bitlist_root_scope(x0, bits)'), 'ProgressiveBits':length_mixed(f'Cache.progressive(Bits.chunks(bits), {cache})','Lists.length(Bool, bits)')},
  'T.NullValue{}':{'Null':'V.and_true(SP.byte_scope(32n, P.pad(32n, [])), True{}, padded_scope([], {==}), {==})'},
  'T.EmptyItems{}':{k:'reverse_scope(acc, [], valid, {==})' for k in ['End','Repeat']},
@@ -88,7 +89,7 @@ law hash_tree_root_scope:
   for +schema: T.Schema
   for +value: T.Value
   Tree.result_scope(I.hash_tree_root(schema, value))
-def hash_tree_root_scope(schema, value): root_gate_scope(Codec.valid(schema, value), schema, value)
+def hash_tree_root_scope(schema, value): root_gate_scope(Bool.and(Schema.valid(schema), I.valid_value(value, schema, True{})), schema, value)
 
 law accepted_root_scope:
   for +schema: T.Schema

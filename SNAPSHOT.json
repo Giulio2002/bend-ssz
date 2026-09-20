@@ -1,0 +1,8 @@
+{
+  "captured_at": "2026-09-20T21:06:19.873692+00:00",
+  "kind": "unverified_development_snapshot",
+  "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0002/workspace",
+  "milestone": "all three proof roots recorded passes below 8 GB physical footprint",
+  "full_acceptance_passed": false,
+  "benchmark_status": "historical measurements; fresh speed acceptance missing"
+}

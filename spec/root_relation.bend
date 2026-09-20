@@ -12,11 +12,16 @@ import ./bit_packing.bend as BitPack
 import ./nat_bytes.bend as Length
 import ./mixing.bend as Mixing
 import ./progressive.bend as Progressive
+import ./value_domain.bend as VD
 
-# Relational normative root semantics, for legal schemas. Existential depths
-# satisfy the independent least-perfect-tree characterization. No runtime depth
-# selector, cache, accumulator, traversal fuel or implementation root is used.
-# The relation describes successful roots; public domain/totality and rejection
+# Relational normative root semantics (simple-serialize.md, Merkleization),
+# for legal schemas. Composite roots recurse over child roots; basic
+# sequences pack the concatenation of their elements' own basic
+# serializations; byte vectors/lists pack their own bytes. No whole-parent
+# encoding, offset layout or 2^32 serialized-size condition is used.
+# Existential depths satisfy the independent least-perfect-tree
+# characterization. No runtime depth selector, cache, accumulator, traversal
+# fuel or implementation root is used. Public domain/totality and rejection
 # equivalence are separate proof obligations, not assumptions of this relation.
 def single(expected: Maybe<&2, +List<U32>>, outputs: +List<+List<U32>>) -> Type:
   match outputs:
@@ -50,8 +55,41 @@ def count(fields: T.Schema) -> Nat:
     case T.Chain{h, t}: 1n+count(t)
     case _: 0n
 
-# For basic sequences the independent canonical encoding is packed; composite
-# sequences contribute one recursively computed root per element.
+# pack(values) for basic objects: the concatenation of each element's own
+# basic serialization (uintN little-endian, boolean one byte).
+def basic_one(value: T.Value, schema: T.Schema) -> Maybe<&2, +List<U32>>:
+  match value:
+    case T.BooleanValue{b}:
+      match schema:
+        case T.Boolean{}: Some{P.boolean_encoding(b)}
+        case _: None{}
+    case T.UnsignedValue{v}:
+      match schema:
+        case T.Unsigned{w}: P.uint_encoding(w, v)
+        case _: None{}
+    case _: None{}
+
+def join(a: Maybe<&2, +List<U32>>, b: Maybe<&2, +List<U32>>) -> Maybe<&2, +List<U32>>:
+  match a b:
+    case Some{x} Some{y}: Some{List.append(&2, U32, x, y)}
+    case _ _: None{}
+
+def basic_bytes(items: T.Value, +element: T.Schema) -> Maybe<&2, +List<U32>>:
+  match items:
+    case T.Items{h, t}: join(basic_one(h, element), basic_bytes(t, element))
+    case T.EmptyItems{}: Some{[]}
+    case _: None{}
+
+# Leaf roots of byte vectors and byte lists: the ungated building blocks of
+# the protected leaf specifications applied to the structural leaf domains.
+def bytevector_at_depth(+n: Nat, depth: Nat, +xs: +List<U32>) -> Maybe<&2, +List<U32>>:
+  Bytes.gate(VD.bytevector_domain(n, xs), depth, xs)
+
+def bytelist_at_depth(+capacity: Nat, depth: Nat, +xs: +List<U32>) -> Maybe<&2, +List<U32>>:
+  ByteList.root_gate(VD.bytelist_domain(capacity, xs), capacity, depth, xs)
+
+# For basic sequences the packed element serializations are the chunks;
+# composite sequences contribute one recursively computed root per element.
 def sequence_chunks(size: Maybe<&2, Nat>, +encoded: Maybe<&2, +List<U32>>, composite: +List<+List<U32>> -> Type, +chunks: +List<+List<U32>>) -> Type:
   match size:
     case None{}: composite(chunks)
@@ -95,8 +133,8 @@ def roots(value: T.Value, schema: T.Schema, +outputs: +List<+List<U32>>) -> Type
         case _: Empty
     case T.BytesValue{+bytes}:
       match schema:
-        case T.ByteVector{+n}: Exists(Nat, depth => {Bytes.canonical_depth(bytes, depth) == True{} : Bool} & single(Bytes.at_depth(n, depth, bytes), outputs))
-        case T.ByteList{+n}: Exists(Nat, depth => {Limits.minimal(ByteList.chunk_limit(n), depth) == True{} : Bool} & single(ByteList.at_depth(n, depth, bytes), outputs))
+        case T.ByteVector{+n}: Exists(Nat, depth => {Bytes.canonical_depth(bytes, depth) == True{} : Bool} & single(bytevector_at_depth(n, depth, bytes), outputs))
+        case T.ByteList{+n}: Exists(Nat, depth => {Limits.minimal(ByteList.chunk_limit(n), depth) == True{} : Bool} & single(bytelist_at_depth(n, depth, bytes), outputs))
         case _: Empty
     case T.BitsValue{+bits}:
       match schema:
@@ -120,9 +158,9 @@ def roots(value: T.Value, schema: T.Schema, +outputs: +List<+List<U32>>) -> Type
         case _: Empty
     case T.Sequence{+items}:
       match schema:
-        case T.Vector{+s, +n}: sequence(basic_size(s), Codec.encoding_for_legal_type(T.Vector{s, n}, T.Sequence{items}), chunks => roots(items, T.Repeat{s}, chunks), n, False{}, None{}, outputs)
-        case T.ListOf{+s, +n}: sequence(basic_size(s), Codec.encoding_for_legal_type(T.ListOf{s, n}, T.Sequence{items}), chunks => roots(items, T.Repeat{s}, chunks), n, False{}, Some{Codec.count(items)}, outputs)
-        case T.ProgressiveList{+s}: sequence(basic_size(s), Codec.encoding_for_legal_type(T.ProgressiveList{s}, T.Sequence{items}), chunks => roots(items, T.Repeat{s}, chunks), 0n, True{}, Some{Codec.count(items)}, outputs)
+        case T.Vector{+s, +n}: sequence(basic_size(s), basic_bytes(items, s), chunks => roots(items, T.Repeat{s}, chunks), n, False{}, None{}, outputs)
+        case T.ListOf{+s, +n}: sequence(basic_size(s), basic_bytes(items, s), chunks => roots(items, T.Repeat{s}, chunks), n, False{}, Some{Codec.count(items)}, outputs)
+        case T.ProgressiveList{+s}: sequence(basic_size(s), basic_bytes(items, s), chunks => roots(items, T.Repeat{s}, chunks), 0n, True{}, Some{Codec.count(items)}, outputs)
         case T.Container{names, +fields}: Exists(+List<+List<U32>>, chunks => roots(items, fields, chunks) & aggregate(False{}, count(fields), chunks, None{}, outputs))
         case T.ProgressiveContainer{names, +fields, +active}: Exists(+List<+List<U32>>, chunks => roots(items, fields, chunks) & active_root(active, chunks, outputs))
         case _: Empty
@@ -132,5 +170,8 @@ def roots(value: T.Value, schema: T.Schema, +outputs: +List<+List<U32>>) -> Type
         case T.CompatibleUnion{selectors, options}: selected(Schema.compatible_option(selectors, options, selector), s => Exists(+List<U32>, root => roots(v, s, [root]) & single(Mixing.mix_in_selector(root, selector), outputs)))
         case _: Empty
 
+# The root of a structurally valid value (spec/value_domain.root_valid).
+# uint256 representability of mixed lengths is implied by the relation itself
+# (a length whose uint256 encoding does not exist has no mixed root).
 def root_for_legal_type(+schema: T.Schema, +value: T.Value, output: +List<U32>) -> Type:
-  Exists(+List<U32>, encoded => {Codec.encoding_for_legal_type(schema, value) == Some{encoded} : Maybe<&2, +List<U32>>}) & roots(value, schema, [output])
+  {VD.root_valid(value, schema) == True{} : Bool} & roots(value, schema, [output])

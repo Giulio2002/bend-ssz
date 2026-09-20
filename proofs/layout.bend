@@ -133,14 +133,28 @@ def finish_output(a, b):
   %L.append_correct(U32, a, b) : {IP.accept_bytes(Bool.and(IB.size_fits(Lists.length(U32, Lists.append(U32, a, b))), PK.valid_go(Lists.append(U32, a, b), True{})), Lists.append(U32, a, b)) == SP.optional(Bool.and(N.fits(4n, List.length(&2, U32, _)), SP.bytes_domain(_)), _) : Maybe<&2, +List<U32>>}
   finish_bytes(Lists.append(U32, a, b))
 
+# The final fixed buffer is already reversed. Prepend it directly instead of
+# reversing it, copying it for append, and reversing the copy again.
+law finish_spine:
+  for +fixed: +List<U32>
+  for +variable: +List<U32>
+  {List.reverse.go(&2, U32, List.reverse(&2, U32, fixed), List.reverse(&2, U32, List.reverse(&2, U32, variable))) == List.append(&2, U32, fixed, variable) : +List<U32>}
+def finish_spine(fixed, variable):
+  Equal.trans(+List<U32>,
+    List.reverse.go(&2, U32, List.reverse(&2, U32, fixed), List.reverse(&2, U32, List.reverse(&2, U32, variable))),
+    List.append(&2, U32, fixed, List.reverse(&2, U32, List.reverse(&2, U32, variable))),
+    List.append(&2, U32, fixed, variable),
+    L.reverse_acc(U32, fixed, [], List.reverse(&2, U32, List.reverse(&2, U32, variable))),
+    Equal.cong(+List<U32>, +List<U32>, xs => List.append(&2, U32, fixed, xs),
+      List.reverse(&2, U32, List.reverse(&2, U32, variable)), variable, L.reverse_twice(U32, variable)))
+
 law finish_forward:
   for +fixed: +List<U32>
   for +variable: +List<U32>
   {I.finish(List.reverse(&2, U32, fixed), List.reverse(&2, U32, variable)) == SP.optional(Bool.and(N.fits(4n, List.length(&2, U32, List.append(&2, U32, fixed, variable))), SP.bytes_domain(List.append(&2, U32, fixed, variable))), List.append(&2, U32, fixed, variable)) : Maybe<&2, +List<U32>>}
 def finish_forward(fixed, variable):
-  %L.reverse_twice(U32, fixed) : {I.finish(List.reverse(&2, U32, fixed), List.reverse(&2, U32, variable)) == SP.optional(Bool.and(N.fits(4n, List.length(&2, U32, List.append(&2, U32, _, variable))), SP.bytes_domain(List.append(&2, U32, _, variable))), List.append(&2, U32, _, variable)) : Maybe<&2, +List<U32>>}
-  %L.reverse_twice(U32, variable) : {I.finish(List.reverse(&2, U32, fixed), List.reverse(&2, U32, variable)) == SP.optional(Bool.and(N.fits(4n, List.length(&2, U32, List.append(&2, U32, List.reverse(&2, U32, List.reverse(&2, U32, fixed)), _))), SP.bytes_domain(List.append(&2, U32, List.reverse(&2, U32, List.reverse(&2, U32, fixed)), _))), List.append(&2, U32, List.reverse(&2, U32, List.reverse(&2, U32, fixed)), _)) : Maybe<&2, +List<U32>>}
-  finish_output(List.reverse(&2, U32, List.reverse(&2, U32, fixed)), List.reverse(&2, U32, List.reverse(&2, U32, variable)))
+  %finish_spine(fixed, variable) : {I.finish(List.reverse(&2, U32, fixed), List.reverse(&2, U32, variable)) == SP.optional(Bool.and(N.fits(4n, List.length(&2, U32, _)), SP.bytes_domain(_)), _) : Maybe<&2, +List<U32>>}
+  finish_bytes(List.reverse.go(&2, U32, List.reverse(&2, U32, fixed), List.reverse(&2, U32, List.reverse(&2, U32, variable))))
 
 law bytes_append:
   for +xs: +List<U32>

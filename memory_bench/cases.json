@@ -1,0 +1,32 @@
+[
+  {
+    "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+    "bytes": 2740473,
+    "sha256": "69dae7cdad38f883aa529d81495532337329358e650745a938c176817a7e92ed",
+    "root": "cc7fb85ad35de0397582328dcaea541e21627920357b6ff37f9c01859ae12ee8"
+  },
+  {
+    "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+    "bytes": 2740934,
+    "sha256": "acf591d75d6cfb0801aa4db8c08fb4307c62165e4f1eeac1466fe1eacd245b67",
+    "root": "1585e21fe40860cdbed0b7777add5bb72c1be257594352cbe6e40a91fe238200"
+  },
+  {
+    "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+    "bytes": 2741095,
+    "sha256": "3596f2e36184c375badecfa8c09bbc47e46761871652311f253a1dc4d686f074",
+    "root": "e396d480f7e0d0634750bbe3169c5a028417ad63d3866e72b6c7da0a7141c06a"
+  },
+  {
+    "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+    "bytes": 2739794,
+    "sha256": "f828fb109173db98efd5ec8c00e5fb226551b5d16ca924fca514340bae365b39",
+    "root": "759c9be66d5029e72c9b77019c44825245aa2c71259489b01be55b4f9e146412"
+  },
+  {
+    "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+    "bytes": 2738771,
+    "sha256": "e85fc8b6c0d4219dcccd0e43db8887da9ee5e73eddbb961f9808c7faf77fa0fb",
+    "root": "2c1cee2dfbdd3b776db01038703d3b1d03f4f89fb37746f804d0e905eb417a94"
+  }
+]

@@ -1,3 +1,5 @@
+> **Optimization progress snapshot:** proof-memory milestone achieved; runtime migration and performance acceptance remain incomplete. See [snapshot status and evidence](SNAPSHOT_STATUS.md).
+
 # bend-ssz
 
 Pure Bend SSZ for all **109 pinned mainnet Fulu names**, with serialization,
@@ -27,6 +29,24 @@ qualification intact; correction and sequential-deserialization research run sep
 Proof roots: [END_TO_END.bend](END_TO_END.bend), [PROOF.bend](PROOF.bend),
 [HASH_PROOF.bend](HASH_PROOF.bend). See [PROOF_STATUS.md](PROOF_STATUS.md) for the
 current obligation table; historical notes below it are not the current status.
+
+> **Status of this working copy.** The decoder is being replaced by a compact
+> cursor decoder over packed storage, for native memory. Its soundness half is
+> proved and checks; the completeness half (a well-formed encoding is never
+> refused) is not yet written for it, so `PROOF.bend` and `END_TO_END.bend` do
+> not check in this working copy. The table above describes the intended and
+> previously established guarantees, not what the checker accepts today - read
+> the "Current state" section of [PROOF_STATUS.md](PROOF_STATUS.md) first.
+> Native memory results are in [MEMORY_REVIEW.md](MEMORY_REVIEW.md) and native
+> performance against Go fastssz in [BENCHMARKS.md](BENCHMARKS.md).
+>
+> The runtime still stores input as a linked chunk list and sequence children
+> as a cons spine. Measurements of the pinned runtime (see
+> [docs/LAW_API_MAP.md](docs/LAW_API_MAP.md) and `benchmarks/probes/`) show that
+> an array-backed, index-addressed representation is what the remaining speed
+> and memory depend on, and that `Array` in Bend 2.0.16 is linear, so that
+> migration is a different decoder and a different proof development. It is
+> designed and justified there, and not implemented.
 
 ## Evidence
 

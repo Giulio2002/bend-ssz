@@ -1,4 +1,5 @@
 import Base
+import ./root_domain_steps.bend as Steps
 import ../src/ssz.bend as API
 import ../src/schema.bend as Schema
 import ../src/codec.bend as Codec
@@ -252,8 +253,8 @@ def roots_go_scope(value, schema, acc, size, valid):
       match schema:
         case T.Boolean{}: Unit{}
         case T.Unsigned{x0}: Unit{}
-        case T.ByteVector{x0}: single_scope(ByteRoot.hash_tree_root(x0, xs), ByteRootLaws.hash_tree_root_scope(x0, xs))
-        case T.ByteList{x0}: single_scope(ByteList.hash_tree_root(x0, xs), ByteListLaws.root_scope(x0, xs))
+        case T.ByteVector{x0}: single_scope(ByteRoot.merkle_root(x0, xs), Steps.bytevector_root_scope(x0, xs))
+        case T.ByteList{x0}: single_scope(ByteList.merkle_root(x0, xs), Steps.bytelist_root_scope(x0, xs))
         case T.BitVector{x0}: Unit{}
         case T.BitList{x0}: Unit{}
         case T.Vector{x0, x1}: Unit{}
@@ -361,8 +362,8 @@ def roots_go_scope(value, schema, acc, size, valid):
         case T.ByteList{x0}: Unit{}
         case T.BitVector{x0}: Unit{}
         case T.BitList{x0}: Unit{}
-        case T.Vector{x0, x1}: single_scope(I.merkle(I.choose_chunks(Schema.basic_size(x0), u => Codec.unwrap(Codec.encode(T.Sequence{items}, T.Vector{x0, x1})), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), I.count_limit(Schema.basic_size(x0), x1), False{}, Cache.zeros(size)), merkle_scope(I.choose_chunks(Schema.basic_size(x0), u => Codec.unwrap(Codec.encode(T.Sequence{items}, T.Vector{x0, x1})), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), I.count_limit(Schema.basic_size(x0), x1), False{}, size))
-        case T.ListOf{x0, x1}: single_scope(I.length_mix(I.merkle(I.choose_chunks(Schema.basic_size(x0), u => Codec.unwrap(Codec.encode(T.Sequence{items}, T.ListOf{x0, x1})), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), I.count_limit(Schema.basic_size(x0), x1), False{}, Cache.zeros(size)), Some{Codec.count(items)}), mix_scope(I.merkle(I.choose_chunks(Schema.basic_size(x0), u => Codec.unwrap(Codec.encode(T.Sequence{items}, T.ListOf{x0, x1})), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), I.count_limit(Schema.basic_size(x0), x1), False{}, Cache.zeros(size)), Length.encode(32n, Codec.count(items))))
+        case T.Vector{x0, x1}: single_scope(I.merkle(I.choose_chunks(Schema.basic_size(x0), u => I.basic_bytes(items, x0), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), I.count_limit(Schema.basic_size(x0), x1), False{}, Cache.zeros(size)), merkle_scope(I.choose_chunks(Schema.basic_size(x0), u => I.basic_bytes(items, x0), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), I.count_limit(Schema.basic_size(x0), x1), False{}, size))
+        case T.ListOf{x0, x1}: single_scope(I.length_mix(I.merkle(I.choose_chunks(Schema.basic_size(x0), u => I.basic_bytes(items, x0), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), I.count_limit(Schema.basic_size(x0), x1), False{}, Cache.zeros(size)), Some{Codec.count(items)}), mix_scope(I.merkle(I.choose_chunks(Schema.basic_size(x0), u => I.basic_bytes(items, x0), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), I.count_limit(Schema.basic_size(x0), x1), False{}, Cache.zeros(size)), Length.encode(32n, Codec.count(items))))
         case T.Container{x0, x1}: single_scope(I.merkle(I.roots_go(items, x1, [], Cache.zeros(size)), Schema.count(x1), False{}, Cache.zeros(size)), merkle_scope(I.roots_go(items, x1, [], Cache.zeros(size)), Schema.count(x1), False{}, size))
         case T.Union{x0}: Unit{}
         case T.Null{}: Unit{}
@@ -370,7 +371,7 @@ def roots_go_scope(value, schema, acc, size, valid):
         case T.End{}: Unit{}
         case T.Repeat{x0}: Unit{}
         case T.Named{x0, x1}: Unit{}
-        case T.ProgressiveList{x0}: single_scope(I.length_mix(I.merkle(I.choose_chunks(Schema.basic_size(x0), u => Codec.unwrap(Codec.encode(T.Sequence{items}, T.ProgressiveList{x0})), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), 0n, True{}, Cache.zeros(size)), Some{Codec.count(items)}), mix_scope(I.merkle(I.choose_chunks(Schema.basic_size(x0), u => Codec.unwrap(Codec.encode(T.Sequence{items}, T.ProgressiveList{x0})), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), 0n, True{}, Cache.zeros(size)), Length.encode(32n, Codec.count(items))))
+        case T.ProgressiveList{x0}: single_scope(I.length_mix(I.merkle(I.choose_chunks(Schema.basic_size(x0), u => I.basic_bytes(items, x0), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), 0n, True{}, Cache.zeros(size)), Some{Codec.count(items)}), mix_scope(I.merkle(I.choose_chunks(Schema.basic_size(x0), u => I.basic_bytes(items, x0), u => I.roots_go(items, T.Repeat{x0}, [], Cache.zeros(size))), 0n, True{}, Cache.zeros(size)), Length.encode(32n, Codec.count(items))))
         case T.ProgressiveBits{}: Unit{}
         case T.ProgressiveContainer{x0, x1, x2}: active_scope(I.roots_go(items, x1, [], Cache.zeros(size)), x2, Cache.zeros(size))
         case T.CompatibleUnion{x0, x1}: Unit{}
@@ -417,7 +418,7 @@ law hash_tree_root_scope:
   for +schema: T.Schema
   for +value: T.Value
   Tree.result_scope(I.hash_tree_root(schema, value))
-def hash_tree_root_scope(schema, value): root_gate_scope(Codec.valid(schema, value), schema, value)
+def hash_tree_root_scope(schema, value): root_gate_scope(Bool.and(Schema.valid(schema), I.valid_value(value, schema, True{})), schema, value)
 
 law accepted_root_scope:
   for +schema: T.Schema

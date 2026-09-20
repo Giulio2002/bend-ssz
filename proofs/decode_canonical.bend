@@ -6,6 +6,7 @@ import ../src/packing.bend as Packing
 import ../src/lists.bend as Lists
 import ../types/schema.bend as T
 import ../src/decode.bend as I
+import ./decode_top.bend as Top
 import ../src/codec.bend as Codec
 import ../spec/byte_sequence.bend as S
 import ./bytes.bend as B
@@ -69,7 +70,7 @@ law canonical_gate:
   for +encoded: +List<U32>
   for selected: {I.equal_bytes(encoded, input) == ok : Bool}
   for serialized: {Codec.serialize(schema, value) == Some{encoded} : Maybe<&2, +List<U32>>}
-  canonical_output(schema, input, I.gate(ok, u => Some{value}))
+  canonical_output(schema, input, I.value_gate(ok, value))
 def canonical_gate(ok, schema, input, value, encoded, selected, serialized):
   match ok:
     case False{}: Unit{}
@@ -104,19 +105,32 @@ law deserialize_gate_sound:
   for +schema: T.Schema
   for +input: +List<U32>
   for +raw: Maybe<&2, T.Value>
-  canonical_output(schema, input, I.gate(ok, u => I.canonical(raw, schema, input)))
+  canonical_output(schema, input, I.value_result(ok, I.canonical(raw, schema, input)))
 def deserialize_gate_sound(ok, schema, input, raw):
   match ok:
     case False{}: Unit{}
     case True{}: canonical_sound(raw, schema, input)
+
+law canonical_result:
+  for +schema: T.Schema
+  for +input: +List<U32>
+  for +result: Maybe<&2, T.Value>
+  for +evaluated: {I.deserialize(schema, input) == result : Maybe<&2, T.Value>}
+  canonical_output(schema, input, result)
+def canonical_result(schema, input, result, evaluated):
+  match result:
+    case None{}: Unit{}
+    case Some{value}: Top.accepted_serializes(schema, input, value, evaluated)
 
 law deserialize_canonical:
   for +schema: T.Schema
   for +input: +List<U32>
   canonical_output(schema, input, I.deserialize(schema, input))
 def deserialize_canonical(schema, input):
-  deserialize_gate_sound(Bool.and(Schema.valid(schema), Packing.valid_go(input, True{})), schema, input, I.decode_go(Nat.mul(2n+Schema.weight(schema), 2n+Lists.length(U32, input)), schema, input, [], T.EmptyItems{}))
+  canonical_result(schema, input, I.deserialize(schema, input), {==})
 
+# The decoder never re-serializes to decide acceptance: the structural offset
+# and region checks already force the canonical encoding (decode_top).
 law accepted_serializes_exactly:
   for +schema: T.Schema
   for +input: +List<U32>
@@ -179,7 +193,7 @@ law canonical_preserves_encoding:
   {I.canonical(Some{value}, schema, input) == Some{value} : Maybe<&2, T.Value>}
 def canonical_preserves_encoding(schema, input, value, encoded):
   %Equal.sym(Maybe<&2, +List<U32>>, Codec.serialize(schema, value), Some{input}, encoded) : {I.canonical_bytes(_, input, value) == Some{value} : Maybe<&2, T.Value>}
-  %Equal.sym(Bool, I.equal_bytes(input, input), True{}, actual_equality_reflexive(input)) : {I.gate(_, u => Some{value}) == Some{value} : Maybe<&2, T.Value>}
+  %Equal.sym(Bool, I.equal_bytes(input, input), True{}, actual_equality_reflexive(input)) : {I.value_gate(_, value) == Some{value} : Maybe<&2, T.Value>}
   {==}
 
 law accepted_value_valid:

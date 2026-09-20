@@ -5,6 +5,8 @@ import ./src/schema.bend as Schema
 import ./src/decode.bend as Decoder
 import ./src/lists.bend as Lists
 import ./src/packing.bend as Packing
+import ./src/packed.bend as Packed
+import ./src/cvalue.bend as CValue
 import ./src/codec.bend as Codec
 import ./src/root.bend as Root
 import ./spec/type_legality.bend as Legal
@@ -34,12 +36,14 @@ import ./spec/representation.bend as Shape
 #   Legal.type_legal         -- legal SSZ types (illegal types section)
 #   Encoding.encoding_for_legal_type -- serialize()
 #   Decoding.decodes / outside_image -- canonical deserialization image
-#   Roots.root_for_legal_type -- hash_tree_root() with packing, padding,
-#                               minimal-depth Merkleization, progressive
-#                               Merkleization, active fields, length and
-#                               selector mixing
-#   Domain.root_domain       -- valid values: a normative encoding exists and
-#                               every mixed length is a uint256.
+#   Roots.root_for_legal_type -- hash_tree_root() of a structurally valid
+#                               value: packing of basic objects, padding,
+#                               minimal-depth Merkleization over child roots,
+#                               progressive Merkleization, active fields,
+#                               length and selector mixing. No whole-object
+#                               encoding is required (see ROOT_DOMAIN.bend).
+#   Domain.root_domain       -- structurally valid values (Domain.root_valid)
+#                               whose mixed lengths are uint256.
 
 # ---------------------------------------------------------------------------
 # Helpers deciding type legality through the (proven equivalent) validator.
@@ -141,7 +145,7 @@ def reject_decide(schema, bytes, b, same, spec):
   match b:
     case True{}: DecodeSound.outside_image_rejected(schema, bytes, spec(ValidatorSound.public_sound(schema, same)))
     case False{}:
-      %Equal.sym(Bool, Schema.valid(schema), False{}, same) : {Decoder.gate(Bool.and(_, Packing.valid_go(bytes, True{})), u => Decoder.canonical(Decoder.decode_go(Nat.mul(2n+Schema.weight(schema), 2n+Lists.length(U32, bytes)), schema, bytes, [], T.EmptyItems{}), schema, bytes)) == None{} : Maybe<&2, T.Value>}
+      %Equal.sym(Bool, Schema.valid(schema), False{}, same) : {CValue.result(Decoder.gate(_, u => Decoder.measured(Packed.pack_list(bytes), schema))) == None{} : Maybe<&2, T.Value>}
       {==}
 
 law deserialize_rejection_correct:
@@ -154,20 +158,11 @@ def deserialize_rejection_correct(schema, bytes):
 
 # ---------------------------------------------------------------------------
 # hash_tree_root: every returned root is exactly 32 bytes and satisfies the
-# independent relational root semantics of a legal type; conversely every root
-# related to a value by that semantics is exactly the returned root (so the API
-# result is characterized exactly); every valid value (normative encoding
-# exists, uint256-representable mixed lengths) has a root.
-
-law root_with_valid:
-  for +schema: T.Schema
-  for +value: T.Value
-  for +root: +List<U32>
-  for +accepted: {API.hash_tree_root(schema, value) == Some{root} : Maybe<&2, +List<U32>>}
-  for +valid: {Schema.valid(schema) == True{} : Bool}
-  Legal.type_legal(schema) & Roots.root_for_legal_type(schema, value, root) & {Bytes.byte_scope(32n, root) == True{} : Bool}
-def root_with_valid(schema, value, root, accepted, valid):
-  (ValidatorSound.public_sound(schema, valid), (RootLaws.root_sound(schema, value, root, valid, accepted), RootLaws.root_bytes(schema, value, root, accepted)))
+# independent relational root semantics of a structurally valid value of a
+# legal type; conversely every root related to a value by that semantics is
+# exactly the returned root (so the API result is characterized exactly);
+# every value of the independent root domain (structural validity and
+# uint256-representable mixed lengths, no encoding premise) has a root.
 
 law root_accepted:
   for +schema: T.Schema
@@ -176,7 +171,7 @@ law root_accepted:
   for +accepted: {API.hash_tree_root(schema, value) == Some{root} : Maybe<&2, +List<U32>>}
   Legal.type_legal(schema) & Roots.root_for_legal_type(schema, value, root) & {Bytes.byte_scope(32n, root) == True{} : Bool}
 def root_accepted(schema, value, root, accepted):
-  root_with_valid(schema, value, root, accepted, Canonical.valid_type_valid(schema, value, RootLaws.gate_open(Codec.valid(schema, value), u => Root.unwrap(Root.roots(value, schema)), root, accepted)))
+  (ValidatorSound.public_sound(schema, RootLaws.accepted_legal(schema, value, root, accepted)), (RootLaws.root_sound(schema, value, root, accepted), RootLaws.root_bytes(schema, value, root, accepted)))
 
 law hash_tree_root_correct:
   for +schema: T.Schema
@@ -287,7 +282,7 @@ law named_root_accepted:
   for +accepted: {Fulu.Name.hash_tree_root(name, value) == Some{root} : Maybe<&2, +List<U32>>}
   Roots.root_for_legal_type(Fulu.Name.schema(name), Fulu.Name.to_ssz(name, value), root) & {Bytes.byte_scope(32n, root) == True{} : Bool}
 def named_root_accepted(name, value, root, accepted):
-  (RootLaws.root_sound(Fulu.Name.schema(name), Fulu.Name.to_ssz(name, value), root, named_valid(name), accepted), RootLaws.root_bytes(Fulu.Name.schema(name), Fulu.Name.to_ssz(name, value), root, accepted))
+  (RootLaws.root_sound(Fulu.Name.schema(name), Fulu.Name.to_ssz(name, value), root, accepted), RootLaws.root_bytes(Fulu.Name.schema(name), Fulu.Name.to_ssz(name, value), root, accepted))
 
 law named_outside:
   for +name: Fulu.Name

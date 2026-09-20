@@ -76,6 +76,27 @@ law options_tail:
 def options_tail(options, valid, compatible):
   V.and_true(I.valid_go(options, True{}), I.compatible_go(Nat.mul(1024n, 1n+I.weight(options)), 1, options, options), valid, Compatibility.options_complete(options, Sound.sound(options, True{}, valid), compatible))
 
+
+# One option-list head, once. The same extraction was written out for each of
+# the eighteen non-null head constructors; a law statement is elaborated in
+# every importing module, so those eighteen copies were a large part of this
+# module's checker memory. See the mirror image in type_validator_soundness.
+law union_complete_at:
+  for +h: T.Schema
+  for +tail: T.Schema
+  for +forest: Bool
+  for legal: {forest == False{} : Bool} & {Nat.is_le(S.field_count(tail), 127n) == True{} : Bool} & S.legal(h, False{}) & S.legal(tail, True{})
+  for rh: @e: S.legal(h, False{}) -> {I.valid_go(h, False{}) == True{} : Bool}
+  for rt: @e: S.legal(tail, True{}) -> {I.valid_go(tail, True{}) == True{} : Bool}
+  {Bool.and(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(h, False{}), I.valid_go(tail, True{})))) == True{} : Bool}
+def union_complete_at(h, tail, forest, legal, rh, rt):
+  (f, lim, head, rest) = legal
+  V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(h, False{}), I.valid_go(tail, True{}))),
+    Selectors.not_false(forest, f),
+    V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(h, False{}), I.valid_go(tail, True{})),
+      limited(tail, 127n, lim),
+      V.and_true(I.valid_go(h, False{}), I.valid_go(tail, True{}), rh(head), rt(rest))))
+
 law complete:
   for +schema: T.Schema
   for +forest: Bool
@@ -122,62 +143,44 @@ def complete(schema, forest, legal):
     case T.Union{T.Union{u0}}: Empty.absurd({False{} == True{} : Bool}, legal)
     case T.Union{T.Null{}}: Empty.absurd({False{} == True{} : Bool}, legal)
     case T.Union{T.Chain{T.Boolean{}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Boolean{}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Boolean{}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.Boolean{}, False{}), I.valid_go(tail, True{}), complete(T.Boolean{}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.Boolean{}, tail, forest, legal, e => complete(T.Boolean{}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.Unsigned{h0}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Unsigned{h0}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Unsigned{h0}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.Unsigned{h0}, False{}), I.valid_go(tail, True{}), complete(T.Unsigned{h0}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.Unsigned{h0}, tail, forest, legal, e => complete(T.Unsigned{h0}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.ByteVector{h0}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ByteVector{h0}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ByteVector{h0}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.ByteVector{h0}, False{}), I.valid_go(tail, True{}), complete(T.ByteVector{h0}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.ByteVector{h0}, tail, forest, legal, e => complete(T.ByteVector{h0}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.ByteList{h0}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ByteList{h0}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ByteList{h0}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.ByteList{h0}, False{}), I.valid_go(tail, True{}), complete(T.ByteList{h0}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.ByteList{h0}, tail, forest, legal, e => complete(T.ByteList{h0}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.BitVector{h0}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.BitVector{h0}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.BitVector{h0}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.BitVector{h0}, False{}), I.valid_go(tail, True{}), complete(T.BitVector{h0}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.BitVector{h0}, tail, forest, legal, e => complete(T.BitVector{h0}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.BitList{h0}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.BitList{h0}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.BitList{h0}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.BitList{h0}, False{}), I.valid_go(tail, True{}), complete(T.BitList{h0}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.BitList{h0}, tail, forest, legal, e => complete(T.BitList{h0}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.Vector{h0, h1}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Vector{h0, h1}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Vector{h0, h1}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.Vector{h0, h1}, False{}), I.valid_go(tail, True{}), complete(T.Vector{h0, h1}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.Vector{h0, h1}, tail, forest, legal, e => complete(T.Vector{h0, h1}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.ListOf{h0, h1}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ListOf{h0, h1}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ListOf{h0, h1}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.ListOf{h0, h1}, False{}), I.valid_go(tail, True{}), complete(T.ListOf{h0, h1}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.ListOf{h0, h1}, tail, forest, legal, e => complete(T.ListOf{h0, h1}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.Container{h0, h1}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Container{h0, h1}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Container{h0, h1}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.Container{h0, h1}, False{}), I.valid_go(tail, True{}), complete(T.Container{h0, h1}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.Container{h0, h1}, tail, forest, legal, e => complete(T.Container{h0, h1}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.Union{h0}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Union{h0}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Union{h0}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.Union{h0}, False{}), I.valid_go(tail, True{}), complete(T.Union{h0}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.Union{h0}, tail, forest, legal, e => complete(T.Union{h0}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.Null{}, tail}}:
       (f, pos, lim, rest) = legal
       V.and_true(Bool.not(forest), Bool.and(Nat.is_lt(0n, I.count(tail)), Bool.and(Nat.is_le(I.count(tail), 127n), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_lt(0n, I.count(tail)), Bool.and(Nat.is_le(I.count(tail), 127n), I.valid_go(tail, True{})), positive(tail, pos), V.and_true(Nat.is_le(I.count(tail), 127n), I.valid_go(tail, True{}), limited(tail, 127n, lim), complete(tail, True{}, rest))))
     case T.Union{T.Chain{T.Chain{h0, h1}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Chain{h0, h1}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Chain{h0, h1}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.Chain{h0, h1}, False{}), I.valid_go(tail, True{}), complete(T.Chain{h0, h1}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.Chain{h0, h1}, tail, forest, legal, e => complete(T.Chain{h0, h1}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.End{}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.End{}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.End{}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.End{}, False{}), I.valid_go(tail, True{}), complete(T.End{}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.End{}, tail, forest, legal, e => complete(T.End{}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.Repeat{h0}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Repeat{h0}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Repeat{h0}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.Repeat{h0}, False{}), I.valid_go(tail, True{}), complete(T.Repeat{h0}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.Repeat{h0}, tail, forest, legal, e => complete(T.Repeat{h0}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.Named{h0, h1}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Named{h0, h1}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.Named{h0, h1}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.Named{h0, h1}, False{}), I.valid_go(tail, True{}), complete(T.Named{h0, h1}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.Named{h0, h1}, tail, forest, legal, e => complete(T.Named{h0, h1}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.ProgressiveList{h0}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ProgressiveList{h0}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ProgressiveList{h0}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.ProgressiveList{h0}, False{}), I.valid_go(tail, True{}), complete(T.ProgressiveList{h0}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.ProgressiveList{h0}, tail, forest, legal, e => complete(T.ProgressiveList{h0}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.ProgressiveBits{}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ProgressiveBits{}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ProgressiveBits{}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.ProgressiveBits{}, False{}), I.valid_go(tail, True{}), complete(T.ProgressiveBits{}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.ProgressiveBits{}, tail, forest, legal, e => complete(T.ProgressiveBits{}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.ProgressiveContainer{h0, h1, h2}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ProgressiveContainer{h0, h1, h2}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.ProgressiveContainer{h0, h1, h2}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.ProgressiveContainer{h0, h1, h2}, False{}), I.valid_go(tail, True{}), complete(T.ProgressiveContainer{h0, h1, h2}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.ProgressiveContainer{h0, h1, h2}, tail, forest, legal, e => complete(T.ProgressiveContainer{h0, h1, h2}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.Chain{T.CompatibleUnion{h0, h1}, tail}}:
-      (f, lim, head, rest) = legal
-      V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.CompatibleUnion{h0, h1}, False{}), I.valid_go(tail, True{}))), Selectors.not_false(forest, f), V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(T.CompatibleUnion{h0, h1}, False{}), I.valid_go(tail, True{})), limited(tail, 127n, lim), V.and_true(I.valid_go(T.CompatibleUnion{h0, h1}, False{}), I.valid_go(tail, True{}), complete(T.CompatibleUnion{h0, h1}, False{}, head), complete(tail, True{}, rest))))
+      union_complete_at(T.CompatibleUnion{h0, h1}, tail, forest, legal, e => complete(T.CompatibleUnion{h0, h1}, False{}, e), e => complete(tail, True{}, e))
     case T.Union{T.End{}}: Empty.absurd({False{} == True{} : Bool}, legal)
     case T.Union{T.Repeat{u0}}: Empty.absurd({False{} == True{} : Bool}, legal)
     case T.Union{T.Named{u0, u1}}: Empty.absurd({False{} == True{} : Bool}, legal)

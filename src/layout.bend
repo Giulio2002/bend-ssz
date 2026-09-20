@@ -23,7 +23,7 @@ def fixed_length(parts: +List<T.Part>, acc: Nat) -> Nat:
         case T.Variable{xs}: fixed_length(t, Nat.add(acc, 4n))
 
 def finish(fixed: +List<U32>, variable: +List<U32>) -> Maybe<&2, +List<U32>>:
-  +out = Lists.append(U32, List.reverse(&2, U32, fixed), List.reverse(&2, U32, variable))
+  +out = List.reverse.go(&2, U32, fixed, List.reverse(&2, U32, variable))
   P.accept_bytes(Bool.and(Bytes.size_fits(Lists.length(U32, out)), Pack.valid_go(out, True{})), out)
 
 def offset_append(offset: Maybe<&2, +List<U32>>, fixed: +List<U32>, next: +List<U32> -> Maybe<&2, +List<U32>>) -> Maybe<&2, +List<U32>>:

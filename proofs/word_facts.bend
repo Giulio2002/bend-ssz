@@ -1,4 +1,5 @@
 import Base
+import ../types/schema.bend as T
 
 # Reflection lemmas for the actual Base comparison, not assumed arithmetic facts.
 def false_motive(b: Bool) -> Type:
@@ -100,3 +101,15 @@ def shifted_byte_bound(x):
   match x:
     case U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{b8, WCon{b9, WCon{b10, WCon{b11, WCon{b12, WCon{b13, WCon{b14, WCon{b15, WCon{b16, WCon{b17, WCon{b18, WCon{b19, WCon{b20, WCon{b21, WCon{b22, WCon{b23, WCon{b24, WCon{b25, WCon{b26, WCon{b27, WCon{b28, WCon{b29, WCon{b30, WCon{b31, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}:
       {==}
+
+def is_some_value(m: Maybe<&2, T.Value>) -> Bool:
+  match m:
+    case None{}: False{}
+    case Some{v}: True{}
+
+law none_some:
+  for +v: T.Value
+  for +e: {None{} == Some{v} : Maybe<&2, T.Value>}
+  Empty
+def none_some(v, e):
+  false_true(Equal.cong(Maybe<&2, T.Value>, Bool, is_some_value, None{}, Some{v}, e))

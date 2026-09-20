@@ -14,6 +14,7 @@ import ./progressive.bend as Progressive
 import ./packing.bend as Pack
 import ./nat_bytes.bend as Length
 import ./mixing.bend as Mixing
+import ./bitfields.bend as Fields
 
 def single(root: Maybe<&2, +List<U32>>) -> Maybe<&2, +List<+List<U32>>>:
   match root:
@@ -89,6 +90,36 @@ def accumulate(result: Maybe<&2, +List<+List<U32>>>, acc: +List<+List<U32>>, nex
     case None{}: None{}
     case Some{rs}: next(List.reverse.go(&2, +List<U32>, rs, acc))
 
+# Basic sequences pack the concatenation of their elements' own basic
+# serializations (pack(values)). The parent is never serialized, so no offset
+# layout or whole-object size bound enters Merkleization. Continuation-passing
+# keeps the element traversal in tail position.
+def basic_one(value: T.Value, schema: T.Schema) -> Maybe<&2, +List<U32>>:
+  match value:
+    case T.BooleanValue{b}:
+      match schema:
+        case T.Boolean{}: Some{P.boolean_serialize(b)}
+        case _: None{}
+    case T.UnsignedValue{v}:
+      match schema:
+        case T.Unsigned{w}: P.uint_serialize(w, v)
+        case _: None{}
+    case _: None{}
+
+def basic_bind(one: Maybe<&2, +List<U32>>, next: +List<U32> -> Maybe<&2, +List<U32>>) -> Maybe<&2, +List<U32>>:
+  match one:
+    case None{}: None{}
+    case Some{xs}: next(xs)
+
+def basic_bytes_k(items: T.Value, +element: T.Schema, k: +List<U32> -> Maybe<&2, +List<U32>>) -> Maybe<&2, +List<U32>>:
+  match items:
+    case T.Items{h, t}: basic_bind(basic_one(h, element), x => basic_bytes_k(t, element, ys => k(Lists.append(U32, x, ys))))
+    case T.EmptyItems{}: k([])
+    case _: None{}
+
+def basic_bytes(items: T.Value, +element: T.Schema) -> Maybe<&2, +List<U32>>:
+  basic_bytes_k(items, element, ys => Some{ys})
+
 def roots_go(value: T.Value, schema: T.Schema, acc: +List<+List<U32>>, +table: +List<+List<U32>>) -> Maybe<&2, +List<+List<U32>>>:
   match value:
     case T.BooleanValue{b}:
@@ -101,8 +132,8 @@ def roots_go(value: T.Value, schema: T.Schema, acc: +List<+List<U32>>, +table: +
         case _: None{}
     case T.BytesValue{xs}:
       match schema:
-        case T.ByteVector{n}: single(Bytes.hash_tree_root(n, xs))
-        case T.ByteList{n}: single(ByteList.hash_tree_root(n, xs))
+        case T.ByteVector{n}: single(Bytes.merkle_root(n, xs))
+        case T.ByteList{n}: single(ByteList.merkle_root(n, xs))
         case _: None{}
     case T.BitsValue{+bs}:
       match schema:
@@ -126,9 +157,9 @@ def roots_go(value: T.Value, schema: T.Schema, acc: +List<+List<U32>>, +table: +
         case _: None{}
     case T.Sequence{+items}:
       match schema:
-        case T.Vector{+s, +n}: single(merkle(choose_chunks(S.basic_size(s), u => C.unwrap(C.encode(T.Sequence{items}, T.Vector{s, n})), u => roots_go(items, T.Repeat{s}, [], table)), count_limit(S.basic_size(s), n), False{}, table))
-        case T.ListOf{+s, +n}: single(length_mix(merkle(choose_chunks(S.basic_size(s), u => C.unwrap(C.encode(T.Sequence{items}, T.ListOf{s, n})), u => roots_go(items, T.Repeat{s}, [], table)), count_limit(S.basic_size(s), n), False{}, table), Some{C.count(items)}))
-        case T.ProgressiveList{+s}: single(length_mix(merkle(choose_chunks(S.basic_size(s), u => C.unwrap(C.encode(T.Sequence{items}, T.ProgressiveList{s})), u => roots_go(items, T.Repeat{s}, [], table)), 0n, True{}, table), Some{C.count(items)}))
+        case T.Vector{+s, +n}: single(merkle(choose_chunks(S.basic_size(s), u => basic_bytes(items, s), u => roots_go(items, T.Repeat{s}, [], table)), count_limit(S.basic_size(s), n), False{}, table))
+        case T.ListOf{+s, +n}: single(length_mix(merkle(choose_chunks(S.basic_size(s), u => basic_bytes(items, s), u => roots_go(items, T.Repeat{s}, [], table)), count_limit(S.basic_size(s), n), False{}, table), Some{C.count(items)}))
+        case T.ProgressiveList{+s}: single(length_mix(merkle(choose_chunks(S.basic_size(s), u => basic_bytes(items, s), u => roots_go(items, T.Repeat{s}, [], table)), 0n, True{}, table), Some{C.count(items)}))
         case T.Container{names, +fields}: single(merkle(roots_go(items, fields, [], table), S.count(fields), False{}, table))
         case T.ProgressiveContainer{names, fields, active}: active_root(roots_go(items, fields, [], table), active, table)
         case _: None{}
@@ -140,10 +171,71 @@ def roots_go(value: T.Value, schema: T.Schema, acc: +List<+List<U32>>, +table: +
 
 def roots(value: T.Value, +schema: T.Schema) -> Maybe<&2, +List<+List<U32>>>: roots_go(value, schema, [], Cached.zeros(Bool.pick(Nat, Nat.is_lt(S.weight(schema), 24n), S.weight(schema), 24n)))
 
+# Runtime decision of the independent structural root domain
+# (spec/value_domain.root_valid): value shape, exact vector counts, list
+# capacities, byte/bit/uint ranges and union selections. No serialization,
+# offset or whole-object size condition. The accumulator keeps the item
+# traversal in tail position.
+def valid_selected(option: Maybe<&2, T.Schema>, next: T.Schema -> Bool) -> Bool:
+  match option:
+    case None{}: False{}
+    case Some{s}: next(s)
+
+def valid_value(value: T.Value, schema: T.Schema, ok: Bool) -> Bool:
+  match value:
+    case T.BooleanValue{b}:
+      match schema:
+        case T.Boolean{}: ok
+        case _: False{}
+    case T.UnsignedValue{v}:
+      match schema:
+        case T.Unsigned{w}: Bool.and(ok, P.uint_valid(w, v))
+        case _: False{}
+    case T.BytesValue{xs}:
+      match schema:
+        case T.ByteVector{n}: Bool.and(ok, Bytes.root_valid(n, xs))
+        case T.ByteList{n}: Bool.and(ok, ByteList.root_valid(n, xs))
+        case _: False{}
+    case T.BitsValue{bs}:
+      match schema:
+        case T.BitVector{n}: Bool.and(ok, Fields.vector_valid(n, bs))
+        case T.BitList{n}: Bool.and(ok, Fields.list_valid(n, bs))
+        case T.ProgressiveBits{}: ok
+        case _: False{}
+    case T.NullValue{}:
+      match schema:
+        case T.Null{}: ok
+        case _: False{}
+    case T.EmptyItems{}:
+      match schema:
+        case T.End{}: ok
+        case T.Repeat{e}: ok
+        case _: False{}
+    case T.Items{h, t}:
+      match schema:
+        case T.Chain{s, rest}: valid_value(t, rest, Bool.and(ok, valid_value(h, s, True{})))
+        case T.Repeat{+s}: valid_value(t, T.Repeat{s}, Bool.and(ok, valid_value(h, s, True{})))
+        case _: False{}
+    case T.Sequence{+items}:
+      match schema:
+        case T.Vector{s, +n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Bool.and(Nat.is_lt(0n, n), Nat.is_eq(C.count(items), n))))
+        case T.ListOf{s, n}: valid_value(items, T.Repeat{s}, Bool.and(ok, Nat.is_le(C.count(items), n)))
+        case T.ProgressiveList{s}: valid_value(items, T.Repeat{s}, ok)
+        case T.Container{names, fields}: valid_value(items, fields, ok)
+        case T.ProgressiveContainer{names, fields, active}: valid_value(items, fields, ok)
+        case _: False{}
+    case T.Selected{+selector, v}:
+      match schema:
+        case T.Union{options}: Bool.and(ok, valid_selected(S.get(options, U32.to_nat(selector)), s => valid_value(v, s, True{})))
+        case T.CompatibleUnion{selectors, options}: Bool.and(ok, valid_selected(C.selected_schema(selectors, options, selector), s => valid_value(v, s, True{})))
+        case _: False{}
+
 def gate(ok: Bool, next: Unit -> Maybe<&2, +List<U32>>) -> Maybe<&2, +List<U32>>:
   match ok:
     case False{}: None{}
     case True{}: next(Unit{})
 
+# Public root: legal schema and structurally valid value; the uint256 length
+# mixes are checked by the recursive computation itself.
 def hash_tree_root(+schema: T.Schema, +value: T.Value) -> Maybe<&2, +List<U32>>:
-  gate(C.valid(schema, value), u => unwrap(roots(value, schema)))
+  gate(Bool.and(S.valid(schema), valid_value(value, schema, True{})), u => unwrap(roots(value, schema)))

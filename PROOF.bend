@@ -101,6 +101,16 @@ import ./proofs/decode_shape.bend as DecoderLayoutShapeLaws
 import ./proofs/decode_goal.bend as DecoderInverseSteps
 import ./proofs/decode_inverse.bend as DecoderRecursiveInverseLaws
 import ./proofs/decode_complete.bend as DecoderCompletenessLaws
+import ./proofs/schema_width.bend as ElementWidthLaws
+import ./proofs/complete_leaves.bend as PackedLeafCompletenessLaws
+import ./proofs/complete_walk.bend as PackedWalkCompletenessLaws
+import ./proofs/complete_regions.bend as PackedRegionCompletenessLaws
+import ./proofs/complete_step.bend as PackedStepCompletenessLaws
+import ./proofs/complete_decode.bend as PackedDecoderCompletenessLaws
+import ./proofs/encoding_domain.bend as EncodingByteDomainLaws
+import ./proofs/packed_domain.bend as PackerDomainLaws
+import ./proofs/decode_image.bend as PublicDecoderCompletenessLaws
+import ./proofs/decode_top.bend as PublicDecoderSoundnessLaws
 import ./proofs/root_steps.bend as RootRelationSteps
 import ./proofs/root_sound.bend as RecursiveRootSoundnessLaws
 import ./proofs/root_public.bend as PublicRootSoundnessLaws
@@ -110,3 +120,4 @@ import ./proofs/root_complete_steps.bend as RootCompletenessSteps
 import ./proofs/root_complete.bend as RecursiveRootCompletenessLaws
 import ./proofs/fulu_named.bend as NamedFuluAdapterLaws
 import ./END_TO_END.bend as EndToEnd
+import ./ROOT_DOMAIN.bend as RootDomain
