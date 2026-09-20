@@ -33,6 +33,18 @@ Raw reports and the acceptance log are in `snapshot-evidence/`.
 Source hashes in the spectest report compared with this export: 0 mismatches.
 See `SNAPSHOT.json` for the exact list. These checks do not replace semantic audit.
 
+## Complete proof-memory sweep — 2026-09-20 23:37 UTC
+
+All **172 checks** in the sequential sweep completed successfully, including
+individual proof modules and public entry points. Largest recorded physical
+footprint was about **6.20 GB**, below the 8 GB user ceiling. The final PROOF
+check recorded about 5.73 GB. This supersedes the earlier partial sweep counts;
+it does not establish native performance acceptance or replace semantic audit.
+The sampled footprint is not a kernel-enforced memory bound on macOS.
+Raw current-sweep results/logs are in `snapshot-evidence/proof-memory-sweep*`;
+historical failed scratch probes are excluded from this successful-sweep report.
+These measurements do not include a complete source fingerprint for each check.
+
 ## Fresh native-memory gate — 2026-09-20 22:47 UTC
 
 The native-memory gate passed after fresh proof/conformance prerequisites.
