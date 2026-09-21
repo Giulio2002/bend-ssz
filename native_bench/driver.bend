@@ -1,8 +1,8 @@
 import Base
 import ../src/buffer.bend as B
-import ../src/api.bend as API
+import ../src/obj.bend as O
 import ../src/digest.bend as D
-import ../types/fulu_cschema.bend as Spec
+import ../types/fulu_obj.bend as T
 
 # Native driver for the compact primary path, speaking the same protocol as
 # native_bench/fastssz: SSZ_INPUT, SSZ_OUTPUT, SSZ_PHASES=input|decode|root|all,
@@ -11,12 +11,15 @@ import ../types/fulu_cschema.bend as Spec
 #
 #   read      the fixture goes into the packed buffer in 64 KiB pieces; the
 #             input never exists as a byte list in full
-#   decode    the primary decode pass validates the whole BeaconState in place;
-#             the decoded value is the validated buffer, so nothing else is
-#             allocated
-#   root      hash_tree_root over the same buffer
-#   serialize the value's encoding is streamed from the buffer to SSZ_OUTPUT
-#             one 64 KiB piece at a time, read by index; SERIALIZE_MS includes
+#   decode    the typed object API builds the owning BeaconState object: the
+#             generated validator, then the reader that allocates the object's
+#             own records and packed collections, then a fold over every field
+#             so nothing is left unevaluated. The input buffer is consumed by
+#             the decode (ownership transfer); the object stays live through
+#             every later phase and until the process ends
+#   root      hash_tree_root of that object
+#   serialize the object is encoded into a fresh buffer, which is then streamed
+#             to SSZ_OUTPUT one 64 KiB piece at a time; SERIALIZE_MS includes
 #             the writes, which Go's SERIALIZE_NS does not
 #
 # Every phase ends with a settle window so the harness can take an idle
@@ -30,6 +33,7 @@ def settle() -> IO(Unit): IO.sleep(150)
 # can lag the print by more than 150 ms, which let root- and serialize-phase
 # samples into the decode window and tripped the harness's representativeness
 # check with no change in the decode itself. Measured work is unchanged.
+
 def settle_long() -> IO(Unit): IO.sleep(600)
 
 def sized(pair: File & Result<&1, &1, U32 & String, U32>) -> IO(File & U32):
@@ -79,6 +83,7 @@ def env_or(name: String, fallback: String) -> IO(String):
 
 # A process told to stop at a boundary drops the buffer - no traversal, so the
 # stopping run does no work the full run does not - and says so.
+
 def stop_now(buf: B.Buf) -> IO(Unit):
   do IO<Unit>:
     IO.print("PHASE=stopped")
@@ -86,6 +91,7 @@ def stop_now(buf: B.Buf) -> IO(Unit):
 
 # The input is complete before the baseline marker: the last byte depends on
 # every piece written into the buffer, so reading it forces the whole fill.
+
 def forced(pair: B.Buf & U32) -> IO(B.Buf):
   (buf, last) = pair
   do IO<B.Buf>:
@@ -126,75 +132,101 @@ def close_out(pair: File & B.Buf) -> IO(Unit):
   (file, buf) = pair
   File.close(file)
 
-def phase_serialize(+out: String, +size: U32, buf: B.Buf) -> IO(Unit):
+def keep_obj(obj: T.BeaconState) -> IO(Unit):
   do IO<Unit>:
-    t0 : Nat <- IO.now()
-    file : File <- IO.try(File, File.open(out, "w"))
-    done : File & B.Buf <- write_buf(file, size, buf)
-    close_out(done)
-    t1 : Nat <- IO.now()
-    IO.print("SERIALIZE_MS=" ++ Nat.show(Nat.sub(t1, t0)))
-    IO.print("PHASE=serialized")
-    settle()
-    IO.print("PHASE=done")
     settle()
 
 # ---------------------------------------------------------------------------
 # root
+
+def written(obj: T.BeaconState, +out: String, +t0: Nat, pair: B.Buf & U32) -> IO(Unit):
+  (enc, +n) = pair
+  do IO<Unit>:
+    file : File <- IO.try(File, File.open(out, "w"))
+    done : File & B.Buf <- write_buf(file, n, enc)
+    close_out(done)
+    t1 : Nat <- IO.now()
+    IO.print("SERIALIZE_MS=" ++ Nat.show(Nat.sub(t1, t0)) ++ " ENCODED=" ++ U32.show(n))
+    IO.print("PHASE=serialized")
+    settle()
+    IO.print("PHASE=done")
+    keep_obj(obj)
+
+# The decoded object stays live to the very end of the measurement.
+
+def encoded(+out: String, +t0: Nat, pair: T.BeaconState & B.Buf) -> IO(Unit):
+  (obj, enc) = pair
+  written(obj, out, t0, B.size(enc))
+
+def phase_serialize(+out: String, obj: T.BeaconState) -> IO(Unit):
+  do IO<Unit>:
+    t0 : Nat <- IO.now()
+    encoded(out, t0, T.BeaconState_encode(obj))
 
 def byte_sum(xs: +List<U32>, +acc: U32) -> U32:
   match xs:
     case Nil{}: acc
     case Con{+h, t}: byte_sum(t, (acc + h : U32))
 
-def after_root(stop: Bool, +out: String, +size: U32, buf: B.Buf) -> IO(Unit):
-  match stop:
-    case True{}: stop_now(buf)
-    case False{}: phase_serialize(out, size, buf)
-
-def rooted(+mode: String, +out: String, +size: U32, +t0: Nat, pair: B.Buf & D.Digest) -> IO(Unit):
-  (buf, o) = pair
+def stop_obj(obj: T.BeaconState) -> IO(Unit):
   do IO<Unit>:
-    +sum : U32 = byte_sum(D.bytes(o), 0)
-    IO.print("ROOTSUM=" ++ U32.show(sum))
+    IO.print("PHASE=stopped")
+    settle()
+
+def after_root(stop: Bool, +out: String, obj: T.BeaconState) -> IO(Unit):
+  match stop:
+    case True{}: stop_obj(obj)
+    case False{}: phase_serialize(out, obj)
+
+def root_show(+mode: String, +out: String, +t0: Nat, obj: T.BeaconState, +d: D.Digest) -> IO(Unit):
+  do IO<Unit>:
+    IO.print("ROOTSUM=" ++ U32.show(byte_sum(D.bytes(d), 0)))
     t1 : Nat <- IO.now()
     IO.print("ROOT_MS=" ++ Nat.show(Nat.sub(t1, t0)))
     IO.print("PHASE=rooted")
     settle()
-    after_root(String.eq(mode, "root"), out, size, buf)
+    after_root(String.eq(mode, "root"), out, obj)
 
-def phase_root(+mode: String, +out: String, +size: U32, buf: B.Buf) -> IO(Unit):
+def rooted(+mode: String, +out: String, +t0: Nat, pair: B.Buf & (T.BeaconState & D.Digest)) -> IO(Unit):
+  (h, r) = pair
+  (obj, d) = r
+  root_show(mode, out, t0, obj, d)
+
+def phase_root(+mode: String, +out: String, obj: T.BeaconState) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    rooted(mode, out, size, t0, API.root(Spec.BeaconState(), size, buf))
+    rooted(mode, out, t0, T.BeaconState_hash_tree_root(O.hasher(), obj))
 
 # ---------------------------------------------------------------------------
-# decode
+# decode: bytes to a fully constructed typed object
 
-def after_decode(stop: Bool, +mode: String, +out: String, +size: U32, buf: B.Buf) -> IO(Unit):
+def after_decode(stop: Bool, +mode: String, +out: String, obj: T.BeaconState) -> IO(Unit):
   match stop:
-    case True{}: stop_now(buf)
-    case False{}: phase_root(mode, out, size, buf)
+    case True{}: stop_obj(obj)
+    case False{}: phase_root(mode, out, obj)
 
-def decoded_gate(ok: Bool, +mode: String, +out: String, +size: U32, +t0: Nat, buf: B.Buf) -> IO(Unit):
-  match ok:
-    case False{}: IO.die(Unit, 1, "decode rejected")
-    case True{}:
-      do IO<Unit>:
-        t1 : Nat <- IO.now()
-        IO.print("DECODE_MS=" ++ Nat.show(Nat.sub(t1, t0)) ++ " CHECKSUM=" ++ U32.show(size))
-        IO.print("PHASE=decoded")
-        settle_long()
-        after_decode(String.eq(mode, "decode"), mode, out, size, buf)
+def forced_obj(+mode: String, +out: String, +t0: Nat, pair: T.BeaconState & U32) -> IO(Unit):
+  (obj, +x) = pair
+  do IO<Unit>:
+    t1 : Nat <- IO.now()
+    IO.print("DECODE_MS=" ++ Nat.show(Nat.sub(t1, t0)) ++ " CHECKSUM=" ++ U32.show(x))
+    IO.print("PHASE=decoded")
+    settle_long()
+    after_decode(String.eq(mode, "decode"), mode, out, obj)
 
-def decoded(+mode: String, +out: String, +size: U32, +t0: Nat, pair: B.Buf & Bool) -> IO(Unit):
-  (buf, o) = pair
-  decoded_gate(o, mode, out, size, t0, buf)
+def decoded_gate(m: Maybe<&1, T.BeaconState>, +mode: String, +out: String, +t0: Nat) -> IO(Unit):
+  match m:
+    case None{}: IO.die(Unit, 1, "decode rejected")
+    case Some{obj}: forced_obj(mode, out, t0, T.BeaconState_force(obj))
+
+def decoded(+mode: String, +out: String, +t0: Nat, pair: B.Buf & Maybe<&1, T.BeaconState>) -> IO(Unit):
+  (buf, m) = pair
+  decoded_gate(m, mode, out, t0)
 
 def phase_decode(+mode: String, +out: String, +size: U32, buf: B.Buf) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    decoded(mode, out, size, t0, API.validate(Spec.BeaconState(), size, buf))
+    decoded(mode, out, t0, T.BeaconState_decode(buf, size))
 
 def after_input(stop: Bool, +mode: String, +out: String, +size: U32, buf: B.Buf) -> IO(Unit):
   match stop:

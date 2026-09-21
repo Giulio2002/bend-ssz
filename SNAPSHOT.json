@@ -1,14 +1,6 @@
 {
-  "captured_at": "2026-09-21T13:41:14.577744+00:00",
-  "kind": "unverified_pre_codegen_snapshot",
-  "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0009/workspace",
-  "source_files": 12056,
-  "full_acceptance_passed": false,
-  "current_speed_gate_passed": false,
-  "publication_documentation_overrides": [
-    "README.md",
-    "BENCHMARKS.md",
-    "SNAPSHOT_STATUS.md"
-  ],
-  "next_direction": "YAML-driven typed owning object/codecs/proofs generation; incremental list Merkle caches"
+  "source": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0014/workspace",
+  "at": "2026-09-21T19:39:05.666172+00:00",
+  "status": "work_in_progress",
+  "description": "Recovered work-in-progress snapshot, not final acceptance. All proof/performance claims require matching source evidence. Prior snapshot reports are historical. Restores iteration 14 including generated fuzz/mutation APIs, cache proof and evidence; iteration 15 recovery experiments retained separately in the run. Full generated API proof acceptance remains unfinished."
 }

@@ -134,8 +134,33 @@ def capacity_go(+fuel: Nat, +need: U32, +depth: Nat) -> Nat:
         case 1: depth
         case _: capacity_go(p, U32.shrn((need + 1 : U32), 1n), 1n+depth)
 
+# The same depth, read off a table for the small buffers that dominate the
+# small encodings: ceil(log2(w)) for w words, exactly what the loop computes.
+# Every SSZ value of up to 64 bytes lands here, and those are the ones whose
+# cost is the allocation rather than the bytes.
+def capacity_small(+w: U32) -> Nat:
+  match w:
+    case 0: 0n
+    case 1: 0n
+    case 2: 1n
+    case 3: 2n
+    case 4: 2n
+    case 5: 3n
+    case 6: 3n
+    case 7: 3n
+    case 8: 3n
+    case 9: 4n
+    case 10: 4n
+    case 11: 4n
+    case 12: 4n
+    case 13: 4n
+    case 14: 4n
+    case 15: 4n
+    case 16: 4n
+    case _: capacity_go(32n, w, 0n)
+
 def capacity(+n: U32) -> Nat:
-  capacity_go(32n, U32.shrn((n + 3 : U32), 2n), 0n)
+  capacity_small(U32.shrn((n + 3 : U32), 2n))
 
 # ---------------------------------------------------------------------------
 # Merkle scratch. A buffer being hashed carries 1024 digest slots of eight

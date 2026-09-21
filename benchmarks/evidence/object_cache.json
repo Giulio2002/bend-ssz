@@ -1,0 +1,1332 @@
+{
+ "cases": [
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "validators": 8,
+   "pass": true,
+   "cache_tree_depth": 3,
+   "retained_cache_bytes": 520,
+   "peak_rss_bytes": {
+    "0": 12779520,
+    "1": 12812288,
+    "2": 12943360,
+    "3": 12812288,
+    "4": 12812288,
+    "5": 12812288,
+    "6": 12812288,
+    "7": 12812288
+   },
+   "roots_hex": {
+    "0": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+    "1": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+    "2": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+    "3": "8e86ab119b72244ac56312a0b412cf80b960288859237659eac73a6d6e4aab81",
+    "4": "8e86ab119b72244ac56312a0b412cf80b960288859237659eac73a6d6e4aab81",
+    "5": "769e54f0d658ec6619606fcfb0bc220d4c9b8e04a25db57361b06d5a010de2db",
+    "6": "769e54f0d658ec6619606fcfb0bc220d4c9b8e04a25db57361b06d5a010de2db",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "expected_hex": {
+    "0": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+    "1": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+    "2": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+    "3": "8e86ab119b72244ac56312a0b412cf80b960288859237659eac73a6d6e4aab81",
+    "4": "8e86ab119b72244ac56312a0b412cf80b960288859237659eac73a6d6e4aab81",
+    "5": "769e54f0d658ec6619606fcfb0bc220d4c9b8e04a25db57361b06d5a010de2db",
+    "6": "769e54f0d658ec6619606fcfb0bc220d4c9b8e04a25db57361b06d5a010de2db",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "seconds_min_of_3": {
+    "0": 0.0224,
+    "1": 0.0204,
+    "2": 0.0207,
+    "3": 0.0202,
+    "4": 0.0204,
+    "5": 0.02,
+    "6": 0.0201,
+    "7": 0.0199
+   },
+   "hashing_seconds": {
+    "0": 0.0025,
+    "1": 0.0005,
+    "2": 0.0008,
+    "3": 0.0003,
+    "4": 0.0005,
+    "5": 0.0001,
+    "6": 0.0002,
+    "7": 0.0
+   },
+   "marginal_second_root_seconds": {
+    "warm": 0.0003,
+    "after_append": -0.0004,
+    "after_update": -0.0002
+   }
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "validators": 7,
+   "pass": true,
+   "cache_tree_depth": 3,
+   "retained_cache_bytes": 520,
+   "peak_rss_bytes": {
+    "0": 12812288,
+    "1": 12812288,
+    "2": 12812288,
+    "3": 12976128,
+    "4": 12812288,
+    "5": 12779520,
+    "6": 12812288,
+    "7": 12812288
+   },
+   "roots_hex": {
+    "0": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+    "1": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+    "2": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+    "3": "a70ef9d40e5790908a514df35b6ec50c9d29bf3f03d59e21069c5f63a12d2b21",
+    "4": "a70ef9d40e5790908a514df35b6ec50c9d29bf3f03d59e21069c5f63a12d2b21",
+    "5": "33ec28ee0f7c51aef67db2fc5ed6cbbdf2ea1e25fc5fff948a06fb9bf64608aa",
+    "6": "33ec28ee0f7c51aef67db2fc5ed6cbbdf2ea1e25fc5fff948a06fb9bf64608aa",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "expected_hex": {
+    "0": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+    "1": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+    "2": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+    "3": "a70ef9d40e5790908a514df35b6ec50c9d29bf3f03d59e21069c5f63a12d2b21",
+    "4": "a70ef9d40e5790908a514df35b6ec50c9d29bf3f03d59e21069c5f63a12d2b21",
+    "5": "33ec28ee0f7c51aef67db2fc5ed6cbbdf2ea1e25fc5fff948a06fb9bf64608aa",
+    "6": "33ec28ee0f7c51aef67db2fc5ed6cbbdf2ea1e25fc5fff948a06fb9bf64608aa",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "seconds_min_of_3": {
+    "0": 0.0202,
+    "1": 0.0205,
+    "2": 0.0203,
+    "3": 0.0199,
+    "4": 0.0204,
+    "5": 0.0207,
+    "6": 0.0208,
+    "7": 0.0206
+   },
+   "hashing_seconds": {
+    "0": -0.0004,
+    "1": -0.0001,
+    "2": -0.0003,
+    "3": -0.0007,
+    "4": -0.0002,
+    "5": 0.0001,
+    "6": 0.0002,
+    "7": 0.0
+   },
+   "marginal_second_root_seconds": {
+    "warm": -0.0002,
+    "after_append": 0.0002,
+    "after_update": -0.0006
+   }
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "validators": 7,
+   "pass": true,
+   "cache_tree_depth": 3,
+   "retained_cache_bytes": 520,
+   "peak_rss_bytes": {
+    "0": 12812288,
+    "1": 12943360,
+    "2": 12943360,
+    "3": 12976128,
+    "4": 12812288,
+    "5": 12943360,
+    "6": 12779520,
+    "7": 12976128
+   },
+   "roots_hex": {
+    "0": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+    "1": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+    "2": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+    "3": "3c71351370d5e41fe6276f4cfc2ede5179b7c0e927e7b97ba7c7644b933aa58c",
+    "4": "3c71351370d5e41fe6276f4cfc2ede5179b7c0e927e7b97ba7c7644b933aa58c",
+    "5": "3789a9599bf597c00ac58a28c96b1a5c4f2fc257b1858dd010481eba1cee4362",
+    "6": "3789a9599bf597c00ac58a28c96b1a5c4f2fc257b1858dd010481eba1cee4362",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "expected_hex": {
+    "0": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+    "1": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+    "2": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+    "3": "3c71351370d5e41fe6276f4cfc2ede5179b7c0e927e7b97ba7c7644b933aa58c",
+    "4": "3c71351370d5e41fe6276f4cfc2ede5179b7c0e927e7b97ba7c7644b933aa58c",
+    "5": "3789a9599bf597c00ac58a28c96b1a5c4f2fc257b1858dd010481eba1cee4362",
+    "6": "3789a9599bf597c00ac58a28c96b1a5c4f2fc257b1858dd010481eba1cee4362",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "seconds_min_of_3": {
+    "0": 0.0205,
+    "1": 0.0204,
+    "2": 0.0213,
+    "3": 0.0212,
+    "4": 0.0211,
+    "5": 0.0214,
+    "6": 0.021,
+    "7": 0.0219
+   },
+   "hashing_seconds": {
+    "0": -0.0014,
+    "1": -0.0015,
+    "2": -0.0006,
+    "3": -0.0007,
+    "4": -0.0008,
+    "5": -0.0005,
+    "6": -0.0009,
+    "7": 0.0
+   },
+   "marginal_second_root_seconds": {
+    "warm": 0.0009,
+    "after_append": 0.001,
+    "after_update": 0.0008
+   }
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "validators": 7,
+   "pass": true,
+   "cache_tree_depth": 3,
+   "retained_cache_bytes": 520,
+   "peak_rss_bytes": {
+    "0": 12812288,
+    "1": 12976128,
+    "2": 12812288,
+    "3": 12812288,
+    "4": 12812288,
+    "5": 12943360,
+    "6": 12812288,
+    "7": 12976128
+   },
+   "roots_hex": {
+    "0": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+    "1": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+    "2": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+    "3": "9bacf3385969442154d7cf5c0e08ef9b9edf035bc388bd9b66207178a785e868",
+    "4": "9bacf3385969442154d7cf5c0e08ef9b9edf035bc388bd9b66207178a785e868",
+    "5": "852a3f49e84e965a9422a4c45312715ad043191559d42258d1fd7206bdc3e889",
+    "6": "852a3f49e84e965a9422a4c45312715ad043191559d42258d1fd7206bdc3e889",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "expected_hex": {
+    "0": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+    "1": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+    "2": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+    "3": "9bacf3385969442154d7cf5c0e08ef9b9edf035bc388bd9b66207178a785e868",
+    "4": "9bacf3385969442154d7cf5c0e08ef9b9edf035bc388bd9b66207178a785e868",
+    "5": "852a3f49e84e965a9422a4c45312715ad043191559d42258d1fd7206bdc3e889",
+    "6": "852a3f49e84e965a9422a4c45312715ad043191559d42258d1fd7206bdc3e889",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "seconds_min_of_3": {
+    "0": 0.0218,
+    "1": 0.0209,
+    "2": 0.0213,
+    "3": 0.022,
+    "4": 0.0212,
+    "5": 0.022,
+    "6": 0.0222,
+    "7": 0.0222
+   },
+   "hashing_seconds": {
+    "0": -0.0004,
+    "1": -0.0013,
+    "2": -0.0009,
+    "3": -0.0002,
+    "4": -0.001,
+    "5": -0.0002,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "marginal_second_root_seconds": {
+    "warm": 0.0004,
+    "after_append": 0.0011,
+    "after_update": 0.0011
+   }
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "validators": 0,
+   "pass": true,
+   "cache_tree_depth": 0,
+   "retained_cache_bytes": 72,
+   "peak_rss_bytes": {
+    "0": 12812288,
+    "1": 12779520,
+    "2": 12976128,
+    "5": 12779520,
+    "6": 12943360,
+    "7": 12812288
+   },
+   "roots_hex": {
+    "0": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+    "1": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+    "2": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+    "5": "ce3f6dbf82a37586f3b4b202669f80887514d4f2f4d2cd506721bc102534c012",
+    "6": "ce3f6dbf82a37586f3b4b202669f80887514d4f2f4d2cd506721bc102534c012",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "expected_hex": {
+    "0": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+    "1": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+    "2": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+    "5": "ce3f6dbf82a37586f3b4b202669f80887514d4f2f4d2cd506721bc102534c012",
+    "6": "ce3f6dbf82a37586f3b4b202669f80887514d4f2f4d2cd506721bc102534c012",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "seconds_min_of_3": {
+    "0": 0.023,
+    "1": 0.0225,
+    "2": 0.0221,
+    "5": 0.0223,
+    "6": 0.0236,
+    "7": 0.0236
+   },
+   "hashing_seconds": {
+    "0": -0.0006,
+    "1": -0.0011,
+    "2": -0.0015,
+    "5": -0.0013,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "marginal_second_root_seconds": {
+    "warm": -0.0004,
+    "after_append": -0.0002
+   }
+  },
+  {
+   "case": "synthetic BeaconState with 1024 validators",
+   "validators": 1024,
+   "pass": true,
+   "cache_tree_depth": 10,
+   "retained_cache_bytes": 65544,
+   "peak_rss_bytes": {
+    "0": 13172736,
+    "1": 13008896,
+    "2": 13008896,
+    "3": 13139968,
+    "4": 13107200,
+    "5": 13402112,
+    "6": 13369344,
+    "7": 12943360
+   },
+   "roots_hex": {
+    "0": "29c21405011e5937e104c35818f6d664bed37d944c06b89dc7dec910bd0ae1b3",
+    "1": "29c21405011e5937e104c35818f6d664bed37d944c06b89dc7dec910bd0ae1b3",
+    "2": "29c21405011e5937e104c35818f6d664bed37d944c06b89dc7dec910bd0ae1b3",
+    "3": "949c1ab0c7cfe0bbd6ded67039bac58547a6a5c3c9c29e82aefd6b528b1d5bd5",
+    "4": "949c1ab0c7cfe0bbd6ded67039bac58547a6a5c3c9c29e82aefd6b528b1d5bd5",
+    "5": "3e501d66bd7423bd06a03c7a22f80a737a5b37ac7ec2dac1b549467537eb1949",
+    "6": "3e501d66bd7423bd06a03c7a22f80a737a5b37ac7ec2dac1b549467537eb1949",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "expected_hex": {
+    "0": "29c21405011e5937e104c35818f6d664bed37d944c06b89dc7dec910bd0ae1b3",
+    "1": "29c21405011e5937e104c35818f6d664bed37d944c06b89dc7dec910bd0ae1b3",
+    "2": "29c21405011e5937e104c35818f6d664bed37d944c06b89dc7dec910bd0ae1b3",
+    "3": "949c1ab0c7cfe0bbd6ded67039bac58547a6a5c3c9c29e82aefd6b528b1d5bd5",
+    "4": "949c1ab0c7cfe0bbd6ded67039bac58547a6a5c3c9c29e82aefd6b528b1d5bd5",
+    "5": "3e501d66bd7423bd06a03c7a22f80a737a5b37ac7ec2dac1b549467537eb1949",
+    "6": "3e501d66bd7423bd06a03c7a22f80a737a5b37ac7ec2dac1b549467537eb1949",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "seconds_min_of_3": {
+    "0": 0.0275,
+    "1": 0.0274,
+    "2": 0.0277,
+    "3": 0.0292,
+    "4": 0.0287,
+    "5": 0.0331,
+    "6": 0.0292,
+    "7": 0.0255
+   },
+   "hashing_seconds": {
+    "0": 0.002,
+    "1": 0.0019,
+    "2": 0.0022,
+    "3": 0.0037,
+    "4": 0.0032,
+    "5": 0.0076,
+    "6": 0.0037,
+    "7": 0.0
+   },
+   "marginal_second_root_seconds": {
+    "warm": 0.0003,
+    "after_append": 0.0057,
+    "after_update": 0.0018
+   }
+  },
+  {
+   "case": "synthetic BeaconState with 8192 validators",
+   "validators": 8192,
+   "pass": true,
+   "cache_tree_depth": 13,
+   "retained_cache_bytes": 524296,
+   "peak_rss_bytes": {
+    "0": 13828096,
+    "1": 13860864,
+    "2": 13828096,
+    "3": 14024704,
+    "4": 14024704,
+    "5": 16089088,
+    "6": 16121856,
+    "7": 13991936
+   },
+   "roots_hex": {
+    "0": "5e436abfb317e0b6c17d31931653d60b6cec981df63a42fd15f29ad31dc49a06",
+    "1": "5e436abfb317e0b6c17d31931653d60b6cec981df63a42fd15f29ad31dc49a06",
+    "2": "5e436abfb317e0b6c17d31931653d60b6cec981df63a42fd15f29ad31dc49a06",
+    "3": "b15bf178201ea979b85eaab79a81f5aa8acb9b4e17680559cec050d5d63c6d56",
+    "4": "b15bf178201ea979b85eaab79a81f5aa8acb9b4e17680559cec050d5d63c6d56",
+    "5": "15cec4345f889ac58a7f0ef5111fc535cabf6c754eaf5379f610698f8c9f8595",
+    "6": "15cec4345f889ac58a7f0ef5111fc535cabf6c754eaf5379f610698f8c9f8595",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "expected_hex": {
+    "0": "5e436abfb317e0b6c17d31931653d60b6cec981df63a42fd15f29ad31dc49a06",
+    "1": "5e436abfb317e0b6c17d31931653d60b6cec981df63a42fd15f29ad31dc49a06",
+    "2": "5e436abfb317e0b6c17d31931653d60b6cec981df63a42fd15f29ad31dc49a06",
+    "3": "b15bf178201ea979b85eaab79a81f5aa8acb9b4e17680559cec050d5d63c6d56",
+    "4": "b15bf178201ea979b85eaab79a81f5aa8acb9b4e17680559cec050d5d63c6d56",
+    "5": "15cec4345f889ac58a7f0ef5111fc535cabf6c754eaf5379f610698f8c9f8595",
+    "6": "15cec4345f889ac58a7f0ef5111fc535cabf6c754eaf5379f610698f8c9f8595",
+    "7": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+   },
+   "seconds_min_of_3": {
+    "0": 0.0591,
+    "1": 0.0558,
+    "2": 0.0558,
+    "3": 0.0544,
+    "4": 0.0546,
+    "5": 0.0831,
+    "6": 0.0553,
+    "7": 0.028
+   },
+   "hashing_seconds": {
+    "0": 0.0311,
+    "1": 0.0278,
+    "2": 0.0278,
+    "3": 0.0264,
+    "4": 0.0266,
+    "5": 0.0551,
+    "6": 0.0273,
+    "7": 0.0
+   },
+   "marginal_second_root_seconds": {
+    "warm": 0.0,
+    "after_append": 0.0273,
+    "after_update": -0.0014
+   }
+  }
+ ],
+ "histories": [
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 1,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "uncached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "oracle_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 1,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "2dc0258662563ad888da6407d823c8abbb885af4f815bec19f0eec62e98cff5c",
+   "uncached_root": "2dc0258662563ad888da6407d823c8abbb885af4f815bec19f0eec62e98cff5c",
+   "oracle_root": "2dc0258662563ad888da6407d823c8abbb885af4f815bec19f0eec62e98cff5c"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 1,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "8d0fa3738577662b09f9d128e4d3be55aca97db1ad58b5979ee37cb60e78e25f",
+   "uncached_root": "8d0fa3738577662b09f9d128e4d3be55aca97db1ad58b5979ee37cb60e78e25f",
+   "oracle_root": "8d0fa3738577662b09f9d128e4d3be55aca97db1ad58b5979ee37cb60e78e25f"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 1,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "b6fb3e8095d4f6ffae94dc9d2f9195b2bbb3a4258e1d18c030311532252f6bf1",
+   "uncached_root": "b6fb3e8095d4f6ffae94dc9d2f9195b2bbb3a4258e1d18c030311532252f6bf1",
+   "oracle_root": "b6fb3e8095d4f6ffae94dc9d2f9195b2bbb3a4258e1d18c030311532252f6bf1"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 7,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "uncached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "oracle_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 7,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "b2de2104ddee677a48dbf78c5477109c8cd87ffbeb0159b9a6e2f8c295c9fa46",
+   "uncached_root": "b2de2104ddee677a48dbf78c5477109c8cd87ffbeb0159b9a6e2f8c295c9fa46",
+   "oracle_root": "b2de2104ddee677a48dbf78c5477109c8cd87ffbeb0159b9a6e2f8c295c9fa46"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 7,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "a84dc3c70b106faa317fe6a8983735c277f088a20b4200d589e243de4e804131",
+   "uncached_root": "a84dc3c70b106faa317fe6a8983735c277f088a20b4200d589e243de4e804131",
+   "oracle_root": "a84dc3c70b106faa317fe6a8983735c277f088a20b4200d589e243de4e804131"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 7,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "12a3d560839529ac0d4179c047e7f44d5fdb3c35ea26753854abac891117f8e6",
+   "uncached_root": "12a3d560839529ac0d4179c047e7f44d5fdb3c35ea26753854abac891117f8e6",
+   "oracle_root": "12a3d560839529ac0d4179c047e7f44d5fdb3c35ea26753854abac891117f8e6"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 4242,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "uncached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "oracle_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 4242,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "uncached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "oracle_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 4242,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "34f43fb8ae5ab97a2e9f92e6fe26440f777352f6b515882ed8f1267a249b2125",
+   "uncached_root": "34f43fb8ae5ab97a2e9f92e6fe26440f777352f6b515882ed8f1267a249b2125",
+   "oracle_root": "34f43fb8ae5ab97a2e9f92e6fe26440f777352f6b515882ed8f1267a249b2125"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 4242,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "db8d2346f6cd60093ba1da2afd62c48f4fc7d77ff5b64520cf3eeeec8012c245",
+   "uncached_root": "db8d2346f6cd60093ba1da2afd62c48f4fc7d77ff5b64520cf3eeeec8012c245",
+   "oracle_root": "db8d2346f6cd60093ba1da2afd62c48f4fc7d77ff5b64520cf3eeeec8012c245"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 987654321,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "uncached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "oracle_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 987654321,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "43a4d008957dc9f7f6cf8f146d2e528fa76e831285b5cbc9eb07c714ff9a8f98",
+   "uncached_root": "43a4d008957dc9f7f6cf8f146d2e528fa76e831285b5cbc9eb07c714ff9a8f98",
+   "oracle_root": "43a4d008957dc9f7f6cf8f146d2e528fa76e831285b5cbc9eb07c714ff9a8f98"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 987654321,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "6707a8fc1cd819a0f6987c3549cd4164e5ad4f45fe2876f81f7a90614ba93bb7",
+   "uncached_root": "6707a8fc1cd819a0f6987c3549cd4164e5ad4f45fe2876f81f7a90614ba93bb7",
+   "oracle_root": "6707a8fc1cd819a0f6987c3549cd4164e5ad4f45fe2876f81f7a90614ba93bb7"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 987654321,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "7483a84bc59a6116800f2e6f96e7d598e0f8ba6bebacc848b549cb6a36e53b8c",
+   "uncached_root": "7483a84bc59a6116800f2e6f96e7d598e0f8ba6bebacc848b549cb6a36e53b8c",
+   "oracle_root": "7483a84bc59a6116800f2e6f96e7d598e0f8ba6bebacc848b549cb6a36e53b8c"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 2147483647,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "uncached_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae",
+   "oracle_root": "c7f5e9ba2daad270b76d44c8e97aab9a2749647f6ac83394b67ab16d00ae62ae"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 2147483647,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "80bfe0044fef3dff222aca50790b9109297ed5e6c4625073fe6d0005f5ed1d8c",
+   "uncached_root": "80bfe0044fef3dff222aca50790b9109297ed5e6c4625073fe6d0005f5ed1d8c",
+   "oracle_root": "80bfe0044fef3dff222aca50790b9109297ed5e6c4625073fe6d0005f5ed1d8c"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 2147483647,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "267c72d02bfc750d5ea77b5f2e9f1767d744fc10aa427c170073e63c4285cd32",
+   "uncached_root": "267c72d02bfc750d5ea77b5f2e9f1767d744fc10aa427c170073e63c4285cd32",
+   "oracle_root": "267c72d02bfc750d5ea77b5f2e9f1767d744fc10aa427c170073e63c4285cd32"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_0",
+   "seed": 2147483647,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "41f02a5756154cfcc2bfc811aae6aa7182394421599d78e30cd43034bb97ee85",
+   "uncached_root": "41f02a5756154cfcc2bfc811aae6aa7182394421599d78e30cd43034bb97ee85",
+   "oracle_root": "41f02a5756154cfcc2bfc811aae6aa7182394421599d78e30cd43034bb97ee85"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 1,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "uncached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "oracle_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 1,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "10c64dbab387ec13fc29f34df2767341114f658349aa44d6ecc92bf6e795a2cf",
+   "uncached_root": "10c64dbab387ec13fc29f34df2767341114f658349aa44d6ecc92bf6e795a2cf",
+   "oracle_root": "10c64dbab387ec13fc29f34df2767341114f658349aa44d6ecc92bf6e795a2cf"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 1,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "a98120496956675c0768b241e3d9950e841a565965598b74aa4774720acd6dcb",
+   "uncached_root": "a98120496956675c0768b241e3d9950e841a565965598b74aa4774720acd6dcb",
+   "oracle_root": "a98120496956675c0768b241e3d9950e841a565965598b74aa4774720acd6dcb"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 1,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "d837d294a17f86a218da42f3f6e815f5119f10030632c4ce9ab055c147d29e2b",
+   "uncached_root": "d837d294a17f86a218da42f3f6e815f5119f10030632c4ce9ab055c147d29e2b",
+   "oracle_root": "d837d294a17f86a218da42f3f6e815f5119f10030632c4ce9ab055c147d29e2b"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 7,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "uncached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "oracle_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 7,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "50104b1590025c5e234af300559283aa1f4dbf5c8be6f95833618b93ade3246d",
+   "uncached_root": "50104b1590025c5e234af300559283aa1f4dbf5c8be6f95833618b93ade3246d",
+   "oracle_root": "50104b1590025c5e234af300559283aa1f4dbf5c8be6f95833618b93ade3246d"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 7,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "6dc5fb4dbffd7132e772a7ff5423a07e2c5dfb43d281b63c9ecac2f6b80d4066",
+   "uncached_root": "6dc5fb4dbffd7132e772a7ff5423a07e2c5dfb43d281b63c9ecac2f6b80d4066",
+   "oracle_root": "6dc5fb4dbffd7132e772a7ff5423a07e2c5dfb43d281b63c9ecac2f6b80d4066"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 7,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "d1df16c2c79ea2b5e80f57271cff0e73fea2db63fe37fc32f7d859a6f6422789",
+   "uncached_root": "d1df16c2c79ea2b5e80f57271cff0e73fea2db63fe37fc32f7d859a6f6422789",
+   "oracle_root": "d1df16c2c79ea2b5e80f57271cff0e73fea2db63fe37fc32f7d859a6f6422789"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 4242,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "uncached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "oracle_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 4242,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "uncached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "oracle_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 4242,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "103cc480ce6bfd4e0b9b9a057fb73f6913e9b8b8a9cc5dc55f2a03687e3da44c",
+   "uncached_root": "103cc480ce6bfd4e0b9b9a057fb73f6913e9b8b8a9cc5dc55f2a03687e3da44c",
+   "oracle_root": "103cc480ce6bfd4e0b9b9a057fb73f6913e9b8b8a9cc5dc55f2a03687e3da44c"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 4242,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "251c52e38dd72e04744edf7f4b42b25a4ab6507fd4f5f374fed4064a6da7a6d4",
+   "uncached_root": "251c52e38dd72e04744edf7f4b42b25a4ab6507fd4f5f374fed4064a6da7a6d4",
+   "oracle_root": "251c52e38dd72e04744edf7f4b42b25a4ab6507fd4f5f374fed4064a6da7a6d4"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 987654321,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "uncached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "oracle_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 987654321,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "f991ec8956c902ab07c4714aff4ecd71139467f93589b59abe6c97b3db568c66",
+   "uncached_root": "f991ec8956c902ab07c4714aff4ecd71139467f93589b59abe6c97b3db568c66",
+   "oracle_root": "f991ec8956c902ab07c4714aff4ecd71139467f93589b59abe6c97b3db568c66"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 987654321,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "cc547e0e59f7488582f7edae5881843aefc9e8955835974ac3d53149cdf67cd3",
+   "uncached_root": "cc547e0e59f7488582f7edae5881843aefc9e8955835974ac3d53149cdf67cd3",
+   "oracle_root": "cc547e0e59f7488582f7edae5881843aefc9e8955835974ac3d53149cdf67cd3"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 987654321,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "8a639837725c8bb005fe0e0020ba3c60a1d192112db72fafd63be206d52edf30",
+   "uncached_root": "8a639837725c8bb005fe0e0020ba3c60a1d192112db72fafd63be206d52edf30",
+   "oracle_root": "8a639837725c8bb005fe0e0020ba3c60a1d192112db72fafd63be206d52edf30"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 2147483647,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "uncached_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72",
+   "oracle_root": "82f549d213bf94d84d4c7edf7cf220eae645d3e999ff2d47232b77f8d8e0af72"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 2147483647,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "ce2808b85f1c8cd41c0e30003ecc648f0300f6fb0616f61b5e4f7d6420670cfa",
+   "uncached_root": "ce2808b85f1c8cd41c0e30003ecc648f0300f6fb0616f61b5e4f7d6420670cfa",
+   "oracle_root": "ce2808b85f1c8cd41c0e30003ecc648f0300f6fb0616f61b5e4f7d6420670cfa"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 2147483647,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "8737b6532014af6a82169087f2ec6a2543a8d4d0edf76e418778ef4e1f4db2a6",
+   "uncached_root": "8737b6532014af6a82169087f2ec6a2543a8d4d0edf76e418778ef4e1f4db2a6",
+   "oracle_root": "8737b6532014af6a82169087f2ec6a2543a8d4d0edf76e418778ef4e1f4db2a6"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_1",
+   "seed": 2147483647,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "035c144b7b4a01088db14fba14eda07b1167a6ff821395daecd9256691b9083b",
+   "uncached_root": "035c144b7b4a01088db14fba14eda07b1167a6ff821395daecd9256691b9083b",
+   "oracle_root": "035c144b7b4a01088db14fba14eda07b1167a6ff821395daecd9256691b9083b"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 1,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "uncached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "oracle_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 1,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "6f47d4f22b76a88effd7ca7c3f998ec8428f4b402b30a082865ca07764fd979b",
+   "uncached_root": "6f47d4f22b76a88effd7ca7c3f998ec8428f4b402b30a082865ca07764fd979b",
+   "oracle_root": "6f47d4f22b76a88effd7ca7c3f998ec8428f4b402b30a082865ca07764fd979b"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 1,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "9bc4514ba8557de6d9faa6052b4d36ea95ae8b21e434f466e1c583a72f62462a",
+   "uncached_root": "9bc4514ba8557de6d9faa6052b4d36ea95ae8b21e434f466e1c583a72f62462a",
+   "oracle_root": "9bc4514ba8557de6d9faa6052b4d36ea95ae8b21e434f466e1c583a72f62462a"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 1,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "9244f9ec20c7f2b9ef993f9c8923d09b83d16e0542d3be0c4e3162e4d47cf2de",
+   "uncached_root": "9244f9ec20c7f2b9ef993f9c8923d09b83d16e0542d3be0c4e3162e4d47cf2de",
+   "oracle_root": "9244f9ec20c7f2b9ef993f9c8923d09b83d16e0542d3be0c4e3162e4d47cf2de"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 7,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "uncached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "oracle_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 7,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "eaafdcc6dee0c2c5808e7dc6e4741ab48feaff8f9dfa1585ee06a0d547754612",
+   "uncached_root": "eaafdcc6dee0c2c5808e7dc6e4741ab48feaff8f9dfa1585ee06a0d547754612",
+   "oracle_root": "eaafdcc6dee0c2c5808e7dc6e4741ab48feaff8f9dfa1585ee06a0d547754612"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 7,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "6cf1aae5784bc7c5731b835e9916fe2dc13af0654231b3ecec9f4bc7bc412bc3",
+   "uncached_root": "6cf1aae5784bc7c5731b835e9916fe2dc13af0654231b3ecec9f4bc7bc412bc3",
+   "oracle_root": "6cf1aae5784bc7c5731b835e9916fe2dc13af0654231b3ecec9f4bc7bc412bc3"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 7,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "3d81b32d88d4e1c92c03ac26cf0c57367c20cc33be5927af742bd1ff44a25401",
+   "uncached_root": "3d81b32d88d4e1c92c03ac26cf0c57367c20cc33be5927af742bd1ff44a25401",
+   "oracle_root": "3d81b32d88d4e1c92c03ac26cf0c57367c20cc33be5927af742bd1ff44a25401"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 4242,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "uncached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "oracle_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 4242,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "uncached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "oracle_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 4242,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "c93cd88c21ac6146f1abeaca4c529ea9c7395edde9569dbae01c8f9a53dcd196",
+   "uncached_root": "c93cd88c21ac6146f1abeaca4c529ea9c7395edde9569dbae01c8f9a53dcd196",
+   "oracle_root": "c93cd88c21ac6146f1abeaca4c529ea9c7395edde9569dbae01c8f9a53dcd196"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 4242,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "b7b06684902f3ce27e7b9e17b9ee4f8cd32e4e2ed98644a7b0707ce2c8587bdd",
+   "uncached_root": "b7b06684902f3ce27e7b9e17b9ee4f8cd32e4e2ed98644a7b0707ce2c8587bdd",
+   "oracle_root": "b7b06684902f3ce27e7b9e17b9ee4f8cd32e4e2ed98644a7b0707ce2c8587bdd"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 987654321,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "uncached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "oracle_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 987654321,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "b8f2c1ede95f151854fc313ee9db0d574e9937edb2100915d79a7bc1a941b84b",
+   "uncached_root": "b8f2c1ede95f151854fc313ee9db0d574e9937edb2100915d79a7bc1a941b84b",
+   "oracle_root": "b8f2c1ede95f151854fc313ee9db0d574e9937edb2100915d79a7bc1a941b84b"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 987654321,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "598080c1561b06714f977cea4841f0cceb037e39c1110c42526c9232469c544f",
+   "uncached_root": "598080c1561b06714f977cea4841f0cceb037e39c1110c42526c9232469c544f",
+   "oracle_root": "598080c1561b06714f977cea4841f0cceb037e39c1110c42526c9232469c544f"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 987654321,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "c972ca0fa4783a3c88c44d812ecaf89632f05a8b8e0366673a0d7a2dbecc265c",
+   "uncached_root": "c972ca0fa4783a3c88c44d812ecaf89632f05a8b8e0366673a0d7a2dbecc265c",
+   "oracle_root": "c972ca0fa4783a3c88c44d812ecaf89632f05a8b8e0366673a0d7a2dbecc265c"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 2147483647,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "uncached_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f",
+   "oracle_root": "8537f89bfcb29411f4c6a5bde34d3c4ebee059f0a502e60c90c8b77735efee9f"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 2147483647,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "144331652b64d349308c4ee69f2e0dcffb179bd534291fd20c18c7b9a836cf3d",
+   "uncached_root": "144331652b64d349308c4ee69f2e0dcffb179bd534291fd20c18c7b9a836cf3d",
+   "oracle_root": "144331652b64d349308c4ee69f2e0dcffb179bd534291fd20c18c7b9a836cf3d"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 2147483647,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "6aaa2c81a5477a5b4a6960f58ac87e5ef2a5bd2609a79e6e13ec0103066c9eb0",
+   "uncached_root": "6aaa2c81a5477a5b4a6960f58ac87e5ef2a5bd2609a79e6e13ec0103066c9eb0",
+   "oracle_root": "6aaa2c81a5477a5b4a6960f58ac87e5ef2a5bd2609a79e6e13ec0103066c9eb0"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_2",
+   "seed": 2147483647,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "c09101ad9232bb8fe146a94d0bfaf02a8d6f0002ceef7450485670b79346eb60",
+   "uncached_root": "c09101ad9232bb8fe146a94d0bfaf02a8d6f0002ceef7450485670b79346eb60",
+   "oracle_root": "c09101ad9232bb8fe146a94d0bfaf02a8d6f0002ceef7450485670b79346eb60"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 1,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "uncached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "oracle_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 1,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "00f8b38f634554256097fb43eb634dd9055b1aa45da572df7ed6c8ab9de37b69",
+   "uncached_root": "00f8b38f634554256097fb43eb634dd9055b1aa45da572df7ed6c8ab9de37b69",
+   "oracle_root": "00f8b38f634554256097fb43eb634dd9055b1aa45da572df7ed6c8ab9de37b69"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 1,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "d33aa2cd6d48240149561fd5e525a283b3751537c68c86e3358d5ec4e79c7fe6",
+   "uncached_root": "d33aa2cd6d48240149561fd5e525a283b3751537c68c86e3358d5ec4e79c7fe6",
+   "oracle_root": "d33aa2cd6d48240149561fd5e525a283b3751537c68c86e3358d5ec4e79c7fe6"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 1,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "9bb86833c147a33855ba012d8b7b6c0cc6425c665b4ed8d41c212ee4a93032f3",
+   "uncached_root": "9bb86833c147a33855ba012d8b7b6c0cc6425c665b4ed8d41c212ee4a93032f3",
+   "oracle_root": "9bb86833c147a33855ba012d8b7b6c0cc6425c665b4ed8d41c212ee4a93032f3"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 7,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "uncached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "oracle_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 7,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "ea95e38344bcf2180b9546b04d388622970ad0ba7cc29f78819dd5195668d43c",
+   "uncached_root": "ea95e38344bcf2180b9546b04d388622970ad0ba7cc29f78819dd5195668d43c",
+   "oracle_root": "ea95e38344bcf2180b9546b04d388622970ad0ba7cc29f78819dd5195668d43c"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 7,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "1c99c3dd2f662b888096821ea6ce5043b4621dac7f93719c39eebfa88d73ffd6",
+   "uncached_root": "1c99c3dd2f662b888096821ea6ce5043b4621dac7f93719c39eebfa88d73ffd6",
+   "oracle_root": "1c99c3dd2f662b888096821ea6ce5043b4621dac7f93719c39eebfa88d73ffd6"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 7,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "9b724e2dd55533ec0bc53de262eb698f48afadad04af4621e28235ad17f2096a",
+   "uncached_root": "9b724e2dd55533ec0bc53de262eb698f48afadad04af4621e28235ad17f2096a",
+   "oracle_root": "9b724e2dd55533ec0bc53de262eb698f48afadad04af4621e28235ad17f2096a"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 4242,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "uncached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "oracle_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 4242,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "uncached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "oracle_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 4242,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "fa285694e9117764aa5796b4a13cdd0f324a65240289df7bf4f0b6a176d4013b",
+   "uncached_root": "fa285694e9117764aa5796b4a13cdd0f324a65240289df7bf4f0b6a176d4013b",
+   "oracle_root": "fa285694e9117764aa5796b4a13cdd0f324a65240289df7bf4f0b6a176d4013b"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 4242,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "08376ed66711b5095897d212adedd9352431b1c04d12dbee94d0e6c89e05e203",
+   "uncached_root": "08376ed66711b5095897d212adedd9352431b1c04d12dbee94d0e6c89e05e203",
+   "oracle_root": "08376ed66711b5095897d212adedd9352431b1c04d12dbee94d0e6c89e05e203"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 987654321,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "uncached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "oracle_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 987654321,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "6c4a502ee9f14fcf10cd052279c3e1dcd74cf33c54199b9c3f23df1d2dceee45",
+   "uncached_root": "6c4a502ee9f14fcf10cd052279c3e1dcd74cf33c54199b9c3f23df1d2dceee45",
+   "oracle_root": "6c4a502ee9f14fcf10cd052279c3e1dcd74cf33c54199b9c3f23df1d2dceee45"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 987654321,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "a843c38aa4a5dde4861854778310f075d3f9a9483299cd1b78045566f008a452",
+   "uncached_root": "a843c38aa4a5dde4861854778310f075d3f9a9483299cd1b78045566f008a452",
+   "oracle_root": "a843c38aa4a5dde4861854778310f075d3f9a9483299cd1b78045566f008a452"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 987654321,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "b84b45448c459b15266c399b2ab00bc5d0ff7a910d953d68862425ae9d511f41",
+   "uncached_root": "b84b45448c459b15266c399b2ab00bc5d0ff7a910d953d68862425ae9d511f41",
+   "oracle_root": "b84b45448c459b15266c399b2ab00bc5d0ff7a910d953d68862425ae9d511f41"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 2147483647,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "uncached_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5",
+   "oracle_root": "dd6794432ccab8e9eafaae0a87136ec6b9cbec86a8fa165243d3f62d677c25b5"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 2147483647,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "01b1a686314436968b81fbdfc8706198d019ba6d9ce2a0f97410b908322593e5",
+   "uncached_root": "01b1a686314436968b81fbdfc8706198d019ba6d9ce2a0f97410b908322593e5",
+   "oracle_root": "01b1a686314436968b81fbdfc8706198d019ba6d9ce2a0f97410b908322593e5"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 2147483647,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "98ed81e9c56a4f82ec3f6e3ed4f18c5257346b1902ee6d92bf4d0b9515df34e4",
+   "uncached_root": "98ed81e9c56a4f82ec3f6e3ed4f18c5257346b1902ee6d92bf4d0b9515df34e4",
+   "oracle_root": "98ed81e9c56a4f82ec3f6e3ed4f18c5257346b1902ee6d92bf4d0b9515df34e4"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_3",
+   "seed": 2147483647,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "ff4dd9a874cf61a5911be19b7a0ea125ce3ce2ca97065d9a5372e9cfe16ef158",
+   "uncached_root": "ff4dd9a874cf61a5911be19b7a0ea125ce3ce2ca97065d9a5372e9cfe16ef158",
+   "oracle_root": "ff4dd9a874cf61a5911be19b7a0ea125ce3ce2ca97065d9a5372e9cfe16ef158"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 1,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "uncached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "oracle_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 1,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "7d7138960b7131a395c6fd5c4ab5e6e52bc22ece38dfa2652a5511c4e134b76a",
+   "uncached_root": "7d7138960b7131a395c6fd5c4ab5e6e52bc22ece38dfa2652a5511c4e134b76a",
+   "oracle_root": "7d7138960b7131a395c6fd5c4ab5e6e52bc22ece38dfa2652a5511c4e134b76a"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 1,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "c3f69fd1dffbe5bcf74826701092dc2f9045d14bca0a393ca8df284ad9c20c69",
+   "uncached_root": "c3f69fd1dffbe5bcf74826701092dc2f9045d14bca0a393ca8df284ad9c20c69",
+   "oracle_root": "c3f69fd1dffbe5bcf74826701092dc2f9045d14bca0a393ca8df284ad9c20c69"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 1,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "a13680ab7c038b6cb41669cc568a6502e92458274f7c87fedc187a9d9c7eebda",
+   "uncached_root": "a13680ab7c038b6cb41669cc568a6502e92458274f7c87fedc187a9d9c7eebda",
+   "oracle_root": "a13680ab7c038b6cb41669cc568a6502e92458274f7c87fedc187a9d9c7eebda"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 7,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "uncached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "oracle_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 7,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "40191f968167704c12759534e0dea1f6e14692189f5232aac0a5bd894d1925f0",
+   "uncached_root": "40191f968167704c12759534e0dea1f6e14692189f5232aac0a5bd894d1925f0",
+   "oracle_root": "40191f968167704c12759534e0dea1f6e14692189f5232aac0a5bd894d1925f0"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 7,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "c4c19c42d91c6abcab7f40c64b7de01f69b53fab0d1c559f0ad14fc4ffd27dd4",
+   "uncached_root": "c4c19c42d91c6abcab7f40c64b7de01f69b53fab0d1c559f0ad14fc4ffd27dd4",
+   "oracle_root": "c4c19c42d91c6abcab7f40c64b7de01f69b53fab0d1c559f0ad14fc4ffd27dd4"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 7,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "571b689921dc300f4f521f6aa6f430971d139523d80e063d0f88436b88a67d90",
+   "uncached_root": "571b689921dc300f4f521f6aa6f430971d139523d80e063d0f88436b88a67d90",
+   "oracle_root": "571b689921dc300f4f521f6aa6f430971d139523d80e063d0f88436b88a67d90"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 4242,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "uncached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "oracle_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 4242,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "uncached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "oracle_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 4242,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "cfb9bd37d03a5bc5b5da175574a23a30d85b0ca01a6f06e7c54862602788b7c6",
+   "uncached_root": "cfb9bd37d03a5bc5b5da175574a23a30d85b0ca01a6f06e7c54862602788b7c6",
+   "oracle_root": "cfb9bd37d03a5bc5b5da175574a23a30d85b0ca01a6f06e7c54862602788b7c6"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 4242,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "61e79dad10987ca6a6a988acf0315aad13cbeaeb476cea6565e03cbf60378bd6",
+   "uncached_root": "61e79dad10987ca6a6a988acf0315aad13cbeaeb476cea6565e03cbf60378bd6",
+   "oracle_root": "61e79dad10987ca6a6a988acf0315aad13cbeaeb476cea6565e03cbf60378bd6"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 987654321,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "uncached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "oracle_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 987654321,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "e4d8bde6c6bfa5050acca4f6d48a19a7778d2bcc67dd38a39b43d32b1a56230e",
+   "uncached_root": "e4d8bde6c6bfa5050acca4f6d48a19a7778d2bcc67dd38a39b43d32b1a56230e",
+   "oracle_root": "e4d8bde6c6bfa5050acca4f6d48a19a7778d2bcc67dd38a39b43d32b1a56230e"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 987654321,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "d199d3cea3002c82dccd634fb5e3db910211d0bb8ce8b5959f3b1a924134af51",
+   "uncached_root": "d199d3cea3002c82dccd634fb5e3db910211d0bb8ce8b5959f3b1a924134af51",
+   "oracle_root": "d199d3cea3002c82dccd634fb5e3db910211d0bb8ce8b5959f3b1a924134af51"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 987654321,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "c071ab1594eb346cc42f554e48e68ed1f0ceebba17ff0b714a42edf2ba2e6a7c",
+   "uncached_root": "c071ab1594eb346cc42f554e48e68ed1f0ceebba17ff0b714a42edf2ba2e6a7c",
+   "oracle_root": "c071ab1594eb346cc42f554e48e68ed1f0ceebba17ff0b714a42edf2ba2e6a7c"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 2147483647,
+   "steps": 0,
+   "pass": true,
+   "cached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "uncached_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725",
+   "oracle_root": "ea569bcb4fbb2ed26d30e997d7337e7e12a43ac115793e9cbe25da401fcbb725"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 2147483647,
+   "steps": 1,
+   "pass": true,
+   "cached_root": "521a754241dbfb472af87e882b1c076296dfccf56a3f81760c4ad6562056778b",
+   "uncached_root": "521a754241dbfb472af87e882b1c076296dfccf56a3f81760c4ad6562056778b",
+   "oracle_root": "521a754241dbfb472af87e882b1c076296dfccf56a3f81760c4ad6562056778b"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 2147483647,
+   "steps": 5,
+   "pass": true,
+   "cached_root": "2f16910a0f69224b110d5ada94366eb84bb8245296beb047b60e3e9f3950652a",
+   "uncached_root": "2f16910a0f69224b110d5ada94366eb84bb8245296beb047b60e3e9f3950652a",
+   "oracle_root": "2f16910a0f69224b110d5ada94366eb84bb8245296beb047b60e3e9f3950652a"
+  },
+  {
+   "case": "tests/mainnet/fulu/ssz_static/BeaconState/ssz_random/case_4",
+   "seed": 2147483647,
+   "steps": 17,
+   "pass": true,
+   "cached_root": "d7061c673b182e2babd7c2c6fdd2dc29c01da198e0fbd657e20d17e903ba5dfe",
+   "uncached_root": "d7061c673b182e2babd7c2c6fdd2dc29c01da198e0fbd657e20d17e903ba5dfe",
+   "oracle_root": "d7061c673b182e2babd7c2c6fdd2dc29c01da198e0fbd657e20d17e903ba5dfe"
+  }
+ ],
+ "pass": true,
+ "arg": 123456789,
+ "note": "roots compared with codegen/oracle.py; times are whole-process wall clock including decode, min of 3"
+}

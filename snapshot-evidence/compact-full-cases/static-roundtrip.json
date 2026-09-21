@@ -1,8 +1,0 @@
-{
-  "cases": 295,
-  "passed": 295,
-  "failures": [],
-  "seconds": 3.691572792013176,
-  "executable_sha256": "4b0d7bb7faa2b3034dca6390c953ab9aef65eeef4523fa5f8262ee9ff09c1c46",
-  "method": "Independent operator: copied native compact-enc executable; one validating decode and packed encoding per official Fulu static fixture; exact output bytes compared with decompressed fixture. No speed claim or universal-proof claim."
-}

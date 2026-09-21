@@ -1,0 +1,61 @@
+{
+ "results": [
+  {
+   "case": "Validator.effective_balance := n, slashed := true",
+   "accepted": true,
+   "expected_accepted": true,
+   "bytes_equal": true,
+   "pass": true
+  },
+  {
+   "case": "Validator.effective_balance read-after-write",
+   "accepted": true,
+   "expected_accepted": true,
+   "bytes_equal": true,
+   "pass": true
+  },
+  {
+   "case": "Deposit.proof[0] := const",
+   "accepted": true,
+   "expected_accepted": true,
+   "bytes_equal": true,
+   "pass": true
+  },
+  {
+   "case": "Deposit.proof[33] rejected, value unchanged",
+   "accepted": false,
+   "expected_accepted": false,
+   "bytes_equal": true,
+   "pass": true
+  },
+  {
+   "case": "ExecutionPayloadHeader.extra_data append (len 18/32)",
+   "accepted": true,
+   "expected_accepted": true,
+   "bytes_equal": true,
+   "pass": true
+  },
+  {
+   "case": "IndexedAttestation.attesting_indices append",
+   "accepted": true,
+   "expected_accepted": true,
+   "bytes_equal": true,
+   "pass": true
+  },
+  {
+   "case": "IndexedAttestation.attesting_indices[0] := n",
+   "accepted": true,
+   "expected_accepted": true,
+   "bytes_equal": true,
+   "pass": true
+  },
+  {
+   "case": "IndexedAttestation.attesting_indices[len] rejected, value unchanged",
+   "accepted": false,
+   "expected_accepted": false,
+   "bytes_equal": true,
+   "pass": true
+  }
+ ],
+ "pass": true
+}

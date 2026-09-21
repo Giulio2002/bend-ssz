@@ -1,0 +1,86 @@
+{
+ "cases": [
+  {
+   "case": "vector_append",
+   "must_compile": false,
+   "compiled": false,
+   "pass": true,
+   "message": [
+    "Error:",
+    "- expected : a defined name",
+    "- observed : T.v33_b32_append",
+    "Context:"
+   ]
+  },
+  {
+   "case": "bytevector_append",
+   "must_compile": false,
+   "compiled": false,
+   "pass": true,
+   "message": [
+    "Error:",
+    "- expected : a defined name",
+    "- observed : T.b32_append",
+    "Context:"
+   ]
+  },
+  {
+   "case": "bitvector_append",
+   "must_compile": false,
+   "compiled": false,
+   "pass": true,
+   "message": [
+    "Error:",
+    "- expected : a defined name",
+    "- observed : T.bits4_append",
+    "Context:"
+   ]
+  },
+  {
+   "case": "use_after_move",
+   "must_compile": false,
+   "compiled": false,
+   "pass": true,
+   "message": [
+    "Error:",
+    "- expected : a",
+    "- observed : a (consumed more than once)",
+    "Location: twice"
+   ]
+  },
+  {
+   "case": "duplicate_object",
+   "must_compile": false,
+   "compiled": false,
+   "pass": true,
+   "message": [
+    "Error:",
+    "- expected : s",
+    "- observed : s (consumed more than once)",
+    "Location: clone"
+   ]
+  },
+  {
+   "case": "stale_collection",
+   "must_compile": false,
+   "compiled": false,
+   "pass": true,
+   "message": [
+    "Error:",
+    "- expected : idx",
+    "- observed : idx (consumed more than once)",
+    "Context:"
+   ]
+  },
+  {
+   "case": "positive_control",
+   "must_compile": true,
+   "compiled": true,
+   "pass": true,
+   "message": [
+    "All terms check."
+   ]
+  }
+ ],
+ "pass": true
+}

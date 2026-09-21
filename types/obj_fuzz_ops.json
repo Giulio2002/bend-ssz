@@ -1,0 +1,1459 @@
+{
+ "boolean": {
+  "program": 0,
+  "index": 0,
+  "ops": []
+ },
+ "uint8": {
+  "program": 0,
+  "index": 1,
+  "ops": []
+ },
+ "uint32": {
+  "program": 0,
+  "index": 2,
+  "ops": []
+ },
+ "uint64": {
+  "program": 0,
+  "index": 3,
+  "ops": []
+ },
+ "uint256": {
+  "program": 1,
+  "index": 4,
+  "ops": []
+ },
+ "Bytes1": {
+  "program": 1,
+  "index": 5,
+  "ops": []
+ },
+ "Bytes4": {
+  "program": 1,
+  "index": 6,
+  "ops": []
+ },
+ "Bytes32": {
+  "program": 1,
+  "index": 7,
+  "ops": []
+ },
+ "Bytes48": {
+  "program": 2,
+  "index": 8,
+  "ops": []
+ },
+ "Bytes96": {
+  "program": 2,
+  "index": 9,
+  "ops": []
+ },
+ "Bytes8": {
+  "program": 2,
+  "index": 10,
+  "ops": []
+ },
+ "Bytes20": {
+  "program": 2,
+  "index": 11,
+  "ops": []
+ },
+ "Slot": {
+  "program": 3,
+  "index": 12,
+  "ops": []
+ },
+ "Epoch": {
+  "program": 3,
+  "index": 13,
+  "ops": []
+ },
+ "Gwei": {
+  "program": 3,
+  "index": 14,
+  "ops": []
+ },
+ "Hash32": {
+  "program": 3,
+  "index": 15,
+  "ops": []
+ },
+ "Version": {
+  "program": 4,
+  "index": 16,
+  "ops": []
+ },
+ "DomainType": {
+  "program": 4,
+  "index": 17,
+  "ops": []
+ },
+ "BLSSignature": {
+  "program": 4,
+  "index": 18,
+  "ops": []
+ },
+ "FinalityBranch": {
+  "program": 4,
+  "index": 19,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": null
+   }
+  ]
+ },
+ "VersionedHash": {
+  "program": 5,
+  "index": 20,
+  "ops": []
+ },
+ "G1Point": {
+  "program": 5,
+  "index": 21,
+  "ops": []
+ },
+ "G2Point": {
+  "program": 5,
+  "index": 22,
+  "ops": []
+ },
+ "Fork": {
+  "program": 5,
+  "index": 23,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "previous_version",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "current_version",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "epoch",
+    "checked": false
+   }
+  ]
+ },
+ "SyncAggregate": {
+  "program": 6,
+  "index": 24,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "sync_committee_bits",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "sync_committee_signature",
+    "checked": false
+   }
+  ]
+ },
+ "SyncAggregatorSelectionData": {
+  "program": 6,
+  "index": 25,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "slot",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "subcommittee_index",
+    "checked": false
+   }
+  ]
+ },
+ "PowBlock": {
+  "program": 6,
+  "index": 26,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "block_hash",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "parent_hash",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "total_difficulty",
+    "checked": false
+   }
+  ]
+ },
+ "CommitteeIndex": {
+  "program": 6,
+  "index": 27,
+  "ops": []
+ },
+ "ValidatorIndex": {
+  "program": 7,
+  "index": 28,
+  "ops": []
+ },
+ "PendingConsolidation": {
+  "program": 7,
+  "index": 29,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "source_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "target_index",
+    "checked": false
+   }
+  ]
+ },
+ "PendingPartialWithdrawal": {
+  "program": 7,
+  "index": 30,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "validator_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "amount",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "withdrawable_epoch",
+    "checked": false
+   }
+  ]
+ },
+ "VoluntaryExit": {
+  "program": 7,
+  "index": 31,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "epoch",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "validator_index",
+    "checked": false
+   }
+  ]
+ },
+ "SignedVoluntaryExit": {
+  "program": 8,
+  "index": 32,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "message",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   }
+  ]
+ },
+ "Root": {
+  "program": 8,
+  "index": 33,
+  "ops": []
+ },
+ "HistoricalSummary": {
+  "program": 8,
+  "index": 34,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "block_summary_root",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "state_summary_root",
+    "checked": false
+   }
+  ]
+ },
+ "SyncCommitteeContribution": {
+  "program": 8,
+  "index": 35,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "slot",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "beacon_block_root",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "subcommittee_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "aggregation_bits",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   }
+  ]
+ },
+ "ContributionAndProof": {
+  "program": 9,
+  "index": 36,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "aggregator_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "selection_proof",
+    "checked": false
+   }
+  ]
+ },
+ "SignedContributionAndProof": {
+  "program": 9,
+  "index": 37,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   }
+  ]
+ },
+ "SyncCommitteeMessage": {
+  "program": 9,
+  "index": 38,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "slot",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "beacon_block_root",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "validator_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   }
+  ]
+ },
+ "Eth1Block": {
+  "program": 9,
+  "index": 39,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "timestamp",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "deposit_root",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "deposit_count",
+    "checked": false
+   }
+  ]
+ },
+ "BeaconBlockHeader": {
+  "program": 10,
+  "index": 40,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "slot",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "proposer_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "parent_root",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "state_root",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "body_root",
+    "checked": false
+   }
+  ]
+ },
+ "SignedBeaconBlockHeader": {
+  "program": 10,
+  "index": 41,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "message",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   }
+  ]
+ },
+ "ProposerSlashing": {
+  "program": 10,
+  "index": 42,
+  "ops": []
+ },
+ "HistoricalBatch": {
+  "program": 10,
+  "index": 43,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "block_roots"
+   },
+   {
+    "kind": "set_elem",
+    "field": "state_roots"
+   }
+  ]
+ },
+ "Eth1Data": {
+  "program": 11,
+  "index": 44,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "deposit_root",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "deposit_count",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "block_hash",
+    "checked": false
+   }
+  ]
+ },
+ "Checkpoint": {
+  "program": 11,
+  "index": 45,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "epoch",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "root",
+    "checked": false
+   }
+  ]
+ },
+ "AttestationData": {
+  "program": 11,
+  "index": 46,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "slot",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "beacon_block_root",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "source",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "target",
+    "checked": false
+   }
+  ]
+ },
+ "SingleAttestation": {
+  "program": 11,
+  "index": 47,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "committee_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "attester_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "data",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   }
+  ]
+ },
+ "Attestation": {
+  "program": 12,
+  "index": 48,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "aggregation_bits"
+   },
+   {
+    "kind": "append",
+    "field": "aggregation_bits"
+   },
+   {
+    "kind": "set_field",
+    "field": "data",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "committee_bits",
+    "checked": false
+   }
+  ]
+ },
+ "AggregateAndProof": {
+  "program": 12,
+  "index": 49,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "aggregator_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "selection_proof",
+    "checked": false
+   }
+  ]
+ },
+ "SignedAggregateAndProof": {
+  "program": 12,
+  "index": 50,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   }
+  ]
+ },
+ "PendingAttestation": {
+  "program": 12,
+  "index": 51,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "aggregation_bits"
+   },
+   {
+    "kind": "append",
+    "field": "aggregation_bits"
+   },
+   {
+    "kind": "set_field",
+    "field": "data",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "inclusion_delay",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "proposer_index",
+    "checked": false
+   }
+  ]
+ },
+ "IndexedAttestation": {
+  "program": 13,
+  "index": 52,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "attesting_indices"
+   },
+   {
+    "kind": "append",
+    "field": "attesting_indices"
+   },
+   {
+    "kind": "set_field",
+    "field": "data",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   }
+  ]
+ },
+ "AttesterSlashing": {
+  "program": 13,
+  "index": 53,
+  "ops": []
+ },
+ "ForkData": {
+  "program": 13,
+  "index": 54,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "current_version",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "genesis_validators_root",
+    "checked": false
+   }
+  ]
+ },
+ "ForkDigest": {
+  "program": 13,
+  "index": 55,
+  "ops": []
+ },
+ "Domain": {
+  "program": 14,
+  "index": 56,
+  "ops": []
+ },
+ "SigningData": {
+  "program": 14,
+  "index": 57,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "object_root",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "domain",
+    "checked": false
+   }
+  ]
+ },
+ "BLSPubkey": {
+  "program": 14,
+  "index": 58,
+  "ops": []
+ },
+ "DepositRequest": {
+  "program": 14,
+  "index": 59,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "pubkey",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "withdrawal_credentials",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "amount",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "index",
+    "checked": false
+   }
+  ]
+ },
+ "PendingDeposit": {
+  "program": 15,
+  "index": 60,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "pubkey",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "withdrawal_credentials",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "amount",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "slot",
+    "checked": false
+   }
+  ]
+ },
+ "SyncCommittee": {
+  "program": 15,
+  "index": 61,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "pubkeys"
+   },
+   {
+    "kind": "set_field",
+    "field": "aggregate_pubkey",
+    "checked": false
+   }
+  ]
+ },
+ "DepositData": {
+  "program": 15,
+  "index": 62,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "pubkey",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "withdrawal_credentials",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "amount",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   }
+  ]
+ },
+ "Deposit": {
+  "program": 15,
+  "index": 63,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "proof"
+   }
+  ]
+ },
+ "DepositMessage": {
+  "program": 16,
+  "index": 64,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "pubkey",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "withdrawal_credentials",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "amount",
+    "checked": false
+   }
+  ]
+ },
+ "Validator": {
+  "program": 16,
+  "index": 65,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "pubkey",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "withdrawal_credentials",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "effective_balance",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "slashed",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "activation_eligibility_epoch",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "activation_epoch",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "exit_epoch",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "withdrawable_epoch",
+    "checked": false
+   }
+  ]
+ },
+ "NodeID": {
+  "program": 16,
+  "index": 66,
+  "ops": []
+ },
+ "SubnetID": {
+  "program": 16,
+  "index": 67,
+  "ops": []
+ },
+ "Ether": {
+  "program": 17,
+  "index": 68,
+  "ops": []
+ },
+ "ParticipationFlags": {
+  "program": 17,
+  "index": 69,
+  "ops": []
+ },
+ "CurrentSyncCommitteeBranch": {
+  "program": 17,
+  "index": 70,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": null
+   }
+  ]
+ },
+ "NextSyncCommitteeBranch": {
+  "program": 17,
+  "index": 71,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": null
+   }
+  ]
+ },
+ "Transaction": {
+  "program": 18,
+  "index": 72,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": null
+   },
+   {
+    "kind": "append",
+    "field": null
+   }
+  ]
+ },
+ "ExecutionAddress": {
+  "program": 18,
+  "index": 73,
+  "ops": []
+ },
+ "ConsolidationRequest": {
+  "program": 18,
+  "index": 74,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "source_address",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "source_pubkey",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "target_pubkey",
+    "checked": false
+   }
+  ]
+ },
+ "WithdrawalRequest": {
+  "program": 18,
+  "index": 75,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "source_address",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "validator_pubkey",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "amount",
+    "checked": false
+   }
+  ]
+ },
+ "ExecutionRequests": {
+  "program": 19,
+  "index": 76,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "deposits"
+   },
+   {
+    "kind": "append",
+    "field": "deposits"
+   },
+   {
+    "kind": "set_elem",
+    "field": "withdrawals"
+   },
+   {
+    "kind": "append",
+    "field": "withdrawals"
+   },
+   {
+    "kind": "set_elem",
+    "field": "consolidations"
+   },
+   {
+    "kind": "append",
+    "field": "consolidations"
+   }
+  ]
+ },
+ "BLSToExecutionChange": {
+  "program": 19,
+  "index": 77,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "validator_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "from_bls_pubkey",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "to_execution_address",
+    "checked": false
+   }
+  ]
+ },
+ "SignedBLSToExecutionChange": {
+  "program": 19,
+  "index": 78,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "message",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   }
+  ]
+ },
+ "ExecutionPayloadHeader": {
+  "program": 19,
+  "index": 79,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "logs_bloom"
+   },
+   {
+    "kind": "set_elem",
+    "field": "extra_data"
+   }
+  ]
+ },
+ "PayloadId": {
+  "program": 20,
+  "index": 80,
+  "ops": []
+ },
+ "WithdrawalIndex": {
+  "program": 20,
+  "index": 81,
+  "ops": []
+ },
+ "Withdrawal": {
+  "program": 20,
+  "index": 82,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "validator_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "address",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "amount",
+    "checked": false
+   }
+  ]
+ },
+ "ExecutionPayload": {
+  "program": 20,
+  "index": 83,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "logs_bloom"
+   },
+   {
+    "kind": "set_elem",
+    "field": "extra_data"
+   }
+  ]
+ },
+ "BeaconState": {
+  "program": 21,
+  "index": 84,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "block_roots"
+   },
+   {
+    "kind": "set_elem",
+    "field": "state_roots"
+   }
+  ]
+ },
+ "ExecutionBranch": {
+  "program": 21,
+  "index": 85,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": null
+   }
+  ]
+ },
+ "LightClientHeader": {
+  "program": 21,
+  "index": 86,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "beacon",
+    "checked": false
+   },
+   {
+    "kind": "set_elem",
+    "field": "execution_branch"
+   }
+  ]
+ },
+ "LightClientOptimisticUpdate": {
+  "program": 21,
+  "index": 87,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "signature_slot",
+    "checked": false
+   }
+  ]
+ },
+ "LightClientFinalityUpdate": {
+  "program": 22,
+  "index": 88,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "finality_branch"
+   },
+   {
+    "kind": "set_field",
+    "field": "signature_slot",
+    "checked": false
+   }
+  ]
+ },
+ "LightClientUpdate": {
+  "program": 22,
+  "index": 89,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "next_sync_committee_branch"
+   },
+   {
+    "kind": "set_elem",
+    "field": "finality_branch"
+   },
+   {
+    "kind": "set_field",
+    "field": "signature_slot",
+    "checked": false
+   }
+  ]
+ },
+ "LightClientBootstrap": {
+  "program": 22,
+  "index": 90,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "current_sync_committee_branch"
+   }
+  ]
+ },
+ "BlobIndex": {
+  "program": 22,
+  "index": 91,
+  "ops": []
+ },
+ "BlobIdentifier": {
+  "program": 23,
+  "index": 92,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "block_root",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "index",
+    "checked": false
+   }
+  ]
+ },
+ "KZGCommitment": {
+  "program": 23,
+  "index": 93,
+  "ops": []
+ },
+ "BeaconBlockBody": {
+  "program": 23,
+  "index": 94,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "voluntary_exits"
+   },
+   {
+    "kind": "append",
+    "field": "voluntary_exits"
+   }
+  ]
+ },
+ "BeaconBlock": {
+  "program": 23,
+  "index": 95,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "slot",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "proposer_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "parent_root",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "state_root",
+    "checked": false
+   }
+  ]
+ },
+ "SignedBeaconBlock": {
+  "program": 24,
+  "index": 96,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "signature",
+    "checked": false
+   }
+  ]
+ },
+ "KZGProof": {
+  "program": 24,
+  "index": 97,
+  "ops": []
+ },
+ "Blob": {
+  "program": 24,
+  "index": 98,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": null
+   }
+  ]
+ },
+ "BlobSidecar": {
+  "program": 24,
+  "index": 99,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "index",
+    "checked": false
+   },
+   {
+    "kind": "set_elem",
+    "field": "blob"
+   },
+   {
+    "kind": "set_field",
+    "field": "kzg_commitment",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "kzg_proof",
+    "checked": false
+   },
+   {
+    "kind": "set_elem",
+    "field": "kzg_commitment_inclusion_proof"
+   }
+  ]
+ },
+ "Cell": {
+  "program": 25,
+  "index": 100,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": null
+   }
+  ]
+ },
+ "CellIndex": {
+  "program": 25,
+  "index": 101,
+  "ops": []
+ },
+ "CommitmentIndex": {
+  "program": 25,
+  "index": 102,
+  "ops": []
+ },
+ "RowIndex": {
+  "program": 25,
+  "index": 103,
+  "ops": []
+ },
+ "ColumnIndex": {
+  "program": 26,
+  "index": 104,
+  "ops": []
+ },
+ "DataColumnsByRootIdentifier": {
+  "program": 26,
+  "index": 105,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "block_root",
+    "checked": false
+   },
+   {
+    "kind": "set_elem",
+    "field": "columns"
+   },
+   {
+    "kind": "append",
+    "field": "columns"
+   }
+  ]
+ },
+ "MatrixEntry": {
+  "program": 26,
+  "index": 106,
+  "ops": [
+   {
+    "kind": "set_elem",
+    "field": "cell"
+   },
+   {
+    "kind": "set_field",
+    "field": "kzg_proof",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "column_index",
+    "checked": false
+   },
+   {
+    "kind": "set_field",
+    "field": "row_index",
+    "checked": false
+   }
+  ]
+ },
+ "DataColumnSidecar": {
+  "program": 26,
+  "index": 107,
+  "ops": [
+   {
+    "kind": "set_field",
+    "field": "index",
+    "checked": false
+   },
+   {
+    "kind": "set_elem",
+    "field": "kzg_commitments"
+   },
+   {
+    "kind": "append",
+    "field": "kzg_commitments"
+   },
+   {
+    "kind": "set_elem",
+    "field": "kzg_proofs"
+   },
+   {
+    "kind": "append",
+    "field": "kzg_proofs"
+   },
+   {
+    "kind": "set_elem",
+    "field": "kzg_commitments_inclusion_proof"
+   }
+  ]
+ },
+ "CustodyIndex": {
+  "program": 27,
+  "index": 108,
+  "ops": []
+ }
+}

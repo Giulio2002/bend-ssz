@@ -1,5 +1,3 @@
-> Historical view-API measurements, not current object-codec acceptance.
-
 # Native SSZ benchmarks — Bend C versus Go fastssz
 
 Reproduce exactly these numbers with:

@@ -25,23 +25,26 @@ For every (type, workload, operation):
 * samples alternate between the two implementations, at least five each, in a
   fresh process per sample.
 
-The Bend side is the compact primary API, three programs built from
-benchmarks/compact/ (one per operation, because the pinned compiler cannot fit
-every walker and the any-type index into one program's compile budget):
+The Bend side is the typed owning object API (types/fulu_obj.bend, generated
+from codegen/fulu.yaml), measured through benchmarks/objprog/g*.bend - one
+program per group of names, because the pinned compiler cannot fit all 109
+types into one program's compile budget:
 
-* deserialize - `API.validate`, the in-place validating decode whose result is
-  the validated view; every verdict is consumed and any rejection exits 1;
-* serialize - `A.encode`, a fresh packed buffer holding the value's encoding,
-  after one untimed decode (Go likewise decodes into its struct before timing
-  MarshalSSZ); every encoding is consumed;
-* hash_tree_root - `API.root` on a buffer the decode program accepted in the
-  verification step (Go likewise decodes once, untimed); every root is
-  consumed.
+* deserialize - bytes to a fully constructed typed object: the generated
+  validator, the generated reader that builds the record and its owned packed
+  collections, and a fold over every field of the result so that no
+  construction work is left unevaluated (record fields are lazy);
+* serialize - object to fresh canonical bytes, after one untimed decode (Go
+  likewise decodes into its struct before timing MarshalSSZ); each encoding is
+  consumed by reading its last word;
+* hash_tree_root - the root of that object, with one hasher (a Merkle scratch
+  buffer with its zero table) created before the clock starts, as fastssz
+  reuses its package-level zero-hash table; every root is consumed.
 
-The schema is selected by index (types/fulu_cschema_index.bend, order in
-build/cschema-index.json). The runtime evaluates stored values eagerly
-(benchmarks/probes/strictness.bend), so consuming one word of an encoding does
-not skip the rest of it.
+The name is selected by its index in the frozen schema order; the program that
+holds it is types/obj_groups.json. The verification pass for every workload
+decodes, re-encodes (which must reproduce the input byte for byte) and hashes
+the object.
 """
 import argparse
 import ctypes
@@ -88,8 +91,14 @@ def sh(command, cwd=ROOT, env=ENV):
     return result.stdout
 
 
-PROGRAMS = {'deserialize': 'dec', 'serialize': 'enc', 'hash_tree_root': 'root'}
+# The measured API is the typed owning object API: one generated program per
+# group of names (benchmarks/objprog/g*.bend), SSZ_MODE selecting the
+# operation (1 decode, 2 encode, 3 root; 0 decodes, encodes and hashes once
+# for the verification pass).
+MODES = {'deserialize': '1', 'serialize': '2', 'hash_tree_root': '3'}
+GROUPS = json.loads((ROOT / 'types/obj_groups.json').read_text()) if (ROOT / 'types/obj_groups.json').exists() else {}
 INDEX = json.loads((ROOT / 'build/cschema-index.json').read_text()) if (ROOT / 'build/cschema-index.json').exists() else []
+PY3 = '/opt/homebrew/bin/python3'   # the generator needs PyYAML
 COMPILE_CAP_BYTES = 6.5e9
 COMPILE_ATTEMPTS = 4
 # The pinned compiler is a Bun (JavaScriptCore) executable. On a loaded machine
@@ -143,18 +152,21 @@ def capped_compile(source, target, log):
 def build(log):
     OUT.mkdir(parents=True, exist_ok=True)
     INPUTS.mkdir(parents=True, exist_ok=True)
-    global INDEX
+    global INDEX, GROUPS
     sh([sys.executable, 'tools/generate_cschema.py'])
+    sh([PY3, 'codegen/check_schema.py'])
+    sh([PY3, 'codegen/generate.py'])
     INDEX = json.loads((ROOT / 'build/cschema-index.json').read_text())
+    GROUPS = json.loads((ROOT / 'types/obj_groups.json').read_text())
     sh([sys.executable, 'tools/generate_missing_go_types.py'])
     sh([sys.executable, 'tools/generate_bench_go.py'])
     sources = source_manifest()
     (OUT / 'source-before-build.json').write_text(json.dumps(sources, indent=2) + '\n')
-    log('building native Bend benchmark executables (compact primary API)')
-    for program in PROGRAMS.values():
-        source = f'benchmarks/compact/{program}.bend'
-        capped_compile(source, OUT / f'bend-{program}', log)
-        capped_compile(source, OUT / f'bend-{program}.c', log)
+    log('building native Bend benchmark executables (typed object API)')
+    for k in sorted({g['group'] for g in GROUPS.values()}):
+        source = f'benchmarks/objprog/g{k}.bend'
+        capped_compile(source, OUT / f'bend-obj-g{k}', log)
+        capped_compile(source, OUT / f'bend-obj-g{k}.c', log)
     log('building native Go reference executable')
     sh(['go', 'build', '-o', str(OUT / 'go-bench'), '.'], cwd=ROOT / 'benchmarks/fastssz')
     if source_manifest() != sources:
@@ -231,34 +243,37 @@ def workloads_for(name, node):
 # ---------------------------------------------------------------------------
 # Measurement.
 
-def bend_env(name, path, ops, output=None):
-    env = {**ENV, 'SSZ_INDEX': str(INDEX.index(name)), 'SSZ_INPUT': str(path), 'SSZ_OPS': str(ops)}
+def bend_program(name):
+    return OUT / f"bend-obj-g{GROUPS[name]['group']}"
+
+
+def bend_env(name, path, ops, mode='1', output=None):
+    env = {**ENV, 'SSZ_MODE': mode, 'SSZ_INDEX': str(GROUPS[name]['index']),
+           'SSZ_INPUT': str(path), 'SSZ_OPS': str(ops)}
     if output is not None:
         env['SSZ_OUTPUT'] = str(output)
     return env
 
 
 def run_bend(name, path, operation, ops, verify):
-    program = PROGRAMS[operation]
     output = path.with_suffix('.bend-out.ssz')
-    text = sh([str(OUT / f'bend-{program}')] + BEND_FLAGS,
-              env=bend_env(name, path, ops, output if program == 'enc' else None))
+    text = sh([str(bend_program(name))] + BEND_FLAGS,
+              env=bend_env(name, path, ops, MODES[operation],
+                           output if operation == 'serialize' else None))
     milliseconds = int(re.search(r'\bMS=(\d+)', text).group(1))
     result = {'text': text, 'ns': milliseconds * 1_000_000, 'roundtrip': None, 'rootsum': None}
     if 'ROOTSUM=' in text:
         result['rootsum'] = int(re.search(r'ROOTSUM=(\d+)', text).group(1))
     if verify:
-        # Decode: the compact API must accept the workload (the root program
-        # does not validate - it is only ever run on accepted inputs). Round
-        # trip: decode then encode must give the input bytes back exactly.
-        # Root: the checksum Go also prints.
-        sh([str(OUT / 'bend-dec')] + BEND_FLAGS, env=bend_env(name, path, 1))
+        # One verification run of the object API on this workload: decode into
+        # the typed object, encode it into fresh bytes (which must equal the
+        # input byte for byte) and hash the object (the checksum Go prints).
         output.unlink(missing_ok=True)
-        sh([str(OUT / 'bend-enc')] + BEND_FLAGS, env=bend_env(name, path, 1, output))
+        checked = sh([str(bend_program(name))] + BEND_FLAGS,
+                     env=bend_env(name, path, 1, '0', output))
         result['roundtrip'] = output.exists() and output.read_bytes() == path.read_bytes()
         output.unlink(missing_ok=True)
-        rooted = sh([str(OUT / 'bend-root')] + BEND_FLAGS, env=bend_env(name, path, 1))
-        result['rootsum'] = int(re.search(r'ROOTSUM=(\d+)', rooted).group(1))
+        result['rootsum'] = int(re.search(r'ROOTSUM=(\d+)', checked).group(1))
     return result
 
 
@@ -295,7 +310,7 @@ def rejection_checks(name, impl, case, path):
         label, mutated = mutation
         broken = path.with_suffix('.' + label + '.ssz')
         broken.write_bytes(mutated)
-        bend_rejected = rejects([str(OUT / 'bend-dec')] + BEND_FLAGS, bend_env(name, broken, 1))
+        bend_rejected = rejects([str(bend_program(name))] + BEND_FLAGS, bend_env(name, broken, 1, '1'))
         reference_rejected = rejects([str(OUT / 'go-bench'), name, impl, str(broken), 'deserialize', '1'])
         broken.unlink(missing_ok=True)
         results.append({'type': name, 'workload': case['workload'], 'mutation': label,
@@ -470,9 +485,10 @@ def main():
     final_sources = source_manifest()
     changed_sources = sorted(k for k in sources.keys() | final_sources.keys()
                              if sources.get(k) != final_sources.get(k))
+    groups = sorted({g['group'] for g in GROUPS.values()})
     artifacts = {str(p.relative_to(ROOT)): digest(p)
-                 for p in [OUT / f'bend-{program}' for program in PROGRAMS.values()]
-                 + [OUT / f'bend-{program}.c' for program in PROGRAMS.values()]
+                 for p in [OUT / f'bend-obj-g{k}' for k in groups]
+                 + [OUT / f'bend-obj-g{k}.c' for k in groups]
                  + [OUT / 'go-bench', log_path]}
     report = {
         'backend': 'native-c',
@@ -487,7 +503,8 @@ def main():
         'benchmarks': rows,
         'skipped': skipped,
         'rejection_checks': rejections,
-        'bend_api': 'compact primary API: benchmarks/compact/{dec,enc,root}.bend',
+        'bend_api': 'typed owning object API: types/fulu_obj.bend through benchmarks/objprog/g*.bend '
+                    '(decode builds the object, encode writes fresh bytes from it, root hashes it)',
         'bend_compiles': COMPILES,
         'bend_compile_env': {'BUN_JSC_forceRAMSize': COMPILE_ENV['BUN_JSC_forceRAMSize']},
         'rejection_summary': {

@@ -1,0 +1,425 @@
+# Mainnet Fulu SSZ schema: generator input for codegen/generate.py.
+# Notation follows the consensus specs. Derived from the pinned pyspec
+# vendor/consensus-specs/fulu_mainnet.py by codegen/bootstrap_pyspec.py and
+# checked against the frozen schemas/fulu_mainnet.json by codegen/check_schema.py.
+# Type expressions: boolean, uintN, BytesN, ByteVector[N], ByteList[N],
+# Bitvector[N], Bitlist[N], Vector[T, N], List[T, N], or a type name; N is
+# an integer, a constant, or +, -, *, exact //, parentheses and floorlog2(...).
+constants:
+  BYTES_PER_FIELD_ELEMENT: 32
+  BYTES_PER_LOGS_BLOOM: 256
+  CURRENT_SYNC_COMMITTEE_GINDEX_ELECTRA: 86
+  DEPOSIT_CONTRACT_TREE_DEPTH: 32
+  EPOCHS_PER_ETH1_VOTING_PERIOD: 64
+  EPOCHS_PER_HISTORICAL_VECTOR: 65536
+  EPOCHS_PER_SLASHINGS_VECTOR: 8192
+  EXECUTION_PAYLOAD_GINDEX: 25
+  FIELD_ELEMENTS_PER_BLOB: 4096
+  FIELD_ELEMENTS_PER_CELL: 64
+  FINALIZED_ROOT_GINDEX_ELECTRA: 169
+  HISTORICAL_ROOTS_LIMIT: 16777216
+  JUSTIFICATION_BITS_LENGTH: 4
+  KZG_COMMITMENTS_INCLUSION_PROOF_DEPTH: 4
+  KZG_COMMITMENT_INCLUSION_PROOF_DEPTH: 17
+  MAX_ATTESTATIONS_ELECTRA: 8
+  MAX_ATTESTER_SLASHINGS_ELECTRA: 1
+  MAX_BLOB_COMMITMENTS_PER_BLOCK: 4096
+  MAX_BLS_TO_EXECUTION_CHANGES: 16
+  MAX_BYTES_PER_TRANSACTION: 1073741824
+  MAX_COMMITTEES_PER_SLOT: 64
+  MAX_CONSOLIDATION_REQUESTS_PER_PAYLOAD: 2
+  MAX_DEPOSITS: 16
+  MAX_DEPOSIT_REQUESTS_PER_PAYLOAD: 8192
+  MAX_EXTRA_DATA_BYTES: 32
+  MAX_PROPOSER_SLASHINGS: 16
+  MAX_TRANSACTIONS_PER_PAYLOAD: 1048576
+  MAX_VALIDATORS_PER_COMMITTEE: 2048
+  MAX_VOLUNTARY_EXITS: 16
+  MAX_WITHDRAWALS_PER_PAYLOAD: 16
+  MAX_WITHDRAWAL_REQUESTS_PER_PAYLOAD: 16
+  MIN_SEED_LOOKAHEAD: 1
+  NEXT_SYNC_COMMITTEE_GINDEX_ELECTRA: 87
+  NUMBER_OF_COLUMNS: 128
+  PENDING_CONSOLIDATIONS_LIMIT: 262144
+  PENDING_DEPOSITS_LIMIT: 134217728
+  PENDING_PARTIAL_WITHDRAWALS_LIMIT: 134217728
+  SLOTS_PER_EPOCH: 32
+  SLOTS_PER_HISTORICAL_ROOT: 8192
+  SYNC_COMMITTEE_SIZE: 512
+  SYNC_COMMITTEE_SUBNET_COUNT: 4
+  VALIDATOR_REGISTRY_LIMIT: 1099511627776
+types:
+  boolean: boolean
+  uint8: uint8
+  uint32: uint32
+  uint64: uint64
+  uint256: uint256
+  Bytes1: Bytes1
+  Bytes4: Bytes4
+  Bytes32: Bytes32
+  Bytes48: Bytes48
+  Bytes96: Bytes96
+  Bytes8: Bytes8
+  Bytes20: Bytes20
+  Slot: "uint64"
+  Epoch: "uint64"
+  Gwei: "uint64"
+  Hash32: "Bytes32"
+  Version: "Bytes4"
+  DomainType: "Bytes4"
+  BLSSignature: "Bytes96"
+  FinalityBranch: "Vector[Bytes32, floorlog2(FINALIZED_ROOT_GINDEX_ELECTRA)]"
+  VersionedHash: "Bytes32"
+  G1Point: "Bytes48"
+  G2Point: "Bytes96"
+  Fork:
+    - previous_version: "Version"
+    - current_version: "Version"
+    - epoch: "Epoch"
+  SyncAggregate:
+    - sync_committee_bits: "Bitvector[SYNC_COMMITTEE_SIZE]"
+    - sync_committee_signature: "BLSSignature"
+  SyncAggregatorSelectionData:
+    - slot: "Slot"
+    - subcommittee_index: "uint64"
+  PowBlock:
+    - block_hash: "Hash32"
+    - parent_hash: "Hash32"
+    - total_difficulty: "uint256"
+  CommitteeIndex: "uint64"
+  ValidatorIndex: "uint64"
+  PendingConsolidation:
+    - source_index: "ValidatorIndex"
+    - target_index: "ValidatorIndex"
+  PendingPartialWithdrawal:
+    - validator_index: "ValidatorIndex"
+    - amount: "Gwei"
+    - withdrawable_epoch: "Epoch"
+  VoluntaryExit:
+    - epoch: "Epoch"
+    - validator_index: "ValidatorIndex"
+  SignedVoluntaryExit:
+    - message: "VoluntaryExit"
+    - signature: "BLSSignature"
+  Root: "Bytes32"
+  HistoricalSummary:
+    - block_summary_root: "Root"
+    - state_summary_root: "Root"
+  SyncCommitteeContribution:
+    - slot: "Slot"
+    - beacon_block_root: "Root"
+    - subcommittee_index: "uint64"
+    - aggregation_bits: "Bitvector[SYNC_COMMITTEE_SIZE // SYNC_COMMITTEE_SUBNET_COUNT]"
+    - signature: "BLSSignature"
+  ContributionAndProof:
+    - aggregator_index: "ValidatorIndex"
+    - contribution: "SyncCommitteeContribution"
+    - selection_proof: "BLSSignature"
+  SignedContributionAndProof:
+    - message: "ContributionAndProof"
+    - signature: "BLSSignature"
+  SyncCommitteeMessage:
+    - slot: "Slot"
+    - beacon_block_root: "Root"
+    - validator_index: "ValidatorIndex"
+    - signature: "BLSSignature"
+  Eth1Block:
+    - timestamp: "uint64"
+    - deposit_root: "Root"
+    - deposit_count: "uint64"
+  BeaconBlockHeader:
+    - slot: "Slot"
+    - proposer_index: "ValidatorIndex"
+    - parent_root: "Root"
+    - state_root: "Root"
+    - body_root: "Root"
+  SignedBeaconBlockHeader:
+    - message: "BeaconBlockHeader"
+    - signature: "BLSSignature"
+  ProposerSlashing:
+    - signed_header_1: "SignedBeaconBlockHeader"
+    - signed_header_2: "SignedBeaconBlockHeader"
+  HistoricalBatch:
+    - block_roots: "Vector[Root, SLOTS_PER_HISTORICAL_ROOT]"
+    - state_roots: "Vector[Root, SLOTS_PER_HISTORICAL_ROOT]"
+  Eth1Data:
+    - deposit_root: "Root"
+    - deposit_count: "uint64"
+    - block_hash: "Hash32"
+  Checkpoint:
+    - epoch: "Epoch"
+    - root: "Root"
+  AttestationData:
+    - slot: "Slot"
+    - index: "CommitteeIndex"
+    - beacon_block_root: "Root"
+    - source: "Checkpoint"
+    - target: "Checkpoint"
+  SingleAttestation:
+    - committee_index: "CommitteeIndex"
+    - attester_index: "ValidatorIndex"
+    - data: "AttestationData"
+    - signature: "BLSSignature"
+  Attestation:
+    - aggregation_bits: "Bitlist[MAX_VALIDATORS_PER_COMMITTEE * MAX_COMMITTEES_PER_SLOT]"
+    - data: "AttestationData"
+    - signature: "BLSSignature"
+    - committee_bits: "Bitvector[MAX_COMMITTEES_PER_SLOT]"
+  AggregateAndProof:
+    - aggregator_index: "ValidatorIndex"
+    - aggregate: "Attestation"
+    - selection_proof: "BLSSignature"
+  SignedAggregateAndProof:
+    - message: "AggregateAndProof"
+    - signature: "BLSSignature"
+  PendingAttestation:
+    - aggregation_bits: "Bitlist[MAX_VALIDATORS_PER_COMMITTEE]"
+    - data: "AttestationData"
+    - inclusion_delay: "Slot"
+    - proposer_index: "ValidatorIndex"
+  IndexedAttestation:
+    - attesting_indices: "List[ValidatorIndex, MAX_VALIDATORS_PER_COMMITTEE * MAX_COMMITTEES_PER_SLOT]"
+    - data: "AttestationData"
+    - signature: "BLSSignature"
+  AttesterSlashing:
+    - attestation_1: "IndexedAttestation"
+    - attestation_2: "IndexedAttestation"
+  ForkData:
+    - current_version: "Version"
+    - genesis_validators_root: "Root"
+  ForkDigest: "Bytes4"
+  Domain: "Bytes32"
+  SigningData:
+    - object_root: "Root"
+    - domain: "Domain"
+  BLSPubkey: "Bytes48"
+  DepositRequest:
+    - pubkey: "BLSPubkey"
+    - withdrawal_credentials: "Bytes32"
+    - amount: "Gwei"
+    - signature: "BLSSignature"
+    - index: "uint64"
+  PendingDeposit:
+    - pubkey: "BLSPubkey"
+    - withdrawal_credentials: "Bytes32"
+    - amount: "Gwei"
+    - signature: "BLSSignature"
+    - slot: "Slot"
+  SyncCommittee:
+    - pubkeys: "Vector[BLSPubkey, SYNC_COMMITTEE_SIZE]"
+    - aggregate_pubkey: "BLSPubkey"
+  DepositData:
+    - pubkey: "BLSPubkey"
+    - withdrawal_credentials: "Bytes32"
+    - amount: "Gwei"
+    - signature: "BLSSignature"
+  Deposit:
+    - proof: "Vector[Bytes32, DEPOSIT_CONTRACT_TREE_DEPTH + 1]"
+    - data: "DepositData"
+  DepositMessage:
+    - pubkey: "BLSPubkey"
+    - withdrawal_credentials: "Bytes32"
+    - amount: "Gwei"
+  Validator:
+    - pubkey: "BLSPubkey"
+    - withdrawal_credentials: "Bytes32"
+    - effective_balance: "Gwei"
+    - slashed: "boolean"
+    - activation_eligibility_epoch: "Epoch"
+    - activation_epoch: "Epoch"
+    - exit_epoch: "Epoch"
+    - withdrawable_epoch: "Epoch"
+  NodeID: "uint256"
+  SubnetID: "uint64"
+  Ether: "uint64"
+  ParticipationFlags: "uint8"
+  CurrentSyncCommitteeBranch: "Vector[Bytes32, floorlog2(CURRENT_SYNC_COMMITTEE_GINDEX_ELECTRA)]"
+  NextSyncCommitteeBranch: "Vector[Bytes32, floorlog2(NEXT_SYNC_COMMITTEE_GINDEX_ELECTRA)]"
+  Transaction: "ByteList[MAX_BYTES_PER_TRANSACTION]"
+  ExecutionAddress: "Bytes20"
+  ConsolidationRequest:
+    - source_address: "ExecutionAddress"
+    - source_pubkey: "BLSPubkey"
+    - target_pubkey: "BLSPubkey"
+  WithdrawalRequest:
+    - source_address: "ExecutionAddress"
+    - validator_pubkey: "BLSPubkey"
+    - amount: "Gwei"
+  ExecutionRequests:
+    - deposits: "List[DepositRequest, MAX_DEPOSIT_REQUESTS_PER_PAYLOAD]"
+    - withdrawals: "List[WithdrawalRequest, MAX_WITHDRAWAL_REQUESTS_PER_PAYLOAD]"
+    - consolidations: "List[ConsolidationRequest, MAX_CONSOLIDATION_REQUESTS_PER_PAYLOAD]"
+  BLSToExecutionChange:
+    - validator_index: "ValidatorIndex"
+    - from_bls_pubkey: "BLSPubkey"
+    - to_execution_address: "ExecutionAddress"
+  SignedBLSToExecutionChange:
+    - message: "BLSToExecutionChange"
+    - signature: "BLSSignature"
+  ExecutionPayloadHeader:
+    - parent_hash: "Hash32"
+    - fee_recipient: "ExecutionAddress"
+    - state_root: "Bytes32"
+    - receipts_root: "Bytes32"
+    - logs_bloom: "ByteVector[BYTES_PER_LOGS_BLOOM]"
+    - prev_randao: "Bytes32"
+    - block_number: "uint64"
+    - gas_limit: "uint64"
+    - gas_used: "uint64"
+    - timestamp: "uint64"
+    - extra_data: "ByteList[MAX_EXTRA_DATA_BYTES]"
+    - base_fee_per_gas: "uint256"
+    - block_hash: "Hash32"
+    - transactions_root: "Root"
+    - withdrawals_root: "Root"
+    - blob_gas_used: "uint64"
+    - excess_blob_gas: "uint64"
+  PayloadId: "Bytes8"
+  WithdrawalIndex: "uint64"
+  Withdrawal:
+    - index: "WithdrawalIndex"
+    - validator_index: "ValidatorIndex"
+    - address: "ExecutionAddress"
+    - amount: "Gwei"
+  ExecutionPayload:
+    - parent_hash: "Hash32"
+    - fee_recipient: "ExecutionAddress"
+    - state_root: "Bytes32"
+    - receipts_root: "Bytes32"
+    - logs_bloom: "ByteVector[BYTES_PER_LOGS_BLOOM]"
+    - prev_randao: "Bytes32"
+    - block_number: "uint64"
+    - gas_limit: "uint64"
+    - gas_used: "uint64"
+    - timestamp: "uint64"
+    - extra_data: "ByteList[MAX_EXTRA_DATA_BYTES]"
+    - base_fee_per_gas: "uint256"
+    - block_hash: "Hash32"
+    - transactions: "List[Transaction, MAX_TRANSACTIONS_PER_PAYLOAD]"
+    - withdrawals: "List[Withdrawal, MAX_WITHDRAWALS_PER_PAYLOAD]"
+    - blob_gas_used: "uint64"
+    - excess_blob_gas: "uint64"
+  BeaconState:
+    - genesis_time: "uint64"
+    - genesis_validators_root: "Root"
+    - slot: "Slot"
+    - fork: "Fork"
+    - latest_block_header: "BeaconBlockHeader"
+    - block_roots: "Vector[Root, SLOTS_PER_HISTORICAL_ROOT]"
+    - state_roots: "Vector[Root, SLOTS_PER_HISTORICAL_ROOT]"
+    - historical_roots: "List[Root, HISTORICAL_ROOTS_LIMIT]"
+    - eth1_data: "Eth1Data"
+    - eth1_data_votes: "List[Eth1Data, EPOCHS_PER_ETH1_VOTING_PERIOD * SLOTS_PER_EPOCH]"
+    - eth1_deposit_index: "uint64"
+    - validators: "List[Validator, VALIDATOR_REGISTRY_LIMIT]"
+    - balances: "List[Gwei, VALIDATOR_REGISTRY_LIMIT]"
+    - randao_mixes: "Vector[Bytes32, EPOCHS_PER_HISTORICAL_VECTOR]"
+    - slashings: "Vector[Gwei, EPOCHS_PER_SLASHINGS_VECTOR]"
+    - previous_epoch_participation: "List[ParticipationFlags, VALIDATOR_REGISTRY_LIMIT]"
+    - current_epoch_participation: "List[ParticipationFlags, VALIDATOR_REGISTRY_LIMIT]"
+    - justification_bits: "Bitvector[JUSTIFICATION_BITS_LENGTH]"
+    - previous_justified_checkpoint: "Checkpoint"
+    - current_justified_checkpoint: "Checkpoint"
+    - finalized_checkpoint: "Checkpoint"
+    - inactivity_scores: "List[uint64, VALIDATOR_REGISTRY_LIMIT]"
+    - current_sync_committee: "SyncCommittee"
+    - next_sync_committee: "SyncCommittee"
+    - latest_execution_payload_header: "ExecutionPayloadHeader"
+    - next_withdrawal_index: "WithdrawalIndex"
+    - next_withdrawal_validator_index: "ValidatorIndex"
+    - historical_summaries: "List[HistoricalSummary, HISTORICAL_ROOTS_LIMIT]"
+    - deposit_requests_start_index: "uint64"
+    - deposit_balance_to_consume: "Gwei"
+    - exit_balance_to_consume: "Gwei"
+    - earliest_exit_epoch: "Epoch"
+    - consolidation_balance_to_consume: "Gwei"
+    - earliest_consolidation_epoch: "Epoch"
+    - pending_deposits: "List[PendingDeposit, PENDING_DEPOSITS_LIMIT]"
+    - pending_partial_withdrawals: "List[PendingPartialWithdrawal, PENDING_PARTIAL_WITHDRAWALS_LIMIT]"
+    - pending_consolidations: "List[PendingConsolidation, PENDING_CONSOLIDATIONS_LIMIT]"
+    - proposer_lookahead: "Vector[ValidatorIndex, (MIN_SEED_LOOKAHEAD + 1) * SLOTS_PER_EPOCH]"
+  ExecutionBranch: "Vector[Bytes32, floorlog2(EXECUTION_PAYLOAD_GINDEX)]"
+  LightClientHeader:
+    - beacon: "BeaconBlockHeader"
+    - execution: "ExecutionPayloadHeader"
+    - execution_branch: "ExecutionBranch"
+  LightClientOptimisticUpdate:
+    - attested_header: "LightClientHeader"
+    - sync_aggregate: "SyncAggregate"
+    - signature_slot: "Slot"
+  LightClientFinalityUpdate:
+    - attested_header: "LightClientHeader"
+    - finalized_header: "LightClientHeader"
+    - finality_branch: "FinalityBranch"
+    - sync_aggregate: "SyncAggregate"
+    - signature_slot: "Slot"
+  LightClientUpdate:
+    - attested_header: "LightClientHeader"
+    - next_sync_committee: "SyncCommittee"
+    - next_sync_committee_branch: "NextSyncCommitteeBranch"
+    - finalized_header: "LightClientHeader"
+    - finality_branch: "FinalityBranch"
+    - sync_aggregate: "SyncAggregate"
+    - signature_slot: "Slot"
+  LightClientBootstrap:
+    - header: "LightClientHeader"
+    - current_sync_committee: "SyncCommittee"
+    - current_sync_committee_branch: "CurrentSyncCommitteeBranch"
+  BlobIndex: "uint64"
+  BlobIdentifier:
+    - block_root: "Root"
+    - index: "BlobIndex"
+  KZGCommitment: "Bytes48"
+  BeaconBlockBody:
+    - randao_reveal: "BLSSignature"
+    - eth1_data: "Eth1Data"
+    - graffiti: "Bytes32"
+    - proposer_slashings: "List[ProposerSlashing, MAX_PROPOSER_SLASHINGS]"
+    - attester_slashings: "List[AttesterSlashing, MAX_ATTESTER_SLASHINGS_ELECTRA]"
+    - attestations: "List[Attestation, MAX_ATTESTATIONS_ELECTRA]"
+    - deposits: "List[Deposit, MAX_DEPOSITS]"
+    - voluntary_exits: "List[SignedVoluntaryExit, MAX_VOLUNTARY_EXITS]"
+    - sync_aggregate: "SyncAggregate"
+    - execution_payload: "ExecutionPayload"
+    - bls_to_execution_changes: "List[SignedBLSToExecutionChange, MAX_BLS_TO_EXECUTION_CHANGES]"
+    - blob_kzg_commitments: "List[KZGCommitment, MAX_BLOB_COMMITMENTS_PER_BLOCK]"
+    - execution_requests: "ExecutionRequests"
+  BeaconBlock:
+    - slot: "Slot"
+    - proposer_index: "ValidatorIndex"
+    - parent_root: "Root"
+    - state_root: "Root"
+    - body: "BeaconBlockBody"
+  SignedBeaconBlock:
+    - message: "BeaconBlock"
+    - signature: "BLSSignature"
+  KZGProof: "Bytes48"
+  Blob: "ByteVector[BYTES_PER_FIELD_ELEMENT * FIELD_ELEMENTS_PER_BLOB]"
+  BlobSidecar:
+    - index: "BlobIndex"
+    - blob: "Blob"
+    - kzg_commitment: "KZGCommitment"
+    - kzg_proof: "KZGProof"
+    - signed_block_header: "SignedBeaconBlockHeader"
+    - kzg_commitment_inclusion_proof: "Vector[Bytes32, KZG_COMMITMENT_INCLUSION_PROOF_DEPTH]"
+  Cell: "ByteVector[BYTES_PER_FIELD_ELEMENT * FIELD_ELEMENTS_PER_CELL]"
+  CellIndex: "uint64"
+  CommitmentIndex: "uint64"
+  RowIndex: "uint64"
+  ColumnIndex: "uint64"
+  DataColumnsByRootIdentifier:
+    - block_root: "Root"
+    - columns: "List[ColumnIndex, NUMBER_OF_COLUMNS]"
+  MatrixEntry:
+    - cell: "Cell"
+    - kzg_proof: "KZGProof"
+    - column_index: "ColumnIndex"
+    - row_index: "RowIndex"
+  DataColumnSidecar:
+    - index: "ColumnIndex"
+    - column: "List[Cell, MAX_BLOB_COMMITMENTS_PER_BLOCK]"
+    - kzg_commitments: "List[KZGCommitment, MAX_BLOB_COMMITMENTS_PER_BLOCK]"
+    - kzg_proofs: "List[KZGProof, MAX_BLOB_COMMITMENTS_PER_BLOCK]"
+    - signed_block_header: "SignedBeaconBlockHeader"
+    - kzg_commitments_inclusion_proof: "Vector[Bytes32, KZG_COMMITMENTS_INCLUSION_PROOF_DEPTH]"
+  CustodyIndex: "uint64"
