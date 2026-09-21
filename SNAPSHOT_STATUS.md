@@ -1,3 +1,15 @@
+## Benchmark provenance repair
+
+The runner now hashes source after generation and before compilation, writes
+source-before-build.json, rejects edits during compilation, and retains the
+original hashes when reporting timings. If source changes during measurement,
+the report lists those changes and exits nonzero. The pre-fix partial speed
+run was interrupted after the worker edited encoder/buffer source; its timings
+remain historical and do not certify those edits. A fault-injection check
+confirmed source mutation during compilation is rejected; generated measurement
+outputs are excluded from the input manifest. This commit changes reporting
+integrity only and contains no new speed or correctness result.
+
 ## Latest: compact-path finite coverage of all 5440 listed cases
 
 The native generic runner passes 5145/5145 cases: valid inputs are accepted,

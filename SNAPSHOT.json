@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-21T04:51:33.316823+00:00",
+  "captured_at": "2026-09-21T05:22:04.367157+00:00",
   "kind": "unverified_development_snapshot",
   "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0007/workspace",
   "milestone": "Compact native generic5145/static295 case coverage with exact roots and roundtrips; universal proofs/performance gates incomplete",
@@ -17,5 +17,6 @@
     "static_accept_root_passed": 295,
     "independent_static_roundtrip_passed": 295,
     "frozen_final_acceptance_claimed": false
-  }
+  },
+  "benchmark_provenance": "Precompile capture; compile/edit guard and explicit end-of-run mismatch rejection. Prior partial timings historical only."
 }

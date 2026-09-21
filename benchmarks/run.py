@@ -135,6 +135,8 @@ def build(log):
     INDEX = json.loads((ROOT / 'build/cschema-index.json').read_text())
     sh([sys.executable, 'tools/generate_missing_go_types.py'])
     sh([sys.executable, 'tools/generate_bench_go.py'])
+    sources = source_manifest()
+    (OUT / 'source-before-build.json').write_text(json.dumps(sources, indent=2) + '\n')
     log('building native Bend benchmark executables (compact primary API)')
     for program in PROGRAMS.values():
         source = f'benchmarks/compact/{program}.bend'
@@ -142,6 +144,9 @@ def build(log):
         capped_compile(source, OUT / f'bend-{program}.c', log)
     log('building native Go reference executable')
     sh(['go', 'build', '-o', str(OUT / 'go-bench'), '.'], cwd=ROOT / 'benchmarks/fastssz')
+    if source_manifest() != sources:
+        raise SystemExit('Sources changed during compilation; refusing mixed-source benchmark')
+    return sources
 
 
 # ---------------------------------------------------------------------------
@@ -341,7 +346,7 @@ def main():
         raw.write(message + '\n')
         raw.flush()
 
-    build(log)
+    sources = build(log)
     schemas = Schemas()
     coverage = json.loads((ROOT / 'benchmarks/reference_coverage.json').read_text())
     names = sorted({op.rsplit('.', 1)[0] for op in CONTRACT['required_operations']})
@@ -437,15 +442,9 @@ def main():
         'reference_flags': 'go build (release defaults), GOMAXPROCS=1',
         'reference_revision': 'go-eth2-client v0.27.2 with fastssz v0.1.4 (pinned in benchmarks/fastssz/go.mod)',
     }
-    sources = {}
-    for folder in ['src', 'types', 'proofs', 'spec', 'benchmarks', 'native_bench']:
-        base = ROOT / folder
-        if base.exists():
-            for path in base.rglob('*'):
-                if path.is_file() and path.suffix in ['.bend', '.c', '.h', '.py', '.go', '.json', '.mod', '.sum', '.sh']:
-                    sources[str(path.relative_to(ROOT))] = digest(path)
-    for path in ROOT.glob('*.bend'):
-        sources[str(path.relative_to(ROOT))] = digest(path)
+    final_sources = source_manifest()
+    changed_sources = sorted(k for k in sources.keys() | final_sources.keys()
+                             if sources.get(k) != final_sources.get(k))
     artifacts = {str(p.relative_to(ROOT)): digest(p)
                  for p in [OUT / f'bend-{program}' for program in PROGRAMS.values()]
                  + [OUT / f'bend-{program}.c' for program in PROGRAMS.values()]
@@ -456,6 +455,9 @@ def main():
         'generated_at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
         'environment': environment,
         'source_sha256': sources,
+        'source_sha256_capture': 'after generators, before compilation',
+        'source_unchanged': not changed_sources,
+        'source_changes_during_measurement': changed_sources,
         'artifacts': artifacts,
         'benchmarks': rows,
         'skipped': skipped,
@@ -477,6 +479,33 @@ def main():
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     print(f'{len(rows)} workloads, {report["coverage"]["covered_operations"]} of '
           f'{report["coverage"]["required_operations"]} required operations covered')
+    if changed_sources:
+        raise SystemExit('Sources changed during measurement; report is historical only: '
+                         + ', '.join(changed_sources))
+
+
+def source_manifest():
+    """Hash source inputs, excluding generated measurement outputs.
+
+    Called after code generation but BEFORE compilation. The final report must
+    retain these hashes even if the worker edits source while timing runs.
+    """
+    sources = {}
+    suffixes = {'.bend', '.c', '.h', '.py', '.go', '.json', '.mod', '.sum', '.sh', '.ts'}
+    for folder in ['src', 'types', 'proofs', 'spec', 'benchmarks', 'native_bench', 'tools', 'automation']:
+        base = ROOT / folder
+        if not base.exists():
+            continue
+        for path in base.rglob('*'):
+            relative = path.relative_to(ROOT)
+            if folder == 'benchmarks' and len(relative.parts) > 1 and relative.parts[1] in {'evidence', 'inputs'}:
+                continue
+            if path.is_file() and path.suffix in suffixes and '__pycache__' not in relative.parts:
+                sources[str(relative)] = digest(path)
+    for path in list(ROOT.glob('*.bend')) + [ROOT / 'cases.json']:
+        if path.is_file():
+            sources[str(path.relative_to(ROOT))] = digest(path)
+    return sources
 
 
 def digest(path):

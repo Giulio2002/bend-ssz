@@ -91,7 +91,7 @@
   "benchmarks/probes/strictness.bend": "6fb8b374752e0c330e8f00f61e3c8f9ff1c9693495ac006faeca467322c48843",
   "benchmarks/reference_coverage.json": "3191f3df687909118f9a9b9960c7ad2aae5cd942ca2083a41f79ee40b85fc959",
   "benchmarks/results.json": "c8f48a7358efce30e9dd495dd4cf3e6dc980f5c62a70c28f6a3559a196882e83",
-  "benchmarks/run.py": "5c116d31b964b4d8ba3a4a20bf5be1381145421667d280092ca9db36ea5d99df",
+  "benchmarks/run.py": "b2321782b2d3c95d71cac9dd67e83ad271304b4521d6705cb91c43df7edde048",
   "benchmarks/schemas.bend": "b3045d5dafa914349d181a9d54c2b51bd25cd3e07e22af25a62cb39b1b4ac1e8",
   "benchmarks/source.json": "75a9b66ad912c97f556045a7efc365fa9b998b138339a4f160f06f0dd1787bdf",
   "cases.json": "de420efe19f46d8276b2c73829a35afa005bfe9bc81fb8c04f5650752050db1a",
