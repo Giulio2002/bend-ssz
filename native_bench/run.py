@@ -24,7 +24,7 @@ only ever be larger than what any one method sees.
 Why this is sound for the Bend side specifically: the Bend runtime maps one
 MAP_NORESERVE heap and grows it with a monotone page bump; freed nodes go to
 per-class free lists and no page is ever unmapped or madvised (see the emitted
-C retained at build/native/bend-ssz.c: pool_mmap / heap_alloc_miss, no munmap
+C retained at build/native/bend-compact.c: pool_mmap / heap_alloc_miss, no munmap
 or madvise). The Bend heap therefore never shrinks, so a run's peak is its
 final heap size; what the operating system reports resident can still drop
 when the kernel compresses or evicts pages, so the harness records whether the
@@ -38,9 +38,17 @@ output bytes identical to the input fixture, reported the decode checksum and
 root digest checksum that the other implementation reported for the same
 fixture, and reached every expected phase marker.
 
-Compilation is excluded from every measurement and always rebuilt here.
+Compilation is excluded from every measurement and always rebuilt here. The
+Bend side is native_bench/driver_compact.bend, the compact primary path:
+packed input buffer, in-place validating decode, hash_tree_root and streamed
+encode over the same buffer.
+
+The pinned compiler's own peak memory for that driver varies between runs of
+the same source (measured 5.2 GB to over 6.5 GB), so each Bend compile runs
+under a physical-footprint cap below the operator's watchdog and is retried if
+it hits the cap. A capped attempt is a failed attempt, never a partial build.
 """
-import hashlib, json, os, platform, re, resource, subprocess, sys, threading, time
+import ctypes, hashlib, json, os, platform, re, resource, signal, struct, subprocess, sys, threading, time
 from pathlib import Path
 import psutil
 import snappy
@@ -57,18 +65,63 @@ MAXRSS_SCALE = 1 if platform.system() == 'Darwin' else 1024
 PHASES = ['baseline', 'decoded', 'rooted', 'serialized', 'done']
 
 
+DRIVER = 'native_bench/driver_compact.bend'
+COMPILE_CAP_BYTES = 6.5e9
+COMPILE_ATTEMPTS = 4
+
+
+def footprint(pid):
+    """macOS physical footprint (ri_phys_footprint) of a process, in bytes."""
+    lib = ctypes.CDLL('/usr/lib/libproc.dylib')
+    buf = ctypes.create_string_buffer(1024)
+    if lib.proc_pid_rusage(pid, 4, ctypes.byref(buf)) != 0:
+        return 0
+    return struct.unpack_from('Q', buf.raw, 72)[0]
+
+
+def capped_compile(name, cmd):
+    """One Bend compile under the footprint cap; retried when the cap is hit."""
+    attempts = []
+    for attempt in range(COMPILE_ATTEMPTS):
+        started = time.monotonic()
+        p = subprocess.Popen(cmd, cwd=ROOT, env=ENV, text=True,
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        peak, capped = 0, False
+        while p.poll() is None:
+            peak = max(peak, footprint(p.pid))
+            if peak >= COMPILE_CAP_BYTES:
+                p.send_signal(signal.SIGKILL)
+                capped = True
+                break
+            time.sleep(0.02)
+        log = p.communicate()[0]
+        attempts.append({'attempt': attempt, 'peak_footprint_bytes': peak, 'capped': capped,
+                         'exit': p.returncode, 'elapsed_s': round(time.monotonic() - started, 2)})
+        (OUT / (name + '-build.log')).write_text(log + '\n' + json.dumps(attempts, indent=1) + '\n')
+        if not capped:
+            if p.returncode:
+                raise SystemExit('native build failed: ' + name + '\n' + log)
+            return attempts
+        print(f'  {name}: compile hit the {COMPILE_CAP_BYTES / 1e9:.1f} GB cap, retrying', flush=True)
+    raise SystemExit(f'native build failed: {name} hit the compile cap {COMPILE_ATTEMPTS} times')
+
+
 def build():
     """Always rebuild both sides; compilation time is never part of a sample."""
-    for name, cmd, cwd in [
-        ('bend', [BEND, 'native_bench/driver.bend', '-o', str(OUT / 'bend-ssz')], ROOT),
-        ('bend-c', [BEND, 'native_bench/driver.bend', '-o', str(OUT / 'bend-ssz.c')], ROOT),
-        ('go', ['go', 'build', '-o', str(OUT / 'go-ssz'), '.'], ROOT / 'native_bench/fastssz'),
-    ]:
+    builds = {}
+    for name, target in [('bend', 'bend-compact'), ('bend-c', 'bend-compact.c')]:
         print('Building ' + name, flush=True)
-        p = subprocess.run(cmd, cwd=cwd, env=ENV, text=True, capture_output=True)
-        (OUT / (name + '-build.log')).write_text(p.stdout + p.stderr)
-        if p.returncode:
-            raise SystemExit('native build failed: ' + name + '\n' + p.stdout + p.stderr)
+        builds[name] = capped_compile(name, [BEND, DRIVER, '-o', str(OUT / target)])
+    print('Building go', flush=True)
+    p = subprocess.run(['go', 'build', '-o', str(OUT / 'go-ssz'), '.'], cwd=ROOT / 'native_bench/fastssz',
+                       env=ENV, text=True, capture_output=True)
+    (OUT / 'go-build.log').write_text(p.stdout + p.stderr)
+    if p.returncode:
+        raise SystemExit('native build failed: go\n' + p.stdout + p.stderr)
+    return builds
+
+
+EXE = {'bend': OUT / 'bend-compact', 'go': OUT / 'go-ssz'}
 
 
 def command(impl, exe):
@@ -234,15 +287,20 @@ def run_sample(impl, exe, data_path, out_path, expected):
 
 
 def main():
-    build()
+    builds = build()
     report = {
         'complete': False,
         'machine': platform.platform(),
         'cpu': subprocess.run(['sysctl', '-n', 'machdep.cpu.brand_string'], capture_output=True, text=True).stdout.strip(),
         'method': (
             'Native Bend-generated C and native Go fastssz on the same raw fixture bytes: '
-            'read -> full typed decode (forced by a checksum fold inside the measured window) -> '
-            'hash_tree_root -> serialize -> write, one sequential thread, fresh process per sample, '
+            'read -> decode -> hash_tree_root -> serialize -> write, one sequential thread, fresh process '
+            'per sample. Go: UnmarshalSSZ into a typed struct plus a checksum fold. Bend: the compact primary '
+            'path - the input is read into one packed Array<U32> buffer and decode validates it in place, '
+            'so the decoded value is the validated buffer (a zero-copy view, nothing else allocated); the '
+            'decode verdict is matched on inside the measured window, and a rejected input exits nonzero. '
+            'Bend serialize streams the view\'s bytes to the output file in 64 KiB pieces and its time '
+            'includes the writes. '
             'three alternating samples per fixture. Every phase boundary is also an exit point, so each '
             'phase is measured by a separate process that stops there and whose peak resident size the '
             'kernel reports through wait4 ru_maxrss; decode_overhead_bytes is the decode-prefix kernel '
@@ -255,6 +313,8 @@ def main():
         ),
         'sampler': {'interval_s': SAMPLE_SECONDS, 'boundary_settle_ms': 150},
         'phase_peak_method': 'kernel ru_maxrss of a process that stops at the phase boundary',
+        'bend_driver': DRIVER,
+        'bend_compile_attempts': builds,
         'cases': [],
     }
     for index, case in enumerate(json.loads((ROOT / 'memory_bench/cases.json').read_text())):
@@ -267,7 +327,7 @@ def main():
         for repeat in range(REPEATS):
             order = ['bend', 'go'] if (index + repeat) % 2 == 0 else ['go', 'bend']
             for impl in order:
-                sample = run_sample(impl, OUT / (impl + '-ssz'), path, OUT / (impl + '-output.ssz'), data)
+                sample = run_sample(impl, EXE[impl], path, OUT / (impl + '-output.ssz'), data)
                 sample['repeat'] = repeat
                 row['samples'].append(sample)
                 print(case['case'].split('/')[-1], impl, 'baseline', sample['baseline_rss_bytes'],

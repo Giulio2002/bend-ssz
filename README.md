@@ -1,4 +1,4 @@
-> **Development milestone:** final memory-repair conformance rerun passed; packed-runtime migration and native speed gates remain incomplete. See [snapshot evidence](SNAPSHOT_STATUS.md).
+> **Experimental compact-runtime snapshot:** native buffer-view memory result recorded; new-path proofs, full conformance and fair speed acceptance are unfinished. See [status and limitations](SNAPSHOT_STATUS.md).
 
 # bend-ssz
 

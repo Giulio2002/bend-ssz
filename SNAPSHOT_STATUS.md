@@ -1,3 +1,26 @@
+## Latest milestone: compact native buffer-view memory experiment
+
+All 15 Bend samples across five ~2.74 MB BeaconState fixtures completed with
+byte-for-byte round-trip output matches. Maximum measured decode overhead above
+the input baseline: 229376 bytes (target 32000000). Raw report and log are in
+snapshot-evidence/compact-native-memory.*.
+
+THIS NEW PATH IS NOT YET FULLY PROVED OR ACCEPTED. Earlier proof and spectest
+reports apply to earlier implementations and cannot certify this compact API.
+This run has no complete source fingerprint; it was captured during development.
+
+The decoded Bend result is a validated packed-buffer view. Go unmarshals a typed
+struct and folds its fields; Bend's decode checksum here is only the byte length.
+These are different amounts of downstream work, so decode timings do not establish
+the <=5x speed gate. Bend serialization streams existing validated bytes to disk;
+Go serializes its object, so those timings also need a comparable benchmark.
+Root checksums are a diagnostic, not full digest-equality proof. Formal bridges,
+full conformance/rejection checks and equal-work speed acceptance remain required.
+The new SHA dependency is pinned through BendHub; its documented proof boundary
+must remain explicit and required missing bridges must be completed.
+
+---
+
 # SSZ development snapshot
 
 This is a progress snapshot, not completed native SSZ optimization or independent

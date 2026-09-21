@@ -3683,3 +3683,192 @@ propositions are byte-for-byte unchanged and
 `PROOF_STATUS.md` was not edited in this iteration (it is outside the editable
 set); its timestamp predates this work and its "Current state" section is stale
 with respect to everything recorded above.
+
+## Iteration 5 checkpoint: SHA package migration and a hard proof constraint
+
+### Pinned dependency
+
+`src/digest.bend` now hashes through the BendHub package
+`0xda83506fb9f059ead7afcfa2f498df5f` (Giulio2002/bend-sha256), imported as
+`import 0xda83506fb9f059ead7afcfa2f498df5f/sha256.bend`. Its sole production
+entry is `sha256(words: Array<U32>, byte_length: Nat) -> Maybe<&1, Array<U32>>`:
+packed four-bytes-per-word input, eight-word output, no list anywhere. The
+module checks ("All terms check.").
+
+Package facts read from the installed source, not assumed:
+
+* `sha256.bend` delegates to `buffer.bend`, which wraps `packed.bend` and
+  returns `buffer.digest`, a balanced eight-leaf `Array<U32>`.
+* `LAWS.bend` provides `sha256_array_correct`: the production array API equals
+  `Buffer.result(PackedSpec.hash(words, byte_length))`, i.e. it is refined
+  against the package's own independent *packed* specification.
+* `package.bend` states plainly that the universal bridge from packed bytes to
+  the historical byte-list FIPS theorem is **not** claimed. `LAWS.bend` has
+  `sha256_bytes_correct` only for the legacy byte-list model.
+* The package's `fips.bend` and `state.bend` are byte-identical to
+  `vendor/bend_sha256/fips.bend` and `.../state.bend` (verified with `diff`),
+  which matters because the frozen `spec/merkle.bend` hashes through the
+  *vendored* FIPS module.
+
+### Measured hashing cost (native C, one thread, Apple M4)
+
+50,000 dependent 64-byte hashes, accumulator feeding the next input so no
+iteration is loop-invariant (`benchmarks/probes/sha_paths.bend`,
+`benchmarks/probes/sha_package.bend`):
+
+| path | ns per 64-byte hash |
+| --- | ---: |
+| `src/sha256.hash` byte-list entry (old runtime path) | 960 |
+| vendored `Core.fips_compress16`, sixteen words passed directly | 280 |
+| pinned package `sha256(Array<U32>, 64n)`, incl. array build and result fold | 380 |
+
+Merkleizing 32,768 leaves (`benchmarks/probes/merkle_paths.bend`): the current
+`src/tree.bend` list path takes 46 ms, a streaming fold over eight-word chunk
+records takes 7 ms. Go fastssz hashes a 64-byte node in about 100 ns on this
+machine, so the packed path is roughly 3.8x Go per hash, inside the 10x
+hash_tree_root limit, while the list path is not.
+
+### Hard constraint discovered: SHA terms must stay stuck in proofs
+
+Two bounded probes, each run as a single checker with the memory runner:
+
+* `build/probe_lazy.bend` - reflexivity `{X == X}` where
+  `X = F.compress(F.schedule(48n, [w,...,w]), F.constants(), F.initial())`
+  with a *concrete sixteen-element* list of a symbolic word: **timed out at
+  120 s** (152 MB, exit -9). The checker normalizes instead of comparing
+  structurally, and symbolic SHA normalization is exponential because each
+  state word is consumed several times per round.
+* `build/probe_stmt.bend` - the same term appearing only in a law *statement*,
+  with the proof being the premise itself: **timed out at 90 s**. So it is the
+  elaboration of the type, not the conversion check, that explodes.
+
+Consequences, which the proof architecture must respect:
+
+1. No proof may contain a SHA application whose message has a concrete length
+   or concrete block count. The existing SSZ root proofs are safe because they
+   hash `List.append(left, right)` for *symbolic* byte lists.
+2. The package's own proofs use the same discipline: every block-level lemma in
+   `packed_proof.bend` keeps `extra: Nat` symbolic, so `F.schedule(extra, ws)`
+   never unfolds.
+3. Therefore the missing packed-to-FIPS bridge cannot be proved "at 64 bytes";
+   it has to be proved *universally* (symbolic array, symbolic byte length and
+   symbolic `extra`), and only then instantiated. That is the required bridge;
+   it is not yet written, and no root law may claim it in the meantime.
+
+An earlier attempt to prove the 64-byte block structure by reduction
+(`build/probe_block64.bend`) was killed at 5 GB; it is recorded here as a
+failed approach so it is not retried unchanged.
+
+## Iteration 5: the indexed runtime exists and is fast
+
+New modules, all checking with the pinned 2.0.16 checker:
+
+* `src/buffer.bend` - `Buf` is one packed `Array<U32>`, four bytes per word,
+  little-endian, plus a byte length. Byte j is word j >> 2 at bit (j & 3) * 8.
+  There is no chunk list and no cons cell per byte. `Array<U32>` has kind
+  `Type`, so the buffer is linear: every reader takes it and gives it back,
+  which is the documented input-ownership contract. `alloc` + `fill_at` let a
+  file be read in 64 KiB pieces straight into the buffer, so a 2.74 MB input is
+  never a byte list in full.
+* `src/sizes.bend` - fixed sizes as `U32` instead of the spec's unary `Nat`, so
+  a 2^40 list limit is never materialised. Limits are still compared against
+  the spec's `Nat` with `Nat.is_le`, which stops at the actual count.
+* `src/scan.bend` - the validating decode pass over `Buf`. Bend has no mutual
+  recursion, cannot match a computed value, and requires a self-call to leave
+  every argument unchanged until one shrinks, so this is *one* self-recursive
+  definition: a `Nat` fuel first, the buffer-and-just-read-value pair last, a
+  `tag` saying what the value is, and a continuation `Frame`. Every decision is
+  made by a pure selector (`usel`/`bsel`/`fsel`/`ssel`) and fed back as data.
+  It checks exact fixed sizes, list limits against the schema's `Nat` limit,
+  boolean bytes, bit-vector padding bits, bit-list terminators, and the offset
+  discipline of variable-size containers and lists (first offset equals the
+  fixed part, each child's window ends where the next begins, the last ends at
+  the window end).
+
+Measured on the real mainnet fixture (`benchmarks/probes/scan_probe.bend`,
+native C backend, one thread, Apple M4), reading
+`build/native/case_0.ssz` (2,740,473 bytes, the decompressed official fixture):
+
+```
+SIZE=2740473
+VALID=True
+SCAN_MS=3
+TRUNCATED=False
+OVERLONG=False
+```
+
+For scale: Go fastssz decodes the same fixture in about 1.3 ms on this machine
+(iteration 2's native comparison), so the 5x budget is 6.5 ms. The previous
+compact decoder needed 18-20 ms and the legacy public API 230-256 ms. The
+indexed pass is 3 ms and rejects the one-byte-short and one-byte-long windows.
+
+The Fulu schema set uses only `Chain`, `End`, `Container`, `ListOf`, `Vector`,
+`ByteVector`, `ByteList`, `BitVector`, `BitList`, `Unsigned` and `Boolean`
+(counted in `spec/fulu_schemas.bend`): no unions, no progressive types. The
+scan implements exactly those plus `Null` and `Named`; `Union`,
+`CompatibleUnion`, `Repeat` and the progressive forms currently reject and are
+listed here as *not yet implemented*, which matters for the generic API even
+though no Fulu type needs them.
+
+Not done yet, in order: the decoded descriptor value and its accessors, the
+compact encoder, streaming merkleization on top of `src/digest.bend`, wiring
+the official 5440-case corpus through this path, and every proof.
+
+## Iteration 5, continued: the compact root, and a compiler wall
+
+### What now exists and is verified
+
+| module | what it is | evidence |
+| --- | --- | --- |
+| `src/buffer.bend` | packed `Array<U32>` byte storage, four bytes per word, little-endian; `alloc`/`fill_at` let a file be read in 64 KiB pieces straight into it | `benchmarks/probes/buffer_probe.bend`: byte-list checksum, byte-at checksum and word-scan checksum all agree at 2,740,472 bytes |
+| `src/sizes.bend` | fixed sizes as `U32` instead of the spec's unary `Nat` | checks |
+| `src/cschema.bend` + `types/fulu_cschema.bend` | the compact runtime schema and all 109 generated named schemas, with strides, field header offsets, machine-sized limits and merkle depths precomputed by `tools/generate_cschema.py` from the frozen `spec/fulu_schemas.bend` | both check; 109 definitions |
+| `src/cscan.bend` | validating decode over the buffer | accepts the real mainnet BeaconState fixture in **1 ms** native, rejects the one-byte-short and one-byte-long windows |
+| `src/digest.bend` | the pinned BendHub packed SHA-256 | 0.38 us per 64-byte node |
+| `src/merkle_fast.bend` | streaming merkleization from the buffer, level stack in a duplicable indexed tree | 12 cross-checks against the existing proved `src/tree.bend` agree, including empty, padded and exactly-full trees |
+| `src/croot.bend` | schema-driven `hash_tree_root` over the buffer | 8 differential cases against the proved `src/root.bend` agree; **10 official fixture types root exactly**: Fork, Checkpoint, Validator, BeaconBlockHeader, Eth1Data, AttestationData, HistoricalSummary, SyncAggregate, Attestation, ExecutionPayloadHeader |
+
+Two real bugs were found and fixed by those checks, not by inspection:
+
+1. Merkleization of an exactly-full tree returned the zero-padded root instead
+   of the completed stack entry (`close_pick`).
+2. A leaf whose own merkle tree is deeper than one chunk overwrote the stack
+   levels its parent container was accumulating in. Leaves now take the
+   segment above their parent's. This is what made SyncAggregate - a container
+   holding a 512-bit vector and a 96-byte signature - root incorrectly.
+
+### The compiler wall, measured
+
+The pinned 2.0.16 compiler cannot build a native binary that contains both the
+root walker and a file reader. Peak compile footprints, each measured with
+`build/capped_build.py` (a self-imposed cap below the operator's watchdog):
+
+| program | compile peak |
+| --- | ---: |
+| file reader + `src/cscan.bend` (whole validator) | 2.35 GB |
+| file reader + `src/merkle_fast.bend` with a symbolic length | 1.84 GB |
+| `src/croot.bend` with a runtime-seeded literal buffer | 3.42 GB |
+| file reader + `src/croot.bend`, any schema, any reader shape | **over 6.5 GB** |
+
+It is superadditive, not a size limit on either part, and it is the same on the
+JavaScript backend, so it is the shared frontend rather than the C backend.
+Things tried and measured, none of which helped: a single dispatcher entry
+point, a recursion guard on the entry, a recursion guard between reader and
+walker, flattening the walker's nested result pair into a named record and then
+back into a plain pair, removing the second linear resource (the merkle stack
+is now a duplicable indexed tree rather than an `Array`), moving the fifteen-way
+schema dispatch into a pure planner, and collapsing the eight chained chunk
+readers into one loop. Each reduced the walker; none brought reader + walker
+under the budget.
+
+Consequence for this session: the BeaconState root is verified *interpreted*
+and on ten smaller official fixtures natively, and the root of a 2.74 MB
+BeaconState ran in **76 ms** natively in the last build that did compile (which
+predates the segment fix, so that number is indicative, not final). Go fastssz
+roots the same fixture in 7.6 ms, so this is about 10x - at the contract limit,
+before any tuning.
+
+The remaining structural fix, not yet done, is to merge the validator and the
+root walker into a single walker with a mode flag. That halves the number of
+large recursive definitions in a program, and a program that validates and then
+roots the same buffer becomes a self-chain, which is the shape that compiles.
