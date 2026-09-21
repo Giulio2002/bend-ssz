@@ -16,9 +16,12 @@ For every (type, workload, operation):
 * both implementations must round-trip those bytes exactly and agree on the
   checksum of the hash tree root before any timing is recorded, which is what
   `verified` in the report means;
-* the operation is then repeated `operations_per_sample` times inside one
-  timed region, calibrated so that a sample lasts long enough to be immune to
-  timer quantization, and every result is consumed;
+* each side independently calibrates its repetition count toward a 250 ms
+  sample (capped at five million operations); every result is consumed;
+* timings are normalized by that side's actual count. `operations_per_sample`
+  is the Bend count for report compatibility; `reference_operations_per_sample`
+  is the Go count. Both counts and all per-operation samples are recorded;
+  capped short batches can still be affected by timer quantization;
 * samples alternate between the two implementations, at least five each, in a
   fresh process per sample.
 
@@ -305,6 +308,21 @@ def calibrate(measure, ops=1):
     return ops, None
 
 
+def measure_pair(bend, reference, samples):
+    """Same workload/operation, independently calibrated native batches."""
+    bend_ops, _ = calibrate(bend)
+    reference_ops, _ = calibrate(reference)
+    bend_ns, reference_ns = [], []
+    for index in range(samples):
+        order = ['bend', 'go'] if index % 2 == 0 else ['go', 'bend']
+        for side in order:
+            if side == 'bend':
+                bend_ns.append(bend(bend_ops)['ns'] / bend_ops)
+            else:
+                reference_ns.append(reference(reference_ops)['ns'] / reference_ops)
+    return bend_ops, reference_ops, bend_ns, reference_ns
+
+
 def choose_reference(name, candidates, path, official, log):
     """Pick the reference implementation that agrees with this workload.
 
@@ -405,21 +423,18 @@ def main():
                 continue
             rejections.extend(rejection_checks(name, impl, case, path))
             for operation in OPERATIONS:
-                ops, _ = calibrate(lambda n: run_bend(name, path, operation, n, verify=False))
-                bend_ns, reference_ns = [], []
-                for index in range(arguments.samples):
-                    order = ['bend', 'go'] if index % 2 == 0 else ['go', 'bend']
-                    for side in order:
-                        if side == 'bend':
-                            bend_ns.append(run_bend(name, path, operation, ops, verify=False)['ns'] / ops)
-                        else:
-                            reference_ns.append(run_go(name, impl, path, operation, ops)['ns'] / ops)
+                ops, reference_ops, bend_ns, reference_ns = measure_pair(
+                    lambda n: run_bend(name, path, operation, n, verify=False),
+                    lambda n: run_go(name, impl, path, operation, n),
+                    arguments.samples)
                 row = {
                     'operation': f'{name}.{operation}',
                     'workload': case['workload'],
                     'size': len(case['bytes']),
                     'verified': agreed,
                     'operations_per_sample': ops,
+                    'reference_operations_per_sample': reference_ops,
+                    'calibration': 'independent-per-side',
                     'bend_ns': bend_ns,
                     'reference_ns': reference_ns,
                     'reference_implementation': impl,

@@ -1,3 +1,12 @@
+## Latest: independent benchmark calibration
+
+Fixed the timing harness to calibrate Bend and Go independently, recording
+both counts and normalizing each sample by its own count. Deterministic
+normalization/order checks and a real five-sample HistoricalBatch smoke pass.
+The interrupted 513-row run is preserved as partial evidence only. A fresh
+full performance report is required. Runtime and proof sources are unchanged
+by this commit; compact universal proofs remain unfinished.
+
 ## Latest: frozen execution gates and fresh compact native memory pass
 
 The native_memory_acceptance command exits0 after PROOF,51runtime tests with

@@ -1,0 +1,19 @@
+{
+  "purpose": "calibration regression smoke only; not full acceptance",
+  "bend_operations_per_sample": 5000000,
+  "reference_operations_per_sample": 1664,
+  "bend_ns": [
+    44.0,
+    46.0,
+    46.2,
+    44.4,
+    44.2
+  ],
+  "reference_ns": [
+    300581.3046875,
+    295999.89963942306,
+    297820.7632211539,
+    286380.5336538461,
+    289477.0883413461
+  ]
+}

@@ -1,10 +1,10 @@
 {
-  "captured_at": "2026-09-21T06:03:48.712081+00:00",
+  "captured_at": "2026-09-21T07:06:38.568685+00:00",
   "kind": "unverified_development_snapshot",
   "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0008/workspace",
   "milestone": "Execution/memory gates pass,5440spectests,15native samples,max131072byte decode overhead; compact universal proofs absent",
   "full_acceptance_passed": false,
-  "benchmark_status": "Memory harness only; full timing report incomplete; compare representations and timer resolution explicitly",
+  "benchmark_status": "Independent per-side calibration fix tested; preserved513-row partial run is not acceptance. Fresh full run required.",
   "spectest_source_hash_mismatches": [
     "tools/generate_type_validator_complete.py",
     "tools/generate_type_validator_soundness.py"
@@ -31,5 +31,10 @@
     "native_samples": 15,
     "max_decode_overhead_bytes": 131072,
     "compact_universal_proofs": false
+  },
+  "benchmark_calibration": {
+    "synthetic_normalization_and_order": "passed",
+    "native_five_sample_smoke": "passed",
+    "full_performance_gate": "pending"
   }
 }
