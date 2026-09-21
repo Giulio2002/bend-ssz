@@ -1,0 +1,24 @@
+{
+  "at": "2026-09-21T13:06:19.578141+00:00",
+  "checked_entry": "proofs/compact/sound.bend",
+  "checker_sha256": "da9bc51449f04a65bf633351fb754cd6f883f5f5d9ab0c4e947f5c6f19eb7386",
+  "exit": 0,
+  "seconds": 1.3862430840381421,
+  "peak_footprint_bytes": 946505024,
+  "unsafe_warning": false,
+  "frozen_files": 609,
+  "copy_hash_mismatches": [],
+  "scope": "Layer1: actual compact scanner successful machine runs imply CVm machine-level obligations; perfect-array tree depth<32. Non-plain walk/valid_in corollaries.",
+  "not_proven": [
+    "CVm equivalence to independent canonical SSZ specification",
+    "scanner completeness and fuel sufficiency",
+    "plain-schema length shortcut equivalence",
+    "full buffer construction/schema correspondence",
+    "encoder and Merkle/SHA runtime bridges",
+    "progressive containers with>31activepositions"
+  ],
+  "current_speed_gate_pass": false,
+  "current_full_acceptance": false,
+  "historical_speed_memory_commit": "b8ad901",
+  "conformance": "Worker reports295static+5145genericcases for compiledschemas; not independently rerun for this proof publication."
+}

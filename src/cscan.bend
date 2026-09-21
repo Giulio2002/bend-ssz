@@ -234,8 +234,14 @@ def run(+fuel: Nat, +tag: U32, +schema: S.CS, +fr: Frame, +a: U32, +b: U32, +c: 
           match schema:
             case S.CBitList{+lim, +big, depth}:
               (buf, +v) = pair
-              +bits = (((b - a : U32) - 1 : U32) * 8 + high_bit(v) : U32)
-              run(p, usel(bsel(U32.is_eq(v, 0), False{}, S.within(bits, lim, big)), 5, 6),
+              # bits = 8 * nb + high_bit(v) must not exceed the limit. It is
+              # compared without being computed: 8 * nb overflows a U32 once
+              # the list reaches 512 MiB, and a wrapped count would pass.
+              +nb = ((b - a : U32) - 1 : U32)
+              +q = U32.shrn(lim, 3n)
+              +fits = bsel(big, True{}, bsel(U32.is_lt(nb, q), True{},
+                bsel(U32.is_eq(nb, q), U32.is_le(high_bit(v), (lim .&. 7 : U32)), False{})))
+              run(p, usel(bsel(U32.is_eq(v, 0), False{}, fits), 5, 6),
                 schema, fr, a, b, c, (buf, 0))
             case _:
               (buf, v) = pair
@@ -250,7 +256,10 @@ def run(+fuel: Nat, +tag: U32, +schema: S.CS, +fr: Frame, +a: U32, +b: U32, +c: 
               (buf, +v) = pair
               +count = U32.shrn(v, 2n)
               +aligned = U32.is_eq((v .&. 3 : U32), 0)
-              +within_len = U32.is_le(v, (b - a : U32))
+              # A non-empty list has at least one element, so its first
+              # offset is at least 4; an empty list is the empty window,
+              # handled at tag 0.
+              +within_len = bsel(U32.is_le(4, v), U32.is_le(v, (b - a : U32)), False{})
               run(p, usel(bsel(aligned, bsel(within_len, S.within(count, lim, big), False{}), False{}), 5, 6),
                 schema, FVarList{elem, 0, count, a, b, fr}, a, b, c, (buf, 0))
             case _:

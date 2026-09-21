@@ -8,7 +8,10 @@ def footprint(pid):
 src, out, cap = sys.argv[1], sys.argv[2], float(sys.argv[3])
 # An output of '-' checks and runs the program in the interpreter instead.
 cmd = ['/Users/monkeair/.bend/bin/bend', src] + ([] if out == '-' else ['-o', out])
-p = subprocess.Popen(cmd,
+# Compiler processes only: the JavaScriptCore heap hint the runners use
+# (benchmarks/run.py, native_bench/run.py); the emitted C is unchanged by it.
+env = {**os.environ, 'BEND_NO_TELEMETRY': '1', 'BUN_JSC_forceRAMSize': os.environ.get('HINT', '3000000000')}
+p = subprocess.Popen(cmd, env=env,
                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 peak = 0
 while p.poll() is None:

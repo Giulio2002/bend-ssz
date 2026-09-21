@@ -1,3 +1,13 @@
+## Latest: compact scanner soundness layer1 independently checks
+
+Frozen proofs/compact/sound.bend passes stock pinnedBend in1.39seconds/946,505,024bytes sampled physical footprint,exit0,All terms check,no unsafe warning. All609files matched before/after source capture. Raw checker log,source manifest and exact proof boundary are under snapshot-evidence/compact-sound-20260921-1505.
+
+This proves successful machine runs imply the CVm machine-level specification under explicit perfect-array/depth premises, including the non-plain scanner path. It does NOT yet connect CVm to independent canonical SSZ semantics, prove completeness/fuel sufficiency, cover the plain-schema shortcut, or establish full encoding/Merkle runtime correctness. Schema correspondence,buffer construction and progressive-container>31active-position support also remain open. Old model proofs are not substitutes.
+
+The runtime/schema generator changed after the all978speed+memory pass at b8ad901. That report is historical for this snapshot; no refreshed whole speed/memory gate or final acceptance is claimed. Worker-reported295static+5145genericconformance is separate finite evidence,not independently reproduced in this publication.
+
+--- Historical milestones below refer to their original source snapshots ---
+
 ## Latest: all measured speed limits pass; compact proofs remain unfinished
 
 The full speed gate exits 0: **978 verified workloads covering all 327 required operations** satisfy decode/encode <=5× Go fastssz and hash-tree-root <=10×. Rejection checks: 685, with zero Bend/reference disagreements. All 452 recorded source hashes match this export; the runner captured them before compilation and confirms no source changes during measurement. Runtime: 3,102 seconds; gate peak memory: 3.52 GB.

@@ -1,4 +1,4 @@
-> Development snapshot: all 978 speed workloads and the native memory gate pass, with measurement caveats. Compact-runtime universal proofs remain unfinished; retained model proofs do not prove the new implementation. See [SNAPSHOT_STATUS.md](SNAPSHOT_STATUS.md).
+> Development snapshot: compact scanner soundness layer1 independently checks. Full SSZ runtime proofs remain incomplete. The passing978-workload speed/memory report belongs to earlier commitb8ad901; newer runtime changes require refreshed gates. See [SNAPSHOT_STATUS.md](SNAPSHOT_STATUS.md).
 
 # bend-ssz
 

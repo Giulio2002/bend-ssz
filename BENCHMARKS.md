@@ -1,3 +1,5 @@
+> Historical benchmark results from b8ad901. This snapshot changes runtime/schema code and has not rerun the complete speed gate.
+
 # Native SSZ benchmarks — Bend C versus Go fastssz
 
 Reproduce exactly these numbers with:
