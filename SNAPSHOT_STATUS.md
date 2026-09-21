@@ -82,3 +82,14 @@ independent semantic review. Preserve every required public law and its actual
 runtime connection. Older status/validation documents may describe earlier code.
 Fixtures remain governed by fixtures.manifest.json and upstream.lock.json;
 large regenerated fixture caches are not added by this snapshot.
+
+## Final memory-repair conformance rerun — 2026-09-21
+
+This snapshot captures the preserved iteration-2 workspace, including the repaired
+proof generators and validator dependency reduction. The final acceptance log
+records 5440 official cases passed, zero failed, and END_TO_END all terms check.
+The worker also recorded 51 runtime tests / 20009 assertions passed.
+The later iteration-3+ packed-hasher and BendHub migration is still in progress
+and is deliberately not represented as validated by these results.
+The runner's failed structured response was a transport failure; it does not
+constitute an audit approval. Full native speed acceptance remains incomplete.

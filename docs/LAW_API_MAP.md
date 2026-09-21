@@ -8,7 +8,7 @@ inspected for non-weakening *before* the representation changes. Rows are marked
 
 Update, 2026-09-21: the starting point for the migration is now a *checked*
 base. `bend PROOF.bend` and `bend END_TO_END.bend` check with zero unsafe
-annotations (5.1 GB and 5.4 GB of physical footprint), and both frozen gates
+annotations (5.1-5.7 GB of physical footprint each, varying between runs), and both frozen gates
 (`automation/root_domain_acceptance.py`, `automation/native_memory_acceptance.py`)
 exit 0, which also means the 29 END_TO_END propositions in section 2 below are
 currently proved in their original form. Every row in this map is therefore a

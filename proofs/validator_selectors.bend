@@ -4,7 +4,6 @@ import ../spec/type_legality.bend as S
 import ./validator_metadata.bend as M
 import ./primitive_invariants.bend as V
 import ./word_facts.bend as W
-import ./decode_canonical.bend as Eq
 
 law conflict:
   for +b: Bool
@@ -126,7 +125,7 @@ def sound(xs, seen, accepted):
       (V.and_left(U32.is_lt(0, head), U32.is_lt(head, 128), head_range(head, tail, seen, accepted)),
        V.and_right(U32.is_lt(0, head), U32.is_lt(head, 128), head_range(head, tail, seen, accepted)),
        %M.contains_selector(head, tail) : {_ == False{} : Bool}
-       exclusion(tail, head <> seen, head, tail_accepted(head, tail, seen, accepted), or_left(U32.is_eq(head, head), I.has_selector(head, seen), Eq.word_equal_reflexive(head))),
+       exclusion(tail, head <> seen, head, tail_accepted(head, tail, seen, accepted), or_left(U32.is_eq(head, head), I.has_selector(head, seen), W.word_equal_reflexive(head))),
        sound(tail, head <> seen, tail_accepted(head, tail, seen, accepted)))
 
 # Disjointness is the accumulator invariant, not an assumed validator result.
@@ -163,7 +162,7 @@ law unequal_symmetric:
 def unequal_symmetric(a, b, no):
   refute(U32.is_eq(b, a), equal => conflict(U32.is_eq(a, b), no,
     %Equal.sym(U32, b, a, W.u32_equal_sound(b, a, equal)) : {U32.is_eq(a, _) == True{} : Bool}
-    Eq.word_equal_reflexive(a)))
+    W.word_equal_reflexive(a)))
 
 law apart_empty:
   for +xs: +List<U32>

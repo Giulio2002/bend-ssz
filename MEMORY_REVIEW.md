@@ -15,7 +15,8 @@ The proof half of that gate now passes: `bend PROOF.bend` and
 `bend END_TO_END.bend` report "All terms check." with zero unsafe annotations,
 and `automation/root_domain_acceptance.py` (which runs the proofs, the 51
 runtime tests and all 5440 official SSZ cases) exits 0 on this copy. The
-checker peaks at 5.1 GB of physical footprint for `PROOF.bend`; see WORK_LOG.md
+checker peaks at 5.1-5.7 GB of physical footprint for `PROOF.bend` (it varies
+between runs); see WORK_LOG.md
 for how that was measured and for the two normalization blow-ups that had to be
 repaired first. `PROOF_STATUS.md` is frozen for this iteration and its "Current
 state" section predates these runs.

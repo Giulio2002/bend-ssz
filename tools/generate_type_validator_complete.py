@@ -102,6 +102,27 @@ law options_tail:
 def options_tail(options, valid, compatible):
   V.and_true(I.valid_go(options, True{}), I.compatible_go(Nat.mul(1024n, 1n+I.weight(options)), 1, options, options), valid, Compatibility.options_complete(options, Sound.sound(options, True{}, valid), compatible))
 
+
+# One option-list head, once. The same extraction was written out for each of
+# the eighteen non-null head constructors; a law statement is elaborated in
+# every importing module, so those eighteen copies were a large part of this
+# module's checker memory. See the mirror image in type_validator_soundness.
+law union_complete_at:
+  for +h: T.Schema
+  for +tail: T.Schema
+  for +forest: Bool
+  for legal: {forest == False{} : Bool} & {Nat.is_le(S.field_count(tail), 127n) == True{} : Bool} & S.legal(h, False{}) & S.legal(tail, True{})
+  for rh: @e: S.legal(h, False{}) -> {I.valid_go(h, False{}) == True{} : Bool}
+  for rt: @e: S.legal(tail, True{}) -> {I.valid_go(tail, True{}) == True{} : Bool}
+  {Bool.and(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(h, False{}), I.valid_go(tail, True{})))) == True{} : Bool}
+def union_complete_at(h, tail, forest, legal, rh, rt):
+  (f, lim, head, rest) = legal
+  V.and_true(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(h, False{}), I.valid_go(tail, True{}))),
+    Selectors.not_false(forest, f),
+    V.and_true(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(h, False{}), I.valid_go(tail, True{})),
+      limited(tail, 127n, lim),
+      V.and_true(I.valid_go(h, False{}), I.valid_go(tail, True{}), rh(head), rt(rest))))
+
 law complete:
   for +schema: T.Schema
   for +forest: Bool
@@ -171,10 +192,10 @@ def main():
                              ("Nat.is_le(I.count(tail), 127n)", "limited(tail, 127n, lim)"),
                              ("I.valid_go(tail, True{})", "complete(tail, True{}, rest)")])
                     else:
-                        case(out, pattern, ["f", "lim", "head", "rest"], [nf,
-                             ("Nat.is_le(I.count(tail), 127n)", "limited(tail, 127n, lim)"),
-                             ("I.valid_go(%s, False{})" % h, "complete(%s, False{}, head)" % h),
-                             ("I.valid_go(tail, True{})", "complete(tail, True{}, rest)")])
+                        # One shared helper instead of a per-head conjunct
+                        # rebuild (a proof-checking memory blow-up).
+                        out.append("    case %s:" % pattern)
+                        out.append("      union_complete_at(%s, tail, forest, legal, e => complete(%s, False{}, e), e => complete(tail, True{}, e))" % (h, h))
     footer = '''
 law public_complete:
   for +schema: T.Schema

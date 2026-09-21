@@ -74,6 +74,29 @@ def last_active(active, accepted):
   %Fields.last_active(active) : {_ == True{} : Bool}
   accepted
 
+
+# One option-list head, once. `valid_go` and the specification both split the
+# option list on a leading `Null`, so the soundness proof used to repeat the
+# same conjunct extraction for every one of the eighteen non-null head
+# constructors. Those eighteen bodies elaborated to about two gigabytes of
+# checker memory in every module that imports this one; the extraction now
+# happens once, here, behind an abstract head.
+law union_sound_at:
+  for +h: T.Schema
+  for +tail: T.Schema
+  for +forest: Bool
+  for +accepted: {Bool.and(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(h, False{}), I.valid_go(tail, True{})))) == True{} : Bool}
+  for rh: @+e: {I.valid_go(h, False{}) == True{} : Bool} -> S.legal(h, False{})
+  for rt: @+e: {I.valid_go(tail, True{}) == True{} : Bool} -> S.legal(tail, True{})
+  {forest == False{} : Bool} & {Nat.is_le(S.field_count(tail), 127n) == True{} : Bool} & S.legal(h, False{}) & S.legal(tail, True{})
+def union_sound_at(h, tail, forest, accepted, rh, rt):
+  +rest = V.and_right(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(h, False{}), I.valid_go(tail, True{}))), accepted)
+  +inner = V.and_right(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(h, False{}), I.valid_go(tail, True{})), rest)
+  (Selectors.not_true(forest, V.and_left(Bool.not(forest), Bool.and(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(h, False{}), I.valid_go(tail, True{}))), accepted)),
+   limited(tail, 127n, V.and_left(Nat.is_le(I.count(tail), 127n), Bool.and(I.valid_go(h, False{}), I.valid_go(tail, True{})), rest)),
+   rh(V.and_left(I.valid_go(h, False{}), I.valid_go(tail, True{}), inner)),
+   rt(V.and_right(I.valid_go(h, False{}), I.valid_go(tail, True{}), inner)))
+
 law sound:
   for +schema: T.Schema
   for +forest: Bool
@@ -114,7 +137,10 @@ for n,k in cs:
   z=['h'+str(i) for i in range(l)];head=pp(h,z);tail='tail';case=f'T.Union{{T.Chain{{{head}, tail}}}}'
   if h=='Null':leaves=['Bool.not(forest)','Nat.is_lt(0n, I.count(tail))','Nat.is_le(I.count(tail), 127n)','I.valid_go(tail, True{})'];parts=[f'Selectors.not_true(forest, {get(leaves,0)})',f'positive(tail, {get(leaves,1)})',f'limited(tail, 127n, {get(leaves,2)})',f'sound(tail, True{{}}, {get(leaves,3)})']
   else:
-   leaves=['Bool.not(forest)','Nat.is_le(I.count(tail), 127n)',f'I.valid_go({head}, False{{}})','I.valid_go(tail, True{})'];parts=[f'Selectors.not_true(forest, {get(leaves,0)})',f'limited(tail, 127n, {get(leaves,1)})',f'sound({head}, False{{}}, {get(leaves,2)})',f'sound(tail, True{{}}, {get(leaves,3)})']
+   # One shared helper instead of a per-head four-way conjunct extraction:
+   # the repeated extraction was one of the proof-checking memory blow-ups.
+   s+=f'    case {case}: union_sound_at({head}, tail, forest, accepted, e => sound({head}, False{{}}, e), e => sound(tail, True{{}}, e))\n'
+   continue
   s+=f'    case {case}: ('+', '.join(parts)+')\n'
 s+='''
 law public_sound:

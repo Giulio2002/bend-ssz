@@ -3607,3 +3607,79 @@ Stated plainly so the next assignment is not misled:
   operations) has 5 workloads inside their limit, median ratio 85.8x. No
   performance work was done here, so no fresh run was claimed; re-running it
   unchanged would only reproduce that result.
+
+## Full sequential sweep, and one more import-graph repair (2026-09-21)
+
+`python3 tools/generate_proof_memory_report.py --all --stop-bytes 6.5e9` checked
+all 172 targets (every `proofs/*.bend` plus `HASH_PROOF.bend`,
+`END_TO_END.bend`, `ROOT_DOMAIN.bend`, `PROOF.bend`) one at a time: 172 pass,
+0 fail, 0 over budget, runner exit 0 (`build/proof-memory-sweep.log`,
+per-module records and footprint traces in `build/proof-memory.json` and
+`build/proof-memory-logs/`). The highest peaks in that sweep were
+`type_validator_complete` 6,202 MB and `type_validator_soundness` 6,045 MB -
+under the watchdog, but too close to it.
+
+Both came from one import: `proofs/validator_selectors.bend` imported the whole
+`proofs/decode_canonical.bend` (and through it `src/decode`, `src/ssz` and
+`decode_top`) for a single lemma, `word_equal_reflexive`, which depends on
+nothing but Base. That lemma and `word_compare_reflexive` now live in
+`proofs/word_facts.bend`; `decode_canonical` and `validator_selectors` use them
+from there. Statements are unchanged.
+
+| module | before | after |
+| --- | --- | --- |
+| `proofs/validator_selectors.bend` | 3,617 MB | 1,801 MB |
+| `proofs/type_validator_soundness.bend` | 6,045 MB | 2,695 MB |
+| `proofs/type_validator_complete.bend` | 6,202 MB | 3,756 MB |
+| `PROOF.bend` | 5,728 MB (sweep) | 5,290 MB |
+| `END_TO_END.bend` | 5,281 MB (sweep) | 5,669 MB |
+| `ROOT_DOMAIN.bend` | 5,397 MB (sweep) | 5,262 MB |
+
+The same file measured twice varies by a few hundred MB between runs (for
+example `PROOF.bend` at 5,129, 5,290 and 5,728 MB on three runs, all exit 0),
+so differences of that size are noise. The largest checks are now the three
+roots at 5.3-5.7 GB, i.e. 1.3 GB or more under the 7 GB watchdog; a single SSZ
+checker never exceeded 6.21 GB in any run of this iteration after the repairs.
+
+## Generators reproduce the repaired proof modules
+
+Three of the repaired modules are generated. Rerunning an unrepaired generator
+would silently bring the memory blow-ups back, so the generators now emit the
+repaired forms and were checked to reproduce the checked files byte-for-byte:
+
+* `tools/generate_fulu_adapter_complete.py` -> `proofs/fulu_adapter_complete.bend`
+  (shared `peel`/`finish` walk; regenerated and checked, see above);
+* `tools/generate_type_validator_soundness.py` ->
+  `proofs/type_validator_soundness.bend` (emits `union_sound_at`; output
+  identical to the checked file);
+* `tools/generate_type_validator_complete.py` ->
+  `proofs/type_validator_complete.bend` (emits `union_complete_at`; output
+  identical to the checked file).
+
+The other edited proof modules (`packed_pack`, `packed_pack_acc`,
+`root_domain_witness`, `root_domain_broader`, `decode_canonical`,
+`validator_selectors`, `word_facts`) and `ROOT_DOMAIN.bend` are hand-written; no
+generator writes them.
+
+## Final state of this iteration
+
+`python3 automation/root_domain_acceptance.py` was run again after the last
+refactor (the reflexivity-lemma move) and exits 0:
+`bend PROOF.bend` "All terms check.", 51/51 runtime tests, 5440/5440 official
+SSZ cases, `bend END_TO_END.bend` "All terms check."
+(`build/root_domain_acceptance.final.log`).
+
+One statement in the frozen-named set changed, and it changed in the
+strengthening direction: `root_domain_strictly_broader` (and
+`Broader.strictly_broader`, `Witness.nest_not_serializable`,
+`Witness.size_fits_false`) now quantify over the nesting depth `d` with the
+premise `Nat.is_le(3n, d) == True{}` instead of fixing `d = 3`. Instantiating
+`d := 3n` with `deep := {==}` gives exactly the previous proposition, so nothing
+is weaker; an auditor should check that instantiation first. The 29 END_TO_END
+propositions are byte-for-byte unchanged and
+`automation/native_memory_acceptance.py` verifies that against
+`memory_bench/law-statements.json`.
+
+`PROOF_STATUS.md` was not edited in this iteration (it is outside the editable
+set); its timestamp predates this work and its "Current state" section is stale
+with respect to everything recorded above.

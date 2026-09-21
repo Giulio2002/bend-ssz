@@ -113,3 +113,27 @@ law none_some:
   Empty
 def none_some(v, e):
   false_true(Equal.cong(Maybe<&2, T.Value>, Bool, is_some_value, None{}, Some{v}, e))
+
+# Reflexivity of the actual Base word comparison. It lives here, next to the
+# other comparison reflection lemmas, because the type validator needs only
+# this fact: importing it from the decoder module pulled the whole decoder
+# (src/decode, src/ssz, decode_top) into the validator proofs and cost the
+# checker about 1.5 GB for one lemma.
+law word_compare_reflexive:
+  for +n: Nat
+  for +w: Word(n)
+  {Word.cmp(n, w, w) == EQ{} : Cmp}
+def word_compare_reflexive(n, w):
+  match n:
+    case 0n: {==}
+    case 1n+p:
+      match w:
+        case WCon{False{}, t}: Equal.cong(Cmp, Cmp, c => Word.cmp.fin(False{}, False{}, c), Word.cmp(p, t, t), EQ{}, word_compare_reflexive(p, t))
+        case WCon{True{}, t}: Equal.cong(Cmp, Cmp, c => Word.cmp.fin(True{}, True{}, c), Word.cmp(p, t, t), EQ{}, word_compare_reflexive(p, t))
+
+law word_equal_reflexive:
+  for +w: U32
+  {U32.is_eq(w, w) == True{} : Bool}
+def word_equal_reflexive(w):
+  match w:
+    case U32{bits}: Equal.cong(Cmp, Bool, c => Cmp.is_eq(c), Word.cmp(32n, bits, bits), EQ{}, word_compare_reflexive(32n, bits))

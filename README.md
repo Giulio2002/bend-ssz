@@ -1,4 +1,4 @@
-> **Optimization progress snapshot:** proof-memory and native decode-memory gates pass; official SSZ tests pass. Indexed-array migration and codec/hash speed targets remain incomplete. See [snapshot status and evidence](SNAPSHOT_STATUS.md).
+> **Development milestone:** final memory-repair conformance rerun passed; packed-runtime migration and native speed gates remain incomplete. See [snapshot evidence](SNAPSHOT_STATUS.md).
 
 # bend-ssz
 
@@ -35,8 +35,8 @@ current obligation table; historical notes below it are not the current status.
 > and `bend END_TO_END.bend` report "All terms check." with zero unsafe
 > annotations, and the frozen gate `automation/root_domain_acceptance.py`
 > (proofs + 51 runtime tests + all 5440 official SSZ cases + `END_TO_END.bend`)
-> exits 0 on this copy. Checking `PROOF.bend` costs 5.1 GB of physical
-> footprint and 50 s; the measurement method, the per-module numbers and the
+> exits 0 on this copy. Checking `PROOF.bend` costs 5.1-5.7 GB of physical
+> footprint (it varies between runs) and about 50 s; the measurement method, the per-module numbers and the
 > two normalization blow-ups that were repaired are recorded in
 > [WORK_LOG.md](WORK_LOG.md) (`PROOF_STATUS.md` is frozen for this iteration
 > and its "Current state" section predates these runs).

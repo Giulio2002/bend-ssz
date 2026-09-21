@@ -150,32 +150,13 @@ law public_accepted_serializes_exactly:
 def public_accepted_serializes_exactly(schema, input, value, accepted):
   accepted_serializes_exactly(schema, input, value, accepted)
 
-law word_compare_reflexive:
-  for +n: Nat
-  for +w: Word(n)
-  {Word.cmp(n, w, w) == EQ{} : Cmp}
-def word_compare_reflexive(n, w):
-  match n:
-    case 0n: {==}
-    case 1n+p:
-      match w:
-        case WCon{False{}, t}: Equal.cong(Cmp, Cmp, c => Word.cmp.fin(False{}, False{}, c), Word.cmp(p, t, t), EQ{}, word_compare_reflexive(p, t))
-        case WCon{True{}, t}: Equal.cong(Cmp, Cmp, c => Word.cmp.fin(True{}, True{}, c), Word.cmp(p, t, t), EQ{}, word_compare_reflexive(p, t))
-
-law word_equal_reflexive:
-  for +w: U32
-  {U32.is_eq(w, w) == True{} : Bool}
-def word_equal_reflexive(w):
-  match w:
-    case U32{bits}: Equal.cong(Cmp, Bool, c => Cmp.is_eq(c), Word.cmp(32n, bits, bits), EQ{}, word_compare_reflexive(32n, bits))
-
 law equality_reflexive:
   for +xs: +List<U32>
   {S.equal(xs, xs) == True{} : Bool}
 def equality_reflexive(xs):
   match xs:
     case Nil{}: {==}
-    case Con{h, t}: V.and_true(U32.is_eq(h, h), S.equal(t, t), word_equal_reflexive(h), equality_reflexive(t))
+    case Con{h, t}: V.and_true(U32.is_eq(h, h), S.equal(t, t), W.word_equal_reflexive(h), equality_reflexive(t))
 
 law actual_equality_reflexive:
   for +xs: +List<U32>

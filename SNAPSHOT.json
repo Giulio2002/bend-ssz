@@ -1,9 +1,11 @@
 {
-  "captured_at": "2026-09-20T23:37:38.104011+00:00",
+  "captured_at": "2026-09-21T00:54:55.450510+00:00",
   "kind": "unverified_development_snapshot",
   "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0002/workspace",
-  "milestone": "All 172 sequential proof-memory checks pass below 8 GB; native decode-memory gate also passes; speed targets incomplete",
+  "milestone": "Final post-refactor memory-repair acceptance: 5440 official cases and END_TO_END pass; generators repaired; full objective incomplete",
   "full_acceptance_passed": false,
   "benchmark_status": "fresh native-memory phase measurements; complete native speed acceptance missing",
-  "spectest_source_hash_mismatches": []
+  "spectest_source_hash_mismatches": [],
+  "final_spectest_source_hash_mismatches": [],
+  "final_spectest_source_hash_count": 150
 }
