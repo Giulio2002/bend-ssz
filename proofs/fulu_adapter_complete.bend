@@ -1,5 +1,5 @@
 import Base
-import ../types/fulu.bend as F
+import ../types/fulu_model.bend as F
 import ../types/schema.bend as T
 import ../spec/representation.bend as S
 import ./primitive_invariants.bend as V

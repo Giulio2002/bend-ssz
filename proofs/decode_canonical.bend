@@ -1,6 +1,6 @@
 import Base
 import ../src/primitives.bend as Primitive
-import ../src/ssz.bend as API
+import ../src/model.bend as API
 import ../src/schema.bend as Schema
 import ../src/packing.bend as Packing
 import ../src/lists.bend as Lists

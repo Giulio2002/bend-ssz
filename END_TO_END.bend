@@ -1,6 +1,6 @@
 import Base
 import ./types/schema.bend as T
-import ./src/ssz.bend as API
+import ./src/model.bend as API
 import ./src/schema.bend as Schema
 import ./src/decode.bend as Decoder
 import ./src/lists.bend as Lists
@@ -23,7 +23,7 @@ import ./proofs/decode_complete.bend as DecodeComplete
 import ./proofs/decode_canonical.bend as Canonical
 import ./proofs/root_public.bend as RootLaws
 import ./proofs/word_facts.bend as W
-import ./types/fulu.bend as Fulu
+import ./types/fulu_model.bend as Fulu
 import ./proofs/fulu_named.bend as Named
 import ./proofs/fulu_adapter_complete.bend as AdapterComplete
 import ./proofs/codec_shape.bend as CodecShape

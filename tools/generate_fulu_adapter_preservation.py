@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 source=(ROOT/'types/fulu.bend').read_text()
 dispatch=dict(re.findall(r'case Name_(\w+)\{\}: (\w+)\.to_value\(v\)', source[source.index('def Name.to_ssz('):source.index('def Name.from_ssz(')]))
-lines=['import Base','import ../types/fulu.bend as F','import ../types/schema.bend as T','import ./lists.bend as Lists','']
+lines=['import Base','import ../types/fulu_model.bend as F','import ../types/schema.bend as T','import ./lists.bend as Lists','']
 def items(vs):
  out='T.EmptyItems{}'
  for v in reversed(vs):out='T.Items{'+v+', '+out+'}'

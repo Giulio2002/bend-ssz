@@ -42,7 +42,7 @@ import ./types/fulu_transaction.bend as FuluTransaction
 
 # Composite APIs are checked for typing/termination here. Their full functional
 # refinement is still outstanding; these imports are not END_TO_END laws.
-import ./types/fulu.bend as FuluCompositeAPIs
+import ./types/fulu_model.bend as FuluCompositeAPIs
 import ./spec/layout.bend as LayoutSpecification
 import ./proofs/lists.bend as TailListLaws
 import ./proofs/layout.bend as LayoutLengthLaws

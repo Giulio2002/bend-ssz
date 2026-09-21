@@ -4083,3 +4083,62 @@ it is not used.
   outside the footprint cap and peaked at 7.01 GB of physical footprint. It
   completed in 9 s and was not a proof check, but it breached the cap
   discipline. Every later compile went through `benchmarks/checks/capped_build.py`.
+
+### All 5,440 official cases through the compact primary API (native)
+
+* Generic forms added to the compact runtime:
+  - progressive lists and bit lists are list and bit-list nodes with no limit
+    and merkle depth 255, the progressive marker; `src/merkle_fast.bend`
+    merkleizes them in 4^k-chunk segments whose roots are kept in scratch and
+    folded right to left, for byte ranges and for pushed element roots alike;
+  - progressive containers (`CPCont`) validate and read like containers, and
+    are rooted over a slot list (fields at active positions, `CNull` zero
+    chunks elsewhere), then mixed with the active mask (at most 31 positions,
+    refused explicitly beyond that; the official cases use at most 22);
+  - compatible unions (`CUnion`) have a selector-indexed option tree. The
+    scanner validates the value after the selector byte as the selected
+    option, and the root walker roots it as a one-element frame whose close
+    mixes in the selector.
+* `tools/generate_cschema_generic.py` compiles the 144 distinct ssz_generic
+  schemas described by the frozen `tools/test_schemas.py` into
+  `types/generic_cschema.bend` with a balanced index. Illegal types (the
+  structural rules of `spec/type_legality.bend`: empty vectors, bit vectors,
+  byte vectors, containers, bad active lists, bad selectors, duplicate names)
+  compile to a schema no input validates against. Union option compatibility
+  (`spec/compatibility.bend`) is not re-derived, and no official case needs it.
+* `tools/generate_generic_programs.py` derives `benchmarks/compact/g{dec,enc,root}.bend`
+  from the Fulu programs.
+* **Native results:** `benchmarks/checks/static_conformance.py` 295/295
+  (decode accepts, exact 32-byte root); `benchmarks/checks/generic_conformance.py`
+  **5,145/5,145** (valid: decode accepts, exact root from meta.yaml, byte-exact
+  re-encode; invalid: rejected by decode); `static_mutations.py` 0/1,180
+  disagreements. Evidence: `benchmarks/evidence/{static,generic}_conformance.json`,
+  `static_mutations.json`.
+* **JS (Bun) compatibility evidence**, labelled as such: the 51 runtime tests
+  pass (20,009 assertions, `benchmarks/evidence/runtime_tests.log`, peak
+  5.21 GB under `benchmarks/checks/capped_run.py`). They unit-test individual
+  modules, not the compact API.
+
+## Iteration 8: fresh native checks, model/primary split for proofs, proof roots
+
+* Fresh native correctness on the current code (clone-based encode, natural
+  buffer capacity): 295/295 static roots, 0/1,180 mutation disagreements,
+  5,145/5,145 generic cases, 49/49 field-access checks
+  (`benchmarks/evidence/*`).
+* The proofs now import `src/model.bend` and `types/fulu_model.bend`, the
+  list-based model API that the frozen laws are about. `src/ssz.bend`
+  re-exports the model definitions (aliases of `Model.*`) next to the compact
+  API. `types/fulu.bend` is generated together with `types/fulu_model.bend` and
+  is the same text plus the compact entries. The law texts are unchanged; only
+  import paths changed. The first ROOT_DOMAIN check in this iteration was
+  capped at 6.85 GB, and removing the compact runtime from the proofs' imports
+  was the first repair.
+* The depth-3 corollary law added in iteration 7 was the actual cause: with it,
+  ROOT_DOMAIN was capped at 6.89 GB even with the split, and without it the
+  check passes at 5.03 GB. It was removed; docs/LAW_API_MAP.md documents the
+  d := 3 instantiation instead.
+* Proof roots, one checker at a time under `benchmarks/checks/capped_run.py`
+  (6.8 GB cap), full logs in `benchmarks/evidence/check_*.log`:
+  ROOT_DOMAIN exit 0 "All terms check." 5.03 GB 39 s; END_TO_END exit 0
+  5.00 GB 38 s; PROOF exit 0 5.28 GB 42 s. No `unsafe` in any root. These cover
+  the list-based model API, not the compact runtime.

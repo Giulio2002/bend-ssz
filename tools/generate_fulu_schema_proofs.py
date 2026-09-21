@@ -35,7 +35,7 @@ def emit(schema):
  return name+'()'
 for name,schema in frozen.items():lines.append('def '+name+'() -> T.Schema: '+emit(schema))
 (ROOT/'spec/fulu_schemas.bend').write_text('\n'.join(lines)+'\n')
-proof=['import Base','import ../types/fulu.bend as F','import ../spec/fulu_schemas.bend as Schemas','import ../spec/codec.bend as S','import ../types/schema.bend as T','import ../src/schema.bend as Actual','import ../proofs/codec_composition.bend as Codec','']
+proof=['import Base','import ../types/fulu_model.bend as F','import ../spec/fulu_schemas.bend as Schemas','import ../spec/codec.bend as S','import ../types/schema.bend as T','import ../src/schema.bend as Actual','import ../proofs/codec_composition.bend as Codec','']
 for name,schema in frozen.items():
  declaration=next(line for line in source.splitlines() if line.startswith('def '+name+'.to_ssz(v: '))
  typ=declaration.split('.to_ssz(v: ')[1].split(') -> T.Value: ')[0]

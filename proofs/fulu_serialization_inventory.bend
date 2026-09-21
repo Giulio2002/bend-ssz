@@ -1,7 +1,7 @@
 import Base
-import ../types/fulu.bend as F
+import ../types/fulu_model.bend as F
 import ../types/schema.bend as T
-import ../src/ssz.bend as API
+import ../src/model.bend as API
 import ../spec/type_legality.bend as Legal
 import ../spec/codec.bend as S
 import ./fulu_legality.bend as Named

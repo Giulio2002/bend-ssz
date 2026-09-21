@@ -1,7 +1,7 @@
 import Base
 import ./types/schema.bend as T
-import ./types/fulu.bend as Fulu
-import ./src/ssz.bend as API
+import ./types/fulu_model.bend as Fulu
+import ./src/model.bend as API
 import ./src/schema.bend as Schema
 import ./spec/type_legality.bend as Legal
 import ./spec/root_relation.bend as Roots
@@ -228,3 +228,4 @@ law root_domain_strictly_broader:
   (@+xs: +List<U32> -> {Bytes.byte_scope(256n, xs) == True{} : Bool} -> Broader.broader_facts(Witness.nest_schema(d, r), Witness.nest_value(d, r, xs))) &
   Exists(T.Schema, schema => Exists(T.Value, value => Broader.broader_facts(schema, value)))
 def root_domain_strictly_broader(d, r, deep): Broader.strictly_broader(d, r, deep)
+

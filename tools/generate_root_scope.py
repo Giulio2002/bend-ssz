@@ -3,7 +3,7 @@ from pathlib import Path
 root=Path(__file__).resolve().parents[1]
 p=root/'proofs/root_scope.bend'
 s=p.read_text().split('# Generated structural public scope composition.')[0]
-extra='''import ../src/ssz.bend as API
+extra='''import ../src/model.bend as API
 import ../src/schema.bend as Schema
 import ../src/codec.bend as Codec
 import ../src/lists.bend as Lists
@@ -116,5 +116,5 @@ law public_root_length:
 def public_root_length(schema, value):
   Tree.result_length(API.hash_tree_root(schema, value), public_root_scope(schema, value))
 '''
-if 'import ../src/ssz.bend as API' not in s:s=s.replace('import Base\n','import Base\nimport ../src/ssz.bend as API\n',1)
+if 'import ../src/model.bend as API' not in s:s=s.replace('import Base\n','import Base\nimport ../src/model.bend as API\n',1)
 p.write_text(s)

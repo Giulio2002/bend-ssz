@@ -1,6 +1,6 @@
 import Base
 import ../types/schema.bend as T
-import ../src/ssz.bend as API
+import ../src/model.bend as API
 import ../src/schema.bend as Schema
 import ../spec/type_legality.bend as Legal
 import ../spec/root_relation.bend as Roots

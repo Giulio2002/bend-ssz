@@ -58,8 +58,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
 from generate_bench_schema import Schemas, fixed_size  # noqa: E402
 
-import snappy  # noqa: E402
-from ruamel.yaml import YAML  # noqa: E402
+# The operator's validation interpreter has no python-snappy or YAML library, so
+# fixtures are read with the checked pure-Python block decoder
+# (benchmarks/snappy_block.py; benchmarks/checks/snappy_check.py compares it with
+# python-snappy on all 5,440 fixtures) and the one-line roots.yaml by pattern.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import snappy_block as snappy  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 BEND = '/Users/monkeair/.bend/bin/bend'
@@ -72,7 +76,6 @@ TARGET_SECONDS = 0.25
 MAX_OPS = 5_000_000
 CONTRACT = json.loads((ROOT / 'automation/performance_contract.json').read_text())
 OPERATIONS = ['deserialize', 'serialize', 'hash_tree_root']
-yaml = YAML(typ='safe')
 
 
 def sh(command, cwd=ROOT, env=ENV):
@@ -160,7 +163,7 @@ def fixture_workloads(name):
     for case in cases:
         directory = ROOT / 'fixtures' / case
         data = snappy.decompress((directory / 'serialized.ssz_snappy').read_bytes())
-        root = yaml.load((directory / 'roots.yaml').read_text())['root'].removeprefix('0x')
+        root = re.search(r"^root: '0x([0-9a-f]{64})'\s*$", (directory / 'roots.yaml').read_text(), re.M).group(1)
         prepared.append({'source': 'official fixture ' + case, 'bytes': data, 'root': root})
     prepared.sort(key=lambda w: len(w['bytes']))
     if not prepared:

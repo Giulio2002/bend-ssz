@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 names=list(json.loads((ROOT/'schemas/fulu_mainnet.json').read_text()))
-lines=['import Base','import ../types/fulu.bend as F','import ../types/schema.bend as T','import ../src/ssz.bend as API','import ../spec/type_legality.bend as Legal','import ../spec/codec.bend as S','import ./fulu_legality.bend as Named','import ./codec_composition.bend as Codec','','# Closed proof index over every frozen public name, including untested types.','type Name is Data:']
+lines=['import Base','import ../types/fulu_model.bend as F','import ../types/schema.bend as T','import ../src/model.bend as API','import ../spec/type_legality.bend as Legal','import ../spec/codec.bend as S','import ./fulu_legality.bend as Named','import ./codec_composition.bend as Codec','','# Closed proof index over every frozen public name, including untested types.','type Name is Data:']
 lines+=['  '+n+'{}' for n in names]
 lines+=['','def schema(name: Name) -> T.Schema:','  match name:']+['    case '+n+'{}: F.'+n+'.schema()' for n in names]
 lines+=['','law type_legal:','  for +name: Name','  Legal.type_legal(schema(name))','def type_legal(name):','  match name:']+['    case '+n+'{}: Named.'+n+'_normative_legal()' for n in names]

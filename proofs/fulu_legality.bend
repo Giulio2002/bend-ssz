@@ -1,5 +1,5 @@
 import Base
-import ../types/fulu.bend as F
+import ../types/fulu_model.bend as F
 import ../spec/type_legality.bend as S
 import ../src/schema.bend as Actual
 

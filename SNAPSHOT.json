@@ -1,8 +1,8 @@
 {
-  "captured_at": "2026-09-21T05:22:04.367157+00:00",
+  "captured_at": "2026-09-21T06:03:48.712081+00:00",
   "kind": "unverified_development_snapshot",
-  "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0007/workspace",
-  "milestone": "Compact native generic5145/static295 case coverage with exact roots and roundtrips; universal proofs/performance gates incomplete",
+  "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0008/workspace",
+  "milestone": "Execution/memory gates pass,5440spectests,15native samples,max131072byte decode overhead; compact universal proofs absent",
   "full_acceptance_passed": false,
   "benchmark_status": "Memory harness only; full timing report incomplete; compare representations and timer resolution explicitly",
   "spectest_source_hash_mismatches": [
@@ -18,5 +18,18 @@
     "independent_static_roundtrip_passed": 295,
     "frozen_final_acceptance_claimed": false
   },
-  "benchmark_provenance": "Precompile capture; compile/edit guard and explicit end-of-run mismatch rejection. Prior partial timings historical only."
+  "benchmark_provenance": "Precompile capture; compile/edit guard and explicit end-of-run mismatch rejection. Prior partial timings historical only.",
+  "execution_gates": {
+    "exit": 0,
+    "spectests_passed": 5440,
+    "spectests_failed": 0,
+    "recorded_spectest_source_count": 170,
+    "source_mismatches_at_review": [],
+    "runtime_tests": 51,
+    "runtime_assertions": 20009,
+    "wrapper_peak_gb_rounded": 6.5,
+    "native_samples": 15,
+    "max_decode_overhead_bytes": 131072,
+    "compact_universal_proofs": false
+  }
 }

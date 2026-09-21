@@ -16,7 +16,7 @@ def legal(s):
  if k=='list':return pair('{==}',legal(s['element']))
  if k=='container':return pair('{==}',pair(pair('{==}',pair('{==}','{==}')),forest(s['fields'])))
  raise ValueError(k)
-lines=['import Base','import ../types/fulu.bend as F','import ../spec/type_legality.bend as S','import ../src/schema.bend as Actual','']
+lines=['import Base','import ../types/fulu_model.bend as F','import ../spec/type_legality.bend as S','import ../src/schema.bend as Actual','']
 for name,s in frozen.items():
  lines += [f'''law {name}_normative_legal:
   S.type_legal(F.{name}.schema())

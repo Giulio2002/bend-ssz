@@ -213,8 +213,32 @@ def finish(aligned: Bool, +len: U32, pair: B.Buf & Array<U32>) -> B.Buf & B.Buf:
     case True{}: close(len, pair)
     case False{}: tail_word(len, pair)
 
-# Encode a validated view: the input buffer back, and the encoding.
-def encode(+v: View, b: B.Buf) -> B.Buf & B.Buf:
+def encode_window(+v: View, b: B.Buf) -> B.Buf & B.Buf:
   finish(U32.is_eq((view_len(v) .&. 3 : U32), 0), view_len(v),
     copy_go(U32.to_nat(U32.shrn((view_len(v) + 3 : U32), 2n)), 0, view_off(v),
       (b, Array.new(U32, B.capacity(view_len(v)), 0))))
+
+def cloned(+n: U32, pair: Array<U32> & Array<U32>) -> B.Buf & B.Buf:
+  (a, c) = pair
+  (B.Buf{a, n}, B.Buf{c, n})
+
+# A view of the whole buffer is encoded by cloning its word array, which the
+# native runtime does as one block copy (`blk_copy` in the emitted C). The
+# bytes past the logical end are the input's zero padding and its Merkle
+# scratch; they are not part of the value, and a later root rewrites the
+# scratch before reading it.
+def encode_whole(b: B.Buf) -> B.Buf & B.Buf:
+  match b:
+    case B.Buf{ws, +n}: cloned(n, Array.clone(U32, ws))
+
+def encode_pick(whole: Bool, +v: View, b: B.Buf) -> B.Buf & B.Buf:
+  match whole:
+    case True{}: encode_whole(b)
+    case False{}: encode_window(v, b)
+
+def encode_sized(+v: View, pair: B.Buf & U32) -> B.Buf & B.Buf:
+  (b, +n) = pair
+  encode_pick(Bool.and(U32.is_eq(view_off(v), 0), U32.is_eq(view_len(v), n)), v, b)
+
+# Encode a validated view: the input buffer back, and the encoding.
+def encode(+v: View, b: B.Buf) -> B.Buf & B.Buf: encode_sized(v, B.size(b))

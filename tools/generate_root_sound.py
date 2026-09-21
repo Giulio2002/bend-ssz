@@ -50,7 +50,7 @@ import ../src/lists.bend as Lists
 import ../src/byte_root.bend as IByteRoot
 import ../src/byte_list.bend as IByteList
 import ../src/bit_root.bend as IBits
-import ../src/ssz.bend as API
+import ../src/model.bend as API
 import ../spec/root_relation.bend as R
 import ../spec/codec.bend as SC
 import ../spec/schema.bend as SS

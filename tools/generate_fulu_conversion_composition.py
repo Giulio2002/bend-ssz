@@ -2,7 +2,7 @@
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 s=(ROOT/'types/fulu.bend').read_text()
-lines=['import Base','import ../types/fulu.bend as F','import ../types/schema.bend as T','import ../spec/representation.bend as S','import ../spec/codec.bend as Encoding','import ../proofs/representation_erasure.bend as Erasure','import ../proofs/codec_shape.bend as Shape','import ../proofs/fulu_adapter_complete.bend as Adapter','']
+lines=['import Base','import ../types/fulu_model.bend as F','import ../types/schema.bend as T','import ../spec/representation.bend as S','import ../spec/codec.bend as Encoding','import ../proofs/representation_erasure.bend as Erasure','import ../proofs/codec_shape.bend as Shape','import ../proofs/fulu_adapter_complete.bend as Adapter','']
 for line in s.splitlines():
  if '.to_ssz(v: ' not in line:continue
  name=line.split()[1].split('.')[0];typ=line.split('.to_ssz(v: ')[1].split(') -> T.Value: ')[0]

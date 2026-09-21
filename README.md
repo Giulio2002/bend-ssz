@@ -1,4 +1,4 @@
-> **Unfinished development snapshot:** compact native runners cover all 5440 listed cases; universal compact-runtime proofs and full speed acceptance remain incomplete. See [snapshot status](SNAPSHOT_STATUS.md).
+> **Unfinished development snapshot:** frozen execution/memory gates pass, but compact-runtime universal proofs and final speed acceptance remain incomplete. See [snapshot status](SNAPSHOT_STATUS.md).
 
 # bend-ssz
 
@@ -30,30 +30,34 @@ Proof roots: [END_TO_END.bend](END_TO_END.bend), [PROOF.bend](PROOF.bend),
 [HASH_PROOF.bend](HASH_PROOF.bend). See [PROOF_STATUS.md](PROOF_STATUS.md) for the
 current obligation table; historical notes below it are not the current status.
 
-> **Status of this working copy (2026-09-21).** The primary runtime is now the
+> **Status of this working copy (2026-09-21).** The primary runtime is the
 > **compact path**: one packed `Array<U32>` input buffer, an in-place validating
 > decode whose result is a zero-copy view, field/element access on views,
-> encode to a fresh packed buffer, and streaming `hash_tree_root` over the same
-> buffer through the pinned BendHub SHA-256 package
-> (`0xda83506fb9f059ead7afcfa2f498df5f/sha256.bend`). See "Public API" below.
-> Checked so far: all 295 official `ssz_static` cases (59 Fulu types) produce
-> the exact 32-byte root through it, 1,180 malformed variants agree with an
-> independent validator, all five BeaconState fixtures round-trip byte for
-> byte, and 49 field-access values match an independent reader. The native
-> BeaconState decode overhead is at most 180 KB against the 32,000,000-byte
-> limit ([MEMORY_REVIEW.md](MEMORY_REVIEW.md)).
+> encode to a fresh packed buffer, and streaming `hash_tree_root` whose
+> intermediate digests live in the buffer's own packed scratch. It hashes
+> through the pinned BendHub SHA-256 package
+> (`0xda83506fb9f059ead7afcfa2f498df5f/sha256.bend`). See "Public API" below
+> and [docs/FASTSSZ_EQUIVALENCE.md](docs/FASTSSZ_EQUIVALENCE.md).
 >
-> **Not yet done**, and not claimed: no proof covers the compact modules
-> (`src/buffer`, `cschema`, `cscan`, `merkle_fast`, `croot`, `digest`, `api`,
-> `access`), nor the packed-input → FIPS SHA bridge. The `ssz_generic` half of
-> the official corpus (progressive lists and containers, compatible unions and
-> the generic test schemas) does not yet run through the compact API. The
-> native performance contract is not established (BENCHMARKS.md). The
-> "Proven properties" table above, the proof roots and the 5,440-case evidence
-> below are about the **legacy list-based API** (`src/ssz`, `src/packed`,
-> `src/cvalue`, …). That API is kept only because those proofs are about it;
-> the operator's instruction is to remove it from the production surface once
-> the compact path carries the proofs.
+> Native evidence (Bend-generated C): **all 5,440 official SSZ cases** pass
+> through the compact API. That is 295 `ssz_static` cases (decode accepts,
+> exact 32-byte root) and 5,145 `ssz_generic` cases: valid ones decode, give
+> the exact root and re-encode byte for byte, invalid ones are rejected.
+> Progressive lists, bit lists and containers and compatible unions are
+> included. 1,180 malformed variants agree with an independent validator. The
+> BeaconState decode overhead is at most a few hundred KB against the
+> 32,000,000-byte limit ([MEMORY_REVIEW.md](MEMORY_REVIEW.md)). JS/Bun
+> compatibility evidence: the 51 runtime tests pass (20,009 assertions).
+>
+> **Not yet done**, and not claimed: no checked proof covers the compact
+> modules (`src/buffer`, `cschema`, `cscan`, `access`, `croot`,
+> `merkle_fast`, `digest`, `api`), nor the packed-input → FIPS SHA bridge; the
+> plan is [docs/COMPACT_PROOF_PLAN.md](docs/COMPACT_PROOF_PLAN.md). The
+> "Proven properties" table above, the proof roots and the historical evidence
+> below are about the **legacy list-based model API** (`src/ssz`
+> serialize/deserialize/hash_tree_root, `src/packed`, `src/cvalue`, …), which
+> is kept because those proofs are about it. The native performance contract
+> is reported in BENCHMARKS.md.
 
 ## Evidence
 
@@ -118,20 +122,29 @@ buffer.
 
 | call | result |
 |---|---|
-| `API.run(0, schema, size, buf)` | decode: `Out{ok, _}`; `ok` says whether `[0, size)` is a canonical encoding of `schema`, and the validated window is the decoded value |
-| `API.run(1, schema, size, buf)` | `hash_tree_root` of a validated window: `Out{True, digest}` |
-| `A.field(schema, i, view, buf)`, `A.field_schema(schema, i)` | view and schema of container field `i` |
-| `A.count(schema, view, buf)`, `A.elem(schema, i, view, buf)`, `A.elem_schema(schema)` | element count and element `i` of a vector or list |
-| `A.uint64`, `A.boolean`, `A.byte` | scalars read in place |
-| `A.encode(view, buf)` | the value's encoding as a fresh packed `Buf` |
+| `Ssz.decode(schema, size, buf)` / `Ssz.decode_in(schema, off, len, buf)` | `Some(view)` if the window is a canonical encoding of `schema`, else `None` (`API.validate_in` underneath) |
+| `Ssz.root(schema, view, buf)` | `hash_tree_root` of a decoded view (`API.root_in`); the buffer's scratch holds every intermediate digest and the zero-subtree table, filled once per buffer |
+| `Ssz.encode(view, buf)` | the value's encoding as a fresh packed `Buf` |
+| `Ssz.field / field_schema / count / elem / elem_schema` | views and schemas of fields and elements, without copying |
+| `Ssz.uint64`, `Ssz.boolean`, `Ssz.byte` | scalars read in place |
+| `Fulu.X.compact()`, `X.decode(size, buf)`, `X.encode(view, buf)`, `X.root(view, buf)` | the same for each of the 109 Fulu names (`types/fulu.bend`) |
 
-Rejection is `ok = False`. Process crashes, memory exhaustion and timeouts are
-not rejection. Native drivers: `native_bench/driver.bend` (memory
-harness) and `benchmarks/compact/{dec,enc,root}.bend` (performance runner).
+Schemas are compact `CS` trees: `types/fulu_cschema.bend` for the 109 Fulu
+names (generated from `spec/fulu_schemas.bend` by `tools/generate_cschema.py`)
+and `types/generic_cschema.bend` for the official generic test schemas
+(generated from `tools/test_schemas.py` by
+`tools/generate_cschema_generic.py`), each with a balanced by-number index.
+`None` is semantic rejection; crashes, memory exhaustion and timeouts are not.
 
-The legacy list-based calls (`src/ssz.{serialize,deserialize,hash_tree_root}`,
-`types/fulu.*`) still exist for the checked proofs; they are not the primary
-API.
+Native programs: `native_bench/driver.bend` (memory harness),
+`benchmarks/compact/{dec,enc,root}.bend` (performance runner, Fulu types) and
+`g{dec,enc,root}.bend` (generic conformance). The conformance checks are
+`benchmarks/checks/{static,generic}_conformance.py` and
+`static_mutations.py`.
+
+The legacy list-based calls (`Ssz.serialize/deserialize/hash_tree_root` over
+byte lists and `T.Value`, and `types/fulu.*` typed values) still exist for the
+checked proofs; they are the model API, not the primary one.
 
 This repository covers SSZ only, not consensus transitions, BLS/KZG verification,
 production resource safety, or compiler correctness. Historical development notes

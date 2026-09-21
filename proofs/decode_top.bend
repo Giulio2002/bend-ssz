@@ -4,7 +4,7 @@ import ../src/packed.bend as P
 import ../src/cvalue.bend as C
 import ../src/decode.bend as D
 import ../src/schema.bend as IS
-import ../src/ssz.bend as API
+import ../src/model.bend as API
 import ../src/codec.bend as Codec
 import ../spec/codec.bend as SC
 import ../spec/schema.bend as SS

@@ -1,1 +1,8 @@
 RUN: /Users/monkeair/.bun/bin/bun test --timeout 600000 --preload /Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0007/workspace/tools/bend_loader.ts ./tests/sha256.test.ts ./tests/new/bit_root.test.ts ./tests/new/bitfields.test.ts ./tests/new/byte_list.test.ts ./tests/new/bytes.test.ts ./tests/new/compatibility_spec.test.ts ./tests/new/composite.test.ts ./tests/new/fulu_inventory.test.ts ./tests/new/fulu_spec_inventory.test.ts ./tests/new/layout.test.ts ./tests/new/limits_byte_root.test.ts ./tests/new/mixing.test.ts ./tests/new/nat_bytes.test.ts ./tests/new/packing_tree.test.ts ./tests/new/primitives.test.ts
+bun test v1.4.2 (744846f84)
+
+ 51 pass
+ 0 fail
+ 20009 expect() calls
+Ran 51 tests across 15 files. [115.79s]
+runtime tests: 51/51 passed, 0 failed, 0 errors, 20009 assertions, 15/15 files (baseline 0011 (Bend 2.0.5, historical): 51 tests / 20009 assertions)

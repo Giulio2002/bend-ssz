@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 source=(ROOT/'types/fulu.bend').read_text()
 dispatch=dict(re.findall(r'case Name_(\w+)\{\}: (\w+)\.to_value\(v\)', source[source.index('def Name.to_ssz('):source.index('def Name.from_ssz(')]))
-lines=['import Base','import ../types/fulu.bend as F','import ../types/schema.bend as T','import ./lists.bend as L','']
+lines=['import Base','import ../types/fulu_model.bend as F','import ../types/schema.bend as T','import ./lists.bend as L','']
 for match in re.finditer(r'^def (\w+)\(\) -> Data: (.+)$',source,re.M):
  name,typ=match.groups();declaration=re.search(r'^def '+name+r'\.to_value\(.*$',source,re.M)
  if not declaration:continue

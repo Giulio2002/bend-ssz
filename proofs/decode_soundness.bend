@@ -1,6 +1,6 @@
 import Base
 import ../types/schema.bend as T
-import ../src/ssz.bend as API
+import ../src/model.bend as API
 import ../spec/codec.bend as Encoding
 import ../spec/decoding_relation.bend as S
 import ./codec_composition.bend as Codec

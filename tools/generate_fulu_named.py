@@ -9,7 +9,7 @@ block = src[src.index('def Name.to_ssz('):src.index('def Name.from_ssz(')]
 pairs = re.findall(r'case Name_(\w+)\{\}: (\w+)\.to_value\(v\)', block)
 assert len(pairs) == 109, len(pairs)
 out = ['''import Base
-import ../types/fulu.bend as F
+import ../types/fulu_model.bend as F
 import ../types/schema.bend as T
 import ../spec/type_legality.bend as Legal
 import ../spec/representation.bend as Shape

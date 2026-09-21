@@ -145,10 +145,32 @@ checks exactly that, and no row above changes a character of any proposition.
 `serializable_root_compatibility`, `root_domain_strictly_broader`.
 
 All of these are stated over `T.Schema`, `T.Value`, the relational root
-semantics and 32-byte outputs. None mentions a storage representation, so all
-stay byte-for-byte; the only work is re-deriving bodies that go through the
-decoder, using `root_bridge`. The broader-domain witness
-(`root_domain_strictly_broader`) is a closed term and is unaffected.
+semantics and 32-byte outputs. None mentions a storage representation. Twelve
+are byte-for-byte as merged; the only work is re-deriving bodies that go
+through the decoder, using `root_bridge`.
+
+**`root_domain_strictly_broader` changed, as a strengthening.** As merged
+from the root-domain worker (`ROOT_DOMAIN.bend` lines 222-225 there) it fixed
+the witness depth at 3:
+
+```
+law root_domain_strictly_broader:
+  for +r: Nat
+  (@+xs: ... -> Broader.broader_facts(Witness.nest_schema(3n, r), Witness.nest_value(3n, r, xs))) &
+  Exists(T.Schema, schema => Exists(T.Value, value => Broader.broader_facts(schema, value)))
+```
+
+It now quantifies over every depth `d` with premise `Nat.is_le(3n, d) == True`.
+Instantiating `d := 3` discharges the premise by computation (`{==}`) and
+gives the old statement exactly, so the generalised law is a strengthening.
+That instantiation is not added as a separate checked law, for a measured
+reason: a corollary `root_domain_strictly_broader_depth3(r) =
+root_domain_strictly_broader(3n, r, {==})` made the checker normalize the
+witness at the literal depth - the blow-up the generalisation was introduced to
+avoid - and `ROOT_DOMAIN.bend` went from 5.03 GB to over the 6.8 GB cap in
+two attempts (benchmarks/evidence/check_ROOT_DOMAIN.log records the passing
+check without it). The frozen gate `automation/root_domain_acceptance.py`
+requires the law by name, which the generalised law satisfies.
 
 ## 4. Public API surface
 

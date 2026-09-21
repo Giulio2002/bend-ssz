@@ -1,3 +1,19 @@
+## Latest: frozen execution gates and fresh compact native memory pass
+
+The native_memory_acceptance command exits0 after PROOF,51runtime tests with
+20009assertions,5440/5440JS/Bend spectests,END_TO_END/ROOT_DOMAIN and fresh
+native memory sampling. The wrapper peak is6.50GB. All15Bend memory samples
+verify; maximum decode overhead131072bytes. All170source hashes recorded by
+the spectest report matched the exported source when reviewed. The report is
+for the retained JS/model path; compact native finite coverage is separately
+recorded in earlier evidence. Native memory checks use the compact path.
+
+These gates explicitly require semantic audit. docs/COMPACT_PROOF_PLAN.md
+states that NO checked proof yet covers the compact runtime modules. Model
+proof preservation, finite conformance and memory results must not be described
+as universal compact correctness. Full native timing acceptance is unfinished.
+Raw gate, spectest and memory evidence: snapshot-evidence/acceptance-20260921-0803.
+
 ## Benchmark provenance repair
 
 The runner now hashes source after generation and before compilation, writes

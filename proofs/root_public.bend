@@ -1,6 +1,6 @@
 import Base
 import ../types/schema.bend as T
-import ../src/ssz.bend as API
+import ../src/model.bend as API
 import ../src/root.bend as IR
 import ../src/codec.bend as IC
 import ../src/schema.bend as IS

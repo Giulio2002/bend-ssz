@@ -138,8 +138,8 @@ def capacity(+n: U32) -> Nat:
   capacity_go(32n, U32.shrn((n + 3 : U32), 2n), 0n)
 
 # ---------------------------------------------------------------------------
-# Merkle scratch. A buffer that will be hashed carries 1024 digest slots of
-# eight words right after its data, at word (n + 3) / 4: the level stack of the
+# Merkle scratch. A buffer being hashed carries 1024 digest slots of eight
+# words right after its data, at word (n + 3) / 4: the level stack of the
 # streaming merkleizer (64-slot segments, one per nesting level) and, in slots
 # 960..1023, the zero-subtree roots. So the only mutable state of a hash is the
 # caller's own packed array: no second structure, no sharing, O(1) word access.
@@ -244,15 +244,18 @@ def with_scratch(b: Buf) -> Buf:
     case Buf{ws, +n}: grow_sized(n, Array.size(U32, ws))
 
 def of_list(+n: U32, xs: +List<U32>) -> Buf:
-  Buf{fill_go(xs, Array.new(U32, capacity_hashable(n), 0), 0), n}
+  Buf{fill_go(xs, Array.new(U32, capacity(n), 0), 0), n}
 
 def empty() -> Buf: Buf{Array.new(U32, 0n, 0), 0}
 
 # Allocate a buffer of `n` bytes with all words zero; pieces are then written
 # in with `fill_at`, so a large input never exists as a byte list in full.
-# Input buffers reserve the Merkle scratch up front, since they are what gets
-# hashed.
-def alloc(+n: U32) -> Buf: Buf{Array.new(U32, capacity_hashable(n), 0), n}
+# Input buffers get their natural power-of-two capacity. When its slack holds
+# the Merkle scratch (a 2.74 MB BeaconState sits in a 4 MiB block) hashing
+# needs nothing more; a small buffer is grown once, by `with_scratch`, the
+# first time it is hashed, and the grown buffer is what the caller gets back.
+# Reserving the scratch up front made every small encode copy 32 KiB.
+def alloc(+n: U32) -> Buf: Buf{Array.new(U32, capacity(n), 0), n}
 
 def fill_at(b: Buf, +byte_off: U32, xs: +List<U32>) -> Buf:
   match b:

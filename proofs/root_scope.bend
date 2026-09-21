@@ -1,6 +1,6 @@
 import Base
 import ./root_domain_steps.bend as Steps
-import ../src/ssz.bend as API
+import ../src/model.bend as API
 import ../src/schema.bend as Schema
 import ../src/codec.bend as Codec
 import ../src/lists.bend as Lists
