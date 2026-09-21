@@ -1,3 +1,13 @@
+## Latest: successful memory gate after compiler heap tuning
+
+Full native_memory_acceptance exits 0 in 2,181 seconds, gate peak 5.83 GB. Retained runtime tests: 51/51, 20,009 assertions; retained recursive/model spectests: 5,440/5,440; retained proof entries check. All 170 spectest source hashes match this export.
+
+Native compact BeaconState memory checks: 15/15 verified samples; worst decode overhead 409,600 bytes, below 32,000,000. Native executable compilation succeeded first attempt at 2.86 GB peak; C emission first attempt at 3.26 GB. Compiler-only BUN_JSC_forceRAMSize=3000000000 is recorded; compiler binary and compile cap are unchanged. Archived generated C hashes to 4f4302b5a87adbe1cb832fdbcae36e4e693ef60617e28ff1f2df67be935818eb. The measured native programs do not receive this compiler heap hint.
+
+Compact-runtime universal proofs are still unfinished. The retained model proofs and spectests do not establish those bridges. Native decode returns a validated packed view rather than materializing a Go-style object graph; memory differences must be interpreted with that semantic distinction. The coarse per-process timing values in the memory harness are not speed acceptance. A fresh complete 978-row performance report is still required; earlier 975/978 results are historical after runtime changes.
+
+Raw evidence: snapshot-evidence/acceptance-20260921-1214. Prior failed runs remain in operator/worker logs; the compiler interruption was an operator mistake, subsequently restored to the exact pinned toolchain, not a code regression.
+
 ## Latest: independent benchmark calibration
 
 Fixed the timing harness to calibrate Bend and Go independently, recording

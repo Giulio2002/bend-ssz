@@ -150,6 +150,16 @@ def plain(node):
     return False
 
 
+def shallow(node):
+    """Validity depends on the length alone (src/cschema.bend `shallow`): a
+    byte list, or a list of plain fixed-size elements."""
+    if node[0] == 'ByteList':
+        return True
+    if node[0] == 'ListOf':
+        return fixed_size(node[1]) is not None and plain(node[1])
+    return False
+
+
 def header_size(node):
     size = fixed_size(node)
     return 4 if size is None else size
@@ -260,10 +270,19 @@ def emit(node, top=False):
         total = fixed_size(node)
         part = sum(header_size(f) for f in members)
         checks = check_fields(members)
-        return 'S.CCont{%s, %d, %d, %d, %s, %d, %s, %s, %d}' % (
+        # Simple: a variable container whose checks are all length-only lists
+        # (tag 15), or a fixed one whose checks are all single bytes - booleans
+        # and partial-byte bit vectors (tag 16).
+        if total is None:
+            simple = all(fixed_size(n) is None and shallow(n) for n, _ in checks)
+        else:
+            simple = len(checks) > 0 and all(n[0] == 'Boolean' or (n[0] == 'BitVector' and n[1] % 8)
+                                             for n, _ in checks)
+        return 'S.CCont{%s, %d, %d, %d, %s, %d, %s, %s, %d, %s}' % (
             emit_fields(members), len(members), part, total if total is not None else 0,
             'True{}' if total is not None else 'False{}', depth_of(max(len(members), 1)),
-            'True{}' if plain(node) else 'False{}', emit_tree(checks), len(checks))
+            'True{}' if plain(node) else 'False{}', emit_tree(checks), len(checks),
+            'True{}' if simple else 'False{}')
     raise SystemExit('cannot emit ' + kind)
 
 

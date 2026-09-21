@@ -61,13 +61,13 @@ def leaf_hsize(f: S.CS) -> U32:
 
 def cont_fields(s: S.CS) -> S.CS:
   match s:
-    case S.CCont{+fields, cnt, fp, size, fixed, depth, plain, checks, nchecks}: fields
+    case S.CCont{+fields, cnt, fp, size, fixed, depth, plain, checks, nchecks, simple}: fields
     case S.CPCont{+fields, cnt, fp, size, fixed, plain, checks, nchecks, slots, nslots, active}: fields
     case _: S.CFNone{}
 
 def cont_count(s: S.CS) -> U32:
   match s:
-    case S.CCont{fields, +cnt, fp, size, fixed, depth, plain, checks, nchecks}: cnt
+    case S.CCont{fields, +cnt, fp, size, fixed, depth, plain, checks, nchecks, simple}: cnt
     case S.CPCont{fields, +cnt, fp, size, fixed, plain, checks, nchecks, slots, nslots, active}: cnt
     case _: 0
 
@@ -128,7 +128,7 @@ def count(+s: S.CS, +v: View, b: B.Buf) -> B.Buf & U32:
     case S.CVecVar{elem, +n, depth}: (b, n)
     case S.CList{elem, lim, big, +stride, depth, basic, plain}: (b, U32.div(view_len(v), stride))
     case S.CListVar{elem, lim, big, depth}: first_count(view_len(v), B.read32(b, view_off(v)))
-    case S.CCont{fields, +cnt, fp, size, fixed, depth, plain, checks, nchecks}: (b, cnt)
+    case S.CCont{fields, +cnt, fp, size, fixed, depth, plain, checks, nchecks, simple}: (b, cnt)
     case S.CPCont{fields, +cnt, fp, size, fixed, plain, checks, nchecks, slots, nslots, active}: (b, cnt)
     case _: (b, 0)
 

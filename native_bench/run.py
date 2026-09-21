@@ -68,6 +68,11 @@ PHASES = ['baseline', 'decoded', 'rooted', 'serialized', 'done']
 DRIVER = 'native_bench/driver.bend'
 COMPILE_CAP_BYTES = 6.5e9
 COMPILE_ATTEMPTS = 4
+# The pinned compiler is a Bun (JavaScriptCore) executable whose collector
+# falls behind on a loaded machine (one compile of this driver: 6.20 GB). A
+# 3 GB RAM-size hint makes JSC collect earlier (2.98-3.77 GB) and the emitted C
+# is byte-identical. Compiler processes only; the measured programs are native.
+COMPILE_ENV = {**ENV, 'BUN_JSC_forceRAMSize': '3000000000'}
 
 
 def footprint(pid):
@@ -84,7 +89,7 @@ def capped_compile(name, cmd):
     attempts = []
     for attempt in range(COMPILE_ATTEMPTS):
         started = time.monotonic()
-        p = subprocess.Popen(cmd, cwd=ROOT, env=ENV, text=True,
+        p = subprocess.Popen(cmd, cwd=ROOT, env=COMPILE_ENV, text=True,
                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         peak, capped = 0, False
         while p.poll() is None:
@@ -322,6 +327,7 @@ def main():
         'phase_peak_method': 'kernel ru_maxrss of a process that stops at the phase boundary',
         'bend_driver': DRIVER,
         'bend_compile_attempts': builds,
+        'bend_compile_env': {'BUN_JSC_forceRAMSize': COMPILE_ENV['BUN_JSC_forceRAMSize']},
         'cases': [],
     }
     for index, case in enumerate(json.loads((ROOT / 'memory_bench/cases.json').read_text())):

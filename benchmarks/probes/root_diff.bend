@@ -72,7 +72,7 @@ def cont_fields() -> CS.CS:
 
 def case_container() -> String:
   check("container",
-    fast_bytes(R.root(CS.CCont{cont_fields(), 2, 16, 16, True{}, 1, True{}, CS.CFNone{}, 0}, 16,
+    fast_bytes(R.root(CS.CCont{cont_fields(), 2, 16, 16, True{}, 1, True{}, CS.CFNone{}, 0, False{}}, 16,
       B.of_list(16, [1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0]))),
     old_bytes(Old.hash_tree_root(
       T.Container{["a", "b"], T.Chain{T.Unsigned{P.U64{}}, T.Chain{T.Unsigned{P.U64{}}, T.End{}}}},
@@ -114,7 +114,7 @@ def sync_like_fields() -> CS.CS:
 
 def case_bits_container() -> String:
   check("bits_container",
-    fast_bytes(R.root(CS.CCont{sync_like_fields(), 2, 34, 34, True{}, 1, True{}, CS.CFNone{}, 0}, 34,
+    fast_bytes(R.root(CS.CCont{sync_like_fields(), 2, 34, 34, True{}, 1, True{}, CS.CFNone{}, 0, False{}}, 34,
       B.of_list(34, List.append(&2, U32, [171, 205], bytes32_list())))),
     old_bytes(Old.hash_tree_root(
       T.Container{["bits", "sig"], T.Chain{T.BitVector{16n}, T.Chain{T.ByteVector{32n}, T.End{}}}},

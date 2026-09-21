@@ -197,7 +197,7 @@ def plan_start_body(+schema: S.CS, +fr: RF, +a: U32, +b: U32, +c: U32) -> Plan:
       P{usel(U32.is_eq((b - a : U32), 0), 8, 2), elem,
         RFr{1, elem, 0, 0, a, b, (c + 64 : U32), depth, 0, fr},
         a, b, (c + 64 : U32), 1, a, 0, depth, no_mix()}
-    case S.CCont{+fields, +cnt, fp, size, fixed, +depth, plain, checks, nchecks}:
+    case S.CCont{+fields, +cnt, fp, size, fixed, +depth, plain, checks, nchecks, simple}:
       P{7, schema, RFr{2, fields, 0, cnt, a, b, (c + 64 : U32), depth, no_mix(), fr},
         a, b, (c + 64 : U32), 3, a, 0, 0, no_mix()}
     # A progressive container walks its slots - fields at their active

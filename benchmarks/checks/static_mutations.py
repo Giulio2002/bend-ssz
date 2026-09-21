@@ -18,6 +18,12 @@ for c in cases:
     muts = [('truncated', data[:-1]), ('extended', data + b'\x00')]
     if len(data) >= 4: muts.append(('offset_ffffffff', b'\xff\xff\xff\xff' + data[4:]))
     if len(data) >= 1: muts.append(('flip_first', bytes([data[0] ^ 0x80]) + data[1:]))
+    # Header words: add 1 to each of the first 16 little-endian words, which
+    # covers the offsets of most containers' variable fields (first offset,
+    # later offsets, end-of-region comparisons).
+    for k in range(min(16, len(data) // 4)):
+        w = (int.from_bytes(data[4 * k:4 * k + 4], 'little') + 1) & 0xffffffff
+        muts.append(('word%d_plus1' % k, data[:4 * k] + w.to_bytes(4, 'little') + data[4 * k + 4:]))
     for label, m in muts:
         expect_valid = ref['check'](tree, m, [], [])
         f = tmp / 'mut.ssz'; f.write_bytes(m)

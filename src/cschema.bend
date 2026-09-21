@@ -38,8 +38,11 @@ type CS is Data:
   # `checks`/`nchecks`: the same field tree filtered to the fields validation
   # must visit - variable-size fields and fixed fields that are not plain - in
   # order and with their header offsets. The scanner walks only these.
+  # `simple`: a variable-size container whose checks are all variable fields
+  # whose validity depends on their length alone (byte lists, lists of plain
+  # elements); the scanner then validates one offset per step (tag 15).
   CCont{fields: CS, count: U32, fixed_part: U32, size: U32, fixed: Bool, depth: U32, plain: Bool,
-        checks: CS, nchecks: U32}
+        checks: CS, nchecks: U32, simple: Bool}
   # Progressive container: encoded, validated and accessed exactly like a
   # container over `fields`; rooted over `slots` - the fields at their active
   # positions with CNull at inactive ones - as a progressive tree, then mixed
@@ -110,7 +113,7 @@ def fixed_size(s: CS) -> Maybe<&2, U32>:
     case CVecVar{elem, count, depth}: None{}
     case CList{elem, lim, big, stride, depth, basic, plain}: None{}
     case CListVar{elem, lim, big, depth}: None{}
-    case CCont{fields, count, fixed_part, +size, fixed, depth, plain, checks, nchecks}: cont_size(fixed, size)
+    case CCont{fields, count, fixed_part, +size, fixed, depth, plain, checks, nchecks, simple}: cont_size(fixed, size)
     case CPCont{fields, count, fixed_part, +size, fixed, plain, checks, nchecks, slots, nslots, active}: cont_size(fixed, size)
     case CUnion{options, nsel}: None{}
     case CNull{}: Some{0}
@@ -130,7 +133,7 @@ def is_fixed(s: CS) -> Bool:
     case CVecVar{elem, count, depth}: False{}
     case CList{elem, lim, big, stride, depth, basic, plain}: False{}
     case CListVar{elem, lim, big, depth}: False{}
-    case CCont{fields, count, fixed_part, size, +fixed, depth, plain, checks, nchecks}: fixed
+    case CCont{fields, count, fixed_part, size, +fixed, depth, plain, checks, nchecks, simple}: fixed
     case CPCont{fields, count, fixed_part, size, +fixed, plain, checks, nchecks, slots, nslots, active}: fixed
     case CUnion{options, nsel}: False{}
     case CNull{}: True{}
@@ -147,10 +150,32 @@ def is_plain(s: CS) -> Bool:
     case CBytes{len, depth}: True{}
     case CBitVec{+bits, bytes, depth}: U32.is_eq((bits .&. 7 : U32), 0)
     case CVec{elem, count, stride, depth, basic, +plain}: plain
-    case CCont{fields, count, fixed_part, size, +fixed, depth, +plain, checks, nchecks}: Bool.and(fixed, plain)
+    case CCont{fields, count, fixed_part, size, +fixed, depth, +plain, checks, nchecks, simple}: Bool.and(fixed, plain)
     case CPCont{fields, count, fixed_part, size, +fixed, +plain, checks, nchecks, slots, nslots, active}: Bool.and(fixed, plain)
     case CNull{}: True{}
     case _: False{}
+
+# Validity of a variable-size value that depends on its length alone: a byte
+# list (within the limit), or a list of plain elements (a whole number of
+# elements, within the limit). 1 = valid, 2 = invalid, 0 = not such a schema,
+# walk into it.
+def shallow_pick(ok: Bool) -> U32:
+  match ok:
+    case True{}: 1
+    case False{}: 2
+
+def shallow_list(plain: Bool, +len: U32, +lim: U32, big: Bool, +stride: U32) -> U32:
+  match plain:
+    case True{}:
+      shallow_pick(Bool.and(U32.is_eq(len, (U32.div(len, stride) * stride : U32)),
+        within(U32.div(len, stride), lim, big)))
+    case False{}: 0
+
+def shallow(+s: CS, +len: U32) -> U32:
+  match s:
+    case CByteList{+lim, big, depth}: shallow_pick(within(len, lim, big))
+    case CList{elem, +lim, big, +stride, depth, basic, plain}: shallow_list(plain, len, lim, big, stride)
+    case _: 0
 
 def size_or(m: Maybe<&2, U32>, +d: U32) -> U32:
   match m:

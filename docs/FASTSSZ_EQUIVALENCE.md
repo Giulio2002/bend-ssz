@@ -29,7 +29,7 @@ two readers at once. It is threaded instead: every reader returns it.
 | list length divisible by element size, ≤ limit | same (`CList`: `exact`, `within`) |
 | bool byte ∈ {0,1}, bit-vector padding zero, bit-list terminator present and within limit | same (tags 1, 2, 3) |
 | **copies** every byte field into the struct, allocates a slice per list, decodes every element | **no copy**: the decoded value is the validated window, an `Access.View`; fields and elements are found by header offsets and offset tables when read (`Access.field`, `Access.elem`) |
-| visits every field | visits only the fields that need a check: plain fixed-size fields (uints, byte vectors, whole-byte bit vectors, and vectors or containers built only from those) are valid by their position, and each container carries a generated "check tree" of the rest |
+| visits every field | visits only the fields that need a check: plain fixed-size fields (uints, byte vectors, whole-byte bit vectors, and vectors or containers built only from those) are valid by their position, and each container carries a generated "check tree" of the rest. A plain schema is validated by its length alone; a variable field that is a byte list or a list of plain elements is checked by its length when its end offset is known; a container whose variable fields are all such lists validates one offset per step |
 
 Consequence: Bend's decode does all the validation fastssz does but builds
 nothing. That is why `Blob.deserialize` is a length check against Go's 131 KB

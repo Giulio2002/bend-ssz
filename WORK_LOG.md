@@ -4142,3 +4142,103 @@ it is not used.
   ROOT_DOMAIN exit 0 "All terms check." 5.03 GB 39 s; END_TO_END exit 0
   5.00 GB 38 s; PROOF exit 0 5.28 GB 42 s. No `unsafe` in any root. These cover
   the list-based model API, not the compact runtime.
+
+
+### Operator review: reusable array foundation
+Read docs/OPERATOR_ARRAY_PROOF_REUSE.md before re-deriving the compact array foundation. DSA already has actual Base.Array laws; adapt with SSZ zero-warning/soundness requirements intact. This is a reuse lead, not proof acceptance.
+
+### Frozen validators
+
+* `automation/native_memory_acceptance.py` exit 0 (run under
+  `benchmarks/checks/capped_run.py`, process-tree peak 6.50 GB, 1,735 s; log in
+  `benchmarks/evidence/native_memory_acceptance.log`). That covers the law map,
+  the root-domain gate (proofs, 51/51 runtime tests, 5,440/5,440 JS spectests)
+  and the native harness: all 15 Bend samples verified, worst decode overhead
+  131,072 bytes, roots agree with Go. Archived:
+  `benchmarks/evidence/native-comparison.json`, `spectests-js.json`,
+  `driver-emitted.c.gz`, `driver-artifacts.sha256`.
+* `automation/performance_gate.py` runs `benchmarks/run.py` with the operator's
+  interpreter (`/Users/monkeair/auto-implementer/.venv/bin/python`), which has
+  neither python-snappy nor a YAML library. Installing them would modify a
+  dependency outside the editable scope, so the runner now reads fixtures with
+  `benchmarks/snappy_block.py`, a pure-Python raw Snappy block decoder checked
+  byte for byte against python-snappy on all 5,440 fixtures
+  (`benchmarks/checks/snappy_check.py`, 0 mismatches), and reads the one-line
+  `roots.yaml` with a pattern that matches all 295 static fixtures. A smoke run
+  under that interpreter (`--only Checkpoint,BeaconState`) passed before the
+  gate was started.
+
+
+## Operator benchmark interruption: independent calibration
+
+Read docs/OPERATOR_BENCHMARK_CALIBRATION.md. The operator is stopping only the inefficient timing run and applying separate per-side calibration; restart full performance gate with source provenance intact. No runtime/proof work discarded.
+
+### First performance-gate attempt, and decode fast paths
+
+* The first `automation/performance_gate.py` run was stopped by the operator at
+  row 513, while it was measuring `Hash32`, to fix the runner's calibration. Bend's
+  length-check decodes calibrated to 5,000,000 operations and Go then ran that
+  many 300 µs decodes. `benchmarks/run.py` now calibrates each side
+  independently (operator change, kept as is). Partial log:
+  `build/performance/benchmark-partial-513.log`. Rows over 80 % of their limit
+  in it: DataColumnsByRootIdentifier.deserialize 4.9x, Fork.deserialize
+  4.1-4.3x.
+* Decode fast paths, each re-verified with 295/295 static roots, 5,145/5,145
+  generic cases, and mutations (now 5,455 variants, including +1 on each of the
+  first 16 header words; 742 invalid; 0 disagreements with the independent
+  validator):
+  - `valid_in` answers a plain schema with the length check alone (Fork,
+    Checkpoint, ForkData, BlobIdentifier, BLSToExecutionChange: below 20 ns);
+  - variable fields whose validity depends on their length alone (byte lists,
+    lists of plain elements) are checked inline when their end is known;
+  - "simple" containers (generator flag: variable fields are all such lists)
+    validate one offset per step (tag 15): DataColumnsByRootIdentifier
+    156 → 101.5 ns (Go 32 ns), Attestation 350 → 258 ns.
+
+### Second performance-gate run: ratios, then a provenance rejection
+
+* Completed: 978 workloads, 327/327 required operations, 0 skipped,
+  685 rejection checks with 0 disagreements. 975 workloads were within limit;
+  `Validator.deserialize` was at 5.12-5.19x (Bend 165.6 ns, Go 31.9 ns).
+* The gate then rejected the report for `missing/stale source
+  benchmarks/evidence/generic_conformance.json`: the frozen gate hashes every
+  `.json`/`.py` under `benchmarks/`, evidence included, but the runner's
+  manifest skipped `benchmarks/evidence`. The runner now hashes it, and a check
+  confirms that all 345 files the gate lists are in the manifest. Evidence is
+  refreshed before a gate run, never during one.
+* Validator: fixed containers whose checks are all single bytes (booleans,
+  the last byte of a partial-byte bit vector) now use the "simple" fast walk
+  too (tag 16: one step per checked byte). Validator decode 165.6 → 118 ns.
+  Re-verified: 295/295, 5,145/5,145, 0/5,455 mutation disagreements.
+
+### Memory gate reruns (2026-09-21, late morning)
+
+* A rerun failed in `native_bench/run.py`'s representativeness check: the full
+  run's sampled "decode window" reached 7.72 MB against a 7.18 MB kernel peak
+  for the stop-after-decode process. Decode now takes under a millisecond, and
+  the window ends 60 ms after Python *receives* the decode marker; on the
+  loaded machine that receipt lagged the print by more than the 150 ms settle,
+  so root- and serialize-phase samples fell inside the window. The driver now
+  stays idle 600 ms after the decode marker (`settle_long`). The check itself is
+  unchanged. `native_bench/run.py` alone then passed (worst sample 229,376 bytes).
+* The next full gate run failed in the JS spectest stage: 1,214 cases failed with
+  `bend loader: pinned bend changed (e3b0c442…)`. That hash is the SHA-256 of an
+  empty file: the pinned compiler was momentarily empty while it was read. The
+  binary matches its pin before and after (`da9bc514…`, mtime Sep 19), but
+  `~/.bend/bin` was modified at 10:59 during the run. This was outside
+  interference with the shared toolchain directory, not a test result. The log is kept at
+  `build/native_memory_acceptance-interrupted-bend-binary.log`, and the gate was rerun.
+* The rerun got through the JS stage: runtime tests 51/51, spectests
+  5,440/5,440, END_TO_END "All terms check.". It then failed in
+  `native_bench/run.py`'s build: the driver's C emission hit the 6.5 GB compile
+  cap on all four attempts (6.53 GB each; the executable build needed two). The
+  pinned `bend` is a Bun/JavaScriptCore executable, and on this machine, which
+  was also running an unrelated 4.5 GB `bend` job, its collector fell behind.
+  Measured on the unchanged driver, one attempt each: 6.20 GB without a hint;
+  3.77 GB and 2.98 GB with `BUN_JSC_forceRAMSize=3000000000`. The emitted C was
+  byte-identical in every case (`4f4302b5…`, the same as the earlier build). Both
+  runners (`native_bench/run.py`, `benchmarks/run.py`) now pass that variable
+  to compiler processes only and record it in their reports
+  (`bend_compile_env`). The measured programs are native C and do not see it.
+  The compiler binary, flags and output are unchanged. Log:
+  `build/native_memory_acceptance-compile-cap.log`.

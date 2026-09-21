@@ -1,4 +1,4 @@
-> **Unfinished development snapshot:** frozen execution/memory gates pass, but compact-runtime universal proofs and final speed acceptance remain incomplete. See [snapshot status](SNAPSHOT_STATUS.md).
+> Development snapshot: native memory gate passes (15/15 samples, maximum decode overhead 409,600 bytes), but compact-runtime universal proofs and full speed acceptance are unfinished. Retained model proofs do not prove the new compact implementation. See [SNAPSHOT_STATUS.md](SNAPSHOT_STATUS.md).
 
 # bend-ssz
 

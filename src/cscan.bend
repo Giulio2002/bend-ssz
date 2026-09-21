@@ -33,6 +33,8 @@ import ./cschema.bend as S
 #  11  the offset of variable element i is in v
 #  12  the offset that ends element i is in v; it starts at a
 #  13  a union's selector byte is in v; the value follows it
+#  15  a simple container's variable field i has its offset in v
+#  16  a fixed simple container's byte check i has its byte in v
 type Frame is Data:
   FDone{}
   FCont{fields: S.CS, i: U32, cnt: U32, base: U32, endp: U32, fp: U32,
@@ -97,6 +99,31 @@ def f_hsize(f: S.CS) -> U32:
   match f:
     case S.CFLeaf{s, hoff, +hsize, fixed}: hsize
     case _: 0
+
+# Next tag after a shallow check (S.shallow): 0 = not shallow, walk into it
+# (`deep`); 1 = valid, go on (`next`); otherwise reject.
+def shallow_tag(+sh: U32, +deep: U32, +next: U32) -> U32:
+  match sh:
+    case 0: deep
+    case 1: next
+    case _: 6
+
+# The byte a fixed byte check reads: the last byte of the field.
+def check_byte(+base: U32, +f: S.CS) -> U32: ((base + f_hoff(f) : U32) + f_hsize(f) - 1 : U32)
+
+# Is `v` a valid last byte for this check: a boolean byte, or a bit vector's
+# last byte with its padding bits zero?
+def byte_ok(s: S.CS, +v: U32) -> Bool:
+  match s:
+    case S.CBool{}: U32.is_le(v, 1)
+    case S.CBitVec{+bits, bytes, depth}: U32.is_eq(v, (v .&. low_mask((bits .&. 7 : U32)) : U32))
+    case _: False{}
+
+# The first value a simple container's walk needs.
+def first_read(fixed: Bool, +f: S.CS, +a: U32, buf: B.Buf) -> B.Buf & U32:
+  match fixed:
+    case True{}: B.byte_at(buf, check_byte(a, f))
+    case False{}: B.read32(buf, (a + f_hoff(f) : U32))
 
 def is_leaf(f: S.CS) -> Bool:
   match f:
@@ -167,11 +194,16 @@ def run(+fuel: Nat, +tag: U32, +schema: S.CS, +fr: Frame, +a: U32, +b: U32, +c: 
               (buf, v) = pair
               run(p, usel(U32.is_eq((b - a : U32), 0), 5, 4), schema, fr, a, b, c,
                 B.read32(buf, a))
-            case S.CCont{fields, cnt, +fp, size, fixed, depth, +plain, +checks, +nchecks}:
+            case S.CCont{fields, cnt, +fp, size, fixed, depth, +plain, +checks, +nchecks, +simple}:
               (buf, v) = pair
               +len = (b - a : U32)
-              run(p, usel(bsel(S.is_fixed(schema), U32.is_eq(len, fp), U32.is_ge(len, fp)), usel(plain, 5, 8), 6),
-                schema, fsel(plain, fr, FCont{checks, 0, nchecks, a, b, fp, S.CFNone{}, 0, 0, fr}), a, b, c, (buf, 0))
+              # A simple container goes straight to its fast walk with the first
+              # value read: tag 15 (variable: first offset), tag 16 (fixed: the
+              # byte of its first byte check).
+              run(p, usel(bsel(S.is_fixed(schema), U32.is_eq(len, fp), U32.is_ge(len, fp)),
+                    usel(plain, 5, usel(simple, usel(S.is_fixed(schema), 16, 15), 8)), 6),
+                schema, fsel(plain, fr, FCont{checks, 0, nchecks, a, b, fp, S.CFNone{}, 0, 0, fr}), a, b, c,
+                first_read(S.is_fixed(schema), S.field(checks, 0), a, buf))
             case S.CPCont{fields, cnt, +fp, size, fixed, +plain, +checks, +nchecks, slots, nslots, active}:
               (buf, v) = pair
               +len = (b - a : U32)
@@ -256,7 +288,10 @@ def run(+fuel: Nat, +tag: U32, +schema: S.CS, +fr: Frame, +a: U32, +b: U32, +c: 
               +hp = (base + f_hoff(f) : U32)
               # A fixed field of a plain type needs no check - its size is fixed
               # by the layout - so the walk moves straight to the next field.
-              run(p, usel(last, usel(pending, 0, 5), usel(fixed, usel(S.is_plain(f_schema(f)), 8, 0), 9)),
+              # The pending variable field's end is now known (the container's
+              # end). If its validity depends on its length alone, decide it here.
+              run(p, usel(last, usel(pending, shallow_tag(S.shallow(pend, (endp - start : U32)), 0, 5), 5),
+                    usel(fixed, usel(S.is_plain(f_schema(f)), 8, 0), 9)),
                 ssel(last, pend, ssel(fixed, f_schema(f), pend)),
                 fsel(last, up,
                   FCont{fields, (i + 1 : U32), cnt, base, endp, fp, pend, start, has, up}),
@@ -274,9 +309,52 @@ def run(+fuel: Nat, +tag: U32, +schema: S.CS, +fr: Frame, +a: U32, +b: U32, +c: 
               +first_ok = U32.is_eq(v, fp)
               +grow_ok = bsel(U32.is_ge(child, start), U32.is_le(child, endp), False{})
               +pending = U32.is_eq(has, 1)
-              run(p, usel(pending, usel(grow_ok, 0, 6), usel(first_ok, 8, 6)), pend,
+              # The previous variable field ends where this one starts; if its
+              # validity depends on its length alone, decide it and walk on.
+              run(p, usel(pending, usel(grow_ok, shallow_tag(S.shallow(pend, (child - start : U32)), 0, 8), 6),
+                    usel(first_ok, 8, 6)), pend,
                 FCont{fields, i, cnt, base, endp, fp, f_schema(f), child, 1, up},
                 start, child, c, (buf, 0))
+            case _:
+              (buf, v) = pair
+              (buf, False{})
+        # ---- 15: simple container: the offset of variable field i is in v ----
+        # One step per variable field: check this offset (the first equals the
+        # fixed part; each later one is at least the previous and at most the
+        # end), check the previous field by its length alone, and read the next
+        # offset - or, after the last field, check it against the end.
+        case 15:
+          match fr:
+            case FCont{+fields, +i, +cnt, +base, +endp, +fp, +pend, +start, +has, +up}:
+              (buf, +v) = pair
+              +child = (base + v : U32)
+              +first = U32.is_eq(i, 0)
+              +off_ok = bsel(first, U32.is_eq(v, fp),
+                bsel(U32.is_ge(child, start), U32.is_le(child, endp), False{}))
+              +prev_ok = bsel(first, True{}, U32.is_eq(S.shallow(pend, (child - start : U32)), 1))
+              +last = U32.is_eq((i + 1 : U32), cnt)
+              +f = S.field(fields, i)
+              run(p, usel(bsel(off_ok, prev_ok, False{}),
+                    usel(last, usel(U32.is_eq(S.shallow(f_schema(f), (endp - child : U32)), 1), 5, 6), 15), 6),
+                schema,
+                fsel(last, up, FCont{fields, (i + 1 : U32), cnt, base, endp, fp, f_schema(f), child, 1, up}),
+                a, b, c, B.read32(buf, (base + f_hoff(S.field(fields, (i + 1 : U32))) : U32)))
+            case _:
+              (buf, v) = pair
+              (buf, False{})
+        # ---- 16: fixed simple container: the byte of check i is in v ---------
+        # Its checks are single bytes at fixed offsets - a boolean (0 or 1), or
+        # the last byte of a bit vector whose padding bits must be zero - so
+        # each step checks one and reads the next.
+        case 16:
+          match fr:
+            case FCont{+fields, +i, +cnt, +base, +endp, +fp, +pend, +start, +has, +up}:
+              (buf, +v) = pair
+              +last = U32.is_eq((i + 1 : U32), cnt)
+              run(p, usel(byte_ok(f_schema(S.field(fields, i)), v), usel(last, 5, 16), 6),
+                schema,
+                fsel(last, up, FCont{fields, (i + 1 : U32), cnt, base, endp, fp, pend, start, has, up}),
+                a, b, c, B.byte_at(buf, check_byte(base, S.field(fields, (i + 1 : U32)))))
             case _:
               (buf, v) = pair
               (buf, False{})
@@ -318,9 +396,18 @@ def run(+fuel: Nat, +tag: U32, +schema: S.CS, +fr: Frame, +a: U32, +b: U32, +c: 
               (buf, False{})
 
 # Entry point: is the window [0, size) a legal encoding of `schema`?
-# Is the window [off, off + len) a legal encoding of `schema`?
-def valid_in(schema: S.CS, +off: U32, +len: U32, buf: B.Buf) -> B.Buf & Bool:
-  run(Nat.add(64n, U32.to_nat((4 * len : U32))), 0, schema, FDone{}, off, (off + len : U32), 0, (buf, 0))
+def valid_pick(plain: Bool, +schema: S.CS, +off: U32, +len: U32, buf: B.Buf) -> B.Buf & Bool:
+  match plain:
+    case True{}: (buf, U32.is_eq(len, S.fixed_or_zero(schema)))
+    case False{}:
+      run(Nat.add(64n, U32.to_nat((4 * len : U32))), 0, schema, FDone{}, off, (off + len : U32), 0, (buf, 0))
+
+# Is the window [off, off + len) a legal encoding of `schema`? For a plain
+# schema - every byte string of its fixed size is valid - that is the length
+# check alone, answered without starting the walk; this is the same test the
+# walk's first step makes for a plain schema.
+def valid_in(+schema: S.CS, +off: U32, +len: U32, buf: B.Buf) -> B.Buf & Bool:
+  valid_pick(S.is_plain(schema), schema, off, len, buf)
 
 def valid_at(schema: S.CS, +size: U32, buf: B.Buf) -> B.Buf & Bool: valid_in(schema, 0, size, buf)
 

@@ -92,6 +92,13 @@ PROGRAMS = {'deserialize': 'dec', 'serialize': 'enc', 'hash_tree_root': 'root'}
 INDEX = json.loads((ROOT / 'build/cschema-index.json').read_text()) if (ROOT / 'build/cschema-index.json').exists() else []
 COMPILE_CAP_BYTES = 6.5e9
 COMPILE_ATTEMPTS = 4
+# The pinned compiler is a Bun (JavaScriptCore) executable. On a loaded machine
+# its collector falls behind and one compile of the same source peaks anywhere
+# from 5 to over 6.5 GB. Telling JSC to size its heap for 3 GB of RAM makes it
+# collect earlier (2.98-3.77 GB, against 6.20 GB without it), and the emitted
+# C is byte-identical. This affects compiler processes only; the measured
+# programs are native C.
+COMPILE_ENV = {**ENV, 'BUN_JSC_forceRAMSize': '3000000000'}
 COMPILES = []
 
 
@@ -110,7 +117,7 @@ def capped_compile(source, target, log):
     attempt that hits the cap is killed and retried; every attempt is logged."""
     for attempt in range(COMPILE_ATTEMPTS):
         started = time.monotonic()
-        p = subprocess.Popen([BEND, source, '-o', str(target)], cwd=ROOT, env=ENV, text=True,
+        p = subprocess.Popen([BEND, source, '-o', str(target)], cwd=ROOT, env=COMPILE_ENV, text=True,
                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         peak, capped = 0, False
         while p.poll() is None:
@@ -482,6 +489,7 @@ def main():
         'rejection_checks': rejections,
         'bend_api': 'compact primary API: benchmarks/compact/{dec,enc,root}.bend',
         'bend_compiles': COMPILES,
+        'bend_compile_env': {'BUN_JSC_forceRAMSize': COMPILE_ENV['BUN_JSC_forceRAMSize']},
         'rejection_summary': {
             'checks': len(rejections),
             'bend_rejected': sum(1 for r in rejections if r['bend_rejected']),
@@ -516,7 +524,12 @@ def source_manifest():
             continue
         for path in base.rglob('*'):
             relative = path.relative_to(ROOT)
-            if folder == 'benchmarks' and len(relative.parts) > 1 and relative.parts[1] in {'evidence', 'inputs'}:
+            # benchmarks/evidence is hashed too: the frozen gate
+            # (automation/performance_gate.py) requires a current hash for every
+            # .json/.py under benchmarks/, evidence included, and rejected a
+            # report that left them out. The runner never writes there; the
+            # evidence must simply stay unchanged while a run is in progress.
+            if folder == 'benchmarks' and len(relative.parts) > 1 and relative.parts[1] == 'inputs':
                 continue
             if path.is_file() and path.suffix in suffixes and '__pycache__' not in relative.parts:
                 sources[str(relative)] = digest(path)

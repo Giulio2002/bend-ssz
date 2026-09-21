@@ -24,6 +24,14 @@ import ../types/fulu_cschema.bend as Spec
 # high-water mark can be measured by a run that stops there.
 def settle() -> IO(Unit): IO.sleep(150)
 
+# After the decode marker the process stays idle longer. A compact decode
+# finishes inside a millisecond, and the harness's sampled decode window ends a
+# fixed time after it *receives* the marker. On a loaded machine that receipt
+# can lag the print by more than 150 ms, which let root- and serialize-phase
+# samples into the decode window and tripped the harness's representativeness
+# check with no change in the decode itself. Measured work is unchanged.
+def settle_long() -> IO(Unit): IO.sleep(600)
+
 def sized(pair: File & Result<&1, &1, U32 & String, U32>) -> IO(File & U32):
   (file, result) = pair
   do IO<File & U32>:
@@ -176,7 +184,7 @@ def decoded_gate(ok: Bool, +mode: String, +out: String, +size: U32, +t0: Nat, bu
         t1 : Nat <- IO.now()
         IO.print("DECODE_MS=" ++ Nat.show(Nat.sub(t1, t0)) ++ " CHECKSUM=" ++ U32.show(size))
         IO.print("PHASE=decoded")
-        settle()
+        settle_long()
         after_decode(String.eq(mode, "decode"), mode, out, size, buf)
 
 def decoded(+mode: String, +out: String, +size: U32, +t0: Nat, pair: B.Buf & Bool) -> IO(Unit):

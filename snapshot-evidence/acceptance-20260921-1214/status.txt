@@ -1,0 +1,2 @@
+exit=0 peak=5.83 GB elapsed=2181 s
+rc=0
