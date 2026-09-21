@@ -35,7 +35,22 @@ type CS is Data:
   CVecVar{elem: CS, count: U32, depth: U32}
   CList{elem: CS, lim: U32, big: Bool, stride: U32, depth: U32, basic: Bool, plain: Bool}
   CListVar{elem: CS, lim: U32, big: Bool, depth: U32}
-  CCont{fields: CS, count: U32, fixed_part: U32, size: U32, fixed: Bool, depth: U32, plain: Bool}
+  # `checks`/`nchecks`: the same field tree filtered to the fields validation
+  # must visit - variable-size fields and fixed fields that are not plain - in
+  # order and with their header offsets. The scanner walks only these.
+  CCont{fields: CS, count: U32, fixed_part: U32, size: U32, fixed: Bool, depth: U32, plain: Bool,
+        checks: CS, nchecks: U32}
+  # Progressive container: encoded, validated and accessed exactly like a
+  # container over `fields`; rooted over `slots` - the fields at their active
+  # positions with CNull at inactive ones - as a progressive tree, then mixed
+  # with the active bit vector, packed little-endian into `active` (the
+  # generator refuses more than 31 positions).
+  CPCont{fields: CS, count: U32, fixed_part: U32, size: U32, fixed: Bool, plain: Bool,
+         checks: CS, nchecks: U32, slots: CS, nslots: U32, active: U32}
+  # Compatible union: a selector byte, then the value of the selected option.
+  # `options` is a field tree indexed by selector value, with a CFNone leaf
+  # where the selector is not allowed; `nsel` is its size.
+  CUnion{options: CS, nsel: U32}
   CNull{}
   # Field-tree nodes. They share this type because Bend has no mutually
   # recursive type declarations; a field tree never appears where a schema is
@@ -95,7 +110,9 @@ def fixed_size(s: CS) -> Maybe<&2, U32>:
     case CVecVar{elem, count, depth}: None{}
     case CList{elem, lim, big, stride, depth, basic, plain}: None{}
     case CListVar{elem, lim, big, depth}: None{}
-    case CCont{fields, count, fixed_part, +size, fixed, depth, plain}: cont_size(fixed, size)
+    case CCont{fields, count, fixed_part, +size, fixed, depth, plain, checks, nchecks}: cont_size(fixed, size)
+    case CPCont{fields, count, fixed_part, +size, fixed, plain, checks, nchecks, slots, nslots, active}: cont_size(fixed, size)
+    case CUnion{options, nsel}: None{}
     case CNull{}: Some{0}
     case CFLeaf{f, hoff, hsize, fixed}: None{}
     case CFNode{lo, hi, split}: None{}
@@ -113,11 +130,27 @@ def is_fixed(s: CS) -> Bool:
     case CVecVar{elem, count, depth}: False{}
     case CList{elem, lim, big, stride, depth, basic, plain}: False{}
     case CListVar{elem, lim, big, depth}: False{}
-    case CCont{fields, count, fixed_part, size, +fixed, depth, plain}: fixed
+    case CCont{fields, count, fixed_part, size, +fixed, depth, plain, checks, nchecks}: fixed
+    case CPCont{fields, count, fixed_part, size, +fixed, plain, checks, nchecks, slots, nslots, active}: fixed
+    case CUnion{options, nsel}: False{}
     case CNull{}: True{}
     case CFLeaf{f, hoff, hsize, fixed}: False{}
     case CFNode{lo, hi, split}: False{}
     case CFNone{}: False{}
+
+# Is every byte string of the schema's fixed size a valid encoding of it?
+# (Uints, byte vectors, whole-byte bit vectors, and the fixed vectors and
+# containers the generator marked `plain`.)
+def is_plain(s: CS) -> Bool:
+  match s:
+    case CUint{size}: True{}
+    case CBytes{len, depth}: True{}
+    case CBitVec{+bits, bytes, depth}: U32.is_eq((bits .&. 7 : U32), 0)
+    case CVec{elem, count, stride, depth, basic, +plain}: plain
+    case CCont{fields, count, fixed_part, size, +fixed, depth, +plain, checks, nchecks}: Bool.and(fixed, plain)
+    case CPCont{fields, count, fixed_part, size, +fixed, +plain, checks, nchecks, slots, nslots, active}: Bool.and(fixed, plain)
+    case CNull{}: True{}
+    case _: False{}
 
 def size_or(m: Maybe<&2, U32>, +d: U32) -> U32:
   match m:

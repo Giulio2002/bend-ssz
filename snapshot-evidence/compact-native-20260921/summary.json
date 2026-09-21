@@ -1,0 +1,10 @@
+{
+  "bend_samples": 15,
+  "verified_samples": 15,
+  "max_decode_overhead_bytes": 311296,
+  "max_roundtrip_peak_rss_bytes": 9027584,
+  "public_api_typecheck": "All terms check.",
+  "universal_compact_runtime_proofs": false,
+  "performance_acceptance": false,
+  "full_source_fingerprint_at_measurement": false
+}

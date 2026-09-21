@@ -11,7 +11,7 @@ python3 automation/native_memory_acceptance.py   # frozen operator gate
 ```
 
 The Bend side is now the **compact primary path**
-(`native_bench/driver_compact.bend`): one packed `Array<U32>` input buffer, an
+(`native_bench/driver.bend`): one packed `Array<U32>` input buffer, an
 in-place validating decode (`src/cscan.bend` through `src/api.bend`),
 `hash_tree_root` over the same buffer (`src/croot.bend`, `src/merkle_fast.bend`,
 the pinned BendHub SHA-256 package), and a streamed encode. The earlier
@@ -22,7 +22,7 @@ The proofs do **not** yet cover this path; see "What is not established" below.
 
 ## What is measured, and how
 
-Both programs (`native_bench/driver_compact.bend`,
+Both programs (`native_bench/driver.bend`,
 `native_bench/fastssz/main.go`) run the same workload on the same raw fixture
 bytes, one sequential thread, a fresh process per sample:
 
@@ -219,7 +219,7 @@ What is **not** list-free, and why:
   `BeaconState` fixtures (roots equal `roots.yaml`, byte-exact round trip,
   truncated and overlong inputs rejected), on 57 official `ssz_static` types
   rooted by the interpreter, and by 49 field-access checks against an
-  independent reader (`build/access_check.py`). It does not yet run the 5440
+  independent reader (`benchmarks/checks/access_check.py`). It does not yet run the 5440
   official cases. The compact schema has no progressive list, progressive
   bit-list, progressive container or compatible-union forms yet, and those
   make up about half of `ssz_generic`.

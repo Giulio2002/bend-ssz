@@ -1,4 +1,5 @@
 import Base
+import ./digest.bend as D
 
 # Indexed byte storage for the SSZ runtime.
 #
@@ -136,14 +137,122 @@ def capacity_go(+fuel: Nat, +need: U32, +depth: Nat) -> Nat:
 def capacity(+n: U32) -> Nat:
   capacity_go(32n, U32.shrn((n + 3 : U32), 2n), 0n)
 
+# ---------------------------------------------------------------------------
+# Merkle scratch. A buffer that will be hashed carries 1024 digest slots of
+# eight words right after its data, at word (n + 3) / 4: the level stack of the
+# streaming merkleizer (64-slot segments, one per nesting level) and, in slots
+# 960..1023, the zero-subtree roots. So the only mutable state of a hash is the
+# caller's own packed array: no second structure, no sharing, O(1) word access.
+def scratch_words() -> U32: 8192
+
+def scratch_base(+n: U32) -> U32: U32.shrn((n + 3 : U32), 2n)
+
+# Capacity for `n` data bytes plus the scratch.
+def capacity_hashable(+n: U32) -> Nat:
+  capacity_go(32n, (U32.shrn((n + 3 : U32), 2n) + 8192 : U32), 0n)
+
+def dg7(+n: U32, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32,
+        pair: Array<U32> & U32) -> Buf & D.Digest:
+  (ws, +a7) = pair
+  (Buf{ws, n}, D.D{a0, a1, a2, a3, a4, a5, a6, a7})
+
+def dg6(+n: U32, +w: U32, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32,
+        pair: Array<U32> & U32) -> Buf & D.Digest:
+  (ws, +a6) = pair
+  dg7(n, a0, a1, a2, a3, a4, a5, a6, Array.get(U32, ws, (w + 7 : U32)))
+
+def dg5(+n: U32, +w: U32, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, pair: Array<U32> & U32) -> Buf & D.Digest:
+  (ws, +a5) = pair
+  dg6(n, w, a0, a1, a2, a3, a4, a5, Array.get(U32, ws, (w + 6 : U32)))
+
+def dg4(+n: U32, +w: U32, +a0: U32, +a1: U32, +a2: U32, +a3: U32, pair: Array<U32> & U32) -> Buf & D.Digest:
+  (ws, +a4) = pair
+  dg5(n, w, a0, a1, a2, a3, a4, Array.get(U32, ws, (w + 5 : U32)))
+
+def dg3(+n: U32, +w: U32, +a0: U32, +a1: U32, +a2: U32, pair: Array<U32> & U32) -> Buf & D.Digest:
+  (ws, +a3) = pair
+  dg4(n, w, a0, a1, a2, a3, Array.get(U32, ws, (w + 4 : U32)))
+
+def dg2(+n: U32, +w: U32, +a0: U32, +a1: U32, pair: Array<U32> & U32) -> Buf & D.Digest:
+  (ws, +a2) = pair
+  dg3(n, w, a0, a1, a2, Array.get(U32, ws, (w + 3 : U32)))
+
+def dg1(+n: U32, +w: U32, +a0: U32, pair: Array<U32> & U32) -> Buf & D.Digest:
+  (ws, +a1) = pair
+  dg2(n, w, a0, a1, Array.get(U32, ws, (w + 2 : U32)))
+
+def dg0(+n: U32, +w: U32, pair: Array<U32> & U32) -> Buf & D.Digest:
+  (ws, +a0) = pair
+  dg1(n, w, a0, Array.get(U32, ws, (w + 1 : U32)))
+
+# Scratch slot `s` as a digest: eight word reads. The accessors are
+# recursive in form (`guard` is always 0n) so that the backend does not inline
+# them into every caller: inlined, they pushed programs over the compile cap.
+def get_digest_go(+guard: Nat, b: Buf, +s: U32) -> Buf & D.Digest:
+  match guard:
+    case 0n:
+      match b:
+        case Buf{ws, +n}:
+          dg0(n, (scratch_base(n) + 8 * s : U32), Array.get(U32, ws, (scratch_base(n) + 8 * s : U32)))
+    case 1n+p: get_digest_go(p, b, s)
+
+def get_digest(b: Buf, +s: U32) -> Buf & D.Digest: get_digest_go(0n, b, s)
+
+def set_digest_go(+guard: Nat, b: Buf, +s: U32, d: D.Digest) -> Buf:
+  match guard:
+    case 1n+p: set_digest_go(p, b, s, d)
+    case 0n:
+      match b:
+        case Buf{ws, +n}:
+          match d:
+            case D.D{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
+              Buf{Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32,
+                   Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, ws,
+                     (scratch_base(n) + 8 * s : U32), w0), (scratch_base(n) + 8 * s + 1 : U32), w1),
+                     (scratch_base(n) + 8 * s + 2 : U32), w2), (scratch_base(n) + 8 * s + 3 : U32), w3),
+                     (scratch_base(n) + 8 * s + 4 : U32), w4), (scratch_base(n) + 8 * s + 5 : U32), w5),
+                     (scratch_base(n) + 8 * s + 6 : U32), w6), (scratch_base(n) + 8 * s + 7 : U32), w7), n}
+
+# Write a digest into scratch slot `s`: eight word writes.
+def set_digest(b: Buf, +s: U32, d: D.Digest) -> Buf: set_digest_go(0n, b, s, d)
+
+# A buffer whose array cannot hold the scratch (an encode output, say) is
+# copied once into one that can, the first time it is hashed.
+def copy_words(+k: Nat, +i: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  match k pair:
+    case 0n Tuple{src, w}: (src, out)
+    case 1n+p Tuple{src, +w}:
+      copy_words(p, (i + 1 : U32), Array.set(U32, out, i, w), Array.get(U32, src, (i + 1 : U32)))
+
+def regrown(+n: U32, pair: Array<U32> & Array<U32>) -> Buf:
+  (src, out) = pair
+  Buf{out, n}
+
+def grow_pick(+roomy: Bool, +n: U32, ws: Array<U32>) -> Buf:
+  match roomy:
+    case True{}: Buf{ws, n}
+    case False{}:
+      regrown(n, copy_words(U32.to_nat(scratch_base(n)), 0, Array.new(U32, capacity_hashable(n), 0),
+        Array.get(U32, ws, 0)))
+
+def grow_sized(+n: U32, pair: Array<U32> & U32) -> Buf:
+  (ws, +cap) = pair
+  grow_pick(U32.is_le((scratch_base(n) + 8192 : U32), cap), n, ws)
+
+def with_scratch(b: Buf) -> Buf:
+  match b:
+    case Buf{ws, +n}: grow_sized(n, Array.size(U32, ws))
+
 def of_list(+n: U32, xs: +List<U32>) -> Buf:
-  Buf{fill_go(xs, Array.new(U32, capacity(n), 0), 0), n}
+  Buf{fill_go(xs, Array.new(U32, capacity_hashable(n), 0), 0), n}
 
 def empty() -> Buf: Buf{Array.new(U32, 0n, 0), 0}
 
 # Allocate a buffer of `n` bytes with all words zero; pieces are then written
 # in with `fill_at`, so a large input never exists as a byte list in full.
-def alloc(+n: U32) -> Buf: Buf{Array.new(U32, capacity(n), 0), n}
+# Input buffers reserve the Merkle scratch up front, since they are what gets
+# hashed.
+def alloc(+n: U32) -> Buf: Buf{Array.new(U32, capacity_hashable(n), 0), n}
 
 def fill_at(b: Buf, +byte_off: U32, xs: +List<U32>) -> Buf:
   match b:

@@ -3,6 +3,11 @@ import ../types/schema.bend as T
 import ../types/primitive.bend as P
 import ../src/ssz.bend as API
 import ../spec/fulu_schemas.bend as Spec
+import ../types/fulu_cschema.bend as Compact
+import ../src/buffer.bend as Buf
+import ../src/access.bend as Access
+import ../src/digest.bend as Digest
+import ../src/cschema.bend as CS
 
 def Node0() -> Data: Bool
 def Node0.to_value(v: Node0()) -> T.Value: T.BooleanValue{v}
@@ -2466,6 +2471,11 @@ def boolean.serialize(v: boolean()) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def boolean.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, boolean()>: Name.decode_result(Name_boolean{}, result)
 def boolean.deserialize(xs: +List<U32>) -> Maybe<&2, boolean()>: Name.deserialize(Name_boolean{}, xs)
 def boolean.hash_tree_root(v: boolean()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_boolean{}, v)
+# boolean, primary compact API: packed buffer in, view / packed bytes / digest out.
+def boolean.compact() -> CS.CS: Compact.boolean()
+def boolean.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.boolean(), size, buf)
+def boolean.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def boolean.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.boolean(), v, buf)
 
 def uint8() -> Data: Node1()
 def uint8.schema() -> T.Schema: Name.schema(Name_uint8{})
@@ -2476,6 +2486,11 @@ def uint8.serialize(v: uint8()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_ui
 def uint8.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, uint8()>: Name.decode_result(Name_uint8{}, result)
 def uint8.deserialize(xs: +List<U32>) -> Maybe<&2, uint8()>: Name.deserialize(Name_uint8{}, xs)
 def uint8.hash_tree_root(v: uint8()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_uint8{}, v)
+# uint8, primary compact API: packed buffer in, view / packed bytes / digest out.
+def uint8.compact() -> CS.CS: Compact.uint8()
+def uint8.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.uint8(), size, buf)
+def uint8.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def uint8.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.uint8(), v, buf)
 
 def uint32() -> Data: Node2()
 def uint32.schema() -> T.Schema: Name.schema(Name_uint32{})
@@ -2486,6 +2501,11 @@ def uint32.serialize(v: uint32()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_
 def uint32.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, uint32()>: Name.decode_result(Name_uint32{}, result)
 def uint32.deserialize(xs: +List<U32>) -> Maybe<&2, uint32()>: Name.deserialize(Name_uint32{}, xs)
 def uint32.hash_tree_root(v: uint32()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_uint32{}, v)
+# uint32, primary compact API: packed buffer in, view / packed bytes / digest out.
+def uint32.compact() -> CS.CS: Compact.uint32()
+def uint32.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.uint32(), size, buf)
+def uint32.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def uint32.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.uint32(), v, buf)
 
 def uint64() -> Data: Node3()
 def uint64.schema() -> T.Schema: Name.schema(Name_uint64{})
@@ -2496,6 +2516,11 @@ def uint64.serialize(v: uint64()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_
 def uint64.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, uint64()>: Name.decode_result(Name_uint64{}, result)
 def uint64.deserialize(xs: +List<U32>) -> Maybe<&2, uint64()>: Name.deserialize(Name_uint64{}, xs)
 def uint64.hash_tree_root(v: uint64()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_uint64{}, v)
+# uint64, primary compact API: packed buffer in, view / packed bytes / digest out.
+def uint64.compact() -> CS.CS: Compact.uint64()
+def uint64.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.uint64(), size, buf)
+def uint64.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def uint64.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.uint64(), v, buf)
 
 def uint256() -> Data: Node4()
 def uint256.schema() -> T.Schema: Name.schema(Name_uint256{})
@@ -2506,6 +2531,11 @@ def uint256.serialize(v: uint256()) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def uint256.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, uint256()>: Name.decode_result(Name_uint256{}, result)
 def uint256.deserialize(xs: +List<U32>) -> Maybe<&2, uint256()>: Name.deserialize(Name_uint256{}, xs)
 def uint256.hash_tree_root(v: uint256()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_uint256{}, v)
+# uint256, primary compact API: packed buffer in, view / packed bytes / digest out.
+def uint256.compact() -> CS.CS: Compact.uint256()
+def uint256.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.uint256(), size, buf)
+def uint256.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def uint256.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.uint256(), v, buf)
 
 def Bytes1() -> Data: Node5()
 def Bytes1.schema() -> T.Schema: Name.schema(Name_Bytes1{})
@@ -2516,6 +2546,11 @@ def Bytes1.serialize(v: Bytes1()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_
 def Bytes1.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Bytes1()>: Name.decode_result(Name_Bytes1{}, result)
 def Bytes1.deserialize(xs: +List<U32>) -> Maybe<&2, Bytes1()>: Name.deserialize(Name_Bytes1{}, xs)
 def Bytes1.hash_tree_root(v: Bytes1()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Bytes1{}, v)
+# Bytes1, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Bytes1.compact() -> CS.CS: Compact.Bytes1()
+def Bytes1.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Bytes1(), size, buf)
+def Bytes1.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Bytes1.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Bytes1(), v, buf)
 
 def Bytes4() -> Data: Node6()
 def Bytes4.schema() -> T.Schema: Name.schema(Name_Bytes4{})
@@ -2526,6 +2561,11 @@ def Bytes4.serialize(v: Bytes4()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_
 def Bytes4.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Bytes4()>: Name.decode_result(Name_Bytes4{}, result)
 def Bytes4.deserialize(xs: +List<U32>) -> Maybe<&2, Bytes4()>: Name.deserialize(Name_Bytes4{}, xs)
 def Bytes4.hash_tree_root(v: Bytes4()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Bytes4{}, v)
+# Bytes4, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Bytes4.compact() -> CS.CS: Compact.Bytes4()
+def Bytes4.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Bytes4(), size, buf)
+def Bytes4.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Bytes4.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Bytes4(), v, buf)
 
 def Bytes32() -> Data: Node7()
 def Bytes32.schema() -> T.Schema: Name.schema(Name_Bytes32{})
@@ -2536,6 +2576,11 @@ def Bytes32.serialize(v: Bytes32()) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def Bytes32.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Bytes32()>: Name.decode_result(Name_Bytes32{}, result)
 def Bytes32.deserialize(xs: +List<U32>) -> Maybe<&2, Bytes32()>: Name.deserialize(Name_Bytes32{}, xs)
 def Bytes32.hash_tree_root(v: Bytes32()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Bytes32{}, v)
+# Bytes32, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Bytes32.compact() -> CS.CS: Compact.Bytes32()
+def Bytes32.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Bytes32(), size, buf)
+def Bytes32.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Bytes32.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Bytes32(), v, buf)
 
 def Bytes48() -> Data: Node8()
 def Bytes48.schema() -> T.Schema: Name.schema(Name_Bytes48{})
@@ -2546,6 +2591,11 @@ def Bytes48.serialize(v: Bytes48()) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def Bytes48.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Bytes48()>: Name.decode_result(Name_Bytes48{}, result)
 def Bytes48.deserialize(xs: +List<U32>) -> Maybe<&2, Bytes48()>: Name.deserialize(Name_Bytes48{}, xs)
 def Bytes48.hash_tree_root(v: Bytes48()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Bytes48{}, v)
+# Bytes48, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Bytes48.compact() -> CS.CS: Compact.Bytes48()
+def Bytes48.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Bytes48(), size, buf)
+def Bytes48.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Bytes48.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Bytes48(), v, buf)
 
 def Bytes96() -> Data: Node9()
 def Bytes96.schema() -> T.Schema: Name.schema(Name_Bytes96{})
@@ -2556,6 +2606,11 @@ def Bytes96.serialize(v: Bytes96()) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def Bytes96.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Bytes96()>: Name.decode_result(Name_Bytes96{}, result)
 def Bytes96.deserialize(xs: +List<U32>) -> Maybe<&2, Bytes96()>: Name.deserialize(Name_Bytes96{}, xs)
 def Bytes96.hash_tree_root(v: Bytes96()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Bytes96{}, v)
+# Bytes96, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Bytes96.compact() -> CS.CS: Compact.Bytes96()
+def Bytes96.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Bytes96(), size, buf)
+def Bytes96.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Bytes96.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Bytes96(), v, buf)
 
 def Bytes8() -> Data: Node10()
 def Bytes8.schema() -> T.Schema: Name.schema(Name_Bytes8{})
@@ -2566,6 +2621,11 @@ def Bytes8.serialize(v: Bytes8()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_
 def Bytes8.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Bytes8()>: Name.decode_result(Name_Bytes8{}, result)
 def Bytes8.deserialize(xs: +List<U32>) -> Maybe<&2, Bytes8()>: Name.deserialize(Name_Bytes8{}, xs)
 def Bytes8.hash_tree_root(v: Bytes8()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Bytes8{}, v)
+# Bytes8, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Bytes8.compact() -> CS.CS: Compact.Bytes8()
+def Bytes8.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Bytes8(), size, buf)
+def Bytes8.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Bytes8.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Bytes8(), v, buf)
 
 def Bytes20() -> Data: Node11()
 def Bytes20.schema() -> T.Schema: Name.schema(Name_Bytes20{})
@@ -2576,6 +2636,11 @@ def Bytes20.serialize(v: Bytes20()) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def Bytes20.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Bytes20()>: Name.decode_result(Name_Bytes20{}, result)
 def Bytes20.deserialize(xs: +List<U32>) -> Maybe<&2, Bytes20()>: Name.deserialize(Name_Bytes20{}, xs)
 def Bytes20.hash_tree_root(v: Bytes20()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Bytes20{}, v)
+# Bytes20, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Bytes20.compact() -> CS.CS: Compact.Bytes20()
+def Bytes20.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Bytes20(), size, buf)
+def Bytes20.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Bytes20.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Bytes20(), v, buf)
 
 def Slot() -> Data: Node3()
 def Slot.schema() -> T.Schema: Name.schema(Name_Slot{})
@@ -2586,6 +2651,11 @@ def Slot.serialize(v: Slot()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_Slot
 def Slot.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Slot()>: Name.decode_result(Name_Slot{}, result)
 def Slot.deserialize(xs: +List<U32>) -> Maybe<&2, Slot()>: Name.deserialize(Name_Slot{}, xs)
 def Slot.hash_tree_root(v: Slot()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Slot{}, v)
+# Slot, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Slot.compact() -> CS.CS: Compact.Slot()
+def Slot.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Slot(), size, buf)
+def Slot.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Slot.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Slot(), v, buf)
 
 def Epoch() -> Data: Node3()
 def Epoch.schema() -> T.Schema: Name.schema(Name_Epoch{})
@@ -2596,6 +2666,11 @@ def Epoch.serialize(v: Epoch()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_Ep
 def Epoch.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Epoch()>: Name.decode_result(Name_Epoch{}, result)
 def Epoch.deserialize(xs: +List<U32>) -> Maybe<&2, Epoch()>: Name.deserialize(Name_Epoch{}, xs)
 def Epoch.hash_tree_root(v: Epoch()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Epoch{}, v)
+# Epoch, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Epoch.compact() -> CS.CS: Compact.Epoch()
+def Epoch.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Epoch(), size, buf)
+def Epoch.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Epoch.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Epoch(), v, buf)
 
 def Gwei() -> Data: Node3()
 def Gwei.schema() -> T.Schema: Name.schema(Name_Gwei{})
@@ -2606,6 +2681,11 @@ def Gwei.serialize(v: Gwei()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_Gwei
 def Gwei.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Gwei()>: Name.decode_result(Name_Gwei{}, result)
 def Gwei.deserialize(xs: +List<U32>) -> Maybe<&2, Gwei()>: Name.deserialize(Name_Gwei{}, xs)
 def Gwei.hash_tree_root(v: Gwei()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Gwei{}, v)
+# Gwei, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Gwei.compact() -> CS.CS: Compact.Gwei()
+def Gwei.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Gwei(), size, buf)
+def Gwei.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Gwei.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Gwei(), v, buf)
 
 def Hash32() -> Data: Node7()
 def Hash32.schema() -> T.Schema: Name.schema(Name_Hash32{})
@@ -2616,6 +2696,11 @@ def Hash32.serialize(v: Hash32()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_
 def Hash32.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Hash32()>: Name.decode_result(Name_Hash32{}, result)
 def Hash32.deserialize(xs: +List<U32>) -> Maybe<&2, Hash32()>: Name.deserialize(Name_Hash32{}, xs)
 def Hash32.hash_tree_root(v: Hash32()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Hash32{}, v)
+# Hash32, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Hash32.compact() -> CS.CS: Compact.Hash32()
+def Hash32.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Hash32(), size, buf)
+def Hash32.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Hash32.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Hash32(), v, buf)
 
 def Version() -> Data: Node6()
 def Version.schema() -> T.Schema: Name.schema(Name_Version{})
@@ -2626,6 +2711,11 @@ def Version.serialize(v: Version()) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def Version.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Version()>: Name.decode_result(Name_Version{}, result)
 def Version.deserialize(xs: +List<U32>) -> Maybe<&2, Version()>: Name.deserialize(Name_Version{}, xs)
 def Version.hash_tree_root(v: Version()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Version{}, v)
+# Version, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Version.compact() -> CS.CS: Compact.Version()
+def Version.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Version(), size, buf)
+def Version.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Version.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Version(), v, buf)
 
 def DomainType() -> Data: Node6()
 def DomainType.schema() -> T.Schema: Name.schema(Name_DomainType{})
@@ -2636,6 +2726,11 @@ def DomainType.serialize(v: DomainType()) -> Maybe<&2, +List<U32>>: Name.seriali
 def DomainType.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, DomainType()>: Name.decode_result(Name_DomainType{}, result)
 def DomainType.deserialize(xs: +List<U32>) -> Maybe<&2, DomainType()>: Name.deserialize(Name_DomainType{}, xs)
 def DomainType.hash_tree_root(v: DomainType()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_DomainType{}, v)
+# DomainType, primary compact API: packed buffer in, view / packed bytes / digest out.
+def DomainType.compact() -> CS.CS: Compact.DomainType()
+def DomainType.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.DomainType(), size, buf)
+def DomainType.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def DomainType.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.DomainType(), v, buf)
 
 def BLSSignature() -> Data: Node9()
 def BLSSignature.schema() -> T.Schema: Name.schema(Name_BLSSignature{})
@@ -2646,6 +2741,11 @@ def BLSSignature.serialize(v: BLSSignature()) -> Maybe<&2, +List<U32>>: Name.ser
 def BLSSignature.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, BLSSignature()>: Name.decode_result(Name_BLSSignature{}, result)
 def BLSSignature.deserialize(xs: +List<U32>) -> Maybe<&2, BLSSignature()>: Name.deserialize(Name_BLSSignature{}, xs)
 def BLSSignature.hash_tree_root(v: BLSSignature()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_BLSSignature{}, v)
+# BLSSignature, primary compact API: packed buffer in, view / packed bytes / digest out.
+def BLSSignature.compact() -> CS.CS: Compact.BLSSignature()
+def BLSSignature.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.BLSSignature(), size, buf)
+def BLSSignature.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def BLSSignature.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.BLSSignature(), v, buf)
 
 def FinalityBranch() -> Data: Node12()
 def FinalityBranch.schema() -> T.Schema: Name.schema(Name_FinalityBranch{})
@@ -2656,6 +2756,11 @@ def FinalityBranch.serialize(v: FinalityBranch()) -> Maybe<&2, +List<U32>>: Name
 def FinalityBranch.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, FinalityBranch()>: Name.decode_result(Name_FinalityBranch{}, result)
 def FinalityBranch.deserialize(xs: +List<U32>) -> Maybe<&2, FinalityBranch()>: Name.deserialize(Name_FinalityBranch{}, xs)
 def FinalityBranch.hash_tree_root(v: FinalityBranch()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_FinalityBranch{}, v)
+# FinalityBranch, primary compact API: packed buffer in, view / packed bytes / digest out.
+def FinalityBranch.compact() -> CS.CS: Compact.FinalityBranch()
+def FinalityBranch.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.FinalityBranch(), size, buf)
+def FinalityBranch.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def FinalityBranch.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.FinalityBranch(), v, buf)
 
 def VersionedHash() -> Data: Node7()
 def VersionedHash.schema() -> T.Schema: Name.schema(Name_VersionedHash{})
@@ -2666,6 +2771,11 @@ def VersionedHash.serialize(v: VersionedHash()) -> Maybe<&2, +List<U32>>: Name.s
 def VersionedHash.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, VersionedHash()>: Name.decode_result(Name_VersionedHash{}, result)
 def VersionedHash.deserialize(xs: +List<U32>) -> Maybe<&2, VersionedHash()>: Name.deserialize(Name_VersionedHash{}, xs)
 def VersionedHash.hash_tree_root(v: VersionedHash()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_VersionedHash{}, v)
+# VersionedHash, primary compact API: packed buffer in, view / packed bytes / digest out.
+def VersionedHash.compact() -> CS.CS: Compact.VersionedHash()
+def VersionedHash.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.VersionedHash(), size, buf)
+def VersionedHash.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def VersionedHash.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.VersionedHash(), v, buf)
 
 def G1Point() -> Data: Node8()
 def G1Point.schema() -> T.Schema: Name.schema(Name_G1Point{})
@@ -2676,6 +2786,11 @@ def G1Point.serialize(v: G1Point()) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def G1Point.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, G1Point()>: Name.decode_result(Name_G1Point{}, result)
 def G1Point.deserialize(xs: +List<U32>) -> Maybe<&2, G1Point()>: Name.deserialize(Name_G1Point{}, xs)
 def G1Point.hash_tree_root(v: G1Point()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_G1Point{}, v)
+# G1Point, primary compact API: packed buffer in, view / packed bytes / digest out.
+def G1Point.compact() -> CS.CS: Compact.G1Point()
+def G1Point.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.G1Point(), size, buf)
+def G1Point.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def G1Point.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.G1Point(), v, buf)
 
 def G2Point() -> Data: Node9()
 def G2Point.schema() -> T.Schema: Name.schema(Name_G2Point{})
@@ -2686,6 +2801,11 @@ def G2Point.serialize(v: G2Point()) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def G2Point.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, G2Point()>: Name.decode_result(Name_G2Point{}, result)
 def G2Point.deserialize(xs: +List<U32>) -> Maybe<&2, G2Point()>: Name.deserialize(Name_G2Point{}, xs)
 def G2Point.hash_tree_root(v: G2Point()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_G2Point{}, v)
+# G2Point, primary compact API: packed buffer in, view / packed bytes / digest out.
+def G2Point.compact() -> CS.CS: Compact.G2Point()
+def G2Point.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.G2Point(), size, buf)
+def G2Point.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def G2Point.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.G2Point(), v, buf)
 
 def Fork.schema() -> T.Schema: Name.schema(Name_Fork{})
 def Fork.to_ssz(v: Fork) -> T.Value: Name.to_ssz(Name_Fork{}, v)
@@ -2695,6 +2815,11 @@ def Fork.serialize(v: Fork) -> Maybe<&2, +List<U32>>: Name.serialize(Name_Fork{}
 def Fork.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Fork>: Name.decode_result(Name_Fork{}, result)
 def Fork.deserialize(xs: +List<U32>) -> Maybe<&2, Fork>: Name.deserialize(Name_Fork{}, xs)
 def Fork.hash_tree_root(v: Fork) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Fork{}, v)
+# Fork, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Fork.compact() -> CS.CS: Compact.Fork()
+def Fork.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Fork(), size, buf)
+def Fork.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Fork.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Fork(), v, buf)
 
 def SyncAggregate.schema() -> T.Schema: Name.schema(Name_SyncAggregate{})
 def SyncAggregate.to_ssz(v: SyncAggregate) -> T.Value: Name.to_ssz(Name_SyncAggregate{}, v)
@@ -2704,6 +2829,11 @@ def SyncAggregate.serialize(v: SyncAggregate) -> Maybe<&2, +List<U32>>: Name.ser
 def SyncAggregate.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SyncAggregate>: Name.decode_result(Name_SyncAggregate{}, result)
 def SyncAggregate.deserialize(xs: +List<U32>) -> Maybe<&2, SyncAggregate>: Name.deserialize(Name_SyncAggregate{}, xs)
 def SyncAggregate.hash_tree_root(v: SyncAggregate) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SyncAggregate{}, v)
+# SyncAggregate, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SyncAggregate.compact() -> CS.CS: Compact.SyncAggregate()
+def SyncAggregate.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SyncAggregate(), size, buf)
+def SyncAggregate.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SyncAggregate.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SyncAggregate(), v, buf)
 
 def SyncAggregatorSelectionData.schema() -> T.Schema: Name.schema(Name_SyncAggregatorSelectionData{})
 def SyncAggregatorSelectionData.to_ssz(v: SyncAggregatorSelectionData) -> T.Value: Name.to_ssz(Name_SyncAggregatorSelectionData{}, v)
@@ -2713,6 +2843,11 @@ def SyncAggregatorSelectionData.serialize(v: SyncAggregatorSelectionData) -> May
 def SyncAggregatorSelectionData.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SyncAggregatorSelectionData>: Name.decode_result(Name_SyncAggregatorSelectionData{}, result)
 def SyncAggregatorSelectionData.deserialize(xs: +List<U32>) -> Maybe<&2, SyncAggregatorSelectionData>: Name.deserialize(Name_SyncAggregatorSelectionData{}, xs)
 def SyncAggregatorSelectionData.hash_tree_root(v: SyncAggregatorSelectionData) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SyncAggregatorSelectionData{}, v)
+# SyncAggregatorSelectionData, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SyncAggregatorSelectionData.compact() -> CS.CS: Compact.SyncAggregatorSelectionData()
+def SyncAggregatorSelectionData.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SyncAggregatorSelectionData(), size, buf)
+def SyncAggregatorSelectionData.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SyncAggregatorSelectionData.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SyncAggregatorSelectionData(), v, buf)
 
 def PowBlock.schema() -> T.Schema: Name.schema(Name_PowBlock{})
 def PowBlock.to_ssz(v: PowBlock) -> T.Value: Name.to_ssz(Name_PowBlock{}, v)
@@ -2722,6 +2857,11 @@ def PowBlock.serialize(v: PowBlock) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def PowBlock.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, PowBlock>: Name.decode_result(Name_PowBlock{}, result)
 def PowBlock.deserialize(xs: +List<U32>) -> Maybe<&2, PowBlock>: Name.deserialize(Name_PowBlock{}, xs)
 def PowBlock.hash_tree_root(v: PowBlock) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_PowBlock{}, v)
+# PowBlock, primary compact API: packed buffer in, view / packed bytes / digest out.
+def PowBlock.compact() -> CS.CS: Compact.PowBlock()
+def PowBlock.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.PowBlock(), size, buf)
+def PowBlock.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def PowBlock.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.PowBlock(), v, buf)
 
 def CommitteeIndex() -> Data: Node3()
 def CommitteeIndex.schema() -> T.Schema: Name.schema(Name_CommitteeIndex{})
@@ -2732,6 +2872,11 @@ def CommitteeIndex.serialize(v: CommitteeIndex()) -> Maybe<&2, +List<U32>>: Name
 def CommitteeIndex.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, CommitteeIndex()>: Name.decode_result(Name_CommitteeIndex{}, result)
 def CommitteeIndex.deserialize(xs: +List<U32>) -> Maybe<&2, CommitteeIndex()>: Name.deserialize(Name_CommitteeIndex{}, xs)
 def CommitteeIndex.hash_tree_root(v: CommitteeIndex()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_CommitteeIndex{}, v)
+# CommitteeIndex, primary compact API: packed buffer in, view / packed bytes / digest out.
+def CommitteeIndex.compact() -> CS.CS: Compact.CommitteeIndex()
+def CommitteeIndex.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.CommitteeIndex(), size, buf)
+def CommitteeIndex.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def CommitteeIndex.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.CommitteeIndex(), v, buf)
 
 def ValidatorIndex() -> Data: Node3()
 def ValidatorIndex.schema() -> T.Schema: Name.schema(Name_ValidatorIndex{})
@@ -2742,6 +2887,11 @@ def ValidatorIndex.serialize(v: ValidatorIndex()) -> Maybe<&2, +List<U32>>: Name
 def ValidatorIndex.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ValidatorIndex()>: Name.decode_result(Name_ValidatorIndex{}, result)
 def ValidatorIndex.deserialize(xs: +List<U32>) -> Maybe<&2, ValidatorIndex()>: Name.deserialize(Name_ValidatorIndex{}, xs)
 def ValidatorIndex.hash_tree_root(v: ValidatorIndex()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ValidatorIndex{}, v)
+# ValidatorIndex, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ValidatorIndex.compact() -> CS.CS: Compact.ValidatorIndex()
+def ValidatorIndex.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ValidatorIndex(), size, buf)
+def ValidatorIndex.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ValidatorIndex.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ValidatorIndex(), v, buf)
 
 def PendingConsolidation.schema() -> T.Schema: Name.schema(Name_PendingConsolidation{})
 def PendingConsolidation.to_ssz(v: PendingConsolidation) -> T.Value: Name.to_ssz(Name_PendingConsolidation{}, v)
@@ -2751,6 +2901,11 @@ def PendingConsolidation.serialize(v: PendingConsolidation) -> Maybe<&2, +List<U
 def PendingConsolidation.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, PendingConsolidation>: Name.decode_result(Name_PendingConsolidation{}, result)
 def PendingConsolidation.deserialize(xs: +List<U32>) -> Maybe<&2, PendingConsolidation>: Name.deserialize(Name_PendingConsolidation{}, xs)
 def PendingConsolidation.hash_tree_root(v: PendingConsolidation) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_PendingConsolidation{}, v)
+# PendingConsolidation, primary compact API: packed buffer in, view / packed bytes / digest out.
+def PendingConsolidation.compact() -> CS.CS: Compact.PendingConsolidation()
+def PendingConsolidation.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.PendingConsolidation(), size, buf)
+def PendingConsolidation.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def PendingConsolidation.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.PendingConsolidation(), v, buf)
 
 def PendingPartialWithdrawal.schema() -> T.Schema: Name.schema(Name_PendingPartialWithdrawal{})
 def PendingPartialWithdrawal.to_ssz(v: PendingPartialWithdrawal) -> T.Value: Name.to_ssz(Name_PendingPartialWithdrawal{}, v)
@@ -2760,6 +2915,11 @@ def PendingPartialWithdrawal.serialize(v: PendingPartialWithdrawal) -> Maybe<&2,
 def PendingPartialWithdrawal.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, PendingPartialWithdrawal>: Name.decode_result(Name_PendingPartialWithdrawal{}, result)
 def PendingPartialWithdrawal.deserialize(xs: +List<U32>) -> Maybe<&2, PendingPartialWithdrawal>: Name.deserialize(Name_PendingPartialWithdrawal{}, xs)
 def PendingPartialWithdrawal.hash_tree_root(v: PendingPartialWithdrawal) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_PendingPartialWithdrawal{}, v)
+# PendingPartialWithdrawal, primary compact API: packed buffer in, view / packed bytes / digest out.
+def PendingPartialWithdrawal.compact() -> CS.CS: Compact.PendingPartialWithdrawal()
+def PendingPartialWithdrawal.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.PendingPartialWithdrawal(), size, buf)
+def PendingPartialWithdrawal.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def PendingPartialWithdrawal.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.PendingPartialWithdrawal(), v, buf)
 
 def VoluntaryExit.schema() -> T.Schema: Name.schema(Name_VoluntaryExit{})
 def VoluntaryExit.to_ssz(v: VoluntaryExit) -> T.Value: Name.to_ssz(Name_VoluntaryExit{}, v)
@@ -2769,6 +2929,11 @@ def VoluntaryExit.serialize(v: VoluntaryExit) -> Maybe<&2, +List<U32>>: Name.ser
 def VoluntaryExit.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, VoluntaryExit>: Name.decode_result(Name_VoluntaryExit{}, result)
 def VoluntaryExit.deserialize(xs: +List<U32>) -> Maybe<&2, VoluntaryExit>: Name.deserialize(Name_VoluntaryExit{}, xs)
 def VoluntaryExit.hash_tree_root(v: VoluntaryExit) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_VoluntaryExit{}, v)
+# VoluntaryExit, primary compact API: packed buffer in, view / packed bytes / digest out.
+def VoluntaryExit.compact() -> CS.CS: Compact.VoluntaryExit()
+def VoluntaryExit.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.VoluntaryExit(), size, buf)
+def VoluntaryExit.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def VoluntaryExit.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.VoluntaryExit(), v, buf)
 
 def SignedVoluntaryExit.schema() -> T.Schema: Name.schema(Name_SignedVoluntaryExit{})
 def SignedVoluntaryExit.to_ssz(v: SignedVoluntaryExit) -> T.Value: Name.to_ssz(Name_SignedVoluntaryExit{}, v)
@@ -2778,6 +2943,11 @@ def SignedVoluntaryExit.serialize(v: SignedVoluntaryExit) -> Maybe<&2, +List<U32
 def SignedVoluntaryExit.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SignedVoluntaryExit>: Name.decode_result(Name_SignedVoluntaryExit{}, result)
 def SignedVoluntaryExit.deserialize(xs: +List<U32>) -> Maybe<&2, SignedVoluntaryExit>: Name.deserialize(Name_SignedVoluntaryExit{}, xs)
 def SignedVoluntaryExit.hash_tree_root(v: SignedVoluntaryExit) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SignedVoluntaryExit{}, v)
+# SignedVoluntaryExit, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SignedVoluntaryExit.compact() -> CS.CS: Compact.SignedVoluntaryExit()
+def SignedVoluntaryExit.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SignedVoluntaryExit(), size, buf)
+def SignedVoluntaryExit.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SignedVoluntaryExit.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SignedVoluntaryExit(), v, buf)
 
 def Root() -> Data: Node7()
 def Root.schema() -> T.Schema: Name.schema(Name_Root{})
@@ -2788,6 +2958,11 @@ def Root.serialize(v: Root()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_Root
 def Root.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Root()>: Name.decode_result(Name_Root{}, result)
 def Root.deserialize(xs: +List<U32>) -> Maybe<&2, Root()>: Name.deserialize(Name_Root{}, xs)
 def Root.hash_tree_root(v: Root()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Root{}, v)
+# Root, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Root.compact() -> CS.CS: Compact.Root()
+def Root.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Root(), size, buf)
+def Root.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Root.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Root(), v, buf)
 
 def HistoricalSummary.schema() -> T.Schema: Name.schema(Name_HistoricalSummary{})
 def HistoricalSummary.to_ssz(v: HistoricalSummary) -> T.Value: Name.to_ssz(Name_HistoricalSummary{}, v)
@@ -2797,6 +2972,11 @@ def HistoricalSummary.serialize(v: HistoricalSummary) -> Maybe<&2, +List<U32>>: 
 def HistoricalSummary.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, HistoricalSummary>: Name.decode_result(Name_HistoricalSummary{}, result)
 def HistoricalSummary.deserialize(xs: +List<U32>) -> Maybe<&2, HistoricalSummary>: Name.deserialize(Name_HistoricalSummary{}, xs)
 def HistoricalSummary.hash_tree_root(v: HistoricalSummary) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_HistoricalSummary{}, v)
+# HistoricalSummary, primary compact API: packed buffer in, view / packed bytes / digest out.
+def HistoricalSummary.compact() -> CS.CS: Compact.HistoricalSummary()
+def HistoricalSummary.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.HistoricalSummary(), size, buf)
+def HistoricalSummary.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def HistoricalSummary.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.HistoricalSummary(), v, buf)
 
 def SyncCommitteeContribution.schema() -> T.Schema: Name.schema(Name_SyncCommitteeContribution{})
 def SyncCommitteeContribution.to_ssz(v: SyncCommitteeContribution) -> T.Value: Name.to_ssz(Name_SyncCommitteeContribution{}, v)
@@ -2806,6 +2986,11 @@ def SyncCommitteeContribution.serialize(v: SyncCommitteeContribution) -> Maybe<&
 def SyncCommitteeContribution.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SyncCommitteeContribution>: Name.decode_result(Name_SyncCommitteeContribution{}, result)
 def SyncCommitteeContribution.deserialize(xs: +List<U32>) -> Maybe<&2, SyncCommitteeContribution>: Name.deserialize(Name_SyncCommitteeContribution{}, xs)
 def SyncCommitteeContribution.hash_tree_root(v: SyncCommitteeContribution) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SyncCommitteeContribution{}, v)
+# SyncCommitteeContribution, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SyncCommitteeContribution.compact() -> CS.CS: Compact.SyncCommitteeContribution()
+def SyncCommitteeContribution.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SyncCommitteeContribution(), size, buf)
+def SyncCommitteeContribution.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SyncCommitteeContribution.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SyncCommitteeContribution(), v, buf)
 
 def ContributionAndProof.schema() -> T.Schema: Name.schema(Name_ContributionAndProof{})
 def ContributionAndProof.to_ssz(v: ContributionAndProof) -> T.Value: Name.to_ssz(Name_ContributionAndProof{}, v)
@@ -2815,6 +3000,11 @@ def ContributionAndProof.serialize(v: ContributionAndProof) -> Maybe<&2, +List<U
 def ContributionAndProof.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ContributionAndProof>: Name.decode_result(Name_ContributionAndProof{}, result)
 def ContributionAndProof.deserialize(xs: +List<U32>) -> Maybe<&2, ContributionAndProof>: Name.deserialize(Name_ContributionAndProof{}, xs)
 def ContributionAndProof.hash_tree_root(v: ContributionAndProof) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ContributionAndProof{}, v)
+# ContributionAndProof, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ContributionAndProof.compact() -> CS.CS: Compact.ContributionAndProof()
+def ContributionAndProof.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ContributionAndProof(), size, buf)
+def ContributionAndProof.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ContributionAndProof.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ContributionAndProof(), v, buf)
 
 def SignedContributionAndProof.schema() -> T.Schema: Name.schema(Name_SignedContributionAndProof{})
 def SignedContributionAndProof.to_ssz(v: SignedContributionAndProof) -> T.Value: Name.to_ssz(Name_SignedContributionAndProof{}, v)
@@ -2824,6 +3014,11 @@ def SignedContributionAndProof.serialize(v: SignedContributionAndProof) -> Maybe
 def SignedContributionAndProof.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SignedContributionAndProof>: Name.decode_result(Name_SignedContributionAndProof{}, result)
 def SignedContributionAndProof.deserialize(xs: +List<U32>) -> Maybe<&2, SignedContributionAndProof>: Name.deserialize(Name_SignedContributionAndProof{}, xs)
 def SignedContributionAndProof.hash_tree_root(v: SignedContributionAndProof) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SignedContributionAndProof{}, v)
+# SignedContributionAndProof, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SignedContributionAndProof.compact() -> CS.CS: Compact.SignedContributionAndProof()
+def SignedContributionAndProof.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SignedContributionAndProof(), size, buf)
+def SignedContributionAndProof.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SignedContributionAndProof.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SignedContributionAndProof(), v, buf)
 
 def SyncCommitteeMessage.schema() -> T.Schema: Name.schema(Name_SyncCommitteeMessage{})
 def SyncCommitteeMessage.to_ssz(v: SyncCommitteeMessage) -> T.Value: Name.to_ssz(Name_SyncCommitteeMessage{}, v)
@@ -2833,6 +3028,11 @@ def SyncCommitteeMessage.serialize(v: SyncCommitteeMessage) -> Maybe<&2, +List<U
 def SyncCommitteeMessage.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SyncCommitteeMessage>: Name.decode_result(Name_SyncCommitteeMessage{}, result)
 def SyncCommitteeMessage.deserialize(xs: +List<U32>) -> Maybe<&2, SyncCommitteeMessage>: Name.deserialize(Name_SyncCommitteeMessage{}, xs)
 def SyncCommitteeMessage.hash_tree_root(v: SyncCommitteeMessage) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SyncCommitteeMessage{}, v)
+# SyncCommitteeMessage, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SyncCommitteeMessage.compact() -> CS.CS: Compact.SyncCommitteeMessage()
+def SyncCommitteeMessage.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SyncCommitteeMessage(), size, buf)
+def SyncCommitteeMessage.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SyncCommitteeMessage.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SyncCommitteeMessage(), v, buf)
 
 def Eth1Block.schema() -> T.Schema: Name.schema(Name_Eth1Block{})
 def Eth1Block.to_ssz(v: Eth1Block) -> T.Value: Name.to_ssz(Name_Eth1Block{}, v)
@@ -2842,6 +3042,11 @@ def Eth1Block.serialize(v: Eth1Block) -> Maybe<&2, +List<U32>>: Name.serialize(N
 def Eth1Block.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Eth1Block>: Name.decode_result(Name_Eth1Block{}, result)
 def Eth1Block.deserialize(xs: +List<U32>) -> Maybe<&2, Eth1Block>: Name.deserialize(Name_Eth1Block{}, xs)
 def Eth1Block.hash_tree_root(v: Eth1Block) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Eth1Block{}, v)
+# Eth1Block, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Eth1Block.compact() -> CS.CS: Compact.Eth1Block()
+def Eth1Block.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Eth1Block(), size, buf)
+def Eth1Block.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Eth1Block.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Eth1Block(), v, buf)
 
 def BeaconBlockHeader.schema() -> T.Schema: Name.schema(Name_BeaconBlockHeader{})
 def BeaconBlockHeader.to_ssz(v: BeaconBlockHeader) -> T.Value: Name.to_ssz(Name_BeaconBlockHeader{}, v)
@@ -2851,6 +3056,11 @@ def BeaconBlockHeader.serialize(v: BeaconBlockHeader) -> Maybe<&2, +List<U32>>: 
 def BeaconBlockHeader.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, BeaconBlockHeader>: Name.decode_result(Name_BeaconBlockHeader{}, result)
 def BeaconBlockHeader.deserialize(xs: +List<U32>) -> Maybe<&2, BeaconBlockHeader>: Name.deserialize(Name_BeaconBlockHeader{}, xs)
 def BeaconBlockHeader.hash_tree_root(v: BeaconBlockHeader) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_BeaconBlockHeader{}, v)
+# BeaconBlockHeader, primary compact API: packed buffer in, view / packed bytes / digest out.
+def BeaconBlockHeader.compact() -> CS.CS: Compact.BeaconBlockHeader()
+def BeaconBlockHeader.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.BeaconBlockHeader(), size, buf)
+def BeaconBlockHeader.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def BeaconBlockHeader.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.BeaconBlockHeader(), v, buf)
 
 def SignedBeaconBlockHeader.schema() -> T.Schema: Name.schema(Name_SignedBeaconBlockHeader{})
 def SignedBeaconBlockHeader.to_ssz(v: SignedBeaconBlockHeader) -> T.Value: Name.to_ssz(Name_SignedBeaconBlockHeader{}, v)
@@ -2860,6 +3070,11 @@ def SignedBeaconBlockHeader.serialize(v: SignedBeaconBlockHeader) -> Maybe<&2, +
 def SignedBeaconBlockHeader.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SignedBeaconBlockHeader>: Name.decode_result(Name_SignedBeaconBlockHeader{}, result)
 def SignedBeaconBlockHeader.deserialize(xs: +List<U32>) -> Maybe<&2, SignedBeaconBlockHeader>: Name.deserialize(Name_SignedBeaconBlockHeader{}, xs)
 def SignedBeaconBlockHeader.hash_tree_root(v: SignedBeaconBlockHeader) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SignedBeaconBlockHeader{}, v)
+# SignedBeaconBlockHeader, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SignedBeaconBlockHeader.compact() -> CS.CS: Compact.SignedBeaconBlockHeader()
+def SignedBeaconBlockHeader.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SignedBeaconBlockHeader(), size, buf)
+def SignedBeaconBlockHeader.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SignedBeaconBlockHeader.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SignedBeaconBlockHeader(), v, buf)
 
 def ProposerSlashing.schema() -> T.Schema: Name.schema(Name_ProposerSlashing{})
 def ProposerSlashing.to_ssz(v: ProposerSlashing) -> T.Value: Name.to_ssz(Name_ProposerSlashing{}, v)
@@ -2869,6 +3084,11 @@ def ProposerSlashing.serialize(v: ProposerSlashing) -> Maybe<&2, +List<U32>>: Na
 def ProposerSlashing.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ProposerSlashing>: Name.decode_result(Name_ProposerSlashing{}, result)
 def ProposerSlashing.deserialize(xs: +List<U32>) -> Maybe<&2, ProposerSlashing>: Name.deserialize(Name_ProposerSlashing{}, xs)
 def ProposerSlashing.hash_tree_root(v: ProposerSlashing) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ProposerSlashing{}, v)
+# ProposerSlashing, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ProposerSlashing.compact() -> CS.CS: Compact.ProposerSlashing()
+def ProposerSlashing.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ProposerSlashing(), size, buf)
+def ProposerSlashing.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ProposerSlashing.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ProposerSlashing(), v, buf)
 
 def HistoricalBatch.schema() -> T.Schema: Name.schema(Name_HistoricalBatch{})
 def HistoricalBatch.to_ssz(v: HistoricalBatch) -> T.Value: Name.to_ssz(Name_HistoricalBatch{}, v)
@@ -2878,6 +3098,11 @@ def HistoricalBatch.serialize(v: HistoricalBatch) -> Maybe<&2, +List<U32>>: Name
 def HistoricalBatch.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, HistoricalBatch>: Name.decode_result(Name_HistoricalBatch{}, result)
 def HistoricalBatch.deserialize(xs: +List<U32>) -> Maybe<&2, HistoricalBatch>: Name.deserialize(Name_HistoricalBatch{}, xs)
 def HistoricalBatch.hash_tree_root(v: HistoricalBatch) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_HistoricalBatch{}, v)
+# HistoricalBatch, primary compact API: packed buffer in, view / packed bytes / digest out.
+def HistoricalBatch.compact() -> CS.CS: Compact.HistoricalBatch()
+def HistoricalBatch.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.HistoricalBatch(), size, buf)
+def HistoricalBatch.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def HistoricalBatch.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.HistoricalBatch(), v, buf)
 
 def Eth1Data.schema() -> T.Schema: Name.schema(Name_Eth1Data{})
 def Eth1Data.to_ssz(v: Eth1Data) -> T.Value: Name.to_ssz(Name_Eth1Data{}, v)
@@ -2887,6 +3112,11 @@ def Eth1Data.serialize(v: Eth1Data) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def Eth1Data.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Eth1Data>: Name.decode_result(Name_Eth1Data{}, result)
 def Eth1Data.deserialize(xs: +List<U32>) -> Maybe<&2, Eth1Data>: Name.deserialize(Name_Eth1Data{}, xs)
 def Eth1Data.hash_tree_root(v: Eth1Data) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Eth1Data{}, v)
+# Eth1Data, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Eth1Data.compact() -> CS.CS: Compact.Eth1Data()
+def Eth1Data.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Eth1Data(), size, buf)
+def Eth1Data.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Eth1Data.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Eth1Data(), v, buf)
 
 def Checkpoint.schema() -> T.Schema: Name.schema(Name_Checkpoint{})
 def Checkpoint.to_ssz(v: Checkpoint) -> T.Value: Name.to_ssz(Name_Checkpoint{}, v)
@@ -2896,6 +3126,11 @@ def Checkpoint.serialize(v: Checkpoint) -> Maybe<&2, +List<U32>>: Name.serialize
 def Checkpoint.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Checkpoint>: Name.decode_result(Name_Checkpoint{}, result)
 def Checkpoint.deserialize(xs: +List<U32>) -> Maybe<&2, Checkpoint>: Name.deserialize(Name_Checkpoint{}, xs)
 def Checkpoint.hash_tree_root(v: Checkpoint) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Checkpoint{}, v)
+# Checkpoint, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Checkpoint.compact() -> CS.CS: Compact.Checkpoint()
+def Checkpoint.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Checkpoint(), size, buf)
+def Checkpoint.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Checkpoint.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Checkpoint(), v, buf)
 
 def AttestationData.schema() -> T.Schema: Name.schema(Name_AttestationData{})
 def AttestationData.to_ssz(v: AttestationData) -> T.Value: Name.to_ssz(Name_AttestationData{}, v)
@@ -2905,6 +3140,11 @@ def AttestationData.serialize(v: AttestationData) -> Maybe<&2, +List<U32>>: Name
 def AttestationData.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, AttestationData>: Name.decode_result(Name_AttestationData{}, result)
 def AttestationData.deserialize(xs: +List<U32>) -> Maybe<&2, AttestationData>: Name.deserialize(Name_AttestationData{}, xs)
 def AttestationData.hash_tree_root(v: AttestationData) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_AttestationData{}, v)
+# AttestationData, primary compact API: packed buffer in, view / packed bytes / digest out.
+def AttestationData.compact() -> CS.CS: Compact.AttestationData()
+def AttestationData.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.AttestationData(), size, buf)
+def AttestationData.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def AttestationData.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.AttestationData(), v, buf)
 
 def SingleAttestation.schema() -> T.Schema: Name.schema(Name_SingleAttestation{})
 def SingleAttestation.to_ssz(v: SingleAttestation) -> T.Value: Name.to_ssz(Name_SingleAttestation{}, v)
@@ -2914,6 +3154,11 @@ def SingleAttestation.serialize(v: SingleAttestation) -> Maybe<&2, +List<U32>>: 
 def SingleAttestation.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SingleAttestation>: Name.decode_result(Name_SingleAttestation{}, result)
 def SingleAttestation.deserialize(xs: +List<U32>) -> Maybe<&2, SingleAttestation>: Name.deserialize(Name_SingleAttestation{}, xs)
 def SingleAttestation.hash_tree_root(v: SingleAttestation) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SingleAttestation{}, v)
+# SingleAttestation, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SingleAttestation.compact() -> CS.CS: Compact.SingleAttestation()
+def SingleAttestation.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SingleAttestation(), size, buf)
+def SingleAttestation.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SingleAttestation.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SingleAttestation(), v, buf)
 
 def Attestation.schema() -> T.Schema: Name.schema(Name_Attestation{})
 def Attestation.to_ssz(v: Attestation) -> T.Value: Name.to_ssz(Name_Attestation{}, v)
@@ -2923,6 +3168,11 @@ def Attestation.serialize(v: Attestation) -> Maybe<&2, +List<U32>>: Name.seriali
 def Attestation.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Attestation>: Name.decode_result(Name_Attestation{}, result)
 def Attestation.deserialize(xs: +List<U32>) -> Maybe<&2, Attestation>: Name.deserialize(Name_Attestation{}, xs)
 def Attestation.hash_tree_root(v: Attestation) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Attestation{}, v)
+# Attestation, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Attestation.compact() -> CS.CS: Compact.Attestation()
+def Attestation.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Attestation(), size, buf)
+def Attestation.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Attestation.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Attestation(), v, buf)
 
 def AggregateAndProof.schema() -> T.Schema: Name.schema(Name_AggregateAndProof{})
 def AggregateAndProof.to_ssz(v: AggregateAndProof) -> T.Value: Name.to_ssz(Name_AggregateAndProof{}, v)
@@ -2932,6 +3182,11 @@ def AggregateAndProof.serialize(v: AggregateAndProof) -> Maybe<&2, +List<U32>>: 
 def AggregateAndProof.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, AggregateAndProof>: Name.decode_result(Name_AggregateAndProof{}, result)
 def AggregateAndProof.deserialize(xs: +List<U32>) -> Maybe<&2, AggregateAndProof>: Name.deserialize(Name_AggregateAndProof{}, xs)
 def AggregateAndProof.hash_tree_root(v: AggregateAndProof) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_AggregateAndProof{}, v)
+# AggregateAndProof, primary compact API: packed buffer in, view / packed bytes / digest out.
+def AggregateAndProof.compact() -> CS.CS: Compact.AggregateAndProof()
+def AggregateAndProof.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.AggregateAndProof(), size, buf)
+def AggregateAndProof.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def AggregateAndProof.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.AggregateAndProof(), v, buf)
 
 def SignedAggregateAndProof.schema() -> T.Schema: Name.schema(Name_SignedAggregateAndProof{})
 def SignedAggregateAndProof.to_ssz(v: SignedAggregateAndProof) -> T.Value: Name.to_ssz(Name_SignedAggregateAndProof{}, v)
@@ -2941,6 +3196,11 @@ def SignedAggregateAndProof.serialize(v: SignedAggregateAndProof) -> Maybe<&2, +
 def SignedAggregateAndProof.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SignedAggregateAndProof>: Name.decode_result(Name_SignedAggregateAndProof{}, result)
 def SignedAggregateAndProof.deserialize(xs: +List<U32>) -> Maybe<&2, SignedAggregateAndProof>: Name.deserialize(Name_SignedAggregateAndProof{}, xs)
 def SignedAggregateAndProof.hash_tree_root(v: SignedAggregateAndProof) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SignedAggregateAndProof{}, v)
+# SignedAggregateAndProof, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SignedAggregateAndProof.compact() -> CS.CS: Compact.SignedAggregateAndProof()
+def SignedAggregateAndProof.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SignedAggregateAndProof(), size, buf)
+def SignedAggregateAndProof.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SignedAggregateAndProof.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SignedAggregateAndProof(), v, buf)
 
 def PendingAttestation.schema() -> T.Schema: Name.schema(Name_PendingAttestation{})
 def PendingAttestation.to_ssz(v: PendingAttestation) -> T.Value: Name.to_ssz(Name_PendingAttestation{}, v)
@@ -2950,6 +3210,11 @@ def PendingAttestation.serialize(v: PendingAttestation) -> Maybe<&2, +List<U32>>
 def PendingAttestation.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, PendingAttestation>: Name.decode_result(Name_PendingAttestation{}, result)
 def PendingAttestation.deserialize(xs: +List<U32>) -> Maybe<&2, PendingAttestation>: Name.deserialize(Name_PendingAttestation{}, xs)
 def PendingAttestation.hash_tree_root(v: PendingAttestation) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_PendingAttestation{}, v)
+# PendingAttestation, primary compact API: packed buffer in, view / packed bytes / digest out.
+def PendingAttestation.compact() -> CS.CS: Compact.PendingAttestation()
+def PendingAttestation.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.PendingAttestation(), size, buf)
+def PendingAttestation.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def PendingAttestation.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.PendingAttestation(), v, buf)
 
 def IndexedAttestation.schema() -> T.Schema: Name.schema(Name_IndexedAttestation{})
 def IndexedAttestation.to_ssz(v: IndexedAttestation) -> T.Value: Name.to_ssz(Name_IndexedAttestation{}, v)
@@ -2959,6 +3224,11 @@ def IndexedAttestation.serialize(v: IndexedAttestation) -> Maybe<&2, +List<U32>>
 def IndexedAttestation.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, IndexedAttestation>: Name.decode_result(Name_IndexedAttestation{}, result)
 def IndexedAttestation.deserialize(xs: +List<U32>) -> Maybe<&2, IndexedAttestation>: Name.deserialize(Name_IndexedAttestation{}, xs)
 def IndexedAttestation.hash_tree_root(v: IndexedAttestation) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_IndexedAttestation{}, v)
+# IndexedAttestation, primary compact API: packed buffer in, view / packed bytes / digest out.
+def IndexedAttestation.compact() -> CS.CS: Compact.IndexedAttestation()
+def IndexedAttestation.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.IndexedAttestation(), size, buf)
+def IndexedAttestation.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def IndexedAttestation.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.IndexedAttestation(), v, buf)
 
 def AttesterSlashing.schema() -> T.Schema: Name.schema(Name_AttesterSlashing{})
 def AttesterSlashing.to_ssz(v: AttesterSlashing) -> T.Value: Name.to_ssz(Name_AttesterSlashing{}, v)
@@ -2968,6 +3238,11 @@ def AttesterSlashing.serialize(v: AttesterSlashing) -> Maybe<&2, +List<U32>>: Na
 def AttesterSlashing.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, AttesterSlashing>: Name.decode_result(Name_AttesterSlashing{}, result)
 def AttesterSlashing.deserialize(xs: +List<U32>) -> Maybe<&2, AttesterSlashing>: Name.deserialize(Name_AttesterSlashing{}, xs)
 def AttesterSlashing.hash_tree_root(v: AttesterSlashing) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_AttesterSlashing{}, v)
+# AttesterSlashing, primary compact API: packed buffer in, view / packed bytes / digest out.
+def AttesterSlashing.compact() -> CS.CS: Compact.AttesterSlashing()
+def AttesterSlashing.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.AttesterSlashing(), size, buf)
+def AttesterSlashing.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def AttesterSlashing.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.AttesterSlashing(), v, buf)
 
 def ForkData.schema() -> T.Schema: Name.schema(Name_ForkData{})
 def ForkData.to_ssz(v: ForkData) -> T.Value: Name.to_ssz(Name_ForkData{}, v)
@@ -2977,6 +3252,11 @@ def ForkData.serialize(v: ForkData) -> Maybe<&2, +List<U32>>: Name.serialize(Nam
 def ForkData.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ForkData>: Name.decode_result(Name_ForkData{}, result)
 def ForkData.deserialize(xs: +List<U32>) -> Maybe<&2, ForkData>: Name.deserialize(Name_ForkData{}, xs)
 def ForkData.hash_tree_root(v: ForkData) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ForkData{}, v)
+# ForkData, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ForkData.compact() -> CS.CS: Compact.ForkData()
+def ForkData.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ForkData(), size, buf)
+def ForkData.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ForkData.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ForkData(), v, buf)
 
 def ForkDigest() -> Data: Node6()
 def ForkDigest.schema() -> T.Schema: Name.schema(Name_ForkDigest{})
@@ -2987,6 +3267,11 @@ def ForkDigest.serialize(v: ForkDigest()) -> Maybe<&2, +List<U32>>: Name.seriali
 def ForkDigest.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ForkDigest()>: Name.decode_result(Name_ForkDigest{}, result)
 def ForkDigest.deserialize(xs: +List<U32>) -> Maybe<&2, ForkDigest()>: Name.deserialize(Name_ForkDigest{}, xs)
 def ForkDigest.hash_tree_root(v: ForkDigest()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ForkDigest{}, v)
+# ForkDigest, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ForkDigest.compact() -> CS.CS: Compact.ForkDigest()
+def ForkDigest.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ForkDigest(), size, buf)
+def ForkDigest.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ForkDigest.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ForkDigest(), v, buf)
 
 def Domain() -> Data: Node7()
 def Domain.schema() -> T.Schema: Name.schema(Name_Domain{})
@@ -2997,6 +3282,11 @@ def Domain.serialize(v: Domain()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_
 def Domain.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Domain()>: Name.decode_result(Name_Domain{}, result)
 def Domain.deserialize(xs: +List<U32>) -> Maybe<&2, Domain()>: Name.deserialize(Name_Domain{}, xs)
 def Domain.hash_tree_root(v: Domain()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Domain{}, v)
+# Domain, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Domain.compact() -> CS.CS: Compact.Domain()
+def Domain.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Domain(), size, buf)
+def Domain.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Domain.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Domain(), v, buf)
 
 def SigningData.schema() -> T.Schema: Name.schema(Name_SigningData{})
 def SigningData.to_ssz(v: SigningData) -> T.Value: Name.to_ssz(Name_SigningData{}, v)
@@ -3006,6 +3296,11 @@ def SigningData.serialize(v: SigningData) -> Maybe<&2, +List<U32>>: Name.seriali
 def SigningData.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SigningData>: Name.decode_result(Name_SigningData{}, result)
 def SigningData.deserialize(xs: +List<U32>) -> Maybe<&2, SigningData>: Name.deserialize(Name_SigningData{}, xs)
 def SigningData.hash_tree_root(v: SigningData) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SigningData{}, v)
+# SigningData, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SigningData.compact() -> CS.CS: Compact.SigningData()
+def SigningData.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SigningData(), size, buf)
+def SigningData.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SigningData.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SigningData(), v, buf)
 
 def BLSPubkey() -> Data: Node8()
 def BLSPubkey.schema() -> T.Schema: Name.schema(Name_BLSPubkey{})
@@ -3016,6 +3311,11 @@ def BLSPubkey.serialize(v: BLSPubkey()) -> Maybe<&2, +List<U32>>: Name.serialize
 def BLSPubkey.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, BLSPubkey()>: Name.decode_result(Name_BLSPubkey{}, result)
 def BLSPubkey.deserialize(xs: +List<U32>) -> Maybe<&2, BLSPubkey()>: Name.deserialize(Name_BLSPubkey{}, xs)
 def BLSPubkey.hash_tree_root(v: BLSPubkey()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_BLSPubkey{}, v)
+# BLSPubkey, primary compact API: packed buffer in, view / packed bytes / digest out.
+def BLSPubkey.compact() -> CS.CS: Compact.BLSPubkey()
+def BLSPubkey.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.BLSPubkey(), size, buf)
+def BLSPubkey.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def BLSPubkey.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.BLSPubkey(), v, buf)
 
 def DepositRequest.schema() -> T.Schema: Name.schema(Name_DepositRequest{})
 def DepositRequest.to_ssz(v: DepositRequest) -> T.Value: Name.to_ssz(Name_DepositRequest{}, v)
@@ -3025,6 +3325,11 @@ def DepositRequest.serialize(v: DepositRequest) -> Maybe<&2, +List<U32>>: Name.s
 def DepositRequest.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, DepositRequest>: Name.decode_result(Name_DepositRequest{}, result)
 def DepositRequest.deserialize(xs: +List<U32>) -> Maybe<&2, DepositRequest>: Name.deserialize(Name_DepositRequest{}, xs)
 def DepositRequest.hash_tree_root(v: DepositRequest) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_DepositRequest{}, v)
+# DepositRequest, primary compact API: packed buffer in, view / packed bytes / digest out.
+def DepositRequest.compact() -> CS.CS: Compact.DepositRequest()
+def DepositRequest.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.DepositRequest(), size, buf)
+def DepositRequest.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def DepositRequest.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.DepositRequest(), v, buf)
 
 def PendingDeposit.schema() -> T.Schema: Name.schema(Name_PendingDeposit{})
 def PendingDeposit.to_ssz(v: PendingDeposit) -> T.Value: Name.to_ssz(Name_PendingDeposit{}, v)
@@ -3034,6 +3339,11 @@ def PendingDeposit.serialize(v: PendingDeposit) -> Maybe<&2, +List<U32>>: Name.s
 def PendingDeposit.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, PendingDeposit>: Name.decode_result(Name_PendingDeposit{}, result)
 def PendingDeposit.deserialize(xs: +List<U32>) -> Maybe<&2, PendingDeposit>: Name.deserialize(Name_PendingDeposit{}, xs)
 def PendingDeposit.hash_tree_root(v: PendingDeposit) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_PendingDeposit{}, v)
+# PendingDeposit, primary compact API: packed buffer in, view / packed bytes / digest out.
+def PendingDeposit.compact() -> CS.CS: Compact.PendingDeposit()
+def PendingDeposit.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.PendingDeposit(), size, buf)
+def PendingDeposit.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def PendingDeposit.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.PendingDeposit(), v, buf)
 
 def SyncCommittee.schema() -> T.Schema: Name.schema(Name_SyncCommittee{})
 def SyncCommittee.to_ssz(v: SyncCommittee) -> T.Value: Name.to_ssz(Name_SyncCommittee{}, v)
@@ -3043,6 +3353,11 @@ def SyncCommittee.serialize(v: SyncCommittee) -> Maybe<&2, +List<U32>>: Name.ser
 def SyncCommittee.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SyncCommittee>: Name.decode_result(Name_SyncCommittee{}, result)
 def SyncCommittee.deserialize(xs: +List<U32>) -> Maybe<&2, SyncCommittee>: Name.deserialize(Name_SyncCommittee{}, xs)
 def SyncCommittee.hash_tree_root(v: SyncCommittee) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SyncCommittee{}, v)
+# SyncCommittee, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SyncCommittee.compact() -> CS.CS: Compact.SyncCommittee()
+def SyncCommittee.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SyncCommittee(), size, buf)
+def SyncCommittee.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SyncCommittee.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SyncCommittee(), v, buf)
 
 def DepositData.schema() -> T.Schema: Name.schema(Name_DepositData{})
 def DepositData.to_ssz(v: DepositData) -> T.Value: Name.to_ssz(Name_DepositData{}, v)
@@ -3052,6 +3367,11 @@ def DepositData.serialize(v: DepositData) -> Maybe<&2, +List<U32>>: Name.seriali
 def DepositData.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, DepositData>: Name.decode_result(Name_DepositData{}, result)
 def DepositData.deserialize(xs: +List<U32>) -> Maybe<&2, DepositData>: Name.deserialize(Name_DepositData{}, xs)
 def DepositData.hash_tree_root(v: DepositData) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_DepositData{}, v)
+# DepositData, primary compact API: packed buffer in, view / packed bytes / digest out.
+def DepositData.compact() -> CS.CS: Compact.DepositData()
+def DepositData.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.DepositData(), size, buf)
+def DepositData.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def DepositData.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.DepositData(), v, buf)
 
 def Deposit.schema() -> T.Schema: Name.schema(Name_Deposit{})
 def Deposit.to_ssz(v: Deposit) -> T.Value: Name.to_ssz(Name_Deposit{}, v)
@@ -3061,6 +3381,11 @@ def Deposit.serialize(v: Deposit) -> Maybe<&2, +List<U32>>: Name.serialize(Name_
 def Deposit.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Deposit>: Name.decode_result(Name_Deposit{}, result)
 def Deposit.deserialize(xs: +List<U32>) -> Maybe<&2, Deposit>: Name.deserialize(Name_Deposit{}, xs)
 def Deposit.hash_tree_root(v: Deposit) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Deposit{}, v)
+# Deposit, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Deposit.compact() -> CS.CS: Compact.Deposit()
+def Deposit.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Deposit(), size, buf)
+def Deposit.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Deposit.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Deposit(), v, buf)
 
 def DepositMessage.schema() -> T.Schema: Name.schema(Name_DepositMessage{})
 def DepositMessage.to_ssz(v: DepositMessage) -> T.Value: Name.to_ssz(Name_DepositMessage{}, v)
@@ -3070,6 +3395,11 @@ def DepositMessage.serialize(v: DepositMessage) -> Maybe<&2, +List<U32>>: Name.s
 def DepositMessage.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, DepositMessage>: Name.decode_result(Name_DepositMessage{}, result)
 def DepositMessage.deserialize(xs: +List<U32>) -> Maybe<&2, DepositMessage>: Name.deserialize(Name_DepositMessage{}, xs)
 def DepositMessage.hash_tree_root(v: DepositMessage) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_DepositMessage{}, v)
+# DepositMessage, primary compact API: packed buffer in, view / packed bytes / digest out.
+def DepositMessage.compact() -> CS.CS: Compact.DepositMessage()
+def DepositMessage.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.DepositMessage(), size, buf)
+def DepositMessage.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def DepositMessage.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.DepositMessage(), v, buf)
 
 def Validator.schema() -> T.Schema: Name.schema(Name_Validator{})
 def Validator.to_ssz(v: Validator) -> T.Value: Name.to_ssz(Name_Validator{}, v)
@@ -3079,6 +3409,11 @@ def Validator.serialize(v: Validator) -> Maybe<&2, +List<U32>>: Name.serialize(N
 def Validator.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Validator>: Name.decode_result(Name_Validator{}, result)
 def Validator.deserialize(xs: +List<U32>) -> Maybe<&2, Validator>: Name.deserialize(Name_Validator{}, xs)
 def Validator.hash_tree_root(v: Validator) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Validator{}, v)
+# Validator, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Validator.compact() -> CS.CS: Compact.Validator()
+def Validator.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Validator(), size, buf)
+def Validator.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Validator.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Validator(), v, buf)
 
 def NodeID() -> Data: Node4()
 def NodeID.schema() -> T.Schema: Name.schema(Name_NodeID{})
@@ -3089,6 +3424,11 @@ def NodeID.serialize(v: NodeID()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_
 def NodeID.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, NodeID()>: Name.decode_result(Name_NodeID{}, result)
 def NodeID.deserialize(xs: +List<U32>) -> Maybe<&2, NodeID()>: Name.deserialize(Name_NodeID{}, xs)
 def NodeID.hash_tree_root(v: NodeID()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_NodeID{}, v)
+# NodeID, primary compact API: packed buffer in, view / packed bytes / digest out.
+def NodeID.compact() -> CS.CS: Compact.NodeID()
+def NodeID.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.NodeID(), size, buf)
+def NodeID.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def NodeID.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.NodeID(), v, buf)
 
 def SubnetID() -> Data: Node3()
 def SubnetID.schema() -> T.Schema: Name.schema(Name_SubnetID{})
@@ -3099,6 +3439,11 @@ def SubnetID.serialize(v: SubnetID()) -> Maybe<&2, +List<U32>>: Name.serialize(N
 def SubnetID.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SubnetID()>: Name.decode_result(Name_SubnetID{}, result)
 def SubnetID.deserialize(xs: +List<U32>) -> Maybe<&2, SubnetID()>: Name.deserialize(Name_SubnetID{}, xs)
 def SubnetID.hash_tree_root(v: SubnetID()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SubnetID{}, v)
+# SubnetID, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SubnetID.compact() -> CS.CS: Compact.SubnetID()
+def SubnetID.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SubnetID(), size, buf)
+def SubnetID.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SubnetID.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SubnetID(), v, buf)
 
 def Ether() -> Data: Node3()
 def Ether.schema() -> T.Schema: Name.schema(Name_Ether{})
@@ -3109,6 +3454,11 @@ def Ether.serialize(v: Ether()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_Et
 def Ether.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Ether()>: Name.decode_result(Name_Ether{}, result)
 def Ether.deserialize(xs: +List<U32>) -> Maybe<&2, Ether()>: Name.deserialize(Name_Ether{}, xs)
 def Ether.hash_tree_root(v: Ether()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Ether{}, v)
+# Ether, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Ether.compact() -> CS.CS: Compact.Ether()
+def Ether.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Ether(), size, buf)
+def Ether.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Ether.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Ether(), v, buf)
 
 def ParticipationFlags() -> Data: Node1()
 def ParticipationFlags.schema() -> T.Schema: Name.schema(Name_ParticipationFlags{})
@@ -3119,6 +3469,11 @@ def ParticipationFlags.serialize(v: ParticipationFlags()) -> Maybe<&2, +List<U32
 def ParticipationFlags.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ParticipationFlags()>: Name.decode_result(Name_ParticipationFlags{}, result)
 def ParticipationFlags.deserialize(xs: +List<U32>) -> Maybe<&2, ParticipationFlags()>: Name.deserialize(Name_ParticipationFlags{}, xs)
 def ParticipationFlags.hash_tree_root(v: ParticipationFlags()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ParticipationFlags{}, v)
+# ParticipationFlags, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ParticipationFlags.compact() -> CS.CS: Compact.ParticipationFlags()
+def ParticipationFlags.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ParticipationFlags(), size, buf)
+def ParticipationFlags.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ParticipationFlags.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ParticipationFlags(), v, buf)
 
 def CurrentSyncCommitteeBranch() -> Data: Node59()
 def CurrentSyncCommitteeBranch.schema() -> T.Schema: Name.schema(Name_CurrentSyncCommitteeBranch{})
@@ -3129,6 +3484,11 @@ def CurrentSyncCommitteeBranch.serialize(v: CurrentSyncCommitteeBranch()) -> May
 def CurrentSyncCommitteeBranch.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, CurrentSyncCommitteeBranch()>: Name.decode_result(Name_CurrentSyncCommitteeBranch{}, result)
 def CurrentSyncCommitteeBranch.deserialize(xs: +List<U32>) -> Maybe<&2, CurrentSyncCommitteeBranch()>: Name.deserialize(Name_CurrentSyncCommitteeBranch{}, xs)
 def CurrentSyncCommitteeBranch.hash_tree_root(v: CurrentSyncCommitteeBranch()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_CurrentSyncCommitteeBranch{}, v)
+# CurrentSyncCommitteeBranch, primary compact API: packed buffer in, view / packed bytes / digest out.
+def CurrentSyncCommitteeBranch.compact() -> CS.CS: Compact.CurrentSyncCommitteeBranch()
+def CurrentSyncCommitteeBranch.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.CurrentSyncCommitteeBranch(), size, buf)
+def CurrentSyncCommitteeBranch.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def CurrentSyncCommitteeBranch.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.CurrentSyncCommitteeBranch(), v, buf)
 
 def NextSyncCommitteeBranch() -> Data: Node59()
 def NextSyncCommitteeBranch.schema() -> T.Schema: Name.schema(Name_NextSyncCommitteeBranch{})
@@ -3139,6 +3499,11 @@ def NextSyncCommitteeBranch.serialize(v: NextSyncCommitteeBranch()) -> Maybe<&2,
 def NextSyncCommitteeBranch.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, NextSyncCommitteeBranch()>: Name.decode_result(Name_NextSyncCommitteeBranch{}, result)
 def NextSyncCommitteeBranch.deserialize(xs: +List<U32>) -> Maybe<&2, NextSyncCommitteeBranch()>: Name.deserialize(Name_NextSyncCommitteeBranch{}, xs)
 def NextSyncCommitteeBranch.hash_tree_root(v: NextSyncCommitteeBranch()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_NextSyncCommitteeBranch{}, v)
+# NextSyncCommitteeBranch, primary compact API: packed buffer in, view / packed bytes / digest out.
+def NextSyncCommitteeBranch.compact() -> CS.CS: Compact.NextSyncCommitteeBranch()
+def NextSyncCommitteeBranch.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.NextSyncCommitteeBranch(), size, buf)
+def NextSyncCommitteeBranch.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def NextSyncCommitteeBranch.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.NextSyncCommitteeBranch(), v, buf)
 
 def Transaction() -> Data: Node60()
 def Transaction.schema() -> T.Schema: Name.schema(Name_Transaction{})
@@ -3149,6 +3514,11 @@ def Transaction.serialize(v: Transaction()) -> Maybe<&2, +List<U32>>: Name.seria
 def Transaction.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Transaction()>: Name.decode_result(Name_Transaction{}, result)
 def Transaction.deserialize(xs: +List<U32>) -> Maybe<&2, Transaction()>: Name.deserialize(Name_Transaction{}, xs)
 def Transaction.hash_tree_root(v: Transaction()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Transaction{}, v)
+# Transaction, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Transaction.compact() -> CS.CS: Compact.Transaction()
+def Transaction.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Transaction(), size, buf)
+def Transaction.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Transaction.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Transaction(), v, buf)
 
 def ExecutionAddress() -> Data: Node11()
 def ExecutionAddress.schema() -> T.Schema: Name.schema(Name_ExecutionAddress{})
@@ -3159,6 +3529,11 @@ def ExecutionAddress.serialize(v: ExecutionAddress()) -> Maybe<&2, +List<U32>>: 
 def ExecutionAddress.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ExecutionAddress()>: Name.decode_result(Name_ExecutionAddress{}, result)
 def ExecutionAddress.deserialize(xs: +List<U32>) -> Maybe<&2, ExecutionAddress()>: Name.deserialize(Name_ExecutionAddress{}, xs)
 def ExecutionAddress.hash_tree_root(v: ExecutionAddress()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ExecutionAddress{}, v)
+# ExecutionAddress, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ExecutionAddress.compact() -> CS.CS: Compact.ExecutionAddress()
+def ExecutionAddress.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ExecutionAddress(), size, buf)
+def ExecutionAddress.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ExecutionAddress.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ExecutionAddress(), v, buf)
 
 def ConsolidationRequest.schema() -> T.Schema: Name.schema(Name_ConsolidationRequest{})
 def ConsolidationRequest.to_ssz(v: ConsolidationRequest) -> T.Value: Name.to_ssz(Name_ConsolidationRequest{}, v)
@@ -3168,6 +3543,11 @@ def ConsolidationRequest.serialize(v: ConsolidationRequest) -> Maybe<&2, +List<U
 def ConsolidationRequest.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ConsolidationRequest>: Name.decode_result(Name_ConsolidationRequest{}, result)
 def ConsolidationRequest.deserialize(xs: +List<U32>) -> Maybe<&2, ConsolidationRequest>: Name.deserialize(Name_ConsolidationRequest{}, xs)
 def ConsolidationRequest.hash_tree_root(v: ConsolidationRequest) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ConsolidationRequest{}, v)
+# ConsolidationRequest, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ConsolidationRequest.compact() -> CS.CS: Compact.ConsolidationRequest()
+def ConsolidationRequest.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ConsolidationRequest(), size, buf)
+def ConsolidationRequest.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ConsolidationRequest.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ConsolidationRequest(), v, buf)
 
 def WithdrawalRequest.schema() -> T.Schema: Name.schema(Name_WithdrawalRequest{})
 def WithdrawalRequest.to_ssz(v: WithdrawalRequest) -> T.Value: Name.to_ssz(Name_WithdrawalRequest{}, v)
@@ -3177,6 +3557,11 @@ def WithdrawalRequest.serialize(v: WithdrawalRequest) -> Maybe<&2, +List<U32>>: 
 def WithdrawalRequest.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, WithdrawalRequest>: Name.decode_result(Name_WithdrawalRequest{}, result)
 def WithdrawalRequest.deserialize(xs: +List<U32>) -> Maybe<&2, WithdrawalRequest>: Name.deserialize(Name_WithdrawalRequest{}, xs)
 def WithdrawalRequest.hash_tree_root(v: WithdrawalRequest) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_WithdrawalRequest{}, v)
+# WithdrawalRequest, primary compact API: packed buffer in, view / packed bytes / digest out.
+def WithdrawalRequest.compact() -> CS.CS: Compact.WithdrawalRequest()
+def WithdrawalRequest.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.WithdrawalRequest(), size, buf)
+def WithdrawalRequest.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def WithdrawalRequest.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.WithdrawalRequest(), v, buf)
 
 def ExecutionRequests.schema() -> T.Schema: Name.schema(Name_ExecutionRequests{})
 def ExecutionRequests.to_ssz(v: ExecutionRequests) -> T.Value: Name.to_ssz(Name_ExecutionRequests{}, v)
@@ -3186,6 +3571,11 @@ def ExecutionRequests.serialize(v: ExecutionRequests) -> Maybe<&2, +List<U32>>: 
 def ExecutionRequests.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ExecutionRequests>: Name.decode_result(Name_ExecutionRequests{}, result)
 def ExecutionRequests.deserialize(xs: +List<U32>) -> Maybe<&2, ExecutionRequests>: Name.deserialize(Name_ExecutionRequests{}, xs)
 def ExecutionRequests.hash_tree_root(v: ExecutionRequests) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ExecutionRequests{}, v)
+# ExecutionRequests, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ExecutionRequests.compact() -> CS.CS: Compact.ExecutionRequests()
+def ExecutionRequests.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ExecutionRequests(), size, buf)
+def ExecutionRequests.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ExecutionRequests.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ExecutionRequests(), v, buf)
 
 def BLSToExecutionChange.schema() -> T.Schema: Name.schema(Name_BLSToExecutionChange{})
 def BLSToExecutionChange.to_ssz(v: BLSToExecutionChange) -> T.Value: Name.to_ssz(Name_BLSToExecutionChange{}, v)
@@ -3195,6 +3585,11 @@ def BLSToExecutionChange.serialize(v: BLSToExecutionChange) -> Maybe<&2, +List<U
 def BLSToExecutionChange.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, BLSToExecutionChange>: Name.decode_result(Name_BLSToExecutionChange{}, result)
 def BLSToExecutionChange.deserialize(xs: +List<U32>) -> Maybe<&2, BLSToExecutionChange>: Name.deserialize(Name_BLSToExecutionChange{}, xs)
 def BLSToExecutionChange.hash_tree_root(v: BLSToExecutionChange) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_BLSToExecutionChange{}, v)
+# BLSToExecutionChange, primary compact API: packed buffer in, view / packed bytes / digest out.
+def BLSToExecutionChange.compact() -> CS.CS: Compact.BLSToExecutionChange()
+def BLSToExecutionChange.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.BLSToExecutionChange(), size, buf)
+def BLSToExecutionChange.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def BLSToExecutionChange.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.BLSToExecutionChange(), v, buf)
 
 def SignedBLSToExecutionChange.schema() -> T.Schema: Name.schema(Name_SignedBLSToExecutionChange{})
 def SignedBLSToExecutionChange.to_ssz(v: SignedBLSToExecutionChange) -> T.Value: Name.to_ssz(Name_SignedBLSToExecutionChange{}, v)
@@ -3204,6 +3599,11 @@ def SignedBLSToExecutionChange.serialize(v: SignedBLSToExecutionChange) -> Maybe
 def SignedBLSToExecutionChange.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SignedBLSToExecutionChange>: Name.decode_result(Name_SignedBLSToExecutionChange{}, result)
 def SignedBLSToExecutionChange.deserialize(xs: +List<U32>) -> Maybe<&2, SignedBLSToExecutionChange>: Name.deserialize(Name_SignedBLSToExecutionChange{}, xs)
 def SignedBLSToExecutionChange.hash_tree_root(v: SignedBLSToExecutionChange) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SignedBLSToExecutionChange{}, v)
+# SignedBLSToExecutionChange, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SignedBLSToExecutionChange.compact() -> CS.CS: Compact.SignedBLSToExecutionChange()
+def SignedBLSToExecutionChange.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SignedBLSToExecutionChange(), size, buf)
+def SignedBLSToExecutionChange.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SignedBLSToExecutionChange.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SignedBLSToExecutionChange(), v, buf)
 
 def ExecutionPayloadHeader.schema() -> T.Schema: Name.schema(Name_ExecutionPayloadHeader{})
 def ExecutionPayloadHeader.to_ssz(v: ExecutionPayloadHeader) -> T.Value: Name.to_ssz(Name_ExecutionPayloadHeader{}, v)
@@ -3213,6 +3613,11 @@ def ExecutionPayloadHeader.serialize(v: ExecutionPayloadHeader) -> Maybe<&2, +Li
 def ExecutionPayloadHeader.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ExecutionPayloadHeader>: Name.decode_result(Name_ExecutionPayloadHeader{}, result)
 def ExecutionPayloadHeader.deserialize(xs: +List<U32>) -> Maybe<&2, ExecutionPayloadHeader>: Name.deserialize(Name_ExecutionPayloadHeader{}, xs)
 def ExecutionPayloadHeader.hash_tree_root(v: ExecutionPayloadHeader) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ExecutionPayloadHeader{}, v)
+# ExecutionPayloadHeader, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ExecutionPayloadHeader.compact() -> CS.CS: Compact.ExecutionPayloadHeader()
+def ExecutionPayloadHeader.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ExecutionPayloadHeader(), size, buf)
+def ExecutionPayloadHeader.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ExecutionPayloadHeader.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ExecutionPayloadHeader(), v, buf)
 
 def PayloadId() -> Data: Node10()
 def PayloadId.schema() -> T.Schema: Name.schema(Name_PayloadId{})
@@ -3223,6 +3628,11 @@ def PayloadId.serialize(v: PayloadId()) -> Maybe<&2, +List<U32>>: Name.serialize
 def PayloadId.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, PayloadId()>: Name.decode_result(Name_PayloadId{}, result)
 def PayloadId.deserialize(xs: +List<U32>) -> Maybe<&2, PayloadId()>: Name.deserialize(Name_PayloadId{}, xs)
 def PayloadId.hash_tree_root(v: PayloadId()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_PayloadId{}, v)
+# PayloadId, primary compact API: packed buffer in, view / packed bytes / digest out.
+def PayloadId.compact() -> CS.CS: Compact.PayloadId()
+def PayloadId.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.PayloadId(), size, buf)
+def PayloadId.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def PayloadId.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.PayloadId(), v, buf)
 
 def WithdrawalIndex() -> Data: Node3()
 def WithdrawalIndex.schema() -> T.Schema: Name.schema(Name_WithdrawalIndex{})
@@ -3233,6 +3643,11 @@ def WithdrawalIndex.serialize(v: WithdrawalIndex()) -> Maybe<&2, +List<U32>>: Na
 def WithdrawalIndex.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, WithdrawalIndex()>: Name.decode_result(Name_WithdrawalIndex{}, result)
 def WithdrawalIndex.deserialize(xs: +List<U32>) -> Maybe<&2, WithdrawalIndex()>: Name.deserialize(Name_WithdrawalIndex{}, xs)
 def WithdrawalIndex.hash_tree_root(v: WithdrawalIndex()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_WithdrawalIndex{}, v)
+# WithdrawalIndex, primary compact API: packed buffer in, view / packed bytes / digest out.
+def WithdrawalIndex.compact() -> CS.CS: Compact.WithdrawalIndex()
+def WithdrawalIndex.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.WithdrawalIndex(), size, buf)
+def WithdrawalIndex.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def WithdrawalIndex.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.WithdrawalIndex(), v, buf)
 
 def Withdrawal.schema() -> T.Schema: Name.schema(Name_Withdrawal{})
 def Withdrawal.to_ssz(v: Withdrawal) -> T.Value: Name.to_ssz(Name_Withdrawal{}, v)
@@ -3242,6 +3657,11 @@ def Withdrawal.serialize(v: Withdrawal) -> Maybe<&2, +List<U32>>: Name.serialize
 def Withdrawal.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Withdrawal>: Name.decode_result(Name_Withdrawal{}, result)
 def Withdrawal.deserialize(xs: +List<U32>) -> Maybe<&2, Withdrawal>: Name.deserialize(Name_Withdrawal{}, xs)
 def Withdrawal.hash_tree_root(v: Withdrawal) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Withdrawal{}, v)
+# Withdrawal, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Withdrawal.compact() -> CS.CS: Compact.Withdrawal()
+def Withdrawal.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Withdrawal(), size, buf)
+def Withdrawal.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Withdrawal.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Withdrawal(), v, buf)
 
 def ExecutionPayload.schema() -> T.Schema: Name.schema(Name_ExecutionPayload{})
 def ExecutionPayload.to_ssz(v: ExecutionPayload) -> T.Value: Name.to_ssz(Name_ExecutionPayload{}, v)
@@ -3251,6 +3671,11 @@ def ExecutionPayload.serialize(v: ExecutionPayload) -> Maybe<&2, +List<U32>>: Na
 def ExecutionPayload.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ExecutionPayload>: Name.decode_result(Name_ExecutionPayload{}, result)
 def ExecutionPayload.deserialize(xs: +List<U32>) -> Maybe<&2, ExecutionPayload>: Name.deserialize(Name_ExecutionPayload{}, xs)
 def ExecutionPayload.hash_tree_root(v: ExecutionPayload) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ExecutionPayload{}, v)
+# ExecutionPayload, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ExecutionPayload.compact() -> CS.CS: Compact.ExecutionPayload()
+def ExecutionPayload.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ExecutionPayload(), size, buf)
+def ExecutionPayload.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ExecutionPayload.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ExecutionPayload(), v, buf)
 
 def BeaconState.schema() -> T.Schema: Name.schema(Name_BeaconState{})
 def BeaconState.to_ssz(v: BeaconState) -> T.Value: Name.to_ssz(Name_BeaconState{}, v)
@@ -3260,6 +3685,11 @@ def BeaconState.serialize(v: BeaconState) -> Maybe<&2, +List<U32>>: Name.seriali
 def BeaconState.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, BeaconState>: Name.decode_result(Name_BeaconState{}, result)
 def BeaconState.deserialize(xs: +List<U32>) -> Maybe<&2, BeaconState>: Name.deserialize(Name_BeaconState{}, xs)
 def BeaconState.hash_tree_root(v: BeaconState) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_BeaconState{}, v)
+# BeaconState, primary compact API: packed buffer in, view / packed bytes / digest out.
+def BeaconState.compact() -> CS.CS: Compact.BeaconState()
+def BeaconState.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.BeaconState(), size, buf)
+def BeaconState.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def BeaconState.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.BeaconState(), v, buf)
 
 def ExecutionBranch() -> Data: Node90()
 def ExecutionBranch.schema() -> T.Schema: Name.schema(Name_ExecutionBranch{})
@@ -3270,6 +3700,11 @@ def ExecutionBranch.serialize(v: ExecutionBranch()) -> Maybe<&2, +List<U32>>: Na
 def ExecutionBranch.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ExecutionBranch()>: Name.decode_result(Name_ExecutionBranch{}, result)
 def ExecutionBranch.deserialize(xs: +List<U32>) -> Maybe<&2, ExecutionBranch()>: Name.deserialize(Name_ExecutionBranch{}, xs)
 def ExecutionBranch.hash_tree_root(v: ExecutionBranch()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ExecutionBranch{}, v)
+# ExecutionBranch, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ExecutionBranch.compact() -> CS.CS: Compact.ExecutionBranch()
+def ExecutionBranch.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ExecutionBranch(), size, buf)
+def ExecutionBranch.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ExecutionBranch.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ExecutionBranch(), v, buf)
 
 def LightClientHeader.schema() -> T.Schema: Name.schema(Name_LightClientHeader{})
 def LightClientHeader.to_ssz(v: LightClientHeader) -> T.Value: Name.to_ssz(Name_LightClientHeader{}, v)
@@ -3279,6 +3714,11 @@ def LightClientHeader.serialize(v: LightClientHeader) -> Maybe<&2, +List<U32>>: 
 def LightClientHeader.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, LightClientHeader>: Name.decode_result(Name_LightClientHeader{}, result)
 def LightClientHeader.deserialize(xs: +List<U32>) -> Maybe<&2, LightClientHeader>: Name.deserialize(Name_LightClientHeader{}, xs)
 def LightClientHeader.hash_tree_root(v: LightClientHeader) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_LightClientHeader{}, v)
+# LightClientHeader, primary compact API: packed buffer in, view / packed bytes / digest out.
+def LightClientHeader.compact() -> CS.CS: Compact.LightClientHeader()
+def LightClientHeader.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.LightClientHeader(), size, buf)
+def LightClientHeader.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def LightClientHeader.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.LightClientHeader(), v, buf)
 
 def LightClientOptimisticUpdate.schema() -> T.Schema: Name.schema(Name_LightClientOptimisticUpdate{})
 def LightClientOptimisticUpdate.to_ssz(v: LightClientOptimisticUpdate) -> T.Value: Name.to_ssz(Name_LightClientOptimisticUpdate{}, v)
@@ -3288,6 +3728,11 @@ def LightClientOptimisticUpdate.serialize(v: LightClientOptimisticUpdate) -> May
 def LightClientOptimisticUpdate.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, LightClientOptimisticUpdate>: Name.decode_result(Name_LightClientOptimisticUpdate{}, result)
 def LightClientOptimisticUpdate.deserialize(xs: +List<U32>) -> Maybe<&2, LightClientOptimisticUpdate>: Name.deserialize(Name_LightClientOptimisticUpdate{}, xs)
 def LightClientOptimisticUpdate.hash_tree_root(v: LightClientOptimisticUpdate) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_LightClientOptimisticUpdate{}, v)
+# LightClientOptimisticUpdate, primary compact API: packed buffer in, view / packed bytes / digest out.
+def LightClientOptimisticUpdate.compact() -> CS.CS: Compact.LightClientOptimisticUpdate()
+def LightClientOptimisticUpdate.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.LightClientOptimisticUpdate(), size, buf)
+def LightClientOptimisticUpdate.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def LightClientOptimisticUpdate.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.LightClientOptimisticUpdate(), v, buf)
 
 def LightClientFinalityUpdate.schema() -> T.Schema: Name.schema(Name_LightClientFinalityUpdate{})
 def LightClientFinalityUpdate.to_ssz(v: LightClientFinalityUpdate) -> T.Value: Name.to_ssz(Name_LightClientFinalityUpdate{}, v)
@@ -3297,6 +3742,11 @@ def LightClientFinalityUpdate.serialize(v: LightClientFinalityUpdate) -> Maybe<&
 def LightClientFinalityUpdate.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, LightClientFinalityUpdate>: Name.decode_result(Name_LightClientFinalityUpdate{}, result)
 def LightClientFinalityUpdate.deserialize(xs: +List<U32>) -> Maybe<&2, LightClientFinalityUpdate>: Name.deserialize(Name_LightClientFinalityUpdate{}, xs)
 def LightClientFinalityUpdate.hash_tree_root(v: LightClientFinalityUpdate) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_LightClientFinalityUpdate{}, v)
+# LightClientFinalityUpdate, primary compact API: packed buffer in, view / packed bytes / digest out.
+def LightClientFinalityUpdate.compact() -> CS.CS: Compact.LightClientFinalityUpdate()
+def LightClientFinalityUpdate.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.LightClientFinalityUpdate(), size, buf)
+def LightClientFinalityUpdate.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def LightClientFinalityUpdate.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.LightClientFinalityUpdate(), v, buf)
 
 def LightClientUpdate.schema() -> T.Schema: Name.schema(Name_LightClientUpdate{})
 def LightClientUpdate.to_ssz(v: LightClientUpdate) -> T.Value: Name.to_ssz(Name_LightClientUpdate{}, v)
@@ -3306,6 +3756,11 @@ def LightClientUpdate.serialize(v: LightClientUpdate) -> Maybe<&2, +List<U32>>: 
 def LightClientUpdate.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, LightClientUpdate>: Name.decode_result(Name_LightClientUpdate{}, result)
 def LightClientUpdate.deserialize(xs: +List<U32>) -> Maybe<&2, LightClientUpdate>: Name.deserialize(Name_LightClientUpdate{}, xs)
 def LightClientUpdate.hash_tree_root(v: LightClientUpdate) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_LightClientUpdate{}, v)
+# LightClientUpdate, primary compact API: packed buffer in, view / packed bytes / digest out.
+def LightClientUpdate.compact() -> CS.CS: Compact.LightClientUpdate()
+def LightClientUpdate.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.LightClientUpdate(), size, buf)
+def LightClientUpdate.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def LightClientUpdate.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.LightClientUpdate(), v, buf)
 
 def LightClientBootstrap.schema() -> T.Schema: Name.schema(Name_LightClientBootstrap{})
 def LightClientBootstrap.to_ssz(v: LightClientBootstrap) -> T.Value: Name.to_ssz(Name_LightClientBootstrap{}, v)
@@ -3315,6 +3770,11 @@ def LightClientBootstrap.serialize(v: LightClientBootstrap) -> Maybe<&2, +List<U
 def LightClientBootstrap.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, LightClientBootstrap>: Name.decode_result(Name_LightClientBootstrap{}, result)
 def LightClientBootstrap.deserialize(xs: +List<U32>) -> Maybe<&2, LightClientBootstrap>: Name.deserialize(Name_LightClientBootstrap{}, xs)
 def LightClientBootstrap.hash_tree_root(v: LightClientBootstrap) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_LightClientBootstrap{}, v)
+# LightClientBootstrap, primary compact API: packed buffer in, view / packed bytes / digest out.
+def LightClientBootstrap.compact() -> CS.CS: Compact.LightClientBootstrap()
+def LightClientBootstrap.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.LightClientBootstrap(), size, buf)
+def LightClientBootstrap.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def LightClientBootstrap.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.LightClientBootstrap(), v, buf)
 
 def BlobIndex() -> Data: Node3()
 def BlobIndex.schema() -> T.Schema: Name.schema(Name_BlobIndex{})
@@ -3325,6 +3785,11 @@ def BlobIndex.serialize(v: BlobIndex()) -> Maybe<&2, +List<U32>>: Name.serialize
 def BlobIndex.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, BlobIndex()>: Name.decode_result(Name_BlobIndex{}, result)
 def BlobIndex.deserialize(xs: +List<U32>) -> Maybe<&2, BlobIndex()>: Name.deserialize(Name_BlobIndex{}, xs)
 def BlobIndex.hash_tree_root(v: BlobIndex()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_BlobIndex{}, v)
+# BlobIndex, primary compact API: packed buffer in, view / packed bytes / digest out.
+def BlobIndex.compact() -> CS.CS: Compact.BlobIndex()
+def BlobIndex.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.BlobIndex(), size, buf)
+def BlobIndex.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def BlobIndex.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.BlobIndex(), v, buf)
 
 def BlobIdentifier.schema() -> T.Schema: Name.schema(Name_BlobIdentifier{})
 def BlobIdentifier.to_ssz(v: BlobIdentifier) -> T.Value: Name.to_ssz(Name_BlobIdentifier{}, v)
@@ -3334,6 +3799,11 @@ def BlobIdentifier.serialize(v: BlobIdentifier) -> Maybe<&2, +List<U32>>: Name.s
 def BlobIdentifier.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, BlobIdentifier>: Name.decode_result(Name_BlobIdentifier{}, result)
 def BlobIdentifier.deserialize(xs: +List<U32>) -> Maybe<&2, BlobIdentifier>: Name.deserialize(Name_BlobIdentifier{}, xs)
 def BlobIdentifier.hash_tree_root(v: BlobIdentifier) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_BlobIdentifier{}, v)
+# BlobIdentifier, primary compact API: packed buffer in, view / packed bytes / digest out.
+def BlobIdentifier.compact() -> CS.CS: Compact.BlobIdentifier()
+def BlobIdentifier.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.BlobIdentifier(), size, buf)
+def BlobIdentifier.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def BlobIdentifier.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.BlobIdentifier(), v, buf)
 
 def KZGCommitment() -> Data: Node8()
 def KZGCommitment.schema() -> T.Schema: Name.schema(Name_KZGCommitment{})
@@ -3344,6 +3814,11 @@ def KZGCommitment.serialize(v: KZGCommitment()) -> Maybe<&2, +List<U32>>: Name.s
 def KZGCommitment.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, KZGCommitment()>: Name.decode_result(Name_KZGCommitment{}, result)
 def KZGCommitment.deserialize(xs: +List<U32>) -> Maybe<&2, KZGCommitment()>: Name.deserialize(Name_KZGCommitment{}, xs)
 def KZGCommitment.hash_tree_root(v: KZGCommitment()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_KZGCommitment{}, v)
+# KZGCommitment, primary compact API: packed buffer in, view / packed bytes / digest out.
+def KZGCommitment.compact() -> CS.CS: Compact.KZGCommitment()
+def KZGCommitment.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.KZGCommitment(), size, buf)
+def KZGCommitment.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def KZGCommitment.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.KZGCommitment(), v, buf)
 
 def BeaconBlockBody.schema() -> T.Schema: Name.schema(Name_BeaconBlockBody{})
 def BeaconBlockBody.to_ssz(v: BeaconBlockBody) -> T.Value: Name.to_ssz(Name_BeaconBlockBody{}, v)
@@ -3353,6 +3828,11 @@ def BeaconBlockBody.serialize(v: BeaconBlockBody) -> Maybe<&2, +List<U32>>: Name
 def BeaconBlockBody.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, BeaconBlockBody>: Name.decode_result(Name_BeaconBlockBody{}, result)
 def BeaconBlockBody.deserialize(xs: +List<U32>) -> Maybe<&2, BeaconBlockBody>: Name.deserialize(Name_BeaconBlockBody{}, xs)
 def BeaconBlockBody.hash_tree_root(v: BeaconBlockBody) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_BeaconBlockBody{}, v)
+# BeaconBlockBody, primary compact API: packed buffer in, view / packed bytes / digest out.
+def BeaconBlockBody.compact() -> CS.CS: Compact.BeaconBlockBody()
+def BeaconBlockBody.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.BeaconBlockBody(), size, buf)
+def BeaconBlockBody.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def BeaconBlockBody.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.BeaconBlockBody(), v, buf)
 
 def BeaconBlock.schema() -> T.Schema: Name.schema(Name_BeaconBlock{})
 def BeaconBlock.to_ssz(v: BeaconBlock) -> T.Value: Name.to_ssz(Name_BeaconBlock{}, v)
@@ -3362,6 +3842,11 @@ def BeaconBlock.serialize(v: BeaconBlock) -> Maybe<&2, +List<U32>>: Name.seriali
 def BeaconBlock.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, BeaconBlock>: Name.decode_result(Name_BeaconBlock{}, result)
 def BeaconBlock.deserialize(xs: +List<U32>) -> Maybe<&2, BeaconBlock>: Name.deserialize(Name_BeaconBlock{}, xs)
 def BeaconBlock.hash_tree_root(v: BeaconBlock) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_BeaconBlock{}, v)
+# BeaconBlock, primary compact API: packed buffer in, view / packed bytes / digest out.
+def BeaconBlock.compact() -> CS.CS: Compact.BeaconBlock()
+def BeaconBlock.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.BeaconBlock(), size, buf)
+def BeaconBlock.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def BeaconBlock.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.BeaconBlock(), v, buf)
 
 def SignedBeaconBlock.schema() -> T.Schema: Name.schema(Name_SignedBeaconBlock{})
 def SignedBeaconBlock.to_ssz(v: SignedBeaconBlock) -> T.Value: Name.to_ssz(Name_SignedBeaconBlock{}, v)
@@ -3371,6 +3856,11 @@ def SignedBeaconBlock.serialize(v: SignedBeaconBlock) -> Maybe<&2, +List<U32>>: 
 def SignedBeaconBlock.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, SignedBeaconBlock>: Name.decode_result(Name_SignedBeaconBlock{}, result)
 def SignedBeaconBlock.deserialize(xs: +List<U32>) -> Maybe<&2, SignedBeaconBlock>: Name.deserialize(Name_SignedBeaconBlock{}, xs)
 def SignedBeaconBlock.hash_tree_root(v: SignedBeaconBlock) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_SignedBeaconBlock{}, v)
+# SignedBeaconBlock, primary compact API: packed buffer in, view / packed bytes / digest out.
+def SignedBeaconBlock.compact() -> CS.CS: Compact.SignedBeaconBlock()
+def SignedBeaconBlock.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.SignedBeaconBlock(), size, buf)
+def SignedBeaconBlock.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def SignedBeaconBlock.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.SignedBeaconBlock(), v, buf)
 
 def KZGProof() -> Data: Node8()
 def KZGProof.schema() -> T.Schema: Name.schema(Name_KZGProof{})
@@ -3381,6 +3871,11 @@ def KZGProof.serialize(v: KZGProof()) -> Maybe<&2, +List<U32>>: Name.serialize(N
 def KZGProof.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, KZGProof()>: Name.decode_result(Name_KZGProof{}, result)
 def KZGProof.deserialize(xs: +List<U32>) -> Maybe<&2, KZGProof()>: Name.deserialize(Name_KZGProof{}, xs)
 def KZGProof.hash_tree_root(v: KZGProof()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_KZGProof{}, v)
+# KZGProof, primary compact API: packed buffer in, view / packed bytes / digest out.
+def KZGProof.compact() -> CS.CS: Compact.KZGProof()
+def KZGProof.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.KZGProof(), size, buf)
+def KZGProof.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def KZGProof.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.KZGProof(), v, buf)
 
 def Blob() -> Data: Node107()
 def Blob.schema() -> T.Schema: Name.schema(Name_Blob{})
@@ -3391,6 +3886,11 @@ def Blob.serialize(v: Blob()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_Blob
 def Blob.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Blob()>: Name.decode_result(Name_Blob{}, result)
 def Blob.deserialize(xs: +List<U32>) -> Maybe<&2, Blob()>: Name.deserialize(Name_Blob{}, xs)
 def Blob.hash_tree_root(v: Blob()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Blob{}, v)
+# Blob, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Blob.compact() -> CS.CS: Compact.Blob()
+def Blob.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Blob(), size, buf)
+def Blob.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Blob.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Blob(), v, buf)
 
 def BlobSidecar.schema() -> T.Schema: Name.schema(Name_BlobSidecar{})
 def BlobSidecar.to_ssz(v: BlobSidecar) -> T.Value: Name.to_ssz(Name_BlobSidecar{}, v)
@@ -3400,6 +3900,11 @@ def BlobSidecar.serialize(v: BlobSidecar) -> Maybe<&2, +List<U32>>: Name.seriali
 def BlobSidecar.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, BlobSidecar>: Name.decode_result(Name_BlobSidecar{}, result)
 def BlobSidecar.deserialize(xs: +List<U32>) -> Maybe<&2, BlobSidecar>: Name.deserialize(Name_BlobSidecar{}, xs)
 def BlobSidecar.hash_tree_root(v: BlobSidecar) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_BlobSidecar{}, v)
+# BlobSidecar, primary compact API: packed buffer in, view / packed bytes / digest out.
+def BlobSidecar.compact() -> CS.CS: Compact.BlobSidecar()
+def BlobSidecar.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.BlobSidecar(), size, buf)
+def BlobSidecar.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def BlobSidecar.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.BlobSidecar(), v, buf)
 
 def Cell() -> Data: Node110()
 def Cell.schema() -> T.Schema: Name.schema(Name_Cell{})
@@ -3410,6 +3915,11 @@ def Cell.serialize(v: Cell()) -> Maybe<&2, +List<U32>>: Name.serialize(Name_Cell
 def Cell.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, Cell()>: Name.decode_result(Name_Cell{}, result)
 def Cell.deserialize(xs: +List<U32>) -> Maybe<&2, Cell()>: Name.deserialize(Name_Cell{}, xs)
 def Cell.hash_tree_root(v: Cell()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_Cell{}, v)
+# Cell, primary compact API: packed buffer in, view / packed bytes / digest out.
+def Cell.compact() -> CS.CS: Compact.Cell()
+def Cell.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.Cell(), size, buf)
+def Cell.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def Cell.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.Cell(), v, buf)
 
 def CellIndex() -> Data: Node3()
 def CellIndex.schema() -> T.Schema: Name.schema(Name_CellIndex{})
@@ -3420,6 +3930,11 @@ def CellIndex.serialize(v: CellIndex()) -> Maybe<&2, +List<U32>>: Name.serialize
 def CellIndex.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, CellIndex()>: Name.decode_result(Name_CellIndex{}, result)
 def CellIndex.deserialize(xs: +List<U32>) -> Maybe<&2, CellIndex()>: Name.deserialize(Name_CellIndex{}, xs)
 def CellIndex.hash_tree_root(v: CellIndex()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_CellIndex{}, v)
+# CellIndex, primary compact API: packed buffer in, view / packed bytes / digest out.
+def CellIndex.compact() -> CS.CS: Compact.CellIndex()
+def CellIndex.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.CellIndex(), size, buf)
+def CellIndex.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def CellIndex.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.CellIndex(), v, buf)
 
 def CommitmentIndex() -> Data: Node3()
 def CommitmentIndex.schema() -> T.Schema: Name.schema(Name_CommitmentIndex{})
@@ -3430,6 +3945,11 @@ def CommitmentIndex.serialize(v: CommitmentIndex()) -> Maybe<&2, +List<U32>>: Na
 def CommitmentIndex.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, CommitmentIndex()>: Name.decode_result(Name_CommitmentIndex{}, result)
 def CommitmentIndex.deserialize(xs: +List<U32>) -> Maybe<&2, CommitmentIndex()>: Name.deserialize(Name_CommitmentIndex{}, xs)
 def CommitmentIndex.hash_tree_root(v: CommitmentIndex()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_CommitmentIndex{}, v)
+# CommitmentIndex, primary compact API: packed buffer in, view / packed bytes / digest out.
+def CommitmentIndex.compact() -> CS.CS: Compact.CommitmentIndex()
+def CommitmentIndex.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.CommitmentIndex(), size, buf)
+def CommitmentIndex.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def CommitmentIndex.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.CommitmentIndex(), v, buf)
 
 def RowIndex() -> Data: Node3()
 def RowIndex.schema() -> T.Schema: Name.schema(Name_RowIndex{})
@@ -3440,6 +3960,11 @@ def RowIndex.serialize(v: RowIndex()) -> Maybe<&2, +List<U32>>: Name.serialize(N
 def RowIndex.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, RowIndex()>: Name.decode_result(Name_RowIndex{}, result)
 def RowIndex.deserialize(xs: +List<U32>) -> Maybe<&2, RowIndex()>: Name.deserialize(Name_RowIndex{}, xs)
 def RowIndex.hash_tree_root(v: RowIndex()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_RowIndex{}, v)
+# RowIndex, primary compact API: packed buffer in, view / packed bytes / digest out.
+def RowIndex.compact() -> CS.CS: Compact.RowIndex()
+def RowIndex.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.RowIndex(), size, buf)
+def RowIndex.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def RowIndex.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.RowIndex(), v, buf)
 
 def ColumnIndex() -> Data: Node3()
 def ColumnIndex.schema() -> T.Schema: Name.schema(Name_ColumnIndex{})
@@ -3450,6 +3975,11 @@ def ColumnIndex.serialize(v: ColumnIndex()) -> Maybe<&2, +List<U32>>: Name.seria
 def ColumnIndex.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, ColumnIndex()>: Name.decode_result(Name_ColumnIndex{}, result)
 def ColumnIndex.deserialize(xs: +List<U32>) -> Maybe<&2, ColumnIndex()>: Name.deserialize(Name_ColumnIndex{}, xs)
 def ColumnIndex.hash_tree_root(v: ColumnIndex()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_ColumnIndex{}, v)
+# ColumnIndex, primary compact API: packed buffer in, view / packed bytes / digest out.
+def ColumnIndex.compact() -> CS.CS: Compact.ColumnIndex()
+def ColumnIndex.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.ColumnIndex(), size, buf)
+def ColumnIndex.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def ColumnIndex.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.ColumnIndex(), v, buf)
 
 def DataColumnsByRootIdentifier.schema() -> T.Schema: Name.schema(Name_DataColumnsByRootIdentifier{})
 def DataColumnsByRootIdentifier.to_ssz(v: DataColumnsByRootIdentifier) -> T.Value: Name.to_ssz(Name_DataColumnsByRootIdentifier{}, v)
@@ -3459,6 +3989,11 @@ def DataColumnsByRootIdentifier.serialize(v: DataColumnsByRootIdentifier) -> May
 def DataColumnsByRootIdentifier.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, DataColumnsByRootIdentifier>: Name.decode_result(Name_DataColumnsByRootIdentifier{}, result)
 def DataColumnsByRootIdentifier.deserialize(xs: +List<U32>) -> Maybe<&2, DataColumnsByRootIdentifier>: Name.deserialize(Name_DataColumnsByRootIdentifier{}, xs)
 def DataColumnsByRootIdentifier.hash_tree_root(v: DataColumnsByRootIdentifier) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_DataColumnsByRootIdentifier{}, v)
+# DataColumnsByRootIdentifier, primary compact API: packed buffer in, view / packed bytes / digest out.
+def DataColumnsByRootIdentifier.compact() -> CS.CS: Compact.DataColumnsByRootIdentifier()
+def DataColumnsByRootIdentifier.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.DataColumnsByRootIdentifier(), size, buf)
+def DataColumnsByRootIdentifier.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def DataColumnsByRootIdentifier.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.DataColumnsByRootIdentifier(), v, buf)
 
 def MatrixEntry.schema() -> T.Schema: Name.schema(Name_MatrixEntry{})
 def MatrixEntry.to_ssz(v: MatrixEntry) -> T.Value: Name.to_ssz(Name_MatrixEntry{}, v)
@@ -3468,6 +4003,11 @@ def MatrixEntry.serialize(v: MatrixEntry) -> Maybe<&2, +List<U32>>: Name.seriali
 def MatrixEntry.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, MatrixEntry>: Name.decode_result(Name_MatrixEntry{}, result)
 def MatrixEntry.deserialize(xs: +List<U32>) -> Maybe<&2, MatrixEntry>: Name.deserialize(Name_MatrixEntry{}, xs)
 def MatrixEntry.hash_tree_root(v: MatrixEntry) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_MatrixEntry{}, v)
+# MatrixEntry, primary compact API: packed buffer in, view / packed bytes / digest out.
+def MatrixEntry.compact() -> CS.CS: Compact.MatrixEntry()
+def MatrixEntry.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.MatrixEntry(), size, buf)
+def MatrixEntry.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def MatrixEntry.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.MatrixEntry(), v, buf)
 
 def DataColumnSidecar.schema() -> T.Schema: Name.schema(Name_DataColumnSidecar{})
 def DataColumnSidecar.to_ssz(v: DataColumnSidecar) -> T.Value: Name.to_ssz(Name_DataColumnSidecar{}, v)
@@ -3477,6 +4017,11 @@ def DataColumnSidecar.serialize(v: DataColumnSidecar) -> Maybe<&2, +List<U32>>: 
 def DataColumnSidecar.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, DataColumnSidecar>: Name.decode_result(Name_DataColumnSidecar{}, result)
 def DataColumnSidecar.deserialize(xs: +List<U32>) -> Maybe<&2, DataColumnSidecar>: Name.deserialize(Name_DataColumnSidecar{}, xs)
 def DataColumnSidecar.hash_tree_root(v: DataColumnSidecar) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_DataColumnSidecar{}, v)
+# DataColumnSidecar, primary compact API: packed buffer in, view / packed bytes / digest out.
+def DataColumnSidecar.compact() -> CS.CS: Compact.DataColumnSidecar()
+def DataColumnSidecar.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.DataColumnSidecar(), size, buf)
+def DataColumnSidecar.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def DataColumnSidecar.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.DataColumnSidecar(), v, buf)
 
 def CustodyIndex() -> Data: Node3()
 def CustodyIndex.schema() -> T.Schema: Name.schema(Name_CustodyIndex{})
@@ -3487,4 +4032,9 @@ def CustodyIndex.serialize(v: CustodyIndex()) -> Maybe<&2, +List<U32>>: Name.ser
 def CustodyIndex.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, CustodyIndex()>: Name.decode_result(Name_CustodyIndex{}, result)
 def CustodyIndex.deserialize(xs: +List<U32>) -> Maybe<&2, CustodyIndex()>: Name.deserialize(Name_CustodyIndex{}, xs)
 def CustodyIndex.hash_tree_root(v: CustodyIndex()) -> Maybe<&2, +List<U32>>: Name.hash_tree_root(Name_CustodyIndex{}, v)
+# CustodyIndex, primary compact API: packed buffer in, view / packed bytes / digest out.
+def CustodyIndex.compact() -> CS.CS: Compact.CustodyIndex()
+def CustodyIndex.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.CustodyIndex(), size, buf)
+def CustodyIndex.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)
+def CustodyIndex.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.CustodyIndex(), v, buf)
 

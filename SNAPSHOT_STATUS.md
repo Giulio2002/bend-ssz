@@ -1,3 +1,27 @@
+## Latest: compact public API and fresh native memory run
+
+All 15 Bend samples across five official ~2.74 MB BeaconState fixtures are
+verified in the fresh native-memory report: roundtrip bytes match and root
+checksums agree. Maximum measured decode overhead is 311296 bytes; maximum
+whole-roundtrip process peak is 9027584 bytes. This is validating buffer-view
+decoding, not materialization into Go-equivalent object graphs. A 0 ms decode
+reading is below the millisecond clock resolution, not zero elapsed time.
+Bend encoding in this memory harness streams to disk and includes writes, so
+these phase timings are not the final encode/decode speed comparison.
+
+The exported src/ssz.bend independently type-checks with no unsafe annotations
+reported. This is type checking, NOT a universal correctness proof for the new
+compact runtime. Its scanner, views, encoder and Merkle implementation still
+need proofs; the legacy 172-module/5440-test results do not prove these changes.
+Generic schema support is work in progress, not complete conformance.
+
+Raw fresh native evidence is in snapshot-evidence/compact-native-20260921.
+The measured native driver and C-generation builds peaked at 5431448784 and
+5404922896 bytes respectively, both below the 6.5 GB build cap. The earlier
+interrupted 353-row speed run is historical, not certification of this version.
+New development artifacts lack an atomic per-run full-source fingerprint;
+this snapshot records its own hashes and does not claim exact-revision audit.
+
 ## Latest: compact-path static conformance
 
 The compact native API produced exact 32-byte expected roots for all 295 official

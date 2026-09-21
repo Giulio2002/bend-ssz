@@ -4,7 +4,7 @@ import ./cschema.bend as S
 
 # Field access, element iteration and encode for the compact primary API.
 #
-# A decoded value is a window of the caller's buffer that `API.run` validated
+# A decoded value is a window of the caller's buffer that `API.validate` accepted
 # against its schema: a `View` is that window, an offset and a length, and the
 # schema says how to read it. Nothing is copied to take a view apart. A field
 # or element of a validated view is again a validated view of its own schema,
@@ -61,12 +61,14 @@ def leaf_hsize(f: S.CS) -> U32:
 
 def cont_fields(s: S.CS) -> S.CS:
   match s:
-    case S.CCont{+fields, cnt, fp, size, fixed, depth, plain}: fields
+    case S.CCont{+fields, cnt, fp, size, fixed, depth, plain, checks, nchecks}: fields
+    case S.CPCont{+fields, cnt, fp, size, fixed, plain, checks, nchecks, slots, nslots, active}: fields
     case _: S.CFNone{}
 
 def cont_count(s: S.CS) -> U32:
   match s:
-    case S.CCont{fields, +cnt, fp, size, fixed, depth, plain}: cnt
+    case S.CCont{fields, +cnt, fp, size, fixed, depth, plain, checks, nchecks}: cnt
+    case S.CPCont{fields, +cnt, fp, size, fixed, plain, checks, nchecks, slots, nslots, active}: cnt
     case _: 0
 
 def rebase(+off: U32, pair: B.Buf & U32) -> B.Buf & U32:
@@ -126,7 +128,8 @@ def count(+s: S.CS, +v: View, b: B.Buf) -> B.Buf & U32:
     case S.CVecVar{elem, +n, depth}: (b, n)
     case S.CList{elem, lim, big, +stride, depth, basic, plain}: (b, U32.div(view_len(v), stride))
     case S.CListVar{elem, lim, big, depth}: first_count(view_len(v), B.read32(b, view_off(v)))
-    case S.CCont{fields, +cnt, fp, size, fixed, depth, plain}: (b, cnt)
+    case S.CCont{fields, +cnt, fp, size, fixed, depth, plain, checks, nchecks}: (b, cnt)
+    case S.CPCont{fields, +cnt, fp, size, fixed, plain, checks, nchecks, slots, nslots, active}: (b, cnt)
     case _: (b, 0)
 
 def var_elem_end(last: Bool, +off: U32, +len: U32, +i: U32, b: B.Buf) -> B.Buf & U32:

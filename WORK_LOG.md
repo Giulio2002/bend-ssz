@@ -4021,3 +4021,65 @@ zero-subtree roots during the ascent, which fastssz reads from a precomputed
 table. A constant table here would need a proof about concrete SHA values,
 which this checker has failed to elaborate (see the SHA checkpoint above), so
 it is not used.
+
+## Iteration 7: hasher, and measured dead ends (2026-09-21)
+
+* `benchmarks/probes/caf.bend`: a closed top-level definition is evaluated
+  again at every reference (20 references to a 20,000-hash chain: 102 ms), so a
+  zero-hash table cannot live in a global. It now lives in a **hasher** value:
+  the digest stack's top segment (slots 960..1023) holds Z(0..63), computed by
+  hashing (`MF.hasher`, 63 hashes). The caller prepares it once and passes it to
+  every root (`API.run_with`, `Ssz.root_with`), as fastssz keeps a package-level
+  zero-hash table. An ascent is now one hash per level instead of two.
+  Attestation root 16.0 → 13.0 µs, AggregateAndProof 20.6 → 16.6 µs,
+  DataColumnsByRootIdentifier 4.3 → 3.2 µs. All 295 ssz_static roots still
+  exact, and 0 mutation disagreements.
+* `benchmarks/probes/root_overhead.bend` (100,000 roots on one buffer): a
+  one-chunk root costs 40 ns, a 64-byte two-chunk root 810 ns (of which one hash
+  is ~260 ns), and Checkpoint 1,130 ns. The rest is the digest stack.
+* Tried and reverted, with measurements:
+  - 16-way stack nodes (3 levels): unrolled access inlined at every call and
+    pushed programs over the 6.5 GB compile cap (three failed attempts);
+  - 4-way nodes with recursive access: compiles, but slower (64-byte root 0.98
+    against 0.81 µs, Checkpoint 1.35 against 1.13 µs);
+  - holding level-0 left siblings in a loop register instead of the stack:
+    slower (1.32 µs for the 64-byte root), because the selector results are
+    deferred rather than computed.
+* `benchmarks/probes/lazy_args.bend`: arguments of an untaken branch are not
+  evaluated. `benchmarks/probes/nat_cost.bend`: `U32.to_nat` fuel is free.
+
+### Merkle scratch in the input buffer; separate entry points; check trees
+
+* **Merkle scratch is now packed words in the caller's buffer**
+  (`src/buffer.bend`): 1024 digest slots of eight words after the data, at
+  word (n + 3) / 4. The level stack (64-slot segments, one per nesting level)
+  and the zero-subtree roots Z(0..63) (slots 960..1023, computed by hashing the
+  first time a buffer is hashed, detected by one word read) live there. Input
+  buffers reserve it at allocation; a buffer without room (an encode output) is
+  copied once into one with room the first time it is hashed
+  (`B.with_scratch`). The duplicable digest tree (`MF.DStack`) and the
+  caller-held hasher are gone. `benchmarks/probes/root_overhead.bend`: a 64-byte
+  root went 0.81 → 0.33 µs and Checkpoint 1.13 → 0.52 µs.
+* **Separate entry points** (`src/api.bend`: `validate_in`/`validate`,
+  `root_in`/`root`) replaced the single dispatcher, which by now cost more
+  compile memory than it saved: the validator-only program compiles at
+  ~3.4 GB, the encode program at ~3.2 GB, and root at 3.6–4.5 GB. Before, all
+  three straddled the 6.5 GB cap. Measured on the way: frontend check ~1 GB,
+  C emission 4–6 GB; a program with the validator alone costs 2.1 GB, root
+  alone 3.3–4.5 GB, and both chained directly a steady 5.2 GB. The root
+  benchmark no longer validates in-process: the runner and the conformance
+  checks validate every input with the decode program first.
+* **Check trees** (`CCont.checks`/`nchecks`, generated): each container's field
+  tree filtered to the fields validation must visit (variable-size, or fixed
+  but not plain). The scanner walks only those; access and root keep the full
+  tree. Validator decode 280 → 120 ns, AggregateAndProof 400 → 300 ns,
+  BeaconBlockBody 4.7 → 3.3 µs.
+* Re-verified after every step: 12/12 merkle cross-checks, 8/8 differential
+  roots, **295/295 ssz_static exact roots** through `compact-dec` +
+  `compact-root`, **0/1,180 mutation disagreements**
+  (`benchmarks/evidence/static_conformance.json`, `static_mutations.json`).
+* Process slip, recorded honestly: one diagnostic compile
+  (`/usr/bin/time -l bend benchmarks/compact/dec.bend -o build/t_dec.c`) ran
+  outside the footprint cap and peaked at 7.01 GB of physical footprint. It
+  completed in 9 s and was not a proof check, but it breached the cap
+  discipline. Every later compile went through `benchmarks/checks/capped_build.py`.

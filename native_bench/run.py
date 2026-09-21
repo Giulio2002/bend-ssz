@@ -39,7 +39,7 @@ root digest checksum that the other implementation reported for the same
 fixture, and reached every expected phase marker.
 
 Compilation is excluded from every measurement and always rebuilt here. The
-Bend side is native_bench/driver_compact.bend, the compact primary path:
+Bend side is native_bench/driver.bend, the compact primary path:
 packed input buffer, in-place validating decode, hash_tree_root and streamed
 encode over the same buffer.
 
@@ -65,7 +65,7 @@ MAXRSS_SCALE = 1 if platform.system() == 'Darwin' else 1024
 PHASES = ['baseline', 'decoded', 'rooted', 'serialized', 'done']
 
 
-DRIVER = 'native_bench/driver_compact.bend'
+DRIVER = 'native_bench/driver.bend'
 COMPILE_CAP_BYTES = 6.5e9
 COMPILE_ATTEMPTS = 4
 
@@ -210,6 +210,13 @@ def run_full(impl, exe, data_path, out_path, expected):
     }
 
 
+def first(*values):
+    """The first reading that is present. A reading of 0 is present: the Bend
+    driver's clock has millisecond resolution, and a compact BeaconState decode
+    now finishes inside one tick."""
+    return next((v for v in values if v is not None), None)
+
+
 def number(text, pattern, scale=1):
     found = re.search(pattern + r'=(\d+)', text)
     return int(found.group(1)) * scale if found else None
@@ -251,9 +258,9 @@ def run_sample(impl, exe, data_path, out_path, expected):
         'kernel_peak_decode_prefix_bytes': int(decode_peak_kernel),
         'kernel_peak_root_prefix_bytes': int(root_peak_kernel),
         'kernel_peak_whole_run_bytes': int(full['kernel_peak']),
-        'decode_ns': number(text, 'DECODE_MS', 1000000) or number(text, 'DECODE_NS'),
-        'serialize_ns': number(text, 'SERIALIZE_MS', 1000000) or number(text, 'SERIALIZE_NS'),
-        'root_ns': number(text, 'ROOT_MS', 1000000) or number(text, 'ROOT_NS'),
+        'decode_ns': first(number(text, 'DECODE_MS', 1000000), number(text, 'DECODE_NS')),
+        'serialize_ns': first(number(text, 'SERIALIZE_MS', 1000000), number(text, 'SERIALIZE_NS')),
+        'root_ns': first(number(text, 'ROOT_MS', 1000000), number(text, 'ROOT_NS')),
         'checksum': number(text, 'CHECKSUM'),
         'root_checksum': number(text, 'ROOTSUM'),
         'go_total_alloc_bytes': number(text, 'GO_TOTAL_ALLOC'),

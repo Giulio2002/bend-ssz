@@ -5,58 +5,30 @@ import ./cscan.bend as SC
 import ./croot.bend as R
 import ./digest.bend as D
 
-# The compact primary SSZ API.
+# The compact primary SSZ operations.
 #
 # Input is a `Buf`: one packed `Array<U32>`, four bytes per word. The caller
 # owns it, passes it to an operation and receives it back with the result -
 # that is the input lifetime contract, and it is what keeps the runtime free of
 # copies: decoding validates in place and byte payloads are never materialised.
 #
-# Every operation goes through one dispatcher. That is not decoration: the
-# pinned 2.0.16 native backend inlines a consumer into each branch of a
-# producer when two *different* large walkers are chained through the same
-# linear buffer, and compiling that exceeded seven gigabytes. Routing both
-# walkers through a single definition keeps a program that validates and then
-# roots the same buffer a self-chain, which compiles in seconds.
-# `build/t_api2.bend` versus `build/t_api.bend` records the difference.
-#
-# ops:
-#   0  validate: is the window a legal encoding of the schema?
-#   1  hash_tree_root
-type Outcome is Data:
-  Out{ok: Bool, root: D.Digest}
+# Each operation is its own entry point, so a program pays compile time only
+# for the walkers it uses (validator alone: ~2 GB; validator and root chained:
+# ~5.2 GB). An earlier single dispatcher over both walkers was a workaround for
+# a compile blow-up that went away with the generated-schema fix, and by then
+# it cost more than it saved (5.0 to over 6.5 GB, see WORK_LOG).
 
-def of_valid(pair: B.Buf & Bool) -> B.Buf & Outcome:
-  (buf, ok) = pair
-  (buf, Out{ok, D.zero()})
+# Is the window [off, off + len) a canonical encoding of `schema`?
+def validate_in(schema: CS.CS, +off: U32, +len: U32, buf: B.Buf) -> B.Buf & Bool:
+  SC.valid_in(schema, off, len, buf)
 
-def of_root(pair: B.Buf & D.Digest) -> B.Buf & Outcome:
-  (buf, d) = pair
-  (buf, Out{True{}, d})
+def validate(schema: CS.CS, +size: U32, buf: B.Buf) -> B.Buf & Bool: validate_in(schema, 0, size, buf)
 
-# The `guard` argument makes this a recursive definition. That is deliberate:
-# the pinned backend inlines a non-recursive consumer into every branch of the
-# walker that produced its buffer, and with two large walkers in one program
-# that exceeded seven gigabytes at compile time. A recursive definition is not
-# inlined, so callers chain into this one entry point instead. Callers pass
-# `0n`; the other branch is unreachable.
-def dispatch(+op: U32, +schema: CS.CS, +size: U32, buf: B.Buf) -> B.Buf & Outcome:
-  match op:
-    case 0: of_valid(SC.valid_at(schema, size, buf))
-    case _: of_root(R.root(schema, size, buf))
+# hash_tree_root of a validated window. Intermediate digests and the
+# zero-subtree table live in the buffer's own scratch (`src/buffer.bend`); the
+# table is computed (63 hashes) the first time a buffer is hashed and reused by
+# every later root of it, as fastssz reuses its package-level zero-hash table.
+def root_in(schema: CS.CS, +off: U32, +len: U32, buf: B.Buf) -> B.Buf & D.Digest:
+  R.root_in(schema, off, len, buf)
 
-def run_go(+guard: Nat, +op: U32, +schema: CS.CS, +size: U32, buf: B.Buf) -> B.Buf & Outcome:
-  match guard:
-    case 0n: dispatch(op, schema, size, buf)
-    case 1n+p: run_go(p, op, schema, size, buf)
-
-def run(+op: U32, +schema: CS.CS, +size: U32, buf: B.Buf) -> B.Buf & Outcome:
-  run_go(0n, op, schema, size, buf)
-
-def accepted(o: Outcome) -> Bool:
-  match o:
-    case Out{+ok, d}: ok
-
-def root_of(o: Outcome) -> D.Digest:
-  match o:
-    case Out{ok, +d}: d
+def root(schema: CS.CS, +size: U32, buf: B.Buf) -> B.Buf & D.Digest: root_in(schema, 0, size, buf)

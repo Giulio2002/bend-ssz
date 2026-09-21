@@ -23,6 +23,7 @@ TARGET = ROOT / 'types/fulu_cschema.bend'
 INDEX = ROOT / 'types/fulu_cschema_index.bend'
 WIDTHS = {'U8': 1, 'U16': 2, 'U32Width': 4, 'U64': 8, 'U128': 16, 'U256': 32}
 U32_MAX = 1 << 32
+PROG = 255  # merkle depth marking a progressive tree
 
 
 def parse_nat(text):
@@ -109,7 +110,7 @@ def fixed_size(node):
     if kind == 'Vector':
         inner = fixed_size(node[1])
         return None if inner is None else inner * node[2]
-    if kind == 'Container':
+    if kind in ('Container', 'ProgressiveContainer'):
         total = 0
         for field in fields_of(node[1]):
             size = fixed_size(field)
@@ -144,7 +145,7 @@ def plain(node):
         return node[1] % 8 == 0
     if kind in ('Vector', 'ListOf'):
         return fixed_size(node[1]) is not None and plain(node[1])
-    if kind == 'Container':
+    if kind in ('Container', 'ProgressiveContainer'):
         return fixed_size(node) is not None and all(plain(f) for f in fields_of(node[1]))
     return False
 
@@ -192,6 +193,42 @@ def emit(node, top=False):
         return 'S.CBitVec{%d, %d, %d}' % (node[1], (node[1] + 7) // 8, depth_of((node[1] + 255) // 256))
     if kind == 'BitList':
         return 'S.CBitList{%s, %d}' % (limit_fields(node[1]), depth_of((node[1] + 255) // 256))
+    # Progressive forms: no limit, and merkle depth 255 marks a progressive
+    # tree (src/merkle_fast.bend). A progressive list validates like a list
+    # with no limit, a progressive bit list like a bit list with no limit.
+    if kind == 'ProgressiveBits':
+        return 'S.CBitList{0, True{}, %d}' % PROG
+    if kind == 'ProgressiveList':
+        element = node[1]
+        stride = fixed_size(element)
+        packs = element[0] in ('Boolean', 'Unsigned') or element == ('ByteVector', 32)
+        if stride is None:
+            return 'S.CListVar{%s, 0, True{}, %d}' % (emit(element), PROG)
+        return 'S.CList{%s, 0, True{}, %d, %d, %s, %s}' % (
+            emit(element), stride, PROG, 'True{}' if packs else 'False{}',
+            'True{}' if plain(element) else 'False{}')
+    if kind == 'ProgressiveContainer':
+        members = fields_of(node[1])
+        active = node[2]
+        if len(active) > 31:
+            raise SystemExit('progressive container with more than 31 active positions')
+        total = fixed_size(node)
+        part = sum(header_size(f) for f in members)
+        checks = check_fields(members)
+        slots, it = [], iter(placed_fields(members))
+        for on in active:
+            slots.append(next(it) if on else (('Null',), 0))
+        mask = sum(1 << i for i, on in enumerate(active) if on)
+        return 'S.CPCont{%s, %d, %d, %d, %s, %s, %s, %d, %s, %d, %d}' % (
+            emit_fields(members), len(members), part, total if total is not None else 0,
+            'True{}' if total is not None else 'False{}', 'True{}' if plain(node) else 'False{}',
+            emit_tree(checks), len(checks), emit_tree(slots), len(slots), mask)
+    if kind == 'CompatibleUnion':
+        selectors, options = node[1], node[2]
+        dense = [None] * (max(selectors) + 1)
+        for sel, opt in zip(selectors, options):
+            dense[sel] = opt
+        return 'S.CUnion{%s, %d}' % (emit_options(dense), len(dense))
     if kind in ('Vector', 'ListOf'):
         element, count = node[1], node[2]
         stride = fixed_size(element)
@@ -220,59 +257,72 @@ def emit(node, top=False):
         members = fields_of(node[1])
         total = fixed_size(node)
         part = sum(header_size(f) for f in members)
-        return 'S.CCont{%s, %d, %d, %d, %s, %d, %s}' % (
+        checks = check_fields(members)
+        return 'S.CCont{%s, %d, %d, %d, %s, %d, %s, %s, %d}' % (
             emit_fields(members), len(members), part, total if total is not None else 0,
             'True{}' if total is not None else 'False{}', depth_of(max(len(members), 1)),
-            'True{}' if plain(node) else 'False{}')
+            'True{}' if plain(node) else 'False{}', emit_tree(checks), len(checks))
     raise SystemExit('cannot emit ' + kind)
 
 
-def emit_fields(members, base=0):
-    """Balanced field tree; each leaf carries its header offset."""
-    if not members:
+def emit_tree(placed):
+    """Balanced field tree over (node, header offset) pairs, in order."""
+    if not placed:
         return 'S.CFNone{}'
-    if len(members) == 1:
-        node = members[0]
+    if len(placed) == 1:
+        node, hoff = placed[0]
         size = fixed_size(node)
         return 'S.CFLeaf{%s, %d, %d, %s}' % (
-            emit(node), base, header_size(node), 'True{}' if size is not None else 'False{}')
-    half = len(members) // 2
-    low, high = members[:half], members[half:]
-    return 'S.CFNode{%s, %s, %d}' % (
-        emit_fields(low, base), emit_fields(high, base + sum(header_size(f) for f in low)), half)
+            emit(node), hoff, header_size(node), 'True{}' if size is not None else 'False{}')
+    half = len(placed) // 2
+    return 'S.CFNode{%s, %s, %d}' % (emit_tree(placed[:half]), emit_tree(placed[half:]), half)
 
 
-def main():
-    text = SOURCE.read_text()
-    defs = dict(re.findall(r'^def (\w+)\(\) -> T\.Schema: (.+)$', text, re.M))
-    names = [name for name in defs if not re.fullmatch(r'Schema\d+', name)]
-    lines = [
-        'import Base',
-        'import ../src/cschema.bend as S',
-        '',
-        '# Generated by tools/generate_cschema.py from the frozen',
-        '# spec/fulu_schemas.bend. Every size, limit, stride, header offset and',
-        '# merkle depth is precomputed here so that the runtime never walks a unary',
-        '# Nat. Do not edit by hand.',
-        '',
-    ]
-    for name in names:
-        tree = parse(defs[name], defs)
-        lines.append('def %s() -> S.CS: %s' % (name, emit(tree, top=True)))
-        SHARED.setdefault(tree, name)
-    # Index dispatch lives in its own module, imported only by programs that
-    # work on any type by number. It is a balanced binary dispatch on the bits
-    # of the index rather than one 109-way match: the flat match cost the pinned
-    # compiler 1.30 GB to elaborate, the balanced one 0.44 GB, and a program
-    # holding both codecs plus the flat table did not fit the compile budget.
+def placed_fields(members):
+    out, hoff = [], 0
+    for node in members:
+        out.append((node, hoff))
+        hoff += header_size(node)
+    return out
+
+
+def emit_options(dense):
+    """Balanced tree indexed by selector value; CFNone where not allowed."""
+    if len(dense) == 1:
+        node = dense[0]
+        if node is None:
+            return 'S.CFNone{}'
+        size = fixed_size(node)
+        return 'S.CFLeaf{%s, 0, 0, %s}' % (emit(node), 'True{}' if size is not None else 'False{}')
+    half = len(dense) // 2
+    return 'S.CFNode{%s, %s, %d}' % (emit_options(dense[:half]), emit_options(dense[half:]), half)
+
+
+def emit_fields(members):
+    """Balanced field tree; each leaf carries its header offset."""
+    return emit_tree(placed_fields(members))
+
+
+def check_fields(members):
+    """The fields validation must visit: variable-size ones, and fixed ones
+    that are not plain. Plain fixed fields are valid by their position."""
+    return [(n, h) for n, h in placed_fields(members) if not (fixed_size(n) is not None and plain(n))]
+
+
+def emit_index(names, table_import, generator, order):
+    """A module with `by_index(i)`: schema `names[i]` of the table module.
+
+    Index dispatch lives in its own module, imported only by programs that
+    work on any type by number. It is a balanced binary dispatch on the bits
+    of the index rather than one flat match: a flat 109-way match cost the
+    pinned compiler 1.30 GB to elaborate, the balanced one 0.44 GB."""
     index = [
         'import Base',
         'import ../src/cschema.bend as S',
-        'import ./fulu_cschema.bend as F',
+        'import %s as F' % table_import,
         '',
-        '# Generated by tools/generate_cschema.py. Named schemas by index, in the',
-        '# order of spec/fulu_schemas.bend (build/cschema-index.json). Do not edit',
-        '# by hand.',
+        '# Generated by %s. Schemas by index, in the order of' % generator,
+        '# %s. Do not edit by hand.' % order,
         '',
         '# Is bit k of i clear?',
         'def low(+i: U32, +k: Nat) -> Bool: U32.is_eq((U32.shrn(i, k) .&. 1 : U32), 0)',
@@ -303,7 +353,30 @@ def main():
 
     root = dispatch(0, len(names), top)
     index.append('def by_index(+i: U32) -> S.CS: %s' % root)
-    INDEX.write_text('\n'.join(index) + '\n')
+    return '\n'.join(index) + '\n'
+
+
+def main():
+    text = SOURCE.read_text()
+    defs = dict(re.findall(r'^def (\w+)\(\) -> T\.Schema: (.+)$', text, re.M))
+    names = [name for name in defs if not re.fullmatch(r'Schema\d+', name)]
+    lines = [
+        'import Base',
+        'import ../src/cschema.bend as S',
+        '',
+        '# Generated by tools/generate_cschema.py from the frozen',
+        '# spec/fulu_schemas.bend. Every size, limit, stride, header offset and',
+        '# merkle depth is precomputed here so that the runtime never walks a unary',
+        '# Nat. Do not edit by hand.',
+        '',
+    ]
+    for name in names:
+        tree = parse(defs[name], defs)
+        lines.append('def %s() -> S.CS: %s' % (name, emit(tree, top=True)))
+        SHARED.setdefault(tree, name)
+    index = emit_index(names, './fulu_cschema.bend', 'tools/generate_cschema.py',
+                       'spec/fulu_schemas.bend (build/cschema-index.json)')
+    INDEX.write_text(index)
     TARGET.write_text('\n'.join(lines) + '\n')
     (ROOT / 'build').mkdir(exist_ok=True)
     (ROOT / 'build/cschema-index.json').write_text(json.dumps(names, indent=1) + '\n')

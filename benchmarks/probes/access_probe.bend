@@ -6,7 +6,7 @@ import ../../src/cschema.bend as CS
 import ../../types/fulu_cschema.bend as Spec
 
 # Field access, element iteration and encode through the compact API on a real
-# BeaconState, printed so build/access_check.py can compare every value with an
+# BeaconState, printed so benchmarks/checks/access_check.py can compare every value with an
 # independent reading of the same bytes. Input: build/native/input.ssz.
 
 def sized(pair: File & Result<&1, &1, U32 & String, U32>) -> IO(File & U32):
@@ -151,13 +151,13 @@ def gate(ok: Bool, +size: U32, b: B.Buf) -> IO(Unit):
     case True{}: queries(size, b)
     case False{}: IO.print("INVALID")
 
-def checked(+size: U32, pair: B.Buf & API.Outcome) -> IO(Unit):
+def checked(+size: U32, pair: B.Buf & Bool) -> IO(Unit):
   (b, o) = pair
-  gate(API.accepted(o), size, b)
+  gate(o, size, b)
 
 def with_input(pair: B.Buf & U32) -> IO(Unit):
   (b, +size) = pair
-  checked(size, API.run(0, Spec.BeaconState(), size, b))
+  checked(size, API.validate(Spec.BeaconState(), size, b))
 
 def main() -> IO(Unit):
   do IO<Unit>:

@@ -144,12 +144,19 @@ def chunk_pick(whole: Bool, buf: B.Buf, +pos: U32, +limit: U32, +mpos: U32, +mas
 def masked_in(+pos: U32, +mpos: U32) -> Bool:
   Bool.and(U32.is_ge(mpos, pos), U32.is_lt(mpos, (pos + 32 : U32)))
 
-# The 32-byte chunk starting at `pos`, zero-padded past `limit`.
+# The 32-byte chunk starting at `pos`, zero-padded past `limit`. Recursive in
+# form (`guard` is always 0n) so that the backend does not inline it.
+def chunk_go(+guard: Nat, buf: B.Buf, +pos: U32, +limit: U32, +mpos: U32, +mask: U32) -> B.Buf & D.Digest:
+  match guard:
+    case 1n+p: chunk_go(p, buf, pos, limit, mpos, mask)
+    case 0n:
+      chunk_pick(
+        Bool.and(U32.is_eq((pos .&. 3 : U32), 0),
+          Bool.and(U32.is_le((pos + 32 : U32), limit), Bool.not(masked_in(pos, mpos)))),
+        buf, pos, limit, mpos, mask)
+
 def chunk_at(buf: B.Buf, +pos: U32, +limit: U32, +mpos: U32, +mask: U32) -> B.Buf & D.Digest:
-  chunk_pick(
-    Bool.and(U32.is_eq((pos .&. 3 : U32), 0),
-      Bool.and(U32.is_le((pos + 32 : U32), limit), Bool.not(masked_in(pos, mpos)))),
-    buf, pos, limit, mpos, mask)
+  chunk_go(0n, buf, pos, limit, mpos, mask)
 
 # Shift right by a runtime amount, as five conditional constant shifts.
 def shr_step(c: Bool, +x: U32, +n: Nat) -> U32:
@@ -188,121 +195,109 @@ def shl_by(+x: U32, +k: U32) -> U32:
           shl_step(U32.is_eq((k .&. 1 : U32), 1), x, 1n), 2n), 4n), 8n), 16n)
 
 # ---------------------------------------------------------------------------
-# The level stack.
+# The level stack and the zero table live in the buffer's Merkle scratch
+# (`B.get_digest` / `B.set_digest`, slot s = eight words): one digest per level
+# in 64-slot segments, one segment per nesting level of the schema, and the
+# zero-subtree roots Z(0..63) in slots 960..1023. So the only mutable state of
+# a hash is the caller's own packed array - no second structure, no sharing,
+# and every access is eight O(1) word reads or writes.
 #
-# One digest per level, addressed by index through a balanced 512-slot tree
-# that is grown on demand. It is a `Data` structure, not a linear `Array`, for two reasons: the
-# pinned backend could not compile a walker that threads two linear resources
-# when its buffer comes from another recursive producer (see
-# `build/t_read_once.bend` versus `build/t_read_stack.bend`), and a duplicable
-# stack keeps the walkers' state a single linear value. Access is by halving,
-# six steps, never a spine walk.
-type DStack is Data:
-  DLeaf{d: D.Digest}
-  DNode{lo: DStack, hi: DStack}
+# (Measured alternatives, see WORK_LOG: a duplicable binary tree of digests
+# cost ~150 ns per access and made the stack most of a small root's time;
+# four- and sixteen-way trees were slower or did not fit the compile budget.)
 
-# A leaf at any level stands for a subtree whose slots all hold its digest, so
-# a fresh stack is one leaf and `set_at` splits leaves only along the path it
-# writes. Building all 511 nodes up front cost more than the hashing of a small
-# container's root.
-def new_stack() -> DStack: DLeaf{D.zero()}
+# Z(0) is the zero chunk and Z(k + 1) = H(Z(k), Z(k)) - computed by hashing,
+# the specification's own definition, not a table of constants.
+def fill_zeros(+k: Nat, +i: U32, +z: D.Digest, buf: B.Buf) -> B.Buf:
+  match k:
+    case 0n: buf
+    case 1n+p: fill_zeros(p, (i + 1 : U32), D.hash_pair(z, z), B.set_digest(buf, (960 + i : U32), z))
 
-def dget_leaf(+st: DStack) -> D.Digest:
-  match st:
-    case DLeaf{+d}: d
-    case DNode{+lo, hi}: dget_leaf(lo)
+def ready_pick(filled: Bool, buf: B.Buf) -> B.Buf:
+  match filled:
+    case True{}: buf
+    case False{}: fill_zeros(64n, 0, D.zero(), buf)
 
-# Is bit 8 - the top bit of a nine-level index - clear? The descent shifts the
-# index left one place per level, so this one test reads each level's bit in
-# turn, where a shift by the level number would cost five conditional shifts.
-def top_zero(+i: U32) -> Bool: U32.is_eq((i .&. 256 : U32), 0)
+def first_word(d: D.Digest) -> U32:
+  match d:
+    case D.D{+x0, x1, x2, x3, x4, x5, x6, x7}: x0
 
-# Indexed read: descend bit by bit from the top level. The decision for the
-# next level is computed by the caller, because Bend cannot match a computed
-# value and has no mutual recursion.
-def dget(+levels: Nat, low: Bool, +st: DStack, +i: U32) -> D.Digest:
-  match levels:
-    case 0n: dget_leaf(st)
-    case 1n+p:
-      match low:
-        case True{}:
-          match st:
-            case DNode{+lo, hi}: dget(p, top_zero(U32.shln(i, 1n)), lo, U32.shln(i, 1n))
-            case DLeaf{+d}: d
-        case False{}:
-          match st:
-            case DNode{lo, +hi}: dget(p, top_zero(U32.shln(i, 1n)), hi, U32.shln(i, 1n))
-            case DLeaf{+d}: d
+def ready_seen(pair: B.Buf & D.Digest) -> B.Buf:
+  (buf, d) = pair
+  ready_pick(Bool.not(U32.is_eq(first_word(d), 0)), buf)
 
-def get_at(+st: DStack, +i: U32) -> D.Digest: dget(9n, top_zero(i), st, i)
-
-def dset(+levels: Nat, low: Bool, +st: DStack, +i: U32, +d: D.Digest) -> DStack:
-  match levels:
-    case 0n: DLeaf{d}
-    case 1n+p:
-      match low:
-        case True{}:
-          match st:
-            case DNode{+lo, +hi}:
-              DNode{dset(p, top_zero(U32.shln(i, 1n)), lo, U32.shln(i, 1n), d), hi}
-            case DLeaf{+x}:
-              DNode{dset(p, top_zero(U32.shln(i, 1n)), DLeaf{x}, U32.shln(i, 1n), d), DLeaf{x}}
-        case False{}:
-          match st:
-            case DNode{+lo, +hi}:
-              DNode{lo, dset(p, top_zero(U32.shln(i, 1n)), hi, U32.shln(i, 1n), d)}
-            case DLeaf{+x}:
-              DNode{DLeaf{x}, dset(p, top_zero(U32.shln(i, 1n)), DLeaf{x}, U32.shln(i, 1n), d)}
-
-def set_at(+st: DStack, +i: U32, +d: D.Digest) -> DStack:
-  dset(9n, top_zero(i), st, i, d)
+# A buffer ready to be hashed: it has scratch room, and its zero table is
+# filled. The table is filled once per buffer; Z(1) = H(0, 0) begins with the
+# word 0xf5a5fd42, so a zero there means "not filled yet".
+def ready(buf: B.Buf) -> B.Buf: ready_seen(B.get_digest(B.with_scratch(buf), 961))
 
 # Push digest `d` as leaf `i`: combine with the stack while bit k of i is set.
-def push(+fuel: Nat, set: Bool, +i: U32, +k: U32, +seg: U32, +d: D.Digest, +st: DStack) -> DStack:
+# `pair` holds the buffer and the stack entry at level k, read beforehand.
+def push(+fuel: Nat, set: Bool, +i: U32, +k: U32, +seg: U32, +d: D.Digest, pair: B.Buf & D.Digest) -> B.Buf:
   match fuel:
-    case 0n: set_at(st, (seg + k : U32), d)
+    case 0n:
+      (buf, top) = pair
+      B.set_digest(buf, (seg + k : U32), d)
     case 1n+p:
       match set:
-        case False{}: set_at(st, (seg + k : U32), d)
+        case False{}:
+          (buf, top) = pair
+          B.set_digest(buf, (seg + k : U32), d)
         case True{}:
-          push(p, bit(i, (k + 1 : U32)), i, (k + 1 : U32), seg,
-            D.hash_pair(get_at(st, (seg + k : U32)), d), st)
+          (buf, +top) = pair
+          push(p, bit(i, (k + 1 : U32)), i, (k + 1 : U32), seg, D.hash_pair(top, d),
+            B.get_digest(buf, (seg + k + 1 : U32)))
+
+def push_leaf(+i: U32, +seg: U32, +d: D.Digest, buf: B.Buf) -> B.Buf:
+  push(64n, bit(i, 0), i, 0, seg, d, B.get_digest(buf, seg))
 
 # Push every chunk of [off, off+len); `n` is the number of chunks.
 def leaves(+fuel: Nat, more: Bool, +i: U32, +n: U32, +off: U32, +len: U32, +mpos: U32, +mask: U32,
-           +seg: U32, +st: DStack, pair: B.Buf & D.Digest) -> B.Buf & DStack:
+           +seg: U32, pair: B.Buf & D.Digest) -> B.Buf:
   match fuel:
     case 0n:
       (buf, d) = pair
-      (buf, st)
+      buf
     case 1n+p:
       match more:
         case False{}:
           (buf, d) = pair
-          (buf, st)
+          buf
         case True{}:
           (buf, +d) = pair
           leaves(p, U32.is_lt((i + 1 : U32), n), (i + 1 : U32), n, off, len, mpos, mask, seg,
-            push(64n, bit(i, 0), i, 0, seg, d, st),
-            chunk_at(buf, (off + 32 * (i + 1 : U32) : U32), (off + len : U32), mpos, mask))
+            chunk_at(push_leaf(i, seg, d, buf), (off + 32 * (i + 1 : U32) : U32), (off + len : U32), mpos, mask))
 
-def climb(left: Bool, top: D.Digest, acc: D.Digest, z: D.Digest) -> D.Digest:
+def climb(left: Bool, other: D.Digest, acc: D.Digest) -> D.Digest:
   match left:
-    case True{}: D.hash_pair(top, acc)
-    case False{}: D.hash_pair(acc, z)
+    case True{}: D.hash_pair(other, acc)
+    case False{}: D.hash_pair(acc, other)
+
+def slot_pick(left: Bool, +here: U32, +zero: U32) -> U32:
+  match left:
+    case True{}: here
+    case False{}: zero
 
 # Ascend to `depth`: the stack entry is the left sibling exactly where bit k of
-# the leaf count is set, the zero-subtree root the right sibling otherwise.
-def ascend(+fuel: Nat, more: Bool, +k: U32, +depth: U32, +n: U32, +seg: U32, acc: D.Digest,
-           +z: D.Digest, +st: DStack) -> D.Digest:
+# the leaf count is set, and the zero-subtree root Z(k) is the right sibling
+# otherwise - so each level reads one slot and hashes once. `pair` holds that
+# slot's digest, read beforehand.
+def ascend(+fuel: Nat, more: Bool, +k: U32, +depth: U32, +n: U32, +seg: U32, +acc: D.Digest,
+           pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
   match fuel:
-    case 0n: acc
+    case 0n:
+      (buf, other) = pair
+      (buf, acc)
     case 1n+p:
       match more:
-        case False{}: acc
+        case False{}:
+          (buf, other) = pair
+          (buf, acc)
         case True{}:
+          (buf, +other) = pair
           ascend(p, U32.is_lt((k + 1 : U32), depth), (k + 1 : U32), depth, n, seg,
-            climb(bit(n, k), get_at(st, (seg + k : U32)), acc, z), D.hash_pair(z, z), st)
+            climb(bit(n, k), other, acc),
+            B.get_digest(buf, slot_pick(bit(n, (k + 1 : U32)), (seg + k + 1 : U32), (960 + k + 1 : U32))))
 
 # Depth needed for `limit` leaves: the smallest d with 2^d >= limit.
 def depth_go(+fuel: Nat, +limit: U32, +d: U32) -> U32:
@@ -316,11 +311,16 @@ def depth_go(+fuel: Nat, +limit: U32, +d: U32) -> U32:
 
 def depth_of(+limit: U32) -> U32: depth_go(32n, limit, 0)
 
-def close_pick(full: Bool, +depth: U32, +n: U32, +seg: U32, +st: DStack) -> D.Digest:
+# An empty tree of depth d is Z(d); a full one is the stack's top entry.
+def close_pick(full: Bool, empty: Bool, +depth: U32, +n: U32, +seg: U32, buf: B.Buf) -> B.Buf & D.Digest:
   match full:
-    case True{}: get_at(st, (seg + depth : U32))
+    case True{}: B.get_digest(buf, (seg + depth : U32))
     case False{}:
-      ascend(64n, U32.is_lt(0, depth), 0, depth, n, seg, D.zero(), D.zero(), st)
+      match empty:
+        case True{}: B.get_digest(buf, (960 + depth : U32))
+        case False{}:
+          ascend(64n, U32.is_lt(0, depth), 0, depth, n, seg, D.zero(),
+            B.get_digest(buf, slot_pick(bit(n, 0), seg, 960)))
 
 def full_in(small: Bool, +depth: U32, +n: U32) -> Bool:
   match small:
@@ -328,39 +328,174 @@ def full_in(small: Bool, +depth: U32, +n: U32) -> Bool:
     case False{}: False{}
 
 # A tree of depth 32 or more is never full: its capacity exceeds any U32 count.
-def close(+depth: U32, +n: U32, +seg: U32, +st: DStack) -> D.Digest:
-  close_pick(full_in(U32.is_lt(depth, 32), depth, n), depth, n, seg, st)
+def close(+depth: U32, +n: U32, +seg: U32, buf: B.Buf) -> B.Buf & D.Digest:
+  close_pick(full_in(U32.is_lt(depth, 32), depth, n), U32.is_eq(n, 0), depth, n, seg, buf)
 
-def finish_leaves(+depth: U32, +n: U32, +seg: U32, pair: B.Buf & DStack) -> B.Buf & D.Digest:
-  (buf, +st) = pair
-  (buf, close(depth, n, seg, st))
-
-# The general case: push every chunk, then close the tree. The stack is a
-# duplicable value, so only the buffer is threaded.
-def merkleize_tree(buf: B.Buf, +st: DStack, +seg: U32, +off: U32, +len: U32, +depth: U32,
+# The general case: push every chunk, then close the tree.
+def merkleize_tree(buf: B.Buf, +seg: U32, +off: U32, +len: U32, +depth: U32,
                    +mpos: U32, +mask: U32) -> B.Buf & D.Digest:
-  finish_leaves(depth, U32.shrn((len + 31 : U32), 5n), seg,
+  close(depth, U32.shrn((len + 31 : U32), 5n), seg,
     leaves(Nat.add(8n, U32.to_nat(U32.shrn((len + 31 : U32), 5n))),
       U32.is_lt(0, U32.shrn((len + 31 : U32), 5n)), 0,
-      U32.shrn((len + 31 : U32), 5n), off, len, mpos, mask, seg, st,
+      U32.shrn((len + 31 : U32), 5n), off, len, mpos, mask, seg,
       chunk_at(buf, off, (off + len : U32), mpos, mask)))
 
-def merkleize_pick(single: Bool, buf: B.Buf, +st: DStack, +seg: U32, +off: U32, +len: U32,
+def merkleize_pick(single: Bool, buf: B.Buf, +seg: U32, +off: U32, +len: U32,
                    +depth: U32, +mpos: U32, +mask: U32) -> B.Buf & D.Digest:
   match single:
     case True{}: chunk_at(buf, off, (off + len : U32), mpos, mask)
-    case False{}: merkleize_tree(buf, st, seg, off, len, depth, mpos, mask)
+    case False{}: merkleize_tree(buf, seg, off, len, depth, mpos, mask)
 
-# Merkleize a byte range using the caller's stack segment. A depth-0 tree is a
-# single chunk - the range zero-padded to 32 bytes, which is also the empty
-# range's root - so it is read directly, without a round trip through the
+# ---------------------------------------------------------------------------
+# Progressive merkleization (ProgressiveList, ProgressiveBitlist, progressive
+# containers). Segment k holds 4^k chunks, starting at chunk s(k) = (4^k-1)/3;
+# its root T(k) is a complete tree of depth 2k, and the whole root is
+# P = H(P', T(0)) where P' is the same construction over the later segments and
+# P(no chunks) is the zero chunk. Streaming: the segment being filled uses the
+# stack levels seg .. seg + 2k, each finished T(k) is kept in slot seg + 48 + k,
+# and the T(k) are folded right to left at the end. Depth 255 marks a
+# progressive tree in the schema; chunk counts below 2^32 need k <= 15.
+def prog_depth() -> U32: 255
+
+def is_prog(+depth: U32) -> Bool: U32.is_eq(depth, 255)
+
+def prog_cap(+k: U32) -> U32: shl_by(1, (2 * k : U32))
+
+def prog_start(+k: U32) -> U32: U32.div((prog_cap(k) - 1 : U32), 3)
+
+def pick_u32(c: Bool, +x: U32, +y: U32) -> U32:
+  match c:
+    case True{}: x
+    case False{}: y
+
+def umin(+x: U32, +y: U32) -> U32: pick_u32(U32.is_le(x, y), x, y)
+
+# The segment of chunk i. The later-segment search is an argument of the
+# selector, and untaken selector arguments are not evaluated.
+def prog_k(+fuel: Nat, +k: U32, +i: U32) -> U32:
+  match fuel:
+    case 0n: k
+    case 1n+p: pick_u32(U32.is_lt(i, (prog_start(k) + prog_cap(k) : U32)), k, prog_k(p, (k + 1 : U32), i))
+
+def seg_of(+i: U32) -> U32: prog_k(16n, 0, i)
+
+def copy_slot(+to: U32, pair: B.Buf & D.Digest) -> B.Buf:
+  (b, d) = pair
+  B.set_digest(b, to, d)
+
+# A finished segment's root, the top of its full local tree, is kept.
+def seal_if(full: Bool, +k: U32, +seg: U32, buf: B.Buf) -> B.Buf:
+  match full:
+    case True{}: copy_slot((seg + 48 + k : U32), B.get_digest(buf, (seg + 2 * k : U32)))
+    case False{}: buf
+
+def push_prog_at(+k: U32, +j: U32, +seg: U32, +d: D.Digest, buf: B.Buf) -> B.Buf:
+  seal_if(U32.is_eq(j, (prog_cap(k) - 1 : U32)), k, seg,
+    push(64n, bit(j, 0), j, 0, seg, d, B.get_digest(buf, seg)))
+
+# Push digest `d` as chunk i of a progressive tree.
+def push_prog(+i: U32, +seg: U32, +d: D.Digest, buf: B.Buf) -> B.Buf:
+  push_prog_at(seg_of(i), (i - prog_start(seg_of(i)) : U32), seg, d, buf)
+
+# Fold the kept segment roots from segment k down to 0: acc = H(acc, T(k)).
+# `pair` holds T(k), read beforehand.
+def fold_prog(+fuel: Nat, more: Bool, +k: U32, +seg: U32, +acc: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
+  match fuel:
+    case 0n:
+      (buf, t) = pair
+      (buf, acc)
+    case 1n+p:
+      match more:
+        case False{}:
+          (buf, +t) = pair
+          (buf, D.hash_pair(acc, t))
+        case True{}:
+          (buf, +t) = pair
+          fold_prog(p, U32.is_lt(1, k), (k - 1 : U32), seg, D.hash_pair(acc, t),
+            B.get_digest(buf, (seg + 48 + k - 1 : U32)))
+
+def fold_from(+k: U32, +seg: U32, buf: B.Buf) -> B.Buf & D.Digest:
+  fold_prog(17n, U32.is_lt(0, k), k, seg, D.zero(), B.get_digest(buf, (seg + 48 + k : U32)))
+
+# The last segment, if partial, is closed as a depth-2k tree and kept.
+def seal_last(full: Bool, +k: U32, +m: U32, +seg: U32, buf: B.Buf) -> B.Buf:
+  match full:
+    case True{}: buf
+    case False{}: copy_slot((seg + 48 + k : U32), close((2 * k : U32), m, seg, buf))
+
+def close_prog_at(+k: U32, +n: U32, +seg: U32, buf: B.Buf) -> B.Buf & D.Digest:
+  fold_from(k, seg,
+    seal_last(U32.is_eq((n - prog_start(k) : U32), prog_cap(k)), k, (n - prog_start(k) : U32), seg, buf))
+
+def close_prog_pick(empty: Bool, +n: U32, +seg: U32, buf: B.Buf) -> B.Buf & D.Digest:
+  match empty:
+    case True{}: (buf, D.zero())
+    case False{}: close_prog_at(seg_of((n - 1 : U32)), n, seg, buf)
+
+# Root of a progressive tree of n pushed chunks.
+def close_prog(+n: U32, +seg: U32, buf: B.Buf) -> B.Buf & D.Digest:
+  close_prog_pick(U32.is_eq(n, 0), n, seg, buf)
+
+def push_any_pick(prog: Bool, +i: U32, +seg: U32, +d: D.Digest, buf: B.Buf) -> B.Buf:
+  match prog:
+    case True{}: push_prog(i, seg, d, buf)
+    case False{}: push_leaf(i, seg, d, buf)
+
+# Push and close for either kind of tree, by the schema's depth.
+def push_any(+depth: U32, +i: U32, +seg: U32, +d: D.Digest, buf: B.Buf) -> B.Buf:
+  push_any_pick(is_prog(depth), i, seg, d, buf)
+
+def close_any_pick(prog: Bool, +depth: U32, +n: U32, +seg: U32, buf: B.Buf) -> B.Buf & D.Digest:
+  match prog:
+    case True{}: close_prog(n, seg, buf)
+    case False{}: close(depth, n, seg, buf)
+
+def close_any(+depth: U32, +n: U32, +seg: U32, buf: B.Buf) -> B.Buf & D.Digest:
+  close_any_pick(is_prog(depth), depth, n, seg, buf)
+
+# A progressive tree over the chunks of a byte range: each segment's chunks
+# are one ordinary merkleization of depth 2k, kept in slot seg + 48 + k.
+def prog_segments(+fuel: Nat, more: Bool, +k: U32, +n: U32, +seg: U32, +off: U32, +len: U32,
+                  +mpos: U32, +mask: U32, buf: B.Buf) -> B.Buf:
+  match fuel:
+    case 0n: buf
+    case 1n+p:
+      match more:
+        case False{}: buf
+        case True{}:
+          prog_segments(p, U32.is_lt(prog_start((k + 1 : U32)), n), (k + 1 : U32), n, seg, off, len, mpos, mask,
+            copy_slot((seg + 48 + k : U32),
+              merkleize_pick(U32.is_eq(k, 0), buf, seg, (off + 32 * prog_start(k) : U32),
+                umin((len - 32 * prog_start(k) : U32), (32 * prog_cap(k) : U32)), (2 * k : U32), mpos, mask)))
+
+def merkleize_prog_at(+n: U32, +seg: U32, +off: U32, +len: U32, +mpos: U32, +mask: U32, buf: B.Buf) -> B.Buf & D.Digest:
+  fold_from(seg_of((n - 1 : U32)), seg, prog_segments(17n, True{}, 0, n, seg, off, len, mpos, mask, buf))
+
+def merkleize_prog_pick(empty: Bool, +n: U32, +seg: U32, +off: U32, +len: U32, +mpos: U32, +mask: U32,
+                        buf: B.Buf) -> B.Buf & D.Digest:
+  match empty:
+    case True{}: (buf, D.zero())
+    case False{}: merkleize_prog_at(n, seg, off, len, mpos, mask, buf)
+
+def merkleize_prog(buf: B.Buf, +seg: U32, +off: U32, +len: U32, +mpos: U32, +mask: U32) -> B.Buf & D.Digest:
+  merkleize_prog_pick(U32.is_eq(len, 0), U32.shrn((len + 31 : U32), 5n), seg, off, len, mpos, mask, buf)
+
+# Merkleize a byte range using the caller's stack segment in a ready buffer.
+# A depth-0 tree is a single chunk - the range zero-padded to 32 bytes, which
+# is also the empty range's root - so it is read directly, without touching the
 # stack; that is every uint, `Bytes32` and other one-chunk field.
-def merkleize_in(buf: B.Buf, +st: DStack, +seg: U32, +off: U32, +len: U32, +depth: U32,
+def merkleize_kind(prog: Bool, buf: B.Buf, +seg: U32, +off: U32, +len: U32, +depth: U32,
+                   +mpos: U32, +mask: U32) -> B.Buf & D.Digest:
+  match prog:
+    case True{}: merkleize_prog(buf, seg, off, len, mpos, mask)
+    case False{}: merkleize_pick(U32.is_eq(depth, 0), buf, seg, off, len, depth, mpos, mask)
+
+def merkleize_in(buf: B.Buf, +seg: U32, +off: U32, +len: U32, +depth: U32,
                  +mpos: U32, +mask: U32) -> B.Buf & D.Digest:
-  merkleize_pick(U32.is_eq(depth, 0), buf, st, seg, off, len, depth, mpos, mask)
+  merkleize_kind(is_prog(depth), buf, seg, off, len, depth, mpos, mask)
 
 def merkleize_at(buf: B.Buf, +off: U32, +len: U32, +depth: U32) -> B.Buf & D.Digest:
-  merkleize_in(buf, new_stack(), 0, off, len, depth, 4294967295, 255)
+  merkleize_in(ready(buf), 0, off, len, depth, 4294967295, 255)
 
 # Merkle root padded to `limit` chunks; the depth follows from the limit.
 def merkleize_bytes(buf: B.Buf, +off: U32, +len: U32, +limit: U32) -> B.Buf & D.Digest:

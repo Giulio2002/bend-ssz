@@ -80,13 +80,13 @@ def hex_digest(d: D.Digest) -> String:
       hex_word(w0) ++ hex_word(w1) ++ hex_word(w2) ++ hex_word(w3)
         ++ hex_word(w4) ++ hex_word(w5) ++ hex_word(w6) ++ hex_word(w7)
 
-def show_root(pair: B.Buf & API.Outcome) -> B.Buf & String:
+def show_root(pair: B.Buf & D.Digest) -> B.Buf & String:
   (buf, o) = pair
-  (buf, hex_digest(API.root_of(o)))
+  (buf, hex_digest(o))
 
-def show_valid(pair: B.Buf & API.Outcome) -> B.Buf & String:
+def show_valid(pair: B.Buf & Bool) -> B.Buf & String:
   (buf, o) = pair
-  (buf, Bool.show(API.accepted(o)))
+  (buf, Bool.show(o))
 
 def report(label: String, pair: B.Buf & String) -> IO(B.Buf):
   (buf, text) = pair
@@ -97,7 +97,7 @@ def report(label: String, pair: B.Buf & String) -> IO(B.Buf):
 def run_all(+size: U32, buf: B.Buf) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    b1 : B.Buf <- report("ROOT=", show_root(API.run(1, Spec.BeaconState(), size, buf)))
+    b1 : B.Buf <- report("ROOT=", show_root(API.root(Spec.BeaconState(), size, buf)))
     t1 : Nat <- IO.now()
     IO.print("ROOT_MS=" ++ Nat.show(Nat.sub(t1, t0)))
     IO.print("DROP=" ++ U32.show((B.drop(b1) .&. 0 : U32)))

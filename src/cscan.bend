@@ -32,6 +32,7 @@ import ./cschema.bend as S
 #   9  the offset of the current variable field is in v
 #  11  the offset of variable element i is in v
 #  12  the offset that ends element i is in v; it starts at a
+#  13  a union's selector byte is in v; the value follows it
 type Frame is Data:
   FDone{}
   FCont{fields: S.CS, i: U32, cnt: U32, base: U32, endp: U32, fp: U32,
@@ -97,6 +98,11 @@ def f_hsize(f: S.CS) -> U32:
     case S.CFLeaf{s, hoff, +hsize, fixed}: hsize
     case _: 0
 
+def is_leaf(f: S.CS) -> Bool:
+  match f:
+    case S.CFLeaf{s, hoff, hsize, fixed}: True{}
+    case _: False{}
+
 def f_fixed(f: S.CS) -> Bool:
   match f:
     case S.CFLeaf{s, hoff, hsize, +fixed}: fixed
@@ -161,11 +167,19 @@ def run(+fuel: Nat, +tag: U32, +schema: S.CS, +fr: Frame, +a: U32, +b: U32, +c: 
               (buf, v) = pair
               run(p, usel(U32.is_eq((b - a : U32), 0), 5, 4), schema, fr, a, b, c,
                 B.read32(buf, a))
-            case S.CCont{+fields, +cnt, +fp, size, fixed, depth, +plain}:
+            case S.CCont{fields, cnt, +fp, size, fixed, depth, +plain, +checks, +nchecks}:
               (buf, v) = pair
               +len = (b - a : U32)
               run(p, usel(bsel(S.is_fixed(schema), U32.is_eq(len, fp), U32.is_ge(len, fp)), usel(plain, 5, 8), 6),
-                schema, fsel(plain, fr, FCont{fields, 0, cnt, a, b, fp, S.CFNone{}, 0, 0, fr}), a, b, c, (buf, 0))
+                schema, fsel(plain, fr, FCont{checks, 0, nchecks, a, b, fp, S.CFNone{}, 0, 0, fr}), a, b, c, (buf, 0))
+            case S.CPCont{fields, cnt, +fp, size, fixed, +plain, +checks, +nchecks, slots, nslots, active}:
+              (buf, v) = pair
+              +len = (b - a : U32)
+              run(p, usel(bsel(S.is_fixed(schema), U32.is_eq(len, fp), U32.is_ge(len, fp)), usel(plain, 5, 8), 6),
+                schema, fsel(plain, fr, FCont{checks, 0, nchecks, a, b, fp, S.CFNone{}, 0, 0, fr}), a, b, c, (buf, 0))
+            case S.CUnion{options, nsel}:
+              (buf, v) = pair
+              run(p, usel(U32.is_lt(a, b), 13, 6), schema, fr, a, b, c, B.byte_at(buf, a))
             case S.CNull{}:
               (buf, v) = pair
               run(p, usel(U32.is_eq((b - a : U32), 0), 5, 6), schema, fr, a, b, c, (buf, 0))
@@ -240,7 +254,9 @@ def run(+fuel: Nat, +tag: U32, +schema: S.CS, +fr: Frame, +a: U32, +b: U32, +c: 
               +f = S.field(fields, i)
               +fixed = f_fixed(f)
               +hp = (base + f_hoff(f) : U32)
-              run(p, usel(last, usel(pending, 0, 5), usel(fixed, 0, 9)),
+              # A fixed field of a plain type needs no check - its size is fixed
+              # by the layout - so the walk moves straight to the next field.
+              run(p, usel(last, usel(pending, 0, 5), usel(fixed, usel(S.is_plain(f_schema(f)), 8, 0), 9)),
                 ssel(last, pend, ssel(fixed, f_schema(f), pend)),
                 fsel(last, up,
                   FCont{fields, (i + 1 : U32), cnt, base, endp, fp, pend, start, has, up}),
@@ -261,6 +277,17 @@ def run(+fuel: Nat, +tag: U32, +schema: S.CS, +fr: Frame, +a: U32, +b: U32, +c: 
               run(p, usel(pending, usel(grow_ok, 0, 6), usel(first_ok, 8, 6)), pend,
                 FCont{fields, i, cnt, base, endp, fp, f_schema(f), child, 1, up},
                 start, child, c, (buf, 0))
+            case _:
+              (buf, v) = pair
+              (buf, False{})
+        # ---- 13: a union's selector byte is in v ---------------------------
+        case 13:
+          match schema:
+            case S.CUnion{+options, +nsel}:
+              (buf, +v) = pair
+              +opt = S.field(options, v)
+              run(p, usel(bsel(U32.is_lt(v, nsel), is_leaf(opt), False{}), 0, 6), f_schema(opt),
+                fr, (a + 1 : U32), b, c, (buf, 0))
             case _:
               (buf, v) = pair
               (buf, False{})
@@ -291,8 +318,11 @@ def run(+fuel: Nat, +tag: U32, +schema: S.CS, +fr: Frame, +a: U32, +b: U32, +c: 
               (buf, False{})
 
 # Entry point: is the window [0, size) a legal encoding of `schema`?
-def valid_at(schema: S.CS, +size: U32, buf: B.Buf) -> B.Buf & Bool:
-  run(Nat.add(64n, U32.to_nat((4 * size : U32))), 0, schema, FDone{}, 0, size, 0, (buf, 0))
+# Is the window [off, off + len) a legal encoding of `schema`?
+def valid_in(schema: S.CS, +off: U32, +len: U32, buf: B.Buf) -> B.Buf & Bool:
+  run(Nat.add(64n, U32.to_nat((4 * len : U32))), 0, schema, FDone{}, off, (off + len : U32), 0, (buf, 0))
+
+def valid_at(schema: S.CS, +size: U32, buf: B.Buf) -> B.Buf & Bool: valid_in(schema, 0, size, buf)
 
 def valid_of(schema: S.CS, pair: B.Buf & U32) -> B.Buf & Bool:
   (buf, +n) = pair

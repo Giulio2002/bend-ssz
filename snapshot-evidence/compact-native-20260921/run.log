@@ -1,0 +1,34 @@
+Building bend
+Building bend-c
+Building go
+case_0 bend baseline 7307264 decode_peak 7307264 overhead 0 decode_ns 0 root_ns 48000000 verified True
+case_0 go baseline 8290304 decode_peak 11665408 overhead 3375104 decode_ns 2120083 root_ns 16460958 verified True
+case_0 go baseline 8257536 decode_peak 11616256 overhead 3358720 decode_ns 2340125 root_ns 10316334 verified True
+case_0 bend baseline 7307264 decode_peak 7307264 overhead 0 decode_ns 0 root_ns 25000000 verified True
+case_0 bend baseline 7421952 decode_peak 7421952 overhead 0 decode_ns 0 root_ns 53000000 verified True
+case_0 go baseline 8388608 decode_peak 11665408 overhead 3276800 decode_ns 3553875 root_ns 14860500 verified True
+case_1 go baseline 8519680 decode_peak 11780096 overhead 3260416 decode_ns 2261958 root_ns 25880750 verified True
+case_1 bend baseline 7503872 decode_peak 7520256 overhead 16384 decode_ns 0 root_ns 60000000 verified True
+case_1 bend baseline 7454720 decode_peak 7454720 overhead 0 decode_ns 1000000 root_ns 33000000 verified True
+case_1 go baseline 8241152 decode_peak 11763712 overhead 3522560 decode_ns 1317875 root_ns 14935000 verified True
+case_1 go baseline 8404992 decode_peak 11730944 overhead 3325952 decode_ns 2745875 root_ns 14553375 verified True
+case_1 bend baseline 7127040 decode_peak 7176192 overhead 49152 decode_ns 0 root_ns 60000000 verified True
+case_2 bend baseline 7159808 decode_peak 7274496 overhead 114688 decode_ns 0 root_ns 59000000 verified True
+case_2 go baseline 8028160 decode_peak 11403264 overhead 3375104 decode_ns 5666042 root_ns 25471042 verified True
+case_2 go baseline 8437760 decode_peak 11763712 overhead 3325952 decode_ns 5499541 root_ns 13998375 verified True
+case_2 bend baseline 7127040 decode_peak 7438336 overhead 311296 decode_ns 0 root_ns 23000000 verified True
+case_2 bend baseline 7127040 decode_peak 7176192 overhead 49152 decode_ns 0 root_ns 60000000 verified True
+case_2 go baseline 8257536 decode_peak 11665408 overhead 3407872 decode_ns 2495500 root_ns 15746625 verified True
+case_3 go baseline 8306688 decode_peak 11714560 overhead 3407872 decode_ns 2330291 root_ns 20174709 verified True
+case_3 bend baseline 7241728 decode_peak 7258112 overhead 16384 decode_ns 0 root_ns 59000000 verified True
+case_3 bend baseline 7176192 decode_peak 7258112 overhead 81920 decode_ns 0 root_ns 25000000 verified True
+case_3 go baseline 8241152 decode_peak 11616256 overhead 3375104 decode_ns 1923042 root_ns 25838792 verified True
+case_3 go baseline 8257536 decode_peak 11616256 overhead 3358720 decode_ns 5449292 root_ns 21974334 verified True
+case_3 bend baseline 7192576 decode_peak 7290880 overhead 98304 decode_ns 0 root_ns 59000000 verified True
+case_4 bend baseline 7389184 decode_peak 7389184 overhead 0 decode_ns 0 root_ns 30000000 verified True
+case_4 go baseline 8257536 decode_peak 11599872 overhead 3342336 decode_ns 2540375 root_ns 23451250 verified True
+case_4 go baseline 8470528 decode_peak 11862016 overhead 3391488 decode_ns 5581042 root_ns 9440708 verified True
+case_4 bend baseline 7241728 decode_peak 7258112 overhead 16384 decode_ns 0 root_ns 25000000 verified True
+case_4 bend baseline 7176192 decode_peak 7290880 overhead 114688 decode_ns 0 root_ns 59000000 verified True
+case_4 go baseline 8241152 decode_peak 11632640 overhead 3391488 decode_ns 3331458 root_ns 23662792 verified True
+exit=0

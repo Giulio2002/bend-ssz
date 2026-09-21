@@ -10,7 +10,7 @@ ROOT=Path(__file__).resolve().parents[1]
 F=json.loads((ROOT/'schemas/fulu_mainnet.json').read_text())
 key=lambda x:json.dumps(x,separators=(',',':'),sort_keys=True)
 containers={key(s):n for n,s in F.items() if s['kind']=='container'}
-lines=['import Base','import ../types/schema.bend as T','import ../types/primitive.bend as P','import ../src/ssz.bend as API','import ../spec/fulu_schemas.bend as Spec','']
+lines=['import Base','import ../types/schema.bend as T','import ../types/primitive.bend as P','import ../src/ssz.bend as API','import ../spec/fulu_schemas.bend as Spec','import ../types/fulu_cschema.bend as Compact','import ../src/buffer.bend as Buf','import ../src/access.bend as Access','import ../src/digest.bend as Digest','import ../src/cschema.bend as CS','']
 # Monomorphic per-element sequence conversions (no ~ template instances: the
 # pinned checker counts every template instance as an unsafe annotation).
 seq_done=set()
@@ -132,5 +132,10 @@ for name,s in names:
  else:
   typ=name+'()';lines.append(f'def {name}() -> Data: {h}()')
  N=f'Name_{name}{{}}'
- lines += [f'def {name}.schema() -> T.Schema: Name.schema({N})',f'def {name}.to_ssz(v: {typ}) -> T.Value: Name.to_ssz({N}, v)',f'def {name}.from_ssz(v: T.Value) -> Maybe<&2, {typ}>: Name.from_ssz({N}, v)',f'def {name}.valid(v: {typ}) -> Bool: Name.valid({N}, v)',f'def {name}.serialize(v: {typ}) -> Maybe<&2, +List<U32>>: Name.serialize({N}, v)',f'def {name}.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, {typ}>: Name.decode_result({N}, result)',f'def {name}.deserialize(xs: +List<U32>) -> Maybe<&2, {typ}>: Name.deserialize({N}, xs)',f'def {name}.hash_tree_root(v: {typ}) -> Maybe<&2, +List<U32>>: Name.hash_tree_root({N}, v)','']
+ lines += [f'def {name}.schema() -> T.Schema: Name.schema({N})',f'def {name}.to_ssz(v: {typ}) -> T.Value: Name.to_ssz({N}, v)',f'def {name}.from_ssz(v: T.Value) -> Maybe<&2, {typ}>: Name.from_ssz({N}, v)',f'def {name}.valid(v: {typ}) -> Bool: Name.valid({N}, v)',f'def {name}.serialize(v: {typ}) -> Maybe<&2, +List<U32>>: Name.serialize({N}, v)',f'def {name}.decode_result(result: Maybe<&2, T.Value>) -> Maybe<&2, {typ}>: Name.decode_result({N}, result)',f'def {name}.deserialize(xs: +List<U32>) -> Maybe<&2, {typ}>: Name.deserialize({N}, xs)',f'def {name}.hash_tree_root(v: {typ}) -> Maybe<&2, +List<U32>>: Name.hash_tree_root({N}, v)',
+  f'# {name}, primary compact API: packed buffer in, view / packed bytes / digest out.',
+  f'def {name}.compact() -> CS.CS: Compact.{name}()',
+  f'def {name}.decode(+size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>: API.decode(Compact.{name}(), size, buf)',
+  f'def {name}.encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: API.encode(v, buf)',
+  f'def {name}.root(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest: API.root(Compact.{name}(), v, buf)','']
 (ROOT/'types/fulu.bend').write_text('\n'.join(lines)+'\n')
