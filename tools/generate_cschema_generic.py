@@ -50,6 +50,9 @@ def to_tree(s):
     if kind == 'list':
         return ('ListOf', to_tree(s['element']), s['limit'])
     if kind == 'container':
+        names = [n for n, _ in s['fields']]
+        if len(set(names)) != len(names):
+            return ('Null',)  # duplicate field names: an illegal type
         chain = ('End',)
         for _, field in reversed(s['fields']):
             chain = ('Chain', to_tree(field), chain)
@@ -59,6 +62,9 @@ def to_tree(s):
     if kind == 'progressive_bits':
         return ('ProgressiveBits',)
     if kind == 'progressive_container':
+        names = [n for n, _ in s['fields']]
+        if len(set(names)) != len(names):
+            return ('Null',)
         chain = ('End',)
         for _, field in reversed(s['fields']):
             chain = ('Chain', to_tree(field), chain)

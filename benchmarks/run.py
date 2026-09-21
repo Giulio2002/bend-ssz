@@ -26,12 +26,13 @@ The Bend side is the compact primary API, three programs built from
 benchmarks/compact/ (one per operation, because the pinned compiler cannot fit
 every walker and the any-type index into one program's compile budget):
 
-* deserialize - `API.run(0, …)`, the in-place validating decode whose result is
+* deserialize - `API.validate`, the in-place validating decode whose result is
   the validated view; every verdict is consumed and any rejection exits 1;
 * serialize - `A.encode`, a fresh packed buffer holding the value's encoding,
   after one untimed decode (Go likewise decodes into its struct before timing
   MarshalSSZ); every encoding is consumed;
-* hash_tree_root - `API.run(1, …)` on a validated buffer; every root is
+* hash_tree_root - `API.root` on a buffer the decode program accepted in the
+  verification step (Go likewise decodes once, untimed); every root is
   consumed.
 
 The schema is selected by index (types/fulu_cschema_index.bend, order in
@@ -229,8 +230,11 @@ def run_bend(name, path, operation, ops, verify):
     if 'ROOTSUM=' in text:
         result['rootsum'] = int(re.search(r'ROOTSUM=(\d+)', text).group(1))
     if verify:
-        # Round trip: decode then encode through the compact API must give the
-        # input bytes back exactly; root: the checksum Go also prints.
+        # Decode: the compact API must accept the workload (the root program
+        # does not validate - it is only ever run on accepted inputs). Round
+        # trip: decode then encode must give the input bytes back exactly.
+        # Root: the checksum Go also prints.
+        sh([str(OUT / 'bend-dec')] + BEND_FLAGS, env=bend_env(name, path, 1))
         output.unlink(missing_ok=True)
         sh([str(OUT / 'bend-enc')] + BEND_FLAGS, env=bend_env(name, path, 1, output))
         result['roundtrip'] = output.exists() and output.read_bytes() == path.read_bytes()

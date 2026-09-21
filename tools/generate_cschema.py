@@ -174,6 +174,8 @@ SHARED = {}
 
 
 def emit(node, top=False):
+    if top and not legal(node):
+        return 'S.CFNone{}'
     if not top:
         name = SHARED.get(node)
         if name is not None:
@@ -284,6 +286,40 @@ def placed_fields(members):
         out.append((node, hoff))
         hoff += header_size(node)
     return out
+
+
+def legal(node):
+    """The structural rules of spec/type_legality.bend over the tuple tree:
+    vectors, byte vectors and bit vectors are nonempty, containers have at
+    least one field, a progressive container's active list is at most 256
+    long, ends with an active position and has one active position per field,
+    and a compatible union has one to 127 options with distinct selectors in
+    1..127. (Field-name distinctness is checked where names are known, in
+    tools/generate_cschema_generic.py. Mutual compatibility of union options,
+    spec/compatibility.bend, is not re-derived here.) An illegal type is
+    emitted as a schema that no input validates against."""
+    kind = node[0]
+    if kind in ('ByteVector', 'BitVector'):
+        return node[1] > 0
+    if kind == 'Vector':
+        return node[2] > 0 and legal(node[1])
+    if kind in ('ListOf', 'ProgressiveList'):
+        return legal(node[1])
+    if kind == 'Container':
+        members = fields_of(node[1])
+        return len(members) > 0 and all(legal(f) for f in members)
+    if kind == 'ProgressiveContainer':
+        members, active = fields_of(node[1]), node[2]
+        return (len(members) > 0 and len(active) <= 256 and len(active) > 0 and active[-1]
+                and sum(active) == len(members) and all(legal(f) for f in members))
+    if kind == 'CompatibleUnion':
+        selectors, options = node[1], node[2]
+        return (0 < len(options) <= 127 and len(selectors) == len(options)
+                and len(set(selectors)) == len(selectors) and all(0 < x < 128 for x in selectors)
+                and all(legal(o) for o in options))
+    if kind == 'Null':
+        return False
+    return True
 
 
 def emit_options(dense):

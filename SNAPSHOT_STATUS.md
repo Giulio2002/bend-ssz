@@ -1,3 +1,20 @@
+## Latest: compact-path finite coverage of all 5440 listed cases
+
+The native generic runner passes 5145/5145 cases: valid inputs are accepted,
+produce the exact 32-byte official root and re-encode byte-for-byte; invalid
+inputs must report decode rejection. Static conformance passes 295/295 cases
+for acceptance and exact root. An independent operator run additionally checks
+all 295 static inputs roundtrip through a copied compact-enc native executable;
+all pass, and the executable hash is recorded. See
+snapshot-evidence/compact-full-cases and benchmarks/checks/generic_conformance.py.
+
+This closes the finite-case coverage gap, not the universal proof gap. These
+are new compact-native development runners, not a claim that all frozen final
+acceptance gates pass. Public API typecheck passes independently; full compact
+runtime refinement and native performance acceptance remain unfinished.
+Per-run source fingerprints are incomplete; results certify the tested binaries,
+not an independent whole-repository audit of this export.
+
 ## Latest: compact public API and fresh native memory run
 
 All 15 Bend samples across five official ~2.74 MB BeaconState fixtures are

@@ -1,8 +1,8 @@
 {
-  "captured_at": "2026-09-21T04:44:43.538522+00:00",
+  "captured_at": "2026-09-21T04:51:33.316823+00:00",
   "kind": "unverified_development_snapshot",
   "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0007/workspace",
-  "milestone": "Fresh compact native memory evidence:15verified samples,max311296byte decode overhead; public API typechecks, universal compact proofs absent",
+  "milestone": "Compact native generic5145/static295 case coverage with exact roots and roundtrips; universal proofs/performance gates incomplete",
   "full_acceptance_passed": false,
   "benchmark_status": "Memory harness only; full timing report incomplete; compare representations and timer resolution explicitly",
   "spectest_source_hash_mismatches": [
@@ -11,5 +11,11 @@
   ],
   "final_spectest_source_hash_mismatches": [],
   "final_spectest_source_hash_count": 150,
-  "compact_native_has_full_source_fingerprint": false
+  "compact_native_has_full_source_fingerprint": false,
+  "compact_finite_cases": {
+    "generic_passed": 5145,
+    "static_accept_root_passed": 295,
+    "independent_static_roundtrip_passed": 295,
+    "frozen_final_acceptance_claimed": false
+  }
 }

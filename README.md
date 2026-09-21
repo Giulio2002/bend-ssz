@@ -1,4 +1,4 @@
-> **Unfinished development snapshot:** compact runtime has finite tests and native memory evidence, but universal runtime proofs and full performance acceptance remain incomplete. See [snapshot status](SNAPSHOT_STATUS.md).
+> **Unfinished development snapshot:** compact native runners cover all 5440 listed cases; universal compact-runtime proofs and full speed acceptance remain incomplete. See [snapshot status](SNAPSHOT_STATUS.md).
 
 # bend-ssz
 
