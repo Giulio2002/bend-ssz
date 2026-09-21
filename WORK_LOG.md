@@ -3872,3 +3872,152 @@ The remaining structural fix, not yet done, is to merge the validator and the
 root walker into a single walker with a mode flag. That halves the number of
 large recursive definitions in a program, and a program that validates and then
 roots the same buffer becomes a self-chain, which is the shape that compiles.
+
+## Iteration 5, continued: the wall was the schema table; native compact path measured
+
+### The compiler wall, re-diagnosed
+
+The "reader + root walker exceeds 6.5 GB" conclusion above was wrong about its
+cause. A program that only imports `types/fulu_cschema.bend` and prints one
+fixed size cost **3.98 GB** to compile (`build/t_sch.bend`); without the
+109-way `by_index`/`name_at` tables it cost 0.22 GB (`build/t_sch3.bend`). The
+pinned compiler elaborates every definition of every imported module, so every
+probe paid for those tables. Fixes in `tools/generate_cschema.py`:
+
+* nested named schemas are emitted as calls to their definitions instead of
+  being expanded again (27 KB module instead of 72 KB; structurally identical
+  types share a definition);
+* the index table moved to its own module, `types/fulu_cschema_index.bend`,
+  imported only by multi-type programs (1.30 GB alone, `build/t_idx.bend`);
+  `name_at` was dropped (names are in `build/cschema-index.json`).
+
+After that the decode driver compiles at 1.8–2.1 GB, and the full driver
+(reader + validate + root + serialize, `native_bench/driver_compact.bend`) at
+5.3–6.0 GB.
+
+Also measured: the compiler's peak is **not deterministic**. The same source
+compiled at 5.21 GB, 5.23 GB and over 6.5 GB on consecutive runs. So the
+earlier "literal path compiles, environment path does not" finding was most
+likely this variance rather than a real rule; the driver now takes its paths
+from the environment again. `native_bench/run.py` compiles under a 6.5 GB
+footprint cap and retries a capped attempt (at most 4), recording every attempt.
+
+### Three bugs the native BeaconState runs found
+
+1. **Merkle depth ≥ 32** (`src/merkle_fast.bend`): `bit(x, k)` and
+   `shl_by(1, depth)` only saw the low five bits of the shift. For the
+   2^40-limit registry lists (validator list depth 40, balances 38), `bit(n, 40)`
+   read bit 8 of the count and `close` could take a non-full list for a full
+   tree. BeaconState rooted to `f282…` instead of `cc7f…`. Fixed with
+   `bit_in`/`full_in`: no U32 has bits at 32 and above, and no tree of depth
+   32 or more is full.
+2. **Empty fixed-element list** (`src/cscan.bend`, `CList`): for length 0 the
+   scanner went to "deliver" with a fresh `FRep` whose `left` was `0 − 1`
+   instead of the parent frame, so a state with any empty list (fixtures 2, 3
+   and 4) was rejected, after a 120–185 ms run to the fuel limit. Fixed with the
+   same `fsel(empty, …)` the `CVec` case already used.
+3. Found by the first memory run: the stop-point `B.drop` fold copies
+   O(n log n) words on this runtime (matching `ANode` splits blocks, per the
+   emitted C's block-layer comment), inflating both bracketing runs' baseline
+   to 15.7 MB. The stop path now just drops the buffer; the baseline is 7.1–7.4 MB.
+
+Independent oracle: `build/ref_validate.py` is a Python SSZ validity checker
+over the generator's parse tree. It accepts all five fixtures and localised
+bug 2 to the empty lists.
+
+### Serialize, field access, encode
+
+* `B.emit` lists the bytes of a word range by indexed `Array.get`. A first
+  version walked the `ANode` tree and took 21–23 ms for BeaconState; the
+  indexed loop takes 10 ms, including writing the file in 64 KiB pieces.
+* `src/access.bend` (new): a `View` is a validated window. It provides
+  `field`, `field_schema`, `count`, `elem`, `elem_schema`, in-place scalar reads
+  (`uint64`, `boolean`, `byte`) and `encode`, which returns a fresh packed
+  `Buf` of exactly the window, copied a word at a time with the tail masked.
+  `benchmarks/probes/access_probe.bend` + `build/access_check.py`: **49/49**
+  values across the five fixtures match an independent Python reading of the
+  same bytes. The checks cover slot, the validator/balance/historical-root/
+  eth1-vote counts, the last validator's `effective_balance`, a
+  `proposer_lookahead` element, the execution payload header's window, its
+  `extra_data` window (a variable field inside a variable field, unaligned),
+  and the byte sum and length of the header's compact encoding (605–615 bytes,
+  unaligned).
+
+### Native evidence, compact path (2026-09-21)
+
+`native_bench/run.py` (now driving `native_bench/driver_compact.bend`), five
+BeaconState fixtures × 3 alternating samples, exit 0, `complete: true`, all
+samples `verified`, roots agree with Go on every fixture:
+
+* Bend decode overhead: medians 0–65,536 bytes, worst sample 180,224 bytes
+  (limit 32,000,000). Go: 3.4 MB.
+* Bend post-input baseline 7.1–7.4 MB (Go 8.2 MB); Bend whole-process peak
+  7.5–7.9 MB (Go 21.9–24.1 MB; the previous Bend list path was ≈ 97 MB).
+* Latency: decode 1–2 ms (Go 1.3 ms), root 82 ms (Go 7.5–7.7 ms, **10.6–10.9x,
+  over the 10x limit**), serialize 10 ms including writes (Go 0.27–0.34 ms,
+  **30–37x**).
+
+Full tables are in MEMORY_REVIEW.md.
+
+### Still open (unchanged in kind)
+
+* Proofs for every compact module and the universal packed → FIPS SHA bridge.
+* The 5440 official cases through the compact API. This needs progressive
+  list/bit-list/container and compatible-union forms in the compact schema,
+  plus runtime-supplied schemas for `ssz_generic`, because compiling one
+  program per case is impossible at these compile costs.
+* The per-type performance gate (`benchmarks/run.py` still measures the legacy
+  path), root below 10x, and serialize below 5x.
+* Removing the legacy list API from the production surface. It is kept for
+  now because the existing checked proofs are about it.
+
+## Iteration 5, continued: every Fulu type through the compact API; performance work
+
+### Any-type programs and conformance
+
+* `types/fulu_cschema_index.bend` is now a balanced binary dispatch on the
+  index bits (0.46 GB to compile) instead of one 109-way `match` (1.30 GB). A
+  program with validator + root walker + the flat table did not fit the 6.5 GB
+  compile cap in five attempts; with the balanced table it compiles at
+  5.0–6.35 GB. All 108 testable indices resolve to the same schema as the flat
+  table (`build/t_bidx`, `build/t_idx2`).
+* `benchmarks/compact/{io,dec,enc,root}.bend`: native programs, one per
+  operation, any type by `SSZ_INDEX`. `root` validates first and exits 1 on
+  rejection.
+* **All 295 official `ssz_static` cases (59 Fulu types) pass through the
+  compact primary API with the exact 32-byte root** (`build/static_conformance.py`
+  → `build/static_conformance.json`; `root` prints the root as `ROOTWORDS`).
+* **1,180 malformed variants** of those cases (truncated, extended, first
+  offset 0xffffffff, first byte flipped) **agree with the independent Python
+  validator** `build/ref_validate.py` on every one: 437 invalid ones rejected,
+  743 still-valid ones accepted (`build/static_mutations.py` →
+  `build/static_mutations.json`).
+* `benchmarks/probes/strictness.bend`: values stored with `Array.set` are
+  evaluated when stored (20,000 SHA-derived stores cost 5 ms, the price of
+  20,000 hashes), so a benchmark that consumes one word of an encoding still
+  pays for all of it.
+
+### Performance changes, each re-verified
+
+Each change below was followed by the 12 merkle cross-checks, the 8
+differential roots, and a re-run of the static conformance and mutations.
+
+| change | effect |
+|---|---|
+| `D.hash_pair` builds its message with `Array.new` + 16 `set`s and reads the result with 8 `get`s instead of `ANode` construction/matching, which copies blocks on this runtime | 76 → 52 ms per 200,000 nodes (`benchmarks/probes/hash_variants.bend`, same digest) |
+| digest-stack index descent shifts the index once per level instead of computing a five-step variable shift | BeaconState root 76 → 72 ms |
+| aligned whole chunks: eight raw word reads, one record | 72 → 69 ms |
+| generator marks `Vector/List[Bytes32]` as chunk-packed (a 32-byte vector's root is its chunk) | BeaconState root 69 → 32–40 ms uncontended: 81,920 elements no longer walked one frame at a time |
+| `plain` flag: a fixed value built from uints, byte vectors and whole-byte bit vectors is valid iff its length is right, so the scanner skips its fields and elements | AttestationData decode 551 → 40–80 ns; Attestation 830 → 340 ns; BeaconState decode under 50 µs |
+| digest stack grown on demand (one leaf, split along written paths) instead of building 511 nodes per root call | small-container roots −40 % |
+| depth-0 leaves read their single chunk directly, no stack round trip; partial chunks built in one record | AttestationData root 9.0 → 6.2 µs, Checkpoint 1.8 → 1.0 µs |
+| benchmark loops take the schema once instead of dispatching per operation | per-op overhead removed from Bend's side |
+
+Where the remaining root time goes: SHA-256 is about 55 % of a small
+container's root. Go hashes with the CPU's SHA instructions (~0.06 µs per
+node); the pinned pure-Bend package takes ~0.26 µs, and hardware SHA is not
+allowed. About a third of the hashing in a list-bearing container recomputes
+zero-subtree roots during the ascent, which fastssz reads from a precomputed
+table. A constant table here would need a proof about concrete SHA values,
+which this checker has failed to elaborate (see the SHA checkpoint above), so
+it is not used.

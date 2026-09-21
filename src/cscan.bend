@@ -136,37 +136,36 @@ def run(+fuel: Nat, +tag: U32, +schema: S.CS, +fr: Frame, +a: U32, +b: U32, +c: 
               (buf, v) = pair
               run(p, usel(U32.is_eq((b - a : U32), 0), 6, 3), schema, fr, a, b, c,
                 B.byte_at(buf, (b - 1 : U32)))
-            case S.CVec{+elem, +count, +stride, depth, basic}:
+            case S.CVec{+elem, +count, +stride, depth, basic, +plain}:
               (buf, v) = pair
               +ok = U32.is_eq((b - a : U32), (count * stride : U32))
-              +empty = U32.is_eq(count, 0)
-              run(p, usel(ok, usel(empty, 5, 0), 6), ssel(empty, schema, elem),
-                fsel(empty, fr, FRep{elem, (count - 1 : U32), stride, (a + stride : U32), fr}),
+              +skip = Bool.or(U32.is_eq(count, 0), plain)
+              run(p, usel(ok, usel(skip, 5, 0), 6), ssel(skip, schema, elem),
+                fsel(skip, fr, FRep{elem, (count - 1 : U32), stride, (a + stride : U32), fr}),
                 a, (a + stride : U32), c, (buf, 0))
             case S.CVecVar{+elem, +count, depth}:
               (buf, v) = pair
               run(p, usel(U32.is_lt((b - a : U32), (4 * count : U32)), 6, 4), schema, fr, a, b, count,
                 B.read32(buf, a))
-            case S.CList{+elem, +lim, +big, +stride, depth, basic}:
+            case S.CList{+elem, +lim, +big, +stride, depth, basic, +plain}:
               (buf, v) = pair
               +len = (b - a : U32)
               +count = U32.div(len, stride)
               +exact = U32.is_eq(len, (count * stride : U32))
-              +empty = U32.is_eq(len, 0)
-              run(p, usel(empty, 5,
-                    usel(bsel(exact, S.within(count, lim, big), False{}), 0, 6)),
-                ssel(empty, schema, elem),
-                fsel(empty, fr, FRep{elem, (count - 1 : U32), stride, (a + stride : U32), fr}),
+              +skip = Bool.or(U32.is_eq(len, 0), plain)
+              run(p, usel(bsel(exact, S.within(count, lim, big), False{}), usel(skip, 5, 0), 6),
+                ssel(skip, schema, elem),
+                fsel(skip, fr, FRep{elem, (count - 1 : U32), stride, (a + stride : U32), fr}),
                 a, (a + stride : U32), c, (buf, 0))
             case S.CListVar{+elem, lim, big, depth}:
               (buf, v) = pair
               run(p, usel(U32.is_eq((b - a : U32), 0), 5, 4), schema, fr, a, b, c,
                 B.read32(buf, a))
-            case S.CCont{+fields, +cnt, +fp, size, fixed, depth}:
+            case S.CCont{+fields, +cnt, +fp, size, fixed, depth, +plain}:
               (buf, v) = pair
               +len = (b - a : U32)
-              run(p, usel(bsel(S.is_fixed(schema), U32.is_eq(len, fp), U32.is_ge(len, fp)), 8, 6),
-                schema, FCont{fields, 0, cnt, a, b, fp, S.CFNone{}, 0, 0, fr}, a, b, c, (buf, 0))
+              run(p, usel(bsel(S.is_fixed(schema), U32.is_eq(len, fp), U32.is_ge(len, fp)), usel(plain, 5, 8), 6),
+                schema, fsel(plain, fr, FCont{fields, 0, cnt, a, b, fp, S.CFNone{}, 0, 0, fr}), a, b, c, (buf, 0))
             case S.CNull{}:
               (buf, v) = pair
               run(p, usel(U32.is_eq((b - a : U32), 0), 5, 6), schema, fr, a, b, c, (buf, 0))

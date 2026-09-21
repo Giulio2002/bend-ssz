@@ -173,7 +173,7 @@ def leaf_mix(+schema: S.CS, +a: U32, +b: U32) -> U32:
 def plan_start(+schema: S.CS, +fr: RF, +a: U32, +b: U32, +c: U32) -> Plan:
   match schema:
     case S.CBitList{lim, big, depth}: P{6, schema, fr, a, b, c, 2, (b - 1 : U32), 0, 0, no_mix()}
-    case S.CVec{+elem, +count, +stride, +depth, +basic}:
+    case S.CVec{+elem, +count, +stride, +depth, +basic, plain}:
       P{usel(basic, 1, usel(U32.is_eq(count, 0), 8, 0)), ssel(basic, schema, elem),
         fsel(basic, fr, RFr{0, elem, 0, count, a, stride, (c + 64 : U32), depth, no_mix(), fr}),
         a, (a + stride : U32), usel(basic, c, (c + 64 : U32)),
@@ -182,7 +182,7 @@ def plan_start(+schema: S.CS, +fr: RF, +a: U32, +b: U32, +c: U32) -> Plan:
       P{usel(U32.is_eq(count, 0), 8, 2), elem,
         RFr{1, elem, 0, count, a, b, (c + 64 : U32), depth, no_mix(), fr},
         a, b, (c + 64 : U32), 1, a, 0, depth, no_mix()}
-    case S.CList{+elem, lim, big, +stride, +depth, +basic}:
+    case S.CList{+elem, lim, big, +stride, +depth, +basic, plain}:
       P{usel(basic, 1, usel(U32.is_eq(U32.div((b - a : U32), stride), 0), 8, 0)),
         ssel(basic, schema, elem),
         fsel(basic, fr, RFr{0, elem, 0, U32.div((b - a : U32), stride), a, stride, (c + 64 : U32),
@@ -193,7 +193,7 @@ def plan_start(+schema: S.CS, +fr: RF, +a: U32, +b: U32, +c: U32) -> Plan:
       P{usel(U32.is_eq((b - a : U32), 0), 8, 2), elem,
         RFr{1, elem, 0, 0, a, b, (c + 64 : U32), depth, 0, fr},
         a, b, (c + 64 : U32), 1, a, 0, depth, no_mix()}
-    case S.CCont{+fields, +cnt, fp, size, fixed, +depth}:
+    case S.CCont{+fields, +cnt, fp, size, fixed, +depth, plain}:
       P{7, schema, RFr{2, fields, 0, cnt, a, b, (c + 64 : U32), depth, no_mix(), fr},
         a, b, (c + 64 : U32), 3, a, 0, 0, no_mix()}
     case _:

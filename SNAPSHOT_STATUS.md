@@ -1,3 +1,21 @@
+## Latest: compact-path static conformance
+
+The compact native API produced exact 32-byte expected roots for all 295 official
+ssz_static cases covering 59 Fulu types (roots.yaml is the independent reference).
+1180 modified inputs agreed with a separately written Python validity checker:
+637 invalid and 543 valid. That checker shares schema parsing/size helpers with
+the generator; it is not a wholly independent schema implementation. Reports and
+scripts are preserved in snapshot-evidence/compact-static/. They are development
+run evidence without a full per-run source fingerprint, not an independent audit
+of this exact commit.
+
+The compact path does NOT yet pass the entire 5440-case suite and still lacks
+its universal runtime refinement proofs and required packed-SHA/FIPS bridge.
+The ongoing performance log is partial. BeaconState hashing rows are about
+33.5ms Bend versus 6.7ms Go; broader speed acceptance is pending. Decode remains
+a validated buffer view vs Go materialization; do not interpret that timing as
+equivalent materializing deserialization. Read the benchmark method for each API.
+
 ## Latest milestone: compact native buffer-view memory experiment
 
 All 15 Bend samples across five ~2.74 MB BeaconState fixtures completed with

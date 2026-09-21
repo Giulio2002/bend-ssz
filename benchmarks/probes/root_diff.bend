@@ -72,7 +72,7 @@ def cont_fields() -> CS.CS:
 
 def case_container() -> String:
   check("container",
-    fast_bytes(R.root(CS.CCont{cont_fields(), 2, 16, 16, True{}, 1}, 16,
+    fast_bytes(R.root(CS.CCont{cont_fields(), 2, 16, 16, True{}, 1, True{}}, 16,
       B.of_list(16, [1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0]))),
     old_bytes(Old.hash_tree_root(
       T.Container{["a", "b"], T.Chain{T.Unsigned{P.U64{}}, T.Chain{T.Unsigned{P.U64{}}, T.End{}}}},
@@ -82,7 +82,7 @@ def case_container() -> String:
 # List[uint64, 4] with two elements: packed leaves plus a length mix
 def case_list_basic() -> String:
   check("list_uint64",
-    fast_bytes(R.root(CS.CList{CS.CUint{8}, 4, False{}, 8, 0, True{}}, 16,
+    fast_bytes(R.root(CS.CList{CS.CUint{8}, 4, False{}, 8, 0, True{}, True{}}, 16,
       B.of_list(16, [1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0]))),
     old_bytes(Old.hash_tree_root(T.ListOf{T.Unsigned{P.U64{}}, 4n},
       T.Sequence{T.Items{T.UnsignedValue{u64(1, 0)},
@@ -91,7 +91,7 @@ def case_list_basic() -> String:
 # Vector[Bytes32, 2]: two composite elements
 def case_vector_composite() -> String:
   check("vector_bytes32",
-    fast_bytes(R.root(CS.CVec{CS.CBytes{32, 0}, 2, 32, 1, False{}}, 64,
+    fast_bytes(R.root(CS.CVec{CS.CBytes{32, 0}, 2, 32, 1, False{}, True{}}, 64,
       B.of_list(64, List.append(&2, U32, bytes32_list(), bytes32_list())))),
     old_bytes(Old.hash_tree_root(T.Vector{T.ByteVector{32n}, 2n},
       T.Sequence{T.Items{T.BytesValue{bytes32_list()},
@@ -114,7 +114,7 @@ def sync_like_fields() -> CS.CS:
 
 def case_bits_container() -> String:
   check("bits_container",
-    fast_bytes(R.root(CS.CCont{sync_like_fields(), 2, 34, 34, True{}, 1}, 34,
+    fast_bytes(R.root(CS.CCont{sync_like_fields(), 2, 34, 34, True{}, 1, True{}}, 34,
       B.of_list(34, List.append(&2, U32, [171, 205], bytes32_list())))),
     old_bytes(Old.hash_tree_root(
       T.Container{["bits", "sig"], T.Chain{T.BitVector{16n}, T.Chain{T.ByteVector{32n}, T.End{}}}},
@@ -155,7 +155,7 @@ def main() -> IO(Unit):
     IO.print(case_vector_composite())
     IO.print(case_bitvector())
     IO.print(case_bits_container())
-    IO.print("list_fast=" ++ hex_bytes(fast_bytes(R.root(CS.CList{CS.CUint{8}, 4, False{}, 8, 0, True{}}, 16,
+    IO.print("list_fast=" ++ hex_bytes(fast_bytes(R.root(CS.CList{CS.CUint{8}, 4, False{}, 8, 0, True{}, True{}}, 16,
       B.of_list(16, [1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0])))))
     IO.print("list_old=" ++ hex_bytes(old_bytes(Old.hash_tree_root(T.ListOf{T.Unsigned{P.U64{}}, 4n},
       T.Sequence{T.Items{T.UnsignedValue{u64(1, 0)},

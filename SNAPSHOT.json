@@ -1,8 +1,8 @@
 {
-  "captured_at": "2026-09-21T02:53:55.922734+00:00",
+  "captured_at": "2026-09-21T03:38:58.356557+00:00",
   "kind": "unverified_development_snapshot",
   "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0005/workspace",
-  "milestone": "Compact native buffer-view memory run: 15 samples max229376 bytes; new runtime not fully proved or accepted",
+  "milestone": "Compact native static conformance:295 exact-root cases and1180 validator comparisons; full suite and runtime proofs incomplete",
   "full_acceptance_passed": false,
   "benchmark_status": "fresh native-memory phase measurements; complete native speed acceptance missing",
   "spectest_source_hash_mismatches": [

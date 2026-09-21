@@ -24,12 +24,18 @@ type CS is Data:
   CByteList{lim: U32, big: Bool, depth: U32}
   CBitVec{bits: U32, bytes: U32, depth: U32}
   CBitList{lim: U32, big: Bool, depth: U32}
-  # fixed-stride elements; `basic` means the elements pack into chunks
-  CVec{elem: CS, count: U32, stride: U32, depth: U32, basic: Bool}
+  # fixed-stride elements; `basic` means each element's root is its own bytes
+  # laid out as chunks - packed basic types, and 32-byte vectors, which are
+  # exactly one chunk - so the sequence merkleizes as one byte range.
+  # `plain` (here and on containers) means every byte string of the right
+  # length is a valid encoding: the value is built only from uints, byte
+  # vectors and whole-byte bit vectors, so validation is the length check
+  # alone and the scanner does not visit elements or fields.
+  CVec{elem: CS, count: U32, stride: U32, depth: U32, basic: Bool, plain: Bool}
   CVecVar{elem: CS, count: U32, depth: U32}
-  CList{elem: CS, lim: U32, big: Bool, stride: U32, depth: U32, basic: Bool}
+  CList{elem: CS, lim: U32, big: Bool, stride: U32, depth: U32, basic: Bool, plain: Bool}
   CListVar{elem: CS, lim: U32, big: Bool, depth: U32}
-  CCont{fields: CS, count: U32, fixed_part: U32, size: U32, fixed: Bool, depth: U32}
+  CCont{fields: CS, count: U32, fixed_part: U32, size: U32, fixed: Bool, depth: U32, plain: Bool}
   CNull{}
   # Field-tree nodes. They share this type because Bend has no mutually
   # recursive type declarations; a field tree never appears where a schema is
@@ -85,11 +91,11 @@ def fixed_size(s: CS) -> Maybe<&2, U32>:
     case CByteList{lim, big, depth}: None{}
     case CBitVec{bits, +bytes, depth}: Some{bytes}
     case CBitList{lim, big, depth}: None{}
-    case CVec{elem, +count, +stride, depth, basic}: Some{(count * stride : U32)}
+    case CVec{elem, +count, +stride, depth, basic, plain}: Some{(count * stride : U32)}
     case CVecVar{elem, count, depth}: None{}
-    case CList{elem, lim, big, stride, depth, basic}: None{}
+    case CList{elem, lim, big, stride, depth, basic, plain}: None{}
     case CListVar{elem, lim, big, depth}: None{}
-    case CCont{fields, count, fixed_part, +size, fixed, depth}: cont_size(fixed, size)
+    case CCont{fields, count, fixed_part, +size, fixed, depth, plain}: cont_size(fixed, size)
     case CNull{}: Some{0}
     case CFLeaf{f, hoff, hsize, fixed}: None{}
     case CFNode{lo, hi, split}: None{}
@@ -103,11 +109,11 @@ def is_fixed(s: CS) -> Bool:
     case CByteList{lim, big, depth}: False{}
     case CBitVec{bits, bytes, depth}: True{}
     case CBitList{lim, big, depth}: False{}
-    case CVec{elem, count, stride, depth, basic}: True{}
+    case CVec{elem, count, stride, depth, basic, plain}: True{}
     case CVecVar{elem, count, depth}: False{}
-    case CList{elem, lim, big, stride, depth, basic}: False{}
+    case CList{elem, lim, big, stride, depth, basic, plain}: False{}
     case CListVar{elem, lim, big, depth}: False{}
-    case CCont{fields, count, fixed_part, size, +fixed, depth}: fixed
+    case CCont{fields, count, fixed_part, size, +fixed, depth, plain}: fixed
     case CNull{}: True{}
     case CFLeaf{f, hoff, hsize, fixed}: False{}
     case CFNode{lo, hi, split}: False{}

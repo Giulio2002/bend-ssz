@@ -22,19 +22,33 @@ For every (type, workload, operation):
 * samples alternate between the two implementations, at least five each, in a
   fresh process per sample.
 
-Asymmetry worth stating plainly: Bend is a lazy runtime, so its deserialize
-loop folds every decoded leaf into an accumulator to force the whole value,
-while the Go loop keeps the decoded struct alive but does not traverse it.
-That makes the Bend side of `deserialize` strictly pessimistic, never the
-reverse.
+The Bend side is the compact primary API, three programs built from
+benchmarks/compact/ (one per operation, because the pinned compiler cannot fit
+every walker and the any-type index into one program's compile budget):
+
+* deserialize - `API.run(0, …)`, the in-place validating decode whose result is
+  the validated view; every verdict is consumed and any rejection exits 1;
+* serialize - `A.encode`, a fresh packed buffer holding the value's encoding,
+  after one untimed decode (Go likewise decodes into its struct before timing
+  MarshalSSZ); every encoding is consumed;
+* hash_tree_root - `API.run(1, …)` on a validated buffer; every root is
+  consumed.
+
+The schema is selected by index (types/fulu_cschema_index.bend, order in
+build/cschema-index.json). The runtime evaluates stored values eagerly
+(benchmarks/probes/strictness.bend), so consuming one word of an encoding does
+not skip the rest of it.
 """
 import argparse
+import ctypes
 import hashlib
 import json
 import os
 import platform
 import re
+import signal
 import statistics
+import struct
 import subprocess
 import sys
 import time
@@ -67,15 +81,64 @@ def sh(command, cwd=ROOT, env=ENV):
     return result.stdout
 
 
+PROGRAMS = {'deserialize': 'dec', 'serialize': 'enc', 'hash_tree_root': 'root'}
+INDEX = json.loads((ROOT / 'build/cschema-index.json').read_text()) if (ROOT / 'build/cschema-index.json').exists() else []
+COMPILE_CAP_BYTES = 6.5e9
+COMPILE_ATTEMPTS = 4
+COMPILES = []
+
+
+def footprint(pid):
+    """macOS physical footprint (ri_phys_footprint) of a process, in bytes."""
+    lib = ctypes.CDLL('/usr/lib/libproc.dylib')
+    buf = ctypes.create_string_buffer(1024)
+    if lib.proc_pid_rusage(pid, 4, ctypes.byref(buf)) != 0:
+        return 0
+    return struct.unpack_from('Q', buf.raw, 72)[0]
+
+
+def capped_compile(source, target, log):
+    """One Bend compile under a footprint cap below the operator watchdog. The
+    pinned compiler's peak varies between compiles of the same source, so an
+    attempt that hits the cap is killed and retried; every attempt is logged."""
+    for attempt in range(COMPILE_ATTEMPTS):
+        started = time.monotonic()
+        p = subprocess.Popen([BEND, source, '-o', str(target)], cwd=ROOT, env=ENV, text=True,
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        peak, capped = 0, False
+        while p.poll() is None:
+            peak = max(peak, footprint(p.pid))
+            if peak >= COMPILE_CAP_BYTES:
+                p.send_signal(signal.SIGKILL)
+                capped = True
+                break
+            time.sleep(0.02)
+        output = p.communicate()[0]
+        COMPILES.append({'source': source, 'target': str(target.relative_to(ROOT)), 'attempt': attempt,
+                         'peak_footprint_bytes': peak, 'capped': capped, 'exit': p.returncode,
+                         'elapsed_s': round(time.monotonic() - started, 2)})
+        log(f'  compile {source} -> {target.name}: attempt {attempt}, peak {peak / 1e9:.2f} GB'
+            + (', hit the cap' if capped else f', exit {p.returncode}'))
+        if not capped:
+            if p.returncode:
+                raise SystemExit(f'native build failed: {source}\n{output}')
+            return
+    raise SystemExit(f'native build failed: {source} hit the compile cap {COMPILE_ATTEMPTS} times')
+
+
 def build(log):
     OUT.mkdir(parents=True, exist_ok=True)
     INPUTS.mkdir(parents=True, exist_ok=True)
-    sh([sys.executable, 'tools/generate_bench_dispatch.py'])
+    global INDEX
+    sh([sys.executable, 'tools/generate_cschema.py'])
+    INDEX = json.loads((ROOT / 'build/cschema-index.json').read_text())
     sh([sys.executable, 'tools/generate_missing_go_types.py'])
     sh([sys.executable, 'tools/generate_bench_go.py'])
-    log('building native Bend benchmark executable')
-    sh([BEND, 'benchmarks/native_driver.bend', '-o', str(OUT / 'bend-bench')])
-    sh([BEND, 'benchmarks/native_driver.bend', '-o', str(OUT / 'bend-bench.c')])
+    log('building native Bend benchmark executables (compact primary API)')
+    for program in PROGRAMS.values():
+        source = f'benchmarks/compact/{program}.bend'
+        capped_compile(source, OUT / f'bend-{program}', log)
+        capped_compile(source, OUT / f'bend-{program}.c', log)
     log('building native Go reference executable')
     sh(['go', 'build', '-o', str(OUT / 'go-bench'), '.'], cwd=ROOT / 'benchmarks/fastssz')
 
@@ -149,14 +212,32 @@ def workloads_for(name, node):
 # ---------------------------------------------------------------------------
 # Measurement.
 
+def bend_env(name, path, ops, output=None):
+    env = {**ENV, 'SSZ_INDEX': str(INDEX.index(name)), 'SSZ_INPUT': str(path), 'SSZ_OPS': str(ops)}
+    if output is not None:
+        env['SSZ_OUTPUT'] = str(output)
+    return env
+
+
 def run_bend(name, path, operation, ops, verify):
-    env = {**ENV, 'SSZ_TYPE': name, 'SSZ_INPUT': str(path), 'SSZ_OP': operation,
-           'SSZ_OPS': str(ops), 'SSZ_VERIFY': '1' if verify else '0'}
-    text = sh([str(OUT / 'bend-bench')] + BEND_FLAGS, env=env)
+    program = PROGRAMS[operation]
+    output = path.with_suffix('.bend-out.ssz')
+    text = sh([str(OUT / f'bend-{program}')] + BEND_FLAGS,
+              env=bend_env(name, path, ops, output if program == 'enc' else None))
     milliseconds = int(re.search(r'\bMS=(\d+)', text).group(1))
-    return {'text': text, 'ns': milliseconds * 1_000_000,
-            'roundtrip': 'ROUNDTRIP=True' in text,
-            'rootsum': int(re.search(r'ROOTSUM=(\d+)', text).group(1)) if 'ROOTSUM=' in text else None}
+    result = {'text': text, 'ns': milliseconds * 1_000_000, 'roundtrip': None, 'rootsum': None}
+    if 'ROOTSUM=' in text:
+        result['rootsum'] = int(re.search(r'ROOTSUM=(\d+)', text).group(1))
+    if verify:
+        # Round trip: decode then encode through the compact API must give the
+        # input bytes back exactly; root: the checksum Go also prints.
+        output.unlink(missing_ok=True)
+        sh([str(OUT / 'bend-enc')] + BEND_FLAGS, env=bend_env(name, path, 1, output))
+        result['roundtrip'] = output.exists() and output.read_bytes() == path.read_bytes()
+        output.unlink(missing_ok=True)
+        rooted = sh([str(OUT / 'bend-root')] + BEND_FLAGS, env=bend_env(name, path, 1))
+        result['rootsum'] = int(re.search(r'ROOTSUM=(\d+)', rooted).group(1))
+    return result
 
 
 def run_go(name, impl, path, operation, ops):
@@ -192,9 +273,7 @@ def rejection_checks(name, impl, case, path):
         label, mutated = mutation
         broken = path.with_suffix('.' + label + '.ssz')
         broken.write_bytes(mutated)
-        bend_env = {**ENV, 'SSZ_TYPE': name, 'SSZ_INPUT': str(broken), 'SSZ_OP': 'deserialize',
-                    'SSZ_OPS': '1', 'SSZ_VERIFY': '0'}
-        bend_rejected = rejects([str(OUT / 'bend-bench')] + BEND_FLAGS, bend_env)
+        bend_rejected = rejects([str(OUT / 'bend-dec')] + BEND_FLAGS, bend_env(name, broken, 1))
         reference_rejected = rejects([str(OUT / 'go-bench'), name, impl, str(broken), 'deserialize', '1'])
         broken.unlink(missing_ok=True)
         results.append({'type': name, 'workload': case['workload'], 'mutation': label,
@@ -364,7 +443,9 @@ def main():
     for path in ROOT.glob('*.bend'):
         sources[str(path.relative_to(ROOT))] = digest(path)
     artifacts = {str(p.relative_to(ROOT)): digest(p)
-                 for p in [OUT / 'bend-bench', OUT / 'go-bench', OUT / 'bend-bench.c', log_path]}
+                 for p in [OUT / f'bend-{program}' for program in PROGRAMS.values()]
+                 + [OUT / f'bend-{program}.c' for program in PROGRAMS.values()]
+                 + [OUT / 'go-bench', log_path]}
     report = {
         'backend': 'native-c',
         'reference': CONTRACT['reference'],
@@ -375,6 +456,8 @@ def main():
         'benchmarks': rows,
         'skipped': skipped,
         'rejection_checks': rejections,
+        'bend_api': 'compact primary API: benchmarks/compact/{dec,enc,root}.bend',
+        'bend_compiles': COMPILES,
         'rejection_summary': {
             'checks': len(rejections),
             'bend_rejected': sum(1 for r in rejections if r['bend_rejected']),

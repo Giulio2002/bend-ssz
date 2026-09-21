@@ -20,6 +20,31 @@ had to be repaired to get there - both are worth knowing before writing the
 array development, because the same two mistakes are easy to repeat in an
 index-arithmetic proof.
 
+Update, 2026-09-21 (later the same day): the **runtime** side of the migration
+now exists and is the primary API, but the **proof** side does not. Every row
+below that says `planned` is still planned as a proposition.
+
+* Implemented and measured: packed input storage (`src/buffer.bend`,
+  `Array<U32>`); the compact schema (`src/cschema.bend`, generated
+  `types/fulu_cschema.bend`); in-place validating decode (`src/cscan.bend`);
+  streaming merkleization and the root walker (`src/merkle_fast.bend`,
+  `src/croot.bend`) over the pinned BendHub SHA-256 package; views, field and
+  element access, and encode to packed bytes (`src/access.bend`); and the
+  dispatcher `src/api.bend`. No linked list is used for storage, schemas,
+  decoded values, encode output, chunks or Merkle scratch. Lists remain only at
+  Base's file-I/O boundary (64 KiB pieces), in the spec-facing `D.bytes` view,
+  and in the legacy modules the existing proofs are about.
+* Evidence (not proof): all 295 official `ssz_static` cases give the exact
+  32-byte root through the compact API; 1,180 malformed variants agree with an
+  independent validator; differential roots against the proved `src/root.bend`
+  and `src/tree.bend` agree; the five BeaconState fixtures round-trip byte for
+  byte. See WORK_LOG.md and MEMORY_REVIEW.md.
+* Not done: no law in section 2 has been restated over the compact modules,
+  and there are no representation bridges (`store_denotation`, `store_index`)
+  and no packed-input → FIPS SHA bridge. The 29 END_TO_END propositions are
+  unchanged and are still proved only about the legacy list API.
+  `docs/LAW_MIGRATION.json` accordingly records every law as unchanged.
+
 ## 0. What the pinned runtime actually offers (measured, not assumed)
 
 The migration target is constrained by facts about pinned Bend 2.0.16 that were

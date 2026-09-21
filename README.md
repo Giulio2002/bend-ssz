@@ -1,4 +1,4 @@
-> **Experimental compact-runtime snapshot:** native buffer-view memory result recorded; new-path proofs, full conformance and fair speed acceptance are unfinished. See [status and limitations](SNAPSHOT_STATUS.md).
+> **Development snapshot:** compact native API passes 295 static-root cases; full 5440-case conformance, compact runtime proofs and speed acceptance remain unfinished. See [status and evidence](SNAPSHOT_STATUS.md).
 
 # bend-ssz
 
@@ -30,27 +30,30 @@ Proof roots: [END_TO_END.bend](END_TO_END.bend), [PROOF.bend](PROOF.bend),
 [HASH_PROOF.bend](HASH_PROOF.bend). See [PROOF_STATUS.md](PROOF_STATUS.md) for the
 current obligation table; historical notes below it are not the current status.
 
-> **Status of this working copy.** The decoder is a compact cursor decoder over
-> packed storage. Both halves are now written and checked: `bend PROOF.bend`
-> and `bend END_TO_END.bend` report "All terms check." with zero unsafe
-> annotations, and the frozen gate `automation/root_domain_acceptance.py`
-> (proofs + 51 runtime tests + all 5440 official SSZ cases + `END_TO_END.bend`)
-> exits 0 on this copy. Checking `PROOF.bend` costs 5.1-5.7 GB of physical
-> footprint (it varies between runs) and about 50 s; the measurement method, the per-module numbers and the
-> two normalization blow-ups that were repaired are recorded in
-> [WORK_LOG.md](WORK_LOG.md) (`PROOF_STATUS.md` is frozen for this iteration
-> and its "Current state" section predates these runs).
-> Native memory results are in [MEMORY_REVIEW.md](MEMORY_REVIEW.md) and native
-> performance against Go fastssz in [BENCHMARKS.md](BENCHMARKS.md); the
-> performance contract is **not** met and that document says so.
+> **Status of this working copy (2026-09-21).** The primary runtime is now the
+> **compact path**: one packed `Array<U32>` input buffer, an in-place validating
+> decode whose result is a zero-copy view, field/element access on views,
+> encode to a fresh packed buffer, and streaming `hash_tree_root` over the same
+> buffer through the pinned BendHub SHA-256 package
+> (`0xda83506fb9f059ead7afcfa2f498df5f/sha256.bend`). See "Public API" below.
+> Checked so far: all 295 official `ssz_static` cases (59 Fulu types) produce
+> the exact 32-byte root through it, 1,180 malformed variants agree with an
+> independent validator, all five BeaconState fixtures round-trip byte for
+> byte, and 49 field-access values match an independent reader. The native
+> BeaconState decode overhead is at most 180 KB against the 32,000,000-byte
+> limit ([MEMORY_REVIEW.md](MEMORY_REVIEW.md)).
 >
-> The runtime still stores input as a linked chunk list and sequence children
-> as a cons spine. Measurements of the pinned runtime (see
-> [docs/LAW_API_MAP.md](docs/LAW_API_MAP.md) and `benchmarks/probes/`) show that
-> an array-backed, index-addressed representation is what the remaining speed
-> and memory depend on, and that `Array` in Bend 2.0.16 is linear, so that
-> migration is a different decoder and a different proof development. It is
-> designed and justified there, and not implemented.
+> **Not yet done**, and not claimed: no proof covers the compact modules
+> (`src/buffer`, `cschema`, `cscan`, `merkle_fast`, `croot`, `digest`, `api`,
+> `access`), nor the packed-input → FIPS SHA bridge. The `ssz_generic` half of
+> the official corpus (progressive lists and containers, compatible unions and
+> the generic test schemas) does not yet run through the compact API. The
+> native performance contract is not established (BENCHMARKS.md). The
+> "Proven properties" table above, the proof roots and the 5,440-case evidence
+> below are about the **legacy list-based API** (`src/ssz`, `src/packed`,
+> `src/cvalue`, …). That API is kept only because those proofs are about it;
+> the operator's instruction is to remove it from the production surface once
+> the compact path carries the proofs.
 
 ## Evidence
 
@@ -103,11 +106,32 @@ produce a new harness provenance; rerun validation and record it. The examples
 above do not install Bend or Bun. A full official gate can take 40–50 minutes or
 longer under contention.
 
-Public calls are `src/ssz.{serialize,deserialize,hash_tree_root}` for neutral
-schemas/values and `types/fulu.BeaconState.{serialize,deserialize,hash_tree_root}`
-(and analogous names) for typed values. Codecs return `Maybe`: `None` is semantic
-rejection. Process crashes, memory exhaustion or timeouts are not rejection.
-Raw typed constructors do not enforce every length/bound at construction time.
+### Public API (compact, primary)
+
+`src/api.bend`, `src/access.bend`, schemas in `types/fulu_cschema.bend` (one
+definition per Fulu name, generated from `spec/fulu_schemas.bend` by
+`tools/generate_cschema.py`; `types/fulu_cschema_index.bend` selects one by
+number). Input is a `B.Buf` (`src/buffer.bend`): packed bytes, four per word.
+The caller owns the buffer; every operation takes it and gives it back with
+its result, and a view stays meaningful for as long as the caller keeps the
+buffer.
+
+| call | result |
+|---|---|
+| `API.run(0, schema, size, buf)` | decode: `Out{ok, _}`; `ok` says whether `[0, size)` is a canonical encoding of `schema`, and the validated window is the decoded value |
+| `API.run(1, schema, size, buf)` | `hash_tree_root` of a validated window: `Out{True, digest}` |
+| `A.field(schema, i, view, buf)`, `A.field_schema(schema, i)` | view and schema of container field `i` |
+| `A.count(schema, view, buf)`, `A.elem(schema, i, view, buf)`, `A.elem_schema(schema)` | element count and element `i` of a vector or list |
+| `A.uint64`, `A.boolean`, `A.byte` | scalars read in place |
+| `A.encode(view, buf)` | the value's encoding as a fresh packed `Buf` |
+
+Rejection is `ok = False`. Process crashes, memory exhaustion and timeouts are
+not rejection. Native drivers: `native_bench/driver_compact.bend` (memory
+harness) and `benchmarks/compact/{dec,enc,root}.bend` (performance runner).
+
+The legacy list-based calls (`src/ssz.{serialize,deserialize,hash_tree_root}`,
+`types/fulu.*`) still exist for the checked proofs; they are not the primary
+API.
 
 This repository covers SSZ only, not consensus transitions, BLS/KZG verification,
 production resource safety, or compiler correctness. Historical development notes
