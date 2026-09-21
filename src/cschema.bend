@@ -88,12 +88,12 @@ def field_at(+fuel: Nat, low: Bool, +fs: CS, +i: U32) -> CS:
 
 def field(+fs: CS, +i: U32) -> CS: field_at(32n, U32.is_lt(i, split_of(fs)), fs, i)
 
-# Is `n` within a list limit? The flag means the limit exceeds any possible
-# input length, so every machine count is within it.
-def within(+n: U32, +lim: U32, big: Bool) -> Bool:
+# Is the count `n` within a list limit? The flag means the limit exceeds any
+# possible input length, so every count is within it.
+def within(+n: Nat, +lim: U32, big: Bool) -> Bool:
   match big:
     case True{}: True{}
-    case False{}: U32.is_le(n, lim)
+    case False{}: Nat.is_le(n, U32.to_nat(lim))
 
 def cont_size(fixed: Bool, +size: U32) -> Maybe<&2, U32>:
   match fixed:
@@ -164,17 +164,17 @@ def shallow_pick(ok: Bool) -> U32:
     case True{}: 1
     case False{}: 2
 
-def shallow_list(plain: Bool, +len: U32, +lim: U32, big: Bool, +stride: U32) -> U32:
+def shallow_list(plain: Bool, +len: Nat, +lim: U32, big: Bool, +stride: Nat) -> U32:
   match plain:
     case True{}:
-      shallow_pick(Bool.and(U32.is_eq(len, (U32.div(len, stride) * stride : U32)),
-        within(U32.div(len, stride), lim, big)))
+      shallow_pick(Bool.and(Nat.is_eq(len, Nat.mul(Nat.div(len, stride), stride)),
+        within(Nat.div(len, stride), lim, big)))
     case False{}: 0
 
-def shallow(+s: CS, +len: U32) -> U32:
+def shallow(+s: CS, +len: Nat) -> U32:
   match s:
     case CByteList{+lim, big, depth}: shallow_pick(within(len, lim, big))
-    case CList{elem, +lim, big, +stride, depth, basic, plain}: shallow_list(plain, len, lim, big, stride)
+    case CList{elem, +lim, big, +stride, depth, basic, plain}: shallow_list(plain, len, lim, big, U32.to_nat(stride))
     case _: 0
 
 def size_or(m: Maybe<&2, U32>, +d: U32) -> U32:

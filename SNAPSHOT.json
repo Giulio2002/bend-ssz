@@ -1,119 +1,14 @@
 {
-  "captured_at": "2026-09-21T13:06:19.578141+00:00",
-  "kind": "unverified_development_snapshot",
-  "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0008/workspace",
-  "milestone": "Speed and memory gates pass; compact universal proof bridges remain incomplete.",
+  "captured_at": "2026-09-21T13:41:14.577744+00:00",
+  "kind": "unverified_pre_codegen_snapshot",
+  "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0009/workspace",
+  "source_files": 12056,
   "full_acceptance_passed": false,
-  "benchmark_status": "978/978 verified workloads and327/327operations within limits; source unchanged; concurrent-load caveat retained. Compact universal proofs incomplete.",
-  "spectest_source_hash_mismatches": [
-    "tools/generate_type_validator_complete.py",
-    "tools/generate_type_validator_soundness.py"
-  ],
-  "final_spectest_source_hash_mismatches": [],
-  "final_spectest_source_hash_count": 150,
-  "compact_native_has_full_source_fingerprint": false,
-  "compact_finite_cases": {
-    "generic_passed": 5145,
-    "static_accept_root_passed": 295,
-    "independent_static_roundtrip_passed": 295,
-    "frozen_final_acceptance_claimed": false
-  },
-  "benchmark_provenance": "Precompile capture; compile/edit guard and explicit end-of-run mismatch rejection. Prior partial timings historical only.",
-  "execution_gates": {
-    "at": "2026-09-21T10:15:38.253054+00:00",
-    "full_acceptance_passed": false,
-    "memory_gate_passed": true,
-    "gate_elapsed_seconds_rounded": 2181,
-    "gate_peak_gb_rounded": 5.83,
-    "spectests_passed": 5440,
-    "spectests_failed": 0,
-    "spectest_backend": "retained recursive/model path",
-    "spectest_source_hashes": 170,
-    "spectest_source_mismatches": [],
-    "native_verified_samples": 15,
-    "native_samples": 15,
-    "max_decode_overhead_bytes": 409600,
-    "compile_attempts": {
-      "bend": [
-        {
-          "attempt": 0,
-          "peak_footprint_bytes": 2856733864,
-          "capped": false,
-          "exit": 0,
-          "elapsed_s": 23.17
-        }
-      ],
-      "bend-c": [
-        {
-          "attempt": 0,
-          "peak_footprint_bytes": 3264155152,
-          "capped": false,
-          "exit": 0,
-          "elapsed_s": 15.26
-        }
-      ]
-    },
-    "compiler_env": {
-      "BUN_JSC_forceRAMSize": "3000000000"
-    },
-    "compact_runtime_universal_proofs_complete": false,
-    "current_speed_acceptance": false,
-    "archived_generated_c_sha256": "4f4302b5a87adbe1cb832fdbcae36e4e693ef60617e28ff1f2df67be935818eb"
-  },
-  "benchmark_calibration": {
-    "synthetic_normalization_and_order": "passed",
-    "native_five_sample_smoke": "passed",
-    "full_performance_gate": "pending"
-  },
-  "latest_performance_gate": {
-    "at": "2026-09-21T11:15:37.486843+00:00",
-    "performance_gate_passed": true,
-    "full_acceptance_passed": false,
-    "workloads": 978,
-    "required_operations": 327,
-    "covered_operations": 327,
-    "source_hash_count": 452,
-    "source_hash_mismatches": [],
-    "source_unchanged_during_measurement": true,
-    "all_rows_verified": true,
-    "rejection_checks": 685,
-    "rejection_disagreements": [],
-    "max_codec_ratio": 4.9279752173221425,
-    "max_hash_tree_root_ratio": 7.5599624585007765,
-    "gate_elapsed_seconds_rounded": 3102,
-    "gate_peak_gb_rounded": 3.52,
-    "concurrent_local_work": true,
-    "compact_runtime_universal_proofs_complete": false,
-    "caveats": [
-      "DSA benchmarking overlapped part of this run; not an isolated release-performance reproduction.",
-      "Bend decode returns a validated packed view; Go materializes objects.",
-      "Closest codec margin is SignedAggregateAndProof large decode at4.92798x versus5x limit.",
-      "Legacy/model proof checks do not prove the compact runtime."
-    ]
-  },
   "current_speed_gate_passed": false,
-  "latest_compact_soundness": {
-    "at": "2026-09-21T13:06:19.578141+00:00",
-    "checked_entry": "proofs/compact/sound.bend",
-    "checker_sha256": "da9bc51449f04a65bf633351fb754cd6f883f5f5d9ab0c4e947f5c6f19eb7386",
-    "exit": 0,
-    "seconds": 1.3862430840381421,
-    "peak_footprint_bytes": 946505024,
-    "unsafe_warning": false,
-    "frozen_files": 609,
-    "copy_hash_mismatches": [],
-    "scope": "Layer1: actual compact scanner successful machine runs imply CVm machine-level obligations; perfect-array tree depth<32. Non-plain walk/valid_in corollaries.",
-    "not_proven": [
-      "CVm equivalence to independent canonical SSZ specification",
-      "scanner completeness and fuel sufficiency",
-      "plain-schema length shortcut equivalence",
-      "full buffer construction/schema correspondence",
-      "encoder and Merkle/SHA runtime bridges",
-      "progressive containers with>31activepositions"
-    ],
-    "current_speed_gate_pass": false,
-    "current_full_acceptance": false,
-    "historical_speed_memory_commit": "b8ad901",
-    "conformance": "Worker reports295static+5145genericcases for compiledschemas; not independently rerun for this proof publication."
-  }
+  "publication_documentation_overrides": [
+    "README.md",
+    "BENCHMARKS.md",
+    "SNAPSHOT_STATUS.md"
+  ],
+  "next_direction": "YAML-driven typed owning object/codecs/proofs generation; incremental list Merkle caches"
 }

@@ -58,15 +58,16 @@ def FD(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, fr: C.Frame) -> Type:
     case C.FVarList{+elem, +i, +n, +base, +endp, up}:
       V.M(t, d, h, V.VEl{elem, i, n, base, endp}) & FD(t, d, h, up)
 
-# Tag 9: the offset v of the variable field just passed (index i - 1) was read.
-def Den9(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, fr: C.Frame, +v: U32) -> Type:
+# Tag 9: the offset v of the variable field just passed was read; `schema`
+# is that field's schema.
+def Den9(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, +schema: S.CS, fr: C.Frame, +v: U32) -> Type:
   match fr:
     case C.FCont{+fields, +i, +cnt, +base, +endp, +fp, +pend, +start, +has, up}:
       V.If(U32.is_eq(has, 1),
-        V.Is(C.bsel(U32.is_ge((base + v : U32), start), U32.is_le((base + v : U32), endp), False{})) &
-        V.Shallow(S.shallow(pend, ((base + v : U32) - start : U32)), V.M(t, d, h, V.Node{pend, start, (base + v : U32)})),
-        V.Is(U32.is_eq(v, fp))) &
-      V.M(t, d, h, V.W8{fields, i, cnt, base, endp, fp, C.f_schema(S.field(fields, (i - 1 : U32))), (base + v : U32), 1}) &
+        V.Is(C.bsel(Nat.is_le(start, Nat.add(base, U32.to_nat(v))), Nat.is_le(Nat.add(base, U32.to_nat(v)), endp), False{})) &
+        V.Shallow(S.shallow(pend, Nat.sub(Nat.add(base, U32.to_nat(v)), start)), V.M(t, d, h, V.Node{pend, start, Nat.add(base, U32.to_nat(v))})),
+        V.Is(Nat.is_eq(U32.to_nat(v), fp))) &
+      V.M(t, d, h, V.W8{fields, i, cnt, base, endp, fp, schema, Nat.add(base, U32.to_nat(v)), 1}) &
       FD(t, d, h, up)
     case _: Empty
 
@@ -74,42 +75,42 @@ def Den9(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, fr: C.Frame, +v: U32) -> Type
 def Den11(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, fr: C.Frame, +v: U32) -> Type:
   match fr:
     case C.FVarList{+elem, +i, +n, +base, +endp, up}:
-      V.Is(C.bsel(U32.is_le((base + v : U32), endp), U32.is_ge((base + v : U32), base), False{})) &
-      V.VarStep(U32.is_eq((i + 1 : U32), n), (base + v : U32), V.el_at(t, d, base, (i + 1 : U32)), endp,
-        V.M(t, d, h, V.Node{elem, (base + v : U32), endp}),
-        V.M(t, d, h, V.Node{elem, (base + v : U32), V.el_at(t, d, base, (i + 1 : U32))}),
-        V.M(t, d, h, V.VEl{elem, (i + 1 : U32), n, base, endp})) &
+      V.Is(C.bsel(Nat.is_le(Nat.add(base, U32.to_nat(v)), endp), Nat.is_le(base, Nat.add(base, U32.to_nat(v))), False{})) &
+      V.VarStep(Nat.is_eq(Nat.add(i, 1n), n), Nat.add(base, U32.to_nat(v)), V.el_at(t, d, base, Nat.add(i, 1n)), endp,
+        V.M(t, d, h, V.Node{elem, Nat.add(base, U32.to_nat(v)), endp}),
+        V.M(t, d, h, V.Node{elem, Nat.add(base, U32.to_nat(v)), V.el_at(t, d, base, Nat.add(i, 1n))}),
+        V.M(t, d, h, V.VEl{elem, Nat.add(i, 1n), n, base, endp})) &
       FD(t, d, h, up)
     case _: Empty
 
 # Tag 12: element i starts at a; the offset v of its end was read.
-def Den12(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, fr: C.Frame, +a: U32, +v: U32) -> Type:
+def Den12(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, fr: C.Frame, +a: Nat, +v: U32) -> Type:
   match fr:
     case C.FVarList{+elem, +i, +n, +base, +endp, up}:
-      V.Is(C.bsel(U32.is_ge((base + v : U32), a), U32.is_le((base + v : U32), endp), False{})) &
-      V.M(t, d, h, V.Node{elem, a, (base + v : U32)}) &
-      V.M(t, d, h, V.VEl{elem, (i + 1 : U32), n, base, endp}) &
+      V.Is(C.bsel(Nat.is_le(a, Nat.add(base, U32.to_nat(v))), Nat.is_le(Nat.add(base, U32.to_nat(v)), endp), False{})) &
+      V.M(t, d, h, V.Node{elem, a, Nat.add(base, U32.to_nat(v))}) &
+      V.M(t, d, h, V.VEl{elem, Nat.add(i, 1n), n, base, endp}) &
       FD(t, d, h, up)
     case _: Empty
 
-def Den3(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, schema: S.CS, fr: C.Frame, +a: U32, +b: U32, +v: U32) -> Type:
+def Den3(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, schema: S.CS, fr: C.Frame, +a: Nat, +b: Nat, +v: U32) -> Type:
   match schema:
     case S.CBitList{+lim, +big, depth}: V.Is(V.tail_ok(a, b, v, lim, big)) & FD(t, d, h, fr)
     case _: Empty
 
-def Den4(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, schema: S.CS, fr: C.Frame, +a: U32, +b: U32, +v: U32) -> Type:
+def Den4(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, schema: S.CS, fr: C.Frame, +a: Nat, +b: Nat, +v: U32) -> Type:
   match schema:
     case S.CVecVar{+elem, +count, depth}:
-      V.Is(U32.is_eq(v, (4 * count : U32))) & V.M(t, d, h, V.VEl{elem, 0, count, a, b}) & FD(t, d, h, fr)
+      V.Is(Nat.is_eq(U32.to_nat(v), Nat.mul(4n, U32.to_nat(count)))) & V.M(t, d, h, V.VEl{elem, 0n, U32.to_nat(count), a, b}) & FD(t, d, h, fr)
     case S.CListVar{+elem, +lim, +big, depth}:
-      V.Is(V.list_head_ok(a, b, v, lim, big)) & V.M(t, d, h, V.VEl{elem, 0, U32.shrn(v, 2n), a, b}) & FD(t, d, h, fr)
+      V.Is(V.list_head_ok(a, b, v, lim, big)) & V.M(t, d, h, V.VEl{elem, 0n, Nat.div(U32.to_nat(v), 4n), a, b}) & FD(t, d, h, fr)
     case _: Empty
 
-def Den13(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, schema: S.CS, fr: C.Frame, +a: U32, +b: U32, +v: U32) -> Type:
+def Den13(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, schema: S.CS, fr: C.Frame, +a: Nat, +b: Nat, +v: U32) -> Type:
   match schema:
     case S.CUnion{+options, +nsel}:
       V.Is(C.bsel(U32.is_lt(v, nsel), C.is_leaf(S.field(options, v)), False{})) &
-      V.M(t, d, h, V.Node{C.f_schema(S.field(options, v)), (a + 1 : U32), b}) & FD(t, d, h, fr)
+      V.M(t, d, h, V.Node{C.f_schema(S.field(options, v)), Nat.add(a, 1n), b}) & FD(t, d, h, fr)
     case _: Empty
 
 def Den15(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, fr: C.Frame, +v: U32) -> Type:
@@ -129,7 +130,7 @@ def Den8(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, fr: C.Frame) -> Type:
     case C.FCont{+fields, +i, +cnt, +base, +endp, +fp, +pend, +start, +has, up}: FD(t, d, h, C.FCont{fields, i, cnt, base, endp, fp, pend, start, has, up})
     case _: Empty
 
-def Den(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, tg: Tag, +schema: S.CS, +fr: C.Frame, +a: U32, +b: U32, +c: U32, +v: U32) -> Type:
+def Den(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, tg: Tag, +schema: S.CS, +fr: C.Frame, +a: Nat, +b: Nat, +c: U32, +v: U32) -> Type:
   match tg:
     case T0{}: V.M(t, d, h, V.Node{schema, a, b}) & FD(t, d, h, fr)
     case T1{}: V.Is(U32.is_le(v, 1)) & FD(t, d, h, fr)
@@ -139,7 +140,7 @@ def Den(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, tg: Tag, +schema: S.CS, +fr: C
     case T5{}: FD(t, d, h, fr)
     case T6{}: Empty
     case T8{}: Den8(t, d, h, fr)
-    case T9{}: Den9(t, d, h, fr, v)
+    case T9{}: Den9(t, d, h, schema, fr, v)
     case T11{}: Den11(t, d, h, fr, v)
     case T12{}: Den12(t, d, h, fr, a, v)
     case T13{}: Den13(t, d, h, schema, fr, a, b, v)
@@ -150,10 +151,10 @@ def Den(+t: F.array__Tree<U32>, +d: Nat, +h: Nat, tg: Tag, +schema: S.CS, +fr: C
 def bf(+t: F.array__Tree<U32>, +n: U32) -> B.Buf: B.Buf{F.array__thaw(U32, t), n}
 
 # A successful run from a state.
-def Ok(+t: F.array__Tree<U32>, +n: U32, +f: Nat, tg: Tag, +s: S.CS, +fr: C.Frame, +a: U32, +b: U32, +c: U32, +v: U32) -> Type:
+def Ok(+t: F.array__Tree<U32>, +n: U32, +f: Nat, tg: Tag, +s: S.CS, +fr: C.Frame, +a: Nat, +b: Nat, +c: U32, +v: U32) -> Type:
   {C.run(f, lit(tg), s, fr, a, b, c, (B.Buf{F.array__thaw(U32, t), n}, v)) == (B.Buf{F.array__thaw(U32, t), n}, True{}) : B.Buf & Bool}
 
 # The induction hypothesis of the soundness proof at fuel p.
 def IH(+t: F.array__Tree<U32>, +d: Nat, +n: U32, +p: Nat) -> Type:
-  @tg: Tag -> @s: S.CS -> @fr: C.Frame -> @a: U32 -> @b: U32 -> @c: U32 -> @v: U32 ->
+  @tg: Tag -> @s: S.CS -> @fr: C.Frame -> @a: Nat -> @b: Nat -> @c: U32 -> @v: U32 ->
     Ok(t, n, p, tg, s, fr, a, b, c, v) -> Den(t, d, p, tg, s, fr, a, b, c, v)

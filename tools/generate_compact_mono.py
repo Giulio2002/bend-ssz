@@ -119,7 +119,7 @@ def mapper(e):
 
 def qualify(s):
     """Names of cvm.bend used unqualified inside it get the module alias."""
-    s = re.sub(r'(?<![A-Za-z0-9_.])(If|Is|Shallow|VarStep|M|el_at|var_at|pad_ok|tail_ok|list_head_ok)\(', r'V.\1(', s)
+    s = re.sub(r'(?<![A-Za-z0-9_.])(If|Is|Shallow|VarStep|M|el_at|var_at|pad_ok|tail_ok|list_head_ok|b8|r32)\(', r'V.\1(', s)
     s = re.sub(r'(?<![A-Za-z0-9_.])(Node|Rep|VEl|W8|W15|W16)\{', r'V.\1{', s)
     return s
 
@@ -171,8 +171,8 @@ def main():
              '  match h:',
              '    case 0n:',
              '      match job:',
-             '        case V.Rep{+elem, +left, +off, +stride}: V2.zero_rep(t, d, elem, U32.is_eq(left, 0), off, stride, left, {==}, x)',
-             '        case V.VEl{+elem, +i, +n, +base, +endp}: V2.zero_vel(t, d, elem, U32.is_eq(i, n), i, n, base, endp, {==}, x)',
+             '        case V.Rep{+elem, +left, +off, +stride}: V2.zero_rep(t, d, elem, Nat.is_eq(left, 0n), off, stride, left, {==}, x)',
+             '        case V.VEl{+elem, +i, +n, +base, +endp}: V2.zero_vel(t, d, elem, Nat.is_eq(i, n), i, n, base, endp, {==}, x)',
              '        case V.Node{cs, a, b}:',
              '          match x:',
              '        case V.W8{fields, i, cnt, base, endp, fp, pend, start, has}:',

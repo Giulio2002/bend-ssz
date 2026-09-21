@@ -1,4 +1,12 @@
-> Development snapshot: compact scanner soundness layer1 independently checks. Full SSZ runtime proofs remain incomplete. The passing978-workload speed/memory report belongs to earlier commitb8ad901; newer runtime changes require refreshed gates. See [SNAPSHOT_STATUS.md](SNAPSHOT_STATUS.md).
+# Preserved before schema-codegen transition
+
+This is the interrupted, unverified iteration 9 source snapshot, preserved at the user’s request before transitioning to generated typed objects, codecs, checked laws, and cached list Merkle roots. No final acceptance is claimed.
+
+The current decoder validates packed bytes and returns the raw buffer plus Bool; offset-only views do not enforce an owning immutable object boundary. Earlier 978-row performance results measured that view API, not materialized typed objects. They cannot certify the next object API.
+
+Latest worker reports scanner positions moved to Nat, all 5440 native cases passing, and 16 compact proof modules checking below 0.96 GB. These latest claims have not been independently reproduced for this snapshot. Compact semantic bridges remain incomplete. The previous independently checked scanner layer applies to its historical snapshot.
+
+---
 
 # bend-ssz
 
@@ -6,17 +14,18 @@ Pure Bend SSZ for all **109 pinned mainnet Fulu names**, with serialization,
 deserialization, exact rejection, hash-tree-root and typed adapters. Includes the
 user's pinned Bend SHA-256 implementation and its functional proofs.
 
-**Research snapshot, not a fully verified release.** The compact packed-buffer
-runtime passes the latest development speed and native memory gates. Universal
-refinement proofs for that runtime are still being built. The retained recursive
-model has checked public laws, but those laws do not establish correctness of the
-new compact implementation. Compiler, runtime and host machinery remain outside
-the functional proofs. See [current evidence](SNAPSHOT_STATUS.md) and the
-[historical review](REVIEW.md) for their respective boundaries.
+**Reviewed research library.** Public refinement proofs are checked against
+independent Bend specifications. The compiler, runtime and host machinery are
+outside those proofs; root totality is conditional on the documented root domain.
+Read [the detailed review](REVIEW.md) before interpreting “formally verified.”
+The proofs cover the list-based model API, **not** the compact primary API that
+is measured below (see "What is not established" in MEMORY_REVIEW.md and
+docs/COMPACT_PROOF_PLAN.md). The compact API met the frozen native performance
+gate on 2026-09-21 (978 workloads, 327 operations; worst deserialize 4.93×,
+serialize 3.86×, hash_tree_root 7.56× Go fastssz; see BENCHMARKS.md). The
+deserialize margin is thin: SignedAggregateAndProof measured 4.83–4.94×.
 
-## Retained recursive-model properties
-
-The following describes the retained model proofs, not completed compact-runtime proofs.
+## Proven properties
 
 | API / obligation | Guarantee |
 |---|---|
@@ -154,7 +163,11 @@ are retained in [docs/HISTORICAL_README.md](docs/HISTORICAL_README.md).
 
 ## Benchmarks
 
-[BeaconState results and runner](benchmarks/README.md) compare all five official
-Fulu fixtures with fastssz. Select a fixture with `--case case_0` or use `--case all`.
-Timings measure each library's native public APIs; setup is excluded. The separate
-Opus-5 research run targets sequential deserialization while retaining full checks.
+[BENCHMARKS.md](BENCHMARKS.md) is the native contract measurement:
+`benchmarks/run.py` compares the compact primary API's decode, encode and
+hash_tree_root with Go fastssz for all 109 Fulu types, per workload. The gate is
+`automation/performance_gate.py`. Native decode memory against Go is in
+[MEMORY_REVIEW.md](MEMORY_REVIEW.md) (`native_bench/run.py`, gate
+`automation/native_memory_acceptance.py`): worst Bend decode overhead
+409,600 bytes, against a 32,000,000-byte limit. The older BeaconState-only
+runner is described in [benchmarks/README.md](benchmarks/README.md).

@@ -1,4 +1,4 @@
-> Historical benchmark results from b8ad901. This snapshot changes runtime/schema code and has not rerun the complete speed gate.
+> Historical view-API measurements, not current object-codec acceptance.
 
 # Native SSZ benchmarks — Bend C versus Go fastssz
 

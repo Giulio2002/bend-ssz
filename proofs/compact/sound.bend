@@ -16,7 +16,7 @@ import ./sound_cont.bend as K
 # The proof is by induction on the fuel; each step is one of the step lemmas.
 
 def step0(+t: F.array__Tree<U32>, +d: Nat, +n: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
-    +p: Nat, +s: S.CS, +fr: C.Frame, +a: U32, +b: U32, +c: U32, +v: U32,
+    +p: Nat, +s: S.CS, +fr: C.Frame, +a: Nat, +b: Nat, +c: U32, +v: U32,
     ih: D.IH(t, d, n, p), h: D.Ok(t, n, 1n+p, D.T0{}, s, fr, a, b, c, v)) -> D.Den(t, d, 1n+p, D.T0{}, s, fr, a, b, c, v):
   match s:
     case S.CBool{}: L.t0_bool(t, d, n, hd, pf, p, fr, a, b, c, v, ih, h)
@@ -38,7 +38,7 @@ def step0(+t: F.array__Tree<U32>, +d: Nat, +n: U32, +hd: {Nat.is_lt(d, 32n) == T
     case S.CFNone{}: Empty.absurd(D.Den(t, d, 1n+p, D.T0{}, S.CFNone{}, fr, a, b, c, v), L.no_run(t, n, h))
 
 def step(+t: F.array__Tree<U32>, +d: Nat, +n: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
-    +p: Nat, tg: D.Tag, +s: S.CS, +fr: C.Frame, +a: U32, +b: U32, +c: U32, +v: U32,
+    +p: Nat, tg: D.Tag, +s: S.CS, +fr: C.Frame, +a: Nat, +b: Nat, +c: U32, +v: U32,
     ih: D.IH(t, d, n, p), h: D.Ok(t, n, 1n+p, tg, s, fr, a, b, c, v)) -> D.Den(t, d, 1n+p, tg, s, fr, a, b, c, v):
   match tg:
     case D.T0{}: step0(t, d, n, hd, pf, p, s, fr, a, b, c, v, ih, h)
@@ -57,7 +57,7 @@ def step(+t: F.array__Tree<U32>, +d: Nat, +n: U32, +hd: {Nat.is_lt(d, 32n) == Tr
     case D.T16{}: K.sound_t16(t, d, n, hd, pf, p, s, fr, a, b, c, v, ih, h)
 
 def sound(+t: F.array__Tree<U32>, +d: Nat, +n: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
-    +fuel: Nat, tg: D.Tag, +s: S.CS, +fr: C.Frame, +a: U32, +b: U32, +c: U32, +v: U32,
+    +fuel: Nat, tg: D.Tag, +s: S.CS, +fr: C.Frame, +a: Nat, +b: Nat, +c: U32, +v: U32,
     h: D.Ok(t, n, fuel, tg, s, fr, a, b, c, v)) -> D.Den(t, d, fuel, tg, s, fr, a, b, c, v):
   match fuel:
     case 0n: Empty.absurd(D.Den(t, d, 0n, tg, s, fr, a, b, c, v), L.no_run(t, n, h))
@@ -74,14 +74,14 @@ def first_of(-A: Type, pr: A & Unit) -> A:
 def sound_walk(+t: F.array__Tree<U32>, +d: Nat, +n: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
     +s: S.CS, +off: U32, +len: U32,
     h: {C.valid_pick(False{}, s, off, len, D.bf(t, n)) == (D.bf(t, n), True{}) : B.Buf & Bool})
-    -> V.CVm(t, d, Nat.add(64n, U32.to_nat((4 * len : U32))), s, off, (off + len : U32)):
-  first_of(V.M(t, d, Nat.add(64n, U32.to_nat((4 * len : U32))), V.Node{s, off, (off + len : U32)}),
-    sound(t, d, n, hd, pf, Nat.add(64n, U32.to_nat((4 * len : U32))), D.T0{}, s, C.FDone{}, off, (off + len : U32), 0, 0, h))
+    -> V.CVm(t, d, Nat.add(64n, Nat.mul(4n, U32.to_nat(len))), s, U32.to_nat(off), Nat.add(U32.to_nat(off), U32.to_nat(len))):
+  first_of(V.M(t, d, Nat.add(64n, Nat.mul(4n, U32.to_nat(len))), V.Node{s, U32.to_nat(off), Nat.add(U32.to_nat(off), U32.to_nat(len))}),
+    sound(t, d, n, hd, pf, Nat.add(64n, Nat.mul(4n, U32.to_nat(len))), D.T0{}, s, C.FDone{}, U32.to_nat(off), Nat.add(U32.to_nat(off), U32.to_nat(len)), 0, 0, h))
 
 # The same through valid_in, for a schema that is not plain.
 def sound_valid_in(+t: F.array__Tree<U32>, +d: Nat, +n: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
     +s: S.CS, +off: U32, +len: U32, np: {S.is_plain(s) == False{} : Bool},
     h: {C.valid_in(s, off, len, D.bf(t, n)) == (D.bf(t, n), True{}) : B.Buf & Bool})
-    -> V.CVm(t, d, Nat.add(64n, U32.to_nat((4 * len : U32))), s, off, (off + len : U32)):
+    -> V.CVm(t, d, Nat.add(64n, Nat.mul(4n, U32.to_nat(len))), s, U32.to_nat(off), Nat.add(U32.to_nat(off), U32.to_nat(len))):
   sound_walk(t, d, n, hd, pf, s, off, len,
     F.logic__subst(Bool, z => {C.valid_pick(z, s, off, len, D.bf(t, n)) == (D.bf(t, n), True{}) : B.Buf & Bool}, S.is_plain(s), False{}, np, h))
