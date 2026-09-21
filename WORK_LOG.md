@@ -4242,3 +4242,57 @@ Read docs/OPERATOR_BENCHMARK_CALIBRATION.md. The operator is stopping only the i
   (`bend_compile_env`). The measured programs are native C and do not see it.
   The compiler binary, flags and output are unchanged. Log:
   `build/native_memory_acceptance-compile-cap.log`.
+* The rerun with the compile hint passed: `automation/native_memory_acceptance.py`
+  exited 0 after 2,181 s, with a 5.83 GB tree peak under `capped_run.py`. PROOF
+  and END_TO_END "All terms check.", runtime tests 51/51, JS spectests
+  5,440/5,440. `native_bench/run.py` compiled on the first attempt at 2.86 and
+  3.26 GB. All 30 samples were verified. Bend decode overhead: medians
+  16,384-49,152 bytes; worst sample 409,600 (case_0 repeat 0, whose
+  stop-after-root process peaked lower than its stop-after-decode process);
+  the other 14 samples were 0-81,920. Go: 3.1-3.6 MB. Whole-run Bend 7.5-8.1 MB
+  against Go 21.8-24.4 MB. Evidence copied to `benchmarks/evidence/`
+  (native-comparison.json, spectests-js.json, driver-emitted.c.gz,
+  driver-artifacts.sha256: C `4f4302b5…`, executable `8d190684…`) and the
+  MEMORY_REVIEW.md tables were refreshed.
+
+### Frozen performance gate (2026-09-21, 12:15-13:07, final code)
+
+* `automation/performance_gate.py` under `capped_run.py` exited 0 after
+  3,102 s (tree peak 3.52 GB): "978 workloads / 327 operations within their
+  operation-specific limits". All six compiles succeeded on the first attempt
+  (2.41-3.52 GB, with the JSC heap hint). Worst medians: deserialize 4.93×
+  (SignedAggregateAndProof large-fixture), serialize 3.86× (BlobSidecar),
+  hash_tree_root 7.56× (Attestation). BeaconState: deserialize 0.01-0.02×
+  (in-place validation against Go's struct build; a documented design
+  difference), serialize 1.47-1.51×, root 3.46-3.52×.
+* Borderline rerun (build/borderline-rerun.log): the gate's own executables and
+  inputs, seven alternating samples per side for SignedAggregateAndProof.deserialize,
+  gave 4.83×, 4.94× and 4.90× (the gate run gave 4.85×, 4.83× and 4.93×). It passes, but
+  with 1-3 % margin. The machine was also running an unrelated `bend` job
+  (load 2.7-4.7). This is the first thing to improve: its nested
+  Attestation's bit list keeps it off the length-only scanner paths.
+* BENCHMARKS.md was regenerated from the report. The report and log are archived as
+  `benchmarks/evidence/performance-report.json.gz` and `performance-gate.log`.
+  These suffixes are outside the gate's hash set, so the report's source hashes
+  stay valid. The gate's `validate()` on the report against the current tree
+  still passes.
+
+### Correction: cause of the 1,214 JS spectest failures
+
+`docs/OPERATOR_COMPILER_INCIDENT.md` (operator, 11:27) gives the cause. The
+monitoring operator called `benchmarks/checks/capped_run.py` with its arguments
+in the wrong order, and that truncated the installed `bend` executable. The stock
+2.0.16 binary was restored at 08:59:04Z and its pinned SHA-256 verified. My
+earlier entry ("outside interference with the shared toolchain directory") had
+no cause; this is it. The failed log is kept (`build/native_memory_acceptance-interrupted-bend-binary.log`,
+`build/spectests-interrupted.json`), and both frozen gates were rerun
+against the restored toolchain (above), so no pins or tests changed.
+Recommended follow-up, not done now because `capped_run.py` is a hashed input of
+the final performance report: make it refuse a log path that already exists as an
+executable file, or take named arguments.
+
+### Operator transport recovery and remaining objective
+OPERATOR RESUME AFTER CLAUDE TRANSPORT FIX. Your completed worker response was needs_work. A one-time guard paused only after that terminal response to prevent the already-loaded old parser from falsely rejecting duplicate same-session init events and discarding candidate8. Backend now deduplicates identical IDs, retains conflicting-ID rejection;48runner tests and actual DSA transcript replay pass. This is a transport recovery, not loss of work or audit approval. Keep the same session and full candidate8 source.
+Progress preserved: full native-memory gate passed(5440/5440 retained/model spectests,51runtime tests/20009assertions,retained proof checks,15/15verifiednative samples,maxdecodeoverhead409600bytes,gatepeak5.83GB); compiler-only heap hint fixed compilation without changing pinned compiler or limits. Full speedgate now exits0:978workloads,327/327requiredoperations within codec5x/root10x limits,3102s/3.52GBgatepeak. Concurrent DSA timings overlapped part of the run, so preserve that measurement context for audit.
+Continue EVERYTHING still missing, especially universal proofs of the actual compact scanner, packed-array access/encoding, schema semantics and Merkle/SHA runtime bridges. Preserved recursive/model proofs and finite conformance are not proofs of these new paths. Read docs/COMPACT_PROOF_PLAN.md and OPERATOR_ARRAY_PROOF_REUSE.md. Preserve all frozen laws/contracts, supported schema/type domains, 32MBnative decode-overhead target, stock Bend, pure Bend SHA, noFFI/nohardwareSHA, and proof-memory limits. Do not narrow APIs or input domains to fit easier proofs; extend correct representations/proofs instead. Do not count instrumented/partial/template-only checking as broader coverage without evidence.
+The implementation/memory/timing milestones are not the final goal while proof gaps remain. Continue in this workspace/session without stopping at another voluntary partial checkpoint or asking for permission already granted. Rerun checks when meaningful code/proof changes require them; do not repeatedly time unchanged code as a substitute for missing proof integration.

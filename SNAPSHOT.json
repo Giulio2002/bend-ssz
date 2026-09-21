@@ -1,10 +1,10 @@
 {
-  "captured_at": "2026-09-21T10:15:38.253054+00:00",
+  "captured_at": "2026-09-21T11:15:37.486843+00:00",
   "kind": "unverified_development_snapshot",
   "source_workspace": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0008/workspace",
-  "milestone": "Native compact memory gate passes after compiler-only heap tuning; compact universal proof bridges remain incomplete.",
+  "milestone": "Speed and memory gates pass; compact universal proof bridges remain incomplete.",
   "full_acceptance_passed": false,
-  "benchmark_status": "Latest completed speed run had3/978 failing rows; historical after further scanner changes. Fresh full timing report required.",
+  "benchmark_status": "978/978 verified workloads and327/327operations within limits; source unchanged; concurrent-load caveat retained. Compact universal proofs incomplete.",
   "spectest_source_hash_mismatches": [
     "tools/generate_type_validator_complete.py",
     "tools/generate_type_validator_soundness.py"
@@ -64,5 +64,31 @@
     "synthetic_normalization_and_order": "passed",
     "native_five_sample_smoke": "passed",
     "full_performance_gate": "pending"
+  },
+  "latest_performance_gate": {
+    "at": "2026-09-21T11:15:37.486843+00:00",
+    "performance_gate_passed": true,
+    "full_acceptance_passed": false,
+    "workloads": 978,
+    "required_operations": 327,
+    "covered_operations": 327,
+    "source_hash_count": 452,
+    "source_hash_mismatches": [],
+    "source_unchanged_during_measurement": true,
+    "all_rows_verified": true,
+    "rejection_checks": 685,
+    "rejection_disagreements": [],
+    "max_codec_ratio": 4.9279752173221425,
+    "max_hash_tree_root_ratio": 7.5599624585007765,
+    "gate_elapsed_seconds_rounded": 3102,
+    "gate_peak_gb_rounded": 3.52,
+    "concurrent_local_work": true,
+    "compact_runtime_universal_proofs_complete": false,
+    "caveats": [
+      "DSA benchmarking overlapped part of this run; not an isolated release-performance reproduction.",
+      "Bend decode returns a validated packed view; Go materializes objects.",
+      "Closest codec margin is SignedAggregateAndProof large decode at4.92798x versus5x limit.",
+      "Legacy/model proof checks do not prove the compact runtime."
+    ]
   }
 }

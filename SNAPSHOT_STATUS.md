@@ -1,3 +1,11 @@
+## Latest: all measured speed limits pass; compact proofs remain unfinished
+
+The full speed gate exits 0: **978 verified workloads covering all 327 required operations** satisfy decode/encode <=5× Go fastssz and hash-tree-root <=10×. Rejection checks: 685, with zero Bend/reference disagreements. All 452 recorded source hashes match this export; the runner captured them before compilation and confirms no source changes during measurement. Runtime: 3,102 seconds; gate peak memory: 3.52 GB.
+
+Largest codec ratio: 4.92798× (SignedAggregateAndProof deserialize, large fixture); largest hash-tree-root ratio: 7.55996× (Attestation, small fixture). The narrow codec margin warrants care in later reproduction. DSA benchmarking overlapped part of the run, so these are development performance results, not an isolated release reproduction. Bend decode returns a validated packed view; Go materializes a typed object.
+
+The native memory gate also passes, as recorded below. Universal correctness proofs for the actual compact implementation remain incomplete; retained model proofs are not a substitute. This is not full acceptance. Raw timing, coverage, source provenance and review: snapshot-evidence/performance-20260921-1306.
+
 ## Latest: successful memory gate after compiler heap tuning
 
 Full native_memory_acceptance exits 0 in 2,181 seconds, gate peak 5.83 GB. Retained runtime tests: 51/51, 20,009 assertions; retained recursive/model spectests: 5,440/5,440; retained proof entries check. All 170 spectest source hashes match this export.

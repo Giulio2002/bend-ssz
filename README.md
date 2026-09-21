@@ -1,4 +1,4 @@
-> Development snapshot: native memory gate passes (15/15 samples, maximum decode overhead 409,600 bytes), but compact-runtime universal proofs and full speed acceptance are unfinished. Retained model proofs do not prove the new compact implementation. See [SNAPSHOT_STATUS.md](SNAPSHOT_STATUS.md).
+> Development snapshot: all 978 speed workloads and the native memory gate pass, with measurement caveats. Compact-runtime universal proofs remain unfinished; retained model proofs do not prove the new implementation. See [SNAPSHOT_STATUS.md](SNAPSHOT_STATUS.md).
 
 # bend-ssz
 
@@ -6,15 +6,17 @@ Pure Bend SSZ for all **109 pinned mainnet Fulu names**, with serialization,
 deserialization, exact rejection, hash-tree-root and typed adapters. Includes the
 user's pinned Bend SHA-256 implementation and its functional proofs.
 
-**Reviewed research library.** Public refinement proofs are checked against
-independent Bend specifications. The compiler, runtime and host machinery are
-outside those proofs; root totality is conditional on the documented root domain.
-Read [the detailed review](REVIEW.md) before interpreting “formally verified.”
-The current codec is not performance-competitive with fastssz on BeaconState.
-This private snapshot is published with that limitation and the root-domain
-qualification intact; correction and sequential-deserialization research run separately.
+**Research snapshot, not a fully verified release.** The compact packed-buffer
+runtime passes the latest development speed and native memory gates. Universal
+refinement proofs for that runtime are still being built. The retained recursive
+model has checked public laws, but those laws do not establish correctness of the
+new compact implementation. Compiler, runtime and host machinery remain outside
+the functional proofs. See [current evidence](SNAPSHOT_STATUS.md) and the
+[historical review](REVIEW.md) for their respective boundaries.
 
-## Proven properties
+## Retained recursive-model properties
+
+The following describes the retained model proofs, not completed compact-runtime proofs.
 
 | API / obligation | Guarantee |
 |---|---|

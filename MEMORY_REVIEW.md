@@ -77,7 +77,7 @@ compile-footprint cap with retries; every attempt is recorded in
 
 ## Result
 
-Run of 2026-09-21, 12:3x, inside the frozen gate
+Run of 2026-09-21 (report written 12:13) inside the frozen gate
 `automation/native_memory_acceptance.py` (exit 0, 2,181 s, peak 5.83 GB for the
 whole gate process tree under `benchmarks/checks/capped_run.py`; log:
 `benchmarks/evidence/native_memory_acceptance.log`). Five mainnet Fulu
