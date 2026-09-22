@@ -1,28 +1,28 @@
 {
- "seed": 20260921,
+ "seed": 20260924,
  "types": 109,
  "valid_per_type": 8,
  "mutations_per_value": 10,
- "histories_per_type": 3,
- "operations_per_history": 8,
+ "histories_per_type": 2,
+ "operations_per_history": 6,
  "counts": {
   "valid": 872,
   "invalid": 8720,
   "accepted_invalid": 0,
   "rejected_valid": 0,
-  "history": 1536
+  "history": 768
  },
  "mutation_kinds": {
-  "grow_last": 861,
-  "extend": 856,
-  "empty": 849,
-  "drop_last": 881,
-  "truncate": 862,
-  "zero_prefix": 879,
-  "offset_word": 862,
-  "set_high_bit": 869,
-  "flip_byte": 897,
-  "swap_bytes": 904
+  "drop_last": 878,
+  "flip_byte": 840,
+  "set_high_bit": 905,
+  "swap_bytes": 853,
+  "extend": 889,
+  "grow_last": 845,
+  "offset_word": 818,
+  "zero_prefix": 892,
+  "empty": 922,
+  "truncate": 878
  },
  "named_operations": {
   "boolean": 0,
@@ -135,8 +135,8 @@
   "DataColumnSidecar": 6,
   "CustodyIndex": 0
  },
- "elapsed_s": 163.0,
- "command": "/opt/homebrew/bin/python3 tests_generated/fuzz_objects.py --seed 20260921 --valid 8 --invalid 10",
+ "elapsed_s": 176.0,
+ "command": "/opt/homebrew/bin/python3 tests_generated/fuzz_objects.py --seed 20260924 --valid 8 --invalid 10",
  "toolchain": {
   "bend": {
    "path": "/Users/monkeair/.bend/bin/bend",
@@ -149,11 +149,11 @@
   "version": "2.0.16"
  },
  "source_sha256": {
-  "types/fulu_obj.bend": "866c82917bd625e9010e1c7a6f4c10461430aff9bf110083e421122a425518ac",
-  "src/obj.bend": "3697572b34f21843905fdc8069c26599affd7060d0d4db0b386fba27700e7e1f",
+  "types/fulu_obj.bend": "2cd3045eee21377a2c9e38b05263613cdfa324b3981d429d359bdc216e031e86",
+  "src/obj.bend": "9d17d5e848354b6fcc87d04ac052b69e48448a1e59b8a438d99384159511e4c6",
   "codegen/fulu.yaml": "8ce462a76c00b2a3a7149c2c81f2160db06680468faec600be5c56a07e6e9cdd",
-  "codegen/generate.py": "c29105d8cc23bbc9a0a90199c2a0ae2aa0620e0885da2efaf827f7a224b9f26b",
-  "codegen/oracle.py": "de97f318757168d73b790cff1120df3a28158693d630e814a869e649a0b726fc"
+  "codegen/generate.py": "24224273fc34798032347f50eb1d14d430e9b43cacdfbaed087907166b656adb",
+  "codegen/oracle.py": "b10d69e029a2a57233b69e170dcc0d060ce93ce58622a611f7394bccd891d183"
  },
  "findings": [],
  "findings_total": 0,

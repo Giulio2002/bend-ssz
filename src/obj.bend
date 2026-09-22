@@ -48,7 +48,7 @@ def npick(c: Bool, +x: Nat, +y: Nat) -> Nat:
 
 # Array depth for `n` bytes rounded up to whole chunks (at least one chunk).
 def depth_for(+n: U32) -> Nat:
-  B.capacity_go(32n, (U32.shrn((n + 31 : U32), 5n) * 8 + 8 : U32), 0n)
+  B.words_depth((U32.shrn((n + 31 : U32), 5n) * 8 + 8 : U32))
 
 def words_new(+n: U32) -> Words: Words{Array.new(U32, depth_for(n), 0), n}
 
@@ -101,8 +101,44 @@ def or_at(+i: U32, +x: U32, pair: Array<U32> & U32) -> Array<U32>:
 def or_word(out: Array<U32>, +i: U32, +x: U32) -> Array<U32>:
   or_at(i, x, Array.get(U32, out, i))
 
+# An OR that is skipped when it would contribute nothing. Used for the word
+# after a written range: it holds real bytes only when the carry is non-zero,
+# and then it is inside the value, so the output needs no spare word.
+def or_skip_go(zero: Bool, out: Array<U32>, +i: U32, +x: U32) -> Array<U32>:
+  match zero:
+    case True{}: out
+    case False{}: or_word(out, i, x)
+
+def or_skip(out: Array<U32>, +i: U32, +x: U32) -> Array<U32>:
+  or_skip_go(U32.is_eq(x, 0), out, i, x)
+
+# Shifts by a whole number of bytes, by literal amounts. `M.shl_by` and
+# `M.shr_by` walk the shift amount, which is many rewrites for what is always
+# one of four constants here; these appear on every unaligned scalar write and
+# on every single-byte write.
+def shl_bytes(+x: U32, +s: U32) -> U32:
+  match s:
+    case 0: x
+    case 1: (x * 256 : U32)
+    case 2: (x * 65536 : U32)
+    case _: (x * 16777216 : U32)
+
+def shr_bytes(+x: U32, +s: U32) -> U32:
+  match s:
+    case 0: x
+    case 1: U32.shrn(x, 8n)
+    case 2: U32.shrn(x, 16n)
+    case _: U32.shrn(x, 24n)
+
+# The bytes of x that a byte-shift of s pushes past the word: x >> (32 - 8s).
+def shr_over(+x: U32, +s: U32) -> U32:
+  match s:
+    case 1: U32.shrn(x, 24n)
+    case 2: U32.shrn(x, 16n)
+    case _: U32.shrn(x, 8n)
+
 def w32_split(out: Array<U32>, +p: U32, +x: U32, +s: U32) -> Array<U32>:
-  or_word(or_word(out, U32.shrn(p, 2n), M.shl_by(x, (8 * s : U32))), (U32.shrn(p, 2n) + 1 : U32), M.shr_by(x, (32 - 8 * s : U32)))
+  or_word(or_word(out, U32.shrn(p, 2n), shl_bytes(x, s)), (U32.shrn(p, 2n) + 1 : U32), shr_over(x, s))
 
 # An aligned four-byte write covers a whole word of the fresh output, so it
 # stores it; the unaligned cases OR their bytes into the two words they share
@@ -116,7 +152,7 @@ def w32(out: Array<U32>, +p: U32, +x: U32) -> Array<U32>:
   w32_pick(U32.is_eq((p .&. 3 : U32), 0), out, p, x)
 
 def w8(out: Array<U32>, +p: U32, +x: U32) -> Array<U32>:
-  or_word(out, U32.shrn(p, 2n), M.shl_by((x .&. 255 : U32), (8 * (p .&. 3 : U32) : U32)))
+  or_word(out, U32.shrn(p, 2n), shl_bytes((x .&. 255 : U32), (p .&. 3 : U32)))
 
 def w64_at(aligned: Bool, out: Array<U32>, +p: U32, +lo: U32, +hi: U32) -> Array<U32>:
   match aligned:
@@ -134,32 +170,245 @@ def wbool(out: Array<U32>, +p: U32, b: Bool) -> Array<U32>:
 
 # Write the packed bytes at p (their trailing zero bytes OR in harmlessly:
 # the output has at least three spare bytes and they are rewritten later).
-def put_go(+k: Nat, +j: U32, +p: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
-  match k:
-    case 0n:
-      (ws, +w) = pair
-      (w32(out, (p + 4 * j : U32), w), ws)
-    case 1n+q:
-      (ws, +w) = pair
-      put_go(q, (j + 1 : U32), p, w32(out, (p + 4 * j : U32), w), Array.get(U32, ws, (j + 1 : U32)))
-
 def put_fin(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & Words:
   (out, ws) = pair
   (out, Words{ws, n})
 
-def put_nz(empty: Bool, +nw: U32, +p: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & Array<U32>:
+# Writing a whole packed byte range at byte position p.
+#
+# The destination alignment is the same for every word of the range, so it is
+# decided once, before the loop, instead of per word. The aligned run stores
+# whole words. An unaligned run carries the high bytes of the previous source
+# word forward, so one source word costs one read and one read-modify-write
+# with two constant shifts, where writing each source word separately cost two
+# read-modify-writes and two loop-driven variable shifts (`M.shl_by`,
+# `M.shr_by` walk the shift amount). The bytes written are exactly the same
+# ones, still OR-ed in, so the result is unchanged.
+
+def pw_store(+k: Nat, +j: U32, +q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  match k:
+    case 0n:
+      (ws, +w) = pair
+      (Array.set(U32, out, (q + j : U32), w), ws)
+    case 1n+t:
+      (ws, +w) = pair
+      pw_store(t, (j + 1 : U32), q, Array.set(U32, out, (q + j : U32), w), Array.get(U32, ws, (j + 1 : U32)))
+
+def pw_aligned(+nw: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & Array<U32>:
+  pw_store(U32.to_nat((nw - 1 : U32)), 0, q, out, Array.get(U32, ws, 0))
+
+# An unaligned run in three parts.
+#
+# Destination word q+j of a run of n bytes at byte position p (s = p & 3, q =
+# p >> 2) covers output bytes [p - s + 4j, p - s + 4j + 4). That window lies
+# wholly inside the value's own [p, p + n) exactly when j >= 1 and
+# 4j + 4 - s <= n, i.e. for j in [1, (n + s - 4) >> 2]. Those words belong to
+# no neighbour, so they are stored outright. Only the first word, the words
+# past that bound and the trailing carry are shared with a neighbour and have
+# to OR. For a long run this turns three array operations per word (read the
+# source, read and write the destination) into two.
+
+def pw_or1(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n:
+      (ws, +w) = pair
+      (or_word(out, (q + j : U32), ((w * 256 : U32) .|. c : U32)), (ws, U32.shrn(w, 24n)))
+    case 1n+e:
+      (ws, +w) = pair
+      pw_or1(e, (j + 1 : U32), q, U32.shrn(w, 24n),
+        or_word(out, (q + j : U32), ((w * 256 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
+
+def pw_st1(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n:
+      (ws, +w) = pair
+      (Array.set(U32, out, (q + j : U32), ((w * 256 : U32) .|. c : U32)), (ws, U32.shrn(w, 24n)))
+    case 1n+e:
+      (ws, +w) = pair
+      pw_st1(e, (j + 1 : U32), q, U32.shrn(w, 24n),
+        Array.set(U32, out, (q + j : U32), ((w * 256 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
+
+def pw_st1_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
+  match empty:
+    case True{}: (out, (ws, c))
+    case False{}: pw_st1(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
+
+def pw_or1_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
+  match empty:
+    case True{}: (out, (ws, c))
+    case False{}: pw_or1(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
+
+def pw_st1_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  (out, r) = pair
+  (ws, c) = r
+  pw_st1_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
+
+def pw_or1_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  (out, r) = pair
+  (ws, c) = r
+  pw_or1_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
+
+def pw_run1(+nw: U32, +mid: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & (Array<U32> & U32):
+  pw_or1_at((mid + 1 : U32), (nw - 1 - mid : U32), q,
+    pw_st1_at(1, mid, q, pw_or1(0n, 0, q, 0, out, Array.get(U32, ws, 0))))
+
+def pw_or2(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n:
+      (ws, +w) = pair
+      (or_word(out, (q + j : U32), ((w * 65536 : U32) .|. c : U32)), (ws, U32.shrn(w, 16n)))
+    case 1n+e:
+      (ws, +w) = pair
+      pw_or2(e, (j + 1 : U32), q, U32.shrn(w, 16n),
+        or_word(out, (q + j : U32), ((w * 65536 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
+
+def pw_st2(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n:
+      (ws, +w) = pair
+      (Array.set(U32, out, (q + j : U32), ((w * 65536 : U32) .|. c : U32)), (ws, U32.shrn(w, 16n)))
+    case 1n+e:
+      (ws, +w) = pair
+      pw_st2(e, (j + 1 : U32), q, U32.shrn(w, 16n),
+        Array.set(U32, out, (q + j : U32), ((w * 65536 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
+
+def pw_st2_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
+  match empty:
+    case True{}: (out, (ws, c))
+    case False{}: pw_st2(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
+
+def pw_or2_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
+  match empty:
+    case True{}: (out, (ws, c))
+    case False{}: pw_or2(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
+
+def pw_st2_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  (out, r) = pair
+  (ws, c) = r
+  pw_st2_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
+
+def pw_or2_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  (out, r) = pair
+  (ws, c) = r
+  pw_or2_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
+
+def pw_run2(+nw: U32, +mid: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & (Array<U32> & U32):
+  pw_or2_at((mid + 1 : U32), (nw - 1 - mid : U32), q,
+    pw_st2_at(1, mid, q, pw_or2(0n, 0, q, 0, out, Array.get(U32, ws, 0))))
+
+def pw_or3(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n:
+      (ws, +w) = pair
+      (or_word(out, (q + j : U32), ((w * 16777216 : U32) .|. c : U32)), (ws, U32.shrn(w, 8n)))
+    case 1n+e:
+      (ws, +w) = pair
+      pw_or3(e, (j + 1 : U32), q, U32.shrn(w, 8n),
+        or_word(out, (q + j : U32), ((w * 16777216 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
+
+def pw_st3(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n:
+      (ws, +w) = pair
+      (Array.set(U32, out, (q + j : U32), ((w * 16777216 : U32) .|. c : U32)), (ws, U32.shrn(w, 8n)))
+    case 1n+e:
+      (ws, +w) = pair
+      pw_st3(e, (j + 1 : U32), q, U32.shrn(w, 8n),
+        Array.set(U32, out, (q + j : U32), ((w * 16777216 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
+
+def pw_st3_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
+  match empty:
+    case True{}: (out, (ws, c))
+    case False{}: pw_st3(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
+
+def pw_or3_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
+  match empty:
+    case True{}: (out, (ws, c))
+    case False{}: pw_or3(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
+
+def pw_st3_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  (out, r) = pair
+  (ws, c) = r
+  pw_st3_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
+
+def pw_or3_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  (out, r) = pair
+  (ws, c) = r
+  pw_or3_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
+
+def pw_run3(+nw: U32, +mid: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & (Array<U32> & U32):
+  pw_or3_at((mid + 1 : U32), (nw - 1 - mid : U32), q,
+    pw_st3_at(1, mid, q, pw_or3(0n, 0, q, 0, out, Array.get(U32, ws, 0))))
+
+# The carry of the last source word lands in the word after the range. That
+# word holds real bytes only when the carry is non-zero, and then it is inside
+# the value being written, hence inside the output; when the carry is zero the
+# write would be a no-op on a word that may not exist. Skipping it is what lets
+# the output be allocated for exactly ceil(n/4) words instead of one more,
+# which for an exactly-power-of-two word count halves the allocation.
+def pw_carry_skip(zero: Bool, +i: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & Array<U32>:
+  match zero:
+    case True{}: (out, ws)
+    case False{}: (or_word(out, i, c), ws)
+
+def pw_carry_at(+i: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & Array<U32>:
+  pw_carry_skip(U32.is_eq(c, 0), i, out, ws, c)
+
+def pw_carry(+i: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & Array<U32>:
+  (out, r) = pair
+  (ws, c) = r
+  pw_carry_at(i, out, ws, c)
+
+# The count of interior words: (n + s - 4) >> 2, clamped to [0, nw - 1].
+def pw_mid(+n: U32, +s: U32, +nw: U32) -> U32:
+  pick(U32.is_lt((n + s : U32), 4), 0,
+    pick(U32.is_lt((nw - 1 : U32), U32.shrn((n + s - 4 : U32), 2n)), (nw - 1 : U32),
+      U32.shrn((n + s - 4 : U32), 2n)))
+
+def pw_un(+s: U32, +n: U32, +nw: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & Array<U32>:
+  match s:
+    case 1: pw_carry((q + nw : U32), pw_run1(nw, pw_mid(n, s, nw), q, out, ws))
+    case 2: pw_carry((q + nw : U32), pw_run2(nw, pw_mid(n, s, nw), q, out, ws))
+    case _: pw_carry((q + nw : U32), pw_run3(nw, pw_mid(n, s, nw), q, out, ws))
+
+def pw_go(zero: Bool, +s: U32, +n: U32, +nw: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & Array<U32>:
+  match zero:
+    case True{}: pw_aligned(nw, q, out, ws)
+    case False{}: pw_un(s, n, nw, q, out, ws)
+
+def pw_empty(empty: Bool, +s: U32, +n: U32, +nw: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & Array<U32>:
   match empty:
     case True{}: (out, ws)
-    case False{}: put_go(U32.to_nat((nw - 1 : U32)), 0, p, out, Array.get(U32, ws, 0))
-
-# A fresh output of n bytes.
+    case False{}: pw_go(U32.is_eq(s, 0), s, n, nw, q, out, ws)
 
 def put_words(out: Array<U32>, +p: U32, w: Words) -> Array<U32> & Words:
   match w:
     case Words{ws, +n}:
-      put_fin(n, put_nz(U32.is_eq(n, 0), U32.shrn((n + 3 : U32), 2n), p, out, ws))
+      put_fin(n, pw_empty(U32.is_eq(n, 0), (p .&. 3 : U32), n, U32.shrn((n + 3 : U32), 2n),
+        U32.shrn(p, 2n), out, ws))
 
-def out_new(+n: U32) -> Array<U32>: Array.new(U32, B.capacity((n + 4 : U32)), 0)
+# A write that also reports how many bytes it wrote. A container or sequence
+# needs the size of each variable-size child to place the next one and to fill
+# in its offset; taking it from the write itself means each subtree is walked
+# once, where calling `_size` first walked every subtree once per enclosing
+# level.
+def pwn_of(out: Array<U32>, pair: Words & U32) -> Array<U32> & (Words & U32):
+  (w, +n) = pair
+  (out, (w, n))
+
+def pwn(pair: Array<U32> & Words) -> Array<U32> & (Words & U32):
+  (out, w) = pair
+  pwn_of(out, words_len(w))
+
+def put_words_n(out: Array<U32>, +p: U32, w: Words) -> Array<U32> & (Words & U32):
+  pwn(put_words(out, p, w))
+
+# Exactly the words the encoding occupies. Nothing writes past
+# ceil(n/4) - 1: the scalar writers stay inside their own value, and the two
+# carry writes (pw_carry, and the record writer's last term) are skipped when
+# their carry is zero, which is the only case in which they would reach the
+# word after the data.
+def out_new(+n: U32) -> Array<U32>: Array.new(U32, B.capacity(n), 0)
 
 # The same allocation with the depth already known (a fixed-size encoding).
 def out_at(+d: Nat) -> Array<U32>: Array.new(U32, d, 0)
@@ -245,6 +494,39 @@ def words_root(h: B.Buf, w: Words, +depth: U32, +seg: U32) -> B.Buf & (Words & D
       close_words(depth, U32.shrn((n + 31 : U32), 5n), seg, n,
         push_start(U32.is_eq(n, 0), U32.shrn((n + 31 : U32), 5n), seg, h, ws))
 
+# ---- progressive merkleization -------------------------------------------
+# The progressive forms (progressive lists, progressive bit lists and the slot
+# tree of a progressive container) have no limit: their chunks go into
+# 4^k-chunk segments that are folded right to left. `M.push_any`/`M.close_any`
+# select that shape from the marker depth `M.prog_depth()` (255); the binary
+# helpers above stay on their own code path so the fixed-limit Fulu types are
+# untouched.
+
+def push_chunks_p(+k: Nat, +c: U32, +seg: U32, h: B.Buf, pair: Array<U32> & D.Digest) -> B.Buf & Array<U32>:
+  match k:
+    case 0n:
+      (ws, d) = pair
+      (M.push_prog(c, seg, d, h), ws)
+    case 1n+q:
+      (ws, d) = pair
+      push_chunks_p(q, (c + 1 : U32), seg, M.push_prog(c, seg, d, h), chunk(ws, (c + 1 : U32)))
+
+def push_start_p(empty: Bool, +nc: U32, +seg: U32, h: B.Buf, ws: Array<U32>) -> B.Buf & Array<U32>:
+  match empty:
+    case True{}: (h, ws)
+    case False{}: push_chunks_p(U32.to_nat((nc - 1 : U32)), 0, seg, h, chunk(ws, 0))
+
+def close_words_p(+nc: U32, +seg: U32, +n: U32, pair: B.Buf & Array<U32>) -> B.Buf & (Words & D.Digest):
+  (h, ws) = pair
+  close_with(Words{ws, n}, M.close_prog(nc, seg, h))
+
+# Root of the packed bytes as a progressive chunk tree, without the length mix.
+def words_root_prog(h: B.Buf, w: Words, +seg: U32) -> B.Buf & (Words & D.Digest):
+  match w:
+    case Words{ws, +n}:
+      close_words_p(U32.shrn((n + 31 : U32), 5n), seg, n,
+        push_start_p(U32.is_eq(n, 0), U32.shrn((n + 31 : U32), 5n), seg, h, ws))
+
 # ---- bit lists ------------------------------------------------------------
 # A Bitlist is held as its bits (Words.n = number of bits, bytes ceil(n/8)),
 # without the delimiter. On the wire the delimiter is the highest set bit of
@@ -307,9 +589,25 @@ def bits_rooted(+k: U32, pair: B.Buf & (Words & D.Digest)) -> B.Buf & (Bits & D.
   match w:
     case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(d, k)))
 
+def pbn_of(out: Array<U32>, pair: Bits & U32) -> Array<U32> & (Bits & U32):
+  (b, +n) = pair
+  (out, (b, n))
+
+def pbn(pair: Array<U32> & Bits) -> Array<U32> & (Bits & U32):
+  (out, b) = pair
+  pbn_of(out, bits_size(b))
+
+def put_bits_n(out: Array<U32>, +p: U32, b: Bits) -> Array<U32> & (Bits & U32):
+  pbn(put_bits(out, p, b))
+
 def bits_root(h: B.Buf, b: Bits, +depth: U32, +seg: U32) -> B.Buf & (Bits & D.Digest):
   match b:
     case Bits{ws, +k}: bits_rooted(k, words_root(h, Words{ws, bits_nbytes(k)}, depth, seg))
+
+# A progressive bit list: the same bit chunks in a progressive tree.
+def bits_root_prog(h: B.Buf, b: Bits, +seg: U32) -> B.Buf & (Bits & D.Digest):
+  match b:
+    case Bits{ws, +k}: bits_rooted(k, words_root_prog(h, Words{ws, bits_nbytes(k)}, seg))
 
 
 # ---- scalar reads from a validated window -----------------------------------
@@ -444,6 +742,30 @@ def elems_start(empty: Bool, +cnt: U32, +ew: U32, +ed: U32, +seg: U32, h: B.Buf,
     case True{}: (h, ws)
     case False{}: elems_go(U32.to_nat((cnt - 1 : U32)), 0, ew, ed, seg, eroot(h, ws, 0, ew, ed, (seg + 64 : U32)))
 
+# The same over a progressive tree (a progressive list of fixed-size byte
+# vectors); each element's own tree is still binary.
+def elems_go_p(+k: Nat, +i: U32, +ew: U32, +ed: U32, +seg: U32, pair: Array<U32> & (B.Buf & D.Digest)) -> B.Buf & Array<U32>:
+  match k:
+    case 0n:
+      (ws, r) = pair
+      (h, d) = r
+      (M.push_prog(i, seg, d, h), ws)
+    case 1n+q:
+      (ws, r) = pair
+      (h, d) = r
+      elems_go_p(q, (i + 1 : U32), ew, ed, seg, eroot(M.push_prog(i, seg, d, h), ws, ((i + 1 : U32) * ew : U32), ew, ed, (seg + 64 : U32)))
+
+def elems_start_p(empty: Bool, +cnt: U32, +ew: U32, +ed: U32, +seg: U32, h: B.Buf, ws: Array<U32>) -> B.Buf & Array<U32>:
+  match empty:
+    case True{}: (h, ws)
+    case False{}: elems_go_p(U32.to_nat((cnt - 1 : U32)), 0, ew, ed, seg, eroot(h, ws, 0, ew, ed, (seg + 64 : U32)))
+
+def elems_root_prog(h: B.Buf, w: Words, +ew: U32, +ed: U32, +seg: U32) -> B.Buf & (Words & D.Digest):
+  match w:
+    case Words{ws, +n}:
+      close_words_p(U32.div(n, (4 * ew : U32)), seg, n,
+        elems_start_p(U32.is_eq(n, 0), U32.div(n, (4 * ew : U32)), ew, ed, seg, h, ws))
+
 # Root of a packed sequence of `ew`-word byte vectors: element trees of depth
 # `ed` in the next stack segment (segments are 64 slots apart), the sequence
 # tree of depth `depth` in `seg`.
@@ -531,10 +853,17 @@ def words_setw(w: Words, +j: U32, +x: U32) -> Words:
   match w:
     case Words{ws, +n}: Words{Array.set(U32, ws, j, x), n}
 
-def mask_at(+s: U32, +bytes: U32) -> U32: M.shl_by(pick(U32.is_eq(bytes, 4), 4294967295, (M.shl_by(1, (8 * bytes : U32)) - 1 : U32)), (8 * s : U32))
+def byte_mask(+bytes: U32) -> U32:
+  match bytes:
+    case 1: 255
+    case 2: 65535
+    case 3: 16777215
+    case _: 4294967295
+
+def mask_at(+s: U32, +bytes: U32) -> U32: shl_bytes(byte_mask(bytes), s)
 
 def merge_word(+old: U32, +x: U32, +s: U32, +bytes: U32) -> U32:
-  ((old .&. U32.not(mask_at(s, bytes)) : U32) .|. (M.shl_by(x, (8 * s : U32)) .&. mask_at(s, bytes) : U32) : U32)
+  ((old .&. U32.not(mask_at(s, bytes)) : U32) .|. (shl_bytes(x, s) .&. mask_at(s, bytes) : U32) : U32)
 
 def put_in(+j: U32, +x: U32, +s: U32, +bytes: U32, pair: Words & U32) -> Words:
   (w, +old) = pair
@@ -551,7 +880,7 @@ def words_read(+bytes: U32, pair: Words & U32) -> Words & U32:
 
 def read_at(+p: U32, +bytes: U32, pair: Words & U32) -> Words & U32:
   (w, +x) = pair
-  (w, keep(bytes, M.shr_by(x, (8 * (p .&. 3 : U32) : U32))))
+  (w, keep(bytes, shr_bytes(x, (p .&. 3 : U32))))
 
 # The `bytes` bytes at byte position p (1..4), as a little-endian value.
 

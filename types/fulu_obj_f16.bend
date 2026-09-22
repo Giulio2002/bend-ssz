@@ -10,6 +10,7 @@ type Any is Type:
   A_Validator{v: T.Validator}
   A_NodeID{v: T.Uint256}
   A_SubnetID{v: O.U64}
+  A_boxed{v: Any}
 
 def wrap_DepositMessage(m: Maybe<&1, T.DepositMessage>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -67,24 +68,37 @@ def root_SubnetID(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest)
   (h, d) = pair
   (h, (A_SubnetID{v}, d))
 def force_SubnetID(+v: O.U64) -> Any & U32: (A_SubnetID{v}, T.u64_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_DepositMessage{+v}: enc_DepositMessage(v)
     case A_Validator{+v}: enc_Validator(v)
     case A_NodeID{+v}: enc_NodeID(v)
     case A_SubnetID{+v}: enc_SubnetID(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_DepositMessage{+v}: root_DepositMessage(v, T.DepositMessage_hash_tree_root(h, v))
     case A_Validator{+v}: root_Validator(v, T.Validator_hash_tree_root(h, v))
     case A_NodeID{+v}: root_NodeID(v, T.NodeID_hash_tree_root(h, v))
     case A_SubnetID{+v}: root_SubnetID(v, T.SubnetID_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_DepositMessage{+v}: force_DepositMessage(v)
     case A_Validator{+v}: force_Validator(v)
     case A_NodeID{+v}: force_NodeID(v)
     case A_SubnetID{+v}: force_SubnetID(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -117,9 +131,13 @@ def fuzz_SubnetID_fin(pr: O.U64 & Bool) -> Any & Bool:
   (A_SubnetID{v}, ok)
 def fuzz_SubnetID(+sel: U32, +a: U32, +b: U32, +v: O.U64) -> Any & Bool:
   fuzz_SubnetID_fin(T.SubnetID_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_DepositMessage{+v}: fuzz_DepositMessage(sel, a, b, v)
     case A_Validator{+v}: fuzz_Validator(sel, a, b, v)
     case A_NodeID{+v}: fuzz_NodeID(sel, a, b, v)
     case A_SubnetID{+v}: fuzz_SubnetID(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

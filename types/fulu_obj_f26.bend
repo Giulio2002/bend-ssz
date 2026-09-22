@@ -10,6 +10,7 @@ type Any is Type:
   A_DataColumnsByRootIdentifier{v: T.DataColumnsByRootIdentifier}
   A_MatrixEntry{v: T.MatrixEntry}
   A_DataColumnSidecar{v: T.DataColumnSidecar}
+  A_boxed{v: Any}
 
 def wrap_ColumnIndex(m: Maybe<&1, O.U64>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -82,24 +83,37 @@ def root_DataColumnSidecar(pair: B.Buf & (T.DataColumnSidecar & D.Digest)) -> B.
 def force_DataColumnSidecar(pair: T.DataColumnSidecar & U32) -> Any & U32:
   (v, +x) = pair
   (A_DataColumnSidecar{v}, x)
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_ColumnIndex{+v}: enc_ColumnIndex(v)
     case A_DataColumnsByRootIdentifier{v}: enc_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier_encode(v))
     case A_MatrixEntry{v}: enc_MatrixEntry(T.MatrixEntry_encode(v))
     case A_DataColumnSidecar{v}: enc_DataColumnSidecar(T.DataColumnSidecar_encode(v))
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_ColumnIndex{+v}: root_ColumnIndex(v, T.ColumnIndex_hash_tree_root(h, v))
     case A_DataColumnsByRootIdentifier{v}: root_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier_hash_tree_root(h, v))
     case A_MatrixEntry{v}: root_MatrixEntry(T.MatrixEntry_hash_tree_root(h, v))
     case A_DataColumnSidecar{v}: root_DataColumnSidecar(T.DataColumnSidecar_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_ColumnIndex{+v}: force_ColumnIndex(v)
     case A_DataColumnsByRootIdentifier{v}: force_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier_force(v))
     case A_MatrixEntry{v}: force_MatrixEntry(T.MatrixEntry_force(v))
     case A_DataColumnSidecar{v}: force_DataColumnSidecar(T.DataColumnSidecar_force(v))
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -132,9 +146,13 @@ def fuzz_DataColumnSidecar_fin(pr: T.DataColumnSidecar & Bool) -> Any & Bool:
   (A_DataColumnSidecar{v}, ok)
 def fuzz_DataColumnSidecar(+sel: U32, +a: U32, +b: U32, v: T.DataColumnSidecar) -> Any & Bool:
   fuzz_DataColumnSidecar_fin(T.DataColumnSidecar_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_ColumnIndex{+v}: fuzz_ColumnIndex(sel, a, b, v)
     case A_DataColumnsByRootIdentifier{v}: fuzz_DataColumnsByRootIdentifier(sel, a, b, v)
     case A_MatrixEntry{v}: fuzz_MatrixEntry(sel, a, b, v)
     case A_DataColumnSidecar{v}: fuzz_DataColumnSidecar(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

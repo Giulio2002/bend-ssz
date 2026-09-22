@@ -10,6 +10,7 @@ type Any is Type:
   A_SignedContributionAndProof{v: T.SignedContributionAndProof}
   A_SyncCommitteeMessage{v: T.SyncCommitteeMessage}
   A_Eth1Block{v: T.Eth1Block}
+  A_boxed{v: Any}
 
 def wrap_ContributionAndProof(m: Maybe<&1, T.ContributionAndProof>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -77,24 +78,37 @@ def root_Eth1Block(+v: T.Eth1Block, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.
   (h, d) = pair
   (h, (A_Eth1Block{v}, d))
 def force_Eth1Block(+v: T.Eth1Block) -> Any & U32: (A_Eth1Block{v}, T.Eth1Block_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_ContributionAndProof{v}: enc_ContributionAndProof(T.ContributionAndProof_encode(v))
     case A_SignedContributionAndProof{v}: enc_SignedContributionAndProof(T.SignedContributionAndProof_encode(v))
     case A_SyncCommitteeMessage{+v}: enc_SyncCommitteeMessage(v)
     case A_Eth1Block{+v}: enc_Eth1Block(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_ContributionAndProof{v}: root_ContributionAndProof(T.ContributionAndProof_hash_tree_root(h, v))
     case A_SignedContributionAndProof{v}: root_SignedContributionAndProof(T.SignedContributionAndProof_hash_tree_root(h, v))
     case A_SyncCommitteeMessage{+v}: root_SyncCommitteeMessage(v, T.SyncCommitteeMessage_hash_tree_root(h, v))
     case A_Eth1Block{+v}: root_Eth1Block(v, T.Eth1Block_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_ContributionAndProof{v}: force_ContributionAndProof(T.ContributionAndProof_force(v))
     case A_SignedContributionAndProof{v}: force_SignedContributionAndProof(T.SignedContributionAndProof_force(v))
     case A_SyncCommitteeMessage{+v}: force_SyncCommitteeMessage(v)
     case A_Eth1Block{+v}: force_Eth1Block(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -127,9 +141,13 @@ def fuzz_Eth1Block_fin(pr: T.Eth1Block & Bool) -> Any & Bool:
   (A_Eth1Block{v}, ok)
 def fuzz_Eth1Block(+sel: U32, +a: U32, +b: U32, +v: T.Eth1Block) -> Any & Bool:
   fuzz_Eth1Block_fin(T.Eth1Block_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_ContributionAndProof{v}: fuzz_ContributionAndProof(sel, a, b, v)
     case A_SignedContributionAndProof{v}: fuzz_SignedContributionAndProof(sel, a, b, v)
     case A_SyncCommitteeMessage{+v}: fuzz_SyncCommitteeMessage(sel, a, b, v)
     case A_Eth1Block{+v}: fuzz_Eth1Block(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

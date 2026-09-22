@@ -18,6 +18,7 @@ type Any is Type:
   A_SigningData{v: T.SigningData}
   A_BLSPubkey{v: T.Bytes48}
   A_DepositRequest{v: T.DepositRequest}
+  A_boxed{v: Any}
 
 def wrap_Attestation(m: Maybe<&1, T.Attestation>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -209,6 +210,16 @@ def root_DepositRequest(+v: T.DepositRequest, pair: B.Buf & D.Digest) -> B.Buf &
   (h, d) = pair
   (h, (A_DepositRequest{v}, d))
 def force_DepositRequest(+v: T.DepositRequest) -> Any & U32: (A_DepositRequest{v}, T.DepositRequest_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_Attestation{v}: enc_Attestation(T.Attestation_encode(v))
@@ -223,6 +234,7 @@ def encode(a: Any) -> Any & B.Buf:
     case A_SigningData{+v}: enc_SigningData(v)
     case A_BLSPubkey{+v}: enc_BLSPubkey(v)
     case A_DepositRequest{+v}: enc_DepositRequest(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_Attestation{v}: root_Attestation(T.Attestation_hash_tree_root(h, v))
@@ -237,6 +249,7 @@ def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
     case A_SigningData{+v}: root_SigningData(v, T.SigningData_hash_tree_root(h, v))
     case A_BLSPubkey{+v}: root_BLSPubkey(v, T.BLSPubkey_hash_tree_root(h, v))
     case A_DepositRequest{+v}: root_DepositRequest(v, T.DepositRequest_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_Attestation{v}: force_Attestation(T.Attestation_force(v))
@@ -251,6 +264,7 @@ def force(a: Any) -> Any & U32:
     case A_SigningData{+v}: force_SigningData(v)
     case A_BLSPubkey{+v}: force_BLSPubkey(v)
     case A_DepositRequest{+v}: force_DepositRequest(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

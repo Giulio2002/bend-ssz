@@ -10,6 +10,7 @@ type Any is Type:
   A_AttesterSlashing{v: T.AttesterSlashing}
   A_ForkData{v: T.ForkData}
   A_ForkDigest{v: T.Bytes4}
+  A_boxed{v: Any}
 
 def wrap_IndexedAttestation(m: Maybe<&1, T.IndexedAttestation>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -77,24 +78,37 @@ def root_ForkDigest(+v: T.Bytes4, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Di
   (h, d) = pair
   (h, (A_ForkDigest{v}, d))
 def force_ForkDigest(+v: T.Bytes4) -> Any & U32: (A_ForkDigest{v}, T.b4_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_IndexedAttestation{v}: enc_IndexedAttestation(T.IndexedAttestation_encode(v))
     case A_AttesterSlashing{v}: enc_AttesterSlashing(T.AttesterSlashing_encode(v))
     case A_ForkData{+v}: enc_ForkData(v)
     case A_ForkDigest{+v}: enc_ForkDigest(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_IndexedAttestation{v}: root_IndexedAttestation(T.IndexedAttestation_hash_tree_root(h, v))
     case A_AttesterSlashing{v}: root_AttesterSlashing(T.AttesterSlashing_hash_tree_root(h, v))
     case A_ForkData{+v}: root_ForkData(v, T.ForkData_hash_tree_root(h, v))
     case A_ForkDigest{+v}: root_ForkDigest(v, T.ForkDigest_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_IndexedAttestation{v}: force_IndexedAttestation(T.IndexedAttestation_force(v))
     case A_AttesterSlashing{v}: force_AttesterSlashing(T.AttesterSlashing_force(v))
     case A_ForkData{+v}: force_ForkData(v)
     case A_ForkDigest{+v}: force_ForkDigest(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -127,9 +141,13 @@ def fuzz_ForkDigest_fin(pr: T.Bytes4 & Bool) -> Any & Bool:
   (A_ForkDigest{v}, ok)
 def fuzz_ForkDigest(+sel: U32, +a: U32, +b: U32, +v: T.Bytes4) -> Any & Bool:
   fuzz_ForkDigest_fin(T.ForkDigest_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_IndexedAttestation{v}: fuzz_IndexedAttestation(sel, a, b, v)
     case A_AttesterSlashing{v}: fuzz_AttesterSlashing(sel, a, b, v)
     case A_ForkData{+v}: fuzz_ForkData(sel, a, b, v)
     case A_ForkDigest{+v}: fuzz_ForkDigest(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

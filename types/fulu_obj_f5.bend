@@ -10,6 +10,7 @@ type Any is Type:
   A_G1Point{v: T.Bytes48}
   A_G2Point{v: T.Bytes96}
   A_Fork{v: T.Fork}
+  A_boxed{v: Any}
 
 def wrap_VersionedHash(m: Maybe<&1, T.Bytes32>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -67,24 +68,37 @@ def root_Fork(+v: T.Fork, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Fork{v}, d))
 def force_Fork(+v: T.Fork) -> Any & U32: (A_Fork{v}, T.Fork_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_VersionedHash{+v}: enc_VersionedHash(v)
     case A_G1Point{+v}: enc_G1Point(v)
     case A_G2Point{+v}: enc_G2Point(v)
     case A_Fork{+v}: enc_Fork(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_VersionedHash{+v}: root_VersionedHash(v, T.VersionedHash_hash_tree_root(h, v))
     case A_G1Point{+v}: root_G1Point(v, T.G1Point_hash_tree_root(h, v))
     case A_G2Point{+v}: root_G2Point(v, T.G2Point_hash_tree_root(h, v))
     case A_Fork{+v}: root_Fork(v, T.Fork_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_VersionedHash{+v}: force_VersionedHash(v)
     case A_G1Point{+v}: force_G1Point(v)
     case A_G2Point{+v}: force_G2Point(v)
     case A_Fork{+v}: force_Fork(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -117,9 +131,13 @@ def fuzz_Fork_fin(pr: T.Fork & Bool) -> Any & Bool:
   (A_Fork{v}, ok)
 def fuzz_Fork(+sel: U32, +a: U32, +b: U32, +v: T.Fork) -> Any & Bool:
   fuzz_Fork_fin(T.Fork_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_VersionedHash{+v}: fuzz_VersionedHash(sel, a, b, v)
     case A_G1Point{+v}: fuzz_G1Point(sel, a, b, v)
     case A_G2Point{+v}: fuzz_G2Point(sel, a, b, v)
     case A_Fork{+v}: fuzz_Fork(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

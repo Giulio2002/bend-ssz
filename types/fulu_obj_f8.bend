@@ -10,6 +10,7 @@ type Any is Type:
   A_Root{v: T.Bytes32}
   A_HistoricalSummary{v: T.HistoricalSummary}
   A_SyncCommitteeContribution{v: T.SyncCommitteeContribution}
+  A_boxed{v: Any}
 
 def wrap_SignedVoluntaryExit(m: Maybe<&1, T.SignedVoluntaryExit>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -67,24 +68,37 @@ def root_SyncCommitteeContribution(+v: T.SyncCommitteeContribution, pair: B.Buf 
   (h, d) = pair
   (h, (A_SyncCommitteeContribution{v}, d))
 def force_SyncCommitteeContribution(+v: T.SyncCommitteeContribution) -> Any & U32: (A_SyncCommitteeContribution{v}, T.SyncCommitteeContribution_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_SignedVoluntaryExit{+v}: enc_SignedVoluntaryExit(v)
     case A_Root{+v}: enc_Root(v)
     case A_HistoricalSummary{+v}: enc_HistoricalSummary(v)
     case A_SyncCommitteeContribution{+v}: enc_SyncCommitteeContribution(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_SignedVoluntaryExit{+v}: root_SignedVoluntaryExit(v, T.SignedVoluntaryExit_hash_tree_root(h, v))
     case A_Root{+v}: root_Root(v, T.Root_hash_tree_root(h, v))
     case A_HistoricalSummary{+v}: root_HistoricalSummary(v, T.HistoricalSummary_hash_tree_root(h, v))
     case A_SyncCommitteeContribution{+v}: root_SyncCommitteeContribution(v, T.SyncCommitteeContribution_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_SignedVoluntaryExit{+v}: force_SignedVoluntaryExit(v)
     case A_Root{+v}: force_Root(v)
     case A_HistoricalSummary{+v}: force_HistoricalSummary(v)
     case A_SyncCommitteeContribution{+v}: force_SyncCommitteeContribution(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -117,9 +131,13 @@ def fuzz_SyncCommitteeContribution_fin(pr: T.SyncCommitteeContribution & Bool) -
   (A_SyncCommitteeContribution{v}, ok)
 def fuzz_SyncCommitteeContribution(+sel: U32, +a: U32, +b: U32, +v: T.SyncCommitteeContribution) -> Any & Bool:
   fuzz_SyncCommitteeContribution_fin(T.SyncCommitteeContribution_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_SignedVoluntaryExit{+v}: fuzz_SignedVoluntaryExit(sel, a, b, v)
     case A_Root{+v}: fuzz_Root(sel, a, b, v)
     case A_HistoricalSummary{+v}: fuzz_HistoricalSummary(sel, a, b, v)
     case A_SyncCommitteeContribution{+v}: fuzz_SyncCommitteeContribution(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

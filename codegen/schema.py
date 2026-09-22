@@ -20,17 +20,20 @@ class SchemaError(Exception):
 @dataclass(frozen=True)
 class Ty:
     kind: str                      # bool uint bytes bytelist bits bitlist vector list container
+                                   # plist pbits pcontainer cunion  (the generic SSZ forms)
     size: int = 0                  # uint: bytes; bytes/bits/vector: length; lists: limit
     elem: Optional['Ty'] = None
     fields: Tuple[Tuple[str, 'Ty'], ...] = ()
     name: Optional[str] = None     # the named container (or alias) this came from
+    active: Tuple[int, ...] = ()   # pcontainer: the active-position mask
+    selectors: Tuple[int, ...] = ()  # cunion: one selector per option (options are `fields`)
 
     def fixed(self) -> bool:
         if self.kind in ('bool', 'uint', 'bytes', 'bits'):
             return True
         if self.kind == 'vector':
             return self.elem.fixed()
-        if self.kind == 'container':
+        if self.kind in ('container', 'pcontainer'):
             return all(t.fixed() for _, t in self.fields)
         return False
 
@@ -46,7 +49,7 @@ class Ty:
             return (self.size + 7) // 8
         if k == 'vector':
             return self.size * self.elem.fixed_size()
-        if k == 'container':
+        if k in ('container', 'pcontainer'):
             return sum(t.fixed_size() for _, t in self.fields)
         raise SchemaError(f'variable-size type has no fixed size: {k}')
 

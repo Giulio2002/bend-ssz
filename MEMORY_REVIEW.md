@@ -11,21 +11,30 @@ python3 automation/native_memory_acceptance.py     # frozen operator gate (also 
                                                    # runtime tests, spectests, then run.py)
 ```
 
-The measured Bend program is `native_bench/driver.bend`, the **compact primary
-path**:
+The measured Bend program is `native_bench/driver.bend`, which uses the
+**generated typed owning object API** (`types/fulu_obj.bend`, emitted by
+`codegen/generate.py`; see docs/CODEGEN.md):
 
-* one packed `Array<U32>` input buffer;
-* an in-place validating decode (`API.validate` → `src/cscan.bend`);
-* `hash_tree_root` over the same buffer (`API.root` → `src/croot.bend`,
-  `src/merkle_fast.bend`, the pinned BendHub SHA-256 package), with every
-  intermediate digest in the buffer's own packed scratch;
-* a streamed encode.
+* one packed `Array<U32>` input buffer, filled straight from the file;
+* `BeaconState_decode`: the generated validator over that buffer, then the
+  generated reader, which builds the typed owning object - a record per
+  container, packed `Array<U32>` for byte/bit/packed storage and array-backed
+  sequences of element objects. The object owns its storage; it is not a view
+  into the input;
+* `BeaconState_hash_tree_root` over the object, streaming, with every
+  intermediate digest in a packed scratch buffer and the pinned BendHub
+  SHA-256 package doing the compression;
+* `BeaconState_encode`: fresh canonical bytes from the object.
 
-The list-based modules (`src/packed.bend`, `src/cvalue.bend`, `src/decode.bend`,
-…) are the model the checked proofs are about; they are not in the measured
-program (see "Emitted C" below).
+The object is kept live until after the measurement (`keep_obj`), so nothing
+that decode allocated can be collected before the peak is taken.
 
-**The proofs do not cover the compact path.** See "What is not established".
+The list-based modules (`src/model.bend`, `src/packed.bend`, `src/cvalue.bend`,
+`src/decode.bend`, ...) are the model the checked `END_TO_END` proofs are about;
+they are not in the measured program (see "Emitted C" below).
+
+**The universal proofs do not cover the generated object codec.** See "What is
+not established".
 
 ## What is measured, and how
 
@@ -42,12 +51,14 @@ read file → decode → `hash_tree_root` → serialize → write.
     the input never exists as a whole byte list, and the last byte is read
     before the baseline marker so the buffer is complete when the baseline is
     taken;
-  - decode: validates the whole `BeaconState` in place. The decoded value is
-    the validated buffer (a zero-copy view), the verdict is matched on inside
-    the measured window, and a rejected input exits nonzero;
-  - root: runs over the same buffer;
-  - serialize: streams the view's bytes to the output file in 64 KiB pieces,
-    and its time includes the writes.
+  - decode: the generated validator runs over the whole `BeaconState` window
+    and the generated reader then builds the typed owning object, copying its
+    storage out of the input buffer. The verdict is matched on inside the
+    measured window, a rejected input exits nonzero, and the object is kept
+    live past the peak measurement;
+  - root: `BeaconState_hash_tree_root` of that object;
+  - serialize: `BeaconState_encode` produces fresh canonical bytes, streamed
+    to the output file in 64 KiB pieces, and its time includes the writes.
 
 Every phase boundary is also an exit point (`SSZ_PHASES=input|decode|root|all`).
 A phase's peak comes from a **separate process that performs exactly the prefix
@@ -90,34 +101,42 @@ with pinned fastssz / go-eth2-client. Raw report:
 
 | fixture | input bytes | Bend baseline | Bend decode peak | **Bend decode overhead** | worst sample | Go baseline | Go decode peak | Go decode overhead |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| case_0 | 2,740,473 | 7,274,496 | 7,323,648 | **49,152** | 409,600 | 8,028,160 | 11,436,032 | 3,375,104 |
-| case_1 | 2,740,934 | 7,274,496 | 7,290,880 | **49,152** | 49,152 | 8,241,152 | 11,616,256 | 3,358,720 |
-| case_2 | 2,741,095 | 7,307,264 | 7,307,264 | **16,384** | 49,152 | 8,028,160 | 11,403,264 | 3,375,104 |
-| case_3 | 2,739,794 | 7,340,032 | 7,356,416 | **49,152** | 81,920 | 8,257,536 | 11,632,640 | 3,391,488 |
-| case_4 | 2,738,771 | 7,307,264 | 7,389,184 | **49,152** | 81,920 | 8,257,536 | 11,599,872 | 3,375,104 |
+| case_0 | 2,740,473 | 7,159,808 | 12,943,360 | **5,783,552** | 5,832,704 | 8,404,992 | 11,763,712 | 3,358,720 |
+| case_1 | 2,740,934 | 7,225,344 | 12,943,360 | **5,718,016** | 5,718,016 | 8,241,152 | 11,649,024 | 3,407,872 |
+| case_2 | 2,741,095 | 7,274,496 | 12,959,744 | **5,685,248** | 5,865,472 | 8,142,848 | 11,665,408 | 3,424,256 |
+| case_3 | 2,739,794 | 7,274,496 | 12,943,360 | **5,718,016** | 5,750,784 | 8,388,608 | 11,730,944 | 3,309,568 |
+| case_4 | 2,738,771 | 7,208,960 | 12,992,512 | **5,718,016** | 5,914,624 | 8,388,608 | 11,747,328 | 3,358,720 |
 
-Worst Bend sample: **409,600 bytes**, 1.3 % of the 32,000,000-byte limit; all
-15 Bend and 15 Go samples are `verified`. The other 14 Bend samples are
-0-81,920 bytes. In the worst sample (case_0, repeat 0), the stop-after-decode
-process peaked at 7,716,864 bytes, while the same repeat's stop-after-root
-process, which does strictly more work, peaked at 7,471,104. So the extra
-~0.25 MB is page-residency variation of that one process, not decode work. It is
-reported as measured anyway. The sampler cross-check held: at most 1.046 ×
-the kernel decode peak, against the harness's 1.05 limit. Go's decode overhead
-is 3.1-3.6 MB, because Go copies the byte fields into its struct.
+Worst Bend sample: **5,914,624 bytes**, 18.5 % of the 32,000,000-byte
+limit; all 15 Bend and 15 Go samples are `verified`. Go's worst decode
+overhead on the same fixtures is 3,637,248 bytes, so the remaining ratio is
+about 1.63x Go.
+
+Both sides do the same thing: they copy the byte fields out of the input into
+a typed owning value. Bend's residual excess over Go is the packed storage
+rounding - every `Array<U32>` is a power-of-two block and every packed byte
+range is rounded up to whole 32-byte chunks, so a collection costs up to twice
+its bytes - plus the runtime's own block headers. Neither is reachable from
+the SSZ code: `Array.new` is the only allocation the pinned Base offers and
+its size is 2^d.
+
+The sampler cross-check held on every sample (`monotone_within_decode`, and
+the sampled maximum never above the kernel decode peak). Every output byte was
+compared (`output_bytes_match`), and the root checksums agree between the two
+implementations on every fixture.
 
 Phase peaks from the same run (medians):
 
 | fixture | Bend root-phase peak | Bend serialize-phase peak | Bend whole run | Go root-phase peak | Go serialize-phase peak | Go whole run |
 |---|---:|---:|---:|---:|---:|---:|
-| case_0 | 7,471,104 | 7,864,320 | 7,864,320 | 19,185,664 | 21,921,792 | 21,921,792 |
-| case_1 | 7,438,336 | 7,815,168 | 7,815,168 | 19,365,888 | 22,183,936 | 22,183,936 |
-| case_2 | 7,438,336 | 7,520,256 | 7,520,256 | 19,382,272 | 21,921,792 | 21,921,792 |
-| case_3 | 7,471,104 | 7,979,008 | 7,979,008 | 19,562,496 | 22,167,552 | 22,167,552 |
-| case_4 | 7,503,872 | 7,979,008 | 7,979,008 | 19,382,272 | 21,921,792 | 21,921,792 |
+| case_0 | 13,172,736 | 13,680,640 | 13,680,640 | 19,513,344 | 21,954,560 | 21,954,560 |
+| case_1 | 13,139,968 | 13,959,168 | 13,959,168 | 19,005,440 | 21,741,568 | 21,741,568 |
+| case_2 | 13,189,120 | 13,746,176 | 13,746,176 | 19,415,040 | 21,905,408 | 21,905,408 |
+| case_3 | 13,205,504 | 14,516,224 | 14,516,224 | 21,741,568 | 22,216,704 | 22,216,704 |
+| case_4 | 13,123,584 | 13,484,032 | 13,484,032 | 19,595,264 | 22,200,320 | 22,200,320 |
 
 The whole Bend process, including input, decode, hashing, serialization and
-output, peaks at 7.5-8.1 MB over all 15 samples, against 21.8-24.4 MB for Go.
+output, peaks at 13.5-15.3 MB over all 15 samples, against 21.5-24.4 MB for Go.
 For history: the list-based Bend path peaked at about 97 MB with a 12.7-13.0 MB
 decode overhead. The whole-run peak is not the decode peak; both are listed.
 
@@ -183,17 +202,24 @@ compressed copy in evidence):
 
 ## What is not established
 
-* **Proofs of the compact path.** No checked law covers `src/buffer`,
-  `cschema`, `cscan`, `access`, `croot`, `merkle_fast`, `digest` or `api`, nor
-  the packed-input → FIPS SHA bridge. `docs/COMPACT_PROOF_PLAN.md` lays out the
-  work. The checked roots (`PROOF.bend`, `END_TO_END.bend`, `ROOT_DOMAIN.bend`:
-  5.00–5.28 GB, logs in `benchmarks/evidence/check_*.log`) are about the
-  list-based model API.
-* **Coverage limits of the compact schema beyond the official cases.**
-  Progressive containers are limited to 31 active positions, refused
-  explicitly beyond that. Compatible-union option compatibility
-  (`spec/compatibility.bend`) is not re-derived by the generator. The official
-  cases pass, but that is finite evidence, not unrestricted semantics.
+* **Universal codec proofs of the generated object path.** No checked law
+  states that the generated validator accepts exactly the canonical encodings,
+  or that the generated reader/encoder round-trip, for `types/fulu_obj.bend`
+  and `types/generic_obj.bend`. What is checked is: the mutation, collection,
+  cache and cost laws of `proofs/obj/*.bend`; the universal soundness proof of
+  the compact window scanner (`proofs/compact/sound.bend`); and the model-API
+  laws of `PROOF.bend` / `END_TO_END.bend` / `ROOT_DOMAIN.bend` (logs in
+  `benchmarks/evidence/check_*.log`). The packed-input → FIPS SHA bridge is
+  also still open. `docs/COMPACT_PROOF_PLAN.md` lays out the work; it is the
+  largest remaining obligation and is not claimed as done anywhere.
+* **Coverage limits beyond the official cases.** Progressive containers are
+  limited to 31 active positions and refused explicitly beyond that
+  (`codegen/generic.py`). Eight of the 144 official generic schema
+  descriptions are refused as not SSZ types (zero-length vectors and bit
+  vectors); every official case for them is an invalid case. Compatible-union
+  option compatibility (`spec/compatibility.bend`) is not re-derived by the
+  generator. All 5,440 official cases pass through the generated object API,
+  but that is finite evidence, not unrestricted semantics.
 * ru_maxrss measures resident pages, not allocator accounting; the Bend runtime
   exposes no heap counter, and patching the compiler or emitted C to add one is
   out of scope. Three samples per fixture per implementation on one shared

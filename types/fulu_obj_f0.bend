@@ -10,6 +10,7 @@ type Any is Type:
   A_uint8{v: U32}
   A_uint32{v: U32}
   A_uint64{v: O.U64}
+  A_boxed{v: Any}
 
 def wrap_boolean(m: Maybe<&1, Bool>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -67,24 +68,37 @@ def root_uint64(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_uint64{v}, d))
 def force_uint64(+v: O.U64) -> Any & U32: (A_uint64{v}, T.u64_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_boolean{+v}: enc_boolean(v)
     case A_uint8{+v}: enc_uint8(v)
     case A_uint32{+v}: enc_uint32(v)
     case A_uint64{+v}: enc_uint64(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_boolean{+v}: root_boolean(v, T.boolean_hash_tree_root(h, v))
     case A_uint8{+v}: root_uint8(v, T.uint8_hash_tree_root(h, v))
     case A_uint32{+v}: root_uint32(v, T.uint32_hash_tree_root(h, v))
     case A_uint64{+v}: root_uint64(v, T.uint64_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_boolean{+v}: force_boolean(v)
     case A_uint8{+v}: force_uint8(v)
     case A_uint32{+v}: force_uint32(v)
     case A_uint64{+v}: force_uint64(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -117,9 +131,13 @@ def fuzz_uint64_fin(pr: O.U64 & Bool) -> Any & Bool:
   (A_uint64{v}, ok)
 def fuzz_uint64(+sel: U32, +a: U32, +b: U32, +v: O.U64) -> Any & Bool:
   fuzz_uint64_fin(T.uint64_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_boolean{+v}: fuzz_boolean(sel, a, b, v)
     case A_uint8{+v}: fuzz_uint8(sel, a, b, v)
     case A_uint32{+v}: fuzz_uint32(sel, a, b, v)
     case A_uint64{+v}: fuzz_uint64(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

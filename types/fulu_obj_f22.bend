@@ -10,6 +10,7 @@ type Any is Type:
   A_LightClientUpdate{v: T.LightClientUpdate}
   A_LightClientBootstrap{v: T.LightClientBootstrap}
   A_BlobIndex{v: O.U64}
+  A_boxed{v: Any}
 
 def wrap_LightClientFinalityUpdate(m: Maybe<&1, T.LightClientFinalityUpdate>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -82,24 +83,37 @@ def root_BlobIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest
   (h, d) = pair
   (h, (A_BlobIndex{v}, d))
 def force_BlobIndex(+v: O.U64) -> Any & U32: (A_BlobIndex{v}, T.u64_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_LightClientFinalityUpdate{v}: enc_LightClientFinalityUpdate(T.LightClientFinalityUpdate_encode(v))
     case A_LightClientUpdate{v}: enc_LightClientUpdate(T.LightClientUpdate_encode(v))
     case A_LightClientBootstrap{v}: enc_LightClientBootstrap(T.LightClientBootstrap_encode(v))
     case A_BlobIndex{+v}: enc_BlobIndex(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_LightClientFinalityUpdate{v}: root_LightClientFinalityUpdate(T.LightClientFinalityUpdate_hash_tree_root(h, v))
     case A_LightClientUpdate{v}: root_LightClientUpdate(T.LightClientUpdate_hash_tree_root(h, v))
     case A_LightClientBootstrap{v}: root_LightClientBootstrap(T.LightClientBootstrap_hash_tree_root(h, v))
     case A_BlobIndex{+v}: root_BlobIndex(v, T.BlobIndex_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_LightClientFinalityUpdate{v}: force_LightClientFinalityUpdate(T.LightClientFinalityUpdate_force(v))
     case A_LightClientUpdate{v}: force_LightClientUpdate(T.LightClientUpdate_force(v))
     case A_LightClientBootstrap{v}: force_LightClientBootstrap(T.LightClientBootstrap_force(v))
     case A_BlobIndex{+v}: force_BlobIndex(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -132,9 +146,13 @@ def fuzz_BlobIndex_fin(pr: O.U64 & Bool) -> Any & Bool:
   (A_BlobIndex{v}, ok)
 def fuzz_BlobIndex(+sel: U32, +a: U32, +b: U32, +v: O.U64) -> Any & Bool:
   fuzz_BlobIndex_fin(T.BlobIndex_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_LightClientFinalityUpdate{v}: fuzz_LightClientFinalityUpdate(sel, a, b, v)
     case A_LightClientUpdate{v}: fuzz_LightClientUpdate(sel, a, b, v)
     case A_LightClientBootstrap{v}: fuzz_LightClientBootstrap(sel, a, b, v)
     case A_BlobIndex{+v}: fuzz_BlobIndex(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

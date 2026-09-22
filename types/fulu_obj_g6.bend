@@ -18,6 +18,7 @@ type Any is Type:
   A_WithdrawalIndex{v: O.U64}
   A_Withdrawal{v: T.Withdrawal}
   A_ExecutionPayload{v: T.ExecutionPayload}
+  A_boxed{v: Any}
 
 def wrap_Transaction(m: Maybe<&1, O.Words>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -199,6 +200,16 @@ def root_ExecutionPayload(pair: B.Buf & (T.ExecutionPayload & D.Digest)) -> B.Bu
 def force_ExecutionPayload(pair: T.ExecutionPayload & U32) -> Any & U32:
   (v, +x) = pair
   (A_ExecutionPayload{v}, x)
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_Transaction{v}: enc_Transaction(T.Transaction_encode(v))
@@ -213,6 +224,7 @@ def encode(a: Any) -> Any & B.Buf:
     case A_WithdrawalIndex{+v}: enc_WithdrawalIndex(v)
     case A_Withdrawal{+v}: enc_Withdrawal(v)
     case A_ExecutionPayload{v}: enc_ExecutionPayload(T.ExecutionPayload_encode(v))
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_Transaction{v}: root_Transaction(T.Transaction_hash_tree_root(h, v))
@@ -227,6 +239,7 @@ def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
     case A_WithdrawalIndex{+v}: root_WithdrawalIndex(v, T.WithdrawalIndex_hash_tree_root(h, v))
     case A_Withdrawal{+v}: root_Withdrawal(v, T.Withdrawal_hash_tree_root(h, v))
     case A_ExecutionPayload{v}: root_ExecutionPayload(T.ExecutionPayload_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_Transaction{v}: force_Transaction(T.bl1073741824_force(v))
@@ -241,6 +254,7 @@ def force(a: Any) -> Any & U32:
     case A_WithdrawalIndex{+v}: force_WithdrawalIndex(v)
     case A_Withdrawal{+v}: force_Withdrawal(v)
     case A_ExecutionPayload{v}: force_ExecutionPayload(T.ExecutionPayload_force(v))
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

@@ -18,6 +18,7 @@ type Any is Type:
   A_DataColumnsByRootIdentifier{v: T.DataColumnsByRootIdentifier}
   A_MatrixEntry{v: T.MatrixEntry}
   A_DataColumnSidecar{v: T.DataColumnSidecar}
+  A_boxed{v: Any}
 
 def wrap_SignedBeaconBlock(m: Maybe<&1, T.SignedBeaconBlock>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -214,6 +215,16 @@ def root_DataColumnSidecar(pair: B.Buf & (T.DataColumnSidecar & D.Digest)) -> B.
 def force_DataColumnSidecar(pair: T.DataColumnSidecar & U32) -> Any & U32:
   (v, +x) = pair
   (A_DataColumnSidecar{v}, x)
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_SignedBeaconBlock{v}: enc_SignedBeaconBlock(T.SignedBeaconBlock_encode(v))
@@ -228,6 +239,7 @@ def encode(a: Any) -> Any & B.Buf:
     case A_DataColumnsByRootIdentifier{v}: enc_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier_encode(v))
     case A_MatrixEntry{v}: enc_MatrixEntry(T.MatrixEntry_encode(v))
     case A_DataColumnSidecar{v}: enc_DataColumnSidecar(T.DataColumnSidecar_encode(v))
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_SignedBeaconBlock{v}: root_SignedBeaconBlock(T.SignedBeaconBlock_hash_tree_root(h, v))
@@ -242,6 +254,7 @@ def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
     case A_DataColumnsByRootIdentifier{v}: root_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier_hash_tree_root(h, v))
     case A_MatrixEntry{v}: root_MatrixEntry(T.MatrixEntry_hash_tree_root(h, v))
     case A_DataColumnSidecar{v}: root_DataColumnSidecar(T.DataColumnSidecar_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_SignedBeaconBlock{v}: force_SignedBeaconBlock(T.SignedBeaconBlock_force(v))
@@ -256,6 +269,7 @@ def force(a: Any) -> Any & U32:
     case A_DataColumnsByRootIdentifier{v}: force_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier_force(v))
     case A_MatrixEntry{v}: force_MatrixEntry(T.MatrixEntry_force(v))
     case A_DataColumnSidecar{v}: force_DataColumnSidecar(T.DataColumnSidecar_force(v))
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

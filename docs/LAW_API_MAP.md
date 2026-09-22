@@ -1,49 +1,38 @@
 # Old-to-new law and API map (array-indexed migration)
 
-Status of this document: **design of record, not yet implemented.** Nothing in
-`src/` has been migrated to array storage at the time of writing. The map below
-is written first, as the orchestrator requires, so that every translation can be
-inspected for non-weakening *before* the representation changes. Rows are marked
-`planned` where the new form does not exist yet; none are marked `done`.
+Status, 2026-09-21 (iteration 17). **No `END_TO_END` or `ROOT_DOMAIN`
+proposition has been changed.** `docs/LAW_MIGRATION.json` - the file the frozen
+gate `automation/native_memory_acceptance.py` reads - therefore records every
+original law as its own counterpart, with the equivalence argument being
+identity. That is the honest state: the array/object migration happened in the
+*runtime*, and the universal laws still speak about the list-based model API
+that `src/model.bend` provides.
 
-Update, 2026-09-21: the starting point for the migration is now a *checked*
-base. `bend PROOF.bend` and `bend END_TO_END.bend` check with zero unsafe
-annotations (5.1-5.7 GB of physical footprint each, varying between runs), and both frozen gates
-(`automation/root_domain_acceptance.py`, `automation/native_memory_acceptance.py`)
-exit 0, which also means the 29 END_TO_END propositions in section 2 below are
-currently proved in their original form. Every row in this map is therefore a
-change to a proposition that is presently checked, and the non-weakening
-argument for each has to be read against that, not against a broken base. See
-WORK_LOG.md for the measurements and for the two normalization blow-ups
-(exported case-split laws, and a literal depth in the root-domain witness) that
-had to be repaired to get there - both are worth knowing before writing the
-array development, because the same two mistakes are easy to repeat in an
-index-arithmetic proof.
+What that means concretely:
 
-Update, 2026-09-21 (later the same day): the **runtime** side of the migration
-now exists and is the primary API, but the **proof** side does not. Every row
-below that says `planned` is still planned as a proposition.
+* the 29 `END_TO_END` and 13 `ROOT_DOMAIN` propositions are byte-for-byte the
+  frozen ones and are checked (`benchmarks/evidence/check_*.log`);
+* the production runtime is the generated typed owning object API
+  (`types/fulu_obj.bend`, `types/generic_obj.bend`), which carries checked
+  mutation/collection/cache/cost laws (`proofs/obj/*.bend`) and native evidence
+  for all 5,440 official cases. Since 2026-09-22 it also carries **codec
+  correctness laws on one stated class**: `proofs/obj/codec_*.bend` and
+  `proofs/obj/gcodec_0.bend` hold, for every name whose encoding is a whole
+  number of words at word-aligned positions (67 of the 109 Fulu names and 5 of
+  the generic schemas), that decoding an encoding returns the object, that the
+  encoding has the type's fixed size, and that a buffer one byte short or one
+  byte long is rejected - stated over free word variables, so over every object
+  of the type, and proved by computation against `T.<name>_encode` and
+  `T.<name>_decode` themselves. The remaining names (sub-word leaves, variable
+  size) have **no codec-correctness law yet**: those equations are not
+  definitional and need the bit lemmas and the offset development;
+* `src/model.bend` is kept precisely because the frozen propositions are about
+  it. Deleting it would delete checked coverage, which the operator instruction
+  forbids until equivalent generated laws exist.
 
-* Implemented and measured: packed input storage (`src/buffer.bend`,
-  `Array<U32>`); the compact schema (`src/cschema.bend`, generated
-  `types/fulu_cschema.bend`); in-place validating decode (`src/cscan.bend`);
-  streaming merkleization and the root walker (`src/merkle_fast.bend`,
-  `src/croot.bend`) over the pinned BendHub SHA-256 package; views, field and
-  element access, and encode to packed bytes (`src/access.bend`); and the
-  dispatcher `src/api.bend`. No linked list is used for storage, schemas,
-  decoded values, encode output, chunks or Merkle scratch. Lists remain only at
-  Base's file-I/O boundary (64 KiB pieces), in the spec-facing `D.bytes` view,
-  and in the legacy modules the existing proofs are about.
-* Evidence (not proof): all 295 official `ssz_static` cases give the exact
-  32-byte root through the compact API; 1,180 malformed variants agree with an
-  independent validator; differential roots against the proved `src/root.bend`
-  and `src/tree.bend` agree; the five BeaconState fixtures round-trip byte for
-  byte. See WORK_LOG.md and MEMORY_REVIEW.md.
-* Not done: no law in section 2 has been restated over the compact modules,
-  and there are no representation bridges (`store_denotation`, `store_index`)
-  and no packed-input → FIPS SHA bridge. The 29 END_TO_END propositions are
-  unchanged and are still proved only about the legacy list API.
-  `docs/LAW_MIGRATION.json` accordingly records every law as unchanged.
+The rest of this document is the design of record for the translation that is
+still to be carried out. Rows marked `planned` are still planned. Nothing below
+is presented as done.
 
 ## 0. What the pinned runtime actually offers (measured, not assumed)
 

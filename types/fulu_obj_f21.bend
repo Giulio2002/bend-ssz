@@ -10,6 +10,7 @@ type Any is Type:
   A_ExecutionBranch{v: O.Words}
   A_LightClientHeader{v: T.LightClientHeader}
   A_LightClientOptimisticUpdate{v: T.LightClientOptimisticUpdate}
+  A_boxed{v: Any}
 
 def wrap_BeaconState(m: Maybe<&1, T.BeaconState>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -87,24 +88,37 @@ def root_LightClientOptimisticUpdate(pair: B.Buf & (T.LightClientOptimisticUpdat
 def force_LightClientOptimisticUpdate(pair: T.LightClientOptimisticUpdate & U32) -> Any & U32:
   (v, +x) = pair
   (A_LightClientOptimisticUpdate{v}, x)
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_BeaconState{v}: enc_BeaconState(T.BeaconState_encode(v))
     case A_ExecutionBranch{v}: enc_ExecutionBranch(T.ExecutionBranch_encode(v))
     case A_LightClientHeader{v}: enc_LightClientHeader(T.LightClientHeader_encode(v))
     case A_LightClientOptimisticUpdate{v}: enc_LightClientOptimisticUpdate(T.LightClientOptimisticUpdate_encode(v))
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_BeaconState{v}: root_BeaconState(T.BeaconState_hash_tree_root(h, v))
     case A_ExecutionBranch{v}: root_ExecutionBranch(T.ExecutionBranch_hash_tree_root(h, v))
     case A_LightClientHeader{v}: root_LightClientHeader(T.LightClientHeader_hash_tree_root(h, v))
     case A_LightClientOptimisticUpdate{v}: root_LightClientOptimisticUpdate(T.LightClientOptimisticUpdate_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_BeaconState{v}: force_BeaconState(T.BeaconState_force(v))
     case A_ExecutionBranch{v}: force_ExecutionBranch(T.v4_b32_force(v))
     case A_LightClientHeader{v}: force_LightClientHeader(T.LightClientHeader_force(v))
     case A_LightClientOptimisticUpdate{v}: force_LightClientOptimisticUpdate(T.LightClientOptimisticUpdate_force(v))
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -137,9 +151,13 @@ def fuzz_LightClientOptimisticUpdate_fin(pr: T.LightClientOptimisticUpdate & Boo
   (A_LightClientOptimisticUpdate{v}, ok)
 def fuzz_LightClientOptimisticUpdate(+sel: U32, +a: U32, +b: U32, v: T.LightClientOptimisticUpdate) -> Any & Bool:
   fuzz_LightClientOptimisticUpdate_fin(T.LightClientOptimisticUpdate_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_BeaconState{v}: fuzz_BeaconState(sel, a, b, v)
     case A_ExecutionBranch{v}: fuzz_ExecutionBranch(sel, a, b, v)
     case A_LightClientHeader{v}: fuzz_LightClientHeader(sel, a, b, v)
     case A_LightClientOptimisticUpdate{v}: fuzz_LightClientOptimisticUpdate(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

@@ -18,6 +18,7 @@ type Any is Type:
   A_KZGCommitment{v: T.Bytes48}
   A_BeaconBlockBody{v: T.BeaconBlockBody}
   A_BeaconBlock{v: T.BeaconBlock}
+  A_boxed{v: Any}
 
 def wrap_BeaconState(m: Maybe<&1, T.BeaconState>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -224,6 +225,16 @@ def root_BeaconBlock(pair: B.Buf & (T.BeaconBlock & D.Digest)) -> B.Buf & (Any &
 def force_BeaconBlock(pair: T.BeaconBlock & U32) -> Any & U32:
   (v, +x) = pair
   (A_BeaconBlock{v}, x)
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_BeaconState{v}: enc_BeaconState(T.BeaconState_encode(v))
@@ -238,6 +249,7 @@ def encode(a: Any) -> Any & B.Buf:
     case A_KZGCommitment{+v}: enc_KZGCommitment(v)
     case A_BeaconBlockBody{v}: enc_BeaconBlockBody(T.BeaconBlockBody_encode(v))
     case A_BeaconBlock{v}: enc_BeaconBlock(T.BeaconBlock_encode(v))
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_BeaconState{v}: root_BeaconState(T.BeaconState_hash_tree_root(h, v))
@@ -252,6 +264,7 @@ def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
     case A_KZGCommitment{+v}: root_KZGCommitment(v, T.KZGCommitment_hash_tree_root(h, v))
     case A_BeaconBlockBody{v}: root_BeaconBlockBody(T.BeaconBlockBody_hash_tree_root(h, v))
     case A_BeaconBlock{v}: root_BeaconBlock(T.BeaconBlock_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_BeaconState{v}: force_BeaconState(T.BeaconState_force(v))
@@ -266,6 +279,7 @@ def force(a: Any) -> Any & U32:
     case A_KZGCommitment{+v}: force_KZGCommitment(v)
     case A_BeaconBlockBody{v}: force_BeaconBlockBody(T.BeaconBlockBody_force(v))
     case A_BeaconBlock{v}: force_BeaconBlock(T.BeaconBlock_force(v))
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

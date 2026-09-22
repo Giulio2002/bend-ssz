@@ -8,6 +8,16 @@ object codec is compared with something that does not share its code.
     from codegen import oracle; v = oracle.parse(ty, data); oracle.root(ty, v)
 """
 import hashlib
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from schema import Ty  # noqa: E402
+
+
+def Ty_list(e):
+    """A progressive list validates exactly like an unbounded list."""
+    return Ty('list', 1 << 64, e)
 
 
 def h(a, b):
@@ -37,6 +47,27 @@ def merkleize(leaves, limit_chunks):
 
 def mix(root, n):
     return h(root, n.to_bytes(32, 'little'))
+
+
+def prog_merkleize(leaves):
+    """The progressive Merkle tree: chunk i lives in segment k, which holds
+    4^k chunks starting at (4^k - 1)/3; each segment is a binary tree of depth
+    2k, and the segment roots are folded right to left into
+    H(...H(H(zero, T(K)), T(K-1))..., T(0)).  Written from the specification;
+    the generated code constant-folds the same shape."""
+    zero = b'\0' * 32
+    if not leaves:
+        return zero
+    segs, k, start = [], 0, 0
+    while start < len(leaves):
+        cap = 1 << (2 * k)
+        segs.append((k, leaves[start:start + cap], cap))
+        start += cap
+        k += 1
+    acc = zero
+    for k, part, cap in reversed(segs):
+        acc = h(acc, merkleize(part, cap))
+    return acc
 
 
 def fixed_size(t):
@@ -107,7 +138,24 @@ def parse(t, b):
                 raise ValueError('offsets')
             out.append(parse(e, b[offs[i]:offs[i + 1]]))
         return out
-    if k == 'container':
+    if k == 'plist':
+        e = t.elem
+        return parse(Ty_list(e), b)
+    if k == 'pbits':
+        if not b or b[-1] == 0:
+            raise ValueError('bitlist delimiter')
+        top = b[-1].bit_length() - 1
+        n = 8 * (len(b) - 1) + top
+        return [(b[i // 8] >> (i % 8)) & 1 for i in range(n)]
+    if k == 'cunion':
+        if not b:
+            raise ValueError('empty union')
+        sel = b[0]
+        if sel not in t.selectors:
+            raise ValueError('selector')
+        i = list(t.selectors).index(sel)
+        return {'selector': sel, 'value': parse(t.fields[i][1], b[1:])}
+    if k in ('container', 'pcontainer'):
         fixed = sum(ft.header() for _, ft in t.fields)
         if len(b) < fixed:
             raise ValueError('short container')
@@ -151,7 +199,17 @@ def serialize(t, v):
                 out[i // 8] |= 1 << (i % 8)
         out[len(v) // 8] |= 1 << (len(v) % 8)
         return bytes(out)
-    if k in ('vector', 'list'):
+    if k == 'pbits':
+        out = bytearray(len(v) // 8 + 1)
+        for i, bit in enumerate(v):
+            if bit:
+                out[i // 8] |= 1 << (i % 8)
+        out[len(v) // 8] |= 1 << (len(v) % 8)
+        return bytes(out)
+    if k == 'cunion':
+        i = list(t.selectors).index(v['selector'])
+        return bytes([v['selector']]) + serialize(t.fields[i][1], v['value'])
+    if k in ('vector', 'list', 'plist'):
         e = t.elem
         if e.fixed():
             return b''.join(serialize(e, x) for x in v)
@@ -162,7 +220,7 @@ def serialize(t, v):
             head += off.to_bytes(4, 'little')
             off += len(p)
         return head + b''.join(parts)
-    if k == 'container':
+    if k in ('container', 'pcontainer'):
         fixed = sum(ft.header() for _, ft in t.fields)
         head, body, off = b'', b'', fixed
         for f, ft in t.fields:
@@ -204,4 +262,34 @@ def root(t, v):
         return mix(r, len(v)) if k == 'list' else r
     if k == 'container':
         return merkleize([root(ft, v[f]) for f, ft in t.fields], len(t.fields))
+    if k == 'pbits':
+        packed = bytearray((len(v) + 7) // 8)
+        for i, bit in enumerate(v):
+            if bit:
+                packed[i // 8] |= 1 << (i % 8)
+        return mix(prog_merkleize(chunks(bytes(packed)) if packed else []), len(v))
+    if k == 'plist':
+        e = t.elem
+        if e.kind in ('bool', 'uint'):
+            data = b''.join(serialize(e, x) for x in v)
+            leaves = chunks(data) if data else []
+        else:
+            leaves = [root(e, x) for x in v]
+        return mix(prog_merkleize(leaves), len(v))
+    if k == 'pcontainer':
+        vals = {f: ft for f, ft in t.fields}
+        order = [f for f, _ in t.fields]
+        leaves, j = [], 0
+        for bit in t.active:
+            if bit:
+                f = order[j]
+                leaves.append(root(vals[f], v[f]))
+                j += 1
+            else:
+                leaves.append(b'\0' * 32)
+        mask = sum(1 << i for i, bit in enumerate(t.active) if bit)
+        return mix(prog_merkleize(leaves), mask)
+    if k == 'cunion':
+        i = list(t.selectors).index(v['selector'])
+        return mix(root(t.fields[i][1], v['value']), v['selector'])
     raise ValueError('kind ' + k)

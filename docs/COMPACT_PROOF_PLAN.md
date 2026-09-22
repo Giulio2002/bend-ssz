@@ -1,14 +1,47 @@
-# Proof plan for the compact primary path (not yet carried out)
+# Proof plan for the generated production codec
 
-Status, 2026-09-21: **no checked proof covers the compact modules** (`src/buffer`,
-`cschema`, `cscan`, `access`, `croot`, `merkle_fast`, `digest`, `api`, the
-compact half of `ssz`). Their evidence is native testing: all 5,440 official
-cases, 1,180 mutation checks against an independent validator, differential
-roots against the proved list-based modules, and the fixture round trips
-(WORK_LOG.md). This file records what the proofs have to establish, in the
-order they depend on each other, so the work can start without re-planning.
-Every item must be a checked Bend law with no unsafe annotation, axiom or hole,
-checked one process at a time under the 8 GB ceiling.
+Status, 2026-09-21 (iteration 17). The production SSZ path is the **generated
+typed owning object API** (`types/fulu_obj.bend` for the 109 Fulu names,
+`types/generic_obj.bend` for the supported generic forms; see
+docs/CODEGEN.md). What is checked about it today:
+
+* `proofs/obj/fields_*.bend`, `collections_*.bend`, `seq_elem.bend`: field
+  read-after-write, unrelated fields unchanged, overwrite, checked-write
+  accept/reject, swap, element read-after-write, rejected write/append leaves
+  the value unchanged, accepted write keeps the length, accepted append
+  increases it by one. Stated over an object built from variables, so they hold
+  for every object of the type, including the ones `X_decode` returns.
+* `proofs/obj/cache.bend`: the cached element-root tree agrees with the
+  uncached root after updates and appends.
+* `proofs/obj/cost.bend`: the cost model of the generated loops.
+* `proofs/compact/*.bend`: a **universal** soundness proof of the compact
+  window scanner (`src/cscan.bend`) - an accepted window satisfies the
+  byte-level specification `V.CVm`, for every schema, frame, fuel and buffer.
+  That scanner is no longer on the production path; the proof is kept because
+  its layers (array facts, buffer denotation, word reads, the machine-level
+  specification and its monotonicity) are exactly the reusable foundation the
+  generated validator's proof needs.
+
+What is **not** checked, and is the open obligation:
+
+1. `X_ok(buf, off, len) == True` iff the window is a canonical SSZ encoding of
+   `X` - soundness, completeness and rejection, for every generated name.
+2. `X_read` of an accepted window is the value that encoding denotes.
+3. `X_encode(X_read(w)) == w` byte for byte, and `X_read(X_encode(o))` is `o`
+   up to non-semantic cache/capacity content.
+4. `X_hash_tree_root` equals the independent specification root.
+5. The packed-bytes → FIPS byte-list SHA bridge (section 3 below): the
+   dependency proves its runtime equal to its own packed specification, not
+   equal to FIPS on the unpacked bytes.
+
+The route is the one below: the foundations in section 0 are shared with
+`proofs/compact/found.bend`, `buf.bend`, `bits.bend` and `reads.bend`, which
+already check; the per-constructor obligations of sections 1-4 have to be
+restated for the *generated* `_ok`/`_read`/`_put`/`_root` families, which the
+generator can emit compositionally because each family is built from the same
+handful of shapes.
+
+---
 
 ## 0. Foundations Base does not provide
 

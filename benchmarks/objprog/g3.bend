@@ -19,7 +19,7 @@ def word_of(pair: B.Buf & U32) -> U32:
 
 def sized_word(pair: B.Buf & U32) -> U32:
   (b, +n) = pair
-  word_of(B.word(b, U32.shrn(n, 2n)))
+  word_of(B.word(b, O.pick(U32.is_eq(n, 0), 0, (U32.shrn((n + 3 : U32), 2n) - 1 : U32))))
 
 # Consumes an encoding by reading its last word.
 def consume(out: B.Buf) -> U32: sized_word(B.size(out))
@@ -53,7 +53,8 @@ def dec_report(+ops: U32, +t0: Nat, pair: B.Buf & (U32 & U32)) -> IO(Unit):
 def run_dec(+i: U32, +ops: U32, +size: U32, buf: B.Buf) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    dec_report(ops, t0, dloop(U32.to_nat((ops - 1 : U32)), i, size, 0, 0, G.decode_force(i, buf, size)))
+    dec_report(ops, t0, dloop(U32.to_nat((ops - 1 : U32)), i, size, 0, 0,
+      G.decode_force(i, buf, size)))
 
 def eloop(+k: Nat, +acc: U32, pair: G.Any & B.Buf) -> G.Any & (U32 & B.Buf):
   match k:

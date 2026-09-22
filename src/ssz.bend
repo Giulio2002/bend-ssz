@@ -6,68 +6,22 @@ import ./codec.bend as Codec
 import ./decode.bend as Decode
 import ./root.bend as Root
 import ./model.bend as Model
-import ./buffer.bend as Buf
-import ./cschema.bend as CS
-import ./api.bend as Compact
-import ./access.bend as Access
-import ./digest.bend as Digest
 
-# ---------------------------------------------------------------------------
-# Primary API: packed buffers and compact values.
+# The list-based SSZ model, re-exported from src/model.bend.
 #
-# Input is a `Buf.Buf`, packed bytes four to a word, owned by the caller: every
-# operation takes it and hands it back with its result, and nothing is copied
-# out of it. A decoded value is an `Access.View` - a window of that buffer that
-# validated against its schema - and it stays meaningful for as long as the
-# caller keeps the buffer. Schemas are compact `CS.CS` trees; the 109 Fulu
-# names are generated in types/fulu_cschema.bend (see also types/fulu.bend).
+# This is NOT the production SSZ API. The production API is the generated typed
+# owning object API: types/fulu_obj.bend for the 109 mainnet Fulu names and
+# types/generic_obj.bend for the supported generic SSZ forms, both emitted by
+# codegen/generate.py (see docs/CODEGEN.md). Packed buffers in, typed owning
+# objects out, fresh packed bytes and 32-byte roots back.
 #
-#   decode(schema, size, buf)       validate [0, size); Some(view) or None
-#   decode_in(schema, off, len, buf) the same for any window
-#   encode(view, buf)               the value's encoding as a fresh packed Buf
-#   root(schema, view, buf)         hash_tree_root, streamed from the buffer
-#   field / field_schema / count / elem / elem_schema / uint64 / boolean / byte
-#                                   access without copying
-#
-# `None` is semantic rejection. Crashes, memory exhaustion and timeouts are not.
-
-def view_if(ok: Bool, +off: U32, +len: U32) -> Maybe<&2, Access.View>:
-  match ok:
-    case True{}: Some{Access.View{off, len}}
-    case False{}: None{}
-
-def decoded(+off: U32, +len: U32, pair: Buf.Buf & Bool) -> Buf.Buf & Maybe<&2, Access.View>:
-  (b, ok) = pair
-  (b, view_if(ok, off, len))
-
-def decode_in(+schema: CS.CS, +off: U32, +len: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>:
-  decoded(off, len, Compact.validate_in(schema, off, len, buf))
-
-def decode(+schema: CS.CS, +size: U32, buf: Buf.Buf) -> Buf.Buf & Maybe<&2, Access.View>:
-  decode_in(schema, 0, size, buf)
-
-def encode(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & Buf.Buf: Access.encode(v, buf)
-
-# Root of a decoded view (it must have validated under `schema`). The root's
-# intermediate digests and zero-subtree table live in the buffer's scratch.
-def root(+schema: CS.CS, +v: Access.View, buf: Buf.Buf) -> Buf.Buf & Digest.Digest:
-  Compact.root_in(schema, Access.view_off(v), Access.view_len(v), buf)
-
-def field(+schema: CS.CS, +i: U32, +v: Access.View, buf: Buf.Buf) -> Buf.Buf & Access.View:
-  Access.field(schema, i, v, buf)
-def field_schema(+schema: CS.CS, +i: U32) -> CS.CS: Access.field_schema(schema, i)
-def count(+schema: CS.CS, +v: Access.View, buf: Buf.Buf) -> Buf.Buf & U32: Access.count(schema, v, buf)
-def elem(+schema: CS.CS, +i: U32, +v: Access.View, buf: Buf.Buf) -> Buf.Buf & Access.View:
-  Access.elem(schema, i, v, buf)
-def elem_schema(schema: CS.CS) -> CS.CS: Access.elem_schema(schema)
-def uint64(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & (U32 & U32): Access.uint64(v, buf)
-def boolean(+v: Access.View, buf: Buf.Buf) -> Buf.Buf & U32: Access.boolean(v, buf)
-def byte(+v: Access.View, +j: U32, buf: Buf.Buf) -> Buf.Buf & U32: Access.byte(v, j, buf)
-
-# ---------------------------------------------------------------------------
-# List-based model API, re-exported from src/model.bend (the definitions the
-# frozen laws are about). Kept for the protected runtime tests and as the
-# model; the compact API above is the primary one.
+# What remains here is the model the 29 frozen END_TO_END propositions are
+# stated about, and the transport the 5,440 official cases run through in
+# tools/spectests.py. It is kept because removing it would delete checked
+# propositions the frozen acceptance gate requires, before equivalent generated
+# laws exist; it is not on any measured path. The compact *view* codec that
+# used to be the primary API here (decode to an Access.View over a packed
+# buffer) was superseded by the object API and has been removed.
 
 def type_valid(schema: T.Schema) -> Bool: Model.type_valid(schema)
 def valid(schema: T.Schema, value: T.Value) -> Bool: Model.valid(schema, value)

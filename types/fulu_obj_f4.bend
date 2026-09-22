@@ -10,6 +10,7 @@ type Any is Type:
   A_DomainType{v: T.Bytes4}
   A_BLSSignature{v: T.Bytes96}
   A_FinalityBranch{v: O.Words}
+  A_boxed{v: Any}
 
 def wrap_Version(m: Maybe<&1, T.Bytes4>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -72,24 +73,37 @@ def root_FinalityBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.
 def force_FinalityBranch(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_FinalityBranch{v}, x)
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_Version{+v}: enc_Version(v)
     case A_DomainType{+v}: enc_DomainType(v)
     case A_BLSSignature{+v}: enc_BLSSignature(v)
     case A_FinalityBranch{v}: enc_FinalityBranch(T.FinalityBranch_encode(v))
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_Version{+v}: root_Version(v, T.Version_hash_tree_root(h, v))
     case A_DomainType{+v}: root_DomainType(v, T.DomainType_hash_tree_root(h, v))
     case A_BLSSignature{+v}: root_BLSSignature(v, T.BLSSignature_hash_tree_root(h, v))
     case A_FinalityBranch{v}: root_FinalityBranch(T.FinalityBranch_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_Version{+v}: force_Version(v)
     case A_DomainType{+v}: force_DomainType(v)
     case A_BLSSignature{+v}: force_BLSSignature(v)
     case A_FinalityBranch{v}: force_FinalityBranch(T.v7_b32_force(v))
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -122,9 +136,13 @@ def fuzz_FinalityBranch_fin(pr: O.Words & Bool) -> Any & Bool:
   (A_FinalityBranch{v}, ok)
 def fuzz_FinalityBranch(+sel: U32, +a: U32, +b: U32, v: O.Words) -> Any & Bool:
   fuzz_FinalityBranch_fin(T.FinalityBranch_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_Version{+v}: fuzz_Version(sel, a, b, v)
     case A_DomainType{+v}: fuzz_DomainType(sel, a, b, v)
     case A_BLSSignature{+v}: fuzz_BLSSignature(sel, a, b, v)
     case A_FinalityBranch{v}: fuzz_FinalityBranch(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

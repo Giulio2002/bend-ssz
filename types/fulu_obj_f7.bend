@@ -10,6 +10,7 @@ type Any is Type:
   A_PendingConsolidation{v: T.PendingConsolidation}
   A_PendingPartialWithdrawal{v: T.PendingPartialWithdrawal}
   A_VoluntaryExit{v: T.VoluntaryExit}
+  A_boxed{v: Any}
 
 def wrap_ValidatorIndex(m: Maybe<&1, O.U64>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -67,24 +68,37 @@ def root_VoluntaryExit(+v: T.VoluntaryExit, pair: B.Buf & D.Digest) -> B.Buf & (
   (h, d) = pair
   (h, (A_VoluntaryExit{v}, d))
 def force_VoluntaryExit(+v: T.VoluntaryExit) -> Any & U32: (A_VoluntaryExit{v}, T.VoluntaryExit_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_ValidatorIndex{+v}: enc_ValidatorIndex(v)
     case A_PendingConsolidation{+v}: enc_PendingConsolidation(v)
     case A_PendingPartialWithdrawal{+v}: enc_PendingPartialWithdrawal(v)
     case A_VoluntaryExit{+v}: enc_VoluntaryExit(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_ValidatorIndex{+v}: root_ValidatorIndex(v, T.ValidatorIndex_hash_tree_root(h, v))
     case A_PendingConsolidation{+v}: root_PendingConsolidation(v, T.PendingConsolidation_hash_tree_root(h, v))
     case A_PendingPartialWithdrawal{+v}: root_PendingPartialWithdrawal(v, T.PendingPartialWithdrawal_hash_tree_root(h, v))
     case A_VoluntaryExit{+v}: root_VoluntaryExit(v, T.VoluntaryExit_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_ValidatorIndex{+v}: force_ValidatorIndex(v)
     case A_PendingConsolidation{+v}: force_PendingConsolidation(v)
     case A_PendingPartialWithdrawal{+v}: force_PendingPartialWithdrawal(v)
     case A_VoluntaryExit{+v}: force_VoluntaryExit(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -117,9 +131,13 @@ def fuzz_VoluntaryExit_fin(pr: T.VoluntaryExit & Bool) -> Any & Bool:
   (A_VoluntaryExit{v}, ok)
 def fuzz_VoluntaryExit(+sel: U32, +a: U32, +b: U32, +v: T.VoluntaryExit) -> Any & Bool:
   fuzz_VoluntaryExit_fin(T.VoluntaryExit_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_ValidatorIndex{+v}: fuzz_ValidatorIndex(sel, a, b, v)
     case A_PendingConsolidation{+v}: fuzz_PendingConsolidation(sel, a, b, v)
     case A_PendingPartialWithdrawal{+v}: fuzz_PendingPartialWithdrawal(sel, a, b, v)
     case A_VoluntaryExit{+v}: fuzz_VoluntaryExit(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

@@ -18,6 +18,7 @@ type Any is Type:
   A_G1Point{v: T.Bytes48}
   A_G2Point{v: T.Bytes96}
   A_Fork{v: T.Fork}
+  A_boxed{v: Any}
 
 def wrap_Slot(m: Maybe<&1, O.U64>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -184,6 +185,16 @@ def root_Fork(+v: T.Fork, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Fork{v}, d))
 def force_Fork(+v: T.Fork) -> Any & U32: (A_Fork{v}, T.Fork_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_Slot{+v}: enc_Slot(v)
@@ -198,6 +209,7 @@ def encode(a: Any) -> Any & B.Buf:
     case A_G1Point{+v}: enc_G1Point(v)
     case A_G2Point{+v}: enc_G2Point(v)
     case A_Fork{+v}: enc_Fork(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_Slot{+v}: root_Slot(v, T.Slot_hash_tree_root(h, v))
@@ -212,6 +224,7 @@ def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
     case A_G1Point{+v}: root_G1Point(v, T.G1Point_hash_tree_root(h, v))
     case A_G2Point{+v}: root_G2Point(v, T.G2Point_hash_tree_root(h, v))
     case A_Fork{+v}: root_Fork(v, T.Fork_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_Slot{+v}: force_Slot(v)
@@ -226,6 +239,7 @@ def force(a: Any) -> Any & U32:
     case A_G1Point{+v}: force_G1Point(v)
     case A_G2Point{+v}: force_G2Point(v)
     case A_Fork{+v}: force_Fork(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

@@ -10,6 +10,7 @@ type Any is Type:
   A_Epoch{v: O.U64}
   A_Gwei{v: O.U64}
   A_Hash32{v: T.Bytes32}
+  A_boxed{v: Any}
 
 def wrap_Slot(m: Maybe<&1, O.U64>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -67,24 +68,37 @@ def root_Hash32(+v: T.Bytes32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Diges
   (h, d) = pair
   (h, (A_Hash32{v}, d))
 def force_Hash32(+v: T.Bytes32) -> Any & U32: (A_Hash32{v}, T.b32_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_Slot{+v}: enc_Slot(v)
     case A_Epoch{+v}: enc_Epoch(v)
     case A_Gwei{+v}: enc_Gwei(v)
     case A_Hash32{+v}: enc_Hash32(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_Slot{+v}: root_Slot(v, T.Slot_hash_tree_root(h, v))
     case A_Epoch{+v}: root_Epoch(v, T.Epoch_hash_tree_root(h, v))
     case A_Gwei{+v}: root_Gwei(v, T.Gwei_hash_tree_root(h, v))
     case A_Hash32{+v}: root_Hash32(v, T.Hash32_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_Slot{+v}: force_Slot(v)
     case A_Epoch{+v}: force_Epoch(v)
     case A_Gwei{+v}: force_Gwei(v)
     case A_Hash32{+v}: force_Hash32(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -117,9 +131,13 @@ def fuzz_Hash32_fin(pr: T.Bytes32 & Bool) -> Any & Bool:
   (A_Hash32{v}, ok)
 def fuzz_Hash32(+sel: U32, +a: U32, +b: U32, +v: T.Bytes32) -> Any & Bool:
   fuzz_Hash32_fin(T.Hash32_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_Slot{+v}: fuzz_Slot(sel, a, b, v)
     case A_Epoch{+v}: fuzz_Epoch(sel, a, b, v)
     case A_Gwei{+v}: fuzz_Gwei(sel, a, b, v)
     case A_Hash32{+v}: fuzz_Hash32(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

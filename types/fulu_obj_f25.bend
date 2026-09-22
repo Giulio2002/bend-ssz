@@ -10,6 +10,7 @@ type Any is Type:
   A_CellIndex{v: O.U64}
   A_CommitmentIndex{v: O.U64}
   A_RowIndex{v: O.U64}
+  A_boxed{v: Any}
 
 def wrap_Cell(m: Maybe<&1, O.Words>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -72,24 +73,37 @@ def root_RowIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest)
   (h, d) = pair
   (h, (A_RowIndex{v}, d))
 def force_RowIndex(+v: O.U64) -> Any & U32: (A_RowIndex{v}, T.u64_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_Cell{v}: enc_Cell(T.Cell_encode(v))
     case A_CellIndex{+v}: enc_CellIndex(v)
     case A_CommitmentIndex{+v}: enc_CommitmentIndex(v)
     case A_RowIndex{+v}: enc_RowIndex(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_Cell{v}: root_Cell(T.Cell_hash_tree_root(h, v))
     case A_CellIndex{+v}: root_CellIndex(v, T.CellIndex_hash_tree_root(h, v))
     case A_CommitmentIndex{+v}: root_CommitmentIndex(v, T.CommitmentIndex_hash_tree_root(h, v))
     case A_RowIndex{+v}: root_RowIndex(v, T.RowIndex_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_Cell{v}: force_Cell(T.b2048_force(v))
     case A_CellIndex{+v}: force_CellIndex(v)
     case A_CommitmentIndex{+v}: force_CommitmentIndex(v)
     case A_RowIndex{+v}: force_RowIndex(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -122,9 +136,13 @@ def fuzz_RowIndex_fin(pr: O.U64 & Bool) -> Any & Bool:
   (A_RowIndex{v}, ok)
 def fuzz_RowIndex(+sel: U32, +a: U32, +b: U32, +v: O.U64) -> Any & Bool:
   fuzz_RowIndex_fin(T.RowIndex_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_Cell{v}: fuzz_Cell(sel, a, b, v)
     case A_CellIndex{+v}: fuzz_CellIndex(sel, a, b, v)
     case A_CommitmentIndex{+v}: fuzz_CommitmentIndex(sel, a, b, v)
     case A_RowIndex{+v}: fuzz_RowIndex(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

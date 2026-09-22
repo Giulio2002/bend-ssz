@@ -10,6 +10,7 @@ type Any is Type:
   A_KZGCommitment{v: T.Bytes48}
   A_BeaconBlockBody{v: T.BeaconBlockBody}
   A_BeaconBlock{v: T.BeaconBlock}
+  A_boxed{v: Any}
 
 def wrap_BlobIdentifier(m: Maybe<&1, T.BlobIdentifier>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -77,24 +78,37 @@ def root_BeaconBlock(pair: B.Buf & (T.BeaconBlock & D.Digest)) -> B.Buf & (Any &
 def force_BeaconBlock(pair: T.BeaconBlock & U32) -> Any & U32:
   (v, +x) = pair
   (A_BeaconBlock{v}, x)
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_BlobIdentifier{+v}: enc_BlobIdentifier(v)
     case A_KZGCommitment{+v}: enc_KZGCommitment(v)
     case A_BeaconBlockBody{v}: enc_BeaconBlockBody(T.BeaconBlockBody_encode(v))
     case A_BeaconBlock{v}: enc_BeaconBlock(T.BeaconBlock_encode(v))
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_BlobIdentifier{+v}: root_BlobIdentifier(v, T.BlobIdentifier_hash_tree_root(h, v))
     case A_KZGCommitment{+v}: root_KZGCommitment(v, T.KZGCommitment_hash_tree_root(h, v))
     case A_BeaconBlockBody{v}: root_BeaconBlockBody(T.BeaconBlockBody_hash_tree_root(h, v))
     case A_BeaconBlock{v}: root_BeaconBlock(T.BeaconBlock_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_BlobIdentifier{+v}: force_BlobIdentifier(v)
     case A_KZGCommitment{+v}: force_KZGCommitment(v)
     case A_BeaconBlockBody{v}: force_BeaconBlockBody(T.BeaconBlockBody_force(v))
     case A_BeaconBlock{v}: force_BeaconBlock(T.BeaconBlock_force(v))
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -127,9 +141,13 @@ def fuzz_BeaconBlock_fin(pr: T.BeaconBlock & Bool) -> Any & Bool:
   (A_BeaconBlock{v}, ok)
 def fuzz_BeaconBlock(+sel: U32, +a: U32, +b: U32, v: T.BeaconBlock) -> Any & Bool:
   fuzz_BeaconBlock_fin(T.BeaconBlock_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_BlobIdentifier{+v}: fuzz_BlobIdentifier(sel, a, b, v)
     case A_KZGCommitment{+v}: fuzz_KZGCommitment(sel, a, b, v)
     case A_BeaconBlockBody{v}: fuzz_BeaconBlockBody(sel, a, b, v)
     case A_BeaconBlock{v}: fuzz_BeaconBlock(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

@@ -18,6 +18,7 @@ type Any is Type:
   A_Bytes96{v: T.Bytes96}
   A_Bytes8{v: T.Bytes8}
   A_Bytes20{v: T.Bytes20}
+  A_boxed{v: Any}
 
 def wrap_boolean(m: Maybe<&1, Bool>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -179,6 +180,16 @@ def root_Bytes20(+v: T.Bytes20, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Dige
   (h, d) = pair
   (h, (A_Bytes20{v}, d))
 def force_Bytes20(+v: T.Bytes20) -> Any & U32: (A_Bytes20{v}, T.b20_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_boolean{+v}: enc_boolean(v)
@@ -193,6 +204,7 @@ def encode(a: Any) -> Any & B.Buf:
     case A_Bytes96{+v}: enc_Bytes96(v)
     case A_Bytes8{+v}: enc_Bytes8(v)
     case A_Bytes20{+v}: enc_Bytes20(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_boolean{+v}: root_boolean(v, T.boolean_hash_tree_root(h, v))
@@ -207,6 +219,7 @@ def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
     case A_Bytes96{+v}: root_Bytes96(v, T.Bytes96_hash_tree_root(h, v))
     case A_Bytes8{+v}: root_Bytes8(v, T.Bytes8_hash_tree_root(h, v))
     case A_Bytes20{+v}: root_Bytes20(v, T.Bytes20_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_boolean{+v}: force_boolean(v)
@@ -221,6 +234,7 @@ def force(a: Any) -> Any & U32:
     case A_Bytes96{+v}: force_Bytes96(v)
     case A_Bytes8{+v}: force_Bytes8(v)
     case A_Bytes20{+v}: force_Bytes20(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

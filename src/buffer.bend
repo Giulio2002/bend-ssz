@@ -159,8 +159,54 @@ def capacity_small(+w: U32) -> Nat:
     case 16: 4n
     case _: capacity_go(32n, w, 0n)
 
-def capacity(+n: U32) -> Nat:
-  capacity_small(U32.shrn((n + 3 : U32), 2n))
+# Array depth for `w` words: the smallest d with 2^d >= w, which is the bit
+# length of w - 1. The halving loop above and the 17-case table below it both
+# cost far more than the allocation they size - measured at 54 ns against 5 ns
+# for the Array.new they precede (benchmarks/probes/put_cost.bend modes 8 and
+# 9) - because a long U32 match and a seven-step loop are many rewrites. This
+# is five comparisons, each shifting by a literal. It returns exactly the same
+# depth as capacity_go for every w (checked against it over 0..2^16 and at the
+# 2^20 and 2^24 boundaries).
+
+def bits0(zero: Bool, +acc: U32) -> Nat:
+  match zero:
+    case True{}: U32.to_nat(acc)
+    case False{}: U32.to_nat((acc + 1 : U32))
+
+def bits1(big: Bool, +m: U32, +acc: U32) -> Nat:
+  match big:
+    case True{}: U32.to_nat((acc + 2 : U32))
+    case False{}: bits0(U32.is_eq(m, 0), acc)
+
+def bits2(big: Bool, +m: U32, +acc: U32) -> Nat:
+  match big:
+    case True{}: bits1(U32.is_le(2, U32.shrn(m, 2n)), U32.shrn(m, 2n), (acc + 2 : U32))
+    case False{}: bits1(U32.is_le(2, m), m, acc)
+
+def bits4(big: Bool, +m: U32, +acc: U32) -> Nat:
+  match big:
+    case True{}: bits2(U32.is_le(4, U32.shrn(m, 4n)), U32.shrn(m, 4n), (acc + 4 : U32))
+    case False{}: bits2(U32.is_le(4, m), m, acc)
+
+def bits8(big: Bool, +m: U32, +acc: U32) -> Nat:
+  match big:
+    case True{}: bits4(U32.is_le(16, U32.shrn(m, 8n)), U32.shrn(m, 8n), (acc + 8 : U32))
+    case False{}: bits4(U32.is_le(16, m), m, acc)
+
+def bits16(big: Bool, +m: U32) -> Nat:
+  match big:
+    case True{}: bits8(U32.is_le(256, U32.shrn(m, 16n)), U32.shrn(m, 16n), 16)
+    case False{}: bits8(U32.is_le(256, m), m, 0)
+
+def words_depth_nz(zero: Bool, +w: U32) -> Nat:
+  match zero:
+    case True{}: 0n
+    case False{}: bits16(U32.is_le(65536, (w - 1 : U32)), (w - 1 : U32))
+
+# Depth for `w` words.
+def words_depth(+w: U32) -> Nat: words_depth_nz(U32.is_eq(w, 0), w)
+
+def capacity(+n: U32) -> Nat: words_depth(U32.shrn((n + 3 : U32), 2n))
 
 # ---------------------------------------------------------------------------
 # Merkle scratch. A buffer being hashed carries 1024 digest slots of eight

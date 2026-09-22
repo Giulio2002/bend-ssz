@@ -18,6 +18,7 @@ type Any is Type:
   A_Checkpoint{v: T.Checkpoint}
   A_AttestationData{v: T.AttestationData}
   A_SingleAttestation{v: T.SingleAttestation}
+  A_boxed{v: Any}
 
 def wrap_ContributionAndProof(m: Maybe<&1, T.ContributionAndProof>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -199,6 +200,16 @@ def root_SingleAttestation(+v: T.SingleAttestation, pair: B.Buf & D.Digest) -> B
   (h, d) = pair
   (h, (A_SingleAttestation{v}, d))
 def force_SingleAttestation(+v: T.SingleAttestation) -> Any & U32: (A_SingleAttestation{v}, T.SingleAttestation_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_ContributionAndProof{v}: enc_ContributionAndProof(T.ContributionAndProof_encode(v))
@@ -213,6 +224,7 @@ def encode(a: Any) -> Any & B.Buf:
     case A_Checkpoint{+v}: enc_Checkpoint(v)
     case A_AttestationData{+v}: enc_AttestationData(v)
     case A_SingleAttestation{+v}: enc_SingleAttestation(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_ContributionAndProof{v}: root_ContributionAndProof(T.ContributionAndProof_hash_tree_root(h, v))
@@ -227,6 +239,7 @@ def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
     case A_Checkpoint{+v}: root_Checkpoint(v, T.Checkpoint_hash_tree_root(h, v))
     case A_AttestationData{+v}: root_AttestationData(v, T.AttestationData_hash_tree_root(h, v))
     case A_SingleAttestation{+v}: root_SingleAttestation(v, T.SingleAttestation_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_ContributionAndProof{v}: force_ContributionAndProof(T.ContributionAndProof_force(v))
@@ -241,6 +254,7 @@ def force(a: Any) -> Any & U32:
     case A_Checkpoint{+v}: force_Checkpoint(v)
     case A_AttestationData{+v}: force_AttestationData(v)
     case A_SingleAttestation{+v}: force_SingleAttestation(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

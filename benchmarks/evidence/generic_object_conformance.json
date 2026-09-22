@@ -1,0 +1,38 @@
+{
+ "cases": 5145,
+ "passed": 5145,
+ "api": "generated typed object API (types/generic_obj*.bend)",
+ "tally": {
+  "basic_progressive_list invalid pass": 567,
+  "basic_progressive_list valid pass": 320,
+  "basic_vector invalid pass": 957,
+  "basic_vector valid pass": 200,
+  "bitlist invalid pass": 44,
+  "bitlist valid pass": 450,
+  "bitvector invalid pass": 31,
+  "bitvector valid pass": 54,
+  "boolean invalid pass": 4,
+  "boolean valid pass": 2,
+  "compatible_unions invalid pass": 311,
+  "compatible_unions valid pass": 210,
+  "containers invalid pass": 238,
+  "containers valid pass": 463,
+  "progressive_bitlist invalid pass": 3,
+  "progressive_bitlist valid pass": 700,
+  "progressive_containers invalid pass": 264,
+  "progressive_containers valid pass": 261,
+  "uints invalid pass": 18,
+  "uints valid pass": 48
+ },
+ "unsupported_schemas": {
+  "Gt0800299A8E": "schema: a zero-length vector is not an SSZ type",
+  "Gt17827D233C": "schema: a zero-length vector is not an SSZ type",
+  "Gt450D58028A": "schema: a zero-length bit vector is not an SSZ type",
+  "Gt4FB8405ADE": "schema: a zero-length vector is not an SSZ type",
+  "Gt5CF33A21E6": "schema: a zero-length vector is not an SSZ type",
+  "Gt9F50AB7A20": "schema: a zero-length vector is not an SSZ type",
+  "GtA5CE788F25": "schema: a zero-length vector is not an SSZ type",
+  "GtB8ACE05E5F": "schema: a zero-length vector is not an SSZ type"
+ },
+ "failures": []
+}

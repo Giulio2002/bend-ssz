@@ -1,5 +1,6 @@
 import Base
 import ../../src/buffer.bend as B
+import ../../src/obj.bend as O
 import ../../src/digest.bend as D
 
 # Shared IO for the generated object programs (benchmarks/objprog/g*.bend):
@@ -139,4 +140,19 @@ def fold(d: D.Digest) -> U32:
     case D.D{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
       (w0 .^. w1 .^. w2 .^. w3 .^. w4 .^. w5 .^. w6 .^. w7 : U32)
 
-def last_word(b: B.Buf, +size: U32) -> B.Buf & U32: B.word(b, U32.shrn(size, 2n))
+# The last word that actually holds output bytes. Reading word size/4 would be
+# one past the end for a size that is a multiple of four, and the output is now
+# allocated for exactly ceil(size/4) words.
+def last_word(b: B.Buf, +size: U32) -> B.Buf & U32:
+  B.word(b, O.pick(U32.is_eq(size, 0), 0, (U32.shrn((size + 3 : U32), 2n) - 1 : U32)))
+
+# The last output word that holds bytes, for consuming an encoding.
+def bare(pair: B.Buf & U32) -> U32:
+  (b, +w) = pair
+  w
+
+def word_out(b: B.Buf, +size: U32) -> U32: bare(last_word(b, size))
+
+def word_out_of(pair: B.Buf & U32) -> U32:
+  (b, +n) = pair
+  word_out(b, n)

@@ -10,6 +10,7 @@ type Any is Type:
   A_BLSToExecutionChange{v: T.BLSToExecutionChange}
   A_SignedBLSToExecutionChange{v: T.SignedBLSToExecutionChange}
   A_ExecutionPayloadHeader{v: T.ExecutionPayloadHeader}
+  A_boxed{v: Any}
 
 def wrap_ExecutionRequests(m: Maybe<&1, T.ExecutionRequests>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -77,24 +78,37 @@ def root_ExecutionPayloadHeader(pair: B.Buf & (T.ExecutionPayloadHeader & D.Dige
 def force_ExecutionPayloadHeader(pair: T.ExecutionPayloadHeader & U32) -> Any & U32:
   (v, +x) = pair
   (A_ExecutionPayloadHeader{v}, x)
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_ExecutionRequests{v}: enc_ExecutionRequests(T.ExecutionRequests_encode(v))
     case A_BLSToExecutionChange{+v}: enc_BLSToExecutionChange(v)
     case A_SignedBLSToExecutionChange{+v}: enc_SignedBLSToExecutionChange(v)
     case A_ExecutionPayloadHeader{v}: enc_ExecutionPayloadHeader(T.ExecutionPayloadHeader_encode(v))
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_ExecutionRequests{v}: root_ExecutionRequests(T.ExecutionRequests_hash_tree_root(h, v))
     case A_BLSToExecutionChange{+v}: root_BLSToExecutionChange(v, T.BLSToExecutionChange_hash_tree_root(h, v))
     case A_SignedBLSToExecutionChange{+v}: root_SignedBLSToExecutionChange(v, T.SignedBLSToExecutionChange_hash_tree_root(h, v))
     case A_ExecutionPayloadHeader{v}: root_ExecutionPayloadHeader(T.ExecutionPayloadHeader_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_ExecutionRequests{v}: force_ExecutionRequests(T.ExecutionRequests_force(v))
     case A_BLSToExecutionChange{+v}: force_BLSToExecutionChange(v)
     case A_SignedBLSToExecutionChange{+v}: force_SignedBLSToExecutionChange(v)
     case A_ExecutionPayloadHeader{v}: force_ExecutionPayloadHeader(T.ExecutionPayloadHeader_force(v))
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -127,9 +141,13 @@ def fuzz_ExecutionPayloadHeader_fin(pr: T.ExecutionPayloadHeader & Bool) -> Any 
   (A_ExecutionPayloadHeader{v}, ok)
 def fuzz_ExecutionPayloadHeader(+sel: U32, +a: U32, +b: U32, v: T.ExecutionPayloadHeader) -> Any & Bool:
   fuzz_ExecutionPayloadHeader_fin(T.ExecutionPayloadHeader_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_ExecutionRequests{v}: fuzz_ExecutionRequests(sel, a, b, v)
     case A_BLSToExecutionChange{+v}: fuzz_BLSToExecutionChange(sel, a, b, v)
     case A_SignedBLSToExecutionChange{+v}: fuzz_SignedBLSToExecutionChange(sel, a, b, v)
     case A_ExecutionPayloadHeader{v}: fuzz_ExecutionPayloadHeader(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

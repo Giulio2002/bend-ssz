@@ -10,6 +10,7 @@ type Any is Type:
   A_Bytes1{v: T.Bytes1}
   A_Bytes4{v: T.Bytes4}
   A_Bytes32{v: T.Bytes32}
+  A_boxed{v: Any}
 
 def wrap_uint256(m: Maybe<&1, T.Uint256>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -67,24 +68,37 @@ def root_Bytes32(+v: T.Bytes32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Dige
   (h, d) = pair
   (h, (A_Bytes32{v}, d))
 def force_Bytes32(+v: T.Bytes32) -> Any & U32: (A_Bytes32{v}, T.b32_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_uint256{+v}: enc_uint256(v)
     case A_Bytes1{+v}: enc_Bytes1(v)
     case A_Bytes4{+v}: enc_Bytes4(v)
     case A_Bytes32{+v}: enc_Bytes32(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_uint256{+v}: root_uint256(v, T.uint256_hash_tree_root(h, v))
     case A_Bytes1{+v}: root_Bytes1(v, T.Bytes1_hash_tree_root(h, v))
     case A_Bytes4{+v}: root_Bytes4(v, T.Bytes4_hash_tree_root(h, v))
     case A_Bytes32{+v}: root_Bytes32(v, T.Bytes32_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_uint256{+v}: force_uint256(v)
     case A_Bytes1{+v}: force_Bytes1(v)
     case A_Bytes4{+v}: force_Bytes4(v)
     case A_Bytes32{+v}: force_Bytes32(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -117,9 +131,13 @@ def fuzz_Bytes32_fin(pr: T.Bytes32 & Bool) -> Any & Bool:
   (A_Bytes32{v}, ok)
 def fuzz_Bytes32(+sel: U32, +a: U32, +b: U32, +v: T.Bytes32) -> Any & Bool:
   fuzz_Bytes32_fin(T.Bytes32_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_uint256{+v}: fuzz_uint256(sel, a, b, v)
     case A_Bytes1{+v}: fuzz_Bytes1(sel, a, b, v)
     case A_Bytes4{+v}: fuzz_Bytes4(sel, a, b, v)
     case A_Bytes32{+v}: fuzz_Bytes32(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

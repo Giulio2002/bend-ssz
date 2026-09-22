@@ -20,6 +20,24 @@ proofs/obj/collections_<k>.bend holds, for every collection, the laws
     accepted write           keeps the length;
     accepted append          increases the length by one.
 
+proofs/obj/codec_<k>.bend holds, for every name whose encoding is a whole
+number of 32-bit words written at word-aligned positions, the codec laws
+
+    round trip     decoding the encoding of any object returns that object;
+    encoded size   the encoding has exactly the type's fixed size;
+    length reject  a buffer one byte short, or one byte long, is rejected.
+
+The class is stated, not selected by what happened to check: a shape qualifies
+when it is fixed-size and every leaf of it occupies a whole number of words
+(uint32/64/128/256, byte vectors and bit vectors whose length is a multiple of
+four bytes, vectors and containers of such). For those the encoder stores whole
+words and the decoder reads them back, so both sides of each equation reduce to
+the same term and the proof is by computation. A shape with a sub-word leaf
+(uint8, uint16, bool, an odd-length byte vector) writes with a shift and a mask
+and reading it back is the word identity (x >> 8s) | ... == x, which is not a
+definitional equality; those names need the bit lemmas and are not covered here.
+Variable-size shapes need the offset development. Neither is claimed.
+
 Every law is stated over an object built from variables - one variable per
 field, nothing assumed about them - so it holds for every object of the type,
 including the ones decode returns. The proofs are by computation: both sides
@@ -204,7 +222,102 @@ def collection_laws(w, s):
             w('  {==}')
 
 
-HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../types/fulu_obj.bend as T', '']
+def word_aligned(t):
+    """Does every leaf of this shape occupy a whole number of words?
+
+    Then every field offset is a multiple of four as well, so the encoder's
+    writes are whole-word stores and the decoder's reads are whole-word loads.
+    """
+    k = t.kind
+    if k in ('uint', 'bytes'):
+        return t.size % 4 == 0
+    if k == 'bits':
+        return t.size % 32 == 0
+    if k == 'vector':
+        return t.elem.fixed() and word_aligned(t.elem)
+    if k == 'container':
+        return bool(t.fields) and all(f.fixed() and word_aligned(f) for _, f in t.fields)
+    return False
+
+
+def value_term(g, t, c):
+    """A value of this shape built from fresh variables, one per stored word.
+
+    A law stated over a variable of a record type cannot reduce: the encoder
+    has to take the record apart, and a variable does not. Building the value
+    from its words instead gives the checker something to compute with, and the
+    statement still quantifies over every object of the type, because every
+    object is that constructor applied to some words.
+    """
+    s = g.shape(t)
+    if s.kind == 'u32':
+        return f'x{next(c)}', [(f'x{next(c) - 1}', 'U32')]
+    if s.kind == 'u64':
+        a, b = f'x{next(c)}', f'x{next(c)}'
+        return f'O.U64{{{a}, {b}}}', [(a, 'U32'), (b, 'U32')]
+    if s.kind == 'rec':
+        vs = [f'x{next(c)}' for _ in range(s.nw)]
+        return f'T.{s.rep}{{' + ', '.join(vs) + '}', [(v, 'U32') for v in vs]
+    if s.kind == 'container':
+        terms, params = [], []
+        for _, ft in t.fields:
+            term, ps = value_term(g, ft, c)
+            terms.append(term)
+            params += ps
+        return f'T.{s.t.name}{{' + ', '.join(terms) + '}', params
+    raise ValueError(s.kind)
+
+
+def buildable(g, t):
+    """Can a value of this shape be built from word variables?"""
+    s = g.shape(t)
+    if s.kind in ('u32', 'u64', 'rec'):
+        return True
+    if s.kind == 'bool':
+        return True
+    if s.kind == 'container':
+        return all(buildable(g, ft) for _, ft in t.fields)
+    return False
+
+
+def codec_laws(w, g, n, t, size):
+    """The three codec laws of one aligned fixed name.
+
+    `boolean` is the one shape whose domain is small enough to enumerate: its
+    two values are both closed terms, so the pair of laws covers the type
+    exactly, with no variable to quantify over.
+    """
+    sh = g.shape(t)
+    R = qual(sh.rep)
+    if sh.kind == 'bool':
+        for b in ('True', 'False'):
+            codec_body(w, f'{n}_{b.lower()}', n, f'{b}{{}}', '', size, R)
+        return
+    c = iter(range(1000))
+    term, params = value_term(g, t, c)
+    sig = ', '.join(f'+{v}: {ty}' for v, ty in params)
+    codec_body(w, n, n, term, sig, size, R)
+
+
+def codec_body(w, law, n, term, sig, size, R):
+    w(f'def {law}_encoded_size({sig})')
+    w(f'    -> {{B.size(T.{n}_encode({term})) == (T.{n}_encode({term}), {size}) : B.Buf & U32}}:')
+    w('  {==}')
+    w(f'def {law}_roundtrip({sig})')
+    w(f'    -> {{T.{n}_decode(T.{n}_encode({term}), {size})'
+      f' == (T.{n}_encode({term}), Some{{{term}}}) : B.Buf & Maybe<&1, {R}>}}:')
+    w('  {==}')
+    w(f'def {law}_reject_short({sig})')
+    w(f'    -> {{T.{n}_decode(T.{n}_encode({term}), {size - 1})'
+      f' == (T.{n}_encode({term}), None{{}}) : B.Buf & Maybe<&1, {R}>}}:')
+    w('  {==}')
+    w(f'def {law}_reject_long({sig})')
+    w(f'    -> {{T.{n}_decode(T.{n}_encode({term}), {size + 1})'
+      f' == (T.{n}_encode({term}), None{{}}) : B.Buf & Maybe<&1, {R}>}}:')
+    w('  {==}')
+
+
+HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', 'import ../../types/fulu_obj.bend as T', '']
 
 
 def main():
@@ -243,6 +356,50 @@ def main():
             w('')
         out[ROOT / f'proofs/obj/collections_{k}.bend'] = '\n'.join(lines) + '\n'
 
+    codecs = [(n, t, t.fixed_size()) for n, t in names.items()
+              if t.fixed() and (word_aligned(t) or t.kind == 'bool')
+              and g.shape(t).data and buildable(g, t)]
+    kchunks = [codecs[i:i + PER_FILE] for i in range(0, len(codecs), PER_FILE)]
+    for k, chunk in enumerate(kchunks):
+        lines = list(HEAD) + [
+            '# GENERATED by codegen/laws.py. Do not edit.',
+            '# Codec laws of the names whose encoding is whole words at word-aligned',
+            '# positions: decoding an encoding returns the object, the encoding has the',
+            '# type\'s fixed size, and a buffer one byte short is rejected. Stated over a',
+            '# variable, so they hold for every object of the type.', '']
+        w = lines.append
+        for n, ty, size in chunk:
+            w(f'# ---- {n} ({size} bytes) ----')
+            codec_laws(w, g, n, ty, size)
+            w('')
+        out[ROOT / f'proofs/obj/codec_{k}.bend'] = '\n'.join(lines) + '\n'
+
+    # The same laws on the generic-form path. Its schemas are mostly variable
+    # size or sub-word, so the aligned fixed class is small; it is stated for
+    # every schema that falls in it, and for no other.
+    sys.path.insert(0, str(ROOT / 'tools'))
+    import generic as gen  # noqa: E402
+    gg = G.Gen()
+    gcodecs = []
+    for n, ty, err in gen.inventory_all():
+        if ty is None:
+            continue
+        if ty.fixed() and (word_aligned(ty) or ty.kind == 'bool') and gg.shape(ty).data and buildable(gg, ty):
+            gcodecs.append((n, ty, ty.fixed_size()))
+    ghead = ['import Base', 'import ../../src/buffer.bend as B',
+             'import ../../src/obj.bend as O', 'import ../../types/generic_obj.bend as T', '']
+    lines = list(ghead) + [
+        '# GENERATED by codegen/laws.py. Do not edit.',
+        '# The codec laws of proofs/obj/codec_*.bend, for the generic SSZ forms.',
+        '# Only the schemas whose encoding is whole words at word-aligned positions',
+        '# qualify; the rest are variable size or sub-word and are not claimed.', '']
+    w = lines.append
+    for n, ty, size in gcodecs:
+        w(f'# ---- {n} ({size} bytes) ----')
+        codec_laws(w, gg, n, ty, size)
+        w('')
+    out[ROOT / 'proofs/obj/gcodec_0.bend'] = '\n'.join(lines) + '\n'
+
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         print('stale generated laws: ' + ', '.join(stale) if stale else 'generated laws are current')
@@ -251,7 +408,9 @@ def main():
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(t)
     print(f'{len(chunks)} field-law files over {len(recs)} records, '
-          f'{len(cchunks)} collection-law files over {len(colls)} collections')
+          f'{len(cchunks)} collection-law files over {len(colls)} collections, '
+          f'{len(kchunks)} codec-law files over {len(codecs)} aligned fixed names, '
+          f'{len(gcodecs)} generic aligned fixed schemas')
 
 
 if __name__ == '__main__':

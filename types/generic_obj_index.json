@@ -1,0 +1,558 @@
+{
+ "generated": {
+  "Gc221EC01D83": {
+   "group": 10,
+   "index": 81
+  },
+  "Gc465214E502": {
+   "group": 10,
+   "index": 86
+  },
+  "Gc4ED9619F50": {
+   "group": 11,
+   "index": 88
+  },
+  "Gc56D855869F": {
+   "group": 10,
+   "index": 87
+  },
+  "Gc60805EC295": {
+   "group": 10,
+   "index": 83
+  },
+  "Gc74A8F5F17F": {
+   "group": 10,
+   "index": 85
+  },
+  "Gc85FA758A04": {
+   "group": 10,
+   "index": 82
+  },
+  "GcDC3E457711": {
+   "group": 10,
+   "index": 84
+  },
+  "Gp4B0CA2906A": {
+   "group": 0,
+   "index": 0
+  },
+  "Gp66304057C3": {
+   "group": 0,
+   "index": 2
+  },
+  "Gp8A7851175B": {
+   "group": 0,
+   "index": 1
+  },
+  "GpF350A3C486": {
+   "group": 0,
+   "index": 3
+  },
+  "Gt0366A291C1": {
+   "group": 15,
+   "index": 123
+  },
+  "Gt039DD44FD8": {
+   "group": 12,
+   "index": 96
+  },
+  "Gt04170D6AA7": {
+   "group": 5,
+   "index": 40
+  },
+  "Gt05340E1F7E": {
+   "group": 14,
+   "index": 117
+  },
+  "Gt0A390CB480": {
+   "group": 14,
+   "index": 118
+  },
+  "Gt0A3B6B4128": {
+   "group": 7,
+   "index": 56
+  },
+  "Gt0B0C03B454": {
+   "group": 14,
+   "index": 119
+  },
+  "Gt0B1B711C4D": {
+   "group": 7,
+   "index": 57
+  },
+  "Gt0B4EF17D71": {
+   "group": 8,
+   "index": 71
+  },
+  "Gt10D6F42D74": {
+   "group": 9,
+   "index": 78
+  },
+  "Gt13AFE546ED": {
+   "group": 8,
+   "index": 66
+  },
+  "Gt1719057EB7": {
+   "group": 8,
+   "index": 68
+  },
+  "Gt19F04F79B8": {
+   "group": 5,
+   "index": 42
+  },
+  "Gt1BD4B4358D": {
+   "group": 15,
+   "index": 124
+  },
+  "Gt1C2FA69562": {
+   "group": 1,
+   "index": 15
+  },
+  "Gt1D9B3E1871": {
+   "group": 0,
+   "index": 5
+  },
+  "Gt21E1483EE1": {
+   "group": 12,
+   "index": 99
+  },
+  "Gt240C147AA2": {
+   "group": 8,
+   "index": 65
+  },
+  "Gt274A0B8DC2": {
+   "group": 6,
+   "index": 55
+  },
+  "Gt27CDB122DD": {
+   "group": 15,
+   "index": 120
+  },
+  "Gt28605B5D5C": {
+   "group": 4,
+   "index": 33
+  },
+  "Gt28ED72E3EF": {
+   "group": 3,
+   "index": 27
+  },
+  "Gt2CD118DF5F": {
+   "group": 4,
+   "index": 34
+  },
+  "Gt2E7060B297": {
+   "group": 6,
+   "index": 53
+  },
+  "Gt2F34855D3D": {
+   "group": 11,
+   "index": 95
+  },
+  "Gt2FF8722A75": {
+   "group": 5,
+   "index": 44
+  },
+  "Gt3429157FEB": {
+   "group": 3,
+   "index": 29
+  },
+  "Gt34AE45611E": {
+   "group": 1,
+   "index": 11
+  },
+  "Gt3771256492": {
+   "group": 0,
+   "index": 7
+  },
+  "Gt38F5890C13": {
+   "group": 12,
+   "index": 100
+  },
+  "Gt39CAD03032": {
+   "group": 5,
+   "index": 47
+  },
+  "Gt3A9420DD8E": {
+   "group": 7,
+   "index": 59
+  },
+  "Gt3CC580499F": {
+   "group": 7,
+   "index": 60
+  },
+  "Gt3E2A057F33": {
+   "group": 3,
+   "index": 25
+  },
+  "Gt3E6E18CD57": {
+   "group": 6,
+   "index": 49
+  },
+  "Gt3EC8B89B94": {
+   "group": 2,
+   "index": 16
+  },
+  "Gt3FD98F54A5": {
+   "group": 2,
+   "index": 17
+  },
+  "Gt44F1B6940F": {
+   "group": 12,
+   "index": 101
+  },
+  "Gt46F5D7703F": {
+   "group": 9,
+   "index": 76
+  },
+  "Gt484D1ADAFE": {
+   "group": 12,
+   "index": 98
+  },
+  "Gt4B1BA0C81D": {
+   "group": 11,
+   "index": 94
+  },
+  "Gt526892A4DC": {
+   "group": 1,
+   "index": 14
+  },
+  "Gt53D2408A5F": {
+   "group": 8,
+   "index": 67
+  },
+  "Gt57090094FA": {
+   "group": 1,
+   "index": 9
+  },
+  "Gt59DCDB2873": {
+   "group": 16,
+   "index": 133
+  },
+  "Gt5BE68AF2C7": {
+   "group": 5,
+   "index": 45
+  },
+  "Gt604E28A301": {
+   "group": 16,
+   "index": 130
+  },
+  "Gt62B0093BE7": {
+   "group": 16,
+   "index": 135
+  },
+  "Gt6463DC73A8": {
+   "group": 5,
+   "index": 43
+  },
+  "Gt669C528764": {
+   "group": 7,
+   "index": 61
+  },
+  "Gt6B1336E534": {
+   "group": 2,
+   "index": 19
+  },
+  "Gt6E9B243B7C": {
+   "group": 6,
+   "index": 52
+  },
+  "Gt6F0D97A69E": {
+   "group": 14,
+   "index": 114
+  },
+  "Gt7274F61A0F": {
+   "group": 2,
+   "index": 22
+  },
+  "Gt74B2AF1CB3": {
+   "group": 6,
+   "index": 54
+  },
+  "Gt75C1995C88": {
+   "group": 4,
+   "index": 32
+  },
+  "Gt7600AB7870": {
+   "group": 2,
+   "index": 20
+  },
+  "Gt7B8507E2C2": {
+   "group": 16,
+   "index": 134
+  },
+  "Gt7C1C13B292": {
+   "group": 11,
+   "index": 90
+  },
+  "Gt7D1CD7363A": {
+   "group": 9,
+   "index": 74
+  },
+  "Gt7D65FF3A10": {
+   "group": 2,
+   "index": 18
+  },
+  "Gt7FBB1934E8": {
+   "group": 1,
+   "index": 13
+  },
+  "Gt83D8B3D008": {
+   "group": 0,
+   "index": 4
+  },
+  "Gt843A1262ED": {
+   "group": 9,
+   "index": 77
+  },
+  "Gt89824BEACE": {
+   "group": 5,
+   "index": 46
+  },
+  "Gt8E507C4540": {
+   "group": 9,
+   "index": 75
+  },
+  "Gt8FB0CF9679": {
+   "group": 9,
+   "index": 79
+  },
+  "Gt9333E6513D": {
+   "group": 5,
+   "index": 41
+  },
+  "Gt9368483BAB": {
+   "group": 13,
+   "index": 111
+  },
+  "Gt94B70684B5": {
+   "group": 11,
+   "index": 92
+  },
+  "Gt9579E0A2FD": {
+   "group": 14,
+   "index": 115
+  },
+  "Gt967E8D815F": {
+   "group": 16,
+   "index": 131
+  },
+  "Gt98B8C9F262": {
+   "group": 12,
+   "index": 103
+  },
+  "Gt9D356BAF82": {
+   "group": 13,
+   "index": 106
+  },
+  "Gt9DF37A5216": {
+   "group": 1,
+   "index": 8
+  },
+  "Gt9EA902108D": {
+   "group": 2,
+   "index": 23
+  },
+  "GtA8100D747D": {
+   "group": 4,
+   "index": 36
+  },
+  "GtA8457965E2": {
+   "group": 6,
+   "index": 48
+  },
+  "GtAA8D1478A7": {
+   "group": 15,
+   "index": 122
+  },
+  "GtAA99FAAC9D": {
+   "group": 11,
+   "index": 91
+  },
+  "GtAD3CF815B7": {
+   "group": 15,
+   "index": 121
+  },
+  "GtAD72FD256A": {
+   "group": 15,
+   "index": 125
+  },
+  "GtADC8DCD962": {
+   "group": 9,
+   "index": 72
+  },
+  "GtAE3EF932C2": {
+   "group": 0,
+   "index": 6
+  },
+  "GtAEB382AD1F": {
+   "group": 4,
+   "index": 38
+  },
+  "GtB0CCEA154C": {
+   "group": 2,
+   "index": 21
+  },
+  "GtB1E9093D65": {
+   "group": 14,
+   "index": 116
+  },
+  "GtB85E1BC748": {
+   "group": 3,
+   "index": 28
+  },
+  "GtB91D4D285D": {
+   "group": 6,
+   "index": 51
+  },
+  "GtBB42F83A45": {
+   "group": 3,
+   "index": 24
+  },
+  "GtBBF12DAB28": {
+   "group": 14,
+   "index": 113
+  },
+  "GtBBFD66E011": {
+   "group": 6,
+   "index": 50
+  },
+  "GtC063F5D9E0": {
+   "group": 13,
+   "index": 104
+  },
+  "GtC0FC7B166A": {
+   "group": 3,
+   "index": 30
+  },
+  "GtC19E8053EB": {
+   "group": 3,
+   "index": 31
+  },
+  "GtC57121EA56": {
+   "group": 1,
+   "index": 10
+  },
+  "GtC847E618FA": {
+   "group": 12,
+   "index": 97
+  },
+  "GtC923FCB2DA": {
+   "group": 9,
+   "index": 73
+  },
+  "GtCCF6FFA0A0": {
+   "group": 8,
+   "index": 69
+  },
+  "GtCF587DD386": {
+   "group": 11,
+   "index": 93
+  },
+  "GtD1AEF07F7D": {
+   "group": 8,
+   "index": 64
+  },
+  "GtD291A17219": {
+   "group": 13,
+   "index": 105
+  },
+  "GtDB1482527D": {
+   "group": 11,
+   "index": 89
+  },
+  "GtDE4B86A990": {
+   "group": 3,
+   "index": 26
+  },
+  "GtE470919895": {
+   "group": 10,
+   "index": 80
+  },
+  "GtE528AAE3C6": {
+   "group": 7,
+   "index": 63
+  },
+  "GtE6006F6F55": {
+   "group": 4,
+   "index": 39
+  },
+  "GtE83F21B20A": {
+   "group": 8,
+   "index": 70
+  },
+  "GtEB2FD43D9B": {
+   "group": 1,
+   "index": 12
+  },
+  "GtECF9BB18D8": {
+   "group": 16,
+   "index": 132
+  },
+  "GtED805B7C93": {
+   "group": 13,
+   "index": 108
+  },
+  "GtEDF530C7B9": {
+   "group": 13,
+   "index": 107
+  },
+  "GtEDFB713194": {
+   "group": 14,
+   "index": 112
+  },
+  "GtF23A2FB97E": {
+   "group": 4,
+   "index": 37
+  },
+  "GtF3865AEE9A": {
+   "group": 4,
+   "index": 35
+  },
+  "GtF45E42B273": {
+   "group": 7,
+   "index": 62
+  },
+  "GtF7582E0E9A": {
+   "group": 16,
+   "index": 129
+  },
+  "GtF91FD5FC73": {
+   "group": 12,
+   "index": 102
+  },
+  "GtFAE59DA275": {
+   "group": 7,
+   "index": 58
+  },
+  "GtFCF8066C33": {
+   "group": 13,
+   "index": 110
+  },
+  "GtFF7C03E8A0": {
+   "group": 13,
+   "index": 109
+  },
+  "Gu6DDF182530": {
+   "group": 15,
+   "index": 127
+  },
+  "GuA2212AE21F": {
+   "group": 16,
+   "index": 128
+  },
+  "GuAD91DEB870": {
+   "group": 15,
+   "index": 126
+  }
+ },
+ "unsupported": {
+  "Gt0800299A8E": "schema: a zero-length vector is not an SSZ type",
+  "Gt17827D233C": "schema: a zero-length vector is not an SSZ type",
+  "Gt450D58028A": "schema: a zero-length bit vector is not an SSZ type",
+  "Gt4FB8405ADE": "schema: a zero-length vector is not an SSZ type",
+  "Gt5CF33A21E6": "schema: a zero-length vector is not an SSZ type",
+  "Gt9F50AB7A20": "schema: a zero-length vector is not an SSZ type",
+  "GtA5CE788F25": "schema: a zero-length vector is not an SSZ type",
+  "GtB8ACE05E5F": "schema: a zero-length vector is not an SSZ type"
+ }
+}

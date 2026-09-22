@@ -10,6 +10,7 @@ type Any is Type:
   A_SyncAggregatorSelectionData{v: T.SyncAggregatorSelectionData}
   A_PowBlock{v: T.PowBlock}
   A_CommitteeIndex{v: O.U64}
+  A_boxed{v: Any}
 
 def wrap_SyncAggregate(m: Maybe<&1, T.SyncAggregate>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -67,24 +68,37 @@ def root_CommitteeIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.D
   (h, d) = pair
   (h, (A_CommitteeIndex{v}, d))
 def force_CommitteeIndex(+v: O.U64) -> Any & U32: (A_CommitteeIndex{v}, T.u64_force(v))
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_SyncAggregate{+v}: enc_SyncAggregate(v)
     case A_SyncAggregatorSelectionData{+v}: enc_SyncAggregatorSelectionData(v)
     case A_PowBlock{+v}: enc_PowBlock(v)
     case A_CommitteeIndex{+v}: enc_CommitteeIndex(v)
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_SyncAggregate{+v}: root_SyncAggregate(v, T.SyncAggregate_hash_tree_root(h, v))
     case A_SyncAggregatorSelectionData{+v}: root_SyncAggregatorSelectionData(v, T.SyncAggregatorSelectionData_hash_tree_root(h, v))
     case A_PowBlock{+v}: root_PowBlock(v, T.PowBlock_hash_tree_root(h, v))
     case A_CommitteeIndex{+v}: root_CommitteeIndex(v, T.CommitteeIndex_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_SyncAggregate{+v}: force_SyncAggregate(v)
     case A_SyncAggregatorSelectionData{+v}: force_SyncAggregatorSelectionData(v)
     case A_PowBlock{+v}: force_PowBlock(v)
     case A_CommitteeIndex{+v}: force_CommitteeIndex(v)
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -117,9 +131,13 @@ def fuzz_CommitteeIndex_fin(pr: O.U64 & Bool) -> Any & Bool:
   (A_CommitteeIndex{v}, ok)
 def fuzz_CommitteeIndex(+sel: U32, +a: U32, +b: U32, +v: O.U64) -> Any & Bool:
   fuzz_CommitteeIndex_fin(T.CommitteeIndex_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_SyncAggregate{+v}: fuzz_SyncAggregate(sel, a, b, v)
     case A_SyncAggregatorSelectionData{+v}: fuzz_SyncAggregatorSelectionData(sel, a, b, v)
     case A_PowBlock{+v}: fuzz_PowBlock(sel, a, b, v)
     case A_CommitteeIndex{+v}: fuzz_CommitteeIndex(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

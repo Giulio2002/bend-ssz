@@ -18,6 +18,7 @@ type Any is Type:
   A_ParticipationFlags{v: U32}
   A_CurrentSyncCommitteeBranch{v: O.Words}
   A_NextSyncCommitteeBranch{v: O.Words}
+  A_boxed{v: Any}
 
 def wrap_PendingDeposit(m: Maybe<&1, T.PendingDeposit>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -199,6 +200,16 @@ def root_NextSyncCommitteeBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & 
 def force_NextSyncCommitteeBranch(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_NextSyncCommitteeBranch{v}, x)
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_PendingDeposit{+v}: enc_PendingDeposit(v)
@@ -213,6 +224,7 @@ def encode(a: Any) -> Any & B.Buf:
     case A_ParticipationFlags{+v}: enc_ParticipationFlags(v)
     case A_CurrentSyncCommitteeBranch{v}: enc_CurrentSyncCommitteeBranch(T.CurrentSyncCommitteeBranch_encode(v))
     case A_NextSyncCommitteeBranch{v}: enc_NextSyncCommitteeBranch(T.NextSyncCommitteeBranch_encode(v))
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_PendingDeposit{+v}: root_PendingDeposit(v, T.PendingDeposit_hash_tree_root(h, v))
@@ -227,6 +239,7 @@ def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
     case A_ParticipationFlags{+v}: root_ParticipationFlags(v, T.ParticipationFlags_hash_tree_root(h, v))
     case A_CurrentSyncCommitteeBranch{v}: root_CurrentSyncCommitteeBranch(T.CurrentSyncCommitteeBranch_hash_tree_root(h, v))
     case A_NextSyncCommitteeBranch{v}: root_NextSyncCommitteeBranch(T.NextSyncCommitteeBranch_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_PendingDeposit{+v}: force_PendingDeposit(v)
@@ -241,6 +254,7 @@ def force(a: Any) -> Any & U32:
     case A_ParticipationFlags{+v}: force_ParticipationFlags(v)
     case A_CurrentSyncCommitteeBranch{v}: force_CurrentSyncCommitteeBranch(T.v6_b32_force(v))
     case A_NextSyncCommitteeBranch{v}: force_NextSyncCommitteeBranch(T.v6_b32_force(v))
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

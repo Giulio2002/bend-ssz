@@ -10,6 +10,7 @@ type Any is Type:
   A_AggregateAndProof{v: T.AggregateAndProof}
   A_SignedAggregateAndProof{v: T.SignedAggregateAndProof}
   A_PendingAttestation{v: T.PendingAttestation}
+  A_boxed{v: Any}
 
 def wrap_Attestation(m: Maybe<&1, T.Attestation>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -87,24 +88,37 @@ def root_PendingAttestation(pair: B.Buf & (T.PendingAttestation & D.Digest)) -> 
 def force_PendingAttestation(pair: T.PendingAttestation & U32) -> Any & U32:
   (v, +x) = pair
   (A_PendingAttestation{v}, x)
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_Attestation{v}: enc_Attestation(T.Attestation_encode(v))
     case A_AggregateAndProof{v}: enc_AggregateAndProof(T.AggregateAndProof_encode(v))
     case A_SignedAggregateAndProof{v}: enc_SignedAggregateAndProof(T.SignedAggregateAndProof_encode(v))
     case A_PendingAttestation{v}: enc_PendingAttestation(T.PendingAttestation_encode(v))
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_Attestation{v}: root_Attestation(T.Attestation_hash_tree_root(h, v))
     case A_AggregateAndProof{v}: root_AggregateAndProof(T.AggregateAndProof_hash_tree_root(h, v))
     case A_SignedAggregateAndProof{v}: root_SignedAggregateAndProof(T.SignedAggregateAndProof_hash_tree_root(h, v))
     case A_PendingAttestation{v}: root_PendingAttestation(T.PendingAttestation_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_Attestation{v}: force_Attestation(T.Attestation_force(v))
     case A_AggregateAndProof{v}: force_AggregateAndProof(T.AggregateAndProof_force(v))
     case A_SignedAggregateAndProof{v}: force_SignedAggregateAndProof(T.SignedAggregateAndProof_force(v))
     case A_PendingAttestation{v}: force_PendingAttestation(T.PendingAttestation_force(v))
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -137,9 +151,13 @@ def fuzz_PendingAttestation_fin(pr: T.PendingAttestation & Bool) -> Any & Bool:
   (A_PendingAttestation{v}, ok)
 def fuzz_PendingAttestation(+sel: U32, +a: U32, +b: U32, v: T.PendingAttestation) -> Any & Bool:
   fuzz_PendingAttestation_fin(T.PendingAttestation_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_Attestation{v}: fuzz_Attestation(sel, a, b, v)
     case A_AggregateAndProof{v}: fuzz_AggregateAndProof(sel, a, b, v)
     case A_SignedAggregateAndProof{v}: fuzz_SignedAggregateAndProof(sel, a, b, v)
     case A_PendingAttestation{v}: fuzz_PendingAttestation(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))

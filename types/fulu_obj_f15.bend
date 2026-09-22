@@ -10,6 +10,7 @@ type Any is Type:
   A_SyncCommittee{v: T.SyncCommittee}
   A_DepositData{v: T.DepositData}
   A_Deposit{v: T.Deposit}
+  A_boxed{v: Any}
 
 def wrap_PendingDeposit(m: Maybe<&1, T.PendingDeposit>, buf: B.Buf) -> B.Buf & Maybe<&1, Any>:
   match m:
@@ -77,24 +78,37 @@ def root_Deposit(pair: B.Buf & (T.Deposit & D.Digest)) -> B.Buf & (Any & D.Diges
 def force_Deposit(pair: T.Deposit & U32) -> Any & U32:
   (v, +x) = pair
   (A_Deposit{v}, x)
+def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:
+  (v, out) = pair
+  (A_boxed{v}, out)
+def root_boxed(pair: B.Buf & (Any & D.Digest)) -> B.Buf & (Any & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (A_boxed{v}, d))
+def force_boxed(pair: Any & U32) -> Any & U32:
+  (v, +x) = pair
+  (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_PendingDeposit{+v}: enc_PendingDeposit(v)
     case A_SyncCommittee{v}: enc_SyncCommittee(T.SyncCommittee_encode(v))
     case A_DepositData{+v}: enc_DepositData(v)
     case A_Deposit{v}: enc_Deposit(T.Deposit_encode(v))
+    case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
     case A_PendingDeposit{+v}: root_PendingDeposit(v, T.PendingDeposit_hash_tree_root(h, v))
     case A_SyncCommittee{v}: root_SyncCommittee(T.SyncCommittee_hash_tree_root(h, v))
     case A_DepositData{+v}: root_DepositData(v, T.DepositData_hash_tree_root(h, v))
     case A_Deposit{v}: root_Deposit(T.Deposit_hash_tree_root(h, v))
+    case A_boxed{v}: root_boxed(root(h, v))
 def force(a: Any) -> Any & U32:
   match a:
     case A_PendingDeposit{+v}: force_PendingDeposit(v)
     case A_SyncCommittee{v}: force_SyncCommittee(T.SyncCommittee_force(v))
     case A_DepositData{+v}: force_DepositData(v)
     case A_Deposit{v}: force_Deposit(T.Deposit_force(v))
+    case A_boxed{v}: force_boxed(force(v))
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
@@ -127,9 +141,13 @@ def fuzz_Deposit_fin(pr: T.Deposit & Bool) -> Any & Bool:
   (A_Deposit{v}, ok)
 def fuzz_Deposit(+sel: U32, +a: U32, +b: U32, v: T.Deposit) -> Any & Bool:
   fuzz_Deposit_fin(T.Deposit_fuzz(v, sel, a, b))
+def fuzz_boxed(pair: Any & Bool) -> Any & Bool:
+  (v, ok) = pair
+  (A_boxed{v}, ok)
 def fuzz(a0: Any, +sel: U32, +a: U32, +b: U32) -> Any & Bool:
   match a0:
     case A_PendingDeposit{+v}: fuzz_PendingDeposit(sel, a, b, v)
     case A_SyncCommittee{v}: fuzz_SyncCommittee(sel, a, b, v)
     case A_DepositData{+v}: fuzz_DepositData(sel, a, b, v)
     case A_Deposit{v}: fuzz_Deposit(sel, a, b, v)
+    case A_boxed{v}: fuzz_boxed(fuzz(v, sel, a, b))
