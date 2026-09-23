@@ -21,7 +21,7 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
   match i:
     case 108: some_CustodyIndex(T.CustodyIndex_decode(buf, size))
     case _: (buf, None{})
-def enc_CustodyIndex(+v: O.U64) -> Any & B.Buf: (A_CustodyIndex{v}, T.CustodyIndex_encode(v))
+def enc_CustodyIndex(+v: O.U64) -> Any & B.Buf: (A_CustodyIndex{v}, O.ser_out(T.CustodyIndex_serialize(v)))
 def root_CustodyIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_CustodyIndex{v}, d))
@@ -48,6 +48,10 @@ def force(a: Any) -> Any & U32:
   match a:
     case A_CustodyIndex{+v}: force_CustodyIndex(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_CustodyIndex{+v}: T.u64_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

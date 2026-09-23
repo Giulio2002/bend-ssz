@@ -48,9 +48,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 98: some_Blob(T.Blob_decode(buf, size))
     case 99: some_BlobSidecar(T.BlobSidecar_decode(buf, size))
     case _: (buf, None{})
-def enc_SignedBeaconBlock(pair: T.SignedBeaconBlock & B.Buf) -> Any & B.Buf:
+def enc_SignedBeaconBlock(pair: T.SignedBeaconBlock & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_SignedBeaconBlock{v}, out)
+  (A_SignedBeaconBlock{v}, O.ser_out(out))
 def root_SignedBeaconBlock(pair: B.Buf & (T.SignedBeaconBlock & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -58,14 +58,14 @@ def root_SignedBeaconBlock(pair: B.Buf & (T.SignedBeaconBlock & D.Digest)) -> B.
 def force_SignedBeaconBlock(pair: T.SignedBeaconBlock & U32) -> Any & U32:
   (v, +x) = pair
   (A_SignedBeaconBlock{v}, x)
-def enc_KZGProof(+v: T.Bytes48) -> Any & B.Buf: (A_KZGProof{v}, T.KZGProof_encode(v))
+def enc_KZGProof(+v: T.Bytes48) -> Any & B.Buf: (A_KZGProof{v}, O.ser_out(T.KZGProof_serialize(v)))
 def root_KZGProof(+v: T.Bytes48, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_KZGProof{v}, d))
 def force_KZGProof(+v: T.Bytes48) -> Any & U32: (A_KZGProof{v}, T.b48_force(v))
-def enc_Blob(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_Blob(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Blob{v}, out)
+  (A_Blob{v}, O.ser_out(out))
 def root_Blob(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -73,9 +73,9 @@ def root_Blob(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
 def force_Blob(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_Blob{v}, x)
-def enc_BlobSidecar(pair: T.BlobSidecar & B.Buf) -> Any & B.Buf:
+def enc_BlobSidecar(pair: T.BlobSidecar & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_BlobSidecar{v}, out)
+  (A_BlobSidecar{v}, O.ser_out(out))
 def root_BlobSidecar(pair: B.Buf & (T.BlobSidecar & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -95,10 +95,10 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_SignedBeaconBlock{v}: enc_SignedBeaconBlock(T.SignedBeaconBlock_encode(v))
+    case A_SignedBeaconBlock{v}: enc_SignedBeaconBlock(T.SignedBeaconBlock_serialize(v))
     case A_KZGProof{+v}: enc_KZGProof(v)
-    case A_Blob{v}: enc_Blob(T.Blob_encode(v))
-    case A_BlobSidecar{v}: enc_BlobSidecar(T.BlobSidecar_encode(v))
+    case A_Blob{v}: enc_Blob(T.Blob_serialize(v))
+    case A_BlobSidecar{v}: enc_BlobSidecar(T.BlobSidecar_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -114,6 +114,13 @@ def force(a: Any) -> Any & U32:
     case A_Blob{v}: force_Blob(T.b131072_force(v))
     case A_BlobSidecar{v}: force_BlobSidecar(T.BlobSidecar_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_SignedBeaconBlock{v}: T.SignedBeaconBlock_dump(v, t)
+    case A_KZGProof{+v}: T.b48_dump(v, t)
+    case A_Blob{v}: T.b131072_dump(v, t)
+    case A_BlobSidecar{v}: T.BlobSidecar_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

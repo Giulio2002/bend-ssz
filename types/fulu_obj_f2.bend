@@ -48,22 +48,22 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 10: some_Bytes8(T.Bytes8_decode(buf, size))
     case 11: some_Bytes20(T.Bytes20_decode(buf, size))
     case _: (buf, None{})
-def enc_Bytes48(+v: T.Bytes48) -> Any & B.Buf: (A_Bytes48{v}, T.Bytes48_encode(v))
+def enc_Bytes48(+v: T.Bytes48) -> Any & B.Buf: (A_Bytes48{v}, O.ser_out(T.Bytes48_serialize(v)))
 def root_Bytes48(+v: T.Bytes48, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Bytes48{v}, d))
 def force_Bytes48(+v: T.Bytes48) -> Any & U32: (A_Bytes48{v}, T.b48_force(v))
-def enc_Bytes96(+v: T.Bytes96) -> Any & B.Buf: (A_Bytes96{v}, T.Bytes96_encode(v))
+def enc_Bytes96(+v: T.Bytes96) -> Any & B.Buf: (A_Bytes96{v}, O.ser_out(T.Bytes96_serialize(v)))
 def root_Bytes96(+v: T.Bytes96, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Bytes96{v}, d))
 def force_Bytes96(+v: T.Bytes96) -> Any & U32: (A_Bytes96{v}, T.b96_force(v))
-def enc_Bytes8(+v: T.Bytes8) -> Any & B.Buf: (A_Bytes8{v}, T.Bytes8_encode(v))
+def enc_Bytes8(+v: T.Bytes8) -> Any & B.Buf: (A_Bytes8{v}, O.ser_out(T.Bytes8_serialize(v)))
 def root_Bytes8(+v: T.Bytes8, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Bytes8{v}, d))
 def force_Bytes8(+v: T.Bytes8) -> Any & U32: (A_Bytes8{v}, T.b8_force(v))
-def enc_Bytes20(+v: T.Bytes20) -> Any & B.Buf: (A_Bytes20{v}, T.Bytes20_encode(v))
+def enc_Bytes20(+v: T.Bytes20) -> Any & B.Buf: (A_Bytes20{v}, O.ser_out(T.Bytes20_serialize(v)))
 def root_Bytes20(+v: T.Bytes20, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Bytes20{v}, d))
@@ -99,6 +99,13 @@ def force(a: Any) -> Any & U32:
     case A_Bytes8{+v}: force_Bytes8(v)
     case A_Bytes20{+v}: force_Bytes20(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_Bytes48{+v}: T.b48_dump(v, t)
+    case A_Bytes96{+v}: T.b96_dump(v, t)
+    case A_Bytes8{+v}: T.b8_dump(v, t)
+    case A_Bytes20{+v}: T.b20_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

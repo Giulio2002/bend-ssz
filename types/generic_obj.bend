@@ -79,15 +79,27 @@ def pbits_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def pbits_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def pbits_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def pbits_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def pbits_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def pbits_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def pbits_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root_prog(h, o, seg)
+def pbits_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root_prog(hl, h, o, seg)
 
 def pbits_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def pbits_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pbits_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pbits_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 0, True{})
+
+def pbits_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): pbits_pk(out, pos, pbits_valid(o))
+
+def pbits_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def pbits_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 0, True{})
 
@@ -147,23 +159,30 @@ def Gp4B0CA2906A_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Gp4B0CA2906A:
 
 def Gp4B0CA2906A_sz0(+acc: U32, pair: O.Bits & U32) -> Gp4B0CA2906A & U32:
   (f_C, +m) = pair
-  (Gp4B0CA2906A{f_C}, (acc + m : U32))
+  (Gp4B0CA2906A{f_C}, O.padd(acc, m))
 
 def Gp4B0CA2906A_size(o: Gp4B0CA2906A) -> Gp4B0CA2906A & U32:
   match o:
     case Gp4B0CA2906A{f_C}: Gp4B0CA2906A_sz0(4, pbits_size(f_C))
 
-def Gp4B0CA2906A_pw0s(+pos: U32, f_C: O.Bits, +s_f_C: U32, out: Array<U32>) -> Array<U32> & (Gp4B0CA2906A & U32):
-  (O.w32(out, (pos + 0 : U32), 4), (Gp4B0CA2906A{f_C}, (4 + s_f_C : U32)))
+def pbits_pvb(+cur: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (O.Bits & U32):
+  (out, r) = pair
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
+
+def pbits_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Bits) -> Array<U32> & (O.Bits & U32):
+  pbits_pvb(cur, pbits_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
 def Gp4B0CA2906A_pw0(+pos: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gp4B0CA2906A & U32):
   (out, r) = pair
-  (f_C, sz) = r
-  Gp4B0CA2906A_pw0s(pos, f_C, sz, out)
+  (f_C, c) = r
+  (out, (Gp4B0CA2906A{f_C}, c))
 
 def Gp4B0CA2906A_putn(out: Array<U32>, +pos: U32, o: Gp4B0CA2906A) -> Array<U32> & (Gp4B0CA2906A & U32):
   match o:
-    case Gp4B0CA2906A{f_C}: Gp4B0CA2906A_pw0(pos, pbits_putn(out, (pos + 4 : U32), f_C))
+    case Gp4B0CA2906A{f_C}: Gp4B0CA2906A_pw0(pos, pbits_putv(out, pos, 0, 4, f_C))
+
+def Gp4B0CA2906A_putk(out: Array<U32>, +pos: U32, o: Gp4B0CA2906A) -> Array<U32> & (Gp4B0CA2906A & U32): Gp4B0CA2906A_putn(out, pos, o)
 
 def Gp4B0CA2906A_put_drop_go(out: Array<U32>, v: Gp4B0CA2906A, +m: U32) -> Array<U32> & Gp4B0CA2906A: (out, v)
 
@@ -174,21 +193,21 @@ def Gp4B0CA2906A_put_drop(pair: Array<U32> & (Gp4B0CA2906A & U32)) -> Array<U32>
 
 def Gp4B0CA2906A_put(out: Array<U32>, +pos: U32, o: Gp4B0CA2906A) -> Array<U32> & Gp4B0CA2906A: Gp4B0CA2906A_put_drop(Gp4B0CA2906A_putn(out, pos, o))
 
-def Gp4B0CA2906A_fin(+d_f_C: D.Digest, +z1: D.Digest, h: B.Buf, f_C: O.Bits) -> B.Buf & (Gp4B0CA2906A & D.Digest):
-  (h, (Gp4B0CA2906A{f_C}, O.mix_len(D.hash_pair(D.hash_pair(D.zero(), D.hash_pair(z1, D.hash_pair(D.zero(), d_f_C))), D.zero()), 16)))
+def Gp4B0CA2906A_fin(+hl: Nat, +d_f_C: D.Digest, +z1: D.Digest, h: B.Buf, f_C: O.Bits) -> B.Buf & (Gp4B0CA2906A & D.Digest):
+  (h, (Gp4B0CA2906A{f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, z1, D.node(hl, D.zero(), d_f_C))), D.zero()), 16)))
 
-def Gp4B0CA2906A_rt1(+seg: U32, f_C: O.Bits, d_f_C: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp4B0CA2906A & D.Digest):
+def Gp4B0CA2906A_rt1(+hl: Nat, +seg: U32, f_C: O.Bits, d_f_C: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp4B0CA2906A & D.Digest):
   (h, z1) = pair
-  Gp4B0CA2906A_fin(d_f_C, z1, h, f_C)
+  Gp4B0CA2906A_fin(hl, d_f_C, z1, h, f_C)
 
-def Gp4B0CA2906A_rt0(+seg: U32, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gp4B0CA2906A & D.Digest):
+def Gp4B0CA2906A_rt0(+hl: Nat, +seg: U32, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gp4B0CA2906A & D.Digest):
   (h, r) = pair
   (f_C, d_f_C) = r
-  Gp4B0CA2906A_rt1(seg, f_C, d_f_C, O.zero(h, 1))
+  Gp4B0CA2906A_rt1(hl, seg, f_C, d_f_C, (h, D.zconst(1n)))
 
-def Gp4B0CA2906A_root(h: B.Buf, o: Gp4B0CA2906A, +seg: U32) -> B.Buf & (Gp4B0CA2906A & D.Digest):
+def Gp4B0CA2906A_root(+hl: Nat, h: B.Buf, o: Gp4B0CA2906A, +seg: U32) -> B.Buf & (Gp4B0CA2906A & D.Digest):
   match o:
-    case Gp4B0CA2906A{f_C}: Gp4B0CA2906A_rt0(seg, pbits_root(h, f_C, seg))
+    case Gp4B0CA2906A{f_C}: Gp4B0CA2906A_rt0(hl, seg, pbits_root(hl, h, f_C, seg))
 
 def Gp4B0CA2906A_swap_f_C(o: Gp4B0CA2906A, v: O.Bits) -> Gp4B0CA2906A & O.Bits:
   match o:
@@ -205,6 +224,10 @@ def Gp4B0CA2906A_fo0(+acc: U32, pair: O.Bits & U32) -> Gp4B0CA2906A & U32:
 def Gp4B0CA2906A_force(o: Gp4B0CA2906A) -> Gp4B0CA2906A & U32:
   match o:
     case Gp4B0CA2906A{f_C}: Gp4B0CA2906A_fo0((0 : U32), pbits_force(f_C))
+
+def Gp4B0CA2906A_dump(o: Gp4B0CA2906A, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gp4B0CA2906A{f_C}: pbits_dump(f_C, t)
 
 def Gp4B0CA2906A_c1(ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> B.Buf & Bool:
   match ok:
@@ -237,9 +260,11 @@ def u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & U32: O.rd_u8(buf, off)
 
 def u8_put(out: Array<U32>, +pos: U32, +o: U32) -> Array<U32>: O.w8(out, pos, o)
 
-def u8_root(h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk(o))
+def u8_root(+hl: Nat, h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk(o))
 
 def u8_force(+o: U32) -> U32: o
+
+def u8_dump(+o: U32, t: +List<U32>) -> +List<U32>: O.dump_le(o, 1, t)
 
 def u8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -256,15 +281,27 @@ def l123_u16_default() -> O.Words: O.words_new(0)
 
 def l123_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)
 
-def l123_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def l123_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def l123_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
 def l123_u16_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): O.put_words_n(out, pos, o)
 
-def l123_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(1n, O.words_root(h, o, 3, seg))
+def l123_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 1n, O.words_root(hl, h, o, 3, seg))
 
 def l123_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def l123_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: l123_u16_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def l123_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 246, False{}, 2)
+
+def l123_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): l123_u16_pk(out, pos, l123_u16_valid(o))
+
+def l123_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words_n(o, t)
 
 def l123_u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), U32.is_le(U32.div(len, 2), 123)))
 
@@ -317,15 +354,27 @@ def pl_u64_default() -> O.Words: O.words_new(0)
 
 def pl_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)
 
-def pl_u64_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def pl_u64_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def pl_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
 def pl_u64_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): O.put_words_n(out, pos, o)
 
-def pl_u64_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(3n, O.words_root_prog(h, o, seg))
+def pl_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 3n, O.words_root_prog(hl, h, o, seg))
 
 def pl_u64_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def pl_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pl_u64_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pl_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 8)
+
+def pl_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_u64_pk(out, pos, pl_u64_valid(o))
+
+def pl_u64_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words_n(o, t)
 
 def pl_u64_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 8) * 8 : U32)), True{}))
 
@@ -380,9 +429,11 @@ def u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & U32: O.rd_u16(buf, off
 
 def u16_put(out: Array<U32>, +pos: U32, +o: U32) -> Array<U32>: O.w16(out, pos, o)
 
-def u16_root(h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk(o))
+def u16_root(+hl: Nat, h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk(o))
 
 def u16_force(+o: U32) -> U32: o
+
+def u16_dump(+o: U32, t: +List<U32>) -> +List<U32>: O.dump_le(o, 2, t)
 
 def u16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -414,17 +465,17 @@ def Gc4ED9619F50_put(out: Array<U32>, +pos: U32, o: Gc4ED9619F50) -> Array<U32>:
   match o:
     case Gc4ED9619F50{+f_A, +f_B}: u16_put(u16_put(out, (pos + 0 : U32), f_A), (pos + 2 : U32), f_B)
 
-def Gc4ED9619F50_rt1(+seg: U32, +f_A: U32, +f_B: U32, d_f_A: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
+def Gc4ED9619F50_rt1(+hl: Nat, +seg: U32, +f_A: U32, +f_B: U32, d_f_A: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
   (h, d_f_B) = pair
-  (h, D.hash_pair(d_f_A, d_f_B))
+  (h, D.node(hl, d_f_A, d_f_B))
 
-def Gc4ED9619F50_rt0(+seg: U32, +f_A: U32, +f_B: U32, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
+def Gc4ED9619F50_rt0(+hl: Nat, +seg: U32, +f_A: U32, +f_B: U32, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
   (h, d_f_A) = pair
-  Gc4ED9619F50_rt1(seg, f_A, f_B, d_f_A, u16_root(h, f_B, seg))
+  Gc4ED9619F50_rt1(hl, seg, f_A, f_B, d_f_A, u16_root(hl, h, f_B, seg))
 
-def Gc4ED9619F50_root(h: B.Buf, o: Gc4ED9619F50, +seg: U32) -> B.Buf & D.Digest:
+def Gc4ED9619F50_root(+hl: Nat, h: B.Buf, o: Gc4ED9619F50, +seg: U32) -> B.Buf & D.Digest:
   match o:
-    case Gc4ED9619F50{+f_A, +f_B}: Gc4ED9619F50_rt0(seg, f_A, f_B, u16_root(h, f_A, seg))
+    case Gc4ED9619F50{+f_A, +f_B}: Gc4ED9619F50_rt0(hl, seg, f_A, f_B, u16_root(hl, h, f_A, seg))
 
 def Gc4ED9619F50_get_f_A(o: Gc4ED9619F50) -> Gc4ED9619F50 & U32:
   match o:
@@ -459,6 +510,10 @@ def Gc4ED9619F50_set_f_B(o: Gc4ED9619F50, +v: U32) -> Gc4ED9619F50 & Bool: Gc4ED
 def Gc4ED9619F50_force(o: Gc4ED9619F50) -> U32:
   match o:
     case Gc4ED9619F50{+f_A, +f_B}: (u16_force(f_A) .^. u16_force(f_B) : U32)
+
+def Gc4ED9619F50_dump(o: Gc4ED9619F50, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gc4ED9619F50{+f_A, +f_B}: u16_dump(f_A, u16_dump(f_B, t))
 
 def Gc4ED9619F50_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -500,9 +555,13 @@ def pl_Gc4ED9619F50_rd_start(empty: Bool, +off: U32, +n: U32, buf: B.Buf) -> B.B
 
 def pl_Gc4ED9619F50_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & pl_Gc4ED9619F50_Seq: pl_Gc4ED9619F50_rd_start(U32.is_eq(len, 0), off, U32.div(len, 4), buf)
 
+def pl_Gc4ED9619F50_szf(+n: U32, pair: Array<Gc4ED9619F50> & U32) -> pl_Gc4ED9619F50_Seq & U32:
+  (arr, +c) = pair
+  (pl_Gc4ED9619F50_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 4 : U32), 2147483648))
+
 def pl_Gc4ED9619F50_size(o: pl_Gc4ED9619F50_Seq) -> pl_Gc4ED9619F50_Seq & U32:
   match o:
-    case pl_Gc4ED9619F50_Seq{arr, +n}: (pl_Gc4ED9619F50_Seq{arr, n}, (n * 4 : U32))
+    case pl_Gc4ED9619F50_Seq{arr, +n}: pl_Gc4ED9619F50_szf(n, Array.size(Gc4ED9619F50, arr))
 
 def pl_Gc4ED9619F50_pt(+k: Nat, +i: U32, +pos: U32, out: Array<U32>, pair: Array<Gc4ED9619F50> & Gc4ED9619F50) -> Array<U32> & Array<Gc4ED9619F50>:
   match k:
@@ -534,37 +593,82 @@ def pl_Gc4ED9619F50_putn(out: Array<U32>, +pos: U32, o: pl_Gc4ED9619F50_Seq) -> 
   match o:
     case pl_Gc4ED9619F50_Seq{arr, +n}: pl_Gc4ED9619F50_ptn_fin(n, pl_Gc4ED9619F50_pt_nz(U32.is_eq(n, 0), pos, n, out, arr))
 
-def pl_Gc4ED9619F50_rt_push(+i: U32, +seg: U32, arr: Array<Gc4ED9619F50>, pair: B.Buf & (Gc4ED9619F50 & D.Digest)) -> B.Buf & Array<Gc4ED9619F50>:
-  (h, r) = pair
-  (v, d) = r
-  (M.push_prog(i, seg, d, h), Array.set(Gc4ED9619F50, arr, i, v))
-
-def pl_Gc4ED9619F50_rt_leaf(+i: U32, +seg: U32, arr: Array<Gc4ED9619F50>, pair: B.Buf & D.Digest) -> B.Buf & Array<Gc4ED9619F50>:
+def pl_Gc4ED9619F50_rl_d(arr: Array<Gc4ED9619F50>, pair: B.Buf & D.Digest) -> B.Buf & (Array<Gc4ED9619F50> & D.Digest):
   (h, d) = pair
-  (M.push_prog(i, seg, d, h), arr)
+  (h, (arr, d))
 
-def pl_Gc4ED9619F50_rt_one(+i: U32, +seg: U32, h: B.Buf, pair: Array<Gc4ED9619F50> & Gc4ED9619F50) -> B.Buf & Array<Gc4ED9619F50>:
+def pl_Gc4ED9619F50_rl(+hl: Nat, +seg: U32, h: B.Buf, pair: Array<Gc4ED9619F50> & Gc4ED9619F50) -> B.Buf & (Array<Gc4ED9619F50> & D.Digest):
   (arr, +v) = pair
-  pl_Gc4ED9619F50_rt_leaf(i, seg, arr, Gc4ED9619F50_root(h, v, (seg + 64 : U32)))
+  pl_Gc4ED9619F50_rl_d(arr, Gc4ED9619F50_root(hl, h, v, (seg + 64 : U32)))
 
-def pl_Gc4ED9619F50_rt(+k: Nat, +i: U32, +seg: U32, pair: B.Buf & Array<Gc4ED9619F50>) -> B.Buf & Array<Gc4ED9619F50>:
-  match k:
-    case 0n: pair
-    case 1n+q:
-      (h, arr) = pair
-      pl_Gc4ED9619F50_rt(q, (i + 1 : U32), seg, pl_Gc4ED9619F50_rt_one(i, seg, h, Array.get(Gc4ED9619F50, arr, i)))
+def pl_Gc4ED9619F50_mj(+hl: Nat, dl: D.Digest, pair: B.Buf & (Array<Gc4ED9619F50> & D.Digest)) -> B.Buf & (Array<Gc4ED9619F50> & D.Digest):
+  (h, r) = pair
+  (arr, dr) = r
+  (h, (arr, D.node(hl, dl, dr)))
 
-def pl_Gc4ED9619F50_rt_close(+n: U32, arr: Array<Gc4ED9619F50>, pair: B.Buf & D.Digest) -> B.Buf & (pl_Gc4ED9619F50_Seq & D.Digest):
-  (h, d) = pair
-  (h, (pl_Gc4ED9619F50_Seq{arr, n}, O.mix_len(d, n)))
+def pl_Gc4ED9619F50_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<Gc4ED9619F50> & D.Digest)) -> B.Buf & (Array<Gc4ED9619F50> & D.Digest):
+  match d:
+    case 0n:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(0n)))
+            case True{}:
+              (h, r) = st
+              (arr, dl) = r
+              pl_Gc4ED9619F50_rl(hl, seg, h, Array.get(Gc4ED9619F50, arr, U32.from_nat(s)))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          pl_Gc4ED9619F50_mj(hl, dl, pl_Gc4ED9619F50_mt(0n, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
+    case 1n+ +p:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(1n+p)))
+            case True{}:
+              pl_Gc4ED9619F50_mt(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, seg, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+                pl_Gc4ED9619F50_mt(p, 0n, True{}, hl, seg, Nat.div(w, 2n), s, n, st))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          pl_Gc4ED9619F50_mj(hl, dl, pl_Gc4ED9619F50_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
-def pl_Gc4ED9619F50_rt_fin(+n: U32, +seg: U32, pair: B.Buf & Array<Gc4ED9619F50>) -> B.Buf & (pl_Gc4ED9619F50_Seq & D.Digest):
-  (h, arr) = pair
-  pl_Gc4ED9619F50_rt_close(n, arr, M.close_prog(n, seg, h))
+def pl_Gc4ED9619F50_prr(+hl: Nat, +seg: U32, +dep: Nat, +s: Nat, +n: Nat, pair: B.Buf & (Array<Gc4ED9619F50> & D.Digest)) -> B.Buf & (Array<Gc4ED9619F50> & D.Digest):
+  (h, r) = pair
+  (arr, dl) = r
+  pl_Gc4ED9619F50_mj(hl, dl, pl_Gc4ED9619F50_mt(dep, 0n, True{}, hl, seg, O.pow2n(dep), s, n, (h, (arr, D.zero()))))
 
-def pl_Gc4ED9619F50_root(h: B.Buf, o: pl_Gc4ED9619F50_Seq, +seg: U32) -> B.Buf & (pl_Gc4ED9619F50_Seq & D.Digest):
+def pl_Gc4ED9619F50_ptr(f: Nat, inside: Bool, +hl: Nat, +seg: U32, +dep: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<Gc4ED9619F50> & D.Digest)) -> B.Buf & (Array<Gc4ED9619F50> & D.Digest):
+  match f:
+    case 0n:
+      (h, r) = st
+      (arr, dl) = r
+      (h, (arr, D.zero()))
+    case 1n+g:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zero()))
+        case True{}:
+          pl_Gc4ED9619F50_prr(hl, seg, dep, s, n,
+            pl_Gc4ED9619F50_ptr(g, Nat.is_lt(Nat.add(s, O.pow2n(dep)), n), hl, seg, Nat.add(dep, 2n), Nat.add(s, O.pow2n(dep)), n, st))
+
+def pl_Gc4ED9619F50_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Gc4ED9619F50> & D.Digest)) -> B.Buf & (pl_Gc4ED9619F50_Seq & D.Digest):
+  (h, r) = pair
+  (arr, d) = r
+  (h, (pl_Gc4ED9619F50_Seq{arr, n}, O.mix_len(hl, d, n)))
+
+def pl_Gc4ED9619F50_root(+hl: Nat, h: B.Buf, o: pl_Gc4ED9619F50_Seq, +seg: U32) -> B.Buf & (pl_Gc4ED9619F50_Seq & D.Digest):
   match o:
-    case pl_Gc4ED9619F50_Seq{arr, +n}: pl_Gc4ED9619F50_rt_fin(n, seg, pl_Gc4ED9619F50_rt(U32.to_nat(n), 0, seg, (h, arr)))
+    case pl_Gc4ED9619F50_Seq{arr, +n}: pl_Gc4ED9619F50_rt_fin(hl, n, pl_Gc4ED9619F50_ptr(1n+U32.to_nat(n), Nat.is_lt(0n, U32.to_nat(n)), hl, seg, 0n, 0n, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def pl_Gc4ED9619F50_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<Gc4ED9619F50> & Gc4ED9619F50) -> Array<Gc4ED9619F50> & U32:
   match k:
@@ -587,6 +691,70 @@ def pl_Gc4ED9619F50_fo_nz(empty: Bool, +n: U32, arr: Array<Gc4ED9619F50>) -> pl_
 def pl_Gc4ED9619F50_force(o: pl_Gc4ED9619F50_Seq) -> pl_Gc4ED9619F50_Seq & U32:
   match o:
     case pl_Gc4ED9619F50_Seq{arr, +n}: pl_Gc4ED9619F50_fo_nz(U32.is_eq(n, 0), n, arr)
+
+def pl_Gc4ED9619F50_pk(out: Array<U32>, +pos: U32, pair: pl_Gc4ED9619F50_Seq & Bool) -> Array<U32> & (pl_Gc4ED9619F50_Seq & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pl_Gc4ED9619F50_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pl_Gc4ED9619F50_va_fin(+n: U32, ok: Bool, pair: Array<Gc4ED9619F50> & Bool) -> pl_Gc4ED9619F50_Seq & Bool:
+  (arr, b) = pair
+  (pl_Gc4ED9619F50_Seq{arr, n}, Bool.and(ok, b))
+
+def u16_valid(+o: U32) -> Bool: U32.is_le(o, 65535)
+
+def Gc4ED9619F50_valid(o: Gc4ED9619F50) -> Bool:
+  match o:
+    case Gc4ED9619F50{+f_A, +f_B}: Bool.and(u16_valid(f_A), u16_valid(f_B))
+
+def pl_Gc4ED9619F50_va(+k: Nat, +i: U32, acc: Bool, pair: Array<Gc4ED9619F50> & Gc4ED9619F50) -> Array<Gc4ED9619F50> & Bool:
+  match k:
+    case 0n:
+      (arr, +v) = pair
+      (arr, Bool.and(acc, Gc4ED9619F50_valid(v)))
+    case 1n+q:
+      (arr, +v) = pair
+      pl_Gc4ED9619F50_va(q, (i + 1 : U32), Bool.and(acc, Gc4ED9619F50_valid(v)), Array.get(Gc4ED9619F50, arr, (i + 1 : U32)))
+
+def pl_Gc4ED9619F50_va_nz(empty: Bool, +n: U32, arr: Array<Gc4ED9619F50>) -> Array<Gc4ED9619F50> & Bool:
+  match empty:
+    case True{}: (arr, True{})
+    case False{}: pl_Gc4ED9619F50_va(U32.to_nat((n - 1 : U32)), 0, True{}, Array.get(Gc4ED9619F50, arr, 0))
+
+def pl_Gc4ED9619F50_va_go(ok: Bool, +n: U32, arr: Array<Gc4ED9619F50>) -> pl_Gc4ED9619F50_Seq & Bool:
+  match ok:
+    case True{}: pl_Gc4ED9619F50_va_fin(n, True{}, pl_Gc4ED9619F50_va_nz(U32.is_eq(n, 0), n, arr))
+    case False{}: (pl_Gc4ED9619F50_Seq{arr, n}, False{})
+
+def pl_Gc4ED9619F50_va_cap(ok: Bool, +n: U32, pair: Array<Gc4ED9619F50> & U32) -> pl_Gc4ED9619F50_Seq & Bool:
+  (arr, +c) = pair
+  pl_Gc4ED9619F50_va_go(Bool.and(ok, U32.is_le(n, c)), n, arr)
+
+def pl_Gc4ED9619F50_valid(o: pl_Gc4ED9619F50_Seq) -> pl_Gc4ED9619F50_Seq & Bool:
+  match o:
+    case pl_Gc4ED9619F50_Seq{arr, +n}: pl_Gc4ED9619F50_va_cap(True{}, n, Array.size(Gc4ED9619F50, arr))
+
+def pl_Gc4ED9619F50_putk(out: Array<U32>, +pos: U32, o: pl_Gc4ED9619F50_Seq) -> Array<U32> & (pl_Gc4ED9619F50_Seq & U32): pl_Gc4ED9619F50_pk(out, pos, pl_Gc4ED9619F50_valid(o))
+
+def pl_Gc4ED9619F50_du_took(t: +List<U32>, pair: Array<Gc4ED9619F50> & Gc4ED9619F50) -> Array<Gc4ED9619F50> & +List<U32>:
+  (arr, +v) = pair
+  (arr, Gc4ED9619F50_dump(v, t))
+
+def pl_Gc4ED9619F50_du(+k: Nat, +i: U32, st: Array<Gc4ED9619F50> & +List<U32>) -> Array<Gc4ED9619F50> & +List<U32>:
+  match k:
+    case 0n: st
+    case 1n+q:
+      (arr, t) = st
+      pl_Gc4ED9619F50_du(q, (i - 1 : U32), pl_Gc4ED9619F50_du_took(t, Array.get(Gc4ED9619F50, arr, (i - 1 : U32))))
+
+def pl_Gc4ED9619F50_du_fin(+n: U32, st: Array<Gc4ED9619F50> & +List<U32>) -> +List<U32>:
+  (arr, t) = st
+  O.dump_le(n, 4, t)
+
+def pl_Gc4ED9619F50_dump(o: pl_Gc4ED9619F50_Seq, t: +List<U32>) -> +List<U32>:
+  match o:
+    case pl_Gc4ED9619F50_Seq{arr, +n}: pl_Gc4ED9619F50_du_fin(n, pl_Gc4ED9619F50_du(U32.to_nat(n), n, (arr, t)))
 
 def pl_Gc4ED9619F50_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 4) * 4 : U32)), True{}))
 
@@ -656,15 +824,27 @@ def l1024_u16_default() -> O.Words: O.words_new(0)
 
 def l1024_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)
 
-def l1024_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def l1024_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def l1024_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
 def l1024_u16_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): O.put_words_n(out, pos, o)
 
-def l1024_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(1n, O.words_root(h, o, 6, seg))
+def l1024_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 1n, O.words_root(hl, h, o, 6, seg))
 
 def l1024_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def l1024_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: l1024_u16_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def l1024_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 2048, False{}, 2)
+
+def l1024_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): l1024_u16_pk(out, pos, l1024_u16_valid(o))
+
+def l1024_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words_n(o, t)
 
 def l1024_u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), U32.is_le(U32.div(len, 2), 1024)))
 
@@ -738,23 +918,32 @@ def Gc465214E502_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Gc465214E502:
 
 def Gc465214E502_sz0(+f_A: U32, +f_C: U32, +acc: U32, pair: O.Words & U32) -> Gc465214E502 & U32:
   (f_B, +m) = pair
-  (Gc465214E502{f_A, f_B, f_C}, (acc + m : U32))
+  (Gc465214E502{f_A, f_B, f_C}, O.padd(acc, m))
 
 def Gc465214E502_size(o: Gc465214E502) -> Gc465214E502 & U32:
   match o:
     case Gc465214E502{+f_A, f_B, +f_C}: Gc465214E502_sz0(f_A, f_C, 7, l1024_u16_size(f_B))
 
-def Gc465214E502_pw0s(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, +s_f_B: U32, out: Array<U32>) -> Array<U32> & (Gc465214E502 & U32):
-  (O.w32(u8_put(u16_put(out, (pos + 0 : U32), f_A), (pos + 6 : U32), f_C), (pos + 2 : U32), 7), (Gc465214E502{f_A, f_B, f_C}, (7 + s_f_B : U32)))
+def l1024_u16_pvb(+cur: U32, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (O.Words & U32):
+  (out, r) = pair
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
+
+def l1024_u16_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Words) -> Array<U32> & (O.Words & U32):
+  l1024_u16_pvb(cur, l1024_u16_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def u8_valid(+o: U32) -> Bool: U32.is_le(o, 255)
 
 def Gc465214E502_pw0(+pos: U32, +f_A: U32, +f_C: U32, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gc465214E502 & U32):
   (out, r) = pair
-  (f_B, sz) = r
-  Gc465214E502_pw0s(pos, f_A, f_B, f_C, sz, out)
+  (f_B, c) = r
+  (u8_put(u16_put(out, (pos + 0 : U32), f_A), (pos + 6 : U32), f_C), (Gc465214E502{f_A, f_B, f_C}, (c .|. O.pz(Bool.and(u16_valid(f_A), u8_valid(f_C))) : U32)))
 
 def Gc465214E502_putn(out: Array<U32>, +pos: U32, o: Gc465214E502) -> Array<U32> & (Gc465214E502 & U32):
   match o:
-    case Gc465214E502{+f_A, f_B, +f_C}: Gc465214E502_pw0(pos, f_A, f_C, l1024_u16_putn(out, (pos + 7 : U32), f_B))
+    case Gc465214E502{+f_A, f_B, +f_C}: Gc465214E502_pw0(pos, f_A, f_C, l1024_u16_putv(out, pos, 2, 7, f_B))
+
+def Gc465214E502_putk(out: Array<U32>, +pos: U32, o: Gc465214E502) -> Array<U32> & (Gc465214E502 & U32): Gc465214E502_putn(out, pos, o)
 
 def Gc465214E502_put_drop_go(out: Array<U32>, v: Gc465214E502, +m: U32) -> Array<U32> & Gc465214E502: (out, v)
 
@@ -765,22 +954,22 @@ def Gc465214E502_put_drop(pair: Array<U32> & (Gc465214E502 & U32)) -> Array<U32>
 
 def Gc465214E502_put(out: Array<U32>, +pos: U32, o: Gc465214E502) -> Array<U32> & Gc465214E502: Gc465214E502_put_drop(Gc465214E502_putn(out, pos, o))
 
-def Gc465214E502_rt2(+seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc465214E502 & D.Digest):
+def Gc465214E502_rt2(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc465214E502 & D.Digest):
   (h, d_f_C) = pair
-  (h, (Gc465214E502{f_A, f_B, f_C}, D.hash_pair(D.hash_pair(d_f_A, d_f_B), D.hash_pair(d_f_C, D.zero()))))
+  (h, (Gc465214E502{f_A, f_B, f_C}, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, D.zero()))))
 
-def Gc465214E502_rt1(+seg: U32, +f_A: U32, +f_C: U32, d_f_A: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc465214E502 & D.Digest):
+def Gc465214E502_rt1(+hl: Nat, +seg: U32, +f_A: U32, +f_C: U32, d_f_A: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc465214E502 & D.Digest):
   (h, r) = pair
   (f_B, d_f_B) = r
-  Gc465214E502_rt2(seg, f_A, f_B, f_C, d_f_A, d_f_B, u8_root(h, f_C, seg))
+  Gc465214E502_rt2(hl, seg, f_A, f_B, f_C, d_f_A, d_f_B, u8_root(hl, h, f_C, seg))
 
-def Gc465214E502_rt0(+seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, pair: B.Buf & D.Digest) -> B.Buf & (Gc465214E502 & D.Digest):
+def Gc465214E502_rt0(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, pair: B.Buf & D.Digest) -> B.Buf & (Gc465214E502 & D.Digest):
   (h, d_f_A) = pair
-  Gc465214E502_rt1(seg, f_A, f_C, d_f_A, l1024_u16_root(h, f_B, seg))
+  Gc465214E502_rt1(hl, seg, f_A, f_C, d_f_A, l1024_u16_root(hl, h, f_B, seg))
 
-def Gc465214E502_root(h: B.Buf, o: Gc465214E502, +seg: U32) -> B.Buf & (Gc465214E502 & D.Digest):
+def Gc465214E502_root(+hl: Nat, h: B.Buf, o: Gc465214E502, +seg: U32) -> B.Buf & (Gc465214E502 & D.Digest):
   match o:
-    case Gc465214E502{+f_A, f_B, +f_C}: Gc465214E502_rt0(seg, f_A, f_B, f_C, u16_root(h, f_A, seg))
+    case Gc465214E502{+f_A, f_B, +f_C}: Gc465214E502_rt0(hl, seg, f_A, f_B, f_C, u16_root(hl, h, f_A, seg))
 
 def Gc465214E502_get_f_A(o: Gc465214E502) -> Gc465214E502 & U32:
   match o:
@@ -828,6 +1017,10 @@ def Gc465214E502_force(o: Gc465214E502) -> Gc465214E502 & U32:
   match o:
     case Gc465214E502{+f_A, f_B, +f_C}: Gc465214E502_fo0(f_A, f_C, (u16_force(f_A) .^. u8_force(f_C) : U32), l1024_u16_force(f_B))
 
+def Gc465214E502_dump(o: Gc465214E502, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gc465214E502{+f_A, f_B, +f_C}: u16_dump(f_A, l1024_u16_dump(f_B, u8_dump(f_C, t)))
+
 def Gc465214E502_c1(ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> B.Buf & Bool:
   match ok:
     case True{}: (buf, True{})
@@ -853,12 +1046,90 @@ def Gc465214E502_ok_len(ok: Bool, buf: B.Buf, +off: U32, +len: U32) -> B.Buf & B
 
 def Gc465214E502_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: Gc465214E502_ok_len(U32.is_le(7, len), buf, off, len)
 
-type pl_Gc465214E502_Seq is Type:
-  pl_Gc465214E502_Seq{items: Array<Gc465214E502>, n: U32}
+def Gc465214E502_bx_wrap(v: Gc465214E502) -> O.Boxed<Gc465214E502>: O.BSome{v, O.BNone{}}
 
-def pl_Gc465214E502_fill(+d: Nat) -> Array<Gc465214E502>:
+def Gc465214E502_bx_default() -> O.Boxed<Gc465214E502>: Gc465214E502_bx_wrap(Gc465214E502_default())
+
+def Gc465214E502_bx_unbox(o: O.Boxed<Gc465214E502>) -> Gc465214E502:
+  match o:
+    case O.BSome{v, rest}: v
+    case O.BNone{}: Gc465214E502_default()
+
+def Gc465214E502_bx_rd(pair: B.Buf & Gc465214E502) -> B.Buf & O.Boxed<Gc465214E502>:
+  (buf, v) = pair
+  (buf, Gc465214E502_bx_wrap(v))
+
+def Gc465214E502_bx_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Boxed<Gc465214E502>: Gc465214E502_bx_rd(Gc465214E502_read(buf, off, len))
+
+def Gc465214E502_bx_put_back(pair: Array<U32> & Gc465214E502) -> Array<U32> & O.Boxed<Gc465214E502>:
+  (out, v) = pair
+  (out, Gc465214E502_bx_wrap(v))
+
+def Gc465214E502_bx_put(out: Array<U32>, +pos: U32, o: O.Boxed<Gc465214E502>) -> Array<U32> & O.Boxed<Gc465214E502>:
+  match o:
+    case O.BSome{v, rest}: Gc465214E502_bx_put_back(Gc465214E502_put(out, pos, v))
+    case O.BNone{}: (out, Gc465214E502_bx_default())
+
+def Gc465214E502_bx_putn_go(out: Array<U32>, v: Gc465214E502, +n: U32) -> Array<U32> & (O.Boxed<Gc465214E502> & U32):
+  (out, (Gc465214E502_bx_wrap(v), n))
+
+def Gc465214E502_bx_putn_back(pair: Array<U32> & (Gc465214E502 & U32)) -> Array<U32> & (O.Boxed<Gc465214E502> & U32):
+  (out, r) = pair
+  (v, n) = r
+  Gc465214E502_bx_putn_go(out, v, n)
+
+def Gc465214E502_bx_putn(out: Array<U32>, +pos: U32, o: O.Boxed<Gc465214E502>) -> Array<U32> & (O.Boxed<Gc465214E502> & U32):
+  match o:
+    case O.BSome{v, rest}: Gc465214E502_bx_putn_back(Gc465214E502_putn(out, pos, v))
+    case O.BNone{}: (out, (Gc465214E502_bx_default(), 0))
+
+def Gc465214E502_bx_size_back(pair: Gc465214E502 & U32) -> O.Boxed<Gc465214E502> & U32:
+  (v, +n) = pair
+  (Gc465214E502_bx_wrap(v), n)
+
+def Gc465214E502_bx_size(o: O.Boxed<Gc465214E502>) -> O.Boxed<Gc465214E502> & U32:
+  match o:
+    case O.BSome{v, rest}: Gc465214E502_bx_size_back(Gc465214E502_size(v))
+    case O.BNone{}: (Gc465214E502_bx_default(), 0)
+
+def Gc465214E502_bx_rt(pair: B.Buf & (Gc465214E502 & D.Digest)) -> B.Buf & (O.Boxed<Gc465214E502> & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (Gc465214E502_bx_wrap(v), d))
+
+def Gc465214E502_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<Gc465214E502>, +seg: U32) -> B.Buf & (O.Boxed<Gc465214E502> & D.Digest):
+  match o:
+    case O.BSome{v, rest}: Gc465214E502_bx_rt(Gc465214E502_root(hl, h, v, seg))
+    case O.BNone{}: (h, (Gc465214E502_bx_default(), D.zero()))
+
+def Gc465214E502_bx_force(o: O.Boxed<Gc465214E502>) -> O.Boxed<Gc465214E502> & U32:
+  match o:
+    case O.BSome{v, rest}: Gc465214E502_bx_size_back(Gc465214E502_force(v))
+    case O.BNone{}: (Gc465214E502_bx_default(), 0)
+
+def Gc465214E502_bx_pk_back(pair: Array<U32> & (Gc465214E502 & U32)) -> Array<U32> & (O.Boxed<Gc465214E502> & U32):
+  (out, r) = pair
+  (v, m) = r
+  (out, (O.BSome{v, O.BNone{}}, m))
+
+def Gc465214E502_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<Gc465214E502>) -> Array<U32> & (O.Boxed<Gc465214E502> & U32):
+  match o:
+    case O.BSome{v, rest}: Gc465214E502_bx_pk_back(Gc465214E502_putk(out, pos, v))
+    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+
+def Gc465214E502_bx_dump(o: O.Boxed<Gc465214E502>, t: +List<U32>) -> +List<U32>:
+  match o:
+    case O.BSome{v, rest}: Gc465214E502_dump(v, t)
+    case O.BNone{}: Gc465214E502_dump(Gc465214E502_default(), t)
+
+def Gc465214E502_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: Gc465214E502_ok(buf, off, len)
+
+type pl_Gc465214E502_Seq is Type:
+  pl_Gc465214E502_Seq{items: Array<O.Boxed<Gc465214E502>>, n: U32}
+
+def pl_Gc465214E502_fill(+d: Nat) -> Array<O.Boxed<Gc465214E502>>:
   match d:
-    case 0n: ALeaf{Gc465214E502_default()}
+    case 0n: ALeaf{O.BNone{}}
     case 1n+q: ANode{pl_Gc465214E502_fill(q), pl_Gc465214E502_fill(q)}
 
 def pl_Gc465214E502_cap(+n: U32) -> Nat: B.words_depth(n)
@@ -878,23 +1149,23 @@ def pl_Gc465214E502_win_start(+off: U32, +len: U32, +i: U32, +n: U32, pair: B.Bu
   (buf, +s) = pair
   pl_Gc465214E502_win_last(U32.is_eq((i + 1 : U32), n), off, len, i, s, buf)
 
-def pl_Gc465214E502_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & Gc465214E502: Gc465214E502_read(buf, (off + s : U32), (e - s : U32))
+def pl_Gc465214E502_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & O.Boxed<Gc465214E502>: Gc465214E502_bx_read(buf, (off + s : U32), (e - s : U32))
 
-def pl_Gc465214E502_elem(+off: U32, pair: B.Buf & (U32 & U32)) -> B.Buf & Gc465214E502:
+def pl_Gc465214E502_elem(+off: U32, pair: B.Buf & (U32 & U32)) -> B.Buf & O.Boxed<Gc465214E502>:
   (buf, se) = pair
   (s, e) = se
   pl_Gc465214E502_elem_win(off, s, e, buf)
 
-def pl_Gc465214E502_rv(+k: Nat, +i: U32, +off: U32, +len: U32, +n: U32, arr: Array<Gc465214E502>, pair: B.Buf & Gc465214E502) -> B.Buf & Array<Gc465214E502>:
+def pl_Gc465214E502_rv(+k: Nat, +i: U32, +off: U32, +len: U32, +n: U32, arr: Array<O.Boxed<Gc465214E502>>, pair: B.Buf & O.Boxed<Gc465214E502>) -> B.Buf & Array<O.Boxed<Gc465214E502>>:
   match k:
     case 0n:
       (buf, v) = pair
-      (buf, Array.set(Gc465214E502, arr, i, v))
+      (buf, Array.set(O.Boxed<Gc465214E502>, arr, i, v))
     case 1n+q:
       (buf, v) = pair
-      pl_Gc465214E502_rv(q, (i + 1 : U32), off, len, n, Array.set(Gc465214E502, arr, i, v), pl_Gc465214E502_elem(off, pl_Gc465214E502_win_start(off, len, (i + 1 : U32), n, B.read32(buf, (off + 4 * (i + 1 : U32) : U32)))))
+      pl_Gc465214E502_rv(q, (i + 1 : U32), off, len, n, Array.set(O.Boxed<Gc465214E502>, arr, i, v), pl_Gc465214E502_elem(off, pl_Gc465214E502_win_start(off, len, (i + 1 : U32), n, B.read32(buf, (off + 4 * (i + 1 : U32) : U32)))))
 
-def pl_Gc465214E502_rv_fin(+n: U32, pair: B.Buf & Array<Gc465214E502>) -> B.Buf & pl_Gc465214E502_Seq:
+def pl_Gc465214E502_rv_fin(+n: U32, pair: B.Buf & Array<O.Boxed<Gc465214E502>>) -> B.Buf & pl_Gc465214E502_Seq:
   (buf, arr) = pair
   (buf, pl_Gc465214E502_Seq{arr, n})
 
@@ -909,134 +1180,295 @@ def pl_Gc465214E502_read_nz(empty: Bool, buf: B.Buf, +off: U32, +len: U32) -> B.
 
 def pl_Gc465214E502_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & pl_Gc465214E502_Seq: pl_Gc465214E502_read_nz(U32.is_eq(len, 0), buf, off, len)
 
-def pl_Gc465214E502_sz_back(+i: U32, +acc: U32, arr: Array<Gc465214E502>, pair: Gc465214E502 & U32) -> Array<Gc465214E502> & U32:
+def pl_Gc465214E502_sz_ret(+acc: U32, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>):
+  (arr, sp) = pair
+  (arr, (acc, sp))
+
+def pl_Gc465214E502_sz_back(+i: U32, +acc: U32, arr: Array<O.Boxed<Gc465214E502>>, pair: O.Boxed<Gc465214E502> & U32) -> Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>):
   (v, +m) = pair
-  (Array.set(Gc465214E502, arr, i, v), (acc + m : U32))
+  pl_Gc465214E502_sz_ret(O.padd(acc, m), Array.swap(O.Boxed<Gc465214E502>, arr, i, v))
 
-def pl_Gc465214E502_sz_one(+i: U32, +acc: U32, pair: Array<Gc465214E502> & Gc465214E502) -> Array<Gc465214E502> & U32:
+def pl_Gc465214E502_sz_one(+i: U32, +acc: U32, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>):
   (arr, v) = pair
-  pl_Gc465214E502_sz_back(i, acc, arr, Gc465214E502_size(v))
+  pl_Gc465214E502_sz_back(i, acc, arr, Gc465214E502_bx_size(v))
 
-def pl_Gc465214E502_sz(+k: Nat, +i: U32, pair: Array<Gc465214E502> & U32) -> Array<Gc465214E502> & U32:
+def pl_Gc465214E502_sz(+k: Nat, +i: U32, st: Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)) -> Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>):
   match k:
-    case 0n: pair
+    case 0n: st
     case 1n+q:
-      (arr, +acc) = pair
-      pl_Gc465214E502_sz(q, (i + 1 : U32), pl_Gc465214E502_sz_one(i, acc, Array.swap(Gc465214E502, arr, i, Gc465214E502_default())))
+      (arr, r) = st
+      (acc, sp) = r
+      pl_Gc465214E502_sz(q, (i + 1 : U32), pl_Gc465214E502_sz_one(i, acc, Array.swap(O.Boxed<Gc465214E502>, arr, i, sp)))
 
-def pl_Gc465214E502_sz_fin(+n: U32, pair: Array<Gc465214E502> & U32) -> pl_Gc465214E502_Seq & U32:
-  (arr, +m) = pair
-  (pl_Gc465214E502_Seq{arr, n}, (4 * n + m : U32))
+def pl_Gc465214E502_sz_fin(+n: U32, st: Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)) -> pl_Gc465214E502_Seq & U32:
+  (arr, r) = st
+  (m, sp) = r
+  (pl_Gc465214E502_Seq{arr, n}, O.padd((4 * n : U32), m))
+
+def pl_Gc465214E502_sz_nz(empty: Bool, arr: Array<O.Boxed<Gc465214E502>>, +n: U32) -> pl_Gc465214E502_Seq & U32:
+  match empty:
+    case True{}: (pl_Gc465214E502_Seq{arr, n}, 0)
+    case False{}: pl_Gc465214E502_sz_fin(n, pl_Gc465214E502_sz(U32.to_nat(n), 0, (arr, (0, O.BNone{}))))
+
+def pl_Gc465214E502_sz_ok(ok: Bool, arr: Array<O.Boxed<Gc465214E502>>, +n: U32) -> pl_Gc465214E502_Seq & U32:
+  match ok:
+    case True{}: pl_Gc465214E502_sz_nz(U32.is_eq(n, 0), arr, n)
+    case False{}: (pl_Gc465214E502_Seq{arr, n}, 2147483648)
+
+def pl_Gc465214E502_sz_cap(+n: U32, pair: Array<O.Boxed<Gc465214E502>> & U32) -> pl_Gc465214E502_Seq & U32:
+  (arr, +c) = pair
+  pl_Gc465214E502_sz_ok(U32.is_le(n, c), arr, n)
 
 def pl_Gc465214E502_size(o: pl_Gc465214E502_Seq) -> pl_Gc465214E502_Seq & U32:
   match o:
-    case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_sz_fin(n, pl_Gc465214E502_sz(U32.to_nat(n), 0, (arr, 0)))
+    case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_sz_cap(n, Array.size(O.Boxed<Gc465214E502>, arr))
 
-def pl_Gc465214E502_pv_put(+i: U32, +next: U32, arr: Array<Gc465214E502>, pair: Array<U32> & Gc465214E502) -> Array<U32> & (Array<Gc465214E502> & U32):
-  (out, v) = pair
-  (out, (Array.set(Gc465214E502, arr, i, v), next))
-
-def pl_Gc465214E502_pv_placed_go(+i: U32, +cur: U32, arr: Array<Gc465214E502>, out: Array<U32>, v: Gc465214E502, +m: U32) -> Array<U32> & (Array<Gc465214E502> & U32):
-  pl_Gc465214E502_pv_put(i, (cur + m : U32), arr, (out, v))
-
-def pl_Gc465214E502_pv_placed(+i: U32, +cur: U32, arr: Array<Gc465214E502>, pair: Array<U32> & (Gc465214E502 & U32)) -> Array<U32> & (Array<Gc465214E502> & U32):
+def Gc465214E502_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<Gc465214E502> & U32)) -> Array<U32> & (O.Boxed<Gc465214E502> & U32):
   (out, r) = pair
-  (v, m) = r
-  pl_Gc465214E502_pv_placed_go(i, cur, arr, out, v, m)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def pl_Gc465214E502_pv_one(+i: U32, +pos: U32, +cur: U32, out: Array<U32>, pair: Array<Gc465214E502> & Gc465214E502) -> Array<U32> & (Array<Gc465214E502> & U32):
+def Gc465214E502_bx_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Boxed<Gc465214E502>) -> Array<U32> & (O.Boxed<Gc465214E502> & U32):
+  Gc465214E502_bx_pvb(cur, Gc465214E502_bx_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def pl_Gc465214E502_pv_ret(out: Array<U32>, c: U32, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)):
+  (arr, sp) = pair
+  (out, (arr, (c, sp)))
+
+def pl_Gc465214E502_pv_placed(+i: U32, arr: Array<O.Boxed<Gc465214E502>>, pair: Array<U32> & (O.Boxed<Gc465214E502> & U32)) -> Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)):
+  (out, r) = pair
+  (v, c) = r
+  pl_Gc465214E502_pv_ret(out, c, Array.swap(O.Boxed<Gc465214E502>, arr, i, v))
+
+def pl_Gc465214E502_pv_one(+i: U32, +pos: U32, +cur: U32, out: Array<U32>, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)):
   (arr, v) = pair
-  pl_Gc465214E502_pv_placed(i, cur, arr, Gc465214E502_putn(O.w32(out, (pos + 4 * i : U32), cur), (pos + cur : U32), v))
+  pl_Gc465214E502_pv_placed(i, arr, Gc465214E502_bx_putv(out, pos, (4 * i : U32), cur, v))
 
-def pl_Gc465214E502_pv(+k: Nat, +i: U32, +pos: U32, pair: Array<U32> & (Array<Gc465214E502> & U32)) -> Array<U32> & (Array<Gc465214E502> & U32):
+def pl_Gc465214E502_pv(+k: Nat, +i: U32, +pos: U32, st: Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>))) -> Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)):
   match k:
-    case 0n: pair
+    case 0n: st
     case 1n+q:
-      (out, st) = pair
-      (arr, cur) = st
-      pl_Gc465214E502_pv(q, (i + 1 : U32), pos, pl_Gc465214E502_pv_one(i, pos, cur, out, Array.swap(Gc465214E502, arr, i, Gc465214E502_default())))
+      (out, s1) = st
+      (arr, s2) = s1
+      (cur, sp) = s2
+      pl_Gc465214E502_pv(q, (i + 1 : U32), pos, pl_Gc465214E502_pv_one(i, pos, cur, out, Array.swap(O.Boxed<Gc465214E502>, arr, i, sp)))
 
-def pl_Gc465214E502_pv_fin(+n: U32, pair: Array<U32> & (Array<Gc465214E502> & U32)) -> Array<U32> & pl_Gc465214E502_Seq:
-  (out, st) = pair
-  (arr, cur) = st
-  (out, pl_Gc465214E502_Seq{arr, n})
-
-def pl_Gc465214E502_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<Gc465214E502>) -> Array<U32> & pl_Gc465214E502_Seq:
-  pl_Gc465214E502_pv_fin(n, pl_Gc465214E502_pv(U32.to_nat(n), 0, pos, (out, (arr, (4 * n : U32)))))
-
-def pl_Gc465214E502_pvn_go(+n: U32, out: Array<U32>, arr: Array<Gc465214E502>, +cur: U32) -> Array<U32> & (pl_Gc465214E502_Seq & U32):
+def pl_Gc465214E502_pvn_go(+n: U32, out: Array<U32>, arr: Array<O.Boxed<Gc465214E502>>, +cur: U32) -> Array<U32> & (pl_Gc465214E502_Seq & U32):
   (out, (pl_Gc465214E502_Seq{arr, n}, cur))
 
-def pl_Gc465214E502_pvn_fin(+n: U32, pair: Array<U32> & (Array<Gc465214E502> & U32)) -> Array<U32> & (pl_Gc465214E502_Seq & U32):
-  (out, st) = pair
-  (arr, cur) = st
+def pl_Gc465214E502_pvn_fin(+n: U32, st: Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>))) -> Array<U32> & (pl_Gc465214E502_Seq & U32):
+  (out, s1) = st
+  (arr, s2) = s1
+  (cur, sp) = s2
   pl_Gc465214E502_pvn_go(n, out, arr, cur)
+
+def pl_Gc465214E502_pvn_nz(empty: Bool, out: Array<U32>, +pos: U32, arr: Array<O.Boxed<Gc465214E502>>, +n: U32) -> Array<U32> & (pl_Gc465214E502_Seq & U32):
+  match empty:
+    case True{}: (out, (pl_Gc465214E502_Seq{arr, n}, 0))
+    case False{}: pl_Gc465214E502_pvn_fin(n, pl_Gc465214E502_pv(U32.to_nat(n), 0, pos, (out, (arr, ((4 * n : U32), O.BNone{})))))
 
 def pl_Gc465214E502_putn(out: Array<U32>, +pos: U32, o: pl_Gc465214E502_Seq) -> Array<U32> & (pl_Gc465214E502_Seq & U32):
   match o:
-    case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_pvn_fin(n, pl_Gc465214E502_pv(U32.to_nat(n), 0, pos, (out, (arr, (4 * n : U32)))))
+    case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_pvn_nz(U32.is_eq(n, 0), out, pos, arr, n)
+
+def pl_Gc465214E502_pv_drop(pair: Array<U32> & (pl_Gc465214E502_Seq & U32)) -> Array<U32> & pl_Gc465214E502_Seq:
+  (out, r) = pair
+  (sq, m) = r
+  (out, sq)
+
+def pl_Gc465214E502_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<O.Boxed<Gc465214E502>>) -> Array<U32> & pl_Gc465214E502_Seq:
+  pl_Gc465214E502_pv_drop(pl_Gc465214E502_pvn_nz(empty, out, pos, arr, n))
 
 def pl_Gc465214E502_put(out: Array<U32>, +pos: U32, o: pl_Gc465214E502_Seq) -> Array<U32> & pl_Gc465214E502_Seq:
   match o:
     case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_pt_nz(U32.is_eq(n, 0), pos, n, out, arr)
 
-def pl_Gc465214E502_rt_push(+i: U32, +seg: U32, arr: Array<Gc465214E502>, pair: B.Buf & (Gc465214E502 & D.Digest)) -> B.Buf & Array<Gc465214E502>:
+def pl_Gc465214E502_rl_n(+i: U32, arr: Array<O.Boxed<Gc465214E502>>, pair: B.Buf & (O.Boxed<Gc465214E502> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest):
   (h, r) = pair
   (v, d) = r
-  (M.push_prog(i, seg, d, h), Array.set(Gc465214E502, arr, i, v))
+  (h, (Array.set(O.Boxed<Gc465214E502>, arr, i, v), d))
 
-def pl_Gc465214E502_rt_one(+i: U32, +seg: U32, h: B.Buf, pair: Array<Gc465214E502> & Gc465214E502) -> B.Buf & Array<Gc465214E502>:
+def pl_Gc465214E502_rl(+hl: Nat, +i: U32, +seg: U32, h: B.Buf, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest):
   (arr, v) = pair
-  pl_Gc465214E502_rt_push(i, seg, arr, Gc465214E502_root(h, v, (seg + 64 : U32)))
+  pl_Gc465214E502_rl_n(i, arr, Gc465214E502_bx_root(hl, h, v, (seg + 64 : U32)))
 
-def pl_Gc465214E502_rt(+k: Nat, +i: U32, +seg: U32, pair: B.Buf & Array<Gc465214E502>) -> B.Buf & Array<Gc465214E502>:
-  match k:
-    case 0n: pair
-    case 1n+q:
-      (h, arr) = pair
-      pl_Gc465214E502_rt(q, (i + 1 : U32), seg, pl_Gc465214E502_rt_one(i, seg, h, Array.swap(Gc465214E502, arr, i, Gc465214E502_default())))
+def pl_Gc465214E502_mj(+hl: Nat, dl: D.Digest, pair: B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest):
+  (h, r) = pair
+  (arr, dr) = r
+  (h, (arr, D.node(hl, dl, dr)))
 
-def pl_Gc465214E502_rt_close(+n: U32, arr: Array<Gc465214E502>, pair: B.Buf & D.Digest) -> B.Buf & (pl_Gc465214E502_Seq & D.Digest):
-  (h, d) = pair
-  (h, (pl_Gc465214E502_Seq{arr, n}, O.mix_len(d, n)))
+def pl_Gc465214E502_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest):
+  match d:
+    case 0n:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(0n)))
+            case True{}:
+              (h, r) = st
+              (arr, dl) = r
+              pl_Gc465214E502_rl(hl, U32.from_nat(s), seg, h, Array.swap(O.Boxed<Gc465214E502>, arr, U32.from_nat(s), O.BNone{}))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          pl_Gc465214E502_mj(hl, dl, pl_Gc465214E502_mt(0n, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
+    case 1n+ +p:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(1n+p)))
+            case True{}:
+              pl_Gc465214E502_mt(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, seg, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+                pl_Gc465214E502_mt(p, 0n, True{}, hl, seg, Nat.div(w, 2n), s, n, st))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          pl_Gc465214E502_mj(hl, dl, pl_Gc465214E502_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
-def pl_Gc465214E502_rt_fin(+n: U32, +seg: U32, pair: B.Buf & Array<Gc465214E502>) -> B.Buf & (pl_Gc465214E502_Seq & D.Digest):
-  (h, arr) = pair
-  pl_Gc465214E502_rt_close(n, arr, M.close_prog(n, seg, h))
+def pl_Gc465214E502_prr(+hl: Nat, +seg: U32, +dep: Nat, +s: Nat, +n: Nat, pair: B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest):
+  (h, r) = pair
+  (arr, dl) = r
+  pl_Gc465214E502_mj(hl, dl, pl_Gc465214E502_mt(dep, 0n, True{}, hl, seg, O.pow2n(dep), s, n, (h, (arr, D.zero()))))
 
-def pl_Gc465214E502_root(h: B.Buf, o: pl_Gc465214E502_Seq, +seg: U32) -> B.Buf & (pl_Gc465214E502_Seq & D.Digest):
+def pl_Gc465214E502_ptr(f: Nat, inside: Bool, +hl: Nat, +seg: U32, +dep: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest):
+  match f:
+    case 0n:
+      (h, r) = st
+      (arr, dl) = r
+      (h, (arr, D.zero()))
+    case 1n+g:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zero()))
+        case True{}:
+          pl_Gc465214E502_prr(hl, seg, dep, s, n,
+            pl_Gc465214E502_ptr(g, Nat.is_lt(Nat.add(s, O.pow2n(dep)), n), hl, seg, Nat.add(dep, 2n), Nat.add(s, O.pow2n(dep)), n, st))
+
+def pl_Gc465214E502_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest)) -> B.Buf & (pl_Gc465214E502_Seq & D.Digest):
+  (h, r) = pair
+  (arr, d) = r
+  (h, (pl_Gc465214E502_Seq{arr, n}, O.mix_len(hl, d, n)))
+
+def pl_Gc465214E502_root(+hl: Nat, h: B.Buf, o: pl_Gc465214E502_Seq, +seg: U32) -> B.Buf & (pl_Gc465214E502_Seq & D.Digest):
   match o:
-    case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_rt_fin(n, seg, pl_Gc465214E502_rt(U32.to_nat(n), 0, seg, (h, arr)))
+    case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_rt_fin(hl, n, pl_Gc465214E502_ptr(1n+U32.to_nat(n), Nat.is_lt(0n, U32.to_nat(n)), hl, seg, 0n, 0n, U32.to_nat(n), (h, (arr, D.zero()))))
 
-def pl_Gc465214E502_fo_back(+i: U32, +acc: U32, arr: Array<Gc465214E502>, pair: Gc465214E502 & U32) -> Array<Gc465214E502> & U32:
+def pl_Gc465214E502_fo_back(+i: U32, +acc: U32, arr: Array<O.Boxed<Gc465214E502>>, pair: O.Boxed<Gc465214E502> & U32) -> Array<O.Boxed<Gc465214E502>> & U32:
   (v, +x) = pair
-  (Array.set(Gc465214E502, arr, i, v), (acc .^. x : U32))
+  (Array.set(O.Boxed<Gc465214E502>, arr, i, v), (acc .^. x : U32))
 
-def pl_Gc465214E502_fo_one(+i: U32, +acc: U32, pair: Array<Gc465214E502> & Gc465214E502) -> Array<Gc465214E502> & U32:
+def pl_Gc465214E502_fo_one(+i: U32, +acc: U32, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<O.Boxed<Gc465214E502>> & U32:
   (arr, v) = pair
-  pl_Gc465214E502_fo_back(i, acc, arr, Gc465214E502_force(v))
+  pl_Gc465214E502_fo_back(i, acc, arr, Gc465214E502_bx_force(v))
 
-def pl_Gc465214E502_fo(+k: Nat, +i: U32, pair: Array<Gc465214E502> & U32) -> Array<Gc465214E502> & U32:
+def pl_Gc465214E502_fo(+k: Nat, +i: U32, pair: Array<O.Boxed<Gc465214E502>> & U32) -> Array<O.Boxed<Gc465214E502>> & U32:
   match k:
     case 0n: pair
     case 1n+q:
       (arr, +acc) = pair
-      pl_Gc465214E502_fo(q, (i + 1 : U32), pl_Gc465214E502_fo_one(i, acc, Array.swap(Gc465214E502, arr, i, Gc465214E502_default())))
+      pl_Gc465214E502_fo(q, (i + 1 : U32), pl_Gc465214E502_fo_one(i, acc, Array.swap(O.Boxed<Gc465214E502>, arr, i, O.BNone{})))
 
-def pl_Gc465214E502_fo_fin(+n: U32, pair: Array<Gc465214E502> & U32) -> pl_Gc465214E502_Seq & U32:
+def pl_Gc465214E502_fo_fin(+n: U32, pair: Array<O.Boxed<Gc465214E502>> & U32) -> pl_Gc465214E502_Seq & U32:
   (arr, +x) = pair
   (pl_Gc465214E502_Seq{arr, n}, x)
 
-def pl_Gc465214E502_fo_nz(empty: Bool, +n: U32, arr: Array<Gc465214E502>) -> pl_Gc465214E502_Seq & U32:
+def pl_Gc465214E502_fo_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<Gc465214E502>>) -> pl_Gc465214E502_Seq & U32:
   pl_Gc465214E502_fo_fin(n, pl_Gc465214E502_fo(U32.to_nat(n), 0, (arr, 0)))
 
 def pl_Gc465214E502_force(o: pl_Gc465214E502_Seq) -> pl_Gc465214E502_Seq & U32:
   match o:
     case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_fo_nz(U32.is_eq(n, 0), n, arr)
 
+def pl_Gc465214E502_pk(out: Array<U32>, +pos: U32, pair: pl_Gc465214E502_Seq & Bool) -> Array<U32> & (pl_Gc465214E502_Seq & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pl_Gc465214E502_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pl_Gc465214E502_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<Gc465214E502>> & Bool) -> pl_Gc465214E502_Seq & Bool:
+  (arr, b) = pair
+  (pl_Gc465214E502_Seq{arr, n}, Bool.and(ok, b))
+
+def Gc465214E502_bx_va_back(pair: Gc465214E502 & Bool) -> O.Boxed<Gc465214E502> & Bool:
+  (v, ok) = pair
+  (O.BSome{v, O.BNone{}}, ok)
+
+def Gc465214E502_va0(+f_A: U32, +f_C: U32, acc: Bool, pair: O.Words & Bool) -> Gc465214E502 & Bool:
+  (f_B, ok) = pair
+  (Gc465214E502{f_A, f_B, f_C}, Bool.and(acc, ok))
+
+def Gc465214E502_valid(o: Gc465214E502) -> Gc465214E502 & Bool:
+  match o:
+    case Gc465214E502{+f_A, f_B, +f_C}: Gc465214E502_va0(f_A, f_C, Bool.and(u16_valid(f_A), u8_valid(f_C)), l1024_u16_valid(f_B))
+
+def Gc465214E502_bx_valid(o: O.Boxed<Gc465214E502>) -> O.Boxed<Gc465214E502> & Bool:
+  match o:
+    case O.BSome{v, rest}: Gc465214E502_bx_va_back(Gc465214E502_valid(v))
+    case O.BNone{}: (O.BNone{}, False{})
+
+def pl_Gc465214E502_va_back(+i: U32, acc: Bool, arr: Array<O.Boxed<Gc465214E502>>, pair: O.Boxed<Gc465214E502> & Bool) -> Array<O.Boxed<Gc465214E502>> & Bool:
+  (v, ok) = pair
+  (Array.set(O.Boxed<Gc465214E502>, arr, i, v), Bool.and(acc, ok))
+
+def pl_Gc465214E502_va_one(+i: U32, acc: Bool, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<O.Boxed<Gc465214E502>> & Bool:
+  (arr, v) = pair
+  pl_Gc465214E502_va_back(i, acc, arr, Gc465214E502_bx_valid(v))
+
+def pl_Gc465214E502_va(+k: Nat, +i: U32, pair: Array<O.Boxed<Gc465214E502>> & Bool) -> Array<O.Boxed<Gc465214E502>> & Bool:
+  match k:
+    case 0n: pair
+    case 1n+q:
+      (arr, acc) = pair
+      pl_Gc465214E502_va(q, (i + 1 : U32), pl_Gc465214E502_va_one(i, acc, Array.swap(O.Boxed<Gc465214E502>, arr, i, O.BNone{})))
+
+def pl_Gc465214E502_va_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<Gc465214E502>>) -> Array<O.Boxed<Gc465214E502>> & Bool:
+  pl_Gc465214E502_va(U32.to_nat(n), 0, (arr, True{}))
+
+def pl_Gc465214E502_va_go(ok: Bool, +n: U32, arr: Array<O.Boxed<Gc465214E502>>) -> pl_Gc465214E502_Seq & Bool:
+  match ok:
+    case True{}: pl_Gc465214E502_va_fin(n, True{}, pl_Gc465214E502_va_nz(U32.is_eq(n, 0), n, arr))
+    case False{}: (pl_Gc465214E502_Seq{arr, n}, False{})
+
+def pl_Gc465214E502_va_cap(ok: Bool, +n: U32, pair: Array<O.Boxed<Gc465214E502>> & U32) -> pl_Gc465214E502_Seq & Bool:
+  (arr, +c) = pair
+  pl_Gc465214E502_va_go(Bool.and(ok, U32.is_le(n, c)), n, arr)
+
+def pl_Gc465214E502_valid(o: pl_Gc465214E502_Seq) -> pl_Gc465214E502_Seq & Bool:
+  match o:
+    case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_va_cap(True{}, n, Array.size(O.Boxed<Gc465214E502>, arr))
+
+def pl_Gc465214E502_putk(out: Array<U32>, +pos: U32, o: pl_Gc465214E502_Seq) -> Array<U32> & (pl_Gc465214E502_Seq & U32): pl_Gc465214E502_pk(out, pos, pl_Gc465214E502_valid(o))
+
+def pl_Gc465214E502_du_took(t: +List<U32>, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<O.Boxed<Gc465214E502>> & +List<U32>:
+  (arr, v) = pair
+  (arr, Gc465214E502_bx_dump(v, t))
+
+def pl_Gc465214E502_du(+k: Nat, +i: U32, st: Array<O.Boxed<Gc465214E502>> & +List<U32>) -> Array<O.Boxed<Gc465214E502>> & +List<U32>:
+  match k:
+    case 0n: st
+    case 1n+q:
+      (arr, t) = st
+      pl_Gc465214E502_du(q, (i - 1 : U32), pl_Gc465214E502_du_took(t, Array.swap(O.Boxed<Gc465214E502>, arr, (i - 1 : U32), O.BNone{})))
+
+def pl_Gc465214E502_du_fin(+n: U32, st: Array<O.Boxed<Gc465214E502>> & +List<U32>) -> +List<U32>:
+  (arr, t) = st
+  O.dump_le(n, 4, t)
+
+def pl_Gc465214E502_dump(o: pl_Gc465214E502_Seq, t: +List<U32>) -> +List<U32>:
+  match o:
+    case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_du_fin(n, pl_Gc465214E502_du(U32.to_nat(n), n, (arr, t)))
+
 def pl_Gc465214E502_ew(ok: Bool, buf: B.Buf, +off: U32, +a: U32, +b: U32) -> B.Buf & Bool:
   match ok:
-    case True{}: Gc465214E502_ok(buf, (off + a : U32), (b - a : U32))
+    case True{}: Gc465214E502_bx_ok(buf, (off + a : U32), (b - a : U32))
     case False{}: (buf, False{})
 
 def pl_Gc465214E502_eb(+b: U32, pair: B.Buf & Bool) -> B.Buf & (Bool & U32):
@@ -1083,14 +1515,14 @@ def pl_Gc465214E502_len(o: pl_Gc465214E502_Seq) -> pl_Gc465214E502_Seq & U32:
   match o:
     case pl_Gc465214E502_Seq{arr, +n}: (pl_Gc465214E502_Seq{arr, n}, n)
 
-def pl_Gc465214E502_took(+n: U32, pair: Array<Gc465214E502> & Gc465214E502) -> pl_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
+def pl_Gc465214E502_took(+n: U32, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> pl_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
   (arr, v) = pair
-  (pl_Gc465214E502_Seq{arr, n}, Some{v})
+  (pl_Gc465214E502_Seq{arr, n}, Some{Gc465214E502_bx_unbox(v)})
 
-def pl_Gc465214E502_at(arr: Array<Gc465214E502>, +n: U32, +i: U32) -> pl_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
-  pl_Gc465214E502_took(n, Array.swap(Gc465214E502, arr, i, Gc465214E502_default()))
+def pl_Gc465214E502_at(arr: Array<O.Boxed<Gc465214E502>>, +n: U32, +i: U32) -> pl_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
+  pl_Gc465214E502_took(n, Array.swap(O.Boxed<Gc465214E502>, arr, i, O.BNone{}))
 
-def pl_Gc465214E502_get_in(inside: Bool, arr: Array<Gc465214E502>, +n: U32, +i: U32) -> pl_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
+def pl_Gc465214E502_get_in(inside: Bool, arr: Array<O.Boxed<Gc465214E502>>, +n: U32, +i: U32) -> pl_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
   match inside:
     case True{}: pl_Gc465214E502_at(arr, n, i)
     case False{}: (pl_Gc465214E502_Seq{arr, n}, None{})
@@ -1099,54 +1531,132 @@ def pl_Gc465214E502_get(o: pl_Gc465214E502_Seq, +i: U32) -> pl_Gc465214E502_Seq 
   match o:
     case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_get_in(U32.is_lt(i, n), arr, n, i)
 
-def pl_Gc465214E502_put_in(ok: Bool, arr: Array<Gc465214E502>, +n: U32, +i: U32, v: Gc465214E502) -> pl_Gc465214E502_Seq & Bool:
+def pl_Gc465214E502_put_in(ok: Bool, arr: Array<O.Boxed<Gc465214E502>>, +n: U32, +i: U32, v: Gc465214E502) -> pl_Gc465214E502_Seq & Bool:
   match ok:
-    case True{}: (pl_Gc465214E502_Seq{Array.set(Gc465214E502, arr, i, v), n}, True{})
+    case True{}: (pl_Gc465214E502_Seq{Array.set(O.Boxed<Gc465214E502>, arr, i, Gc465214E502_bx_wrap(v)), n}, True{})
     case False{}: (pl_Gc465214E502_Seq{arr, n}, False{})
 
 def pl_Gc465214E502_set(o: pl_Gc465214E502_Seq, +i: U32, v: Gc465214E502) -> pl_Gc465214E502_Seq & Bool:
   match o:
     case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_put_in(U32.is_lt(i, n), arr, n, i, v)
 
-def pl_Gc465214E502_moved(+i: U32, fresh: Array<Gc465214E502>, pair: Array<Gc465214E502> & Gc465214E502) -> Array<Gc465214E502> & Array<Gc465214E502>:
+def pl_Gc465214E502_moved(+i: U32, fresh: Array<O.Boxed<Gc465214E502>>, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<O.Boxed<Gc465214E502>> & Array<O.Boxed<Gc465214E502>>:
   (old, v) = pair
-  (Array.set(Gc465214E502, fresh, i, v), old)
+  (Array.set(O.Boxed<Gc465214E502>, fresh, i, v), old)
 
-def pl_Gc465214E502_copy(+k: Nat, +i: U32, pair: Array<Gc465214E502> & Array<Gc465214E502>) -> Array<Gc465214E502>:
+def pl_Gc465214E502_copy(+k: Nat, +i: U32, pair: Array<O.Boxed<Gc465214E502>> & Array<O.Boxed<Gc465214E502>>) -> Array<O.Boxed<Gc465214E502>>:
   match k:
     case 0n:
       (fresh, old) = pair
       fresh
     case 1n+q:
       (fresh, old) = pair
-      pl_Gc465214E502_copy(q, (i + 1 : U32), pl_Gc465214E502_moved(i, fresh, Array.swap(Gc465214E502, old, i, Gc465214E502_default())))
+      pl_Gc465214E502_copy(q, (i + 1 : U32), pl_Gc465214E502_moved(i, fresh, Array.swap(O.Boxed<Gc465214E502>, old, i, O.BNone{})))
 
-def pl_Gc465214E502_room_pick(fits: Bool, arr: Array<Gc465214E502>, +n: U32) -> Array<Gc465214E502>:
+def pl_Gc465214E502_room_pick(fits: Bool, arr: Array<O.Boxed<Gc465214E502>>, +n: U32) -> Array<O.Boxed<Gc465214E502>>:
   match fits:
     case True{}: arr
     case False{}: pl_Gc465214E502_copy(U32.to_nat(n), 0, (pl_Gc465214E502_fill(pl_Gc465214E502_cap((n + 1 : U32))), arr))
 
-def pl_Gc465214E502_room_sized(+n: U32, pair: Array<Gc465214E502> & U32) -> Array<Gc465214E502>:
+def pl_Gc465214E502_room_sized(+n: U32, pair: Array<O.Boxed<Gc465214E502>> & U32) -> Array<O.Boxed<Gc465214E502>>:
   (arr, +cap) = pair
   pl_Gc465214E502_room_pick(U32.is_lt(n, cap), arr, n)
 
-def pl_Gc465214E502_room(arr: Array<Gc465214E502>, +n: U32) -> Array<Gc465214E502>: pl_Gc465214E502_room_sized(n, Array.size(Gc465214E502, arr))
+def pl_Gc465214E502_room(arr: Array<O.Boxed<Gc465214E502>>, +n: U32) -> Array<O.Boxed<Gc465214E502>>: pl_Gc465214E502_room_sized(n, Array.size(O.Boxed<Gc465214E502>, arr))
 
-def pl_Gc465214E502_app_in(ok: Bool, arr: Array<Gc465214E502>, +n: U32, v: Gc465214E502) -> pl_Gc465214E502_Seq & Bool:
+def pl_Gc465214E502_app_in(ok: Bool, arr: Array<O.Boxed<Gc465214E502>>, +n: U32, v: Gc465214E502) -> pl_Gc465214E502_Seq & Bool:
   match ok:
-    case True{}: (pl_Gc465214E502_Seq{Array.set(Gc465214E502, pl_Gc465214E502_room(arr, n), n, v), (n + 1 : U32)}, True{})
+    case True{}: (pl_Gc465214E502_Seq{Array.set(O.Boxed<Gc465214E502>, pl_Gc465214E502_room(arr, n), n, Gc465214E502_bx_wrap(v)), (n + 1 : U32)}, True{})
     case False{}: (pl_Gc465214E502_Seq{arr, n}, False{})
 
 def pl_Gc465214E502_append(o: pl_Gc465214E502_Seq, v: Gc465214E502) -> pl_Gc465214E502_Seq & Bool:
   match o:
     case pl_Gc465214E502_Seq{arr, +n}: pl_Gc465214E502_app_in(True{}, arr, n, v)
 
-type pl_pl_Gc465214E502_Seq is Type:
-  pl_pl_Gc465214E502_Seq{items: Array<pl_Gc465214E502_Seq>, n: U32}
+def pl_Gc465214E502_bx_wrap(v: pl_Gc465214E502_Seq) -> O.Boxed<pl_Gc465214E502_Seq>: O.BSome{v, O.BNone{}}
 
-def pl_pl_Gc465214E502_fill(+d: Nat) -> Array<pl_Gc465214E502_Seq>:
+def pl_Gc465214E502_bx_default() -> O.Boxed<pl_Gc465214E502_Seq>: pl_Gc465214E502_bx_wrap(pl_Gc465214E502_default())
+
+def pl_Gc465214E502_bx_unbox(o: O.Boxed<pl_Gc465214E502_Seq>) -> pl_Gc465214E502_Seq:
+  match o:
+    case O.BSome{v, rest}: v
+    case O.BNone{}: pl_Gc465214E502_default()
+
+def pl_Gc465214E502_bx_rd(pair: B.Buf & pl_Gc465214E502_Seq) -> B.Buf & O.Boxed<pl_Gc465214E502_Seq>:
+  (buf, v) = pair
+  (buf, pl_Gc465214E502_bx_wrap(v))
+
+def pl_Gc465214E502_bx_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Boxed<pl_Gc465214E502_Seq>: pl_Gc465214E502_bx_rd(pl_Gc465214E502_read(buf, off, len))
+
+def pl_Gc465214E502_bx_put_back(pair: Array<U32> & pl_Gc465214E502_Seq) -> Array<U32> & O.Boxed<pl_Gc465214E502_Seq>:
+  (out, v) = pair
+  (out, pl_Gc465214E502_bx_wrap(v))
+
+def pl_Gc465214E502_bx_put(out: Array<U32>, +pos: U32, o: O.Boxed<pl_Gc465214E502_Seq>) -> Array<U32> & O.Boxed<pl_Gc465214E502_Seq>:
+  match o:
+    case O.BSome{v, rest}: pl_Gc465214E502_bx_put_back(pl_Gc465214E502_put(out, pos, v))
+    case O.BNone{}: (out, pl_Gc465214E502_bx_default())
+
+def pl_Gc465214E502_bx_putn_go(out: Array<U32>, v: pl_Gc465214E502_Seq, +n: U32) -> Array<U32> & (O.Boxed<pl_Gc465214E502_Seq> & U32):
+  (out, (pl_Gc465214E502_bx_wrap(v), n))
+
+def pl_Gc465214E502_bx_putn_back(pair: Array<U32> & (pl_Gc465214E502_Seq & U32)) -> Array<U32> & (O.Boxed<pl_Gc465214E502_Seq> & U32):
+  (out, r) = pair
+  (v, n) = r
+  pl_Gc465214E502_bx_putn_go(out, v, n)
+
+def pl_Gc465214E502_bx_putn(out: Array<U32>, +pos: U32, o: O.Boxed<pl_Gc465214E502_Seq>) -> Array<U32> & (O.Boxed<pl_Gc465214E502_Seq> & U32):
+  match o:
+    case O.BSome{v, rest}: pl_Gc465214E502_bx_putn_back(pl_Gc465214E502_putn(out, pos, v))
+    case O.BNone{}: (out, (pl_Gc465214E502_bx_default(), 0))
+
+def pl_Gc465214E502_bx_size_back(pair: pl_Gc465214E502_Seq & U32) -> O.Boxed<pl_Gc465214E502_Seq> & U32:
+  (v, +n) = pair
+  (pl_Gc465214E502_bx_wrap(v), n)
+
+def pl_Gc465214E502_bx_size(o: O.Boxed<pl_Gc465214E502_Seq>) -> O.Boxed<pl_Gc465214E502_Seq> & U32:
+  match o:
+    case O.BSome{v, rest}: pl_Gc465214E502_bx_size_back(pl_Gc465214E502_size(v))
+    case O.BNone{}: (pl_Gc465214E502_bx_default(), 0)
+
+def pl_Gc465214E502_bx_rt(pair: B.Buf & (pl_Gc465214E502_Seq & D.Digest)) -> B.Buf & (O.Boxed<pl_Gc465214E502_Seq> & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (pl_Gc465214E502_bx_wrap(v), d))
+
+def pl_Gc465214E502_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<pl_Gc465214E502_Seq>, +seg: U32) -> B.Buf & (O.Boxed<pl_Gc465214E502_Seq> & D.Digest):
+  match o:
+    case O.BSome{v, rest}: pl_Gc465214E502_bx_rt(pl_Gc465214E502_root(hl, h, v, seg))
+    case O.BNone{}: (h, (pl_Gc465214E502_bx_default(), D.zero()))
+
+def pl_Gc465214E502_bx_force(o: O.Boxed<pl_Gc465214E502_Seq>) -> O.Boxed<pl_Gc465214E502_Seq> & U32:
+  match o:
+    case O.BSome{v, rest}: pl_Gc465214E502_bx_size_back(pl_Gc465214E502_force(v))
+    case O.BNone{}: (pl_Gc465214E502_bx_default(), 0)
+
+def pl_Gc465214E502_bx_pk_back(pair: Array<U32> & (pl_Gc465214E502_Seq & U32)) -> Array<U32> & (O.Boxed<pl_Gc465214E502_Seq> & U32):
+  (out, r) = pair
+  (v, m) = r
+  (out, (O.BSome{v, O.BNone{}}, m))
+
+def pl_Gc465214E502_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<pl_Gc465214E502_Seq>) -> Array<U32> & (O.Boxed<pl_Gc465214E502_Seq> & U32):
+  match o:
+    case O.BSome{v, rest}: pl_Gc465214E502_bx_pk_back(pl_Gc465214E502_putk(out, pos, v))
+    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+
+def pl_Gc465214E502_bx_dump(o: O.Boxed<pl_Gc465214E502_Seq>, t: +List<U32>) -> +List<U32>:
+  match o:
+    case O.BSome{v, rest}: pl_Gc465214E502_dump(v, t)
+    case O.BNone{}: pl_Gc465214E502_dump(pl_Gc465214E502_default(), t)
+
+def pl_Gc465214E502_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: pl_Gc465214E502_ok(buf, off, len)
+
+type pl_pl_Gc465214E502_Seq is Type:
+  pl_pl_Gc465214E502_Seq{items: Array<O.Boxed<pl_Gc465214E502_Seq>>, n: U32}
+
+def pl_pl_Gc465214E502_fill(+d: Nat) -> Array<O.Boxed<pl_Gc465214E502_Seq>>:
   match d:
-    case 0n: ALeaf{pl_Gc465214E502_default()}
+    case 0n: ALeaf{O.BNone{}}
     case 1n+q: ANode{pl_pl_Gc465214E502_fill(q), pl_pl_Gc465214E502_fill(q)}
 
 def pl_pl_Gc465214E502_cap(+n: U32) -> Nat: B.words_depth(n)
@@ -1166,23 +1676,23 @@ def pl_pl_Gc465214E502_win_start(+off: U32, +len: U32, +i: U32, +n: U32, pair: B
   (buf, +s) = pair
   pl_pl_Gc465214E502_win_last(U32.is_eq((i + 1 : U32), n), off, len, i, s, buf)
 
-def pl_pl_Gc465214E502_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & pl_Gc465214E502_Seq: pl_Gc465214E502_read(buf, (off + s : U32), (e - s : U32))
+def pl_pl_Gc465214E502_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & O.Boxed<pl_Gc465214E502_Seq>: pl_Gc465214E502_bx_read(buf, (off + s : U32), (e - s : U32))
 
-def pl_pl_Gc465214E502_elem(+off: U32, pair: B.Buf & (U32 & U32)) -> B.Buf & pl_Gc465214E502_Seq:
+def pl_pl_Gc465214E502_elem(+off: U32, pair: B.Buf & (U32 & U32)) -> B.Buf & O.Boxed<pl_Gc465214E502_Seq>:
   (buf, se) = pair
   (s, e) = se
   pl_pl_Gc465214E502_elem_win(off, s, e, buf)
 
-def pl_pl_Gc465214E502_rv(+k: Nat, +i: U32, +off: U32, +len: U32, +n: U32, arr: Array<pl_Gc465214E502_Seq>, pair: B.Buf & pl_Gc465214E502_Seq) -> B.Buf & Array<pl_Gc465214E502_Seq>:
+def pl_pl_Gc465214E502_rv(+k: Nat, +i: U32, +off: U32, +len: U32, +n: U32, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, pair: B.Buf & O.Boxed<pl_Gc465214E502_Seq>) -> B.Buf & Array<O.Boxed<pl_Gc465214E502_Seq>>:
   match k:
     case 0n:
       (buf, v) = pair
-      (buf, Array.set(pl_Gc465214E502_Seq, arr, i, v))
+      (buf, Array.set(O.Boxed<pl_Gc465214E502_Seq>, arr, i, v))
     case 1n+q:
       (buf, v) = pair
-      pl_pl_Gc465214E502_rv(q, (i + 1 : U32), off, len, n, Array.set(pl_Gc465214E502_Seq, arr, i, v), pl_pl_Gc465214E502_elem(off, pl_pl_Gc465214E502_win_start(off, len, (i + 1 : U32), n, B.read32(buf, (off + 4 * (i + 1 : U32) : U32)))))
+      pl_pl_Gc465214E502_rv(q, (i + 1 : U32), off, len, n, Array.set(O.Boxed<pl_Gc465214E502_Seq>, arr, i, v), pl_pl_Gc465214E502_elem(off, pl_pl_Gc465214E502_win_start(off, len, (i + 1 : U32), n, B.read32(buf, (off + 4 * (i + 1 : U32) : U32)))))
 
-def pl_pl_Gc465214E502_rv_fin(+n: U32, pair: B.Buf & Array<pl_Gc465214E502_Seq>) -> B.Buf & pl_pl_Gc465214E502_Seq:
+def pl_pl_Gc465214E502_rv_fin(+n: U32, pair: B.Buf & Array<O.Boxed<pl_Gc465214E502_Seq>>) -> B.Buf & pl_pl_Gc465214E502_Seq:
   (buf, arr) = pair
   (buf, pl_pl_Gc465214E502_Seq{arr, n})
 
@@ -1197,134 +1707,287 @@ def pl_pl_Gc465214E502_read_nz(empty: Bool, buf: B.Buf, +off: U32, +len: U32) ->
 
 def pl_pl_Gc465214E502_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & pl_pl_Gc465214E502_Seq: pl_pl_Gc465214E502_read_nz(U32.is_eq(len, 0), buf, off, len)
 
-def pl_pl_Gc465214E502_sz_back(+i: U32, +acc: U32, arr: Array<pl_Gc465214E502_Seq>, pair: pl_Gc465214E502_Seq & U32) -> Array<pl_Gc465214E502_Seq> & U32:
+def pl_pl_Gc465214E502_sz_ret(+acc: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & O.Boxed<pl_Gc465214E502_Seq>) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>):
+  (arr, sp) = pair
+  (arr, (acc, sp))
+
+def pl_pl_Gc465214E502_sz_back(+i: U32, +acc: U32, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, pair: O.Boxed<pl_Gc465214E502_Seq> & U32) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>):
   (v, +m) = pair
-  (Array.set(pl_Gc465214E502_Seq, arr, i, v), (acc + m : U32))
+  pl_pl_Gc465214E502_sz_ret(O.padd(acc, m), Array.swap(O.Boxed<pl_Gc465214E502_Seq>, arr, i, v))
 
-def pl_pl_Gc465214E502_sz_one(+i: U32, +acc: U32, pair: Array<pl_Gc465214E502_Seq> & pl_Gc465214E502_Seq) -> Array<pl_Gc465214E502_Seq> & U32:
+def pl_pl_Gc465214E502_sz_one(+i: U32, +acc: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & O.Boxed<pl_Gc465214E502_Seq>) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>):
   (arr, v) = pair
-  pl_pl_Gc465214E502_sz_back(i, acc, arr, pl_Gc465214E502_size(v))
+  pl_pl_Gc465214E502_sz_back(i, acc, arr, pl_Gc465214E502_bx_size(v))
 
-def pl_pl_Gc465214E502_sz(+k: Nat, +i: U32, pair: Array<pl_Gc465214E502_Seq> & U32) -> Array<pl_Gc465214E502_Seq> & U32:
+def pl_pl_Gc465214E502_sz(+k: Nat, +i: U32, st: Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>)) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>):
   match k:
-    case 0n: pair
+    case 0n: st
     case 1n+q:
-      (arr, +acc) = pair
-      pl_pl_Gc465214E502_sz(q, (i + 1 : U32), pl_pl_Gc465214E502_sz_one(i, acc, Array.swap(pl_Gc465214E502_Seq, arr, i, pl_Gc465214E502_default())))
+      (arr, r) = st
+      (acc, sp) = r
+      pl_pl_Gc465214E502_sz(q, (i + 1 : U32), pl_pl_Gc465214E502_sz_one(i, acc, Array.swap(O.Boxed<pl_Gc465214E502_Seq>, arr, i, sp)))
 
-def pl_pl_Gc465214E502_sz_fin(+n: U32, pair: Array<pl_Gc465214E502_Seq> & U32) -> pl_pl_Gc465214E502_Seq & U32:
-  (arr, +m) = pair
-  (pl_pl_Gc465214E502_Seq{arr, n}, (4 * n + m : U32))
+def pl_pl_Gc465214E502_sz_fin(+n: U32, st: Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>)) -> pl_pl_Gc465214E502_Seq & U32:
+  (arr, r) = st
+  (m, sp) = r
+  (pl_pl_Gc465214E502_Seq{arr, n}, O.padd((4 * n : U32), m))
+
+def pl_pl_Gc465214E502_sz_nz(empty: Bool, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, +n: U32) -> pl_pl_Gc465214E502_Seq & U32:
+  match empty:
+    case True{}: (pl_pl_Gc465214E502_Seq{arr, n}, 0)
+    case False{}: pl_pl_Gc465214E502_sz_fin(n, pl_pl_Gc465214E502_sz(U32.to_nat(n), 0, (arr, (0, O.BNone{}))))
+
+def pl_pl_Gc465214E502_sz_ok(ok: Bool, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, +n: U32) -> pl_pl_Gc465214E502_Seq & U32:
+  match ok:
+    case True{}: pl_pl_Gc465214E502_sz_nz(U32.is_eq(n, 0), arr, n)
+    case False{}: (pl_pl_Gc465214E502_Seq{arr, n}, 2147483648)
+
+def pl_pl_Gc465214E502_sz_cap(+n: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & U32) -> pl_pl_Gc465214E502_Seq & U32:
+  (arr, +c) = pair
+  pl_pl_Gc465214E502_sz_ok(U32.is_le(n, c), arr, n)
 
 def pl_pl_Gc465214E502_size(o: pl_pl_Gc465214E502_Seq) -> pl_pl_Gc465214E502_Seq & U32:
   match o:
-    case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_sz_fin(n, pl_pl_Gc465214E502_sz(U32.to_nat(n), 0, (arr, 0)))
+    case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_sz_cap(n, Array.size(O.Boxed<pl_Gc465214E502_Seq>, arr))
 
-def pl_pl_Gc465214E502_pv_put(+i: U32, +next: U32, arr: Array<pl_Gc465214E502_Seq>, pair: Array<U32> & pl_Gc465214E502_Seq) -> Array<U32> & (Array<pl_Gc465214E502_Seq> & U32):
-  (out, v) = pair
-  (out, (Array.set(pl_Gc465214E502_Seq, arr, i, v), next))
-
-def pl_pl_Gc465214E502_pv_placed_go(+i: U32, +cur: U32, arr: Array<pl_Gc465214E502_Seq>, out: Array<U32>, v: pl_Gc465214E502_Seq, +m: U32) -> Array<U32> & (Array<pl_Gc465214E502_Seq> & U32):
-  pl_pl_Gc465214E502_pv_put(i, (cur + m : U32), arr, (out, v))
-
-def pl_pl_Gc465214E502_pv_placed(+i: U32, +cur: U32, arr: Array<pl_Gc465214E502_Seq>, pair: Array<U32> & (pl_Gc465214E502_Seq & U32)) -> Array<U32> & (Array<pl_Gc465214E502_Seq> & U32):
+def pl_Gc465214E502_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<pl_Gc465214E502_Seq> & U32)) -> Array<U32> & (O.Boxed<pl_Gc465214E502_Seq> & U32):
   (out, r) = pair
-  (v, m) = r
-  pl_pl_Gc465214E502_pv_placed_go(i, cur, arr, out, v, m)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def pl_pl_Gc465214E502_pv_one(+i: U32, +pos: U32, +cur: U32, out: Array<U32>, pair: Array<pl_Gc465214E502_Seq> & pl_Gc465214E502_Seq) -> Array<U32> & (Array<pl_Gc465214E502_Seq> & U32):
+def pl_Gc465214E502_bx_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Boxed<pl_Gc465214E502_Seq>) -> Array<U32> & (O.Boxed<pl_Gc465214E502_Seq> & U32):
+  pl_Gc465214E502_bx_pvb(cur, pl_Gc465214E502_bx_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def pl_pl_Gc465214E502_pv_ret(out: Array<U32>, c: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & O.Boxed<pl_Gc465214E502_Seq>) -> Array<U32> & (Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>)):
+  (arr, sp) = pair
+  (out, (arr, (c, sp)))
+
+def pl_pl_Gc465214E502_pv_placed(+i: U32, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, pair: Array<U32> & (O.Boxed<pl_Gc465214E502_Seq> & U32)) -> Array<U32> & (Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>)):
+  (out, r) = pair
+  (v, c) = r
+  pl_pl_Gc465214E502_pv_ret(out, c, Array.swap(O.Boxed<pl_Gc465214E502_Seq>, arr, i, v))
+
+def pl_pl_Gc465214E502_pv_one(+i: U32, +pos: U32, +cur: U32, out: Array<U32>, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & O.Boxed<pl_Gc465214E502_Seq>) -> Array<U32> & (Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>)):
   (arr, v) = pair
-  pl_pl_Gc465214E502_pv_placed(i, cur, arr, pl_Gc465214E502_putn(O.w32(out, (pos + 4 * i : U32), cur), (pos + cur : U32), v))
+  pl_pl_Gc465214E502_pv_placed(i, arr, pl_Gc465214E502_bx_putv(out, pos, (4 * i : U32), cur, v))
 
-def pl_pl_Gc465214E502_pv(+k: Nat, +i: U32, +pos: U32, pair: Array<U32> & (Array<pl_Gc465214E502_Seq> & U32)) -> Array<U32> & (Array<pl_Gc465214E502_Seq> & U32):
+def pl_pl_Gc465214E502_pv(+k: Nat, +i: U32, +pos: U32, st: Array<U32> & (Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>))) -> Array<U32> & (Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>)):
   match k:
-    case 0n: pair
+    case 0n: st
     case 1n+q:
-      (out, st) = pair
-      (arr, cur) = st
-      pl_pl_Gc465214E502_pv(q, (i + 1 : U32), pos, pl_pl_Gc465214E502_pv_one(i, pos, cur, out, Array.swap(pl_Gc465214E502_Seq, arr, i, pl_Gc465214E502_default())))
+      (out, s1) = st
+      (arr, s2) = s1
+      (cur, sp) = s2
+      pl_pl_Gc465214E502_pv(q, (i + 1 : U32), pos, pl_pl_Gc465214E502_pv_one(i, pos, cur, out, Array.swap(O.Boxed<pl_Gc465214E502_Seq>, arr, i, sp)))
 
-def pl_pl_Gc465214E502_pv_fin(+n: U32, pair: Array<U32> & (Array<pl_Gc465214E502_Seq> & U32)) -> Array<U32> & pl_pl_Gc465214E502_Seq:
-  (out, st) = pair
-  (arr, cur) = st
-  (out, pl_pl_Gc465214E502_Seq{arr, n})
-
-def pl_pl_Gc465214E502_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<pl_Gc465214E502_Seq>) -> Array<U32> & pl_pl_Gc465214E502_Seq:
-  pl_pl_Gc465214E502_pv_fin(n, pl_pl_Gc465214E502_pv(U32.to_nat(n), 0, pos, (out, (arr, (4 * n : U32)))))
-
-def pl_pl_Gc465214E502_pvn_go(+n: U32, out: Array<U32>, arr: Array<pl_Gc465214E502_Seq>, +cur: U32) -> Array<U32> & (pl_pl_Gc465214E502_Seq & U32):
+def pl_pl_Gc465214E502_pvn_go(+n: U32, out: Array<U32>, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, +cur: U32) -> Array<U32> & (pl_pl_Gc465214E502_Seq & U32):
   (out, (pl_pl_Gc465214E502_Seq{arr, n}, cur))
 
-def pl_pl_Gc465214E502_pvn_fin(+n: U32, pair: Array<U32> & (Array<pl_Gc465214E502_Seq> & U32)) -> Array<U32> & (pl_pl_Gc465214E502_Seq & U32):
-  (out, st) = pair
-  (arr, cur) = st
+def pl_pl_Gc465214E502_pvn_fin(+n: U32, st: Array<U32> & (Array<O.Boxed<pl_Gc465214E502_Seq>> & (U32 & O.Boxed<pl_Gc465214E502_Seq>))) -> Array<U32> & (pl_pl_Gc465214E502_Seq & U32):
+  (out, s1) = st
+  (arr, s2) = s1
+  (cur, sp) = s2
   pl_pl_Gc465214E502_pvn_go(n, out, arr, cur)
+
+def pl_pl_Gc465214E502_pvn_nz(empty: Bool, out: Array<U32>, +pos: U32, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, +n: U32) -> Array<U32> & (pl_pl_Gc465214E502_Seq & U32):
+  match empty:
+    case True{}: (out, (pl_pl_Gc465214E502_Seq{arr, n}, 0))
+    case False{}: pl_pl_Gc465214E502_pvn_fin(n, pl_pl_Gc465214E502_pv(U32.to_nat(n), 0, pos, (out, (arr, ((4 * n : U32), O.BNone{})))))
 
 def pl_pl_Gc465214E502_putn(out: Array<U32>, +pos: U32, o: pl_pl_Gc465214E502_Seq) -> Array<U32> & (pl_pl_Gc465214E502_Seq & U32):
   match o:
-    case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_pvn_fin(n, pl_pl_Gc465214E502_pv(U32.to_nat(n), 0, pos, (out, (arr, (4 * n : U32)))))
+    case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_pvn_nz(U32.is_eq(n, 0), out, pos, arr, n)
+
+def pl_pl_Gc465214E502_pv_drop(pair: Array<U32> & (pl_pl_Gc465214E502_Seq & U32)) -> Array<U32> & pl_pl_Gc465214E502_Seq:
+  (out, r) = pair
+  (sq, m) = r
+  (out, sq)
+
+def pl_pl_Gc465214E502_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>) -> Array<U32> & pl_pl_Gc465214E502_Seq:
+  pl_pl_Gc465214E502_pv_drop(pl_pl_Gc465214E502_pvn_nz(empty, out, pos, arr, n))
 
 def pl_pl_Gc465214E502_put(out: Array<U32>, +pos: U32, o: pl_pl_Gc465214E502_Seq) -> Array<U32> & pl_pl_Gc465214E502_Seq:
   match o:
     case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_pt_nz(U32.is_eq(n, 0), pos, n, out, arr)
 
-def pl_pl_Gc465214E502_rt_push(+i: U32, +seg: U32, arr: Array<pl_Gc465214E502_Seq>, pair: B.Buf & (pl_Gc465214E502_Seq & D.Digest)) -> B.Buf & Array<pl_Gc465214E502_Seq>:
+def pl_pl_Gc465214E502_rl_n(+i: U32, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, pair: B.Buf & (O.Boxed<pl_Gc465214E502_Seq> & D.Digest)) -> B.Buf & (Array<O.Boxed<pl_Gc465214E502_Seq>> & D.Digest):
   (h, r) = pair
   (v, d) = r
-  (M.push_prog(i, seg, d, h), Array.set(pl_Gc465214E502_Seq, arr, i, v))
+  (h, (Array.set(O.Boxed<pl_Gc465214E502_Seq>, arr, i, v), d))
 
-def pl_pl_Gc465214E502_rt_one(+i: U32, +seg: U32, h: B.Buf, pair: Array<pl_Gc465214E502_Seq> & pl_Gc465214E502_Seq) -> B.Buf & Array<pl_Gc465214E502_Seq>:
+def pl_pl_Gc465214E502_rl(+hl: Nat, +i: U32, +seg: U32, h: B.Buf, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & O.Boxed<pl_Gc465214E502_Seq>) -> B.Buf & (Array<O.Boxed<pl_Gc465214E502_Seq>> & D.Digest):
   (arr, v) = pair
-  pl_pl_Gc465214E502_rt_push(i, seg, arr, pl_Gc465214E502_root(h, v, (seg + 64 : U32)))
+  pl_pl_Gc465214E502_rl_n(i, arr, pl_Gc465214E502_bx_root(hl, h, v, (seg + 64 : U32)))
 
-def pl_pl_Gc465214E502_rt(+k: Nat, +i: U32, +seg: U32, pair: B.Buf & Array<pl_Gc465214E502_Seq>) -> B.Buf & Array<pl_Gc465214E502_Seq>:
-  match k:
-    case 0n: pair
-    case 1n+q:
-      (h, arr) = pair
-      pl_pl_Gc465214E502_rt(q, (i + 1 : U32), seg, pl_pl_Gc465214E502_rt_one(i, seg, h, Array.swap(pl_Gc465214E502_Seq, arr, i, pl_Gc465214E502_default())))
+def pl_pl_Gc465214E502_mj(+hl: Nat, dl: D.Digest, pair: B.Buf & (Array<O.Boxed<pl_Gc465214E502_Seq>> & D.Digest)) -> B.Buf & (Array<O.Boxed<pl_Gc465214E502_Seq>> & D.Digest):
+  (h, r) = pair
+  (arr, dr) = r
+  (h, (arr, D.node(hl, dl, dr)))
 
-def pl_pl_Gc465214E502_rt_close(+n: U32, arr: Array<pl_Gc465214E502_Seq>, pair: B.Buf & D.Digest) -> B.Buf & (pl_pl_Gc465214E502_Seq & D.Digest):
-  (h, d) = pair
-  (h, (pl_pl_Gc465214E502_Seq{arr, n}, O.mix_len(d, n)))
+def pl_pl_Gc465214E502_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<O.Boxed<pl_Gc465214E502_Seq>> & D.Digest)) -> B.Buf & (Array<O.Boxed<pl_Gc465214E502_Seq>> & D.Digest):
+  match d:
+    case 0n:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(0n)))
+            case True{}:
+              (h, r) = st
+              (arr, dl) = r
+              pl_pl_Gc465214E502_rl(hl, U32.from_nat(s), seg, h, Array.swap(O.Boxed<pl_Gc465214E502_Seq>, arr, U32.from_nat(s), O.BNone{}))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          pl_pl_Gc465214E502_mj(hl, dl, pl_pl_Gc465214E502_mt(0n, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
+    case 1n+ +p:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(1n+p)))
+            case True{}:
+              pl_pl_Gc465214E502_mt(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, seg, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+                pl_pl_Gc465214E502_mt(p, 0n, True{}, hl, seg, Nat.div(w, 2n), s, n, st))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          pl_pl_Gc465214E502_mj(hl, dl, pl_pl_Gc465214E502_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
-def pl_pl_Gc465214E502_rt_fin(+n: U32, +seg: U32, pair: B.Buf & Array<pl_Gc465214E502_Seq>) -> B.Buf & (pl_pl_Gc465214E502_Seq & D.Digest):
-  (h, arr) = pair
-  pl_pl_Gc465214E502_rt_close(n, arr, M.close_prog(n, seg, h))
+def pl_pl_Gc465214E502_prr(+hl: Nat, +seg: U32, +dep: Nat, +s: Nat, +n: Nat, pair: B.Buf & (Array<O.Boxed<pl_Gc465214E502_Seq>> & D.Digest)) -> B.Buf & (Array<O.Boxed<pl_Gc465214E502_Seq>> & D.Digest):
+  (h, r) = pair
+  (arr, dl) = r
+  pl_pl_Gc465214E502_mj(hl, dl, pl_pl_Gc465214E502_mt(dep, 0n, True{}, hl, seg, O.pow2n(dep), s, n, (h, (arr, D.zero()))))
 
-def pl_pl_Gc465214E502_root(h: B.Buf, o: pl_pl_Gc465214E502_Seq, +seg: U32) -> B.Buf & (pl_pl_Gc465214E502_Seq & D.Digest):
+def pl_pl_Gc465214E502_ptr(f: Nat, inside: Bool, +hl: Nat, +seg: U32, +dep: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<O.Boxed<pl_Gc465214E502_Seq>> & D.Digest)) -> B.Buf & (Array<O.Boxed<pl_Gc465214E502_Seq>> & D.Digest):
+  match f:
+    case 0n:
+      (h, r) = st
+      (arr, dl) = r
+      (h, (arr, D.zero()))
+    case 1n+g:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zero()))
+        case True{}:
+          pl_pl_Gc465214E502_prr(hl, seg, dep, s, n,
+            pl_pl_Gc465214E502_ptr(g, Nat.is_lt(Nat.add(s, O.pow2n(dep)), n), hl, seg, Nat.add(dep, 2n), Nat.add(s, O.pow2n(dep)), n, st))
+
+def pl_pl_Gc465214E502_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<pl_Gc465214E502_Seq>> & D.Digest)) -> B.Buf & (pl_pl_Gc465214E502_Seq & D.Digest):
+  (h, r) = pair
+  (arr, d) = r
+  (h, (pl_pl_Gc465214E502_Seq{arr, n}, O.mix_len(hl, d, n)))
+
+def pl_pl_Gc465214E502_root(+hl: Nat, h: B.Buf, o: pl_pl_Gc465214E502_Seq, +seg: U32) -> B.Buf & (pl_pl_Gc465214E502_Seq & D.Digest):
   match o:
-    case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_rt_fin(n, seg, pl_pl_Gc465214E502_rt(U32.to_nat(n), 0, seg, (h, arr)))
+    case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_rt_fin(hl, n, pl_pl_Gc465214E502_ptr(1n+U32.to_nat(n), Nat.is_lt(0n, U32.to_nat(n)), hl, seg, 0n, 0n, U32.to_nat(n), (h, (arr, D.zero()))))
 
-def pl_pl_Gc465214E502_fo_back(+i: U32, +acc: U32, arr: Array<pl_Gc465214E502_Seq>, pair: pl_Gc465214E502_Seq & U32) -> Array<pl_Gc465214E502_Seq> & U32:
+def pl_pl_Gc465214E502_fo_back(+i: U32, +acc: U32, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, pair: O.Boxed<pl_Gc465214E502_Seq> & U32) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & U32:
   (v, +x) = pair
-  (Array.set(pl_Gc465214E502_Seq, arr, i, v), (acc .^. x : U32))
+  (Array.set(O.Boxed<pl_Gc465214E502_Seq>, arr, i, v), (acc .^. x : U32))
 
-def pl_pl_Gc465214E502_fo_one(+i: U32, +acc: U32, pair: Array<pl_Gc465214E502_Seq> & pl_Gc465214E502_Seq) -> Array<pl_Gc465214E502_Seq> & U32:
+def pl_pl_Gc465214E502_fo_one(+i: U32, +acc: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & O.Boxed<pl_Gc465214E502_Seq>) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & U32:
   (arr, v) = pair
-  pl_pl_Gc465214E502_fo_back(i, acc, arr, pl_Gc465214E502_force(v))
+  pl_pl_Gc465214E502_fo_back(i, acc, arr, pl_Gc465214E502_bx_force(v))
 
-def pl_pl_Gc465214E502_fo(+k: Nat, +i: U32, pair: Array<pl_Gc465214E502_Seq> & U32) -> Array<pl_Gc465214E502_Seq> & U32:
+def pl_pl_Gc465214E502_fo(+k: Nat, +i: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & U32) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & U32:
   match k:
     case 0n: pair
     case 1n+q:
       (arr, +acc) = pair
-      pl_pl_Gc465214E502_fo(q, (i + 1 : U32), pl_pl_Gc465214E502_fo_one(i, acc, Array.swap(pl_Gc465214E502_Seq, arr, i, pl_Gc465214E502_default())))
+      pl_pl_Gc465214E502_fo(q, (i + 1 : U32), pl_pl_Gc465214E502_fo_one(i, acc, Array.swap(O.Boxed<pl_Gc465214E502_Seq>, arr, i, O.BNone{})))
 
-def pl_pl_Gc465214E502_fo_fin(+n: U32, pair: Array<pl_Gc465214E502_Seq> & U32) -> pl_pl_Gc465214E502_Seq & U32:
+def pl_pl_Gc465214E502_fo_fin(+n: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & U32) -> pl_pl_Gc465214E502_Seq & U32:
   (arr, +x) = pair
   (pl_pl_Gc465214E502_Seq{arr, n}, x)
 
-def pl_pl_Gc465214E502_fo_nz(empty: Bool, +n: U32, arr: Array<pl_Gc465214E502_Seq>) -> pl_pl_Gc465214E502_Seq & U32:
+def pl_pl_Gc465214E502_fo_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>) -> pl_pl_Gc465214E502_Seq & U32:
   pl_pl_Gc465214E502_fo_fin(n, pl_pl_Gc465214E502_fo(U32.to_nat(n), 0, (arr, 0)))
 
 def pl_pl_Gc465214E502_force(o: pl_pl_Gc465214E502_Seq) -> pl_pl_Gc465214E502_Seq & U32:
   match o:
     case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_fo_nz(U32.is_eq(n, 0), n, arr)
 
+def pl_pl_Gc465214E502_pk(out: Array<U32>, +pos: U32, pair: pl_pl_Gc465214E502_Seq & Bool) -> Array<U32> & (pl_pl_Gc465214E502_Seq & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pl_pl_Gc465214E502_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pl_pl_Gc465214E502_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & Bool) -> pl_pl_Gc465214E502_Seq & Bool:
+  (arr, b) = pair
+  (pl_pl_Gc465214E502_Seq{arr, n}, Bool.and(ok, b))
+
+def pl_Gc465214E502_bx_va_back(pair: pl_Gc465214E502_Seq & Bool) -> O.Boxed<pl_Gc465214E502_Seq> & Bool:
+  (v, ok) = pair
+  (O.BSome{v, O.BNone{}}, ok)
+
+def pl_Gc465214E502_bx_valid(o: O.Boxed<pl_Gc465214E502_Seq>) -> O.Boxed<pl_Gc465214E502_Seq> & Bool:
+  match o:
+    case O.BSome{v, rest}: pl_Gc465214E502_bx_va_back(pl_Gc465214E502_valid(v))
+    case O.BNone{}: (O.BNone{}, False{})
+
+def pl_pl_Gc465214E502_va_back(+i: U32, acc: Bool, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, pair: O.Boxed<pl_Gc465214E502_Seq> & Bool) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & Bool:
+  (v, ok) = pair
+  (Array.set(O.Boxed<pl_Gc465214E502_Seq>, arr, i, v), Bool.and(acc, ok))
+
+def pl_pl_Gc465214E502_va_one(+i: U32, acc: Bool, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & O.Boxed<pl_Gc465214E502_Seq>) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & Bool:
+  (arr, v) = pair
+  pl_pl_Gc465214E502_va_back(i, acc, arr, pl_Gc465214E502_bx_valid(v))
+
+def pl_pl_Gc465214E502_va(+k: Nat, +i: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & Bool) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & Bool:
+  match k:
+    case 0n: pair
+    case 1n+q:
+      (arr, acc) = pair
+      pl_pl_Gc465214E502_va(q, (i + 1 : U32), pl_pl_Gc465214E502_va_one(i, acc, Array.swap(O.Boxed<pl_Gc465214E502_Seq>, arr, i, O.BNone{})))
+
+def pl_pl_Gc465214E502_va_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & Bool:
+  pl_pl_Gc465214E502_va(U32.to_nat(n), 0, (arr, True{}))
+
+def pl_pl_Gc465214E502_va_go(ok: Bool, +n: U32, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>) -> pl_pl_Gc465214E502_Seq & Bool:
+  match ok:
+    case True{}: pl_pl_Gc465214E502_va_fin(n, True{}, pl_pl_Gc465214E502_va_nz(U32.is_eq(n, 0), n, arr))
+    case False{}: (pl_pl_Gc465214E502_Seq{arr, n}, False{})
+
+def pl_pl_Gc465214E502_va_cap(ok: Bool, +n: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & U32) -> pl_pl_Gc465214E502_Seq & Bool:
+  (arr, +c) = pair
+  pl_pl_Gc465214E502_va_go(Bool.and(ok, U32.is_le(n, c)), n, arr)
+
+def pl_pl_Gc465214E502_valid(o: pl_pl_Gc465214E502_Seq) -> pl_pl_Gc465214E502_Seq & Bool:
+  match o:
+    case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_va_cap(True{}, n, Array.size(O.Boxed<pl_Gc465214E502_Seq>, arr))
+
+def pl_pl_Gc465214E502_putk(out: Array<U32>, +pos: U32, o: pl_pl_Gc465214E502_Seq) -> Array<U32> & (pl_pl_Gc465214E502_Seq & U32): pl_pl_Gc465214E502_pk(out, pos, pl_pl_Gc465214E502_valid(o))
+
+def pl_pl_Gc465214E502_du_took(t: +List<U32>, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & O.Boxed<pl_Gc465214E502_Seq>) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & +List<U32>:
+  (arr, v) = pair
+  (arr, pl_Gc465214E502_bx_dump(v, t))
+
+def pl_pl_Gc465214E502_du(+k: Nat, +i: U32, st: Array<O.Boxed<pl_Gc465214E502_Seq>> & +List<U32>) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & +List<U32>:
+  match k:
+    case 0n: st
+    case 1n+q:
+      (arr, t) = st
+      pl_pl_Gc465214E502_du(q, (i - 1 : U32), pl_pl_Gc465214E502_du_took(t, Array.swap(O.Boxed<pl_Gc465214E502_Seq>, arr, (i - 1 : U32), O.BNone{})))
+
+def pl_pl_Gc465214E502_du_fin(+n: U32, st: Array<O.Boxed<pl_Gc465214E502_Seq>> & +List<U32>) -> +List<U32>:
+  (arr, t) = st
+  O.dump_le(n, 4, t)
+
+def pl_pl_Gc465214E502_dump(o: pl_pl_Gc465214E502_Seq, t: +List<U32>) -> +List<U32>:
+  match o:
+    case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_du_fin(n, pl_pl_Gc465214E502_du(U32.to_nat(n), n, (arr, t)))
+
 def pl_pl_Gc465214E502_ew(ok: Bool, buf: B.Buf, +off: U32, +a: U32, +b: U32) -> B.Buf & Bool:
   match ok:
-    case True{}: pl_Gc465214E502_ok(buf, (off + a : U32), (b - a : U32))
+    case True{}: pl_Gc465214E502_bx_ok(buf, (off + a : U32), (b - a : U32))
     case False{}: (buf, False{})
 
 def pl_pl_Gc465214E502_eb(+b: U32, pair: B.Buf & Bool) -> B.Buf & (Bool & U32):
@@ -1371,14 +2034,14 @@ def pl_pl_Gc465214E502_len(o: pl_pl_Gc465214E502_Seq) -> pl_pl_Gc465214E502_Seq 
   match o:
     case pl_pl_Gc465214E502_Seq{arr, +n}: (pl_pl_Gc465214E502_Seq{arr, n}, n)
 
-def pl_pl_Gc465214E502_took(+n: U32, pair: Array<pl_Gc465214E502_Seq> & pl_Gc465214E502_Seq) -> pl_pl_Gc465214E502_Seq & Maybe<&1, pl_Gc465214E502_Seq>:
+def pl_pl_Gc465214E502_took(+n: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & O.Boxed<pl_Gc465214E502_Seq>) -> pl_pl_Gc465214E502_Seq & Maybe<&1, pl_Gc465214E502_Seq>:
   (arr, v) = pair
-  (pl_pl_Gc465214E502_Seq{arr, n}, Some{v})
+  (pl_pl_Gc465214E502_Seq{arr, n}, Some{pl_Gc465214E502_bx_unbox(v)})
 
-def pl_pl_Gc465214E502_at(arr: Array<pl_Gc465214E502_Seq>, +n: U32, +i: U32) -> pl_pl_Gc465214E502_Seq & Maybe<&1, pl_Gc465214E502_Seq>:
-  pl_pl_Gc465214E502_took(n, Array.swap(pl_Gc465214E502_Seq, arr, i, pl_Gc465214E502_default()))
+def pl_pl_Gc465214E502_at(arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, +n: U32, +i: U32) -> pl_pl_Gc465214E502_Seq & Maybe<&1, pl_Gc465214E502_Seq>:
+  pl_pl_Gc465214E502_took(n, Array.swap(O.Boxed<pl_Gc465214E502_Seq>, arr, i, O.BNone{}))
 
-def pl_pl_Gc465214E502_get_in(inside: Bool, arr: Array<pl_Gc465214E502_Seq>, +n: U32, +i: U32) -> pl_pl_Gc465214E502_Seq & Maybe<&1, pl_Gc465214E502_Seq>:
+def pl_pl_Gc465214E502_get_in(inside: Bool, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, +n: U32, +i: U32) -> pl_pl_Gc465214E502_Seq & Maybe<&1, pl_Gc465214E502_Seq>:
   match inside:
     case True{}: pl_pl_Gc465214E502_at(arr, n, i)
     case False{}: (pl_pl_Gc465214E502_Seq{arr, n}, None{})
@@ -1387,42 +2050,42 @@ def pl_pl_Gc465214E502_get(o: pl_pl_Gc465214E502_Seq, +i: U32) -> pl_pl_Gc465214
   match o:
     case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_get_in(U32.is_lt(i, n), arr, n, i)
 
-def pl_pl_Gc465214E502_put_in(ok: Bool, arr: Array<pl_Gc465214E502_Seq>, +n: U32, +i: U32, v: pl_Gc465214E502_Seq) -> pl_pl_Gc465214E502_Seq & Bool:
+def pl_pl_Gc465214E502_put_in(ok: Bool, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, +n: U32, +i: U32, v: pl_Gc465214E502_Seq) -> pl_pl_Gc465214E502_Seq & Bool:
   match ok:
-    case True{}: (pl_pl_Gc465214E502_Seq{Array.set(pl_Gc465214E502_Seq, arr, i, v), n}, True{})
+    case True{}: (pl_pl_Gc465214E502_Seq{Array.set(O.Boxed<pl_Gc465214E502_Seq>, arr, i, pl_Gc465214E502_bx_wrap(v)), n}, True{})
     case False{}: (pl_pl_Gc465214E502_Seq{arr, n}, False{})
 
 def pl_pl_Gc465214E502_set(o: pl_pl_Gc465214E502_Seq, +i: U32, v: pl_Gc465214E502_Seq) -> pl_pl_Gc465214E502_Seq & Bool:
   match o:
     case pl_pl_Gc465214E502_Seq{arr, +n}: pl_pl_Gc465214E502_put_in(U32.is_lt(i, n), arr, n, i, v)
 
-def pl_pl_Gc465214E502_moved(+i: U32, fresh: Array<pl_Gc465214E502_Seq>, pair: Array<pl_Gc465214E502_Seq> & pl_Gc465214E502_Seq) -> Array<pl_Gc465214E502_Seq> & Array<pl_Gc465214E502_Seq>:
+def pl_pl_Gc465214E502_moved(+i: U32, fresh: Array<O.Boxed<pl_Gc465214E502_Seq>>, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & O.Boxed<pl_Gc465214E502_Seq>) -> Array<O.Boxed<pl_Gc465214E502_Seq>> & Array<O.Boxed<pl_Gc465214E502_Seq>>:
   (old, v) = pair
-  (Array.set(pl_Gc465214E502_Seq, fresh, i, v), old)
+  (Array.set(O.Boxed<pl_Gc465214E502_Seq>, fresh, i, v), old)
 
-def pl_pl_Gc465214E502_copy(+k: Nat, +i: U32, pair: Array<pl_Gc465214E502_Seq> & Array<pl_Gc465214E502_Seq>) -> Array<pl_Gc465214E502_Seq>:
+def pl_pl_Gc465214E502_copy(+k: Nat, +i: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & Array<O.Boxed<pl_Gc465214E502_Seq>>) -> Array<O.Boxed<pl_Gc465214E502_Seq>>:
   match k:
     case 0n:
       (fresh, old) = pair
       fresh
     case 1n+q:
       (fresh, old) = pair
-      pl_pl_Gc465214E502_copy(q, (i + 1 : U32), pl_pl_Gc465214E502_moved(i, fresh, Array.swap(pl_Gc465214E502_Seq, old, i, pl_Gc465214E502_default())))
+      pl_pl_Gc465214E502_copy(q, (i + 1 : U32), pl_pl_Gc465214E502_moved(i, fresh, Array.swap(O.Boxed<pl_Gc465214E502_Seq>, old, i, O.BNone{})))
 
-def pl_pl_Gc465214E502_room_pick(fits: Bool, arr: Array<pl_Gc465214E502_Seq>, +n: U32) -> Array<pl_Gc465214E502_Seq>:
+def pl_pl_Gc465214E502_room_pick(fits: Bool, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, +n: U32) -> Array<O.Boxed<pl_Gc465214E502_Seq>>:
   match fits:
     case True{}: arr
     case False{}: pl_pl_Gc465214E502_copy(U32.to_nat(n), 0, (pl_pl_Gc465214E502_fill(pl_pl_Gc465214E502_cap((n + 1 : U32))), arr))
 
-def pl_pl_Gc465214E502_room_sized(+n: U32, pair: Array<pl_Gc465214E502_Seq> & U32) -> Array<pl_Gc465214E502_Seq>:
+def pl_pl_Gc465214E502_room_sized(+n: U32, pair: Array<O.Boxed<pl_Gc465214E502_Seq>> & U32) -> Array<O.Boxed<pl_Gc465214E502_Seq>>:
   (arr, +cap) = pair
   pl_pl_Gc465214E502_room_pick(U32.is_lt(n, cap), arr, n)
 
-def pl_pl_Gc465214E502_room(arr: Array<pl_Gc465214E502_Seq>, +n: U32) -> Array<pl_Gc465214E502_Seq>: pl_pl_Gc465214E502_room_sized(n, Array.size(pl_Gc465214E502_Seq, arr))
+def pl_pl_Gc465214E502_room(arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, +n: U32) -> Array<O.Boxed<pl_Gc465214E502_Seq>>: pl_pl_Gc465214E502_room_sized(n, Array.size(O.Boxed<pl_Gc465214E502_Seq>, arr))
 
-def pl_pl_Gc465214E502_app_in(ok: Bool, arr: Array<pl_Gc465214E502_Seq>, +n: U32, v: pl_Gc465214E502_Seq) -> pl_pl_Gc465214E502_Seq & Bool:
+def pl_pl_Gc465214E502_app_in(ok: Bool, arr: Array<O.Boxed<pl_Gc465214E502_Seq>>, +n: U32, v: pl_Gc465214E502_Seq) -> pl_pl_Gc465214E502_Seq & Bool:
   match ok:
-    case True{}: (pl_pl_Gc465214E502_Seq{Array.set(pl_Gc465214E502_Seq, pl_pl_Gc465214E502_room(arr, n), n, v), (n + 1 : U32)}, True{})
+    case True{}: (pl_pl_Gc465214E502_Seq{Array.set(O.Boxed<pl_Gc465214E502_Seq>, pl_pl_Gc465214E502_room(arr, n), n, pl_Gc465214E502_bx_wrap(v)), (n + 1 : U32)}, True{})
     case False{}: (pl_pl_Gc465214E502_Seq{arr, n}, False{})
 
 def pl_pl_Gc465214E502_append(o: pl_pl_Gc465214E502_Seq, v: pl_Gc465214E502_Seq) -> pl_pl_Gc465214E502_Seq & Bool:
@@ -1444,16 +2107,16 @@ def GpF350A3C486_put(out: Array<U32>, +pos: U32, o: GpF350A3C486) -> Array<U32>:
   match o:
     case GpF350A3C486{+f_A}: u8_put(out, (pos + 0 : U32), f_A)
 
-def GpF350A3C486_fin(+d_f_A: D.Digest, h: B.Buf, +f_A: U32) -> B.Buf & D.Digest:
-  (h, O.mix_len(D.hash_pair(D.zero(), d_f_A), 1))
+def GpF350A3C486_fin(+hl: Nat, +d_f_A: D.Digest, h: B.Buf, +f_A: U32) -> B.Buf & D.Digest:
+  (h, O.mix_len(hl, D.node(hl, D.zero(), d_f_A), 1))
 
-def GpF350A3C486_rt0(+seg: U32, +f_A: U32, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
+def GpF350A3C486_rt0(+hl: Nat, +seg: U32, +f_A: U32, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
   (h, d_f_A) = pair
-  GpF350A3C486_fin(d_f_A, h, f_A)
+  GpF350A3C486_fin(hl, d_f_A, h, f_A)
 
-def GpF350A3C486_root(h: B.Buf, o: GpF350A3C486, +seg: U32) -> B.Buf & D.Digest:
+def GpF350A3C486_root(+hl: Nat, h: B.Buf, o: GpF350A3C486, +seg: U32) -> B.Buf & D.Digest:
   match o:
-    case GpF350A3C486{+f_A}: GpF350A3C486_rt0(seg, f_A, u8_root(h, f_A, seg))
+    case GpF350A3C486{+f_A}: GpF350A3C486_rt0(hl, seg, f_A, u8_root(hl, h, f_A, seg))
 
 def GpF350A3C486_get_f_A(o: GpF350A3C486) -> GpF350A3C486 & U32:
   match o:
@@ -1473,6 +2136,10 @@ def GpF350A3C486_set_f_A(o: GpF350A3C486, +v: U32) -> GpF350A3C486 & Bool: GpF35
 def GpF350A3C486_force(o: GpF350A3C486) -> U32:
   match o:
     case GpF350A3C486{+f_A}: u8_force(f_A)
+
+def GpF350A3C486_dump(o: GpF350A3C486, t: +List<U32>) -> +List<U32>:
+  match o:
+    case GpF350A3C486{+f_A}: u8_dump(f_A, t)
 
 def GpF350A3C486_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -1514,9 +2181,13 @@ def l10_GpF350A3C486_rd_start(empty: Bool, +off: U32, +n: U32, buf: B.Buf) -> B.
 
 def l10_GpF350A3C486_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & l10_GpF350A3C486_Seq: l10_GpF350A3C486_rd_start(U32.is_eq(len, 0), off, U32.div(len, 1), buf)
 
+def l10_GpF350A3C486_szf(+n: U32, pair: Array<GpF350A3C486> & U32) -> l10_GpF350A3C486_Seq & U32:
+  (arr, +c) = pair
+  (l10_GpF350A3C486_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 1 : U32), 2147483648))
+
 def l10_GpF350A3C486_size(o: l10_GpF350A3C486_Seq) -> l10_GpF350A3C486_Seq & U32:
   match o:
-    case l10_GpF350A3C486_Seq{arr, +n}: (l10_GpF350A3C486_Seq{arr, n}, (n * 1 : U32))
+    case l10_GpF350A3C486_Seq{arr, +n}: l10_GpF350A3C486_szf(n, Array.size(GpF350A3C486, arr))
 
 def l10_GpF350A3C486_pt(+k: Nat, +i: U32, +pos: U32, out: Array<U32>, pair: Array<GpF350A3C486> & GpF350A3C486) -> Array<U32> & Array<GpF350A3C486>:
   match k:
@@ -1548,37 +2219,61 @@ def l10_GpF350A3C486_putn(out: Array<U32>, +pos: U32, o: l10_GpF350A3C486_Seq) -
   match o:
     case l10_GpF350A3C486_Seq{arr, +n}: l10_GpF350A3C486_ptn_fin(n, l10_GpF350A3C486_pt_nz(U32.is_eq(n, 0), pos, n, out, arr))
 
-def l10_GpF350A3C486_rt_push(+i: U32, +seg: U32, arr: Array<GpF350A3C486>, pair: B.Buf & (GpF350A3C486 & D.Digest)) -> B.Buf & Array<GpF350A3C486>:
-  (h, r) = pair
-  (v, d) = r
-  (M.push_leaf(i, seg, d, h), Array.set(GpF350A3C486, arr, i, v))
-
-def l10_GpF350A3C486_rt_leaf(+i: U32, +seg: U32, arr: Array<GpF350A3C486>, pair: B.Buf & D.Digest) -> B.Buf & Array<GpF350A3C486>:
+def l10_GpF350A3C486_rl_d(arr: Array<GpF350A3C486>, pair: B.Buf & D.Digest) -> B.Buf & (Array<GpF350A3C486> & D.Digest):
   (h, d) = pair
-  (M.push_leaf(i, seg, d, h), arr)
+  (h, (arr, d))
 
-def l10_GpF350A3C486_rt_one(+i: U32, +seg: U32, h: B.Buf, pair: Array<GpF350A3C486> & GpF350A3C486) -> B.Buf & Array<GpF350A3C486>:
+def l10_GpF350A3C486_rl(+hl: Nat, +seg: U32, h: B.Buf, pair: Array<GpF350A3C486> & GpF350A3C486) -> B.Buf & (Array<GpF350A3C486> & D.Digest):
   (arr, +v) = pair
-  l10_GpF350A3C486_rt_leaf(i, seg, arr, GpF350A3C486_root(h, v, (seg + 64 : U32)))
+  l10_GpF350A3C486_rl_d(arr, GpF350A3C486_root(hl, h, v, (seg + 64 : U32)))
 
-def l10_GpF350A3C486_rt(+k: Nat, +i: U32, +seg: U32, pair: B.Buf & Array<GpF350A3C486>) -> B.Buf & Array<GpF350A3C486>:
-  match k:
-    case 0n: pair
-    case 1n+q:
-      (h, arr) = pair
-      l10_GpF350A3C486_rt(q, (i + 1 : U32), seg, l10_GpF350A3C486_rt_one(i, seg, h, Array.get(GpF350A3C486, arr, i)))
+def l10_GpF350A3C486_mj(+hl: Nat, dl: D.Digest, pair: B.Buf & (Array<GpF350A3C486> & D.Digest)) -> B.Buf & (Array<GpF350A3C486> & D.Digest):
+  (h, r) = pair
+  (arr, dr) = r
+  (h, (arr, D.node(hl, dl, dr)))
 
-def l10_GpF350A3C486_rt_close(+n: U32, arr: Array<GpF350A3C486>, pair: B.Buf & D.Digest) -> B.Buf & (l10_GpF350A3C486_Seq & D.Digest):
-  (h, d) = pair
-  (h, (l10_GpF350A3C486_Seq{arr, n}, O.mix_len(d, n)))
+def l10_GpF350A3C486_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<GpF350A3C486> & D.Digest)) -> B.Buf & (Array<GpF350A3C486> & D.Digest):
+  match d:
+    case 0n:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(0n)))
+            case True{}:
+              (h, r) = st
+              (arr, dl) = r
+              l10_GpF350A3C486_rl(hl, seg, h, Array.get(GpF350A3C486, arr, U32.from_nat(s)))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          l10_GpF350A3C486_mj(hl, dl, l10_GpF350A3C486_mt(0n, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
+    case 1n+ +p:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(1n+p)))
+            case True{}:
+              l10_GpF350A3C486_mt(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, seg, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+                l10_GpF350A3C486_mt(p, 0n, True{}, hl, seg, Nat.div(w, 2n), s, n, st))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          l10_GpF350A3C486_mj(hl, dl, l10_GpF350A3C486_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
-def l10_GpF350A3C486_rt_fin(+n: U32, +seg: U32, pair: B.Buf & Array<GpF350A3C486>) -> B.Buf & (l10_GpF350A3C486_Seq & D.Digest):
-  (h, arr) = pair
-  l10_GpF350A3C486_rt_close(n, arr, M.close(4, n, seg, h))
+def l10_GpF350A3C486_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<GpF350A3C486> & D.Digest)) -> B.Buf & (l10_GpF350A3C486_Seq & D.Digest):
+  (h, r) = pair
+  (arr, d) = r
+  (h, (l10_GpF350A3C486_Seq{arr, n}, O.mix_len(hl, d, n)))
 
-def l10_GpF350A3C486_root(h: B.Buf, o: l10_GpF350A3C486_Seq, +seg: U32) -> B.Buf & (l10_GpF350A3C486_Seq & D.Digest):
+def l10_GpF350A3C486_root(+hl: Nat, h: B.Buf, o: l10_GpF350A3C486_Seq, +seg: U32) -> B.Buf & (l10_GpF350A3C486_Seq & D.Digest):
   match o:
-    case l10_GpF350A3C486_Seq{arr, +n}: l10_GpF350A3C486_rt_fin(n, seg, l10_GpF350A3C486_rt(U32.to_nat(n), 0, seg, (h, arr)))
+    case l10_GpF350A3C486_Seq{arr, +n}: l10_GpF350A3C486_rt_fin(hl, n, l10_GpF350A3C486_mt(4n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(4n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l10_GpF350A3C486_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<GpF350A3C486> & GpF350A3C486) -> Array<GpF350A3C486> & U32:
   match k:
@@ -1601,6 +2296,68 @@ def l10_GpF350A3C486_fo_nz(empty: Bool, +n: U32, arr: Array<GpF350A3C486>) -> l1
 def l10_GpF350A3C486_force(o: l10_GpF350A3C486_Seq) -> l10_GpF350A3C486_Seq & U32:
   match o:
     case l10_GpF350A3C486_Seq{arr, +n}: l10_GpF350A3C486_fo_nz(U32.is_eq(n, 0), n, arr)
+
+def l10_GpF350A3C486_pk(out: Array<U32>, +pos: U32, pair: l10_GpF350A3C486_Seq & Bool) -> Array<U32> & (l10_GpF350A3C486_Seq & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: l10_GpF350A3C486_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def l10_GpF350A3C486_va_fin(+n: U32, ok: Bool, pair: Array<GpF350A3C486> & Bool) -> l10_GpF350A3C486_Seq & Bool:
+  (arr, b) = pair
+  (l10_GpF350A3C486_Seq{arr, n}, Bool.and(ok, b))
+
+def GpF350A3C486_valid(o: GpF350A3C486) -> Bool:
+  match o:
+    case GpF350A3C486{+f_A}: u8_valid(f_A)
+
+def l10_GpF350A3C486_va(+k: Nat, +i: U32, acc: Bool, pair: Array<GpF350A3C486> & GpF350A3C486) -> Array<GpF350A3C486> & Bool:
+  match k:
+    case 0n:
+      (arr, +v) = pair
+      (arr, Bool.and(acc, GpF350A3C486_valid(v)))
+    case 1n+q:
+      (arr, +v) = pair
+      l10_GpF350A3C486_va(q, (i + 1 : U32), Bool.and(acc, GpF350A3C486_valid(v)), Array.get(GpF350A3C486, arr, (i + 1 : U32)))
+
+def l10_GpF350A3C486_va_nz(empty: Bool, +n: U32, arr: Array<GpF350A3C486>) -> Array<GpF350A3C486> & Bool:
+  match empty:
+    case True{}: (arr, True{})
+    case False{}: l10_GpF350A3C486_va(U32.to_nat((n - 1 : U32)), 0, True{}, Array.get(GpF350A3C486, arr, 0))
+
+def l10_GpF350A3C486_va_go(ok: Bool, +n: U32, arr: Array<GpF350A3C486>) -> l10_GpF350A3C486_Seq & Bool:
+  match ok:
+    case True{}: l10_GpF350A3C486_va_fin(n, True{}, l10_GpF350A3C486_va_nz(U32.is_eq(n, 0), n, arr))
+    case False{}: (l10_GpF350A3C486_Seq{arr, n}, False{})
+
+def l10_GpF350A3C486_va_cap(ok: Bool, +n: U32, pair: Array<GpF350A3C486> & U32) -> l10_GpF350A3C486_Seq & Bool:
+  (arr, +c) = pair
+  l10_GpF350A3C486_va_go(Bool.and(ok, U32.is_le(n, c)), n, arr)
+
+def l10_GpF350A3C486_valid(o: l10_GpF350A3C486_Seq) -> l10_GpF350A3C486_Seq & Bool:
+  match o:
+    case l10_GpF350A3C486_Seq{arr, +n}: l10_GpF350A3C486_va_cap(Bool.or(False{}, U32.is_le(n, 10)), n, Array.size(GpF350A3C486, arr))
+
+def l10_GpF350A3C486_putk(out: Array<U32>, +pos: U32, o: l10_GpF350A3C486_Seq) -> Array<U32> & (l10_GpF350A3C486_Seq & U32): l10_GpF350A3C486_pk(out, pos, l10_GpF350A3C486_valid(o))
+
+def l10_GpF350A3C486_du_took(t: +List<U32>, pair: Array<GpF350A3C486> & GpF350A3C486) -> Array<GpF350A3C486> & +List<U32>:
+  (arr, +v) = pair
+  (arr, GpF350A3C486_dump(v, t))
+
+def l10_GpF350A3C486_du(+k: Nat, +i: U32, st: Array<GpF350A3C486> & +List<U32>) -> Array<GpF350A3C486> & +List<U32>:
+  match k:
+    case 0n: st
+    case 1n+q:
+      (arr, t) = st
+      l10_GpF350A3C486_du(q, (i - 1 : U32), l10_GpF350A3C486_du_took(t, Array.get(GpF350A3C486, arr, (i - 1 : U32))))
+
+def l10_GpF350A3C486_du_fin(+n: U32, st: Array<GpF350A3C486> & +List<U32>) -> +List<U32>:
+  (arr, t) = st
+  O.dump_le(n, 4, t)
+
+def l10_GpF350A3C486_dump(o: l10_GpF350A3C486_Seq, t: +List<U32>) -> +List<U32>:
+  match o:
+    case l10_GpF350A3C486_Seq{arr, +n}: l10_GpF350A3C486_du_fin(n, l10_GpF350A3C486_du(U32.to_nat(n), n, (arr, t)))
 
 def l10_GpF350A3C486_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 1) * 1 : U32)), U32.is_le(U32.div(len, 1), 10)))
 
@@ -1733,84 +2490,84 @@ def l10_GpF350A3C486_leaf_fin(+k: U32, arr: Array<GpF350A3C486>, nodes: Array<D.
   (h, +dg) = pr
   l10_GpF350A3C486_ts_store(l10_GpF350A3C486_TS{h, arr, nodes}, k, dg)
 
-def l10_GpF350A3C486_leaf_go(+k: U32, +seg: U32, nodes: Array<D.Digest>, h: B.Buf, pr: Array<GpF350A3C486> & GpF350A3C486) -> l10_GpF350A3C486_TS:
+def l10_GpF350A3C486_leaf_go(+hl: Nat, +k: U32, +seg: U32, nodes: Array<D.Digest>, h: B.Buf, pr: Array<GpF350A3C486> & GpF350A3C486) -> l10_GpF350A3C486_TS:
   (arr, +v) = pr
-  l10_GpF350A3C486_leaf_fin(k, arr, nodes, GpF350A3C486_root(h, v, (seg + 64 : U32)))
+  l10_GpF350A3C486_leaf_fin(k, arr, nodes, GpF350A3C486_root(hl, h, v, (seg + 64 : U32)))
 
-def l10_GpF350A3C486_leaf_hash(+k: U32, +i: U32, +seg: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
+def l10_GpF350A3C486_leaf_hash(+hl: Nat, +k: U32, +i: U32, +seg: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
   match ts:
-    case l10_GpF350A3C486_TS{h, arr, nodes}: l10_GpF350A3C486_leaf_go(k, seg, nodes, h, Array.get(GpF350A3C486, arr, i))
+    case l10_GpF350A3C486_TS{h, arr, nodes}: l10_GpF350A3C486_leaf_go(hl, k, seg, nodes, h, Array.get(GpF350A3C486, arr, i))
 
-def l10_GpF350A3C486_leaf_step(inside: Bool, +k: U32, +i: U32, +seg: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
+def l10_GpF350A3C486_leaf_step(+hl: Nat, inside: Bool, +k: U32, +i: U32, +seg: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
   match inside:
-    case True{}: l10_GpF350A3C486_leaf_hash(k, i, seg, ts)
+    case True{}: l10_GpF350A3C486_leaf_hash(hl, k, i, seg, ts)
     case False{}: l10_GpF350A3C486_ts_store(ts, k, D.zero())
 
-def l10_GpF350A3C486_leaves(+q: Nat, +i: U32, +n: U32, +seg: U32, +cap: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
+def l10_GpF350A3C486_leaves(+hl: Nat, +q: Nat, +i: U32, +n: U32, +seg: U32, +cap: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
   match q:
     case 0n: ts
     case 1n+r:
-      l10_GpF350A3C486_leaves(r, (i + 1 : U32), n, seg, cap, l10_GpF350A3C486_leaf_step(U32.is_lt(i, n), (cap + i : U32), i, seg, ts))
+      l10_GpF350A3C486_leaves(hl, r, (i + 1 : U32), n, seg, cap, l10_GpF350A3C486_leaf_step(hl, U32.is_lt(i, n), (cap + i : U32), i, seg, ts))
 
-def l10_GpF350A3C486_node_fin(+j: U32, h: B.Buf, arr: Array<GpF350A3C486>, +dl: D.Digest, pr: Array<D.Digest> & D.Digest) -> l10_GpF350A3C486_TS:
+def l10_GpF350A3C486_node_fin(+hl: Nat, +j: U32, h: B.Buf, arr: Array<GpF350A3C486>, +dl: D.Digest, pr: Array<D.Digest> & D.Digest) -> l10_GpF350A3C486_TS:
   (nodes, +dr) = pr
-  l10_GpF350A3C486_ts_store(l10_GpF350A3C486_TS{h, arr, nodes}, j, D.hash_pair(dl, dr))
+  l10_GpF350A3C486_ts_store(l10_GpF350A3C486_TS{h, arr, nodes}, j, D.node(hl, dl, dr))
 
-def l10_GpF350A3C486_node_go(+j: U32, h: B.Buf, arr: Array<GpF350A3C486>, pr: Array<D.Digest> & D.Digest) -> l10_GpF350A3C486_TS:
+def l10_GpF350A3C486_node_go(+hl: Nat, +j: U32, h: B.Buf, arr: Array<GpF350A3C486>, pr: Array<D.Digest> & D.Digest) -> l10_GpF350A3C486_TS:
   (nodes, +dl) = pr
-  l10_GpF350A3C486_node_fin(j, h, arr, dl, Array.get(D.Digest, nodes, (2 * j + 1 : U32)))
+  l10_GpF350A3C486_node_fin(hl, j, h, arr, dl, Array.get(D.Digest, nodes, (2 * j + 1 : U32)))
 
-def l10_GpF350A3C486_node_step(+j: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
+def l10_GpF350A3C486_node_step(+hl: Nat, +j: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
   match ts:
-    case l10_GpF350A3C486_TS{h, arr, nodes}: l10_GpF350A3C486_node_go(j, h, arr, Array.get(D.Digest, nodes, (2 * j : U32)))
+    case l10_GpF350A3C486_TS{h, arr, nodes}: l10_GpF350A3C486_node_go(hl, j, h, arr, Array.get(D.Digest, nodes, (2 * j : U32)))
 
-def l10_GpF350A3C486_level(+q: Nat, +j: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
+def l10_GpF350A3C486_level(+hl: Nat, +q: Nat, +j: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
   match q:
     case 0n: ts
-    case 1n+r: l10_GpF350A3C486_level(r, (j + 1 : U32), l10_GpF350A3C486_node_step(j, ts))
+    case 1n+r: l10_GpF350A3C486_level(hl, r, (j + 1 : U32), l10_GpF350A3C486_node_step(hl, j, ts))
 
-def l10_GpF350A3C486_levels(+L: Nat, +klo: U32, +khi: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
+def l10_GpF350A3C486_levels(+hl: Nat, +L: Nat, +klo: U32, +khi: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
   match L:
     case 0n: ts
     case 1n+q:
-      l10_GpF350A3C486_levels(q, U32.shrn(klo, 1n), U32.shrn(khi, 1n), l10_GpF350A3C486_level(U32.to_nat((U32.shrn(khi, 1n) - U32.shrn(klo, 1n) + 1 : U32)), U32.shrn(klo, 1n), ts))
+      l10_GpF350A3C486_levels(hl, q, U32.shrn(klo, 1n), U32.shrn(khi, 1n), l10_GpF350A3C486_level(hl, U32.to_nat((U32.shrn(khi, 1n) - U32.shrn(klo, 1n) + 1 : U32)), U32.shrn(klo, 1n), ts))
 
-def l10_GpF350A3C486_sweep(+d: Nat, +lo: U32, +hi: U32, +n: U32, +seg: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
-  l10_GpF350A3C486_levels(d, (O.pow2u(d) + lo : U32), (O.pow2u(d) + hi : U32), l10_GpF350A3C486_leaves(U32.to_nat((hi - lo + 1 : U32)), lo, n, seg, O.pow2u(d), ts))
+def l10_GpF350A3C486_sweep(+hl: Nat, +d: Nat, +lo: U32, +hi: U32, +n: U32, +seg: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
+  l10_GpF350A3C486_levels(hl, d, (O.pow2u(d) + lo : U32), (O.pow2u(d) + hi : U32), l10_GpF350A3C486_leaves(hl, U32.to_nat((hi - lo + 1 : U32)), lo, n, seg, O.pow2u(d), ts))
 
-def l10_GpF350A3C486_sweep_pick(some: Bool, +d: Nat, +lo: U32, +hi: U32, +n: U32, +seg: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
+def l10_GpF350A3C486_sweep_pick(+hl: Nat, some: Bool, +d: Nat, +lo: U32, +hi: U32, +n: U32, +seg: U32, ts: l10_GpF350A3C486_TS) -> l10_GpF350A3C486_TS:
   match some:
-    case True{}: l10_GpF350A3C486_sweep(d, lo, hi, n, seg, ts)
+    case True{}: l10_GpF350A3C486_sweep(hl, d, lo, hi, n, seg, ts)
     case False{}: ts
 
-def l10_GpF350A3C486_pad_go(+k: Nat, +lvl: U32, +r: D.Digest, pr: B.Buf & D.Digest) -> B.Buf & D.Digest:
+def l10_GpF350A3C486_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr: B.Buf & D.Digest) -> B.Buf & D.Digest:
   match k:
     case 0n:
       (h, +z) = pr
       (h, r)
     case 1n+q:
       (h, +z) = pr
-      l10_GpF350A3C486_pad_go(q, (lvl + 1 : U32), D.hash_pair(r, z), O.zero(h, (lvl + 1 : U32)))
+      l10_GpF350A3C486_pad_go(hl, q, (lvl + 1 : U32), D.node(hl, r, z), (h, D.zconst(U32.to_nat((lvl + 1 : U32)))))
 
-def l10_GpF350A3C486_croot_fin(+n: U32, +d: Nat, arr: Array<GpF350A3C486>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
+def l10_GpF350A3C486_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<GpF350A3C486>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l10_GpF350A3C486_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(r, n)))
+  (h, (l10_GpF350A3C486_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
 
-def l10_GpF350A3C486_croot_pad(+n: U32, +d: Nat, arr: Array<GpF350A3C486>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
-  l10_GpF350A3C486_croot_fin(n, d, arr, nodes, l10_GpF350A3C486_pad_go(Nat.sub(4n, d), O.nat_u32(d), r, O.zero(h, O.nat_u32(d))))
+def l10_GpF350A3C486_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<GpF350A3C486>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
+  l10_GpF350A3C486_croot_fin(hl, n, d, arr, nodes, l10_GpF350A3C486_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))
 
-def l10_GpF350A3C486_croot_read(+n: U32, +d: Nat, h: B.Buf, arr: Array<GpF350A3C486>, pr: Array<D.Digest> & D.Digest) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
+def l10_GpF350A3C486_croot_read(+hl: Nat, +n: U32, +d: Nat, h: B.Buf, arr: Array<GpF350A3C486>, pr: Array<D.Digest> & D.Digest) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
   (nodes, +r) = pr
-  l10_GpF350A3C486_croot_pad(n, d, arr, nodes, h, r)
+  l10_GpF350A3C486_croot_pad(hl, n, d, arr, nodes, h, r)
 
-def l10_GpF350A3C486_croot_top(+n: U32, +d: Nat, ts: l10_GpF350A3C486_TS) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
+def l10_GpF350A3C486_croot_top(+hl: Nat, +n: U32, +d: Nat, ts: l10_GpF350A3C486_TS) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
   match ts:
-    case l10_GpF350A3C486_TS{h, arr, nodes}: l10_GpF350A3C486_croot_read(n, d, h, arr, Array.get(D.Digest, nodes, 1))
+    case l10_GpF350A3C486_TS{h, arr, nodes}: l10_GpF350A3C486_croot_read(hl, n, d, h, arr, Array.get(D.Digest, nodes, 1))
 
-def l10_GpF350A3C486_cached_root(h: B.Buf, c: l10_GpF350A3C486_Cached, +seg: U32) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
+def l10_GpF350A3C486_cached_root(+hl: Nat, h: B.Buf, c: l10_GpF350A3C486_Cached, +seg: U32) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
   match c:
     case l10_GpF350A3C486_Cached{arr, +n, +d, nodes, +lo, +hi}:
-      l10_GpF350A3C486_croot_top(n, d, l10_GpF350A3C486_sweep_pick(U32.is_le(lo, hi), d, lo, hi, n, seg, l10_GpF350A3C486_TS{h, arr, nodes}))
+      l10_GpF350A3C486_croot_top(hl, n, d, l10_GpF350A3C486_sweep_pick(hl, U32.is_le(lo, hi), d, lo, hi, n, seg, l10_GpF350A3C486_TS{h, arr, nodes}))
 
 type Gp66304057C3 is Type:
   Gp66304057C3{f_A: U32, f_B: O.Words, f_C: O.Bits}
@@ -1841,35 +2598,39 @@ def Gp66304057C3_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Gp66304057C3:
 
 def Gp66304057C3_sz1(+f_A: U32, f_B: O.Words, +acc: U32, pair: O.Bits & U32) -> Gp66304057C3 & U32:
   (f_C, +m) = pair
-  (Gp66304057C3{f_A, f_B, f_C}, (acc + m : U32))
+  (Gp66304057C3{f_A, f_B, f_C}, O.padd(acc, m))
 
 def Gp66304057C3_sz0(+f_A: U32, f_C: O.Bits, +acc: U32, pair: O.Words & U32) -> Gp66304057C3 & U32:
   (f_B, +m) = pair
-  Gp66304057C3_sz1(f_A, f_B, (acc + m : U32), pbits_size(f_C))
+  Gp66304057C3_sz1(f_A, f_B, O.padd(acc, m), pbits_size(f_C))
 
 def Gp66304057C3_size(o: Gp66304057C3) -> Gp66304057C3 & U32:
   match o:
     case Gp66304057C3{+f_A, f_B, f_C}: Gp66304057C3_sz0(f_A, f_C, 9, l123_u16_size(f_B))
 
-def Gp66304057C3_pw1s(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, +s_f_B: U32, +s_f_C: U32, out: Array<U32>) -> Array<U32> & (Gp66304057C3 & U32):
-  (O.w32(O.w32(u8_put(out, (pos + 0 : U32), f_A), (pos + 1 : U32), 9), (pos + 5 : U32), (9 + s_f_B : U32)), (Gp66304057C3{f_A, f_B, f_C}, (9 + s_f_B + s_f_C : U32)))
-
-def Gp66304057C3_pw1(+pos: U32, +f_A: U32, f_B: O.Words, +s_f_B: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gp66304057C3 & U32):
+def l123_u16_pvb(+cur: U32, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (O.Words & U32):
   (out, r) = pair
-  (f_C, sz) = r
-  Gp66304057C3_pw1s(pos, f_A, f_B, f_C, s_f_B, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gp66304057C3_pw0s(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, +s_f_B: U32, out: Array<U32>) -> Array<U32> & (Gp66304057C3 & U32):
-  Gp66304057C3_pw1(pos, f_A, f_B, s_f_B, pbits_putn(out, (pos + (9 + s_f_B : U32) : U32), f_C))
+def l123_u16_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Words) -> Array<U32> & (O.Words & U32):
+  l123_u16_pvb(cur, l123_u16_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def Gp66304057C3_pw1(+pos: U32, +f_A: U32, f_B: O.Words, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gp66304057C3 & U32):
+  (out, r) = pair
+  (f_C, c) = r
+  (u8_put(out, (pos + 0 : U32), f_A), (Gp66304057C3{f_A, f_B, f_C}, (c .|. O.pz(u8_valid(f_A)) : U32)))
 
 def Gp66304057C3_pw0(+pos: U32, +f_A: U32, f_C: O.Bits, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gp66304057C3 & U32):
   (out, r) = pair
-  (f_B, sz) = r
-  Gp66304057C3_pw0s(pos, f_A, f_B, f_C, sz, out)
+  (f_B, c) = r
+  Gp66304057C3_pw1(pos, f_A, f_B, pbits_putv(out, pos, 5, c, f_C))
 
 def Gp66304057C3_putn(out: Array<U32>, +pos: U32, o: Gp66304057C3) -> Array<U32> & (Gp66304057C3 & U32):
   match o:
-    case Gp66304057C3{+f_A, f_B, f_C}: Gp66304057C3_pw0(pos, f_A, f_C, l123_u16_putn(out, (pos + 9 : U32), f_B))
+    case Gp66304057C3{+f_A, f_B, f_C}: Gp66304057C3_pw0(pos, f_A, f_C, l123_u16_putv(out, pos, 1, 9, f_B))
+
+def Gp66304057C3_putk(out: Array<U32>, +pos: U32, o: Gp66304057C3) -> Array<U32> & (Gp66304057C3 & U32): Gp66304057C3_putn(out, pos, o)
 
 def Gp66304057C3_put_drop_go(out: Array<U32>, v: Gp66304057C3, +m: U32) -> Array<U32> & Gp66304057C3: (out, v)
 
@@ -1880,26 +2641,26 @@ def Gp66304057C3_put_drop(pair: Array<U32> & (Gp66304057C3 & U32)) -> Array<U32>
 
 def Gp66304057C3_put(out: Array<U32>, +pos: U32, o: Gp66304057C3) -> Array<U32> & Gp66304057C3: Gp66304057C3_put_drop(Gp66304057C3_putn(out, pos, o))
 
-def Gp66304057C3_fin(+d_f_A: D.Digest, +d_f_B: D.Digest, +d_f_C: D.Digest, h: B.Buf, +f_A: U32, f_B: O.Words, f_C: O.Bits) -> B.Buf & (Gp66304057C3 & D.Digest):
-  (h, (Gp66304057C3{f_A, f_B, f_C}, O.mix_len(D.hash_pair(D.hash_pair(D.zero(), D.hash_pair(D.hash_pair(D.zero(), d_f_B), D.hash_pair(D.zero(), d_f_C))), d_f_A), 21)))
+def Gp66304057C3_fin(+hl: Nat, +d_f_A: D.Digest, +d_f_B: D.Digest, +d_f_C: D.Digest, h: B.Buf, +f_A: U32, f_B: O.Words, f_C: O.Bits) -> B.Buf & (Gp66304057C3 & D.Digest):
+  (h, (Gp66304057C3{f_A, f_B, f_C}, O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 21)))
 
-def Gp66304057C3_rt2(+seg: U32, +f_A: U32, f_B: O.Words, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gp66304057C3 & D.Digest):
+def Gp66304057C3_rt2(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gp66304057C3 & D.Digest):
   (h, r) = pair
   (f_C, d_f_C) = r
-  Gp66304057C3_fin(d_f_A, d_f_B, d_f_C, h, f_A, f_B, f_C)
+  Gp66304057C3_fin(hl, d_f_A, d_f_B, d_f_C, h, f_A, f_B, f_C)
 
-def Gp66304057C3_rt1(+seg: U32, +f_A: U32, f_C: O.Bits, d_f_A: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gp66304057C3 & D.Digest):
+def Gp66304057C3_rt1(+hl: Nat, +seg: U32, +f_A: U32, f_C: O.Bits, d_f_A: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gp66304057C3 & D.Digest):
   (h, r) = pair
   (f_B, d_f_B) = r
-  Gp66304057C3_rt2(seg, f_A, f_B, d_f_A, d_f_B, pbits_root(h, f_C, seg))
+  Gp66304057C3_rt2(hl, seg, f_A, f_B, d_f_A, d_f_B, pbits_root(hl, h, f_C, seg))
 
-def Gp66304057C3_rt0(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, pair: B.Buf & D.Digest) -> B.Buf & (Gp66304057C3 & D.Digest):
+def Gp66304057C3_rt0(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, pair: B.Buf & D.Digest) -> B.Buf & (Gp66304057C3 & D.Digest):
   (h, d_f_A) = pair
-  Gp66304057C3_rt1(seg, f_A, f_C, d_f_A, l123_u16_root(h, f_B, seg))
+  Gp66304057C3_rt1(hl, seg, f_A, f_C, d_f_A, l123_u16_root(hl, h, f_B, seg))
 
-def Gp66304057C3_root(h: B.Buf, o: Gp66304057C3, +seg: U32) -> B.Buf & (Gp66304057C3 & D.Digest):
+def Gp66304057C3_root(+hl: Nat, h: B.Buf, o: Gp66304057C3, +seg: U32) -> B.Buf & (Gp66304057C3 & D.Digest):
   match o:
-    case Gp66304057C3{+f_A, f_B, f_C}: Gp66304057C3_rt0(seg, f_A, f_B, f_C, u8_root(h, f_A, seg))
+    case Gp66304057C3{+f_A, f_B, f_C}: Gp66304057C3_rt0(hl, seg, f_A, f_B, f_C, u8_root(hl, h, f_A, seg))
 
 def Gp66304057C3_get_f_A(o: Gp66304057C3) -> Gp66304057C3 & U32:
   match o:
@@ -1944,6 +2705,10 @@ def Gp66304057C3_force(o: Gp66304057C3) -> Gp66304057C3 & U32:
   match o:
     case Gp66304057C3{+f_A, f_B, f_C}: Gp66304057C3_fo0(f_A, f_C, (u8_force(f_A) : U32), l123_u16_force(f_B))
 
+def Gp66304057C3_dump(o: Gp66304057C3, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gp66304057C3{+f_A, f_B, f_C}: u8_dump(f_A, l123_u16_dump(f_B, pbits_dump(f_C, t)))
+
 def Gp66304057C3_c3(ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32, +o1: U32) -> B.Buf & Bool:
   match ok:
     case True{}: (buf, True{})
@@ -1987,12 +2752,90 @@ def Gp66304057C3_ok_len(ok: Bool, buf: B.Buf, +off: U32, +len: U32) -> B.Buf & B
 
 def Gp66304057C3_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: Gp66304057C3_ok_len(U32.is_le(9, len), buf, off, len)
 
-type pl_Gp66304057C3_Seq is Type:
-  pl_Gp66304057C3_Seq{items: Array<Gp66304057C3>, n: U32}
+def Gp66304057C3_bx_wrap(v: Gp66304057C3) -> O.Boxed<Gp66304057C3>: O.BSome{v, O.BNone{}}
 
-def pl_Gp66304057C3_fill(+d: Nat) -> Array<Gp66304057C3>:
+def Gp66304057C3_bx_default() -> O.Boxed<Gp66304057C3>: Gp66304057C3_bx_wrap(Gp66304057C3_default())
+
+def Gp66304057C3_bx_unbox(o: O.Boxed<Gp66304057C3>) -> Gp66304057C3:
+  match o:
+    case O.BSome{v, rest}: v
+    case O.BNone{}: Gp66304057C3_default()
+
+def Gp66304057C3_bx_rd(pair: B.Buf & Gp66304057C3) -> B.Buf & O.Boxed<Gp66304057C3>:
+  (buf, v) = pair
+  (buf, Gp66304057C3_bx_wrap(v))
+
+def Gp66304057C3_bx_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Boxed<Gp66304057C3>: Gp66304057C3_bx_rd(Gp66304057C3_read(buf, off, len))
+
+def Gp66304057C3_bx_put_back(pair: Array<U32> & Gp66304057C3) -> Array<U32> & O.Boxed<Gp66304057C3>:
+  (out, v) = pair
+  (out, Gp66304057C3_bx_wrap(v))
+
+def Gp66304057C3_bx_put(out: Array<U32>, +pos: U32, o: O.Boxed<Gp66304057C3>) -> Array<U32> & O.Boxed<Gp66304057C3>:
+  match o:
+    case O.BSome{v, rest}: Gp66304057C3_bx_put_back(Gp66304057C3_put(out, pos, v))
+    case O.BNone{}: (out, Gp66304057C3_bx_default())
+
+def Gp66304057C3_bx_putn_go(out: Array<U32>, v: Gp66304057C3, +n: U32) -> Array<U32> & (O.Boxed<Gp66304057C3> & U32):
+  (out, (Gp66304057C3_bx_wrap(v), n))
+
+def Gp66304057C3_bx_putn_back(pair: Array<U32> & (Gp66304057C3 & U32)) -> Array<U32> & (O.Boxed<Gp66304057C3> & U32):
+  (out, r) = pair
+  (v, n) = r
+  Gp66304057C3_bx_putn_go(out, v, n)
+
+def Gp66304057C3_bx_putn(out: Array<U32>, +pos: U32, o: O.Boxed<Gp66304057C3>) -> Array<U32> & (O.Boxed<Gp66304057C3> & U32):
+  match o:
+    case O.BSome{v, rest}: Gp66304057C3_bx_putn_back(Gp66304057C3_putn(out, pos, v))
+    case O.BNone{}: (out, (Gp66304057C3_bx_default(), 0))
+
+def Gp66304057C3_bx_size_back(pair: Gp66304057C3 & U32) -> O.Boxed<Gp66304057C3> & U32:
+  (v, +n) = pair
+  (Gp66304057C3_bx_wrap(v), n)
+
+def Gp66304057C3_bx_size(o: O.Boxed<Gp66304057C3>) -> O.Boxed<Gp66304057C3> & U32:
+  match o:
+    case O.BSome{v, rest}: Gp66304057C3_bx_size_back(Gp66304057C3_size(v))
+    case O.BNone{}: (Gp66304057C3_bx_default(), 0)
+
+def Gp66304057C3_bx_rt(pair: B.Buf & (Gp66304057C3 & D.Digest)) -> B.Buf & (O.Boxed<Gp66304057C3> & D.Digest):
+  (h, r) = pair
+  (v, d) = r
+  (h, (Gp66304057C3_bx_wrap(v), d))
+
+def Gp66304057C3_bx_root(+hl: Nat, h: B.Buf, o: O.Boxed<Gp66304057C3>, +seg: U32) -> B.Buf & (O.Boxed<Gp66304057C3> & D.Digest):
+  match o:
+    case O.BSome{v, rest}: Gp66304057C3_bx_rt(Gp66304057C3_root(hl, h, v, seg))
+    case O.BNone{}: (h, (Gp66304057C3_bx_default(), D.zero()))
+
+def Gp66304057C3_bx_force(o: O.Boxed<Gp66304057C3>) -> O.Boxed<Gp66304057C3> & U32:
+  match o:
+    case O.BSome{v, rest}: Gp66304057C3_bx_size_back(Gp66304057C3_force(v))
+    case O.BNone{}: (Gp66304057C3_bx_default(), 0)
+
+def Gp66304057C3_bx_pk_back(pair: Array<U32> & (Gp66304057C3 & U32)) -> Array<U32> & (O.Boxed<Gp66304057C3> & U32):
+  (out, r) = pair
+  (v, m) = r
+  (out, (O.BSome{v, O.BNone{}}, m))
+
+def Gp66304057C3_bx_putk(out: Array<U32>, +pos: U32, o: O.Boxed<Gp66304057C3>) -> Array<U32> & (O.Boxed<Gp66304057C3> & U32):
+  match o:
+    case O.BSome{v, rest}: Gp66304057C3_bx_pk_back(Gp66304057C3_putk(out, pos, v))
+    case O.BNone{}: (out, (O.BNone{}, 2147483648))
+
+def Gp66304057C3_bx_dump(o: O.Boxed<Gp66304057C3>, t: +List<U32>) -> +List<U32>:
+  match o:
+    case O.BSome{v, rest}: Gp66304057C3_dump(v, t)
+    case O.BNone{}: Gp66304057C3_dump(Gp66304057C3_default(), t)
+
+def Gp66304057C3_bx_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: Gp66304057C3_ok(buf, off, len)
+
+type pl_Gp66304057C3_Seq is Type:
+  pl_Gp66304057C3_Seq{items: Array<O.Boxed<Gp66304057C3>>, n: U32}
+
+def pl_Gp66304057C3_fill(+d: Nat) -> Array<O.Boxed<Gp66304057C3>>:
   match d:
-    case 0n: ALeaf{Gp66304057C3_default()}
+    case 0n: ALeaf{O.BNone{}}
     case 1n+q: ANode{pl_Gp66304057C3_fill(q), pl_Gp66304057C3_fill(q)}
 
 def pl_Gp66304057C3_cap(+n: U32) -> Nat: B.words_depth(n)
@@ -2012,23 +2855,23 @@ def pl_Gp66304057C3_win_start(+off: U32, +len: U32, +i: U32, +n: U32, pair: B.Bu
   (buf, +s) = pair
   pl_Gp66304057C3_win_last(U32.is_eq((i + 1 : U32), n), off, len, i, s, buf)
 
-def pl_Gp66304057C3_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & Gp66304057C3: Gp66304057C3_read(buf, (off + s : U32), (e - s : U32))
+def pl_Gp66304057C3_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & O.Boxed<Gp66304057C3>: Gp66304057C3_bx_read(buf, (off + s : U32), (e - s : U32))
 
-def pl_Gp66304057C3_elem(+off: U32, pair: B.Buf & (U32 & U32)) -> B.Buf & Gp66304057C3:
+def pl_Gp66304057C3_elem(+off: U32, pair: B.Buf & (U32 & U32)) -> B.Buf & O.Boxed<Gp66304057C3>:
   (buf, se) = pair
   (s, e) = se
   pl_Gp66304057C3_elem_win(off, s, e, buf)
 
-def pl_Gp66304057C3_rv(+k: Nat, +i: U32, +off: U32, +len: U32, +n: U32, arr: Array<Gp66304057C3>, pair: B.Buf & Gp66304057C3) -> B.Buf & Array<Gp66304057C3>:
+def pl_Gp66304057C3_rv(+k: Nat, +i: U32, +off: U32, +len: U32, +n: U32, arr: Array<O.Boxed<Gp66304057C3>>, pair: B.Buf & O.Boxed<Gp66304057C3>) -> B.Buf & Array<O.Boxed<Gp66304057C3>>:
   match k:
     case 0n:
       (buf, v) = pair
-      (buf, Array.set(Gp66304057C3, arr, i, v))
+      (buf, Array.set(O.Boxed<Gp66304057C3>, arr, i, v))
     case 1n+q:
       (buf, v) = pair
-      pl_Gp66304057C3_rv(q, (i + 1 : U32), off, len, n, Array.set(Gp66304057C3, arr, i, v), pl_Gp66304057C3_elem(off, pl_Gp66304057C3_win_start(off, len, (i + 1 : U32), n, B.read32(buf, (off + 4 * (i + 1 : U32) : U32)))))
+      pl_Gp66304057C3_rv(q, (i + 1 : U32), off, len, n, Array.set(O.Boxed<Gp66304057C3>, arr, i, v), pl_Gp66304057C3_elem(off, pl_Gp66304057C3_win_start(off, len, (i + 1 : U32), n, B.read32(buf, (off + 4 * (i + 1 : U32) : U32)))))
 
-def pl_Gp66304057C3_rv_fin(+n: U32, pair: B.Buf & Array<Gp66304057C3>) -> B.Buf & pl_Gp66304057C3_Seq:
+def pl_Gp66304057C3_rv_fin(+n: U32, pair: B.Buf & Array<O.Boxed<Gp66304057C3>>) -> B.Buf & pl_Gp66304057C3_Seq:
   (buf, arr) = pair
   (buf, pl_Gp66304057C3_Seq{arr, n})
 
@@ -2043,134 +2886,299 @@ def pl_Gp66304057C3_read_nz(empty: Bool, buf: B.Buf, +off: U32, +len: U32) -> B.
 
 def pl_Gp66304057C3_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & pl_Gp66304057C3_Seq: pl_Gp66304057C3_read_nz(U32.is_eq(len, 0), buf, off, len)
 
-def pl_Gp66304057C3_sz_back(+i: U32, +acc: U32, arr: Array<Gp66304057C3>, pair: Gp66304057C3 & U32) -> Array<Gp66304057C3> & U32:
+def pl_Gp66304057C3_sz_ret(+acc: U32, pair: Array<O.Boxed<Gp66304057C3>> & O.Boxed<Gp66304057C3>) -> Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>):
+  (arr, sp) = pair
+  (arr, (acc, sp))
+
+def pl_Gp66304057C3_sz_back(+i: U32, +acc: U32, arr: Array<O.Boxed<Gp66304057C3>>, pair: O.Boxed<Gp66304057C3> & U32) -> Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>):
   (v, +m) = pair
-  (Array.set(Gp66304057C3, arr, i, v), (acc + m : U32))
+  pl_Gp66304057C3_sz_ret(O.padd(acc, m), Array.swap(O.Boxed<Gp66304057C3>, arr, i, v))
 
-def pl_Gp66304057C3_sz_one(+i: U32, +acc: U32, pair: Array<Gp66304057C3> & Gp66304057C3) -> Array<Gp66304057C3> & U32:
+def pl_Gp66304057C3_sz_one(+i: U32, +acc: U32, pair: Array<O.Boxed<Gp66304057C3>> & O.Boxed<Gp66304057C3>) -> Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>):
   (arr, v) = pair
-  pl_Gp66304057C3_sz_back(i, acc, arr, Gp66304057C3_size(v))
+  pl_Gp66304057C3_sz_back(i, acc, arr, Gp66304057C3_bx_size(v))
 
-def pl_Gp66304057C3_sz(+k: Nat, +i: U32, pair: Array<Gp66304057C3> & U32) -> Array<Gp66304057C3> & U32:
+def pl_Gp66304057C3_sz(+k: Nat, +i: U32, st: Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>)) -> Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>):
   match k:
-    case 0n: pair
+    case 0n: st
     case 1n+q:
-      (arr, +acc) = pair
-      pl_Gp66304057C3_sz(q, (i + 1 : U32), pl_Gp66304057C3_sz_one(i, acc, Array.swap(Gp66304057C3, arr, i, Gp66304057C3_default())))
+      (arr, r) = st
+      (acc, sp) = r
+      pl_Gp66304057C3_sz(q, (i + 1 : U32), pl_Gp66304057C3_sz_one(i, acc, Array.swap(O.Boxed<Gp66304057C3>, arr, i, sp)))
 
-def pl_Gp66304057C3_sz_fin(+n: U32, pair: Array<Gp66304057C3> & U32) -> pl_Gp66304057C3_Seq & U32:
-  (arr, +m) = pair
-  (pl_Gp66304057C3_Seq{arr, n}, (4 * n + m : U32))
+def pl_Gp66304057C3_sz_fin(+n: U32, st: Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>)) -> pl_Gp66304057C3_Seq & U32:
+  (arr, r) = st
+  (m, sp) = r
+  (pl_Gp66304057C3_Seq{arr, n}, O.padd((4 * n : U32), m))
+
+def pl_Gp66304057C3_sz_nz(empty: Bool, arr: Array<O.Boxed<Gp66304057C3>>, +n: U32) -> pl_Gp66304057C3_Seq & U32:
+  match empty:
+    case True{}: (pl_Gp66304057C3_Seq{arr, n}, 0)
+    case False{}: pl_Gp66304057C3_sz_fin(n, pl_Gp66304057C3_sz(U32.to_nat(n), 0, (arr, (0, O.BNone{}))))
+
+def pl_Gp66304057C3_sz_ok(ok: Bool, arr: Array<O.Boxed<Gp66304057C3>>, +n: U32) -> pl_Gp66304057C3_Seq & U32:
+  match ok:
+    case True{}: pl_Gp66304057C3_sz_nz(U32.is_eq(n, 0), arr, n)
+    case False{}: (pl_Gp66304057C3_Seq{arr, n}, 2147483648)
+
+def pl_Gp66304057C3_sz_cap(+n: U32, pair: Array<O.Boxed<Gp66304057C3>> & U32) -> pl_Gp66304057C3_Seq & U32:
+  (arr, +c) = pair
+  pl_Gp66304057C3_sz_ok(U32.is_le(n, c), arr, n)
 
 def pl_Gp66304057C3_size(o: pl_Gp66304057C3_Seq) -> pl_Gp66304057C3_Seq & U32:
   match o:
-    case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_sz_fin(n, pl_Gp66304057C3_sz(U32.to_nat(n), 0, (arr, 0)))
+    case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_sz_cap(n, Array.size(O.Boxed<Gp66304057C3>, arr))
 
-def pl_Gp66304057C3_pv_put(+i: U32, +next: U32, arr: Array<Gp66304057C3>, pair: Array<U32> & Gp66304057C3) -> Array<U32> & (Array<Gp66304057C3> & U32):
-  (out, v) = pair
-  (out, (Array.set(Gp66304057C3, arr, i, v), next))
-
-def pl_Gp66304057C3_pv_placed_go(+i: U32, +cur: U32, arr: Array<Gp66304057C3>, out: Array<U32>, v: Gp66304057C3, +m: U32) -> Array<U32> & (Array<Gp66304057C3> & U32):
-  pl_Gp66304057C3_pv_put(i, (cur + m : U32), arr, (out, v))
-
-def pl_Gp66304057C3_pv_placed(+i: U32, +cur: U32, arr: Array<Gp66304057C3>, pair: Array<U32> & (Gp66304057C3 & U32)) -> Array<U32> & (Array<Gp66304057C3> & U32):
+def Gp66304057C3_bx_pvb(+cur: U32, pair: Array<U32> & (O.Boxed<Gp66304057C3> & U32)) -> Array<U32> & (O.Boxed<Gp66304057C3> & U32):
   (out, r) = pair
-  (v, m) = r
-  pl_Gp66304057C3_pv_placed_go(i, cur, arr, out, v, m)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def pl_Gp66304057C3_pv_one(+i: U32, +pos: U32, +cur: U32, out: Array<U32>, pair: Array<Gp66304057C3> & Gp66304057C3) -> Array<U32> & (Array<Gp66304057C3> & U32):
+def Gp66304057C3_bx_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Boxed<Gp66304057C3>) -> Array<U32> & (O.Boxed<Gp66304057C3> & U32):
+  Gp66304057C3_bx_pvb(cur, Gp66304057C3_bx_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def pl_Gp66304057C3_pv_ret(out: Array<U32>, c: U32, pair: Array<O.Boxed<Gp66304057C3>> & O.Boxed<Gp66304057C3>) -> Array<U32> & (Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>)):
+  (arr, sp) = pair
+  (out, (arr, (c, sp)))
+
+def pl_Gp66304057C3_pv_placed(+i: U32, arr: Array<O.Boxed<Gp66304057C3>>, pair: Array<U32> & (O.Boxed<Gp66304057C3> & U32)) -> Array<U32> & (Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>)):
+  (out, r) = pair
+  (v, c) = r
+  pl_Gp66304057C3_pv_ret(out, c, Array.swap(O.Boxed<Gp66304057C3>, arr, i, v))
+
+def pl_Gp66304057C3_pv_one(+i: U32, +pos: U32, +cur: U32, out: Array<U32>, pair: Array<O.Boxed<Gp66304057C3>> & O.Boxed<Gp66304057C3>) -> Array<U32> & (Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>)):
   (arr, v) = pair
-  pl_Gp66304057C3_pv_placed(i, cur, arr, Gp66304057C3_putn(O.w32(out, (pos + 4 * i : U32), cur), (pos + cur : U32), v))
+  pl_Gp66304057C3_pv_placed(i, arr, Gp66304057C3_bx_putv(out, pos, (4 * i : U32), cur, v))
 
-def pl_Gp66304057C3_pv(+k: Nat, +i: U32, +pos: U32, pair: Array<U32> & (Array<Gp66304057C3> & U32)) -> Array<U32> & (Array<Gp66304057C3> & U32):
+def pl_Gp66304057C3_pv(+k: Nat, +i: U32, +pos: U32, st: Array<U32> & (Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>))) -> Array<U32> & (Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>)):
   match k:
-    case 0n: pair
+    case 0n: st
     case 1n+q:
-      (out, st) = pair
-      (arr, cur) = st
-      pl_Gp66304057C3_pv(q, (i + 1 : U32), pos, pl_Gp66304057C3_pv_one(i, pos, cur, out, Array.swap(Gp66304057C3, arr, i, Gp66304057C3_default())))
+      (out, s1) = st
+      (arr, s2) = s1
+      (cur, sp) = s2
+      pl_Gp66304057C3_pv(q, (i + 1 : U32), pos, pl_Gp66304057C3_pv_one(i, pos, cur, out, Array.swap(O.Boxed<Gp66304057C3>, arr, i, sp)))
 
-def pl_Gp66304057C3_pv_fin(+n: U32, pair: Array<U32> & (Array<Gp66304057C3> & U32)) -> Array<U32> & pl_Gp66304057C3_Seq:
-  (out, st) = pair
-  (arr, cur) = st
-  (out, pl_Gp66304057C3_Seq{arr, n})
-
-def pl_Gp66304057C3_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<Gp66304057C3>) -> Array<U32> & pl_Gp66304057C3_Seq:
-  pl_Gp66304057C3_pv_fin(n, pl_Gp66304057C3_pv(U32.to_nat(n), 0, pos, (out, (arr, (4 * n : U32)))))
-
-def pl_Gp66304057C3_pvn_go(+n: U32, out: Array<U32>, arr: Array<Gp66304057C3>, +cur: U32) -> Array<U32> & (pl_Gp66304057C3_Seq & U32):
+def pl_Gp66304057C3_pvn_go(+n: U32, out: Array<U32>, arr: Array<O.Boxed<Gp66304057C3>>, +cur: U32) -> Array<U32> & (pl_Gp66304057C3_Seq & U32):
   (out, (pl_Gp66304057C3_Seq{arr, n}, cur))
 
-def pl_Gp66304057C3_pvn_fin(+n: U32, pair: Array<U32> & (Array<Gp66304057C3> & U32)) -> Array<U32> & (pl_Gp66304057C3_Seq & U32):
-  (out, st) = pair
-  (arr, cur) = st
+def pl_Gp66304057C3_pvn_fin(+n: U32, st: Array<U32> & (Array<O.Boxed<Gp66304057C3>> & (U32 & O.Boxed<Gp66304057C3>))) -> Array<U32> & (pl_Gp66304057C3_Seq & U32):
+  (out, s1) = st
+  (arr, s2) = s1
+  (cur, sp) = s2
   pl_Gp66304057C3_pvn_go(n, out, arr, cur)
+
+def pl_Gp66304057C3_pvn_nz(empty: Bool, out: Array<U32>, +pos: U32, arr: Array<O.Boxed<Gp66304057C3>>, +n: U32) -> Array<U32> & (pl_Gp66304057C3_Seq & U32):
+  match empty:
+    case True{}: (out, (pl_Gp66304057C3_Seq{arr, n}, 0))
+    case False{}: pl_Gp66304057C3_pvn_fin(n, pl_Gp66304057C3_pv(U32.to_nat(n), 0, pos, (out, (arr, ((4 * n : U32), O.BNone{})))))
 
 def pl_Gp66304057C3_putn(out: Array<U32>, +pos: U32, o: pl_Gp66304057C3_Seq) -> Array<U32> & (pl_Gp66304057C3_Seq & U32):
   match o:
-    case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_pvn_fin(n, pl_Gp66304057C3_pv(U32.to_nat(n), 0, pos, (out, (arr, (4 * n : U32)))))
+    case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_pvn_nz(U32.is_eq(n, 0), out, pos, arr, n)
+
+def pl_Gp66304057C3_pv_drop(pair: Array<U32> & (pl_Gp66304057C3_Seq & U32)) -> Array<U32> & pl_Gp66304057C3_Seq:
+  (out, r) = pair
+  (sq, m) = r
+  (out, sq)
+
+def pl_Gp66304057C3_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<O.Boxed<Gp66304057C3>>) -> Array<U32> & pl_Gp66304057C3_Seq:
+  pl_Gp66304057C3_pv_drop(pl_Gp66304057C3_pvn_nz(empty, out, pos, arr, n))
 
 def pl_Gp66304057C3_put(out: Array<U32>, +pos: U32, o: pl_Gp66304057C3_Seq) -> Array<U32> & pl_Gp66304057C3_Seq:
   match o:
     case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_pt_nz(U32.is_eq(n, 0), pos, n, out, arr)
 
-def pl_Gp66304057C3_rt_push(+i: U32, +seg: U32, arr: Array<Gp66304057C3>, pair: B.Buf & (Gp66304057C3 & D.Digest)) -> B.Buf & Array<Gp66304057C3>:
+def pl_Gp66304057C3_rl_n(+i: U32, arr: Array<O.Boxed<Gp66304057C3>>, pair: B.Buf & (O.Boxed<Gp66304057C3> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gp66304057C3>> & D.Digest):
   (h, r) = pair
   (v, d) = r
-  (M.push_prog(i, seg, d, h), Array.set(Gp66304057C3, arr, i, v))
+  (h, (Array.set(O.Boxed<Gp66304057C3>, arr, i, v), d))
 
-def pl_Gp66304057C3_rt_one(+i: U32, +seg: U32, h: B.Buf, pair: Array<Gp66304057C3> & Gp66304057C3) -> B.Buf & Array<Gp66304057C3>:
+def pl_Gp66304057C3_rl(+hl: Nat, +i: U32, +seg: U32, h: B.Buf, pair: Array<O.Boxed<Gp66304057C3>> & O.Boxed<Gp66304057C3>) -> B.Buf & (Array<O.Boxed<Gp66304057C3>> & D.Digest):
   (arr, v) = pair
-  pl_Gp66304057C3_rt_push(i, seg, arr, Gp66304057C3_root(h, v, (seg + 64 : U32)))
+  pl_Gp66304057C3_rl_n(i, arr, Gp66304057C3_bx_root(hl, h, v, (seg + 64 : U32)))
 
-def pl_Gp66304057C3_rt(+k: Nat, +i: U32, +seg: U32, pair: B.Buf & Array<Gp66304057C3>) -> B.Buf & Array<Gp66304057C3>:
-  match k:
-    case 0n: pair
-    case 1n+q:
-      (h, arr) = pair
-      pl_Gp66304057C3_rt(q, (i + 1 : U32), seg, pl_Gp66304057C3_rt_one(i, seg, h, Array.swap(Gp66304057C3, arr, i, Gp66304057C3_default())))
+def pl_Gp66304057C3_mj(+hl: Nat, dl: D.Digest, pair: B.Buf & (Array<O.Boxed<Gp66304057C3>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gp66304057C3>> & D.Digest):
+  (h, r) = pair
+  (arr, dr) = r
+  (h, (arr, D.node(hl, dl, dr)))
 
-def pl_Gp66304057C3_rt_close(+n: U32, arr: Array<Gp66304057C3>, pair: B.Buf & D.Digest) -> B.Buf & (pl_Gp66304057C3_Seq & D.Digest):
-  (h, d) = pair
-  (h, (pl_Gp66304057C3_Seq{arr, n}, O.mix_len(d, n)))
+def pl_Gp66304057C3_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<O.Boxed<Gp66304057C3>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gp66304057C3>> & D.Digest):
+  match d:
+    case 0n:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(0n)))
+            case True{}:
+              (h, r) = st
+              (arr, dl) = r
+              pl_Gp66304057C3_rl(hl, U32.from_nat(s), seg, h, Array.swap(O.Boxed<Gp66304057C3>, arr, U32.from_nat(s), O.BNone{}))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          pl_Gp66304057C3_mj(hl, dl, pl_Gp66304057C3_mt(0n, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
+    case 1n+ +p:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(1n+p)))
+            case True{}:
+              pl_Gp66304057C3_mt(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, seg, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+                pl_Gp66304057C3_mt(p, 0n, True{}, hl, seg, Nat.div(w, 2n), s, n, st))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          pl_Gp66304057C3_mj(hl, dl, pl_Gp66304057C3_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
-def pl_Gp66304057C3_rt_fin(+n: U32, +seg: U32, pair: B.Buf & Array<Gp66304057C3>) -> B.Buf & (pl_Gp66304057C3_Seq & D.Digest):
-  (h, arr) = pair
-  pl_Gp66304057C3_rt_close(n, arr, M.close_prog(n, seg, h))
+def pl_Gp66304057C3_prr(+hl: Nat, +seg: U32, +dep: Nat, +s: Nat, +n: Nat, pair: B.Buf & (Array<O.Boxed<Gp66304057C3>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gp66304057C3>> & D.Digest):
+  (h, r) = pair
+  (arr, dl) = r
+  pl_Gp66304057C3_mj(hl, dl, pl_Gp66304057C3_mt(dep, 0n, True{}, hl, seg, O.pow2n(dep), s, n, (h, (arr, D.zero()))))
 
-def pl_Gp66304057C3_root(h: B.Buf, o: pl_Gp66304057C3_Seq, +seg: U32) -> B.Buf & (pl_Gp66304057C3_Seq & D.Digest):
+def pl_Gp66304057C3_ptr(f: Nat, inside: Bool, +hl: Nat, +seg: U32, +dep: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<O.Boxed<Gp66304057C3>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gp66304057C3>> & D.Digest):
+  match f:
+    case 0n:
+      (h, r) = st
+      (arr, dl) = r
+      (h, (arr, D.zero()))
+    case 1n+g:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zero()))
+        case True{}:
+          pl_Gp66304057C3_prr(hl, seg, dep, s, n,
+            pl_Gp66304057C3_ptr(g, Nat.is_lt(Nat.add(s, O.pow2n(dep)), n), hl, seg, Nat.add(dep, 2n), Nat.add(s, O.pow2n(dep)), n, st))
+
+def pl_Gp66304057C3_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<Gp66304057C3>> & D.Digest)) -> B.Buf & (pl_Gp66304057C3_Seq & D.Digest):
+  (h, r) = pair
+  (arr, d) = r
+  (h, (pl_Gp66304057C3_Seq{arr, n}, O.mix_len(hl, d, n)))
+
+def pl_Gp66304057C3_root(+hl: Nat, h: B.Buf, o: pl_Gp66304057C3_Seq, +seg: U32) -> B.Buf & (pl_Gp66304057C3_Seq & D.Digest):
   match o:
-    case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_rt_fin(n, seg, pl_Gp66304057C3_rt(U32.to_nat(n), 0, seg, (h, arr)))
+    case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_rt_fin(hl, n, pl_Gp66304057C3_ptr(1n+U32.to_nat(n), Nat.is_lt(0n, U32.to_nat(n)), hl, seg, 0n, 0n, U32.to_nat(n), (h, (arr, D.zero()))))
 
-def pl_Gp66304057C3_fo_back(+i: U32, +acc: U32, arr: Array<Gp66304057C3>, pair: Gp66304057C3 & U32) -> Array<Gp66304057C3> & U32:
+def pl_Gp66304057C3_fo_back(+i: U32, +acc: U32, arr: Array<O.Boxed<Gp66304057C3>>, pair: O.Boxed<Gp66304057C3> & U32) -> Array<O.Boxed<Gp66304057C3>> & U32:
   (v, +x) = pair
-  (Array.set(Gp66304057C3, arr, i, v), (acc .^. x : U32))
+  (Array.set(O.Boxed<Gp66304057C3>, arr, i, v), (acc .^. x : U32))
 
-def pl_Gp66304057C3_fo_one(+i: U32, +acc: U32, pair: Array<Gp66304057C3> & Gp66304057C3) -> Array<Gp66304057C3> & U32:
+def pl_Gp66304057C3_fo_one(+i: U32, +acc: U32, pair: Array<O.Boxed<Gp66304057C3>> & O.Boxed<Gp66304057C3>) -> Array<O.Boxed<Gp66304057C3>> & U32:
   (arr, v) = pair
-  pl_Gp66304057C3_fo_back(i, acc, arr, Gp66304057C3_force(v))
+  pl_Gp66304057C3_fo_back(i, acc, arr, Gp66304057C3_bx_force(v))
 
-def pl_Gp66304057C3_fo(+k: Nat, +i: U32, pair: Array<Gp66304057C3> & U32) -> Array<Gp66304057C3> & U32:
+def pl_Gp66304057C3_fo(+k: Nat, +i: U32, pair: Array<O.Boxed<Gp66304057C3>> & U32) -> Array<O.Boxed<Gp66304057C3>> & U32:
   match k:
     case 0n: pair
     case 1n+q:
       (arr, +acc) = pair
-      pl_Gp66304057C3_fo(q, (i + 1 : U32), pl_Gp66304057C3_fo_one(i, acc, Array.swap(Gp66304057C3, arr, i, Gp66304057C3_default())))
+      pl_Gp66304057C3_fo(q, (i + 1 : U32), pl_Gp66304057C3_fo_one(i, acc, Array.swap(O.Boxed<Gp66304057C3>, arr, i, O.BNone{})))
 
-def pl_Gp66304057C3_fo_fin(+n: U32, pair: Array<Gp66304057C3> & U32) -> pl_Gp66304057C3_Seq & U32:
+def pl_Gp66304057C3_fo_fin(+n: U32, pair: Array<O.Boxed<Gp66304057C3>> & U32) -> pl_Gp66304057C3_Seq & U32:
   (arr, +x) = pair
   (pl_Gp66304057C3_Seq{arr, n}, x)
 
-def pl_Gp66304057C3_fo_nz(empty: Bool, +n: U32, arr: Array<Gp66304057C3>) -> pl_Gp66304057C3_Seq & U32:
+def pl_Gp66304057C3_fo_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<Gp66304057C3>>) -> pl_Gp66304057C3_Seq & U32:
   pl_Gp66304057C3_fo_fin(n, pl_Gp66304057C3_fo(U32.to_nat(n), 0, (arr, 0)))
 
 def pl_Gp66304057C3_force(o: pl_Gp66304057C3_Seq) -> pl_Gp66304057C3_Seq & U32:
   match o:
     case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_fo_nz(U32.is_eq(n, 0), n, arr)
 
+def pl_Gp66304057C3_pk(out: Array<U32>, +pos: U32, pair: pl_Gp66304057C3_Seq & Bool) -> Array<U32> & (pl_Gp66304057C3_Seq & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pl_Gp66304057C3_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pl_Gp66304057C3_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<Gp66304057C3>> & Bool) -> pl_Gp66304057C3_Seq & Bool:
+  (arr, b) = pair
+  (pl_Gp66304057C3_Seq{arr, n}, Bool.and(ok, b))
+
+def Gp66304057C3_bx_va_back(pair: Gp66304057C3 & Bool) -> O.Boxed<Gp66304057C3> & Bool:
+  (v, ok) = pair
+  (O.BSome{v, O.BNone{}}, ok)
+
+def Gp66304057C3_va1(+f_A: U32, f_B: O.Words, acc: Bool, pair: O.Bits & Bool) -> Gp66304057C3 & Bool:
+  (f_C, ok) = pair
+  (Gp66304057C3{f_A, f_B, f_C}, Bool.and(acc, ok))
+
+def Gp66304057C3_va0(+f_A: U32, f_C: O.Bits, acc: Bool, pair: O.Words & Bool) -> Gp66304057C3 & Bool:
+  (f_B, ok) = pair
+  Gp66304057C3_va1(f_A, f_B, Bool.and(acc, ok), pbits_valid(f_C))
+
+def Gp66304057C3_valid(o: Gp66304057C3) -> Gp66304057C3 & Bool:
+  match o:
+    case Gp66304057C3{+f_A, f_B, f_C}: Gp66304057C3_va0(f_A, f_C, u8_valid(f_A), l123_u16_valid(f_B))
+
+def Gp66304057C3_bx_valid(o: O.Boxed<Gp66304057C3>) -> O.Boxed<Gp66304057C3> & Bool:
+  match o:
+    case O.BSome{v, rest}: Gp66304057C3_bx_va_back(Gp66304057C3_valid(v))
+    case O.BNone{}: (O.BNone{}, False{})
+
+def pl_Gp66304057C3_va_back(+i: U32, acc: Bool, arr: Array<O.Boxed<Gp66304057C3>>, pair: O.Boxed<Gp66304057C3> & Bool) -> Array<O.Boxed<Gp66304057C3>> & Bool:
+  (v, ok) = pair
+  (Array.set(O.Boxed<Gp66304057C3>, arr, i, v), Bool.and(acc, ok))
+
+def pl_Gp66304057C3_va_one(+i: U32, acc: Bool, pair: Array<O.Boxed<Gp66304057C3>> & O.Boxed<Gp66304057C3>) -> Array<O.Boxed<Gp66304057C3>> & Bool:
+  (arr, v) = pair
+  pl_Gp66304057C3_va_back(i, acc, arr, Gp66304057C3_bx_valid(v))
+
+def pl_Gp66304057C3_va(+k: Nat, +i: U32, pair: Array<O.Boxed<Gp66304057C3>> & Bool) -> Array<O.Boxed<Gp66304057C3>> & Bool:
+  match k:
+    case 0n: pair
+    case 1n+q:
+      (arr, acc) = pair
+      pl_Gp66304057C3_va(q, (i + 1 : U32), pl_Gp66304057C3_va_one(i, acc, Array.swap(O.Boxed<Gp66304057C3>, arr, i, O.BNone{})))
+
+def pl_Gp66304057C3_va_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<Gp66304057C3>>) -> Array<O.Boxed<Gp66304057C3>> & Bool:
+  pl_Gp66304057C3_va(U32.to_nat(n), 0, (arr, True{}))
+
+def pl_Gp66304057C3_va_go(ok: Bool, +n: U32, arr: Array<O.Boxed<Gp66304057C3>>) -> pl_Gp66304057C3_Seq & Bool:
+  match ok:
+    case True{}: pl_Gp66304057C3_va_fin(n, True{}, pl_Gp66304057C3_va_nz(U32.is_eq(n, 0), n, arr))
+    case False{}: (pl_Gp66304057C3_Seq{arr, n}, False{})
+
+def pl_Gp66304057C3_va_cap(ok: Bool, +n: U32, pair: Array<O.Boxed<Gp66304057C3>> & U32) -> pl_Gp66304057C3_Seq & Bool:
+  (arr, +c) = pair
+  pl_Gp66304057C3_va_go(Bool.and(ok, U32.is_le(n, c)), n, arr)
+
+def pl_Gp66304057C3_valid(o: pl_Gp66304057C3_Seq) -> pl_Gp66304057C3_Seq & Bool:
+  match o:
+    case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_va_cap(True{}, n, Array.size(O.Boxed<Gp66304057C3>, arr))
+
+def pl_Gp66304057C3_putk(out: Array<U32>, +pos: U32, o: pl_Gp66304057C3_Seq) -> Array<U32> & (pl_Gp66304057C3_Seq & U32): pl_Gp66304057C3_pk(out, pos, pl_Gp66304057C3_valid(o))
+
+def pl_Gp66304057C3_du_took(t: +List<U32>, pair: Array<O.Boxed<Gp66304057C3>> & O.Boxed<Gp66304057C3>) -> Array<O.Boxed<Gp66304057C3>> & +List<U32>:
+  (arr, v) = pair
+  (arr, Gp66304057C3_bx_dump(v, t))
+
+def pl_Gp66304057C3_du(+k: Nat, +i: U32, st: Array<O.Boxed<Gp66304057C3>> & +List<U32>) -> Array<O.Boxed<Gp66304057C3>> & +List<U32>:
+  match k:
+    case 0n: st
+    case 1n+q:
+      (arr, t) = st
+      pl_Gp66304057C3_du(q, (i - 1 : U32), pl_Gp66304057C3_du_took(t, Array.swap(O.Boxed<Gp66304057C3>, arr, (i - 1 : U32), O.BNone{})))
+
+def pl_Gp66304057C3_du_fin(+n: U32, st: Array<O.Boxed<Gp66304057C3>> & +List<U32>) -> +List<U32>:
+  (arr, t) = st
+  O.dump_le(n, 4, t)
+
+def pl_Gp66304057C3_dump(o: pl_Gp66304057C3_Seq, t: +List<U32>) -> +List<U32>:
+  match o:
+    case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_du_fin(n, pl_Gp66304057C3_du(U32.to_nat(n), n, (arr, t)))
+
 def pl_Gp66304057C3_ew(ok: Bool, buf: B.Buf, +off: U32, +a: U32, +b: U32) -> B.Buf & Bool:
   match ok:
-    case True{}: Gp66304057C3_ok(buf, (off + a : U32), (b - a : U32))
+    case True{}: Gp66304057C3_bx_ok(buf, (off + a : U32), (b - a : U32))
     case False{}: (buf, False{})
 
 def pl_Gp66304057C3_eb(+b: U32, pair: B.Buf & Bool) -> B.Buf & (Bool & U32):
@@ -2217,14 +3225,14 @@ def pl_Gp66304057C3_len(o: pl_Gp66304057C3_Seq) -> pl_Gp66304057C3_Seq & U32:
   match o:
     case pl_Gp66304057C3_Seq{arr, +n}: (pl_Gp66304057C3_Seq{arr, n}, n)
 
-def pl_Gp66304057C3_took(+n: U32, pair: Array<Gp66304057C3> & Gp66304057C3) -> pl_Gp66304057C3_Seq & Maybe<&1, Gp66304057C3>:
+def pl_Gp66304057C3_took(+n: U32, pair: Array<O.Boxed<Gp66304057C3>> & O.Boxed<Gp66304057C3>) -> pl_Gp66304057C3_Seq & Maybe<&1, Gp66304057C3>:
   (arr, v) = pair
-  (pl_Gp66304057C3_Seq{arr, n}, Some{v})
+  (pl_Gp66304057C3_Seq{arr, n}, Some{Gp66304057C3_bx_unbox(v)})
 
-def pl_Gp66304057C3_at(arr: Array<Gp66304057C3>, +n: U32, +i: U32) -> pl_Gp66304057C3_Seq & Maybe<&1, Gp66304057C3>:
-  pl_Gp66304057C3_took(n, Array.swap(Gp66304057C3, arr, i, Gp66304057C3_default()))
+def pl_Gp66304057C3_at(arr: Array<O.Boxed<Gp66304057C3>>, +n: U32, +i: U32) -> pl_Gp66304057C3_Seq & Maybe<&1, Gp66304057C3>:
+  pl_Gp66304057C3_took(n, Array.swap(O.Boxed<Gp66304057C3>, arr, i, O.BNone{}))
 
-def pl_Gp66304057C3_get_in(inside: Bool, arr: Array<Gp66304057C3>, +n: U32, +i: U32) -> pl_Gp66304057C3_Seq & Maybe<&1, Gp66304057C3>:
+def pl_Gp66304057C3_get_in(inside: Bool, arr: Array<O.Boxed<Gp66304057C3>>, +n: U32, +i: U32) -> pl_Gp66304057C3_Seq & Maybe<&1, Gp66304057C3>:
   match inside:
     case True{}: pl_Gp66304057C3_at(arr, n, i)
     case False{}: (pl_Gp66304057C3_Seq{arr, n}, None{})
@@ -2233,42 +3241,42 @@ def pl_Gp66304057C3_get(o: pl_Gp66304057C3_Seq, +i: U32) -> pl_Gp66304057C3_Seq 
   match o:
     case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_get_in(U32.is_lt(i, n), arr, n, i)
 
-def pl_Gp66304057C3_put_in(ok: Bool, arr: Array<Gp66304057C3>, +n: U32, +i: U32, v: Gp66304057C3) -> pl_Gp66304057C3_Seq & Bool:
+def pl_Gp66304057C3_put_in(ok: Bool, arr: Array<O.Boxed<Gp66304057C3>>, +n: U32, +i: U32, v: Gp66304057C3) -> pl_Gp66304057C3_Seq & Bool:
   match ok:
-    case True{}: (pl_Gp66304057C3_Seq{Array.set(Gp66304057C3, arr, i, v), n}, True{})
+    case True{}: (pl_Gp66304057C3_Seq{Array.set(O.Boxed<Gp66304057C3>, arr, i, Gp66304057C3_bx_wrap(v)), n}, True{})
     case False{}: (pl_Gp66304057C3_Seq{arr, n}, False{})
 
 def pl_Gp66304057C3_set(o: pl_Gp66304057C3_Seq, +i: U32, v: Gp66304057C3) -> pl_Gp66304057C3_Seq & Bool:
   match o:
     case pl_Gp66304057C3_Seq{arr, +n}: pl_Gp66304057C3_put_in(U32.is_lt(i, n), arr, n, i, v)
 
-def pl_Gp66304057C3_moved(+i: U32, fresh: Array<Gp66304057C3>, pair: Array<Gp66304057C3> & Gp66304057C3) -> Array<Gp66304057C3> & Array<Gp66304057C3>:
+def pl_Gp66304057C3_moved(+i: U32, fresh: Array<O.Boxed<Gp66304057C3>>, pair: Array<O.Boxed<Gp66304057C3>> & O.Boxed<Gp66304057C3>) -> Array<O.Boxed<Gp66304057C3>> & Array<O.Boxed<Gp66304057C3>>:
   (old, v) = pair
-  (Array.set(Gp66304057C3, fresh, i, v), old)
+  (Array.set(O.Boxed<Gp66304057C3>, fresh, i, v), old)
 
-def pl_Gp66304057C3_copy(+k: Nat, +i: U32, pair: Array<Gp66304057C3> & Array<Gp66304057C3>) -> Array<Gp66304057C3>:
+def pl_Gp66304057C3_copy(+k: Nat, +i: U32, pair: Array<O.Boxed<Gp66304057C3>> & Array<O.Boxed<Gp66304057C3>>) -> Array<O.Boxed<Gp66304057C3>>:
   match k:
     case 0n:
       (fresh, old) = pair
       fresh
     case 1n+q:
       (fresh, old) = pair
-      pl_Gp66304057C3_copy(q, (i + 1 : U32), pl_Gp66304057C3_moved(i, fresh, Array.swap(Gp66304057C3, old, i, Gp66304057C3_default())))
+      pl_Gp66304057C3_copy(q, (i + 1 : U32), pl_Gp66304057C3_moved(i, fresh, Array.swap(O.Boxed<Gp66304057C3>, old, i, O.BNone{})))
 
-def pl_Gp66304057C3_room_pick(fits: Bool, arr: Array<Gp66304057C3>, +n: U32) -> Array<Gp66304057C3>:
+def pl_Gp66304057C3_room_pick(fits: Bool, arr: Array<O.Boxed<Gp66304057C3>>, +n: U32) -> Array<O.Boxed<Gp66304057C3>>:
   match fits:
     case True{}: arr
     case False{}: pl_Gp66304057C3_copy(U32.to_nat(n), 0, (pl_Gp66304057C3_fill(pl_Gp66304057C3_cap((n + 1 : U32))), arr))
 
-def pl_Gp66304057C3_room_sized(+n: U32, pair: Array<Gp66304057C3> & U32) -> Array<Gp66304057C3>:
+def pl_Gp66304057C3_room_sized(+n: U32, pair: Array<O.Boxed<Gp66304057C3>> & U32) -> Array<O.Boxed<Gp66304057C3>>:
   (arr, +cap) = pair
   pl_Gp66304057C3_room_pick(U32.is_lt(n, cap), arr, n)
 
-def pl_Gp66304057C3_room(arr: Array<Gp66304057C3>, +n: U32) -> Array<Gp66304057C3>: pl_Gp66304057C3_room_sized(n, Array.size(Gp66304057C3, arr))
+def pl_Gp66304057C3_room(arr: Array<O.Boxed<Gp66304057C3>>, +n: U32) -> Array<O.Boxed<Gp66304057C3>>: pl_Gp66304057C3_room_sized(n, Array.size(O.Boxed<Gp66304057C3>, arr))
 
-def pl_Gp66304057C3_app_in(ok: Bool, arr: Array<Gp66304057C3>, +n: U32, v: Gp66304057C3) -> pl_Gp66304057C3_Seq & Bool:
+def pl_Gp66304057C3_app_in(ok: Bool, arr: Array<O.Boxed<Gp66304057C3>>, +n: U32, v: Gp66304057C3) -> pl_Gp66304057C3_Seq & Bool:
   match ok:
-    case True{}: (pl_Gp66304057C3_Seq{Array.set(Gp66304057C3, pl_Gp66304057C3_room(arr, n), n, v), (n + 1 : U32)}, True{})
+    case True{}: (pl_Gp66304057C3_Seq{Array.set(O.Boxed<Gp66304057C3>, pl_Gp66304057C3_room(arr, n), n, Gp66304057C3_bx_wrap(v)), (n + 1 : U32)}, True{})
     case False{}: (pl_Gp66304057C3_Seq{arr, n}, False{})
 
 def pl_Gp66304057C3_append(o: pl_Gp66304057C3_Seq, v: Gp66304057C3) -> pl_Gp66304057C3_Seq & Bool:
@@ -2344,95 +3352,116 @@ def Gp8A7851175B_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Gp8A7851175B:
 
 def Gp8A7851175B_sz6(+f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, +acc: U32, pair: pl_Gp66304057C3_Seq & U32) -> Gp8A7851175B & U32:
   (f_H, +m) = pair
-  (Gp8A7851175B{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, (acc + m : U32))
+  (Gp8A7851175B{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, O.padd(acc, m))
 
 def Gp8A7851175B_sz5(+f_A: U32, f_H: pl_Gp66304057C3_Seq, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, +acc: U32, pair: l10_GpF350A3C486_Seq & U32) -> Gp8A7851175B & U32:
   (f_G, +m) = pair
-  Gp8A7851175B_sz6(f_A, f_B, f_C, f_D, f_E, f_F, f_G, (acc + m : U32), pl_Gp66304057C3_size(f_H))
+  Gp8A7851175B_sz6(f_A, f_B, f_C, f_D, f_E, f_F, f_G, O.padd(acc, m), pl_Gp66304057C3_size(f_H))
 
 def Gp8A7851175B_sz4(+f_A: U32, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, +acc: U32, pair: pl_pl_Gc465214E502_Seq & U32) -> Gp8A7851175B & U32:
   (f_F, +m) = pair
-  Gp8A7851175B_sz5(f_A, f_H, f_B, f_C, f_D, f_E, f_F, (acc + m : U32), l10_GpF350A3C486_size(f_G))
+  Gp8A7851175B_sz5(f_A, f_H, f_B, f_C, f_D, f_E, f_F, O.padd(acc, m), l10_GpF350A3C486_size(f_G))
 
 def Gp8A7851175B_sz3(+f_A: U32, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, f_B: O.Words, f_C: O.Bits, f_D: O.Words, +acc: U32, pair: pl_Gc4ED9619F50_Seq & U32) -> Gp8A7851175B & U32:
   (f_E, +m) = pair
-  Gp8A7851175B_sz4(f_A, f_G, f_H, f_B, f_C, f_D, f_E, (acc + m : U32), pl_pl_Gc465214E502_size(f_F))
+  Gp8A7851175B_sz4(f_A, f_G, f_H, f_B, f_C, f_D, f_E, O.padd(acc, m), pl_pl_Gc465214E502_size(f_F))
 
 def Gp8A7851175B_sz2(+f_A: U32, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, f_B: O.Words, f_C: O.Bits, +acc: U32, pair: O.Words & U32) -> Gp8A7851175B & U32:
   (f_D, +m) = pair
-  Gp8A7851175B_sz3(f_A, f_F, f_G, f_H, f_B, f_C, f_D, (acc + m : U32), pl_Gc4ED9619F50_size(f_E))
+  Gp8A7851175B_sz3(f_A, f_F, f_G, f_H, f_B, f_C, f_D, O.padd(acc, m), pl_Gc4ED9619F50_size(f_E))
 
 def Gp8A7851175B_sz1(+f_A: U32, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, f_B: O.Words, +acc: U32, pair: O.Bits & U32) -> Gp8A7851175B & U32:
   (f_C, +m) = pair
-  Gp8A7851175B_sz2(f_A, f_E, f_F, f_G, f_H, f_B, f_C, (acc + m : U32), pl_u64_size(f_D))
+  Gp8A7851175B_sz2(f_A, f_E, f_F, f_G, f_H, f_B, f_C, O.padd(acc, m), pl_u64_size(f_D))
 
 def Gp8A7851175B_sz0(+f_A: U32, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +acc: U32, pair: O.Words & U32) -> Gp8A7851175B & U32:
   (f_B, +m) = pair
-  Gp8A7851175B_sz1(f_A, f_D, f_E, f_F, f_G, f_H, f_B, (acc + m : U32), pbits_size(f_C))
+  Gp8A7851175B_sz1(f_A, f_D, f_E, f_F, f_G, f_H, f_B, O.padd(acc, m), pbits_size(f_C))
 
 def Gp8A7851175B_size(o: Gp8A7851175B) -> Gp8A7851175B & U32:
   match o:
     case Gp8A7851175B{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: Gp8A7851175B_sz0(f_A, f_C, f_D, f_E, f_F, f_G, f_H, 29, l123_u16_size(f_B))
 
-def Gp8A7851175B_pw6s(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, +s_f_C: U32, +s_f_D: U32, +s_f_E: U32, +s_f_F: U32, +s_f_G: U32, +s_f_H: U32, out: Array<U32>) -> Array<U32> & (Gp8A7851175B & U32):
-  (O.w32(O.w32(O.w32(O.w32(O.w32(O.w32(O.w32(u8_put(out, (pos + 0 : U32), f_A), (pos + 1 : U32), 29), (pos + 5 : U32), (29 + s_f_B : U32)), (pos + 9 : U32), (29 + s_f_B + s_f_C : U32)), (pos + 13 : U32), (29 + s_f_B + s_f_C + s_f_D : U32)), (pos + 17 : U32), (29 + s_f_B + s_f_C + s_f_D + s_f_E : U32)), (pos + 21 : U32), (29 + s_f_B + s_f_C + s_f_D + s_f_E + s_f_F : U32)), (pos + 25 : U32), (29 + s_f_B + s_f_C + s_f_D + s_f_E + s_f_F + s_f_G : U32)), (Gp8A7851175B{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, (29 + s_f_B + s_f_C + s_f_D + s_f_E + s_f_F + s_f_G + s_f_H : U32)))
-
-def Gp8A7851175B_pw6(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, +s_f_B: U32, +s_f_C: U32, +s_f_D: U32, +s_f_E: U32, +s_f_F: U32, +s_f_G: U32, pair: Array<U32> & (pl_Gp66304057C3_Seq & U32)) -> Array<U32> & (Gp8A7851175B & U32):
+def pl_u64_pvb(+cur: U32, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (O.Words & U32):
   (out, r) = pair
-  (f_H, sz) = r
-  Gp8A7851175B_pw6s(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, s_f_B, s_f_C, s_f_D, s_f_E, s_f_F, s_f_G, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gp8A7851175B_pw5s(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, +s_f_C: U32, +s_f_D: U32, +s_f_E: U32, +s_f_F: U32, +s_f_G: U32, out: Array<U32>) -> Array<U32> & (Gp8A7851175B & U32):
-  Gp8A7851175B_pw6(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, s_f_B, s_f_C, s_f_D, s_f_E, s_f_F, s_f_G, pl_Gp66304057C3_putn(out, (pos + (29 + s_f_B + s_f_C + s_f_D + s_f_E + s_f_F + s_f_G : U32) : U32), f_H))
+def pl_u64_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Words) -> Array<U32> & (O.Words & U32):
+  pl_u64_pvb(cur, pl_u64_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gp8A7851175B_pw5(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, +s_f_C: U32, +s_f_D: U32, +s_f_E: U32, +s_f_F: U32, pair: Array<U32> & (l10_GpF350A3C486_Seq & U32)) -> Array<U32> & (Gp8A7851175B & U32):
+def pl_Gc4ED9619F50_pvb(+cur: U32, pair: Array<U32> & (pl_Gc4ED9619F50_Seq & U32)) -> Array<U32> & (pl_Gc4ED9619F50_Seq & U32):
   (out, r) = pair
-  (f_G, sz) = r
-  Gp8A7851175B_pw5s(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, s_f_B, s_f_C, s_f_D, s_f_E, s_f_F, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gp8A7851175B_pw4s(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, +s_f_C: U32, +s_f_D: U32, +s_f_E: U32, +s_f_F: U32, out: Array<U32>) -> Array<U32> & (Gp8A7851175B & U32):
-  Gp8A7851175B_pw5(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_H, s_f_B, s_f_C, s_f_D, s_f_E, s_f_F, l10_GpF350A3C486_putn(out, (pos + (29 + s_f_B + s_f_C + s_f_D + s_f_E + s_f_F : U32) : U32), f_G))
+def pl_Gc4ED9619F50_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: pl_Gc4ED9619F50_Seq) -> Array<U32> & (pl_Gc4ED9619F50_Seq & U32):
+  pl_Gc4ED9619F50_pvb(cur, pl_Gc4ED9619F50_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gp8A7851175B_pw4(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, +s_f_C: U32, +s_f_D: U32, +s_f_E: U32, pair: Array<U32> & (pl_pl_Gc465214E502_Seq & U32)) -> Array<U32> & (Gp8A7851175B & U32):
+def pl_pl_Gc465214E502_pvb(+cur: U32, pair: Array<U32> & (pl_pl_Gc465214E502_Seq & U32)) -> Array<U32> & (pl_pl_Gc465214E502_Seq & U32):
   (out, r) = pair
-  (f_F, sz) = r
-  Gp8A7851175B_pw4s(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, s_f_B, s_f_C, s_f_D, s_f_E, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gp8A7851175B_pw3s(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, +s_f_C: U32, +s_f_D: U32, +s_f_E: U32, out: Array<U32>) -> Array<U32> & (Gp8A7851175B & U32):
-  Gp8A7851175B_pw4(pos, f_A, f_B, f_C, f_D, f_E, f_G, f_H, s_f_B, s_f_C, s_f_D, s_f_E, pl_pl_Gc465214E502_putn(out, (pos + (29 + s_f_B + s_f_C + s_f_D + s_f_E : U32) : U32), f_F))
+def pl_pl_Gc465214E502_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: pl_pl_Gc465214E502_Seq) -> Array<U32> & (pl_pl_Gc465214E502_Seq & U32):
+  pl_pl_Gc465214E502_pvb(cur, pl_pl_Gc465214E502_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gp8A7851175B_pw3(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, +s_f_C: U32, +s_f_D: U32, pair: Array<U32> & (pl_Gc4ED9619F50_Seq & U32)) -> Array<U32> & (Gp8A7851175B & U32):
+def l10_GpF350A3C486_pvb(+cur: U32, pair: Array<U32> & (l10_GpF350A3C486_Seq & U32)) -> Array<U32> & (l10_GpF350A3C486_Seq & U32):
   (out, r) = pair
-  (f_E, sz) = r
-  Gp8A7851175B_pw3s(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, s_f_B, s_f_C, s_f_D, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gp8A7851175B_pw2s(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, +s_f_C: U32, +s_f_D: U32, out: Array<U32>) -> Array<U32> & (Gp8A7851175B & U32):
-  Gp8A7851175B_pw3(pos, f_A, f_B, f_C, f_D, f_F, f_G, f_H, s_f_B, s_f_C, s_f_D, pl_Gc4ED9619F50_putn(out, (pos + (29 + s_f_B + s_f_C + s_f_D : U32) : U32), f_E))
+def l10_GpF350A3C486_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: l10_GpF350A3C486_Seq) -> Array<U32> & (l10_GpF350A3C486_Seq & U32):
+  l10_GpF350A3C486_pvb(cur, l10_GpF350A3C486_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gp8A7851175B_pw2(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, +s_f_C: U32, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gp8A7851175B & U32):
+def pl_Gp66304057C3_pvb(+cur: U32, pair: Array<U32> & (pl_Gp66304057C3_Seq & U32)) -> Array<U32> & (pl_Gp66304057C3_Seq & U32):
   (out, r) = pair
-  (f_D, sz) = r
-  Gp8A7851175B_pw2s(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, s_f_B, s_f_C, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gp8A7851175B_pw1s(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, +s_f_C: U32, out: Array<U32>) -> Array<U32> & (Gp8A7851175B & U32):
-  Gp8A7851175B_pw2(pos, f_A, f_B, f_C, f_E, f_F, f_G, f_H, s_f_B, s_f_C, pl_u64_putn(out, (pos + (29 + s_f_B + s_f_C : U32) : U32), f_D))
+def pl_Gp66304057C3_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: pl_Gp66304057C3_Seq) -> Array<U32> & (pl_Gp66304057C3_Seq & U32):
+  pl_Gp66304057C3_pvb(cur, pl_Gp66304057C3_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gp8A7851175B_pw1(+pos: U32, +f_A: U32, f_B: O.Words, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gp8A7851175B & U32):
+def Gp8A7851175B_pw6(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, pair: Array<U32> & (pl_Gp66304057C3_Seq & U32)) -> Array<U32> & (Gp8A7851175B & U32):
   (out, r) = pair
-  (f_C, sz) = r
-  Gp8A7851175B_pw1s(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, s_f_B, sz, out)
+  (f_H, c) = r
+  (u8_put(out, (pos + 0 : U32), f_A), (Gp8A7851175B{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, (c .|. O.pz(u8_valid(f_A)) : U32)))
 
-def Gp8A7851175B_pw0s(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, +s_f_B: U32, out: Array<U32>) -> Array<U32> & (Gp8A7851175B & U32):
-  Gp8A7851175B_pw1(pos, f_A, f_B, f_D, f_E, f_F, f_G, f_H, s_f_B, pbits_putn(out, (pos + (29 + s_f_B : U32) : U32), f_C))
+def Gp8A7851175B_pw5(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_H: pl_Gp66304057C3_Seq, pair: Array<U32> & (l10_GpF350A3C486_Seq & U32)) -> Array<U32> & (Gp8A7851175B & U32):
+  (out, r) = pair
+  (f_G, c) = r
+  Gp8A7851175B_pw6(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, pl_Gp66304057C3_putv(out, pos, 25, c, f_H))
+
+def Gp8A7851175B_pw4(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, pair: Array<U32> & (pl_pl_Gc465214E502_Seq & U32)) -> Array<U32> & (Gp8A7851175B & U32):
+  (out, r) = pair
+  (f_F, c) = r
+  Gp8A7851175B_pw5(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_H, l10_GpF350A3C486_putv(out, pos, 21, c, f_G))
+
+def Gp8A7851175B_pw3(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, pair: Array<U32> & (pl_Gc4ED9619F50_Seq & U32)) -> Array<U32> & (Gp8A7851175B & U32):
+  (out, r) = pair
+  (f_E, c) = r
+  Gp8A7851175B_pw4(pos, f_A, f_B, f_C, f_D, f_E, f_G, f_H, pl_pl_Gc465214E502_putv(out, pos, 17, c, f_F))
+
+def Gp8A7851175B_pw2(+pos: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gp8A7851175B & U32):
+  (out, r) = pair
+  (f_D, c) = r
+  Gp8A7851175B_pw3(pos, f_A, f_B, f_C, f_D, f_F, f_G, f_H, pl_Gc4ED9619F50_putv(out, pos, 13, c, f_E))
+
+def Gp8A7851175B_pw1(+pos: U32, +f_A: U32, f_B: O.Words, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gp8A7851175B & U32):
+  (out, r) = pair
+  (f_C, c) = r
+  Gp8A7851175B_pw2(pos, f_A, f_B, f_C, f_E, f_F, f_G, f_H, pl_u64_putv(out, pos, 9, c, f_D))
 
 def Gp8A7851175B_pw0(+pos: U32, +f_A: U32, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gp8A7851175B & U32):
   (out, r) = pair
-  (f_B, sz) = r
-  Gp8A7851175B_pw0s(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, sz, out)
+  (f_B, c) = r
+  Gp8A7851175B_pw1(pos, f_A, f_B, f_D, f_E, f_F, f_G, f_H, pbits_putv(out, pos, 5, c, f_C))
 
 def Gp8A7851175B_putn(out: Array<U32>, +pos: U32, o: Gp8A7851175B) -> Array<U32> & (Gp8A7851175B & U32):
   match o:
-    case Gp8A7851175B{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: Gp8A7851175B_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, f_H, l123_u16_putn(out, (pos + 29 : U32), f_B))
+    case Gp8A7851175B{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: Gp8A7851175B_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, f_H, l123_u16_putv(out, pos, 1, 29, f_B))
+
+def Gp8A7851175B_putk(out: Array<U32>, +pos: U32, o: Gp8A7851175B) -> Array<U32> & (Gp8A7851175B & U32): Gp8A7851175B_putn(out, pos, o)
 
 def Gp8A7851175B_put_drop_go(out: Array<U32>, v: Gp8A7851175B, +m: U32) -> Array<U32> & Gp8A7851175B: (out, v)
 
@@ -2443,71 +3472,71 @@ def Gp8A7851175B_put_drop(pair: Array<U32> & (Gp8A7851175B & U32)) -> Array<U32>
 
 def Gp8A7851175B_put(out: Array<U32>, +pos: U32, o: Gp8A7851175B) -> Array<U32> & Gp8A7851175B: Gp8A7851175B_put_drop(Gp8A7851175B_putn(out, pos, o))
 
-def Gp8A7851175B_fin(+d_f_A: D.Digest, +d_f_B: D.Digest, +d_f_C: D.Digest, +d_f_D: D.Digest, +d_f_E: D.Digest, +d_f_F: D.Digest, +d_f_G: D.Digest, +d_f_H: D.Digest, +z1: D.Digest, +z2: D.Digest, +z3: D.Digest, +z4: D.Digest, +z5: D.Digest, h: B.Buf, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq) -> B.Buf & (Gp8A7851175B & D.Digest):
-  (h, (Gp8A7851175B{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, O.mix_len(D.hash_pair(D.hash_pair(D.hash_pair(D.hash_pair(D.zero(), D.hash_pair(D.hash_pair(D.hash_pair(D.hash_pair(D.hash_pair(D.hash_pair(d_f_H, D.zero()), z1), z2), z3), z4), z5)), D.hash_pair(D.hash_pair(D.hash_pair(z1, D.hash_pair(D.zero(), d_f_D)), D.hash_pair(z1, D.hash_pair(D.zero(), d_f_E))), D.hash_pair(D.hash_pair(D.hash_pair(d_f_F, D.zero()), z1), D.hash_pair(z1, D.hash_pair(D.zero(), d_f_G))))), D.hash_pair(D.hash_pair(D.zero(), d_f_B), D.hash_pair(D.zero(), d_f_C))), d_f_A), 3158293)))
+def Gp8A7851175B_fin(+hl: Nat, +d_f_A: D.Digest, +d_f_B: D.Digest, +d_f_C: D.Digest, +d_f_D: D.Digest, +d_f_E: D.Digest, +d_f_F: D.Digest, +d_f_G: D.Digest, +d_f_H: D.Digest, +z1: D.Digest, +z2: D.Digest, +z3: D.Digest, +z4: D.Digest, +z5: D.Digest, h: B.Buf, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq) -> B.Buf & (Gp8A7851175B & D.Digest):
+  (h, (Gp8A7851175B{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, O.mix_len(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, D.node(hl, d_f_H, D.zero()), z1), z2), z3), z4), z5)), D.node(hl, D.node(hl, D.node(hl, z1, D.node(hl, D.zero(), d_f_D)), D.node(hl, z1, D.node(hl, D.zero(), d_f_E))), D.node(hl, D.node(hl, D.node(hl, d_f_F, D.zero()), z1), D.node(hl, z1, D.node(hl, D.zero(), d_f_G))))), D.node(hl, D.node(hl, D.zero(), d_f_B), D.node(hl, D.zero(), d_f_C))), d_f_A), 3158293)))
 
-def Gp8A7851175B_rt12(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, d_f_H: D.Digest, z1: D.Digest, z2: D.Digest, z3: D.Digest, z4: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt12(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, d_f_H: D.Digest, z1: D.Digest, z2: D.Digest, z3: D.Digest, z4: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, z5) = pair
-  Gp8A7851175B_fin(d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, z4, z5, h, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H)
+  Gp8A7851175B_fin(hl, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, z4, z5, h, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H)
 
-def Gp8A7851175B_rt11(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, d_f_H: D.Digest, z1: D.Digest, z2: D.Digest, z3: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt11(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, d_f_H: D.Digest, z1: D.Digest, z2: D.Digest, z3: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, z4) = pair
-  Gp8A7851175B_rt12(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, z4, O.zero(h, 5))
+  Gp8A7851175B_rt12(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, z4, (h, D.zconst(5n)))
 
-def Gp8A7851175B_rt10(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, d_f_H: D.Digest, z1: D.Digest, z2: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt10(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, d_f_H: D.Digest, z1: D.Digest, z2: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, z3) = pair
-  Gp8A7851175B_rt11(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, O.zero(h, 4))
+  Gp8A7851175B_rt11(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, z3, (h, D.zconst(4n)))
 
-def Gp8A7851175B_rt9(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, d_f_H: D.Digest, z1: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt9(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, d_f_H: D.Digest, z1: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, z2) = pair
-  Gp8A7851175B_rt10(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, O.zero(h, 3))
+  Gp8A7851175B_rt10(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, z2, (h, D.zconst(3n)))
 
-def Gp8A7851175B_rt8(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, d_f_H: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt8(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, d_f_H: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, z1) = pair
-  Gp8A7851175B_rt9(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, O.zero(h, 2))
+  Gp8A7851175B_rt9(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, z1, (h, D.zconst(2n)))
 
-def Gp8A7851175B_rt7(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, pair: B.Buf & (pl_Gp66304057C3_Seq & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt7(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, pair: B.Buf & (pl_Gp66304057C3_Seq & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, r) = pair
   (f_H, d_f_H) = r
-  Gp8A7851175B_rt8(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, O.zero(h, 1))
+  Gp8A7851175B_rt8(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, d_f_H, (h, D.zconst(1n)))
 
-def Gp8A7851175B_rt6(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, pair: B.Buf & (l10_GpF350A3C486_Seq & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt6(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, pair: B.Buf & (l10_GpF350A3C486_Seq & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, r) = pair
   (f_G, d_f_G) = r
-  Gp8A7851175B_rt7(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, pl_Gp66304057C3_root(h, f_H, seg))
+  Gp8A7851175B_rt7(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, pl_Gp66304057C3_root(hl, h, f_H, seg))
 
-def Gp8A7851175B_rt5(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, pair: B.Buf & (pl_pl_Gc465214E502_Seq & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt5(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, pair: B.Buf & (pl_pl_Gc465214E502_Seq & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, r) = pair
   (f_F, d_f_F) = r
-  Gp8A7851175B_rt6(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, l10_GpF350A3C486_root(h, f_G, seg))
+  Gp8A7851175B_rt6(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, l10_GpF350A3C486_root(hl, h, f_G, seg))
 
-def Gp8A7851175B_rt4(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, pair: B.Buf & (pl_Gc4ED9619F50_Seq & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt4(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, pair: B.Buf & (pl_Gc4ED9619F50_Seq & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, r) = pair
   (f_E, d_f_E) = r
-  Gp8A7851175B_rt5(seg, f_A, f_B, f_C, f_D, f_E, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, pl_pl_Gc465214E502_root(h, f_F, seg))
+  Gp8A7851175B_rt5(hl, seg, f_A, f_B, f_C, f_D, f_E, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, pl_pl_Gc465214E502_root(hl, h, f_F, seg))
 
-def Gp8A7851175B_rt3(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt3(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, r) = pair
   (f_D, d_f_D) = r
-  Gp8A7851175B_rt4(seg, f_A, f_B, f_C, f_D, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, pl_Gc4ED9619F50_root(h, f_E, seg))
+  Gp8A7851175B_rt4(hl, seg, f_A, f_B, f_C, f_D, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, pl_Gc4ED9619F50_root(hl, h, f_E, seg))
 
-def Gp8A7851175B_rt2(+seg: U32, +f_A: U32, f_B: O.Words, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt2(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, r) = pair
   (f_C, d_f_C) = r
-  Gp8A7851175B_rt3(seg, f_A, f_B, f_C, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, pl_u64_root(h, f_D, seg))
+  Gp8A7851175B_rt3(hl, seg, f_A, f_B, f_C, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, pl_u64_root(hl, h, f_D, seg))
 
-def Gp8A7851175B_rt1(+seg: U32, +f_A: U32, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt1(+hl: Nat, +seg: U32, +f_A: U32, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, d_f_A: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, r) = pair
   (f_B, d_f_B) = r
-  Gp8A7851175B_rt2(seg, f_A, f_B, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, pbits_root(h, f_C, seg))
+  Gp8A7851175B_rt2(hl, seg, f_A, f_B, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, pbits_root(hl, h, f_C, seg))
 
-def Gp8A7851175B_rt0(+seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_rt0(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, pair: B.Buf & D.Digest) -> B.Buf & (Gp8A7851175B & D.Digest):
   (h, d_f_A) = pair
-  Gp8A7851175B_rt1(seg, f_A, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, l123_u16_root(h, f_B, seg))
+  Gp8A7851175B_rt1(hl, seg, f_A, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, l123_u16_root(hl, h, f_B, seg))
 
-def Gp8A7851175B_root(h: B.Buf, o: Gp8A7851175B, +seg: U32) -> B.Buf & (Gp8A7851175B & D.Digest):
+def Gp8A7851175B_root(+hl: Nat, h: B.Buf, o: Gp8A7851175B, +seg: U32) -> B.Buf & (Gp8A7851175B & D.Digest):
   match o:
-    case Gp8A7851175B{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: Gp8A7851175B_rt0(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, u8_root(h, f_A, seg))
+    case Gp8A7851175B{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: Gp8A7851175B_rt0(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, u8_root(hl, h, f_A, seg))
 
 def Gp8A7851175B_get_f_A(o: Gp8A7851175B) -> Gp8A7851175B & U32:
   match o:
@@ -2611,6 +3640,10 @@ def Gp8A7851175B_fo0(+f_A: U32, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_
 def Gp8A7851175B_force(o: Gp8A7851175B) -> Gp8A7851175B & U32:
   match o:
     case Gp8A7851175B{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: Gp8A7851175B_fo0(f_A, f_C, f_D, f_E, f_F, f_G, f_H, (u8_force(f_A) : U32), l123_u16_force(f_B))
+
+def Gp8A7851175B_dump(o: Gp8A7851175B, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gp8A7851175B{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: u8_dump(f_A, l123_u16_dump(f_B, pbits_dump(f_C, pl_u64_dump(f_D, pl_Gc4ED9619F50_dump(f_E, pl_pl_Gc465214E502_dump(f_F, l10_GpF350A3C486_dump(f_G, pl_Gp66304057C3_dump(f_H, t))))))))
 
 def Gp8A7851175B_c13(ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32, +o1: U32, +o2: U32, +o3: U32, +o4: U32, +o5: U32, +o6: U32) -> B.Buf & Bool:
   match ok:
@@ -2749,15 +3782,27 @@ def pl_bool_default() -> O.Words: O.words_new(0)
 
 def pl_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)
 
-def pl_bool_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def pl_bool_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def pl_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
 def pl_bool_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): O.put_words_n(out, pos, o)
 
-def pl_bool_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(0n, O.words_root_prog(h, o, seg))
+def pl_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root_prog(hl, h, o, seg))
 
 def pl_bool_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def pl_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pl_bool_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pl_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 0, 0, True{}, 1))
+
+def pl_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_bool_pk(out, pos, pl_bool_valid(o))
+
+def pl_bool_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words_n(o, t)
 
 def pl_bool_ck(+k: Nat, +i: U32, +off: U32, +acc: Bool, pair: B.Buf & Bool) -> B.Buf & Bool:
   match k:
@@ -2832,15 +3877,58 @@ def pl_bool_append(o: O.Words, +v: Bool) -> O.Words & Bool: pl_bool_app_n(v, pl_
 
 def v16_bool_default() -> O.Words: O.words_new(16)
 
-def v16_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 16)
+def v16_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 16, Array.new(U32, 4n, 0))
 
-def v16_bool_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v16_bool_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v16_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v16_bool_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 3 : U32), w), ws)
 
-def v16_bool_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v16_bool_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_bool_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v16_bool_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_bool_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v16_bool_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_bool_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v16_bool_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v16_bool_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v16_bool_pal(n, v16_bool_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v16_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v16_bool_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v16_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v16_bool_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v16_bool_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v16_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v16_bool_pk_ok(v16_bool_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v16_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 16, 16, False{}, 1))
+
+def v16_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v16_bool_pk(out, pos, v16_bool_valid(o))
+
+def v16_bool_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v16_bool_ck(+k: Nat, +i: U32, +off: U32, +acc: Bool, pair: B.Buf & Bool) -> B.Buf & Bool:
   match k:
@@ -2906,15 +3994,31 @@ def v16_bool_set(o: O.Words, +i: U32, +v: Bool) -> O.Words & Bool: v16_bool_set_
 
 def v1_bool_default() -> O.Words: O.words_new(1)
 
-def v1_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 1)
+def v1_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 1, Array.new(U32, 4n, 0))
 
-def v1_bool_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v1_bool_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v1_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v1_bool_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v1_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v1_bool_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v1_bool_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v1_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v1_bool_pk_ok(v1_bool_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v1_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 1, 1, False{}, 1))
+
+def v1_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v1_bool_pk(out, pos, v1_bool_valid(o))
+
+def v1_bool_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v1_bool_ck(+k: Nat, +i: U32, +off: U32, +acc: Bool, pair: B.Buf & Bool) -> B.Buf & Bool:
   match k:
@@ -2980,15 +4084,31 @@ def v1_bool_set(o: O.Words, +i: U32, +v: Bool) -> O.Words & Bool: v1_bool_set_n(
 
 def v2_bool_default() -> O.Words: O.words_new(2)
 
-def v2_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 2)
+def v2_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 2, Array.new(U32, 4n, 0))
 
-def v2_bool_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v2_bool_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v2_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v2_bool_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v2_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v2_bool_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v2_bool_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v2_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v2_bool_pk_ok(v2_bool_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v2_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 2, 2, False{}, 1))
+
+def v2_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v2_bool_pk(out, pos, v2_bool_valid(o))
+
+def v2_bool_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v2_bool_ck(+k: Nat, +i: U32, +off: U32, +acc: Bool, pair: B.Buf & Bool) -> B.Buf & Bool:
   match k:
@@ -3054,15 +4174,31 @@ def v2_bool_set(o: O.Words, +i: U32, +v: Bool) -> O.Words & Bool: v2_bool_set_n(
 
 def v31_bool_default() -> O.Words: O.words_new(31)
 
-def v31_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 31)
+def v31_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 31, Array.new(U32, 4n, 0))
 
-def v31_bool_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v31_bool_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v31_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v31_bool_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v31_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v31_bool_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v31_bool_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v31_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v31_bool_pk_ok(v31_bool_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v31_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 31, 31, False{}, 1))
+
+def v31_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v31_bool_pk(out, pos, v31_bool_valid(o))
+
+def v31_bool_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v31_bool_ck(+k: Nat, +i: U32, +off: U32, +acc: Bool, pair: B.Buf & Bool) -> B.Buf & Bool:
   match k:
@@ -3128,15 +4264,31 @@ def v31_bool_set(o: O.Words, +i: U32, +v: Bool) -> O.Words & Bool: v31_bool_set_
 
 def v3_bool_default() -> O.Words: O.words_new(3)
 
-def v3_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 3)
+def v3_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 3, Array.new(U32, 4n, 0))
 
-def v3_bool_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v3_bool_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v3_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v3_bool_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v3_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v3_bool_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v3_bool_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v3_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v3_bool_pk_ok(v3_bool_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v3_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 3, 3, False{}, 1))
+
+def v3_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v3_bool_pk(out, pos, v3_bool_valid(o))
+
+def v3_bool_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v3_bool_ck(+k: Nat, +i: U32, +off: U32, +acc: Bool, pair: B.Buf & Bool) -> B.Buf & Bool:
   match k:
@@ -3202,15 +4354,46 @@ def v3_bool_set(o: O.Words, +i: U32, +v: Bool) -> O.Words & Bool: v3_bool_set_n(
 
 def v4_bool_default() -> O.Words: O.words_new(4)
 
-def v4_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 4)
+def v4_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 4, Array.new(U32, 4n, 0))
 
-def v4_bool_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v4_bool_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v4_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v4_bool_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 0 : U32), w), ws)
 
-def v4_bool_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v4_bool_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v4_bool_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v4_bool_pal(n, v4_bool_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v4_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v4_bool_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v4_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v4_bool_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v4_bool_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v4_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v4_bool_pk_ok(v4_bool_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v4_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 4, 4, False{}, 1))
+
+def v4_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v4_bool_pk(out, pos, v4_bool_valid(o))
+
+def v4_bool_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v4_bool_ck(+k: Nat, +i: U32, +off: U32, +acc: Bool, pair: B.Buf & Bool) -> B.Buf & Bool:
   match k:
@@ -3276,15 +4459,31 @@ def v4_bool_set(o: O.Words, +i: U32, +v: Bool) -> O.Words & Bool: v4_bool_set_n(
 
 def v512_bool_default() -> O.Words: O.words_new(512)
 
-def v512_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 512)
+def v512_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 512, Array.new(U32, 8n, 0))
 
-def v512_bool_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v512_bool_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v512_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v512_bool_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 4, seg)
+def v512_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 4, seg)
 
 def v512_bool_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v512_bool_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v512_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v512_bool_pk_ok(v512_bool_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v512_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 512, 512, False{}, 1))
+
+def v512_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v512_bool_pk(out, pos, v512_bool_valid(o))
+
+def v512_bool_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v512_bool_ck(+k: Nat, +i: U32, +off: U32, +acc: Bool, pair: B.Buf & Bool) -> B.Buf & Bool:
   match k:
@@ -3350,15 +4549,31 @@ def v512_bool_set(o: O.Words, +i: U32, +v: Bool) -> O.Words & Bool: v512_bool_se
 
 def v513_bool_default() -> O.Words: O.words_new(513)
 
-def v513_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 513)
+def v513_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 513, Array.new(U32, 8n, 0))
 
-def v513_bool_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v513_bool_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v513_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v513_bool_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 5, seg)
+def v513_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 5, seg)
 
 def v513_bool_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v513_bool_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v513_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v513_bool_pk_ok(v513_bool_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v513_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 513, 513, False{}, 1))
+
+def v513_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v513_bool_pk(out, pos, v513_bool_valid(o))
+
+def v513_bool_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v513_bool_ck(+k: Nat, +i: U32, +off: U32, +acc: Bool, pair: B.Buf & Bool) -> B.Buf & Bool:
   match k:
@@ -3424,15 +4639,31 @@ def v513_bool_set(o: O.Words, +i: U32, +v: Bool) -> O.Words & Bool: v513_bool_se
 
 def v5_bool_default() -> O.Words: O.words_new(5)
 
-def v5_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 5)
+def v5_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 5, Array.new(U32, 4n, 0))
 
-def v5_bool_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v5_bool_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v5_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v5_bool_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v5_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v5_bool_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v5_bool_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v5_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v5_bool_pk_ok(v5_bool_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v5_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 5, 5, False{}, 1))
+
+def v5_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v5_bool_pk(out, pos, v5_bool_valid(o))
+
+def v5_bool_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v5_bool_ck(+k: Nat, +i: U32, +off: U32, +acc: Bool, pair: B.Buf & Bool) -> B.Buf & Bool:
   match k:
@@ -3498,15 +4729,50 @@ def v5_bool_set(o: O.Words, +i: U32, +v: Bool) -> O.Words & Bool: v5_bool_set_n(
 
 def v8_bool_default() -> O.Words: O.words_new(8)
 
-def v8_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 8)
+def v8_bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 8, Array.new(U32, 4n, 0))
 
-def v8_bool_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v8_bool_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v8_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v8_bool_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 1 : U32), w), ws)
 
-def v8_bool_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v8_bool_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_bool_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v8_bool_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v8_bool_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v8_bool_pal(n, v8_bool_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v8_bool_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v8_bool_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v8_bool_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v8_bool_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v8_bool_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v8_bool_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v8_bool_pk_ok(v8_bool_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v8_bool_valid(o: O.Words) -> O.Words & Bool: O.bools_ok(O.words_ok(o, 8, 8, False{}, 1))
+
+def v8_bool_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v8_bool_pk(out, pos, v8_bool_valid(o))
+
+def v8_bool_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v8_bool_ck(+k: Nat, +i: U32, +off: U32, +acc: Bool, pair: B.Buf & Bool) -> B.Buf & Bool:
   match k:
@@ -3574,15 +4840,27 @@ def pl_u128_default() -> O.Words: O.words_new(0)
 
 def pl_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)
 
-def pl_u128_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def pl_u128_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def pl_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
 def pl_u128_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): O.put_words_n(out, pos, o)
 
-def pl_u128_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(4n, O.words_root_prog(h, o, seg))
+def pl_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 4n, O.words_root_prog(hl, h, o, seg))
 
 def pl_u128_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def pl_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pl_u128_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pl_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 16)
+
+def pl_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_u128_pk(out, pos, pl_u128_valid(o))
+
+def pl_u128_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words_n(o, t)
 
 def pl_u128_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 16) * 16 : U32)), True{}))
 
@@ -3655,15 +4933,298 @@ def pl_u128_append(o: O.Words, +v: Uint128) -> O.Words & Bool: pl_u128_app_n(v, 
 
 def v16_u128_default() -> O.Words: O.words_new(256)
 
-def v16_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 256)
+def v16_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 256, Array.new(U32, 7n, 0))
 
-def v16_u128_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v16_u128_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v16_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v16_u128_pa63(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 63 : U32), w), ws)
 
-def v16_u128_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 3, seg)
+def v16_u128_pa62(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa63(q, Array.set(U32, out, (q + 62 : U32), w), Array.get(U32, ws, 63))
+
+def v16_u128_pa61(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa62(q, Array.set(U32, out, (q + 61 : U32), w), Array.get(U32, ws, 62))
+
+def v16_u128_pa60(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa61(q, Array.set(U32, out, (q + 60 : U32), w), Array.get(U32, ws, 61))
+
+def v16_u128_pa59(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa60(q, Array.set(U32, out, (q + 59 : U32), w), Array.get(U32, ws, 60))
+
+def v16_u128_pa58(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa59(q, Array.set(U32, out, (q + 58 : U32), w), Array.get(U32, ws, 59))
+
+def v16_u128_pa57(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa58(q, Array.set(U32, out, (q + 57 : U32), w), Array.get(U32, ws, 58))
+
+def v16_u128_pa56(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa57(q, Array.set(U32, out, (q + 56 : U32), w), Array.get(U32, ws, 57))
+
+def v16_u128_pa55(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa56(q, Array.set(U32, out, (q + 55 : U32), w), Array.get(U32, ws, 56))
+
+def v16_u128_pa54(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa55(q, Array.set(U32, out, (q + 54 : U32), w), Array.get(U32, ws, 55))
+
+def v16_u128_pa53(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa54(q, Array.set(U32, out, (q + 53 : U32), w), Array.get(U32, ws, 54))
+
+def v16_u128_pa52(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa53(q, Array.set(U32, out, (q + 52 : U32), w), Array.get(U32, ws, 53))
+
+def v16_u128_pa51(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa52(q, Array.set(U32, out, (q + 51 : U32), w), Array.get(U32, ws, 52))
+
+def v16_u128_pa50(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa51(q, Array.set(U32, out, (q + 50 : U32), w), Array.get(U32, ws, 51))
+
+def v16_u128_pa49(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa50(q, Array.set(U32, out, (q + 49 : U32), w), Array.get(U32, ws, 50))
+
+def v16_u128_pa48(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa49(q, Array.set(U32, out, (q + 48 : U32), w), Array.get(U32, ws, 49))
+
+def v16_u128_pa47(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa48(q, Array.set(U32, out, (q + 47 : U32), w), Array.get(U32, ws, 48))
+
+def v16_u128_pa46(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa47(q, Array.set(U32, out, (q + 46 : U32), w), Array.get(U32, ws, 47))
+
+def v16_u128_pa45(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa46(q, Array.set(U32, out, (q + 45 : U32), w), Array.get(U32, ws, 46))
+
+def v16_u128_pa44(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa45(q, Array.set(U32, out, (q + 44 : U32), w), Array.get(U32, ws, 45))
+
+def v16_u128_pa43(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa44(q, Array.set(U32, out, (q + 43 : U32), w), Array.get(U32, ws, 44))
+
+def v16_u128_pa42(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa43(q, Array.set(U32, out, (q + 42 : U32), w), Array.get(U32, ws, 43))
+
+def v16_u128_pa41(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa42(q, Array.set(U32, out, (q + 41 : U32), w), Array.get(U32, ws, 42))
+
+def v16_u128_pa40(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa41(q, Array.set(U32, out, (q + 40 : U32), w), Array.get(U32, ws, 41))
+
+def v16_u128_pa39(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa40(q, Array.set(U32, out, (q + 39 : U32), w), Array.get(U32, ws, 40))
+
+def v16_u128_pa38(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa39(q, Array.set(U32, out, (q + 38 : U32), w), Array.get(U32, ws, 39))
+
+def v16_u128_pa37(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa38(q, Array.set(U32, out, (q + 37 : U32), w), Array.get(U32, ws, 38))
+
+def v16_u128_pa36(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa37(q, Array.set(U32, out, (q + 36 : U32), w), Array.get(U32, ws, 37))
+
+def v16_u128_pa35(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa36(q, Array.set(U32, out, (q + 35 : U32), w), Array.get(U32, ws, 36))
+
+def v16_u128_pa34(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa35(q, Array.set(U32, out, (q + 34 : U32), w), Array.get(U32, ws, 35))
+
+def v16_u128_pa33(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa34(q, Array.set(U32, out, (q + 33 : U32), w), Array.get(U32, ws, 34))
+
+def v16_u128_pa32(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa33(q, Array.set(U32, out, (q + 32 : U32), w), Array.get(U32, ws, 33))
+
+def v16_u128_pa31(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa32(q, Array.set(U32, out, (q + 31 : U32), w), Array.get(U32, ws, 32))
+
+def v16_u128_pa30(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa31(q, Array.set(U32, out, (q + 30 : U32), w), Array.get(U32, ws, 31))
+
+def v16_u128_pa29(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa30(q, Array.set(U32, out, (q + 29 : U32), w), Array.get(U32, ws, 30))
+
+def v16_u128_pa28(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa29(q, Array.set(U32, out, (q + 28 : U32), w), Array.get(U32, ws, 29))
+
+def v16_u128_pa27(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa28(q, Array.set(U32, out, (q + 27 : U32), w), Array.get(U32, ws, 28))
+
+def v16_u128_pa26(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa27(q, Array.set(U32, out, (q + 26 : U32), w), Array.get(U32, ws, 27))
+
+def v16_u128_pa25(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa26(q, Array.set(U32, out, (q + 25 : U32), w), Array.get(U32, ws, 26))
+
+def v16_u128_pa24(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa25(q, Array.set(U32, out, (q + 24 : U32), w), Array.get(U32, ws, 25))
+
+def v16_u128_pa23(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa24(q, Array.set(U32, out, (q + 23 : U32), w), Array.get(U32, ws, 24))
+
+def v16_u128_pa22(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa23(q, Array.set(U32, out, (q + 22 : U32), w), Array.get(U32, ws, 23))
+
+def v16_u128_pa21(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa22(q, Array.set(U32, out, (q + 21 : U32), w), Array.get(U32, ws, 22))
+
+def v16_u128_pa20(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa21(q, Array.set(U32, out, (q + 20 : U32), w), Array.get(U32, ws, 21))
+
+def v16_u128_pa19(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa20(q, Array.set(U32, out, (q + 19 : U32), w), Array.get(U32, ws, 20))
+
+def v16_u128_pa18(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa19(q, Array.set(U32, out, (q + 18 : U32), w), Array.get(U32, ws, 19))
+
+def v16_u128_pa17(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa18(q, Array.set(U32, out, (q + 17 : U32), w), Array.get(U32, ws, 18))
+
+def v16_u128_pa16(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa17(q, Array.set(U32, out, (q + 16 : U32), w), Array.get(U32, ws, 17))
+
+def v16_u128_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa16(q, Array.set(U32, out, (q + 15 : U32), w), Array.get(U32, ws, 16))
+
+def v16_u128_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v16_u128_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v16_u128_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v16_u128_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v16_u128_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v16_u128_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v16_u128_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v16_u128_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v16_u128_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v16_u128_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v16_u128_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v16_u128_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v16_u128_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v16_u128_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v16_u128_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u128_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v16_u128_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v16_u128_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v16_u128_pal(n, v16_u128_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v16_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v16_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v16_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 3, seg)
 
 def v16_u128_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v16_u128_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v16_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v16_u128_pk_ok(v16_u128_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v16_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 256, 256, False{}, 16)
+
+def v16_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v16_u128_pk(out, pos, v16_u128_valid(o))
+
+def v16_u128_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v16_u128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -3710,15 +5271,58 @@ def v16_u128_set(o: O.Words, +i: U32, +v: Uint128) -> O.Words & Bool: v16_u128_s
 
 def v1_u128_default() -> O.Words: O.words_new(16)
 
-def v1_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 16)
+def v1_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 16, Array.new(U32, 4n, 0))
 
-def v1_u128_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v1_u128_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v1_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v1_u128_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 3 : U32), w), ws)
 
-def v1_u128_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v1_u128_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v1_u128_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v1_u128_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v1_u128_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v1_u128_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v1_u128_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v1_u128_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v1_u128_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v1_u128_pal(n, v1_u128_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v1_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v1_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v1_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v1_u128_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v1_u128_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v1_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v1_u128_pk_ok(v1_u128_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v1_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16, 16, False{}, 16)
+
+def v1_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v1_u128_pk(out, pos, v1_u128_valid(o))
+
+def v1_u128_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v1_u128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -3765,15 +5369,74 @@ def v1_u128_set(o: O.Words, +i: U32, +v: Uint128) -> O.Words & Bool: v1_u128_set
 
 def v2_u128_default() -> O.Words: O.words_new(32)
 
-def v2_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 32)
+def v2_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 32, Array.new(U32, 4n, 0))
 
-def v2_u128_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v2_u128_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v2_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v2_u128_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 7 : U32), w), ws)
 
-def v2_u128_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v2_u128_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u128_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v2_u128_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u128_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v2_u128_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u128_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v2_u128_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u128_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v2_u128_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u128_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v2_u128_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u128_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v2_u128_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u128_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v2_u128_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v2_u128_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v2_u128_pal(n, v2_u128_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v2_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v2_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v2_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v2_u128_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v2_u128_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v2_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v2_u128_pk_ok(v2_u128_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v2_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 32, 32, False{}, 16)
+
+def v2_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v2_u128_pk(out, pos, v2_u128_valid(o))
+
+def v2_u128_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v2_u128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -3820,15 +5483,31 @@ def v2_u128_set(o: O.Words, +i: U32, +v: Uint128) -> O.Words & Bool: v2_u128_set
 
 def v31_u128_default() -> O.Words: O.words_new(496)
 
-def v31_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 496)
+def v31_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 496, Array.new(U32, 8n, 0))
 
-def v31_u128_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v31_u128_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v31_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v31_u128_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 4, seg)
+def v31_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 4, seg)
 
 def v31_u128_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v31_u128_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v31_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v31_u128_pk_ok(v31_u128_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v31_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 496, 496, False{}, 16)
+
+def v31_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v31_u128_pk(out, pos, v31_u128_valid(o))
+
+def v31_u128_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v31_u128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -3875,15 +5554,90 @@ def v31_u128_set(o: O.Words, +i: U32, +v: Uint128) -> O.Words & Bool: v31_u128_s
 
 def v3_u128_default() -> O.Words: O.words_new(48)
 
-def v3_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 48)
+def v3_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 48, Array.new(U32, 5n, 0))
 
-def v3_u128_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v3_u128_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v3_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v3_u128_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 11 : U32), w), ws)
 
-def v3_u128_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 1, seg)
+def v3_u128_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u128_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v3_u128_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u128_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v3_u128_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u128_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v3_u128_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u128_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v3_u128_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u128_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v3_u128_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u128_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v3_u128_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u128_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v3_u128_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u128_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v3_u128_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u128_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v3_u128_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u128_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v3_u128_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u128_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v3_u128_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v3_u128_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v3_u128_pal(n, v3_u128_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v3_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v3_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v3_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
 
 def v3_u128_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v3_u128_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v3_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v3_u128_pk_ok(v3_u128_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v3_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 48, 48, False{}, 16)
+
+def v3_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v3_u128_pk(out, pos, v3_u128_valid(o))
+
+def v3_u128_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v3_u128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -3930,15 +5684,106 @@ def v3_u128_set(o: O.Words, +i: U32, +v: Uint128) -> O.Words & Bool: v3_u128_set
 
 def v4_u128_default() -> O.Words: O.words_new(64)
 
-def v4_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 64)
+def v4_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 64, Array.new(U32, 5n, 0))
 
-def v4_u128_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v4_u128_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v4_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v4_u128_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 15 : U32), w), ws)
 
-def v4_u128_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 1, seg)
+def v4_u128_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v4_u128_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v4_u128_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v4_u128_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v4_u128_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v4_u128_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v4_u128_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v4_u128_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v4_u128_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v4_u128_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v4_u128_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v4_u128_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v4_u128_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v4_u128_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v4_u128_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u128_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v4_u128_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v4_u128_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v4_u128_pal(n, v4_u128_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v4_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v4_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v4_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
 
 def v4_u128_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v4_u128_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v4_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v4_u128_pk_ok(v4_u128_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v4_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 64, 64, False{}, 16)
+
+def v4_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v4_u128_pk(out, pos, v4_u128_valid(o))
+
+def v4_u128_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v4_u128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -3985,15 +5830,31 @@ def v4_u128_set(o: O.Words, +i: U32, +v: Uint128) -> O.Words & Bool: v4_u128_set
 
 def v512_u128_default() -> O.Words: O.words_new(8192)
 
-def v512_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 8192)
+def v512_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 8192, Array.new(U32, 12n, 0))
 
-def v512_u128_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v512_u128_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v512_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v512_u128_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 8, seg)
+def v512_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 8, seg)
 
 def v512_u128_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v512_u128_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v512_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v512_u128_pk_ok(v512_u128_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v512_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8192, 8192, False{}, 16)
+
+def v512_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v512_u128_pk(out, pos, v512_u128_valid(o))
+
+def v512_u128_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v512_u128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4040,15 +5901,31 @@ def v512_u128_set(o: O.Words, +i: U32, +v: Uint128) -> O.Words & Bool: v512_u128
 
 def v513_u128_default() -> O.Words: O.words_new(8208)
 
-def v513_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 8208)
+def v513_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 8208, Array.new(U32, 12n, 0))
 
-def v513_u128_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v513_u128_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v513_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v513_u128_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 9, seg)
+def v513_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 9, seg)
 
 def v513_u128_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v513_u128_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v513_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v513_u128_pk_ok(v513_u128_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v513_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8208, 8208, False{}, 16)
+
+def v513_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v513_u128_pk(out, pos, v513_u128_valid(o))
+
+def v513_u128_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v513_u128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4095,15 +5972,122 @@ def v513_u128_set(o: O.Words, +i: U32, +v: Uint128) -> O.Words & Bool: v513_u128
 
 def v5_u128_default() -> O.Words: O.words_new(80)
 
-def v5_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 80)
+def v5_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 80, Array.new(U32, 5n, 0))
 
-def v5_u128_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v5_u128_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v5_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v5_u128_pa19(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 19 : U32), w), ws)
 
-def v5_u128_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 2, seg)
+def v5_u128_pa18(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa19(q, Array.set(U32, out, (q + 18 : U32), w), Array.get(U32, ws, 19))
+
+def v5_u128_pa17(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa18(q, Array.set(U32, out, (q + 17 : U32), w), Array.get(U32, ws, 18))
+
+def v5_u128_pa16(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa17(q, Array.set(U32, out, (q + 16 : U32), w), Array.get(U32, ws, 17))
+
+def v5_u128_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa16(q, Array.set(U32, out, (q + 15 : U32), w), Array.get(U32, ws, 16))
+
+def v5_u128_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v5_u128_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v5_u128_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v5_u128_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v5_u128_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v5_u128_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v5_u128_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v5_u128_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v5_u128_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v5_u128_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v5_u128_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v5_u128_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v5_u128_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v5_u128_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v5_u128_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u128_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v5_u128_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v5_u128_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v5_u128_pal(n, v5_u128_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v5_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v5_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v5_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
 
 def v5_u128_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v5_u128_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v5_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v5_u128_pk_ok(v5_u128_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v5_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 80, 80, False{}, 16)
+
+def v5_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v5_u128_pk(out, pos, v5_u128_valid(o))
+
+def v5_u128_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v5_u128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4150,15 +6134,170 @@ def v5_u128_set(o: O.Words, +i: U32, +v: Uint128) -> O.Words & Bool: v5_u128_set
 
 def v8_u128_default() -> O.Words: O.words_new(128)
 
-def v8_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 128)
+def v8_u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 128, Array.new(U32, 6n, 0))
 
-def v8_u128_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v8_u128_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v8_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v8_u128_pa31(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 31 : U32), w), ws)
 
-def v8_u128_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 2, seg)
+def v8_u128_pa30(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa31(q, Array.set(U32, out, (q + 30 : U32), w), Array.get(U32, ws, 31))
+
+def v8_u128_pa29(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa30(q, Array.set(U32, out, (q + 29 : U32), w), Array.get(U32, ws, 30))
+
+def v8_u128_pa28(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa29(q, Array.set(U32, out, (q + 28 : U32), w), Array.get(U32, ws, 29))
+
+def v8_u128_pa27(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa28(q, Array.set(U32, out, (q + 27 : U32), w), Array.get(U32, ws, 28))
+
+def v8_u128_pa26(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa27(q, Array.set(U32, out, (q + 26 : U32), w), Array.get(U32, ws, 27))
+
+def v8_u128_pa25(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa26(q, Array.set(U32, out, (q + 25 : U32), w), Array.get(U32, ws, 26))
+
+def v8_u128_pa24(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa25(q, Array.set(U32, out, (q + 24 : U32), w), Array.get(U32, ws, 25))
+
+def v8_u128_pa23(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa24(q, Array.set(U32, out, (q + 23 : U32), w), Array.get(U32, ws, 24))
+
+def v8_u128_pa22(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa23(q, Array.set(U32, out, (q + 22 : U32), w), Array.get(U32, ws, 23))
+
+def v8_u128_pa21(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa22(q, Array.set(U32, out, (q + 21 : U32), w), Array.get(U32, ws, 22))
+
+def v8_u128_pa20(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa21(q, Array.set(U32, out, (q + 20 : U32), w), Array.get(U32, ws, 21))
+
+def v8_u128_pa19(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa20(q, Array.set(U32, out, (q + 19 : U32), w), Array.get(U32, ws, 20))
+
+def v8_u128_pa18(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa19(q, Array.set(U32, out, (q + 18 : U32), w), Array.get(U32, ws, 19))
+
+def v8_u128_pa17(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa18(q, Array.set(U32, out, (q + 17 : U32), w), Array.get(U32, ws, 18))
+
+def v8_u128_pa16(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa17(q, Array.set(U32, out, (q + 16 : U32), w), Array.get(U32, ws, 17))
+
+def v8_u128_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa16(q, Array.set(U32, out, (q + 15 : U32), w), Array.get(U32, ws, 16))
+
+def v8_u128_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v8_u128_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v8_u128_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v8_u128_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v8_u128_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v8_u128_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v8_u128_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v8_u128_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v8_u128_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v8_u128_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v8_u128_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v8_u128_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v8_u128_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v8_u128_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v8_u128_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u128_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v8_u128_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v8_u128_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v8_u128_pal(n, v8_u128_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v8_u128_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v8_u128_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v8_u128_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
 
 def v8_u128_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v8_u128_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v8_u128_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v8_u128_pk_ok(v8_u128_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v8_u128_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 128, 128, False{}, 16)
+
+def v8_u128_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v8_u128_pk(out, pos, v8_u128_valid(o))
+
+def v8_u128_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v8_u128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4207,15 +6346,27 @@ def pl_u8_default() -> O.Words: O.words_new(0)
 
 def pl_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)
 
-def pl_u8_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def pl_u8_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def pl_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
 def pl_u8_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): O.put_words_n(out, pos, o)
 
-def pl_u8_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(0n, O.words_root_prog(h, o, seg))
+def pl_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root_prog(hl, h, o, seg))
 
 def pl_u8_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def pl_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pl_u8_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pl_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 1)
+
+def pl_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_u8_pk(out, pos, pl_u8_valid(o))
+
+def pl_u8_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words_n(o, t)
 
 def pl_u8_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 1) * 1 : U32)), True{}))
 
@@ -4266,15 +6417,58 @@ def pl_u8_append(o: O.Words, +v: U32) -> O.Words & Bool: pl_u8_app_n(v, pl_u8_le
 
 def v16_u8_default() -> O.Words: O.words_new(16)
 
-def v16_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 16)
+def v16_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 16, Array.new(U32, 4n, 0))
 
-def v16_u8_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v16_u8_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v16_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v16_u8_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 3 : U32), w), ws)
 
-def v16_u8_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v16_u8_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u8_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v16_u8_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u8_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v16_u8_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u8_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v16_u8_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v16_u8_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v16_u8_pal(n, v16_u8_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v16_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v16_u8_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v16_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v16_u8_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v16_u8_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v16_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v16_u8_pk_ok(v16_u8_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v16_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16, 16, False{}, 1)
+
+def v16_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v16_u8_pk(out, pos, v16_u8_valid(o))
+
+def v16_u8_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v16_u8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4321,15 +6515,31 @@ def v16_u8_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v16_u8_set_n(i, 
 
 def v1_u8_default() -> O.Words: O.words_new(1)
 
-def v1_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 1)
+def v1_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 1, Array.new(U32, 4n, 0))
 
-def v1_u8_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v1_u8_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v1_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v1_u8_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v1_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v1_u8_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v1_u8_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v1_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v1_u8_pk_ok(v1_u8_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v1_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 1, 1, False{}, 1)
+
+def v1_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v1_u8_pk(out, pos, v1_u8_valid(o))
+
+def v1_u8_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v1_u8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4376,15 +6586,31 @@ def v1_u8_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v1_u8_set_n(i, v,
 
 def v2_u8_default() -> O.Words: O.words_new(2)
 
-def v2_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 2)
+def v2_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 2, Array.new(U32, 4n, 0))
 
-def v2_u8_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v2_u8_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v2_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v2_u8_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v2_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v2_u8_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v2_u8_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v2_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v2_u8_pk_ok(v2_u8_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v2_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2, 2, False{}, 1)
+
+def v2_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v2_u8_pk(out, pos, v2_u8_valid(o))
+
+def v2_u8_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v2_u8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4431,15 +6657,31 @@ def v2_u8_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v2_u8_set_n(i, v,
 
 def v31_u8_default() -> O.Words: O.words_new(31)
 
-def v31_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 31)
+def v31_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 31, Array.new(U32, 4n, 0))
 
-def v31_u8_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v31_u8_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v31_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v31_u8_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v31_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v31_u8_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v31_u8_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v31_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v31_u8_pk_ok(v31_u8_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v31_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 31, 31, False{}, 1)
+
+def v31_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v31_u8_pk(out, pos, v31_u8_valid(o))
+
+def v31_u8_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v31_u8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4486,15 +6728,31 @@ def v31_u8_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v31_u8_set_n(i, 
 
 def v3_u8_default() -> O.Words: O.words_new(3)
 
-def v3_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 3)
+def v3_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 3, Array.new(U32, 4n, 0))
 
-def v3_u8_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v3_u8_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v3_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v3_u8_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v3_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v3_u8_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v3_u8_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v3_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v3_u8_pk_ok(v3_u8_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v3_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 3, 3, False{}, 1)
+
+def v3_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v3_u8_pk(out, pos, v3_u8_valid(o))
+
+def v3_u8_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v3_u8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4541,15 +6799,46 @@ def v3_u8_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v3_u8_set_n(i, v,
 
 def v4_u8_default() -> O.Words: O.words_new(4)
 
-def v4_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 4)
+def v4_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 4, Array.new(U32, 4n, 0))
 
-def v4_u8_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v4_u8_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v4_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v4_u8_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 0 : U32), w), ws)
 
-def v4_u8_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v4_u8_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v4_u8_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v4_u8_pal(n, v4_u8_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v4_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v4_u8_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v4_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v4_u8_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v4_u8_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v4_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v4_u8_pk_ok(v4_u8_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v4_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4, 4, False{}, 1)
+
+def v4_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v4_u8_pk(out, pos, v4_u8_valid(o))
+
+def v4_u8_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v4_u8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4596,15 +6885,31 @@ def v4_u8_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v4_u8_set_n(i, v,
 
 def v512_u8_default() -> O.Words: O.words_new(512)
 
-def v512_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 512)
+def v512_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 512, Array.new(U32, 8n, 0))
 
-def v512_u8_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v512_u8_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v512_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v512_u8_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 4, seg)
+def v512_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 4, seg)
 
 def v512_u8_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v512_u8_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v512_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v512_u8_pk_ok(v512_u8_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v512_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 512, 512, False{}, 1)
+
+def v512_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v512_u8_pk(out, pos, v512_u8_valid(o))
+
+def v512_u8_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v512_u8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4651,15 +6956,31 @@ def v512_u8_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v512_u8_set_n(i
 
 def v513_u8_default() -> O.Words: O.words_new(513)
 
-def v513_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 513)
+def v513_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 513, Array.new(U32, 8n, 0))
 
-def v513_u8_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v513_u8_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v513_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v513_u8_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 5, seg)
+def v513_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 5, seg)
 
 def v513_u8_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v513_u8_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v513_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v513_u8_pk_ok(v513_u8_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v513_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 513, 513, False{}, 1)
+
+def v513_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v513_u8_pk(out, pos, v513_u8_valid(o))
+
+def v513_u8_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v513_u8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4706,15 +7027,31 @@ def v513_u8_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v513_u8_set_n(i
 
 def v5_u8_default() -> O.Words: O.words_new(5)
 
-def v5_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 5)
+def v5_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 5, Array.new(U32, 4n, 0))
 
-def v5_u8_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v5_u8_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v5_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v5_u8_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v5_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v5_u8_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v5_u8_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v5_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v5_u8_pk_ok(v5_u8_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v5_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 5, 5, False{}, 1)
+
+def v5_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v5_u8_pk(out, pos, v5_u8_valid(o))
+
+def v5_u8_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v5_u8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4761,15 +7098,50 @@ def v5_u8_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v5_u8_set_n(i, v,
 
 def v8_u8_default() -> O.Words: O.words_new(8)
 
-def v8_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 8)
+def v8_u8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 8, Array.new(U32, 4n, 0))
 
-def v8_u8_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v8_u8_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v8_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v8_u8_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 1 : U32), w), ws)
 
-def v8_u8_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v8_u8_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u8_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v8_u8_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v8_u8_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v8_u8_pal(n, v8_u8_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v8_u8_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v8_u8_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v8_u8_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v8_u8_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v8_u8_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v8_u8_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v8_u8_pk_ok(v8_u8_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v8_u8_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8, 8, False{}, 1)
+
+def v8_u8_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v8_u8_pk(out, pos, v8_u8_valid(o))
+
+def v8_u8_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v8_u8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4818,15 +7190,27 @@ def pl_u16_default() -> O.Words: O.words_new(0)
 
 def pl_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)
 
-def pl_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def pl_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def pl_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
 def pl_u16_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): O.put_words_n(out, pos, o)
 
-def pl_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(1n, O.words_root_prog(h, o, seg))
+def pl_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 1n, O.words_root_prog(hl, h, o, seg))
 
 def pl_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def pl_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pl_u16_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pl_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 2)
+
+def pl_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_u16_pk(out, pos, pl_u16_valid(o))
+
+def pl_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words_n(o, t)
 
 def pl_u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), True{}))
 
@@ -4877,15 +7261,74 @@ def pl_u16_append(o: O.Words, +v: U32) -> O.Words & Bool: pl_u16_app_n(v, pl_u16
 
 def v16_u16_default() -> O.Words: O.words_new(32)
 
-def v16_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 32)
+def v16_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 32, Array.new(U32, 4n, 0))
 
-def v16_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v16_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v16_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v16_u16_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 7 : U32), w), ws)
 
-def v16_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v16_u16_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u16_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v16_u16_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u16_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v16_u16_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u16_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v16_u16_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u16_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v16_u16_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u16_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v16_u16_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u16_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v16_u16_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u16_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v16_u16_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v16_u16_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v16_u16_pal(n, v16_u16_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v16_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v16_u16_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v16_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v16_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v16_u16_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v16_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v16_u16_pk_ok(v16_u16_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v16_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 32, 32, False{}, 2)
+
+def v16_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v16_u16_pk(out, pos, v16_u16_valid(o))
+
+def v16_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v16_u16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4932,15 +7375,31 @@ def v16_u16_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v16_u16_set_n(i
 
 def v1_u16_default() -> O.Words: O.words_new(2)
 
-def v1_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 2)
+def v1_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 2, Array.new(U32, 4n, 0))
 
-def v1_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v1_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v1_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v1_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v1_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v1_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v1_u16_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v1_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v1_u16_pk_ok(v1_u16_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v1_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2, 2, False{}, 2)
+
+def v1_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v1_u16_pk(out, pos, v1_u16_valid(o))
+
+def v1_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v1_u16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -4987,15 +7446,46 @@ def v1_u16_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v1_u16_set_n(i, 
 
 def v2_u16_default() -> O.Words: O.words_new(4)
 
-def v2_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 4)
+def v2_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 4, Array.new(U32, 4n, 0))
 
-def v2_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v2_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v2_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v2_u16_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 0 : U32), w), ws)
 
-def v2_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v2_u16_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v2_u16_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v2_u16_pal(n, v2_u16_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v2_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v2_u16_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v2_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v2_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v2_u16_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v2_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v2_u16_pk_ok(v2_u16_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v2_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4, 4, False{}, 2)
+
+def v2_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v2_u16_pk(out, pos, v2_u16_valid(o))
+
+def v2_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v2_u16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5042,15 +7532,31 @@ def v2_u16_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v2_u16_set_n(i, 
 
 def v31_u16_default() -> O.Words: O.words_new(62)
 
-def v31_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 62)
+def v31_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 62, Array.new(U32, 5n, 0))
 
-def v31_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v31_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v31_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v31_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 1, seg)
+def v31_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
 
 def v31_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v31_u16_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v31_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v31_u16_pk_ok(v31_u16_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v31_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 62, 62, False{}, 2)
+
+def v31_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v31_u16_pk(out, pos, v31_u16_valid(o))
+
+def v31_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v31_u16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5097,15 +7603,31 @@ def v31_u16_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v31_u16_set_n(i
 
 def v3_u16_default() -> O.Words: O.words_new(6)
 
-def v3_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 6)
+def v3_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 6, Array.new(U32, 4n, 0))
 
-def v3_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v3_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v3_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v3_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v3_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v3_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v3_u16_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v3_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v3_u16_pk_ok(v3_u16_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v3_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 6, 6, False{}, 2)
+
+def v3_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v3_u16_pk(out, pos, v3_u16_valid(o))
+
+def v3_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v3_u16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5152,15 +7674,50 @@ def v3_u16_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v3_u16_set_n(i, 
 
 def v4_u16_default() -> O.Words: O.words_new(8)
 
-def v4_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 8)
+def v4_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 8, Array.new(U32, 4n, 0))
 
-def v4_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v4_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v4_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v4_u16_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 1 : U32), w), ws)
 
-def v4_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v4_u16_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u16_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v4_u16_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v4_u16_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v4_u16_pal(n, v4_u16_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v4_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v4_u16_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v4_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v4_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v4_u16_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v4_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v4_u16_pk_ok(v4_u16_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v4_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8, 8, False{}, 2)
+
+def v4_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v4_u16_pk(out, pos, v4_u16_valid(o))
+
+def v4_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v4_u16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5207,15 +7764,31 @@ def v4_u16_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v4_u16_set_n(i, 
 
 def v512_u16_default() -> O.Words: O.words_new(1024)
 
-def v512_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 1024)
+def v512_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 1024, Array.new(U32, 9n, 0))
 
-def v512_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v512_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v512_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v512_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 5, seg)
+def v512_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 5, seg)
 
 def v512_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v512_u16_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v512_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v512_u16_pk_ok(v512_u16_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v512_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 1024, 1024, False{}, 2)
+
+def v512_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v512_u16_pk(out, pos, v512_u16_valid(o))
+
+def v512_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v512_u16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5262,15 +7835,31 @@ def v512_u16_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v512_u16_set_n
 
 def v513_u16_default() -> O.Words: O.words_new(1026)
 
-def v513_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 1026)
+def v513_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 1026, Array.new(U32, 9n, 0))
 
-def v513_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v513_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v513_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v513_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 6, seg)
+def v513_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 6, seg)
 
 def v513_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v513_u16_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v513_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v513_u16_pk_ok(v513_u16_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v513_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 1026, 1026, False{}, 2)
+
+def v513_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v513_u16_pk(out, pos, v513_u16_valid(o))
+
+def v513_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v513_u16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5317,15 +7906,31 @@ def v513_u16_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v513_u16_set_n
 
 def v5_u16_default() -> O.Words: O.words_new(10)
 
-def v5_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 10)
+def v5_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 10, Array.new(U32, 4n, 0))
 
-def v5_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v5_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v5_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v5_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v5_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v5_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v5_u16_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v5_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v5_u16_pk_ok(v5_u16_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v5_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 10, 10, False{}, 2)
+
+def v5_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v5_u16_pk(out, pos, v5_u16_valid(o))
+
+def v5_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v5_u16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5372,15 +7977,58 @@ def v5_u16_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v5_u16_set_n(i, 
 
 def v8_u16_default() -> O.Words: O.words_new(16)
 
-def v8_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 16)
+def v8_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 16, Array.new(U32, 4n, 0))
 
-def v8_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v8_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v8_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v8_u16_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 3 : U32), w), ws)
 
-def v8_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v8_u16_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u16_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v8_u16_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u16_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v8_u16_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u16_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v8_u16_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v8_u16_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v8_u16_pal(n, v8_u16_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v8_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v8_u16_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v8_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v8_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v8_u16_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v8_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v8_u16_pk_ok(v8_u16_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v8_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16, 16, False{}, 2)
+
+def v8_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v8_u16_pk(out, pos, v8_u16_valid(o))
+
+def v8_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v8_u16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5429,15 +8077,27 @@ def pl_u256_default() -> O.Words: O.words_new(0)
 
 def pl_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)
 
-def pl_u256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def pl_u256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def pl_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
 def pl_u256_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): O.put_words_n(out, pos, o)
 
-def pl_u256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(5n, O.words_root_prog(h, o, seg))
+def pl_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 5n, O.words_root_prog(hl, h, o, seg))
 
 def pl_u256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def pl_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pl_u256_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pl_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 32)
+
+def pl_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_u256_pk(out, pos, pl_u256_valid(o))
+
+def pl_u256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words_n(o, t)
 
 def pl_u256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 32) * 32 : U32)), True{}))
 
@@ -5526,15 +8186,31 @@ def pl_u256_append(o: O.Words, +v: Uint256) -> O.Words & Bool: pl_u256_app_n(v, 
 
 def v16_u256_default() -> O.Words: O.words_new(512)
 
-def v16_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 512)
+def v16_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 512, Array.new(U32, 8n, 0))
 
-def v16_u256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v16_u256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v16_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v16_u256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 4, seg)
+def v16_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 4, seg)
 
 def v16_u256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v16_u256_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v16_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v16_u256_pk_ok(v16_u256_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v16_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 512, 512, False{}, 32)
+
+def v16_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v16_u256_pk(out, pos, v16_u256_valid(o))
+
+def v16_u256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v16_u256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5581,15 +8257,74 @@ def v16_u256_set(o: O.Words, +i: U32, +v: Uint256) -> O.Words & Bool: v16_u256_s
 
 def v1_u256_default() -> O.Words: O.words_new(32)
 
-def v1_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 32)
+def v1_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 32, Array.new(U32, 4n, 0))
 
-def v1_u256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v1_u256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v1_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v1_u256_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 7 : U32), w), ws)
 
-def v1_u256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v1_u256_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v1_u256_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v1_u256_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v1_u256_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v1_u256_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v1_u256_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v1_u256_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v1_u256_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v1_u256_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v1_u256_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v1_u256_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v1_u256_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v1_u256_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v1_u256_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v1_u256_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v1_u256_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v1_u256_pal(n, v1_u256_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v1_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v1_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v1_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v1_u256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v1_u256_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v1_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v1_u256_pk_ok(v1_u256_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v1_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 32, 32, False{}, 32)
+
+def v1_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v1_u256_pk(out, pos, v1_u256_valid(o))
+
+def v1_u256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v1_u256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5636,15 +8371,106 @@ def v1_u256_set(o: O.Words, +i: U32, +v: Uint256) -> O.Words & Bool: v1_u256_set
 
 def v2_u256_default() -> O.Words: O.words_new(64)
 
-def v2_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 64)
+def v2_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 64, Array.new(U32, 5n, 0))
 
-def v2_u256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v2_u256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v2_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v2_u256_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 15 : U32), w), ws)
 
-def v2_u256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 1, seg)
+def v2_u256_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v2_u256_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v2_u256_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v2_u256_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v2_u256_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v2_u256_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v2_u256_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v2_u256_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v2_u256_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v2_u256_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v2_u256_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v2_u256_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v2_u256_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v2_u256_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v2_u256_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u256_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v2_u256_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v2_u256_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v2_u256_pal(n, v2_u256_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v2_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v2_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v2_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
 
 def v2_u256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v2_u256_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v2_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v2_u256_pk_ok(v2_u256_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v2_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 64, 64, False{}, 32)
+
+def v2_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v2_u256_pk(out, pos, v2_u256_valid(o))
+
+def v2_u256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v2_u256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5691,15 +8517,31 @@ def v2_u256_set(o: O.Words, +i: U32, +v: Uint256) -> O.Words & Bool: v2_u256_set
 
 def v31_u256_default() -> O.Words: O.words_new(992)
 
-def v31_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 992)
+def v31_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 992, Array.new(U32, 8n, 0))
 
-def v31_u256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v31_u256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v31_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v31_u256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 5, seg)
+def v31_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 5, seg)
 
 def v31_u256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v31_u256_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v31_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v31_u256_pk_ok(v31_u256_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v31_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 992, 992, False{}, 32)
+
+def v31_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v31_u256_pk(out, pos, v31_u256_valid(o))
+
+def v31_u256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v31_u256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5746,15 +8588,138 @@ def v31_u256_set(o: O.Words, +i: U32, +v: Uint256) -> O.Words & Bool: v31_u256_s
 
 def v3_u256_default() -> O.Words: O.words_new(96)
 
-def v3_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 96)
+def v3_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 96, Array.new(U32, 5n, 0))
 
-def v3_u256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v3_u256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v3_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v3_u256_pa23(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 23 : U32), w), ws)
 
-def v3_u256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 2, seg)
+def v3_u256_pa22(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa23(q, Array.set(U32, out, (q + 22 : U32), w), Array.get(U32, ws, 23))
+
+def v3_u256_pa21(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa22(q, Array.set(U32, out, (q + 21 : U32), w), Array.get(U32, ws, 22))
+
+def v3_u256_pa20(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa21(q, Array.set(U32, out, (q + 20 : U32), w), Array.get(U32, ws, 21))
+
+def v3_u256_pa19(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa20(q, Array.set(U32, out, (q + 19 : U32), w), Array.get(U32, ws, 20))
+
+def v3_u256_pa18(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa19(q, Array.set(U32, out, (q + 18 : U32), w), Array.get(U32, ws, 19))
+
+def v3_u256_pa17(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa18(q, Array.set(U32, out, (q + 17 : U32), w), Array.get(U32, ws, 18))
+
+def v3_u256_pa16(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa17(q, Array.set(U32, out, (q + 16 : U32), w), Array.get(U32, ws, 17))
+
+def v3_u256_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa16(q, Array.set(U32, out, (q + 15 : U32), w), Array.get(U32, ws, 16))
+
+def v3_u256_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v3_u256_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v3_u256_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v3_u256_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v3_u256_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v3_u256_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v3_u256_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v3_u256_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v3_u256_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v3_u256_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v3_u256_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v3_u256_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v3_u256_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v3_u256_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v3_u256_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u256_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v3_u256_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v3_u256_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v3_u256_pal(n, v3_u256_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v3_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v3_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v3_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
 
 def v3_u256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v3_u256_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v3_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v3_u256_pk_ok(v3_u256_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v3_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 96, 96, False{}, 32)
+
+def v3_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v3_u256_pk(out, pos, v3_u256_valid(o))
+
+def v3_u256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v3_u256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5801,15 +8766,170 @@ def v3_u256_set(o: O.Words, +i: U32, +v: Uint256) -> O.Words & Bool: v3_u256_set
 
 def v4_u256_default() -> O.Words: O.words_new(128)
 
-def v4_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 128)
+def v4_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 128, Array.new(U32, 6n, 0))
 
-def v4_u256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v4_u256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v4_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v4_u256_pa31(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 31 : U32), w), ws)
 
-def v4_u256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 2, seg)
+def v4_u256_pa30(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa31(q, Array.set(U32, out, (q + 30 : U32), w), Array.get(U32, ws, 31))
+
+def v4_u256_pa29(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa30(q, Array.set(U32, out, (q + 29 : U32), w), Array.get(U32, ws, 30))
+
+def v4_u256_pa28(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa29(q, Array.set(U32, out, (q + 28 : U32), w), Array.get(U32, ws, 29))
+
+def v4_u256_pa27(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa28(q, Array.set(U32, out, (q + 27 : U32), w), Array.get(U32, ws, 28))
+
+def v4_u256_pa26(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa27(q, Array.set(U32, out, (q + 26 : U32), w), Array.get(U32, ws, 27))
+
+def v4_u256_pa25(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa26(q, Array.set(U32, out, (q + 25 : U32), w), Array.get(U32, ws, 26))
+
+def v4_u256_pa24(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa25(q, Array.set(U32, out, (q + 24 : U32), w), Array.get(U32, ws, 25))
+
+def v4_u256_pa23(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa24(q, Array.set(U32, out, (q + 23 : U32), w), Array.get(U32, ws, 24))
+
+def v4_u256_pa22(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa23(q, Array.set(U32, out, (q + 22 : U32), w), Array.get(U32, ws, 23))
+
+def v4_u256_pa21(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa22(q, Array.set(U32, out, (q + 21 : U32), w), Array.get(U32, ws, 22))
+
+def v4_u256_pa20(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa21(q, Array.set(U32, out, (q + 20 : U32), w), Array.get(U32, ws, 21))
+
+def v4_u256_pa19(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa20(q, Array.set(U32, out, (q + 19 : U32), w), Array.get(U32, ws, 20))
+
+def v4_u256_pa18(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa19(q, Array.set(U32, out, (q + 18 : U32), w), Array.get(U32, ws, 19))
+
+def v4_u256_pa17(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa18(q, Array.set(U32, out, (q + 17 : U32), w), Array.get(U32, ws, 18))
+
+def v4_u256_pa16(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa17(q, Array.set(U32, out, (q + 16 : U32), w), Array.get(U32, ws, 17))
+
+def v4_u256_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa16(q, Array.set(U32, out, (q + 15 : U32), w), Array.get(U32, ws, 16))
+
+def v4_u256_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v4_u256_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v4_u256_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v4_u256_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v4_u256_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v4_u256_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v4_u256_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v4_u256_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v4_u256_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v4_u256_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v4_u256_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v4_u256_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v4_u256_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v4_u256_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v4_u256_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u256_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v4_u256_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v4_u256_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v4_u256_pal(n, v4_u256_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v4_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v4_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v4_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
 
 def v4_u256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v4_u256_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v4_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v4_u256_pk_ok(v4_u256_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v4_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 128, 128, False{}, 32)
+
+def v4_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v4_u256_pk(out, pos, v4_u256_valid(o))
+
+def v4_u256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v4_u256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5856,15 +8976,31 @@ def v4_u256_set(o: O.Words, +i: U32, +v: Uint256) -> O.Words & Bool: v4_u256_set
 
 def v512_u256_default() -> O.Words: O.words_new(16384)
 
-def v512_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 16384)
+def v512_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 16384, Array.new(U32, 13n, 0))
 
-def v512_u256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v512_u256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v512_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v512_u256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 9, seg)
+def v512_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 9, seg)
 
 def v512_u256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v512_u256_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v512_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v512_u256_pk_ok(v512_u256_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v512_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16384, 16384, False{}, 32)
+
+def v512_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v512_u256_pk(out, pos, v512_u256_valid(o))
+
+def v512_u256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v512_u256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5911,15 +9047,31 @@ def v512_u256_set(o: O.Words, +i: U32, +v: Uint256) -> O.Words & Bool: v512_u256
 
 def v513_u256_default() -> O.Words: O.words_new(16416)
 
-def v513_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 16416)
+def v513_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 16416, Array.new(U32, 13n, 0))
 
-def v513_u256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v513_u256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v513_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v513_u256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 10, seg)
+def v513_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 10, seg)
 
 def v513_u256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v513_u256_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v513_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v513_u256_pk_ok(v513_u256_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v513_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16416, 16416, False{}, 32)
+
+def v513_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v513_u256_pk(out, pos, v513_u256_valid(o))
+
+def v513_u256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v513_u256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -5966,15 +9118,202 @@ def v513_u256_set(o: O.Words, +i: U32, +v: Uint256) -> O.Words & Bool: v513_u256
 
 def v5_u256_default() -> O.Words: O.words_new(160)
 
-def v5_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 160)
+def v5_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 160, Array.new(U32, 6n, 0))
 
-def v5_u256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v5_u256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v5_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v5_u256_pa39(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 39 : U32), w), ws)
 
-def v5_u256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 3, seg)
+def v5_u256_pa38(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa39(q, Array.set(U32, out, (q + 38 : U32), w), Array.get(U32, ws, 39))
+
+def v5_u256_pa37(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa38(q, Array.set(U32, out, (q + 37 : U32), w), Array.get(U32, ws, 38))
+
+def v5_u256_pa36(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa37(q, Array.set(U32, out, (q + 36 : U32), w), Array.get(U32, ws, 37))
+
+def v5_u256_pa35(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa36(q, Array.set(U32, out, (q + 35 : U32), w), Array.get(U32, ws, 36))
+
+def v5_u256_pa34(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa35(q, Array.set(U32, out, (q + 34 : U32), w), Array.get(U32, ws, 35))
+
+def v5_u256_pa33(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa34(q, Array.set(U32, out, (q + 33 : U32), w), Array.get(U32, ws, 34))
+
+def v5_u256_pa32(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa33(q, Array.set(U32, out, (q + 32 : U32), w), Array.get(U32, ws, 33))
+
+def v5_u256_pa31(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa32(q, Array.set(U32, out, (q + 31 : U32), w), Array.get(U32, ws, 32))
+
+def v5_u256_pa30(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa31(q, Array.set(U32, out, (q + 30 : U32), w), Array.get(U32, ws, 31))
+
+def v5_u256_pa29(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa30(q, Array.set(U32, out, (q + 29 : U32), w), Array.get(U32, ws, 30))
+
+def v5_u256_pa28(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa29(q, Array.set(U32, out, (q + 28 : U32), w), Array.get(U32, ws, 29))
+
+def v5_u256_pa27(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa28(q, Array.set(U32, out, (q + 27 : U32), w), Array.get(U32, ws, 28))
+
+def v5_u256_pa26(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa27(q, Array.set(U32, out, (q + 26 : U32), w), Array.get(U32, ws, 27))
+
+def v5_u256_pa25(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa26(q, Array.set(U32, out, (q + 25 : U32), w), Array.get(U32, ws, 26))
+
+def v5_u256_pa24(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa25(q, Array.set(U32, out, (q + 24 : U32), w), Array.get(U32, ws, 25))
+
+def v5_u256_pa23(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa24(q, Array.set(U32, out, (q + 23 : U32), w), Array.get(U32, ws, 24))
+
+def v5_u256_pa22(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa23(q, Array.set(U32, out, (q + 22 : U32), w), Array.get(U32, ws, 23))
+
+def v5_u256_pa21(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa22(q, Array.set(U32, out, (q + 21 : U32), w), Array.get(U32, ws, 22))
+
+def v5_u256_pa20(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa21(q, Array.set(U32, out, (q + 20 : U32), w), Array.get(U32, ws, 21))
+
+def v5_u256_pa19(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa20(q, Array.set(U32, out, (q + 19 : U32), w), Array.get(U32, ws, 20))
+
+def v5_u256_pa18(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa19(q, Array.set(U32, out, (q + 18 : U32), w), Array.get(U32, ws, 19))
+
+def v5_u256_pa17(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa18(q, Array.set(U32, out, (q + 17 : U32), w), Array.get(U32, ws, 18))
+
+def v5_u256_pa16(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa17(q, Array.set(U32, out, (q + 16 : U32), w), Array.get(U32, ws, 17))
+
+def v5_u256_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa16(q, Array.set(U32, out, (q + 15 : U32), w), Array.get(U32, ws, 16))
+
+def v5_u256_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v5_u256_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v5_u256_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v5_u256_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v5_u256_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v5_u256_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v5_u256_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v5_u256_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v5_u256_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v5_u256_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v5_u256_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v5_u256_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v5_u256_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v5_u256_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v5_u256_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u256_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v5_u256_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v5_u256_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v5_u256_pal(n, v5_u256_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v5_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v5_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v5_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 3, seg)
 
 def v5_u256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v5_u256_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v5_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v5_u256_pk_ok(v5_u256_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v5_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 160, 160, False{}, 32)
+
+def v5_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v5_u256_pk(out, pos, v5_u256_valid(o))
+
+def v5_u256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v5_u256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6021,15 +9360,298 @@ def v5_u256_set(o: O.Words, +i: U32, +v: Uint256) -> O.Words & Bool: v5_u256_set
 
 def v8_u256_default() -> O.Words: O.words_new(256)
 
-def v8_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 256)
+def v8_u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 256, Array.new(U32, 7n, 0))
 
-def v8_u256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v8_u256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v8_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v8_u256_pa63(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 63 : U32), w), ws)
 
-def v8_u256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 3, seg)
+def v8_u256_pa62(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa63(q, Array.set(U32, out, (q + 62 : U32), w), Array.get(U32, ws, 63))
+
+def v8_u256_pa61(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa62(q, Array.set(U32, out, (q + 61 : U32), w), Array.get(U32, ws, 62))
+
+def v8_u256_pa60(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa61(q, Array.set(U32, out, (q + 60 : U32), w), Array.get(U32, ws, 61))
+
+def v8_u256_pa59(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa60(q, Array.set(U32, out, (q + 59 : U32), w), Array.get(U32, ws, 60))
+
+def v8_u256_pa58(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa59(q, Array.set(U32, out, (q + 58 : U32), w), Array.get(U32, ws, 59))
+
+def v8_u256_pa57(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa58(q, Array.set(U32, out, (q + 57 : U32), w), Array.get(U32, ws, 58))
+
+def v8_u256_pa56(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa57(q, Array.set(U32, out, (q + 56 : U32), w), Array.get(U32, ws, 57))
+
+def v8_u256_pa55(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa56(q, Array.set(U32, out, (q + 55 : U32), w), Array.get(U32, ws, 56))
+
+def v8_u256_pa54(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa55(q, Array.set(U32, out, (q + 54 : U32), w), Array.get(U32, ws, 55))
+
+def v8_u256_pa53(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa54(q, Array.set(U32, out, (q + 53 : U32), w), Array.get(U32, ws, 54))
+
+def v8_u256_pa52(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa53(q, Array.set(U32, out, (q + 52 : U32), w), Array.get(U32, ws, 53))
+
+def v8_u256_pa51(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa52(q, Array.set(U32, out, (q + 51 : U32), w), Array.get(U32, ws, 52))
+
+def v8_u256_pa50(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa51(q, Array.set(U32, out, (q + 50 : U32), w), Array.get(U32, ws, 51))
+
+def v8_u256_pa49(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa50(q, Array.set(U32, out, (q + 49 : U32), w), Array.get(U32, ws, 50))
+
+def v8_u256_pa48(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa49(q, Array.set(U32, out, (q + 48 : U32), w), Array.get(U32, ws, 49))
+
+def v8_u256_pa47(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa48(q, Array.set(U32, out, (q + 47 : U32), w), Array.get(U32, ws, 48))
+
+def v8_u256_pa46(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa47(q, Array.set(U32, out, (q + 46 : U32), w), Array.get(U32, ws, 47))
+
+def v8_u256_pa45(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa46(q, Array.set(U32, out, (q + 45 : U32), w), Array.get(U32, ws, 46))
+
+def v8_u256_pa44(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa45(q, Array.set(U32, out, (q + 44 : U32), w), Array.get(U32, ws, 45))
+
+def v8_u256_pa43(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa44(q, Array.set(U32, out, (q + 43 : U32), w), Array.get(U32, ws, 44))
+
+def v8_u256_pa42(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa43(q, Array.set(U32, out, (q + 42 : U32), w), Array.get(U32, ws, 43))
+
+def v8_u256_pa41(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa42(q, Array.set(U32, out, (q + 41 : U32), w), Array.get(U32, ws, 42))
+
+def v8_u256_pa40(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa41(q, Array.set(U32, out, (q + 40 : U32), w), Array.get(U32, ws, 41))
+
+def v8_u256_pa39(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa40(q, Array.set(U32, out, (q + 39 : U32), w), Array.get(U32, ws, 40))
+
+def v8_u256_pa38(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa39(q, Array.set(U32, out, (q + 38 : U32), w), Array.get(U32, ws, 39))
+
+def v8_u256_pa37(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa38(q, Array.set(U32, out, (q + 37 : U32), w), Array.get(U32, ws, 38))
+
+def v8_u256_pa36(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa37(q, Array.set(U32, out, (q + 36 : U32), w), Array.get(U32, ws, 37))
+
+def v8_u256_pa35(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa36(q, Array.set(U32, out, (q + 35 : U32), w), Array.get(U32, ws, 36))
+
+def v8_u256_pa34(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa35(q, Array.set(U32, out, (q + 34 : U32), w), Array.get(U32, ws, 35))
+
+def v8_u256_pa33(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa34(q, Array.set(U32, out, (q + 33 : U32), w), Array.get(U32, ws, 34))
+
+def v8_u256_pa32(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa33(q, Array.set(U32, out, (q + 32 : U32), w), Array.get(U32, ws, 33))
+
+def v8_u256_pa31(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa32(q, Array.set(U32, out, (q + 31 : U32), w), Array.get(U32, ws, 32))
+
+def v8_u256_pa30(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa31(q, Array.set(U32, out, (q + 30 : U32), w), Array.get(U32, ws, 31))
+
+def v8_u256_pa29(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa30(q, Array.set(U32, out, (q + 29 : U32), w), Array.get(U32, ws, 30))
+
+def v8_u256_pa28(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa29(q, Array.set(U32, out, (q + 28 : U32), w), Array.get(U32, ws, 29))
+
+def v8_u256_pa27(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa28(q, Array.set(U32, out, (q + 27 : U32), w), Array.get(U32, ws, 28))
+
+def v8_u256_pa26(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa27(q, Array.set(U32, out, (q + 26 : U32), w), Array.get(U32, ws, 27))
+
+def v8_u256_pa25(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa26(q, Array.set(U32, out, (q + 25 : U32), w), Array.get(U32, ws, 26))
+
+def v8_u256_pa24(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa25(q, Array.set(U32, out, (q + 24 : U32), w), Array.get(U32, ws, 25))
+
+def v8_u256_pa23(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa24(q, Array.set(U32, out, (q + 23 : U32), w), Array.get(U32, ws, 24))
+
+def v8_u256_pa22(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa23(q, Array.set(U32, out, (q + 22 : U32), w), Array.get(U32, ws, 23))
+
+def v8_u256_pa21(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa22(q, Array.set(U32, out, (q + 21 : U32), w), Array.get(U32, ws, 22))
+
+def v8_u256_pa20(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa21(q, Array.set(U32, out, (q + 20 : U32), w), Array.get(U32, ws, 21))
+
+def v8_u256_pa19(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa20(q, Array.set(U32, out, (q + 19 : U32), w), Array.get(U32, ws, 20))
+
+def v8_u256_pa18(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa19(q, Array.set(U32, out, (q + 18 : U32), w), Array.get(U32, ws, 19))
+
+def v8_u256_pa17(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa18(q, Array.set(U32, out, (q + 17 : U32), w), Array.get(U32, ws, 18))
+
+def v8_u256_pa16(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa17(q, Array.set(U32, out, (q + 16 : U32), w), Array.get(U32, ws, 17))
+
+def v8_u256_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa16(q, Array.set(U32, out, (q + 15 : U32), w), Array.get(U32, ws, 16))
+
+def v8_u256_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v8_u256_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v8_u256_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v8_u256_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v8_u256_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v8_u256_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v8_u256_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v8_u256_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v8_u256_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v8_u256_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v8_u256_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v8_u256_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v8_u256_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v8_u256_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v8_u256_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u256_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v8_u256_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v8_u256_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v8_u256_pal(n, v8_u256_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v8_u256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v8_u256_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v8_u256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 3, seg)
 
 def v8_u256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v8_u256_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v8_u256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v8_u256_pk_ok(v8_u256_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v8_u256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 256, 256, False{}, 32)
+
+def v8_u256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v8_u256_pk(out, pos, v8_u256_valid(o))
+
+def v8_u256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v8_u256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6078,15 +9700,27 @@ def pl_u32_default() -> O.Words: O.words_new(0)
 
 def pl_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)
 
-def pl_u32_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def pl_u32_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def pl_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
 def pl_u32_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): O.put_words_n(out, pos, o)
 
-def pl_u32_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(2n, O.words_root_prog(h, o, seg))
+def pl_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 2n, O.words_root_prog(hl, h, o, seg))
 
 def pl_u32_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def pl_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: pl_u32_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def pl_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 0, True{}, 4)
+
+def pl_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): pl_u32_pk(out, pos, pl_u32_valid(o))
+
+def pl_u32_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words_n(o, t)
 
 def pl_u32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 4) * 4 : U32)), True{}))
 
@@ -6137,15 +9771,106 @@ def pl_u32_append(o: O.Words, +v: U32) -> O.Words & Bool: pl_u32_app_n(v, pl_u32
 
 def v16_u32_default() -> O.Words: O.words_new(64)
 
-def v16_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 64)
+def v16_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 64, Array.new(U32, 5n, 0))
 
-def v16_u32_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v16_u32_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v16_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v16_u32_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 15 : U32), w), ws)
 
-def v16_u32_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 1, seg)
+def v16_u32_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v16_u32_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v16_u32_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v16_u32_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v16_u32_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v16_u32_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v16_u32_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v16_u32_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v16_u32_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v16_u32_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v16_u32_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v16_u32_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v16_u32_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v16_u32_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v16_u32_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u32_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v16_u32_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v16_u32_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v16_u32_pal(n, v16_u32_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v16_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v16_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v16_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
 
 def v16_u32_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v16_u32_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v16_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v16_u32_pk_ok(v16_u32_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v16_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 64, 64, False{}, 4)
+
+def v16_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v16_u32_pk(out, pos, v16_u32_valid(o))
+
+def v16_u32_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v16_u32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6192,15 +9917,46 @@ def v16_u32_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v16_u32_set_n(i
 
 def v1_u32_default() -> O.Words: O.words_new(4)
 
-def v1_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 4)
+def v1_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 4, Array.new(U32, 4n, 0))
 
-def v1_u32_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v1_u32_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v1_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v1_u32_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 0 : U32), w), ws)
 
-def v1_u32_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v1_u32_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v1_u32_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v1_u32_pal(n, v1_u32_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v1_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v1_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v1_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v1_u32_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v1_u32_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v1_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v1_u32_pk_ok(v1_u32_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v1_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4, 4, False{}, 4)
+
+def v1_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v1_u32_pk(out, pos, v1_u32_valid(o))
+
+def v1_u32_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v1_u32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6247,15 +10003,50 @@ def v1_u32_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v1_u32_set_n(i, 
 
 def v2_u32_default() -> O.Words: O.words_new(8)
 
-def v2_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 8)
+def v2_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 8, Array.new(U32, 4n, 0))
 
-def v2_u32_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v2_u32_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v2_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v2_u32_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 1 : U32), w), ws)
 
-def v2_u32_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v2_u32_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u32_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v2_u32_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v2_u32_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v2_u32_pal(n, v2_u32_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v2_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v2_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v2_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v2_u32_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v2_u32_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v2_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v2_u32_pk_ok(v2_u32_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v2_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8, 8, False{}, 4)
+
+def v2_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v2_u32_pk(out, pos, v2_u32_valid(o))
+
+def v2_u32_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v2_u32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6302,15 +10093,166 @@ def v2_u32_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v2_u32_set_n(i, 
 
 def v31_u32_default() -> O.Words: O.words_new(124)
 
-def v31_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 124)
+def v31_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 124, Array.new(U32, 6n, 0))
 
-def v31_u32_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v31_u32_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v31_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v31_u32_pa30(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 30 : U32), w), ws)
 
-def v31_u32_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 2, seg)
+def v31_u32_pa29(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa30(q, Array.set(U32, out, (q + 29 : U32), w), Array.get(U32, ws, 30))
+
+def v31_u32_pa28(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa29(q, Array.set(U32, out, (q + 28 : U32), w), Array.get(U32, ws, 29))
+
+def v31_u32_pa27(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa28(q, Array.set(U32, out, (q + 27 : U32), w), Array.get(U32, ws, 28))
+
+def v31_u32_pa26(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa27(q, Array.set(U32, out, (q + 26 : U32), w), Array.get(U32, ws, 27))
+
+def v31_u32_pa25(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa26(q, Array.set(U32, out, (q + 25 : U32), w), Array.get(U32, ws, 26))
+
+def v31_u32_pa24(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa25(q, Array.set(U32, out, (q + 24 : U32), w), Array.get(U32, ws, 25))
+
+def v31_u32_pa23(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa24(q, Array.set(U32, out, (q + 23 : U32), w), Array.get(U32, ws, 24))
+
+def v31_u32_pa22(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa23(q, Array.set(U32, out, (q + 22 : U32), w), Array.get(U32, ws, 23))
+
+def v31_u32_pa21(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa22(q, Array.set(U32, out, (q + 21 : U32), w), Array.get(U32, ws, 22))
+
+def v31_u32_pa20(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa21(q, Array.set(U32, out, (q + 20 : U32), w), Array.get(U32, ws, 21))
+
+def v31_u32_pa19(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa20(q, Array.set(U32, out, (q + 19 : U32), w), Array.get(U32, ws, 20))
+
+def v31_u32_pa18(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa19(q, Array.set(U32, out, (q + 18 : U32), w), Array.get(U32, ws, 19))
+
+def v31_u32_pa17(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa18(q, Array.set(U32, out, (q + 17 : U32), w), Array.get(U32, ws, 18))
+
+def v31_u32_pa16(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa17(q, Array.set(U32, out, (q + 16 : U32), w), Array.get(U32, ws, 17))
+
+def v31_u32_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa16(q, Array.set(U32, out, (q + 15 : U32), w), Array.get(U32, ws, 16))
+
+def v31_u32_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v31_u32_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v31_u32_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v31_u32_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v31_u32_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v31_u32_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v31_u32_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v31_u32_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v31_u32_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v31_u32_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v31_u32_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v31_u32_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v31_u32_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v31_u32_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v31_u32_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u32_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v31_u32_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v31_u32_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v31_u32_pal(n, v31_u32_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v31_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v31_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v31_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
 
 def v31_u32_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v31_u32_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v31_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v31_u32_pk_ok(v31_u32_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v31_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 124, 124, False{}, 4)
+
+def v31_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v31_u32_pk(out, pos, v31_u32_valid(o))
+
+def v31_u32_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v31_u32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6357,15 +10299,54 @@ def v31_u32_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v31_u32_set_n(i
 
 def v3_u32_default() -> O.Words: O.words_new(12)
 
-def v3_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 12)
+def v3_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 12, Array.new(U32, 4n, 0))
 
-def v3_u32_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v3_u32_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v3_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v3_u32_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 2 : U32), w), ws)
 
-def v3_u32_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v3_u32_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u32_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v3_u32_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u32_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v3_u32_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v3_u32_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v3_u32_pal(n, v3_u32_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v3_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v3_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v3_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v3_u32_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v3_u32_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v3_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v3_u32_pk_ok(v3_u32_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v3_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 12, 12, False{}, 4)
+
+def v3_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v3_u32_pk(out, pos, v3_u32_valid(o))
+
+def v3_u32_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v3_u32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6412,15 +10393,58 @@ def v3_u32_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v3_u32_set_n(i, 
 
 def v4_u32_default() -> O.Words: O.words_new(16)
 
-def v4_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 16)
+def v4_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 16, Array.new(U32, 4n, 0))
 
-def v4_u32_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v4_u32_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v4_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v4_u32_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 3 : U32), w), ws)
 
-def v4_u32_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v4_u32_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u32_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v4_u32_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u32_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v4_u32_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u32_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v4_u32_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v4_u32_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v4_u32_pal(n, v4_u32_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v4_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v4_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v4_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v4_u32_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v4_u32_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v4_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v4_u32_pk_ok(v4_u32_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v4_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16, 16, False{}, 4)
+
+def v4_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v4_u32_pk(out, pos, v4_u32_valid(o))
+
+def v4_u32_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v4_u32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6467,15 +10491,31 @@ def v4_u32_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v4_u32_set_n(i, 
 
 def v512_u32_default() -> O.Words: O.words_new(2048)
 
-def v512_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 2048)
+def v512_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 2048, Array.new(U32, 10n, 0))
 
-def v512_u32_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v512_u32_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v512_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v512_u32_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 6, seg)
+def v512_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 6, seg)
 
 def v512_u32_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v512_u32_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v512_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v512_u32_pk_ok(v512_u32_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v512_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2048, 2048, False{}, 4)
+
+def v512_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v512_u32_pk(out, pos, v512_u32_valid(o))
+
+def v512_u32_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v512_u32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6522,15 +10562,31 @@ def v512_u32_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v512_u32_set_n
 
 def v513_u32_default() -> O.Words: O.words_new(2052)
 
-def v513_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 2052)
+def v513_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 2052, Array.new(U32, 10n, 0))
 
-def v513_u32_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v513_u32_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v513_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v513_u32_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 7, seg)
+def v513_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 7, seg)
 
 def v513_u32_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v513_u32_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v513_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v513_u32_pk_ok(v513_u32_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v513_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 2052, 2052, False{}, 4)
+
+def v513_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v513_u32_pk(out, pos, v513_u32_valid(o))
+
+def v513_u32_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v513_u32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6577,15 +10633,62 @@ def v513_u32_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v513_u32_set_n
 
 def v5_u32_default() -> O.Words: O.words_new(20)
 
-def v5_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 20)
+def v5_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 20, Array.new(U32, 4n, 0))
 
-def v5_u32_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v5_u32_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v5_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v5_u32_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 4 : U32), w), ws)
 
-def v5_u32_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v5_u32_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u32_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v5_u32_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u32_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v5_u32_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u32_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v5_u32_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u32_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v5_u32_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v5_u32_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v5_u32_pal(n, v5_u32_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v5_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v5_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v5_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v5_u32_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v5_u32_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v5_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v5_u32_pk_ok(v5_u32_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v5_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 20, 20, False{}, 4)
+
+def v5_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v5_u32_pk(out, pos, v5_u32_valid(o))
+
+def v5_u32_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v5_u32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6632,15 +10735,74 @@ def v5_u32_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v5_u32_set_n(i, 
 
 def v8_u32_default() -> O.Words: O.words_new(32)
 
-def v8_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 32)
+def v8_u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 32, Array.new(U32, 4n, 0))
 
-def v8_u32_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v8_u32_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v8_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v8_u32_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 7 : U32), w), ws)
 
-def v8_u32_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v8_u32_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u32_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v8_u32_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u32_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v8_u32_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u32_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v8_u32_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u32_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v8_u32_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u32_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v8_u32_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u32_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v8_u32_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u32_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v8_u32_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v8_u32_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v8_u32_pal(n, v8_u32_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v8_u32_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v8_u32_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v8_u32_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v8_u32_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v8_u32_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v8_u32_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v8_u32_pk_ok(v8_u32_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v8_u32_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 32, 32, False{}, 4)
+
+def v8_u32_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v8_u32_pk(out, pos, v8_u32_valid(o))
+
+def v8_u32_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v8_u32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6687,15 +10849,170 @@ def v8_u32_set(o: O.Words, +i: U32, +v: U32) -> O.Words & Bool: v8_u32_set_n(i, 
 
 def v16_u64_default() -> O.Words: O.words_new(128)
 
-def v16_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 128)
+def v16_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 128, Array.new(U32, 6n, 0))
 
-def v16_u64_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v16_u64_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v16_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v16_u64_pa31(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 31 : U32), w), ws)
 
-def v16_u64_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 2, seg)
+def v16_u64_pa30(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa31(q, Array.set(U32, out, (q + 30 : U32), w), Array.get(U32, ws, 31))
+
+def v16_u64_pa29(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa30(q, Array.set(U32, out, (q + 29 : U32), w), Array.get(U32, ws, 30))
+
+def v16_u64_pa28(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa29(q, Array.set(U32, out, (q + 28 : U32), w), Array.get(U32, ws, 29))
+
+def v16_u64_pa27(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa28(q, Array.set(U32, out, (q + 27 : U32), w), Array.get(U32, ws, 28))
+
+def v16_u64_pa26(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa27(q, Array.set(U32, out, (q + 26 : U32), w), Array.get(U32, ws, 27))
+
+def v16_u64_pa25(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa26(q, Array.set(U32, out, (q + 25 : U32), w), Array.get(U32, ws, 26))
+
+def v16_u64_pa24(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa25(q, Array.set(U32, out, (q + 24 : U32), w), Array.get(U32, ws, 25))
+
+def v16_u64_pa23(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa24(q, Array.set(U32, out, (q + 23 : U32), w), Array.get(U32, ws, 24))
+
+def v16_u64_pa22(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa23(q, Array.set(U32, out, (q + 22 : U32), w), Array.get(U32, ws, 23))
+
+def v16_u64_pa21(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa22(q, Array.set(U32, out, (q + 21 : U32), w), Array.get(U32, ws, 22))
+
+def v16_u64_pa20(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa21(q, Array.set(U32, out, (q + 20 : U32), w), Array.get(U32, ws, 21))
+
+def v16_u64_pa19(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa20(q, Array.set(U32, out, (q + 19 : U32), w), Array.get(U32, ws, 20))
+
+def v16_u64_pa18(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa19(q, Array.set(U32, out, (q + 18 : U32), w), Array.get(U32, ws, 19))
+
+def v16_u64_pa17(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa18(q, Array.set(U32, out, (q + 17 : U32), w), Array.get(U32, ws, 18))
+
+def v16_u64_pa16(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa17(q, Array.set(U32, out, (q + 16 : U32), w), Array.get(U32, ws, 17))
+
+def v16_u64_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa16(q, Array.set(U32, out, (q + 15 : U32), w), Array.get(U32, ws, 16))
+
+def v16_u64_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v16_u64_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v16_u64_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v16_u64_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v16_u64_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v16_u64_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v16_u64_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v16_u64_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v16_u64_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v16_u64_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v16_u64_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v16_u64_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v16_u64_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v16_u64_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v16_u64_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v16_u64_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v16_u64_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v16_u64_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v16_u64_pal(n, v16_u64_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v16_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v16_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v16_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 2, seg)
 
 def v16_u64_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v16_u64_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v16_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v16_u64_pk_ok(v16_u64_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v16_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 128, 128, False{}, 8)
+
+def v16_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v16_u64_pk(out, pos, v16_u64_valid(o))
+
+def v16_u64_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v16_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6742,15 +11059,50 @@ def v16_u64_set(o: O.Words, +i: U32, +v: O.U64) -> O.Words & Bool: v16_u64_set_n
 
 def v1_u64_default() -> O.Words: O.words_new(8)
 
-def v1_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 8)
+def v1_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 8, Array.new(U32, 4n, 0))
 
-def v1_u64_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v1_u64_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v1_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v1_u64_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 1 : U32), w), ws)
 
-def v1_u64_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v1_u64_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v1_u64_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v1_u64_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v1_u64_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v1_u64_pal(n, v1_u64_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v1_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v1_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v1_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v1_u64_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v1_u64_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v1_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v1_u64_pk_ok(v1_u64_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v1_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 8, 8, False{}, 8)
+
+def v1_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v1_u64_pk(out, pos, v1_u64_valid(o))
+
+def v1_u64_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v1_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6797,15 +11149,58 @@ def v1_u64_set(o: O.Words, +i: U32, +v: O.U64) -> O.Words & Bool: v1_u64_set_n(i
 
 def v2_u64_default() -> O.Words: O.words_new(16)
 
-def v2_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 16)
+def v2_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 16, Array.new(U32, 4n, 0))
 
-def v2_u64_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v2_u64_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v2_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v2_u64_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 3 : U32), w), ws)
 
-def v2_u64_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v2_u64_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u64_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v2_u64_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u64_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v2_u64_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v2_u64_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v2_u64_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v2_u64_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v2_u64_pal(n, v2_u64_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v2_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v2_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v2_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v2_u64_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v2_u64_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v2_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v2_u64_pk_ok(v2_u64_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v2_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 16, 16, False{}, 8)
+
+def v2_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v2_u64_pk(out, pos, v2_u64_valid(o))
+
+def v2_u64_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v2_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6852,15 +11247,290 @@ def v2_u64_set(o: O.Words, +i: U32, +v: O.U64) -> O.Words & Bool: v2_u64_set_n(i
 
 def v31_u64_default() -> O.Words: O.words_new(248)
 
-def v31_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 248)
+def v31_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 248, Array.new(U32, 7n, 0))
 
-def v31_u64_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v31_u64_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v31_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v31_u64_pa61(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 61 : U32), w), ws)
 
-def v31_u64_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 3, seg)
+def v31_u64_pa60(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa61(q, Array.set(U32, out, (q + 60 : U32), w), Array.get(U32, ws, 61))
+
+def v31_u64_pa59(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa60(q, Array.set(U32, out, (q + 59 : U32), w), Array.get(U32, ws, 60))
+
+def v31_u64_pa58(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa59(q, Array.set(U32, out, (q + 58 : U32), w), Array.get(U32, ws, 59))
+
+def v31_u64_pa57(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa58(q, Array.set(U32, out, (q + 57 : U32), w), Array.get(U32, ws, 58))
+
+def v31_u64_pa56(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa57(q, Array.set(U32, out, (q + 56 : U32), w), Array.get(U32, ws, 57))
+
+def v31_u64_pa55(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa56(q, Array.set(U32, out, (q + 55 : U32), w), Array.get(U32, ws, 56))
+
+def v31_u64_pa54(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa55(q, Array.set(U32, out, (q + 54 : U32), w), Array.get(U32, ws, 55))
+
+def v31_u64_pa53(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa54(q, Array.set(U32, out, (q + 53 : U32), w), Array.get(U32, ws, 54))
+
+def v31_u64_pa52(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa53(q, Array.set(U32, out, (q + 52 : U32), w), Array.get(U32, ws, 53))
+
+def v31_u64_pa51(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa52(q, Array.set(U32, out, (q + 51 : U32), w), Array.get(U32, ws, 52))
+
+def v31_u64_pa50(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa51(q, Array.set(U32, out, (q + 50 : U32), w), Array.get(U32, ws, 51))
+
+def v31_u64_pa49(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa50(q, Array.set(U32, out, (q + 49 : U32), w), Array.get(U32, ws, 50))
+
+def v31_u64_pa48(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa49(q, Array.set(U32, out, (q + 48 : U32), w), Array.get(U32, ws, 49))
+
+def v31_u64_pa47(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa48(q, Array.set(U32, out, (q + 47 : U32), w), Array.get(U32, ws, 48))
+
+def v31_u64_pa46(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa47(q, Array.set(U32, out, (q + 46 : U32), w), Array.get(U32, ws, 47))
+
+def v31_u64_pa45(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa46(q, Array.set(U32, out, (q + 45 : U32), w), Array.get(U32, ws, 46))
+
+def v31_u64_pa44(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa45(q, Array.set(U32, out, (q + 44 : U32), w), Array.get(U32, ws, 45))
+
+def v31_u64_pa43(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa44(q, Array.set(U32, out, (q + 43 : U32), w), Array.get(U32, ws, 44))
+
+def v31_u64_pa42(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa43(q, Array.set(U32, out, (q + 42 : U32), w), Array.get(U32, ws, 43))
+
+def v31_u64_pa41(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa42(q, Array.set(U32, out, (q + 41 : U32), w), Array.get(U32, ws, 42))
+
+def v31_u64_pa40(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa41(q, Array.set(U32, out, (q + 40 : U32), w), Array.get(U32, ws, 41))
+
+def v31_u64_pa39(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa40(q, Array.set(U32, out, (q + 39 : U32), w), Array.get(U32, ws, 40))
+
+def v31_u64_pa38(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa39(q, Array.set(U32, out, (q + 38 : U32), w), Array.get(U32, ws, 39))
+
+def v31_u64_pa37(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa38(q, Array.set(U32, out, (q + 37 : U32), w), Array.get(U32, ws, 38))
+
+def v31_u64_pa36(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa37(q, Array.set(U32, out, (q + 36 : U32), w), Array.get(U32, ws, 37))
+
+def v31_u64_pa35(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa36(q, Array.set(U32, out, (q + 35 : U32), w), Array.get(U32, ws, 36))
+
+def v31_u64_pa34(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa35(q, Array.set(U32, out, (q + 34 : U32), w), Array.get(U32, ws, 35))
+
+def v31_u64_pa33(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa34(q, Array.set(U32, out, (q + 33 : U32), w), Array.get(U32, ws, 34))
+
+def v31_u64_pa32(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa33(q, Array.set(U32, out, (q + 32 : U32), w), Array.get(U32, ws, 33))
+
+def v31_u64_pa31(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa32(q, Array.set(U32, out, (q + 31 : U32), w), Array.get(U32, ws, 32))
+
+def v31_u64_pa30(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa31(q, Array.set(U32, out, (q + 30 : U32), w), Array.get(U32, ws, 31))
+
+def v31_u64_pa29(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa30(q, Array.set(U32, out, (q + 29 : U32), w), Array.get(U32, ws, 30))
+
+def v31_u64_pa28(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa29(q, Array.set(U32, out, (q + 28 : U32), w), Array.get(U32, ws, 29))
+
+def v31_u64_pa27(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa28(q, Array.set(U32, out, (q + 27 : U32), w), Array.get(U32, ws, 28))
+
+def v31_u64_pa26(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa27(q, Array.set(U32, out, (q + 26 : U32), w), Array.get(U32, ws, 27))
+
+def v31_u64_pa25(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa26(q, Array.set(U32, out, (q + 25 : U32), w), Array.get(U32, ws, 26))
+
+def v31_u64_pa24(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa25(q, Array.set(U32, out, (q + 24 : U32), w), Array.get(U32, ws, 25))
+
+def v31_u64_pa23(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa24(q, Array.set(U32, out, (q + 23 : U32), w), Array.get(U32, ws, 24))
+
+def v31_u64_pa22(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa23(q, Array.set(U32, out, (q + 22 : U32), w), Array.get(U32, ws, 23))
+
+def v31_u64_pa21(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa22(q, Array.set(U32, out, (q + 21 : U32), w), Array.get(U32, ws, 22))
+
+def v31_u64_pa20(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa21(q, Array.set(U32, out, (q + 20 : U32), w), Array.get(U32, ws, 21))
+
+def v31_u64_pa19(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa20(q, Array.set(U32, out, (q + 19 : U32), w), Array.get(U32, ws, 20))
+
+def v31_u64_pa18(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa19(q, Array.set(U32, out, (q + 18 : U32), w), Array.get(U32, ws, 19))
+
+def v31_u64_pa17(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa18(q, Array.set(U32, out, (q + 17 : U32), w), Array.get(U32, ws, 18))
+
+def v31_u64_pa16(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa17(q, Array.set(U32, out, (q + 16 : U32), w), Array.get(U32, ws, 17))
+
+def v31_u64_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa16(q, Array.set(U32, out, (q + 15 : U32), w), Array.get(U32, ws, 16))
+
+def v31_u64_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v31_u64_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v31_u64_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v31_u64_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v31_u64_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v31_u64_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v31_u64_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v31_u64_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v31_u64_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v31_u64_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v31_u64_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v31_u64_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v31_u64_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v31_u64_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v31_u64_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v31_u64_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v31_u64_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v31_u64_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v31_u64_pal(n, v31_u64_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v31_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v31_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v31_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 3, seg)
 
 def v31_u64_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v31_u64_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v31_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v31_u64_pk_ok(v31_u64_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v31_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 248, 248, False{}, 8)
+
+def v31_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v31_u64_pk(out, pos, v31_u64_valid(o))
+
+def v31_u64_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v31_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6907,15 +11577,66 @@ def v31_u64_set(o: O.Words, +i: U32, +v: O.U64) -> O.Words & Bool: v31_u64_set_n
 
 def v3_u64_default() -> O.Words: O.words_new(24)
 
-def v3_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 24)
+def v3_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 24, Array.new(U32, 4n, 0))
 
-def v3_u64_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v3_u64_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v3_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v3_u64_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 5 : U32), w), ws)
 
-def v3_u64_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v3_u64_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u64_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v3_u64_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u64_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v3_u64_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u64_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v3_u64_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u64_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v3_u64_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v3_u64_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v3_u64_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v3_u64_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v3_u64_pal(n, v3_u64_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v3_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v3_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v3_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v3_u64_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v3_u64_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v3_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v3_u64_pk_ok(v3_u64_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v3_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 24, 24, False{}, 8)
+
+def v3_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v3_u64_pk(out, pos, v3_u64_valid(o))
+
+def v3_u64_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v3_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -6962,15 +11683,74 @@ def v3_u64_set(o: O.Words, +i: U32, +v: O.U64) -> O.Words & Bool: v3_u64_set_n(i
 
 def v4_u64_default() -> O.Words: O.words_new(32)
 
-def v4_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 32)
+def v4_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 32, Array.new(U32, 4n, 0))
 
-def v4_u64_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v4_u64_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v4_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v4_u64_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 7 : U32), w), ws)
 
-def v4_u64_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 0, seg)
+def v4_u64_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u64_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v4_u64_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u64_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v4_u64_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u64_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v4_u64_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u64_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v4_u64_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u64_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v4_u64_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u64_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v4_u64_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v4_u64_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v4_u64_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v4_u64_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v4_u64_pal(n, v4_u64_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v4_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v4_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v4_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 0, seg)
 
 def v4_u64_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v4_u64_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v4_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v4_u64_pk_ok(v4_u64_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v4_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 32, 32, False{}, 8)
+
+def v4_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v4_u64_pk(out, pos, v4_u64_valid(o))
+
+def v4_u64_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v4_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -7017,15 +11797,31 @@ def v4_u64_set(o: O.Words, +i: U32, +v: O.U64) -> O.Words & Bool: v4_u64_set_n(i
 
 def v512_u64_default() -> O.Words: O.words_new(4096)
 
-def v512_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 4096)
+def v512_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 4096, Array.new(U32, 11n, 0))
 
-def v512_u64_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v512_u64_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v512_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v512_u64_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 7, seg)
+def v512_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 7, seg)
 
 def v512_u64_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v512_u64_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v512_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v512_u64_pk_ok(v512_u64_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v512_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4096, 4096, False{}, 8)
+
+def v512_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v512_u64_pk(out, pos, v512_u64_valid(o))
+
+def v512_u64_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v512_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -7072,15 +11868,31 @@ def v512_u64_set(o: O.Words, +i: U32, +v: O.U64) -> O.Words & Bool: v512_u64_set
 
 def v513_u64_default() -> O.Words: O.words_new(4104)
 
-def v513_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 4104)
+def v513_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 4104, Array.new(U32, 11n, 0))
 
-def v513_u64_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v513_u64_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def v513_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def v513_u64_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 8, seg)
+def v513_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 8, seg)
 
 def v513_u64_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v513_u64_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v513_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v513_u64_pk_ok(v513_u64_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v513_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 4104, 4104, False{}, 8)
+
+def v513_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v513_u64_pk(out, pos, v513_u64_valid(o))
+
+def v513_u64_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v513_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -7127,15 +11939,82 @@ def v513_u64_set(o: O.Words, +i: U32, +v: O.U64) -> O.Words & Bool: v513_u64_set
 
 def v5_u64_default() -> O.Words: O.words_new(40)
 
-def v5_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 40)
+def v5_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 40, Array.new(U32, 5n, 0))
 
-def v5_u64_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v5_u64_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v5_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v5_u64_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 9 : U32), w), ws)
 
-def v5_u64_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 1, seg)
+def v5_u64_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u64_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v5_u64_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u64_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v5_u64_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u64_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v5_u64_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u64_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v5_u64_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u64_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v5_u64_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u64_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v5_u64_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u64_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v5_u64_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u64_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v5_u64_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v5_u64_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v5_u64_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v5_u64_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v5_u64_pal(n, v5_u64_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v5_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v5_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v5_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
 
 def v5_u64_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v5_u64_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v5_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v5_u64_pk_ok(v5_u64_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v5_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 40, 40, False{}, 8)
+
+def v5_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v5_u64_pk(out, pos, v5_u64_valid(o))
+
+def v5_u64_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v5_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -7182,15 +12061,106 @@ def v5_u64_set(o: O.Words, +i: U32, +v: O.U64) -> O.Words & Bool: v5_u64_set_n(i
 
 def v8_u64_default() -> O.Words: O.words_new(64)
 
-def v8_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 64)
+def v8_u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 64, Array.new(U32, 5n, 0))
 
-def v8_u64_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def v8_u64_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def v8_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def v8_u64_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 15 : U32), w), ws)
 
-def v8_u64_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 1, seg)
+def v8_u64_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def v8_u64_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def v8_u64_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def v8_u64_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def v8_u64_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def v8_u64_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def v8_u64_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def v8_u64_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def v8_u64_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def v8_u64_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def v8_u64_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def v8_u64_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def v8_u64_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def v8_u64_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def v8_u64_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  v8_u64_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def v8_u64_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def v8_u64_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: v8_u64_pal(n, v8_u64_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def v8_u64_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: v8_u64_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def v8_u64_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 1, seg)
 
 def v8_u64_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def v8_u64_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v8_u64_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v8_u64_pk_ok(v8_u64_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v8_u64_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 64, 64, False{}, 8)
+
+def v8_u64_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): v8_u64_pk(out, pos, v8_u64_valid(o))
+
+def v8_u64_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def v8_u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -7276,59 +12246,57 @@ def Gc221EC01D83_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Gc221EC01D83:
 
 def Gc221EC01D83_sz3(f_A: O.Words, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, +acc: U32, pair: pl_pl_Gc465214E502_Seq & U32) -> Gc221EC01D83 & U32:
   (f_D, +m) = pair
-  (Gc221EC01D83{f_A, f_B, f_C, f_D}, (acc + m : U32))
+  (Gc221EC01D83{f_A, f_B, f_C, f_D}, O.padd(acc, m))
 
 def Gc221EC01D83_sz2(f_D: pl_pl_Gc465214E502_Seq, f_A: O.Words, f_B: O.Words, +acc: U32, pair: pl_Gc4ED9619F50_Seq & U32) -> Gc221EC01D83 & U32:
   (f_C, +m) = pair
-  Gc221EC01D83_sz3(f_A, f_B, f_C, (acc + m : U32), pl_pl_Gc465214E502_size(f_D))
+  Gc221EC01D83_sz3(f_A, f_B, f_C, O.padd(acc, m), pl_pl_Gc465214E502_size(f_D))
 
 def Gc221EC01D83_sz1(f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, f_A: O.Words, +acc: U32, pair: O.Words & U32) -> Gc221EC01D83 & U32:
   (f_B, +m) = pair
-  Gc221EC01D83_sz2(f_D, f_A, f_B, (acc + m : U32), pl_Gc4ED9619F50_size(f_C))
+  Gc221EC01D83_sz2(f_D, f_A, f_B, O.padd(acc, m), pl_Gc4ED9619F50_size(f_C))
 
 def Gc221EC01D83_sz0(f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, +acc: U32, pair: O.Words & U32) -> Gc221EC01D83 & U32:
   (f_A, +m) = pair
-  Gc221EC01D83_sz1(f_C, f_D, f_A, (acc + m : U32), pl_u64_size(f_B))
+  Gc221EC01D83_sz1(f_C, f_D, f_A, O.padd(acc, m), pl_u64_size(f_B))
 
 def Gc221EC01D83_size(o: Gc221EC01D83) -> Gc221EC01D83 & U32:
   match o:
     case Gc221EC01D83{f_A, f_B, f_C, f_D}: Gc221EC01D83_sz0(f_B, f_C, f_D, 16, pl_u8_size(f_A))
 
-def Gc221EC01D83_pw3s(+pos: U32, f_A: O.Words, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, +s_f_A: U32, +s_f_B: U32, +s_f_C: U32, +s_f_D: U32, out: Array<U32>) -> Array<U32> & (Gc221EC01D83 & U32):
-  (O.w32(O.w32(O.w32(O.w32(out, (pos + 0 : U32), 16), (pos + 4 : U32), (16 + s_f_A : U32)), (pos + 8 : U32), (16 + s_f_A + s_f_B : U32)), (pos + 12 : U32), (16 + s_f_A + s_f_B + s_f_C : U32)), (Gc221EC01D83{f_A, f_B, f_C, f_D}, (16 + s_f_A + s_f_B + s_f_C + s_f_D : U32)))
-
-def Gc221EC01D83_pw3(+pos: U32, f_A: O.Words, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, +s_f_A: U32, +s_f_B: U32, +s_f_C: U32, pair: Array<U32> & (pl_pl_Gc465214E502_Seq & U32)) -> Array<U32> & (Gc221EC01D83 & U32):
+def pl_u8_pvb(+cur: U32, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (O.Words & U32):
   (out, r) = pair
-  (f_D, sz) = r
-  Gc221EC01D83_pw3s(pos, f_A, f_B, f_C, f_D, s_f_A, s_f_B, s_f_C, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gc221EC01D83_pw2s(+pos: U32, f_A: O.Words, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, +s_f_A: U32, +s_f_B: U32, +s_f_C: U32, out: Array<U32>) -> Array<U32> & (Gc221EC01D83 & U32):
-  Gc221EC01D83_pw3(pos, f_A, f_B, f_C, s_f_A, s_f_B, s_f_C, pl_pl_Gc465214E502_putn(out, (pos + (16 + s_f_A + s_f_B + s_f_C : U32) : U32), f_D))
+def pl_u8_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Words) -> Array<U32> & (O.Words & U32):
+  pl_u8_pvb(cur, pl_u8_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gc221EC01D83_pw2(+pos: U32, f_A: O.Words, f_B: O.Words, f_D: pl_pl_Gc465214E502_Seq, +s_f_A: U32, +s_f_B: U32, pair: Array<U32> & (pl_Gc4ED9619F50_Seq & U32)) -> Array<U32> & (Gc221EC01D83 & U32):
+def Gc221EC01D83_pw3(+pos: U32, f_A: O.Words, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, pair: Array<U32> & (pl_pl_Gc465214E502_Seq & U32)) -> Array<U32> & (Gc221EC01D83 & U32):
   (out, r) = pair
-  (f_C, sz) = r
-  Gc221EC01D83_pw2s(pos, f_A, f_B, f_C, f_D, s_f_A, s_f_B, sz, out)
+  (f_D, c) = r
+  (out, (Gc221EC01D83{f_A, f_B, f_C, f_D}, c))
 
-def Gc221EC01D83_pw1s(+pos: U32, f_A: O.Words, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, +s_f_A: U32, +s_f_B: U32, out: Array<U32>) -> Array<U32> & (Gc221EC01D83 & U32):
-  Gc221EC01D83_pw2(pos, f_A, f_B, f_D, s_f_A, s_f_B, pl_Gc4ED9619F50_putn(out, (pos + (16 + s_f_A + s_f_B : U32) : U32), f_C))
-
-def Gc221EC01D83_pw1(+pos: U32, f_A: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, +s_f_A: U32, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gc221EC01D83 & U32):
+def Gc221EC01D83_pw2(+pos: U32, f_A: O.Words, f_B: O.Words, f_D: pl_pl_Gc465214E502_Seq, pair: Array<U32> & (pl_Gc4ED9619F50_Seq & U32)) -> Array<U32> & (Gc221EC01D83 & U32):
   (out, r) = pair
-  (f_B, sz) = r
-  Gc221EC01D83_pw1s(pos, f_A, f_B, f_C, f_D, s_f_A, sz, out)
+  (f_C, c) = r
+  Gc221EC01D83_pw3(pos, f_A, f_B, f_C, pl_pl_Gc465214E502_putv(out, pos, 12, c, f_D))
 
-def Gc221EC01D83_pw0s(+pos: U32, f_A: O.Words, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, +s_f_A: U32, out: Array<U32>) -> Array<U32> & (Gc221EC01D83 & U32):
-  Gc221EC01D83_pw1(pos, f_A, f_C, f_D, s_f_A, pl_u64_putn(out, (pos + (16 + s_f_A : U32) : U32), f_B))
+def Gc221EC01D83_pw1(+pos: U32, f_A: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gc221EC01D83 & U32):
+  (out, r) = pair
+  (f_B, c) = r
+  Gc221EC01D83_pw2(pos, f_A, f_B, f_D, pl_Gc4ED9619F50_putv(out, pos, 8, c, f_C))
 
 def Gc221EC01D83_pw0(+pos: U32, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gc221EC01D83 & U32):
   (out, r) = pair
-  (f_A, sz) = r
-  Gc221EC01D83_pw0s(pos, f_A, f_B, f_C, f_D, sz, out)
+  (f_A, c) = r
+  Gc221EC01D83_pw1(pos, f_A, f_C, f_D, pl_u64_putv(out, pos, 4, c, f_B))
 
 def Gc221EC01D83_putn(out: Array<U32>, +pos: U32, o: Gc221EC01D83) -> Array<U32> & (Gc221EC01D83 & U32):
   match o:
-    case Gc221EC01D83{f_A, f_B, f_C, f_D}: Gc221EC01D83_pw0(pos, f_B, f_C, f_D, pl_u8_putn(out, (pos + 16 : U32), f_A))
+    case Gc221EC01D83{f_A, f_B, f_C, f_D}: Gc221EC01D83_pw0(pos, f_B, f_C, f_D, pl_u8_putv(out, pos, 0, 16, f_A))
+
+def Gc221EC01D83_putk(out: Array<U32>, +pos: U32, o: Gc221EC01D83) -> Array<U32> & (Gc221EC01D83 & U32): Gc221EC01D83_putn(out, pos, o)
 
 def Gc221EC01D83_put_drop_go(out: Array<U32>, v: Gc221EC01D83, +m: U32) -> Array<U32> & Gc221EC01D83: (out, v)
 
@@ -7339,29 +12307,29 @@ def Gc221EC01D83_put_drop(pair: Array<U32> & (Gc221EC01D83 & U32)) -> Array<U32>
 
 def Gc221EC01D83_put(out: Array<U32>, +pos: U32, o: Gc221EC01D83) -> Array<U32> & Gc221EC01D83: Gc221EC01D83_put_drop(Gc221EC01D83_putn(out, pos, o))
 
-def Gc221EC01D83_rt3(+seg: U32, f_A: O.Words, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, pair: B.Buf & (pl_pl_Gc465214E502_Seq & D.Digest)) -> B.Buf & (Gc221EC01D83 & D.Digest):
+def Gc221EC01D83_rt3(+hl: Nat, +seg: U32, f_A: O.Words, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, pair: B.Buf & (pl_pl_Gc465214E502_Seq & D.Digest)) -> B.Buf & (Gc221EC01D83 & D.Digest):
   (h, r) = pair
   (f_D, d_f_D) = r
-  (h, (Gc221EC01D83{f_A, f_B, f_C, f_D}, D.hash_pair(D.hash_pair(d_f_A, d_f_B), D.hash_pair(d_f_C, d_f_D))))
+  (h, (Gc221EC01D83{f_A, f_B, f_C, f_D}, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D))))
 
-def Gc221EC01D83_rt2(+seg: U32, f_A: O.Words, f_B: O.Words, f_D: pl_pl_Gc465214E502_Seq, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & (pl_Gc4ED9619F50_Seq & D.Digest)) -> B.Buf & (Gc221EC01D83 & D.Digest):
+def Gc221EC01D83_rt2(+hl: Nat, +seg: U32, f_A: O.Words, f_B: O.Words, f_D: pl_pl_Gc465214E502_Seq, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & (pl_Gc4ED9619F50_Seq & D.Digest)) -> B.Buf & (Gc221EC01D83 & D.Digest):
   (h, r) = pair
   (f_C, d_f_C) = r
-  Gc221EC01D83_rt3(seg, f_A, f_B, f_C, d_f_A, d_f_B, d_f_C, pl_pl_Gc465214E502_root(h, f_D, seg))
+  Gc221EC01D83_rt3(hl, seg, f_A, f_B, f_C, d_f_A, d_f_B, d_f_C, pl_pl_Gc465214E502_root(hl, h, f_D, seg))
 
-def Gc221EC01D83_rt1(+seg: U32, f_A: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, d_f_A: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc221EC01D83 & D.Digest):
+def Gc221EC01D83_rt1(+hl: Nat, +seg: U32, f_A: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, d_f_A: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc221EC01D83 & D.Digest):
   (h, r) = pair
   (f_B, d_f_B) = r
-  Gc221EC01D83_rt2(seg, f_A, f_B, f_D, d_f_A, d_f_B, pl_Gc4ED9619F50_root(h, f_C, seg))
+  Gc221EC01D83_rt2(hl, seg, f_A, f_B, f_D, d_f_A, d_f_B, pl_Gc4ED9619F50_root(hl, h, f_C, seg))
 
-def Gc221EC01D83_rt0(+seg: U32, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc221EC01D83 & D.Digest):
+def Gc221EC01D83_rt0(+hl: Nat, +seg: U32, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc221EC01D83 & D.Digest):
   (h, r) = pair
   (f_A, d_f_A) = r
-  Gc221EC01D83_rt1(seg, f_A, f_C, f_D, d_f_A, pl_u64_root(h, f_B, seg))
+  Gc221EC01D83_rt1(hl, seg, f_A, f_C, f_D, d_f_A, pl_u64_root(hl, h, f_B, seg))
 
-def Gc221EC01D83_root(h: B.Buf, o: Gc221EC01D83, +seg: U32) -> B.Buf & (Gc221EC01D83 & D.Digest):
+def Gc221EC01D83_root(+hl: Nat, h: B.Buf, o: Gc221EC01D83, +seg: U32) -> B.Buf & (Gc221EC01D83 & D.Digest):
   match o:
-    case Gc221EC01D83{f_A, f_B, f_C, f_D}: Gc221EC01D83_rt0(seg, f_B, f_C, f_D, pl_u8_root(h, f_A, seg))
+    case Gc221EC01D83{f_A, f_B, f_C, f_D}: Gc221EC01D83_rt0(hl, seg, f_B, f_C, f_D, pl_u8_root(hl, h, f_A, seg))
 
 def Gc221EC01D83_swap_f_A(o: Gc221EC01D83, v: O.Words) -> Gc221EC01D83 & O.Words:
   match o:
@@ -7414,6 +12382,10 @@ def Gc221EC01D83_fo0(f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214
 def Gc221EC01D83_force(o: Gc221EC01D83) -> Gc221EC01D83 & U32:
   match o:
     case Gc221EC01D83{f_A, f_B, f_C, f_D}: Gc221EC01D83_fo0(f_B, f_C, f_D, (0 : U32), pl_u8_force(f_A))
+
+def Gc221EC01D83_dump(o: Gc221EC01D83, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gc221EC01D83{f_A, f_B, f_C, f_D}: pl_u8_dump(f_A, pl_u64_dump(f_B, pl_Gc4ED9619F50_dump(f_C, pl_pl_Gc465214E502_dump(f_D, t))))
 
 def Gc221EC01D83_c7(ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32, +o1: U32, +o2: U32, +o3: U32) -> B.Buf & Bool:
   match ok:
@@ -7498,15 +12470,27 @@ def bits5_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits5_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits5_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits5_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits5_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits5_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits5_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits5_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits5_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits5_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits5_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits5_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 5, False{})
+
+def bits5_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits5_pk(out, pos, bits5_valid(o))
+
+def bits5_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits5_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 5, False{})
 
@@ -7557,7 +12541,7 @@ def bv2_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector2:
 
 def bv2_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector2: bv2_r0(off, B.read32(buf, off))
 
-def bv2_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv2_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv2_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -7565,24 +12549,32 @@ def bv2_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_wo
 
 def bv2_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv2_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv2_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv2_pw0(out, q, w0)
     case 1: bv2_pw1(out, q, w0)
     case 2: bv2_pw2(out, q, w0)
     case _: bv2_pw3(out, q, w0)
 
+def bv2_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv2_pw0(out, q, w0)
+    case False{}: bv2_pwu(s, out, q, w0)
+
 def bv2_put(out: Array<U32>, +pos: U32, o: Bitvector2) -> Array<U32>:
   match o:
-    case Bitvector2{+w0}: bv2_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector2{+w0}: bv2_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv2_root(h: B.Buf, o: Bitvector2, +seg: U32) -> B.Buf & D.Digest:
+def bv2_root(+hl: Nat, h: B.Buf, o: Bitvector2, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector2{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv2_force(o: Bitvector2) -> U32:
   match o:
     case Bitvector2{+w0}: w0
+
+def bv2_dump(o: Bitvector2, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector2{+w0}: O.dump_le(w0, 1, t)
 
 def bv2_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 0 : U32), 2)
 
@@ -7613,7 +12605,7 @@ def bv1_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector1:
 
 def bv1_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector1: bv1_r0(off, B.read32(buf, off))
 
-def bv1_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv1_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv1_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -7621,24 +12613,32 @@ def bv1_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_wo
 
 def bv1_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv1_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv1_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv1_pw0(out, q, w0)
     case 1: bv1_pw1(out, q, w0)
     case 2: bv1_pw2(out, q, w0)
     case _: bv1_pw3(out, q, w0)
 
+def bv1_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv1_pw0(out, q, w0)
+    case False{}: bv1_pwu(s, out, q, w0)
+
 def bv1_put(out: Array<U32>, +pos: U32, o: Bitvector1) -> Array<U32>:
   match o:
-    case Bitvector1{+w0}: bv1_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector1{+w0}: bv1_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv1_root(h: B.Buf, o: Bitvector1, +seg: U32) -> B.Buf & D.Digest:
+def bv1_root(+hl: Nat, h: B.Buf, o: Bitvector1, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector1{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv1_force(o: Bitvector1) -> U32:
   match o:
     case Bitvector1{+w0}: w0
+
+def bv1_dump(o: Bitvector1, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector1{+w0}: O.dump_le(w0, 1, t)
 
 def bv1_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 0 : U32), 1)
 
@@ -7665,15 +12665,27 @@ def bits6_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits6_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits6_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits6_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits6_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits6_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits6_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits6_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits6_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits6_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits6_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits6_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 6, False{})
+
+def bits6_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits6_pk(out, pos, bits6_valid(o))
+
+def bits6_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits6_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 6, False{})
 
@@ -7724,7 +12736,7 @@ def bv8_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector8:
 
 def bv8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector8: bv8_r0(off, B.read32(buf, off))
 
-def bv8_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv8_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv8_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -7732,24 +12744,32 @@ def bv8_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_wo
 
 def bv8_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv8_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv8_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv8_pw0(out, q, w0)
     case 1: bv8_pw1(out, q, w0)
     case 2: bv8_pw2(out, q, w0)
     case _: bv8_pw3(out, q, w0)
 
+def bv8_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv8_pw0(out, q, w0)
+    case False{}: bv8_pwu(s, out, q, w0)
+
 def bv8_put(out: Array<U32>, +pos: U32, o: Bitvector8) -> Array<U32>:
   match o:
-    case Bitvector8{+w0}: bv8_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector8{+w0}: bv8_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv8_root(h: B.Buf, o: Bitvector8, +seg: U32) -> B.Buf & D.Digest:
+def bv8_root(+hl: Nat, h: B.Buf, o: Bitvector8, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector8{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv8_force(o: Bitvector8) -> U32:
   match o:
     case Bitvector8{+w0}: w0
+
+def bv8_dump(o: Bitvector8, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector8{+w0}: O.dump_le(w0, 1, t)
 
 def bv8_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -7809,35 +12829,59 @@ def Gc85FA758A04_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Gc85FA758A04:
 
 def Gc85FA758A04_sz1(+f_B: Bitvector2, +f_C: Bitvector1, +f_E: Bitvector8, f_A: O.Bits, +acc: U32, pair: O.Bits & U32) -> Gc85FA758A04 & U32:
   (f_D, +m) = pair
-  (Gc85FA758A04{f_A, f_B, f_C, f_D, f_E}, (acc + m : U32))
+  (Gc85FA758A04{f_A, f_B, f_C, f_D, f_E}, O.padd(acc, m))
 
 def Gc85FA758A04_sz0(+f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, +acc: U32, pair: O.Bits & U32) -> Gc85FA758A04 & U32:
   (f_A, +m) = pair
-  Gc85FA758A04_sz1(f_B, f_C, f_E, f_A, (acc + m : U32), bits6_size(f_D))
+  Gc85FA758A04_sz1(f_B, f_C, f_E, f_A, O.padd(acc, m), bits6_size(f_D))
 
 def Gc85FA758A04_size(o: Gc85FA758A04) -> Gc85FA758A04 & U32:
   match o:
     case Gc85FA758A04{f_A, +f_B, +f_C, f_D, +f_E}: Gc85FA758A04_sz0(f_B, f_C, f_D, f_E, 11, bits5_size(f_A))
 
-def Gc85FA758A04_pw1s(+pos: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, +s_f_A: U32, +s_f_D: U32, out: Array<U32>) -> Array<U32> & (Gc85FA758A04 & U32):
-  (O.w32(O.w32(bv8_put(bv1_put(bv2_put(out, (pos + 4 : U32), f_B), (pos + 5 : U32), f_C), (pos + 10 : U32), f_E), (pos + 0 : U32), 11), (pos + 6 : U32), (11 + s_f_A : U32)), (Gc85FA758A04{f_A, f_B, f_C, f_D, f_E}, (11 + s_f_A + s_f_D : U32)))
-
-def Gc85FA758A04_pw1(+pos: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, +f_E: Bitvector8, +s_f_A: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc85FA758A04 & U32):
+def bits5_pvb(+cur: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (O.Bits & U32):
   (out, r) = pair
-  (f_D, sz) = r
-  Gc85FA758A04_pw1s(pos, f_A, f_B, f_C, f_D, f_E, s_f_A, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gc85FA758A04_pw0s(+pos: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, +s_f_A: U32, out: Array<U32>) -> Array<U32> & (Gc85FA758A04 & U32):
-  Gc85FA758A04_pw1(pos, f_A, f_B, f_C, f_E, s_f_A, bits6_putn(out, (pos + (11 + s_f_A : U32) : U32), f_D))
+def bits5_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Bits) -> Array<U32> & (O.Bits & U32):
+  bits5_pvb(cur, bits5_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def bits6_pvb(+cur: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (O.Bits & U32):
+  (out, r) = pair
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
+
+def bits6_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Bits) -> Array<U32> & (O.Bits & U32):
+  bits6_pvb(cur, bits6_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def bv1_valid(o: Bitvector1) -> Bool:
+  match o:
+    case Bitvector1{+w0}: U32.is_lt(w0, 2)
+
+def bv2_valid(o: Bitvector2) -> Bool:
+  match o:
+    case Bitvector2{+w0}: U32.is_lt(w0, 4)
+
+def bv8_valid(o: Bitvector8) -> Bool:
+  match o:
+    case Bitvector8{+w0}: U32.is_lt(w0, 256)
+
+def Gc85FA758A04_pw1(+pos: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, +f_E: Bitvector8, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc85FA758A04 & U32):
+  (out, r) = pair
+  (f_D, c) = r
+  (bv8_put(bv1_put(bv2_put(out, (pos + 4 : U32), f_B), (pos + 5 : U32), f_C), (pos + 10 : U32), f_E), (Gc85FA758A04{f_A, f_B, f_C, f_D, f_E}, (c .|. O.pz(Bool.and(bv2_valid(f_B), Bool.and(bv1_valid(f_C), bv8_valid(f_E)))) : U32)))
 
 def Gc85FA758A04_pw0(+pos: U32, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc85FA758A04 & U32):
   (out, r) = pair
-  (f_A, sz) = r
-  Gc85FA758A04_pw0s(pos, f_A, f_B, f_C, f_D, f_E, sz, out)
+  (f_A, c) = r
+  Gc85FA758A04_pw1(pos, f_A, f_B, f_C, f_E, bits6_putv(out, pos, 6, c, f_D))
 
 def Gc85FA758A04_putn(out: Array<U32>, +pos: U32, o: Gc85FA758A04) -> Array<U32> & (Gc85FA758A04 & U32):
   match o:
-    case Gc85FA758A04{f_A, +f_B, +f_C, f_D, +f_E}: Gc85FA758A04_pw0(pos, f_B, f_C, f_D, f_E, bits5_putn(out, (pos + 11 : U32), f_A))
+    case Gc85FA758A04{f_A, +f_B, +f_C, f_D, +f_E}: Gc85FA758A04_pw0(pos, f_B, f_C, f_D, f_E, bits5_putv(out, pos, 0, 11, f_A))
+
+def Gc85FA758A04_putk(out: Array<U32>, +pos: U32, o: Gc85FA758A04) -> Array<U32> & (Gc85FA758A04 & U32): Gc85FA758A04_putn(out, pos, o)
 
 def Gc85FA758A04_put_drop_go(out: Array<U32>, v: Gc85FA758A04, +m: U32) -> Array<U32> & Gc85FA758A04: (out, v)
 
@@ -7848,35 +12892,35 @@ def Gc85FA758A04_put_drop(pair: Array<U32> & (Gc85FA758A04 & U32)) -> Array<U32>
 
 def Gc85FA758A04_put(out: Array<U32>, +pos: U32, o: Gc85FA758A04) -> Array<U32> & Gc85FA758A04: Gc85FA758A04_put_drop(Gc85FA758A04_putn(out, pos, o))
 
-def Gc85FA758A04_rt5(+seg: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc85FA758A04 & D.Digest):
+def Gc85FA758A04_rt5(+hl: Nat, +seg: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc85FA758A04 & D.Digest):
   (h, z1) = pair
-  (h, (Gc85FA758A04{f_A, f_B, f_C, f_D, f_E}, D.hash_pair(D.hash_pair(D.hash_pair(d_f_A, d_f_B), D.hash_pair(d_f_C, d_f_D)), D.hash_pair(D.hash_pair(d_f_E, D.zero()), z1))))
+  (h, (Gc85FA758A04{f_A, f_B, f_C, f_D, f_E}, D.node(hl, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D)), D.node(hl, D.node(hl, d_f_E, D.zero()), z1))))
 
-def Gc85FA758A04_rt4(+seg: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc85FA758A04 & D.Digest):
+def Gc85FA758A04_rt4(+hl: Nat, +seg: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc85FA758A04 & D.Digest):
   (h, d_f_E) = pair
-  Gc85FA758A04_rt5(seg, f_A, f_B, f_C, f_D, f_E, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, O.zero(h, 1))
+  Gc85FA758A04_rt5(hl, seg, f_A, f_B, f_C, f_D, f_E, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, (h, D.zconst(1n)))
 
-def Gc85FA758A04_rt3(+seg: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, +f_E: Bitvector8, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc85FA758A04 & D.Digest):
+def Gc85FA758A04_rt3(+hl: Nat, +seg: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, +f_E: Bitvector8, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc85FA758A04 & D.Digest):
   (h, r) = pair
   (f_D, d_f_D) = r
-  Gc85FA758A04_rt4(seg, f_A, f_B, f_C, f_D, f_E, d_f_A, d_f_B, d_f_C, d_f_D, bv8_root(h, f_E, seg))
+  Gc85FA758A04_rt4(hl, seg, f_A, f_B, f_C, f_D, f_E, d_f_A, d_f_B, d_f_C, d_f_D, bv8_root(hl, h, f_E, seg))
 
-def Gc85FA758A04_rt2(+seg: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc85FA758A04 & D.Digest):
+def Gc85FA758A04_rt2(+hl: Nat, +seg: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc85FA758A04 & D.Digest):
   (h, d_f_C) = pair
-  Gc85FA758A04_rt3(seg, f_A, f_B, f_C, f_E, d_f_A, d_f_B, d_f_C, bits6_root(h, f_D, seg))
+  Gc85FA758A04_rt3(hl, seg, f_A, f_B, f_C, f_E, d_f_A, d_f_B, d_f_C, bits6_root(hl, h, f_D, seg))
 
-def Gc85FA758A04_rt1(+seg: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, d_f_A: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc85FA758A04 & D.Digest):
+def Gc85FA758A04_rt1(+hl: Nat, +seg: U32, f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, d_f_A: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc85FA758A04 & D.Digest):
   (h, d_f_B) = pair
-  Gc85FA758A04_rt2(seg, f_A, f_B, f_C, f_D, f_E, d_f_A, d_f_B, bv1_root(h, f_C, seg))
+  Gc85FA758A04_rt2(hl, seg, f_A, f_B, f_C, f_D, f_E, d_f_A, d_f_B, bv1_root(hl, h, f_C, seg))
 
-def Gc85FA758A04_rt0(+seg: U32, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc85FA758A04 & D.Digest):
+def Gc85FA758A04_rt0(+hl: Nat, +seg: U32, +f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc85FA758A04 & D.Digest):
   (h, r) = pair
   (f_A, d_f_A) = r
-  Gc85FA758A04_rt1(seg, f_A, f_B, f_C, f_D, f_E, d_f_A, bv2_root(h, f_B, seg))
+  Gc85FA758A04_rt1(hl, seg, f_A, f_B, f_C, f_D, f_E, d_f_A, bv2_root(hl, h, f_B, seg))
 
-def Gc85FA758A04_root(h: B.Buf, o: Gc85FA758A04, +seg: U32) -> B.Buf & (Gc85FA758A04 & D.Digest):
+def Gc85FA758A04_root(+hl: Nat, h: B.Buf, o: Gc85FA758A04, +seg: U32) -> B.Buf & (Gc85FA758A04 & D.Digest):
   match o:
-    case Gc85FA758A04{f_A, +f_B, +f_C, f_D, +f_E}: Gc85FA758A04_rt0(seg, f_B, f_C, f_D, f_E, bits5_root(h, f_A, seg))
+    case Gc85FA758A04{f_A, +f_B, +f_C, f_D, +f_E}: Gc85FA758A04_rt0(hl, seg, f_B, f_C, f_D, f_E, bits5_root(hl, h, f_A, seg))
 
 def Gc85FA758A04_swap_f_A(o: Gc85FA758A04, v: O.Bits) -> Gc85FA758A04 & O.Bits:
   match o:
@@ -7929,6 +12973,10 @@ def Gc85FA758A04_fo0(+f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitv
 def Gc85FA758A04_force(o: Gc85FA758A04) -> Gc85FA758A04 & U32:
   match o:
     case Gc85FA758A04{f_A, +f_B, +f_C, f_D, +f_E}: Gc85FA758A04_fo0(f_B, f_C, f_D, f_E, (bv2_force(f_B) .^. bv1_force(f_C) .^. bv8_force(f_E) : U32), bits5_force(f_A))
+
+def Gc85FA758A04_dump(o: Gc85FA758A04, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gc85FA758A04{f_A, +f_B, +f_C, f_D, +f_E}: bits5_dump(f_A, bv2_dump(f_B, bv1_dump(f_C, bits6_dump(f_D, bv8_dump(f_E, t)))))
 
 def Gc85FA758A04_c5(ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32, +o1: U32) -> B.Buf & Bool:
   match ok:
@@ -8029,30 +13077,38 @@ def bv256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector256: bv256_
 
 def bv256_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1), (q + 2 : U32), w2), (q + 3 : U32), w3), (q + 4 : U32), w4), (q + 5 : U32), w5), (q + 6 : U32), w6), (q + 7 : U32), w7)
 
-def bv256_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), U32.shrn(w7, 24n))
+def bv256_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), U32.shrn(w7, 24n))
 
-def bv256_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), U32.shrn(w7, 16n))
+def bv256_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), U32.shrn(w7, 16n))
 
-def bv256_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), U32.shrn(w7, 8n))
+def bv256_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), U32.shrn(w7, 8n))
 
-def bv256_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>:
+def bv256_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>:
   match s:
-    case 0: bv256_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
     case 1: bv256_pw1(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
     case 2: bv256_pw2(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
     case _: bv256_pw3(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
 
+def bv256_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv256_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
+    case False{}: bv256_pwu(s, out, q, w0, w1, w2, w3, w4, w5, w6, w7)
+
 def bv256_put(out: Array<U32>, +pos: U32, o: Bitvector256) -> Array<U32>:
   match o:
-    case Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: bv256_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7)
+    case Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: bv256_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7)
 
-def bv256_root(h: B.Buf, o: Bitvector256, +seg: U32) -> B.Buf & D.Digest:
+def bv256_root(+hl: Nat, h: B.Buf, o: Bitvector256, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})
 
 def bv256_force(o: Bitvector256) -> U32:
   match o:
     case Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (((((((w0 .^. w1 : U32) .^. w2 : U32) .^. w3 : U32) .^. w4 : U32) .^. w5 : U32) .^. w6 : U32) .^. w7 : U32)
+
+def bv256_dump(o: Bitvector256, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: O.dump_le(w0, 4, O.dump_le(w1, 4, O.dump_le(w2, 4, O.dump_le(w3, 4, O.dump_le(w4, 4, O.dump_le(w5, 4, O.dump_le(w6, 4, O.dump_le(w7, 4, t))))))))
 
 def bv256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -8107,15 +13163,27 @@ def bits256_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits256_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits256_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits256_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits256_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits256_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits256_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits256_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits256_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits256_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits256_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 256, False{})
+
+def bits256_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits256_pk(out, pos, bits256_valid(o))
+
+def bits256_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 256, False{})
 
@@ -8198,32 +13266,40 @@ def bv257_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector257:
 
 def bv257_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector257: bv257_r0(off, B.read32(buf, off))
 
-def bv257_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32) -> Array<U32>: Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1), (q + 2 : U32), w2), (q + 3 : U32), w3), (q + 4 : U32), w4), (q + 5 : U32), w5), (q + 6 : U32), w6), (q + 7 : U32), w7), (q + 8 : U32), w8)
+def bv257_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32) -> Array<U32>: O.or_word(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1), (q + 2 : U32), w2), (q + 3 : U32), w3), (q + 4 : U32), w4), (q + 5 : U32), w5), (q + 6 : U32), w6), (q + 7 : U32), w7), (q + 8 : U32), w8)
 
-def bv257_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), ((w8 * 256 : U32) .|. U32.shrn(w7, 24n) : U32)), (q + 9 : U32), U32.shrn(w8, 24n))
+def bv257_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32) -> Array<U32>: O.or_skip(O.or_word(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), ((w8 * 256 : U32) .|. U32.shrn(w7, 24n) : U32)), (q + 9 : U32), U32.shrn(w8, 24n))
 
-def bv257_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), ((w8 * 65536 : U32) .|. U32.shrn(w7, 16n) : U32)), (q + 9 : U32), U32.shrn(w8, 16n))
+def bv257_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32) -> Array<U32>: O.or_skip(O.or_word(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), ((w8 * 65536 : U32) .|. U32.shrn(w7, 16n) : U32)), (q + 9 : U32), U32.shrn(w8, 16n))
 
-def bv257_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), ((w8 * 16777216 : U32) .|. U32.shrn(w7, 8n) : U32)), (q + 9 : U32), U32.shrn(w8, 8n))
+def bv257_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), ((w8 * 16777216 : U32) .|. U32.shrn(w7, 8n) : U32)), (q + 9 : U32), U32.shrn(w8, 8n))
 
-def bv257_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32) -> Array<U32>:
+def bv257_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32) -> Array<U32>:
   match s:
-    case 0: bv257_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8)
     case 1: bv257_pw1(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8)
     case 2: bv257_pw2(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8)
     case _: bv257_pw3(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8)
 
+def bv257_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv257_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8)
+    case False{}: bv257_pwu(s, out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8)
+
 def bv257_put(out: Array<U32>, +pos: U32, o: Bitvector257) -> Array<U32>:
   match o:
-    case Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: bv257_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8)
+    case Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: bv257_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8)
 
-def bv257_root(h: B.Buf, o: Bitvector257, +seg: U32) -> B.Buf & D.Digest:
+def bv257_root(+hl: Nat, h: B.Buf, o: Bitvector257, +seg: U32) -> B.Buf & D.Digest:
   match o:
-    case Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: (h, D.hash_pair(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), 0, 0, 0, 0, 0, 0, 0}))
+    case Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: (h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), 0, 0, 0, 0, 0, 0, 0}))
 
 def bv257_force(o: Bitvector257) -> U32:
   match o:
     case Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: ((((((((w0 .^. w1 : U32) .^. w2 : U32) .^. w3 : U32) .^. w4 : U32) .^. w5 : U32) .^. w6 : U32) .^. w7 : U32) .^. w8 : U32)
+
+def bv257_dump(o: Bitvector257, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: O.dump_le(w0, 4, O.dump_le(w1, 4, O.dump_le(w2, 4, O.dump_le(w3, 4, O.dump_le(w4, 4, O.dump_le(w5, 4, O.dump_le(w6, 4, O.dump_le(w7, 4, O.dump_le(w8, 1, t)))))))))
 
 def bv257_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 32 : U32), 1)
 
@@ -8282,15 +13358,27 @@ def bits257_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits257_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits257_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits257_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits257_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits257_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits257_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 1, seg)
+def bits257_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 1, seg)
 
 def bits257_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits257_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits257_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits257_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 257, False{})
+
+def bits257_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits257_pk(out, pos, bits257_valid(o))
+
+def bits257_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits257_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 257, False{})
 
@@ -8335,15 +13423,202 @@ def bits257_append(o: O.Bits, v: Bool) -> O.Bits & Bool: bits257_app_n(v, O.bits
 
 def bv1280_default() -> O.Words: O.words_new(160)
 
-def bv1280_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 160)
+def bv1280_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 160, Array.new(U32, 6n, 0))
 
-def bv1280_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def bv1280_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
-def bv1280_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
+def bv1280_pa39(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (Array.set(U32, out, (q + 39 : U32), w), ws)
 
-def bv1280_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 3, seg)
+def bv1280_pa38(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa39(q, Array.set(U32, out, (q + 38 : U32), w), Array.get(U32, ws, 39))
+
+def bv1280_pa37(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa38(q, Array.set(U32, out, (q + 37 : U32), w), Array.get(U32, ws, 38))
+
+def bv1280_pa36(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa37(q, Array.set(U32, out, (q + 36 : U32), w), Array.get(U32, ws, 37))
+
+def bv1280_pa35(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa36(q, Array.set(U32, out, (q + 35 : U32), w), Array.get(U32, ws, 36))
+
+def bv1280_pa34(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa35(q, Array.set(U32, out, (q + 34 : U32), w), Array.get(U32, ws, 35))
+
+def bv1280_pa33(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa34(q, Array.set(U32, out, (q + 33 : U32), w), Array.get(U32, ws, 34))
+
+def bv1280_pa32(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa33(q, Array.set(U32, out, (q + 32 : U32), w), Array.get(U32, ws, 33))
+
+def bv1280_pa31(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa32(q, Array.set(U32, out, (q + 31 : U32), w), Array.get(U32, ws, 32))
+
+def bv1280_pa30(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa31(q, Array.set(U32, out, (q + 30 : U32), w), Array.get(U32, ws, 31))
+
+def bv1280_pa29(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa30(q, Array.set(U32, out, (q + 29 : U32), w), Array.get(U32, ws, 30))
+
+def bv1280_pa28(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa29(q, Array.set(U32, out, (q + 28 : U32), w), Array.get(U32, ws, 29))
+
+def bv1280_pa27(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa28(q, Array.set(U32, out, (q + 27 : U32), w), Array.get(U32, ws, 28))
+
+def bv1280_pa26(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa27(q, Array.set(U32, out, (q + 26 : U32), w), Array.get(U32, ws, 27))
+
+def bv1280_pa25(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa26(q, Array.set(U32, out, (q + 25 : U32), w), Array.get(U32, ws, 26))
+
+def bv1280_pa24(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa25(q, Array.set(U32, out, (q + 24 : U32), w), Array.get(U32, ws, 25))
+
+def bv1280_pa23(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa24(q, Array.set(U32, out, (q + 23 : U32), w), Array.get(U32, ws, 24))
+
+def bv1280_pa22(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa23(q, Array.set(U32, out, (q + 22 : U32), w), Array.get(U32, ws, 23))
+
+def bv1280_pa21(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa22(q, Array.set(U32, out, (q + 21 : U32), w), Array.get(U32, ws, 22))
+
+def bv1280_pa20(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa21(q, Array.set(U32, out, (q + 20 : U32), w), Array.get(U32, ws, 21))
+
+def bv1280_pa19(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa20(q, Array.set(U32, out, (q + 19 : U32), w), Array.get(U32, ws, 20))
+
+def bv1280_pa18(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa19(q, Array.set(U32, out, (q + 18 : U32), w), Array.get(U32, ws, 19))
+
+def bv1280_pa17(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa18(q, Array.set(U32, out, (q + 17 : U32), w), Array.get(U32, ws, 18))
+
+def bv1280_pa16(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa17(q, Array.set(U32, out, (q + 16 : U32), w), Array.get(U32, ws, 17))
+
+def bv1280_pa15(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa16(q, Array.set(U32, out, (q + 15 : U32), w), Array.get(U32, ws, 16))
+
+def bv1280_pa14(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa15(q, Array.set(U32, out, (q + 14 : U32), w), Array.get(U32, ws, 15))
+
+def bv1280_pa13(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa14(q, Array.set(U32, out, (q + 13 : U32), w), Array.get(U32, ws, 14))
+
+def bv1280_pa12(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa13(q, Array.set(U32, out, (q + 12 : U32), w), Array.get(U32, ws, 13))
+
+def bv1280_pa11(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa12(q, Array.set(U32, out, (q + 11 : U32), w), Array.get(U32, ws, 12))
+
+def bv1280_pa10(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa11(q, Array.set(U32, out, (q + 10 : U32), w), Array.get(U32, ws, 11))
+
+def bv1280_pa9(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa10(q, Array.set(U32, out, (q + 9 : U32), w), Array.get(U32, ws, 10))
+
+def bv1280_pa8(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa9(q, Array.set(U32, out, (q + 8 : U32), w), Array.get(U32, ws, 9))
+
+def bv1280_pa7(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa8(q, Array.set(U32, out, (q + 7 : U32), w), Array.get(U32, ws, 8))
+
+def bv1280_pa6(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa7(q, Array.set(U32, out, (q + 6 : U32), w), Array.get(U32, ws, 7))
+
+def bv1280_pa5(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa6(q, Array.set(U32, out, (q + 5 : U32), w), Array.get(U32, ws, 6))
+
+def bv1280_pa4(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa5(q, Array.set(U32, out, (q + 4 : U32), w), Array.get(U32, ws, 5))
+
+def bv1280_pa3(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa4(q, Array.set(U32, out, (q + 3 : U32), w), Array.get(U32, ws, 4))
+
+def bv1280_pa2(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa3(q, Array.set(U32, out, (q + 2 : U32), w), Array.get(U32, ws, 3))
+
+def bv1280_pa1(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa2(q, Array.set(U32, out, (q + 1 : U32), w), Array.get(U32, ws, 2))
+
+def bv1280_pa0(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  bv1280_pa1(q, Array.set(U32, out, (q + 0 : U32), w), Array.get(U32, ws, 1))
+
+def bv1280_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:
+  (out, ws) = pair
+  (out, O.Words{ws, n})
+
+def bv1280_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:
+  match aligned:
+    case True{}: bv1280_pal(n, bv1280_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))
+    case False{}: O.put_words(out, pos, O.Words{ws, n})
+
+def bv1280_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:
+  match o:
+    case O.Words{ws, +n}: bv1280_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)
+
+def bv1280_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 3, seg)
 
 def bv1280_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def bv1280_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def bv1280_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bv1280_pk_ok(bv1280_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def bv1280_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 160, 160, False{}, 1)
+
+def bv1280_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): bv1280_pk(out, pos, bv1280_valid(o))
+
+def bv1280_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def bv1280_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -8386,15 +13661,27 @@ def bits1280_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits1280_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits1280_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits1280_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits1280_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits1280_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits1280_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 3, seg)
+def bits1280_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 3, seg)
 
 def bits1280_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits1280_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits1280_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits1280_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 1280, False{})
+
+def bits1280_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits1280_pk(out, pos, bits1280_valid(o))
+
+def bits1280_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits1280_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 1280, False{})
 
@@ -8439,15 +13726,31 @@ def bits1280_append(o: O.Bits, v: Bool) -> O.Bits & Bool: bits1280_app_n(v, O.bi
 
 def bv1281_default() -> O.Words: O.words_new(161)
 
-def bv1281_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, 161)
+def bv1281_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_into(buf, off, 161, Array.new(U32, 6n, 0))
 
-def bv1281_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def bv1281_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def bv1281_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
-def bv1281_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(h, o, 3, seg)
+def bv1281_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.words_root(hl, h, o, 3, seg)
 
 def bv1281_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def bv1281_pk_ok(pair: Array<U32> & O.Words) -> Array<U32> & (O.Words & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def bv1281_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bv1281_pk_ok(bv1281_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def bv1281_valid(o: O.Words) -> O.Words & Bool: O.bitvec_tail(1281, O.words_ok(o, 161, 161, False{}, 1))
+
+def bv1281_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): bv1281_pk(out, pos, bv1281_valid(o))
+
+def bv1281_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words(o, t)
 
 def bv1281_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 160 : U32), 1)
 
@@ -8490,15 +13793,27 @@ def bits1281_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits1281_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits1281_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits1281_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits1281_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits1281_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits1281_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 3, seg)
+def bits1281_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 3, seg)
 
 def bits1281_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits1281_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits1281_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits1281_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 1281, False{})
+
+def bits1281_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits1281_pk(out, pos, bits1281_valid(o))
+
+def bits1281_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits1281_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 1281, False{})
 
@@ -8602,117 +13917,131 @@ def Gc60805EC295_g0_read(buf: B.Buf, +off: U32, +len: U32, +vend: U32) -> B.Buf 
 
 def Gc60805EC295_g0_sz4(+f_A: Bitvector256, +f_D: Bitvector257, f_G: O.Words, f_B: O.Bits, f_C: O.Bits, f_E: O.Bits, f_F: O.Bits, +acc: U32, pair: O.Bits & U32) -> Gc60805EC295_g0 & U32:
   (f_H, +m) = pair
-  (Gc60805EC295_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, (acc + m : U32))
+  (Gc60805EC295_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, O.padd(acc, m))
 
 def Gc60805EC295_g0_sz3(+f_A: Bitvector256, +f_D: Bitvector257, f_G: O.Words, f_H: O.Bits, f_B: O.Bits, f_C: O.Bits, f_E: O.Bits, +acc: U32, pair: O.Bits & U32) -> Gc60805EC295_g0 & U32:
   (f_F, +m) = pair
-  Gc60805EC295_g0_sz4(f_A, f_D, f_G, f_B, f_C, f_E, f_F, (acc + m : U32), bits1280_size(f_H))
+  Gc60805EC295_g0_sz4(f_A, f_D, f_G, f_B, f_C, f_E, f_F, O.padd(acc, m), bits1280_size(f_H))
 
 def Gc60805EC295_g0_sz2(+f_A: Bitvector256, +f_D: Bitvector257, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, f_B: O.Bits, f_C: O.Bits, +acc: U32, pair: O.Bits & U32) -> Gc60805EC295_g0 & U32:
   (f_E, +m) = pair
-  Gc60805EC295_g0_sz3(f_A, f_D, f_G, f_H, f_B, f_C, f_E, (acc + m : U32), pbits_size(f_F))
+  Gc60805EC295_g0_sz3(f_A, f_D, f_G, f_H, f_B, f_C, f_E, O.padd(acc, m), pbits_size(f_F))
 
 def Gc60805EC295_g0_sz1(+f_A: Bitvector256, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, f_B: O.Bits, +acc: U32, pair: O.Bits & U32) -> Gc60805EC295_g0 & U32:
   (f_C, +m) = pair
-  Gc60805EC295_g0_sz2(f_A, f_D, f_F, f_G, f_H, f_B, f_C, (acc + m : U32), bits257_size(f_E))
+  Gc60805EC295_g0_sz2(f_A, f_D, f_F, f_G, f_H, f_B, f_C, O.padd(acc, m), bits257_size(f_E))
 
 def Gc60805EC295_g0_sz0(+f_A: Bitvector256, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, +acc: U32, pair: O.Bits & U32) -> Gc60805EC295_g0 & U32:
   (f_B, +m) = pair
-  Gc60805EC295_g0_sz1(f_A, f_D, f_E, f_F, f_G, f_H, f_B, (acc + m : U32), pbits_size(f_C))
+  Gc60805EC295_g0_sz1(f_A, f_D, f_E, f_F, f_G, f_H, f_B, O.padd(acc, m), pbits_size(f_C))
 
 def Gc60805EC295_g0_size(o: Gc60805EC295_g0) -> Gc60805EC295_g0 & U32:
   match o:
     case Gc60805EC295_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: Gc60805EC295_g0_sz0(f_A, f_C, f_D, f_E, f_F, f_G, f_H, 0, bits256_size(f_B))
 
-def Gc60805EC295_g0_pw5(+pos: U32, +voff: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_H: O.Bits, +s_f_B: U32, +s_f_C: U32, +s_f_E: U32, +s_f_F: U32, +s_f_H: U32, pair: Array<U32> & O.Words) -> Array<U32> & (Gc60805EC295_g0 & U32):
-  (out, f_G) = pair
-  (O.w32(O.w32(O.w32(O.w32(O.w32(bv257_put(bv256_put(out, (pos + 0 : U32), f_A), (pos + 40 : U32), f_D), (pos + 32 : U32), voff), (pos + 36 : U32), (voff + s_f_B : U32)), (pos + 73 : U32), (voff + s_f_B + s_f_C : U32)), (pos + 77 : U32), (voff + s_f_B + s_f_C + s_f_E : U32)), (pos + 241 : U32), (voff + s_f_B + s_f_C + s_f_E + s_f_F : U32)), (Gc60805EC295_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, (voff + s_f_B + s_f_C + s_f_E + s_f_F + s_f_H : U32)))
-
-def Gc60805EC295_g0_pw4s(+pos: U32, +voff: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, +s_f_B: U32, +s_f_C: U32, +s_f_E: U32, +s_f_F: U32, +s_f_H: U32, out: Array<U32>) -> Array<U32> & (Gc60805EC295_g0 & U32):
-  Gc60805EC295_g0_pw5(pos, voff, f_A, f_B, f_C, f_D, f_E, f_F, f_H, s_f_B, s_f_C, s_f_E, s_f_F, s_f_H, bv1280_put(out, (pos + 81 : U32), f_G))
-
-def Gc60805EC295_g0_pw4(+pos: U32, +voff: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, +s_f_B: U32, +s_f_C: U32, +s_f_E: U32, +s_f_F: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g0 & U32):
+def bits256_pvb(+cur: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (O.Bits & U32):
   (out, r) = pair
-  (f_H, sz) = r
-  Gc60805EC295_g0_pw4s(pos, voff, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, s_f_B, s_f_C, s_f_E, s_f_F, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gc60805EC295_g0_pw3s(+pos: U32, +voff: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, +s_f_B: U32, +s_f_C: U32, +s_f_E: U32, +s_f_F: U32, out: Array<U32>) -> Array<U32> & (Gc60805EC295_g0 & U32):
-  Gc60805EC295_g0_pw4(pos, voff, f_A, f_B, f_C, f_D, f_E, f_F, f_G, s_f_B, s_f_C, s_f_E, s_f_F, bits1280_putn(out, (pos + (voff + s_f_B + s_f_C + s_f_E + s_f_F : U32) : U32), f_H))
+def bits256_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Bits) -> Array<U32> & (O.Bits & U32):
+  bits256_pvb(cur, bits256_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gc60805EC295_g0_pw3(+pos: U32, +voff: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_G: O.Words, f_H: O.Bits, +s_f_B: U32, +s_f_C: U32, +s_f_E: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g0 & U32):
+def bits257_pvb(+cur: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (O.Bits & U32):
   (out, r) = pair
-  (f_F, sz) = r
-  Gc60805EC295_g0_pw3s(pos, voff, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, s_f_B, s_f_C, s_f_E, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gc60805EC295_g0_pw2s(+pos: U32, +voff: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, +s_f_B: U32, +s_f_C: U32, +s_f_E: U32, out: Array<U32>) -> Array<U32> & (Gc60805EC295_g0 & U32):
-  Gc60805EC295_g0_pw3(pos, voff, f_A, f_B, f_C, f_D, f_E, f_G, f_H, s_f_B, s_f_C, s_f_E, pbits_putn(out, (pos + (voff + s_f_B + s_f_C + s_f_E : U32) : U32), f_F))
+def bits257_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Bits) -> Array<U32> & (O.Bits & U32):
+  bits257_pvb(cur, bits257_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gc60805EC295_g0_pw2(+pos: U32, +voff: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, +s_f_B: U32, +s_f_C: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g0 & U32):
+def bits1280_pvb(+cur: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (O.Bits & U32):
   (out, r) = pair
-  (f_E, sz) = r
-  Gc60805EC295_g0_pw2s(pos, voff, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, s_f_B, s_f_C, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gc60805EC295_g0_pw1s(+pos: U32, +voff: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, +s_f_B: U32, +s_f_C: U32, out: Array<U32>) -> Array<U32> & (Gc60805EC295_g0 & U32):
-  Gc60805EC295_g0_pw2(pos, voff, f_A, f_B, f_C, f_D, f_F, f_G, f_H, s_f_B, s_f_C, bits257_putn(out, (pos + (voff + s_f_B + s_f_C : U32) : U32), f_E))
+def bits1280_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Bits) -> Array<U32> & (O.Bits & U32):
+  bits1280_pvb(cur, bits1280_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gc60805EC295_g0_pw1(+pos: U32, +voff: U32, +f_A: Bitvector256, f_B: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, +s_f_B: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g0 & U32):
+def bv257_valid(o: Bitvector257) -> Bool:
+  match o:
+    case Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: U32.is_lt(w8, 2)
+
+def Gc60805EC295_g0_pw5(+pos: U32, +cur: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_H: O.Bits, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gc60805EC295_g0 & U32):
   (out, r) = pair
-  (f_C, sz) = r
-  Gc60805EC295_g0_pw1s(pos, voff, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, s_f_B, sz, out)
+  (f_G, fl) = r
+  (bv257_put(bv256_put(out, (pos + 0 : U32), f_A), (pos + 40 : U32), f_D), (Gc60805EC295_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, ((cur .|. fl : U32) .|. O.pz(bv257_valid(f_D)) : U32)))
 
-def Gc60805EC295_g0_pw0s(+pos: U32, +voff: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, +s_f_B: U32, out: Array<U32>) -> Array<U32> & (Gc60805EC295_g0 & U32):
-  Gc60805EC295_g0_pw1(pos, voff, f_A, f_B, f_D, f_E, f_F, f_G, f_H, s_f_B, pbits_putn(out, (pos + (voff + s_f_B : U32) : U32), f_C))
-
-def Gc60805EC295_g0_pw0(+pos: U32, +voff: U32, +f_A: Bitvector256, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g0 & U32):
+def Gc60805EC295_g0_pw4(+pos: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g0 & U32):
   (out, r) = pair
-  (f_B, sz) = r
-  Gc60805EC295_g0_pw0s(pos, voff, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, sz, out)
+  (f_H, c) = r
+  Gc60805EC295_g0_pw5(pos, c, f_A, f_B, f_C, f_D, f_E, f_F, f_H, bv1280_putk(out, (pos + 81 : U32), f_G))
+
+def Gc60805EC295_g0_pw3(+pos: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_G: O.Words, f_H: O.Bits, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g0 & U32):
+  (out, r) = pair
+  (f_F, c) = r
+  Gc60805EC295_g0_pw4(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, bits1280_putv(out, pos, 241, c, f_H))
+
+def Gc60805EC295_g0_pw2(+pos: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g0 & U32):
+  (out, r) = pair
+  (f_E, c) = r
+  Gc60805EC295_g0_pw3(pos, f_A, f_B, f_C, f_D, f_E, f_G, f_H, pbits_putv(out, pos, 77, c, f_F))
+
+def Gc60805EC295_g0_pw1(+pos: U32, +f_A: Bitvector256, f_B: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g0 & U32):
+  (out, r) = pair
+  (f_C, c) = r
+  Gc60805EC295_g0_pw2(pos, f_A, f_B, f_C, f_D, f_F, f_G, f_H, bits257_putv(out, pos, 73, c, f_E))
+
+def Gc60805EC295_g0_pw0(+pos: U32, +f_A: Bitvector256, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g0 & U32):
+  (out, r) = pair
+  (f_B, c) = r
+  Gc60805EC295_g0_pw1(pos, f_A, f_B, f_D, f_E, f_F, f_G, f_H, pbits_putv(out, pos, 36, c, f_C))
 
 def Gc60805EC295_g0_put(out: Array<U32>, +pos: U32, +voff: U32, o: Gc60805EC295_g0) -> Array<U32> & (Gc60805EC295_g0 & U32):
   match o:
-    case Gc60805EC295_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: Gc60805EC295_g0_pw0(pos, voff, f_A, f_C, f_D, f_E, f_F, f_G, f_H, bits256_putn(out, (pos + voff : U32), f_B))
+    case Gc60805EC295_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: Gc60805EC295_g0_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, f_H, bits256_putv(out, pos, 32, voff, f_B))
 
-def Gc60805EC295_g0_rt7(+seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
+def Gc60805EC295_g0_rt7(+hl: Nat, +seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, d_f_G: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
   (h, r) = pair
   (f_H, d_f_H) = r
-  (h, (Gc60805EC295_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, D.hash_pair(D.hash_pair(D.hash_pair(d_f_A, d_f_B), D.hash_pair(d_f_C, d_f_D)), D.hash_pair(D.hash_pair(d_f_E, d_f_F), D.hash_pair(d_f_G, d_f_H)))))
+  (h, (Gc60805EC295_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, D.node(hl, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D)), D.node(hl, D.node(hl, d_f_E, d_f_F), D.node(hl, d_f_G, d_f_H)))))
 
-def Gc60805EC295_g0_rt6(+seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_H: O.Bits, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
+def Gc60805EC295_g0_rt6(+hl: Nat, +seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_H: O.Bits, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
   (h, r) = pair
   (f_G, d_f_G) = r
-  Gc60805EC295_g0_rt7(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, bits1280_root(h, f_H, seg))
+  Gc60805EC295_g0_rt7(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, d_f_G, bits1280_root(hl, h, f_H, seg))
 
-def Gc60805EC295_g0_rt5(+seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_G: O.Words, f_H: O.Bits, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
+def Gc60805EC295_g0_rt5(+hl: Nat, +seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_G: O.Words, f_H: O.Bits, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
   (h, r) = pair
   (f_F, d_f_F) = r
-  Gc60805EC295_g0_rt6(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, bv1280_root(h, f_G, seg))
+  Gc60805EC295_g0_rt6(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, bv1280_root(hl, h, f_G, seg))
 
-def Gc60805EC295_g0_rt4(+seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
+def Gc60805EC295_g0_rt4(+hl: Nat, +seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
   (h, r) = pair
   (f_E, d_f_E) = r
-  Gc60805EC295_g0_rt5(seg, f_A, f_B, f_C, f_D, f_E, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, pbits_root(h, f_F, seg))
+  Gc60805EC295_g0_rt5(hl, seg, f_A, f_B, f_C, f_D, f_E, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, pbits_root(hl, h, f_F, seg))
 
-def Gc60805EC295_g0_rt3(+seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
+def Gc60805EC295_g0_rt3(+hl: Nat, +seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
   (h, d_f_D) = pair
-  Gc60805EC295_g0_rt4(seg, f_A, f_B, f_C, f_D, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, bits257_root(h, f_E, seg))
+  Gc60805EC295_g0_rt4(hl, seg, f_A, f_B, f_C, f_D, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, d_f_D, bits257_root(hl, h, f_E, seg))
 
-def Gc60805EC295_g0_rt2(+seg: U32, +f_A: Bitvector256, f_B: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
+def Gc60805EC295_g0_rt2(+hl: Nat, +seg: U32, +f_A: Bitvector256, f_B: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
   (h, r) = pair
   (f_C, d_f_C) = r
-  Gc60805EC295_g0_rt3(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, bv257_root(h, f_D, seg))
+  Gc60805EC295_g0_rt3(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, d_f_C, bv257_root(hl, h, f_D, seg))
 
-def Gc60805EC295_g0_rt1(+seg: U32, +f_A: Bitvector256, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, d_f_A: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
+def Gc60805EC295_g0_rt1(+hl: Nat, +seg: U32, +f_A: Bitvector256, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, d_f_A: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
   (h, r) = pair
   (f_B, d_f_B) = r
-  Gc60805EC295_g0_rt2(seg, f_A, f_B, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, pbits_root(h, f_C, seg))
+  Gc60805EC295_g0_rt2(hl, seg, f_A, f_B, f_D, f_E, f_F, f_G, f_H, d_f_A, d_f_B, pbits_root(hl, h, f_C, seg))
 
-def Gc60805EC295_g0_rt0(+seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, pair: B.Buf & D.Digest) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
+def Gc60805EC295_g0_rt0(+hl: Nat, +seg: U32, +f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, pair: B.Buf & D.Digest) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
   (h, d_f_A) = pair
-  Gc60805EC295_g0_rt1(seg, f_A, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, bits256_root(h, f_B, seg))
+  Gc60805EC295_g0_rt1(hl, seg, f_A, f_C, f_D, f_E, f_F, f_G, f_H, d_f_A, bits256_root(hl, h, f_B, seg))
 
-def Gc60805EC295_g0_root(h: B.Buf, o: Gc60805EC295_g0, +seg: U32) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
+def Gc60805EC295_g0_root(+hl: Nat, h: B.Buf, o: Gc60805EC295_g0, +seg: U32) -> B.Buf & (Gc60805EC295_g0 & D.Digest):
   match o:
-    case Gc60805EC295_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: Gc60805EC295_g0_rt0(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, bv256_root(h, f_A, seg))
+    case Gc60805EC295_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: Gc60805EC295_g0_rt0(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H, bv256_root(hl, h, f_A, seg))
 
 def Gc60805EC295_g0_fo5(+f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, +acc: U32, pair: O.Bits & U32) -> Gc60805EC295_g0 & U32:
   (f_H, +x) = pair
@@ -8741,6 +14070,10 @@ def Gc60805EC295_g0_fo0(+f_A: Bitvector256, f_C: O.Bits, +f_D: Bitvector257, f_E
 def Gc60805EC295_g0_force(o: Gc60805EC295_g0) -> Gc60805EC295_g0 & U32:
   match o:
     case Gc60805EC295_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: Gc60805EC295_g0_fo0(f_A, f_C, f_D, f_E, f_F, f_G, f_H, (bv256_force(f_A) .^. bv257_force(f_D) : U32), bits256_force(f_B))
+
+def Gc60805EC295_g0_dump(o: Gc60805EC295_g0, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gc60805EC295_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: bv256_dump(f_A, bits256_dump(f_B, pbits_dump(f_C, bv257_dump(f_D, bits257_dump(f_E, pbits_dump(f_F, bv1280_dump(f_G, bits1280_dump(f_H, t))))))))
 
 def Gc60805EC295_g0_get_f_A(o: Gc60805EC295_g0) -> Gc60805EC295_g0 & Bitvector256:
   match o:
@@ -8843,79 +14176,79 @@ def Gc60805EC295_g1_read(buf: B.Buf, +off: U32, +len: U32, +vend: U32) -> B.Buf 
 
 def Gc60805EC295_g1_sz2(f_J: O.Words, f_I: O.Bits, f_K: O.Bits, +acc: U32, pair: O.Bits & U32) -> Gc60805EC295_g1 & U32:
   (f_L, +m) = pair
-  (Gc60805EC295_g1{f_I, f_J, f_K, f_L}, (acc + m : U32))
+  (Gc60805EC295_g1{f_I, f_J, f_K, f_L}, O.padd(acc, m))
 
 def Gc60805EC295_g1_sz1(f_J: O.Words, f_L: O.Bits, f_I: O.Bits, +acc: U32, pair: O.Bits & U32) -> Gc60805EC295_g1 & U32:
   (f_K, +m) = pair
-  Gc60805EC295_g1_sz2(f_J, f_I, f_K, (acc + m : U32), pbits_size(f_L))
+  Gc60805EC295_g1_sz2(f_J, f_I, f_K, O.padd(acc, m), pbits_size(f_L))
 
 def Gc60805EC295_g1_sz0(f_J: O.Words, f_K: O.Bits, f_L: O.Bits, +acc: U32, pair: O.Bits & U32) -> Gc60805EC295_g1 & U32:
   (f_I, +m) = pair
-  Gc60805EC295_g1_sz1(f_J, f_L, f_I, (acc + m : U32), bits1281_size(f_K))
+  Gc60805EC295_g1_sz1(f_J, f_L, f_I, O.padd(acc, m), bits1281_size(f_K))
 
 def Gc60805EC295_g1_size(o: Gc60805EC295_g1) -> Gc60805EC295_g1 & U32:
   match o:
     case Gc60805EC295_g1{f_I, f_J, f_K, f_L}: Gc60805EC295_g1_sz0(f_J, f_K, f_L, 0, pbits_size(f_I))
 
-def Gc60805EC295_g1_pw3(+pos: U32, +voff: U32, f_I: O.Bits, f_K: O.Bits, f_L: O.Bits, +s_f_I: U32, +s_f_K: U32, +s_f_L: U32, pair: Array<U32> & O.Words) -> Array<U32> & (Gc60805EC295_g1 & U32):
-  (out, f_J) = pair
-  (O.w32(O.w32(O.w32(out, (pos + 245 : U32), voff), (pos + 410 : U32), (voff + s_f_I : U32)), (pos + 414 : U32), (voff + s_f_I + s_f_K : U32)), (Gc60805EC295_g1{f_I, f_J, f_K, f_L}, (voff + s_f_I + s_f_K + s_f_L : U32)))
-
-def Gc60805EC295_g1_pw2s(+pos: U32, +voff: U32, f_I: O.Bits, f_J: O.Words, f_K: O.Bits, f_L: O.Bits, +s_f_I: U32, +s_f_K: U32, +s_f_L: U32, out: Array<U32>) -> Array<U32> & (Gc60805EC295_g1 & U32):
-  Gc60805EC295_g1_pw3(pos, voff, f_I, f_K, f_L, s_f_I, s_f_K, s_f_L, bv1281_put(out, (pos + 249 : U32), f_J))
-
-def Gc60805EC295_g1_pw2(+pos: U32, +voff: U32, f_I: O.Bits, f_J: O.Words, f_K: O.Bits, +s_f_I: U32, +s_f_K: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g1 & U32):
+def bits1281_pvb(+cur: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (O.Bits & U32):
   (out, r) = pair
-  (f_L, sz) = r
-  Gc60805EC295_g1_pw2s(pos, voff, f_I, f_J, f_K, f_L, s_f_I, s_f_K, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gc60805EC295_g1_pw1s(+pos: U32, +voff: U32, f_I: O.Bits, f_J: O.Words, f_K: O.Bits, f_L: O.Bits, +s_f_I: U32, +s_f_K: U32, out: Array<U32>) -> Array<U32> & (Gc60805EC295_g1 & U32):
-  Gc60805EC295_g1_pw2(pos, voff, f_I, f_J, f_K, s_f_I, s_f_K, pbits_putn(out, (pos + (voff + s_f_I + s_f_K : U32) : U32), f_L))
+def bits1281_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Bits) -> Array<U32> & (O.Bits & U32):
+  bits1281_pvb(cur, bits1281_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gc60805EC295_g1_pw1(+pos: U32, +voff: U32, f_I: O.Bits, f_J: O.Words, f_L: O.Bits, +s_f_I: U32, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g1 & U32):
+def Gc60805EC295_g1_pw3(+pos: U32, +cur: U32, f_I: O.Bits, f_K: O.Bits, f_L: O.Bits, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gc60805EC295_g1 & U32):
   (out, r) = pair
-  (f_K, sz) = r
-  Gc60805EC295_g1_pw1s(pos, voff, f_I, f_J, f_K, f_L, s_f_I, sz, out)
+  (f_J, fl) = r
+  (out, (Gc60805EC295_g1{f_I, f_J, f_K, f_L}, (cur .|. fl : U32)))
 
-def Gc60805EC295_g1_pw0s(+pos: U32, +voff: U32, f_I: O.Bits, f_J: O.Words, f_K: O.Bits, f_L: O.Bits, +s_f_I: U32, out: Array<U32>) -> Array<U32> & (Gc60805EC295_g1 & U32):
-  Gc60805EC295_g1_pw1(pos, voff, f_I, f_J, f_L, s_f_I, bits1281_putn(out, (pos + (voff + s_f_I : U32) : U32), f_K))
-
-def Gc60805EC295_g1_pw0(+pos: U32, +voff: U32, f_J: O.Words, f_K: O.Bits, f_L: O.Bits, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g1 & U32):
+def Gc60805EC295_g1_pw2(+pos: U32, f_I: O.Bits, f_J: O.Words, f_K: O.Bits, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g1 & U32):
   (out, r) = pair
-  (f_I, sz) = r
-  Gc60805EC295_g1_pw0s(pos, voff, f_I, f_J, f_K, f_L, sz, out)
+  (f_L, c) = r
+  Gc60805EC295_g1_pw3(pos, c, f_I, f_K, f_L, bv1281_putk(out, (pos + 249 : U32), f_J))
+
+def Gc60805EC295_g1_pw1(+pos: U32, f_I: O.Bits, f_J: O.Words, f_L: O.Bits, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g1 & U32):
+  (out, r) = pair
+  (f_K, c) = r
+  Gc60805EC295_g1_pw2(pos, f_I, f_J, f_K, pbits_putv(out, pos, 414, c, f_L))
+
+def Gc60805EC295_g1_pw0(+pos: U32, f_J: O.Words, f_K: O.Bits, f_L: O.Bits, pair: Array<U32> & (O.Bits & U32)) -> Array<U32> & (Gc60805EC295_g1 & U32):
+  (out, r) = pair
+  (f_I, c) = r
+  Gc60805EC295_g1_pw1(pos, f_I, f_J, f_L, bits1281_putv(out, pos, 410, c, f_K))
 
 def Gc60805EC295_g1_put(out: Array<U32>, +pos: U32, +voff: U32, o: Gc60805EC295_g1) -> Array<U32> & (Gc60805EC295_g1 & U32):
   match o:
-    case Gc60805EC295_g1{f_I, f_J, f_K, f_L}: Gc60805EC295_g1_pw0(pos, voff, f_J, f_K, f_L, pbits_putn(out, (pos + voff : U32), f_I))
+    case Gc60805EC295_g1{f_I, f_J, f_K, f_L}: Gc60805EC295_g1_pw0(pos, f_J, f_K, f_L, pbits_putv(out, pos, 245, voff, f_I))
 
-def Gc60805EC295_g1_rt4(+seg: U32, f_I: O.Bits, f_J: O.Words, f_K: O.Bits, f_L: O.Bits, d_f_I: D.Digest, d_f_J: D.Digest, d_f_K: D.Digest, d_f_L: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
+def Gc60805EC295_g1_rt4(+hl: Nat, +seg: U32, f_I: O.Bits, f_J: O.Words, f_K: O.Bits, f_L: O.Bits, d_f_I: D.Digest, d_f_J: D.Digest, d_f_K: D.Digest, d_f_L: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
   (h, z2) = pair
-  (h, (Gc60805EC295_g1{f_I, f_J, f_K, f_L}, D.hash_pair(D.hash_pair(D.hash_pair(d_f_I, d_f_J), D.hash_pair(d_f_K, d_f_L)), z2)))
+  (h, (Gc60805EC295_g1{f_I, f_J, f_K, f_L}, D.node(hl, D.node(hl, D.node(hl, d_f_I, d_f_J), D.node(hl, d_f_K, d_f_L)), z2)))
 
-def Gc60805EC295_g1_rt3(+seg: U32, f_I: O.Bits, f_J: O.Words, f_K: O.Bits, d_f_I: D.Digest, d_f_J: D.Digest, d_f_K: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
+def Gc60805EC295_g1_rt3(+hl: Nat, +seg: U32, f_I: O.Bits, f_J: O.Words, f_K: O.Bits, d_f_I: D.Digest, d_f_J: D.Digest, d_f_K: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
   (h, r) = pair
   (f_L, d_f_L) = r
-  Gc60805EC295_g1_rt4(seg, f_I, f_J, f_K, f_L, d_f_I, d_f_J, d_f_K, d_f_L, O.zero(h, 2))
+  Gc60805EC295_g1_rt4(hl, seg, f_I, f_J, f_K, f_L, d_f_I, d_f_J, d_f_K, d_f_L, (h, D.zconst(2n)))
 
-def Gc60805EC295_g1_rt2(+seg: U32, f_I: O.Bits, f_J: O.Words, f_L: O.Bits, d_f_I: D.Digest, d_f_J: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
+def Gc60805EC295_g1_rt2(+hl: Nat, +seg: U32, f_I: O.Bits, f_J: O.Words, f_L: O.Bits, d_f_I: D.Digest, d_f_J: D.Digest, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
   (h, r) = pair
   (f_K, d_f_K) = r
-  Gc60805EC295_g1_rt3(seg, f_I, f_J, f_K, d_f_I, d_f_J, d_f_K, pbits_root(h, f_L, seg))
+  Gc60805EC295_g1_rt3(hl, seg, f_I, f_J, f_K, d_f_I, d_f_J, d_f_K, pbits_root(hl, h, f_L, seg))
 
-def Gc60805EC295_g1_rt1(+seg: U32, f_I: O.Bits, f_K: O.Bits, f_L: O.Bits, d_f_I: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
+def Gc60805EC295_g1_rt1(+hl: Nat, +seg: U32, f_I: O.Bits, f_K: O.Bits, f_L: O.Bits, d_f_I: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
   (h, r) = pair
   (f_J, d_f_J) = r
-  Gc60805EC295_g1_rt2(seg, f_I, f_J, f_L, d_f_I, d_f_J, bits1281_root(h, f_K, seg))
+  Gc60805EC295_g1_rt2(hl, seg, f_I, f_J, f_L, d_f_I, d_f_J, bits1281_root(hl, h, f_K, seg))
 
-def Gc60805EC295_g1_rt0(+seg: U32, f_J: O.Words, f_K: O.Bits, f_L: O.Bits, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
+def Gc60805EC295_g1_rt0(+hl: Nat, +seg: U32, f_J: O.Words, f_K: O.Bits, f_L: O.Bits, pair: B.Buf & (O.Bits & D.Digest)) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
   (h, r) = pair
   (f_I, d_f_I) = r
-  Gc60805EC295_g1_rt1(seg, f_I, f_K, f_L, d_f_I, bv1281_root(h, f_J, seg))
+  Gc60805EC295_g1_rt1(hl, seg, f_I, f_K, f_L, d_f_I, bv1281_root(hl, h, f_J, seg))
 
-def Gc60805EC295_g1_root(h: B.Buf, o: Gc60805EC295_g1, +seg: U32) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
+def Gc60805EC295_g1_root(+hl: Nat, h: B.Buf, o: Gc60805EC295_g1, +seg: U32) -> B.Buf & (Gc60805EC295_g1 & D.Digest):
   match o:
-    case Gc60805EC295_g1{f_I, f_J, f_K, f_L}: Gc60805EC295_g1_rt0(seg, f_J, f_K, f_L, pbits_root(h, f_I, seg))
+    case Gc60805EC295_g1{f_I, f_J, f_K, f_L}: Gc60805EC295_g1_rt0(hl, seg, f_J, f_K, f_L, pbits_root(hl, h, f_I, seg))
 
 def Gc60805EC295_g1_fo3(f_I: O.Bits, f_J: O.Words, f_K: O.Bits, +acc: U32, pair: O.Bits & U32) -> Gc60805EC295_g1 & U32:
   (f_L, +x) = pair
@@ -8936,6 +14269,10 @@ def Gc60805EC295_g1_fo0(f_J: O.Words, f_K: O.Bits, f_L: O.Bits, +acc: U32, pair:
 def Gc60805EC295_g1_force(o: Gc60805EC295_g1) -> Gc60805EC295_g1 & U32:
   match o:
     case Gc60805EC295_g1{f_I, f_J, f_K, f_L}: Gc60805EC295_g1_fo0(f_J, f_K, f_L, (0 : U32), pbits_force(f_I))
+
+def Gc60805EC295_g1_dump(o: Gc60805EC295_g1, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gc60805EC295_g1{f_I, f_J, f_K, f_L}: pbits_dump(f_I, bv1281_dump(f_J, bits1281_dump(f_K, pbits_dump(f_L, t))))
 
 def Gc60805EC295_g1_swap_f_I(o: Gc60805EC295_g1, v: O.Bits) -> Gc60805EC295_g1 & O.Bits:
   match o:
@@ -8994,11 +14331,11 @@ def Gc60805EC295_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Gc60805EC295:
 
 def Gc60805EC295_sz1(g0: Gc60805EC295_g0, +acc: U32, pair: Gc60805EC295_g1 & U32) -> Gc60805EC295 & U32:
   (g1, +m) = pair
-  (Gc60805EC295{g0, g1}, (acc + m : U32))
+  (Gc60805EC295{g0, g1}, O.padd(acc, m))
 
 def Gc60805EC295_sz0(g1: Gc60805EC295_g1, +acc: U32, pair: Gc60805EC295_g0 & U32) -> Gc60805EC295 & U32:
   (g0, +m) = pair
-  Gc60805EC295_sz1(g0, (acc + m : U32), Gc60805EC295_g1_size(g1))
+  Gc60805EC295_sz1(g0, O.padd(acc, m), Gc60805EC295_g1_size(g1))
 
 def Gc60805EC295_size(o: Gc60805EC295) -> Gc60805EC295 & U32:
   match o:
@@ -9024,6 +14361,8 @@ def Gc60805EC295_putn(out: Array<U32>, +pos: U32, o: Gc60805EC295) -> Array<U32>
   match o:
     case Gc60805EC295{g0, g1}: Gc60805EC295_pw0(pos, g1, Gc60805EC295_g0_put(out, pos, 418, g0))
 
+def Gc60805EC295_putk(out: Array<U32>, +pos: U32, o: Gc60805EC295) -> Array<U32> & (Gc60805EC295 & U32): Gc60805EC295_putn(out, pos, o)
+
 def Gc60805EC295_put_drop_go(out: Array<U32>, v: Gc60805EC295, +m: U32) -> Array<U32> & Gc60805EC295: (out, v)
 
 def Gc60805EC295_put_drop(pair: Array<U32> & (Gc60805EC295 & U32)) -> Array<U32> & Gc60805EC295:
@@ -9033,19 +14372,19 @@ def Gc60805EC295_put_drop(pair: Array<U32> & (Gc60805EC295 & U32)) -> Array<U32>
 
 def Gc60805EC295_put(out: Array<U32>, +pos: U32, o: Gc60805EC295) -> Array<U32> & Gc60805EC295: Gc60805EC295_put_drop(Gc60805EC295_putn(out, pos, o))
 
-def Gc60805EC295_rt1(+seg: U32, g0: Gc60805EC295_g0, r0: D.Digest, pair: B.Buf & (Gc60805EC295_g1 & D.Digest)) -> B.Buf & (Gc60805EC295 & D.Digest):
+def Gc60805EC295_rt1(+hl: Nat, +seg: U32, g0: Gc60805EC295_g0, r0: D.Digest, pair: B.Buf & (Gc60805EC295_g1 & D.Digest)) -> B.Buf & (Gc60805EC295 & D.Digest):
   (h, r) = pair
   (g1, r1) = r
-  (h, (Gc60805EC295{g0, g1}, D.hash_pair(r0, r1)))
+  (h, (Gc60805EC295{g0, g1}, D.node(hl, r0, r1)))
 
-def Gc60805EC295_rt0(+seg: U32, g1: Gc60805EC295_g1, pair: B.Buf & (Gc60805EC295_g0 & D.Digest)) -> B.Buf & (Gc60805EC295 & D.Digest):
+def Gc60805EC295_rt0(+hl: Nat, +seg: U32, g1: Gc60805EC295_g1, pair: B.Buf & (Gc60805EC295_g0 & D.Digest)) -> B.Buf & (Gc60805EC295 & D.Digest):
   (h, r) = pair
   (g0, r0) = r
-  Gc60805EC295_rt1(seg, g0, r0, Gc60805EC295_g1_root(h, g1, seg))
+  Gc60805EC295_rt1(hl, seg, g0, r0, Gc60805EC295_g1_root(hl, h, g1, seg))
 
-def Gc60805EC295_root(h: B.Buf, o: Gc60805EC295, +seg: U32) -> B.Buf & (Gc60805EC295 & D.Digest):
+def Gc60805EC295_root(+hl: Nat, h: B.Buf, o: Gc60805EC295, +seg: U32) -> B.Buf & (Gc60805EC295 & D.Digest):
   match o:
-    case Gc60805EC295{g0, g1}: Gc60805EC295_rt0(seg, g1, Gc60805EC295_g0_root(h, g0, seg))
+    case Gc60805EC295{g0, g1}: Gc60805EC295_rt0(hl, seg, g1, Gc60805EC295_g0_root(hl, h, g0, seg))
 
 def Gc60805EC295_got_f_A(g1: Gc60805EC295_g1, pair: Gc60805EC295_g0 & Bitvector256) -> Gc60805EC295 & Bitvector256:
   (g0, +v) = pair
@@ -9202,6 +14541,10 @@ def Gc60805EC295_fo0(g1: Gc60805EC295_g1, +acc: U32, pair: Gc60805EC295_g0 & U32
 def Gc60805EC295_force(o: Gc60805EC295) -> Gc60805EC295 & U32:
   match o:
     case Gc60805EC295{g0, g1}: Gc60805EC295_fo0(g1, (0 : U32), Gc60805EC295_g0_force(g0))
+
+def Gc60805EC295_dump(o: Gc60805EC295, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gc60805EC295{g0, g1}: Gc60805EC295_g0_dump(g0, Gc60805EC295_g1_dump(g1, t))
 
 def Gc60805EC295_c17(ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32, +o1: U32, +o2: U32, +o3: U32, +o4: U32, +o5: U32, +o6: U32, +o7: U32) -> B.Buf & Bool:
   match ok:
@@ -9378,11 +14721,13 @@ def u64_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.U64: O.rd_u64(buf, o
 
 def u64_put(out: Array<U32>, +pos: U32, o: O.U64) -> Array<U32>: O.w64(out, pos, o)
 
-def u64_root(h: B.Buf, o: O.U64, +seg: U32) -> B.Buf & D.Digest: (h, O.u64_chunk(o))
+def u64_root(+hl: Nat, h: B.Buf, o: O.U64, +seg: U32) -> B.Buf & D.Digest: (h, O.u64_chunk(o))
 
 def u64_force(o: O.U64) -> U32:
   match o:
     case O.U64{+lo, +hi}: (lo .^. hi : U32)
+
+def u64_dump(o: O.U64, t: +List<U32>) -> +List<U32>: O.dump_u64(o, t)
 
 def u64_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -9401,9 +14746,11 @@ def u32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & U32: O.rd_u32(buf, off
 
 def u32_put(out: Array<U32>, +pos: U32, +o: U32) -> Array<U32>: O.w32(out, pos, o)
 
-def u32_root(h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk(o))
+def u32_root(+hl: Nat, h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk(o))
 
 def u32_force(+o: U32) -> U32: o
+
+def u32_dump(+o: U32, t: +List<U32>) -> +List<U32>: O.dump_le(o, 4, t)
 
 def u32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -9439,21 +14786,21 @@ def GcDC3E457711_put(out: Array<U32>, +pos: U32, o: GcDC3E457711) -> Array<U32>:
   match o:
     case GcDC3E457711{+f_A, +f_B, +f_C}: u32_put(u64_put(u8_put(out, (pos + 0 : U32), f_A), (pos + 1 : U32), f_B), (pos + 9 : U32), f_C)
 
-def GcDC3E457711_rt2(+seg: U32, +f_A: U32, +f_B: O.U64, +f_C: U32, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
+def GcDC3E457711_rt2(+hl: Nat, +seg: U32, +f_A: U32, +f_B: O.U64, +f_C: U32, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
   (h, d_f_C) = pair
-  (h, D.hash_pair(D.hash_pair(d_f_A, d_f_B), D.hash_pair(d_f_C, D.zero())))
+  (h, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, D.zero())))
 
-def GcDC3E457711_rt1(+seg: U32, +f_A: U32, +f_B: O.U64, +f_C: U32, d_f_A: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
+def GcDC3E457711_rt1(+hl: Nat, +seg: U32, +f_A: U32, +f_B: O.U64, +f_C: U32, d_f_A: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
   (h, d_f_B) = pair
-  GcDC3E457711_rt2(seg, f_A, f_B, f_C, d_f_A, d_f_B, u32_root(h, f_C, seg))
+  GcDC3E457711_rt2(hl, seg, f_A, f_B, f_C, d_f_A, d_f_B, u32_root(hl, h, f_C, seg))
 
-def GcDC3E457711_rt0(+seg: U32, +f_A: U32, +f_B: O.U64, +f_C: U32, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
+def GcDC3E457711_rt0(+hl: Nat, +seg: U32, +f_A: U32, +f_B: O.U64, +f_C: U32, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
   (h, d_f_A) = pair
-  GcDC3E457711_rt1(seg, f_A, f_B, f_C, d_f_A, u64_root(h, f_B, seg))
+  GcDC3E457711_rt1(hl, seg, f_A, f_B, f_C, d_f_A, u64_root(hl, h, f_B, seg))
 
-def GcDC3E457711_root(h: B.Buf, o: GcDC3E457711, +seg: U32) -> B.Buf & D.Digest:
+def GcDC3E457711_root(+hl: Nat, h: B.Buf, o: GcDC3E457711, +seg: U32) -> B.Buf & D.Digest:
   match o:
-    case GcDC3E457711{+f_A, +f_B, +f_C}: GcDC3E457711_rt0(seg, f_A, f_B, f_C, u8_root(h, f_A, seg))
+    case GcDC3E457711{+f_A, +f_B, +f_C}: GcDC3E457711_rt0(hl, seg, f_A, f_B, f_C, u8_root(hl, h, f_A, seg))
 
 def GcDC3E457711_get_f_A(o: GcDC3E457711) -> GcDC3E457711 & U32:
   match o:
@@ -9490,6 +14837,10 @@ def GcDC3E457711_force(o: GcDC3E457711) -> U32:
   match o:
     case GcDC3E457711{+f_A, +f_B, +f_C}: (u8_force(f_A) .^. u64_force(f_B) .^. u32_force(f_C) : U32)
 
+def GcDC3E457711_dump(o: GcDC3E457711, t: +List<U32>) -> +List<U32>:
+  match o:
+    case GcDC3E457711{+f_A, +f_B, +f_C}: u8_dump(f_A, u64_dump(f_B, u32_dump(f_C, t)))
+
 def GcDC3E457711_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
 def GcDC3E457711_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
@@ -9516,13 +14867,13 @@ def Gc74A8F5F17F_put(out: Array<U32>, +pos: U32, o: Gc74A8F5F17F) -> Array<U32>:
   match o:
     case Gc74A8F5F17F{+f_A}: u8_put(out, (pos + 0 : U32), f_A)
 
-def Gc74A8F5F17F_rt0(+seg: U32, +f_A: U32, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
+def Gc74A8F5F17F_rt0(+hl: Nat, +seg: U32, +f_A: U32, pair: B.Buf & D.Digest) -> B.Buf & D.Digest:
   (h, d_f_A) = pair
   (h, d_f_A)
 
-def Gc74A8F5F17F_root(h: B.Buf, o: Gc74A8F5F17F, +seg: U32) -> B.Buf & D.Digest:
+def Gc74A8F5F17F_root(+hl: Nat, h: B.Buf, o: Gc74A8F5F17F, +seg: U32) -> B.Buf & D.Digest:
   match o:
-    case Gc74A8F5F17F{+f_A}: Gc74A8F5F17F_rt0(seg, f_A, u8_root(h, f_A, seg))
+    case Gc74A8F5F17F{+f_A}: Gc74A8F5F17F_rt0(hl, seg, f_A, u8_root(hl, h, f_A, seg))
 
 def Gc74A8F5F17F_get_f_A(o: Gc74A8F5F17F) -> Gc74A8F5F17F & U32:
   match o:
@@ -9543,6 +14894,10 @@ def Gc74A8F5F17F_force(o: Gc74A8F5F17F) -> U32:
   match o:
     case Gc74A8F5F17F{+f_A}: u8_force(f_A)
 
+def Gc74A8F5F17F_dump(o: Gc74A8F5F17F, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gc74A8F5F17F{+f_A}: u8_dump(f_A, t)
+
 def Gc74A8F5F17F_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
 def Gc74A8F5F17F_ok_len(ok: Bool, buf: B.Buf, +off: U32) -> B.Buf & Bool:
@@ -9558,15 +14913,27 @@ def l128_u16_default() -> O.Words: O.words_new(0)
 
 def l128_u16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)
 
-def l128_u16_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def l128_u16_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def l128_u16_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
 def l128_u16_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): O.put_words_n(out, pos, o)
 
-def l128_u16_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(1n, O.words_root(h, o, 3, seg))
+def l128_u16_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 1n, O.words_root(hl, h, o, 3, seg))
 
 def l128_u16_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def l128_u16_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: l128_u16_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def l128_u16_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 256, False{}, 2)
+
+def l128_u16_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): l128_u16_pk(out, pos, l128_u16_valid(o))
+
+def l128_u16_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words_n(o, t)
 
 def l128_u16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, Bool.and(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), U32.is_le(U32.div(len, 2), 128)))
 
@@ -9619,15 +14986,27 @@ def bl256_default() -> O.Words: O.words_new(0)
 
 def bl256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)
 
-def bl256_size(o: O.Words) -> O.Words & U32: O.words_len(o)
+def bl256_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)
 
 def bl256_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)
 
 def bl256_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): O.put_words_n(out, pos, o)
 
-def bl256_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(0n, O.words_root(h, o, 3, seg))
+def bl256_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): O.mix_count(hl, 0n, O.words_root(hl, h, o, 3, seg))
 
 def bl256_force(o: O.Words) -> O.Words & U32: O.words_len(o)
+
+def bl256_pk(out: Array<U32>, +pos: U32, pair: O.Words & Bool) -> Array<U32> & (O.Words & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bl256_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bl256_valid(o: O.Words) -> O.Words & Bool: O.words_ok(o, 0, 256, False{}, 1)
+
+def bl256_putk(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): bl256_pk(out, pos, bl256_valid(o))
+
+def bl256_dump(o: O.Words, t: +List<U32>) -> +List<U32>: O.dump_words_n(o, t)
 
 def bl256_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, U32.is_le(len, 256))
 
@@ -9705,9 +15084,13 @@ def v4_GcDC3E457711_rd_start(empty: Bool, +off: U32, +n: U32, buf: B.Buf) -> B.B
 
 def v4_GcDC3E457711_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & v4_GcDC3E457711_Seq: v4_GcDC3E457711_rd_start(False{}, off, 4, buf)
 
+def v4_GcDC3E457711_szf(+n: U32, pair: Array<GcDC3E457711> & U32) -> v4_GcDC3E457711_Seq & U32:
+  (arr, +c) = pair
+  (v4_GcDC3E457711_Seq{arr, n}, O.pick(U32.is_le(n, c), (n * 13 : U32), 2147483648))
+
 def v4_GcDC3E457711_size(o: v4_GcDC3E457711_Seq) -> v4_GcDC3E457711_Seq & U32:
   match o:
-    case v4_GcDC3E457711_Seq{arr, +n}: (v4_GcDC3E457711_Seq{arr, n}, (n * 13 : U32))
+    case v4_GcDC3E457711_Seq{arr, +n}: v4_GcDC3E457711_szf(n, Array.size(GcDC3E457711, arr))
 
 def v4_GcDC3E457711_pt(+k: Nat, +i: U32, +pos: U32, out: Array<U32>, pair: Array<GcDC3E457711> & GcDC3E457711) -> Array<U32> & Array<GcDC3E457711>:
   match k:
@@ -9731,37 +15114,61 @@ def v4_GcDC3E457711_put(out: Array<U32>, +pos: U32, o: v4_GcDC3E457711_Seq) -> A
   match o:
     case v4_GcDC3E457711_Seq{arr, +n}: v4_GcDC3E457711_pt_nz(U32.is_eq(n, 0), pos, n, out, arr)
 
-def v4_GcDC3E457711_rt_push(+i: U32, +seg: U32, arr: Array<GcDC3E457711>, pair: B.Buf & (GcDC3E457711 & D.Digest)) -> B.Buf & Array<GcDC3E457711>:
-  (h, r) = pair
-  (v, d) = r
-  (M.push_leaf(i, seg, d, h), Array.set(GcDC3E457711, arr, i, v))
-
-def v4_GcDC3E457711_rt_leaf(+i: U32, +seg: U32, arr: Array<GcDC3E457711>, pair: B.Buf & D.Digest) -> B.Buf & Array<GcDC3E457711>:
+def v4_GcDC3E457711_rl_d(arr: Array<GcDC3E457711>, pair: B.Buf & D.Digest) -> B.Buf & (Array<GcDC3E457711> & D.Digest):
   (h, d) = pair
-  (M.push_leaf(i, seg, d, h), arr)
+  (h, (arr, d))
 
-def v4_GcDC3E457711_rt_one(+i: U32, +seg: U32, h: B.Buf, pair: Array<GcDC3E457711> & GcDC3E457711) -> B.Buf & Array<GcDC3E457711>:
+def v4_GcDC3E457711_rl(+hl: Nat, +seg: U32, h: B.Buf, pair: Array<GcDC3E457711> & GcDC3E457711) -> B.Buf & (Array<GcDC3E457711> & D.Digest):
   (arr, +v) = pair
-  v4_GcDC3E457711_rt_leaf(i, seg, arr, GcDC3E457711_root(h, v, (seg + 64 : U32)))
+  v4_GcDC3E457711_rl_d(arr, GcDC3E457711_root(hl, h, v, (seg + 64 : U32)))
 
-def v4_GcDC3E457711_rt(+k: Nat, +i: U32, +seg: U32, pair: B.Buf & Array<GcDC3E457711>) -> B.Buf & Array<GcDC3E457711>:
-  match k:
-    case 0n: pair
-    case 1n+q:
-      (h, arr) = pair
-      v4_GcDC3E457711_rt(q, (i + 1 : U32), seg, v4_GcDC3E457711_rt_one(i, seg, h, Array.get(GcDC3E457711, arr, i)))
+def v4_GcDC3E457711_mj(+hl: Nat, dl: D.Digest, pair: B.Buf & (Array<GcDC3E457711> & D.Digest)) -> B.Buf & (Array<GcDC3E457711> & D.Digest):
+  (h, r) = pair
+  (arr, dr) = r
+  (h, (arr, D.node(hl, dl, dr)))
 
-def v4_GcDC3E457711_rt_close(+n: U32, arr: Array<GcDC3E457711>, pair: B.Buf & D.Digest) -> B.Buf & (v4_GcDC3E457711_Seq & D.Digest):
-  (h, d) = pair
+def v4_GcDC3E457711_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<GcDC3E457711> & D.Digest)) -> B.Buf & (Array<GcDC3E457711> & D.Digest):
+  match d:
+    case 0n:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(0n)))
+            case True{}:
+              (h, r) = st
+              (arr, dl) = r
+              v4_GcDC3E457711_rl(hl, seg, h, Array.get(GcDC3E457711, arr, U32.from_nat(s)))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          v4_GcDC3E457711_mj(hl, dl, v4_GcDC3E457711_mt(0n, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
+    case 1n+ +p:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(1n+p)))
+            case True{}:
+              v4_GcDC3E457711_mt(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, seg, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+                v4_GcDC3E457711_mt(p, 0n, True{}, hl, seg, Nat.div(w, 2n), s, n, st))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          v4_GcDC3E457711_mj(hl, dl, v4_GcDC3E457711_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
+
+def v4_GcDC3E457711_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<GcDC3E457711> & D.Digest)) -> B.Buf & (v4_GcDC3E457711_Seq & D.Digest):
+  (h, r) = pair
+  (arr, d) = r
   (h, (v4_GcDC3E457711_Seq{arr, n}, d))
 
-def v4_GcDC3E457711_rt_fin(+n: U32, +seg: U32, pair: B.Buf & Array<GcDC3E457711>) -> B.Buf & (v4_GcDC3E457711_Seq & D.Digest):
-  (h, arr) = pair
-  v4_GcDC3E457711_rt_close(n, arr, M.close(2, n, seg, h))
-
-def v4_GcDC3E457711_root(h: B.Buf, o: v4_GcDC3E457711_Seq, +seg: U32) -> B.Buf & (v4_GcDC3E457711_Seq & D.Digest):
+def v4_GcDC3E457711_root(+hl: Nat, h: B.Buf, o: v4_GcDC3E457711_Seq, +seg: U32) -> B.Buf & (v4_GcDC3E457711_Seq & D.Digest):
   match o:
-    case v4_GcDC3E457711_Seq{arr, +n}: v4_GcDC3E457711_rt_fin(n, seg, v4_GcDC3E457711_rt(U32.to_nat(n), 0, seg, (h, arr)))
+    case v4_GcDC3E457711_Seq{arr, +n}: v4_GcDC3E457711_rt_fin(hl, n, v4_GcDC3E457711_mt(2n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(2n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def v4_GcDC3E457711_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<GcDC3E457711> & GcDC3E457711) -> Array<GcDC3E457711> & U32:
   match k:
@@ -9784,6 +15191,72 @@ def v4_GcDC3E457711_fo_nz(empty: Bool, +n: U32, arr: Array<GcDC3E457711>) -> v4_
 def v4_GcDC3E457711_force(o: v4_GcDC3E457711_Seq) -> v4_GcDC3E457711_Seq & U32:
   match o:
     case v4_GcDC3E457711_Seq{arr, +n}: v4_GcDC3E457711_fo_nz(U32.is_eq(n, 0), n, arr)
+
+def v4_GcDC3E457711_pk_ok(pair: Array<U32> & v4_GcDC3E457711_Seq) -> Array<U32> & (v4_GcDC3E457711_Seq & U32):
+  (out, o) = pair
+  (out, (o, 0))
+
+def v4_GcDC3E457711_pk(out: Array<U32>, +pos: U32, pair: v4_GcDC3E457711_Seq & Bool) -> Array<U32> & (v4_GcDC3E457711_Seq & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v4_GcDC3E457711_pk_ok(v4_GcDC3E457711_put(out, pos, o))
+    case False{}: (out, (o, 2147483648))
+
+def v4_GcDC3E457711_va_fin(+n: U32, ok: Bool, pair: Array<GcDC3E457711> & Bool) -> v4_GcDC3E457711_Seq & Bool:
+  (arr, b) = pair
+  (v4_GcDC3E457711_Seq{arr, n}, Bool.and(ok, b))
+
+def GcDC3E457711_valid(o: GcDC3E457711) -> Bool:
+  match o:
+    case GcDC3E457711{+f_A, +f_B, +f_C}: u8_valid(f_A)
+
+def v4_GcDC3E457711_va(+k: Nat, +i: U32, acc: Bool, pair: Array<GcDC3E457711> & GcDC3E457711) -> Array<GcDC3E457711> & Bool:
+  match k:
+    case 0n:
+      (arr, +v) = pair
+      (arr, Bool.and(acc, GcDC3E457711_valid(v)))
+    case 1n+q:
+      (arr, +v) = pair
+      v4_GcDC3E457711_va(q, (i + 1 : U32), Bool.and(acc, GcDC3E457711_valid(v)), Array.get(GcDC3E457711, arr, (i + 1 : U32)))
+
+def v4_GcDC3E457711_va_nz(empty: Bool, +n: U32, arr: Array<GcDC3E457711>) -> Array<GcDC3E457711> & Bool:
+  match empty:
+    case True{}: (arr, True{})
+    case False{}: v4_GcDC3E457711_va(U32.to_nat((n - 1 : U32)), 0, True{}, Array.get(GcDC3E457711, arr, 0))
+
+def v4_GcDC3E457711_va_go(ok: Bool, +n: U32, arr: Array<GcDC3E457711>) -> v4_GcDC3E457711_Seq & Bool:
+  match ok:
+    case True{}: v4_GcDC3E457711_va_fin(n, True{}, v4_GcDC3E457711_va_nz(U32.is_eq(n, 0), n, arr))
+    case False{}: (v4_GcDC3E457711_Seq{arr, n}, False{})
+
+def v4_GcDC3E457711_va_cap(ok: Bool, +n: U32, pair: Array<GcDC3E457711> & U32) -> v4_GcDC3E457711_Seq & Bool:
+  (arr, +c) = pair
+  v4_GcDC3E457711_va_go(Bool.and(ok, U32.is_le(n, c)), n, arr)
+
+def v4_GcDC3E457711_valid(o: v4_GcDC3E457711_Seq) -> v4_GcDC3E457711_Seq & Bool:
+  match o:
+    case v4_GcDC3E457711_Seq{arr, +n}: v4_GcDC3E457711_va_cap(U32.is_eq(n, 4), n, Array.size(GcDC3E457711, arr))
+
+def v4_GcDC3E457711_putk(out: Array<U32>, +pos: U32, o: v4_GcDC3E457711_Seq) -> Array<U32> & (v4_GcDC3E457711_Seq & U32): v4_GcDC3E457711_pk(out, pos, v4_GcDC3E457711_valid(o))
+
+def v4_GcDC3E457711_du_took(t: +List<U32>, pair: Array<GcDC3E457711> & GcDC3E457711) -> Array<GcDC3E457711> & +List<U32>:
+  (arr, +v) = pair
+  (arr, GcDC3E457711_dump(v, t))
+
+def v4_GcDC3E457711_du(+k: Nat, +i: U32, st: Array<GcDC3E457711> & +List<U32>) -> Array<GcDC3E457711> & +List<U32>:
+  match k:
+    case 0n: st
+    case 1n+q:
+      (arr, t) = st
+      v4_GcDC3E457711_du(q, (i - 1 : U32), v4_GcDC3E457711_du_took(t, Array.get(GcDC3E457711, arr, (i - 1 : U32))))
+
+def v4_GcDC3E457711_du_fin(+n: U32, st: Array<GcDC3E457711> & +List<U32>) -> +List<U32>:
+  (arr, t) = st
+  t
+
+def v4_GcDC3E457711_dump(o: v4_GcDC3E457711_Seq, t: +List<U32>) -> +List<U32>:
+  match o:
+    case v4_GcDC3E457711_Seq{arr, +n}: v4_GcDC3E457711_du_fin(n, v4_GcDC3E457711_du(U32.to_nat(n), n, (arr, t)))
 
 def v4_GcDC3E457711_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -9824,11 +15297,11 @@ def v4_GcDC3E457711_set(o: v4_GcDC3E457711_Seq, +i: U32, v: GcDC3E457711) -> v4_
     case v4_GcDC3E457711_Seq{arr, +n}: v4_GcDC3E457711_put_in(U32.is_lt(i, n), arr, n, i, v)
 
 type v2_Gc465214E502_Seq is Type:
-  v2_Gc465214E502_Seq{items: Array<Gc465214E502>, n: U32}
+  v2_Gc465214E502_Seq{items: Array<O.Boxed<Gc465214E502>>, n: U32}
 
-def v2_Gc465214E502_fill(+d: Nat) -> Array<Gc465214E502>:
+def v2_Gc465214E502_fill(+d: Nat) -> Array<O.Boxed<Gc465214E502>>:
   match d:
-    case 0n: ALeaf{Gc465214E502_default()}
+    case 0n: ALeaf{O.BNone{}}
     case 1n+q: ANode{v2_Gc465214E502_fill(q), v2_Gc465214E502_fill(q)}
 
 def v2_Gc465214E502_cap(+n: U32) -> Nat: B.words_depth(n)
@@ -9848,23 +15321,23 @@ def v2_Gc465214E502_win_start(+off: U32, +len: U32, +i: U32, +n: U32, pair: B.Bu
   (buf, +s) = pair
   v2_Gc465214E502_win_last(U32.is_eq((i + 1 : U32), n), off, len, i, s, buf)
 
-def v2_Gc465214E502_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & Gc465214E502: Gc465214E502_read(buf, (off + s : U32), (e - s : U32))
+def v2_Gc465214E502_elem_win(+off: U32, +s: U32, +e: U32, buf: B.Buf) -> B.Buf & O.Boxed<Gc465214E502>: Gc465214E502_bx_read(buf, (off + s : U32), (e - s : U32))
 
-def v2_Gc465214E502_elem(+off: U32, pair: B.Buf & (U32 & U32)) -> B.Buf & Gc465214E502:
+def v2_Gc465214E502_elem(+off: U32, pair: B.Buf & (U32 & U32)) -> B.Buf & O.Boxed<Gc465214E502>:
   (buf, se) = pair
   (s, e) = se
   v2_Gc465214E502_elem_win(off, s, e, buf)
 
-def v2_Gc465214E502_rv(+k: Nat, +i: U32, +off: U32, +len: U32, +n: U32, arr: Array<Gc465214E502>, pair: B.Buf & Gc465214E502) -> B.Buf & Array<Gc465214E502>:
+def v2_Gc465214E502_rv(+k: Nat, +i: U32, +off: U32, +len: U32, +n: U32, arr: Array<O.Boxed<Gc465214E502>>, pair: B.Buf & O.Boxed<Gc465214E502>) -> B.Buf & Array<O.Boxed<Gc465214E502>>:
   match k:
     case 0n:
       (buf, v) = pair
-      (buf, Array.set(Gc465214E502, arr, i, v))
+      (buf, Array.set(O.Boxed<Gc465214E502>, arr, i, v))
     case 1n+q:
       (buf, v) = pair
-      v2_Gc465214E502_rv(q, (i + 1 : U32), off, len, n, Array.set(Gc465214E502, arr, i, v), v2_Gc465214E502_elem(off, v2_Gc465214E502_win_start(off, len, (i + 1 : U32), n, B.read32(buf, (off + 4 * (i + 1 : U32) : U32)))))
+      v2_Gc465214E502_rv(q, (i + 1 : U32), off, len, n, Array.set(O.Boxed<Gc465214E502>, arr, i, v), v2_Gc465214E502_elem(off, v2_Gc465214E502_win_start(off, len, (i + 1 : U32), n, B.read32(buf, (off + 4 * (i + 1 : U32) : U32)))))
 
-def v2_Gc465214E502_rv_fin(+n: U32, pair: B.Buf & Array<Gc465214E502>) -> B.Buf & v2_Gc465214E502_Seq:
+def v2_Gc465214E502_rv_fin(+n: U32, pair: B.Buf & Array<O.Boxed<Gc465214E502>>) -> B.Buf & v2_Gc465214E502_Seq:
   (buf, arr) = pair
   (buf, v2_Gc465214E502_Seq{arr, n})
 
@@ -9874,134 +15347,249 @@ def v2_Gc465214E502_rv_count(+off: U32, +len: U32, pair: B.Buf & U32) -> B.Buf &
 
 def v2_Gc465214E502_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & v2_Gc465214E502_Seq: v2_Gc465214E502_rv_count(off, len, B.read32(buf, off))
 
-def v2_Gc465214E502_sz_back(+i: U32, +acc: U32, arr: Array<Gc465214E502>, pair: Gc465214E502 & U32) -> Array<Gc465214E502> & U32:
+def v2_Gc465214E502_sz_ret(+acc: U32, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>):
+  (arr, sp) = pair
+  (arr, (acc, sp))
+
+def v2_Gc465214E502_sz_back(+i: U32, +acc: U32, arr: Array<O.Boxed<Gc465214E502>>, pair: O.Boxed<Gc465214E502> & U32) -> Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>):
   (v, +m) = pair
-  (Array.set(Gc465214E502, arr, i, v), (acc + m : U32))
+  v2_Gc465214E502_sz_ret(O.padd(acc, m), Array.swap(O.Boxed<Gc465214E502>, arr, i, v))
 
-def v2_Gc465214E502_sz_one(+i: U32, +acc: U32, pair: Array<Gc465214E502> & Gc465214E502) -> Array<Gc465214E502> & U32:
+def v2_Gc465214E502_sz_one(+i: U32, +acc: U32, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>):
   (arr, v) = pair
-  v2_Gc465214E502_sz_back(i, acc, arr, Gc465214E502_size(v))
+  v2_Gc465214E502_sz_back(i, acc, arr, Gc465214E502_bx_size(v))
 
-def v2_Gc465214E502_sz(+k: Nat, +i: U32, pair: Array<Gc465214E502> & U32) -> Array<Gc465214E502> & U32:
+def v2_Gc465214E502_sz(+k: Nat, +i: U32, st: Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)) -> Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>):
   match k:
-    case 0n: pair
+    case 0n: st
     case 1n+q:
-      (arr, +acc) = pair
-      v2_Gc465214E502_sz(q, (i + 1 : U32), v2_Gc465214E502_sz_one(i, acc, Array.swap(Gc465214E502, arr, i, Gc465214E502_default())))
+      (arr, r) = st
+      (acc, sp) = r
+      v2_Gc465214E502_sz(q, (i + 1 : U32), v2_Gc465214E502_sz_one(i, acc, Array.swap(O.Boxed<Gc465214E502>, arr, i, sp)))
 
-def v2_Gc465214E502_sz_fin(+n: U32, pair: Array<Gc465214E502> & U32) -> v2_Gc465214E502_Seq & U32:
-  (arr, +m) = pair
-  (v2_Gc465214E502_Seq{arr, n}, (4 * n + m : U32))
+def v2_Gc465214E502_sz_fin(+n: U32, st: Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)) -> v2_Gc465214E502_Seq & U32:
+  (arr, r) = st
+  (m, sp) = r
+  (v2_Gc465214E502_Seq{arr, n}, O.padd((4 * n : U32), m))
+
+def v2_Gc465214E502_sz_nz(empty: Bool, arr: Array<O.Boxed<Gc465214E502>>, +n: U32) -> v2_Gc465214E502_Seq & U32:
+  match empty:
+    case True{}: (v2_Gc465214E502_Seq{arr, n}, 0)
+    case False{}: v2_Gc465214E502_sz_fin(n, v2_Gc465214E502_sz(U32.to_nat(n), 0, (arr, (0, O.BNone{}))))
+
+def v2_Gc465214E502_sz_ok(ok: Bool, arr: Array<O.Boxed<Gc465214E502>>, +n: U32) -> v2_Gc465214E502_Seq & U32:
+  match ok:
+    case True{}: v2_Gc465214E502_sz_nz(U32.is_eq(n, 0), arr, n)
+    case False{}: (v2_Gc465214E502_Seq{arr, n}, 2147483648)
+
+def v2_Gc465214E502_sz_cap(+n: U32, pair: Array<O.Boxed<Gc465214E502>> & U32) -> v2_Gc465214E502_Seq & U32:
+  (arr, +c) = pair
+  v2_Gc465214E502_sz_ok(U32.is_le(n, c), arr, n)
 
 def v2_Gc465214E502_size(o: v2_Gc465214E502_Seq) -> v2_Gc465214E502_Seq & U32:
   match o:
-    case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_sz_fin(n, v2_Gc465214E502_sz(U32.to_nat(n), 0, (arr, 0)))
+    case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_sz_cap(n, Array.size(O.Boxed<Gc465214E502>, arr))
 
-def v2_Gc465214E502_pv_put(+i: U32, +next: U32, arr: Array<Gc465214E502>, pair: Array<U32> & Gc465214E502) -> Array<U32> & (Array<Gc465214E502> & U32):
-  (out, v) = pair
-  (out, (Array.set(Gc465214E502, arr, i, v), next))
+def v2_Gc465214E502_pv_ret(out: Array<U32>, c: U32, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)):
+  (arr, sp) = pair
+  (out, (arr, (c, sp)))
 
-def v2_Gc465214E502_pv_placed_go(+i: U32, +cur: U32, arr: Array<Gc465214E502>, out: Array<U32>, v: Gc465214E502, +m: U32) -> Array<U32> & (Array<Gc465214E502> & U32):
-  v2_Gc465214E502_pv_put(i, (cur + m : U32), arr, (out, v))
-
-def v2_Gc465214E502_pv_placed(+i: U32, +cur: U32, arr: Array<Gc465214E502>, pair: Array<U32> & (Gc465214E502 & U32)) -> Array<U32> & (Array<Gc465214E502> & U32):
+def v2_Gc465214E502_pv_placed(+i: U32, arr: Array<O.Boxed<Gc465214E502>>, pair: Array<U32> & (O.Boxed<Gc465214E502> & U32)) -> Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)):
   (out, r) = pair
-  (v, m) = r
-  v2_Gc465214E502_pv_placed_go(i, cur, arr, out, v, m)
+  (v, c) = r
+  v2_Gc465214E502_pv_ret(out, c, Array.swap(O.Boxed<Gc465214E502>, arr, i, v))
 
-def v2_Gc465214E502_pv_one(+i: U32, +pos: U32, +cur: U32, out: Array<U32>, pair: Array<Gc465214E502> & Gc465214E502) -> Array<U32> & (Array<Gc465214E502> & U32):
+def v2_Gc465214E502_pv_one(+i: U32, +pos: U32, +cur: U32, out: Array<U32>, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)):
   (arr, v) = pair
-  v2_Gc465214E502_pv_placed(i, cur, arr, Gc465214E502_putn(O.w32(out, (pos + 4 * i : U32), cur), (pos + cur : U32), v))
+  v2_Gc465214E502_pv_placed(i, arr, Gc465214E502_bx_putv(out, pos, (4 * i : U32), cur, v))
 
-def v2_Gc465214E502_pv(+k: Nat, +i: U32, +pos: U32, pair: Array<U32> & (Array<Gc465214E502> & U32)) -> Array<U32> & (Array<Gc465214E502> & U32):
+def v2_Gc465214E502_pv(+k: Nat, +i: U32, +pos: U32, st: Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>))) -> Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>)):
   match k:
-    case 0n: pair
+    case 0n: st
     case 1n+q:
-      (out, st) = pair
-      (arr, cur) = st
-      v2_Gc465214E502_pv(q, (i + 1 : U32), pos, v2_Gc465214E502_pv_one(i, pos, cur, out, Array.swap(Gc465214E502, arr, i, Gc465214E502_default())))
+      (out, s1) = st
+      (arr, s2) = s1
+      (cur, sp) = s2
+      v2_Gc465214E502_pv(q, (i + 1 : U32), pos, v2_Gc465214E502_pv_one(i, pos, cur, out, Array.swap(O.Boxed<Gc465214E502>, arr, i, sp)))
 
-def v2_Gc465214E502_pv_fin(+n: U32, pair: Array<U32> & (Array<Gc465214E502> & U32)) -> Array<U32> & v2_Gc465214E502_Seq:
-  (out, st) = pair
-  (arr, cur) = st
-  (out, v2_Gc465214E502_Seq{arr, n})
-
-def v2_Gc465214E502_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<Gc465214E502>) -> Array<U32> & v2_Gc465214E502_Seq:
-  v2_Gc465214E502_pv_fin(n, v2_Gc465214E502_pv(U32.to_nat(n), 0, pos, (out, (arr, (4 * n : U32)))))
-
-def v2_Gc465214E502_pvn_go(+n: U32, out: Array<U32>, arr: Array<Gc465214E502>, +cur: U32) -> Array<U32> & (v2_Gc465214E502_Seq & U32):
+def v2_Gc465214E502_pvn_go(+n: U32, out: Array<U32>, arr: Array<O.Boxed<Gc465214E502>>, +cur: U32) -> Array<U32> & (v2_Gc465214E502_Seq & U32):
   (out, (v2_Gc465214E502_Seq{arr, n}, cur))
 
-def v2_Gc465214E502_pvn_fin(+n: U32, pair: Array<U32> & (Array<Gc465214E502> & U32)) -> Array<U32> & (v2_Gc465214E502_Seq & U32):
-  (out, st) = pair
-  (arr, cur) = st
+def v2_Gc465214E502_pvn_fin(+n: U32, st: Array<U32> & (Array<O.Boxed<Gc465214E502>> & (U32 & O.Boxed<Gc465214E502>))) -> Array<U32> & (v2_Gc465214E502_Seq & U32):
+  (out, s1) = st
+  (arr, s2) = s1
+  (cur, sp) = s2
   v2_Gc465214E502_pvn_go(n, out, arr, cur)
+
+def v2_Gc465214E502_pvn_nz(empty: Bool, out: Array<U32>, +pos: U32, arr: Array<O.Boxed<Gc465214E502>>, +n: U32) -> Array<U32> & (v2_Gc465214E502_Seq & U32):
+  match empty:
+    case True{}: (out, (v2_Gc465214E502_Seq{arr, n}, 0))
+    case False{}: v2_Gc465214E502_pvn_fin(n, v2_Gc465214E502_pv(U32.to_nat(n), 0, pos, (out, (arr, ((4 * n : U32), O.BNone{})))))
 
 def v2_Gc465214E502_putn(out: Array<U32>, +pos: U32, o: v2_Gc465214E502_Seq) -> Array<U32> & (v2_Gc465214E502_Seq & U32):
   match o:
-    case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_pvn_fin(n, v2_Gc465214E502_pv(U32.to_nat(n), 0, pos, (out, (arr, (4 * n : U32)))))
+    case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_pvn_nz(U32.is_eq(n, 0), out, pos, arr, n)
+
+def v2_Gc465214E502_pv_drop(pair: Array<U32> & (v2_Gc465214E502_Seq & U32)) -> Array<U32> & v2_Gc465214E502_Seq:
+  (out, r) = pair
+  (sq, m) = r
+  (out, sq)
+
+def v2_Gc465214E502_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<O.Boxed<Gc465214E502>>) -> Array<U32> & v2_Gc465214E502_Seq:
+  v2_Gc465214E502_pv_drop(v2_Gc465214E502_pvn_nz(empty, out, pos, arr, n))
 
 def v2_Gc465214E502_put(out: Array<U32>, +pos: U32, o: v2_Gc465214E502_Seq) -> Array<U32> & v2_Gc465214E502_Seq:
   match o:
     case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_pt_nz(U32.is_eq(n, 0), pos, n, out, arr)
 
-def v2_Gc465214E502_rt_push(+i: U32, +seg: U32, arr: Array<Gc465214E502>, pair: B.Buf & (Gc465214E502 & D.Digest)) -> B.Buf & Array<Gc465214E502>:
+def v2_Gc465214E502_rl_n(+i: U32, arr: Array<O.Boxed<Gc465214E502>>, pair: B.Buf & (O.Boxed<Gc465214E502> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest):
   (h, r) = pair
   (v, d) = r
-  (M.push_leaf(i, seg, d, h), Array.set(Gc465214E502, arr, i, v))
+  (h, (Array.set(O.Boxed<Gc465214E502>, arr, i, v), d))
 
-def v2_Gc465214E502_rt_one(+i: U32, +seg: U32, h: B.Buf, pair: Array<Gc465214E502> & Gc465214E502) -> B.Buf & Array<Gc465214E502>:
+def v2_Gc465214E502_rl(+hl: Nat, +i: U32, +seg: U32, h: B.Buf, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest):
   (arr, v) = pair
-  v2_Gc465214E502_rt_push(i, seg, arr, Gc465214E502_root(h, v, (seg + 64 : U32)))
+  v2_Gc465214E502_rl_n(i, arr, Gc465214E502_bx_root(hl, h, v, (seg + 64 : U32)))
 
-def v2_Gc465214E502_rt(+k: Nat, +i: U32, +seg: U32, pair: B.Buf & Array<Gc465214E502>) -> B.Buf & Array<Gc465214E502>:
-  match k:
-    case 0n: pair
-    case 1n+q:
-      (h, arr) = pair
-      v2_Gc465214E502_rt(q, (i + 1 : U32), seg, v2_Gc465214E502_rt_one(i, seg, h, Array.swap(Gc465214E502, arr, i, Gc465214E502_default())))
+def v2_Gc465214E502_mj(+hl: Nat, dl: D.Digest, pair: B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest):
+  (h, r) = pair
+  (arr, dr) = r
+  (h, (arr, D.node(hl, dl, dr)))
 
-def v2_Gc465214E502_rt_close(+n: U32, arr: Array<Gc465214E502>, pair: B.Buf & D.Digest) -> B.Buf & (v2_Gc465214E502_Seq & D.Digest):
-  (h, d) = pair
+def v2_Gc465214E502_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest):
+  match d:
+    case 0n:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(0n)))
+            case True{}:
+              (h, r) = st
+              (arr, dl) = r
+              v2_Gc465214E502_rl(hl, U32.from_nat(s), seg, h, Array.swap(O.Boxed<Gc465214E502>, arr, U32.from_nat(s), O.BNone{}))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          v2_Gc465214E502_mj(hl, dl, v2_Gc465214E502_mt(0n, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
+    case 1n+ +p:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (arr, dl) = r
+              (h, (arr, D.zconst(1n+p)))
+            case True{}:
+              v2_Gc465214E502_mt(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, seg, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+                v2_Gc465214E502_mt(p, 0n, True{}, hl, seg, Nat.div(w, 2n), s, n, st))
+        case 1n+q:
+          (h, r) = st
+          (arr, dl) = r
+          v2_Gc465214E502_mj(hl, dl, v2_Gc465214E502_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
+
+def v2_Gc465214E502_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest)) -> B.Buf & (v2_Gc465214E502_Seq & D.Digest):
+  (h, r) = pair
+  (arr, d) = r
   (h, (v2_Gc465214E502_Seq{arr, n}, d))
 
-def v2_Gc465214E502_rt_fin(+n: U32, +seg: U32, pair: B.Buf & Array<Gc465214E502>) -> B.Buf & (v2_Gc465214E502_Seq & D.Digest):
-  (h, arr) = pair
-  v2_Gc465214E502_rt_close(n, arr, M.close(1, n, seg, h))
-
-def v2_Gc465214E502_root(h: B.Buf, o: v2_Gc465214E502_Seq, +seg: U32) -> B.Buf & (v2_Gc465214E502_Seq & D.Digest):
+def v2_Gc465214E502_root(+hl: Nat, h: B.Buf, o: v2_Gc465214E502_Seq, +seg: U32) -> B.Buf & (v2_Gc465214E502_Seq & D.Digest):
   match o:
-    case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_rt_fin(n, seg, v2_Gc465214E502_rt(U32.to_nat(n), 0, seg, (h, arr)))
+    case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_rt_fin(hl, n, v2_Gc465214E502_mt(1n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(1n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
 
-def v2_Gc465214E502_fo_back(+i: U32, +acc: U32, arr: Array<Gc465214E502>, pair: Gc465214E502 & U32) -> Array<Gc465214E502> & U32:
+def v2_Gc465214E502_fo_back(+i: U32, +acc: U32, arr: Array<O.Boxed<Gc465214E502>>, pair: O.Boxed<Gc465214E502> & U32) -> Array<O.Boxed<Gc465214E502>> & U32:
   (v, +x) = pair
-  (Array.set(Gc465214E502, arr, i, v), (acc .^. x : U32))
+  (Array.set(O.Boxed<Gc465214E502>, arr, i, v), (acc .^. x : U32))
 
-def v2_Gc465214E502_fo_one(+i: U32, +acc: U32, pair: Array<Gc465214E502> & Gc465214E502) -> Array<Gc465214E502> & U32:
+def v2_Gc465214E502_fo_one(+i: U32, +acc: U32, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<O.Boxed<Gc465214E502>> & U32:
   (arr, v) = pair
-  v2_Gc465214E502_fo_back(i, acc, arr, Gc465214E502_force(v))
+  v2_Gc465214E502_fo_back(i, acc, arr, Gc465214E502_bx_force(v))
 
-def v2_Gc465214E502_fo(+k: Nat, +i: U32, pair: Array<Gc465214E502> & U32) -> Array<Gc465214E502> & U32:
+def v2_Gc465214E502_fo(+k: Nat, +i: U32, pair: Array<O.Boxed<Gc465214E502>> & U32) -> Array<O.Boxed<Gc465214E502>> & U32:
   match k:
     case 0n: pair
     case 1n+q:
       (arr, +acc) = pair
-      v2_Gc465214E502_fo(q, (i + 1 : U32), v2_Gc465214E502_fo_one(i, acc, Array.swap(Gc465214E502, arr, i, Gc465214E502_default())))
+      v2_Gc465214E502_fo(q, (i + 1 : U32), v2_Gc465214E502_fo_one(i, acc, Array.swap(O.Boxed<Gc465214E502>, arr, i, O.BNone{})))
 
-def v2_Gc465214E502_fo_fin(+n: U32, pair: Array<Gc465214E502> & U32) -> v2_Gc465214E502_Seq & U32:
+def v2_Gc465214E502_fo_fin(+n: U32, pair: Array<O.Boxed<Gc465214E502>> & U32) -> v2_Gc465214E502_Seq & U32:
   (arr, +x) = pair
   (v2_Gc465214E502_Seq{arr, n}, x)
 
-def v2_Gc465214E502_fo_nz(empty: Bool, +n: U32, arr: Array<Gc465214E502>) -> v2_Gc465214E502_Seq & U32:
+def v2_Gc465214E502_fo_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<Gc465214E502>>) -> v2_Gc465214E502_Seq & U32:
   v2_Gc465214E502_fo_fin(n, v2_Gc465214E502_fo(U32.to_nat(n), 0, (arr, 0)))
 
 def v2_Gc465214E502_force(o: v2_Gc465214E502_Seq) -> v2_Gc465214E502_Seq & U32:
   match o:
     case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_fo_nz(U32.is_eq(n, 0), n, arr)
 
+def v2_Gc465214E502_pk(out: Array<U32>, +pos: U32, pair: v2_Gc465214E502_Seq & Bool) -> Array<U32> & (v2_Gc465214E502_Seq & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: v2_Gc465214E502_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def v2_Gc465214E502_va_fin(+n: U32, ok: Bool, pair: Array<O.Boxed<Gc465214E502>> & Bool) -> v2_Gc465214E502_Seq & Bool:
+  (arr, b) = pair
+  (v2_Gc465214E502_Seq{arr, n}, Bool.and(ok, b))
+
+def v2_Gc465214E502_va_back(+i: U32, acc: Bool, arr: Array<O.Boxed<Gc465214E502>>, pair: O.Boxed<Gc465214E502> & Bool) -> Array<O.Boxed<Gc465214E502>> & Bool:
+  (v, ok) = pair
+  (Array.set(O.Boxed<Gc465214E502>, arr, i, v), Bool.and(acc, ok))
+
+def v2_Gc465214E502_va_one(+i: U32, acc: Bool, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<O.Boxed<Gc465214E502>> & Bool:
+  (arr, v) = pair
+  v2_Gc465214E502_va_back(i, acc, arr, Gc465214E502_bx_valid(v))
+
+def v2_Gc465214E502_va(+k: Nat, +i: U32, pair: Array<O.Boxed<Gc465214E502>> & Bool) -> Array<O.Boxed<Gc465214E502>> & Bool:
+  match k:
+    case 0n: pair
+    case 1n+q:
+      (arr, acc) = pair
+      v2_Gc465214E502_va(q, (i + 1 : U32), v2_Gc465214E502_va_one(i, acc, Array.swap(O.Boxed<Gc465214E502>, arr, i, O.BNone{})))
+
+def v2_Gc465214E502_va_nz(empty: Bool, +n: U32, arr: Array<O.Boxed<Gc465214E502>>) -> Array<O.Boxed<Gc465214E502>> & Bool:
+  v2_Gc465214E502_va(U32.to_nat(n), 0, (arr, True{}))
+
+def v2_Gc465214E502_va_go(ok: Bool, +n: U32, arr: Array<O.Boxed<Gc465214E502>>) -> v2_Gc465214E502_Seq & Bool:
+  match ok:
+    case True{}: v2_Gc465214E502_va_fin(n, True{}, v2_Gc465214E502_va_nz(U32.is_eq(n, 0), n, arr))
+    case False{}: (v2_Gc465214E502_Seq{arr, n}, False{})
+
+def v2_Gc465214E502_va_cap(ok: Bool, +n: U32, pair: Array<O.Boxed<Gc465214E502>> & U32) -> v2_Gc465214E502_Seq & Bool:
+  (arr, +c) = pair
+  v2_Gc465214E502_va_go(Bool.and(ok, U32.is_le(n, c)), n, arr)
+
+def v2_Gc465214E502_valid(o: v2_Gc465214E502_Seq) -> v2_Gc465214E502_Seq & Bool:
+  match o:
+    case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_va_cap(U32.is_eq(n, 2), n, Array.size(O.Boxed<Gc465214E502>, arr))
+
+def v2_Gc465214E502_putk(out: Array<U32>, +pos: U32, o: v2_Gc465214E502_Seq) -> Array<U32> & (v2_Gc465214E502_Seq & U32): v2_Gc465214E502_pk(out, pos, v2_Gc465214E502_valid(o))
+
+def v2_Gc465214E502_du_took(t: +List<U32>, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> Array<O.Boxed<Gc465214E502>> & +List<U32>:
+  (arr, v) = pair
+  (arr, Gc465214E502_bx_dump(v, t))
+
+def v2_Gc465214E502_du(+k: Nat, +i: U32, st: Array<O.Boxed<Gc465214E502>> & +List<U32>) -> Array<O.Boxed<Gc465214E502>> & +List<U32>:
+  match k:
+    case 0n: st
+    case 1n+q:
+      (arr, t) = st
+      v2_Gc465214E502_du(q, (i - 1 : U32), v2_Gc465214E502_du_took(t, Array.swap(O.Boxed<Gc465214E502>, arr, (i - 1 : U32), O.BNone{})))
+
+def v2_Gc465214E502_du_fin(+n: U32, st: Array<O.Boxed<Gc465214E502>> & +List<U32>) -> +List<U32>:
+  (arr, t) = st
+  t
+
+def v2_Gc465214E502_dump(o: v2_Gc465214E502_Seq, t: +List<U32>) -> +List<U32>:
+  match o:
+    case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_du_fin(n, v2_Gc465214E502_du(U32.to_nat(n), n, (arr, t)))
+
 def v2_Gc465214E502_ew(ok: Bool, buf: B.Buf, +off: U32, +a: U32, +b: U32) -> B.Buf & Bool:
   match ok:
-    case True{}: Gc465214E502_ok(buf, (off + a : U32), (b - a : U32))
+    case True{}: Gc465214E502_bx_ok(buf, (off + a : U32), (b - a : U32))
     case False{}: (buf, False{})
 
 def v2_Gc465214E502_eb(+b: U32, pair: B.Buf & Bool) -> B.Buf & (Bool & U32):
@@ -10048,14 +15636,14 @@ def v2_Gc465214E502_len(o: v2_Gc465214E502_Seq) -> v2_Gc465214E502_Seq & U32:
   match o:
     case v2_Gc465214E502_Seq{arr, +n}: (v2_Gc465214E502_Seq{arr, n}, n)
 
-def v2_Gc465214E502_took(+n: U32, pair: Array<Gc465214E502> & Gc465214E502) -> v2_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
+def v2_Gc465214E502_took(+n: U32, pair: Array<O.Boxed<Gc465214E502>> & O.Boxed<Gc465214E502>) -> v2_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
   (arr, v) = pair
-  (v2_Gc465214E502_Seq{arr, n}, Some{v})
+  (v2_Gc465214E502_Seq{arr, n}, Some{Gc465214E502_bx_unbox(v)})
 
-def v2_Gc465214E502_at(arr: Array<Gc465214E502>, +n: U32, +i: U32) -> v2_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
-  v2_Gc465214E502_took(n, Array.swap(Gc465214E502, arr, i, Gc465214E502_default()))
+def v2_Gc465214E502_at(arr: Array<O.Boxed<Gc465214E502>>, +n: U32, +i: U32) -> v2_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
+  v2_Gc465214E502_took(n, Array.swap(O.Boxed<Gc465214E502>, arr, i, O.BNone{}))
 
-def v2_Gc465214E502_get_in(inside: Bool, arr: Array<Gc465214E502>, +n: U32, +i: U32) -> v2_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
+def v2_Gc465214E502_get_in(inside: Bool, arr: Array<O.Boxed<Gc465214E502>>, +n: U32, +i: U32) -> v2_Gc465214E502_Seq & Maybe<&1, Gc465214E502>:
   match inside:
     case True{}: v2_Gc465214E502_at(arr, n, i)
     case False{}: (v2_Gc465214E502_Seq{arr, n}, None{})
@@ -10064,9 +15652,9 @@ def v2_Gc465214E502_get(o: v2_Gc465214E502_Seq, +i: U32) -> v2_Gc465214E502_Seq 
   match o:
     case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_get_in(U32.is_lt(i, n), arr, n, i)
 
-def v2_Gc465214E502_put_in(ok: Bool, arr: Array<Gc465214E502>, +n: U32, +i: U32, v: Gc465214E502) -> v2_Gc465214E502_Seq & Bool:
+def v2_Gc465214E502_put_in(ok: Bool, arr: Array<O.Boxed<Gc465214E502>>, +n: U32, +i: U32, v: Gc465214E502) -> v2_Gc465214E502_Seq & Bool:
   match ok:
-    case True{}: (v2_Gc465214E502_Seq{Array.set(Gc465214E502, arr, i, v), n}, True{})
+    case True{}: (v2_Gc465214E502_Seq{Array.set(O.Boxed<Gc465214E502>, arr, i, Gc465214E502_bx_wrap(v)), n}, True{})
     case False{}: (v2_Gc465214E502_Seq{arr, n}, False{})
 
 def v2_Gc465214E502_set(o: v2_Gc465214E502_Seq, +i: U32, v: Gc465214E502) -> v2_Gc465214E502_Seq & Bool:
@@ -10126,63 +15714,86 @@ def Gc56D855869F_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Gc56D855869F:
 
 def Gc56D855869F_sz3(+f_A: U32, +f_C: U32, f_F: v4_GcDC3E457711_Seq, f_B: O.Words, f_D: O.Words, f_E: Gc465214E502, +acc: U32, pair: v2_Gc465214E502_Seq & U32) -> Gc56D855869F & U32:
   (f_G, +m) = pair
-  (Gc56D855869F{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, (acc + m : U32))
+  (Gc56D855869F{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, O.padd(acc, m))
 
 def Gc56D855869F_sz2(+f_A: U32, +f_C: U32, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, f_B: O.Words, f_D: O.Words, +acc: U32, pair: Gc465214E502 & U32) -> Gc56D855869F & U32:
   (f_E, +m) = pair
-  Gc56D855869F_sz3(f_A, f_C, f_F, f_B, f_D, f_E, (acc + m : U32), v2_Gc465214E502_size(f_G))
+  Gc56D855869F_sz3(f_A, f_C, f_F, f_B, f_D, f_E, O.padd(acc, m), v2_Gc465214E502_size(f_G))
 
 def Gc56D855869F_sz1(+f_A: U32, +f_C: U32, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, f_B: O.Words, +acc: U32, pair: O.Words & U32) -> Gc56D855869F & U32:
   (f_D, +m) = pair
-  Gc56D855869F_sz2(f_A, f_C, f_F, f_G, f_B, f_D, (acc + m : U32), Gc465214E502_size(f_E))
+  Gc56D855869F_sz2(f_A, f_C, f_F, f_G, f_B, f_D, O.padd(acc, m), Gc465214E502_size(f_E))
 
 def Gc56D855869F_sz0(+f_A: U32, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, +acc: U32, pair: O.Words & U32) -> Gc56D855869F & U32:
   (f_B, +m) = pair
-  Gc56D855869F_sz1(f_A, f_C, f_E, f_F, f_G, f_B, (acc + m : U32), bl256_size(f_D))
+  Gc56D855869F_sz1(f_A, f_C, f_E, f_F, f_G, f_B, O.padd(acc, m), bl256_size(f_D))
 
 def Gc56D855869F_size(o: Gc56D855869F) -> Gc56D855869F & U32:
   match o:
     case Gc56D855869F{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: Gc56D855869F_sz0(f_A, f_C, f_D, f_E, f_F, f_G, 71, l128_u16_size(f_B))
 
-def Gc56D855869F_pw4(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_G: v2_Gc465214E502_Seq, +s_f_B: U32, +s_f_D: U32, +s_f_E: U32, +s_f_G: U32, pair: Array<U32> & v4_GcDC3E457711_Seq) -> Array<U32> & (Gc56D855869F & U32):
-  (out, f_F) = pair
-  (O.w32(O.w32(O.w32(O.w32(u8_put(u16_put(out, (pos + 0 : U32), f_A), (pos + 6 : U32), f_C), (pos + 2 : U32), 71), (pos + 7 : U32), (71 + s_f_B : U32)), (pos + 11 : U32), (71 + s_f_B + s_f_D : U32)), (pos + 67 : U32), (71 + s_f_B + s_f_D + s_f_E : U32)), (Gc56D855869F{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, (71 + s_f_B + s_f_D + s_f_E + s_f_G : U32)))
-
-def Gc56D855869F_pw3s(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, +s_f_B: U32, +s_f_D: U32, +s_f_E: U32, +s_f_G: U32, out: Array<U32>) -> Array<U32> & (Gc56D855869F & U32):
-  Gc56D855869F_pw4(pos, f_A, f_B, f_C, f_D, f_E, f_G, s_f_B, s_f_D, s_f_E, s_f_G, v4_GcDC3E457711_put(out, (pos + 15 : U32), f_F))
-
-def Gc56D855869F_pw3(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, +s_f_B: U32, +s_f_D: U32, +s_f_E: U32, pair: Array<U32> & (v2_Gc465214E502_Seq & U32)) -> Array<U32> & (Gc56D855869F & U32):
+def l128_u16_pvb(+cur: U32, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (O.Words & U32):
   (out, r) = pair
-  (f_G, sz) = r
-  Gc56D855869F_pw3s(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, s_f_B, s_f_D, s_f_E, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gc56D855869F_pw2s(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, +s_f_B: U32, +s_f_D: U32, +s_f_E: U32, out: Array<U32>) -> Array<U32> & (Gc56D855869F & U32):
-  Gc56D855869F_pw3(pos, f_A, f_B, f_C, f_D, f_E, f_F, s_f_B, s_f_D, s_f_E, v2_Gc465214E502_putn(out, (pos + (71 + s_f_B + s_f_D + s_f_E : U32) : U32), f_G))
+def l128_u16_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Words) -> Array<U32> & (O.Words & U32):
+  l128_u16_pvb(cur, l128_u16_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gc56D855869F_pw2(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, +s_f_B: U32, +s_f_D: U32, pair: Array<U32> & (Gc465214E502 & U32)) -> Array<U32> & (Gc56D855869F & U32):
+def bl256_pvb(+cur: U32, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (O.Words & U32):
   (out, r) = pair
-  (f_E, sz) = r
-  Gc56D855869F_pw2s(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, s_f_B, s_f_D, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gc56D855869F_pw1s(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, +s_f_B: U32, +s_f_D: U32, out: Array<U32>) -> Array<U32> & (Gc56D855869F & U32):
-  Gc56D855869F_pw2(pos, f_A, f_B, f_C, f_D, f_F, f_G, s_f_B, s_f_D, Gc465214E502_putn(out, (pos + (71 + s_f_B + s_f_D : U32) : U32), f_E))
+def bl256_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: O.Words) -> Array<U32> & (O.Words & U32):
+  bl256_pvb(cur, bl256_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
 
-def Gc56D855869F_pw1(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, +s_f_B: U32, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gc56D855869F & U32):
+def Gc465214E502_pvb(+cur: U32, pair: Array<U32> & (Gc465214E502 & U32)) -> Array<U32> & (Gc465214E502 & U32):
   (out, r) = pair
-  (f_D, sz) = r
-  Gc56D855869F_pw1s(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, s_f_B, sz, out)
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
 
-def Gc56D855869F_pw0s(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, +s_f_B: U32, out: Array<U32>) -> Array<U32> & (Gc56D855869F & U32):
-  Gc56D855869F_pw1(pos, f_A, f_B, f_C, f_E, f_F, f_G, s_f_B, bl256_putn(out, (pos + (71 + s_f_B : U32) : U32), f_D))
+def Gc465214E502_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: Gc465214E502) -> Array<U32> & (Gc465214E502 & U32):
+  Gc465214E502_pvb(cur, Gc465214E502_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def v2_Gc465214E502_pvb(+cur: U32, pair: Array<U32> & (v2_Gc465214E502_Seq & U32)) -> Array<U32> & (v2_Gc465214E502_Seq & U32):
+  (out, r) = pair
+  (v, sz) = r
+  (out, (v, O.padd(cur, sz)))
+
+def v2_Gc465214E502_putv(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: v2_Gc465214E502_Seq) -> Array<U32> & (v2_Gc465214E502_Seq & U32):
+  v2_Gc465214E502_pvb(cur, v2_Gc465214E502_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))
+
+def Gc56D855869F_pw4(+pos: U32, +cur: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_G: v2_Gc465214E502_Seq, pair: Array<U32> & (v4_GcDC3E457711_Seq & U32)) -> Array<U32> & (Gc56D855869F & U32):
+  (out, r) = pair
+  (f_F, fl) = r
+  (u8_put(u16_put(out, (pos + 0 : U32), f_A), (pos + 6 : U32), f_C), (Gc56D855869F{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, ((cur .|. fl : U32) .|. O.pz(Bool.and(u16_valid(f_A), u8_valid(f_C))) : U32)))
+
+def Gc56D855869F_pw3(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, pair: Array<U32> & (v2_Gc465214E502_Seq & U32)) -> Array<U32> & (Gc56D855869F & U32):
+  (out, r) = pair
+  (f_G, c) = r
+  Gc56D855869F_pw4(pos, c, f_A, f_B, f_C, f_D, f_E, f_G, v4_GcDC3E457711_putk(out, (pos + 15 : U32), f_F))
+
+def Gc56D855869F_pw2(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, pair: Array<U32> & (Gc465214E502 & U32)) -> Array<U32> & (Gc56D855869F & U32):
+  (out, r) = pair
+  (f_E, c) = r
+  Gc56D855869F_pw3(pos, f_A, f_B, f_C, f_D, f_E, f_F, v2_Gc465214E502_putv(out, pos, 67, c, f_G))
+
+def Gc56D855869F_pw1(+pos: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gc56D855869F & U32):
+  (out, r) = pair
+  (f_D, c) = r
+  Gc56D855869F_pw2(pos, f_A, f_B, f_C, f_D, f_F, f_G, Gc465214E502_putv(out, pos, 11, c, f_E))
 
 def Gc56D855869F_pw0(+pos: U32, +f_A: U32, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, pair: Array<U32> & (O.Words & U32)) -> Array<U32> & (Gc56D855869F & U32):
   (out, r) = pair
-  (f_B, sz) = r
-  Gc56D855869F_pw0s(pos, f_A, f_B, f_C, f_D, f_E, f_F, f_G, sz, out)
+  (f_B, c) = r
+  Gc56D855869F_pw1(pos, f_A, f_B, f_C, f_E, f_F, f_G, bl256_putv(out, pos, 7, c, f_D))
 
 def Gc56D855869F_putn(out: Array<U32>, +pos: U32, o: Gc56D855869F) -> Array<U32> & (Gc56D855869F & U32):
   match o:
-    case Gc56D855869F{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: Gc56D855869F_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, l128_u16_putn(out, (pos + 71 : U32), f_B))
+    case Gc56D855869F{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: Gc56D855869F_pw0(pos, f_A, f_C, f_D, f_E, f_F, f_G, l128_u16_putv(out, pos, 2, 71, f_B))
+
+def Gc56D855869F_putk(out: Array<U32>, +pos: U32, o: Gc56D855869F) -> Array<U32> & (Gc56D855869F & U32): Gc56D855869F_putn(out, pos, o)
 
 def Gc56D855869F_put_drop_go(out: Array<U32>, v: Gc56D855869F, +m: U32) -> Array<U32> & Gc56D855869F: (out, v)
 
@@ -10193,42 +15804,42 @@ def Gc56D855869F_put_drop(pair: Array<U32> & (Gc56D855869F & U32)) -> Array<U32>
 
 def Gc56D855869F_put(out: Array<U32>, +pos: U32, o: Gc56D855869F) -> Array<U32> & Gc56D855869F: Gc56D855869F_put_drop(Gc56D855869F_putn(out, pos, o))
 
-def Gc56D855869F_rt6(+seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, pair: B.Buf & (v2_Gc465214E502_Seq & D.Digest)) -> B.Buf & (Gc56D855869F & D.Digest):
+def Gc56D855869F_rt6(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, d_f_F: D.Digest, pair: B.Buf & (v2_Gc465214E502_Seq & D.Digest)) -> B.Buf & (Gc56D855869F & D.Digest):
   (h, r) = pair
   (f_G, d_f_G) = r
-  (h, (Gc56D855869F{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, D.hash_pair(D.hash_pair(D.hash_pair(d_f_A, d_f_B), D.hash_pair(d_f_C, d_f_D)), D.hash_pair(D.hash_pair(d_f_E, d_f_F), D.hash_pair(d_f_G, D.zero())))))
+  (h, (Gc56D855869F{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, D.node(hl, D.node(hl, D.node(hl, d_f_A, d_f_B), D.node(hl, d_f_C, d_f_D)), D.node(hl, D.node(hl, d_f_E, d_f_F), D.node(hl, d_f_G, D.zero())))))
 
-def Gc56D855869F_rt5(+seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_G: v2_Gc465214E502_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, pair: B.Buf & (v4_GcDC3E457711_Seq & D.Digest)) -> B.Buf & (Gc56D855869F & D.Digest):
+def Gc56D855869F_rt5(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_G: v2_Gc465214E502_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, d_f_E: D.Digest, pair: B.Buf & (v4_GcDC3E457711_Seq & D.Digest)) -> B.Buf & (Gc56D855869F & D.Digest):
   (h, r) = pair
   (f_F, d_f_F) = r
-  Gc56D855869F_rt6(seg, f_A, f_B, f_C, f_D, f_E, f_F, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, v2_Gc465214E502_root(h, f_G, seg))
+  Gc56D855869F_rt6(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, d_f_F, v2_Gc465214E502_root(hl, h, f_G, seg))
 
-def Gc56D855869F_rt4(+seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, pair: B.Buf & (Gc465214E502 & D.Digest)) -> B.Buf & (Gc56D855869F & D.Digest):
+def Gc56D855869F_rt4(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, d_f_D: D.Digest, pair: B.Buf & (Gc465214E502 & D.Digest)) -> B.Buf & (Gc56D855869F & D.Digest):
   (h, r) = pair
   (f_E, d_f_E) = r
-  Gc56D855869F_rt5(seg, f_A, f_B, f_C, f_D, f_E, f_G, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, v4_GcDC3E457711_root(h, f_F, seg))
+  Gc56D855869F_rt5(hl, seg, f_A, f_B, f_C, f_D, f_E, f_G, d_f_A, d_f_B, d_f_C, d_f_D, d_f_E, v4_GcDC3E457711_root(hl, h, f_F, seg))
 
-def Gc56D855869F_rt3(+seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc56D855869F & D.Digest):
+def Gc56D855869F_rt3(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, d_f_A: D.Digest, d_f_B: D.Digest, d_f_C: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc56D855869F & D.Digest):
   (h, r) = pair
   (f_D, d_f_D) = r
-  Gc56D855869F_rt4(seg, f_A, f_B, f_C, f_D, f_F, f_G, d_f_A, d_f_B, d_f_C, d_f_D, Gc465214E502_root(h, f_E, seg))
+  Gc56D855869F_rt4(hl, seg, f_A, f_B, f_C, f_D, f_F, f_G, d_f_A, d_f_B, d_f_C, d_f_D, Gc465214E502_root(hl, h, f_E, seg))
 
-def Gc56D855869F_rt2(+seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc56D855869F & D.Digest):
+def Gc56D855869F_rt2(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, d_f_A: D.Digest, d_f_B: D.Digest, pair: B.Buf & D.Digest) -> B.Buf & (Gc56D855869F & D.Digest):
   (h, d_f_C) = pair
-  Gc56D855869F_rt3(seg, f_A, f_B, f_C, f_E, f_F, f_G, d_f_A, d_f_B, d_f_C, bl256_root(h, f_D, seg))
+  Gc56D855869F_rt3(hl, seg, f_A, f_B, f_C, f_E, f_F, f_G, d_f_A, d_f_B, d_f_C, bl256_root(hl, h, f_D, seg))
 
-def Gc56D855869F_rt1(+seg: U32, +f_A: U32, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, d_f_A: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc56D855869F & D.Digest):
+def Gc56D855869F_rt1(+hl: Nat, +seg: U32, +f_A: U32, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, d_f_A: D.Digest, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Gc56D855869F & D.Digest):
   (h, r) = pair
   (f_B, d_f_B) = r
-  Gc56D855869F_rt2(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, d_f_A, d_f_B, u8_root(h, f_C, seg))
+  Gc56D855869F_rt2(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, d_f_A, d_f_B, u8_root(hl, h, f_C, seg))
 
-def Gc56D855869F_rt0(+seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, pair: B.Buf & D.Digest) -> B.Buf & (Gc56D855869F & D.Digest):
+def Gc56D855869F_rt0(+hl: Nat, +seg: U32, +f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, pair: B.Buf & D.Digest) -> B.Buf & (Gc56D855869F & D.Digest):
   (h, d_f_A) = pair
-  Gc56D855869F_rt1(seg, f_A, f_C, f_D, f_E, f_F, f_G, d_f_A, l128_u16_root(h, f_B, seg))
+  Gc56D855869F_rt1(hl, seg, f_A, f_C, f_D, f_E, f_F, f_G, d_f_A, l128_u16_root(hl, h, f_B, seg))
 
-def Gc56D855869F_root(h: B.Buf, o: Gc56D855869F, +seg: U32) -> B.Buf & (Gc56D855869F & D.Digest):
+def Gc56D855869F_root(+hl: Nat, h: B.Buf, o: Gc56D855869F, +seg: U32) -> B.Buf & (Gc56D855869F & D.Digest):
   match o:
-    case Gc56D855869F{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: Gc56D855869F_rt0(seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, u16_root(h, f_A, seg))
+    case Gc56D855869F{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: Gc56D855869F_rt0(hl, seg, f_A, f_B, f_C, f_D, f_E, f_F, f_G, u16_root(hl, h, f_A, seg))
 
 def Gc56D855869F_get_f_A(o: Gc56D855869F) -> Gc56D855869F & U32:
   match o:
@@ -10324,6 +15935,10 @@ def Gc56D855869F_force(o: Gc56D855869F) -> Gc56D855869F & U32:
   match o:
     case Gc56D855869F{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: Gc56D855869F_fo0(f_A, f_C, f_D, f_E, f_F, f_G, (u16_force(f_A) .^. u8_force(f_C) : U32), l128_u16_force(f_B))
 
+def Gc56D855869F_dump(o: Gc56D855869F, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gc56D855869F{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: u16_dump(f_A, l128_u16_dump(f_B, u8_dump(f_C, bl256_dump(f_D, Gc465214E502_dump(f_E, v4_GcDC3E457711_dump(f_F, v2_Gc465214E502_dump(f_G, t)))))))
+
 def Gc56D855869F_c7(ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32, +o1: U32, +o2: U32, +o3: U32) -> B.Buf & Bool:
   match ok:
     case True{}: (buf, True{})
@@ -10407,15 +16022,27 @@ def bits15_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits15_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits15_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits15_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits15_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits15_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits15_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits15_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits15_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits15_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits15_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits15_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 15, False{})
+
+def bits15_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits15_pk(out, pos, bits15_valid(o))
+
+def bits15_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits15_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 15, False{})
 
@@ -10462,15 +16089,27 @@ def bits16_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits16_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits16_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits16_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits16_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits16_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits16_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits16_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits16_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits16_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits16_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 16, False{})
+
+def bits16_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits16_pk(out, pos, bits16_valid(o))
+
+def bits16_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits16_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 16, False{})
 
@@ -10517,15 +16156,27 @@ def bits17_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits17_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits17_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits17_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits17_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits17_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits17_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits17_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits17_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits17_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits17_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits17_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 17, False{})
+
+def bits17_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits17_pk(out, pos, bits17_valid(o))
+
+def bits17_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits17_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 17, False{})
 
@@ -10572,15 +16223,27 @@ def bits1_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits1_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits1_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits1_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits1_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits1_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits1_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits1_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits1_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits1_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits1_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits1_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 1, False{})
+
+def bits1_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits1_pk(out, pos, bits1_valid(o))
+
+def bits1_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits1_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 1, False{})
 
@@ -10627,15 +16290,27 @@ def bits2_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits2_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits2_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits2_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits2_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits2_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits2_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits2_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits2_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits2_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits2_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits2_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 2, False{})
+
+def bits2_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits2_pk(out, pos, bits2_valid(o))
+
+def bits2_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits2_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 2, False{})
 
@@ -10682,15 +16357,27 @@ def bits31_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits31_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits31_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits31_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits31_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits31_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits31_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits31_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits31_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits31_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits31_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits31_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 31, False{})
+
+def bits31_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits31_pk(out, pos, bits31_valid(o))
+
+def bits31_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits31_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 31, False{})
 
@@ -10737,15 +16424,27 @@ def bits32_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits32_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits32_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits32_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits32_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits32_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits32_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits32_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits32_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits32_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits32_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits32_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 32, False{})
+
+def bits32_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits32_pk(out, pos, bits32_valid(o))
+
+def bits32_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits32_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 32, False{})
 
@@ -10792,15 +16491,27 @@ def bits33_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits33_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits33_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits33_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits33_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits33_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits33_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits33_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits33_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits33_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits33_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits33_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 33, False{})
+
+def bits33_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits33_pk(out, pos, bits33_valid(o))
+
+def bits33_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits33_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 33, False{})
 
@@ -10847,15 +16558,27 @@ def bits3_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits3_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits3_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits3_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits3_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits3_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits3_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits3_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits3_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits3_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits3_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits3_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 3, False{})
+
+def bits3_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits3_pk(out, pos, bits3_valid(o))
+
+def bits3_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits3_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 3, False{})
 
@@ -10902,15 +16625,27 @@ def bits4_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits4_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits4_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits4_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits4_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits4_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits4_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits4_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits4_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits4_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits4_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits4_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 4, False{})
+
+def bits4_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits4_pk(out, pos, bits4_valid(o))
+
+def bits4_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits4_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 4, False{})
 
@@ -10957,15 +16692,27 @@ def bits511_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits511_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits511_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits511_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits511_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits511_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits511_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 1, seg)
+def bits511_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 1, seg)
 
 def bits511_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits511_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits511_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits511_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 511, False{})
+
+def bits511_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits511_pk(out, pos, bits511_valid(o))
+
+def bits511_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits511_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 511, False{})
 
@@ -11012,15 +16759,27 @@ def bits512_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits512_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits512_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits512_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits512_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits512_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits512_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 1, seg)
+def bits512_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 1, seg)
 
 def bits512_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits512_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits512_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits512_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 512, False{})
+
+def bits512_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits512_pk(out, pos, bits512_valid(o))
+
+def bits512_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits512_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 512, False{})
 
@@ -11067,15 +16826,27 @@ def bits513_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits513_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits513_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits513_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits513_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits513_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits513_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 2, seg)
+def bits513_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 2, seg)
 
 def bits513_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits513_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits513_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits513_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 513, False{})
+
+def bits513_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits513_pk(out, pos, bits513_valid(o))
+
+def bits513_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits513_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 513, False{})
 
@@ -11122,15 +16893,27 @@ def bits7_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits7_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits7_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits7_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits7_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits7_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits7_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits7_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits7_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits7_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits7_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits7_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 7, False{})
+
+def bits7_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits7_pk(out, pos, bits7_valid(o))
+
+def bits7_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits7_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 7, False{})
 
@@ -11177,15 +16960,27 @@ def bits8_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits8_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits8_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits8_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits8_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits8_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits8_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits8_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits8_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits8_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits8_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits8_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 8, False{})
+
+def bits8_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits8_pk(out, pos, bits8_valid(o))
+
+def bits8_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits8_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 8, False{})
 
@@ -11232,15 +17027,27 @@ def bits9_default() -> O.Bits: O.Bits{Array.new(U32, 3n, 0), 0}
 
 def bits9_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)
 
-def bits9_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+def bits9_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)
 
 def bits9_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)
 
 def bits9_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)
 
-def bits9_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(h, o, 0, seg)
+def bits9_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): O.bits_root(hl, h, o, 0, seg)
 
 def bits9_force(o: O.Bits) -> O.Bits & U32: O.bits_size(o)
+
+def bits9_pk(out: Array<U32>, +pos: U32, pair: O.Bits & Bool) -> Array<U32> & (O.Bits & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: bits9_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def bits9_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, 9, False{})
+
+def bits9_putk(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): bits9_pk(out, pos, bits9_valid(o))
+
+def bits9_dump(o: O.Bits, t: +List<U32>) -> +List<U32>: O.dump_bits_n(o, t)
 
 def bits9_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.ok_bitlist(buf, off, len, 9, False{})
 
@@ -11291,7 +17098,7 @@ def bv15_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector15:
 
 def bv15_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector15: bv15_r0(off, B.read32(buf, off))
 
-def bv15_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv15_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv15_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -11299,24 +17106,32 @@ def bv15_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_w
 
 def bv15_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv15_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv15_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv15_pw0(out, q, w0)
     case 1: bv15_pw1(out, q, w0)
     case 2: bv15_pw2(out, q, w0)
     case _: bv15_pw3(out, q, w0)
 
+def bv15_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv15_pw0(out, q, w0)
+    case False{}: bv15_pwu(s, out, q, w0)
+
 def bv15_put(out: Array<U32>, +pos: U32, o: Bitvector15) -> Array<U32>:
   match o:
-    case Bitvector15{+w0}: bv15_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector15{+w0}: bv15_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv15_root(h: B.Buf, o: Bitvector15, +seg: U32) -> B.Buf & D.Digest:
+def bv15_root(+hl: Nat, h: B.Buf, o: Bitvector15, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector15{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv15_force(o: Bitvector15) -> U32:
   match o:
     case Bitvector15{+w0}: w0
+
+def bv15_dump(o: Bitvector15, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector15{+w0}: O.dump_le(w0, 2, t)
 
 def bv15_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 1 : U32), 7)
 
@@ -11347,7 +17162,7 @@ def bv16_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector16:
 
 def bv16_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector16: bv16_r0(off, B.read32(buf, off))
 
-def bv16_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv16_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv16_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -11355,24 +17170,32 @@ def bv16_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_w
 
 def bv16_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv16_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv16_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv16_pw0(out, q, w0)
     case 1: bv16_pw1(out, q, w0)
     case 2: bv16_pw2(out, q, w0)
     case _: bv16_pw3(out, q, w0)
 
+def bv16_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv16_pw0(out, q, w0)
+    case False{}: bv16_pwu(s, out, q, w0)
+
 def bv16_put(out: Array<U32>, +pos: U32, o: Bitvector16) -> Array<U32>:
   match o:
-    case Bitvector16{+w0}: bv16_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector16{+w0}: bv16_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv16_root(h: B.Buf, o: Bitvector16, +seg: U32) -> B.Buf & D.Digest:
+def bv16_root(+hl: Nat, h: B.Buf, o: Bitvector16, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector16{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv16_force(o: Bitvector16) -> U32:
   match o:
     case Bitvector16{+w0}: w0
+
+def bv16_dump(o: Bitvector16, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector16{+w0}: O.dump_le(w0, 2, t)
 
 def bv16_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -11403,7 +17226,7 @@ def bv17_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector17:
 
 def bv17_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector17: bv17_r0(off, B.read32(buf, off))
 
-def bv17_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv17_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv17_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -11411,24 +17234,32 @@ def bv17_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_w
 
 def bv17_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv17_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv17_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv17_pw0(out, q, w0)
     case 1: bv17_pw1(out, q, w0)
     case 2: bv17_pw2(out, q, w0)
     case _: bv17_pw3(out, q, w0)
 
+def bv17_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv17_pw0(out, q, w0)
+    case False{}: bv17_pwu(s, out, q, w0)
+
 def bv17_put(out: Array<U32>, +pos: U32, o: Bitvector17) -> Array<U32>:
   match o:
-    case Bitvector17{+w0}: bv17_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector17{+w0}: bv17_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv17_root(h: B.Buf, o: Bitvector17, +seg: U32) -> B.Buf & D.Digest:
+def bv17_root(+hl: Nat, h: B.Buf, o: Bitvector17, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector17{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv17_force(o: Bitvector17) -> U32:
   match o:
     case Bitvector17{+w0}: w0
+
+def bv17_dump(o: Bitvector17, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector17{+w0}: O.dump_le(w0, 3, t)
 
 def bv17_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 2 : U32), 1)
 
@@ -11467,24 +17298,32 @@ def bv31_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_w
 
 def bv31_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv31_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv31_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv31_pw0(out, q, w0)
     case 1: bv31_pw1(out, q, w0)
     case 2: bv31_pw2(out, q, w0)
     case _: bv31_pw3(out, q, w0)
 
+def bv31_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv31_pw0(out, q, w0)
+    case False{}: bv31_pwu(s, out, q, w0)
+
 def bv31_put(out: Array<U32>, +pos: U32, o: Bitvector31) -> Array<U32>:
   match o:
-    case Bitvector31{+w0}: bv31_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector31{+w0}: bv31_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv31_root(h: B.Buf, o: Bitvector31, +seg: U32) -> B.Buf & D.Digest:
+def bv31_root(+hl: Nat, h: B.Buf, o: Bitvector31, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector31{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv31_force(o: Bitvector31) -> U32:
   match o:
     case Bitvector31{+w0}: w0
+
+def bv31_dump(o: Bitvector31, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector31{+w0}: O.dump_le(w0, 4, t)
 
 def bv31_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 3 : U32), 7)
 
@@ -11523,24 +17362,32 @@ def bv32_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_w
 
 def bv32_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv32_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv32_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv32_pw0(out, q, w0)
     case 1: bv32_pw1(out, q, w0)
     case 2: bv32_pw2(out, q, w0)
     case _: bv32_pw3(out, q, w0)
 
+def bv32_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv32_pw0(out, q, w0)
+    case False{}: bv32_pwu(s, out, q, w0)
+
 def bv32_put(out: Array<U32>, +pos: U32, o: Bitvector32) -> Array<U32>:
   match o:
-    case Bitvector32{+w0}: bv32_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector32{+w0}: bv32_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv32_root(h: B.Buf, o: Bitvector32, +seg: U32) -> B.Buf & D.Digest:
+def bv32_root(+hl: Nat, h: B.Buf, o: Bitvector32, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector32{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv32_force(o: Bitvector32) -> U32:
   match o:
     case Bitvector32{+w0}: w0
+
+def bv32_dump(o: Bitvector32, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector32{+w0}: O.dump_le(w0, 4, t)
 
 def bv32_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -11575,32 +17422,40 @@ def bv33_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector33:
 
 def bv33_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector33: bv33_r0(off, B.read32(buf, off))
 
-def bv33_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32) -> Array<U32>: Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1)
+def bv33_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32) -> Array<U32>: O.or_word(Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1)
 
 def bv33_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), U32.shrn(w1, 24n))
 
 def bv33_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), U32.shrn(w1, 16n))
 
-def bv33_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), U32.shrn(w1, 8n))
+def bv33_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32) -> Array<U32>: O.or_skip(Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), U32.shrn(w1, 8n))
 
-def bv33_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32) -> Array<U32>:
+def bv33_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32) -> Array<U32>:
   match s:
-    case 0: bv33_pw0(out, q, w0, w1)
     case 1: bv33_pw1(out, q, w0, w1)
     case 2: bv33_pw2(out, q, w0, w1)
     case _: bv33_pw3(out, q, w0, w1)
 
+def bv33_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv33_pw0(out, q, w0, w1)
+    case False{}: bv33_pwu(s, out, q, w0, w1)
+
 def bv33_put(out: Array<U32>, +pos: U32, o: Bitvector33) -> Array<U32>:
   match o:
-    case Bitvector33{+w0, +w1}: bv33_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1)
+    case Bitvector33{+w0, +w1}: bv33_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1)
 
-def bv33_root(h: B.Buf, o: Bitvector33, +seg: U32) -> B.Buf & D.Digest:
+def bv33_root(+hl: Nat, h: B.Buf, o: Bitvector33, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector33{+w0, +w1}: (h, D.D{B.swap32(w0), B.swap32(w1), 0, 0, 0, 0, 0, 0})
 
 def bv33_force(o: Bitvector33) -> U32:
   match o:
     case Bitvector33{+w0, +w1}: (w0 .^. w1 : U32)
+
+def bv33_dump(o: Bitvector33, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector33{+w0, +w1}: O.dump_le(w0, 4, O.dump_le(w1, 1, t))
 
 def bv33_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 4 : U32), 1)
 
@@ -11635,7 +17490,7 @@ def bv3_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector3:
 
 def bv3_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector3: bv3_r0(off, B.read32(buf, off))
 
-def bv3_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv3_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv3_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -11643,24 +17498,32 @@ def bv3_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_wo
 
 def bv3_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv3_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv3_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv3_pw0(out, q, w0)
     case 1: bv3_pw1(out, q, w0)
     case 2: bv3_pw2(out, q, w0)
     case _: bv3_pw3(out, q, w0)
 
+def bv3_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv3_pw0(out, q, w0)
+    case False{}: bv3_pwu(s, out, q, w0)
+
 def bv3_put(out: Array<U32>, +pos: U32, o: Bitvector3) -> Array<U32>:
   match o:
-    case Bitvector3{+w0}: bv3_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector3{+w0}: bv3_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv3_root(h: B.Buf, o: Bitvector3, +seg: U32) -> B.Buf & D.Digest:
+def bv3_root(+hl: Nat, h: B.Buf, o: Bitvector3, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector3{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv3_force(o: Bitvector3) -> U32:
   match o:
     case Bitvector3{+w0}: w0
+
+def bv3_dump(o: Bitvector3, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector3{+w0}: O.dump_le(w0, 1, t)
 
 def bv3_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 0 : U32), 3)
 
@@ -11691,7 +17554,7 @@ def bv4_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector4:
 
 def bv4_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector4: bv4_r0(off, B.read32(buf, off))
 
-def bv4_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv4_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv4_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -11699,24 +17562,32 @@ def bv4_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_wo
 
 def bv4_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv4_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv4_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv4_pw0(out, q, w0)
     case 1: bv4_pw1(out, q, w0)
     case 2: bv4_pw2(out, q, w0)
     case _: bv4_pw3(out, q, w0)
 
+def bv4_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv4_pw0(out, q, w0)
+    case False{}: bv4_pwu(s, out, q, w0)
+
 def bv4_put(out: Array<U32>, +pos: U32, o: Bitvector4) -> Array<U32>:
   match o:
-    case Bitvector4{+w0}: bv4_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector4{+w0}: bv4_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv4_root(h: B.Buf, o: Bitvector4, +seg: U32) -> B.Buf & D.Digest:
+def bv4_root(+hl: Nat, h: B.Buf, o: Bitvector4, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector4{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv4_force(o: Bitvector4) -> U32:
   match o:
     case Bitvector4{+w0}: w0
+
+def bv4_dump(o: Bitvector4, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector4{+w0}: O.dump_le(w0, 1, t)
 
 def bv4_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 0 : U32), 4)
 
@@ -11809,30 +17680,38 @@ def bv511_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector511: bv511_
 
 def bv511_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1), (q + 2 : U32), w2), (q + 3 : U32), w3), (q + 4 : U32), w4), (q + 5 : U32), w5), (q + 6 : U32), w6), (q + 7 : U32), w7), (q + 8 : U32), w8), (q + 9 : U32), w9), (q + 10 : U32), w10), (q + 11 : U32), w11), (q + 12 : U32), w12), (q + 13 : U32), w13), (q + 14 : U32), w14), (q + 15 : U32), w15)
 
-def bv511_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), ((w8 * 256 : U32) .|. U32.shrn(w7, 24n) : U32)), (q + 9 : U32), ((w9 * 256 : U32) .|. U32.shrn(w8, 24n) : U32)), (q + 10 : U32), ((w10 * 256 : U32) .|. U32.shrn(w9, 24n) : U32)), (q + 11 : U32), ((w11 * 256 : U32) .|. U32.shrn(w10, 24n) : U32)), (q + 12 : U32), ((w12 * 256 : U32) .|. U32.shrn(w11, 24n) : U32)), (q + 13 : U32), ((w13 * 256 : U32) .|. U32.shrn(w12, 24n) : U32)), (q + 14 : U32), ((w14 * 256 : U32) .|. U32.shrn(w13, 24n) : U32)), (q + 15 : U32), ((w15 * 256 : U32) .|. U32.shrn(w14, 24n) : U32)), (q + 16 : U32), U32.shrn(w15, 24n))
+def bv511_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), ((w8 * 256 : U32) .|. U32.shrn(w7, 24n) : U32)), (q + 9 : U32), ((w9 * 256 : U32) .|. U32.shrn(w8, 24n) : U32)), (q + 10 : U32), ((w10 * 256 : U32) .|. U32.shrn(w9, 24n) : U32)), (q + 11 : U32), ((w11 * 256 : U32) .|. U32.shrn(w10, 24n) : U32)), (q + 12 : U32), ((w12 * 256 : U32) .|. U32.shrn(w11, 24n) : U32)), (q + 13 : U32), ((w13 * 256 : U32) .|. U32.shrn(w12, 24n) : U32)), (q + 14 : U32), ((w14 * 256 : U32) .|. U32.shrn(w13, 24n) : U32)), (q + 15 : U32), ((w15 * 256 : U32) .|. U32.shrn(w14, 24n) : U32)), (q + 16 : U32), U32.shrn(w15, 24n))
 
-def bv511_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), ((w8 * 65536 : U32) .|. U32.shrn(w7, 16n) : U32)), (q + 9 : U32), ((w9 * 65536 : U32) .|. U32.shrn(w8, 16n) : U32)), (q + 10 : U32), ((w10 * 65536 : U32) .|. U32.shrn(w9, 16n) : U32)), (q + 11 : U32), ((w11 * 65536 : U32) .|. U32.shrn(w10, 16n) : U32)), (q + 12 : U32), ((w12 * 65536 : U32) .|. U32.shrn(w11, 16n) : U32)), (q + 13 : U32), ((w13 * 65536 : U32) .|. U32.shrn(w12, 16n) : U32)), (q + 14 : U32), ((w14 * 65536 : U32) .|. U32.shrn(w13, 16n) : U32)), (q + 15 : U32), ((w15 * 65536 : U32) .|. U32.shrn(w14, 16n) : U32)), (q + 16 : U32), U32.shrn(w15, 16n))
+def bv511_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), ((w8 * 65536 : U32) .|. U32.shrn(w7, 16n) : U32)), (q + 9 : U32), ((w9 * 65536 : U32) .|. U32.shrn(w8, 16n) : U32)), (q + 10 : U32), ((w10 * 65536 : U32) .|. U32.shrn(w9, 16n) : U32)), (q + 11 : U32), ((w11 * 65536 : U32) .|. U32.shrn(w10, 16n) : U32)), (q + 12 : U32), ((w12 * 65536 : U32) .|. U32.shrn(w11, 16n) : U32)), (q + 13 : U32), ((w13 * 65536 : U32) .|. U32.shrn(w12, 16n) : U32)), (q + 14 : U32), ((w14 * 65536 : U32) .|. U32.shrn(w13, 16n) : U32)), (q + 15 : U32), ((w15 * 65536 : U32) .|. U32.shrn(w14, 16n) : U32)), (q + 16 : U32), U32.shrn(w15, 16n))
 
-def bv511_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), ((w8 * 16777216 : U32) .|. U32.shrn(w7, 8n) : U32)), (q + 9 : U32), ((w9 * 16777216 : U32) .|. U32.shrn(w8, 8n) : U32)), (q + 10 : U32), ((w10 * 16777216 : U32) .|. U32.shrn(w9, 8n) : U32)), (q + 11 : U32), ((w11 * 16777216 : U32) .|. U32.shrn(w10, 8n) : U32)), (q + 12 : U32), ((w12 * 16777216 : U32) .|. U32.shrn(w11, 8n) : U32)), (q + 13 : U32), ((w13 * 16777216 : U32) .|. U32.shrn(w12, 8n) : U32)), (q + 14 : U32), ((w14 * 16777216 : U32) .|. U32.shrn(w13, 8n) : U32)), (q + 15 : U32), ((w15 * 16777216 : U32) .|. U32.shrn(w14, 8n) : U32)), (q + 16 : U32), U32.shrn(w15, 8n))
+def bv511_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), ((w8 * 16777216 : U32) .|. U32.shrn(w7, 8n) : U32)), (q + 9 : U32), ((w9 * 16777216 : U32) .|. U32.shrn(w8, 8n) : U32)), (q + 10 : U32), ((w10 * 16777216 : U32) .|. U32.shrn(w9, 8n) : U32)), (q + 11 : U32), ((w11 * 16777216 : U32) .|. U32.shrn(w10, 8n) : U32)), (q + 12 : U32), ((w12 * 16777216 : U32) .|. U32.shrn(w11, 8n) : U32)), (q + 13 : U32), ((w13 * 16777216 : U32) .|. U32.shrn(w12, 8n) : U32)), (q + 14 : U32), ((w14 * 16777216 : U32) .|. U32.shrn(w13, 8n) : U32)), (q + 15 : U32), ((w15 * 16777216 : U32) .|. U32.shrn(w14, 8n) : U32)), (q + 16 : U32), U32.shrn(w15, 8n))
 
-def bv511_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>:
+def bv511_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>:
   match s:
-    case 0: bv511_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
     case 1: bv511_pw1(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
     case 2: bv511_pw2(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
     case _: bv511_pw3(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
 
+def bv511_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv511_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
+    case False{}: bv511_pwu(s, out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
+
 def bv511_put(out: Array<U32>, +pos: U32, o: Bitvector511) -> Array<U32>:
   match o:
-    case Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: bv511_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
+    case Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: bv511_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
 
-def bv511_root(h: B.Buf, o: Bitvector511, +seg: U32) -> B.Buf & D.Digest:
+def bv511_root(+hl: Nat, h: B.Buf, o: Bitvector511, +seg: U32) -> B.Buf & D.Digest:
   match o:
-    case Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: (h, D.hash_pair(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}))
+    case Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: (h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}))
 
 def bv511_force(o: Bitvector511) -> U32:
   match o:
     case Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: (((((((((((((((w0 .^. w1 : U32) .^. w2 : U32) .^. w3 : U32) .^. w4 : U32) .^. w5 : U32) .^. w6 : U32) .^. w7 : U32) .^. w8 : U32) .^. w9 : U32) .^. w10 : U32) .^. w11 : U32) .^. w12 : U32) .^. w13 : U32) .^. w14 : U32) .^. w15 : U32)
+
+def bv511_dump(o: Bitvector511, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: O.dump_le(w0, 4, O.dump_le(w1, 4, O.dump_le(w2, 4, O.dump_le(w3, 4, O.dump_le(w4, 4, O.dump_le(w5, 4, O.dump_le(w6, 4, O.dump_le(w7, 4, O.dump_le(w8, 4, O.dump_le(w9, 4, O.dump_le(w10, 4, O.dump_le(w11, 4, O.dump_le(w12, 4, O.dump_le(w13, 4, O.dump_le(w14, 4, O.dump_le(w15, 4, t))))))))))))))))
 
 def bv511_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 63 : U32), 7)
 
@@ -11985,30 +17864,38 @@ def bv512_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector512: bv512_
 
 def bv512_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1), (q + 2 : U32), w2), (q + 3 : U32), w3), (q + 4 : U32), w4), (q + 5 : U32), w5), (q + 6 : U32), w6), (q + 7 : U32), w7), (q + 8 : U32), w8), (q + 9 : U32), w9), (q + 10 : U32), w10), (q + 11 : U32), w11), (q + 12 : U32), w12), (q + 13 : U32), w13), (q + 14 : U32), w14), (q + 15 : U32), w15)
 
-def bv512_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), ((w8 * 256 : U32) .|. U32.shrn(w7, 24n) : U32)), (q + 9 : U32), ((w9 * 256 : U32) .|. U32.shrn(w8, 24n) : U32)), (q + 10 : U32), ((w10 * 256 : U32) .|. U32.shrn(w9, 24n) : U32)), (q + 11 : U32), ((w11 * 256 : U32) .|. U32.shrn(w10, 24n) : U32)), (q + 12 : U32), ((w12 * 256 : U32) .|. U32.shrn(w11, 24n) : U32)), (q + 13 : U32), ((w13 * 256 : U32) .|. U32.shrn(w12, 24n) : U32)), (q + 14 : U32), ((w14 * 256 : U32) .|. U32.shrn(w13, 24n) : U32)), (q + 15 : U32), ((w15 * 256 : U32) .|. U32.shrn(w14, 24n) : U32)), (q + 16 : U32), U32.shrn(w15, 24n))
+def bv512_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), ((w8 * 256 : U32) .|. U32.shrn(w7, 24n) : U32)), (q + 9 : U32), ((w9 * 256 : U32) .|. U32.shrn(w8, 24n) : U32)), (q + 10 : U32), ((w10 * 256 : U32) .|. U32.shrn(w9, 24n) : U32)), (q + 11 : U32), ((w11 * 256 : U32) .|. U32.shrn(w10, 24n) : U32)), (q + 12 : U32), ((w12 * 256 : U32) .|. U32.shrn(w11, 24n) : U32)), (q + 13 : U32), ((w13 * 256 : U32) .|. U32.shrn(w12, 24n) : U32)), (q + 14 : U32), ((w14 * 256 : U32) .|. U32.shrn(w13, 24n) : U32)), (q + 15 : U32), ((w15 * 256 : U32) .|. U32.shrn(w14, 24n) : U32)), (q + 16 : U32), U32.shrn(w15, 24n))
 
-def bv512_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), ((w8 * 65536 : U32) .|. U32.shrn(w7, 16n) : U32)), (q + 9 : U32), ((w9 * 65536 : U32) .|. U32.shrn(w8, 16n) : U32)), (q + 10 : U32), ((w10 * 65536 : U32) .|. U32.shrn(w9, 16n) : U32)), (q + 11 : U32), ((w11 * 65536 : U32) .|. U32.shrn(w10, 16n) : U32)), (q + 12 : U32), ((w12 * 65536 : U32) .|. U32.shrn(w11, 16n) : U32)), (q + 13 : U32), ((w13 * 65536 : U32) .|. U32.shrn(w12, 16n) : U32)), (q + 14 : U32), ((w14 * 65536 : U32) .|. U32.shrn(w13, 16n) : U32)), (q + 15 : U32), ((w15 * 65536 : U32) .|. U32.shrn(w14, 16n) : U32)), (q + 16 : U32), U32.shrn(w15, 16n))
+def bv512_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), ((w8 * 65536 : U32) .|. U32.shrn(w7, 16n) : U32)), (q + 9 : U32), ((w9 * 65536 : U32) .|. U32.shrn(w8, 16n) : U32)), (q + 10 : U32), ((w10 * 65536 : U32) .|. U32.shrn(w9, 16n) : U32)), (q + 11 : U32), ((w11 * 65536 : U32) .|. U32.shrn(w10, 16n) : U32)), (q + 12 : U32), ((w12 * 65536 : U32) .|. U32.shrn(w11, 16n) : U32)), (q + 13 : U32), ((w13 * 65536 : U32) .|. U32.shrn(w12, 16n) : U32)), (q + 14 : U32), ((w14 * 65536 : U32) .|. U32.shrn(w13, 16n) : U32)), (q + 15 : U32), ((w15 * 65536 : U32) .|. U32.shrn(w14, 16n) : U32)), (q + 16 : U32), U32.shrn(w15, 16n))
 
-def bv512_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), ((w8 * 16777216 : U32) .|. U32.shrn(w7, 8n) : U32)), (q + 9 : U32), ((w9 * 16777216 : U32) .|. U32.shrn(w8, 8n) : U32)), (q + 10 : U32), ((w10 * 16777216 : U32) .|. U32.shrn(w9, 8n) : U32)), (q + 11 : U32), ((w11 * 16777216 : U32) .|. U32.shrn(w10, 8n) : U32)), (q + 12 : U32), ((w12 * 16777216 : U32) .|. U32.shrn(w11, 8n) : U32)), (q + 13 : U32), ((w13 * 16777216 : U32) .|. U32.shrn(w12, 8n) : U32)), (q + 14 : U32), ((w14 * 16777216 : U32) .|. U32.shrn(w13, 8n) : U32)), (q + 15 : U32), ((w15 * 16777216 : U32) .|. U32.shrn(w14, 8n) : U32)), (q + 16 : U32), U32.shrn(w15, 8n))
+def bv512_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), ((w8 * 16777216 : U32) .|. U32.shrn(w7, 8n) : U32)), (q + 9 : U32), ((w9 * 16777216 : U32) .|. U32.shrn(w8, 8n) : U32)), (q + 10 : U32), ((w10 * 16777216 : U32) .|. U32.shrn(w9, 8n) : U32)), (q + 11 : U32), ((w11 * 16777216 : U32) .|. U32.shrn(w10, 8n) : U32)), (q + 12 : U32), ((w12 * 16777216 : U32) .|. U32.shrn(w11, 8n) : U32)), (q + 13 : U32), ((w13 * 16777216 : U32) .|. U32.shrn(w12, 8n) : U32)), (q + 14 : U32), ((w14 * 16777216 : U32) .|. U32.shrn(w13, 8n) : U32)), (q + 15 : U32), ((w15 * 16777216 : U32) .|. U32.shrn(w14, 8n) : U32)), (q + 16 : U32), U32.shrn(w15, 8n))
 
-def bv512_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>:
+def bv512_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>:
   match s:
-    case 0: bv512_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
     case 1: bv512_pw1(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
     case 2: bv512_pw2(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
     case _: bv512_pw3(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
 
+def bv512_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv512_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
+    case False{}: bv512_pwu(s, out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
+
 def bv512_put(out: Array<U32>, +pos: U32, o: Bitvector512) -> Array<U32>:
   match o:
-    case Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: bv512_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
+    case Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: bv512_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15)
 
-def bv512_root(h: B.Buf, o: Bitvector512, +seg: U32) -> B.Buf & D.Digest:
+def bv512_root(+hl: Nat, h: B.Buf, o: Bitvector512, +seg: U32) -> B.Buf & D.Digest:
   match o:
-    case Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: (h, D.hash_pair(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}))
+    case Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: (h, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}))
 
 def bv512_force(o: Bitvector512) -> U32:
   match o:
     case Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: (((((((((((((((w0 .^. w1 : U32) .^. w2 : U32) .^. w3 : U32) .^. w4 : U32) .^. w5 : U32) .^. w6 : U32) .^. w7 : U32) .^. w8 : U32) .^. w9 : U32) .^. w10 : U32) .^. w11 : U32) .^. w12 : U32) .^. w13 : U32) .^. w14 : U32) .^. w15 : U32)
+
+def bv512_dump(o: Bitvector512, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: O.dump_le(w0, 4, O.dump_le(w1, 4, O.dump_le(w2, 4, O.dump_le(w3, 4, O.dump_le(w4, 4, O.dump_le(w5, 4, O.dump_le(w6, 4, O.dump_le(w7, 4, O.dump_le(w8, 4, O.dump_le(w9, 4, O.dump_le(w10, 4, O.dump_le(w11, 4, O.dump_le(w12, 4, O.dump_le(w13, 4, O.dump_le(w14, 4, O.dump_le(w15, 4, t))))))))))))))))
 
 def bv512_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -12163,32 +18050,40 @@ def bv513_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector513:
 
 def bv513_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector513: bv513_r0(off, B.read32(buf, off))
 
-def bv513_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32) -> Array<U32>: Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1), (q + 2 : U32), w2), (q + 3 : U32), w3), (q + 4 : U32), w4), (q + 5 : U32), w5), (q + 6 : U32), w6), (q + 7 : U32), w7), (q + 8 : U32), w8), (q + 9 : U32), w9), (q + 10 : U32), w10), (q + 11 : U32), w11), (q + 12 : U32), w12), (q + 13 : U32), w13), (q + 14 : U32), w14), (q + 15 : U32), w15), (q + 16 : U32), w16)
+def bv513_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32) -> Array<U32>: O.or_word(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1), (q + 2 : U32), w2), (q + 3 : U32), w3), (q + 4 : U32), w4), (q + 5 : U32), w5), (q + 6 : U32), w6), (q + 7 : U32), w7), (q + 8 : U32), w8), (q + 9 : U32), w9), (q + 10 : U32), w10), (q + 11 : U32), w11), (q + 12 : U32), w12), (q + 13 : U32), w13), (q + 14 : U32), w14), (q + 15 : U32), w15), (q + 16 : U32), w16)
 
-def bv513_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), ((w8 * 256 : U32) .|. U32.shrn(w7, 24n) : U32)), (q + 9 : U32), ((w9 * 256 : U32) .|. U32.shrn(w8, 24n) : U32)), (q + 10 : U32), ((w10 * 256 : U32) .|. U32.shrn(w9, 24n) : U32)), (q + 11 : U32), ((w11 * 256 : U32) .|. U32.shrn(w10, 24n) : U32)), (q + 12 : U32), ((w12 * 256 : U32) .|. U32.shrn(w11, 24n) : U32)), (q + 13 : U32), ((w13 * 256 : U32) .|. U32.shrn(w12, 24n) : U32)), (q + 14 : U32), ((w14 * 256 : U32) .|. U32.shrn(w13, 24n) : U32)), (q + 15 : U32), ((w15 * 256 : U32) .|. U32.shrn(w14, 24n) : U32)), (q + 16 : U32), ((w16 * 256 : U32) .|. U32.shrn(w15, 24n) : U32)), (q + 17 : U32), U32.shrn(w16, 24n))
+def bv513_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32) -> Array<U32>: O.or_skip(O.or_word(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), ((w8 * 256 : U32) .|. U32.shrn(w7, 24n) : U32)), (q + 9 : U32), ((w9 * 256 : U32) .|. U32.shrn(w8, 24n) : U32)), (q + 10 : U32), ((w10 * 256 : U32) .|. U32.shrn(w9, 24n) : U32)), (q + 11 : U32), ((w11 * 256 : U32) .|. U32.shrn(w10, 24n) : U32)), (q + 12 : U32), ((w12 * 256 : U32) .|. U32.shrn(w11, 24n) : U32)), (q + 13 : U32), ((w13 * 256 : U32) .|. U32.shrn(w12, 24n) : U32)), (q + 14 : U32), ((w14 * 256 : U32) .|. U32.shrn(w13, 24n) : U32)), (q + 15 : U32), ((w15 * 256 : U32) .|. U32.shrn(w14, 24n) : U32)), (q + 16 : U32), ((w16 * 256 : U32) .|. U32.shrn(w15, 24n) : U32)), (q + 17 : U32), U32.shrn(w16, 24n))
 
-def bv513_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), ((w8 * 65536 : U32) .|. U32.shrn(w7, 16n) : U32)), (q + 9 : U32), ((w9 * 65536 : U32) .|. U32.shrn(w8, 16n) : U32)), (q + 10 : U32), ((w10 * 65536 : U32) .|. U32.shrn(w9, 16n) : U32)), (q + 11 : U32), ((w11 * 65536 : U32) .|. U32.shrn(w10, 16n) : U32)), (q + 12 : U32), ((w12 * 65536 : U32) .|. U32.shrn(w11, 16n) : U32)), (q + 13 : U32), ((w13 * 65536 : U32) .|. U32.shrn(w12, 16n) : U32)), (q + 14 : U32), ((w14 * 65536 : U32) .|. U32.shrn(w13, 16n) : U32)), (q + 15 : U32), ((w15 * 65536 : U32) .|. U32.shrn(w14, 16n) : U32)), (q + 16 : U32), ((w16 * 65536 : U32) .|. U32.shrn(w15, 16n) : U32)), (q + 17 : U32), U32.shrn(w16, 16n))
+def bv513_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32) -> Array<U32>: O.or_skip(O.or_word(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), ((w8 * 65536 : U32) .|. U32.shrn(w7, 16n) : U32)), (q + 9 : U32), ((w9 * 65536 : U32) .|. U32.shrn(w8, 16n) : U32)), (q + 10 : U32), ((w10 * 65536 : U32) .|. U32.shrn(w9, 16n) : U32)), (q + 11 : U32), ((w11 * 65536 : U32) .|. U32.shrn(w10, 16n) : U32)), (q + 12 : U32), ((w12 * 65536 : U32) .|. U32.shrn(w11, 16n) : U32)), (q + 13 : U32), ((w13 * 65536 : U32) .|. U32.shrn(w12, 16n) : U32)), (q + 14 : U32), ((w14 * 65536 : U32) .|. U32.shrn(w13, 16n) : U32)), (q + 15 : U32), ((w15 * 65536 : U32) .|. U32.shrn(w14, 16n) : U32)), (q + 16 : U32), ((w16 * 65536 : U32) .|. U32.shrn(w15, 16n) : U32)), (q + 17 : U32), U32.shrn(w16, 16n))
 
-def bv513_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), ((w8 * 16777216 : U32) .|. U32.shrn(w7, 8n) : U32)), (q + 9 : U32), ((w9 * 16777216 : U32) .|. U32.shrn(w8, 8n) : U32)), (q + 10 : U32), ((w10 * 16777216 : U32) .|. U32.shrn(w9, 8n) : U32)), (q + 11 : U32), ((w11 * 16777216 : U32) .|. U32.shrn(w10, 8n) : U32)), (q + 12 : U32), ((w12 * 16777216 : U32) .|. U32.shrn(w11, 8n) : U32)), (q + 13 : U32), ((w13 * 16777216 : U32) .|. U32.shrn(w12, 8n) : U32)), (q + 14 : U32), ((w14 * 16777216 : U32) .|. U32.shrn(w13, 8n) : U32)), (q + 15 : U32), ((w15 * 16777216 : U32) .|. U32.shrn(w14, 8n) : U32)), (q + 16 : U32), ((w16 * 16777216 : U32) .|. U32.shrn(w15, 8n) : U32)), (q + 17 : U32), U32.shrn(w16, 8n))
+def bv513_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), ((w8 * 16777216 : U32) .|. U32.shrn(w7, 8n) : U32)), (q + 9 : U32), ((w9 * 16777216 : U32) .|. U32.shrn(w8, 8n) : U32)), (q + 10 : U32), ((w10 * 16777216 : U32) .|. U32.shrn(w9, 8n) : U32)), (q + 11 : U32), ((w11 * 16777216 : U32) .|. U32.shrn(w10, 8n) : U32)), (q + 12 : U32), ((w12 * 16777216 : U32) .|. U32.shrn(w11, 8n) : U32)), (q + 13 : U32), ((w13 * 16777216 : U32) .|. U32.shrn(w12, 8n) : U32)), (q + 14 : U32), ((w14 * 16777216 : U32) .|. U32.shrn(w13, 8n) : U32)), (q + 15 : U32), ((w15 * 16777216 : U32) .|. U32.shrn(w14, 8n) : U32)), (q + 16 : U32), ((w16 * 16777216 : U32) .|. U32.shrn(w15, 8n) : U32)), (q + 17 : U32), U32.shrn(w16, 8n))
 
-def bv513_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32) -> Array<U32>:
+def bv513_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32) -> Array<U32>:
   match s:
-    case 0: bv513_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16)
     case 1: bv513_pw1(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16)
     case 2: bv513_pw2(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16)
     case _: bv513_pw3(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16)
 
+def bv513_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv513_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16)
+    case False{}: bv513_pwu(s, out, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16)
+
 def bv513_put(out: Array<U32>, +pos: U32, o: Bitvector513) -> Array<U32>:
   match o:
-    case Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}: bv513_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16)
+    case Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}: bv513_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16)
 
-def bv513_root(h: B.Buf, o: Bitvector513, +seg: U32) -> B.Buf & D.Digest:
+def bv513_root(+hl: Nat, h: B.Buf, o: Bitvector513, +seg: U32) -> B.Buf & D.Digest:
   match o:
-    case Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}: (h, D.hash_pair(D.hash_pair(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}), D.hash_pair(D.D{B.swap32(w16), 0, 0, 0, 0, 0, 0, 0}, D.zero())))
+    case Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}: (h, D.node(hl, D.node(hl, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}), D.node(hl, D.D{B.swap32(w16), 0, 0, 0, 0, 0, 0, 0}, D.zero())))
 
 def bv513_force(o: Bitvector513) -> U32:
   match o:
     case Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}: ((((((((((((((((w0 .^. w1 : U32) .^. w2 : U32) .^. w3 : U32) .^. w4 : U32) .^. w5 : U32) .^. w6 : U32) .^. w7 : U32) .^. w8 : U32) .^. w9 : U32) .^. w10 : U32) .^. w11 : U32) .^. w12 : U32) .^. w13 : U32) .^. w14 : U32) .^. w15 : U32) .^. w16 : U32)
+
+def bv513_dump(o: Bitvector513, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}: O.dump_le(w0, 4, O.dump_le(w1, 4, O.dump_le(w2, 4, O.dump_le(w3, 4, O.dump_le(w4, 4, O.dump_le(w5, 4, O.dump_le(w6, 4, O.dump_le(w7, 4, O.dump_le(w8, 4, O.dump_le(w9, 4, O.dump_le(w10, 4, O.dump_le(w11, 4, O.dump_le(w12, 4, O.dump_le(w13, 4, O.dump_le(w14, 4, O.dump_le(w15, 4, O.dump_le(w16, 1, t)))))))))))))))))
 
 def bv513_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 64 : U32), 1)
 
@@ -12283,7 +18178,7 @@ def bv5_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector5:
 
 def bv5_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector5: bv5_r0(off, B.read32(buf, off))
 
-def bv5_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv5_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv5_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -12291,24 +18186,32 @@ def bv5_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_wo
 
 def bv5_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv5_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv5_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv5_pw0(out, q, w0)
     case 1: bv5_pw1(out, q, w0)
     case 2: bv5_pw2(out, q, w0)
     case _: bv5_pw3(out, q, w0)
 
+def bv5_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv5_pw0(out, q, w0)
+    case False{}: bv5_pwu(s, out, q, w0)
+
 def bv5_put(out: Array<U32>, +pos: U32, o: Bitvector5) -> Array<U32>:
   match o:
-    case Bitvector5{+w0}: bv5_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector5{+w0}: bv5_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv5_root(h: B.Buf, o: Bitvector5, +seg: U32) -> B.Buf & D.Digest:
+def bv5_root(+hl: Nat, h: B.Buf, o: Bitvector5, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector5{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv5_force(o: Bitvector5) -> U32:
   match o:
     case Bitvector5{+w0}: w0
+
+def bv5_dump(o: Bitvector5, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector5{+w0}: O.dump_le(w0, 1, t)
 
 def bv5_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 0 : U32), 5)
 
@@ -12339,7 +18242,7 @@ def bv6_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector6:
 
 def bv6_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector6: bv6_r0(off, B.read32(buf, off))
 
-def bv6_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv6_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv6_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -12347,24 +18250,32 @@ def bv6_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_wo
 
 def bv6_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv6_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv6_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv6_pw0(out, q, w0)
     case 1: bv6_pw1(out, q, w0)
     case 2: bv6_pw2(out, q, w0)
     case _: bv6_pw3(out, q, w0)
 
+def bv6_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv6_pw0(out, q, w0)
+    case False{}: bv6_pwu(s, out, q, w0)
+
 def bv6_put(out: Array<U32>, +pos: U32, o: Bitvector6) -> Array<U32>:
   match o:
-    case Bitvector6{+w0}: bv6_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector6{+w0}: bv6_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv6_root(h: B.Buf, o: Bitvector6, +seg: U32) -> B.Buf & D.Digest:
+def bv6_root(+hl: Nat, h: B.Buf, o: Bitvector6, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector6{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv6_force(o: Bitvector6) -> U32:
   match o:
     case Bitvector6{+w0}: w0
+
+def bv6_dump(o: Bitvector6, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector6{+w0}: O.dump_le(w0, 1, t)
 
 def bv6_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 0 : U32), 6)
 
@@ -12395,7 +18306,7 @@ def bv7_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector7:
 
 def bv7_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector7: bv7_r0(off, B.read32(buf, off))
 
-def bv7_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv7_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv7_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -12403,24 +18314,32 @@ def bv7_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_wo
 
 def bv7_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv7_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv7_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv7_pw0(out, q, w0)
     case 1: bv7_pw1(out, q, w0)
     case 2: bv7_pw2(out, q, w0)
     case _: bv7_pw3(out, q, w0)
 
+def bv7_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv7_pw0(out, q, w0)
+    case False{}: bv7_pwu(s, out, q, w0)
+
 def bv7_put(out: Array<U32>, +pos: U32, o: Bitvector7) -> Array<U32>:
   match o:
-    case Bitvector7{+w0}: bv7_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector7{+w0}: bv7_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv7_root(h: B.Buf, o: Bitvector7, +seg: U32) -> B.Buf & D.Digest:
+def bv7_root(+hl: Nat, h: B.Buf, o: Bitvector7, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector7{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv7_force(o: Bitvector7) -> U32:
   match o:
     case Bitvector7{+w0}: w0
+
+def bv7_dump(o: Bitvector7, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector7{+w0}: O.dump_le(w0, 1, t)
 
 def bv7_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 0 : U32), 7)
 
@@ -12451,7 +18370,7 @@ def bv9_r0(+off: U32, pair: B.Buf & U32) -> B.Buf & Bitvector9:
 
 def bv9_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bitvector9: bv9_r0(off, B.read32(buf, off))
 
-def bv9_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: Array.set(U32, out, (q + 0 : U32), w0)
+def bv9_pw0(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_word(out, (q + 0 : U32), w0)
 
 def bv9_pw1(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), U32.shrn(w0, 24n))
 
@@ -12459,24 +18378,32 @@ def bv9_pw2(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_wo
 
 def bv9_pw3(out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>: O.or_skip(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), U32.shrn(w0, 8n))
 
-def bv9_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+def bv9_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
   match s:
-    case 0: bv9_pw0(out, q, w0)
     case 1: bv9_pw1(out, q, w0)
     case 2: bv9_pw2(out, q, w0)
     case _: bv9_pw3(out, q, w0)
 
+def bv9_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32) -> Array<U32>:
+  match aligned:
+    case True{}: bv9_pw0(out, q, w0)
+    case False{}: bv9_pwu(s, out, q, w0)
+
 def bv9_put(out: Array<U32>, +pos: U32, o: Bitvector9) -> Array<U32>:
   match o:
-    case Bitvector9{+w0}: bv9_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
+    case Bitvector9{+w0}: bv9_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0)
 
-def bv9_root(h: B.Buf, o: Bitvector9, +seg: U32) -> B.Buf & D.Digest:
+def bv9_root(+hl: Nat, h: B.Buf, o: Bitvector9, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Bitvector9{+w0}: (h, D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0})
 
 def bv9_force(o: Bitvector9) -> U32:
   match o:
     case Bitvector9{+w0}: w0
+
+def bv9_dump(o: Bitvector9, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Bitvector9{+w0}: O.dump_le(w0, 2, t)
 
 def bv9_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_pad(buf, (off + 1 : U32), 1)
 
@@ -12505,9 +18432,11 @@ def bool_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.rd_bool(buf, 
 
 def bool_put(out: Array<U32>, +pos: U32, o: Bool) -> Array<U32>: O.wbool(out, pos, o)
 
-def bool_root(h: B.Buf, o: Bool, +seg: U32) -> B.Buf & D.Digest: (h, O.bool_chunk(o))
+def bool_root(+hl: Nat, h: B.Buf, o: Bool, +seg: U32) -> B.Buf & D.Digest: (h, O.bool_chunk(o))
 
 def bool_force(o: Bool) -> U32: O.pick(o, 1, 0)
+
+def bool_dump(o: Bool, t: +List<U32>) -> +List<U32>: O.dump_bool(o, t)
 
 def bool_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: O.ok_bool(buf, off)
 
@@ -12614,20 +18543,20 @@ def GuAD91DEB870_putn_sz(out: Array<U32>, +pos: U32, pair: GuAD91DEB870 & U32) -
 def GuAD91DEB870_putn(out: Array<U32>, +pos: U32, o: GuAD91DEB870) -> Array<U32> & (GuAD91DEB870 & U32):
   GuAD91DEB870_putn_sz(out, pos, GuAD91DEB870_size(o))
 
-def GuAD91DEB870_rt0(pair: B.Buf & (Gp4B0CA2906A & D.Digest)) -> B.Buf & (GuAD91DEB870 & D.Digest):
+def GuAD91DEB870_rt0(+hl: Nat, pair: B.Buf & (Gp4B0CA2906A & D.Digest)) -> B.Buf & (GuAD91DEB870 & D.Digest):
   (h, r) = pair
   (v, d) = r
-  (h, (GuAD91DEB870_c0{v}, O.mix_len(d, 2)))
+  (h, (GuAD91DEB870_c0{v}, O.mix_len(hl, d, 2)))
 
-def GuAD91DEB870_rt1(pair: B.Buf & (Gp66304057C3 & D.Digest)) -> B.Buf & (GuAD91DEB870 & D.Digest):
+def GuAD91DEB870_rt1(+hl: Nat, pair: B.Buf & (Gp66304057C3 & D.Digest)) -> B.Buf & (GuAD91DEB870 & D.Digest):
   (h, r) = pair
   (v, d) = r
-  (h, (GuAD91DEB870_c1{v}, O.mix_len(d, 3)))
+  (h, (GuAD91DEB870_c1{v}, O.mix_len(hl, d, 3)))
 
-def GuAD91DEB870_root(h: B.Buf, o: GuAD91DEB870, +seg: U32) -> B.Buf & (GuAD91DEB870 & D.Digest):
+def GuAD91DEB870_root(+hl: Nat, h: B.Buf, o: GuAD91DEB870, +seg: U32) -> B.Buf & (GuAD91DEB870 & D.Digest):
   match o:
-    case GuAD91DEB870_c0{v}: GuAD91DEB870_rt0(Gp4B0CA2906A_root(h, v, seg))
-    case GuAD91DEB870_c1{v}: GuAD91DEB870_rt1(Gp66304057C3_root(h, v, seg))
+    case GuAD91DEB870_c0{v}: GuAD91DEB870_rt0(hl, Gp4B0CA2906A_root(hl, h, v, seg))
+    case GuAD91DEB870_c1{v}: GuAD91DEB870_rt1(hl, Gp66304057C3_root(hl, h, v, seg))
 
 def GuAD91DEB870_fo0(pair: Gp4B0CA2906A & U32) -> GuAD91DEB870 & U32:
   (v, +x) = pair
@@ -12646,6 +18575,40 @@ def GuAD91DEB870_selector(o: GuAD91DEB870) -> GuAD91DEB870 & U32:
   match o:
     case GuAD91DEB870_c0{v}: (GuAD91DEB870_c0{v}, 2)
     case GuAD91DEB870_c1{v}: (GuAD91DEB870_c1{v}, 3)
+
+def GuAD91DEB870_dump(o: GuAD91DEB870, t: +List<U32>) -> +List<U32>:
+  match o:
+    case GuAD91DEB870_c0{v}: O.dump_le(2, 1, Gp4B0CA2906A_dump(v, t))
+    case GuAD91DEB870_c1{v}: O.dump_le(3, 1, Gp66304057C3_dump(v, t))
+
+def GuAD91DEB870_pk(out: Array<U32>, +pos: U32, pair: GuAD91DEB870 & Bool) -> Array<U32> & (GuAD91DEB870 & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: GuAD91DEB870_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def Gp4B0CA2906A_va0(acc: Bool, pair: O.Bits & Bool) -> Gp4B0CA2906A & Bool:
+  (f_C, ok) = pair
+  (Gp4B0CA2906A{f_C}, Bool.and(acc, ok))
+
+def Gp4B0CA2906A_valid(o: Gp4B0CA2906A) -> Gp4B0CA2906A & Bool:
+  match o:
+    case Gp4B0CA2906A{f_C}: Gp4B0CA2906A_va0(True{}, pbits_valid(f_C))
+
+def GuAD91DEB870_va0(pair: Gp4B0CA2906A & Bool) -> GuAD91DEB870 & Bool:
+  (v, ok) = pair
+  (GuAD91DEB870_c0{v}, ok)
+
+def GuAD91DEB870_va1(pair: Gp66304057C3 & Bool) -> GuAD91DEB870 & Bool:
+  (v, ok) = pair
+  (GuAD91DEB870_c1{v}, ok)
+
+def GuAD91DEB870_valid(o: GuAD91DEB870) -> GuAD91DEB870 & Bool:
+  match o:
+    case GuAD91DEB870_c0{v}: GuAD91DEB870_va0(Gp4B0CA2906A_valid(v))
+    case GuAD91DEB870_c1{v}: GuAD91DEB870_va1(Gp66304057C3_valid(v))
+
+def GuAD91DEB870_putk(out: Array<U32>, +pos: U32, o: GuAD91DEB870) -> Array<U32> & (GuAD91DEB870 & U32): GuAD91DEB870_pk(out, pos, GuAD91DEB870_valid(o))
 
 type Gu6DDF182530 is Type:
   Gu6DDF182530_c0{v: GpF350A3C486}
@@ -12781,30 +18744,30 @@ def Gu6DDF182530_putn_sz(out: Array<U32>, +pos: U32, pair: Gu6DDF182530 & U32) -
 def Gu6DDF182530_putn(out: Array<U32>, +pos: U32, o: Gu6DDF182530) -> Array<U32> & (Gu6DDF182530 & U32):
   Gu6DDF182530_putn_sz(out, pos, Gu6DDF182530_size(o))
 
-def Gu6DDF182530_rt0(+v: GpF350A3C486, pair: B.Buf & D.Digest) -> B.Buf & (Gu6DDF182530 & D.Digest):
+def Gu6DDF182530_rt0(+hl: Nat, +v: GpF350A3C486, pair: B.Buf & D.Digest) -> B.Buf & (Gu6DDF182530 & D.Digest):
   (h, d) = pair
-  (h, (Gu6DDF182530_c0{v}, O.mix_len(d, 1)))
+  (h, (Gu6DDF182530_c0{v}, O.mix_len(hl, d, 1)))
 
-def Gu6DDF182530_rt1(pair: B.Buf & (Gp4B0CA2906A & D.Digest)) -> B.Buf & (Gu6DDF182530 & D.Digest):
+def Gu6DDF182530_rt1(+hl: Nat, pair: B.Buf & (Gp4B0CA2906A & D.Digest)) -> B.Buf & (Gu6DDF182530 & D.Digest):
   (h, r) = pair
   (v, d) = r
-  (h, (Gu6DDF182530_c1{v}, O.mix_len(d, 2)))
+  (h, (Gu6DDF182530_c1{v}, O.mix_len(hl, d, 2)))
 
-def Gu6DDF182530_rt2(pair: B.Buf & (Gp66304057C3 & D.Digest)) -> B.Buf & (Gu6DDF182530 & D.Digest):
+def Gu6DDF182530_rt2(+hl: Nat, pair: B.Buf & (Gp66304057C3 & D.Digest)) -> B.Buf & (Gu6DDF182530 & D.Digest):
   (h, r) = pair
   (v, d) = r
-  (h, (Gu6DDF182530_c2{v}, O.mix_len(d, 3)))
+  (h, (Gu6DDF182530_c2{v}, O.mix_len(hl, d, 3)))
 
-def Gu6DDF182530_rt3(+v: GpF350A3C486, pair: B.Buf & D.Digest) -> B.Buf & (Gu6DDF182530 & D.Digest):
+def Gu6DDF182530_rt3(+hl: Nat, +v: GpF350A3C486, pair: B.Buf & D.Digest) -> B.Buf & (Gu6DDF182530 & D.Digest):
   (h, d) = pair
-  (h, (Gu6DDF182530_c3{v}, O.mix_len(d, 4)))
+  (h, (Gu6DDF182530_c3{v}, O.mix_len(hl, d, 4)))
 
-def Gu6DDF182530_root(h: B.Buf, o: Gu6DDF182530, +seg: U32) -> B.Buf & (Gu6DDF182530 & D.Digest):
+def Gu6DDF182530_root(+hl: Nat, h: B.Buf, o: Gu6DDF182530, +seg: U32) -> B.Buf & (Gu6DDF182530 & D.Digest):
   match o:
-    case Gu6DDF182530_c0{+v}: Gu6DDF182530_rt0(v, GpF350A3C486_root(h, v, seg))
-    case Gu6DDF182530_c1{v}: Gu6DDF182530_rt1(Gp4B0CA2906A_root(h, v, seg))
-    case Gu6DDF182530_c2{v}: Gu6DDF182530_rt2(Gp66304057C3_root(h, v, seg))
-    case Gu6DDF182530_c3{+v}: Gu6DDF182530_rt3(v, GpF350A3C486_root(h, v, seg))
+    case Gu6DDF182530_c0{+v}: Gu6DDF182530_rt0(hl, v, GpF350A3C486_root(hl, h, v, seg))
+    case Gu6DDF182530_c1{v}: Gu6DDF182530_rt1(hl, Gp4B0CA2906A_root(hl, h, v, seg))
+    case Gu6DDF182530_c2{v}: Gu6DDF182530_rt2(hl, Gp66304057C3_root(hl, h, v, seg))
+    case Gu6DDF182530_c3{+v}: Gu6DDF182530_rt3(hl, v, GpF350A3C486_root(hl, h, v, seg))
 
 def Gu6DDF182530_fo1(pair: Gp4B0CA2906A & U32) -> Gu6DDF182530 & U32:
   (v, +x) = pair
@@ -12827,6 +18790,36 @@ def Gu6DDF182530_selector(o: Gu6DDF182530) -> Gu6DDF182530 & U32:
     case Gu6DDF182530_c1{v}: (Gu6DDF182530_c1{v}, 2)
     case Gu6DDF182530_c2{v}: (Gu6DDF182530_c2{v}, 3)
     case Gu6DDF182530_c3{+v}: (Gu6DDF182530_c3{v}, 4)
+
+def Gu6DDF182530_dump(o: Gu6DDF182530, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Gu6DDF182530_c0{+v}: O.dump_le(1, 1, GpF350A3C486_dump(v, t))
+    case Gu6DDF182530_c1{v}: O.dump_le(2, 1, Gp4B0CA2906A_dump(v, t))
+    case Gu6DDF182530_c2{v}: O.dump_le(3, 1, Gp66304057C3_dump(v, t))
+    case Gu6DDF182530_c3{+v}: O.dump_le(4, 1, GpF350A3C486_dump(v, t))
+
+def Gu6DDF182530_pk(out: Array<U32>, +pos: U32, pair: Gu6DDF182530 & Bool) -> Array<U32> & (Gu6DDF182530 & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: Gu6DDF182530_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def Gu6DDF182530_va1(pair: Gp4B0CA2906A & Bool) -> Gu6DDF182530 & Bool:
+  (v, ok) = pair
+  (Gu6DDF182530_c1{v}, ok)
+
+def Gu6DDF182530_va2(pair: Gp66304057C3 & Bool) -> Gu6DDF182530 & Bool:
+  (v, ok) = pair
+  (Gu6DDF182530_c2{v}, ok)
+
+def Gu6DDF182530_valid(o: Gu6DDF182530) -> Gu6DDF182530 & Bool:
+  match o:
+    case Gu6DDF182530_c0{+v}: (Gu6DDF182530_c0{v}, GpF350A3C486_valid(v))
+    case Gu6DDF182530_c1{v}: Gu6DDF182530_va1(Gp4B0CA2906A_valid(v))
+    case Gu6DDF182530_c2{v}: Gu6DDF182530_va2(Gp66304057C3_valid(v))
+    case Gu6DDF182530_c3{+v}: (Gu6DDF182530_c3{v}, GpF350A3C486_valid(v))
+
+def Gu6DDF182530_putk(out: Array<U32>, +pos: U32, o: Gu6DDF182530) -> Array<U32> & (Gu6DDF182530 & U32): Gu6DDF182530_pk(out, pos, Gu6DDF182530_valid(o))
 
 type GuA2212AE21F is Type:
   GuA2212AE21F_c0{v: GpF350A3C486}
@@ -12886,13 +18879,13 @@ def GuA2212AE21F_putn_sz(out: Array<U32>, +pos: U32, pair: GuA2212AE21F & U32) -
 def GuA2212AE21F_putn(out: Array<U32>, +pos: U32, o: GuA2212AE21F) -> Array<U32> & (GuA2212AE21F & U32):
   GuA2212AE21F_putn_sz(out, pos, GuA2212AE21F_size(o))
 
-def GuA2212AE21F_rt0(+v: GpF350A3C486, pair: B.Buf & D.Digest) -> B.Buf & (GuA2212AE21F & D.Digest):
+def GuA2212AE21F_rt0(+hl: Nat, +v: GpF350A3C486, pair: B.Buf & D.Digest) -> B.Buf & (GuA2212AE21F & D.Digest):
   (h, d) = pair
-  (h, (GuA2212AE21F_c0{v}, O.mix_len(d, 1)))
+  (h, (GuA2212AE21F_c0{v}, O.mix_len(hl, d, 1)))
 
-def GuA2212AE21F_root(h: B.Buf, o: GuA2212AE21F, +seg: U32) -> B.Buf & (GuA2212AE21F & D.Digest):
+def GuA2212AE21F_root(+hl: Nat, h: B.Buf, o: GuA2212AE21F, +seg: U32) -> B.Buf & (GuA2212AE21F & D.Digest):
   match o:
-    case GuA2212AE21F_c0{+v}: GuA2212AE21F_rt0(v, GpF350A3C486_root(h, v, seg))
+    case GuA2212AE21F_c0{+v}: GuA2212AE21F_rt0(hl, v, GpF350A3C486_root(hl, h, v, seg))
 
 def GuA2212AE21F_force(o: GuA2212AE21F) -> GuA2212AE21F & U32:
   match o:
@@ -12901,6 +18894,22 @@ def GuA2212AE21F_force(o: GuA2212AE21F) -> GuA2212AE21F & U32:
 def GuA2212AE21F_selector(o: GuA2212AE21F) -> GuA2212AE21F & U32:
   match o:
     case GuA2212AE21F_c0{+v}: (GuA2212AE21F_c0{v}, 1)
+
+def GuA2212AE21F_dump(o: GuA2212AE21F, t: +List<U32>) -> +List<U32>:
+  match o:
+    case GuA2212AE21F_c0{+v}: O.dump_le(1, 1, GpF350A3C486_dump(v, t))
+
+def GuA2212AE21F_pk(out: Array<U32>, +pos: U32, pair: GuA2212AE21F & Bool) -> Array<U32> & (GuA2212AE21F & U32):
+  (o, ok) = pair
+  match ok:
+    case True{}: GuA2212AE21F_putn(out, pos, o)
+    case False{}: (out, (o, 2147483648))
+
+def GuA2212AE21F_valid(o: GuA2212AE21F) -> GuA2212AE21F & Bool:
+  match o:
+    case GuA2212AE21F_c0{+v}: (GuA2212AE21F_c0{v}, GpF350A3C486_valid(v))
+
+def GuA2212AE21F_putk(out: Array<U32>, +pos: U32, o: GuA2212AE21F) -> Array<U32> & (GuA2212AE21F & U32): GuA2212AE21F_pk(out, pos, GuA2212AE21F_valid(o))
 
 def u128_default() -> Uint128: Uint128{0, 0, 0, 0}
 
@@ -12924,30 +18933,38 @@ def u128_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Uint128: u128_r0(off,
 
 def u128_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1), (q + 2 : U32), w2), (q + 3 : U32), w3)
 
-def u128_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), U32.shrn(w3, 24n))
+def u128_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), U32.shrn(w3, 24n))
 
-def u128_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), U32.shrn(w3, 16n))
+def u128_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), U32.shrn(w3, 16n))
 
-def u128_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), U32.shrn(w3, 8n))
+def u128_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), U32.shrn(w3, 8n))
 
-def u128_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>:
+def u128_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>:
   match s:
-    case 0: u128_pw0(out, q, w0, w1, w2, w3)
     case 1: u128_pw1(out, q, w0, w1, w2, w3)
     case 2: u128_pw2(out, q, w0, w1, w2, w3)
     case _: u128_pw3(out, q, w0, w1, w2, w3)
 
+def u128_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32) -> Array<U32>:
+  match aligned:
+    case True{}: u128_pw0(out, q, w0, w1, w2, w3)
+    case False{}: u128_pwu(s, out, q, w0, w1, w2, w3)
+
 def u128_put(out: Array<U32>, +pos: U32, o: Uint128) -> Array<U32>:
   match o:
-    case Uint128{+w0, +w1, +w2, +w3}: u128_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3)
+    case Uint128{+w0, +w1, +w2, +w3}: u128_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3)
 
-def u128_root(h: B.Buf, o: Uint128, +seg: U32) -> B.Buf & D.Digest:
+def u128_root(+hl: Nat, h: B.Buf, o: Uint128, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Uint128{+w0, +w1, +w2, +w3}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0})
 
 def u128_force(o: Uint128) -> U32:
   match o:
     case Uint128{+w0, +w1, +w2, +w3}: (((w0 .^. w1 : U32) .^. w2 : U32) .^. w3 : U32)
+
+def u128_dump(o: Uint128, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Uint128{+w0, +w1, +w2, +w3}: O.dump_le(w0, 4, O.dump_le(w1, 4, O.dump_le(w2, 4, O.dump_le(w3, 4, t))))
 
 def u128_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -12998,30 +19015,38 @@ def u256_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Uint256: u256_r0(off,
 
 def u256_pw0(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, out, (q + 0 : U32), w0), (q + 1 : U32), w1), (q + 2 : U32), w2), (q + 3 : U32), w3), (q + 4 : U32), w4), (q + 5 : U32), w5), (q + 6 : U32), w6), (q + 7 : U32), w7)
 
-def u256_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), U32.shrn(w7, 24n))
+def u256_pw1(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 256 : U32)), (q + 1 : U32), ((w1 * 256 : U32) .|. U32.shrn(w0, 24n) : U32)), (q + 2 : U32), ((w2 * 256 : U32) .|. U32.shrn(w1, 24n) : U32)), (q + 3 : U32), ((w3 * 256 : U32) .|. U32.shrn(w2, 24n) : U32)), (q + 4 : U32), ((w4 * 256 : U32) .|. U32.shrn(w3, 24n) : U32)), (q + 5 : U32), ((w5 * 256 : U32) .|. U32.shrn(w4, 24n) : U32)), (q + 6 : U32), ((w6 * 256 : U32) .|. U32.shrn(w5, 24n) : U32)), (q + 7 : U32), ((w7 * 256 : U32) .|. U32.shrn(w6, 24n) : U32)), (q + 8 : U32), U32.shrn(w7, 24n))
 
-def u256_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), U32.shrn(w7, 16n))
+def u256_pw2(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 65536 : U32)), (q + 1 : U32), ((w1 * 65536 : U32) .|. U32.shrn(w0, 16n) : U32)), (q + 2 : U32), ((w2 * 65536 : U32) .|. U32.shrn(w1, 16n) : U32)), (q + 3 : U32), ((w3 * 65536 : U32) .|. U32.shrn(w2, 16n) : U32)), (q + 4 : U32), ((w4 * 65536 : U32) .|. U32.shrn(w3, 16n) : U32)), (q + 5 : U32), ((w5 * 65536 : U32) .|. U32.shrn(w4, 16n) : U32)), (q + 6 : U32), ((w6 * 65536 : U32) .|. U32.shrn(w5, 16n) : U32)), (q + 7 : U32), ((w7 * 65536 : U32) .|. U32.shrn(w6, 16n) : U32)), (q + 8 : U32), U32.shrn(w7, 16n))
 
-def u256_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), U32.shrn(w7, 8n))
+def u256_pw3(out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>: O.or_skip(Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, O.or_word(out, (q + 0 : U32), (w0 * 16777216 : U32)), (q + 1 : U32), ((w1 * 16777216 : U32) .|. U32.shrn(w0, 8n) : U32)), (q + 2 : U32), ((w2 * 16777216 : U32) .|. U32.shrn(w1, 8n) : U32)), (q + 3 : U32), ((w3 * 16777216 : U32) .|. U32.shrn(w2, 8n) : U32)), (q + 4 : U32), ((w4 * 16777216 : U32) .|. U32.shrn(w3, 8n) : U32)), (q + 5 : U32), ((w5 * 16777216 : U32) .|. U32.shrn(w4, 8n) : U32)), (q + 6 : U32), ((w6 * 16777216 : U32) .|. U32.shrn(w5, 8n) : U32)), (q + 7 : U32), ((w7 * 16777216 : U32) .|. U32.shrn(w6, 8n) : U32)), (q + 8 : U32), U32.shrn(w7, 8n))
 
-def u256_pwd(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>:
+def u256_pwu(+s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>:
   match s:
-    case 0: u256_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
     case 1: u256_pw1(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
     case 2: u256_pw2(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
     case _: u256_pw3(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
 
+def u256_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> Array<U32>:
+  match aligned:
+    case True{}: u256_pw0(out, q, w0, w1, w2, w3, w4, w5, w6, w7)
+    case False{}: u256_pwu(s, out, q, w0, w1, w2, w3, w4, w5, w6, w7)
+
 def u256_put(out: Array<U32>, +pos: U32, o: Uint256) -> Array<U32>:
   match o:
-    case Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: u256_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7)
+    case Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: u256_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7)
 
-def u256_root(h: B.Buf, o: Uint256, +seg: U32) -> B.Buf & D.Digest:
+def u256_root(+hl: Nat, h: B.Buf, o: Uint256, +seg: U32) -> B.Buf & D.Digest:
   match o:
     case Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (h, D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})
 
 def u256_force(o: Uint256) -> U32:
   match o:
     case Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: (((((((w0 .^. w1 : U32) .^. w2 : U32) .^. w3 : U32) .^. w4 : U32) .^. w5 : U32) .^. w6 : U32) .^. w7 : U32)
+
+def u256_dump(o: Uint256, t: +List<U32>) -> +List<U32>:
+  match o:
+    case Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: O.dump_le(w0, 4, O.dump_le(w1, 4, O.dump_le(w2, 4, O.dump_le(w3, 4, O.dump_le(w4, 4, O.dump_le(w5, 4, O.dump_le(w6, 4, O.dump_le(w7, 4, t))))))))
 
 def u256_ok_at(buf: B.Buf, +off: U32) -> B.Buf & Bool: (buf, True{})
 
@@ -13065,7 +19090,7 @@ def Gp4B0CA2906A_enc_sized(pair: Gp4B0CA2906A & U32) -> Gp4B0CA2906A & B.Buf:
 
 def Gp4B0CA2906A_encode(o: Gp4B0CA2906A) -> Gp4B0CA2906A & B.Buf: Gp4B0CA2906A_enc_sized(Gp4B0CA2906A_size(o))
 
-def Gp4B0CA2906A_hash_tree_root(h: B.Buf, o: Gp4B0CA2906A) -> B.Buf & (Gp4B0CA2906A & D.Digest): Gp4B0CA2906A_root(h, o, 0)
+def Gp4B0CA2906A_hash_tree_root(h: B.Buf, o: Gp4B0CA2906A) -> B.Buf & (Gp4B0CA2906A & D.Digest): Gp4B0CA2906A_root(64n, h, o, 0)
 
 # ---- Gp8A7851175B ----
 
@@ -13098,7 +19123,7 @@ def Gp8A7851175B_enc_sized(pair: Gp8A7851175B & U32) -> Gp8A7851175B & B.Buf:
 
 def Gp8A7851175B_encode(o: Gp8A7851175B) -> Gp8A7851175B & B.Buf: Gp8A7851175B_enc_sized(Gp8A7851175B_size(o))
 
-def Gp8A7851175B_hash_tree_root(h: B.Buf, o: Gp8A7851175B) -> B.Buf & (Gp8A7851175B & D.Digest): Gp8A7851175B_root(h, o, 0)
+def Gp8A7851175B_hash_tree_root(h: B.Buf, o: Gp8A7851175B) -> B.Buf & (Gp8A7851175B & D.Digest): Gp8A7851175B_root(64n, h, o, 0)
 
 # ---- Gp66304057C3 ----
 
@@ -13131,7 +19156,7 @@ def Gp66304057C3_enc_sized(pair: Gp66304057C3 & U32) -> Gp66304057C3 & B.Buf:
 
 def Gp66304057C3_encode(o: Gp66304057C3) -> Gp66304057C3 & B.Buf: Gp66304057C3_enc_sized(Gp66304057C3_size(o))
 
-def Gp66304057C3_hash_tree_root(h: B.Buf, o: Gp66304057C3) -> B.Buf & (Gp66304057C3 & D.Digest): Gp66304057C3_root(h, o, 0)
+def Gp66304057C3_hash_tree_root(h: B.Buf, o: Gp66304057C3) -> B.Buf & (Gp66304057C3 & D.Digest): Gp66304057C3_root(64n, h, o, 0)
 
 # ---- GpF350A3C486 ----
 
@@ -13152,7 +19177,7 @@ def GpF350A3C486_build(buf: B.Buf, +size: U32) -> B.Buf & GpF350A3C486: GpF350A3
 
 def GpF350A3C486_encode(+o: GpF350A3C486) -> B.Buf: O.out_done(1, GpF350A3C486_put(O.out_at(0n), 0, o))
 
-def GpF350A3C486_hash_tree_root(h: B.Buf, +o: GpF350A3C486) -> B.Buf & D.Digest: GpF350A3C486_root(h, o, 0)
+def GpF350A3C486_hash_tree_root(h: B.Buf, +o: GpF350A3C486) -> B.Buf & D.Digest: GpF350A3C486_root(64n, h, o, 0)
 
 # ---- Gt83D8B3D008 ----
 
@@ -13185,7 +19210,7 @@ def Gt83D8B3D008_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
 
 def Gt83D8B3D008_encode(o: O.Words) -> O.Words & B.Buf: Gt83D8B3D008_enc_sized(pl_bool_size(o))
 
-def Gt83D8B3D008_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_bool_root(h, o, 0)
+def Gt83D8B3D008_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_bool_root(64n, h, o, 0)
 
 # ---- Gt1D9B3E1871 ----
 
@@ -13204,17 +19229,13 @@ def Gt1D9B3E1871_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt1D9B3E1871_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v16_bool_read(buf, 0, size)
 
-def Gt1D9B3E1871_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt1D9B3E1871_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(16, out))
 
-def Gt1D9B3E1871_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt1D9B3E1871_enc_out(n, v16_bool_put(O.out_new(n), 0, o))
+def Gt1D9B3E1871_encode(o: O.Words) -> O.Words & B.Buf: Gt1D9B3E1871_enc_out(v16_bool_put(O.out_at(2n), 0, o))
 
-def Gt1D9B3E1871_encode(o: O.Words) -> O.Words & B.Buf: Gt1D9B3E1871_enc_sized(v16_bool_size(o))
-
-def Gt1D9B3E1871_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_bool_root(h, o, 0)
+def Gt1D9B3E1871_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_bool_root(64n, h, o, 0)
 
 # ---- GtAE3EF932C2 ----
 
@@ -13233,17 +19254,13 @@ def GtAE3EF932C2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtAE3EF932C2_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_bool_read(buf, 0, size)
 
-def GtAE3EF932C2_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtAE3EF932C2_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(1, out))
 
-def GtAE3EF932C2_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtAE3EF932C2_enc_out(n, v1_bool_put(O.out_new(n), 0, o))
+def GtAE3EF932C2_encode(o: O.Words) -> O.Words & B.Buf: GtAE3EF932C2_enc_out(v1_bool_put(O.out_at(0n), 0, o))
 
-def GtAE3EF932C2_encode(o: O.Words) -> O.Words & B.Buf: GtAE3EF932C2_enc_sized(v1_bool_size(o))
-
-def GtAE3EF932C2_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_bool_root(h, o, 0)
+def GtAE3EF932C2_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_bool_root(64n, h, o, 0)
 
 # ---- Gt3771256492 ----
 
@@ -13262,17 +19279,13 @@ def Gt3771256492_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt3771256492_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v2_bool_read(buf, 0, size)
 
-def Gt3771256492_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt3771256492_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(2, out))
 
-def Gt3771256492_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt3771256492_enc_out(n, v2_bool_put(O.out_new(n), 0, o))
+def Gt3771256492_encode(o: O.Words) -> O.Words & B.Buf: Gt3771256492_enc_out(v2_bool_put(O.out_at(0n), 0, o))
 
-def Gt3771256492_encode(o: O.Words) -> O.Words & B.Buf: Gt3771256492_enc_sized(v2_bool_size(o))
-
-def Gt3771256492_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_bool_root(h, o, 0)
+def Gt3771256492_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_bool_root(64n, h, o, 0)
 
 # ---- Gt9DF37A5216 ----
 
@@ -13291,17 +19304,13 @@ def Gt9DF37A5216_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt9DF37A5216_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v31_bool_read(buf, 0, size)
 
-def Gt9DF37A5216_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt9DF37A5216_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(31, out))
 
-def Gt9DF37A5216_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt9DF37A5216_enc_out(n, v31_bool_put(O.out_new(n), 0, o))
+def Gt9DF37A5216_encode(o: O.Words) -> O.Words & B.Buf: Gt9DF37A5216_enc_out(v31_bool_put(O.out_at(3n), 0, o))
 
-def Gt9DF37A5216_encode(o: O.Words) -> O.Words & B.Buf: Gt9DF37A5216_enc_sized(v31_bool_size(o))
-
-def Gt9DF37A5216_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_bool_root(h, o, 0)
+def Gt9DF37A5216_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_bool_root(64n, h, o, 0)
 
 # ---- Gt57090094FA ----
 
@@ -13320,17 +19329,13 @@ def Gt57090094FA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt57090094FA_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v3_bool_read(buf, 0, size)
 
-def Gt57090094FA_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt57090094FA_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(3, out))
 
-def Gt57090094FA_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt57090094FA_enc_out(n, v3_bool_put(O.out_new(n), 0, o))
+def Gt57090094FA_encode(o: O.Words) -> O.Words & B.Buf: Gt57090094FA_enc_out(v3_bool_put(O.out_at(0n), 0, o))
 
-def Gt57090094FA_encode(o: O.Words) -> O.Words & B.Buf: Gt57090094FA_enc_sized(v3_bool_size(o))
-
-def Gt57090094FA_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_bool_root(h, o, 0)
+def Gt57090094FA_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_bool_root(64n, h, o, 0)
 
 # ---- GtC57121EA56 ----
 
@@ -13349,17 +19354,13 @@ def GtC57121EA56_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtC57121EA56_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_bool_read(buf, 0, size)
 
-def GtC57121EA56_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtC57121EA56_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(4, out))
 
-def GtC57121EA56_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtC57121EA56_enc_out(n, v4_bool_put(O.out_new(n), 0, o))
+def GtC57121EA56_encode(o: O.Words) -> O.Words & B.Buf: GtC57121EA56_enc_out(v4_bool_put(O.out_at(0n), 0, o))
 
-def GtC57121EA56_encode(o: O.Words) -> O.Words & B.Buf: GtC57121EA56_enc_sized(v4_bool_size(o))
-
-def GtC57121EA56_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_bool_root(h, o, 0)
+def GtC57121EA56_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_bool_root(64n, h, o, 0)
 
 # ---- Gt34AE45611E ----
 
@@ -13378,17 +19379,13 @@ def Gt34AE45611E_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt34AE45611E_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v512_bool_read(buf, 0, size)
 
-def Gt34AE45611E_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt34AE45611E_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(512, out))
 
-def Gt34AE45611E_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt34AE45611E_enc_out(n, v512_bool_put(O.out_new(n), 0, o))
+def Gt34AE45611E_encode(o: O.Words) -> O.Words & B.Buf: Gt34AE45611E_enc_out(v512_bool_put(O.out_at(7n), 0, o))
 
-def Gt34AE45611E_encode(o: O.Words) -> O.Words & B.Buf: Gt34AE45611E_enc_sized(v512_bool_size(o))
-
-def Gt34AE45611E_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_bool_root(h, o, 0)
+def Gt34AE45611E_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_bool_root(64n, h, o, 0)
 
 # ---- GtEB2FD43D9B ----
 
@@ -13407,17 +19404,13 @@ def GtEB2FD43D9B_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtEB2FD43D9B_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_bool_read(buf, 0, size)
 
-def GtEB2FD43D9B_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtEB2FD43D9B_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(513, out))
 
-def GtEB2FD43D9B_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtEB2FD43D9B_enc_out(n, v513_bool_put(O.out_new(n), 0, o))
+def GtEB2FD43D9B_encode(o: O.Words) -> O.Words & B.Buf: GtEB2FD43D9B_enc_out(v513_bool_put(O.out_at(8n), 0, o))
 
-def GtEB2FD43D9B_encode(o: O.Words) -> O.Words & B.Buf: GtEB2FD43D9B_enc_sized(v513_bool_size(o))
-
-def GtEB2FD43D9B_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_bool_root(h, o, 0)
+def GtEB2FD43D9B_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_bool_root(64n, h, o, 0)
 
 # ---- Gt7FBB1934E8 ----
 
@@ -13436,17 +19429,13 @@ def Gt7FBB1934E8_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt7FBB1934E8_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v5_bool_read(buf, 0, size)
 
-def Gt7FBB1934E8_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt7FBB1934E8_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(5, out))
 
-def Gt7FBB1934E8_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt7FBB1934E8_enc_out(n, v5_bool_put(O.out_new(n), 0, o))
+def Gt7FBB1934E8_encode(o: O.Words) -> O.Words & B.Buf: Gt7FBB1934E8_enc_out(v5_bool_put(O.out_at(1n), 0, o))
 
-def Gt7FBB1934E8_encode(o: O.Words) -> O.Words & B.Buf: Gt7FBB1934E8_enc_sized(v5_bool_size(o))
-
-def Gt7FBB1934E8_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_bool_root(h, o, 0)
+def Gt7FBB1934E8_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_bool_root(64n, h, o, 0)
 
 # ---- Gt526892A4DC ----
 
@@ -13465,17 +19454,13 @@ def Gt526892A4DC_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt526892A4DC_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v8_bool_read(buf, 0, size)
 
-def Gt526892A4DC_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt526892A4DC_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(8, out))
 
-def Gt526892A4DC_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt526892A4DC_enc_out(n, v8_bool_put(O.out_new(n), 0, o))
+def Gt526892A4DC_encode(o: O.Words) -> O.Words & B.Buf: Gt526892A4DC_enc_out(v8_bool_put(O.out_at(1n), 0, o))
 
-def Gt526892A4DC_encode(o: O.Words) -> O.Words & B.Buf: Gt526892A4DC_enc_sized(v8_bool_size(o))
-
-def Gt526892A4DC_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_bool_root(h, o, 0)
+def Gt526892A4DC_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_bool_root(64n, h, o, 0)
 
 # ---- Gt1C2FA69562 ----
 
@@ -13508,7 +19493,7 @@ def Gt1C2FA69562_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
 
 def Gt1C2FA69562_encode(o: O.Words) -> O.Words & B.Buf: Gt1C2FA69562_enc_sized(pl_u128_size(o))
 
-def Gt1C2FA69562_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u128_root(h, o, 0)
+def Gt1C2FA69562_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u128_root(64n, h, o, 0)
 
 # ---- Gt3EC8B89B94 ----
 
@@ -13527,17 +19512,13 @@ def Gt3EC8B89B94_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt3EC8B89B94_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v16_u128_read(buf, 0, size)
 
-def Gt3EC8B89B94_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt3EC8B89B94_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(256, out))
 
-def Gt3EC8B89B94_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt3EC8B89B94_enc_out(n, v16_u128_put(O.out_new(n), 0, o))
+def Gt3EC8B89B94_encode(o: O.Words) -> O.Words & B.Buf: Gt3EC8B89B94_enc_out(v16_u128_put(O.out_at(6n), 0, o))
 
-def Gt3EC8B89B94_encode(o: O.Words) -> O.Words & B.Buf: Gt3EC8B89B94_enc_sized(v16_u128_size(o))
-
-def Gt3EC8B89B94_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u128_root(h, o, 0)
+def Gt3EC8B89B94_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u128_root(64n, h, o, 0)
 
 # ---- Gt3FD98F54A5 ----
 
@@ -13556,17 +19537,13 @@ def Gt3FD98F54A5_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt3FD98F54A5_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_u128_read(buf, 0, size)
 
-def Gt3FD98F54A5_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt3FD98F54A5_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(16, out))
 
-def Gt3FD98F54A5_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt3FD98F54A5_enc_out(n, v1_u128_put(O.out_new(n), 0, o))
+def Gt3FD98F54A5_encode(o: O.Words) -> O.Words & B.Buf: Gt3FD98F54A5_enc_out(v1_u128_put(O.out_at(2n), 0, o))
 
-def Gt3FD98F54A5_encode(o: O.Words) -> O.Words & B.Buf: Gt3FD98F54A5_enc_sized(v1_u128_size(o))
-
-def Gt3FD98F54A5_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u128_root(h, o, 0)
+def Gt3FD98F54A5_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u128_root(64n, h, o, 0)
 
 # ---- Gt7D65FF3A10 ----
 
@@ -13585,17 +19562,13 @@ def Gt7D65FF3A10_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt7D65FF3A10_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v2_u128_read(buf, 0, size)
 
-def Gt7D65FF3A10_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt7D65FF3A10_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(32, out))
 
-def Gt7D65FF3A10_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt7D65FF3A10_enc_out(n, v2_u128_put(O.out_new(n), 0, o))
+def Gt7D65FF3A10_encode(o: O.Words) -> O.Words & B.Buf: Gt7D65FF3A10_enc_out(v2_u128_put(O.out_at(3n), 0, o))
 
-def Gt7D65FF3A10_encode(o: O.Words) -> O.Words & B.Buf: Gt7D65FF3A10_enc_sized(v2_u128_size(o))
-
-def Gt7D65FF3A10_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u128_root(h, o, 0)
+def Gt7D65FF3A10_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u128_root(64n, h, o, 0)
 
 # ---- Gt6B1336E534 ----
 
@@ -13614,17 +19587,13 @@ def Gt6B1336E534_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt6B1336E534_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v31_u128_read(buf, 0, size)
 
-def Gt6B1336E534_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt6B1336E534_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(496, out))
 
-def Gt6B1336E534_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt6B1336E534_enc_out(n, v31_u128_put(O.out_new(n), 0, o))
+def Gt6B1336E534_encode(o: O.Words) -> O.Words & B.Buf: Gt6B1336E534_enc_out(v31_u128_put(O.out_at(7n), 0, o))
 
-def Gt6B1336E534_encode(o: O.Words) -> O.Words & B.Buf: Gt6B1336E534_enc_sized(v31_u128_size(o))
-
-def Gt6B1336E534_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u128_root(h, o, 0)
+def Gt6B1336E534_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u128_root(64n, h, o, 0)
 
 # ---- Gt7600AB7870 ----
 
@@ -13643,17 +19612,13 @@ def Gt7600AB7870_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt7600AB7870_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v3_u128_read(buf, 0, size)
 
-def Gt7600AB7870_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt7600AB7870_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(48, out))
 
-def Gt7600AB7870_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt7600AB7870_enc_out(n, v3_u128_put(O.out_new(n), 0, o))
+def Gt7600AB7870_encode(o: O.Words) -> O.Words & B.Buf: Gt7600AB7870_enc_out(v3_u128_put(O.out_at(4n), 0, o))
 
-def Gt7600AB7870_encode(o: O.Words) -> O.Words & B.Buf: Gt7600AB7870_enc_sized(v3_u128_size(o))
-
-def Gt7600AB7870_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u128_root(h, o, 0)
+def Gt7600AB7870_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u128_root(64n, h, o, 0)
 
 # ---- GtB0CCEA154C ----
 
@@ -13672,17 +19637,13 @@ def GtB0CCEA154C_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtB0CCEA154C_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_u128_read(buf, 0, size)
 
-def GtB0CCEA154C_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtB0CCEA154C_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(64, out))
 
-def GtB0CCEA154C_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtB0CCEA154C_enc_out(n, v4_u128_put(O.out_new(n), 0, o))
+def GtB0CCEA154C_encode(o: O.Words) -> O.Words & B.Buf: GtB0CCEA154C_enc_out(v4_u128_put(O.out_at(4n), 0, o))
 
-def GtB0CCEA154C_encode(o: O.Words) -> O.Words & B.Buf: GtB0CCEA154C_enc_sized(v4_u128_size(o))
-
-def GtB0CCEA154C_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u128_root(h, o, 0)
+def GtB0CCEA154C_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u128_root(64n, h, o, 0)
 
 # ---- Gt7274F61A0F ----
 
@@ -13701,17 +19662,13 @@ def Gt7274F61A0F_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt7274F61A0F_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v512_u128_read(buf, 0, size)
 
-def Gt7274F61A0F_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt7274F61A0F_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(8192, out))
 
-def Gt7274F61A0F_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt7274F61A0F_enc_out(n, v512_u128_put(O.out_new(n), 0, o))
+def Gt7274F61A0F_encode(o: O.Words) -> O.Words & B.Buf: Gt7274F61A0F_enc_out(v512_u128_put(O.out_at(11n), 0, o))
 
-def Gt7274F61A0F_encode(o: O.Words) -> O.Words & B.Buf: Gt7274F61A0F_enc_sized(v512_u128_size(o))
-
-def Gt7274F61A0F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u128_root(h, o, 0)
+def Gt7274F61A0F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u128_root(64n, h, o, 0)
 
 # ---- Gt9EA902108D ----
 
@@ -13730,17 +19687,13 @@ def Gt9EA902108D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt9EA902108D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_u128_read(buf, 0, size)
 
-def Gt9EA902108D_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt9EA902108D_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(8208, out))
 
-def Gt9EA902108D_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt9EA902108D_enc_out(n, v513_u128_put(O.out_new(n), 0, o))
+def Gt9EA902108D_encode(o: O.Words) -> O.Words & B.Buf: Gt9EA902108D_enc_out(v513_u128_put(O.out_at(12n), 0, o))
 
-def Gt9EA902108D_encode(o: O.Words) -> O.Words & B.Buf: Gt9EA902108D_enc_sized(v513_u128_size(o))
-
-def Gt9EA902108D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u128_root(h, o, 0)
+def Gt9EA902108D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u128_root(64n, h, o, 0)
 
 # ---- GtBB42F83A45 ----
 
@@ -13759,17 +19712,13 @@ def GtBB42F83A45_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtBB42F83A45_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v5_u128_read(buf, 0, size)
 
-def GtBB42F83A45_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtBB42F83A45_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(80, out))
 
-def GtBB42F83A45_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtBB42F83A45_enc_out(n, v5_u128_put(O.out_new(n), 0, o))
+def GtBB42F83A45_encode(o: O.Words) -> O.Words & B.Buf: GtBB42F83A45_enc_out(v5_u128_put(O.out_at(5n), 0, o))
 
-def GtBB42F83A45_encode(o: O.Words) -> O.Words & B.Buf: GtBB42F83A45_enc_sized(v5_u128_size(o))
-
-def GtBB42F83A45_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u128_root(h, o, 0)
+def GtBB42F83A45_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u128_root(64n, h, o, 0)
 
 # ---- Gt3E2A057F33 ----
 
@@ -13788,17 +19737,13 @@ def Gt3E2A057F33_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt3E2A057F33_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v8_u128_read(buf, 0, size)
 
-def Gt3E2A057F33_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt3E2A057F33_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(128, out))
 
-def Gt3E2A057F33_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt3E2A057F33_enc_out(n, v8_u128_put(O.out_new(n), 0, o))
+def Gt3E2A057F33_encode(o: O.Words) -> O.Words & B.Buf: Gt3E2A057F33_enc_out(v8_u128_put(O.out_at(5n), 0, o))
 
-def Gt3E2A057F33_encode(o: O.Words) -> O.Words & B.Buf: Gt3E2A057F33_enc_sized(v8_u128_size(o))
-
-def Gt3E2A057F33_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u128_root(h, o, 0)
+def Gt3E2A057F33_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u128_root(64n, h, o, 0)
 
 # ---- GtDE4B86A990 ----
 
@@ -13831,7 +19776,7 @@ def GtDE4B86A990_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
 
 def GtDE4B86A990_encode(o: O.Words) -> O.Words & B.Buf: GtDE4B86A990_enc_sized(pl_u8_size(o))
 
-def GtDE4B86A990_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u8_root(h, o, 0)
+def GtDE4B86A990_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u8_root(64n, h, o, 0)
 
 # ---- Gt28ED72E3EF ----
 
@@ -13850,17 +19795,13 @@ def Gt28ED72E3EF_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt28ED72E3EF_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v16_u8_read(buf, 0, size)
 
-def Gt28ED72E3EF_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt28ED72E3EF_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(16, out))
 
-def Gt28ED72E3EF_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt28ED72E3EF_enc_out(n, v16_u8_put(O.out_new(n), 0, o))
+def Gt28ED72E3EF_encode(o: O.Words) -> O.Words & B.Buf: Gt28ED72E3EF_enc_out(v16_u8_put(O.out_at(2n), 0, o))
 
-def Gt28ED72E3EF_encode(o: O.Words) -> O.Words & B.Buf: Gt28ED72E3EF_enc_sized(v16_u8_size(o))
-
-def Gt28ED72E3EF_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u8_root(h, o, 0)
+def Gt28ED72E3EF_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u8_root(64n, h, o, 0)
 
 # ---- GtB85E1BC748 ----
 
@@ -13879,17 +19820,13 @@ def GtB85E1BC748_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtB85E1BC748_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_u8_read(buf, 0, size)
 
-def GtB85E1BC748_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtB85E1BC748_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(1, out))
 
-def GtB85E1BC748_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtB85E1BC748_enc_out(n, v1_u8_put(O.out_new(n), 0, o))
+def GtB85E1BC748_encode(o: O.Words) -> O.Words & B.Buf: GtB85E1BC748_enc_out(v1_u8_put(O.out_at(0n), 0, o))
 
-def GtB85E1BC748_encode(o: O.Words) -> O.Words & B.Buf: GtB85E1BC748_enc_sized(v1_u8_size(o))
-
-def GtB85E1BC748_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u8_root(h, o, 0)
+def GtB85E1BC748_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u8_root(64n, h, o, 0)
 
 # ---- Gt3429157FEB ----
 
@@ -13908,17 +19845,13 @@ def Gt3429157FEB_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt3429157FEB_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v2_u8_read(buf, 0, size)
 
-def Gt3429157FEB_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt3429157FEB_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(2, out))
 
-def Gt3429157FEB_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt3429157FEB_enc_out(n, v2_u8_put(O.out_new(n), 0, o))
+def Gt3429157FEB_encode(o: O.Words) -> O.Words & B.Buf: Gt3429157FEB_enc_out(v2_u8_put(O.out_at(0n), 0, o))
 
-def Gt3429157FEB_encode(o: O.Words) -> O.Words & B.Buf: Gt3429157FEB_enc_sized(v2_u8_size(o))
-
-def Gt3429157FEB_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u8_root(h, o, 0)
+def Gt3429157FEB_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u8_root(64n, h, o, 0)
 
 # ---- GtC0FC7B166A ----
 
@@ -13937,17 +19870,13 @@ def GtC0FC7B166A_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtC0FC7B166A_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v31_u8_read(buf, 0, size)
 
-def GtC0FC7B166A_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtC0FC7B166A_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(31, out))
 
-def GtC0FC7B166A_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtC0FC7B166A_enc_out(n, v31_u8_put(O.out_new(n), 0, o))
+def GtC0FC7B166A_encode(o: O.Words) -> O.Words & B.Buf: GtC0FC7B166A_enc_out(v31_u8_put(O.out_at(3n), 0, o))
 
-def GtC0FC7B166A_encode(o: O.Words) -> O.Words & B.Buf: GtC0FC7B166A_enc_sized(v31_u8_size(o))
-
-def GtC0FC7B166A_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u8_root(h, o, 0)
+def GtC0FC7B166A_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u8_root(64n, h, o, 0)
 
 # ---- GtC19E8053EB ----
 
@@ -13966,17 +19895,13 @@ def GtC19E8053EB_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtC19E8053EB_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v3_u8_read(buf, 0, size)
 
-def GtC19E8053EB_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtC19E8053EB_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(3, out))
 
-def GtC19E8053EB_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtC19E8053EB_enc_out(n, v3_u8_put(O.out_new(n), 0, o))
+def GtC19E8053EB_encode(o: O.Words) -> O.Words & B.Buf: GtC19E8053EB_enc_out(v3_u8_put(O.out_at(0n), 0, o))
 
-def GtC19E8053EB_encode(o: O.Words) -> O.Words & B.Buf: GtC19E8053EB_enc_sized(v3_u8_size(o))
-
-def GtC19E8053EB_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u8_root(h, o, 0)
+def GtC19E8053EB_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u8_root(64n, h, o, 0)
 
 # ---- Gt75C1995C88 ----
 
@@ -13995,17 +19920,13 @@ def Gt75C1995C88_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt75C1995C88_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_u8_read(buf, 0, size)
 
-def Gt75C1995C88_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt75C1995C88_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(4, out))
 
-def Gt75C1995C88_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt75C1995C88_enc_out(n, v4_u8_put(O.out_new(n), 0, o))
+def Gt75C1995C88_encode(o: O.Words) -> O.Words & B.Buf: Gt75C1995C88_enc_out(v4_u8_put(O.out_at(0n), 0, o))
 
-def Gt75C1995C88_encode(o: O.Words) -> O.Words & B.Buf: Gt75C1995C88_enc_sized(v4_u8_size(o))
-
-def Gt75C1995C88_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u8_root(h, o, 0)
+def Gt75C1995C88_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u8_root(64n, h, o, 0)
 
 # ---- Gt28605B5D5C ----
 
@@ -14024,17 +19945,13 @@ def Gt28605B5D5C_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt28605B5D5C_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v512_u8_read(buf, 0, size)
 
-def Gt28605B5D5C_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt28605B5D5C_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(512, out))
 
-def Gt28605B5D5C_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt28605B5D5C_enc_out(n, v512_u8_put(O.out_new(n), 0, o))
+def Gt28605B5D5C_encode(o: O.Words) -> O.Words & B.Buf: Gt28605B5D5C_enc_out(v512_u8_put(O.out_at(7n), 0, o))
 
-def Gt28605B5D5C_encode(o: O.Words) -> O.Words & B.Buf: Gt28605B5D5C_enc_sized(v512_u8_size(o))
-
-def Gt28605B5D5C_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u8_root(h, o, 0)
+def Gt28605B5D5C_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u8_root(64n, h, o, 0)
 
 # ---- Gt2CD118DF5F ----
 
@@ -14053,17 +19970,13 @@ def Gt2CD118DF5F_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt2CD118DF5F_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_u8_read(buf, 0, size)
 
-def Gt2CD118DF5F_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt2CD118DF5F_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(513, out))
 
-def Gt2CD118DF5F_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt2CD118DF5F_enc_out(n, v513_u8_put(O.out_new(n), 0, o))
+def Gt2CD118DF5F_encode(o: O.Words) -> O.Words & B.Buf: Gt2CD118DF5F_enc_out(v513_u8_put(O.out_at(8n), 0, o))
 
-def Gt2CD118DF5F_encode(o: O.Words) -> O.Words & B.Buf: Gt2CD118DF5F_enc_sized(v513_u8_size(o))
-
-def Gt2CD118DF5F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u8_root(h, o, 0)
+def Gt2CD118DF5F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u8_root(64n, h, o, 0)
 
 # ---- GtF3865AEE9A ----
 
@@ -14082,17 +19995,13 @@ def GtF3865AEE9A_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtF3865AEE9A_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v5_u8_read(buf, 0, size)
 
-def GtF3865AEE9A_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtF3865AEE9A_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(5, out))
 
-def GtF3865AEE9A_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtF3865AEE9A_enc_out(n, v5_u8_put(O.out_new(n), 0, o))
+def GtF3865AEE9A_encode(o: O.Words) -> O.Words & B.Buf: GtF3865AEE9A_enc_out(v5_u8_put(O.out_at(1n), 0, o))
 
-def GtF3865AEE9A_encode(o: O.Words) -> O.Words & B.Buf: GtF3865AEE9A_enc_sized(v5_u8_size(o))
-
-def GtF3865AEE9A_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u8_root(h, o, 0)
+def GtF3865AEE9A_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u8_root(64n, h, o, 0)
 
 # ---- GtA8100D747D ----
 
@@ -14111,17 +20020,13 @@ def GtA8100D747D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtA8100D747D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v8_u8_read(buf, 0, size)
 
-def GtA8100D747D_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtA8100D747D_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(8, out))
 
-def GtA8100D747D_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtA8100D747D_enc_out(n, v8_u8_put(O.out_new(n), 0, o))
+def GtA8100D747D_encode(o: O.Words) -> O.Words & B.Buf: GtA8100D747D_enc_out(v8_u8_put(O.out_at(1n), 0, o))
 
-def GtA8100D747D_encode(o: O.Words) -> O.Words & B.Buf: GtA8100D747D_enc_sized(v8_u8_size(o))
-
-def GtA8100D747D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u8_root(h, o, 0)
+def GtA8100D747D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u8_root(64n, h, o, 0)
 
 # ---- GtF23A2FB97E ----
 
@@ -14154,7 +20059,7 @@ def GtF23A2FB97E_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
 
 def GtF23A2FB97E_encode(o: O.Words) -> O.Words & B.Buf: GtF23A2FB97E_enc_sized(pl_u16_size(o))
 
-def GtF23A2FB97E_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u16_root(h, o, 0)
+def GtF23A2FB97E_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u16_root(64n, h, o, 0)
 
 # ---- GtAEB382AD1F ----
 
@@ -14173,17 +20078,13 @@ def GtAEB382AD1F_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtAEB382AD1F_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v16_u16_read(buf, 0, size)
 
-def GtAEB382AD1F_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtAEB382AD1F_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(32, out))
 
-def GtAEB382AD1F_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtAEB382AD1F_enc_out(n, v16_u16_put(O.out_new(n), 0, o))
+def GtAEB382AD1F_encode(o: O.Words) -> O.Words & B.Buf: GtAEB382AD1F_enc_out(v16_u16_put(O.out_at(3n), 0, o))
 
-def GtAEB382AD1F_encode(o: O.Words) -> O.Words & B.Buf: GtAEB382AD1F_enc_sized(v16_u16_size(o))
-
-def GtAEB382AD1F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u16_root(h, o, 0)
+def GtAEB382AD1F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u16_root(64n, h, o, 0)
 
 # ---- GtE6006F6F55 ----
 
@@ -14202,17 +20103,13 @@ def GtE6006F6F55_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtE6006F6F55_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_u16_read(buf, 0, size)
 
-def GtE6006F6F55_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtE6006F6F55_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(2, out))
 
-def GtE6006F6F55_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtE6006F6F55_enc_out(n, v1_u16_put(O.out_new(n), 0, o))
+def GtE6006F6F55_encode(o: O.Words) -> O.Words & B.Buf: GtE6006F6F55_enc_out(v1_u16_put(O.out_at(0n), 0, o))
 
-def GtE6006F6F55_encode(o: O.Words) -> O.Words & B.Buf: GtE6006F6F55_enc_sized(v1_u16_size(o))
-
-def GtE6006F6F55_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u16_root(h, o, 0)
+def GtE6006F6F55_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u16_root(64n, h, o, 0)
 
 # ---- Gt04170D6AA7 ----
 
@@ -14231,17 +20128,13 @@ def Gt04170D6AA7_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt04170D6AA7_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v2_u16_read(buf, 0, size)
 
-def Gt04170D6AA7_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt04170D6AA7_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(4, out))
 
-def Gt04170D6AA7_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt04170D6AA7_enc_out(n, v2_u16_put(O.out_new(n), 0, o))
+def Gt04170D6AA7_encode(o: O.Words) -> O.Words & B.Buf: Gt04170D6AA7_enc_out(v2_u16_put(O.out_at(0n), 0, o))
 
-def Gt04170D6AA7_encode(o: O.Words) -> O.Words & B.Buf: Gt04170D6AA7_enc_sized(v2_u16_size(o))
-
-def Gt04170D6AA7_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u16_root(h, o, 0)
+def Gt04170D6AA7_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u16_root(64n, h, o, 0)
 
 # ---- Gt9333E6513D ----
 
@@ -14260,17 +20153,13 @@ def Gt9333E6513D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt9333E6513D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v31_u16_read(buf, 0, size)
 
-def Gt9333E6513D_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt9333E6513D_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(62, out))
 
-def Gt9333E6513D_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt9333E6513D_enc_out(n, v31_u16_put(O.out_new(n), 0, o))
+def Gt9333E6513D_encode(o: O.Words) -> O.Words & B.Buf: Gt9333E6513D_enc_out(v31_u16_put(O.out_at(4n), 0, o))
 
-def Gt9333E6513D_encode(o: O.Words) -> O.Words & B.Buf: Gt9333E6513D_enc_sized(v31_u16_size(o))
-
-def Gt9333E6513D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u16_root(h, o, 0)
+def Gt9333E6513D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u16_root(64n, h, o, 0)
 
 # ---- Gt19F04F79B8 ----
 
@@ -14289,17 +20178,13 @@ def Gt19F04F79B8_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt19F04F79B8_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v3_u16_read(buf, 0, size)
 
-def Gt19F04F79B8_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt19F04F79B8_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(6, out))
 
-def Gt19F04F79B8_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt19F04F79B8_enc_out(n, v3_u16_put(O.out_new(n), 0, o))
+def Gt19F04F79B8_encode(o: O.Words) -> O.Words & B.Buf: Gt19F04F79B8_enc_out(v3_u16_put(O.out_at(1n), 0, o))
 
-def Gt19F04F79B8_encode(o: O.Words) -> O.Words & B.Buf: Gt19F04F79B8_enc_sized(v3_u16_size(o))
-
-def Gt19F04F79B8_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u16_root(h, o, 0)
+def Gt19F04F79B8_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u16_root(64n, h, o, 0)
 
 # ---- Gt6463DC73A8 ----
 
@@ -14318,17 +20203,13 @@ def Gt6463DC73A8_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt6463DC73A8_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_u16_read(buf, 0, size)
 
-def Gt6463DC73A8_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt6463DC73A8_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(8, out))
 
-def Gt6463DC73A8_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt6463DC73A8_enc_out(n, v4_u16_put(O.out_new(n), 0, o))
+def Gt6463DC73A8_encode(o: O.Words) -> O.Words & B.Buf: Gt6463DC73A8_enc_out(v4_u16_put(O.out_at(1n), 0, o))
 
-def Gt6463DC73A8_encode(o: O.Words) -> O.Words & B.Buf: Gt6463DC73A8_enc_sized(v4_u16_size(o))
-
-def Gt6463DC73A8_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u16_root(h, o, 0)
+def Gt6463DC73A8_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u16_root(64n, h, o, 0)
 
 # ---- Gt2FF8722A75 ----
 
@@ -14347,17 +20228,13 @@ def Gt2FF8722A75_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt2FF8722A75_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v512_u16_read(buf, 0, size)
 
-def Gt2FF8722A75_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt2FF8722A75_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(1024, out))
 
-def Gt2FF8722A75_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt2FF8722A75_enc_out(n, v512_u16_put(O.out_new(n), 0, o))
+def Gt2FF8722A75_encode(o: O.Words) -> O.Words & B.Buf: Gt2FF8722A75_enc_out(v512_u16_put(O.out_at(8n), 0, o))
 
-def Gt2FF8722A75_encode(o: O.Words) -> O.Words & B.Buf: Gt2FF8722A75_enc_sized(v512_u16_size(o))
-
-def Gt2FF8722A75_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u16_root(h, o, 0)
+def Gt2FF8722A75_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u16_root(64n, h, o, 0)
 
 # ---- Gt5BE68AF2C7 ----
 
@@ -14376,17 +20253,13 @@ def Gt5BE68AF2C7_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt5BE68AF2C7_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_u16_read(buf, 0, size)
 
-def Gt5BE68AF2C7_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt5BE68AF2C7_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(1026, out))
 
-def Gt5BE68AF2C7_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt5BE68AF2C7_enc_out(n, v513_u16_put(O.out_new(n), 0, o))
+def Gt5BE68AF2C7_encode(o: O.Words) -> O.Words & B.Buf: Gt5BE68AF2C7_enc_out(v513_u16_put(O.out_at(9n), 0, o))
 
-def Gt5BE68AF2C7_encode(o: O.Words) -> O.Words & B.Buf: Gt5BE68AF2C7_enc_sized(v513_u16_size(o))
-
-def Gt5BE68AF2C7_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u16_root(h, o, 0)
+def Gt5BE68AF2C7_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u16_root(64n, h, o, 0)
 
 # ---- Gt89824BEACE ----
 
@@ -14405,17 +20278,13 @@ def Gt89824BEACE_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt89824BEACE_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v5_u16_read(buf, 0, size)
 
-def Gt89824BEACE_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt89824BEACE_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(10, out))
 
-def Gt89824BEACE_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt89824BEACE_enc_out(n, v5_u16_put(O.out_new(n), 0, o))
+def Gt89824BEACE_encode(o: O.Words) -> O.Words & B.Buf: Gt89824BEACE_enc_out(v5_u16_put(O.out_at(2n), 0, o))
 
-def Gt89824BEACE_encode(o: O.Words) -> O.Words & B.Buf: Gt89824BEACE_enc_sized(v5_u16_size(o))
-
-def Gt89824BEACE_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u16_root(h, o, 0)
+def Gt89824BEACE_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u16_root(64n, h, o, 0)
 
 # ---- Gt39CAD03032 ----
 
@@ -14434,17 +20303,13 @@ def Gt39CAD03032_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt39CAD03032_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v8_u16_read(buf, 0, size)
 
-def Gt39CAD03032_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt39CAD03032_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(16, out))
 
-def Gt39CAD03032_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt39CAD03032_enc_out(n, v8_u16_put(O.out_new(n), 0, o))
+def Gt39CAD03032_encode(o: O.Words) -> O.Words & B.Buf: Gt39CAD03032_enc_out(v8_u16_put(O.out_at(2n), 0, o))
 
-def Gt39CAD03032_encode(o: O.Words) -> O.Words & B.Buf: Gt39CAD03032_enc_sized(v8_u16_size(o))
-
-def Gt39CAD03032_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u16_root(h, o, 0)
+def Gt39CAD03032_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u16_root(64n, h, o, 0)
 
 # ---- GtA8457965E2 ----
 
@@ -14477,7 +20342,7 @@ def GtA8457965E2_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
 
 def GtA8457965E2_encode(o: O.Words) -> O.Words & B.Buf: GtA8457965E2_enc_sized(pl_u256_size(o))
 
-def GtA8457965E2_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u256_root(h, o, 0)
+def GtA8457965E2_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u256_root(64n, h, o, 0)
 
 # ---- Gt3E6E18CD57 ----
 
@@ -14496,17 +20361,13 @@ def Gt3E6E18CD57_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt3E6E18CD57_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v16_u256_read(buf, 0, size)
 
-def Gt3E6E18CD57_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt3E6E18CD57_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(512, out))
 
-def Gt3E6E18CD57_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt3E6E18CD57_enc_out(n, v16_u256_put(O.out_new(n), 0, o))
+def Gt3E6E18CD57_encode(o: O.Words) -> O.Words & B.Buf: Gt3E6E18CD57_enc_out(v16_u256_put(O.out_at(7n), 0, o))
 
-def Gt3E6E18CD57_encode(o: O.Words) -> O.Words & B.Buf: Gt3E6E18CD57_enc_sized(v16_u256_size(o))
-
-def Gt3E6E18CD57_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u256_root(h, o, 0)
+def Gt3E6E18CD57_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u256_root(64n, h, o, 0)
 
 # ---- GtBBFD66E011 ----
 
@@ -14525,17 +20386,13 @@ def GtBBFD66E011_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtBBFD66E011_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_u256_read(buf, 0, size)
 
-def GtBBFD66E011_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtBBFD66E011_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(32, out))
 
-def GtBBFD66E011_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtBBFD66E011_enc_out(n, v1_u256_put(O.out_new(n), 0, o))
+def GtBBFD66E011_encode(o: O.Words) -> O.Words & B.Buf: GtBBFD66E011_enc_out(v1_u256_put(O.out_at(3n), 0, o))
 
-def GtBBFD66E011_encode(o: O.Words) -> O.Words & B.Buf: GtBBFD66E011_enc_sized(v1_u256_size(o))
-
-def GtBBFD66E011_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u256_root(h, o, 0)
+def GtBBFD66E011_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u256_root(64n, h, o, 0)
 
 # ---- GtB91D4D285D ----
 
@@ -14554,17 +20411,13 @@ def GtB91D4D285D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtB91D4D285D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v2_u256_read(buf, 0, size)
 
-def GtB91D4D285D_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtB91D4D285D_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(64, out))
 
-def GtB91D4D285D_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtB91D4D285D_enc_out(n, v2_u256_put(O.out_new(n), 0, o))
+def GtB91D4D285D_encode(o: O.Words) -> O.Words & B.Buf: GtB91D4D285D_enc_out(v2_u256_put(O.out_at(4n), 0, o))
 
-def GtB91D4D285D_encode(o: O.Words) -> O.Words & B.Buf: GtB91D4D285D_enc_sized(v2_u256_size(o))
-
-def GtB91D4D285D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u256_root(h, o, 0)
+def GtB91D4D285D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u256_root(64n, h, o, 0)
 
 # ---- Gt6E9B243B7C ----
 
@@ -14583,17 +20436,13 @@ def Gt6E9B243B7C_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt6E9B243B7C_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v31_u256_read(buf, 0, size)
 
-def Gt6E9B243B7C_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt6E9B243B7C_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(992, out))
 
-def Gt6E9B243B7C_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt6E9B243B7C_enc_out(n, v31_u256_put(O.out_new(n), 0, o))
+def Gt6E9B243B7C_encode(o: O.Words) -> O.Words & B.Buf: Gt6E9B243B7C_enc_out(v31_u256_put(O.out_at(8n), 0, o))
 
-def Gt6E9B243B7C_encode(o: O.Words) -> O.Words & B.Buf: Gt6E9B243B7C_enc_sized(v31_u256_size(o))
-
-def Gt6E9B243B7C_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u256_root(h, o, 0)
+def Gt6E9B243B7C_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u256_root(64n, h, o, 0)
 
 # ---- Gt2E7060B297 ----
 
@@ -14612,17 +20461,13 @@ def Gt2E7060B297_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt2E7060B297_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v3_u256_read(buf, 0, size)
 
-def Gt2E7060B297_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt2E7060B297_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(96, out))
 
-def Gt2E7060B297_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt2E7060B297_enc_out(n, v3_u256_put(O.out_new(n), 0, o))
+def Gt2E7060B297_encode(o: O.Words) -> O.Words & B.Buf: Gt2E7060B297_enc_out(v3_u256_put(O.out_at(5n), 0, o))
 
-def Gt2E7060B297_encode(o: O.Words) -> O.Words & B.Buf: Gt2E7060B297_enc_sized(v3_u256_size(o))
-
-def Gt2E7060B297_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u256_root(h, o, 0)
+def Gt2E7060B297_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u256_root(64n, h, o, 0)
 
 # ---- Gt74B2AF1CB3 ----
 
@@ -14641,17 +20486,13 @@ def Gt74B2AF1CB3_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt74B2AF1CB3_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_u256_read(buf, 0, size)
 
-def Gt74B2AF1CB3_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt74B2AF1CB3_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(128, out))
 
-def Gt74B2AF1CB3_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt74B2AF1CB3_enc_out(n, v4_u256_put(O.out_new(n), 0, o))
+def Gt74B2AF1CB3_encode(o: O.Words) -> O.Words & B.Buf: Gt74B2AF1CB3_enc_out(v4_u256_put(O.out_at(5n), 0, o))
 
-def Gt74B2AF1CB3_encode(o: O.Words) -> O.Words & B.Buf: Gt74B2AF1CB3_enc_sized(v4_u256_size(o))
-
-def Gt74B2AF1CB3_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u256_root(h, o, 0)
+def Gt74B2AF1CB3_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u256_root(64n, h, o, 0)
 
 # ---- Gt274A0B8DC2 ----
 
@@ -14670,17 +20511,13 @@ def Gt274A0B8DC2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt274A0B8DC2_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v512_u256_read(buf, 0, size)
 
-def Gt274A0B8DC2_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt274A0B8DC2_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(16384, out))
 
-def Gt274A0B8DC2_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt274A0B8DC2_enc_out(n, v512_u256_put(O.out_new(n), 0, o))
+def Gt274A0B8DC2_encode(o: O.Words) -> O.Words & B.Buf: Gt274A0B8DC2_enc_out(v512_u256_put(O.out_at(12n), 0, o))
 
-def Gt274A0B8DC2_encode(o: O.Words) -> O.Words & B.Buf: Gt274A0B8DC2_enc_sized(v512_u256_size(o))
-
-def Gt274A0B8DC2_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u256_root(h, o, 0)
+def Gt274A0B8DC2_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u256_root(64n, h, o, 0)
 
 # ---- Gt0A3B6B4128 ----
 
@@ -14699,17 +20536,13 @@ def Gt0A3B6B4128_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt0A3B6B4128_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_u256_read(buf, 0, size)
 
-def Gt0A3B6B4128_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt0A3B6B4128_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(16416, out))
 
-def Gt0A3B6B4128_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt0A3B6B4128_enc_out(n, v513_u256_put(O.out_new(n), 0, o))
+def Gt0A3B6B4128_encode(o: O.Words) -> O.Words & B.Buf: Gt0A3B6B4128_enc_out(v513_u256_put(O.out_at(13n), 0, o))
 
-def Gt0A3B6B4128_encode(o: O.Words) -> O.Words & B.Buf: Gt0A3B6B4128_enc_sized(v513_u256_size(o))
-
-def Gt0A3B6B4128_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u256_root(h, o, 0)
+def Gt0A3B6B4128_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u256_root(64n, h, o, 0)
 
 # ---- Gt0B1B711C4D ----
 
@@ -14728,17 +20561,13 @@ def Gt0B1B711C4D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt0B1B711C4D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v5_u256_read(buf, 0, size)
 
-def Gt0B1B711C4D_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt0B1B711C4D_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(160, out))
 
-def Gt0B1B711C4D_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt0B1B711C4D_enc_out(n, v5_u256_put(O.out_new(n), 0, o))
+def Gt0B1B711C4D_encode(o: O.Words) -> O.Words & B.Buf: Gt0B1B711C4D_enc_out(v5_u256_put(O.out_at(6n), 0, o))
 
-def Gt0B1B711C4D_encode(o: O.Words) -> O.Words & B.Buf: Gt0B1B711C4D_enc_sized(v5_u256_size(o))
-
-def Gt0B1B711C4D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u256_root(h, o, 0)
+def Gt0B1B711C4D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u256_root(64n, h, o, 0)
 
 # ---- GtFAE59DA275 ----
 
@@ -14757,17 +20586,13 @@ def GtFAE59DA275_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtFAE59DA275_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v8_u256_read(buf, 0, size)
 
-def GtFAE59DA275_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtFAE59DA275_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(256, out))
 
-def GtFAE59DA275_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtFAE59DA275_enc_out(n, v8_u256_put(O.out_new(n), 0, o))
+def GtFAE59DA275_encode(o: O.Words) -> O.Words & B.Buf: GtFAE59DA275_enc_out(v8_u256_put(O.out_at(6n), 0, o))
 
-def GtFAE59DA275_encode(o: O.Words) -> O.Words & B.Buf: GtFAE59DA275_enc_sized(v8_u256_size(o))
-
-def GtFAE59DA275_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u256_root(h, o, 0)
+def GtFAE59DA275_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u256_root(64n, h, o, 0)
 
 # ---- Gt3A9420DD8E ----
 
@@ -14800,7 +20625,7 @@ def Gt3A9420DD8E_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
 
 def Gt3A9420DD8E_encode(o: O.Words) -> O.Words & B.Buf: Gt3A9420DD8E_enc_sized(pl_u32_size(o))
 
-def Gt3A9420DD8E_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u32_root(h, o, 0)
+def Gt3A9420DD8E_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u32_root(64n, h, o, 0)
 
 # ---- Gt3CC580499F ----
 
@@ -14819,17 +20644,13 @@ def Gt3CC580499F_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt3CC580499F_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v16_u32_read(buf, 0, size)
 
-def Gt3CC580499F_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt3CC580499F_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(64, out))
 
-def Gt3CC580499F_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt3CC580499F_enc_out(n, v16_u32_put(O.out_new(n), 0, o))
+def Gt3CC580499F_encode(o: O.Words) -> O.Words & B.Buf: Gt3CC580499F_enc_out(v16_u32_put(O.out_at(4n), 0, o))
 
-def Gt3CC580499F_encode(o: O.Words) -> O.Words & B.Buf: Gt3CC580499F_enc_sized(v16_u32_size(o))
-
-def Gt3CC580499F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u32_root(h, o, 0)
+def Gt3CC580499F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u32_root(64n, h, o, 0)
 
 # ---- Gt669C528764 ----
 
@@ -14848,17 +20669,13 @@ def Gt669C528764_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt669C528764_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_u32_read(buf, 0, size)
 
-def Gt669C528764_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt669C528764_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(4, out))
 
-def Gt669C528764_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt669C528764_enc_out(n, v1_u32_put(O.out_new(n), 0, o))
+def Gt669C528764_encode(o: O.Words) -> O.Words & B.Buf: Gt669C528764_enc_out(v1_u32_put(O.out_at(0n), 0, o))
 
-def Gt669C528764_encode(o: O.Words) -> O.Words & B.Buf: Gt669C528764_enc_sized(v1_u32_size(o))
-
-def Gt669C528764_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u32_root(h, o, 0)
+def Gt669C528764_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u32_root(64n, h, o, 0)
 
 # ---- GtF45E42B273 ----
 
@@ -14877,17 +20694,13 @@ def GtF45E42B273_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtF45E42B273_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v2_u32_read(buf, 0, size)
 
-def GtF45E42B273_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtF45E42B273_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(8, out))
 
-def GtF45E42B273_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtF45E42B273_enc_out(n, v2_u32_put(O.out_new(n), 0, o))
+def GtF45E42B273_encode(o: O.Words) -> O.Words & B.Buf: GtF45E42B273_enc_out(v2_u32_put(O.out_at(1n), 0, o))
 
-def GtF45E42B273_encode(o: O.Words) -> O.Words & B.Buf: GtF45E42B273_enc_sized(v2_u32_size(o))
-
-def GtF45E42B273_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u32_root(h, o, 0)
+def GtF45E42B273_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u32_root(64n, h, o, 0)
 
 # ---- GtE528AAE3C6 ----
 
@@ -14906,17 +20719,13 @@ def GtE528AAE3C6_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtE528AAE3C6_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v31_u32_read(buf, 0, size)
 
-def GtE528AAE3C6_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtE528AAE3C6_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(124, out))
 
-def GtE528AAE3C6_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtE528AAE3C6_enc_out(n, v31_u32_put(O.out_new(n), 0, o))
+def GtE528AAE3C6_encode(o: O.Words) -> O.Words & B.Buf: GtE528AAE3C6_enc_out(v31_u32_put(O.out_at(5n), 0, o))
 
-def GtE528AAE3C6_encode(o: O.Words) -> O.Words & B.Buf: GtE528AAE3C6_enc_sized(v31_u32_size(o))
-
-def GtE528AAE3C6_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u32_root(h, o, 0)
+def GtE528AAE3C6_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u32_root(64n, h, o, 0)
 
 # ---- GtD1AEF07F7D ----
 
@@ -14935,17 +20744,13 @@ def GtD1AEF07F7D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtD1AEF07F7D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v3_u32_read(buf, 0, size)
 
-def GtD1AEF07F7D_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtD1AEF07F7D_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(12, out))
 
-def GtD1AEF07F7D_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtD1AEF07F7D_enc_out(n, v3_u32_put(O.out_new(n), 0, o))
+def GtD1AEF07F7D_encode(o: O.Words) -> O.Words & B.Buf: GtD1AEF07F7D_enc_out(v3_u32_put(O.out_at(2n), 0, o))
 
-def GtD1AEF07F7D_encode(o: O.Words) -> O.Words & B.Buf: GtD1AEF07F7D_enc_sized(v3_u32_size(o))
-
-def GtD1AEF07F7D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u32_root(h, o, 0)
+def GtD1AEF07F7D_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u32_root(64n, h, o, 0)
 
 # ---- Gt240C147AA2 ----
 
@@ -14964,17 +20769,13 @@ def Gt240C147AA2_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt240C147AA2_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_u32_read(buf, 0, size)
 
-def Gt240C147AA2_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt240C147AA2_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(16, out))
 
-def Gt240C147AA2_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt240C147AA2_enc_out(n, v4_u32_put(O.out_new(n), 0, o))
+def Gt240C147AA2_encode(o: O.Words) -> O.Words & B.Buf: Gt240C147AA2_enc_out(v4_u32_put(O.out_at(2n), 0, o))
 
-def Gt240C147AA2_encode(o: O.Words) -> O.Words & B.Buf: Gt240C147AA2_enc_sized(v4_u32_size(o))
-
-def Gt240C147AA2_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u32_root(h, o, 0)
+def Gt240C147AA2_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u32_root(64n, h, o, 0)
 
 # ---- Gt13AFE546ED ----
 
@@ -14993,17 +20794,13 @@ def Gt13AFE546ED_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt13AFE546ED_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v512_u32_read(buf, 0, size)
 
-def Gt13AFE546ED_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt13AFE546ED_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(2048, out))
 
-def Gt13AFE546ED_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt13AFE546ED_enc_out(n, v512_u32_put(O.out_new(n), 0, o))
+def Gt13AFE546ED_encode(o: O.Words) -> O.Words & B.Buf: Gt13AFE546ED_enc_out(v512_u32_put(O.out_at(9n), 0, o))
 
-def Gt13AFE546ED_encode(o: O.Words) -> O.Words & B.Buf: Gt13AFE546ED_enc_sized(v512_u32_size(o))
-
-def Gt13AFE546ED_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u32_root(h, o, 0)
+def Gt13AFE546ED_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u32_root(64n, h, o, 0)
 
 # ---- Gt53D2408A5F ----
 
@@ -15022,17 +20819,13 @@ def Gt53D2408A5F_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt53D2408A5F_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_u32_read(buf, 0, size)
 
-def Gt53D2408A5F_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt53D2408A5F_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(2052, out))
 
-def Gt53D2408A5F_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt53D2408A5F_enc_out(n, v513_u32_put(O.out_new(n), 0, o))
+def Gt53D2408A5F_encode(o: O.Words) -> O.Words & B.Buf: Gt53D2408A5F_enc_out(v513_u32_put(O.out_at(10n), 0, o))
 
-def Gt53D2408A5F_encode(o: O.Words) -> O.Words & B.Buf: Gt53D2408A5F_enc_sized(v513_u32_size(o))
-
-def Gt53D2408A5F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u32_root(h, o, 0)
+def Gt53D2408A5F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u32_root(64n, h, o, 0)
 
 # ---- Gt1719057EB7 ----
 
@@ -15051,17 +20844,13 @@ def Gt1719057EB7_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt1719057EB7_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v5_u32_read(buf, 0, size)
 
-def Gt1719057EB7_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt1719057EB7_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(20, out))
 
-def Gt1719057EB7_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt1719057EB7_enc_out(n, v5_u32_put(O.out_new(n), 0, o))
+def Gt1719057EB7_encode(o: O.Words) -> O.Words & B.Buf: Gt1719057EB7_enc_out(v5_u32_put(O.out_at(3n), 0, o))
 
-def Gt1719057EB7_encode(o: O.Words) -> O.Words & B.Buf: Gt1719057EB7_enc_sized(v5_u32_size(o))
-
-def Gt1719057EB7_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u32_root(h, o, 0)
+def Gt1719057EB7_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u32_root(64n, h, o, 0)
 
 # ---- GtCCF6FFA0A0 ----
 
@@ -15080,17 +20869,13 @@ def GtCCF6FFA0A0_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtCCF6FFA0A0_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v8_u32_read(buf, 0, size)
 
-def GtCCF6FFA0A0_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtCCF6FFA0A0_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(32, out))
 
-def GtCCF6FFA0A0_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtCCF6FFA0A0_enc_out(n, v8_u32_put(O.out_new(n), 0, o))
+def GtCCF6FFA0A0_encode(o: O.Words) -> O.Words & B.Buf: GtCCF6FFA0A0_enc_out(v8_u32_put(O.out_at(3n), 0, o))
 
-def GtCCF6FFA0A0_encode(o: O.Words) -> O.Words & B.Buf: GtCCF6FFA0A0_enc_sized(v8_u32_size(o))
-
-def GtCCF6FFA0A0_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u32_root(h, o, 0)
+def GtCCF6FFA0A0_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u32_root(64n, h, o, 0)
 
 # ---- GtE83F21B20A ----
 
@@ -15123,7 +20908,7 @@ def GtE83F21B20A_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
 
 def GtE83F21B20A_encode(o: O.Words) -> O.Words & B.Buf: GtE83F21B20A_enc_sized(pl_u64_size(o))
 
-def GtE83F21B20A_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u64_root(h, o, 0)
+def GtE83F21B20A_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): pl_u64_root(64n, h, o, 0)
 
 # ---- Gt0B4EF17D71 ----
 
@@ -15142,17 +20927,13 @@ def Gt0B4EF17D71_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt0B4EF17D71_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v16_u64_read(buf, 0, size)
 
-def Gt0B4EF17D71_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt0B4EF17D71_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(128, out))
 
-def Gt0B4EF17D71_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt0B4EF17D71_enc_out(n, v16_u64_put(O.out_new(n), 0, o))
+def Gt0B4EF17D71_encode(o: O.Words) -> O.Words & B.Buf: Gt0B4EF17D71_enc_out(v16_u64_put(O.out_at(5n), 0, o))
 
-def Gt0B4EF17D71_encode(o: O.Words) -> O.Words & B.Buf: Gt0B4EF17D71_enc_sized(v16_u64_size(o))
-
-def Gt0B4EF17D71_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u64_root(h, o, 0)
+def Gt0B4EF17D71_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v16_u64_root(64n, h, o, 0)
 
 # ---- GtADC8DCD962 ----
 
@@ -15171,17 +20952,13 @@ def GtADC8DCD962_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtADC8DCD962_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v1_u64_read(buf, 0, size)
 
-def GtADC8DCD962_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtADC8DCD962_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(8, out))
 
-def GtADC8DCD962_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtADC8DCD962_enc_out(n, v1_u64_put(O.out_new(n), 0, o))
+def GtADC8DCD962_encode(o: O.Words) -> O.Words & B.Buf: GtADC8DCD962_enc_out(v1_u64_put(O.out_at(1n), 0, o))
 
-def GtADC8DCD962_encode(o: O.Words) -> O.Words & B.Buf: GtADC8DCD962_enc_sized(v1_u64_size(o))
-
-def GtADC8DCD962_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u64_root(h, o, 0)
+def GtADC8DCD962_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v1_u64_root(64n, h, o, 0)
 
 # ---- GtC923FCB2DA ----
 
@@ -15200,17 +20977,13 @@ def GtC923FCB2DA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtC923FCB2DA_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v2_u64_read(buf, 0, size)
 
-def GtC923FCB2DA_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtC923FCB2DA_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(16, out))
 
-def GtC923FCB2DA_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtC923FCB2DA_enc_out(n, v2_u64_put(O.out_new(n), 0, o))
+def GtC923FCB2DA_encode(o: O.Words) -> O.Words & B.Buf: GtC923FCB2DA_enc_out(v2_u64_put(O.out_at(2n), 0, o))
 
-def GtC923FCB2DA_encode(o: O.Words) -> O.Words & B.Buf: GtC923FCB2DA_enc_sized(v2_u64_size(o))
-
-def GtC923FCB2DA_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u64_root(h, o, 0)
+def GtC923FCB2DA_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v2_u64_root(64n, h, o, 0)
 
 # ---- Gt7D1CD7363A ----
 
@@ -15229,17 +21002,13 @@ def Gt7D1CD7363A_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt7D1CD7363A_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v31_u64_read(buf, 0, size)
 
-def Gt7D1CD7363A_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt7D1CD7363A_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(248, out))
 
-def Gt7D1CD7363A_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt7D1CD7363A_enc_out(n, v31_u64_put(O.out_new(n), 0, o))
+def Gt7D1CD7363A_encode(o: O.Words) -> O.Words & B.Buf: Gt7D1CD7363A_enc_out(v31_u64_put(O.out_at(6n), 0, o))
 
-def Gt7D1CD7363A_encode(o: O.Words) -> O.Words & B.Buf: Gt7D1CD7363A_enc_sized(v31_u64_size(o))
-
-def Gt7D1CD7363A_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u64_root(h, o, 0)
+def Gt7D1CD7363A_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v31_u64_root(64n, h, o, 0)
 
 # ---- Gt8E507C4540 ----
 
@@ -15258,17 +21027,13 @@ def Gt8E507C4540_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt8E507C4540_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v3_u64_read(buf, 0, size)
 
-def Gt8E507C4540_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt8E507C4540_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(24, out))
 
-def Gt8E507C4540_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt8E507C4540_enc_out(n, v3_u64_put(O.out_new(n), 0, o))
+def Gt8E507C4540_encode(o: O.Words) -> O.Words & B.Buf: Gt8E507C4540_enc_out(v3_u64_put(O.out_at(3n), 0, o))
 
-def Gt8E507C4540_encode(o: O.Words) -> O.Words & B.Buf: Gt8E507C4540_enc_sized(v3_u64_size(o))
-
-def Gt8E507C4540_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u64_root(h, o, 0)
+def Gt8E507C4540_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v3_u64_root(64n, h, o, 0)
 
 # ---- Gt46F5D7703F ----
 
@@ -15287,17 +21052,13 @@ def Gt46F5D7703F_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt46F5D7703F_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v4_u64_read(buf, 0, size)
 
-def Gt46F5D7703F_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt46F5D7703F_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(32, out))
 
-def Gt46F5D7703F_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt46F5D7703F_enc_out(n, v4_u64_put(O.out_new(n), 0, o))
+def Gt46F5D7703F_encode(o: O.Words) -> O.Words & B.Buf: Gt46F5D7703F_enc_out(v4_u64_put(O.out_at(3n), 0, o))
 
-def Gt46F5D7703F_encode(o: O.Words) -> O.Words & B.Buf: Gt46F5D7703F_enc_sized(v4_u64_size(o))
-
-def Gt46F5D7703F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u64_root(h, o, 0)
+def Gt46F5D7703F_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v4_u64_root(64n, h, o, 0)
 
 # ---- Gt843A1262ED ----
 
@@ -15316,17 +21077,13 @@ def Gt843A1262ED_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt843A1262ED_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v512_u64_read(buf, 0, size)
 
-def Gt843A1262ED_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt843A1262ED_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(4096, out))
 
-def Gt843A1262ED_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt843A1262ED_enc_out(n, v512_u64_put(O.out_new(n), 0, o))
+def Gt843A1262ED_encode(o: O.Words) -> O.Words & B.Buf: Gt843A1262ED_enc_out(v512_u64_put(O.out_at(10n), 0, o))
 
-def Gt843A1262ED_encode(o: O.Words) -> O.Words & B.Buf: Gt843A1262ED_enc_sized(v512_u64_size(o))
-
-def Gt843A1262ED_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u64_root(h, o, 0)
+def Gt843A1262ED_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v512_u64_root(64n, h, o, 0)
 
 # ---- Gt10D6F42D74 ----
 
@@ -15345,17 +21102,13 @@ def Gt10D6F42D74_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt10D6F42D74_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v513_u64_read(buf, 0, size)
 
-def Gt10D6F42D74_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt10D6F42D74_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(4104, out))
 
-def Gt10D6F42D74_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt10D6F42D74_enc_out(n, v513_u64_put(O.out_new(n), 0, o))
+def Gt10D6F42D74_encode(o: O.Words) -> O.Words & B.Buf: Gt10D6F42D74_enc_out(v513_u64_put(O.out_at(11n), 0, o))
 
-def Gt10D6F42D74_encode(o: O.Words) -> O.Words & B.Buf: Gt10D6F42D74_enc_sized(v513_u64_size(o))
-
-def Gt10D6F42D74_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u64_root(h, o, 0)
+def Gt10D6F42D74_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v513_u64_root(64n, h, o, 0)
 
 # ---- Gt8FB0CF9679 ----
 
@@ -15374,17 +21127,13 @@ def Gt8FB0CF9679_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def Gt8FB0CF9679_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v5_u64_read(buf, 0, size)
 
-def Gt8FB0CF9679_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def Gt8FB0CF9679_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(40, out))
 
-def Gt8FB0CF9679_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  Gt8FB0CF9679_enc_out(n, v5_u64_put(O.out_new(n), 0, o))
+def Gt8FB0CF9679_encode(o: O.Words) -> O.Words & B.Buf: Gt8FB0CF9679_enc_out(v5_u64_put(O.out_at(4n), 0, o))
 
-def Gt8FB0CF9679_encode(o: O.Words) -> O.Words & B.Buf: Gt8FB0CF9679_enc_sized(v5_u64_size(o))
-
-def Gt8FB0CF9679_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u64_root(h, o, 0)
+def Gt8FB0CF9679_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v5_u64_root(64n, h, o, 0)
 
 # ---- GtE470919895 ----
 
@@ -15403,17 +21152,13 @@ def GtE470919895_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Words>:
 
 def GtE470919895_build(buf: B.Buf, +size: U32) -> B.Buf & O.Words: v8_u64_read(buf, 0, size)
 
-def GtE470919895_enc_out(+n: U32, pair: Array<U32> & O.Words) -> O.Words & B.Buf:
+def GtE470919895_enc_out(pair: Array<U32> & O.Words) -> O.Words & B.Buf:
   (out, o) = pair
-  (o, O.out_done(n, out))
+  (o, O.out_done(64, out))
 
-def GtE470919895_enc_sized(pair: O.Words & U32) -> O.Words & B.Buf:
-  (o, +n) = pair
-  GtE470919895_enc_out(n, v8_u64_put(O.out_new(n), 0, o))
+def GtE470919895_encode(o: O.Words) -> O.Words & B.Buf: GtE470919895_enc_out(v8_u64_put(O.out_at(4n), 0, o))
 
-def GtE470919895_encode(o: O.Words) -> O.Words & B.Buf: GtE470919895_enc_sized(v8_u64_size(o))
-
-def GtE470919895_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u64_root(h, o, 0)
+def GtE470919895_hash_tree_root(h: B.Buf, o: O.Words) -> B.Buf & (O.Words & D.Digest): v8_u64_root(64n, h, o, 0)
 
 # ---- Gc221EC01D83 ----
 
@@ -15446,7 +21191,7 @@ def Gc221EC01D83_enc_sized(pair: Gc221EC01D83 & U32) -> Gc221EC01D83 & B.Buf:
 
 def Gc221EC01D83_encode(o: Gc221EC01D83) -> Gc221EC01D83 & B.Buf: Gc221EC01D83_enc_sized(Gc221EC01D83_size(o))
 
-def Gc221EC01D83_hash_tree_root(h: B.Buf, o: Gc221EC01D83) -> B.Buf & (Gc221EC01D83 & D.Digest): Gc221EC01D83_root(h, o, 0)
+def Gc221EC01D83_hash_tree_root(h: B.Buf, o: Gc221EC01D83) -> B.Buf & (Gc221EC01D83 & D.Digest): Gc221EC01D83_root(64n, h, o, 0)
 
 # ---- Gc85FA758A04 ----
 
@@ -15465,21 +21210,17 @@ def Gc85FA758A04_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Gc85FA758A0
 
 def Gc85FA758A04_build(buf: B.Buf, +size: U32) -> B.Buf & Gc85FA758A04: Gc85FA758A04_read(buf, 0, size)
 
-def Gc85FA758A04_enc_out(+n: U32, out: Array<U32>, o: Gc85FA758A04, +m: U32) -> Gc85FA758A04 & B.Buf:
-  (o, O.out_done(n, out))
+def Gc85FA758A04_enc_out(out: Array<U32>, o: Gc85FA758A04, +m: U32) -> Gc85FA758A04 & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def Gc85FA758A04_enc_put(+n: U32, pair: Array<U32> & (Gc85FA758A04 & U32)) -> Gc85FA758A04 & B.Buf:
+def Gc85FA758A04_enc_put(pair: Array<U32> & (Gc85FA758A04 & U32)) -> Gc85FA758A04 & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gc85FA758A04_enc_out(n, out, o, m)
+  Gc85FA758A04_enc_out(out, o, m)
 
-def Gc85FA758A04_enc_sized(pair: Gc85FA758A04 & U32) -> Gc85FA758A04 & B.Buf:
-  (o, +n) = pair
-  Gc85FA758A04_enc_put(n, Gc85FA758A04_putn(O.out_new(n), 0, o))
+def Gc85FA758A04_encode(o: Gc85FA758A04) -> Gc85FA758A04 & B.Buf: Gc85FA758A04_enc_put(Gc85FA758A04_putn(O.out_at(2n), 0, o))
 
-def Gc85FA758A04_encode(o: Gc85FA758A04) -> Gc85FA758A04 & B.Buf: Gc85FA758A04_enc_sized(Gc85FA758A04_size(o))
-
-def Gc85FA758A04_hash_tree_root(h: B.Buf, o: Gc85FA758A04) -> B.Buf & (Gc85FA758A04 & D.Digest): Gc85FA758A04_root(h, o, 0)
+def Gc85FA758A04_hash_tree_root(h: B.Buf, o: Gc85FA758A04) -> B.Buf & (Gc85FA758A04 & D.Digest): Gc85FA758A04_root(64n, h, o, 0)
 
 # ---- Gc60805EC295 ----
 
@@ -15512,7 +21253,7 @@ def Gc60805EC295_enc_sized(pair: Gc60805EC295 & U32) -> Gc60805EC295 & B.Buf:
 
 def Gc60805EC295_encode(o: Gc60805EC295) -> Gc60805EC295 & B.Buf: Gc60805EC295_enc_sized(Gc60805EC295_size(o))
 
-def Gc60805EC295_hash_tree_root(h: B.Buf, o: Gc60805EC295) -> B.Buf & (Gc60805EC295 & D.Digest): Gc60805EC295_root(h, o, 0)
+def Gc60805EC295_hash_tree_root(h: B.Buf, o: Gc60805EC295) -> B.Buf & (Gc60805EC295 & D.Digest): Gc60805EC295_root(64n, h, o, 0)
 
 # ---- GcDC3E457711 ----
 
@@ -15533,7 +21274,7 @@ def GcDC3E457711_build(buf: B.Buf, +size: U32) -> B.Buf & GcDC3E457711: GcDC3E45
 
 def GcDC3E457711_encode(+o: GcDC3E457711) -> B.Buf: O.out_done(13, GcDC3E457711_put(O.out_at(2n), 0, o))
 
-def GcDC3E457711_hash_tree_root(h: B.Buf, +o: GcDC3E457711) -> B.Buf & D.Digest: GcDC3E457711_root(h, o, 0)
+def GcDC3E457711_hash_tree_root(h: B.Buf, +o: GcDC3E457711) -> B.Buf & D.Digest: GcDC3E457711_root(64n, h, o, 0)
 
 # ---- Gc74A8F5F17F ----
 
@@ -15554,7 +21295,7 @@ def Gc74A8F5F17F_build(buf: B.Buf, +size: U32) -> B.Buf & Gc74A8F5F17F: Gc74A8F5
 
 def Gc74A8F5F17F_encode(+o: Gc74A8F5F17F) -> B.Buf: O.out_done(1, Gc74A8F5F17F_put(O.out_at(0n), 0, o))
 
-def Gc74A8F5F17F_hash_tree_root(h: B.Buf, +o: Gc74A8F5F17F) -> B.Buf & D.Digest: Gc74A8F5F17F_root(h, o, 0)
+def Gc74A8F5F17F_hash_tree_root(h: B.Buf, +o: Gc74A8F5F17F) -> B.Buf & D.Digest: Gc74A8F5F17F_root(64n, h, o, 0)
 
 # ---- Gc465214E502 ----
 
@@ -15587,7 +21328,7 @@ def Gc465214E502_enc_sized(pair: Gc465214E502 & U32) -> Gc465214E502 & B.Buf:
 
 def Gc465214E502_encode(o: Gc465214E502) -> Gc465214E502 & B.Buf: Gc465214E502_enc_sized(Gc465214E502_size(o))
 
-def Gc465214E502_hash_tree_root(h: B.Buf, o: Gc465214E502) -> B.Buf & (Gc465214E502 & D.Digest): Gc465214E502_root(h, o, 0)
+def Gc465214E502_hash_tree_root(h: B.Buf, o: Gc465214E502) -> B.Buf & (Gc465214E502 & D.Digest): Gc465214E502_root(64n, h, o, 0)
 
 # ---- Gc56D855869F ----
 
@@ -15620,7 +21361,7 @@ def Gc56D855869F_enc_sized(pair: Gc56D855869F & U32) -> Gc56D855869F & B.Buf:
 
 def Gc56D855869F_encode(o: Gc56D855869F) -> Gc56D855869F & B.Buf: Gc56D855869F_enc_sized(Gc56D855869F_size(o))
 
-def Gc56D855869F_hash_tree_root(h: B.Buf, o: Gc56D855869F) -> B.Buf & (Gc56D855869F & D.Digest): Gc56D855869F_root(h, o, 0)
+def Gc56D855869F_hash_tree_root(h: B.Buf, o: Gc56D855869F) -> B.Buf & (Gc56D855869F & D.Digest): Gc56D855869F_root(64n, h, o, 0)
 
 # ---- Gc4ED9619F50 ----
 
@@ -15641,7 +21382,7 @@ def Gc4ED9619F50_build(buf: B.Buf, +size: U32) -> B.Buf & Gc4ED9619F50: Gc4ED961
 
 def Gc4ED9619F50_encode(+o: Gc4ED9619F50) -> B.Buf: O.out_done(4, Gc4ED9619F50_put(O.out_at(0n), 0, o))
 
-def Gc4ED9619F50_hash_tree_root(h: B.Buf, +o: Gc4ED9619F50) -> B.Buf & D.Digest: Gc4ED9619F50_root(h, o, 0)
+def Gc4ED9619F50_hash_tree_root(h: B.Buf, +o: Gc4ED9619F50) -> B.Buf & D.Digest: Gc4ED9619F50_root(64n, h, o, 0)
 
 # ---- GtDB1482527D ----
 
@@ -15660,21 +21401,17 @@ def GtDB1482527D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def GtDB1482527D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits15_read(buf, 0, size)
 
-def GtDB1482527D_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def GtDB1482527D_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtDB1482527D_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def GtDB1482527D_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtDB1482527D_enc_out(n, out, o, m)
+  GtDB1482527D_enc_out(out, o, m)
 
-def GtDB1482527D_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  GtDB1482527D_enc_put(n, bits15_putn(O.out_new(n), 0, o))
+def GtDB1482527D_encode(o: O.Bits) -> O.Bits & B.Buf: GtDB1482527D_enc_put(bits15_putn(O.out_at(0n), 0, o))
 
-def GtDB1482527D_encode(o: O.Bits) -> O.Bits & B.Buf: GtDB1482527D_enc_sized(bits15_size(o))
-
-def GtDB1482527D_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits15_root(h, o, 0)
+def GtDB1482527D_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits15_root(64n, h, o, 0)
 
 # ---- Gt7C1C13B292 ----
 
@@ -15693,21 +21430,17 @@ def Gt7C1C13B292_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def Gt7C1C13B292_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits16_read(buf, 0, size)
 
-def Gt7C1C13B292_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def Gt7C1C13B292_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def Gt7C1C13B292_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def Gt7C1C13B292_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt7C1C13B292_enc_out(n, out, o, m)
+  Gt7C1C13B292_enc_out(out, o, m)
 
-def Gt7C1C13B292_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  Gt7C1C13B292_enc_put(n, bits16_putn(O.out_new(n), 0, o))
+def Gt7C1C13B292_encode(o: O.Bits) -> O.Bits & B.Buf: Gt7C1C13B292_enc_put(bits16_putn(O.out_at(0n), 0, o))
 
-def Gt7C1C13B292_encode(o: O.Bits) -> O.Bits & B.Buf: Gt7C1C13B292_enc_sized(bits16_size(o))
-
-def Gt7C1C13B292_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits16_root(h, o, 0)
+def Gt7C1C13B292_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits16_root(64n, h, o, 0)
 
 # ---- GtAA99FAAC9D ----
 
@@ -15726,21 +21459,17 @@ def GtAA99FAAC9D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def GtAA99FAAC9D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits17_read(buf, 0, size)
 
-def GtAA99FAAC9D_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def GtAA99FAAC9D_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtAA99FAAC9D_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def GtAA99FAAC9D_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtAA99FAAC9D_enc_out(n, out, o, m)
+  GtAA99FAAC9D_enc_out(out, o, m)
 
-def GtAA99FAAC9D_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  GtAA99FAAC9D_enc_put(n, bits17_putn(O.out_new(n), 0, o))
+def GtAA99FAAC9D_encode(o: O.Bits) -> O.Bits & B.Buf: GtAA99FAAC9D_enc_put(bits17_putn(O.out_at(0n), 0, o))
 
-def GtAA99FAAC9D_encode(o: O.Bits) -> O.Bits & B.Buf: GtAA99FAAC9D_enc_sized(bits17_size(o))
-
-def GtAA99FAAC9D_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits17_root(h, o, 0)
+def GtAA99FAAC9D_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits17_root(64n, h, o, 0)
 
 # ---- Gt94B70684B5 ----
 
@@ -15759,21 +21488,17 @@ def Gt94B70684B5_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def Gt94B70684B5_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits1_read(buf, 0, size)
 
-def Gt94B70684B5_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def Gt94B70684B5_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def Gt94B70684B5_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def Gt94B70684B5_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt94B70684B5_enc_out(n, out, o, m)
+  Gt94B70684B5_enc_out(out, o, m)
 
-def Gt94B70684B5_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  Gt94B70684B5_enc_put(n, bits1_putn(O.out_new(n), 0, o))
+def Gt94B70684B5_encode(o: O.Bits) -> O.Bits & B.Buf: Gt94B70684B5_enc_put(bits1_putn(O.out_at(0n), 0, o))
 
-def Gt94B70684B5_encode(o: O.Bits) -> O.Bits & B.Buf: Gt94B70684B5_enc_sized(bits1_size(o))
-
-def Gt94B70684B5_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits1_root(h, o, 0)
+def Gt94B70684B5_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits1_root(64n, h, o, 0)
 
 # ---- GtCF587DD386 ----
 
@@ -15792,21 +21517,17 @@ def GtCF587DD386_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def GtCF587DD386_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits2_read(buf, 0, size)
 
-def GtCF587DD386_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def GtCF587DD386_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtCF587DD386_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def GtCF587DD386_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtCF587DD386_enc_out(n, out, o, m)
+  GtCF587DD386_enc_out(out, o, m)
 
-def GtCF587DD386_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  GtCF587DD386_enc_put(n, bits2_putn(O.out_new(n), 0, o))
+def GtCF587DD386_encode(o: O.Bits) -> O.Bits & B.Buf: GtCF587DD386_enc_put(bits2_putn(O.out_at(0n), 0, o))
 
-def GtCF587DD386_encode(o: O.Bits) -> O.Bits & B.Buf: GtCF587DD386_enc_sized(bits2_size(o))
-
-def GtCF587DD386_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits2_root(h, o, 0)
+def GtCF587DD386_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits2_root(64n, h, o, 0)
 
 # ---- Gt4B1BA0C81D ----
 
@@ -15825,21 +21546,17 @@ def Gt4B1BA0C81D_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def Gt4B1BA0C81D_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits31_read(buf, 0, size)
 
-def Gt4B1BA0C81D_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def Gt4B1BA0C81D_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def Gt4B1BA0C81D_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def Gt4B1BA0C81D_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt4B1BA0C81D_enc_out(n, out, o, m)
+  Gt4B1BA0C81D_enc_out(out, o, m)
 
-def Gt4B1BA0C81D_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  Gt4B1BA0C81D_enc_put(n, bits31_putn(O.out_new(n), 0, o))
+def Gt4B1BA0C81D_encode(o: O.Bits) -> O.Bits & B.Buf: Gt4B1BA0C81D_enc_put(bits31_putn(O.out_at(0n), 0, o))
 
-def Gt4B1BA0C81D_encode(o: O.Bits) -> O.Bits & B.Buf: Gt4B1BA0C81D_enc_sized(bits31_size(o))
-
-def Gt4B1BA0C81D_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits31_root(h, o, 0)
+def Gt4B1BA0C81D_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits31_root(64n, h, o, 0)
 
 # ---- Gt2F34855D3D ----
 
@@ -15872,7 +21589,7 @@ def Gt2F34855D3D_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
 
 def Gt2F34855D3D_encode(o: O.Bits) -> O.Bits & B.Buf: Gt2F34855D3D_enc_sized(bits32_size(o))
 
-def Gt2F34855D3D_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits32_root(h, o, 0)
+def Gt2F34855D3D_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits32_root(64n, h, o, 0)
 
 # ---- Gt039DD44FD8 ----
 
@@ -15905,7 +21622,7 @@ def Gt039DD44FD8_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
 
 def Gt039DD44FD8_encode(o: O.Bits) -> O.Bits & B.Buf: Gt039DD44FD8_enc_sized(bits33_size(o))
 
-def Gt039DD44FD8_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits33_root(h, o, 0)
+def Gt039DD44FD8_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits33_root(64n, h, o, 0)
 
 # ---- GtC847E618FA ----
 
@@ -15924,21 +21641,17 @@ def GtC847E618FA_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def GtC847E618FA_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits3_read(buf, 0, size)
 
-def GtC847E618FA_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def GtC847E618FA_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtC847E618FA_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def GtC847E618FA_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtC847E618FA_enc_out(n, out, o, m)
+  GtC847E618FA_enc_out(out, o, m)
 
-def GtC847E618FA_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  GtC847E618FA_enc_put(n, bits3_putn(O.out_new(n), 0, o))
+def GtC847E618FA_encode(o: O.Bits) -> O.Bits & B.Buf: GtC847E618FA_enc_put(bits3_putn(O.out_at(0n), 0, o))
 
-def GtC847E618FA_encode(o: O.Bits) -> O.Bits & B.Buf: GtC847E618FA_enc_sized(bits3_size(o))
-
-def GtC847E618FA_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits3_root(h, o, 0)
+def GtC847E618FA_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits3_root(64n, h, o, 0)
 
 # ---- Gt484D1ADAFE ----
 
@@ -15957,21 +21670,17 @@ def Gt484D1ADAFE_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def Gt484D1ADAFE_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits4_read(buf, 0, size)
 
-def Gt484D1ADAFE_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def Gt484D1ADAFE_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def Gt484D1ADAFE_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def Gt484D1ADAFE_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt484D1ADAFE_enc_out(n, out, o, m)
+  Gt484D1ADAFE_enc_out(out, o, m)
 
-def Gt484D1ADAFE_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  Gt484D1ADAFE_enc_put(n, bits4_putn(O.out_new(n), 0, o))
+def Gt484D1ADAFE_encode(o: O.Bits) -> O.Bits & B.Buf: Gt484D1ADAFE_enc_put(bits4_putn(O.out_at(0n), 0, o))
 
-def Gt484D1ADAFE_encode(o: O.Bits) -> O.Bits & B.Buf: Gt484D1ADAFE_enc_sized(bits4_size(o))
-
-def Gt484D1ADAFE_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits4_root(h, o, 0)
+def Gt484D1ADAFE_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits4_root(64n, h, o, 0)
 
 # ---- Gt21E1483EE1 ----
 
@@ -16004,7 +21713,7 @@ def Gt21E1483EE1_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
 
 def Gt21E1483EE1_encode(o: O.Bits) -> O.Bits & B.Buf: Gt21E1483EE1_enc_sized(bits511_size(o))
 
-def Gt21E1483EE1_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits511_root(h, o, 0)
+def Gt21E1483EE1_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits511_root(64n, h, o, 0)
 
 # ---- Gt38F5890C13 ----
 
@@ -16037,7 +21746,7 @@ def Gt38F5890C13_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
 
 def Gt38F5890C13_encode(o: O.Bits) -> O.Bits & B.Buf: Gt38F5890C13_enc_sized(bits512_size(o))
 
-def Gt38F5890C13_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits512_root(h, o, 0)
+def Gt38F5890C13_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits512_root(64n, h, o, 0)
 
 # ---- Gt44F1B6940F ----
 
@@ -16070,7 +21779,7 @@ def Gt44F1B6940F_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
 
 def Gt44F1B6940F_encode(o: O.Bits) -> O.Bits & B.Buf: Gt44F1B6940F_enc_sized(bits513_size(o))
 
-def Gt44F1B6940F_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits513_root(h, o, 0)
+def Gt44F1B6940F_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits513_root(64n, h, o, 0)
 
 # ---- GtF91FD5FC73 ----
 
@@ -16089,21 +21798,17 @@ def GtF91FD5FC73_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def GtF91FD5FC73_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits5_read(buf, 0, size)
 
-def GtF91FD5FC73_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def GtF91FD5FC73_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtF91FD5FC73_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def GtF91FD5FC73_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtF91FD5FC73_enc_out(n, out, o, m)
+  GtF91FD5FC73_enc_out(out, o, m)
 
-def GtF91FD5FC73_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  GtF91FD5FC73_enc_put(n, bits5_putn(O.out_new(n), 0, o))
+def GtF91FD5FC73_encode(o: O.Bits) -> O.Bits & B.Buf: GtF91FD5FC73_enc_put(bits5_putn(O.out_at(0n), 0, o))
 
-def GtF91FD5FC73_encode(o: O.Bits) -> O.Bits & B.Buf: GtF91FD5FC73_enc_sized(bits5_size(o))
-
-def GtF91FD5FC73_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits5_root(h, o, 0)
+def GtF91FD5FC73_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits5_root(64n, h, o, 0)
 
 # ---- Gt98B8C9F262 ----
 
@@ -16122,21 +21827,17 @@ def Gt98B8C9F262_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def Gt98B8C9F262_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits6_read(buf, 0, size)
 
-def Gt98B8C9F262_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def Gt98B8C9F262_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def Gt98B8C9F262_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def Gt98B8C9F262_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt98B8C9F262_enc_out(n, out, o, m)
+  Gt98B8C9F262_enc_out(out, o, m)
 
-def Gt98B8C9F262_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  Gt98B8C9F262_enc_put(n, bits6_putn(O.out_new(n), 0, o))
+def Gt98B8C9F262_encode(o: O.Bits) -> O.Bits & B.Buf: Gt98B8C9F262_enc_put(bits6_putn(O.out_at(0n), 0, o))
 
-def Gt98B8C9F262_encode(o: O.Bits) -> O.Bits & B.Buf: Gt98B8C9F262_enc_sized(bits6_size(o))
-
-def Gt98B8C9F262_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits6_root(h, o, 0)
+def Gt98B8C9F262_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits6_root(64n, h, o, 0)
 
 # ---- GtC063F5D9E0 ----
 
@@ -16155,21 +21856,17 @@ def GtC063F5D9E0_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def GtC063F5D9E0_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits7_read(buf, 0, size)
 
-def GtC063F5D9E0_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def GtC063F5D9E0_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtC063F5D9E0_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def GtC063F5D9E0_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtC063F5D9E0_enc_out(n, out, o, m)
+  GtC063F5D9E0_enc_out(out, o, m)
 
-def GtC063F5D9E0_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  GtC063F5D9E0_enc_put(n, bits7_putn(O.out_new(n), 0, o))
+def GtC063F5D9E0_encode(o: O.Bits) -> O.Bits & B.Buf: GtC063F5D9E0_enc_put(bits7_putn(O.out_at(0n), 0, o))
 
-def GtC063F5D9E0_encode(o: O.Bits) -> O.Bits & B.Buf: GtC063F5D9E0_enc_sized(bits7_size(o))
-
-def GtC063F5D9E0_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits7_root(h, o, 0)
+def GtC063F5D9E0_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits7_root(64n, h, o, 0)
 
 # ---- GtD291A17219 ----
 
@@ -16188,21 +21885,17 @@ def GtD291A17219_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def GtD291A17219_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits8_read(buf, 0, size)
 
-def GtD291A17219_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def GtD291A17219_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GtD291A17219_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def GtD291A17219_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GtD291A17219_enc_out(n, out, o, m)
+  GtD291A17219_enc_out(out, o, m)
 
-def GtD291A17219_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  GtD291A17219_enc_put(n, bits8_putn(O.out_new(n), 0, o))
+def GtD291A17219_encode(o: O.Bits) -> O.Bits & B.Buf: GtD291A17219_enc_put(bits8_putn(O.out_at(0n), 0, o))
 
-def GtD291A17219_encode(o: O.Bits) -> O.Bits & B.Buf: GtD291A17219_enc_sized(bits8_size(o))
-
-def GtD291A17219_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits8_root(h, o, 0)
+def GtD291A17219_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits8_root(64n, h, o, 0)
 
 # ---- Gt9D356BAF82 ----
 
@@ -16221,21 +21914,17 @@ def Gt9D356BAF82_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, O.Bits>:
 
 def Gt9D356BAF82_build(buf: B.Buf, +size: U32) -> B.Buf & O.Bits: bits9_read(buf, 0, size)
 
-def Gt9D356BAF82_enc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
-  (o, O.out_done(n, out))
+def Gt9D356BAF82_enc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def Gt9D356BAF82_enc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
+def Gt9D356BAF82_enc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & B.Buf:
   (out, r) = pair
   (o, m) = r
-  Gt9D356BAF82_enc_out(n, out, o, m)
+  Gt9D356BAF82_enc_out(out, o, m)
 
-def Gt9D356BAF82_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
-  (o, +n) = pair
-  Gt9D356BAF82_enc_put(n, bits9_putn(O.out_new(n), 0, o))
+def Gt9D356BAF82_encode(o: O.Bits) -> O.Bits & B.Buf: Gt9D356BAF82_enc_put(bits9_putn(O.out_at(0n), 0, o))
 
-def Gt9D356BAF82_encode(o: O.Bits) -> O.Bits & B.Buf: Gt9D356BAF82_enc_sized(bits9_size(o))
-
-def Gt9D356BAF82_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits9_root(h, o, 0)
+def Gt9D356BAF82_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): bits9_root(64n, h, o, 0)
 
 # ---- GtEDF530C7B9 ----
 
@@ -16256,7 +21945,7 @@ def GtEDF530C7B9_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector15: bv15_read
 
 def GtEDF530C7B9_encode(+o: Bitvector15) -> B.Buf: O.out_done(2, bv15_put(O.out_at(0n), 0, o))
 
-def GtEDF530C7B9_hash_tree_root(h: B.Buf, +o: Bitvector15) -> B.Buf & D.Digest: bv15_root(h, o, 0)
+def GtEDF530C7B9_hash_tree_root(h: B.Buf, +o: Bitvector15) -> B.Buf & D.Digest: bv15_root(64n, h, o, 0)
 
 # ---- GtED805B7C93 ----
 
@@ -16277,7 +21966,7 @@ def GtED805B7C93_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector16: bv16_read
 
 def GtED805B7C93_encode(+o: Bitvector16) -> B.Buf: O.out_done(2, bv16_put(O.out_at(0n), 0, o))
 
-def GtED805B7C93_hash_tree_root(h: B.Buf, +o: Bitvector16) -> B.Buf & D.Digest: bv16_root(h, o, 0)
+def GtED805B7C93_hash_tree_root(h: B.Buf, +o: Bitvector16) -> B.Buf & D.Digest: bv16_root(64n, h, o, 0)
 
 # ---- GtFF7C03E8A0 ----
 
@@ -16298,7 +21987,7 @@ def GtFF7C03E8A0_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector17: bv17_read
 
 def GtFF7C03E8A0_encode(+o: Bitvector17) -> B.Buf: O.out_done(3, bv17_put(O.out_at(0n), 0, o))
 
-def GtFF7C03E8A0_hash_tree_root(h: B.Buf, +o: Bitvector17) -> B.Buf & D.Digest: bv17_root(h, o, 0)
+def GtFF7C03E8A0_hash_tree_root(h: B.Buf, +o: Bitvector17) -> B.Buf & D.Digest: bv17_root(64n, h, o, 0)
 
 # ---- GtFCF8066C33 ----
 
@@ -16319,7 +22008,7 @@ def GtFCF8066C33_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector1: bv1_read(b
 
 def GtFCF8066C33_encode(+o: Bitvector1) -> B.Buf: O.out_done(1, bv1_put(O.out_at(0n), 0, o))
 
-def GtFCF8066C33_hash_tree_root(h: B.Buf, +o: Bitvector1) -> B.Buf & D.Digest: bv1_root(h, o, 0)
+def GtFCF8066C33_hash_tree_root(h: B.Buf, +o: Bitvector1) -> B.Buf & D.Digest: bv1_root(64n, h, o, 0)
 
 # ---- Gt9368483BAB ----
 
@@ -16340,7 +22029,7 @@ def Gt9368483BAB_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector2: bv2_read(b
 
 def Gt9368483BAB_encode(+o: Bitvector2) -> B.Buf: O.out_done(1, bv2_put(O.out_at(0n), 0, o))
 
-def Gt9368483BAB_hash_tree_root(h: B.Buf, +o: Bitvector2) -> B.Buf & D.Digest: bv2_root(h, o, 0)
+def Gt9368483BAB_hash_tree_root(h: B.Buf, +o: Bitvector2) -> B.Buf & D.Digest: bv2_root(64n, h, o, 0)
 
 # ---- GtEDFB713194 ----
 
@@ -16361,7 +22050,7 @@ def GtEDFB713194_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector31: bv31_read
 
 def GtEDFB713194_encode(+o: Bitvector31) -> B.Buf: O.out_done(4, bv31_put(O.out_at(0n), 0, o))
 
-def GtEDFB713194_hash_tree_root(h: B.Buf, +o: Bitvector31) -> B.Buf & D.Digest: bv31_root(h, o, 0)
+def GtEDFB713194_hash_tree_root(h: B.Buf, +o: Bitvector31) -> B.Buf & D.Digest: bv31_root(64n, h, o, 0)
 
 # ---- GtBBF12DAB28 ----
 
@@ -16382,7 +22071,7 @@ def GtBBF12DAB28_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector32: bv32_read
 
 def GtBBF12DAB28_encode(+o: Bitvector32) -> B.Buf: O.out_done(4, bv32_put(O.out_at(0n), 0, o))
 
-def GtBBF12DAB28_hash_tree_root(h: B.Buf, +o: Bitvector32) -> B.Buf & D.Digest: bv32_root(h, o, 0)
+def GtBBF12DAB28_hash_tree_root(h: B.Buf, +o: Bitvector32) -> B.Buf & D.Digest: bv32_root(64n, h, o, 0)
 
 # ---- Gt6F0D97A69E ----
 
@@ -16403,7 +22092,7 @@ def Gt6F0D97A69E_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector33: bv33_read
 
 def Gt6F0D97A69E_encode(+o: Bitvector33) -> B.Buf: O.out_done(5, bv33_put(O.out_at(1n), 0, o))
 
-def Gt6F0D97A69E_hash_tree_root(h: B.Buf, +o: Bitvector33) -> B.Buf & D.Digest: bv33_root(h, o, 0)
+def Gt6F0D97A69E_hash_tree_root(h: B.Buf, +o: Bitvector33) -> B.Buf & D.Digest: bv33_root(64n, h, o, 0)
 
 # ---- Gt9579E0A2FD ----
 
@@ -16424,7 +22113,7 @@ def Gt9579E0A2FD_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector3: bv3_read(b
 
 def Gt9579E0A2FD_encode(+o: Bitvector3) -> B.Buf: O.out_done(1, bv3_put(O.out_at(0n), 0, o))
 
-def Gt9579E0A2FD_hash_tree_root(h: B.Buf, +o: Bitvector3) -> B.Buf & D.Digest: bv3_root(h, o, 0)
+def Gt9579E0A2FD_hash_tree_root(h: B.Buf, +o: Bitvector3) -> B.Buf & D.Digest: bv3_root(64n, h, o, 0)
 
 # ---- GtB1E9093D65 ----
 
@@ -16445,7 +22134,7 @@ def GtB1E9093D65_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector4: bv4_read(b
 
 def GtB1E9093D65_encode(+o: Bitvector4) -> B.Buf: O.out_done(1, bv4_put(O.out_at(0n), 0, o))
 
-def GtB1E9093D65_hash_tree_root(h: B.Buf, +o: Bitvector4) -> B.Buf & D.Digest: bv4_root(h, o, 0)
+def GtB1E9093D65_hash_tree_root(h: B.Buf, +o: Bitvector4) -> B.Buf & D.Digest: bv4_root(64n, h, o, 0)
 
 # ---- Gt05340E1F7E ----
 
@@ -16466,7 +22155,7 @@ def Gt05340E1F7E_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector511: bv511_re
 
 def Gt05340E1F7E_encode(+o: Bitvector511) -> B.Buf: O.out_done(64, bv511_put(O.out_at(4n), 0, o))
 
-def Gt05340E1F7E_hash_tree_root(h: B.Buf, +o: Bitvector511) -> B.Buf & D.Digest: bv511_root(h, o, 0)
+def Gt05340E1F7E_hash_tree_root(h: B.Buf, +o: Bitvector511) -> B.Buf & D.Digest: bv511_root(64n, h, o, 0)
 
 # ---- Gt0A390CB480 ----
 
@@ -16487,7 +22176,7 @@ def Gt0A390CB480_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector512: bv512_re
 
 def Gt0A390CB480_encode(+o: Bitvector512) -> B.Buf: O.out_done(64, bv512_put(O.out_at(4n), 0, o))
 
-def Gt0A390CB480_hash_tree_root(h: B.Buf, +o: Bitvector512) -> B.Buf & D.Digest: bv512_root(h, o, 0)
+def Gt0A390CB480_hash_tree_root(h: B.Buf, +o: Bitvector512) -> B.Buf & D.Digest: bv512_root(64n, h, o, 0)
 
 # ---- Gt0B0C03B454 ----
 
@@ -16508,7 +22197,7 @@ def Gt0B0C03B454_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector513: bv513_re
 
 def Gt0B0C03B454_encode(+o: Bitvector513) -> B.Buf: O.out_done(65, bv513_put(O.out_at(5n), 0, o))
 
-def Gt0B0C03B454_hash_tree_root(h: B.Buf, +o: Bitvector513) -> B.Buf & D.Digest: bv513_root(h, o, 0)
+def Gt0B0C03B454_hash_tree_root(h: B.Buf, +o: Bitvector513) -> B.Buf & D.Digest: bv513_root(64n, h, o, 0)
 
 # ---- Gt27CDB122DD ----
 
@@ -16529,7 +22218,7 @@ def Gt27CDB122DD_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector5: bv5_read(b
 
 def Gt27CDB122DD_encode(+o: Bitvector5) -> B.Buf: O.out_done(1, bv5_put(O.out_at(0n), 0, o))
 
-def Gt27CDB122DD_hash_tree_root(h: B.Buf, +o: Bitvector5) -> B.Buf & D.Digest: bv5_root(h, o, 0)
+def Gt27CDB122DD_hash_tree_root(h: B.Buf, +o: Bitvector5) -> B.Buf & D.Digest: bv5_root(64n, h, o, 0)
 
 # ---- GtAD3CF815B7 ----
 
@@ -16550,7 +22239,7 @@ def GtAD3CF815B7_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector6: bv6_read(b
 
 def GtAD3CF815B7_encode(+o: Bitvector6) -> B.Buf: O.out_done(1, bv6_put(O.out_at(0n), 0, o))
 
-def GtAD3CF815B7_hash_tree_root(h: B.Buf, +o: Bitvector6) -> B.Buf & D.Digest: bv6_root(h, o, 0)
+def GtAD3CF815B7_hash_tree_root(h: B.Buf, +o: Bitvector6) -> B.Buf & D.Digest: bv6_root(64n, h, o, 0)
 
 # ---- GtAA8D1478A7 ----
 
@@ -16571,7 +22260,7 @@ def GtAA8D1478A7_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector7: bv7_read(b
 
 def GtAA8D1478A7_encode(+o: Bitvector7) -> B.Buf: O.out_done(1, bv7_put(O.out_at(0n), 0, o))
 
-def GtAA8D1478A7_hash_tree_root(h: B.Buf, +o: Bitvector7) -> B.Buf & D.Digest: bv7_root(h, o, 0)
+def GtAA8D1478A7_hash_tree_root(h: B.Buf, +o: Bitvector7) -> B.Buf & D.Digest: bv7_root(64n, h, o, 0)
 
 # ---- Gt0366A291C1 ----
 
@@ -16592,7 +22281,7 @@ def Gt0366A291C1_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector8: bv8_read(b
 
 def Gt0366A291C1_encode(+o: Bitvector8) -> B.Buf: O.out_done(1, bv8_put(O.out_at(0n), 0, o))
 
-def Gt0366A291C1_hash_tree_root(h: B.Buf, +o: Bitvector8) -> B.Buf & D.Digest: bv8_root(h, o, 0)
+def Gt0366A291C1_hash_tree_root(h: B.Buf, +o: Bitvector8) -> B.Buf & D.Digest: bv8_root(64n, h, o, 0)
 
 # ---- Gt1BD4B4358D ----
 
@@ -16613,7 +22302,7 @@ def Gt1BD4B4358D_build(buf: B.Buf, +size: U32) -> B.Buf & Bitvector9: bv9_read(b
 
 def Gt1BD4B4358D_encode(+o: Bitvector9) -> B.Buf: O.out_done(2, bv9_put(O.out_at(0n), 0, o))
 
-def Gt1BD4B4358D_hash_tree_root(h: B.Buf, +o: Bitvector9) -> B.Buf & D.Digest: bv9_root(h, o, 0)
+def Gt1BD4B4358D_hash_tree_root(h: B.Buf, +o: Bitvector9) -> B.Buf & D.Digest: bv9_root(64n, h, o, 0)
 
 # ---- GtAD72FD256A ----
 
@@ -16634,7 +22323,7 @@ def GtAD72FD256A_build(buf: B.Buf, +size: U32) -> B.Buf & Bool: bool_read(buf, 0
 
 def GtAD72FD256A_encode(+o: Bool) -> B.Buf: O.out_done(1, bool_put(O.out_at(0n), 0, o))
 
-def GtAD72FD256A_hash_tree_root(h: B.Buf, +o: Bool) -> B.Buf & D.Digest: bool_root(h, o, 0)
+def GtAD72FD256A_hash_tree_root(h: B.Buf, +o: Bool) -> B.Buf & D.Digest: bool_root(64n, h, o, 0)
 
 # ---- GuAD91DEB870 ----
 
@@ -16667,7 +22356,7 @@ def GuAD91DEB870_enc_sized(pair: GuAD91DEB870 & U32) -> GuAD91DEB870 & B.Buf:
 
 def GuAD91DEB870_encode(o: GuAD91DEB870) -> GuAD91DEB870 & B.Buf: GuAD91DEB870_enc_sized(GuAD91DEB870_size(o))
 
-def GuAD91DEB870_hash_tree_root(h: B.Buf, o: GuAD91DEB870) -> B.Buf & (GuAD91DEB870 & D.Digest): GuAD91DEB870_root(h, o, 0)
+def GuAD91DEB870_hash_tree_root(h: B.Buf, o: GuAD91DEB870) -> B.Buf & (GuAD91DEB870 & D.Digest): GuAD91DEB870_root(64n, h, o, 0)
 
 # ---- Gu6DDF182530 ----
 
@@ -16700,7 +22389,7 @@ def Gu6DDF182530_enc_sized(pair: Gu6DDF182530 & U32) -> Gu6DDF182530 & B.Buf:
 
 def Gu6DDF182530_encode(o: Gu6DDF182530) -> Gu6DDF182530 & B.Buf: Gu6DDF182530_enc_sized(Gu6DDF182530_size(o))
 
-def Gu6DDF182530_hash_tree_root(h: B.Buf, o: Gu6DDF182530) -> B.Buf & (Gu6DDF182530 & D.Digest): Gu6DDF182530_root(h, o, 0)
+def Gu6DDF182530_hash_tree_root(h: B.Buf, o: Gu6DDF182530) -> B.Buf & (Gu6DDF182530 & D.Digest): Gu6DDF182530_root(64n, h, o, 0)
 
 # ---- GuA2212AE21F ----
 
@@ -16719,21 +22408,17 @@ def GuA2212AE21F_decode(buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, GuA2212AE21
 
 def GuA2212AE21F_build(buf: B.Buf, +size: U32) -> B.Buf & GuA2212AE21F: GuA2212AE21F_read(buf, 0, size)
 
-def GuA2212AE21F_enc_out(+n: U32, out: Array<U32>, o: GuA2212AE21F, +m: U32) -> GuA2212AE21F & B.Buf:
-  (o, O.out_done(n, out))
+def GuA2212AE21F_enc_out(out: Array<U32>, o: GuA2212AE21F, +m: U32) -> GuA2212AE21F & B.Buf:
+  (o, O.out_done((m .&. 2147483647 : U32), out))
 
-def GuA2212AE21F_enc_put(+n: U32, pair: Array<U32> & (GuA2212AE21F & U32)) -> GuA2212AE21F & B.Buf:
+def GuA2212AE21F_enc_put(pair: Array<U32> & (GuA2212AE21F & U32)) -> GuA2212AE21F & B.Buf:
   (out, r) = pair
   (o, m) = r
-  GuA2212AE21F_enc_out(n, out, o, m)
+  GuA2212AE21F_enc_out(out, o, m)
 
-def GuA2212AE21F_enc_sized(pair: GuA2212AE21F & U32) -> GuA2212AE21F & B.Buf:
-  (o, +n) = pair
-  GuA2212AE21F_enc_put(n, GuA2212AE21F_putn(O.out_new(n), 0, o))
+def GuA2212AE21F_encode(o: GuA2212AE21F) -> GuA2212AE21F & B.Buf: GuA2212AE21F_enc_put(GuA2212AE21F_putn(O.out_at(0n), 0, o))
 
-def GuA2212AE21F_encode(o: GuA2212AE21F) -> GuA2212AE21F & B.Buf: GuA2212AE21F_enc_sized(GuA2212AE21F_size(o))
-
-def GuA2212AE21F_hash_tree_root(h: B.Buf, o: GuA2212AE21F) -> B.Buf & (GuA2212AE21F & D.Digest): GuA2212AE21F_root(h, o, 0)
+def GuA2212AE21F_hash_tree_root(h: B.Buf, o: GuA2212AE21F) -> B.Buf & (GuA2212AE21F & D.Digest): GuA2212AE21F_root(64n, h, o, 0)
 
 # ---- GtF7582E0E9A ----
 
@@ -16766,7 +22451,7 @@ def GtF7582E0E9A_enc_sized(pair: O.Bits & U32) -> O.Bits & B.Buf:
 
 def GtF7582E0E9A_encode(o: O.Bits) -> O.Bits & B.Buf: GtF7582E0E9A_enc_sized(pbits_size(o))
 
-def GtF7582E0E9A_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): pbits_root(h, o, 0)
+def GtF7582E0E9A_hash_tree_root(h: B.Buf, o: O.Bits) -> B.Buf & (O.Bits & D.Digest): pbits_root(64n, h, o, 0)
 
 # ---- Gt604E28A301 ----
 
@@ -16787,7 +22472,7 @@ def Gt604E28A301_build(buf: B.Buf, +size: U32) -> B.Buf & Uint128: u128_read(buf
 
 def Gt604E28A301_encode(+o: Uint128) -> B.Buf: O.out_done(16, u128_put(O.out_at(2n), 0, o))
 
-def Gt604E28A301_hash_tree_root(h: B.Buf, +o: Uint128) -> B.Buf & D.Digest: u128_root(h, o, 0)
+def Gt604E28A301_hash_tree_root(h: B.Buf, +o: Uint128) -> B.Buf & D.Digest: u128_root(64n, h, o, 0)
 
 # ---- Gt967E8D815F ----
 
@@ -16808,7 +22493,7 @@ def Gt967E8D815F_build(buf: B.Buf, +size: U32) -> B.Buf & U32: u8_read(buf, 0, s
 
 def Gt967E8D815F_encode(+o: U32) -> B.Buf: O.out_done(1, u8_put(O.out_at(0n), 0, o))
 
-def Gt967E8D815F_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u8_root(h, o, 0)
+def Gt967E8D815F_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u8_root(64n, h, o, 0)
 
 # ---- GtECF9BB18D8 ----
 
@@ -16829,7 +22514,7 @@ def GtECF9BB18D8_build(buf: B.Buf, +size: U32) -> B.Buf & U32: u16_read(buf, 0, 
 
 def GtECF9BB18D8_encode(+o: U32) -> B.Buf: O.out_done(2, u16_put(O.out_at(0n), 0, o))
 
-def GtECF9BB18D8_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u16_root(h, o, 0)
+def GtECF9BB18D8_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u16_root(64n, h, o, 0)
 
 # ---- Gt59DCDB2873 ----
 
@@ -16850,7 +22535,7 @@ def Gt59DCDB2873_build(buf: B.Buf, +size: U32) -> B.Buf & Uint256: u256_read(buf
 
 def Gt59DCDB2873_encode(+o: Uint256) -> B.Buf: O.out_done(32, u256_put(O.out_at(3n), 0, o))
 
-def Gt59DCDB2873_hash_tree_root(h: B.Buf, +o: Uint256) -> B.Buf & D.Digest: u256_root(h, o, 0)
+def Gt59DCDB2873_hash_tree_root(h: B.Buf, +o: Uint256) -> B.Buf & D.Digest: u256_root(64n, h, o, 0)
 
 # ---- Gt7B8507E2C2 ----
 
@@ -16871,7 +22556,7 @@ def Gt7B8507E2C2_build(buf: B.Buf, +size: U32) -> B.Buf & U32: u32_read(buf, 0, 
 
 def Gt7B8507E2C2_encode(+o: U32) -> B.Buf: O.out_done(4, u32_put(O.out_at(0n), 0, o))
 
-def Gt7B8507E2C2_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u32_root(h, o, 0)
+def Gt7B8507E2C2_hash_tree_root(h: B.Buf, +o: U32) -> B.Buf & D.Digest: u32_root(64n, h, o, 0)
 
 # ---- Gt62B0093BE7 ----
 
@@ -16892,4 +22577,1487 @@ def Gt62B0093BE7_build(buf: B.Buf, +size: U32) -> B.Buf & O.U64: u64_read(buf, 0
 
 def Gt62B0093BE7_encode(+o: O.U64) -> B.Buf: O.out_done(8, u64_put(O.out_at(1n), 0, o))
 
-def Gt62B0093BE7_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: u64_root(h, o, 0)
+def Gt62B0093BE7_hash_tree_root(h: B.Buf, +o: O.U64) -> B.Buf & D.Digest: u64_root(64n, h, o, 0)
+
+# ---- validity and checked serialize ----
+
+def Gp8A7851175B_va6(+f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, acc: Bool, pair: pl_Gp66304057C3_Seq & Bool) -> Gp8A7851175B & Bool:
+  (f_H, ok) = pair
+  (Gp8A7851175B{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, Bool.and(acc, ok))
+
+def Gp8A7851175B_va5(+f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_H: pl_Gp66304057C3_Seq, acc: Bool, pair: l10_GpF350A3C486_Seq & Bool) -> Gp8A7851175B & Bool:
+  (f_G, ok) = pair
+  Gp8A7851175B_va6(f_A, f_B, f_C, f_D, f_E, f_F, f_G, Bool.and(acc, ok), pl_Gp66304057C3_valid(f_H))
+
+def Gp8A7851175B_va4(+f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, acc: Bool, pair: pl_pl_Gc465214E502_Seq & Bool) -> Gp8A7851175B & Bool:
+  (f_F, ok) = pair
+  Gp8A7851175B_va5(f_A, f_B, f_C, f_D, f_E, f_F, f_H, Bool.and(acc, ok), l10_GpF350A3C486_valid(f_G))
+
+def Gp8A7851175B_va3(+f_A: U32, f_B: O.Words, f_C: O.Bits, f_D: O.Words, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, acc: Bool, pair: pl_Gc4ED9619F50_Seq & Bool) -> Gp8A7851175B & Bool:
+  (f_E, ok) = pair
+  Gp8A7851175B_va4(f_A, f_B, f_C, f_D, f_E, f_G, f_H, Bool.and(acc, ok), pl_pl_Gc465214E502_valid(f_F))
+
+def Gp8A7851175B_va2(+f_A: U32, f_B: O.Words, f_C: O.Bits, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, acc: Bool, pair: O.Words & Bool) -> Gp8A7851175B & Bool:
+  (f_D, ok) = pair
+  Gp8A7851175B_va3(f_A, f_B, f_C, f_D, f_F, f_G, f_H, Bool.and(acc, ok), pl_Gc4ED9619F50_valid(f_E))
+
+def Gp8A7851175B_va1(+f_A: U32, f_B: O.Words, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, acc: Bool, pair: O.Bits & Bool) -> Gp8A7851175B & Bool:
+  (f_C, ok) = pair
+  Gp8A7851175B_va2(f_A, f_B, f_C, f_E, f_F, f_G, f_H, Bool.and(acc, ok), pl_u64_valid(f_D))
+
+def Gp8A7851175B_va0(+f_A: U32, f_C: O.Bits, f_D: O.Words, f_E: pl_Gc4ED9619F50_Seq, f_F: pl_pl_Gc465214E502_Seq, f_G: l10_GpF350A3C486_Seq, f_H: pl_Gp66304057C3_Seq, acc: Bool, pair: O.Words & Bool) -> Gp8A7851175B & Bool:
+  (f_B, ok) = pair
+  Gp8A7851175B_va1(f_A, f_B, f_D, f_E, f_F, f_G, f_H, Bool.and(acc, ok), pbits_valid(f_C))
+
+def Gp8A7851175B_valid(o: Gp8A7851175B) -> Gp8A7851175B & Bool:
+  match o:
+    case Gp8A7851175B{+f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}: Gp8A7851175B_va0(f_A, f_C, f_D, f_E, f_F, f_G, f_H, u8_valid(f_A), l123_u16_valid(f_B))
+
+def Gc221EC01D83_va3(f_A: O.Words, f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, acc: Bool, pair: pl_pl_Gc465214E502_Seq & Bool) -> Gc221EC01D83 & Bool:
+  (f_D, ok) = pair
+  (Gc221EC01D83{f_A, f_B, f_C, f_D}, Bool.and(acc, ok))
+
+def Gc221EC01D83_va2(f_A: O.Words, f_B: O.Words, f_D: pl_pl_Gc465214E502_Seq, acc: Bool, pair: pl_Gc4ED9619F50_Seq & Bool) -> Gc221EC01D83 & Bool:
+  (f_C, ok) = pair
+  Gc221EC01D83_va3(f_A, f_B, f_C, Bool.and(acc, ok), pl_pl_Gc465214E502_valid(f_D))
+
+def Gc221EC01D83_va1(f_A: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, acc: Bool, pair: O.Words & Bool) -> Gc221EC01D83 & Bool:
+  (f_B, ok) = pair
+  Gc221EC01D83_va2(f_A, f_B, f_D, Bool.and(acc, ok), pl_Gc4ED9619F50_valid(f_C))
+
+def Gc221EC01D83_va0(f_B: O.Words, f_C: pl_Gc4ED9619F50_Seq, f_D: pl_pl_Gc465214E502_Seq, acc: Bool, pair: O.Words & Bool) -> Gc221EC01D83 & Bool:
+  (f_A, ok) = pair
+  Gc221EC01D83_va1(f_A, f_C, f_D, Bool.and(acc, ok), pl_u64_valid(f_B))
+
+def Gc221EC01D83_valid(o: Gc221EC01D83) -> Gc221EC01D83 & Bool:
+  match o:
+    case Gc221EC01D83{f_A, f_B, f_C, f_D}: Gc221EC01D83_va0(f_B, f_C, f_D, True{}, pl_u8_valid(f_A))
+
+def Gc85FA758A04_va1(f_A: O.Bits, +f_B: Bitvector2, +f_C: Bitvector1, +f_E: Bitvector8, acc: Bool, pair: O.Bits & Bool) -> Gc85FA758A04 & Bool:
+  (f_D, ok) = pair
+  (Gc85FA758A04{f_A, f_B, f_C, f_D, f_E}, Bool.and(acc, ok))
+
+def Gc85FA758A04_va0(+f_B: Bitvector2, +f_C: Bitvector1, f_D: O.Bits, +f_E: Bitvector8, acc: Bool, pair: O.Bits & Bool) -> Gc85FA758A04 & Bool:
+  (f_A, ok) = pair
+  Gc85FA758A04_va1(f_A, f_B, f_C, f_E, Bool.and(acc, ok), bits6_valid(f_D))
+
+def Gc85FA758A04_valid(o: Gc85FA758A04) -> Gc85FA758A04 & Bool:
+  match o:
+    case Gc85FA758A04{f_A, +f_B, +f_C, f_D, +f_E}: Gc85FA758A04_va0(f_B, f_C, f_D, f_E, Bool.and(bv2_valid(f_B), Bool.and(bv1_valid(f_C), bv8_valid(f_E))), bits5_valid(f_A))
+
+def bv256_valid(+o: Bitvector256) -> Bool: True{}
+
+def Gc60805EC295_g0_va5(+f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, acc: Bool, pair: O.Bits & Bool) -> Gc60805EC295_g0 & Bool:
+  (f_H, ok) = pair
+  (Gc60805EC295_g0{f_A, f_B, f_C, f_D, f_E, f_F, f_G, f_H}, Bool.and(acc, ok))
+
+def Gc60805EC295_g0_va4(+f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_H: O.Bits, acc: Bool, pair: O.Words & Bool) -> Gc60805EC295_g0 & Bool:
+  (f_G, ok) = pair
+  Gc60805EC295_g0_va5(f_A, f_B, f_C, f_D, f_E, f_F, f_G, Bool.and(acc, ok), bits1280_valid(f_H))
+
+def Gc60805EC295_g0_va3(+f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_G: O.Words, f_H: O.Bits, acc: Bool, pair: O.Bits & Bool) -> Gc60805EC295_g0 & Bool:
+  (f_F, ok) = pair
+  Gc60805EC295_g0_va4(f_A, f_B, f_C, f_D, f_E, f_F, f_H, Bool.and(acc, ok), bv1280_valid(f_G))
+
+def Gc60805EC295_g0_va2(+f_A: Bitvector256, f_B: O.Bits, f_C: O.Bits, +f_D: Bitvector257, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, acc: Bool, pair: O.Bits & Bool) -> Gc60805EC295_g0 & Bool:
+  (f_E, ok) = pair
+  Gc60805EC295_g0_va3(f_A, f_B, f_C, f_D, f_E, f_G, f_H, Bool.and(acc, ok), pbits_valid(f_F))
+
+def Gc60805EC295_g0_va1(+f_A: Bitvector256, f_B: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, acc: Bool, pair: O.Bits & Bool) -> Gc60805EC295_g0 & Bool:
+  (f_C, ok) = pair
+  Gc60805EC295_g0_va2(f_A, f_B, f_C, f_D, f_F, f_G, f_H, Bool.and(acc, ok), bits257_valid(f_E))
+
+def Gc60805EC295_g0_va0(+f_A: Bitvector256, f_C: O.Bits, +f_D: Bitvector257, f_E: O.Bits, f_F: O.Bits, f_G: O.Words, f_H: O.Bits, acc: Bool, pair: O.Bits & Bool) -> Gc60805EC295_g0 & Bool:
+  (f_B, ok) = pair
+  Gc60805EC295_g0_va1(f_A, f_B, f_D, f_E, f_F, f_G, f_H, Bool.and(acc, ok), pbits_valid(f_C))
+
+def Gc60805EC295_g0_valid(o: Gc60805EC295_g0) -> Gc60805EC295_g0 & Bool:
+  match o:
+    case Gc60805EC295_g0{+f_A, f_B, f_C, +f_D, f_E, f_F, f_G, f_H}: Gc60805EC295_g0_va0(f_A, f_C, f_D, f_E, f_F, f_G, f_H, bv257_valid(f_D), bits256_valid(f_B))
+
+def Gc60805EC295_g1_va3(f_I: O.Bits, f_J: O.Words, f_K: O.Bits, acc: Bool, pair: O.Bits & Bool) -> Gc60805EC295_g1 & Bool:
+  (f_L, ok) = pair
+  (Gc60805EC295_g1{f_I, f_J, f_K, f_L}, Bool.and(acc, ok))
+
+def Gc60805EC295_g1_va2(f_I: O.Bits, f_J: O.Words, f_L: O.Bits, acc: Bool, pair: O.Bits & Bool) -> Gc60805EC295_g1 & Bool:
+  (f_K, ok) = pair
+  Gc60805EC295_g1_va3(f_I, f_J, f_K, Bool.and(acc, ok), pbits_valid(f_L))
+
+def Gc60805EC295_g1_va1(f_I: O.Bits, f_K: O.Bits, f_L: O.Bits, acc: Bool, pair: O.Words & Bool) -> Gc60805EC295_g1 & Bool:
+  (f_J, ok) = pair
+  Gc60805EC295_g1_va2(f_I, f_J, f_L, Bool.and(acc, ok), bits1281_valid(f_K))
+
+def Gc60805EC295_g1_va0(f_J: O.Words, f_K: O.Bits, f_L: O.Bits, acc: Bool, pair: O.Bits & Bool) -> Gc60805EC295_g1 & Bool:
+  (f_I, ok) = pair
+  Gc60805EC295_g1_va1(f_I, f_K, f_L, Bool.and(acc, ok), bv1281_valid(f_J))
+
+def Gc60805EC295_g1_valid(o: Gc60805EC295_g1) -> Gc60805EC295_g1 & Bool:
+  match o:
+    case Gc60805EC295_g1{f_I, f_J, f_K, f_L}: Gc60805EC295_g1_va0(f_J, f_K, f_L, True{}, pbits_valid(f_I))
+
+def Gc60805EC295_va1(g0: Gc60805EC295_g0, acc: Bool, pair: Gc60805EC295_g1 & Bool) -> Gc60805EC295 & Bool:
+  (g1, ok) = pair
+  (Gc60805EC295{g0, g1}, Bool.and(acc, ok))
+
+def Gc60805EC295_va0(g1: Gc60805EC295_g1, acc: Bool, pair: Gc60805EC295_g0 & Bool) -> Gc60805EC295 & Bool:
+  (g0, ok) = pair
+  Gc60805EC295_va1(g0, Bool.and(acc, ok), Gc60805EC295_g1_valid(g1))
+
+def Gc60805EC295_valid(o: Gc60805EC295) -> Gc60805EC295 & Bool:
+  match o:
+    case Gc60805EC295{g0, g1}: Gc60805EC295_va0(g1, True{}, Gc60805EC295_g0_valid(g0))
+
+def u64_valid(+o: O.U64) -> Bool: True{}
+
+def u32_valid(+o: U32) -> Bool: True{}
+
+def Gc74A8F5F17F_valid(o: Gc74A8F5F17F) -> Bool:
+  match o:
+    case Gc74A8F5F17F{+f_A}: u8_valid(f_A)
+
+def Gc56D855869F_va4(+f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, acc: Bool, pair: v2_Gc465214E502_Seq & Bool) -> Gc56D855869F & Bool:
+  (f_G, ok) = pair
+  (Gc56D855869F{f_A, f_B, f_C, f_D, f_E, f_F, f_G}, Bool.and(acc, ok))
+
+def Gc56D855869F_va3(+f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_G: v2_Gc465214E502_Seq, acc: Bool, pair: v4_GcDC3E457711_Seq & Bool) -> Gc56D855869F & Bool:
+  (f_F, ok) = pair
+  Gc56D855869F_va4(f_A, f_B, f_C, f_D, f_E, f_F, Bool.and(acc, ok), v2_Gc465214E502_valid(f_G))
+
+def Gc56D855869F_va2(+f_A: U32, f_B: O.Words, +f_C: U32, f_D: O.Words, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, acc: Bool, pair: Gc465214E502 & Bool) -> Gc56D855869F & Bool:
+  (f_E, ok) = pair
+  Gc56D855869F_va3(f_A, f_B, f_C, f_D, f_E, f_G, Bool.and(acc, ok), v4_GcDC3E457711_valid(f_F))
+
+def Gc56D855869F_va1(+f_A: U32, f_B: O.Words, +f_C: U32, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, acc: Bool, pair: O.Words & Bool) -> Gc56D855869F & Bool:
+  (f_D, ok) = pair
+  Gc56D855869F_va2(f_A, f_B, f_C, f_D, f_F, f_G, Bool.and(acc, ok), Gc465214E502_valid(f_E))
+
+def Gc56D855869F_va0(+f_A: U32, +f_C: U32, f_D: O.Words, f_E: Gc465214E502, f_F: v4_GcDC3E457711_Seq, f_G: v2_Gc465214E502_Seq, acc: Bool, pair: O.Words & Bool) -> Gc56D855869F & Bool:
+  (f_B, ok) = pair
+  Gc56D855869F_va1(f_A, f_B, f_C, f_E, f_F, f_G, Bool.and(acc, ok), bl256_valid(f_D))
+
+def Gc56D855869F_valid(o: Gc56D855869F) -> Gc56D855869F & Bool:
+  match o:
+    case Gc56D855869F{+f_A, f_B, +f_C, f_D, f_E, f_F, f_G}: Gc56D855869F_va0(f_A, f_C, f_D, f_E, f_F, f_G, Bool.and(u16_valid(f_A), u8_valid(f_C)), l128_u16_valid(f_B))
+
+def bv15_valid(o: Bitvector15) -> Bool:
+  match o:
+    case Bitvector15{+w0}: U32.is_lt(w0, 32768)
+
+def bv16_valid(o: Bitvector16) -> Bool:
+  match o:
+    case Bitvector16{+w0}: U32.is_lt(w0, 65536)
+
+def bv17_valid(o: Bitvector17) -> Bool:
+  match o:
+    case Bitvector17{+w0}: U32.is_lt(w0, 131072)
+
+def bv31_valid(o: Bitvector31) -> Bool:
+  match o:
+    case Bitvector31{+w0}: U32.is_lt(w0, 2147483648)
+
+def bv32_valid(+o: Bitvector32) -> Bool: True{}
+
+def bv33_valid(o: Bitvector33) -> Bool:
+  match o:
+    case Bitvector33{+w0, +w1}: U32.is_lt(w1, 2)
+
+def bv3_valid(o: Bitvector3) -> Bool:
+  match o:
+    case Bitvector3{+w0}: U32.is_lt(w0, 8)
+
+def bv4_valid(o: Bitvector4) -> Bool:
+  match o:
+    case Bitvector4{+w0}: U32.is_lt(w0, 16)
+
+def bv511_valid(o: Bitvector511) -> Bool:
+  match o:
+    case Bitvector511{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: U32.is_lt(w15, 2147483648)
+
+def bv512_valid(+o: Bitvector512) -> Bool: True{}
+
+def bv513_valid(o: Bitvector513) -> Bool:
+  match o:
+    case Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}: U32.is_lt(w16, 2)
+
+def bv5_valid(o: Bitvector5) -> Bool:
+  match o:
+    case Bitvector5{+w0}: U32.is_lt(w0, 32)
+
+def bv6_valid(o: Bitvector6) -> Bool:
+  match o:
+    case Bitvector6{+w0}: U32.is_lt(w0, 64)
+
+def bv7_valid(o: Bitvector7) -> Bool:
+  match o:
+    case Bitvector7{+w0}: U32.is_lt(w0, 128)
+
+def bv9_valid(o: Bitvector9) -> Bool:
+  match o:
+    case Bitvector9{+w0}: U32.is_lt(w0, 512)
+
+def bool_valid(+o: Bool) -> Bool: True{}
+
+def u128_valid(+o: Uint128) -> Bool: True{}
+
+def u256_valid(+o: Uint256) -> Bool: True{}
+
+def Gp4B0CA2906A_senc_out(+n: U32, out: Array<U32>, o: Gp4B0CA2906A, +m: U32) -> Gp4B0CA2906A & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gp4B0CA2906A_senc_put(+n: U32, pair: Array<U32> & (Gp4B0CA2906A & U32)) -> Gp4B0CA2906A & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gp4B0CA2906A_senc_out(n, out, o, m)
+
+def Gp4B0CA2906A_senc_go(bad: Bool, +n: U32, o: Gp4B0CA2906A) -> Gp4B0CA2906A & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gp4B0CA2906A_senc_put(n, Gp4B0CA2906A_putk(O.out_new(n), 0, o))
+
+def Gp4B0CA2906A_senc_sized(pair: Gp4B0CA2906A & U32) -> Gp4B0CA2906A & O.Encoded:
+  (o, +n) = pair
+  Gp4B0CA2906A_senc_go(O.is_poisoned(n), n, o)
+
+def Gp4B0CA2906A_serialize(o: Gp4B0CA2906A) -> Gp4B0CA2906A & O.Encoded: Gp4B0CA2906A_senc_sized(Gp4B0CA2906A_size(o))
+
+def Gp8A7851175B_senc_out(+n: U32, out: Array<U32>, o: Gp8A7851175B, +m: U32) -> Gp8A7851175B & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gp8A7851175B_senc_put(+n: U32, pair: Array<U32> & (Gp8A7851175B & U32)) -> Gp8A7851175B & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gp8A7851175B_senc_out(n, out, o, m)
+
+def Gp8A7851175B_senc_go(bad: Bool, +n: U32, o: Gp8A7851175B) -> Gp8A7851175B & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gp8A7851175B_senc_put(n, Gp8A7851175B_putk(O.out_new(n), 0, o))
+
+def Gp8A7851175B_senc_sized(pair: Gp8A7851175B & U32) -> Gp8A7851175B & O.Encoded:
+  (o, +n) = pair
+  Gp8A7851175B_senc_go(O.is_poisoned(n), n, o)
+
+def Gp8A7851175B_serialize(o: Gp8A7851175B) -> Gp8A7851175B & O.Encoded: Gp8A7851175B_senc_sized(Gp8A7851175B_size(o))
+
+def Gp66304057C3_senc_out(+n: U32, out: Array<U32>, o: Gp66304057C3, +m: U32) -> Gp66304057C3 & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gp66304057C3_senc_put(+n: U32, pair: Array<U32> & (Gp66304057C3 & U32)) -> Gp66304057C3 & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gp66304057C3_senc_out(n, out, o, m)
+
+def Gp66304057C3_senc_go(bad: Bool, +n: U32, o: Gp66304057C3) -> Gp66304057C3 & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gp66304057C3_senc_put(n, Gp66304057C3_putk(O.out_new(n), 0, o))
+
+def Gp66304057C3_senc_sized(pair: Gp66304057C3 & U32) -> Gp66304057C3 & O.Encoded:
+  (o, +n) = pair
+  Gp66304057C3_senc_go(O.is_poisoned(n), n, o)
+
+def Gp66304057C3_serialize(o: Gp66304057C3) -> Gp66304057C3 & O.Encoded: Gp66304057C3_senc_sized(Gp66304057C3_size(o))
+
+def GpF350A3C486_ser_pick(ok: Bool, +o: GpF350A3C486) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GpF350A3C486_encode(o))
+    case False{}: O.refused()
+
+def GpF350A3C486_serialize(+o: GpF350A3C486) -> O.Encoded: GpF350A3C486_ser_pick(GpF350A3C486_valid(o), o)
+
+def Gt83D8B3D008_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gt83D8B3D008_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt83D8B3D008_senc_out(n, out, o, m)
+
+def Gt83D8B3D008_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gt83D8B3D008_senc_put(n, pl_bool_putk(O.out_new(n), 0, o))
+
+def Gt83D8B3D008_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+  (o, +n) = pair
+  Gt83D8B3D008_senc_go(O.is_poisoned(n), n, o)
+
+def Gt83D8B3D008_serialize(o: O.Words) -> O.Words & O.Encoded: Gt83D8B3D008_senc_sized(pl_bool_size(o))
+
+def Gt1D9B3E1871_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 16, out))
+
+def Gt1D9B3E1871_serialize(o: O.Words) -> O.Words & O.Encoded: Gt1D9B3E1871_senc_out(v16_bool_putk(O.out_at(2n), 0, o))
+
+def GtAE3EF932C2_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 1, out))
+
+def GtAE3EF932C2_serialize(o: O.Words) -> O.Words & O.Encoded: GtAE3EF932C2_senc_out(v1_bool_putk(O.out_at(0n), 0, o))
+
+def Gt3771256492_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 2, out))
+
+def Gt3771256492_serialize(o: O.Words) -> O.Words & O.Encoded: Gt3771256492_senc_out(v2_bool_putk(O.out_at(0n), 0, o))
+
+def Gt9DF37A5216_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 31, out))
+
+def Gt9DF37A5216_serialize(o: O.Words) -> O.Words & O.Encoded: Gt9DF37A5216_senc_out(v31_bool_putk(O.out_at(3n), 0, o))
+
+def Gt57090094FA_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 3, out))
+
+def Gt57090094FA_serialize(o: O.Words) -> O.Words & O.Encoded: Gt57090094FA_senc_out(v3_bool_putk(O.out_at(0n), 0, o))
+
+def GtC57121EA56_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 4, out))
+
+def GtC57121EA56_serialize(o: O.Words) -> O.Words & O.Encoded: GtC57121EA56_senc_out(v4_bool_putk(O.out_at(0n), 0, o))
+
+def Gt34AE45611E_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 512, out))
+
+def Gt34AE45611E_serialize(o: O.Words) -> O.Words & O.Encoded: Gt34AE45611E_senc_out(v512_bool_putk(O.out_at(7n), 0, o))
+
+def GtEB2FD43D9B_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 513, out))
+
+def GtEB2FD43D9B_serialize(o: O.Words) -> O.Words & O.Encoded: GtEB2FD43D9B_senc_out(v513_bool_putk(O.out_at(8n), 0, o))
+
+def Gt7FBB1934E8_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 5, out))
+
+def Gt7FBB1934E8_serialize(o: O.Words) -> O.Words & O.Encoded: Gt7FBB1934E8_senc_out(v5_bool_putk(O.out_at(1n), 0, o))
+
+def Gt526892A4DC_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 8, out))
+
+def Gt526892A4DC_serialize(o: O.Words) -> O.Words & O.Encoded: Gt526892A4DC_senc_out(v8_bool_putk(O.out_at(1n), 0, o))
+
+def Gt1C2FA69562_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gt1C2FA69562_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt1C2FA69562_senc_out(n, out, o, m)
+
+def Gt1C2FA69562_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gt1C2FA69562_senc_put(n, pl_u128_putk(O.out_new(n), 0, o))
+
+def Gt1C2FA69562_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+  (o, +n) = pair
+  Gt1C2FA69562_senc_go(O.is_poisoned(n), n, o)
+
+def Gt1C2FA69562_serialize(o: O.Words) -> O.Words & O.Encoded: Gt1C2FA69562_senc_sized(pl_u128_size(o))
+
+def Gt3EC8B89B94_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 256, out))
+
+def Gt3EC8B89B94_serialize(o: O.Words) -> O.Words & O.Encoded: Gt3EC8B89B94_senc_out(v16_u128_putk(O.out_at(6n), 0, o))
+
+def Gt3FD98F54A5_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 16, out))
+
+def Gt3FD98F54A5_serialize(o: O.Words) -> O.Words & O.Encoded: Gt3FD98F54A5_senc_out(v1_u128_putk(O.out_at(2n), 0, o))
+
+def Gt7D65FF3A10_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 32, out))
+
+def Gt7D65FF3A10_serialize(o: O.Words) -> O.Words & O.Encoded: Gt7D65FF3A10_senc_out(v2_u128_putk(O.out_at(3n), 0, o))
+
+def Gt6B1336E534_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 496, out))
+
+def Gt6B1336E534_serialize(o: O.Words) -> O.Words & O.Encoded: Gt6B1336E534_senc_out(v31_u128_putk(O.out_at(7n), 0, o))
+
+def Gt7600AB7870_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 48, out))
+
+def Gt7600AB7870_serialize(o: O.Words) -> O.Words & O.Encoded: Gt7600AB7870_senc_out(v3_u128_putk(O.out_at(4n), 0, o))
+
+def GtB0CCEA154C_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 64, out))
+
+def GtB0CCEA154C_serialize(o: O.Words) -> O.Words & O.Encoded: GtB0CCEA154C_senc_out(v4_u128_putk(O.out_at(4n), 0, o))
+
+def Gt7274F61A0F_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 8192, out))
+
+def Gt7274F61A0F_serialize(o: O.Words) -> O.Words & O.Encoded: Gt7274F61A0F_senc_out(v512_u128_putk(O.out_at(11n), 0, o))
+
+def Gt9EA902108D_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 8208, out))
+
+def Gt9EA902108D_serialize(o: O.Words) -> O.Words & O.Encoded: Gt9EA902108D_senc_out(v513_u128_putk(O.out_at(12n), 0, o))
+
+def GtBB42F83A45_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 80, out))
+
+def GtBB42F83A45_serialize(o: O.Words) -> O.Words & O.Encoded: GtBB42F83A45_senc_out(v5_u128_putk(O.out_at(5n), 0, o))
+
+def Gt3E2A057F33_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 128, out))
+
+def Gt3E2A057F33_serialize(o: O.Words) -> O.Words & O.Encoded: Gt3E2A057F33_senc_out(v8_u128_putk(O.out_at(5n), 0, o))
+
+def GtDE4B86A990_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def GtDE4B86A990_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtDE4B86A990_senc_out(n, out, o, m)
+
+def GtDE4B86A990_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: GtDE4B86A990_senc_put(n, pl_u8_putk(O.out_new(n), 0, o))
+
+def GtDE4B86A990_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+  (o, +n) = pair
+  GtDE4B86A990_senc_go(O.is_poisoned(n), n, o)
+
+def GtDE4B86A990_serialize(o: O.Words) -> O.Words & O.Encoded: GtDE4B86A990_senc_sized(pl_u8_size(o))
+
+def Gt28ED72E3EF_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 16, out))
+
+def Gt28ED72E3EF_serialize(o: O.Words) -> O.Words & O.Encoded: Gt28ED72E3EF_senc_out(v16_u8_putk(O.out_at(2n), 0, o))
+
+def GtB85E1BC748_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 1, out))
+
+def GtB85E1BC748_serialize(o: O.Words) -> O.Words & O.Encoded: GtB85E1BC748_senc_out(v1_u8_putk(O.out_at(0n), 0, o))
+
+def Gt3429157FEB_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 2, out))
+
+def Gt3429157FEB_serialize(o: O.Words) -> O.Words & O.Encoded: Gt3429157FEB_senc_out(v2_u8_putk(O.out_at(0n), 0, o))
+
+def GtC0FC7B166A_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 31, out))
+
+def GtC0FC7B166A_serialize(o: O.Words) -> O.Words & O.Encoded: GtC0FC7B166A_senc_out(v31_u8_putk(O.out_at(3n), 0, o))
+
+def GtC19E8053EB_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 3, out))
+
+def GtC19E8053EB_serialize(o: O.Words) -> O.Words & O.Encoded: GtC19E8053EB_senc_out(v3_u8_putk(O.out_at(0n), 0, o))
+
+def Gt75C1995C88_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 4, out))
+
+def Gt75C1995C88_serialize(o: O.Words) -> O.Words & O.Encoded: Gt75C1995C88_senc_out(v4_u8_putk(O.out_at(0n), 0, o))
+
+def Gt28605B5D5C_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 512, out))
+
+def Gt28605B5D5C_serialize(o: O.Words) -> O.Words & O.Encoded: Gt28605B5D5C_senc_out(v512_u8_putk(O.out_at(7n), 0, o))
+
+def Gt2CD118DF5F_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 513, out))
+
+def Gt2CD118DF5F_serialize(o: O.Words) -> O.Words & O.Encoded: Gt2CD118DF5F_senc_out(v513_u8_putk(O.out_at(8n), 0, o))
+
+def GtF3865AEE9A_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 5, out))
+
+def GtF3865AEE9A_serialize(o: O.Words) -> O.Words & O.Encoded: GtF3865AEE9A_senc_out(v5_u8_putk(O.out_at(1n), 0, o))
+
+def GtA8100D747D_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 8, out))
+
+def GtA8100D747D_serialize(o: O.Words) -> O.Words & O.Encoded: GtA8100D747D_senc_out(v8_u8_putk(O.out_at(1n), 0, o))
+
+def GtF23A2FB97E_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def GtF23A2FB97E_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtF23A2FB97E_senc_out(n, out, o, m)
+
+def GtF23A2FB97E_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: GtF23A2FB97E_senc_put(n, pl_u16_putk(O.out_new(n), 0, o))
+
+def GtF23A2FB97E_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+  (o, +n) = pair
+  GtF23A2FB97E_senc_go(O.is_poisoned(n), n, o)
+
+def GtF23A2FB97E_serialize(o: O.Words) -> O.Words & O.Encoded: GtF23A2FB97E_senc_sized(pl_u16_size(o))
+
+def GtAEB382AD1F_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 32, out))
+
+def GtAEB382AD1F_serialize(o: O.Words) -> O.Words & O.Encoded: GtAEB382AD1F_senc_out(v16_u16_putk(O.out_at(3n), 0, o))
+
+def GtE6006F6F55_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 2, out))
+
+def GtE6006F6F55_serialize(o: O.Words) -> O.Words & O.Encoded: GtE6006F6F55_senc_out(v1_u16_putk(O.out_at(0n), 0, o))
+
+def Gt04170D6AA7_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 4, out))
+
+def Gt04170D6AA7_serialize(o: O.Words) -> O.Words & O.Encoded: Gt04170D6AA7_senc_out(v2_u16_putk(O.out_at(0n), 0, o))
+
+def Gt9333E6513D_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 62, out))
+
+def Gt9333E6513D_serialize(o: O.Words) -> O.Words & O.Encoded: Gt9333E6513D_senc_out(v31_u16_putk(O.out_at(4n), 0, o))
+
+def Gt19F04F79B8_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 6, out))
+
+def Gt19F04F79B8_serialize(o: O.Words) -> O.Words & O.Encoded: Gt19F04F79B8_senc_out(v3_u16_putk(O.out_at(1n), 0, o))
+
+def Gt6463DC73A8_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 8, out))
+
+def Gt6463DC73A8_serialize(o: O.Words) -> O.Words & O.Encoded: Gt6463DC73A8_senc_out(v4_u16_putk(O.out_at(1n), 0, o))
+
+def Gt2FF8722A75_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 1024, out))
+
+def Gt2FF8722A75_serialize(o: O.Words) -> O.Words & O.Encoded: Gt2FF8722A75_senc_out(v512_u16_putk(O.out_at(8n), 0, o))
+
+def Gt5BE68AF2C7_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 1026, out))
+
+def Gt5BE68AF2C7_serialize(o: O.Words) -> O.Words & O.Encoded: Gt5BE68AF2C7_senc_out(v513_u16_putk(O.out_at(9n), 0, o))
+
+def Gt89824BEACE_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 10, out))
+
+def Gt89824BEACE_serialize(o: O.Words) -> O.Words & O.Encoded: Gt89824BEACE_senc_out(v5_u16_putk(O.out_at(2n), 0, o))
+
+def Gt39CAD03032_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 16, out))
+
+def Gt39CAD03032_serialize(o: O.Words) -> O.Words & O.Encoded: Gt39CAD03032_senc_out(v8_u16_putk(O.out_at(2n), 0, o))
+
+def GtA8457965E2_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def GtA8457965E2_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtA8457965E2_senc_out(n, out, o, m)
+
+def GtA8457965E2_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: GtA8457965E2_senc_put(n, pl_u256_putk(O.out_new(n), 0, o))
+
+def GtA8457965E2_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+  (o, +n) = pair
+  GtA8457965E2_senc_go(O.is_poisoned(n), n, o)
+
+def GtA8457965E2_serialize(o: O.Words) -> O.Words & O.Encoded: GtA8457965E2_senc_sized(pl_u256_size(o))
+
+def Gt3E6E18CD57_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 512, out))
+
+def Gt3E6E18CD57_serialize(o: O.Words) -> O.Words & O.Encoded: Gt3E6E18CD57_senc_out(v16_u256_putk(O.out_at(7n), 0, o))
+
+def GtBBFD66E011_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 32, out))
+
+def GtBBFD66E011_serialize(o: O.Words) -> O.Words & O.Encoded: GtBBFD66E011_senc_out(v1_u256_putk(O.out_at(3n), 0, o))
+
+def GtB91D4D285D_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 64, out))
+
+def GtB91D4D285D_serialize(o: O.Words) -> O.Words & O.Encoded: GtB91D4D285D_senc_out(v2_u256_putk(O.out_at(4n), 0, o))
+
+def Gt6E9B243B7C_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 992, out))
+
+def Gt6E9B243B7C_serialize(o: O.Words) -> O.Words & O.Encoded: Gt6E9B243B7C_senc_out(v31_u256_putk(O.out_at(8n), 0, o))
+
+def Gt2E7060B297_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 96, out))
+
+def Gt2E7060B297_serialize(o: O.Words) -> O.Words & O.Encoded: Gt2E7060B297_senc_out(v3_u256_putk(O.out_at(5n), 0, o))
+
+def Gt74B2AF1CB3_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 128, out))
+
+def Gt74B2AF1CB3_serialize(o: O.Words) -> O.Words & O.Encoded: Gt74B2AF1CB3_senc_out(v4_u256_putk(O.out_at(5n), 0, o))
+
+def Gt274A0B8DC2_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 16384, out))
+
+def Gt274A0B8DC2_serialize(o: O.Words) -> O.Words & O.Encoded: Gt274A0B8DC2_senc_out(v512_u256_putk(O.out_at(12n), 0, o))
+
+def Gt0A3B6B4128_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 16416, out))
+
+def Gt0A3B6B4128_serialize(o: O.Words) -> O.Words & O.Encoded: Gt0A3B6B4128_senc_out(v513_u256_putk(O.out_at(13n), 0, o))
+
+def Gt0B1B711C4D_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 160, out))
+
+def Gt0B1B711C4D_serialize(o: O.Words) -> O.Words & O.Encoded: Gt0B1B711C4D_senc_out(v5_u256_putk(O.out_at(6n), 0, o))
+
+def GtFAE59DA275_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 256, out))
+
+def GtFAE59DA275_serialize(o: O.Words) -> O.Words & O.Encoded: GtFAE59DA275_senc_out(v8_u256_putk(O.out_at(6n), 0, o))
+
+def Gt3A9420DD8E_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gt3A9420DD8E_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt3A9420DD8E_senc_out(n, out, o, m)
+
+def Gt3A9420DD8E_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gt3A9420DD8E_senc_put(n, pl_u32_putk(O.out_new(n), 0, o))
+
+def Gt3A9420DD8E_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+  (o, +n) = pair
+  Gt3A9420DD8E_senc_go(O.is_poisoned(n), n, o)
+
+def Gt3A9420DD8E_serialize(o: O.Words) -> O.Words & O.Encoded: Gt3A9420DD8E_senc_sized(pl_u32_size(o))
+
+def Gt3CC580499F_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 64, out))
+
+def Gt3CC580499F_serialize(o: O.Words) -> O.Words & O.Encoded: Gt3CC580499F_senc_out(v16_u32_putk(O.out_at(4n), 0, o))
+
+def Gt669C528764_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 4, out))
+
+def Gt669C528764_serialize(o: O.Words) -> O.Words & O.Encoded: Gt669C528764_senc_out(v1_u32_putk(O.out_at(0n), 0, o))
+
+def GtF45E42B273_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 8, out))
+
+def GtF45E42B273_serialize(o: O.Words) -> O.Words & O.Encoded: GtF45E42B273_senc_out(v2_u32_putk(O.out_at(1n), 0, o))
+
+def GtE528AAE3C6_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 124, out))
+
+def GtE528AAE3C6_serialize(o: O.Words) -> O.Words & O.Encoded: GtE528AAE3C6_senc_out(v31_u32_putk(O.out_at(5n), 0, o))
+
+def GtD1AEF07F7D_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 12, out))
+
+def GtD1AEF07F7D_serialize(o: O.Words) -> O.Words & O.Encoded: GtD1AEF07F7D_senc_out(v3_u32_putk(O.out_at(2n), 0, o))
+
+def Gt240C147AA2_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 16, out))
+
+def Gt240C147AA2_serialize(o: O.Words) -> O.Words & O.Encoded: Gt240C147AA2_senc_out(v4_u32_putk(O.out_at(2n), 0, o))
+
+def Gt13AFE546ED_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 2048, out))
+
+def Gt13AFE546ED_serialize(o: O.Words) -> O.Words & O.Encoded: Gt13AFE546ED_senc_out(v512_u32_putk(O.out_at(9n), 0, o))
+
+def Gt53D2408A5F_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 2052, out))
+
+def Gt53D2408A5F_serialize(o: O.Words) -> O.Words & O.Encoded: Gt53D2408A5F_senc_out(v513_u32_putk(O.out_at(10n), 0, o))
+
+def Gt1719057EB7_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 20, out))
+
+def Gt1719057EB7_serialize(o: O.Words) -> O.Words & O.Encoded: Gt1719057EB7_senc_out(v5_u32_putk(O.out_at(3n), 0, o))
+
+def GtCCF6FFA0A0_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 32, out))
+
+def GtCCF6FFA0A0_serialize(o: O.Words) -> O.Words & O.Encoded: GtCCF6FFA0A0_senc_out(v8_u32_putk(O.out_at(3n), 0, o))
+
+def GtE83F21B20A_senc_out(+n: U32, out: Array<U32>, o: O.Words, +m: U32) -> O.Words & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def GtE83F21B20A_senc_put(+n: U32, pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtE83F21B20A_senc_out(n, out, o, m)
+
+def GtE83F21B20A_senc_go(bad: Bool, +n: U32, o: O.Words) -> O.Words & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: GtE83F21B20A_senc_put(n, pl_u64_putk(O.out_new(n), 0, o))
+
+def GtE83F21B20A_senc_sized(pair: O.Words & U32) -> O.Words & O.Encoded:
+  (o, +n) = pair
+  GtE83F21B20A_senc_go(O.is_poisoned(n), n, o)
+
+def GtE83F21B20A_serialize(o: O.Words) -> O.Words & O.Encoded: GtE83F21B20A_senc_sized(pl_u64_size(o))
+
+def Gt0B4EF17D71_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 128, out))
+
+def Gt0B4EF17D71_serialize(o: O.Words) -> O.Words & O.Encoded: Gt0B4EF17D71_senc_out(v16_u64_putk(O.out_at(5n), 0, o))
+
+def GtADC8DCD962_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 8, out))
+
+def GtADC8DCD962_serialize(o: O.Words) -> O.Words & O.Encoded: GtADC8DCD962_senc_out(v1_u64_putk(O.out_at(1n), 0, o))
+
+def GtC923FCB2DA_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 16, out))
+
+def GtC923FCB2DA_serialize(o: O.Words) -> O.Words & O.Encoded: GtC923FCB2DA_senc_out(v2_u64_putk(O.out_at(2n), 0, o))
+
+def Gt7D1CD7363A_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 248, out))
+
+def Gt7D1CD7363A_serialize(o: O.Words) -> O.Words & O.Encoded: Gt7D1CD7363A_senc_out(v31_u64_putk(O.out_at(6n), 0, o))
+
+def Gt8E507C4540_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 24, out))
+
+def Gt8E507C4540_serialize(o: O.Words) -> O.Words & O.Encoded: Gt8E507C4540_senc_out(v3_u64_putk(O.out_at(3n), 0, o))
+
+def Gt46F5D7703F_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 32, out))
+
+def Gt46F5D7703F_serialize(o: O.Words) -> O.Words & O.Encoded: Gt46F5D7703F_senc_out(v4_u64_putk(O.out_at(3n), 0, o))
+
+def Gt843A1262ED_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 4096, out))
+
+def Gt843A1262ED_serialize(o: O.Words) -> O.Words & O.Encoded: Gt843A1262ED_senc_out(v512_u64_putk(O.out_at(10n), 0, o))
+
+def Gt10D6F42D74_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 4104, out))
+
+def Gt10D6F42D74_serialize(o: O.Words) -> O.Words & O.Encoded: Gt10D6F42D74_senc_out(v513_u64_putk(O.out_at(11n), 0, o))
+
+def Gt8FB0CF9679_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 40, out))
+
+def Gt8FB0CF9679_serialize(o: O.Words) -> O.Words & O.Encoded: Gt8FB0CF9679_senc_out(v5_u64_putk(O.out_at(4n), 0, o))
+
+def GtE470919895_senc_out(pair: Array<U32> & (O.Words & U32)) -> O.Words & O.Encoded:
+  (out, r) = pair
+  (o, fl) = r
+  (o, O.ser_done(O.is_poisoned(fl), 64, out))
+
+def GtE470919895_serialize(o: O.Words) -> O.Words & O.Encoded: GtE470919895_senc_out(v8_u64_putk(O.out_at(4n), 0, o))
+
+def Gc221EC01D83_senc_out(+n: U32, out: Array<U32>, o: Gc221EC01D83, +m: U32) -> Gc221EC01D83 & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gc221EC01D83_senc_put(+n: U32, pair: Array<U32> & (Gc221EC01D83 & U32)) -> Gc221EC01D83 & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gc221EC01D83_senc_out(n, out, o, m)
+
+def Gc221EC01D83_senc_go(bad: Bool, +n: U32, o: Gc221EC01D83) -> Gc221EC01D83 & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gc221EC01D83_senc_put(n, Gc221EC01D83_putk(O.out_new(n), 0, o))
+
+def Gc221EC01D83_senc_sized(pair: Gc221EC01D83 & U32) -> Gc221EC01D83 & O.Encoded:
+  (o, +n) = pair
+  Gc221EC01D83_senc_go(O.is_poisoned(n), n, o)
+
+def Gc221EC01D83_serialize(o: Gc221EC01D83) -> Gc221EC01D83 & O.Encoded: Gc221EC01D83_senc_sized(Gc221EC01D83_size(o))
+
+def Gc85FA758A04_senc_out(out: Array<U32>, o: Gc85FA758A04, +m: U32) -> Gc85FA758A04 & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def Gc85FA758A04_senc_put(pair: Array<U32> & (Gc85FA758A04 & U32)) -> Gc85FA758A04 & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gc85FA758A04_senc_out(out, o, m)
+
+def Gc85FA758A04_serialize(o: Gc85FA758A04) -> Gc85FA758A04 & O.Encoded: Gc85FA758A04_senc_put(Gc85FA758A04_putk(O.out_at(2n), 0, o))
+
+def Gc60805EC295_senc_out(+n: U32, out: Array<U32>, o: Gc60805EC295, +m: U32) -> Gc60805EC295 & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gc60805EC295_senc_put(+n: U32, pair: Array<U32> & (Gc60805EC295 & U32)) -> Gc60805EC295 & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gc60805EC295_senc_out(n, out, o, m)
+
+def Gc60805EC295_senc_go(bad: Bool, +n: U32, o: Gc60805EC295) -> Gc60805EC295 & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gc60805EC295_senc_put(n, Gc60805EC295_putk(O.out_new(n), 0, o))
+
+def Gc60805EC295_senc_sized(pair: Gc60805EC295 & U32) -> Gc60805EC295 & O.Encoded:
+  (o, +n) = pair
+  Gc60805EC295_senc_go(O.is_poisoned(n), n, o)
+
+def Gc60805EC295_serialize(o: Gc60805EC295) -> Gc60805EC295 & O.Encoded: Gc60805EC295_senc_sized(Gc60805EC295_size(o))
+
+def GcDC3E457711_ser_pick(ok: Bool, +o: GcDC3E457711) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GcDC3E457711_encode(o))
+    case False{}: O.refused()
+
+def GcDC3E457711_serialize(+o: GcDC3E457711) -> O.Encoded: GcDC3E457711_ser_pick(GcDC3E457711_valid(o), o)
+
+def Gc74A8F5F17F_ser_pick(ok: Bool, +o: Gc74A8F5F17F) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gc74A8F5F17F_encode(o))
+    case False{}: O.refused()
+
+def Gc74A8F5F17F_serialize(+o: Gc74A8F5F17F) -> O.Encoded: Gc74A8F5F17F_ser_pick(Gc74A8F5F17F_valid(o), o)
+
+def Gc465214E502_senc_out(+n: U32, out: Array<U32>, o: Gc465214E502, +m: U32) -> Gc465214E502 & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gc465214E502_senc_put(+n: U32, pair: Array<U32> & (Gc465214E502 & U32)) -> Gc465214E502 & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gc465214E502_senc_out(n, out, o, m)
+
+def Gc465214E502_senc_go(bad: Bool, +n: U32, o: Gc465214E502) -> Gc465214E502 & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gc465214E502_senc_put(n, Gc465214E502_putk(O.out_new(n), 0, o))
+
+def Gc465214E502_senc_sized(pair: Gc465214E502 & U32) -> Gc465214E502 & O.Encoded:
+  (o, +n) = pair
+  Gc465214E502_senc_go(O.is_poisoned(n), n, o)
+
+def Gc465214E502_serialize(o: Gc465214E502) -> Gc465214E502 & O.Encoded: Gc465214E502_senc_sized(Gc465214E502_size(o))
+
+def Gc56D855869F_senc_out(+n: U32, out: Array<U32>, o: Gc56D855869F, +m: U32) -> Gc56D855869F & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gc56D855869F_senc_put(+n: U32, pair: Array<U32> & (Gc56D855869F & U32)) -> Gc56D855869F & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gc56D855869F_senc_out(n, out, o, m)
+
+def Gc56D855869F_senc_go(bad: Bool, +n: U32, o: Gc56D855869F) -> Gc56D855869F & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gc56D855869F_senc_put(n, Gc56D855869F_putk(O.out_new(n), 0, o))
+
+def Gc56D855869F_senc_sized(pair: Gc56D855869F & U32) -> Gc56D855869F & O.Encoded:
+  (o, +n) = pair
+  Gc56D855869F_senc_go(O.is_poisoned(n), n, o)
+
+def Gc56D855869F_serialize(o: Gc56D855869F) -> Gc56D855869F & O.Encoded: Gc56D855869F_senc_sized(Gc56D855869F_size(o))
+
+def Gc4ED9619F50_ser_pick(ok: Bool, +o: Gc4ED9619F50) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gc4ED9619F50_encode(o))
+    case False{}: O.refused()
+
+def Gc4ED9619F50_serialize(+o: Gc4ED9619F50) -> O.Encoded: Gc4ED9619F50_ser_pick(Gc4ED9619F50_valid(o), o)
+
+def GtDB1482527D_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def GtDB1482527D_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtDB1482527D_senc_out(out, o, m)
+
+def GtDB1482527D_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtDB1482527D_senc_put(bits15_putk(O.out_at(0n), 0, o))
+
+def Gt7C1C13B292_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def Gt7C1C13B292_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt7C1C13B292_senc_out(out, o, m)
+
+def Gt7C1C13B292_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt7C1C13B292_senc_put(bits16_putk(O.out_at(0n), 0, o))
+
+def GtAA99FAAC9D_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def GtAA99FAAC9D_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtAA99FAAC9D_senc_out(out, o, m)
+
+def GtAA99FAAC9D_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtAA99FAAC9D_senc_put(bits17_putk(O.out_at(0n), 0, o))
+
+def Gt94B70684B5_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def Gt94B70684B5_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt94B70684B5_senc_out(out, o, m)
+
+def Gt94B70684B5_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt94B70684B5_senc_put(bits1_putk(O.out_at(0n), 0, o))
+
+def GtCF587DD386_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def GtCF587DD386_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtCF587DD386_senc_out(out, o, m)
+
+def GtCF587DD386_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtCF587DD386_senc_put(bits2_putk(O.out_at(0n), 0, o))
+
+def Gt4B1BA0C81D_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def Gt4B1BA0C81D_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt4B1BA0C81D_senc_out(out, o, m)
+
+def Gt4B1BA0C81D_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt4B1BA0C81D_senc_put(bits31_putk(O.out_at(0n), 0, o))
+
+def Gt2F34855D3D_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gt2F34855D3D_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt2F34855D3D_senc_out(n, out, o, m)
+
+def Gt2F34855D3D_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gt2F34855D3D_senc_put(n, bits32_putk(O.out_new(n), 0, o))
+
+def Gt2F34855D3D_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
+  (o, +n) = pair
+  Gt2F34855D3D_senc_go(O.is_poisoned(n), n, o)
+
+def Gt2F34855D3D_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt2F34855D3D_senc_sized(bits32_size(o))
+
+def Gt039DD44FD8_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gt039DD44FD8_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt039DD44FD8_senc_out(n, out, o, m)
+
+def Gt039DD44FD8_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gt039DD44FD8_senc_put(n, bits33_putk(O.out_new(n), 0, o))
+
+def Gt039DD44FD8_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
+  (o, +n) = pair
+  Gt039DD44FD8_senc_go(O.is_poisoned(n), n, o)
+
+def Gt039DD44FD8_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt039DD44FD8_senc_sized(bits33_size(o))
+
+def GtC847E618FA_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def GtC847E618FA_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtC847E618FA_senc_out(out, o, m)
+
+def GtC847E618FA_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtC847E618FA_senc_put(bits3_putk(O.out_at(0n), 0, o))
+
+def Gt484D1ADAFE_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def Gt484D1ADAFE_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt484D1ADAFE_senc_out(out, o, m)
+
+def Gt484D1ADAFE_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt484D1ADAFE_senc_put(bits4_putk(O.out_at(0n), 0, o))
+
+def Gt21E1483EE1_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gt21E1483EE1_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt21E1483EE1_senc_out(n, out, o, m)
+
+def Gt21E1483EE1_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gt21E1483EE1_senc_put(n, bits511_putk(O.out_new(n), 0, o))
+
+def Gt21E1483EE1_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
+  (o, +n) = pair
+  Gt21E1483EE1_senc_go(O.is_poisoned(n), n, o)
+
+def Gt21E1483EE1_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt21E1483EE1_senc_sized(bits511_size(o))
+
+def Gt38F5890C13_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gt38F5890C13_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt38F5890C13_senc_out(n, out, o, m)
+
+def Gt38F5890C13_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gt38F5890C13_senc_put(n, bits512_putk(O.out_new(n), 0, o))
+
+def Gt38F5890C13_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
+  (o, +n) = pair
+  Gt38F5890C13_senc_go(O.is_poisoned(n), n, o)
+
+def Gt38F5890C13_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt38F5890C13_senc_sized(bits512_size(o))
+
+def Gt44F1B6940F_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gt44F1B6940F_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt44F1B6940F_senc_out(n, out, o, m)
+
+def Gt44F1B6940F_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gt44F1B6940F_senc_put(n, bits513_putk(O.out_new(n), 0, o))
+
+def Gt44F1B6940F_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
+  (o, +n) = pair
+  Gt44F1B6940F_senc_go(O.is_poisoned(n), n, o)
+
+def Gt44F1B6940F_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt44F1B6940F_senc_sized(bits513_size(o))
+
+def GtF91FD5FC73_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def GtF91FD5FC73_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtF91FD5FC73_senc_out(out, o, m)
+
+def GtF91FD5FC73_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtF91FD5FC73_senc_put(bits5_putk(O.out_at(0n), 0, o))
+
+def Gt98B8C9F262_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def Gt98B8C9F262_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt98B8C9F262_senc_out(out, o, m)
+
+def Gt98B8C9F262_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt98B8C9F262_senc_put(bits6_putk(O.out_at(0n), 0, o))
+
+def GtC063F5D9E0_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def GtC063F5D9E0_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtC063F5D9E0_senc_out(out, o, m)
+
+def GtC063F5D9E0_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtC063F5D9E0_senc_put(bits7_putk(O.out_at(0n), 0, o))
+
+def GtD291A17219_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def GtD291A17219_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtD291A17219_senc_out(out, o, m)
+
+def GtD291A17219_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtD291A17219_senc_put(bits8_putk(O.out_at(0n), 0, o))
+
+def Gt9D356BAF82_senc_out(out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def Gt9D356BAF82_senc_put(pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gt9D356BAF82_senc_out(out, o, m)
+
+def Gt9D356BAF82_serialize(o: O.Bits) -> O.Bits & O.Encoded: Gt9D356BAF82_senc_put(bits9_putk(O.out_at(0n), 0, o))
+
+def GtEDF530C7B9_ser_pick(ok: Bool, +o: Bitvector15) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GtEDF530C7B9_encode(o))
+    case False{}: O.refused()
+
+def GtEDF530C7B9_serialize(+o: Bitvector15) -> O.Encoded: GtEDF530C7B9_ser_pick(bv15_valid(o), o)
+
+def GtED805B7C93_ser_pick(ok: Bool, +o: Bitvector16) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GtED805B7C93_encode(o))
+    case False{}: O.refused()
+
+def GtED805B7C93_serialize(+o: Bitvector16) -> O.Encoded: GtED805B7C93_ser_pick(bv16_valid(o), o)
+
+def GtFF7C03E8A0_ser_pick(ok: Bool, +o: Bitvector17) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GtFF7C03E8A0_encode(o))
+    case False{}: O.refused()
+
+def GtFF7C03E8A0_serialize(+o: Bitvector17) -> O.Encoded: GtFF7C03E8A0_ser_pick(bv17_valid(o), o)
+
+def GtFCF8066C33_ser_pick(ok: Bool, +o: Bitvector1) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GtFCF8066C33_encode(o))
+    case False{}: O.refused()
+
+def GtFCF8066C33_serialize(+o: Bitvector1) -> O.Encoded: GtFCF8066C33_ser_pick(bv1_valid(o), o)
+
+def Gt9368483BAB_ser_pick(ok: Bool, +o: Bitvector2) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt9368483BAB_encode(o))
+    case False{}: O.refused()
+
+def Gt9368483BAB_serialize(+o: Bitvector2) -> O.Encoded: Gt9368483BAB_ser_pick(bv2_valid(o), o)
+
+def GtEDFB713194_ser_pick(ok: Bool, +o: Bitvector31) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GtEDFB713194_encode(o))
+    case False{}: O.refused()
+
+def GtEDFB713194_serialize(+o: Bitvector31) -> O.Encoded: GtEDFB713194_ser_pick(bv31_valid(o), o)
+
+def GtBBF12DAB28_ser_pick(ok: Bool, +o: Bitvector32) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GtBBF12DAB28_encode(o))
+    case False{}: O.refused()
+
+def GtBBF12DAB28_serialize(+o: Bitvector32) -> O.Encoded: GtBBF12DAB28_ser_pick(bv32_valid(o), o)
+
+def Gt6F0D97A69E_ser_pick(ok: Bool, +o: Bitvector33) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt6F0D97A69E_encode(o))
+    case False{}: O.refused()
+
+def Gt6F0D97A69E_serialize(+o: Bitvector33) -> O.Encoded: Gt6F0D97A69E_ser_pick(bv33_valid(o), o)
+
+def Gt9579E0A2FD_ser_pick(ok: Bool, +o: Bitvector3) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt9579E0A2FD_encode(o))
+    case False{}: O.refused()
+
+def Gt9579E0A2FD_serialize(+o: Bitvector3) -> O.Encoded: Gt9579E0A2FD_ser_pick(bv3_valid(o), o)
+
+def GtB1E9093D65_ser_pick(ok: Bool, +o: Bitvector4) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GtB1E9093D65_encode(o))
+    case False{}: O.refused()
+
+def GtB1E9093D65_serialize(+o: Bitvector4) -> O.Encoded: GtB1E9093D65_ser_pick(bv4_valid(o), o)
+
+def Gt05340E1F7E_ser_pick(ok: Bool, +o: Bitvector511) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt05340E1F7E_encode(o))
+    case False{}: O.refused()
+
+def Gt05340E1F7E_serialize(+o: Bitvector511) -> O.Encoded: Gt05340E1F7E_ser_pick(bv511_valid(o), o)
+
+def Gt0A390CB480_ser_pick(ok: Bool, +o: Bitvector512) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt0A390CB480_encode(o))
+    case False{}: O.refused()
+
+def Gt0A390CB480_serialize(+o: Bitvector512) -> O.Encoded: Gt0A390CB480_ser_pick(bv512_valid(o), o)
+
+def Gt0B0C03B454_ser_pick(ok: Bool, +o: Bitvector513) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt0B0C03B454_encode(o))
+    case False{}: O.refused()
+
+def Gt0B0C03B454_serialize(+o: Bitvector513) -> O.Encoded: Gt0B0C03B454_ser_pick(bv513_valid(o), o)
+
+def Gt27CDB122DD_ser_pick(ok: Bool, +o: Bitvector5) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt27CDB122DD_encode(o))
+    case False{}: O.refused()
+
+def Gt27CDB122DD_serialize(+o: Bitvector5) -> O.Encoded: Gt27CDB122DD_ser_pick(bv5_valid(o), o)
+
+def GtAD3CF815B7_ser_pick(ok: Bool, +o: Bitvector6) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GtAD3CF815B7_encode(o))
+    case False{}: O.refused()
+
+def GtAD3CF815B7_serialize(+o: Bitvector6) -> O.Encoded: GtAD3CF815B7_ser_pick(bv6_valid(o), o)
+
+def GtAA8D1478A7_ser_pick(ok: Bool, +o: Bitvector7) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GtAA8D1478A7_encode(o))
+    case False{}: O.refused()
+
+def GtAA8D1478A7_serialize(+o: Bitvector7) -> O.Encoded: GtAA8D1478A7_ser_pick(bv7_valid(o), o)
+
+def Gt0366A291C1_ser_pick(ok: Bool, +o: Bitvector8) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt0366A291C1_encode(o))
+    case False{}: O.refused()
+
+def Gt0366A291C1_serialize(+o: Bitvector8) -> O.Encoded: Gt0366A291C1_ser_pick(bv8_valid(o), o)
+
+def Gt1BD4B4358D_ser_pick(ok: Bool, +o: Bitvector9) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt1BD4B4358D_encode(o))
+    case False{}: O.refused()
+
+def Gt1BD4B4358D_serialize(+o: Bitvector9) -> O.Encoded: Gt1BD4B4358D_ser_pick(bv9_valid(o), o)
+
+def GtAD72FD256A_ser_pick(ok: Bool, +o: Bool) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GtAD72FD256A_encode(o))
+    case False{}: O.refused()
+
+def GtAD72FD256A_serialize(+o: Bool) -> O.Encoded: GtAD72FD256A_ser_pick(bool_valid(o), o)
+
+def GuAD91DEB870_senc_out(+n: U32, out: Array<U32>, o: GuAD91DEB870, +m: U32) -> GuAD91DEB870 & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def GuAD91DEB870_senc_put(+n: U32, pair: Array<U32> & (GuAD91DEB870 & U32)) -> GuAD91DEB870 & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GuAD91DEB870_senc_out(n, out, o, m)
+
+def GuAD91DEB870_senc_go(bad: Bool, +n: U32, o: GuAD91DEB870) -> GuAD91DEB870 & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: GuAD91DEB870_senc_put(n, GuAD91DEB870_putk(O.out_new(n), 0, o))
+
+def GuAD91DEB870_senc_sized(pair: GuAD91DEB870 & U32) -> GuAD91DEB870 & O.Encoded:
+  (o, +n) = pair
+  GuAD91DEB870_senc_go(O.is_poisoned(n), n, o)
+
+def GuAD91DEB870_serialize(o: GuAD91DEB870) -> GuAD91DEB870 & O.Encoded: GuAD91DEB870_senc_sized(GuAD91DEB870_size(o))
+
+def Gu6DDF182530_senc_out(+n: U32, out: Array<U32>, o: Gu6DDF182530, +m: U32) -> Gu6DDF182530 & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def Gu6DDF182530_senc_put(+n: U32, pair: Array<U32> & (Gu6DDF182530 & U32)) -> Gu6DDF182530 & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  Gu6DDF182530_senc_out(n, out, o, m)
+
+def Gu6DDF182530_senc_go(bad: Bool, +n: U32, o: Gu6DDF182530) -> Gu6DDF182530 & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: Gu6DDF182530_senc_put(n, Gu6DDF182530_putk(O.out_new(n), 0, o))
+
+def Gu6DDF182530_senc_sized(pair: Gu6DDF182530 & U32) -> Gu6DDF182530 & O.Encoded:
+  (o, +n) = pair
+  Gu6DDF182530_senc_go(O.is_poisoned(n), n, o)
+
+def Gu6DDF182530_serialize(o: Gu6DDF182530) -> Gu6DDF182530 & O.Encoded: Gu6DDF182530_senc_sized(Gu6DDF182530_size(o))
+
+def GuA2212AE21F_senc_out(out: Array<U32>, o: GuA2212AE21F, +m: U32) -> GuA2212AE21F & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), m, out))
+
+def GuA2212AE21F_senc_put(pair: Array<U32> & (GuA2212AE21F & U32)) -> GuA2212AE21F & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GuA2212AE21F_senc_out(out, o, m)
+
+def GuA2212AE21F_serialize(o: GuA2212AE21F) -> GuA2212AE21F & O.Encoded: GuA2212AE21F_senc_put(GuA2212AE21F_putk(O.out_at(0n), 0, o))
+
+def GtF7582E0E9A_senc_out(+n: U32, out: Array<U32>, o: O.Bits, +m: U32) -> O.Bits & O.Encoded:
+  (o, O.ser_done(O.is_poisoned(m), n, out))
+
+def GtF7582E0E9A_senc_put(+n: U32, pair: Array<U32> & (O.Bits & U32)) -> O.Bits & O.Encoded:
+  (out, r) = pair
+  (o, m) = r
+  GtF7582E0E9A_senc_out(n, out, o, m)
+
+def GtF7582E0E9A_senc_go(bad: Bool, +n: U32, o: O.Bits) -> O.Bits & O.Encoded:
+  match bad:
+    case True{}: (o, O.refused())
+    case False{}: GtF7582E0E9A_senc_put(n, pbits_putk(O.out_new(n), 0, o))
+
+def GtF7582E0E9A_senc_sized(pair: O.Bits & U32) -> O.Bits & O.Encoded:
+  (o, +n) = pair
+  GtF7582E0E9A_senc_go(O.is_poisoned(n), n, o)
+
+def GtF7582E0E9A_serialize(o: O.Bits) -> O.Bits & O.Encoded: GtF7582E0E9A_senc_sized(pbits_size(o))
+
+def Gt604E28A301_ser_pick(ok: Bool, +o: Uint128) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt604E28A301_encode(o))
+    case False{}: O.refused()
+
+def Gt604E28A301_serialize(+o: Uint128) -> O.Encoded: Gt604E28A301_ser_pick(u128_valid(o), o)
+
+def Gt967E8D815F_ser_pick(ok: Bool, +o: U32) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt967E8D815F_encode(o))
+    case False{}: O.refused()
+
+def Gt967E8D815F_serialize(+o: U32) -> O.Encoded: Gt967E8D815F_ser_pick(u8_valid(o), o)
+
+def GtECF9BB18D8_ser_pick(ok: Bool, +o: U32) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(GtECF9BB18D8_encode(o))
+    case False{}: O.refused()
+
+def GtECF9BB18D8_serialize(+o: U32) -> O.Encoded: GtECF9BB18D8_ser_pick(u16_valid(o), o)
+
+def Gt59DCDB2873_ser_pick(ok: Bool, +o: Uint256) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt59DCDB2873_encode(o))
+    case False{}: O.refused()
+
+def Gt59DCDB2873_serialize(+o: Uint256) -> O.Encoded: Gt59DCDB2873_ser_pick(u256_valid(o), o)
+
+def Gt7B8507E2C2_ser_pick(ok: Bool, +o: U32) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt7B8507E2C2_encode(o))
+    case False{}: O.refused()
+
+def Gt7B8507E2C2_serialize(+o: U32) -> O.Encoded: Gt7B8507E2C2_ser_pick(u32_valid(o), o)
+
+def Gt62B0093BE7_ser_pick(ok: Bool, +o: O.U64) -> O.Encoded:
+  match ok:
+    case True{}: O.encoded(Gt62B0093BE7_encode(o))
+    case False{}: O.refused()
+
+def Gt62B0093BE7_serialize(+o: O.U64) -> O.Encoded: Gt62B0093BE7_ser_pick(u64_valid(o), o)

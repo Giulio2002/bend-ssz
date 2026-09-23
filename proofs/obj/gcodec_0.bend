@@ -37,29 +37,57 @@ def Gt0A390CB480_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +
   {==}
 
 # ---- GtAD72FD256A (1 bytes) ----
-def GtAD72FD256A_true_encoded_size()
+def GtAD72FD256A_t_encoded_size()
     -> {B.size(T.GtAD72FD256A_encode(True{})) == (T.GtAD72FD256A_encode(True{}), 1) : B.Buf & U32}:
   {==}
-def GtAD72FD256A_true_roundtrip()
+def GtAD72FD256A_t_roundtrip()
     -> {T.GtAD72FD256A_decode(T.GtAD72FD256A_encode(True{}), 1) == (T.GtAD72FD256A_encode(True{}), Some{True{}}) : B.Buf & Maybe<&1, Bool>}:
   {==}
-def GtAD72FD256A_true_reject_short()
+def GtAD72FD256A_t_reject_short()
     -> {T.GtAD72FD256A_decode(T.GtAD72FD256A_encode(True{}), 0) == (T.GtAD72FD256A_encode(True{}), None{}) : B.Buf & Maybe<&1, Bool>}:
   {==}
-def GtAD72FD256A_true_reject_long()
+def GtAD72FD256A_t_reject_long()
     -> {T.GtAD72FD256A_decode(T.GtAD72FD256A_encode(True{}), 2) == (T.GtAD72FD256A_encode(True{}), None{}) : B.Buf & Maybe<&1, Bool>}:
   {==}
-def GtAD72FD256A_false_encoded_size()
+def GtAD72FD256A_f_encoded_size()
     -> {B.size(T.GtAD72FD256A_encode(False{})) == (T.GtAD72FD256A_encode(False{}), 1) : B.Buf & U32}:
   {==}
-def GtAD72FD256A_false_roundtrip()
+def GtAD72FD256A_f_roundtrip()
     -> {T.GtAD72FD256A_decode(T.GtAD72FD256A_encode(False{}), 1) == (T.GtAD72FD256A_encode(False{}), Some{False{}}) : B.Buf & Maybe<&1, Bool>}:
   {==}
-def GtAD72FD256A_false_reject_short()
+def GtAD72FD256A_f_reject_short()
     -> {T.GtAD72FD256A_decode(T.GtAD72FD256A_encode(False{}), 0) == (T.GtAD72FD256A_encode(False{}), None{}) : B.Buf & Maybe<&1, Bool>}:
   {==}
-def GtAD72FD256A_false_reject_long()
+def GtAD72FD256A_f_reject_long()
     -> {T.GtAD72FD256A_decode(T.GtAD72FD256A_encode(False{}), 2) == (T.GtAD72FD256A_encode(False{}), None{}) : B.Buf & Maybe<&1, Bool>}:
+  {==}
+
+# ---- Gt604E28A301 (16 bytes) ----
+def Gt604E28A301_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
+    -> {B.size(T.Gt604E28A301_encode(T.Uint128{x0, x1, x2, x3})) == (T.Gt604E28A301_encode(T.Uint128{x0, x1, x2, x3}), 16) : B.Buf & U32}:
+  {==}
+def Gt604E28A301_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
+    -> {T.Gt604E28A301_decode(T.Gt604E28A301_encode(T.Uint128{x0, x1, x2, x3}), 16) == (T.Gt604E28A301_encode(T.Uint128{x0, x1, x2, x3}), Some{T.Uint128{x0, x1, x2, x3}}) : B.Buf & Maybe<&1, T.Uint128>}:
+  {==}
+def Gt604E28A301_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
+    -> {T.Gt604E28A301_decode(T.Gt604E28A301_encode(T.Uint128{x0, x1, x2, x3}), 15) == (T.Gt604E28A301_encode(T.Uint128{x0, x1, x2, x3}), None{}) : B.Buf & Maybe<&1, T.Uint128>}:
+  {==}
+def Gt604E28A301_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
+    -> {T.Gt604E28A301_decode(T.Gt604E28A301_encode(T.Uint128{x0, x1, x2, x3}), 17) == (T.Gt604E28A301_encode(T.Uint128{x0, x1, x2, x3}), None{}) : B.Buf & Maybe<&1, T.Uint128>}:
+  {==}
+
+# ---- Gt59DCDB2873 (32 bytes) ----
+def Gt59DCDB2873_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {B.size(T.Gt59DCDB2873_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})) == (T.Gt59DCDB2873_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 32) : B.Buf & U32}:
+  {==}
+def Gt59DCDB2873_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {T.Gt59DCDB2873_decode(T.Gt59DCDB2873_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 32) == (T.Gt59DCDB2873_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), Some{T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}}) : B.Buf & Maybe<&1, T.Uint256>}:
+  {==}
+def Gt59DCDB2873_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {T.Gt59DCDB2873_decode(T.Gt59DCDB2873_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 31) == (T.Gt59DCDB2873_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), None{}) : B.Buf & Maybe<&1, T.Uint256>}:
+  {==}
+def Gt59DCDB2873_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {T.Gt59DCDB2873_decode(T.Gt59DCDB2873_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 33) == (T.Gt59DCDB2873_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), None{}) : B.Buf & Maybe<&1, T.Uint256>}:
   {==}
 
 # ---- Gt7B8507E2C2 (4 bytes) ----

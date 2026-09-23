@@ -1,0 +1,785 @@
+#!/usr/bin/env python3
+"""Generate the spec-connected codec laws of the typed object API.
+
+    python3 codegen/spec_laws.py [--check]
+
+proofs/obj/spec_codec_<k>.bend holds, for every Fulu name whose encoding is a
+whole number of 32-bit words at word-aligned positions (the class of
+codegen/laws.py, see `word_aligned` there) and whose leaves are integers and
+byte vectors, the laws that tie the generated codec to the INDEPENDENT
+specification in spec/*:
+
+    <N>_spec_bytes    the bytes the encoder emits (`B.emit`, the output path of
+                      every native program) are the little-endian limbs of the
+                      object's words;
+    <N>_spec_encode   those bytes are in the spec's canonical encoding relation
+                      `Decoding.decodes(Spec.<N>(), bytes, value)` with the
+                      spec value of the object - encoder soundness against
+                      spec/codec.bend, whose `decodes` is defined as
+                      `encoding_for_legal_type(schema, value) == Some{bytes}`;
+    <N>_spec_decode   decoding ANY buffer of the type's size - every word free,
+                      including the padding words of the array - accepts and
+                      returns the object of those words (acceptance and
+                      soundness over all buffers of that size);
+    <N>_spec_view     the bytes of that buffer are the limbs of its words, so
+                      with <N>_spec_encode the decoded object's spec value is
+                      related by the spec to exactly the buffer's bytes;
+    <N>_spec_reject   decoding with any size other than the type's size is
+                      refused, for every buffer (a hypothesis `size != n`, no
+                      other premise).
+
+proofs/obj/spec_unique_<k>.bend adds
+
+    <N>_spec_unique   every spec value related to those bytes IS the decoded
+                      object's value (completeness of the decoder's answer:
+                      injectivity of the canonical image, END_TO_END's frozen
+                      `deserialize_unique`, with the name's legality witness).
+
+The spec value of an object is built from its words the only way the spec
+allows: an integer of words is `UInt{words, 0...}`, a byte vector of words is
+`BytesValue{limbs(words)}`, a container is `Sequence{Items{...}}`. The schema
+the laws speak about is `Spec.<N>()` from the frozen spec/fulu_schemas.bend;
+the structural schema written into the proof terms is checked against it by
+the kernel (it must reduce to the same term), so a transcription slip fails.
+
+Bit vectors of whole words are covered through proofs/obj/spec_bits.bend: the
+spec value is `BitsValue{bitsof(words)}`, the words' bits low bit first.
+
+Not covered here, and not claimed: sub-word leaves, booleans inside
+containers, variable-size shapes, roots. Those need the bit and
+offset developments.
+"""
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import generate as G  # noqa: E402
+import laws as LW  # noqa: E402
+import schema  # noqa: E402
+
+ROOT = Path(__file__).resolve().parents[1]
+PER_FILE = 12
+UNIQUE_PER_FILE = 40
+WIDTH = {4: 'P.U32Width{}', 8: 'P.U64{}', 16: 'P.U128{}', 32: 'P.U256{}'}
+PART = {4: 'F.uint32_part', 8: 'F.uint64_part', 16: 'F.uint128_part', 32: 'F.uint256_part'}
+
+
+class Skip(Exception):
+    pass
+
+
+class Node:
+    """One schema node of a law: the object term, its words in encoding order,
+    its spec value and schema, and the proof that the spec's parts of that
+    value are one fixed part holding the limbs of those words."""
+
+    def __init__(self, obj, words, val, sch, proof, dec=None, opads=()):
+        self.obj, self.words, self.val, self.sch, self.proof = obj, words, val, sch, proof
+        # `dec`: the object a decoder builds (its own storage padding is zero);
+        # `opads`: an arbitrary object's storage padding words, free in the
+        # encoder laws.
+        self.dec = obj if dec is None else dec
+        self.opads = list(opads)
+
+
+VEC_MAX_WORDS = 512
+
+
+def words_depth(w):
+    return max(0, (w - 1).bit_length())
+
+
+def storage(n):
+    """Depth of the packed storage a decoder allocates for n bytes (src/obj.bend
+    `zeros_for`)."""
+    return words_depth(((n + 31) >> 5) * 8 + 8)
+
+
+def wl(ws):
+    return '[' + ', '.join(ws) + ']'
+
+
+def walk(g, t, c):
+    s = g.shape(t)
+    if t.kind == 'uint':
+        if t.size not in WIDTH:
+            raise Skip('sub-word integer')
+        n = t.size // 4
+        ws = [f'x{next(c)}' for _ in range(n)]
+        if s.kind == 'u32':
+            obj = ws[0]
+        elif s.kind == 'u64':
+            obj = f'O.U64{{{ws[0]}, {ws[1]}}}'
+        else:
+            obj = f'T.{s.rep}{{' + ', '.join(ws) + '}'
+        val = 'S.UnsignedValue{P.UInt{' + ', '.join(ws + ['0'] * (8 - n)) + '}}'
+        return Node(obj, ws, val, f'S.Unsigned{{{WIDTH[t.size]}}}', f'{PART[t.size]}(' + ', '.join(ws) + ')')
+    if t.kind == 'bytes' and s.kind == 'fixwords':
+        if t.size % 4 or t.size // 4 > VEC_MAX_WORDS:
+            raise Skip('array-backed byte vector (needs the array induction)')
+        ws = [f'x{next(c)}' for _ in range(t.size // 4)]
+        op = [f'q{next(c)}' for _ in range((1 << storage(t.size)) - len(ws))]
+        return Node(f'O.Words{{{tree(ws + op)}, {t.size}}}', ws, f'S.BytesValue{{F.limbs({wl(ws)})}}',
+                    f'S.ByteVector{{{t.size}n}}', f'F.bytes_part({ws[0]}, {wl(ws[1:])}, {{==}})',
+                    dec=f'O.Words{{{tree(ws + ["0"] * len(op))}, {t.size}}}', opads=op)
+    if t.kind == 'vector' and s.kind in ('packed', 'packed_elems'):
+        e = t.elem
+        es = e.fixed_size()
+        if not ((e.kind == 'bytes' and es % 4 == 0) or (e.kind == 'uint' and es in WIDTH)):
+            raise Skip('vector of sub-word elements')
+        if t.size * es // 4 > VEC_MAX_WORDS:
+            raise Skip('array-backed vector (needs the array induction)')
+        kids = [walk(g, e, c) for _ in range(t.size)]
+        ws = [x for k in kids for x in k.words]
+        n = t.fixed_size()
+        op = [f'q{next(c)}' for _ in range((1 << storage(n)) - len(ws))]
+        esch = kids[0].sch
+
+        def vitems(i):
+            return 'S.EmptyItems{}' if i == len(kids) else f'S.Items{{{kids[i].val}, {vitems(i + 1)}}}'
+
+        def vcat(i):
+            if i == len(kids):
+                return '{==}'
+            rest = '[' + ', '.join(f'S.Fixed{{F.limbs({wl(k.words)})}}' for k in kids[i + 1:]) + ']'
+            return (f'F.cat_fixed(Codec.parts({kids[i].val}, {esch}), F.limbs({wl(kids[i].words)}), '
+                    f'Codec.parts({vitems(i + 1)}, S.Repeat{{{esch}}}), {rest}, {kids[i].proof}, {vcat(i + 1)})')
+        wss = '[' + ', '.join(wl(k.words) for k in kids) + ']'
+        proof = f'F.aggregate_fixed(Codec.parts({vitems(0)}, S.Repeat{{{esch}}}), {wss}, {n}n, {vcat(0)}, {{==}})'
+        return Node(f'O.Words{{{tree(ws + op)}, {n}}}', ws, f'S.Sequence{{{vitems(0)}}}',
+                    f'S.Vector{{{esch}, {t.size}n}}', proof,
+                    dec=f'O.Words{{{tree(ws + ["0"] * len(op))}, {n}}}', opads=op)
+    if t.kind == 'bytes':
+        if s.kind != 'rec':
+            raise Skip('array-backed byte vector (needs the array induction)')
+        if t.size % 4 or t.size == 0:
+            raise Skip('byte vector not a whole number of words')
+        ws = [f'x{next(c)}' for _ in range(t.size // 4)]
+        obj = f'T.{s.rep}{{' + ', '.join(ws) + '}'
+        return Node(obj, ws, f'S.BytesValue{{F.limbs({wl(ws)})}}', f'S.ByteVector{{{t.size}n}}',
+                    f'F.bytes_part({ws[0]}, {wl(ws[1:])}, {{==}})')
+    if t.kind == 'bits':
+        if s.kind != 'rec':
+            raise Skip('array-backed bit vector (needs the array induction)')
+        if t.size % 32 or t.size == 0:
+            raise Skip('bit vector not a whole number of words')
+        ws = [f'x{next(c)}' for _ in range(t.size // 32)]
+        obj = f'T.{s.rep}{{' + ', '.join(ws) + '}'
+        return Node(obj, ws, f'S.BitsValue{{FB.bitsof({wl(ws)})}}', f'S.BitVector{{{t.size}n}}',
+                    f'FB.bits_part({wl(ws)}, {t.size}n, {{==}}, {{==}})')
+    if t.kind == 'container':
+        if s.kind != 'container' or len(t.fields) > G.GROUP:
+            raise Skip('grouped container')
+        kids = []
+        for (_, ft), (_, fs) in zip(t.fields, s.fields):
+            k = walk(g, ft, c)
+            if fs.kind == 'box':
+                # a boxed child is stored as a one-element box around the record
+                k.obj = f'O.BSome{{{k.obj}, O.BNone{{}}}}'
+                k.dec = f'O.BSome{{{k.dec}, O.BNone{{}}}}'
+            kids.append(k)
+        names = '[' + ', '.join(f'"{f}"' for f, _ in t.fields) + ']'
+
+        def items(i):
+            return 'S.EmptyItems{}' if i == len(kids) else f'S.Items{{{kids[i].val}, {items(i + 1)}}}'
+
+        def chain(i):
+            return 'S.End{}' if i == len(kids) else f'S.Chain{{{kids[i].sch}, {chain(i + 1)}}}'
+
+        def cat(i):
+            if i == len(kids):
+                return '{==}'
+            rest = '[' + ', '.join(f'S.Fixed{{F.limbs({wl(k.words)})}}' for k in kids[i + 1:]) + ']'
+            return (f'F.cat_fixed(Codec.parts({kids[i].val}, {kids[i].sch}), F.limbs({wl(kids[i].words)}), '
+                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {kids[i].proof}, {cat(i + 1)})')
+        words = [w for k in kids for w in k.words]
+        wss = '[' + ', '.join(wl(k.words) for k in kids) + ']'
+        proof = f'F.aggregate_fixed(Codec.parts({items(0)}, {chain(0)}), {wss}, {t.fixed_size()}n, {cat(0)}, {{==}})'
+        obj = f'T.{s.t.name}{{' + ', '.join(k.obj for k in kids) + '}'
+        dec = f'T.{s.t.name}{{' + ', '.join(k.dec for k in kids) + '}'
+        return Node(obj, words, f'S.Sequence{{{items(0)}}}', f'S.Container{{{names}, {chain(0)}}}', proof,
+                    dec=dec, opads=[q for k in kids for q in k.opads])
+    raise Skip(t.kind + ' (array-backed; needs the array induction)' if t.kind == 'vector' else t.kind)
+
+
+def tree(leaves):
+    """The array of a buffer: a complete binary tree, as `Array.new` of the
+    buffer's capacity depth builds it."""
+    if len(leaves) == 1:
+        return f'ALeaf{{{leaves[0]}}}'
+    h = len(leaves) // 2
+    return f'ANode{{{tree(leaves[:h])}, {tree(leaves[h:])}}}'
+
+
+def okname(obj_src, n):
+    head = f'def {n}_decode(buf: B.Buf, +size: U32)'
+    i = obj_src.index(head)
+    body = obj_src[i:obj_src.index('\n\n', i)]
+    want = f'{n}_built(size, '
+    j = body.index(want) + len(want)
+    k = body.index('_ok(buf, 0, size)', j)
+    return body[j:k]
+
+
+
+def word_pat(a):
+    return 'U32{' + ''.join(f'WCon{{{x}, ' for x in a) + 'WNil{}' + '}' * len(a) + '}'
+
+
+def bits_module():
+    """proofs/obj/spec_bits.bend: what the spec's bit packing makes of words.
+
+    `bitsof(ws)` lists the 32 bits of every word, low bit first, by taking the
+    word apart - the reading of spec/bit_packing.bend ("bit i has weight 2^i")
+    applied to the little-endian bytes the object stores. The laws: its length,
+    the 256-case identity between the spec's `octet` and the byte of a word,
+    `pack(bitsof ws) == limbs(ws)` by induction on the words, and the bit-vector
+    leaf: the spec's parts of `BitsValue{bitsof(ws)}` at `BitVector{n}` are one
+    fixed part holding `limbs(ws)` whenever n is the bit count.
+    """
+    a = [f'a{i}' for i in range(32)]
+    W = word_pat(a)
+    F24 = ['False{}'] * 24
+    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/primitives.bend as I',
+         'import ../../spec/bit_packing.bend as SB', 'import ../../spec/bitfields.bend as SBF',
+         'import ../../spec/codec.bend as Codec', 'import ../../types/schema.bend as S',
+         'import ../../proofs/compact/bits.bend as BT', 'import ./spec_fixed.bend as F', '',
+         '# GENERATED by codegen/spec_laws.py (bits_module). Do not edit.', '']
+    w = L.append
+    w('def bitsof(ws: +List<U32>) -> +List<Bool>:')
+    w('  match ws:')
+    w('    case Nil{}: []')
+    w('    case Con{h, t}:')
+    w('      match h:')
+    w(f'        case {W}: ' + ' <> '.join(a) + ' <> bitsof(t)')
+    w('')
+    w('def bitlen(ws: +List<U32>) -> Nat:')
+    w('  match ws:')
+    w('    case Nil{}: 0n')
+    w('    case Con{h, t}: ' + '1n+' * 32 + 'bitlen(t)')
+    w('')
+    w('law len_bits:')
+    w('  for +ws: +List<U32>')
+    w('  {List.length(&2, Bool, bitsof(ws)) == bitlen(ws) : Nat}')
+    w('def len_bits(ws):')
+    w('  match ws:')
+    w('    case Nil{}: {==}')
+    w('    case Con{h, t}:')
+    w('      match h:')
+    w(f'        case {W}: Equal.cong(Nat, Nat, k => ' + '1n+' * 32 + 'k, List.length(&2, Bool, bitsof(t)), bitlen(t), len_bits(t))')
+    w('')
+    b = [f'b{i}' for i in range(8)]
+    w('law octet_word:')
+    for x in b:
+        w(f'  for +{x}: Bool')
+    w('  {SB.octet(' + ', '.join(b) + ') == ' + word_pat(b + F24) + ' : U32}')
+    w('def octet_word(' + ', '.join(b) + '):')
+    w('  match ' + ' '.join(b) + ':')
+    for m in range(256):
+        w('    case ' + ' '.join('True{}' if m >> i & 1 else 'False{}' for i in range(8)) + ': {==}')
+    w('')
+    for k in range(4):
+        seg = a[8 * k:8 * k + 8]
+        w(f'law byte{k}_octet:')
+        for x in a:
+            w(f'  for +{x}: Bool')
+        w(f'  {{SB.octet({", ".join(seg)}) == B.byte_sel({k}, {W}) : U32}}')
+        w(f'def byte{k}_octet({", ".join(a)}):')
+        w(f'  Equal.trans(U32, SB.octet({", ".join(seg)}), {word_pat(seg + F24)}, B.byte_sel({k}, {W}),')
+        w(f'    octet_word({", ".join(seg)}),')
+        w(f'    Equal.sym(U32, B.byte_sel({k}, {W}), {word_pat(seg + F24)}, BT.sel{k}({", ".join(a)})))')
+        w('')
+    octs = [f'SB.octet({", ".join(a[8 * k:8 * k + 8])})' for k in range(4)]
+    sels = [f'B.byte_sel({k}, {W})' for k in range(4)]
+    rhs = f'List.append(&2, U32, I.limb({W}), F.limbs(t))'
+    w('law pack_limbs:')
+    w('  for +ws: +List<U32>')
+    w('  {SB.pack(bitsof(ws)) == F.limbs(ws) : +List<U32>}')
+    w('def pack_limbs(ws):')
+    w('  match ws:')
+    w('    case Nil{}: {==}')
+    w('    case Con{h, t}:')
+    w('      match h:')
+    w(f'        case {W}:')
+    for k in range(4):
+        cur = sels[:k] + ['_'] + octs[k + 1:]
+        w(f'          %Equal.sym(U32, {octs[k]}, {sels[k]}, byte{k}_octet({", ".join(a)})) :')
+        w('            {' + ' <> '.join(cur) + f' <> SB.pack(bitsof(t)) == {rhs} : +List<U32>}}')
+    w(f'          Equal.cong(+List<U32>, +List<U32>, r => ' + ' <> '.join(sels) + ' <> r, SB.pack(bitsof(t)), F.limbs(t), pack_limbs(t))')
+    w('')
+    goal = 'Some{[S.Fixed{F.limbs(ws)}]} : Maybe<&2, +List<S.Part>>'
+    w('law bits_part:')
+    w('  for +ws: +List<U32>')
+    w('  for +n: Nat')
+    w('  for fit: {Nat.is_eq(bitlen(ws), n) == True{} : Bool}')
+    w('  for pos: {Nat.is_lt(0n, n) == True{} : Bool}')
+    w(f'  {{Codec.parts(S.BitsValue{{bitsof(ws)}}, S.BitVector{{n}}) == {goal}}}')
+    w('def bits_part(ws, n, fit, pos):')
+    width = 'Some{Nat.div(Nat.add(n, 7n), 8n)}'
+    w('  %Equal.sym(Nat, List.length(&2, Bool, bitsof(ws)), bitlen(ws), len_bits(ws)) :')
+    w(f'    {{Codec.one(SBF.encoding(Bool.and(Nat.is_lt(0n, n), Nat.is_eq(_, n)), bitsof(ws)), {width}) == {goal}}}')
+    w('  %Equal.sym(Bool, Nat.is_eq(bitlen(ws), n), True{}, fit) :')
+    w(f'    {{Codec.one(SBF.encoding(Bool.and(Nat.is_lt(0n, n), _), bitsof(ws)), {width}) == {goal}}}')
+    w('  %Equal.sym(Bool, Nat.is_lt(0n, n), True{}, pos) :')
+    w(f'    {{Codec.one(SBF.encoding(Bool.and(_, True{{}}), bitsof(ws)), {width}) == {goal}}}')
+    w('  %Equal.sym(+List<U32>, SB.pack(bitsof(ws)), F.limbs(ws), pack_limbs(ws)) :')
+    w(f'    {{Codec.one(Some{{_}}, {width}) == {goal}}}')
+    w('  {==}')
+    return '\n'.join(L) + '\n'
+
+
+VALUES = ['BooleanValue{b}', 'UnsignedValue{u}', 'BytesValue{xs}', 'BitsValue{bs}', 'Sequence{it}',
+          'Items{hd, tl}', 'EmptyItems{}', 'Selected{sel, sv}', 'NullValue{}']
+
+
+def small_module(src):
+    """proofs/obj/spec_small.bend: the one-byte names.
+
+    uint8, ParticipationFlags (uint8) and Bytes1 hold one byte, boolean one of
+    two. A VALID object is one of 256 (2) byte values, so the encoder laws are
+    stated over the eight bits of that byte and proved by exhaustive cases. The
+    decoder laws are stated over an ARBITRARY buffer word w (all 32 bits free)
+    and moved to the byte's bits with bits.bend `sel0` and found.bend
+    `logic__subst`, so they cover every buffer of the size.
+    """
+    a = [f'a{i}' for i in range(32)]
+    b = [f'b{i}' for i in range(8)]
+    W = word_pat(a)
+    X = word_pat(b + ['False{}'] * 24)
+    LOWA = word_pat(a[:8] + ['False{}'] * 24)
+    bsig = ', '.join(f'+{x}: Bool' for x in b)
+    bargs = ', '.join(b)
+    cases = [' '.join('True{}' if m >> i & 1 else 'False{}' for i in range(8)) for m in range(256)]
+    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
+         'import ../../types/fulu_obj.bend as T', 'import ../../types/schema.bend as S',
+         'import ../../types/primitive.bend as P', 'import ../../spec/codec.bend as Codec',
+         'import ../../spec/decoding_relation.bend as Decoding', 'import ../../spec/fulu_schemas.bend as Spec',
+         'import ../../proofs/compact/bits.bend as BT', 'import ../../proofs/compact/found.bend as FD',
+         'import ../../proofs/word_facts.bend as WF', '',
+         '# GENERATED by codegen/spec_laws.py (small_module). Do not edit.', '']
+    w = L.append
+
+    def all_cases(indent='  '):
+        w(f'{indent}match {" ".join(b)}:')
+        for c in cases:
+            w(f'{indent}  case {c}: {{==}}')
+
+    def buf(x):
+        return f'B.Buf{{ALeaf{{{x}}}, 1}}'
+
+    for n, obj, val in [('uint8', X, f'S.UnsignedValue{{P.UInt{{{X}, 0, 0, 0, 0, 0, 0, 0}}}}'),
+                        ('ParticipationFlags', X, f'S.UnsignedValue{{P.UInt{{{X}, 0, 0, 0, 0, 0, 0, 0}}}}'),
+                        ('Bytes1', f'T.Bytes1{{{X}}}', f'S.BytesValue{{[{X}]}}')]:
+        R = 'T.Bytes1' if n == 'Bytes1' else 'U32'
+        w(f'# ---- {n} (1 byte) ----')
+        w(f'def {n}_spec_bytes({bsig})')
+        w(f'    -> {{B.emit(T.{n}_encode({obj}), 0, 1) == (T.{n}_encode({obj}), [{X}]) : B.Buf & +List<U32>}}:')
+        all_cases()
+        w(f'def {n}_spec_encode({bsig})')
+        w(f'    -> Decoding.decodes(Spec.{n}(), [{X}], {val}):')
+        all_cases()
+        dobj = 'T.Bytes1{B.byte_sel(0, w)}' if n == 'Bytes1' else 'B.byte_sel(0, w)'
+        w(f'def {n}_spec_decode(+w: U32)')
+        w(f'    -> {{T.{n}_decode({buf("w")}, 1) == ({buf("w")}, Some{{{dobj}}}) : B.Buf & Maybe<&1, {R}>}}:')
+        w('  {==}')
+        w(f'def {n}_spec_view(+w: U32)')
+        w(f'    -> {{B.emit({buf("w")}, 0, 1) == ({buf("w")}, [B.byte_sel(0, w)]) : B.Buf & +List<U32>}}:')
+        w('  {==}')
+        pv = val.replace(X, 'x')
+        w(f'def {n}_spec_value(+w: U32)')
+        w(f'    -> Decoding.decodes(Spec.{n}(), [B.byte_sel(0, w)], {pv.replace("x", "B.byte_sel(0, w)")}):')
+        w('  match w:')
+        w(f'    case {W}:')
+        w(f'      FD.logic__subst(U32, x => Decoding.decodes(Spec.{n}(), [x], {pv}), {LOWA}, B.byte_sel(0, {W}),')
+        w(f'        Equal.sym(U32, B.byte_sel(0, {W}), {LOWA}, BT.sel0({", ".join(a)})),')
+        w(f'        {n}_spec_encode({", ".join(a[:8])}))')
+        w('')
+
+    # boolean
+    w('# ---- boolean (1 byte) ----')
+    for bv, byte in [('True', 1), ('False', 0)]:
+        w(f'def boolean_{bv.lower()}_spec_bytes()')
+        w(f'    -> {{B.emit(T.boolean_encode({bv}{{}}), 0, 1) == (T.boolean_encode({bv}{{}}), [{byte}]) : B.Buf & +List<U32>}}:')
+        w('  {==}')
+        w(f'def boolean_{bv.lower()}_spec_encode()')
+        w(f'    -> Decoding.decodes(Spec.boolean(), [{byte}], S.BooleanValue{{{bv}{{}}}}):')
+        w('  {==}')
+    w('')
+    BUF = buf('w')
+    R = 'B.Buf & Maybe<&1, Bool>'
+    w('def boolean_spec_view(+w: U32)')
+    w(f'    -> {{B.emit({BUF}, 0, 1) == ({BUF}, [B.byte_sel(0, w)]) : B.Buf & +List<U32>}}:')
+    w('  {==}')
+    for c, got in [(0, 'False{}'), (1, 'True{}')]:
+        w(f'def boolean_spec_decode_{c}(+w: U32, +h: {{B.byte_sel(0, w) == {c} : U32}})')
+        w(f'    -> {{T.boolean_decode({BUF}, 1) == ({BUF}, Some{{{got}}}) : {R}}}:')
+        w(f'  %Equal.sym(U32, B.byte_sel(0, w), {c}, h) : {{T.boolean_built(1, ({BUF}, U32.is_le(_, 1))) == ({BUF}, Some{{{got}}}) : {R}}}')
+        w(f'  %Equal.sym(U32, B.byte_sel(0, w), {c}, h) : {{({BUF}, Some{{U32.is_eq(_, 1)}}) == ({BUF}, Some{{{got}}}) : {R}}}')
+        w('  {==}')
+    w(f'def boolean_spec_decode_reject(+w: U32, +h: {{U32.is_le(B.byte_sel(0, w), 1) == False{{}} : Bool}})')
+    w(f'    -> {{T.boolean_decode({BUF}, 1) == ({BUF}, None{{}}) : {R}}}:')
+    w(f'  %Equal.sym(Bool, U32.is_le(B.byte_sel(0, w), 1), False{{}}, h) : {{T.boolean_built(1, ({BUF}, _)) == ({BUF}, None{{}}) : {R}}}')
+    w('  {==}')
+    w('')
+    w('# Rejection is exactly the complement of the spec image: a byte above 1 is')
+    w('# the encoding of no value (spec/codec.bend encodes booleans as [0] or [1]).')
+    w('def head_or(m: Maybe<&2, +List<U32>>, +d: U32) -> U32:')
+    w('  match m:')
+    w('    case Some{Con{x, t}}: x')
+    w('    case _: d')
+    w('def is_some2(m: Maybe<&2, +List<U32>>) -> Bool:')
+    w('  match m:')
+    w('    case None{}: False{}')
+    w('    case Some{x}: True{}')
+    w('def not_image(+c: U32, +h: {U32.is_le(c, 1) == False{} : Bool}, +k: U32, +hk: {U32.is_le(k, 1) == True{} : Bool},')
+    w('    e: {Some{[k]} == Some{[c]} : Maybe<&2, +List<U32>>}) -> Empty:')
+    w('  WF.false_true(Equal.trans(Bool, False{}, U32.is_le(c, 1), True{}, Equal.sym(Bool, U32.is_le(c, 1), False{}, h),')
+    w('    %Equal.cong(Maybe<&2, +List<U32>>, U32, m => head_or(m, k), Some{[k]}, Some{[c]}, e) : {U32.is_le(_, 1) == True{} : Bool}')
+    w('    hk))')
+    w('def none_image(+c: U32, e: {None{} == Some{[c]} : Maybe<&2, +List<U32>>}) -> Empty:')
+    w('  WF.false_true(Equal.cong(Maybe<&2, +List<U32>>, Bool, m => is_some2(m), None{}, Some{[c]}, e))')
+    w('def boolean_outside_v(+c: U32, +h: {U32.is_le(c, 1) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.boolean(), [c], v)) -> Empty:')
+    w('  match v:')
+    w('    case S.BooleanValue{+bv}:')
+    w('      match bv:')
+    w('        case True{}: not_image(c, h, 1, {==}, e)')
+    w('        case False{}: not_image(c, h, 0, {==}, e)')
+    for vc in VALUES[1:]:
+        w(f'    case S.{vc}: none_image(c, e)')
+    w('def boolean_outside(+c: U32, +h: {U32.is_le(c, 1) == False{} : Bool}) -> Decoding.outside_image(Spec.boolean(), [c]):')
+    w('  v => e => boolean_outside_v(c, h, v, e)')
+    w('def boolean_spec_reject_outside(+w: U32, +h: {U32.is_le(B.byte_sel(0, w), 1) == False{} : Bool})')
+    w('    -> Decoding.outside_image(Spec.boolean(), [B.byte_sel(0, w)]):')
+    w('  boolean_outside(B.byte_sel(0, w), h)')
+    w('')
+    w('# ---- every other size is refused ----')
+    for n, R in [('uint8', 'U32'), ('ParticipationFlags', 'U32'), ('Bytes1', 'T.Bytes1'), ('boolean', 'Bool')]:
+        P = okname(src, n)
+        w(f'def {n}_spec_reject(buf: B.Buf, +m: U32, e: {{U32.is_eq(m, 1) == False{{}} : Bool}})')
+        w(f'    -> {{T.{n}_decode(buf, m) == (buf, None{{}}) : B.Buf & Maybe<&1, {R}>}}:')
+        w(f'  %Equal.sym(Bool, U32.is_eq(m, 1), False{{}}, e) : '
+          f'{{T.{n}_built(m, T.{P}_ok_len(_, buf, 0)) == (buf, None{{}}) : B.Buf & Maybe<&1, {R}>}}')
+        w('  {==}')
+    return '\n'.join(L) + '\n'
+
+
+def unique_small():
+    """Completeness of the one-byte decoders' answers (END_TO_END.deserialize_unique)."""
+    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../types/schema.bend as S',
+         'import ../../types/primitive.bend as P', 'import ../../spec/decoding_relation.bend as Decoding',
+         'import ../../spec/fulu_schemas.bend as Spec', 'import ../../END_TO_END.bend as E',
+         'import ../../proofs/fulu_legality.bend as Legal', 'import ../../proofs/compact/found.bend as FD',
+         'import ./spec_small.bend as SM', '',
+         '# GENERATED by codegen/spec_laws.py (unique_small). Do not edit.', '']
+    w = L.append
+    for n in ['uint8', 'ParticipationFlags', 'Bytes1']:
+        val = ('S.BytesValue{[B.byte_sel(0, w)]}' if n == 'Bytes1'
+               else 'S.UnsignedValue{P.UInt{B.byte_sel(0, w), 0, 0, 0, 0, 0, 0, 0}}')
+        w(f'def {n}_spec_unique(+w: U32, +v: S.Value, spec: Decoding.decodes(Spec.{n}(), [B.byte_sel(0, w)], v))')
+        w(f'    -> {{v == {val} : S.Value}}:')
+        w(f'  E.deserialize_unique(Spec.{n}(), [B.byte_sel(0, w)], v, {val}, Legal.{n}_normative_legal(), spec, SM.{n}_spec_value(w))')
+    for c, got, law in [(0, 'False{}', 'false'), (1, 'True{}', 'true')]:
+        w(f'def boolean_spec_unique_{c}(+w: U32, +h: {{B.byte_sel(0, w) == {c} : U32}}, +v: S.Value,')
+        w(f'    spec: Decoding.decodes(Spec.boolean(), [B.byte_sel(0, w)], v)) -> {{v == S.BooleanValue{{{got}}} : S.Value}}:')
+        w(f'  E.deserialize_unique(Spec.boolean(), [B.byte_sel(0, w)], v, S.BooleanValue{{{got}}}, Legal.boolean_normative_legal(), spec,')
+        w(f'    FD.logic__subst(U32, x => Decoding.decodes(Spec.boolean(), [x], S.BooleanValue{{{got}}}), {c}, B.byte_sel(0, w),')
+        w(f'      Equal.sym(U32, B.byte_sel(0, w), {c}, h), SM.boolean_{law}_spec_encode()))')
+    return '\n'.join(L) + '\n'
+
+
+REPR_HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
+             'import ../../types/fulu_obj.bend as T', 'import ../../proofs/compact/found.bend as FD',
+             'import ./repr.bend as R', 'import ./spec_fixed.bend as F']
+
+
+def repr_law(w, n, depth, size, nw, R, obj, law, rhs_of):
+    """One law of the literal buffer tree, carried to EVERY perfect tree of the
+    loader's depth by proofs/obj/repr.bend `tree_words` (a tree is the canonical
+    tree of its words) and found.bend `logic__subst`."""
+    tv = 'FD.array__Tree<U32>'
+    words = [f'R.w(t, {i}n)' for i in range(1 << depth)]
+    ty = rhs_of('u', words)
+    w(f'def {law}_tree(+t: {tv}, +pf: {{FD.array__perfect(U32, {depth}n, t) == True{{}} : Bool}})')
+    w(f'    -> {rhs_of("t", words)}:')
+    w(f'  FD.logic__subst({tv}, u => {ty},')
+    w(f'    R.build({depth}n, R.lits(FD.spec_common__pow2({depth}n), FD.array__slots(U32, t))), t, R.tree_words({depth}n, t, pf),')
+    w(f'    C.{law}({", ".join(words)}))')
+
+
+def emit_repr(w, n, node, size, R):
+    import re
+    nw = size // 4
+    depth = max(0, (nw - 1).bit_length())
+    idx = {v: i for i, v in enumerate(node.words)}
+    words_all = lambda ws: ws
+    def sub(term, ws):
+        return re.sub(r'\bx\d+\b', lambda m: ws[idx[m.group(0)]], term)
+    def buf(u):
+        return f'B.Buf{{FD.array__thaw(U32, {u}), {size}}}'
+    repr_law(w, n, depth, size, nw, R, node.obj, f'{n}_spec_decode',
+             lambda u, ws: f'{{T.{n}_decode({buf(u)}, {size}) == ({buf(u)}, Some{{{sub(node.dec, ws)}}}) : B.Buf & Maybe<&1, {R}>}}')
+    repr_law(w, n, depth, size, nw, R, node.obj, f'{n}_spec_view',
+             lambda u, ws: f'{{B.emit({buf(u)}, 0, {nw}) == ({buf(u)}, F.limbs([{", ".join(ws[:nw])}])) : B.Buf & +List<U32>}}')
+
+
+def repr_small():
+    L = REPR_HEAD + ['import ./spec_small.bend as C', '',
+                     '# GENERATED by codegen/spec_laws.py (repr_small). Do not edit.', '']
+    w = L.append
+    b = lambda u: f'B.Buf{{FD.array__thaw(U32, {u}), 1}}'
+    for n, R, obj in [('uint8', 'U32', 'B.byte_sel(0, {x})'), ('ParticipationFlags', 'U32', 'B.byte_sel(0, {x})'),
+                      ('Bytes1', 'T.Bytes1', 'T.Bytes1{{B.byte_sel(0, {x})}}')]:
+        repr_law(w, n, 0, 1, 1, R, None, f'{n}_spec_decode',
+                 lambda u, ws, n=n, R=R, obj=obj: f'{{T.{n}_decode({b(u)}, 1) == ({b(u)}, Some{{{obj.format(x=ws[0])}}}) : B.Buf & Maybe<&1, {R}>}}')
+    for n in ['uint8', 'ParticipationFlags', 'Bytes1', 'boolean']:
+        repr_law(w, n, 0, 1, 1, None, None, f'{n}_spec_view',
+                 lambda u, ws: f'{{B.emit({b(u)}, 0, 1) == ({b(u)}, [B.byte_sel(0, {ws[0]})]) : B.Buf & +List<U32>}}')
+    # boolean: the three decoder answers, each under its hypothesis on the byte
+    tv = 'FD.array__Tree<U32>'
+    for law, hyp, ans in [('boolean_spec_decode_0', '{B.byte_sel(0, R.w(t, 0n)) == 0 : U32}', 'Some{False{}}'),
+                          ('boolean_spec_decode_1', '{B.byte_sel(0, R.w(t, 0n)) == 1 : U32}', 'Some{True{}}'),
+                          ('boolean_spec_decode_reject', '{U32.is_le(B.byte_sel(0, R.w(t, 0n)), 1) == False{} : Bool}', 'None{}')]:
+        ty = lambda u: f'{{T.boolean_decode({b(u)}, 1) == ({b(u)}, {ans}) : B.Buf & Maybe<&1, Bool>}}'
+        w(f'def {law}_tree(+t: {tv}, +pf: {{FD.array__perfect(U32, 0n, t) == True{{}} : Bool}}, +h: {hyp})')
+        w(f'    -> {ty("t")}:')
+        w(f'  FD.logic__subst({tv}, u => {ty("u")},')
+        w(f'    R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf),')
+        w(f'    C.{law}(R.w(t, 0n), h))')
+    return '\n'.join(L) + '\n'
+
+
+def load_module(sizes):
+    """proofs/obj/load.bend: the real input path.
+
+    The native programs read a file into `B.alloc(n)` with `B.fill_at(buf, 0,
+    bytes)` (benchmarks/compact/objio.bend; one piece for every fixed name
+    here). A byte list of a whole number of words is `limbs(ws)` for its words
+    ws, and `word_of` of the four bytes of a word is that word (`word_of_bytes`,
+    by the word's 32 bits). So the loaded buffer is the literal buffer of ws
+    (`load_<n>`), and every decode law over literal buffers holds for the bytes
+    as loaded (proofs/obj/spec_input_*.bend).
+    """
+    a = [f'a{i}' for i in range(32)]
+    F24 = ['False{}'] * 24
+    W = word_pat(a)
+    L = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../proofs/compact/bits.bend as BT',
+         'import ../../proofs/compact/found.bend as FD', 'import ./repr.bend as R',
+         'import ./spec_fixed.bend as F', '', '# GENERATED by codegen/spec_laws.py (load_module). Do not edit.', '']
+    w = L.append
+    shapes = {3: 'Bool.or(Bool.or(Bool.or(Bool.and(x, True{}), False{}), False{}), False{})',
+              2: 'Bool.or(Bool.or(Bool.and(x, True{}), False{}), False{})',
+              1: 'Bool.or(Bool.and(x, True{}), False{})', 0: 'Bool.and(x, True{})'}
+    for k, e in shapes.items():
+        w(f'def fix{k}(+x: Bool) -> {{{e} == x : Bool}}:')
+        w('  match x:')
+        w('    case True{}: {==}')
+        w('    case False{}: {==}')
+    byts = [word_pat(a[8 * k:8 * k + 8] + F24) for k in range(4)]
+    xs = [shapes[3 - i // 8].replace('x', a[i]) for i in range(32)]
+    sig = ', '.join(f'+{x}: Bool' for x in a)
+    w(f'def word_of_bits({sig}) -> {{B.word_of({", ".join(byts)}) == {W} : U32}}:')
+    w(f'  BT.word32_eq({", ".join(xs)}, {", ".join(a)}, ' + ', '.join(f'fix{3 - i // 8}({a[i]})' for i in range(32)) + ')')
+    w('')
+    w('# word_of of the four little-endian bytes of any word is the word.')
+    w('law word_of_bytes:')
+    w('  for +x: U32')
+    w('  {B.word_of(B.byte_sel(0, x), B.byte_sel(1, x), B.byte_sel(2, x), B.byte_sel(3, x)) == x : U32}')
+    w('def word_of_bytes(x):')
+    w('  match x:')
+    w(f'    case {W}:')
+    sels = [f'B.byte_sel({k}, {W})' for k in range(4)]
+    for k in range(4):
+        args = byts[:k] + ['_'] + sels[k + 1:]
+        w(f'      %Equal.sym(U32, B.byte_sel({k}, {W}), {byts[k]}, BT.sel{k}({", ".join(a)})) :')
+        w(f'        {{B.word_of({", ".join(args)}) == {W} : U32}}')
+    w(f'      word_of_bits({", ".join(a)})')
+    w('')
+    w('# The words the loader stores for the bytes of a word list.')
+    w('def wofs(ws: List<&2, U32>) -> List<&2, U32>:')
+    w('  match ws:')
+    w('    case Nil{}: Nil{}')
+    w('    case Con{+h, t}: Con{B.word_of(B.byte_sel(0, h), B.byte_sel(1, h), B.byte_sel(2, h), B.byte_sel(3, h)), wofs(t)}')
+    w('law wofs_id:')
+    w('  for +ws: List<&2, U32>')
+    w('  {wofs(ws) == ws : List<&2, U32>}')
+    w('def wofs_id(ws):')
+    w('  match ws:')
+    w('    case Nil{}: {==}')
+    w('    case Con{+h, +t}:')
+    w('      %Equal.sym(U32, B.word_of(B.byte_sel(0, h), B.byte_sel(1, h), B.byte_sel(2, h), B.byte_sel(3, h)), h, word_of_bytes(h)) :')
+    w('        {Con{_, wofs(t)} == Con{h, t} : List<&2, U32>}')
+    w('      FD.list__cons_cong(U32, h, wofs(t), t, wofs_id(t))')
+    w('')
+    for n in sorted(sizes):
+        nw = n // 4
+        depth = max(0, (nw - 1).bit_length())
+        ws = [f'x{i}' for i in range(nw)]
+        leaves = ws + ['0'] * ((1 << depth) - nw)
+        wsig = ', '.join(f'+{x}: U32' for x in ws)
+        rhs = f'B.Buf{{{tree(leaves)}, {n}}}'
+        zeros = '[' + ', '.join(['0'] * ((1 << depth) - nw)) + ']'
+        WS = '[' + ', '.join(ws) + ']'
+        w(f'def load_{n}({wsig})')
+        w(f'    -> {{B.fill_at(B.alloc({n}), 0, F.limbs({WS})) == {rhs} : B.Buf}}:')
+        w(f'  Equal.cong(List<&2, U32>, B.Buf, l => B.Buf{{FD.array__thaw(U32, R.build({depth}n, FD.spec_common__append(U32, l, {zeros}))), {n}}},')
+        w(f'    wofs({WS}), {WS}, wofs_id({WS}))')
+    return '\n'.join(L) + '\n'
+
+
+def emit_input(w, n, node, size, R):
+    """decode of the bytes as the loader stores them = the object of the words."""
+    import re
+    nw = size // 4
+    depth = max(0, (nw - 1).bit_length())
+    pads = ['0'] * ((1 << depth) - nw)
+    loaded = f'B.fill_at(B.alloc({size}), 0, F.limbs([{", ".join(node.words)}]))'
+    sig = ', '.join(f'+{v}: U32' for v in node.words)
+    ty = lambda b: f'{{T.{n}_decode({b}, {size}) == ({b}, Some{{{node.dec}}}) : B.Buf & Maybe<&1, {R}>}}'
+    lit = f'B.Buf{{{tree(node.words + pads)}, {size}}}'
+    w(f'def {n}_spec_input({sig})')
+    w(f'    -> {ty(loaded)}:')
+    w(f'  FD.logic__subst(B.Buf, b => {ty("b")}, {lit}, {loaded},')
+    w(f'    Equal.sym(B.Buf, {loaded}, {lit}, LD.load_{size}({", ".join(node.words)})),')
+    w(f'    C.{n}_spec_decode({", ".join(node.words + pads)}))')
+
+
+def emit_name(w, n, t, node, size, R, P, data):
+    nw = size // 4
+    sig = ', '.join(f'+{v}: U32' for v in node.words)
+    args = ', '.join(node.words)
+    L = f'F.limbs({wl(node.words)})'
+    enc = f'T.{n}_encode({node.obj})'
+    depth = max(0, (nw - 1).bit_length())
+    pads = [f'p{i}' for i in range((1 << depth) - nw)]
+    buf = f'B.Buf{{{tree(node.words + pads)}, {size}}}'
+    psig = ', '.join([sig] + [f'+{p}: U32' for p in pads])
+    osig = ', '.join([sig] + [f'+{q}: U32' for q in node.opads])
+    w(f'def {n}_spec_bytes({osig})')
+    if data:
+        w(f'    -> {{B.emit({enc}, 0, {nw}) == ({enc}, {L}) : B.Buf & +List<U32>}}:')
+    else:
+        w(f'    -> {{F.emitted({R}, {enc}, {nw}) == ({node.obj}, {L}) : {R} & +List<U32>}}:')
+    w('  {==}')
+    w(f'def {n}_spec_parts({sig})')
+    w(f'    -> {{Codec.parts({node.val}, Spec.{n}()) == Some{{[S.Fixed{{{L}}}]}} : Maybe<&2, +List<S.Part>>}}:')
+    w(f'  {node.proof}')
+    w(f'def {n}_spec_encode({sig})')
+    w(f'    -> Decoding.decodes(Spec.{n}(), {L}, {node.val}):')
+    w(f'  F.encoding_of_parts(Spec.{n}(), {node.val}, {L}, {n}_spec_parts({args}))')
+    w(f'def {n}_spec_decode({psig})')
+    w(f'    -> {{T.{n}_decode({buf}, {size}) == ({buf}, Some{{{node.dec}}}) : B.Buf & Maybe<&1, {R}>}}:')
+    w('  {==}')
+    w(f'def {n}_spec_view({psig})')
+    w(f'    -> {{B.emit({buf}, 0, {nw}) == ({buf}, {L}) : B.Buf & +List<U32>}}:')
+    w('  {==}')
+    w(f'def {n}_spec_reject(buf: B.Buf, +m: U32, e: {{U32.is_eq(m, {size}) == False{{}} : Bool}})')
+    w(f'    -> {{T.{n}_decode(buf, m) == (buf, None{{}}) : B.Buf & Maybe<&1, {R}>}}:')
+    w(f'  %Equal.sym(Bool, U32.is_eq(m, {size}), False{{}}, e) : '
+      f'{{T.{n}_built(m, T.{P}_ok_len(_, buf, 0)) == (buf, None{{}}) : B.Buf & Maybe<&1, {R}>}}')
+    w('  {==}')
+
+
+def emit_unique(w, n, node, k):
+    sig = ', '.join(f'+{v}: U32' for v in node.words)
+    args = ', '.join(node.words)
+    L = f'F.limbs({wl(node.words)})'
+    w(f'def {n}_spec_unique({sig}, +v: S.Value, spec: Decoding.decodes(Spec.{n}(), {L}, v))')
+    w(f'    -> {{v == {node.val} : S.Value}}:')
+    w(f'  E.deserialize_unique(Spec.{n}(), {L}, v, {node.val}, Legal.{n}_normative_legal(), spec, '
+      f'C{k}.{n}_spec_encode({args}))')
+
+
+HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
+        'import ../../types/fulu_obj.bend as T', 'import ../../types/schema.bend as S',
+        'import ../../types/primitive.bend as P', 'import ../../spec/codec.bend as Codec',
+        'import ../../spec/decoding_relation.bend as Decoding', 'import ../../spec/fulu_schemas.bend as Spec',
+        'import ./spec_fixed.bend as F', 'import ./spec_bits.bend as FB', '']
+
+
+def main():
+    names = schema.load(ROOT / 'codegen/fulu.yaml')
+    g = G.Gen()
+    for n, t in names.items():
+        g.shape(t)
+    src = (ROOT / 'types/fulu_obj.bend').read_text()
+    chosen, skipped = [], {}
+    for n, t in names.items():
+        if not (t.fixed() and LW.word_aligned(t)):
+            continue
+        try:
+            node = walk(g, t, iter(range(10000)))
+        except Skip as e:
+            skipped[n] = str(e)
+            continue
+        chosen.append((n, t, node))
+    out = {ROOT / 'proofs/obj/spec_bits.bend': bits_module(), ROOT / 'proofs/obj/spec_small.bend': small_module(src),
+           ROOT / 'proofs/obj/spec_unique_small.bend': unique_small(),
+           ROOT / 'proofs/obj/spec_repr_small.bend': repr_small()}
+    out[ROOT / 'proofs/obj/load.bend'] = load_module({t.fixed_size() for _, t, _ in chosen})
+    chunks = [chosen[i:i + PER_FILE] for i in range(0, len(chosen), PER_FILE)]
+    where = {}
+    for k, chunk in enumerate(chunks):
+        lines = list(HEAD) + [
+            '# GENERATED by codegen/spec_laws.py. Do not edit.',
+            '# Spec-connected codec laws of the aligned fixed names: the emitted bytes,',
+            '# their relation to the object value in the independent spec/codec.bend,',
+            '# acceptance of every buffer of the size, and rejection of every other size.', '']
+        w = lines.append
+        for n, t, node in chunk:
+            where[n] = k
+            size = t.fixed_size()
+            w(f'# ---- {n} ({size} bytes) ----')
+            emit_name(w, n, t, node, size, LW.qual(g.shape(t).rep), okname(src, n), g.shape(t).data)
+            w('')
+        out[ROOT / f'proofs/obj/spec_codec_{k}.bend'] = '\n'.join(lines) + '\n'
+        rl = REPR_HEAD + [f'import ./spec_codec_{k}.bend as C', '',
+                          '# GENERATED by codegen/spec_laws.py. Do not edit.',
+                          '# The decode and view laws of spec_codec_%d.bend for EVERY perfect buffer' % k,
+                          '# tree of the depth the loader allocates, not only the literal tree.', '']
+        for n, t, node in chunk:
+            emit_repr(rl.append, n, node, t.fixed_size(), LW.qual(g.shape(t).rep))
+            rl.append('')
+        out[ROOT / f'proofs/obj/spec_repr_{k}.bend'] = '\n'.join(rl) + '\n'
+        il = REPR_HEAD + ['import ./load.bend as LD', f'import ./spec_codec_{k}.bend as C', '',
+                          '# GENERATED by codegen/spec_laws.py. Do not edit.',
+                          '# The decode laws of spec_codec_%d.bend on the buffer the real loader builds' % k,
+                          '# (B.fill_at(B.alloc(n), 0, bytes), benchmarks/compact/objio.bend) from the',
+                          '# bytes limbs(words) - every byte list of the size.', '']
+        for n, t, node in chunk:
+            emit_input(il.append, n, node, t.fixed_size(), LW.qual(g.shape(t).rep))
+            il.append('')
+        out[ROOT / f'proofs/obj/spec_input_{k}.bend'] = '\n'.join(il) + '\n'
+    uchunks = [chosen[i:i + UNIQUE_PER_FILE] for i in range(0, len(chosen), UNIQUE_PER_FILE)]
+    for u, chunk in enumerate(uchunks):
+        used = sorted({where[n] for n, _, _ in chunk})
+        lines = ['import Base', 'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P',
+                 'import ../../spec/decoding_relation.bend as Decoding', 'import ../../spec/fulu_schemas.bend as Spec',
+                 'import ../../END_TO_END.bend as E', 'import ../../proofs/fulu_legality.bend as Legal',
+                 'import ./spec_fixed.bend as F', 'import ./spec_bits.bend as FB'] + [f'import ./spec_codec_{k}.bend as C{k}' for k in used] + [
+            '',
+            '# GENERATED by codegen/spec_laws.py. Do not edit.',
+            '# Completeness of the decoder\'s answer: every value the independent spec relates',
+            '# to the bytes of a buffer is the value of the object the decoder returns for it',
+            '# (END_TO_END.deserialize_unique with the name\'s legality witness).', '']
+        w = lines.append
+        for n, t, node in chunk:
+            emit_unique(w, n, node, where[n])
+        out[ROOT / f'proofs/obj/spec_unique_{u}.bend'] = '\n'.join(lines) + '\n'
+    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('spec_*_*.bend') if q not in out)
+    if '--check' in sys.argv:
+        stale = [str(p.relative_to(ROOT)) for p, text in out.items() if not p.exists() or p.read_text() != text]
+        if stale or orphans:
+            print('stale generated spec laws: ' + ', '.join(stale + orphans))
+            sys.exit(1)
+        print('generated spec laws are current')
+        return
+    for q in orphans:
+        (ROOT / q).unlink()
+    for p, text in out.items():
+        p.write_text(text)
+    print(f'{len(chunks)} spec-codec files and {len(uchunks)} uniqueness files over {len(chosen)} names; '
+          f'not covered: ' + ', '.join(f'{n} ({why})' for n, why in skipped.items()))
+
+
+if __name__ == '__main__':
+    main()

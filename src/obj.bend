@@ -50,7 +50,10 @@ def npick(c: Bool, +x: Nat, +y: Nat) -> Nat:
 def depth_for(+n: U32) -> Nat:
   B.words_depth((U32.shrn((n + 31 : U32), 5n) * 8 + 8 : U32))
 
-def words_new(+n: U32) -> Words: Words{Array.new(U32, depth_for(n), 0), n}
+def zeros_for(+n: U32) -> Array<U32>:
+  B.zeros(B.words_depth_u((U32.shrn((n + 31 : U32), 5n) * 8 + 8 : U32)))
+
+def words_new(+n: U32) -> Words: Words{zeros_for(n), n}
 
 def words_len(w: Words) -> Words & U32:
   match w:
@@ -64,31 +67,298 @@ def keep(+k: U32, +w: U32) -> U32:
     case 3: (w .&. 16777215 : U32)
     case _: w
 
-# ---- copy a validated byte range of the input into fresh packed storage ----
+# ---- bulk word copies, eight words per loop step --------------------------
+# One loop iteration of the native backend costs several times what one
+# array access does (the step, its counter and its fuel), so a word copy that
+# takes one word per iteration spends most of its time in the loop. These copy
+# eight words per iteration with straight-line reads and writes, and the
+# remainder one at a time. Measured: 0.26 ns against 0.085 ns per word for a
+# 4096-word copy (benchmarks/probes/copy_unroll.bend). The words moved are the
+# same as a one-word loop's.
 
-# `pair` holds word j, read beforehand; the last word keeps only `rem` bytes.
-def cp_go(+k: Nat, +j: U32, +nw: U32, +off: U32, +rem: U32, out: Array<U32>, pair: B.Buf & U32) -> B.Buf & Array<U32>:
+# dst[b + j] = src[a + j] for j < nw. Returns (dst, src).
+
+def ac_c7(+a: U32, +b: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (src, +w) = pair
+  (Array.set(U32, dst, (b + 7 : U32), w), src)
+
+def ac_c6(+a: U32, +b: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (src, +w) = pair
+  ac_c7(a, b, Array.set(U32, dst, (b + 6 : U32), w), Array.get(U32, src, (a + 7 : U32)))
+
+def ac_c5(+a: U32, +b: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (src, +w) = pair
+  ac_c6(a, b, Array.set(U32, dst, (b + 5 : U32), w), Array.get(U32, src, (a + 6 : U32)))
+
+def ac_c4(+a: U32, +b: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (src, +w) = pair
+  ac_c5(a, b, Array.set(U32, dst, (b + 4 : U32), w), Array.get(U32, src, (a + 5 : U32)))
+
+def ac_c3(+a: U32, +b: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (src, +w) = pair
+  ac_c4(a, b, Array.set(U32, dst, (b + 3 : U32), w), Array.get(U32, src, (a + 4 : U32)))
+
+def ac_c2(+a: U32, +b: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (src, +w) = pair
+  ac_c3(a, b, Array.set(U32, dst, (b + 2 : U32), w), Array.get(U32, src, (a + 3 : U32)))
+
+def ac_c1(+a: U32, +b: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (src, +w) = pair
+  ac_c2(a, b, Array.set(U32, dst, (b + 1 : U32), w), Array.get(U32, src, (a + 2 : U32)))
+
+def ac_c0(+a: U32, +b: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (src, +w) = pair
+  ac_c1(a, b, Array.set(U32, dst, (b + 0 : U32), w), Array.get(U32, src, (a + 1 : U32)))
+
+def ac_blk(+k: Nat, +a: U32, +b: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & Array<U32>:
   match k:
-    case 0n:
-      (buf, +w) = pair
-      (buf, Array.set(U32, out, j, keep(rem, w)))
+    case 0n: pair
+    case 1n+t:
+      (dst, src) = pair
+      ac_blk(t, (a + 8 : U32), (b + 8 : U32), ac_c0(a, b, dst, Array.get(U32, src, a)))
+
+def ac_w(+b: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (src, +w) = pair
+  (Array.set(U32, dst, b, w), src)
+
+def ac_tail(+k: Nat, +a: U32, +b: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & Array<U32>:
+  match k:
+    case 0n: pair
+    case 1n+t:
+      (dst, src) = pair
+      ac_tail(t, (a + 1 : U32), (b + 1 : U32), ac_w(b, dst, Array.get(U32, src, a)))
+
+def acopy(+nw: U32, +a: U32, +b: U32, dst: Array<U32>, src: Array<U32>) -> Array<U32> & Array<U32>:
+  ac_tail(U32.to_nat((nw .&. 7 : U32)), (a + nw - (nw .&. 7 : U32) : U32), (b + nw - (nw .&. 7 : U32) : U32),
+    ac_blk(U32.to_nat(U32.shrn(nw, 3n)), a, b, (dst, src)))
+
+# dst[b + j] = (src[a + j] >> 8t) | (src[a + j + 1] << (32 - 8t)) for j < nw,
+# t = 1, 2, 3: the words of a byte range that starts t bytes into word a. The
+# state carries the source word read last; src[a + nw] is read, and only its
+# low t bytes reach dst[b + nw - 1]. Returns (dst, src).
+
+def sc_first(dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +c) = pair
+  (dst, (src, c))
+
+def sc_drop(st: Array<U32> & (Array<U32> & U32)) -> Array<U32> & Array<U32>:
+  (dst, r) = st
+  (src, c) = r
+  (dst, src)
+
+def sc1_c7(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  (Array.set(U32, dst, (b + 7 : U32), (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), (src, w))
+
+def sc1_c6(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc1_c7(a, b, w, Array.set(U32, dst, (b + 6 : U32), (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), Array.get(U32, src, (a + 8 : U32)))
+
+def sc1_c5(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc1_c6(a, b, w, Array.set(U32, dst, (b + 5 : U32), (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), Array.get(U32, src, (a + 7 : U32)))
+
+def sc1_c4(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc1_c5(a, b, w, Array.set(U32, dst, (b + 4 : U32), (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), Array.get(U32, src, (a + 6 : U32)))
+
+def sc1_c3(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc1_c4(a, b, w, Array.set(U32, dst, (b + 3 : U32), (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), Array.get(U32, src, (a + 5 : U32)))
+
+def sc1_c2(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc1_c3(a, b, w, Array.set(U32, dst, (b + 2 : U32), (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), Array.get(U32, src, (a + 4 : U32)))
+
+def sc1_c1(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc1_c2(a, b, w, Array.set(U32, dst, (b + 1 : U32), (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), Array.get(U32, src, (a + 3 : U32)))
+
+def sc1_c0(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc1_c1(a, b, w, Array.set(U32, dst, (b + 0 : U32), (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), Array.get(U32, src, (a + 2 : U32)))
+
+def sc1_blk(+k: Nat, +a: U32, +b: U32, st: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n: st
     case 1n+q:
-      (buf, +w) = pair
-      cp_go(q, (j + 1 : U32), nw, off, rem, Array.set(U32, out, j, w), B.read32(buf, (off + 4 * (j + 1 : U32) : U32)))
+      (dst, r) = st
+      (src, c) = r
+      sc1_blk(q, (a + 8 : U32), (b + 8 : U32), sc1_c0(a, b, c, dst, Array.get(U32, src, (a + 1 : U32))))
 
-def cp_start(empty: Bool, +nw: U32, +off: U32, +rem: U32, out: Array<U32>, buf: B.Buf) -> B.Buf & Array<U32>:
+def sc1_w(+b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  (Array.set(U32, dst, b, (U32.shrn(c, 8n) .|. (w * 16777216 : U32) : U32)), (src, w))
+
+def sc1_tail(+k: Nat, +a: U32, +b: U32, st: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n: st
+    case 1n+q:
+      (dst, r) = st
+      (src, c) = r
+      sc1_tail(q, (a + 1 : U32), (b + 1 : U32), sc1_w(b, c, dst, Array.get(U32, src, (a + 1 : U32))))
+
+def scopy1(+nw: U32, +a: U32, +b: U32, dst: Array<U32>, src: Array<U32>) -> Array<U32> & Array<U32>:
+  sc_drop(sc1_tail(U32.to_nat((nw .&. 7 : U32)), (a + nw - (nw .&. 7 : U32) : U32), (b + nw - (nw .&. 7 : U32) : U32),
+    sc1_blk(U32.to_nat(U32.shrn(nw, 3n)), a, b, sc_first(dst, Array.get(U32, src, a)))))
+
+def sc2_c7(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  (Array.set(U32, dst, (b + 7 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), (src, w))
+
+def sc2_c6(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc2_c7(a, b, w, Array.set(U32, dst, (b + 6 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), Array.get(U32, src, (a + 8 : U32)))
+
+def sc2_c5(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc2_c6(a, b, w, Array.set(U32, dst, (b + 5 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), Array.get(U32, src, (a + 7 : U32)))
+
+def sc2_c4(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc2_c5(a, b, w, Array.set(U32, dst, (b + 4 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), Array.get(U32, src, (a + 6 : U32)))
+
+def sc2_c3(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc2_c4(a, b, w, Array.set(U32, dst, (b + 3 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), Array.get(U32, src, (a + 5 : U32)))
+
+def sc2_c2(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc2_c3(a, b, w, Array.set(U32, dst, (b + 2 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), Array.get(U32, src, (a + 4 : U32)))
+
+def sc2_c1(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc2_c2(a, b, w, Array.set(U32, dst, (b + 1 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), Array.get(U32, src, (a + 3 : U32)))
+
+def sc2_c0(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc2_c1(a, b, w, Array.set(U32, dst, (b + 0 : U32), (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), Array.get(U32, src, (a + 2 : U32)))
+
+def sc2_blk(+k: Nat, +a: U32, +b: U32, st: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n: st
+    case 1n+q:
+      (dst, r) = st
+      (src, c) = r
+      sc2_blk(q, (a + 8 : U32), (b + 8 : U32), sc2_c0(a, b, c, dst, Array.get(U32, src, (a + 1 : U32))))
+
+def sc2_w(+b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  (Array.set(U32, dst, b, (U32.shrn(c, 16n) .|. (w * 65536 : U32) : U32)), (src, w))
+
+def sc2_tail(+k: Nat, +a: U32, +b: U32, st: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n: st
+    case 1n+q:
+      (dst, r) = st
+      (src, c) = r
+      sc2_tail(q, (a + 1 : U32), (b + 1 : U32), sc2_w(b, c, dst, Array.get(U32, src, (a + 1 : U32))))
+
+def scopy2(+nw: U32, +a: U32, +b: U32, dst: Array<U32>, src: Array<U32>) -> Array<U32> & Array<U32>:
+  sc_drop(sc2_tail(U32.to_nat((nw .&. 7 : U32)), (a + nw - (nw .&. 7 : U32) : U32), (b + nw - (nw .&. 7 : U32) : U32),
+    sc2_blk(U32.to_nat(U32.shrn(nw, 3n)), a, b, sc_first(dst, Array.get(U32, src, a)))))
+
+def sc3_c7(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  (Array.set(U32, dst, (b + 7 : U32), (U32.shrn(c, 24n) .|. (w * 256 : U32) : U32)), (src, w))
+
+def sc3_c6(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc3_c7(a, b, w, Array.set(U32, dst, (b + 6 : U32), (U32.shrn(c, 24n) .|. (w * 256 : U32) : U32)), Array.get(U32, src, (a + 8 : U32)))
+
+def sc3_c5(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc3_c6(a, b, w, Array.set(U32, dst, (b + 5 : U32), (U32.shrn(c, 24n) .|. (w * 256 : U32) : U32)), Array.get(U32, src, (a + 7 : U32)))
+
+def sc3_c4(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc3_c5(a, b, w, Array.set(U32, dst, (b + 4 : U32), (U32.shrn(c, 24n) .|. (w * 256 : U32) : U32)), Array.get(U32, src, (a + 6 : U32)))
+
+def sc3_c3(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc3_c4(a, b, w, Array.set(U32, dst, (b + 3 : U32), (U32.shrn(c, 24n) .|. (w * 256 : U32) : U32)), Array.get(U32, src, (a + 5 : U32)))
+
+def sc3_c2(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc3_c3(a, b, w, Array.set(U32, dst, (b + 2 : U32), (U32.shrn(c, 24n) .|. (w * 256 : U32) : U32)), Array.get(U32, src, (a + 4 : U32)))
+
+def sc3_c1(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc3_c2(a, b, w, Array.set(U32, dst, (b + 1 : U32), (U32.shrn(c, 24n) .|. (w * 256 : U32) : U32)), Array.get(U32, src, (a + 3 : U32)))
+
+def sc3_c0(+a: U32, +b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  sc3_c1(a, b, w, Array.set(U32, dst, (b + 0 : U32), (U32.shrn(c, 24n) .|. (w * 256 : U32) : U32)), Array.get(U32, src, (a + 2 : U32)))
+
+def sc3_blk(+k: Nat, +a: U32, +b: U32, st: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n: st
+    case 1n+q:
+      (dst, r) = st
+      (src, c) = r
+      sc3_blk(q, (a + 8 : U32), (b + 8 : U32), sc3_c0(a, b, c, dst, Array.get(U32, src, (a + 1 : U32))))
+
+def sc3_w(+b: U32, +c: U32, dst: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (src, +w) = pair
+  (Array.set(U32, dst, b, (U32.shrn(c, 24n) .|. (w * 256 : U32) : U32)), (src, w))
+
+def sc3_tail(+k: Nat, +a: U32, +b: U32, st: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  match k:
+    case 0n: st
+    case 1n+q:
+      (dst, r) = st
+      (src, c) = r
+      sc3_tail(q, (a + 1 : U32), (b + 1 : U32), sc3_w(b, c, dst, Array.get(U32, src, (a + 1 : U32))))
+
+def scopy3(+nw: U32, +a: U32, +b: U32, dst: Array<U32>, src: Array<U32>) -> Array<U32> & Array<U32>:
+  sc_drop(sc3_tail(U32.to_nat((nw .&. 7 : U32)), (a + nw - (nw .&. 7 : U32) : U32), (b + nw - (nw .&. 7 : U32) : U32),
+    sc3_blk(U32.to_nat(U32.shrn(nw, 3n)), a, b, sc_first(dst, Array.get(U32, src, a)))))
+
+# ---- copy a validated byte range of the input into fresh packed storage ----
+# The range starts s = off & 3 bytes into input word off >> 2; it is moved in
+# whole words (a plain copy when s = 0, a shifted one otherwise) and the last
+# word then keeps only its n & 3 low bytes, so the storage past the logical
+# length stays zero.
+
+def ml_set(+rem: U32, +i: U32, pair: Array<U32> & U32) -> Array<U32>:
+  (a, +w) = pair
+  Array.set(U32, a, i, keep(rem, w))
+
+def ml_go(whole: Bool, +rem: U32, +i: U32, dst: Array<U32>) -> Array<U32>:
+  match whole:
+    case True{}: dst
+    case False{}: ml_set(rem, i, Array.get(U32, dst, i))
+
+def mask_last(+n: U32, dst: Array<U32>) -> Array<U32>:
+  ml_go(U32.is_eq((n .&. 3 : U32), 0), (n .&. 3 : U32), (U32.shrn((n + 3 : U32), 2n) - 1 : U32), dst)
+
+def ci_pick(+s: U32, +a: U32, +nw: U32, dst: Array<U32>, src: Array<U32>) -> Array<U32> & Array<U32>:
+  match s:
+    case 0: acopy(nw, a, 0, dst, src)
+    case 1: scopy1(nw, a, 0, dst, src)
+    case 2: scopy2(nw, a, 0, dst, src)
+    case _: scopy3(nw, a, 0, dst, src)
+
+def ci_go(empty: Bool, +s: U32, +a: U32, +nw: U32, dst: Array<U32>, src: Array<U32>) -> Array<U32> & Array<U32>:
   match empty:
-    case True{}: (buf, out)
-    case False{}: cp_go(U32.to_nat((nw - 1 : U32)), 0, nw, off, rem, out, B.read32(buf, off))
+    case True{}: (dst, src)
+    case False{}: ci_pick(s, a, nw, dst, src)
 
-def copy_fin(+n: U32, pair: B.Buf & Array<U32>) -> B.Buf & Words:
-  (buf, out) = pair
-  (buf, Words{out, n})
+def ci_fin(+len: U32, +n: U32, pair: Array<U32> & Array<U32>) -> B.Buf & Words:
+  (dst, src) = pair
+  (B.Buf{src, len}, Words{mask_last(n, dst), n})
+
+# Bytes [off, off + n) of the buffer as a Words, in `dst`: zero storage of
+# depth depth_for(n). A fixed-size field passes an Array.new at a literal
+# depth, which the C compiler fills with bzero.
+def copy_into(buf: B.Buf, +off: U32, +n: U32, dst: Array<U32>) -> B.Buf & Words:
+  match buf:
+    case B.Buf{ws, +len}:
+      ci_fin(len, n, ci_go(U32.is_eq(n, 0), (off .&. 3 : U32), U32.shrn(off, 2n), U32.shrn((n + 3 : U32), 2n),
+        dst, ws))
 
 # Bytes [off, off + n) of the buffer as a Words.
-def copy_in(buf: B.Buf, +off: U32, +n: U32) -> B.Buf & Words:
-  copy_fin(n, cp_start(U32.is_eq(n, 0), U32.shrn((n + 3 : U32), 2n), off, (n .&. 3 : U32),
-    Array.new(U32, depth_for(n), 0), buf))
+def copy_in(buf: B.Buf, +off: U32, +n: U32) -> B.Buf & Words: copy_into(buf, off, n, zeros_for(n))
 
 # ---- the output: a pre-zeroed word array written at absolute byte positions --
 # Each byte of the output is written once, so a write ORs its bytes in; an
@@ -185,17 +455,26 @@ def put_fin(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & Words:
 # `M.shr_by` walk the shift amount). The bytes written are exactly the same
 # ones, still OR-ed in, so the result is unchanged.
 
-def pw_store(+k: Nat, +j: U32, +q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
-  match k:
-    case 0n:
-      (ws, +w) = pair
-      (Array.set(U32, out, (q + j : U32), w), ws)
-    case 1n+t:
-      (ws, +w) = pair
-      pw_store(t, (j + 1 : U32), q, Array.set(U32, out, (q + j : U32), w), Array.get(U32, ws, (j + 1 : U32)))
+# The words wholly inside the range are stored; a last word holding fewer
+# than four of the range's bytes shares the rest with the next value, so it is
+# OR-ed in. Every write to a shared word is an OR, which makes the result
+# independent of the order in which neighbouring values are written.
+def pw_al_or_w(+nw: U32, +q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:
+  (ws, +w) = pair
+  (or_word(out, (q + nw - 1 : U32), w), ws)
 
-def pw_aligned(+nw: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & Array<U32>:
-  pw_store(U32.to_nat((nw - 1 : U32)), 0, q, out, Array.get(U32, ws, 0))
+def pw_al_or(+nw: U32, +q: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & Array<U32>:
+  (out, ws) = pair
+  pw_al_or_w(nw, q, out, Array.get(U32, ws, (nw - 1 : U32)))
+
+def pw_al_tail(whole: Bool, +nw: U32, +q: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & Array<U32>:
+  match whole:
+    case True{}: pair
+    case False{}: pw_al_or(nw, q, pair)
+
+def pw_aligned(+n: U32, +nw: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & Array<U32>:
+  pw_al_tail(U32.is_eq((n .&. 3 : U32), 0), nw, q,
+    acopy(pick(U32.is_eq((n .&. 3 : U32), 0), nw, (nw - 1 : U32)), 0, q, out, ws))
 
 # An unaligned run in three parts.
 #
@@ -218,39 +497,39 @@ def pw_or1(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32>
       pw_or1(e, (j + 1 : U32), q, U32.shrn(w, 24n),
         or_word(out, (q + j : U32), ((w * 256 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
 
-def pw_st1(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
-  match k:
-    case 0n:
-      (ws, +w) = pair
-      (Array.set(U32, out, (q + j : U32), ((w * 256 : U32) .|. c : U32)), (ws, U32.shrn(w, 24n)))
-    case 1n+e:
-      (ws, +w) = pair
-      pw_st1(e, (j + 1 : U32), q, U32.shrn(w, 24n),
-        Array.set(U32, out, (q + j : U32), ((w * 256 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
-
-def pw_st1_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
-  match empty:
-    case True{}: (out, (ws, c))
-    case False{}: pw_st1(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
-
 def pw_or1_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
   match empty:
     case True{}: (out, (ws, c))
     case False{}: pw_or1(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
-
-def pw_st1_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
-  (out, r) = pair
-  (ws, c) = r
-  pw_st1_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
 
 def pw_or1_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
   (out, r) = pair
   (ws, c) = r
   pw_or1_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
 
+# Words 1..mid of the run: word j is (ws[j-1] >> 24) | (ws[j] << 8), a
+# shifted copy; the carry left for the next word is ws[mid] >> 24.
+def pw_mid1_c(out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (ws, +w) = pair
+  (out, (ws, U32.shrn(w, 24n)))
+
+def pw_mid1_carry(+mid: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & (Array<U32> & U32):
+  (out, ws) = pair
+  pw_mid1_c(out, Array.get(U32, ws, mid))
+
+def pw_mid1_run(empty: Bool, +mid: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
+  match empty:
+    case True{}: (out, (ws, c))
+    case False{}: pw_mid1_carry(mid, scopy3(mid, 0, (q + 1 : U32), out, ws))
+
+def pw_mid1(+mid: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  (out, r) = pair
+  (ws, c) = r
+  pw_mid1_run(U32.is_eq(mid, 0), mid, q, out, ws, c)
+
 def pw_run1(+nw: U32, +mid: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & (Array<U32> & U32):
   pw_or1_at((mid + 1 : U32), (nw - 1 - mid : U32), q,
-    pw_st1_at(1, mid, q, pw_or1(0n, 0, q, 0, out, Array.get(U32, ws, 0))))
+    pw_mid1(mid, q, pw_or1(0n, 0, q, 0, out, Array.get(U32, ws, 0))))
 
 def pw_or2(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
   match k:
@@ -262,39 +541,39 @@ def pw_or2(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32>
       pw_or2(e, (j + 1 : U32), q, U32.shrn(w, 16n),
         or_word(out, (q + j : U32), ((w * 65536 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
 
-def pw_st2(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
-  match k:
-    case 0n:
-      (ws, +w) = pair
-      (Array.set(U32, out, (q + j : U32), ((w * 65536 : U32) .|. c : U32)), (ws, U32.shrn(w, 16n)))
-    case 1n+e:
-      (ws, +w) = pair
-      pw_st2(e, (j + 1 : U32), q, U32.shrn(w, 16n),
-        Array.set(U32, out, (q + j : U32), ((w * 65536 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
-
-def pw_st2_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
-  match empty:
-    case True{}: (out, (ws, c))
-    case False{}: pw_st2(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
-
 def pw_or2_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
   match empty:
     case True{}: (out, (ws, c))
     case False{}: pw_or2(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
-
-def pw_st2_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
-  (out, r) = pair
-  (ws, c) = r
-  pw_st2_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
 
 def pw_or2_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
   (out, r) = pair
   (ws, c) = r
   pw_or2_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
 
+# Words 1..mid of the run: word j is (ws[j-1] >> 16) | (ws[j] << 16), a
+# shifted copy; the carry left for the next word is ws[mid] >> 16.
+def pw_mid2_c(out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (ws, +w) = pair
+  (out, (ws, U32.shrn(w, 16n)))
+
+def pw_mid2_carry(+mid: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & (Array<U32> & U32):
+  (out, ws) = pair
+  pw_mid2_c(out, Array.get(U32, ws, mid))
+
+def pw_mid2_run(empty: Bool, +mid: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
+  match empty:
+    case True{}: (out, (ws, c))
+    case False{}: pw_mid2_carry(mid, scopy2(mid, 0, (q + 1 : U32), out, ws))
+
+def pw_mid2(+mid: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  (out, r) = pair
+  (ws, c) = r
+  pw_mid2_run(U32.is_eq(mid, 0), mid, q, out, ws, c)
+
 def pw_run2(+nw: U32, +mid: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & (Array<U32> & U32):
   pw_or2_at((mid + 1 : U32), (nw - 1 - mid : U32), q,
-    pw_st2_at(1, mid, q, pw_or2(0n, 0, q, 0, out, Array.get(U32, ws, 0))))
+    pw_mid2(mid, q, pw_or2(0n, 0, q, 0, out, Array.get(U32, ws, 0))))
 
 def pw_or3(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
   match k:
@@ -306,39 +585,39 @@ def pw_or3(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32>
       pw_or3(e, (j + 1 : U32), q, U32.shrn(w, 8n),
         or_word(out, (q + j : U32), ((w * 16777216 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
 
-def pw_st3(+k: Nat, +j: U32, +q: U32, +c: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
-  match k:
-    case 0n:
-      (ws, +w) = pair
-      (Array.set(U32, out, (q + j : U32), ((w * 16777216 : U32) .|. c : U32)), (ws, U32.shrn(w, 8n)))
-    case 1n+e:
-      (ws, +w) = pair
-      pw_st3(e, (j + 1 : U32), q, U32.shrn(w, 8n),
-        Array.set(U32, out, (q + j : U32), ((w * 16777216 : U32) .|. c : U32)), Array.get(U32, ws, (j + 1 : U32)))
-
-def pw_st3_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
-  match empty:
-    case True{}: (out, (ws, c))
-    case False{}: pw_st3(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
-
 def pw_or3_run(empty: Bool, +j: U32, +k: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
   match empty:
     case True{}: (out, (ws, c))
     case False{}: pw_or3(U32.to_nat((k - 1 : U32)), j, q, c, out, Array.get(U32, ws, j))
-
-def pw_st3_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
-  (out, r) = pair
-  (ws, c) = r
-  pw_st3_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
 
 def pw_or3_at(+j: U32, +k: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
   (out, r) = pair
   (ws, c) = r
   pw_or3_run(U32.is_eq(k, 0), j, k, q, out, ws, c)
 
+# Words 1..mid of the run: word j is (ws[j-1] >> 8) | (ws[j] << 24), a
+# shifted copy; the carry left for the next word is ws[mid] >> 8.
+def pw_mid3_c(out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & (Array<U32> & U32):
+  (ws, +w) = pair
+  (out, (ws, U32.shrn(w, 8n)))
+
+def pw_mid3_carry(+mid: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & (Array<U32> & U32):
+  (out, ws) = pair
+  pw_mid3_c(out, Array.get(U32, ws, mid))
+
+def pw_mid3_run(empty: Bool, +mid: U32, +q: U32, out: Array<U32>, ws: Array<U32>, +c: U32) -> Array<U32> & (Array<U32> & U32):
+  match empty:
+    case True{}: (out, (ws, c))
+    case False{}: pw_mid3_carry(mid, scopy1(mid, 0, (q + 1 : U32), out, ws))
+
+def pw_mid3(+mid: U32, +q: U32, pair: Array<U32> & (Array<U32> & U32)) -> Array<U32> & (Array<U32> & U32):
+  (out, r) = pair
+  (ws, c) = r
+  pw_mid3_run(U32.is_eq(mid, 0), mid, q, out, ws, c)
+
 def pw_run3(+nw: U32, +mid: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & (Array<U32> & U32):
   pw_or3_at((mid + 1 : U32), (nw - 1 - mid : U32), q,
-    pw_st3_at(1, mid, q, pw_or3(0n, 0, q, 0, out, Array.get(U32, ws, 0))))
+    pw_mid3(mid, q, pw_or3(0n, 0, q, 0, out, Array.get(U32, ws, 0))))
 
 # The carry of the last source word lands in the word after the range. That
 # word holds real bytes only when the carry is non-zero, and then it is inside
@@ -373,7 +652,7 @@ def pw_un(+s: U32, +n: U32, +nw: U32, +q: U32, out: Array<U32>, ws: Array<U32>) 
 
 def pw_go(zero: Bool, +s: U32, +n: U32, +nw: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & Array<U32>:
   match zero:
-    case True{}: pw_aligned(nw, q, out, ws)
+    case True{}: pw_aligned(n, nw, q, out, ws)
     case False{}: pw_un(s, n, nw, q, out, ws)
 
 def pw_empty(empty: Bool, +s: U32, +n: U32, +nw: U32, +q: U32, out: Array<U32>, ws: Array<U32>) -> Array<U32> & Array<U32>:
@@ -408,7 +687,7 @@ def put_words_n(out: Array<U32>, +p: U32, w: Words) -> Array<U32> & (Words & U32
 # carry writes (pw_carry, and the record writer's last term) are skipped when
 # their carry is zero, which is the only case in which they would reach the
 # word after the data.
-def out_new(+n: U32) -> Array<U32>: Array.new(U32, B.capacity(n), 0)
+def out_new(+n: U32) -> Array<U32>: B.zeros_bytes(n)
 
 # The same allocation with the depth already known (a fixed-size encoding).
 def out_at(+d: Nat) -> Array<U32>: Array.new(U32, d, 0)
@@ -426,106 +705,235 @@ def zero(h: B.Buf, +k: U32) -> B.Buf & D.Digest: B.get_digest(h, (960 + k : U32)
 
 def len_chunk(+n: U32) -> D.Digest: D.D{B.swap32(n), 0, 0, 0, 0, 0, 0, 0}
 
-def mix_len(r: D.Digest, +n: U32) -> D.Digest: D.hash_pair(r, len_chunk(n))
+def mix_len(+hl: Nat, r: D.Digest, +n: U32) -> D.Digest: D.node(hl, r, len_chunk(n))
 
-# The chunk of eight packed words starting at word 8c, big-endian for SHA.
-def ck7(+a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+# e8(i) = 8i as three doublings: 8(i + 1) is 8 + 8i by computation alone.
+def e8(+i: Nat) -> Nat: Nat.double(Nat.double(Nat.double(i)))
+
+# Chunk i of the packed words for the recursive trees: words 8i .. 8i + 7,
+# big-endian for SHA, read at Nat positions (the proofs relate U32.from_nat
+# of a Nat position to the array's slots without any U32 arithmetic).
+def cn7(+b: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
   (ws, +a7) = pair
   (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), B.swap32(a7)})
-
-def ck6(+i: U32, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+def cn6(+b: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
   (ws, +a6) = pair
-  ck7(a0, a1, a2, a3, a4, a5, a6, Array.get(U32, ws, (i + 7 : U32)))
-
-def ck5(+i: U32, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  cn7(b, a0, a1, a2, a3, a4, a5, a6, Array.get(U32, ws, U32.from_nat(Nat.add(b, 7n))))
+def cn5(+b: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
   (ws, +a5) = pair
-  ck6(i, a0, a1, a2, a3, a4, a5, Array.get(U32, ws, (i + 6 : U32)))
-
-def ck4(+i: U32, +a0: U32, +a1: U32, +a2: U32, +a3: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  cn6(b, a0, a1, a2, a3, a4, a5, Array.get(U32, ws, U32.from_nat(Nat.add(b, 6n))))
+def cn4(+b: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
   (ws, +a4) = pair
-  ck5(i, a0, a1, a2, a3, a4, Array.get(U32, ws, (i + 5 : U32)))
-
-def ck3(+i: U32, +a0: U32, +a1: U32, +a2: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  cn5(b, a0, a1, a2, a3, a4, Array.get(U32, ws, U32.from_nat(Nat.add(b, 5n))))
+def cn3(+b: Nat, +a0: U32, +a1: U32, +a2: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
   (ws, +a3) = pair
-  ck4(i, a0, a1, a2, a3, Array.get(U32, ws, (i + 4 : U32)))
-
-def ck2(+i: U32, +a0: U32, +a1: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  cn4(b, a0, a1, a2, a3, Array.get(U32, ws, U32.from_nat(Nat.add(b, 4n))))
+def cn2(+b: Nat, +a0: U32, +a1: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
   (ws, +a2) = pair
-  ck3(i, a0, a1, a2, Array.get(U32, ws, (i + 3 : U32)))
-
-def ck1(+i: U32, +a0: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  cn3(b, a0, a1, a2, Array.get(U32, ws, U32.from_nat(Nat.add(b, 3n))))
+def cn1(+b: Nat, +a0: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
   (ws, +a1) = pair
-  ck2(i, a0, a1, Array.get(U32, ws, (i + 2 : U32)))
-
-def ck0(+i: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  cn2(b, a0, a1, Array.get(U32, ws, U32.from_nat(Nat.add(b, 2n))))
+def cn0(+b: Nat, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
   (ws, +a0) = pair
-  ck1(i, a0, Array.get(U32, ws, (i + 1 : U32)))
+  cn1(b, a0, Array.get(U32, ws, U32.from_nat(Nat.add(b, 1n))))
+def chunkn(ws: Array<U32>, +b: Nat) -> Array<U32> & D.Digest: cn0(b, Array.get(U32, ws, U32.from_nat(Nat.add(b, 0n))))
 
-def chunk(ws: Array<U32>, +c: U32) -> Array<U32> & D.Digest: ck0((8 * c : U32), Array.get(U32, ws, (8 * c : U32)))
+# Chunk c of the `ew`-word element at word b: word j = 8c + k is read only when
+# j < ew (inside the element) and is zero otherwise; Nat positions, as above.
+def rdc(inside: Bool, ws: Array<U32>, +pos: Nat) -> Array<U32> & U32:
+  match inside:
+    case True{}: Array.get(U32, ws, U32.from_nat(pos))
+    case False{}: (ws, 0)
+def ec7(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  (ws, +a7) = pair
+  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), B.swap32(a7)})
+def ec6(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  (ws, +a6) = pair
+  ec7(b, j, ew, a0, a1, a2, a3, a4, a5, a6, rdc(Nat.is_lt(Nat.add(j, 7n), ew), ws, Nat.add(b, Nat.add(j, 7n))))
+def ec5(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  (ws, +a5) = pair
+  ec6(b, j, ew, a0, a1, a2, a3, a4, a5, rdc(Nat.is_lt(Nat.add(j, 6n), ew), ws, Nat.add(b, Nat.add(j, 6n))))
+def ec4(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, +a1: U32, +a2: U32, +a3: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  (ws, +a4) = pair
+  ec5(b, j, ew, a0, a1, a2, a3, a4, rdc(Nat.is_lt(Nat.add(j, 5n), ew), ws, Nat.add(b, Nat.add(j, 5n))))
+def ec3(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, +a1: U32, +a2: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  (ws, +a3) = pair
+  ec4(b, j, ew, a0, a1, a2, a3, rdc(Nat.is_lt(Nat.add(j, 4n), ew), ws, Nat.add(b, Nat.add(j, 4n))))
+def ec2(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, +a1: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  (ws, +a2) = pair
+  ec3(b, j, ew, a0, a1, a2, rdc(Nat.is_lt(Nat.add(j, 3n), ew), ws, Nat.add(b, Nat.add(j, 3n))))
+def ec1(+b: Nat, +j: Nat, +ew: Nat, +a0: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  (ws, +a1) = pair
+  ec2(b, j, ew, a0, a1, rdc(Nat.is_lt(Nat.add(j, 2n), ew), ws, Nat.add(b, Nat.add(j, 2n))))
+def ec0(+b: Nat, +j: Nat, +ew: Nat, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
+  (ws, +a0) = pair
+  ec1(b, j, ew, a0, rdc(Nat.is_lt(Nat.add(j, 1n), ew), ws, Nat.add(b, Nat.add(j, 1n))))
+def echunkn(ws: Array<U32>, +b: Nat, +c: Nat, +ew: Nat) -> Array<U32> & D.Digest:
+  ec0(b, e8(c), ew, rdc(Nat.is_lt(Nat.add(e8(c), 0n), ew), ws, Nat.add(b, Nat.add(e8(c), 0n))))
 
-def push_chunks(+k: Nat, +c: U32, +seg: U32, h: B.Buf, pair: Array<U32> & D.Digest) -> B.Buf & Array<U32>:
-  match k:
+# ---- recursive Merkle trees -------------------------------------------------
+# The root of the chunks [s, s + w) of a chunk sequence with n chunks, w = 2^d:
+# Z(d) (the hasher's zero table) when s >= n, the chunk itself at d = 0, and the
+# node of the two halves otherwise - spec/tree.bend's own recursion. `lf` says
+# where chunk i comes from: whole chunks of the array (LWords), chunk i of the
+# `ew`-word element at word `base` with the words past it zero (LClip), or the
+# root of element i's own tree of depth `ed` over its `nce` chunks (LElems).
+type Leaf is Data:
+  LWords{}
+  LClip{base: Nat, ew: Nat}
+  LElems{ew: Nat, ed: Nat, nce: Nat}
+
+def pow2n(+d: Nat) -> Nat:
+  match d:
+    case 0n: 1n
+    case 1n+p: Nat.double(pow2n(p))
+
+def mt_leaf(h: B.Buf, pair: Array<U32> & D.Digest) -> B.Buf & (Array<U32> & D.Digest):
+  (ws, c) = pair
+  (h, (ws, c))
+
+def mt_join(+hl: Nat, dl: D.Digest, pair: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Array<U32> & D.Digest):
+  (h, r) = pair
+  (ws, dr) = r
+  (h, (ws, D.node(hl, dl, dr)))
+
+# One self-recursive definition per tree (a def may only call defs above it,
+# and a match may only scrutinize a parameter, in parameter order). Phase
+# m = 0 computes the tree of depth d at chunk s; the state's digest is ignored.
+# Phase m = 1 holds the LEFT sibling's root in the state and computes the
+# right subtree of depth d at s, then joins the two. Termination: the depth
+# shrinks for both children, and the phase shrinks from 1 to its predecessor
+# 0 at the same depth. `hl` is the byte length of a node's message, 64 - a
+# parameter rather than a literal so that laws about roots can hold it
+# abstract (proofs/obj/sha_node.bend).
+
+# The tree of one element: the chunks of the `ew`-word element at word `base`.
+def ctree(d: Nat, m: Nat, inside: Bool, +hl: Nat, +base: Nat, +ew: Nat, +w: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Array<U32> & D.Digest):
+  match d:
     case 0n:
-      (ws, d) = pair
-      (M.push_leaf(c, seg, d, h), ws)
-    case 1n+q:
-      (ws, d) = pair
-      push_chunks(q, (c + 1 : U32), seg, M.push_leaf(c, seg, d, h), chunk(ws, (c + 1 : U32)))
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (ws, dl) = r
+              (h, (ws, D.zconst(0n)))
+            case True{}:
+              (h, r) = st
+              (ws, dl) = r
+              mt_leaf(h, echunkn(ws, base, s, ew))
+        case 1n+q:
+          (h, r) = st
+          (ws, dl) = r
+          mt_join(hl, dl, ctree(0n, q, inside, hl, base, ew, w, s, n, (h, (ws, D.zero()))))
+    case 1n+ +p:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (ws, dl) = r
+              (h, (ws, D.zconst(1n+p)))
+            case True{}:
+              ctree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, base, ew, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+                ctree(p, 0n, True{}, hl, base, ew, Nat.div(w, 2n), s, n, st))
+        case 1n+q:
+          (h, r) = st
+          (ws, dl) = r
+          mt_join(hl, dl, ctree(1n+p, q, inside, hl, base, ew, w, s, n, (h, (ws, D.zero()))))
 
-def push_start(empty: Bool, +nc: U32, +seg: U32, h: B.Buf, ws: Array<U32>) -> B.Buf & Array<U32>:
-  match empty:
-    case True{}: (h, ws)
-    case False{}: push_chunks(U32.to_nat((nc - 1 : U32)), 0, seg, h, chunk(ws, 0))
+def leaf_at(+hl: Nat, lf: Leaf, h: B.Buf, ws: Array<U32>, +i: Nat) -> B.Buf & (Array<U32> & D.Digest):
+  match lf:
+    case LWords{}: mt_leaf(h, chunkn(ws, e8(i)))
+    case LClip{+base, +ew}: mt_leaf(h, echunkn(ws, base, i, ew))
+    case LElems{+ew, +ed, +nce}: ctree(ed, 0n, Nat.is_lt(0n, nce), hl, Nat.mul(i, ew), ew, pow2n(ed), 0n, nce, (h, (ws, D.zero())))
 
-def close_with(w: Words, pair: B.Buf & D.Digest) -> B.Buf & (Words & D.Digest):
-  (h, d) = pair
-  (h, (w, d))
+def mtree(d: Nat, m: Nat, inside: Bool, +hl: Nat, +lf: Leaf, +w: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Array<U32> & D.Digest):
+  match d:
+    case 0n:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (ws, dl) = r
+              (h, (ws, D.zconst(0n)))
+            case True{}:
+              (h, r) = st
+              (ws, dl) = r
+              leaf_at(hl, lf, h, ws, s)
+        case 1n+q:
+          (h, r) = st
+          (ws, dl) = r
+          mt_join(hl, dl, mtree(0n, q, inside, hl, lf, w, s, n, (h, (ws, D.zero()))))
+    case 1n+ +p:
+      match m:
+        case 0n:
+          match inside:
+            case False{}:
+              (h, r) = st
+              (ws, dl) = r
+              (h, (ws, D.zconst(1n+p)))
+            case True{}:
+              mtree(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, lf, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,
+                mtree(p, 0n, True{}, hl, lf, Nat.div(w, 2n), s, n, st))
+        case 1n+q:
+          (h, r) = st
+          (ws, dl) = r
+          mt_join(hl, dl, mtree(1n+p, q, inside, hl, lf, w, s, n, (h, (ws, D.zero()))))
+
+def mt_words(+n: U32, pair: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Words & D.Digest):
+  (h, r) = pair
+  (ws, d) = r
+  (h, (Words{ws, n}, d))
+
+# The chunks of n bytes, ceil(n / 32), in Nat arithmetic (no U32 overflow, and
+# the proofs reason about it with Nat division alone).
+def chunks_of(+n: U32) -> Nat: Nat.div(Nat.add(U32.to_nat(n), 31n), 32n)
 
 # Root of the packed bytes as `depth` levels of chunks (a vector or a list's
-# data tree; a list mixes its length in afterwards). Stack segment `seg`.
-
-def close_words(+depth: U32, +nc: U32, +seg: U32, +n: U32, pair: B.Buf & Array<U32>) -> B.Buf & (Words & D.Digest):
-  (h, ws) = pair
-  close_with(Words{ws, n}, M.close(depth, nc, seg, h))
-
-def words_root(h: B.Buf, w: Words, +depth: U32, +seg: U32) -> B.Buf & (Words & D.Digest):
+# data tree; a list mixes its length in afterwards).
+def words_root(+hl: Nat, h: B.Buf, w: Words, +depth: U32, +seg: U32) -> B.Buf & (Words & D.Digest):
   match w:
     case Words{ws, +n}:
-      close_words(depth, U32.shrn((n + 31 : U32), 5n), seg, n,
-        push_start(U32.is_eq(n, 0), U32.shrn((n + 31 : U32), 5n), seg, h, ws))
+      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, chunks_of(n)), hl, LWords{}, pow2n(U32.to_nat(depth)), 0n,
+        chunks_of(n), (h, (ws, D.zero()))))
 
 # ---- progressive merkleization -------------------------------------------
-# The progressive forms (progressive lists, progressive bit lists and the slot
-# tree of a progressive container) have no limit: their chunks go into
-# 4^k-chunk segments that are folded right to left. `M.push_any`/`M.close_any`
-# select that shape from the marker depth `M.prog_depth()` (255); the binary
-# helpers above stay on their own code path so the fixed-limit Fulu types are
-# untouched.
+# merkleize_progressive (spec/progressive.bend): the zero chunk for no chunks,
+# otherwise H(P(rest), T) where T is the tree of depth `dep` over the first
+# 2^dep chunks and P(rest) the same construction over the rest at depth
+# dep + 2. `f` bounds the recursion; each nonempty step consumes a chunk, so
+# the number of chunks plus one is enough.
+def pt_right(+hl: Nat, +lf: Leaf, +dep: Nat, +s: Nat, +n: Nat, pair: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Array<U32> & D.Digest):
+  (h, r) = pair
+  (ws, dl) = r
+  mt_join(hl, dl, mtree(dep, 0n, True{}, hl, lf, pow2n(dep), s, n, (h, (ws, D.zero()))))
 
-def push_chunks_p(+k: Nat, +c: U32, +seg: U32, h: B.Buf, pair: Array<U32> & D.Digest) -> B.Buf & Array<U32>:
-  match k:
+def ptree(f: Nat, inside: Bool, +hl: Nat, +lf: Leaf, +dep: Nat, +s: Nat, +n: Nat, st: B.Buf & (Array<U32> & D.Digest)) -> B.Buf & (Array<U32> & D.Digest):
+  match f:
     case 0n:
-      (ws, d) = pair
-      (M.push_prog(c, seg, d, h), ws)
-    case 1n+q:
-      (ws, d) = pair
-      push_chunks_p(q, (c + 1 : U32), seg, M.push_prog(c, seg, d, h), chunk(ws, (c + 1 : U32)))
+      (h, r) = st
+      (ws, dl) = r
+      (h, (ws, D.zero()))
+    case 1n+g:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (ws, dl) = r
+          (h, (ws, D.zero()))
+        case True{}:
+          pt_right(hl, lf, dep, s, n,
+            ptree(g, Nat.is_lt(Nat.add(s, pow2n(dep)), n), hl, lf, Nat.add(dep, 2n), Nat.add(s, pow2n(dep)), n, st))
 
-def push_start_p(empty: Bool, +nc: U32, +seg: U32, h: B.Buf, ws: Array<U32>) -> B.Buf & Array<U32>:
-  match empty:
-    case True{}: (h, ws)
-    case False{}: push_chunks_p(U32.to_nat((nc - 1 : U32)), 0, seg, h, chunk(ws, 0))
-
-def close_words_p(+nc: U32, +seg: U32, +n: U32, pair: B.Buf & Array<U32>) -> B.Buf & (Words & D.Digest):
-  (h, ws) = pair
-  close_with(Words{ws, n}, M.close_prog(nc, seg, h))
+def prog_root(+hl: Nat, +lf: Leaf, +n: Nat, h: B.Buf, ws: Array<U32>) -> B.Buf & (Array<U32> & D.Digest):
+  ptree(1n+n, Nat.is_lt(0n, n), hl, lf, 0n, 0n, n, (h, (ws, D.zero())))
 
 # Root of the packed bytes as a progressive chunk tree, without the length mix.
-def words_root_prog(h: B.Buf, w: Words, +seg: U32) -> B.Buf & (Words & D.Digest):
+def words_root_prog(+hl: Nat, h: B.Buf, w: Words, +seg: U32) -> B.Buf & (Words & D.Digest):
   match w:
-    case Words{ws, +n}:
-      close_words_p(U32.shrn((n + 31 : U32), 5n), seg, n,
-        push_start_p(U32.is_eq(n, 0), U32.shrn((n + 31 : U32), 5n), seg, h, ws))
+    case Words{ws, +n}: mt_words(n, prog_root(hl, LWords{}, chunks_of(n), h, ws))
 
 # ---- bit lists ------------------------------------------------------------
 # A Bitlist is held as its bits (Words.n = number of bits, bytes ceil(n/8)),
@@ -583,11 +991,11 @@ def put_bits(out: Array<U32>, +p: U32, b: Bits) -> Array<U32> & Bits:
   match b:
     case Bits{ws, +k}: bits_fin(k, w8_delim(p, k, put_words(out, p, Words{ws, bits_nbytes(k)})))
 
-def bits_rooted(+k: U32, pair: B.Buf & (Words & D.Digest)) -> B.Buf & (Bits & D.Digest):
+def bits_rooted(+hl: Nat, +k: U32, pair: B.Buf & (Words & D.Digest)) -> B.Buf & (Bits & D.Digest):
   (h, r) = pair
   (w, d) = r
   match w:
-    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(d, k)))
+    case Words{ws, +n}: (h, (Bits{ws, k}, mix_len(hl, d, k)))
 
 def pbn_of(out: Array<U32>, pair: Bits & U32) -> Array<U32> & (Bits & U32):
   (b, +n) = pair
@@ -600,14 +1008,14 @@ def pbn(pair: Array<U32> & Bits) -> Array<U32> & (Bits & U32):
 def put_bits_n(out: Array<U32>, +p: U32, b: Bits) -> Array<U32> & (Bits & U32):
   pbn(put_bits(out, p, b))
 
-def bits_root(h: B.Buf, b: Bits, +depth: U32, +seg: U32) -> B.Buf & (Bits & D.Digest):
+def bits_root(+hl: Nat, h: B.Buf, b: Bits, +depth: U32, +seg: U32) -> B.Buf & (Bits & D.Digest):
   match b:
-    case Bits{ws, +k}: bits_rooted(k, words_root(h, Words{ws, bits_nbytes(k)}, depth, seg))
+    case Bits{ws, +k}: bits_rooted(hl, k, words_root(hl, h, Words{ws, bits_nbytes(k)}, depth, seg))
 
 # A progressive bit list: the same bit chunks in a progressive tree.
-def bits_root_prog(h: B.Buf, b: Bits, +seg: U32) -> B.Buf & (Bits & D.Digest):
+def bits_root_prog(+hl: Nat, h: B.Buf, b: Bits, +seg: U32) -> B.Buf & (Bits & D.Digest):
   match b:
-    case Bits{ws, +k}: bits_rooted(k, words_root_prog(h, Words{ws, bits_nbytes(k)}, seg))
+    case Bits{ws, +k}: bits_rooted(hl, k, words_root_prog(hl, h, Words{ws, bits_nbytes(k)}, seg))
 
 
 # ---- scalar reads from a validated window -----------------------------------
@@ -650,130 +1058,34 @@ def u64_chunk(v: U64) -> D.Digest:
     case U64{+lo, +hi}: D.D{B.swap32(lo), B.swap32(hi), 0, 0, 0, 0, 0, 0}
 
 # The count mixed into a list root, for packed lists of `esize`-byte elements.
-def mix_count(+shift: Nat, pair: B.Buf & (Words & D.Digest)) -> B.Buf & (Words & D.Digest):
+def mix_count(+hl: Nat, +shift: Nat, pair: B.Buf & (Words & D.Digest)) -> B.Buf & (Words & D.Digest):
   (h, r) = pair
   (w, d) = r
   match w:
-    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(d, U32.shrn(n, shift))))
+    case Words{ws, +n}: (h, (Words{ws, n}, mix_len(hl, d, U32.shrn(n, shift))))
 
 # ---- per-element roots of a packed list of byte vectors ------------------------
 # Element i occupies words [i * ew, (i + 1) * ew). Its root is a tree of depth
 # `ed` over its chunks, built in stack segment seg + 1; words past the
 # element's end read as zero.
 
-def clip(+j: U32, +ew: U32, +w: U32) -> U32: pick(U32.is_lt(j, ew), w, 0)
 
-# Chunk c of an element: eight word reads, each clipped at the element end.
-def clip_pair(+j: U32, +ew: U32, pair: Array<U32> & U32) -> Array<U32> & U32:
-  (ws, +w) = pair
-  (ws, clip(j, ew, w))
-
-
-def rd_clip(ws: Array<U32>, +base: U32, +j: U32, +ew: U32) -> Array<U32> & U32:
-  clip_pair(j, ew, Array.get(U32, ws, (base + j : U32)))
-
-def eg7(+a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
-  (ws, +a7) = pair
-  (ws, D.D{B.swap32(a0), B.swap32(a1), B.swap32(a2), B.swap32(a3), B.swap32(a4), B.swap32(a5), B.swap32(a6), B.swap32(a7)})
-
-def eg6(+b: U32, +j: U32, +ew: U32, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
-  (ws, +a6) = pair
-  eg7(a0, a1, a2, a3, a4, a5, a6, rd_clip(ws, b, (j + 7 : U32), ew))
-
-def eg5(+b: U32, +j: U32, +ew: U32, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
-  (ws, +a5) = pair
-  eg6(b, j, ew, a0, a1, a2, a3, a4, a5, rd_clip(ws, b, (j + 6 : U32), ew))
-
-def eg4(+b: U32, +j: U32, +ew: U32, +a0: U32, +a1: U32, +a2: U32, +a3: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
-  (ws, +a4) = pair
-  eg5(b, j, ew, a0, a1, a2, a3, a4, rd_clip(ws, b, (j + 5 : U32), ew))
-
-def eg3(+b: U32, +j: U32, +ew: U32, +a0: U32, +a1: U32, +a2: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
-  (ws, +a3) = pair
-  eg4(b, j, ew, a0, a1, a2, a3, rd_clip(ws, b, (j + 4 : U32), ew))
-
-def eg2(+b: U32, +j: U32, +ew: U32, +a0: U32, +a1: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
-  (ws, +a2) = pair
-  eg3(b, j, ew, a0, a1, a2, rd_clip(ws, b, (j + 3 : U32), ew))
-
-def eg1(+b: U32, +j: U32, +ew: U32, +a0: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
-  (ws, +a1) = pair
-  eg2(b, j, ew, a0, a1, rd_clip(ws, b, (j + 2 : U32), ew))
-
-def eg0(+b: U32, +j: U32, +ew: U32, pair: Array<U32> & U32) -> Array<U32> & D.Digest:
-  (ws, +a0) = pair
-  eg1(b, j, ew, a0, rd_clip(ws, b, (j + 1 : U32), ew))
-
-def echunk(ws: Array<U32>, +base: U32, +c: U32, +ew: U32) -> Array<U32> & D.Digest:
-  eg0(base, (8 * c : U32), ew, rd_clip(ws, base, (8 * c : U32), ew))
-
-# Push the chunks of one element into segment `seg`, then close its tree.
-def epush(+k: Nat, +c: U32, +base: U32, +ew: U32, +seg: U32, h: B.Buf, pair: Array<U32> & D.Digest) -> B.Buf & Array<U32>:
-  match k:
-    case 0n:
-      (ws, d) = pair
-      (M.push_leaf(c, seg, d, h), ws)
-    case 1n+q:
-      (ws, d) = pair
-      epush(q, (c + 1 : U32), base, ew, seg, M.push_leaf(c, seg, d, h), echunk(ws, base, (c + 1 : U32), ew))
-
-def eclose(+ed: U32, +nc: U32, +seg: U32, pair: B.Buf & Array<U32>) -> Array<U32> & (B.Buf & D.Digest):
-  (h, ws) = pair
-  (ws, M.close(ed, nc, seg, h))
-
-def eroot(h: B.Buf, ws: Array<U32>, +base: U32, +ew: U32, +ed: U32, +seg: U32) -> Array<U32> & (B.Buf & D.Digest):
-  eclose(ed, U32.shrn((ew + 7 : U32), 3n), seg,
-    epush(U32.to_nat((U32.shrn((ew + 7 : U32), 3n) - 1 : U32)), 0, base, ew, seg, h, echunk(ws, base, 0, ew)))
-
-# Push each element's root as leaf i of segment `seg`.
-def elems_go(+k: Nat, +i: U32, +ew: U32, +ed: U32, +seg: U32, pair: Array<U32> & (B.Buf & D.Digest)) -> B.Buf & Array<U32>:
-  match k:
-    case 0n:
-      (ws, r) = pair
-      (h, d) = r
-      (M.push_leaf(i, seg, d, h), ws)
-    case 1n+q:
-      (ws, r) = pair
-      (h, d) = r
-      elems_go(q, (i + 1 : U32), ew, ed, seg, eroot(M.push_leaf(i, seg, d, h), ws, ((i + 1 : U32) * ew : U32), ew, ed, (seg + 64 : U32)))
-
-def elems_start(empty: Bool, +cnt: U32, +ew: U32, +ed: U32, +seg: U32, h: B.Buf, ws: Array<U32>) -> B.Buf & Array<U32>:
-  match empty:
-    case True{}: (h, ws)
-    case False{}: elems_go(U32.to_nat((cnt - 1 : U32)), 0, ew, ed, seg, eroot(h, ws, 0, ew, ed, (seg + 64 : U32)))
+# Root of a packed sequence of `ew`-word byte vectors: element trees of depth
+# `ed`, the sequence tree of depth `depth`.
+def elems_root(+hl: Nat, h: B.Buf, w: Words, +ew: U32, +ed: U32, +depth: U32, +seg: U32) -> B.Buf & (Words & D.Digest):
+  match w:
+    case Words{ws, +n}:
+      mt_words(n, mtree(U32.to_nat(depth), 0n, Nat.is_lt(0n, U32.to_nat(U32.div(n, (4 * ew : U32)))), hl,
+        LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
+        pow2n(U32.to_nat(depth)), 0n, U32.to_nat(U32.div(n, (4 * ew : U32))), (h, (ws, D.zero()))))
 
 # The same over a progressive tree (a progressive list of fixed-size byte
 # vectors); each element's own tree is still binary.
-def elems_go_p(+k: Nat, +i: U32, +ew: U32, +ed: U32, +seg: U32, pair: Array<U32> & (B.Buf & D.Digest)) -> B.Buf & Array<U32>:
-  match k:
-    case 0n:
-      (ws, r) = pair
-      (h, d) = r
-      (M.push_prog(i, seg, d, h), ws)
-    case 1n+q:
-      (ws, r) = pair
-      (h, d) = r
-      elems_go_p(q, (i + 1 : U32), ew, ed, seg, eroot(M.push_prog(i, seg, d, h), ws, ((i + 1 : U32) * ew : U32), ew, ed, (seg + 64 : U32)))
-
-def elems_start_p(empty: Bool, +cnt: U32, +ew: U32, +ed: U32, +seg: U32, h: B.Buf, ws: Array<U32>) -> B.Buf & Array<U32>:
-  match empty:
-    case True{}: (h, ws)
-    case False{}: elems_go_p(U32.to_nat((cnt - 1 : U32)), 0, ew, ed, seg, eroot(h, ws, 0, ew, ed, (seg + 64 : U32)))
-
-def elems_root_prog(h: B.Buf, w: Words, +ew: U32, +ed: U32, +seg: U32) -> B.Buf & (Words & D.Digest):
+def elems_root_prog(+hl: Nat, h: B.Buf, w: Words, +ew: U32, +ed: U32, +seg: U32) -> B.Buf & (Words & D.Digest):
   match w:
     case Words{ws, +n}:
-      close_words_p(U32.div(n, (4 * ew : U32)), seg, n,
-        elems_start_p(U32.is_eq(n, 0), U32.div(n, (4 * ew : U32)), ew, ed, seg, h, ws))
-
-# Root of a packed sequence of `ew`-word byte vectors: element trees of depth
-# `ed` in the next stack segment (segments are 64 slots apart), the sequence
-# tree of depth `depth` in `seg`.
-def elems_root(h: B.Buf, w: Words, +ew: U32, +ed: U32, +depth: U32, +seg: U32) -> B.Buf & (Words & D.Digest):
-  match w:
-    case Words{ws, +n}:
-      close_words(depth, U32.div(n, (4 * ew : U32)), seg, n,
-        elems_start(U32.is_eq(n, 0), U32.div(n, (4 * ew : U32)), ew, ed, seg, h, ws))
+      mt_words(n, prog_root(hl, LElems{U32.to_nat(ew), U32.to_nat(ed), U32.to_nat(U32.shrn((ew + 7 : U32), 3n))},
+        U32.to_nat(U32.div(n, (4 * ew : U32))), h, ws))
 
 # ---- boxed fields ------------------------------------------------------------
 # The native backend lays every non-recursive record out inline, and no
@@ -918,13 +1230,13 @@ def gfin(+n: U32, pair: Array<U32> & Array<U32>) -> Words:
   (out, ws) = pair
   Words{out, n}
 
-def grow_to(+n: U32, +nw: U32, +depth: Nat, ws: Array<U32>) -> Words:
-  gfin(n, gcopy(U32.to_nat(nw), 0, Array.new(U32, depth, 0), Array.get(U32, ws, 0)))
+def grow_to(+n: U32, +nw: U32, +want: U32, ws: Array<U32>) -> Words:
+  gfin(n, gcopy(U32.to_nat(nw), 0, zeros_for(want), Array.get(U32, ws, 0)))
 
 def fit_pick(roomy: Bool, +n: U32, +want: U32, +cap: U32, ws: Array<U32>) -> Words:
   match roomy:
     case True{}: Words{ws, n}
-    case False{}: grow_to(n, U32.shrn((n + 3 : U32), 2n), depth_for(want), ws)
+    case False{}: grow_to(n, U32.shrn((n + 3 : U32), 2n), want, ws)
 
 def fit_sized(+n: U32, +want: U32, pair: Array<U32> & U32) -> Words:
   (ws, +cap) = pair
@@ -1022,7 +1334,7 @@ def sl_fin(+n: U32, pair: Words & Array<U32>) -> Words & Words:
 
 def words_slice(o: Words, +p: U32, +n: U32) -> Words & Words:
   sl_fin(n, sl_go(U32.to_nat((U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(p, 2n),
-    Array.new(U32, depth_for(n), 0), words_word(o, U32.shrn(p, 2n))))
+    zeros_for(n), words_word(o, U32.shrn(p, 2n))))
 
 def bl_go(+k: Nat, +j: U32, +base: U32, o: Words, pair: Array<U32> & U32) -> Words & Array<U32>:
   match k:
@@ -1045,3 +1357,243 @@ def words_blit(o: Words, +p: U32, src: Words) -> Words & Words:
 def u64_lo_of(v: U64) -> U32:
   match v:
     case U64{+lo, hi}: lo
+
+# ---- the structural value dump (test oracle adapter, not codec) -----------
+# `{T}_dump(o, t)` prepends a byte description of the decoded object to the
+# list t: every leaf's value in its typed field, in field order, with a 4-byte
+# count before each list. It is read back by tools/spectests.py, which
+# compares the value it describes with the official value.yaml. It is not an
+# SSZ encoding (no offsets), it runs only in the conformance programs, and it
+# consumes the object. A byte list is fine here: nothing measured uses it.
+
+def dump_le(+x: U32, +k: U32, t: +List<U32>) -> +List<U32>:
+  match k:
+    case 1: (x .&. 255 : U32) <> t
+    case 2: (x .&. 255 : U32) <> ((U32.shrn(x, 8n) .&. 255 : U32) <> t)
+    case 3: (x .&. 255 : U32) <> ((U32.shrn(x, 8n) .&. 255 : U32) <> ((U32.shrn(x, 16n) .&. 255 : U32) <> t))
+    case _: (x .&. 255 : U32) <> ((U32.shrn(x, 8n) .&. 255 : U32) <> ((U32.shrn(x, 16n) .&. 255 : U32) <> (U32.shrn(x, 24n) <> t)))
+
+def dump_bool(b: Bool, t: +List<U32>) -> +List<U32>: pick(b, 1, 0) <> t
+
+def dump_u64(o: U64, t: +List<U32>) -> +List<U32>:
+  match o:
+    case U64{+lo, +hi}: dump_le(lo, 4, dump_le(hi, 4, t))
+
+def dw_byte(+i: U32, t: +List<U32>, pair: Array<U32> & U32) -> Array<U32> & +List<U32>:
+  (ws, +w) = pair
+  (ws, B.byte_sel((i .&. 3 : U32), w) <> t)
+
+def dw_step(+i: U32, st: Array<U32> & +List<U32>) -> Array<U32> & +List<U32>:
+  (ws, t) = st
+  dw_byte(i, t, Array.get(U32, ws, U32.shrn(i, 2n)))
+
+# bytes j-1, j-2, ..., 0 of the packed words, prepended in that order
+def dw_go(+k: Nat, +j: U32, st: Array<U32> & +List<U32>) -> Array<U32> & +List<U32>:
+  match k:
+    case 0n: st
+    case 1n+q: dw_go(q, (j - 1 : U32), dw_step((j - 1 : U32), st))
+
+def dw_fin(st: Array<U32> & +List<U32>) -> +List<U32>:
+  (ws, t) = st
+  t
+
+# the first `n` bytes of packed storage
+def dump_bytes(ws: Array<U32>, +n: U32, t: +List<U32>) -> +List<U32>:
+  dw_fin(dw_go(U32.to_nat(n), n, (ws, t)))
+
+def dump_words(w: Words, t: +List<U32>) -> +List<U32>:
+  match w:
+    case Words{ws, +n}: dump_bytes(ws, n, t)
+
+# a byte list: its length, then its bytes
+def dump_words_n(w: Words, t: +List<U32>) -> +List<U32>:
+  match w:
+    case Words{ws, +n}: dump_le(n, 4, dump_bytes(ws, n, t))
+
+# a bit list: its bit count, then ceil(count / 8) bytes of bits (no delimiter)
+def dump_bits_n(b: Bits, t: +List<U32>) -> +List<U32>:
+  match b:
+    case Bits{ws, +k}: dump_le(k, 4, dump_bytes(ws, U32.shrn((k + 7 : U32), 3n), t))
+
+# ---- validity of representable objects ------------------------------------
+# The record constructors of the generated types are ordinary Bend data, so
+# a caller can build a value no decoder or checked setter would produce: a
+# length over its limit, storage too small for its length, bytes set past its
+# length (which the word-at-a-time encoder would OR into the next field), a
+# packed boolean above 1. `{p}_valid` (generated) decides validity from these
+# checks, and the public `{Name}_serialize` refuses an invalid value instead
+# of truncating, wrapping or merging it. Every check is O(1) per packed
+# collection except the boolean scan, which is O(words).
+
+# Bytes r..3 of x are zero (r = n mod 4; r = 0 means the word is not a tail).
+def tail_zero(+r: U32, +x: U32) -> Bool:
+  match r:
+    case 0: True{}
+    case 1: U32.is_eq(U32.shrn(x, 8n), 0)
+    case 2: U32.is_eq(U32.shrn(x, 16n), 0)
+    case _: U32.is_eq(U32.shrn(x, 24n), 0)
+
+# Bits r..31 of x are zero, r = 0..31.
+def bits_above_zero(+r: U32, +x: U32) -> Bool:
+  match r:
+    case 0: U32.is_eq((x .&. 4294967295 : U32), 0)
+    case 1: U32.is_eq((x .&. 4294967294 : U32), 0)
+    case 2: U32.is_eq((x .&. 4294967292 : U32), 0)
+    case 3: U32.is_eq((x .&. 4294967288 : U32), 0)
+    case 4: U32.is_eq((x .&. 4294967280 : U32), 0)
+    case 5: U32.is_eq((x .&. 4294967264 : U32), 0)
+    case 6: U32.is_eq((x .&. 4294967232 : U32), 0)
+    case 7: U32.is_eq((x .&. 4294967168 : U32), 0)
+    case 8: U32.is_eq((x .&. 4294967040 : U32), 0)
+    case 9: U32.is_eq((x .&. 4294966784 : U32), 0)
+    case 10: U32.is_eq((x .&. 4294966272 : U32), 0)
+    case 11: U32.is_eq((x .&. 4294965248 : U32), 0)
+    case 12: U32.is_eq((x .&. 4294963200 : U32), 0)
+    case 13: U32.is_eq((x .&. 4294959104 : U32), 0)
+    case 14: U32.is_eq((x .&. 4294950912 : U32), 0)
+    case 15: U32.is_eq((x .&. 4294934528 : U32), 0)
+    case 16: U32.is_eq((x .&. 4294901760 : U32), 0)
+    case 17: U32.is_eq((x .&. 4294836224 : U32), 0)
+    case 18: U32.is_eq((x .&. 4294705152 : U32), 0)
+    case 19: U32.is_eq((x .&. 4294443008 : U32), 0)
+    case 20: U32.is_eq((x .&. 4293918720 : U32), 0)
+    case 21: U32.is_eq((x .&. 4292870144 : U32), 0)
+    case 22: U32.is_eq((x .&. 4290772992 : U32), 0)
+    case 23: U32.is_eq((x .&. 4286578688 : U32), 0)
+    case 24: U32.is_eq((x .&. 4278190080 : U32), 0)
+    case 25: U32.is_eq((x .&. 4261412864 : U32), 0)
+    case 26: U32.is_eq((x .&. 4227858432 : U32), 0)
+    case 27: U32.is_eq((x .&. 4160749568 : U32), 0)
+    case 28: U32.is_eq((x .&. 4026531840 : U32), 0)
+    case 29: U32.is_eq((x .&. 3758096384 : U32), 0)
+    case 30: U32.is_eq((x .&. 3221225472 : U32), 0)
+    case _: U32.is_eq((x .&. 2147483648 : U32), 0)
+
+def wk_last(ok: Bool, +n: U32, pair: Array<U32> & U32) -> Words & Bool:
+  (ws, +x) = pair
+  (Words{ws, n}, Bool.and(ok, tail_zero((n .&. 3 : U32), x)))
+def wk_cap(ok: Bool, +n: U32, pair: Array<U32> & U32) -> Words & Bool:
+  (ws, +c) = pair
+  wk_last(Bool.and(ok, U32.is_le(U32.shrn((n + 3 : U32), 2n), c)), n, Array.get(U32, ws, U32.shrn(n, 2n)))
+
+# n is a multiple of the element size (no division for the common sizes).
+def unit_ok(+unit: U32, +n: U32) -> Bool:
+  match unit:
+    case 1: True{}
+    case 2: U32.is_eq((n .&. 1 : U32), 0)
+    case 4: U32.is_eq((n .&. 3 : U32), 0)
+    case 8: U32.is_eq((n .&. 7 : U32), 0)
+    case 32: U32.is_eq((n .&. 31 : U32), 0)
+    case _: U32.is_eq(U32.mod(n, unit), 0)
+
+# A packed byte collection: lo <= n <= hi (no upper check when `big`), n a
+# multiple of the element size, storage for its ceil(n/4) words, and the bytes
+# of its last word past n zero (the encoder stores that word whole).
+def words_ok(o: Words, +lo: U32, +hi: U32, big: Bool, +unit: U32) -> Words & Bool:
+  match o:
+    case Words{ws, +n}:
+      wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), unit_ok(unit, n)), n, Array.size(U32, ws))
+
+
+
+# Every byte of the first k words is 0 or 1 (a packed boolean collection).
+def bo_go(+k: Nat, +i: U32, acc: Bool, pair: Array<U32> & U32) -> Array<U32> & Bool:
+  match k pair:
+    case 0n Tuple{ws, x}: (ws, acc)
+    case 1n+q Tuple{ws, +x}:
+      bo_go(q, (i + 1 : U32), Bool.and(acc, U32.is_eq((x .&. 4278124286 : U32), 0)), Array.get(U32, ws, (i + 1 : U32)))
+def bools_fin(+n: U32, ok: Bool, pair: Array<U32> & Bool) -> Words & Bool:
+  (ws, b) = pair
+  (Words{ws, n}, Bool.and(ok, b))
+def bools_ok(pair: Words & Bool) -> Words & Bool:
+  (o, ok) = pair
+  match o:
+    case Words{ws, +n}: bools_fin(n, ok, bo_go(U32.to_nat(U32.shrn((n + 3 : U32), 2n)), 0, True{}, Array.get(U32, ws, 0)))
+
+# A bit list: nbits <= limit (none when `big`), storage through the word that
+# holds bit nbits, and every bit from nbits up to the end of that word zero
+# (the delimiter is ORed in at bit nbits).
+def bk_last(ok: Bool, +k: U32, pair: Array<U32> & U32) -> Bits & Bool:
+  (ws, +x) = pair
+  (Bits{ws, k}, Bool.and(ok, bits_above_zero((k .&. 31 : U32), x)))
+def bk_cap(ok: Bool, +k: U32, pair: Array<U32> & U32) -> Bits & Bool:
+  (ws, +c) = pair
+  bk_last(Bool.and(ok, U32.is_le((U32.shrn(k, 5n) + 1 : U32), c)), k, Array.get(U32, ws, U32.shrn(k, 5n)))
+# A bit vector of k bits held as packed words: its bits from k up to the end of
+# word k >> 5 are zero.
+def bv_fin(+n: U32, ok: Bool, +k: U32, pair: Array<U32> & U32) -> Words & Bool:
+  (ws, +x) = pair
+  (Words{ws, n}, Bool.and(ok, bits_above_zero((k .&. 31 : U32), x)))
+
+def bitvec_tail(+k: U32, pair: Words & Bool) -> Words & Bool:
+  (o, ok) = pair
+  match o:
+    case Words{ws, +n}: bv_fin(n, ok, k, Array.get(U32, ws, U32.shrn(k, 5n)))
+
+# ---- the fused check of the encode path --------------------------------------
+# The literal-depth encoders (every name whose output depth is a constant)
+# check validity while they write: each writer reports a count or flag with
+# bit 31 set when the value it wrote was invalid, and the running cursors keep
+# it set (`padd`), so the final length says whether the whole value was valid.
+# A valid encoding is shorter than 2^31 bytes there by construction.
+def poison() -> U32: 2147483648
+
+def pz(ok: Bool) -> U32:
+  match ok:
+    case True{}: 0
+    case False{}: 2147483648
+
+# Add two counts, keeping bit 31 if either had it.
+def padd(+a: U32, +b: U32) -> U32: ((a + b : U32) .|. ((a .|. b : U32) .&. 2147483648 : U32) : U32)
+
+def is_poisoned(+m: U32) -> Bool: U32.is_le(2147483648, m)
+
+def bits_ok(o: Bits, +limit: U32, big: Bool) -> Bits & Bool:
+  match o:
+    case Bits{ws, +k}: bk_cap(Bool.or(big, U32.is_le(k, limit)), k, Array.size(U32, ws))
+
+# The result of the public checked encoder: `ok` and the fresh bytes, or ok =
+# False with no bytes for a refused (invalid) value. A single-constructor
+# record rather than `Maybe`: it is passed inline like the buffer itself, where
+# a boxed `Some{buf}` measured about 100 ns more per small-object encode.
+type Encoded is Type:
+  Encoded{ok: Bool, bytes: B.Buf}
+
+def encoded(b: B.Buf) -> Encoded: Encoded{True{}, b}
+
+def refused() -> Encoded: Encoded{False{}, B.empty()}
+
+# The bytes a program writes for a serialize result: a refused value writes
+# nothing, so any output check against the expected encoding fails.
+def ser_out(e: Encoded) -> B.Buf:
+  match e:
+    case Encoded{ok, b}: b
+
+# The serialize result from a checked writer's final length or flag.
+def ser_done(bad: Bool, +m: U32, out: Array<U32>) -> Encoded:
+  match bad:
+    case True{}: refused()
+    case False{}: Encoded{True{}, B.Buf{out, m}}
+
+# The size of a packed collection for the size pass: bit 31 when its storage
+# cannot hold its length (so nothing that large is ever allocated for it).
+def wsz_pick(+n: U32, pair: Array<U32> & U32) -> Words & U32:
+  (ws, +c) = pair
+  (Words{ws, n}, pick(U32.is_le(U32.shrn((n + 3 : U32), 2n), c), n, 2147483648))
+
+def words_sizek(o: Words) -> Words & U32:
+  match o:
+    case Words{ws, +n}: wsz_pick(n, Array.size(U32, ws))
+
+def bsz_pick(+k: U32, pair: Array<U32> & U32) -> Bits & U32:
+  (ws, +c) = pair
+  (Bits{ws, k}, pick(U32.is_le((U32.shrn(k, 5n) + 1 : U32), c), (U32.shrn(k, 3n) + 1 : U32), 2147483648))
+
+def bits_sizek(o: Bits) -> Bits & U32:
+  match o:
+    case Bits{ws, +k}: bsz_pick(k, Array.size(U32, ws))
+
+def pick_str(ok: Bool) -> String:
+  match ok:
+    case True{}: "1"
+    case False{}: "0"

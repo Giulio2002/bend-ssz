@@ -121,16 +121,16 @@ def bl32_append_rejected(ws: Array<U32>, +n: U32, +m: U32, +v: U32)
   {==}
 
 # ---- l1048576_bl1073741824 ----
-def l1048576_bl1073741824_write_rejected(arr: Array<O.Words>, +n: U32, +i: U32, v: O.Words)
+def l1048576_bl1073741824_write_rejected(arr: Array<O.Boxed<O.Words>>, +n: U32, +i: U32, v: O.Words)
     -> {T.l1048576_bl1073741824_put_in(False{}, arr, n, i, v) == (T.l1048576_bl1073741824_Seq{arr, n}, False{}) : T.l1048576_bl1073741824_Seq & Bool}:
   {==}
-def l1048576_bl1073741824_write_keeps_length(arr: Array<O.Words>, +n: U32, +i: U32, v: O.Words)
+def l1048576_bl1073741824_write_keeps_length(arr: Array<O.Boxed<O.Words>>, +n: U32, +i: U32, v: O.Words)
     -> {T.l1048576_bl1073741824_len(Pair.fst(T.l1048576_bl1073741824_Seq, Bool, T.l1048576_bl1073741824_put_in(True{}, arr, n, i, v))) == (Pair.fst(T.l1048576_bl1073741824_Seq, Bool, T.l1048576_bl1073741824_put_in(True{}, arr, n, i, v)), n) : T.l1048576_bl1073741824_Seq & U32}:
   {==}
-def l1048576_bl1073741824_append_rejected(arr: Array<O.Words>, +n: U32, v: O.Words)
+def l1048576_bl1073741824_append_rejected(arr: Array<O.Boxed<O.Words>>, +n: U32, v: O.Words)
     -> {T.l1048576_bl1073741824_app_in(False{}, arr, n, v) == (T.l1048576_bl1073741824_Seq{arr, n}, False{}) : T.l1048576_bl1073741824_Seq & Bool}:
   {==}
-def l1048576_bl1073741824_append_length(arr: Array<O.Words>, +n: U32, v: O.Words)
+def l1048576_bl1073741824_append_length(arr: Array<O.Boxed<O.Words>>, +n: U32, v: O.Words)
     -> {T.l1048576_bl1073741824_len(Pair.fst(T.l1048576_bl1073741824_Seq, Bool, T.l1048576_bl1073741824_app_in(True{}, arr, n, v))) == (Pair.fst(T.l1048576_bl1073741824_Seq, Bool, T.l1048576_bl1073741824_app_in(True{}, arr, n, v)), (n + 1 : U32)) : T.l1048576_bl1073741824_Seq & U32}:
   {==}
 

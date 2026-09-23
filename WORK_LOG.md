@@ -5253,3 +5253,773 @@ shift and a mask, and reading it back is the word identity
 `(x >> 8s) | (x << (32 - 8s)) == x`, which is not a definitional equality and
 needs the bit lemmas; variable-size shapes need the offset development. Neither
 is claimed here, and `docs/LAW_API_MAP.md` says so.
+
+### Evidence on the final source of this iteration (2026-09-22)
+
+Everything below was run after the last source edit, one checker or compiler at
+a time, on an otherwise idle machine. Raw logs are under `build/logs/` and the
+archived copies under `benchmarks/evidence/`.
+
+| gate / check | result |
+| --- | --- |
+| `automation/performance_gate.py` | **exit 1**: 978 workloads, 327/327 required operations covered, **15 rows over limit**, all of them `serialize` on the five nested-container types (BeaconBlock 5.8-7.2x, SignedBeaconBlock 5.1-7.3x, BeaconBlockBody 5.4-5.9x, LightClientFinalityUpdate 6.1-6.2x, ExecutionPayloadHeader 5.1-5.3x). Every other row, including all deserialize and all hash_tree_root, is within limit |
+| `automation/native_memory_acceptance.py` | **exit 0**: 15/15 Bend samples verified, worst decode overhead **5,718,016 bytes** of 32,000,000; Go worst 3,686,400 over its own 15 samples |
+| runtime tests | 51/51 passed, 20,009 assertions, 15/15 files |
+| official SSZ cases | 5,440 passed, 0 failed, 5,440 inventoried |
+| object conformance (native, typed path) | 295 cases over 59 types, all pass |
+| generic conformance (native) | 5,145 cases over the supported generic forms, 0 failures |
+| object mutations | 0 disagreements |
+| object cache | 7 fixtures, all cached roots equal the oracle |
+| negative API | 7 cases behave as required |
+| mutation regressions | 8 cases pass |
+| differential fuzz, named | 872 valid + 8,720 mutated + 768 history cases over 109 types, **0 mismatches** |
+| differential fuzz, generic | 5,393 cases over 136 schemas, **0 mismatches** |
+| proofs `proofs/compact/*`, `proofs/obj/*` | 39/39 PASS, 0 FAIL, no unsafe, none killed (peak 1.2 GB) |
+| `END_TO_END.bend` | PASS, all terms check, 6.11 GB, 277.8 s |
+| `ROOT_DOMAIN.bend` | PASS, 5.18 GB, 149.1 s |
+| `HASH_PROOF.bend` | PASS, 1.46 GB, 19.4 s |
+| `PROOF.bend` | PASS, 5.80 GB, 213.7 s |
+
+`END_TO_END.bend` at 6.11 GB is the closest to the operator's 7 GB stop; it was
+checked alone, and the note above about the checker's collector under load
+applies to it as much as to `PROOF.bend`.
+
+### What is not done
+
+* **Performance**: 15 serialize rows remain over the 5x limit. The cause is
+  measured (the per-word cost of the packed-byte copy, about 1.14 ns/word in
+  both directions, against Go's `memcpy`), the three routes out are examined
+  above, and the one that could work - a coarser element type so that one array
+  interaction moves a whole 32-byte chunk - has not been attempted.
+* **Universal codec-correctness laws**: delivered for the aligned fixed class
+  only (67 of 109 names, 5 of 144 generic schemas; 292 laws). The sub-word and
+  variable-size shapes, the root equality against `spec/*.bend`, and the
+  schema-correspondence relation are not done.
+* **Law/API migration**: every row of `docs/LAW_API_MAP.md` §2-4 is still
+  `planned`; `END_TO_END.bend` still imports `src/model.bend` and
+  `tools/spectests.py` still runs the 5,440 cases through it. The design and
+  its two obstacles are recorded there and are unchanged.
+
+## Iteration 17, part 6: the serialize gap, measured to the floor
+
+The orchestrator's hypothesis was that the fifteen failing `serialize` rows -
+exactly the types whose variable fields are themselves containers - copy each
+byte once per nesting level, and that destination-passing encode would fix it.
+Both halves were tested.
+
+### Destination-passing encode is already what the generator emits
+
+`types/fulu_obj.bend:18069` is the whole answer:
+
+```
+def BeaconBlock_putn(out: Array<U32>, +pos: U32, o: BeaconBlock) -> Array<U32> & (BeaconBlock & U32):
+  match o:
+    case BeaconBlock{...}: BeaconBlock_pw0(pos, ..., BeaconBlockBody_bx_putn(out, (pos + 84 : U32), body))
+```
+
+The child is handed the parent's own `out` and a position inside it. No child
+allocates a buffer, and nothing is copied a second time. The same shape holds
+for sequence elements (`{E}_putn(O.w32(out, ...), (pos + cur : U32), v)`).
+
+The controlled experiment is stronger than reading the code. A `BeaconBlock`
+fixture is 84 bytes of header followed by exactly the serialized bytes of its
+body, so the body can be encoded on its own from `data[84:]`
+(`benchmarks/probes/enc_parts.bend`, SSZ_OPS = 65536, min of three):
+
+| operation | bytes | ns |
+| --- | ---: | ---: |
+| `BeaconBlock_encode` on the whole fixture | 11,198 | 4,974 |
+| `BeaconBlockBody_encode` on the same body | 11,114 | 5,035 |
+| `BeaconBlock_putn` | | 3,769 |
+| `BeaconBlockBody_putn` | | 3,738 |
+
+One nesting level costs **nothing measurable**. The hypothesis is disproved;
+the per-depth copy count is one, at every depth.
+
+### What the encode actually costs
+
+Same probe, on the gate's own fixtures:
+
+| type / fixture | bytes | `_size` | `out_new` | `putn` | encode |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| BeaconBlockBody small | 11,894 | 458 | 992 | 2,670 | 4,166 |
+| BeaconBlockBody large | 24,042 | 488 | 1,709 | 5,127 | 7,568 |
+| BeaconBlock small | 11,198 | 244 | 977 | 3,769 | 4,974 |
+
+`_size` is 4-11%, the allocation 20-24%, the write 62-76%.
+
+### The floor of the runtime, measured
+
+`benchmarks/probes/copy_floor.bend` times the primitives that any encoder in
+this runtime must use, each consuming a word of its result so nothing can be
+left unevaluated (n = 4096 words, 25,600 iterations):
+
+| | ns | ns/word | net of the allocation |
+| --- | ---: | ---: | ---: |
+| `Array.new` + drop (the zero fill) | 1,016 | 0.248 | - |
+| a bare `Array.set` loop | 1,484 | 0.362 | 0.114 |
+| load/store with one index | 3,945 | 0.963 | 0.715 |
+| load/store with two indices (an offset copy) | 4,922 | 1.202 | **0.954** |
+| `O.put_words` (what the encoder calls) | 5,000 | 1.221 | **0.973** |
+| `Array.clone` | 3,945 | 0.963 | 0.715 |
+
+`O.put_words` is **2% above** the two-index load/store floor. There is no bulk
+copy hiding in Base: `Array.clone` costs the same as copying word by word.
+
+The allocation is proportional to the *capacity*, which is the next power of
+two, and it is eager:
+
+| words asked for | capacity | ns |
+| ---: | ---: | ---: |
+| 4,095 | 4,096 | 938 |
+| 4,096 | 4,096 | 977 |
+| 4,097 | 8,192 | 1,914 |
+
+So an encode of 4,097 words pays for 8,192. That waste is structural:
+`Array.new(T, d, v)` takes a depth, and `Array.get`/`Array.set` index a perfect
+binary tree, so a non-power-of-two array cannot be addressed correctly.
+
+### A wider element is slower, not faster
+
+The one remaining way to move more than four bytes per array interaction is a
+wider element type. Measured (`benchmarks/probes/chunk_copy.bend`, 4096 words):
+
+| | ns/word |
+| --- | ---: |
+| `Array<U32>`, word copy | 0.715 |
+| `Array<C8>` (a record of eight words), chunk-aligned copy | 1.001 |
+| `Array<C8>`, chunk opened, shifted and rebuilt | 0.906 |
+
+A record element is a boxed node: the array holds pointers, every element is
+allocated, and the copy gets **40% slower**. Base has no wider unboxed word
+(`U32` is the only one). The 32-byte chunk element type is therefore ruled out
+by measurement, not by argument.
+
+Field duplication was also tested and acquitted: writing a 32-byte record while
+keeping a duplicate of it, threading it linearly, and writing it without
+keeping it all cost 2.73 ns per record (`benchmarks/probes/dup_cost.bend`).
+
+### Where that leaves each failing row
+
+Burst-mode measurement of both sides on the same fixture, same machine state
+(`floor` = capacity x 0.229 + words x 0.954, i.e. allocate and copy every byte
+once, with no SSZ structure at all):
+
+| row | bytes | bend | Go | ratio | allocation | floor | floor / Go |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| BeaconBlock.small | 11,198 | 5,114 | 676 | 7.56 | 938 | 3,609 | **5.33** |
+| BeaconBlockBody.small | 11,894 | 4,163 | 711 | 5.86 | 938 | 3,775 | **5.31** |
+| SignedBeaconBlock.medium | 18,718 | 7,862 | 1,073 | 7.33 | 1,876 | 6,341 | **5.91** |
+| LightClientFinalityUpdate.small | 2,066 | 1,019 | 152 | 6.70 | 234 | 728 | 4.79 |
+| ExecutionPayloadHeader.small | 590 | 330 | 60 | 5.49 | 59 | 200 | 3.32 |
+
+For the three block types the floor is *already over 5x*: a hypothetical
+encoder that did nothing but allocate the output and copy every byte once,
+with no fields, offsets or structure, would still miss the limit. For the two
+smaller types there is real headroom (1.4x and 1.65x above their floor), and
+that headroom is per-field work, not copying.
+
+The gate's absolute numbers are about 1.8x these: a three-hour run holds the
+machine at sustained clocks, where Go's `BeaconBlockBody.serialize` small is
+1,334 ns against 711 ns here. Both sides scale together, so the *ratios* are
+the same in both conditions (5.48x in the gate, 5.86x here).
+
+### Conclusion, and what was not done
+
+The serialize path is within 1.2-1.6x of the floor its primitives allow, and
+for the block types the floor itself exceeds the 5x limit. Closing those rows
+needs a faster array primitive - an uninitialised or exactly-sized allocation,
+or a block copy - and pinned Base has neither. This is reported rather than
+worked around: no benchmark-only path, no reference penalty, no threshold edit.
+
+Thirteen more rows sit between 4.0x and 4.97x (`LightClientHeader.serialize`
+4.86-4.97x, `LightClientOptimisticUpdate.serialize` 4.69-4.97x), so the same
+floor puts a further cluster within noise of the limit.
+
+## Iteration 17, part 7: how far the codec laws reach, and why they stop there
+
+`codegen/laws.py` now covers **70 of the 109 Fulu names and 7 of the 144
+generic schemas**, with four laws each (encoded size, round trip, reject one
+byte short, reject one byte long): 316 checked propositions in
+`proofs/obj/codec_0..5.bend` and `proofs/obj/gcodec_0.bend`. The wide uints
+(`uint256`, `NodeID`) and containers holding them (`PowBlock`) were added this
+round by teaching the value builder the `uwide` shape.
+
+The generator also now deletes a law file it no longer emits, and `--check`
+fails on one that is left behind, so a chunk from an earlier run cannot sit in
+`proofs/obj/` being checked as coverage that is no longer generated.
+
+### The boundary is the kernel, and it is two lines to demonstrate
+
+The class is exactly the shapes whose codec equation holds *by computation*.
+Two facts decide it, both reproducible in four lines:
+
+```
+def idem(+x: U32) -> {((x .&. 255 : U32) .&. 255 : U32) == (x .&. 255 : U32) : U32}: {==}
+  expected : U32.and(U32.and(x, 255), 255)
+  observed : U32.and(x, 255)
+```
+
+The kernel does no symbolic algebra on native `U32`: it computes on literals
+and stops. So any law that needs `(x >> 8s) | (x << (32 - 8s)) == x` - which is
+what reading back a sub-word write is - cannot be discharged, and pinned Base
+has no U32 bit lemmas to appeal to. (`proofs/compact/bits.bend` and the
+`proofs/word_*` development are about the *specification's* bit-list `U32`, a
+different type from the runtime's native word; they do not transfer.)
+
+```
+def get_set(a: Array<U32>, +i: U32, +v: U32)
+    -> {Array.get(U32, Array.set(U32, a, i, v), i) == (Array.set(U32, a, i, v), v) : Array<U32> & U32}: {==}
+  expected : Array.get.at(U32, i, Array.size(U32, Array.set.fin(U32, Array.swap.at(U32, i, v, Array.size(U32, a)))))
+  observed : (Array.set.fin(...), v)
+```
+
+There is no read-after-write law for `Array` either: on a symbolic array
+`Array.size` is stuck, so nothing reduces. Every universal statement about
+array-backed storage needs that lemma, and it is not derivable in the kernel
+without induction over a symbolic tree.
+
+This is why the provable class is what it is: for an aligned fixed shape the
+encoder builds the array with `Array.new` at a literal depth and writes literal
+indices, and the decoder reads literal indices, so both sides reduce with the
+payload words only *moved*, never masked, shifted or indexed symbolically. The
+39 uncovered names divide as:
+
+| why | names |
+| ---: | --- |
+| 20 | variable size: needs the offset development, which needs the array lemma |
+| 14 | representation is an `Array` (`O.Words`, sequences): a value cannot be built from word variables, and `Array.new` would restrict the law to all-equal elements |
+| 3 | a sub-word leaf (`uint8`, `Bytes1`, `ParticipationFlags`) |
+| 1 | `Transaction`, a byte list |
+| 1 | `Validator`: its `slashed` boolean puts every later field at an offset that is not a multiple of four (121 bytes total) |
+
+`Validator` is worth spelling out because it was briefly *wrongly* included:
+enumerating its one boolean gives two closed cases, but the boolean is not the
+last field, so the fields after it are written with shifts and the laws failed
+to check. They were removed rather than weakened.
+
+None of this is a claim that the remaining names are unprovable in principle -
+it is a claim about what this kernel can discharge without new lemmas about
+`Array` and native `U32`, which is the work `docs/LAW_API_MAP.md` §6 already
+identifies as the first obstacle of the migration. It is now demonstrated
+rather than predicted.
+
+## Iteration 17, part 8: self-audit against AUDITOR.md
+
+Checked on the final source, before returning. Each line says what kind of
+evidence stands behind it - proved, measured, or finitely checked - because the
+policy asks for exactly that distinction.
+
+### Harness honesty
+
+* The benchmark loop is the generic `Any` dispatch again. A per-name loop was
+  written, measured and **withdrawn**: with the dispatch removed the decode's
+  inputs became loop-invariant and the runtime elided the work, which the gate
+  itself exposed as `Epoch.deserialize ... bend 0.0 ns` for 5,000,000
+  operations. Part 5 above records it. Nothing in the measured path now has a
+  shape whose validity depends on the optimizer not noticing an invariant.
+* Every probe in `benchmarks/probes/` consumes a word of its result. A probe
+  that dropped its result was discarded and the number it produced withdrawn:
+  in an interaction net an unobserved `Array.set` chain is never rewritten.
+* The Go reference allocates on every operation (`MarshalSSZ` in
+  `benchmarks/fastssz/main.go:149`, which is `make` + `MarshalSSZTo`), as we
+  do. No buffer is reused on either side; the reference was not penalised.
+* Absolute timings differ by about 1.8x between a three-hour gate run and a
+  burst measurement on the same binary, in the same direction on both sides
+  (Go `BeaconBlockBody.serialize` small: 1,334 ns in the gate, 711 ns in
+  burst). Ratios agree. Any number in this log says which condition it came
+  from.
+
+### Workload coverage
+
+* 978 workloads, 327 of 327 required operations, all 109 names, small/medium/
+  large official fixtures plus zero/random/saturated synthetic cases; five
+  alternating samples each, calibrated per side. **Measured.**
+* Fifteen `serialize` rows exceed 5x and are reported, not rounded off; a
+  further thirteen sit between 4.0x and 4.97x, which part 6 states explicitly
+  because they are within noise of the limit.
+
+### Proof linkage
+
+* The codec laws are stated about `T.<name>_encode` and `T.<name>_decode` -
+  the functions the benchmarks and the conformance checks call - not about a
+  model. **Proved**, for the stated class (70 of 109 names, 7 of 144 generic
+  schemas, 316 laws).
+* The 39 remaining names have **no** codec law. Part 7 gives the reason with a
+  four-line demonstration for each of the two blocking facts. This is not
+  presented as coverage.
+* The 29 `END_TO_END` and 13 `ROOT_DOMAIN` propositions are byte-for-byte the
+  frozen ones and speak about `src/model.bend`, which is **not** on the
+  production path (part: import graph). They are preserved coverage of the
+  list model, not of the generated codec, and `docs/LAW_API_MAP.md` says so.
+* Zero `unsafe`, zero axioms, zero holes: every checker line in
+  `benchmarks/evidence/proofcheck-summary.log` records `unsafe=False`.
+
+### Import graph
+
+* `codegen/import_graph.py` computes it. The production entry points reach four
+  `src/` modules (`obj`, `buffer`, `digest`, `merkle_fast`) plus the pinned
+  BendHub SHA package, and nothing else; the measured programs add none. The
+  legacy model and the compact scanner reach 29 and 6 modules respectively,
+  **disjoint** from production. `--check` enforces it. **Measured.**
+
+### Per criterion
+
+| criterion | state |
+| --- | --- |
+| performance | **not met**: 15 of 978 workload medians over limit, all `serialize`. Measured, with a floor analysis showing three of them are under the floor of the pinned runtime's primitives (part 6). |
+| architecture | met: one generated production path, packed arrays throughout, no linked list on it, destination-passing encode, import graph verified. |
+| memory | met when the gate runs: worst decode overhead 5.7 MB of 32 MB, 15/15 verified, Go 3.7 MB. |
+| proofs | **partly met**: all frozen propositions check; 316 new codec laws check on a stated class; the remaining 39 names and the law/API migration do not, for a demonstrated kernel reason. |
+| coverage | met: 5,440 official cases through the generated path natively (295 static + 5,145 generic), 51 runtime tests, fuzz 10,360 named and 5,393 generic cases with 0 mismatches. |
+| review | this section; the gaps above are stated, not closed. |
+
+## Iteration 17, part 9: two measurement-stability repairs
+
+Both gates failed on the final source for reasons that had nothing to do with
+the SSZ code, and both are worth recording because "re-run until green" would
+have been evidence-shopping.
+
+### The proof checker's peak, and the heap hint
+
+`automation/acceptance.py` runs `bend PROOF.bend` with no cap. It was killed
+with exit 247 (SIGKILL) in one run and passed in another. Checked directly, the
+same file peaks at **5.80 GB** - close enough to the operator's 7 GB stop that
+whether it survives depends on machine state, which is the "collector falls
+behind under load" behaviour recorded earlier in this log.
+
+The pinned compiler already runs with a JavaScriptCore heap hint
+(`BUN_JSC_forceRAMSize`, set by `benchmarks/checks/capped_build.py` for
+compilation). The checker is the same binary, and it responds the same way:
+
+| `BUN_JSC_forceRAMSize` | PROOF.bend peak | elapsed |
+| --- | ---: | ---: |
+| unset | 5.80 GB | 213.7 s |
+| 2,000,000,000 | **4.18 GB** | 178.3 s |
+| 3,000,000,000 | **4.24 GB** | 146.9 s |
+
+This is host configuration, not a change to the compiler, to Base, to the
+proof, or to any threshold: the same file, the same checker, the same "All
+terms check." with zero unsafe annotations. The memory gate was run with
+`BUN_JSC_forceRAMSize=3000000000` exported and passed. The margin below the
+7 GB stop goes from 17% to 39%.
+
+`ROOT_DOMAIN.bend` showed the same thing: killed at 6.81 GB in one run at
+16:09, then **PASS at 5.26 GB in 76.6 s** when checked alone at 17:15. None of
+this iteration's 75 changed `.bend` files is inside `ROOT_DOMAIN`'s 209-module
+import cone (`codegen/import_graph.py`), so it is not a regression. Both lines
+are kept in `benchmarks/evidence/proofcheck-summary.log`, the failure included.
+
+### The native memory harness's representativeness test
+
+`native_bench/run.py` brackets the decode phase two ways - sampling during the
+full run, and the kernel high-water of a separate process that stops after
+decode - and refuses to certify if the sampled maximum exceeds the prefix
+process's kernel peak by more than 5%. On this machine it failed about half the
+time on identical work (`sampled 13,975,552` against `prefix 12,812,288`, 9%
+over; then a pass; then a fail; then a pass).
+
+The cause is that one reading of one process is a poor estimate of that
+process's high-water: resident size is not monotone here, and the three
+readings of the same prefix run differ by 2% (`[13,107,200, 12,845,056,
+12,845,056]`). The repair measures the decode-prefix process **three times and
+keeps the largest**. This cannot hide anything:
+
+* the reported `decode_peak` was already the maximum over the kernel readings,
+  the phase marks and every sample in the decode window, and still is;
+* taking the maximum over three prefix runs can only *raise* the reported peak.
+  It did: the worst Bend decode overhead went from 5,718,016 to **5,898,240**
+  bytes. The number got bigger, not smaller;
+* a prefix run that genuinely did less work would be lower in all three
+  readings and the test would still fire.
+
+Three consecutive runs of `native_bench/run.py` then passed, and the memory gate
+passed end to end.
+
+## Iteration 19, part 1: the serialize gap closed - measured causes, not the floor
+
+Part 6 of iteration 17 concluded that the block serializers sat on a floor of
+the runtime's primitives. That floor was wrong in its largest term. Each fix
+below was found with `sample` on the running native program and the emitted
+C, and measured with the new fast loop before the next one.
+
+### The fast loop (`benchmarks/quick.py`)
+
+`python3 benchmarks/quick.py [--only T,..] [--ops ..] [--workloads ..]`
+regenerates from the YAML, keys each program group on the compiler binary, the
+flags and the bytes of every `.bend` in its import cone, compiles only groups
+whose key is new (one compile at a time, same footprint cap), builds Go keyed
+on its sources, verifies each workload (byte-exact re-encode, both root
+checksums, official root) and times alternating samples through
+`benchmarks/run.py`'s own `measure_pair`/`run_bend`/`run_go`. Warm: 5-25 s for
+the default screen; cold group compiles are reported separately. `--build all`
+/ `--build-generic all` build and link `build/obj-g<k>` / `build/obj-x<k>` for
+the conformance checks, removing the old link first so a failed compile can
+never leave a stale program behind (that happened once: an old build/obj-x0
+answered a check - caught, the removal is the fix). acceptance=false: it never
+replaces `benchmarks/run.py`.
+
+### What the time actually was (BeaconBlockBody medium, 19,087 bytes)
+
+| cause | evidence | fix | effect |
+| --- | --- | --- | --- |
+| zero-filling the output: `Array.new(U32, d, 0)` with a run-time `d` is emitted as a scalar store loop (`str wzr` per word, disassembly of the probe) | 2,050 ns of a 5,100 ns encode; the same fill with a literal depth compiles to `bzero`, 10x faster (`benchmarks/probes/zero_fill.bend`, `build/probes/zc.bend`) | `B.zeros(d)`: one tiny allocation function per literal depth, reached through a chain of comparisons (a U32 `match` becomes a 32-bit decision tree that copies the default arm into every leaf, which defeats it - measured) | alloc 2,050 -> 330 ns |
+| one default element built and dropped per element visit (`Array.swap(arr, i, E_default())` in size/put/root/force) | `term_drop` 15% of samples | a single spare per loop, then boxed linear elements with the empty box `BNone` as the spare | -18% encode |
+| per-word loop overhead in bulk copies | copy 0.26 ns/word one word per step, 0.085 ns/word eight per step (`benchmarks/probes/copy_unroll.bend`) | `O.acopy`/`O.scopyN`: eight words per step, used by the packed writer and by `copy_in` (decode) | BeaconState decode 530 -> 150 us |
+| 48- and 96-byte vectors as 12/24-word inline records, copied at every function boundary; linear list elements stored inline and swapped in and out (4x their width per visit) | profile: record shuffles and 60-word swaps | `RECORD_MAX = 48` (signatures are packed Words, pubkeys stay records), fixed-size packed runs get a straight-line aligned writer, linear list elements are held behind a pointer (`O.Boxed`) | BeaconBlock small 4.8x -> 3.5x |
+| the size pass on types whose output depth is fixed by the schema | EPH `_size` 40 ns of 345 | `literal_depth`: bounded types whose every encoding has one output depth (or a narrow one-power-of-two straddle) allocate at that literal depth and skip `_size` | EPH 5.6x -> 3.5x, LCFU 6.3x -> 3.9x |
+| two function boundaries per variable field in a container writer (the size had to arrive as a duplicable parameter) | chain structure in the generated code | a cursor-carrying `_putv(out, pos, hoff, cur, v)` writes the offset word and payload and returns the advanced cursor: one boundary per field | small, kept |
+
+Two correctness bugs were introduced and caught by the 5,440 official cases,
+not by review: the reordered container writer wrote offset words before a
+sub-word record's aligned *store* of its last word, clobbering its neighbour
+(BitsStruct, 160 cases). Every write to a word shared with a neighbour is now
+an OR (records whose size is not a multiple of four OR their last word; the
+aligned packed writer ORs a partial last word), which makes the result
+independent of write order.
+
+Screen after the changes (quick loop, 2-5 samples, loaded machine): every one
+of 109 names x 3 operations at or below 3.9x (codec) / 4.5x (root); the block
+family 2.8-3.5x; BeaconState decode 0.78x and encode 0.75x of Go. Not the
+gate: the full `benchmarks/run.py` remains the measurement.
+
+## Iteration 19/20, part 2: representation settled, codegen-only transport, cleanup, fuzz
+
+### Correction to part 1
+
+Part 1 records `RECORD_MAX = 48`. That setting was reverted: with it, the pinned
+toolchain's clang (Apple clang 17.0.0 at -O3) aborts on the native memory driver
+with "live register clobbered by inserted prologue instructions" (bisected to the
+record width: 32 and 96 compile, 48 and 64 crash). The final setting is
+`RECORD_MAX = 96`, measured together with boxed linear list elements: every block
+serializer 2.6-4.0x Go, decode 0.7-1.9x, roots <= 4.5x (quick screens, loaded
+machine). 32 was ~15% faster on block encodes but makes `Validator` and every
+signed message linear (a list read becomes a move) and shrinks the whole-word
+codec-law class; the reason is recorded next to the constant in codegen/generate.py.
+
+### Boxed linear list elements (kept)
+
+A list whose element has storage of its own holds `O.Boxed<E>` slots; an unused
+slot and the stand-in during a visit is the empty box `BNone`, so no default
+element is built to fill capacity or to swap with. The public list API still
+takes and returns `E` (`_wrap`/`_unbox` at the boundary). ExecutionRequests
+decode 4.4x -> 1.9-2.9x; BeaconBlock small serialize 4.8x -> 3.5x.
+
+### The official cases run on the generated path (item 2)
+
+`tools/spectests.py` now builds (import-cone-keyed cache) and runs the native
+generated programs for every case: valid cases must decode, re-encode to the
+exact official bytes, hash to the exact official root, and - in a second run -
+the decoded object's structural value dump (`dump_*` in src/obj.bend, one
+generated `_dump` per shape, leaves read from their typed fields) must equal
+`value.yaml` normalized by the frozen tools/test_schemas.py. Invalid cases must
+be refused by the generated validator. Result: 5,440 passed, 0 failed, 8,435
+native program runs, 202 s. The expected outputs are never passed to the program.
+
+### Removed: the compact scanner path
+
+`src/cscan|cschema|ccompile`, their generated tables and generators, the scanner
+proofs `proofs/compact/{cv*,den*,sound*}` and two checks that used the tables.
+No production, measured or test entry point reached them (codegen/import_graph.py
+--check: OK). Their reusable foundations stay: `proofs/compact/found.bend` (checked
+Base.Array get/set/swap/new/clone laws), `buf/reads/bits/arith.bend` (packed buffer
+byte denotation, `B.read32`). `benchmarks/checks/object_mutations.py` now takes its
+expected verdicts from `codegen/oracle.py` + canonicality instead of the removed
+table-based validator (0 disagreements).
+
+### Fuzz re-run on the changed encode path (item 5)
+
+* `tests_generated/fuzz_objects.py --seed 20260925 --valid 12 --invalid 12 --histories 4`:
+  1,308 valid + 15,696 mutated + 1,536 history cases over 109 types, 0 mismatches,
+  89.9 s (full bytes, full 32-byte roots, cached vs recomputed roots in histories).
+* `tests_generated/fuzz_generic.py --seed 20260925 --per 10`: 6,940 cases over 136
+  generic schemas, 0 mismatches, 31 s.
+* mutations 8/8, negative API 7/7, object cache 100 histories + 7 fixtures, object
+  mutations 0 disagreements.
+
+### SizzLean (etheorem/etheorem packages/SizzLean), inspected for ideas only
+
+Read the source and docs/PROOF_LEDGER.md. What it proves: `decode_encode`,
+`serialize_injective`, an encoded-size bound, per constructor of a gating
+predicate (`BasicSupported`), with a value-level guard `EncodedFits`. What it does
+not: decoder completeness / rejection characterization of arbitrary bytes,
+progressive containers (out of scope), cached-root vs spec-root equality (ledger:
+"no further work targets the cache rows"), and SHA-256 enters through three named
+axioms (`sha256Hash_eq_spec`, `sha256Combine_eq_spec`, `sha256BatchCombine_eq_spec`).
+None of those gaps may be inherited here (no axioms at all; completeness and
+rejection are required). Useful ideas: per-shape composition of the roundtrip
+theorem, the offset-table lemma shape (`extractFieldOffsets_serializeFieldsAux`),
+and stating the SHA link only at the one call shape Merkleization uses. The last
+one is the plan for our missing bridge: the package proves the packed API equals
+its packed-input spec; SSZ only ever hashes exactly 64 bytes, so the bridge needed
+is "packed 64-byte message == FIPS on its byte list", not the universal claim the
+package disclaims.
+
+## Iteration 21 (Bend 2.0.25 migration; spec-connected codec laws) - recovery notes
+
+* Toolchain: stock Bend 2.0.25 reinstated from `~/.bend/bend-2.0.25-backup`
+  (see docs/TOOLCHAIN.md for hashes, provenance and the protected
+  `automation/toolchain.json` hash-only update the operator must make).
+  Editable guards now read `benchmarks/toolchain.json`. quick.py cache keys on
+  compiler AND Base. run.py uses `bend version`.
+* 2.0.25 Base defines `Nat.min` structurally: `proofs/packed.bend` `min_succ`
+  is now `{==}` (law statement unchanged). That was the only proof break.
+* `benchmarks/checks/check_proof.py` now sets the JSC heap hint
+  `BUN_JSC_forceRAMSize=3000000000` (as the gates' runs did) and records it.
+  Without it END_TO_END was killed at 7.04 GB on 2.0.25; with it:
+  END_TO_END 3.84 GB/82 s, ROOT_DOMAIN 3.80 GB/68 s, PROOF 3.56 GB/65 s,
+  HASH_PROOF 1.56 GB, all proofs/obj and proofs/compact <= 1.4 GB. PASS.
+* `B.to_list` (proof/oracle view only, no production caller) was rotated by one
+  byte; fixed in src/buffer.bend (found by the new spec laws).
+* NEW codegen/spec_laws.py -> proofs/obj/spec_fixed.bend (hand-written reusable
+  lemmas: limbs, byte scope/domain of limbs, integer/byte-vector parts,
+  cat_fixed, aggregate_fixed, encoding_of_parts) and generated
+  proofs/obj/spec_codec_{0..5}.bend + spec_unique_{0,1}.bend for 67 aligned
+  Fulu names: emitted bytes = limbs; `Decoding.decodes(Spec.N(), bytes, value)`
+  (encoder soundness vs spec/codec.bend); decode of EVERY buffer of the size
+  (all words incl. array padding free) accepts with the object; view of that
+  buffer = limbs; every other size rejected; every spec value of those bytes is
+  the decoded value (END_TO_END.deserialize_unique + fulu_legality witness).
+  All checked on 2.0.25: spec_codec <= 2.0 GB, spec_unique 4.87/4.72 GB
+  (509 s/366 s). Not covered: SyncAggregate, SyncCommitteeContribution (bit
+  vectors), sub-word/variable shapes, roots.
+
+## Iteration 21/22 - spec laws extended; SHA concrete-shape finding
+
+* 2.0.25 native rebuild of all 10 Fulu groups (quick.py) and native spectests:
+  **5440/5440** (build/spectests.json, 2026-09-22 23:3x). Quick screen on 2.0.25:
+  BeaconState decode 0.82x / encode 0.79x / root 3.50x; slow serializers
+  2.86-3.76x; Transaction.deserialize large 1.39x.
+* spec laws now cover 76 names: added bit vectors (spec_bits.bend: bitsof,
+  len_bits, 256-case octet_word, byte{0..3}_octet, pack_limbs, bits_part),
+  boxed wide containers (F.emitted view for Type-kind encoders), and the
+  one-byte names (spec_small.bend, exhaustive over the byte's bits, moved to
+  arbitrary buffer words with bits.bend sel0 + found.bend logic__subst;
+  boolean rejection = complement of the spec image).
+  Checks (2.0.25, heap hint 3e9): spec_codec_* <= 2.15 GB, spec_small 1.88 GB/70 s,
+  spec_bits 0.40 GB, spec_unique_0/1/small 4.88/4.89/4.79 GB, 470-623 s.
+* SHA: proofs/obj/sha_bridge.bend proves PF == VF function by function
+  (constants, initial, step, rounds, feedforward, compress, digest, nth,
+  recurrence, extension, schedule) in 0.2 s; a negative control is rejected.
+  The concrete 16-word instance cannot be checked: probe p1
+  (`PF.schedule(48n,[16 vars]) == VF.schedule(...)` via schedule_eq) and probe
+  p2 (`{X == X}` for that schedule) both ran >10 min / >2 min and were stopped;
+  the checker normalizes eagerly and the package fixes 15/48 literally.
+* Found and fixed: B.to_list (oracle view, no production caller) rotated bytes.
+* Open: encoder masks invalid sub-word objects instead of rejecting (see
+  docs/LAW_API_MAP.md status). automation/toolchain.json still pins 2.0.16, so
+  automation/acceptance.py (called by native_memory_acceptance.py) refuses 2.0.25.
+
+## Iteration 22 - representation bridge, input path, checked encoder
+
+* proofs/obj/repr.bend: every perfect Array tree of depth d is the canonical
+  tree of its words (`canon`, `eta`, `tree_words`). spec_repr_{0..5,small}.bend
+  carry every `*_spec_decode`/`*_spec_view` law from the literal buffer tree to
+  EVERY perfect buffer tree of the loader's depth (`*_tree` laws, words
+  `R.w(t, i)`), via found.bend `logic__subst`. All pass (<= 2.47 GB).
+* proofs/obj/load.bend + spec_input_{0..5}.bend: the real input path.
+  `word_of_bytes` (word_of of a word's 4 little-endian bytes is the word, by its
+  32 bits; four 2-case bit lemmas + bits.bend word32_eq); `wofs_id` by
+  induction; `load_<n>`: B.fill_at(B.alloc(n), 0, limbs(ws)) == literal buffer
+  of ws, one Equal.cong through R.build. `*_spec_input`: decode of the buffer the
+  loader builds from any byte list of the size = the object of its words. First
+  version with per-leaf rewrites peaked at 9.11 GB; the cong version 0.67 GB/4 s.
+* SHA feasibility measured (not assumed): `{VF.extension(k, h) == VF.extension(k, h)}`
+  with h a VARIABLE list checks in 0.3 s (k=8), 2.5 s (k=12), 71 s (k=16) and does
+  not finish in 120 s (k=20): ~x28 per 4 rounds. The package and the vendored spec
+  both fix 48 rounds, so any checked type containing the 48-round schedule is out
+  of reach for this checker. Recorded as a checker-level blocker for root equality.
+* Encoder validity (item 3). Generated `{p}_valid` for every shape and a public
+  checked encoder `{Name}_serialize -> O.Encoded{ok, bytes}` (refused =
+  ok False, no bytes). First attempt: a separate validity pass before encode.
+  It cost up to 1.45x on small linear serializers (LCFU 5.19x, SAAP 5.03x, EPH
+  4.86x): each step of a validity chain copies the flattened record (Bend passes
+  inline records by value). Measurement note: quick.py re-runs the generator,
+  so env switches must be passed to quick.py itself - several early "variants"
+  measured the same build and were discarded.
+  Final design (fused): every linear writer has a checked form `putk` whose
+  count/flag carries bit 31 when the value is invalid; container, group and
+  wide chains call children's `putk`, keep the bit in the running cursor
+  (`O.padd`) and add the Data fields' checks in the last step; leaves,
+  sequences and unions check only themselves (`{p}_valid`) before writing.
+  The size pass of sized names also checks leaf storage and keeps the bit, so
+  an unholdable size is refused before allocation. Data names: `serialize =
+  valid ? encoded(encode) : refused` (proofs/obj/serialize_{0,1,2}.bend, 74
+  names x 2 laws, checked). Screen after fusion: worst LCFU 4.05x, SAAP 3.91x,
+  EPH 3.59x (single quick samples).
+  Supported-domain note: counts use bit 31 as the refusal mark, so encodings
+  of 2^31 bytes or more are refused (U32 sizes already bounded them by 2^32).
+  Regression: tests_generated/invalid_objects.py (build/compact-oinvalid,
+  benchmarks/compact/oinvalid.bend): uint8 300, Bytes1 tail, byte-list slack,
+  storage smaller than length, bit list over limit, packed list over limit and
+  not a whole number of elements, empty box - all refused; 7 controls accepted.
+* Found by the spectests: the generic bit vector of 1281 bits (array-backed,
+  partial byte) had no validity rule and was dropped as unsupported (80 cases).
+  Added `O.bitvec_tail`; rerun below.
+
+### Final gates on stable source (2026-09-23)
+
+* Deterministic regeneration: `generate.py --check` was stale on consecutive
+  runs; reorder() iterated a raw `set` of callee names, so definition order
+  followed Python's hash seed. Now sorted; `PYTHONHASHSEED=1,2,3 generate.py
+  --check` → current; laws.py / spec_laws.py --check current; import_graph OK.
+* Fresh build of all group, generic, fuzz and compact binaries, then, sequentially
+  (logs in build/final/, summary build/final/runtime_summary.log):
+  spectests 5440/5440; runtime tests 51/51 (20009 assertions); object
+  conformance 295 pass / 59 types; generic conformance 5145/5145; object
+  mutations 0 disagreements; mutations 8/8; negative API 7/7; cached roots 7/7;
+  invalid objects 14/14; fuzz (new seed 20260923) objects 327 valid + 1962
+  mutated + 768 history / 109 types, generic 5432 / 136 schemas, 0 mismatches.
+* Performance gate (automation/performance_gate.py, fresh build, heap hint):
+  `PERFORMANCE GATE: 978 workloads / 327 operations within their
+  operation-specific limits`. Worst: deserialize 4.1x (SignedBeaconBlockHeader
+  large-fixture), serialize 4.0x (BeaconBlock small-fixture; the timed encoder
+  is the checked `X_serialize`), hash_tree_root 5.8x (Attestation small-fixture).
+  Log build/final/performance_gate.log (sha256 f69f0fa4…), report
+  build/performance/report.json (sha256 534e4486…). BENCHMARKS.md regenerated
+  from that report. Source manifest after the gate: build/final/source_manifest.txt
+  (528 hashed files, aggregate bb9eafb7…); no hashed file changed afterwards.
+* native_bench/run.py: complete, 15/15 Bend samples verified, worst decode
+  overhead 6,373,376 B (MEMORY_REVIEW.md). automation/native_memory_acceptance.py
+  stops at acceptance.py: "Pinned 2.0.16 toolchain identity changed: bend" —
+  the protected automation/toolchain.json needs the operator's hash-only 2.0.25
+  update (docs/TOOLCHAIN.md). acceptance.py builds its checker environment from
+  `os.environ` (automation/acceptance.py:13) and runs `bend PROOF.bend` (:51) and
+  `bend END_TO_END.bend` (:70), so the operator exports
+  `BUN_JSC_forceRAMSize=3000000000` in the shell that runs acceptance.py (or
+  run.sh) - the same hint every check in this log used
+  (benchmarks/checks/check_proof.py:61). Not re-measured without the hint.
+* Proofs: every file checked sequentially, uncapped, one checker at a time
+  (proofs/*.bend, proofs/compact/*.bend, proofs/obj/*.bend, HASH_PROOF,
+  END_TO_END, ROOT_DOMAIN, PROOF): 230/230 PASS, all "All terms check.", zero
+  unsafe. Total 130.5 min; peak footprint 5.28 GB (spec_unique_1, 784 s);
+  longest spec_repr_6 (Cell/MatrixEntry, 512-word vectors) 1291 s / 2.96 GB;
+  END_TO_END 3.79 GB / 121 s, ROOT_DOMAIN 3.78 GB / 127 s, PROOF 3.62 GB / 115 s.
+  Log build/final/proofs_final_iter22.log (sha256 09b544db…); per-file checker
+  output in build/proofcheck/.
+* Self-audit (AUDITOR.md), open items stated as such:
+  - serialize_{0,1,2}: prove the dispatch `serialize = valid ? encoded(encode)
+    : refused` only; that `{p}_valid` coincides with the spec's validity is
+    tested (invalid_objects, fuzz), not proved.
+  - load.bend proves a single whole-list `fill_at`; native_bench/driver.bend:50
+    fills in pieces at offsets - piecewise equivalence not proved.
+  - Codec spec laws cover 79 + 4 names; HistoricalBatch, SyncCommittee, Blob,
+    BlobSidecar, Validator and the 21 variable-size names have none; no generic
+    spec link.
+  - Root equality with the spec: not proved (48-round SHA schedule out of the
+    checker's reach, measured above); sha_bridge covers function identity only.
+  - The 29 END_TO_END + 13 ROOT_DOMAIN propositions are unchanged and pass, but
+    are not migrated onto the object API; no law for the linear fused flag, no
+    invariant-preservation or complexity laws.
+  - Encodings of 2^31 bytes or more are refused (bit-31 refusal mark).
+
+## Iteration 22 (continued) - root equality: SHA node bridge and proof-ready root runtime
+
+Recovery notes (work in progress; later sections supersede).
+
+* **SHA node bridge proved** (proofs/obj/sha_node.bend, generated by
+  codegen/sha_laws.py, 11 s): `spec_node(l, r)`:
+  `M.hash_pair(D.bytes(l), D.bytes(r)) == Some{D.bytes(D.hash_pair(l, r))}` for
+  every pair of digests - the runtime node hashes exactly the specification's
+  64-byte message, through the pinned package law `sha256_array_correct`
+  (its filled proof in CORRECTNESS.bend; the checker rejects an unfilled law).
+  How, without normalizing SHA: `node_blocks` states the two compressions for an
+  ARBITRARY round count `extra` and start state `s0` (both stay stuck, so the
+  16 message words may be cased: rounds unfold 16 steps on a stuck state, linear
+  size); the instances at extra = 48 / initial state are taken only where the
+  message array is still stuck on the variable digests. Probes (build/shaprobe):
+  `hash_pair` over variable digests checks in 1 s; over constructor-shaped
+  digests (symbolic words) it does not finish in 120 s; with a VARIABLE message
+  length it checks in 1 s; fully concrete SHA evaluates (8 hashes, 16 s).
+* Consequence for the runtime: every root function now takes `+hl: Nat`, the
+  node message length, and hashes with `D.node(hl, l, r)`; the public
+  `X_hash_tree_root(h, o)` passes 64n (`D.hash_pair = node(64n, ..)`). Laws can
+  hold hl abstract, so nodes over constructor digests stay stuck.
+* The streaming stack merkleizer (merkle_fast push/ascend/close, U32 bit
+  arithmetic, digest slots in the scratch buffer) is replaced on every root path
+  by recursive trees with the spec's own shape (O.mtree / O.ctree / O.ptree and a
+  generated `{p}_mt` / `{p}_ptr` per composite sequence): Z(d) from the hasher's
+  zero table for an empty range, the chunk at depth 0, node(left, right)
+  otherwise; Nat indices (native Nat arithmetic measured: 4M add/sub in ~1 ms).
+  Bend constraints met: one self-recursive def per tree (no forward references),
+  two phases m = 0/1 instead of a closure (the closure version cost +35% on
+  BeaconState root), matches in parameter order, no destructuring before a match.
+  Root screen (quick.py, medium fixtures, roots verified against the official
+  ones): BeaconState 24.0 ms / 3.59x (baseline 23.0 ms / 3.61x), BeaconBlockBody
+  3.93x (4.02x), ExecutionPayload 3.96x (4.21x), DataColumnSidecar 4.07x (4.15x),
+  HistoricalBatch 3.87x (3.95x), Attestation 3.85x (3.82x), BLSToExecutionChange
+  3.38x (3.40x). Backups: build/keep/*.stream.*.
+* Zero-subtree roots are now constants `D.zconst(0..63)` (SHA-256 of zeros,
+  computed once by hashlib, and CHECKED against spec/merkle.bend zero_subtree in
+  proofs/obj/zero_roots.bend: 63 concrete FIPS evaluations, 84 s). Runtime trees
+  and container padding use them; the hasher's zero table is no longer read by
+  roots. (A symbolic zero root Z(k) = node(Z(k-1), Z(k-1)) is exponential as a
+  term; a zero table read needs a "for every k" premise that the quantity rules
+  do not let a proof reuse.) Spectests after the recursive-tree + hl change,
+  before the constants: 5440/5440.
+* Proof-side rules learned (Bend 2.0.25 checker): a universally quantified
+  hypothesis (a function-typed parameter) cannot be `+`, so it cannot be used
+  twice - hypotheses are equations (`+ehl: {hl == 64n}`, `+hd: {d < 64}`) and
+  the facts derived from them are lemmas (SN.node_at); `B.Buf` is Type-kind, so
+  the hasher is an ERASED parameter (`-h`) of every root law.
+* **Merkle layer (spec side) proved**: proofs/obj/mtree_spec.bend - the reference
+  tree `rtree(d, inside, hl, L, s)` over any digest list L is spec/tree.bend's
+  `tree(d, bytes(L[s..]))` (induction on d; drop/capacity algebra; 171 s).
+  proofs/obj/root_support.bend - chunk domain/length of digest lists,
+  `Lim.at_depth` of a fitting digest list, and `aggregate_digests`: any digest
+  list aggregates (spec/root_relation.bend `aggregate`) to the reference root.
+* **Per-name root laws, phase A (68 of 109 names) proved**:
+  proofs/obj/root_names.bend (codegen/root_laws.py; root_leaf.bend for the
+  leaves: chunk-word bytes via codegen/bitfix.py, bool, uint64, bytes_1..8).
+  For every object o and hasher h:
+  `RR.roots(v_X(o), Spec.X(), [D.bytes(Pair.snd(T.X_hash_tree_root(h, o)))])` -
+  the ACTUAL generated root function, the independent relational root
+  specification, the pinned package's SHA law. Covered: all fixed data names
+  built from bool / uint64 / uint128/256 / word-aligned byte records / plain
+  containers of <= 8 fields (Validator, BeaconBlockHeader, AttestationData,
+  Checkpoint, DepositData, Withdrawal, ... and every alias of those leaves).
+  Not yet: containers held by pointer (28: every name with a list/vector field,
+  BeaconState, BeaconBlockBody, ExecutionPayload, ...), packed lists (4),
+  uint8 (2), fixed word vectors (2), uint32, byte list, bit list/vector fields,
+  Bytes1 (partial word). Check: 303 s, All terms check.
+* Decoded-input root laws: `X_decoded_root_correct(words, h, o, e: o == dec(words))`
+  for 66 fixed word-aligned names - the root of the object the decoder builds
+  from limbs(words) (spec_input_*: decode of the loaded buffer = dec(words)) is
+  the specification root of val(words), the value spec_codec's `X_spec_encode`
+  relates to those bytes. The object stays abstract (the equation), so the root
+  is never unfolded on concretely shaped words. root_names.bend: 389 s, PASS.
+* Runtime chunk reads for the trees now use Nat positions (`O.chunkn(ws, e8(i))`,
+  e8(i) = double(double(double(i))) so 8(i+1) = 8 + 8i by computation; clipped
+  element chunks `O.echunkn` read only words inside the element). Root screen:
+  BeaconState 3.51x, others 3.37-4.14x (unchanged).
+* **Runtime Merkle layer for packed words proved** (proofs/obj/mtree_run.bend,
+  1.6 s): `chunk_read` (eight found.bend `array__get` reads of a perfect word
+  tree), and `mt_words`: `O.mtree(d, 0, b, hl, LWords, 2^d, s, n, (h, (thaw t, _)))
+  == (h, (thaw t, rtree(d, b, hl, clist(n, slots t, 0), s)))` for every depth,
+  perfect array tree of depth < 32 holding 8n words, and chunk position.
+  proofs/obj/mtree_defs.bend now holds the reference-tree definitions (so the
+  runtime-side modules do not re-check the 84 s zero-root evaluation).
+* **Byte-vector roots proved generically** (proofs/obj/words_spec.bend 7 s,
+  proofs/obj/words_root.bend ~150-320 s): the bytes of a word array cut at
+  32q + r (1 <= r <= 32) pack (spec/packing.bend `scan`) into exactly the runtime
+  tree's chunk digests (`chunk_scan`, with `limbs8`, list and arithmetic
+  lemmas; the premise: the bytes past the length up to the chunk boundary are
+  zero), are in the byte domain (`chunk_scope`), and are 1 + q chunks
+  (`chunks_count`, via divmod peeling 32 at a time). `bv_full`: for every
+  perfect word tree t of depth < 32 holding the chunks,
+  `roots(BytesValue{take(N, limbs(slots t))}, ByteVector{N}, [bytes(root of
+  O.words_root(hl, h, Words{thaw t, N}, depth, seg))])`.
+* Checker limit found (probes build/shaprobe/big*.bend): the checker is lazy
+  (WHNF) and short-circuits syntactically identical terms (Spec.BeaconState() ==
+  Spec.BeaconState() checks instantly), but comparing different terms that force
+  a Nat value above roughly 2^14 - 2^15 overflows the JS stack ("the machine
+  stack overflowed"): `e8(4096) == 32768`, `Nat.add(5n, 65536) == 65541` fail;
+  `div(131072 + 31, 32) == 4096` passes. BUN_JSC_maxPerThreadStackUsage=1 GB
+  lifts it only to ~3e4 and larger values segfault Bun (the real thread stack).
+  Consequence: the Blob law (131072 bytes, q = 4095) cannot be checked by
+  evaluating its size facts; nor can any spec relation that makes the checker
+  evaluate list limits (up to 2^40 in BeaconState). Remedy (next): discharge
+  numeric facts by moving them to U32 comparisons (found.bend u32__is_lt_nat,
+  u32__pow2u_value: 32-bit literals compare natively) or by symbolic pow2
+  algebra, keeping every normalized comparison between small values or
+  syntactically identical terms.

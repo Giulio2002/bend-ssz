@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run Bun tests against the actual compiled Bend modules of the pinned 2.0.16 toolchain.
+"""Run Bun tests against the actual compiled Bend modules of the pinned 2.0.25 toolchain.
 
 Every `.bend` import goes through tools/bend_loader.ts, which returns the ES module
 that the pinned compiler emits. Fails on any test failure, load/compile error,
@@ -23,7 +23,7 @@ def main(argv):
     if not argv:
         print('run_runtime_tests: no test files given', file=sys.stderr)
         return 2
-    lock = json.loads((ROOT / 'automation/toolchain.json').read_text())
+    lock = json.loads((ROOT / 'benchmarks/toolchain.json').read_text())
     for key in ('bend', 'base'):
         if hashlib.sha256(Path(lock[key]['path']).read_bytes()).hexdigest() != lock[key]['sha256']:
             print('run_runtime_tests: pinned toolchain changed: ' + key, file=sys.stderr)

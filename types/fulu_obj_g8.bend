@@ -120,9 +120,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 106: some_MatrixEntry(T.MatrixEntry_decode(buf, size))
     case 107: some_DataColumnSidecar(T.DataColumnSidecar_decode(buf, size))
     case _: (buf, None{})
-def enc_SignedBeaconBlock(pair: T.SignedBeaconBlock & B.Buf) -> Any & B.Buf:
+def enc_SignedBeaconBlock(pair: T.SignedBeaconBlock & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_SignedBeaconBlock{v}, out)
+  (A_SignedBeaconBlock{v}, O.ser_out(out))
 def root_SignedBeaconBlock(pair: B.Buf & (T.SignedBeaconBlock & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -130,14 +130,14 @@ def root_SignedBeaconBlock(pair: B.Buf & (T.SignedBeaconBlock & D.Digest)) -> B.
 def force_SignedBeaconBlock(pair: T.SignedBeaconBlock & U32) -> Any & U32:
   (v, +x) = pair
   (A_SignedBeaconBlock{v}, x)
-def enc_KZGProof(+v: T.Bytes48) -> Any & B.Buf: (A_KZGProof{v}, T.KZGProof_encode(v))
+def enc_KZGProof(+v: T.Bytes48) -> Any & B.Buf: (A_KZGProof{v}, O.ser_out(T.KZGProof_serialize(v)))
 def root_KZGProof(+v: T.Bytes48, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_KZGProof{v}, d))
 def force_KZGProof(+v: T.Bytes48) -> Any & U32: (A_KZGProof{v}, T.b48_force(v))
-def enc_Blob(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_Blob(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Blob{v}, out)
+  (A_Blob{v}, O.ser_out(out))
 def root_Blob(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -145,9 +145,9 @@ def root_Blob(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
 def force_Blob(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_Blob{v}, x)
-def enc_BlobSidecar(pair: T.BlobSidecar & B.Buf) -> Any & B.Buf:
+def enc_BlobSidecar(pair: T.BlobSidecar & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_BlobSidecar{v}, out)
+  (A_BlobSidecar{v}, O.ser_out(out))
 def root_BlobSidecar(pair: B.Buf & (T.BlobSidecar & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -155,9 +155,9 @@ def root_BlobSidecar(pair: B.Buf & (T.BlobSidecar & D.Digest)) -> B.Buf & (Any &
 def force_BlobSidecar(pair: T.BlobSidecar & U32) -> Any & U32:
   (v, +x) = pair
   (A_BlobSidecar{v}, x)
-def enc_Cell(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_Cell(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Cell{v}, out)
+  (A_Cell{v}, O.ser_out(out))
 def root_Cell(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -165,29 +165,29 @@ def root_Cell(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
 def force_Cell(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_Cell{v}, x)
-def enc_CellIndex(+v: O.U64) -> Any & B.Buf: (A_CellIndex{v}, T.CellIndex_encode(v))
+def enc_CellIndex(+v: O.U64) -> Any & B.Buf: (A_CellIndex{v}, O.ser_out(T.CellIndex_serialize(v)))
 def root_CellIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_CellIndex{v}, d))
 def force_CellIndex(+v: O.U64) -> Any & U32: (A_CellIndex{v}, T.u64_force(v))
-def enc_CommitmentIndex(+v: O.U64) -> Any & B.Buf: (A_CommitmentIndex{v}, T.CommitmentIndex_encode(v))
+def enc_CommitmentIndex(+v: O.U64) -> Any & B.Buf: (A_CommitmentIndex{v}, O.ser_out(T.CommitmentIndex_serialize(v)))
 def root_CommitmentIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_CommitmentIndex{v}, d))
 def force_CommitmentIndex(+v: O.U64) -> Any & U32: (A_CommitmentIndex{v}, T.u64_force(v))
-def enc_RowIndex(+v: O.U64) -> Any & B.Buf: (A_RowIndex{v}, T.RowIndex_encode(v))
+def enc_RowIndex(+v: O.U64) -> Any & B.Buf: (A_RowIndex{v}, O.ser_out(T.RowIndex_serialize(v)))
 def root_RowIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_RowIndex{v}, d))
 def force_RowIndex(+v: O.U64) -> Any & U32: (A_RowIndex{v}, T.u64_force(v))
-def enc_ColumnIndex(+v: O.U64) -> Any & B.Buf: (A_ColumnIndex{v}, T.ColumnIndex_encode(v))
+def enc_ColumnIndex(+v: O.U64) -> Any & B.Buf: (A_ColumnIndex{v}, O.ser_out(T.ColumnIndex_serialize(v)))
 def root_ColumnIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ColumnIndex{v}, d))
 def force_ColumnIndex(+v: O.U64) -> Any & U32: (A_ColumnIndex{v}, T.u64_force(v))
-def enc_DataColumnsByRootIdentifier(pair: T.DataColumnsByRootIdentifier & B.Buf) -> Any & B.Buf:
+def enc_DataColumnsByRootIdentifier(pair: T.DataColumnsByRootIdentifier & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_DataColumnsByRootIdentifier{v}, out)
+  (A_DataColumnsByRootIdentifier{v}, O.ser_out(out))
 def root_DataColumnsByRootIdentifier(pair: B.Buf & (T.DataColumnsByRootIdentifier & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -195,9 +195,9 @@ def root_DataColumnsByRootIdentifier(pair: B.Buf & (T.DataColumnsByRootIdentifie
 def force_DataColumnsByRootIdentifier(pair: T.DataColumnsByRootIdentifier & U32) -> Any & U32:
   (v, +x) = pair
   (A_DataColumnsByRootIdentifier{v}, x)
-def enc_MatrixEntry(pair: T.MatrixEntry & B.Buf) -> Any & B.Buf:
+def enc_MatrixEntry(pair: T.MatrixEntry & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_MatrixEntry{v}, out)
+  (A_MatrixEntry{v}, O.ser_out(out))
 def root_MatrixEntry(pair: B.Buf & (T.MatrixEntry & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -205,9 +205,9 @@ def root_MatrixEntry(pair: B.Buf & (T.MatrixEntry & D.Digest)) -> B.Buf & (Any &
 def force_MatrixEntry(pair: T.MatrixEntry & U32) -> Any & U32:
   (v, +x) = pair
   (A_MatrixEntry{v}, x)
-def enc_DataColumnSidecar(pair: T.DataColumnSidecar & B.Buf) -> Any & B.Buf:
+def enc_DataColumnSidecar(pair: T.DataColumnSidecar & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_DataColumnSidecar{v}, out)
+  (A_DataColumnSidecar{v}, O.ser_out(out))
 def root_DataColumnSidecar(pair: B.Buf & (T.DataColumnSidecar & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -227,18 +227,18 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_SignedBeaconBlock{v}: enc_SignedBeaconBlock(T.SignedBeaconBlock_encode(v))
+    case A_SignedBeaconBlock{v}: enc_SignedBeaconBlock(T.SignedBeaconBlock_serialize(v))
     case A_KZGProof{+v}: enc_KZGProof(v)
-    case A_Blob{v}: enc_Blob(T.Blob_encode(v))
-    case A_BlobSidecar{v}: enc_BlobSidecar(T.BlobSidecar_encode(v))
-    case A_Cell{v}: enc_Cell(T.Cell_encode(v))
+    case A_Blob{v}: enc_Blob(T.Blob_serialize(v))
+    case A_BlobSidecar{v}: enc_BlobSidecar(T.BlobSidecar_serialize(v))
+    case A_Cell{v}: enc_Cell(T.Cell_serialize(v))
     case A_CellIndex{+v}: enc_CellIndex(v)
     case A_CommitmentIndex{+v}: enc_CommitmentIndex(v)
     case A_RowIndex{+v}: enc_RowIndex(v)
     case A_ColumnIndex{+v}: enc_ColumnIndex(v)
-    case A_DataColumnsByRootIdentifier{v}: enc_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier_encode(v))
-    case A_MatrixEntry{v}: enc_MatrixEntry(T.MatrixEntry_encode(v))
-    case A_DataColumnSidecar{v}: enc_DataColumnSidecar(T.DataColumnSidecar_encode(v))
+    case A_DataColumnsByRootIdentifier{v}: enc_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier_serialize(v))
+    case A_MatrixEntry{v}: enc_MatrixEntry(T.MatrixEntry_serialize(v))
+    case A_DataColumnSidecar{v}: enc_DataColumnSidecar(T.DataColumnSidecar_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -270,6 +270,21 @@ def force(a: Any) -> Any & U32:
     case A_MatrixEntry{v}: force_MatrixEntry(T.MatrixEntry_force(v))
     case A_DataColumnSidecar{v}: force_DataColumnSidecar(T.DataColumnSidecar_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_SignedBeaconBlock{v}: T.SignedBeaconBlock_dump(v, t)
+    case A_KZGProof{+v}: T.b48_dump(v, t)
+    case A_Blob{v}: T.b131072_dump(v, t)
+    case A_BlobSidecar{v}: T.BlobSidecar_dump(v, t)
+    case A_Cell{v}: T.b2048_dump(v, t)
+    case A_CellIndex{+v}: T.u64_dump(v, t)
+    case A_CommitmentIndex{+v}: T.u64_dump(v, t)
+    case A_RowIndex{+v}: T.u64_dump(v, t)
+    case A_ColumnIndex{+v}: T.u64_dump(v, t)
+    case A_DataColumnsByRootIdentifier{v}: T.DataColumnsByRootIdentifier_dump(v, t)
+    case A_MatrixEntry{v}: T.MatrixEntry_dump(v, t)
+    case A_DataColumnSidecar{v}: T.DataColumnSidecar_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

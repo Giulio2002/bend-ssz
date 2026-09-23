@@ -18,7 +18,7 @@ What that means concretely:
   for all 5,440 official cases. Since 2026-09-22 it also carries **codec
   correctness laws on one stated class**: `proofs/obj/codec_*.bend` and
   `proofs/obj/gcodec_0.bend` hold, for every name whose encoding is a whole
-  number of words at word-aligned positions (67 of the 109 Fulu names and 5 of
+  number of words at word-aligned positions (70 of the 109 Fulu names and 7 of
   the generic schemas), that decoding an encoding returns the object, that the
   encoding has the type's fixed size, and that a buffer one byte short or one
   byte long is rejected - stated over free word variables, so over every object
@@ -26,6 +26,47 @@ What that means concretely:
   `T.<name>_decode` themselves. The remaining names (sub-word leaves, variable
   size) have **no codec-correctness law yet**: those equations are not
   definitional and need the bit lemmas and the offset development;
+* Since 2026-09-23 (Bend 2.0.25) the generated codec is also **connected to the
+  independent specification** for 83 of the 109 Fulu names
+  (`codegen/spec_laws.py` -> `proofs/obj/spec_fixed.bend`, `spec_bits.bend`,
+  `spec_small.bend`, `spec_codec_{0..6}.bend`, `spec_unique_{0,1,small}.bend`):
+  the bytes the encoder emits through `B.emit` satisfy
+  `Decoding.decodes(Spec.<N>(), bytes, value)` of spec/decoding_relation.bend
+  (encoder soundness against spec/codec.bend; for objects with packed storage
+  every storage padding word is free); decoding a buffer of the size accepts and
+  returns the object whose spec value is related to exactly that buffer's bytes;
+  every other size is refused; and every spec value of those bytes equals the
+  decoded value (via the frozen `deserialize_unique` and the name's legality
+  witness). For `boolean` the rejection is characterized exactly: every byte
+  above 1 is outside the spec image.
+  **Buffers**: `proofs/obj/repr.bend` proves every perfect Array tree of depth d
+  is the canonical tree of its words, so `spec_repr_*.bend` state the decode and
+  view laws for EVERY perfect buffer array of the loader's depth (not a literal
+  tree); `load.bend`/`spec_input_*.bend` state them for the buffer the real
+  loader builds (`B.fill_at(B.alloc(n), 0, bytes)`, benchmarks/compact/objio.bend)
+  from every byte list of the size. Arrays that are not perfect trees are not
+  produced by Base's `Array.new`/`set`; they are outside this bridge.
+  Not covered: HistoricalBatch, SyncCommittee, Blob, BlobSidecar (packed storage
+  beyond 512 words: need loop induction over the array model), Validator (a
+  boolean inside an unaligned record), the 21 variable-size names, and all roots.
+* Root equality is blocked at one point, recorded with measurements: the SHA
+  function-level bridge between the pinned package's `fips.bend` and the vendored
+  one is proved (`proofs/obj/sha_bridge.bend`), but the checker normalizes every
+  checked type eagerly and without sharing: `{VF.extension(k, h) == VF.extension(k, h)}`
+  with h a free list checks in 0.3 s (k=8), 2.5 s (k=12), 71 s (k=16) and not
+  within 120 s (k=20), about x28 per four rounds. Both the package's packed
+  specification and the vendored spec fix 48 rounds, so any statement that
+  mentions the 48-round schedule - which the 64-byte link `hash_pair == FIPS on
+  64 bytes` must - is out of reach for this checker. No root law is claimed.
+* The public encoder is `<Name>_serialize -> O.Encoded{ok, bytes}`: it refuses
+  representable-but-invalid objects (scalars out of range, bits or bytes set
+  past a length, lengths over limits or not whole elements, storage too small
+  for a length, empty boxes) instead of masking or merging them. For the 74
+  Data names the law `serialize = valid ? encoded(encode) : refused` is checked
+  (proofs/obj/serialize_*.bend). For the linear names the check is fused into
+  the writers (codegen/generate.py `emit_putk`) and is covered by native
+  regressions (tests_generated/invalid_objects.py) and the spectests, not yet by
+  a law equating the fused flag with `<p>_valid`.
 * `src/model.bend` is kept precisely because the frozen propositions are about
   it. Deleting it would delete checked coverage, which the operator instruction
   forbids until equivalent generated laws exist.
@@ -190,6 +231,25 @@ requires the law by name, which the generalised law satisfies.
    bit-level word lemmas that `proofs/word_*.bend` already provide for the
    existing limb code. This is the first real obstacle of the migration and it
    has not been started.
+
+   **Measured, 2026-09-22.** The obstacle is now demonstrated rather than
+   predicted, and it is larger than "needs the word lemmas":
+
+   * the kernel does no symbolic algebra on native `U32`. `((x & 255) & 255) ==
+     (x & 255)` does not check: `expected U32.and(U32.and(x, 255), 255)`,
+     `observed U32.and(x, 255)`. The `proofs/word_*` and `proofs/compact/bits`
+     lemmas are about the *specification's* bit-list `U32`, which is a
+     different type from the runtime's native word, so they do not transfer;
+   * there is no read-after-write law for `Array`. `Array.get(Array.set(a, i,
+     v), i)` does not reduce on a symbolic `a`, because `Array.size` is stuck.
+     Every statement of the form `store_index` needs exactly that lemma.
+
+   Neither can be added as an axiom (the objective forbids it), and neither is
+   derivable in the pinned kernel without induction over a symbolic tree. Until
+   one of them is available, a universal law about array-backed storage can
+   only be discharged where both sides reduce by computation - which is the
+   aligned fixed class that `proofs/obj/codec_*.bend` covers (70 of 109 names,
+   7 of 144 generic schemas, four laws each).
 2. The decoder must be rewritten in linear buffer-threading style, and the whole
    `proofs/cursor_*.bend` development (about 3,500 lines) restated over indices,
    because every one of its laws currently quantifies over a duplicable

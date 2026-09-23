@@ -224,3 +224,45 @@ compressed copy in evidence):
   exposes no heap counter, and patching the compiler or emitted C to add one is
   out of scope. Three samples per fixture per implementation on one shared
   machine. Memory figures were stable to within 0.3 MB.
+
+## 2026-09-23: native memory on stock Bend 2.0.25
+
+`native_bench/run.py` (the native step of `automation/native_memory_acceptance.py`)
+run directly on 2.0.25 with a fresh build, because the gate's earlier step
+`automation/acceptance.py` still compares the compiler against the 2.0.16 pin in
+the protected `automation/toolchain.json` and stops with "Pinned 2.0.16
+toolchain identity changed: bend" (see docs/TOOLCHAIN.md for the hash-only
+update). The gate's own per-sample conditions were applied to
+`build/native/comparison.json`: complete, 5 fixtures, 3 verified Bend samples
+each, `decode_overhead_bytes == max(0, peak - baseline)`, all <= 32,000,000.
+
+| fixture | Bend max decode overhead | Go max decode overhead |
+| --- | ---: | ---: |
+| BeaconState ssz_random case_0 | 6,209,536 | 3,571,712 |
+| case_1 | 6,340,608 | 3,637,248 |
+| case_2 | 5,767,168 | 3,407,872 |
+| case_3 | 6,422,528 | 3,555,328 |
+| case_4 | 6,193,152 | 3,768,320 |
+
+Worst Bend/Go ratio 1.8x; all 15 Bend samples verified and within the cap. The
+representation and residual-source analysis above is unchanged (same generated
+runtime; only the compiler moved).
+
+## 2026-09-23 (later): re-run after the checked encoder
+
+Same procedure as the previous section, fresh build of the final iteration-22
+runtime (fused validity in the encoder; decode path unchanged).
+`automation/native_memory_acceptance.py` again stops at its acceptance.py step
+("Pinned 2.0.16 toolchain identity changed: bend"); `native_bench/run.py`
+directly: complete, 5 fixtures, 3 verified samples per side each.
+Log: build/final/native_bench.log.
+
+| fixture | Bend max decode overhead | Go max decode overhead |
+| --- | ---: | ---: |
+| BeaconState ssz_random case_0 | 6,127,616 | 3,702,784 |
+| case_1 | 6,373,376 | 3,620,864 |
+| case_2 | 5,865,472 | 3,604,480 |
+| case_3 | 6,144,000 | 3,424,256 |
+| case_4 | 6,291,456 | 3,407,872 |
+
+Worst Bend overhead 6.37 MB (cap 32,000,000 B); worst Bend/Go ratio 1.8x.

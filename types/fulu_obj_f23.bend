@@ -48,19 +48,19 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 94: some_BeaconBlockBody(T.BeaconBlockBody_decode(buf, size))
     case 95: some_BeaconBlock(T.BeaconBlock_decode(buf, size))
     case _: (buf, None{})
-def enc_BlobIdentifier(+v: T.BlobIdentifier) -> Any & B.Buf: (A_BlobIdentifier{v}, T.BlobIdentifier_encode(v))
+def enc_BlobIdentifier(+v: T.BlobIdentifier) -> Any & B.Buf: (A_BlobIdentifier{v}, O.ser_out(T.BlobIdentifier_serialize(v)))
 def root_BlobIdentifier(+v: T.BlobIdentifier, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BlobIdentifier{v}, d))
 def force_BlobIdentifier(+v: T.BlobIdentifier) -> Any & U32: (A_BlobIdentifier{v}, T.BlobIdentifier_force(v))
-def enc_KZGCommitment(+v: T.Bytes48) -> Any & B.Buf: (A_KZGCommitment{v}, T.KZGCommitment_encode(v))
+def enc_KZGCommitment(+v: T.Bytes48) -> Any & B.Buf: (A_KZGCommitment{v}, O.ser_out(T.KZGCommitment_serialize(v)))
 def root_KZGCommitment(+v: T.Bytes48, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_KZGCommitment{v}, d))
 def force_KZGCommitment(+v: T.Bytes48) -> Any & U32: (A_KZGCommitment{v}, T.b48_force(v))
-def enc_BeaconBlockBody(pair: T.BeaconBlockBody & B.Buf) -> Any & B.Buf:
+def enc_BeaconBlockBody(pair: T.BeaconBlockBody & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_BeaconBlockBody{v}, out)
+  (A_BeaconBlockBody{v}, O.ser_out(out))
 def root_BeaconBlockBody(pair: B.Buf & (T.BeaconBlockBody & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -68,9 +68,9 @@ def root_BeaconBlockBody(pair: B.Buf & (T.BeaconBlockBody & D.Digest)) -> B.Buf 
 def force_BeaconBlockBody(pair: T.BeaconBlockBody & U32) -> Any & U32:
   (v, +x) = pair
   (A_BeaconBlockBody{v}, x)
-def enc_BeaconBlock(pair: T.BeaconBlock & B.Buf) -> Any & B.Buf:
+def enc_BeaconBlock(pair: T.BeaconBlock & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_BeaconBlock{v}, out)
+  (A_BeaconBlock{v}, O.ser_out(out))
 def root_BeaconBlock(pair: B.Buf & (T.BeaconBlock & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -92,8 +92,8 @@ def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_BlobIdentifier{+v}: enc_BlobIdentifier(v)
     case A_KZGCommitment{+v}: enc_KZGCommitment(v)
-    case A_BeaconBlockBody{v}: enc_BeaconBlockBody(T.BeaconBlockBody_encode(v))
-    case A_BeaconBlock{v}: enc_BeaconBlock(T.BeaconBlock_encode(v))
+    case A_BeaconBlockBody{v}: enc_BeaconBlockBody(T.BeaconBlockBody_serialize(v))
+    case A_BeaconBlock{v}: enc_BeaconBlock(T.BeaconBlock_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -109,6 +109,13 @@ def force(a: Any) -> Any & U32:
     case A_BeaconBlockBody{v}: force_BeaconBlockBody(T.BeaconBlockBody_force(v))
     case A_BeaconBlock{v}: force_BeaconBlock(T.BeaconBlock_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_BlobIdentifier{+v}: T.BlobIdentifier_dump(v, t)
+    case A_KZGCommitment{+v}: T.b48_dump(v, t)
+    case A_BeaconBlockBody{v}: T.BeaconBlockBody_dump(v, t)
+    case A_BeaconBlock{v}: T.BeaconBlock_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

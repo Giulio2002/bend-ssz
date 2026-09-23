@@ -120,62 +120,62 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 10: some_Bytes8(T.Bytes8_decode(buf, size))
     case 11: some_Bytes20(T.Bytes20_decode(buf, size))
     case _: (buf, None{})
-def enc_boolean(+v: Bool) -> Any & B.Buf: (A_boolean{v}, T.boolean_encode(v))
+def enc_boolean(+v: Bool) -> Any & B.Buf: (A_boolean{v}, O.ser_out(T.boolean_serialize(v)))
 def root_boolean(+v: Bool, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_boolean{v}, d))
 def force_boolean(+v: Bool) -> Any & U32: (A_boolean{v}, T.bool_force(v))
-def enc_uint8(+v: U32) -> Any & B.Buf: (A_uint8{v}, T.uint8_encode(v))
+def enc_uint8(+v: U32) -> Any & B.Buf: (A_uint8{v}, O.ser_out(T.uint8_serialize(v)))
 def root_uint8(+v: U32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_uint8{v}, d))
 def force_uint8(+v: U32) -> Any & U32: (A_uint8{v}, T.u8_force(v))
-def enc_uint32(+v: U32) -> Any & B.Buf: (A_uint32{v}, T.uint32_encode(v))
+def enc_uint32(+v: U32) -> Any & B.Buf: (A_uint32{v}, O.ser_out(T.uint32_serialize(v)))
 def root_uint32(+v: U32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_uint32{v}, d))
 def force_uint32(+v: U32) -> Any & U32: (A_uint32{v}, T.u32_force(v))
-def enc_uint64(+v: O.U64) -> Any & B.Buf: (A_uint64{v}, T.uint64_encode(v))
+def enc_uint64(+v: O.U64) -> Any & B.Buf: (A_uint64{v}, O.ser_out(T.uint64_serialize(v)))
 def root_uint64(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_uint64{v}, d))
 def force_uint64(+v: O.U64) -> Any & U32: (A_uint64{v}, T.u64_force(v))
-def enc_uint256(+v: T.Uint256) -> Any & B.Buf: (A_uint256{v}, T.uint256_encode(v))
+def enc_uint256(+v: T.Uint256) -> Any & B.Buf: (A_uint256{v}, O.ser_out(T.uint256_serialize(v)))
 def root_uint256(+v: T.Uint256, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_uint256{v}, d))
 def force_uint256(+v: T.Uint256) -> Any & U32: (A_uint256{v}, T.u256_force(v))
-def enc_Bytes1(+v: T.Bytes1) -> Any & B.Buf: (A_Bytes1{v}, T.Bytes1_encode(v))
+def enc_Bytes1(+v: T.Bytes1) -> Any & B.Buf: (A_Bytes1{v}, O.ser_out(T.Bytes1_serialize(v)))
 def root_Bytes1(+v: T.Bytes1, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Bytes1{v}, d))
 def force_Bytes1(+v: T.Bytes1) -> Any & U32: (A_Bytes1{v}, T.b1_force(v))
-def enc_Bytes4(+v: T.Bytes4) -> Any & B.Buf: (A_Bytes4{v}, T.Bytes4_encode(v))
+def enc_Bytes4(+v: T.Bytes4) -> Any & B.Buf: (A_Bytes4{v}, O.ser_out(T.Bytes4_serialize(v)))
 def root_Bytes4(+v: T.Bytes4, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Bytes4{v}, d))
 def force_Bytes4(+v: T.Bytes4) -> Any & U32: (A_Bytes4{v}, T.b4_force(v))
-def enc_Bytes32(+v: T.Bytes32) -> Any & B.Buf: (A_Bytes32{v}, T.Bytes32_encode(v))
+def enc_Bytes32(+v: T.Bytes32) -> Any & B.Buf: (A_Bytes32{v}, O.ser_out(T.Bytes32_serialize(v)))
 def root_Bytes32(+v: T.Bytes32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Bytes32{v}, d))
 def force_Bytes32(+v: T.Bytes32) -> Any & U32: (A_Bytes32{v}, T.b32_force(v))
-def enc_Bytes48(+v: T.Bytes48) -> Any & B.Buf: (A_Bytes48{v}, T.Bytes48_encode(v))
+def enc_Bytes48(+v: T.Bytes48) -> Any & B.Buf: (A_Bytes48{v}, O.ser_out(T.Bytes48_serialize(v)))
 def root_Bytes48(+v: T.Bytes48, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Bytes48{v}, d))
 def force_Bytes48(+v: T.Bytes48) -> Any & U32: (A_Bytes48{v}, T.b48_force(v))
-def enc_Bytes96(+v: T.Bytes96) -> Any & B.Buf: (A_Bytes96{v}, T.Bytes96_encode(v))
+def enc_Bytes96(+v: T.Bytes96) -> Any & B.Buf: (A_Bytes96{v}, O.ser_out(T.Bytes96_serialize(v)))
 def root_Bytes96(+v: T.Bytes96, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Bytes96{v}, d))
 def force_Bytes96(+v: T.Bytes96) -> Any & U32: (A_Bytes96{v}, T.b96_force(v))
-def enc_Bytes8(+v: T.Bytes8) -> Any & B.Buf: (A_Bytes8{v}, T.Bytes8_encode(v))
+def enc_Bytes8(+v: T.Bytes8) -> Any & B.Buf: (A_Bytes8{v}, O.ser_out(T.Bytes8_serialize(v)))
 def root_Bytes8(+v: T.Bytes8, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Bytes8{v}, d))
 def force_Bytes8(+v: T.Bytes8) -> Any & U32: (A_Bytes8{v}, T.b8_force(v))
-def enc_Bytes20(+v: T.Bytes20) -> Any & B.Buf: (A_Bytes20{v}, T.Bytes20_encode(v))
+def enc_Bytes20(+v: T.Bytes20) -> Any & B.Buf: (A_Bytes20{v}, O.ser_out(T.Bytes20_serialize(v)))
 def root_Bytes20(+v: T.Bytes20, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Bytes20{v}, d))
@@ -235,6 +235,21 @@ def force(a: Any) -> Any & U32:
     case A_Bytes8{+v}: force_Bytes8(v)
     case A_Bytes20{+v}: force_Bytes20(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_boolean{+v}: T.bool_dump(v, t)
+    case A_uint8{+v}: T.u8_dump(v, t)
+    case A_uint32{+v}: T.u32_dump(v, t)
+    case A_uint64{+v}: T.u64_dump(v, t)
+    case A_uint256{+v}: T.u256_dump(v, t)
+    case A_Bytes1{+v}: T.b1_dump(v, t)
+    case A_Bytes4{+v}: T.b4_dump(v, t)
+    case A_Bytes32{+v}: T.b32_dump(v, t)
+    case A_Bytes48{+v}: T.b48_dump(v, t)
+    case A_Bytes96{+v}: T.b96_dump(v, t)
+    case A_Bytes8{+v}: T.b8_dump(v, t)
+    case A_Bytes20{+v}: T.b20_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

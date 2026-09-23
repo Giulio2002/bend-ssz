@@ -61,58 +61,58 @@ def v4_b32_write_rejected(ws: Array<U32>, +n: U32, +i: U32, +v: T.Bytes32)
   {==}
 
 # ---- l16_ProposerSlashing ----
-def l16_ProposerSlashing_write_rejected(arr: Array<T.ProposerSlashing>, +n: U32, +i: U32, v: T.ProposerSlashing)
+def l16_ProposerSlashing_write_rejected(arr: Array<O.Boxed<T.ProposerSlashing>>, +n: U32, +i: U32, v: T.ProposerSlashing)
     -> {T.l16_ProposerSlashing_put_in(False{}, arr, n, i, v) == (T.l16_ProposerSlashing_Seq{arr, n}, False{}) : T.l16_ProposerSlashing_Seq & Bool}:
   {==}
-def l16_ProposerSlashing_write_keeps_length(arr: Array<T.ProposerSlashing>, +n: U32, +i: U32, v: T.ProposerSlashing)
+def l16_ProposerSlashing_write_keeps_length(arr: Array<O.Boxed<T.ProposerSlashing>>, +n: U32, +i: U32, v: T.ProposerSlashing)
     -> {T.l16_ProposerSlashing_len(Pair.fst(T.l16_ProposerSlashing_Seq, Bool, T.l16_ProposerSlashing_put_in(True{}, arr, n, i, v))) == (Pair.fst(T.l16_ProposerSlashing_Seq, Bool, T.l16_ProposerSlashing_put_in(True{}, arr, n, i, v)), n) : T.l16_ProposerSlashing_Seq & U32}:
   {==}
-def l16_ProposerSlashing_append_rejected(arr: Array<T.ProposerSlashing>, +n: U32, v: T.ProposerSlashing)
+def l16_ProposerSlashing_append_rejected(arr: Array<O.Boxed<T.ProposerSlashing>>, +n: U32, v: T.ProposerSlashing)
     -> {T.l16_ProposerSlashing_app_in(False{}, arr, n, v) == (T.l16_ProposerSlashing_Seq{arr, n}, False{}) : T.l16_ProposerSlashing_Seq & Bool}:
   {==}
-def l16_ProposerSlashing_append_length(arr: Array<T.ProposerSlashing>, +n: U32, v: T.ProposerSlashing)
+def l16_ProposerSlashing_append_length(arr: Array<O.Boxed<T.ProposerSlashing>>, +n: U32, v: T.ProposerSlashing)
     -> {T.l16_ProposerSlashing_len(Pair.fst(T.l16_ProposerSlashing_Seq, Bool, T.l16_ProposerSlashing_app_in(True{}, arr, n, v))) == (Pair.fst(T.l16_ProposerSlashing_Seq, Bool, T.l16_ProposerSlashing_app_in(True{}, arr, n, v)), (n + 1 : U32)) : T.l16_ProposerSlashing_Seq & U32}:
   {==}
 
 # ---- l1_AttesterSlashing ----
-def l1_AttesterSlashing_write_rejected(arr: Array<T.AttesterSlashing>, +n: U32, +i: U32, v: T.AttesterSlashing)
+def l1_AttesterSlashing_write_rejected(arr: Array<O.Boxed<T.AttesterSlashing>>, +n: U32, +i: U32, v: T.AttesterSlashing)
     -> {T.l1_AttesterSlashing_put_in(False{}, arr, n, i, v) == (T.l1_AttesterSlashing_Seq{arr, n}, False{}) : T.l1_AttesterSlashing_Seq & Bool}:
   {==}
-def l1_AttesterSlashing_write_keeps_length(arr: Array<T.AttesterSlashing>, +n: U32, +i: U32, v: T.AttesterSlashing)
+def l1_AttesterSlashing_write_keeps_length(arr: Array<O.Boxed<T.AttesterSlashing>>, +n: U32, +i: U32, v: T.AttesterSlashing)
     -> {T.l1_AttesterSlashing_len(Pair.fst(T.l1_AttesterSlashing_Seq, Bool, T.l1_AttesterSlashing_put_in(True{}, arr, n, i, v))) == (Pair.fst(T.l1_AttesterSlashing_Seq, Bool, T.l1_AttesterSlashing_put_in(True{}, arr, n, i, v)), n) : T.l1_AttesterSlashing_Seq & U32}:
   {==}
-def l1_AttesterSlashing_append_rejected(arr: Array<T.AttesterSlashing>, +n: U32, v: T.AttesterSlashing)
+def l1_AttesterSlashing_append_rejected(arr: Array<O.Boxed<T.AttesterSlashing>>, +n: U32, v: T.AttesterSlashing)
     -> {T.l1_AttesterSlashing_app_in(False{}, arr, n, v) == (T.l1_AttesterSlashing_Seq{arr, n}, False{}) : T.l1_AttesterSlashing_Seq & Bool}:
   {==}
-def l1_AttesterSlashing_append_length(arr: Array<T.AttesterSlashing>, +n: U32, v: T.AttesterSlashing)
+def l1_AttesterSlashing_append_length(arr: Array<O.Boxed<T.AttesterSlashing>>, +n: U32, v: T.AttesterSlashing)
     -> {T.l1_AttesterSlashing_len(Pair.fst(T.l1_AttesterSlashing_Seq, Bool, T.l1_AttesterSlashing_app_in(True{}, arr, n, v))) == (Pair.fst(T.l1_AttesterSlashing_Seq, Bool, T.l1_AttesterSlashing_app_in(True{}, arr, n, v)), (n + 1 : U32)) : T.l1_AttesterSlashing_Seq & U32}:
   {==}
 
 # ---- l8_Attestation ----
-def l8_Attestation_write_rejected(arr: Array<T.Attestation>, +n: U32, +i: U32, v: T.Attestation)
+def l8_Attestation_write_rejected(arr: Array<O.Boxed<T.Attestation>>, +n: U32, +i: U32, v: T.Attestation)
     -> {T.l8_Attestation_put_in(False{}, arr, n, i, v) == (T.l8_Attestation_Seq{arr, n}, False{}) : T.l8_Attestation_Seq & Bool}:
   {==}
-def l8_Attestation_write_keeps_length(arr: Array<T.Attestation>, +n: U32, +i: U32, v: T.Attestation)
+def l8_Attestation_write_keeps_length(arr: Array<O.Boxed<T.Attestation>>, +n: U32, +i: U32, v: T.Attestation)
     -> {T.l8_Attestation_len(Pair.fst(T.l8_Attestation_Seq, Bool, T.l8_Attestation_put_in(True{}, arr, n, i, v))) == (Pair.fst(T.l8_Attestation_Seq, Bool, T.l8_Attestation_put_in(True{}, arr, n, i, v)), n) : T.l8_Attestation_Seq & U32}:
   {==}
-def l8_Attestation_append_rejected(arr: Array<T.Attestation>, +n: U32, v: T.Attestation)
+def l8_Attestation_append_rejected(arr: Array<O.Boxed<T.Attestation>>, +n: U32, v: T.Attestation)
     -> {T.l8_Attestation_app_in(False{}, arr, n, v) == (T.l8_Attestation_Seq{arr, n}, False{}) : T.l8_Attestation_Seq & Bool}:
   {==}
-def l8_Attestation_append_length(arr: Array<T.Attestation>, +n: U32, v: T.Attestation)
+def l8_Attestation_append_length(arr: Array<O.Boxed<T.Attestation>>, +n: U32, v: T.Attestation)
     -> {T.l8_Attestation_len(Pair.fst(T.l8_Attestation_Seq, Bool, T.l8_Attestation_app_in(True{}, arr, n, v))) == (Pair.fst(T.l8_Attestation_Seq, Bool, T.l8_Attestation_app_in(True{}, arr, n, v)), (n + 1 : U32)) : T.l8_Attestation_Seq & U32}:
   {==}
 
 # ---- l16_Deposit ----
-def l16_Deposit_write_rejected(arr: Array<T.Deposit>, +n: U32, +i: U32, v: T.Deposit)
+def l16_Deposit_write_rejected(arr: Array<O.Boxed<T.Deposit>>, +n: U32, +i: U32, v: T.Deposit)
     -> {T.l16_Deposit_put_in(False{}, arr, n, i, v) == (T.l16_Deposit_Seq{arr, n}, False{}) : T.l16_Deposit_Seq & Bool}:
   {==}
-def l16_Deposit_write_keeps_length(arr: Array<T.Deposit>, +n: U32, +i: U32, v: T.Deposit)
+def l16_Deposit_write_keeps_length(arr: Array<O.Boxed<T.Deposit>>, +n: U32, +i: U32, v: T.Deposit)
     -> {T.l16_Deposit_len(Pair.fst(T.l16_Deposit_Seq, Bool, T.l16_Deposit_put_in(True{}, arr, n, i, v))) == (Pair.fst(T.l16_Deposit_Seq, Bool, T.l16_Deposit_put_in(True{}, arr, n, i, v)), n) : T.l16_Deposit_Seq & U32}:
   {==}
-def l16_Deposit_append_rejected(arr: Array<T.Deposit>, +n: U32, v: T.Deposit)
+def l16_Deposit_append_rejected(arr: Array<O.Boxed<T.Deposit>>, +n: U32, v: T.Deposit)
     -> {T.l16_Deposit_app_in(False{}, arr, n, v) == (T.l16_Deposit_Seq{arr, n}, False{}) : T.l16_Deposit_Seq & Bool}:
   {==}
-def l16_Deposit_append_length(arr: Array<T.Deposit>, +n: U32, v: T.Deposit)
+def l16_Deposit_append_length(arr: Array<O.Boxed<T.Deposit>>, +n: U32, v: T.Deposit)
     -> {T.l16_Deposit_len(Pair.fst(T.l16_Deposit_Seq, Bool, T.l16_Deposit_app_in(True{}, arr, n, v))) == (Pair.fst(T.l16_Deposit_Seq, Bool, T.l16_Deposit_app_in(True{}, arr, n, v)), (n + 1 : U32)) : T.l16_Deposit_Seq & U32}:
   {==}
 

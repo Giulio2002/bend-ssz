@@ -48,9 +48,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 50: some_SignedAggregateAndProof(T.SignedAggregateAndProof_decode(buf, size))
     case 51: some_PendingAttestation(T.PendingAttestation_decode(buf, size))
     case _: (buf, None{})
-def enc_Attestation(pair: T.Attestation & B.Buf) -> Any & B.Buf:
+def enc_Attestation(pair: T.Attestation & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Attestation{v}, out)
+  (A_Attestation{v}, O.ser_out(out))
 def root_Attestation(pair: B.Buf & (T.Attestation & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -58,9 +58,9 @@ def root_Attestation(pair: B.Buf & (T.Attestation & D.Digest)) -> B.Buf & (Any &
 def force_Attestation(pair: T.Attestation & U32) -> Any & U32:
   (v, +x) = pair
   (A_Attestation{v}, x)
-def enc_AggregateAndProof(pair: T.AggregateAndProof & B.Buf) -> Any & B.Buf:
+def enc_AggregateAndProof(pair: T.AggregateAndProof & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_AggregateAndProof{v}, out)
+  (A_AggregateAndProof{v}, O.ser_out(out))
 def root_AggregateAndProof(pair: B.Buf & (T.AggregateAndProof & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -68,9 +68,9 @@ def root_AggregateAndProof(pair: B.Buf & (T.AggregateAndProof & D.Digest)) -> B.
 def force_AggregateAndProof(pair: T.AggregateAndProof & U32) -> Any & U32:
   (v, +x) = pair
   (A_AggregateAndProof{v}, x)
-def enc_SignedAggregateAndProof(pair: T.SignedAggregateAndProof & B.Buf) -> Any & B.Buf:
+def enc_SignedAggregateAndProof(pair: T.SignedAggregateAndProof & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_SignedAggregateAndProof{v}, out)
+  (A_SignedAggregateAndProof{v}, O.ser_out(out))
 def root_SignedAggregateAndProof(pair: B.Buf & (T.SignedAggregateAndProof & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -78,9 +78,9 @@ def root_SignedAggregateAndProof(pair: B.Buf & (T.SignedAggregateAndProof & D.Di
 def force_SignedAggregateAndProof(pair: T.SignedAggregateAndProof & U32) -> Any & U32:
   (v, +x) = pair
   (A_SignedAggregateAndProof{v}, x)
-def enc_PendingAttestation(pair: T.PendingAttestation & B.Buf) -> Any & B.Buf:
+def enc_PendingAttestation(pair: T.PendingAttestation & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_PendingAttestation{v}, out)
+  (A_PendingAttestation{v}, O.ser_out(out))
 def root_PendingAttestation(pair: B.Buf & (T.PendingAttestation & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -100,10 +100,10 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_Attestation{v}: enc_Attestation(T.Attestation_encode(v))
-    case A_AggregateAndProof{v}: enc_AggregateAndProof(T.AggregateAndProof_encode(v))
-    case A_SignedAggregateAndProof{v}: enc_SignedAggregateAndProof(T.SignedAggregateAndProof_encode(v))
-    case A_PendingAttestation{v}: enc_PendingAttestation(T.PendingAttestation_encode(v))
+    case A_Attestation{v}: enc_Attestation(T.Attestation_serialize(v))
+    case A_AggregateAndProof{v}: enc_AggregateAndProof(T.AggregateAndProof_serialize(v))
+    case A_SignedAggregateAndProof{v}: enc_SignedAggregateAndProof(T.SignedAggregateAndProof_serialize(v))
+    case A_PendingAttestation{v}: enc_PendingAttestation(T.PendingAttestation_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -119,6 +119,13 @@ def force(a: Any) -> Any & U32:
     case A_SignedAggregateAndProof{v}: force_SignedAggregateAndProof(T.SignedAggregateAndProof_force(v))
     case A_PendingAttestation{v}: force_PendingAttestation(T.PendingAttestation_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_Attestation{v}: T.Attestation_dump(v, t)
+    case A_AggregateAndProof{v}: T.AggregateAndProof_dump(v, t)
+    case A_SignedAggregateAndProof{v}: T.SignedAggregateAndProof_dump(v, t)
+    case A_PendingAttestation{v}: T.PendingAttestation_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

@@ -10,28 +10,28 @@ import ../../types/fulu_obj.bend as T
 # variable, so they hold for every object of the type.
 
 # ---- boolean (1 bytes) ----
-def boolean_true_encoded_size()
+def boolean_t_encoded_size()
     -> {B.size(T.boolean_encode(True{})) == (T.boolean_encode(True{}), 1) : B.Buf & U32}:
   {==}
-def boolean_true_roundtrip()
+def boolean_t_roundtrip()
     -> {T.boolean_decode(T.boolean_encode(True{}), 1) == (T.boolean_encode(True{}), Some{True{}}) : B.Buf & Maybe<&1, Bool>}:
   {==}
-def boolean_true_reject_short()
+def boolean_t_reject_short()
     -> {T.boolean_decode(T.boolean_encode(True{}), 0) == (T.boolean_encode(True{}), None{}) : B.Buf & Maybe<&1, Bool>}:
   {==}
-def boolean_true_reject_long()
+def boolean_t_reject_long()
     -> {T.boolean_decode(T.boolean_encode(True{}), 2) == (T.boolean_encode(True{}), None{}) : B.Buf & Maybe<&1, Bool>}:
   {==}
-def boolean_false_encoded_size()
+def boolean_f_encoded_size()
     -> {B.size(T.boolean_encode(False{})) == (T.boolean_encode(False{}), 1) : B.Buf & U32}:
   {==}
-def boolean_false_roundtrip()
+def boolean_f_roundtrip()
     -> {T.boolean_decode(T.boolean_encode(False{}), 1) == (T.boolean_encode(False{}), Some{False{}}) : B.Buf & Maybe<&1, Bool>}:
   {==}
-def boolean_false_reject_short()
+def boolean_f_reject_short()
     -> {T.boolean_decode(T.boolean_encode(False{}), 0) == (T.boolean_encode(False{}), None{}) : B.Buf & Maybe<&1, Bool>}:
   {==}
-def boolean_false_reject_long()
+def boolean_f_reject_long()
     -> {T.boolean_decode(T.boolean_encode(False{}), 2) == (T.boolean_encode(False{}), None{}) : B.Buf & Maybe<&1, Bool>}:
   {==}
 
@@ -61,6 +61,20 @@ def uint64_reject_short(+x0: U32, +x1: U32)
   {==}
 def uint64_reject_long(+x0: U32, +x1: U32)
     -> {T.uint64_decode(T.uint64_encode(O.U64{x0, x1}), 9) == (T.uint64_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+
+# ---- uint256 (32 bytes) ----
+def uint256_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {B.size(T.uint256_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})) == (T.uint256_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 32) : B.Buf & U32}:
+  {==}
+def uint256_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {T.uint256_decode(T.uint256_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 32) == (T.uint256_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), Some{T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}}) : B.Buf & Maybe<&1, T.Uint256>}:
+  {==}
+def uint256_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {T.uint256_decode(T.uint256_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 31) == (T.uint256_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), None{}) : B.Buf & Maybe<&1, T.Uint256>}:
+  {==}
+def uint256_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {T.uint256_decode(T.uint256_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 33) == (T.uint256_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), None{}) : B.Buf & Maybe<&1, T.Uint256>}:
   {==}
 
 # ---- Bytes4 (4 bytes) ----
@@ -173,19 +187,5 @@ def Epoch_reject_short(+x0: U32, +x1: U32)
   {==}
 def Epoch_reject_long(+x0: U32, +x1: U32)
     -> {T.Epoch_decode(T.Epoch_encode(O.U64{x0, x1}), 9) == (T.Epoch_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-
-# ---- Gwei (8 bytes) ----
-def Gwei_encoded_size(+x0: U32, +x1: U32)
-    -> {B.size(T.Gwei_encode(O.U64{x0, x1})) == (T.Gwei_encode(O.U64{x0, x1}), 8) : B.Buf & U32}:
-  {==}
-def Gwei_roundtrip(+x0: U32, +x1: U32)
-    -> {T.Gwei_decode(T.Gwei_encode(O.U64{x0, x1}), 8) == (T.Gwei_encode(O.U64{x0, x1}), Some{O.U64{x0, x1}}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-def Gwei_reject_short(+x0: U32, +x1: U32)
-    -> {T.Gwei_decode(T.Gwei_encode(O.U64{x0, x1}), 7) == (T.Gwei_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-def Gwei_reject_long(+x0: U32, +x1: U32)
-    -> {T.Gwei_decode(T.Gwei_encode(O.U64{x0, x1}), 9) == (T.Gwei_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
   {==}
 

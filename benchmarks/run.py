@@ -84,6 +84,15 @@ CONTRACT = json.loads((ROOT / 'automation/performance_contract.json').read_text(
 OPERATIONS = ['deserialize', 'serialize', 'hash_tree_root']
 
 
+def bend_version():
+    # 2.0.25 answers `bend version`; 2.0.16 answered `bend --version`
+    for flag in ('version', '--version'):
+        r = subprocess.run([BEND, flag], cwd=ROOT, env=ENV, text=True, capture_output=True)
+        if r.returncode == 0 and r.stdout.startswith('bend '):
+            return r.stdout.strip()
+    raise SystemExit('cannot determine the Bend compiler version')
+
+
 def sh(command, cwd=ROOT, env=ENV):
     result = subprocess.run(command, cwd=cwd, env=env, text=True, capture_output=True)
     if result.returncode:
@@ -97,7 +106,6 @@ def sh(command, cwd=ROOT, env=ENV):
 # for the verification pass).
 MODES = {'deserialize': '1', 'serialize': '2', 'hash_tree_root': '3'}
 GROUPS = json.loads((ROOT / 'types/obj_groups.json').read_text()) if (ROOT / 'types/obj_groups.json').exists() else {}
-INDEX = json.loads((ROOT / 'build/cschema-index.json').read_text()) if (ROOT / 'build/cschema-index.json').exists() else []
 PY3 = '/opt/homebrew/bin/python3'   # the generator needs PyYAML
 COMPILE_CAP_BYTES = 6.5e9
 COMPILE_ATTEMPTS = 4
@@ -152,11 +160,9 @@ def capped_compile(source, target, log):
 def build(log):
     OUT.mkdir(parents=True, exist_ok=True)
     INPUTS.mkdir(parents=True, exist_ok=True)
-    global INDEX, GROUPS
-    sh([sys.executable, 'tools/generate_cschema.py'])
+    global GROUPS
     sh([PY3, 'codegen/check_schema.py'])
     sh([PY3, 'codegen/generate.py'])
-    INDEX = json.loads((ROOT / 'build/cschema-index.json').read_text())
     GROUPS = json.loads((ROOT / 'types/obj_groups.json').read_text())
     sh([sys.executable, 'tools/generate_missing_go_types.py'])
     sh([sys.executable, 'tools/generate_bench_go.py'])
@@ -476,7 +482,7 @@ def main():
     environment = {
         'cpu': subprocess.run(['sysctl', '-n', 'machdep.cpu.brand_string'], capture_output=True, text=True).stdout.strip(),
         'os': platform.platform(),
-        'bend_compiler': sh([BEND, '--version']).strip() if shutil_which(BEND) else 'bend 2.0.16',
+        'bend_compiler': bend_version(),
         'reference_compiler': sh(['go', 'version']).strip(),
         'bend_flags': ' '.join(BEND_FLAGS) + ' (native C backend, release build)',
         'reference_flags': 'go build (release defaults), GOMAXPROCS=1',

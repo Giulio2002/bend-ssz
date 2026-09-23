@@ -49,6 +49,7 @@ are stated with the group that holds the field expanded and the other groups
 left as variables, which is what makes the untouched groups visible in the
 statement; the laws of the group records cover the fields within a group.
 """
+import itertools
 import sys
 from pathlib import Path
 
@@ -204,19 +205,19 @@ def collection_laws(w, s):
         w(f'    -> {{{p}_put_at(False{{}}, O.Words{{ws, n}}, i, v) == (O.Words{{ws, n}}, False{{}}) : O.Words & Bool}}:')
         w('  {==}')
     elif k == 'seq':
-        S, Re = f'T.{s.p}_Seq', qual(s.elem.rep)
-        w(f'def {L}_write_rejected(arr: Array<{Re}>, +n: U32, +i: U32, v: {Re})')
+        S, Re, Pe = f'T.{s.p}_Seq', qual(s.elem.rep), qual(s.pelem.rep)
+        w(f'def {L}_write_rejected(arr: Array<{Re}>, +n: U32, +i: U32, v: {Pe})')
         w(f'    -> {{{p}_put_in(False{{}}, arr, n, i, v) == ({S}{{arr, n}}, False{{}}) : {S} & Bool}}:')
         w('  {==}')
-        w(f'def {L}_write_keeps_length(arr: Array<{Re}>, +n: U32, +i: U32, v: {Re})')
+        w(f'def {L}_write_keeps_length(arr: Array<{Re}>, +n: U32, +i: U32, v: {Pe})')
         w(f'    -> {{{p}_len(Pair.fst({S}, Bool, {p}_put_in(True{{}}, arr, n, i, v)))'
           f' == (Pair.fst({S}, Bool, {p}_put_in(True{{}}, arr, n, i, v)), n) : {S} & U32}}:')
         w('  {==}')
         if t.kind == 'list':
-            w(f'def {L}_append_rejected(arr: Array<{Re}>, +n: U32, v: {Re})')
+            w(f'def {L}_append_rejected(arr: Array<{Re}>, +n: U32, v: {Pe})')
             w(f'    -> {{{p}_app_in(False{{}}, arr, n, v) == ({S}{{arr, n}}, False{{}}) : {S} & Bool}}:')
             w('  {==}')
-            w(f'def {L}_append_length(arr: Array<{Re}>, +n: U32, v: {Re})')
+            w(f'def {L}_append_length(arr: Array<{Re}>, +n: U32, v: {Pe})')
             w(f'    -> {{{p}_len(Pair.fst({S}, Bool, {p}_app_in(True{{}}, arr, n, v)))'
               f' == (Pair.fst({S}, Bool, {p}_app_in(True{{}}, arr, n, v)), (n + 1 : U32)) : {S} & U32}}:')
             w('  {==}')
@@ -240,28 +241,33 @@ def word_aligned(t):
     return False
 
 
-def value_term(g, t, c):
+def value_term(g, t, c, bits):
     """A value of this shape built from fresh variables, one per stored word.
 
     A law stated over a variable of a record type cannot reduce: the encoder
     has to take the record apart, and a variable does not. Building the value
     from its words instead gives the checker something to compute with, and the
     statement still quantifies over every object of the type, because every
-    object is that constructor applied to some words.
+    object is that constructor applied to some words. A boolean leaf has no
+    word to quantify over and only two values, so `bits` supplies one of them
+    and the caller emits the law once for each combination - which is the whole
+    type, not a sample of it.
     """
     s = g.shape(t)
+    if s.kind == 'bool':
+        return next(bits) + '{}', []
     if s.kind == 'u32':
         return f'x{next(c)}', [(f'x{next(c) - 1}', 'U32')]
     if s.kind == 'u64':
         a, b = f'x{next(c)}', f'x{next(c)}'
         return f'O.U64{{{a}, {b}}}', [(a, 'U32'), (b, 'U32')]
-    if s.kind == 'rec':
+    if s.kind in ('rec', 'uwide'):
         vs = [f'x{next(c)}' for _ in range(s.nw)]
         return f'T.{s.rep}{{' + ', '.join(vs) + '}', [(v, 'U32') for v in vs]
     if s.kind == 'container':
         terms, params = [], []
         for _, ft in t.fields:
-            term, ps = value_term(g, ft, c)
+            term, ps = value_term(g, ft, c, bits)
             terms.append(term)
             params += ps
         return f'T.{s.t.name}{{' + ', '.join(terms) + '}', params
@@ -269,34 +275,51 @@ def value_term(g, t, c):
 
 
 def buildable(g, t):
-    """Can a value of this shape be built from word variables?"""
+    """Can a value of this shape be built from word variables?
+
+    Everything stored as words in the object: the scalars, the word records
+    (byte vectors up to 256 bytes, bit vectors, the wide uints) and containers
+    of those. A shape backed by an `Array` (`O.Words`, a sequence) is not: the
+    only way to build one is `Array.new`, which fills every element with the
+    same value, and a law stated over an all-equal array would be a law about
+    a narrower domain than the type.
+    """
     s = g.shape(t)
-    if s.kind in ('u32', 'u64', 'rec'):
-        return True
-    if s.kind == 'bool':
+    if s.kind in ('u32', 'u64', 'rec', 'uwide', 'bool'):
         return True
     if s.kind == 'container':
         return all(buildable(g, ft) for _, ft in t.fields)
     return False
 
 
-def codec_laws(w, g, n, t, size):
-    """The three codec laws of one aligned fixed name.
+def bool_leaves(g, t):
+    """How many boolean leaves the shape has; each one doubles the cases."""
+    s = g.shape(t)
+    if s.kind == 'bool':
+        return 1
+    if s.kind == 'container':
+        return sum(bool_leaves(g, ft) for _, ft in t.fields)
+    return 0
 
-    `boolean` is the one shape whose domain is small enough to enumerate: its
-    two values are both closed terms, so the pair of laws covers the type
-    exactly, with no variable to quantify over.
+
+def codec_laws(w, g, n, t, size):
+    """The codec laws of one aligned fixed name.
+
+    A shape with `k` boolean leaves is stated `2^k` times, once for each
+    combination, because a boolean has no word to quantify over; `k` is 0 or 1
+    for every name in the schema, and the generator refuses more than three so
+    that the enumeration can never quietly become a sample.
     """
     sh = g.shape(t)
     R = qual(sh.rep)
-    if sh.kind == 'bool':
-        for b in ('True', 'False'):
-            codec_body(w, f'{n}_{b.lower()}', n, f'{b}{{}}', '', size, R)
-        return
-    c = iter(range(1000))
-    term, params = value_term(g, t, c)
-    sig = ', '.join(f'+{v}: {ty}' for v, ty in params)
-    codec_body(w, n, n, term, sig, size, R)
+    k = bool_leaves(g, t)
+    if k > 3:
+        raise ValueError(f'{n}: {k} boolean leaves is too many to enumerate')
+    for combo in itertools.product(('True', 'False'), repeat=k):
+        suffix = '' if k == 0 else '_' + ''.join(b[0].lower() for b in combo)
+        term, params = value_term(g, t, iter(range(1000)), iter(combo))
+        sig = ', '.join(f'+{v}: {ty}' for v, ty in params)
+        codec_body(w, n + suffix, n, term, sig, size, R)
 
 
 def codec_body(w, law, n, term, sig, size, R):
@@ -400,10 +423,43 @@ def main():
         w('')
     out[ROOT / 'proofs/obj/gcodec_0.bend'] = '\n'.join(lines) + '\n'
 
+    # The public checked encoder of every name whose object is Data: it
+    # encodes exactly when the generated validity predicate holds and refuses
+    # otherwise. Stated over a variable object, proved by rewriting with the
+    # hypothesis - the predicate is the one serialize itself evaluates.
+    ser = [(n, g.shape(t)) for n, t in names.items() if g.shape(t).data]
+    schunks = [ser[i:i + PER_FILE * 3] for i in range(0, len(ser), PER_FILE * 3)]
+    for k, chunk in enumerate(schunks):
+        lines = list(HEAD) + [
+            '# GENERATED by codegen/laws.py. Do not edit.',
+            '# Checked encoder laws: a valid object serializes to its encoding, an',
+            '# invalid representable one (uint8 above 255, bits past a byte vector,',
+            '# nested invalid fields) is refused. Stated over a variable object.', '']
+        w = lines.append
+        for n, sh in chunk:
+            R, pv = qual(sh.rep), f'T.{sh.p}_valid'
+            w(f'def {n}_serialize_valid(+o: {R}, e: {{{pv}(o) == True{{}} : Bool}})')
+            w(f'    -> {{T.{n}_serialize(o) == O.encoded(T.{n}_encode(o)) : O.Encoded}}:')
+            w(f'  %Equal.sym(Bool, {pv}(o), True{{}}, e) : {{T.{n}_ser_pick(_, o) == O.encoded(T.{n}_encode(o)) : O.Encoded}}')
+            w('  {==}')
+            w(f'def {n}_serialize_refused(+o: {R}, e: {{{pv}(o) == False{{}} : Bool}})')
+            w(f'    -> {{T.{n}_serialize(o) == O.refused() : O.Encoded}}:')
+            w(f'  %Equal.sym(Bool, {pv}(o), False{{}}, e) : {{T.{n}_ser_pick(_, o) == O.refused() : O.Encoded}}')
+            w('  {==}')
+        out[ROOT / f'proofs/obj/serialize_{k}.bend'] = '\n'.join(lines) + '\n'
+
+    orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('*.bend')
+                     if q not in out and q.name.split('_')[0] in ('fields', 'collections', 'codec', 'gcodec', 'serialize'))
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
-        print('stale generated laws: ' + ', '.join(stale) if stale else 'generated laws are current')
-        sys.exit(1 if stale else 0)
+        if stale or orphans:
+            print('stale generated laws: ' + ', '.join(stale + orphans))
+            sys.exit(1)
+        print('generated laws are current')
+        sys.exit(0)
+    for q in orphans:
+        (ROOT / q).unlink()
+        print('removed no-longer-generated ' + q)
     for p, t in out.items():
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(t)

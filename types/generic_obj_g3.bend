@@ -84,9 +84,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 30: some_GtC0FC7B166A(T.GtC0FC7B166A_decode(buf, size))
     case 31: some_GtC19E8053EB(T.GtC19E8053EB_decode(buf, size))
     case _: (buf, None{})
-def enc_GtBB42F83A45(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_GtBB42F83A45(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_GtBB42F83A45{v}, out)
+  (A_GtBB42F83A45{v}, O.ser_out(out))
 def root_GtBB42F83A45(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -94,9 +94,9 @@ def root_GtBB42F83A45(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Di
 def force_GtBB42F83A45(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_GtBB42F83A45{v}, x)
-def enc_Gt3E2A057F33(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_Gt3E2A057F33(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Gt3E2A057F33{v}, out)
+  (A_Gt3E2A057F33{v}, O.ser_out(out))
 def root_Gt3E2A057F33(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -104,9 +104,9 @@ def root_Gt3E2A057F33(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Di
 def force_Gt3E2A057F33(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_Gt3E2A057F33{v}, x)
-def enc_GtDE4B86A990(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_GtDE4B86A990(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_GtDE4B86A990{v}, out)
+  (A_GtDE4B86A990{v}, O.ser_out(out))
 def root_GtDE4B86A990(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -114,9 +114,9 @@ def root_GtDE4B86A990(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Di
 def force_GtDE4B86A990(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_GtDE4B86A990{v}, x)
-def enc_Gt28ED72E3EF(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_Gt28ED72E3EF(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Gt28ED72E3EF{v}, out)
+  (A_Gt28ED72E3EF{v}, O.ser_out(out))
 def root_Gt28ED72E3EF(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -124,9 +124,9 @@ def root_Gt28ED72E3EF(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Di
 def force_Gt28ED72E3EF(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_Gt28ED72E3EF{v}, x)
-def enc_GtB85E1BC748(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_GtB85E1BC748(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_GtB85E1BC748{v}, out)
+  (A_GtB85E1BC748{v}, O.ser_out(out))
 def root_GtB85E1BC748(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -134,9 +134,9 @@ def root_GtB85E1BC748(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Di
 def force_GtB85E1BC748(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_GtB85E1BC748{v}, x)
-def enc_Gt3429157FEB(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_Gt3429157FEB(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Gt3429157FEB{v}, out)
+  (A_Gt3429157FEB{v}, O.ser_out(out))
 def root_Gt3429157FEB(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -144,9 +144,9 @@ def root_Gt3429157FEB(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Di
 def force_Gt3429157FEB(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_Gt3429157FEB{v}, x)
-def enc_GtC0FC7B166A(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_GtC0FC7B166A(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_GtC0FC7B166A{v}, out)
+  (A_GtC0FC7B166A{v}, O.ser_out(out))
 def root_GtC0FC7B166A(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -154,9 +154,9 @@ def root_GtC0FC7B166A(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Di
 def force_GtC0FC7B166A(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_GtC0FC7B166A{v}, x)
-def enc_GtC19E8053EB(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_GtC19E8053EB(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_GtC19E8053EB{v}, out)
+  (A_GtC19E8053EB{v}, O.ser_out(out))
 def root_GtC19E8053EB(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -176,14 +176,14 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_GtBB42F83A45{v}: enc_GtBB42F83A45(T.GtBB42F83A45_encode(v))
-    case A_Gt3E2A057F33{v}: enc_Gt3E2A057F33(T.Gt3E2A057F33_encode(v))
-    case A_GtDE4B86A990{v}: enc_GtDE4B86A990(T.GtDE4B86A990_encode(v))
-    case A_Gt28ED72E3EF{v}: enc_Gt28ED72E3EF(T.Gt28ED72E3EF_encode(v))
-    case A_GtB85E1BC748{v}: enc_GtB85E1BC748(T.GtB85E1BC748_encode(v))
-    case A_Gt3429157FEB{v}: enc_Gt3429157FEB(T.Gt3429157FEB_encode(v))
-    case A_GtC0FC7B166A{v}: enc_GtC0FC7B166A(T.GtC0FC7B166A_encode(v))
-    case A_GtC19E8053EB{v}: enc_GtC19E8053EB(T.GtC19E8053EB_encode(v))
+    case A_GtBB42F83A45{v}: enc_GtBB42F83A45(T.GtBB42F83A45_serialize(v))
+    case A_Gt3E2A057F33{v}: enc_Gt3E2A057F33(T.Gt3E2A057F33_serialize(v))
+    case A_GtDE4B86A990{v}: enc_GtDE4B86A990(T.GtDE4B86A990_serialize(v))
+    case A_Gt28ED72E3EF{v}: enc_Gt28ED72E3EF(T.Gt28ED72E3EF_serialize(v))
+    case A_GtB85E1BC748{v}: enc_GtB85E1BC748(T.GtB85E1BC748_serialize(v))
+    case A_Gt3429157FEB{v}: enc_Gt3429157FEB(T.Gt3429157FEB_serialize(v))
+    case A_GtC0FC7B166A{v}: enc_GtC0FC7B166A(T.GtC0FC7B166A_serialize(v))
+    case A_GtC19E8053EB{v}: enc_GtC19E8053EB(T.GtC19E8053EB_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -207,6 +207,17 @@ def force(a: Any) -> Any & U32:
     case A_GtC0FC7B166A{v}: force_GtC0FC7B166A(T.v31_u8_force(v))
     case A_GtC19E8053EB{v}: force_GtC19E8053EB(T.v3_u8_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_GtBB42F83A45{v}: T.v5_u128_dump(v, t)
+    case A_Gt3E2A057F33{v}: T.v8_u128_dump(v, t)
+    case A_GtDE4B86A990{v}: T.pl_u8_dump(v, t)
+    case A_Gt28ED72E3EF{v}: T.v16_u8_dump(v, t)
+    case A_GtB85E1BC748{v}: T.v1_u8_dump(v, t)
+    case A_Gt3429157FEB{v}: T.v2_u8_dump(v, t)
+    case A_GtC0FC7B166A{v}: T.v31_u8_dump(v, t)
+    case A_GtC19E8053EB{v}: T.v3_u8_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

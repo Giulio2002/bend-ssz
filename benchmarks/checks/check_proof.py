@@ -7,11 +7,10 @@ the elapsed time and the checker's real exit code, and says whether the output
 contains "All terms check." with zero unsafe annotations. The full checker
 output goes to build/proofcheck/<name>.log; a one-line summary is appended to
 build/proofcheck/summary.log and printed. A lock file refuses a second
-concurrent checker. The process is killed when the footprint reaches the cap
-(default 6.5 GB), well below the 8 GB proof ceiling; a killed check is a failed
-check. The exit status of this script is 0 only for a real pass.
+concurrent checker. Proof time and memory are uncapped by explicit operator instruction.
+Legacy cap_bytes arguments are ignored; footprint and elapsed time remain recorded. The exit status of this script is 0 only for a real pass.
 """
-import ctypes, fcntl, os, re, signal, struct, subprocess, sys, time
+import ctypes, fcntl, hashlib, json, os, re, signal, struct, subprocess, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -27,9 +26,24 @@ def footprint(pid):
     return struct.unpack_from('Q', buf.raw, 72)[0]
 
 
+def pinned():
+    """The checker and Base must be the pinned ones (benchmarks/toolchain.json);
+    `bend update` replaces both in place, which once went unnoticed."""
+    pin = json.loads((ROOT / 'benchmarks/toolchain.json').read_text())
+    for part in ('bend', 'base'):
+        got = hashlib.sha256(Path(pin[part]['path']).read_bytes()).hexdigest()
+        if got != pin[part]['sha256']:
+            return f'{pin[part]["path"]} has sha256 {got}, pinned {pin[part]["sha256"]}'
+    return None
+
+
 def main():
     target = sys.argv[1]
-    cap = float(sys.argv[2]) if len(sys.argv) > 2 else 6.5e9
+    bad = pinned()
+    if bad:
+        print('refusing to check with an unpinned toolchain: ' + bad)
+        return 4
+    cap = float("inf")  # User override: proof memory is uncapped, including legacy arguments.
     OUT.mkdir(parents=True, exist_ok=True)
     lock = open(OUT / '.lock', 'w')
     try:
@@ -40,7 +54,11 @@ def main():
     name = target.replace('/', '_').removesuffix('.bend')
     log = OUT / (name + '.log')
     started = time.monotonic()
-    env = {**os.environ, 'BEND_NO_TELEMETRY': '1'}
+    # The checker is a Bun program; this JavaScriptCore heap hint makes its
+    # collector keep up (WORK_LOG "The proof checker's peak, and the heap
+    # hint"). Host configuration only; recorded in every summary line.
+    env = {**os.environ, 'BEND_NO_TELEMETRY': '1',
+           'BUN_JSC_forceRAMSize': os.environ.get('BUN_JSC_forceRAMSize', '3000000000')}
     with open(log, 'w') as out:
         p = subprocess.Popen([BEND, target], cwd=ROOT, env=env, stdout=out, stderr=subprocess.STDOUT)
         peak, killed = 0, False
@@ -59,7 +77,8 @@ def main():
     ok = p.returncode == 0 and checked and not unsafe and not killed
     line = (f'{time.strftime("%Y-%m-%d %H:%M:%S")} {target} exit={p.returncode} '
             f'peak={peak / 1e9:.2f}GB elapsed={elapsed:.1f}s all_terms_check={checked} '
-            f'unsafe={unsafe} killed={killed} -> {"PASS" if ok else "FAIL"}')
+            f'unsafe={unsafe} killed={killed} heap_hint={env["BUN_JSC_forceRAMSize"]} '
+            f'-> {"PASS" if ok else "FAIL"}')
     with open(OUT / 'summary.log', 'a') as s:
         s.write(line + '\n')
     print(line)

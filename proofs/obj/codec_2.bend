@@ -9,6 +9,34 @@ import ../../types/fulu_obj.bend as T
 # type's fixed size, and a buffer one byte short is rejected. Stated over a
 # variable, so they hold for every object of the type.
 
+# ---- CommitteeIndex (8 bytes) ----
+def CommitteeIndex_encoded_size(+x0: U32, +x1: U32)
+    -> {B.size(T.CommitteeIndex_encode(O.U64{x0, x1})) == (T.CommitteeIndex_encode(O.U64{x0, x1}), 8) : B.Buf & U32}:
+  {==}
+def CommitteeIndex_roundtrip(+x0: U32, +x1: U32)
+    -> {T.CommitteeIndex_decode(T.CommitteeIndex_encode(O.U64{x0, x1}), 8) == (T.CommitteeIndex_encode(O.U64{x0, x1}), Some{O.U64{x0, x1}}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+def CommitteeIndex_reject_short(+x0: U32, +x1: U32)
+    -> {T.CommitteeIndex_decode(T.CommitteeIndex_encode(O.U64{x0, x1}), 7) == (T.CommitteeIndex_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+def CommitteeIndex_reject_long(+x0: U32, +x1: U32)
+    -> {T.CommitteeIndex_decode(T.CommitteeIndex_encode(O.U64{x0, x1}), 9) == (T.CommitteeIndex_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+
+# ---- ValidatorIndex (8 bytes) ----
+def ValidatorIndex_encoded_size(+x0: U32, +x1: U32)
+    -> {B.size(T.ValidatorIndex_encode(O.U64{x0, x1})) == (T.ValidatorIndex_encode(O.U64{x0, x1}), 8) : B.Buf & U32}:
+  {==}
+def ValidatorIndex_roundtrip(+x0: U32, +x1: U32)
+    -> {T.ValidatorIndex_decode(T.ValidatorIndex_encode(O.U64{x0, x1}), 8) == (T.ValidatorIndex_encode(O.U64{x0, x1}), Some{O.U64{x0, x1}}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+def ValidatorIndex_reject_short(+x0: U32, +x1: U32)
+    -> {T.ValidatorIndex_decode(T.ValidatorIndex_encode(O.U64{x0, x1}), 7) == (T.ValidatorIndex_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+def ValidatorIndex_reject_long(+x0: U32, +x1: U32)
+    -> {T.ValidatorIndex_decode(T.ValidatorIndex_encode(O.U64{x0, x1}), 9) == (T.ValidatorIndex_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+
 # ---- PendingConsolidation (16 bytes) ----
 def PendingConsolidation_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
     -> {B.size(T.PendingConsolidation_encode(T.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}})) == (T.PendingConsolidation_encode(T.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}), 16) : B.Buf & U32}:
@@ -147,33 +175,5 @@ def BeaconBlockHeader_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: 
   {==}
 def BeaconBlockHeader_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32)
     -> {T.BeaconBlockHeader_decode(T.BeaconBlockHeader_encode(T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}), 113) == (T.BeaconBlockHeader_encode(T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}), None{}) : B.Buf & Maybe<&1, T.BeaconBlockHeader>}:
-  {==}
-
-# ---- SignedBeaconBlockHeader (208 bytes) ----
-def SignedBeaconBlockHeader_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32, +x46: U32, +x47: U32, +x48: U32, +x49: U32, +x50: U32, +x51: U32)
-    -> {B.size(T.SignedBeaconBlockHeader_encode(T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}})) == (T.SignedBeaconBlockHeader_encode(T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}), 208) : B.Buf & U32}:
-  {==}
-def SignedBeaconBlockHeader_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32, +x46: U32, +x47: U32, +x48: U32, +x49: U32, +x50: U32, +x51: U32)
-    -> {T.SignedBeaconBlockHeader_decode(T.SignedBeaconBlockHeader_encode(T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}), 208) == (T.SignedBeaconBlockHeader_encode(T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}), Some{T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}}) : B.Buf & Maybe<&1, T.SignedBeaconBlockHeader>}:
-  {==}
-def SignedBeaconBlockHeader_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32, +x46: U32, +x47: U32, +x48: U32, +x49: U32, +x50: U32, +x51: U32)
-    -> {T.SignedBeaconBlockHeader_decode(T.SignedBeaconBlockHeader_encode(T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}), 207) == (T.SignedBeaconBlockHeader_encode(T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}), None{}) : B.Buf & Maybe<&1, T.SignedBeaconBlockHeader>}:
-  {==}
-def SignedBeaconBlockHeader_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32, +x46: U32, +x47: U32, +x48: U32, +x49: U32, +x50: U32, +x51: U32)
-    -> {T.SignedBeaconBlockHeader_decode(T.SignedBeaconBlockHeader_encode(T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}), 209) == (T.SignedBeaconBlockHeader_encode(T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}), None{}) : B.Buf & Maybe<&1, T.SignedBeaconBlockHeader>}:
-  {==}
-
-# ---- Eth1Data (72 bytes) ----
-def Eth1Data_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32)
-    -> {B.size(T.Eth1Data_encode(T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}})) == (T.Eth1Data_encode(T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}), 72) : B.Buf & U32}:
-  {==}
-def Eth1Data_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32)
-    -> {T.Eth1Data_decode(T.Eth1Data_encode(T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}), 72) == (T.Eth1Data_encode(T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}), Some{T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}}) : B.Buf & Maybe<&1, T.Eth1Data>}:
-  {==}
-def Eth1Data_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32)
-    -> {T.Eth1Data_decode(T.Eth1Data_encode(T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}), 71) == (T.Eth1Data_encode(T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}), None{}) : B.Buf & Maybe<&1, T.Eth1Data>}:
-  {==}
-def Eth1Data_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32)
-    -> {T.Eth1Data_decode(T.Eth1Data_encode(T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}), 73) == (T.Eth1Data_encode(T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}), None{}) : B.Buf & Maybe<&1, T.Eth1Data>}:
   {==}
 

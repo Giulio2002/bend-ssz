@@ -48,22 +48,22 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 14: some_Gwei(T.Gwei_decode(buf, size))
     case 15: some_Hash32(T.Hash32_decode(buf, size))
     case _: (buf, None{})
-def enc_Slot(+v: O.U64) -> Any & B.Buf: (A_Slot{v}, T.Slot_encode(v))
+def enc_Slot(+v: O.U64) -> Any & B.Buf: (A_Slot{v}, O.ser_out(T.Slot_serialize(v)))
 def root_Slot(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Slot{v}, d))
 def force_Slot(+v: O.U64) -> Any & U32: (A_Slot{v}, T.u64_force(v))
-def enc_Epoch(+v: O.U64) -> Any & B.Buf: (A_Epoch{v}, T.Epoch_encode(v))
+def enc_Epoch(+v: O.U64) -> Any & B.Buf: (A_Epoch{v}, O.ser_out(T.Epoch_serialize(v)))
 def root_Epoch(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Epoch{v}, d))
 def force_Epoch(+v: O.U64) -> Any & U32: (A_Epoch{v}, T.u64_force(v))
-def enc_Gwei(+v: O.U64) -> Any & B.Buf: (A_Gwei{v}, T.Gwei_encode(v))
+def enc_Gwei(+v: O.U64) -> Any & B.Buf: (A_Gwei{v}, O.ser_out(T.Gwei_serialize(v)))
 def root_Gwei(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Gwei{v}, d))
 def force_Gwei(+v: O.U64) -> Any & U32: (A_Gwei{v}, T.u64_force(v))
-def enc_Hash32(+v: T.Bytes32) -> Any & B.Buf: (A_Hash32{v}, T.Hash32_encode(v))
+def enc_Hash32(+v: T.Bytes32) -> Any & B.Buf: (A_Hash32{v}, O.ser_out(T.Hash32_serialize(v)))
 def root_Hash32(+v: T.Bytes32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Hash32{v}, d))
@@ -99,6 +99,13 @@ def force(a: Any) -> Any & U32:
     case A_Gwei{+v}: force_Gwei(v)
     case A_Hash32{+v}: force_Hash32(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_Slot{+v}: T.u64_dump(v, t)
+    case A_Epoch{+v}: T.u64_dump(v, t)
+    case A_Gwei{+v}: T.u64_dump(v, t)
+    case A_Hash32{+v}: T.b32_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

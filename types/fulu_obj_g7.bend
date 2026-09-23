@@ -120,9 +120,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 94: some_BeaconBlockBody(T.BeaconBlockBody_decode(buf, size))
     case 95: some_BeaconBlock(T.BeaconBlock_decode(buf, size))
     case _: (buf, None{})
-def enc_BeaconState(pair: T.BeaconState & B.Buf) -> Any & B.Buf:
+def enc_BeaconState(pair: T.BeaconState & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_BeaconState{v}, out)
+  (A_BeaconState{v}, O.ser_out(out))
 def root_BeaconState(pair: B.Buf & (T.BeaconState & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -130,9 +130,9 @@ def root_BeaconState(pair: B.Buf & (T.BeaconState & D.Digest)) -> B.Buf & (Any &
 def force_BeaconState(pair: T.BeaconState & U32) -> Any & U32:
   (v, +x) = pair
   (A_BeaconState{v}, x)
-def enc_ExecutionBranch(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_ExecutionBranch(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ExecutionBranch{v}, out)
+  (A_ExecutionBranch{v}, O.ser_out(out))
 def root_ExecutionBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -140,9 +140,9 @@ def root_ExecutionBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D
 def force_ExecutionBranch(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_ExecutionBranch{v}, x)
-def enc_LightClientHeader(pair: T.LightClientHeader & B.Buf) -> Any & B.Buf:
+def enc_LightClientHeader(pair: T.LightClientHeader & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_LightClientHeader{v}, out)
+  (A_LightClientHeader{v}, O.ser_out(out))
 def root_LightClientHeader(pair: B.Buf & (T.LightClientHeader & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -150,9 +150,9 @@ def root_LightClientHeader(pair: B.Buf & (T.LightClientHeader & D.Digest)) -> B.
 def force_LightClientHeader(pair: T.LightClientHeader & U32) -> Any & U32:
   (v, +x) = pair
   (A_LightClientHeader{v}, x)
-def enc_LightClientOptimisticUpdate(pair: T.LightClientOptimisticUpdate & B.Buf) -> Any & B.Buf:
+def enc_LightClientOptimisticUpdate(pair: T.LightClientOptimisticUpdate & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_LightClientOptimisticUpdate{v}, out)
+  (A_LightClientOptimisticUpdate{v}, O.ser_out(out))
 def root_LightClientOptimisticUpdate(pair: B.Buf & (T.LightClientOptimisticUpdate & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -160,9 +160,9 @@ def root_LightClientOptimisticUpdate(pair: B.Buf & (T.LightClientOptimisticUpdat
 def force_LightClientOptimisticUpdate(pair: T.LightClientOptimisticUpdate & U32) -> Any & U32:
   (v, +x) = pair
   (A_LightClientOptimisticUpdate{v}, x)
-def enc_LightClientFinalityUpdate(pair: T.LightClientFinalityUpdate & B.Buf) -> Any & B.Buf:
+def enc_LightClientFinalityUpdate(pair: T.LightClientFinalityUpdate & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_LightClientFinalityUpdate{v}, out)
+  (A_LightClientFinalityUpdate{v}, O.ser_out(out))
 def root_LightClientFinalityUpdate(pair: B.Buf & (T.LightClientFinalityUpdate & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -170,9 +170,9 @@ def root_LightClientFinalityUpdate(pair: B.Buf & (T.LightClientFinalityUpdate & 
 def force_LightClientFinalityUpdate(pair: T.LightClientFinalityUpdate & U32) -> Any & U32:
   (v, +x) = pair
   (A_LightClientFinalityUpdate{v}, x)
-def enc_LightClientUpdate(pair: T.LightClientUpdate & B.Buf) -> Any & B.Buf:
+def enc_LightClientUpdate(pair: T.LightClientUpdate & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_LightClientUpdate{v}, out)
+  (A_LightClientUpdate{v}, O.ser_out(out))
 def root_LightClientUpdate(pair: B.Buf & (T.LightClientUpdate & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -180,9 +180,9 @@ def root_LightClientUpdate(pair: B.Buf & (T.LightClientUpdate & D.Digest)) -> B.
 def force_LightClientUpdate(pair: T.LightClientUpdate & U32) -> Any & U32:
   (v, +x) = pair
   (A_LightClientUpdate{v}, x)
-def enc_LightClientBootstrap(pair: T.LightClientBootstrap & B.Buf) -> Any & B.Buf:
+def enc_LightClientBootstrap(pair: T.LightClientBootstrap & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_LightClientBootstrap{v}, out)
+  (A_LightClientBootstrap{v}, O.ser_out(out))
 def root_LightClientBootstrap(pair: B.Buf & (T.LightClientBootstrap & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -190,24 +190,24 @@ def root_LightClientBootstrap(pair: B.Buf & (T.LightClientBootstrap & D.Digest))
 def force_LightClientBootstrap(pair: T.LightClientBootstrap & U32) -> Any & U32:
   (v, +x) = pair
   (A_LightClientBootstrap{v}, x)
-def enc_BlobIndex(+v: O.U64) -> Any & B.Buf: (A_BlobIndex{v}, T.BlobIndex_encode(v))
+def enc_BlobIndex(+v: O.U64) -> Any & B.Buf: (A_BlobIndex{v}, O.ser_out(T.BlobIndex_serialize(v)))
 def root_BlobIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BlobIndex{v}, d))
 def force_BlobIndex(+v: O.U64) -> Any & U32: (A_BlobIndex{v}, T.u64_force(v))
-def enc_BlobIdentifier(+v: T.BlobIdentifier) -> Any & B.Buf: (A_BlobIdentifier{v}, T.BlobIdentifier_encode(v))
+def enc_BlobIdentifier(+v: T.BlobIdentifier) -> Any & B.Buf: (A_BlobIdentifier{v}, O.ser_out(T.BlobIdentifier_serialize(v)))
 def root_BlobIdentifier(+v: T.BlobIdentifier, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BlobIdentifier{v}, d))
 def force_BlobIdentifier(+v: T.BlobIdentifier) -> Any & U32: (A_BlobIdentifier{v}, T.BlobIdentifier_force(v))
-def enc_KZGCommitment(+v: T.Bytes48) -> Any & B.Buf: (A_KZGCommitment{v}, T.KZGCommitment_encode(v))
+def enc_KZGCommitment(+v: T.Bytes48) -> Any & B.Buf: (A_KZGCommitment{v}, O.ser_out(T.KZGCommitment_serialize(v)))
 def root_KZGCommitment(+v: T.Bytes48, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_KZGCommitment{v}, d))
 def force_KZGCommitment(+v: T.Bytes48) -> Any & U32: (A_KZGCommitment{v}, T.b48_force(v))
-def enc_BeaconBlockBody(pair: T.BeaconBlockBody & B.Buf) -> Any & B.Buf:
+def enc_BeaconBlockBody(pair: T.BeaconBlockBody & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_BeaconBlockBody{v}, out)
+  (A_BeaconBlockBody{v}, O.ser_out(out))
 def root_BeaconBlockBody(pair: B.Buf & (T.BeaconBlockBody & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -215,9 +215,9 @@ def root_BeaconBlockBody(pair: B.Buf & (T.BeaconBlockBody & D.Digest)) -> B.Buf 
 def force_BeaconBlockBody(pair: T.BeaconBlockBody & U32) -> Any & U32:
   (v, +x) = pair
   (A_BeaconBlockBody{v}, x)
-def enc_BeaconBlock(pair: T.BeaconBlock & B.Buf) -> Any & B.Buf:
+def enc_BeaconBlock(pair: T.BeaconBlock & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_BeaconBlock{v}, out)
+  (A_BeaconBlock{v}, O.ser_out(out))
 def root_BeaconBlock(pair: B.Buf & (T.BeaconBlock & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -237,18 +237,18 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_BeaconState{v}: enc_BeaconState(T.BeaconState_encode(v))
-    case A_ExecutionBranch{v}: enc_ExecutionBranch(T.ExecutionBranch_encode(v))
-    case A_LightClientHeader{v}: enc_LightClientHeader(T.LightClientHeader_encode(v))
-    case A_LightClientOptimisticUpdate{v}: enc_LightClientOptimisticUpdate(T.LightClientOptimisticUpdate_encode(v))
-    case A_LightClientFinalityUpdate{v}: enc_LightClientFinalityUpdate(T.LightClientFinalityUpdate_encode(v))
-    case A_LightClientUpdate{v}: enc_LightClientUpdate(T.LightClientUpdate_encode(v))
-    case A_LightClientBootstrap{v}: enc_LightClientBootstrap(T.LightClientBootstrap_encode(v))
+    case A_BeaconState{v}: enc_BeaconState(T.BeaconState_serialize(v))
+    case A_ExecutionBranch{v}: enc_ExecutionBranch(T.ExecutionBranch_serialize(v))
+    case A_LightClientHeader{v}: enc_LightClientHeader(T.LightClientHeader_serialize(v))
+    case A_LightClientOptimisticUpdate{v}: enc_LightClientOptimisticUpdate(T.LightClientOptimisticUpdate_serialize(v))
+    case A_LightClientFinalityUpdate{v}: enc_LightClientFinalityUpdate(T.LightClientFinalityUpdate_serialize(v))
+    case A_LightClientUpdate{v}: enc_LightClientUpdate(T.LightClientUpdate_serialize(v))
+    case A_LightClientBootstrap{v}: enc_LightClientBootstrap(T.LightClientBootstrap_serialize(v))
     case A_BlobIndex{+v}: enc_BlobIndex(v)
     case A_BlobIdentifier{+v}: enc_BlobIdentifier(v)
     case A_KZGCommitment{+v}: enc_KZGCommitment(v)
-    case A_BeaconBlockBody{v}: enc_BeaconBlockBody(T.BeaconBlockBody_encode(v))
-    case A_BeaconBlock{v}: enc_BeaconBlock(T.BeaconBlock_encode(v))
+    case A_BeaconBlockBody{v}: enc_BeaconBlockBody(T.BeaconBlockBody_serialize(v))
+    case A_BeaconBlock{v}: enc_BeaconBlock(T.BeaconBlock_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -280,6 +280,21 @@ def force(a: Any) -> Any & U32:
     case A_BeaconBlockBody{v}: force_BeaconBlockBody(T.BeaconBlockBody_force(v))
     case A_BeaconBlock{v}: force_BeaconBlock(T.BeaconBlock_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_BeaconState{v}: T.BeaconState_dump(v, t)
+    case A_ExecutionBranch{v}: T.v4_b32_dump(v, t)
+    case A_LightClientHeader{v}: T.LightClientHeader_dump(v, t)
+    case A_LightClientOptimisticUpdate{v}: T.LightClientOptimisticUpdate_dump(v, t)
+    case A_LightClientFinalityUpdate{v}: T.LightClientFinalityUpdate_dump(v, t)
+    case A_LightClientUpdate{v}: T.LightClientUpdate_dump(v, t)
+    case A_LightClientBootstrap{v}: T.LightClientBootstrap_dump(v, t)
+    case A_BlobIndex{+v}: T.u64_dump(v, t)
+    case A_BlobIdentifier{+v}: T.BlobIdentifier_dump(v, t)
+    case A_KZGCommitment{+v}: T.b48_dump(v, t)
+    case A_BeaconBlockBody{v}: T.BeaconBlockBody_dump(v, t)
+    case A_BeaconBlock{v}: T.BeaconBlock_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

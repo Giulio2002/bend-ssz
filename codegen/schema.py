@@ -10,7 +10,6 @@ import re
 from dataclasses import dataclass, field
 from typing import List, Optional, Tuple
 
-import yaml
 
 
 class SchemaError(Exception):
@@ -188,6 +187,7 @@ class Resolver:
 
 
 def load(path):
+    import yaml  # only the YAML front end needs PyYAML
     with open(path) as f:
         doc = yaml.safe_load(f)
     if not isinstance(doc, dict) or set(doc) != {'constants', 'types'}:

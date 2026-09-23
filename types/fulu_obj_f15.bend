@@ -48,14 +48,14 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 62: some_DepositData(T.DepositData_decode(buf, size))
     case 63: some_Deposit(T.Deposit_decode(buf, size))
     case _: (buf, None{})
-def enc_PendingDeposit(+v: T.PendingDeposit) -> Any & B.Buf: (A_PendingDeposit{v}, T.PendingDeposit_encode(v))
+def enc_PendingDeposit(+v: T.PendingDeposit) -> Any & B.Buf: (A_PendingDeposit{v}, O.ser_out(T.PendingDeposit_serialize(v)))
 def root_PendingDeposit(+v: T.PendingDeposit, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_PendingDeposit{v}, d))
 def force_PendingDeposit(+v: T.PendingDeposit) -> Any & U32: (A_PendingDeposit{v}, T.PendingDeposit_force(v))
-def enc_SyncCommittee(pair: T.SyncCommittee & B.Buf) -> Any & B.Buf:
+def enc_SyncCommittee(pair: T.SyncCommittee & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_SyncCommittee{v}, out)
+  (A_SyncCommittee{v}, O.ser_out(out))
 def root_SyncCommittee(pair: B.Buf & (T.SyncCommittee & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -63,14 +63,14 @@ def root_SyncCommittee(pair: B.Buf & (T.SyncCommittee & D.Digest)) -> B.Buf & (A
 def force_SyncCommittee(pair: T.SyncCommittee & U32) -> Any & U32:
   (v, +x) = pair
   (A_SyncCommittee{v}, x)
-def enc_DepositData(+v: T.DepositData) -> Any & B.Buf: (A_DepositData{v}, T.DepositData_encode(v))
+def enc_DepositData(+v: T.DepositData) -> Any & B.Buf: (A_DepositData{v}, O.ser_out(T.DepositData_serialize(v)))
 def root_DepositData(+v: T.DepositData, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_DepositData{v}, d))
 def force_DepositData(+v: T.DepositData) -> Any & U32: (A_DepositData{v}, T.DepositData_force(v))
-def enc_Deposit(pair: T.Deposit & B.Buf) -> Any & B.Buf:
+def enc_Deposit(pair: T.Deposit & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Deposit{v}, out)
+  (A_Deposit{v}, O.ser_out(out))
 def root_Deposit(pair: B.Buf & (T.Deposit & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -91,9 +91,9 @@ def force_boxed(pair: Any & U32) -> Any & U32:
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_PendingDeposit{+v}: enc_PendingDeposit(v)
-    case A_SyncCommittee{v}: enc_SyncCommittee(T.SyncCommittee_encode(v))
+    case A_SyncCommittee{v}: enc_SyncCommittee(T.SyncCommittee_serialize(v))
     case A_DepositData{+v}: enc_DepositData(v)
-    case A_Deposit{v}: enc_Deposit(T.Deposit_encode(v))
+    case A_Deposit{v}: enc_Deposit(T.Deposit_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -109,6 +109,13 @@ def force(a: Any) -> Any & U32:
     case A_DepositData{+v}: force_DepositData(v)
     case A_Deposit{v}: force_Deposit(T.Deposit_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_PendingDeposit{+v}: T.PendingDeposit_dump(v, t)
+    case A_SyncCommittee{v}: T.SyncCommittee_dump(v, t)
+    case A_DepositData{+v}: T.DepositData_dump(v, t)
+    case A_Deposit{v}: T.Deposit_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

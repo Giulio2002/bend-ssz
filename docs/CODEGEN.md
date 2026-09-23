@@ -49,7 +49,10 @@ them, and every official case that uses one is an invalid case.
 ```
 
 Generation is deterministic: the same inputs give byte-identical outputs, and
-`--check` is the gate that the checked-in sources match the schema. A malformed
+`--check` is the gate that the checked-in sources match the schema. (The
+definition reorder walks callee names in sorted order; iterating a raw `set`
+there once made the order depend on Python's per-process hash seed. Checked with
+`PYTHONHASHSEED=1,2,3 generate.py --check`.) A malformed
 or unsupported YAML document raises `SchemaError` naming the offending type and
 expression; the generator never guesses a layout.
 
@@ -71,5 +74,62 @@ emits Bend source. Nothing is believed because the generator produced it:
 | --- | --- | --- |
 | `src/buffer.bend`, `src/obj.bend`, `src/merkle_fast.bend`, `src/digest.bend` | packed buffers, owning collections, streaming Merkleization, the pinned BendHub SHA-256 | shared runtime primitives; generating 109 copies of them would multiply the proof graph instead of sharing it. The operator requirement is explicit that codegen-only does not mean deleting reusable runtime support. |
 | `spec/*.bend` | the independent mathematical SSZ definitions | must stay independent of the generator, or the proofs would compare the implementation with itself |
-| `src/model.bend` and the list-based modules under it | the model the 29 frozen `END_TO_END` propositions are stated about, and the transport the 5,440 official cases run through in `tools/spectests.py` | removing them would delete checked propositions that the frozen acceptance gate requires, before equivalent generated laws exist. See `docs/LAW_API_MAP.md` and `WORK_LOG.md` for the exact remaining obligation. |
-| `src/cscan.bend`, `src/cschema.bend`, `src/ccompile.bend`, `src/croot.bend` | the compact window scanner and its schema compiler | `proofs/compact/sound.bend` is a *universal* checked soundness proof of this scanner. It is no longer a production entry point and no benchmark uses it; it is kept as proof-carrying reference code until the generated validators have their own universal proofs, because deleting it would delete proof coverage with nothing to replace it. |
+| `src/model.bend` and the list-based modules under it (`src/ssz.bend`, `types/fulu.bend`) | the model the 29 frozen `END_TO_END` and 13 `ROOT_DOMAIN` propositions are stated about, and the API the 51 protected Bun runtime tests exercise through `tools/generic_transport.ts` / `tools/primitive_backend.ts` | removing them would delete checked frozen propositions and break protected tests. They are **not** a production path and no longer carry the official cases: `tools/spectests.py` runs all 5,440 official cases natively through the generated programs (iteration 19). `tools/generic_transport.ts` accepts arbitrary schema descriptions at run time, which a per-schema generated API cannot, so it stays as the model's test transport. See `docs/LAW_API_MAP.md` for the remaining obligation. |
+
+Removed in iteration 20, because no production, measured or test entry point
+reached them any more: the compact window scanner `src/cscan.bend`, its schema
+compiler `src/cschema.bend`/`src/ccompile.bend`, the generated compact schema
+tables `types/{fulu,generic}_cschema{,_index}.bend` and `types/generic_spec.bend`,
+their generators `tools/generate_cschema{,_generic}.py`,
+`tools/generate_generic_programs.py`, `tools/generate_compact_{mono,walk}.py`,
+the checks `benchmarks/checks/{compile_equiv,ref_validate}.py`, and the scanner
+proof modules `proofs/compact/{cv,cv_mono,cvm,cvm_mono,cvm_mono_gen,den,den_mono,sound,sound_leaf,sound_seq,sound_cont}.bend`.
+Those proofs were about the scanner, which is not the generated validator, so
+they covered no production code; nothing about the production path is lost.
+Their reusable foundations are kept and used by the generated-path proofs:
+`proofs/compact/found.bend` (the checked `Base.Array` get/set/swap/new/clone
+laws over a mirror tree), `buf.bend`/`reads.bend` (the byte denotation of the
+packed input buffer and `B.read32`), `bits.bend`, `arith.bend`.
+
+## The import graph, computed (2026-09-22, re-run after the iteration-20 removals)
+
+The codegen-only requirement is a statement about reachability, so it is
+answered by a reachability computation rather than by reading import lines:
+
+```
+/opt/homebrew/bin/python3 codegen/import_graph.py [--check]
+```
+
+It parses every `import ... .bend` edge in the workspace and reports what each
+class of entry point reaches. Result on this source:
+
+| Entry points | Reaches, in `src/` |
+| --- | --- |
+| production: `types/fulu_obj.bend`, `types/generic_obj.bend` | `buffer`, `digest`, `merkle_fast`, `obj` - and nothing else |
+| the ten measured programs `benchmarks/objprog/g*.bend`, the seventeen generic programs `x*.bend`, `native_bench/driver.bend` | no module beyond the four above |
+| proof roots `PROOF`, `END_TO_END`, `ROOT_DOMAIN`, `HASH_PROOF` | 30 modules, **none shared with production** |
+| legacy list model `src/ssz.bend`, `types/fulu.bend` (frozen propositions, protected runtime tests) | 29 modules, **none shared with production** |
+| `spec/*.bend` | none - the independent specification shares no runtime module |
+
+Outside `src/`, the production path also reaches the pinned BendHub SHA package
+`0xda83506fb9f059ead7afcfa2f498df5f/sha256.bend`, imported by `src/digest.bend`.
+No `src/` module is unreachable from every entry point, so nothing is dead that
+is merely unlisted.
+
+`--check` fails if the production path ever reaches a module outside the four
+runtime primitives (plus `sha256`/`merkle`), which is the property the
+codegen-only requirement asks for. It is the audit to re-run after any import
+change.
+
+The legacy modules therefore remain in the tree but on no production or
+measured path: they carry the frozen `END_TO_END`/`ROOT_DOMAIN` propositions and
+the protected runtime tests, and `docs/LAW_API_MAP.md` records
+what has to be proved about the generated path before they can be retired.
+
+## Regeneration check, recorded
+
+On the iteration-20 source: `codegen/check_schema.py` → `109 frozen names; 109
+YAML names; 10 malformed documents; OK`; `codegen/generate.py --check` →
+`generated sources are current`; `codegen/laws.py --check` → `generated laws are
+current`; `codegen/import_graph.py --check` → `OK: the production path reaches
+only the shared runtime primitives`.

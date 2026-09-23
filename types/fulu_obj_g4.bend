@@ -120,9 +120,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 58: some_BLSPubkey(T.BLSPubkey_decode(buf, size))
     case 59: some_DepositRequest(T.DepositRequest_decode(buf, size))
     case _: (buf, None{})
-def enc_Attestation(pair: T.Attestation & B.Buf) -> Any & B.Buf:
+def enc_Attestation(pair: T.Attestation & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Attestation{v}, out)
+  (A_Attestation{v}, O.ser_out(out))
 def root_Attestation(pair: B.Buf & (T.Attestation & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -130,9 +130,9 @@ def root_Attestation(pair: B.Buf & (T.Attestation & D.Digest)) -> B.Buf & (Any &
 def force_Attestation(pair: T.Attestation & U32) -> Any & U32:
   (v, +x) = pair
   (A_Attestation{v}, x)
-def enc_AggregateAndProof(pair: T.AggregateAndProof & B.Buf) -> Any & B.Buf:
+def enc_AggregateAndProof(pair: T.AggregateAndProof & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_AggregateAndProof{v}, out)
+  (A_AggregateAndProof{v}, O.ser_out(out))
 def root_AggregateAndProof(pair: B.Buf & (T.AggregateAndProof & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -140,9 +140,9 @@ def root_AggregateAndProof(pair: B.Buf & (T.AggregateAndProof & D.Digest)) -> B.
 def force_AggregateAndProof(pair: T.AggregateAndProof & U32) -> Any & U32:
   (v, +x) = pair
   (A_AggregateAndProof{v}, x)
-def enc_SignedAggregateAndProof(pair: T.SignedAggregateAndProof & B.Buf) -> Any & B.Buf:
+def enc_SignedAggregateAndProof(pair: T.SignedAggregateAndProof & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_SignedAggregateAndProof{v}, out)
+  (A_SignedAggregateAndProof{v}, O.ser_out(out))
 def root_SignedAggregateAndProof(pair: B.Buf & (T.SignedAggregateAndProof & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -150,9 +150,9 @@ def root_SignedAggregateAndProof(pair: B.Buf & (T.SignedAggregateAndProof & D.Di
 def force_SignedAggregateAndProof(pair: T.SignedAggregateAndProof & U32) -> Any & U32:
   (v, +x) = pair
   (A_SignedAggregateAndProof{v}, x)
-def enc_PendingAttestation(pair: T.PendingAttestation & B.Buf) -> Any & B.Buf:
+def enc_PendingAttestation(pair: T.PendingAttestation & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_PendingAttestation{v}, out)
+  (A_PendingAttestation{v}, O.ser_out(out))
 def root_PendingAttestation(pair: B.Buf & (T.PendingAttestation & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -160,9 +160,9 @@ def root_PendingAttestation(pair: B.Buf & (T.PendingAttestation & D.Digest)) -> 
 def force_PendingAttestation(pair: T.PendingAttestation & U32) -> Any & U32:
   (v, +x) = pair
   (A_PendingAttestation{v}, x)
-def enc_IndexedAttestation(pair: T.IndexedAttestation & B.Buf) -> Any & B.Buf:
+def enc_IndexedAttestation(pair: T.IndexedAttestation & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_IndexedAttestation{v}, out)
+  (A_IndexedAttestation{v}, O.ser_out(out))
 def root_IndexedAttestation(pair: B.Buf & (T.IndexedAttestation & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -170,9 +170,9 @@ def root_IndexedAttestation(pair: B.Buf & (T.IndexedAttestation & D.Digest)) -> 
 def force_IndexedAttestation(pair: T.IndexedAttestation & U32) -> Any & U32:
   (v, +x) = pair
   (A_IndexedAttestation{v}, x)
-def enc_AttesterSlashing(pair: T.AttesterSlashing & B.Buf) -> Any & B.Buf:
+def enc_AttesterSlashing(pair: T.AttesterSlashing & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_AttesterSlashing{v}, out)
+  (A_AttesterSlashing{v}, O.ser_out(out))
 def root_AttesterSlashing(pair: B.Buf & (T.AttesterSlashing & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -180,32 +180,32 @@ def root_AttesterSlashing(pair: B.Buf & (T.AttesterSlashing & D.Digest)) -> B.Bu
 def force_AttesterSlashing(pair: T.AttesterSlashing & U32) -> Any & U32:
   (v, +x) = pair
   (A_AttesterSlashing{v}, x)
-def enc_ForkData(+v: T.ForkData) -> Any & B.Buf: (A_ForkData{v}, T.ForkData_encode(v))
+def enc_ForkData(+v: T.ForkData) -> Any & B.Buf: (A_ForkData{v}, O.ser_out(T.ForkData_serialize(v)))
 def root_ForkData(+v: T.ForkData, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ForkData{v}, d))
 def force_ForkData(+v: T.ForkData) -> Any & U32: (A_ForkData{v}, T.ForkData_force(v))
-def enc_ForkDigest(+v: T.Bytes4) -> Any & B.Buf: (A_ForkDigest{v}, T.ForkDigest_encode(v))
+def enc_ForkDigest(+v: T.Bytes4) -> Any & B.Buf: (A_ForkDigest{v}, O.ser_out(T.ForkDigest_serialize(v)))
 def root_ForkDigest(+v: T.Bytes4, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ForkDigest{v}, d))
 def force_ForkDigest(+v: T.Bytes4) -> Any & U32: (A_ForkDigest{v}, T.b4_force(v))
-def enc_Domain(+v: T.Bytes32) -> Any & B.Buf: (A_Domain{v}, T.Domain_encode(v))
+def enc_Domain(+v: T.Bytes32) -> Any & B.Buf: (A_Domain{v}, O.ser_out(T.Domain_serialize(v)))
 def root_Domain(+v: T.Bytes32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Domain{v}, d))
 def force_Domain(+v: T.Bytes32) -> Any & U32: (A_Domain{v}, T.b32_force(v))
-def enc_SigningData(+v: T.SigningData) -> Any & B.Buf: (A_SigningData{v}, T.SigningData_encode(v))
+def enc_SigningData(+v: T.SigningData) -> Any & B.Buf: (A_SigningData{v}, O.ser_out(T.SigningData_serialize(v)))
 def root_SigningData(+v: T.SigningData, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SigningData{v}, d))
 def force_SigningData(+v: T.SigningData) -> Any & U32: (A_SigningData{v}, T.SigningData_force(v))
-def enc_BLSPubkey(+v: T.Bytes48) -> Any & B.Buf: (A_BLSPubkey{v}, T.BLSPubkey_encode(v))
+def enc_BLSPubkey(+v: T.Bytes48) -> Any & B.Buf: (A_BLSPubkey{v}, O.ser_out(T.BLSPubkey_serialize(v)))
 def root_BLSPubkey(+v: T.Bytes48, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BLSPubkey{v}, d))
 def force_BLSPubkey(+v: T.Bytes48) -> Any & U32: (A_BLSPubkey{v}, T.b48_force(v))
-def enc_DepositRequest(+v: T.DepositRequest) -> Any & B.Buf: (A_DepositRequest{v}, T.DepositRequest_encode(v))
+def enc_DepositRequest(+v: T.DepositRequest) -> Any & B.Buf: (A_DepositRequest{v}, O.ser_out(T.DepositRequest_serialize(v)))
 def root_DepositRequest(+v: T.DepositRequest, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_DepositRequest{v}, d))
@@ -222,12 +222,12 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_Attestation{v}: enc_Attestation(T.Attestation_encode(v))
-    case A_AggregateAndProof{v}: enc_AggregateAndProof(T.AggregateAndProof_encode(v))
-    case A_SignedAggregateAndProof{v}: enc_SignedAggregateAndProof(T.SignedAggregateAndProof_encode(v))
-    case A_PendingAttestation{v}: enc_PendingAttestation(T.PendingAttestation_encode(v))
-    case A_IndexedAttestation{v}: enc_IndexedAttestation(T.IndexedAttestation_encode(v))
-    case A_AttesterSlashing{v}: enc_AttesterSlashing(T.AttesterSlashing_encode(v))
+    case A_Attestation{v}: enc_Attestation(T.Attestation_serialize(v))
+    case A_AggregateAndProof{v}: enc_AggregateAndProof(T.AggregateAndProof_serialize(v))
+    case A_SignedAggregateAndProof{v}: enc_SignedAggregateAndProof(T.SignedAggregateAndProof_serialize(v))
+    case A_PendingAttestation{v}: enc_PendingAttestation(T.PendingAttestation_serialize(v))
+    case A_IndexedAttestation{v}: enc_IndexedAttestation(T.IndexedAttestation_serialize(v))
+    case A_AttesterSlashing{v}: enc_AttesterSlashing(T.AttesterSlashing_serialize(v))
     case A_ForkData{+v}: enc_ForkData(v)
     case A_ForkDigest{+v}: enc_ForkDigest(v)
     case A_Domain{+v}: enc_Domain(v)
@@ -265,6 +265,21 @@ def force(a: Any) -> Any & U32:
     case A_BLSPubkey{+v}: force_BLSPubkey(v)
     case A_DepositRequest{+v}: force_DepositRequest(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_Attestation{v}: T.Attestation_dump(v, t)
+    case A_AggregateAndProof{v}: T.AggregateAndProof_dump(v, t)
+    case A_SignedAggregateAndProof{v}: T.SignedAggregateAndProof_dump(v, t)
+    case A_PendingAttestation{v}: T.PendingAttestation_dump(v, t)
+    case A_IndexedAttestation{v}: T.IndexedAttestation_dump(v, t)
+    case A_AttesterSlashing{v}: T.AttesterSlashing_dump(v, t)
+    case A_ForkData{+v}: T.ForkData_dump(v, t)
+    case A_ForkDigest{+v}: T.b4_dump(v, t)
+    case A_Domain{+v}: T.b32_dump(v, t)
+    case A_SigningData{+v}: T.SigningData_dump(v, t)
+    case A_BLSPubkey{+v}: T.b48_dump(v, t)
+    case A_DepositRequest{+v}: T.DepositRequest_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

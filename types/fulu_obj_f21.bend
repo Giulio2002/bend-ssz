@@ -48,9 +48,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 86: some_LightClientHeader(T.LightClientHeader_decode(buf, size))
     case 87: some_LightClientOptimisticUpdate(T.LightClientOptimisticUpdate_decode(buf, size))
     case _: (buf, None{})
-def enc_BeaconState(pair: T.BeaconState & B.Buf) -> Any & B.Buf:
+def enc_BeaconState(pair: T.BeaconState & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_BeaconState{v}, out)
+  (A_BeaconState{v}, O.ser_out(out))
 def root_BeaconState(pair: B.Buf & (T.BeaconState & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -58,9 +58,9 @@ def root_BeaconState(pair: B.Buf & (T.BeaconState & D.Digest)) -> B.Buf & (Any &
 def force_BeaconState(pair: T.BeaconState & U32) -> Any & U32:
   (v, +x) = pair
   (A_BeaconState{v}, x)
-def enc_ExecutionBranch(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_ExecutionBranch(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ExecutionBranch{v}, out)
+  (A_ExecutionBranch{v}, O.ser_out(out))
 def root_ExecutionBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -68,9 +68,9 @@ def root_ExecutionBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D
 def force_ExecutionBranch(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_ExecutionBranch{v}, x)
-def enc_LightClientHeader(pair: T.LightClientHeader & B.Buf) -> Any & B.Buf:
+def enc_LightClientHeader(pair: T.LightClientHeader & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_LightClientHeader{v}, out)
+  (A_LightClientHeader{v}, O.ser_out(out))
 def root_LightClientHeader(pair: B.Buf & (T.LightClientHeader & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -78,9 +78,9 @@ def root_LightClientHeader(pair: B.Buf & (T.LightClientHeader & D.Digest)) -> B.
 def force_LightClientHeader(pair: T.LightClientHeader & U32) -> Any & U32:
   (v, +x) = pair
   (A_LightClientHeader{v}, x)
-def enc_LightClientOptimisticUpdate(pair: T.LightClientOptimisticUpdate & B.Buf) -> Any & B.Buf:
+def enc_LightClientOptimisticUpdate(pair: T.LightClientOptimisticUpdate & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_LightClientOptimisticUpdate{v}, out)
+  (A_LightClientOptimisticUpdate{v}, O.ser_out(out))
 def root_LightClientOptimisticUpdate(pair: B.Buf & (T.LightClientOptimisticUpdate & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -100,10 +100,10 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_BeaconState{v}: enc_BeaconState(T.BeaconState_encode(v))
-    case A_ExecutionBranch{v}: enc_ExecutionBranch(T.ExecutionBranch_encode(v))
-    case A_LightClientHeader{v}: enc_LightClientHeader(T.LightClientHeader_encode(v))
-    case A_LightClientOptimisticUpdate{v}: enc_LightClientOptimisticUpdate(T.LightClientOptimisticUpdate_encode(v))
+    case A_BeaconState{v}: enc_BeaconState(T.BeaconState_serialize(v))
+    case A_ExecutionBranch{v}: enc_ExecutionBranch(T.ExecutionBranch_serialize(v))
+    case A_LightClientHeader{v}: enc_LightClientHeader(T.LightClientHeader_serialize(v))
+    case A_LightClientOptimisticUpdate{v}: enc_LightClientOptimisticUpdate(T.LightClientOptimisticUpdate_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -119,6 +119,13 @@ def force(a: Any) -> Any & U32:
     case A_LightClientHeader{v}: force_LightClientHeader(T.LightClientHeader_force(v))
     case A_LightClientOptimisticUpdate{v}: force_LightClientOptimisticUpdate(T.LightClientOptimisticUpdate_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_BeaconState{v}: T.BeaconState_dump(v, t)
+    case A_ExecutionBranch{v}: T.v4_b32_dump(v, t)
+    case A_LightClientHeader{v}: T.LightClientHeader_dump(v, t)
+    case A_LightClientOptimisticUpdate{v}: T.LightClientOptimisticUpdate_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

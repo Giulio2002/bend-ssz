@@ -48,22 +48,22 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 26: some_PowBlock(T.PowBlock_decode(buf, size))
     case 27: some_CommitteeIndex(T.CommitteeIndex_decode(buf, size))
     case _: (buf, None{})
-def enc_SyncAggregate(+v: T.SyncAggregate) -> Any & B.Buf: (A_SyncAggregate{v}, T.SyncAggregate_encode(v))
+def enc_SyncAggregate(+v: T.SyncAggregate) -> Any & B.Buf: (A_SyncAggregate{v}, O.ser_out(T.SyncAggregate_serialize(v)))
 def root_SyncAggregate(+v: T.SyncAggregate, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SyncAggregate{v}, d))
 def force_SyncAggregate(+v: T.SyncAggregate) -> Any & U32: (A_SyncAggregate{v}, T.SyncAggregate_force(v))
-def enc_SyncAggregatorSelectionData(+v: T.SyncAggregatorSelectionData) -> Any & B.Buf: (A_SyncAggregatorSelectionData{v}, T.SyncAggregatorSelectionData_encode(v))
+def enc_SyncAggregatorSelectionData(+v: T.SyncAggregatorSelectionData) -> Any & B.Buf: (A_SyncAggregatorSelectionData{v}, O.ser_out(T.SyncAggregatorSelectionData_serialize(v)))
 def root_SyncAggregatorSelectionData(+v: T.SyncAggregatorSelectionData, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SyncAggregatorSelectionData{v}, d))
 def force_SyncAggregatorSelectionData(+v: T.SyncAggregatorSelectionData) -> Any & U32: (A_SyncAggregatorSelectionData{v}, T.SyncAggregatorSelectionData_force(v))
-def enc_PowBlock(+v: T.PowBlock) -> Any & B.Buf: (A_PowBlock{v}, T.PowBlock_encode(v))
+def enc_PowBlock(+v: T.PowBlock) -> Any & B.Buf: (A_PowBlock{v}, O.ser_out(T.PowBlock_serialize(v)))
 def root_PowBlock(+v: T.PowBlock, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_PowBlock{v}, d))
 def force_PowBlock(+v: T.PowBlock) -> Any & U32: (A_PowBlock{v}, T.PowBlock_force(v))
-def enc_CommitteeIndex(+v: O.U64) -> Any & B.Buf: (A_CommitteeIndex{v}, T.CommitteeIndex_encode(v))
+def enc_CommitteeIndex(+v: O.U64) -> Any & B.Buf: (A_CommitteeIndex{v}, O.ser_out(T.CommitteeIndex_serialize(v)))
 def root_CommitteeIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_CommitteeIndex{v}, d))
@@ -99,6 +99,13 @@ def force(a: Any) -> Any & U32:
     case A_PowBlock{+v}: force_PowBlock(v)
     case A_CommitteeIndex{+v}: force_CommitteeIndex(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_SyncAggregate{+v}: T.SyncAggregate_dump(v, t)
+    case A_SyncAggregatorSelectionData{+v}: T.SyncAggregatorSelectionData_dump(v, t)
+    case A_PowBlock{+v}: T.PowBlock_dump(v, t)
+    case A_CommitteeIndex{+v}: T.u64_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

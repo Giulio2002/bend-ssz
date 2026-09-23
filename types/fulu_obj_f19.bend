@@ -48,9 +48,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 78: some_SignedBLSToExecutionChange(T.SignedBLSToExecutionChange_decode(buf, size))
     case 79: some_ExecutionPayloadHeader(T.ExecutionPayloadHeader_decode(buf, size))
     case _: (buf, None{})
-def enc_ExecutionRequests(pair: T.ExecutionRequests & B.Buf) -> Any & B.Buf:
+def enc_ExecutionRequests(pair: T.ExecutionRequests & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ExecutionRequests{v}, out)
+  (A_ExecutionRequests{v}, O.ser_out(out))
 def root_ExecutionRequests(pair: B.Buf & (T.ExecutionRequests & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -58,19 +58,19 @@ def root_ExecutionRequests(pair: B.Buf & (T.ExecutionRequests & D.Digest)) -> B.
 def force_ExecutionRequests(pair: T.ExecutionRequests & U32) -> Any & U32:
   (v, +x) = pair
   (A_ExecutionRequests{v}, x)
-def enc_BLSToExecutionChange(+v: T.BLSToExecutionChange) -> Any & B.Buf: (A_BLSToExecutionChange{v}, T.BLSToExecutionChange_encode(v))
+def enc_BLSToExecutionChange(+v: T.BLSToExecutionChange) -> Any & B.Buf: (A_BLSToExecutionChange{v}, O.ser_out(T.BLSToExecutionChange_serialize(v)))
 def root_BLSToExecutionChange(+v: T.BLSToExecutionChange, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BLSToExecutionChange{v}, d))
 def force_BLSToExecutionChange(+v: T.BLSToExecutionChange) -> Any & U32: (A_BLSToExecutionChange{v}, T.BLSToExecutionChange_force(v))
-def enc_SignedBLSToExecutionChange(+v: T.SignedBLSToExecutionChange) -> Any & B.Buf: (A_SignedBLSToExecutionChange{v}, T.SignedBLSToExecutionChange_encode(v))
+def enc_SignedBLSToExecutionChange(+v: T.SignedBLSToExecutionChange) -> Any & B.Buf: (A_SignedBLSToExecutionChange{v}, O.ser_out(T.SignedBLSToExecutionChange_serialize(v)))
 def root_SignedBLSToExecutionChange(+v: T.SignedBLSToExecutionChange, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SignedBLSToExecutionChange{v}, d))
 def force_SignedBLSToExecutionChange(+v: T.SignedBLSToExecutionChange) -> Any & U32: (A_SignedBLSToExecutionChange{v}, T.SignedBLSToExecutionChange_force(v))
-def enc_ExecutionPayloadHeader(pair: T.ExecutionPayloadHeader & B.Buf) -> Any & B.Buf:
+def enc_ExecutionPayloadHeader(pair: T.ExecutionPayloadHeader & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ExecutionPayloadHeader{v}, out)
+  (A_ExecutionPayloadHeader{v}, O.ser_out(out))
 def root_ExecutionPayloadHeader(pair: B.Buf & (T.ExecutionPayloadHeader & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -90,10 +90,10 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_ExecutionRequests{v}: enc_ExecutionRequests(T.ExecutionRequests_encode(v))
+    case A_ExecutionRequests{v}: enc_ExecutionRequests(T.ExecutionRequests_serialize(v))
     case A_BLSToExecutionChange{+v}: enc_BLSToExecutionChange(v)
     case A_SignedBLSToExecutionChange{+v}: enc_SignedBLSToExecutionChange(v)
-    case A_ExecutionPayloadHeader{v}: enc_ExecutionPayloadHeader(T.ExecutionPayloadHeader_encode(v))
+    case A_ExecutionPayloadHeader{v}: enc_ExecutionPayloadHeader(T.ExecutionPayloadHeader_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -109,6 +109,13 @@ def force(a: Any) -> Any & U32:
     case A_SignedBLSToExecutionChange{+v}: force_SignedBLSToExecutionChange(v)
     case A_ExecutionPayloadHeader{v}: force_ExecutionPayloadHeader(T.ExecutionPayloadHeader_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_ExecutionRequests{v}: T.ExecutionRequests_dump(v, t)
+    case A_BLSToExecutionChange{+v}: T.BLSToExecutionChange_dump(v, t)
+    case A_SignedBLSToExecutionChange{+v}: T.SignedBLSToExecutionChange_dump(v, t)
+    case A_ExecutionPayloadHeader{v}: T.ExecutionPayloadHeader_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

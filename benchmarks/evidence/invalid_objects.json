@@ -1,0 +1,90 @@
+{
+ "exit": 0,
+ "cases": [
+  {
+   "case": "uint8_300",
+   "accepted": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "case": "uint8_200",
+   "accepted": 1,
+   "expected": 1,
+   "pass": true
+  },
+  {
+   "case": "bytes1_tail",
+   "accepted": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "case": "bytes1_ok",
+   "accepted": 1,
+   "expected": 1,
+   "pass": true
+  },
+  {
+   "case": "tx_slack",
+   "accepted": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "case": "tx_ok",
+   "accepted": 1,
+   "expected": 1,
+   "pass": true
+  },
+  {
+   "case": "tx_capacity",
+   "accepted": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "case": "att_bits_over",
+   "accepted": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "case": "att_bits_limit",
+   "accepted": 1,
+   "expected": 1,
+   "pass": true
+  },
+  {
+   "case": "columns_over",
+   "accepted": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "case": "columns_limit",
+   "accepted": 1,
+   "expected": 1,
+   "pass": true
+  },
+  {
+   "case": "columns_unit",
+   "accepted": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "case": "box_empty",
+   "accepted": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "case": "box_ok",
+   "accepted": 1,
+   "expected": 1,
+   "pass": true
+  }
+ ],
+ "failed": 0
+}

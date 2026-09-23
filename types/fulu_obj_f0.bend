@@ -48,22 +48,22 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 2: some_uint32(T.uint32_decode(buf, size))
     case 3: some_uint64(T.uint64_decode(buf, size))
     case _: (buf, None{})
-def enc_boolean(+v: Bool) -> Any & B.Buf: (A_boolean{v}, T.boolean_encode(v))
+def enc_boolean(+v: Bool) -> Any & B.Buf: (A_boolean{v}, O.ser_out(T.boolean_serialize(v)))
 def root_boolean(+v: Bool, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_boolean{v}, d))
 def force_boolean(+v: Bool) -> Any & U32: (A_boolean{v}, T.bool_force(v))
-def enc_uint8(+v: U32) -> Any & B.Buf: (A_uint8{v}, T.uint8_encode(v))
+def enc_uint8(+v: U32) -> Any & B.Buf: (A_uint8{v}, O.ser_out(T.uint8_serialize(v)))
 def root_uint8(+v: U32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_uint8{v}, d))
 def force_uint8(+v: U32) -> Any & U32: (A_uint8{v}, T.u8_force(v))
-def enc_uint32(+v: U32) -> Any & B.Buf: (A_uint32{v}, T.uint32_encode(v))
+def enc_uint32(+v: U32) -> Any & B.Buf: (A_uint32{v}, O.ser_out(T.uint32_serialize(v)))
 def root_uint32(+v: U32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_uint32{v}, d))
 def force_uint32(+v: U32) -> Any & U32: (A_uint32{v}, T.u32_force(v))
-def enc_uint64(+v: O.U64) -> Any & B.Buf: (A_uint64{v}, T.uint64_encode(v))
+def enc_uint64(+v: O.U64) -> Any & B.Buf: (A_uint64{v}, O.ser_out(T.uint64_serialize(v)))
 def root_uint64(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_uint64{v}, d))
@@ -99,6 +99,13 @@ def force(a: Any) -> Any & U32:
     case A_uint32{+v}: force_uint32(v)
     case A_uint64{+v}: force_uint64(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_boolean{+v}: T.bool_dump(v, t)
+    case A_uint8{+v}: T.u8_dump(v, t)
+    case A_uint32{+v}: T.u32_dump(v, t)
+    case A_uint64{+v}: T.u64_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

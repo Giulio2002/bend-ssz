@@ -28,7 +28,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import schema  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-RECORD_MAX = 96           # byte vectors / bit vectors up to this many bytes are word records
+RECORD_MAX = 96           # byte vectors / bit vectors up to this many bytes are word records (Data, inline);
+                          # longer ones are packed Words. Measured with boxed linear list elements: 32 is
+                          # up to ~15% faster on block encodes but makes Validator (its pubkey) and every
+                          # signed message linear, which turns a copying element read into a move and
+                          # drops them out of the whole-word codec-law class; 48 makes the pinned
+                          # toolchain's clang (Apple clang 17.0.0, -O3) abort on the native memory driver
+                          # ("live register clobbered by inserted prologue instructions"). 96 keeps every
+                          # block serializer under 4x Go (WORK_LOG.md, iteration 19).
+FIXED_COPY_MAX_WORDS = 64  # fixed packed runs up to this many words get a straight-line aligned writer
 BOX_MIN = 33              # container fields wider than this many words are boxed (src/obj.bend Boxed)
 FLAT_MAX = 64             # a Data container is laid out inline (flattened) by the C backend;
                           # larger containers are linear records so that no generated function
@@ -180,7 +188,14 @@ class Shape:
             self.rep = {'bytes': f'Bytes{t.size}', 'bits': f'Bitvector{t.size}', 'uint': f'Uint{8 * t.size}'}[t.kind]
             self.g.records[self.rep] = self.nw
         elif self.kind == 'seq':
-            self.elem = self.g.shape(t.elem)
+            # A list's storage holds Data elements inline; an element with
+            # storage of its own (packed bytes, nested lists) is held behind a
+            # pointer (O.Boxed), so the loops move one word per element and an
+            # unused slot is the empty box BNone - no default element is ever
+            # built to fill or to swap with. `pelem` is the element type the
+            # public API reads and writes; `elem` is what the array stores.
+            self.pelem = self.g.shape(t.elem)
+            self.elem = self.pelem if self.pelem.data else self.g.boxed(self.pelem)
         elif self.kind == 'container':
             self.fields = []
             for f, ft in t.fields:
@@ -242,7 +257,14 @@ class Shape:
         return self.t.name
 
 
+# Code emitted after everything else in a module: the validity predicates and
+# the checked serialize stages (`reorder` still puts callees first).
+TAIL = []
+
+
 def emit_all(g, names, title=None, with_fuzz=True):
+    PUTV_EMITTED.clear()
+    TAIL.clear()
     for n, t in names.items():
         g.shape(t)
     lines = []
@@ -271,11 +293,20 @@ def emit_all(g, names, title=None, with_fuzz=True):
         if with_fuzz:
             ops[n] = emit_fuzz(g, n, g.shape(t), w)
     g.fuzz_ops = ops
+    lines.append('# ---- validity and checked serialize ----')
+    lines.extend(TAIL)
     return '\n'.join(lines) + '\n'
 
 
 # ---------------------------------------------------------------------------
 # Emission helpers.
+
+def placeholder(e):
+    """What fills an unused slot of a list's storage, or stands in for an
+    element taken out of it: the empty box for boxed elements, else a default
+    element."""
+    return 'O.BNone{}' if e.kind == 'box' else f'{e.p}_default()'
+
 
 def plus(s):
     return '+' if s.data else ''
@@ -284,6 +315,9 @@ def plus(s):
 def emit_shape(s, w):
     if s.kind == 'cunion':
         emit_cunion(s, w)
+        emit_dump(s, w)
+        emit_valid(s, TAIL.append)
+        emit_putk(s, w)
         w('')
         return
     fn = {
@@ -295,6 +329,9 @@ def emit_shape(s, w):
     fn(s, w)
     if s.kind != 'box':
         emit_force(s, w)
+    emit_valid(s, TAIL.append)
+    emit_putk(s, w)
+    emit_dump(s, w)
     emit_ok(s, w)
     if s.kind in ('rec', 'uwide'):
         emit_word_codec(s.rep, s.nw, w)
@@ -312,6 +349,10 @@ def emit_box(s, w):
     B_ = s.rep
     w(f'def {p}_wrap(v: {R}) -> {B_}: O.BSome{{v, O.BNone{{}}}}')
     w(f'def {p}_default() -> {B_}: {p}_wrap({i.p}_default())')
+    w(f'def {p}_unbox(o: {B_}) -> {R}:')
+    w('  match o:')
+    w(f'    case O.BSome{{{"+" if i.data else ""}v, rest}}: v')
+    w(f'    case O.BNone{{}}: {i.p}_default()')
     w(f'def {p}_rd(pair: B.Buf & {R}) -> B.Buf & {B_}:')
     w(f'  (buf, {plus(i)}v) = pair')
     w(f'  (buf, {p}_wrap(v))')
@@ -326,8 +367,8 @@ def emit_box(s, w):
         w(f'def {p}_rt(+v: {R}, pair: B.Buf & D.Digest) -> B.Buf & ({B_} & D.Digest):')
         w('  (h, d) = pair')
         w(f'  (h, ({p}_wrap(v), d))')
-        w(f'def {p}_root(h: B.Buf, o: {B_}, +seg: U32) -> B.Buf & ({B_} & D.Digest):')
-        w(unwrap(f'{p}_rt(v, {i.p}_root(h, v, seg))', f'(h, ({p}_default(), D.zero()))'))
+        w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {B_}, +seg: U32) -> B.Buf & ({B_} & D.Digest):')
+        w(unwrap(f'{p}_rt(v, {i.p}_root(hl, h, v, seg))', f'(h, ({p}_default(), D.zero()))'))
         w(f'def {p}_force(o: {B_}) -> {B_} & U32:')
         w(unwrap(f'({p}_wrap(v), {i.p}_force(v))', f'({p}_default(), 0)'))
         return
@@ -354,8 +395,8 @@ def emit_box(s, w):
     w('  (h, r) = pair')
     w('  (v, d) = r')
     w(f'  (h, ({p}_wrap(v), d))')
-    w(f'def {p}_root(h: B.Buf, o: {B_}, +seg: U32) -> B.Buf & ({B_} & D.Digest):')
-    w(unwrap(f'{p}_rt({i.p}_root(h, v, seg))', f'(h, ({p}_default(), D.zero()))'))
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {B_}, +seg: U32) -> B.Buf & ({B_} & D.Digest):')
+    w(unwrap(f'{p}_rt({i.p}_root(hl, h, v, seg))', f'(h, ({p}_default(), D.zero()))'))
     w(f'def {p}_force(o: {B_}) -> {B_} & U32:')
     w(unwrap(f'{p}_size_back({i.p}_force(v))', f'({p}_default(), 0)'))
 
@@ -753,6 +794,14 @@ def emit_access(s, w):
         return
     if k == 'seq':
         e, S, Re, E = s.elem, f'{p}_Seq', s.elem.rep, s.elem.p
+        Pe = s.pelem.rep
+        boxed = e.kind == 'box'
+
+        def wrap(v):
+            return f'{E}_wrap({v})' if boxed else v
+
+        def unbox(v):
+            return f'{E}_unbox({v})' if boxed else v
         w(f'def {p}_len(o: {S}) -> {S} & U32:')
         w('  match o:')
         w(f'    case {S}{{arr, +n}}: ({S}{{arr, n}}, n)')
@@ -764,23 +813,25 @@ def emit_access(s, w):
             w('  (arr, +v) = pair')
             w(f'  ({S}{{arr, n}}, Some{{v}})')
         else:
-            w(f'def {p}_at(arr: Array<{Re}>, +n: U32, +i: U32) -> {S} & Maybe<&1, {Re}>:')
-            w(f'  {p}_took(n, Array.swap({Re}, arr, i, {E}_default()))')
-            w(f'def {p}_took(+n: U32, pair: Array<{Re}> & {Re}) -> {S} & Maybe<&1, {Re}>:')
+            # a linear element is moved out (its slot keeps the empty box,
+            # read back as the default element) - the affine idiom
+            w(f'def {p}_at(arr: Array<{Re}>, +n: U32, +i: U32) -> {S} & Maybe<&1, {Pe}>:')
+            w(f'  {p}_took(n, Array.swap({Re}, arr, i, {placeholder(e)}))')
+            w(f'def {p}_took(+n: U32, pair: Array<{Re}> & {Re}) -> {S} & Maybe<&1, {Pe}>:')
             w('  (arr, v) = pair')
-            w(f'  ({S}{{arr, n}}, Some{{v}})')
-        w(f'def {p}_get_in(inside: Bool, arr: Array<{Re}>, +n: U32, +i: U32) -> {S} & Maybe<&1, {Re}>:')
+            w(f'  ({S}{{arr, n}}, Some{{{unbox("v")}}})')
+        w(f'def {p}_get_in(inside: Bool, arr: Array<{Re}>, +n: U32, +i: U32) -> {S} & Maybe<&1, {Pe}>:')
         w('  match inside:')
         w(f'    case True{{}}: {p}_at(arr, n, i)')
         w(f'    case False{{}}: ({S}{{arr, n}}, None{{}})')
-        w(f'def {p}_get(o: {S}, +i: U32) -> {S} & Maybe<&1, {Re}>:')
+        w(f'def {p}_get(o: {S}, +i: U32) -> {S} & Maybe<&1, {Pe}>:')
         w('  match o:')
         w(f'    case {S}{{arr, +n}}: {p}_get_in(U32.is_lt(i, n), arr, n, i)')
-        w(f'def {p}_put_in(ok: Bool, arr: Array<{Re}>, +n: U32, +i: U32, v: {Re}) -> {S} & Bool:')
+        w(f'def {p}_put_in(ok: Bool, arr: Array<{Re}>, +n: U32, +i: U32, v: {Pe}) -> {S} & Bool:')
         w('  match ok:')
-        w(f'    case True{{}}: ({S}{{Array.set({Re}, arr, i, v), n}}, True{{}})')
+        w(f'    case True{{}}: ({S}{{Array.set({Re}, arr, i, {wrap("v")}), n}}, True{{}})')
         w(f'    case False{{}}: ({S}{{arr, n}}, False{{}})')
-        w(f'def {p}_set(o: {S}, +i: U32, v: {Re}) -> {S} & Bool:')
+        w(f'def {p}_set(o: {S}, +i: U32, v: {Pe}) -> {S} & Bool:')
         w('  match o:')
         w(f'    case {S}{{arr, +n}}: {p}_put_in(U32.is_lt(i, n), arr, n, i, v)')
         if t.kind in ('list', 'plist'):
@@ -797,7 +848,7 @@ def emit_access(s, w):
             w('      fresh')
             w('    case 1n+q:')
             w('      (fresh, old) = pair')
-            w(f'      {p}_copy(q, (i + 1 : U32), {p}_moved(i, fresh, Array.swap({Re}, old, i, {E}_default())))')
+            w(f'      {p}_copy(q, (i + 1 : U32), {p}_moved(i, fresh, Array.swap({Re}, old, i, {placeholder(e)})))')
             w(f'def {p}_room_pick(fits: Bool, arr: Array<{Re}>, +n: U32) -> Array<{Re}>:')
             w('  match fits:')
             w('    case True{}: arr')
@@ -806,11 +857,11 @@ def emit_access(s, w):
             w('  (arr, +cap) = pair')
             w(f'  {p}_room_pick(U32.is_lt(n, cap), arr, n)')
             w(f'def {p}_room(arr: Array<{Re}>, +n: U32) -> Array<{Re}>: {p}_room_sized(n, Array.size({Re}, arr))')
-            w(f'def {p}_app_in(ok: Bool, arr: Array<{Re}>, +n: U32, v: {Re}) -> {S} & Bool:')
+            w(f'def {p}_app_in(ok: Bool, arr: Array<{Re}>, +n: U32, v: {Pe}) -> {S} & Bool:')
             w('  match ok:')
-            w(f'    case True{{}}: ({S}{{Array.set({Re}, {p}_room(arr, n), n, v), (n + 1 : U32)}}, True{{}})')
+            w(f'    case True{{}}: ({S}{{Array.set({Re}, {p}_room(arr, n), n, {wrap("v")}), (n + 1 : U32)}}, True{{}})')
             w(f'    case False{{}}: ({S}{{arr, n}}, False{{}})')
-            w(f'def {p}_append(o: {S}, v: {Re}) -> {S} & Bool:')
+            w(f'def {p}_append(o: {S}, v: {Pe}) -> {S} & Bool:')
             w('  match o:')
             w(f'    case {S}{{arr, +n}}: {p}_app_in({within("(n + 1 : U32)", t.size)}, arr, n, v)')
         return
@@ -871,7 +922,7 @@ def emit_force(s, w):
             w('    case 0n: pair')
             w('    case 1n+q:')
             w('      (arr, +acc) = pair')
-            w(f'      {p}_fo(q, (i + 1 : U32), {p}_fo_one(i, acc, Array.swap({Re}, arr, i, {E}_default())))')
+            w(f'      {p}_fo(q, (i + 1 : U32), {p}_fo_one(i, acc, Array.swap({Re}, arr, i, {placeholder(e)})))')
             w(f'def {p}_fo_fin(+n: U32, pair: Array<{Re}> & U32) -> {S} & U32:')
             w('  (arr, +x) = pair')
             w(f'  ({S}{{arr, n}}, x)')
@@ -886,6 +937,84 @@ def emit_force(s, w):
             emit_force_fields(w, p, R, gs, s.data)
         else:
             emit_force_fields(w, p, R, s.fields, s.data)
+
+
+def emit_dump(s, w):
+    """`{p}_dump(o, t)`: the structural value dump of src/obj.bend (a test
+    oracle adapter read by tools/spectests.py; never on a measured path).
+    Leaves in field order, a 4-byte count before every list; it consumes the
+    object."""
+    p, k, R = s.p, s.kind, s.rep
+    T = '+List<U32>'
+    if k == 'bool':
+        w(f'def {p}_dump(o: Bool, t: {T}) -> {T}: O.dump_bool(o, t)')
+    elif k in ('u8', 'u16', 'u32'):
+        nb = {'u8': 1, 'u16': 2, 'u32': 4}[k]
+        w(f'def {p}_dump(+o: U32, t: {T}) -> {T}: O.dump_le(o, {nb}, t)')
+    elif k == 'u64':
+        w(f'def {p}_dump(o: O.U64, t: {T}) -> {T}: O.dump_u64(o, t)')
+    elif k in ('rec', 'uwide'):
+        nb = s.nbytes if k == 'rec' else s.t.size
+        ws = [f'w{i}' for i in range(s.nw)]
+        e = 't'
+        for i in range(s.nw - 1, -1, -1):
+            e = f'O.dump_le({ws[i]}, {min(4, nb - 4 * i)}, {e})'
+        w(f'def {p}_dump(o: {R}, t: {T}) -> {T}:')
+        w('  match o:')
+        w(f'    case {R}{{' + ', '.join('+' + x for x in ws) + f'}}: {e}')
+    elif k == 'fixwords':
+        w(f'def {p}_dump(o: O.Words, t: {T}) -> {T}: O.dump_words(o, t)')
+    elif k in ('bytelist', 'packed', 'packed_elems'):
+        if s.t.kind == 'vector':
+            w(f'def {p}_dump(o: O.Words, t: {T}) -> {T}: O.dump_words(o, t)')
+        else:
+            w(f'def {p}_dump(o: O.Words, t: {T}) -> {T}: O.dump_words_n(o, t)')
+    elif k == 'bitlist':
+        w(f'def {p}_dump(o: O.Bits, t: {T}) -> {T}: O.dump_bits_n(o, t)')
+    elif k == 'box':
+        i = s.inner
+        w(f'def {p}_dump(o: {R}, t: {T}) -> {T}:')
+        w('  match o:')
+        w(f'    case O.BSome{{{"+" if i.data else ""}v, rest}}: {i.p}_dump(v, t)')
+        w(f'    case O.BNone{{}}: {i.p}_dump({i.p}_default(), t)')
+    elif k == 'seq':
+        e, S, Re, E = s.elem, f'{p}_Seq', s.elem.rep, s.elem.p
+        ST = f'Array<{Re}> & {T}'
+        w(f'def {p}_du_took(t: {T}, pair: Array<{Re}> & {Re}) -> {ST}:')
+        w(f'  (arr, {plus(e)}v) = pair')
+        w(f'  (arr, {E}_dump(v, t))')
+        take = (f'Array.get({Re}, arr, (i - 1 : U32))' if e.data
+                else f'Array.swap({Re}, arr, (i - 1 : U32), {placeholder(e)})')
+        w(f'def {p}_du(+k: Nat, +i: U32, st: {ST}) -> {ST}:')
+        w('  match k:')
+        w('    case 0n: st')
+        w('    case 1n+q:')
+        w('      (arr, t) = st')
+        w(f'      {p}_du(q, (i - 1 : U32), {p}_du_took(t, {take}))')
+        w(f'def {p}_du_fin(+n: U32, st: {ST}) -> {T}:')
+        w('  (arr, t) = st')
+        w('  t' if s.t.kind == 'vector' else '  O.dump_le(n, 4, t)')
+        w(f'def {p}_dump(o: {S}, t: {T}) -> {T}:')
+        w('  match o:')
+        w(f'    case {S}{{arr, +n}}: {p}_du_fin(n, {p}_du(U32.to_nat(n), n, (arr, t)))')
+    elif k == 'container':
+        F = [(f'g{g.k}', g) for g in s.groups] if len(s.fields) > GROUP else s.fields
+        emit_dump_fields(w, p, R, F)
+    elif k == 'cunion':
+        sels = list(s.t.selectors)
+        w(f'def {p}_dump(o: {R}, t: {T}) -> {T}:')
+        w('  match o:')
+        for i, (_, o) in enumerate(s.options):
+            w(f'    case {R}_c{i}{{{plus(o)}v}}: O.dump_le({sels[i]}, 1, {o.p}_dump(v, t))')
+
+
+def emit_dump_fields(w, p, R, F):
+    e = 't'
+    for f, fs in reversed(F):
+        e = f'{fs.p}_dump({f}, {e})'
+    w(f'def {p}_dump(o: {R}, t: +List<U32>) -> +List<U32>:')
+    w('  match o:')
+    w(f'    case {R}{{' + ', '.join(f'{plus(fs)}{f}' for f, fs in F) + f'}}: {e}')
 
 
 def emit_force_fields(w, p, R, F, data):
@@ -921,12 +1050,252 @@ def emit_force_fields(w, p, R, F, data):
     w(f'    case {pat}: {p}_fo0(' + ', '.join(args0 + [f'({dx} : U32)', f'{F[lin[0]][1].p}_force({names[lin[0]]})']) + ')')
 
 
+# ---------------------------------------------------------------------------
+# Validity of representable objects. `{p}_valid` holds exactly when the value
+# is one a decoder or checked setter can produce: scalars in range, no bits
+# set past a partial word, packed collections within their bounds with storage
+# for their words and zero bytes past their length, every sequence element and
+# boxed field present and valid. `{Name}_serialize` (emit_api) encodes only a
+# valid value and refuses the rest, so an invalid object is never truncated,
+# wrapped or merged into a neighbouring field.
+
+def trivial(s):
+    """Is every representable value of this shape valid?"""
+    k = s.kind
+    if k in ('bool', 'u32', 'u64', 'uwide'):
+        return True
+    if k == 'rec':
+        return rec_bound(s) is None
+    if k in ('container', 'group'):
+        return all(trivial(fs) for _, fs in s.fields)
+    return False
+
+
+def rec_bound(s):
+    """For a record whose last word is partial: (index, exclusive bound)."""
+    t = s.t
+    bits = t.size if t.kind == 'bits' else 8 * t.size
+    r = bits % 32
+    return None if r == 0 else (s.nw - 1, 1 << r)
+
+
+def emit_valid(s, w):
+    p, k, R, t = s.p, s.kind, s.rep, s.t
+    if s.data and trivial(s):
+        w(f'def {p}_valid({plus(s)}o: {R}) -> Bool: True{{}}')
+        return
+    if k == 'u8':
+        w(f'def {p}_valid(+o: U32) -> Bool: U32.is_le(o, 255)')
+    elif k == 'u16':
+        w(f'def {p}_valid(+o: U32) -> Bool: U32.is_le(o, 65535)')
+    elif k == 'rec':
+        i, bound = rec_bound(s)
+        ws = [f'w{j}' for j in range(s.nw)]
+        w(f'def {p}_valid(o: {R}) -> Bool:')
+        w('  match o:')
+        w(f'    case {R}{{' + ', '.join('+' + y for y in ws) + f'}}: U32.is_lt(w{i}, {bound})')
+    elif k in ('fixwords', 'bytelist', 'packed', 'packed_elems'):
+        if k == 'fixwords':
+            nb = t.size if t.kind == 'bytes' else (t.size + 7) // 8
+            lo, hi, big, unit = nb, nb, 'False{}', 1
+        elif k == 'bytelist':
+            lim, big = u32_limit(t.size)
+            lo, hi, unit = 0, lim, 1
+        else:
+            es = t.elem.fixed_size()
+            if t.kind == 'vector':
+                lo, hi, big = t.size * es, t.size * es, 'False{}'
+            elif t.kind == 'plist':
+                lo, hi, big = 0, 0, 'True{}'
+            else:
+                lim, big = u32_limit(t.size * es)
+                lo, hi = 0, lim
+            unit = es
+        call = f'O.words_ok(o, {lo}, {hi}, {big}, {unit})'
+        if k == 'packed' and t.elem.kind == 'bool':
+            call = f'O.bools_ok({call})'
+        if k == 'fixwords' and t.kind == 'bits' and t.size % 32:
+            # the bits of the last word past the vector's length are zero
+            call = f'O.bitvec_tail({t.size}, {call})'
+        w(f'def {p}_valid(o: O.Words) -> O.Words & Bool: {call}')
+    elif k == 'bitlist':
+        if t.kind == 'pbits':
+            lim, big = 0, 'True{}'
+        else:
+            lim, big = u32_limit(t.size)
+        w(f'def {p}_valid(o: O.Bits) -> O.Bits & Bool: O.bits_ok(o, {lim}, {big})')
+    elif k == 'box':
+        i = s.inner
+        B_ = s.rep
+        w(f'def {p}_va_back(pair: {i.rep} & Bool) -> {B_} & Bool:')
+        w(f'  (v, ok) = pair')
+        w(f'  (O.BSome{{v, O.BNone{{}}}}, ok)')
+        w(f'def {p}_valid(o: {B_}) -> {B_} & Bool:')
+        w('  match o:')
+        if i.data:
+            w(f'    case O.BSome{{+v, rest}}: (O.BSome{{v, O.BNone{{}}}}, {i.p}_valid(v))')
+        else:
+            w(f'    case O.BSome{{v, rest}}: {p}_va_back({i.p}_valid(v))')
+        w(f'    case O.BNone{{}}: (O.BNone{{}}, False{{}})')
+    elif k == 'seq':
+        e, S, Re, E = s.elem, f'{p}_Seq', s.elem.rep, s.elem.p
+        if t.kind == 'vector':
+            cnt = f'U32.is_eq(n, {t.size})'
+        elif t.kind == 'plist':
+            cnt = 'True{}'
+        else:
+            lim, big = u32_limit(t.size)
+            cnt = f'Bool.or({big}, U32.is_le(n, {lim}))'
+        if e.data and trivial(e):
+            w(f'def {p}_va_cap(ok: Bool, +n: U32, pair: Array<{Re}> & U32) -> {S} & Bool:')
+            w('  (arr, +c) = pair')
+            w(f'  ({S}{{arr, n}}, Bool.and(ok, U32.is_le(n, c)))')
+            w(f'def {p}_valid(o: {S}) -> {S} & Bool:')
+            w('  match o:')
+            w(f'    case {S}{{arr, +n}}: {p}_va_cap({cnt}, n, Array.size({Re}, arr))')
+            return
+        if e.data:
+            w(f'def {p}_va(+k: Nat, +i: U32, acc: Bool, pair: Array<{Re}> & {Re}) -> Array<{Re}> & Bool:')
+            w('  match k:')
+            w('    case 0n:')
+            w('      (arr, +v) = pair')
+            w(f'      (arr, Bool.and(acc, {E}_valid(v)))')
+            w('    case 1n+q:')
+            w('      (arr, +v) = pair')
+            w(f'      {p}_va(q, (i + 1 : U32), Bool.and(acc, {E}_valid(v)), Array.get({Re}, arr, (i + 1 : U32)))')
+            w(f'def {p}_va_nz(empty: Bool, +n: U32, arr: Array<{Re}>) -> Array<{Re}> & Bool:')
+            w('  match empty:')
+            w('    case True{}: (arr, True{})')
+            w(f'    case False{{}}: {p}_va(U32.to_nat((n - 1 : U32)), 0, True{{}}, Array.get({Re}, arr, 0))')
+        else:
+            w(f'def {p}_va_back(+i: U32, acc: Bool, arr: Array<{Re}>, pair: {Re} & Bool) -> Array<{Re}> & Bool:')
+            w('  (v, ok) = pair')
+            w(f'  (Array.set({Re}, arr, i, v), Bool.and(acc, ok))')
+            w(f'def {p}_va_one(+i: U32, acc: Bool, pair: Array<{Re}> & {Re}) -> Array<{Re}> & Bool:')
+            w('  (arr, v) = pair')
+            w(f'  {p}_va_back(i, acc, arr, {E}_valid(v))')
+            w(f'def {p}_va(+k: Nat, +i: U32, pair: Array<{Re}> & Bool) -> Array<{Re}> & Bool:')
+            w('  match k:')
+            w('    case 0n: pair')
+            w('    case 1n+q:')
+            w('      (arr, acc) = pair')
+            w(f'      {p}_va(q, (i + 1 : U32), {p}_va_one(i, acc, Array.swap({Re}, arr, i, {placeholder(e)})))')
+            w(f'def {p}_va_nz(empty: Bool, +n: U32, arr: Array<{Re}>) -> Array<{Re}> & Bool:')
+            w(f'  {p}_va(U32.to_nat(n), 0, (arr, True{{}}))')
+        # capacity first: the element scan reads only indices below n
+        w(f'def {p}_va_fin(+n: U32, ok: Bool, pair: Array<{Re}> & Bool) -> {S} & Bool:')
+        w('  (arr, b) = pair')
+        w(f'  ({S}{{arr, n}}, Bool.and(ok, b))')
+        w(f'def {p}_va_go(ok: Bool, +n: U32, arr: Array<{Re}>) -> {S} & Bool:')
+        w('  match ok:')
+        w(f'    case True{{}}: {p}_va_fin(n, True{{}}, {p}_va_nz(U32.is_eq(n, 0), n, arr))')
+        w(f'    case False{{}}: ({S}{{arr, n}}, False{{}})')
+        w(f'def {p}_va_cap(ok: Bool, +n: U32, pair: Array<{Re}> & U32) -> {S} & Bool:')
+        w('  (arr, +c) = pair')
+        w(f'  {p}_va_go(Bool.and(ok, U32.is_le(n, c)), n, arr)')
+        w(f'def {p}_valid(o: {S}) -> {S} & Bool:')
+        w('  match o:')
+        w(f'    case {S}{{arr, +n}}: {p}_va_cap({cnt}, n, Array.size({Re}, arr))')
+    elif k == 'container':
+        F = [(f'g{g.k}', g) for g in s.groups] if len(s.fields) > GROUP else s.fields
+        emit_valid_fields(w, p, R, F, s.data)
+    elif k == 'cunion':
+        opts = s.options
+        for i, (_, o) in enumerate(opts):
+            if o.data:
+                continue
+            w(f'def {p}_va{i}(pair: {o.rep} & Bool) -> {R} & Bool:')
+            w('  (v, ok) = pair')
+            w(f'  ({R}_c{i}{{v}}, ok)')
+        w(f'def {p}_valid(o: {R}) -> {R} & Bool:')
+        w('  match o:')
+        for i, (_, o) in enumerate(opts):
+            if o.data:
+                w(f'    case {R}_c{i}{{+v}}: ({R}_c{i}{{v}}, {o.p}_valid(v))')
+            else:
+                w(f'    case {R}_c{i}{{v}}: {p}_va{i}({o.p}_valid(v))')
+    else:
+        raise ValueError(f'{p}: no validity for kind {k}')
+
+
+def emit_valid_fields(w, p, R, F, data):
+    names = [f for f, _ in F]
+    pat = f'{R}{{' + ', '.join(f'{plus(fs)}{f}' for f, fs in F) + '}'
+    def conj(xs):
+        x = 'True{}'
+        for y in reversed(xs):
+            x = y if x == 'True{}' else f'Bool.and({y}, {x})'
+        return x
+    dvs = [f'{fs.p}_valid({f})' for f, fs in F if fs.data and not trivial(fs)]
+    if data:
+        w(f'def {p}_valid(o: {R}) -> Bool:')
+        w('  match o:')
+        w(f'    case {pat}: {conj(dvs)}')
+        return
+    lin = [i for i, (f, fs) in enumerate(F) if not fs.data]
+    dx = conj(dvs)
+    for j in range(len(lin) - 1, -1, -1):
+        i = lin[j]
+        params = [f'{plus(fs)}{f}: {fs.rep}' for k2, (f, fs) in enumerate(F) if k2 != i]
+        w(f'def {p}_va{j}(' + ', '.join(params + ['acc: Bool', f'pair: {F[i][1].rep} & Bool']) + f') -> {R} & Bool:')
+        w(f'  ({names[i]}, ok) = pair')
+        if j == len(lin) - 1:
+            w(f'  ({R}{{' + ', '.join(names) + '}, Bool.and(acc, ok))')
+        else:
+            nx = lin[j + 1]
+            args = [f for k2, f in enumerate(names) if k2 != nx]
+            w(f'  {p}_va{j + 1}(' + ', '.join(args + ['Bool.and(acc, ok)', f'{F[nx][1].p}_valid({names[nx]})']) + ')')
+    args0 = [f for k2, f in enumerate(names) if k2 != lin[0]]
+    w(f'def {p}_valid(o: {R}) -> {R} & Bool:')
+    w('  match o:')
+    w(f'    case {pat}: {p}_va0(' + ', '.join(args0 + [dx, f'{F[lin[0]][1].p}_valid({names[lin[0]]})']) + ')')
+
+
+def emit_putk(s, w):
+    """`{p}_putk`: the checked writer of a linear shape (see emit_fieldset).
+    A leaf, sequence or union is checked by its own `{p}_valid` - a pass over
+    that value alone, never its parent's record - and then written; a box
+    checks presence and hands the check of its content to the content's
+    writer. Containers and groups emit theirs with their put chain."""
+    p, k, R = s.p, s.kind, s.rep
+    if s.data or k == 'container':
+        return
+    if k == 'box':
+        i, B_ = s.inner, s.rep
+        w(f'def {p}_pk_back(pair: Array<U32> & ({i.rep} & U32)) -> Array<U32> & ({B_} & U32):')
+        w('  (out, r) = pair')
+        w('  (v, m) = r')
+        w(f'  (out, (O.BSome{{v, O.BNone{{}}}}, m))')
+        w(f'def {p}_putk(out: Array<U32>, +pos: U32, o: {B_}) -> Array<U32> & ({B_} & U32):')
+        w('  match o:')
+        if i.data:
+            w(f'    case O.BSome{{+v, rest}}: ({i.p}_put(out, pos, v), (O.BSome{{v, O.BNone{{}}}}, O.pz({i.p}_valid(v))))')
+        else:
+            w(f'    case O.BSome{{v, rest}}: {p}_pk_back({i.p}_putk(out, pos, v))')
+        w('    case O.BNone{}: (out, (O.BNone{}, 2147483648))')
+        return
+    variable = not s.fixed
+    w(f'def {p}_pk(out: Array<U32>, +pos: U32, pair: {R} & Bool) -> Array<U32> & ({R} & U32):')
+    w('  (o, ok) = pair')
+    w('  match ok:')
+    if variable:
+        w(f'    case True{{}}: {p}_putn(out, pos, o)')
+    else:
+        w(f'    case True{{}}: {p}_pk_ok({p}_put(out, pos, o))')
+    w('    case False{}: (out, (o, 2147483648))')
+    if not variable:
+        w(f'def {p}_pk_ok(pair: Array<U32> & {R}) -> Array<U32> & ({R} & U32):')
+        w('  (out, o) = pair')
+        w('  (out, (o, 0))')
+    w(f'def {p}_putk(out: Array<U32>, +pos: U32, o: {R}) -> Array<U32> & ({R} & U32): {p}_pk(out, pos, {p}_valid(o))')
+
+
 def emit_bool(s, w):
     p = s.p
     w(f'def {p}_default() -> Bool: False{{}}')
     w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: O.rd_bool(buf, off)')
     w(f'def {p}_put(out: Array<U32>, +pos: U32, o: Bool) -> Array<U32>: O.wbool(out, pos, o)')
-    w(f'def {p}_root(h: B.Buf, o: Bool, +seg: U32) -> B.Buf & D.Digest: (h, O.bool_chunk(o))')
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: Bool, +seg: U32) -> B.Buf & D.Digest: (h, O.bool_chunk(o))')
 
 
 def emit_uint(s, w):
@@ -936,7 +1305,7 @@ def emit_uint(s, w):
     w(f'def {p}_default() -> U32: 0')
     w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & U32: {rd}(buf, off)')
     w(f'def {p}_put(out: Array<U32>, +pos: U32, +o: U32) -> Array<U32>: {wr}(out, pos, o)')
-    w(f'def {p}_root(h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk(o))')
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, +o: U32, +seg: U32) -> B.Buf & D.Digest: (h, O.u32_chunk(o))')
 
 
 def emit_u64(s, w):
@@ -944,7 +1313,7 @@ def emit_u64(s, w):
     w(f'def {p}_default() -> O.U64: O.u64_zero()')
     w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.U64: O.rd_u64(buf, off)')
     w(f'def {p}_put(out: Array<U32>, +pos: U32, o: O.U64) -> Array<U32>: O.w64(out, pos, o)')
-    w(f'def {p}_root(h: B.Buf, o: O.U64, +seg: U32) -> B.Buf & D.Digest: (h, O.u64_chunk(o))')
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: O.U64, +seg: U32) -> B.Buf & D.Digest: (h, O.u64_chunk(o))')
 
 
 def emit_rec(s, w):
@@ -970,19 +1339,19 @@ def emit_rec(s, w):
     w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & {R}: {p}_r0(off, B.read32(buf, off))')
     # put
     pat = f'{R}{{' + ', '.join('+' + x for x in ws) + '}'
-    emit_rec_put(p, R, ws, w)
+    emit_rec_put(p, R, ws, w, nb)
     # root: chunks of eight big-endian words, zero padded, in a complete tree
     nc = chunks_of(nb)
     leaves = []
     for c in range(nc):
         wsw = [f'B.swap32({ws[8 * c + j]})' if 8 * c + j < nw else '0' for j in range(8)]
         leaves.append('D.D{' + ', '.join(wsw) + '}')
-    w(f'def {p}_root(h: B.Buf, o: {R}, +seg: U32) -> B.Buf & D.Digest:')
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {R}, +seg: U32) -> B.Buf & D.Digest:')
     w('  match o:')
     w(f'    case {pat}: (h, {tree(leaves)})')
 
 
-def emit_rec_put(p, R, ws, w):
+def emit_rec_put(p, R, ws, w, nbytes):
     """Write a word record's bytes at an arbitrary byte position.
 
     The destination alignment is the same for every word of the record, so it
@@ -998,7 +1367,12 @@ def emit_rec_put(p, R, ws, w):
     args = ', '.join(ws)
     e = 'out'
     for j, x in enumerate(ws):
-        e = f'Array.set(U32, {e}, (q + {j} : U32), {x})'
+        if j == n - 1 and nbytes % 4:
+            # the last word holds fewer than four of the record's bytes; the
+            # rest belong to the next value, so it is OR-ed in, not stored
+            e = f'O.or_word({e}, (q + {j} : U32), {x})'
+        else:
+            e = f'Array.set(U32, {e}, (q + {j} : U32), {x})'
     w(f'def {p}_pw0(out: Array<U32>, +q: U32, {params}) -> Array<U32>: {e}')
     for s, mul, sh in ((1, 256, 24), (2, 65536, 16), (3, 16777216, 8)):
         e = 'out'
@@ -1010,18 +1384,30 @@ def emit_rec_put(p, R, ws, w):
                 # the trailing carry word: written only when it carries bytes,
                 # so the output needs no spare word past the data
                 e = f'O.or_skip({e}, (q + {j} : U32), {val})'
+            elif 1 <= j and 4 * j + 4 - s <= nbytes:
+                # destination word q+j lies wholly inside the record's own
+                # bytes [p, p + nbytes): no neighbour shares it, so it is
+                # stored, not OR-ed into (the same bytes: the output is zero)
+                e = f'Array.set(U32, {e}, (q + {j} : U32), {val})'
             else:
                 e = f'O.or_word({e}, (q + {j} : U32), {val})'
         w(f'def {p}_pw{s}(out: Array<U32>, +q: U32, {params}) -> Array<U32>: {e}')
-    w(f'def {p}_pwd(+s: U32, out: Array<U32>, +q: U32, {params}) -> Array<U32>:')
+    # The aligned case is the common one (every fixed layout of a word-sized
+    # field at a word-aligned container position); it is tested by one
+    # comparison and the three shifted writers sit behind a separate function,
+    # so the aligned path stays small enough to be inlined into its caller.
+    w(f'def {p}_pwu(+s: U32, out: Array<U32>, +q: U32, {params}) -> Array<U32>:')
     w('  match s:')
-    w(f'    case 0: {p}_pw0(out, q, {args})')
     w(f'    case 1: {p}_pw1(out, q, {args})')
     w(f'    case 2: {p}_pw2(out, q, {args})')
     w(f'    case _: {p}_pw3(out, q, {args})')
+    w(f'def {p}_pwd(aligned: Bool, +s: U32, out: Array<U32>, +q: U32, {params}) -> Array<U32>:')
+    w('  match aligned:')
+    w(f'    case True{{}}: {p}_pw0(out, q, {args})')
+    w(f'    case False{{}}: {p}_pwu(s, out, q, {args})')
     w(f'def {p}_put(out: Array<U32>, +pos: U32, o: {R}) -> Array<U32>:')
     w('  match o:')
-    w(f'    case {pat}: {p}_pwd((pos .&. 3 : U32), out, U32.shrn(pos, 2n), {args})')
+    w(f'    case {pat}: {p}_pwd(U32.is_eq((pos .&. 3 : U32), 0), (pos .&. 3 : U32), out, U32.shrn(pos, 2n), {args})')
 
 
 def tree(leaves):
@@ -1042,9 +1428,15 @@ def tree(leaves):
             a, b = level[i], level[i + 1]
             if a == 'D.zero()' and b == 'D.zero()':
                 raise schema.SchemaError('record root needs a zero subtree above level 0')
-            nxt.append(f'D.hash_pair({a}, {b})')
+            nxt.append(f'D.node(hl, {a}, {b})')
         level = nxt
     return level[0]
+
+
+def words_depth_for(nb):
+    """O.depth_for(nb): the depth of a Words holding nb bytes (whole chunks
+    plus one spare chunk)."""
+    return cap_depth(4 * (((nb + 31) // 32) * 8 + 8))
 
 
 def emit_words(s, w):
@@ -1053,64 +1445,90 @@ def emit_words(s, w):
     if k == 'fixwords':
         nb = t.size if t.kind == 'bytes' else (t.size + 7) // 8
         w(f'def {p}_default() -> O.Words: O.words_new({nb})')
-        w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, {nb})')
+        w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: '
+          f'O.copy_into(buf, off, {nb}, Array.new(U32, {words_depth_for(nb)}n, 0))')
         depth = log2ceil(chunks_of(nb))
-        root = f'O.words_root(h, o, {depth}, seg)'
+        root = f'O.words_root(hl, h, o, {depth}, seg)'
     elif k == 'bytelist':
         w(f'def {p}_default() -> O.Words: O.words_new(0)')
         w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)')
-        core = ('O.words_root_prog(h, o, seg)' if s.prog
-                else f'O.words_root(h, o, {log2ceil(chunks_of(t.size))}, seg)')
-        root = f'O.mix_count(0n, {core})'
+        core = ('O.words_root_prog(hl, h, o, seg)' if s.prog
+                else f'O.words_root(hl, h, o, {log2ceil(chunks_of(t.size))}, seg)')
+        root = f'O.mix_count(hl, 0n, {core})'
     else:
         e = t.elem
         es = e.fixed_size()
         count = t.size
         if t.kind == 'vector':
             w(f'def {p}_default() -> O.Words: O.words_new({count * es})')
-            w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, {count * es})')
+            w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: '
+              f'O.copy_into(buf, off, {count * es}, Array.new(U32, {words_depth_for(count * es)}n, 0))')
         else:
             w(f'def {p}_default() -> O.Words: O.words_new(0)')
             w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)')
         if k == 'packed':
-            core = ('O.words_root_prog(h, o, seg)' if s.prog
-                    else f'O.words_root(h, o, {log2ceil(chunks_of(count * es))}, seg)')
+            core = ('O.words_root_prog(hl, h, o, seg)' if s.prog
+                    else f'O.words_root(hl, h, o, {log2ceil(chunks_of(count * es))}, seg)')
         else:
             ew = es // 4
             ed = log2ceil(chunks_of(es))
-            core = (f'O.elems_root_prog(h, o, {ew}, {ed}, seg)' if s.prog
-                    else f'O.elems_root(h, o, {ew}, {ed}, {log2ceil(count)}, seg)')
+            core = (f'O.elems_root_prog(hl, h, o, {ew}, {ed}, seg)' if s.prog
+                    else f'O.elems_root(hl, h, o, {ew}, {ed}, {log2ceil(count)}, seg)')
         if t.kind == 'vector':
             root = core
         else:
             shift = {1: 0, 2: 1, 4: 2, 8: 3, 16: 4, 32: 5}.get(es)
             if shift is None:
-                root = f'{p}_mix({core})'
-                w(f'def {p}_mix(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (O.Words & D.Digest):')
+                root = f'{p}_mix(hl, {core})'
+                w(f'def {p}_mix(+hl: Nat, pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (O.Words & D.Digest):')
                 w('  (h, r) = pair')
                 w('  (o, d) = r')
                 w('  match o:')
-                w(f'    case O.Words{{ws, +n}}: (h, (O.Words{{ws, n}}, O.mix_len(d, U32.div(n, {es}))))')
+                w(f'    case O.Words{{ws, +n}}: (h, (O.Words{{ws, n}}, O.mix_len(hl, d, U32.div(n, {es}))))')
             else:
-                root = f'O.mix_count({shift}n, {core})'
-    w(f'def {p}_size(o: O.Words) -> O.Words & U32: O.words_len(o)')
-    w(f'def {p}_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)')
+                root = f'O.mix_count(hl, {shift}n, {core})'
+    w(f'def {p}_size(o: O.Words) -> O.Words & U32: O.words_sizek(o)')
+    fixed_nb = s.fsize if s.fixed else None
+    if fixed_nb is not None and fixed_nb % 4 == 0 and fixed_nb // 4 <= FIXED_COPY_MAX_WORDS:
+        # A short fixed-size run (a signature, a pubkey, a proof branch) at a
+        # word-aligned position: its words are moved by straight-line reads
+        # and stores, with no loop; any other position takes the general
+        # writer. The same words are written either way.
+        nw = fixed_nb // 4
+        for k in range(nw - 1, -1, -1):
+            nxt = (f'{p}_pa{k + 1}(q, Array.set(U32, out, (q + {k} : U32), w), Array.get(U32, ws, {k + 1}))'
+                   if k < nw - 1 else f'(Array.set(U32, out, (q + {k} : U32), w), ws)')
+            w(f'def {p}_pa{k}(+q: U32, out: Array<U32>, pair: Array<U32> & U32) -> Array<U32> & Array<U32>:')
+            w('  (ws, +w) = pair')
+            w(f'  {nxt}')
+        w(f'def {p}_pal(+n: U32, pair: Array<U32> & Array<U32>) -> Array<U32> & O.Words:')
+        w('  (out, ws) = pair')
+        w('  (out, O.Words{ws, n})')
+        w(f'def {p}_pw(aligned: Bool, out: Array<U32>, +pos: U32, ws: Array<U32>, +n: U32) -> Array<U32> & O.Words:')
+        w('  match aligned:')
+        w(f'    case True{{}}: {p}_pal(n, {p}_pa0(U32.shrn(pos, 2n), out, Array.get(U32, ws, 0)))')
+        w('    case False{}: O.put_words(out, pos, O.Words{ws, n})')
+        w(f'def {p}_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words:')
+        w('  match o:')
+        w(f'    case O.Words{{ws, +n}}: {p}_pw(U32.is_eq((pos .&. 3 : U32), 0), out, pos, ws, n)')
+    else:
+        w(f'def {p}_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)')
     if not s.fixed:
         w(f'def {p}_putn(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & (O.Words & U32): '
           f'O.put_words_n(out, pos, o)')
-    w(f'def {p}_root(h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): {root}')
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: O.Words, +seg: U32) -> B.Buf & (O.Words & D.Digest): {root}')
 
 
 def emit_bitlist(s, w):
     p, t = s.p, s.t
     w(f'def {p}_default() -> O.Bits: O.Bits{{Array.new(U32, 3n, 0), 0}}')
     w(f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Bits: O.bits_in(buf, off, len)')
-    w(f'def {p}_size(o: O.Bits) -> O.Bits & U32: O.bits_size(o)')
+    w(f'def {p}_size(o: O.Bits) -> O.Bits & U32: O.bits_sizek(o)')
     w(f'def {p}_put(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & O.Bits: O.put_bits(out, pos, o)')
     w(f'def {p}_putn(out: Array<U32>, +pos: U32, o: O.Bits) -> Array<U32> & (O.Bits & U32): O.put_bits_n(out, pos, o)')
-    root = ('O.bits_root_prog(h, o, seg)' if s.prog
-            else f'O.bits_root(h, o, {log2ceil(chunks_of((t.size + 7) // 8))}, seg)')
-    w(f'def {p}_root(h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): {root}')
+    root = ('O.bits_root_prog(hl, h, o, seg)' if s.prog
+            else f'O.bits_root(hl, h, o, {log2ceil(chunks_of((t.size + 7) // 8))}, seg)')
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: O.Bits, +seg: U32) -> B.Buf & (O.Bits & D.Digest): {root}')
 
 
 # ---------------------------------------------------------------------------
@@ -1129,7 +1547,7 @@ def emit_seq(s, w):
     else:
         w(f'def {p}_fill(+d: Nat) -> Array<{R}>:')
         w('  match d:')
-        w(f'    case 0n: ALeaf{{{E}_default()}}')
+        w(f'    case 0n: ALeaf{{{placeholder(e)}}}')
         w(f'    case 1n+q: ANode{{{p}_fill(q), {p}_fill(q)}}')
     w(f'def {p}_cap(+n: U32) -> Nat: B.words_depth(n)')
     count = t.size
@@ -1141,7 +1559,7 @@ def emit_seq(s, w):
     if e.data:
         take = f'Array.get({R}, arr, i)'
     else:
-        take = f'Array.swap({R}, arr, i, {E}_default())'
+        take = f'Array.swap({R}, arr, i, {placeholder(e)})'
     # ---- read ----
     if e.fixed:
         es = e.fsize
@@ -1208,7 +1626,11 @@ def emit_seq(s, w):
         es = e.fsize
         w(f'def {p}_size(o: {S}) -> {S} & U32:')
         w('  match o:')
-        w(f'    case {S}{{arr, +n}}: ({S}{{arr, n}}, (n * {es} : U32))')
+        w(f'    case {S}{{arr, +n}}: {p}_szf(n, Array.size({R}, arr))')
+        # the size of storage that does not hold n elements is refused (bit 31)
+        w(f'def {p}_szf(+n: U32, pair: Array<{R}> & U32) -> {S} & U32:')
+        w('  (arr, +c) = pair')
+        w(f'  ({S}{{arr, n}}, O.pick(U32.is_le(n, c), (n * {es} : U32), 2147483648))')
         if e.data:
             w(f'def {p}_pt(+k: Nat, +i: U32, +pos: U32, out: Array<U32>, pair: Array<{R}> & {R}) -> Array<U32> & Array<{R}>:')
             w('  match k:')
@@ -1226,81 +1648,118 @@ def emit_seq(s, w):
             w(f'    case True{{}}: (out, {S}{{arr, n}})')
             w(f'    case False{{}}: {p}_pt_fin(n, {p}_pt(U32.to_nat((n - 1 : U32)), 0, pos, out, Array.get({R}, arr, 0)))')
         else:
-            # linear fixed-size elements (a Deposit's proof is packed words)
-            w(f'def {p}_pt_back(+i: U32, arr: Array<{R}>, pair: Array<U32> & {R}) -> Array<U32> & Array<{R}>:')
+            # linear fixed-size elements (a Deposit's proof is packed words),
+            # taken out and put back with one spare element for the loop
+            PT = f'Array<U32> & (Array<{R}> & {R})'
+            w(f'def {p}_pt_ret(out: Array<U32>, pair: Array<{R}> & {R}) -> {PT}:')
+            w('  (arr, sp) = pair')
+            w('  (out, (arr, sp))')
+            w(f'def {p}_pt_back(+i: U32, arr: Array<{R}>, pair: Array<U32> & {R}) -> {PT}:')
             w('  (out, v) = pair')
-            w(f'  (out, Array.set({R}, arr, i, v))')
-            w(f'def {p}_pt_one(+i: U32, +pos: U32, out: Array<U32>, pair: Array<{R}> & {R}) -> Array<U32> & Array<{R}>:')
+            w(f'  {p}_pt_ret(out, Array.swap({R}, arr, i, v))')
+            w(f'def {p}_pt_one(+i: U32, +pos: U32, out: Array<U32>, pair: Array<{R}> & {R}) -> {PT}:')
             w('  (arr, v) = pair')
             w(f'  {p}_pt_back(i, arr, {E}_put(out, (pos + i * {es} : U32), v))')
-            w(f'def {p}_pt(+k: Nat, +i: U32, +pos: U32, pair: Array<U32> & Array<{R}>) -> Array<U32> & Array<{R}>:')
+            w(f'def {p}_pt(+k: Nat, +i: U32, +pos: U32, st: {PT}) -> {PT}:')
             w('  match k:')
-            w('    case 0n: pair')
+            w('    case 0n: st')
             w('    case 1n+q:')
-            w('      (out, arr) = pair')
-            w(f'      {p}_pt(q, (i + 1 : U32), pos, {p}_pt_one(i, pos, out, Array.swap({R}, arr, i, {E}_default())))')
-            w(f'def {p}_pt_fin(+n: U32, pair: Array<U32> & Array<{R}>) -> Array<U32> & {S}:')
-            w('  (out, arr) = pair')
+            w('      (out, r) = st')
+            w('      (arr, sp) = r')
+            w(f'      {p}_pt(q, (i + 1 : U32), pos, {p}_pt_one(i, pos, out, Array.swap({R}, arr, i, sp)))')
+            w(f'def {p}_pt_fin(+n: U32, st: {PT}) -> Array<U32> & {S}:')
+            w('  (out, r) = st')
+            w('  (arr, sp) = r')
             w(f'  (out, {S}{{arr, n}})')
             w(f'def {p}_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<{R}>) -> Array<U32> & {S}:')
-            w(f'  {p}_pt_fin(n, {p}_pt(U32.to_nat(n), 0, pos, (out, arr)))')
+            w('  match empty:')
+            w(f'    case True{{}}: (out, {S}{{arr, n}})')
+            w(f'    case False{{}}: {p}_pt_fin(n, {p}_pt(U32.to_nat(n), 0, pos, (out, (arr, {placeholder(e)}))))')
     else:
         # variable-size elements: element sizes first (for the offsets), then
         # offsets and elements in one pass tracking the running offset.
-        w(f'def {p}_sz_back(+i: U32, +acc: U32, arr: Array<{R}>, pair: {R} & U32) -> Array<{R}> & U32:')
+        # Each element is taken out of the array by a swap with a spare
+        # element and put back by a second swap that returns the spare, so
+        # one default element serves the whole loop (built only for a
+        # nonempty list) instead of one being built and dropped per element.
+        SP = f'Array<{R}> & (U32 & {R})'
+        w(f'def {p}_sz_ret(+acc: U32, pair: Array<{R}> & {R}) -> {SP}:')
+        w('  (arr, sp) = pair')
+        w('  (arr, (acc, sp))')
+        w(f'def {p}_sz_back(+i: U32, +acc: U32, arr: Array<{R}>, pair: {R} & U32) -> {SP}:')
         w('  (v, +m) = pair')
-        w(f'  (Array.set({R}, arr, i, v), (acc + m : U32))')
-        w(f'def {p}_sz_one(+i: U32, +acc: U32, pair: Array<{R}> & {R}) -> Array<{R}> & U32:')
+        w(f'  {p}_sz_ret(O.padd(acc, m), Array.swap({R}, arr, i, v))')
+        w(f'def {p}_sz_one(+i: U32, +acc: U32, pair: Array<{R}> & {R}) -> {SP}:')
         w('  (arr, v) = pair')
         w(f'  {p}_sz_back(i, acc, arr, {E}_size(v))')
-        w(f'def {p}_sz(+k: Nat, +i: U32, pair: Array<{R}> & U32) -> Array<{R}> & U32:')
+        w(f'def {p}_sz(+k: Nat, +i: U32, st: {SP}) -> {SP}:')
         w('  match k:')
-        w('    case 0n: pair')
+        w('    case 0n: st')
         w('    case 1n+q:')
-        w('      (arr, +acc) = pair')
-        w(f'      {p}_sz(q, (i + 1 : U32), {p}_sz_one(i, acc, Array.swap({R}, arr, i, {E}_default())))')
-        w(f'def {p}_sz_fin(+n: U32, pair: Array<{R}> & U32) -> {S} & U32:')
-        w('  (arr, +m) = pair')
-        w(f'  ({S}{{arr, n}}, (4 * n + m : U32))')
+        w('      (arr, r) = st')
+        w('      (acc, sp) = r')
+        w(f'      {p}_sz(q, (i + 1 : U32), {p}_sz_one(i, acc, Array.swap({R}, arr, i, sp)))')
+        w(f'def {p}_sz_fin(+n: U32, st: {SP}) -> {S} & U32:')
+        w('  (arr, r) = st')
+        w('  (m, sp) = r')
+        w(f'  ({S}{{arr, n}}, O.padd((4 * n : U32), m))')
+        w(f'def {p}_sz_nz(empty: Bool, arr: Array<{R}>, +n: U32) -> {S} & U32:')
+        w('  match empty:')
+        w(f'    case True{{}}: ({S}{{arr, n}}, 0)')
+        w(f'    case False{{}}: {p}_sz_fin(n, {p}_sz(U32.to_nat(n), 0, (arr, (0, {placeholder(e)}))))')
+        # storage that does not hold n elements: refused (bit 31), no loop
+        w(f'def {p}_sz_ok(ok: Bool, arr: Array<{R}>, +n: U32) -> {S} & U32:')
+        w('  match ok:')
+        w(f'    case True{{}}: {p}_sz_nz(U32.is_eq(n, 0), arr, n)')
+        w(f'    case False{{}}: ({S}{{arr, n}}, 2147483648)')
+        w(f'def {p}_sz_cap(+n: U32, pair: Array<{R}> & U32) -> {S} & U32:')
+        w('  (arr, +c) = pair')
+        w(f'  {p}_sz_ok(U32.is_le(n, c), arr, n)')
         w(f'def {p}_size(o: {S}) -> {S} & U32:')
         w('  match o:')
-        w(f'    case {S}{{arr, +n}}: {p}_sz_fin(n, {p}_sz(U32.to_nat(n), 0, (arr, 0)))')
-        # put: state (out, (arr, cur)); element i: size it, write its offset
+        w(f'    case {S}{{arr, +n}}: {p}_sz_cap(n, Array.size({R}, arr))')
+        # put: state (out, (arr, (cur, spare))); element i: write its offset
         # (cur) and the element at pos + cur, put it back, advance cur.
-        w(f'def {p}_pv_put(+i: U32, +next: U32, arr: Array<{R}>, pair: Array<U32> & {R}) -> Array<U32> & (Array<{R}> & U32):')
-        w('  (out, v) = pair')
-        w(f'  (out, (Array.set({R}, arr, i, v), next))')
-        w(f'def {p}_pv_placed_go(+i: U32, +cur: U32, arr: Array<{R}>, out: Array<U32>, v: {R}, +m: U32) -> Array<U32> & (Array<{R}> & U32):')
-        w(f'  {p}_pv_put(i, (cur + m : U32), arr, (out, v))')
-        w(f'def {p}_pv_placed(+i: U32, +cur: U32, arr: Array<{R}>, pair: Array<U32> & ({R} & U32)) -> Array<U32> & (Array<{R}> & U32):')
+        PS = f'Array<U32> & (Array<{R}> & (U32 & {R}))'
+        putv = putv_helper(e, w)
+        w(f'def {p}_pv_ret(out: Array<U32>, c: U32, pair: Array<{R}> & {R}) -> {PS}:')
+        w('  (arr, sp) = pair')
+        w('  (out, (arr, (c, sp)))')
+        w(f'def {p}_pv_placed(+i: U32, arr: Array<{R}>, pair: Array<U32> & ({R} & U32)) -> {PS}:')
         w('  (out, r) = pair')
-        w('  (v, m) = r')
-        w(f'  {p}_pv_placed_go(i, cur, arr, out, v, m)')
-        w(f'def {p}_pv_one(+i: U32, +pos: U32, +cur: U32, out: Array<U32>, pair: Array<{R}> & {R}) -> Array<U32> & (Array<{R}> & U32):')
+        w('  (v, c) = r')
+        w(f'  {p}_pv_ret(out, c, Array.swap({R}, arr, i, v))')
+        w(f'def {p}_pv_one(+i: U32, +pos: U32, +cur: U32, out: Array<U32>, pair: Array<{R}> & {R}) -> {PS}:')
         w('  (arr, v) = pair')
-        w(f'  {p}_pv_placed(i, cur, arr, {E}_putn(O.w32(out, (pos + 4 * i : U32), cur), (pos + cur : U32), v))')
-        w(f'def {p}_pv(+k: Nat, +i: U32, +pos: U32, pair: Array<U32> & (Array<{R}> & U32)) -> Array<U32> & (Array<{R}> & U32):')
+        w(f'  {p}_pv_placed(i, arr, {putv}(out, pos, (4 * i : U32), cur, v))')
+        w(f'def {p}_pv(+k: Nat, +i: U32, +pos: U32, st: {PS}) -> {PS}:')
         w('  match k:')
-        w('    case 0n: pair')
+        w('    case 0n: st')
         w('    case 1n+q:')
-        w('      (out, st) = pair')
-        w('      (arr, cur) = st')
-        w(f'      {p}_pv(q, (i + 1 : U32), pos, {p}_pv_one(i, pos, cur, out, Array.swap({R}, arr, i, {E}_default())))')
-        w(f'def {p}_pv_fin(+n: U32, pair: Array<U32> & (Array<{R}> & U32)) -> Array<U32> & {S}:')
-        w('  (out, st) = pair')
-        w('  (arr, cur) = st')
-        w(f'  (out, {S}{{arr, n}})')
-        w(f'def {p}_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<{R}>) -> Array<U32> & {S}:')
-        w(f'  {p}_pv_fin(n, {p}_pv(U32.to_nat(n), 0, pos, (out, (arr, (4 * n : U32)))))')
+        w('      (out, s1) = st')
+        w('      (arr, s2) = s1')
+        w('      (cur, sp) = s2')
+        w(f'      {p}_pv(q, (i + 1 : U32), pos, {p}_pv_one(i, pos, cur, out, Array.swap({R}, arr, i, sp)))')
         w(f'def {p}_pvn_go(+n: U32, out: Array<U32>, arr: Array<{R}>, +cur: U32) -> Array<U32> & ({S} & U32):')
         w(f'  (out, ({S}{{arr, n}}, cur))')
-        w(f'def {p}_pvn_fin(+n: U32, pair: Array<U32> & (Array<{R}> & U32)) -> Array<U32> & ({S} & U32):')
-        w('  (out, st) = pair')
-        w('  (arr, cur) = st')
+        w(f'def {p}_pvn_fin(+n: U32, st: {PS}) -> Array<U32> & ({S} & U32):')
+        w('  (out, s1) = st')
+        w('  (arr, s2) = s1')
+        w('  (cur, sp) = s2')
         w(f'  {p}_pvn_go(n, out, arr, cur)')
+        w(f'def {p}_pvn_nz(empty: Bool, out: Array<U32>, +pos: U32, arr: Array<{R}>, +n: U32) -> Array<U32> & ({S} & U32):')
+        w('  match empty:')
+        w(f'    case True{{}}: (out, ({S}{{arr, n}}, 0))')
+        w(f'    case False{{}}: {p}_pvn_fin(n, {p}_pv(U32.to_nat(n), 0, pos, (out, (arr, ((4 * n : U32), {placeholder(e)})))))')
         w(f'def {p}_putn(out: Array<U32>, +pos: U32, o: {S}) -> Array<U32> & ({S} & U32):')
         w('  match o:')
-        w(f'    case {S}{{arr, +n}}: {p}_pvn_fin(n, {p}_pv(U32.to_nat(n), 0, pos, (out, (arr, (4 * n : U32)))))')
+        w(f'    case {S}{{arr, +n}}: {p}_pvn_nz(U32.is_eq(n, 0), out, pos, arr, n)')
+        w(f'def {p}_pv_drop(pair: Array<U32> & ({S} & U32)) -> Array<U32> & {S}:')
+        w('  (out, r) = pair')
+        w('  (sq, m) = r')
+        w('  (out, sq)')
+        w(f'def {p}_pt_nz(empty: Bool, +pos: U32, +n: U32, out: Array<U32>, arr: Array<{R}>) -> Array<U32> & {S}:')
+        w(f'  {p}_pv_drop({p}_pvn_nz(empty, out, pos, arr, n))')
     w(f'def {p}_put(out: Array<U32>, +pos: U32, o: {S}) -> Array<U32> & {S}:')
     w('  match o:')
     w(f'    case {S}{{arr, +n}}: {p}_pt_nz(U32.is_eq(n, 0), pos, n, out, arr)')
@@ -1311,40 +1770,97 @@ def emit_seq(s, w):
         w(f'def {p}_putn(out: Array<U32>, +pos: U32, o: {S}) -> Array<U32> & ({S} & U32):')
         w('  match o:')
         w(f'    case {S}{{arr, +n}}: {p}_ptn_fin(n, {p}_pt_nz(U32.is_eq(n, 0), pos, n, out, arr))')
-    # ---- root ----
-    push = 'M.push_prog' if s.prog else 'M.push_leaf'
-    close = ('M.close_prog(n, seg, h)' if s.prog else f'M.close({log2ceil(t.size)}, n, seg, h)')
-    w(f'def {p}_rt_push(+i: U32, +seg: U32, arr: Array<{R}>, pair: B.Buf & ({R} & D.Digest)) -> B.Buf & Array<{R}>:')
-    w('  (h, r) = pair')
-    w('  (v, d) = r')
-    w(f'  ({push}(i, seg, d, h), Array.set({R}, arr, i, v))')
+    # ---- root: the recursive tree over the element roots, O.mtree's shape
+    # (phase m = 0 computes a subtree, m = 1 holds the left sibling's root).
+    lim = log2ceil(t.size)
+    ST = f'B.Buf & (Array<{R}> & D.Digest)'
     if e.data:
-        w(f'def {p}_rt_one(+i: U32, +seg: U32, h: B.Buf, pair: Array<{R}> & {R}) -> B.Buf & Array<{R}>:')
-        w('  (arr, +v) = pair')
-        w(f'  {p}_rt_leaf(i, seg, arr, {E}_root(h, v, (seg + 64 : U32)))')
-        w(f'def {p}_rt_leaf(+i: U32, +seg: U32, arr: Array<{R}>, pair: B.Buf & D.Digest) -> B.Buf & Array<{R}>:')
+        w(f'def {p}_rl_d(arr: Array<{R}>, pair: B.Buf & D.Digest) -> {ST}:')
         w('  (h, d) = pair')
-        w(f'  ({push}(i, seg, d, h), arr)')
+        w('  (h, (arr, d))')
+        w(f'def {p}_rl(+hl: Nat, +seg: U32, h: B.Buf, pair: Array<{R}> & {R}) -> {ST}:')
+        w('  (arr, +v) = pair')
+        w(f'  {p}_rl_d(arr, {E}_root(hl, h, v, (seg + 64 : U32)))')
+        leaf = f'{p}_rl(hl, seg, h, Array.get({R}, arr, U32.from_nat(s)))'
     else:
-        w(f'def {p}_rt_one(+i: U32, +seg: U32, h: B.Buf, pair: Array<{R}> & {R}) -> B.Buf & Array<{R}>:')
+        w(f'def {p}_rl_n(+i: U32, arr: Array<{R}>, pair: B.Buf & ({R} & D.Digest)) -> {ST}:')
+        w('  (h, r) = pair')
+        w('  (v, d) = r')
+        w(f'  (h, (Array.set({R}, arr, i, v), d))')
+        w(f'def {p}_rl(+hl: Nat, +i: U32, +seg: U32, h: B.Buf, pair: Array<{R}> & {R}) -> {ST}:')
         w('  (arr, v) = pair')
-        w(f'  {p}_rt_push(i, seg, arr, {E}_root(h, v, (seg + 64 : U32)))')
-    w(f'def {p}_rt(+k: Nat, +i: U32, +seg: U32, pair: B.Buf & Array<{R}>) -> B.Buf & Array<{R}>:')
-    w('  match k:')
-    w('    case 0n: pair')
-    w('    case 1n+q:')
-    w('      (h, arr) = pair')
-    w(f'      {p}_rt(q, (i + 1 : U32), seg, {p}_rt_one(i, seg, h, {take}))')
-    w(f'def {p}_rt_fin(+n: U32, +seg: U32, pair: B.Buf & Array<{R}>) -> B.Buf & ({S} & D.Digest):')
-    w('  (h, arr) = pair')
-    w(f'  {p}_rt_close(n, arr, {close})')
-    w(f'def {p}_rt_close(+n: U32, arr: Array<{R}>, pair: B.Buf & D.Digest) -> B.Buf & ({S} & D.Digest):')
-    w('  (h, d) = pair')
-    mixed = 'd' if t.kind == 'vector' else 'O.mix_len(d, n)'
+        w(f'  {p}_rl_n(i, arr, {E}_root(hl, h, v, (seg + 64 : U32)))')
+        leaf = f'{p}_rl(hl, U32.from_nat(s), seg, h, Array.swap({R}, arr, U32.from_nat(s), {placeholder(e)}))'
+    w(f'def {p}_mj(+hl: Nat, dl: D.Digest, pair: {ST}) -> {ST}:')
+    w('  (h, r) = pair')
+    w('  (arr, dr) = r')
+    w('  (h, (arr, D.node(hl, dl, dr)))')
+    w(f'def {p}_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat, +s: Nat, +n: Nat, st: {ST}) -> {ST}:')
+    w('  match d:')
+    w('    case 0n:')
+    w('      match m:')
+    w('        case 0n:')
+    w('          match inside:')
+    w('            case False{}:')
+    w('              (h, r) = st')
+    w('              (arr, dl) = r')
+    w('              (h, (arr, D.zconst(0n)))')
+    w('            case True{}:')
+    w('              (h, r) = st')
+    w('              (arr, dl) = r')
+    w(f'              {leaf}')
+    w('        case 1n+q:')
+    w('          (h, r) = st')
+    w('          (arr, dl) = r')
+    w(f'          {p}_mj(hl, dl, {p}_mt(0n, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))')
+    w('    case 1n+ +p:')
+    w('      match m:')
+    w('        case 0n:')
+    w('          match inside:')
+    w('            case False{}:')
+    w('              (h, r) = st')
+    w('              (arr, dl) = r')
+    w('              (h, (arr, D.zconst(1n+p)))')
+    w('            case True{}:')
+    w(f'              {p}_mt(p, 1n, Nat.is_lt(Nat.add(s, Nat.div(w, 2n)), n), hl, seg, Nat.div(w, 2n), Nat.add(s, Nat.div(w, 2n)), n,')
+    w(f'                {p}_mt(p, 0n, True{{}}, hl, seg, Nat.div(w, 2n), s, n, st))')
+    w('        case 1n+q:')
+    w('          (h, r) = st')
+    w('          (arr, dl) = r')
+    w(f'          {p}_mj(hl, dl, {p}_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))')
+    if s.prog:
+        # merkleize_progressive over the element roots (O.ptree's shape)
+        w(f'def {p}_prr(+hl: Nat, +seg: U32, +dep: Nat, +s: Nat, +n: Nat, pair: {ST}) -> {ST}:')
+        w('  (h, r) = pair')
+        w('  (arr, dl) = r')
+        w(f'  {p}_mj(hl, dl, {p}_mt(dep, 0n, True{{}}, hl, seg, O.pow2n(dep), s, n, (h, (arr, D.zero()))))')
+        w(f'def {p}_ptr(f: Nat, inside: Bool, +hl: Nat, +seg: U32, +dep: Nat, +s: Nat, +n: Nat, st: {ST}) -> {ST}:')
+        w('  match f:')
+        w('    case 0n:')
+        w('      (h, r) = st')
+        w('      (arr, dl) = r')
+        w('      (h, (arr, D.zero()))')
+        w('    case 1n+g:')
+        w('      match inside:')
+        w('        case False{}:')
+        w('          (h, r) = st')
+        w('          (arr, dl) = r')
+        w('          (h, (arr, D.zero()))')
+        w('        case True{}:')
+        w(f'          {p}_prr(hl, seg, dep, s, n,')
+        w(f'            {p}_ptr(g, Nat.is_lt(Nat.add(s, O.pow2n(dep)), n), hl, seg, Nat.add(dep, 2n), Nat.add(s, O.pow2n(dep)), n, st))')
+        tree_call = f'{p}_ptr(1n+U32.to_nat(n), Nat.is_lt(0n, U32.to_nat(n)), hl, seg, 0n, 0n, U32.to_nat(n), (h, (arr, D.zero())))'
+    else:
+        tree_call = (f'{p}_mt({lim}n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n({lim}n), 0n, U32.to_nat(n), '
+                     f'(h, (arr, D.zero())))')
+    mixed = 'd' if t.kind == 'vector' else 'O.mix_len(hl, d, n)'
+    w(f'def {p}_rt_fin(+hl: Nat, +n: U32, pair: {ST}) -> B.Buf & ({S} & D.Digest):')
+    w('  (h, r) = pair')
+    w('  (arr, d) = r')
     w(f'  (h, ({S}{{arr, n}}, {mixed}))')
-    w(f'def {p}_root(h: B.Buf, o: {S}, +seg: U32) -> B.Buf & ({S} & D.Digest):')
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {S}, +seg: U32) -> B.Buf & ({S} & D.Digest):')
     w('  match o:')
-    w(f'    case {S}{{arr, +n}}: {p}_rt_fin(n, seg, {p}_rt(U32.to_nat(n), 0, seg, (h, arr)))')
+    w(f'    case {S}{{arr, +n}}: {p}_rt_fin(hl, n, {tree_call})')
 
 
 def emit_seq_cache(s, w):
@@ -1375,7 +1891,15 @@ def emit_seq_cache(s, w):
     p, t, e = s.p, s.t, s.elem
     R, E, S, C, TS = e.rep, e.p, f'{p}_Seq', f'{p}_Cached', f'{p}_TS'
     depth = log2ceil(t.size)
-    take = f'Array.get({R}, arr, i)' if e.data else f'Array.swap({R}, arr, i, {E}_default())'
+    take = f'Array.get({R}, arr, i)' if e.data else f'Array.swap({R}, arr, i, {placeholder(e)})'
+    Pe = s.pelem.rep
+    boxed = e.kind == 'box'
+
+    def wrap(v):
+        return f'{E}_wrap({v})' if boxed else v
+
+    def unbox(v):
+        return f'{E}_unbox({v})' if boxed else v
     w(f'type {C} is Type:')
     w(f'  {C}{{items: Array<{R}>, n: U32, d: Nat, nodes: Array<D.Digest>, lo: U32, hi: U32}}')
     w(f'type {TS} is Type:')
@@ -1393,36 +1917,36 @@ def emit_seq_cache(s, w):
     w('  match c:')
     w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: ({C}{{arr, n, d, nodes, lo, hi}}, n)')
     # indexed read and write through the cache
-    w(f'def {p}_cget(c: {C}, +i: U32) -> {C} & Maybe<&1, {R}>:')
+    w(f'def {p}_cget(c: {C}, +i: U32) -> {C} & Maybe<&1, {Pe}>:')
     w('  match c:')
     w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: {p}_cget_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i)')
-    w(f'def {p}_cget_in(inside: Bool, arr: Array<{R}>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32) -> {C} & Maybe<&1, {R}>:')
+    w(f'def {p}_cget_in(inside: Bool, arr: Array<{R}>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32) -> {C} & Maybe<&1, {Pe}>:')
     w('  match inside:')
     w(f'    case True{{}}: {p}_ctook(n, d, nodes, lo, hi, {take})')
     w(f'    case False{{}}: ({C}{{arr, n, d, nodes, lo, hi}}, None{{}})')
-    w(f'def {p}_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, pair: Array<{R}> & {R}) -> {C} & Maybe<&1, {R}>:')
+    w(f'def {p}_ctook(+n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, pair: Array<{R}> & {R}) -> {C} & Maybe<&1, {Pe}>:')
     w(f'  (arr, {plus(e)}v) = pair')
-    w(f'  ({C}{{arr, n, d, nodes, lo, hi}}, Some{{v}})')
-    w(f'def {p}_cset(c: {C}, +i: U32, v: {R}) -> {C} & Bool:')
+    w(f'  ({C}{{arr, n, d, nodes, lo, hi}}, Some{{{unbox("v")}}})')
+    w(f'def {p}_cset(c: {C}, +i: U32, v: {Pe}) -> {C} & Bool:')
     w('  match c:')
     w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: {p}_cset_in(U32.is_lt(i, n), arr, n, d, nodes, lo, hi, i, v)')
-    w(f'def {p}_cset_in(ok: Bool, arr: Array<{R}>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32, v: {R}) -> {C} & Bool:')
+    w(f'def {p}_cset_in(ok: Bool, arr: Array<{R}>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, +i: U32, v: {Pe}) -> {C} & Bool:')
     w('  match ok:')
-    w(f'    case True{{}}: ({C}{{Array.set({R}, arr, i, v), n, d, nodes,'
+    w(f'    case True{{}}: ({C}{{Array.set({R}, arr, i, {wrap("v")}), n, d, nodes,'
       ' O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})')
     w(f'    case False{{}}: ({C}{{arr, n, d, nodes, lo, hi}}, False{{}})')
-    w(f'def {p}_capp(c: {C}, v: {R}) -> {C} & Bool:')
+    w(f'def {p}_capp(c: {C}, v: {Pe}) -> {C} & Bool:')
     w('  match c:')
     w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}: {p}_capp_in({within("(n + 1 : U32)", t.size)}, arr, n, d, nodes, lo, hi, v)')
-    w(f'def {p}_capp_in(ok: Bool, arr: Array<{R}>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: {R}) -> {C} & Bool:')
+    w(f'def {p}_capp_in(ok: Bool, arr: Array<{R}>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: {Pe}) -> {C} & Bool:')
     w('  match ok:')
     w(f'    case True{{}}: ({p}_capp_fit(U32.is_lt(n, O.pow2u(d)), arr, n, d, nodes, lo, hi, v), True{{}})')
     w(f'    case False{{}}: ({C}{{arr, n, d, nodes, lo, hi}}, False{{}})')
-    w(f'def {p}_capp_fit(fits: Bool, arr: Array<{R}>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: {R}) -> {C}:')
+    w(f'def {p}_capp_fit(fits: Bool, arr: Array<{R}>, +n: U32, +d: Nat, nodes: Array<D.Digest>, +lo: U32, +hi: U32, v: {Pe}) -> {C}:')
     w('  match fits:')
-    w(f'    case True{{}}: {C}{{Array.set({R}, arr, n, v), (n + 1 : U32), d, nodes,'
+    w(f'    case True{{}}: {C}{{Array.set({R}, arr, n, {wrap("v")}), (n + 1 : U32), d, nodes,'
       ' O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}')
-    w(f'    case False{{}}: {C}{{Array.set({R}, {p}_room(arr, n), n, v), (n + 1 : U32), 1n+d,'
+    w(f'    case False{{}}: {C}{{Array.set({R}, {p}_room(arr, n), n, {wrap("v")}), (n + 1 : U32), 1n+d,'
       f' {p}_dfill(2n+d), 0, (O.pow2u(1n+d) - 1 : U32)}}')
     # ---- the sweep: recompute the stale leaves, then their ancestors ----
     w(f'def {p}_ts_store(ts: {TS}, +k: U32, +dg: D.Digest) -> {TS}:')
@@ -1432,9 +1956,9 @@ def emit_seq_cache(s, w):
         w(f'def {p}_leaf_fin(+k: U32, arr: Array<{R}>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> {TS}:')
         w('  (h, +dg) = pr')
         w(f'  {p}_ts_store({TS}{{h, arr, nodes}}, k, dg)')
-        w(f'def {p}_leaf_go(+k: U32, +seg: U32, nodes: Array<D.Digest>, h: B.Buf, pr: Array<{R}> & {R}) -> {TS}:')
+        w(f'def {p}_leaf_go(+hl: Nat, +k: U32, +seg: U32, nodes: Array<D.Digest>, h: B.Buf, pr: Array<{R}> & {R}) -> {TS}:')
         w('  (arr, +v) = pr')
-        w(f'  {p}_leaf_fin(k, arr, nodes, {E}_root(h, v, (seg + 64 : U32)))')
+        w(f'  {p}_leaf_fin(k, arr, nodes, {E}_root(hl, h, v, (seg + 64 : U32)))')
         hash_args = 'k, seg, nodes, h, '
     else:
         w(f'def {p}_leaf_put(+k: U32, h: B.Buf, arr: Array<{R}>, nodes: Array<D.Digest>, +dg: D.Digest) -> {TS}:')
@@ -1443,75 +1967,75 @@ def emit_seq_cache(s, w):
         w('  (h, r) = pr')
         w('  (v, dg) = r')
         w(f'  {p}_leaf_put(k, h, Array.set({R}, arr, i, v), nodes, dg)')
-        w(f'def {p}_leaf_go(+k: U32, +i: U32, +seg: U32, nodes: Array<D.Digest>, h: B.Buf, pr: Array<{R}> & {R}) -> {TS}:')
+        w(f'def {p}_leaf_go(+hl: Nat, +k: U32, +i: U32, +seg: U32, nodes: Array<D.Digest>, h: B.Buf, pr: Array<{R}> & {R}) -> {TS}:')
         w('  (arr, v) = pr')
-        w(f'  {p}_leaf_fin(k, i, arr, nodes, {E}_root(h, v, (seg + 64 : U32)))')
+        w(f'  {p}_leaf_fin(k, i, arr, nodes, {E}_root(hl, h, v, (seg + 64 : U32)))')
         hash_args = 'k, i, seg, nodes, h, '
-    w(f'def {p}_leaf_hash(+k: U32, +i: U32, +seg: U32, ts: {TS}) -> {TS}:')
+    w(f'def {p}_leaf_hash(+hl: Nat, +k: U32, +i: U32, +seg: U32, ts: {TS}) -> {TS}:')
     w('  match ts:')
-    w(f'    case {TS}{{h, arr, nodes}}: {p}_leaf_go({hash_args}{take})')
-    w(f'def {p}_leaf_step(inside: Bool, +k: U32, +i: U32, +seg: U32, ts: {TS}) -> {TS}:')
+    w(f'    case {TS}{{h, arr, nodes}}: {p}_leaf_go(hl, {hash_args}{take})')
+    w(f'def {p}_leaf_step(+hl: Nat, inside: Bool, +k: U32, +i: U32, +seg: U32, ts: {TS}) -> {TS}:')
     w('  match inside:')
-    w(f'    case True{{}}: {p}_leaf_hash(k, i, seg, ts)')
+    w(f'    case True{{}}: {p}_leaf_hash(hl, k, i, seg, ts)')
     w(f'    case False{{}}: {p}_ts_store(ts, k, D.zero())')
-    w(f'def {p}_leaves(+q: Nat, +i: U32, +n: U32, +seg: U32, +cap: U32, ts: {TS}) -> {TS}:')
+    w(f'def {p}_leaves(+hl: Nat, +q: Nat, +i: U32, +n: U32, +seg: U32, +cap: U32, ts: {TS}) -> {TS}:')
     w('  match q:')
     w('    case 0n: ts')
     w('    case 1n+r:')
-    w(f'      {p}_leaves(r, (i + 1 : U32), n, seg, cap,'
-      f' {p}_leaf_step(U32.is_lt(i, n), (cap + i : U32), i, seg, ts))')
+    w(f'      {p}_leaves(hl, r, (i + 1 : U32), n, seg, cap,'
+      f' {p}_leaf_step(hl, U32.is_lt(i, n), (cap + i : U32), i, seg, ts))')
     # one internal node: the hash of its two children, both already up to date
-    w(f'def {p}_node_fin(+j: U32, h: B.Buf, arr: Array<{R}>, +dl: D.Digest, pr: Array<D.Digest> & D.Digest) -> {TS}:')
+    w(f'def {p}_node_fin(+hl: Nat, +j: U32, h: B.Buf, arr: Array<{R}>, +dl: D.Digest, pr: Array<D.Digest> & D.Digest) -> {TS}:')
     w('  (nodes, +dr) = pr')
-    w(f'  {p}_ts_store({TS}{{h, arr, nodes}}, j, D.hash_pair(dl, dr))')
-    w(f'def {p}_node_go(+j: U32, h: B.Buf, arr: Array<{R}>, pr: Array<D.Digest> & D.Digest) -> {TS}:')
+    w(f'  {p}_ts_store({TS}{{h, arr, nodes}}, j, D.node(hl, dl, dr))')
+    w(f'def {p}_node_go(+hl: Nat, +j: U32, h: B.Buf, arr: Array<{R}>, pr: Array<D.Digest> & D.Digest) -> {TS}:')
     w('  (nodes, +dl) = pr')
-    w(f'  {p}_node_fin(j, h, arr, dl, Array.get(D.Digest, nodes, (2 * j + 1 : U32)))')
-    w(f'def {p}_node_step(+j: U32, ts: {TS}) -> {TS}:')
+    w(f'  {p}_node_fin(hl, j, h, arr, dl, Array.get(D.Digest, nodes, (2 * j + 1 : U32)))')
+    w(f'def {p}_node_step(+hl: Nat, +j: U32, ts: {TS}) -> {TS}:')
     w('  match ts:')
-    w(f'    case {TS}{{h, arr, nodes}}: {p}_node_go(j, h, arr, Array.get(D.Digest, nodes, (2 * j : U32)))')
-    w(f'def {p}_level(+q: Nat, +j: U32, ts: {TS}) -> {TS}:')
+    w(f'    case {TS}{{h, arr, nodes}}: {p}_node_go(hl, j, h, arr, Array.get(D.Digest, nodes, (2 * j : U32)))')
+    w(f'def {p}_level(+hl: Nat, +q: Nat, +j: U32, ts: {TS}) -> {TS}:')
     w('  match q:')
     w('    case 0n: ts')
-    w(f'    case 1n+r: {p}_level(r, (j + 1 : U32), {p}_node_step(j, ts))')
-    w(f'def {p}_levels(+L: Nat, +klo: U32, +khi: U32, ts: {TS}) -> {TS}:')
+    w(f'    case 1n+r: {p}_level(hl, r, (j + 1 : U32), {p}_node_step(hl, j, ts))')
+    w(f'def {p}_levels(+hl: Nat, +L: Nat, +klo: U32, +khi: U32, ts: {TS}) -> {TS}:')
     w('  match L:')
     w('    case 0n: ts')
     w('    case 1n+q:')
-    w(f'      {p}_levels(q, U32.shrn(klo, 1n), U32.shrn(khi, 1n),'
-      f' {p}_level(U32.to_nat((U32.shrn(khi, 1n) - U32.shrn(klo, 1n) + 1 : U32)), U32.shrn(klo, 1n), ts))')
-    w(f'def {p}_sweep(+d: Nat, +lo: U32, +hi: U32, +n: U32, +seg: U32, ts: {TS}) -> {TS}:')
-    w(f'  {p}_levels(d, (O.pow2u(d) + lo : U32), (O.pow2u(d) + hi : U32),'
-      f' {p}_leaves(U32.to_nat((hi - lo + 1 : U32)), lo, n, seg, O.pow2u(d), ts))')
-    w(f'def {p}_sweep_pick(some: Bool, +d: Nat, +lo: U32, +hi: U32, +n: U32, +seg: U32, ts: {TS}) -> {TS}:')
+    w(f'      {p}_levels(hl, q, U32.shrn(klo, 1n), U32.shrn(khi, 1n),'
+      f' {p}_level(hl, U32.to_nat((U32.shrn(khi, 1n) - U32.shrn(klo, 1n) + 1 : U32)), U32.shrn(klo, 1n), ts))')
+    w(f'def {p}_sweep(+hl: Nat, +d: Nat, +lo: U32, +hi: U32, +n: U32, +seg: U32, ts: {TS}) -> {TS}:')
+    w(f'  {p}_levels(hl, d, (O.pow2u(d) + lo : U32), (O.pow2u(d) + hi : U32),'
+      f' {p}_leaves(hl, U32.to_nat((hi - lo + 1 : U32)), lo, n, seg, O.pow2u(d), ts))')
+    w(f'def {p}_sweep_pick(+hl: Nat, some: Bool, +d: Nat, +lo: U32, +hi: U32, +n: U32, +seg: U32, ts: {TS}) -> {TS}:')
     w('  match some:')
-    w(f'    case True{{}}: {p}_sweep(d, lo, hi, n, seg, ts)')
+    w(f'    case True{{}}: {p}_sweep(hl, d, lo, hi, n, seg, ts)')
     w('    case False{}: ts')
     # the levels between the capacity and the list limit are zero subtrees
-    w(f'def {p}_pad_go(+k: Nat, +lvl: U32, +r: D.Digest, pr: B.Buf & D.Digest) -> B.Buf & D.Digest:')
+    w(f'def {p}_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr: B.Buf & D.Digest) -> B.Buf & D.Digest:')
     w('  match k:')
     w('    case 0n:')
     w('      (h, +z) = pr')
     w('      (h, r)')
     w('    case 1n+q:')
     w('      (h, +z) = pr')
-    w(f'      {p}_pad_go(q, (lvl + 1 : U32), D.hash_pair(r, z), O.zero(h, (lvl + 1 : U32)))')
-    w(f'def {p}_croot_fin(+n: U32, +d: Nat, arr: Array<{R}>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & ({C} & D.Digest):')
+    w(f'      {p}_pad_go(hl, q, (lvl + 1 : U32), D.node(hl, r, z), (h, D.zconst(U32.to_nat((lvl + 1 : U32)))))')
+    w(f'def {p}_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<{R}>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & ({C} & D.Digest):')
     w('  (h, +r) = pr')
-    w(f'  (h, ({C}{{arr, n, d, nodes, 4294967295, 0}}, O.mix_len(r, n)))')
-    w(f'def {p}_croot_pad(+n: U32, +d: Nat, arr: Array<{R}>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & ({C} & D.Digest):')
-    w(f'  {p}_croot_fin(n, d, arr, nodes,'
-      f' {p}_pad_go(Nat.sub({depth}n, d), O.nat_u32(d), r, O.zero(h, O.nat_u32(d))))')
-    w(f'def {p}_croot_read(+n: U32, +d: Nat, h: B.Buf, arr: Array<{R}>, pr: Array<D.Digest> & D.Digest) -> B.Buf & ({C} & D.Digest):')
+    w(f'  (h, ({C}{{arr, n, d, nodes, 4294967295, 0}}, O.mix_len(hl, r, n)))')
+    w(f'def {p}_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<{R}>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & ({C} & D.Digest):')
+    w(f'  {p}_croot_fin(hl, n, d, arr, nodes,'
+      f' {p}_pad_go(hl, Nat.sub({depth}n, d), O.nat_u32(d), r, (h, D.zconst(d))))')
+    w(f'def {p}_croot_read(+hl: Nat, +n: U32, +d: Nat, h: B.Buf, arr: Array<{R}>, pr: Array<D.Digest> & D.Digest) -> B.Buf & ({C} & D.Digest):')
     w('  (nodes, +r) = pr')
-    w(f'  {p}_croot_pad(n, d, arr, nodes, h, r)')
-    w(f'def {p}_croot_top(+n: U32, +d: Nat, ts: {TS}) -> B.Buf & ({C} & D.Digest):')
+    w(f'  {p}_croot_pad(hl, n, d, arr, nodes, h, r)')
+    w(f'def {p}_croot_top(+hl: Nat, +n: U32, +d: Nat, ts: {TS}) -> B.Buf & ({C} & D.Digest):')
     w('  match ts:')
-    w(f'    case {TS}{{h, arr, nodes}}: {p}_croot_read(n, d, h, arr, Array.get(D.Digest, nodes, 1))')
-    w(f'def {p}_cached_root(h: B.Buf, c: {C}, +seg: U32) -> B.Buf & ({C} & D.Digest):')
+    w(f'    case {TS}{{h, arr, nodes}}: {p}_croot_read(hl, n, d, h, arr, Array.get(D.Digest, nodes, 1))')
+    w(f'def {p}_cached_root(+hl: Nat, h: B.Buf, c: {C}, +seg: U32) -> B.Buf & ({C} & D.Digest):')
     w('  match c:')
     w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}:')
-    w(f'      {p}_croot_top(n, d, {p}_sweep_pick(U32.is_le(lo, hi), d, lo, hi, n, seg, {TS}{{h, arr, nodes}}))')
+    w(f'      {p}_croot_top(hl, n, d, {p}_sweep_pick(hl, U32.is_le(lo, hi), d, lo, hi, n, seg, {TS}{{h, arr, nodes}}))')
     w('')
 
 
@@ -1666,12 +2190,12 @@ def emit_fieldset(s, w, p, R, F, hoff, fixed_part, mode, data):
             w(f'def {p}_sz{j}({", ".join(others + done + ["+acc: U32"])}, pair: {F[i][1].rep} & U32) -> {R} & U32:')
             w(f'  ({names[i]}, +m) = pair')
             if j == len(var) - 1:
-                w(f'  ({R}{{' + ', '.join(names) + f'}}, (acc + m : U32))')
+                w(f'  ({R}{{' + ', '.join(names) + f'}}, O.padd(acc, m))')
             else:
                 nxt = var[j + 1]
                 others2 = [f for k2, (f, fs) in enumerate(F) if k2 != nxt and (k2 not in var or var.index(k2) > j + 1)]
                 done2 = [names[var[q]] for q in range(j + 1)]
-                w(f'  {p}_sz{j + 1}({", ".join(others2 + done2)}, (acc + m : U32), {F[nxt][1].p}_size({names[nxt]}))')
+                w(f'  {p}_sz{j + 1}({", ".join(others2 + done2)}, O.padd(acc, m), {F[nxt][1].p}_size({names[nxt]}))')
         first = var[0]
         others0 = [f for k2, f in enumerate(names) if k2 != first]
         w(f'def {p}_size(o: {R}) -> {R} & U32:')
@@ -1682,39 +2206,51 @@ def emit_fieldset(s, w, p, R, F, hoff, fixed_part, mode, data):
         w(f'def {p}_size(o: {R}) -> {R} & U32: (o, {base})')
     # ---- put ----
     # Each variable-size field is written once and reports how many bytes it
-    # wrote, so its size is never computed by a separate traversal. The
-    # payloads go first, in order, accumulating the running offset; the header
-    # (the fixed fields and the offset words) is written at the end, because it
-    # occupies a disjoint part of the output. Before this, every level called
-    # `_size` on each variable child before writing it, so a subtree was walked
-    # once per enclosing level.
+    # wrote, so its size is never computed by a separate traversal. The fields
+    # are placed in order; a running cursor `cur` (the offset of the next
+    # payload) goes into each variable field's writer, which also writes that
+    # field's offset word and hands back the advanced cursor. So a variable
+    # field costs one step of this chain - its result pair is taken apart and
+    # the next field's writer is called in the same function - and nothing
+    # but the cursor has to be remembered for the header: the fixed Data
+    # fields are written in the last step, where the record is rebuilt.
     psteps = [('putv', i) for i in var] + [('put', i) for i in lin if i not in var]
-    vstart = 'voff' if mode == 'group' else str(fixed_part)
+    # The chain also decides validity (emit_valid): each linear field's checked
+    # writer `putk` reports its size or flag with bit 31 set when the field is
+    # invalid, the cursor keeps that bit, and the last step adds the Data
+    # fields' checks. A fixed-size container threads a flag in the same slot.
+    sized = bool(var) or mode == 'group'
+    cur0 = 'voff' if mode == 'group' else (str(fixed_part) if sized else '0')
+    vparam = ['+voff: U32'] if mode == 'group' else []
+    entry = f'{p}_putn' if (sized and mode != 'group') else (f'{p}_put' if mode == 'group' else f'{p}_putk')
+    rtype = f'Array<U32> & ({R} & U32)'
+    dchk = [f'{fs.p}_valid({f})' for f, fs in F if fs.data and not trivial(fs)]
 
-    def offs(i):
-        parts = [vstart] + [f's_{names[v]}' for v in var if v < i]
-        return '(' + ' + '.join(parts) + ' : U32)' if len(parts) > 1 else parts[0]
+    def conj(xs):
+        x = xs[-1]
+        for y in reversed(xs[:-1]):
+            x = f'Bool.and({y}, {x})'
+        return x
 
-    def call(kind_, i, src):
+    def fixed_writes(expr):
+        for i, (f, fs) in enumerate(F):
+            if fs.data:
+                expr = f'{fs.p}_put({expr}, (pos + {hoff[i]} : U32), {f})'
+        return expr
+
+    def tail(cur):
+        body = f'{R}{{' + ', '.join(names) + '}'
+        if dchk:
+            cur = f'({cur} .|. O.pz({conj(dchk)}) : U32)'
+        return f'({fixed_writes("out")}, ({body}, {cur}))'
+
+    def call(k, cur):
+        kind_, i = psteps[k]
         fs = F[i][1]
         if kind_ == 'putv':
-            return f'{fs.p}_putn({src}, (pos + {offs(i)} : U32), {names[i]})'
-        return f'{fs.p}_put({src}, (pos + {hoff[i]} : U32), {names[i]})'
+            return f'{putv_helper(fs, w)}(out, pos, {hoff[i]}, {cur}, {names[i]})'
+        return f'{fs.p}_putk(out, (pos + {hoff[i]} : U32), {names[i]})'
 
-    vparam = ['+voff: U32'] if mode == 'group' else []
-    vargs = ['voff'] if mode == 'group' else []
-    # A variable-size container reports its own size from the same chain: the
-    # running offsets are already there, so `_putn` is the chain itself and
-    # `_put` is the wrapper that drops the size.
-    sized = bool(var) or mode == 'group'
-    entry = f'{p}_putn' if (sized and mode != 'group') else f'{p}_put'
-    if sized:
-        rtype = f'Array<U32> & ({R} & U32)'
-        total = '(' + ' + '.join([vstart] + [f's_{names[v]}' for v in var]) + ' : U32)' if var else vstart
-        tail = f'({R}{{' + ', '.join(names) + f'}}, {total})'
-    else:
-        rtype = f'Array<U32> & {R}'
-        tail = f'{R}{{' + ', '.join(names) + '}'
     def head(name):
         if mode == 'group':
             w(f'def {name}(out: Array<U32>, +pos: U32, +voff: U32, o: {R}) -> {rtype}:')
@@ -1722,63 +2258,80 @@ def emit_fieldset(s, w, p, R, F, hoff, fixed_part, mode, data):
             w(f'def {name}(out: Array<U32>, +pos: U32, o: {R}) -> {rtype}:')
 
     def wrapper():
-        if not (sized and mode != 'group'):
+        if mode == 'group':
             return
+        if sized:
+            w(f'def {p}_putk(out: Array<U32>, +pos: U32, o: {R}) -> {rtype}: {p}_putn(out, pos, o)')
         w(f'def {p}_put_drop(pair: Array<U32> & ({R} & U32)) -> Array<U32> & {R}:')
         w('  (out, r) = pair')
         w('  (v, m) = r')
         w(f'  {p}_put_drop_go(out, v, m)')
         w(f'def {p}_put_drop_go(out: Array<U32>, v: {R}, +m: U32) -> Array<U32> & {R}: (out, v)')
+        src = f'{p}_putn' if sized else f'{p}_putk'
         w(f'def {p}_put(out: Array<U32>, +pos: U32, o: {R}) -> Array<U32> & {R}: '
-          f'{p}_put_drop({p}_putn(out, pos, o))')
+          f'{p}_put_drop({src}(out, pos, o))')
 
     if not psteps:
         head(entry)
         w('  match o:')
-        w(f'    case {pat}: ({data_writes("out", offs)}, {tail})')
+        w(f'    case {pat}: {tail(cur0)}')
         wrapper()
         return
+    for kind_, i in psteps:
+        if kind_ == 'putv':
+            putv_helper(F[i][1], w)
     total_steps = len(psteps)
     for k in range(total_steps - 1, -1, -1):
         kind_, i = psteps[k]
-        params = ['+pos: U32'] + vparam
-        for i2, (f, fs) in enumerate(F):
-            if i2 == i:
-                continue
-            params.append(f'{plus(fs)}{f}: {fs.rep}')
-        known = [f'+s_{names[v]}: U32' for v in var if ('putv', v) in psteps[:k]]
+        others = [f'{plus(fs)}{f}: {fs.rep}' for i2, (f, fs) in enumerate(F) if i2 != i]
+        if kind_ == 'putv':
+            # the cursor arrives in the pair, advanced past this field
+            w(f'def {p}_pw{k}({", ".join(["+pos: U32"] + others)}, pair: Array<U32> & ({F[i][1].rep} & U32)) -> {rtype}:')
+            w('  (out, r) = pair')
+            w(f'  ({names[i]}, c) = r')
+            cur = 'c'
+        else:
+            w(f'def {p}_pw{k}({", ".join(["+pos: U32", "+cur: U32"] + others)}, pair: Array<U32> & ({F[i][1].rep} & U32)) -> {rtype}:')
+            w('  (out, r) = pair')
+            w(f'  ({names[i]}, fl) = r')
+            cur = '(cur .|. fl : U32)'
         if k == total_steps - 1:
-            body = f'({data_writes("out", offs)}, {tail})'
+            w(f'  {tail(cur)}')
         else:
             nk, ni = psteps[k + 1]
             held = [f for i2, f in enumerate(names) if i2 != ni]
-            known2 = [f's_{names[v]}' for v in var if ('putv', v) in psteps[:k + 1]]
-            body = f'{p}_pw{k + 1}({", ".join(["pos"] + vargs + held + known2)}, {call(nk, ni, "out")})'
-        if kind_ == 'putv':
-            # The size is used more than once (in later offsets and in the
-            # total), so it has to arrive as a duplicable parameter; the
-            # checker cannot infer that from a nested tuple binding.
-            allp = ['+pos: U32'] + vparam
-            for i2, (f, fs) in enumerate(F):
-                allp.append(f'{plus(fs)}{f}: {fs.rep}')
-            allp += known + [f'+s_{names[i]}: U32', 'out: Array<U32>']
-            w(f'def {p}_pw{k}s({", ".join(allp)}) -> {rtype}:')
-            w(f'  {body}')
-            w(f'def {p}_pw{k}({", ".join(params + known)}, pair: Array<U32> & ({F[i][1].rep} & U32)) -> {rtype}:')
-            w('  (out, r) = pair')
-            w(f'  ({names[i]}, sz) = r')
-            passed = ['pos'] + vargs + names + [f's_{names[v]}' for v in var if ('putv', v) in psteps[:k]] + ['sz', 'out']
-            w(f'  {p}_pw{k}s({", ".join(passed)})')
-        else:
-            w(f'def {p}_pw{k}({", ".join(params + known)}, pair: Array<U32> & {F[i][1].rep}) -> {rtype}:')
-            w(f'  (out, {names[i]}) = pair')
-            w(f'  {body}')
+            if nk == 'putv':
+                w(f'  {p}_pw{k + 1}({", ".join(["pos"] + held)}, {call(k + 1, cur)})')
+            else:
+                w(f'  {p}_pw{k + 1}({", ".join(["pos", cur] + held)}, {call(k + 1, cur)})')
     held0 = [f for i2, f in enumerate(names) if i2 != psteps[0][1]]
     head(entry)
     w('  match o:')
     k0, i0 = psteps[0]
-    w(f'    case {pat}: {p}_pw0({", ".join(["pos"] + vargs + held0)}, {call(k0, i0, "out")})')
+    if k0 == 'putv':
+        w(f'    case {pat}: {p}_pw0({", ".join(["pos"] + held0)}, {call(0, cur0)})')
+    else:
+        w(f'    case {pat}: {p}_pw0({", ".join(["pos", cur0] + held0)}, {call(0, cur0)})')
     wrapper()
+
+PUTV_EMITTED = set()
+
+
+def putv_helper(fs, w):
+    """`{shape}_putv(out, pos, hoff, cur, v)`: write the offset word `cur` at
+    pos + hoff and the value's payload at pos + cur, and return the value with
+    the cursor advanced past it. Emitted once per shape; the definitions are
+    ordered before their users by `reorder`."""
+    name = f'{fs.p}_putv'
+    if name not in PUTV_EMITTED:
+        PUTV_EMITTED.add(name)
+        w(f'def {fs.p}_pvb(+cur: U32, pair: Array<U32> & ({fs.rep} & U32)) -> Array<U32> & ({fs.rep} & U32):')
+        w('  (out, r) = pair')
+        w('  (v, sz) = r')
+        w('  (out, (v, O.padd(cur, sz)))')
+        w(f'def {name}(out: Array<U32>, +pos: U32, +hoff: U32, +cur: U32, v: {fs.rep}) -> Array<U32> & ({fs.rep} & U32):')
+        w(f'  {fs.p}_pvb(cur, {fs.p}_putk(O.w32(out, (pos + hoff : U32), cur), (pos + cur : U32), v))')
+    return name
 
 
 def emit_fields_access(w, p, R, F):
@@ -1949,21 +2502,21 @@ def emit_cunion(s, w):
     # ---- root: mix_in_selector(root of the option, selector)
     for i, (_, o) in enumerate(opts):
         if o.data:
-            w(f'def {p}_rt{i}({plus(o)}v: {o.rep}, pair: B.Buf & D.Digest) -> B.Buf & ({R} & D.Digest):')
+            w(f'def {p}_rt{i}(+hl: Nat, {plus(o)}v: {o.rep}, pair: B.Buf & D.Digest) -> B.Buf & ({R} & D.Digest):')
             w('  (h, d) = pair')
-            w(f'  (h, ({R}_c{i}{{v}}, O.mix_len(d, {sels[i]})))')
+            w(f'  (h, ({R}_c{i}{{v}}, O.mix_len(hl, d, {sels[i]})))')
         else:
-            w(f'def {p}_rt{i}(pair: B.Buf & ({o.rep} & D.Digest)) -> B.Buf & ({R} & D.Digest):')
+            w(f'def {p}_rt{i}(+hl: Nat, pair: B.Buf & ({o.rep} & D.Digest)) -> B.Buf & ({R} & D.Digest):')
             w('  (h, r) = pair')
             w('  (v, d) = r')
-            w(f'  (h, ({R}_c{i}{{v}}, O.mix_len(d, {sels[i]})))')
-    w(f'def {p}_root(h: B.Buf, o: {R}, +seg: U32) -> B.Buf & ({R} & D.Digest):')
+            w(f'  (h, ({R}_c{i}{{v}}, O.mix_len(hl, d, {sels[i]})))')
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {R}, +seg: U32) -> B.Buf & ({R} & D.Digest):')
     w('  match o:')
     for i, (_, o) in enumerate(opts):
         if o.data:
-            w(f'    case {R}_c{i}{{{plus(o)}v}}: {p}_rt{i}(v, {o.p}_root(h, v, seg))')
+            w(f'    case {R}_c{i}{{{plus(o)}v}}: {p}_rt{i}(hl, v, {o.p}_root(hl, h, v, seg))')
         else:
-            w(f'    case {R}_c{i}{{v}}: {p}_rt{i}({o.p}_root(h, v, seg))')
+            w(f'    case {R}_c{i}{{v}}: {p}_rt{i}(hl, {o.p}_root(hl, h, v, seg))')
 
     # ---- force
     for i, (_, o) in enumerate(opts):
@@ -2044,10 +2597,10 @@ def emit_pcontainer_root(s, w, p, R, F, data):
                     if a[0] == 'Z' and b[0] == 'Z':
                         nxt.append(('Z', lv + 1))
                     else:
-                        nxt.append(('E', f'D.hash_pair({concrete(a)}, {concrete(b)})'))
+                        nxt.append(('E', f'D.node(hl, {concrete(a)}, {concrete(b)})'))
                 level = nxt
                 lv += 1
-            acc = ('E', f'D.hash_pair({concrete(acc)}, {concrete(level[0])})')
+            acc = ('E', f'D.node(hl, {concrete(acc)}, {concrete(level[0])})')
         return concrete(acc)
 
     def concrete(node):
@@ -2067,16 +2620,16 @@ def emit_pcontainer_root(s, w, p, R, F, data):
 
     def call(st, hexpr='h'):
         if st[0] == 'z':
-            return f'O.zero({hexpr}, {st[1]})'
+            return f'({hexpr}, D.zconst({st[1]}n))'
         fs = F[st[1]][1]
-        return f'{fs.p}_root({hexpr}, {names[st[1]]}, seg)'
+        return f'{fs.p}_root(hl, {hexpr}, {names[st[1]]}, seg)'
 
-    finp = [f'+{bname(x)}: D.Digest' for x in steps] + ['h: B.Buf'] + [f'{plus(fs)}{f}: {fs.rep}' for f, fs in F]
+    finp = ['+hl: Nat'] + [f'+{bname(x)}: D.Digest' for x in steps] + ['h: B.Buf'] + [f'{plus(fs)}{f}: {fs.rep}' for f, fs in F]
     w(f'def {p}_fin(' + ', '.join(finp) + f') -> {rtype}:')
     if data:
-        w(f'  (h, O.mix_len({body}, {mask}))')
+        w(f'  (h, O.mix_len(hl, {body}, {mask}))')
     else:
-        w(f'  (h, ({R}{{' + ', '.join(names) + f'}}, O.mix_len({body}, {mask})))')
+        w(f'  (h, ({R}{{' + ', '.join(names) + f'}}, O.mix_len(hl, {body}, {mask})))')
     for k in range(len(steps) - 1, -1, -1):
         st = steps[k]
         params = []
@@ -2086,26 +2639,26 @@ def emit_pcontainer_root(s, w, p, R, F, data):
             params.append(f'{plus(fs)}{f}: {fs.rep}')
         params += [f'{bname(x)}: D.Digest' for x in steps[:k]]
         if st[0] == 'f' and not F[st[1]][1].data:
-            w(f'def {p}_rt{k}(' + ', '.join(['+seg: U32'] + params + [f'pair: B.Buf & ({F[st[1]][1].rep} & D.Digest)']) + f') -> {rtype}:')
+            w(f'def {p}_rt{k}(' + ', '.join(['+hl: Nat', '+seg: U32'] + params + [f'pair: B.Buf & ({F[st[1]][1].rep} & D.Digest)']) + f') -> {rtype}:')
             w('  (h, r) = pair')
             w(f'  ({names[st[1]]}, {bname(st)}) = r')
         else:
-            w(f'def {p}_rt{k}(' + ', '.join(['+seg: U32'] + params + ['pair: B.Buf & D.Digest']) + f') -> {rtype}:')
+            w(f'def {p}_rt{k}(' + ', '.join(['+hl: Nat', '+seg: U32'] + params + ['pair: B.Buf & D.Digest']) + f') -> {rtype}:')
             w(f'  (h, {bname(st)}) = pair')
         if k == len(steps) - 1:
             # The final combination uses each zero digest several times, so it
             # lives in one helper whose digest parameters are duplicable.
-            w(f'  {p}_fin(' + ', '.join([bname(x) for x in steps] + ['h'] + names) + ')')
+            w(f'  {p}_fin(' + ', '.join(['hl'] + [bname(x) for x in steps] + ['h'] + names) + ')')
             continue
         nst = steps[k + 1]
         held = [f for i2, (f, fs) in enumerate(F) if not (nst[0] == 'f' and i2 == nst[1] and not fs.data)]
         done = [bname(x) for x in steps[:k + 1]]
-        w(f'  {p}_rt{k + 1}(' + ', '.join(['seg'] + held + done + [call(nst)]) + ')')
+        w(f'  {p}_rt{k + 1}(' + ', '.join(['hl', 'seg'] + held + done + [call(nst)]) + ')')
     pat = f'{R}{{' + ', '.join(f'{plus(fs)}{f}' for f, fs in F) + '}'
     held0 = [f for i2, (f, fs) in enumerate(F) if not (i2 == 0 and not fs.data)]
-    w(f'def {p}_root(h: B.Buf, o: {R}, +seg: U32) -> {rtype}:')
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {R}, +seg: U32) -> {rtype}:')
     w('  match o:')
-    w(f'    case {pat}: {p}_rt0(seg, {", ".join(held0)}{", " if held0 else ""}{call(steps[0])})')
+    w(f'    case {pat}: {p}_rt0(hl, seg, {", ".join(held0)}{", " if held0 else ""}{call(steps[0])})')
 
 
 def emit_fieldset_root(s, w, p, R, F, mode, data):
@@ -2137,9 +2690,9 @@ def emit_fieldset_root(s, w, p, R, F, mode, data):
 
     def call(st, hexpr='h'):
         if st[0] == 'z':
-            return f'O.zero({hexpr}, {st[1]})'
+            return f'({hexpr}, D.zconst({st[1]}n))'
         fs = F[st[1]][1]
-        return f'{fs.p}_root({hexpr}, {names[st[1]]}, seg)'
+        return f'{fs.p}_root(hl, {hexpr}, {names[st[1]]}, seg)'
 
     def combine():
         level = [f'd_{f}' for f in names]
@@ -2147,7 +2700,7 @@ def emit_fieldset_root(s, w, p, R, F, mode, data):
         while (1 << lv) < width:
             if len(level) % 2:
                 level.append('D.zero()' if lv == 0 else f'z{lv}')
-            level = [f'D.hash_pair({level[i]}, {level[i + 1]})' for i in range(0, len(level), 2)]
+            level = [f'D.node(hl, {level[i]}, {level[i + 1]})' for i in range(0, len(level), 2)]
             lv += 1
         return level[0]
 
@@ -2160,11 +2713,11 @@ def emit_fieldset_root(s, w, p, R, F, mode, data):
             params.append(f'{plus(fs)}{f}: {fs.rep}')
         params += [f'{bname(x)}: D.Digest' for x in steps[:k]]
         if st[0] == 'f' and not F[st[1]][1].data:
-            w(f'def {p}_rt{k}(' + ', '.join(['+seg: U32'] + params + [f'pair: B.Buf & ({F[st[1]][1].rep} & D.Digest)']) + f') -> {rtype}:')
+            w(f'def {p}_rt{k}(' + ', '.join(['+hl: Nat', '+seg: U32'] + params + [f'pair: B.Buf & ({F[st[1]][1].rep} & D.Digest)']) + f') -> {rtype}:')
             w('  (h, r) = pair')
             w(f'  ({names[st[1]]}, {bname(st)}) = r')
         else:
-            w(f'def {p}_rt{k}(' + ', '.join(['+seg: U32'] + params + ['pair: B.Buf & D.Digest']) + f') -> {rtype}:')
+            w(f'def {p}_rt{k}(' + ', '.join(['+hl: Nat', '+seg: U32'] + params + ['pair: B.Buf & D.Digest']) + f') -> {rtype}:')
             w(f'  (h, {bname(st)}) = pair')
         if k == len(steps) - 1:
             if data:
@@ -2175,16 +2728,18 @@ def emit_fieldset_root(s, w, p, R, F, mode, data):
         nst = steps[k + 1]
         held = [f for i2, (f, fs) in enumerate(F) if not (nst[0] == 'f' and i2 == nst[1] and not fs.data)]
         done = [bname(x) for x in steps[:k + 1]]
-        w(f'  {p}_rt{k + 1}(' + ', '.join(['seg'] + held + done + [call(nst)]) + ')')
+        w(f'  {p}_rt{k + 1}(' + ', '.join(['hl', 'seg'] + held + done + [call(nst)]) + ')')
     pat = f'{R}{{' + ', '.join(f'{plus(fs)}{f}' for f, fs in F) + '}'
     held0 = [f for i2, (f, fs) in enumerate(F) if not (i2 == 0 and not fs.data)]
-    w(f'def {p}_root(h: B.Buf, o: {R}, +seg: U32) -> {rtype}:')
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {R}, +seg: U32) -> {rtype}:')
     w('  match o:')
-    w(f'    case {pat}: {p}_rt0(seg, {", ".join(held0)}{", " if held0 else ""}{call(steps[0])})')
+    w(f'    case {pat}: {p}_rt0(hl, seg, {", ".join(held0)}{", " if held0 else ""}{call(steps[0])})')
 
 
 def emit_group_force(g, w):
     emit_force_fields(w, g.p, g.rep, g.fields, g.data)
+    emit_valid_fields(TAIL.append, g.p, g.rep, g.fields, g.data)
+    emit_dump_fields(w, g.p, g.rep, g.fields)
 
 
 def emit_wide(s, w, groups, hoff, fixed_part):
@@ -2247,12 +2802,12 @@ def emit_wide(s, w, groups, hoff, fixed_part):
             w(f'def {p}_sz{j}({", ".join(others + done + ["+acc: U32"])}, pair: {g.rep} & U32) -> {R} & U32:')
             w(f'  (g{g.k}, +m) = pair')
             if j == len(lin) - 1:
-                w(f'  ({R}{{' + ', '.join(gn) + '}, (acc + m : U32))')
+                w(f'  ({R}{{' + ', '.join(gn) + '}, O.padd(acc, m))')
             else:
                 nx = lin[j + 1]
                 others2 = [f'g{g2.k}' for g2 in groups if g2.k != nx.k and (g2.data or lin.index(g2) > j + 1)]
                 done2 = [f'g{lin[q].k}' for q in range(j + 1)]
-                w(f'  {p}_sz{j + 1}({", ".join(others2 + done2)}, (acc + m : U32), {nx.p}_size(g{nx.k}))')
+                w(f'  {p}_sz{j + 1}({", ".join(others2 + done2)}, O.padd(acc, m), {nx.p}_size(g{nx.k}))')
         others0 = [x for x, g in zip(gn, groups) if g.k != lin[0].k]
         w(f'def {p}_size(o: {R}) -> {R} & U32:')
         w('  match o:')
@@ -2264,11 +2819,22 @@ def emit_wide(s, w, groups, hoff, fixed_part):
     # container's size, so a wide container reports it the same way a plain one
     # does and no caller has to size it again.
     variable = not s.fixed
-    rtype = f'Array<U32> & ({R} & U32)' if variable else f'Array<U32> & {R}'
+    # the running offset keeps bit 31 of any invalid group (emit_fieldset);
+    # the Data groups' checks are added at the end. A fixed-size wide
+    # container reports that bit alone, as its checked writer `putk`.
+    rtype = f'Array<U32> & ({R} & U32)'
+    gchk = [f'{g.p}_valid(g{g.k})' for g in groups if g.data and not trivial(g)]
 
     def done(expr, voff):
         rec = f'{R}{{' + ', '.join(gn) + '}'
-        return f'({expr}, ({rec}, {voff}))' if variable else f'({expr}, {rec})'
+        if gchk:
+            x = gchk[-1]
+            for y in reversed(gchk[:-1]):
+                x = f'Bool.and({y}, {x})'
+            voff = f'({voff} .|. O.pz({x}) : U32)'
+        if not variable:
+            voff = f'({voff} .&. 2147483648 : U32)'
+        return f'({expr}, ({rec}, {voff}))'
 
     for j in range(len(lin) - 1, -1, -1):
         g = lin[j]
@@ -2290,7 +2856,7 @@ def emit_wide(s, w, groups, hoff, fixed_part):
         w('  (out, r) = pair')
         w(f'  (g{g.k}, vo) = r')
         w(f'  {p}_pw{j}v(pos, {", ".join(["g%d" % g2.k for g2 in groups])}, vo, out)')
-    w(f'def {p}_{"putn" if variable else "put"}(out: Array<U32>, +pos: U32, o: {R}) -> {rtype}:')
+    w(f'def {p}_{"putn" if variable else "putk"}(out: Array<U32>, +pos: U32, o: {R}) -> {rtype}:')
     w('  match o:')
     if lin:
         expr = 'out'
@@ -2305,13 +2871,14 @@ def emit_wide(s, w, groups, hoff, fixed_part):
             expr = f'{g2.p}_put({expr}, pos, {fixed_part}, g{g2.k})'
         w(f'    case {pat}: {done(expr, str(fixed_part))}')
     if variable:
-        w(f'def {p}_put_drop_go(out: Array<U32>, v: {R}, +m: U32) -> Array<U32> & {R}: (out, v)')
-        w(f'def {p}_put_drop(pair: Array<U32> & ({R} & U32)) -> Array<U32> & {R}:')
-        w('  (out, r) = pair')
-        w('  (v, m) = r')
-        w(f'  {p}_put_drop_go(out, v, m)')
-        w(f'def {p}_put(out: Array<U32>, +pos: U32, o: {R}) -> Array<U32> & {R}: '
-          f'{p}_put_drop({p}_putn(out, pos, o))')
+        w(f'def {p}_putk(out: Array<U32>, +pos: U32, o: {R}) -> {rtype}: {p}_putn(out, pos, o)')
+    w(f'def {p}_put_drop_go(out: Array<U32>, v: {R}, +m: U32) -> Array<U32> & {R}: (out, v)')
+    w(f'def {p}_put_drop(pair: Array<U32> & ({R} & U32)) -> Array<U32> & {R}:')
+    w('  (out, r) = pair')
+    w('  (v, m) = r')
+    w(f'  {p}_put_drop_go(out, v, m)')
+    w(f'def {p}_put(out: Array<U32>, +pos: U32, o: {R}) -> Array<U32> & {R}: '
+      f'{p}_put_drop({p}_{"putn" if variable else "putk"}(out, pos, o))')
     # root: the group subtrees are the level-3 nodes; above them a tree of
     # depth ceil(log2(fields)) - 3 padded with Z(3 + level)
     n = len(s.fields)
@@ -2328,8 +2895,8 @@ def emit_wide(s, w, groups, hoff, fixed_part):
 
     def rcall(st):
         if st[0] == 'z':
-            return f'O.zero(h, {st[1]})'
-        return f'{groups[st[1]].p}_root(h, g{st[1]}, seg)'
+            return f'(h, D.zconst({st[1]}n))'
+        return f'{groups[st[1]].p}_root(hl, h, g{st[1]}, seg)'
 
     def combine():
         level = [f'r{g.k}' for g in groups]
@@ -2337,7 +2904,7 @@ def emit_wide(s, w, groups, hoff, fixed_part):
         while (1 << lv) < width:
             if len(level) % 2:
                 level.append(f'z{3 + lv}')
-            level = [f'D.hash_pair({level[i]}, {level[i + 1]})' for i in range(0, len(level), 2)]
+            level = [f'D.node(hl, {level[i]}, {level[i + 1]})' for i in range(0, len(level), 2)]
             lv += 1
         return level[0]
 
@@ -2347,11 +2914,11 @@ def emit_wide(s, w, groups, hoff, fixed_part):
         params = [f'{plus(g)}g{g.k}: {g.rep}' for g in groups if not (st[0] == 'g' and g.k == st[1] and not g.data)]
         params += [f'{rb(x)}: D.Digest' for x in steps[:k]]
         if st[0] == 'g' and not groups[st[1]].data:
-            w(f'def {p}_rt{k}(+seg: U32, {", ".join(params)}, pair: B.Buf & ({groups[st[1]].rep} & D.Digest)) -> {rt}:')
+            w(f'def {p}_rt{k}(+hl: Nat, +seg: U32, {", ".join(params)}, pair: B.Buf & ({groups[st[1]].rep} & D.Digest)) -> {rt}:')
             w('  (h, r) = pair')
             w(f'  (g{st[1]}, {rb(st)}) = r')
         else:
-            w(f'def {p}_rt{k}(+seg: U32, {", ".join(params)}, pair: B.Buf & D.Digest) -> {rt}:')
+            w(f'def {p}_rt{k}(+hl: Nat, +seg: U32, {", ".join(params)}, pair: B.Buf & D.Digest) -> {rt}:')
             w(f'  (h, {rb(st)}) = pair')
         if k == len(steps) - 1:
             w(f'  (h, {combine()})' if data else f'  (h, ({R}{{' + ', '.join(gn) + f'}}, {combine()}))')
@@ -2359,11 +2926,11 @@ def emit_wide(s, w, groups, hoff, fixed_part):
         nst = steps[k + 1]
         held = [f'g{g.k}' for g in groups if not (nst[0] == 'g' and g.k == nst[1] and not g.data)]
         done = [rb(x) for x in steps[:k + 1]]
-        w(f'  {p}_rt{k + 1}(seg, {", ".join(held + done)}, {rcall(nst)})')
+        w(f'  {p}_rt{k + 1}(hl, seg, {", ".join(held + done)}, {rcall(nst)})')
     held0 = [f'g{g.k}' for g in groups if not (g.k == 0 and not g.data)]
-    w(f'def {p}_root(h: B.Buf, o: {R}, +seg: U32) -> {rt}:')
+    w(f'def {p}_root(+hl: Nat, h: B.Buf, o: {R}, +seg: U32) -> {rt}:')
     w('  match o:')
-    w(f'    case {pat}: {p}_rt0(seg, {", ".join(held0)}, {rcall(steps[0])})')
+    w(f'    case {pat}: {p}_rt0(hl, seg, {", ".join(held0)}, {rcall(steps[0])})')
 
 
 # ---------------------------------------------------------------------------
@@ -2377,6 +2944,59 @@ def cap_depth(nbytes):
     while (1 << d) < max(1, words):
         d += 1
     return d
+
+
+def size_bounds(t):
+    """(min, max) encoded bytes of every value of schema type t; max is None
+    when the type admits arbitrarily large values (progressive forms)."""
+    k = t.kind
+    if t.fixed():
+        n = t.fixed_size()
+        return n, n
+    if k == 'bytelist':
+        return 0, t.size
+    if k == 'bitlist':
+        return 1, t.size // 8 + 1
+    if k in ('vector', 'list'):
+        lo, hi = size_bounds(t.elem)
+        count_lo = t.size if k == 'vector' else 0
+        per = 0 if t.elem.fixed() else 4
+        return count_lo * (lo + per), None if hi is None else t.size * (hi + per)
+    if k == 'container':
+        lo = hi = 0
+        for _, ft in t.fields:
+            a, b = size_bounds(ft)
+            extra = 0 if ft.fixed() else 4
+            lo += a + extra
+            hi = None if (hi is None or b is None) else hi + b + extra
+        return lo, hi
+    if k == 'cunion':
+        opts = [size_bounds(ft) if ft is not None else (0, 0) for _, ft in t.fields]
+        return 1 + min(a for a, _ in opts), (None if any(b is None for _, b in opts) else 1 + max(b for _, b in opts))
+    return 0, None
+
+
+# An encode whose output depth is known from the type alone skips the size
+# traversal: the output is allocated at that literal depth and the writer's
+# own byte count is the length. That is exact when every value's encoding has
+# the same depth. A range straddling one power of two is accepted only when it
+# is narrow (within 1/8 of its minimum) and small (at most 4096 words), so the
+# allocation is at most one power of two larger than the size pass would pick
+# and only for the few values just under the boundary.
+LITERAL_ENCODE_MAX_DEPTH = 20
+LITERAL_STRADDLE_MAX_DEPTH = 12
+
+
+def literal_depth(t):
+    lo, hi = size_bounds(t)
+    if hi is None:
+        return None
+    dl, dh = cap_depth(lo), cap_depth(hi)
+    if dh == dl and dh <= LITERAL_ENCODE_MAX_DEPTH:
+        return dh
+    if dh == dl + 1 and dh <= LITERAL_STRADDLE_MAX_DEPTH and 8 * hi <= 9 * lo:
+        return dh
+    return None
 
 
 def emit_api(g, name, s, w):
@@ -2403,32 +3023,107 @@ def emit_api(g, name, s, w):
         # allocation takes the depth directly instead of computing it
         w(f'def {name}_encode(+o: {R}) -> B.Buf: '
           f'O.out_done({s.fsize}, {p}_put(O.out_at({cap_depth(s.fsize)}n), 0, o))')
-        w(f'def {name}_hash_tree_root(h: B.Buf, +o: {R}) -> B.Buf & D.Digest: {p}_root(h, o, 0)')
+        w(f'def {name}_hash_tree_root(h: B.Buf, +o: {R}) -> B.Buf & D.Digest: {p}_root(64n, h, o, 0)')
     else:
         # A non-recursive record is laid out inline, so every function
         # boundary that carries one copies its words. The encode path
         # therefore goes straight to the size-reporting writer instead of
         # through `_put` and its size-dropping wrapper: two fewer boundaries
         # carrying the whole value.
-        if not s.fixed:
-            w(f'def {name}_enc_out(+n: U32, out: Array<U32>, o: {R}, +m: U32) -> {R} & B.Buf:')
-            w('  (o, O.out_done(n, out))')
-            w(f'def {name}_enc_put(+n: U32, pair: Array<U32> & ({R} & U32)) -> {R} & B.Buf:')
-            w('  (out, r) = pair')
-            w('  (o, m) = r')
-            w(f'  {name}_enc_out(n, out, o, m)')
-            w(f'def {name}_enc_sized(pair: {R} & U32) -> {R} & B.Buf:')
-            w('  (o, +n) = pair')
-            w(f'  {name}_enc_put(n, {p}_putn(O.out_new(n), 0, o))')
-        else:
-            w(f'def {name}_enc_out(+n: U32, pair: Array<U32> & {R}) -> {R} & B.Buf:')
-            w('  (out, o) = pair')
-            w('  (o, O.out_done(n, out))')
-            w(f'def {name}_enc_sized(pair: {R} & U32) -> {R} & B.Buf:')
-            w('  (o, +n) = pair')
-            w(f'  {name}_enc_out(n, {p}_put(O.out_new(n), 0, o))')
-        w(f'def {name}_encode(o: {R}) -> {R} & B.Buf: {name}_enc_sized({p}_size(o))')
-        w(f'def {name}_hash_tree_root(h: B.Buf, o: {R}) -> B.Buf & ({R} & D.Digest): {p}_root(h, o, 0)')
+        lit = literal_depth(s.t)
+        # The stages are emitted twice: `encode` returns the buffer, the
+        # serialize path (x = 's') returns it inside Some, entering the first
+        # stage straight from the validity decision - no extra boundary.
+        wmain = w
+        for x, Bt, wrap in (('', 'B.Buf', lambda e: e), ('s', 'O.Encoded', lambda e: f'O.encoded({e})')):
+            w = wmain if x == '' else TAIL.append
+            if lit is not None and not s.fixed:
+                w(f'def {name}_{x}enc_out(out: Array<U32>, o: {R}, +m: U32) -> {R} & {Bt}:')
+                if x == '':
+                    w(f'  (o, O.out_done((m .&. 2147483647 : U32), out))')
+                else:
+                    # the writer's length carries bit 31 when the value is invalid
+                    w(f'  (o, O.ser_done(O.is_poisoned(m), m, out))')
+                w(f'def {name}_{x}enc_put(pair: Array<U32> & ({R} & U32)) -> {R} & {Bt}:')
+                w('  (out, r) = pair')
+                w('  (o, m) = r')
+                w(f'  {name}_{x}enc_out(out, o, m)')
+                first = f'{name}_{x}enc_put({p}_{"putk" if x else "putn"}(O.out_at({lit}n), 0, o))'
+            elif lit is not None and x == '':
+                w(f'def {name}_{x}enc_out(pair: Array<U32> & {R}) -> {R} & {Bt}:')
+                w('  (out, o) = pair')
+                w(f'  (o, {wrap(f"O.out_done({s.fsize}, out)")})')
+                first = f'{name}_{x}enc_out({p}_put(O.out_at({lit}n), 0, o))'
+            elif lit is not None:
+                w(f'def {name}_{x}enc_out(pair: Array<U32> & ({R} & U32)) -> {R} & {Bt}:')
+                w('  (out, r) = pair')
+                w('  (o, fl) = r')
+                w(f'  (o, O.ser_done(O.is_poisoned(fl), {s.fsize}, out))')
+                first = f'{name}_{x}enc_out({p}_putk(O.out_at({lit}n), 0, o))'
+            elif not s.fixed:
+                w(f'def {name}_{x}enc_out(+n: U32, out: Array<U32>, o: {R}, +m: U32) -> {R} & {Bt}:')
+                if x == '':
+                    w(f'  (o, O.out_done(n, out))')
+                else:
+                    w(f'  (o, O.ser_done(O.is_poisoned(m), n, out))')
+                w(f'def {name}_{x}enc_put(+n: U32, pair: Array<U32> & ({R} & U32)) -> {R} & {Bt}:')
+                w('  (out, r) = pair')
+                w('  (o, m) = r')
+                w(f'  {name}_{x}enc_out(n, out, o, m)')
+                if x == '':
+                    w(f'def {name}_{x}enc_sized(pair: {R} & U32) -> {R} & {Bt}:')
+                    w('  (o, +n) = pair')
+                    w(f'  {name}_{x}enc_put(n, {p}_putn(O.out_new(n), 0, o))')
+                else:
+                    # a size with bit 31 (storage that cannot hold the value)
+                    # is refused before anything is allocated
+                    w(f'def {name}_{x}enc_go(bad: Bool, +n: U32, o: {R}) -> {R} & {Bt}:')
+                    w('  match bad:')
+                    w(f'    case True{{}}: (o, O.refused())')
+                    w(f'    case False{{}}: {name}_{x}enc_put(n, {p}_putk(O.out_new(n), 0, o))')
+                    w(f'def {name}_{x}enc_sized(pair: {R} & U32) -> {R} & {Bt}:')
+                    w('  (o, +n) = pair')
+                    w(f'  {name}_{x}enc_go(O.is_poisoned(n), n, o)')
+                first = f'{name}_{x}enc_sized({p}_size(o))'
+            elif x == '':
+                w(f'def {name}_{x}enc_out(+n: U32, pair: Array<U32> & {R}) -> {R} & {Bt}:')
+                w('  (out, o) = pair')
+                w(f'  (o, {wrap("O.out_done(n, out)")})')
+                w(f'def {name}_{x}enc_sized(pair: {R} & U32) -> {R} & {Bt}:')
+                w('  (o, +n) = pair')
+                w(f'  {name}_{x}enc_out(n, {p}_put(O.out_new(n), 0, o))')
+                first = f'{name}_{x}enc_sized({p}_size(o))'
+            else:
+                w(f'def {name}_{x}enc_out(+n: U32, pair: Array<U32> & ({R} & U32)) -> {R} & {Bt}:')
+                w('  (out, r) = pair')
+                w('  (o, fl) = r')
+                w(f'  (o, O.ser_done(O.is_poisoned(fl), n, out))')
+                w(f'def {name}_{x}enc_sized(pair: {R} & U32) -> {R} & {Bt}:')
+                w('  (o, +n) = pair')
+                w(f'  {name}_{x}enc_out(n, {p}_putk(O.out_new(n), 0, o))')
+                first = f'{name}_{x}enc_sized({p}_size(o))'
+            if x == '':
+                w(f'def {name}_encode(o: {R}) -> {R} & B.Buf: {first}')
+            else:
+                sfirst = first
+        w = wmain
+        w(f'def {name}_hash_tree_root(h: B.Buf, o: {R}) -> B.Buf & ({R} & D.Digest): {p}_root(64n, h, o, 0)')
+    wmain2 = w
+    w = TAIL.append
+    # serialize: the public encoder. It encodes a valid value and refuses an
+    # invalid representable one (see emit_valid) instead of encoding it.
+    if s.data:
+        w(f'def {name}_ser_pick(ok: Bool, +o: {R}) -> O.Encoded:')
+        w('  match ok:')
+        w(f'    case True{{}}: O.encoded({name}_encode(o))')
+        w('    case False{}: O.refused()')
+        w(f'def {name}_serialize(+o: {R}) -> O.Encoded: {name}_ser_pick({p}_valid(o), o)')
+    else:
+        # the checked writers decide validity as they write; a sized value
+        # whose size pass finds storage unable to hold it is refused first
+        w(f'def {name}_serialize(o: {R}) -> {R} & O.Encoded: {sfirst}')
+    w('')
+    w = wmain2
     w('')
 
 
@@ -2453,7 +3148,9 @@ def reorder(text):
         stack = stack | {nm}
         body = b.split('\n', 1)[1] if '\n' in b else ''
         sig = b.split('\n', 1)[0]
-        for ref in set(re.findall(r'\b([A-Za-z][A-Za-z0-9_]*)\(', body + sig)) | set(re.findall(r'\b([A-Z][A-Za-z0-9_]*)\{', body + sig)):
+        # sorted: set order depends on the per-process string hash seed, and the
+        # emitted order must not (deterministic regeneration)
+        for ref in sorted(set(re.findall(r'\b([A-Za-z][A-Za-z0-9_]*)\(', body + sig)) | set(re.findall(r'\b([A-Z][A-Za-z0-9_]*)\{', body + sig))):
             if ref in defs and ref != nm:
                 place(ref, defs[ref], stack)
         placed.add(nm)
@@ -2741,7 +3438,7 @@ def emit_group(g, names, ns, k, with_fuzz=False, prefix='g', module='fulu_obj'):
         sh = g.shape(names[n])
         R = qual(sh.rep)
         if sh.data:
-            w(f'def enc_{n}(+v: {R}) -> Any & B.Buf: (A_{n}{{v}}, T.{n}_encode(v))')
+            w(f'def enc_{n}(+v: {R}) -> Any & B.Buf: (A_{n}{{v}}, O.ser_out(T.{n}_serialize(v)))')
             w(f'def root_{n}(+v: {R}, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):')
             w('  (h, d) = pair')
             w(f'  (h, (A_{n}{{v}}, d))')
@@ -2750,9 +3447,9 @@ def emit_group(g, names, ns, k, with_fuzz=False, prefix='g', module='fulu_obj'):
             rt.append(f'    case A_{n}{{+v}}: root_{n}(v, T.{n}_hash_tree_root(h, v))')
             fo.append(f'    case A_{n}{{+v}}: force_{n}(v)')
         else:
-            w(f'def enc_{n}(pair: {R} & B.Buf) -> Any & B.Buf:')
+            w(f'def enc_{n}(pair: {R} & O.Encoded) -> Any & B.Buf:')
             w('  (v, out) = pair')
-            w(f'  (A_{n}{{v}}, out)')
+            w(f'  (A_{n}{{v}}, O.ser_out(out))')
             w(f'def root_{n}(pair: B.Buf & ({R} & D.Digest)) -> B.Buf & (Any & D.Digest):')
             w('  (h, r) = pair')
             w('  (v, d) = r')
@@ -2760,7 +3457,7 @@ def emit_group(g, names, ns, k, with_fuzz=False, prefix='g', module='fulu_obj'):
             w(f'def force_{n}(pair: {R} & U32) -> Any & U32:')
             w('  (v, +x) = pair')
             w(f'  (A_{n}{{v}}, x)')
-            enc.append(f'    case A_{n}{{v}}: enc_{n}(T.{n}_encode(v))')
+            enc.append(f'    case A_{n}{{v}}: enc_{n}(T.{n}_serialize(v))')
             rt.append(f'    case A_{n}{{v}}: root_{n}(T.{n}_hash_tree_root(h, v))')
             fo.append(f'    case A_{n}{{v}}: force_{n}(T.{sh.p}_force(v))')
     w('def enc_boxed(pair: Any & B.Buf) -> Any & B.Buf:')
@@ -2785,6 +3482,13 @@ def emit_group(g, names, ns, k, with_fuzz=False, prefix='g', module='fulu_obj'):
     w('  match a:')
     L.extend(fo)
     w('    case A_boxed{v}: force_boxed(force(v))')
+    # the structural value dump for the conformance runner (consumes the object)
+    w('def dump(a: Any, t: +List<U32>) -> +List<U32>:')
+    w('  match a:')
+    for n, i in ns:
+        sh = g.shape(names[n])
+        w(f'    case A_{n}{{{plus(sh)}v}}: T.{sh.p}_dump(v, t)')
+    w('    case A_boxed{v}: dump(v, t)')
     # decode + force in one call: the decode benchmark consumes the whole
     # object, so no construction work is left unevaluated
     w('def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):')
@@ -2964,10 +3668,18 @@ def run_check(a: G.Any) -> IO(Unit):
     IO.print("DECODED=1")
     check_enc(G.encode(a))
 
+# Mode 5 writes the decoded object's structural value dump (src/obj.bend) to
+# SSZ_OUTPUT for tools/spectests.py, which compares it with value.yaml.
+def run_dump(a: G.Any) -> IO(Unit):
+  do IO<Unit>:
+    IO.print("DECODED=1")
+    IOx.write_list(G.dump(a, []))
+
 def with_obj(+mode: U32, +ops: U32, a: G.Any) -> IO(Unit):
   match mode:
     case 2: run_enc(ops, a)
     case 3: run_root(ops, a)
+    case 5: run_dump(a)
     case _: run_check(a)
 
 def on_decoded(m: Maybe<&1, G.Any>, +mode: U32, +ops: U32) -> IO(Unit):

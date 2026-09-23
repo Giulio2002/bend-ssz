@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+"""Audit which modules each entry point actually reaches.
+
+    /opt/homebrew/bin/python3 codegen/import_graph.py [--check]
+
+Every `.bend` file in the workspace is a node; an `import path.bend as X` line
+is an edge. The entry points are grouped by what they are for, so the question
+the codegen-only requirement asks - is there still a legacy module on a
+production path? - is answered by a reachability computation rather than by
+reading import lines by hand.
+
+`--check` fails if a module that is not part of the generated production path
+becomes reachable from a measured or public entry point.
+"""
+import pathlib
+import re
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[1]
+IMPORT = re.compile(r'^\s*import\s+(\S+\.bend)\b', re.M)
+
+# The public/measured entry points. Anything these reach is production.
+PRODUCTION = [
+    'types/fulu_obj.bend',      # the 109 mainnet Fulu names, generated
+    'types/generic_obj.bend',   # the supported generic SSZ forms, generated
+]
+MEASURED = sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'benchmarks/objprog').glob('g*.bend'))
+MEASURED += [str(p.relative_to(ROOT)) for p in (ROOT / 'benchmarks/objprog').glob('x*.bend')]
+MEASURED += ['native_bench/driver.bend']
+OTHER = {
+    'proof roots': ['PROOF.bend', 'END_TO_END.bend', 'ROOT_DOMAIN.bend', 'HASH_PROOF.bend'],
+    # the list model: the frozen END_TO_END/ROOT_DOMAIN propositions speak about it and the
+    # protected Bun runtime tests (tests/new/*.test.ts, via tools/generic_transport.ts and
+    # tools/primitive_backend.ts) exercise it; the official spectests no longer do
+    'legacy list model (frozen propositions, protected runtime tests)': ['src/ssz.bend', 'types/fulu.bend'],
+    'independent specification': sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'spec').glob('*.bend')),
+}
+
+
+def imports(rel):
+    path = ROOT / rel
+    if not path.exists():
+        return []
+    out = []
+    for raw in IMPORT.findall(path.read_text()):
+        if raw.startswith('/') or raw.startswith('0x'):
+            continue
+        target = (path.parent / raw).resolve()
+        try:
+            out.append(str(target.relative_to(ROOT)))
+        except ValueError:
+            continue           # the pinned BendHub package, outside the tree
+    return out
+
+
+def reach(roots):
+    seen, stack = set(), list(roots)
+    while stack:
+        node = stack.pop()
+        if node in seen:
+            continue
+        seen.add(node)
+        stack.extend(imports(node))
+    return seen
+
+
+def main():
+    production = reach(PRODUCTION)
+    measured = reach(MEASURED)
+    runtime = sorted(m for m in production if m.startswith('src/'))
+    print('production entry points:', ', '.join(PRODUCTION))
+    print(f'  reaches {len(production)} modules, {len(runtime)} of them in src/:')
+    for m in runtime:
+        print('   ', m)
+    extra = sorted(m for m in measured - production if m.startswith('src/'))
+    print(f'measured programs additionally reach {len(extra)} src/ modules:')
+    for m in extra:
+        print('   ', m)
+    print()
+    for label, roots in OTHER.items():
+        got = reach(roots)
+        overlap = sorted(m for m in got & production if m.startswith('src/'))
+        only = sorted(m for m in got - production if m.startswith('src/'))
+        print(f'{label}:')
+        print(f'  {len(only)} src/ modules of its own, {len(overlap)} shared with production')
+        if only:
+            print('   own:', ', '.join(only))
+    unreached = sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'src').glob('*.bend')
+                       if str(p.relative_to(ROOT)) not in reach(
+                           PRODUCTION + MEASURED + [r for rs in OTHER.values() for r in rs]))
+    print()
+    print('src/ modules no entry point reaches:', ', '.join(unreached) if unreached else 'none')
+    if '--check' in sys.argv:
+        allowed = {'src/obj.bend', 'src/buffer.bend', 'src/digest.bend', 'src/merkle_fast.bend',
+                   'src/sha256.bend', 'src/merkle.bend'}
+        bad = sorted(set(runtime) - allowed)
+        if bad:
+            print('FAIL: production path reaches non-runtime modules: ' + ', '.join(bad))
+            sys.exit(1)
+        if unreached:
+            print('FAIL: unreachable src/ modules: ' + ', '.join(unreached))
+            sys.exit(1)
+        print('OK: the production path reaches only the shared runtime primitives')
+
+
+if __name__ == '__main__':
+    main()

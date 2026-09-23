@@ -49,7 +49,9 @@ law min_succ:
   for +b: Nat
   {Nat.min(1n+a, 1n+b) == 1n+Nat.min(a, b) : Nat}
 def min_succ(a, b):
-  min_pick(Nat.is_lt(a, b), a, b)
+  # Base 2.0.25 defines Nat.min structurally, so this is a computation step
+  # (2.0.16's Nat.min went through Bool.pick and needed min_pick).
+  {==}
 
 law take_zero:
   for +xs: +List<U32>

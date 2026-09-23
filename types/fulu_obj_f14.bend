@@ -48,22 +48,22 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 58: some_BLSPubkey(T.BLSPubkey_decode(buf, size))
     case 59: some_DepositRequest(T.DepositRequest_decode(buf, size))
     case _: (buf, None{})
-def enc_Domain(+v: T.Bytes32) -> Any & B.Buf: (A_Domain{v}, T.Domain_encode(v))
+def enc_Domain(+v: T.Bytes32) -> Any & B.Buf: (A_Domain{v}, O.ser_out(T.Domain_serialize(v)))
 def root_Domain(+v: T.Bytes32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Domain{v}, d))
 def force_Domain(+v: T.Bytes32) -> Any & U32: (A_Domain{v}, T.b32_force(v))
-def enc_SigningData(+v: T.SigningData) -> Any & B.Buf: (A_SigningData{v}, T.SigningData_encode(v))
+def enc_SigningData(+v: T.SigningData) -> Any & B.Buf: (A_SigningData{v}, O.ser_out(T.SigningData_serialize(v)))
 def root_SigningData(+v: T.SigningData, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SigningData{v}, d))
 def force_SigningData(+v: T.SigningData) -> Any & U32: (A_SigningData{v}, T.SigningData_force(v))
-def enc_BLSPubkey(+v: T.Bytes48) -> Any & B.Buf: (A_BLSPubkey{v}, T.BLSPubkey_encode(v))
+def enc_BLSPubkey(+v: T.Bytes48) -> Any & B.Buf: (A_BLSPubkey{v}, O.ser_out(T.BLSPubkey_serialize(v)))
 def root_BLSPubkey(+v: T.Bytes48, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BLSPubkey{v}, d))
 def force_BLSPubkey(+v: T.Bytes48) -> Any & U32: (A_BLSPubkey{v}, T.b48_force(v))
-def enc_DepositRequest(+v: T.DepositRequest) -> Any & B.Buf: (A_DepositRequest{v}, T.DepositRequest_encode(v))
+def enc_DepositRequest(+v: T.DepositRequest) -> Any & B.Buf: (A_DepositRequest{v}, O.ser_out(T.DepositRequest_serialize(v)))
 def root_DepositRequest(+v: T.DepositRequest, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_DepositRequest{v}, d))
@@ -99,6 +99,13 @@ def force(a: Any) -> Any & U32:
     case A_BLSPubkey{+v}: force_BLSPubkey(v)
     case A_DepositRequest{+v}: force_DepositRequest(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_Domain{+v}: T.b32_dump(v, t)
+    case A_SigningData{+v}: T.SigningData_dump(v, t)
+    case A_BLSPubkey{+v}: T.b48_dump(v, t)
+    case A_DepositRequest{+v}: T.DepositRequest_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

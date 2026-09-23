@@ -2,7 +2,8 @@
 
 The object programs (benchmarks/objprog/g*.bend) decode into the typed object,
 then encode and hash it. The expected verdict of each mutated input comes from
-the independent Python validator benchmarks/checks/ref_validate.py, not from an
+the independent Python SSZ oracle codegen/oracle.py (written from the
+specification, sharing no code with the generator's output), not from an
 assumption that a mutation must be invalid: appending a byte to a variable-size
 value can be legal. For inputs the reference calls valid, the object's fresh
 encoding must equal the mutated bytes exactly.
@@ -18,9 +19,22 @@ import sys
 
 import snappy
 
-src = pathlib.Path('benchmarks/checks/ref_validate.py').read_text().split('tree = G.parse')[0]
-ref = {}
-exec(compile(src, 'ref_validate', 'exec'), ref)
+sys.path.insert(0, 'codegen')
+import oracle  # noqa: E402
+import schema  # noqa: E402
+
+TY = dict(schema.load('codegen/fulu.yaml').items())
+
+
+def legal(t, b):
+    # the oracle's parser plus canonicality: an accepted encoding is the only
+    # encoding of its value (the same reference tests_generated/fuzz_objects.py uses)
+    try:
+        v = oracle.parse(t, b)
+    except Exception:
+        return False
+    return oracle.serialize(t, v) == b
+
 groups = json.load(open('types/obj_groups.json'))
 cases = [c for c in json.load(open('cases.json')) if '/ssz_static/' in c]
 tmp = pathlib.Path('build/performance/inputs')
@@ -30,7 +44,6 @@ bad = []
 for c in cases:
     t = c.split('/')[4]
     data = snappy.decompress((pathlib.Path('fixtures') / c / 'serialized.ssz_snappy').read_bytes())
-    tree = ref['G'].parse(ref['defs'][t], ref['defs'])
     muts = [('truncated', data[:-1]), ('extended', data + b'\x00')]
     if len(data) >= 4:
         muts.append(('offset_ffffffff', b'\xff\xff\xff\xff' + data[4:]))
@@ -41,7 +54,7 @@ for c in cases:
         muts.append(('word%d_plus1' % k, data[:4 * k] + w.to_bytes(4, 'little') + data[4 * k + 4:]))
     g = groups[t]
     for label, m in muts:
-        expect_valid = ref['check'](tree, m, [], [])
+        expect_valid = legal(TY[t], m)
         f = tmp / 'mut.ssz'
         f.write_bytes(m)
         o = tmp / 'mut-out.ssz'

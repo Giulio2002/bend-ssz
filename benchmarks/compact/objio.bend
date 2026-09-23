@@ -156,3 +156,12 @@ def word_out(b: B.Buf, +size: U32) -> U32: bare(last_word(b, size))
 def word_out_of(pair: B.Buf & U32) -> U32:
   (b, +n) = pair
   word_out(b, n)
+
+# A byte list (the conformance programs' value dump) to SSZ_OUTPUT.
+def write_list(data: +List<U32>) -> IO(Unit):
+  do IO<Unit>:
+    path : String <- IO.try(String, IO.get_env("SSZ_OUTPUT"))
+    file : File <- IO.try(File, File.open(path, "w"))
+    got : File & Result<&1, &1, U32 & String, Unit> <- File.write_bytes(file, data)
+    done : File <- wrote(got)
+    File.close(done)

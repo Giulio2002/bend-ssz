@@ -209,6 +209,199 @@ def words_depth(+w: U32) -> Nat: words_depth_nz(U32.is_eq(w, 0), w)
 def capacity(+n: U32) -> Nat: words_depth(U32.shrn((n + 3 : U32), 2n))
 
 # ---------------------------------------------------------------------------
+# Zero-filled word arrays.
+#
+# `Array.new(U32, d, 0)` is emitted as a loop over 2^d words. When d is a
+# compile-time constant the C compiler turns that loop into bzero; when d is
+# computed at run time it stays a scalar store loop, measured about ten times
+# slower (8192 words: 2.2 us against 0.2 us, benchmarks/probes/zero_fill.bend).
+# So each depth an encoding or a decoded field can need has its own
+# allocation function with a literal depth, reached through a chain of
+# comparisons. (A U32 `match` with literal cases is emitted as a decision tree
+# over the 32 bits that repeats the default arm at every leaf, and the many
+# copies of the allocation it creates are not specialised; the chain has one
+# call site per depth.) The array is exactly Array.new(U32, d, 0) either way.
+def zeros_d0() -> Array<U32>: Array.new(U32, 0n, 0)
+def zeros_d1() -> Array<U32>: Array.new(U32, 1n, 0)
+def zeros_d2() -> Array<U32>: Array.new(U32, 2n, 0)
+def zeros_d3() -> Array<U32>: Array.new(U32, 3n, 0)
+def zeros_d4() -> Array<U32>: Array.new(U32, 4n, 0)
+def zeros_d5() -> Array<U32>: Array.new(U32, 5n, 0)
+def zeros_d6() -> Array<U32>: Array.new(U32, 6n, 0)
+def zeros_d7() -> Array<U32>: Array.new(U32, 7n, 0)
+def zeros_d8() -> Array<U32>: Array.new(U32, 8n, 0)
+def zeros_d9() -> Array<U32>: Array.new(U32, 9n, 0)
+def zeros_d10() -> Array<U32>: Array.new(U32, 10n, 0)
+def zeros_d11() -> Array<U32>: Array.new(U32, 11n, 0)
+def zeros_d12() -> Array<U32>: Array.new(U32, 12n, 0)
+def zeros_d13() -> Array<U32>: Array.new(U32, 13n, 0)
+def zeros_d14() -> Array<U32>: Array.new(U32, 14n, 0)
+def zeros_d15() -> Array<U32>: Array.new(U32, 15n, 0)
+def zeros_d16() -> Array<U32>: Array.new(U32, 16n, 0)
+def zeros_d17() -> Array<U32>: Array.new(U32, 17n, 0)
+def zeros_d18() -> Array<U32>: Array.new(U32, 18n, 0)
+def zeros_d19() -> Array<U32>: Array.new(U32, 19n, 0)
+def zeros_d20() -> Array<U32>: Array.new(U32, 20n, 0)
+def zeros_d21() -> Array<U32>: Array.new(U32, 21n, 0)
+def zeros_d22() -> Array<U32>: Array.new(U32, 22n, 0)
+def zeros_d23() -> Array<U32>: Array.new(U32, 23n, 0)
+def zeros_d24() -> Array<U32>: Array.new(U32, 24n, 0)
+def zeros_d25() -> Array<U32>: Array.new(U32, 25n, 0)
+def zeros_d26() -> Array<U32>: Array.new(U32, 26n, 0)
+def zeros_c26(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d26()
+    case False{}: Array.new(U32, U32.to_nat(d), 0)
+def zeros_c25(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d25()
+    case False{}: zeros_c26(U32.is_eq(d, 26), d)
+def zeros_c24(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d24()
+    case False{}: zeros_c25(U32.is_eq(d, 25), d)
+def zeros_c23(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d23()
+    case False{}: zeros_c24(U32.is_eq(d, 24), d)
+def zeros_c22(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d22()
+    case False{}: zeros_c23(U32.is_eq(d, 23), d)
+def zeros_c21(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d21()
+    case False{}: zeros_c22(U32.is_eq(d, 22), d)
+def zeros_c20(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d20()
+    case False{}: zeros_c21(U32.is_eq(d, 21), d)
+def zeros_c19(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d19()
+    case False{}: zeros_c20(U32.is_eq(d, 20), d)
+def zeros_c18(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d18()
+    case False{}: zeros_c19(U32.is_eq(d, 19), d)
+def zeros_c17(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d17()
+    case False{}: zeros_c18(U32.is_eq(d, 18), d)
+def zeros_c16(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d16()
+    case False{}: zeros_c17(U32.is_eq(d, 17), d)
+def zeros_c15(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d15()
+    case False{}: zeros_c16(U32.is_eq(d, 16), d)
+def zeros_c14(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d14()
+    case False{}: zeros_c15(U32.is_eq(d, 15), d)
+def zeros_c13(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d13()
+    case False{}: zeros_c14(U32.is_eq(d, 14), d)
+def zeros_c12(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d12()
+    case False{}: zeros_c13(U32.is_eq(d, 13), d)
+def zeros_c11(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d11()
+    case False{}: zeros_c12(U32.is_eq(d, 12), d)
+def zeros_c10(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d10()
+    case False{}: zeros_c11(U32.is_eq(d, 11), d)
+def zeros_c9(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d9()
+    case False{}: zeros_c10(U32.is_eq(d, 10), d)
+def zeros_c8(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d8()
+    case False{}: zeros_c9(U32.is_eq(d, 9), d)
+def zeros_c7(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d7()
+    case False{}: zeros_c8(U32.is_eq(d, 8), d)
+def zeros_c6(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d6()
+    case False{}: zeros_c7(U32.is_eq(d, 7), d)
+def zeros_c5(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d5()
+    case False{}: zeros_c6(U32.is_eq(d, 6), d)
+def zeros_c4(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d4()
+    case False{}: zeros_c5(U32.is_eq(d, 5), d)
+def zeros_c3(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d3()
+    case False{}: zeros_c4(U32.is_eq(d, 4), d)
+def zeros_c2(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d2()
+    case False{}: zeros_c3(U32.is_eq(d, 3), d)
+def zeros_c1(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d1()
+    case False{}: zeros_c2(U32.is_eq(d, 2), d)
+def zeros_c0(t: Bool, +d: U32) -> Array<U32>:
+  match t:
+    case True{}: zeros_d0()
+    case False{}: zeros_c1(U32.is_eq(d, 1), d)
+# Array.new(U32, d, 0) for a depth d known only at run time.
+def zeros(+d: U32) -> Array<U32>: zeros_c0(U32.is_eq(d, 0), d)
+
+# The depth `words_depth` returns, as a U32.
+def ubits0(zero: Bool, +acc: U32) -> U32:
+  match zero:
+    case True{}: acc
+    case False{}: (acc + 1 : U32)
+
+def ubits1(big: Bool, +m: U32, +acc: U32) -> U32:
+  match big:
+    case True{}: (acc + 2 : U32)
+    case False{}: ubits0(U32.is_eq(m, 0), acc)
+
+def ubits2(big: Bool, +m: U32, +acc: U32) -> U32:
+  match big:
+    case True{}: ubits1(U32.is_le(2, U32.shrn(m, 2n)), U32.shrn(m, 2n), (acc + 2 : U32))
+    case False{}: ubits1(U32.is_le(2, m), m, acc)
+
+def ubits4(big: Bool, +m: U32, +acc: U32) -> U32:
+  match big:
+    case True{}: ubits2(U32.is_le(4, U32.shrn(m, 4n)), U32.shrn(m, 4n), (acc + 4 : U32))
+    case False{}: ubits2(U32.is_le(4, m), m, acc)
+
+def ubits8(big: Bool, +m: U32, +acc: U32) -> U32:
+  match big:
+    case True{}: ubits4(U32.is_le(16, U32.shrn(m, 8n)), U32.shrn(m, 8n), (acc + 8 : U32))
+    case False{}: ubits4(U32.is_le(16, m), m, acc)
+
+def ubits16(big: Bool, +m: U32) -> U32:
+  match big:
+    case True{}: ubits8(U32.is_le(256, U32.shrn(m, 16n)), U32.shrn(m, 16n), 16)
+    case False{}: ubits8(U32.is_le(256, m), m, 0)
+
+def words_depth_unz(zero: Bool, +w: U32) -> U32:
+  match zero:
+    case True{}: 0
+    case False{}: ubits16(U32.is_le(65536, (w - 1 : U32)), (w - 1 : U32))
+
+def words_depth_u(+w: U32) -> U32: words_depth_unz(U32.is_eq(w, 0), w)
+
+# Zero words for n bytes, at the depth `capacity(n)`.
+def zeros_bytes(+n: U32) -> Array<U32>: zeros(words_depth_u(U32.shrn((n + 3 : U32), 2n)))
+
+
+# ---------------------------------------------------------------------------
 # Merkle scratch. A buffer being hashed carries 1024 digest slots of eight
 # words right after its data, at word (n + 3) / 4: the level stack of the
 # streaming merkleizer (64-slot segments, one per nesting level) and, in slots
@@ -335,15 +528,17 @@ def fill_at(b: Buf, +byte_off: U32, xs: +List<U32>) -> Buf:
 # ---------------------------------------------------------------------------
 # Views used by proofs, transports and test oracles only, never on a measured
 # runtime path. The pending read is threaded as the last argument so that the
-# loop stays a single self-recursive definition.
+# loop stays a single self-recursive definition: `pair` holds byte i - 1, the
+# next one to prepend. (Until 2026-09-22 the first pending read was byte 0, so
+# the view came out rotated by one byte; proofs/obj/spec_codec.bend found it.)
 def to_list_go(+k: Nat, +i: U32, acc: +List<U32>, pair: Buf & U32) -> Buf & +List<U32>:
   match k pair:
     case 0n Tuple{b, v}: (b, acc)
-    case 1n+p Tuple{b, v}: to_list_go(p, (i - 1 : U32), v <> acc, byte_at(b, (i - 1 : U32)))
+    case 1n+p Tuple{b, v}: to_list_go(p, (i - 1 : U32), v <> acc, byte_at(b, (i - 2 : U32)))
 
 def to_list_at(pair: Buf & U32) -> Buf & +List<U32>:
   (b, +n) = pair
-  to_list_go(U32.to_nat(n), n, [], byte_at(b, 0))
+  to_list_go(U32.to_nat(n), n, [], byte_at(b, (n - 1 : U32)))
 
 def to_list(b: Buf) -> Buf & +List<U32>:
   to_list_at(size(b))

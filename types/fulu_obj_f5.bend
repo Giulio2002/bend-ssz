@@ -48,22 +48,22 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 22: some_G2Point(T.G2Point_decode(buf, size))
     case 23: some_Fork(T.Fork_decode(buf, size))
     case _: (buf, None{})
-def enc_VersionedHash(+v: T.Bytes32) -> Any & B.Buf: (A_VersionedHash{v}, T.VersionedHash_encode(v))
+def enc_VersionedHash(+v: T.Bytes32) -> Any & B.Buf: (A_VersionedHash{v}, O.ser_out(T.VersionedHash_serialize(v)))
 def root_VersionedHash(+v: T.Bytes32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_VersionedHash{v}, d))
 def force_VersionedHash(+v: T.Bytes32) -> Any & U32: (A_VersionedHash{v}, T.b32_force(v))
-def enc_G1Point(+v: T.Bytes48) -> Any & B.Buf: (A_G1Point{v}, T.G1Point_encode(v))
+def enc_G1Point(+v: T.Bytes48) -> Any & B.Buf: (A_G1Point{v}, O.ser_out(T.G1Point_serialize(v)))
 def root_G1Point(+v: T.Bytes48, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_G1Point{v}, d))
 def force_G1Point(+v: T.Bytes48) -> Any & U32: (A_G1Point{v}, T.b48_force(v))
-def enc_G2Point(+v: T.Bytes96) -> Any & B.Buf: (A_G2Point{v}, T.G2Point_encode(v))
+def enc_G2Point(+v: T.Bytes96) -> Any & B.Buf: (A_G2Point{v}, O.ser_out(T.G2Point_serialize(v)))
 def root_G2Point(+v: T.Bytes96, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_G2Point{v}, d))
 def force_G2Point(+v: T.Bytes96) -> Any & U32: (A_G2Point{v}, T.b96_force(v))
-def enc_Fork(+v: T.Fork) -> Any & B.Buf: (A_Fork{v}, T.Fork_encode(v))
+def enc_Fork(+v: T.Fork) -> Any & B.Buf: (A_Fork{v}, O.ser_out(T.Fork_serialize(v)))
 def root_Fork(+v: T.Fork, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Fork{v}, d))
@@ -99,6 +99,13 @@ def force(a: Any) -> Any & U32:
     case A_G2Point{+v}: force_G2Point(v)
     case A_Fork{+v}: force_Fork(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_VersionedHash{+v}: T.b32_dump(v, t)
+    case A_G1Point{+v}: T.b48_dump(v, t)
+    case A_G2Point{+v}: T.b96_dump(v, t)
+    case A_Fork{+v}: T.Fork_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

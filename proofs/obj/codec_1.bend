@@ -9,6 +9,20 @@ import ../../types/fulu_obj.bend as T
 # type's fixed size, and a buffer one byte short is rejected. Stated over a
 # variable, so they hold for every object of the type.
 
+# ---- Gwei (8 bytes) ----
+def Gwei_encoded_size(+x0: U32, +x1: U32)
+    -> {B.size(T.Gwei_encode(O.U64{x0, x1})) == (T.Gwei_encode(O.U64{x0, x1}), 8) : B.Buf & U32}:
+  {==}
+def Gwei_roundtrip(+x0: U32, +x1: U32)
+    -> {T.Gwei_decode(T.Gwei_encode(O.U64{x0, x1}), 8) == (T.Gwei_encode(O.U64{x0, x1}), Some{O.U64{x0, x1}}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+def Gwei_reject_short(+x0: U32, +x1: U32)
+    -> {T.Gwei_decode(T.Gwei_encode(O.U64{x0, x1}), 7) == (T.Gwei_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+def Gwei_reject_long(+x0: U32, +x1: U32)
+    -> {T.Gwei_decode(T.Gwei_encode(O.U64{x0, x1}), 9) == (T.Gwei_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
+  {==}
+
 # ---- Hash32 (32 bytes) ----
 def Hash32_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
     -> {B.size(T.Hash32_encode(T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})) == (T.Hash32_encode(T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), 32) : B.Buf & U32}:
@@ -149,31 +163,17 @@ def SyncAggregatorSelectionData_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U
     -> {T.SyncAggregatorSelectionData_decode(T.SyncAggregatorSelectionData_encode(T.SyncAggregatorSelectionData{O.U64{x0, x1}, O.U64{x2, x3}}), 17) == (T.SyncAggregatorSelectionData_encode(T.SyncAggregatorSelectionData{O.U64{x0, x1}, O.U64{x2, x3}}), None{}) : B.Buf & Maybe<&1, T.SyncAggregatorSelectionData>}:
   {==}
 
-# ---- CommitteeIndex (8 bytes) ----
-def CommitteeIndex_encoded_size(+x0: U32, +x1: U32)
-    -> {B.size(T.CommitteeIndex_encode(O.U64{x0, x1})) == (T.CommitteeIndex_encode(O.U64{x0, x1}), 8) : B.Buf & U32}:
+# ---- PowBlock (96 bytes) ----
+def PowBlock_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32)
+    -> {B.size(T.PowBlock_encode(T.PowBlock{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, T.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}, T.Uint256{x16, x17, x18, x19, x20, x21, x22, x23}})) == (T.PowBlock_encode(T.PowBlock{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, T.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}, T.Uint256{x16, x17, x18, x19, x20, x21, x22, x23}}), 96) : B.Buf & U32}:
   {==}
-def CommitteeIndex_roundtrip(+x0: U32, +x1: U32)
-    -> {T.CommitteeIndex_decode(T.CommitteeIndex_encode(O.U64{x0, x1}), 8) == (T.CommitteeIndex_encode(O.U64{x0, x1}), Some{O.U64{x0, x1}}) : B.Buf & Maybe<&1, O.U64>}:
+def PowBlock_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32)
+    -> {T.PowBlock_decode(T.PowBlock_encode(T.PowBlock{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, T.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}, T.Uint256{x16, x17, x18, x19, x20, x21, x22, x23}}), 96) == (T.PowBlock_encode(T.PowBlock{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, T.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}, T.Uint256{x16, x17, x18, x19, x20, x21, x22, x23}}), Some{T.PowBlock{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, T.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}, T.Uint256{x16, x17, x18, x19, x20, x21, x22, x23}}}) : B.Buf & Maybe<&1, T.PowBlock>}:
   {==}
-def CommitteeIndex_reject_short(+x0: U32, +x1: U32)
-    -> {T.CommitteeIndex_decode(T.CommitteeIndex_encode(O.U64{x0, x1}), 7) == (T.CommitteeIndex_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
+def PowBlock_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32)
+    -> {T.PowBlock_decode(T.PowBlock_encode(T.PowBlock{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, T.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}, T.Uint256{x16, x17, x18, x19, x20, x21, x22, x23}}), 95) == (T.PowBlock_encode(T.PowBlock{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, T.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}, T.Uint256{x16, x17, x18, x19, x20, x21, x22, x23}}), None{}) : B.Buf & Maybe<&1, T.PowBlock>}:
   {==}
-def CommitteeIndex_reject_long(+x0: U32, +x1: U32)
-    -> {T.CommitteeIndex_decode(T.CommitteeIndex_encode(O.U64{x0, x1}), 9) == (T.CommitteeIndex_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-
-# ---- ValidatorIndex (8 bytes) ----
-def ValidatorIndex_encoded_size(+x0: U32, +x1: U32)
-    -> {B.size(T.ValidatorIndex_encode(O.U64{x0, x1})) == (T.ValidatorIndex_encode(O.U64{x0, x1}), 8) : B.Buf & U32}:
-  {==}
-def ValidatorIndex_roundtrip(+x0: U32, +x1: U32)
-    -> {T.ValidatorIndex_decode(T.ValidatorIndex_encode(O.U64{x0, x1}), 8) == (T.ValidatorIndex_encode(O.U64{x0, x1}), Some{O.U64{x0, x1}}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-def ValidatorIndex_reject_short(+x0: U32, +x1: U32)
-    -> {T.ValidatorIndex_decode(T.ValidatorIndex_encode(O.U64{x0, x1}), 7) == (T.ValidatorIndex_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-def ValidatorIndex_reject_long(+x0: U32, +x1: U32)
-    -> {T.ValidatorIndex_decode(T.ValidatorIndex_encode(O.U64{x0, x1}), 9) == (T.ValidatorIndex_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
+def PowBlock_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32)
+    -> {T.PowBlock_decode(T.PowBlock_encode(T.PowBlock{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, T.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}, T.Uint256{x16, x17, x18, x19, x20, x21, x22, x23}}), 97) == (T.PowBlock_encode(T.PowBlock{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, T.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}, T.Uint256{x16, x17, x18, x19, x20, x21, x22, x23}}), None{}) : B.Buf & Maybe<&1, T.PowBlock>}:
   {==}
 

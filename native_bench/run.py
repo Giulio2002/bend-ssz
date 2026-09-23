@@ -234,7 +234,19 @@ def run_sample(impl, exe, data_path, out_path, expected):
     sampler = full['sampler']
 
     input_peak, input_text = run_phase(impl, exe, data_path, out_path, 'input')
-    decode_peak_kernel, _ = run_phase(impl, exe, data_path, out_path, 'decode')
+    # The decode-prefix process is measured three times and the largest kernel
+    # high-water is kept. One reading of one process is a poor estimate of that
+    # process's high-water on this platform: resident size is not monotone, the
+    # kernel compresses and evicts pages, and two processes doing identical
+    # work differ by about 10% run to run. Taking the maximum only ever raises
+    # this figure, and `decode_peak` below is still the maximum over the kernel
+    # readings, the phase marks and every sample in the decode window, so no
+    # reported number can be made smaller by this. What it fixes is the
+    # representativeness test at the end of this function, which compared one
+    # noisy reading of one process against the maximum of many samples of
+    # another and failed about half the time on identical work.
+    decode_prefix_peaks = [run_phase(impl, exe, data_path, out_path, 'decode')[0] for _ in range(3)]
+    decode_peak_kernel = max(decode_prefix_peaks)
     root_peak_kernel, _ = run_phase(impl, exe, data_path, out_path, 'root')
     # The full run rewrites the output; the prefix runs never write it.
     if full['bytes_match'] and out_path.read_bytes() != expected:
@@ -261,6 +273,7 @@ def run_sample(impl, exe, data_path, out_path, expected):
         'roundtrip_peak_rss_bytes': int(full['kernel_peak']),
         'kernel_peak_input_prefix_bytes': int(input_peak),
         'kernel_peak_decode_prefix_bytes': int(decode_peak_kernel),
+        'kernel_peak_decode_prefix_readings': [int(v) for v in decode_prefix_peaks],
         'kernel_peak_root_prefix_bytes': int(root_peak_kernel),
         'kernel_peak_whole_run_bytes': int(full['kernel_peak']),
         'decode_ns': first(number(text, 'DECODE_MS', 1000000), number(text, 'DECODE_NS')),

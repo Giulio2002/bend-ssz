@@ -48,9 +48,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 74: some_ConsolidationRequest(T.ConsolidationRequest_decode(buf, size))
     case 75: some_WithdrawalRequest(T.WithdrawalRequest_decode(buf, size))
     case _: (buf, None{})
-def enc_Transaction(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_Transaction(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Transaction{v}, out)
+  (A_Transaction{v}, O.ser_out(out))
 def root_Transaction(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -58,17 +58,17 @@ def root_Transaction(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Dig
 def force_Transaction(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_Transaction{v}, x)
-def enc_ExecutionAddress(+v: T.Bytes20) -> Any & B.Buf: (A_ExecutionAddress{v}, T.ExecutionAddress_encode(v))
+def enc_ExecutionAddress(+v: T.Bytes20) -> Any & B.Buf: (A_ExecutionAddress{v}, O.ser_out(T.ExecutionAddress_serialize(v)))
 def root_ExecutionAddress(+v: T.Bytes20, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ExecutionAddress{v}, d))
 def force_ExecutionAddress(+v: T.Bytes20) -> Any & U32: (A_ExecutionAddress{v}, T.b20_force(v))
-def enc_ConsolidationRequest(+v: T.ConsolidationRequest) -> Any & B.Buf: (A_ConsolidationRequest{v}, T.ConsolidationRequest_encode(v))
+def enc_ConsolidationRequest(+v: T.ConsolidationRequest) -> Any & B.Buf: (A_ConsolidationRequest{v}, O.ser_out(T.ConsolidationRequest_serialize(v)))
 def root_ConsolidationRequest(+v: T.ConsolidationRequest, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ConsolidationRequest{v}, d))
 def force_ConsolidationRequest(+v: T.ConsolidationRequest) -> Any & U32: (A_ConsolidationRequest{v}, T.ConsolidationRequest_force(v))
-def enc_WithdrawalRequest(+v: T.WithdrawalRequest) -> Any & B.Buf: (A_WithdrawalRequest{v}, T.WithdrawalRequest_encode(v))
+def enc_WithdrawalRequest(+v: T.WithdrawalRequest) -> Any & B.Buf: (A_WithdrawalRequest{v}, O.ser_out(T.WithdrawalRequest_serialize(v)))
 def root_WithdrawalRequest(+v: T.WithdrawalRequest, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_WithdrawalRequest{v}, d))
@@ -85,7 +85,7 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_Transaction{v}: enc_Transaction(T.Transaction_encode(v))
+    case A_Transaction{v}: enc_Transaction(T.Transaction_serialize(v))
     case A_ExecutionAddress{+v}: enc_ExecutionAddress(v)
     case A_ConsolidationRequest{+v}: enc_ConsolidationRequest(v)
     case A_WithdrawalRequest{+v}: enc_WithdrawalRequest(v)
@@ -104,6 +104,13 @@ def force(a: Any) -> Any & U32:
     case A_ConsolidationRequest{+v}: force_ConsolidationRequest(v)
     case A_WithdrawalRequest{+v}: force_WithdrawalRequest(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_Transaction{v}: T.bl1073741824_dump(v, t)
+    case A_ExecutionAddress{+v}: T.b20_dump(v, t)
+    case A_ConsolidationRequest{+v}: T.ConsolidationRequest_dump(v, t)
+    case A_WithdrawalRequest{+v}: T.WithdrawalRequest_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

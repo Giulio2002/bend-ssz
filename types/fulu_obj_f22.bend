@@ -48,9 +48,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 90: some_LightClientBootstrap(T.LightClientBootstrap_decode(buf, size))
     case 91: some_BlobIndex(T.BlobIndex_decode(buf, size))
     case _: (buf, None{})
-def enc_LightClientFinalityUpdate(pair: T.LightClientFinalityUpdate & B.Buf) -> Any & B.Buf:
+def enc_LightClientFinalityUpdate(pair: T.LightClientFinalityUpdate & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_LightClientFinalityUpdate{v}, out)
+  (A_LightClientFinalityUpdate{v}, O.ser_out(out))
 def root_LightClientFinalityUpdate(pair: B.Buf & (T.LightClientFinalityUpdate & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -58,9 +58,9 @@ def root_LightClientFinalityUpdate(pair: B.Buf & (T.LightClientFinalityUpdate & 
 def force_LightClientFinalityUpdate(pair: T.LightClientFinalityUpdate & U32) -> Any & U32:
   (v, +x) = pair
   (A_LightClientFinalityUpdate{v}, x)
-def enc_LightClientUpdate(pair: T.LightClientUpdate & B.Buf) -> Any & B.Buf:
+def enc_LightClientUpdate(pair: T.LightClientUpdate & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_LightClientUpdate{v}, out)
+  (A_LightClientUpdate{v}, O.ser_out(out))
 def root_LightClientUpdate(pair: B.Buf & (T.LightClientUpdate & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -68,9 +68,9 @@ def root_LightClientUpdate(pair: B.Buf & (T.LightClientUpdate & D.Digest)) -> B.
 def force_LightClientUpdate(pair: T.LightClientUpdate & U32) -> Any & U32:
   (v, +x) = pair
   (A_LightClientUpdate{v}, x)
-def enc_LightClientBootstrap(pair: T.LightClientBootstrap & B.Buf) -> Any & B.Buf:
+def enc_LightClientBootstrap(pair: T.LightClientBootstrap & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_LightClientBootstrap{v}, out)
+  (A_LightClientBootstrap{v}, O.ser_out(out))
 def root_LightClientBootstrap(pair: B.Buf & (T.LightClientBootstrap & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -78,7 +78,7 @@ def root_LightClientBootstrap(pair: B.Buf & (T.LightClientBootstrap & D.Digest))
 def force_LightClientBootstrap(pair: T.LightClientBootstrap & U32) -> Any & U32:
   (v, +x) = pair
   (A_LightClientBootstrap{v}, x)
-def enc_BlobIndex(+v: O.U64) -> Any & B.Buf: (A_BlobIndex{v}, T.BlobIndex_encode(v))
+def enc_BlobIndex(+v: O.U64) -> Any & B.Buf: (A_BlobIndex{v}, O.ser_out(T.BlobIndex_serialize(v)))
 def root_BlobIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BlobIndex{v}, d))
@@ -95,9 +95,9 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_LightClientFinalityUpdate{v}: enc_LightClientFinalityUpdate(T.LightClientFinalityUpdate_encode(v))
-    case A_LightClientUpdate{v}: enc_LightClientUpdate(T.LightClientUpdate_encode(v))
-    case A_LightClientBootstrap{v}: enc_LightClientBootstrap(T.LightClientBootstrap_encode(v))
+    case A_LightClientFinalityUpdate{v}: enc_LightClientFinalityUpdate(T.LightClientFinalityUpdate_serialize(v))
+    case A_LightClientUpdate{v}: enc_LightClientUpdate(T.LightClientUpdate_serialize(v))
+    case A_LightClientBootstrap{v}: enc_LightClientBootstrap(T.LightClientBootstrap_serialize(v))
     case A_BlobIndex{+v}: enc_BlobIndex(v)
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
@@ -114,6 +114,13 @@ def force(a: Any) -> Any & U32:
     case A_LightClientBootstrap{v}: force_LightClientBootstrap(T.LightClientBootstrap_force(v))
     case A_BlobIndex{+v}: force_BlobIndex(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_LightClientFinalityUpdate{v}: T.LightClientFinalityUpdate_dump(v, t)
+    case A_LightClientUpdate{v}: T.LightClientUpdate_dump(v, t)
+    case A_LightClientBootstrap{v}: T.LightClientBootstrap_dump(v, t)
+    case A_BlobIndex{+v}: T.u64_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

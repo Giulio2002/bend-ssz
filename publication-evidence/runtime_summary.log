@@ -1,0 +1,12 @@
+spectests rc=0 SSZ: 5440 passed, 0 failed, 5440 inventoried
+runtime_tests rc=0 runtime tests: 51/51 passed, 0 failed, 0 errors, 20009 assertions, 15/15 files (baseline 0011 (Bend 2.0.5, historical): 51 tests / 20009 assertions)
+object_conformance rc=0 {'pass': 295} types 59
+generic_conformance rc=0 generic cases 5145 passed 5145 failed 0
+object_mutations rc=0 disagreements 0
+mutations rc=0 all mutation regressions pass (8 cases)
+negative_api rc=0 all negative API checks behave as required (7 cases)
+object_cache rc=0 all cached roots match the oracle (7 fixtures)
+invalid_objects rc=0 14/14 invalid-object cases behave as required
+fuzz_objects rc=0 327 valid, 1962 mutated and 768 history cases over 109 types, 0 mismatches, 12.1s
+fuzz_generic rc=0 5432 cases over 136 generic schemas, 0 mismatches, 28s
+DONE

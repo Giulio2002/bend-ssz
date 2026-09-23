@@ -48,22 +48,22 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 66: some_NodeID(T.NodeID_decode(buf, size))
     case 67: some_SubnetID(T.SubnetID_decode(buf, size))
     case _: (buf, None{})
-def enc_DepositMessage(+v: T.DepositMessage) -> Any & B.Buf: (A_DepositMessage{v}, T.DepositMessage_encode(v))
+def enc_DepositMessage(+v: T.DepositMessage) -> Any & B.Buf: (A_DepositMessage{v}, O.ser_out(T.DepositMessage_serialize(v)))
 def root_DepositMessage(+v: T.DepositMessage, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_DepositMessage{v}, d))
 def force_DepositMessage(+v: T.DepositMessage) -> Any & U32: (A_DepositMessage{v}, T.DepositMessage_force(v))
-def enc_Validator(+v: T.Validator) -> Any & B.Buf: (A_Validator{v}, T.Validator_encode(v))
+def enc_Validator(+v: T.Validator) -> Any & B.Buf: (A_Validator{v}, O.ser_out(T.Validator_serialize(v)))
 def root_Validator(+v: T.Validator, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Validator{v}, d))
 def force_Validator(+v: T.Validator) -> Any & U32: (A_Validator{v}, T.Validator_force(v))
-def enc_NodeID(+v: T.Uint256) -> Any & B.Buf: (A_NodeID{v}, T.NodeID_encode(v))
+def enc_NodeID(+v: T.Uint256) -> Any & B.Buf: (A_NodeID{v}, O.ser_out(T.NodeID_serialize(v)))
 def root_NodeID(+v: T.Uint256, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_NodeID{v}, d))
 def force_NodeID(+v: T.Uint256) -> Any & U32: (A_NodeID{v}, T.u256_force(v))
-def enc_SubnetID(+v: O.U64) -> Any & B.Buf: (A_SubnetID{v}, T.SubnetID_encode(v))
+def enc_SubnetID(+v: O.U64) -> Any & B.Buf: (A_SubnetID{v}, O.ser_out(T.SubnetID_serialize(v)))
 def root_SubnetID(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SubnetID{v}, d))
@@ -99,6 +99,13 @@ def force(a: Any) -> Any & U32:
     case A_NodeID{+v}: force_NodeID(v)
     case A_SubnetID{+v}: force_SubnetID(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_DepositMessage{+v}: T.DepositMessage_dump(v, t)
+    case A_Validator{+v}: T.Validator_dump(v, t)
+    case A_NodeID{+v}: T.u256_dump(v, t)
+    case A_SubnetID{+v}: T.u64_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

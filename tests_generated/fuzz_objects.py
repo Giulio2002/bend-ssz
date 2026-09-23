@@ -371,7 +371,7 @@ def main():
         'elapsed_s': round(time.monotonic() - started, 1),
         'command': f'/opt/homebrew/bin/python3 tests_generated/fuzz_objects.py --seed {args.seed} '
                    f'--valid {args.valid} --invalid {args.invalid}',
-        'toolchain': json.loads((ROOT / 'automation/toolchain.json').read_text()),
+        'toolchain': json.loads((ROOT / 'benchmarks/toolchain.json').read_text()),
         'source_sha256': {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
                           for p in ['types/fulu_obj.bend', 'src/obj.bend', 'codegen/fulu.yaml',
                                     'codegen/generate.py', 'codegen/oracle.py']},

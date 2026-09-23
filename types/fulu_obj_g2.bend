@@ -120,62 +120,62 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 34: some_HistoricalSummary(T.HistoricalSummary_decode(buf, size))
     case 35: some_SyncCommitteeContribution(T.SyncCommitteeContribution_decode(buf, size))
     case _: (buf, None{})
-def enc_SyncAggregate(+v: T.SyncAggregate) -> Any & B.Buf: (A_SyncAggregate{v}, T.SyncAggregate_encode(v))
+def enc_SyncAggregate(+v: T.SyncAggregate) -> Any & B.Buf: (A_SyncAggregate{v}, O.ser_out(T.SyncAggregate_serialize(v)))
 def root_SyncAggregate(+v: T.SyncAggregate, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SyncAggregate{v}, d))
 def force_SyncAggregate(+v: T.SyncAggregate) -> Any & U32: (A_SyncAggregate{v}, T.SyncAggregate_force(v))
-def enc_SyncAggregatorSelectionData(+v: T.SyncAggregatorSelectionData) -> Any & B.Buf: (A_SyncAggregatorSelectionData{v}, T.SyncAggregatorSelectionData_encode(v))
+def enc_SyncAggregatorSelectionData(+v: T.SyncAggregatorSelectionData) -> Any & B.Buf: (A_SyncAggregatorSelectionData{v}, O.ser_out(T.SyncAggregatorSelectionData_serialize(v)))
 def root_SyncAggregatorSelectionData(+v: T.SyncAggregatorSelectionData, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SyncAggregatorSelectionData{v}, d))
 def force_SyncAggregatorSelectionData(+v: T.SyncAggregatorSelectionData) -> Any & U32: (A_SyncAggregatorSelectionData{v}, T.SyncAggregatorSelectionData_force(v))
-def enc_PowBlock(+v: T.PowBlock) -> Any & B.Buf: (A_PowBlock{v}, T.PowBlock_encode(v))
+def enc_PowBlock(+v: T.PowBlock) -> Any & B.Buf: (A_PowBlock{v}, O.ser_out(T.PowBlock_serialize(v)))
 def root_PowBlock(+v: T.PowBlock, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_PowBlock{v}, d))
 def force_PowBlock(+v: T.PowBlock) -> Any & U32: (A_PowBlock{v}, T.PowBlock_force(v))
-def enc_CommitteeIndex(+v: O.U64) -> Any & B.Buf: (A_CommitteeIndex{v}, T.CommitteeIndex_encode(v))
+def enc_CommitteeIndex(+v: O.U64) -> Any & B.Buf: (A_CommitteeIndex{v}, O.ser_out(T.CommitteeIndex_serialize(v)))
 def root_CommitteeIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_CommitteeIndex{v}, d))
 def force_CommitteeIndex(+v: O.U64) -> Any & U32: (A_CommitteeIndex{v}, T.u64_force(v))
-def enc_ValidatorIndex(+v: O.U64) -> Any & B.Buf: (A_ValidatorIndex{v}, T.ValidatorIndex_encode(v))
+def enc_ValidatorIndex(+v: O.U64) -> Any & B.Buf: (A_ValidatorIndex{v}, O.ser_out(T.ValidatorIndex_serialize(v)))
 def root_ValidatorIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ValidatorIndex{v}, d))
 def force_ValidatorIndex(+v: O.U64) -> Any & U32: (A_ValidatorIndex{v}, T.u64_force(v))
-def enc_PendingConsolidation(+v: T.PendingConsolidation) -> Any & B.Buf: (A_PendingConsolidation{v}, T.PendingConsolidation_encode(v))
+def enc_PendingConsolidation(+v: T.PendingConsolidation) -> Any & B.Buf: (A_PendingConsolidation{v}, O.ser_out(T.PendingConsolidation_serialize(v)))
 def root_PendingConsolidation(+v: T.PendingConsolidation, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_PendingConsolidation{v}, d))
 def force_PendingConsolidation(+v: T.PendingConsolidation) -> Any & U32: (A_PendingConsolidation{v}, T.PendingConsolidation_force(v))
-def enc_PendingPartialWithdrawal(+v: T.PendingPartialWithdrawal) -> Any & B.Buf: (A_PendingPartialWithdrawal{v}, T.PendingPartialWithdrawal_encode(v))
+def enc_PendingPartialWithdrawal(+v: T.PendingPartialWithdrawal) -> Any & B.Buf: (A_PendingPartialWithdrawal{v}, O.ser_out(T.PendingPartialWithdrawal_serialize(v)))
 def root_PendingPartialWithdrawal(+v: T.PendingPartialWithdrawal, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_PendingPartialWithdrawal{v}, d))
 def force_PendingPartialWithdrawal(+v: T.PendingPartialWithdrawal) -> Any & U32: (A_PendingPartialWithdrawal{v}, T.PendingPartialWithdrawal_force(v))
-def enc_VoluntaryExit(+v: T.VoluntaryExit) -> Any & B.Buf: (A_VoluntaryExit{v}, T.VoluntaryExit_encode(v))
+def enc_VoluntaryExit(+v: T.VoluntaryExit) -> Any & B.Buf: (A_VoluntaryExit{v}, O.ser_out(T.VoluntaryExit_serialize(v)))
 def root_VoluntaryExit(+v: T.VoluntaryExit, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_VoluntaryExit{v}, d))
 def force_VoluntaryExit(+v: T.VoluntaryExit) -> Any & U32: (A_VoluntaryExit{v}, T.VoluntaryExit_force(v))
-def enc_SignedVoluntaryExit(+v: T.SignedVoluntaryExit) -> Any & B.Buf: (A_SignedVoluntaryExit{v}, T.SignedVoluntaryExit_encode(v))
+def enc_SignedVoluntaryExit(+v: T.SignedVoluntaryExit) -> Any & B.Buf: (A_SignedVoluntaryExit{v}, O.ser_out(T.SignedVoluntaryExit_serialize(v)))
 def root_SignedVoluntaryExit(+v: T.SignedVoluntaryExit, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SignedVoluntaryExit{v}, d))
 def force_SignedVoluntaryExit(+v: T.SignedVoluntaryExit) -> Any & U32: (A_SignedVoluntaryExit{v}, T.SignedVoluntaryExit_force(v))
-def enc_Root(+v: T.Bytes32) -> Any & B.Buf: (A_Root{v}, T.Root_encode(v))
+def enc_Root(+v: T.Bytes32) -> Any & B.Buf: (A_Root{v}, O.ser_out(T.Root_serialize(v)))
 def root_Root(+v: T.Bytes32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Root{v}, d))
 def force_Root(+v: T.Bytes32) -> Any & U32: (A_Root{v}, T.b32_force(v))
-def enc_HistoricalSummary(+v: T.HistoricalSummary) -> Any & B.Buf: (A_HistoricalSummary{v}, T.HistoricalSummary_encode(v))
+def enc_HistoricalSummary(+v: T.HistoricalSummary) -> Any & B.Buf: (A_HistoricalSummary{v}, O.ser_out(T.HistoricalSummary_serialize(v)))
 def root_HistoricalSummary(+v: T.HistoricalSummary, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_HistoricalSummary{v}, d))
 def force_HistoricalSummary(+v: T.HistoricalSummary) -> Any & U32: (A_HistoricalSummary{v}, T.HistoricalSummary_force(v))
-def enc_SyncCommitteeContribution(+v: T.SyncCommitteeContribution) -> Any & B.Buf: (A_SyncCommitteeContribution{v}, T.SyncCommitteeContribution_encode(v))
+def enc_SyncCommitteeContribution(+v: T.SyncCommitteeContribution) -> Any & B.Buf: (A_SyncCommitteeContribution{v}, O.ser_out(T.SyncCommitteeContribution_serialize(v)))
 def root_SyncCommitteeContribution(+v: T.SyncCommitteeContribution, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SyncCommitteeContribution{v}, d))
@@ -235,6 +235,21 @@ def force(a: Any) -> Any & U32:
     case A_HistoricalSummary{+v}: force_HistoricalSummary(v)
     case A_SyncCommitteeContribution{+v}: force_SyncCommitteeContribution(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_SyncAggregate{+v}: T.SyncAggregate_dump(v, t)
+    case A_SyncAggregatorSelectionData{+v}: T.SyncAggregatorSelectionData_dump(v, t)
+    case A_PowBlock{+v}: T.PowBlock_dump(v, t)
+    case A_CommitteeIndex{+v}: T.u64_dump(v, t)
+    case A_ValidatorIndex{+v}: T.u64_dump(v, t)
+    case A_PendingConsolidation{+v}: T.PendingConsolidation_dump(v, t)
+    case A_PendingPartialWithdrawal{+v}: T.PendingPartialWithdrawal_dump(v, t)
+    case A_VoluntaryExit{+v}: T.VoluntaryExit_dump(v, t)
+    case A_SignedVoluntaryExit{+v}: T.SignedVoluntaryExit_dump(v, t)
+    case A_Root{+v}: T.b32_dump(v, t)
+    case A_HistoricalSummary{+v}: T.HistoricalSummary_dump(v, t)
+    case A_SyncCommitteeContribution{+v}: T.SyncCommitteeContribution_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

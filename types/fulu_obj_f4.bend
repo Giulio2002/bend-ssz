@@ -48,24 +48,24 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 18: some_BLSSignature(T.BLSSignature_decode(buf, size))
     case 19: some_FinalityBranch(T.FinalityBranch_decode(buf, size))
     case _: (buf, None{})
-def enc_Version(+v: T.Bytes4) -> Any & B.Buf: (A_Version{v}, T.Version_encode(v))
+def enc_Version(+v: T.Bytes4) -> Any & B.Buf: (A_Version{v}, O.ser_out(T.Version_serialize(v)))
 def root_Version(+v: T.Bytes4, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Version{v}, d))
 def force_Version(+v: T.Bytes4) -> Any & U32: (A_Version{v}, T.b4_force(v))
-def enc_DomainType(+v: T.Bytes4) -> Any & B.Buf: (A_DomainType{v}, T.DomainType_encode(v))
+def enc_DomainType(+v: T.Bytes4) -> Any & B.Buf: (A_DomainType{v}, O.ser_out(T.DomainType_serialize(v)))
 def root_DomainType(+v: T.Bytes4, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_DomainType{v}, d))
 def force_DomainType(+v: T.Bytes4) -> Any & U32: (A_DomainType{v}, T.b4_force(v))
-def enc_BLSSignature(+v: T.Bytes96) -> Any & B.Buf: (A_BLSSignature{v}, T.BLSSignature_encode(v))
+def enc_BLSSignature(+v: T.Bytes96) -> Any & B.Buf: (A_BLSSignature{v}, O.ser_out(T.BLSSignature_serialize(v)))
 def root_BLSSignature(+v: T.Bytes96, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BLSSignature{v}, d))
 def force_BLSSignature(+v: T.Bytes96) -> Any & U32: (A_BLSSignature{v}, T.b96_force(v))
-def enc_FinalityBranch(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_FinalityBranch(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_FinalityBranch{v}, out)
+  (A_FinalityBranch{v}, O.ser_out(out))
 def root_FinalityBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -88,7 +88,7 @@ def encode(a: Any) -> Any & B.Buf:
     case A_Version{+v}: enc_Version(v)
     case A_DomainType{+v}: enc_DomainType(v)
     case A_BLSSignature{+v}: enc_BLSSignature(v)
-    case A_FinalityBranch{v}: enc_FinalityBranch(T.FinalityBranch_encode(v))
+    case A_FinalityBranch{v}: enc_FinalityBranch(T.FinalityBranch_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -104,6 +104,13 @@ def force(a: Any) -> Any & U32:
     case A_BLSSignature{+v}: force_BLSSignature(v)
     case A_FinalityBranch{v}: force_FinalityBranch(T.v7_b32_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_Version{+v}: T.b4_dump(v, t)
+    case A_DomainType{+v}: T.b4_dump(v, t)
+    case A_BLSSignature{+v}: T.b96_dump(v, t)
+    case A_FinalityBranch{v}: T.v7_b32_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

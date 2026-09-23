@@ -120,9 +120,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 82: some_Withdrawal(T.Withdrawal_decode(buf, size))
     case 83: some_ExecutionPayload(T.ExecutionPayload_decode(buf, size))
     case _: (buf, None{})
-def enc_Transaction(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_Transaction(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Transaction{v}, out)
+  (A_Transaction{v}, O.ser_out(out))
 def root_Transaction(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -130,24 +130,24 @@ def root_Transaction(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Dig
 def force_Transaction(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_Transaction{v}, x)
-def enc_ExecutionAddress(+v: T.Bytes20) -> Any & B.Buf: (A_ExecutionAddress{v}, T.ExecutionAddress_encode(v))
+def enc_ExecutionAddress(+v: T.Bytes20) -> Any & B.Buf: (A_ExecutionAddress{v}, O.ser_out(T.ExecutionAddress_serialize(v)))
 def root_ExecutionAddress(+v: T.Bytes20, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ExecutionAddress{v}, d))
 def force_ExecutionAddress(+v: T.Bytes20) -> Any & U32: (A_ExecutionAddress{v}, T.b20_force(v))
-def enc_ConsolidationRequest(+v: T.ConsolidationRequest) -> Any & B.Buf: (A_ConsolidationRequest{v}, T.ConsolidationRequest_encode(v))
+def enc_ConsolidationRequest(+v: T.ConsolidationRequest) -> Any & B.Buf: (A_ConsolidationRequest{v}, O.ser_out(T.ConsolidationRequest_serialize(v)))
 def root_ConsolidationRequest(+v: T.ConsolidationRequest, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ConsolidationRequest{v}, d))
 def force_ConsolidationRequest(+v: T.ConsolidationRequest) -> Any & U32: (A_ConsolidationRequest{v}, T.ConsolidationRequest_force(v))
-def enc_WithdrawalRequest(+v: T.WithdrawalRequest) -> Any & B.Buf: (A_WithdrawalRequest{v}, T.WithdrawalRequest_encode(v))
+def enc_WithdrawalRequest(+v: T.WithdrawalRequest) -> Any & B.Buf: (A_WithdrawalRequest{v}, O.ser_out(T.WithdrawalRequest_serialize(v)))
 def root_WithdrawalRequest(+v: T.WithdrawalRequest, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_WithdrawalRequest{v}, d))
 def force_WithdrawalRequest(+v: T.WithdrawalRequest) -> Any & U32: (A_WithdrawalRequest{v}, T.WithdrawalRequest_force(v))
-def enc_ExecutionRequests(pair: T.ExecutionRequests & B.Buf) -> Any & B.Buf:
+def enc_ExecutionRequests(pair: T.ExecutionRequests & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ExecutionRequests{v}, out)
+  (A_ExecutionRequests{v}, O.ser_out(out))
 def root_ExecutionRequests(pair: B.Buf & (T.ExecutionRequests & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -155,19 +155,19 @@ def root_ExecutionRequests(pair: B.Buf & (T.ExecutionRequests & D.Digest)) -> B.
 def force_ExecutionRequests(pair: T.ExecutionRequests & U32) -> Any & U32:
   (v, +x) = pair
   (A_ExecutionRequests{v}, x)
-def enc_BLSToExecutionChange(+v: T.BLSToExecutionChange) -> Any & B.Buf: (A_BLSToExecutionChange{v}, T.BLSToExecutionChange_encode(v))
+def enc_BLSToExecutionChange(+v: T.BLSToExecutionChange) -> Any & B.Buf: (A_BLSToExecutionChange{v}, O.ser_out(T.BLSToExecutionChange_serialize(v)))
 def root_BLSToExecutionChange(+v: T.BLSToExecutionChange, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BLSToExecutionChange{v}, d))
 def force_BLSToExecutionChange(+v: T.BLSToExecutionChange) -> Any & U32: (A_BLSToExecutionChange{v}, T.BLSToExecutionChange_force(v))
-def enc_SignedBLSToExecutionChange(+v: T.SignedBLSToExecutionChange) -> Any & B.Buf: (A_SignedBLSToExecutionChange{v}, T.SignedBLSToExecutionChange_encode(v))
+def enc_SignedBLSToExecutionChange(+v: T.SignedBLSToExecutionChange) -> Any & B.Buf: (A_SignedBLSToExecutionChange{v}, O.ser_out(T.SignedBLSToExecutionChange_serialize(v)))
 def root_SignedBLSToExecutionChange(+v: T.SignedBLSToExecutionChange, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SignedBLSToExecutionChange{v}, d))
 def force_SignedBLSToExecutionChange(+v: T.SignedBLSToExecutionChange) -> Any & U32: (A_SignedBLSToExecutionChange{v}, T.SignedBLSToExecutionChange_force(v))
-def enc_ExecutionPayloadHeader(pair: T.ExecutionPayloadHeader & B.Buf) -> Any & B.Buf:
+def enc_ExecutionPayloadHeader(pair: T.ExecutionPayloadHeader & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ExecutionPayloadHeader{v}, out)
+  (A_ExecutionPayloadHeader{v}, O.ser_out(out))
 def root_ExecutionPayloadHeader(pair: B.Buf & (T.ExecutionPayloadHeader & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -175,24 +175,24 @@ def root_ExecutionPayloadHeader(pair: B.Buf & (T.ExecutionPayloadHeader & D.Dige
 def force_ExecutionPayloadHeader(pair: T.ExecutionPayloadHeader & U32) -> Any & U32:
   (v, +x) = pair
   (A_ExecutionPayloadHeader{v}, x)
-def enc_PayloadId(+v: T.Bytes8) -> Any & B.Buf: (A_PayloadId{v}, T.PayloadId_encode(v))
+def enc_PayloadId(+v: T.Bytes8) -> Any & B.Buf: (A_PayloadId{v}, O.ser_out(T.PayloadId_serialize(v)))
 def root_PayloadId(+v: T.Bytes8, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_PayloadId{v}, d))
 def force_PayloadId(+v: T.Bytes8) -> Any & U32: (A_PayloadId{v}, T.b8_force(v))
-def enc_WithdrawalIndex(+v: O.U64) -> Any & B.Buf: (A_WithdrawalIndex{v}, T.WithdrawalIndex_encode(v))
+def enc_WithdrawalIndex(+v: O.U64) -> Any & B.Buf: (A_WithdrawalIndex{v}, O.ser_out(T.WithdrawalIndex_serialize(v)))
 def root_WithdrawalIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_WithdrawalIndex{v}, d))
 def force_WithdrawalIndex(+v: O.U64) -> Any & U32: (A_WithdrawalIndex{v}, T.u64_force(v))
-def enc_Withdrawal(+v: T.Withdrawal) -> Any & B.Buf: (A_Withdrawal{v}, T.Withdrawal_encode(v))
+def enc_Withdrawal(+v: T.Withdrawal) -> Any & B.Buf: (A_Withdrawal{v}, O.ser_out(T.Withdrawal_serialize(v)))
 def root_Withdrawal(+v: T.Withdrawal, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Withdrawal{v}, d))
 def force_Withdrawal(+v: T.Withdrawal) -> Any & U32: (A_Withdrawal{v}, T.Withdrawal_force(v))
-def enc_ExecutionPayload(pair: T.ExecutionPayload & B.Buf) -> Any & B.Buf:
+def enc_ExecutionPayload(pair: T.ExecutionPayload & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ExecutionPayload{v}, out)
+  (A_ExecutionPayload{v}, O.ser_out(out))
 def root_ExecutionPayload(pair: B.Buf & (T.ExecutionPayload & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -212,18 +212,18 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_Transaction{v}: enc_Transaction(T.Transaction_encode(v))
+    case A_Transaction{v}: enc_Transaction(T.Transaction_serialize(v))
     case A_ExecutionAddress{+v}: enc_ExecutionAddress(v)
     case A_ConsolidationRequest{+v}: enc_ConsolidationRequest(v)
     case A_WithdrawalRequest{+v}: enc_WithdrawalRequest(v)
-    case A_ExecutionRequests{v}: enc_ExecutionRequests(T.ExecutionRequests_encode(v))
+    case A_ExecutionRequests{v}: enc_ExecutionRequests(T.ExecutionRequests_serialize(v))
     case A_BLSToExecutionChange{+v}: enc_BLSToExecutionChange(v)
     case A_SignedBLSToExecutionChange{+v}: enc_SignedBLSToExecutionChange(v)
-    case A_ExecutionPayloadHeader{v}: enc_ExecutionPayloadHeader(T.ExecutionPayloadHeader_encode(v))
+    case A_ExecutionPayloadHeader{v}: enc_ExecutionPayloadHeader(T.ExecutionPayloadHeader_serialize(v))
     case A_PayloadId{+v}: enc_PayloadId(v)
     case A_WithdrawalIndex{+v}: enc_WithdrawalIndex(v)
     case A_Withdrawal{+v}: enc_Withdrawal(v)
-    case A_ExecutionPayload{v}: enc_ExecutionPayload(T.ExecutionPayload_encode(v))
+    case A_ExecutionPayload{v}: enc_ExecutionPayload(T.ExecutionPayload_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -255,6 +255,21 @@ def force(a: Any) -> Any & U32:
     case A_Withdrawal{+v}: force_Withdrawal(v)
     case A_ExecutionPayload{v}: force_ExecutionPayload(T.ExecutionPayload_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_Transaction{v}: T.bl1073741824_dump(v, t)
+    case A_ExecutionAddress{+v}: T.b20_dump(v, t)
+    case A_ConsolidationRequest{+v}: T.ConsolidationRequest_dump(v, t)
+    case A_WithdrawalRequest{+v}: T.WithdrawalRequest_dump(v, t)
+    case A_ExecutionRequests{v}: T.ExecutionRequests_dump(v, t)
+    case A_BLSToExecutionChange{+v}: T.BLSToExecutionChange_dump(v, t)
+    case A_SignedBLSToExecutionChange{+v}: T.SignedBLSToExecutionChange_dump(v, t)
+    case A_ExecutionPayloadHeader{v}: T.ExecutionPayloadHeader_dump(v, t)
+    case A_PayloadId{+v}: T.b8_dump(v, t)
+    case A_WithdrawalIndex{+v}: T.u64_dump(v, t)
+    case A_Withdrawal{+v}: T.Withdrawal_dump(v, t)
+    case A_ExecutionPayload{v}: T.ExecutionPayload_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

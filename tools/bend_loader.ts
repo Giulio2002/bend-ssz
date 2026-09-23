@@ -1,6 +1,6 @@
 /**
  * Local Bun preload: `import X from './m.bend'` yields the ES module that the
- * pinned Bend 2.0.16 compiler itself emits for m.bend (its load_js/js_lib path,
+ * pinned Bend 2.0.25 compiler itself emits for m.bend (its load_js/js_lib path,
  * reached through the official `bend <page.html> -o <dir>` bundler).
  * No Bend algorithm is reimplemented here; this file only compiles, caches
  * and re-exports the compiler's output. Compile errors abort the import.
@@ -11,7 +11,7 @@ import {existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathS
 import {join, relative, resolve} from 'node:path';
 
 const ROOT = resolve(import.meta.dir, '..');
-const LOCK = JSON.parse(readFileSync(join(ROOT, 'automation/toolchain.json'), 'utf8'));
+const LOCK = JSON.parse(readFileSync(join(ROOT, 'benchmarks/toolchain.json'), 'utf8'));
 const BEND: string = LOCK.bend.path;
 const CACHE = join(ROOT, 'build/bend-loader');
 
@@ -74,7 +74,7 @@ function compile(file: string): string {
 }
 
 plugin({
-  name: 'bend-2.0.16-local-loader',
+  name: 'bend-local-loader',
   setup(build) {
     build.onLoad({filter: /\.bend$/}, args => ({contents: compile(args.path), loader: 'js'}));
   },

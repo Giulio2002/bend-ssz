@@ -48,22 +48,22 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 30: some_PendingPartialWithdrawal(T.PendingPartialWithdrawal_decode(buf, size))
     case 31: some_VoluntaryExit(T.VoluntaryExit_decode(buf, size))
     case _: (buf, None{})
-def enc_ValidatorIndex(+v: O.U64) -> Any & B.Buf: (A_ValidatorIndex{v}, T.ValidatorIndex_encode(v))
+def enc_ValidatorIndex(+v: O.U64) -> Any & B.Buf: (A_ValidatorIndex{v}, O.ser_out(T.ValidatorIndex_serialize(v)))
 def root_ValidatorIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ValidatorIndex{v}, d))
 def force_ValidatorIndex(+v: O.U64) -> Any & U32: (A_ValidatorIndex{v}, T.u64_force(v))
-def enc_PendingConsolidation(+v: T.PendingConsolidation) -> Any & B.Buf: (A_PendingConsolidation{v}, T.PendingConsolidation_encode(v))
+def enc_PendingConsolidation(+v: T.PendingConsolidation) -> Any & B.Buf: (A_PendingConsolidation{v}, O.ser_out(T.PendingConsolidation_serialize(v)))
 def root_PendingConsolidation(+v: T.PendingConsolidation, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_PendingConsolidation{v}, d))
 def force_PendingConsolidation(+v: T.PendingConsolidation) -> Any & U32: (A_PendingConsolidation{v}, T.PendingConsolidation_force(v))
-def enc_PendingPartialWithdrawal(+v: T.PendingPartialWithdrawal) -> Any & B.Buf: (A_PendingPartialWithdrawal{v}, T.PendingPartialWithdrawal_encode(v))
+def enc_PendingPartialWithdrawal(+v: T.PendingPartialWithdrawal) -> Any & B.Buf: (A_PendingPartialWithdrawal{v}, O.ser_out(T.PendingPartialWithdrawal_serialize(v)))
 def root_PendingPartialWithdrawal(+v: T.PendingPartialWithdrawal, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_PendingPartialWithdrawal{v}, d))
 def force_PendingPartialWithdrawal(+v: T.PendingPartialWithdrawal) -> Any & U32: (A_PendingPartialWithdrawal{v}, T.PendingPartialWithdrawal_force(v))
-def enc_VoluntaryExit(+v: T.VoluntaryExit) -> Any & B.Buf: (A_VoluntaryExit{v}, T.VoluntaryExit_encode(v))
+def enc_VoluntaryExit(+v: T.VoluntaryExit) -> Any & B.Buf: (A_VoluntaryExit{v}, O.ser_out(T.VoluntaryExit_serialize(v)))
 def root_VoluntaryExit(+v: T.VoluntaryExit, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_VoluntaryExit{v}, d))
@@ -99,6 +99,13 @@ def force(a: Any) -> Any & U32:
     case A_PendingPartialWithdrawal{+v}: force_PendingPartialWithdrawal(v)
     case A_VoluntaryExit{+v}: force_VoluntaryExit(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_ValidatorIndex{+v}: T.u64_dump(v, t)
+    case A_PendingConsolidation{+v}: T.PendingConsolidation_dump(v, t)
+    case A_PendingPartialWithdrawal{+v}: T.PendingPartialWithdrawal_dump(v, t)
+    case A_VoluntaryExit{+v}: T.VoluntaryExit_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

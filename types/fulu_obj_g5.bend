@@ -120,14 +120,14 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 70: some_CurrentSyncCommitteeBranch(T.CurrentSyncCommitteeBranch_decode(buf, size))
     case 71: some_NextSyncCommitteeBranch(T.NextSyncCommitteeBranch_decode(buf, size))
     case _: (buf, None{})
-def enc_PendingDeposit(+v: T.PendingDeposit) -> Any & B.Buf: (A_PendingDeposit{v}, T.PendingDeposit_encode(v))
+def enc_PendingDeposit(+v: T.PendingDeposit) -> Any & B.Buf: (A_PendingDeposit{v}, O.ser_out(T.PendingDeposit_serialize(v)))
 def root_PendingDeposit(+v: T.PendingDeposit, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_PendingDeposit{v}, d))
 def force_PendingDeposit(+v: T.PendingDeposit) -> Any & U32: (A_PendingDeposit{v}, T.PendingDeposit_force(v))
-def enc_SyncCommittee(pair: T.SyncCommittee & B.Buf) -> Any & B.Buf:
+def enc_SyncCommittee(pair: T.SyncCommittee & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_SyncCommittee{v}, out)
+  (A_SyncCommittee{v}, O.ser_out(out))
 def root_SyncCommittee(pair: B.Buf & (T.SyncCommittee & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -135,14 +135,14 @@ def root_SyncCommittee(pair: B.Buf & (T.SyncCommittee & D.Digest)) -> B.Buf & (A
 def force_SyncCommittee(pair: T.SyncCommittee & U32) -> Any & U32:
   (v, +x) = pair
   (A_SyncCommittee{v}, x)
-def enc_DepositData(+v: T.DepositData) -> Any & B.Buf: (A_DepositData{v}, T.DepositData_encode(v))
+def enc_DepositData(+v: T.DepositData) -> Any & B.Buf: (A_DepositData{v}, O.ser_out(T.DepositData_serialize(v)))
 def root_DepositData(+v: T.DepositData, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_DepositData{v}, d))
 def force_DepositData(+v: T.DepositData) -> Any & U32: (A_DepositData{v}, T.DepositData_force(v))
-def enc_Deposit(pair: T.Deposit & B.Buf) -> Any & B.Buf:
+def enc_Deposit(pair: T.Deposit & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Deposit{v}, out)
+  (A_Deposit{v}, O.ser_out(out))
 def root_Deposit(pair: B.Buf & (T.Deposit & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -150,39 +150,39 @@ def root_Deposit(pair: B.Buf & (T.Deposit & D.Digest)) -> B.Buf & (Any & D.Diges
 def force_Deposit(pair: T.Deposit & U32) -> Any & U32:
   (v, +x) = pair
   (A_Deposit{v}, x)
-def enc_DepositMessage(+v: T.DepositMessage) -> Any & B.Buf: (A_DepositMessage{v}, T.DepositMessage_encode(v))
+def enc_DepositMessage(+v: T.DepositMessage) -> Any & B.Buf: (A_DepositMessage{v}, O.ser_out(T.DepositMessage_serialize(v)))
 def root_DepositMessage(+v: T.DepositMessage, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_DepositMessage{v}, d))
 def force_DepositMessage(+v: T.DepositMessage) -> Any & U32: (A_DepositMessage{v}, T.DepositMessage_force(v))
-def enc_Validator(+v: T.Validator) -> Any & B.Buf: (A_Validator{v}, T.Validator_encode(v))
+def enc_Validator(+v: T.Validator) -> Any & B.Buf: (A_Validator{v}, O.ser_out(T.Validator_serialize(v)))
 def root_Validator(+v: T.Validator, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Validator{v}, d))
 def force_Validator(+v: T.Validator) -> Any & U32: (A_Validator{v}, T.Validator_force(v))
-def enc_NodeID(+v: T.Uint256) -> Any & B.Buf: (A_NodeID{v}, T.NodeID_encode(v))
+def enc_NodeID(+v: T.Uint256) -> Any & B.Buf: (A_NodeID{v}, O.ser_out(T.NodeID_serialize(v)))
 def root_NodeID(+v: T.Uint256, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_NodeID{v}, d))
 def force_NodeID(+v: T.Uint256) -> Any & U32: (A_NodeID{v}, T.u256_force(v))
-def enc_SubnetID(+v: O.U64) -> Any & B.Buf: (A_SubnetID{v}, T.SubnetID_encode(v))
+def enc_SubnetID(+v: O.U64) -> Any & B.Buf: (A_SubnetID{v}, O.ser_out(T.SubnetID_serialize(v)))
 def root_SubnetID(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SubnetID{v}, d))
 def force_SubnetID(+v: O.U64) -> Any & U32: (A_SubnetID{v}, T.u64_force(v))
-def enc_Ether(+v: O.U64) -> Any & B.Buf: (A_Ether{v}, T.Ether_encode(v))
+def enc_Ether(+v: O.U64) -> Any & B.Buf: (A_Ether{v}, O.ser_out(T.Ether_serialize(v)))
 def root_Ether(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Ether{v}, d))
 def force_Ether(+v: O.U64) -> Any & U32: (A_Ether{v}, T.u64_force(v))
-def enc_ParticipationFlags(+v: U32) -> Any & B.Buf: (A_ParticipationFlags{v}, T.ParticipationFlags_encode(v))
+def enc_ParticipationFlags(+v: U32) -> Any & B.Buf: (A_ParticipationFlags{v}, O.ser_out(T.ParticipationFlags_serialize(v)))
 def root_ParticipationFlags(+v: U32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ParticipationFlags{v}, d))
 def force_ParticipationFlags(+v: U32) -> Any & U32: (A_ParticipationFlags{v}, T.u8_force(v))
-def enc_CurrentSyncCommitteeBranch(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_CurrentSyncCommitteeBranch(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_CurrentSyncCommitteeBranch{v}, out)
+  (A_CurrentSyncCommitteeBranch{v}, O.ser_out(out))
 def root_CurrentSyncCommitteeBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -190,9 +190,9 @@ def root_CurrentSyncCommitteeBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf
 def force_CurrentSyncCommitteeBranch(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_CurrentSyncCommitteeBranch{v}, x)
-def enc_NextSyncCommitteeBranch(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_NextSyncCommitteeBranch(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_NextSyncCommitteeBranch{v}, out)
+  (A_NextSyncCommitteeBranch{v}, O.ser_out(out))
 def root_NextSyncCommitteeBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -213,17 +213,17 @@ def force_boxed(pair: Any & U32) -> Any & U32:
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_PendingDeposit{+v}: enc_PendingDeposit(v)
-    case A_SyncCommittee{v}: enc_SyncCommittee(T.SyncCommittee_encode(v))
+    case A_SyncCommittee{v}: enc_SyncCommittee(T.SyncCommittee_serialize(v))
     case A_DepositData{+v}: enc_DepositData(v)
-    case A_Deposit{v}: enc_Deposit(T.Deposit_encode(v))
+    case A_Deposit{v}: enc_Deposit(T.Deposit_serialize(v))
     case A_DepositMessage{+v}: enc_DepositMessage(v)
     case A_Validator{+v}: enc_Validator(v)
     case A_NodeID{+v}: enc_NodeID(v)
     case A_SubnetID{+v}: enc_SubnetID(v)
     case A_Ether{+v}: enc_Ether(v)
     case A_ParticipationFlags{+v}: enc_ParticipationFlags(v)
-    case A_CurrentSyncCommitteeBranch{v}: enc_CurrentSyncCommitteeBranch(T.CurrentSyncCommitteeBranch_encode(v))
-    case A_NextSyncCommitteeBranch{v}: enc_NextSyncCommitteeBranch(T.NextSyncCommitteeBranch_encode(v))
+    case A_CurrentSyncCommitteeBranch{v}: enc_CurrentSyncCommitteeBranch(T.CurrentSyncCommitteeBranch_serialize(v))
+    case A_NextSyncCommitteeBranch{v}: enc_NextSyncCommitteeBranch(T.NextSyncCommitteeBranch_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -255,6 +255,21 @@ def force(a: Any) -> Any & U32:
     case A_CurrentSyncCommitteeBranch{v}: force_CurrentSyncCommitteeBranch(T.v6_b32_force(v))
     case A_NextSyncCommitteeBranch{v}: force_NextSyncCommitteeBranch(T.v6_b32_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_PendingDeposit{+v}: T.PendingDeposit_dump(v, t)
+    case A_SyncCommittee{v}: T.SyncCommittee_dump(v, t)
+    case A_DepositData{+v}: T.DepositData_dump(v, t)
+    case A_Deposit{v}: T.Deposit_dump(v, t)
+    case A_DepositMessage{+v}: T.DepositMessage_dump(v, t)
+    case A_Validator{+v}: T.Validator_dump(v, t)
+    case A_NodeID{+v}: T.u256_dump(v, t)
+    case A_SubnetID{+v}: T.u64_dump(v, t)
+    case A_Ether{+v}: T.u64_dump(v, t)
+    case A_ParticipationFlags{+v}: T.u8_dump(v, t)
+    case A_CurrentSyncCommitteeBranch{v}: T.v6_b32_dump(v, t)
+    case A_NextSyncCommitteeBranch{v}: T.v6_b32_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

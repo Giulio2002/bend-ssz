@@ -134,10 +134,18 @@ def run_check(a: G.Any) -> IO(Unit):
     IO.print("DECODED=1")
     check_enc(G.encode(a))
 
+# Mode 5 writes the decoded object's structural value dump (src/obj.bend) to
+# SSZ_OUTPUT for tools/spectests.py, which compares it with value.yaml.
+def run_dump(a: G.Any) -> IO(Unit):
+  do IO<Unit>:
+    IO.print("DECODED=1")
+    IOx.write_list(G.dump(a, []))
+
 def with_obj(+mode: U32, +ops: U32, a: G.Any) -> IO(Unit):
   match mode:
     case 2: run_enc(ops, a)
     case 3: run_root(ops, a)
+    case 5: run_dump(a)
     case _: run_check(a)
 
 def on_decoded(m: Maybe<&1, G.Any>, +mode: U32, +ops: U32) -> IO(Unit):

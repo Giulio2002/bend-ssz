@@ -120,9 +120,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 46: some_AttestationData(T.AttestationData_decode(buf, size))
     case 47: some_SingleAttestation(T.SingleAttestation_decode(buf, size))
     case _: (buf, None{})
-def enc_ContributionAndProof(pair: T.ContributionAndProof & B.Buf) -> Any & B.Buf:
+def enc_ContributionAndProof(pair: T.ContributionAndProof & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ContributionAndProof{v}, out)
+  (A_ContributionAndProof{v}, O.ser_out(out))
 def root_ContributionAndProof(pair: B.Buf & (T.ContributionAndProof & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -130,9 +130,9 @@ def root_ContributionAndProof(pair: B.Buf & (T.ContributionAndProof & D.Digest))
 def force_ContributionAndProof(pair: T.ContributionAndProof & U32) -> Any & U32:
   (v, +x) = pair
   (A_ContributionAndProof{v}, x)
-def enc_SignedContributionAndProof(pair: T.SignedContributionAndProof & B.Buf) -> Any & B.Buf:
+def enc_SignedContributionAndProof(pair: T.SignedContributionAndProof & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_SignedContributionAndProof{v}, out)
+  (A_SignedContributionAndProof{v}, O.ser_out(out))
 def root_SignedContributionAndProof(pair: B.Buf & (T.SignedContributionAndProof & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -140,29 +140,29 @@ def root_SignedContributionAndProof(pair: B.Buf & (T.SignedContributionAndProof 
 def force_SignedContributionAndProof(pair: T.SignedContributionAndProof & U32) -> Any & U32:
   (v, +x) = pair
   (A_SignedContributionAndProof{v}, x)
-def enc_SyncCommitteeMessage(+v: T.SyncCommitteeMessage) -> Any & B.Buf: (A_SyncCommitteeMessage{v}, T.SyncCommitteeMessage_encode(v))
+def enc_SyncCommitteeMessage(+v: T.SyncCommitteeMessage) -> Any & B.Buf: (A_SyncCommitteeMessage{v}, O.ser_out(T.SyncCommitteeMessage_serialize(v)))
 def root_SyncCommitteeMessage(+v: T.SyncCommitteeMessage, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SyncCommitteeMessage{v}, d))
 def force_SyncCommitteeMessage(+v: T.SyncCommitteeMessage) -> Any & U32: (A_SyncCommitteeMessage{v}, T.SyncCommitteeMessage_force(v))
-def enc_Eth1Block(+v: T.Eth1Block) -> Any & B.Buf: (A_Eth1Block{v}, T.Eth1Block_encode(v))
+def enc_Eth1Block(+v: T.Eth1Block) -> Any & B.Buf: (A_Eth1Block{v}, O.ser_out(T.Eth1Block_serialize(v)))
 def root_Eth1Block(+v: T.Eth1Block, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Eth1Block{v}, d))
 def force_Eth1Block(+v: T.Eth1Block) -> Any & U32: (A_Eth1Block{v}, T.Eth1Block_force(v))
-def enc_BeaconBlockHeader(+v: T.BeaconBlockHeader) -> Any & B.Buf: (A_BeaconBlockHeader{v}, T.BeaconBlockHeader_encode(v))
+def enc_BeaconBlockHeader(+v: T.BeaconBlockHeader) -> Any & B.Buf: (A_BeaconBlockHeader{v}, O.ser_out(T.BeaconBlockHeader_serialize(v)))
 def root_BeaconBlockHeader(+v: T.BeaconBlockHeader, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BeaconBlockHeader{v}, d))
 def force_BeaconBlockHeader(+v: T.BeaconBlockHeader) -> Any & U32: (A_BeaconBlockHeader{v}, T.BeaconBlockHeader_force(v))
-def enc_SignedBeaconBlockHeader(+v: T.SignedBeaconBlockHeader) -> Any & B.Buf: (A_SignedBeaconBlockHeader{v}, T.SignedBeaconBlockHeader_encode(v))
+def enc_SignedBeaconBlockHeader(+v: T.SignedBeaconBlockHeader) -> Any & B.Buf: (A_SignedBeaconBlockHeader{v}, O.ser_out(T.SignedBeaconBlockHeader_serialize(v)))
 def root_SignedBeaconBlockHeader(+v: T.SignedBeaconBlockHeader, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SignedBeaconBlockHeader{v}, d))
 def force_SignedBeaconBlockHeader(+v: T.SignedBeaconBlockHeader) -> Any & U32: (A_SignedBeaconBlockHeader{v}, T.SignedBeaconBlockHeader_force(v))
-def enc_ProposerSlashing(pair: T.ProposerSlashing & B.Buf) -> Any & B.Buf:
+def enc_ProposerSlashing(pair: T.ProposerSlashing & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ProposerSlashing{v}, out)
+  (A_ProposerSlashing{v}, O.ser_out(out))
 def root_ProposerSlashing(pair: B.Buf & (T.ProposerSlashing & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -170,9 +170,9 @@ def root_ProposerSlashing(pair: B.Buf & (T.ProposerSlashing & D.Digest)) -> B.Bu
 def force_ProposerSlashing(pair: T.ProposerSlashing & U32) -> Any & U32:
   (v, +x) = pair
   (A_ProposerSlashing{v}, x)
-def enc_HistoricalBatch(pair: T.HistoricalBatch & B.Buf) -> Any & B.Buf:
+def enc_HistoricalBatch(pair: T.HistoricalBatch & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_HistoricalBatch{v}, out)
+  (A_HistoricalBatch{v}, O.ser_out(out))
 def root_HistoricalBatch(pair: B.Buf & (T.HistoricalBatch & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -180,22 +180,22 @@ def root_HistoricalBatch(pair: B.Buf & (T.HistoricalBatch & D.Digest)) -> B.Buf 
 def force_HistoricalBatch(pair: T.HistoricalBatch & U32) -> Any & U32:
   (v, +x) = pair
   (A_HistoricalBatch{v}, x)
-def enc_Eth1Data(+v: T.Eth1Data) -> Any & B.Buf: (A_Eth1Data{v}, T.Eth1Data_encode(v))
+def enc_Eth1Data(+v: T.Eth1Data) -> Any & B.Buf: (A_Eth1Data{v}, O.ser_out(T.Eth1Data_serialize(v)))
 def root_Eth1Data(+v: T.Eth1Data, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Eth1Data{v}, d))
 def force_Eth1Data(+v: T.Eth1Data) -> Any & U32: (A_Eth1Data{v}, T.Eth1Data_force(v))
-def enc_Checkpoint(+v: T.Checkpoint) -> Any & B.Buf: (A_Checkpoint{v}, T.Checkpoint_encode(v))
+def enc_Checkpoint(+v: T.Checkpoint) -> Any & B.Buf: (A_Checkpoint{v}, O.ser_out(T.Checkpoint_serialize(v)))
 def root_Checkpoint(+v: T.Checkpoint, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Checkpoint{v}, d))
 def force_Checkpoint(+v: T.Checkpoint) -> Any & U32: (A_Checkpoint{v}, T.Checkpoint_force(v))
-def enc_AttestationData(+v: T.AttestationData) -> Any & B.Buf: (A_AttestationData{v}, T.AttestationData_encode(v))
+def enc_AttestationData(+v: T.AttestationData) -> Any & B.Buf: (A_AttestationData{v}, O.ser_out(T.AttestationData_serialize(v)))
 def root_AttestationData(+v: T.AttestationData, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_AttestationData{v}, d))
 def force_AttestationData(+v: T.AttestationData) -> Any & U32: (A_AttestationData{v}, T.AttestationData_force(v))
-def enc_SingleAttestation(+v: T.SingleAttestation) -> Any & B.Buf: (A_SingleAttestation{v}, T.SingleAttestation_encode(v))
+def enc_SingleAttestation(+v: T.SingleAttestation) -> Any & B.Buf: (A_SingleAttestation{v}, O.ser_out(T.SingleAttestation_serialize(v)))
 def root_SingleAttestation(+v: T.SingleAttestation, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SingleAttestation{v}, d))
@@ -212,14 +212,14 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_ContributionAndProof{v}: enc_ContributionAndProof(T.ContributionAndProof_encode(v))
-    case A_SignedContributionAndProof{v}: enc_SignedContributionAndProof(T.SignedContributionAndProof_encode(v))
+    case A_ContributionAndProof{v}: enc_ContributionAndProof(T.ContributionAndProof_serialize(v))
+    case A_SignedContributionAndProof{v}: enc_SignedContributionAndProof(T.SignedContributionAndProof_serialize(v))
     case A_SyncCommitteeMessage{+v}: enc_SyncCommitteeMessage(v)
     case A_Eth1Block{+v}: enc_Eth1Block(v)
     case A_BeaconBlockHeader{+v}: enc_BeaconBlockHeader(v)
     case A_SignedBeaconBlockHeader{+v}: enc_SignedBeaconBlockHeader(v)
-    case A_ProposerSlashing{v}: enc_ProposerSlashing(T.ProposerSlashing_encode(v))
-    case A_HistoricalBatch{v}: enc_HistoricalBatch(T.HistoricalBatch_encode(v))
+    case A_ProposerSlashing{v}: enc_ProposerSlashing(T.ProposerSlashing_serialize(v))
+    case A_HistoricalBatch{v}: enc_HistoricalBatch(T.HistoricalBatch_serialize(v))
     case A_Eth1Data{+v}: enc_Eth1Data(v)
     case A_Checkpoint{+v}: enc_Checkpoint(v)
     case A_AttestationData{+v}: enc_AttestationData(v)
@@ -255,6 +255,21 @@ def force(a: Any) -> Any & U32:
     case A_AttestationData{+v}: force_AttestationData(v)
     case A_SingleAttestation{+v}: force_SingleAttestation(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_ContributionAndProof{v}: T.ContributionAndProof_dump(v, t)
+    case A_SignedContributionAndProof{v}: T.SignedContributionAndProof_dump(v, t)
+    case A_SyncCommitteeMessage{+v}: T.SyncCommitteeMessage_dump(v, t)
+    case A_Eth1Block{+v}: T.Eth1Block_dump(v, t)
+    case A_BeaconBlockHeader{+v}: T.BeaconBlockHeader_dump(v, t)
+    case A_SignedBeaconBlockHeader{+v}: T.SignedBeaconBlockHeader_dump(v, t)
+    case A_ProposerSlashing{v}: T.ProposerSlashing_dump(v, t)
+    case A_HistoricalBatch{v}: T.HistoricalBatch_dump(v, t)
+    case A_Eth1Data{+v}: T.Eth1Data_dump(v, t)
+    case A_Checkpoint{+v}: T.Checkpoint_dump(v, t)
+    case A_AttestationData{+v}: T.AttestationData_dump(v, t)
+    case A_SingleAttestation{+v}: T.SingleAttestation_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

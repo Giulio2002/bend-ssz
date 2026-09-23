@@ -48,9 +48,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 38: some_SyncCommitteeMessage(T.SyncCommitteeMessage_decode(buf, size))
     case 39: some_Eth1Block(T.Eth1Block_decode(buf, size))
     case _: (buf, None{})
-def enc_ContributionAndProof(pair: T.ContributionAndProof & B.Buf) -> Any & B.Buf:
+def enc_ContributionAndProof(pair: T.ContributionAndProof & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ContributionAndProof{v}, out)
+  (A_ContributionAndProof{v}, O.ser_out(out))
 def root_ContributionAndProof(pair: B.Buf & (T.ContributionAndProof & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -58,9 +58,9 @@ def root_ContributionAndProof(pair: B.Buf & (T.ContributionAndProof & D.Digest))
 def force_ContributionAndProof(pair: T.ContributionAndProof & U32) -> Any & U32:
   (v, +x) = pair
   (A_ContributionAndProof{v}, x)
-def enc_SignedContributionAndProof(pair: T.SignedContributionAndProof & B.Buf) -> Any & B.Buf:
+def enc_SignedContributionAndProof(pair: T.SignedContributionAndProof & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_SignedContributionAndProof{v}, out)
+  (A_SignedContributionAndProof{v}, O.ser_out(out))
 def root_SignedContributionAndProof(pair: B.Buf & (T.SignedContributionAndProof & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -68,12 +68,12 @@ def root_SignedContributionAndProof(pair: B.Buf & (T.SignedContributionAndProof 
 def force_SignedContributionAndProof(pair: T.SignedContributionAndProof & U32) -> Any & U32:
   (v, +x) = pair
   (A_SignedContributionAndProof{v}, x)
-def enc_SyncCommitteeMessage(+v: T.SyncCommitteeMessage) -> Any & B.Buf: (A_SyncCommitteeMessage{v}, T.SyncCommitteeMessage_encode(v))
+def enc_SyncCommitteeMessage(+v: T.SyncCommitteeMessage) -> Any & B.Buf: (A_SyncCommitteeMessage{v}, O.ser_out(T.SyncCommitteeMessage_serialize(v)))
 def root_SyncCommitteeMessage(+v: T.SyncCommitteeMessage, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SyncCommitteeMessage{v}, d))
 def force_SyncCommitteeMessage(+v: T.SyncCommitteeMessage) -> Any & U32: (A_SyncCommitteeMessage{v}, T.SyncCommitteeMessage_force(v))
-def enc_Eth1Block(+v: T.Eth1Block) -> Any & B.Buf: (A_Eth1Block{v}, T.Eth1Block_encode(v))
+def enc_Eth1Block(+v: T.Eth1Block) -> Any & B.Buf: (A_Eth1Block{v}, O.ser_out(T.Eth1Block_serialize(v)))
 def root_Eth1Block(+v: T.Eth1Block, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Eth1Block{v}, d))
@@ -90,8 +90,8 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_ContributionAndProof{v}: enc_ContributionAndProof(T.ContributionAndProof_encode(v))
-    case A_SignedContributionAndProof{v}: enc_SignedContributionAndProof(T.SignedContributionAndProof_encode(v))
+    case A_ContributionAndProof{v}: enc_ContributionAndProof(T.ContributionAndProof_serialize(v))
+    case A_SignedContributionAndProof{v}: enc_SignedContributionAndProof(T.SignedContributionAndProof_serialize(v))
     case A_SyncCommitteeMessage{+v}: enc_SyncCommitteeMessage(v)
     case A_Eth1Block{+v}: enc_Eth1Block(v)
     case A_boxed{v}: enc_boxed(encode(v))
@@ -109,6 +109,13 @@ def force(a: Any) -> Any & U32:
     case A_SyncCommitteeMessage{+v}: force_SyncCommitteeMessage(v)
     case A_Eth1Block{+v}: force_Eth1Block(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_ContributionAndProof{v}: T.ContributionAndProof_dump(v, t)
+    case A_SignedContributionAndProof{v}: T.SignedContributionAndProof_dump(v, t)
+    case A_SyncCommitteeMessage{+v}: T.SyncCommitteeMessage_dump(v, t)
+    case A_Eth1Block{+v}: T.Eth1Block_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

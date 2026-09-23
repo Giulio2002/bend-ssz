@@ -48,14 +48,14 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 106: some_MatrixEntry(T.MatrixEntry_decode(buf, size))
     case 107: some_DataColumnSidecar(T.DataColumnSidecar_decode(buf, size))
     case _: (buf, None{})
-def enc_ColumnIndex(+v: O.U64) -> Any & B.Buf: (A_ColumnIndex{v}, T.ColumnIndex_encode(v))
+def enc_ColumnIndex(+v: O.U64) -> Any & B.Buf: (A_ColumnIndex{v}, O.ser_out(T.ColumnIndex_serialize(v)))
 def root_ColumnIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ColumnIndex{v}, d))
 def force_ColumnIndex(+v: O.U64) -> Any & U32: (A_ColumnIndex{v}, T.u64_force(v))
-def enc_DataColumnsByRootIdentifier(pair: T.DataColumnsByRootIdentifier & B.Buf) -> Any & B.Buf:
+def enc_DataColumnsByRootIdentifier(pair: T.DataColumnsByRootIdentifier & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_DataColumnsByRootIdentifier{v}, out)
+  (A_DataColumnsByRootIdentifier{v}, O.ser_out(out))
 def root_DataColumnsByRootIdentifier(pair: B.Buf & (T.DataColumnsByRootIdentifier & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -63,9 +63,9 @@ def root_DataColumnsByRootIdentifier(pair: B.Buf & (T.DataColumnsByRootIdentifie
 def force_DataColumnsByRootIdentifier(pair: T.DataColumnsByRootIdentifier & U32) -> Any & U32:
   (v, +x) = pair
   (A_DataColumnsByRootIdentifier{v}, x)
-def enc_MatrixEntry(pair: T.MatrixEntry & B.Buf) -> Any & B.Buf:
+def enc_MatrixEntry(pair: T.MatrixEntry & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_MatrixEntry{v}, out)
+  (A_MatrixEntry{v}, O.ser_out(out))
 def root_MatrixEntry(pair: B.Buf & (T.MatrixEntry & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -73,9 +73,9 @@ def root_MatrixEntry(pair: B.Buf & (T.MatrixEntry & D.Digest)) -> B.Buf & (Any &
 def force_MatrixEntry(pair: T.MatrixEntry & U32) -> Any & U32:
   (v, +x) = pair
   (A_MatrixEntry{v}, x)
-def enc_DataColumnSidecar(pair: T.DataColumnSidecar & B.Buf) -> Any & B.Buf:
+def enc_DataColumnSidecar(pair: T.DataColumnSidecar & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_DataColumnSidecar{v}, out)
+  (A_DataColumnSidecar{v}, O.ser_out(out))
 def root_DataColumnSidecar(pair: B.Buf & (T.DataColumnSidecar & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -96,9 +96,9 @@ def force_boxed(pair: Any & U32) -> Any & U32:
 def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_ColumnIndex{+v}: enc_ColumnIndex(v)
-    case A_DataColumnsByRootIdentifier{v}: enc_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier_encode(v))
-    case A_MatrixEntry{v}: enc_MatrixEntry(T.MatrixEntry_encode(v))
-    case A_DataColumnSidecar{v}: enc_DataColumnSidecar(T.DataColumnSidecar_encode(v))
+    case A_DataColumnsByRootIdentifier{v}: enc_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier_serialize(v))
+    case A_MatrixEntry{v}: enc_MatrixEntry(T.MatrixEntry_serialize(v))
+    case A_DataColumnSidecar{v}: enc_DataColumnSidecar(T.DataColumnSidecar_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -114,6 +114,13 @@ def force(a: Any) -> Any & U32:
     case A_MatrixEntry{v}: force_MatrixEntry(T.MatrixEntry_force(v))
     case A_DataColumnSidecar{v}: force_DataColumnSidecar(T.DataColumnSidecar_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_ColumnIndex{+v}: T.u64_dump(v, t)
+    case A_DataColumnsByRootIdentifier{v}: T.DataColumnsByRootIdentifier_dump(v, t)
+    case A_MatrixEntry{v}: T.MatrixEntry_dump(v, t)
+    case A_DataColumnSidecar{v}: T.DataColumnSidecar_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

@@ -49,21 +49,21 @@ def m_uncached(lst: T.l1099511627776_Validator_Seq) -> IO(Unit):
   fin_u(T.l1099511627776_Validator_root(O.hasher(), lst, 0))
 
 def m_first(lst: T.l1099511627776_Validator_Seq) -> IO(Unit):
-  fin_c(T.l1099511627776_Validator_cached_root(O.hasher(), T.l1099511627776_Validator_cache(lst), 0))
+  fin_c(T.l1099511627776_Validator_cached_root(64n, O.hasher(), T.l1099511627776_Validator_cache(lst), 0))
 
 def warm_again(pair: B.Buf & (T.l1099511627776_Validator_Cached & D.Digest)) -> IO(Unit):
   (h, r) = pair
   (c, d) = r
-  fin_c(T.l1099511627776_Validator_cached_root(h, c, 0))
+  fin_c(T.l1099511627776_Validator_cached_root(64n, h, c, 0))
 
 def m_warm(lst: T.l1099511627776_Validator_Seq) -> IO(Unit):
-  warm_again(T.l1099511627776_Validator_cached_root(O.hasher(), T.l1099511627776_Validator_cache(lst), 0))
+  warm_again(T.l1099511627776_Validator_cached_root(64n, O.hasher(), T.l1099511627776_Validator_cache(lst), 0))
 
 # ---- 3: a write through the cache ------------------------------------------
 
 def set_done(h: B.Buf, res: T.l1099511627776_Validator_Cached & Bool) -> IO(Unit):
   (c, ok) = res
-  fin_c(T.l1099511627776_Validator_cached_root(h, c, 0))
+  fin_c(T.l1099511627776_Validator_cached_root(64n, h, c, 0))
 
 def set_elem(+arg: U32, h: B.Buf, c: T.l1099511627776_Validator_Cached, m: Maybe<&1, T.Validator>) -> IO(Unit):
   match m:
@@ -81,7 +81,7 @@ def set_after(+arg: U32, pair: B.Buf & (T.l1099511627776_Validator_Cached & D.Di
   set_got(arg, h, T.l1099511627776_Validator_cget(c, 0))
 
 def m_update(+arg: U32, lst: T.l1099511627776_Validator_Seq) -> IO(Unit):
-  set_after(arg, T.l1099511627776_Validator_cached_root(O.hasher(), T.l1099511627776_Validator_cache(lst), 0))
+  set_after(arg, T.l1099511627776_Validator_cached_root(64n, O.hasher(), T.l1099511627776_Validator_cache(lst), 0))
 
 # ---- 4: the same write with no cache ---------------------------------------
 
@@ -103,7 +103,7 @@ def m_update_plain(+arg: U32, pr: T.l1099511627776_Validator_Seq & Maybe<&1, T.V
 
 def app_done(h: B.Buf, res: T.l1099511627776_Validator_Cached & Bool) -> IO(Unit):
   (c, ok) = res
-  fin_c(T.l1099511627776_Validator_cached_root(h, c, 0))
+  fin_c(T.l1099511627776_Validator_cached_root(64n, h, c, 0))
 
 def app_after(pair: B.Buf & (T.l1099511627776_Validator_Cached & D.Digest)) -> IO(Unit):
   (h, r) = pair
@@ -111,7 +111,7 @@ def app_after(pair: B.Buf & (T.l1099511627776_Validator_Cached & D.Digest)) -> I
   app_done(h, T.l1099511627776_Validator_capp(c, T.Validator_default()))
 
 def m_append(lst: T.l1099511627776_Validator_Seq) -> IO(Unit):
-  app_after(T.l1099511627776_Validator_cached_root(O.hasher(), T.l1099511627776_Validator_cache(lst), 0))
+  app_after(T.l1099511627776_Validator_cached_root(64n, O.hasher(), T.l1099511627776_Validator_cache(lst), 0))
 
 def m_append_plain(res: T.l1099511627776_Validator_Seq & Bool) -> IO(Unit):
   (lst, ok) = res
@@ -146,7 +146,7 @@ def hist_c(+k: Nat, +s: U32, c: T.l1099511627776_Validator_Cached) -> T.l1099511
     case 1n+q: hist_c(q, next_seed(s), hist_step_c((s .&. 1 : U32), hist_index(s), s, c))
 
 def m_history_cached(+ops: U32, +arg: U32, lst: T.l1099511627776_Validator_Seq) -> IO(Unit):
-  fin_c(T.l1099511627776_Validator_cached_root(O.hasher(),
+  fin_c(T.l1099511627776_Validator_cached_root(64n, O.hasher(),
     hist_c(U32.to_nat(ops), arg, T.l1099511627776_Validator_cache(lst)), 0))
 
 def hist_drop_u(pr: T.l1099511627776_Validator_Seq & Bool) -> T.l1099511627776_Validator_Seq:

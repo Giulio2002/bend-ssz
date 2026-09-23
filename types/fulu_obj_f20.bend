@@ -48,24 +48,24 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 82: some_Withdrawal(T.Withdrawal_decode(buf, size))
     case 83: some_ExecutionPayload(T.ExecutionPayload_decode(buf, size))
     case _: (buf, None{})
-def enc_PayloadId(+v: T.Bytes8) -> Any & B.Buf: (A_PayloadId{v}, T.PayloadId_encode(v))
+def enc_PayloadId(+v: T.Bytes8) -> Any & B.Buf: (A_PayloadId{v}, O.ser_out(T.PayloadId_serialize(v)))
 def root_PayloadId(+v: T.Bytes8, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_PayloadId{v}, d))
 def force_PayloadId(+v: T.Bytes8) -> Any & U32: (A_PayloadId{v}, T.b8_force(v))
-def enc_WithdrawalIndex(+v: O.U64) -> Any & B.Buf: (A_WithdrawalIndex{v}, T.WithdrawalIndex_encode(v))
+def enc_WithdrawalIndex(+v: O.U64) -> Any & B.Buf: (A_WithdrawalIndex{v}, O.ser_out(T.WithdrawalIndex_serialize(v)))
 def root_WithdrawalIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_WithdrawalIndex{v}, d))
 def force_WithdrawalIndex(+v: O.U64) -> Any & U32: (A_WithdrawalIndex{v}, T.u64_force(v))
-def enc_Withdrawal(+v: T.Withdrawal) -> Any & B.Buf: (A_Withdrawal{v}, T.Withdrawal_encode(v))
+def enc_Withdrawal(+v: T.Withdrawal) -> Any & B.Buf: (A_Withdrawal{v}, O.ser_out(T.Withdrawal_serialize(v)))
 def root_Withdrawal(+v: T.Withdrawal, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Withdrawal{v}, d))
 def force_Withdrawal(+v: T.Withdrawal) -> Any & U32: (A_Withdrawal{v}, T.Withdrawal_force(v))
-def enc_ExecutionPayload(pair: T.ExecutionPayload & B.Buf) -> Any & B.Buf:
+def enc_ExecutionPayload(pair: T.ExecutionPayload & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ExecutionPayload{v}, out)
+  (A_ExecutionPayload{v}, O.ser_out(out))
 def root_ExecutionPayload(pair: B.Buf & (T.ExecutionPayload & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -88,7 +88,7 @@ def encode(a: Any) -> Any & B.Buf:
     case A_PayloadId{+v}: enc_PayloadId(v)
     case A_WithdrawalIndex{+v}: enc_WithdrawalIndex(v)
     case A_Withdrawal{+v}: enc_Withdrawal(v)
-    case A_ExecutionPayload{v}: enc_ExecutionPayload(T.ExecutionPayload_encode(v))
+    case A_ExecutionPayload{v}: enc_ExecutionPayload(T.ExecutionPayload_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -104,6 +104,13 @@ def force(a: Any) -> Any & U32:
     case A_Withdrawal{+v}: force_Withdrawal(v)
     case A_ExecutionPayload{v}: force_ExecutionPayload(T.ExecutionPayload_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_PayloadId{+v}: T.b8_dump(v, t)
+    case A_WithdrawalIndex{+v}: T.u64_dump(v, t)
+    case A_Withdrawal{+v}: T.Withdrawal_dump(v, t)
+    case A_ExecutionPayload{v}: T.ExecutionPayload_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

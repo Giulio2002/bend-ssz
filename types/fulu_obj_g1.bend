@@ -120,44 +120,44 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 22: some_G2Point(T.G2Point_decode(buf, size))
     case 23: some_Fork(T.Fork_decode(buf, size))
     case _: (buf, None{})
-def enc_Slot(+v: O.U64) -> Any & B.Buf: (A_Slot{v}, T.Slot_encode(v))
+def enc_Slot(+v: O.U64) -> Any & B.Buf: (A_Slot{v}, O.ser_out(T.Slot_serialize(v)))
 def root_Slot(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Slot{v}, d))
 def force_Slot(+v: O.U64) -> Any & U32: (A_Slot{v}, T.u64_force(v))
-def enc_Epoch(+v: O.U64) -> Any & B.Buf: (A_Epoch{v}, T.Epoch_encode(v))
+def enc_Epoch(+v: O.U64) -> Any & B.Buf: (A_Epoch{v}, O.ser_out(T.Epoch_serialize(v)))
 def root_Epoch(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Epoch{v}, d))
 def force_Epoch(+v: O.U64) -> Any & U32: (A_Epoch{v}, T.u64_force(v))
-def enc_Gwei(+v: O.U64) -> Any & B.Buf: (A_Gwei{v}, T.Gwei_encode(v))
+def enc_Gwei(+v: O.U64) -> Any & B.Buf: (A_Gwei{v}, O.ser_out(T.Gwei_serialize(v)))
 def root_Gwei(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Gwei{v}, d))
 def force_Gwei(+v: O.U64) -> Any & U32: (A_Gwei{v}, T.u64_force(v))
-def enc_Hash32(+v: T.Bytes32) -> Any & B.Buf: (A_Hash32{v}, T.Hash32_encode(v))
+def enc_Hash32(+v: T.Bytes32) -> Any & B.Buf: (A_Hash32{v}, O.ser_out(T.Hash32_serialize(v)))
 def root_Hash32(+v: T.Bytes32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Hash32{v}, d))
 def force_Hash32(+v: T.Bytes32) -> Any & U32: (A_Hash32{v}, T.b32_force(v))
-def enc_Version(+v: T.Bytes4) -> Any & B.Buf: (A_Version{v}, T.Version_encode(v))
+def enc_Version(+v: T.Bytes4) -> Any & B.Buf: (A_Version{v}, O.ser_out(T.Version_serialize(v)))
 def root_Version(+v: T.Bytes4, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Version{v}, d))
 def force_Version(+v: T.Bytes4) -> Any & U32: (A_Version{v}, T.b4_force(v))
-def enc_DomainType(+v: T.Bytes4) -> Any & B.Buf: (A_DomainType{v}, T.DomainType_encode(v))
+def enc_DomainType(+v: T.Bytes4) -> Any & B.Buf: (A_DomainType{v}, O.ser_out(T.DomainType_serialize(v)))
 def root_DomainType(+v: T.Bytes4, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_DomainType{v}, d))
 def force_DomainType(+v: T.Bytes4) -> Any & U32: (A_DomainType{v}, T.b4_force(v))
-def enc_BLSSignature(+v: T.Bytes96) -> Any & B.Buf: (A_BLSSignature{v}, T.BLSSignature_encode(v))
+def enc_BLSSignature(+v: T.Bytes96) -> Any & B.Buf: (A_BLSSignature{v}, O.ser_out(T.BLSSignature_serialize(v)))
 def root_BLSSignature(+v: T.Bytes96, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BLSSignature{v}, d))
 def force_BLSSignature(+v: T.Bytes96) -> Any & U32: (A_BLSSignature{v}, T.b96_force(v))
-def enc_FinalityBranch(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_FinalityBranch(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_FinalityBranch{v}, out)
+  (A_FinalityBranch{v}, O.ser_out(out))
 def root_FinalityBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -165,22 +165,22 @@ def root_FinalityBranch(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.
 def force_FinalityBranch(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_FinalityBranch{v}, x)
-def enc_VersionedHash(+v: T.Bytes32) -> Any & B.Buf: (A_VersionedHash{v}, T.VersionedHash_encode(v))
+def enc_VersionedHash(+v: T.Bytes32) -> Any & B.Buf: (A_VersionedHash{v}, O.ser_out(T.VersionedHash_serialize(v)))
 def root_VersionedHash(+v: T.Bytes32, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_VersionedHash{v}, d))
 def force_VersionedHash(+v: T.Bytes32) -> Any & U32: (A_VersionedHash{v}, T.b32_force(v))
-def enc_G1Point(+v: T.Bytes48) -> Any & B.Buf: (A_G1Point{v}, T.G1Point_encode(v))
+def enc_G1Point(+v: T.Bytes48) -> Any & B.Buf: (A_G1Point{v}, O.ser_out(T.G1Point_serialize(v)))
 def root_G1Point(+v: T.Bytes48, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_G1Point{v}, d))
 def force_G1Point(+v: T.Bytes48) -> Any & U32: (A_G1Point{v}, T.b48_force(v))
-def enc_G2Point(+v: T.Bytes96) -> Any & B.Buf: (A_G2Point{v}, T.G2Point_encode(v))
+def enc_G2Point(+v: T.Bytes96) -> Any & B.Buf: (A_G2Point{v}, O.ser_out(T.G2Point_serialize(v)))
 def root_G2Point(+v: T.Bytes96, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_G2Point{v}, d))
 def force_G2Point(+v: T.Bytes96) -> Any & U32: (A_G2Point{v}, T.b96_force(v))
-def enc_Fork(+v: T.Fork) -> Any & B.Buf: (A_Fork{v}, T.Fork_encode(v))
+def enc_Fork(+v: T.Fork) -> Any & B.Buf: (A_Fork{v}, O.ser_out(T.Fork_serialize(v)))
 def root_Fork(+v: T.Fork, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Fork{v}, d))
@@ -204,7 +204,7 @@ def encode(a: Any) -> Any & B.Buf:
     case A_Version{+v}: enc_Version(v)
     case A_DomainType{+v}: enc_DomainType(v)
     case A_BLSSignature{+v}: enc_BLSSignature(v)
-    case A_FinalityBranch{v}: enc_FinalityBranch(T.FinalityBranch_encode(v))
+    case A_FinalityBranch{v}: enc_FinalityBranch(T.FinalityBranch_serialize(v))
     case A_VersionedHash{+v}: enc_VersionedHash(v)
     case A_G1Point{+v}: enc_G1Point(v)
     case A_G2Point{+v}: enc_G2Point(v)
@@ -240,6 +240,21 @@ def force(a: Any) -> Any & U32:
     case A_G2Point{+v}: force_G2Point(v)
     case A_Fork{+v}: force_Fork(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_Slot{+v}: T.u64_dump(v, t)
+    case A_Epoch{+v}: T.u64_dump(v, t)
+    case A_Gwei{+v}: T.u64_dump(v, t)
+    case A_Hash32{+v}: T.b32_dump(v, t)
+    case A_Version{+v}: T.b4_dump(v, t)
+    case A_DomainType{+v}: T.b4_dump(v, t)
+    case A_BLSSignature{+v}: T.b96_dump(v, t)
+    case A_FinalityBranch{v}: T.v7_b32_dump(v, t)
+    case A_VersionedHash{+v}: T.b32_dump(v, t)
+    case A_G1Point{+v}: T.b48_dump(v, t)
+    case A_G2Point{+v}: T.b96_dump(v, t)
+    case A_Fork{+v}: T.Fork_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

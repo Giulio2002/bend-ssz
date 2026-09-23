@@ -48,9 +48,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 102: some_CommitmentIndex(T.CommitmentIndex_decode(buf, size))
     case 103: some_RowIndex(T.RowIndex_decode(buf, size))
     case _: (buf, None{})
-def enc_Cell(pair: O.Words & B.Buf) -> Any & B.Buf:
+def enc_Cell(pair: O.Words & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_Cell{v}, out)
+  (A_Cell{v}, O.ser_out(out))
 def root_Cell(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -58,17 +58,17 @@ def root_Cell(pair: B.Buf & (O.Words & D.Digest)) -> B.Buf & (Any & D.Digest):
 def force_Cell(pair: O.Words & U32) -> Any & U32:
   (v, +x) = pair
   (A_Cell{v}, x)
-def enc_CellIndex(+v: O.U64) -> Any & B.Buf: (A_CellIndex{v}, T.CellIndex_encode(v))
+def enc_CellIndex(+v: O.U64) -> Any & B.Buf: (A_CellIndex{v}, O.ser_out(T.CellIndex_serialize(v)))
 def root_CellIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_CellIndex{v}, d))
 def force_CellIndex(+v: O.U64) -> Any & U32: (A_CellIndex{v}, T.u64_force(v))
-def enc_CommitmentIndex(+v: O.U64) -> Any & B.Buf: (A_CommitmentIndex{v}, T.CommitmentIndex_encode(v))
+def enc_CommitmentIndex(+v: O.U64) -> Any & B.Buf: (A_CommitmentIndex{v}, O.ser_out(T.CommitmentIndex_serialize(v)))
 def root_CommitmentIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_CommitmentIndex{v}, d))
 def force_CommitmentIndex(+v: O.U64) -> Any & U32: (A_CommitmentIndex{v}, T.u64_force(v))
-def enc_RowIndex(+v: O.U64) -> Any & B.Buf: (A_RowIndex{v}, T.RowIndex_encode(v))
+def enc_RowIndex(+v: O.U64) -> Any & B.Buf: (A_RowIndex{v}, O.ser_out(T.RowIndex_serialize(v)))
 def root_RowIndex(+v: O.U64, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_RowIndex{v}, d))
@@ -85,7 +85,7 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_Cell{v}: enc_Cell(T.Cell_encode(v))
+    case A_Cell{v}: enc_Cell(T.Cell_serialize(v))
     case A_CellIndex{+v}: enc_CellIndex(v)
     case A_CommitmentIndex{+v}: enc_CommitmentIndex(v)
     case A_RowIndex{+v}: enc_RowIndex(v)
@@ -104,6 +104,13 @@ def force(a: Any) -> Any & U32:
     case A_CommitmentIndex{+v}: force_CommitmentIndex(v)
     case A_RowIndex{+v}: force_RowIndex(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_Cell{v}: T.b2048_dump(v, t)
+    case A_CellIndex{+v}: T.u64_dump(v, t)
+    case A_CommitmentIndex{+v}: T.u64_dump(v, t)
+    case A_RowIndex{+v}: T.u64_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

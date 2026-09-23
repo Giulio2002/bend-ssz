@@ -48,19 +48,19 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 42: some_ProposerSlashing(T.ProposerSlashing_decode(buf, size))
     case 43: some_HistoricalBatch(T.HistoricalBatch_decode(buf, size))
     case _: (buf, None{})
-def enc_BeaconBlockHeader(+v: T.BeaconBlockHeader) -> Any & B.Buf: (A_BeaconBlockHeader{v}, T.BeaconBlockHeader_encode(v))
+def enc_BeaconBlockHeader(+v: T.BeaconBlockHeader) -> Any & B.Buf: (A_BeaconBlockHeader{v}, O.ser_out(T.BeaconBlockHeader_serialize(v)))
 def root_BeaconBlockHeader(+v: T.BeaconBlockHeader, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_BeaconBlockHeader{v}, d))
 def force_BeaconBlockHeader(+v: T.BeaconBlockHeader) -> Any & U32: (A_BeaconBlockHeader{v}, T.BeaconBlockHeader_force(v))
-def enc_SignedBeaconBlockHeader(+v: T.SignedBeaconBlockHeader) -> Any & B.Buf: (A_SignedBeaconBlockHeader{v}, T.SignedBeaconBlockHeader_encode(v))
+def enc_SignedBeaconBlockHeader(+v: T.SignedBeaconBlockHeader) -> Any & B.Buf: (A_SignedBeaconBlockHeader{v}, O.ser_out(T.SignedBeaconBlockHeader_serialize(v)))
 def root_SignedBeaconBlockHeader(+v: T.SignedBeaconBlockHeader, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SignedBeaconBlockHeader{v}, d))
 def force_SignedBeaconBlockHeader(+v: T.SignedBeaconBlockHeader) -> Any & U32: (A_SignedBeaconBlockHeader{v}, T.SignedBeaconBlockHeader_force(v))
-def enc_ProposerSlashing(pair: T.ProposerSlashing & B.Buf) -> Any & B.Buf:
+def enc_ProposerSlashing(pair: T.ProposerSlashing & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_ProposerSlashing{v}, out)
+  (A_ProposerSlashing{v}, O.ser_out(out))
 def root_ProposerSlashing(pair: B.Buf & (T.ProposerSlashing & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -68,9 +68,9 @@ def root_ProposerSlashing(pair: B.Buf & (T.ProposerSlashing & D.Digest)) -> B.Bu
 def force_ProposerSlashing(pair: T.ProposerSlashing & U32) -> Any & U32:
   (v, +x) = pair
   (A_ProposerSlashing{v}, x)
-def enc_HistoricalBatch(pair: T.HistoricalBatch & B.Buf) -> Any & B.Buf:
+def enc_HistoricalBatch(pair: T.HistoricalBatch & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_HistoricalBatch{v}, out)
+  (A_HistoricalBatch{v}, O.ser_out(out))
 def root_HistoricalBatch(pair: B.Buf & (T.HistoricalBatch & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -92,8 +92,8 @@ def encode(a: Any) -> Any & B.Buf:
   match a:
     case A_BeaconBlockHeader{+v}: enc_BeaconBlockHeader(v)
     case A_SignedBeaconBlockHeader{+v}: enc_SignedBeaconBlockHeader(v)
-    case A_ProposerSlashing{v}: enc_ProposerSlashing(T.ProposerSlashing_encode(v))
-    case A_HistoricalBatch{v}: enc_HistoricalBatch(T.HistoricalBatch_encode(v))
+    case A_ProposerSlashing{v}: enc_ProposerSlashing(T.ProposerSlashing_serialize(v))
+    case A_HistoricalBatch{v}: enc_HistoricalBatch(T.HistoricalBatch_serialize(v))
     case A_boxed{v}: enc_boxed(encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
@@ -109,6 +109,13 @@ def force(a: Any) -> Any & U32:
     case A_ProposerSlashing{v}: force_ProposerSlashing(T.ProposerSlashing_force(v))
     case A_HistoricalBatch{v}: force_HistoricalBatch(T.HistoricalBatch_force(v))
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_BeaconBlockHeader{+v}: T.BeaconBlockHeader_dump(v, t)
+    case A_SignedBeaconBlockHeader{+v}: T.SignedBeaconBlockHeader_dump(v, t)
+    case A_ProposerSlashing{v}: T.ProposerSlashing_dump(v, t)
+    case A_HistoricalBatch{v}: T.HistoricalBatch_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

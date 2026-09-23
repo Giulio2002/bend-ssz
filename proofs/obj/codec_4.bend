@@ -9,6 +9,48 @@ import ../../types/fulu_obj.bend as T
 # type's fixed size, and a buffer one byte short is rejected. Stated over a
 # variable, so they hold for every object of the type.
 
+# ---- DepositData (184 bytes) ----
+def DepositData_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32)
+    -> {B.size(T.DepositData_encode(T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}})) == (T.DepositData_encode(T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}), 184) : B.Buf & U32}:
+  {==}
+def DepositData_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32)
+    -> {T.DepositData_decode(T.DepositData_encode(T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}), 184) == (T.DepositData_encode(T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}), Some{T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}}) : B.Buf & Maybe<&1, T.DepositData>}:
+  {==}
+def DepositData_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32)
+    -> {T.DepositData_decode(T.DepositData_encode(T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}), 183) == (T.DepositData_encode(T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}), None{}) : B.Buf & Maybe<&1, T.DepositData>}:
+  {==}
+def DepositData_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32)
+    -> {T.DepositData_decode(T.DepositData_encode(T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}), 185) == (T.DepositData_encode(T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}), None{}) : B.Buf & Maybe<&1, T.DepositData>}:
+  {==}
+
+# ---- DepositMessage (88 bytes) ----
+def DepositMessage_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32)
+    -> {B.size(T.DepositMessage_encode(T.DepositMessage{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}})) == (T.DepositMessage_encode(T.DepositMessage{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}}), 88) : B.Buf & U32}:
+  {==}
+def DepositMessage_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32)
+    -> {T.DepositMessage_decode(T.DepositMessage_encode(T.DepositMessage{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}}), 88) == (T.DepositMessage_encode(T.DepositMessage{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}}), Some{T.DepositMessage{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}}}) : B.Buf & Maybe<&1, T.DepositMessage>}:
+  {==}
+def DepositMessage_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32)
+    -> {T.DepositMessage_decode(T.DepositMessage_encode(T.DepositMessage{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}}), 87) == (T.DepositMessage_encode(T.DepositMessage{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}}), None{}) : B.Buf & Maybe<&1, T.DepositMessage>}:
+  {==}
+def DepositMessage_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32)
+    -> {T.DepositMessage_decode(T.DepositMessage_encode(T.DepositMessage{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}}), 89) == (T.DepositMessage_encode(T.DepositMessage{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}}), None{}) : B.Buf & Maybe<&1, T.DepositMessage>}:
+  {==}
+
+# ---- NodeID (32 bytes) ----
+def NodeID_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {B.size(T.NodeID_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})) == (T.NodeID_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 32) : B.Buf & U32}:
+  {==}
+def NodeID_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {T.NodeID_decode(T.NodeID_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 32) == (T.NodeID_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), Some{T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}}) : B.Buf & Maybe<&1, T.Uint256>}:
+  {==}
+def NodeID_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {T.NodeID_decode(T.NodeID_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 31) == (T.NodeID_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), None{}) : B.Buf & Maybe<&1, T.Uint256>}:
+  {==}
+def NodeID_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
+    -> {T.NodeID_decode(T.NodeID_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 33) == (T.NodeID_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), None{}) : B.Buf & Maybe<&1, T.Uint256>}:
+  {==}
+
 # ---- SubnetID (8 bytes) ----
 def SubnetID_encoded_size(+x0: U32, +x1: U32)
     -> {B.size(T.SubnetID_encode(O.U64{x0, x1})) == (T.SubnetID_encode(O.U64{x0, x1}), 8) : B.Buf & U32}:
@@ -133,47 +175,5 @@ def WithdrawalIndex_reject_short(+x0: U32, +x1: U32)
   {==}
 def WithdrawalIndex_reject_long(+x0: U32, +x1: U32)
     -> {T.WithdrawalIndex_decode(T.WithdrawalIndex_encode(O.U64{x0, x1}), 9) == (T.WithdrawalIndex_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-
-# ---- Withdrawal (44 bytes) ----
-def Withdrawal_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32)
-    -> {B.size(T.Withdrawal_encode(T.Withdrawal{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes20{x4, x5, x6, x7, x8}, O.U64{x9, x10}})) == (T.Withdrawal_encode(T.Withdrawal{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes20{x4, x5, x6, x7, x8}, O.U64{x9, x10}}), 44) : B.Buf & U32}:
-  {==}
-def Withdrawal_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32)
-    -> {T.Withdrawal_decode(T.Withdrawal_encode(T.Withdrawal{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes20{x4, x5, x6, x7, x8}, O.U64{x9, x10}}), 44) == (T.Withdrawal_encode(T.Withdrawal{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes20{x4, x5, x6, x7, x8}, O.U64{x9, x10}}), Some{T.Withdrawal{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes20{x4, x5, x6, x7, x8}, O.U64{x9, x10}}}) : B.Buf & Maybe<&1, T.Withdrawal>}:
-  {==}
-def Withdrawal_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32)
-    -> {T.Withdrawal_decode(T.Withdrawal_encode(T.Withdrawal{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes20{x4, x5, x6, x7, x8}, O.U64{x9, x10}}), 43) == (T.Withdrawal_encode(T.Withdrawal{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes20{x4, x5, x6, x7, x8}, O.U64{x9, x10}}), None{}) : B.Buf & Maybe<&1, T.Withdrawal>}:
-  {==}
-def Withdrawal_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32)
-    -> {T.Withdrawal_decode(T.Withdrawal_encode(T.Withdrawal{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes20{x4, x5, x6, x7, x8}, O.U64{x9, x10}}), 45) == (T.Withdrawal_encode(T.Withdrawal{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes20{x4, x5, x6, x7, x8}, O.U64{x9, x10}}), None{}) : B.Buf & Maybe<&1, T.Withdrawal>}:
-  {==}
-
-# ---- BlobIndex (8 bytes) ----
-def BlobIndex_encoded_size(+x0: U32, +x1: U32)
-    -> {B.size(T.BlobIndex_encode(O.U64{x0, x1})) == (T.BlobIndex_encode(O.U64{x0, x1}), 8) : B.Buf & U32}:
-  {==}
-def BlobIndex_roundtrip(+x0: U32, +x1: U32)
-    -> {T.BlobIndex_decode(T.BlobIndex_encode(O.U64{x0, x1}), 8) == (T.BlobIndex_encode(O.U64{x0, x1}), Some{O.U64{x0, x1}}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-def BlobIndex_reject_short(+x0: U32, +x1: U32)
-    -> {T.BlobIndex_decode(T.BlobIndex_encode(O.U64{x0, x1}), 7) == (T.BlobIndex_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-def BlobIndex_reject_long(+x0: U32, +x1: U32)
-    -> {T.BlobIndex_decode(T.BlobIndex_encode(O.U64{x0, x1}), 9) == (T.BlobIndex_encode(O.U64{x0, x1}), None{}) : B.Buf & Maybe<&1, O.U64>}:
-  {==}
-
-# ---- BlobIdentifier (40 bytes) ----
-def BlobIdentifier_encoded_size(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32)
-    -> {B.size(T.BlobIdentifier_encode(T.BlobIdentifier{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}})) == (T.BlobIdentifier_encode(T.BlobIdentifier{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}), 40) : B.Buf & U32}:
-  {==}
-def BlobIdentifier_roundtrip(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32)
-    -> {T.BlobIdentifier_decode(T.BlobIdentifier_encode(T.BlobIdentifier{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}), 40) == (T.BlobIdentifier_encode(T.BlobIdentifier{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}), Some{T.BlobIdentifier{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}}) : B.Buf & Maybe<&1, T.BlobIdentifier>}:
-  {==}
-def BlobIdentifier_reject_short(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32)
-    -> {T.BlobIdentifier_decode(T.BlobIdentifier_encode(T.BlobIdentifier{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}), 39) == (T.BlobIdentifier_encode(T.BlobIdentifier{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}), None{}) : B.Buf & Maybe<&1, T.BlobIdentifier>}:
-  {==}
-def BlobIdentifier_reject_long(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32)
-    -> {T.BlobIdentifier_decode(T.BlobIdentifier_encode(T.BlobIdentifier{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}), 41) == (T.BlobIdentifier_encode(T.BlobIdentifier{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}), None{}) : B.Buf & Maybe<&1, T.BlobIdentifier>}:
   {==}
 

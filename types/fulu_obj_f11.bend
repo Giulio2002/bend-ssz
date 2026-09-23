@@ -48,22 +48,22 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 46: some_AttestationData(T.AttestationData_decode(buf, size))
     case 47: some_SingleAttestation(T.SingleAttestation_decode(buf, size))
     case _: (buf, None{})
-def enc_Eth1Data(+v: T.Eth1Data) -> Any & B.Buf: (A_Eth1Data{v}, T.Eth1Data_encode(v))
+def enc_Eth1Data(+v: T.Eth1Data) -> Any & B.Buf: (A_Eth1Data{v}, O.ser_out(T.Eth1Data_serialize(v)))
 def root_Eth1Data(+v: T.Eth1Data, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Eth1Data{v}, d))
 def force_Eth1Data(+v: T.Eth1Data) -> Any & U32: (A_Eth1Data{v}, T.Eth1Data_force(v))
-def enc_Checkpoint(+v: T.Checkpoint) -> Any & B.Buf: (A_Checkpoint{v}, T.Checkpoint_encode(v))
+def enc_Checkpoint(+v: T.Checkpoint) -> Any & B.Buf: (A_Checkpoint{v}, O.ser_out(T.Checkpoint_serialize(v)))
 def root_Checkpoint(+v: T.Checkpoint, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_Checkpoint{v}, d))
 def force_Checkpoint(+v: T.Checkpoint) -> Any & U32: (A_Checkpoint{v}, T.Checkpoint_force(v))
-def enc_AttestationData(+v: T.AttestationData) -> Any & B.Buf: (A_AttestationData{v}, T.AttestationData_encode(v))
+def enc_AttestationData(+v: T.AttestationData) -> Any & B.Buf: (A_AttestationData{v}, O.ser_out(T.AttestationData_serialize(v)))
 def root_AttestationData(+v: T.AttestationData, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_AttestationData{v}, d))
 def force_AttestationData(+v: T.AttestationData) -> Any & U32: (A_AttestationData{v}, T.AttestationData_force(v))
-def enc_SingleAttestation(+v: T.SingleAttestation) -> Any & B.Buf: (A_SingleAttestation{v}, T.SingleAttestation_encode(v))
+def enc_SingleAttestation(+v: T.SingleAttestation) -> Any & B.Buf: (A_SingleAttestation{v}, O.ser_out(T.SingleAttestation_serialize(v)))
 def root_SingleAttestation(+v: T.SingleAttestation, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_SingleAttestation{v}, d))
@@ -99,6 +99,13 @@ def force(a: Any) -> Any & U32:
     case A_AttestationData{+v}: force_AttestationData(v)
     case A_SingleAttestation{+v}: force_SingleAttestation(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_Eth1Data{+v}: T.Eth1Data_dump(v, t)
+    case A_Checkpoint{+v}: T.Checkpoint_dump(v, t)
+    case A_AttestationData{+v}: T.AttestationData_dump(v, t)
+    case A_SingleAttestation{+v}: T.SingleAttestation_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))

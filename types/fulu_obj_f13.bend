@@ -48,9 +48,9 @@ def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
     case 54: some_ForkData(T.ForkData_decode(buf, size))
     case 55: some_ForkDigest(T.ForkDigest_decode(buf, size))
     case _: (buf, None{})
-def enc_IndexedAttestation(pair: T.IndexedAttestation & B.Buf) -> Any & B.Buf:
+def enc_IndexedAttestation(pair: T.IndexedAttestation & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_IndexedAttestation{v}, out)
+  (A_IndexedAttestation{v}, O.ser_out(out))
 def root_IndexedAttestation(pair: B.Buf & (T.IndexedAttestation & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -58,9 +58,9 @@ def root_IndexedAttestation(pair: B.Buf & (T.IndexedAttestation & D.Digest)) -> 
 def force_IndexedAttestation(pair: T.IndexedAttestation & U32) -> Any & U32:
   (v, +x) = pair
   (A_IndexedAttestation{v}, x)
-def enc_AttesterSlashing(pair: T.AttesterSlashing & B.Buf) -> Any & B.Buf:
+def enc_AttesterSlashing(pair: T.AttesterSlashing & O.Encoded) -> Any & B.Buf:
   (v, out) = pair
-  (A_AttesterSlashing{v}, out)
+  (A_AttesterSlashing{v}, O.ser_out(out))
 def root_AttesterSlashing(pair: B.Buf & (T.AttesterSlashing & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
@@ -68,12 +68,12 @@ def root_AttesterSlashing(pair: B.Buf & (T.AttesterSlashing & D.Digest)) -> B.Bu
 def force_AttesterSlashing(pair: T.AttesterSlashing & U32) -> Any & U32:
   (v, +x) = pair
   (A_AttesterSlashing{v}, x)
-def enc_ForkData(+v: T.ForkData) -> Any & B.Buf: (A_ForkData{v}, T.ForkData_encode(v))
+def enc_ForkData(+v: T.ForkData) -> Any & B.Buf: (A_ForkData{v}, O.ser_out(T.ForkData_serialize(v)))
 def root_ForkData(+v: T.ForkData, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ForkData{v}, d))
 def force_ForkData(+v: T.ForkData) -> Any & U32: (A_ForkData{v}, T.ForkData_force(v))
-def enc_ForkDigest(+v: T.Bytes4) -> Any & B.Buf: (A_ForkDigest{v}, T.ForkDigest_encode(v))
+def enc_ForkDigest(+v: T.Bytes4) -> Any & B.Buf: (A_ForkDigest{v}, O.ser_out(T.ForkDigest_serialize(v)))
 def root_ForkDigest(+v: T.Bytes4, pair: B.Buf & D.Digest) -> B.Buf & (Any & D.Digest):
   (h, d) = pair
   (h, (A_ForkDigest{v}, d))
@@ -90,8 +90,8 @@ def force_boxed(pair: Any & U32) -> Any & U32:
   (A_boxed{v}, x)
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_IndexedAttestation{v}: enc_IndexedAttestation(T.IndexedAttestation_encode(v))
-    case A_AttesterSlashing{v}: enc_AttesterSlashing(T.AttesterSlashing_encode(v))
+    case A_IndexedAttestation{v}: enc_IndexedAttestation(T.IndexedAttestation_serialize(v))
+    case A_AttesterSlashing{v}: enc_AttesterSlashing(T.AttesterSlashing_serialize(v))
     case A_ForkData{+v}: enc_ForkData(v)
     case A_ForkDigest{+v}: enc_ForkDigest(v)
     case A_boxed{v}: enc_boxed(encode(v))
@@ -109,6 +109,13 @@ def force(a: Any) -> Any & U32:
     case A_ForkData{+v}: force_ForkData(v)
     case A_ForkDigest{+v}: force_ForkDigest(v)
     case A_boxed{v}: force_boxed(force(v))
+def dump(a: Any, t: +List<U32>) -> +List<U32>:
+  match a:
+    case A_IndexedAttestation{v}: T.IndexedAttestation_dump(v, t)
+    case A_AttesterSlashing{v}: T.AttesterSlashing_dump(v, t)
+    case A_ForkData{+v}: T.ForkData_dump(v, t)
+    case A_ForkDigest{+v}: T.b4_dump(v, t)
+    case A_boxed{v}: dump(v, t)
 def force_fin(buf: B.Buf, pair: Any & U32) -> B.Buf & (U32 & U32):
   (a, +x) = pair
   (buf, (x, 1))
