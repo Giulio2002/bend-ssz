@@ -49,15 +49,31 @@ What that means concretely:
   Not covered: HistoricalBatch, SyncCommittee, Blob, BlobSidecar (packed storage
   beyond 512 words: need loop induction over the array model), Validator (a
   boolean inside an unaligned record), the 21 variable-size names, and all roots.
-* Root equality is blocked at one point, recorded with measurements: the SHA
-  function-level bridge between the pinned package's `fips.bend` and the vendored
-  one is proved (`proofs/obj/sha_bridge.bend`), but the checker normalizes every
-  checked type eagerly and without sharing: `{VF.extension(k, h) == VF.extension(k, h)}`
-  with h a free list checks in 0.3 s (k=8), 2.5 s (k=12), 71 s (k=16) and not
-  within 120 s (k=20), about x28 per four rounds. Both the package's packed
-  specification and the vendored spec fix 48 rounds, so any statement that
-  mentions the 48-round schedule - which the 64-byte link `hash_pair == FIPS on
-  64 bytes` must - is out of reach for this checker. No root law is claimed.
+* Root equality (2026-09-23): proved for 96 of the 109 Fulu names, for the
+  ACTUAL public root `T.<Name>_hash_tree_root(h, o)`, against the independent
+  relational specification spec/root_relation.bend `roots` and the pinned
+  package's SHA law, with no symbolic SHA normalization. Chain:
+  `proofs/obj/sha_node.bend` (runtime node = spec `hash_pair` on the 64-byte
+  message, for every pair of digests, through `sha256_array_correct`);
+  `mtree_spec.bend` (the reference tree is spec/tree.bend's tree);
+  `mtree_run.bend` (runtime trees over word arrays = reference trees);
+  `words_*`, `list_*`, `pv_obj`, `ulist_obj`, `elems*` (byte storage, packed
+  lists, Bytes48 elements); `root_names.bend` (75 Data-kind names, phase A),
+  `leaf_small.bend` (uint8, ParticipationFlags, uint32, Bytes1),
+  `root_types.bend` (17 Type-kind names, phase B, incl. Blob). Each law is
+  `RR.roots(v_X(o), s, [D.bytes(root of T.X_hash_tree_root(h, o))])` for every
+  hasher h and every object o with the representation invariant `rep_X(o, s)`,
+  where `s == Spec.X()`. Not covered, with the measured reason
+  (`codegen/root_laws_b.py --status`): Attestation, AggregateAndProof,
+  SignedAggregateAndProof, PendingAttestation (bit lists: no law yet);
+  IndexedAttestation, AttesterSlashing (a runtime tree of depth 15: the checker
+  compares the closed capacity 2^15 in unary and overflows); Transaction (its
+  closed limit fact `minimal(2^25, 25)` does not evaluate; law generated as a
+  probe only); ExecutionPayload, BeaconBlockBody, BeaconBlock,
+  SignedBeaconBlock, DataColumnSidecar, BeaconState (lists of Type-kind or
+  2048-byte elements, and 2^40 limits). No generic-form root law. The cached
+  root (proofs/obj/cache.bend) has step laws only; cached = spec root is not
+  proved.
 * The public encoder is `<Name>_serialize -> O.Encoded{ok, bytes}`: it refuses
   representable-but-invalid objects (scalars out of range, bits or bytes set
   past a length, lengths over limits or not whole elements, storage too small

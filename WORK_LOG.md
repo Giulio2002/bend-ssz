@@ -6023,3 +6023,270 @@ Recovery notes (work in progress; later sections supersede).
   u32__pow2u_value: 32-bit literals compare natively) or by symbolic pow2
   algebra, keeping every normalized comparison between small values or
   syntactically identical terms.
+
+## Iteration 22 (continued) - root equality for large sizes and Type-kind containers
+
+Supersedes the "Root equality ... not proved" items of the self-audit above and
+the recovery notes of the previous section.
+
+### The checker's comparison, measured (why large sizes failed)
+
+* `term_compare` (the Bun checker) stops early only on POINTER-identical terms;
+  otherwise it weak-head-evaluates both sides and compares structurally. Two
+  separately built copies of a large closed number (a spec size such as
+  `U32.to_nat(131072)`) are unfolded into unary digits and compared one stack
+  frame per unit: past about 2^14 the JS stack overflows (the message "the
+  machine stack overflowed" comes from the error printer's `term_snf`).
+  Probes (build/natprobe2): `def p(+x, +e: {x == U32.to_nat(131072)}) ->
+  {x == U32.to_nat(131072)}: e` overflows; closed Bool facts in a closed
+  definition evaluate (`is_le(2^15, 2^15)` instant, `is_le(2^30, 2^30)` 524 s);
+  `{s == Spec.Blob()}` against another copy checks instantly, but
+  `roots(v, Spec.Blob(), ..)` against another copy overflows.
+* New this round (build/zz_ok_all.bend, 1 s per probe): a closed fact that a
+  closed definition evaluates (`{ok_IndexedAttestation(Spec.IndexedAttestation())
+  == True}`, containing `Lim.minimal(32768, 15)`) is NOT evaluated when the same
+  term arises after a rewrite `s -> Spec.Name()` or as an argument type: the
+  check fails and printing the failure overflows. `{Nat.is_le(ListOf_limit(s),
+  to_nat(131072))}` after the rewrite fails the same way; `{is_ListOf(s)}` and
+  every fact whose numbers stay below 2^15 pass. Only IndexedAttestation and
+  AttesterSlashing are affected (Electra attesting_indices limit 131072).
+* Statement form used by every law that touches a large size:
+  - the schema is a VARIABLE `s` with `es: s == Spec.Name()` (a consumer
+    instantiates `s := Spec.Name(), es := {==}`);
+  - object facts are stated RELATIVE to `s` (`rep_bv(o, s)`: the object's length
+    is `ByteVector_length(s)`), never against a literal;
+  - schema facts are ONE closed Bool (`ok_*(s, depth)`), proved at the name by a
+    single rewrite and `{==}`;
+  - schema shapes come from Bool tests (proofs/obj/schema_shapes.bend,
+    codegen/schema_shapes.py: `is_C(s) == True -> s == C{C_f1(s), ..}`);
+  - Data-kind existentials and pairs (proofs/obj/dk.bend `Ex`, `P2`, `Or2`),
+    because Base's `Exists`/`&` are single-use and a root law needs the
+    invariant twice (state rewrite and spec relation).
+
+### Byte storage as objects
+
+* proofs/obj/words_obj.bend: `wview(o)`, `wf1(o)` (perfect word tree t of depth
+  dw < 32, length N = 32q + r with 1 <= r <= 32, room for the chunks, zero bytes
+  after N to the chunk boundary), `rep_bv(o, s)`, `ok_bv(s, depth)`, `wdig(hl, o,
+  depth)`, `bv_st` (the runtime root returns `(h, (o, wdig))`), `bv_rs` (the
+  digest is a spec root of `wview(o)`).
+* proofs/obj/list_root.bend (byte lists against spec ByteList: data tree, length
+  mix-in via len_bridge + the SHA node bridge; empty and nonempty),
+  proofs/obj/list_obj.bend (`wfl = Or2(wf0, wf1)`, `rep_bl`, `ok_bl`, `ldig`,
+  `bl_st`, `bl_rs`), proofs/obj/nat_facts.bend (chunk bound from length bound).
+* proofs/obj/pv_obj.bend: vectors of Bytes32. proofs/obj/ulist_obj.bend: lists of
+  uint64 (`uitems`, `Pack.pack` of their `basic_bytes`, count = length >> 3
+  mixed in). proofs/obj/elems_obj.bend + elems48.bend: packed Bytes48 vectors
+  and lists (element roots are the phase-A `Bytes48` record law).
+* proofs/obj/leaf_small.bend: uint8, ParticipationFlags, uint32, Bytes1.
+  proofs/obj/bits_leaf.bend + phase-A bit records (bits of 32k bits): SyncAggregate,
+  SyncCommitteeContribution.
+* proofs/obj/cform.bend (3534 s under a machine load of ~30 from unrelated jobs):
+  the concrete form `CF(o)` (word tree and length as values) of every byte
+  storage invariant.
+
+### Phase B (codegen/root_laws_b.py -> proofs/obj/root_types.bend)
+
+Per Type-kind container / field group / box: view, digest, `rep`, `ok`, `eqs`
+(equations for the Data-kind parts' schemas), the fields' chain-shape law, the
+state law (the runtime rt-chain rewritten field by field with each field's state
+law), the DIGEST WITNESS `wd_p : rep_p(o, s) -> DW(d_p(hl, o))` and the spec law
+(field laws composed through `aggregate_digests`). Lists of Data-kind containers
+get generated laws for their `_mt` trees (element reads through the array model).
+
+* Why the digest witness: the spec relation's `Exists` witnesses (chunk lists)
+  are computational, but a Type-kind object is an ERASED parameter (it holds
+  arrays, so it cannot be copied). A container therefore cannot compute its
+  chunks from `d_field(hl, pj(o))`. `wd_*` computes the same digest from values
+  in the invariant (words: `CF`; boxes: the boxed record; lists: the element
+  tree; containers: recursively), with the equation `d(hl, o) == dd`; the spec
+  law rewrites the goal's field digests to the witnesses and moves each field law
+  along `OS.dtrans`. Checker constraints met on the way: a binder that is used
+  again cannot be destructured, and a call result cannot be destructured
+  (projections `OS.dwv`/`OS.dwe` instead).
+* Transaction (ByteList 2^30): its law is generated as a probe
+  (build/probes/root_big.bend, not a gate): the closed fact
+  `Lim.minimal(div(2^30 + 31, 32), 25)` did not finish in 23 min and the module
+  overflowed at 803 s.
+* Bisection of the module's stack overflow (the error printer hides the
+  failing definition): `root_laws_b.py --only N1,N2 --out F` writes a probe
+  module; probes (build/probe[A-H].log) located IndexedAttestation's STATE law.
+  Mechanism: the runtime `O.words_root(.., depth, ..)` body builds
+  `mtree(to_nat(depth), .., pow2n(to_nat(depth)), ..)`; the rewrite compares the
+  stuck runtime term with the lemma instance, whose closed capacity
+  `pow2n(to_nat(15))` is a separate copy, unfolded in unary. Depth 13 (8192:
+  HistoricalBatch) checks, depth 15 (32768) overflows. The generator refuses
+  fields of depth >= 14 with that reason (IndexedAttestation, AttesterSlashing).
+  Remedy not taken: a U32 capacity in the runtime tree (runtime and mtree_run
+  change).
+* Result: proofs/obj/root_types.bend PASS (3730 s, 3.39 GB): 17 names -
+  ContributionAndProof, SignedContributionAndProof, ProposerSlashing,
+  HistoricalBatch, SyncCommittee, Deposit, ExecutionRequests,
+  ExecutionPayloadHeader, LightClientHeader, LightClientOptimisticUpdate,
+  LightClientFinalityUpdate, LightClientUpdate, LightClientBootstrap, Blob,
+  BlobSidecar, DataColumnsByRootIdentifier, MatrixEntry. Each:
+  `law N_root_correct: for -h, -o, +s, +es: {s == Spec.N()}, +rep: rep_p(o, s):
+  RR.roots(v_p(o), s, [D.bytes(root of T.N_hash_tree_root(h, o))])`.
+
+### Validity (item 2)
+
+* proofs/obj/valid_names.bend PASS (1729 s): for the 70 phase-A Data-kind names,
+  `T.<p>_valid(o) == VD.root_valid(v(o), Spec.N())` (spec/value_domain.bend) for
+  every object - these are the names whose every representable object is valid,
+  so both sides are True (rv_* lemmas). Not proved: agreement for the Type-kind,
+  sub-word and list names (their validity is data-dependent); the fused bit-31
+  put-chain = separate validity + encode (tested by
+  tests_generated/invalid_objects.py 14/14, fuzz, spectests; no law).
+* The 2^31 refusal is DISCLOSED as a supported-domain bound: counts carry the
+  refusal mark in bit 31, so encodings of 2^31 bytes or more are refused (U32
+  sizes already bound them by 2^32). No Fulu fixture approaches it; a
+  BeaconState at the list limits could, and would be refused, not truncated.
+
+### Input path (item 4)
+
+* proofs/obj/fill_pieces.bend PASS (28 s): `driver_fill(size, ps, c, eg, hb)`:
+  `fillp(ps, B.alloc(size), 0, 65536) == B.fill_at(B.alloc(size), 0, cat(ps))`,
+  where `fillp` is the fill sequence of native_bench/driver.bend `read_loop`
+  (`B.fill_at(buf, offset, piece)`, offset += 65536), for every list of pieces
+  whose pieces but the last hold exactly 65536 bytes (`good(ps, 16384)`) and
+  whose total length stays within a U32 bound c (no offset wrap). With
+  load.bend, the buffer the driver builds is the literal buffer of the file's
+  bytes. Trusted: `File.read_at` returns the file's bytes (Base IO).
+
+### Toolchain handoff (item 7)
+
+The operator's hash-only replacement for the protected automation/toolchain.json
+(the gate stops at "Pinned 2.0.16 toolchain identity changed: bend"):
+bend sha256 `3850c7cd281a687715a181ad6a2ecdef041704f320ea2b4304cf9e802309203c`,
+Base (bend2/base.bend) sha256
+`e5639663177f2de93ef34867c029698aa4e68a98d46629f0b15452b67b99d798`, version
+`"2.0.25"`. Same text in docs/TOOLCHAIN.md. Not edited here (protected).
+
+### Coverage table (final source, 2026-09-24)
+
+| obligation | status | where / reason |
+| --- | --- | --- |
+| root = spec hash_tree_root, per name | **96 / 109 proved** | root_names (75), leaf_small (4), root_types (17); SHA via the pinned package law, no SHA normalization |
+| root, remaining 13 names | not proved | bit lists (Attestation, AggregateAndProof, SignedAggregateAndProof, PendingAttestation); depth-15 tree (IndexedAttestation, AttesterSlashing); Transaction (limit fact, probe only); lists of Type-kind/2048-byte elements and 2^40 limits (ExecutionPayload, BeaconBlockBody, BeaconBlock, SignedBeaconBlock, DataColumnSidecar, BeaconState) |
+| root, generic forms | not proved | no generic root law |
+| cached root = spec root | not proved | proofs/obj/cache.bend has step laws only |
+| Merkle layer | proved | mtree_spec (reference = spec tree), mtree_run (runtime = reference), zero_roots (63 constants vs spec) |
+| `{p}_valid` = spec validity | 70 names proved | valid_names.bend; data-dependent names tested only |
+| fused bit-31 put-chain = validity + encode | not proved | invalid_objects 14/14, fuzz, spectests |
+| 2^31 refusal | disclosed | supported-domain bound (encodings < 2^31 bytes) |
+| codec vs spec | 83 names (unchanged this round) | spec_codec_*, spec_unique_*; 26 names and the generic forms have no spec link |
+| piecewise fill = whole fill | proved | fill_pieces.bend `driver_fill` |
+| mutation / invariant / complexity laws | unchanged | laws.py mutation/collection/cache/cost step laws; no invariant-preservation or complexity-bound law on the object API |
+| END_TO_END (29) / ROOT_DOMAIN (13) migration to the object API | not done | propositions unchanged and checked; docs/LAW_MIGRATION.json maps each to itself |
+| runtime gates | pass | spectests 5440/5440, runtime 51/51, conformance, mutations, negative, cache, invalid, fuzz |
+| performance | pass | gate 978 workloads / 327 ops; worst 4.3x decode, 4.1x encode, 5.9x root |
+| decode memory | pass | 15/15 samples, worst 6,520,832 B |
+
+### Trust assumptions
+
+* The stock Bend 2.0.25 checker and native C backend (sha256 above) and Base;
+  the pinned BendHub SHA package `0xda83506fb9f059ead7afcfa2f498df5f` and its
+  filled law `sha256_array_correct`.
+* The vendored/pinned specification modules spec/*.bend as the meaning of SSZ.
+* Affine ownership (input isolation, no aliasing of arrays) is the compiler's
+  and runtime's; it is tested (negative_api, object_mutations), not proved.
+* `File.read_at` / `File.open` (Base IO) return the file's bytes.
+* The representation invariants `rep_*(o, s)` are the hypotheses of the root
+  laws; that the decoder and the mutation API only build objects satisfying them
+  is proved for the words-level loader (load.bend, fill_pieces.bend) and the
+  decoded Data names (`X_decoded_root_correct`), not for every Type-kind path.
+
+### Final gates on the final source (2026-09-23/24)
+
+Pre-build manifest build/final/source_manifest_prebuild.txt (673 files under
+src, types, proofs, spec, benchmarks, native_bench, codegen, tools,
+tests_generated and the root .bend files; aggregate 9b8a03ab…). After all gates
+the only differing files are the gates' own outputs
+benchmarks/evidence/{fuzz_generic,fuzz_objects,object_cache}.json.
+
+* Static: every generator `--check` current (generate, laws, spec_laws,
+  sha_laws, schema_shapes, root_laws, root_laws_b); `check_schema.py` 109/109,
+  10 malformed rejected; `import_graph.py --check` OK (production reaches only
+  the shared runtime primitives; no unreachable src module).
+* Runtime (build/final/runtime_summary.log): spectests 5440/5440; runtime tests
+  51/51 (20009 assertions); object conformance 295 / 59 types; generic
+  conformance 5145/5145; object mutations 0 disagreements; mutations 8/8;
+  negative API 7/7; cached roots 7/7; invalid objects 14/14; fuzz with the
+  fresh seed 20260924: objects 327 valid + 1962 mutated + 768 history cases / 109
+  types, generic 5393 cases / 136 schemas, 0 mismatches.
+* Performance (automation/performance_gate.py, fresh build): `PERFORMANCE GATE:
+  978 workloads / 327 operations within their operation-specific limits`. Worst
+  deserialize 4.3x (SignedBeaconBlockHeader medium), serialize 4.1x (BeaconBlock
+  small), hash_tree_root 5.9x (Attestation small). Log sha256 775642da…, report
+  build/performance/report.json sha256 f50388bc…; BENCHMARKS.md regenerated from
+  it. All 21 codec rows >= 3.5x re-run (benchmarks/run.py --only …,
+  build/final/borderline_rerun.log): within ±0.3x, worst 4.3x / 4.0x. The
+  machine carried unrelated load (load average 9-12) during these runs.
+* Memory: native_bench/run.py 15/15 Bend samples verified, worst decode overhead
+  6,520,832 B (MEMORY_REVIEW.md). automation/native_memory_acceptance.py stops
+  at "Pinned 2.0.16 toolchain identity changed: bend" (toolchain handoff above).
+* Proofs, sequentially, one checker at a time, uncapped (proofs/*.bend,
+  proofs/compact/*.bend, proofs/obj/*.bend, HASH_PROOF, END_TO_END, ROOT_DOMAIN,
+  PROOF): **260/260 PASS**, all "All terms check.", zero unsafe. Total 219.6 min;
+  peak 5.61 GB (spec_unique_1, 1098 s); longest spec_repr_6 1258 s; root_types
+  554 s / 3.40 GB, root_names 514 s, valid_names 474 s, cform 355 s; END_TO_END
+  3.86 GB / 103 s, ROOT_DOMAIN 3.83 GB / 103 s, PROOF 3.57 GB / 90 s. Log
+  build/final/proofs_final_iter22b.log (sha256 97517276…).
+
+### Self-audit (AUDITOR.md), final
+
+Met: native performance and memory targets on the generated owning-object API
+(all 978 workloads); all official cases and runtime tests; stock 2.0.25, pinned
+SHA package, no FFI or hardware SHA, zero unsafe/axioms/holes; root equality
+with the independent spec for 96 of 109 names through the actual public root
+function; piecewise input fill; validity agreement for 70 names.
+
+Open, stated as such (none of these is claimed):
+- root equality for 13 names, for the generic forms, and cached root = spec
+  root (reasons in the coverage table);
+- codec total correctness beyond the 83 spec-linked names, and the generic
+  forms' spec link;
+- a law for the fused bit-31 encoder flag; validity agreement for
+  data-dependent names; the 2^31-byte refusal is a disclosed domain bound;
+- migration of the 29 END_TO_END + 13 ROOT_DOMAIN propositions onto the object
+  API (unchanged, checked), invariant-preservation and complexity-bound laws;
+- automation/toolchain.json hash-only update (operator).
+
+## Iteration 22, round 3 - recovery notes (work in progress; later sections supersede)
+
+* The depth-15 failure, re-diagnosed with sub-second probes (proofs/obj/zz_p5.bend
+  pattern, now deleted): it is NOT the runtime tree. `ul_st` at depth 15 checks
+  (330 s probe) and a stuck `words_root` body with `pow2n(to_nat(15))` compares
+  fine. The failing step is any comparison of two copies of a schema fact with a
+  literal large depth over a SCHEMA VARIABLE: even
+  `def t(+x: Nat, +k: {Lim.minimal(x, 15n) == True}) -> {Lim.minimal(x, 15n) == True}: k`
+  overflows. `Nat.is_le(<stuck>, capacity(15n))` is `Nat.cmp`, which matches
+  both arguments; with the first stuck, the checker compares the branches by
+  unrolling the closed bound 2^15 in unary. Closed facts (no variable) evaluate.
+* Fix (general, no refusal): proofs/obj/obj_support.bend `DV` - a record of the
+  depths 14..40 that every schema-variable law holds as a VARIABLE `dv` with
+  `edv: dv == DV0()`; `dveq`, `dvu`, `dvl` recover the literal facts;
+  `ok_at` moves a closed schema fact at (Spec.N(), DV0()) to (s, dv). Generated
+  laws (codegen/root_laws_b.py): `ok_p(s, dv)`, fields of depth >= 14 use
+  `OS.dv_d(dv)` in schema facts, their spec laws run at the variable depth and a
+  cong-`dtrans` returns to the literal-depth digest the runtime computes; name
+  laws are `N_okc` (closed, evaluated once), `N_ok` (transported), `N_rc` (over
+  dv) and `N_root_correct = N_rc(.., DV0(), {==})`. IndexedAttestation +
+  AttesterSlashing probe: PASS (499 s, 4.14 GB).
+* Transaction back in proofs/obj/root_big.bend with the same scheme; its closed
+  fact `minimal(div(2^30 + 31, 32), 25)` is a linear but ~2^30-step unary
+  evaluation (Nat.divmod over Word.to_nat doublings); check running (> 90 CPU
+  min, 1.3-2.6 GB).
+* Bit lists: codegen/bitlist_laws.py -> proofs/obj/bitlist_pack.bend (`bpack`:
+  the first k bits of a word list pack to its first ceil(k/8) bytes when the bits
+  of the last byte past k are zero; 31 generated partial-word cases over Bool
+  parameters) and proofs/obj/bitlist_obj.bend (invariant, `bst` state law,
+  `brs` spec law via bpack + chunk_scan + at_depth_tree + mix_bytes, `bwd`
+  witness). The invariant carries `byte_count(k) == to_nat(bits_nbytes(k))` and
+  `length(view) == k` as facts; both hold for every k < 2^32 - 7 and are item-2
+  obligations. Not yet checked (waits for the single checker slot).
+* Lists of Type-kind elements (BeaconBlockBody lists, transactions): the array
+  holds Type-kind boxes, so found.bend's Data mirror trees do not apply and the
+  root laws only ever see the object erased. Plan: generated Data-kind mirror
+  types per Type-kind shape with a `thaw`, invariants as `o == thaw(m)`, and the
+  found.bend swap proofs over mapped mirror trees.

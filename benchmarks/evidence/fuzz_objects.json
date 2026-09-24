@@ -1,5 +1,5 @@
 {
- "seed": 20260923,
+ "seed": 20260924,
  "types": 109,
  "valid_per_type": 3,
  "mutations_per_value": 6,
@@ -13,16 +13,16 @@
   "history": 768
  },
  "mutation_kinds": {
-  "grow_last": 186,
-  "drop_last": 201,
-  "offset_word": 193,
-  "set_high_bit": 170,
-  "flip_byte": 192,
-  "extend": 202,
-  "truncate": 191,
-  "zero_prefix": 220,
-  "empty": 207,
-  "swap_bytes": 200
+  "drop_last": 198,
+  "flip_byte": 201,
+  "set_high_bit": 208,
+  "swap_bytes": 192,
+  "extend": 188,
+  "empty": 212,
+  "zero_prefix": 195,
+  "truncate": 184,
+  "offset_word": 194,
+  "grow_last": 190
  },
  "named_operations": {
   "boolean": 0,
@@ -135,8 +135,8 @@
   "DataColumnSidecar": 6,
   "CustodyIndex": 0
  },
- "elapsed_s": 12.1,
- "command": "/opt/homebrew/bin/python3 tests_generated/fuzz_objects.py --seed 20260923 --valid 3 --invalid 6",
+ "elapsed_s": 13.4,
+ "command": "/opt/homebrew/bin/python3 tests_generated/fuzz_objects.py --seed 20260924 --valid 3 --invalid 6",
  "toolchain": {
   "note": "Operator-authorized toolchain migration of 2026-09-22 (USER TOOLCHAIN OVERRIDE): stock upstream Bend 2.0.25 as installed by `bend update`, backed up at ~/.bend/bend-2.0.25-backup and reinstated unchanged. automation/toolchain.json (protected) still pins 2.0.16 and needs the hash-only update recorded in docs/TOOLCHAIN.md.",
   "bend": {
@@ -150,10 +150,10 @@
   "version": "2.0.25"
  },
  "source_sha256": {
-  "types/fulu_obj.bend": "953a97f087d9935cdfb789de0f8eba19705f21d3c7fb6152e39ca45daee9e995",
-  "src/obj.bend": "53ca85beed6354e6d321220424138bd7995ceeb3c34a9da38d5d30f27c23d88c",
+  "types/fulu_obj.bend": "79c84ee72910ba49a9d6d1bc1cf5d51871f4f09a0d64a8aee8a271b6e4d88466",
+  "src/obj.bend": "2d282f46c05ffa427c89f9945d421c63194b8ba3d1a4ad5402822a58172007dd",
   "codegen/fulu.yaml": "8ce462a76c00b2a3a7149c2c81f2160db06680468faec600be5c56a07e6e9cdd",
-  "codegen/generate.py": "e8f927f5626c68b29377aa46f5abcf6a63f762613dc87108971f568fcfd67dc2",
+  "codegen/generate.py": "5d7707a3d09ee5f115756c724758c5c164d7b290bf16e14d2f60178872f70bd7",
   "codegen/oracle.py": "b10d69e029a2a57233b69e170dcc0d060ce93ce58622a611f7394bccd891d183"
  },
  "findings": [],

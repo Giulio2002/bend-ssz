@@ -108,3 +108,51 @@ def emit(w, name, sig, lhs, rhs, res):
     w(f'    case {word(BITS)}:')
     proofs = ', '.join(f'{name}_b{i}(' + ', '.join(f'a{v}' for v in vars_of(L[i] + ' ' + R[i])) + ')' for i in range(32))
     w(f'      BT.word32_eq({", ".join(L)}, {", ".join(R)}, {proofs})')
+
+
+def refresh_bits(key, imports, lhs, rhs):
+    """As refresh, for `{lhs == rhs : U32}` over the 32 bit variables a0..a31
+    directly (lhs/rhs may mention U32{..} words built from them)."""
+    probe = ROOT / 'build/bitfix' / f'{key}.bend'
+    probe.parent.mkdir(parents=True, exist_ok=True)
+    rel = lambda p: '../../' + p
+    src = ['import Base'] + [f'import {rel(p)} as {a}' for p, a in imports]
+    sig = ', '.join(f'+{b}: Bool' for b in BITS)
+    src += ['', f'def probe({sig}) -> {{{lhs} == {rhs} : U32}}: {{==}}', '']
+    probe.write_text('\n'.join(src))
+    r = subprocess.run([BEND, probe.name], cwd=probe.parent, capture_output=True, text=True,
+                       env={'BEND_NO_TELEMETRY': '1', 'BUN_JSC_forceRAMSize': '3000000000', 'PATH': '/usr/bin:/bin'})
+    out = r.stdout + r.stderr
+    if 'All terms check.' in out:
+        return {'lhs': 'same', 'rhs': 'same'}
+    e = re.search(r'- expected : (.*)', out).group(1)
+    o = re.search(r'- observed : (.*)', out).group(1)
+    return {'lhs': split_word(e), 'rhs': split_word(o)}
+
+
+def emit_bits(w, name, lhs, rhs, res):
+    """Emit `def {name}(+a0..+a31: Bool) -> {lhs == rhs : U32}` from residuals."""
+    sig = ', '.join(f'+{b}: Bool' for b in BITS)
+    if res['lhs'] == 'same':
+        w(f'def {name}({sig}) -> {{{lhs} == {rhs} : U32}}: {{==}}')
+        return
+    L, R = res['lhs'], res['rhs']
+    for i in range(32):
+        vs = vars_of(L[i] + ' ' + R[i])
+        w(f'def {name}_b{i}(' + ', '.join(f'+a{v}: Bool' for v in vs) + f') -> {{{L[i]} == {R[i]} : Bool}}:')
+        if not vs:
+            w('  {==}')
+            continue
+
+        def cases(k, ind):
+            if k == len(vs):
+                w(f'{ind}{{==}}')
+                return
+            w(f'{ind}match a{vs[k]}:')
+            for c in ('True{}', 'False{}'):
+                w(f'{ind}  case {c}:')
+                cases(k + 1, ind + '    ')
+        cases(0, '  ')
+    w(f'def {name}({sig}) -> {{{lhs} == {rhs} : U32}}:')
+    proofs = ', '.join(f'{name}_b{i}(' + ', '.join(f'a{v}' for v in vars_of(L[i] + ' ' + R[i])) + ')' for i in range(32))
+    w(f'  BT.word32_eq({", ".join(L)}, {", ".join(R)}, {proofs})')

@@ -266,3 +266,23 @@ Log: build/final/native_bench.log.
 | case_4 | 6,291,456 | 3,407,872 |
 
 Worst Bend overhead 6.37 MB (cap 32,000,000 B); worst Bend/Go ratio 1.8x.
+
+## 2026-09-24: final re-run on the root-law runtime
+
+Fresh build of the final runtime (recursive Merkle trees with the spec's shape,
+`+hl` node length, zero-subtree constants; decode path unchanged since the
+previous section). Same procedure: `native_bench/run.py` directly (the
+acceptance.py step of `automation/native_memory_acceptance.py` still stops at
+the 2.0.16 pin in the protected automation/toolchain.json). Complete, 5
+fixtures, 3 verified samples per side each (15/15 Bend samples verified).
+Log: build/final/native_bench.log.
+
+| fixture | Bend max decode overhead | Go max decode overhead |
+| --- | ---: | ---: |
+| BeaconState ssz_random case_0 | 6,176,768 | 3,653,632 |
+| case_1 | 6,209,536 | 3,506,176 |
+| case_2 | 6,438,912 | 3,571,712 |
+| case_3 | 6,520,832 | 3,653,632 |
+| case_4 | 5,570,560 | 3,735,552 |
+
+Worst Bend overhead 6,520,832 B (cap 32,000,000 B); worst Bend/Go ratio 1.8x.

@@ -1,5 +1,5 @@
 # Work-in-progress snapshot
 
-Codec specification coverage last confirmed 83/109; named root coverage 68/109, with additional generic packed-vector proofs. Latest spectests 5440/5440. Earlier 978-workload performance pass predates current Merkle changes. Full formal verification incomplete; large-number checker issue unresolved.
+Work-in-progress SSZ snapshot before remote migration. Named root coverage: 70 laws in root_names plus 23 in root_types; root_types passed 2026-09-24 08:33 CEST (602.2s, recorded peak 3.61GB). root_big (five additional names) is still checking and is NOT counted. These are root-refinement laws with representation premises, not complete end-to-end verification. Last reported codec-spec coverage 83/109 and spectests 5440/5440 are historical; no fresh full acceptance run for this snapshot. BeaconState and further runtime/proof composition remain incomplete. Existing performance evidence predates these latest proof edits.
 
-Snapshot integrity and artifact review only. Active worker not interrupted; no fresh full acceptance run. Retained logs do not certify subsequent edits.
+Captured current source and checker evidence. No new full proof, conformance, benchmark or audit run. Active worker may continue after capture.

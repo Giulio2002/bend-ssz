@@ -2266,6 +2266,19 @@ def l10_GpF350A3C486_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: N
           (arr, dl) = r
           l10_GpF350A3C486_mj(hl, dl, l10_GpF350A3C486_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l10_GpF350A3C486_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<GpF350A3C486> & D.Digest)) -> B.Buf & (Array<GpF350A3C486> & D.Digest):
+  match d:
+    case 0n: l10_GpF350A3C486_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l10_GpF350A3C486_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l10_GpF350A3C486_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l10_GpF350A3C486_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<GpF350A3C486> & D.Digest)) -> B.Buf & (l10_GpF350A3C486_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -2273,7 +2286,7 @@ def l10_GpF350A3C486_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<GpF350A3C486
 
 def l10_GpF350A3C486_root(+hl: Nat, h: B.Buf, o: l10_GpF350A3C486_Seq, +seg: U32) -> B.Buf & (l10_GpF350A3C486_Seq & D.Digest):
   match o:
-    case l10_GpF350A3C486_Seq{arr, +n}: l10_GpF350A3C486_rt_fin(hl, n, l10_GpF350A3C486_mt(4n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(4n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l10_GpF350A3C486_Seq{arr, +n}: l10_GpF350A3C486_rt_fin(hl, n, l10_GpF350A3C486_mt0(4n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l10_GpF350A3C486_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<GpF350A3C486> & GpF350A3C486) -> Array<GpF350A3C486> & U32:
   match k:
@@ -15161,6 +15174,19 @@ def v4_GcDC3E457711_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Na
           (arr, dl) = r
           v4_GcDC3E457711_mj(hl, dl, v4_GcDC3E457711_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def v4_GcDC3E457711_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<GcDC3E457711> & D.Digest)) -> B.Buf & (Array<GcDC3E457711> & D.Digest):
+  match d:
+    case 0n: v4_GcDC3E457711_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          v4_GcDC3E457711_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            v4_GcDC3E457711_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def v4_GcDC3E457711_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<GcDC3E457711> & D.Digest)) -> B.Buf & (v4_GcDC3E457711_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -15168,7 +15194,7 @@ def v4_GcDC3E457711_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<GcDC3E457711>
 
 def v4_GcDC3E457711_root(+hl: Nat, h: B.Buf, o: v4_GcDC3E457711_Seq, +seg: U32) -> B.Buf & (v4_GcDC3E457711_Seq & D.Digest):
   match o:
-    case v4_GcDC3E457711_Seq{arr, +n}: v4_GcDC3E457711_rt_fin(hl, n, v4_GcDC3E457711_mt(2n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(2n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case v4_GcDC3E457711_Seq{arr, +n}: v4_GcDC3E457711_rt_fin(hl, n, v4_GcDC3E457711_mt0(2n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def v4_GcDC3E457711_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<GcDC3E457711> & GcDC3E457711) -> Array<GcDC3E457711> & U32:
   match k:
@@ -15490,6 +15516,19 @@ def v2_Gc465214E502_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Na
           (arr, dl) = r
           v2_Gc465214E502_mj(hl, dl, v2_Gc465214E502_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def v2_Gc465214E502_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest):
+  match d:
+    case 0n: v2_Gc465214E502_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          v2_Gc465214E502_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            v2_Gc465214E502_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def v2_Gc465214E502_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<Gc465214E502>> & D.Digest)) -> B.Buf & (v2_Gc465214E502_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -15497,7 +15536,7 @@ def v2_Gc465214E502_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<Gc465
 
 def v2_Gc465214E502_root(+hl: Nat, h: B.Buf, o: v2_Gc465214E502_Seq, +seg: U32) -> B.Buf & (v2_Gc465214E502_Seq & D.Digest):
   match o:
-    case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_rt_fin(hl, n, v2_Gc465214E502_mt(1n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(1n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case v2_Gc465214E502_Seq{arr, +n}: v2_Gc465214E502_rt_fin(hl, n, v2_Gc465214E502_mt0(1n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def v2_Gc465214E502_fo_back(+i: U32, +acc: U32, arr: Array<O.Boxed<Gc465214E502>>, pair: O.Boxed<Gc465214E502> & U32) -> Array<O.Boxed<Gc465214E502>> & U32:
   (v, +x) = pair

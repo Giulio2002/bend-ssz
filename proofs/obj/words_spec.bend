@@ -688,3 +688,63 @@ def chunks_count(q, r, h1, h32):
   %Equal.sym(Nat, Nat.add(q, 0n), q, MR.add_zero(q)) :
     {Nat.div.fin(Nat.divmod.go(Nat.add(r, 31n), 31n, _, 0n)) == 1n+q : Nat}
   count_last(q, r, h1, h32)
+
+# A scoped byte list is in the byte domain and has exactly that length.
+law scope_dom:
+  for +k: Nat
+  for +xs: +List<U32>
+  for +e: {SP.byte_scope(k, xs) == True{} : Bool}
+  {SP.bytes_domain(xs) == True{} : Bool}
+def scope_dom(k, xs, e):
+  match k:
+    case 0n:
+      match xs:
+        case Nil{}: {==}
+        case Con{x, t}: Empty.absurd({SP.bytes_domain(Con{x, t}) == True{} : Bool}, MS.false_true(e))
+    case 1n+ +p:
+      match xs:
+        case Nil{}: Empty.absurd({SP.bytes_domain(Nil{}) == True{} : Bool}, MS.false_true(e))
+        case Con{+x, +t}:
+          %Equal.sym(Bool, U32.is_lt(x, 256), True{}, and_left(U32.is_lt(x, 256), SP.byte_scope(p, t), e)) :
+            {Bool.and(_, SP.bytes_domain(t)) == True{} : Bool}
+          scope_dom(p, t, and_right(U32.is_lt(x, 256), SP.byte_scope(p, t), e))
+
+law scope_len:
+  for +k: Nat
+  for +xs: +List<U32>
+  for +e: {SP.byte_scope(k, xs) == True{} : Bool}
+  {List.length(&2, U32, xs) == k : Nat}
+def scope_len(k, xs, e):
+  match k:
+    case 0n:
+      match xs:
+        case Nil{}: {==}
+        case Con{x, t}: Empty.absurd({List.length(&2, U32, Con{x, t}) == 0n : Nat}, MS.false_true(e))
+    case 1n+ +p:
+      match xs:
+        case Nil{}: Empty.absurd({List.length(&2, U32, Nil{}) == 1n+p : Nat}, MS.false_true(e))
+        case Con{+x, +t}:
+          %scope_len(p, t, and_right(U32.is_lt(x, 256), SP.byte_scope(p, t), e)) : {1n+List.length(&2, U32, t) == 1n+_ : Nat}
+          {==}
+
+# A Nat equation from its Bool comparison. The checker evaluates `Nat.is_eq`
+# iteratively, but compares Nat terms by recursion on their depth, so a size
+# fact past ~2^14 is stated to the checker as a comparison and turned into an
+# equation here, symbolically.
+law nat_eq:
+  for +a: Nat
+  for +b: Nat
+  for +e: {Nat.is_eq(a, b) == True{} : Bool}
+  {a == b : Nat}
+def nat_eq(a, b, e):
+  match a:
+    case 0n:
+      match b:
+        case 0n: {==}
+        case 1n+q: Empty.absurd({0n == 1n+q : Nat}, MS.false_true(e))
+    case 1n+ +p:
+      match b:
+        case 0n: Empty.absurd({1n+p == 0n : Nat}, MS.false_true(e))
+        case 1n+ +q:
+          %Equal.sym(Nat, p, q, nat_eq(p, q, e)) : {1n+_ == 1n+q : Nat}
+          {==}

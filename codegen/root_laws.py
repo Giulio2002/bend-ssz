@@ -16,6 +16,7 @@ shaped message (see codegen/sha_laws.py and WORK_LOG.md):
     variable (an object or a field), and objects are cased only in lemmas
     that hash nothing (chunking, byte views).
 """
+import json
 import sys
 from pathlib import Path
 
@@ -185,6 +186,8 @@ def spec_schema(s):
         return {16: 'S.Unsigned{P.U128{}}', 32: 'S.Unsigned{P.U256{}}'}[t.size]
     if k == 'rec' and t.kind == 'bytes':
         return f'S.ByteVector{{{t.size}n}}'
+    if k == 'rec' and t.kind == 'bits':
+        return f'S.BitVector{{{t.size}n}}'
     if k == 'container' and t.kind == 'container':
         names = '[' + ', '.join(f'"{f}"' for f, _ in t.fields) + ']'
         chain = 'S.End{}'
@@ -206,8 +209,10 @@ def covered(s):
     if k == 'uwide':
         return
     if k == 'rec':
-        if t.kind != 'bytes':
-            raise Skip('bit vector record')
+        if t.kind == 'bits':
+            if t.size % 32:
+                raise Skip('bit vector record of a partial word')
+            return
         if t.size % 4:
             raise Skip('byte vector of a partial word')
         return
@@ -278,11 +283,12 @@ def emit_shape_laws(s, w):
             w(f'        {{I.uint_root({wd}, {v}) == Some{{_}} : Maybe<&2, +List<U32>>}}')
             w('      {==}')
             return
-        # byte vector record
+        # byte vector record (a bit vector record adds its bit view below)
         w(f'def vb_{p}(o: {R}) -> +List<U32>:')
         w('  match o:')
         w(f'    case {pat}: F.limbs([{", ".join(ws)}])')
-        w(f'def v_{p}(o: {R}) -> S.Value: S.BytesValue{{vb_{p}(o)}}')
+        if t.kind != 'bits':
+            w(f'def v_{p}(o: {R}) -> S.Value: S.BytesValue{{vb_{p}(o)}}')
         # chunks of the view
         w(f'def chunks_{p}(+o: {R}) -> {{Br.chunks(vb_{p}(o)) == MD.bytes_list({Lc}) : +List<+List<U32>>}}:')
         w('  match o:')
@@ -300,6 +306,9 @@ def emit_shape_laws(s, w):
         w(f'def domain_{p}(+o: {R}) -> {{VD.bytevector_domain({nb}n, vb_{p}(o)) == True{{}} : Bool}}:')
         w('  match o:')
         w(f'    case {pat}: F.scope_limbs([{", ".join(ws)}])')
+        if t.kind == 'bits':
+            emit_bits_record(w, p, R, pat, ws, t.size, depth, Lc, sch)
+            return
         # the two components as their own defs (rewrites need a statement position)
         body = [
             f'def rs_canon_{p}(+o: {R}) -> {{Br.canonical_depth(vb_{p}(o), {depth}n) == True{{}} : Bool}}:',
@@ -365,6 +374,60 @@ def emit_shape_laws(s, w):
     raise Skip(k)
 
 
+def emit_bits_record(w, p, R, pat, ws, nbits, depth, Lc, sch):
+    """The bit view of a bit vector record and its specification root."""
+    q = pat.replace('+', '')
+    bl = '[]'
+    for x in reversed(ws):
+        bl = f'List.append(&2, Bool, BL.wbits({x}), {bl})'
+    w(f'def bits_{p}(o: {R}) -> +List<Bool>:')
+    w('  match o:')
+    w(f'    case {pat}: {bl}')
+    w(f'def v_{p}(o: {R}) -> S.Value: S.BitsValue{{bits_{p}(o)}}')
+    w(f'def packv_{p}(+o: {R}) -> {{Bp.pack(bits_{p}(o)) == vb_{p}(o) : +List<U32>}}:')
+    w('  match o:')
+    w(f'    case {pat}:')
+    target = f'F.limbs([{", ".join(ws)}])'
+    for i, x in enumerate(ws):
+        rest = '[]'
+        for y in reversed(ws[i + 1:]):
+            rest = f'List.append(&2, Bool, BL.wbits({y}), {rest})'
+        ctx = '_'
+        for y in reversed(ws[:i]):
+            ctx = f'List.append(&2, U32, I.limb({y}), {ctx})'
+        w(f'      %Equal.sym(+List<U32>, Bp.pack(List.append(&2, Bool, BL.wbits({x}), {rest})), List.append(&2, U32, I.limb({x}), Bp.pack({rest})), BL.pack_word({x}, {rest})) :')
+        w(f'        {{{ctx} == {target} : +List<U32>}}')
+    w('      {==}')
+    w(f'def blen_{p}(+o: {R}) -> {{List.length(&2, Bool, bits_{p}(o)) == {nbits}n : Nat}}:')
+    w('  match o:')
+    w(f'    case {pat}:')
+    for i, x in enumerate(ws):
+        rest = '[]'
+        for y in reversed(ws[i + 1:]):
+            rest = f'List.append(&2, Bool, BL.wbits({y}), {rest})'
+        ctx = '_'
+        for _ in range(i):
+            ctx = f'Nat.add(32n, {ctx})'
+        w(f'      %Equal.sym(Nat, List.length(&2, Bool, List.append(&2, Bool, BL.wbits({x}), {rest})), Nat.add(32n, List.length(&2, Bool, {rest})), BL.len_app_w({x}, {rest})) :')
+        w(f'        {{{ctx} == {nbits}n : Nat}}')
+    w('      {==}')
+    w(f'def rs_gate_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, +o: {R}) -> {{Bits.bitvector_at_depth({nbits}n, {depth}n, bits_{p}(o)) == Some{{D.bytes(d_{p}(hl, o))}} : Maybe<&2, +List<U32>>}}:')
+    w('  match o:')
+    w(f'    case {pat}:')
+    w(f'      %Equal.sym(Nat, List.length(&2, Bool, bits_{p}({q})), {nbits}n, blen_{p}({q})) :')
+    w(f'        {{Bits.vector_gate(Bool.and(Nat.is_lt(0n, {nbits}n), Nat.is_eq(_, {nbits}n)), {nbits}n, {depth}n, bits_{p}({q})) == Some{{D.bytes(d_{p}(hl, {q}))}} : Maybe<&2, +List<U32>>}}')
+    w(f'      %Equal.sym(+List<U32>, Bp.pack(bits_{p}({q})), vb_{p}({q}), packv_{p}({q})) :')
+    w(f'        {{Lim.at_depth(Bits.chunk_limit({nbits}n), {depth}n, Pack.scan(_, 31n, [], [])) == Some{{D.bytes(d_{p}(hl, {q}))}} : Maybe<&2, +List<U32>>}}')
+    w(f'      %Equal.sym(+List<+List<U32>>, Br.chunks(vb_{p}({q})), MD.bytes_list({Lc.replace("(o)", f"({q})")}), chunks_{p}({q})) :')
+    w(f'        {{Lim.at_depth(Bits.chunk_limit({nbits}n), {depth}n, _) == Some{{D.bytes(d_{p}(hl, {q}))}} : Maybe<&2, +List<U32>>}}')
+    Lq = Lc.replace('(o)', f'({q})')
+    w(f'      %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit({nbits}n), {depth}n, MD.bytes_list({Lq})), Some{{D.bytes(MD.rtree({depth}n, Nat.is_lt(0n, MD.dlen({Lq})), hl, {Lq}, 0n))}}, RS.at_depth_tree(Bits.chunk_limit({nbits}n), {depth}n, hl, {Lq}, {{==}}, {{==}}, ehl)) :')
+    w(f'        {{_ == Some{{D.bytes(d_{p}(hl, {q}))}} : Maybe<&2, +List<U32>>}}')
+    w('      {==}')
+    w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, +o: {R}) -> RR.roots(v_{p}(o), {sch}, [D.bytes(d_{p}(hl, o))]):')
+    w(f'  ({depth}n, ({{==}}, rs_gate_{p}(hl, ehl, o)))')
+
+
 def emit_name_law(w, name, s):
     p = s.p
     R = qual(s.rep)
@@ -415,7 +478,17 @@ HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/di
         'import ../../spec/limits.bend as Lim', 'import ../../spec/tree.bend as Tr',
         'import ../../spec/value_domain.bend as VD', 'import ../../spec/fulu_schemas.bend as Spec',
         'import ../../proofs/integer_encoding.bend as IE', 'import ./spec_fixed.bend as F',
-        'import ./mtree_defs.bend as MD', 'import ./mtree_spec.bend as MS', 'import ./root_support.bend as RS', 'import ./root_leaf.bend as RL']
+        'import ./mtree_defs.bend as MD', 'import ./mtree_spec.bend as MS', 'import ./root_support.bend as RS', 'import ./root_leaf.bend as RL',
+        'import ./bits_leaf.bend as BL', 'import ../../spec/bit_packing.bend as Bp', 'import ../../spec/bit_root.bend as Bits',
+        'import ../../spec/packing.bend as Pack']
+
+
+def has_bits(s):
+    if s.kind == 'rec':
+        return s.t.kind == 'bits'
+    if s.kind == 'container':
+        return any(has_bits(fs) for _, fs in s.fields)
+    return False
 
 
 def emit_names():
@@ -452,7 +525,7 @@ def emit_names():
         if s.p in good:
             emit_name_law(name_laws.append, n, s)
             status[n] = 'proved'
-            if t.fixed() and LW.word_aligned(t):
+            if t.fixed() and LW.word_aligned(t) and not has_bits(s):
                 try:
                     node = SL.walk(g, t, iter(range(10000)))
                 except SL.Skip:
@@ -536,11 +609,408 @@ def emit_words_names():
     return '\n'.join(L) + '\n', status
 
 
+# ---------------------------------------------------------------------------
+# Bit vectors: the specification packs a list of booleans eight at a time
+# (spec/bit_packing.bend `octet`, bit i of weight 2^i). A bit vector record's
+# view is its words' bits, least significant first; each word's 32 bits pack to
+# the word's four little-endian bytes (proved bit by bit, codegen/bitfix.py).
+
+BITS_LEAF = ROOT / 'proofs/obj/bits_leaf.bend'
+
+
+def emit_bits_leaf():
+    """wbits: a word's bits, least significant first (its own bit structure);
+    oct8: eight bits pack to the byte with those bits; pack_word: a word's
+    bits pack to its four little-endian bytes (with the byte lemmas of
+    proofs/obj/len_bridge.bend)."""
+    L = ['import Base', 'import ../../src/primitives.bend as I', 'import ../../spec/bit_packing.bend as Bp',
+         'import ./len_bridge.bend as LB', '',
+         '# GENERATED by codegen/root_laws.py. Do not edit.',
+         '# The bits of a word, least significant first, pack to its four bytes.', '']
+    w = L.append
+    w('def word_bits(n: Nat, w: Word(n)) -> +List<Bool>:')
+    w('  match n:')
+    w('    case 0n: []')
+    w('    case 1n+p:')
+    w('      match w:')
+    w('        case WCon{+b, t}: b <> word_bits(p, t)')
+    w('')
+    w('def wbits(+x: U32) -> +List<Bool>:')
+    w('  match x:')
+    w('    case U32{w}: word_bits(32n, w)')
+    w('')
+    bs = [f'b{i}' for i in range(8)]
+    byte = bitfix.word(bs + ['False{}'] * 24)
+    w('law oct8:')
+    for b_ in bs:
+        w(f'  for +{b_}: Bool')
+    w(f'  {{Bp.octet({", ".join(bs)}) == {byte} : U32}}')
+    w(f'def oct8({", ".join(bs)}):')
+
+    def cases(k, ind):
+        if k == 8:
+            w(f'{ind}{{==}}')
+            return
+        w(f'{ind}match b{k}:')
+        for c in ('True{}', 'False{}'):
+            w(f'{ind}  case {c}:')
+            cases(k + 1, ind + '    ')
+    cases(0, '  ')
+    w('')
+    A = bitfix.BITS
+    Wd = bitfix.word(A)
+    octs = [f'Bp.octet({", ".join(A[8 * k:8 * k + 8])})' for k in range(4)]
+    bytes_ = [bitfix.word(A[8 * k:8 * k + 8] + ['False{}'] * 24) for k in range(4)]
+    limbs = [f'U32.and({Wd}, 255)', f'U32.and(U32.shrn({Wd}, 8n), 255)', f'U32.and(U32.shrn({Wd}, 16n), 255)', f'U32.shrn({Wd}, 24n)']
+    w('law len_app_w:')
+    w('  for +x: U32')
+    w('  for +rest: +List<Bool>')
+    w('  {List.length(&2, Bool, List.append(&2, Bool, wbits(x), rest)) == Nat.add(32n, List.length(&2, Bool, rest)) : Nat}')
+    w('def len_app_w(x, rest):')
+    w('  match x:')
+    w(f'    case {Wd}: {{==}}')
+    w('')
+    w('law pack_word:')
+    w('  for +x: U32')
+    w('  for +rest: +List<Bool>')
+    w('  {Bp.pack(List.append(&2, Bool, wbits(x), rest)) == List.append(&2, U32, I.limb(x), Bp.pack(rest)) : +List<U32>}')
+    w('def pack_word(x, rest):')
+    w('  match x:')
+    w(f'    case {Wd}:')
+    lhs = list(octs)
+    rhs = list(limbs)
+
+    def show(l, r):
+        L_ = f'{l[0]} <> ({l[1]} <> ({l[2]} <> ({l[3]} <> Bp.pack(rest))))'
+        R_ = f'List.append(&2, U32, [{r[0]}, {r[1]}, {r[2]}, {r[3]}], Bp.pack(rest))'
+        return f'{{{L_} == {R_} : +List<U32>}}'
+    for k in range(4):
+        l2 = lhs[:k] + ['_'] + lhs[k + 1:]
+        w(f'      %Equal.sym(U32, {octs[k]}, {bytes_[k]}, oct8({", ".join(A[8 * k:8 * k + 8])})) :')
+        w(f'        {show(l2, rhs)}')
+        lhs[k] = bytes_[k]
+    for k in range(4):
+        r2 = rhs[:k] + ['_'] + rhs[k + 1:]
+        w(f'      %Equal.sym(U32, {limbs[k]}, {bytes_[k]}, LB.byte{k}({", ".join(A)})) :')
+        w(f'        {show(lhs, r2)}')
+        rhs[k] = bytes_[k]
+    w('      {==}')
+    return '\n'.join(L) + '\n'
+
+
+# ---------------------------------------------------------------------------
+# The length bridge: the specification's 32-byte little-endian encoding of a
+# U32 count (spec/nat_bytes.bend `encoding(32, to_nat(n))`, Nat digits) is the
+# bytes of the runtime's length chunk (limbs([n]) ++ 28 zero bytes).
+
+def emit_len_bridge():
+    L = ['import Base', 'import ../../src/primitives.bend as I', 'import ../../spec/nat_bytes.bend as N',
+         'import ../../spec/primitives.bend as SP', 'import ../../proofs/compact/bits.bend as BT',
+         'import ../../proofs/offset_digits.bend as OD', 'import ../../proofs/u32_order.bend as UO',
+         'import ../../proofs/primitive_invariants.bend as V', 'import ../compact/found.bend as F',
+         'import ./spec_fixed.bend as FX', '',
+         '# GENERATED by codegen/root_laws.py. Do not edit.',
+         '# A U32 word is the value of its four little-endian bytes, and its 32-byte',
+         '# specification encoding is those bytes followed by 28 zero bytes.', '']
+    w = L.append
+    res = bitfix.load()
+    Wd = bitfix.word(bitfix.BITS)
+    Fz = ['False{}']
+    specs = [('byte0', f'U32.and({Wd}, 255)', bitfix.word(bitfix.BITS[0:8] + Fz * 24)),
+             ('byte1', f'U32.and(U32.shrn({Wd}, 8n), 255)', bitfix.word(bitfix.BITS[8:16] + Fz * 24)),
+             ('byte2', f'U32.and(U32.shrn({Wd}, 16n), 255)', bitfix.word(bitfix.BITS[16:24] + Fz * 24)),
+             ('byte3', f'U32.shrn({Wd}, 24n)', bitfix.word(bitfix.BITS[24:32] + Fz * 24))]
+    for k, l, r in specs:
+        bitfix.emit_bits(w, k, l, r, res[k])
+        w('')
+    bv = 'F.spec_numeric__bit_value'
+    w(f'def lyr(+b: Bool, +y: Nat) -> Nat: Nat.add({bv}(b), Nat.double(y))')
+    w('')
+    w('law double_add:')
+    w('  for +a: Nat')
+    w('  for +b: Nat')
+    w('  {Nat.double(Nat.add(a, b)) == Nat.add(Nat.double(a), Nat.double(b)) : Nat}')
+    w('def double_add(a, b):')
+    w('  match a:')
+    w('    case 0n: {==}')
+    w('    case 1n+ +p:')
+    w('      %double_add(p, b) : {2n+Nat.double(Nat.add(p, b)) == 2n+_ : Nat}')
+    w('      {==}')
+    w('')
+    w('law add_assoc:')
+    w('  for +x: Nat')
+    w('  for +y: Nat')
+    w('  for +z: Nat')
+    w('  {Nat.add(Nat.add(x, y), z) == Nat.add(x, Nat.add(y, z)) : Nat}')
+    w('def add_assoc(x, y, z):')
+    w('  match x:')
+    w('    case 0n: {==}')
+    w('    case 1n+ +p:')
+    w('      %add_assoc(p, y, z) : {1n+Nat.add(Nat.add(p, y), z) == 1n+_ : Nat}')
+    w('      {==}')
+    w('')
+    w('# One binary layer is linear in its tail.')
+    w('law lin:')
+    w('  for +b: Bool')
+    w('  for +y: Nat')
+    w('  for +t: Nat')
+    w(f'  {{lyr(b, Nat.add(y, t)) == Nat.add(lyr(b, y), Nat.double(t)) : Nat}}')
+    w('def lin(b, y, t):')
+    w(f'  %Equal.sym(Nat, Nat.double(Nat.add(y, t)), Nat.add(Nat.double(y), Nat.double(t)), double_add(y, t)) :')
+    w(f'    {{Nat.add({bv}(b), _) == Nat.add(lyr(b, y), Nat.double(t)) : Nat}}')
+    w(f'  %Equal.sym(Nat, Nat.add(Nat.add({bv}(b), Nat.double(y)), Nat.double(t)), Nat.add({bv}(b), Nat.add(Nat.double(y), Nat.double(t))), add_assoc({bv}(b), Nat.double(y), Nat.double(t))) :')
+    w(f'    {{Nat.add({bv}(b), Nat.add(Nat.double(y), Nat.double(t))) == _ : Nat}}')
+    w('  {==}')
+    w('')
+    d8 = lambda x: 'Nat.double(' * 8 + x + ')' * 8
+    w('law d8:')
+    w('  for +t: Nat')
+    w(f'  {{{d8("t")} == Nat.mul(t, 256n) : Nat}}')
+    w('def d8(t):')
+    w('  match t:')
+    w('    case 0n: {==}')
+    w('    case 1n+ +p:')
+    w(f'      %d8(p) : {{{d8("1n+p")} == Nat.add(256n, _) : Nat}}')
+    w('      {==}')
+    w('')
+    a8 = [f'a{i}' for i in range(8)]
+    chain = lambda bits, tail: (''.join(f'lyr({b}, ' for b in bits) + tail + ')' * len(bits))
+    P0 = chain(a8, '0n')
+    w('# Eight layers: the byte they spell plus 256 times the rest.')
+    w('law byte8:')
+    for b in a8:
+        w(f'  for +{b}: Bool')
+    w('  for +Y: Nat')
+    w(f'  {{{chain(a8, "Y")} == Nat.add({P0}, Nat.mul(Y, 256n)) : Nat}}')
+    w(f'def byte8({", ".join(a8)}, Y):')
+    w(f'  %d8(Y) : {{{chain(a8, "Y")} == Nat.add({P0}, _) : Nat}}')
+    # innermost first: layer k over (P_{k+1}(0) + double^{7-k}(Y))
+    dY = lambda j: 'Nat.double(' * j + 'Y' + ')' * j
+    for k in range(7, -1, -1):
+        inner0 = chain(a8[k + 1:], '0n')      # P_{k+1}(0)
+        cur = f'Nat.add({inner0}, {dY(7 - k)})' if k < 7 else 'Y'
+        ctx = ''.join(f'lyr({b}, ' for b in a8[:k]) + '_' + ')' * k
+        e_l = f'lyr({a8[k]}, Nat.add({inner0}, {dY(7 - k)}))'
+        e_r = f'Nat.add(lyr({a8[k]}, {inner0}), {dY(8 - k)})'
+        w(f'  %Equal.sym(Nat, {e_l}, {e_r}, lin({a8[k]}, {inner0}, {dY(7 - k)})) :')
+        w(f'    {{{ctx} == Nat.add({P0}, {d8("Y")}) : Nat}}')
+    w('  {==}')
+    w('')
+    # to_nat(x) == value(limb x)
+    A = bitfix.BITS
+    Wx = bitfix.word(A)
+    w('# A word is the value of its four little-endian bytes.')
+    w('law u32_value:')
+    w('  for +x: U32')
+    w('  {U32.to_nat(x) == N.value(I.limb(x)) : Nat}')
+    w('def u32_value(x):')
+    w('  match x:')
+    w(f'    case {Wx}:')
+    U = chain(A, '0n')
+    w(f'      %Equal.sym(Nat, U32.to_nat({Wx}), F.spec_numeric__unsigned(32n, {bitfix.word(A).replace("U32{","",1)[:-1]}), F.u32__to_nat_word({bitfix.word(A).replace("U32{","",1)[:-1]})) :')
+    w(f'        {{_ == N.value(I.limb({Wx})) : Nat}}')
+    words = [f'U32.and({Wx}, 255)', f'U32.and(U32.shrn({Wx}, 8n), 255)', f'U32.and(U32.shrn({Wx}, 16n), 255)', f'U32.shrn({Wx}, 24n)']
+    tgt = [bitfix.word(A[8 * k:8 * k + 8] + Fz * 24) for k in range(4)]
+    for k in range(4):
+        lst = tgt[:k] + ['_'] + words[k + 1:]
+        w(f'      %Equal.sym(U32, {words[k]}, {tgt[k]}, byte{k}({", ".join(A)})) :')
+        w(f'        {{{U} == N.value([{", ".join(lst)}]) : Nat}}')
+    RHS = f'N.value([{", ".join(tgt)}])'
+    # RHS: each byte's to_nat as found.bend's unsigned
+    un = [f'F.spec_numeric__unsigned(32n, {t[4:-1]})' for t in tgt]
+    for k in range(4):
+        inner = f'N.value([{", ".join(tgt[k + 1:])}])' if k < 3 else '0n'
+        ctx = f'Nat.add(_, Nat.mul({inner}, 256n))'
+        for j in range(k - 1, -1, -1):
+            ctx = f'Nat.add({un[j]}, Nat.mul({ctx}, 256n))'
+        w(f'      %Equal.sym(Nat, U32.to_nat({tgt[k]}), {un[k]}, F.u32__to_nat_word({tgt[k][4:-1]})) :')
+        w(f'        {{{U} == {ctx} : Nat}}')
+    RHS = None
+    for k in range(3, -1, -1):
+        RHS = f'Nat.add({un[k]}, Nat.mul({RHS if RHS else "0n"}, 256n))'
+    # LHS: split into bytes
+    for k in range(4):
+        bits = A[8 * k:8 * k + 8]
+        Yk = chain(A[8 * k + 8:], '0n')
+        pre = ''
+        post = ''
+        for j in range(k):
+            pre += f'Nat.add({chain(A[8 * j:8 * j + 8], "0n")}, Nat.mul('
+            post = ', 256n))' + post
+        full = chain(bits, Yk)
+        w(f'      %Equal.sym(Nat, {full}, Nat.add({chain(bits, "0n")}, Nat.mul({Yk}, 256n)), byte8({", ".join(bits)}, {Yk})) :')
+        w(f'        {{{pre}_{post} == {RHS} : Nat}}')
+    w('      {==}')
+    w('')
+    # fits of a value
+    w('law fits_value:')
+    w('  for +width: Nat')
+    w('  for +xs: +List<U32>')
+    w('  for +sized: {List.length(&2, U32, xs) == width : Nat}')
+    w('  for +scope: {SP.bytes_domain(xs) == True{} : Bool}')
+    w('  {N.fits(width, N.value(xs)) == True{} : Bool}')
+    w('def fits_value(width, xs, sized, scope):')
+    w('  match width:')
+    w('    case 0n:')
+    w('      match xs:')
+    w('        case Nil{}: {==}')
+    w('        case Con{h, t}: Empty.absurd({N.fits(0n, N.value(Con{h, t})) == True{} : Bool}, zero_succ(List.length(&2, U32, t), sized))')
+    w('    case 1n+ +p:')
+    w('      match xs:')
+    w('        case Nil{}: Empty.absurd({N.fits(1n+p, N.value(Nil{})) == True{} : Bool}, zero_succ(p, Equal.sym(Nat, 0n, 1n+p, sized)))')
+    w('        case Con{+h, +t}:')
+    w('          %Equal.sym(Nat, Nat.div(N.value(h <> t), 256n), N.value(t), OD.value_tail(h, t, small(h, and_l(U32.is_lt(h, 256), SP.bytes_domain(t), scope)))) :')
+    w('            {N.fits(p, _) == True{} : Bool}')
+    w('          fits_value(p, t, F.nat__succ_inj(List.length(&2, U32, t), p, sized), and_r(U32.is_lt(h, 256), SP.bytes_domain(t), scope))')
+    w('')
+    w('# The 32-byte specification encoding of a count is its length chunk\'s bytes.')
+    w('law len_bytes:')
+    w('  for +x: U32')
+    XS = 'List.append(&2, U32, FX.limbs([x]), SP.zero_bytes(28n))'
+    w(f'  {{N.encoding(32n, U32.to_nat(x)) == Some{{{XS}}} : Maybe<&2, +List<U32>>}}')
+    w('def len_bytes(x):')
+    w('  %Equal.sym(Nat, U32.to_nat(x), N.value(I.limb(x)), u32_value(x)) : {N.encoding(32n, _) == Some{List.append(&2, U32, FX.limbs([x]), SP.zero_bytes(28n))} : Maybe<&2, +List<U32>>}')
+    sc = f'V.append_domain(FX.limbs([x]), SP.zero_bytes(28n), FX.domain_limbs([x]), {{==}})'
+    w(f'  %Equal.sym(Bool, N.fits(32n, N.value({XS})), True{{}}, fits_value(32n, {XS}, {{==}}, {sc})) :')
+    w(f'    {{SP.optional(_, N.digits(32n, N.value(I.limb(x)))) == Some{{{XS}}} : Maybe<&2, +List<U32>>}}')
+    w(f'  %Equal.sym(+List<U32>, N.digits(32n, N.value({XS})), {XS}, OD.digits_of_value(32n, {XS}, {{==}}, {sc})) :')
+    w(f'    {{SP.optional(True{{}}, _) == Some{{{XS}}} : Maybe<&2, +List<U32>>}}')
+    w('  {==}')
+    text = '\n'.join(L) + '\n'
+    # helpers (before their first use)
+    H = ['def disc(b: Bool) -> Type:',
+         '  match b:',
+         '    case True{}: Unit',
+         '    case False{}: Empty',
+         '',
+         'def false_true(e: {False{} == True{} : Bool}) -> Empty:',
+         '  %Equal.sym(Bool, False{}, True{}, e) : disc(_)',
+         '  Unit{}',
+         '',
+         'def zero_succ(+n: Nat, +e: {1n+n == 0n : Nat}) -> Empty: F.nat__zero_succ(n, Equal.sym(Nat, 1n+n, 0n, e))',
+         '',
+         'def and_l(+a: Bool, +b: Bool, +e: {Bool.and(a, b) == True{} : Bool}) -> {a == True{} : Bool}:',
+         '  match a:',
+         '    case True{}: {==}',
+         '    case False{}: Empty.absurd({False{} == True{} : Bool}, false_true(e))',
+         '',
+         'def and_r(+a: Bool, +b: Bool, +e: {Bool.and(a, b) == True{} : Bool}) -> {b == True{} : Bool}:',
+         '  match a:',
+         '    case True{}: e',
+         '    case False{}: Empty.absurd({b == True{} : Bool}, false_true(e))',
+         '',
+         '# A byte below 256 is at most 255.',
+         'def small(+h: U32, +e: {U32.is_lt(h, 256) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(h), 255n) == True{} : Bool}:',
+         '  F.nat__lt_succ_le(U32.to_nat(h), 255n, Equal.trans(Bool, Nat.is_lt(U32.to_nat(h), 256n), U32.is_lt(h, 256), True{},',
+         '    Equal.sym(Bool, U32.is_lt(h, 256), Nat.is_lt(U32.to_nat(h), U32.to_nat(256)), UO.u32_less(h, 256)), e))', '']
+    marker = 'law fits_value:'
+    text = text.replace(marker, '\n'.join(H) + '\n' + marker)
+    return text
+
+
+# ---------------------------------------------------------------------------
+# Validity (item 2): for every phase-A shape, every object's view satisfies the
+# specification's structural domain (spec/value_domain.bend root_valid), and a
+# name whose generated `{p}_valid` is the constant True agrees with it.
+
+VALID = ROOT / 'proofs/obj/valid_names.bend'
+
+
+def emit_valid():
+    import re as _re
+    names = schema.load(ROOT / 'codegen/fulu.yaml')
+    g = G.Gen()
+    for n, t in names.items():
+        g.shape(t)
+    good = []
+    for s in g.order:
+        if s.kind == 'box':
+            continue
+        try:
+            covered(s)
+            spec_schema(s)
+            good.append(s)
+        except Skip:
+            pass
+    src = (ROOT / 'types/fulu_obj.bend').read_text()
+    true_valid = set(_re.findall(r'^def (\w+)_valid\(\+o: [\w.]+\) -> Bool: True\{\}$', src, _re.M))
+    L = ['import Base', 'import ../../src/obj.bend as O', 'import ../../types/fulu_obj.bend as T',
+         'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P',
+         'import ../../spec/value_domain.bend as VD', 'import ../../spec/fulu_schemas.bend as Spec',
+         'import ./root_names.bend as RN', '',
+         '# GENERATED by codegen/root_laws.py. Do not edit.',
+         '# Every object of a phase-A shape is structurally valid (spec/value_domain.bend',
+         '# root_valid of its view), and the generated validity of those names agrees.', '']
+    w = L.append
+    for s in good:
+        p, k, t = s.p, s.kind, s.t
+        R = qual(s.rep)
+        E = spec_schema(s)
+        head = f'def rv_{p}(+o: {R}) -> {{VD.root_valid(RN.v_{p}(o), {E}) == True{{}} : Bool}}:'
+        if k == 'bool':
+            w(head + ' {==}')
+        elif k == 'u64':
+            w(head)
+            w('  match o:')
+            w('    case O.U64{+lo, +hi}: {==}')
+        elif k in ('uwide',):
+            ws = [f'w{i}' for i in range(s.nw)]
+            w(head)
+            w('  match o:')
+            w(f'    case {pattern(R, ws)}: {{==}}')
+        elif k == 'rec' and t.kind == 'bytes':
+            w(head + f' RN.domain_{p}(o)')
+        elif k == 'rec' and t.kind == 'bits':
+            w(head)
+            w(f'  %Equal.sym(Nat, List.length(&2, Bool, RN.bits_{p}(o)), {t.size}n, RN.blen_{p}(o)) :')
+            w(f'    {{Bool.and(Nat.is_lt(0n, {t.size}n), Nat.is_eq(_, {t.size}n)) == True{{}} : Bool}}')
+            w('  {==}')
+        elif k == 'container':
+            F_ = s.fields
+            n = len(F_)
+            xs = [f'x{i}' for i in range(n)]
+            w(head)
+            w('  match o:')
+            w(f'    case {pattern(R, xs)}:')
+
+            def rest(i):
+                items = 'S.EmptyItems{}'
+                chain = 'S.End{}'
+                for j in range(n - 1, i - 1, -1):
+                    items = f'S.Items{{RN.v_{F_[j][1].p}({xs[j]}), {items}}}'
+                    chain = f'S.Chain{{{spec_schema(F_[j][1])}, {chain}}}'
+                return f'VD.root_valid({items}, {chain})'
+            for i, (f, fs) in enumerate(F_):
+                ctx = f'Bool.and(_, {rest(i + 1)})'
+                for _ in range(i):
+                    ctx = f'Bool.and(True{{}}, {ctx})'
+                Ei = spec_schema(fs)
+                w(f'      %Equal.sym(Bool, VD.root_valid(RN.v_{fs.p}({xs[i]}), {Ei}), True{{}}, rv_{fs.p}({xs[i]})) :')
+                w(f'        {{{ctx} == True{{}} : Bool}}')
+            w('      {==}')
+        else:
+            continue
+        w('')
+    for name, t in names.items():
+        s = g.shape(t)
+        if s not in good or s.p not in true_valid:
+            continue
+        R = qual(s.rep)
+        E = spec_schema(s)
+        w(f'# {name}: every object is valid, as its generated validity says.')
+        w(f'def {name}_valid_agrees(+o: {R}) -> {{T.{s.p}_valid(o) == VD.root_valid(RN.v_{s.p}(o), Spec.{name}()) : Bool}}:')
+        w(f'  %Equal.sym(Bool, VD.root_valid(RN.v_{s.p}(o), {E}), True{{}}, rv_{s.p}(o)) : {{T.{s.p}_valid(o) == _ : Bool}}')
+        w('  {==}')
+        w('')
+    return '\n'.join(L) + '\n'
+
+
 def main():
     text, status = emit_names()
     wtext, wstatus = emit_words_names()
     status.update(wstatus)
-    outs = [(LEAF, emit_leaf()), (ROOT / 'proofs/obj/root_names.bend', text), (ROOT / 'proofs/obj/root_words.bend', wtext)]
+    outs = [(LEAF, emit_leaf()), (BITS_LEAF, emit_bits_leaf()), (ROOT / 'proofs/obj/root_names.bend', text), (ROOT / 'proofs/obj/root_words.bend', wtext),
+            (ROOT / 'proofs/obj/len_bridge.bend', emit_len_bridge()), (VALID, emit_valid())]
     if '--status' in sys.argv:
         for n, st in status.items():
             print(f'{n}: {st}')

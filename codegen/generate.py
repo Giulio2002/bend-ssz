@@ -1851,7 +1851,26 @@ def emit_seq(s, w):
         w(f'            {p}_ptr(g, Nat.is_lt(Nat.add(s, O.pow2n(dep)), n), hl, seg, Nat.add(dep, 2n), Nat.add(s, O.pow2n(dep)), n, st))')
         tree_call = f'{p}_ptr(1n+U32.to_nat(n), Nat.is_lt(0n, U32.to_nat(n)), hl, seg, 0n, 0n, U32.to_nat(n), (h, (arr, D.zero())))'
     else:
-        tree_call = (f'{p}_mt({lim}n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n({lim}n), 0n, U32.to_nat(n), '
+        # The capacity 2^d is computed inside {p}_mt0 from the depth, never
+        # written at the call site: the root laws compare the runtime's call
+        # with their own, and two separately written copies of a closed 2^d
+        # are compared digit by digit by the proof checker (it overflows past
+        # about 2^14; WORK_LOG iteration 22, round 3).
+        # (The top level splits itself: an environment holding the closed 2^d
+        # would be forced by the checker when two stuck roots are compared.)
+        w(f'def {p}_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: {ST}) -> {ST}:')
+        w('  match d:')
+        w(f'    case 0n: {p}_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)')
+        w('    case 1n+q:')
+        w('      match inside:')
+        w('        case False{}:')
+        w('          (h, r) = st')
+        w('          (arr, dl) = r')
+        w('          (h, (arr, D.zconst(1n+q)))')
+        w('        case True{}:')
+        w(f'          {p}_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,')
+        w(f'            {p}_mt(q, 0n, True{{}}, hl, seg, O.pow2n(q), 0n, n, st))')
+        tree_call = (f'{p}_mt0({lim}n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), '
                      f'(h, (arr, D.zero())))')
     mixed = 'd' if t.kind == 'vector' else 'O.mix_len(hl, d, n)'
     w(f'def {p}_rt_fin(+hl: Nat, +n: U32, pair: {ST}) -> B.Buf & ({S} & D.Digest):')

@@ -38,6 +38,12 @@ them, and every official case that uses one is an invalid case.
 | `types/generic_obj_g<k>.bend`, `benchmarks/objprog/x<k>.bend` | the generic conformance programs, eight schemas each |
 | `types/obj_groups.json`, `types/obj_fuzz_ops.json`, `types/generic_obj_index.json` | the name → program/index tables the checks and benchmarks dispatch on |
 | `proofs/obj/*.bend` | the generated mutation, collection, cache and cost laws (`codegen/laws.py`) |
+| `proofs/obj/spec_*.bend`, `serialize_*.bend` | codec laws against the independent spec (`codegen/spec_laws.py`) |
+| `proofs/obj/sha_node.bend` | the SHA node bridge: runtime node = spec 64-byte message hash, via the pinned package law (`codegen/sha_laws.py`) |
+| `proofs/obj/schema_shapes.bend` | Bool shape tests and shape laws for every schema constructor (`codegen/schema_shapes.py`) |
+| `proofs/obj/root_names.bend`, `bits_leaf.bend`, `valid_names.bend` | phase-A root laws (Data-kind names: `X_root_correct`, `X_decoded_root_correct`) and generated-validity agreement (`codegen/root_laws.py`) |
+| `proofs/obj/root_types.bend` | phase-B root laws (Type-kind containers, byte storage, boxes, lists of Data containers) with digest witnesses (`codegen/root_laws_b.py`); `--status` prints per-name coverage and the reason for every uncovered name; `--only N1,N2 --out F` writes a bisection probe (not a gate) |
+| `build/probes/root_big.bend` | the Transaction root law, generated as a probe only (its closed limit fact is not evaluable by the checker) |
 
 ## Regeneration
 
@@ -45,8 +51,16 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/check_schema.py      # YAML vs frozen inventory
 /opt/homebrew/bin/python3 codegen/generate.py          # types/, benchmarks/objprog/
 /opt/homebrew/bin/python3 codegen/laws.py              # proofs/obj/
+/opt/homebrew/bin/python3 codegen/spec_laws.py         # codec spec laws
+/opt/homebrew/bin/python3 codegen/sha_laws.py          # SHA node bridge
+/opt/homebrew/bin/python3 codegen/schema_shapes.py     # schema shape laws
+/opt/homebrew/bin/python3 codegen/root_laws.py         # phase-A root laws, validity agreement
+/opt/homebrew/bin/python3 codegen/root_laws_b.py       # phase-B root laws
 /opt/homebrew/bin/python3 codegen/generate.py --check   # fails if anything is stale
 ```
+
+Every law generator takes `--check` as well (all current on the final source,
+2026-09-23).
 
 Generation is deterministic: the same inputs give byte-identical outputs, and
 `--check` is the gate that the checked-in sources match the schema. (The
@@ -72,7 +86,7 @@ emits Bend source. Nothing is believed because the generator produced it:
 
 | Module | Role | Why it is not generated |
 | --- | --- | --- |
-| `src/buffer.bend`, `src/obj.bend`, `src/merkle_fast.bend`, `src/digest.bend` | packed buffers, owning collections, streaming Merkleization, the pinned BendHub SHA-256 | shared runtime primitives; generating 109 copies of them would multiply the proof graph instead of sharing it. The operator requirement is explicit that codegen-only does not mean deleting reusable runtime support. |
+| `src/buffer.bend`, `src/obj.bend`, `src/merkle_fast.bend`, `src/digest.bend` | packed buffers, owning collections, recursive Merkle trees with the spec's shape (`O.mtree`/`ctree`/`ptree`, zero-subtree constants checked against spec/merkle.bend), the pinned BendHub SHA-256 | shared runtime primitives; generating 109 copies of them would multiply the proof graph instead of sharing it. The operator requirement is explicit that codegen-only does not mean deleting reusable runtime support. |
 | `spec/*.bend` | the independent mathematical SSZ definitions | must stay independent of the generator, or the proofs would compare the implementation with itself |
 | `src/model.bend` and the list-based modules under it (`src/ssz.bend`, `types/fulu.bend`) | the model the 29 frozen `END_TO_END` and 13 `ROOT_DOMAIN` propositions are stated about, and the API the 51 protected Bun runtime tests exercise through `tools/generic_transport.ts` / `tools/primitive_backend.ts` | removing them would delete checked frozen propositions and break protected tests. They are **not** a production path and no longer carry the official cases: `tools/spectests.py` runs all 5,440 official cases natively through the generated programs (iteration 19). `tools/generic_transport.ts` accepts arbitrary schema descriptions at run time, which a per-schema generated API cannot, so it stays as the model's test transport. See `docs/LAW_API_MAP.md` for the remaining obligation. |
 

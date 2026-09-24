@@ -6718,6 +6718,19 @@ def l8192_DepositRequest_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +
           (arr, dl) = r
           l8192_DepositRequest_mj(hl, dl, l8192_DepositRequest_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l8192_DepositRequest_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<DepositRequest> & D.Digest)) -> B.Buf & (Array<DepositRequest> & D.Digest):
+  match d:
+    case 0n: l8192_DepositRequest_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l8192_DepositRequest_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l8192_DepositRequest_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l8192_DepositRequest_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<DepositRequest> & D.Digest)) -> B.Buf & (l8192_DepositRequest_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -6725,7 +6738,7 @@ def l8192_DepositRequest_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<DepositR
 
 def l8192_DepositRequest_root(+hl: Nat, h: B.Buf, o: l8192_DepositRequest_Seq, +seg: U32) -> B.Buf & (l8192_DepositRequest_Seq & D.Digest):
   match o:
-    case l8192_DepositRequest_Seq{arr, +n}: l8192_DepositRequest_rt_fin(hl, n, l8192_DepositRequest_mt(13n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(13n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l8192_DepositRequest_Seq{arr, +n}: l8192_DepositRequest_rt_fin(hl, n, l8192_DepositRequest_mt0(13n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l8192_DepositRequest_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<DepositRequest> & DepositRequest) -> Array<DepositRequest> & U32:
   match k:
@@ -7108,6 +7121,19 @@ def l16_WithdrawalRequest_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, 
           (arr, dl) = r
           l16_WithdrawalRequest_mj(hl, dl, l16_WithdrawalRequest_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l16_WithdrawalRequest_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<WithdrawalRequest> & D.Digest)) -> B.Buf & (Array<WithdrawalRequest> & D.Digest):
+  match d:
+    case 0n: l16_WithdrawalRequest_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l16_WithdrawalRequest_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l16_WithdrawalRequest_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l16_WithdrawalRequest_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<WithdrawalRequest> & D.Digest)) -> B.Buf & (l16_WithdrawalRequest_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -7115,7 +7141,7 @@ def l16_WithdrawalRequest_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Withdra
 
 def l16_WithdrawalRequest_root(+hl: Nat, h: B.Buf, o: l16_WithdrawalRequest_Seq, +seg: U32) -> B.Buf & (l16_WithdrawalRequest_Seq & D.Digest):
   match o:
-    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_rt_fin(hl, n, l16_WithdrawalRequest_mt(4n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(4n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l16_WithdrawalRequest_Seq{arr, +n}: l16_WithdrawalRequest_rt_fin(hl, n, l16_WithdrawalRequest_mt0(4n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l16_WithdrawalRequest_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<WithdrawalRequest> & WithdrawalRequest) -> Array<WithdrawalRequest> & U32:
   match k:
@@ -7498,6 +7524,19 @@ def l2_ConsolidationRequest_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32
           (arr, dl) = r
           l2_ConsolidationRequest_mj(hl, dl, l2_ConsolidationRequest_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l2_ConsolidationRequest_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<ConsolidationRequest> & D.Digest)) -> B.Buf & (Array<ConsolidationRequest> & D.Digest):
+  match d:
+    case 0n: l2_ConsolidationRequest_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l2_ConsolidationRequest_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l2_ConsolidationRequest_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l2_ConsolidationRequest_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<ConsolidationRequest> & D.Digest)) -> B.Buf & (l2_ConsolidationRequest_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -7505,7 +7544,7 @@ def l2_ConsolidationRequest_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Conso
 
 def l2_ConsolidationRequest_root(+hl: Nat, h: B.Buf, o: l2_ConsolidationRequest_Seq, +seg: U32) -> B.Buf & (l2_ConsolidationRequest_Seq & D.Digest):
   match o:
-    case l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_rt_fin(hl, n, l2_ConsolidationRequest_mt(1n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(1n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l2_ConsolidationRequest_Seq{arr, +n}: l2_ConsolidationRequest_rt_fin(hl, n, l2_ConsolidationRequest_mt0(1n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l2_ConsolidationRequest_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<ConsolidationRequest> & ConsolidationRequest) -> Array<ConsolidationRequest> & U32:
   match k:
@@ -9659,6 +9698,19 @@ def l1048576_bl1073741824_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, 
           (arr, dl) = r
           l1048576_bl1073741824_mj(hl, dl, l1048576_bl1073741824_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l1048576_bl1073741824_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<O.Boxed<O.Words>> & D.Digest)) -> B.Buf & (Array<O.Boxed<O.Words>> & D.Digest):
+  match d:
+    case 0n: l1048576_bl1073741824_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l1048576_bl1073741824_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l1048576_bl1073741824_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l1048576_bl1073741824_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<O.Words>> & D.Digest)) -> B.Buf & (l1048576_bl1073741824_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -9666,7 +9718,7 @@ def l1048576_bl1073741824_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed
 
 def l1048576_bl1073741824_root(+hl: Nat, h: B.Buf, o: l1048576_bl1073741824_Seq, +seg: U32) -> B.Buf & (l1048576_bl1073741824_Seq & D.Digest):
   match o:
-    case l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_rt_fin(hl, n, l1048576_bl1073741824_mt(20n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(20n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l1048576_bl1073741824_Seq{arr, +n}: l1048576_bl1073741824_rt_fin(hl, n, l1048576_bl1073741824_mt0(20n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l1048576_bl1073741824_fo_back(+i: U32, +acc: U32, arr: Array<O.Boxed<O.Words>>, pair: O.Boxed<O.Words> & U32) -> Array<O.Boxed<O.Words>> & U32:
   (v, +x) = pair
@@ -10136,6 +10188,19 @@ def l16_Withdrawal_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat
           (arr, dl) = r
           l16_Withdrawal_mj(hl, dl, l16_Withdrawal_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l16_Withdrawal_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<Withdrawal> & D.Digest)) -> B.Buf & (Array<Withdrawal> & D.Digest):
+  match d:
+    case 0n: l16_Withdrawal_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l16_Withdrawal_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l16_Withdrawal_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l16_Withdrawal_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Withdrawal> & D.Digest)) -> B.Buf & (l16_Withdrawal_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -10143,7 +10208,7 @@ def l16_Withdrawal_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Withdrawal> & 
 
 def l16_Withdrawal_root(+hl: Nat, h: B.Buf, o: l16_Withdrawal_Seq, +seg: U32) -> B.Buf & (l16_Withdrawal_Seq & D.Digest):
   match o:
-    case l16_Withdrawal_Seq{arr, +n}: l16_Withdrawal_rt_fin(hl, n, l16_Withdrawal_mt(4n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(4n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l16_Withdrawal_Seq{arr, +n}: l16_Withdrawal_rt_fin(hl, n, l16_Withdrawal_mt0(4n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l16_Withdrawal_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<Withdrawal> & Withdrawal) -> Array<Withdrawal> & U32:
   match k:
@@ -11403,6 +11468,19 @@ def l2048_Eth1Data_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat
           (arr, dl) = r
           l2048_Eth1Data_mj(hl, dl, l2048_Eth1Data_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l2048_Eth1Data_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<Eth1Data> & D.Digest)) -> B.Buf & (Array<Eth1Data> & D.Digest):
+  match d:
+    case 0n: l2048_Eth1Data_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l2048_Eth1Data_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l2048_Eth1Data_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l2048_Eth1Data_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Eth1Data> & D.Digest)) -> B.Buf & (l2048_Eth1Data_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -11410,7 +11488,7 @@ def l2048_Eth1Data_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Eth1Data> & D.
 
 def l2048_Eth1Data_root(+hl: Nat, h: B.Buf, o: l2048_Eth1Data_Seq, +seg: U32) -> B.Buf & (l2048_Eth1Data_Seq & D.Digest):
   match o:
-    case l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_rt_fin(hl, n, l2048_Eth1Data_mt(11n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(11n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l2048_Eth1Data_Seq{arr, +n}: l2048_Eth1Data_rt_fin(hl, n, l2048_Eth1Data_mt0(11n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l2048_Eth1Data_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<Eth1Data> & Eth1Data) -> Array<Eth1Data> & U32:
   match k:
@@ -11793,6 +11871,19 @@ def l1099511627776_Validator_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U3
           (arr, dl) = r
           l1099511627776_Validator_mj(hl, dl, l1099511627776_Validator_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l1099511627776_Validator_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<Validator> & D.Digest)) -> B.Buf & (Array<Validator> & D.Digest):
+  match d:
+    case 0n: l1099511627776_Validator_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l1099511627776_Validator_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l1099511627776_Validator_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l1099511627776_Validator_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Validator> & D.Digest)) -> B.Buf & (l1099511627776_Validator_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -11800,7 +11891,7 @@ def l1099511627776_Validator_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Vali
 
 def l1099511627776_Validator_root(+hl: Nat, h: B.Buf, o: l1099511627776_Validator_Seq, +seg: U32) -> B.Buf & (l1099511627776_Validator_Seq & D.Digest):
   match o:
-    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_rt_fin(hl, n, l1099511627776_Validator_mt(40n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(40n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l1099511627776_Validator_Seq{arr, +n}: l1099511627776_Validator_rt_fin(hl, n, l1099511627776_Validator_mt0(40n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l1099511627776_Validator_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<Validator> & Validator) -> Array<Validator> & U32:
   match k:
@@ -12633,6 +12724,19 @@ def l16777216_HistoricalSummary_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg:
           (arr, dl) = r
           l16777216_HistoricalSummary_mj(hl, dl, l16777216_HistoricalSummary_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l16777216_HistoricalSummary_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<HistoricalSummary> & D.Digest)) -> B.Buf & (Array<HistoricalSummary> & D.Digest):
+  match d:
+    case 0n: l16777216_HistoricalSummary_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l16777216_HistoricalSummary_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l16777216_HistoricalSummary_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l16777216_HistoricalSummary_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<HistoricalSummary> & D.Digest)) -> B.Buf & (l16777216_HistoricalSummary_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -12640,7 +12744,7 @@ def l16777216_HistoricalSummary_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<H
 
 def l16777216_HistoricalSummary_root(+hl: Nat, h: B.Buf, o: l16777216_HistoricalSummary_Seq, +seg: U32) -> B.Buf & (l16777216_HistoricalSummary_Seq & D.Digest):
   match o:
-    case l16777216_HistoricalSummary_Seq{arr, +n}: l16777216_HistoricalSummary_rt_fin(hl, n, l16777216_HistoricalSummary_mt(24n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(24n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l16777216_HistoricalSummary_Seq{arr, +n}: l16777216_HistoricalSummary_rt_fin(hl, n, l16777216_HistoricalSummary_mt0(24n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l16777216_HistoricalSummary_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<HistoricalSummary> & HistoricalSummary) -> Array<HistoricalSummary> & U32:
   match k:
@@ -13023,6 +13127,19 @@ def l134217728_PendingDeposit_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U
           (arr, dl) = r
           l134217728_PendingDeposit_mj(hl, dl, l134217728_PendingDeposit_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l134217728_PendingDeposit_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<PendingDeposit> & D.Digest)) -> B.Buf & (Array<PendingDeposit> & D.Digest):
+  match d:
+    case 0n: l134217728_PendingDeposit_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l134217728_PendingDeposit_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l134217728_PendingDeposit_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l134217728_PendingDeposit_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<PendingDeposit> & D.Digest)) -> B.Buf & (l134217728_PendingDeposit_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -13030,7 +13147,7 @@ def l134217728_PendingDeposit_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Pen
 
 def l134217728_PendingDeposit_root(+hl: Nat, h: B.Buf, o: l134217728_PendingDeposit_Seq, +seg: U32) -> B.Buf & (l134217728_PendingDeposit_Seq & D.Digest):
   match o:
-    case l134217728_PendingDeposit_Seq{arr, +n}: l134217728_PendingDeposit_rt_fin(hl, n, l134217728_PendingDeposit_mt(27n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(27n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l134217728_PendingDeposit_Seq{arr, +n}: l134217728_PendingDeposit_rt_fin(hl, n, l134217728_PendingDeposit_mt0(27n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l134217728_PendingDeposit_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<PendingDeposit> & PendingDeposit) -> Array<PendingDeposit> & U32:
   match k:
@@ -13413,6 +13530,19 @@ def l134217728_PendingPartialWithdrawal_mt(d: Nat, m: Nat, inside: Bool, +hl: Na
           (arr, dl) = r
           l134217728_PendingPartialWithdrawal_mj(hl, dl, l134217728_PendingPartialWithdrawal_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l134217728_PendingPartialWithdrawal_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<PendingPartialWithdrawal> & D.Digest)) -> B.Buf & (Array<PendingPartialWithdrawal> & D.Digest):
+  match d:
+    case 0n: l134217728_PendingPartialWithdrawal_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l134217728_PendingPartialWithdrawal_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l134217728_PendingPartialWithdrawal_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l134217728_PendingPartialWithdrawal_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<PendingPartialWithdrawal> & D.Digest)) -> B.Buf & (l134217728_PendingPartialWithdrawal_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -13420,7 +13550,7 @@ def l134217728_PendingPartialWithdrawal_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & 
 
 def l134217728_PendingPartialWithdrawal_root(+hl: Nat, h: B.Buf, o: l134217728_PendingPartialWithdrawal_Seq, +seg: U32) -> B.Buf & (l134217728_PendingPartialWithdrawal_Seq & D.Digest):
   match o:
-    case l134217728_PendingPartialWithdrawal_Seq{arr, +n}: l134217728_PendingPartialWithdrawal_rt_fin(hl, n, l134217728_PendingPartialWithdrawal_mt(27n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(27n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l134217728_PendingPartialWithdrawal_Seq{arr, +n}: l134217728_PendingPartialWithdrawal_rt_fin(hl, n, l134217728_PendingPartialWithdrawal_mt0(27n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l134217728_PendingPartialWithdrawal_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<PendingPartialWithdrawal> & PendingPartialWithdrawal) -> Array<PendingPartialWithdrawal> & U32:
   match k:
@@ -13803,6 +13933,19 @@ def l262144_PendingConsolidation_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg
           (arr, dl) = r
           l262144_PendingConsolidation_mj(hl, dl, l262144_PendingConsolidation_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l262144_PendingConsolidation_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<PendingConsolidation> & D.Digest)) -> B.Buf & (Array<PendingConsolidation> & D.Digest):
+  match d:
+    case 0n: l262144_PendingConsolidation_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l262144_PendingConsolidation_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l262144_PendingConsolidation_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l262144_PendingConsolidation_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<PendingConsolidation> & D.Digest)) -> B.Buf & (l262144_PendingConsolidation_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -13810,7 +13953,7 @@ def l262144_PendingConsolidation_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<
 
 def l262144_PendingConsolidation_root(+hl: Nat, h: B.Buf, o: l262144_PendingConsolidation_Seq, +seg: U32) -> B.Buf & (l262144_PendingConsolidation_Seq & D.Digest):
   match o:
-    case l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_rt_fin(hl, n, l262144_PendingConsolidation_mt(18n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(18n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l262144_PendingConsolidation_Seq{arr, +n}: l262144_PendingConsolidation_rt_fin(hl, n, l262144_PendingConsolidation_mt0(18n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l262144_PendingConsolidation_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<PendingConsolidation> & PendingConsolidation) -> Array<PendingConsolidation> & U32:
   match k:
@@ -17601,6 +17744,19 @@ def l16_ProposerSlashing_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +
           (arr, dl) = r
           l16_ProposerSlashing_mj(hl, dl, l16_ProposerSlashing_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l16_ProposerSlashing_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<O.Boxed<ProposerSlashing>> & D.Digest)) -> B.Buf & (Array<O.Boxed<ProposerSlashing>> & D.Digest):
+  match d:
+    case 0n: l16_ProposerSlashing_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l16_ProposerSlashing_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l16_ProposerSlashing_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l16_ProposerSlashing_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<ProposerSlashing>> & D.Digest)) -> B.Buf & (l16_ProposerSlashing_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -17608,7 +17764,7 @@ def l16_ProposerSlashing_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<
 
 def l16_ProposerSlashing_root(+hl: Nat, h: B.Buf, o: l16_ProposerSlashing_Seq, +seg: U32) -> B.Buf & (l16_ProposerSlashing_Seq & D.Digest):
   match o:
-    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_rt_fin(hl, n, l16_ProposerSlashing_mt(4n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(4n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l16_ProposerSlashing_Seq{arr, +n}: l16_ProposerSlashing_rt_fin(hl, n, l16_ProposerSlashing_mt0(4n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l16_ProposerSlashing_fo_back(+i: U32, +acc: U32, arr: Array<O.Boxed<ProposerSlashing>>, pair: O.Boxed<ProposerSlashing> & U32) -> Array<O.Boxed<ProposerSlashing>> & U32:
   (v, +x) = pair
@@ -18223,6 +18379,19 @@ def l1_AttesterSlashing_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w
           (arr, dl) = r
           l1_AttesterSlashing_mj(hl, dl, l1_AttesterSlashing_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l1_AttesterSlashing_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<O.Boxed<AttesterSlashing>> & D.Digest)) -> B.Buf & (Array<O.Boxed<AttesterSlashing>> & D.Digest):
+  match d:
+    case 0n: l1_AttesterSlashing_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l1_AttesterSlashing_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l1_AttesterSlashing_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l1_AttesterSlashing_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<AttesterSlashing>> & D.Digest)) -> B.Buf & (l1_AttesterSlashing_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -18230,7 +18399,7 @@ def l1_AttesterSlashing_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<A
 
 def l1_AttesterSlashing_root(+hl: Nat, h: B.Buf, o: l1_AttesterSlashing_Seq, +seg: U32) -> B.Buf & (l1_AttesterSlashing_Seq & D.Digest):
   match o:
-    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_rt_fin(hl, n, l1_AttesterSlashing_mt(0n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(0n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l1_AttesterSlashing_Seq{arr, +n}: l1_AttesterSlashing_rt_fin(hl, n, l1_AttesterSlashing_mt0(0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l1_AttesterSlashing_fo_back(+i: U32, +acc: U32, arr: Array<O.Boxed<AttesterSlashing>>, pair: O.Boxed<AttesterSlashing> & U32) -> Array<O.Boxed<AttesterSlashing>> & U32:
   (v, +x) = pair
@@ -18814,6 +18983,19 @@ def l8_Attestation_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat
           (arr, dl) = r
           l8_Attestation_mj(hl, dl, l8_Attestation_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l8_Attestation_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<O.Boxed<Attestation>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Attestation>> & D.Digest):
+  match d:
+    case 0n: l8_Attestation_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l8_Attestation_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l8_Attestation_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l8_Attestation_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<Attestation>> & D.Digest)) -> B.Buf & (l8_Attestation_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -18821,7 +19003,7 @@ def l8_Attestation_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<Attest
 
 def l8_Attestation_root(+hl: Nat, h: B.Buf, o: l8_Attestation_Seq, +seg: U32) -> B.Buf & (l8_Attestation_Seq & D.Digest):
   match o:
-    case l8_Attestation_Seq{arr, +n}: l8_Attestation_rt_fin(hl, n, l8_Attestation_mt(3n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(3n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l8_Attestation_Seq{arr, +n}: l8_Attestation_rt_fin(hl, n, l8_Attestation_mt0(3n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l8_Attestation_fo_back(+i: U32, +acc: U32, arr: Array<O.Boxed<Attestation>>, pair: O.Boxed<Attestation> & U32) -> Array<O.Boxed<Attestation>> & U32:
   (v, +x) = pair
@@ -19382,6 +19564,19 @@ def l16_Deposit_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32, +w: Nat, +
           (arr, dl) = r
           l16_Deposit_mj(hl, dl, l16_Deposit_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l16_Deposit_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<O.Boxed<Deposit>> & D.Digest)) -> B.Buf & (Array<O.Boxed<Deposit>> & D.Digest):
+  match d:
+    case 0n: l16_Deposit_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l16_Deposit_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l16_Deposit_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l16_Deposit_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<Deposit>> & D.Digest)) -> B.Buf & (l16_Deposit_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -19389,7 +19584,7 @@ def l16_Deposit_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<O.Boxed<Deposit>>
 
 def l16_Deposit_root(+hl: Nat, h: B.Buf, o: l16_Deposit_Seq, +seg: U32) -> B.Buf & (l16_Deposit_Seq & D.Digest):
   match o:
-    case l16_Deposit_Seq{arr, +n}: l16_Deposit_rt_fin(hl, n, l16_Deposit_mt(4n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(4n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l16_Deposit_Seq{arr, +n}: l16_Deposit_rt_fin(hl, n, l16_Deposit_mt0(4n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l16_Deposit_fo_back(+i: U32, +acc: U32, arr: Array<O.Boxed<Deposit>>, pair: O.Boxed<Deposit> & U32) -> Array<O.Boxed<Deposit>> & U32:
   (v, +x) = pair
@@ -19833,6 +20028,19 @@ def l16_SignedVoluntaryExit_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +seg: U32
           (arr, dl) = r
           l16_SignedVoluntaryExit_mj(hl, dl, l16_SignedVoluntaryExit_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l16_SignedVoluntaryExit_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<SignedVoluntaryExit> & D.Digest)) -> B.Buf & (Array<SignedVoluntaryExit> & D.Digest):
+  match d:
+    case 0n: l16_SignedVoluntaryExit_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l16_SignedVoluntaryExit_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l16_SignedVoluntaryExit_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l16_SignedVoluntaryExit_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<SignedVoluntaryExit> & D.Digest)) -> B.Buf & (l16_SignedVoluntaryExit_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -19840,7 +20048,7 @@ def l16_SignedVoluntaryExit_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<Signe
 
 def l16_SignedVoluntaryExit_root(+hl: Nat, h: B.Buf, o: l16_SignedVoluntaryExit_Seq, +seg: U32) -> B.Buf & (l16_SignedVoluntaryExit_Seq & D.Digest):
   match o:
-    case l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_rt_fin(hl, n, l16_SignedVoluntaryExit_mt(4n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(4n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l16_SignedVoluntaryExit_Seq{arr, +n}: l16_SignedVoluntaryExit_rt_fin(hl, n, l16_SignedVoluntaryExit_mt0(4n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l16_SignedVoluntaryExit_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<SignedVoluntaryExit> & SignedVoluntaryExit) -> Array<SignedVoluntaryExit> & U32:
   match k:
@@ -20301,6 +20509,19 @@ def l16_SignedBLSToExecutionChange_mt(d: Nat, m: Nat, inside: Bool, +hl: Nat, +s
           (arr, dl) = r
           l16_SignedBLSToExecutionChange_mj(hl, dl, l16_SignedBLSToExecutionChange_mt(1n+p, q, inside, hl, seg, w, s, n, (h, (arr, D.zero()))))
 
+def l16_SignedBLSToExecutionChange_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: B.Buf & (Array<SignedBLSToExecutionChange> & D.Digest)) -> B.Buf & (Array<SignedBLSToExecutionChange> & D.Digest):
+  match d:
+    case 0n: l16_SignedBLSToExecutionChange_mt(0n, 0n, inside, hl, seg, 1n, 0n, n, st)
+    case 1n+q:
+      match inside:
+        case False{}:
+          (h, r) = st
+          (arr, dl) = r
+          (h, (arr, D.zconst(1n+q)))
+        case True{}:
+          l16_SignedBLSToExecutionChange_mt(q, 1n, Nat.is_lt(Nat.add(0n, O.pow2n(q)), n), hl, seg, O.pow2n(q), Nat.add(0n, O.pow2n(q)), n,
+            l16_SignedBLSToExecutionChange_mt(q, 0n, True{}, hl, seg, O.pow2n(q), 0n, n, st))
+
 def l16_SignedBLSToExecutionChange_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Array<SignedBLSToExecutionChange> & D.Digest)) -> B.Buf & (l16_SignedBLSToExecutionChange_Seq & D.Digest):
   (h, r) = pair
   (arr, d) = r
@@ -20308,7 +20529,7 @@ def l16_SignedBLSToExecutionChange_rt_fin(+hl: Nat, +n: U32, pair: B.Buf & (Arra
 
 def l16_SignedBLSToExecutionChange_root(+hl: Nat, h: B.Buf, o: l16_SignedBLSToExecutionChange_Seq, +seg: U32) -> B.Buf & (l16_SignedBLSToExecutionChange_Seq & D.Digest):
   match o:
-    case l16_SignedBLSToExecutionChange_Seq{arr, +n}: l16_SignedBLSToExecutionChange_rt_fin(hl, n, l16_SignedBLSToExecutionChange_mt(4n, 0n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, O.pow2n(4n), 0n, U32.to_nat(n), (h, (arr, D.zero()))))
+    case l16_SignedBLSToExecutionChange_Seq{arr, +n}: l16_SignedBLSToExecutionChange_rt_fin(hl, n, l16_SignedBLSToExecutionChange_mt0(4n, Nat.is_lt(0n, U32.to_nat(n)), hl, seg, U32.to_nat(n), (h, (arr, D.zero()))))
 
 def l16_SignedBLSToExecutionChange_fo(+k: Nat, +i: U32, +acc: U32, pair: Array<SignedBLSToExecutionChange> & SignedBLSToExecutionChange) -> Array<SignedBLSToExecutionChange> & U32:
   match k:
