@@ -109,6 +109,9 @@ What that means concretely:
   depth 56. 2026-09-26 (agent/root-packed): Gc465214E502 (List[uint16, 1024]
   field; root_gtypes.bend stock PASS 529 s) and, with it, Gp66304057C3 and the
   unions GuAD91DEB870, Gu6DDF182530 (root_gtypes2.bend) now have laws; the
+  Gc56D855869F (vectors of Data and Type-kind containers, codegen root_laws_b
+  vecify; elements with a uint8 field carry their rp facts, ereps; root_gtypes
+  PASS 522 s, root_gtypes2 PASS 555 s) too. The
   "bit list of depth 56" (GtF7582E0E9A) is a progressive bit list (Spec
   S.ProgressiveBits{}), not a depth-56 tree. Progressive containers of more than 8 slots have no tree law yet
   (Gp8A7851175B: 22 slots).

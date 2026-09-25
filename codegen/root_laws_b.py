@@ -503,10 +503,10 @@ class Gen:
             return 'lh'
         if fs.kind == 'packed' and fs.t.kind == 'vector' and (fs.t.elem.kind == 'bool' or (fs.t.elem.kind == 'uint' and fs.t.elem.size in (1, 2, 4, 8, 16, 32))):
             return 'vk' + ('b' if fs.t.elem.kind == 'bool' else str(fs.t.elem.size))
-        if fs.kind == 'seq' and fs.t.kind == 'list' and not fs.pelem.data:
+        if fs.kind == 'seq' and fs.t.kind in ('list', 'vector') and not fs.pelem.data:
             self.tlist_laws(fs)
             return 'tl'
-        if fs.kind == 'seq' and fs.t.kind == 'list' and fs.pelem.data:
+        if fs.kind == 'seq' and fs.t.kind in ('list', 'vector') and fs.pelem.data:
             if fs.pelem.p not in self.phaseA:
                 raise Skip(f'{fs.p}: element {fs.pelem.p} not a phase A shape')
             self.xlist_laws(fs)
@@ -694,7 +694,7 @@ class Gen:
             inner = fs.inner if k == 'boxT' else fs
             return f'eqs_{inner.p}({sx})'
         if k == 'xl':
-            return f'{{SH.ListOf_element({sx}) == {RA.spec_schema(fs.pelem)} : S.Schema}}'
+            return f'{{{self.vsub(fs, "SH.ListOf_element")}({sx}) == {RA.spec_schema(fs.pelem)} : S.Schema}}'
         if k == 'tl':
             return f'eqs_{fs.p}({sx})'
         return None
@@ -878,6 +878,93 @@ class Gen:
         self.done[p] = True
         self.out.extend(L)
 
+    @staticmethod
+    def vsub(fs, c):
+        """A list schema accessor, as the vector's when fs is a vector."""
+        if fs.t.kind != 'vector':
+            return c
+        for a, b in (('SH.is_ListOf', 'SH.is_Vector'), ('SH.ListOf_limit', 'SH.Vector_length'), ('SH.ListOf_element', 'SH.Vector_element'),
+                     ('SH.ListOf_shape', 'SH.Vector_shape'), ('S.ListOf{', 'S.Vector{')):
+            c = c.replace(a, b)
+        return c
+
+    def vecify(self, fs, L):
+        """The laws of a vector of containers from its list laws: the runtime
+        mixes no length in, the schema is a vector whose length is the count, and
+        the specification's sequence has no length (codegen: the same tree)."""
+        if fs.t.kind != 'vector':
+            return L
+        p = fs.p
+        out = []
+        if 'VEC:helpers' not in self.done:
+            self.done['VEC:helpers'] = True
+            out += ['# ---- vectors of containers: the sequence relation without a length ----',
+                    'def vec_none(-items: S.Value, -E: S.Schema, -L: Nat, -outs: +List<+List<U32>>, +e: {RR.basic_size(E) == None{} : Maybe<&2, Nat>},',
+                    '    p: RR.sequence(None{}, RR.basic_bytes(items, E), c => RR.roots(items, S.Repeat{E}, c), L, False{}, None{}, outs))',
+                    '    -> RR.roots(S.Sequence{items}, S.Vector{E, L}, outs):',
+                    '  %Equal.sym(Maybe<&2, Nat>, RR.basic_size(E), None{}, e) : RR.sequence(_, RR.basic_bytes(items, E), c => RR.roots(items, S.Repeat{E}, c), L, False{}, None{}, outs)',
+                    '  p',
+                    'law veq_le:', '  for +a: Nat', '  for +b: Nat', '  for +e: {Nat.is_eq(a, b) == True{} : Bool}',
+                    '  {Nat.is_le(a, b) == True{} : Bool}',
+                    'def veq_le(a, b, e):',
+                    '  match a b:',
+                    '    case 0n 0n: {==}',
+                    '    case 0n 1n+q: Empty.absurd({Nat.is_le(0n, 1n+q) == True{} : Bool}, MD.false_true(e))',
+                    '    case 1n+p 0n: Empty.absurd({Nat.is_le(1n+p, 0n) == True{} : Bool}, MD.false_true(e))',
+                    '    case 1n+ +p 1n+ +q: veq_le(p, q, e)', '']
+        # the length-mixing lemma xlm_<p> has no use for a vector: drop it
+        keep, skip = [], False
+        for line in L:
+            if line.startswith(f'def xlm_{p}('):
+                skip = True
+            elif skip and (line.startswith('def ') or line.startswith('law ')):
+                skip = False
+            if not skip:
+                keep.append(line)
+        text = '\n'.join(keep)
+        # drop the length mixing: O.mix_len(hl, X, N) -> X (N the count)
+        for cnt in ('N', 'n'):
+            key = 'O.mix_len(hl, '
+            i = 0
+            while True:
+                i = text.find(key, i)
+                if i < 0:
+                    break
+                j, depth = i + len(key), 1
+                k = j
+                while depth:
+                    ch = text[k]
+                    depth += ch == '('
+                    depth -= ch == ')'
+                    k += 1
+                inner = text[j:k - 1]
+                if inner.endswith(', ' + cnt):
+                    text = text[:i] + inner[:-len(', ' + cnt)] + text[k:]
+                else:
+                    i = k
+        text = self.vsub(fs, text)
+        text = text.replace(f'{{Nat.is_le(U32.to_nat(xlen_o_{p}(o)), SH.Vector_length(s)) == True{{}} : Bool}}',
+                            f'{{Nat.is_eq(U32.to_nat(xlen_o_{p}(o)), SH.Vector_length(s)) == True{{}} : Bool}}')
+        text = text.replace(f'+hv: {{Nat.is_le(U32.to_nat(xlen_o_{p}(o)), Lm) == True{{}} : Bool}}) -> {{Nat.is_le(U32.to_nat(N), Lm) == True{{}} : Bool}}',
+                            f'+hv: {{Nat.is_eq(U32.to_nat(xlen_o_{p}(o)), Lm) == True{{}} : Bool}}) -> {{Nat.is_eq(U32.to_nat(N), Lm) == True{{}} : Bool}}')
+        text = text.replace(f'{{Nat.is_le(U32.to_nat(_), Lm) == True{{}} : Bool}}\n  hv', f'{{Nat.is_eq(U32.to_nat(_), Lm) == True{{}} : Bool}}\n  hv')
+        text = text.replace(f'+hvN = xhv_{p}(o, t, N, SH.Vector_length(s), eo, hv)',
+                            f'+hvN = veq_le(U32.to_nat(N), SH.Vector_length(s), xhv_{p}(o, t, N, SH.Vector_length(s), eo, hv))')
+        text = text.replace('OS.list_none(', 'vec_none(')
+        # the length-mixing lemma is not used: the length part of the relation is [root] == [root]
+        key = f'xlm_{p}(hl, ehl, N,'
+        while key in text:
+            i = text.index(key)
+            k, depth = i + len(f'xlm_{p}('), 1
+            while depth:
+                depth += text[k] == '('
+                depth -= text[k] == ')'
+                k += 1
+            text = text[:i] + '{==}' + text[k:]
+        assert f'xlm_{p}(hl, ehl, N,' not in text, p
+        out += text.split('\n')
+        return out
+
     def xlist_laws(self, fs):
         """Laws of a list of Data-kind containers (its generated tree `_mt`)."""
         if fs.p in self.done:
@@ -951,18 +1038,32 @@ class Gen:
         w('  match k:')
         w('    case 0n: S.EmptyItems{}')
         w(f'    case 1n+q: S.Items{{RN.v_{X.p}(xat_{p}(W, i)), xi_{p}(q, W, 1n+i)}}')
+        # elements whose phase A law needs a representation fact (uint8/16 fields)
+        erp = RA.needs_rep(X)
+        ER = ', er' if erp else ''
+        if erp:
+            w(f'def ereps_{p}(k: Nat, +W: List<&2, {RX}>, +i: Nat) -> Data:')
+            w('  match k:')
+            w('    case 0n: {True{} == True{} : Bool}')
+            w(f'    case 1n+q: DK.P2(RN.rp_{X.p}(xat_{p}(W, i)), ereps_{p}(q, W, 1n+i))')
         w(f'law xroots_{p}:')
         w('  for +k: Nat')
         w(f'  for +W: List<&2, {RX}>')
         w('  for +i: Nat')
         w('  for +hl: Nat')
         w('  for +ehl: {hl == 64n : Nat}')
+        if erp:
+            w(f'  for +er: ereps_{p}(k, W, i)')
         w(f'  RR.roots(xi_{p}(k, W, i), S.Repeat{{{EX}}}, MD.bytes_list(xl_{p}(k, W, i, hl)))')
-        w(f'def xroots_{p}(k, W, i, hl, ehl):')
+        w(f'def xroots_{p}(k, W, i, hl, ehl{ER}):')
         w('  match k:')
         w('    case 0n: {==}')
         w('    case 1n+ +q:')
-        w(f'      ([D.bytes(RN.d_{X.p}(hl, xat_{p}(W, i)))], (MD.bytes_list(xl_{p}(q, W, 1n+i, hl)), (RN.rs_{X.p}(hl, ehl, xat_{p}(W, i)), (xroots_{p}(q, W, 1n+i, hl, ehl), {{==}}))))')
+        if erp:
+            w('      (+r0, +rs) = er')
+        R0 = ', r0' if erp else ''
+        RS_ = ', rs' if erp else ''
+        w(f'      ([D.bytes(RN.d_{X.p}(hl, xat_{p}(W, i)))], (MD.bytes_list(xl_{p}(q, W, 1n+i, hl)), (RN.rs_{X.p}(hl, ehl, xat_{p}(W, i){R0}), (xroots_{p}(q, W, 1n+i, hl, ehl{RS_}), {{==}}))))')
         w(f'law xcount_{p}:')
         w('  for +k: Nat')
         w(f'  for +W: List<&2, {RX}>')
@@ -1080,14 +1181,18 @@ class Gen:
         w(f'    DK.P2({{o == {Seq}{{F.array__thaw({RX}, t), N}} : {Seq}}},')
         w(f'    DK.P2({{F.array__perfect({RX}, dw, t) == True{{}} : Bool}},')
         w('    DK.P2({Nat.is_lt(dw, 32n) == True{} : Bool},')
-        w('          {Nat.is_le(U32.to_nat(N), F.spec_common__pow2(dw)) == True{} : Bool})))))),')
+        if erp:
+            w('    DK.P2({Nat.is_le(U32.to_nat(N), F.spec_common__pow2(dw)) == True{} : Bool},')
+            w(f'          ereps_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n)))))))),')
+        else:
+            w('          {Nat.is_le(U32.to_nat(N), F.spec_common__pow2(dw)) == True{} : Bool})))))),')
         w(f'    {{Nat.is_le(U32.to_nat(xlen_o_{p}(o)), SH.ListOf_limit(s)) == True{{}} : Bool}})')
         big = D_ >= BIGD
         DD = f'OS.dv_{D_}(dv)' if big else f'{D_}n'
         if big:
             # the depth as the variable record's entry (see OS.DV)
             w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: Bool.and(SH.is_ListOf(s), Lim.minimal(SH.ListOf_limit(s), {DD}))')
-            self.okinfo[p] = ('and', ['SH.is_ListOf(s)', f'Lim.minimal(SH.ListOf_limit(s), {DD})'], {}, {1: (p, 's')} if p in SYMBOLIC else {})
+            self.okinfo[p] = ('and', [self.vsub(fs, c) for c in ['SH.is_ListOf(s)', f'Lim.minimal(SH.ListOf_limit(s), {DD})']], {}, {1: (p, 's')} if p in SYMBOLIC else {})
         else:
             w(f'def ok_{p}(+s: S.Schema) -> Bool: Bool.and(SH.is_ListOf(s), Lim.minimal(SH.ListOf_limit(s), {D_}n))')
         Wo = f'{Seq}{{F.array__thaw({RX}, t), N}}'
@@ -1100,7 +1205,11 @@ class Gen:
         w('  (+N, w3) = w2')
         w('  (+eo, w4) = w3')
         w('  (+pf, w5) = w4')
-        w('  (+hd, +hn) = w5')
+        if erp:
+            w('  (+hd, w6) = w5')
+            w('  (+hn, +er) = w6')
+        else:
+            w('  (+hd, +hn) = w5')
         w(f'  %Equal.sym({Seq}, o, {Wo}, eo) :')
         w(f'    {{T.{p}_root(hl, h, _, seg) == (h, (_, xd_{p}(hl, _))) : B.Buf & ({Seq} & D.Digest)}}')
         w(f'  %Equal.sym({TY}, T.{p}_mt0({D_}n, Nat.is_lt(0n, U32.to_nat(N)), hl, seg, U32.to_nat(N), (h, ({Ts}, D.zero()))), (h, ({Ts}, MD.rtree({D_}n, Nat.is_lt(0n, U32.to_nat(N)), hl, {XLo}, 0n))),')
@@ -1142,7 +1251,11 @@ class Gen:
         w('  (+N, w3) = w2')
         w('  (+eo, w4) = w3')
         w('  (+pf, w5) = w4')
-        w('  (+hd, +hn) = w5')
+        if erp:
+            w('  (+hd, w6) = w5')
+            w('  (+hn, +er) = w6')
+        else:
+            w('  (+hd, +hn) = w5')
         w(f'  +k0 = DK.and_l(SH.is_ListOf(s), Lim.minimal({Lm}, {DD}), ok)')
         w(f'  +k1 = DK.and_r(SH.is_ListOf(s), Lim.minimal({Lm}, {DD}), ok)')
         w(f'  +hvN = xhv_{p}(o, t, N, {Lm}, eo, hv)')
@@ -1164,17 +1277,17 @@ class Gen:
             e = f'Equal.cong(Nat, D.Digest, y => O.mix_len(hl, MD.rtree(y, Nat.is_lt(0n, MD.dlen({XLo})), hl, {XLo}, 0n), N), {Dv}, {D_}n, OS.dveq(OS.dv_{D_}, dv, edv))'
             XI = f'xi_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n)'
             w(f'  OS.dtrans(S.Sequence{{{XI}}}, S.ListOf{{{EX}, {Lm}}}, O.mix_len(hl, {R2l}, N), O.mix_len(hl, {R2v}, N), {e},')
-            w(f'  (MD.bytes_list({XLo}), (xroots_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n, hl, ehl),')
+            w(f'  (MD.bytes_list({XLo}), (xroots_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n, hl, ehl{ER}),')
             w(f'    (D.bytes({R2v}), (({Dv}, (k1, RS.at_depth_tree({Lm}, {Dv}, hl, {XLo}, OS.dvl(OS.dv_{D_}, dv, edv, {{==}}), xhl_{p}(N, {Lm}, F.array__slots({RX}, t), hl, hvN), ehl))),')
             w(f'     xlm_{p}(hl, ehl, N, {R2v}, F.array__slots({RX}, t)))))))')
         else:
             R2 = f'MD.rtree({D_}n, Nat.is_lt(0n, MD.dlen({XLo})), hl, {XLo}, 0n)'
-            w(f'  (MD.bytes_list({XLo}), (xroots_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n, hl, ehl),')
+            w(f'  (MD.bytes_list({XLo}), (xroots_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n, hl, ehl{ER}),')
             w(f'    (D.bytes({R2}), (({D_}n, (k1, RS.at_depth_tree({Lm}, {D_}n, hl, {XLo}, {{==}}, xhl_{p}(N, {Lm}, F.array__slots({RX}, t), hl, hvN), ehl))),')
             w(f'     xlm_{p}(hl, ehl, N, {R2}, F.array__slots({RX}, t))))))')
         w('')
         self.done[p] = True
-        self.out.extend(L)
+        self.out.extend(self.vecify(fs, L))
 
     # ---- lists of Type-kind elements ---------------------------------------------
     def tlist_laws(self, fs):
@@ -1460,8 +1573,8 @@ class Gen:
         w(f'          ereps_{p}(U32.to_nat(N), F.array__slots({MX}, t), 0n, SH.ListOf_element(s))))))))),')
         w(f'    {{Nat.is_le(U32.to_nat(xlen_o_{p}(o)), SH.ListOf_limit(s)) == True{{}} : Bool}})')
         w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: Bool.and(SH.is_ListOf(s), Bool.and(Lim.minimal(SH.ListOf_limit(s), {DD}), ok_{BE.p}(SH.ListOf_element(s), dv)))')
-        self.okinfo[p] = ('and', ['SH.is_ListOf(s)', f'Lim.minimal(SH.ListOf_limit(s), {DD})', f'ok_{BE.p}(SH.ListOf_element(s), dv)'],
-                          {2: (BE.p, 'SH.ListOf_element(s)')})
+        self.okinfo[p] = ('and', [self.vsub(fs, c) for c in ['SH.is_ListOf(s)', f'Lim.minimal(SH.ListOf_limit(s), {DD})', f'ok_{BE.p}(SH.ListOf_element(s), dv)']],
+                          {2: (BE.p, self.vsub(fs, 'SH.ListOf_element(s)'))})
         w(f'def eqs_{p}(+s: S.Schema) -> Data: eqs_{BE.p}(SH.ListOf_element(s))')
         XLo = f'xl_{p}(U32.to_nat(N), F.array__slots({MX}, t), 0n, hl)'
         w(f'def st_{p}(+hl: Nat, -h: B.Buf, -o: {Seq}, +seg: U32, +s: S.Schema, +rep: rep_{p}(o, s))')
@@ -1548,7 +1661,7 @@ class Gen:
             w(f'       xlm_{p}(hl, ehl, N, {R2v}, F.array__slots({MX}, t))))))))')
             w('')
             self.done[p] = True
-            self.out.extend(L)
+            self.out.extend(self.vecify(fs, L))
             return
         R2 = f'MD.rtree({D_}n, Nat.is_lt(0n, MD.dlen({XLo})), hl, {XLo}, 0n)'
         XI = f'xi_{p}(U32.to_nat(N), F.array__slots({MX}, t), 0n)'
@@ -1558,7 +1671,7 @@ class Gen:
         w(f'     xlm_{p}(hl, ehl, N, {R2}, F.array__slots({MX}, t)))))))')
         w('')
         self.done[p] = True
-        self.out.extend(L)
+        self.out.extend(self.vecify(fs, L))
 
     def box_words(self, fs):
         """A box of byte storage (a list element): box laws and its Data mirror."""
@@ -2240,11 +2353,11 @@ class Gen:
             if k in ('data', 'datar', 'bvr', 'boxD'):
                 comps.append(f'OS.eq_at(y => {sub("y")}, s, Spec.{name}(), {self.E(fs)}, es, {{==}})')
             elif k == 'xl':
-                comps.append(f'OS.eq_at(y => SH.ListOf_element({sub("y")}), s, Spec.{name}(), {RA.spec_schema(fs.pelem)}, es, {{==}})')
+                comps.append(f'OS.eq_at(y => {self.vsub(fs, "SH.ListOf_element")}({sub("y")}), s, Spec.{name}(), {RA.spec_schema(fs.pelem)}, es, {{==}})')
             elif k == 'tl' and fs.elem.inner.kind != 'container':
                 comps.append('{==}')
             elif k == 'tl':
-                comps.append(self.eqs_proof(name, fs.elem.inner.p, lambda y, sub=sub: f'SH.ListOf_element({sub(y)})'))
+                comps.append(self.eqs_proof(name, fs.elem.inner.p, lambda y, sub=sub, fs=fs: f'{self.vsub(fs, "SH.ListOf_element")}({sub(y)})'))
             else:
                 inner = fs.inner if k == 'boxT' else fs
                 comps.append(self.eqs_proof(name, inner.p, sub))
