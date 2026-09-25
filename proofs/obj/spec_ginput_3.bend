@@ -13,12 +13,6 @@ import ./spec_gcodec_3.bend as C
 # (B.fill_at(B.alloc(n), 0, bytes), benchmarks/compact/objio.bend) from the
 # bytes limbs(words) - every byte list of the size.
 
-def Gt59DCDB2873_spec_input(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
-    -> {T.Gt59DCDB2873_decode(B.fill_at(B.alloc(32), 0, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])), 32) == (B.fill_at(B.alloc(32), 0, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])), Some{T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}}) : B.Buf & Maybe<&1, T.Uint256>}:
-  FD.logic__subst(B.Buf, b => {T.Gt59DCDB2873_decode(b, 32) == (b, Some{T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}}) : B.Buf & Maybe<&1, T.Uint256>}, B.Buf{ANode{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, ANode{ANode{ALeaf{x4}, ALeaf{x5}}, ANode{ALeaf{x6}, ALeaf{x7}}}}, 32}, B.fill_at(B.alloc(32), 0, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])),
-    Equal.sym(B.Buf, B.fill_at(B.alloc(32), 0, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])), B.Buf{ANode{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, ANode{ANode{ALeaf{x4}, ALeaf{x5}}, ANode{ALeaf{x6}, ALeaf{x7}}}}, 32}, LD.load_32(x0, x1, x2, x3, x4, x5, x6, x7)),
-    C.Gt59DCDB2873_spec_decode(x0, x1, x2, x3, x4, x5, x6, x7))
-
 def Gt7B8507E2C2_spec_input(+x0: U32)
     -> {T.Gt7B8507E2C2_decode(B.fill_at(B.alloc(4), 0, F.limbs([x0])), 4) == (B.fill_at(B.alloc(4), 0, F.limbs([x0])), Some{x0}) : B.Buf & Maybe<&1, U32>}:
   FD.logic__subst(B.Buf, b => {T.Gt7B8507E2C2_decode(b, 4) == (b, Some{x0}) : B.Buf & Maybe<&1, U32>}, B.Buf{ALeaf{x0}, 4}, B.fill_at(B.alloc(4), 0, F.limbs([x0])),

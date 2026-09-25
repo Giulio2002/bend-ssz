@@ -15,27 +15,6 @@ import ./spec_bits.bend as FB
 # their relation to the object value in the independent spec/codec.bend,
 # acceptance of every buffer of the size, and rejection of every other size.
 
-# ---- Gt59DCDB2873 (32 bytes) ----
-def Gt59DCDB2873_spec_bytes(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
-    -> {B.emit(T.Gt59DCDB2873_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), 0, 8) == (T.Gt59DCDB2873_encode(T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])) : B.Buf & +List<U32>}:
-  {==}
-def Gt59DCDB2873_spec_parts(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
-    -> {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, x2, x3, x4, x5, x6, x7}}, Spec.Gt59DCDB2873()) == Some{[S.Fixed{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}]} : Maybe<&2, +List<S.Part>>}:
-  F.uint256_part(x0, x1, x2, x3, x4, x5, x6, x7)
-def Gt59DCDB2873_spec_encode(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
-    -> Decoding.decodes(Spec.Gt59DCDB2873(), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7]), S.UnsignedValue{P.UInt{x0, x1, x2, x3, x4, x5, x6, x7}}):
-  F.encoding_of_parts(Spec.Gt59DCDB2873(), S.UnsignedValue{P.UInt{x0, x1, x2, x3, x4, x5, x6, x7}}, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7]), Gt59DCDB2873_spec_parts(x0, x1, x2, x3, x4, x5, x6, x7))
-def Gt59DCDB2873_spec_decode(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
-    -> {T.Gt59DCDB2873_decode(B.Buf{ANode{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, ANode{ANode{ALeaf{x4}, ALeaf{x5}}, ANode{ALeaf{x6}, ALeaf{x7}}}}, 32}, 32) == (B.Buf{ANode{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, ANode{ANode{ALeaf{x4}, ALeaf{x5}}, ANode{ALeaf{x6}, ALeaf{x7}}}}, 32}, Some{T.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}}) : B.Buf & Maybe<&1, T.Uint256>}:
-  {==}
-def Gt59DCDB2873_spec_view(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
-    -> {B.emit(B.Buf{ANode{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, ANode{ANode{ALeaf{x4}, ALeaf{x5}}, ANode{ALeaf{x6}, ALeaf{x7}}}}, 32}, 0, 8) == (B.Buf{ANode{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, ANode{ANode{ALeaf{x4}, ALeaf{x5}}, ANode{ALeaf{x6}, ALeaf{x7}}}}, 32}, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])) : B.Buf & +List<U32>}:
-  {==}
-def Gt59DCDB2873_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 32) == False{} : Bool})
-    -> {T.Gt59DCDB2873_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, T.Uint256>}:
-  %Equal.sym(Bool, U32.is_eq(m, 32), False{}, e) : {T.Gt59DCDB2873_built(m, T.u256_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, T.Uint256>}
-  {==}
-
 # ---- Gt7B8507E2C2 (4 bytes) ----
 def Gt7B8507E2C2_spec_bytes(+x0: U32)
     -> {B.emit(T.Gt7B8507E2C2_encode(x0), 0, 1) == (T.Gt7B8507E2C2_encode(x0), F.limbs([x0])) : B.Buf & +List<U32>}:

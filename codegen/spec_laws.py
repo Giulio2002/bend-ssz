@@ -50,14 +50,15 @@ Bit vectors of whole words are covered through proofs/obj/spec_bits.bend: the
 spec value is `BitsValue{bitsof(words)}`, the words' bits low bit first.
 
 The generic SSZ forms whose encoding is whole words at aligned positions (the
-same class, 39 of the supported forms) get the same laws against their schema in
+same class, 38 of the supported forms) get the same laws against their schema in
 proofs/obj/generic_specs.bend: spec_gcodec_<k>, spec_grepr_<k>, spec_ginput_<k>,
 spec_gunique_<k> (legality from the checked validator, type_validator_soundness).
 
 Array-backed storage (more than 512 words), codegen/spec_arr.py ->
 proofs/obj/spec_arr_<N>.bend and spec_arr_unique_<N>.bend for Blob,
 HistoricalBatch, SyncCommittee and BlobSidecar, spec_garr_<N>.bend for the generic
-Vector[uint64/128/256, 512]: the same laws for EVERY perfect buffer tree (and
+Vector[uint32/64/128/256, 512] (vectors of more than VEC_MAX_ELEMS elements go
+there: the element-by-element proof is quadratic in the count): the same laws for EVERY perfect buffer tree (and
 every storage tree), proved with the loop laws of proofs/obj/arr_*.bend
 (codegen/arr_laws.py) for symbolic counts; no closed size is compared. The
 BlobSidecar encoder law is not generated (see spec_arr.blob_sidecar).
@@ -113,6 +114,7 @@ class Node:
 
 
 VEC_MAX_WORDS = 512
+VEC_MAX_ELEMS = 256
 
 
 def words_depth(w):
@@ -159,6 +161,10 @@ def walk(g, t, c):
             raise Skip('vector of sub-word elements')
         if t.size * es // 4 > VEC_MAX_WORDS:
             raise Skip('array-backed vector (needs the array induction)')
+        if t.size > VEC_MAX_ELEMS:
+            # the element-by-element proof is quadratic in the element count
+            # (Vector[uint32, 512]: 11 MB, over 30 min); spec_arr.uvec proves it over the tree
+            raise Skip('long vector (spec_arr.uvec)')
         kids = [walk(g, e, c) for _ in range(t.size)]
         ws = [x for k in kids for x in k.words]
         n = t.fixed_size()

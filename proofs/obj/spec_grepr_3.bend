@@ -11,17 +11,6 @@ import ./spec_gcodec_3.bend as C
 # The decode and view laws of spec_codec_3.bend for EVERY perfect buffer
 # tree of the depth the loader allocates, not only the literal tree.
 
-def Gt59DCDB2873_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 3n, t) == True{} : Bool})
-    -> {T.Gt59DCDB2873_decode(B.Buf{FD.array__thaw(U32, t), 32}, 32) == (B.Buf{FD.array__thaw(U32, t), 32}, Some{T.Uint256{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)}}) : B.Buf & Maybe<&1, T.Uint256>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {T.Gt59DCDB2873_decode(B.Buf{FD.array__thaw(U32, u), 32}, 32) == (B.Buf{FD.array__thaw(U32, u), 32}, Some{T.Uint256{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)}}) : B.Buf & Maybe<&1, T.Uint256>},
-    R.build(3n, R.lits(FD.spec_common__pow2(3n), FD.array__slots(U32, t))), t, R.tree_words(3n, t, pf),
-    C.Gt59DCDB2873_spec_decode(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)))
-def Gt59DCDB2873_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 3n, t) == True{} : Bool})
-    -> {B.emit(B.Buf{FD.array__thaw(U32, t), 32}, 0, 8) == (B.Buf{FD.array__thaw(U32, t), 32}, F.limbs([R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)])) : B.Buf & +List<U32>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {B.emit(B.Buf{FD.array__thaw(U32, u), 32}, 0, 8) == (B.Buf{FD.array__thaw(U32, u), 32}, F.limbs([R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)])) : B.Buf & +List<U32>},
-    R.build(3n, R.lits(FD.spec_common__pow2(3n), FD.array__slots(U32, t))), t, R.tree_words(3n, t, pf),
-    C.Gt59DCDB2873_spec_view(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)))
-
 def Gt7B8507E2C2_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {T.Gt7B8507E2C2_decode(B.Buf{FD.array__thaw(U32, t), 4}, 4) == (B.Buf{FD.array__thaw(U32, t), 4}, Some{R.w(t, 0n)}) : B.Buf & Maybe<&1, U32>}:
   FD.logic__subst(FD.array__Tree<U32>, u => {T.Gt7B8507E2C2_decode(B.Buf{FD.array__thaw(U32, u), 4}, 4) == (B.Buf{FD.array__thaw(U32, u), 4}, Some{R.w(t, 0n)}) : B.Buf & Maybe<&1, U32>},
