@@ -874,3 +874,4 @@ def Gt1BD4B4358D_root_correct(h, o, e):
   %Equal.sym(B.Buf & D.Digest, T.Gt1BD4B4358D_hash_tree_root(h, o), T.bv9_root(64n, h, o, 0), Gt1BD4B4358D_htr(h, o)) :
     RR.roots(S.BitsValue{Gt1BD4B4358D_bits(o)}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   Gt1BD4B4358D_lawg(h, 64n, {==}, o, e)
+

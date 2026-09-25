@@ -1748,3 +1748,4 @@ def Gt9D356BAF82_root_correct(h, o, s, es, rep):
   %Equal.sym(B.Buf & (O.Bits & D.Digest), O.bits_root(64n, h, o, 0, 0), (h, (o, BO.bdig(64n, o, 0n))), BO.bst(64n, h, o, 0, 0, 0n, BO.rep_wf(o, s, rep), {==})) :
     RR.roots(S.BitsValue{BO.bview(o)}, s, [D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, _)))])
   BO.brs(64n, {==}, h, o, s, 0n, 0, 0, rep, Gt9D356BAF82_ok(s, es), {==}, {==})
+
