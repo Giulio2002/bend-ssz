@@ -80,10 +80,22 @@ What that means concretely:
   concrete hash length 64n while the object's words were exposed, so the
   checker reduced SHA-256 over them. The laws are unchanged. The proofs now keep
   the object opaque at 64n and do the rest for a symbolic hash length (see
-  WORK_LOG 2026-09-25). No law for 13 forms: 3 compatible unions,
-  1 progressive container, 2 containers with a progressive bit-list field,
-  5 containers with uint16-list / plist fields or a Bitvector[2] field, and 1
-  bit list of tree depth 56.
+  WORK_LOG 2026-09-25).
+  2026-09-26 (agent/root-generic): 5 more forms, checked on stock Bend via
+  checkq: GpF350A3C486 (progressive container; root_gnames.bend PASS 418 s),
+  Gp4B0CA2906A, Gc85FA758A04, Gc60805EC295 and GuA2212AE21F (compatible union)
+  in the new root_gtypes2.bend (PASS 557 s, 7.1 GB). Support: pcont.bend
+  (generated; progressive-container trees `pc_<active>_ar`, union selector mix
+  `msel_<k>`), pbits_obj.bend (progressive bit lists, PASS 295 s),
+  wbits_obj.bend (bit vectors in byte storage, PASS 239 s), and partial-word
+  bit vector records (Bitvector[1/2/8/257]) as phase A shapes with the
+  representation fact rp_<p> (last word = its low bits, then zeros).
+  No law for 8 forms: 2 unions whose option Gp66304057C3 has a List[uint16, 123]
+  field, 1 container with progressive lists of uint8/uint64/containers and of
+  progressive lists of a container with a List[uint16, 1024] field
+  (Gc221EC01D83), 4 forms with uint16-list fields, and 1 bit list of tree
+  depth 56. Progressive containers of more than 8 slots have no tree law yet
+  (Gp8A7851175B: 22 slots).
   The representation invariants `rep_X` are hypotheses of the Type-kind root
   laws. Producers establishing them (2026-09-25):
   - Checked: every field setter of the 27 Type-kind containers with a
