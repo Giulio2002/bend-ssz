@@ -4,7 +4,7 @@ import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/decoding_relation.bend as Decoding
 import ../../spec/fulu_schemas.bend as Spec
-import ../../END_TO_END.bend as E
+import ../decode_complete.bend as E
 import ../../proofs/fulu_legality.bend as Legal
 import ../../proofs/compact/found.bend as FD
 import ./spec_small.bend as SM
@@ -13,20 +13,20 @@ import ./spec_small.bend as SM
 
 def uint8_spec_unique(+w: U32, +v: S.Value, spec: Decoding.decodes(Spec.uint8(), [B.byte_sel(0, w)], v))
     -> {v == S.UnsignedValue{P.UInt{B.byte_sel(0, w), 0, 0, 0, 0, 0, 0, 0}} : S.Value}:
-  E.deserialize_unique(Spec.uint8(), [B.byte_sel(0, w)], v, S.UnsignedValue{P.UInt{B.byte_sel(0, w), 0, 0, 0, 0, 0, 0, 0}}, Legal.uint8_normative_legal(), spec, SM.uint8_spec_value(w))
+  E.image_unique(Spec.uint8(), [B.byte_sel(0, w)], v, S.UnsignedValue{P.UInt{B.byte_sel(0, w), 0, 0, 0, 0, 0, 0, 0}}, Legal.uint8_normative_legal(), spec, SM.uint8_spec_value(w))
 def ParticipationFlags_spec_unique(+w: U32, +v: S.Value, spec: Decoding.decodes(Spec.ParticipationFlags(), [B.byte_sel(0, w)], v))
     -> {v == S.UnsignedValue{P.UInt{B.byte_sel(0, w), 0, 0, 0, 0, 0, 0, 0}} : S.Value}:
-  E.deserialize_unique(Spec.ParticipationFlags(), [B.byte_sel(0, w)], v, S.UnsignedValue{P.UInt{B.byte_sel(0, w), 0, 0, 0, 0, 0, 0, 0}}, Legal.ParticipationFlags_normative_legal(), spec, SM.ParticipationFlags_spec_value(w))
+  E.image_unique(Spec.ParticipationFlags(), [B.byte_sel(0, w)], v, S.UnsignedValue{P.UInt{B.byte_sel(0, w), 0, 0, 0, 0, 0, 0, 0}}, Legal.ParticipationFlags_normative_legal(), spec, SM.ParticipationFlags_spec_value(w))
 def Bytes1_spec_unique(+w: U32, +v: S.Value, spec: Decoding.decodes(Spec.Bytes1(), [B.byte_sel(0, w)], v))
     -> {v == S.BytesValue{[B.byte_sel(0, w)]} : S.Value}:
-  E.deserialize_unique(Spec.Bytes1(), [B.byte_sel(0, w)], v, S.BytesValue{[B.byte_sel(0, w)]}, Legal.Bytes1_normative_legal(), spec, SM.Bytes1_spec_value(w))
+  E.image_unique(Spec.Bytes1(), [B.byte_sel(0, w)], v, S.BytesValue{[B.byte_sel(0, w)]}, Legal.Bytes1_normative_legal(), spec, SM.Bytes1_spec_value(w))
 def boolean_spec_unique_0(+w: U32, +h: {B.byte_sel(0, w) == 0 : U32}, +v: S.Value,
     spec: Decoding.decodes(Spec.boolean(), [B.byte_sel(0, w)], v)) -> {v == S.BooleanValue{False{}} : S.Value}:
-  E.deserialize_unique(Spec.boolean(), [B.byte_sel(0, w)], v, S.BooleanValue{False{}}, Legal.boolean_normative_legal(), spec,
+  E.image_unique(Spec.boolean(), [B.byte_sel(0, w)], v, S.BooleanValue{False{}}, Legal.boolean_normative_legal(), spec,
     FD.logic__subst(U32, x => Decoding.decodes(Spec.boolean(), [x], S.BooleanValue{False{}}), 0, B.byte_sel(0, w),
       Equal.sym(U32, B.byte_sel(0, w), 0, h), SM.boolean_false_spec_encode()))
 def boolean_spec_unique_1(+w: U32, +h: {B.byte_sel(0, w) == 1 : U32}, +v: S.Value,
     spec: Decoding.decodes(Spec.boolean(), [B.byte_sel(0, w)], v)) -> {v == S.BooleanValue{True{}} : S.Value}:
-  E.deserialize_unique(Spec.boolean(), [B.byte_sel(0, w)], v, S.BooleanValue{True{}}, Legal.boolean_normative_legal(), spec,
+  E.image_unique(Spec.boolean(), [B.byte_sel(0, w)], v, S.BooleanValue{True{}}, Legal.boolean_normative_legal(), spec,
     FD.logic__subst(U32, x => Decoding.decodes(Spec.boolean(), [x], S.BooleanValue{True{}}), 1, B.byte_sel(0, w),
       Equal.sym(U32, B.byte_sel(0, w), 1, h), SM.boolean_true_spec_encode()))
