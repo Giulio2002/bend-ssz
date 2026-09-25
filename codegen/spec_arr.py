@@ -540,11 +540,15 @@ def blob_sidecar(name='BlobSidecar'):
     subtrees), kzg_commitment, kzg_proof (12 words each), signed_block_header (52
     words), kzg_commitment_inclusion_proof (136 words), 131928 bytes; buffer depth 16.
 
-    Decoder, view, spec and uniqueness laws. The buffer is every perfect tree of
+    Decoder, view, spec, encoder and uniqueness laws. The buffer is every perfect tree of
     depth 16 written [[x0, x1 | M1 | .. | M14] | [G | P8 | .. | P14]] with the
     first two words and the 256-word head G of the right half literal (so the
     field reads compute) and M_j, P_j free trees of depth j. The blob's storage is
     the canonical tree of the 2^15 words after the first two (arr_shift `bq`).
+    Encoder bytes: the output after the blob copy is [sp(14) | rp(14)]
+    (arr_enc.enc_copy), the field writes compute on it, and the emitted words are
+    split at the halves (arr_enc.emit_split) so the right half's zeros are never
+    listed.
     """
     import re
     import spec_laws as SL

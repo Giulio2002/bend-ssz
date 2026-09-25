@@ -27,7 +27,8 @@ What that means concretely:
   size) have **no codec-correctness law yet**: those equations are not
   definitional and need the bit lemmas and the offset development;
 * Since 2026-09-23 (Bend 2.0.25) the generated codec is also **connected to the
-  independent specification** for 83 of the 109 Fulu names
+  independent specification** for 83 of the 109 Fulu names (87 since
+  2026-09-26, see below)
   (`codegen/spec_laws.py` -> `proofs/obj/spec_fixed.bend`, `spec_bits.bend`,
   `spec_small.bend`, `spec_codec_{0..6}.bend`, `spec_unique_{0,1,small}.bend`):
   the bytes the encoder emits through `B.emit` satisfy
@@ -46,9 +47,33 @@ What that means concretely:
   loader builds (`B.fill_at(B.alloc(n), 0, bytes)`, benchmarks/compact/objio.bend)
   from every byte list of the size. Arrays that are not perfect trees are not
   produced by Base's `Array.new`/`set`; they are outside this bridge.
-  Not covered: HistoricalBatch, SyncCommittee, Blob, BlobSidecar (packed storage
-  beyond 512 words: need loop induction over the array model), Validator (a
-  boolean inside an unaligned record), the 21 variable-size names, and all roots.
+  **Array-backed names** (2026-09-26, `codegen/spec_arr.py` ->
+  `proofs/obj/spec_arr_{Blob,HistoricalBatch,SyncCommittee,BlobSidecar}.bend`,
+  `spec_arr_unique_*.bend`, loop laws in `proofs/obj/arr_*.bend` from
+  `codegen/arr_laws.py`): decode, view, spec parts, encoder soundness, rejection
+  of every other size, uniqueness, and the encoder's bytes, for EVERY perfect
+  buffer tree / storage tree (free trees, sizes symbolic: no closed size is
+  compared or unfolded; BlobSidecar's blob sits at word 2, unaligned to the
+  buffer's subtrees, and is handled by arr_shift/arr_enc). The loader law
+  (`*_spec_input`) exists for Blob and HistoricalBatch only. The BlobSidecar
+  uniqueness law takes the bytes as a variable `by` with `eby: by == <bytes>`
+  (a parameter typed with the 212 literal field words overflows the checker's
+  stack); it is the same statement at `eby := {==}`.
+  **Validator** (`spec_rec_Validator.bend`, `spec_rec_unique_Validator.bend`):
+  the spec parts and encoding of the value of any words and boolean, a buffer
+  whose byte 88 is above 1 is refused (whatever its other bytes), every size
+  other than 121 is refused, uniqueness. Not proved: the runtime encoder's bytes
+  and the decoder's acceptance, which go through `U32.mul(w, 256)` and
+  `U32.or` on variable words (need the byte-packing lemmas).
+  **Generic forms**: the aligned family covers 38 generic forms
+  (`spec_gcodec/grepr/ginput/gunique_*`), Vector[uint32/64/128/256, 512]
+  go through the array route (`spec_garr_*`).
+  Uniqueness is proved with `proofs/decode_complete.bend` `image_unique` (which
+  END_TO_END's frozen `deserialize_unique` is): on Bend 2.0.28 a module that
+  imports END_TO_END together with `spec_fixed.bend` fails to resolve names.
+  Not covered: the 21 variable-size names, the generic sub-word forms (vectors
+  of bool/uint8/uint16, bit vectors of partial words, small containers), and
+  all roots.
 * Root equality (updated 2026-09-24, Linux host; see WORK_LOG "Iteration 23"):
   laws exist for 108 of the 109 Fulu names, for the ACTUAL public root
   `T.<Name>_hash_tree_root(h, o)`, against the independent relational
