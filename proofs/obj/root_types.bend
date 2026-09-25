@@ -22,6 +22,7 @@ import ./cells.bend as CE
 import ./obj_support.bend as OS
 import ./root_names.bend as RN
 import ./ulist_obj.bend as UL
+import ./packed_obj.bend as PK
 import ./elems48.bend as E48
 import ./xlist_support.bend as XS
 import ./mtree_run.bend as MR
@@ -8219,6 +8220,23 @@ law BlobSidecar_root_correct:
   for +rep: rep_BlobSidecar(o, s)
   RR.roots(v_BlobSidecar(o), s, [D.bytes(Pair.snd(T.BlobSidecar, D.Digest, Pair.snd(B.Buf, T.BlobSidecar & D.Digest, T.BlobSidecar_hash_tree_root(h, o))))])
 def BlobSidecar_root_correct(h, o, s, es, rep): BlobSidecar_rc(h, o, s, es, rep, OS.DV0(), {==})
+
+# Cell: for every byte storage object representing a value of Spec.Cell(),
+# the runtime root is a specification root of its bytes.
+def Cell_ok(+s: S.Schema, +es: {s == Spec.Cell() : S.Schema}) -> {WO.ok_bv(s, 6n) == True{} : Bool}:
+  %Equal.sym(S.Schema, s, Spec.Cell(), es) : {WO.ok_bv(_, 6n) == True{} : Bool}
+  {==}
+law Cell_root_correct:
+  for -h: B.Buf
+  for -o: O.Words
+  for +s: S.Schema
+  for +es: {s == Spec.Cell() : S.Schema}
+  for +rep: WO.rep_bv(o, s)
+  RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.Cell_hash_tree_root(h, o))))])
+def Cell_root_correct(h, o, s, es, rep):
+  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, 6, 0), (h, (o, WO.wdig(64n, o, 6n))), WO.bv_st(64n, h, o, 6, 0, 6n, WO.rep_wf(o, s, rep), {==})) :
+    RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
+  WO.bv_rs(64n, {==}, h, o, s, 6n, 6, 0, rep, Cell_ok(s, es), {==}, {==})
 
 # DataColumnsByRootIdentifier: for every object representing a value of Spec.DataColumnsByRootIdentifier(), the runtime
 # root is a specification root of that value.

@@ -1311,7 +1311,7 @@ def bits_zeros(+n: U32) -> Bits: bits_of_words(n, words_new(bits_nbytes(n)))
 def pow2u(+d: Nat) -> U32:
   match d:
     case 0n: 1
-    case 1n+q: (pow2u(q) * 2 : U32)
+    case 1n+q: U32.shl(pow2u(q))
 
 def nat_u32(+d: Nat) -> U32:
   match d:

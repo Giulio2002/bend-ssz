@@ -106,7 +106,9 @@ def sh(command, cwd=ROOT, env=ENV):
 # for the verification pass).
 MODES = {'deserialize': '1', 'serialize': '2', 'hash_tree_root': '3'}
 GROUPS = json.loads((ROOT / 'types/obj_groups.json').read_text()) if (ROOT / 'types/obj_groups.json').exists() else {}
-PY3 = '/opt/homebrew/bin/python3'   # the generator needs PyYAML
+# the generator needs PyYAML: the Homebrew interpreter on the Mac host, the
+# running interpreter elsewhere (Linux host: /srv/ssz-optimization/venv)
+PY3 = '/opt/homebrew/bin/python3' if Path('/opt/homebrew/bin/python3').exists() else sys.executable
 COMPILE_CAP_BYTES = 6.5e9
 COMPILE_ATTEMPTS = 4
 # The pinned compiler is a Bun (JavaScriptCore) executable. On a loaded machine
@@ -120,12 +122,31 @@ COMPILES = []
 
 
 def footprint(pid):
-    """macOS physical footprint (ri_phys_footprint) of a process, in bytes."""
+    """Memory of a (compiler) process in bytes: macOS physical footprint
+    (ri_phys_footprint); on Linux the kernel's peak resident set (VmHWM).
+    The two are different metrics; reports say which host produced them."""
+    if sys.platform.startswith('linux'):
+        try:
+            for line in Path(f'/proc/{pid}/status').read_text().splitlines():
+                if line.startswith('VmHWM:'):
+                    return int(line.split()[1]) * 1024
+        except (FileNotFoundError, ProcessLookupError):
+            pass
+        return 0
     lib = ctypes.CDLL('/usr/lib/libproc.dylib')
     buf = ctypes.create_string_buffer(1024)
     if lib.proc_pid_rusage(pid, 4, ctypes.byref(buf)) != 0:
         return 0
     return struct.unpack_from('Q', buf.raw, 72)[0]
+
+
+def cpu_name():
+    if sys.platform == 'darwin':
+        return subprocess.run(['sysctl', '-n', 'machdep.cpu.brand_string'], capture_output=True, text=True).stdout.strip()
+    for line in Path('/proc/cpuinfo').read_text().splitlines():
+        if line.startswith('model name'):
+            return line.split(':', 1)[1].strip()
+    return platform.processor()
 
 
 def capped_compile(source, target, log):
@@ -480,7 +501,7 @@ def main():
     raw.close()
 
     environment = {
-        'cpu': subprocess.run(['sysctl', '-n', 'machdep.cpu.brand_string'], capture_output=True, text=True).stdout.strip(),
+        'cpu': cpu_name(),
         'os': platform.platform(),
         'bend_compiler': bend_version(),
         'reference_compiler': sh(['go', 'version']).strip(),

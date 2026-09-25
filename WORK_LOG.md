@@ -6290,3 +6290,418 @@ Open, stated as such (none of these is claimed):
   root laws only ever see the object erased. Plan: generated Data-kind mirror
   types per Type-kind shape with a `thaw`, invariants as `o == thaw(m)`, and the
   found.bend swap proofs over mapped mirror trees.
+
+## Iteration 23 (Linux host, 2026-09-24) - recovery notes
+
+* Host migrated to Linux x86_64; checker memory is now VmHWM (Linux peak RSS), not
+  macOS physical footprint. Mac logs are historical.
+* The Mac root_big check (started 08:56 CEST) left no final log: NOT a pass; rerun queued.
+* New: codegen/packed_laws.py -> proofs/obj/packed_obj.bend: root laws of vectors of
+  uint32/64/128/256 in packed words (elements `it{W}`, bytes `pb{W}` by limb_correct,
+  `v{W}_rs` via ulist ul_pack + at_depth_tree). root_laws_b.py `packed_law` emits a
+  per-name law for 40 generic packed vectors. Linux check: PASS (585.6 s, 3.20 GB VmHWM).
+  First attempt failed: an erased object was used in a relevant argument (fixed by
+  transporting the count fact to the destructured length N).
+* Still not covered in generic forms: bool/uint8/uint16 vectors (need per-byte
+  domain lemmas: limb bytes as embed8 words), progressive lists (7), partial-word
+  bitvector records (16), unions (3), 1 progressive container, u8/u16/u32 leaves.
+* Linux conformance on the current source (native, Ubuntu clang 21.1.8 via CC, see
+  docs/TOOLCHAIN.md): tools/spectests.py 5440/5440 passed; tools/run_runtime_tests.py
+  51/51 tests, 20009 assertions (Bun 1.4.2; these are JS, not native, as before).
+  A first spectest attempt reported 939 failures: two spectest processes had been
+  started and shared build/spectests/case.out; with one process all pass.
+* benchmarks/run.py and native_bench/run.py: `footprint()` (compiler-process memory
+  cap) read macOS libproc only; now reads Linux VmHWM on Linux; the CPU name comes
+  from /proc/cpuinfo on Linux. `PY3` falls back to the running interpreter when
+  /opt/homebrew is absent. Measured-program memory was already wait4 ru_maxrss.
+* New generated root laws (checks queued, sequential):
+  - packed_bytes.bend (codegen/packed_laws.py): vectors of uint8, boolean, uint16
+    (byte-level encodings over symbolic bits: `bone8`, `bbool1`, `two8`; the bool
+    storage invariant `bscope`: every byte 0/1);
+  - gleaf.bend (root_laws_generic.py): generic uint8/uint16/uint32 leaves (`half_shape`,
+    `u16_w`);
+  - gbits.bend: the 16 generic bit vectors of length not a multiple of 32, via
+    bitlist_pack `bpack`, invariant: last word = its low k bits then zeros;
+  - prog_root.bend (hand-written): the runtime progressive tree `O.ptree` is `pr`
+    (pt_run) and bytes(pr) = spec/progressive.bend `tree` (pr_spec) for every
+    fuel/depth with the invariants n <= s + fuel and 2^dep <= 4s + 1 (so dep < 64
+    without any closed large number);
+  - prog_list.bend (codegen/prog_laws.py): the 7 progressive lists of basic elements.
+  Generic status now (root_laws_generic.py --status): 123 of 139 forms with a law
+  (70 packed vectors, 18 byte storage, 16 partial bit vectors, 7 progressive lists,
+  6 phase A, 3 leaves, 3 phase B containers), pending checks. Not covered: 3
+  compatible unions, 2 progressive containers, 8 containers with uint8/uint16/
+  partial-bitvector fields (phase A/B lack a data field with a representation fact),
+  1 container with a progressive list field, GtF7582E0E9A (bit list of depth 56).
+* Measured check cost floor on this host: importing mtree_spec costs ~310 s
+  (zero_roots evaluates 63 concrete SHA-256 compressions, 254 s); every module
+  importing the tree laws pays it.
+* Benchmark portability fix: tools/generate_bench_go.py read go-eth2-client from
+  the Mac module cache path; on Linux it found nothing and silently routed every
+  container to the locally sszgen-generated `gen` package (and 4 types to no
+  reference). It now resolves the pinned v0.27.2 module via `go env GOMODCACHE`
+  and fails loudly if absent; regenerated benchmarks/fastssz/generated.go is
+  byte-identical to the committed one. The first Linux benchmark run (bench-snap-1)
+  is therefore INVALID (wrong reference) and was renamed accordingly; a fresh
+  snapshot run (bench-snap-2) is measuring. benchmarks/checks/capped_{build,run}.py
+  read Linux VmHWM; fuzz evidence records sys.executable instead of a Homebrew path.
+* Native memory harness on Linux: the first Linux run (mem-snap-1) reported
+  baseline == decode peak == the same byte count for Go AND Bend on every sample
+  (31-36 MB): Linux keeps ru_maxrss across exec, so a child forked from the
+  Python harness reports the harness's own resident size (measured: /bin/true
+  spawned from Python "peaks" at 12 MB; 1.2 MB under /usr/bin/time). INVALID,
+  renamed mem-snap-1-INVALID-inherited-maxrss. native_bench/run.py now starts the
+  measured program under /usr/bin/time on Linux and takes the child's kernel
+  peak from its report; the sampler follows the program's pid (/proc children).
+  psutil is optional (Linux reads /proc/<pid>/statm). Re-run: mem-snap-2.
+  With the /usr/bin/time fix the Linux numbers are real (e.g. Bend case_0: baseline
+  9.04 MB, decode peak 14.75 MB, overhead 5.71 MB). The harness's own consistency
+  check (sampled decode max <= 1.05 x the decode-prefix run's kernel peak) then
+  failed once for Go (13.93 MB vs 12.85 MB: its collector timed differently in the
+  two processes). The 5% tolerance is unchanged; a sample that fails it is now
+  re-measured up to 5 times with every attempt recorded in the sample
+  (`representativeness_attempts`), and the run still aborts if none agrees.
+  Re-run: mem-snap-3.
+* Runtime change (cache paths only): src/obj.bend `pow2u(1 + q)` is now
+  `U32.shl(pow2u(q))` instead of `pow2u(q) * 2` - the same U32 for every q
+  (both wrap mod 2^32); only the `_Cached` lists (cache_at, capp, the root sweep)
+  use it. Reason: found.bend's checked `u32__pow2u` is the shl form, so its value
+  lemma (to_nat(pow2u(d)) = 2^d for every symbolic d < 32) now applies to the
+  runtime's capacity; U32.mul recurses over its left operand's bits and could not
+  be related symbolically. Measurements taken before this change are historical.
+* After the pow2u change: benchmarks/compact/ocache.bend was stale against the
+  `+hl` root signature (`_root(O.hasher(), ...)`), so the uncached calls now pass
+  64n. Rebuilt; benchmarks/checks/object_cache.py (its `time -l` was replaced by
+  GNU time on Linux) passes: 5 ssz_random BeaconStates, synthetic 1024 and 8192
+  validators, and 100 seeded mutation histories all give cached root = uncached
+  root = oracle root.
+* Fuzz (Linux, same seed 20260924): fuzz_objects gave 654 valid, 7848 mutated and
+  2048 history cases over 109 types with 0 mismatches. fuzz_generic gave 7739
+  cases over 136 generic schemas with 0 mismatches.
+* mem-snap-3 is complete, with 15/15 verified Bend samples. The worst Bend
+  decode overhead is 5,844,992 B (Linux RSS; cap 32,000,000). See the
+  MEMORY_REVIEW.md Linux section. automation/acceptance.py on this host still
+  stops at "Pinned 2.0.16 toolchain identity changed: bend".
+* Cached-root proofs (item 1f) and a Bend 2.0.25 kind rule. The first ctree
+  model stated its invariants as function types: "every clean node holds its
+  value" was `@l -> @j -> ... -> ok_at`. The checker rejects this. A `+`
+  (duplicable) parameter must be `Data`, and a Pi type is only `Type`.
+  Probes in /tmp/bprobe showed that a plain function hypothesis is strictly
+  linear ("consumed more than once"). An erased one cannot be used even in
+  the rewrite position of `%e : M`. The invariant is needed at every tree
+  level, so ctree's quantified layer was rewritten as data:
+  - `LV`, `CL`, `AU`, `CI` are finite products of node facts (`Sigma<&2, &2, ...>`,
+    recursion on a count), so `cinv`, `lvl_ok` and `all_upto` are Data.
+  - Accessors are `lv_get`, `cl_get`, `au_get` and `ci_lvl`; single-write maps are
+    `lv_wo`, `cl_w`, `ci_w` and `au_w`; the loop lemmas `lv_pre` and `lv_build` build
+    products by recursion.
+  - The pointwise lemmas are unchanged (backup: build/ctree.fn.bak).
+  - In cloc.bend, leaf agreement is now a concrete change `dput(XL, i, x)`
+    (replace leaf i, or append when i is the length). Its agreement facts,
+    `put_at` and `put_len`, are lemmas rather than a hypothesis.
+  - New files, being checked:
+    - cloop.bend: the runtime node step and level loop;
+    - cloop2.bend: leaf loop, level loops, `xl`;
+    - cloop3.bend: `csweep`, padding and `cached_root_correct`;
+    - cset.bend: write preservation (`xl_set`);
+    - cmut.bend: append preservation (`xl_app`) and the fresh-cache invariant.
+  - Stated hypotheses (not yet derived from `words_depth`): n <= 2^d,
+    d < 31, and items capacity 2^dw >= 2^d.
+* bench-snap-2 (Linux, pre-pow2u runtime) passes the frozen gate's `validate`
+  in its snapshot: 978 workloads / 327 operations within limits. The final
+  snapshots (bench-snap-3, mem-snap-4) were started on the current sources.
+* obj_support.bend: the depth record `DV` now covers depths 14 .. 63 (was
+  14 .. 40). The generic set has a container of a bitlist whose tree depth is
+  56, and root_gtypes referred to `OS.dv_56`. `dvl` already bounds depths below
+  64. Files importing obj_support must be re-checked (root_types, root_gnames,
+  root_gtypes, root_big).
+* cloop3's first re-check was stopped after 40 s (exit -15) because it imported the cloop2 version already known to fail at lt_items. It was not stopped for time; it is re-queued after the fixed cloop2.
+* cloop3's second start was likewise stopped after about 15 s (stale cloop2 import: swapped Equal.sym endpoints in cleaf_b, now fixed).
+* wdepth.bend: checker stack overflow ("a literal too large to expand"), no location. The only closed large quantity is pow2n(32n) in u32_lt32. wdstage's check, which imports wdepth, was stopped after 90 s (doomed, not for time). A probe (proofs/obj/probe_u32.bend) isolates which step of the 2^32 bound overflows.
+* Final Linux benchmark (bench-snap-3, current sources): the frozen gate's
+  `validate` passes in the snapshot, with 978 workloads / 327 operations within
+  limits. The row closest to its limit is Attestation.hash_tree_root
+  small-fixture at 9.1x of 10x (Bend 28.7 us vs Go 3.2 us). It was re-measured
+  with benchmarks/quick.py (same programs, 9 alternating samples, 0.25 s
+  target, reports build/quick/attestation_small_{1,2,3}.json): 8.30x, 7.99x and
+  8.99x.
+  - The margin is thin on this host (load average near 100). On the Apple M4
+    host of iteration 22 the same row was 5.9x.
+  - Absolute times here are about 4x the Mac's for Bend and 3x for Go; the
+    row is SHA-bound (pure-Bend SHA-256 by requirement).
+  - The runtime was not changed for it: `words_root` is under checked root laws.
+  tools/generate_benchmarks_md.py now lists the five rows closest to their
+  limits and marks the per-node SHA and zero-fill timings as Mac measurements.
+* Checker limit, now measured precisely (Base-only probes proofs/obj/probe_k*.bend, removed after use).
+  Any statement containing a closed Nat term whose value is at or above 2^16
+  overflows the pinned checker at once (0.4 s), even when the two sides are
+  syntactically identical: `dbl(16n) == dbl(16n)`, `dbl32(32n) == ...` and
+  `U32.to_nat(4294967295) == ...` all fail. So proofs must never state a
+  closed large number. Widths are symbolic or at most 32. Powers of two
+  are replaced by shifts (`rng(k, M) < 1` for M < 2^k). U32 literals
+  are related through `O.pow2u(K)` as 32-bit words (wdepth/wdstage rewritten
+  this way).
+* Runtime change (codegen/generate.py, all 17 `_Cached` lists): after a root the
+  dirty range is `[n, 0]`, where it used to be `[0xFFFFFFFF, 0]`.
+  - It is empty for n > 0. For n = 0 it is the one zero leaf: one extra leaf
+    and its path on the next root of an empty list.
+  - A later write at i < n widens it to [i, i] and an append to [n, n], by the
+    same min/max as before. Hashing is otherwise unchanged.
+  - Reason: with the old sentinel, the first write after a root needed the
+    Nat value of 2^32 - 1, which the checker cannot state.
+  - Revalidated on the regenerated runtime:
+    - benchmarks/checks/object_cache.py: 7 fixtures and 100 histories,
+      cached = uncached = oracle;
+    - runtime tests: 51/51, 20009 assertions;
+    - fuzz_objects, seed 20260925: 654 valid, 7848 mutated and 2048 history
+      cases, 0 mismatches;
+    - generic fuzz and spectests: running.
+* Checked (Linux): cset.bend (write preservation, `xl_set`) PASS 779 s,
+  3.20 GB. codegen/root_laws_b.py no longer misfiles a progressive bit-list
+  field as a fixed-depth bit list (Gp4B0CA2906A, Gc60805EC295 are now
+  "not covered").
+* New: proofs/obj/capi.bend covers the public cache API on a Data-packaged
+  invariant: `root_eq`/`root_inv`, `cset_eq`/`cset_inv`, `capp_eq`/`capp_inv`
+  (append inside the capacity) and `cache_eq`/`cache_inv` (fresh cache, via
+  `words_depth`). codegen/cached_laws.py emits the six parts for the 11 other
+  Data-element lists (proofs/obj/cached_<list>.bend).
+- 2026-09-24 16:09:09 Stopped the wdstage check (doomed: it imports wdepth, whose blen had a linearity error, fixed with erased binders `+k`/`+j`). Requeued wdepth then wdstage.
+- History law (proofs/obj/chist.bend, queued): `hist_inv` — from a valid cache
+  (one of the form `cached(ta, t, n, d, lo, hi)` with `CA.inv`) of length n, a
+  history of `cset`/`capp` calls whose preconditions hold at each step (write
+  index < current length; appends keep n + 1 <= 2^k, k <= 30, k <= limit depth)
+  ends in a valid cache. With `CA.root_eq` the root of that cache is the
+  reference root of its elements; with `CA.cache_inv` the history can start
+  from `cache(o)`. Type-kind cache values are ghost (`-c`) binders (a `+`
+  binder needs a Data type); Base-only probe build/probe_tk.bend confirmed the
+  pattern. codegen/cached_laws.py now also writes chist_<list>.bend for the 11
+  generated lists (importing cached_<list>.bend); the cached_*.bend files are
+  byte-identical to before.
+- 2026-09-24 16:28:24 Spectests on the regenerated runtime (croot_fin range n,0): 5440 passed, 0 failed (build/spectests_reval.json).
+- Cached-root spec link (queued): codegen/cached_laws.py writes
+  proofs/obj/cspec_<list>.bend for the 6 generated lists whose uncached root law
+  `rs_<list>` is in root_types.bend (DepositRequest, WithdrawalRequest,
+  ConsolidationRequest, Withdrawal, SignedVoluntaryExit,
+  SignedBLSToExecutionChange). `cached_spec`: for a valid cache (CA.inv) whose
+  length fits the schema, `cached_root` returns CA.dig(n, ta) (CA.root_eq) AND
+  RR.roots(RT.xv_<list>(Seq{thaw ta, n}), s, [bytes(CA.dig(n, ta))]) — the
+  independent root relation. Proof: `xl_same` (the two element-root lists are
+  the same recursion), `freeze_thaw`, and RT.rs_<list> with the rep built from
+  the cache invariant. The 5 BeaconState-only lists (Eth1Data votes,
+  HistoricalSummary, PendingDeposit, PendingPartialWithdrawal,
+  PendingConsolidation) have no uncached law (BeaconState is not covered), so
+  no spec link.
+- Cached-root cost law (proofs/obj/ccost.bend, queued): `sweep_cost`,
+  ncost(k, l, lo, hi) <= (rng(l, hi) - rng(l, lo)) + 3k, where ncost is the sum
+  of the per-level step counts CT.qn that cloop2's `clevels` proves the runtime
+  level loops run. Whole sweep: <= (hi - lo) + 3d node hashes; one write: <= 3d.
+- Toolchain docs: docs/TOOLCHAIN.md now records the Linux binary hash
+  (d9c0dad1...) next to the Mac one; README's reproduce section points at it
+  instead of the stale 2.0.16 text.
+- 2026-09-24 17:03:04 capi FAIL (720 s): pw_le_dw rewrote with sym(pow2_eq) though pow2_eq is already {pow2 == pow2n}; fixed. Stopped the cgrow check that had read the old capi (doomed). Regenerated cached_*.bend; requeued capi, cgrow.
+- Producers establish rep (item 2, list values; generated, queued): the 6
+  cspec_<list>.bend files also hold `default_rep`, `uncache_rep` (from CA.inv),
+  `set_rep` (i < n) and `append_rep` (runtime guard n + 1 <= limit accepted,
+  n < 2^k, k <= 30, n + 1 <= schema limit): each producer reports success and
+  its result satisfies RT.rep_<list>, the hypothesis of RT.rs_<list>. The
+  append proof reuses cgrow's room/copy lemmas (the Seq append and the
+  capacity-growing capp share `room`).
+- Check-time packaging: generated laws that share expensive imports are in one
+  file: history law folded into cached_<list>.bend (chist's `len_after`
+  renamed `op_len`, the one name clash with capi); producer laws folded into
+  cspec_<list>.bend. Queue now 27 files.
+- 2026-09-24 17:59:05 chist and all generated cached/cspec files failed at parse (2.8 s): constructor `App` clashes with Base's App (constructor names are global). Renamed HWrite/HAppend, regenerated, requeued (chist, cached_l16_Withdrawal, cspec_l16_Withdrawal first).
+- root_gtypes.bend (regenerated without the two pbits containers; DV to depth 63): Linux PASS 1298 s, 4.81 GB VmHWM.
+- prog_root.bend (with the prog_list pow2_eq fix): Linux PASS 573 s, 3.22 GB.
+- 2026-09-24 18:20:58 chist parse error: a second parameter destructure after a let (`(+hop, +hrest) = hok` after `(+vc, +en) = st`). run_valid now takes one packed parameter. Regenerated, requeued.
+- Recovery note (2026-09-24 22:35 CEST, after usage-limit wait): queue daemon
+  build/pqd.sh still running; gbits.bend check running for 2.5 h at a flat
+  2.78 GB VmHWM (16 generic bit vectors up to 513 bits over symbolic words);
+  not stopped (no time cap). Next in queue: chist (packed-parameter fix),
+  cached_l16_Withdrawal (includes history law), cspec_l16_Withdrawal (spec link
+  + producer rep laws), then packed_bytes, root_gnames, root_types, root_big,
+  cache, the other 10 cached_* and 5 cspec_*. Generators current (--check).
+- Removed proofs/zzp/p2.bend (iteration-22 scratch probe, unreferenced).
+- Decode producer law (generated into cspec_<list>.bend, queued): `read_rep`
+  — the list decoder `<list>_read(buf, off, len)` for len != 0, n = len/size
+  >= 1, n <= 2^k (k <= 30), n <= schema limit, yields a value with
+  RT.rep_<list>; `read_empty_rep` for len = 0. Loop lemma `rd_ok`: the element
+  loop writes positions i..i+k of a perfect tree of depth D and leaves a perfect
+  tree (induction on k, case split of the ghost (buffer, element) pair).
+  Probe build/probes/probe_peta.bend (queued first) checks that a ghost
+  Type-kind pair can be matched in a proof.
+- gbits.bend: check ended with exit -15 (SIGTERM) after 19,672 s at 2.84 GB
+  VmHWM. I did not stop it (not from this session); recorded as NOT passed. It
+  must be re-run (or split per law) before any coverage claim.
+- Probe results: matching a ghost (`-`) Type-kind pair in a proof is refused
+  ("a live scrutinee ... matches only in a dead region"); the read laws must
+  take the (buffer, element) pair as a live parameter. chist still fails at the
+  second destructure (`(+hop, +hrest) = hok` after `(+vc, +en) = st`, both from
+  the packed parameter); probes queued to find the accepted form.
+- OPERATOR_DIRECTIVE_20260925.md: gbits.bend (5 h+, stopped by the operator)
+  is a proof-engineering bottleneck. Split: codegen/root_laws_generic.py now
+  writes one file per partial-word bit vector (proofs/obj/gbits_<name>.bend,
+  16 files, each with the two shared list lemmas; gbits.bend removed; other
+  generic outputs byte-identical). Diagnosis in progress: only the 511-bit
+  (tree depth 1) and 513-bit (depth 2) vectors hash nodes; their `_st` step is
+  a `{==}` between the runtime root and the reference tree, which forces the
+  checker through SHA-256 over symbolic words. Incremental measurement: 1-bit
+  and 17-bit files queued first, the other 12 small ones after; 511/513 held
+  back until `_st` is refactored.
+- gbits refactor: for vectors whose tree has depth >= 1 (511, 513 bits), `<name>_shape` states rtree(depth, True, hl, [x0..], 0) = the runtime's node shape over OPAQUE digests (SHA stays unevaluated), and `_st` rewrites with it so its final {==} compares syntactically equal terms instead of evaluating SHA-256 over the partly known last word. Queued: 1-bit, 17-bit (baselines), then 511, 513, then the rest.
+- bend-collections reuse assessment (OPERATOR_DIRECTIVE_20260925): docs/BEND_COLLECTIONS_REUSE.md. Upstream 06caea4 inspected; same 2.0.25/Base pin; its array/Nat/U32 library is already vendored (found.bend) and used by all new proofs; bitlist/dynamic_array refine their own models, carry no SSZ encoding/root facts, and use different representations, so they are not adopted as storage.
+- packed_bytes.bend: Linux PASS 624 s, 3.26 GB VmHWM.
+- root_gnames.bend: Linux PASS 931 s, 3.85 GB. gbits_GtFCF8066C33 (Bitvector[1]): PASS 624 s, 3.97 GB (mostly imports).
+- gbits_GtFF7C03E8A0 (Bitvector[17]): PASS 608 s, 4.19 GB (= import baseline). Depth-0 laws measured cheap, so the 14 one-chunk vectors are regrouped in gbits_small.bend; 511 (depth 1) and 513 (depth 2) stay separate (gbits_Gt05340E1F7E, gbits_Gt0B0C03B454). 511 check started 02:14.
+- 2026-09-25 00:45:44 gbits_Gt05340E1F7E (511 bits, with the shape lemma) stopped after ~27 min at flat 3.84 GB (same spin pattern as the full gbits run). Stopped for diagnosis per OPERATOR_DIRECTIVE_20260925 (measure incrementally), not for time. Bisection probes: build/probes/g511_st.bend (shape + _st only), g511_g.bend (_lh, _len, _ch, _g).
+- probe g511_st (shape + _st of the 511-bit law): PASS 631 s, 2.96 GB = import baseline. The shape refactor works; the spin is in another step.
+- probe g511_g (_lh, _len, _ch, _g): PASS 602 s, 3.67 GB = import baseline. Next probe g511_h (everything through _h, no law).
+- 2026-09-25 01:08:00 chist: destructure after an ordinary let is refused too (`(+ta, w1) = vc` after `+hop = pa(...)`); all destructures now precede the projection lets. Regenerated; chain requeued.
+- root_types.bend (DV to depth 63): Linux PASS 948 s, 4.18 GB.
+- 2026-09-25 01:35:12 chist FAIL 715 s, 3.14 GB: rebase rewrote with sym(e) (should be e). Fixed and regenerated. Stopped the cached_l16_Withdrawal check started on the old text (doomed). cspec_l16_Withdrawal (imports the fixed cached file) runs next, then chist and cached.
+- cspec_l16_Withdrawal FAIL 765 s: the generated lists' runtime `capp` guards
+  the append with the list limit (`capp_in(U32.is_le(n + 1, LIMIT), ...)`),
+  the Validator instance with True{} (limit 2^40). capi now defines
+  `guard(n)` (True{} for the instance; the generator substitutes
+  `U32.is_le((n + 1 : U32), LIMIT)` per list) and `capp_eq`/`grow_eq` take
+  `hgd: guard(n) == True`; chist's append precondition includes it. capi,
+  cgrow, chist and the generated files requeued.
+- Probe g511_h (everything through `_h`): still running at 22 min (2x the
+  import baseline), stopped: `_h` is the step that spins. Cause: its goal has
+  D.bytes(snd(hash_tree_root(h, obj))) and the rewritten motive
+  D.bytes(snd(bv511_root(64n, h, obj, 0))); the checker unfolds both through
+  SHA-256 over the partly known last word and compares two separately built
+  huge terms (flat memory, exponential time). Fix (generator): `<name>_htr`,
+  hash_tree_root(h, o) == <p>_root(64n, h, o, 0) over an opaque o (one delta
+  step), used first in `_h`, so every later comparison is syntactic. 511-bit
+  file requeued first.
+- Refined gbits diagnosis. The g511_g probe shows the checker compares
+  congruent spines first. The costly step is where heads differ over
+  SHA-bearing digests: the final `(depth, ({==}, _g))` checked
+  D.bytes(Pair.snd(h, DIG)) against _g's D.bytes(DIG), which reduces both
+  sides through SHA-256. New generated step `<name>_fin` states that final
+  pair over an OPAQUE digest r (Pair.snd(h, r) reduces to the variable r);
+  `_h` instantiates r := DIG syntactically. `_htr` is kept (it has the same
+  effect for the hash_tree_root/runtime-root alias). No statement changed.
+- capi.bend with the append guard: Linux PASS 713 s, 3.23 GB.
+- 2026-09-25 03:05:40 gbits_Gt05340E1F7E with _htr and _fin: still at flat 2.72 GB after 40 min; stopped for diagnosis. Probes queued: g511_fin (only _fin), g511_h2 (through the new _h, no law).
+- Probes: g511_fin PASS 633 s; g31 (Bitvector[31], same 31-deep bit match,
+  depth 0) PASS 612 s, so the deep match is not the cause. Every passing probe
+  had a symbolic hash length hl, and D.node(hl, ...) stays stuck on it. `_h`
+  used hl = 64n with a last word built from 31 bit variables, which lets
+  SHA-256's word operations unfold through the cells. Generator change: `_h` is
+  stated for symbolic hl with ehl: hl == 64n, over the runtime root at hl. The
+  law rewrites hash_tree_root to the runtime root (`_htr`, over the object whose
+  last word is take(bits(w15)), opaque) and only then instantiates hl := 64n.
+  g511_h2 (old _h) stopped as obsolete; the regenerated 511 file queued first.
+- 2026-09-25 03:53:23 gbits_Gt05340E1F7E with symbolic-hl _h: still running at 25 min (3.34 GB); stopped for diagnosis. Probe g511_h3 (through the new _h, no law) queued.
+- Probe g511_h3 (through the symbolic-hl `_h`, no law): PASS 657 s, so the law
+  step spins. Finding: once the law has destructured o into its 16 words, any
+  goal holding the root at 64n reduces into SHA-256 over those fields. The
+  working container laws (root_names) keep o opaque whenever 64n appears.
+  Generator: the law now rewrites hash_tree_root(h, o) to <p>_root(64n, h, o,
+  0) with o opaque (`_htr`), then calls `_lawg`, which is stated for symbolic
+  hl, destructures o and applies `_h`. Law statement byte-identical.
+- cgrow.bend with the append guard: Linux PASS 749 s, 3.01 GB.
+- gbits_Gt05340E1F7E (Bitvector[511], depth 1): Linux PASS 602 s, 4.18 GB
+  (= import baseline; the same law was > 5 h before). Proof-engineering rule
+  found: never let a goal contain the runtime root at the concrete hash length
+  64n while the object's fields are exposed. Keep o opaque (or hl symbolic)
+  wherever SHA could reduce. Next: 513 bits (depth 2), then gbits_small.
+- chist.bend (hist_inv, with the append guard): Linux PASS 729 s, 3.23 GB.
+- gbits_Gt0B0C03B454 (Bitvector[513], depth 2): Linux PASS 649 s, 3.13 GB.
+- Item 2, setters (generated, queued): codegen/rep_laws.py ->
+  proofs/obj/prep_setters.bend, 127 laws over the 27 Type-kind containers with
+  rep_<X> in root_types. For every field setter,
+  rep_X(o, s) [+ the field's own invariant of v] -> rep_X(X_set_<f>(o, v), s).
+  Field order comes from codegen/fulu.yaml; setters from types/fulu_obj.bend.
+  The proof returns the same witnesses and invariants with field f replaced, so
+  the other components are provably the old ones.
+- cached_l16_Withdrawal.bend (generated: all 8 parts incl. guard and history): Linux PASS 737 s, 3.10 GB.
+- cspec_l16_Withdrawal FAIL 966 s at `cached_spec`'s statement (DK.P2 needs Data; RR.roots is a Type). xat_same, xl_same and dig_spec checked before it. Fixed: the conclusion is the Type pair {cached_root = ...} & RR.roots(...). Requeued after prep_setters.
+- gbits_small.bend (14 one-chunk bit vectors): Linux PASS 660 s, 3.21 GB. All 16 partial-word bit-vector root laws now check: 602 + 649 + 660 s in three files, against > 5 h (unfinished) for the former single gbits.bend.
+- prep_setters.bend (127 setter rep laws, 27 Type-kind containers): Linux PASS 988 s, 3.70 GB. Nested update/append on a container field composes: the list producer law (cspec_<list>: set_rep/append_rep) gives the field's invariant, then the setter law gives the container's.
+- cspec_l16_Withdrawal FAIL 984 s at read_rep: the live buffer was used twice (inside the tree witness rto(...) passed as a + argument, and as rd_eq's live pair). All laws before read_rep (cached_spec, default/uncache/set/append) now check. Fix: rd_eq returns the tree as an existential witness, rto removed. Requeued.
+- 2026-09-25 06:05:23 Final runtime gates started (build/final_runtime.sh -> build/final_runtime/): runtime tests, spectests, object/generic conformance, mutations, negative API, cache, invalid objects, fuzz builds and fresh-seed fuzz (seed 20260926). Runtime sources unchanged since 2026-09-24 18:02.
+  - runtime tests (current sources, run separately; the script's first call lacked the file list): 51/51 passed, 20009 assertions (build/final_runtime/runtime_tests.out).
+  - spectests 5440/5440; object conformance 295 (59 types); generic
+    conformance 5145/5145; object mutations 0 disagreements; negative API 7/7
+    (build/final_runtime/*.out).
+  - build/compact-{ocache,omut,oinvalid} rebuilt from current sources (the
+    ocache binary predated the 18:02 regeneration; omut/oinvalid were
+    missing), then: object cache 7 fixtures match the oracle; mutation
+    regressions 8/8; invalid objects 14/14.
+  - fresh-seed fuzz (seed 20260926): fuzz_objects 654 valid + 7848 mutated + 2048 history cases / 109 types, 0 mismatches; 7795 cases over 136 generic schemas, 0 mismatches, 142s
+- 2026-09-25 06:50:04 root_big.bend stopped at 47 min, 21.5 GB and growing ~6 GB/15 min (host shared with BLS workloads; 129 GB available). Stopped to protect the host, not for time. Its closed 2^30-scale limit facts are evaluated in unary; they need the symbolic refactor the orchestrator requested (item 1b).
+- cspec_l16_Withdrawal.bend (spec link cached_spec + producer laws incl.
+  read_rep): Linux PASS 1017 s, 4.03 GB.
+- Item 1b (Transaction limit), finding: probes build/probes/p_lit.bend and
+  p_pow.bend both overflow the checker stack at once (0.4 s / 2.4 s) on
+  {Spec.Transaction() == ByteList{U32.to_nat(1073741824)}} and on the same with
+  U32.to_nat(O.pow2u(30n)). Every conversion that reaches the protected schema's
+  limit literal weak-head-evaluates U32.to_nat of it, and the doubling recursion
+  blows the stack. So no symbolic lemma can be connected to the spec schema by
+  conversion. The drafted proofs/obj/lim_sym.bend (symbolic
+  minimal(chunk_limit(2^(5+d)), d) via divmod peeling) was removed unchecked,
+  because its Transaction instance cannot check. The only working route remains
+  the normalizer's one-time evaluation of the closed fact (slow, memory-heavy).
+- root_big split per name (codegen/root_laws_b.py): proofs/obj/root_big_<Name>.bend
+  for Transaction, ExecutionPayload, BeaconBlockBody, BeaconBlock and
+  SignedBeaconBlock, so each 2^30 evaluation runs in its own process. They are
+  queued last, with build/memguard.sh stopping an SSZ checker only if host
+  MemAvailable < 40 GB (shared host protection, not a proof budget).
+- 2026-09-25 07:10:54 Final performance gate started in the workspace (build/final_perf.sh: automation/performance_gate.py with the SSZ venv and CC=clang-21; fresh build; no hashed-source edits until it ends).
+- Final performance gate (current sources, workspace, fresh build):
+  `PERFORMANCE GATE: 978 workloads / 327 operations within their
+  operation-specific limits` (build/final_perf/gate.log, report copy
+  build/final_perf/report.json). Load average ~94 on the shared host.
+  Worst root row Attestation.hash_tree_root small 7.65x of 10x; worst codec
+  row SyncCommitteeMessage.deserialize medium 2.99x of 5x. Reruns of the three
+  worst root rows (quick.py, 9 samples, 2 runs each): Attestation 8.01/7.57x,
+  ExecutionPayload medium 5.36/7.62x, LightClientFinalityUpdate medium
+  5.76/5.93x. BENCHMARKS.md regenerated from the report.
+- Final native memory: 15/15 Bend samples verified, worst decode overhead
+  5,779,456 B (cap 32,000,000), Go worst 3,112,960 B; MEMORY_REVIEW.md updated.
+
+## Iteration 23 status (2026-09-25, Linux) — coverage table (updated as checks finish)
+
+| obligation | state | evidence |
+|---|---|---|
+| root, Fulu names | 75 Data (root_names) + 25 Type-kind (root_types PASS 948 s) checked on Linux or Mac; 5 big names (root_big_<Name>) queued, each needs a one-time unary evaluation of the 2^30 Transaction limit; BeaconState not covered | queue.log |
+| root, generic forms | 123 of 136 with generated laws, all checked on Linux (gbits split: 3 files, 602/649/660 s) | LAW_API_MAP |
+| cached root = reference root after histories (validators) | checked: cloop/cloop2/cloop3/cset/cmut/capi/cgrow/chist | queue.log |
+| cached root, 11 other Data-element lists | generated; 7 PASS so far, rest queued | queue.log |
+| cached root = spec root (RR.roots) | 6 lists with uncached laws; l16_Withdrawal PASS, 5 queued | cspec_* |
+| sweep cost (O(dirty + 3d) node hashes) | checked (ccost.bend) over the runtime-proved step counts | ccost.bend |
+| rep established by producers | list values: default/uncache/set/append/read (cspec_*); 127 container setters (prep_setters PASS); NOT: container decode/default (closed-number limit for large defaults) | LAW_API_MAP |
+| codec total correctness | unchanged this iteration: 83 names spec-linked; 26 names + generic forms open | LAW_API_MAP |
+| END_TO_END/ROOT_DOMAIN migration to object API | not done (propositions unchanged; checked in iteration 22 sweep) | LAW_MIGRATION.json |
+| runtime gates | spectests 5440/5440, runtime 51/51, conformance 295 + 5145, mutations, negative 7/7, cache 7, invalid 14/14, fuzz seed 20260926 0 mismatches | build/final_runtime |
+| performance | gate PASS 978/327; worst 7.65x root, 2.99x codec | build/final_perf |
+| memory | 15/15, worst 5,779,456 B | MEMORY_REVIEW |
+- 2026-09-25 10:54:21 Final sequential sweep started (build/final_sweep.sh over build/sweep_todo.txt: 304 files; build/sweep_plan.py reuses 9 Linux PASSes newer than the file and all its transitive imports, listed in build/sweep_reuse.txt). The queue daemon is idle (empty queue). Generators now write only changed files, so regeneration no longer invalidates PASS results through mtimes.
+- 2026-09-25 13:15:27 Sweep regrouped: per-file checks of proofs/obj re-parse the same heavy imports (~10 min each on this host). build/sweep2.sh checks group wrappers (build/sweep_groups/*.bend, each importing modules that can share a process: constructor names are global, so each cached_<list> with its cspec_<list> is its own group, and root_gtypes is alone because of root_types' WMr/BMr/MB). Then HASH_PROOF, END_TO_END, ROOT_DOMAIN, PROOF and the 5 root_big files. Checking a wrapper type-checks every imported module in full.
+- Sweep: build/sweep_groups/g_base.bend (102 proofs/obj modules, listed in g_base.list) PASS 5257 s, 8.66 GB VmHWM.
+- HOST INCIDENT 2026-09-25 15:36 CEST: /dev/null was replaced host-wide by a
+  dangling symlink `/dev/null -> ../../../proofs/fp2_sqrt_blst.bend` (created
+  15:36; a BLS-named path, not created by the SSZ worker). Every shell command
+  failed (the tool wraps commands with `< /dev/null`). Repair, minimal and
+  host-level (no BLS process, source or /srv/bls-* directory touched):
+  1. created an empty /proofs/fp2_sqrt_blst.bend so the symlink resolved;
+  2. `rm -f /dev/null && mknod -m 666 /dev/null c 1 3` (restored the standard
+     character device; verified crw-rw-rw- 1,3; writes discarded, reads empty).
+  The temporary file /proofs/fp2_sqrt_blst.bend (48 bytes of stray shell
+  output) remains: removing it was denied by the tool's permission mode.
+  Operator: please delete /proofs/fp2_sqrt_blst.bend and /proofs, and find the
+  process that replaced /dev/null. The sweep kept running; its results before
+  and after 15:36 are unaffected (each check is a separate process; the
+  15:37:43 group PASS was logged normally).
+- Sweep: g_l16_Withdrawal (cached_l16_Withdrawal + cspec_l16_Withdrawal in one wrapper) FAIL 536 s: checker stack overflow, no location. Both files are unchanged since 08:03, and cspec_l16_Withdrawal, which imports the cached file, passed standalone at 09:07. Re-checking cspec_l16_Withdrawal standalone after the sweep.
+- 15:57 CEST: build/sweep_parallel.py (not written by this worker; created
+  15:57:01, apparently by the operator) replaced build/sweep2.sh. It reads
+  build/sweep_plan2.txt, runs the pinned benchmarks/checks/check_proof.py per
+  target (8 at a time, root_big 2 at a time), appends the real result lines to
+  build/final_sweep.log, adopts the in-flight check, and defers
+  cspec_l16_Withdrawal. This worker did not interfere with it. Its root-file
+  results so far: HASH_PROOF PASS 21 s, PROOF PASS 119 s, END_TO_END PASS 130 s,
+  ROOT_DOMAIN PASS 139 s (all zero unsafe).

@@ -1,5 +1,5 @@
 # Work-in-progress snapshot
 
-Work-in-progress SSZ snapshot before remote migration. Named root coverage: 70 laws in root_names plus 23 in root_types; root_types passed 2026-09-24 08:33 CEST (602.2s, recorded peak 3.61GB). root_big (five additional names) is still checking and is NOT counted. These are root-refinement laws with representation premises, not complete end-to-end verification. Last reported codec-spec coverage 83/109 and spectests 5440/5440 are historical; no fresh full acceptance run for this snapshot. BeaconState and further runtime/proof composition remain incomplete. Existing performance evidence predates these latest proof edits.
+Iteration 23 source snapshot. Root proof sweep is incomplete: recent grouped checks include passes and two failures; root_big checks and a standalone diagnostic were still running. Runtime, fuzz, performance and memory evidence are reported from the worker log and were not rerun for this publication.
 
-Captured current source and checker evidence. No new full proof, conformance, benchmark or audit run. Active worker may continue after capture.
+Copied current sources and selected sweep logs; git diff --check and Python syntax validation only. No full proofs/runtime/performance rerun. Worker left running. See [the captured sweep status](publication-evidence/20260925-progress/STATUS.md) and [logs](publication-evidence/20260925-progress/). The sweep is incomplete and includes recorded failures.

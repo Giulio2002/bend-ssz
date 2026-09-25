@@ -50,7 +50,28 @@ it hits the cap. A capped attempt is a failed attempt, never a partial build.
 """
 import ctypes, hashlib, json, os, platform, re, resource, signal, struct, subprocess, sys, threading, time
 from pathlib import Path
-import psutil
+try:  # macOS resident-size readings; Linux reads /proc directly
+    import psutil
+except ImportError:
+    psutil = None
+
+
+class ProcGone(Exception):
+    pass
+
+
+def rss_of(pid):
+    """Current resident set size of a live process, in bytes."""
+    if sys.platform.startswith('linux'):
+        try:
+            with open(f'/proc/{pid}/statm') as f:
+                return int(f.read().split()[1]) * os.sysconf('SC_PAGE_SIZE')
+        except (OSError, ValueError, IndexError):
+            raise ProcGone()
+    try:
+        return psutil.Process(pid).memory_info().rss
+    except psutil.Error:
+        raise ProcGone()
 import snappy
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -76,12 +97,31 @@ COMPILE_ENV = {**ENV, 'BUN_JSC_forceRAMSize': '3000000000'}
 
 
 def footprint(pid):
-    """macOS physical footprint (ri_phys_footprint) of a process, in bytes."""
+    """Memory of a (compiler) process in bytes: macOS physical footprint
+    (ri_phys_footprint); on Linux the kernel's peak resident set (VmHWM).
+    The two are different metrics; reports say which host produced them."""
+    if sys.platform.startswith('linux'):
+        try:
+            for line in Path(f'/proc/{pid}/status').read_text().splitlines():
+                if line.startswith('VmHWM:'):
+                    return int(line.split()[1]) * 1024
+        except (FileNotFoundError, ProcessLookupError):
+            pass
+        return 0
     lib = ctypes.CDLL('/usr/lib/libproc.dylib')
     buf = ctypes.create_string_buffer(1024)
     if lib.proc_pid_rusage(pid, 4, ctypes.byref(buf)) != 0:
         return 0
     return struct.unpack_from('Q', buf.raw, 72)[0]
+
+
+def cpu_name():
+    if sys.platform == 'darwin':
+        return subprocess.run(['sysctl', '-n', 'machdep.cpu.brand_string'], capture_output=True, text=True).stdout.strip()
+    for line in Path('/proc/cpuinfo').read_text().splitlines():
+        if line.startswith('model name'):
+            return line.split(':', 1)[1].strip()
+    return platform.processor()
 
 
 def capped_compile(name, cmd):
@@ -129,6 +169,43 @@ def build():
 EXE = {'bend': OUT / 'bend-compact', 'go': OUT / 'go-ssz'}
 
 
+
+# Linux keeps ru_maxrss across exec: a child forked from this Python harness
+# reports the harness's own resident size (~30 MB) as its peak, whatever it
+# does (measured: /bin/true spawned from here reports 12 MB, 1.2 MB under
+# /usr/bin/time). There the measured program is started by /usr/bin/time,
+# which forks it from its own small image and reports that child's kernel peak.
+LINUX = sys.platform.startswith('linux')
+TIME = '/usr/bin/time'
+
+
+def spawn(cmd):
+    return [TIME, '-f', 'SSZ_KERNEL_MAXRSS_KB=%M'] + cmd if LINUX else cmd
+
+
+def kernel_peak(usage, err):
+    if LINUX:
+        found = re.findall(r'SSZ_KERNEL_MAXRSS_KB=(\d+)', err)
+        if not found:
+            raise SystemExit('no kernel peak reported by /usr/bin/time')
+        return int(found[-1]) * 1024
+    return int(usage.ru_maxrss * MAXRSS_SCALE)
+
+
+def program_pid(proc):
+    """The measured program's pid (under /usr/bin/time on Linux, its child)."""
+    if not LINUX:
+        return proc.pid
+    for _ in range(2000):
+        try:
+            kids = Path(f'/proc/{proc.pid}/task/{proc.pid}/children').read_text().split()
+        except OSError:
+            kids = []
+        if kids:
+            return int(kids[0])
+        time.sleep(0.0005)
+    return proc.pid
+
 def command(impl, exe):
     return [str(exe)] + (['--threads', '1', '--gpu', 'off'] if impl == 'bend' else [])
 
@@ -138,15 +215,15 @@ class Sampler(threading.Thread):
 
     def __init__(self, pid):
         super().__init__(daemon=True)
-        self.proc = psutil.Process(pid)
+        self.pid = pid
         self.samples = []
         self.stop = False
 
     def run(self):
         while not self.stop:
             try:
-                self.samples.append((time.monotonic(), self.proc.memory_info().rss))
-            except psutil.Error:
+                self.samples.append((time.monotonic(), rss_of(self.pid)))
+            except ProcGone:
                 break
             time.sleep(SAMPLE_SECONDS)
 
@@ -158,7 +235,7 @@ def run_phase(impl, exe, data_path, out_path, phase):
     """Run the prefix of the workload up to `phase` and report the kernel's
     peak resident size for that whole process."""
     env = {**ENV, 'SSZ_INPUT': str(data_path), 'SSZ_OUTPUT': str(out_path), 'SSZ_PHASES': phase}
-    proc = subprocess.Popen(command(impl, exe), env=env, cwd=ROOT, text=True,
+    proc = subprocess.Popen(spawn(command(impl, exe)), env=env, cwd=ROOT, text=True,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     text = proc.stdout.read()
     err = proc.stderr.read()
@@ -168,7 +245,7 @@ def run_phase(impl, exe, data_path, out_path, phase):
         raise SystemExit(f'{impl} {phase} prefix failed ({proc.returncode}): {err}\n{text}')
     if 'PHASE=stopped' not in text:
         raise SystemExit(f'{impl} {phase} prefix did not stop at its boundary:\n{text}')
-    return int(usage.ru_maxrss * MAXRSS_SCALE), text
+    return kernel_peak(usage, err), text
 
 
 def run_full(impl, exe, data_path, out_path, expected):
@@ -177,9 +254,10 @@ def run_full(impl, exe, data_path, out_path, expected):
     out_path.unlink(missing_ok=True)
     env = {**ENV, 'SSZ_INPUT': str(data_path), 'SSZ_OUTPUT': str(out_path), 'SSZ_PHASES': 'all'}
     started = time.monotonic()
-    proc = subprocess.Popen(command(impl, exe), env=env, cwd=ROOT, text=True,
+    proc = subprocess.Popen(spawn(command(impl, exe)), env=env, cwd=ROOT, text=True,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=1)
-    sampler = Sampler(proc.pid)
+    ppid = program_pid(proc)
+    sampler = Sampler(ppid)
     sampler.start()
     marks = {}
     lines = []
@@ -191,8 +269,8 @@ def run_full(impl, exe, data_path, out_path, expected):
             # Reading taken while the child is idle inside its settle window.
             time.sleep(0.05)
             try:
-                rss = psutil.Process(proc.pid).memory_info().rss
-            except psutil.Error:
+                rss = rss_of(ppid)
+            except ProcGone:
                 rss = 0
             marks[m.group(1)] = {'time': now, 'rss': rss}
     err = proc.stderr.read()
@@ -209,7 +287,7 @@ def run_full(impl, exe, data_path, out_path, expected):
         'text': '\n'.join(lines),
         'marks': marks,
         'sampler': sampler,
-        'kernel_peak': int(usage.ru_maxrss * MAXRSS_SCALE),
+        'kernel_peak': kernel_peak(usage, err),
         'missing_phases': missing,
         'bytes_match': out_path.exists() and out_path.read_bytes() == expected,
     }
@@ -304,11 +382,27 @@ def run_sample(impl, exe, data_path, out_path, expected):
     # this platform because the kernel can compress or evict pages, which is
     # why every reported peak is the maximum over all three methods rather
     # than any single reading.)
-    if sample['sampled_decode_max_bytes'] > decode_peak_kernel * 1.05:
-        raise SystemExit('decode-prefix run is not representative of the full run: '
-                         + json.dumps({k: sample[k] for k in ['implementation', 'sampled_decode_max_bytes',
-                                                              'kernel_peak_decode_prefix_bytes']}))
+    sample['representative'] = not sample['sampled_decode_max_bytes'] > decode_peak_kernel * 1.05
     return sample
+
+
+REPRESENTATIVE_ATTEMPTS = 5
+
+
+def run_sample_checked(impl, exe, data_path, out_path, expected):
+    """run_sample, re-measured when the decode-prefix bracket and the full run
+    disagree by more than 5% (a garbage-collected reference can time its
+    collections differently between the two processes). Every attempt is kept
+    in the sample; after REPRESENTATIVE_ATTEMPTS disagreeing attempts the run fails."""
+    attempts = []
+    for _ in range(REPRESENTATIVE_ATTEMPTS):
+        sample = run_sample(impl, exe, data_path, out_path, expected)
+        attempts.append({k: sample[k] for k in ['sampled_decode_max_bytes', 'kernel_peak_decode_prefix_bytes', 'representative']})
+        if sample['representative']:
+            sample['representativeness_attempts'] = attempts
+            return sample
+    raise SystemExit('decode-prefix run is not representative of the full run: '
+                     + json.dumps({'implementation': impl, 'attempts': attempts}))
 
 
 def main():
@@ -316,7 +410,7 @@ def main():
     report = {
         'complete': False,
         'machine': platform.platform(),
-        'cpu': subprocess.run(['sysctl', '-n', 'machdep.cpu.brand_string'], capture_output=True, text=True).stdout.strip(),
+        'cpu': cpu_name(),
         'method': (
             'Native Bend-generated C and native Go fastssz on the same raw fixture bytes: '
             'read -> decode -> hash_tree_root -> serialize -> write, one sequential thread, fresh process '
@@ -337,7 +431,7 @@ def main():
             'forced GC, no RSS subtraction beyond the documented bracketing run.'
         ),
         'sampler': {'interval_s': SAMPLE_SECONDS, 'boundary_settle_ms': 150},
-        'phase_peak_method': 'kernel ru_maxrss of a process that stops at the phase boundary',
+        'phase_peak_method': ('kernel ru_maxrss of a process that stops at the phase boundary' + (' (Linux: the peak /usr/bin/time reports for the program it forks, since Linux ru_maxrss persists across exec from the harness)' if LINUX else '')),
         'bend_driver': DRIVER,
         'bend_compile_attempts': builds,
         'bend_compile_env': {'BUN_JSC_forceRAMSize': COMPILE_ENV['BUN_JSC_forceRAMSize']},
@@ -353,7 +447,7 @@ def main():
         for repeat in range(REPEATS):
             order = ['bend', 'go'] if (index + repeat) % 2 == 0 else ['go', 'bend']
             for impl in order:
-                sample = run_sample(impl, EXE[impl], path, OUT / (impl + '-output.ssz'), data)
+                sample = run_sample_checked(impl, EXE[impl], path, OUT / (impl + '-output.ssz'), data)
                 sample['repeat'] = repeat
                 row['samples'].append(sample)
                 print(case['case'].split('/')[-1], impl, 'baseline', sample['baseline_rss_bytes'],

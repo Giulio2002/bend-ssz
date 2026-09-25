@@ -83,7 +83,9 @@ def run(mode, path, ops=1, arg=ARG):
            'SSZ_INPUT': str(path),
            'SSZ_OUTPUT': str(ROOT / 'build/performance/inputs/cache-out.ssz')}
     started = time.monotonic()
-    r = subprocess.run(['/usr/bin/time', '-l', EXE, '--threads', '1', '--gpu', 'off'],
+    # BSD time (macOS) reports bytes with -l; GNU time (Linux) kilobytes with %M
+    timer = ['/usr/bin/time', '-l'] if sys.platform == 'darwin' else ['/usr/bin/time', '-f', '%M maximum resident set size (kB)']
+    r = subprocess.run(timer + [EXE, '--threads', '1', '--gpu', 'off'],
                        env=env, capture_output=True, text=True)
     elapsed = time.monotonic() - started
     if r.returncode != 0:
@@ -93,7 +95,8 @@ def run(mode, path, ops=1, arg=ARG):
         raise SystemExit(f'mode {mode} printed no root: {r.stdout}')
     rss = re.search(r'(\d+)\s+maximum resident set size', r.stderr)
     words = [int(x) for x in m.group(1).split(',')]
-    return b''.join(w.to_bytes(4, 'big') for w in words), elapsed, int(rss.group(1)) if rss else 0
+    scale = 1 if sys.platform == 'darwin' else 1024
+    return b''.join(w.to_bytes(4, 'big') for w in words), elapsed, int(rss.group(1)) * scale if rss else 0
 
 
 def expectations(vals):

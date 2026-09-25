@@ -49,31 +49,113 @@ What that means concretely:
   Not covered: HistoricalBatch, SyncCommittee, Blob, BlobSidecar (packed storage
   beyond 512 words: need loop induction over the array model), Validator (a
   boolean inside an unaligned record), the 21 variable-size names, and all roots.
-* Root equality (2026-09-23): proved for 96 of the 109 Fulu names, for the
-  ACTUAL public root `T.<Name>_hash_tree_root(h, o)`, against the independent
-  relational specification spec/root_relation.bend `roots` and the pinned
-  package's SHA law, with no symbolic SHA normalization. Chain:
-  `proofs/obj/sha_node.bend` (runtime node = spec `hash_pair` on the 64-byte
-  message, for every pair of digests, through `sha256_array_correct`);
-  `mtree_spec.bend` (the reference tree is spec/tree.bend's tree);
-  `mtree_run.bend` (runtime trees over word arrays = reference trees);
-  `words_*`, `list_*`, `pv_obj`, `ulist_obj`, `elems*` (byte storage, packed
-  lists, Bytes48 elements); `root_names.bend` (75 Data-kind names, phase A),
-  `leaf_small.bend` (uint8, ParticipationFlags, uint32, Bytes1),
-  `root_types.bend` (17 Type-kind names, phase B, incl. Blob). Each law is
+* Root equality (updated 2026-09-24, Linux host; see WORK_LOG "Iteration 23"):
+  laws exist for 108 of the 109 Fulu names, for the ACTUAL public root
+  `T.<Name>_hash_tree_root(h, o)`, against the independent relational
+  specification spec/root_relation.bend `roots` and the pinned package's SHA
+  law, with no symbolic SHA normalization. Each law is
   `RR.roots(v_X(o), s, [D.bytes(root of T.X_hash_tree_root(h, o))])` for every
   hasher h and every object o with the representation invariant `rep_X(o, s)`,
-  where `s == Spec.X()`. Not covered, with the measured reason
-  (`codegen/root_laws_b.py --status`): Attestation, AggregateAndProof,
-  SignedAggregateAndProof, PendingAttestation (bit lists: no law yet);
-  IndexedAttestation, AttesterSlashing (a runtime tree of depth 15: the checker
-  compares the closed capacity 2^15 in unary and overflows); Transaction (its
-  closed limit fact `minimal(2^25, 25)` does not evaluate; law generated as a
-  probe only); ExecutionPayload, BeaconBlockBody, BeaconBlock,
-  SignedBeaconBlock, DataColumnSidecar, BeaconState (lists of Type-kind or
-  2048-byte elements, and 2^40 limits). No generic-form root law. The cached
-  root (proofs/obj/cache.bend) has step laws only; cached = spec root is not
-  proved.
+  where `s == Spec.X()`. Checked: `root_names.bend` (75 Data-kind names, phase A;
+  Mac check), `leaf_small.bend` (uint8, ParticipationFlags, uint32, Bytes1; Mac
+  check), `root_types.bend` (25 Type-kind names incl. IndexedAttestation and
+  AttesterSlashing (depth 15, through the variable-depth record OS.DV), the 4
+  bit-list names (bitlist_obj), Blob, BlobSidecar and DataColumnSidecar (cells.bend);
+  Linux PASS 1047 s, 4.08 GB VmHWM). Pending check: `root_big.bend` (Transaction,
+  ExecutionPayload, BeaconBlockBody, BeaconBlock, SignedBeaconBlock: closed limit
+  facts up to 2^30 that the checker evaluates once in unary; hours).
+  Not covered: BeaconState (its 2^40 limits appear in closed facts the checker
+  cannot evaluate in unary; no symbolic route through the schema literal is known).
+  Generic forms (codegen/root_laws_generic.py --status, 2026-09-25): laws for
+  123 of the 136 supported forms: 70 packed vectors of bool/uint8/16/32/64/128/256
+  (packed_obj.bend, packed_bytes.bend: Linux PASS 624 s); 18 byte-storage forms;
+  16 bit vectors of a length not a multiple of 32; 7 progressive lists
+  (prog_root.bend PASS 573 s + prog_list.bend); 6 phase A containers
+  (root_gnames.bend PASS 931 s); 3 uint leaves (gleaf.bend PASS); 3 phase B
+  containers (root_gtypes.bend PASS 1298 s). The bit vectors are in
+  gbits_small.bend (the 14 one-chunk vectors) and gbits_Gt05340E1F7E.bend
+  (Bitvector[511]: PASS 602 s) / gbits_Gt0B0C03B454.bend (Bitvector[513]).
+  The former single gbits.bend was stopped by the operator after 5 h. The cause
+  was proof engineering, not the statements: a goal held the runtime root at the
+  concrete hash length 64n while the object's words were exposed, so the
+  checker reduced SHA-256 over them. The laws are unchanged. The proofs now keep
+  the object opaque at 64n and do the rest for a symbolic hash length (see
+  WORK_LOG 2026-09-25). No law for 13 forms: 3 compatible unions,
+  1 progressive container, 2 containers with a progressive bit-list field,
+  5 containers with uint16-list / plist fields or a Bitvector[2] field, and 1
+  bit list of tree depth 56.
+  The representation invariants `rep_X` are hypotheses of the Type-kind root
+  laws. Producers establishing them (2026-09-25):
+  - Checked: every field setter of the 27 Type-kind containers with a
+    `rep_<X>` keeps it (proofs/obj/prep_setters.bend, codegen/rep_laws.py,
+    127 laws, Linux PASS 988 s). From rep_X(o, s) and the new field value's
+    own invariant, rep_X(X_set_f(o, v), s) holds, with every other component
+    unchanged.
+  - Generated, being checked: for the 6 list types with a root law
+    (cspec_<list>.bend), `default_rep`, `uncache_rep` (from the cache
+    invariant), `set_rep`, `append_rep` (when the runtime guard accepts) and
+    `read_rep`/`read_empty_rep` (the list decoder).
+  - Not yet: the whole-container decoders (`X_read` of the 27 containers and
+    of the list types not listed above) and container `default()`. So on the
+    public API, `rep` is discharged for list values built by
+    default/read/set/append/uncache and for setter chains starting from a
+    value that has it. It is not yet discharged for a container decoded from
+    bytes.
+  The cached root (updated 2026-09-25, Linux checks):
+  - Checked: the heap model proofs/obj/ctree.bend, which covers the node
+    rule, the clean-node invariant as Data products (a function-typed
+    invariant is linear in Bend 2.0.25), the sweep as level loops, and
+    root = reference tree.
+  - Checked: the locality lemmas proofs/obj/cloc.bend. A change at one leaf,
+    `dput`, keeps every node that is clean for a range covering the leaf.
+  - Checked: the runtime connection for BeaconState.validators
+    (`l1099511627776_Validator`). proofs/obj/cloop.bend covers the U32 node
+    step and level loop; cloop2.bend covers the leaf loop, element roots
+    `d_Validator` and the shifted level ranges; cloop3.bend covers
+    `csweep`, the padding to depth 40 and
+    **`cached_root_correct`**. For a cache whose items and nodes are thawed
+    perfect trees satisfying the invariant, `cached_root(64, h, c, seg)`
+    returns `mix_len(64, rtree(40, 0 < n, 64, XL, 0), n)`, where XL is the
+    element roots. It also returns a cache with an empty range in which every
+    node holds its value (Linux PASS: cloop3 808 s, 3.11 GB VmHWM).
+  - Checked (Linux): preservation by `cset` (cset.bend, `xl_set`; PASS 779 s)
+    and by `capp` inside the capacity (cmut.bend, `xl_app`; PASS 778 s), the
+    fresh-cache invariant (`fresh_cinv`), and `B.words_depth` (wdepth.bend
+    PASS 562 s, wdstage.bend PASS 556 s: the minimal depth, stated without
+    closed powers of two). cloop3.bend re-checked after the runtime now returns
+    the empty range `[n, 0]` from `cached_root` (PASS 728 s).
+  - Checked (Linux): the cost of the sweep (ccost.bend, PASS 528 s).
+    `sweep_cost` says levels l+1 .. l+k rehash at most
+    (rng(l, hi) - rng(l, lo)) + 3k nodes. The step counts are the ones that
+    `clevels` proves the runtime runs. The whole sweep is (hi - lo) + 3d, and
+    after one write it is at most 3d (O(log n), against 2^d - 1 for a full
+    rehash).
+  - Checked (Linux): the public API as an invariant-preserving interface
+    (capi.bend, PASS 713 s: `root_eq`, `cset_eq`/`cset_inv`, `capp_eq`/
+    `capp_inv` under the runtime's append guard `guard(n)`, `cache_eq`/
+    `cache_inv` for `cache(o)`); the capacity-growing `capp` (cgrow.bend,
+    PASS 749 s: `grow_eq`/`grow_inv`, the copy loop into a doubled array); and
+    the history law (chist.bend, PASS 729 s: `hist_inv`). By `hist_inv`, every
+    sequence of `cset`/`capp` calls whose preconditions hold keeps the cache
+    valid. So, by `root_eq`, the root after any such history is the reference
+    root of its elements.
+  - Generated for the 11 other `_Cached` lists with Data-kind elements
+    (codegen/cached_laws.py -> cached_<list>.bend: all eight parts, with each
+    list's guard literal and limit depth). cached_l16_Withdrawal: Linux PASS
+    737 s; the other 10 are being checked.
+  - Spec link (cspec_<list>.bend, `cached_spec`) for the 6 lists that also
+    have an uncached root law. The digest the cached root returns satisfies
+    RR.roots for the list's value. cspec_l16_Withdrawal, which also holds the
+    list producer laws: Linux PASS 1017 s; the other 5 are being checked.
+    The lists are DepositRequest, WithdrawalRequest, ConsolidationRequest,
+    Withdrawal, SignedVoluntaryExit and SignedBLSToExecutionChange.
+  - Not yet: the 5 `_Cached` lists with Type-kind elements (bit lists,
+    ProposerSlashing, AttesterSlashing, Attestation, Deposit), and the spec
+    link for BeaconState's lists (validators and the 5 BeaconState-only
+    lists). Their uncached law is not generated, because BeaconState's
+    `l16777216_b32` field kind is unsupported and its 2^40 limit facts are
+    closed. So for those lists cached = spec root is proved only up to the
+    reference tree of the element roots.
 * The public encoder is `<Name>_serialize -> O.Encoded{ok, bytes}`: it refuses
   representable-but-invalid objects (scalars out of range, bits or bytes set
   past a length, lengths over limits or not whole elements, storage too small

@@ -154,10 +154,11 @@ def validators_pad_done(+hl: Nat, +lvl: U32, +r: D.Digest, h: B.Buf, +z: D.Diges
   {==}
 
 # The root the API returns is the tree root with the length mixed in, and the
-# cache it returns has an empty dirty range: lo > hi, so the next root hashes
-# nothing unless something is written.
+# cache it returns has the dirty range [n, 0]: empty for n > 0 (lo > hi), so the
+# next root hashes nothing unless something is written; for n = 0 it is the one
+# zero leaf. A write at i < n then narrows it to [i, i], an append to [n, n].
 def validators_croot_mixes_len(+hl: Nat, +n: U32, +d: Nat, arr: Array<T.Validator>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest)
     -> {T.l1099511627776_Validator_croot_fin(hl, n, d, arr, nodes, (h, r))
-        == (h, (T.l1099511627776_Validator_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+        == (h, (T.l1099511627776_Validator_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
         : B.Buf & (T.l1099511627776_Validator_Cached & D.Digest)}:
   {==}

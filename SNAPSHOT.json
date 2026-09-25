@@ -1,7 +1,7 @@
 {
-  "at": "2026-09-24T07:04:09.430360+00:00",
-  "source": "/Users/monkeair/work/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0022/workspace",
+  "at": "2026-09-25T16:16:00+02:00",
+  "source": "/srv/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0023/workspace",
   "status": "work_in_progress",
-  "description": "Work-in-progress SSZ snapshot before remote migration. Named root coverage: 70 laws in root_names plus 23 in root_types; root_types passed 2026-09-24 08:33 CEST (602.2s, recorded peak 3.61GB). root_big (five additional names) is still checking and is NOT counted. These are root-refinement laws with representation premises, not complete end-to-end verification. Last reported codec-spec coverage 83/109 and spectests 5440/5440 are historical; no fresh full acceptance run for this snapshot. BeaconState and further runtime/proof composition remain incomplete. Existing performance evidence predates these latest proof edits.",
-  "validation_this_publication": "Captured current source and checker evidence. No new full proof, conformance, benchmark or audit run. Active worker may continue after capture."
+  "description": "Iteration 23 source snapshot. Root proof sweep is incomplete: recent grouped checks include passes and two failures; root_big checks and a standalone diagnostic were still running. Runtime, fuzz, performance and memory evidence are reported from the worker log and were not rerun for this publication.",
+  "validation_this_publication": "Copied current sources and selected sweep logs; git diff --check and Python syntax validation only. No full proofs/runtime/performance rerun. Worker left running."
 }

@@ -286,3 +286,74 @@ Log: build/final/native_bench.log.
 | case_4 | 5,570,560 | 3,735,552 |
 
 Worst Bend overhead 6,520,832 B (cap 32,000,000 B); worst Bend/Go ratio 1.8x.
+
+## 2026-09-24 (Linux): re-run on the migrated host
+
+The host is now Linux x86_64 (Intel Xeon Gold 5412U, 48 CPUs, shared and busy:
+load average about 100 during the run). The procedure is unchanged:
+`native_bench/run.py` directly, with the gate's own per-sample conditions
+applied to `build/native/comparison.json`. The run was complete, with 5
+fixtures and 3 verified samples per side each (15/15 Bend samples verified).
+Snapshot: `iterations/0023/mem-snap-3`.
+
+The metric differs from the macOS rows above, which measured physical
+footprint. Here the sampled value is Linux resident set size
+(/proc/PID/statm), and the whole-run kernel peak is VmHWM/`ru_maxrss`. The two
+metrics are not directly comparable. Two harness corrections were needed on
+Linux:
+- The program now runs under `/usr/bin/time`. `ru_maxrss` carries over across
+  exec, so a child forked from the Python harness otherwise reports the
+  harness's own resident size (snapshot mem-snap-1 was invalid for that
+  reason).
+- A sample whose sampled and kernel peaks disagree by more than the
+  unchanged 5% tolerance is re-measured, up to 5 times. Every attempt is kept
+  in `representativeness_attempts`. On the busy host, mem-snap-2 had stopped
+  on one Go sample (13.93 vs 12.85 MB).
+
+| fixture | Bend max decode overhead | Go max decode overhead |
+| --- | ---: | ---: |
+| BeaconState ssz_random case_0 | 5,808,128 | 3,104,768 |
+| case_1 | 5,763,072 | 2,850,816 |
+| case_2 | 5,844,992 | 3,072,000 |
+| case_3 | 5,795,840 | 3,108,864 |
+| case_4 | 5,775,360 | 3,117,056 |
+
+Worst Bend overhead is 5,844,992 B (cap 32,000,000 B); worst Bend/Go ratio is
+2.0x (case_1). `automation/native_memory_acceptance.py` itself was not run
+end to end. It re-runs the harness after its earlier steps, which still stop
+at the 2.0.16 pin (docs/TOOLCHAIN.md).
+
+Final re-run on the current sources (including the `pow2u` shift form of the
+cache paths; the decode path is unchanged): snapshot `iterations/0023/mem-snap-4`.
+The run was complete, with 15/15 Bend samples verified.
+
+| fixture | Bend max decode overhead | Go max decode overhead |
+| --- | ---: | ---: |
+| BeaconState ssz_random case_0 | 5,713,920 | 3,108,864 |
+| case_1 | 5,808,128 | 3,096,576 |
+| case_2 | 5,713,920 | 3,108,864 |
+| case_3 | 5,795,840 | 3,096,576 |
+| case_4 | 5,783,552 | 3,125,248 |
+
+Worst Bend overhead is 5,808,128 B (cap 32,000,000 B).
+
+## 2026-09-25 (Linux): re-run on the final sources of iteration 23
+
+Run in the workspace itself (`native_bench/run.py` with the SSZ venv and
+`CC=clang-21`), after the proof-only changes of 2026-09-25; the runtime is
+unchanged since 2026-09-24. The run was complete, with 15/15 Bend samples
+verified and all five root checksums agreeing with Go. Copy:
+`build/final_perf/comparison.json`.
+
+| fixture | Bend max decode overhead | Go max decode overhead | Bend max decode peak |
+| --- | ---: | ---: | ---: |
+| BeaconState ssz_random case_0 | 5,713,920 | 2,768,896 | 14,733,312 |
+| BeaconState ssz_random case_1 | 5,713,920 | 2,908,160 | 14,786,560 |
+| BeaconState ssz_random case_2 | 5,779,456 | 3,112,960 | 14,749,696 |
+| BeaconState ssz_random case_3 | 5,713,920 | 2,953,216 | 14,721,024 |
+| BeaconState ssz_random case_4 | 5,750,784 | 3,108,864 | 14,684,160 |
+
+Worst Bend overhead is 5,779,456 B (cap 32,000,000 B); worst Go overhead
+3,112,960 B (worst Bend/Go ratio 1.9x).
+`automation/native_memory_acceptance.py` still stops at the 2.0.16 toolchain
+pin (docs/TOOLCHAIN.md gives the hash-only update).

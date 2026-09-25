@@ -20,6 +20,11 @@
 | --- | --- |
 | `~/.bend/bin/bend` (`bend version` prints `bend 2.0.25`) | `3850c7cd281a687715a181ad6a2ecdef041704f320ea2b4304cf9e802309203c` |
 | `~/.bend/bend2/base.bend` | `e5639663177f2de93ef34867c029698aa4e68a98d46629f0b15452b67b99d798` |
+| Linux x86_64 host (2026-09-24): `~/.bend/bin/bend` -> `/srv/ssz-optimization/toolchain/bend/bin/bend` (`bend version` prints `bend 2.0.25`) | `d9c0dad1f77be6a13dd8dcc16aef4f59047a956a2744f25d5c220cb8de384693` |
+| Linux x86_64 host: `~/.bend/bend2/base.bend` (same bytes as on the Mac) | `e5639663177f2de93ef34867c029698aa4e68a98d46629f0b15452b67b99d798` |
+
+`benchmarks/toolchain.json` pins the Linux binary hash on this host (only the
+platform binary differs; Base is byte-identical).
 
 Provenance limit: these are the files the official `bend update` installer
 (curl | sh from upstream) wrote. No independent upstream checksum was available
@@ -37,8 +42,10 @@ from `bend version` (2.0.25 no longer accepts `--version`).
 
 `automation/acceptance.py` (called by the native-memory gate) compares
 `~/.bend/bin/bend` and Base against `automation/toolchain.json` and exits with
-"Pinned 2.0.16 toolchain identity changed" otherwise. The minimal update is to
-`automation/toolchain.json` only:
+"Pinned 2.0.16 toolchain identity changed" otherwise (re-observed on the Linux
+host on 2026-09-24). The minimal update is to `automation/toolchain.json` only
+(shown with the Mac binary hash; on the Linux host the bend sha256 is
+`d9c0dad1f77be6a13dd8dcc16aef4f59047a956a2744f25d5c220cb8de384693`):
 
 ```json
 {
@@ -57,3 +64,30 @@ only and does not affect the check. No gate check needs to be removed.
 
 All evidence produced before the reinstatement (proof logs, native programs,
 spectest/fuzz/gate reports) is 2.0.16 evidence and is historical for 2.0.25.
+
+## Linux host (2026-09-24): C compiler for Bend's native backend
+
+The pinned Bend 2.0.25 builds binaries only with clang >= 14 (it probes `$CC`,
+`clang`, `clang-<n>`; gcc is refused). The migrated Linux x86_64 host had the
+LLVM 21 runtime libraries (`libllvm21`, `libclang-cpp21`) but no clang driver.
+Nothing system-wide was installed: the Ubuntu packages of the same LLVM release
+were downloaded with `apt-get download` and unpacked with `dpkg-deb -x` into the
+SSZ-private directory `/srv/ssz-optimization/toolchain/clang21`:
+
+| package | sha256 |
+| --- | --- |
+| clang-21_1:21.1.8-6ubuntu1_amd64.deb | 792701d9c82e5f237879cc0bda552d8a127ea24b0c7d520e815aff14bd314b03 |
+| libclang-common-21-dev_1:21.1.8-6ubuntu1_amd64.deb | c7188f593d77017a4ebb6fea76bb4b5180a3e5a1e7b9f0e3dbd5f5abf7e7183e |
+| llvm-21-linker-tools_1:21.1.8-6ubuntu1_amd64.deb | 51e9cecdb44252d9fed8209ce8d3194455210905068fbbf7c08dd016e3ed4b8f |
+
+Native builds on this host run with
+`CC=/srv/ssz-optimization/toolchain/clang21/usr/lib/llvm-21/bin/clang-21`
+(Ubuntu clang 21.1.8). The Bend compiler, Base and the emitted C are unchanged;
+Mac measurements used Apple clang and are historical, not Linux evidence.
+The frozen gates (`automation/*`) do not set `CC`; they must be launched with
+it exported (or with a clang on PATH) on this host. The gate interpreters
+`/Users/monkeair/work/fulu-bend/.venv/bin/python` and
+`/Users/monkeair/auto-implementer/.venv/bin/python` currently lack `psutil`
+and `snappy`, which native_bench/run.py and tools/spectests.py import; the
+Linux `/srv/ssz-optimization/venv` has them. That is an operator environment
+item, not a source change.

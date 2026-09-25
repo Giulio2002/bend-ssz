@@ -46,7 +46,7 @@ def fin_c(pair: B.Buf & (T.l1099511627776_Validator_Cached & D.Digest)) -> IO(Un
 # ---- 0, 1, 2 ---------------------------------------------------------------
 
 def m_uncached(lst: T.l1099511627776_Validator_Seq) -> IO(Unit):
-  fin_u(T.l1099511627776_Validator_root(O.hasher(), lst, 0))
+  fin_u(T.l1099511627776_Validator_root(64n, O.hasher(), lst, 0))
 
 def m_first(lst: T.l1099511627776_Validator_Seq) -> IO(Unit):
   fin_c(T.l1099511627776_Validator_cached_root(64n, O.hasher(), T.l1099511627776_Validator_cache(lst), 0))
@@ -87,7 +87,7 @@ def m_update(+arg: U32, lst: T.l1099511627776_Validator_Seq) -> IO(Unit):
 
 def u_set_done(res: T.l1099511627776_Validator_Seq & Bool) -> IO(Unit):
   (lst, ok) = res
-  fin_u(T.l1099511627776_Validator_root(O.hasher(), lst, 0))
+  fin_u(T.l1099511627776_Validator_root(64n, O.hasher(), lst, 0))
 
 def u_set_elem(+arg: U32, lst: T.l1099511627776_Validator_Seq, m: Maybe<&1, T.Validator>) -> IO(Unit):
   match m:
@@ -115,7 +115,7 @@ def m_append(lst: T.l1099511627776_Validator_Seq) -> IO(Unit):
 
 def m_append_plain(res: T.l1099511627776_Validator_Seq & Bool) -> IO(Unit):
   (lst, ok) = res
-  fin_u(T.l1099511627776_Validator_root(O.hasher(), lst, 0))
+  fin_u(T.l1099511627776_Validator_root(64n, O.hasher(), lst, 0))
 
 # ---- 7: the baseline: decode and force the list, hash nothing of it --------
 
@@ -123,7 +123,7 @@ def m_baseline(pr: T.l1099511627776_Validator_Seq & U32) -> IO(Unit):
   (lst, +n) = pr
   do IO<Unit>:
     IO.print("FORCED=" ++ U32.show(n))
-    fin_u(T.l1099511627776_Validator_root(O.hasher(), T.l1099511627776_Validator_default(), 0))
+    fin_u(T.l1099511627776_Validator_root(64n, O.hasher(), T.l1099511627776_Validator_default(), 0))
 
 # ---- 8, 9: a seeded history of writes and appends ---------------------------
 
@@ -164,7 +164,7 @@ def hist_u(+k: Nat, +s: U32, l: T.l1099511627776_Validator_Seq) -> T.l1099511627
     case 1n+q: hist_u(q, next_seed(s), hist_step_u((s .&. 1 : U32), hist_index(s), s, l))
 
 def m_history_plain(+ops: U32, +arg: U32, lst: T.l1099511627776_Validator_Seq) -> IO(Unit):
-  fin_u(T.l1099511627776_Validator_root(O.hasher(), hist_u(U32.to_nat(ops), arg, lst), 0))
+  fin_u(T.l1099511627776_Validator_root(64n, O.hasher(), hist_u(U32.to_nat(ops), arg, lst), 0))
 
 # ---- dispatch --------------------------------------------------------------
 

@@ -369,7 +369,7 @@ def main():
         'operations_per_history': args.history, 'counts': counts, 'mutation_kinds': kinds,
         'named_operations': {n: len(e['ops']) for n, e in FUZZ_OPS.items()},
         'elapsed_s': round(time.monotonic() - started, 1),
-        'command': f'/opt/homebrew/bin/python3 tests_generated/fuzz_objects.py --seed {args.seed} '
+        'command': f'{sys.executable} tests_generated/fuzz_objects.py --seed {args.seed} '
                    f'--valid {args.valid} --invalid {args.invalid}',
         'toolchain': json.loads((ROOT / 'benchmarks/toolchain.json').read_text()),
         'source_sha256': {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest()

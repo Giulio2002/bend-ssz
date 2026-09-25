@@ -6989,7 +6989,7 @@ def l8192_DepositRequest_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr: 
 
 def l8192_DepositRequest_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<DepositRequest>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l8192_DepositRequest_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l8192_DepositRequest_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l8192_DepositRequest_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l8192_DepositRequest_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<DepositRequest>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l8192_DepositRequest_Cached & D.Digest):
   l8192_DepositRequest_croot_fin(hl, n, d, arr, nodes, l8192_DepositRequest_pad_go(hl, Nat.sub(13n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -7392,7 +7392,7 @@ def l16_WithdrawalRequest_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr:
 
 def l16_WithdrawalRequest_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<WithdrawalRequest>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l16_WithdrawalRequest_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l16_WithdrawalRequest_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l16_WithdrawalRequest_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l16_WithdrawalRequest_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<WithdrawalRequest>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l16_WithdrawalRequest_Cached & D.Digest):
   l16_WithdrawalRequest_croot_fin(hl, n, d, arr, nodes, l16_WithdrawalRequest_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -7795,7 +7795,7 @@ def l2_ConsolidationRequest_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, p
 
 def l2_ConsolidationRequest_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<ConsolidationRequest>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l2_ConsolidationRequest_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l2_ConsolidationRequest_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l2_ConsolidationRequest_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l2_ConsolidationRequest_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<ConsolidationRequest>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l2_ConsolidationRequest_Cached & D.Digest):
   l2_ConsolidationRequest_croot_fin(hl, n, d, arr, nodes, l2_ConsolidationRequest_pad_go(hl, Nat.sub(1n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -10056,7 +10056,7 @@ def l1048576_bl1073741824_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr:
 
 def l1048576_bl1073741824_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<O.Words>>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l1048576_bl1073741824_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l1048576_bl1073741824_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l1048576_bl1073741824_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l1048576_bl1073741824_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<O.Words>>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l1048576_bl1073741824_Cached & D.Digest):
   l1048576_bl1073741824_croot_fin(hl, n, d, arr, nodes, l1048576_bl1073741824_pad_go(hl, Nat.sub(20n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -10459,7 +10459,7 @@ def l16_Withdrawal_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr: B.Buf 
 
 def l16_Withdrawal_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<Withdrawal>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l16_Withdrawal_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l16_Withdrawal_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l16_Withdrawal_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l16_Withdrawal_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<Withdrawal>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l16_Withdrawal_Cached & D.Digest):
   l16_Withdrawal_croot_fin(hl, n, d, arr, nodes, l16_Withdrawal_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -11739,7 +11739,7 @@ def l2048_Eth1Data_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr: B.Buf 
 
 def l2048_Eth1Data_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<Eth1Data>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l2048_Eth1Data_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l2048_Eth1Data_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l2048_Eth1Data_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l2048_Eth1Data_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<Eth1Data>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l2048_Eth1Data_Cached & D.Digest):
   l2048_Eth1Data_croot_fin(hl, n, d, arr, nodes, l2048_Eth1Data_pad_go(hl, Nat.sub(11n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -12162,7 +12162,7 @@ def l1099511627776_Validator_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, 
 
 def l1099511627776_Validator_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<Validator>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l1099511627776_Validator_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l1099511627776_Validator_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l1099511627776_Validator_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l1099511627776_Validator_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<Validator>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l1099511627776_Validator_Cached & D.Digest):
   l1099511627776_Validator_croot_fin(hl, n, d, arr, nodes, l1099511627776_Validator_pad_go(hl, Nat.sub(40n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -12995,7 +12995,7 @@ def l16777216_HistoricalSummary_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Diges
 
 def l16777216_HistoricalSummary_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<HistoricalSummary>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l16777216_HistoricalSummary_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l16777216_HistoricalSummary_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l16777216_HistoricalSummary_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l16777216_HistoricalSummary_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<HistoricalSummary>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l16777216_HistoricalSummary_Cached & D.Digest):
   l16777216_HistoricalSummary_croot_fin(hl, n, d, arr, nodes, l16777216_HistoricalSummary_pad_go(hl, Nat.sub(24n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -13398,7 +13398,7 @@ def l134217728_PendingDeposit_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest,
 
 def l134217728_PendingDeposit_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<PendingDeposit>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l134217728_PendingDeposit_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l134217728_PendingDeposit_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l134217728_PendingDeposit_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l134217728_PendingDeposit_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<PendingDeposit>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l134217728_PendingDeposit_Cached & D.Digest):
   l134217728_PendingDeposit_croot_fin(hl, n, d, arr, nodes, l134217728_PendingDeposit_pad_go(hl, Nat.sub(27n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -13801,7 +13801,7 @@ def l134217728_PendingPartialWithdrawal_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r:
 
 def l134217728_PendingPartialWithdrawal_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<PendingPartialWithdrawal>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l134217728_PendingPartialWithdrawal_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l134217728_PendingPartialWithdrawal_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l134217728_PendingPartialWithdrawal_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l134217728_PendingPartialWithdrawal_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<PendingPartialWithdrawal>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l134217728_PendingPartialWithdrawal_Cached & D.Digest):
   l134217728_PendingPartialWithdrawal_croot_fin(hl, n, d, arr, nodes, l134217728_PendingPartialWithdrawal_pad_go(hl, Nat.sub(27n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -14204,7 +14204,7 @@ def l262144_PendingConsolidation_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Dige
 
 def l262144_PendingConsolidation_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<PendingConsolidation>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l262144_PendingConsolidation_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l262144_PendingConsolidation_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l262144_PendingConsolidation_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l262144_PendingConsolidation_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<PendingConsolidation>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l262144_PendingConsolidation_Cached & D.Digest):
   l262144_PendingConsolidation_croot_fin(hl, n, d, arr, nodes, l262144_PendingConsolidation_pad_go(hl, Nat.sub(18n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -18076,7 +18076,7 @@ def l16_ProposerSlashing_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr: 
 
 def l16_ProposerSlashing_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<ProposerSlashing>>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l16_ProposerSlashing_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l16_ProposerSlashing_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l16_ProposerSlashing_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l16_ProposerSlashing_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<ProposerSlashing>>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l16_ProposerSlashing_Cached & D.Digest):
   l16_ProposerSlashing_croot_fin(hl, n, d, arr, nodes, l16_ProposerSlashing_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -18766,7 +18766,7 @@ def l1_AttesterSlashing_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr: B
 
 def l1_AttesterSlashing_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<AttesterSlashing>>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l1_AttesterSlashing_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l1_AttesterSlashing_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l1_AttesterSlashing_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l1_AttesterSlashing_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<AttesterSlashing>>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l1_AttesterSlashing_Cached & D.Digest):
   l1_AttesterSlashing_croot_fin(hl, n, d, arr, nodes, l1_AttesterSlashing_pad_go(hl, Nat.sub(0n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -19349,7 +19349,7 @@ def l8_Attestation_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr: B.Buf 
 
 def l8_Attestation_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<Attestation>>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l8_Attestation_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l8_Attestation_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l8_Attestation_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l8_Attestation_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<Attestation>>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l8_Attestation_Cached & D.Digest):
   l8_Attestation_croot_fin(hl, n, d, arr, nodes, l8_Attestation_pad_go(hl, Nat.sub(3n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -19896,7 +19896,7 @@ def l16_Deposit_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr: B.Buf & D
 
 def l16_Deposit_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<Deposit>>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l16_Deposit_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l16_Deposit_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l16_Deposit_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l16_Deposit_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<O.Boxed<Deposit>>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l16_Deposit_Cached & D.Digest):
   l16_Deposit_croot_fin(hl, n, d, arr, nodes, l16_Deposit_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -20299,7 +20299,7 @@ def l16_SignedVoluntaryExit_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, p
 
 def l16_SignedVoluntaryExit_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<SignedVoluntaryExit>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l16_SignedVoluntaryExit_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l16_SignedVoluntaryExit_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l16_SignedVoluntaryExit_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l16_SignedVoluntaryExit_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<SignedVoluntaryExit>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l16_SignedVoluntaryExit_Cached & D.Digest):
   l16_SignedVoluntaryExit_croot_fin(hl, n, d, arr, nodes, l16_SignedVoluntaryExit_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))
@@ -20780,7 +20780,7 @@ def l16_SignedBLSToExecutionChange_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Di
 
 def l16_SignedBLSToExecutionChange_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<SignedBLSToExecutionChange>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l16_SignedBLSToExecutionChange_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l16_SignedBLSToExecutionChange_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l16_SignedBLSToExecutionChange_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l16_SignedBLSToExecutionChange_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<SignedBLSToExecutionChange>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l16_SignedBLSToExecutionChange_Cached & D.Digest):
   l16_SignedBLSToExecutionChange_croot_fin(hl, n, d, arr, nodes, l16_SignedBLSToExecutionChange_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))

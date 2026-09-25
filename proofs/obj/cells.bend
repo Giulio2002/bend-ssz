@@ -27,6 +27,7 @@ import ./list_root.bend as LR
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK
 import ../compact/arith.bend as AR
+import ../../proofs/nat_algebra.bend as NA
 
 # Byte vectors of whole chunks packed in words, as list elements (the cells of
 # DataColumnSidecar: 2048 bytes, 512 words, 64 chunks, element depth 6). The
@@ -46,7 +47,7 @@ def e8_add(a, b):
   match a:
     case 0n: {==}
     case 1n+ +p:
-      %e8_add(p, b) : {8n+_ == 8n+Nat.add(O.e8(p), O.e8(b)) : Nat}
+      %Equal.sym(Nat, O.e8(Nat.add(p, b)), Nat.add(O.e8(p), O.e8(b)), e8_add(p, b)) : {8n+_ == 8n+Nat.add(O.e8(p), O.e8(b)) : Nat}
       {==}
 
 law mul_e8:
@@ -145,7 +146,7 @@ def eclist_cl(k, W, i0, c, hk):
         {_ <> EL.eclist(q, W, O.e8(i0), 512n, 1n+c) == MR.clist(1n+q, W, Nat.add(i0, c)) : List<&2, D.Digest>}
       %Equal.sym(List<&2, D.Digest>, EL.eclist(q, W, O.e8(i0), 512n, 1n+c), MR.clist(q, W, Nat.add(i0, 1n+c)), eclist_cl(q, W, i0, 1n+c, hq)) :
         {MR.cw(W, Nat.add(i0, c)) <> _ == MR.clist(1n+q, W, Nat.add(i0, c)) : List<&2, D.Digest>}
-      %MR.add_succ(i0, c) : {MR.cw(W, Nat.add(i0, c)) <> MR.clist(q, W, _) == MR.clist(1n+q, W, Nat.add(i0, c)) : List<&2, D.Digest>}
+      %Equal.sym(Nat, Nat.add(i0, 1n+c), 1n+Nat.add(i0, c), MR.add_succ(i0, c)) : {MR.cw(W, Nat.add(i0, c)) <> MR.clist(q, W, _) == MR.clist(1n+q, W, Nat.add(i0, c)) : List<&2, D.Digest>}
       {==}
 
 # The element's root is the tree of depth 6 over the storage's chunks 64 j ..
@@ -155,7 +156,7 @@ def er_cells(+W: List<&2, U32>, +j: Nat, +hl: Nat)
     {MD.rtree(6n, True{}, hl, EL.eclist(64n, W, _, 512n, 0n), 0n) == MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n) : D.Digest}
   %Equal.sym(List<&2, D.Digest>, EL.eclist(64n, W, O.e8(Nat.mul(j, 64n)), 512n, 0n), MR.clist(64n, W, Nat.add(Nat.mul(j, 64n), 0n)), eclist_cl(64n, W, Nat.mul(j, 64n), 0n, {==})) :
     {MD.rtree(6n, True{}, hl, _, 0n) == MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n) : D.Digest}
-  %MR.add_zero(Nat.mul(j, 64n)) : {MD.rtree(6n, True{}, hl, MR.clist(64n, W, _), 0n) == MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n) : D.Digest}
+  %Equal.sym(Nat, Nat.add(Nat.mul(j, 64n), 0n), Nat.mul(j, 64n), MR.add_zero(Nat.mul(j, 64n))) : {MD.rtree(6n, True{}, hl, MR.clist(64n, W, _), 0n) == MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n) : D.Digest}
   {==}
 
 # The bytes of cell j.
@@ -174,17 +175,28 @@ def ccanon(+W: List<&2, U32>, +j: Nat,
     {Lim.minimal(List.length(&2, +List<U32>, _), 6n) == True{} : Bool}
   {==}
 
-def cgate(+hl: Nat, +ehl: {hl == 64n : Nat}, +W: List<&2, U32>, +j: Nat,
-    +cap: {Nat.is_le(O.e8(Nat.add(64n, Nat.mul(j, 64n))), F.spec_common__length(U32, W)) == True{} : Bool})
-    -> {RR.bytevector_at_depth(2048n, 6n, cbytes(W, j)) == Some{D.bytes(MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n))} : Maybe<&2, +List<U32>>}:
-  %Equal.sym(Bool, VD.bytevector_domain(2048n, cbytes(W, j)), SP.byte_scope(2048n, cbytes(W, j)), WR.dom_pos(2048n, cbytes(W, j), {==})) :
-    {Br.gate(_, 6n, cbytes(W, j)) == Some{D.bytes(MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n))} : Maybe<&2, +List<U32>>}
-  %Equal.sym(Bool, SP.byte_scope(2048n, cbytes(W, j)), True{}, WS.chunk_scope(63n, 32n, W, Nat.mul(j, 64n), {==}, cap)) :
-    {Br.gate(_, 6n, cbytes(W, j)) == Some{D.bytes(MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n))} : Maybe<&2, +List<U32>>}
-  %Equal.sym(+List<+List<U32>>, Br.chunks(cbytes(W, j)), MD.bytes_list(MR.clist(64n, W, Nat.mul(j, 64n))), cchunks(W, j, cap)) :
-    {Some{Tr.tree(6n, _)} == Some{D.bytes(MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n))} : Maybe<&2, +List<U32>>}
-  %MS.rtree_spec(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n, {==}, {==}, ehl) :
-    {Some{_} == Some{D.bytes(MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n))} : Maybe<&2, +List<U32>>}
+# The gate over q + 1 chunks for a SYMBOLIC q: the specification's tree over a
+# list of symbolic length stays unevaluated (instantiated at 64 chunks, the
+# checker would evaluate 63 FIPS compressions over symbolic words).
+def cbq(+W: List<&2, U32>, +j: Nat, +q: Nat) -> +List<U32>:
+  WS.btake(Nat.add(WS.e32(q), 32n), FX.limbs(WS.wdrop(O.e8(Nat.mul(j, 64n)), W)))
+
+def pos32(+x: Nat) -> {Nat.is_lt(0n, Nat.add(x, 32n)) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(x, 32n), Nat.add(32n, x), NA.add_commute(x, 32n)) : {Nat.is_lt(0n, _) == True{} : Bool}
+  {==}
+
+def cgq(+hl: Nat, +ehl: {hl == 64n : Nat}, +W: List<&2, U32>, +j: Nat, +q: Nat, +d: Nat,
+    +hd: {Nat.is_lt(d, 64n) == True{} : Bool},
+    +cap: {Nat.is_le(O.e8(Nat.add(1n+q, Nat.mul(j, 64n))), F.spec_common__length(U32, W)) == True{} : Bool})
+    -> {RR.bytevector_at_depth(Nat.add(WS.e32(q), 32n), d, cbq(W, j, q)) == Some{D.bytes(MD.rtree(d, True{}, hl, MR.clist(1n+q, W, Nat.mul(j, 64n)), 0n))} : Maybe<&2, +List<U32>>}:
+  %Equal.sym(Bool, VD.bytevector_domain(Nat.add(WS.e32(q), 32n), cbq(W, j, q)), SP.byte_scope(Nat.add(WS.e32(q), 32n), cbq(W, j, q)), WR.dom_pos(Nat.add(WS.e32(q), 32n), cbq(W, j, q), pos32(WS.e32(q)))) :
+    {Br.gate(_, d, cbq(W, j, q)) == Some{D.bytes(MD.rtree(d, True{}, hl, MR.clist(1n+q, W, Nat.mul(j, 64n)), 0n))} : Maybe<&2, +List<U32>>}
+  %Equal.sym(Bool, SP.byte_scope(Nat.add(WS.e32(q), 32n), cbq(W, j, q)), True{}, WS.chunk_scope(q, 32n, W, Nat.mul(j, 64n), {==}, cap)) :
+    {Br.gate(_, d, cbq(W, j, q)) == Some{D.bytes(MD.rtree(d, True{}, hl, MR.clist(1n+q, W, Nat.mul(j, 64n)), 0n))} : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<+List<U32>>, Br.chunks(cbq(W, j, q)), MD.bytes_list(MR.clist(1n+q, W, Nat.mul(j, 64n))), WS.chunk_scan(q, 32n, W, Nat.mul(j, 64n), [], {==}, {==}, cap, {==})) :
+    {Some{Tr.tree(d, _)} == Some{D.bytes(MD.rtree(d, True{}, hl, MR.clist(1n+q, W, Nat.mul(j, 64n)), 0n))} : Maybe<&2, +List<U32>>}
+  %MS.rtree_spec(d, True{}, hl, MR.clist(1n+q, W, Nat.mul(j, 64n)), 0n, {==}, hd, ehl) :
+    {Some{_} == Some{D.bytes(MD.rtree(d, True{}, hl, MR.clist(1n+q, W, Nat.mul(j, 64n)), 0n))} : Maybe<&2, +List<U32>>}
   {==}
 
 # A cell is a specification root of its bytes.
@@ -193,7 +205,7 @@ def celem(+hl: Nat, +ehl: {hl == 64n : Nat}, +W: List<&2, U32>, +j: Nat,
     -> RR.roots(S.BytesValue{cbytes(W, j)}, S.ByteVector{2048n}, [D.bytes(EL.er(W, j, 512n, 6n, 64n, hl))]):
   %Equal.sym(D.Digest, EL.er(W, j, 512n, 6n, 64n, hl), MD.rtree(6n, True{}, hl, MR.clist(64n, W, Nat.mul(j, 64n)), 0n), er_cells(W, j, hl)) :
     RR.roots(S.BytesValue{cbytes(W, j)}, S.ByteVector{2048n}, [D.bytes(_)])
-  (6n, (ccanon(W, j, cap), cgate(hl, ehl, W, j, cap)))
+  (6n, (ccanon(W, j, cap), cgq(hl, ehl, W, j, 63n, 6n, {==}, cap)))
 
 def citems(k: Nat, +W: List<&2, U32>, +i: Nat) -> S.Value:
   match k:
@@ -239,7 +251,7 @@ def ccap(+K: Nat, +dw: Nat, +t: F.array__Tree<U32>,
     -> {Nat.is_le(Nat.mul(Nat.add(K, 0n), 512n), F.spec_common__length(U32, F.array__slots(U32, t))) == True{} : Bool}:
   %Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, t)), F.spec_common__pow2(dw), F.array__slots_length(U32, dw, t, pf)) :
     {Nat.is_le(Nat.mul(Nat.add(K, 0n), 512n), _) == True{} : Bool}
-  %MR.add_zero(K) : {Nat.is_le(Nat.mul(_, 512n), F.spec_common__pow2(dw)) == True{} : Bool}
+  %Equal.sym(Nat, Nat.add(K, 0n), K, MR.add_zero(K)) : {Nat.is_le(Nat.mul(_, 512n), F.spec_common__pow2(dw)) == True{} : Bool}
   room
 
 # ---- the object -------------------------------------------------------------------
@@ -352,7 +364,7 @@ def el_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Words, +s: S.Schem
     RR.roots(eview(o), _, [D.bytes(ldig(hl, o, depth))])
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.ByteVector{SH.ByteVector_length(SH.ListOf_element(s))}, SH.ByteVector_shape(SH.ListOf_element(s), c1)) :
     RR.roots(eview(o), S.ListOf{_, SH.ListOf_limit(s)}, [D.bytes(ldig(hl, o, depth))])
-  %Equal.sym(Nat, SH.ByteVector_length(SH.ListOf_element(s)), 48n, WS.nat_eq(SH.ByteVector_length(SH.ListOf_element(s)), 48n, c2)) :
+  %Equal.sym(Nat, SH.ByteVector_length(SH.ListOf_element(s)), 2048n, WS.nat_eq(SH.ByteVector_length(SH.ListOf_element(s)), 2048n, c2)) :
     RR.roots(eview(o), S.ListOf{S.ByteVector{_}, SH.ListOf_limit(s)}, [D.bytes(ldig(hl, o, depth))])
   %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) :
     RR.roots(eview(_), S.ListOf{S.ByteVector{2048n}, SH.ListOf_limit(s)}, [D.bytes(ldig(hl, _, depth))])

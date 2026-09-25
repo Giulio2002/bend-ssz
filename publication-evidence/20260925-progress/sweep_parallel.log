@@ -1,0 +1,12 @@
+tracking existing proof: build/sweep_groups/g_l2_ConsolidationRequest.bend
+existing active targets: ['build/sweep_groups/g_l2_ConsolidationRequest.bend']
+pending ordinary=6 root_big=5 deferred=['proofs/obj/cspec_l16_Withdrawal.bend']
+starting batch: 6 checks, concurrency=8
+2026-09-25 15:57:24 HASH_PROOF.bend exit=0 peak=1.18GB memory_metric=VmHWM elapsed=21.2s all_terms_check=True unsafe=False killed=False heap_hint=3000000000 -> PASS
+2026-09-25 15:59:02 PROOF.bend exit=0 peak=3.61GB memory_metric=VmHWM elapsed=118.8s all_terms_check=True unsafe=False killed=False heap_hint=3000000000 -> PASS
+2026-09-25 15:59:13 END_TO_END.bend exit=0 peak=3.82GB memory_metric=VmHWM elapsed=130.3s all_terms_check=True unsafe=False killed=False heap_hint=3000000000 -> PASS
+2026-09-25 15:59:22 ROOT_DOMAIN.bend exit=0 peak=3.86GB memory_metric=VmHWM elapsed=138.9s all_terms_check=True unsafe=False killed=False heap_hint=3000000000 -> PASS
+2026-09-25 16:06:20 build/sweep_groups/g_l8192_DepositRequest.bend exit=1 peak=3.31GB memory_metric=VmHWM elapsed=557.4s all_terms_check=False unsafe=False killed=False heap_hint=3000000000 -> FAIL
+2026-09-25 16:07:08 build/sweep_groups/g_l2_ConsolidationRequest.bend exit=0 peak=3.75GB memory_metric=VmHWM elapsed=622.2s all_terms_check=True unsafe=False killed=False heap_hint=3000000000 -> PASS
+2026-09-25 16:10:55 proofs/obj/root_gtypes.bend exit=0 peak=4.74GB memory_metric=VmHWM elapsed=832.0s all_terms_check=True unsafe=False killed=False heap_hint=3000000000 -> PASS
+starting batch: 5 checks, concurrency=2

@@ -176,8 +176,27 @@ def pattern(R, xs):
     return f'{R}{{' + ', '.join('+' + x for x in xs) + '}'
 
 
+# Small unsigned leaves (uint8/16/32 held in a U32) as phase A shapes, with the
+# representation fact of uint8/16 (the value is below 2^8 / 2^16). Enabled by
+# the generic forms' generator only (codegen/root_laws_generic.py): the Fulu
+# names' leaves have their own laws (proofs/obj/leaf_small.bend).
+EXTRA_LEAVES = False
+SMALL = {'u8': ('P.U8{}', '256'), 'u16': ('P.U16{}', '65536'), 'u32': ('P.U32Width{}', None)}
+
+
+def needs_rep(s):
+    """The shape's root law needs a representation fact of its object."""
+    if s.kind in ('u8', 'u16'):
+        return True
+    if s.kind == 'container':
+        return any(needs_rep(fs) for _, fs in s.fields)
+    return False
+
+
 def spec_schema(s):
     t, k = s.t, s.kind
+    if k in SMALL and EXTRA_LEAVES:
+        return f'S.Unsigned{{{SMALL[k][0]}}}'
     if k == 'bool':
         return 'S.Boolean{}'
     if k == 'u64':
@@ -205,6 +224,8 @@ def covered(s):
     word-aligned byte records, in plain containers of at most 8 fields."""
     k, t = s.kind, s.t
     if k in LEAVES:
+        return
+    if k in SMALL and EXTRA_LEAVES:
         return
     if k == 'uwide':
         return
@@ -238,6 +259,24 @@ def emit_shape_laws(s, w):
     p, k, t = s.p, s.kind, s.t
     R = qual(s.rep)
     sch = spec_schema(s)
+    if k in SMALL and EXTRA_LEAVES:
+        wd, bound = SMALL[k]
+        w(f'def v_{p}(o: U32) -> S.Value: S.UnsignedValue{{P.UInt{{o, 0, 0, 0, 0, 0, 0, 0}}}}')
+        w(f'def d_{p}(+hl: Nat, o: U32) -> D.Digest: O.u32_chunk(o)')
+        w(f'def st_{p}(+hl: Nat, -h: B.Buf, +o: U32, +seg: U32) -> {{T.{p}_root(hl, h, o, seg) == (h, d_{p}(hl, o)) : B.Buf & D.Digest}}: {{==}}')
+        if bound is None:
+            w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, +o: U32) -> RR.roots(v_{p}(o), {sch}, [D.bytes(d_{p}(hl, o))]): LS.u32_root(o)')
+            return
+        w(f'def rp_{p}(+o: U32) -> Data: {{U32.is_lt(o, {bound}) == True{{}} : Bool}}')
+        if k == 'u8':
+            shape, lem, law = 'PD.embed8(WSp.take(8n, 32n, PD.bits(o)))', 'ID.byte_shape', 'LS.u8_w(WSp.take(8n, 32n, PD.bits(o)))'
+        else:
+            shape, lem, law = 'U32{WSp.join(16n, 16n, WSp.take(16n, 32n, PD.bits(o)), Word.zero(16n))}', 'GL.half_shape', 'GL.u16_w(WSp.take(16n, 32n, PD.bits(o)))'
+        w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, +o: U32, +rp: rp_{p}(o)) -> RR.roots(v_{p}(o), {sch}, [D.bytes(d_{p}(hl, o))]):')
+        w(f'  %Equal.sym(U32, o, {shape}, {lem}(o, rp)) :')
+        w(f'    RR.roots(S.UnsignedValue{{P.UInt{{_, 0, 0, 0, 0, 0, 0, 0}}}}, {sch}, [D.bytes(O.u32_chunk(_))])')
+        w(f'  {law}')
+        return
     if k == 'bool':
         w(f'def v_{p}(o: Bool) -> S.Value: S.BooleanValue{{o}}')
         w(f'def d_{p}(+hl: Nat, o: Bool) -> D.Digest: O.bool_chunk(o)')
@@ -351,23 +390,45 @@ def emit_shape_laws(s, w):
         w(f'    case {pat}:')
         rhs = f'(h, d_{p}(hl, {pat.replace("+", "")}))'
         for i, (f, fs) in enumerate(F_):
-            if fs.kind in LEAVES:
+            if fs.kind in LEAVES or (EXTRA_LEAVES and fs.kind in SMALL):
                 continue
             done = [f'd_{F_[j][1].p}(hl, {xs[j]})' for j in range(i)]
             args = ', '.join(['hl', 'seg'] + xs + done + ['_'])
             w(f'      %Equal.sym(B.Buf & D.Digest, T.{fs.p}_root(hl, h, {xs[i]}, seg), (h, d_{fs.p}(hl, {xs[i]})), st_{fs.p}(hl, h, {xs[i]}, seg)) :')
             w(f'        {{T.{p}_rt{i}({args}) == {rhs} : B.Buf & D.Digest}}')
         w('      {==}')
-        # spec law
-        w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, +o: {R}) -> RR.roots(v_{p}(o), {sch}, [D.bytes(d_{p}(hl, o))]):')
+        # spec law (with the fields' representation facts when some field needs one)
+        reps = [i for i, (_, fs) in enumerate(F_) if needs_rep(fs)]
+        if reps:
+            parts = [f'rp_{F_[i][1].p}({xs[i]})' for i in reps]
+            ty = parts[-1]
+            for q in reversed(parts[:-1]):
+                ty = f'DK.P2({q}, {ty})'
+            w(f'def rp_{p}(o: {R}) -> Data:')
+            w('  match o:')
+            w(f'    case {pat}: {ty}')
+            w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, +o: {R}, +rp: rp_{p}(o)) -> RR.roots(v_{p}(o), {sch}, [D.bytes(d_{p}(hl, o))]):')
+        else:
+            w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, +o: {R}) -> RR.roots(v_{p}(o), {sch}, [D.bytes(d_{p}(hl, o))]):')
         w('  match o:')
         w(f'    case {pat}:')
+        rpn = {}
+        if reps:
+            cur = 'rp'
+            for j, i in enumerate(reps):
+                if j == len(reps) - 1:
+                    rpn[i] = cur
+                else:
+                    w(f'      (+r{i}, +k{i}) = {cur}')
+                    rpn[i] = f'r{i}'
+                    cur = f'k{i}'
         def items_proof(i):
             if i == n:
                 return '{==}'
             rest = '[' + ', '.join(f'd_{F_[j][1].p}(hl, {xs[j]})' for j in range(i + 1, n)) + ']'
+            call = f'rs_{F_[i][1].p}(hl, ehl, {xs[i]}' + (f', {rpn[i]})' if i in rpn else ')')
             return (f'([D.bytes(d_{F_[i][1].p}(hl, {xs[i]}))], (MD.bytes_list({rest}), '
-                    f'(rs_{F_[i][1].p}(hl, ehl, {xs[i]}), ({items_proof(i + 1)}, {{==}}))))')
+                    f'({call}, ({items_proof(i + 1)}, {{==}}))))')
         w(f'      (MD.bytes_list({Ld}), ({items_proof(0)},')
         w(f'        RS.aggregate_digests({n}n, {depth}n, hl, {Ld}, {{==}}, {{==}}, {{==}}, ehl)))')
         return
@@ -431,15 +492,18 @@ def emit_bits_record(w, p, R, pat, ws, nbits, depth, Lc, sch):
 def emit_name_law(w, name, s):
     p = s.p
     R = qual(s.rep)
-    w(f'# {name}: the root of every {name} object is its specification root.')
+    rep = needs_rep(s) and EXTRA_LEAVES
+    w(f'# {name}: the root of every {name} object' + (' (with its representation facts)' if rep else '') + ' is its specification root.')
     w(f'law {name}_root_correct:')
     w('  for -h: B.Buf')
     w(f'  for +o: {R}')
+    if rep:
+        w(f'  for +rp: rp_{p}(o)')
     w(f'  RR.roots(v_{p}(o), Spec.{name}(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.{name}_hash_tree_root(h, o)))])')
-    w(f'def {name}_root_correct(h, o):')
+    w(f'def {name}_root_correct(h, o{", rp" if rep else ""}):')
     w(f'  %Equal.sym(B.Buf & D.Digest, T.{p}_root(64n, h, o, 0), (h, d_{p}(64n, o)), st_{p}(64n, h, o, 0)) :')
     w(f'    RR.roots(v_{p}(o), Spec.{name}(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])')
-    w(f'  rs_{p}(64n, {{==}}, o)')
+    w(f'  rs_{p}(64n, {{==}}, o{", rp" if rep else ""})')
     w('')
 
 

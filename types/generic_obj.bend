@@ -2564,7 +2564,7 @@ def l10_GpF350A3C486_pad_go(+hl: Nat, +k: Nat, +lvl: U32, +r: D.Digest, pr: B.Bu
 
 def l10_GpF350A3C486_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<GpF350A3C486>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
   (h, +r) = pr
-  (h, (l10_GpF350A3C486_Cached{arr, n, d, nodes, 4294967295, 0}, O.mix_len(hl, r, n)))
+  (h, (l10_GpF350A3C486_Cached{arr, n, d, nodes, n, 0}, O.mix_len(hl, r, n)))
 
 def l10_GpF350A3C486_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<GpF350A3C486>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & (l10_GpF350A3C486_Cached & D.Digest):
   l10_GpF350A3C486_croot_fin(hl, n, d, arr, nodes, l10_GpF350A3C486_pad_go(hl, Nat.sub(4n, d), O.nat_u32(d), r, (h, D.zconst(d))))

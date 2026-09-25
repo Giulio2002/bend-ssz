@@ -1,9 +1,19 @@
 """Run a bend compile under a self-imposed memory cap, well below the watchdog."""
 import ctypes, os, signal, struct, subprocess, sys, time
-LIB = ctypes.CDLL('/usr/lib/libproc.dylib')
+LIB = ctypes.CDLL('/usr/lib/libproc.dylib') if sys.platform == 'darwin' else None
 def footprint(pid):
+    """macOS physical footprint; on Linux the process's peak resident set (VmHWM)."""
+    if LIB is None:
+        try:
+            for line in open(f'/proc/{pid}/status'):
+                if line.startswith('VmHWM:'):
+                    return int(line.split()[1]) * 1024
+        except OSError:
+            pass
+        return 0
     buf = ctypes.create_string_buffer(1024)
-    if LIB.proc_pid_rusage(pid, 4, ctypes.byref(buf)) != 0: return 0
+    if LIB.proc_pid_rusage(pid, 4, ctypes.byref(buf)) != 0:
+        return 0
     return struct.unpack_from('Q', buf.raw, 72)[0]
 src, out, cap = sys.argv[1], sys.argv[2], float(sys.argv[3])
 # An output of '-' checks and runs the program in the interpreter instead.

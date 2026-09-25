@@ -49,7 +49,7 @@ HEAD = ['import Base', 'import ../compact/found.bend as F', 'import ../../src/bu
         'import ./schema_shapes.bend as SH', 'import ./dk.bend as DK', 'import ./mtree_defs.bend as MD',
         'import ./root_support.bend as RS', 'import ./words_obj.bend as WO', 'import ./list_obj.bend as LO',
         'import ./pv_obj.bend as PV', 'import ./bitlist_obj.bend as BO', 'import ./cells.bend as CE', 'import ./obj_support.bend as OS', 'import ./root_names.bend as RN',
-        'import ./ulist_obj.bend as UL', 'import ./elems48.bend as E48', 'import ./xlist_support.bend as XS',
+        'import ./ulist_obj.bend as UL', 'import ./packed_obj.bend as PK', 'import ./elems48.bend as E48', 'import ./xlist_support.bend as XS',
         'import ./mtree_run.bend as MR', 'import ./list_root.bend as LR', 'import ../../spec/codec.bend as Codec',
         'import ../../spec/limits.bend as Lim', 'import ../../spec/bit_root.bend as Mix', 'import ../../spec/nat_bytes.bend as Len', 'import ../../spec/byte_list.bend as BL']
 
@@ -249,12 +249,16 @@ class Gen:
         if fs.data:
             if fs.p not in self.phaseA:
                 raise Skip(f'{fs.p}: not a phase A shape')
-            return 'data'
+            # a Data field whose phase A law needs a representation fact (uint8/16)
+            return 'datar' if RA.needs_rep(fs) else 'data'
         if fs.kind == 'fixwords' and fs.t.kind == 'bytes':
             return 'bv'
         if fs.kind == 'bytelist':
             return 'bl'
         if fs.kind == 'bitlist':
+            if fs.t is not None and fs.t.kind == 'pbits':
+                # a progressive bit list: its root is bits_root_prog, not a fixed-depth tree
+                raise Skip(f'{fs.p}: progressive bit list field (no law yet)')
             return 'bits'
         if fs.kind == 'packed' and fs.t.kind == 'vector' and fs.t.elem.kind == 'bytes' and fs.t.elem.size == 32:
             return 'pv'
@@ -300,7 +304,7 @@ class Gen:
         return RA.spec_schema(fs.inner if fs.kind == 'box' else fs)
 
     def view(self, fs, k, x):
-        if k == 'data':
+        if k in ('data', 'datar'):
             return f'RN.v_{fs.p}({x})'
         if k in ('bv', 'bl'):
             return f'S.BytesValue{{WO.wview({x})}}'
@@ -319,7 +323,7 @@ class Gen:
         return f'v_{fs.p}({x})'
 
     def dig(self, fs, k, x):
-        if k == 'data':
+        if k in ('data', 'datar'):
             return f'RN.d_{fs.p}(hl, {x})'
         d = self.depth(fs, k)
         if k in ('bv', 'pv'):
@@ -343,6 +347,8 @@ class Gen:
     def rep(self, fs, k, x, sx):
         if k == 'data':
             return None
+        if k == 'datar':
+            return f'RN.rp_{fs.p}({x})'
         if k == 'bv':
             return f'WO.rep_bv({x}, {sx})'
         if k == 'bl':
@@ -365,7 +371,7 @@ class Gen:
 
     def ok(self, fs, k, sx):
         d = self.depth(fs, k)
-        if k in ('data', 'boxD'):
+        if k in ('data', 'datar', 'boxD'):
             return None
         if k == 'bv':
             return f'WO.ok_bv({sx}, {self.dd(fs, k)})'
@@ -389,7 +395,7 @@ class Gen:
 
     def eqs_items(self, fs, k):
         """The eqs structure of a field whose schema is the variable x."""
-        if k in ('data', 'boxD'):
+        if k in ('data', 'datar', 'boxD'):
             return [('eq', lambda x: x, self.E(fs))]
         if k in ('boxT', 'T'):
             inner = fs.inner if k == 'boxT' else fs
@@ -399,7 +405,7 @@ class Gen:
         return []
 
     def eqs_type(self, fs, k, sx):
-        if k in ('data', 'boxD'):
+        if k in ('data', 'datar', 'boxD'):
             return f'{{{sx} == {self.E(fs)} : S.Schema}}'
         if k in ('boxT', 'T'):
             inner = fs.inner if k == 'boxT' else fs
@@ -415,7 +421,7 @@ class Gen:
         R = RA.qual(fs.rep)
         lhs = f'T.{fs.p}_root(hl, h, {x}, seg)'
         dg = self.dig(fs, k, x)
-        if k == 'data':
+        if k in ('data', 'datar'):
             return lhs, f'(h, {dg})', 'B.Buf & D.Digest', f'RN.st_{fs.p}(hl, h, {x}, seg)'
         ty = f'B.Buf & ({R} & D.Digest)'
         rhs = f'(h, ({x}, {dg}))'
@@ -442,6 +448,8 @@ class Gen:
         vw, dg = self.view(fs, k, x), self.dig(fs, k, x)
         if k == 'data':
             return f'OS.transport({vw}, {sx}, {self.E(fs)}, [D.bytes({dg})], {eqp}, RN.rs_{fs.p}(hl, ehl, {x}))'
+        if k == 'datar':
+            return f'OS.transport({vw}, {sx}, {self.E(fs)}, [D.bytes({dg})], {eqp}, RN.rs_{fs.p}(hl, ehl, {x}, {r}))'
         d = self.depth(fs, k)
         if k in self.DIGF and d >= BIGD:
             # the spec law at the variable depth, moved to the literal-depth digest
@@ -1290,7 +1298,7 @@ class Gen:
     def mfield(self, fs, k):
         """(mirror type, thaw(a), freeze(x), proof of freeze(thaw(a)) == a or None)."""
         R = RA.qual(fs.rep)
-        if k == 'data':
+        if k in ('data', 'datar'):
             return R, lambda a: a, lambda x: x, None
         if k == 'boxD':
             RI = RA.qual(fs.inner.rep)
@@ -1334,7 +1342,7 @@ class Gen:
         w(f'def th_{p}(m: M_{p}) -> {R}:')
         w('  match m:')
         w(f'    case M_{p}{{' + ', '.join(f'+a{i}' for i in range(n)) + f'}}: {R}{{' + ', '.join(ms[i][1](f'a{i}') for i in range(n)) + '}')
-        isdata = [k == 'data' for k in kinds]
+        isdata = [k in ('data', 'datar') for k in kinds]
         w(f'def fz_{p}(x: {R}) -> M_{p}:')
         w('  match x:')
         w(f'    case {R}{{' + ', '.join(('+' if isdata[i] else '') + f'x{i}' for i in range(n)) + f'}}: M_{p}{{' + ', '.join(ms[i][2](f'x{i}') for i in range(n)) + '}')
@@ -1508,7 +1516,7 @@ class Gen:
         wide = n > G.GROUP
         groups = [list(range(j, min(n, j + G.GROUP))) for j in range(0, n, G.GROUP)] if wide else None
         xs = [f'x{i}' for i in range(n)]
-        isdata = [k == 'data' for k in kinds]
+        isdata = [k in ('data', 'datar') for k in kinds]
         L = []
         w = L.append
         w(f'# ---- {p} (Type-kind container, {n} fields{", in groups" if wide else ""}) ----')
@@ -1847,7 +1855,7 @@ class Gen:
         for i in m['eqt']:
             fs, k = m['F'][i][1], m['kinds'][i]
             sub = (lambda y, i=i: sch(path(y), i))
-            if k in ('data', 'boxD'):
+            if k in ('data', 'datar', 'boxD'):
                 comps.append(f'OS.eq_at(y => {sub("y")}, s, Spec.{name}(), {self.E(fs)}, es, {{==}})')
             elif k == 'xl':
                 comps.append(f'OS.eq_at(y => SH.ListOf_element({sub("y")}), s, Spec.{name}(), {RA.spec_schema(fs.pelem)}, es, {{==}})')
@@ -1896,35 +1904,100 @@ class Gen:
         return L
 
     def words_law(self, name, s):
-        k = {'fixwords': 'bv', 'bytelist': 'bl'}.get(s.kind)
+        k = {'fixwords': 'bv', 'bytelist': 'bl', 'bitlist': 'bits'}.get(s.kind)
         if k is None or (k == 'bv' and s.t.kind != 'bytes'):
             raise Skip(f'{name}: kind {s.kind}')
         d = self.depth(s, k)
-        M = {'bv': 'WO', 'bl': 'LO'}[k]
-        run = {'bv': f'O.words_root(64n, h, o, {d}, 0)', 'bl': f'O.mix_count(64n, 0n, O.words_root(64n, h, o, {d}, 0))'}[k]
+        M = {'bv': 'WO', 'bl': 'LO', 'bits': 'BO'}[k]
+        OT = 'O.Bits' if k == 'bits' else 'O.Words'
+        VIEW = 'S.BitsValue{BO.bview(o)}' if k == 'bits' else 'S.BytesValue{WO.wview(o)}'
+        REP = 'BO.rep_bits' if k == 'bits' else f'{M}.rep_{k}'
+        OK = 'BO.ok_bits' if k == 'bits' else f'{M}.ok_{k}'
+        RS_ = 'BO.brs' if k == 'bits' else f'{M}.{k}_rs'
+        run = {'bv': f'O.words_root(64n, h, o, {d}, 0)', 'bl': f'O.mix_count(64n, 0n, O.words_root(64n, h, o, {d}, 0))',
+               'bits': f'O.bits_root(64n, h, o, {d}, 0)'}[k]
         dig = self.dig(s, k, 'o').replace('hl', '64n')
         st = {'bv': f'WO.bv_st(64n, h, o, {d}, 0, {d}n, WO.rep_wf(o, s, rep), {{==}})',
-              'bl': f'LO.bl_st(64n, h, o, {d}, 0, {d}n, LO.rep_wf(o, s, rep), {{==}})'}[k]
+              'bl': f'LO.bl_st(64n, h, o, {d}, 0, {d}n, LO.rep_wf(o, s, rep), {{==}})',
+              'bits': f'BO.bst(64n, h, o, {d}, 0, {d}n, BO.rep_wf(o, s, rep), {{==}})'}[k]
         if d >= BIGD:
+            if k == 'bits':
+                raise Skip(f'{name}: bit list of depth {d} >= {BIGD}')
             return self.words_law_big(name, s, k, d, M, run, dig, st)
         L = []
         w = L.append
-        w(f'# {name}: for every byte storage object representing a value of Spec.{name}(),')
-        w('# the runtime root is a specification root of its bytes.')
-        w(f'def {name}_ok(+s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}) -> {{{M}.ok_{k}(s, {d}n) == True{{}} : Bool}}:')
-        w(f'  %Equal.sym(S.Schema, s, Spec.{name}(), es) : {{{M}.ok_{k}(_, {d}n) == True{{}} : Bool}}')
+        what = 'bits' if k == 'bits' else 'bytes'
+        w(f'# {name}: for every {"bit list" if k == "bits" else "byte storage"} object representing a value of Spec.{name}(),')
+        w(f'# the runtime root is a specification root of its {what}.')
+        w(f'def {name}_ok(+s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}) -> {{{OK}(s, {d}n) == True{{}} : Bool}}:')
+        w(f'  %Equal.sym(S.Schema, s, Spec.{name}(), es) : {{{OK}(_, {d}n) == True{{}} : Bool}}')
+        w('  {==}')
+        w(f'law {name}_root_correct:')
+        w('  for -h: B.Buf')
+        w(f'  for -o: {OT}')
+        w('  for +s: S.Schema')
+        w(f'  for +es: {{s == Spec.{name}() : S.Schema}}')
+        w(f'  for +rep: {REP}(o, s)')
+        w(f'  RR.roots({VIEW}, s, [D.bytes(Pair.snd({OT}, D.Digest, Pair.snd(B.Buf, {OT} & D.Digest, T.{name}_hash_tree_root(h, o))))])')
+        w(f'def {name}_root_correct(h, o, s, es, rep):')
+        w(f'  %Equal.sym(B.Buf & ({OT} & D.Digest), {run}, (h, (o, {dig})), {st}) :')
+        w(f'    RR.roots({VIEW}, s, [D.bytes(Pair.snd({OT}, D.Digest, Pair.snd(B.Buf, {OT} & D.Digest, _)))])')
+        w(f'  {RS_}(64n, {{==}}, h, o, s, {d}n, {d}, 0, rep, {name}_ok(s, es), {{==}}, {{==}})')
+        w('')
+        return L
+
+    def plist_law(self, name, s):
+        """A progressive list of basic elements held as packed bytes (prog_list)."""
+        K = 'b' if s.t.elem.kind == 'bool' else str(s.t.elem.size)
+        sh = {'b': 0, '1': 0, '2': 1, '4': 2, '8': 3, '16': 4, '32': 5}[K]
+        VIEW = {'8': 'UL.uview(o)', '4': 'PK.vview4(o)', '16': 'PK.vview16(o)', '32': 'PK.vview32(o)',
+                '1': 'PB.vview1(o)', '2': 'PB.vview2(o)', 'b': 'PB.vviewb(o)'}[K]
+        L = []
+        w = L.append
+        w(f'# {name}: for every packed byte object representing a value of Spec.{name}(),')
+        w('# the runtime root is a specification root of its elements.')
+        w(f'def {name}_ok(+s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}) -> {{PG.ok_pl{K}(s) == True{{}} : Bool}}:')
+        w(f'  %Equal.sym(S.Schema, s, Spec.{name}(), es) : {{PG.ok_pl{K}(_) == True{{}} : Bool}}')
         w('  {==}')
         w(f'law {name}_root_correct:')
         w('  for -h: B.Buf')
         w('  for -o: O.Words')
         w('  for +s: S.Schema')
         w(f'  for +es: {{s == Spec.{name}() : S.Schema}}')
-        w(f'  for +rep: {M}.rep_{k}(o, s)')
-        w(f'  RR.roots(S.BytesValue{{WO.wview(o)}}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.{name}_hash_tree_root(h, o))))])')
+        w(f'  for +rep: PG.rep_pl{K}(o, s)')
+        w(f'  RR.roots({VIEW}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.{name}_hash_tree_root(h, o))))])')
         w(f'def {name}_root_correct(h, o, s, es, rep):')
-        w(f'  %Equal.sym(B.Buf & (O.Words & D.Digest), {run}, (h, (o, {dig})), {st}) :')
-        w('    RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])')
-        w(f'  {M}.{k}_rs(64n, {{==}}, h, o, s, {d}n, {d}, 0, rep, {name}_ok(s, es), {{==}}, {{==}})')
+        w(f'  %Equal.sym(B.Buf & (O.Words & D.Digest), O.mix_count(64n, {sh}n, O.words_root_prog(64n, h, o, 0)), (h, (o, PG.pdig(64n, o, {sh}n))), PG.pl_st(64n, h, o, 0, {sh}n, PG.rep_wf{K}(o, s, rep))) :')
+        w(f'    RR.roots({VIEW}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])')
+        w(f'  PG.pl{K}_rs(64n, {{==}}, o, s, rep, {name}_ok(s, es))')
+        w('')
+        return L
+
+    def packed_law(self, name, s):
+        """A vector of uint32/64/128/256 held as packed words (packed_obj)."""
+        W = 1 if s.t.elem.kind == 'bool' else s.t.elem.size
+        d = G.log2ceil(G.chunks_of(W * s.t.size))
+        # uint8 and boolean vectors: one byte per element (packed_bytes.bend)
+        Mo, K = ('PB', 'b') if s.t.elem.kind == 'bool' else (('PB', str(W)) if W in (1, 2) else ('PK', W))
+        VIEW = f'{Mo}.vview{K}(o)'
+        L = []
+        w = L.append
+        w(f'# {name}: for every packed word object representing a value of Spec.{name}(),')
+        w('# the runtime root is a specification root of its elements.')
+        w(f'def {name}_ok(+s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}) -> {{{Mo}.ok_v{K}(s, {d}n) == True{{}} : Bool}}:')
+        w(f'  %Equal.sym(S.Schema, s, Spec.{name}(), es) : {{{Mo}.ok_v{K}(_, {d}n) == True{{}} : Bool}}')
+        w('  {==}')
+        w(f'law {name}_root_correct:')
+        w('  for -h: B.Buf')
+        w('  for -o: O.Words')
+        w('  for +s: S.Schema')
+        w(f'  for +es: {{s == Spec.{name}() : S.Schema}}')
+        w(f'  for +rep: {Mo}.rep_v{K}(o, s)')
+        w(f'  RR.roots({VIEW}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.{name}_hash_tree_root(h, o))))])')
+        w(f'def {name}_root_correct(h, o, s, es, rep):')
+        w(f'  %Equal.sym(B.Buf & (O.Words & D.Digest), O.words_root(64n, h, o, {d}, 0), (h, (o, WO.wdig(64n, o, {d}n))), WO.bv_st(64n, h, o, {d}, 0, {d}n, {Mo}.rep_wf{K}(o, s, rep), {{==}})) :')
+        w(f'    RR.roots({VIEW}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])')
+        w(f'  {Mo}.v{K}_rs(64n, {{==}}, o, s, {d}n, rep, {name}_ok(s, es), {{==}})')
         w('')
         return L
 
@@ -1962,7 +2035,7 @@ class Gen:
         self.meta = {}
         status = {}
         laws = []
-        big = []
+        big = {}
         only = None
         if '--only' in sys.argv:
             only = set(sys.argv[sys.argv.index('--only') + 1].split(','))
@@ -1970,9 +2043,20 @@ class Gen:
             if only is not None and n not in only:
                 continue
             s = self.g.shape(t)
-            if n in ('Blob', 'Transaction'):
-                (big if n in BIG_NAMES else laws).extend(self.words_law(n, s))
-                status[n] = 'proved (phase B, byte storage)'
+            if s.kind == 'packed' and t.kind == 'plist' and (t.elem.kind == 'bool' or (t.elem.kind == 'uint' and t.elem.size in (1, 2, 4, 8, 16, 32))):
+                laws.extend(self.plist_law(n, s))
+                status[n] = 'proved (phase B, progressive list)'
+                continue
+            if s.kind == 'packed' and t.kind == 'vector' and (t.elem.kind == 'bool' or (t.elem.kind == 'uint' and t.elem.size in (1, 2, 4, 8, 16, 32))):
+                laws.extend(self.packed_law(n, s))
+                status[n] = 'proved (phase B, packed vector)'
+                continue
+            if n in ('Blob', 'Transaction') or s.kind in ('bitlist', 'fixwords', 'bytelist'):
+                try:
+                    (big.setdefault(n, []) if n in BIG_NAMES else laws).extend(self.words_law(n, s))
+                    status[n] = 'proved (phase B, byte storage)'
+                except Skip as e:
+                    status[n] = f'phase B: {e}'
                 continue
             if s.kind != 'container' or s.data:
                 continue
@@ -1982,7 +2066,7 @@ class Gen:
                     status[n] = f'phase B: {NAME_SKIP[n]}'
                     continue
                 if n in BIG_NAMES:
-                    big.extend(self.name_law(n, s, 'RT.'))
+                    big.setdefault(n, []).extend(self.name_law(n, s, 'RT.'))
                 else:
                     laws.extend(self.name_law(n, s))
                 status[n] = 'proved (phase B)'
@@ -1990,8 +2074,13 @@ class Gen:
                 status[n] = f'phase B: {e}'
         text = '\n'.join(HEAD + ['', '# GENERATED by codegen/root_laws_b.py. Do not edit.',
                                  '# Root laws of the Type-kind containers (see the generator).', ''] + WD_WORDS.strip('\n').split('\n') + [''] + self.out + laws) + '\n'
-        bigtext = '\n'.join(BIGHEAD + ['', '# GENERATED by codegen/root_laws_b.py. Do not edit.',
-                                       '# Root laws whose schema facts take minutes to evaluate.', ''] + big) + '\n'
+        # One file per name (proofs/obj/root_big_<Name>.bend): each closed schema
+        # fact is evaluated in its own checker process, so the unary evaluations
+        # of the 2^30-byte Transaction limit do not accumulate in one process.
+        bigtext = {ROOT / f'proofs/obj/root_big_{n}.bend':
+                   '\n'.join(BIGHEAD + ['', '# GENERATED by codegen/root_laws_b.py. Do not edit.',
+                                        '# A root law whose schema fact takes minutes to evaluate.', ''] + ls) + '\n'
+                   for n, ls in big.items()}
         return text, bigtext, status
 
 
@@ -2003,8 +2092,8 @@ def main():
             print(f'{n}: {st}')
         return 0
     if '--check' in sys.argv:
-        for path, t in ((OUT, text), (BIG, bigtext)):
-            if path.read_text() != t:
+        for path, t in [(OUT, text)] + sorted(bigtext.items()):
+            if not path.exists() or path.read_text() != t:
                 print(f'{path} is stale; run codegen/root_laws_b.py')
                 return 1
         return 0
@@ -2012,9 +2101,11 @@ def main():
         # a bisection probe of the named laws (not a gate file)
         Path(sys.argv[sys.argv.index('--out') + 1]).write_text(text)
         return 0
-    OUT.write_text(text)
-    BIG.parent.mkdir(parents=True, exist_ok=True)
-    BIG.write_text(bigtext)
+    if not OUT.exists() or OUT.read_text() != text:
+        OUT.write_text(text)
+    for path, t in bigtext.items():
+        if not path.exists() or path.read_text() != t:
+            path.write_text(t)
     return 0
 
 

@@ -9,17 +9,27 @@ independent Bend specifications. The compiler, runtime and host machinery are
 outside those proofs; root totality is conditional on the documented root domain.
 Read [the detailed review](REVIEW.md) before interpreting "formally verified."
 
-**Current status (2026-09-22).** The native decode-memory gate passes (worst
-Bend decode overhead 5,914,624 bytes against a 32,000,000-byte limit, Go
-3,637,248 on the same fixtures; whole-process peak 13.5-14.6 MB against
-Go's 21.7-24.5 MB). All 5,440 official SSZ cases pass through the
-generated object API natively, and again through the list model under Bun. All
-proof roots and proof modules check with zero unsafe annotations. The native
-**performance contract is not met**: of 978 measured workloads, 40 exceed their
-limit - 36 `serialize` and 4 `deserialize`, while `hash_tree_root` is within
-its 10x limit on all 326 rows (worst 5.86x). See [BENCHMARKS.md](BENCHMARKS.md)
-and WORK_LOG.md for the per-workload numbers, the measured cost decomposition
-and the identified causes.
+**Current status (2026-09-25, Linux x86_64 host, stock Bend 2.0.25).**
+- The frozen performance gate passes on the current sources: 978 workloads and
+  327 operations, each within its limit (worst root 7.65x of 10x, worst codec
+  2.99x of 5x).
+- The native decode-memory run passes: 15/15 samples verified, worst Bend
+  decode overhead 5,779,456 B against 32,000,000 B; Go's worst is 3,112,960 B.
+- All 5,440 official SSZ cases pass through the generated object API. The 51
+  runtime tests and the conformance, mutation, negative-API, cache,
+  invalid-object and fresh-seed fuzz checks all pass
+  (build/final_runtime).
+- The proof picture is in docs/LAW_API_MAP.md and the WORK_LOG iteration-23
+  table. Checked: root laws for 104 names (root_names 75, leaf_small 4,
+  root_types 25) plus 123 of 136 generic forms, the cached root under
+  arbitrary valid write/append histories, and producer laws for the
+  representation invariants. Still open: BeaconState's root law, and the 5
+  root_big names (Transaction, ExecutionPayload, BeaconBlockBody, BeaconBlock,
+  SignedBeaconBlock), whose closed 2^30 limit fact the checker must evaluate in
+  unary (being checked in the final sweep), codec total correctness beyond 83 names, and the
+  migration of the END_TO_END/ROOT_DOMAIN propositions to the object API.
+- `automation/native_memory_acceptance.py` still stops at its 2.0.16
+  toolchain pin; docs/TOOLCHAIN.md gives the hash-only update.
 
 ## Public API: the generated typed owning objects
 
@@ -127,8 +137,12 @@ review's broader scope qualifications are retained in [REVIEW.md](REVIEW.md).
 
 ## Reproduce
 
-Use the exact **Bend 2.0.16** binary/Base hashes in
-`automation/toolchain.json`, Bun 1.4.2, and Python 3.12 with `requirements.txt`.
+The current toolchain is stock **Bend 2.0.25** (operator-authorized migration;
+binary and Base hashes, the Linux host's clang for native builds, and the
+protected `automation/toolchain.json` pin that still names 2.0.16 are in
+[docs/TOOLCHAIN.md](docs/TOOLCHAIN.md); the editable pin is
+`benchmarks/toolchain.json`). Bun 1.4.2, and Python 3.12 with `requirements.txt`.
+The 2.0.16 evidence described above is historical.
 The earlier 2.0.5 entry in `upstream.lock.json` records historical provenance.
 
 ```sh

@@ -1,8 +1,8 @@
 {
-  "note": "Operator-authorized toolchain migration of 2026-09-22 (USER TOOLCHAIN OVERRIDE): stock upstream Bend 2.0.25 as installed by `bend update`, backed up at ~/.bend/bend-2.0.25-backup and reinstated unchanged. automation/toolchain.json (protected) still pins 2.0.16 and needs the hash-only update recorded in docs/TOOLCHAIN.md.",
+  "note": "Operator-authorized toolchain migration of 2026-09-22 (USER TOOLCHAIN OVERRIDE): stock upstream Bend 2.0.25 as installed by `bend update`, backed up at ~/.bend/bend-2.0.25-backup and reinstated unchanged. automation/toolchain.json (protected) still pins 2.0.16 and needs the hash-only update recorded in docs/TOOLCHAIN.md. Operator remote migration 2026-09-24: stock Linux x86_64 Bend 2.0.25, same Base bytes; only platform binary hash changed. Mac evidence remains historical.",
   "bend": {
     "path": "/Users/monkeair/.bend/bin/bend",
-    "sha256": "3850c7cd281a687715a181ad6a2ecdef041704f320ea2b4304cf9e802309203c"
+    "sha256": "d9c0dad1f77be6a13dd8dcc16aef4f59047a956a2744f25d5c220cb8de384693"
   },
   "base": {
     "path": "/Users/monkeair/.bend/bend2/base.bend",

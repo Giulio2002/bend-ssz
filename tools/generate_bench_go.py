@@ -22,7 +22,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from generate_bench_schema import Schemas, fixed_size
 
 ROOT = Path(__file__).resolve().parents[1]
-GOETH = Path('/Users/monkeair/go/pkg/mod/github.com/attestantio/go-eth2-client@v0.27.2/spec')
+def _modcache():
+    """The Go module cache holding the pinned go-eth2-client (go.sum pins it)."""
+    import subprocess
+    try:
+        out = subprocess.run(['go', 'env', 'GOMODCACHE'], capture_output=True, text=True, check=True).stdout.strip()
+        if out:
+            return Path(out)
+    except (OSError, subprocess.CalledProcessError):
+        pass
+    return Path.home() / 'go/pkg/mod'
+
+
+GOETH = _modcache() / 'github.com/attestantio/go-eth2-client@v0.27.2/spec'
+if not GOETH.is_dir():
+    raise SystemExit(f'pinned go-eth2-client v0.27.2 not in the Go module cache ({GOETH}); run `go mod download` in benchmarks/fastssz')
 PACKAGES = ['phase0', 'altair', 'bellatrix', 'capella', 'deneb', 'electra', 'fulu']
 
 

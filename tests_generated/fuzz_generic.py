@@ -143,7 +143,7 @@ report = {
     'seed': args.seed, 'schemas': len(by_schema), 'cases': cases,
     'fixtures_per_schema': args.fixtures, 'random_mutations_per_fixture': args.per,
     'elapsed_s': round(elapsed, 1),
-    'command': f'/opt/homebrew/bin/python3 tests_generated/fuzz_generic.py --seed {args.seed} '
+    'command': f'{sys.executable} tests_generated/fuzz_generic.py --seed {args.seed} '
                f'--per {args.per} --fixtures {args.fixtures}',
     'oracle': 'codegen/oracle.py, written from the SSZ specification; compared on full bytes and '
               'full 32-byte roots, not checksums',

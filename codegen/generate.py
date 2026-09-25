@@ -2041,7 +2041,11 @@ def emit_seq_cache(s, w):
     w(f'      {p}_pad_go(hl, q, (lvl + 1 : U32), D.node(hl, r, z), (h, D.zconst(U32.to_nat((lvl + 1 : U32)))))')
     w(f'def {p}_croot_fin(+hl: Nat, +n: U32, +d: Nat, arr: Array<{R}>, nodes: Array<D.Digest>, pr: B.Buf & D.Digest) -> B.Buf & ({C} & D.Digest):')
     w('  (h, +r) = pr')
-    w(f'  (h, ({C}{{arr, n, d, nodes, 4294967295, 0}}, O.mix_len(hl, r, n)))')
+    # the dirty range after a root is [n, 0]: empty for n > 0 (for n = 0 it is
+    # the single zero leaf 0). A later write at i < n widens it to [i, i] and an
+    # append to [n, n], by the same min/max as from any range; the cache laws
+    # reason about it without a closed 2^32 - 1 sentinel.
+    w(f'  (h, ({C}{{arr, n, d, nodes, n, 0}}, O.mix_len(hl, r, n)))')
     w(f'def {p}_croot_pad(+hl: Nat, +n: U32, +d: Nat, arr: Array<{R}>, nodes: Array<D.Digest>, h: B.Buf, +r: D.Digest) -> B.Buf & ({C} & D.Digest):')
     w(f'  {p}_croot_fin(hl, n, d, arr, nodes,'
       f' {p}_pad_go(hl, Nat.sub({depth}n, d), O.nat_u32(d), r, (h, D.zconst(d))))')
