@@ -635,3 +635,17 @@ def wt_eta(+k: Nat, +j: Nat, +W: List<&2, U32>, +h: {Nat.is_lt(j, len(W)) == Tru
   %Equal.sym(List<&2, U32>, wdr(j, W), Con{F.flat__nthc(W, j), wdr(1n+j, W)}, wdr_eta(j, W, h)) :
     {VS.wtake(1n+k, _) == Con{F.flat__nthc(W, j), VS.wtake(k, wdr(1n+j, W))} : List<&2, U32>}
   {==}
+
+law wdr_upd:
+  for +j: Nat
+  for +L: List<&2, U32>
+  for +k: Nat
+  for +v: U32
+  for +h: {Nat.is_lt(k, j) == True{} : Bool}
+  {wdr(j, F.spec_common__update(U32, L, k, v)) == wdr(j, L) : List<&2, U32>}
+def wdr_upd(j, L, k, v, h):
+  match j L k:
+    case 0n _ _: Empty.absurd({wdr(0n, F.spec_common__update(U32, L, k, v)) == wdr(0n, L) : List<&2, U32>}, F.logic__false_true(F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_lt(k, 0n), False{}, F.nat__not_lt_zero(k), h)))
+    case 1n+ +p Nil{} _: {==}
+    case 1n+ +p Con{+x, +t} 0n: {==}
+    case 1n+ +p Con{+x, +t} 1n+ +q: wdr_upd(p, t, q, v, h)
