@@ -21,7 +21,7 @@ import ./vspec.bend as VS
 import ./vbuf.bend as VB
 import ./vu32.bend as VU
 import ./vcopy.bend as VC
-import ./spec_var_dcbri.bend as DC
+import ./var_codec_dcbri.bend as DC
 
 # Rejection of DataColumnsByRootIdentifier is exactly the complement of the
 # spec image: every byte string the spec relates to some value has the shape

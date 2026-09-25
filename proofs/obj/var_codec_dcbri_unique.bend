@@ -6,7 +6,7 @@ import ../../proofs/fulu_legality.bend as Legal
 import ../compact/found.bend as F
 import ../compact/arith.bend as A
 import ./vbuf.bend as VB
-import ./spec_var_dcbri.bend as DC
+import ./var_codec_dcbri.bend as DC
 import ../../proofs/decode_complete.bend as DCO
 
 # Every spec value of an accepted buffer's bytes is the decoded object's value.

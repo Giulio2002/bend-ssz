@@ -15,7 +15,7 @@ import ./vu32.bend as VU
 import ./vcopy.bend as VC
 import ./vdepth.bend as VD
 import ./venc.bend as VE
-import ./spec_var_dcbri.bend as DC
+import ./var_codec_dcbri.bend as DC
 
 # The encoder of DataColumnsByRootIdentifier: for every object whose list
 # storage is a perfect tree T holding N = 8c bytes (c <= 128) with room for

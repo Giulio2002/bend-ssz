@@ -34,7 +34,7 @@ import ./spec_fixed.bend as FX
 #   decode_spec    and then the buffer's bytes VW(t, n) are exactly the
 #                  spec/codec.bend encoding of VAL(t, n), the spec value of
 #                  that object (Decoding.decodes).
-# spec_var_dcbri_unique.bend: every spec value of those bytes is VAL(t, n).
+# var_codec_dcbri_unique.bend: every spec value of those bytes is VAL(t, n).
 
 def BF(t: F.array__Tree<U32>, +n: U32) -> B.Buf: B.Buf{F.array__thaw(U32, t), n}
 
