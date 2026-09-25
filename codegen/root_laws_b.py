@@ -36,7 +36,6 @@ import schema  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'proofs/obj/root_types.bend'
-BIG = ROOT / 'proofs/obj/root_big.bend'
 # Names whose closed schema fact takes the checker long to evaluate (the
 # Transaction limit 2^30 bytes: `Lim.minimal(div(2^30 + 31, 32), 25)` is 2^30
 # unary steps of Nat.div): kept in their own module, so root_types stays quick.
@@ -54,7 +53,16 @@ HEAD = ['import Base', 'import ../compact/found.bend as F', 'import ../../src/bu
         'import ../../spec/limits.bend as Lim', 'import ../../spec/bit_root.bend as Mix', 'import ../../spec/nat_bytes.bend as Len', 'import ../../spec/byte_list.bend as BL']
 
 
-BIGHEAD = HEAD + ['import ./root_types.bend as RT']
+BIGHEAD = HEAD + ['import ./root_types.bend as RT', 'import ./big_lim_bl.bend as LBL']
+# BIG proofs (proofs/obj/big_root_<Name>.bend, proofs/obj/big_lim_sym.bend,
+# proofs/obj/big_lim_bl.bend): their closed schema facts hold a 2^30-byte limit,
+# proved symbolically and instantiated in the exact form of the goal. They
+# check only with a checker that compares syntactically identical terms
+# before normalizing them (bendlang/bend#1075); stock 2.0.28 evaluates the
+# limit in unary. `--no-big` generates no big_* file.
+# Byte-list shapes whose closed fact is proved symbolically: shape -> (depth,
+# lemma `(+s, +es: {s == Spec.<Name>()}) -> {LO.ok_bl(s, OS.dv_<depth>(OS.DV0())) == True}`).
+SYMBOLIC_BL = {'bl1073741824': (25, 'LBL.tx_ok_at')}
 
 
 WD_WORDS = r'''
@@ -208,6 +216,7 @@ class Gen:
         for n, t in self.names.items():
             self.g.shape(t)
         self.done = {}        # shape p -> True (emitted) / Skip message
+        self.okinfo = {}      # shape p -> how ok_p is built (see okproof)
         self.out = []
         self.phaseA = set()
         for s in self.g.order:
@@ -1122,6 +1131,8 @@ class Gen:
         w(f'          ereps_{p}(U32.to_nat(N), F.array__slots({MX}, t), 0n, SH.ListOf_element(s))))))))),')
         w(f'    {{Nat.is_le(U32.to_nat(xlen_o_{p}(o)), SH.ListOf_limit(s)) == True{{}} : Bool}})')
         w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: Bool.and(SH.is_ListOf(s), Bool.and(Lim.minimal(SH.ListOf_limit(s), {DD}), ok_{BE.p}(SH.ListOf_element(s), dv)))')
+        self.okinfo[p] = ('and', ['SH.is_ListOf(s)', f'Lim.minimal(SH.ListOf_limit(s), {DD})', f'ok_{BE.p}(SH.ListOf_element(s), dv)'],
+                          {2: (BE.p, 'SH.ListOf_element(s)')})
         w(f'def eqs_{p}(+s: S.Schema) -> Data: eqs_{BE.p}(SH.ListOf_element(s))')
         XLo = f'xl_{p}(U32.to_nat(N), F.array__slots({MX}, t), 0n, hl)'
         w(f'def st_{p}(+hl: Nat, -h: B.Buf, -o: {Seq}, +seg: U32, +s: S.Schema, +rep: rep_{p}(o, s))')
@@ -1250,6 +1261,7 @@ class Gen:
         w(f'def rep_{p}(o: {BR}, +s: S.Schema) -> Data:')
         w(f'  DK.P2({{o == {B1} : {BR}}}, LO.rep_bl(pjb_{p}(o), s))')
         w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: LO.ok_bl(s, {D})')
+        self.okinfo[p] = ('bl', d)
         w(f'def eqs_{p}(+s: S.Schema) -> Data: {{True{{}} == True{{}} : Bool}}')
         w(f'def okc_{p}(+s: S.Schema, +dv: OS.DV, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}) -> {{SH.is_ByteList(s) == True{{}} : Bool}}: DK.and_l(SH.is_ByteList(s), Lim.minimal(BL.chunk_limit(SH.ByteList_limit(s)), {D}), ok)')
         w(f'def st_{p}(+hl: Nat, -h: B.Buf, -o: {BR}, +seg: U32, +s: S.Schema, +rep: rep_{p}(o, s))')
@@ -1497,6 +1509,7 @@ class Gen:
             w(f'  wd_{inner.p}(hl, {v}, s, ri)')
             # the box's ok / eqs are the inner's
             w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: ok_{inner.p}(s, dv)')
+            self.okinfo[p] = ('alias', inner.p)
             w(f'def eqs_{p}(+s: S.Schema) -> Data: eqs_{inner.p}(s)')
         w('')
         self.done[fs.p] = True
@@ -1582,10 +1595,14 @@ class Gen:
         conj = ['SH.is_Container(s)'] + [f'SH.is_Chain({tails(f0, j)})' for j in range(n)] + [f'SH.is_End({tails(f0, n)})']
         oks = [self.ok(F[i][1], kinds[i], sx[i]) for i in range(n)]
         ok_at = {}
+        subs = {}
         for i in range(n):
             if oks[i]:
                 ok_at[i] = len(conj)
+                if oks[i].startswith('ok_'):
+                    subs[len(conj)] = (F[i][1].p, sx[i])
                 conj.append(oks[i])
+        self.okinfo[p] = ('and', list(conj), subs)
         w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: {fold_and(conj)}')
         w(f'def okc_{p}(+s: S.Schema, +dv: OS.DV, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}) -> {{SH.is_Container(s) == True{{}} : Bool}}: DK.and_l({conj[0]}, {fold_and(conj[1:])}, ok)')
         # eqs
@@ -1873,6 +1890,73 @@ class Gen:
             t = f'({c}, {t})'
         return t
 
+    def has_symbolic(self, p):
+        info = self.okinfo.get(p)
+        if info is None:
+            return False
+        if info[0] == 'bl':
+            b = SYMBOLIC_BL.get(p.removesuffix('_bx'))
+            return b is not None and b[0] == info[1]
+        if info[0] == 'alias':
+            return self.has_symbolic(info[1])
+        return any(self.has_symbolic(sp) for sp, _ in info[2].values())
+
+    def ok_intros(self, p, Q, L, seen):
+        """Emit okI_<p>: ok_<p>(s, dv) from one fact per conjunct, proved with s
+        and dv as variables (nothing closed is evaluated), for every shape on
+        the way to a symbolic byte-list fact."""
+        if p in seen or not self.has_symbolic(p):
+            return
+        seen.add(p)
+        info = self.okinfo[p]
+        w = L.append
+        if info[0] == 'bl':
+            d = info[1]
+            w(f'def okI_{p}(+s: S.Schema, +dv: OS.DV, +h: {{LO.ok_bl(s, OS.dv_{d}(dv)) == True{{}} : Bool}}) -> {{{Q}ok_{p}(s, dv) == True{{}} : Bool}}: h')
+            return
+        if info[0] == 'alias':
+            self.ok_intros(info[1], Q, L, seen)
+            w(f'def okI_{p}(+s: S.Schema, +dv: OS.DV, +h: {{{Q}ok_{info[1]}(s, dv) == True{{}} : Bool}}) -> {{{Q}ok_{p}(s, dv) == True{{}} : Bool}}: h')
+            return
+        _, conj, subs = info
+        for sp, _ in subs.values():
+            self.ok_intros(sp, Q, L, seen)
+        cs = [self.qual(c, Q) for c in conj]
+        hs = ', '.join(f'+h{j}: {{{c} == True{{}} : Bool}}' for j, c in enumerate(cs))
+        t = f'h{len(cs) - 1}'
+        for j in range(len(cs) - 2, -1, -1):
+            t = f'LBL.and_t({cs[j]}, {fold_and(cs[j + 1:])}, h{j}, {t})'
+        w(f'def okI_{p}(+s: S.Schema, +dv: OS.DV, {hs}) -> {{{Q}ok_{p}(s, dv) == True{{}} : Bool}}:')
+        w(f'  {t}')
+
+    @staticmethod
+    def qual(c, Q):
+        return re.sub(r'(?<![\w.])ok_', Q + 'ok_', c)
+
+    def okproof(self, p, S, Q):
+        """A proof of {ok_p(S, OS.DV0()) == True{}} for a closed schema S: okI_p at
+        (S, DV0()), whose type is the goal's text; each conjunct without a
+        symbolic byte-list fact is a closed fact ({==}, evaluated)."""
+        if not self.has_symbolic(p):
+            return '{==}'
+        info = self.okinfo[p]
+        if info[0] == 'bl':
+            lemma = SYMBOLIC_BL[p.removesuffix('_bx')][1]
+            return f'okI_{p}({S}, OS.DV0(), {lemma}({S}, {{==}}))'
+        if info[0] == 'alias':
+            return f'okI_{p}({S}, OS.DV0(), {self.okproof(info[1], S, Q)})'
+        _, conj, subs = info
+
+        def close(c):
+            return re.sub(r'(?<![\w.])s(?![\w])', lambda _: S, c)
+        pf = []
+        for j in range(len(conj)):
+            if j in subs and self.has_symbolic(subs[j][0]):
+                pf.append(self.okproof(subs[j][0], close(subs[j][1]), Q))
+            else:
+                pf.append('{==}')
+        return f'okI_{p}({S}, OS.DV0(), ' + ', '.join(pf) + ')'
+
     def name_law(self, name, s, q=''):
         p = s.p
         Q = q
@@ -1881,9 +1965,14 @@ class Gen:
         w = L.append
         w(f'# {name}: for every object representing a value of Spec.{name}(), the runtime')
         w('# root is a specification root of that value.')
-        # the closed schema fact is the {==} argument of ok_at: evaluated once
+        # the closed schema fact is the last argument of ok_at: evaluated once
+        # ({==}), or, for a BIG name, built from okI lemmas (okproof)
+        closed = '{==}'
+        if Q and self.has_symbolic(p):
+            self.ok_intros(p, Q, L, set())
+            closed = self.okproof(p, f'Spec.{name}()', Q)
         w(f'def {name}_ok(+s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}, +dv: OS.DV, +edv: {{dv == OS.DV0() : OS.DV}}) -> {{{Q}ok_{p}(s, dv) == True{{}} : Bool}}:')
-        w(f'  OS.ok_at(y => d => {Q}ok_{p}(y, d), s, Spec.{name}(), dv, es, edv, {{==}})')
+        w(f'  OS.ok_at(y => d => {Q}ok_{p}(y, d), s, Spec.{name}(), dv, es, edv, {closed})')
         eqp = self.eqs_proof(name, p, lambda y: y)
         w(f'def {name}_eqs(+s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}) -> {Q}eqs_{p}(s): {eqp}')
         concl = f'RR.roots({Q}v_{p}(o), s, [D.bytes(Pair.snd({R}, D.Digest, Pair.snd(B.Buf, {R} & D.Digest, T.{name}_hash_tree_root(h, o))))])'
@@ -2008,10 +2097,19 @@ class Gen:
         L = []
         w = L.append
         w(f'# {name}: for every byte storage object representing a value of Spec.{name}(),')
-        w('# the runtime root is a specification root of its bytes. The closed limit fact')
-        w('# is evaluated once, at DV0() (a large closed number, so this takes long).')
+        closed = '{==}'
+        if s.p in SYMBOLIC_BL:
+            sd, lemma = SYMBOLIC_BL[s.p]
+            if (M, k, d) != ('LO', 'bl', sd):
+                raise Skip(f'{name}: symbolic limit table does not match (M={M}, k={k}, d={d})')
+            closed = f'{lemma}(Spec.{name}(), {{==}})'
+            w('# the runtime root is a specification root of its bytes. The closed limit fact')
+            w(f'# is proved symbolically ({lemma}, proofs/obj/big_lim_bl.bend).')
+        else:
+            w('# the runtime root is a specification root of its bytes. The closed limit fact')
+            w('# is evaluated once, at DV0() (a large closed number, so this takes long).')
         w(f'def {name}_ok(+s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}, +dv: OS.DV, +edv: {{dv == OS.DV0() : OS.DV}}) -> {{{M}.ok_{k}(s, {D}) == True{{}} : Bool}}:')
-        w(f'  OS.ok_at(y => e => {M}.ok_{k}(y, OS.dv_{d}(e)), s, Spec.{name}(), dv, es, edv, {{==}})')
+        w(f'  OS.ok_at(y => e => {M}.ok_{k}(y, OS.dv_{d}(e)), s, Spec.{name}(), dv, es, edv, {closed})')
         concl = f'RR.roots(S.BytesValue{{WO.wview(o)}}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.{name}_hash_tree_root(h, o))))])'
         w(f'def {name}_rc(-h: B.Buf, -o: O.Words, +s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}, +rep: {M}.rep_{k}(o, s), +dv: OS.DV, +edv: {{dv == OS.DV0() : OS.DV}})')
         w(f'    -> {concl}:')
@@ -2074,12 +2172,12 @@ class Gen:
                 status[n] = f'phase B: {e}'
         text = '\n'.join(HEAD + ['', '# GENERATED by codegen/root_laws_b.py. Do not edit.',
                                  '# Root laws of the Type-kind containers (see the generator).', ''] + WD_WORDS.strip('\n').split('\n') + [''] + self.out + laws) + '\n'
-        # One file per name (proofs/obj/root_big_<Name>.bend): each closed schema
+        # One file per name (proofs/obj/big_root_<Name>.bend): each closed schema
         # fact is evaluated in its own checker process, so the unary evaluations
         # of the 2^30-byte Transaction limit do not accumulate in one process.
-        bigtext = {ROOT / f'proofs/obj/root_big_{n}.bend':
+        bigtext = {ROOT / f'proofs/obj/big_root_{n}.bend':
                    '\n'.join(BIGHEAD + ['', '# GENERATED by codegen/root_laws_b.py. Do not edit.',
-                                        '# A root law whose schema fact takes minutes to evaluate.', ''] + ls) + '\n'
+                                        '# BIG: checks only with bendlang/bend#1075 (see SYMBOLIC_BL in the generator).', ''] + ls) + '\n'
                    for n, ls in big.items()}
         return text, bigtext, status
 
@@ -2091,6 +2189,8 @@ def main():
         for n, st in status.items():
             print(f'{n}: {st}')
         return 0
+    if '--no-big' in sys.argv:
+        bigtext = {}
     if '--check' in sys.argv:
         for path, t in [(OUT, text)] + sorted(bigtext.items()):
             if not path.exists() or path.read_text() != t:

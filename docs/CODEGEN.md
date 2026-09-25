@@ -43,7 +43,7 @@ them, and every official case that uses one is an invalid case.
 | `proofs/obj/schema_shapes.bend` | Bool shape tests and shape laws for every schema constructor (`codegen/schema_shapes.py`) |
 | `proofs/obj/root_names.bend`, `bits_leaf.bend`, `valid_names.bend` | phase-A root laws (Data-kind names: `X_root_correct`, `X_decoded_root_correct`) and generated-validity agreement (`codegen/root_laws.py`) |
 | `proofs/obj/root_types.bend` | phase-B root laws (Type-kind containers, byte storage, boxes, lists of Data containers) with digest witnesses (`codegen/root_laws_b.py`); `--status` prints per-name coverage and the reason for every uncovered name; `--only N1,N2 --out F` writes a bisection probe (not a gate) |
-| `build/probes/root_big.bend` | the Transaction root law, generated as a probe only (its closed limit fact is not evaluable by the checker) |
+| `proofs/obj/big_root_<Name>.bend` | BIG: the root laws of Transaction, ExecutionPayload, BeaconBlockBody, BeaconBlock, SignedBeaconBlock (their 2^30-byte limit fact is proved symbolically; see "Big proofs" below) |
 
 ## Regeneration
 
@@ -147,3 +147,18 @@ YAML names; 10 malformed documents; OK`; `codegen/generate.py --check` →
 `generated sources are current`; `codegen/laws.py --check` → `generated laws are
 current`; `codegen/import_graph.py --check` → `OK: the production path reaches
 only the shared runtime primitives`.
+
+## Big proofs (`big_*` files) and `--no-big`
+
+A proof file named `proofs/obj/big_*.bend` is BIG: it holds a law whose
+closed facts involve numbers too large for stock Bend 2.0.28 to evaluate (the
+2^30-byte Transaction limit, the 2^40 BeaconState limits). Those facts are
+proved symbolically (`big_lim_sym.bend`, `big_lim_bl.bend`) and instantiated
+in exactly the form of the goal, which checks with a checker that compares
+syntactically identical terms before normalizing them (bendlang/bend#1075).
+Stock 2.0.28 evaluates them in unary and runs out of memory.
+
+Every generator takes `--no-big`: it then writes no `big_*` file, and every
+file it writes checks on stock Bend. The laws of the `big_*` files are the
+only ones missing from that stock-checkable set. `proofs/obj/big_root_all.bend`
+checks the five big root laws in one process (332 s, 3.9 GB with #1075).
