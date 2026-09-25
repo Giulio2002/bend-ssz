@@ -126,3 +126,4 @@ def Gt05340E1F7E_root_correct(h, o, e):
   %Equal.sym(B.Buf & D.Digest, T.Gt05340E1F7E_hash_tree_root(h, o), T.bv511_root(64n, h, o, 0), Gt05340E1F7E_htr(h, o)) :
     RR.roots(S.BitsValue{Gt05340E1F7E_bits(o)}, Spec.Gt05340E1F7E(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   Gt05340E1F7E_lawg(h, 64n, {==}, o, e)
+

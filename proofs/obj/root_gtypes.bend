@@ -25,6 +25,7 @@ import ./ulist_obj.bend as UL
 import ./packed_obj.bend as PK
 import ./packed_bytes.bend as PB
 import ./prog_list.bend as PG
+import ./blist_obj.bend as BLI
 import ./elems48.bend as E48
 import ./xlist_support.bend as XS
 import ./mtree_run.bend as MR
@@ -133,6 +134,107 @@ def bs_cont(+E: S.Schema, +k: {SH.is_Container(E) == True{} : Bool}) -> {RR.basi
 def bs_blist(+E: S.Schema, +k: {SH.is_ByteList(E) == True{} : Bool}) -> {RR.basic_size(E) == None{} : Maybe<&2, Nat>}:
   %Equal.sym(S.Schema, E, S.ByteList{SH.ByteList_limit(E)}, SH.ByteList_shape(E, k)) : {RR.basic_size(_) == None{} : Maybe<&2, Nat>}
   {==}
+
+def wdc_bdig(+hl: Nat, -o: O.Words, +d: Nat, +sh: Nat, +c: CF.CF(o)) -> OS.DW(BLI.bdig(hl, o, d, sh)):
+  (+t, +c1) = c
+  (+N, +ce) = c1
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, ce) : OS.DW(BLI.bdig(hl, _, d, sh))
+  (BLI.bdig(hl, O.Words{F.array__thaw(U32, t), N}, d, sh), {==})
+def wd_l2(+hl: Nat, -o: O.Words, +s: S.Schema, +d: Nat, +r: BLI.rep_l2(o, s)) -> OS.DW(BLI.bdig(hl, o, d, 1n)):
+  wdc_bdig(hl, o, d, 1n, CF.cfl(o, BLI.rep_wf2(o, s, r)))
+
+# ---- Gc465214E502 (Type-kind container, 3 fields) ----
+def pj_Gc465214E502_1(o: T.Gc465214E502) -> O.Words:
+  match o:
+    case T.Gc465214E502{+x0, x1, +x2}: x1
+def v_Gc465214E502(o: T.Gc465214E502) -> S.Value:
+  match o:
+    case T.Gc465214E502{+x0, x1, +x2}: S.Sequence{S.Items{RN.v_u16(x0), S.Items{PB.vview2(x1), S.Items{RN.v_u8(x2), S.EmptyItems{}}}}}
+def d_Gc465214E502(+hl: Nat, o: T.Gc465214E502) -> D.Digest:
+  match o:
+    case T.Gc465214E502{+x0, x1, +x2}: MD.rtree(2n, True{}, hl, [RN.d_u16(hl, x0), BLI.bdig(hl, x1, 6n, 1n), RN.d_u8(hl, x2)], 0n)
+def rep_Gc465214E502(o: T.Gc465214E502, +s: S.Schema) -> Data:
+  DK.Ex(U32, x0 => DK.Ex(U32, x2 => DK.P2({o == T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2} : T.Gc465214E502}, DK.P2(RN.rp_u16(x0), DK.P2(BLI.rep_l2(pj_Gc465214E502_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), RN.rp_u8(x2))))))
+def ok_Gc465214E502(+s: S.Schema, +dv: OS.DV) -> Bool: Bool.and(SH.is_Container(s), Bool.and(SH.is_Chain(SH.Container_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n))))))
+def okc_Gc465214E502(+s: S.Schema, +dv: OS.DV, +ok: {ok_Gc465214E502(s, dv) == True{} : Bool}) -> {SH.is_Container(s) == True{} : Bool}: DK.and_l(SH.is_Container(s), Bool.and(SH.is_Chain(SH.Container_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n))))), ok)
+def eqs_Gc465214E502(+s: S.Schema) -> Data: DK.P2({SH.Chain_head(SH.Container_fields(s)) == S.Unsigned{P.U16{}} : S.Schema}, {SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))) == S.Unsigned{P.U8{}} : S.Schema})
+def fsh_Gc465214E502(+s: S.Schema, +dv: OS.DV, +ok: {ok_Gc465214E502(s, dv) == True{} : Bool}) -> {SH.Container_fields(s) == S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}} : S.Schema}:
+  +k0 = DK.and_l(SH.is_Container(s), Bool.and(SH.is_Chain(SH.Container_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n))))), ok)
+  +r1 = DK.and_r(SH.is_Container(s), Bool.and(SH.is_Chain(SH.Container_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n))))), ok)
+  +k1 = DK.and_l(SH.is_Chain(SH.Container_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n)))), r1)
+  +r2 = DK.and_r(SH.is_Chain(SH.Container_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n)))), r1)
+  +k2 = DK.and_l(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n))), r2)
+  +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n))), r2)
+  +k3 = DK.and_l(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n)), r3)
+  +r4 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n)), r3)
+  +k4 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n), r4)
+  +r5 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n), r4)
+  %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), SH.Chain_tail(SH.Container_fields(s))}, SH.Chain_shape(SH.Container_fields(s), k1)) :
+    {_ == S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}} : S.Schema}
+  %Equal.sym(S.Schema, SH.Chain_tail(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))}, SH.Chain_shape(SH.Chain_tail(SH.Container_fields(s)), k2)) :
+    {S.Chain{SH.Chain_head(SH.Container_fields(s)), _} == S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}} : S.Schema}
+  %Equal.sym(S.Schema, SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))}, SH.Chain_shape(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))), k3)) :
+    {S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), _}} == S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}} : S.Schema}
+  %Equal.sym(S.Schema, SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}, SH.End_shape(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), k4)) :
+    {S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), _}}} == S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}} : S.Schema}
+  {==}
+def st_Gc465214E502(+hl: Nat, -h: B.Buf, -o: T.Gc465214E502, +seg: U32, +s: S.Schema, +rep: rep_Gc465214E502(o, s))
+    -> {T.Gc465214E502_root(hl, h, o, seg) == (h, (o, d_Gc465214E502(hl, o))) : B.Buf & (T.Gc465214E502 & D.Digest)}:
+  (+x0, +q0) = rep
+  (+x2, +q1) = q0
+  (+eo, +q2) = q1
+  (+rp0, +q3) = q2
+  (+rp1, +q4) = q3
+  %Equal.sym(T.Gc465214E502, o, T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}, eo) :
+    {T.Gc465214E502_root(hl, h, _, seg) == (h, (_, d_Gc465214E502(hl, _))) : B.Buf & (T.Gc465214E502 & D.Digest)}
+  %Equal.sym(B.Buf & D.Digest, T.u16_root(hl, h, x0, seg), (h, RN.d_u16(hl, x0)), RN.st_u16(hl, h, x0, seg)) :
+    {T.Gc465214E502_rt0(hl, seg, x0, pj_Gc465214E502_1(o), x2, _) == (h, (T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}, d_Gc465214E502(hl, T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}))) : B.Buf & (T.Gc465214E502 & D.Digest)}
+  %Equal.sym(B.Buf & (O.Words & D.Digest), T.l1024_u16_root(hl, h, pj_Gc465214E502_1(o), seg), (h, (pj_Gc465214E502_1(o), BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n))), BLI.bl_st(hl, h, pj_Gc465214E502_1(o), 6, seg, 6n, 1n, BLI.rep_wf2(pj_Gc465214E502_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), rp1), {==})) :
+    {T.Gc465214E502_rt1(hl, seg, x0, x2, RN.d_u16(hl, x0), _) == (h, (T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}, d_Gc465214E502(hl, T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}))) : B.Buf & (T.Gc465214E502 & D.Digest)}
+  %Equal.sym(B.Buf & D.Digest, T.u8_root(hl, h, x2, seg), (h, RN.d_u8(hl, x2)), RN.st_u8(hl, h, x2, seg)) :
+    {T.Gc465214E502_rt2(hl, seg, x0, pj_Gc465214E502_1(o), x2, RN.d_u16(hl, x0), BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n), _) == (h, (T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}, d_Gc465214E502(hl, T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}))) : B.Buf & (T.Gc465214E502 & D.Digest)}
+  {==}
+def wd_Gc465214E502(+hl: Nat, -o: T.Gc465214E502, +s: S.Schema, +rep: rep_Gc465214E502(o, s)) -> OS.DW(d_Gc465214E502(hl, o)):
+  (+x0, +q0) = rep
+  (+x2, +q1) = q0
+  (+eo, +q2) = q1
+  (+rp0, +q3) = q2
+  (+rp1, +q4) = q3
+  +dd1 = OS.dwv(BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n), wd_l2(hl, pj_Gc465214E502_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n, rp1))
+  +de1 = OS.dwe(BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n), wd_l2(hl, pj_Gc465214E502_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n, rp1))
+  %Equal.sym(T.Gc465214E502, o, T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}, eo) : OS.DW(d_Gc465214E502(hl, _))
+  %Equal.sym(D.Digest, BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n), dd1, de1) :
+    OS.DW(MD.rtree(2n, True{}, hl, [RN.d_u16(hl, x0), _, RN.d_u8(hl, x2)], 0n))
+  (MD.rtree(2n, True{}, hl, [RN.d_u16(hl, x0), dd1, RN.d_u8(hl, x2)], 0n), {==})
+def rs_Gc465214E502(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.Gc465214E502, +s: S.Schema, +rep: rep_Gc465214E502(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {ok_Gc465214E502(s, dv) == True{} : Bool}, +ev: eqs_Gc465214E502(s))
+    -> RR.roots(v_Gc465214E502(o), s, [D.bytes(d_Gc465214E502(hl, o))]):
+  (+x0, +q0) = rep
+  (+x2, +q1) = q0
+  (+eo, +q2) = q1
+  (+rp0, +q3) = q2
+  (+rp1, +q4) = q3
+  (+qe0, +qv0) = ev
+  +dd1 = OS.dwv(BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n), wd_l2(hl, pj_Gc465214E502_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n, rp1))
+  +de1 = OS.dwe(BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n), wd_l2(hl, pj_Gc465214E502_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n, rp1))
+  +k0 = DK.and_l(SH.is_Container(s), Bool.and(SH.is_Chain(SH.Container_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n))))), ok)
+  +r1 = DK.and_r(SH.is_Container(s), Bool.and(SH.is_Chain(SH.Container_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n))))), ok)
+  +k1 = DK.and_l(SH.is_Chain(SH.Container_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n)))), r1)
+  +r2 = DK.and_r(SH.is_Chain(SH.Container_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n)))), r1)
+  +k2 = DK.and_l(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n))), r2)
+  +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n))), r2)
+  +k3 = DK.and_l(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n)), r3)
+  +r4 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n)), r3)
+  +k4 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n), r4)
+  +r5 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n), r4)
+  %Equal.sym(T.Gc465214E502, o, T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}, eo) : RR.roots(v_Gc465214E502(_), s, [D.bytes(d_Gc465214E502(hl, _))])
+  %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
+    RR.roots(v_Gc465214E502(T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}), _, [D.bytes(d_Gc465214E502(hl, T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}))])
+  %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}}, fsh_Gc465214E502(s, dv, ok)) :
+    RR.roots(v_Gc465214E502(T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}), S.Container{SH.Container_names(s), _}, [D.bytes(d_Gc465214E502(hl, T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}))])
+  %Equal.sym(D.Digest, BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n), dd1, de1) :
+    RR.roots(v_Gc465214E502(T.Gc465214E502{x0, pj_Gc465214E502_1(o), x2}), S.Container{SH.Container_names(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}}}, [D.bytes(MD.rtree(2n, True{}, hl, [RN.d_u16(hl, x0), _, RN.d_u8(hl, x2)], 0n))])
+  (MD.bytes_list([RN.d_u16(hl, x0), dd1, RN.d_u8(hl, x2)]), (([D.bytes(RN.d_u16(hl, x0))], (MD.bytes_list([dd1, RN.d_u8(hl, x2)]), (OS.transport(RN.v_u16(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U16{}}, [D.bytes(RN.d_u16(hl, x0))], qe0, RN.rs_u16(hl, ehl, x0, rp0)), (([D.bytes(dd1)], (MD.bytes_list([RN.d_u8(hl, x2)]), (OS.dtrans(PB.vview2(pj_Gc465214E502_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dd1, BLI.bdig(hl, pj_Gc465214E502_1(o), 6n, 1n), de1, BLI.l2_rs(hl, ehl, h, pj_Gc465214E502_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n, 6, 0, rp1, r5, {==}, {==})), (([D.bytes(RN.d_u8(hl, x2))], (MD.bytes_list([]), (OS.transport(RN.v_u8(x2), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Unsigned{P.U8{}}, [D.bytes(RN.d_u8(hl, x2))], qv0, RN.rs_u8(hl, ehl, x2, q4)), ({==}, {==})))), {==})))), {==})))),
+    RS.aggregate_digests(3n, 2n, hl, [RN.d_u16(hl, x0), dd1, RN.d_u8(hl, x2)], {==}, {==}, {==}, ehl)))
 
 # Gt83D8B3D008: for every packed byte object representing a value of Spec.Gt83D8B3D008(),
 # the runtime root is a specification root of its elements.
@@ -1443,6 +1545,25 @@ def GtE470919895_root_correct(h, o, s, es, rep):
     RR.roots(PK.vview8(o), s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   PK.v8_rs(64n, {==}, o, s, 1n, rep, GtE470919895_ok(s, es), {==})
 
+# Gc465214E502: for every object representing a value of Spec.Gc465214E502(), the runtime
+# root is a specification root of that value.
+def Gc465214E502_ok(+s: S.Schema, +es: {s == Spec.Gc465214E502() : S.Schema}, +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}) -> {ok_Gc465214E502(s, dv) == True{} : Bool}:
+  OS.ok_at(y => d => ok_Gc465214E502(y, d), s, Spec.Gc465214E502(), dv, es, edv, {==})
+def Gc465214E502_eqs(+s: S.Schema, +es: {s == Spec.Gc465214E502() : S.Schema}) -> eqs_Gc465214E502(s): (OS.eq_at(y => SH.Chain_head(SH.Container_fields(y)), s, Spec.Gc465214E502(), S.Unsigned{P.U16{}}, es, {==}), OS.eq_at(y => SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(y)))), s, Spec.Gc465214E502(), S.Unsigned{P.U8{}}, es, {==}))
+def Gc465214E502_rc(-h: B.Buf, -o: T.Gc465214E502, +s: S.Schema, +es: {s == Spec.Gc465214E502() : S.Schema}, +rep: rep_Gc465214E502(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV})
+    -> RR.roots(v_Gc465214E502(o), s, [D.bytes(Pair.snd(T.Gc465214E502, D.Digest, Pair.snd(B.Buf, T.Gc465214E502 & D.Digest, T.Gc465214E502_hash_tree_root(h, o))))]):
+  %Equal.sym(B.Buf & (T.Gc465214E502 & D.Digest), T.Gc465214E502_root(64n, h, o, 0), (h, (o, d_Gc465214E502(64n, o))), st_Gc465214E502(64n, h, o, 0, s, rep)) :
+    RR.roots(v_Gc465214E502(o), s, [D.bytes(Pair.snd(T.Gc465214E502, D.Digest, Pair.snd(B.Buf, T.Gc465214E502 & D.Digest, _)))])
+  rs_Gc465214E502(64n, {==}, h, o, s, rep, dv, edv, Gc465214E502_ok(s, es, dv, edv), Gc465214E502_eqs(s, es))
+law Gc465214E502_root_correct:
+  for -h: B.Buf
+  for -o: T.Gc465214E502
+  for +s: S.Schema
+  for +es: {s == Spec.Gc465214E502() : S.Schema}
+  for +rep: rep_Gc465214E502(o, s)
+  RR.roots(v_Gc465214E502(o), s, [D.bytes(Pair.snd(T.Gc465214E502, D.Digest, Pair.snd(B.Buf, T.Gc465214E502 & D.Digest, T.Gc465214E502_hash_tree_root(h, o))))])
+def Gc465214E502_root_correct(h, o, s, es, rep): Gc465214E502_rc(h, o, s, es, rep, OS.DV0(), {==})
+
 # GtDB1482527D: for every bit list object representing a value of Spec.GtDB1482527D(),
 # the runtime root is a specification root of its bits.
 def GtDB1482527D_ok(+s: S.Schema, +es: {s == Spec.GtDB1482527D() : S.Schema}) -> {BO.ok_bits(s, 0n) == True{} : Bool}:
@@ -1748,3 +1869,4 @@ def Gt9D356BAF82_root_correct(h, o, s, es, rep):
   %Equal.sym(B.Buf & (O.Bits & D.Digest), O.bits_root(64n, h, o, 0, 0), (h, (o, BO.bdig(64n, o, 0n))), BO.bst(64n, h, o, 0, 0, 0n, BO.rep_wf(o, s, rep), {==})) :
     RR.roots(S.BitsValue{BO.bview(o)}, s, [D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, _)))])
   BO.brs(64n, {==}, h, o, s, 0n, 0, 0, rep, Gt9D356BAF82_ok(s, es), {==}, {==})
+

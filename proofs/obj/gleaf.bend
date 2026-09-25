@@ -71,3 +71,4 @@ law Gt7B8507E2C2_root_correct:
   for +o: U32
   RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.Gt7B8507E2C2(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt7B8507E2C2_hash_tree_root(h, o)))])
 def Gt7B8507E2C2_root_correct(h, o): LS.u32_root(o)
+

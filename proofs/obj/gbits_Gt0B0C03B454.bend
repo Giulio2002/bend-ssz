@@ -128,3 +128,4 @@ def Gt0B0C03B454_root_correct(h, o, e):
   %Equal.sym(B.Buf & D.Digest, T.Gt0B0C03B454_hash_tree_root(h, o), T.bv513_root(64n, h, o, 0), Gt0B0C03B454_htr(h, o)) :
     RR.roots(S.BitsValue{Gt0B0C03B454_bits(o)}, Spec.Gt0B0C03B454(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   Gt0B0C03B454_lawg(h, 64n, {==}, o, e)
+

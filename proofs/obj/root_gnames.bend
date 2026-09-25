@@ -542,3 +542,4 @@ def Gt62B0093BE7_root_correct(h, o):
   %Equal.sym(B.Buf & D.Digest, T.u64_root(64n, h, o, 0), (h, d_u64(64n, o)), st_u64(64n, h, o, 0)) :
     RR.roots(v_u64(o), Spec.Gt62B0093BE7(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_u64(64n, {==}, o)
+

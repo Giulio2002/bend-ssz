@@ -63,6 +63,24 @@ BIGHEAD = HEAD + ['import ./root_types.bend as RT', 'import ./big_lim_bl.bend as
 # Byte-list shapes whose closed fact is proved symbolically: shape -> (depth,
 # lemma `(+s, +es: {s == Spec.<Name>()}) -> {LO.ok_bl(s, OS.dv_<depth>(OS.DV0())) == True}`).
 SYMBOLIC_BL = {'bl1073741824': (25, 'LBL.tx_ok_at')}
+# Field shapes of BeaconState whose closed schema fact (a limit of 2^24, 2^27 or
+# 2^40) is proved symbolically: shape -> lemma
+# `(+s, +es: {s == Spec.<Schema>()}) -> {<the field's ok conjunct at s, OS.DV0()> == True{}}`
+# (proofs/obj/big_lim_st.bend).
+SYMBOLIC = {'l16777216_b32': 'LST.hr_ok_at', 'l1099511627776_Validator': 'LST.val_ok_at',
+            'l1099511627776_u64': 'LST.bal_ok_at', 'l1099511627776_u8': 'LST.part_ok_at',
+            'l16777216_HistoricalSummary': 'LST.hs_ok_at', 'l134217728_PendingDeposit': 'LST.pd_ok_at',
+            'l134217728_PendingPartialWithdrawal': 'LST.ppw_ok_at'}
+# Names whose laws are generated after all others, into their own files: their
+# new shapes into proofs/obj/root_state.bend (importing root_types as RT, so
+# root_types does not grow), their name law into a big_root_<Name>.bend.
+SPLIT_NAMES = ('BeaconState',)
+STATE_OUT = ROOT / 'proofs/obj/root_state.bend'
+STATE_HEAD = ['import ./root_types.bend as RT', 'import ./blist_obj.bend as BLI', 'import ./packed_bytes.bend as PB',
+              'import ./bitlist_pack.bend as BLP', 'import ./bits_leaf.bend as BLF', 'import ./root_leaf.bend as RL',
+              'import ../../spec/bit_packing.bend as Bp', 'import ../../spec/packing.bend as Pack', 'import ../../spec/primitives.bend as SP',
+              'import ../../proofs/power_division.bend as PD', 'import ../../proofs/word_split.bend as WSp',
+              'import ./spec_fixed.bend as FX', 'import ./words_spec.bend as WS']
 
 
 WD_WORDS = r'''
@@ -181,6 +199,41 @@ class Skip(Exception):
     pass
 
 
+# Binder names the generated proofs use; a module-level name equal to one of
+# them could not be qualified by `qualify` without capturing the binder.
+BINDERS = {'o', 's', 'h', 'hl', 'ehl', 'seg', 'rep', 'ok', 'ev', 'eq', 'dv', 'edv', 't', 'dw', 'N', 'eo', 'pf', 'hd', 'hn',
+           'er', 'wf', 'hv', 'junk', 'e', 'b', 'd', 'v', 'n', 'W', 'i', 'k', 'sE', 'm', 'y', 'x', 'q', 'r', 'w', 'c', 'es', 'rest'}
+
+
+def defnames(text):
+    """The names a generated module defines: defs, laws, types and constructors."""
+    names = set()
+    intype = False
+    for line in text.split('\n'):
+        m = re.match(r'(def|law|type)\s+(\w+)', line)
+        if m:
+            names.add(m.group(2))
+            intype = m.group(1) == 'type'
+            continue
+        if intype:
+            m = re.match(r'  (\w+)\{', line)
+            if m:
+                names.add(m.group(1))
+                continue
+            intype = False
+    clash = names & BINDERS
+    assert not clash, clash
+    return names
+
+
+def qualify(text, names, prefix):
+    """Qualify every reference to one of `names` in text with `prefix`."""
+    if not names:
+        return text
+    pat = re.compile(r'(?<![\w.])(' + '|'.join(sorted(map(re.escape, names), key=len, reverse=True)) + r')(?![\w])')
+    return pat.sub(lambda m: prefix + m.group(1), text)
+
+
 def fold_and(cs):
     if not cs:
         return 'True{}'
@@ -233,9 +286,6 @@ class Gen:
     def fk(self, fs):
         """The kind of a field shape, or Skip."""
         k = self.fk0(fs)
-        d = self.depth(fs, k)
-        if d is not None and d >= BIGD and k == 'xl':
-            raise Skip(f'{fs.p}: list of Data containers of depth {d} >= {BIGD} (no variable-depth law yet)')
         return k
 
     def dd(self, fs, k):
@@ -244,7 +294,169 @@ class Gen:
         d = self.depth(fs, k)
         return f'OS.dv_{d}(dv)' if d >= BIGD else f'{d}n'
 
+    bvr_ok = False
+
+    def bvr_laws(self, fs):
+        """v/d/rp/st/rs of a one-word Data record bit vector of k < 32 bits
+        (the generic gbits laws' argument at depth 0): the representation fact is
+        that the word is its low k bits followed by zeros."""
+        p = fs.p
+        if p in self.done:
+            return
+        self.done[p] = True
+        L = []
+        w = L.append
+        if 'BITS:helpers' not in self.done:
+            self.done['BITS:helpers'] = True
+            w('# ---- bit lengths of words (as codegen/root_laws_generic.py BITS_HEAD) ----')
+            w('def bl32(ws: +List<U32>) -> Nat:')
+            w('  match ws:')
+            w('    case Nil{}: 0n')
+            w('    case Con{+x, r}: Nat.add(32n, bl32(r))')
+            w('law len_bitsof:')
+            w('  for +ws: +List<U32>')
+            w('  {List.length(&2, Bool, BLP.bitsof(ws)) == bl32(ws) : Nat}')
+            w('def len_bitsof(ws):')
+            w('  match ws:')
+            w('    case Nil{}: {==}')
+            w('    case Con{+x, +r}:')
+            w('      %Equal.sym(Nat, List.length(&2, Bool, List.append(&2, Bool, BLF.wbits(x), BLP.bitsof(r))), Nat.add(32n, List.length(&2, Bool, BLP.bitsof(r))), BLF.len_app_w(x, BLP.bitsof(r))) :')
+            w('        {_ == Nat.add(32n, bl32(r)) : Nat}')
+            w('      %Equal.sym(Nat, List.length(&2, Bool, BLP.bitsof(r)), bl32(r), len_bitsof(r)) : {Nat.add(32n, _) == Nat.add(32n, bl32(r)) : Nat}')
+            w('      {==}')
+            w('law btk_len:')
+            w('  for +n: Nat')
+            w('  for +xs: +List<Bool>')
+            w('  for +h: {Nat.is_le(n, List.length(&2, Bool, xs)) == True{} : Bool}')
+            w('  {List.length(&2, Bool, BLP.btk(n, xs)) == n : Nat}')
+            w('def btk_len(n, xs, h):')
+            w('  match n:')
+            w('    case 0n: {==}')
+            w('    case 1n+ +p:')
+            w('      match xs:')
+            w('        case Nil{}: Empty.absurd({List.length(&2, Bool, BLP.btk(1n+p, Nil{})) == 1n+p : Nat}, MD.false_true(h))')
+            w('        case Con{+b, +t}:')
+            w('          %Equal.sym(Nat, List.length(&2, Bool, BLP.btk(p, t)), p, btk_len(p, t, h)) : {1n+_ == 1n+p : Nat}')
+            w('          {==}')
+            w('')
+        nb = fs.t.size
+        k = nb
+        R = RA.qual(fs.rep)
+        A = [f'a{i}' for i in range(k)]
+        low = 'WNil{}'
+        for a in reversed(A):
+            low = f'WCon{{{a}, {low}}}'
+        lowp = low.replace('WCon{a', 'WCon{+a')
+        X = f'U32{{WSp.join({k}n, {32 - k}n, {low}, Word.zero({32 - k}n))}}'
+        XT = f'U32{{WSp.join({k}n, {32 - k}n, t, Word.zero({32 - k}n))}}'
+        M = 'Maybe<&2, +List<U32>>'
+
+        def dg(x):
+            return f'D.D{{B.swap32({x}), 0, 0, 0, 0, 0, 0, 0}}'
+        Lc = f'[{dg(X)}]'
+        BITS = f'BLP.btk({nb}n, BLP.bitsof([{X}]))'
+        BYTES = f'WS.btake(Bp.byte_count({nb}n), FX.limbs([{X}]))'
+        DIG = f'MD.rtree(0n, True{{}}, hl, {Lc}, 0n)'
+        aargs = ', '.join(f'+{a}: Bool' for a in A)
+        acall = ', '.join(A)
+        w(f'# ---- {p}: Bitvector[{nb}] in one word (a Data field) ----')
+        w(f'def {p}_lh({aargs}) -> {{Nat.is_le({nb}n, List.length(&2, Bool, BLP.bitsof([{X}]))) == True{{}} : Bool}}:')
+        w(f'  %Equal.sym(Nat, List.length(&2, Bool, BLP.bitsof([{X}])), bl32([{X}]), len_bitsof([{X}])) :')
+        w(f'    {{Nat.is_le({nb}n, _) == True{{}} : Bool}}')
+        w('  {==}')
+        w(f'def {p}_len({aargs}) -> {{List.length(&2, Bool, {BITS}) == {nb}n : Nat}}:')
+        w(f'  btk_len({nb}n, BLP.bitsof([{X}]), {p}_lh({acall}))')
+        w(f'def {p}_ch({aargs}) -> {{Pack.scan({BYTES}, 31n, [], []) == MD.bytes_list({Lc}) : +List<+List<U32>>}}:')
+        w(f'  %Equal.sym(+List<U32>, D.bytes({dg(X)}), List.append(&2, U32, FX.limbs([{X}]), SP.zero_bytes(28n)), RL.bytes_1({X})) :')
+        w(f'    {{Pack.scan({BYTES}, 31n, [], []) == [_] : +List<+List<U32>>}}')
+        w('  {==}')
+        w(f'def {p}_g(+hl: Nat, +ehl: {{hl == 64n : Nat}}, {aargs}) -> {{Mix.bitvector_at_depth({nb}n, 0n, {BITS}) == Some{{D.bytes({DIG})}} : {M}}}:')
+        w(f'  %Equal.sym(Nat, List.length(&2, Bool, {BITS}), {nb}n, {p}_len({acall})) :')
+        w(f'    {{Mix.vector_gate(Bool.and(Nat.is_lt(0n, {nb}n), Nat.is_eq(_, {nb}n)), {nb}n, 0n, {BITS}) == Some{{D.bytes({DIG})}} : {M}}}')
+        w(f'  %Equal.sym(+List<U32>, Bp.pack({BITS}), {BYTES}, BLP.bpack([{X}], {nb}n, {{==}})) :')
+        w(f'    {{Lim.at_depth(Mix.chunk_limit({nb}n), 0n, Pack.scan(_, 31n, [], [])) == Some{{D.bytes({DIG})}} : {M}}}')
+        w(f'  %Equal.sym(+List<+List<U32>>, Pack.scan({BYTES}, 31n, [], []), MD.bytes_list({Lc}), {p}_ch({acall})) :')
+        w(f'    {{Lim.at_depth(Mix.chunk_limit({nb}n), 0n, _) == Some{{D.bytes({DIG})}} : {M}}}')
+        w(f'  %Equal.sym({M}, Lim.at_depth(Mix.chunk_limit({nb}n), 0n, MD.bytes_list({Lc})), Some{{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen({Lc})), hl, {Lc}, 0n))}}, RS.at_depth_tree(Mix.chunk_limit({nb}n), 0n, hl, {Lc}, {{==}}, {{==}}, ehl)) :')
+        w(f'    {{_ == Some{{D.bytes({DIG})}} : {M}}}')
+        w('  {==}')
+        w(f'def v_{p}(o: {R}) -> S.Value:')
+        w('  match o:')
+        w(f'    case {R}{{+w0}}: S.BitsValue{{BLP.btk({nb}n, BLP.bitsof([w0]))}}')
+        w(f'def d_{p}(+hl: Nat, o: {R}) -> D.Digest:')
+        w('  match o:')
+        w(f'    case {R}{{+w0}}: {dg("w0")}')
+        w(f'def last_{p}(o: {R}) -> U32:')
+        w('  match o:')
+        w(f'    case {R}{{+w0}}: w0')
+        w(f'# the representation fact: the bits past {nb} are zero')
+        w(f'def rp_{p}(o: {R}) -> Data: {{last_{p}(o) == U32{{WSp.join({k}n, {32 - k}n, WSp.take({k}n, 32n, PD.bits(last_{p}(o))), Word.zero({32 - k}n))}} : U32}}')
+        w(f'def st_{p}(+hl: Nat, -h: B.Buf, +o: {R}, +seg: U32) -> {{T.{p}_root(hl, h, o, seg) == (h, d_{p}(hl, o)) : B.Buf & D.Digest}}:')
+        w('  match o:')
+        w(f'    case {R}{{+w0}}: {{==}}')
+        w(f'def rsh_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, +t: Word({k}n)) -> RR.roots(S.BitsValue{{BLP.btk({nb}n, BLP.bitsof([{XT}]))}}, S.BitVector{{{nb}n}}, [D.bytes({dg(XT)})]):')
+        w('  match t:')
+        w(f'    case {lowp}: (0n, ({{==}}, {p}_g(hl, ehl, {acall})))')
+        w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, +o: {R}, +rp: rp_{p}(o)) -> RR.roots(v_{p}(o), S.BitVector{{{nb}n}}, [D.bytes(d_{p}(hl, o))]):')
+        w('  match o:')
+        w(f'    case {R}{{+w0}}:')
+        w(f'      %Equal.sym(U32, w0, U32{{WSp.join({k}n, {32 - k}n, WSp.take({k}n, 32n, PD.bits(w0)), Word.zero({32 - k}n))}}, rp) :')
+        w(f'        RR.roots(S.BitsValue{{BLP.btk({nb}n, BLP.bitsof([_]))}}, S.BitVector{{{nb}n}}, [D.bytes({dg("_")})])')
+        w(f'      rsh_{p}(hl, ehl, WSp.take({k}n, 32n, PD.bits(w0)))')
+        w('')
+        self.out.extend(L)
+
     DIGF = {'bits': 'BO.bdig', 'bv': 'WO.wdig', 'pv': 'WO.wdig', 'bl': 'LO.ldig', 'ul': 'UL.udig', 'ev': 'E48.edig', 'el': 'E48.ldig'}
+
+    # Packed lists of uint8 / uint16 / Bytes32 (proofs/obj/blist_obj.bend) and
+    # packed vectors of basic elements (packed_obj PK, packed_bytes PB): kind ->
+    # (count shift, view, rep, ok, rep -> wf, spec law).
+    PLIST = {'l1': ('0n', 'PB.vview1', 'BLI.rep_l1', 'BLI.ok_l1', 'BLI.rep_wf1', 'BLI.l1_rs'),
+             'l2': ('1n', 'PB.vview2', 'BLI.rep_l2', 'BLI.ok_l2', 'BLI.rep_wf2', 'BLI.l2_rs'),
+             'lh': ('5n', 'BLI.hview', 'BLI.rep_lh', 'BLI.ok_lh', 'BLI.rep_wfh', 'BLI.lh_rs')}
+
+    @staticmethod
+    def vk(k):
+        """(module, K) of a packed vector kind 'vk<K>'."""
+        K = k[2:]
+        return ('PB' if K in ('1', '2', 'b') else 'PK'), K
+
+    def digf(self, k, x, d):
+        """The digest of a leaf field kind at depth term d."""
+        if k in self.PLIST:
+            return f'BLI.bdig(hl, {x}, {d}, {self.PLIST[k][0]})'
+        if k.startswith('vk'):
+            return f'WO.wdig(hl, {x}, {d})'
+        return f'{self.DIGF[k]}(hl, {x}, {d})'
+
+    def isleaf(self, k):
+        return k in self.DIGF or k in self.PLIST or k.startswith('vk')
+
+    def wdk(self, k):
+        """Emit (once) the digest witness wd_<k> of a packed list / vector kind."""
+        key = 'WD:' + k
+        if key in self.done:
+            return
+        self.done[key] = True
+        L = []
+        w = L.append
+        if 'WD:bdig' not in self.done:
+            self.done['WD:bdig'] = True
+            w('def wdc_bdig(+hl: Nat, -o: O.Words, +d: Nat, +sh: Nat, +c: CF.CF(o)) -> OS.DW(BLI.bdig(hl, o, d, sh)):')
+            w('  (+t, +c1) = c')
+            w('  (+N, +ce) = c1')
+            w('  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, ce) : OS.DW(BLI.bdig(hl, _, d, sh))')
+            w('  (BLI.bdig(hl, O.Words{F.array__thaw(U32, t), N}, d, sh), {==})')
+        if k in self.PLIST:
+            sh, _v, R, _o, WF, _r = self.PLIST[k]
+            w(f'def wd_{k}(+hl: Nat, -o: O.Words, +s: S.Schema, +d: Nat, +r: {R}(o, s)) -> OS.DW(BLI.bdig(hl, o, d, {sh})):')
+            w(f'  wdc_bdig(hl, o, d, {sh}, CF.cfl(o, {WF}(o, s, r)))')
+        else:
+            Mo, K = self.vk(k)
+            w(f'def wd_{k}(+hl: Nat, -o: O.Words, +s: S.Schema, +d: Nat, +r: {Mo}.rep_v{K}(o, s)) -> OS.DW(WO.wdig(hl, o, d)):')
+            w(f'  wdc_wdig(hl, o, d, CF.cf1(o, {Mo}.rep_wf{K}(o, s, r)))')
+        w('')
+        self.out.extend(L)
 
     def fk0(self, fs):
         if fs.kind == 'box':
@@ -255,6 +467,14 @@ class Gen:
                 return 'boxD'
             self.shape(inner)
             return 'boxT'
+        if fs.data and fs.kind == 'rec' and fs.t.kind == 'bits' and fs.t.size % 32:
+            # a bit vector in part of a word: its law is generated here (bvr_laws)
+            if not self.bvr_ok:
+                raise Skip(f'{fs.p}: partial-word bit vector field (its laws need the bit-packing imports of root_state)')
+            if fs.nw != 1:
+                raise Skip(f'{fs.p}: partial-word bit vector field of {fs.nw} words')
+            self.bvr_laws(fs)
+            return 'bvr'
         if fs.data:
             if fs.p not in self.phaseA:
                 raise Skip(f'{fs.p}: not a phase A shape')
@@ -273,6 +493,12 @@ class Gen:
             return 'pv'
         if fs.kind == 'packed' and fs.t.kind == 'list' and fs.t.elem.kind == 'uint' and fs.t.elem.size == 8:
             return 'ul'
+        if fs.kind == 'packed' and fs.t.kind == 'list' and fs.t.elem.kind == 'uint' and fs.t.elem.size in (1, 2):
+            return f'l{fs.t.elem.size}'
+        if fs.kind == 'packed' and fs.t.kind == 'list' and fs.t.elem.kind == 'bytes' and fs.t.elem.size == 32:
+            return 'lh'
+        if fs.kind == 'packed' and fs.t.kind == 'vector' and (fs.t.elem.kind == 'bool' or (fs.t.elem.kind == 'uint' and fs.t.elem.size in (1, 2, 4, 8, 16, 32))):
+            return 'vk' + ('b' if fs.t.elem.kind == 'bool' else str(fs.t.elem.size))
         if fs.kind == 'seq' and fs.t.kind == 'list' and not fs.pelem.data:
             self.tlist_laws(fs)
             return 'tl'
@@ -305,6 +531,13 @@ class Gen:
             return G.log2ceil(fs.t.size)
         if k == 'ul':
             return G.log2ceil(max(1, (8 * fs.t.size + 31) // 32))
+        if k in ('l1', 'l2'):
+            return G.log2ceil(max(1, (int(k[1]) * fs.t.size + 31) // 32))
+        if k == 'lh':
+            return G.log2ceil(max(1, fs.t.size))
+        if k.startswith('vk'):
+            W = 1 if fs.t.elem.kind == 'bool' else fs.t.elem.size
+            return G.log2ceil(G.chunks_of(W * fs.t.size))
         if k in ('ev', 'el', 'xl', 'tl', 'cl'):
             return G.log2ceil(fs.t.size)
         return None
@@ -312,9 +545,14 @@ class Gen:
     def E(self, fs):
         return RA.spec_schema(fs.inner if fs.kind == 'box' else fs)
 
+    @staticmethod
+    def pre(k):
+        """Where the laws of a Data field's shape are: phase A (RN) or here."""
+        return '' if k == 'bvr' else 'RN.'
+
     def view(self, fs, k, x):
-        if k in ('data', 'datar'):
-            return f'RN.v_{fs.p}({x})'
+        if k in ('data', 'datar', 'bvr'):
+            return f'{self.pre(k)}v_{fs.p}({x})'
         if k in ('bv', 'bl'):
             return f'S.BytesValue{{WO.wview({x})}}'
         if k == 'pv':
@@ -323,6 +561,11 @@ class Gen:
             return f'S.BitsValue{{BO.bview({x})}}'
         if k == 'ul':
             return f'UL.uview({x})'
+        if k in self.PLIST:
+            return f'{self.PLIST[k][1]}({x})'
+        if k.startswith('vk'):
+            Mo, K = self.vk(k)
+            return f'{Mo}.vview{K}({x})'
         if k in ('ev', 'el'):
             return f'E48.eview({x})'
         if k == 'cl':
@@ -332,8 +575,9 @@ class Gen:
         return f'v_{fs.p}({x})'
 
     def dig(self, fs, k, x):
-        if k in ('data', 'datar'):
-            return f'RN.d_{fs.p}(hl, {x})'
+        if k in ('data', 'datar', 'bvr'):
+            return f'{self.pre(k)}d_{fs.p}(hl, {x})'
+
         d = self.depth(fs, k)
         if k in ('bv', 'pv'):
             return f'WO.wdig(hl, {x}, {d}n)'
@@ -343,6 +587,8 @@ class Gen:
             return f'BO.bdig(hl, {x}, {d}n)'
         if k == 'ul':
             return f'UL.udig(hl, {x}, {d}n)'
+        if k in self.PLIST or k.startswith('vk'):
+            return self.digf(k, x, f'{d}n')
         if k == 'ev':
             return f'E48.edig(hl, {x}, {d}n)'
         if k == 'el':
@@ -356,8 +602,9 @@ class Gen:
     def rep(self, fs, k, x, sx):
         if k == 'data':
             return None
-        if k == 'datar':
-            return f'RN.rp_{fs.p}({x})'
+        if k in ('datar', 'bvr'):
+            return f'{self.pre(k)}rp_{fs.p}({x})'
+
         if k == 'bv':
             return f'WO.rep_bv({x}, {sx})'
         if k == 'bl':
@@ -368,6 +615,11 @@ class Gen:
             return f'PV.rep_pv({x}, {sx})'
         if k == 'ul':
             return f'UL.rep_ul({x}, {sx})'
+        if k in self.PLIST:
+            return f'{self.PLIST[k][2]}({x}, {sx})'
+        if k.startswith('vk'):
+            Mo, K = self.vk(k)
+            return f'{Mo}.rep_v{K}({x}, {sx})'
         if k == 'ev':
             return f'E48.rep_ev({x}, {sx})'
         if k == 'el':
@@ -380,7 +632,7 @@ class Gen:
 
     def ok(self, fs, k, sx):
         d = self.depth(fs, k)
-        if k in ('data', 'datar', 'boxD'):
+        if k in ('data', 'datar', 'bvr', 'boxD'):
             return None
         if k == 'bv':
             return f'WO.ok_bv({sx}, {self.dd(fs, k)})'
@@ -392,6 +644,11 @@ class Gen:
             return f'PV.ok_pv({sx}, {self.dd(fs, k)})'
         if k == 'ul':
             return f'UL.ok_ul({sx}, {self.dd(fs, k)})'
+        if k in self.PLIST:
+            return f'{self.PLIST[k][3]}({sx}, {self.dd(fs, k)})'
+        if k.startswith('vk'):
+            Mo, K = self.vk(k)
+            return f'{Mo}.ok_v{K}({sx}, {self.dd(fs, k)})'
         if k == 'ev':
             return f'E48.ok_ev({sx}, {self.dd(fs, k)})'
         if k == 'el':
@@ -399,12 +656,12 @@ class Gen:
         if k == 'cl':
             return f'CE.ok_el({sx}, {self.dd(fs, k)})'
         if k == 'xl':
-            return f'ok_{fs.p}({sx})'
+            return f'ok_{fs.p}({sx}, dv)' if d >= BIGD else f'ok_{fs.p}({sx})'
         return f'ok_{fs.p}({sx}, dv)'  # T, boxT, tl
 
     def eqs_items(self, fs, k):
         """The eqs structure of a field whose schema is the variable x."""
-        if k in ('data', 'datar', 'boxD'):
+        if k in ('data', 'datar', 'bvr', 'boxD'):
             return [('eq', lambda x: x, self.E(fs))]
         if k in ('boxT', 'T'):
             inner = fs.inner if k == 'boxT' else fs
@@ -414,7 +671,7 @@ class Gen:
         return []
 
     def eqs_type(self, fs, k, sx):
-        if k in ('data', 'datar', 'boxD'):
+        if k in ('data', 'datar', 'bvr', 'boxD'):
             return f'{{{sx} == {self.E(fs)} : S.Schema}}'
         if k in ('boxT', 'T'):
             inner = fs.inner if k == 'boxT' else fs
@@ -430,8 +687,8 @@ class Gen:
         R = RA.qual(fs.rep)
         lhs = f'T.{fs.p}_root(hl, h, {x}, seg)'
         dg = self.dig(fs, k, x)
-        if k in ('data', 'datar'):
-            return lhs, f'(h, {dg})', 'B.Buf & D.Digest', f'RN.st_{fs.p}(hl, h, {x}, seg)'
+        if k in ('data', 'datar', 'bvr'):
+            return lhs, f'(h, {dg})', 'B.Buf & D.Digest', f'{self.pre(k)}st_{fs.p}(hl, h, {x}, seg)'
         ty = f'B.Buf & ({R} & D.Digest)'
         rhs = f'(h, ({x}, {dg}))'
         d = self.depth(fs, k)
@@ -441,10 +698,16 @@ class Gen:
             pf = f'LO.bl_st(hl, h, {x}, {d}, seg, {d}n, LO.rep_wf({x}, {sx}, {r}), {{==}})'
         elif k == 'bits':
             pf = f'BO.bst(hl, h, {x}, {d}, seg, {d}n, BO.rep_wf({x}, {sx}, {r}), {{==}})'
+
         elif k == 'pv':
             pf = f'PV.pv_st(hl, h, {x}, {d}, seg, {d}n, PV.rep_wf({x}, {sx}, {r}), {{==}})'
         elif k == 'ul':
             pf = f'UL.ul_st(hl, h, {x}, {d}, seg, {d}n, UL.rep_wf({x}, {sx}, {r}), {{==}})'
+        elif k in self.PLIST:
+            pf = f'BLI.bl_st(hl, h, {x}, {d}, seg, {d}n, {self.PLIST[k][0]}, {self.PLIST[k][4]}({x}, {sx}, {r}), {{==}})'
+        elif k.startswith('vk'):
+            Mo, K = self.vk(k)
+            pf = f'WO.bv_st(hl, h, {x}, {d}, seg, {d}n, {Mo}.rep_wf{K}({x}, {sx}, {r}), {{==}})'
         elif k == 'ev':
             pf = f'E48.ev_st(hl, h, {x}, {d}, seg, {d}n, E48.rep_wfv({x}, {sx}, {r}), {{==}})'
         elif k in ('el', 'xl', 'tl', 'cl'):
@@ -457,24 +720,31 @@ class Gen:
         vw, dg = self.view(fs, k, x), self.dig(fs, k, x)
         if k == 'data':
             return f'OS.transport({vw}, {sx}, {self.E(fs)}, [D.bytes({dg})], {eqp}, RN.rs_{fs.p}(hl, ehl, {x}))'
-        if k == 'datar':
-            return f'OS.transport({vw}, {sx}, {self.E(fs)}, [D.bytes({dg})], {eqp}, RN.rs_{fs.p}(hl, ehl, {x}, {r}))'
+        if k in ('datar', 'bvr'):
+            return f'OS.transport({vw}, {sx}, {self.E(fs)}, [D.bytes({dg})], {eqp}, {self.pre(k)}rs_{fs.p}(hl, ehl, {x}, {r}))'
+
         d = self.depth(fs, k)
-        if k in self.DIGF and d >= BIGD:
+        if self.isleaf(k) and d >= BIGD:
             # the spec law at the variable depth, moved to the literal-depth digest
-            f = self.DIGF[k]
             D = f'OS.dv_{d}(dv)'
             du = f'OS.dvu(OS.dv_{d}, dv, edv, {d}, {{==}})'
             dl = f'OS.dvl(OS.dv_{d}, dv, edv, {{==}})'
-            law = {'bv': f'WO.bv_rs(hl, ehl, h, {x}, {sx}, {D}, {d}, 0, {r}, {okp}, {du}, {dl})',
+            if k in self.PLIST:
+                law = f'{self.PLIST[k][5]}(hl, ehl, h, {x}, {sx}, {D}, {d}, 0, {r}, {okp}, {du}, {dl})'
+            elif k.startswith('vk'):
+                Mo, K = self.vk(k)
+                law = f'{Mo}.v{K}_rs(hl, ehl, {x}, {sx}, {D}, {r}, {okp}, {dl})'
+            else:
+                law = None
+            law = law or {'bv': f'WO.bv_rs(hl, ehl, h, {x}, {sx}, {D}, {d}, 0, {r}, {okp}, {du}, {dl})',
                    'bl': f'LO.bl_rs(hl, ehl, h, {x}, {sx}, {D}, {d}, 0, {r}, {okp}, {du}, {dl})',
                    'pv': f'PV.pv_rs(hl, ehl, h, {x}, {sx}, {D}, {d}, 0, {r}, {okp}, {du}, {dl})',
                    'ul': f'UL.ul_rs(hl, ehl, h, {x}, {sx}, {D}, {d}, 0, {r}, {okp}, {du}, {dl})',
                    'ev': f'E48.ev_rs(hl, ehl, h, {x}, {sx}, {D}, {d}, 0, {r}, {okp}, {du}, {dl})',
                    'el': f'E48.el_rs(hl, ehl, h, {x}, {sx}, {D}, {r}, {okp}, {dl})',
                    'bits': f'BO.brs(hl, ehl, h, {x}, {sx}, {D}, {d}, 0, {r}, {okp}, {du}, {dl})'}[k]
-            e = f'Equal.cong(Nat, D.Digest, y => {f}(hl, {x}, y), {D}, {d}n, OS.dveq(OS.dv_{d}, dv, edv))'
-            return f'OS.dtrans({vw}, {sx}, {f}(hl, {x}, {d}n), {f}(hl, {x}, {D}), {e}, {law})'
+            e = f'Equal.cong(Nat, D.Digest, y => {self.digf(k, x, "y")}, {D}, {d}n, OS.dveq(OS.dv_{d}, dv, edv))'
+            return f'OS.dtrans({vw}, {sx}, {self.digf(k, x, f"{d}n")}, {self.digf(k, x, D)}, {e}, {law})'
         if k == 'bv':
             return f'WO.bv_rs(hl, ehl, h, {x}, {sx}, {d}n, {d}, 0, {r}, {okp}, {{==}}, {{==}})'
         if k == 'bl':
@@ -485,6 +755,11 @@ class Gen:
             return f'PV.pv_rs(hl, ehl, h, {x}, {sx}, {d}n, {d}, 0, {r}, {okp}, {{==}}, {{==}})'
         if k == 'ul':
             return f'UL.ul_rs(hl, ehl, h, {x}, {sx}, {d}n, {d}, 0, {r}, {okp}, {{==}}, {{==}})'
+        if k in self.PLIST:
+            return f'{self.PLIST[k][5]}(hl, ehl, h, {x}, {sx}, {d}n, {d}, 0, {r}, {okp}, {{==}}, {{==}})'
+        if k.startswith('vk'):
+            Mo, K = self.vk(k)
+            return f'{Mo}.v{K}_rs(hl, ehl, {x}, {sx}, {d}n, {r}, {okp}, {{==}})'
         if k == 'ev':
             return f'E48.ev_rs(hl, ehl, h, {x}, {sx}, {d}n, {d}, 0, {r}, {okp}, {{==}}, {{==}})'
         if k == 'el':
@@ -492,6 +767,8 @@ class Gen:
         if k == 'cl':
             return f'CE.el_rs(hl, ehl, h, {x}, {sx}, {d}n, {r}, {okp}, {{==}})'
         if k == 'xl':
+            if d >= BIGD:
+                return f'rs_{fs.p}(hl, ehl, h, {x}, {sx}, {r}, dv, edv, {okp}, {eqp})'
             return f'rs_{fs.p}(hl, ehl, h, {x}, {sx}, {r}, {okp}, {eqp})'
         if k == 'boxD':
             return f'rs_{fs.p}(hl, ehl, h, {x}, {sx}, {r}, {eqp})'
@@ -504,6 +781,9 @@ class Gen:
         if k == 'bits':
             call = f'BO.bwd(hl, {x}, {sx}, {self.dd(fs, k) if d < BIGD else str(d) + "n"}, {r})'
         elif k in ('bv', 'bl', 'pv', 'ul', 'ev', 'el', 'cl'):
+            call = f'wd_{k}(hl, {x}, {sx}, {d}n, {r})'
+        elif k in self.PLIST or k.startswith('vk'):
+            self.wdk(k)
             call = f'wd_{k}(hl, {x}, {sx}, {d}n, {r})'
         else:
             call = f'wd_{fs.p}(hl, {x}, {sx}, {r})'
@@ -774,7 +1054,14 @@ class Gen:
         w('    DK.P2({Nat.is_lt(dw, 32n) == True{} : Bool},')
         w('          {Nat.is_le(U32.to_nat(N), F.spec_common__pow2(dw)) == True{} : Bool})))))),')
         w(f'    {{Nat.is_le(U32.to_nat(xlen_o_{p}(o)), SH.ListOf_limit(s)) == True{{}} : Bool}})')
-        w(f'def ok_{p}(+s: S.Schema) -> Bool: Bool.and(SH.is_ListOf(s), Lim.minimal(SH.ListOf_limit(s), {D_}n))')
+        big = D_ >= BIGD
+        DD = f'OS.dv_{D_}(dv)' if big else f'{D_}n'
+        if big:
+            # the depth as the variable record's entry (see OS.DV)
+            w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: Bool.and(SH.is_ListOf(s), Lim.minimal(SH.ListOf_limit(s), {DD}))')
+            self.okinfo[p] = ('and', ['SH.is_ListOf(s)', f'Lim.minimal(SH.ListOf_limit(s), {DD})'], {}, {1: (p, 's')} if p in SYMBOLIC else {})
+        else:
+            w(f'def ok_{p}(+s: S.Schema) -> Bool: Bool.and(SH.is_ListOf(s), Lim.minimal(SH.ListOf_limit(s), {D_}n))')
         Wo = f'{Seq}{{F.array__thaw({RX}, t), N}}'
         XLo = f'xl_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n, hl)'
         w(f'def st_{p}(+hl: Nat, -h: B.Buf, -o: {Seq}, +seg: U32, +s: S.Schema, +rep: rep_{p}(o, s))')
@@ -817,7 +1104,9 @@ class Gen:
         w(f'  %Equal.sym({Seq}, o, {Wo}, eo) : OS.DW(xd_{p}(hl, _))')
         w(f'  (xd_{p}(hl, {Wo}), {{==}})')
         Lm = 'SH.ListOf_limit(s)'
-        w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, -h: B.Buf, -o: {Seq}, +s: S.Schema, +rep: rep_{p}(o, s), +ok: {{ok_{p}(s) == True{{}} : Bool}}, +eq: {{SH.ListOf_element(s) == {EX} : S.Schema}})')
+        dvp = ', +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}' if big else ''
+        dva = ', dv' if big else ''
+        w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, -h: B.Buf, -o: {Seq}, +s: S.Schema, +rep: rep_{p}(o, s){dvp}, +ok: {{ok_{p}(s{dva}) == True{{}} : Bool}}, +eq: {{SH.ListOf_element(s) == {EX} : S.Schema}})')
         w(f'    -> RR.roots(xv_{p}(o), s, [D.bytes(xd_{p}(hl, o))]):')
         w('  (+wf, +hv) = rep')
         w('  (+t, w1) = wf')
@@ -826,8 +1115,8 @@ class Gen:
         w('  (+eo, w4) = w3')
         w('  (+pf, w5) = w4')
         w('  (+hd, +hn) = w5')
-        w(f'  +k0 = DK.and_l(SH.is_ListOf(s), Lim.minimal({Lm}, {D_}n), ok)')
-        w(f'  +k1 = DK.and_r(SH.is_ListOf(s), Lim.minimal({Lm}, {D_}n), ok)')
+        w(f'  +k0 = DK.and_l(SH.is_ListOf(s), Lim.minimal({Lm}, {DD}), ok)')
+        w(f'  +k1 = DK.and_r(SH.is_ListOf(s), Lim.minimal({Lm}, {DD}), ok)')
         w(f'  +hvN = xhv_{p}(o, t, N, {Lm}, eo, hv)')
         w(f'  %Equal.sym(S.Schema, s, S.ListOf{{SH.ListOf_element(s), {Lm}}}, SH.ListOf_shape(s, k0)) :')
         w(f'    RR.roots(xv_{p}(o), _, [D.bytes(xd_{p}(hl, o))])')
@@ -839,10 +1128,22 @@ class Gen:
         w(f'    RR.roots(S.Sequence{{xi_{p}(U32.to_nat(N), F.array__slots({RX}, _), 0n)}}, S.ListOf{{{EX}, {Lm}}}, [D.bytes(O.mix_len(hl, MD.rtree({D_}n, Nat.is_lt(0n, U32.to_nat(N)), hl, xl_{p}(U32.to_nat(N), F.array__slots({RX}, _), 0n, hl), 0n), N))])')
         w(f'  %xlen_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n, hl) :')
         w(f'    RR.roots(S.Sequence{{xi_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n)}}, S.ListOf{{{EX}, {Lm}}}, [D.bytes(O.mix_len(hl, MD.rtree({D_}n, Nat.is_lt(0n, _), hl, {XLo}, 0n), N))])')
-        R2 = f'MD.rtree({D_}n, Nat.is_lt(0n, MD.dlen({XLo})), hl, {XLo}, 0n)'
-        w(f'  (MD.bytes_list({XLo}), (xroots_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n, hl, ehl),')
-        w(f'    (D.bytes({R2}), (({D_}n, (k1, RS.at_depth_tree({Lm}, {D_}n, hl, {XLo}, {{==}}, xhl_{p}(N, {Lm}, F.array__slots({RX}, t), hl, hvN), ehl))),')
-        w(f'     xlm_{p}(hl, ehl, N, {R2}, F.array__slots({RX}, t))))))')
+        if big:
+            # the spec law at the variable depth, moved to the literal-depth digest
+            Dv = DD
+            R2v = f'MD.rtree({Dv}, Nat.is_lt(0n, MD.dlen({XLo})), hl, {XLo}, 0n)'
+            R2l = f'MD.rtree({D_}n, Nat.is_lt(0n, MD.dlen({XLo})), hl, {XLo}, 0n)'
+            e = f'Equal.cong(Nat, D.Digest, y => O.mix_len(hl, MD.rtree(y, Nat.is_lt(0n, MD.dlen({XLo})), hl, {XLo}, 0n), N), {Dv}, {D_}n, OS.dveq(OS.dv_{D_}, dv, edv))'
+            XI = f'xi_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n)'
+            w(f'  OS.dtrans(S.Sequence{{{XI}}}, S.ListOf{{{EX}, {Lm}}}, O.mix_len(hl, {R2l}, N), O.mix_len(hl, {R2v}, N), {e},')
+            w(f'  (MD.bytes_list({XLo}), (xroots_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n, hl, ehl),')
+            w(f'    (D.bytes({R2v}), (({Dv}, (k1, RS.at_depth_tree({Lm}, {Dv}, hl, {XLo}, OS.dvl(OS.dv_{D_}, dv, edv, {{==}}), xhl_{p}(N, {Lm}, F.array__slots({RX}, t), hl, hvN), ehl))),')
+            w(f'     xlm_{p}(hl, ehl, N, {R2v}, F.array__slots({RX}, t)))))))')
+        else:
+            R2 = f'MD.rtree({D_}n, Nat.is_lt(0n, MD.dlen({XLo})), hl, {XLo}, 0n)'
+            w(f'  (MD.bytes_list({XLo}), (xroots_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n, hl, ehl),')
+            w(f'    (D.bytes({R2}), (({D_}n, (k1, RS.at_depth_tree({Lm}, {D_}n, hl, {XLo}, {{==}}, xhl_{p}(N, {Lm}, F.array__slots({RX}, t), hl, hvN), ehl))),')
+            w(f'     xlm_{p}(hl, ehl, N, {R2}, F.array__slots({RX}, t))))))')
         w('')
         self.done[p] = True
         self.out.extend(L)
@@ -1310,14 +1611,14 @@ class Gen:
     def mfield(self, fs, k):
         """(mirror type, thaw(a), freeze(x), proof of freeze(thaw(a)) == a or None)."""
         R = RA.qual(fs.rep)
-        if k in ('data', 'datar'):
+        if k in ('data', 'datar', 'bvr'):
             return R, lambda a: a, lambda x: x, None
         if k == 'boxD':
             RI = RA.qual(fs.inner.rep)
             self.mirror_box(fs)
             return (RI, lambda a: f'O.BSome{{{a}, O.BNone{{}}}}',
                     lambda x: f'mfz_{fs.p}({x})', None)
-        if k in ('bv', 'bl', 'pv', 'ul', 'ev', 'el'):
+        if k in ('bv', 'bl', 'pv', 'ul', 'ev', 'el') or k in self.PLIST or k.startswith('vk'):
             return 'WMr', lambda a: f'th_w({a})', lambda x: f'fz_w({x})', lambda a: f'fzth_w({a})'
         if k == 'bits':
             return 'BMr', lambda a: f'th_b({a})', lambda x: f'fz_b({x})', lambda a: f'fzth_b({a})'
@@ -1354,7 +1655,7 @@ class Gen:
         w(f'def th_{p}(m: M_{p}) -> {R}:')
         w('  match m:')
         w(f'    case M_{p}{{' + ', '.join(f'+a{i}' for i in range(n)) + f'}}: {R}{{' + ', '.join(ms[i][1](f'a{i}') for i in range(n)) + '}')
-        isdata = [k in ('data', 'datar') for k in kinds]
+        isdata = [k in ('data', 'datar', 'bvr') for k in kinds]
         w(f'def fz_{p}(x: {R}) -> M_{p}:')
         w('  match x:')
         w(f'    case {R}{{' + ', '.join(('+' if isdata[i] else '') + f'x{i}' for i in range(n)) + f'}}: M_{p}{{' + ', '.join(ms[i][2](f'x{i}') for i in range(n)) + '}')
@@ -1529,7 +1830,7 @@ class Gen:
         wide = n > G.GROUP
         groups = [list(range(j, min(n, j + G.GROUP))) for j in range(0, n, G.GROUP)] if wide else None
         xs = [f'x{i}' for i in range(n)]
-        isdata = [k in ('data', 'datar') for k in kinds]
+        isdata = [k in ('data', 'datar', 'bvr') for k in kinds]
         L = []
         w = L.append
         w(f'# ---- {p} (Type-kind container, {n} fields{", in groups" if wide else ""}) ----')
@@ -1596,13 +1897,16 @@ class Gen:
         oks = [self.ok(F[i][1], kinds[i], sx[i]) for i in range(n)]
         ok_at = {}
         subs = {}
+        leafsym = {}
         for i in range(n):
             if oks[i]:
                 ok_at[i] = len(conj)
                 if oks[i].startswith('ok_'):
                     subs[len(conj)] = (F[i][1].p, sx[i])
+                elif F[i][1].p in SYMBOLIC:
+                    leafsym[len(conj)] = (F[i][1].p, sx[i])
                 conj.append(oks[i])
-        self.okinfo[p] = ('and', list(conj), subs)
+        self.okinfo[p] = ('and', list(conj), subs, leafsym) if leafsym else ('and', list(conj), subs)
         w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: {fold_and(conj)}')
         w(f'def okc_{p}(+s: S.Schema, +dv: OS.DV, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}) -> {{SH.is_Container(s) == True{{}} : Bool}}: DK.and_l({conj[0]}, {fold_and(conj[1:])}, ok)')
         # eqs
@@ -1872,7 +2176,7 @@ class Gen:
         for i in m['eqt']:
             fs, k = m['F'][i][1], m['kinds'][i]
             sub = (lambda y, i=i: sch(path(y), i))
-            if k in ('data', 'datar', 'boxD'):
+            if k in ('data', 'datar', 'bvr', 'boxD'):
                 comps.append(f'OS.eq_at(y => {sub("y")}, s, Spec.{name}(), {self.E(fs)}, es, {{==}})')
             elif k == 'xl':
                 comps.append(f'OS.eq_at(y => SH.ListOf_element({sub("y")}), s, Spec.{name}(), {RA.spec_schema(fs.pelem)}, es, {{==}})')
@@ -1899,6 +2203,8 @@ class Gen:
             return b is not None and b[0] == info[1]
         if info[0] == 'alias':
             return self.has_symbolic(info[1])
+        if len(info) > 3 and info[3]:
+            return True
         return any(self.has_symbolic(sp) for sp, _ in info[2].values())
 
     def ok_intros(self, p, Q, L, seen):
@@ -1918,7 +2224,7 @@ class Gen:
             self.ok_intros(info[1], Q, L, seen)
             w(f'def okI_{p}(+s: S.Schema, +dv: OS.DV, +h: {{{Q}ok_{info[1]}(s, dv) == True{{}} : Bool}}) -> {{{Q}ok_{p}(s, dv) == True{{}} : Bool}}: h')
             return
-        _, conj, subs = info
+        conj, subs = info[1], info[2]
         for sp, _ in subs.values():
             self.ok_intros(sp, Q, L, seen)
         cs = [self.qual(c, Q) for c in conj]
@@ -1945,7 +2251,8 @@ class Gen:
             return f'okI_{p}({S}, OS.DV0(), {lemma}({S}, {{==}}))'
         if info[0] == 'alias':
             return f'okI_{p}({S}, OS.DV0(), {self.okproof(info[1], S, Q)})'
-        _, conj, subs = info
+        conj, subs = info[1], info[2]
+        leafsym = info[3] if len(info) > 3 else {}
 
         def close(c):
             return re.sub(r'(?<![\w.])s(?![\w])', lambda _: S, c)
@@ -1953,11 +2260,14 @@ class Gen:
         for j in range(len(conj)):
             if j in subs and self.has_symbolic(subs[j][0]):
                 pf.append(self.okproof(subs[j][0], close(subs[j][1]), Q))
+            elif j in leafsym:
+                # a closed limit fact proved symbolically (proofs/obj/big_lim_st.bend)
+                pf.append(f'{SYMBOLIC[leafsym[j][0]]}({close(leafsym[j][1])}, {{==}})')
             else:
                 pf.append('{==}')
         return f'okI_{p}({S}, OS.DV0(), ' + ', '.join(pf) + ')'
 
-    def name_law(self, name, s, q=''):
+    def name_law(self, name, s, q='', sym=False):
         p = s.p
         Q = q
         R = RA.qual(s.rep)
@@ -1968,7 +2278,7 @@ class Gen:
         # the closed schema fact is the last argument of ok_at: evaluated once
         # ({==}), or, for a BIG name, built from okI lemmas (okproof)
         closed = '{==}'
-        if Q and self.has_symbolic(p):
+        if (Q or sym) and self.has_symbolic(p):
             self.ok_intros(p, Q, L, set())
             closed = self.okproof(p, f'Spec.{name}()', Q)
         w(f'def {name}_ok(+s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}, +dv: OS.DV, +edv: {{dv == OS.DV0() : OS.DV}}) -> {{{Q}ok_{p}(s, dv) == True{{}} : Bool}}:')
@@ -2137,8 +2447,12 @@ class Gen:
         only = None
         if '--only' in sys.argv:
             only = set(sys.argv[sys.argv.index('--only') + 1].split(','))
+        deferred = []
         for n, t in self.names.items():
             if only is not None and n not in only:
+                continue
+            if n in SPLIT_NAMES:
+                deferred.append(n)
                 continue
             s = self.g.shape(t)
             if s.kind == 'packed' and t.kind == 'plist' and (t.elem.kind == 'bool' or (t.elem.kind == 'uint' and t.elem.size in (1, 2, 4, 8, 16, 32))):
@@ -2170,14 +2484,41 @@ class Gen:
                 status[n] = 'proved (phase B)'
             except Skip as e:
                 status[n] = f'phase B: {e}'
+        base_out = list(self.out)
+        state_laws = {}
+        self.bvr_ok = True
+        for n in deferred:
+            s = self.g.shape(self.names[n])
+            try:
+                self.shape(s)
+                state_laws[n] = self.name_law(n, s, '', sym=True)
+                status[n] = 'proved (phase B, big)'
+            except Skip as e:
+                status[n] = f'phase B: {e}'
+        state_body = self.out[len(base_out):]
+        self.out = base_out
         text = '\n'.join(HEAD + ['', '# GENERATED by codegen/root_laws_b.py. Do not edit.',
                                  '# Root laws of the Type-kind containers (see the generator).', ''] + WD_WORDS.strip('\n').split('\n') + [''] + self.out + laws) + '\n'
+        self.state_text = None
+        if deferred:
+            rt = defnames(text)
+            body = qualify('\n'.join(state_body), rt, 'RT.')
+            self.state_text = '\n'.join(HEAD + STATE_HEAD + ['', '# GENERATED by codegen/root_laws_b.py. Do not edit.',
+                                                             '# Root laws of the shapes only BeaconState uses (see SPLIT_NAMES in the generator);',
+                                                             '# the shapes it shares with other names are root_types\'s (RT).', '', body]) + '\n'
+            st = defnames(self.state_text)
+            for n, ls in state_laws.items():
+                big[n] = ['import ./root_state.bend as ST', 'import ./blist_obj.bend as BLI', 'import ./big_lim_st.bend as LST', '',
+                          '# GENERATED by codegen/root_laws_b.py. Do not edit.',
+                          '# BIG: checks only with bendlang/bend#1075 (see SYMBOLIC in the generator).', '',
+                          qualify(qualify('\n'.join(ls), st, 'ST.'), rt, 'RT.')]
         # One file per name (proofs/obj/big_root_<Name>.bend): each closed schema
         # fact is evaluated in its own checker process, so the unary evaluations
         # of the 2^30-byte Transaction limit do not accumulate in one process.
         bigtext = {ROOT / f'proofs/obj/big_root_{n}.bend':
-                   '\n'.join(BIGHEAD + ['', '# GENERATED by codegen/root_laws_b.py. Do not edit.',
-                                        '# BIG: checks only with bendlang/bend#1075 (see SYMBOLIC_BL in the generator).', ''] + ls) + '\n'
+                   ('\n'.join(BIGHEAD + ls) if n in state_laws else
+                    '\n'.join(BIGHEAD + ['', '# GENERATED by codegen/root_laws_b.py. Do not edit.',
+                                         '# BIG: checks only with bendlang/bend#1075 (see SYMBOLIC_BL in the generator).', ''] + ls)) + '\n'
                    for n, ls in big.items()}
         return text, bigtext, status
 
@@ -2191,8 +2532,9 @@ def main():
         return 0
     if '--no-big' in sys.argv:
         bigtext = {}
+    extra = [(STATE_OUT, gen.state_text)] if gen.state_text is not None else []
     if '--check' in sys.argv:
-        for path, t in [(OUT, text)] + sorted(bigtext.items()):
+        for path, t in [(OUT, text)] + extra + sorted(bigtext.items()):
             if not path.exists() or path.read_text() != t:
                 print(f'{path} is stale; run codegen/root_laws_b.py')
                 return 1
@@ -2203,7 +2545,7 @@ def main():
         return 0
     if not OUT.exists() or OUT.read_text() != text:
         OUT.write_text(text)
-    for path, t in bigtext.items():
+    for path, t in extra + list(bigtext.items()):
         if not path.exists() or path.read_text() != t:
             path.write_text(t)
     return 0
