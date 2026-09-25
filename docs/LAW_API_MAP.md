@@ -62,9 +62,11 @@ What that means concretely:
   **Validator** (`spec_rec_Validator.bend`, `spec_rec_unique_Validator.bend`):
   the spec parts and encoding of the value of any words and boolean, a buffer
   whose byte 88 is above 1 is refused (whatever its other bytes), every size
-  other than 121 is refused, uniqueness. Not proved: the runtime encoder's bytes
-  and the decoder's acceptance, which go through `U32.mul(w, 256)` and
-  `U32.or` on variable words (need the byte-packing lemmas).
+  other than 121 is refused, a buffer of 121 bytes whose byte 88 is at most 1 is
+  accepted and the spec relates exactly its bytes to the decoded object's value
+  (`Validator_spec_decode`/`_view`/`_decoded`), uniqueness. Not proved: the
+  runtime encoder's bytes, which go through `U32.mul(w, 256)` on variable words
+  (U32.mul recurses over its left operand; needs `mul(w, 256) == shln(w, 8)`).
   **Generic forms**: the aligned family covers 38 generic forms
   (`spec_gcodec/grepr/ginput/gunique_*`), Vector[uint32/64/128/256, 512]
   go through the array route (`spec_garr_*`).
