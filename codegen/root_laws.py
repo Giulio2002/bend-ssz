@@ -181,12 +181,24 @@ def pattern(R, xs):
 # the generic forms' generator only (codegen/root_laws_generic.py): the Fulu
 # names' leaves have their own laws (proofs/obj/leaf_small.bend).
 EXTRA_LEAVES = False
+# Partial-word bit vector records admitted as phase A shapes (generic only: the
+# shape keys, and the emitter of their laws, set by root_laws_generic.py).
+PARTIAL_OK = set()
+PARTIAL_HOOK = None
+
+
+def partial_bits(s):
+    return s.kind == 'rec' and s.t.kind == 'bits' and s.t.size % 32 and s.p in PARTIAL_OK
+
+
 SMALL = {'u8': ('P.U8{}', '256'), 'u16': ('P.U16{}', '65536'), 'u32': ('P.U32Width{}', None)}
 
 
 def needs_rep(s):
     """The shape's root law needs a representation fact of its object."""
     if s.kind in ('u8', 'u16'):
+        return True
+    if partial_bits(s):
         return True
     if s.kind == 'container':
         return any(needs_rep(fs) for _, fs in s.fields)
@@ -213,6 +225,13 @@ def spec_schema(s):
         for _, fs in reversed(s.fields):
             chain = f'S.Chain{{{spec_schema(fs)}, {chain}}}'
         return f'S.Container{{{names}, {chain}}}'
+    if k == 'container' and t.kind == 'pcontainer' and EXTRA_LEAVES:
+        names = '[' + ', '.join(f'"{f}"' for f, _ in t.fields) + ']'
+        chain = 'S.End{}'
+        for _, fs in reversed(s.fields):
+            chain = f'S.Chain{{{spec_schema(fs)}, {chain}}}'
+        act = '[' + ', '.join('True{}' if a else 'False{}' for a in t.active) + ']'
+        return f'S.ProgressiveContainer{{{names}, {chain}, {act}}}'
     raise Skip(f'kind {k}/{t.kind}')
 
 
@@ -231,14 +250,14 @@ def covered(s):
         return
     if k == 'rec':
         if t.kind == 'bits':
-            if t.size % 32:
+            if t.size % 32 and not partial_bits(s):
                 raise Skip('bit vector record of a partial word')
             return
         if t.size % 4:
             raise Skip('byte vector of a partial word')
         return
     if k == 'container':
-        if t.kind != 'container':
+        if t.kind != 'container' and not (t.kind == 'pcontainer' and EXTRA_LEAVES):
             raise Skip('progressive container')
         if not s.data:
             raise Skip('container held by pointer (Type kind)')
@@ -288,6 +307,9 @@ def emit_shape_laws(s, w):
         w(f'def d_{p}(+hl: Nat, o: O.U64) -> D.Digest: O.u64_chunk(o)')
         w(f'def st_{p}(+hl: Nat, -h: B.Buf, +o: O.U64, +seg: U32) -> {{T.{p}_root(hl, h, o, seg) == (h, d_{p}(hl, o)) : B.Buf & D.Digest}}: {{==}}')
         w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, +o: O.U64) -> RR.roots(v_{p}(o), {sch}, [D.bytes(d_{p}(hl, o))]): RL.u64_root(o)')
+        return
+    if partial_bits(s):
+        PARTIAL_HOOK(s, w)
         return
     if k in ('rec', 'uwide'):
         nw, nb = s.nw, s.nbytes
@@ -381,9 +403,15 @@ def emit_shape_laws(s, w):
         w('  match o:')
         w(f'    case {pat}: S.Sequence{{{items}}}')
         Ld = '[' + ', '.join(f'd_{fs.p}(hl, {xs[i]})' for i, (_, fs) in enumerate(F_)) + ']'
+        prog = t.kind == 'pcontainer'
         w(f'def d_{p}(+hl: Nat, +o: {R}) -> D.Digest:')
         w('  match o:')
-        w(f'    case {pat}: MD.rtree({depth}n, True{{}}, hl, {Ld}, 0n)')
+        if prog:
+            import pcont_laws as PCL
+            dls = [f'd_{fs.p}(hl, {xs[i]})' for i, (_, fs) in enumerate(F_)]
+            w(f'    case {pat}: O.mix_len(hl, {PCL.expr(PCL.tree(t.active), dls)}, {PCL.mask(t.active)})')
+        else:
+            w(f'    case {pat}: MD.rtree({depth}n, True{{}}, hl, {Ld}, 0n)')
         # state law: rewrite each stuck field root call in its step
         w(f'def st_{p}(+hl: Nat, -h: B.Buf, +o: {R}, +seg: U32) -> {{T.{p}_root(hl, h, o, seg) == (h, d_{p}(hl, o)) : B.Buf & D.Digest}}:')
         w('  match o:')
@@ -430,7 +458,10 @@ def emit_shape_laws(s, w):
             return (f'([D.bytes(d_{F_[i][1].p}(hl, {xs[i]}))], (MD.bytes_list({rest}), '
                     f'({call}, ({items_proof(i + 1)}, {{==}}))))')
         w(f'      (MD.bytes_list({Ld}), ({items_proof(0)},')
-        w(f'        RS.aggregate_digests({n}n, {depth}n, hl, {Ld}, {{==}}, {{==}}, {{==}}, ehl)))')
+        if prog:
+            w(f'        PCN.{PCL.key(t.active)}_ar(hl, ehl, {", ".join(dls)})))')
+        else:
+            w(f'        RS.aggregate_digests({n}n, {depth}n, hl, {Ld}, {{==}}, {{==}}, {{==}}, ehl)))')
         return
     raise Skip(k)
 

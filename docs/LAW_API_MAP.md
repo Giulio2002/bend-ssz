@@ -64,8 +64,20 @@ What that means concretely:
   Linux PASS 1047 s, 4.08 GB VmHWM). Pending check: `root_big.bend` (Transaction,
   ExecutionPayload, BeaconBlockBody, BeaconBlock, SignedBeaconBlock: closed limit
   facts up to 2^30 that the checker evaluates once in unary; hours).
-  Not covered: BeaconState (its 2^40 limits appear in closed facts the checker
-  cannot evaluate in unary; no symbolic route through the schema literal is known).
+  BeaconState (2026-09-26, agent/root-packed): its law
+  `BeaconState_root_correct` is in the BIG file big_root_BeaconState.bend
+  (`checkq --big` PASS 686 s, 6.5 GB); all its shape laws are stock-checkable, in
+  root_state.bend (stock PASS 400 s, 6.2 GB; importing root_types, which is
+  unchanged). The closed facts with limits 2^24, 2^27 and 2^40
+  (historical_roots, historical_summaries, pending_deposits,
+  pending_partial_withdrawals, validators, balances, inactivity_scores, the two
+  participation lists) are proved for a symbolic depth and instantiated in the
+  goal's form (big_lim_st.bend, --big PASS 194 s); the other closed facts are
+  evaluated. New field kinds: packed lists of uint8/uint16/Bytes32 for any limit
+  and depth (blist_obj.bend, codegen/blist_laws.py, stock PASS 297 s), packed
+  vectors of basic elements as fields, lists of Data containers of depth >= 14
+  through OS.DV (validators: depth 40), and a one-word partial bit vector Data
+  field (justification_bits).
   Generic forms (codegen/root_laws_generic.py --status, 2026-09-25): laws for
   123 of the 136 supported forms: 70 packed vectors of bool/uint8/16/32/64/128/256
   (packed_obj.bend, packed_bytes.bend: Linux PASS 624 s); 18 byte-storage forms;
@@ -80,10 +92,26 @@ What that means concretely:
   concrete hash length 64n while the object's words were exposed, so the
   checker reduced SHA-256 over them. The laws are unchanged. The proofs now keep
   the object opaque at 64n and do the rest for a symbolic hash length (see
-  WORK_LOG 2026-09-25). No law for 13 forms: 3 compatible unions,
-  1 progressive container, 2 containers with a progressive bit-list field,
-  5 containers with uint16-list / plist fields or a Bitvector[2] field, and 1
-  bit list of tree depth 56.
+  WORK_LOG 2026-09-25).
+  2026-09-26 (agent/root-generic): 5 more forms, checked on stock Bend via
+  checkq: GpF350A3C486 (progressive container; root_gnames.bend PASS 418 s),
+  Gp4B0CA2906A, Gc85FA758A04, Gc60805EC295 and GuA2212AE21F (compatible union)
+  in the new root_gtypes2.bend (PASS 557 s, 7.1 GB). Support: pcont.bend
+  (generated; progressive-container trees `pc_<active>_ar`, union selector mix
+  `msel_<k>`), pbits_obj.bend (progressive bit lists, PASS 295 s),
+  wbits_obj.bend (bit vectors in byte storage, PASS 239 s), and partial-word
+  bit vector records (Bitvector[1/2/8/257]) as phase A shapes with the
+  representation fact rp_<p> (last word = its low bits, then zeros).
+  No law for 8 forms: 2 unions whose option Gp66304057C3 has a List[uint16, 123]
+  field, 1 container with progressive lists of uint8/uint64/containers and of
+  progressive lists of a container with a List[uint16, 1024] field
+  (Gc221EC01D83), 4 forms with uint16-list fields, and 1 bit list of tree
+  depth 56. 2026-09-26 (agent/root-packed): Gc465214E502 (List[uint16, 1024]
+  field; root_gtypes.bend stock PASS 529 s) and, with it, Gp66304057C3 and the
+  unions GuAD91DEB870, Gu6DDF182530 (root_gtypes2.bend) now have laws; the
+  "bit list of depth 56" (GtF7582E0E9A) is a progressive bit list (Spec
+  S.ProgressiveBits{}), not a depth-56 tree. Progressive containers of more than 8 slots have no tree law yet
+  (Gp8A7851175B: 22 slots).
   The representation invariants `rep_X` are hypotheses of the Type-kind root
   laws. Producers establishing them (2026-09-25):
   - Checked: every field setter of the 27 Type-kind containers with a

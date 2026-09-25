@@ -258,8 +258,8 @@ def tails(f, j):
     return f
 
 
-def sch(s, i):
-    return f'SH.Chain_head({tails(f"SH.Container_fields({s})", i)})'
+def sch(s, i, cf='SH.Container_fields'):
+    return f'SH.Chain_head({tails(f"{cf}({s})", i)})'
 
 
 class Gen:
@@ -467,7 +467,7 @@ class Gen:
                 return 'boxD'
             self.shape(inner)
             return 'boxT'
-        if fs.data and fs.kind == 'rec' and fs.t.kind == 'bits' and fs.t.size % 32:
+        if fs.data and fs.kind == 'rec' and fs.t.kind == 'bits' and fs.t.size % 32 and fs.p not in self.phaseA:
             # a bit vector in part of a word: its law is generated here (bvr_laws)
             if not self.bvr_ok:
                 raise Skip(f'{fs.p}: partial-word bit vector field (its laws need the bit-packing imports of root_state)')
@@ -482,11 +482,15 @@ class Gen:
             return 'datar' if RA.needs_rep(fs) else 'data'
         if fs.kind == 'fixwords' and fs.t.kind == 'bytes':
             return 'bv'
+        if fs.kind == 'fixwords' and fs.t.kind == 'bits' and getattr(self, 'v2', False):
+            return 'bvb'
         if fs.kind == 'bytelist':
             return 'bl'
         if fs.kind == 'bitlist':
             if fs.t is not None and fs.t.kind == 'pbits':
                 # a progressive bit list: its root is bits_root_prog, not a fixed-depth tree
+                if getattr(self, 'v2', False):
+                    return 'pb'
                 raise Skip(f'{fs.p}: progressive bit list field (no law yet)')
             return 'bits'
         if fs.kind == 'packed' and fs.t.kind == 'vector' and fs.t.elem.kind == 'bytes' and fs.t.elem.size == 32:
@@ -523,6 +527,8 @@ class Gen:
     def depth(self, fs, k):
         if k == 'bv':
             return G.log2ceil(G.chunks_of(fs.t.size))
+        if k == 'bvb':
+            return G.log2ceil(G.chunks_of((fs.t.size + 7) // 8))
         if k == 'bl':
             return G.log2ceil(max(1, (fs.t.size + 31) // 32))
         if k == 'bits':
@@ -555,9 +561,11 @@ class Gen:
             return f'{self.pre(k)}v_{fs.p}({x})'
         if k in ('bv', 'bl'):
             return f'S.BytesValue{{WO.wview({x})}}'
+        if k == 'bvb':
+            return f'S.BitsValue{{WBV.wbits({x}, {fs.t.size}n)}}'
         if k == 'pv':
             return f'PV.pview({x})'
-        if k == 'bits':
+        if k in ('bits', 'pb'):
             return f'S.BitsValue{{BO.bview({x})}}'
         if k == 'ul':
             return f'UL.uview({x})'
@@ -577,9 +585,10 @@ class Gen:
     def dig(self, fs, k, x):
         if k in ('data', 'datar', 'bvr'):
             return f'{self.pre(k)}d_{fs.p}(hl, {x})'
-
+        if k == 'pb':
+            return f'PBO.pbdig(hl, {x})'
         d = self.depth(fs, k)
-        if k in ('bv', 'pv'):
+        if k in ('bv', 'pv', 'bvb'):
             return f'WO.wdig(hl, {x}, {d}n)'
         if k == 'bl':
             return f'LO.ldig(hl, {x}, {d}n)'
@@ -611,6 +620,10 @@ class Gen:
             return f'LO.rep_bl({x}, {sx})'
         if k == 'bits':
             return f'BO.rep_bits({x}, {sx})'
+        if k == 'pb':
+            return f'PBO.rep_pbits({x}, {sx})'
+        if k == 'bvb':
+            return f'WBV.rep_bvb({x}, {fs.t.size}n)'
         if k == 'pv':
             return f'PV.rep_pv({x}, {sx})'
         if k == 'ul':
@@ -640,6 +653,10 @@ class Gen:
             return f'LO.ok_bl({sx}, {self.dd(fs, k)})'
         if k == 'bits':
             return f'BO.ok_bits({sx}, {self.dd(fs, k)})'
+        if k == 'pb':
+            return f'PBO.ok_pbits({sx})'
+        if k == 'bvb':
+            return f'WBV.ok_bvb({sx}, {fs.t.size}n, {d}n)'
         if k == 'pv':
             return f'PV.ok_pv({sx}, {self.dd(fs, k)})'
         if k == 'ul':
@@ -698,7 +715,10 @@ class Gen:
             pf = f'LO.bl_st(hl, h, {x}, {d}, seg, {d}n, LO.rep_wf({x}, {sx}, {r}), {{==}})'
         elif k == 'bits':
             pf = f'BO.bst(hl, h, {x}, {d}, seg, {d}n, BO.rep_wf({x}, {sx}, {r}), {{==}})'
-
+        elif k == 'pb':
+            pf = f'PBO.pbst(hl, h, {x}, seg, {r})'
+        elif k == 'bvb':
+            pf = f'WBV.bvb_st(hl, h, {x}, {d}, seg, {d}n, {fs.t.size}n, {r}, {{==}})'
         elif k == 'pv':
             pf = f'PV.pv_st(hl, h, {x}, {d}, seg, {d}n, PV.rep_wf({x}, {sx}, {r}), {{==}})'
         elif k == 'ul':
@@ -751,6 +771,10 @@ class Gen:
             return f'LO.bl_rs(hl, ehl, h, {x}, {sx}, {d}n, {d}, 0, {r}, {okp}, {{==}}, {{==}})'
         if k == 'bits':
             return f'BO.brs(hl, ehl, h, {x}, {sx}, {d}n, {d}, 0, {r}, {okp}, {{==}}, {{==}})'
+        if k == 'pb':
+            return f'PBO.pbrs(hl, ehl, h, {x}, {sx}, {r}, {okp})'
+        if k == 'bvb':
+            return f'WBV.bvb_rs(hl, ehl, h, {x}, {sx}, {fs.t.size}n, {d}n, {r}, {okp}, {{==}})'
         if k == 'pv':
             return f'PV.pv_rs(hl, ehl, h, {x}, {sx}, {d}n, {d}, 0, {r}, {okp}, {{==}}, {{==}})'
         if k == 'ul':
@@ -780,6 +804,10 @@ class Gen:
         d = self.depth(fs, k)
         if k == 'bits':
             call = f'BO.bwd(hl, {x}, {sx}, {self.dd(fs, k) if d < BIGD else str(d) + "n"}, {r})'
+        elif k == 'pb':
+            call = f'PBO.pbwd(hl, {x}, {sx}, {r})'
+        elif k == 'bvb':
+            call = f'WBV.bvb_wd(hl, {x}, {fs.t.size}n, {d}n, {r})'
         elif k in ('bv', 'bl', 'pv', 'ul', 'ev', 'el', 'cl'):
             call = f'wd_{k}(hl, {x}, {sx}, {d}n, {r})'
         elif k in self.PLIST or k.startswith('vk'):
@@ -1871,7 +1899,25 @@ class Gen:
             w(f'def pj_{p}_{i}(o: {R}) -> {RA.qual(F[i][1].rep)}:')
             match_lines(binders, xs[i])
         args = [xs[i] if isdata[i] else f'pj_{p}_{i}(o)' for i in range(n)]
-        sx = [sch('s', i) for i in range(n)]
+        # a progressive container (generic forms): the progressive schema's
+        # accessors, its active list, and the progressive root tree (pcont.bend)
+        prog = s.t is not None and s.t.kind == 'pcontainer'
+        if prog:
+            import pcont_laws as PCL
+            if wide:
+                raise Skip(f'{p}: wide progressive container')
+            if len(s.t.active) > 8:
+                raise Skip(f'{p}: progressive container of {len(s.t.active)} slots (no tree law yet)')
+            PK_ = PCL.key(s.t.active)
+            ACT = PCL.act_term(s.t.active)
+        cf = 'SH.ProgressiveContainer_fields' if prog else 'SH.Container_fields'
+        cpred = 'SH.is_ProgressiveContainer' if prog else 'SH.is_Container'
+
+        def digexpr(ds):
+            if prog:
+                return f'O.mix_len(hl, {PCL.expr(PCL.tree(s.t.active), ds)}, {PCL.mask(s.t.active)})'
+            return f'MD.rtree({depth}n, True{{}}, hl, [' + ', '.join(ds) + '], 0n)'
+        sx = [sch('s', i, cf) for i in range(n)]
         # view and digest
         items = 'S.EmptyItems{}'
         for i in range(n - 1, -1, -1):
@@ -1879,9 +1925,8 @@ class Gen:
         w(f'def v_{p}(o: {R}) -> S.Value:')
         match_lines(binders, f'S.Sequence{{{items}}}')
         depth = G.log2ceil(n)
-        Ld = '[' + ', '.join(self.dig(F[i][1], kinds[i], xs[i]) for i in range(n)) + ']'
         w(f'def d_{p}(+hl: Nat, o: {R}) -> D.Digest:')
-        match_lines(binders, f'MD.rtree({depth}n, True{{}}, hl, {Ld}, 0n)')
+        match_lines(binders, digexpr([self.dig(F[i][1], kinds[i], xs[i]) for i in range(n)]))
         # rep
         reps = [self.rep(F[i][1], kinds[i], args[i], sx[i]) for i in range(n)]
         inner = fold_p2([f'{{o == {obj(args)} : {R}}}'] + [r for r in reps if r])
@@ -1892,8 +1937,8 @@ class Gen:
         w(f'def rep_{p}(o: {R}, +s: S.Schema) -> Data:')
         w(f'  {rt}')
         # ok
-        f0 = 'SH.Container_fields(s)'
-        conj = ['SH.is_Container(s)'] + [f'SH.is_Chain({tails(f0, j)})' for j in range(n)] + [f'SH.is_End({tails(f0, n)})']
+        f0 = f'{cf}(s)'
+        conj = [f'{cpred}(s)'] + [f'SH.is_Chain({tails(f0, j)})' for j in range(n)] + [f'SH.is_End({tails(f0, n)})']
         oks = [self.ok(F[i][1], kinds[i], sx[i]) for i in range(n)]
         ok_at = {}
         subs = {}
@@ -1906,14 +1951,17 @@ class Gen:
                 elif F[i][1].p in SYMBOLIC:
                     leafsym[len(conj)] = (F[i][1].p, sx[i])
                 conj.append(oks[i])
+        if prog:
+            kact = len(conj)
+            conj.append(f'PCN.beq(SH.ProgressiveContainer_active(s), {ACT})')
         self.okinfo[p] = ('and', list(conj), subs, leafsym) if leafsym else ('and', list(conj), subs)
         w(f'def ok_{p}(+s: S.Schema, +dv: OS.DV) -> Bool: {fold_and(conj)}')
-        w(f'def okc_{p}(+s: S.Schema, +dv: OS.DV, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}) -> {{SH.is_Container(s) == True{{}} : Bool}}: DK.and_l({conj[0]}, {fold_and(conj[1:])}, ok)')
+        w(f'def okc_{p}(+s: S.Schema, +dv: OS.DV, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}) -> {{{cpred}(s) == True{{}} : Bool}}: DK.and_l({conj[0]}, {fold_and(conj[1:])}, ok)')
         # eqs
         eqt = [(i, self.eqs_type(F[i][1], kinds[i], sx[i])) for i in range(n)]
         eqt = [(i, t) for i, t in eqt if t]
         w(f'def eqs_{p}(+s: S.Schema) -> Data: {fold_p2([t for _, t in eqt])}')
-        self.meta[p] = dict(sx=sx, kinds=kinds, F=F, eqt=[i for i, _ in eqt])
+        self.meta[p] = dict(sx=sx, kinds=kinds, F=F, eqt=[i for i, _ in eqt], cf=cf)
 
         def conj_lets(ind='  '):
             """let-bind every ok conjunct: +k{j}."""
@@ -2063,7 +2111,7 @@ class Gen:
                 hole = list(cur)
                 hole[i] = '_'
                 w(f'  %Equal.sym(D.Digest, {digs0[i]}, {dd}, {de}) :')
-                w(f'    {ctx("MD.rtree(" + str(depth) + "n, True{}, hl, [" + ", ".join(hole) + "], 0n)")}')
+                w(f'    {ctx(digexpr(hole))}')
                 cur[i] = dd
 
         # the digest as a value (from the invariant)
@@ -2072,7 +2120,7 @@ class Gen:
         digw, ws_ = witnesses(rpn)
         w(f'  %Equal.sym({R}, o, {O_}, {self.eo_name}) : OS.DW(d_{p}(hl, _))')
         dig_rewrites(digw, ws_, lambda t: f'OS.DW({t})')
-        w(f'  (MD.rtree({depth}n, True{{}}, hl, [' + ', '.join(digw) + '], 0n), {==})')
+        w(f'  ({digexpr(digw)}, {{==}})')
 
         # the spec law
         w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, -h: B.Buf, -o: {R}, +s: S.Schema, +rep: rep_{p}(o, s), +dv: OS.DV, +edv: {{dv == OS.DV0() : OS.DV}}, +ok: {{ok_{p}(s, dv) == True{{}} : Bool}}, +ev: eqs_{p}(s))')
@@ -2082,11 +2130,21 @@ class Gen:
         digw, ws_ = witnesses(rpn)
         kn = conj_lets()
         w(f'  %Equal.sym({R}, o, {O_}, {self.eo_name}) : RR.roots(v_{p}(_), s, [D.bytes(d_{p}(hl, _))])')
-        w(f'  %Equal.sym(S.Schema, s, S.Container{{SH.Container_names(s), SH.Container_fields(s)}}, SH.Container_shape(s, {kn(0)})) :')
-        w(f'    RR.roots(v_{p}({O_}), _, [D.bytes(d_{p}(hl, {O_}))])')
-        w(f'  %Equal.sym(S.Schema, SH.Container_fields(s), {chain}, fsh_{p}(s, dv, ok)) :')
-        w(f'    RR.roots(v_{p}({O_}), S.Container{{SH.Container_names(s), _}}, [D.bytes(d_{p}(hl, {O_}))])')
-        dig_rewrites(digw, ws_, lambda t: f'RR.roots(v_{p}({O_}), S.Container{{SH.Container_names(s), {chain}}}, [D.bytes({t})])')
+        if prog:
+            PN, PF, PA = 'SH.ProgressiveContainer_names(s)', 'SH.ProgressiveContainer_fields(s)', 'SH.ProgressiveContainer_active(s)'
+            w(f'  %Equal.sym(S.Schema, s, S.ProgressiveContainer{{{PN}, {PF}, {PA}}}, SH.ProgressiveContainer_shape(s, {kn(0)})) :')
+            w(f'    RR.roots(v_{p}({O_}), _, [D.bytes(d_{p}(hl, {O_}))])')
+            w(f'  %Equal.sym(S.Schema, {PF}, {chain}, fsh_{p}(s, dv, ok)) :')
+            w(f'    RR.roots(v_{p}({O_}), S.ProgressiveContainer{{{PN}, _, {PA}}}, [D.bytes(d_{p}(hl, {O_}))])')
+            w(f'  %Equal.sym(+List<Bool>, {PA}, {ACT}, PCN.beq_eq({PA}, {ACT}, {kn(kact)})) :')
+            w(f'    RR.roots(v_{p}({O_}), S.ProgressiveContainer{{{PN}, {chain}, _}}, [D.bytes(d_{p}(hl, {O_}))])')
+            dig_rewrites(digw, ws_, lambda t: f'RR.roots(v_{p}({O_}), S.ProgressiveContainer{{{PN}, {chain}, {ACT}}}, [D.bytes({t})])')
+        else:
+            w(f'  %Equal.sym(S.Schema, s, S.Container{{SH.Container_names(s), SH.Container_fields(s)}}, SH.Container_shape(s, {kn(0)})) :')
+            w(f'    RR.roots(v_{p}({O_}), _, [D.bytes(d_{p}(hl, {O_}))])')
+            w(f'  %Equal.sym(S.Schema, SH.Container_fields(s), {chain}, fsh_{p}(s, dv, ok)) :')
+            w(f'    RR.roots(v_{p}({O_}), S.Container{{SH.Container_names(s), _}}, [D.bytes(d_{p}(hl, {O_}))])')
+            dig_rewrites(digw, ws_, lambda t: f'RR.roots(v_{p}({O_}), S.Container{{SH.Container_names(s), {chain}}}, [D.bytes({t})])')
         wmap = {i: (dd, de) for i, dd, de in ws_}
         digs = digw
         Lda = '[' + ', '.join(digs) + ']'
@@ -2103,7 +2161,10 @@ class Gen:
                 rsx = f'OS.dtrans({self.view(fs, k, args[i])}, {sx[i]}, {wmap[i][0]}, {digs0[i]}, {wmap[i][1]}, {rsx})'
             return f'([D.bytes({digs[i]})], (MD.bytes_list({rest}), ({rsx}, ({items_proof(i + 1)}, {{==}}))))'
         w(f'  (MD.bytes_list({Lda}), ({items_proof(0)},')
-        w(f'    RS.aggregate_digests({n}n, {depth}n, hl, {Lda}, {{==}}, {{==}}, {{==}}, ehl)))')
+        if prog:
+            w(f'    PCN.{PK_}_ar(hl, ehl, {", ".join(digs)})))')
+        else:
+            w(f'    RS.aggregate_digests({n}n, {depth}n, hl, {Lda}, {{==}}, {{==}}, {{==}}, ehl)))')
         w('')
         return pre + L
 
@@ -2175,7 +2236,7 @@ class Gen:
         comps = []
         for i in m['eqt']:
             fs, k = m['F'][i][1], m['kinds'][i]
-            sub = (lambda y, i=i: sch(path(y), i))
+            sub = (lambda y, i=i: sch(path(y), i, m.get('cf', 'SH.Container_fields')))
             if k in ('data', 'datar', 'bvr', 'boxD'):
                 comps.append(f'OS.eq_at(y => {sub("y")}, s, Spec.{name}(), {self.E(fs)}, es, {{==}})')
             elif k == 'xl':

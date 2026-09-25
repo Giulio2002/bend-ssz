@@ -43,7 +43,9 @@ them, and every official case that uses one is an invalid case.
 | `proofs/obj/schema_shapes.bend` | Bool shape tests and shape laws for every schema constructor (`codegen/schema_shapes.py`) |
 | `proofs/obj/root_names.bend`, `bits_leaf.bend`, `valid_names.bend` | phase-A root laws (Data-kind names: `X_root_correct`, `X_decoded_root_correct`) and generated-validity agreement (`codegen/root_laws.py`) |
 | `proofs/obj/root_types.bend` | phase-B root laws (Type-kind containers, byte storage, boxes, lists of Data containers) with digest witnesses (`codegen/root_laws_b.py`); `--status` prints per-name coverage and the reason for every uncovered name; `--only N1,N2 --out F` writes a bisection probe (not a gate) |
-| `proofs/obj/big_root_<Name>.bend` | BIG: the root laws of Transaction, ExecutionPayload, BeaconBlockBody, BeaconBlock, SignedBeaconBlock (their 2^30-byte limit fact is proved symbolically; see "Big proofs" below) |
+| `proofs/obj/big_root_<Name>.bend` | BIG: the root laws of Transaction, ExecutionPayload, BeaconBlockBody, BeaconBlock, SignedBeaconBlock (their 2^30-byte limit fact is proved symbolically; see "Big proofs" below) and of BeaconState (2^24/2^27/2^40 limit facts, proofs/obj/big_lim_st.bend) |
+| `proofs/obj/root_state.bend` | phase-B root laws of the shapes only BeaconState uses (`codegen/root_laws_b.py`, SPLIT_NAMES): generated after every other name and importing root_types as RT, so root_types does not grow; stock-checkable |
+| `proofs/obj/blist_obj.bend` | root laws of List[uint8/uint16/Bytes32, L] held as byte storage, for any limit and depth (`codegen/blist_laws.py`) |
 
 ## Regeneration
 
@@ -55,7 +57,8 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/sha_laws.py          # SHA node bridge
 /opt/homebrew/bin/python3 codegen/schema_shapes.py     # schema shape laws
 /opt/homebrew/bin/python3 codegen/root_laws.py         # phase-A root laws, validity agreement
-/opt/homebrew/bin/python3 codegen/root_laws_b.py       # phase-B root laws
+/opt/homebrew/bin/python3 codegen/blist_laws.py        # packed lists of uint8/uint16/Bytes32
+/opt/homebrew/bin/python3 codegen/root_laws_b.py       # phase-B root laws (root_types, root_state, big_root_*)
 /opt/homebrew/bin/python3 codegen/generate.py --check   # fails if anything is stale
 ```
 
