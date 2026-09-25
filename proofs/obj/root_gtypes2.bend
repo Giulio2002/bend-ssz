@@ -25,6 +25,7 @@ import ./ulist_obj.bend as UL
 import ./packed_obj.bend as PK
 import ./packed_bytes.bend as PB
 import ./prog_list.bend as PG
+import ./blist_obj.bend as BLI
 import ./elems48.bend as E48
 import ./xlist_support.bend as XS
 import ./mtree_run.bend as MR
@@ -270,24 +271,24 @@ def xi_pl_Gc4ED9619F50(k: Nat, +W: List<&2, T.Gc4ED9619F50>, +i: Nat) -> S.Value
   match k:
     case 0n: S.EmptyItems{}
     case 1n+q: S.Items{RN.v_Gc4ED9619F50(xat_pl_Gc4ED9619F50(W, i)), xi_pl_Gc4ED9619F50(q, W, 1n+i)}
-def xrp_pl_Gc4ED9619F50(k: Nat, +W: List<&2, T.Gc4ED9619F50>, +i: Nat) -> Data:
+def ereps_pl_Gc4ED9619F50(k: Nat, +W: List<&2, T.Gc4ED9619F50>, +i: Nat) -> Data:
   match k:
-    case 0n: Unit
-    case 1n+q: DK.P2(RN.rp_Gc4ED9619F50(xat_pl_Gc4ED9619F50(W, i)), xrp_pl_Gc4ED9619F50(q, W, 1n+i))
+    case 0n: {True{} == True{} : Bool}
+    case 1n+q: DK.P2(RN.rp_Gc4ED9619F50(xat_pl_Gc4ED9619F50(W, i)), ereps_pl_Gc4ED9619F50(q, W, 1n+i))
 law xroots_pl_Gc4ED9619F50:
   for +k: Nat
   for +W: List<&2, T.Gc4ED9619F50>
   for +i: Nat
   for +hl: Nat
   for +ehl: {hl == 64n : Nat}
-  for +hr: xrp_pl_Gc4ED9619F50(k, W, i)
+  for +er: ereps_pl_Gc4ED9619F50(k, W, i)
   RR.roots(xi_pl_Gc4ED9619F50(k, W, i), S.Repeat{S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}}, MD.bytes_list(xl_pl_Gc4ED9619F50(k, W, i, hl)))
-def xroots_pl_Gc4ED9619F50(k, W, i, hl, ehl, hr):
+def xroots_pl_Gc4ED9619F50(k, W, i, hl, ehl, er):
   match k:
     case 0n: {==}
     case 1n+ +q:
-      (+r0, +r1) = hr
-      ([D.bytes(RN.d_Gc4ED9619F50(hl, xat_pl_Gc4ED9619F50(W, i)))], (MD.bytes_list(xl_pl_Gc4ED9619F50(q, W, 1n+i, hl)), (RN.rs_Gc4ED9619F50(hl, ehl, xat_pl_Gc4ED9619F50(W, i), r0), (xroots_pl_Gc4ED9619F50(q, W, 1n+i, hl, ehl, r1), {==}))))
+      (+r0, +rs) = er
+      ([D.bytes(RN.d_Gc4ED9619F50(hl, xat_pl_Gc4ED9619F50(W, i)))], (MD.bytes_list(xl_pl_Gc4ED9619F50(q, W, 1n+i, hl)), (RN.rs_Gc4ED9619F50(hl, ehl, xat_pl_Gc4ED9619F50(W, i), r0), (xroots_pl_Gc4ED9619F50(q, W, 1n+i, hl, ehl, rs), {==}))))
 law xcount_pl_Gc4ED9619F50:
   for +k: Nat
   for +W: List<&2, T.Gc4ED9619F50>
@@ -416,7 +417,7 @@ def rep_pl_Gc4ED9619F50(o: T.pl_Gc4ED9619F50_Seq, +s: S.Schema) -> Data:
     DK.P2({o == T.pl_Gc4ED9619F50_Seq{F.array__thaw(T.Gc4ED9619F50, t), N} : T.pl_Gc4ED9619F50_Seq},
     DK.P2({F.array__perfect(T.Gc4ED9619F50, dw, t) == True{} : Bool},
     DK.P2({Nat.is_lt(dw, 32n) == True{} : Bool},
-          DK.P2({Nat.is_le(U32.to_nat(N), F.spec_common__pow2(dw)) == True{} : Bool}, xrp_pl_Gc4ED9619F50(U32.to_nat(N), F.array__slots(T.Gc4ED9619F50, t), 0n))))))))
+          DK.P2({Nat.is_le(U32.to_nat(N), F.spec_common__pow2(dw)) == True{} : Bool}, ereps_pl_Gc4ED9619F50(U32.to_nat(N), F.array__slots(T.Gc4ED9619F50, t), 0n))))))))
 def ok_pl_Gc4ED9619F50(+s: S.Schema) -> Bool: SH.is_ProgressiveList(s)
 def st_pl_Gc4ED9619F50(+hl: Nat, -h: B.Buf, -o: T.pl_Gc4ED9619F50_Seq, +seg: U32, +s: S.Schema, +rep: rep_pl_Gc4ED9619F50(o, s))
     -> {T.pl_Gc4ED9619F50_root(hl, h, o, seg) == (h, (o, xd_pl_Gc4ED9619F50(hl, o))) : B.Buf & (T.pl_Gc4ED9619F50_Seq & D.Digest)}:
@@ -467,6 +468,124 @@ def rs_pl_Gc4ED9619F50(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.pl_Gc
   (MD.bytes_list(xl_pl_Gc4ED9619F50(U32.to_nat(N), F.array__slots(T.Gc4ED9619F50, t), 0n, hl)), (xroots_pl_Gc4ED9619F50(U32.to_nat(N), F.array__slots(T.Gc4ED9619F50, t), 0n, hl, ehl, hr),
     (D.bytes(PR.pr(1n+U32.to_nat(N), Nat.is_lt(0n, U32.to_nat(N)), hl, 0n, 0n, U32.to_nat(N), xl_pl_Gc4ED9619F50(U32.to_nat(N), F.array__slots(T.Gc4ED9619F50, t), 0n, hl))), (PCN.pmerk(hl, ehl, U32.to_nat(N), xl_pl_Gc4ED9619F50(U32.to_nat(N), F.array__slots(T.Gc4ED9619F50, t), 0n, hl), dw, xlen_pl_Gc4ED9619F50(U32.to_nat(N), F.array__slots(T.Gc4ED9619F50, t), 0n, hl), hd, hn),
      xlm_pl_Gc4ED9619F50(hl, ehl, N, PR.pr(1n+U32.to_nat(N), Nat.is_lt(0n, U32.to_nat(N)), hl, 0n, 0n, U32.to_nat(N), xl_pl_Gc4ED9619F50(U32.to_nat(N), F.array__slots(T.Gc4ED9619F50, t), 0n, hl)), F.array__slots(T.Gc4ED9619F50, t))))))
+
+def wdc_bdig(+hl: Nat, -o: O.Words, +d: Nat, +sh: Nat, +c: CF.CF(o)) -> OS.DW(BLI.bdig(hl, o, d, sh)):
+  (+t, +c1) = c
+  (+N, +ce) = c1
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, ce) : OS.DW(BLI.bdig(hl, _, d, sh))
+  (BLI.bdig(hl, O.Words{F.array__thaw(U32, t), N}, d, sh), {==})
+def wd_l2(+hl: Nat, -o: O.Words, +s: S.Schema, +d: Nat, +r: BLI.rep_l2(o, s)) -> OS.DW(BLI.bdig(hl, o, d, 1n)):
+  wdc_bdig(hl, o, d, 1n, CF.cfl(o, BLI.rep_wf2(o, s, r)))
+
+# ---- Gp66304057C3 (Type-kind container, 3 fields) ----
+def pj_Gp66304057C3_1(o: T.Gp66304057C3) -> O.Words:
+  match o:
+    case T.Gp66304057C3{+x0, x1, x2}: x1
+def pj_Gp66304057C3_2(o: T.Gp66304057C3) -> O.Bits:
+  match o:
+    case T.Gp66304057C3{+x0, x1, x2}: x2
+def v_Gp66304057C3(o: T.Gp66304057C3) -> S.Value:
+  match o:
+    case T.Gp66304057C3{+x0, x1, x2}: S.Sequence{S.Items{RN.v_u8(x0), S.Items{PB.vview2(x1), S.Items{S.BitsValue{BO.bview(x2)}, S.EmptyItems{}}}}}
+def d_Gp66304057C3(+hl: Nat, o: T.Gp66304057C3) -> D.Digest:
+  match o:
+    case T.Gp66304057C3{+x0, x1, x2}: O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), BLI.bdig(hl, x1, 3n, 1n)), D.node(hl, D.zero(), PBO.pbdig(hl, x2)))), RN.d_u8(hl, x0)), 21)
+def rep_Gp66304057C3(o: T.Gp66304057C3, +s: S.Schema) -> Data:
+  DK.Ex(U32, x0 => DK.P2({o == T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)} : T.Gp66304057C3}, DK.P2(RN.rp_u8(x0), DK.P2(BLI.rep_l2(pj_Gp66304057C3_1(o), SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), PBO.rep_pbits(pj_Gp66304057C3_2(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))))))))
+def ok_Gp66304057C3(+s: S.Schema, +dv: OS.DV) -> Bool: Bool.and(SH.is_ProgressiveContainer(s), Bool.and(SH.is_Chain(SH.ProgressiveContainer_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))))))))
+def okc_Gp66304057C3(+s: S.Schema, +dv: OS.DV, +ok: {ok_Gp66304057C3(s, dv) == True{} : Bool}) -> {SH.is_ProgressiveContainer(s) == True{} : Bool}: DK.and_l(SH.is_ProgressiveContainer(s), Bool.and(SH.is_Chain(SH.ProgressiveContainer_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))))))), ok)
+def eqs_Gp66304057C3(+s: S.Schema) -> Data: {SH.Chain_head(SH.ProgressiveContainer_fields(s)) == S.Unsigned{P.U8{}} : S.Schema}
+def fsh_Gp66304057C3(+s: S.Schema, +dv: OS.DV, +ok: {ok_Gp66304057C3(s, dv) == True{} : Bool}) -> {SH.ProgressiveContainer_fields(s) == S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), S.End{}}}} : S.Schema}:
+  +k0 = DK.and_l(SH.is_ProgressiveContainer(s), Bool.and(SH.is_Chain(SH.ProgressiveContainer_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))))))), ok)
+  +r1 = DK.and_r(SH.is_ProgressiveContainer(s), Bool.and(SH.is_Chain(SH.ProgressiveContainer_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))))))), ok)
+  +k1 = DK.and_l(SH.is_Chain(SH.ProgressiveContainer_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])))))), r1)
+  +r2 = DK.and_r(SH.is_Chain(SH.ProgressiveContainer_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])))))), r1)
+  +k2 = DK.and_l(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))))), r2)
+  +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))))), r2)
+  +k3 = DK.and_l(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])))), r3)
+  +r4 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])))), r3)
+  +k4 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))), r4)
+  +r5 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))), r4)
+  +k5 = DK.and_l(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])), r5)
+  +r6 = DK.and_r(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])), r5)
+  +k6 = DK.and_l(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]), r6)
+  +r7 = DK.and_r(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]), r6)
+  %Equal.sym(S.Schema, SH.ProgressiveContainer_fields(s), S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), SH.Chain_tail(SH.ProgressiveContainer_fields(s))}, SH.Chain_shape(SH.ProgressiveContainer_fields(s), k1)) :
+    {_ == S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), S.End{}}}} : S.Schema}
+  %Equal.sym(S.Schema, SH.Chain_tail(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))}, SH.Chain_shape(SH.Chain_tail(SH.ProgressiveContainer_fields(s)), k2)) :
+    {S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), _} == S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), S.End{}}}} : S.Schema}
+  %Equal.sym(S.Schema, SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))}, SH.Chain_shape(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), k3)) :
+    {S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), _}} == S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), S.End{}}}} : S.Schema}
+  %Equal.sym(S.Schema, SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), S.End{}, SH.End_shape(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), k4)) :
+    {S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), _}}} == S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), S.End{}}}} : S.Schema}
+  {==}
+def st_Gp66304057C3(+hl: Nat, -h: B.Buf, -o: T.Gp66304057C3, +seg: U32, +s: S.Schema, +rep: rep_Gp66304057C3(o, s))
+    -> {T.Gp66304057C3_root(hl, h, o, seg) == (h, (o, d_Gp66304057C3(hl, o))) : B.Buf & (T.Gp66304057C3 & D.Digest)}:
+  (+x0, +q0) = rep
+  (+eo, +q1) = q0
+  (+rp0, +q2) = q1
+  (+rp1, +q3) = q2
+  %Equal.sym(T.Gp66304057C3, o, T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}, eo) :
+    {T.Gp66304057C3_root(hl, h, _, seg) == (h, (_, d_Gp66304057C3(hl, _))) : B.Buf & (T.Gp66304057C3 & D.Digest)}
+  %Equal.sym(B.Buf & D.Digest, T.u8_root(hl, h, x0, seg), (h, RN.d_u8(hl, x0)), RN.st_u8(hl, h, x0, seg)) :
+    {T.Gp66304057C3_rt0(hl, seg, x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o), _) == (h, (T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}, d_Gp66304057C3(hl, T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}))) : B.Buf & (T.Gp66304057C3 & D.Digest)}
+  %Equal.sym(B.Buf & (O.Words & D.Digest), T.l123_u16_root(hl, h, pj_Gp66304057C3_1(o), seg), (h, (pj_Gp66304057C3_1(o), BLI.bdig(hl, pj_Gp66304057C3_1(o), 3n, 1n))), BLI.bl_st(hl, h, pj_Gp66304057C3_1(o), 3, seg, 3n, 1n, BLI.rep_wf2(pj_Gp66304057C3_1(o), SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), rp1), {==})) :
+    {T.Gp66304057C3_rt1(hl, seg, x0, pj_Gp66304057C3_2(o), RN.d_u8(hl, x0), _) == (h, (T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}, d_Gp66304057C3(hl, T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}))) : B.Buf & (T.Gp66304057C3 & D.Digest)}
+  %Equal.sym(B.Buf & (O.Bits & D.Digest), T.pbits_root(hl, h, pj_Gp66304057C3_2(o), seg), (h, (pj_Gp66304057C3_2(o), PBO.pbdig(hl, pj_Gp66304057C3_2(o)))), PBO.pbst(hl, h, pj_Gp66304057C3_2(o), seg, q3)) :
+    {T.Gp66304057C3_rt2(hl, seg, x0, pj_Gp66304057C3_1(o), RN.d_u8(hl, x0), BLI.bdig(hl, pj_Gp66304057C3_1(o), 3n, 1n), _) == (h, (T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}, d_Gp66304057C3(hl, T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}))) : B.Buf & (T.Gp66304057C3 & D.Digest)}
+  {==}
+def wd_Gp66304057C3(+hl: Nat, -o: T.Gp66304057C3, +s: S.Schema, +rep: rep_Gp66304057C3(o, s)) -> OS.DW(d_Gp66304057C3(hl, o)):
+  (+x0, +q0) = rep
+  (+eo, +q1) = q0
+  (+rp0, +q2) = q1
+  (+rp1, +q3) = q2
+  +dd1 = OS.dwv(BLI.bdig(hl, pj_Gp66304057C3_1(o), 3n, 1n), wd_l2(hl, pj_Gp66304057C3_1(o), SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n, rp1))
+  +de1 = OS.dwe(BLI.bdig(hl, pj_Gp66304057C3_1(o), 3n, 1n), wd_l2(hl, pj_Gp66304057C3_1(o), SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n, rp1))
+  +dd2 = OS.dwv(PBO.pbdig(hl, pj_Gp66304057C3_2(o)), PBO.pbwd(hl, pj_Gp66304057C3_2(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), q3))
+  +de2 = OS.dwe(PBO.pbdig(hl, pj_Gp66304057C3_2(o)), PBO.pbwd(hl, pj_Gp66304057C3_2(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), q3))
+  %Equal.sym(T.Gp66304057C3, o, T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}, eo) : OS.DW(d_Gp66304057C3(hl, _))
+  %Equal.sym(D.Digest, BLI.bdig(hl, pj_Gp66304057C3_1(o), 3n, 1n), dd1, de1) :
+    OS.DW(O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), _), D.node(hl, D.zero(), PBO.pbdig(hl, pj_Gp66304057C3_2(o))))), RN.d_u8(hl, x0)), 21))
+  %Equal.sym(D.Digest, PBO.pbdig(hl, pj_Gp66304057C3_2(o)), dd2, de2) :
+    OS.DW(O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), dd1), D.node(hl, D.zero(), _))), RN.d_u8(hl, x0)), 21))
+  (O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), dd1), D.node(hl, D.zero(), dd2))), RN.d_u8(hl, x0)), 21), {==})
+def rs_Gp66304057C3(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.Gp66304057C3, +s: S.Schema, +rep: rep_Gp66304057C3(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {ok_Gp66304057C3(s, dv) == True{} : Bool}, +ev: eqs_Gp66304057C3(s))
+    -> RR.roots(v_Gp66304057C3(o), s, [D.bytes(d_Gp66304057C3(hl, o))]):
+  (+x0, +q0) = rep
+  (+eo, +q1) = q0
+  (+rp0, +q2) = q1
+  (+rp1, +q3) = q2
+  +dd1 = OS.dwv(BLI.bdig(hl, pj_Gp66304057C3_1(o), 3n, 1n), wd_l2(hl, pj_Gp66304057C3_1(o), SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n, rp1))
+  +de1 = OS.dwe(BLI.bdig(hl, pj_Gp66304057C3_1(o), 3n, 1n), wd_l2(hl, pj_Gp66304057C3_1(o), SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n, rp1))
+  +dd2 = OS.dwv(PBO.pbdig(hl, pj_Gp66304057C3_2(o)), PBO.pbwd(hl, pj_Gp66304057C3_2(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), q3))
+  +de2 = OS.dwe(PBO.pbdig(hl, pj_Gp66304057C3_2(o)), PBO.pbwd(hl, pj_Gp66304057C3_2(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), q3))
+  +k0 = DK.and_l(SH.is_ProgressiveContainer(s), Bool.and(SH.is_Chain(SH.ProgressiveContainer_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))))))), ok)
+  +r1 = DK.and_r(SH.is_ProgressiveContainer(s), Bool.and(SH.is_Chain(SH.ProgressiveContainer_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))))))), ok)
+  +k1 = DK.and_l(SH.is_Chain(SH.ProgressiveContainer_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])))))), r1)
+  +r2 = DK.and_r(SH.is_Chain(SH.ProgressiveContainer_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])))))), r1)
+  +k2 = DK.and_l(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))))), r2)
+  +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))))), r2)
+  +k3 = DK.and_l(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])))), r3)
+  +r4 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])))), r3)
+  +k4 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))), r4)
+  +r5 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), Bool.and(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]))), r4)
+  +k5 = DK.and_l(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])), r5)
+  +r6 = DK.and_r(BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n), Bool.and(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}])), r5)
+  +k6 = DK.and_l(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]), r6)
+  +r7 = DK.and_r(PBO.ok_pbits(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s))))), PCN.beq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}]), r6)
+  %Equal.sym(T.Gp66304057C3, o, T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}, eo) : RR.roots(v_Gp66304057C3(_), s, [D.bytes(d_Gp66304057C3(hl, _))])
+  %Equal.sym(S.Schema, s, S.ProgressiveContainer{SH.ProgressiveContainer_names(s), SH.ProgressiveContainer_fields(s), SH.ProgressiveContainer_active(s)}, SH.ProgressiveContainer_shape(s, k0)) :
+    RR.roots(v_Gp66304057C3(T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}), _, [D.bytes(d_Gp66304057C3(hl, T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}))])
+  %Equal.sym(S.Schema, SH.ProgressiveContainer_fields(s), S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), S.End{}}}}, fsh_Gp66304057C3(s, dv, ok)) :
+    RR.roots(v_Gp66304057C3(T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}), S.ProgressiveContainer{SH.ProgressiveContainer_names(s), _, SH.ProgressiveContainer_active(s)}, [D.bytes(d_Gp66304057C3(hl, T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}))])
+  %Equal.sym(+List<Bool>, SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}], PCN.beq_eq(SH.ProgressiveContainer_active(s), [True{}, False{}, True{}, False{}, True{}], r7)) :
+    RR.roots(v_Gp66304057C3(T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}), S.ProgressiveContainer{SH.ProgressiveContainer_names(s), S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), S.End{}}}}, _}, [D.bytes(d_Gp66304057C3(hl, T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}))])
+  %Equal.sym(D.Digest, BLI.bdig(hl, pj_Gp66304057C3_1(o), 3n, 1n), dd1, de1) :
+    RR.roots(v_Gp66304057C3(T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}), S.ProgressiveContainer{SH.ProgressiveContainer_names(s), S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, [D.bytes(O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), _), D.node(hl, D.zero(), PBO.pbdig(hl, pj_Gp66304057C3_2(o))))), RN.d_u8(hl, x0)), 21))])
+  %Equal.sym(D.Digest, PBO.pbdig(hl, pj_Gp66304057C3_2(o)), dd2, de2) :
+    RR.roots(v_Gp66304057C3(T.Gp66304057C3{x0, pj_Gp66304057C3_1(o), pj_Gp66304057C3_2(o)}), S.ProgressiveContainer{SH.ProgressiveContainer_names(s), S.Chain{SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, [D.bytes(O.mix_len(hl, D.node(hl, D.node(hl, D.zero(), D.node(hl, D.node(hl, D.zero(), dd1), D.node(hl, D.zero(), _))), RN.d_u8(hl, x0)), 21))])
+  (MD.bytes_list([RN.d_u8(hl, x0), dd1, dd2]), (([D.bytes(RN.d_u8(hl, x0))], (MD.bytes_list([dd1, dd2]), (OS.transport(RN.v_u8(x0), SH.Chain_head(SH.ProgressiveContainer_fields(s)), S.Unsigned{P.U8{}}, [D.bytes(RN.d_u8(hl, x0))], ev, RN.rs_u8(hl, ehl, x0, rp0)), (([D.bytes(dd1)], (MD.bytes_list([dd2]), (OS.dtrans(PB.vview2(pj_Gp66304057C3_1(o)), SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), dd1, BLI.bdig(hl, pj_Gp66304057C3_1(o), 3n, 1n), de1, BLI.l2_rs(hl, ehl, h, pj_Gp66304057C3_1(o), SH.Chain_head(SH.Chain_tail(SH.ProgressiveContainer_fields(s))), 3n, 3, 0, rp1, k5, {==}, {==})), (([D.bytes(dd2)], (MD.bytes_list([]), (OS.dtrans(S.BitsValue{BO.bview(pj_Gp66304057C3_2(o))}, SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), dd2, PBO.pbdig(hl, pj_Gp66304057C3_2(o)), de2, PBO.pbrs(hl, ehl, h, pj_Gp66304057C3_2(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.ProgressiveContainer_fields(s)))), q3, k6)), ({==}, {==})))), {==})))), {==})))),
+    PCN.pc_10101_ar(hl, ehl, RN.d_u8(hl, x0), dd1, dd2)))
 
 # ---- Gc85FA758A04 (Type-kind container, 5 fields) ----
 def pj_Gc85FA758A04_0(o: T.Gc85FA758A04) -> O.Bits:
@@ -1017,6 +1136,25 @@ law Gp4B0CA2906A_root_correct:
   RR.roots(v_Gp4B0CA2906A(o), s, [D.bytes(Pair.snd(T.Gp4B0CA2906A, D.Digest, Pair.snd(B.Buf, T.Gp4B0CA2906A & D.Digest, T.Gp4B0CA2906A_hash_tree_root(h, o))))])
 def Gp4B0CA2906A_root_correct(h, o, s, es, rep): Gp4B0CA2906A_rc(h, o, s, es, rep, OS.DV0(), {==})
 
+# Gp66304057C3: for every object representing a value of Spec.Gp66304057C3(), the runtime
+# root is a specification root of that value.
+def Gp66304057C3_ok(+s: S.Schema, +es: {s == Spec.Gp66304057C3() : S.Schema}, +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}) -> {ok_Gp66304057C3(s, dv) == True{} : Bool}:
+  OS.ok_at(y => d => ok_Gp66304057C3(y, d), s, Spec.Gp66304057C3(), dv, es, edv, {==})
+def Gp66304057C3_eqs(+s: S.Schema, +es: {s == Spec.Gp66304057C3() : S.Schema}) -> eqs_Gp66304057C3(s): OS.eq_at(y => SH.Chain_head(SH.ProgressiveContainer_fields(y)), s, Spec.Gp66304057C3(), S.Unsigned{P.U8{}}, es, {==})
+def Gp66304057C3_rc(-h: B.Buf, -o: T.Gp66304057C3, +s: S.Schema, +es: {s == Spec.Gp66304057C3() : S.Schema}, +rep: rep_Gp66304057C3(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV})
+    -> RR.roots(v_Gp66304057C3(o), s, [D.bytes(Pair.snd(T.Gp66304057C3, D.Digest, Pair.snd(B.Buf, T.Gp66304057C3 & D.Digest, T.Gp66304057C3_hash_tree_root(h, o))))]):
+  %Equal.sym(B.Buf & (T.Gp66304057C3 & D.Digest), T.Gp66304057C3_root(64n, h, o, 0), (h, (o, d_Gp66304057C3(64n, o))), st_Gp66304057C3(64n, h, o, 0, s, rep)) :
+    RR.roots(v_Gp66304057C3(o), s, [D.bytes(Pair.snd(T.Gp66304057C3, D.Digest, Pair.snd(B.Buf, T.Gp66304057C3 & D.Digest, _)))])
+  rs_Gp66304057C3(64n, {==}, h, o, s, rep, dv, edv, Gp66304057C3_ok(s, es, dv, edv), Gp66304057C3_eqs(s, es))
+law Gp66304057C3_root_correct:
+  for -h: B.Buf
+  for -o: T.Gp66304057C3
+  for +s: S.Schema
+  for +es: {s == Spec.Gp66304057C3() : S.Schema}
+  for +rep: rep_Gp66304057C3(o, s)
+  RR.roots(v_Gp66304057C3(o), s, [D.bytes(Pair.snd(T.Gp66304057C3, D.Digest, Pair.snd(B.Buf, T.Gp66304057C3 & D.Digest, T.Gp66304057C3_hash_tree_root(h, o))))])
+def Gp66304057C3_root_correct(h, o, s, es, rep): Gp66304057C3_rc(h, o, s, es, rep, OS.DV0(), {==})
+
 # Gc85FA758A04: for every object representing a value of Spec.Gc85FA758A04(), the runtime
 # root is a specification root of that value.
 def Gc85FA758A04_ok(+s: S.Schema, +es: {s == Spec.Gc85FA758A04() : S.Schema}, +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}) -> {ok_Gc85FA758A04(s, dv) == True{} : Bool}:
@@ -1054,6 +1192,220 @@ law Gc60805EC295_root_correct:
   for +rep: rep_Gc60805EC295(o, s)
   RR.roots(v_Gc60805EC295(o), s, [D.bytes(Pair.snd(T.Gc60805EC295, D.Digest, Pair.snd(B.Buf, T.Gc60805EC295 & D.Digest, T.Gc60805EC295_hash_tree_root(h, o))))])
 def Gc60805EC295_root_correct(h, o, s, es, rep): Gc60805EC295_rc(h, o, s, es, rep, OS.DV0(), {==})
+
+# ---- GuAD91DEB870 (compatible union, selectors [2, 3]) ----
+def pju_GuAD91DEB870_0(o: T.GuAD91DEB870) -> T.Gp4B0CA2906A:
+  match o:
+    case T.GuAD91DEB870_c0{v}: v
+    case T.GuAD91DEB870_c1{v}: T.Gp4B0CA2906A_default()
+def pju_GuAD91DEB870_1(o: T.GuAD91DEB870) -> T.Gp66304057C3:
+  match o:
+    case T.GuAD91DEB870_c0{v}: T.Gp66304057C3_default()
+    case T.GuAD91DEB870_c1{v}: v
+def v_GuAD91DEB870(o: T.GuAD91DEB870) -> S.Value:
+  match o:
+    case T.GuAD91DEB870_c0{v}: S.Selected{2, v_Gp4B0CA2906A(v)}
+    case T.GuAD91DEB870_c1{v}: S.Selected{3, v_Gp66304057C3(v)}
+def d_GuAD91DEB870(+hl: Nat, o: T.GuAD91DEB870) -> D.Digest:
+  match o:
+    case T.GuAD91DEB870_c0{v}: O.mix_len(hl, d_Gp4B0CA2906A(hl, v), 2)
+    case T.GuAD91DEB870_c1{v}: O.mix_len(hl, d_Gp66304057C3(hl, v), 3)
+def pc_GuAD91DEB870_0(o: T.GuAD91DEB870) -> Data: DK.P2({o == T.GuAD91DEB870_c0{pju_GuAD91DEB870_0(o)} : T.GuAD91DEB870}, rep_Gp4B0CA2906A(pju_GuAD91DEB870_0(o), S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}))
+def pc_GuAD91DEB870_1(o: T.GuAD91DEB870) -> Data: DK.P2({o == T.GuAD91DEB870_c1{pju_GuAD91DEB870_1(o)} : T.GuAD91DEB870}, rep_Gp66304057C3(pju_GuAD91DEB870_1(o), S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}))
+def por_GuAD91DEB870_0(o: T.GuAD91DEB870) -> Data: DK.Or2(pc_GuAD91DEB870_0(o), pc_GuAD91DEB870_1(o))
+def rep_GuAD91DEB870(o: T.GuAD91DEB870) -> Data: por_GuAD91DEB870_0(o)
+def stc_GuAD91DEB870_0(+hl: Nat, -h: B.Buf, -o: T.GuAD91DEB870, +seg: U32, +a: pc_GuAD91DEB870_0(o))
+    -> {T.GuAD91DEB870_root(hl, h, o, seg) == (h, (o, d_GuAD91DEB870(hl, o))) : B.Buf & (T.GuAD91DEB870 & D.Digest)}:
+  (+eo, +ri) = a
+  %Equal.sym(T.GuAD91DEB870, o, T.GuAD91DEB870_c0{pju_GuAD91DEB870_0(o)}, eo) : {T.GuAD91DEB870_root(hl, h, _, seg) == (h, (_, d_GuAD91DEB870(hl, _))) : B.Buf & (T.GuAD91DEB870 & D.Digest)}
+  %Equal.sym(B.Buf & (T.Gp4B0CA2906A & D.Digest), T.Gp4B0CA2906A_root(hl, h, pju_GuAD91DEB870_0(o), seg), (h, (pju_GuAD91DEB870_0(o), d_Gp4B0CA2906A(hl, pju_GuAD91DEB870_0(o)))), st_Gp4B0CA2906A(hl, h, pju_GuAD91DEB870_0(o), seg, S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, ri)) :
+    {T.GuAD91DEB870_rt0(hl, _) == (h, (T.GuAD91DEB870_c0{pju_GuAD91DEB870_0(o)}, d_GuAD91DEB870(hl, T.GuAD91DEB870_c0{pju_GuAD91DEB870_0(o)}))) : B.Buf & (T.GuAD91DEB870 & D.Digest)}
+  {==}
+def rsc_GuAD91DEB870_0(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.GuAD91DEB870, +a: pc_GuAD91DEB870_0(o))
+    -> RR.roots(v_GuAD91DEB870(o), Spec.GuAD91DEB870(), [D.bytes(d_GuAD91DEB870(hl, o))]):
+  (+eo, +ri) = a
+  +dd = OS.dwv(d_Gp4B0CA2906A(hl, pju_GuAD91DEB870_0(o)), wd_Gp4B0CA2906A(hl, pju_GuAD91DEB870_0(o), S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, ri))
+  +de = OS.dwe(d_Gp4B0CA2906A(hl, pju_GuAD91DEB870_0(o)), wd_Gp4B0CA2906A(hl, pju_GuAD91DEB870_0(o), S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, ri))
+  %Equal.sym(T.GuAD91DEB870, o, T.GuAD91DEB870_c0{pju_GuAD91DEB870_0(o)}, eo) : RR.roots(v_GuAD91DEB870(_), Spec.GuAD91DEB870(), [D.bytes(d_GuAD91DEB870(hl, _))])
+  %Equal.sym(D.Digest, d_Gp4B0CA2906A(hl, pju_GuAD91DEB870_0(o)), dd, de) : RR.roots(v_GuAD91DEB870(T.GuAD91DEB870_c0{pju_GuAD91DEB870_0(o)}), Spec.GuAD91DEB870(), [D.bytes(O.mix_len(hl, _, 2))])
+  (D.bytes(dd), (OS.dtrans(v_Gp4B0CA2906A(pju_GuAD91DEB870_0(o)), S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, dd, d_Gp4B0CA2906A(hl, pju_GuAD91DEB870_0(o)), de, rs_Gp4B0CA2906A(hl, ehl, h, pju_GuAD91DEB870_0(o), S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, ri, OS.DV0(), {==}, {==}, Unit{})), PCN.msel_2(hl, ehl, dd)))
+def stc_GuAD91DEB870_1(+hl: Nat, -h: B.Buf, -o: T.GuAD91DEB870, +seg: U32, +a: pc_GuAD91DEB870_1(o))
+    -> {T.GuAD91DEB870_root(hl, h, o, seg) == (h, (o, d_GuAD91DEB870(hl, o))) : B.Buf & (T.GuAD91DEB870 & D.Digest)}:
+  (+eo, +ri) = a
+  %Equal.sym(T.GuAD91DEB870, o, T.GuAD91DEB870_c1{pju_GuAD91DEB870_1(o)}, eo) : {T.GuAD91DEB870_root(hl, h, _, seg) == (h, (_, d_GuAD91DEB870(hl, _))) : B.Buf & (T.GuAD91DEB870 & D.Digest)}
+  %Equal.sym(B.Buf & (T.Gp66304057C3 & D.Digest), T.Gp66304057C3_root(hl, h, pju_GuAD91DEB870_1(o), seg), (h, (pju_GuAD91DEB870_1(o), d_Gp66304057C3(hl, pju_GuAD91DEB870_1(o)))), st_Gp66304057C3(hl, h, pju_GuAD91DEB870_1(o), seg, S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, ri)) :
+    {T.GuAD91DEB870_rt1(hl, _) == (h, (T.GuAD91DEB870_c1{pju_GuAD91DEB870_1(o)}, d_GuAD91DEB870(hl, T.GuAD91DEB870_c1{pju_GuAD91DEB870_1(o)}))) : B.Buf & (T.GuAD91DEB870 & D.Digest)}
+  {==}
+def rsc_GuAD91DEB870_1(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.GuAD91DEB870, +a: pc_GuAD91DEB870_1(o))
+    -> RR.roots(v_GuAD91DEB870(o), Spec.GuAD91DEB870(), [D.bytes(d_GuAD91DEB870(hl, o))]):
+  (+eo, +ri) = a
+  +dd = OS.dwv(d_Gp66304057C3(hl, pju_GuAD91DEB870_1(o)), wd_Gp66304057C3(hl, pju_GuAD91DEB870_1(o), S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, ri))
+  +de = OS.dwe(d_Gp66304057C3(hl, pju_GuAD91DEB870_1(o)), wd_Gp66304057C3(hl, pju_GuAD91DEB870_1(o), S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, ri))
+  %Equal.sym(T.GuAD91DEB870, o, T.GuAD91DEB870_c1{pju_GuAD91DEB870_1(o)}, eo) : RR.roots(v_GuAD91DEB870(_), Spec.GuAD91DEB870(), [D.bytes(d_GuAD91DEB870(hl, _))])
+  %Equal.sym(D.Digest, d_Gp66304057C3(hl, pju_GuAD91DEB870_1(o)), dd, de) : RR.roots(v_GuAD91DEB870(T.GuAD91DEB870_c1{pju_GuAD91DEB870_1(o)}), Spec.GuAD91DEB870(), [D.bytes(O.mix_len(hl, _, 3))])
+  (D.bytes(dd), (OS.dtrans(v_Gp66304057C3(pju_GuAD91DEB870_1(o)), S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, dd, d_Gp66304057C3(hl, pju_GuAD91DEB870_1(o)), de, rs_Gp66304057C3(hl, ehl, h, pju_GuAD91DEB870_1(o), S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, ri, OS.DV0(), {==}, {==}, {==})), PCN.msel_3(hl, ehl, dd)))
+def stl_GuAD91DEB870_0(+hl: Nat, -h: B.Buf, -o: T.GuAD91DEB870, +seg: U32, +r: por_GuAD91DEB870_0(o)) -> {T.GuAD91DEB870_root(hl, h, o, seg) == (h, (o, d_GuAD91DEB870(hl, o))) : B.Buf & (T.GuAD91DEB870 & D.Digest)}:
+  match r:
+    case Inl{+a}: stc_GuAD91DEB870_0(hl, h, o, seg, a)
+    case Inr{+b}: stc_GuAD91DEB870_1(hl, h, o, seg, b)
+def st_GuAD91DEB870(+hl: Nat, -h: B.Buf, -o: T.GuAD91DEB870, +seg: U32, +rep: rep_GuAD91DEB870(o)) -> {T.GuAD91DEB870_root(hl, h, o, seg) == (h, (o, d_GuAD91DEB870(hl, o))) : B.Buf & (T.GuAD91DEB870 & D.Digest)}: stl_GuAD91DEB870_0(hl, h, o, seg, rep)
+def rsl_GuAD91DEB870_0(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.GuAD91DEB870, +r: por_GuAD91DEB870_0(o)) -> RR.roots(v_GuAD91DEB870(o), Spec.GuAD91DEB870(), [D.bytes(d_GuAD91DEB870(hl, o))]):
+  match r:
+    case Inl{+a}: rsc_GuAD91DEB870_0(hl, ehl, h, o, a)
+    case Inr{+b}: rsc_GuAD91DEB870_1(hl, ehl, h, o, b)
+def rs_GuAD91DEB870(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.GuAD91DEB870, +rep: rep_GuAD91DEB870(o)) -> RR.roots(v_GuAD91DEB870(o), Spec.GuAD91DEB870(), [D.bytes(d_GuAD91DEB870(hl, o))]): rsl_GuAD91DEB870_0(hl, ehl, h, o, rep)
+# GuAD91DEB870: for every represented object (one of its options, represented),
+# the runtime root is a specification root of its value.
+law GuAD91DEB870_root_correct:
+  for -h: B.Buf
+  for -o: T.GuAD91DEB870
+  for +rep: rep_GuAD91DEB870(o)
+  RR.roots(v_GuAD91DEB870(o), Spec.GuAD91DEB870(), [D.bytes(Pair.snd(T.GuAD91DEB870, D.Digest, Pair.snd(B.Buf, T.GuAD91DEB870 & D.Digest, T.GuAD91DEB870_hash_tree_root(h, o))))])
+def GuAD91DEB870_root_correct(h, o, rep):
+  %Equal.sym(B.Buf & (T.GuAD91DEB870 & D.Digest), T.GuAD91DEB870_root(64n, h, o, 0), (h, (o, d_GuAD91DEB870(64n, o))), st_GuAD91DEB870(64n, h, o, 0, rep)) :
+    RR.roots(v_GuAD91DEB870(o), Spec.GuAD91DEB870(), [D.bytes(Pair.snd(T.GuAD91DEB870, D.Digest, Pair.snd(B.Buf, T.GuAD91DEB870 & D.Digest, _)))])
+  rs_GuAD91DEB870(64n, {==}, h, o, rep)
+
+# ---- Gu6DDF182530 (compatible union, selectors [1, 2, 3, 4]) ----
+def pju_Gu6DDF182530_0(o: T.Gu6DDF182530) -> T.GpF350A3C486:
+  match o:
+    case T.Gu6DDF182530_c0{v}: v
+    case T.Gu6DDF182530_c1{v}: T.GpF350A3C486_default()
+    case T.Gu6DDF182530_c2{v}: T.GpF350A3C486_default()
+    case T.Gu6DDF182530_c3{v}: T.GpF350A3C486_default()
+def pju_Gu6DDF182530_1(o: T.Gu6DDF182530) -> T.Gp4B0CA2906A:
+  match o:
+    case T.Gu6DDF182530_c0{v}: T.Gp4B0CA2906A_default()
+    case T.Gu6DDF182530_c1{v}: v
+    case T.Gu6DDF182530_c2{v}: T.Gp4B0CA2906A_default()
+    case T.Gu6DDF182530_c3{v}: T.Gp4B0CA2906A_default()
+def pju_Gu6DDF182530_2(o: T.Gu6DDF182530) -> T.Gp66304057C3:
+  match o:
+    case T.Gu6DDF182530_c0{v}: T.Gp66304057C3_default()
+    case T.Gu6DDF182530_c1{v}: T.Gp66304057C3_default()
+    case T.Gu6DDF182530_c2{v}: v
+    case T.Gu6DDF182530_c3{v}: T.Gp66304057C3_default()
+def pju_Gu6DDF182530_3(o: T.Gu6DDF182530) -> T.GpF350A3C486:
+  match o:
+    case T.Gu6DDF182530_c0{v}: T.GpF350A3C486_default()
+    case T.Gu6DDF182530_c1{v}: T.GpF350A3C486_default()
+    case T.Gu6DDF182530_c2{v}: T.GpF350A3C486_default()
+    case T.Gu6DDF182530_c3{v}: v
+def v_Gu6DDF182530(o: T.Gu6DDF182530) -> S.Value:
+  match o:
+    case T.Gu6DDF182530_c0{v}: S.Selected{1, RN.v_GpF350A3C486(v)}
+    case T.Gu6DDF182530_c1{v}: S.Selected{2, v_Gp4B0CA2906A(v)}
+    case T.Gu6DDF182530_c2{v}: S.Selected{3, v_Gp66304057C3(v)}
+    case T.Gu6DDF182530_c3{v}: S.Selected{4, RN.v_GpF350A3C486(v)}
+def d_Gu6DDF182530(+hl: Nat, o: T.Gu6DDF182530) -> D.Digest:
+  match o:
+    case T.Gu6DDF182530_c0{v}: O.mix_len(hl, RN.d_GpF350A3C486(hl, v), 1)
+    case T.Gu6DDF182530_c1{v}: O.mix_len(hl, d_Gp4B0CA2906A(hl, v), 2)
+    case T.Gu6DDF182530_c2{v}: O.mix_len(hl, d_Gp66304057C3(hl, v), 3)
+    case T.Gu6DDF182530_c3{v}: O.mix_len(hl, RN.d_GpF350A3C486(hl, v), 4)
+def pc_Gu6DDF182530_0(o: T.Gu6DDF182530) -> Data: DK.Ex(T.GpF350A3C486, v => DK.P2({o == T.Gu6DDF182530_c0{v} : T.Gu6DDF182530}, RN.rp_GpF350A3C486(v)))
+def pc_Gu6DDF182530_1(o: T.Gu6DDF182530) -> Data: DK.P2({o == T.Gu6DDF182530_c1{pju_Gu6DDF182530_1(o)} : T.Gu6DDF182530}, rep_Gp4B0CA2906A(pju_Gu6DDF182530_1(o), S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}))
+def pc_Gu6DDF182530_2(o: T.Gu6DDF182530) -> Data: DK.P2({o == T.Gu6DDF182530_c2{pju_Gu6DDF182530_2(o)} : T.Gu6DDF182530}, rep_Gp66304057C3(pju_Gu6DDF182530_2(o), S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}))
+def pc_Gu6DDF182530_3(o: T.Gu6DDF182530) -> Data: DK.Ex(T.GpF350A3C486, v => DK.P2({o == T.Gu6DDF182530_c3{v} : T.Gu6DDF182530}, RN.rp_GpF350A3C486(v)))
+def por_Gu6DDF182530_2(o: T.Gu6DDF182530) -> Data: DK.Or2(pc_Gu6DDF182530_2(o), pc_Gu6DDF182530_3(o))
+def por_Gu6DDF182530_1(o: T.Gu6DDF182530) -> Data: DK.Or2(pc_Gu6DDF182530_1(o), por_Gu6DDF182530_2(o))
+def por_Gu6DDF182530_0(o: T.Gu6DDF182530) -> Data: DK.Or2(pc_Gu6DDF182530_0(o), por_Gu6DDF182530_1(o))
+def rep_Gu6DDF182530(o: T.Gu6DDF182530) -> Data: por_Gu6DDF182530_0(o)
+def stc_Gu6DDF182530_0(+hl: Nat, -h: B.Buf, -o: T.Gu6DDF182530, +seg: U32, +a: pc_Gu6DDF182530_0(o))
+    -> {T.Gu6DDF182530_root(hl, h, o, seg) == (h, (o, d_Gu6DDF182530(hl, o))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}:
+  (+v, +q) = a
+  (+eo, +rp) = q
+  %Equal.sym(T.Gu6DDF182530, o, T.Gu6DDF182530_c0{v}, eo) : {T.Gu6DDF182530_root(hl, h, _, seg) == (h, (_, d_Gu6DDF182530(hl, _))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}
+  %Equal.sym(B.Buf & D.Digest, T.GpF350A3C486_root(hl, h, v, seg), (h, RN.d_GpF350A3C486(hl, v)), RN.st_GpF350A3C486(hl, h, v, seg)) :
+    {T.Gu6DDF182530_rt0(hl, v, _) == (h, (T.Gu6DDF182530_c0{v}, d_Gu6DDF182530(hl, T.Gu6DDF182530_c0{v}))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}
+  {==}
+def rsc_Gu6DDF182530_0(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.Gu6DDF182530, +a: pc_Gu6DDF182530_0(o))
+    -> RR.roots(v_Gu6DDF182530(o), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, o))]):
+  (+v, +q) = a
+  (+eo, +rp) = q
+  %Equal.sym(T.Gu6DDF182530, o, T.Gu6DDF182530_c0{v}, eo) : RR.roots(v_Gu6DDF182530(_), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, _))])
+  (D.bytes(RN.d_GpF350A3C486(hl, v)), (RN.rs_GpF350A3C486(hl, ehl, v, rp), PCN.msel_1(hl, ehl, RN.d_GpF350A3C486(hl, v))))
+def stc_Gu6DDF182530_1(+hl: Nat, -h: B.Buf, -o: T.Gu6DDF182530, +seg: U32, +a: pc_Gu6DDF182530_1(o))
+    -> {T.Gu6DDF182530_root(hl, h, o, seg) == (h, (o, d_Gu6DDF182530(hl, o))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}:
+  (+eo, +ri) = a
+  %Equal.sym(T.Gu6DDF182530, o, T.Gu6DDF182530_c1{pju_Gu6DDF182530_1(o)}, eo) : {T.Gu6DDF182530_root(hl, h, _, seg) == (h, (_, d_Gu6DDF182530(hl, _))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}
+  %Equal.sym(B.Buf & (T.Gp4B0CA2906A & D.Digest), T.Gp4B0CA2906A_root(hl, h, pju_Gu6DDF182530_1(o), seg), (h, (pju_Gu6DDF182530_1(o), d_Gp4B0CA2906A(hl, pju_Gu6DDF182530_1(o)))), st_Gp4B0CA2906A(hl, h, pju_Gu6DDF182530_1(o), seg, S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, ri)) :
+    {T.Gu6DDF182530_rt1(hl, _) == (h, (T.Gu6DDF182530_c1{pju_Gu6DDF182530_1(o)}, d_Gu6DDF182530(hl, T.Gu6DDF182530_c1{pju_Gu6DDF182530_1(o)}))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}
+  {==}
+def rsc_Gu6DDF182530_1(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.Gu6DDF182530, +a: pc_Gu6DDF182530_1(o))
+    -> RR.roots(v_Gu6DDF182530(o), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, o))]):
+  (+eo, +ri) = a
+  +dd = OS.dwv(d_Gp4B0CA2906A(hl, pju_Gu6DDF182530_1(o)), wd_Gp4B0CA2906A(hl, pju_Gu6DDF182530_1(o), S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, ri))
+  +de = OS.dwe(d_Gp4B0CA2906A(hl, pju_Gu6DDF182530_1(o)), wd_Gp4B0CA2906A(hl, pju_Gu6DDF182530_1(o), S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, ri))
+  %Equal.sym(T.Gu6DDF182530, o, T.Gu6DDF182530_c1{pju_Gu6DDF182530_1(o)}, eo) : RR.roots(v_Gu6DDF182530(_), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, _))])
+  %Equal.sym(D.Digest, d_Gp4B0CA2906A(hl, pju_Gu6DDF182530_1(o)), dd, de) : RR.roots(v_Gu6DDF182530(T.Gu6DDF182530_c1{pju_Gu6DDF182530_1(o)}), Spec.Gu6DDF182530(), [D.bytes(O.mix_len(hl, _, 2))])
+  (D.bytes(dd), (OS.dtrans(v_Gp4B0CA2906A(pju_Gu6DDF182530_1(o)), S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, dd, d_Gp4B0CA2906A(hl, pju_Gu6DDF182530_1(o)), de, rs_Gp4B0CA2906A(hl, ehl, h, pju_Gu6DDF182530_1(o), S.ProgressiveContainer{["f_C"], S.Chain{S.ProgressiveBits{}, S.End{}}, [False{}, False{}, False{}, False{}, True{}]}, ri, OS.DV0(), {==}, {==}, Unit{})), PCN.msel_2(hl, ehl, dd)))
+def stc_Gu6DDF182530_2(+hl: Nat, -h: B.Buf, -o: T.Gu6DDF182530, +seg: U32, +a: pc_Gu6DDF182530_2(o))
+    -> {T.Gu6DDF182530_root(hl, h, o, seg) == (h, (o, d_Gu6DDF182530(hl, o))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}:
+  (+eo, +ri) = a
+  %Equal.sym(T.Gu6DDF182530, o, T.Gu6DDF182530_c2{pju_Gu6DDF182530_2(o)}, eo) : {T.Gu6DDF182530_root(hl, h, _, seg) == (h, (_, d_Gu6DDF182530(hl, _))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}
+  %Equal.sym(B.Buf & (T.Gp66304057C3 & D.Digest), T.Gp66304057C3_root(hl, h, pju_Gu6DDF182530_2(o), seg), (h, (pju_Gu6DDF182530_2(o), d_Gp66304057C3(hl, pju_Gu6DDF182530_2(o)))), st_Gp66304057C3(hl, h, pju_Gu6DDF182530_2(o), seg, S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, ri)) :
+    {T.Gu6DDF182530_rt2(hl, _) == (h, (T.Gu6DDF182530_c2{pju_Gu6DDF182530_2(o)}, d_Gu6DDF182530(hl, T.Gu6DDF182530_c2{pju_Gu6DDF182530_2(o)}))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}
+  {==}
+def rsc_Gu6DDF182530_2(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.Gu6DDF182530, +a: pc_Gu6DDF182530_2(o))
+    -> RR.roots(v_Gu6DDF182530(o), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, o))]):
+  (+eo, +ri) = a
+  +dd = OS.dwv(d_Gp66304057C3(hl, pju_Gu6DDF182530_2(o)), wd_Gp66304057C3(hl, pju_Gu6DDF182530_2(o), S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, ri))
+  +de = OS.dwe(d_Gp66304057C3(hl, pju_Gu6DDF182530_2(o)), wd_Gp66304057C3(hl, pju_Gu6DDF182530_2(o), S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, ri))
+  %Equal.sym(T.Gu6DDF182530, o, T.Gu6DDF182530_c2{pju_Gu6DDF182530_2(o)}, eo) : RR.roots(v_Gu6DDF182530(_), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, _))])
+  %Equal.sym(D.Digest, d_Gp66304057C3(hl, pju_Gu6DDF182530_2(o)), dd, de) : RR.roots(v_Gu6DDF182530(T.Gu6DDF182530_c2{pju_Gu6DDF182530_2(o)}), Spec.Gu6DDF182530(), [D.bytes(O.mix_len(hl, _, 3))])
+  (D.bytes(dd), (OS.dtrans(v_Gp66304057C3(pju_Gu6DDF182530_2(o)), S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, dd, d_Gp66304057C3(hl, pju_Gu6DDF182530_2(o)), de, rs_Gp66304057C3(hl, ehl, h, pju_Gu6DDF182530_2(o), S.ProgressiveContainer{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.ListOf{S.Unsigned{P.U16{}}, 123n}, S.Chain{S.ProgressiveBits{}, S.End{}}}}, [True{}, False{}, True{}, False{}, True{}]}, ri, OS.DV0(), {==}, {==}, {==})), PCN.msel_3(hl, ehl, dd)))
+def stc_Gu6DDF182530_3(+hl: Nat, -h: B.Buf, -o: T.Gu6DDF182530, +seg: U32, +a: pc_Gu6DDF182530_3(o))
+    -> {T.Gu6DDF182530_root(hl, h, o, seg) == (h, (o, d_Gu6DDF182530(hl, o))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}:
+  (+v, +q) = a
+  (+eo, +rp) = q
+  %Equal.sym(T.Gu6DDF182530, o, T.Gu6DDF182530_c3{v}, eo) : {T.Gu6DDF182530_root(hl, h, _, seg) == (h, (_, d_Gu6DDF182530(hl, _))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}
+  %Equal.sym(B.Buf & D.Digest, T.GpF350A3C486_root(hl, h, v, seg), (h, RN.d_GpF350A3C486(hl, v)), RN.st_GpF350A3C486(hl, h, v, seg)) :
+    {T.Gu6DDF182530_rt3(hl, v, _) == (h, (T.Gu6DDF182530_c3{v}, d_Gu6DDF182530(hl, T.Gu6DDF182530_c3{v}))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}
+  {==}
+def rsc_Gu6DDF182530_3(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.Gu6DDF182530, +a: pc_Gu6DDF182530_3(o))
+    -> RR.roots(v_Gu6DDF182530(o), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, o))]):
+  (+v, +q) = a
+  (+eo, +rp) = q
+  %Equal.sym(T.Gu6DDF182530, o, T.Gu6DDF182530_c3{v}, eo) : RR.roots(v_Gu6DDF182530(_), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, _))])
+  (D.bytes(RN.d_GpF350A3C486(hl, v)), (RN.rs_GpF350A3C486(hl, ehl, v, rp), PCN.msel_4(hl, ehl, RN.d_GpF350A3C486(hl, v))))
+def stl_Gu6DDF182530_2(+hl: Nat, -h: B.Buf, -o: T.Gu6DDF182530, +seg: U32, +r: por_Gu6DDF182530_2(o)) -> {T.Gu6DDF182530_root(hl, h, o, seg) == (h, (o, d_Gu6DDF182530(hl, o))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}:
+  match r:
+    case Inl{+a}: stc_Gu6DDF182530_2(hl, h, o, seg, a)
+    case Inr{+b}: stc_Gu6DDF182530_3(hl, h, o, seg, b)
+def stl_Gu6DDF182530_1(+hl: Nat, -h: B.Buf, -o: T.Gu6DDF182530, +seg: U32, +r: por_Gu6DDF182530_1(o)) -> {T.Gu6DDF182530_root(hl, h, o, seg) == (h, (o, d_Gu6DDF182530(hl, o))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}:
+  match r:
+    case Inl{+a}: stc_Gu6DDF182530_1(hl, h, o, seg, a)
+    case Inr{+b}: stl_Gu6DDF182530_2(hl, h, o, seg, b)
+def stl_Gu6DDF182530_0(+hl: Nat, -h: B.Buf, -o: T.Gu6DDF182530, +seg: U32, +r: por_Gu6DDF182530_0(o)) -> {T.Gu6DDF182530_root(hl, h, o, seg) == (h, (o, d_Gu6DDF182530(hl, o))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}:
+  match r:
+    case Inl{+a}: stc_Gu6DDF182530_0(hl, h, o, seg, a)
+    case Inr{+b}: stl_Gu6DDF182530_1(hl, h, o, seg, b)
+def st_Gu6DDF182530(+hl: Nat, -h: B.Buf, -o: T.Gu6DDF182530, +seg: U32, +rep: rep_Gu6DDF182530(o)) -> {T.Gu6DDF182530_root(hl, h, o, seg) == (h, (o, d_Gu6DDF182530(hl, o))) : B.Buf & (T.Gu6DDF182530 & D.Digest)}: stl_Gu6DDF182530_0(hl, h, o, seg, rep)
+def rsl_Gu6DDF182530_2(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.Gu6DDF182530, +r: por_Gu6DDF182530_2(o)) -> RR.roots(v_Gu6DDF182530(o), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, o))]):
+  match r:
+    case Inl{+a}: rsc_Gu6DDF182530_2(hl, ehl, h, o, a)
+    case Inr{+b}: rsc_Gu6DDF182530_3(hl, ehl, h, o, b)
+def rsl_Gu6DDF182530_1(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.Gu6DDF182530, +r: por_Gu6DDF182530_1(o)) -> RR.roots(v_Gu6DDF182530(o), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, o))]):
+  match r:
+    case Inl{+a}: rsc_Gu6DDF182530_1(hl, ehl, h, o, a)
+    case Inr{+b}: rsl_Gu6DDF182530_2(hl, ehl, h, o, b)
+def rsl_Gu6DDF182530_0(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.Gu6DDF182530, +r: por_Gu6DDF182530_0(o)) -> RR.roots(v_Gu6DDF182530(o), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, o))]):
+  match r:
+    case Inl{+a}: rsc_Gu6DDF182530_0(hl, ehl, h, o, a)
+    case Inr{+b}: rsl_Gu6DDF182530_1(hl, ehl, h, o, b)
+def rs_Gu6DDF182530(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: T.Gu6DDF182530, +rep: rep_Gu6DDF182530(o)) -> RR.roots(v_Gu6DDF182530(o), Spec.Gu6DDF182530(), [D.bytes(d_Gu6DDF182530(hl, o))]): rsl_Gu6DDF182530_0(hl, ehl, h, o, rep)
+# Gu6DDF182530: for every represented object (one of its options, represented),
+# the runtime root is a specification root of its value.
+law Gu6DDF182530_root_correct:
+  for -h: B.Buf
+  for -o: T.Gu6DDF182530
+  for +rep: rep_Gu6DDF182530(o)
+  RR.roots(v_Gu6DDF182530(o), Spec.Gu6DDF182530(), [D.bytes(Pair.snd(T.Gu6DDF182530, D.Digest, Pair.snd(B.Buf, T.Gu6DDF182530 & D.Digest, T.Gu6DDF182530_hash_tree_root(h, o))))])
+def Gu6DDF182530_root_correct(h, o, rep):
+  %Equal.sym(B.Buf & (T.Gu6DDF182530 & D.Digest), T.Gu6DDF182530_root(64n, h, o, 0), (h, (o, d_Gu6DDF182530(64n, o))), st_Gu6DDF182530(64n, h, o, 0, rep)) :
+    RR.roots(v_Gu6DDF182530(o), Spec.Gu6DDF182530(), [D.bytes(Pair.snd(T.Gu6DDF182530, D.Digest, Pair.snd(B.Buf, T.Gu6DDF182530 & D.Digest, _)))])
+  rs_Gu6DDF182530(64n, {==}, h, o, rep)
 
 # ---- GuA2212AE21F (compatible union, selectors [1]) ----
 def pju_GuA2212AE21F_0(o: T.GuA2212AE21F) -> T.GpF350A3C486:
