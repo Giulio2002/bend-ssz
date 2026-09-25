@@ -27,8 +27,8 @@ What that means concretely:
   size) have **no codec-correctness law yet**: those equations are not
   definitional and need the bit lemmas and the offset development;
 * Since 2026-09-23 (Bend 2.0.25) the generated codec is also **connected to the
-  independent specification** for 83 of the 109 Fulu names (87 since
-  2026-09-26, see below)
+  independent specification** for 83 of the 109 Fulu names (88 since
+  2026-09-26: the array-backed names and Validator, see below)
   (`codegen/spec_laws.py` -> `proofs/obj/spec_fixed.bend`, `spec_bits.bend`,
   `spec_small.bend`, `spec_codec_{0..6}.bend`, `spec_unique_{0,1,small}.bend`):
   the bytes the encoder emits through `B.emit` satisfy
@@ -64,9 +64,10 @@ What that means concretely:
   whose byte 88 is above 1 is refused (whatever its other bytes), every size
   other than 121 is refused, a buffer of 121 bytes whose byte 88 is at most 1 is
   accepted and the spec relates exactly its bytes to the decoded object's value
-  (`Validator_spec_decode`/`_view`/`_decoded`), uniqueness. Not proved: the
-  runtime encoder's bytes, which go through `U32.mul(w, 256)` on variable words
-  (U32.mul recurses over its left operand; needs `mul(w, 256) == shln(w, 8)`).
+  (`Validator_spec_decode`/`_view`/`_decoded`), the encoder emits exactly the
+  spec bytes (`Validator_spec_bytes`; the encoder's `U32.mul(w, 256)` goes
+  through `proofs/obj/word_mul.bend` `mul256`: `U32.mul(w, 256) == U32.shln(w,
+  8n)` for every w), uniqueness.
   **Generic forms**: the aligned family covers 38 generic forms
   (`spec_gcodec/grepr/ginput/gunique_*`), Vector[uint32/64/128/256, 512]
   go through the array route (`spec_garr_*`).
