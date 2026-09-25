@@ -1,10 +1,13 @@
 import Base
-import ../../vendor/bend_sha256_pkg/fips.bend as PF
-import ../../vendor/bend_sha256_pkg/state.bend as PS
-import ../../vendor/bend_sha256/fips.bend as VF
-import ../../vendor/bend_sha256/state.bend as VS
+import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as PF
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as PS
+import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as VF
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as VS
 
-# The SHA-256 bridge between the two copies of FIPS 180-4 in play.
+# The SHA-256 bridge between the two copies of FIPS 180-4 that were in play.
+# Since both now come from bend-collections (spec/crypto/sha.bend), PF and VF
+# are the same module and these laws hold trivially; they are kept so the
+# proofs built on them keep their statements. The original rationale:
 #
 # The pinned BendHub package proves its packed runtime equal to its packed
 # specification (package LAWS `sha256_array_correct`), and that specification

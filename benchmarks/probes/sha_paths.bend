@@ -1,7 +1,7 @@
 import Base
-import ../../vendor/bend_sha256/sha256.bend as SHA
-import ../../vendor/bend_sha256/core.bend as Core
-import ../../vendor/bend_sha256/state.bend as S
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/sha256.bend as SHA
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/core.bend as Core
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as S
 
 # Cost of one SSZ Merkle node hash (two 32-byte chunks) on the native C
 # backend, measured two ways: through the byte-list entry point the codec uses

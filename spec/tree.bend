@@ -2,7 +2,7 @@ import Base
 import ./primitives.bend as P
 import ./merkle.bend as M
 import ./packing.bend as Pack
-import ../vendor/bend_sha256/fips.bend as FIPS
+import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as FIPS
 
 # Exact perfect-tree capacity. General next-power-of-two selection is separate.
 def capacity(depth: Nat) -> Nat:

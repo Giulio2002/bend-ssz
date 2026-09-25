@@ -1,16 +1,16 @@
 import Base
 import ../../src/digest.bend as D
-import ../../vendor/bend_sha256/fips.bend as VF
-import ../../vendor/bend_sha256/state.bend as VS
-import ../../vendor/bend_sha256_pkg/fips.bend as PF
-import ../../vendor/bend_sha256_pkg/state.bend as PS
-import ../../vendor/bend_sha256_pkg/packed_spec.bend as PSP
+import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as VF
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as VS
+import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as PF
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/state.bend as PS
+import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha/packed.bend as PSP
 import ../../proofs/compact/bits.bend as BT
 import ./sha_bridge.bend as SB
-import ../../vendor/bend_sha256_pkg/buffer.bend as Buf
-import ../../vendor/bend_sha256_pkg/sha256.bend as PKG
-import ../../vendor/bend_sha256_pkg/LAWS.bend as PL
-import ../../vendor/bend_sha256_pkg/CORRECTNESS.bend as PC
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/packed/buffer.bend as Buf
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/packed/sha256.bend as PKG
+import 0xe4067e0d858024083f36a7abe7281e89/proofs/crypto/sha/packed/laws.bend as PL
+import 0xe4067e0d858024083f36a7abe7281e89/proofs/crypto/sha/packed/proof.bend as PC
 import ../../spec/merkle.bend as M
 import ../../spec/primitives.bend as P
 

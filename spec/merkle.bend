@@ -1,6 +1,6 @@
 import Base
 import ./primitives.bend as P
-import ../vendor/bend_sha256/fips.bend as FIPS
+import 0xe4067e0d858024083f36a7abe7281e89/spec/crypto/sha.bend as FIPS
 
 # Normative binary-node hashing, independent of the optimized runtime SHA.
 def pair_checked(ok: Bool, left: +List<U32>, right: +List<U32>) -> Maybe<&2, +List<U32>>:

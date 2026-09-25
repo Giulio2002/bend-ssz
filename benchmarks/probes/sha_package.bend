@@ -1,5 +1,5 @@
 import Base
-import ../../vendor/bend_sha256_pkg/sha256.bend as PKG
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/packed/sha256.bend as PKG
 
 # Cost of one SSZ Merkle node hash (64 bytes = sixteen packed words) through
 # the pinned BendHub package's production array API, on the native C backend.

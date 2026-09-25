@@ -1,8 +1,9 @@
 # bend-ssz
 
 Pure Bend SSZ for all **109 pinned mainnet Fulu names**, with serialization,
-deserialization, exact rejection, hash-tree-root and typed adapters. Includes the
-user's pinned Bend SHA-256 implementation and its functional proofs.
+deserialization, exact rejection, hash-tree-root and typed adapters. SHA-256 and its
+functional proofs come from the bend-collections library (BendHub package
+`0xe4067e0d858024083f36a7abe7281e89`).
 
 **Reviewed research library.** Public refinement proofs are checked against
 independent Bend specifications. The compiler, runtime and host machinery are

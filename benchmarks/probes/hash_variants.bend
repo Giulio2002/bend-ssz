@@ -1,5 +1,5 @@
 import Base
-import ../../vendor/bend_sha256_pkg/sha256.bend as PKG
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/packed/sha256.bend as PKG
 import ../../src/digest.bend as D
 
 # Chained Merkle-node hashing, two ways of feeding the pinned package:

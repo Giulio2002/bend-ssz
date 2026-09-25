@@ -13,14 +13,13 @@ binary `871df0ae7b0895236e14a5c2dac4fa014fbe770c3470ee3f60f6dcfe8ae4cfcf`
 alias used twice in one file (upstream #1042). The sources change only as
 needed for that, with no statement or algorithm changed:
 
-* `vendor/bend_sha256/core.bend`, `conformance.bend`: the SHA-256 message
-  window type `Window` is renamed `ShaWindow` (Base declares `Window`).
-* `vendor/bend_sha256_pkg/`: the BendHub SHA-256 package
-  `0xda83506fb9f059ead7afcfa2f498df5f` declares `Window` too, and a hub
-  package cannot change, so it is vendored with the same rename (see its
-  README). `src/digest.bend`, `proofs/obj/sha_bridge.bend`,
-  `proofs/obj/sha_node.bend`, two probes and `codegen/sha_laws.py` import it
-  from there instead of from the hub.
+* SHA-256 comes from the bend-collections library, BendHub package
+  `0xe4067e0d858024083f36a7abe7281e89` (list API `src/crypto/sha/`, packed API
+  `src/crypto/sha/packed/`, FIPS spec `spec/crypto/sha.bend`, laws in
+  `proofs/crypto/sha/`), which runs on 2.0.28. It replaces `vendor/bend_sha256`
+  and the BendHub package `0xda83506fb9f059ead7afcfa2f498df5f`, whose `type
+  Window` 2.0.26+ refuse (Base declares `Window`); the code and laws are the
+  same, with that type renamed `ShaWindow`.
 * `proofs/root_complete.bend`: a repeated `import ./root_domain_steps.bend as
   Steps` line is removed.
 

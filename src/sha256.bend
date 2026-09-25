@@ -1,5 +1,5 @@
 import Base
-import ../vendor/bend_sha256/sha256.bend as SHA
+import 0xe4067e0d858024083f36a7abe7281e89/src/crypto/sha/sha256.bend as SHA
 
 # Use the pinned upstream optimized implementation directly.
 def hash(xs: +List<U32>) -> +List<U32>:
