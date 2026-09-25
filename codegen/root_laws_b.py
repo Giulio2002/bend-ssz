@@ -277,6 +277,13 @@ class Gen:
             return 'pv'
         if fs.kind == 'packed' and fs.t.kind == 'list' and fs.t.elem.kind == 'uint' and fs.t.elem.size == 8:
             return 'ul'
+        if getattr(self, 'v2', False) and fs.kind == 'packed' and fs.t.kind == 'plist' and (fs.t.elem.kind == 'bool' or (fs.t.elem.kind == 'uint' and fs.t.elem.size in (1, 2, 4, 8, 16, 32))):
+            return 'pk'
+        if getattr(self, 'v2', False) and fs.kind == 'seq' and fs.t.kind == 'plist' and fs.pelem.data:
+            if fs.pelem.p not in self.phaseA:
+                raise Skip(f'{fs.p}: element {fs.pelem.p} not a phase A shape')
+            self.plist_x_laws(fs)
+            return 'px'
         if fs.kind == 'seq' and fs.t.kind == 'list' and not fs.pelem.data:
             self.tlist_laws(fs)
             return 'tl'
@@ -297,6 +304,15 @@ class Gen:
             self.shape(fs)
             return 'T'
         raise Skip(f'{fs.p}: field kind {fs.kind}/{fs.t.kind if fs.t else ""} not covered yet')
+
+    @staticmethod
+    def pk(fs):
+        """(key, shift, view) of a packed progressive list field (prog_list)."""
+        K = 'b' if fs.t.elem.kind == 'bool' else str(fs.t.elem.size)
+        sh = {'b': 0, '1': 0, '2': 1, '4': 2, '8': 3, '16': 4, '32': 5}[K]
+        VIEW = {'8': 'UL.uview(o)', '4': 'PK.vview4(o)', '16': 'PK.vview16(o)', '32': 'PK.vview32(o)',
+                '1': 'PB.vview1(o)', '2': 'PB.vview2(o)', 'b': 'PB.vviewb(o)'}[K]
+        return K, sh, VIEW
 
     def depth(self, fs, k):
         if k == 'bv':
@@ -335,8 +351,10 @@ class Gen:
             return f'E48.eview({x})'
         if k == 'cl':
             return f'CE.eview({x})'
-        if k in ('xl', 'tl'):
+        if k in ('xl', 'tl', 'px'):
             return f'xv_{fs.p}({x})'
+        if k == 'pk':
+            return self.pk(fs)[2].replace('(o)', f'({x})')
         return f'v_{fs.p}({x})'
 
     def dig(self, fs, k, x):
@@ -359,8 +377,10 @@ class Gen:
             return f'E48.ldig(hl, {x}, {d}n)'
         if k == 'cl':
             return f'CE.ldig(hl, {x}, {d}n)'
-        if k in ('xl', 'tl'):
+        if k in ('xl', 'tl', 'px'):
             return f'xd_{fs.p}(hl, {x})'
+        if k == 'pk':
+            return f'PG.pdig(hl, {x}, {self.pk(fs)[1]}n)'
         return f'd_{fs.p}(hl, {x})'
 
     def rep(self, fs, k, x, sx):
@@ -388,8 +408,10 @@ class Gen:
             return f'E48.rep_el({x}, {sx})'
         if k == 'cl':
             return f'CE.rep_el({x}, {sx})'
-        if k == 'xl':
+        if k in ('xl', 'px'):
             return f'rep_{fs.p}({x}, {sx})'
+        if k == 'pk':
+            return f'PG.rep_pl{self.pk(fs)[0]}({x}, {sx})'
         return f'rep_{fs.p}({x}, {sx})'
 
     def ok(self, fs, k, sx):
@@ -416,8 +438,10 @@ class Gen:
             return f'E48.ok_el({sx}, {self.dd(fs, k)})'
         if k == 'cl':
             return f'CE.ok_el({sx}, {self.dd(fs, k)})'
-        if k == 'xl':
+        if k in ('xl', 'px'):
             return f'ok_{fs.p}({sx})'
+        if k == 'pk':
+            return f'PG.ok_pl{self.pk(fs)[0]}({sx})'
         return f'ok_{fs.p}({sx}, dv)'  # T, boxT, tl
 
     def eqs_items(self, fs, k):
@@ -439,6 +463,8 @@ class Gen:
             return f'eqs_{inner.p}({sx})'
         if k == 'xl':
             return f'{{SH.ListOf_element({sx}) == {RA.spec_schema(fs.pelem)} : S.Schema}}'
+        if k == 'px':
+            return f'{{SH.ProgressiveList_element({sx}) == {RA.spec_schema(fs.pelem)} : S.Schema}}'
         if k == 'tl':
             return f'eqs_{fs.p}({sx})'
         return None
@@ -461,6 +487,8 @@ class Gen:
             pf = f'BO.bst(hl, h, {x}, {d}, seg, {d}n, BO.rep_wf({x}, {sx}, {r}), {{==}})'
         elif k == 'pb':
             pf = f'PBO.pbst(hl, h, {x}, seg, {r})'
+        elif k == 'pk':
+            pf = f'PG.pl_st(hl, h, {x}, seg, {self.pk(fs)[1]}n, PG.rep_wf{self.pk(fs)[0]}({x}, {sx}, {r}))'
         elif k == 'bvb':
             pf = f'WBV.bvb_st(hl, h, {x}, {d}, seg, {d}n, {fs.t.size}n, {r}, {{==}})'
         elif k == 'pv':
@@ -517,8 +545,10 @@ class Gen:
             return f'E48.el_rs(hl, ehl, h, {x}, {sx}, {d}n, {r}, {okp}, {{==}})'
         if k == 'cl':
             return f'CE.el_rs(hl, ehl, h, {x}, {sx}, {d}n, {r}, {okp}, {{==}})'
-        if k == 'xl':
+        if k in ('xl', 'px'):
             return f'rs_{fs.p}(hl, ehl, h, {x}, {sx}, {r}, {okp}, {eqp})'
+        if k == 'pk':
+            return f'PG.pl{self.pk(fs)[0]}_rs(hl, ehl, {x}, {sx}, {r}, {okp})'
         if k == 'boxD':
             return f'rs_{fs.p}(hl, ehl, h, {x}, {sx}, {r}, {eqp})'
         return f'rs_{fs.p}(hl, ehl, h, {x}, {sx}, {r}, dv, edv, {okp}, {eqp})'
@@ -531,6 +561,8 @@ class Gen:
             call = f'BO.bwd(hl, {x}, {sx}, {self.dd(fs, k) if d < BIGD else str(d) + "n"}, {r})'
         elif k == 'pb':
             call = f'PBO.pbwd(hl, {x}, {sx}, {r})'
+        elif k == 'pk':
+            call = f'PLO.pdwd(hl, {x}, {self.pk(fs)[1]}n, PG.rep_wf{self.pk(fs)[0]}({x}, {sx}, {r}))'
         elif k == 'bvb':
             call = f'WBV.bvb_wd(hl, {x}, {fs.t.size}n, {d}n, {r})'
         elif k in ('bv', 'bl', 'pv', 'ul', 'ev', 'el', 'cl'):
@@ -600,20 +632,9 @@ class Gen:
         self.done[p] = True
         self.out.extend(L)
 
-    def xlist_laws(self, fs):
-        """Laws of a list of Data-kind containers (its generated tree `_mt`)."""
-        if fs.p in self.done:
-            return
-        p = fs.p
-        X = fs.pelem
-        RX = RA.qual(X.rep)
-        EX = RA.spec_schema(X)
-        D_ = self.depth(fs, 'xl')
-        Seq = f'T.{p}_Seq'
-        L = []
-        w = L.append
-        W = f'F.array__slots({RX}, t)'
-        w(f'# ---- {p}: list of {X.p} (Data elements) ----')
+    def xcommon(self, p, X, RX, EX, w, rep=False):
+        """The element, digest-list, view and tree laws shared by the lists of
+        Data-kind elements (bounded `xl`, progressive `px`)."""
         w(f'def xat_{p}(W: List<&2, {RX}>, +i: Nat) -> {RX}:')
         w('  match W:')
         w(f'    case Nil{{}}: T.{X.p}_default()')
@@ -673,18 +694,39 @@ class Gen:
         w('  match k:')
         w('    case 0n: S.EmptyItems{}')
         w(f'    case 1n+q: S.Items{{RN.v_{X.p}(xat_{p}(W, i)), xi_{p}(q, W, 1n+i)}}')
-        w(f'law xroots_{p}:')
-        w('  for +k: Nat')
-        w(f'  for +W: List<&2, {RX}>')
-        w('  for +i: Nat')
-        w('  for +hl: Nat')
-        w('  for +ehl: {hl == 64n : Nat}')
-        w(f'  RR.roots(xi_{p}(k, W, i), S.Repeat{{{EX}}}, MD.bytes_list(xl_{p}(k, W, i, hl)))')
-        w(f'def xroots_{p}(k, W, i, hl, ehl):')
-        w('  match k:')
-        w('    case 0n: {==}')
-        w('    case 1n+ +q:')
-        w(f'      ([D.bytes(RN.d_{X.p}(hl, xat_{p}(W, i)))], (MD.bytes_list(xl_{p}(q, W, 1n+i, hl)), (RN.rs_{X.p}(hl, ehl, xat_{p}(W, i)), (xroots_{p}(q, W, 1n+i, hl, ehl), {{==}}))))')
+        if not rep:
+            w(f'law xroots_{p}:')
+            w('  for +k: Nat')
+            w(f'  for +W: List<&2, {RX}>')
+            w('  for +i: Nat')
+            w('  for +hl: Nat')
+            w('  for +ehl: {hl == 64n : Nat}')
+            w(f'  RR.roots(xi_{p}(k, W, i), S.Repeat{{{EX}}}, MD.bytes_list(xl_{p}(k, W, i, hl)))')
+            w(f'def xroots_{p}(k, W, i, hl, ehl):')
+            w('  match k:')
+            w('    case 0n: {==}')
+            w('    case 1n+ +q:')
+            w(f'      ([D.bytes(RN.d_{X.p}(hl, xat_{p}(W, i)))], (MD.bytes_list(xl_{p}(q, W, 1n+i, hl)), (RN.rs_{X.p}(hl, ehl, xat_{p}(W, i)), (xroots_{p}(q, W, 1n+i, hl, ehl), {{==}}))))')
+        else:
+            # every element holds its representation fact (uint8/16 fields)
+            w(f'def xrp_{p}(k: Nat, +W: List<&2, {RX}>, +i: Nat) -> Data:')
+            w('  match k:')
+            w('    case 0n: Unit')
+            w(f'    case 1n+q: DK.P2(RN.rp_{X.p}(xat_{p}(W, i)), xrp_{p}(q, W, 1n+i))')
+            w(f'law xroots_{p}:')
+            w('  for +k: Nat')
+            w(f'  for +W: List<&2, {RX}>')
+            w('  for +i: Nat')
+            w('  for +hl: Nat')
+            w('  for +ehl: {hl == 64n : Nat}')
+            w(f'  for +hr: xrp_{p}(k, W, i)')
+            w(f'  RR.roots(xi_{p}(k, W, i), S.Repeat{{{EX}}}, MD.bytes_list(xl_{p}(k, W, i, hl)))')
+            w(f'def xroots_{p}(k, W, i, hl, ehl, hr):')
+            w('  match k:')
+            w('    case 0n: {==}')
+            w('    case 1n+ +q:')
+            w('      (+r0, +r1) = hr')
+            w(f'      ([D.bytes(RN.d_{X.p}(hl, xat_{p}(W, i)))], (MD.bytes_list(xl_{p}(q, W, 1n+i, hl)), (RN.rs_{X.p}(hl, ehl, xat_{p}(W, i), r0), (xroots_{p}(q, W, 1n+i, hl, ehl, r1), {{==}}))))')
         w(f'law xcount_{p}:')
         w('  for +k: Nat')
         w(f'  for +W: List<&2, {RX}>')
@@ -774,6 +816,23 @@ class Gen:
         w(f'              xmt_{p}(q, Nat.is_lt(Nat.add(s, {Pq}), n), hl, seg, dw, t, Nat.add(s, {Pq}), n, h, D.zero(), {{==}}, hd, pf, hn)) :')
         w(f'            {{T.{p}_mj(hl, MD.rtree(q, True{{}}, hl, {XL}, s), _) == (h, ({Ts}, {node("n")})) : {TY}}}')
         w('          {==}')
+        return Ts, XL, TY
+
+    def xlist_laws(self, fs):
+        """Laws of a list of Data-kind containers (its generated tree `_mt`)."""
+        if fs.p in self.done:
+            return
+        p = fs.p
+        X = fs.pelem
+        RX = RA.qual(X.rep)
+        EX = RA.spec_schema(X)
+        D_ = self.depth(fs, 'xl')
+        Seq = f'T.{p}_Seq'
+        L = []
+        w = L.append
+        W = f'F.array__slots({RX}, t)'
+        w(f'# ---- {p}: list of {X.p} (Data elements) ----')
+        Ts, XL, TY = self.xcommon(p, X, RX, EX, w)
         w(f'def xmt0_{p}(+d: Nat, +b: Bool, +hl: Nat, +seg: U32, +dw: Nat, +t: F.array__Tree<{RX}>, +n: Nat, -h: B.Buf, +junk: D.Digest,')
         w('    +e: {Nat.is_lt(0n, n) == b : Bool}, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},')
         w(f'    +pf: {{F.array__perfect({RX}, dw, t) == True{{}} : Bool}}, +hn: {{Nat.is_le(n, F.spec_common__pow2(dw)) == True{{}} : Bool}})')
@@ -873,6 +932,129 @@ class Gen:
         w(f'  (MD.bytes_list({XLo}), (xroots_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n, hl, ehl),')
         w(f'    (D.bytes({R2}), (({D_}n, (k1, RS.at_depth_tree({Lm}, {D_}n, hl, {XLo}, {{==}}, xhl_{p}(N, {Lm}, F.array__slots({RX}, t), hl, hvN), ehl))),')
         w(f'     xlm_{p}(hl, ehl, N, {R2}, F.array__slots({RX}, t))))))')
+        w('')
+        self.done[p] = True
+        self.out.extend(L)
+
+    def plist_x_laws(self, fs):
+        """Laws of a progressive list of Data-kind elements (its generated
+        progressive tree `_ptr` over the fixed-depth `_mt` subtrees)."""
+        if fs.p in self.done:
+            return
+        p = fs.p
+        X = fs.pelem
+        RX = RA.qual(X.rep)
+        EX = RA.spec_schema(X)
+        rep = RA.needs_rep(X)
+        Seq = f'T.{p}_Seq'
+        L = []
+        w = L.append
+        w(f'# ---- {p}: progressive list of {X.p} (Data elements) ----')
+        Ts, XL, TY = self.xcommon(p, X, RX, EX, w, rep)
+        P_ = 'O.pow2n(dep)'
+        B2 = f'Nat.is_lt(Nat.add(s, {P_}), n)'
+        w(f'law xpt_{p}:')
+        for a, ty in (('g', 'Nat'), ('b', 'Bool'), ('hl', 'Nat'), ('seg', 'U32'), ('dep', 'Nat'), ('s', 'Nat'), ('n', 'Nat'), ('dw', 'Nat')):
+            w(f'  for +{a}: {ty}')
+        w(f'  for +t: F.array__Tree<{RX}>')
+        w('  for -h: B.Buf')
+        w('  for +junk: D.Digest')
+        w('  for +e: {Nat.is_lt(s, n) == b : Bool}')
+        w('  for +hd: {Nat.is_lt(dw, 32n) == True{} : Bool}')
+        w(f'  for +pf: {{F.array__perfect({RX}, dw, t) == True{{}} : Bool}}')
+        w('  for +hn: {Nat.is_le(n, F.spec_common__pow2(dw)) == True{} : Bool}')
+        w(f'  {{T.{p}_ptr(g, b, hl, seg, dep, s, n, (h, ({Ts}, junk))) == (h, ({Ts}, PR.pr(g, b, hl, dep, s, n, {XL}))) : {TY}}}')
+        w(f'def xpt_{p}(g, b, hl, seg, dep, s, n, dw, t, h, junk, e, hd, pf, hn):')
+        w('  match g:')
+        w('    case 0n: {==}')
+        w('    case 1n+ +k:')
+        w('      match b:')
+        w('        case False{}: {==}')
+        w('        case True{}:')
+        PRK = f'PR.pr(k, {B2}, hl, Nat.add(dep, 2n), Nat.add(s, {P_}), n, {XL})'
+        RHS = f'(h, ({Ts}, PR.pr(1n+k, True{{}}, hl, dep, s, n, {XL})))'
+        w(f'          %Equal.sym({TY}, T.{p}_ptr(k, {B2}, hl, seg, Nat.add(dep, 2n), Nat.add(s, {P_}), n, (h, ({Ts}, junk))), (h, ({Ts}, {PRK})),')
+        w(f'              xpt_{p}(k, {B2}, hl, seg, Nat.add(dep, 2n), Nat.add(s, {P_}), n, dw, t, h, junk, {{==}}, hd, pf, hn)) :')
+        w(f'            {{T.{p}_prr(hl, seg, dep, s, n, _) == {RHS} : {TY}}}')
+        w(f'          %Equal.sym({TY}, T.{p}_mt(dep, 0n, True{{}}, hl, seg, {P_}, s, n, (h, ({Ts}, D.zero()))), (h, ({Ts}, MD.rtree(dep, True{{}}, hl, {XL}, s))),')
+        w(f'              xmt_{p}(dep, True{{}}, hl, seg, dw, t, s, n, h, D.zero(), e, hd, pf, hn)) :')
+        w(f'            {{T.{p}_mj(hl, {PRK}, _) == {RHS} : {TY}}}')
+        w('          {==}')
+        # the object
+        w(f'def xlen_o_{p}(o: {Seq}) -> U32:')
+        w('  match o:')
+        w(f'    case {Seq}{{arr, +n}}: n')
+        w(f'def xv_{p}(o: {Seq}) -> S.Value:')
+        w('  match o:')
+        w(f'    case {Seq}{{arr, +n}}: S.Sequence{{xi_{p}(U32.to_nat(n), F.array__slots({RX}, F.array__freeze({RX}, arr)), 0n)}}')
+        nn = 'U32.to_nat(n)'
+        w(f'def xd_{p}(+hl: Nat, o: {Seq}) -> D.Digest:')
+        w('  match o:')
+        w(f'    case {Seq}{{arr, +n}}: O.mix_len(hl, PR.pr(1n+{nn}, Nat.is_lt(0n, {nn}), hl, 0n, 0n, {nn}, xl_{p}({nn}, F.array__slots({RX}, F.array__freeze({RX}, arr)), 0n, hl)), n)')
+        inner = '{Nat.is_le(U32.to_nat(N), F.spec_common__pow2(dw)) == True{} : Bool}'
+        if rep:
+            inner = f'DK.P2({inner}, xrp_{p}(U32.to_nat(N), F.array__slots({RX}, t), 0n))'
+        w(f'def rep_{p}(o: {Seq}, +s: S.Schema) -> Data:')
+        w(f'  DK.Ex(F.array__Tree<{RX}>, t => DK.Ex(Nat, dw => DK.Ex(U32, N =>')
+        w(f'    DK.P2({{o == {Seq}{{F.array__thaw({RX}, t), N}} : {Seq}}},')
+        w(f'    DK.P2({{F.array__perfect({RX}, dw, t) == True{{}} : Bool}},')
+        w('    DK.P2({Nat.is_lt(dw, 32n) == True{} : Bool},')
+        w(f'          {inner}))))))')
+        w(f'def ok_{p}(+s: S.Schema) -> Bool: SH.is_ProgressiveList(s)')
+        Wo = f'{Seq}{{F.array__thaw({RX}, t), N}}'
+        nN = 'U32.to_nat(N)'
+        XLo = f'xl_{p}({nN}, F.array__slots({RX}, t), 0n, hl)'
+        PRo = f'PR.pr(1n+{nN}, Nat.is_lt(0n, {nN}), hl, 0n, 0n, {nN}, {XLo})'
+
+        def dest(ind='  '):
+            w(f'{ind}(+t, w1) = rep')
+            w(f'{ind}(+dw, w2) = w1')
+            w(f'{ind}(+N, w3) = w2')
+            w(f'{ind}(+eo, w4) = w3')
+            w(f'{ind}(+pf, w5) = w4')
+            if rep:
+                w(f'{ind}(+hd, w6) = w5')
+                w(f'{ind}(+hn, +hr) = w6')
+            else:
+                w(f'{ind}(+hd, +hn) = w5')
+        w(f'def st_{p}(+hl: Nat, -h: B.Buf, -o: {Seq}, +seg: U32, +s: S.Schema, +rep: rep_{p}(o, s))')
+        w(f'    -> {{T.{p}_root(hl, h, o, seg) == (h, (o, xd_{p}(hl, o))) : B.Buf & ({Seq} & D.Digest)}}:')
+        dest()
+        w(f'  %Equal.sym({Seq}, o, {Wo}, eo) :')
+        w(f'    {{T.{p}_root(hl, h, _, seg) == (h, (_, xd_{p}(hl, _))) : B.Buf & ({Seq} & D.Digest)}}')
+        w(f'  %Equal.sym({TY}, T.{p}_ptr(1n+{nN}, Nat.is_lt(0n, {nN}), hl, seg, 0n, 0n, {nN}, (h, ({Ts}, D.zero()))), (h, ({Ts}, {PRo})),')
+        w(f'      xpt_{p}(1n+{nN}, Nat.is_lt(0n, {nN}), hl, seg, 0n, 0n, {nN}, dw, t, h, D.zero(), {{==}}, hd, pf, hn)) :')
+        w(f'    {{T.{p}_rt_fin(hl, N, _) == (h, ({Wo}, xd_{p}(hl, {Wo}))) : B.Buf & ({Seq} & D.Digest)}}')
+        w(f'  %Equal.sym(F.array__Tree<{RX}>, F.array__freeze({RX}, {Ts}), t, F.array__freeze_thaw({RX}, t)) :')
+        w(f'    {{(h, ({Wo}, O.mix_len(hl, {PRo}, N))) == (h, ({Wo}, O.mix_len(hl, PR.pr(1n+{nN}, Nat.is_lt(0n, {nN}), hl, 0n, 0n, {nN}, xl_{p}({nN}, F.array__slots({RX}, _), 0n, hl)), N))) : B.Buf & ({Seq} & D.Digest)}}')
+        w('  {==}')
+        w(f'def xlm_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, +N: U32, +R: D.Digest, +Wl: List<&2, {RX}>)')
+        w(f'    -> {{Mix.mix_length_bytes(Some{{D.bytes(R)}}, Len.encoding(32n, Codec.count(xi_{p}(U32.to_nat(N), Wl, 0n)))) == Some{{D.bytes(O.mix_len(hl, R, N))}} : Maybe<&2, +List<U32>>}}:')
+        w(f'  %Equal.sym(Nat, Codec.count(xi_{p}(U32.to_nat(N), Wl, 0n)), U32.to_nat(N), xcount_{p}(U32.to_nat(N), Wl, 0n)) :')
+        w('    {Mix.mix_length_bytes(Some{D.bytes(R)}, Len.encoding(32n, _)) == Some{D.bytes(O.mix_len(hl, R, N))} : Maybe<&2, +List<U32>>}')
+        w('  LR.mix_bytes(hl, ehl, R, N)')
+        w(f'def wd_{p}(+hl: Nat, -o: {Seq}, +s: S.Schema, +rep: rep_{p}(o, s)) -> OS.DW(xd_{p}(hl, o)):')
+        w('  (+t, +w1) = rep')
+        w('  (+dw, +w2) = w1')
+        w('  (+N, +w3) = w2')
+        w('  (+eo, +w4) = w3')
+        w(f'  %Equal.sym({Seq}, o, {Wo}, eo) : OS.DW(xd_{p}(hl, _))')
+        w(f'  (xd_{p}(hl, {Wo}), {{==}})')
+        w(f'def rs_{p}(+hl: Nat, +ehl: {{hl == 64n : Nat}}, -h: B.Buf, -o: {Seq}, +s: S.Schema, +rep: rep_{p}(o, s), +ok: {{ok_{p}(s) == True{{}} : Bool}}, +eq: {{SH.ProgressiveList_element(s) == {EX} : S.Schema}})')
+        w(f'    -> RR.roots(xv_{p}(o), s, [D.bytes(xd_{p}(hl, o))]):')
+        dest()
+        w(f'  %Equal.sym(S.Schema, s, S.ProgressiveList{{SH.ProgressiveList_element(s)}}, SH.ProgressiveList_shape(s, ok)) :')
+        w(f'    RR.roots(xv_{p}(o), _, [D.bytes(xd_{p}(hl, o))])')
+        w(f'  %Equal.sym(S.Schema, SH.ProgressiveList_element(s), {EX}, eq) :')
+        w(f'    RR.roots(xv_{p}(o), S.ProgressiveList{{_}}, [D.bytes(xd_{p}(hl, o))])')
+        w(f'  %Equal.sym({Seq}, o, {Wo}, eo) :')
+        w(f'    RR.roots(xv_{p}(_), S.ProgressiveList{{{EX}}}, [D.bytes(xd_{p}(hl, _))])')
+        w(f'  %Equal.sym(F.array__Tree<{RX}>, F.array__freeze({RX}, {Ts}), t, F.array__freeze_thaw({RX}, t)) :')
+        w(f'    RR.roots(S.Sequence{{xi_{p}({nN}, F.array__slots({RX}, _), 0n)}}, S.ProgressiveList{{{EX}}}, [D.bytes(O.mix_len(hl, PR.pr(1n+{nN}, Nat.is_lt(0n, {nN}), hl, 0n, 0n, {nN}, xl_{p}({nN}, F.array__slots({RX}, _), 0n, hl)), N))])')
+        xr = f'xroots_{p}({nN}, F.array__slots({RX}, t), 0n, hl, ehl' + (', hr)' if rep else ')')
+        w(f'  (MD.bytes_list({XLo}), ({xr},')
+        w(f'    (D.bytes({PRo}), (PCN.pmerk(hl, ehl, {nN}, {XLo}, dw, xlen_{p}({nN}, F.array__slots({RX}, t), 0n, hl), hd, hn),')
+        w(f'     xlm_{p}(hl, ehl, N, {PRo}, F.array__slots({RX}, t))))))')
         w('')
         self.done[p] = True
         self.out.extend(L)
@@ -1607,8 +1789,6 @@ class Gen:
             import pcont_laws as PCL
             if wide:
                 raise Skip(f'{p}: wide progressive container')
-            if len(s.t.active) > 8:
-                raise Skip(f'{p}: progressive container of {len(s.t.active)} slots (no tree law yet)')
             PK_ = PCL.key(s.t.active)
             ACT = PCL.act_term(s.t.active)
         cf = 'SH.ProgressiveContainer_fields' if prog else 'SH.Container_fields'
@@ -1939,6 +2119,8 @@ class Gen:
                 comps.append(f'OS.eq_at(y => {sub("y")}, s, Spec.{name}(), {self.E(fs)}, es, {{==}})')
             elif k == 'xl':
                 comps.append(f'OS.eq_at(y => SH.ListOf_element({sub("y")}), s, Spec.{name}(), {RA.spec_schema(fs.pelem)}, es, {{==}})')
+            elif k == 'px':
+                comps.append(f'OS.eq_at(y => SH.ProgressiveList_element({sub("y")}), s, Spec.{name}(), {RA.spec_schema(fs.pelem)}, es, {{==}})')
             elif k == 'tl' and fs.elem.inner.kind != 'container':
                 comps.append('{==}')
             elif k == 'tl':

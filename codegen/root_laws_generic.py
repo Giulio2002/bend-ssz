@@ -197,7 +197,7 @@ class GenB(RB.Gen):
         comps = []
         for i in m['eqt']:
             fs, k = m['F'][i][1], m['kinds'][i]
-            if k in ('data', 'datar', 'boxD', 'xl') or (k == 'tl' and fs.elem.inner.kind != 'container'):
+            if k in ('data', 'datar', 'boxD', 'xl', 'px') or (k == 'tl' and fs.elem.inner.kind != 'container'):
                 comps.append('{==}')
             elif k == 'tl':
                 comps.append(self.eqs_closed(fs.elem.inner.p))
@@ -362,7 +362,9 @@ def emit_phase_b(names):
         rest = {n: t for n, t in names.items() if not status.get(n, '').startswith('proved')}
         gb2 = GenB(rest)
         gb2.v2 = True
-        RB.HEAD = RB.HEAD + ['import ./pbits_obj.bend as PBO', 'import ./wbits_obj.bend as WBV', 'import ./pcont.bend as PCN']
+        RB.HEAD = RB.HEAD + ['import ./pbits_obj.bend as PBO', 'import ./wbits_obj.bend as WBV', 'import ./pcont.bend as PCN',
+                              'import ./prog_root.bend as PR', 'import ./plist_obj.bend as PLO']
+        RA.EXTRA_LEAVES = True     # the generic leaves' schemas (element schemas of lists)
         text2, _big2, status2 = gb2.run()
         seen = len(gb2.out)
         ulaws = []
@@ -374,6 +376,7 @@ def emit_phase_b(names):
                     status2[n] = 'proved (phase B, compatible union)'
                 except RB.Skip as e:
                     status2[n] = f'phase B: {e}'
+        RA.EXTRA_LEAVES = False
         text2 = text2 + '\n'.join(gb2.out[seen:] + ulaws) + '\n'
     finally:
         RB.HEAD, RB.BIG_NAMES = saved
@@ -835,9 +838,7 @@ def pcont_patterns(names):
             walk(t.elem)
     for t in names.values():
         walk(t)
-    # Longer patterns (a 22-slot container) have deep zero subtrees whose
-    # constants the checker evaluates slowly in this form; none is needed yet.
-    return sorted((a for a in pats if len(a) <= 8), key=lambda a: (len(a), a))
+    return sorted(pats, key=lambda a: (len(a), a))
 
 
 def main():
