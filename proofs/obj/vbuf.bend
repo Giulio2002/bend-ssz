@@ -508,3 +508,124 @@ def acopy_ok(nw, a, b, i, j, dd, ds, D, S, ea, eb, hdd, hds, hi, hj, pfD, pfS):
   %mone_add(A, r, i, j, dd, D, S) :
     {(F.array__thaw(U32, mone(r, Nat.add(A, i), Nat.add(A, j), dd, M, S)), F.array__thaw(U32, S)) == (F.array__thaw(U32, _), F.array__thaw(U32, S)) : Array<U32> & Array<U32>}
   {==}
+
+# ---- the words a copy leaves, as lists ------------------------------------------------
+
+def len(+W: List<&2, U32>) -> Nat: F.spec_common__length(U32, W)
+
+def wdr(n: Nat, W: List<&2, U32>) -> List<&2, U32>:
+  match n:
+    case 0n: W
+    case 1n+p:
+      match W:
+        case Nil{}: []
+        case Con{h, t}: wdr(p, t)
+
+law wdr_eta:
+  for +j: Nat
+  for +W: List<&2, U32>
+  for +h: {Nat.is_lt(j, len(W)) == True{} : Bool}
+  {wdr(j, W) == Con{F.flat__nthc(W, j), wdr(1n+j, W)} : List<&2, U32>}
+def wdr_eta(j, W, h):
+  match j W:
+    case 0n Nil{}: Empty.absurd({wdr(0n, Nil{}) == Con{F.flat__nthc(Nil{}, 0n), wdr(1n, Nil{})} : List<&2, U32>}, F.logic__false_true(h))
+    case 0n Con{+x, +t}: {==}
+    case 1n+ +p Nil{}: Empty.absurd({wdr(1n+p, Nil{}) == Con{F.flat__nthc(Nil{}, 1n+p), wdr(2n+p, Nil{})} : List<&2, U32>}, F.logic__false_true(h))
+    case 1n+ +p Con{+x, +t}: wdr_eta(p, t, h)
+
+# The list model of mone.
+def lm(n: Nat, +i: Nat, +j: Nat, L: List<&2, U32>, +SL: List<&2, U32>) -> List<&2, U32>:
+  match n:
+    case 0n: L
+    case 1n+p: lm(p, 1n+i, 1n+j, F.spec_common__update(U32, L, j, F.flat__nthc(SL, i)), SL)
+
+law lm_len:
+  for +n: Nat
+  for +i: Nat
+  for +j: Nat
+  for +L: List<&2, U32>
+  for +SL: List<&2, U32>
+  {len(lm(n, i, j, L, SL)) == len(L) : Nat}
+def lm_len(n, i, j, L, SL):
+  match n:
+    case 0n: {==}
+    case 1n+ +p:
+      %F.list__length_update(U32, L, j, F.flat__nthc(SL, i)) :
+        {len(lm(p, 1n+i, 1n+j, F.spec_common__update(U32, L, j, F.flat__nthc(SL, i)), SL)) == _ : Nat}
+      lm_len(p, 1n+i, 1n+j, F.spec_common__update(U32, L, j, F.flat__nthc(SL, i)), SL)
+
+law lm_pre:
+  for +n: Nat
+  for +i: Nat
+  for +j: Nat
+  for +L: List<&2, U32>
+  for +SL: List<&2, U32>
+  for +k: Nat
+  for +hk: {Nat.is_lt(k, j) == True{} : Bool}
+  {F.flat__nthc(lm(n, i, j, L, SL), k) == F.flat__nthc(L, k) : U32}
+def lm_pre(n, i, j, L, SL, k, hk):
+  match n:
+    case 0n: {==}
+    case 1n+ +p:
+      +L1 = F.spec_common__update(U32, L, j, F.flat__nthc(SL, i))
+      %Equal.sym(U32, F.flat__nthc(lm(p, 1n+i, 1n+j, L1, SL), k), F.flat__nthc(L1, k), lm_pre(p, 1n+i, 1n+j, L1, SL, k, F.nat__lt_trans(k, j, 1n+j, hk, F.nat__lt_succ(j)))) :
+        {_ == F.flat__nthc(L, k) : U32}
+      F.flat__nthc_other(L, j, k, F.flat__nthc(SL, i), F.flat__ne_gt(j, k, hk))
+
+law lm_win:
+  for +n: Nat
+  for +i: Nat
+  for +j: Nat
+  for +L: List<&2, U32>
+  for +SL: List<&2, U32>
+  for +hj: {Nat.is_le(Nat.add(n, j), len(L)) == True{} : Bool}
+  for +hi: {Nat.is_le(Nat.add(n, i), len(SL)) == True{} : Bool}
+  {VS.wtake(n, wdr(j, lm(n, i, j, L, SL))) == VS.wtake(n, wdr(i, SL)) : List<&2, U32>}
+def lm_win(n, i, j, L, SL, hj, hi):
+  match n:
+    case 0n: {==}
+    case 1n+ +p:
+      +v = F.flat__nthc(SL, i)
+      +L1 = F.spec_common__update(U32, L, j, v)
+      +A = lm(p, 1n+i, 1n+j, L1, SL)
+      +hjL = le1_head(p, j, len(L), hj)
+      +hjA = F.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, len(L), len(A),
+        Equal.sym(Nat, len(A), len(L), Equal.trans(Nat, len(A), len(L1), len(L), lm_len(p, 1n+i, 1n+j, L1, SL), F.list__length_update(U32, L, j, v))), hjL)
+      %Equal.sym(List<&2, U32>, wdr(j, A), Con{F.flat__nthc(A, j), wdr(1n+j, A)}, wdr_eta(j, A, hjA)) :
+        {VS.wtake(1n+p, _) == VS.wtake(1n+p, wdr(i, SL)) : List<&2, U32>}
+      %Equal.sym(List<&2, U32>, wdr(i, SL), Con{v, wdr(1n+i, SL)}, wdr_eta(i, SL, le1_head(p, i, len(SL), hi))) :
+        {Con{F.flat__nthc(A, j), VS.wtake(p, wdr(1n+j, A))} == VS.wtake(1n+p, _) : List<&2, U32>}
+      %Equal.sym(U32, F.flat__nthc(A, j), F.flat__nthc(L1, j), lm_pre(p, 1n+i, 1n+j, L1, SL, j, F.nat__lt_succ(j))) :
+        {Con{_, VS.wtake(p, wdr(1n+j, A))} == Con{v, VS.wtake(p, wdr(1n+i, SL))} : List<&2, U32>}
+      %Equal.sym(U32, F.flat__nthc(L1, j), v, F.flat__nthc_same(L, j, v, hjL)) :
+        {Con{_, VS.wtake(p, wdr(1n+j, A))} == Con{v, VS.wtake(p, wdr(1n+i, SL))} : List<&2, U32>}
+      %Equal.sym(List<&2, U32>, VS.wtake(p, wdr(1n+j, A)), VS.wtake(p, wdr(1n+i, SL)),
+          lm_win(p, 1n+i, 1n+j, L1, SL,
+            F.logic__subst(Nat, z => {Nat.is_le(Nat.add(p, 1n+j), z) == True{} : Bool}, len(L), len(L1), Equal.sym(Nat, len(L1), len(L), F.list__length_update(U32, L, j, v)), le1_shift(p, j, len(L), hj)),
+            le1_shift(p, i, len(SL), hi))) :
+        {Con{v, _} == Con{v, VS.wtake(p, wdr(1n+i, SL))} : List<&2, U32>}
+      {==}
+
+# The slots of the copied tree are its list model.
+law slots_mone:
+  for +n: Nat
+  for +i: Nat
+  for +j: Nat
+  for +dd: Nat
+  for +D: F.array__Tree<U32>
+  for +S: F.array__Tree<U32>
+  for +pf: {F.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hj: {Nat.is_le(Nat.add(n, j), pw(dd)) == True{} : Bool}
+  {F.array__slots(U32, mone(n, i, j, dd, D, S)) == lm(n, i, j, F.array__slots(U32, D), F.array__slots(U32, S)) : List<&2, U32>}
+def slots_mone(n, i, j, dd, D, S, pf, hj):
+  match n:
+    case 0n: {==}
+    case 1n+ +p:
+      +D1 = F.array__upd(U32, dd, D, j, slot(S, i))
+      %Equal.sym(List<&2, U32>, F.array__slots(U32, mone(p, 1n+i, 1n+j, dd, D1, S)), lm(p, 1n+i, 1n+j, F.array__slots(U32, D1), F.array__slots(U32, S)),
+          slots_mone(p, 1n+i, 1n+j, dd, D1, S, F.array__upd_perfect(U32, dd, D, j, slot(S, i), pf), le1_shift(p, j, pw(dd), hj))) :
+        {_ == lm(p, 1n+i, 1n+j, F.spec_common__update(U32, F.array__slots(U32, D), j, slot(S, i)), F.array__slots(U32, S)) : List<&2, U32>}
+      %Equal.sym(List<&2, U32>, F.array__slots(U32, D1), F.spec_common__update(U32, F.array__slots(U32, D), j, slot(S, i)),
+          F.array__upd_slots(U32, dd, D, j, slot(S, i), le1_head(p, j, pw(dd), hj), pf)) :
+        {lm(p, 1n+i, 1n+j, _, F.array__slots(U32, S)) == lm(p, 1n+i, 1n+j, F.spec_common__update(U32, F.array__slots(U32, D), j, slot(S, i)), F.array__slots(U32, S)) : List<&2, U32>}
+      {==}
