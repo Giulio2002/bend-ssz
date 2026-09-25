@@ -1,6 +1,6 @@
 import Base
-import 0xda83506fb9f059ead7afcfa2f498df5f/fips.bend as PF
-import 0xda83506fb9f059ead7afcfa2f498df5f/state.bend as PS
+import ../../vendor/bend_sha256_pkg/fips.bend as PF
+import ../../vendor/bend_sha256_pkg/state.bend as PS
 import ../../vendor/bend_sha256/fips.bend as VF
 import ../../vendor/bend_sha256/state.bend as VS
 

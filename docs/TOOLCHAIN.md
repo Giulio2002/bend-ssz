@@ -1,4 +1,30 @@
-# Toolchain: stock Bend 2.0.25 (operator-authorized migration, 2026-09-22)
+# Toolchain: stock Bend 2.0.28 (updated 2026-09-25)
+
+## Update to 2.0.28 (2026-09-25)
+
+`benchmarks/toolchain.json` pins the official 2.0.28 release: Linux x86_64
+binary `871df0ae7b0895236e14a5c2dac4fa014fbe770c3470ee3f60f6dcfe8ae4cfcf`
+(from `bend-2.0.28-linux-x64.tar.gz`), macOS arm64 binary
+`8ff8223fa61c04400ed2359ad013eacaa6f760e42ed248ce96f6bb844a1a9147`, and
+`base.bend` `22eea83911e2395f63594fea7c10ac0c1e5b548251681fc97cd7667e0eb7031b`
+(the same bytes on every platform).
+
+2.0.26-2.0.28 refuse a declared name that collides with Base and an import
+alias used twice in one file (upstream #1042). The sources change only as
+needed for that, with no statement or algorithm changed:
+
+* `vendor/bend_sha256/core.bend`, `conformance.bend`: the SHA-256 message
+  window type `Window` is renamed `ShaWindow` (Base declares `Window`).
+* `vendor/bend_sha256_pkg/`: the BendHub SHA-256 package
+  `0xda83506fb9f059ead7afcfa2f498df5f` declares `Window` too, and a hub
+  package cannot change, so it is vendored with the same rename (see its
+  README). `src/digest.bend`, `proofs/obj/sha_bridge.bend`,
+  `proofs/obj/sha_node.bend`, two probes and `codegen/sha_laws.py` import it
+  from there instead of from the hub.
+* `proofs/root_complete.bend`: a repeated `import ./root_domain_steps.bend as
+  Steps` line is removed.
+
+The 2.0.25 notes below are historical.
 
 ## What happened
 

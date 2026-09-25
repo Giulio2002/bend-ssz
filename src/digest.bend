@@ -1,10 +1,10 @@
 import Base
-import 0xda83506fb9f059ead7afcfa2f498df5f/sha256.bend as PKG
+import ../vendor/bend_sha256_pkg/sha256.bend as PKG
 
 # A 32-byte SSZ chunk held as eight big-endian words instead of thirty-two
 # list cells, and the single hashing primitive SSZ merkleization needs.
 #
-# Hashing goes through the pinned BendHub package
+# Hashing goes through vendor/bend_sha256_pkg, the BendHub package
 # `0xda83506fb9f059ead7afcfa2f498df5f` (Giulio2002/bend-sha256), whose sole
 # production entry point takes a packed `Array<U32>` and a byte length and
 # returns eight packed words. Nothing on this path builds, walks or consumes a

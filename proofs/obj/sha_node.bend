@@ -2,15 +2,15 @@ import Base
 import ../../src/digest.bend as D
 import ../../vendor/bend_sha256/fips.bend as VF
 import ../../vendor/bend_sha256/state.bend as VS
-import 0xda83506fb9f059ead7afcfa2f498df5f/fips.bend as PF
-import 0xda83506fb9f059ead7afcfa2f498df5f/state.bend as PS
-import 0xda83506fb9f059ead7afcfa2f498df5f/packed_spec.bend as PSP
+import ../../vendor/bend_sha256_pkg/fips.bend as PF
+import ../../vendor/bend_sha256_pkg/state.bend as PS
+import ../../vendor/bend_sha256_pkg/packed_spec.bend as PSP
 import ../../proofs/compact/bits.bend as BT
 import ./sha_bridge.bend as SB
-import 0xda83506fb9f059ead7afcfa2f498df5f/buffer.bend as Buf
-import 0xda83506fb9f059ead7afcfa2f498df5f/sha256.bend as PKG
-import 0xda83506fb9f059ead7afcfa2f498df5f/LAWS.bend as PL
-import 0xda83506fb9f059ead7afcfa2f498df5f/CORRECTNESS.bend as PC
+import ../../vendor/bend_sha256_pkg/buffer.bend as Buf
+import ../../vendor/bend_sha256_pkg/sha256.bend as PKG
+import ../../vendor/bend_sha256_pkg/LAWS.bend as PL
+import ../../vendor/bend_sha256_pkg/CORRECTNESS.bend as PC
 import ../../spec/merkle.bend as M
 import ../../spec/primitives.bend as P
 

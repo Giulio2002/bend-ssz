@@ -137,7 +137,7 @@ review's broader scope qualifications are retained in [REVIEW.md](REVIEW.md).
 
 ## Reproduce
 
-The current toolchain is stock **Bend 2.0.25** (operator-authorized migration;
+The current toolchain is stock **Bend 2.0.28** (updated 2026-09-25;
 binary and Base hashes, the Linux host's clang for native builds, and the
 protected `automation/toolchain.json` pin that still names 2.0.16 are in
 [docs/TOOLCHAIN.md](docs/TOOLCHAIN.md); the editable pin is

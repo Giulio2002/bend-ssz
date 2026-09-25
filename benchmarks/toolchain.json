@@ -1,12 +1,12 @@
 {
-  "note": "Operator-authorized toolchain migration of 2026-09-22 (USER TOOLCHAIN OVERRIDE): stock upstream Bend 2.0.25 as installed by `bend update`, backed up at ~/.bend/bend-2.0.25-backup and reinstated unchanged. automation/toolchain.json (protected) still pins 2.0.16 and needs the hash-only update recorded in docs/TOOLCHAIN.md. Operator remote migration 2026-09-24: stock Linux x86_64 Bend 2.0.25, same Base bytes; only platform binary hash changed. Mac evidence remains historical.",
+  "note": "Stock upstream Bend 2.0.28 (2026-09-25), Linux x86_64 release bend-2.0.28-linux-x64.tar.gz from github.com/bendlang/bend; base.bend is byte-identical on every platform. Previous pin: 2.0.25 (Linux binary d9c0dad1..., Base e5639663...). automation/toolchain.json (protected) still pins 2.0.16; see docs/TOOLCHAIN.md.",
   "bend": {
     "path": "/Users/monkeair/.bend/bin/bend",
-    "sha256": "d9c0dad1f77be6a13dd8dcc16aef4f59047a956a2744f25d5c220cb8de384693"
+    "sha256": "871df0ae7b0895236e14a5c2dac4fa014fbe770c3470ee3f60f6dcfe8ae4cfcf"
   },
   "base": {
     "path": "/Users/monkeair/.bend/bend2/base.bend",
-    "sha256": "e5639663177f2de93ef34867c029698aa4e68a98d46629f0b15452b67b99d798"
+    "sha256": "22eea83911e2395f63594fea7c10ac0c1e5b548251681fc97cd7667e0eb7031b"
   },
-  "version": "2.0.25"
+  "version": "2.0.28"
 }
