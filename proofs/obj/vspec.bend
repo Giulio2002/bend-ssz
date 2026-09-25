@@ -604,3 +604,76 @@ def enc_len(+ps: +List<S.Part>, +ys: +List<U32>, +h: {allfix(ps) == True{} : Boo
     +e: {Layout.encoding(ps) == Some{ys} : Maybe<&2, +List<U32>>})
     -> {List.length(&2, U32, ys) == Layout.fixed_size(ps) : Nat}:
   enc_len_go(ps, ys, h, Bool.and(Layout.bytes_valid(ps), N.fits(4n, Nat.add(Layout.fixed_size(ps), List.length(&2, U32, Layout.payloads(ps))))), e)
+
+# ---- a container of fixed fields of words around ONE variable field ---------------------------
+
+def fpv(+pre: +List<+List<U32>>, +Y: +List<U32>, +post: +List<+List<U32>>) -> +List<S.Part>:
+  List.append(&2, S.Part, FX.fparts(pre), Con{S.Variable{Y}, FX.fparts(post)})
+
+law fpv_size:
+  for +pre: +List<+List<U32>>
+  for +Y: +List<U32>
+  for +post: +List<+List<U32>>
+  {Layout.fixed_size(fpv(pre, Y, post)) == Nat.add(List.length(&2, U32, FX.flat(pre)), 4n+List.length(&2, U32, FX.flat(post))) : Nat}
+def fpv_size(pre, Y, post):
+  match pre:
+    case Nil{}:
+      %Equal.sym(Nat, Layout.fixed_size(FX.fparts(post)), List.length(&2, U32, FX.flat(post)), fixed_size_fparts(post)) : {4n+_ == 4n+List.length(&2, U32, FX.flat(post)) : Nat}
+      {==}
+    case Con{+ws, +t}:
+      %Equal.sym(Nat, Layout.fixed_size(fpv(t, Y, post)), Nat.add(List.length(&2, U32, FX.flat(t)), 4n+List.length(&2, U32, FX.flat(post))), fpv_size(t, Y, post)) :
+        {Nat.add(List.length(&2, U32, FX.limbs(ws)), _) == Nat.add(List.length(&2, U32, List.append(&2, U32, FX.limbs(ws), FX.flat(t))), 4n+List.length(&2, U32, FX.flat(post))) : Nat}
+      %Equal.sym(Nat, List.length(&2, U32, List.append(&2, U32, FX.limbs(ws), FX.flat(t))), Nat.add(List.length(&2, U32, FX.limbs(ws)), List.length(&2, U32, FX.flat(t))), len_app(FX.limbs(ws), FX.flat(t))) :
+        {Nat.add(List.length(&2, U32, FX.limbs(ws)), Nat.add(List.length(&2, U32, FX.flat(t)), 4n+List.length(&2, U32, FX.flat(post)))) == Nat.add(_, 4n+List.length(&2, U32, FX.flat(post))) : Nat}
+      Equal.sym(Nat, Nat.add(Nat.add(List.length(&2, U32, FX.limbs(ws)), List.length(&2, U32, FX.flat(t))), 4n+List.length(&2, U32, FX.flat(post))),
+        Nat.add(List.length(&2, U32, FX.limbs(ws)), Nat.add(List.length(&2, U32, FX.flat(t)), 4n+List.length(&2, U32, FX.flat(post)))),
+        F.nat__add_assoc(List.length(&2, U32, FX.limbs(ws)), List.length(&2, U32, FX.flat(t)), 4n+List.length(&2, U32, FX.flat(post))))
+
+law fpv_pay:
+  for +pre: +List<+List<U32>>
+  for +Y: +List<U32>
+  for +post: +List<+List<U32>>
+  {Layout.payloads(fpv(pre, Y, post)) == List.append(&2, U32, Y, []) : +List<U32>}
+def fpv_pay(pre, Y, post):
+  match pre:
+    case Nil{}:
+      %Equal.sym(+List<U32>, Layout.payloads(FX.fparts(post)), [], payloads_fparts(post)) : {List.append(&2, U32, Y, _) == List.append(&2, U32, Y, []) : +List<U32>}
+      {==}
+    case Con{+ws, +t}: fpv_pay(t, Y, post)
+
+law fpv_fp:
+  for +pre: +List<+List<U32>>
+  for +Y: +List<U32>
+  for +post: +List<+List<U32>>
+  for +off: Nat
+  {Layout.fixed_parts(fpv(pre, Y, post), off) == List.append(&2, U32, FX.flat(pre), List.append(&2, U32, N.digits(4n, off), FX.flat(post))) : +List<U32>}
+def fpv_fp(pre, Y, post, off):
+  match pre:
+    case Nil{}:
+      %Equal.sym(+List<U32>, Layout.fixed_parts(FX.fparts(post), Nat.add(off, List.length(&2, U32, Y))), FX.flat(post), fixed_parts_fparts(post, Nat.add(off, List.length(&2, U32, Y)))) : {List.append(&2, U32, N.digits(4n, off), _) == List.append(&2, U32, N.digits(4n, off), FX.flat(post)) : +List<U32>}
+      {==}
+    case Con{+ws, +t}:
+      %Equal.sym(+List<U32>, Layout.fixed_parts(fpv(t, Y, post), off), List.append(&2, U32, FX.flat(t), List.append(&2, U32, N.digits(4n, off), FX.flat(post))), fpv_fp(t, Y, post, off)) : {List.append(&2, U32, FX.limbs(ws), _) == List.append(&2, U32, List.append(&2, U32, FX.limbs(ws), FX.flat(t)), List.append(&2, U32, N.digits(4n, off), FX.flat(post))) : +List<U32>}
+      Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, FX.limbs(ws), FX.flat(t)), List.append(&2, U32, N.digits(4n, off), FX.flat(post))),
+        List.append(&2, U32, FX.limbs(ws), List.append(&2, U32, FX.flat(t), List.append(&2, U32, N.digits(4n, off), FX.flat(post)))),
+        app_assoc(FX.limbs(ws), FX.flat(t), List.append(&2, U32, N.digits(4n, off), FX.flat(post))))
+
+law fpv_valid:
+  for +pre: +List<+List<U32>>
+  for +Ys: List<&2, U32>
+  for +post: +List<+List<U32>>
+  {Layout.bytes_valid(fpv(pre, FX.limbs(Ys), post)) == True{} : Bool}
+def fpv_valid(pre, Ys, post):
+  match pre:
+    case Nil{}: V.and_true(SP.bytes_domain(FX.limbs(Ys)), Layout.bytes_valid(FX.fparts(post)), FX.domain_limbs(Ys), FX.valid_fparts(post))
+    case Con{+ws, +t}: V.and_true(SP.bytes_domain(FX.limbs(ws)), Layout.bytes_valid(fpv(t, FX.limbs(Ys), post)), FX.domain_limbs(ws), fpv_valid(t, Ys, post))
+
+def enc_go(+pre: +List<+List<U32>>, +Ys: List<&2, U32>, +post: +List<+List<U32>>, +b: Bool,
+    +eb: {N.fits(4n, Nat.add(Layout.fixed_size(fpv(pre, FX.limbs(Ys), post)), List.length(&2, U32, Layout.payloads(fpv(pre, FX.limbs(Ys), post))))) == b : Bool},
+    +fit: {b == True{} : Bool})
+    -> {Layout.encoding(fpv(pre, FX.limbs(Ys), post)) == Some{List.append(&2, U32, Layout.fixed_parts(fpv(pre, FX.limbs(Ys), post), Layout.fixed_size(fpv(pre, FX.limbs(Ys), post))), Layout.payloads(fpv(pre, FX.limbs(Ys), post)))} : Maybe<&2, +List<U32>>}:
+  %Equal.sym(Bool, Layout.bytes_valid(fpv(pre, FX.limbs(Ys), post)), True{}, fpv_valid(pre, Ys, post)) :
+    {SP.optional(Bool.and(_, N.fits(4n, Nat.add(Layout.fixed_size(fpv(pre, FX.limbs(Ys), post)), List.length(&2, U32, Layout.payloads(fpv(pre, FX.limbs(Ys), post)))))), List.append(&2, U32, Layout.fixed_parts(fpv(pre, FX.limbs(Ys), post), Layout.fixed_size(fpv(pre, FX.limbs(Ys), post))), Layout.payloads(fpv(pre, FX.limbs(Ys), post)))) == Some{List.append(&2, U32, Layout.fixed_parts(fpv(pre, FX.limbs(Ys), post), Layout.fixed_size(fpv(pre, FX.limbs(Ys), post))), Layout.payloads(fpv(pre, FX.limbs(Ys), post)))} : Maybe<&2, +List<U32>>}
+  %Equal.sym(Bool, N.fits(4n, Nat.add(Layout.fixed_size(fpv(pre, FX.limbs(Ys), post)), List.length(&2, U32, Layout.payloads(fpv(pre, FX.limbs(Ys), post))))), True{}, Equal.trans(Bool, N.fits(4n, Nat.add(Layout.fixed_size(fpv(pre, FX.limbs(Ys), post)), List.length(&2, U32, Layout.payloads(fpv(pre, FX.limbs(Ys), post))))), b, True{}, eb, fit)) :
+    {SP.optional(Bool.and(True{}, _), List.append(&2, U32, Layout.fixed_parts(fpv(pre, FX.limbs(Ys), post), Layout.fixed_size(fpv(pre, FX.limbs(Ys), post))), Layout.payloads(fpv(pre, FX.limbs(Ys), post)))) == Some{List.append(&2, U32, Layout.fixed_parts(fpv(pre, FX.limbs(Ys), post), Layout.fixed_size(fpv(pre, FX.limbs(Ys), post))), Layout.payloads(fpv(pre, FX.limbs(Ys), post)))} : Maybe<&2, +List<U32>>}
+  {==}

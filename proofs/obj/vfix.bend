@@ -339,3 +339,24 @@ def limbs_app(a, b):
         {List.append(&2, U32, I.limb(h), _) == List.append(&2, U32, List.append(&2, U32, I.limb(h), FX.limbs(t)), FX.limbs(b)) : +List<U32>}
       Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, I.limb(h), FX.limbs(t)), FX.limbs(b)), List.append(&2, U32, I.limb(h), List.append(&2, U32, FX.limbs(t), FX.limbs(b))),
         VS.app_assoc(I.limb(h), FX.limbs(t), FX.limbs(b)))
+
+# ---- bounds for a field inside a range ------------------------------------------------------
+
+# k + i < P when k < W and W + i <= P.
+def in_lt(+k: Nat, +W: Nat, +i: Nat, +P: Nat, +hk: {Nat.is_lt(k, W) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(W, i), P) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(k, i), P) == True{} : Bool}:
+  F.nat__lt_le_trans(Nat.add(k, i), Nat.add(W, i), P, VB.lt_kk(k, W, i, hk), hb)
+
+# Wk + (k + i) <= P when Wk + k <= W and W + i <= P.
+def in_le(+Wk: Nat, +k: Nat, +W: Nat, +i: Nat, +P: Nat, +hk: {Nat.is_le(Nat.add(Wk, k), W) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(W, i), P) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(Wk, Nat.add(k, i)), P) == True{} : Bool}:
+  %F.nat__add_assoc(Wk, k, i) : {Nat.is_le(_, P) == True{} : Bool}
+  F.nat__le_trans(Nat.add(Nat.add(Wk, k), i), Nat.add(W, i), P, Order.add_right(Nat.add(Wk, k), W, i, hk), hb)
+
+# 4 (k + i) <= 2^(2 + d) when k + i <= 2^d.
+def in_q(+k: Nat, +i: Nat, +d: Nat, +h: {Nat.is_le(Nat.add(k, i), VB.pw(d)) == True{} : Bool})
+    -> {Nat.is_le(A.quad(Nat.add(k, i)), VB.pw(2n+d)) == True{} : Bool}:
+  F.nat__double_le(Nat.double(Nat.add(k, i)), Nat.double(VB.pw(d)), F.nat__double_le(Nat.add(k, i), VB.pw(d), h))
+
+def lt_le1(+k: Nat, +i: Nat, +P: Nat, +h: {Nat.is_lt(Nat.add(k, i), P) == True{} : Bool}) -> {Nat.is_le(Nat.add(k, i), P) == True{} : Bool}:
+  F.nat__lt_le(Nat.add(k, i), P, h)
