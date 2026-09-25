@@ -629,3 +629,9 @@ def slots_mone(n, i, j, dd, D, S, pf, hj):
           F.array__upd_slots(U32, dd, D, j, slot(S, i), le1_head(p, j, pw(dd), hj), pf)) :
         {lm(p, 1n+i, 1n+j, _, F.array__slots(U32, S)) == lm(p, 1n+i, 1n+j, F.spec_common__update(U32, F.array__slots(U32, D), j, slot(S, i)), F.array__slots(U32, S)) : List<&2, U32>}
       {==}
+
+def wt_eta(+k: Nat, +j: Nat, +W: List<&2, U32>, +h: {Nat.is_lt(j, len(W)) == True{} : Bool})
+    -> {VS.wtake(1n+k, wdr(j, W)) == Con{F.flat__nthc(W, j), VS.wtake(k, wdr(1n+j, W))} : List<&2, U32>}:
+  %Equal.sym(List<&2, U32>, wdr(j, W), Con{F.flat__nthc(W, j), wdr(1n+j, W)}, wdr_eta(j, W, h)) :
+    {VS.wtake(1n+k, _) == Con{F.flat__nthc(W, j), VS.wtake(k, wdr(1n+j, W))} : List<&2, U32>}
+  {==}

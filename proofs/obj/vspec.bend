@@ -373,3 +373,27 @@ law len_limbs_wtake2:
 def len_limbs_wtake2(k, W, hl):
   %wlen_wtake2(k, W, hl) : {List.length(&2, U32, FX.limbs(wtake(Nat.double(k), W))) == _ : Nat}
   len_limbs(wtake(Nat.double(k), W))
+
+# The first n bytes (as proofs/obj/words_spec.bend `btake`).
+def bt(n: Nat, xs: +List<U32>) -> +List<U32>:
+  match n:
+    case 0n: []
+    case 1n+p:
+      match xs:
+        case Nil{}: []
+        case Con{h, t}: h <> bt(p, t)
+
+# The first 4m bytes of the limbs of words are the limbs of the first m words.
+law bt_limbs:
+  for +m: Nat
+  for +W: List<&2, U32>
+  {bt(Nat.double(Nat.double(m)), FX.limbs(W)) == FX.limbs(wtake(m, W)) : +List<U32>}
+def bt_limbs(m, W):
+  match m W:
+    case 0n _: {==}
+    case 1n+ +p Nil{}: {==}
+    case 1n+ +p Con{+h, +t}:
+      %Equal.sym(+List<U32>, bt(Nat.double(Nat.double(p)), FX.limbs(t)), FX.limbs(wtake(p, t)), bt_limbs(p, t)) :
+        {U32.and(h, 255) <> U32.and(U32.shrn(h, 8n), 255) <> U32.and(U32.shrn(h, 16n), 255) <> U32.shrn(h, 24n) <> _ ==
+         U32.and(h, 255) <> U32.and(U32.shrn(h, 8n), 255) <> U32.and(U32.shrn(h, 16n), 255) <> U32.shrn(h, 24n) <> FX.limbs(wtake(p, t)) : +List<U32>}
+      {==}

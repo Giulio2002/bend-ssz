@@ -4,6 +4,7 @@ import ../../src/obj.bend as O
 import ../compact/found.bend as F
 import ../compact/arith.bend as A
 import ../compact/buf.bend as BF
+import ../compact/reads.bend as RD
 import ../../proofs/nat_order.bend as Order
 import ./vspec.bend as VS
 import ./vbuf.bend as VB
@@ -284,3 +285,50 @@ def wz_le(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat
     -> {Nat.is_le(U32.to_nat(WZ(L)), Nat.add(VD.s_rng(2n, YL(L)), 8n)) == True{} : Bool}:
   %Equal.sym(Nat, U32.to_nat(WZ(L)), Nat.add(VB.d3(VD.s_rng(5n, YL(L))), 8n), eWZ(L, k, hk, hy)) : {Nat.is_le(_, Nat.add(VD.s_rng(2n, YL(L)), 8n)) == True{} : Bool}
   Order.add_right(VB.d3(VD.s_rng(5n, YL(L))), VD.s_rng(2n, YL(L)), 8n, rng3_down(VD.s_rng(2n, YL(L))))
+
+# ---- lengths of whole u64 lists -------------------------------------------------------------
+
+law quad_mul:
+  for +q: Nat
+  {Nat.mul(q, 4n) == A.quad(q) : Nat}
+def quad_mul(q):
+  match q:
+    case 0n: {==}
+    case 1n+ +p:
+      %Equal.sym(Nat, Nat.mul(p, 4n), A.quad(p), quad_mul(p)) : {4n+_ == 4n+A.quad(p) : Nat}
+      {==}
+
+law quad_inv:
+  for +a: Nat
+  for +b: Nat
+  for +h: {Nat.is_le(A.quad(a), A.quad(b)) == True{} : Bool}
+  {Nat.is_le(a, b) == True{} : Bool}
+def quad_inv(a, b, h):
+  match a b:
+    case 0n _: Order.zero_le(b)
+    case 1n+p 0n: Empty.absurd({Nat.is_le(1n+p, 0n) == True{} : Bool}, F.logic__false_true(h))
+    case 1n+ +p 1n+ +q: quad_inv(p, q, h)
+
+# A length of 8c bytes has no bytes past a whole word.
+def and3_x8(+L: U32, +c: Nat, +e: {U32.to_nat(L) == VS.x8(c) : Nat}) -> {U32.and(L, 3) == 0 : U32}:
+  +q = U32.to_nat(U32.shrn(L, 2n))
+  +r = U32.to_nat(U32.and(L, 3))
+  +e1 = Equal.trans(Nat, Nat.add(Nat.mul(q, 4n), r), Nat.add(A.quad(q), r), Nat.add(Nat.mul(Nat.double(c), 4n), 0n),
+    Equal.cong(Nat, Nat, z => Nat.add(z, r), Nat.mul(q, 4n), A.quad(q), quad_mul(q)),
+    Equal.trans(Nat, Nat.add(A.quad(q), r), U32.to_nat(L), Nat.add(Nat.mul(Nat.double(c), 4n), 0n), Equal.sym(Nat, U32.to_nat(L), Nat.add(A.quad(q), r), split4(L)),
+      Equal.trans(Nat, U32.to_nat(L), VS.x8(c), Nat.add(Nat.mul(Nat.double(c), 4n), 0n), e,
+        Equal.trans(Nat, VS.x8(c), A.quad(Nat.double(c)), Nat.add(Nat.mul(Nat.double(c), 4n), 0n), VB.x8_d3(c),
+          Equal.trans(Nat, A.quad(Nat.double(c)), Nat.mul(Nat.double(c), 4n), Nat.add(Nat.mul(Nat.double(c), 4n), 0n), Equal.sym(Nat, Nat.mul(Nat.double(c), 4n), A.quad(Nat.double(c)), quad_mul(Nat.double(c))),
+            Equal.sym(Nat, Nat.add(Nat.mul(Nat.double(c), 4n), 0n), Nat.mul(Nat.double(c), 4n), F.nat__add_zero(Nat.mul(Nat.double(c), 4n))))))))
+  +hr = F.nat__le_lt_trans(r, 3n, 4n, RD.and_le(L, 3), {==})
+  F.u32__injective(U32.and(L, 3), 0, Pair.snd({q == Nat.double(c) : Nat}, {r == 0n : Nat}, VU.dm_unique(q, r, Nat.double(c), 0n, 4n, e1, hr, {==})))
+
+law rng2_x8:
+  for +c: Nat
+  {VD.s_rng(2n, 3n+VS.x8(c)) == Nat.double(c) : Nat}
+def rng2_x8(c):
+  match c:
+    case 0n: {==}
+    case 1n+ +p:
+      %Equal.sym(Nat, VD.s_rng(2n, 3n+VS.x8(p)), Nat.double(p), rng2_x8(p)) : {2n+_ == 2n+Nat.double(p) : Nat}
+      {==}
