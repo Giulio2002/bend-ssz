@@ -37,12 +37,25 @@ def BF(t: FD.array__Tree<U32>, +n: U32) -> B.Buf: UA.BF(t, n)
 # ---- the records ---------------------------------------------------------------------------------
 
 # the record whose words are the four-byte joins at y, y + 4, ...
+def hv0(+w0: U32, +w1: U32, +w2: U32, +w3: U32) -> S.Value: S.Sequence{S.Items{S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{w2, w3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}
+
+def hq0(+w0: U32, +w1: U32, +w2: U32, +w3: U32) -> {S.Sequence{S.Items{S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{w2, w3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}} == hv0(w0, w1, w2, w3) : S.Value}:
+  {==}
+
+def hp0(+w0: U32, +w1: U32, +w2: U32, +w3: U32) -> {Codec.parts(hv0(w0, w1, w2, w3), S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs([w0, w1, w2, w3])}]} : Maybe<&2, +List<S.Part>>}:
+  %hq0(w0, w1, w2, w3) : {Codec.parts(_, S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs([w0, w1, w2, w3])}]} : Maybe<&2, +List<S.Part>>}
+  F.container_fixed(["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}, S.Items{S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{w2, w3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}, [[w0, w1], [w2, w3]], 16n, [w0, w1, w2, w3], F.items_fixed(S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{w2, w3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}, S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}, F.limbs([w0, w1]), [S.Fixed{F.limbs([w2, w3])}], F.uint64_part(w0, w1), F.items_fixed(S.UnsignedValue{P.UInt{w2, w3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}, S.Unsigned{P.U64{}}, S.End{}, F.limbs([w2, w3]), [], F.uint64_part(w2, w3), {==})), {==}, {==}, {==})
+
 def RX(+t: FD.array__Tree<U32>, +y: Nat) -> T.PendingConsolidation: T.PendingConsolidation{O.U64{UR.RWN(t, y), UR.RWN(t, 4n+y)}, O.U64{UR.RWN(t, 8n+y), UR.RWN(t, 12n+y)}}
 
 # its spec value, and that value's parts: the limbs of those words
-def RVAL(+t: FD.array__Tree<U32>, +y: Nat) -> S.Value: S.Sequence{S.Items{S.UnsignedValue{P.UInt{UR.RWN(t, y), UR.RWN(t, 4n+y), 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}
+def RVAL(+t: FD.array__Tree<U32>, +y: Nat) -> S.Value: hv0(UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y))
+# (RVAL unfolded by a rewrite: comparing parts(RVAL(t, y), s) with parts(<its body>, s) evaluates the parts)
+def RVQ(+t: FD.array__Tree<U32>, +y: Nat) -> {hv0(UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y)) == RVAL(t, y) : S.Value}:
+  {==}
 def RPRF(+t: FD.array__Tree<U32>, +y: Nat) -> {Codec.parts(RVAL(t, y), S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(UR.RWS(4n, t, y))}]} : Maybe<&2, +List<S.Part>>}:
-  F.container_fixed(["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}, S.Items{S.UnsignedValue{P.UInt{UR.RWN(t, y), UR.RWN(t, 4n+y), 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}, [[UR.RWN(t, y), UR.RWN(t, 4n+y)], [UR.RWN(t, 8n+y), UR.RWN(t, 12n+y)]], 16n, [UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y)], F.items_fixed(S.UnsignedValue{P.UInt{UR.RWN(t, y), UR.RWN(t, 4n+y), 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}, S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}, F.limbs([UR.RWN(t, y), UR.RWN(t, 4n+y)]), [S.Fixed{F.limbs([UR.RWN(t, 8n+y), UR.RWN(t, 12n+y)])}], F.uint64_part(UR.RWN(t, y), UR.RWN(t, 4n+y)), F.items_fixed(S.UnsignedValue{P.UInt{UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}, S.Unsigned{P.U64{}}, S.End{}, F.limbs([UR.RWN(t, 8n+y), UR.RWN(t, 12n+y)]), [], F.uint64_part(UR.RWN(t, 8n+y), UR.RWN(t, 12n+y)), {==})), {==}, {==}, {==})
+  %RVQ(t, y) : {Codec.parts(_, S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(UR.RWS(4n, t, y))}]} : Maybe<&2, +List<S.Part>>}
+  hp0(UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y))
 
 # the records j, j + 1, ..., j + k written into a record tree D
 def RT(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<T.PendingConsolidation>, +t: FD.array__Tree<U32>, +x: Nat) -> FD.array__Tree<T.PendingConsolidation>:
@@ -170,6 +183,9 @@ def RITEMS(c: Nat, +t: FD.array__Tree<U32>, +y: Nat) -> S.Value:
     case 0n: S.EmptyItems{}
     case 1n+q: S.Items{RVAL(t, y), RITEMS(q, t, Nat.add(16n, y))}
 
+def RIT1(+q: Nat, +t: FD.array__Tree<U32>, +y: Nat) -> {S.Items{RVAL(t, y), RITEMS(q, t, Nat.add(16n, y))} == RITEMS(1n+q, t, y) : S.Value}:
+  {==}
+
 def CHUNKS(c: Nat, +t: FD.array__Tree<U32>, +y: Nat) -> +List<+List<U32>>:
   match c:
     case 0n: []
@@ -194,7 +210,8 @@ def prt_items(c, t, y):
   match c:
     case 0n: {==}
     case 1n+ +q:
-      F.cat_fixed(Codec.parts(RVAL(t, y), S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}), F.limbs(UR.RWS(4n, t, y)), Codec.parts(RITEMS(q, t, Nat.add(16n, y)), S.Repeat{S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}),
+      %RIT1(q, t, y) : {Codec.parts(_, S.Repeat{S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}) == Some{F.fparts(CHUNKS(1n+q, t, y))} : Maybe<&2, +List<S.Part>>}
+      F.items_rep(RVAL(t, y), RITEMS(q, t, Nat.add(16n, y)), S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, F.limbs(UR.RWS(4n, t, y)),
         F.fparts(CHUNKS(q, t, Nat.add(16n, y))), RPRF(t, y), prt_items(q, t, Nat.add(16n, y)))
 
 law flat_chunks:
