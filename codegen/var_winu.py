@@ -35,8 +35,10 @@ WBL = 'UW.WX(t, x, U32.to_nat(len))'
 TGT = f'Some{{[S.Variable{{{WBL}}}]}}'
 GOAL = f'{{CHKw({TXOA}) == {TRUE}}}'
 # union: arm window modules (by arm runtime type)
-ARMS = {'Gp4B0CA2906A': 'big_var_winx_Gp4B0CA2906A.bend', 'Gp66304057C3': 'big_var_winx_Gp66304057C3.bend'}
-UNIONS = ['GuAD91DEB870']
+ARMS = {'Gp4B0CA2906A': 'big_var_winx_Gp4B0CA2906A.bend', 'Gp66304057C3': 'big_var_winx_Gp66304057C3.bend', 'GpF350A3C486': 'var_winx_GpF350A3C486.bend'}
+# arms whose one spec part is fixed (their windows' specw / invw state S.Fixed)
+FIXARMS = {'GpF350A3C486': 1}
+UNIONS = ['GuAD91DEB870', 'GuA2212AE21F', 'Gu6DDF182530']
 
 
 def union_schema(name):
@@ -71,7 +73,7 @@ def module_text(U):
             .replace('import ../../spec/fulu_schemas.bend as Spec', 'import ./generic_specs.bend as Spec') for ln in W.HEADX]
     extra = ['import ./generic_specs.bend as GS', 'import ./vua_rd.bend as UR', 'import ./vua.bend as UA', 'import ./vbitl.bend as VBL',
              'import ./vfxg.bend as VXG', 'import ./vmul.bend as VM', 'import ./vmr.bend as VMR', 'import ../../spec/schema.bend as SS',
-             'import ../../proofs/decode_facts.bend as DF']
+             'import ../../proofs/decode_facts.bend as DF', 'import ../../proofs/decode_shape.bend as DS']
     have = {ln.split(' as ')[-1] for ln in imps}
     imps += [ln for ln in extra if ln.split(' as ')[-1] not in have]
     for i, rt in enumerate(rts):
@@ -214,9 +216,10 @@ def readw({CW}, +hchk: {GOAL}) -> {{{Tn}_read({BUF}, off, len) == ({BUF}, OBJw(d
         a('  match c:')
         a('    case True{}:')
         a(f'      +es = FD.u32alg__eq_of({SB}, {sels[i]}, ec)')
-        a(f'      +p = FD.logic__subst({MP}, m => {{Codec.tagged({sels[i]}, m) == Some{{[S.Variable{{{sels[i]} <> {YJ}}}]}} : {MP}}}, Some{{[S.Variable{{{YJ}}}]}}, '
+        PKi = 'S.Fixed' if rts[i] in FIXARMS else 'S.Variable'
+        a(f'      +p = FD.logic__subst({MP}, m => {{Codec.tagged({sels[i]}, m) == Some{{[S.Variable{{{sels[i]} <> {YJ}}}]}} : {MP}}}, Some{{[{PKi}{{{YJ}}}]}}, '
           f'Codec.parts(CH{i}.VALw(t, {XJ}, {LJ}), {arms[i]}),')
-        a(f'        Equal.sym({MP}, Codec.parts(CH{i}.VALw(t, {XJ}, {LJ}), {arms[i]}), Some{{[S.Variable{{{YJ}}}]}},')
+        a(f'        Equal.sym({MP}, Codec.parts(CH{i}.VALw(t, {XJ}, {LJ}), {arms[i]}), Some{{[{PKi}{{{YJ}}}]}},')
         a(f'          CH{i}.specw(d, t, n, {XJ}, {FJ}, {LJ}, eoJ({CWA}, h1), hd, hwJ({CWA}, h1), pf, hk)), {{==}})')
         a(f'      FD.logic__subst(U32, z => GS_({TXOA}, z), {sels[i]}, {SB}, Equal.sym(U32, {SB}, {sels[i]}, es), p)')
         if i + 1 < k:
@@ -272,25 +275,31 @@ def h1of({CW}, +sel: U32, +xs: +List<U32>, +ey: {{sel <> xs == {WBL} : +List<U32
         m = re.fullmatch(r'S\.ProgressiveContainer\{(\[.*?\]), (.*), (\[.*?\])\}', arms[i])
         assert m, arms[i]
         CKi = f'Bool.and(U32.is_le(1, len), K0(U32.is_eq(z, {sels[0]}), z, {TXOA}))'
-        a(f'def ivv{i}({CW}, +sel: U32, +w: S.Value, +xs: +List<U32>, +em: {{Codec.parts(w, {arms[i]}) == Some{{[S.Variable{{xs}}]}} : {MP}}},')
+        PKi = 'S.Fixed' if rts[i] in FIXARMS else 'S.Variable'
+        a(f'def ivv{i}({CW}, +sel: U32, +w: S.Value, +xs: +List<U32>, +em: {{Codec.parts(w, {arms[i]}) == Some{{[{PKi}{{xs}}]}} : {MP}}},')
         a(f'    +ey: {{sel <> xs == {WBL} : +List<U32>}}, +es: {{{sels[i]} == sel : U32}}) -> {GOAL}:')
         a(f'  +h1 = h1of({CWA}, sel, xs, ey)')
         a(f'  +e2 = Equal.trans(+List<U32>, sel <> xs, {WBL}, {SB} <> {YJ}, ey, ewx({CWA}, h1))')
         a(f'  +eh = Equal.cong(+List<U32>, U32, z => HDL(z), sel <> xs, {SB} <> {YJ}, e2)')
         a(f'  +et = Equal.cong(+List<U32>, +List<U32>, z => TLL(z), sel <> xs, {SB} <> {YJ}, e2)')
-        a(f'  +ew = FD.logic__subst(+List<U32>, z => {{Codec.parts(w, GS.{rts[i]}()) == Some{{[S.Variable{{z}}]}} : {MP}}}, xs, {YJ}, et, em)')
+        a(f'  +ew = FD.logic__subst(+List<U32>, z => {{Codec.parts(w, GS.{rts[i]}()) == Some{{[{PKi}{{z}}]}} : {MP}}}, xs, {YJ}, et, em)')
         a(f'  +hc = CH{i}.invw(d, t, n, {XJ}, {FJ}, {LJ}, eoJ({CWA}, h1), hd, hwJ({CWA}, h1), pf, w, ew)')
         a(f'  +p = FD.logic__and_intro(U32.is_le(1, len), CH{i}.CHKw(t, {XJ}, {FJ}, {LJ}), VMR.u32le(1, len, h1), hc)')
         a(f'  FD.logic__subst(U32, z => {{{CKi} == {TRUE}}}, {sels[i]}, {SB}, Equal.trans(U32, {sels[i]}, sel, {SB}, es, eh), p)')
         a('')
-        a(f'def ivt{i}({CW}, +sel: U32, +w: S.Value, +m: {MP}, hf: DF.single_result(None{{}}, m), +em: {{Codec.parts(w, {arms[i]}) == m : {MP}}},')
+        WD = f'Some{{{FIXARMS[rts[i]]}n}}' if rts[i] in FIXARMS else 'None{}'
+        a(f'def ivt{i}({CW}, +sel: U32, +w: S.Value, +m: {MP}, hf: DF.single_result({WD}, m), +em: {{Codec.parts(w, {arms[i]}) == m : {MP}}},')
         a(f'    +e: {{Codec.tagged(sel, m) == {TGT} : {MP}}}, +es: {{{sels[i]} == sel : U32}}) -> {GOAL}:')
         a('  match m:')
         a(f'    case None{{}}: {AB("e")}')
         a(f'    case Some{{Nil{{}}}}: {AB("e")}')
-        a(f'    case Some{{Con{{S.Fixed{{+xs}}, Nil{{}}}}}}:')
-        a(f'      Empty.absurd({GOAL}, FD.logic__none_some(Nat, List.length(&2, U32, xs), hf))')
-        a(f'    case Some{{Con{{S.Variable{{+xs}}, Nil{{}}}}}}: ivv{i}({CWA}, sel, w, xs, em, var_inj(sel <> xs, {WBL}, e), es)')
+        if rts[i] in FIXARMS:
+            a(f'    case Some{{Con{{S.Fixed{{+xs}}, Nil{{}}}}}}: ivv{i}({CWA}, sel, w, xs, em, var_inj(sel <> xs, {WBL}, e), es)')
+            a(f'    case Some{{Con{{S.Variable{{+xs}}, Nil{{}}}}}}: Empty.absurd({GOAL}, FD.logic__none_some(Nat, {FIXARMS[rts[i]]}n, Equal.sym(Maybe<&2, Nat>, Some{{{FIXARMS[rts[i]]}n}}, None{{}}, hf)))')
+        else:
+            a(f'    case Some{{Con{{S.Fixed{{+xs}}, Nil{{}}}}}}:')
+            a(f'      Empty.absurd({GOAL}, FD.logic__none_some(Nat, List.length(&2, U32, xs), hf))')
+            a(f'    case Some{{Con{{S.Variable{{+xs}}, Nil{{}}}}}}: ivv{i}({CWA}, sel, w, xs, em, var_inj(sel <> xs, {WBL}, e), es)')
         a(f'    case Some{{Con{{S.Fixed{{+xs}}, Con{{+h2, +r2}}}}}}: {AB("e")}')
         a(f'    case Some{{Con{{S.Variable{{+xs}}, Con{{+h2, +r2}}}}}}: {AB("e")}')
         a('')
@@ -300,7 +309,8 @@ def h1of({CW}, +sel: U32, +xs: +List<U32>, +ey: {{sel <> xs == {WBL} : +List<U32
         a(f'def ivs{i}({CW}, +sel: U32, +w: S.Value, +b: Bool, +eb: {{U32.is_eq({sels[i]}, sel) == b : Bool}},')
         a(f'    +e: {{Codec.with_option(SS.selected(b, {arms[i]}, {rest}), s => Codec.tagged(sel, Codec.parts(w, s))) == {TGT} : {MP}}}) -> {GOAL}:')
         a('  match b:')
-        a(f'    case True{{}}: ivt{i}({CWA}, sel, w, Codec.parts(w, {arms[i]}), vsingleP(w, {m.group(1)}, {m.group(2)}, {m.group(3)}, {{==}}), {{==}}, e, FD.u32alg__eq_of({sels[i]}, sel, eb))')
+        FACT = f'DS.facts(w, {arms[i]}, {{==}})' if rts[i] in FIXARMS else f'vsingleP(w, {m.group(1)}, {m.group(2)}, {m.group(3)}, {{==}})'
+        a(f'    case True{{}}: ivt{i}({CWA}, sel, w, Codec.parts(w, {arms[i]}), {FACT}, {{==}}, e, FD.u32alg__eq_of({sels[i]}, sel, eb))')
         if i + 1 < k:
             a(f'    case False{{}}: ivs{i + 1}({CWA}, sel, w, U32.is_eq({sels[i + 1]}, sel), {{==}}, e)')
         else:
@@ -318,6 +328,98 @@ def h1of({CW}, +sel: U32, +xs: +List<U32>, +ey: {{sel <> xs == {WBL} : +List<U32
     a('')
     head = imps + ['', HDR, f'# {U}: a CompatibleUnion at a window of any byte offset (the selector byte, then the arm\'s window): the interface of proofs/obj/vua_win.bend.', '']
     return '\n'.join(head) + '\n'.join(w) + '\n'
+
+
+def fixw_text(X):
+    """A progressive container of one uint8 (X) at a window of any byte offset: its checks
+    (len = 1), reader, value and FIXED spec part (one byte), for the unions' arms."""
+    Tn = f'T.{X}'
+    YW = 'UW.WX(t, x, U32.to_nat(len))'
+    FG = f'{{CHKw({TXOA}) == {TRUE}}}'
+    imps = [ln.replace('import ../../types/fulu_obj.bend as T', 'import ../../types/generic_obj.bend as T')
+            .replace('import ../../spec/fulu_schemas.bend as Spec', 'import ./generic_specs.bend as Spec') for ln in W.HEADX]
+    have = {ln.split(' as ')[-1] for ln in imps}
+    imps += [ln for ln in ['import ./generic_specs.bend as GS', 'import ./vua_rd.bend as UR', 'import ./vua.bend as UA', 'import ./vfx_u8.bend as FX',
+                           'import ./sub_pack.bend as SP2', 'import ../../proofs/decode_shape.bend as DS', 'import ../../proofs/decode_facts.bend as DF']
+             if ln.split(' as ')[-1] not in have]
+    body = f"""
+# One byte: the window's length is 1.
+def CHKw({TXO}) -> Bool: U32.is_eq(len, 1)
+
+def okl({CW}, +a: Bool) -> {{{Tn}_ok_len(a, {BUF}, off) == ({BUF}, a) : B.Buf & Bool}}:
+  match a:
+    case True{{}}: {{==}}
+    case False{{}}: {{==}}
+
+# The validator on the window returns the buffer and CHKw.
+def ok_evalw({CW}) -> {{{Tn}_ok({BUF}, off, len) == ({BUF}, CHKw({TXOA})) : B.Buf & Bool}}: okl({CWA}, U32.is_eq(len, 1))
+
+def el1({TXO}, +h: {FG}) -> {{U32.to_nat(len) == 1n : Nat}}: Equal.cong(U32, Nat, z => U32.to_nat(z), len, 1, FD.u32alg__eq_of(len, 1, h))
+def hb1({CW}, +h: {FG}) -> {{Nat.is_le(Nat.add(x, 1n), {PW}) == {TRUE}}}:
+  FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), {PW}) == {TRUE}}}, U32.to_nat(len), 1n, el1({TXOA}, h), hw)
+
+def OBJw(+d: Nat, {TXO}) -> {Tn}: {Tn}{{FX.OBJ(d, t, x)}}
+
+# The reader on the window, when the checks hold.
+def readw({CW}, +hchk: {FG}) -> {{{Tn}_read({BUF}, off, len) == ({BUF}, OBJw(d, {TXOA})) : B.Buf & {Tn}}}:
+  +e0 = Equal.trans(Nat, U32.to_nat(U32.add(off, 0)), U32.to_nat(off), x, Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(off, 0), off, FD.u32alg__add_zero(off)), eo)
+  %Equal.sym(B.Buf & U32, T.u8_read({BUF}, U32.add(off, 0), 1), ({BUF}, FX.OBJ(d, t, x)), FX.rdx(d, t, n, U32.add(off, 0), x, e0, hd, pf, hb1({CWA}, hchk))) :
+    {{{Tn}_rd0(off, len, _) == ({BUF}, OBJw(d, {TXOA})) : B.Buf & {Tn}}}
+  {{==}}
+
+def VALw(+t: {TR}, +x: Nat, +len: U32) -> S.Value: S.Sequence{{S.Items{{FX.VAL(t, x), S.EmptyItems{{}}}}}}
+
+# The spec parts of the value: one FIXED part, the window's byte.
+def specw({CW}, +hchk: {FG}) -> {{Codec.parts(VALw(t, x, len), GS.{X}()) == Some{{[S.Fixed{{{YW}}}]}} : {MP}}}:
+  +hb = hb1({CWA}, hchk)
+  %Equal.sym(Nat, U32.to_nat(len), 1n, el1({TXOA}, hchk)) : {{Codec.parts(VALw(t, x, len), GS.{X}()) == Some{{[S.Fixed{{UW.WX(t, x, _)}}]}} : {MP}}}
+  %Equal.sym({MP}, Codec.parts(S.Items{{FX.VAL(t, x), S.EmptyItems{{}}}}, S.Chain{{S.Unsigned{{P.U8{{}}}}, S.End{{}}}}), Some{{[S.Fixed{{UW.WX(t, x, 1n)}}]}},
+      F.cat_fixed(Codec.parts(FX.VAL(t, x), S.Unsigned{{P.U8{{}}}}), UW.WX(t, x, 1n), Codec.parts(S.EmptyItems{{}}, S.End{{}}), [],
+        FX.prt(d, t, x, pf, hb, S.Unsigned{{P.U8{{}}}}, {{==}}), {{==}})) :
+    {{Codec.aggregate(_, SS.fixed_size(S.Chain{{S.Unsigned{{P.U8{{}}}}, S.End{{}}}})) == Some{{[S.Fixed{{UW.WX(t, x, 1n)}}]}} : {MP}}}
+  %VS.app_nil(UW.WX(t, x, 1n)) :
+    {{Codec.aggregate(Some{{[S.Fixed{{UW.WX(t, x, 1n)}}]}}, Some{{1n}}) == Some{{[S.Fixed{{_}}]}} : {MP}}}
+  SP2.agg([S.Fixed{{UW.WX(t, x, 1n)}}], 1n, 1n, {{==}},
+    FD.logic__subst(+List<U32>, z => {{SP.bytes_domain(z) == {TRUE}}}, UW.WX(t, x, 1n), SP2.fcat([S.Fixed{{UW.WX(t, x, 1n)}}]),
+      Equal.sym(+List<U32>, SP2.fcat([S.Fixed{{UW.WX(t, x, 1n)}}]), UW.WX(t, x, 1n), VS.app_nil(UW.WX(t, x, 1n))), UW.domWX(t, x, 1n)),
+    FD.logic__subst(+List<U32>, z => {{List.length(&2, U32, z) == 1n : Nat}}, UW.WX(t, x, 1n), SP2.fcat([S.Fixed{{UW.WX(t, x, 1n)}}]),
+      Equal.sym(+List<U32>, SP2.fcat([S.Fixed{{UW.WX(t, x, 1n)}}]), UW.WX(t, x, 1n), VS.app_nil(UW.WX(t, x, 1n))), UW.lenWX(d, t, x, 1n, pf, hb)),
+    {{==}})
+
+# Every value whose spec part is the window's bytes (one fixed part) passes the checks.
+def MN(m: Maybe<&2, Nat>) -> Nat:
+  match m:
+    case None{{}}: 0n
+    case Some{{k}}: k
+def FXS(ps: +List<S.Part>) -> +List<U32>:
+  match ps:
+    case Con{{S.Fixed{{xs}}, r}}: xs
+    case _: []
+
+def ivp({CW}, +ps: +List<S.Part>, hf: DF.single(Some{{1n}}, ps), +ep: {{ps == [S.Fixed{{{YW}}}] : +List<S.Part>}}) -> {FG}:
+  match ps:
+    case Nil{{}}: Empty.absurd({FG}, hf)
+    case Con{{S.Fixed{{+xs}}, Nil{{}}}}:
+      +ex = Equal.cong(+List<S.Part>, +List<U32>, z => FXS(z), [S.Fixed{{xs}}], [S.Fixed{{{YW}}}], ep)
+      +l1 = Equal.cong(Maybe<&2, Nat>, Nat, z => MN(z), Some{{List.length(&2, U32, xs)}}, Some{{1n}}, Equal.sym(Maybe<&2, Nat>, Some{{1n}}, Some{{List.length(&2, U32, xs)}}, hf))
+      +el = Equal.trans(Nat, U32.to_nat(len), List.length(&2, U32, {YW}), 1n, Equal.sym(Nat, List.length(&2, U32, {YW}), U32.to_nat(len), UW.lenWX(d, t, x, U32.to_nat(len), pf, hw)),
+        FD.logic__subst(+List<U32>, z => {{List.length(&2, U32, z) == 1n : Nat}}, xs, {YW}, ex, l1))
+      FD.u32alg__eq_true(len, 1, FD.u32__injective(len, 1, el))
+    case Con{{S.Variable{{+xs}}, Nil{{}}}}: Empty.absurd({FG}, FD.logic__none_some(Nat, 1n, Equal.sym(Maybe<&2, Nat>, Some{{1n}}, None{{}}, hf)))
+    case Con{{S.Fixed{{+xs}}, Con{{+h2, +r2}}}}: Empty.absurd({FG}, hf)
+    case Con{{S.Variable{{+xs}}, Con{{+h2, +r2}}}}: Empty.absurd({FG}, hf)
+
+def ivf({CW}, +v: S.Value, +m: {MP}, hf: DF.single_result(Some{{1n}}, m),
+    +e: {{m == Some{{[S.Fixed{{{YW}}}]}} : {MP}}}) -> {FG}:
+  match m:
+    case None{{}}: Empty.absurd({FG}, FD.logic__none_some(+List<S.Part>, [S.Fixed{{{YW}}}], e))
+    case Some{{+ps}}: ivp({CWA}, ps, hf, FD.logic__some_inj(+List<S.Part>, ps, [S.Fixed{{{YW}}}], e))
+
+def invw({CW}, +v: S.Value, +e: {{Codec.parts(v, GS.{X}()) == Some{{[S.Fixed{{{YW}}}]}} : {MP}}}) -> {FG}:
+  ivf({CWA}, v, Codec.parts(v, GS.{X}()), DS.facts(v, GS.{X}(), {{==}}), e)
+"""
+    head = imps + ['import ../../spec/schema.bend as SS', '', HDR, f'# {X}: a progressive container of one uint8 at a window of any byte offset (its one part fixed).', '']
+    return '\n'.join(head) + W.COMMONX + body
 
 
 def chain_suffix(arms, i):
@@ -380,7 +482,7 @@ def rej_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U3
 
 
 def outputs(no_big=False):
-    out = {}
+    out = {ROOT / 'proofs/obj/var_winx_GpF350A3C486.bend': fixw_text('GpF350A3C486')}
     for U in UNIONS:
         wm = f'var_winx_{U}.bend'
         out[ROOT / 'proofs/obj' / wm] = module_text(U)
