@@ -24,12 +24,40 @@ import schema  # noqa: E402
 import var_laws as VLW  # noqa: E402
 
 LISTS = [('ExecutionRequests', 'deposits'), ('ExecutionRequests', 'withdrawals'), ('ExecutionRequests', 'consolidations'),
-         ('BeaconBlockBody', 'voluntary_exits'), ('BeaconBlockBody', 'bls_to_execution_changes'), ('ExecutionPayload', 'withdrawals')]
+         ('BeaconBlockBody', 'voluntary_exits'), ('BeaconBlockBody', 'bls_to_execution_changes'), ('ExecutionPayload', 'withdrawals'),
+         ('BeaconState', 'eth1_data_votes'), ('BeaconState', 'historical_summaries'), ('BeaconState', 'pending_deposits'),
+         ('BeaconState', 'pending_partial_withdrawals'), ('BeaconState', 'pending_consolidations')]
+
+# A closed limit above this is evaluated only by checkq --big (stock Bend's stack holds unary
+# numbers of a few thousand): such modules are big_ files.
+BIG_LIM = 8192
+
+
+def sym_depth(text, RS, KL):
+    """rd_go's bound on the record storage depth from the window (count <= len <= 2^(d+2)),
+    not from the closed limit (whose unary value exhausts the checker's memory)."""
+    T = 'True{} : Bool'
+    hcp = f'      +hcp = VD.wd_cover(NN(len), {KL}n, {{==}}, FD.nat__le_trans(c, U32.to_nat('
+    a = text.index(hcp)
+    text = text[:a] + (f'      +hcN = FD.logic__subst(Nat, z => {{Nat.is_le(c, z) == {T}}}, VB.pw(2n+d), O.pow2n(2n+d), VD.s_pow2_eq(2n+d),\n'
+                       f'        FD.nat__le_trans(c, Nat.mul(c, {RS}n), VB.pw(2n+d), VRL.le_mul(c, {RS - 1}n),\n'
+                       f'          FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(2n+d)) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec,\n'
+                       f'            FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw))))\n'
+                       f'      +hcp = VD.wd_cover(NN(len), 2n+d, FD.nat__lt_le(d, 30n, FD.nat__lt_trans(d, 28n, 30n, hd, {{==}})), hcN)\n') + text[text.index('\n', a) + 1:]
+    hdd = '      +hdd = FD.nat__le_lt_trans(B.words_depth(NN(len)), '
+    a = text.index(hdd)
+    text = text[:a] + '      +hdd = FD.nat__le_lt_trans(B.words_depth(NN(len)), 2n+d, 32n, VD.wd_min(NN(len), 2n+d, hcN), FD.nat__lt_trans(d, 28n, 30n, hd, {==}))\n' + text[text.index('\n', a) + 1:]
+    assert f'O.pow2n({KL}n)' not in text
+    return text
+
+
+def winx_name(p, LIM):
+    return f'{"big_" if LIM > BIG_LIM else ""}var_winx_{p}.bend'
 
 # lists of boxed records (codegen/var_rlist_box.py)
 BOXLISTS = [('BeaconBlockBody', 'proposer_slashings'), ('BeaconBlockBody', 'deposits')]
 # packed lists of byte vectors (codegen/var_rlist_bv.py)
-BVLISTS = [('BeaconBlockBody', 'blob_kzg_commitments')]
+BVLISTS = [('BeaconBlockBody', 'blob_kzg_commitments'), ('BeaconState', 'historical_roots')]
 
 HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
         'import ../../types/fulu_obj.bend as T', 'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P',
@@ -423,7 +451,10 @@ def outputs():
            ROOT / 'proofs/obj/vrc.bend': (ROOT / 'codegen/vrc.bend.in').read_text()}
     for parent, field in LISTS:
         I = info(g, names, parent, field)
-        out[ROOT / f'proofs/obj/var_winx_{I["p"]}.bend'] = list_text(g, names, parent, field)
+        txt = list_text(g, names, parent, field)
+        if I['LIM'] > BIG_LIM:
+            txt = sym_depth(txt, I['RS'], I['KL'])
+        out[ROOT / f'proofs/obj/{winx_name(I["p"], I["LIM"])}'] = txt
     import var_rlist_box as BX
     out[ROOT / 'proofs/obj/vua_fixb.bend'] = BX.fixb_module(g, [dict(names[pa].fields)[f].elem for pa, f in BOXLISTS])
     for parent, field in BOXLISTS:
@@ -435,8 +466,8 @@ def outputs():
     for parent, field in BVLISTS:
         ft = dict(names[parent].fields)[field]
         B, N, p = ft.elem.fixed_size(), ft.size, g.shape(ft).p
-        out[ROOT / f'proofs/obj/var_winx_{p}.bend'] = BV.bvx_text(HEAD, VWN.zeros_at_text, inv_text, p, B, N, f'S.ByteVector{{{B}n}}',
-                                                                  f'S.ListOf{{S.ByteVector{{{B}n}}, U32.to_nat({N})}}')
+        out[ROOT / f'proofs/obj/{winx_name(p, N)}'] = BV.bvx_text(HEAD, VWN.zeros_at_text, inv_text, p, B, N, f'S.ByteVector{{{B}n}}',
+                                                                  f'S.ListOf{{S.ByteVector{{{B}n}}, U32.to_nat({N})}}', N > BIG_LIM)
     import var_rlist_er as ER
     LS = []
     for field in ('deposits', 'withdrawals', 'consolidations'):
