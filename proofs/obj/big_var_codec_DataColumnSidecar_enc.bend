@@ -23,6 +23,7 @@ import ./vfix.bend as VF
 import ./vlist.bend as VL
 import ./vmul.bend as VM
 import ./vmv.bend as VV
+import ./vadd.bend as VA
 import ./venc.bend as VE
 import ./venc2.bend as V2
 import ./vme.bend as VME
@@ -43,29 +44,295 @@ def M2(+c2: Nat) -> Nat: VM.mulE(12n, c2)
 def Q1(+c0: Nat) -> Nat: Nat.add(89n, M0(c0))
 def Q2(+c0: Nat, +c1: Nat) -> Nat: Nat.add(Q1(c0), M1(c1))
 def QN(+c0: Nat, +c1: Nat, +c2: Nat) -> Nat: Nat.add(Q2(c0, c1), M2(c2))
-def MX0() -> Nat: VM.mulE(512n, U32.to_nat(4096))
-def MX1() -> Nat: VM.mulE(12n, U32.to_nat(4096))
-def QX() -> Nat: Nat.add(Nat.add(Nat.add(89n, MX0()), MX1()), MX1())
 def S1(+N0: U32) -> U32: U32.add(356, N0)
 def S2(+N0: U32, +N1: U32) -> U32: U32.add(S1(N0), N1)
 def S3(+N0: U32, +N1: U32, +N2: U32) -> U32: U32.add(S2(N0, N1), N2)
 def DO(+N0: U32, +N1: U32, +N2: U32) -> Nat: B.words_depth(VC.nwu(S3(N0, N1, N2)))
 
-# the closed bounds (big)
-def cQ() -> {Nat.is_le(Nat.add(31n, A.quad(QX())), VB.pw(24n)) == True{} : Bool}: {==}
-def cS() -> {Nat.is_le(A.quad(QX()), U32.to_nat(16777216)) == True{} : Bool}: {==}
-def cD() -> {Nat.is_le(QX(), O.pow2n(23n)) == True{} : Bool}: {==}
-def cH0() -> {Nat.is_le(A.quad(MX0()), U32.to_nat(8388608)) == True{} : Bool}: {==}
-def cH1() -> {Nat.is_le(A.quad(MX1()), U32.to_nat(196608)) == True{} : Bool}: {==}
+
+# ---- the closed bounds, on U32 words ------------------------------------------------------------
+# Unary Nat arithmetic on these millions costs tens of seconds (and a def compared with its body
+# evaluates the number): every closed quantity is U32.to_nat of a word, sums and quads go through
+# VA.add_nc (the carry is decided on the words), comparisons through VA.le_nat.
+
+def dblw(+w: U32, +hc: {VA.CY(w, w) == False{} : Bool}) -> {Nat.double(U32.to_nat(w)) == U32.to_nat(U32.add(w, w)) : Nat}:
+  +n = U32.to_nat(w)
+  Equal.trans(Nat, Nat.double(n), Nat.add(n, Nat.add(n, 0n)), U32.to_nat(U32.add(w, w)), FD.u32__double_pow(n),
+    Equal.trans(Nat, Nat.add(n, Nat.add(n, 0n)), Nat.add(n, n), U32.to_nat(U32.add(w, w)),
+      Equal.cong(Nat, Nat, z => Nat.add(n, z), Nat.add(n, 0n), n, FD.nat__add_zero(n)), Equal.sym(Nat, U32.to_nat(U32.add(w, w)), Nat.add(n, n), VA.add_nc(w, w, hc))))
+
+def quadw(+w: U32, +h1: {VA.CY(w, w) == False{} : Bool}, +h2: {VA.CY(U32.add(w, w), U32.add(w, w)) == False{} : Bool})
+    -> {A.quad(U32.to_nat(w)) == U32.to_nat(U32.add(U32.add(w, w), U32.add(w, w))) : Nat}:
+  Equal.trans(Nat, Nat.double(Nat.double(U32.to_nat(w))), Nat.double(U32.to_nat(U32.add(w, w))), U32.to_nat(U32.add(U32.add(w, w), U32.add(w, w))),
+    Equal.cong(Nat, Nat, z => Nat.double(z), Nat.double(U32.to_nat(w)), U32.to_nat(U32.add(w, w)), dblw(w, h1)), dblw(U32.add(w, w), h2))
+
+# a Nat bound z <= to_nat(b) from the words: to_nat(a) == z and a <= b
+def lew(+z: Nat, +a: U32, +b: U32, +e: {U32.to_nat(a) == z : Nat}, +h: {U32.is_le(a, b) == True{} : Bool}) -> {Nat.is_le(z, U32.to_nat(b)) == True{} : Bool}:
+  FD.logic__subst(Nat, y => {Nat.is_le(y, U32.to_nat(b)) == True{} : Bool}, U32.to_nat(a), z, e, VA.le_nat(a, b, h))
+
+def pws_s(+k: Nat, +k1: Nat, +ek: {1n+k == k1 : Nat}, +w: U32, +e: {VB.pw(k) == U32.to_nat(w) : Nat},
+    +hc: {VA.CY(w, w) == False{} : Bool}) -> {VB.pw(k1) == U32.to_nat(U32.add(w, w)) : Nat}:
+  %ek : {VB.pw(_) == U32.to_nat(U32.add(w, w)) : Nat}
+  Equal.trans(Nat, Nat.double(VB.pw(k)), Nat.double(U32.to_nat(w)), U32.to_nat(U32.add(w, w)),
+    Equal.cong(Nat, Nat, z => Nat.double(z), VB.pw(k), U32.to_nat(w), e), dblw(w, hc))
+
+def pws0() -> {VB.pw(0n) == U32.to_nat(1) : Nat}: {==}
+
+def pws1() -> {VB.pw(1n) == U32.to_nat(2) : Nat}:
+  Equal.trans(Nat, VB.pw(1n), U32.to_nat(U32.add(1, 1)), U32.to_nat(2), pws_s(0n, 1n, {==}, 1, pws0(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(1, 1), 2, {==}))
+
+def pws2() -> {VB.pw(2n) == U32.to_nat(4) : Nat}:
+  Equal.trans(Nat, VB.pw(2n), U32.to_nat(U32.add(2, 2)), U32.to_nat(4), pws_s(1n, 2n, {==}, 2, pws1(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(2, 2), 4, {==}))
+
+def pws3() -> {VB.pw(3n) == U32.to_nat(8) : Nat}:
+  Equal.trans(Nat, VB.pw(3n), U32.to_nat(U32.add(4, 4)), U32.to_nat(8), pws_s(2n, 3n, {==}, 4, pws2(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(4, 4), 8, {==}))
+
+def pws4() -> {VB.pw(4n) == U32.to_nat(16) : Nat}:
+  Equal.trans(Nat, VB.pw(4n), U32.to_nat(U32.add(8, 8)), U32.to_nat(16), pws_s(3n, 4n, {==}, 8, pws3(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(8, 8), 16, {==}))
+
+def pws5() -> {VB.pw(5n) == U32.to_nat(32) : Nat}:
+  Equal.trans(Nat, VB.pw(5n), U32.to_nat(U32.add(16, 16)), U32.to_nat(32), pws_s(4n, 5n, {==}, 16, pws4(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(16, 16), 32, {==}))
+
+def pws6() -> {VB.pw(6n) == U32.to_nat(64) : Nat}:
+  Equal.trans(Nat, VB.pw(6n), U32.to_nat(U32.add(32, 32)), U32.to_nat(64), pws_s(5n, 6n, {==}, 32, pws5(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(32, 32), 64, {==}))
+
+def pws7() -> {VB.pw(7n) == U32.to_nat(128) : Nat}:
+  Equal.trans(Nat, VB.pw(7n), U32.to_nat(U32.add(64, 64)), U32.to_nat(128), pws_s(6n, 7n, {==}, 64, pws6(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(64, 64), 128, {==}))
+
+def pws8() -> {VB.pw(8n) == U32.to_nat(256) : Nat}:
+  Equal.trans(Nat, VB.pw(8n), U32.to_nat(U32.add(128, 128)), U32.to_nat(256), pws_s(7n, 8n, {==}, 128, pws7(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(128, 128), 256, {==}))
+
+def pws9() -> {VB.pw(9n) == U32.to_nat(512) : Nat}:
+  Equal.trans(Nat, VB.pw(9n), U32.to_nat(U32.add(256, 256)), U32.to_nat(512), pws_s(8n, 9n, {==}, 256, pws8(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(256, 256), 512, {==}))
+
+def pws10() -> {VB.pw(10n) == U32.to_nat(1024) : Nat}:
+  Equal.trans(Nat, VB.pw(10n), U32.to_nat(U32.add(512, 512)), U32.to_nat(1024), pws_s(9n, 10n, {==}, 512, pws9(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(512, 512), 1024, {==}))
+
+def pws11() -> {VB.pw(11n) == U32.to_nat(2048) : Nat}:
+  Equal.trans(Nat, VB.pw(11n), U32.to_nat(U32.add(1024, 1024)), U32.to_nat(2048), pws_s(10n, 11n, {==}, 1024, pws10(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(1024, 1024), 2048, {==}))
+
+def pws12() -> {VB.pw(12n) == U32.to_nat(4096) : Nat}:
+  Equal.trans(Nat, VB.pw(12n), U32.to_nat(U32.add(2048, 2048)), U32.to_nat(4096), pws_s(11n, 12n, {==}, 2048, pws11(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(2048, 2048), 4096, {==}))
+
+def pws13() -> {VB.pw(13n) == U32.to_nat(8192) : Nat}:
+  Equal.trans(Nat, VB.pw(13n), U32.to_nat(U32.add(4096, 4096)), U32.to_nat(8192), pws_s(12n, 13n, {==}, 4096, pws12(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(4096, 4096), 8192, {==}))
+
+def pws14() -> {VB.pw(14n) == U32.to_nat(16384) : Nat}:
+  Equal.trans(Nat, VB.pw(14n), U32.to_nat(U32.add(8192, 8192)), U32.to_nat(16384), pws_s(13n, 14n, {==}, 8192, pws13(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(8192, 8192), 16384, {==}))
+
+def pws15() -> {VB.pw(15n) == U32.to_nat(32768) : Nat}:
+  Equal.trans(Nat, VB.pw(15n), U32.to_nat(U32.add(16384, 16384)), U32.to_nat(32768), pws_s(14n, 15n, {==}, 16384, pws14(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(16384, 16384), 32768, {==}))
+
+def pws16() -> {VB.pw(16n) == U32.to_nat(65536) : Nat}:
+  Equal.trans(Nat, VB.pw(16n), U32.to_nat(U32.add(32768, 32768)), U32.to_nat(65536), pws_s(15n, 16n, {==}, 32768, pws15(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(32768, 32768), 65536, {==}))
+
+def pws17() -> {VB.pw(17n) == U32.to_nat(131072) : Nat}:
+  Equal.trans(Nat, VB.pw(17n), U32.to_nat(U32.add(65536, 65536)), U32.to_nat(131072), pws_s(16n, 17n, {==}, 65536, pws16(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(65536, 65536), 131072, {==}))
+
+def pws18() -> {VB.pw(18n) == U32.to_nat(262144) : Nat}:
+  Equal.trans(Nat, VB.pw(18n), U32.to_nat(U32.add(131072, 131072)), U32.to_nat(262144), pws_s(17n, 18n, {==}, 131072, pws17(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(131072, 131072), 262144, {==}))
+
+def pws19() -> {VB.pw(19n) == U32.to_nat(524288) : Nat}:
+  Equal.trans(Nat, VB.pw(19n), U32.to_nat(U32.add(262144, 262144)), U32.to_nat(524288), pws_s(18n, 19n, {==}, 262144, pws18(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(262144, 262144), 524288, {==}))
+
+def pws20() -> {VB.pw(20n) == U32.to_nat(1048576) : Nat}:
+  Equal.trans(Nat, VB.pw(20n), U32.to_nat(U32.add(524288, 524288)), U32.to_nat(1048576), pws_s(19n, 20n, {==}, 524288, pws19(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(524288, 524288), 1048576, {==}))
+
+def pws21() -> {VB.pw(21n) == U32.to_nat(2097152) : Nat}:
+  Equal.trans(Nat, VB.pw(21n), U32.to_nat(U32.add(1048576, 1048576)), U32.to_nat(2097152), pws_s(20n, 21n, {==}, 1048576, pws20(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(1048576, 1048576), 2097152, {==}))
+
+def pws22() -> {VB.pw(22n) == U32.to_nat(4194304) : Nat}:
+  Equal.trans(Nat, VB.pw(22n), U32.to_nat(U32.add(2097152, 2097152)), U32.to_nat(4194304), pws_s(21n, 22n, {==}, 2097152, pws21(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(2097152, 2097152), 4194304, {==}))
+
+def pws23() -> {VB.pw(23n) == U32.to_nat(8388608) : Nat}:
+  Equal.trans(Nat, VB.pw(23n), U32.to_nat(U32.add(4194304, 4194304)), U32.to_nat(8388608), pws_s(22n, 23n, {==}, 4194304, pws22(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(4194304, 4194304), 8388608, {==}))
+
+def pws24() -> {VB.pw(24n) == U32.to_nat(16777216) : Nat}:
+  Equal.trans(Nat, VB.pw(24n), U32.to_nat(U32.add(8388608, 8388608)), U32.to_nat(16777216), pws_s(23n, 24n, {==}, 8388608, pws23(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(8388608, 8388608), 16777216, {==}))
+
+def pwn_s(+k: Nat, +k1: Nat, +ek: {1n+k == k1 : Nat}, +w: U32, +e: {O.pow2n(k) == U32.to_nat(w) : Nat},
+    +hc: {VA.CY(w, w) == False{} : Bool}) -> {O.pow2n(k1) == U32.to_nat(U32.add(w, w)) : Nat}:
+  %ek : {O.pow2n(_) == U32.to_nat(U32.add(w, w)) : Nat}
+  Equal.trans(Nat, Nat.double(O.pow2n(k)), Nat.double(U32.to_nat(w)), U32.to_nat(U32.add(w, w)),
+    Equal.cong(Nat, Nat, z => Nat.double(z), O.pow2n(k), U32.to_nat(w), e), dblw(w, hc))
+
+def pwn0() -> {O.pow2n(0n) == U32.to_nat(1) : Nat}: {==}
+
+def pwn1() -> {O.pow2n(1n) == U32.to_nat(2) : Nat}:
+  Equal.trans(Nat, O.pow2n(1n), U32.to_nat(U32.add(1, 1)), U32.to_nat(2), pwn_s(0n, 1n, {==}, 1, pwn0(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(1, 1), 2, {==}))
+
+def pwn2() -> {O.pow2n(2n) == U32.to_nat(4) : Nat}:
+  Equal.trans(Nat, O.pow2n(2n), U32.to_nat(U32.add(2, 2)), U32.to_nat(4), pwn_s(1n, 2n, {==}, 2, pwn1(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(2, 2), 4, {==}))
+
+def pwn3() -> {O.pow2n(3n) == U32.to_nat(8) : Nat}:
+  Equal.trans(Nat, O.pow2n(3n), U32.to_nat(U32.add(4, 4)), U32.to_nat(8), pwn_s(2n, 3n, {==}, 4, pwn2(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(4, 4), 8, {==}))
+
+def pwn4() -> {O.pow2n(4n) == U32.to_nat(16) : Nat}:
+  Equal.trans(Nat, O.pow2n(4n), U32.to_nat(U32.add(8, 8)), U32.to_nat(16), pwn_s(3n, 4n, {==}, 8, pwn3(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(8, 8), 16, {==}))
+
+def pwn5() -> {O.pow2n(5n) == U32.to_nat(32) : Nat}:
+  Equal.trans(Nat, O.pow2n(5n), U32.to_nat(U32.add(16, 16)), U32.to_nat(32), pwn_s(4n, 5n, {==}, 16, pwn4(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(16, 16), 32, {==}))
+
+def pwn6() -> {O.pow2n(6n) == U32.to_nat(64) : Nat}:
+  Equal.trans(Nat, O.pow2n(6n), U32.to_nat(U32.add(32, 32)), U32.to_nat(64), pwn_s(5n, 6n, {==}, 32, pwn5(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(32, 32), 64, {==}))
+
+def pwn7() -> {O.pow2n(7n) == U32.to_nat(128) : Nat}:
+  Equal.trans(Nat, O.pow2n(7n), U32.to_nat(U32.add(64, 64)), U32.to_nat(128), pwn_s(6n, 7n, {==}, 64, pwn6(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(64, 64), 128, {==}))
+
+def pwn8() -> {O.pow2n(8n) == U32.to_nat(256) : Nat}:
+  Equal.trans(Nat, O.pow2n(8n), U32.to_nat(U32.add(128, 128)), U32.to_nat(256), pwn_s(7n, 8n, {==}, 128, pwn7(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(128, 128), 256, {==}))
+
+def pwn9() -> {O.pow2n(9n) == U32.to_nat(512) : Nat}:
+  Equal.trans(Nat, O.pow2n(9n), U32.to_nat(U32.add(256, 256)), U32.to_nat(512), pwn_s(8n, 9n, {==}, 256, pwn8(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(256, 256), 512, {==}))
+
+def pwn10() -> {O.pow2n(10n) == U32.to_nat(1024) : Nat}:
+  Equal.trans(Nat, O.pow2n(10n), U32.to_nat(U32.add(512, 512)), U32.to_nat(1024), pwn_s(9n, 10n, {==}, 512, pwn9(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(512, 512), 1024, {==}))
+
+def pwn11() -> {O.pow2n(11n) == U32.to_nat(2048) : Nat}:
+  Equal.trans(Nat, O.pow2n(11n), U32.to_nat(U32.add(1024, 1024)), U32.to_nat(2048), pwn_s(10n, 11n, {==}, 1024, pwn10(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(1024, 1024), 2048, {==}))
+
+def pwn12() -> {O.pow2n(12n) == U32.to_nat(4096) : Nat}:
+  Equal.trans(Nat, O.pow2n(12n), U32.to_nat(U32.add(2048, 2048)), U32.to_nat(4096), pwn_s(11n, 12n, {==}, 2048, pwn11(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(2048, 2048), 4096, {==}))
+
+def pwn13() -> {O.pow2n(13n) == U32.to_nat(8192) : Nat}:
+  Equal.trans(Nat, O.pow2n(13n), U32.to_nat(U32.add(4096, 4096)), U32.to_nat(8192), pwn_s(12n, 13n, {==}, 4096, pwn12(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(4096, 4096), 8192, {==}))
+
+def pwn14() -> {O.pow2n(14n) == U32.to_nat(16384) : Nat}:
+  Equal.trans(Nat, O.pow2n(14n), U32.to_nat(U32.add(8192, 8192)), U32.to_nat(16384), pwn_s(13n, 14n, {==}, 8192, pwn13(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(8192, 8192), 16384, {==}))
+
+def pwn15() -> {O.pow2n(15n) == U32.to_nat(32768) : Nat}:
+  Equal.trans(Nat, O.pow2n(15n), U32.to_nat(U32.add(16384, 16384)), U32.to_nat(32768), pwn_s(14n, 15n, {==}, 16384, pwn14(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(16384, 16384), 32768, {==}))
+
+def pwn16() -> {O.pow2n(16n) == U32.to_nat(65536) : Nat}:
+  Equal.trans(Nat, O.pow2n(16n), U32.to_nat(U32.add(32768, 32768)), U32.to_nat(65536), pwn_s(15n, 16n, {==}, 32768, pwn15(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(32768, 32768), 65536, {==}))
+
+def pwn17() -> {O.pow2n(17n) == U32.to_nat(131072) : Nat}:
+  Equal.trans(Nat, O.pow2n(17n), U32.to_nat(U32.add(65536, 65536)), U32.to_nat(131072), pwn_s(16n, 17n, {==}, 65536, pwn16(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(65536, 65536), 131072, {==}))
+
+def pwn18() -> {O.pow2n(18n) == U32.to_nat(262144) : Nat}:
+  Equal.trans(Nat, O.pow2n(18n), U32.to_nat(U32.add(131072, 131072)), U32.to_nat(262144), pwn_s(17n, 18n, {==}, 131072, pwn17(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(131072, 131072), 262144, {==}))
+
+def pwn19() -> {O.pow2n(19n) == U32.to_nat(524288) : Nat}:
+  Equal.trans(Nat, O.pow2n(19n), U32.to_nat(U32.add(262144, 262144)), U32.to_nat(524288), pwn_s(18n, 19n, {==}, 262144, pwn18(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(262144, 262144), 524288, {==}))
+
+def pwn20() -> {O.pow2n(20n) == U32.to_nat(1048576) : Nat}:
+  Equal.trans(Nat, O.pow2n(20n), U32.to_nat(U32.add(524288, 524288)), U32.to_nat(1048576), pwn_s(19n, 20n, {==}, 524288, pwn19(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(524288, 524288), 1048576, {==}))
+
+def pwn21() -> {O.pow2n(21n) == U32.to_nat(2097152) : Nat}:
+  Equal.trans(Nat, O.pow2n(21n), U32.to_nat(U32.add(1048576, 1048576)), U32.to_nat(2097152), pwn_s(20n, 21n, {==}, 1048576, pwn20(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(1048576, 1048576), 2097152, {==}))
+
+def pwn22() -> {O.pow2n(22n) == U32.to_nat(4194304) : Nat}:
+  Equal.trans(Nat, O.pow2n(22n), U32.to_nat(U32.add(2097152, 2097152)), U32.to_nat(4194304), pwn_s(21n, 22n, {==}, 2097152, pwn21(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(2097152, 2097152), 4194304, {==}))
+
+def pwn23() -> {O.pow2n(23n) == U32.to_nat(8388608) : Nat}:
+  Equal.trans(Nat, O.pow2n(23n), U32.to_nat(U32.add(4194304, 4194304)), U32.to_nat(8388608), pwn_s(22n, 23n, {==}, 4194304, pwn22(), {==}),
+    Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(4194304, 4194304), 8388608, {==}))
+
+def eM0() -> {VM.mulE(512n, U32.to_nat(4096)) == U32.to_nat(2097152) : Nat}: FD.nat__eq_from_is_eq(VM.mulE(512n, U32.to_nat(4096)), U32.to_nat(2097152), {==})
+def eM1() -> {VM.mulE(12n, U32.to_nat(4096)) == U32.to_nat(49152) : Nat}: FD.nat__eq_from_is_eq(VM.mulE(12n, U32.to_nat(4096)), U32.to_nat(49152), {==})
+def lM512(+c: Nat, +h: {Nat.is_le(c, U32.to_nat(4096)) == True{} : Bool}) -> {Nat.is_le(VM.mulE(512n, c), U32.to_nat(2097152)) == True{} : Bool}:
+  %eM0() : {Nat.is_le(VM.mulE(512n, c), _) == True{} : Bool}
+  VME.mulE_mono(512n, c, U32.to_nat(4096), h)
+def lM12(+c: Nat, +h: {Nat.is_le(c, U32.to_nat(4096)) == True{} : Bool}) -> {Nat.is_le(VM.mulE(12n, c), U32.to_nat(49152)) == True{} : Bool}:
+  %eM1() : {Nat.is_le(VM.mulE(12n, c), _) == True{} : Bool}
+  VME.mulE_mono(12n, c, U32.to_nat(4096), h)
+def e89() -> {U32.to_nat(89) == 89n : Nat}: FD.nat__eq_from_is_eq(U32.to_nat(89), 89n, {==})
+def e31() -> {U32.to_nat(31) == 31n : Nat}: FD.nat__eq_from_is_eq(U32.to_nat(31), 31n, {==})
+
+# 89 + X0 + X1 + X1 == QX, on words
+def eQX() -> {Nat.add(Nat.add(Nat.add(89n, U32.to_nat(2097152)), U32.to_nat(49152)), U32.to_nat(49152)) == U32.to_nat(2195545) : Nat}:
+  +A1 = U32.add(89, 2097152)
+  +A2 = U32.add(A1, 49152)
+  +A3 = U32.add(A2, 49152)
+  +s = Equal.trans(Nat, Nat.add(Nat.add(Nat.add(U32.to_nat(89), U32.to_nat(2097152)), U32.to_nat(49152)), U32.to_nat(49152)), Nat.add(Nat.add(U32.to_nat(A1), U32.to_nat(49152)), U32.to_nat(49152)), U32.to_nat(A3),
+    Equal.cong(Nat, Nat, z => Nat.add(Nat.add(z, U32.to_nat(49152)), U32.to_nat(49152)), Nat.add(U32.to_nat(89), U32.to_nat(2097152)), U32.to_nat(A1), Equal.sym(Nat, U32.to_nat(A1), Nat.add(U32.to_nat(89), U32.to_nat(2097152)), VA.add_nc(89, 2097152, {==}))),
+    Equal.trans(Nat, Nat.add(Nat.add(U32.to_nat(A1), U32.to_nat(49152)), U32.to_nat(49152)), Nat.add(U32.to_nat(A2), U32.to_nat(49152)), U32.to_nat(A3),
+      Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(49152)), Nat.add(U32.to_nat(A1), U32.to_nat(49152)), U32.to_nat(A2), Equal.sym(Nat, U32.to_nat(A2), Nat.add(U32.to_nat(A1), U32.to_nat(49152)), VA.add_nc(A1, 49152, {==}))),
+      Equal.sym(Nat, U32.to_nat(A3), Nat.add(U32.to_nat(A2), U32.to_nat(49152)), VA.add_nc(A2, 49152, {==}))))
+  Equal.trans(Nat, Nat.add(Nat.add(Nat.add(89n, U32.to_nat(2097152)), U32.to_nat(49152)), U32.to_nat(49152)), Nat.add(Nat.add(Nat.add(U32.to_nat(89), U32.to_nat(2097152)), U32.to_nat(49152)), U32.to_nat(49152)), U32.to_nat(2195545),
+    Equal.cong(Nat, Nat, z => Nat.add(Nat.add(Nat.add(z, U32.to_nat(2097152)), U32.to_nat(49152)), U32.to_nat(49152)), 89n, U32.to_nat(89), Equal.sym(Nat, U32.to_nat(89), 89n, e89())),
+    Equal.trans(Nat, Nat.add(Nat.add(Nat.add(U32.to_nat(89), U32.to_nat(2097152)), U32.to_nat(49152)), U32.to_nat(49152)), U32.to_nat(A3), U32.to_nat(2195545), s,
+      Equal.cong(U32, Nat, z => U32.to_nat(z), A3, 2195545, {==})))
+
+def eqQX() -> {A.quad(U32.to_nat(2195545)) == U32.to_nat(U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545))) : Nat}: quadw(2195545, {==}, {==})
+
+def cQ() -> {Nat.is_le(Nat.add(31n, A.quad(U32.to_nat(2195545))), VB.pw(24n)) == True{} : Bool}:
+  +e = Equal.trans(Nat, Nat.add(31n, A.quad(U32.to_nat(2195545))), Nat.add(U32.to_nat(31), U32.to_nat(U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545)))), U32.to_nat(U32.add(31, U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545)))),
+    Equal.trans(Nat, Nat.add(31n, A.quad(U32.to_nat(2195545))), Nat.add(U32.to_nat(31), A.quad(U32.to_nat(2195545))), Nat.add(U32.to_nat(31), U32.to_nat(U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545)))),
+      Equal.cong(Nat, Nat, z => Nat.add(z, A.quad(U32.to_nat(2195545))), 31n, U32.to_nat(31), Equal.sym(Nat, U32.to_nat(31), 31n, e31())),
+      Equal.cong(Nat, Nat, z => Nat.add(U32.to_nat(31), z), A.quad(U32.to_nat(2195545)), U32.to_nat(U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545))), eqQX())),
+    Equal.sym(Nat, U32.to_nat(U32.add(31, U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545)))), Nat.add(U32.to_nat(31), U32.to_nat(U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545)))), VA.add_nc(31, U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545)), {==})))
+  %Equal.sym(Nat, VB.pw(24n), U32.to_nat(16777216), pws24()) : {Nat.is_le(Nat.add(31n, A.quad(U32.to_nat(2195545))), _) == True{} : Bool}
+  lew(Nat.add(31n, A.quad(U32.to_nat(2195545))), U32.add(31, U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545))), 16777216, Equal.sym(Nat, Nat.add(31n, A.quad(U32.to_nat(2195545))), U32.to_nat(U32.add(31, U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545)))), e), {==})
+
+def cS() -> {Nat.is_le(A.quad(U32.to_nat(2195545)), U32.to_nat(16777216)) == True{} : Bool}:
+  lew(A.quad(U32.to_nat(2195545)), U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545)), 16777216, Equal.sym(Nat, A.quad(U32.to_nat(2195545)), U32.to_nat(U32.add(U32.add(2195545, 2195545), U32.add(2195545, 2195545))), eqQX()), {==})
+
+def cD() -> {Nat.is_le(U32.to_nat(2195545), O.pow2n(23n)) == True{} : Bool}:
+  %Equal.sym(Nat, O.pow2n(23n), U32.to_nat(8388608), pwn23()) : {Nat.is_le(U32.to_nat(2195545), _) == True{} : Bool}
+  VA.le_nat(2195545, 8388608, {==})
+
+def cH0() -> {Nat.is_le(A.quad(U32.to_nat(2097152)), U32.to_nat(8388608)) == True{} : Bool}:
+  lew(A.quad(U32.to_nat(2097152)), U32.add(U32.add(2097152, 2097152), U32.add(2097152, 2097152)), 8388608, Equal.sym(Nat, A.quad(U32.to_nat(2097152)), U32.to_nat(U32.add(U32.add(2097152, 2097152), U32.add(2097152, 2097152))), quadw(2097152, {==}, {==})), {==})
+
+def cH1() -> {Nat.is_le(A.quad(U32.to_nat(49152)), U32.to_nat(196608)) == True{} : Bool}:
+  lew(A.quad(U32.to_nat(49152)), U32.add(U32.add(49152, 49152), U32.add(49152, 49152)), 196608, Equal.sym(Nat, A.quad(U32.to_nat(49152)), U32.to_nat(U32.add(U32.add(49152, 49152), U32.add(49152, 49152))), quadw(49152, {==}, {==})), {==})
 
 def lQX(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
-    +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}) -> {Nat.is_le(QN(c0, c1, c2), QX()) == True{} : Bool}:
-  +l1 = Order.add_left(89n, M0(c0), MX0(), VME.mulE_mono(512n, c0, U32.to_nat(4096), hc0))
-  +l2 = FD.nat__le_trans(Q2(c0, c1), Nat.add(Nat.add(89n, MX0()), M1(c1)), Nat.add(Nat.add(89n, MX0()), MX1()),
-    Order.add_right(Q1(c0), Nat.add(89n, MX0()), M1(c1), l1), Order.add_left(Nat.add(89n, MX0()), M1(c1), MX1(), VME.mulE_mono(12n, c1, U32.to_nat(4096), hc1)))
-  FD.nat__le_trans(QN(c0, c1, c2), Nat.add(Nat.add(Nat.add(89n, MX0()), MX1()), M2(c2)), QX(),
-    Order.add_right(Q2(c0, c1), Nat.add(Nat.add(89n, MX0()), MX1()), M2(c2), l2), Order.add_left(Nat.add(Nat.add(89n, MX0()), MX1()), M2(c2), MX1(), VME.mulE_mono(12n, c2, U32.to_nat(4096), hc2)))
+    +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}) -> {Nat.is_le(QN(c0, c1, c2), U32.to_nat(2195545)) == True{} : Bool}:
+  +l1 = Order.add_left(89n, M0(c0), U32.to_nat(2097152), lM512(c0, hc0))
+  +l2 = FD.nat__le_trans(Q2(c0, c1), Nat.add(Nat.add(89n, U32.to_nat(2097152)), M1(c1)), Nat.add(Nat.add(89n, U32.to_nat(2097152)), U32.to_nat(49152)),
+    Order.add_right(Q1(c0), Nat.add(89n, U32.to_nat(2097152)), M1(c1), l1), Order.add_left(Nat.add(89n, U32.to_nat(2097152)), M1(c1), U32.to_nat(49152), lM12(c1, hc1)))
+  FD.logic__subst(Nat, z => {Nat.is_le(QN(c0, c1, c2), z) == True{} : Bool}, Nat.add(Nat.add(Nat.add(89n, U32.to_nat(2097152)), U32.to_nat(49152)), U32.to_nat(49152)), U32.to_nat(2195545), eQX(),
+    FD.nat__le_trans(QN(c0, c1, c2), Nat.add(Nat.add(Nat.add(89n, U32.to_nat(2097152)), U32.to_nat(49152)), M2(c2)), Nat.add(Nat.add(Nat.add(89n, U32.to_nat(2097152)), U32.to_nat(49152)), U32.to_nat(49152)),
+      Order.add_right(Q2(c0, c1), Nat.add(Nat.add(89n, U32.to_nat(2097152)), U32.to_nat(49152)), M2(c2), l2), Order.add_left(Nat.add(Nat.add(89n, U32.to_nat(2097152)), U32.to_nat(49152)), M2(c2), U32.to_nat(49152), lM12(c2, hc2))))
 
 def lQ1N(+c0: Nat, +c1: Nat, +c2: Nat) -> {Nat.is_le(Q1(c0), QN(c0, c1, c2)) == True{} : Bool}:
   FD.nat__le_trans(Q1(c0), Q2(c0, c1), QN(c0, c1, c2), Order.below_sum(Q1(c0), M1(c1)), Order.below_sum(Q2(c0, c1), M2(c2)))
@@ -80,8 +347,8 @@ def qy(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}, +x: Nat, +h: {Nat.is_le(x, QN(c0, c1, c2)) == True{} : Bool})
     -> {Nat.is_le(Nat.add(31n, A.quad(x)), VB.pw(24n)) == True{} : Bool}:
-  FD.nat__le_trans(Nat.add(31n, A.quad(x)), Nat.add(31n, A.quad(QX())), VB.pw(24n),
-    Order.add_left(31n, A.quad(x), A.quad(QX()), VME.quad_mono(x, QX(), FD.nat__le_trans(x, QN(c0, c1, c2), QX(), h, lQX(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2)))), cQ())
+  FD.nat__le_trans(Nat.add(31n, A.quad(x)), Nat.add(31n, A.quad(U32.to_nat(2195545))), VB.pw(24n),
+    Order.add_left(31n, A.quad(x), A.quad(U32.to_nat(2195545)), VME.quad_mono(x, U32.to_nat(2195545), FD.nat__le_trans(x, QN(c0, c1, c2), U32.to_nat(2195545), h, lQX(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2)))), cQ())
 def qlt(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}, +x: Nat, +h: {Nat.is_le(x, QN(c0, c1, c2)) == True{} : Bool})
@@ -91,7 +358,7 @@ def qle(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}, +x: Nat, +h: {Nat.is_le(x, QN(c0, c1, c2)) == True{} : Bool})
     -> {Nat.is_le(A.quad(x), U32.to_nat(16777216)) == True{} : Bool}:
-  FD.nat__le_trans(A.quad(x), A.quad(QX()), U32.to_nat(16777216), VME.quad_mono(x, QX(), FD.nat__le_trans(x, QN(c0, c1, c2), QX(), h, lQX(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2))), cS())
+  FD.nat__le_trans(A.quad(x), A.quad(U32.to_nat(2195545)), U32.to_nat(16777216), VME.quad_mono(x, U32.to_nat(2195545), FD.nat__le_trans(x, QN(c0, c1, c2), U32.to_nat(2195545), h, lQX(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2))), cS())
 
 def eS1(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
@@ -156,7 +423,7 @@ def hDO(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}) -> {Nat.is_le(DO(N0, N1, N2), 23n) == True{} : Bool}:
   VD.wd_min(VC.nwu(S3(N0, N1, N2)), 23n,
     FD.logic__subst(Nat, z => {Nat.is_le(z, O.pow2n(23n)) == True{} : Bool}, QN(c0, c1, c2), VC.NW(S3(N0, N1, N2)), Equal.sym(Nat, VC.NW(S3(N0, N1, N2)), QN(c0, c1, c2), eNWS(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2)),
-      FD.nat__le_trans(QN(c0, c1, c2), QX(), O.pow2n(23n), lQX(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2), cD())))
+      FD.nat__le_trans(QN(c0, c1, c2), U32.to_nat(2195545), O.pow2n(23n), lQX(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2), cD())))
 def hDO29(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}) -> {Nat.is_lt(DO(N0, N1, N2), 29n) == True{} : Bool}: FD.nat__le_lt_trans(DO(N0, N1, N2), 23n, 29n, hDO(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2), {==})
@@ -173,7 +440,7 @@ def roomS(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
   %eNWS(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2) : {Nat.is_le(_, O.pow2n(DO(N0, N1, N2))) == True{} : Bool}
   VD.wd_cover(VC.nwu(S3(N0, N1, N2)), 23n, {==},
     FD.logic__subst(Nat, z => {Nat.is_le(z, O.pow2n(23n)) == True{} : Bool}, QN(c0, c1, c2), VC.NW(S3(N0, N1, N2)), Equal.sym(Nat, VC.NW(S3(N0, N1, N2)), QN(c0, c1, c2), eNWS(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2)),
-      FD.nat__le_trans(QN(c0, c1, c2), QX(), O.pow2n(23n), lQX(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2), cD())))
+      FD.nat__le_trans(QN(c0, c1, c2), U32.to_nat(2195545), O.pow2n(23n), lQX(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2), cD())))
 def lQ1P(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}) -> {Nat.is_le(Q1(c0), VB.pw(DO(N0, N1, N2))) == True{} : Bool}: FD.nat__le_trans(Q1(c0), QN(c0, c1, c2), VB.pw(DO(N0, N1, N2)), lQ1N(c0, c1, c2), roomS(N0, N1, N2, c0, c1, c2, ec0, ec1, ec2, hc0, hc1, hc2))
@@ -579,7 +846,7 @@ def hhi0(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}) -> {U32.is_le(N0, 8388608) == True{} : Bool}:
   VE.le_hi(N0, 8388608, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(8388608)) == True{} : Bool}, A.quad(M0(c0)), U32.to_nat(N0), Equal.sym(Nat, U32.to_nat(N0), A.quad(M0(c0)), ec0),
-    FD.nat__le_trans(A.quad(M0(c0)), A.quad(MX0()), U32.to_nat(8388608), VME.quad_mono(M0(c0), MX0(), VME.mulE_mono(512n, c0, U32.to_nat(4096), hc0)), cH0())))
+    FD.nat__le_trans(A.quad(M0(c0)), A.quad(U32.to_nat(2097152)), U32.to_nat(8388608), VME.quad_mono(M0(c0), U32.to_nat(2097152), lM512(c0, hc0)), cH0())))
 def hu0(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}) -> {O.unit_ok(2048, N0) == True{} : Bool}:
@@ -612,7 +879,7 @@ def hhi1(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}) -> {U32.is_le(N1, 196608) == True{} : Bool}:
   VE.le_hi(N1, 196608, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(196608)) == True{} : Bool}, A.quad(M1(c1)), U32.to_nat(N1), Equal.sym(Nat, U32.to_nat(N1), A.quad(M1(c1)), ec1),
-    FD.nat__le_trans(A.quad(M1(c1)), A.quad(MX1()), U32.to_nat(196608), VME.quad_mono(M1(c1), MX1(), VME.mulE_mono(12n, c1, U32.to_nat(4096), hc1)), cH1())))
+    FD.nat__le_trans(A.quad(M1(c1)), A.quad(U32.to_nat(49152)), U32.to_nat(196608), VME.quad_mono(M1(c1), U32.to_nat(49152), lM12(c1, hc1)), cH1())))
 def hu1(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}) -> {O.unit_ok(48, N1) == True{} : Bool}:
@@ -647,7 +914,7 @@ def hhi2(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}) -> {U32.is_le(N2, 196608) == True{} : Bool}:
   VE.le_hi(N2, 196608, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(196608)) == True{} : Bool}, A.quad(M2(c2)), U32.to_nat(N2), Equal.sym(Nat, U32.to_nat(N2), A.quad(M2(c2)), ec2),
-    FD.nat__le_trans(A.quad(M2(c2)), A.quad(MX1()), U32.to_nat(196608), VME.quad_mono(M2(c2), MX1(), VME.mulE_mono(12n, c2, U32.to_nat(4096), hc2)), cH1())))
+    FD.nat__le_trans(A.quad(M2(c2)), A.quad(U32.to_nat(49152)), U32.to_nat(196608), VME.quad_mono(M2(c2), U32.to_nat(49152), lM12(c2, hc2)), cH1())))
 def hu2(+N0: U32, +N1: U32, +N2: U32, +c0: Nat, +c1: Nat, +c2: Nat,
     +ec0: {U32.to_nat(N0) == A.quad(M0(c0)) : Nat}, +ec1: {U32.to_nat(N1) == A.quad(M1(c1)) : Nat}, +ec2: {U32.to_nat(N2) == A.quad(M2(c2)) : Nat},
     +hc0: {Nat.is_le(c0, U32.to_nat(4096)) == True{} : Bool}, +hc1: {Nat.is_le(c1, U32.to_nat(4096)) == True{} : Bool}, +hc2: {Nat.is_le(c2, U32.to_nat(4096)) == True{} : Bool}) -> {O.unit_ok(48, N2) == True{} : Bool}:
