@@ -15,6 +15,8 @@ size, model, perfect lemma, and the piece lemma returning DK.P2(runtime fact, by
 
 WLEAVES[p]: the generic bit-vector word leaves at a word position (proofs/obj/vuwg_<p>.bend).
 
+TLEAVES[p]: the packed-words leaves Bitvector[1280] (vuwg_bv1280) and Bitvector[1281] (vuwl_bv1281).
+
 UNION: the union step lemmas (proofs/obj/vunion.bend).
 
 --check verifies that every module listed exports the interface.
@@ -67,6 +69,17 @@ WLEAVES = {p: {'module': f'vuwg_{p}.bend', 'ctor': f'T.Bitvector{p[2:]}', 'W': W
                'bytes': f'{p}_any_bytes', 'perfect': f'{p}x_perfect', 'runtime': f'T.{p}_put', 'pad': pad, 'vt': pad, 'rt_hz': True}
            for p, W, m, pad in [('bv1', 1, 1, True), ('bv2', 1, 1, True), ('bv8', 1, 1, True), ('bv256', 8, 32, False), ('bv257', 9, 33, True)]}
 
+# the packed-words leaves (O.Words{thaw TB, m} objects, checked writers T.<p>_putk returning size 0) at a word
+# position (q, r): <p>_any(dd, D, X, q, r, dB, TB, e, hr, hd, hl, pf, pfB, hdB, hrB, [htz, hbz,] hz)
+TLEAVES = {
+    'bv1280': {'module': 'vuwg_bv1280.bend', 'size': 160, 'words': 40, 'model': 'PX_bv1280', 'rt': 'bv1280_any', 'bytes': 'bv1280_any_bytes',
+               'perfect': 'bv1280x_perfect', 'runtime': 'T.bv1280_putk', 'pad': False, 'extra': ['pfB', 'hdB', 'hrB'],
+               'hdB': 'Nat.is_lt(dB, 31n)', 'hrB': 'Nat.is_le(40n, VB.pw(dB))'},
+    'bv1281': {'module': 'vuwl_bv1281.bend', 'size': 161, 'words': 41, 'model': 'PX_bv1281', 'rt': 'bv1281_any', 'bytes': 'bv1281_any_bytes',
+               'perfect': 'bv1281x_perfect', 'runtime': 'T.bv1281_putk', 'pad': True, 'extra': ['pfB', 'hdB', 'hrB', 'htz', 'hbz'],
+               'hdB': 'Nat.is_lt(dB, 28n)', 'hrB': 'Nat.is_le(161n, A.quad(VB.pw(dB)))'},
+}
+
 # the union step (vunion.bend): the selector byte with O.w8 at X, the arm at X + 1 (4 AQ(q, r) + AR(r))
 UNION = {'module': 'vunion.bend', 'arm_q': 'AQ', 'arm_r': 'AR', 'sel_model': 'DS', 'sel_rt': 'sel_rt', 'sel_by': 'sel_by', 'sel_pf': 'sel_pf',
          'arm_e': 'arm_e', 'arm_room': 'aroom', 'arm_hz': 'arm_hz', 'bytes': 'ubytes', 'pad': 'padsh', 'r_lt': 'ar_lt',
@@ -89,7 +102,7 @@ def check():
         for n in (lf['model'], lf['perfect'], lf['piece']):
             if not re.search(rf'^def {n}\(', s, re.M):
                 bad.append(f'{lf["module"]}: no def {n}')
-    for k, lf in WLEAVES.items():
+    for k, lf in list(WLEAVES.items()) + list(TLEAVES.items()):
         f = OBJ / lf['module']
         if not f.exists():
             bad.append(f'no {lf["module"]}')
@@ -111,7 +124,7 @@ def main():
         if bad or missing:
             print('encoder children: ' + '; '.join(bad + [f'missing big_encx_{p}' for p in missing]))
             sys.exit(1)
-        print(f'encoder children are consistent ({len(CHILDREN)} children, {len(LEAVES)} piece leaves, {len(WLEAVES)} word leaves, union step)')
+        print(f'encoder children are consistent ({len(CHILDREN)} children, {len(LEAVES)} piece leaves, {len(WLEAVES)} word leaves, {len(TLEAVES)} packed-words leaves, union step)')
         return
     for p, c in CHILDREN.items():
         print(f'{p}: {c["file"]} {c["mirror"]}{{{", ".join(n for n, t in c["fields"])}}} -> {c["obj"]} [{c["generator"]}]')
