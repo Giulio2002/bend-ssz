@@ -996,3 +996,12 @@ law ovn:
 def ovn(p, nw, a, b, U, V, hp, h7, hk, ha, hb, pu, pv):
   ov(p, nw, a, b, U, V, hp, h7, hk, ha, hb, pu, pv)
 
+# The words of [l | r] are those of l then those of r (one unfolding; stated so a
+# copy model over slots(TNode{l, r}) meets lemmas stated over the append).
+law slots_node:
+  for +l: F.array__Tree<U32>
+  for +r: F.array__Tree<U32>
+  {F.array__slots(U32, F.TNode{l, r}) == F.spec_common__append(U32, F.array__slots(U32, l), F.array__slots(U32, r)) : List<&2, U32>}
+def slots_node(l, r):
+  {==}
+
