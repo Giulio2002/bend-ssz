@@ -70,6 +70,12 @@ def TB(+b: Nat) -> Data: {Nat.is_le(VD.s_rng(3n, Nat.add(b, 7n)), 1n) == True{} 
 def TC(+j: Nat, +b: Nat) -> Data: {VD.s_rng(2n, Nat.add(j, VD.s_rng(3n, b))) == 0n : Nat}
 def TD(+j: Nat) -> Data: {VD.s_rng(2n, Nat.add(Nat.add(j, 1n), 3n)) == 1n : Nat}
 def TE(+j: Nat, +b: Nat) -> Data: {Nat.is_le(Nat.add(VS.x8(j), b), 31n) == True{} : Bool}
+def TF(+j: Nat, +b: Nat) -> Data: {Bp.byte_count(1n+Nat.add(VS.x8(j), b)) == Nat.add(j, 1n) : Nat}
+def CE(+j: Nat, +b: Nat) -> Data: DK.P2(TE(j, b), TF(j, b))
+def CD(+j: Nat, +b: Nat) -> Data: DK.P2(TD(j), CE(j, b))
+def CC(+j: Nat, +b: Nat) -> Data: DK.P2(TC(j, b), CD(j, b))
+def CB(+j: Nat, +b: Nat) -> Data: DK.P2(TB(b), CC(j, b))
+def CA(+j: Nat, +b: Nat) -> Data: DK.P2(TA(j, b), CB(j, b))
 def TD1(+j: Nat, +b: Nat, +x: U32) -> Data: {BK.btk(1n+Nat.add(VS.x8(j), b), BLf.wbits(U32.or(x, BW.DL(j, b)))) == List.append(&2, Bool, BK.btk(Nat.add(VS.x8(j), b), BLf.wbits(x)), [True{}]) : +List<Bool>}
 def TD2(+j: Nat, +b: Nat, +x: U32) -> Data: {BK.zw(1n+Nat.add(VS.x8(j), b), U32.or(x, BW.DL(j, b))) == True{} : Bool}
 def TX1(+r: Nat, +X: U32, +Sq: U32) -> Data: {BK.btk(r, BLf.wbits(X)) == BK.btk(r, BLf.wbits(Sq)) : +List<Bool>}
@@ -100,9 +106,9 @@ def words_pack(+dd: Nat, +dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat,
   +hj = F.nat__le_lt_trans(j, 3n, 4n, RD.and_le(VBT.PDK(K), 3), {==})
   +hb = F.nat__le_lt_trans(b, 7n, 8n, RD.and_le(K, 7), {==})
   +cf = BW.cfj(j, b, hj, hb)
-  +cA = p1(TA(j, b), DK.P2(TB(b), DK.P2(TC(j, b), DK.P2(TD(j), TE(j, b)))), cf)
-  +cB = p1(TB(b), DK.P2(TC(j, b), DK.P2(TD(j), TE(j, b))), p2(TA(j, b), DK.P2(TB(b), DK.P2(TC(j, b), DK.P2(TD(j), TE(j, b)))), cf))
-  +cE = p2(TD(j), TE(j, b), p2(TC(j, b), DK.P2(TD(j), TE(j, b)), p2(TB(b), DK.P2(TC(j, b), DK.P2(TD(j), TE(j, b))), p2(TA(j, b), DK.P2(TB(b), DK.P2(TC(j, b), DK.P2(TD(j), TE(j, b)))), cf))))
+  +cA = p1(TA(j, b), CB(j, b), cf)
+  +cB = p1(TB(b), CC(j, b), p2(TA(j, b), CB(j, b), cf))
+  +cE = p1(TE(j, b), TF(j, b), p2(TD(j), CE(j, b), p2(TC(j, b), CD(j, b), p2(TB(b), CC(j, b), p2(TA(j, b), CB(j, b), cf)))))
   +pfZ = F.array__trep_perfect(U32, dd, 0)
   +pfM = VB.mone_perfect(NB, 0n, 0n, dd, VC.ZT(dd), T, pfZ)
   +pfO = F.array__upd_perfect(U32, dd, M, q, U32.or(X, VBT.DMK(0, K)), pfM)
