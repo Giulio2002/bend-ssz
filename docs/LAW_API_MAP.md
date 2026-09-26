@@ -189,7 +189,12 @@ What that means concretely:
   `WX(t, x, L)`), with fixed-size readers at any offset (`vua_fix.rdx_<p>`,
   words `UR.RWN(t, x + 4 k)`); modules `var_winx_bits2048`,
   `var_winx_PendingAttestation` (stock), `big_var_winx_bits131072`,
-  `big_var_winx_Attestation` (big), from `codegen/var_win.py` (WINX).
+  `big_var_winx_Attestation` (big), and List[uint64, N] children
+  (`var_winx_l128_u64`, `var_winx_DataColumnsByRootIdentifier` stock;
+  `big_var_winx_l131072_u64`, `big_var_winx_IndexedAttestation` big), from
+  `codegen/var_win.py` (WINX); two variable fields of one child:
+  `big_var_winx_AttesterSlashing` (offsets 8 and O1, both windows
+  checked, inverted from the spec's two-part layout).
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
@@ -212,6 +217,46 @@ What that means concretely:
   specw; `_rej`: inv_p, rej_facts; `_enc`: putw at pos = 4 P over any tree,
   frame_lo, partsw) and the whole-buffer laws are the window laws at i = 0; a
   container nesting a covered name uses the child's window laws at the window
+  after its header. Not covered, and why: LightClientBootstrap and
+  LightClientUpdate hold a SyncCommittee (6156 words, array-backed: its value's
+  parts are those of spec_arr_SyncCommittee, which the header layout here does
+  not yet take as a symbolic word segment); LightClientUpdate and
+  LightClientFinalityUpdate hold a second LightClientHeader whose offset is
+  4k + (extra_data length), in general not word-aligned, so its reads and
+  copies go through the runtime's shifted paths (`B.read32` split reads,
+  `O.scopy1..3`), which have no laws yet; ExecutionPayload likewise (its
+  transactions and withdrawals start after extra_data).
+* **Several variable fields: DataColumnSidecar** (`codegen/var_multi.py` with
+  `var_multi_enc.py`; 2026-09-26). Three lists of byte vectors (2048/48/48-byte
+  elements, `O.Words` storage) between a uint64 and a boxed SignedBeaconBlockHeader
+  and a `Vector[Bytes32, 4]`. For a buffer on a perfect word tree of depth d < 23
+  with n <= 4 2^d: `ok_eval`, `decode_spec`
+  (`var_codec_DataColumnSidecar.bend`, stock), `decode_accept`
+  (`var_codec_DataColumnSidecar_acc.bend`, stock; the only importer of
+  `vzeros.bend`, the zero trees up to depth 23), `decode_unique` (`_unique`),
+  `decode_reject`, `decode_none` (`_rej`); for every object whose three list
+  storages are perfect trees with room for their c0/c1/c2 elements (c <= 4096):
+  `encode_eval`, `encode_spec` (`big_var_codec_DataColumnSidecar_enc.bend`, big:
+  the output's size bounds, up to 8.8 MB, are closed facts). Libraries:
+  `vmul.bend` (spec parts of a list of byte vectors), `vmv.bend` (the layout of
+  one fixed part, three variable parts and fixed parts; list windows),
+  `vmr.bend` (rejection: lists of byte vectors are whole elements; the inverse
+  layout of three variable parts), `vme.bend` (storage checks of such lists;
+  windows of a tree after a list copy).
+* **Lists of fixed records, ExecutionRequests** (`codegen/var_rlist.py` with
+  `var_rlist_er.py`; 2026-09-26, stock). Byte-offset window modules (the
+  `vua_win.bend` interface: CHKw, ok_evalw, OBJw, readw, VALw, specw, invw, plus
+  `linvr`: the spec bytes of any value of the list are whole records) for
+  `l8192_DepositRequest`, `l16_WithdrawalRequest`, `l2_ConsolidationRequest`,
+  `l16_SignedVoluntaryExit`, `l16_SignedBLSToExecutionChange`
+  (`var_winx_<p>.bend`): the reader's record array is the tree of the records
+  read at x + R j (`vua_fix.rdx_<record>`), the value's items the records' values
+  over the same words. `var_winx_ExecutionRequests.bend` composes the three list
+  windows at byte position x; `var_codec_ExecutionRequests.bend` gives the
+  whole-buffer ok_eval, decode_accept, decode_spec, decode_unique, decode_reject
+  and decode_none (the window at x = 0; d < 28). Libraries `vrl.bend` (Array.set
+  of any element type on a perfect tree; positions of consecutive records),
+  `vrc.bend` (window splits, the offset layout of three variable parts).
   after its header. LightClientBootstrap (a LightClientHeader, a SyncCommittee
   whose 6144 packed words are one symbolic segment of the header, `vsc.bend`
   `sc_parts`, and the branch) has ok_eval, decode_accept, decode_spec and
