@@ -374,6 +374,7 @@ def emit_phase_b(names):
         rest = {n: t for n, t in names.items() if not status.get(n, '').startswith('proved')}
         gb2 = GenB(rest)
         gb2.v2 = True
+        gb2.plists = {}
         RB.HEAD = RB.HEAD + ['import ./pbits_obj.bend as PBO', 'import ./wbits_obj.bend as WBV', 'import ./pcont.bend as PCN',
                               'import ./prog_root.bend as PR', 'import ./plist_obj.bend as PLO']
         RA.EXTRA_LEAVES = True  # GenB() resets it; also the element schemas of lists

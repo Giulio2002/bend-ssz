@@ -113,8 +113,17 @@ What that means concretely:
   vecify; elements with a uint8 field carry their rp facts, ereps; root_gtypes
   PASS 522 s, root_gtypes2 PASS 555 s) too. The
   "bit list of depth 56" (GtF7582E0E9A) is a progressive bit list (Spec
-  S.ProgressiveBits{}), not a depth-56 tree. Progressive containers of more than 8 slots have no tree law yet
-  (Gp8A7851175B: 22 slots).
+  S.ProgressiveBits{}), not a depth-56 tree.
+  2026-09-26 (agent/root-generic, second pass): ALL 136 supported generic forms
+  now have a root law. GtF7582E0E9A (progressive bit list, pbits_obj),
+  Gc221EC01D83 and Gp8A7851175B (22-slot progressive container) in
+  root_gtypes2.bend (stock PASS 498 s, 7.6 GB). New: progressive-container
+  trees of any slot count (pcont.bend PASS 236 s: the runtime tree is
+  prog_root `pr` over the slot digests, merkleized by `pmerk`, pr_spec over a
+  symbolic digest list); progressive-list fields of basic elements (`pk`,
+  prog_list), of Data containers (`px`) and of boxed Type-kind elements (`ptl`:
+  containers, progressive containers, and progressive lists of them through a
+  Data mirror of the list, `mirror_seq`); plist_obj.bend (PASS 257 s).
   The representation invariants `rep_X` are hypotheses of the Type-kind root
   laws. Producers establishing them (2026-09-25):
   - Checked: every field setter of the 27 Type-kind containers with a
