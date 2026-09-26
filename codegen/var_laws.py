@@ -376,8 +376,9 @@ def main():
         out[fname(x)] = dec_module_text(g, x)
         out[fname(x, '_unique')] = unique_text(x)
         out[fname(x, '_rej')] = rej_module_text(g, x)
+        out[fname(x, '_enc')] = var_enc.enc_module_text(g, x)
     mine = [q for q in (ROOT / 'proofs/obj').glob('*var_codec_*.bend') if q.name.startswith(('var_codec_', 'big_var_codec_'))]
-    orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out and 'dcbri' not in q.name
+    orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out
                      and not (no_big and q.name.startswith('big_')))
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, text in out.items() if not p.exists() or p.read_text() != text]
@@ -1268,6 +1269,9 @@ law decode_none:
 def decode_none(d, t, n, pf, hd, hn, hchk):
   none_go(d, t, n, pf, hd, hn, hchk, U32.is_le(@FS, n), {==})
 '''
+
+
+import var_enc  # noqa: E402  (uses the definitions above)
 
 
 if __name__ == '__main__':
