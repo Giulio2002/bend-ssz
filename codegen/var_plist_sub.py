@@ -118,13 +118,426 @@ def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
   chk(t, x, off, len)
 """
 
-WIN_IMPORTS = ['import ./vua_rd.bend as UR', 'import ./big_vvlz.bend as VZG', 'import ./vu8.bend as U8', 'import ./vmv.bend as VMV',
-               'import ./packed_bytes.bend as PB']
+WIN_U16 = r"""
+def v2() -> Word(31n): FD.spec_numeric__from_nat(31n, 2n)
+def CQ(+len: U32) -> Nat: U32.to_nat(U32.div(len, 2))
+
+# Whole elements (two bytes each, no limit).
+def CHKw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool: Bool.and(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), True{})
+
+# The validator on the window returns the buffer and CHKw.
+def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
+    -> {T.@p_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+  {==}
+
+# CHKw: the length is twice the element count.
+def eLc(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hc: {CHKw(t, x, off, len) == True{} : Bool}) -> {U32.to_nat(len) == Nat.double(CQ(len)) : Nat}:
+  Equal.trans(Nat, U32.to_nat(len), Nat.mul(CQ(len), 2n), Nat.double(CQ(len)), VLS.whole_t1(len, 2, v2(), {==}, {==}, {==}, hc),
+    Equal.sym(Nat, Nat.double(CQ(len)), Nat.mul(CQ(len), 2n), PB.dbl_mul(CQ(len))))
+
+# A length of 2 c bytes passes the checks.
+def chk2(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +c: Nat, +ec: {U32.to_nat(len) == Nat.double(c) : Nat}) -> {CHKw(t, x, off, len) == True{} : Bool}:
+  +hc = FD.logic__subst(Nat, z => {Nat.is_le(c, z) == True{} : Bool}, Nat.add(c, c), U32.to_nat(len),
+    Equal.trans(Nat, Nat.add(c, c), Nat.double(c), U32.to_nat(len), Equal.sym(Nat, Nat.double(c), Nat.add(c, c), FD.lru_nat_algebra__double_self(c)), Equal.sym(Nat, U32.to_nat(len), Nat.double(c), ec)),
+    Order.left_below_sum(c, c))
+  +w = VU.whole_i(len, 2, len, v2(), {==}, {==}, {==}, c, Equal.trans(Nat, U32.to_nat(len), Nat.double(c), Nat.mul(c, 2n), ec, PB.dbl_mul(c)), hc)
+  FD.logic__and_intro(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), True{}, FD.logic__and_left(U32.is_eq(len, (U32.div(len, 2) * 2 : U32)), U32.is_le(U32.div(len, 2), len), w), {==})
+@READW
+def VALw(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: S.Sequence{PB.it2(CQ(len), UW.WX(t, x, U32.to_nat(len)))}
+
+# ---- the spec parts of a list of 2-byte elements ------------------------------------------------
+
+def sp2(xs: +List<U32>) -> +List<S.Part>:
+  match xs:
+    case Nil{}: []
+    case Con{x0, t}:
+      match t:
+        case Nil{}: []
+        case Con{x1, r}: S.Fixed{[x0, x1]} <> sp2(r)
+
+def u16p(+x0: U32, +x1: U32, +e0: {U32.is_lt(x0, 256) == True{} : Bool}, +e1: {U32.is_lt(x1, 256) == True{} : Bool})
+    -> {Codec.parts(S.UnsignedValue{P.UInt{PB.v16of(x0, x1), 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U16{}}) == Some{[S.Fixed{[x0, x1]}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(Maybe<&2, +List<U32>>, RR.basic_one(S.UnsignedValue{P.UInt{PB.v16of(x0, x1), 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U16{}}), Some{[x0, x1]}, PB.two(x0, x1, e0, e1)) :
+    {Codec.one(_, Some{2n}) == Some{[S.Fixed{[x0, x1]}]} : Maybe<&2, +List<S.Part>>}
+  {==}
+
+# The facts of a byte string in scope for k elements, by induction on k.
+law sc2p:
+  for +k: Nat
+  for +xs: +List<U32>
+  for +hs: {SP.byte_scope(Nat.double(k), xs) == True{} : Bool}
+  {Codec.parts(PB.it2(k, xs), S.Repeat{S.Unsigned{P.U16{}}}) == Some{sp2(xs)} : Maybe<&2, +List<S.Part>>}
+def sc2p(k, xs, hs):
+  match k xs:
+    case 0n Nil{}: {==}
+    case 0n Con{+x, +t}: Empty.absurd({Codec.parts(PB.it2(0n, x <> t), S.Repeat{S.Unsigned{P.U16{}}}) == Some{sp2(x <> t)} : Maybe<&2, +List<S.Part>>}, FD.logic__false_true(hs))
+    case 1n+ +c Nil{}: Empty.absurd({Codec.parts(PB.it2(1n+c, Nil{}), S.Repeat{S.Unsigned{P.U16{}}}) == Some{sp2(Nil{})} : Maybe<&2, +List<S.Part>>}, FD.logic__false_true(hs))
+    case 1n+ +c Con{+x0, +t}:
+      match t:
+        case Nil{}: Empty.absurd({Codec.parts(PB.it2(1n+c, [x0]), S.Repeat{S.Unsigned{P.U16{}}}) == Some{sp2([x0])} : Maybe<&2, +List<S.Part>>}, FD.logic__false_true(FD.logic__and_right(U32.is_lt(x0, 256), False{}, hs)))
+        case Con{+x1, +rest}:
+          +k1 = FD.logic__and_right(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
+          +e0 = FD.logic__and_left(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
+          +e1 = FD.logic__and_left(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1)
+          +ih = sc2p(c, rest, FD.logic__and_right(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1))
+          F.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{PB.v16of(x0, x1), 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U16{}}), [x0, x1], Codec.parts(PB.it2(c, rest), S.Repeat{S.Unsigned{P.U16{}}}), sp2(rest), u16p(x0, x1, e0, e1), ih)
+
+law sc2s:
+  for +k: Nat
+  for +xs: +List<U32>
+  for +hs: {SP.byte_scope(Nat.double(k), xs) == True{} : Bool}
+  {Layout.fixed_size(sp2(xs)) == Nat.double(k) : Nat}
+def sc2s(k, xs, hs):
+  match k xs:
+    case 0n Nil{}: {==}
+    case 0n Con{+x, +t}: Empty.absurd({Layout.fixed_size(sp2(x <> t)) == Nat.double(0n) : Nat}, FD.logic__false_true(hs))
+    case 1n+ +c Nil{}: Empty.absurd({Layout.fixed_size(sp2(Nil{})) == Nat.double(1n+c) : Nat}, FD.logic__false_true(hs))
+    case 1n+ +c Con{+x0, +t}:
+      match t:
+        case Nil{}: Empty.absurd({Layout.fixed_size(sp2([x0])) == Nat.double(1n+c) : Nat}, FD.logic__false_true(FD.logic__and_right(U32.is_lt(x0, 256), False{}, hs)))
+        case Con{+x1, +rest}:
+          +k1 = FD.logic__and_right(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
+          +e0 = FD.logic__and_left(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
+          +e1 = FD.logic__and_left(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1)
+          +ih = sc2s(c, rest, FD.logic__and_right(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1))
+          Equal.cong(Nat, Nat, z => 2n+z, Layout.fixed_size(sp2(rest)), Nat.double(c), ih)
+
+law sc2v:
+  for +k: Nat
+  for +xs: +List<U32>
+  for +hs: {SP.byte_scope(Nat.double(k), xs) == True{} : Bool}
+  {Layout.bytes_valid(sp2(xs)) == True{} : Bool}
+def sc2v(k, xs, hs):
+  match k xs:
+    case 0n Nil{}: {==}
+    case 0n Con{+x, +t}: Empty.absurd({Layout.bytes_valid(sp2(x <> t)) == True{} : Bool}, FD.logic__false_true(hs))
+    case 1n+ +c Nil{}: Empty.absurd({Layout.bytes_valid(sp2(Nil{})) == True{} : Bool}, FD.logic__false_true(hs))
+    case 1n+ +c Con{+x0, +t}:
+      match t:
+        case Nil{}: Empty.absurd({Layout.bytes_valid(sp2([x0])) == True{} : Bool}, FD.logic__false_true(FD.logic__and_right(U32.is_lt(x0, 256), False{}, hs)))
+        case Con{+x1, +rest}:
+          +k1 = FD.logic__and_right(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
+          +e0 = FD.logic__and_left(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
+          +e1 = FD.logic__and_left(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1)
+          +ih = sc2v(c, rest, FD.logic__and_right(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1))
+          FD.logic__and_intro(SP.bytes_domain([x0, x1]), Layout.bytes_valid(sp2(rest)), FD.logic__and_intro(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), True{}), e0, FD.logic__and_intro(U32.is_lt(x1, 256), True{}, e1, {==})), ih)
+
+law sc2l:
+  for +k: Nat
+  for +xs: +List<U32>
+  for +hs: {SP.byte_scope(Nat.double(k), xs) == True{} : Bool}
+  {List.length(&2, U32, xs) == Nat.double(k) : Nat}
+def sc2l(k, xs, hs):
+  match k xs:
+    case 0n Nil{}: {==}
+    case 0n Con{+x, +t}: Empty.absurd({List.length(&2, U32, x <> t) == Nat.double(0n) : Nat}, FD.logic__false_true(hs))
+    case 1n+ +c Nil{}: Empty.absurd({List.length(&2, U32, Nil{}) == Nat.double(1n+c) : Nat}, FD.logic__false_true(hs))
+    case 1n+ +c Con{+x0, +t}:
+      match t:
+        case Nil{}: Empty.absurd({List.length(&2, U32, [x0]) == Nat.double(1n+c) : Nat}, FD.logic__false_true(FD.logic__and_right(U32.is_lt(x0, 256), False{}, hs)))
+        case Con{+x1, +rest}:
+          +k1 = FD.logic__and_right(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
+          +e0 = FD.logic__and_left(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
+          +e1 = FD.logic__and_left(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1)
+          +ih = sc2l(c, rest, FD.logic__and_right(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1))
+          Equal.cong(Nat, Nat, z => 2n+z, List.length(&2, U32, rest), Nat.double(c), ih)
+
+def ev(xs: +List<U32>) -> Bool:
+  match xs:
+    case Nil{}: True{}
+    case Con{x0, t}:
+      match t:
+        case Nil{}: False{}
+        case Con{x1, r}: ev(r)
+
+law sc2e:
+  for +k: Nat
+  for +xs: +List<U32>
+  for +hs: {SP.byte_scope(Nat.double(k), xs) == True{} : Bool}
+  {ev(xs) == True{} : Bool}
+def sc2e(k, xs, hs):
+  match k xs:
+    case 0n Nil{}: {==}
+    case 0n Con{+x, +t}: Empty.absurd({ev(x <> t) == True{} : Bool}, FD.logic__false_true(hs))
+    case 1n+ +c Nil{}: Empty.absurd({ev(Nil{}) == True{} : Bool}, FD.logic__false_true(hs))
+    case 1n+ +c Con{+x0, +t}:
+      match t:
+        case Nil{}: Empty.absurd({ev([x0]) == True{} : Bool}, FD.logic__false_true(FD.logic__and_right(U32.is_lt(x0, 256), False{}, hs)))
+        case Con{+x1, +rest}:
+          +k1 = FD.logic__and_right(U32.is_lt(x0, 256), Bool.and(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest)), hs)
+          sc2e(c, rest, FD.logic__and_right(U32.is_lt(x1, 256), SP.byte_scope(Nat.double(c), rest), k1))
+
+law s2_fp:
+  for +xs: +List<U32>
+  for +o: Nat
+  for +h: {ev(xs) == True{} : Bool}
+  {Layout.fixed_parts(sp2(xs), o) == xs : +List<U32>}
+def s2_fp(xs, o, h):
+  match xs:
+    case Nil{}: {==}
+    case Con{+x0, +t}:
+      match t:
+        case Nil{}: Empty.absurd({Layout.fixed_parts(sp2([x0]), o) == [x0] : +List<U32>}, FD.logic__false_true(h))
+        case Con{+x1, +r}: Equal.cong(+List<U32>, +List<U32>, z => x0 <> x1 <> z, Layout.fixed_parts(sp2(r), o), r, s2_fp(r, o, h))
+
+law s2_pay:
+  for +xs: +List<U32>
+  {Layout.payloads(sp2(xs)) == [] : +List<U32>}
+def s2_pay(xs):
+  match xs:
+    case Nil{}: {==}
+    case Con{+x0, +t}:
+      match t:
+        case Nil{}: {==}
+        case Con{+x1, +r}: s2_pay(r)
+
+# The progressive list of the 2-byte elements of a byte string: one variable part, the string.
+def prog_parts(+k: Nat, +xs: +List<U32>, +hs: {SP.byte_scope(Nat.double(k), xs) == True{} : Bool}, +hfit: {N.fits(4n, Nat.double(k)) == True{} : Bool})
+    -> {Codec.parts(S.Sequence{PB.it2(k, xs)}, Spec.@X()) == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}:
+  +hm = sc2e(k, xs, hs)
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(PB.it2(k, xs), S.Repeat{S.Unsigned{P.U16{}}}), Some{sp2(xs)}, sc2p(k, xs, hs)) :
+    {Codec.aggregate(_, None{}) == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(sp2(xs)), Some{List.append(&2, U32, xs, [])},
+      VMV.enc_gen(sp2(xs), Nat.double(k), xs, [], sc2s(k, xs, hs), s2_fp(xs, Nat.double(k), hm), s2_pay(xs), sc2v(k, xs, hs),
+        FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, Nat.double(k), Nat.add(Nat.double(k), 0n), Equal.sym(Nat, Nat.add(Nat.double(k), 0n), Nat.double(k), FD.nat__add_zero(Nat.double(k))), hfit))) :
+    {Codec.one(_, None{}) == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(+List<U32>, List.append(&2, U32, xs, []), xs, VS.app_nil(xs)) : {Codec.one(Some{_}, None{}) == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}
+  {==}
+
+# The spec parts of the value: one variable part, the window's bytes.
+def specw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool})
+    -> {Codec.parts(VALw(t, x, len), Spec.@X()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}:
+  +Y = UW.WX(t, x, U32.to_nat(len))
+  +el = eLc(t, x, off, len, hchk)
+  +hs0 = FD.logic__subst(Nat, z => {SP.byte_scope(z, Y) == True{} : Bool}, List.length(&2, U32, Y), U32.to_nat(len), UW.lenWX(d, t, x, U32.to_nat(len), pf, hw),
+    U8.dom_scope(Y, UW.domWX(t, x, U32.to_nat(len))))
+  +hs = FD.logic__subst(Nat, z => {SP.byte_scope(z, Y) == True{} : Bool}, U32.to_nat(len), Nat.double(CQ(len)), el, hs0)
+  +hf = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(len), Nat.double(CQ(len)), el,
+    VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==})))
+  prog_parts(CQ(len), Y, hs, hf)
+
+# ---- every value whose spec parts are the window's bytes passes the checks ----------------------
+
+@REP
+
+def ivf(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +c: Nat,
+    +ys: +List<U32>, +ly: {List.length(&2, U32, ys) == Nat.double(c) : Nat}, +ey: {ys == UW.WX(t, x, U32.to_nat(len)) : +List<U32>})
+    -> {CHKw(t, x, off, len) == True{} : Bool}:
+  +el = Equal.trans(Nat, U32.to_nat(len), List.length(&2, U32, UW.WX(t, x, U32.to_nat(len))), Nat.double(c),
+    Equal.sym(Nat, List.length(&2, U32, UW.WX(t, x, U32.to_nat(len))), U32.to_nat(len), UW.lenWX(d, t, x, U32.to_nat(len), pf, hw)),
+    Equal.trans(Nat, List.length(&2, U32, UW.WX(t, x, U32.to_nat(len))), List.length(&2, U32, ys), Nat.double(c),
+      Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), UW.WX(t, x, U32.to_nat(len)), ys, Equal.sym(+List<U32>, ys, UW.WX(t, x, U32.to_nat(len)), ey)), ly))
+  chk2(t, x, off, len, c, el)
+
+def ivm4(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +its: S.Value,
+    +ps: +List<S.Part>, +em3: {Codec.parts(its, S.Repeat{U16S()}) == Some{ps} : Maybe<&2, +List<S.Part>>},
+    +m4: Maybe<&2, +List<U32>>, +em4: {Layout.encoding(ps) == m4 : Maybe<&2, +List<U32>>},
+    +e: {Codec.one(m4, None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>})
+    -> {CHKw(t, x, off, len) == True{} : Bool}:
+  match m4:
+    case None{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case Some{+ys}:
+      +lys = Equal.trans(Nat, List.length(&2, U32, ys), Layout.fixed_size(ps), Nat.double(Codec.count(its)),
+        VS.enc_len(ps, ys, Pair.fst({VS.allfix(ps) == True{} : Bool}, {Layout.fixed_size(ps) == Nat.double(Codec.count(its)) : Nat}, rep_facts(its, ps, em3)), em4),
+        Pair.snd({VS.allfix(ps) == True{} : Bool}, {Layout.fixed_size(ps) == Nat.double(Codec.count(its)) : Nat}, rep_facts(its, ps, em3)))
+      ivf(d, t, x, off, len, hw, pf, Codec.count(its), ys, lys, var_inj(ys, UW.WX(t, x, U32.to_nat(len)), e))
+
+def ivm3(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +its: S.Value,
+    +m3: Maybe<&2, +List<S.Part>>, +em3: {Codec.parts(its, S.Repeat{U16S()}) == m3 : Maybe<&2, +List<S.Part>>},
+    +e: {Codec.aggregate(m3, None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>})
+    -> {CHKw(t, x, off, len) == True{} : Bool}:
+  match m3:
+    case None{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case Some{+ps}: ivm4(d, t, x, off, len, hw, pf, its, ps, em3, Layout.encoding(ps), {==}, e)
+
+# Every value whose spec parts are the window's bytes passes the checks.
+def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +v: S.Value,
+    +e: {Codec.parts(v, Spec.@X()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>})
+    -> {CHKw(t, x, off, len) == True{} : Bool}:
+  match v:
+    case S.Sequence{+its}: ivm3(d, t, x, off, len, hw, pf, its, Codec.parts(its, S.Repeat{U16S()}), {==}, e)
+@ABSURDV
+"""
+
+
+def rep16_text():
+    """vspec.bend's inversion of repeated uint64 parts, for uint16 (2 bytes each)."""
+    src = (ROOT / 'proofs/obj/vspec.bend').read_text().split('\n')
+    a = src.index('def REPF(+its: S.Value, +ps: +List<S.Part>) -> Type:')
+    b = next(i for i in range(a, len(src)) if src[i].startswith('law allfix_pay:'))
+    txt = '\n'.join(src[a:b]).rstrip()
+    for o, n in [('F.', 'FD.'), ('x8(', 'Nat.double('), ('8n+Nat.double', '2n+Nat.double'), ('== 8n', '== 2n'), ('SP.prefix(8n,', 'SP.prefix(2n,'),
+                 ('Some{8n}', 'Some{2n}'), (', 8n, l8)', ', 2n, l8)'), ('{8n+_', '{2n+_'), ('U64S()', 'U16S()'), ('P.U64{}', 'P.U16{}'), ('allfix(', 'VS.allfix(')]:
+        txt = txt.replace(o, n)
+    assert '8n' not in txt and 'x8' not in txt, txt
+    return txt
+
+
+def absurd_v(goal):
+    L = []
+    for c, args in VW.VALUE_CTORS:
+        if c == 'Sequence':
+            continue
+        pat = f'S.{c}{{' + ', '.join('+' + a for a in args) + '}'
+        term = f'S.{c}{{' + ', '.join(args) + '}'
+        L.append(f'    case {pat}: Empty.absurd({goal}, FD.logic__none_some(+List<S.Part>, [S.Variable{{UW.WX(t, x, U32.to_nat(len))}}], e))')
+    return '\n'.join(L)
+
+
+WIN_BOOL = r"""
+def v1() -> Word(31n): FD.spec_numeric__from_nat(31n, 1n)
+
+# Every byte of the window a boolean (0 or 1).
+def CHKw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool: VRB.ALLB(UW.WX(t, x, U32.to_nat(len)))
+
+# The validator's length check holds for every length (one-byte elements, no limit).
+def chk1(+len: U32) -> {Bool.and(U32.is_eq(len, (U32.div(len, 1) * 1 : U32)), True{}) == True{} : Bool}:
+  +w = VU.whole_i(len, 1, len, v1(), {==}, {==}, {==}, U32.to_nat(len), PB.mul1(U32.to_nat(len)), FD.nat__le_refl(U32.to_nat(len)))
+  FD.logic__and_intro(U32.is_eq(len, (U32.div(len, 1) * 1 : U32)), True{}, FD.logic__and_left(U32.is_eq(len, (U32.div(len, 1) * 1 : U32)), U32.is_le(U32.div(len, 1), len), w), {==})
+
+def em(+len: U32) -> {U32.to_nat(len) == U32.to_nat(U32.div(len, 1)) : Nat}:
+  Equal.trans(Nat, U32.to_nat(len), Nat.mul(U32.to_nat(U32.div(len, 1)), 1n), U32.to_nat(U32.div(len, 1)), VLS.whole_t1(len, 1, v1(), {==}, {==}, {==}, chk1(len)),
+    Equal.sym(Nat, U32.to_nat(U32.div(len, 1)), Nat.mul(U32.to_nat(U32.div(len, 1)), 1n), PB.mul1(U32.to_nat(U32.div(len, 1)))))
+
+def s1(+c: Nat, +h: {Nat.is_le(1n, c) == True{} : Bool}) -> {c == 1n+Nat.sub(c, 1n) : Nat}:
+  match c:
+    case 0n: Empty.absurd({0n == 1n+Nat.sub(0n, 1n) : Nat}, FD.logic__false_true(h))
+    case 1n+ +p: Equal.cong(Nat, Nat, z => 1n+z, p, Nat.sub(1n+p, 1n), Equal.sym(Nat, Nat.sub(Nat.add(1n, p), 1n), p, FD.nat__add_sub_cancel(1n, p)))
+
+@CK
+# The loop's bound: byte 1 + k of the window is inside the buffer.
+def hbk(+d: Nat, +x: Nat, +len: U32, +k: Nat, +ek: {U32.to_nat(len) == 1n+k : Nat},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_le(VRL.pos(Nat.add(1n+k, 0n), 1n, x), A.quad(VB.pw(d))) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(1n+k, 0n), 1n+k, FD.nat__add_zero(1n+k)) : {Nat.is_le(Nat.add(Nat.mul(_, 1n), x), A.quad(VB.pw(d))) == True{} : Bool}
+  %PB.mul1(1n+k) : {Nat.is_le(Nat.add(_, x), A.quad(VB.pw(d))) == True{} : Bool}
+  FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, U32.to_nat(len)), Nat.add(1n+k, x),
+    Equal.trans(Nat, Nat.add(x, U32.to_nat(len)), Nat.add(x, 1n+k), Nat.add(1n+k, x), Equal.cong(Nat, Nat, z => Nat.add(x, z), U32.to_nat(len), 1n+k, ek), FD.nat__add_comm(x, 1n+k)), hw)
+
+def nzb(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(U32.div(len, 1), 0) == b : Bool})
+    -> {T.pl_bool_ok_nz(b, BF(t, n), off, U32.div(len, 1)) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+  match b:
+    case True{}:
+      +e0 = Equal.trans(Nat, U32.to_nat(len), U32.to_nat(U32.div(len, 1)), 0n, em(len),
+        Equal.cong(U32, Nat, z => U32.to_nat(z), U32.div(len, 1), 0, FD.u32alg__eq_of(U32.div(len, 1), 0, eb)))
+      %Equal.sym(Nat, U32.to_nat(len), 0n, e0) : {(BF(t, n), True{}) == (BF(t, n), VRB.ALLB(UW.WX(t, x, _))) : B.Buf & Bool}
+      {==}
+    case False{}:
+      +M = U32.div(len, 1)
+      +k = U32.to_nat(U32.sub(M, 1))
+      +h1 = VRL.cposu(M, U32.to_nat(M), {==}, eb)
+      +ek = Equal.trans(Nat, U32.to_nat(len), U32.to_nat(M), 1n+k, em(len),
+        Equal.trans(Nat, U32.to_nat(M), 1n+Nat.sub(U32.to_nat(M), 1n), 1n+k, s1(U32.to_nat(M), h1),
+          Equal.cong(Nat, Nat, z => 1n+z, Nat.sub(U32.to_nat(M), 1n), k, Equal.sym(Nat, k, Nat.sub(U32.to_nat(M), 1n), FD.u32__sub_nat(M, 1, h1)))))
+      +hwk = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == True{} : Bool}, U32.to_nat(len), 1n+k, ek, hw)
+      +hx = FD.nat__lt_le_trans(x, Nat.add(x, 1n+k), A.quad(VB.pw(d)), VTX.ltp(x, k), hwk)
+      %Equal.sym(B.Buf & Bool, O.ok_bool(BF(t, n), off), (BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, eo, hd, pf, hx)) :
+        {T.pl_bool_ck(k, 0, off, True{}, _) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}
+      %Equal.sym(Nat, U32.to_nat(len), 1n+k, ek) :
+        {T.pl_bool_ck(k, 0, off, True{}, (BF(t, n), U32.is_le(VRB.BX(t, x), 1))) == (BF(t, n), VRB.ALLB(UW.WX(t, x, _))) : B.Buf & Bool}
+      ck(k, d, t, n, off, x, 0, 0n, True{}, eo, {==}, hd, pf, hbk(d, x, len, k, ek, hw))
+
+# The validator on the window returns the buffer and CHKw.
+def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
+    -> {T.pl_bool_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+  %Equal.sym(Bool, Bool.and(U32.is_eq(len, (U32.div(len, 1) * 1 : U32)), True{}), True{}, chk1(len)) :
+    {T.pl_bool_ok_len(_, BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}
+  nzb(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_eq(U32.div(len, 1), 0), {==})
+@READW
+# ---- the spec side ------------------------------------------------------------------------------
+
+def vb(xs: +List<U32>) -> S.Value:
+  match xs:
+    case Nil{}: S.EmptyItems{}
+    case Con{x, t}: S.Items{S.BooleanValue{U32.is_eq(x, 1)}, vb(t)}
+
+def VALw(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: S.Sequence{vb(UW.WX(t, x, U32.to_nat(len)))}
+
+law prt_b:
+  for +xs: +List<U32>
+  for +h: {VRB.ALLB(xs) == True{} : Bool}
+  {Codec.parts(vb(xs), S.Repeat{S.Boolean{}}) == Some{U8.sparts(xs)} : Maybe<&2, +List<S.Part>>}
+def prt_b(xs, h):
+  match xs:
+    case Nil{}: {==}
+    case Con{+x, +t}:
+      F.cat_fixed(Codec.parts(S.BooleanValue{U32.is_eq(x, 1)}, S.Boolean{}), [x], Codec.parts(vb(t), S.Repeat{S.Boolean{}}), U8.sparts(t),
+        SP2.bool_part(x, FD.logic__and_left(U32.is_le(x, 1), VRB.ALLB(t), h)), prt_b(t, FD.logic__and_right(U32.is_le(x, 1), VRB.ALLB(t), h)))
+
+# The progressive list of the booleans of a string of bytes 0 and 1: one variable part, the string.
+def prog_parts(+xs: +List<U32>, +hb: {VRB.ALLB(xs) == True{} : Bool}, +hdm: {SP.bytes_domain(xs) == True{} : Bool},
+    +hfit: {N.fits(4n, List.length(&2, U32, xs)) == True{} : Bool})
+    -> {Codec.parts(S.Sequence{vb(xs)}, Spec.@X()) == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}:
+  +L = List.length(&2, U32, xs)
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(vb(xs), S.Repeat{S.Boolean{}}), Some{U8.sparts(xs)}, prt_b(xs, hb)) :
+    {Codec.aggregate(_, None{}) == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(U8.sparts(xs)), Some{List.append(&2, U32, xs, [])},
+      VMV.enc_gen(U8.sparts(xs), L, xs, [], U8.sp_size(xs), U8.sp_fp(xs, L), U8.sp_pay(xs), U8.scope_valid(L, xs, U8.dom_scope(xs, hdm)),
+        FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, L, Nat.add(L, 0n), Equal.sym(Nat, Nat.add(L, 0n), L, FD.nat__add_zero(L)), hfit))) :
+    {Codec.one(_, None{}) == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(+List<U32>, List.append(&2, U32, xs, []), xs, VS.app_nil(xs)) : {Codec.one(Some{_}, None{}) == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}
+  {==}
+
+# The spec parts of the value: one variable part, the window's bytes.
+def specw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool})
+    -> {Codec.parts(VALw(t, x, len), Spec.@X()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}:
+  +Y = UW.WX(t, x, U32.to_nat(len))
+  +hf = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(len), List.length(&2, U32, Y),
+    Equal.sym(Nat, List.length(&2, U32, Y), U32.to_nat(len), UW.lenWX(d, t, x, U32.to_nat(len), pf, hw)),
+    VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==})))
+  prog_parts(Y, hchk, UW.domWX(t, x, U32.to_nat(len)), hf)
+
+# Every value whose spec parts are the window's bytes has only bytes 0 and 1 there.
+def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +v: S.Value,
+    +e: {Codec.parts(v, Spec.@X()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>})
+    -> {CHKw(t, x, off, len) == True{} : Bool}:
+  match v:
+    case S.Sequence{+its}:
+      VRB.agg_m(its, Codec.parts(its, S.Repeat{S.Boolean{}}), {==}, None{}, UW.WX(t, x, U32.to_nat(len)),
+        Equal.cong(Maybe<&2, +List<S.Part>>, Maybe<&2, +List<U32>>, z => Codec.bytes(z), Codec.aggregate(Codec.parts(its, S.Repeat{S.Boolean{}}), None{}),
+          Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]}, e))
+@ABSURDV
+"""
+
+
+def ck_text():
+    """fix_reject_chk.py's loop lemma for the boolean check O.ok_bool, for T.pl_bool_ck."""
+    import fix_reject_chk as FRC
+    t = FRC.name_text('PLB', 'g', 'pl_bool', 1, 'vec')
+    a = t.index('# the check loop')
+    b = t.index('def PLB_at')
+    return t[a:b].replace('PLB_ck', 'ck').replace('UA.BF(t, n)', 'BF(t, n)').rstrip() + '\n'
+
+
+WIN_IMPORTS = ['import ../../spec/root_relation.bend as RR', 'import ./vua_rd.bend as UR', 'import ./big_vvlz.bend as VZG', 'import ./vu8.bend as U8', 'import ./vmv.bend as VMV',
+               'import ./packed_bytes.bend as PB', 'import ./vrl.bend as VRL', 'import ./vrejb.bend as VRB',
+               'import ./vua_fix.bend as VTX', 'import ./vua.bend as UA', 'import ./sub_pack.bend as SP2']
 
 
 def win_text(k):
     X, p = KINDS[k]
-    body = {'u8': WIN_U8}[k].replace('@READW', READW)
+    body = {'u8': WIN_U8, 'u16': WIN_U16, 'bool': WIN_BOOL}[k].replace('@READW', READW)
+    if k == 'bool':
+        body = body.replace('@CK', ck_text()).replace('@ABSURDV', absurd_v('{CHKw(t, x, off, len) == True{} : Bool}'))
+    if k == 'u16':
+        body = body.replace('@REP', rep16_text()).replace('@ABSURDV', absurd_v('{CHKw(t, x, off, len) == True{} : Bool}'))
     body = body.replace('@X(', f'{X}(').replace('@p_', f'{p}_')
     L = generic(VW.HEADX) + WIN_IMPORTS + ['', HDR,
                                            f'# ProgressiveList[{ {"u8": "uint8", "u16": "uint16", "bool": "boolean"}[k] }] ({X}) at a window of any byte offset x:',
@@ -242,8 +655,8 @@ law encode_spec:
   for +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool}
   for +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}
   for +hN: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}
-  Decoding.decodes(Spec.@X(), VS.bt(U32.to_nat(N), F.limbs(FD.array__slots(U32, VLS.OUTP(N, T)))), W.VALw(T, 0n, N))
-def encode_spec(dw, T, N, pfT, hdw, hN):
+@SHYP  Decoding.decodes(Spec.@X(), VS.bt(U32.to_nat(N), F.limbs(FD.array__slots(U32, VLS.OUTP(N, T)))), W.VALw(T, 0n, N))
+def encode_spec(dw, T, N, pfT, hdw, hN@SARG):
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(W.VALw(T, 0n, N), Spec.@X()), Some{[S.Variable{UW.WX(T, 0n, U32.to_nat(N))}]},
       W.specw(dw, T, N, 0n, 0, N, {==}, hdw, hN, pfT, @CHK)) :
     {Codec.bytes(_) == Some{VS.bt(U32.to_nat(N), F.limbs(FD.array__slots(U32, VLS.OUTP(N, T))))} : Maybe<&2, +List<U32>>}
@@ -254,8 +667,10 @@ def encode_spec(dw, T, N, pfT, hdw, hN):
 
 def enc_text(k):
     X, p = KINDS[k]
-    chk = {'u8': 'W.chk(T, 0n, 0, N)'}[k]
-    body = ENC.replace('@X', X).replace('@p_', f'{p}_').replace('@CHK', chk)
+    chk = {'u8': 'W.chk(T, 0n, 0, N)', 'u16': 'W.chk2(T, 0n, 0, N, c, ec)', 'bool': 'hb'}[k]
+    shyp, sarg = {'u8': ('', ''), 'u16': ('  for +c: Nat\n  for +ec: {U32.to_nat(N) == Nat.double(c) : Nat}\n', ', c, ec'),
+                  'bool': ('  for +hb: {W.CHKw(T, 0n, 0, N) == True{} : Bool}\n', ', hb')}[k]
+    body = ENC.replace('@X', X).replace('@p_', f'{p}_').replace('@CHK', chk).replace('@SHYP', shyp).replace('@SARG', sarg)
     L = generic(VW.HEADX) + ['import ./big_vvlz.bend as VZG', 'import ./venc.bend as VE', 'import ./vbenc.bend as VBE', 'import ./vbspec.bend as VBS', 'import ./vbytes.bend as VYS',
                              f'import ./{win_fname(k).name} as W', '', HDR,
                              f'# The encoder of {X}: for every object O.Words{{thaw(T), N}} whose storage T is a perfect',
@@ -265,7 +680,7 @@ def enc_text(k):
     return '\n'.join(L) + body
 
 
-DONE = ['u8']
+DONE = ['u8', 'u16', 'bool']
 
 
 def outputs(no_big):
