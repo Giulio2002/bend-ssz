@@ -215,6 +215,8 @@ GFULL = [('bv256', 'Bitvector256', 8)]
 GPART = [('bv1', 'Bitvector1', 1), ('bv2', 'Bitvector2', 1), ('bv8', 'Bitvector8', 1), ('bv257', 'Bitvector257', 9)]
 # byte vectors held as packed words (validity words_ok(S, S), an aligned copy, put_words): (prefix, bytes, words)
 GWORDS = [('bv1280', 160, 40)]
+# Fulu's: the branch vectors of the light-client containers: (prefix, bytes, words, unit)
+FWORDS = [('v4_b32', 128, 32, 32), ('v6_b32', 192, 48, 32), ('v7_b32', 224, 56, 32)]
 
 
 def gput0_full(p, C, N):
@@ -493,7 +495,7 @@ def {p}_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, 
 ''')
     return module(GHEAD_IMPORTS + ['import ../../src/primitives.bend as I'], f'T.{p}_put (generic {C}, {m} bytes)', '\n'.join(out))
 
-def gwords_text(p, S, W):
+def gwords_text(p, S, W, unit=1, generic=True):
     """A byte vector of S bytes held as packed words (W = S / 4): its validity check, then at
     r = 0 its unrolled aligned copy (the run VF.updv of the storage's first W words), and
     otherwise O.put_words (vuwd's loose putw: the carry word lies inside the value's room)."""
@@ -529,7 +531,7 @@ def gwput_{p}(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {{U32.t
   +hd32 = VB.lt32(dd, FD.nat__lt_trans(dd, 29n, 31n, hdd, {{==}}))
   +hB32 = VB.lt32(dB, hdB)
   %Equal.sym(O.Words & Bool, T.{p}_valid({OBJ}), ({OBJ}, True{{}}),
-      VBE.words_ok_b(dB, TB, {S}, {S}, {S}, {kw}n, pfB, hdB, {{==}}, {{==}}, {{==}}, {{==}}, hrB, {{==}}, 1, {{==}})) :
+      VBE.words_ok_b(dB, TB, {S}, {S}, {S}, {kw}n, pfB, hdB, {{==}}, {{==}}, {{==}}, {{==}}, hrB, {{==}}, {unit}, {{==}})) :
     {{T.{p}_pk(FD.array__thaw(U32, D), pos, _) == {RHS0} : {TY}}}
   %Equal.sym(U32, U32.and(pos, 3), 0, VF.al_3(pos, P, e)) :
     {{T.{p}_pk_ok(T.{p}_pw(U32.is_eq(_, 0), FD.array__thaw(U32, D), pos, FD.array__thaw(U32, TB), {S})) == {RHS0} : {TY}}}''')
@@ -579,7 +581,7 @@ def {p}_any({P})
     for s in (1, 2, 3):
         out.append(f'''    case {s}n:
       +e3 = UW.ua_3(X, q, {s}n, {s}, {{==}}, e, {{==}})
-      %Equal.sym(O.Words & Bool, T.{p}_valid({OBJ}), ({OBJ}, True{{}}), VBE.words_ok_b(dB, TB, {S}, {S}, {S}, {kw}n, pfB, hdB, {{==}}, {{==}}, {{==}}, {{==}}, hrB, {{==}}, 1, {{==}})) :
+      %Equal.sym(O.Words & Bool, T.{p}_valid({OBJ}), ({OBJ}, True{{}}), VBE.words_ok_b(dB, TB, {S}, {S}, {S}, {kw}n, pfB, hdB, {{==}}, {{==}}, {{==}}, {{==}}, hrB, {{==}}, {unit}, {{==}})) :
         {{T.{p}_pk({TH.format("D")}, X, _) == ({TH.format(PX(f"{s}n"))}, ({OBJ}, 0)) : {TY}}}
       %Equal.sym(U32, U32.and(X, 3), {s}, e3) : {{T.{p}_pk_ok(T.{p}_pw(U32.is_eq(_, 0), {TH.format("D")}, X, {TH.format("TB")}, {S})) == ({TH.format(PX(f"{s}n"))}, ({OBJ}, 0)) : {TY}}}
       %Equal.sym(Array<U32> & O.Words, O.put_words({TH.format("D")}, X, {OBJ}), ({TH.format(f"UWD.PWM({s}n, dd, D, q, TB, {S})")}, {OBJ}),
@@ -606,8 +608,13 @@ def {p}_any_bytes({P})
         FD.logic__subst(Nat, z => {{VS.bt(A.quad(z), VS.bdr(Nat.add(A.quad(q), {s}n), UA.BYT(D))) == UW.ZB(A.quad(z)) : +List<U32>}}, {W}n, List.length(&2, U32, {WS}), Equal.sym(Nat, List.length(&2, U32, {WS}), {W}n, eL), hz))''')
     out.append(f'''    case 4n+ +t: Empty.absurd({BY("4n+t", "Nat.add(A.quad(q), 4n+t)")}, FD.nat__lt_zero_absurd(t, hr))
 ''')
-    imports = GHEAD_IMPORTS + ['import ./vuwv_b256.bend as VWB']
-    return module(imports, f'T.{p}_putk (generic, the {S}-byte O.Words)', '\n'.join(out))
+    if generic:
+        imports = GHEAD_IMPORTS + ['import ./vuwv_b256.bend as VWB']
+        what = f'T.{p}_putk (generic, the {S}-byte O.Words)'
+    else:
+        imports = ['import ./vbenc.bend as VBE', 'import ./vuwv_b256.bend as VWB']
+        what = f'T.{p}_putk (the {S}-byte O.Words)'
+    return module(imports, what, '\n'.join(out))
 
 def module(imports, what, body):
     head = HEAD
@@ -631,6 +638,8 @@ def outputs():
         out[ROOT / f'proofs/obj/vuwg_{g[0]}.bend'] = gpart_text(*g)
     for g in GWORDS:
         out[ROOT / f'proofs/obj/vuwg_{g[0]}.bend'] = gwords_text(*g)
+    for g in FWORDS:
+        out[ROOT / f'proofs/obj/vuwv_{g[0]}.bend'] = gwords_text(g[0], g[1], g[2], g[3], generic=False)
     return out
 
 
