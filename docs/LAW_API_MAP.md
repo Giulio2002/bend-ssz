@@ -176,6 +176,27 @@ What that means concretely:
   `SPL(BYT(D), 4 i + s, limbs(ws))` when those bytes were zero (`swlb`: the
   list model; bit lemmas `vuw_bits`, generated); `vuw<s>.w32b` for `W32M`;
   `vuw.updv_bytes`: an aligned run `VF.updv` at word j is `SPL(BYT, 4 j, ...)`.
+  With a zero carry out, `vuwp<s>.putwu_o` (room for the run's own words only)
+  is the open model `SWo`, whose bytes are `vuw<s>.swcbo` (the first 4|ws| - s
+  bytes land; `SWLo`, `swo_slots`, `swlbo`).
+* **Writers at ANY byte position** X = 4 q + r (r < 4 symbolic; 2026-09-26),
+  the encoder leaves, in the tight form: room `q + NWN(r + m) <= 2^dd` for a
+  value of m bytes (no word past the value's own), zero bytes before the write.
+  `vuwd.bend` (hand-written): `PWM`/`putw_any`/`putw_any_bytes` (`O.put_words`;
+  bytes: the n data bytes then `ZB(PADB(r, n))` zeros to the end of the last
+  word, given the source's tail-zero fact htz; dispatch on n & 3 and r: a carry
+  word inside the value, `c1_*` over the loose `putw_loose`, or none, `c2_*<s>`
+  over `putwu_o`), `W32X`/`w32_any` (`O.w32`, `T.u32_put`), `W64X`/`w64_any`
+  (`O.w64`), `B20X`/`b20_any` (`T.b20_put`), the data-only bytes `*_any_bytes`
+  and `*_perfect`; `key_any` (the source's words as data then zeros).
+  `vuwv_<p>.bend` (`codegen/var_uwv.py`): `PX_<p>`/`<p>_any`/`<p>_any_bytes`/
+  `<p>x_perfect` for b32, u256, b48, b96, bv512, bv64 (data-only bytes) and
+  b256 (`T.b256_putk` over its 256-byte `O.Words`). `vuwb.bend` (hand-written):
+  `O.put_bits` at X (`PBX`, `pbx_any`, `pbx_perfect`) and its bytes
+  `pbx_any_bytes`: the spec's `Bp.pack` of the bits and the delimiter, then
+  `ZB(PADB(r, NK))` (through `pbx_raw` and the aligned writer at offset 0 of a
+  zero tree, `vbitcore.enc_core`); a byte OR-ed into the tree at any byte,
+  `tor`, over the list model `ORB`.
 * **Unaligned offsets** (`codegen/var_ua.py`, hand-written `vua.bend`,
   `vua_copy.bend`; 2026-09-26, stock). Generic in the offset and length, for
   a buffer of depth d < 31. U1: `B.read32` at ANY byte offset X returns
