@@ -15,6 +15,7 @@ import ./vrecx.bend as VRX
 import ./spec_fixed.bend as FX
 import ../../src/obj.bend as O
 import ./venc.bend as VE
+import ./vdepth.bend as VD
 
 # A container's bytes as a list of pieces (hand-written; for codegen/var_cont_enc.py).
 #
@@ -533,3 +534,18 @@ def pc_end(+q: Nat, +r: Nat, +L: Nat, +dd: Nat, +x: Nat, +h: {Nat.is_le(x, L) ==
 
 # An equation, with its type written out.
 def EQN(+a: Nat, +b: Nat, +e: {a == b : Nat}) -> {a == b : Nat}: e
+
+# ceil(L / 4) words, as the runtime computes them, for L within a tree of depth k < 29's bytes.
+def nw_nat(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 29n) == True{} : Bool}, +h: {Nat.is_le(U32.to_nat(L), A.quad(VB.pw(k))) == True{} : Bool})
+    -> {VC.NW(L) == WD.NWN(U32.to_nat(L)) : Nat}:
+  +Q = A.quad(VB.pw(k))
+  +h3 = F.nat__le_trans(3n, 4n, Q, {==}, VME4(1n, VB.pw(k), F.nat__pow2_pos(k)))
+  +hab = F.nat__le_trans(Nat.add(U32.to_nat(L), 3n), Nat.add(Q, 3n), Nat.add(Q, Q), Order.add_right(U32.to_nat(L), Q, 3n, h), Order.add_left(Q, 3n, Q, h3))
+  +hc = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(U32.to_nat(L), 3n), z) == True{} : Bool}, Nat.add(Q, Q), Nat.double(Q), Equal.sym(Nat, Nat.double(Q), Nat.add(Q, Q), F.lru_nat_algebra__double_self(Q)), hab)
+  +hd = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(U32.to_nat(L), 3n), z) == True{} : Bool}, VB.pw(Nat.add(3n, k)), O.pow2n(Nat.add(3n, k)), VD.s_pow2_eq(Nat.add(3n, k)), hc)
+  +e1 = VD.shrk(2n, U32.add(L, 3))
+  +e2 = VD.s_add_nat(L, 3, Nat.add(3n, k), hk, hd)
+  Equal.trans(Nat, VC.NW(L), VD.s_rng(2n, U32.to_nat(U32.add(L, 3))), WD.NWN(U32.to_nat(L)), e1,
+    Equal.trans(Nat, VD.s_rng(2n, U32.to_nat(U32.add(L, 3))), VD.s_rng(2n, Nat.add(U32.to_nat(L), 3n)), WD.NWN(U32.to_nat(L)),
+      Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(U32.add(L, 3)), Nat.add(U32.to_nat(L), 3n), e2),
+      Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), Nat.add(U32.to_nat(L), 3n), 3n+U32.to_nat(L), F.nat__add_comm(U32.to_nat(L), 3n))))

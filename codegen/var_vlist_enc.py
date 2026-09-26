@@ -74,11 +74,11 @@ TEMPLATE = ROOT / 'codegen/vvle_list.bend.in'
 # (list prefix, element runtime prefix, mode, count (limit / vector length / None), element encx module,
 #  element schema, source file, source list prefix, source element prefix)
 GLISTS = [
-    ('pl_Gc465214E502', 'Gc465214E502', 'prog', None, 'big_encx_Gc465214E502.bend', 'Spec.Gc465214E502()',
+    ('pl_Gc465214E502', 'Gc465214E502', 'prog', None, 'big_encx_Gc465214E502_iface.bend', 'Spec.Gc465214E502()',
      'root_gtypes2.bend', 'pl_Gc465214E502', 'Gc465214E502'),
-    ('pl_Gp66304057C3', 'Gp66304057C3', 'prog', None, 'big_encx_Gp66304057C3.bend', 'Spec.Gp66304057C3()',
+    ('pl_Gp66304057C3', 'Gp66304057C3', 'prog', None, 'big_encx_Gp66304057C3_iface.bend', 'Spec.Gp66304057C3()',
      'root_gtypes2.bend', 'pl_Gp66304057C3', 'Gp66304057C3'),
-    ('v2_Gc465214E502', 'Gc465214E502', 'vec', 2, 'big_encx_Gc465214E502.bend', 'Spec.Gc465214E502()',
+    ('v2_Gc465214E502', 'Gc465214E502', 'vec', 2, 'big_encx_Gc465214E502_iface.bend', 'Spec.Gc465214E502()',
      'root_gtypes2.bend', 'pl_Gc465214E502', 'Gc465214E502'),
     ('pl_pl_Gc465214E502', 'pl_Gc465214E502', 'prog', None, 'big_encx_pl_Gc465214E502.bend', 'S.ProgressiveList{Spec.Gc465214E502()}',
      'root_gtypes2.bend', 'pl_pl_Gc465214E502', 'pl_Gc465214E502'),

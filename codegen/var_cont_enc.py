@@ -1059,7 +1059,12 @@ def iface_text(C, generic=False):
     curs = {ev['field']: ev['cur'] for ev in events if ev['kind'] == 'var'}
     for i, (f, fs) in enumerate(F):
         sch = kids[i]
-        if fs.fixed and fs.data:
+        if fs.fixed and fs.data and leaf_of(fs).sub:
+            m_ = leaf_of(fs).sub
+            Y = f'[U32.and({f}, 255)]' if m_ == 1 else f'[U32.and({f}, 255), U32.and(U32.shrn({f}, 8n), 255)]'
+            fields.append(dict(kind='fix', f=f, val=f'VRB.UV{8 * m_}({f})', sch=sch, part=f'S.Fixed{{{Y}}}', bytes=Y,
+                               prf=f'VRB.prt{8 * m_}({f})', psch=f'S.Unsigned{{P.U{8 * m_}{{}}}}'))
+        elif fs.fixed and fs.data:
             lf = leaf_of(fs)
             if lf.p not in lvs:
                 nd = SLW.walk(g, tfs[f], iter(range(1000000)))
@@ -1207,6 +1212,11 @@ def okbk({OPS}, +h: {{OKT({OAS}) == {TRUE_}}}, +k: Nat, +ek: {{k == 28n : Nat}})
         hY = x.get('hY', '{==}')
         ch = K.children[x['f']]
         rw.append(f'  %Equal.sym(+List<U32>, {vw[j]}, {x["enc"]}, VCN.pc_id({ch.len}, {x["enc"]}, {hY})) :\n    {{VCN.AP(VCN.CAT([{", ".join(fw)}]), VCN.CAT([{", ".join(cells)}])) == VCN.AP(VCN.CAT([{", ".join(fw)}]), Layout.payloads(PSC({OAS}))) : +List<U32>}}')
+    if getattr(K, 'pz', None) is not None:
+        SZCORE = SZC[1:SZC.index(' .|. O.pz(')]
+        ESZ = f'K.szpz({OAS}, ok_hpz({OAS}, h))'
+    else:
+        SZCORE, ESZ = SZC, f'eSZ({OAS}, Unit{{}})'
     w(f'''
 def partsC({OPS}, +h: {{OKT({OAS}) == {TRUE_}}}, +k: Nat, +ek: {{k == 28n : Nat}})
     -> {{Codec.parts({items(0)}, {chain(0)}) == Some{{PSC({OAS})}} : Maybe<&2, +List<S.Part>>}}:
@@ -1222,7 +1232,7 @@ def okoC({OPS}, +h: {{OKT({OAS}) == {TRUE_}}}, +k: Nat, +ek: {{k == 28n : Nat}})
 # the returned size is the bytes' end
 def eSZ({OPS}, +u: Unit) -> {{K.SZC({OAS}) == {SZC} : U32}}: {{==}}
 def szC({OPS}, +h: {{OKT({OAS}) == {TRUE_}}}, +k: Nat, +ek: {{k == 28n : Nat}}) -> {{U32.to_nat(K.SZC({OAS})) == ENDC({OAS}) : Nat}}:
-  FD.logic__subst(U32, z => {{U32.to_nat(z) == ENDC({OAS}) : Nat}}, {SZC}, K.SZC({OAS}), Equal.sym(U32, K.SZC({OAS}), {SZC}, eSZ({OAS}, Unit{{}})),
+  FD.logic__subst(U32, z => {{U32.to_nat(z) == ENDC({OAS}) : Nat}}, {SZCORE}, K.SZC({OAS}), Equal.sym(U32, K.SZC({OAS}), {SZCORE}, {ESZ}),
     {eo[-1]})
 
 # the writer's bytes: the fixed region (the layout's header), then the payloads
@@ -1390,7 +1400,12 @@ def domx(m, hok):
     for k, ev in enumerate(events):
         f = ev['field']
         fs = fsd[f]
-        if ev['kind'] == 'leaf':
+        if ev['kind'] == 'leaf' and leaf_of(fs).sub:
+            pfs = f'{leaf_of(fs).pf}(dd, {Mk(k)}, XQ(q, r), {ev["hoff"]}, {f}, {pfs})'
+        elif ev['kind'] == 'off' and ev['hoff'] % 4:
+            Xc_ = f'U32.add(XQ(q, r), {ev["hoff"]})'
+            pfs = f'WD.w32x_perfect(VCN.RX({Xc_}), dd, {Mk(k)}, VCN.QX({Xc_}), {ev["cur"]}, {pfs})'
+        elif ev['kind'] == 'leaf':
             pfs = f'K.pfo_{leaf_of(fs).p}({f}, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), r, {pfs})'
         elif ev['kind'] == 'fixw':
             pfs = f'V_{fs.p}.{fs.p}x_perfect(r, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), TB_{f}, {pfs})'
@@ -1431,6 +1446,9 @@ def domx(m, hok):
             return re.sub(r'(?<![\w.])([A-Za-z_]\w*)\b(?![({])', lambda z: d.get(z.group(1), z.group(1)), t)
         cur = rq(subst(mm.group(3).strip(), sub))
         steps = []
+        if entry == 'valid' and getattr(K, 'pz', None) is not None and K.pz in cur:
+            steps.append(f'  %Equal.sym(Bool, {K.pz}, True{{}}, ok_hpz({OAS}, h)) :\n    {{{cur.replace(K.pz, "_", 1)} == {final_rhs} : {result_t}}}')
+            cur = cur.replace(K.pz, 'True{}', 1)
         while True:
             m2 = re.fullmatch(r'T\.(\w+_(?:sz|va)\d+)\((.*)\)', cur)
             if not m2:
@@ -1468,6 +1486,9 @@ def domx(m, hok):
             return re.sub(r'(?<![\w.])([A-Za-z_]\w*)\b(?![({])', lambda z: d.get(z.group(1), z.group(1)), t)
         cur = rq(subst(mm.group(3).strip(), sub))
         steps = []
+        if getattr(K, 'pz', None) is not None:
+            core_ = SZC[1:SZC.index(' .|. O.pz(')]
+            steps.append(f'  %Equal.sym(U32, K.SZC({OAS}), {core_}, K.szpz({OAS}, ok_hpz({OAS}, h))) :\n    {{T.{K.p}_size(K.OBJC({OAS})) == (K.OBJC({OAS}), _) : T.{C} & U32}}')
         while True:
             m2 = re.fullmatch(r'T\.(\w+_sz\d+)\((.*)\)', cur)
             if not m2:
@@ -1481,7 +1502,8 @@ def domx(m, hok):
                 break
             sz_prf, vt, _, SZj, hokn, _v = cs[cp]
             ctx = f'T.{fname}(' + ', '.join(args[:-1] + ['_']) + ')'
-            steps.append(f'  %Equal.sym({vt} & U32, {last}, ({V}, {SZj}), {sz_prf.replace("@HOK", f"{hokn}({OAS}, h)")}) :\n    {{{ctx} == (K.OBJC({OAS}), K.SZC({OAS})) : T.{C} & U32}}')
+            SZR = SZC[1:SZC.index(' .|. O.pz(')] if getattr(K, 'pz', None) is not None else f'K.SZC({OAS})'
+            steps.append(f'  %Equal.sym({vt} & U32, {last}, ({V}, {SZj}), {sz_prf.replace("@HOK", f"{hokn}({OAS}, h)")}) :\n    {{{ctx} == (K.OBJC({OAS}), {SZR}) : T.{C} & U32}}')
             fb = fn_body(fname)
             params = fn_params(fname)
             d = dict(zip(params, args[:-1] + [None]))
@@ -1554,10 +1576,12 @@ def iface_full(C, generic=False):
     body = iface_text(C, generic)
     main = (out_file(C) if not generic else gfile_c(C)).name
     heads = (out_file(C) if not generic else gfile_c(C)).read_text().split('\n')
-    mods = [l for l in heads if l.startswith('import ./') and (' as E' in l or ' as V_' in l)]
+    mods = [l for l in heads if l.startswith('import ./') and (' as E' in l or ' as V_' in l or l.endswith(' as VPC'))]
     hd = IHEAD
     if generic:
         hd = [x.replace('../../types/fulu_obj.bend as T', '../../types/generic_obj.bend as T').replace('../../spec/fulu_schemas.bend as Spec', './generic_specs.bend as Spec') for x in hd]
+    if 'VRB.' in body:
+        mods.append('import ./vrecb.bend as VRB')
     head = hd + mods + [f'import ./{main} as K', '', '# GENERATED by codegen/var_cont_enc.py. Do not edit.',
                         f'# {C} in the encoder-window interface, with its spec side (see the generator: iface_text).', '',
                         'def PA(-A: Data, -B: Data, +p: DK.P2(A, B)) -> A:', '  (+a, +b) = p', '  a',
@@ -1577,7 +1601,7 @@ HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primi
 # every child in the encoder-window interface, every fixed piece word-aligned (so far).
 GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3']
 # the containers written in the encoder-window interface with their spec side (iface_text): (name, generic)
-ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False)]
+ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True)]
 
 
 def gfile_c(C):
