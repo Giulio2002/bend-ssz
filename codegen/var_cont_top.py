@@ -23,8 +23,8 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 
 import var_cont_enc as CE  # noqa: E402
 
-TOPS = ['ExecutionPayload']
-SIZES = ['ExecutionPayload', 'ExecutionPayloadHeader']
+TOPS = ['ExecutionPayload', 'BeaconBlockBody']
+SIZES = ['ExecutionPayload', 'ExecutionPayloadHeader', 'BeaconBlockBody']
 TRUE = 'True{} : Bool'
 
 
@@ -75,6 +75,8 @@ def top_text(C):
             OBJF[f] = f
         elif fs.fixed and fs.kind == 'fixwords':
             OBJF[f] = f'O.Words{{FD.array__thaw(U32, TB_{f}), {fs.fsize}}}'
+        elif f in K.fixw:
+            OBJF[f] = K.fixw[f].obj
         else:
             OBJF[f] = K.children[f].obj
     groups = [(k // CE.GROUP, list(range(k, min(k + CE.GROUP, len(F))))) for k in range(0, len(F), CE.GROUP)] if K.wide else []
@@ -451,12 +453,9 @@ def valid_fact(f, fs, K):
     h = lambda x: f'CI.ok_{x}({{OAS}}, h)'
     if f in K.fixw:
         fw = K.fixw[f]
-        v = getattr(fw, 'valid', None)
-        if v is None:
+        if not callable(getattr(fw, 'valid', None)):
             return None
-        for x in fw.hargs:
-            v = re.sub(rf'(?<![\w.]){x}(?!\w)', h(x), v)
-        return (fw.vt, v)
+        return (fw.vt, fw.valid([h(x) for x in fw.hargs]))
     ch = K.children[f]
     if ch.p == 'bl32':
         return (ch.vt, f'EB.validx({ch.oargs[0]}, {h(ch.hargs[0])})')
