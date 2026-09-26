@@ -23,7 +23,8 @@ OUT_SC = ROOT / 'proofs/obj/vua_sc.bend'
 OUT_FIX = ROOT / 'proofs/obj/vua_fix.bend'
 # The fixed-size types read at any byte offset (with their fixed-size parts).
 FIX_ROOTS = ['Attestation', 'IndexedAttestation', 'SignedVoluntaryExit', 'SignedBLSToExecutionChange', 'SyncAggregate', 'Eth1Data',
-             'DepositRequest', 'WithdrawalRequest', 'ConsolidationRequest', 'Withdrawal', 'BeaconBlockBody']
+             'DepositRequest', 'WithdrawalRequest', 'ConsolidationRequest', 'Withdrawal', 'BeaconBlockBody',
+             'HistoricalSummary', 'PendingDeposit', 'PendingPartialWithdrawal', 'PendingConsolidation']
 
 F_, T_ = 'False{}', 'True{}'
 
