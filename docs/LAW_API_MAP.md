@@ -88,7 +88,10 @@ What that means concretely:
   word-aligned window (off = 4 i, len) of a buffer; through them
   `big_var_codec_AttesterSlashing{,_unique,_rej}.bend` prove ok_eval,
   decode_accept, decode_spec, decode_unique, decode_reject and decode_none for
-  AttesterSlashing (two IndexedAttestation fields). Its encoder laws are open.
+  AttesterSlashing (two IndexedAttestation fields), and
+  `big_var_codec_AttesterSlashing_enc.bend` encode_eval/encode_spec through the
+  windowed IndexedAttestation writer laws (`big_var_codec_IndexedAttestation_encw.bend`,
+  `codegen/var_nest_enc.py`, stock lib `vnenc.bend`).
   Supporting stock libraries: `vnest.bend` (a word from its limbs, bytes at 4 k
   are word k), `vdig.bend` (the spec's four offset digits of a word's value are
   its limbs), `vfits.bend` (N.fits(4n, x) for x <= 2^a, a < 32, symbolically).
