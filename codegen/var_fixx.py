@@ -328,8 +328,9 @@ def have(f):
     return {ln.split('(')[0][len('def rdx_'):] for ln in src.splitlines() if ln.startswith('def rdx_')}
 
 
-def small_mod(g, t, sch):
-    """A fixed type read word by word: thin wrappers over vua_fix / vbx_fix (or a reader here)."""
+def small_mod(g, t, sch, exact=False):
+    """A fixed type read word by word: thin wrappers over vua_fix / vbx_fix (or a reader here).
+    exact: the spec-parts proof in spec_laws' SL.EXACT form, the schema rewritten to its node's first."""
     import var_laws as VLW
     import var_ua as VUA
     ft = VLW.FT(g, t)
@@ -358,6 +359,8 @@ def small_mod(g, t, sch):
     if p in xf:
         L.insert(L.index('import ./vua_fix.bend as VTX') + 1, 'import ./vbx_fix.bend as XF')
     P = 'A.quad(VB.pw(d))'
+    xrw = (f'  %Equal.sym(S.Schema, {sch}, {nd.sch}, {{==}}) : {{Codec.parts(VAL(t, x), _) == Some{{[S.Fixed{{F.limbs(UR.RWS({W}n, t, x))}}]}} : Maybe<&2, +List<S.Part>>}}\n'
+           if exact else '')
     L.append(f'''def OBJ(+d: Nat, +t: {TR}, +x: Nat) -> {ft.rep()}: {OBJ}
 
 {sig('rdx', S)}
@@ -371,7 +374,7 @@ def prt(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE
     -> {{Codec.parts(VAL(t, x), s) == Some{{[S.Fixed{{UW.WX(t, x, {S}n)}}]}} : Maybe<&2, +List<S.Part>>}}:
   %Equal.sym(S.Schema, s, {sch}, es) : {{Codec.parts(VAL(t, x), _) == Some{{[S.Fixed{{UW.WX(t, x, {S}n)}}]}} : Maybe<&2, +List<S.Part>>}}
   %UR.rws_bytes({W}n, d, t, x, pf, hb) : {{Codec.parts(VAL(t, x), {sch}) == Some{{[S.Fixed{{_}}]}} : Maybe<&2, +List<S.Part>>}}
-  {proof}
+{xrw}  {proof}
 ''')
     return p, '\n'.join(L) + '\n'
 
@@ -381,6 +384,27 @@ def outputs(no_big=False):
     import var_fixx_bv4 as BV4
     out = {ROOT / 'proofs/obj/vfxg.bend': gen_text(), ROOT / 'proofs/obj/vfx_SyncCommittee.bend': sc_mod(),
            ROOT / 'proofs/obj/vfx_bv4.bend': BV4.bv4_mod(HEAD, sig, TR, TRUE)}
+    import var_fixx_gen as GEN   # the generic containers' short fields (types/generic_obj.bend)
+    out[ROOT / 'proofs/obj/vfx_u8.bend'] = GEN.u8_mod(HEAD, sig, TR, TRUE)
+    out[ROOT / 'proofs/obj/vfx_u16.bend'] = GEN.u16_mod(HEAD, sig, TR, TRUE)
+    out[ROOT / 'proofs/obj/vfx_u32.bend'] = GEN.u32_mod(HEAD, sig, TR, TRUE)
+    import generic as GN0
+    import generate as G0
+    gn0 = {n_: t_ for n_, t_, err in GN0.inventory_all() if err is None}
+    g0 = G0.Gen()
+    for t_ in gn0.values():
+        g0.shape(t_)
+    for P_, R_, K_ in GEN.RECVECS:
+        out[ROOT / f'proofs/obj/vfx_{P_}.bend'] = GEN.recvec_mod(gn0, g0, P_, R_, K_, HEAD, sig, TR, TRUE)
+    for N in (1, 2, 8):
+        out[ROOT / f'proofs/obj/vfx_bv{N}.bend'] = GEN.bvn_mod(N, HEAD, sig, TR, TRUE)
+    import generic as GN
+    gnames = {n: t for n, t, err in GN.inventory_all() if err is None}
+    out[ROOT / 'proofs/obj/vfx_bv257.bend'] = GEN.bvw1_mod(HEAD, sig, TR, TRUE)
+    out[ROOT / 'proofs/obj/vfx_bv1281.bend'] = GEN.bvw1_mod(HEAD, sig, TR, TRUE, 1281)
+    out[ROOT / 'proofs/obj/vfx_bv1280.bend'] = GEN.bvc_mod(1280, HEAD, sig, TR, TRUE)
+    for p, txt in GEN.generic_small(gnames, small_mod).items():
+        out[ROOT / f'proofs/obj/vfx_{p}.bend'] = txt
     import schema
     import generate as G
     names = schema.load(ROOT / 'codegen/fulu.yaml')

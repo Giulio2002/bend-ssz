@@ -222,6 +222,60 @@ def le_p1(+p: Nat) -> {Nat.is_le(Nat.add(F.spec_common__pow2(p), 0n), F.spec_com
 def u0(+a: U32, +ha: {Nat.is_eq(U32.to_nat(a), 0n) == True{} : Bool}) -> {U32.to_nat(a) == 0n : Nat}:
   F.nat__eq_from_is_eq(U32.to_nat(a), 0n, ha)
 
+# ---- word counts 2^p without unary evaluation ----------------------------------------
+# The copy shapes below take their word count nw and offsets as closed U32
+# literals; their hypotheses compare them with 2^p. Closing those by {==}
+# builds and walks 2^p in unary (a deep recursion: 65536 levels for
+# HistoricalBatch, which overflows the machine stack). These close them from
+# nw == u32__pow2u(p), a 32-bit comparison.
+
+law oct_double:
+  for +x: Nat
+  {oct(x) == Nat.double(Nat.double(Nat.double(x))) : Nat}
+def oct_double(x):
+  match x:
+    case 0n: {==}
+    case 1n+ +q:
+      Equal.cong(Nat, Nat, z => 8n+z, oct(q), Nat.double(Nat.double(Nat.double(q))), oct_double(q))
+
+law pow2u_is:
+  for +a: U32
+  for +p: Nat
+  for +e: {a == F.u32__pow2u(p) : U32}
+  for +hp: {Nat.is_lt(p, 32n) == True{} : Bool}
+  {Nat.is_eq(U32.to_nat(a), F.spec_common__pow2(p)) == True{} : Bool}
+def pow2u_is(a, p, e, hp):
+  %Equal.sym(U32, a, F.u32__pow2u(p), e) : {Nat.is_eq(U32.to_nat(_), F.spec_common__pow2(p)) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(F.u32__pow2u(p)), F.spec_common__pow2(p), F.u32__pow2u_value(p, hp)) :
+    {Nat.is_eq(_, F.spec_common__pow2(p)) == True{} : Bool}
+  F.nat__is_eq_refl(F.spec_common__pow2(p))
+
+law oct_pow:
+  for +nw: U32
+  for +p: Nat
+  for +q: Nat
+  for +ep: {p == 3n+q : Nat}
+  for +e: {nw == F.u32__pow2u(3n+q) : U32}
+  for +h3: {Nat.is_lt(3n+q, 32n) == True{} : Bool}
+  for +h2: {Nat.is_lt(2n+q, 32n) == True{} : Bool}
+  for +h1: {Nat.is_lt(1n+q, 32n) == True{} : Bool}
+  for +h0: {Nat.is_lt(q, 32n) == True{} : Bool}
+  {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), F.spec_common__pow2(p)) == True{} : Bool}
+def oct_pow(nw, p, q, ep, e, h3, h2, h1, h0):
+  %Equal.sym(Nat, p, 3n+q, ep) : {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), F.spec_common__pow2(_)) == True{} : Bool}
+  %Equal.sym(U32, nw, F.u32__pow2u(3n+q), e) : {Nat.is_eq(oct(U32.to_nat(U32.shrn(_, 3n))), F.spec_common__pow2(3n+q)) == True{} : Bool}
+  %Equal.sym(U32, U32.shr(F.u32__pow2u(3n+q)), F.u32__pow2u(2n+q), F.u32__shr_pow2u(2n+q, h3)) :
+    {Nat.is_eq(oct(U32.to_nat(U32.shr(U32.shr(_)))), F.spec_common__pow2(3n+q)) == True{} : Bool}
+  %Equal.sym(U32, U32.shr(F.u32__pow2u(2n+q)), F.u32__pow2u(1n+q), F.u32__shr_pow2u(1n+q, h2)) :
+    {Nat.is_eq(oct(U32.to_nat(U32.shr(_))), F.spec_common__pow2(3n+q)) == True{} : Bool}
+  %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+q)), F.u32__pow2u(q), F.u32__shr_pow2u(q, h1)) :
+    {Nat.is_eq(oct(U32.to_nat(_)), F.spec_common__pow2(3n+q)) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(F.u32__pow2u(q)), F.spec_common__pow2(q), F.u32__pow2u_value(q, h0)) :
+    {Nat.is_eq(oct(_), F.spec_common__pow2(3n+q)) == True{} : Bool}
+  %Equal.sym(Nat, oct(F.spec_common__pow2(q)), Nat.double(Nat.double(Nat.double(F.spec_common__pow2(q)))), oct_double(F.spec_common__pow2(q))) :
+    {Nat.is_eq(_, F.spec_common__pow2(3n+q)) == True{} : Bool}
+  F.nat__is_eq_refl(Nat.double(Nat.double(Nat.double(F.spec_common__pow2(q)))))
+
 # ---- the copy shapes of the fixed-size codecs ----------------------------------------
 
 # Decode of a whole perfect tree U into zero storage twice its size: [U | 0].
@@ -533,3 +587,130 @@ def sc3(p, nw, a, b, A, Bt, C, hp, h7, hk, ha, hb, pa, pb, pc):
   %Equal.sym(F.array__Tree<U32>, segt(p, 0n, sR), Bt, seg_self(p, Bt, F.array__slots(U32, C), pb)) :
     {(F.array__thaw(U32, F.TNode{A, F.TNode{_, z}}), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
   {==}
+
+
+# ---- the copy shapes in the exact form the readers and writers unfold to ----------
+# A reader or writer reaches O.acopy with its own argument terms (the word count
+# U32.shrn((n + 3 : U32), 2n), the word offset U32.shrn(off, 2n), the source
+# array as the buffer holds it). Stating the copy with exactly those terms lets
+# the checker match them syntactically; any other form makes it run the copy
+# loop on the literal sizes (2^16 words for HistoricalBatch: a deep recursion).
+
+# Bytes [off, off + n) of a buffer, word aligned, copied by one acopy.
+law read_al:
+  for ws: Array<U32>
+  for dst: Array<U32>
+  for +len: U32
+  for +off: U32
+  for +n: U32
+  for r: Array<U32> & Array<U32>
+  for es: {U32.is_eq(n, 0) == False{} : Bool}
+  for e3: {(off .&. 3 : U32) == 0 : U32}
+  for ec: {O.acopy(U32.shrn((n + 3 : U32), 2n), U32.shrn(off, 2n), 0, dst, ws) == r : Array<U32> & Array<U32>}
+  {O.copy_into(B.Buf{ws, len}, off, n, dst) == O.ci_fin(len, n, r) : B.Buf & O.Words}
+def read_al(ws, dst, len, off, n, r, es, e3, ec):
+  %Equal.sym(Bool, U32.is_eq(n, 0), False{}, es) :
+    {O.ci_fin(len, n, O.ci_go(_, (off .&. 3 : U32), U32.shrn(off, 2n), U32.shrn((n + 3 : U32), 2n), dst, ws)) == O.ci_fin(len, n, r) : B.Buf & O.Words}
+  %Equal.sym(U32, (off .&. 3 : U32), 0, e3) :
+    {O.ci_fin(len, n, O.ci_go(False{}, _, U32.shrn(off, 2n), U32.shrn((n + 3 : U32), 2n), dst, ws)) == O.ci_fin(len, n, r) : B.Buf & O.Words}
+  %Equal.sym(Array<U32> & Array<U32>, O.acopy(U32.shrn((n + 3 : U32), 2n), U32.shrn(off, 2n), 0, dst, ws), r, ec) :
+    {O.ci_fin(len, n, _) == O.ci_fin(len, n, r) : B.Buf & O.Words}
+  {==}
+
+# A word-aligned whole-word write of Words{ws, n} at byte pos, done by one acopy.
+law put_al:
+  for out: Array<U32>
+  for ws: Array<U32>
+  for +pos: U32
+  for +n: U32
+  for r: Array<U32> & Array<U32>
+  for es: {U32.is_eq(n, 0) == False{} : Bool}
+  for e3: {(pos .&. 3 : U32) == 0 : U32}
+  for en3: {U32.is_eq((n .&. 3 : U32), 0) == True{} : Bool}
+  for ec: {O.acopy(U32.shrn((n + 3 : U32), 2n), 0, U32.shrn(pos, 2n), out, ws) == r : Array<U32> & Array<U32>}
+  {O.put_words(out, pos, O.Words{ws, n}) == O.put_fin(n, r) : Array<U32> & O.Words}
+def put_al(out, ws, pos, n, r, es, e3, en3, ec):
+  %Equal.sym(Bool, U32.is_eq(n, 0), False{}, es) :
+    {O.put_fin(n, O.pw_empty(_, (pos .&. 3 : U32), n, U32.shrn((n + 3 : U32), 2n), U32.shrn(pos, 2n), out, ws)) == O.put_fin(n, r) : Array<U32> & O.Words}
+  %Equal.sym(U32, (pos .&. 3 : U32), 0, e3) :
+    {O.put_fin(n, O.pw_go(U32.is_eq(_, 0), _, n, U32.shrn((n + 3 : U32), 2n), U32.shrn(pos, 2n), out, ws)) == O.put_fin(n, r) : Array<U32> & O.Words}
+  %Equal.sym(Bool, U32.is_eq((n .&. 3 : U32), 0), True{}, en3) :
+    {O.put_fin(n, O.pw_al_tail(_, U32.shrn((n + 3 : U32), 2n), U32.shrn(pos, 2n), O.acopy(O.pick(_, U32.shrn((n + 3 : U32), 2n), (U32.shrn((n + 3 : U32), 2n) - 1 : U32)), 0, U32.shrn(pos, 2n), out, ws))) == O.put_fin(n, r) : Array<U32> & O.Words}
+  %Equal.sym(Array<U32> & Array<U32>, O.acopy(U32.shrn((n + 3 : U32), 2n), 0, U32.shrn(pos, 2n), out, ws), r, ec) :
+    {O.put_fin(n, _) == O.put_fin(n, r) : Array<U32> & O.Words}
+  {==}
+
+# zl2, zl3, zr, ov with the source array as a buffer or object holds it.
+law zl2n:
+  for +p: Nat
+  for +nw: U32
+  for +a: U32
+  for +b: U32
+  for +U: F.array__Tree<U32>
+  for +V: F.array__Tree<U32>
+  for +hp: {Nat.is_lt(p, 31n) == True{} : Bool}
+  for +h7: {U32.and(nw, 7) == 0 : U32}
+  for +hk: {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), F.spec_common__pow2(p)) == True{} : Bool}
+  for +ha: {Nat.is_eq(U32.to_nat(a), 0n) == True{} : Bool}
+  for +hb: {Nat.is_eq(U32.to_nat(b), 0n) == True{} : Bool}
+  for +pu: {F.array__perfect(U32, p, U) == True{} : Bool}
+  for +pv: {F.array__perfect(U32, p, V) == True{} : Bool}
+  {O.acopy(nw, a, b, Array.new(U32, 1n+p, 0), ANode{F.array__thaw(U32, U), F.array__thaw(U32, V)}) == (ANode{F.array__thaw(U32, U), Array.new(U32, p, 0)}, ANode{F.array__thaw(U32, U), F.array__thaw(U32, V)}) : Array<U32> & Array<U32>}
+def zl2n(p, nw, a, b, U, V, hp, h7, hk, ha, hb, pu, pv):
+  zl2(p, nw, a, b, U, V, hp, h7, hk, ha, hb, pu, pv)
+
+law zl3n:
+  for +p: Nat
+  for +nw: U32
+  for +a: U32
+  for +b: U32
+  for +U: F.array__Tree<U32>
+  for +V: F.array__Tree<U32>
+  for +hp: {Nat.is_lt(p, 31n) == True{} : Bool}
+  for +h7: {U32.and(nw, 7) == 0 : U32}
+  for +hk: {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), F.spec_common__pow2(p)) == True{} : Bool}
+  for +ha: {Nat.is_eq(U32.to_nat(a), F.spec_common__pow2(p)) == True{} : Bool}
+  for +hb: {Nat.is_eq(U32.to_nat(b), 0n) == True{} : Bool}
+  for +pu: {F.array__perfect(U32, p, U) == True{} : Bool}
+  for +pv: {F.array__perfect(U32, p, V) == True{} : Bool}
+  {O.acopy(nw, a, b, Array.new(U32, 1n+p, 0), ANode{F.array__thaw(U32, U), F.array__thaw(U32, V)}) == (ANode{F.array__thaw(U32, V), Array.new(U32, p, 0)}, ANode{F.array__thaw(U32, U), F.array__thaw(U32, V)}) : Array<U32> & Array<U32>}
+def zl3n(p, nw, a, b, U, V, hp, h7, hk, ha, hb, pu, pv):
+  zl3(p, nw, a, b, U, V, hp, h7, hk, ha, hb, pu, pv)
+
+law zrn:
+  for +p: Nat
+  for +nw: U32
+  for +a: U32
+  for +b: U32
+  for +X: F.array__Tree<U32>
+  for +U: F.array__Tree<U32>
+  for +V: F.array__Tree<U32>
+  for +hp: {Nat.is_lt(p, 31n) == True{} : Bool}
+  for +h7: {U32.and(nw, 7) == 0 : U32}
+  for +hk: {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), F.spec_common__pow2(p)) == True{} : Bool}
+  for +ha: {Nat.is_eq(U32.to_nat(a), 0n) == True{} : Bool}
+  for +hb: {Nat.is_eq(U32.to_nat(b), F.spec_common__pow2(p)) == True{} : Bool}
+  for +px: {F.array__perfect(U32, p, X) == True{} : Bool}
+  for +pu: {F.array__perfect(U32, p, U) == True{} : Bool}
+  for +pv: {F.array__perfect(U32, p, V) == True{} : Bool}
+  {O.acopy(nw, a, b, ANode{F.array__thaw(U32, X), Array.new(U32, p, 0)}, ANode{F.array__thaw(U32, U), F.array__thaw(U32, V)}) == (ANode{F.array__thaw(U32, X), F.array__thaw(U32, U)}, ANode{F.array__thaw(U32, U), F.array__thaw(U32, V)}) : Array<U32> & Array<U32>}
+def zrn(p, nw, a, b, X, U, V, hp, h7, hk, ha, hb, px, pu, pv):
+  zr(p, nw, a, b, X, U, V, hp, h7, hk, ha, hb, px, pu, pv)
+
+law ovn:
+  for +p: Nat
+  for +nw: U32
+  for +a: U32
+  for +b: U32
+  for +U: F.array__Tree<U32>
+  for +V: F.array__Tree<U32>
+  for +hp: {Nat.is_lt(p, 31n) == True{} : Bool}
+  for +h7: {U32.and(nw, 7) == 0 : U32}
+  for +hk: {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), F.spec_common__pow2(p)) == True{} : Bool}
+  for +ha: {Nat.is_eq(U32.to_nat(a), 0n) == True{} : Bool}
+  for +hb: {Nat.is_eq(U32.to_nat(b), 0n) == True{} : Bool}
+  for +pu: {F.array__perfect(U32, p, U) == True{} : Bool}
+  for +pv: {F.array__perfect(U32, p, V) == True{} : Bool}
+  {O.acopy(nw, a, b, Array.new(U32, p, 0), ANode{F.array__thaw(U32, U), F.array__thaw(U32, V)}) == (F.array__thaw(U32, U), ANode{F.array__thaw(U32, U), F.array__thaw(U32, V)}) : Array<U32> & Array<U32>}
+def ovn(p, nw, a, b, U, V, hp, h7, hk, ha, hb, pu, pv):
+  ov(p, nw, a, b, U, V, hp, h7, hk, ha, hb, pu, pv)

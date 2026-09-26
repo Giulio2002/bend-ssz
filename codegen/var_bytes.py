@@ -1012,6 +1012,7 @@ def rej_facts(+d: Nat, +t: F.array__Tree<U32>, +i: Nat, +len: U32, +pf: {F.array
 
 
 def main():
+    SL.EXACT = True   # spec_laws' exact spec-parts proofs (F.items_fixed, container_fixed, ...)
     names = schema.load(ROOT / 'codegen/fulu.yaml')
     g = G.Gen()
     for nm, t in names.items():

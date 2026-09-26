@@ -80,7 +80,27 @@ def rd_comp_lemma(f):
     RHS = f'(VF.BF(t, n), T.{p}{{{WO}, {RO}}})'
     TY = f'B.Buf & T.{p}'
     kw = VBY.kfit(31 + ws)
-    return [f'''# The {p} reader at off = 4 i: its packed words are a copy of words i .., its record the next words.
+    MN = f'VB.mone(VC.NW({ws}), i, 0n, {dz}n, VC.ZT({dz}n), t)'
+    MO = f'VB.mone({wW}n, i, 0n, {dz}n, VC.ZT({dz}n), t)'
+    MKT = f'VY.MK({ws}, {dz}n, {MN})'
+    return [f'''# The masked storage of a whole-word copy is the copy's words.
+def mkid(+L: U32, +dz: Nat, +M: FD.array__Tree<U32>, +h: {{U32.is_eq(VY.RM(L), 0) == True{{}} : Bool}}) -> {{VY.MK(L, dz, M) == M : FD.array__Tree<U32>}}:
+  %Equal.sym(Bool, U32.is_eq(VY.RM(L), 0), True{{}}, h) : {{VY.mk(_, L, dz, M) == M : FD.array__Tree<U32>}}
+  {{==}}
+
+# copy_into_any's words at off = 4 i, as the {wW} words from i (the rewrite keeps both trees unevaluated).
+def cpeq_{p}(+t: FD.array__Tree<U32>, +i: Nat) -> {{{MKT} == {MO} : FD.array__Tree<U32>}}:
+  Equal.trans(FD.array__Tree<U32>, {MKT}, {MN}, {MO}, mkid({ws}, {dz}n, {MN}, {{==}}),
+    Equal.cong(Nat, FD.array__Tree<U32>, z => VB.mone(z, i, 0n, {dz}n, VC.ZT({dz}n), t), VC.NW({ws}), {wW}n, {{==}}))
+
+def cp_{p}(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}},
+    +hd31: {{Nat.is_lt(d, 31n) == True{{}} : Bool}}, +e0: {{U32.to_nat(U32.shrn(U32.add(off, 0), 2n)) == i : Nat}}, +h3: {{U32.and(U32.add(off, 0), 3) == 0 : U32}},
+    +hbw: {{Nat.is_le(Nat.add({wW}n, Nat.add(0n, i)), VB.pw(d)) == True{{}} : Bool}})
+    -> {{T.{f["wp"]}_read(VF.BF(t, n), U32.add(off, 0), {ws}) == (VF.BF(t, n), {WO}) : B.Buf & O.Words}}:
+  %cpeq_{p}(t, i) : {{T.{f["wp"]}_read(VF.BF(t, n), U32.add(off, 0), {ws}) == (VF.BF(t, n), O.Words{{FD.array__thaw(U32, _), {ws}}}) : B.Buf & O.Words}}
+  VY.copy_into_any(d, t, n, U32.add(off, 0), i, {ws}, {dz}n, {kw}n, pf, hd31, {{==}}, h3, e0, hbw, {{==}}, {{==}}, {{==}})
+
+# The {p} reader at off = 4 i: its packed words are a copy of words i .., its record the next words.
 def hq4(+k: Nat, +i: Nat, +d: Nat, +W: Nat, +h: {{Nat.is_le(Nat.add(W, Nat.add(k, i)), VB.pw(d)) == True{{}} : Bool}})
     -> {{Nat.is_le(A.quad(Nat.add(k, i)), VB.pw(2n+d)) == True{{}} : Bool}}:
   +h1 = FD.nat__le_trans(Nat.add(k, i), Nat.add(W, Nat.add(k, i)), VB.pw(d), Order.left_below_sum(W, Nat.add(k, i)), h)
@@ -94,8 +114,7 @@ def rd_comp_{p}(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +
   +hbr = FD.nat__le_trans(Nat.add({rft.W}n, Nat.add({wW}n, i)), Nat.add({W}n, i), VB.pw(d), Order.add_right({rft.W + wW}n, {W}n, i, {{==}}), hb)
   +e0 = VF.off_add(off, 0, i, 0n, 2n+d, e, {{==}}, hd, hq4(0n, i, d, {wW}n, hbw))
   %Equal.sym(B.Buf & O.Words, T.{f["wp"]}_read(VF.BF(t, n), U32.add(off, 0), {ws}), (VF.BF(t, n), {WO}),
-      VY.copy_into_any(d, t, n, U32.add(off, 0), i, {ws}, {dz}n, {kw}n, pf, hd31, {{==}}, VF.al_3(U32.add(off, 0), i, e0), VF.al_q(U32.add(off, 0), i, e0),
-        hbw, {{==}}, {{==}}, {{==}})) :
+      cp_{p}(d, t, n, off, i, pf, hd31, VF.al_q(U32.add(off, 0), i, e0), VF.al_3(U32.add(off, 0), i, e0), hbw)) :
     {{T.{p}_rd0(off, {f["size"]}, _) == {RHS} : {TY}}}
   %Equal.sym({"B.Buf & " + rft.rep()}, T.{rft.p}_read(VF.BF(t, n), U32.add(off, {ws}), {rft.size}), (VF.BF(t, n), {RO}),
       VT.rd_{rft.p}(d, t, n, U32.add(off, {ws}), Nat.add({wW}n, i), VF.off_add(off, {ws}, i, {wW}n, 2n+d, e, {VBN.ecq(wW, ws)}, hd, hq4({wW}n, i, d, {rft.W}n, hbr)), hd, pf, hbr)) :

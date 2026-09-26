@@ -35,7 +35,7 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 import generate as G  # noqa: E402
 import schema  # noqa: E402
 
-CONTS = ['ExecutionPayload']
+CONTS = ['ExecutionPayload', 'ExecutionPayloadHeader']
 TR = 'FD.array__Tree<U32>'
 TRUE = 'True{} : Bool'
 GROUP = G.GROUP
@@ -50,9 +50,31 @@ def out_file(C):
 class Leaf:
     """A Data leaf written at any X by its dispatch lemma (vuwd, vuwv_<p>)."""
 
-    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz):
+    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz, rec=None):
         self.p, self.ctor, self.W, self.mod = p, ctor, W, mod
         self.model, self.rt, self.by, self.pf, self.rt_hz = model, rt, by, pf, rt_hz
+        self.rec = rec    # a fixed record of codegen/var_rec_enc.py's RECS: its field tree (var_laws.FT)
+
+
+# the fixed records written by codegen/var_rec_enc.py (proofs/obj/encx_recs.bend), by name: their field trees
+_RECFT = None
+
+
+def rec_ft(n):
+    global _RECFT
+    if _RECFT is None:
+        import var_rec_enc as VRE
+        g, names = VRE.layout()
+        _RECFT = {m: ft for m, ft in VRE.order(g, names, VRE.RECS)}
+    return _RECFT.get(n)
+
+
+# the packed byte vectors of fixed size written like the fixwords (codegen/var_uwv.py's FWORDS: vuwv_<p>)
+FIXW_PACKED = ('v4_b32', 'v6_b32', 'v7_b32')
+
+
+def is_fixw(fs):
+    return fs.fixed and (fs.kind == 'fixwords' or (fs.kind == 'packed' and fs.p in FIXW_PACKED))
 
 
 def leaf_of(fs):
@@ -64,10 +86,55 @@ def leaf_of(fs):
         a = f'V_{fs.p}'
         return Leaf(fs.p, f'T.{fs.rep}', fs.fsize // 4, f'import ./vuwv_{fs.p}.bend as {a}', f'{a}.PX_{fs.p}', f'{a}.{fs.p}_any',
                     f'{a}.{fs.p}_any_bytes', f'{a}.{fs.p}x_perfect', True)
+    if fs.kind == 'container' and rec_ft(fs.p) is not None:
+        return Leaf(fs.p, f'T.{fs.p}', fs.fsize // 4, 'import ./encx_recs.bend as ER', f'ER.PX_{fs.p}', f'ER.putx_{fs.p}', None,
+                    f'ER.pf_{fs.p}', True, rec=rec_ft(fs.p))
     raise SystemExit(f'no leaf writer for {fs.kind}/{fs.p}')
 
 
+def rec_leaf_text(lf):
+    """A fixed record's writer on the object: nested matches exposing its words, then encx_recs' lemmas."""
+    import var_rlist_enc as EN
+    p = lf.p
+    words = []
+    ls, ind = EN.nest(lf.rec, 'o', words, 2)
+    body = '\n'.join(ls)
+    pad = ' ' * ind
+    WA = ', '.join(words)
+    X0 = 'Nat.add(A.quad(q), r)'
+    B = 4 * lf.W
+    return f'''
+# ---- {p}: its writer on the object (the record's words; proofs/obj/encx_recs.bend) ----
+def RW_{p}(o: {lf.ctor}) -> List<&2, U32>:
+{body}
+{pad}[{WA}]
+def PXo_{p}(o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> {TR}:
+{body}
+{pad}ER.PX_{p}({WA}, dd, D, q, r)
+def pfo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
+    -> {{FD.array__perfect(U32, dd, PXo_{p}(o, dd, D, q, r)) == {TRUE}}}:
+{body}
+{pad}ER.pf_{p}({WA}, dd, D, q, r, pf)
+def RTo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {{T.{p}_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_{p}(o, dd, D, q, r)) : Array<U32>}}
+def BYo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> Data:
+  {{UA.BYT(PXo_{p}(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), {X0}, FX.limbs(RW_{p}(o))) : +List<U32>}}
+def putxo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
+    +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}}, +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}},
+    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, {B}n))), VB.pw(dd)) == {TRUE}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}},
+    +hz: {{VS.bt({B}n, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({B}n) : +List<U32>}})
+    -> DK.P2(RTo_{p}(o, dd, D, X, q, r), BYo_{p}(o, dd, D, q, r)):
+{body}
+{pad}ER.putx_{p}({WA}, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+def lenb_{p}(+o: {lf.ctor}) -> {{VCN.LN(FX.limbs(RW_{p}(o))) == {B}n : Nat}}:
+{body}
+{pad}{{==}}
+'''
+
+
 def leaf_text(lf):
+    if lf.rec is not None:
+        return rec_leaf_text(lf)
     p, W = lf.p, lf.W
     ws = [f'w{i}' for i in range(W)]
     pat = f'{lf.ctor}{{' + ', '.join('+' + w for w in ws) + '}'
@@ -162,6 +229,26 @@ class Child:
             self.model = lambda dd, D, X, q, r: f'{a}.PUTL_{p}({A_}, {N}, {dd}, {D}, {q}, {r})'
             self.hY = f'{a}.len_encl_{p}({A_}, {N})'
             self.alias = a
+        elif fs.p in STD_CHILDREN():
+            # a child in var_plist_sub's encoder-window interface (codegen/encx_children.py)
+            c = STD_CHILDREN()[fs.p]
+            a = f'EX_{fs.p}'
+            m = f'm_{f}'
+            self.mod = f'import ./{c["file"]} as {a}'
+            self.params = [f'+{m}: {a}.{c["mirror"]}']
+            self.hyps = [f'+hok_{f}: {{{a}.OK({m}) == {TRUE}}}']
+            self.oargs = [m]
+            self.hargs = [f'hok_{f}']
+            self.obj = f'{a}.TH({m})'
+            self.vt = c['obj']
+            self.enc = f'{a}.ENC({m})'
+            self.len = f'List.length(&2, U32, {a}.ENC({m}))'
+            self.sz = f'{a}.SZ({m})'
+            self.pad = True
+            self.model = lambda dd, D, X, q, r: f'{a}.PUTX({m}, {dd}, {D}, {q}, {r})'
+            self.hY = '{==}'
+            self.alias = a
+            self.std = True
         else:
             raise SystemExit(f'no child window for {fs.kind}/{fs.p}')
 
@@ -172,6 +259,10 @@ class Child:
             m = f'm_{f}'
             a = f'{m}, {dd}, {D}, {X}, {q}, {r}, {e}, {hr}, {hd}, {pf}, {hl}, {hz}, hok_{f}'
             return f'EB.putx({a})', f'EB.putx_bytes({a})', f'EB.pfx({m}, {dd}, {D}, {q}, {r}, {pf})', None
+        if getattr(self, 'std', False):
+            m, al = f'm_{f}', self.alias
+            a = f'{m}, {dd}, {D}, {X}, {q}, {r}, {e}, {hr}, {hd}, {pf}, {hl}, {hz}, hok_{f}'
+            return f'{al}.putx({a})', f'{al}.putx_bytes({a})', f'{al}.pfx({m}, {dd}, {D}, {q}, {r}, {pf})', None
         t, N = self.oargs
         if p == 'l1048576_bl1073741824':
             g = f'ET.putx({t}, {N}, h_{f}, {dd}, {D}, {X}, {q}, {r}, {e}, {hr}, {hd}, {hl}, {pf}, {hz})'
@@ -191,6 +282,8 @@ class Child:
         f, p = self.f, self.p
         if p == 'bl32':
             return f'EB.szx(m_{f}, hok_{f})'
+        if getattr(self, 'std', False):
+            return f'{self.alias}.szx(m_{f}, hok_{f})'
         t, N = self.oargs
         if p == 'l1048576_bl1073741824':
             hb = (f'FD.nat__le_trans(ET.LL({t}, {N}), A.quad(VB.pw({dd})), VB.pw(30n), VCN.pc_end({qc}, {rc}, ET.LL({t}, {N}), {dd}, ET.LL({t}, {N}), '
@@ -203,12 +296,24 @@ class Child:
 # ---- the runtime's source ---------------------------------------------------------------------------
 
 SRC = None
+SRC_FILE = 'types/fulu_obj.bend'
+_STD = None
+
+
+def STD_CHILDREN():
+    """The children in the encoder-window interface (codegen/encx_children.py), by runtime prefix;
+    bl32 keeps its own branch."""
+    global _STD
+    if _STD is None:
+        import encx_children as EC
+        _STD = {p: c for p, c in EC.CHILDREN.items() if p != 'bl32'}
+    return _STD
 
 
 def src():
     global SRC
     if SRC is None:
-        SRC = (ROOT / 'types/fulu_obj.bend').read_text()
+        SRC = (ROOT / SRC_FILE).read_text()
     return SRC
 
 
@@ -260,7 +365,7 @@ class Cont:
             if fs.fixed and fs.data:
                 lf = leaf_of(fs)
                 self.leaves.setdefault(lf.p, lf)
-            elif fs.fixed and fs.kind == 'fixwords':
+            elif is_fixw(fs):
                 self.fixw[f] = fs
             elif not fs.fixed:
                 self.children[f] = Child(f, fs)
@@ -281,7 +386,7 @@ def generate_cont(g, names, C):
             OP.append(f'+{f}: {leaf_of(fs).ctor}')
             OA.append(f)
             OBJF[f] = f
-        elif fs.fixed and fs.kind == 'fixwords':
+        elif is_fixw(fs):
             nW = fs.fsize // 4
             OP += [f'+dB_{f}: Nat', f'+TB_{f}: {TR}']
             OA += [f'dB_{f}', f'TB_{f}']
@@ -796,8 +901,27 @@ HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primi
         'import ./vuwd.bend as WD', 'import ./vcopy.bend as VC', 'import ./vrecx.bend as VRX', 'import ./vcont.bend as VCN', 'import ./vmr.bend as VMR', 'import ./dk.bend as DK']
 
 
-def full_text(C):
-    g, names = G.Gen(), schema.load(ROOT / 'codegen/fulu.yaml')
+# The generic containers (types/generic_obj.bend, proofs/obj/generic_specs.bend) written by this generator:
+# every child in the encoder-window interface, every fixed piece word-aligned (so far).
+GCONTS = ['Gp4B0CA2906A']
+
+
+def gfile_c(C):
+    return ROOT / f'proofs/obj/big_encx_{C}.bend'
+
+
+def full_text(C, generic=False):
+    global SRC, SRC_FILE
+    if generic:
+        import generic as GN
+        names = {n: t for n, t, err in GN.inventory_all() if err is None}
+        g = G.Gen()
+        if SRC_FILE != 'types/generic_obj.bend':
+            SRC, SRC_FILE = None, 'types/generic_obj.bend'
+    else:
+        g, names = G.Gen(), schema.load(ROOT / 'codegen/fulu.yaml')
+        if SRC_FILE != 'types/fulu_obj.bend':
+            SRC, SRC_FILE = None, 'types/fulu_obj.bend'
     for n, t in names.items():
         g.shape(t)
     L, K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJ, OBJF, OP, OA, HP, HA, SZC = module_text(g, names, C)
@@ -813,7 +937,8 @@ def full_text(C):
     for ch in K.children.values():
         if ch.mod not in mods:
             mods.append(ch.mod)
-    head = HEAD + mods + ['', '# GENERATED by codegen/var_cont_enc.py. Do not edit.',
+    hd = [x.replace('../../types/fulu_obj.bend as T', '../../types/generic_obj.bend as T') for x in HEAD] if generic else HEAD
+    head = hd + mods + ['', '# GENERATED by codegen/var_cont_enc.py. Do not edit.',
                           f'# {C} in the encoder-window interface: written at any byte position X = 4 q + r (see the generator).', '',
                           'def PA(-A: Data, -B: Data, +p: DK.P2(A, B)) -> A:', '  (+a, +b) = p', '  a',
                           'def PB(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:', '  (+a, +b) = p', '  b']
@@ -825,6 +950,8 @@ def main():
     if '--no-big' not in sys.argv:
         for C in CONTS:
             out[out_file(C)] = full_text(C)
+        for C in GCONTS:
+            out[gfile_c(C)] = full_text(C, generic=True)
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale:
