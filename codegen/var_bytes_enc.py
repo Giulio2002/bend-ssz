@@ -407,6 +407,244 @@ def xput(+dd: Nat, +D1: FD.array__Tree<U32>, +pos: U32, +P: Nat, +eP: {{U32.to_n
     return E, L, layers, leaves, NL
 
 
+
+
+def enc_spec_text(x, E, layers, NL):
+    """encode_eval, the output window's bytes, encE, encode_spec."""
+    n, FS, H, po, cvar, LIM, KY = x.n, x.FS, x.H, x.po, x.cvar, x.LIM, x.KY
+    Tn = f'T.{n}'
+    L = []
+    w = L.append
+    DP = f'{E.P}, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat'
+    DA = f'{E.A}, dd, D, P'
+    OBJ = f'OBJE({E.A})'
+    HN = f'+hN: {{Nat.is_le(U32.to_nat(N), {LIM}n) == True{{}} : Bool}}'
+    HDST = f'+hdst: {{Nat.is_le(Nat.add(VC.NW(N), Nat.add({H}n, P)), VB.pw(dd)) == True{{}} : Bool}}'
+    PFD = '+pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}'
+    HDD = '+hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}'
+    NWM = (LIM + 3) // 4
+    DO = E.DO
+    KS = VBY.kfit(FS + LIM + 1)
+    T0 = f'OUTW({E.A}, {DO}n, VC.ZT({DO}n), 0n)'
+    A0 = f'{E.A}, {DO}n, VC.ZT({DO}n), 0n'
+
+    def tree(j):
+        return 'D' if j == 0 else f'LY{j}({DA})'
+
+    def pfl(j):
+        return f'pfL{j}({DA}, pf)' if j else 'pf'
+
+    def hbw(W, k):
+        return f'hb({W}n, {k}n, P, dd, {{==}}, hHP(N, dd, P, hdst))'
+
+    def vterm(kind, V, i):
+        f = x.fields[i]
+        return f'WP.WL_{f["p"]}(TB{i})' if kind == 'words' else f'[{", ".join(V)}]'
+    # ---- encode_eval ----
+    RE = f'({OBJ}, B.Buf{{FD.array__thaw(U32, {T0}), SFS(N)}})'
+    TY = f'Array<U32> & ({Tn} & U32)'
+    HD0 = (f'FD.nat__le_trans(Nat.add(VC.NW(N), {H}n), Nat.add({NWM}n, {H}n), VB.pw({DO}n), '
+           f'Order.add_right(VC.NW(N), {NWM}n, {H}n, hNW(N, hN)), {{==}})')
+    w(f"""
+def hNW(+N: U32, {HN}) -> {{Nat.is_le(VC.NW(N), {NWM}n) == True{{}} : Bool}}:
+  %Equal.sym(Nat, VC.NW(N), VD.s_rng(2n, 3n+U32.to_nat(N)), VC.eNW(N, {KY}n, {{==}}, hyN(N, hN))) : {{Nat.is_le(_, {NWM}n) == True{{}} : Bool}}
+  VC.rng_mono(2n, 3n+U32.to_nat(N), {3 + LIM}n, hN)
+
+def hS(+N: U32, {HN}) -> {{Nat.is_lt(U32.to_nat(SFS(N)), VB.pw({KS}n)) == True{{}} : Bool}}:
+  %Equal.sym(Nat, U32.to_nat(SFS(N)), Nat.add({FS}n, U32.to_nat(N)), eS(N, hN)) : {{Nat.is_lt(_, VB.pw({KS}n)) == True{{}} : Bool}}
+  FD.nat__le_lt_trans(Nat.add({FS}n, U32.to_nat(N)), {FS + LIM}n, VB.pw({KS}n), Order.add_left({FS}n, U32.to_nat(N), {LIM}n, hN), {{==}})
+
+# The encoder returns the object and the buffer of the output tree, {FS} + N bytes.
+law encode_eval:
+""" + '\n'.join(f'  for {q}' for q in E.params + E.hyps) + f"""
+  {{{Tn}_encode({OBJ}) == {RE} : {Tn} & B.Buf}}
+def encode_eval({E.AH}):
+  %Equal.sym(Array<U32>, Array.new(U32, {DO}n, 0), FD.array__thaw(U32, VC.ZT({DO}n)), FD.array__new(U32, {DO}n, 0)) :
+    {{{Tn}_enc_put({Tn}_putn(_, 0, {OBJ})) == {RE} : {Tn} & B.Buf}}
+  %Equal.sym({TY}, {Tn}_putn(FD.array__thaw(U32, VC.ZT({DO}n)), 0, {OBJ}), (FD.array__thaw(U32, {T0}), ({OBJ}, SFS(N))),
+      putw({A0}, {', '.join(E.hargs)}, 0, {{==}}, {{==}}, FD.array__trep_perfect(U32, {DO}n, 0), {HD0},
+        VBE.slot_zt({DO}n, Nat.add(VY.QL(N), {H}n)))) :
+    {{{Tn}_enc_put(_) == {RE} : {Tn} & B.Buf}}
+  %Equal.sym(U32, U32.and(SFS(N), 2147483647), SFS(N), VBE.and31(SFS(N), {KS}n, {{==}}, hS(N, hN))) :
+    {{({OBJ}, O.out_done(_, FD.array__thaw(U32, {T0}))) == {RE} : {Tn} & B.Buf}}
+  {{==}}
+""")
+    # ---- the output window's words ----
+    S_ = f'FD.array__slots(U32, OUTW({DA}))'
+    LT = 'List<&2, U32>'
+    WP_ = f'{DP}, {", ".join(E.hyps)}, {PFD}, {HDST}'
+    WA_ = f'{DA}, {", ".join(E.hargs)}, pf, hdst'
+
+    def win(m, p, j):
+        return f'VF.WIN({m}, {p}, FD.array__slots(U32, {tree(j)}))'
+
+    vj = [j for j, l in enumerate(layers) if l[0] == 'var'][0]
+
+    def peel_chain(m, k0, mlit, j_stop, last_term, last_proof):
+        """WIN(m, k0 + P, LY_NL) = ... = WIN(m, k0 + P, LY_j_stop), then last_proof."""
+        p = f'Nat.add({k0}n, P)'
+
+        def rel(W2, k2, pre):
+            if k2 + W2 <= k0:
+                return f'V2.peel_lo({pre}, {m}, {p}, ' + '@PF@, @HB@, ' + f'Order.add_right({W2 + k2}n, {k0}n, P, {{==}}))'
+            assert mlit is not None and k0 + mlit <= k2
+            return f'V2.peel_hi({pre}, {m}, {p}, ' + '@PF@, @HB@, ' + f'Order.add_right({mlit + k0}n, {k2}n, P, {{==}}))'
+        steps = []
+        for g in range(NL - 1, j_stop - 1, -1):
+            kind, V, kL, i = layers[g]
+            if kind == 'var':
+                D2 = f'VF.updv([{FS}], dd, {tree(g)}, Nat.add({po}n, P))'
+                pf2 = f'VF.updv_perfect([{FS}], dd, {tree(g)}, Nat.add({po}n, P), {pfl(g)})'
+                assert mlit is not None and k0 + mlit <= H
+                pr1 = (f'VBE.peel_mone_hi(VC.NW(N), 0n, Nat.add({H}n, P), dd, {D2}, TX, {m}, {p}, {pf2}, hdst, '
+                       f'Order.add_right({mlit + k0}n, {H}n, P, {{==}}))')
+                steps.append((win(m, p, g + 1), f'VF.WIN({m}, {p}, FD.array__slots(U32, {D2}))', pr1))
+                pr2 = rel(1, po, f'[{FS}], dd, {tree(g)}, Nat.add({po}n, P)').replace('@PF@', pfl(g)).replace('@HB@', hbw(1, po))
+                steps.append((f'VF.WIN({m}, {p}, FD.array__slots(U32, {D2}))', win(m, p, g), pr2))
+            else:
+                f = x.fields[i]
+                pr = rel(f['W'], kL, f'{vterm(kind, V, i)}, dd, {tree(g)}, Nat.add({kL}n, P)').replace('@PF@', pfl(g)).replace('@HB@', hbw(f['W'], kL))
+                steps.append((win(m, p, g + 1), win(m, p, g), pr))
+        out = last_proof
+        for a, b, pr in reversed(steps):
+            out = f'Equal.trans({LT}, {a}, {b}, {last_term}, {pr},\n    {out})'
+        return out
+
+    segs = []
+    for i, f in enumerate(x.fields):
+        if f['kind'] == 'var':
+            segs.append((i, 1, f['k'], f'[{FS}]'))
+        else:
+            segs.append((i, f['W'], f['k'], f'[{", ".join(E.words[i])}]'))
+    layer_of = {l[3]: j for j, l in enumerate(layers)}
+    for i, Wd, k0, Vs in segs:
+        f = x.fields[i]
+        j = layer_of[i]
+        m, p = f'{Wd}n', f'Nat.add({k0}n, P)'
+        if f['kind'] == 'var':
+            D2 = f'VF.updv([{FS}], dd, {tree(j)}, Nat.add({po}n, P))'
+            own = (f'Equal.trans({LT}, {win(m, p, j + 1)}, VF.WIN({m}, {p}, FD.array__slots(U32, {D2})), {Vs},\n'
+                   f'    VBE.peel_mone_hi(VC.NW(N), 0n, Nat.add({H}n, P), dd, {D2}, TX, {m}, {p}, VF.updv_perfect([{FS}], dd, {tree(j)}, Nat.add({po}n, P), {pfl(j)}), hdst, '
+                   f'Order.add_right({1 + po}n, {H}n, P, {{==}})),\n'
+                   f'    V2.own([{FS}], dd, {tree(j)}, Nat.add({po}n, P), {pfl(j)}, {hbw(1, po)}))')
+        else:
+            own = f'V2.own({vterm(layers[j][0], layers[j][1], i)}, dd, {tree(j)}, Nat.add({k0}n, P), {pfl(j)}, {hbw(Wd, k0)})'
+        body = peel_chain(m, k0, Wd, j + 1, Vs, own)
+        w(f'def seg{i}({WP_}) -> {{{win(m, p, NL)} == {Vs} : {LT}}}:')
+        w('  ' + body)
+        w('')
+    D2 = f'VF.updv([{FS}], dd, {tree(vj)}, Nat.add({po}n, P))'
+    own = (f'VBE.own_mone(VC.NW(N), Nat.add({H}n, P), dd, {D2}, dX, TX, VF.updv_perfect([{FS}], dd, {tree(vj)}, Nat.add({po}n, P), {pfl(vj)}), '
+           f'pfX, hdst, hrX)')
+    body = peel_chain('VC.NW(N)', H, None, vj + 1, 'VS.wtake(VC.NW(N), FD.array__slots(U32, TX))', own)
+    w(f'def pay_eq({WP_}) -> {{{win("VC.NW(N)", f"Nat.add({H}n, P)", NL)} == VS.wtake(VC.NW(N), FD.array__slots(U32, TX)) : {LT}}}:')
+    w('  ' + body)
+    w('')
+    hdr = []
+    for i, Wd, k0, Vs in segs:
+        hdr += (E.words[i] if x.fields[i]['kind'] != 'var' else [str(FS)])
+    HDRE = '[' + ', '.join(hdr) + ']'
+    w(f'def hdr_eq({WP_}) -> {{{win(f"{H}n", "Nat.add(0n, P)", NL)} == {HDRE} : {LT}}}:')
+    R, pos_ = H, 0
+    pre = lambda t: t  # noqa: E731
+    for idx, (i, Wd, k0, Vs) in enumerate(segs):
+        assert k0 == pos_
+        if idx < len(segs) - 1:
+            w(f'  %Equal.sym({LT}, {win(f"Nat.add({Wd}n, {R - Wd}n)", f"Nat.add({pos_}n, P)", NL)}, VF.app({win(f"{Wd}n", f"Nat.add({pos_}n, P)", NL)}, {win(f"{R - Wd}n", f"Nat.add(Nat.add({pos_}n, {Wd}n), P)", NL)}),')
+            w(f'      VBE.win_splitP({Wd}n, {R - Wd}n, {pos_}n, P, {S_})) :')
+            w(f'    {{{pre("_")} == {HDRE} : {LT}}}')
+            rest = win(f'{R - Wd}n', f'Nat.add({pos_ + Wd}n, P)', NL)
+            w(f'  %Equal.sym({LT}, {win(f"{Wd}n", f"Nat.add({pos_}n, P)", NL)}, {Vs}, seg{i}({WA_})) :')
+            w(f'    {{{pre(f"VF.app(_, {rest})")} == {HDRE} : {LT}}}')
+            pre = (lambda p0, Vs: (lambda t: p0(f'VF.app({Vs}, {t})')))(pre, Vs)
+            R, pos_ = R - Wd, pos_ + Wd
+        else:
+            assert R == Wd
+            w(f'  %Equal.sym({LT}, {win(f"{Wd}n", f"Nat.add({pos_}n, P)", NL)}, {Vs}, seg{i}({WA_})) :')
+            w(f'    {{{pre("_")} == {HDRE} : {LT}}}')
+    w('  {==}')
+    w('')
+    YE = 'VS.bt(U32.to_nat(N), F.limbs(FD.array__slots(U32, TX)))'
+    BYTES = f'VS.bt(U32.to_nat(SFS(N)), F.limbs(VB.wdr(P, {S_})))'
+    RB = f'List.append(&2, U32, F.limbs({HDRE}), {YE})'
+    WT = f'VS.bt(U32.to_nat(N), F.limbs(VS.wtake(VC.NW(N), FD.array__slots(U32, TX))))'
+    w(f'''# The bytes of the output window: the header's words and the byte list's bytes.
+def bytesw_enc({WP_}, {HDD})
+    -> {{{BYTES} == {RB} : +List<U32>}}:
+  +hq = VZ.quad_nw_ge(N, {KY}n, {{==}}, hyN(N, hN))
+  +hls = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({H}n, P), z) == True{{}} : Bool}}, VB.pw(dd), VB.len({S_}),
+    Equal.sym(Nat, VB.len({S_}), VB.pw(dd), FD.array__slots_length(U32, dd, OUTW({DA}), pfL{NL}({DA}, pf))), hHP(N, dd, P, hdst))
+  %Equal.sym(Nat, U32.to_nat(SFS(N)), Nat.add({FS}n, U32.to_nat(N)), eS(N, hN)) : {{VS.bt(_, F.limbs(VB.wdr(P, {S_}))) == {RB} : +List<U32>}}
+  %Equal.sym(+List<U32>, VS.bt(Nat.add(A.quad({H}n), U32.to_nat(N)), F.limbs(VB.wdr(P, {S_}))),
+      List.append(&2, U32, F.limbs(VS.wtake({H}n, VB.wdr(P, {S_}))), VS.bt(U32.to_nat(N), F.limbs(VB.wdr({H}n, VB.wdr(P, {S_}))))),
+      VY.bt_split({H}n, U32.to_nat(N), VB.wdr(P, {S_}), VZ.wdr_len_le({H}n, P, {S_}, hls))) :
+    {{_ == {RB} : +List<U32>}}
+  %Equal.sym({LT}, VF.WIN({H}n, Nat.add(0n, P), {S_}), {HDRE}, hdr_eq({WA_})) :
+    {{List.append(&2, U32, F.limbs(_), VS.bt(U32.to_nat(N), F.limbs(VB.wdr({H}n, VB.wdr(P, {S_}))))) == {RB} : +List<U32>}}
+  %Equal.sym({LT}, VB.wdr({H}n, VB.wdr(P, {S_})), VB.wdr(Nat.add(P, {H}n), {S_}), VF.wdr_add({H}n, P, {S_})) :
+    {{List.append(&2, U32, F.limbs({HDRE}), VS.bt(U32.to_nat(N), F.limbs(_))) == {RB} : +List<U32>}}
+  %Equal.sym(Nat, Nat.add(P, {H}n), Nat.add({H}n, P), FD.nat__add_comm(P, {H}n)) :
+    {{List.append(&2, U32, F.limbs({HDRE}), VS.bt(U32.to_nat(N), F.limbs(VB.wdr(_, {S_})))) == {RB} : +List<U32>}}
+  %VY.bt_take(VC.NW(N), U32.to_nat(N), VB.wdr(Nat.add({H}n, P), {S_}), hq) :
+    {{List.append(&2, U32, F.limbs({HDRE}), _) == {RB} : +List<U32>}}
+  %Equal.sym({LT}, VF.WIN(VC.NW(N), Nat.add({H}n, P), {S_}), VS.wtake(VC.NW(N), FD.array__slots(U32, TX)), pay_eq({WA_})) :
+    {{List.append(&2, U32, F.limbs({HDRE}), VS.bt(U32.to_nat(N), F.limbs(_))) == {RB} : +List<U32>}}
+  %Equal.sym(+List<U32>, {WT}, {YE}, VY.bt_take(VC.NW(N), U32.to_nat(N), FD.array__slots(U32, TX), hq)) :
+    {{List.append(&2, U32, F.limbs({HDRE}), _) == {RB} : +List<U32>}}
+  {{==}}
+''')
+    wt = lambda f, j: E.words[x.fields.index(f)][j]  # noqa: E731
+    ITEMS, CHAIN, PL, CAT, PRE, POST, hdr2 = VBY.spec_items(x, 'Y', wt)
+    assert '[' + ', '.join(hdr2) + ']' == HDRE
+    MP = 'Maybe<&2, +List<S.Part>>'
+    M = 'Maybe<&2, +List<U32>>'
+    ENC = f'List.append(&2, U32, F.limbs({HDRE}), Y)'
+    ENCR = f'List.append(&2, U32, List.append(&2, U32, F.flat({PRE}), List.append(&2, U32, N.digits(4n, VS.FSZ({PRE}, {POST})), F.flat({POST}))), Y)'
+    BY0 = f'VS.bt(U32.to_nat(SFS(N)), F.limbs(FD.array__slots(U32, {T0})))'
+    w(f'''# The value of an object of words w.., packed words TB.. and byte list Y.
+def XEY({E.P}, +Y: +List<U32>) -> S.Value: S.Sequence{{{ITEMS}}}
+
+def encE({E.P}, +Y: +List<U32>, +hdom: {{SP.bytes_domain(Y) == True{{}} : Bool}},
+    +hlen: {{Nat.is_le(List.length(&2, U32, Y), {LIM}n) == True{{}} : Bool}})
+    -> {{Codec.parts(XEY({E.A}, Y), Spec.{n}()) == Some{{[S.Variable{{{ENC}}}]}} : {MP}}}:
+  +fit = VS.fits_mono(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, Y)), Nat.add({FS}n, {LIM}n),
+    Order.add_left({FS}n, List.length(&2, U32, Y), {LIM}n, hlen), {{==}})
+  %Equal.sym({MP}, Codec.parts({ITEMS}, {CHAIN}), Some{{{PL}}},
+      {CAT}) :
+    {{Codec.aggregate(_, None{{}}) == Some{{[S.Variable{{{ENC}}}]}} : {MP}}}
+  %Equal.sym({M}, Layout.encoding(VS.fpv({PRE}, Y, {POST})), Some{{{ENCR}}}, VZ.enc_fpvb({PRE}, Y, {POST}, hdom, fit)) :
+    {{Codec.one(_, None{{}}) == Some{{[S.Variable{{{ENC}}}]}} : {MP}}}
+  {{==}}
+
+# The value of the object: its byte list's value is the first N bytes of its storage.
+def XE({E.P}) -> S.Value: XEY({E.A}, {YE})
+
+def hlenE(+dX: Nat, +TX: FD.array__Tree<U32>, +N: U32, {HN}) -> {{Nat.is_le(List.length(&2, U32, {YE}), {LIM}n) == True{{}} : Bool}}:
+  FD.nat__le_trans(List.length(&2, U32, {YE}), U32.to_nat(N), {LIM}n, VZ.bt_len_le(U32.to_nat(N), F.limbs(FD.array__slots(U32, TX))), hN)
+
+# The spec parts of the object's value are one variable part: the bytes of the
+# encoder's output window.
+def partsw({WP_}, {HDD})
+    -> {{Codec.parts(XE({E.A}), Spec.{n}()) == Some{{[S.Variable{{{BYTES}}}]}} : {MP}}}:
+  %Equal.sym(+List<U32>, {BYTES}, {RB}, bytesw_enc({WA_}, hdd)) :
+    {{Codec.parts(XE({E.A}), Spec.{n}()) == Some{{[S.Variable{{_}}]}} : {MP}}}
+  encE({E.A}, {YE}, VZ.bd_btl(U32.to_nat(N), FD.array__slots(U32, TX)), hlenE(dX, TX, N, hN))
+
+# The bytes the encoder writes are the spec/codec.bend encoding of the object's value.
+law encode_spec:
+''' + '\n'.join(f'  for {q}' for q in E.params + E.hyps) + f'''
+  Decoding.decodes(Spec.{n}(), {BY0}, XE({E.A}))
+def encode_spec({E.AH}):
+  %Equal.sym({MP}, Codec.parts(XE({E.A}), Spec.{n}()), Some{{[S.Variable{{{BY0}}}]}},
+      partsw({A0}, {', '.join(E.hargs)}, FD.array__trep_perfect(U32, {DO}n, 0), {HD0}, {{==}})) :
+    {{Codec.bytes(_) == Some{{{BY0}}} : {M}}}
+  {{==}}
+''')
+    return L
+
+
 def enc_module_text(x):
     E, L, layers, leaves, NL = enc_text(x)
-    return '\n'.join(L) + '\n'
+    L = L + enc_spec_text(x, E, layers, NL)
+    txt = '\n'.join(L) + '\n'
+    return txt.replace('import ./vbenc.bend as VBE\n', 'import ./vbenc.bend as VBE\nimport ./venc2.bend as V2\n', 1)

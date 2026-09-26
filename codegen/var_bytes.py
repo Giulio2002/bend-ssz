@@ -159,9 +159,10 @@ class Name:
             return f'O.Words{{FD.array__thaw(U32, VB.mone({f["W"]}n, Nat.add({f["k"]}n, i), 0n, {f["dz"]}n, VC.ZT({f["dz"]}n), t)), {f["size"]}}}'
         return 'O.Words{FD.array__thaw(U32, MKw(t, i, len)), LL(len)}'
 
-    def node(self, f):
+    def node(self, f, wt=None):
         nd = f['node']
-        mp = {int(w[1:]): self.slot(f['k'] + j) for j, w in enumerate(nd.words)}
+        wt = wt or (lambda f, j: self.slot(f['k'] + j))
+        mp = {int(w[1:]): wt(f, j) for j, w in enumerate(nd.words)}
         sub = lambda s: re.sub(r'\bx(\d+)\b', lambda m: mp[int(m.group(1))], s)  # noqa: E731
         return {'val': sub(nd.val), 'sch': nd.sch, 'proof': sub(nd.proof), 'words': [mp[int(w[1:])] for w in nd.words]}
 
@@ -505,7 +506,7 @@ def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U
     return '\n'.join(L) + '\n'
 
 
-def spec_items(x, Y):
+def spec_items(x, Y, wt=None):
     """ITEMS, CHAIN, PL, CAT, PRE, POST, HDR of the window's value with byte list Y."""
     vals, schs, parts, nodes = [], [], [], []
     for f in x.fields:
@@ -515,7 +516,7 @@ def spec_items(x, Y):
             parts.append(f'S.Variable{{{Y}}}')
             nodes.append(None)
         else:
-            nd = x.node(f)
+            nd = x.node(f, wt)
             nodes.append(nd)
             vals.append(nd['val'])
             schs.append(nd['sch'])
