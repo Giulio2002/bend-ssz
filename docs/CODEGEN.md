@@ -47,6 +47,8 @@ them, and every official case that uses one is an invalid case.
 | `proofs/obj/var_bytesx_<Name>{,_inv}.bend`, `vbx_fix.bend` | the same names at a window at any byte offset (the `vua_win.bend` interface), for nesting at unaligned offsets (`codegen/var_bytes_x.py`; library `proofs/obj/vbx.bend`); ExecutionPayloadHeader, LightClientHeader; and LightClientFinalityUpdate (two leading variable fields, `codegen/var_bytes_x2.py`, library `vbx2.bend`) with its whole-buffer decoder laws `_dec`; stock |
 | `proofs/obj/var_winx_<list>.bend`, `var_winx_ExecutionRequests.bend`, `var_codec_ExecutionRequests.bend`, `v{rl,rc}.bend` | byte-offset window modules of lists of fixed records and of ExecutionRequests, its whole-buffer decoder laws (`codegen/var_rlist.py`, `var_rlist_er.py`; stock), and its encoder laws `var_rlenc_ExecutionRequests.bend` (stock) and `big_var_codec_ExecutionRequests_enc.bend` (big; `var_rlist_enc.py`) |
 | `proofs/obj/var_bytesx_<Name>{,_inv}.bend`, `vbx_fix.bend` | the same names at a window at any byte offset (the `vua_win.bend` interface), for nesting at unaligned offsets (`codegen/var_bytes_x.py`; library `proofs/obj/vbx.bend`); ExecutionPayloadHeader, LightClientHeader; stock |
+| `proofs/obj/big_vvl_<list>.bend`, `big_vvlb_<bytelist>.bend`, `big_vvlz.bend` (libraries `vvl.bend`, `vvlr.bend` stock, `big_vvlu.bend`) | byte-offset windows of lists of variable-size elements and of ByteList[N] (`codegen/var_vlist.py`); big |
+| `proofs/obj/var_winx_ExecutionPayload.bend` (library `vwc.bend`, stock) | ExecutionPayload's byte-offset window over its children's windows (`codegen/var_winx_c.py`); checkq --big |
 | `proofs/obj/sha_node.bend` | the SHA node bridge: runtime node = spec 64-byte message hash, via the pinned package law (`codegen/sha_laws.py`) |
 | `proofs/obj/schema_shapes.bend` | Bool shape tests and shape laws for every schema constructor (`codegen/schema_shapes.py`) |
 | `proofs/obj/root_names.bend`, `bits_leaf.bend`, `valid_names.bend` | phase-A root laws (Data-kind names: `X_root_correct`, `X_decoded_root_correct`) and generated-validity agreement (`codegen/root_laws.py`) |
@@ -75,6 +77,8 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/var_multi.py         # DataColumnSidecar (three lists of byte vectors); encoder big_ file
 /opt/homebrew/bin/python3 codegen/var_rlist.py         # lists of fixed records (byte-offset windows), ExecutionRequests
 /opt/homebrew/bin/python3 codegen/var_bytes_x.py       # the same names at any byte offset
+/opt/homebrew/bin/python3 codegen/var_vlist.py         # lists of variable-size elements (transactions), ByteList[N] windows [--no-big]
+/opt/homebrew/bin/python3 codegen/var_winx_c.py        # containers with several variable fields over child windows (ExecutionPayload; big children) [--no-big]
 /opt/homebrew/bin/python3 codegen/sha_laws.py          # SHA node bridge
 /opt/homebrew/bin/python3 codegen/schema_shapes.py     # schema shape laws
 /opt/homebrew/bin/python3 codegen/root_laws.py         # phase-A root laws, validity agreement
