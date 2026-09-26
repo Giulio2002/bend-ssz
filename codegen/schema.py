@@ -190,8 +190,8 @@ def load(path):
     import yaml  # only the YAML front end needs PyYAML
     with open(path) as f:
         doc = yaml.safe_load(f)
-    if not isinstance(doc, dict) or set(doc) != {'constants', 'types'}:
-        raise SchemaError('the schema has exactly two sections: constants and types')
+    if not isinstance(doc, dict) or set(doc) - {'prefix'} != {'constants', 'types'}:
+        raise SchemaError('the schema has the sections constants and types (and an optional prefix)')
     consts = doc['constants'] or {}
     for k, v in consts.items():
         if not re.fullmatch(r'[A-Z][A-Z0-9_]*', str(k)) or not isinstance(v, int) or isinstance(v, bool) or v < 0:
@@ -201,6 +201,17 @@ def load(path):
         raise SchemaError('types must be a mapping')
     r = Resolver(consts, raw)
     return {n: r.named(n) for n in raw}
+
+
+def load_prefix(path):
+    """The schema's hardfork prefix (its `prefix:` entry; '' when absent)."""
+    import yaml
+    with open(path) as f:
+        doc = yaml.safe_load(f)
+    pre = doc.get('prefix', '') if isinstance(doc, dict) else ''
+    if pre and not re.fullmatch(r'[A-Z][A-Za-z0-9]*', str(pre)):
+        raise SchemaError(f'prefix {pre!r}: a capitalised identifier')
+    return str(pre or '')
 
 
 def to_json(t):
