@@ -40,7 +40,7 @@ import ./vua_rd.bend as UR
 import ./big_vvlz.bend as VZG
 import ./vu8.bend as U8
 import ./vmv.bend as VMV
-import ./packed_bytes.bend as PB
+import ./pb_min.bend as PB
 import ./vrl.bend as VRL
 import ./vrejb.bend as VRB
 import ./vua_fix.bend as VTX

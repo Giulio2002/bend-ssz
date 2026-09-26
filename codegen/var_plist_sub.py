@@ -527,7 +527,7 @@ def ck_text():
 
 
 WIN_IMPORTS = ['import ../../spec/root_relation.bend as RR', 'import ./vua_rd.bend as UR', 'import ./big_vvlz.bend as VZG', 'import ./vu8.bend as U8', 'import ./vmv.bend as VMV',
-               'import ./packed_bytes.bend as PB', 'import ./vrl.bend as VRL', 'import ./vrejb.bend as VRB',
+               'import ./pb_min.bend as PB', 'import ./vrl.bend as VRL', 'import ./vrejb.bend as VRB',
                'import ./vua_fix.bend as VTX', 'import ./vua.bend as UA', 'import ./sub_pack.bend as SP2']
 
 
@@ -962,6 +962,64 @@ def encx_text(k):
     return '\n'.join(L) + body
 
 
+# ---- ProgressiveBits at a byte-offset window (var_win's BitList window with no bound) ----------
+
+def cut(text, start, end):
+    a = text.index(start)
+    b = text.index(end, a)
+    return text[:a] + text[b:]
+
+
+def pbits_text():
+    b = VW.Bits(0, 'pbits', 'Spec.GtF7582E0E9A()', '0n')
+    body = VW.bitsx_text(b)
+    head, body = body.split('\ndef BF(', 1)
+    body = '\ndef BF(' + body
+    # the validator's bound check is off (big = True)
+    body = body.replace('O.bsel(False{}, True{}, ', 'O.bsel(True{}, True{}, ')
+    body = body.replace('off, len, 0, False{})', 'off, len, 0, True{})').replace('O.bitlist_pick(len, 0, False{}, _)', 'O.bitlist_pick(len, 0, True{}, _)')
+    body = body.replace('# A bit list\'s window: non-empty, a non-zero last byte, at most 0 bits.', '# A progressive bit list\'s window: non-empty, a non-zero last byte (no bound).')
+    # no length bound: drop cC, hB, hdzK, zeros_at
+    body = cut(body, 'def cC(', 'def cE(')
+    body = cut(body, 'def hB(', 'def NB(')
+    body = body.replace("""  +hz = hdzK(d, len, hd, hL, hB(t, off, len, e1, cC(t, off, len, h1, cB(t, off, len, h1))))
+  +ez = zeros_at(B.words_depth_u(VC.WZ(len)), VLS.DZ(len), VD.wdu(VC.WZ(len)), hz)""", """  +hz = VLS.hdz29(d, len, hd, hL)
+  +ez = FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.WZ(len))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.WZ(len))), VLS.DZ(len),
+    VD.wdu(VC.WZ(len)), VZG.zg(B.words_depth_u(VC.WZ(len))))""")
+    body = body.replace(f'FD.nat__le_lt_trans(VLS.DZ(len), {b.K}n, 31n, hz, {{==}})', 'FD.nat__le_lt_trans(VLS.DZ(len), 29n, 31n, hz, {==})')
+    # the spec: the list encoding at the bits' own length
+    body = body.replace('  +bd = cC(t, off, len, h1, nz)\n', '')
+    body = cut(body, '  +bd1 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, U32.to_nat(O.high_bit(V(t, off, len)))), U32.to_nat(0))', '  %Equal.sym(Nat, U32.to_nat(len), 1n+m, e1) :\n    {Codec.parts(S.BitsValue')
+    body = body.replace('  VBC.bl_parts(W1, 0n, dom, nzl, hl)',
+                        '  VBC.bl_parts(W1, List.length(&2, Bool, VBL.bl(W1)), dom, nzl, FD.nat__le_refl(List.length(&2, Bool, VBL.bl(W1))))')
+    # the inversion: every bit list is in the domain
+    body = body.replace(''',
+    +nz: {U32.is_eq(V(t, off, len), 0) == False{} : Bool}, +bd: {Nat.is_le(BD(t, off, len), U32.to_nat(0)) == True{} : Bool})
+    -> {CHKw(t, x, off, len) == True{} : Bool}:''', ''',
+    +nz: {U32.is_eq(V(t, off, len), 0) == False{} : Bool})
+    -> {CHKw(t, x, off, len) == True{} : Bool}:''')
+    body = body.replace('''  %Equal.sym(Bool, U32.is_eq(V(t, off, len), 0), False{}, nz) : {O.bsel(_, False{}, O.bsel(True{}, True{}, Nat.is_le(BD(t, off, len), U32.to_nat(0)))) == True{} : Bool}
+  bd''', '''  %Equal.sym(Bool, U32.is_eq(V(t, off, len), 0), False{}, nz) : {O.bsel(_, False{}, O.bsel(True{}, True{}, Nat.is_le(BD(t, off, len), U32.to_nat(0)))) == True{} : Bool}
+  {==}''')
+    body = body.replace('+bits: +List<Bool>, +hb: {Nat.is_le(List.length(&2, Bool, bits), 0n) == True{} : Bool}, +pk:', '+bits: +List<Bool>, +pk:')
+    body = cut(body, '  +eBD = Equal.trans(Nat, BD(t, off, len)', '  chk_true(t, x, off, len, m, e1, nz, bd)')
+    body = body.replace('  chk_true(t, x, off, len, m, e1, nz, bd)', '  chk_true(t, x, off, len, m, e1, nz)')
+    body = body.replace('+bits: +List<Bool>, +b: Bool, +eb: {Nat.is_le(List.length(&2, Bool, bits), 0n) == b : Bool},',
+                        '+bits: +List<Bool>, +b: Bool, +eb: {Nat.is_le(List.length(&2, Bool, bits), List.length(&2, Bool, bits)) == b : Bool},')
+    body = body.replace('inv_t(d, t, x, off, len, eo, hd, hw, pf, bits, eb, var_inj', 'inv_t(d, t, x, off, len, eo, hd, hw, pf, bits, var_inj')
+    body = body.replace('inv_b(d, t, x, off, len, eo, hd, hw, pf, bits, Nat.is_le(List.length(&2, Bool, bits), 0n), {==}, e)',
+                        'inv_b(d, t, x, off, len, eo, hd, hw, pf, bits, Nat.is_le(List.length(&2, Bool, bits), List.length(&2, Bool, bits)), {==}, e)')
+    for bad in ['hdzK', 'zeros_at', 'hB(', 'cC(', 'bd1', ', bd)']:
+        assert bad not in body, (bad, [l for l in body.split('\n') if bad in l][:3])
+    L = generic(VW.HEADX) + ['import ./big_vvlz.bend as VZG', '', HDR,
+                             '# ProgressiveBits (GtF7582E0E9A, runtime pbits) at a window of any byte offset x: the',
+                             '# interface of proofs/obj/vua_win.bend (var_win BitList window with the bound removed).', '']
+    return '\n'.join(L) + body
+
+
+PBITS_FNAME = ROOT / 'proofs/obj/big_var_winp_pbits.bend'
+
+
 DONE = ['u8', 'u16', 'bool']
 
 
@@ -969,6 +1027,7 @@ def outputs(no_big):
     out = {}
     if no_big:
         return out
+    out[PBITS_FNAME] = pbits_text()
     for k in DONE:
         X, p = KINDS[k]
         out[win_fname(k)] = win_text(k)
