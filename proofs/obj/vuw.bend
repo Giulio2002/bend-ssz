@@ -1368,3 +1368,74 @@ def swo_slots(S, ws, dd, D, i, c, pf, hr):
       %Equal.sym(List<&2, U32>, VB.wdr(1n+i, FD.spec_common__update(U32, SLW(D), i, V1)), VB.wdr(1n+i, SLW(D)), drop_upd(SLW(D), i, V1)) :
         {VF.app(VF.app(VS.wtake(i, SLW(D)), [V1]), SWLo(S, r, _, O.shr_over(w, S))) == VF.app(VS.wtake(i, SLW(D)), Con{V1, SWLo(S, r, VB.wdr(1n+i, SLW(D)), O.shr_over(w, S))}) : List<&2, U32>}
       app_assoc_l(VS.wtake(i, SLW(D)), [V1], SWLo(S, r, VB.wdr(1n+i, SLW(D)), O.shr_over(w, S)))
+
+# ---- the word-by-word writers' interior stores, generically ----------------------------------------
+
+# The runtime's stores of the words ws at word positions q + j for the offsets j in js (each
+# word the shifted word OR the carry of the one before), as a recursion over ws: for literal
+# lists it unfolds to the writers' <p>_pw<s> chains of Array.set, offsets as they are.
+def RS2(+S: U32, ws: +List<U32>, js: List<&2, U32>, out: Array<U32>, +q: U32, +prev: U32) -> Array<U32>:
+  match ws js:
+    case Nil{} _: out
+    case Con{+w, t} Nil{}: out
+    case Con{+w, t} Con{+j, jt}: RS2(S, t, jt, Array.set(U32, out, U32.add(q, j), U32.or(O.shl_bytes(w, S), O.shr_over(prev, S))), q, w)
+
+# The offsets are J, J + 1, .. (n of them).
+def CJ(+n: Nat, js: List<&2, U32>, +J: Nat) -> Bool:
+  match n js:
+    case 0n _: True{}
+    case 1n+k Nil{}: False{}
+    case 1n+k Con{+j, jt}: Bool.and(Nat.is_eq(U32.to_nat(j), J), CJ(k, jt, 1n+J))
+
+# Stored into zero words, they are the open model SWo.
+law rs2_swo:
+  for +S: U32
+  for +ws: +List<U32>
+  for +js: List<&2, U32>
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +q: U32
+  for +i: Nat
+  for +J: Nat
+  for +prev: U32
+  for +eq: {U32.to_nat(q) == i : Nat}
+  for +hj: {CJ(List.length(&2, U32, ws), js, J) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(Nat.add(J, i), List.length(&2, U32, ws)), VB.pw(dd)) == True{} : Bool}
+  for +hz: {VS.bt(A.quad(List.length(&2, U32, ws)), VS.bdr(A.quad(Nat.add(J, i)), UA.BYT(D))) == ZB(A.quad(List.length(&2, U32, ws))) : +List<U32>}
+  {RS2(S, ws, js, FD.array__thaw(U32, D), q, prev) == FD.array__thaw(U32, SWo(S, ws, dd, D, Nat.add(J, i), O.shr_over(prev, S))) : Array<U32>}
+def rs2_swo(S, ws, js, dd, D, q, i, J, prev, eq, hj, hd, pf, hl, hz):
+  match ws js:
+    case Nil{} _: {==}
+    case Con{+w, +t} Nil{}: Empty.absurd({RS2(S, Con{w, t}, Nil{}, FD.array__thaw(U32, D), q, prev) == FD.array__thaw(U32, SWo(S, Con{w, t}, dd, D, Nat.add(J, i), O.shr_over(prev, S))) : Array<U32>}, FD.logic__false_true(hj))
+    case Con{+w, +t} Con{+j, +jt}:
+      +ej = FD.nat__eq_from_is_eq(U32.to_nat(j), J, FD.logic__and_left(Nat.is_eq(U32.to_nat(j), J), CJ(List.length(&2, U32, t), jt, 1n+J), hj))
+      +hjt = FD.logic__and_right(Nat.is_eq(U32.to_nat(j), J), CJ(List.length(&2, U32, t), jt, 1n+J), hj)
+      +K = Nat.add(J, i)
+      +p = List.length(&2, U32, t)
+      +hd32 = FD.nat__lt_trans(dd, 31n, 32n, hd, {==})
+      +hl1 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(K, 1n+p), 1n+Nat.add(K, p), FD.nat__add_succ(K, p), hl)
+      +hK = FD.nat__lt_le_trans(K, 1n+Nat.add(K, p), VB.pw(dd), FD.nat__le_lt_succ(K, Nat.add(K, p), Order.below_sum(K, p)), hl1)
+      +eqK = FD.logic__subst(Nat, z => {U32.to_nat(U32.add(q, j)) == Nat.add(z, i) : Nat}, U32.to_nat(j), J, ej,
+        VB.add_at(q, j, i, dd, eq, hd32, FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, i), VB.pw(dd)) == True{} : Bool}, J, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), J, ej), hK)))
+      +hzj = FD.logic__subst(Nat, z => {VS.bt(4n+A.quad(p), VS.bdr(z, UA.BYT(D))) == ZB(4n+A.quad(p)) : +List<U32>}, A.quad(K), Nat.add(A.quad(K), 0n),
+        Equal.sym(Nat, Nat.add(A.quad(K), 0n), A.quad(K), FD.nat__add_zero(A.quad(K))), hz)
+      +ez = zslot_g(dd, D, K, 0n, 4n+A.quad(p), 0n, 0n, pf, hzj, {==}, FD.nat__zero_le(A.quad(p)), hK)
+      +v = U32.or(O.shl_bytes(w, S), O.shr_over(prev, S))
+      +D1 = ORW(dd, D, K, v)
+      +es = set_orw(dd, D, U32.add(q, j), K, v, eqK, hd32, hK, pf, ez)
+      +fr = upd_frame(dd, D, K, U32.or(VB.slot(D, K), v), pf, hK)
+      +hzb = Equal.trans(+List<U32>, VS.bt(A.quad(p), VS.bdr(4n, VS.bdr(A.quad(K), UA.BYT(D)))), VS.bdr(4n, VS.bt(Nat.add(4n, A.quad(p)), VS.bdr(A.quad(K), UA.BYT(D)))), ZB(A.quad(p)),
+        Equal.sym(+List<U32>, VS.bdr(4n, VS.bt(Nat.add(4n, A.quad(p)), VS.bdr(A.quad(K), UA.BYT(D)))), VS.bt(A.quad(p), VS.bdr(4n, VS.bdr(A.quad(K), UA.BYT(D)))), VS.bdr_bt(4n, A.quad(p), VS.bdr(A.quad(K), UA.BYT(D)))),
+        Equal.cong(+List<U32>, +List<U32>, z => VS.bdr(4n, z), VS.bt(4n+A.quad(p), VS.bdr(A.quad(K), UA.BYT(D))), ZB(4n+A.quad(p)), hz))
+      +eb4 = Equal.trans(+List<U32>, VS.bdr(4n+A.quad(K), UA.BYT(D1)), VS.bdr(4n+A.quad(K), UA.BYT(D)), VS.bdr(4n, VS.bdr(A.quad(K), UA.BYT(D))), fr,
+        Equal.trans(+List<U32>, VS.bdr(4n+A.quad(K), UA.BYT(D)), VS.bdr(Nat.add(A.quad(K), 4n), UA.BYT(D)), VS.bdr(4n, VS.bdr(A.quad(K), UA.BYT(D))),
+          Equal.cong(Nat, +List<U32>, z => VS.bdr(z, UA.BYT(D)), 4n+A.quad(K), Nat.add(A.quad(K), 4n), FD.nat__add_comm(4n, A.quad(K))),
+          bdr_add(A.quad(K), 4n, UA.BYT(D))))
+      +hz1 = FD.logic__subst(+List<U32>, z => {VS.bt(A.quad(p), z) == ZB(A.quad(p)) : +List<U32>}, VS.bdr(4n, VS.bdr(A.quad(K), UA.BYT(D))), VS.bdr(4n+A.quad(K), UA.BYT(D1)),
+        Equal.sym(+List<U32>, VS.bdr(4n+A.quad(K), UA.BYT(D1)), VS.bdr(4n, VS.bdr(A.quad(K), UA.BYT(D))), eb4), hzb)
+      +ih = rs2_swo(S, t, jt, dd, D1, q, i, 1n+J, w, eq, hjt, hd, orw_perfect(dd, D, K, v, pf), hl1, hz1)
+      %Equal.sym(Array<U32>, Array.set(U32, FD.array__thaw(U32, D), U32.add(q, j), v), FD.array__thaw(U32, D1), es) :
+        {RS2(S, t, jt, _, q, w) == FD.array__thaw(U32, SWo(S, Con{w, t}, dd, D, K, O.shr_over(prev, S))) : Array<U32>}
+      ih
