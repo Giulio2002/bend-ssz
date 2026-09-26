@@ -28,6 +28,9 @@ KINDS = {
     'pbits': ('generic_obj', 'GS.GtF7582E0E9A()', None),
     'bits131072': ('fulu_obj', 'Spec.Schema38()', 131072),
 }
+# the bounded bit lists of the generic forms
+for _N in (5, 6, 256, 257, 1280, 1281):
+    KINDS[f'bits{_N}'] = ('generic_obj', f'S.BitList{{{_N}n}}', _N)
 
 
 def fname(p):
