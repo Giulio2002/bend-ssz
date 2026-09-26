@@ -168,6 +168,23 @@ def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32
   %Equal.sym(U32, SPOw(t, i), 24820, epo) : {(VF.BF(t, n), _) == (VF.BF(t, n), 24820) : B.Buf & U32}
   {==}
 
+# The masked storage of a whole-word copy is the copy's words.
+def mkid(+L: U32, +dz: Nat, +M: FD.array__Tree<U32>, +h: {U32.is_eq(VY.RM(L), 0) == True{} : Bool}) -> {VY.MK(L, dz, M) == M : FD.array__Tree<U32>}:
+  %Equal.sym(Bool, U32.is_eq(VY.RM(L), 0), True{}, h) : {VY.mk(_, L, dz, M) == M : FD.array__Tree<U32>}
+  {==}
+
+# copy_into_any's words at off = 4 i, as the 6144 words from i (the rewrite keeps both trees unevaluated).
+def cpeq_SyncCommittee(+t: FD.array__Tree<U32>, +i: Nat) -> {VY.MK(24576, 13n, VB.mone(VC.NW(24576), i, 0n, 13n, VC.ZT(13n), t)) == VB.mone(6144n, i, 0n, 13n, VC.ZT(13n), t) : FD.array__Tree<U32>}:
+  Equal.trans(FD.array__Tree<U32>, VY.MK(24576, 13n, VB.mone(VC.NW(24576), i, 0n, 13n, VC.ZT(13n), t)), VB.mone(VC.NW(24576), i, 0n, 13n, VC.ZT(13n), t), VB.mone(6144n, i, 0n, 13n, VC.ZT(13n), t), mkid(24576, 13n, VB.mone(VC.NW(24576), i, 0n, 13n, VC.ZT(13n), t), {==}),
+    Equal.cong(Nat, FD.array__Tree<U32>, z => VB.mone(z, i, 0n, 13n, VC.ZT(13n), t), VC.NW(24576), 6144n, {==}))
+
+def cp_SyncCommittee(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hd31: {Nat.is_lt(d, 31n) == True{} : Bool}, +e0: {U32.to_nat(U32.shrn(U32.add(off, 0), 2n)) == i : Nat}, +h3: {U32.and(U32.add(off, 0), 3) == 0 : U32},
+    +hbw: {Nat.is_le(Nat.add(6144n, Nat.add(0n, i)), VB.pw(d)) == True{} : Bool})
+    -> {T.v512_b48_read(VF.BF(t, n), U32.add(off, 0), 24576) == (VF.BF(t, n), O.Words{FD.array__thaw(U32, VB.mone(6144n, i, 0n, 13n, VC.ZT(13n), t)), 24576}) : B.Buf & O.Words}:
+  %cpeq_SyncCommittee(t, i) : {T.v512_b48_read(VF.BF(t, n), U32.add(off, 0), 24576) == (VF.BF(t, n), O.Words{FD.array__thaw(U32, _), 24576}) : B.Buf & O.Words}
+  VY.copy_into_any(d, t, n, U32.add(off, 0), i, 24576, 13n, 15n, pf, hd31, {==}, h3, e0, hbw, {==}, {==}, {==})
+
 # The SyncCommittee reader at off = 4 i: its packed words are a copy of words i .., its record the next words.
 def hq4(+k: Nat, +i: Nat, +d: Nat, +W: Nat, +h: {Nat.is_le(Nat.add(W, Nat.add(k, i)), VB.pw(d)) == True{} : Bool})
     -> {Nat.is_le(A.quad(Nat.add(k, i)), VB.pw(2n+d)) == True{} : Bool}:
@@ -182,8 +199,7 @@ def rd_comp_SyncCommittee(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, 
   +hbr = FD.nat__le_trans(Nat.add(12n, Nat.add(6144n, i)), Nat.add(6156n, i), VB.pw(d), Order.add_right(6156n, 6156n, i, {==}), hb)
   +e0 = VF.off_add(off, 0, i, 0n, 2n+d, e, {==}, hd, hq4(0n, i, d, 6144n, hbw))
   %Equal.sym(B.Buf & O.Words, T.v512_b48_read(VF.BF(t, n), U32.add(off, 0), 24576), (VF.BF(t, n), O.Words{FD.array__thaw(U32, VB.mone(6144n, i, 0n, 13n, VC.ZT(13n), t)), 24576}),
-      VY.copy_into_any(d, t, n, U32.add(off, 0), i, 24576, 13n, 15n, pf, hd31, {==}, VF.al_3(U32.add(off, 0), i, e0), VF.al_q(U32.add(off, 0), i, e0),
-        hbw, {==}, {==}, {==})) :
+      cp_SyncCommittee(d, t, n, off, i, pf, hd31, VF.al_q(U32.add(off, 0), i, e0), VF.al_3(U32.add(off, 0), i, e0), hbw)) :
     {T.SyncCommittee_rd0(off, 24624, _) == (VF.BF(t, n), T.SyncCommittee{O.Words{FD.array__thaw(U32, VB.mone(6144n, i, 0n, 13n, VC.ZT(13n), t)), 24576}, T.Bytes48{VB.slot(t, Nat.add(6144n, i)), VB.slot(t, Nat.add(6145n, i)), VB.slot(t, Nat.add(6146n, i)), VB.slot(t, Nat.add(6147n, i)), VB.slot(t, Nat.add(6148n, i)), VB.slot(t, Nat.add(6149n, i)), VB.slot(t, Nat.add(6150n, i)), VB.slot(t, Nat.add(6151n, i)), VB.slot(t, Nat.add(6152n, i)), VB.slot(t, Nat.add(6153n, i)), VB.slot(t, Nat.add(6154n, i)), VB.slot(t, Nat.add(6155n, i))}}) : B.Buf & T.SyncCommittee}
   %Equal.sym(B.Buf & T.Bytes48, T.b48_read(VF.BF(t, n), U32.add(off, 24576), 48), (VF.BF(t, n), T.Bytes48{VB.slot(t, Nat.add(6144n, i)), VB.slot(t, Nat.add(6145n, i)), VB.slot(t, Nat.add(6146n, i)), VB.slot(t, Nat.add(6147n, i)), VB.slot(t, Nat.add(6148n, i)), VB.slot(t, Nat.add(6149n, i)), VB.slot(t, Nat.add(6150n, i)), VB.slot(t, Nat.add(6151n, i)), VB.slot(t, Nat.add(6152n, i)), VB.slot(t, Nat.add(6153n, i)), VB.slot(t, Nat.add(6154n, i)), VB.slot(t, Nat.add(6155n, i))}),
       VT.rd_b48(d, t, n, U32.add(off, 24576), Nat.add(6144n, i), VF.off_add(off, 24576, i, 6144n, 2n+d, e, FD.nat__eq_from_is_eq(U32.to_nat(24576), A.quad(6144n), {==}), hd, hq4(6144n, i, d, 12n, hbr)), hd, pf, hbr)) :
