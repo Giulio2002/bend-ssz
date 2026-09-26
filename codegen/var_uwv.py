@@ -839,6 +839,20 @@ def SyncCommittee_any_bytes({P})
     imports = ['import ./vbenc.bend as VBE', 'import ./vuwv_b48.bend as V_b48', 'import ./vrecx.bend as VRX', 'import ./dk.bend as DK', 'import ./vcopy.bend as VC', 'import ./vbytes.bend as VY']
     return module(imports, 'T.SyncCommittee_putk (512 pubkeys and the aggregate pubkey, 24624 bytes)', body)
 
+B4_ALIGNED = """
+# T.b4_put at a word-aligned position 4 P: the store of its word.
+def put_b4(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(1n, P), VB.pw(dd)) == True{} : Bool}, +x0: U32)
+    -> {T.b4_put(FD.array__thaw(U32, D), pos, T.Bytes4{x0}) == FD.array__thaw(U32, VF.updv([x0], dd, D, P)) : Array<U32>}:
+  %Equal.sym(U32, U32.and(pos, 3), 0, VF.al_3(pos, P, e)) :
+    {T.b4_pwd(U32.is_eq(_, 0), _, FD.array__thaw(U32, D), U32.shrn(pos, 2n), x0) == FD.array__thaw(U32, VF.updv([x0], dd, D, P)) : Array<U32>}
+  %Equal.sym(Array<U32>, Array.set(U32, FD.array__thaw(U32, D), U32.add(U32.shrn(pos, 2n), 0), x0), FD.array__thaw(U32, FD.array__upd(U32, dd, D, P, x0)), VB.set_at(dd, D, U32.shrn(pos, 2n), 0, P, x0, VF.al_q(pos, P, e), VB.lt32(dd, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==})), VF.in_lt(0n, 1n, P, VB.pw(dd), {==}, hb), pf)) :
+    {_ == FD.array__thaw(U32, VF.updv([x0], dd, D, P)) : Array<U32>}
+  {==}
+"""
+
+
 def module(imports, what, body):
     head = HEAD
     if any('generic_obj' in i for i in imports):
@@ -853,6 +867,9 @@ def outputs():
         uf = [f'import ./vuwf{s}.bend as UF{s}' if p in ('b32', 'u256') else f'import ./vuwf{s}_{p}.bend as UF{s}' for s in (1, 2, 3)]
         al = 'import ./var_fix_types.bend as VT' if AL.startswith('VT.') else 'import ./var_bytes_fix.bend as VBF'
         out[ROOT / f'proofs/obj/vuwv_{p}.bend'] = module(uf + [al], f'T.{p}_put ({C}, {N} words)', vec_text(*v))
+    # Bytes4 (Fork's versions): its aligned store is proved here (b4_put's aligned branch is one Array.set)
+    uf4 = [f'import ./vuwf{s}_b4.bend as UF{s}' for s in (1, 2, 3)]
+    out[ROOT / 'proofs/obj/vuwv_b4.bend'] = module(uf4, 'T.b4_put (Bytes4, 1 word)', B4_ALIGNED + vec_text('b4', 'Bytes4', 1, 'put_b4'))
     uk = [f'import ./vuwk{s}.bend as UK{s}' for s in (1, 2, 3)] + ['import ./var_bytes_wput.bend as VW']
     out[ROOT / 'proofs/obj/vuwv_b256.bend'] = module(uk, 'T.b256_putk (the 256-byte O.Words)', b256_text())
     for g in GFULL:

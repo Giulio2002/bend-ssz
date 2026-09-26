@@ -676,7 +676,7 @@ def swlb_text(s):
 # the fixed-size values the runtime writes word by word (b<p>_pw<s>): prefix, constructor, words
 FIXW = [('b32', 'Bytes32', 8), ('b20', 'Bytes20', 5), ('u256', 'Uint256', 8)]
 # the others, one module per writer (proofs/obj/vuwf<s>_<p>.bend), so a user imports only its own
-FIXW1 = [('b48', 'Bytes48', 12), ('b96', 'Bytes96', 24), ('bv512', 'Bitvector512', 16), ('bv64', 'Bitvector64', 2)]
+FIXW1 = [('b48', 'Bytes48', 12), ('b96', 'Bytes96', 24), ('bv512', 'Bitvector512', 16), ('bv64', 'Bitvector64', 2), ('b4', 'Bytes4', 1)]
 # the generic types' (types/generic_obj.bend) full-word vectors
 FIXWG = [('bv256', 'Bitvector256', 8)]
 

@@ -33,9 +33,10 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 import var_laws as VL  # noqa: E402
 
 OUT = ROOT / 'proofs/obj/encx_recs.bend'
-RECS = ['Withdrawal', 'SyncAggregate', 'BeaconBlockHeader']
+RECS = ['Withdrawal', 'SyncAggregate', 'BeaconBlockHeader', 'Fork', 'Checkpoint', 'Eth1Data', 'HistoricalSummary', 'PendingDeposit',
+        'PendingPartialWithdrawal', 'PendingConsolidation']
 # the word-vector leaves written by their own modules (codegen/var_uwv.py's vuwv_<p>)
-VLEAVES = ('b32', 'u256', 'b48', 'b96', 'bv512', 'bv64')
+VLEAVES = ('b32', 'u256', 'b48', 'b96', 'bv512', 'bv64', 'b4')
 TR = 'FD.array__Tree<U32>'
 TRUE = 'True{} : Bool'
 
