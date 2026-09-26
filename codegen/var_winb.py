@@ -656,8 +656,12 @@ def sym_schema_text(L):
     w.append(f'def isend({SVE}) -> {{SH.is_End(TL{nf}(sv)) == True{{}} : Bool}}:')
     w.append(f'  FD.logic__subst(S.Schema, z => {{SH.is_End(TL{nf}(z)) == True{{}} : Bool}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
 
+    w.append(f'def CHS{nf}(+sv: S.Schema) -> S.Schema: S.End{{}}')
+    for i in range(nf - 1, -1, -1):
+        w.append(f'def CHS{i}(+sv: S.Schema) -> S.Schema: S.Chain{{HD{i}(sv), CHS{i + 1}(sv)}}')
+
     def ch(i):
-        return 'S.End{}' if i == nf else f'S.Chain{{HD{i}(sv), {ch(i + 1)}}}'
+        return f'CHS{i}(sv)'
     w.append(f'def fe{nf}({SVE}) -> {{TL{nf}(sv) == S.End{{}} : S.Schema}}: SH.End_shape(TL{nf}(sv), isend(sv, esv))')
     for i in range(nf - 1, -1, -1):
         w.append(f'def fe{i}({SVE}) -> {{TL{i}(sv) == {ch(i)} : S.Schema}}:')
@@ -687,11 +691,13 @@ def spec_text(L):
     nf = L.nf
 
     def itm(i):
+        if L.sym:
+            return f'ITS{i}(t, x, len)'
         return 'S.EmptyItems{}' if i == nf else f'S.Items{{{vals[i]}, {itm(i + 1)}}}'
 
     def chain(i):
         if L.sym:
-            return 'S.End{}' if i == nf else f'S.Chain{{HD{i}(sv), {chain(i + 1)}}}'
+            return f'CHS{i}(sv)'
         return 'S.End{}' if i == nf else f'S.Chain{{{L.spec(L.fields[i])}, {chain(i + 1)}}}'
 
     def sch(i):
@@ -700,7 +706,7 @@ def spec_text(L):
     def cat(i):
         if i == nf:
             return '{==}'
-        rest = '[' + ', '.join(parts[i + 1:]) + ']'
+        rest = f'RST{i}(t, x, len)' if L.sym else '[' + ', '.join(parts[i + 1:]) + ']'
         f = L.fields[i]
         if f['kind'] == 'fix' and L.sym:
             P, sz = L.pos(f['c']), f['size']
@@ -718,6 +724,17 @@ def spec_text(L):
         return (f'VS.cat_var(Codec.parts({vals[i]}, {sch(i)}), {L.Y(j)}, Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, '
                 f'{cs},\n      {cat(i + 1)})')
     PSV = '[' + ', '.join(parts) + ']'
+    if L.sym:
+        TXL = '+t: FD.array__Tree<U32>, +x: Nat, +len: U32'
+        w.append(f'def PSW({TXL}) -> +List<S.Part>: {PSV}')
+        w.append(f'def RST{nf - 1}({TXL}) -> +List<S.Part>: []')
+        for i in range(nf - 2, -1, -1):
+            w.append(f'def RST{i}({TXL}) -> +List<S.Part>: Con{{{parts[i + 1]}, RST{i + 1}(t, x, len)}}')
+        w.append(f'def ITS{nf}({TXL}) -> S.Value: S.EmptyItems{{}}')
+        for i in range(nf - 1, -1, -1):
+            w.append(f'def ITS{i}({TXL}) -> S.Value: S.Items{{{vals[i]}, ITS{i + 1}(t, x, len)}}')
+        w.append('')
+        PSV = 'PSW(t, x, len)'
     OSL = '[' + ', '.join(L.O(j) for j in range(k)) + ']'
     Ln = [f'U32.to_nat({L.LJ(j)})' for j in range(k)]
     lenY = [f'List.length(&2, U32, {L.Y(j)})' for j in range(k)]
@@ -812,7 +829,7 @@ def spec_text(L):
             doms.append((f'SP.bytes_domain({L.Y(j)})', f'UW.domWX(t, {L.XJ(j)}, {Ln[j]})'))
     hv = '{==}'
     for i in range(nf - 1, -1, -1):
-        rest = '[' + ', '.join(parts[i + 1:]) + ']'
+        rest = f'RST{i}(t, x, len)' if L.sym else '[' + ', '.join(parts[i + 1:]) + ']'
         hv = f'FD.logic__and_intro({doms[i][0]}, Layout.bytes_valid({rest}), {doms[i][1]},\n      {hv})'
     PL = f'Layout.payloads({PSV})'
     w.append(f'def fitw({CW}, {H}) -> {{N.fits(4n, Nat.add({FS}n, List.length(&2, U32, {PL}))) == {TRUE}}}:')
@@ -883,7 +900,10 @@ def inv_text(L):
                     out.append(f'+hx{f["i"]}: S.Value, +ex{f["i"]}: {{Codec.parts(hx{f["i"]}, {L.spec(f)}) == Some{{[S.Fixed{{xs{f["i"]}}}]}} : {MP}}}')
             else:
                 j = f['j']
-                out.append(f'+y{j}: +List<U32>, +h{j}: S.Value, +ev{j}: {{Codec.parts(h{j}, {L.spec(f)}) == Some{{[S.Variable{{y{j}}}]}} : {MP}}}')
+                if L.sym:
+                    out.append(f'+y{j}: +List<U32>, +h{j}: S.Value, ev{j}: EVF(h{j}, {L.spec(f)}, y{j})')
+                else:
+                    out.append(f'+y{j}: +List<U32>, +h{j}: S.Value, +ev{j}: {{Codec.parts(h{j}, {L.spec(f)}) == Some{{[S.Variable{{y{j}}}]}} : {MP}}}')
         return ''.join(x + ', ' for x in out)
 
     def sargs(i):
@@ -907,16 +927,34 @@ def inv_text(L):
 
     def absurd():
         return f'Empty.absurd({GOAL}, FD.logic__none_some(+List<S.Part>, [S.Variable{{{WBL}}}], e))'
+    CP = L.sym
     PS = '[' + ', '.join(part(f) for f in L.fields) + ']'
+    WS = '[' + ', '.join(f'Some{{{f["size"]}n}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields) + ']'
+    PLD = ''.join(f'+xs{f["i"]}: +List<U32>, ' if f['kind'] == 'fix' else f'+y{f["j"]}: +List<U32>, ' for f in L.fields)
+    PLA = ''.join(f'xs{f["i"]}, ' if f['kind'] == 'fix' else f'y{f["j"]}, ' for f in L.fields)
+    if CP:
+        # the parts, their bytes and widths as definitions (the lemmas below take the payloads only)
+        w.append(f'def PSX({PLD[:-2]}) -> +List<S.Part>: {PS}')
+        PS = f'PSX({PLA[:-2]})'
+        w.append(f'def BYX({PLD[:-2]}) -> +List<U32>: List.append(&2, U32, Layout.fixed_parts({PS}, Layout.fixed_size({PS})), Layout.payloads({PS}))')
+        w.append(f'def WSX() -> +List<Maybe<&2, Nat>>: {WS}')
+        w.append(f'def EVF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Type: {{Codec.parts(h, s) == Some{{[S.Variable{{y}}]}} : {MP}}}')
+        w.append('')
+        WS = 'WSX()'
     FP = f'Layout.fixed_parts({PS}, Layout.fixed_size({PS}))'
     PL = f'Layout.payloads({PS})'
-    BYTES = f'List.append(&2, U32, {FP}, {PL})'
-    SD = f'{CW}, {sdecl(nf)}+eq: {{{BYTES} == {WBL} : +List<U32>}}'
-    SA = f'{CWA}, {sargs(nf)}eq'
-    WS = '[' + ', '.join(f'Some{{{f["size"]}n}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields) + ']'
+    BYTES = f'BYX({PLA[:-2]})' if CP else f'List.append(&2, U32, {FP}, {PL})'
+    if CP:
+        SD = f'{CW}, {PLD}+ew: {{LY.WID({PS}) == {WS} : +List<Maybe<&2, Nat>>}}, +eq: {{{BYTES} == {WBL} : +List<U32>}}'
+        SA = f'{CWA}, {PLA}ew, eq'
+    else:
+        SD = f'{CW}, {sdecl(nf)}+eq: {{{BYTES} == {WBL} : +List<U32>}}'
+        SA = f'{CWA}, {sargs(nf)}eq'
     fixed = [f for f in L.fields if f['kind'] == 'fix']
     # the widths of the parts
-    w.append(f'def ewid({sdecl(nf)}+u: Unit) -> {{LY.WID({PS}) == {WS} : +List<Maybe<&2, Nat>>}}:')
+    LXD = ''.join(f'+lx{f["i"]}: {{Some{{{f["size"]}n}} == Some{{List.length(&2, U32, xs{f["i"]})}} : Maybe<&2, Nat>}}, ' for f in L.fields if f['kind'] == 'fix')
+    LXA = ''.join(f'lx{f["i"]}, ' for f in L.fields if f['kind'] == 'fix')
+    w.append(f'def ewid({PLD + LXD if CP else sdecl(nf)}+u: Unit) -> {{LY.WID({PS}) == {WS} : +List<Maybe<&2, Nat>>}}:')
     for f in fixed:
         els = []
         for g2 in L.fields:
@@ -931,7 +969,7 @@ def inv_text(L):
         w.append(f'  %lx{f["i"]} : {{[{", ".join(els)}] == {WS} : +List<Maybe<&2, Nat>>}}')
     w.append('  {==}')
     w.append('')
-    EW = f'ewid({sargs(nf)}Unit{{}})'
+    EW = 'ew' if CP else f'ewid({sargs(nf)}Unit{{}})'
     w.append(f'def efs({SD}) -> {{Layout.fixed_size({PS}) == {FS}n : Nat}}:')
     w.append(f'  Equal.trans(Nat, Layout.fixed_size({PS}), LY.WFS(LY.WID({PS})), {FS}n, LY.fs_w({PS}),')
     w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WFS(z), LY.WID({PS}), {WS}, {EW}))')
@@ -955,13 +993,13 @@ def inv_text(L):
         c = f['c']
         OFF = f'LY.OFF({PS}, {i}n, {FS}n)'
         OFFS.append(OFF)
-        w.append(f'def epos{j}({sdecl(nf)}+u: Unit) -> {{LY.FPOS({PS}, {i}n) == {c}n : Nat}}:')
+        w.append(f'def epos{j}({PLD + "+ew: {LY.WID(" + PS + ") == " + WS + " : +List<Maybe<&2, Nat>>}" if CP else sdecl(nf) + "+u: Unit"}) -> {{LY.FPOS({PS}, {i}n) == {c}n : Nat}}:')
         w.append(f'  Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS(LY.WID({PS}), {i}n), {c}n, LY.fpos_w({PS}, {i}n),')
         w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WPOS(z, {i}n), LY.WID({PS}), {WS}, {EW}))')
         w.append(f'def eb{j}({SD}) -> {{VS.bt(4n, VS.bdr({c}n, {WBL})) == N.digits(4n, {OFF}) : +List<U32>}}:')
         w.append(f'  %eq : {{VS.bt(4n, VS.bdr({c}n, _)) == N.digits(4n, {OFF}) : +List<U32>}}')
         w.append(f'  %efs({SA}) : {{VS.bt(4n, VS.bdr({c}n, {BYTES})) == N.digits(4n, LY.OFF({PS}, {i}n, _)) : +List<U32>}}')
-        w.append(f'  %epos{j}({sargs(nf)}Unit{{}}) : {{VS.bt(4n, VS.bdr(_, {BYTES})) == N.digits(4n, LY.OFF({PS}, {i}n, Layout.fixed_size({PS}))) : +List<U32>}}')
+        w.append(f'  %epos{j}({PLA + "ew" if CP else sargs(nf) + "Unit{}"}) : {{VS.bt(4n, VS.bdr(_, {BYTES})) == N.digits(4n, LY.OFF({PS}, {i}n, Layout.fixed_size({PS}))) : +List<U32>}}')
         w.append(f'  LY.lay_off({PS}, Layout.fixed_size({PS}), {i}n, y{j}, {PL}, {{==}})')
         RF = FS - c - 4
         w.append(f'def ov{j}({SD}) -> {{U32.to_nat({L.O(j)}) == {OFF} : Nat}}:')
@@ -1001,27 +1039,27 @@ def inv_text(L):
         w.append(f'  %eq : {{VS.bt({ly}, VS.bdr({OFF}, _)) == y{j} : +List<U32>}}')
         w.append(f'  %efs({SA}) : {{VS.bt({ly}, VS.bdr(LY.OFF({PS}, {i}n, _), {BYTES})) == y{j} : +List<U32>}}')
         w.append(f'  LY.lay_pay({PS}, {i}n, y{j}, Layout.fixed_size({PS}), {FP}, LY.lay_len({PS}, Layout.fixed_size({PS})), {{==}})')
-        w.append(f'def dch{j}({SD}) -> {{CH{j}.CHKw(t, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}) == {TRUE}}}:')
+        w.append(f'def dch{j}({SD}{", +h" + str(j) + ": S.Value, ev" + str(j) + ": EVF(h" + str(j) + ", " + L.spec(f) + ", y" + str(j) + ")" if CP else ""}) -> {{CH{j}.CHKw(t, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}) == {TRUE}}}:')
         w.append(f'  CH{j}.invw(d, t, n, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}, eoW({CWA}, {L.O(j)}, {E}, nle{j}({SA}), nle2{j}({SA})), hd,')
         w.append(f'    hwj({CWA}, {L.O(j)}, {E}, nle{j}({SA}), nle2{j}({SA})), pf, h{j},')
         w.append(f'    FD.logic__subst(+List<U32>, z => {{Codec.parts(h{j}, {L.spec(f)}) == Some{{[S.Variable{{z}}]}} : {MP}}}, y{j}, {L.Y(j)}, Equal.sym(+List<U32>, {L.Y(j)}, y{j}, ypay{j}({SA})), ev{j}))')
     w.append('')
     for f in L.fchk:
         i, c, sz, P = f['i'], f['c'], f['size'], L.pos(f['c'])
-        w.append(f'def eposF{i}({sdecl(nf)}+u: Unit) -> {{LY.FPOS({PS}, {i}n) == {c}n : Nat}}:')
+        w.append(f'def eposF{i}({PLD + "+ew: {LY.WID(" + PS + ") == " + WS + " : +List<Maybe<&2, Nat>>}" if CP else sdecl(nf) + "+u: Unit"}) -> {{LY.FPOS({PS}, {i}n) == {c}n : Nat}}:')
         w.append(f'  Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS(LY.WID({PS}), {i}n), {c}n, LY.fpos_w({PS}, {i}n),')
         w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WPOS(z, {i}n), LY.WID({PS}), {WS}, {EW}))')
-        w.append(f'def fx{i}({SD}) -> {{UW.WX(t, {P}, {sz}n) == xs{i} : +List<U32>}}:')
+        w.append(f'def fx{i}({SD}{", +lx" + str(i) + ": {Some{" + str(sz) + "n} == Some{List.length(&2, U32, xs" + str(i) + ")} : Maybe<&2, Nat>}" if CP else ""}) -> {{UW.WX(t, {P}, {sz}n) == xs{i} : +List<U32>}}:')
         w.append(f'  +hl = FD.nat__le_trans(Nat.add({c}n, {sz}n), {FS}n, U32.to_nat(len), {{==}},')
         w.append(f'    FD.logic__subst(Nat, z => {{Nat.is_le({FS}n, z) == {TRUE}}}, {END}, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), {END}, eL({SA})), LY.end_ge({PS}, {FS}n)))')
         w.append(f'  %UW.subWX(t, x, {c}n, {sz}n, U32.to_nat(len), hl) : {{_ == xs{i} : +List<U32>}}')
         w.append(f'  %eq : {{VS.bt({sz}n, VS.bdr({c}n, _)) == xs{i} : +List<U32>}}')
-        w.append(f'  %eposF{i}({sargs(nf)}Unit{{}}) : {{VS.bt({sz}n, VS.bdr(_, {BYTES})) == xs{i} : +List<U32>}}')
+        w.append(f'  %eposF{i}({PLA + "ew" if CP else sargs(nf) + "Unit{}"}) : {{VS.bt({sz}n, VS.bdr(_, {BYTES})) == xs{i} : +List<U32>}}')
         w.append(f'  %Equal.sym(Nat, {sz}n, List.length(&2, U32, xs{i}), LY.mnat({sz}n, List.length(&2, U32, xs{i}), lx{i})) : {{VS.bt(_, VS.bdr(LY.FPOS({PS}, {i}n), {BYTES})) == xs{i} : +List<U32>}}')
         w.append(f'  LY.lay_fix({PS}, Layout.fixed_size({PS}), {i}n, xs{i}, {PL}, {{==}})')
-        w.append(f'def fch{i}({SD}) -> {{{f["fa"]}.CHK(t, {P}) == {TRUE}}}:')
+        w.append(f'def fch{i}({SD}{", +lx" + str(i) + ": {Some{" + str(sz) + "n} == Some{List.length(&2, U32, xs" + str(i) + ")} : Maybe<&2, Nat>}, +hx" + str(i) + ": S.Value, +ex" + str(i) + ": {Codec.parts(hx" + str(i) + ", " + L.spec(f) + ") == Some{[S.Fixed{xs" + str(i) + "}]} : " + MP + "}" if CP else ""}) -> {{{f["fa"]}.CHK(t, {P}) == {TRUE}}}:')
         w.append(f'  {f["fa"]}.inv(t, {P}, hx{i}, FD.logic__subst(+List<U32>, z => {{Codec.parts(hx{i}, {L.spec(f)}) == Some{{[S.Fixed{{z}}]}} : {MP}}}, xs{i}, UW.WX(t, {P}, {sz}n),')
-        w.append(f'    Equal.sym(+List<U32>, UW.WX(t, {P}, {sz}n), xs{i}, fx{i}({SA})), ex{i}))')
+        w.append(f'    Equal.sym(+List<U32>, UW.WX(t, {P}, {sz}n), xs{i}, fx{i}({SA}{", lx" + str(i) if CP else ""})), ex{i}))')
     if L.fchk:
         w.append('')
     its = items(L)
@@ -1030,14 +1068,18 @@ def inv_text(L):
     for j in range(1, k):
         prfs.append(f'FD.logic__and_intro(U32.is_le({L.O(j - 1)}, {L.O(j)}), U32.is_le({L.O(j)}, len), VMR.u32le({L.O(j - 1)}, {L.O(j)}, nle{j - 1}({SA})), VMR.u32le({L.O(j)}, len, nle2{j - 1}({SA})))')
     for f in L.fchk:
-        prfs.append(f'fch{f["i"]}({SA})')
+        prfs.append(f'fch{f["i"]}({SA}' + (f', lx{f["i"]}, hx{f["i"]}, ex{f["i"]})' if CP else ')'))
     for j in range(k):
-        prfs.append(f'dch{j}({SA})')
+        prfs.append(f'dch{j}({SA}' + (f', h{j}, ev{j})' if CP else ')'))
     n = len(its)
     body = prfs[n - 1]
     for m in range(n - 2, -1, -1):
         body = f'FD.logic__and_intro(IT{m}({TXOA}), K{m + 1}({TXOA}), {prfs[m]},\n    {body})'
-    w.append(f'def contra({SD}) -> {GOAL}:')
+    if CP:
+        w.append(f'def contra({CW}, {sdecl(nf)}+eq: {{{BYTES} == {WBL} : +List<U32>}}) -> {GOAL}:')
+        w.append(f'  +ew = ewid({PLA}{LXA}Unit{{}})')
+    else:
+        w.append(f'def contra({SD}) -> {GOAL}:')
     w.append(f'  {body}')
     w.append('')
     bexpr = f'Bool.and(Layout.bytes_valid({PS}), N.fits(4n, Nat.add(Layout.fixed_size({PS}), List.length(&2, U32, {PL}))))'
