@@ -391,6 +391,7 @@ def main():
         pf = ROOT / f'proofs/obj/{pre}var_codec_{parent}.bend'
         out[pf] = var_nest.as_module_text(g, xc, parent)
         out[ROOT / f'proofs/obj/{pre}var_codec_{parent}_unique.bend'] = unique_text(xc, parent, pf.name)
+        out[ROOT / f'proofs/obj/{pre}var_codec_{parent}_rej.bend'] = var_nest.as_rej_text(g, xc, parent)
     mine = [q for q in (ROOT / 'proofs/obj').glob('*var_codec_*.bend') if q.name.startswith(('var_codec_', 'big_var_codec_'))]
     orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out
                      and not (no_big and q.name.startswith('big_')))

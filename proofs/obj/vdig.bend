@@ -7,6 +7,7 @@ import ../../proofs/integer_decoding.bend as ID
 import ../../proofs/layout_offset_value.bend as LOV
 import ../../proofs/offset_digits.bend as OD
 import ../../proofs/primitive_invariants.bend as V
+import ../../proofs/nat_bytes.bend as NB
 
 # The spec's four little-endian digits of a word's value are the word's limbs:
 # an offset field written as a U32 is the spec's offset encoding.
@@ -26,3 +27,15 @@ law digits_limb:
 def digits_limb(x):
   %value_limb(x) : {N.digits(4n, _) == I.limb(x) : +List<U32>}
   OD.digits_of_value(4n, I.limb(x), {==}, V.limb_domain(x))
+
+# A word whose limbs are the four digits of v < 2^32 has value v.
+law digits_word:
+  for +x: U32
+  for +v: Nat
+  for +fit: {N.fits(4n, v) == True{} : Bool}
+  for +e: {I.limb(x) == N.digits(4n, v) : +List<U32>}
+  {U32.to_nat(x) == v : Nat}
+def digits_word(x, v, fit, e):
+  Equal.trans(Nat, U32.to_nat(x), N.value(I.limb(x)), v, Equal.sym(Nat, N.value(I.limb(x)), U32.to_nat(x), value_limb(x)),
+    Equal.trans(Nat, N.value(I.limb(x)), N.value(N.digits(4n, v)), v, Equal.cong(+List<U32>, Nat, l => N.value(l), I.limb(x), N.digits(4n, v), e),
+      NB.digits_value(4n, v, fit)))
