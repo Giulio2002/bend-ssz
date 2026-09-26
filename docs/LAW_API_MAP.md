@@ -289,6 +289,14 @@ What that means concretely:
   take d. Packed lists of byte vectors (`codegen/var_rlist_bv.py`): `l4096_b48`
   (stock; the copy's depth bounded from the limit by right shifts only) and
   `big_var_winx_l16777216_b32` (depth from the window, zero arrays by `big_vvlz`).
+  ok_eval and decode_reject for every FIXED-SIZE name (all 87 Fulu names and 99 generic
+  forms of fixed size; `codegen/fix_reject.py`, `fix_reject_chk.py`, `fix_reject_pad.py`):
+  `<X>_ok_eval` (T.<p>_ok, the name's validator, returns the length check, and for
+  booleans / boolean vectors / Validator's slashed byte / bit vectors' padding the byte
+  checks of the window's bytes: ALLB, byte 88 <= 1, PADK) and `<X>_decode_reject` (a byte
+  list failing that check - another length, or a failing byte - is outside the spec image,
+  from the shape of every encoding at the schema: decode_shape.facts for the size,
+  vrejb/vrejp for the bytes). The large names state the length against VRF.SZ(schema).
   BeaconState's fixed fields at any byte position (`codegen/var_fixx.py`, all stock):
   `vfx_<p>.bend` for u64, b32, Fork, Checkpoint, BeaconBlockHeader, Eth1Data,
   SyncCommittee, v8192_b32, v65536_b32, v8192_u64, v64_u64 export OBJ(d, t, x),
