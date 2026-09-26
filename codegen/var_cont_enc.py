@@ -35,7 +35,7 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 import generate as G  # noqa: E402
 import schema  # noqa: E402
 
-CONTS = ['ExecutionPayload']
+CONTS = ['ExecutionPayload', 'ExecutionPayloadHeader']
 TR = 'FD.array__Tree<U32>'
 TRUE = 'True{} : Bool'
 GROUP = G.GROUP
