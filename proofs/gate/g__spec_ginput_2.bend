@@ -5,7 +5,7 @@ import ../../types/generic_obj.bend as T
 import ../../proofs/compact/found.bend as FD
 import ../obj/repr.bend as R
 import ../obj/spec_fixed.bend as F
-import ../obj/load.bend as LD
+import ../obj/spec_gload_2.bend as LD
 import ../obj/spec_gcodec_2.bend as C
 import ../obj/spec_ginput_2.bend as PRV
 

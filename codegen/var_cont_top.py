@@ -23,8 +23,8 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 
 import var_cont_enc as CE  # noqa: E402
 
-TOPS = ['ExecutionPayload']
-SIZES = ['ExecutionPayload', 'ExecutionPayloadHeader']
+TOPS = ['ExecutionPayload', 'BeaconBlockBody']
+SIZES = ['ExecutionPayload', 'ExecutionPayloadHeader', 'BeaconBlockBody']
 TRUE = 'True{} : Bool'
 
 
@@ -75,6 +75,8 @@ def top_text(C):
             OBJF[f] = f
         elif fs.fixed and fs.kind == 'fixwords':
             OBJF[f] = f'O.Words{{FD.array__thaw(U32, TB_{f}), {fs.fsize}}}'
+        elif f in K.fixw:
+            OBJF[f] = K.fixw[f].obj
         else:
             OBJF[f] = K.children[f].obj
     groups = [(k // CE.GROUP, list(range(k, min(k + CE.GROUP, len(F))))) for k in range(0, len(F), CE.GROUP)] if K.wide else []
@@ -330,16 +332,19 @@ def szS({P}, +h: {{CI.OKT({OAS}) == {TRUE}}}, +k: Nat, +ek: {{k == 28n : Nat}}) 
   {body}
   Equal.trans(Nat, U32.to_nat(SZS({OAS})), {NT}, {ENDC}, {root}, eN)
 ''')
+    if K.wide:
+        vt_ = valid_text(C, K, P, OAS, OBJF, groups, gobj, fnames, lin)
+        if vt_:
+            w(vt_)
     cut = len(L)
     if C not in TOPS:
         return L, [], K, P, OA, imps
     # ---- encode_eval / encode_spec ----
-    HA = []
-    for f, fs in F:
-        if fs.fixed and fs.kind == 'fixwords':
-            HA += [f'pfB_{f}', f'hdB_{f}', f'hrB_{f}']
-        elif not fs.fixed:
-            HA += K.children[f].hargs
+    # the writer's hypotheses, as the window's putx lists them (after the object's parameters, before dd)
+    ptxt = (ROOT / f'proofs/obj/big_encx_{C}.bend').read_text()
+    ph = re.search(r'^def putx\((.*?)\+dd: Nat, \+D: ', ptxt, re.M | re.S).group(1)
+    pn = [x.split(':')[0].strip().lstrip('+') for x in CE_split(ph.rstrip().rstrip(','))]
+    HA = pn[len(OA):]
     HAC = ', '.join(f'CI.ok_{x}({OAS}, h)' for x in HA)
     S = f'SZS({OAS})'
     Dd = f'VL.DO({S})'
@@ -441,6 +446,84 @@ def encode_spec(m, hok):
     case CI.MW{{{", ".join("+" + x for x in OA)}}}: spec_go({OAS}, hok)
 """)
     return L[:cut], L[cut:], K, P, OA, imps
+
+
+def valid_fact(f, fs, K):
+    """(the field's valid call's type, its proof) in a size module (hypotheses through CI.ok_*), or None"""
+    h = lambda x: f'CI.ok_{x}({{OAS}}, h)'
+    if f in K.fixw:
+        fw = K.fixw[f]
+        if not callable(getattr(fw, 'valid', None)):
+            return None
+        return (fw.vt, fw.valid([h(x) for x in fw.hargs]))
+    ch = K.children[f]
+    if ch.p == 'bl32':
+        return (ch.vt, f'EB.validx({ch.oargs[0]}, {h(ch.hargs[0])})')
+    if ch.p == 'l1048576_bl1073741824':
+        return (ch.vt, f'ET.valid_l({ch.oargs[0]}, {ch.oargs[1]}, {h(ch.hargs[0])})')
+    if getattr(ch, 'std', False):
+        m = ch.oargs[0]
+        sa = getattr(ch, 'szalias', None)
+        e = f'{sa or ch.alias}.validx({m}, {h(ch.hargs[0])})'
+        B = getattr(ch, 'box', None)
+        if B:
+            th = f'{ch.alias}.TH({m})'
+            e = f'Equal.cong(T.{B} & Bool, O.Boxed<T.{B}> & Bool, z => T.{B}_bx_va_back(z), T.{B}_valid({th}), ({th}, True{{}}), {e})'
+        return (ch.vt, e)
+    return (ch.vt, f'{ch.alias}.valid_{ch.p}({ch.oargs[0]}, {ch.oargs[1]}, {h(ch.hargs[0])})')
+
+
+def valid_text(C, K, P, OAS, OBJF, groups, gobj, fnames, lin):
+    """A wide container's validity pass (T.<C>_valid: its groups' _va chains) rewritten through its
+    non-Data fields' validity facts; None when a field has none yet (a FixW field without its valid term)."""
+    F, p = K.F, K.p
+    steps, prfs = [], []
+    tacc = 'True{}'
+    gok = None
+    for j, (gk, idx) in enumerate(lin):
+        gp = f'{p}_g{gk}'
+        tparams = CE.fn_params(f'{p}_va{j}')
+        if j > 0:
+            tacc = f'Bool.and({tacc}, {gok})'
+        gmap = {f'g{g2}': gobj[g2] for g2, _ in groups}
+        gmap['acc'] = tacc
+        nd = [i for i in idx if not F[i][1].data]
+        acc = 'True{}'
+        for s, i in enumerate(nd):
+            f = fnames[i]
+            fs = F[i][1]
+            vf = valid_fact(f, fs, K)
+            if vf is None:
+                return None
+            vt, prf = vf
+            ps = CE.fn_params(f'{gp}_va{s}')
+            mp = {fnames[i2]: OBJF[fnames[i2]] for i2 in idx}
+            mp['acc'] = acc
+            inner = f'T.{gp}_va{s}(' + ', '.join(mp[x] if x != 'pair' else 'z' for x in ps) + ')'
+            outer = f'T.{p}_va{j}(' + ', '.join(gmap[x] if x != 'pair' else inner for x in tparams) + ')'
+            o = OBJF[f]
+            steps.append((outer, f'T.{fs.p}_valid({o})', f'({o}, True{{}})', f'{vt} & Bool'))
+            prfs.append(prf.replace('{OAS}', OAS))
+            acc = f'Bool.and({acc}, True{{}})'
+        gok = acc
+    RT = f'T.{C} & Bool'
+    OBJ = f'K.OBJC({OAS})'
+    start = f'T.{p}_valid({OBJ})'
+    end = f'({OBJ}, True{{}})'
+
+    def chain(k, first):
+        outer, lhs, rhs, ity = steps[k]
+        e = f'Equal.cong({ity}, {RT}, z => {outer}, {lhs}, {rhs}, {prfs[k]})'
+        if k == len(steps) - 1:
+            return e
+        after = outer.replace(', z)', f', {rhs})')
+        nxt = steps[k + 1][0].replace(', z)', f', {steps[k + 1][1]})')
+        return f'Equal.trans({RT}, {first}, {after}, {end}, {e}, {chain(k + 1, nxt)})'
+    return f'''
+# ---- {C}: the runtime's validity pass ----
+def validC({P}, +h: {{CI.OKT({OAS}) == {TRUE}}}) -> {{{start} == {end} : {RT}}}:
+  {chain(0, steps[0][0].replace(', z)', f', {steps[0][1]})'))}
+'''
 
 
 def size_term(ch):
@@ -547,6 +630,17 @@ def sizez(m, hok):
     Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szx(m, hok))))
   FD.logic__subst(U32, z => {{T.{K.p}_size(CI.TH(m)) == (CI.TH(m), z) : T.{C} & U32}}, SZSM(m), CI.SZ(m), e, sizex(m, hok))
 '''
+    if 'def validC(' in sz:
+        sz += f'''
+# The runtime's validity pass accepts the object.
+law validx:
+  for +m: CI.MW
+  for +hok: {{CI.OK(m) == {TRUE}}}
+  {{T.{K.p}_valid(CI.TH(m)) == (CI.TH(m), True{{}}) : T.{C} & Bool}}
+def validx(m, hok):
+  match m:
+    case CI.MW{{{pat}}}: validC({OAS}, hok)
+'''
     hs = imps + HEADX + [f'import ./big_encx_{C}_iface.bend as CI', '', '# GENERATED by codegen/var_cont_top.py. Do not edit.',
                          f'# {C}: the runtime\'s size pass on its encoder window (T.{K.p}_size; see the generator).', '']
     out = {size_file(C): '\n'.join(hs) + '\n' + sz + '\n'}
@@ -567,7 +661,7 @@ def sizez(m, hok):
 # interface alone: the size pass is CI.sizex, its value CI.szx, the bound CI.bndx, the writer at X = 0 of
 # a zero tree CI.putx / putx_bytes, the spec CI.encx_spec.
 
-GTOPS = ['Gp4B0CA2906A', 'Gp66304057C3', 'Gp8A7851175B', 'Gc465214E502', 'Gc221EC01D83', 'Gc85FA758A04']
+GTOPS = ['Gp4B0CA2906A', 'Gp66304057C3', 'Gp8A7851175B', 'Gc465214E502', 'Gc221EC01D83', 'Gc85FA758A04', 'BeaconBlock', 'SignedBeaconBlock']
 
 
 def gtop_text(C):
