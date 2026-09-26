@@ -172,3 +172,28 @@ def cposu(+n: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +ee: {U32.is_eq(n, 
 def u32le_n(+n: U32, +L: U32, +c: Nat, +ec: {U32.to_nat(n) == c : Nat}, +h: {Nat.is_le(c, U32.to_nat(L)) == True{} : Bool}) -> {U32.is_le(n, L) == True{} : Bool}:
   F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(L)), U32.is_le(n, L), Equal.sym(Bool, U32.is_le(n, L), Nat.is_le(U32.to_nat(n), U32.to_nat(L)), VU.le_u32(n, L)),
     F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(L)) == True{} : Bool}, c, U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), c, ec), h))
+
+# The position after record j is record j + 1's.
+def pnx(+j: Nat, +W: Nat, +Q: Nat) -> {Nat.add(pos(j, W, Q), W) == pos(1n+j, W, Q) : Nat}:
+  +M = Nat.mul(j, W)
+  Equal.trans(Nat, Nat.add(Nat.add(M, Q), W), Nat.add(M, Nat.add(Q, W)), pos(1n+j, W, Q), F.nat__add_assoc(M, Q, W),
+    Equal.trans(Nat, Nat.add(M, Nat.add(Q, W)), Nat.add(M, Nat.add(W, Q)), pos(1n+j, W, Q), Equal.cong(Nat, Nat, z => Nat.add(M, z), Nat.add(Q, W), Nat.add(W, Q), F.nat__add_comm(Q, W)),
+      Equal.trans(Nat, Nat.add(M, Nat.add(W, Q)), Nat.add(Nat.add(M, W), Q), pos(1n+j, W, Q), Equal.sym(Nat, Nat.add(Nat.add(M, W), Q), Nat.add(M, Nat.add(W, Q)), F.nat__add_assoc(M, W, Q)),
+        Equal.cong(Nat, Nat, z => Nat.add(z, Q), Nat.add(M, W), Nat.add(W, M), F.nat__add_comm(M, W)))))
+
+def pmono(+j: Nat, +W: Nat, +Q: Nat) -> {Nat.is_le(pos(j, W, Q), pos(1n+j, W, Q)) == True{} : Bool}:
+  Order.add_right(Nat.mul(j, W), Nat.mul(1n+j, W), Q, Order.left_below_sum(W, Nat.mul(j, W)))
+
+def pnx0(+j: Nat, +W: Nat, +Q: Nat) -> {Nat.add(W, pos(j, W, Q)) == pos(1n+j, W, Q) : Nat}:
+  Equal.sym(Nat, pos(1n+j, W, Q), Nat.add(W, pos(j, W, Q)), F.nat__add_assoc(W, Nat.mul(j, W), Q))
+
+# fit0's other direction: the run's end is record j + 1's position.
+def fit0inv(+j: Nat, +W: Nat, +Q: Nat, +P: Nat, +h: {Nat.is_le(Nat.add(W, pos(j, W, Q)), P) == True{} : Bool})
+    -> {Nat.is_le(pos(1n+j, W, Q), P) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(z, P) == True{} : Bool}, Nat.add(W, pos(j, W, Q)), pos(1n+j, W, Q), pnx0(j, W, Q), h)
+
+# the first record of k + 1 fits
+def fitk0(+j: Nat, +k: Nat, +W: Nat, +Q: Nat, +P: Nat, +h: {Nat.is_le(pos(Nat.add(1n+k, j), W, Q), P) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(W, pos(j, W, Q)), P) == True{} : Bool}:
+  fit0(j, W, Q, P, F.nat__le_trans(pos(1n+j, W, Q), pos(Nat.add(1n+k, j), W, Q), P,
+    Order.add_right(Nat.mul(1n+j, W), Nat.mul(Nat.add(1n+k, j), W), Q, mul_mono(1n+j, Nat.add(1n+k, j), W, Order.left_below_sum(k, j))), h))
