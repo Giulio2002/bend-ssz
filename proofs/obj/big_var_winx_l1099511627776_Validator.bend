@@ -41,6 +41,7 @@ import ./vua.bend as UA
 import ../compact/reads.bend as RD
 import ./vrl.bend as VRL
 import ./vmv.bend as VMV
+import ./vua_lay.bend as LY
 import ./vmr.bend as VMR
 import ./big_vu40.bend as V40
 import ../../proofs/decode_shape.bend as DS
@@ -642,3 +643,410 @@ def specw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
     {Codec.one(Some{_}, None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
   %ec : {Codec.one(Some{UW.WX(t, x, _)}, None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
   {==}
+
+# ---- the inversion: one record -------------------------------------------------------------------
+
+def fixpay(ps: +List<S.Part>) -> +List<U32>:
+  match ps:
+    case Con{S.Fixed{+xs}, t}: xs
+    case _: []
+
+def fixed_inj(+a: +List<U32>, +b: +List<U32>, +e: {Some{[S.Fixed{a}]} == Some{[S.Fixed{b}]} : Maybe<&2, +List<S.Part>>}) -> {a == b : +List<U32>}:
+  Equal.cong(+List<S.Part>, +List<U32>, z => fixpay(z), [S.Fixed{a}], [S.Fixed{b}], FD.logic__some_inj(+List<S.Part>, [S.Fixed{a}], [S.Fixed{b}], e))
+
+law nth_app:
+  for +p: +List<U32>
+  for +q: +List<U32>
+  for +k: Nat
+  {VBL.nthb(List.append(&2, U32, p, q), Nat.add(List.length(&2, U32, p), k)) == VBL.nthb(q, k) : U32}
+def nth_app(p, q, k):
+  match p:
+    case Nil{}: {==}
+    case Con{+h, +r}: nth_app(r, q, k)
+
+def nth_app2(+p: +List<U32>, +q: +List<U32>, +r: +List<U32>, +k: Nat)
+    -> {VBL.nthb(List.append(&2, U32, List.append(&2, U32, p, q), r), Nat.add(List.length(&2, U32, p), k)) == VBL.nthb(List.append(&2, U32, q, r), k) : U32}:
+  %Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, p, q), r), List.append(&2, U32, p, List.append(&2, U32, q, r)), VS.app_assoc(p, q, r)) :
+    {VBL.nthb(_, Nat.add(List.length(&2, U32, p), k)) == VBL.nthb(List.append(&2, U32, q, r), k) : U32}
+  nth_app(p, List.append(&2, U32, q, r), k)
+
+def bz(+b: Bool, +R: +List<U32>, +P: +List<U32>) -> {U32.is_le(VBL.nthb(List.append(&2, U32, List.append(&2, U32, SP.boolean_encoding(b), R), P), 0n), 1) == True{} : Bool}:
+  match b:
+    case False{}: {==}
+    case True{}: {==}
+
+# The boolean's byte of a record's bytes: 88 = 48 + 32 + 8.
+def byteB(+a0: +List<U32>, +l0: {Some{48n} == Some{List.length(&2, U32, a0)} : Maybe<&2, Nat>}, +a1: +List<U32>, +l1: {Some{32n} == Some{List.length(&2, U32, a1)} : Maybe<&2, Nat>}, +a2: +List<U32>, +l2: {Some{8n} == Some{List.length(&2, U32, a2)} : Maybe<&2, Nat>}, +b: Bool, +rps: +List<S.Part>, +o: Nat, +P: +List<U32>)
+    -> {U32.is_le(VBL.nthb(List.append(&2, U32, List.append(&2, U32, a0, List.append(&2, U32, a1, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o))))), P), 88n), 1) == True{} : Bool}:
+  +t1 = FD.logic__subst(Nat, z => {VBL.nthb(List.append(&2, U32, List.append(&2, U32, a0, List.append(&2, U32, a1, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o))))), P), Nat.add(z, 40n)) == VBL.nthb(List.append(&2, U32, List.append(&2, U32, a1, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o)))), P), 40n) : U32}, List.length(&2, U32, a0), 48n,
+    Equal.sym(Nat, 48n, List.length(&2, U32, a0), LY.mnat(48n, List.length(&2, U32, a0), l0)), nth_app2(a0, List.append(&2, U32, a1, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o)))), P, 40n))
+  +t2 = FD.logic__subst(Nat, z => {VBL.nthb(List.append(&2, U32, List.append(&2, U32, a1, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o)))), P), Nat.add(z, 8n)) == VBL.nthb(List.append(&2, U32, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o))), P), 8n) : U32}, List.length(&2, U32, a1), 32n,
+    Equal.sym(Nat, 32n, List.length(&2, U32, a1), LY.mnat(32n, List.length(&2, U32, a1), l1)), nth_app2(a1, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o))), P, 8n))
+  +t3 = FD.logic__subst(Nat, z => {VBL.nthb(List.append(&2, U32, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o))), P), Nat.add(z, 0n)) == VBL.nthb(List.append(&2, U32, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o)), P), 0n) : U32}, List.length(&2, U32, a2), 8n,
+    Equal.sym(Nat, 8n, List.length(&2, U32, a2), LY.mnat(8n, List.length(&2, U32, a2), l2)), nth_app2(a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o)), P, 0n))
+  FD.logic__subst(U32, z => {U32.is_le(z, 1) == True{} : Bool}, VBL.nthb(List.append(&2, U32, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o)), P), 0n), VBL.nthb(List.append(&2, U32, List.append(&2, U32, a0, List.append(&2, U32, a1, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o))))), P), 88n),
+    Equal.sym(U32, VBL.nthb(List.append(&2, U32, List.append(&2, U32, a0, List.append(&2, U32, a1, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o))))), P), 88n), VBL.nthb(List.append(&2, U32, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o)), P), 0n),
+      Equal.trans(U32, VBL.nthb(List.append(&2, U32, List.append(&2, U32, a0, List.append(&2, U32, a1, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o))))), P), 88n), VBL.nthb(List.append(&2, U32, List.append(&2, U32, a1, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o)))), P), 40n), VBL.nthb(List.append(&2, U32, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o)), P), 0n), t1,
+        Equal.trans(U32, VBL.nthb(List.append(&2, U32, List.append(&2, U32, a1, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o)))), P), 40n), VBL.nthb(List.append(&2, U32, List.append(&2, U32, a2, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o))), P), 8n), VBL.nthb(List.append(&2, U32, List.append(&2, U32, SP.boolean_encoding(b), Layout.fixed_parts(rps, o)), P), 0n), t2, t3))),
+    bz(b, Layout.fixed_parts(rps, o), P))
+
+def rfin(+a0: +List<U32>, +l0: {Some{48n} == Some{List.length(&2, U32, a0)} : Maybe<&2, Nat>}, +a1: +List<U32>, +l1: {Some{32n} == Some{List.length(&2, U32, a1)} : Maybe<&2, Nat>}, +a2: +List<U32>, +l2: {Some{8n} == Some{List.length(&2, U32, a2)} : Maybe<&2, Nat>}, +b: Bool, +rps: +List<S.Part>, +xs: +List<U32>, +v: Bool,
+    +e: {Codec.one(SP.optional(v, List.append(&2, U32, Layout.fixed_parts(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps, Layout.fixed_size(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps)), Layout.payloads(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps))), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match v:
+    case False{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case True{}:
+      FD.logic__subst(+List<U32>, z => {U32.is_le(VBL.nthb(z, 88n), 1) == True{} : Bool}, List.append(&2, U32, Layout.fixed_parts(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps, Layout.fixed_size(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps)), Layout.payloads(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps)), xs, fixed_inj(List.append(&2, U32, Layout.fixed_parts(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps, Layout.fixed_size(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps)), Layout.payloads(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps)), xs, e),
+        byteB(a0, l0, a1, l1, a2, l2, b, rps, Layout.fixed_size(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps), Layout.payloads(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps)))
+
+def rq4(+a0: +List<U32>, +l0: {Some{48n} == Some{List.length(&2, U32, a0)} : Maybe<&2, Nat>}, +a1: +List<U32>, +l1: {Some{32n} == Some{List.length(&2, U32, a1)} : Maybe<&2, Nat>}, +a2: +List<U32>, +l2: {Some{8n} == Some{List.length(&2, U32, a2)} : Maybe<&2, Nat>}, +b: Bool, +mm: Maybe<&2, +List<S.Part>>, +xs: +List<U32>,
+    +e: {Codec.aggregate(Codec.concatenate(Some{[S.Fixed{a0}]}, Codec.concatenate(Some{[S.Fixed{a1}]}, Codec.concatenate(Some{[S.Fixed{a2}]}, Codec.concatenate(Some{[S.Fixed{SP.boolean_encoding(b)}]}, mm)))), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match mm:
+    case None{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case Some{+rps}: rfin(a0, l0, a1, l1, a2, l2, b, rps, xs, Bool.and(Layout.bytes_valid(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps), N.fits(4n, Nat.add(Layout.fixed_size(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps), List.length(&2, U32, Layout.payloads(S.Fixed{a0} <> S.Fixed{a1} <> S.Fixed{a2} <> S.Fixed{SP.boolean_encoding(b)} <> rps))))), e)
+
+def rb3(+a0: +List<U32>, +l0: {Some{48n} == Some{List.length(&2, U32, a0)} : Maybe<&2, Nat>}, +a1: +List<U32>, +l1: {Some{32n} == Some{List.length(&2, U32, a1)} : Maybe<&2, Nat>}, +a2: +List<U32>, +l2: {Some{8n} == Some{List.length(&2, U32, a2)} : Maybe<&2, Nat>}, +h: S.Value, +r: S.Value, +xs: +List<U32>,
+    +e: {Codec.aggregate(Codec.concatenate(Some{[S.Fixed{a0}]}, Codec.concatenate(Some{[S.Fixed{a1}]}, Codec.concatenate(Some{[S.Fixed{a2}]}, Codec.concatenate(Codec.parts(h, Spec.Schema0()), Codec.parts(r, S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}))))), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match h:
+    case S.BooleanValue{+b}: rq4(a0, l0, a1, l1, a2, l2, b, Codec.parts(r, S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}), xs, e)
+    case S.UnsignedValue{+u0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BytesValue{+xs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BitsValue{+bs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Sequence{+it0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Items{+hd0, +tl0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.EmptyItems{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Selected{+sel0, +sv0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.NullValue{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+
+def rs3(+a0: +List<U32>, +l0: {Some{48n} == Some{List.length(&2, U32, a0)} : Maybe<&2, Nat>}, +a1: +List<U32>, +l1: {Some{32n} == Some{List.length(&2, U32, a1)} : Maybe<&2, Nat>}, +a2: +List<U32>, +l2: {Some{8n} == Some{List.length(&2, U32, a2)} : Maybe<&2, Nat>}, +items: S.Value, +xs: +List<U32>, +e: {Codec.aggregate(Codec.concatenate(Some{[S.Fixed{a0}]}, Codec.concatenate(Some{[S.Fixed{a1}]}, Codec.concatenate(Some{[S.Fixed{a2}]}, Codec.parts(items, S.Chain{Spec.Schema0(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}})))), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match items:
+    case S.BooleanValue{+b0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.UnsignedValue{+u0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BytesValue{+xs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BitsValue{+bs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Sequence{+it0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Items{+h, +r}: rb3(a0, l0, a1, l1, a2, l2, h, r, xs, e)
+    case S.EmptyItems{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Selected{+sel0, +sv0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.NullValue{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+
+def rp2(+a0: +List<U32>, +l0: {Some{48n} == Some{List.length(&2, U32, a0)} : Maybe<&2, Nat>}, +a1: +List<U32>, +l1: {Some{32n} == Some{List.length(&2, U32, a1)} : Maybe<&2, Nat>}, +h: S.Value, +ps: +List<S.Part>, hf: DF.single(Some{8n}, ps), +r: S.Value, +xs: +List<U32>,
+    +e: {Codec.aggregate(Codec.concatenate(Some{[S.Fixed{a0}]}, Codec.concatenate(Some{[S.Fixed{a1}]}, Codec.concatenate(Some{ps}, Codec.parts(r, S.Chain{Spec.Schema0(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}})))), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match ps:
+    case Nil{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, hf)
+    case Con{S.Fixed{+a}, Nil{}}: rs3(a0, l0, a1, l1, a, hf, r, xs, e)
+    case Con{S.Variable{+ys}, Nil{}}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(Nat, 8n, Equal.sym(Maybe<&2, Nat>, Some{8n}, None{}, hf)))
+    case Con{S.Fixed{+a}, Con{+c, +q}}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, hf)
+    case Con{S.Variable{+a}, Con{+c, +q}}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, hf)
+
+def rm2(+a0: +List<U32>, +l0: {Some{48n} == Some{List.length(&2, U32, a0)} : Maybe<&2, Nat>}, +a1: +List<U32>, +l1: {Some{32n} == Some{List.length(&2, U32, a1)} : Maybe<&2, Nat>}, +h: S.Value, +mm: Maybe<&2, +List<S.Part>>, hf: DF.single_result(Some{8n}, mm), +em: {Codec.parts(h, Spec.Schema3()) == mm : Maybe<&2, +List<S.Part>>}, +r: S.Value, +xs: +List<U32>,
+    +e: {Codec.aggregate(Codec.concatenate(Some{[S.Fixed{a0}]}, Codec.concatenate(Some{[S.Fixed{a1}]}, Codec.concatenate(mm, Codec.parts(r, S.Chain{Spec.Schema0(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}})))), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match mm:
+    case None{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case Some{+ps}: rp2(a0, l0, a1, l1, h, ps, hf, r, xs, e)
+
+def rs2(+a0: +List<U32>, +l0: {Some{48n} == Some{List.length(&2, U32, a0)} : Maybe<&2, Nat>}, +a1: +List<U32>, +l1: {Some{32n} == Some{List.length(&2, U32, a1)} : Maybe<&2, Nat>}, +items: S.Value, +xs: +List<U32>, +e: {Codec.aggregate(Codec.concatenate(Some{[S.Fixed{a0}]}, Codec.concatenate(Some{[S.Fixed{a1}]}, Codec.parts(items, S.Chain{Spec.Schema3(), S.Chain{Spec.Schema0(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}}}))), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match items:
+    case S.BooleanValue{+b0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.UnsignedValue{+u0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BytesValue{+xs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BitsValue{+bs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Sequence{+it0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Items{+h, +r}: rm2(a0, l0, a1, l1, h, Codec.parts(h, Spec.Schema3()), DS.facts(h, Spec.Schema3(), {==}), {==}, r, xs, e)
+    case S.EmptyItems{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Selected{+sel0, +sv0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.NullValue{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+
+def rp1(+a0: +List<U32>, +l0: {Some{48n} == Some{List.length(&2, U32, a0)} : Maybe<&2, Nat>}, +h: S.Value, +ps: +List<S.Part>, hf: DF.single(Some{32n}, ps), +r: S.Value, +xs: +List<U32>,
+    +e: {Codec.aggregate(Codec.concatenate(Some{[S.Fixed{a0}]}, Codec.concatenate(Some{ps}, Codec.parts(r, S.Chain{Spec.Schema3(), S.Chain{Spec.Schema0(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}}}))), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match ps:
+    case Nil{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, hf)
+    case Con{S.Fixed{+a}, Nil{}}: rs2(a0, l0, a, hf, r, xs, e)
+    case Con{S.Variable{+ys}, Nil{}}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(Nat, 32n, Equal.sym(Maybe<&2, Nat>, Some{32n}, None{}, hf)))
+    case Con{S.Fixed{+a}, Con{+c, +q}}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, hf)
+    case Con{S.Variable{+a}, Con{+c, +q}}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, hf)
+
+def rm1(+a0: +List<U32>, +l0: {Some{48n} == Some{List.length(&2, U32, a0)} : Maybe<&2, Nat>}, +h: S.Value, +mm: Maybe<&2, +List<S.Part>>, hf: DF.single_result(Some{32n}, mm), +em: {Codec.parts(h, Spec.Schema7()) == mm : Maybe<&2, +List<S.Part>>}, +r: S.Value, +xs: +List<U32>,
+    +e: {Codec.aggregate(Codec.concatenate(Some{[S.Fixed{a0}]}, Codec.concatenate(mm, Codec.parts(r, S.Chain{Spec.Schema3(), S.Chain{Spec.Schema0(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}}}))), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match mm:
+    case None{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case Some{+ps}: rp1(a0, l0, h, ps, hf, r, xs, e)
+
+def rs1(+a0: +List<U32>, +l0: {Some{48n} == Some{List.length(&2, U32, a0)} : Maybe<&2, Nat>}, +items: S.Value, +xs: +List<U32>, +e: {Codec.aggregate(Codec.concatenate(Some{[S.Fixed{a0}]}, Codec.parts(items, S.Chain{Spec.Schema7(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema0(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}}}})), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match items:
+    case S.BooleanValue{+b0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.UnsignedValue{+u0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BytesValue{+xs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BitsValue{+bs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Sequence{+it0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Items{+h, +r}: rm1(a0, l0, h, Codec.parts(h, Spec.Schema7()), DS.facts(h, Spec.Schema7(), {==}), {==}, r, xs, e)
+    case S.EmptyItems{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Selected{+sel0, +sv0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.NullValue{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+
+def rp0(+h: S.Value, +ps: +List<S.Part>, hf: DF.single(Some{48n}, ps), +r: S.Value, +xs: +List<U32>,
+    +e: {Codec.aggregate(Codec.concatenate(Some{ps}, Codec.parts(r, S.Chain{Spec.Schema7(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema0(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}}}})), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match ps:
+    case Nil{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, hf)
+    case Con{S.Fixed{+a}, Nil{}}: rs1(a, hf, r, xs, e)
+    case Con{S.Variable{+ys}, Nil{}}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(Nat, 48n, Equal.sym(Maybe<&2, Nat>, Some{48n}, None{}, hf)))
+    case Con{S.Fixed{+a}, Con{+c, +q}}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, hf)
+    case Con{S.Variable{+a}, Con{+c, +q}}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, hf)
+
+def rm0(+h: S.Value, +mm: Maybe<&2, +List<S.Part>>, hf: DF.single_result(Some{48n}, mm), +em: {Codec.parts(h, Spec.Schema8()) == mm : Maybe<&2, +List<S.Part>>}, +r: S.Value, +xs: +List<U32>,
+    +e: {Codec.aggregate(Codec.concatenate(mm, Codec.parts(r, S.Chain{Spec.Schema7(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema0(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}}}})), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match mm:
+    case None{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case Some{+ps}: rp0(h, ps, hf, r, xs, e)
+
+def rs0(+items: S.Value, +xs: +List<U32>, +e: {Codec.aggregate(Codec.parts(items, S.Chain{Spec.Schema8(), S.Chain{Spec.Schema7(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema0(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.Chain{Spec.Schema3(), S.End{}}}}}}}}}), Some{121n}) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match items:
+    case S.BooleanValue{+b0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.UnsignedValue{+u0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BytesValue{+xs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BitsValue{+bs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Sequence{+it0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Items{+h, +r}: rm0(h, Codec.parts(h, Spec.Schema8()), DS.facts(h, Spec.Schema8(), {==}), {==}, r, xs, e)
+    case S.EmptyItems{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Selected{+sel0, +sv0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.NullValue{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+
+# A record's bytes hold a boolean byte (at most 1) at 88.
+def rv(+h: S.Value, +xs: +List<U32>, +e: {Codec.parts(h, Spec.Schema58()) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}) -> {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}:
+  match h:
+    case S.BooleanValue{+b0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.UnsignedValue{+u0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BytesValue{+xs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.BitsValue{+bs0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Sequence{+items}: rs0(items, xs, e)
+    case S.Items{+hd0, +tl0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.EmptyItems{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.Selected{+sel0, +sv0}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+    case S.NullValue{}: Empty.absurd({U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Fixed{xs}], e))
+
+# ---- the inversion: the list ---------------------------------------------------------------------
+
+def cancel_l(+a: +List<U32>, +b: +List<U32>, +c: +List<U32>, +q: +List<U32>, +E: {List.append(&2, U32, a, b) == List.append(&2, U32, c, q) : +List<U32>},
+    +hl: {List.length(&2, U32, a) == List.length(&2, U32, c) : Nat}) -> {a == c : +List<U32>}:
+  +e1 = Equal.trans(+List<U32>, a, VS.bt(List.length(&2, U32, a), a), VS.bt(List.length(&2, U32, a), List.append(&2, U32, a, b)), Equal.sym(+List<U32>, VS.bt(List.length(&2, U32, a), a), a, UW.bt_self(a)),
+    Equal.sym(+List<U32>, VS.bt(List.length(&2, U32, a), List.append(&2, U32, a, b)), VS.bt(List.length(&2, U32, a), a), VN.bt_app(List.length(&2, U32, a), a, b, FD.nat__le_refl(List.length(&2, U32, a)))))
+  +e2 = Equal.cong(+List<U32>, +List<U32>, z => VS.bt(List.length(&2, U32, a), z), List.append(&2, U32, a, b), List.append(&2, U32, c, q), E)
+  +e3 = FD.logic__subst(Nat, z => {VS.bt(List.length(&2, U32, a), List.append(&2, U32, c, q)) == VS.bt(z, List.append(&2, U32, c, q)) : +List<U32>}, List.length(&2, U32, a), List.length(&2, U32, c), hl, {==})
+  +e4 = Equal.trans(+List<U32>, VS.bt(List.length(&2, U32, c), List.append(&2, U32, c, q)), VS.bt(List.length(&2, U32, c), c), c, VN.bt_app(List.length(&2, U32, c), c, q, FD.nat__le_refl(List.length(&2, U32, c))), UW.bt_self(c))
+  Equal.trans(+List<U32>, a, VS.bt(List.length(&2, U32, a), List.append(&2, U32, a, b)), c, e1,
+    Equal.trans(+List<U32>, VS.bt(List.length(&2, U32, a), List.append(&2, U32, a, b)), VS.bt(List.length(&2, U32, a), List.append(&2, U32, c, q)), c, e2,
+      Equal.trans(+List<U32>, VS.bt(List.length(&2, U32, a), List.append(&2, U32, c, q)), VS.bt(List.length(&2, U32, c), List.append(&2, U32, c, q)), c, e3, e4)))
+
+def cancel_r(+a: +List<U32>, +b: +List<U32>, +c: +List<U32>, +q: +List<U32>, +E: {List.append(&2, U32, a, b) == List.append(&2, U32, c, q) : +List<U32>},
+    +hl: {List.length(&2, U32, a) == List.length(&2, U32, c) : Nat}) -> {b == q : +List<U32>}:
+  +e2 = Equal.cong(+List<U32>, +List<U32>, z => VS.bdr(List.length(&2, U32, a), z), List.append(&2, U32, a, b), List.append(&2, U32, c, q), E)
+  +e3 = FD.logic__subst(Nat, z => {VS.bdr(List.length(&2, U32, a), List.append(&2, U32, c, q)) == VS.bdr(z, List.append(&2, U32, c, q)) : +List<U32>}, List.length(&2, U32, a), List.length(&2, U32, c), hl, {==})
+  Equal.trans(+List<U32>, b, VS.bdr(List.length(&2, U32, a), List.append(&2, U32, a, b)), q, Equal.sym(+List<U32>, VS.bdr(List.length(&2, U32, a), List.append(&2, U32, a, b)), b, VS.bdr_app(a, b)),
+    Equal.trans(+List<U32>, VS.bdr(List.length(&2, U32, a), List.append(&2, U32, a, b)), VS.bdr(List.length(&2, U32, a), List.append(&2, U32, c, q)), q, e2,
+      Equal.trans(+List<U32>, VS.bdr(List.length(&2, U32, a), List.append(&2, U32, c, q)), VS.bdr(List.length(&2, U32, c), List.append(&2, U32, c, q)), q, e3, VS.bdr_app(c, q))))
+
+# ---- lengths: every record is 121 bytes -----------------------------------------------------------
+
+def ll_t(+h: S.Value, +xs: +List<U32>, +r: S.Value, +ps: +List<S.Part>, +o: Nat, +lx: {List.length(&2, U32, xs) == 121n : Nat}, +mr: Maybe<&2, +List<S.Part>>, +emr: {Codec.parts(r, S.Repeat{Spec.Schema58()}) == mr : Maybe<&2, +List<S.Part>>},
+    +e: {Codec.concatenate(Some{[S.Fixed{xs}]}, mr) == Some{ps} : Maybe<&2, +List<S.Part>>}, ih: @+pt: +List<S.Part> -> {Codec.parts(r, S.Repeat{Spec.Schema58()}) == Some{pt} : Maybe<&2, +List<S.Part>>} -> {List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt))) == Nat.mul(Codec.count(r), 121n) : Nat}) -> {List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.Items{h, r}), 121n) : Nat}:
+  match mr:
+    case None{}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.Items{h, r}), 121n) : Nat}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case Some{+pt}:
+      %FD.logic__some_inj(+List<S.Part>, S.Fixed{xs} <> pt, ps, e) : {List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(_, o), Layout.payloads(_))) == Nat.mul(Codec.count(S.Items{h, r}), 121n) : Nat}
+      %Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, xs, Layout.fixed_parts(pt, o)), Layout.payloads(pt)), List.append(&2, U32, xs, List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt))), VS.app_assoc(xs, Layout.fixed_parts(pt, o), Layout.payloads(pt))) :
+        {List.length(&2, U32, _) == Nat.mul(1n+Codec.count(r), 121n) : Nat}
+      %Equal.sym(Nat, List.length(&2, U32, List.append(&2, U32, xs, List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt)))), Nat.add(List.length(&2, U32, xs), List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt)))), VS.len_app(xs, List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt)))) : {_ == Nat.mul(1n+Codec.count(r), 121n) : Nat}
+      %Equal.sym(Nat, List.length(&2, U32, xs), 121n, lx) : {Nat.add(_, List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt)))) == Nat.mul(1n+Codec.count(r), 121n) : Nat}
+      Equal.cong(Nat, Nat, z => Nat.add(121n, z), List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt))), Nat.mul(Codec.count(r), 121n), ih(pt, emr))
+
+def ll_p(+h: S.Value, +r: S.Value, +ps: +List<S.Part>, +o: Nat, +ph: +List<S.Part>, hf: DF.single(Some{121n}, ph), +em: {Codec.parts(h, Spec.Schema58()) == Some{ph} : Maybe<&2, +List<S.Part>>},
+    +e: {Codec.concatenate(Some{ph}, Codec.parts(r, S.Repeat{Spec.Schema58()})) == Some{ps} : Maybe<&2, +List<S.Part>>}, ih: @+pt: +List<S.Part> -> {Codec.parts(r, S.Repeat{Spec.Schema58()}) == Some{pt} : Maybe<&2, +List<S.Part>>} -> {List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt))) == Nat.mul(Codec.count(r), 121n) : Nat}) -> {List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.Items{h, r}), 121n) : Nat}:
+  match ph:
+    case Nil{}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.Items{h, r}), 121n) : Nat}, hf)
+    case Con{S.Fixed{+xs}, Nil{}}: ll_t(h, xs, r, ps, o, Equal.sym(Nat, 121n, List.length(&2, U32, xs), LY.mnat(121n, List.length(&2, U32, xs), hf)), Codec.parts(r, S.Repeat{Spec.Schema58()}), {==}, e, ih)
+    case Con{S.Variable{+ys}, Nil{}}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.Items{h, r}), 121n) : Nat}, FD.logic__none_some(Nat, 121n, Equal.sym(Maybe<&2, Nat>, Some{121n}, None{}, hf)))
+    case Con{S.Fixed{+a}, Con{+c, +q}}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.Items{h, r}), 121n) : Nat}, hf)
+    case Con{S.Variable{+a}, Con{+c, +q}}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.Items{h, r}), 121n) : Nat}, hf)
+
+def ll_m(+h: S.Value, +r: S.Value, +ps: +List<S.Part>, +o: Nat, +mh: Maybe<&2, +List<S.Part>>, hf: DF.single_result(Some{121n}, mh), +em: {Codec.parts(h, Spec.Schema58()) == mh : Maybe<&2, +List<S.Part>>},
+    +e: {Codec.concatenate(mh, Codec.parts(r, S.Repeat{Spec.Schema58()})) == Some{ps} : Maybe<&2, +List<S.Part>>}, ih: @+pt: +List<S.Part> -> {Codec.parts(r, S.Repeat{Spec.Schema58()}) == Some{pt} : Maybe<&2, +List<S.Part>>} -> {List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt))) == Nat.mul(Codec.count(r), 121n) : Nat}) -> {List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.Items{h, r}), 121n) : Nat}:
+  match mh:
+    case None{}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.Items{h, r}), 121n) : Nat}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case Some{+ph}: ll_p(h, r, ps, o, ph, hf, em, e, ih)
+
+law lenl:
+  for +its: S.Value
+  for +ps: +List<S.Part>
+  for +o: Nat
+  for +e: {Codec.parts(its, S.Repeat{Spec.Schema58()}) == Some{ps} : Maybe<&2, +List<S.Part>>}
+  {List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(its), 121n) : Nat}
+def lenl(its, ps, o, e):
+  match its:
+    case S.EmptyItems{}:
+      %FD.logic__some_inj(+List<S.Part>, [], ps, e) : {List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(_, o), Layout.payloads(_))) == Nat.mul(Codec.count(S.EmptyItems{}), 121n) : Nat}
+      {==}
+    case S.Items{+h, +r}: ll_m(h, r, ps, o, Codec.parts(h, Spec.Schema58()), DS.facts(h, Spec.Schema58(), {==}), {==}, e, pt => ept => lenl(r, pt, o, ept))
+    case S.BooleanValue{+b0}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.BooleanValue{b0}), 121n) : Nat}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.UnsignedValue{+u0}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.UnsignedValue{u0}), 121n) : Nat}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.BytesValue{+xs0}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.BytesValue{xs0}), 121n) : Nat}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.BitsValue{+bs0}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.BitsValue{bs0}), 121n) : Nat}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.Sequence{+it0}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.Sequence{it0}), 121n) : Nat}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.Selected{+sel0, +sv0}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.Selected{sel0, sv0}), 121n) : Nat}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.NullValue{}: Empty.absurd({List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps))) == Nat.mul(Codec.count(S.NullValue{}), 121n) : Nat}, FD.logic__none_some(+List<S.Part>, ps, e))
+
+# ---- the records' boolean bytes, read back from the window ----------------------------------------
+
+def iv_t(+h: S.Value, +xs: +List<U32>, +r: S.Value, +ps: +List<S.Part>, +o: Nat, +j: Nat, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +lx: {List.length(&2, U32, xs) == 121n : Nat},
+    +hbyte: {U32.is_le(VBL.nthb(xs, 88n), 1) == True{} : Bool}, +mr: Maybe<&2, +List<S.Part>>, +emr: {Codec.parts(r, S.Repeat{Spec.Schema58()}) == mr : Maybe<&2, +List<S.Part>>},
+    +e: {Codec.concatenate(Some{[S.Fixed{xs}]}, mr) == Some{ps} : Maybe<&2, +List<S.Part>>}, +L: Nat, +E: {List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps)) == UW.WX(t, VRL.pos(j, 121n, x), L) : +List<U32>},
+    +hb: {Nat.is_le(Nat.add(VRL.pos(j, 121n, x), L), A.quad(VB.pw(d))) == True{} : Bool}, ih: @+pt: +List<S.Part> -> {Codec.parts(r, S.Repeat{Spec.Schema58()}) == Some{pt} : Maybe<&2, +List<S.Part>>} -> @+L2: Nat -> {List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt)) == UW.WX(t, VRL.pos(1n+j, 121n, x), L2) : +List<U32>} -> {Nat.is_le(Nat.add(VRL.pos(1n+j, 121n, x), L2), A.quad(VB.pw(d))) == True{} : Bool} -> {ALLV(Codec.count(r), 1n+j, t, x) == True{} : Bool}) -> {ALLV(Codec.count(S.Items{h, r}), j, t, x) == True{} : Bool}:
+  match mr:
+    case None{}: Empty.absurd({ALLV(Codec.count(S.Items{h, r}), j, t, x) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case Some{+pt}:
+      +B2 = List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt))
+      +L2 = List.length(&2, U32, B2)
+      +E1 = FD.logic__subst(+List<S.Part>, z => {List.append(&2, U32, Layout.fixed_parts(z, o), Layout.payloads(z)) == UW.WX(t, VRL.pos(j, 121n, x), L) : +List<U32>}, ps, S.Fixed{xs} <> pt,
+        Equal.sym(+List<S.Part>, S.Fixed{xs} <> pt, ps, FD.logic__some_inj(+List<S.Part>, S.Fixed{xs} <> pt, ps, e)), E)
+      +E2 = Equal.trans(+List<U32>, List.append(&2, U32, xs, B2), List.append(&2, U32, List.append(&2, U32, xs, Layout.fixed_parts(pt, o)), Layout.payloads(pt)), UW.WX(t, VRL.pos(j, 121n, x), L),
+        Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, xs, Layout.fixed_parts(pt, o)), Layout.payloads(pt)), List.append(&2, U32, xs, B2), VS.app_assoc(xs, Layout.fixed_parts(pt, o), Layout.payloads(pt))), E1)
+      +eL = Equal.trans(Nat, L, List.length(&2, U32, UW.WX(t, VRL.pos(j, 121n, x), L)), Nat.add(121n, L2), Equal.sym(Nat, List.length(&2, U32, UW.WX(t, VRL.pos(j, 121n, x), L)), L, UW.lenWX(d, t, VRL.pos(j, 121n, x), L, pf, hb)),
+        Equal.trans(Nat, List.length(&2, U32, UW.WX(t, VRL.pos(j, 121n, x), L)), List.length(&2, U32, List.append(&2, U32, xs, B2)), Nat.add(121n, L2),
+          Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), UW.WX(t, VRL.pos(j, 121n, x), L), List.append(&2, U32, xs, B2), Equal.sym(+List<U32>, List.append(&2, U32, xs, B2), UW.WX(t, VRL.pos(j, 121n, x), L), E2)),
+          Equal.trans(Nat, List.length(&2, U32, List.append(&2, U32, xs, B2)), Nat.add(List.length(&2, U32, xs), L2), Nat.add(121n, L2), VS.len_app(xs, B2), Equal.cong(Nat, Nat, z => Nat.add(z, L2), List.length(&2, U32, xs), 121n, lx))))
+      +hb1 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(VRL.pos(j, 121n, x), z), A.quad(VB.pw(d))) == True{} : Bool}, L, Nat.add(121n, L2), eL, hb)
+      +E3 = FD.logic__subst(Nat, z => {List.append(&2, U32, xs, B2) == UW.WX(t, VRL.pos(j, 121n, x), z) : +List<U32>}, L, Nat.add(121n, L2), eL, E2)
+      +E4 = Equal.trans(+List<U32>, List.append(&2, U32, xs, B2), UW.WX(t, VRL.pos(j, 121n, x), Nat.add(121n, L2)), List.append(&2, U32, UW.WX(t, VRL.pos(j, 121n, x), 121n), UW.WX(t, Nat.add(121n, VRL.pos(j, 121n, x)), L2)), E3,
+        UW.splitWX(t, VRL.pos(j, 121n, x), 121n, L2))
+      +hr = FD.nat__le_trans(Nat.add(VRL.pos(j, 121n, x), 121n), Nat.add(VRL.pos(j, 121n, x), Nat.add(121n, L2)), A.quad(VB.pw(d)), Order.add_left(VRL.pos(j, 121n, x), 121n, Nat.add(121n, L2), FD.nat__le_add_right(121n, L2)), hb1)
+      +lw = UW.lenWX(d, t, VRL.pos(j, 121n, x), 121n, pf, hr)
+      +eqx = cancel_l(xs, B2, UW.WX(t, VRL.pos(j, 121n, x), 121n), UW.WX(t, Nat.add(121n, VRL.pos(j, 121n, x)), L2), E4, Equal.trans(Nat, List.length(&2, U32, xs), 121n, List.length(&2, U32, UW.WX(t, VRL.pos(j, 121n, x), 121n)), lx, Equal.sym(Nat, List.length(&2, U32, UW.WX(t, VRL.pos(j, 121n, x), 121n)), 121n, lw)))
+      +eB = cancel_r(xs, B2, UW.WX(t, VRL.pos(j, 121n, x), 121n), UW.WX(t, Nat.add(121n, VRL.pos(j, 121n, x)), L2), E4, Equal.trans(Nat, List.length(&2, U32, xs), 121n, List.length(&2, U32, UW.WX(t, VRL.pos(j, 121n, x), 121n)), lx, Equal.sym(Nat, List.length(&2, U32, UW.WX(t, VRL.pos(j, 121n, x), 121n)), 121n, lw)))
+      +eP = FD.nat__add_assoc(121n, Nat.mul(j, 121n), x)
+      +E5 = FD.logic__subst(Nat, z => {B2 == UW.WX(t, z, L2) : +List<U32>}, Nat.add(121n, VRL.pos(j, 121n, x)), VRL.pos(1n+j, 121n, x), Equal.sym(Nat, VRL.pos(1n+j, 121n, x), Nat.add(121n, VRL.pos(j, 121n, x)), eP), eB)
+      +hb3 = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(VRL.pos(j, 121n, x), Nat.add(121n, L2)), Nat.add(Nat.add(121n, VRL.pos(j, 121n, x)), L2),
+        Equal.trans(Nat, Nat.add(VRL.pos(j, 121n, x), Nat.add(121n, L2)), Nat.add(121n, Nat.add(VRL.pos(j, 121n, x), L2)), Nat.add(Nat.add(121n, VRL.pos(j, 121n, x)), L2),
+          FD.lru_nat_algebra__add_swap(VRL.pos(j, 121n, x), 121n, L2), Equal.sym(Nat, Nat.add(Nat.add(121n, VRL.pos(j, 121n, x)), L2), Nat.add(121n, Nat.add(VRL.pos(j, 121n, x), L2)), FD.nat__add_assoc(121n, VRL.pos(j, 121n, x), L2))), hb1)
+      +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, L2), A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(121n, VRL.pos(j, 121n, x)), VRL.pos(1n+j, 121n, x), Equal.sym(Nat, VRL.pos(1n+j, 121n, x), Nat.add(121n, VRL.pos(j, 121n, x)), eP), hb3)
+      +nb = Equal.trans(U32, VBL.nthb(UW.WX(t, VRL.pos(j, 121n, x), 121n), 88n), VBL.nthb(VS.bdr(VRL.pos(j, 121n, x), UA.BYT(t)), 88n), LB(t, Nat.add(VRL.pos(j, 121n, x), 88n)),
+        VR.nth_bt(121n, VS.bdr(VRL.pos(j, 121n, x), UA.BYT(t)), 88n, {==}), VR.nth_bdr(VRL.pos(j, 121n, x), UA.BYT(t), 88n))
+      +hbx = FD.logic__subst(+List<U32>, z => {U32.is_le(VBL.nthb(z, 88n), 1) == True{} : Bool}, xs, UW.WX(t, VRL.pos(j, 121n, x), 121n), eqx, hbyte)
+      +hby = FD.logic__subst(U32, z => {U32.is_le(z, 1) == True{} : Bool}, VBL.nthb(UW.WX(t, VRL.pos(j, 121n, x), 121n), 88n), LB(t, Nat.add(VRL.pos(j, 121n, x), 88n)), nb, hbx)
+      +hvj = FD.logic__subst(Nat, z => {U32.is_le(LB(t, z), 1) == True{} : Bool}, Nat.add(VRL.pos(j, 121n, x), 88n), Nat.add(88n, VRL.pos(j, 121n, x)), A.add_right(VRL.pos(j, 121n, x), 88n), hby)
+      FD.logic__and_intro(VCK(t, VRL.pos(j, 121n, x)), ALLV(Codec.count(r), 1n+j, t, x), hvj, ih(pt, emr, L2, E5, hb2))
+
+def iv_p(+h: S.Value, +r: S.Value, +ps: +List<S.Part>, +o: Nat, +j: Nat, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +L: Nat, +E: {List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps)) == UW.WX(t, VRL.pos(j, 121n, x), L) : +List<U32>}, +hb: {Nat.is_le(Nat.add(VRL.pos(j, 121n, x), L), A.quad(VB.pw(d))) == True{} : Bool}, +ph: +List<S.Part>, hf: DF.single(Some{121n}, ph), +em: {Codec.parts(h, Spec.Schema58()) == Some{ph} : Maybe<&2, +List<S.Part>>},
+    +e: {Codec.concatenate(Some{ph}, Codec.parts(r, S.Repeat{Spec.Schema58()})) == Some{ps} : Maybe<&2, +List<S.Part>>}, ih: @+pt: +List<S.Part> -> {Codec.parts(r, S.Repeat{Spec.Schema58()}) == Some{pt} : Maybe<&2, +List<S.Part>>} -> @+L2: Nat -> {List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt)) == UW.WX(t, VRL.pos(1n+j, 121n, x), L2) : +List<U32>} -> {Nat.is_le(Nat.add(VRL.pos(1n+j, 121n, x), L2), A.quad(VB.pw(d))) == True{} : Bool} -> {ALLV(Codec.count(r), 1n+j, t, x) == True{} : Bool}) -> {ALLV(Codec.count(S.Items{h, r}), j, t, x) == True{} : Bool}:
+  match ph:
+    case Nil{}: Empty.absurd({ALLV(Codec.count(S.Items{h, r}), j, t, x) == True{} : Bool}, hf)
+    case Con{S.Fixed{+xs}, Nil{}}: iv_t(h, xs, r, ps, o, j, d, t, x, pf, Equal.sym(Nat, 121n, List.length(&2, U32, xs), LY.mnat(121n, List.length(&2, U32, xs), hf)), rv(h, xs, em), Codec.parts(r, S.Repeat{Spec.Schema58()}), {==}, e, L, E, hb, ih)
+    case Con{S.Variable{+ys}, Nil{}}: Empty.absurd({ALLV(Codec.count(S.Items{h, r}), j, t, x) == True{} : Bool}, FD.logic__none_some(Nat, 121n, Equal.sym(Maybe<&2, Nat>, Some{121n}, None{}, hf)))
+    case Con{S.Fixed{+a}, Con{+c, +q}}: Empty.absurd({ALLV(Codec.count(S.Items{h, r}), j, t, x) == True{} : Bool}, hf)
+    case Con{S.Variable{+a}, Con{+c, +q}}: Empty.absurd({ALLV(Codec.count(S.Items{h, r}), j, t, x) == True{} : Bool}, hf)
+
+def iv_m(+h: S.Value, +r: S.Value, +ps: +List<S.Part>, +o: Nat, +j: Nat, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +L: Nat, +E: {List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps)) == UW.WX(t, VRL.pos(j, 121n, x), L) : +List<U32>}, +hb: {Nat.is_le(Nat.add(VRL.pos(j, 121n, x), L), A.quad(VB.pw(d))) == True{} : Bool}, +mh: Maybe<&2, +List<S.Part>>, hf: DF.single_result(Some{121n}, mh), +em: {Codec.parts(h, Spec.Schema58()) == mh : Maybe<&2, +List<S.Part>>},
+    +e: {Codec.concatenate(mh, Codec.parts(r, S.Repeat{Spec.Schema58()})) == Some{ps} : Maybe<&2, +List<S.Part>>}, ih: @+pt: +List<S.Part> -> {Codec.parts(r, S.Repeat{Spec.Schema58()}) == Some{pt} : Maybe<&2, +List<S.Part>>} -> @+L2: Nat -> {List.append(&2, U32, Layout.fixed_parts(pt, o), Layout.payloads(pt)) == UW.WX(t, VRL.pos(1n+j, 121n, x), L2) : +List<U32>} -> {Nat.is_le(Nat.add(VRL.pos(1n+j, 121n, x), L2), A.quad(VB.pw(d))) == True{} : Bool} -> {ALLV(Codec.count(r), 1n+j, t, x) == True{} : Bool}) -> {ALLV(Codec.count(S.Items{h, r}), j, t, x) == True{} : Bool}:
+  match mh:
+    case None{}: Empty.absurd({ALLV(Codec.count(S.Items{h, r}), j, t, x) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case Some{+ph}: iv_p(h, r, ps, o, j, d, t, x, pf, L, E, hb, ph, hf, em, e, ih)
+
+law invl:
+  for +its: S.Value
+  for +ps: +List<S.Part>
+  for +o: Nat
+  for +j: Nat
+  for +d: Nat
+  for +t: FD.array__Tree<U32>
+  for +x: Nat
+  for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
+  for +e: {Codec.parts(its, S.Repeat{Spec.Schema58()}) == Some{ps} : Maybe<&2, +List<S.Part>>}
+  for +L: Nat
+  for +E: {List.append(&2, U32, Layout.fixed_parts(ps, o), Layout.payloads(ps)) == UW.WX(t, VRL.pos(j, 121n, x), L) : +List<U32>}
+  for +hb: {Nat.is_le(Nat.add(VRL.pos(j, 121n, x), L), A.quad(VB.pw(d))) == True{} : Bool}
+  {ALLV(Codec.count(its), j, t, x) == True{} : Bool}
+def invl(its, ps, o, j, d, t, x, pf, e, L, E, hb):
+  match its:
+    case S.EmptyItems{}: {==}
+    case S.Items{+h, +r}: iv_m(h, r, ps, o, j, d, t, x, pf, L, E, hb, Codec.parts(h, Spec.Schema58()), DS.facts(h, Spec.Schema58(), {==}), {==}, e,
+      pt => ept => L2 => E2 => hb2 => invl(r, pt, o, 1n+j, d, t, x, pf, ept, L2, E2, hb2))
+    case S.BooleanValue{+b0}: Empty.absurd({ALLV(Codec.count(S.BooleanValue{b0}), j, t, x) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.UnsignedValue{+u0}: Empty.absurd({ALLV(Codec.count(S.UnsignedValue{u0}), j, t, x) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.BytesValue{+xs0}: Empty.absurd({ALLV(Codec.count(S.BytesValue{xs0}), j, t, x) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.BitsValue{+bs0}: Empty.absurd({ALLV(Codec.count(S.BitsValue{bs0}), j, t, x) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.Sequence{+it0}: Empty.absurd({ALLV(Codec.count(S.Sequence{it0}), j, t, x) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.Selected{+sel0, +sv0}: Empty.absurd({ALLV(Codec.count(S.Selected{sel0, sv0}), j, t, x) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case S.NullValue{}: Empty.absurd({ALLV(Codec.count(S.NullValue{}), j, t, x) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, ps, e))
+
+# ---- the inversion: every value whose parts are the window's bytes passes the checks ---------------
+
+def all_cka(k: Nat, +j: Nat, +acc: Bool, +t: FD.array__Tree<U32>, +x: Nat, +ha: {acc == True{} : Bool}, +h: {ALLV(1n+k, j, t, x) == True{} : Bool}) -> {CKA(k, j, acc, t, x) == True{} : Bool}:
+  match k:
+    case 0n: FD.logic__and_intro(acc, VCK(t, VRL.pos(j, 121n, x)), ha, FD.logic__and_left(VCK(t, VRL.pos(j, 121n, x)), True{}, h))
+    case 1n+ +q:
+      all_cka(q, 1n+j, Bool.and(acc, VCK(t, VRL.pos(j, 121n, x))), t, x, FD.logic__and_intro(acc, VCK(t, VRL.pos(j, 121n, x)), ha, FD.logic__and_left(VCK(t, VRL.pos(j, 121n, x)), ALLV(1n+q, 1n+j, t, x), h)),
+        FD.logic__and_right(VCK(t, VRL.pos(j, 121n, x)), ALLV(1n+q, 1n+j, t, x), h))
+
+def zck_of(+t: FD.array__Tree<U32>, +x: Nat, +len: U32, +e: Bool, +ee: {U32.is_eq(NN(len), 0) == e : Bool}, +hall: {ALLV(CC(len), 0n, t, x) == True{} : Bool})
+    -> {ZCK(e, t, x, len) == True{} : Bool}:
+  match e:
+    case True{}: {==}
+    case False{}:
+      +c = CC(len)
+      +h1 = cpos(NN(len), ee, c, {==})
+      +e1 = Equal.trans(Nat, 1n+KK(len), 1n+Nat.sub(c, 1n), c, Equal.cong(Nat, Nat, z => 1n+z, KK(len), Nat.sub(c, 1n), FD.u32__sub_nat(NN(len), 1, h1)), FD.nat__sub_add(c, 1n, h1))
+      all_cka(KK(len), 0n, True{}, t, x, {==}, FD.logic__subst(Nat, z => {ALLV(z, 0n, t, x) == True{} : Bool}, c, 1n+KK(len), Equal.sym(Nat, 1n+KK(len), c, e1), hall))
+
+def encb(+ps: +List<S.Part>, +zs: +List<U32>, +b: Bool, +e: {SP.optional(b, List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps))) == Some{zs} : Maybe<&2, +List<U32>>}) -> {List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps)) == zs : +List<U32>}:
+  match b:
+    case False{}: Empty.absurd({List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps)) == zs : +List<U32>}, FD.logic__none_some(+List<U32>, zs, e))
+    case True{}: FD.logic__some_inj(+List<U32>, List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps)), zs, e)
+
+def im4(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +its: S.Value, +ps: +List<S.Part>, +em3: {Codec.parts(its, S.Repeat{Spec.Schema58()}) == Some{ps} : Maybe<&2, +List<S.Part>>},
+    +m4: Maybe<&2, +List<U32>>, +em4: {Layout.encoding(ps) == m4 : Maybe<&2, +List<U32>>}, +e: {Codec.one(m4, None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
+  match m4:
+    case None{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case Some{+zs}:
+      +E = Equal.trans(+List<U32>, List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps)), zs, UW.WX(t, x, U32.to_nat(len)), encb(ps, zs, Bool.and(Layout.bytes_valid(ps), N.fits(4n, Nat.add(Layout.fixed_size(ps), List.length(&2, U32, Layout.payloads(ps))))), em4),
+        var_inj(zs, UW.WX(t, x, U32.to_nat(len)), e))
+      +c = Codec.count(its)
+      +ec = Equal.trans(Nat, U32.to_nat(len), List.length(&2, U32, UW.WX(t, x, U32.to_nat(len))), Nat.mul(c, 121n), Equal.sym(Nat, List.length(&2, U32, UW.WX(t, x, U32.to_nat(len))), U32.to_nat(len), UW.lenWX(d, t, x, U32.to_nat(len), pf, hw)),
+        Equal.trans(Nat, List.length(&2, U32, UW.WX(t, x, U32.to_nat(len))), List.length(&2, U32, List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps))), Nat.mul(c, 121n),
+          Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), UW.WX(t, x, U32.to_nat(len)), List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps)), Equal.sym(+List<U32>, List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps)), UW.WX(t, x, U32.to_nat(len)), E)), lenl(its, ps, Layout.fixed_size(ps), em3)))
+      +hall0 = invl(its, ps, Layout.fixed_size(ps), 0n, d, t, x, pf, em3, U32.to_nat(len), E, hw)
+      +ecc = Pair.fst({U32.to_nat(U32.div(len, 121)) == c : Nat}, {U32.to_nat(U32.mod(len, 121)) == 0n : Nat},
+        VU.whole_q(len, 121, c, ec, {==}, VU.div_u32(len, 121, vR(), {==}, {==}, {==})))
+      +hall = FD.logic__subst(Nat, z => {ALLV(z, 0n, t, x) == True{} : Bool}, c, CC(len), Equal.sym(Nat, CC(len), c, ecc), hall0)
+      +hc = FD.nat__le_trans(c, Nat.mul(c, 121n), U32.to_nat(len), VRL.le_mul(c, 120n),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.mul(c, 121n), z) == True{} : Bool}, Nat.mul(c, 121n), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), Nat.mul(c, 121n), ec), FD.nat__le_refl(Nat.mul(c, 121n))))
+      +heq = FD.logic__and_left(U32.is_eq(len, (U32.div(len, 121) * 121 : U32)), U32.is_le(U32.div(len, 121), len), VU.whole_i(len, 121, len, vR(), {==}, {==}, {==}, c, ec, hc))
+      FD.logic__subst(Bool, z => {LCK(z, t, x, len) == True{} : Bool}, True{}, Bool.and(U32.is_eq(len, (U32.div(len, 121) * 121 : U32)), True{}), Equal.sym(Bool, Bool.and(U32.is_eq(len, (U32.div(len, 121) * 121 : U32)), True{}), True{}, FD.logic__and_intro(U32.is_eq(len, (U32.div(len, 121) * 121 : U32)), True{}, heq, {==})),
+        zck_of(t, x, len, U32.is_eq(NN(len), 0), {==}, hall))
+
+def im3(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +its: S.Value, +m3: Maybe<&2, +List<S.Part>>, +em3: {Codec.parts(its, S.Repeat{Spec.Schema58()}) == m3 : Maybe<&2, +List<S.Part>>}, +e: {Codec.aggregate(m3, None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
+  match m3:
+    case None{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case Some{+ps}: im4(d, t, n, x, off, len, eo, hd, hw, pf, its, ps, em3, Layout.encoding(ps), {==}, e)
+
+def ib(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +its: S.Value, +b: Bool, +e: {Codec.require(b, Codec.aggregate(Codec.parts(its, S.Repeat{Spec.Schema58()}), None{})) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
+  match b:
+    case False{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case True{}: im3(d, t, n, x, off, len, eo, hd, hw, pf, its, Codec.parts(its, S.Repeat{Spec.Schema58()}), {==}, e)
+
+# Every value whose spec parts are the window's bytes passes the checks.
+def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +v: S.Value, +e: {Codec.parts(v, Spec.Schema78()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
+  match v:
+    case S.BooleanValue{+b0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case S.UnsignedValue{+u0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case S.BytesValue{+xs0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case S.BitsValue{+bs0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case S.Sequence{+its}: ib(d, t, n, x, off, len, eo, hd, hw, pf, its, Nat.is_le(Codec.count(its), Nat.mul(U32.to_nat(1073741824), 1024n)), e)
+    case S.Items{+hd0, +tl0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case S.EmptyItems{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case S.Selected{+sel0, +sv0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+    case S.NullValue{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))

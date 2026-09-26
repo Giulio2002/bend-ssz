@@ -73,6 +73,7 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/var_ua.py            # unaligned offsets: word-join limbs, shifted-copy loops (vua_bits, vua_sc, vua_fix)
 /opt/homebrew/bin/python3 codegen/var_winl.py          # byte-offset windows of List[AttesterSlashing,1], List[Attestation,8] [--no-big]
 /opt/homebrew/bin/python3 codegen/var_winb.py          # byte-offset windows of containers with several variable fields (BeaconBlockBody, once its children exist) [--no-big]
+/opt/homebrew/bin/python3 codegen/var_winv.py          # byte-offset window of List[Validator, 2^40] (121-byte records at any phase) [--no-big]
 /opt/homebrew/bin/python3 codegen/var_bytes.py         # byte lists at any length, and the names nesting them [--no-big]
 /opt/homebrew/bin/python3 codegen/var_multi.py         # DataColumnSidecar (three lists of byte vectors); encoder big_ file
 /opt/homebrew/bin/python3 codegen/var_rlist.py         # lists of fixed records (byte-offset windows), ExecutionRequests

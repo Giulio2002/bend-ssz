@@ -213,7 +213,7 @@ What that means concretely:
   `big_var_winx_l1099511627776_u8` (List[uint64/uint8, 2^40]: the count is
   bounded by the length's, `big_vu40` compares the 2^40 limit as a capacity),
   `vu8` (a byte string's uint8 items), and `codegen/var_winv.py`
-  (List[Validator, 2^40], 121-byte records at any phase; in progress).
+  (List[Validator, 2^40], 121-byte records at any phase: `big_var_winx_l1099511627776_Validator`, 51 s).
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
