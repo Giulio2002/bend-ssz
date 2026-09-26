@@ -1911,3 +1911,33 @@ def putw_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +hz: {VS.bt(Nat.add(U32.to_nat(n), PADB(r, U32.to_nat(n))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(U32.to_nat(n), PADB(r, U32.to_nat(n)))) : +List<U32>})
     -> {UA.BYT(PWM(r, dd, D, q, T, n)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T))), UW.ZB(PADB(r, U32.to_nat(n))))) : +List<U32>}:
   pwd_bytes(LB0(n), LB1(n), dd, D, X, q, r, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, hl, pf, pfT, htz, hz, rmv(n))
+
+# ---- the source's words written: the n data bytes, then zeros to the end of the last word -------
+
+def keyd(+b0: Bool, +b1: Bool, +n: U32, +dw: Nat, +T: FD.array__Tree<U32>, +k: Nat, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
+    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool}, +hsrc: {Nat.is_le(VC.NW(n), VB.pw(dw)) == True{} : Bool},
+    +htz: {O.tail_zero(U32.and(n, 3), VB.slot(T, VY.QL(n))) == True{} : Bool},
+    +eb: {U32.and(n, 3) == U32{WCon{b0, WCon{b1, Word.zero(30n)}}} : U32})
+    -> {FX.limbs(VS.wtake(VC.NW(n), UW.SLW(T))) == List.append(&2, U32, VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T))), UW.ZB(Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n)))) : +List<U32>}:
+  match b0 b1:
+    case False{} False{}:
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      key0(n, T, k, hk, hy, eR)
+    case True{} False{}:
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 8n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb, htz))
+      key1(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+    case False{} True{}:
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 16n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      key2(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+    case True{} True{}:
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 24n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      key3(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+
+def key_any(+n: U32, +dw: Nat, +T: FD.array__Tree<U32>, +k: Nat, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
+    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool}, +hsrc: {Nat.is_le(VC.NW(n), VB.pw(dw)) == True{} : Bool},
+    +htz: {O.tail_zero(U32.and(n, 3), VB.slot(T, VY.QL(n))) == True{} : Bool})
+    -> {FX.limbs(VS.wtake(VC.NW(n), UW.SLW(T))) == List.append(&2, U32, VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T))), UW.ZB(Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n)))) : +List<U32>}:
+  keyd(LB0(n), LB1(n), n, dw, T, k, pfT, hk, hy, hsrc, htz, rmv(n))
