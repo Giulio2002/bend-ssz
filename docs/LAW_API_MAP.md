@@ -257,6 +257,13 @@ What that means concretely:
   and decode_none (the window at x = 0; d < 28). Libraries `vrl.bend` (Array.set
   of any element type on a perfect tree; positions of consecutive records),
   `vrc.bend` (window splits, the offset layout of three variable parts).
+  Encoder (`codegen/var_rlist_enc.py`): `var_rlenc_ExecutionRequests.bend`
+  (stock) has per list the write loop's model (WT/LW: the records' words at
+  Q + W j), the putv run lemma (pvl), and the spec side (RWA: the records'
+  words; lpart: the list's parts; LWlo/LWhi/LWown: windows of the output after
+  the list write); `big_var_codec_ExecutionRequests_enc.bend` (checkq --big;
+  closed 2^24-byte size bounds) has encode_eval and encode_spec for counts
+  within the limits (hl_k) and record arrays on perfect trees (da_k < 31).
   after its header. LightClientBootstrap (a LightClientHeader, a SyncCommittee
   whose 6144 packed words are one symbolic segment of the header, `vsc.bend`
   `sc_parts`, and the branch) has ok_eval, decode_accept, decode_spec and
