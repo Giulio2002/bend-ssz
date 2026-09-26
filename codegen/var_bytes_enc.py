@@ -246,6 +246,11 @@ def enc_text(x):
     OBJ = f'OBJE({E.A})'
     w(f'def OBJE({E.P}) -> {Tn}: {E.objterm()}')
     w(f'def SFS(+N: U32) -> U32: U32.add({FS}, N)')
+    w(f'# The words the encoding occupies past word P, and the word under the byte list\'s partial last word.')
+    w(f'def ROOM(+N: U32, +P: Nat) -> Nat: Nat.add(VC.NW(N), Nat.add({H}n, P))')
+    w(f'def KZ(+N: U32, +P: Nat) -> Nat: Nat.add(VY.QL(N), Nat.add({H}n, P))')
+    w(f'def room_hp(+N: U32, +P: Nat) -> {{Nat.is_le(P, ROOM(N, P)) == True{{}} : Bool}}:')
+    w(f'  FD.nat__le_trans(P, Nat.add({H}n, P), ROOM(N, P), Order.left_below_sum({H}n, P), Order.left_below_sum(VC.NW(N), Nat.add({H}n, P)))')
     layers, leaves = plan(x, E)
     NL = len(layers)
 
@@ -264,9 +269,9 @@ def enc_text(x):
         w(f'def LY{j + 1}({DP}) -> FD.array__Tree<U32>: {term}')
     w(f'def OUTW({DP}) -> FD.array__Tree<U32>: {tree(NL)}')
     HN = f'+hN: {{Nat.is_le(U32.to_nat(N), {LIM}n) == True{{}} : Bool}}'
-    HDST = f'+hdst: {{Nat.is_le(Nat.add(VC.NW(N), Nat.add({H}n, P)), VB.pw(dd)) == True{{}} : Bool}}'
+    HDST = '+hdst: {Nat.is_le(ROOM(N, P), VB.pw(dd)) == True{} : Bool}'
     K = f'Nat.add(VY.QL(N), Nat.add({H}n, P))'
-    HZ = f'+hz0: {{VB.slot(D, {K}) == 0 : U32}}'
+    HZ = '+hz0: {VB.slot(D, KZ(N, P)) == 0 : U32}'
     PFD = '+pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}'
     w(f"""
 def hyN(+N: U32, {HN}) -> {{Nat.is_le(VC.YL(N), VB.pw({KY}n)) == True{{}} : Bool}}:
@@ -419,7 +424,7 @@ def enc_spec_text(x, E, layers, NL):
     DA = f'{E.A}, dd, D, P'
     OBJ = f'OBJE({E.A})'
     HN = f'+hN: {{Nat.is_le(U32.to_nat(N), {LIM}n) == True{{}} : Bool}}'
-    HDST = f'+hdst: {{Nat.is_le(Nat.add(VC.NW(N), Nat.add({H}n, P)), VB.pw(dd)) == True{{}} : Bool}}'
+    HDST = '+hdst: {Nat.is_le(ROOM(N, P), VB.pw(dd)) == True{} : Bool}'
     PFD = '+pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}'
     HDD = '+hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}'
     NWM = (LIM + 3) // 4
@@ -539,6 +544,31 @@ def encode_eval({E.AH}):
     body = peel_chain('VC.NW(N)', H, None, vj + 1, 'VS.wtake(VC.NW(N), FD.array__slots(U32, TX))', own)
     w(f'def pay_eq({WP_}) -> {{{win("VC.NW(N)", f"Nat.add({H}n, P)", NL)} == VS.wtake(VC.NW(N), FD.array__slots(U32, TX)) : {LT}}}:')
     w('  ' + body)
+    w('')
+
+    # the frame: windows below the encoding are left alone
+    steps = []
+    for g in range(NL - 1, -1, -1):
+        kind, V, kL, i = layers[g]
+        hlo = f'FD.nat__le_trans(Nat.add(m, p), P, Nat.add({kL}n, P), h, Order.left_below_sum({kL}n, P))'
+        if kind == 'var':
+            D2 = f'VF.updv([{FS}], dd, {tree(g)}, Nat.add({po}n, P))'
+            pf2 = f'VF.updv_perfect([{FS}], dd, {tree(g)}, Nat.add({po}n, P), {pfl(g)})'
+            steps.append((f'VF.WIN(m, p, FD.array__slots(U32, {tree(g + 1)}))', f'VF.WIN(m, p, FD.array__slots(U32, {D2}))',
+                          f'VBE.peel_mone_hi(VC.NW(N), 0n, Nat.add({H}n, P), dd, {D2}, TX, m, p, {pf2}, hdst, FD.nat__le_trans(Nat.add(m, p), P, Nat.add({H}n, P), h, Order.left_below_sum({H}n, P)))'))
+            steps.append((f'VF.WIN(m, p, FD.array__slots(U32, {D2}))', f'VF.WIN(m, p, FD.array__slots(U32, {tree(g)}))',
+                          f'V2.peel_hi([{FS}], dd, {tree(g)}, Nat.add({po}n, P), m, p, {pfl(g)}, {hbw(1, po)}, FD.nat__le_trans(Nat.add(m, p), P, Nat.add({po}n, P), h, Order.left_below_sum({po}n, P)))'))
+        else:
+            f = x.fields[i]
+            steps.append((f'VF.WIN(m, p, FD.array__slots(U32, {tree(g + 1)}))', f'VF.WIN(m, p, FD.array__slots(U32, {tree(g)}))',
+                          f'V2.peel_hi({vterm(kind, V, i)}, dd, {tree(g)}, Nat.add({kL}n, P), m, p, {pfl(g)}, {hbw(f["W"], kL)}, {hlo})'))
+    out = '{==}'
+    for a_, b_, pr in reversed(steps):
+        out = f'Equal.trans({LT}, {a_}, {b_}, VF.WIN(m, p, FD.array__slots(U32, D)), {pr},\n    {out})'
+    w(f'# The encoder leaves every window below word P alone.')
+    w(f'def frame_lo({DP}, {PFD}, {HDST}, +m: Nat, +p: Nat, +h: {{Nat.is_le(Nat.add(m, p), P) == True{{}} : Bool}})')
+    w(f'    -> {{VF.WIN(m, p, FD.array__slots(U32, OUTW({DA}))) == VF.WIN(m, p, FD.array__slots(U32, D)) : {LT}}}:')
+    w('  ' + out)
     w('')
     hdr = []
     for i, Wd, k0, Vs in segs:

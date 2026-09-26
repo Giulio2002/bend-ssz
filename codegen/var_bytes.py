@@ -62,11 +62,27 @@ class FTW(VL.FT):
 
     def __init__(self, g, t):
         s = g.shape(t)
-        if t.kind == 'uint' and s.kind == 'uwide':
+        if (t.kind == 'uint' and s.kind == 'uwide') or (t.kind == 'bits' and s.kind == 'rec' and t.size % 32 == 0):
             self.t, self.s, self.p = t, s, s.p
             self.size = t.fixed_size()
             self.W = self.size // 4
             self.kind = 'bytes'
+            return
+        if t.kind == 'container' and s.kind == 'container' and s.data:
+            self.t, self.s, self.p = t, s, s.p
+            self.size = t.fixed_size()
+            if self.size % 4:
+                raise Skip('not whole words')
+            self.W = self.size // 4
+            self.kind = 'container'
+            self.kids = []
+            c = 0
+            for (fname, ft), (_, fs) in zip(t.fields, s.fields):
+                if fs.kind == 'box':
+                    raise Skip('boxed field')
+                k = FTW(g, ft)
+                self.kids.append((c, k))
+                c += k.size
             return
         super().__init__(g, t)
 
@@ -998,7 +1014,7 @@ def main():
         g.shape(t)
     xs = [Name(g, nm, names[nm]) for nm in NAMES]
     fts = []
-    for x in xs:
+    for x in xs + [VBN.NName(g, nm, names[nm]) for nm in VBN.ORDER]:
         for f in x.fields:
             if f['kind'] == 'fix':
                 for dft in f['ft'].deps():
@@ -1011,6 +1027,7 @@ def main():
         out[fname(x, '_unique')] = unique_text(x)
         out[fname(x, '_rej')] = rej_text(x)
         out[fname(x, '_enc')] = VBE.enc_module_text(x)
+    out.update(VBN.outputs(g, names, '--no-big' in sys.argv))
     mine = sorted((ROOT / 'proofs/obj').glob('*var_bytes_*.bend'))
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
     if '--check' in sys.argv:
@@ -1076,6 +1093,7 @@ def bytePw(+d: Nat, +t: F.array__Tree<U32>, +i: Nat, +len: U32, +X: Nat, +en: {U
 """
 
 import var_bytes_enc as VBE  # noqa: E402
+import var_bytes_nest as VBN  # noqa: E402
 
 if __name__ == '__main__':
     main()
