@@ -217,6 +217,33 @@ def lay_end(ps, o):
     case Nil{}: F.nat__add_zero(o)
     case Con{+h, +t}: endh(h, t, o, lay_end(t, NX(h, o)))
 
+def nx_ge(+h: S.Part, +o: Nat) -> {Nat.is_le(o, NX(h, o)) == True{} : Bool}:
+  match h:
+    case S.Fixed{+xs}: F.nat__le_refl(o)
+    case S.Variable{+xs}: F.nat__le_add_right(o, List.length(&2, U32, xs))
+
+# The payloads end at or after they start.
+law end_ge:
+  for +ps: +List<S.Part>
+  for +o: Nat
+  {Nat.is_le(o, END(ps, o)) == True{} : Bool}
+def end_ge(ps, o):
+  match ps:
+    case Nil{}: F.nat__le_refl(o)
+    case Con{+h, +t}: F.nat__le_trans(o, NX(h, o), END(t, NX(h, o)), nx_ge(h, o), end_ge(t, NX(h, o)))
+
+# Every offset is at most the end.
+law off_le:
+  for +ps: +List<S.Part>
+  for +i: Nat
+  for +o: Nat
+  {Nat.is_le(OFF(ps, i, o), END(ps, o)) == True{} : Bool}
+def off_le(ps, i, o):
+  match ps i:
+    case Nil{} _: F.nat__le_refl(o)
+    case Con{+h, +t} 0n: F.nat__le_trans(o, NX(h, o), END(t, NX(h, o)), nx_ge(h, o), end_ge(t, NX(h, o)))
+    case Con{+h, +t} 1n+ +q: off_le(t, q, NX(h, o))
+
 # ---- positions from the widths ------------------------------------------------------------------------
 
 def WIDH(h: S.Part) -> Maybe<&2, Nat>:

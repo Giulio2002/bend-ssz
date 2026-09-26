@@ -201,6 +201,14 @@ What that means concretely:
   VAL_m), the inversion recovering m from the value; `vua_rd.rd_lt` covers
   the first read of a window shorter than 4 bytes, `vua_win.vsingle` the
   one-part shape of a variable container's spec parts.
+  Containers with several variable fields (`codegen/var_winb.py`,
+  BeaconBlockBody; tested on ExecutionRequests and
+  DataColumnsByRootIdentifier): the validator's flat offset chain, the reader
+  (by groups of eight fields), the spec parts laid out by `vua_lay.hdr_fp`,
+  and the inversion reading the value's parts back part by part
+  (`vua_lay`: lay_off, lay_pay, lay_end, fpos_w, fs_w, for any part list).
+  `big_var_winx_BeaconBlockBody` is written once its children's window
+  modules exist (l16_ProposerSlashing, l16_Deposit, ExecutionPayload pending).
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
