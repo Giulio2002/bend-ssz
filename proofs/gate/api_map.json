@@ -12995,14 +12995,62 @@
      "big": false
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
-   "encode_eval": [],
-   "encode_spec": [],
+   "ok_eval": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top.bend",
+     "law": "decode_accept",
+     "big": true
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top.bend",
+     "law": "decode_spec",
+     "big": true
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top_unique.bend",
+     "law": "decode_unique",
+     "big": true
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top.bend",
+     "law": "decode_reject",
+     "big": true
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top.bend",
+     "law": "decode_none",
+     "big": true
+    }
+   ],
+   "encode_eval": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -20446,14 +20494,62 @@
      "big": false
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
-   "encode_eval": [],
-   "encode_spec": [],
+   "ok_eval": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "decode_accept",
+     "big": false
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "decode_spec",
+     "big": false
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "var_pbits_GtF7582E0E9A_unique.bend",
+     "law": "decode_unique",
+     "big": false
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "var_pbits_GtF7582E0E9A_rej.bend",
+     "law": "decode_reject",
+     "big": false
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "decode_none",
+     "big": false
+    }
+   ],
+   "encode_eval": [
+    {
+     "file": "var_pbits_GtF7582E0E9A_enc.bend",
+     "law": "encode_eval",
+     "big": false
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "var_pbits_GtF7582E0E9A_enc.bend",
+     "law": "encode_spec",
+     "big": false
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
