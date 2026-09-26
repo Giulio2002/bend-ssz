@@ -57,7 +57,7 @@ def winx_name(p, LIM):
 # lists of boxed records (codegen/var_rlist_box.py)
 BOXLISTS = [('BeaconBlockBody', 'proposer_slashings'), ('BeaconBlockBody', 'deposits')]
 # packed lists of byte vectors (codegen/var_rlist_bv.py)
-BVLISTS = [('BeaconBlockBody', 'blob_kzg_commitments')]
+BVLISTS = [('BeaconBlockBody', 'blob_kzg_commitments'), ('BeaconState', 'historical_roots')]
 
 HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
         'import ../../types/fulu_obj.bend as T', 'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P',
@@ -466,8 +466,8 @@ def outputs():
     for parent, field in BVLISTS:
         ft = dict(names[parent].fields)[field]
         B, N, p = ft.elem.fixed_size(), ft.size, g.shape(ft).p
-        out[ROOT / f'proofs/obj/var_winx_{p}.bend'] = BV.bvx_text(HEAD, VWN.zeros_at_text, inv_text, p, B, N, f'S.ByteVector{{{B}n}}',
-                                                                  f'S.ListOf{{S.ByteVector{{{B}n}}, U32.to_nat({N})}}')
+        out[ROOT / f'proofs/obj/{winx_name(p, N)}'] = BV.bvx_text(HEAD, VWN.zeros_at_text, inv_text, p, B, N, f'S.ByteVector{{{B}n}}',
+                                                                  f'S.ListOf{{S.ByteVector{{{B}n}}, U32.to_nat({N})}}', N > BIG_LIM)
     import var_rlist_er as ER
     LS = []
     for field in ('deposits', 'withdrawals', 'consolidations'):
