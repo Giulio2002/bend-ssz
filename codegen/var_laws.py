@@ -52,6 +52,9 @@ ROOT = Path(__file__).resolve().parents[1]
 FAMILY = ['DataColumnsByRootIdentifier', 'IndexedAttestation']
 # Containers of two variable-size family fields (codegen/var_nest.py): parent -> child.
 NESTED = {'AttesterSlashing': 'IndexedAttestation'}
+# Containers of fixed fields around one bit list (codegen/var_bitc.py); their
+# fixed field types are in var_fix_types.bend too.
+BITC = ['Attestation', 'PendingAttestation']
 
 
 class Skip(Exception):
@@ -73,7 +76,7 @@ class FT:
         self.W = self.size // 4
         if t.kind == 'uint' and t.size == 8:
             self.kind = 'u64'
-        elif t.kind == 'bytes' and self.s.kind == 'rec':
+        elif t.kind in ('bytes', 'bits') and self.s.kind == 'rec':
             self.kind = 'bytes'
         elif t.kind == 'container' and self.s.kind == 'container' and self.s.data:
             self.kind = 'container'
@@ -366,14 +369,15 @@ def main():
     no_big = '--no-big' in sys.argv
     fts = []
     xs = []
-    for n in FAMILY:
+    for n in FAMILY + BITC:
         t = names[n]
         for fname_, ft in t.fields:
             if ft.fixed():
                 for d in FT(g, ft).deps():
                     if d.p not in [x.p for x in fts]:
                         fts.append(d)
-        xs.append(Name(g, n, t, src))
+        if n in FAMILY:
+            xs.append(Name(g, n, t, src))
     out = {ROOT / 'proofs/obj/var_fix_types.bend': fix_module(fts)}
     for x in xs:
         if no_big and is_big(x):

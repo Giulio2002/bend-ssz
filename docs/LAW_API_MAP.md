@@ -93,7 +93,10 @@ What that means concretely:
   element vectors state it over every list of the length. The containers' joined
   words and the encoders' bytes are proved bit by bit (`codegen/bitsim.py`: per-bit
   lemmas of at most two variables).
-* Since 2026-09-26 the spec connection covers **3 of the 21 variable-size names**
+* Since 2026-09-26 the spec connection covers **7 of the 21 variable-size names**
+  (DataColumnsByRootIdentifier, IndexedAttestation, AttesterSlashing, Attestation,
+  PendingAttestation, AggregateAndProof, SignedAggregateAndProof; the last four
+  decode-side only, see "Bit lists")
   (see below and the AttesterSlashing paragraph after it) and 4 variable-size
   generic forms:
   the family "word-aligned fixed Data fields around ONE `List[uint64, N]`"
@@ -139,6 +142,26 @@ What that means concretely:
   Supporting stock libraries: `vnest.bend` (a word from its limbs, bytes at 4 k
   are word k), `vdig.bend` (the spec's four offset digits of a word's value are
   its limbs), `vfits.bend` (N.fits(4n, x) for x <= 2^a, a < 32, symbolically).
+* **Bit lists** (`codegen/var_bits.py`, `var_bitc.py`, `var_win.py`; 2026-09-26):
+  the runtime's delimiter search (`O.ok_bitlist`, `O.bits_in`) is related to the
+  spec's delimiter encoding (spec/bitfields.bend) through byte facts proved by
+  exhaustive case analysis over a byte's eight bits (`vbyte.bend`, generated)
+  and the byte-string development `vbitl.bend` (the value bits `bl(bytes)` =
+  every byte's bits, the last one cut before its highest set bit, pack with the
+  delimiter back to the bytes; every delimiter encoding has that shape), with
+  the runtime bridge `vbrt.bend` (the byte the validator reads is the spec's
+  last byte; `copy_in` of any length). Laws (ok_eval, decode_accept,
+  decode_none, decode_spec, decode_unique, decode_reject) for: the 18 generic
+  BitList[N] forms (`var_bits_<X>{,_unique,_rej}.bend`, stock); PendingAttestation
+  (`var_bitc_PendingAttestation*.bend`, stock) and Attestation
+  (`big_var_bitc_Attestation*.bend`, big: its 131072-bit limit); and, through
+  window laws (`var_win.py`: `big_var_win_bits131072.bend`,
+  `big_var_win_Attestation.bend`, a uniform interface CHKw/ok_evalw/readw/
+  specw/invw at a symbolic word-aligned window), AggregateAndProof and
+  SignedAggregateAndProof (`big_var_win_<X>{,_top,_unique}.bend`). Buffers of
+  depth d < 28. The value of a decoded bit list is stated from the buffer's
+  bytes (`bl`); relating it to the decoded object's own bits (a view law) and
+  the bit-list encoder laws are open.
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
