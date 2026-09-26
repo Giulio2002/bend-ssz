@@ -180,11 +180,70 @@ def w16_any_bytes(+dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +x: U32, +e: {{
     return '\n'.join(L)
 
 
+BV1281 = rf"""
+# ---- T.bv1281_putk (Bitvector[1281], 161 bytes held as O.Words) at X = 4 q + r ------------------------
+# The validity check (161 bytes, storage room, zero tails), then O.put_words of the 161 bytes (vuwd.putw_any).
+
+def PX_bv1281(+r: Nat, +dd: Nat, +D: {TR}, +q: Nat, +TB: {TR}) -> {TR}: UWD.PWM(r, dd, D, q, TB, 161)
+
+def bv1281x_perfect(+r: Nat, +dd: Nat, +D: {TR}, +q: Nat, +TB: {TR}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
+    -> {{FD.array__perfect(U32, dd, PX_bv1281(r, dd, D, q, TB)) == {TRUE}}}:
+  UWD.pwm_perfect(r, dd, D, q, TB, 161, pf)
+
+def hrm(+dB: Nat, +hdB: {{Nat.is_lt(dB, 28n) == {TRUE}}}, +hrB: {{Nat.is_le(161n, A.quad(VB.pw(dB))) == {TRUE}}})
+    -> {{Nat.is_le(Nat.add(VC.NW(161), 0n), VB.pw(dB)) == {TRUE}}}:
+  UW2.hsx(dB, 0, 0n, 161, {{==}}, hdB, hrB)
+
+def valid(+dB: Nat, +TB: {TR}, +pfB: {{FD.array__perfect(U32, dB, TB) == {TRUE}}}, +hdB: {{Nat.is_lt(dB, 28n) == {TRUE}}},
+    +hrB: {{Nat.is_le(161n, A.quad(VB.pw(dB))) == {TRUE}}}, +htz: {{O.tail_zero(U32.and(161, 3), VB.slot(TB, VYS.QL(161))) == {TRUE}}},
+    +hbz: {{O.bits_above_zero(U32.and(1281, 31), RD.wd(TB, dB, U32.shrn(1281, 5n))) == {TRUE}}})
+    -> {{T.bv1281_valid(O.Words{{FD.array__thaw(U32, TB), 161}}) == (O.Words{{FD.array__thaw(U32, TB), 161}}, True{{}}) : O.Words & Bool}}:
+  %Equal.sym(O.Words & Bool, O.words_ok(O.Words{{FD.array__thaw(U32, TB), 161}}, 161, 161, False{{}}, 1), (O.Words{{FD.array__thaw(U32, TB), 161}}, True{{}}),
+      VBE.words_ok_b(dB, TB, 161, 161, 161, VLS.KK(dB), pfB, FD.nat__lt_trans(dB, 28n, 31n, hdB, {{==}}), VLS.kk_lt(dB, hdB), VLS.hyn(dB, 161, hrB), {{==}}, {{==}},
+        hrm(dB, hdB, hrB), htz, 1, {{==}})) :
+    {{O.bitvec_tail(1281, _) == (O.Words{{FD.array__thaw(U32, TB), 161}}, True{{}}) : O.Words & Bool}}
+  %Equal.sym(Array<U32> & U32, Array.get(U32, FD.array__thaw(U32, TB), U32.shrn(1281, 5n)), (FD.array__thaw(U32, TB), RD.wd(TB, dB, U32.shrn(1281, 5n))),
+      VE.get_any(dB, TB, U32.shrn(1281, 5n), FD.nat__lt_trans(dB, 28n, 32n, hdB, {{==}}), pfB)) :
+    {{O.bv_fin(161, True{{}}, 1281, _) == (O.Words{{FD.array__thaw(U32, TB), 161}}, True{{}}) : O.Words & Bool}}
+  %Equal.sym(Bool, O.bits_above_zero(U32.and(1281, 31), RD.wd(TB, dB, U32.shrn(1281, 5n))), True{{}}, hbz) :
+    {{(O.Words{{FD.array__thaw(U32, TB), 161}}, Bool.and(True{{}}, _)) == (O.Words{{FD.array__thaw(U32, TB), 161}}, True{{}}) : O.Words & Bool}}
+  {{==}}
+
+def bv1281_any(+dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: {TR}, +e: {{U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}},
+    +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}}, +hl: {{Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 161n))), VB.pw(dd)) == {TRUE}}},
+    +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}}, +pfB: {{FD.array__perfect(U32, dB, TB) == {TRUE}}}, +hdB: {{Nat.is_lt(dB, 28n) == {TRUE}}},
+    +hrB: {{Nat.is_le(161n, A.quad(VB.pw(dB))) == {TRUE}}}, +htz: {{O.tail_zero(U32.and(161, 3), VB.slot(TB, VYS.QL(161))) == {TRUE}}},
+    +hbz: {{O.bits_above_zero(U32.and(1281, 31), RD.wd(TB, dB, U32.shrn(1281, 5n))) == {TRUE}}},
+    +hz: {{VS.bt(Nat.add(161n, UWD.PADB(r, 161n)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(161n, UWD.PADB(r, 161n))) : +List<U32>}})
+    -> {{T.bv1281_putk(FD.array__thaw(U32, D), X, O.Words{{FD.array__thaw(U32, TB), 161}}) == (FD.array__thaw(U32, PX_bv1281(r, dd, D, q, TB)), (O.Words{{FD.array__thaw(U32, TB), 161}}, 0)) : Array<U32> & (O.Words & U32)}}:
+  %Equal.sym(O.Words & Bool, T.bv1281_valid(O.Words{{FD.array__thaw(U32, TB), 161}}), (O.Words{{FD.array__thaw(U32, TB), 161}}, True{{}}), valid(dB, TB, pfB, hdB, hrB, htz, hbz)) :
+    {{T.bv1281_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PX_bv1281(r, dd, D, q, TB)), (O.Words{{FD.array__thaw(U32, TB), 161}}, 0)) : Array<U32> & (O.Words & U32)}}
+  %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, D), X, O.Words{{FD.array__thaw(U32, TB), 161}}), (FD.array__thaw(U32, PX_bv1281(r, dd, D, q, TB)), O.Words{{FD.array__thaw(U32, TB), 161}}),
+      UWD.putw_any(dd, D, X, q, r, dB, TB, 161, VLS.KK(dB), e, hr, hd, FD.nat__lt_trans(dB, 28n, 31n, hdB, {{==}}), VLS.kk_lt(dB, hdB), VLS.hyn(dB, 161, hrB),
+        FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == {TRUE}}}, Nat.add(VC.NW(161), 0n), VC.NW(161), FD.nat__add_zero(VC.NW(161)), hrm(dB, hdB, hrB)), hl, pf, pfB, htz, hz)) :
+    {{T.bv1281_pk_ok(_) == (FD.array__thaw(U32, PX_bv1281(r, dd, D, q, TB)), (O.Words{{FD.array__thaw(U32, TB), 161}}, 0)) : Array<U32> & (O.Words & U32)}}
+  {{==}}
+
+# Its bytes: the 161 bytes, then zeros to the end of the last word written (vuwd.putw_any_bytes).
+def bv1281_any_bytes(+dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: {TR}, +e: {{U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}},
+    +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}}, +hl: {{Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 161n))), VB.pw(dd)) == {TRUE}}},
+    +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}}, +pfB: {{FD.array__perfect(U32, dB, TB) == {TRUE}}}, +hdB: {{Nat.is_lt(dB, 28n) == {TRUE}}},
+    +hrB: {{Nat.is_le(161n, A.quad(VB.pw(dB))) == {TRUE}}}, +htz: {{O.tail_zero(U32.and(161, 3), VB.slot(TB, VYS.QL(161))) == {TRUE}}},
+    +hz: {{VS.bt(Nat.add(161n, UWD.PADB(r, 161n)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(161n, UWD.PADB(r, 161n))) : +List<U32>}})
+    -> {{UA.BYT(PX_bv1281(r, dd, D, q, TB)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, VS.bt(161n, FX.limbs(UW.SLW(TB))), UW.ZB(UWD.PADB(r, 161n)))) : +List<U32>}}:
+  UWD.putw_any_bytes(dd, D, X, q, r, dB, TB, 161, VLS.KK(dB), e, hr, hd, FD.nat__lt_trans(dB, 28n, 31n, hdB, {{==}}), VLS.kk_lt(dB, hdB), VLS.hyn(dB, 161, hrB),
+    FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == {TRUE}}}, Nat.add(VC.NW(161), 0n), VC.NW(161), FD.nat__add_zero(VC.NW(161)), hrm(dB, hdB, hrB)), hl, pf, pfB, htz, hz)
+"""
+
+
 def outputs():
     u8 = '\n'.join(HEAD + ['', HDR, '# O.w8 (T.u8_put) at any byte position (see codegen/var_uwl.py).']) + '\n' + U8
     u16 = '\n'.join(HEAD + ['import ./vuwl_u8.bend as W8', '', HDR, '# O.w16 (T.u16_put) at any byte position: two w8 (see codegen/var_uwl.py).']) + '\n' + \
         u16_text().replace('W8X(', 'W8.W8X(').replace('w8x_perfect(', 'W8.w8x_perfect(').replace('w8_any(', 'W8.w8_any(').replace('hxP(', 'W8.hxP(').replace('bnd(', 'W8.bnd(')
-    return {ROOT / 'proofs/obj/vuwl_u8.bend': u8, ROOT / 'proofs/obj/vuwl_u16.bend': u16}
+    bv = '\n'.join(HEAD + ['import ./spec_fixed.bend as FX', 'import ./vcopy.bend as VC', 'import ./venc.bend as VE', 'import ./vbytes.bend as VYS',
+                           'import ./vlist.bend as VLS', 'import ./vua_win.bend as UW2', 'import ../compact/reads.bend as RD', '', HDR,
+                           '# T.bv1281_putk (Bitvector[1281]) at any byte position (see codegen/var_uwl.py).']) + '\n' + BV1281
+    return {ROOT / 'proofs/obj/vuwl_u8.bend': u8, ROOT / 'proofs/obj/vuwl_u16.bend': u16, ROOT / 'proofs/obj/vuwl_bv1281.bend': bv}
 
 
 def main():
