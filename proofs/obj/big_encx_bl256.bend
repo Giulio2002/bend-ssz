@@ -261,3 +261,14 @@ law validx:
 def validx(m, hok):
   match m:
     case MW{+dw, +T, +N}: valid(dw, T, N, hok)
+
+law maxx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  {Nat.is_le(List.length(&2, U32, ENC(m)), 256n) == True{} : Bool}
+def maxx(m, hok):
+  match m:
+    case MW{+dw, +T, +N}:
+      FD.logic__subst(Nat, z => {Nat.is_le(z, 256n) == True{} : Bool}, U32.to_nat(N), List.length(&2, U32, ENC(MW{dw, T, N})),
+        Equal.sym(Nat, List.length(&2, U32, ENC(MW{dw, T, N})), U32.to_nat(N), eL(dw, T, N, hok)),
+        FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 256), Nat.is_le(U32.to_nat(N), U32.to_nat(256)), VU.le_u32(N, 256), ok_ex(dw, T, N, hok)))

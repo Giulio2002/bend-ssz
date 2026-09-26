@@ -36,7 +36,7 @@ import generate as G  # noqa: E402
 import schema  # noqa: E402
 
 CONTS = ['ExecutionPayload', 'ExecutionPayloadHeader', 'ExecutionRequests', 'Attestation', 'IndexedAttestation', 'AttesterSlashing',
-         'LightClientHeader', 'BeaconBlockBody']
+         'LightClientHeader', 'BeaconBlockBody', 'LightClientFinalityUpdate', 'BeaconBlock', 'SignedBeaconBlock']
 TR = 'FD.array__Tree<U32>'
 TRUE = 'True{} : Bool'
 GROUP = G.GROUP
@@ -51,13 +51,27 @@ def out_file(C):
 class Leaf:
     """A Data leaf written at any X by its dispatch lemma (vuwd, vuwv_<p>)."""
 
-    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz, rec=None, sub=0, pad=False, bits=0):
+    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz, rec=None, sub=0, pad=False, bits=0, tail=False):
         self.p, self.ctor, self.W, self.mod = p, ctor, W, mod
+        self.tail = tail  # W words and then one byte (Bitvector[257]: vbv257, data-only; its check T.<p>_valid a hypothesis)
         self.bits = bits  # a one-byte bit vector (Bitvector[1/2/8]): a byte leaf on its word (vbitb), valid below 2^bits
         self.pad = pad    # a one-byte leaf in the zero-padded form (vuwv_bv4): its bytes and the zeros to its word's end
         self.sub = sub    # a sub-word leaf (uint8 / uint16: its byte count), a piece at any byte (vpiece)
         self.model, self.rt, self.by, self.pf, self.rt_hz = model, rt, by, pf, rt_hz
         self.rec = rec    # a fixed record of codegen/var_rec_enc.py's RECS: its field tree (var_laws.FT)
+
+
+# The modules this generator writes, as this run computes them (read before the disk copy, so one
+# run reaches its fixed point: an interface's maxx / sizex reads its children's interfaces).
+GEN = {}
+
+
+def obj_text(path):
+    """A proofs/obj module's text: this run's, else the disk's (None when neither)."""
+    path = Path(path)
+    if path in GEN:
+        return GEN[path]
+    return path.read_text() if path.exists() else None
 
 
 # the fixed records written by codegen/var_rec_enc.py (proofs/obj/encx_recs.bend), by name: their field trees
@@ -108,6 +122,48 @@ class FixW:
             self.by = lambda *x: f'{a}.SyncCommittee_any_bytes({args(*x)})'
             self.Y = f'List.append(&2, U32, VS.bt(U32.to_nat(24576), FX.limbs(UW.SLW(TB_{f}))), FX.limbs([{A_}]))'
             self.hY = f'{a}.SyncCommittee_len(dB_{f}, TB_{f}, {A_}, pfB_{f}, hrB_{f})'
+        elif fs.kind == 'fixwords' and fs.p == 'bv1281':
+            # Bitvector[1281] (161 bytes held as O.Words), data-only (vbv1281d over vputwd): only its bytes zero,
+            # room for one more word after them (room_extra)
+            a = 'V_bv1281'
+            self.mod = 'import ./vbv1281d.bend as V_bv1281'
+            self.params = [f'+dB_{f}: Nat', f'+TB_{f}: {TR}']
+            self.oargs = [f'dB_{f}', f'TB_{f}']
+            self.hyps = [f'+pfB_{f}: {{FD.array__perfect(U32, dB_{f}, TB_{f}) == {TRUE}}}', f'+hdB_{f}: {{Nat.is_lt(dB_{f}, 28n) == {TRUE}}}',
+                         f'+hrB_{f}: {{Nat.is_le(161n, A.quad(VB.pw(dB_{f}))) == {TRUE}}}', f'+htz_{f}: {{{a}.HTZ(TB_{f}) == {TRUE}}}',
+                         f'+hbz_{f}: {{{a}.HBZ(dB_{f}, TB_{f}) == {TRUE}}}']
+            self.hargs = [f'pfB_{f}', f'hdB_{f}', f'hrB_{f}', f'htz_{f}', f'hbz_{f}']
+            self.obj = f'O.Words{{FD.array__thaw(U32, TB_{f}), 161}}'
+            self.vt = 'O.Words'
+            self.model = lambda r, D, q: f'{a}.PXD({r}, dd, {D}, {q}, TB_{f})'
+            self.pf = lambda r, D, q, pf: f'{a}.pxd_perfect({r}, dd, {D}, {q}, TB_{f}, {pf})'
+            self.rt = lambda D, X, q, r, e, hr, hl, pf, hz: (f'{a}.bv1281d_any(dd, {D}, {X}, {q}, {r}, dB_{f}, TB_{f}, {e}, {hr}, hd, {hl}, {pf}, pfB_{f}, hdB_{f}, hrB_{f}, '
+                                                             f'htz_{f}, hbz_{f}, {hz})')
+            self.by = lambda D, X, q, r, e, hr, hl, pf, hz: (f'{a}.bv1281d_any_bytes(dd, {D}, {X}, {q}, {r}, dB_{f}, TB_{f}, {e}, {hr}, hd, {hl}, {pf}, pfB_{f}, hdB_{f}, hrB_{f}, '
+                                                             f'htz_{f}, {hz})')
+            self.Y = f'VS.bt(161n, FX.limbs(UW.SLW(TB_{f})))'
+            self.hY = f'{a}.lenY(dB_{f}, TB_{f}, pfB_{f}, hrB_{f})'
+            self.alias = a
+            self.room_extra = 4
+        elif fs.p in rvec_names():
+            # a vector of records (var_rec_enc.RVECS): big_encx_<p>'s FixW-form laws fwrt / fwby / lenv / pfx / validx
+            a = f'RV_{fs.p}'
+            m = f'm_{f}'
+            self.mod = f'import ./big_encx_{fs.p}.bend as {a}'
+            self.params = [f'+{m}: {a}.MW']
+            self.oargs = [m]
+            self.hyps = [f'+hok_{f}: {{{a}.OK({m}) == {TRUE}}}']
+            self.hargs = [f'hok_{f}']
+            self.obj = f'{a}.TH({m})'
+            self.vt = f'T.{fs.rep}'
+            self.model = lambda r, D, q: f'{a}.PUTX({m}, dd, {D}, {q}, {r})'
+            self.pf = lambda r, D, q, pf: f'{a}.pfx({m}, dd, {D}, {q}, {r}, {pf})'
+            args = lambda D, X, q, r, e, hr, hl, pf, hz: f'{m}, dd, {D}, {X}, {q}, {r}, {e}, {hr}, hd, {hl}, {pf}, {hz}, hok_{f}'  # noqa: E731
+            self.rt = lambda *x: f'{a}.fwrt({args(*x)})'
+            self.by = lambda *x: f'{a}.fwby({args(*x)})'
+            self.Y = f'{a}.ENC({m})'
+            self.hY = f'{a}.lenv({m}, hok_{f})'
+            self.alias = a
         elif fs.kind == 'box' and rec_ft(fs.p[:-3]) is not None:
             R = fs.p[:-3]
             ft = rec_ft(R)
@@ -143,7 +199,9 @@ def bxrt_{f}({", ".join(self.params)}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r:
         else:
             nW = fs.fsize // 4
             a = f'V_{fs.p}'
-            self.mod = f'import ./vuwv_{fs.p}.bend as {a}'
+            # the word vector's module: vuwv_<p>, or the generic containers' data-only vuwg_<p> (bv1280)
+            m_ = 'vuwv' if (ROOT / f'proofs/obj/vuwv_{fs.p}.bend').exists() or not (ROOT / f'proofs/obj/vuwg_{fs.p}.bend').exists() else 'vuwg'
+            self.mod = f'import ./{m_}_{fs.p}.bend as {a}'
             self.params = [f'+dB_{f}: Nat', f'+TB_{f}: {TR}']
             self.oargs = [f'dB_{f}', f'TB_{f}']
             self.hyps = [f'+pfB_{f}: {{FD.array__perfect(U32, dB_{f}, TB_{f}) == {TRUE}}}', f'+hdB_{f}: {{Nat.is_lt(dB_{f}, 31n) == {TRUE}}}',
@@ -170,6 +228,10 @@ def bxrt_{f}({", ".join(self.params)}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r:
         fs, f = self.fs, self.f
         if fs.kind == 'box':
             return '{==}'
+        if fs.p in rvec_names():
+            return f'{self.alias}.validx(m_{f}, {hargs[0]})'
+        if fs.kind == 'fixwords' and fs.p == 'bv1281':
+            return f'V_bv1281.valid_ok(dB_{f}, TB_{f}, {", ".join(hargs)})'
         if fs.kind == 'container' and fs.p == 'SyncCommittee':
             return f'V_SyncCommittee.SyncCommittee_valid_ok(dB_{f}, TB_{f}, {", ".join(self.oargs[2:])}, {", ".join(hargs)})'
         return f'V_{fs.p}.{fs.p}_valid_ok(dB_{f}, TB_{f}, {", ".join(hargs)})'
@@ -178,10 +240,61 @@ def bxrt_{f}({", ".join(self.params)}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r:
         return f'{{T.{self.p}_valid({self.obj}) == ({self.obj}, True{{}}) : {self.vt} & Bool}}'
 
 
+def rvec_names():
+    """The record vectors of codegen/var_rec_enc.py (RVECS), fixed fields in the FixW form."""
+    import var_rec_enc as VRE
+    return [p for p, _, _ in VRE.RVECS]
+
+
 def is_fixw_ext(fs):
-    """is_fixw, and the fixed non-Data fields with a FixW entry: SyncCommittee, a boxed record of var_rec_enc."""
+    """is_fixw, and the fixed non-Data fields with a FixW entry: SyncCommittee, a boxed record of var_rec_enc,
+    a record vector of var_rec_enc.RVECS."""
     return is_fixw(fs) or (fs.fixed and not fs.data and ((fs.kind == 'container' and fs.p == 'SyncCommittee')
-                                                        or (fs.kind == 'box' and fs.p.endswith('_bx') and rec_ft(fs.p[:-3]) is not None)))
+                                                        or (fs.kind == 'box' and fs.p.endswith('_bx') and rec_ft(fs.p[:-3]) is not None)
+                                                        or (fs.kind == 'seq' and fs.p in rvec_names())))
+
+
+
+BIGPIECE = 4096   # a fixed piece this large: its region offsets are proved (ln_cat), never evaluated
+
+
+def piece_len(pc):
+    """(length term, proof of {VCN.LN(pc) == length}) of a region piece string."""
+    m = re.fullmatch(r'VCN\.PC\((\d+)n, (.*)\)', pc)
+    if m:
+        return f'{m.group(1)}n', f'VCN.len_pc({m.group(1)}n, {m.group(2)})', int(m.group(1))
+    m = re.fullmatch(r'UW\.ZB\((\d+)n\)', pc)
+    if m:
+        return f'{m.group(1)}n', f'UW.len_zb({m.group(1)}n)', int(m.group(1))
+    if pc.startswith('I.limb('):
+        return '4n', '{==}', 4
+    return None, None, 0
+
+
+def big_pieces(pcs):
+    return any(piece_len(x)[2] >= BIGPIECE for x in pcs)
+
+
+def ln_cat(pcs, target):
+    """A proof of {VCN.LN(VCN.CAT([pcs])) == target} (target a closed Nat): each piece's length by its lemma
+    (VCN.len_pc / UW.len_zb), their sum by Nat.is_eq, so no long piece is ever unfolded."""
+    def go(i):
+        if i == len(pcs):
+            return '0n', '{==}'
+        rest = '[' + ', '.join(pcs[i + 1:]) + ']'
+        lt, lp, _ = piece_len(pcs[i])
+        st, sp = go(i + 1)
+        L0 = f'VCN.LN(VCN.CAT([{", ".join(pcs[i:])}]))'
+        LR = f'VCN.LN(VCN.CAT({rest}))'
+        tot = f'Nat.add({lt}, {st})'
+        prf = (f'Equal.trans(Nat, {L0}, Nat.add(VCN.LN({pcs[i]}), {LR}), {tot}, VCN.len_app({pcs[i]}, VCN.CAT({rest})), '
+               f'Equal.trans(Nat, Nat.add(VCN.LN({pcs[i]}), {LR}), Nat.add({lt}, {LR}), {tot}, '
+               f'Equal.cong(Nat, Nat, zz => Nat.add(zz, {LR}), VCN.LN({pcs[i]}), {lt}, {lp}), '
+               f'Equal.cong(Nat, Nat, zz => Nat.add({lt}, zz), {LR}, {st}, {sp})))')
+        return tot, prf
+    tot, prf = go(0)
+    L0 = f'VCN.LN(VCN.CAT([{", ".join(pcs)}]))'
+    return f'Equal.trans(Nat, {L0}, {tot}, {target}, {prf}, FD.nat__eq_from_is_eq({tot}, {target}, {{==}}))'
 
 
 def qr_at(c, X='X'):
@@ -248,6 +361,12 @@ def leaf_of(fs):
         a = f'V_{fs.p}'
         return Leaf(fs.p, f'T.{fs.rep}', fs.fsize // 4, f'import ./vuwv_{fs.p}.bend as {a}', f'{a}.PX_{fs.p}', f'{a}.{fs.p}_any',
                     f'{a}.{fs.p}_any_bytes', f'{a}.{fs.p}x_perfect', True)
+    if fs.p == 'bv256':
+        return Leaf('bv256', 'T.Bitvector256', 8, 'import ./vuwg_bv256.bend as V_bv256', 'V_bv256.PX_bv256', 'V_bv256.bv256_any',
+                    'V_bv256.bv256_any_bytes', 'V_bv256.bv256x_perfect', True)
+    if fs.p == 'bv257':
+        return Leaf('bv257', 'T.Bitvector257', 8, 'import ./vbv257.bend as V_bv257', 'V_bv257.PXD', 'V_bv257.bv257d_any',
+                    'V_bv257.bv257d_any_bytes', 'V_bv257.pxd_perfect', True, tail=True)
     if fs.p == 'bv4':
         PADCTOR['bv4'] = Leaf('bv4', 'T.Bitvector4', 1, 'import ./vuwv_bv4.bend as V_bv4', 'V_bv4.PX_bv4', 'V_bv4.bv4_any', 'V_bv4.bv4_any_bytes',
                               'V_bv4.bv4x_perfect', True, pad=True)
@@ -365,9 +484,52 @@ def prto_{p}(+o: {lf.ctor}, +hv: {{K.OK_{p}(o) == {TRUE_}}})
 '''
 
 
+def leaf_bytes(lf, f):
+    """A leaf's bytes, as a term of its object f."""
+    return f'V_{lf.p}.BYW({f})' if lf.tail else f'FX.limbs(RW_{lf.p}({f}))'
+
+
+def tail_leaf_text(lf):
+    """W words and then one byte (Bitvector[257]): written data-only (vbv257), its check a hypothesis."""
+    p, W = lf.p, lf.W
+    ws = [f'w{i}' for i in range(W + 1)]
+    pat = f'{lf.ctor}{{' + ', '.join('+' + w for w in ws) + '}'
+    WA = ', '.join(ws)
+    X0 = 'Nat.add(A.quad(q), r)'
+    B = 4 * W + 1
+    return f'''
+# ---- {p}: its writer on the object ({B} bytes, data-only; vbv257) ----
+def PXo_{p}(o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> {TR}:
+  match o:
+    case {pat}: {lf.model}(r, dd, D, q, {WA})
+def pfo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
+    -> {{FD.array__perfect(U32, dd, PXo_{p}(o, dd, D, q, r)) == {TRUE}}}:
+  match o:
+    case {pat}: {lf.pf}(r, dd, D, q, {WA}, pf)
+def RTo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {{T.{p}_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_{p}(o, dd, D, q, r)) : Array<U32>}}
+def BYo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> Data:
+  {{UA.BYT(PXo_{p}(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), {X0}, V_{p}.BYW(o)) : +List<U32>}}
+def putxo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
+    +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}}, +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}},
+    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, {B}n))), VB.pw(dd)) == {TRUE}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}},
+    +hv: {{T.{p}_valid(o) == {TRUE}}}, +hz: {{VS.bt({B}n, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({B}n) : +List<U32>}})
+    -> DK.P2(RTo_{p}(o, dd, D, X, q, r), BYo_{p}(o, dd, D, q, r)):
+  match o:
+    case {pat}:
+      +e8 = VBB.e1(w{W}, hv)
+      ({lf.rt}(dd, D, X, q, r, {WA}, e, hr, hd, hl, pf, e8, hz), {lf.by}(dd, D, X, q, r, {WA}, e, hr, hd, hl, pf, e8, hz))
+def lenb_{p}(+o: {lf.ctor}) -> {{VCN.LN(V_{p}.BYW(o)) == {B}n : Nat}}:
+  match o:
+    case {pat}: {{==}}
+'''
+
+
 def leaf_text(lf):
     if lf.pad:
         return pad_leaf_text(lf)
+    if lf.tail:
+        return tail_leaf_text(lf)
     if lf.rec is not None:
         return rec_leaf_text(lf)
     p, W = lf.p, lf.W
@@ -514,7 +676,8 @@ class Child:
             # a wide container's interface states no sizex / validx: its size module big_encx_<X>_size does (sizez, validx)
             fi = ROOT / 'proofs/obj' / f'big_encx_{X}_iface.bend'
             self.szalias = None
-            if fi.exists() and '\nlaw sizex:' not in fi.read_text():
+            ft_ = obj_text(fi)
+            if ft_ is not None and '\nlaw sizex:' not in ft_:
                 self.szalias = f'ES_{X}'
                 self.mod += f'\nimport ./big_encx_{X}_size.bend as ES_{X}'
         else:
@@ -582,7 +745,16 @@ def STD_CHILDREN():
     global _STD
     if _STD is None:
         import encx_children as EC
-        _STD = {p: c for p, c in EC.CHILDREN.items() if p != 'bl32'}
+        _STD = {}
+        for p in EC.PREFIXES:
+            if p == 'bl32':
+                continue
+            # this run's interface module first (GEN), else the disk's
+            fi = EC.OBJ / f'big_encx_{p}_iface.bend'
+            if fi in GEN:
+                _STD[p] = EC.read_child(p, GEN[fi], fi.name)
+            elif p in EC.CHILDREN:
+                _STD[p] = EC.CHILDREN[p]
     return _STD
 
 
@@ -669,6 +841,9 @@ def generate_cont(g, names, C):
             if leaf_of(fs).pad:
                 HP.append(f'+hv_{f}: {{OK_{leaf_of(fs).p}({f}) == {TRUE}}}')
                 HA.append(f'hv_{f}')
+            if leaf_of(fs).tail:
+                HP.append(f'+hv_{f}: {{T.{leaf_of(fs).p}_valid({f}) == {TRUE}}}')
+                HA.append(f'hv_{f}')
         elif f in K.fixw:
             fw = K.fixw[f]
             OP += fw.params
@@ -686,7 +861,7 @@ def generate_cont(g, names, C):
     # the runtime's check of the sub-word leaves, folded into the returned size (c .|. O.pz(V)): V is a hypothesis
     K.pz = None
     if not K.wide and any(fs.fixed and fs.data for _, fs in F):
-        npw = sum(1 for _, fs in F if not fs.fixed)
+        npw = sum(1 for _, fs in F if not fs.data)    # the put steps: the variable fields and the checked fixed writers
         if npw:
             b_ = fn_body(f'{p}_pw{npw - 1}')
             j_ = b_.find('O.pz(')
@@ -705,6 +880,29 @@ def generate_cont(g, names, C):
                         K.pz = re.sub(rf'(?<![\w.{{]){f_}\b', bits_obj(leaf_of(fs_), f_), K.pz)
                 HP.append(f'+hpz: {{{K.pz} == {TRUE}}}')
                 HA.append('hpz')
+    # a wide container's groups' own checks of their Data fields, folded into the group's size (c .|. O.pz(V))
+    K.gpz = {}
+    if K.wide:
+        for gk_ in range(0, (len(F) + GROUP - 1) // GROUP):
+            idx_ = list(range(gk_ * GROUP, min(gk_ * GROUP + GROUP, len(F))))
+            nps_ = sum(1 for i_ in idx_ if not F[i_][1].data)
+            if not nps_ or not any(F[i_][1].fixed and F[i_][1].data for i_ in idx_):
+                continue
+            b_ = fn_body(f'{p}_g{gk_}_pw{nps_ - 1}')
+            j_ = b_.find('O.pz(')
+            if j_ < 0:
+                continue
+            d_ = 0
+            for k_ in range(j_ + len('O.pz('), len(b_)):
+                if b_[k_] == '(':
+                    d_ += 1
+                elif b_[k_] == ')':
+                    if d_ == 0:
+                        break
+                    d_ -= 1
+            K.gpz[gk_] = re.sub(r'(?<![\w.])([a-z_]\w*)\(', r'T.\1(', b_[j_ + len('O.pz('):k_])
+            HP.append(f'+hpz_g{gk_}: {{{K.gpz[gk_]} == {TRUE}}}')
+            HA.append(f'hpz_g{gk_}')
     OPS, OAS = ', '.join(OP), ', '.join(OA)
     HPS, HAS = ', '.join(HP), ', '.join(HA)
     if K.wide:
@@ -945,6 +1143,8 @@ def putv_{f}({', '.join(ch.params)}, +D: {TR}, +D1: {TR}, +D2: {TR}, +X: U32, +h
                 kk += 1
         if K.pz is not None and psteps:
             cur = f'({cur} .|. O.pz({K.pz}) : U32)'
+        if K.wide and psteps and gk in K.gpz:
+            cur = f'({cur} .|. O.pz({K.gpz[gk]}) : U32)'
         # the Data fields, innermost first
         dat = [i for i in idx if F[i][1].fixed and F[i][1].data]
 
@@ -1001,6 +1201,16 @@ def rt_{gp.replace(p, "G") if gk is not None else "C"}({MP},
             steps.append((ctx, start, end, RTg, prf, after))
             # a group ending in FixW writes returns (c .|. 0): back to c (vuw_bits.or0r; a literal c evaluates)
             clean = cur
+            if gk in K.gpz and clean.endswith(f' .|. O.pz({K.gpz[gk]}) : U32)'):
+                # its Data fields' check (c .|. O.pz(V)), V true: back to c
+                inner_ = clean[1:-len(f' .|. O.pz({K.gpz[gk]}) : U32)')]
+                ctx3 = ctx.replace('z)', f'({TH(kB)}, ({gobj}, z)))')
+                V_ = K.gpz[gk]
+                prf_ = (f'Equal.trans(U32, U32.or({inner_}, O.pz({V_})), U32.or({inner_}, 0), {inner_}, '
+                        f'Equal.cong(Bool, U32, zb => U32.or({inner_}, O.pz(zb)), {V_}, True{{}}, hpz_g{gk}), UWB.or0r({inner_}))')
+                steps.append((ctx3, clean, inner_, 'U32', prf_, ctx.replace('z)', f'({TH(kB)}, ({gobj}, {inner_})))')))
+                clean = inner_
+                K.or0 = True
             while re.fullmatch(r'\((.*) \.\|\. 0 : U32\)', clean) and not re.fullmatch(r'\((\d+) \.\|\. 0 : U32\)', clean):
                 inner_ = re.fullmatch(r'\((.*) \.\|\. 0 : U32\)', clean).group(1)
                 ctx3 = ctx.replace('z)', f'({TH(kB)}, ({gobj}, z)))')
@@ -1019,10 +1229,11 @@ def rt_{gp.replace(p, "G") if gk is not None else "C"}({MP},
         chain_rt = chain(RTC, steps, START, ENDC)
     else:
         chain_rt = f'rt_C({MA}, {FAS})'
+    GPZP = ''.join(f',\n    +hpz_g{gk_}: {{{V_} == {TRUE}}}' for gk_, V_ in sorted(K.gpz.items()))
     w(f'''
 # the runtime's put of {C} at X
 def rt_all({MP},
-    {FPS})
+    {FPS}{GPZP})
     -> {{{START} == {ENDC} : {RTC}}}:
   {chain_rt}
 ''')
@@ -1052,8 +1263,14 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
     PTr = f'WD.PADB(r, {LLv})'
     MS = f'VCN.APPN({FS}, VCN.APPN({KS(ks_all)}, [{PTr}]))'
     a(f'+hX = VRX.xstart(q, r, {LLv}, dd, D, pf, hl)')
+    esr = f'VCN.sum_region({FS}, {KS(ks_all)}, {PTr})'
+    if big_pieces(pieces_init := [f'UW.ZB({sz})' for _, _, sz in pieces if sz.endswith('n') and sz[:-1].isdigit()]):
+        # a large fixed region: its size proved by Nat.is_eq, never compared by unfolding
+        SK = f'VCN.SUM({KS(ks_all)})'
+        esr = (f'Equal.trans(Nat, VCN.SUM({MS}), Nat.add(Nat.add(VCN.SUM({FS}), {SK}), {PTr}), Nat.add(Nat.add({FIX}n, {SK}), {PTr}), {esr}, '
+               f'Equal.cong(Nat, Nat, zz => Nat.add(Nat.add(zz, {SK}), {PTr}), VCN.SUM({FS}), {FIX}n, FD.nat__eq_from_is_eq(VCN.SUM({FS}), {FIX}n, {{==}})))')
     a(f'+hz0 = FD.logic__subst(Nat, zz => {{VS.bt(zz, VS.bdr({X0}, UA.BYT(D))) == UW.ZB(zz) : +List<U32>}}, Nat.add({LLv}, {PTr}), VCN.SUM({MS}), '
-      f'Equal.sym(Nat, VCN.SUM({MS}), Nat.add({LLv}, {PTr}), VCN.sum_region({FS}, {KS(ks_all)}, {PTr})), hz)')
+      f'Equal.sym(Nat, VCN.SUM({MS}), Nat.add({LLv}, {PTr}), {esr}), hz)')
     a(f'+I0 = VCN.reg_init(UA.BYT(D), {X0}, {MS}, hz0)')
     a('+pf0 = pf')
     facts = []
@@ -1121,22 +1338,32 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
             rel = f'Nat.add({X0}, VCN.LN(VCN.CAT({pre})))'
             Xc = f'U32.add(X, {c})'
             qk, rk = qr_at(c)
+            # the room a checked fixed writer asks for past its bytes (FixW.room_extra, e.g. vbv1281d's carry word)
+            rsize = size + (getattr(K.fixw.get(f), 'room_extra', 0) if kind == 'fixw' else 0)
+            bigp = big_pieces(st[:i])
             if c % 4:
                 # a field at a byte offset: its word position (QX, RX) of X + c (vpiece.ppos / proom)
                 pos = f'Nat.add(A.quad({qk}), {rk})'
                 hk_ = f'FD.nat__le_trans(Nat.add({c}n, {size}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)})))'
+                hkr_ = f'FD.nat__le_trans(Nat.add({c}n, {rsize}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)})))'
                 a(f'+z{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, {size}n, {post}, 0n, {UBk}, hX, I{k}, {{==}})')
                 a(f'+pp{k} = VPC.ppos(X, {c}, {c}n, q, r, {LLv}, {size}n, dd, e, {{==}}, hd, {hk_}, hl)')
-                a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt({size}n, VS.bdr(zz, {UBk})) == UW.ZB({size}n) : +List<U32>}}, {rel}, {pos}, pp{k}, z{k})')
+                if bigp:
+                    a(f'+eln{k} = {ln_cat(st[:i], f"{c}n")}')
+                    a(f'+rp{k} = Equal.trans(Nat, {rel}, Nat.add({X0}, {c}n), {pos}, Equal.cong(Nat, Nat, zz => Nat.add({X0}, zz), VCN.LN(VCN.CAT({pre})), {c}n, eln{k}), pp{k})')
+                a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt({size}n, VS.bdr(zz, {UBk})) == UW.ZB({size}n) : +List<U32>}}, {rel}, {pos}, {"rp" if bigp else "pp"}{k}, z{k})')
                 a(f'+ep{k} = VC.split4({Xc})')
-                a(f'+hl{k} = VPC.proom(X, {c}, {c}n, q, r, {LLv}, {size}n, dd, e, {{==}}, hd, {hk_}, hl)')
-                hrk, eqpos = f'VCN.rx_lt({Xc})', f'pp{k}'
+                a(f'+hl{k} = VPC.proom(X, {c}, {c}n, q, r, {LLv}, {rsize}n, dd, e, {{==}}, hd, {hkr_}, hl)')
+                hrk, eqpos = f'VCN.rx_lt({Xc})', f'{"rp" if bigp else "pp"}{k}'
             else:
                 a(f'+z{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, {size}n, {post}, 0n, {UBk}, hX, I{k}, {{==}})')
-                a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt({size}n, VS.bdr(zz, {UBk})) == UW.ZB({size}n) : +List<U32>}}, {rel}, {pos}, VRX.fpx(q, r, {kw}n), z{k})')
+                if bigp:
+                    a(f'+eln{k} = {ln_cat(st[:i], f"A.quad({kw}n)")}')
+                    a(f'+rp{k} = Equal.trans(Nat, {rel}, Nat.add({X0}, A.quad({kw}n)), {pos}, Equal.cong(Nat, Nat, zz => Nat.add({X0}, zz), VCN.LN(VCN.CAT({pre})), A.quad({kw}n), eln{k}), VRX.fpx(q, r, {kw}n))')
+                a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt({size}n, VS.bdr(zz, {UBk})) == UW.ZB({size}n) : +List<U32>}}, {rel}, {pos}, {f"rp{k}" if bigp else f"VRX.fpx(q, r, {kw}n)"}, z{k})')
                 a(f'+ep{k} = VRX.fpos(X, q, r, {kw}n, {c}, {LLv}, dd, e, {{==}}, hd, {{==}}, hl)')
-                a(f'+hl{k} = VRX.froom(q, r, dd, {kw}n, {size}n, {LLv}, FD.nat__le_trans(Nat.add(A.quad({kw}n), {size}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)}))), hl)')
-                hrk, eqpos = 'hr', f'VRX.fpx(q, r, {kw}n)'
+                a(f'+hl{k} = VRX.froom(q, r, dd, {kw}n, {rsize}n, {LLv}, FD.nat__le_trans(Nat.add(A.quad({kw}n), {rsize}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)}))), hl)')
+                hrk, eqpos = 'hr', (f'rp{k}' if bigp else f'VRX.fpx(q, r, {kw}n)')
             if kind == 'leaf' and leaf_of(fs).pad:
                 # the zero-padded one-byte leaf: its byte and the zeros to its word's end, from the next piece's zeros
                 lf = leaf_of(fs)
@@ -1159,10 +1386,11 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
                 continue
             if kind == 'leaf':
                 lf = leaf_of(fs)
-                a(f'+g{k} = putxo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}, ep{k}, {hrk}, hd, hl{k}, pf{k}, hz{k})')
+                hv_ = f', hv_{f}' if lf.tail else ''
+                a(f'+g{k} = putxo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}, ep{k}, {hrk}, hd, hl{k}, pf{k}{hv_}, hz{k})')
                 a(f'+rt{k} = PA(RTo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}), BYo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}), g{k})')
                 a(f'+by{k} = PB(RTo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}), BYo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}), g{k})')
-                Y = f'FX.limbs(RW_{lf.p}({f}))'
+                Y = leaf_bytes(lf, f)
                 hY = f'lenb_{lf.p}({f})'
                 a(f'+pf{k + 1} = pfo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}, pf{k})')
                 piece = f'VCN.PC({size}n, {Y})'
@@ -1221,8 +1449,13 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
         post = '[' + ', '.join(st[i + 1:]) + ']'
         rel = f'Nat.add({X0}, VCN.LN(VCN.CAT({pre})))'
         pos = f'Nat.add(A.quad({QX}), {RX})'
+        epv = f'VCN.eposv([{", ".join(fw)}], {ps}, {KS(ks_j)})'
+        if big_pieces(fw):
+            a(f'+efw{k} = {ln_cat(fw, f"{FIX}n")}')
+            epv = (f'Equal.trans(Nat, VCN.LN(VCN.CAT({pre})), Nat.add(VCN.LN(VCN.CAT([{", ".join(fw)}])), VCN.SUM({KS(ks_j)})), {aj}, {epv}, '
+                   f'Equal.cong(Nat, Nat, zz => Nat.add(zz, VCN.SUM({KS(ks_j)})), VCN.LN(VCN.CAT([{", ".join(fw)}])), {FIX}n, efw{k}))')
         a(f'+epc{k} = Equal.trans(Nat, {rel}, Nat.add({X0}, {aj}), {pos}, Equal.cong(Nat, Nat, zz => Nat.add({X0}, zz), VCN.LN(VCN.CAT({pre})), {aj}, '
-          f'VCN.eposv([{", ".join(fw)}], {ps}, {KS(ks_j)})), '
+          f'{epv}), '
           f'Equal.trans(Nat, Nat.add({X0}, {aj}), U32.to_nat({Xc}), {pos}, Equal.sym(Nat, U32.to_nat({Xc}), Nat.add({X0}, {aj}), ep{k}), VC.split4({Xc})))')
         if ch.pad:
             pc = f'WD.PADB({RX}, {Lj})'
@@ -1270,9 +1503,9 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
     pa = f'Nat.add(Nat.add({FIX}n, VCN.SUM({KS(ksl)})), {ks_all[-1]})'
     a(f'+szf = VCN.cnext({curs[fl]}, {K.children[fl].sz}, {FIX}n, {KS(ksl)}, {ks_all[-1]}, dd, hd, {ec_of[fl]}, {szx_of[fl]}, '
       f'VCN.pc_end(q, r, {LLv}, dd, {pa}, VCN.pc_room({FIX}n, {KS(ksl)}, {ks_all[-1]}, []), hl))')
-    if K.pz is None:
+    if True:
         # the checked fixed writers' flags (0) OR-ed into the size (narrow containers): peel them with or0r
-        t_, layers = SZC, []
+        t_, layers = (SZC if K.pz is None else SZC[1:SZC.index(' .|. O.pz(')]), []
         while t_.startswith('(') and t_.endswith(' .|. 0 : U32)'):
             layers.append((t_[1:-len(' .|. 0 : U32)')], t_))
             t_ = layers[-1][0]
@@ -1304,7 +1537,7 @@ def putx({OPS}, {HPS}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
     +hz: {{VS.bt(Nat.add(LLC({MA}), WD.PADB(r, LLC({MA}))), VS.bdr({X0}, UA.BYT(D))) == UW.ZB(Nat.add(LLC({MA}), WD.PADB(r, LLC({MA})))) : +List<U32>}})
     -> DK.P2(RTC({MA}), DK.P2(BYC({MA}), DK.P2(PFC({MA}), SZXC({MA})))):
   {body}
-  mk4({MA}, rt_all({MA}, {", ".join(facts)}), byf, pf{n}, szf)
+  mk4({MA}, rt_all({MA}, {", ".join(facts + [f"hpz_g{gk_}" for gk_ in sorted(K.gpz)])}), byf, pf{n}, szf)
 ''')
     return L
 
@@ -1352,14 +1585,27 @@ def split_list(txt):
     return [x.strip() for x in WB.split_top(txt[1:-1])]
 
 
+def szpeel(core, prf, end):
+    """The size's proof {to_nat(core) == end} from the innermost one prf, peeling the checked fixed writers'
+    flags (0) OR-ed onto it, (x .|. 0 : U32) layers, with vuw_bits.or0r."""
+    t_, layers = core, []
+    while t_.startswith('(') and t_.endswith(' .|. 0 : U32)'):
+        layers.append((t_[1:-len(' .|. 0 : U32)')], t_))
+        t_ = layers[-1][0]
+    for inner, outer in reversed(layers):
+        prf = (f'FD.logic__subst(U32, zz => {{U32.to_nat(zz) == {end} : Nat}}, {inner}, {outer}, '
+               f'Equal.sym(U32, U32.or({inner}, 0), {inner}, UWB.or0r({inner})), {prf})')
+    return prf
+
+
 def child_max(ch):
     """The byte bound MX a child's module states (law maxx), or None."""
-    if not getattr(ch, 'std', False) and not getattr(ch, 'alias', '').startswith('EC_'):
+    if ch.p != 'bl32' and not getattr(ch, 'std', False) and not getattr(ch, 'alias', '').startswith('EC_'):
         return None
     m = re.match(r'import \./(\S+) as ', ch.mod or '')
-    if not m or not (ROOT / 'proofs/obj' / m.group(1)).exists():
+    t = obj_text(ROOT / 'proofs/obj' / m.group(1)) if m else None
+    if t is None:
         return None
-    t = (ROOT / 'proofs/obj' / m.group(1)).read_text()
     mm = re.search(r'^law maxx:\n.*\n.*\n  \{Nat\.is_le\(List\.length\(&2, U32, ENC\(m\)\), (\d+)n\) == True\{\} : Bool\}', t, re.M)
     return int(mm.group(1)) if mm else None
 
@@ -1408,7 +1654,13 @@ def iface_text(C, generic=False):
     curs = {ev['field']: ev['cur'] for ev in events if ev['kind'] == 'var'}
     for i, (f, fs) in enumerate(F):
         sch = kids[i]
-        if fs.fixed and fs.data and leaf_of(fs).bits:
+        if fs.fixed and fs.data and leaf_of(fs).tail:
+            # Bitvector[257]: its value and parts (vbv257s), its bytes vbv257.BYW
+            B_ = f'VCN.PC({4 * leaf_of(fs).W + 1}n, V_{fs.p}.BYW({f}))'
+            prf_ = (f'FD.logic__subst(+List<U32>, zz => {{Codec.parts(V2S.V257({f}), {sch}) == Some{{[S.Fixed{{zz}}]}} : Maybe<&2, +List<S.Part>>}}, V_{fs.p}.BYW({f}), {B_}, '
+                    f'Equal.sym(+List<U32>, {B_}, V_{fs.p}.BYW({f}), VCN.pc_id({4 * leaf_of(fs).W + 1}n, V_{fs.p}.BYW({f}), K.lenb_{fs.p}({f}))), V2S.prt257({f}, OKA_hv_{f}))')
+            fields.append(dict(kind='fix', f=f, val=f'V2S.V257({f})', sch=sch, part=f'S.Fixed{{{B_}}}', bytes=B_, prf=prf_, psch=sch))
+        elif fs.fixed and fs.data and leaf_of(fs).bits:
             n_ = leaf_of(fs).bits
             Y = f'[U32.and({f}, 255)]'
             fields.append(dict(kind='fix', f=f, val=f'VBB.V{n_}({f})', sch=sch, part=f'S.Fixed{{{Y}}}', bytes=Y,
@@ -1466,6 +1718,28 @@ def lvp_{lf.p}(+o: {lf.ctor}) -> {{Codec.parts(LV_{lf.p}(o), {fx(nd.sch)}) == So
             part = f'S.Fixed{{VCN.PC({B}n, FX.limbs(K.RW_{lf.p}({f})))}}'
             fields.append(dict(kind='fix', f=f, val=f'LV_{lf.p}({f})', sch=sch, part=part, bytes=f'VCN.PC({B}n, FX.limbs(K.RW_{lf.p}({f})))',
                                prf=f'lvp_{lf.p}({f})', psch=lsch))
+        elif fs.fixed and not fs.data and fs.p in rvec_names():
+            # a record vector (var_rec_enc.RVECS): its value, bytes and parts from its module (vspec)
+            a_ = K.fixw[f].alias
+            E_, B_ = f'{a_}.ENC(m_{f})', f'VCN.PC({fs.fsize}n, {a_}.ENC(m_{f}))'
+            prf_ = (f'FD.logic__subst(+List<U32>, zz => {{Codec.parts({a_}.VAL(m_{f}), {sch}) == Some{{[S.Fixed{{zz}}]}} : Maybe<&2, +List<S.Part>>}}, {E_}, {B_}, '
+                    f'Equal.sym(+List<U32>, {B_}, {E_}, VCN.pc_id({fs.fsize}n, {E_}, {a_}.lenv(m_{f}, OKA_hok_{f}))), {a_}.vspec(m_{f}, OKA_hok_{f}))')
+            fields.append(dict(kind='fix', f=f, val=f'{a_}.VAL(m_{f})', sch=sch, part=f'S.Fixed{{{B_}}}', bytes=B_, prf=prf_, psch=sch))
+        elif f in K.fixw and fs.kind == 'fixwords' and fs.p in ('bv1280', 'bv1281'):
+            # the word-held bit vectors of the generic containers (vbv128s)
+            fw8 = K.fixw[f]
+            nB = fs.fsize
+            B_ = f'VCN.PC({nB}n, {fw8.Y})'
+            if fs.p == 'bv1281':
+                val = f'V2S8.V1281(TB_{f})'
+                hY_ = f'V_bv1281.lenY(dB_{f}, TB_{f}, OKA_pfB_{f}, OKA_hrB_{f})'
+                prt_ = f'V2S8.prt1281(dB_{f}, TB_{f}, OKA_pfB_{f}, OKA_hdB_{f}, OKA_hrB_{f}, OKA_hbz_{f})'
+            else:
+                val = f'V2S8.V1280(TB_{f})'
+                hY_ = re.sub(r'(?<![\w_])(pfB|hrB)_' + f, lambda mm: 'OKA_' + mm.group(0), fw8.hY)
+                prt_ = f'V2S8.prt1280(dB_{f}, TB_{f}, OKA_pfB_{f}, OKA_hrB_{f})'
+            fields.append(dict(kind='fix', f=f, val=val, sch=sch, part=f'S.Fixed{{{B_}}}', bytes=B_, psch=sch,
+                               prf=f'CS.pcfix({val}, {sch}, {fw8.Y}, {nB}n, {hY_}, {prt_})'))
         elif fs.fixed and fs.kind == 'fixwords':
             nW = fs.fsize // 4
             by = f'VCN.PC(A.quad({nW}n), CS.WT({nW}n, TB_{f}))'
@@ -1619,7 +1893,7 @@ def okoC({OPS}, +h: {{OKT({OAS}) == {TRUE_}}}, +k: Nat, +ek: {{k == 28n : Nat}})
 def eSZ({OPS}, +u: Unit) -> {{K.SZC({OAS}) == {SZC} : U32}}: {{==}}
 def szC({OPS}, +h: {{OKT({OAS}) == {TRUE_}}}, +k: Nat, +ek: {{k == 28n : Nat}}) -> {{U32.to_nat(K.SZC({OAS})) == ENDC({OAS}) : Nat}}:
   FD.logic__subst(U32, z => {{U32.to_nat(z) == ENDC({OAS}) : Nat}}, {SZCORE}, K.SZC({OAS}), Equal.sym(U32, K.SZC({OAS}), {SZCORE}, {ESZ}),
-    {eo[-1]})
+    {szpeel(SZCORE, eo[-1], f'ENDC({OAS})')})
 
 # the writer's bytes: the fixed region (the layout's header), then the payloads
 def eENC({OPS}, +u: Unit) -> {{{ENCCt} == VCN.CAT([{", ".join(EP)}]) : +List<U32>}}: {{==}}
@@ -1800,7 +2074,7 @@ def domx(m, hok):
             ln = f'LY.LN({x["enc"]})'
             nxt = f'Nat.add({cur}, {ln})'
             prf = (f'FD.nat__le_trans({nxt}, Nat.add({B_}n, {ln}), {B_ + mx}n, Order.add_right({cur}, {B_}n, {ln}, {prf}), '
-                   f'Order.add_left({B_}n, {ln}, {mx}n, {ch.alias}.maxx(m_{x["f"]}, ok_hok_{x["f"]}({OAS}, h))))')
+                   f'Order.add_left({B_}n, {ln}, {mx}n, {"EB" if ch.p == "bl32" else ch.alias}.maxx(m_{x["f"]}, ok_hok_{x["f"]}({OAS}, h))))')
             cur, B_ = nxt, B_ + mx
         ifc += f'''
 # The bytes' bound: the fixed part and the children's bounds.
@@ -1867,6 +2141,11 @@ def maxx(m, hok):
             else:
                 A_, N_ = ch.oargs
                 cs.setdefault(ch.p, []).append((f'{ch.alias}.sizex_{ch.p}({A_}, {N_}, @HOK)', ch.vt, ch.obj, ch.sz, f'ok_h_{x["f"]}', f'{ch.alias}.valid_{ch.p}({A_}, {N_}, @HOK)'))
+        # the record vectors (var_rec_enc.RVECS): their storage check, FixW.valid on the OK accessors
+        for f_, fw_ in K.fixw.items():
+            if fw_.p in rvec_names():
+                vt_ = fw_.valid([f'ok_{hn}({OAS}, h)' for hn in fw_.hargs])
+                cs.setdefault(fw_.p, []).append((None, fw_.vt, fw_.obj, None, None, vt_))
     def chain_rt(entry, lawname, result_t, final_rhs, pair_second):
         """The runtime's pass `entry` (size / valid) over the children, each child's call rewritten by its law."""
         body_ = fn_body(f'{K.p}_{entry}')
@@ -1935,6 +2214,14 @@ def maxx(m, hok):
                 core_ = inner
             steps.append(f'  %Equal.sym(U32, K.SZC({OAS}), {core_}, {prf_}) :\n    {{T.{K.p}_size(K.OBJC({OAS})) == (K.OBJC({OAS}), _) : T.{C} & U32}}')
             SZR0 = core_
+        # the pz case: its core's checked fixed writers' flags (0), peeled with or0r
+        t_, peeled = SZC, False
+        if getattr(K, 'pz', None) is not None:
+            t_ = SZC[1:SZC.index(' .|. O.pz(')]
+            while t_.startswith('(') and t_.endswith(' .|. 0 : U32)'):
+                in_ = t_[1:-len(' .|. 0 : U32)')]
+                steps.append(f'  %Equal.sym(U32, U32.or({in_}, 0), {in_}, UWB.or0r({in_})) :\n    {{T.{K.p}_size(K.OBJC({OAS})) == (K.OBJC({OAS}), _) : T.{C} & U32}}')
+                t_, peeled = in_, True
         while True:
             m2 = re.fullmatch(r'T\.(\w+_sz\d+)\((.*)\)', cur)
             if not m2:
@@ -1952,7 +2239,7 @@ def maxx(m, hok):
                 break
             sz_prf, vt, _, SZj, hokn, _v = cands[0]
             ctx = f'T.{fname}(' + ', '.join(args[:-1] + ['_']) + ')'
-            SZR = SZC[1:SZC.index(' .|. O.pz(')] if getattr(K, 'pz', None) is not None else (SZR0 or f'K.SZC({OAS})')
+            SZR = t_ if peeled else (SZC[1:SZC.index(' .|. O.pz(')] if getattr(K, 'pz', None) is not None else (SZR0 or f'K.SZC({OAS})'))
             steps.append(f'  %Equal.sym({vt} & U32, {last}, ({V}, {SZj}), {sz_prf.replace("@HOK", f"{hokn}({OAS}, h)")}) :\n    {{{ctx} == (K.OBJC({OAS}), {SZR}) : T.{C} & U32}}')
             fb = fn_body(fname)
             params = fn_params(fname)
@@ -2028,7 +2315,7 @@ def iface_full(C, generic=False):
     body = iface_text(C, generic)
     main = (out_file(C) if not generic else gfile_c(C)).name
     heads = full_text(C, generic).split('\n')
-    mods = [l for l in heads if l.startswith('import ./') and (' as E' in l or ' as V_' in l or l.endswith(' as VPC'))]
+    mods = [l for l in heads if l.startswith('import ./') and (' as E' in l or ' as V_' in l or ' as RV_' in l or l.endswith(' as VPC'))]
     hd = IHEAD
     if generic:
         hd = [x.replace('../../types/fulu_obj.bend as T', '../../types/generic_obj.bend as T').replace('../../spec/fulu_schemas.bend as Spec', './generic_specs.bend as Spec') for x in hd]
@@ -2040,6 +2327,12 @@ def iface_full(C, generic=False):
         mods.append('import ./vfx_bv4.bend as VFB4')
     if 'VBB.' in body:
         mods.append('import ./vbitb.bend as VBB')
+    if 'V2S.' in body:
+        mods.append('import ./vbv257s.bend as V2S')
+    if 'V2S8.' in body:
+        mods.append('import ./vbv128s.bend as V2S8')
+    if 'VMR.' in body and 'import ./vmr.bend as VMR' not in mods + hd:
+        mods.append('import ./vmr.bend as VMR')
     if 'FWS.' in body:
         mods.append('import ./vfixw_spec.bend as FWS')
     if 'UWB.' in body and 'import ./vuw_bits.bend as UWB' not in mods + hd:
@@ -2061,7 +2354,7 @@ HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primi
 
 # The generic containers (types/generic_obj.bend, proofs/obj/generic_specs.bend) written by this generator:
 # every child in the encoder-window interface, every fixed piece word-aligned (so far).
-GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3', 'Gp8A7851175B', 'Gc221EC01D83', 'Gc85FA758A04']
+GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3', 'Gp8A7851175B', 'Gc221EC01D83', 'Gc85FA758A04', 'Gc56D855869F', 'Gc60805EC295']
 # the containers written in the encoder-window interface with their spec side (iface_text): (name, generic)
 def _has_iface(X):
     # a container child has an encoder window when its iface is generated here (ICONTS) or already on disk
@@ -2071,7 +2364,8 @@ def _has_iface(X):
 ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True),
           ('Gp8A7851175B', True), ('Gc221EC01D83', True), ('ExecutionRequests', False), ('Attestation', False),
           ('IndexedAttestation', False), ('AttesterSlashing', False), ('Gc85FA758A04', True),
-          ('LightClientHeader', False), ('BeaconBlockBody', False)]
+          ('LightClientHeader', False), ('BeaconBlockBody', False), ('BeaconBlock', False), ('SignedBeaconBlock', False), ('Gc56D855869F', True),
+          ('LightClientFinalityUpdate', False), ('Gc60805EC295', True)]
 
 
 def gfile_c(C):
@@ -2108,7 +2402,7 @@ def full_text(C, generic=False):
         mods.append('import ./vpiece.bend as VPC')
     if getattr(K, 'pz', None) is not None or ' .|. 0 : U32)' in SZC or getattr(K, 'or0', False):
         mods.append('import ./vuw_bits.bend as UWB')
-    if any(lf.bits for lf in K.leaves.values()):
+    if any(lf.bits or lf.tail for lf in K.leaves.values()):
         mods.append('import ./vbitb.bend as VBB')
     if any(lf.pad for lf in K.leaves.values()):   # the zero-padded bv4 leaf: its validity and spec (vbitb, vfx_bv4)
         mods.append('import ./vbitb.bend as VBB')
@@ -2199,6 +2493,356 @@ def pfC({OPS_}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +pf: {{FD.array__
   {pfs}'''
 
 
+# ==== unions in the encoder-window interface (UCONTS) ===========================================
+# A generic union U: the runtime writes the selector byte s with O.w8 at X, then the arm's put at X + 1
+# (proofs/obj/vunion.bend: sel_rt / sel_by / arm_e / aroom / arm_hz / ubytes / tag_v / tag_f). Its arms:
+# a container through its interface big_encx_<A>_iface (EA_<A>), or a Data record of one uint8 (vrecb's
+# W8P at the byte after the selector). big_encx_<U>_iface.bend states the interface's laws on its mirror MW.
+
+UCONTS = ['GuA2212AE21F', 'GuAD91DEB870', 'Gu6DDF182530']
+
+UHEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primitives.bend as I', 'import ../../types/generic_obj.bend as T',
+         'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P', 'import ../../spec/codec.bend as Codec',
+         'import ../../spec/layout.bend as Layout', 'import ../../spec/primitives.bend as SP', 'import ./generic_specs.bend as Spec',
+         'import ../compact/found.bend as FD', 'import ../compact/arith.bend as A', 'import ../../proofs/nat_order.bend as Order',
+         'import ./spec_fixed.bend as FX', 'import ./vspec.bend as VS', 'import ./vbuf.bend as VB', 'import ./vua.bend as UA', 'import ./vuw.bend as UW',
+         'import ./vuwd.bend as WD', 'import ./vcopy.bend as VC', 'import ./vrecx.bend as VRX', 'import ./vcont.bend as VCN', 'import ./vua_lay.bend as LY',
+         'import ./vconts.bend as CS', 'import ./dk.bend as DK', 'import ./vunion.bend as VU', 'import ./vrecb.bend as VRB', 'import ./sub_pack.bend as SP2']
+
+
+def ufile(U):
+    return ROOT / f'proofs/obj/big_encx_{U}_iface.bend'
+
+
+def union_arms(U):
+    src = (ROOT / 'types/generic_obj.bend').read_text()
+    m = re.search(rf'^type {U} is Type:\n((?:  .*\n)+)', src, re.M)
+    arms = []
+    for ln in m.group(1).rstrip('\n').split('\n'):
+        mm = re.fullmatch(rf'  {U}_c(\d+)\{{v: (\w+)\}}', ln)
+        j, A = int(mm.group(1)), mm.group(2)
+        pt = re.search(rf'^def {U}_pt{j}\(.*\n  (.*)$', src, re.M).group(1)
+        s = int(re.search(r'O\.w8\(out, pos, (\d+)\)', pt).group(1))
+        if _has_iface(A):
+            pk = re.search(rf'^def {A}_putk\(out: Array<U32>, \+pos: U32, o: {A}\) -> .*: (.*)$', src, re.M).group(1)
+            assert pk == f'{A}_putn(out, pos, o)', (A, pk)
+            arms.append(dict(j=j, A=A, s=s, kind='if'))
+        else:
+            assert re.search(rf'^type {A} is Data:\n  {A}\{{f_A: U32\}}\n', src, re.M), A
+            assert re.search(rf'^    case {A}\{{\+f_A\}}: u8_valid\(f_A\)$', src, re.M)
+            sz = re.search(rf'^    case {U}_c{j}\{{\+v\}}: \({U}_c{j}\{{v\}}, (\d+)\)$', src, re.M).group(1)
+            assert sz == '2', (U, j, sz)
+            arms.append(dict(j=j, A=A, s=s, kind='u8'))
+    return arms
+
+
+def union_text(U):
+    arms = union_arms(U)
+    TRU = 'True{} : Bool'
+    TY = f'Array<U32> & (T.{U} & U32)'
+    X0 = 'Nat.add(A.quad(q), r)'
+    L = []
+    w = L.append
+    mods = []
+    for a in arms:
+        if a['kind'] == 'if' and f'import ./big_encx_{a["A"]}_iface.bend as EA_{a["A"]}' not in mods:
+            mods.append(f'import ./big_encx_{a["A"]}_iface.bend as EA_{a["A"]}')
+    w('')
+    w('# GENERATED by codegen/var_cont_enc.py. Do not edit.')
+    w(f'# {U} in the encoder-window interface: its selector byte, then its arm at X + 1 (see the generator: union_text).')
+    w('')
+    w('def PA(-A: Data, -B: Data, +p: DK.P2(A, B)) -> A:\n  (+a, +b) = p\n  a')
+    w('def PB(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:\n  (+a, +b) = p\n  b')
+    w('def and_l(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {a == True{} : Bool}: FD.logic__and_left(a, b, h)')
+    w('def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == True{} : Bool}: FD.logic__and_right(a, b, h)')
+    if any(a['kind'] == 'u8' for a in arms):
+        w('''
+# ---- the one-byte record arm: its value and parts (one fixed byte) ----
+def RV8(+x: U32) -> S.Value: S.Sequence{S.Items{VRB.UV8(x), S.EmptyItems{}}}
+def rprf(+x: U32) -> {Codec.parts(RV8(x), Spec.GpF350A3C486()) == Some{[S.Fixed{[U32.and(x, 255)]}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{VRB.UV8(x), S.EmptyItems{}}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}), Some{[S.Fixed{[U32.and(x, 255)]}]},
+    FX.cat_fixed(Codec.parts(VRB.UV8(x), S.Unsigned{P.U8{}}), [U32.and(x, 255)], Codec.parts(S.EmptyItems{}, S.End{}), [], VRB.prt8(x), {==})) :
+    {Codec.aggregate(_, Some{1n}) == Some{[S.Fixed{[U32.and(x, 255)]}]} : Maybe<&2, +List<S.Part>>}
+  SP2.agg([S.Fixed{[U32.and(x, 255)]}], 1n, 1n, {==}, SP2.bd_app([U32.and(x, 255)], [], VRB.dom8(x), {==}), {==}, {==})''')
+    # per-arm definitions
+    D = {}
+    for a in arms:
+        j, A, s = a['j'], a['A'], a['s']
+        S_ = str(s)
+        Sb = f'U32.and({s}, 255)'
+        DS = f'VU.DS(dd, D, q, r, {S_})'
+        if a['kind'] == 'if':
+            ea = f'EA_{A}'
+            xt = f'{ea}.MW'
+            TH = f'T.{U}_c{j}{{{ea}.TH(x)}}'
+            E = f'List.length(&2, U32, {ea}.ENC(x))'
+            OK = f'Bool.and({ea}.OK(x), Nat.is_le(1n+{E}, A.quad(VB.pw(28n))))'
+            ENC = f'Con{{{Sb}, {ea}.ENC(x)}}'
+            VAL = f'S.Selected{{{S_}, {ea}.VAL(x)}}'
+            SZ = f'({ea}.SZ(x) + 1 : U32)'
+            PUTX = f'{ea}.PUTX(x, dd, {DS}, VU.AQ(q, r), VU.AR(r))'
+        else:
+            xt = 'U32'
+            TH = f'T.{U}_c{j}{{T.{A}{{x}}}}'
+            E = '1n'
+            OK = 'U32.is_le(x, 255)'
+            ENC = f'Con{{{Sb}, [U32.and(x, 255)]}}'
+            VAL = f'S.Selected{{{S_}, RV8(x)}}'
+            SZ = '2'
+            PUTX = f'VRB.W8P(dd, {DS}, Nat.add(0n, 1n+VU.X0(q, r)), x)'
+        D[j] = dict(xt=xt)
+        w(f'''
+# ---- arm {j}: {A}, selector {s} ----
+def TH{j}(+x: {xt}) -> T.{U}: {TH}
+def OK{j}(+x: {xt}) -> Bool: {OK}
+def ENC{j}(+x: {xt}) -> +List<U32>: {ENC}
+def VAL{j}(+x: {xt}) -> S.Value: {VAL}
+def SZ{j}(+x: {xt}) -> U32: {SZ}
+def PUTX{j}(+x: {xt}, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: {PUTX}
+def RT{j}(+x: {xt}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {{T.{U}_putk(FD.array__thaw(U32, D), X, TH{j}(x)) == (FD.array__thaw(U32, PUTX{j}(x, dd, D, q, r)), (TH{j}(x), SZ{j}(x))) : {TY}}}
+def BY{j}(+x: {xt}, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+  {{UA.BYT(PUTX{j}(x, dd, D, q, r)) == UW.SPL(UA.BYT(D), {X0}, List.append(&2, U32, ENC{j}(x), UW.ZB(WD.PADB(r, List.length(&2, U32, ENC{j}(x)))))) : +List<U32>}}
+def mk{j}(+x: {xt}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RT{j}(x, dd, D, X, q, r), +b: BY{j}(x, dd, D, q, r)) -> DK.P2(RT{j}(x, dd, D, X, q, r), BY{j}(x, dd, D, q, r)):
+  (a, b)''')
+        HYP = (f'+x: {xt}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRU}}},\n'
+               f'    +hd: {{Nat.is_lt(dd, 29n) == {TRU}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRU}}},\n'
+               f'    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC{j}(x))))), VB.pw(dd)) == {TRU}}},\n'
+               f'    +hz: {{VS.bt(Nat.add(List.length(&2, U32, ENC{j}(x)), WD.PADB(r, List.length(&2, U32, ENC{j}(x)))), VS.bdr({X0}, UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC{j}(x)), WD.PADB(r, List.length(&2, U32, ENC{j}(x))))) : +List<U32>}},\n'
+               f'    +hok: {{OK{j}(x) == {TRU}}}')
+        END = f'(FD.array__thaw(U32, PUTX{j}(x, dd, D, q, r)), (TH{j}(x), SZ{j}(x)))'
+        if a['kind'] == 'if':
+            ea = f'EA_{A}'
+            B = f'Nat.is_le(1n+{E}, A.quad(VB.pw(28n)))'
+            w(f'''def go{j}({HYP})
+    -> DK.P2(RT{j}(x, dd, D, X, q, r), BY{j}(x, dd, D, q, r)):
+  +E = {E}
+  +hok0 = and_l({ea}.OK(x), {B}, hok)
+  +rts = VU.sel_rt(dd, D, X, q, r, {S_}, E, e, hr, hd, hl, pf)
+  +bys = VU.sel_by(dd, D, X, q, r, {S_}, E, WD.PADB(r, 1n+E), e, hr, hd, hl, pf, hz)
+  +pfs = VU.sel_pf(dd, D, q, r, {S_}, pf)
+  +hX = VRX.xstart(q, r, 1n+E, dd, D, pf, hl)
+  +ea = VU.arm_e(dd, X, q, r, E, e, hr, hd, hl)
+  +hla = VU.aroom(q, r, E, dd, hr, hl)
+  +hza = VU.arm_hz(dd, D, q, r, {S_}, E, hr, hX, bys, hz)
+  +rta = {ea}.putx(x, dd, {DS}, U32.add(X, 1), VU.AQ(q, r), VU.AR(r), ea, VU.ar_lt(r), hd, pfs, hla, hza, hok0)
+  +bya = {ea}.putx_bytes(x, dd, {DS}, U32.add(X, 1), VU.AQ(q, r), VU.AR(r), ea, VU.ar_lt(r), hd, pfs, hla, hza, hok0)
+  +by = VU.ubytes(dd, D, PUTX{j}(x, dd, D, q, r), q, r, {S_}, {ea}.ENC(x), hr, hX, bys, bya)
+  +rt = rt{j}(x, dd, D, X, q, r, hok0, rts, rta)
+  mk{j}(x, dd, D, X, q, r, rt, by)
+''')
+            # the runtime chain, before go
+            L.insert(len(L) - 1, f'''
+def rt{j}(+x: {xt}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +hok0: {{{ea}.OK(x) == {TRU}}},
+    +rts: {{O.w8(FD.array__thaw(U32, D), X, {S_}) == FD.array__thaw(U32, {DS}) : Array<U32>}},
+    +rta: {{T.{A}_putk(FD.array__thaw(U32, {DS}), U32.add(X, 1), {ea}.TH(x)) == (FD.array__thaw(U32, PUTX{j}(x, dd, D, q, r)), ({ea}.TH(x), {ea}.SZ(x))) : Array<U32> & (T.{A} & U32)}})
+    -> RT{j}(x, dd, D, X, q, r):
+  %Equal.sym(T.{A} & Bool, T.{A}_valid({ea}.TH(x)), ({ea}.TH(x), True{{}}), {ea}.validx(x, hok0)) :
+    {{T.{U}_pk(FD.array__thaw(U32, D), X, T.{U}_va{j}(_)) == {END} : {TY}}}
+  %Equal.sym(T.{A} & U32, T.{A}_size({ea}.TH(x)), ({ea}.TH(x), {ea}.SZ(x)), {ea}.sizex(x, hok0)) :
+    {{T.{U}_putn_sz(FD.array__thaw(U32, D), X, T.{U}_sz{j}(_)) == {END} : {TY}}}
+  %Equal.sym(Array<U32>, O.w8(FD.array__thaw(U32, D), X, {S_}), FD.array__thaw(U32, {DS}), rts) :
+    {{T.{U}_putn_fin(SZ{j}(x), T.{U}_pb{j}(T.{A}_put(_, U32.add(X, 1), {ea}.TH(x)))) == {END} : {TY}}}
+  %Equal.sym(Array<U32> & (T.{A} & U32), T.{A}_putk(FD.array__thaw(U32, {DS}), U32.add(X, 1), {ea}.TH(x)), (FD.array__thaw(U32, PUTX{j}(x, dd, D, q, r)), ({ea}.TH(x), {ea}.SZ(x))), rta) :
+    {{T.{U}_putn_fin(SZ{j}(x), T.{U}_pb{j}(T.{A}_put_drop(_))) == {END} : {TY}}}
+  {{==}}''')
+        else:
+            P_ = 'Nat.add(0n, 1n+VU.X0(q, r))'
+            Xn = 'Nat.add(A.quad(VU.AQ(q, r)), VU.AR(r))'
+            Y0 = 'U32.add(U32.add(X, 1), 0)'
+            PB_ = 'WD.PADB(VU.AR(r), 1n)'
+            b8 = '[U32.and(x, 255)]'
+            w(f'''def go{j}({HYP})
+    -> DK.P2(RT{j}(x, dd, D, X, q, r), BY{j}(x, dd, D, q, r)):
+  +rts = VU.sel_rt(dd, D, X, q, r, {S_}, 1n, e, hr, hd, hl, pf)
+  +bys = VU.sel_by(dd, D, X, q, r, {S_}, 1n, WD.PADB(r, 2n), e, hr, hd, hl, pf, hz)
+  +pfs = VU.sel_pf(dd, D, q, r, {S_}, pf)
+  +hX = VRX.xstart(q, r, 2n, dd, D, pf, hl)
+  +eY = Equal.trans(Nat, U32.to_nat(U32.add(X, 1)), {Xn}, 1n+VU.X0(q, r), VU.arm_e(dd, X, q, r, 1n, e, hr, hd, hl), VU.apos(q, r, hr))
+  +hb = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(dd))) == {TRU}}}, Nat.add(VU.X0(q, r), 2n), 1n+Nat.add(VU.X0(q, r), 1n), FD.nat__add_succ(VU.X0(q, r), 1n),
+    VRX.xend(q, r, 2n, dd, hl))
+  +e0 = VRB.fposb(dd, U32.add(X, 1), 0, 1n+VU.X0(q, r), 1n, eY, hd, hb, {{==}})
+  +rtw = VRB.w8p_rt(dd, {DS}, {Y0}, {P_}, x, e0, hd, hb, pfs)
+  +hza = VU.arm_hz(dd, D, q, r, {S_}, 1n, hr, hX, bys, hz)
+  +hz1 = FD.logic__subst(Nat, z => {{VS.bt(1n, VS.bdr(z, UA.BYT({DS}))) == UW.ZB(1n) : +List<U32>}}, {Xn}, {P_}, VU.apos(q, r, hr),
+    VRX.zhead(1n, {PB_}, VS.bdr({Xn}, UA.BYT({DS})), hza))
+  +byw = VRB.w8p_bytes(dd, {DS}, {Y0}, {P_}, x, e0, hd, hb, pfs, hz1)
+  +zt = VRX.ztail(1n, {PB_}, VS.bdr({Xn}, UA.BYT({DS})), hza)
+  +zt2 = FD.logic__subst(+List<U32>, zz => {{VS.bt({PB_}, zz) == UW.ZB({PB_}) : +List<U32>}}, VS.bdr(1n, VS.bdr({Xn}, UA.BYT({DS}))), VS.bdr(Nat.add({Xn}, 1n), UA.BYT({DS})),
+    Equal.sym(+List<U32>, VS.bdr(Nat.add({Xn}, 1n), UA.BYT({DS})), VS.bdr(1n, VS.bdr({Xn}, UA.BYT({DS}))), UW.bdr_add({Xn}, 1n, UA.BYT({DS}))), zt)
+  +hzt = FD.logic__subst(Nat, z => {{VS.bt({PB_}, VS.bdr(Nat.add(z, 1n), UA.BYT({DS}))) == UW.ZB({PB_}) : +List<U32>}}, {Xn}, {P_}, VU.apos(q, r, hr), zt2)
+  +ext = WD.spl_ext(UA.BYT({DS}), {P_}, {b8}, {PB_}, hzt)
+  +by2p = Equal.trans(+List<U32>, UA.BYT(PUTX{j}(x, dd, D, q, r)), UW.SPL(UA.BYT({DS}), {P_}, {b8}), UW.SPL(UA.BYT({DS}), {P_}, List.append(&2, U32, {b8}, UW.ZB({PB_}))), byw, ext)
+  +by2 = FD.logic__subst(Nat, z => {{UA.BYT(PUTX{j}(x, dd, D, q, r)) == UW.SPL(UA.BYT({DS}), z, List.append(&2, U32, {b8}, UW.ZB({PB_}))) : +List<U32>}}, {P_}, {Xn},
+    Equal.sym(Nat, {Xn}, {P_}, VU.apos(q, r, hr)), by2p)
+  +by = VU.ubytes(dd, D, PUTX{j}(x, dd, D, q, r), q, r, {S_}, {b8}, hr, hX, bys, by2)
+  +rt = rt{j}(x, dd, D, X, q, r, hok, rts, rtw)
+  mk{j}(x, dd, D, X, q, r, rt, by)
+''')
+            L.insert(len(L) - 1, f'''
+def rt{j}(+x: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +hok: {{OK{j}(x) == {TRU}}},
+    +rts: {{O.w8(FD.array__thaw(U32, D), X, {S_}) == FD.array__thaw(U32, {DS}) : Array<U32>}},
+    +rtw: {{T.u8_put(FD.array__thaw(U32, {DS}), {Y0}, x) == FD.array__thaw(U32, PUTX{j}(x, dd, D, q, r)) : Array<U32>}})
+    -> RT{j}(x, dd, D, X, q, r):
+  %Equal.sym(Bool, U32.is_le(x, 255), True{{}}, hok) :
+    {{T.{U}_pk(FD.array__thaw(U32, D), X, (TH{j}(x), _)) == {END} : {TY}}}
+  %Equal.sym(Array<U32>, O.w8(FD.array__thaw(U32, D), X, {S_}), FD.array__thaw(U32, {DS}), rts) :
+    {{T.{U}_putn_fin(2, (T.{A}_put(_, U32.add(X, 1), T.{A}{{x}}), TH{j}(x))) == {END} : {TY}}}
+  %Equal.sym(Array<U32>, T.u8_put(FD.array__thaw(U32, {DS}), {Y0}, x), FD.array__thaw(U32, PUTX{j}(x, dd, D, q, r)), rtw) :
+    {{T.{U}_putn_fin(2, (_, TH{j}(x))) == {END} : {TY}}}
+  {{==}}''')
+        # the arm's other facts
+        if a['kind'] == 'if':
+            ea = f'EA_{A}'
+            B = f'Nat.is_le(1n+{E}, A.quad(VB.pw(28n)))'
+            w(f'''def pfx{j}(+x: {xt}, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRU}}})
+    -> {{FD.array__perfect(U32, dd, PUTX{j}(x, dd, D, q, r)) == {TRU}}}:
+  {ea}.pfx(x, dd, {DS}, VU.AQ(q, r), VU.AR(r), VU.sel_pf(dd, D, q, r, {S_}, pf))
+def bnd{j}(+x: {xt}, +hok: {{OK{j}(x) == {TRU}}}, +k: Nat, +ek: {{k == 28n : Nat}}) -> {{Nat.is_le(List.length(&2, U32, ENC{j}(x)), A.quad(VB.pw(k))) == {TRU}}}:
+  FD.logic__subst(Nat, z => {{Nat.is_le(1n+{E}, A.quad(VB.pw(z))) == {TRU}}}, 28n, k, Equal.sym(Nat, k, 28n, ek), and_r({ea}.OK(x), {B}, hok))
+def szk{j}(+x: {xt}, +hok: {{OK{j}(x) == {TRU}}}, +k: Nat, +ek: {{k == 28n : Nat}}) -> {{U32.to_nat(SZ{j}(x)) == List.length(&2, U32, ENC{j}(x)) : Nat}}:
+  VB.add_le_at({ea}.SZ(x), 1, {E}, 2n+k, {ea}.szx(x, and_l({ea}.OK(x), {B}, hok)),
+    FD.logic__subst(Nat, z => {{Nat.is_lt(2n+z, 31n) == {TRU}}}, 28n, k, Equal.sym(Nat, k, 28n, ek), {{==}}), bnd{j}(x, hok, k, ek))
+def spec{j}(+x: {xt}, +hok: {{OK{j}(x) == {TRU}}}) -> {{Codec.parts(VAL{j}(x), Spec.{U}()) == Some{{[S.Variable{{ENC{j}(x)}}]}} : Maybe<&2, +List<S.Part>>}}:
+  VU.tag_v({S_}, {ea}.VAL(x), Spec.{A}(), {ea}.ENC(x), {ea}.encx_spec(x, and_l({ea}.OK(x), {B}, hok)))
+def size{j}(+x: {xt}, +hok: {{OK{j}(x) == {TRU}}}) -> {{T.{U}_size(TH{j}(x)) == (TH{j}(x), SZ{j}(x)) : T.{U} & U32}}:
+  %Equal.sym(T.{A} & U32, T.{A}_size({ea}.TH(x)), ({ea}.TH(x), {ea}.SZ(x)), {ea}.sizex(x, and_l({ea}.OK(x), {B}, hok))) : {{T.{U}_sz{j}(_) == (TH{j}(x), SZ{j}(x)) : T.{U} & U32}}
+  {{==}}
+def valid{j}(+x: {xt}, +hok: {{OK{j}(x) == {TRU}}}) -> {{T.{U}_valid(TH{j}(x)) == (TH{j}(x), True{{}}) : T.{U} & Bool}}:
+  %Equal.sym(T.{A} & Bool, T.{A}_valid({ea}.TH(x)), ({ea}.TH(x), True{{}}), {ea}.validx(x, and_l({ea}.OK(x), {B}, hok))) : {{T.{U}_va{j}(_) == (TH{j}(x), True{{}}) : T.{U} & Bool}}
+  {{==}}''')
+        else:
+            w(f'''def pfx{j}(+x: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRU}}})
+    -> {{FD.array__perfect(U32, dd, PUTX{j}(x, dd, D, q, r)) == {TRU}}}:
+  VRB.w8p_perfect(dd, {DS}, Nat.add(0n, 1n+VU.X0(q, r)), x, VU.sel_pf(dd, D, q, r, {S_}, pf))
+def bnd{j}(+x: U32, +hok: {{OK{j}(x) == {TRU}}}, +k: Nat, +ek: {{k == 28n : Nat}}) -> {{Nat.is_le(List.length(&2, U32, ENC{j}(x)), A.quad(VB.pw(k))) == {TRU}}}:
+  FD.nat__le_trans(2n, 4n, A.quad(VB.pw(k)), {{==}}, VCN.VME4(1n, VB.pw(k), FD.nat__pow2_pos(k)))
+def szk{j}(+x: U32, +hok: {{OK{j}(x) == {TRU}}}, +k: Nat, +ek: {{k == 28n : Nat}}) -> {{U32.to_nat(SZ{j}(x)) == List.length(&2, U32, ENC{j}(x)) : Nat}}: {{==}}
+def spec{j}(+x: U32, +hok: {{OK{j}(x) == {TRU}}}) -> {{Codec.parts(VAL{j}(x), Spec.{U}()) == Some{{[S.Variable{{ENC{j}(x)}}]}} : Maybe<&2, +List<S.Part>>}}:
+  VU.tag_f({S_}, RV8(x), Spec.{A}(), [U32.and(x, 255)], rprf(x))
+def size{j}(+x: U32, +hok: {{OK{j}(x) == {TRU}}}) -> {{T.{U}_size(TH{j}(x)) == (TH{j}(x), SZ{j}(x)) : T.{U} & U32}}: {{==}}
+def valid{j}(+x: U32, +hok: {{OK{j}(x) == {TRU}}}) -> {{T.{U}_valid(TH{j}(x)) == (TH{j}(x), True{{}}) : T.{U} & Bool}}:
+  %Equal.sym(Bool, U32.is_le(x, 255), True{{}}, hok) : {{(TH{j}(x), _) == (TH{j}(x), True{{}}) : T.{U} & Bool}}
+  {{==}}''')
+    # the mirror and the interface
+    ctors = '\n'.join(f'  MW{a["j"]}{{x: {D[a["j"]]["xt"]}}}' for a in arms)
+
+    def mt(ret, fn, extra='', args=''):
+        cases = '\n'.join(f'    case MW{a["j"]}{{+x}}: {fn}{a["j"]}(x{args})' for a in arms)
+        return f'  match m:\n{cases}'
+    w(f'''
+# ---- the union's mirror and its interface ----
+type MW is Data:
+{ctors}
+def TH(m: MW) -> T.{U}:
+{mt('', 'TH')}
+def OK(m: MW) -> Bool:
+{mt('', 'OK')}
+def ENC(m: MW) -> +List<U32>:
+{mt('', 'ENC')}
+def VAL(m: MW) -> S.Value:
+{mt('', 'VAL')}
+def SZ(m: MW) -> U32:
+{mt('', 'SZ')}
+def PUTX(m: MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+{mt('', 'PUTX', args=', dd, D, q, r')}
+def PADB(+r: Nat, m: MW) -> Nat: WD.PADB(r, List.length(&2, U32, ENC(m)))
+''')
+    LH = ['for +m: MW', 'for +dd: Nat', 'for +D: FD.array__Tree<U32>', 'for +X: U32', 'for +q: Nat', 'for +r: Nat',
+          'for +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}', 'for +hr: {Nat.is_lt(r, 4n) == True{} : Bool}',
+          'for +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}', 'for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}',
+          'for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}',
+          'for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}',
+          'for +hok: {OK(m) == True{} : Bool}']
+    LHs = '\n  '.join(LH)
+    cs = lambda body: '\n'.join(f'    case MW{a["j"]}{{+x}}: ' + body(a['j']) for a in arms)  # noqa: E731
+    GA = 'x, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok'
+    w(f'''law putx:
+  {LHs}
+  {{T.{U}_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : {TY}}}
+def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
+  match m:
+{cs(lambda j: f"PA(RT{j}(x, dd, D, X, q, r), BY{j}(x, dd, D, q, r), go{j}({GA}))")}
+
+law putx_bytes:
+  {LHs}
+  {{UA.BYT(PUTX(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, ENC(m), UW.ZB(PADB(r, m)))) : +List<U32>}}
+def putx_bytes(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
+  match m:
+{cs(lambda j: f"PB(RT{j}(x, dd, D, X, q, r), BY{j}(x, dd, D, q, r), go{j}({GA}))")}
+
+law szx:
+  for +m: MW
+  for +hok: {{OK(m) == True{{}} : Bool}}
+  {{U32.to_nat(SZ(m)) == List.length(&2, U32, ENC(m)) : Nat}}
+def szx(m, hok):
+  match m:
+{cs(lambda j: f"szk{j}(x, hok, 28n, {{==}})")}
+
+law bndx:
+  for +m: MW
+  for +hok: {{OK(m) == True{{}} : Bool}}
+  for +k: Nat
+  for +ek: {{k == 28n : Nat}}
+  {{Nat.is_le(List.length(&2, U32, ENC(m)), A.quad(VB.pw(k))) == True{{}} : Bool}}
+def bndx(m, hok, k, ek):
+  match m:
+{cs(lambda j: f"bnd{j}(x, hok, k, ek)")}
+
+law encx_spec:
+  for +m: MW
+  for +hok: {{OK(m) == True{{}} : Bool}}
+  {{Codec.parts(VAL(m), Spec.{U}()) == Some{{[S.Variable{{ENC(m)}}]}} : Maybe<&2, +List<S.Part>>}}
+def encx_spec(m, hok):
+  match m:
+{cs(lambda j: f"spec{j}(x, hok)")}
+
+law domx:
+  for +m: MW
+  for +hok: {{OK(m) == True{{}} : Bool}}
+  {{SP.bytes_domain(ENC(m)) == True{{}} : Bool}}
+def domx(m, hok): CS.domv(VAL(m), Spec.{U}(), ENC(m), {{==}}, encx_spec(m, hok))
+
+law pfx:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +q: Nat
+  for +r: Nat
+  for +pf: {{FD.array__perfect(U32, dd, D) == True{{}} : Bool}}
+  {{FD.array__perfect(U32, dd, PUTX(m, dd, D, q, r)) == True{{}} : Bool}}
+def pfx(m, dd, D, q, r, pf):
+  match m:
+{cs(lambda j: f"pfx{j}(x, dd, D, q, r, pf)")}
+
+law sizex:
+  for +m: MW
+  for +hok: {{OK(m) == True{{}} : Bool}}
+  {{T.{U}_size(TH(m)) == (TH(m), SZ(m)) : T.{U} & U32}}
+def sizex(m, hok):
+  match m:
+{cs(lambda j: f"size{j}(x, hok)")}
+
+law validx:
+  for +m: MW
+  for +hok: {{OK(m) == True{{}} : Bool}}
+  {{T.{U}_valid(TH(m)) == (TH(m), True{{}}) : T.{U} & Bool}}
+def validx(m, hok):
+  match m:
+{cs(lambda j: f"valid{j}(x, hok)")}
+''')
+    if all(a['kind'] == 'u8' for a in arms):
+        w(f'''law maxx:
+  for +m: MW
+  for +hok: {{OK(m) == True{{}} : Bool}}
+  {{Nat.is_le(List.length(&2, U32, ENC(m)), 2n) == True{{}} : Bool}}
+def maxx(m, hok):
+  match m:
+{cs(lambda j: "{==}")}
+''')
+    return '\n'.join(UHEAD + mods) + '\n' + '\n'.join(L)
+
+
 def main():
     out = {}
     if '--no-big' not in sys.argv:
@@ -2208,6 +2852,28 @@ def main():
             out[gfile_c(C)] = full_text(C, generic=True)
         for C, gen in ICONTS:
             out[iface_file(C)] = iface_full(C, gen)
+        for U in UCONTS:
+            out[ufile(U)] = union_text(U)
+        # to the fixed point, in this run: a module's text may read its children's (GEN)
+        global _STD
+        for _ in range(8):
+            GEN.clear()
+            GEN.update(out)
+            _STD = None
+            nxt = {}
+            for C in CONTS:
+                nxt[out_file(C)] = full_text(C)
+            for C in GCONTS:
+                nxt[gfile_c(C)] = full_text(C, generic=True)
+            for C, gen in ICONTS:
+                nxt[iface_file(C)] = iface_full(C, gen)
+            for U in UCONTS:
+                nxt[ufile(U)] = union_text(U)
+            if nxt == out:
+                break
+            out = nxt
+        else:
+            raise SystemExit('var_cont_enc: no fixed point in 8 rounds')
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale:
