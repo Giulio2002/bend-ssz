@@ -26,6 +26,8 @@ import var_laws as VLW  # noqa: E402
 LISTS = [('ExecutionRequests', 'deposits'), ('ExecutionRequests', 'withdrawals'), ('ExecutionRequests', 'consolidations'),
          ('BeaconBlockBody', 'voluntary_exits'), ('BeaconBlockBody', 'bls_to_execution_changes'), ('ExecutionPayload', 'withdrawals')]
 
+# lists of boxed records (codegen/var_rlist_box.py)
+BOXLISTS = [('BeaconBlockBody', 'proposer_slashings'), ('BeaconBlockBody', 'deposits')]
 # packed lists of byte vectors (codegen/var_rlist_bv.py)
 BVLISTS = [('BeaconBlockBody', 'blob_kzg_commitments')]
 
@@ -67,10 +69,10 @@ def rec_node(g, rt):
     return obj, VLW.subst_words(nd.val, mp), nd.sch, VLW.subst_words(nd.proof, mp), ftp.p
 
 
-def list_text(g, names, parent, field):
+def list_text(g, names, parent, field, rec=None):
     I = info(g, names, parent, field)
     p, R, RS, W, LIM, KL = I['p'], I['R'], I['RS'], I['W'], I['LIM'], I['KL']
-    obj, val, sch, proof, rp = rec_node(g, I['rt'])
+    obj, val, sch, proof, rp = rec or rec_node(g, I['rt'])
     TR = 'FD.array__Tree<U32>'
     TRR = f'FD.array__Tree<T.{R}>'
     TRUE = 'True{} : Bool'
@@ -422,6 +424,12 @@ def outputs():
     for parent, field in LISTS:
         I = info(g, names, parent, field)
         out[ROOT / f'proofs/obj/var_winx_{I["p"]}.bend'] = list_text(g, names, parent, field)
+    import var_rlist_box as BX
+    out[ROOT / 'proofs/obj/vua_fixb.bend'] = BX.fixb_module(g, [dict(names[pa].fields)[f].elem for pa, f in BOXLISTS])
+    for parent, field in BOXLISTS:
+        I = info(g, names, parent, field)
+        rec, needs_d = BX.list_rec(g, I['rt'])
+        out[ROOT / f'proofs/obj/var_winx_{I["p"]}.bend'] = BX.post_box(list_text(g, names, parent, field, rec), I['p'], I['R'], I['RS'], needs_d)
     import var_rlist_bv as BV
     import var_win as VWN
     for parent, field in BVLISTS:
