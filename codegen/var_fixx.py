@@ -381,6 +381,11 @@ def outputs(no_big=False):
     import var_fixx_bv4 as BV4
     out = {ROOT / 'proofs/obj/vfxg.bend': gen_text(), ROOT / 'proofs/obj/vfx_SyncCommittee.bend': sc_mod(),
            ROOT / 'proofs/obj/vfx_bv4.bend': BV4.bv4_mod(HEAD, sig, TR, TRUE)}
+    import var_fixx_gen as GEN   # the generic containers' short fields (types/generic_obj.bend)
+    out[ROOT / 'proofs/obj/vfx_u8.bend'] = GEN.u8_mod(HEAD, sig, TR, TRUE)
+    out[ROOT / 'proofs/obj/vfx_u16.bend'] = GEN.u16_mod(HEAD, sig, TR, TRUE)
+    for N in (1, 2, 8):
+        out[ROOT / f'proofs/obj/vfx_bv{N}.bend'] = GEN.bvn_mod(N, HEAD, sig, TR, TRUE)
     import schema
     import generate as G
     names = schema.load(ROOT / 'codegen/fulu.yaml')

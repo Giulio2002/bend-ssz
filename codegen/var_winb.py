@@ -37,7 +37,9 @@ import generate as G  # noqa: E402
 ROOT = VL.ROOT
 GROUP = 8
 # the child window module of each variable field's runtime prefix (boxes stripped)
-CHECKED = {'bv4'}
+CHECKED = {'bv4', 'bv1', 'bv2'}
+# the room a fixed-field module's reader needs past its field (default: the field's size)
+READROOM = {'bv4': 4}
 CHILD_MOD = {
     'l16_ProposerSlashing': 'var_winx_l16_ProposerSlashing.bend',
     'l1_AttesterSlashing': 'big_var_winx_l1_AttesterSlashing.bend',
@@ -70,7 +72,9 @@ CHILD_MOD = {
 PENDING = set()
 # the fixed-field modules (at any byte position) of the containers generated with window slices
 FIXMOD = {p: f'vfx_{p}.bend' for p in ['u64', 'b32', 'Fork', 'BeaconBlockHeader', 'v8192_b32', 'Eth1Data', 'v65536_b32', 'v8192_u64', 'bv4',
-                                         'Checkpoint', 'SyncCommittee', 'v64_u64']}
+                                         'Checkpoint', 'SyncCommittee', 'v64_u64', 'u8', 'u16', 'bv1', 'bv2', 'bv8']}
+# the generic containers (types/generic_obj.bend, generic_specs.bend): (name, their variable fields' child windows)
+GENERIC = [('Gc465214E502', {'l1024_u16': 'var_winx_l1024_u16.bend'})]
 # (container, output file) of the tracked modules
 MODULES = [('BeaconBlockBody', 'big_var_winx_BeaconBlockBody.bend', False), ('BeaconBlock', 'big_var_winx_BeaconBlock.bend', False),
            ('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock.bend', False), ('BeaconState', 'big_var_winx_BeaconState.bend', True)]
@@ -101,7 +105,7 @@ def qual(rep):
     m = re.fullmatch(r'O\.Boxed<(\w+)>', rep)
     if m:
         return f'O.Boxed<T.{m.group(1)}>'
-    return rep if rep.startswith('O.') else f'T.{rep}'
+    return rep if rep.startswith('O.') or rep in ('U32', 'Bool') else f'T.{rep}'
 
 
 def split_top(txt):
@@ -122,17 +126,20 @@ def split_top(txt):
 
 
 def generic_schema(name):
-    """(names text, [field schema texts]) of generic container `name` (proofs/obj/generic_specs.bend)."""
+    """(names text, [field schema texts], kind) of generic container `name` (proofs/obj/generic_specs.bend);
+    kind is 'Container' or 'ProgressiveContainer' (encoded alike: spec/codec.bend)."""
     src = (ROOT / 'proofs/obj/generic_specs.bend').read_text()
-    m = re.search(rf'^def {name}\(\) -> S\.Schema: S\.Container\{{(\[.*?\]), (.*)\}}$', src, re.M)
-    names_txt, ch = m.group(1), m.group(2)
+    m = re.search(rf'^def {name}\(\) -> S\.Schema: S\.(Container|ProgressiveContainer)\{{(.*)\}}$', src, re.M)
+    kind = m.group(1)
+    top = split_top(m.group(2))
+    names_txt, ch = top[0], top[1]
     kids = []
     while ch != 'S.End{}':
         assert ch.startswith('S.Chain{') and ch.endswith('}'), ch
         a, b = split_top(ch[len('S.Chain{'):-1])
         kids.append(a)
         ch = b
-    return names_txt, kids
+    return names_txt, kids, kind
 
 
 class Layout:
@@ -147,12 +154,13 @@ class Layout:
         t = names[name]
         s = g.shape(t)
         if generic:
-            _, ktxt = generic_schema(name)
+            _, ktxt, self.CK = generic_schema(name)
             kids = [f'F{i}' for i in range(len(ktxt))]
             self.top = f'GS.{name}()'
         else:
             kids, _ = VL.spec_schemas(name)
             ktxt = [f'Spec.{k}()' for k in kids]
+            self.CK = 'Container'
             self.top = f'Spec.{name}()'
         self.defs = W.spec_defs()
         self.fields = []
@@ -168,6 +176,7 @@ class Layout:
                     f['fmod'] = fixmod[fs.p]
                     f['fa'] = f'FX_{fs.p}'
                     f['chk'] = fs.p in CHECKED
+                    f['rs'] = READROOM.get(fs.p, f['size'])
                 else:
                     f['ft'] = VL.FT(g, ft)
                 p += f['size']
@@ -594,7 +603,7 @@ def validator_text(L):
             f = L.fchk[i - (k - 1)]
             c = f['c']
             w.append(f'      %Equal.sym(B.Buf & Bool, T.{f["rt"]}_ok_at({BUF}, U32.add(off, {c})), ({BUF}, {f["fa"]}.CHK(t, {L.pos(c)})),')
-            w.append(f'          {f["fa"]}.ok(d, t, n, U32.add(off, {c}), {L.pos(c)}, {L.EOC(c)}, hd, pf, {L.ROOM(c, 4)})) :')
+            w.append(f'          {f["fa"]}.ok(d, t, n, U32.add(off, {c}), {L.pos(c)}, {L.EOC(c)}, hd, pf, {L.ROOM(c, f["rs"])})) :')
             w.append(f'        {{{Tn}_v{i + 1}(off, len, {OS(k - 1)}, _) == {GOALT}}}')
         else:
             j = i - (k - 1) - m
@@ -648,7 +657,7 @@ def read_step(L, f):
         sz = f['size']
         call = f'T.{f["rt"]}_read({BUF}, U32.add(off, {c}), {sz})'
         prf = (f'{f["fa"]}.rdx(d, t, n, U32.add(off, {c}), {L.pos(c)}, {L.EOC(c)}, hd, pf,\n'
-               f'        {L.ROOM(c, max(sz, 4) if f.get("chk") else sz)})')
+               f'        {L.ROOM(c, f["rs"])})')
         ty = f'B.Buf & {f["rep"]}'
         base = f['rt']
     elif f['kind'] == 'fix':
@@ -828,17 +837,18 @@ def sym_schema_text(L):
     nf = L.nf
     X = L.top
     w = ['', '# ---- the schema, taken apart without unfolding it ----------------------------------------------', '']
-    w.append('def TL0(+sv: S.Schema) -> S.Schema: SH.Container_fields(sv)')
+    CK = L.CK
+    w.append(f'def TL0(+sv: S.Schema) -> S.Schema: SH.{CK}_fields(sv)')
     for i in range(nf):
         w.append(f'def TL{i + 1}(+sv: S.Schema) -> S.Schema: SH.Chain_tail(TL{i}(sv))')
     for i in range(nf):
         w.append(f'def HD{i}(+sv: S.Schema) -> S.Schema: SH.Chain_head(TL{i}(sv))')
     SVE = f'+sv: S.Schema, +esv: {{sv == {X} : S.Schema}}'
     TR = lambda body: f'FD.logic__subst(S.Schema, z => {{{body} : {"Bool" if "== True" in body else "S.Schema" if "Spec." in body or "S.End" in body else "Maybe<&2, Nat>"}}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})'
-    w.append(f'def isc({SVE}) -> {{SH.is_Container(sv) == True{{}} : Bool}}:')
-    w.append(f'  FD.logic__subst(S.Schema, z => {{SH.is_Container(z) == True{{}} : Bool}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
-    w.append(f'def fsn({SVE}) -> {{SS.fixed_size(SH.Container_fields(sv)) == None{{}} : Maybe<&2, Nat>}}:')
-    w.append(f'  FD.logic__subst(S.Schema, z => {{SS.fixed_size(SH.Container_fields(z)) == None{{}} : Maybe<&2, Nat>}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
+    w.append(f'def isc({SVE}) -> {{SH.is_{CK}(sv) == True{{}} : Bool}}:')
+    w.append(f'  FD.logic__subst(S.Schema, z => {{SH.is_{CK}(z) == True{{}} : Bool}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
+    w.append(f'def fsn({SVE}) -> {{SS.fixed_size(SH.{CK}_fields(sv)) == None{{}} : Maybe<&2, Nat>}}:')
+    w.append(f'  FD.logic__subst(S.Schema, z => {{SS.fixed_size(SH.{CK}_fields(z)) == None{{}} : Maybe<&2, Nat>}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
     for i, f in enumerate(L.fields):
         w.append(f'def es{i}({SVE}) -> {{HD{i}(sv) == {L.spec(f)} : S.Schema}}:')
         w.append(f'  FD.logic__subst(S.Schema, z => {{HD{i}(z) == {L.spec(f)} : S.Schema}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
@@ -903,10 +913,9 @@ def spec_text(L):
         if f['kind'] == 'fix' and L.sym:
             P, sz = L.pos(f['c']), f['size']
             ex = ''
-            hb = sz
+            hb = f['rs']
             if f.get('chk'):
                 ex = f', it{1 + L.k + L.fchk.index(f)}({TXOA}, hchk)'
-                hb = max(sz, 4)
             return (f'F.cat_fixed(Codec.parts({vals[i]}, {sch(i)}), UW.WX(t, {P}, {sz}n), Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, '
                     f'{f["fa"]}.prt(d, t, {P}, pf, {L.ROOM(f["c"], hb, hF=f"hFc({TXOA}, hchk)")}, HD{i}(sv), es{i}(sv, esv){ex}),\n      {cat(i + 1)})')
         if f['kind'] == 'fix':
@@ -1048,15 +1057,18 @@ def spec_text(L):
     w.append(f'    {hv},')
     w.append(f'    fitw({CWA}, h))')
     w.append('')
-    SV = ', +sv: S.Schema, +esv: {sv == Spec.' + L.name + '() : S.Schema}' if L.sym else ''
+    SV = ', +sv: S.Schema, +esv: {sv == ' + L.top + ' : S.Schema}' if L.sym else ''
     w.append(f'def partsw({CW}, {HCHK}{SV}) -> {{Codec.parts({itm(0)}, {chain(0)}) == Some{{{PSV}}} : {MP}}}:')
     w.append(f'  {cat(0)}')
     w.append('')
     if L.sym:
         w.append('# The spec parts of the value at the schema sv = the spec\'s (never unfolded here).')
         w.append(f'def specg({CW}, {HCHK}{SV}) -> {{Codec.parts(VALw(t, x, len), sv) == {TGT} : {MP}}}:')
-        w.append(f'  %Equal.sym(S.Schema, sv, S.Container{{SH.Container_names(sv), SH.Container_fields(sv)}}, SH.Container_shape(sv, isc(sv, esv))) : {{Codec.parts(VALw(t, x, len), _) == {TGT} : {MP}}}')
-        w.append(f'  %Equal.sym(Maybe<&2, Nat>, SS.fixed_size(SH.Container_fields(sv)), None{{}}, fsn(sv, esv)) : {{Codec.aggregate(Codec.parts({itm(0)}, SH.Container_fields(sv)), _) == {TGT} : {MP}}}')
+        CK = L.CK
+        SHP = (f'S.Container{{SH.Container_names(sv), SH.Container_fields(sv)}}' if CK == 'Container' else
+               f'S.ProgressiveContainer{{SH.ProgressiveContainer_names(sv), SH.ProgressiveContainer_fields(sv), SH.ProgressiveContainer_active(sv)}}')
+        w.append(f'  %Equal.sym(S.Schema, sv, {SHP}, SH.{CK}_shape(sv, isc(sv, esv))) : {{Codec.parts(VALw(t, x, len), _) == {TGT} : {MP}}}')
+        w.append(f'  %Equal.sym(Maybe<&2, Nat>, SS.fixed_size(SH.{CK}_fields(sv)), None{{}}, fsn(sv, esv)) : {{Codec.aggregate(Codec.parts({itm(0)}, SH.{CK}_fields(sv)), _) == {TGT} : {MP}}}')
         w.append(f'  %Equal.sym(S.Schema, TL0(sv), {chain(0)}, fe0(sv, esv)) : {{Codec.aggregate(Codec.parts({itm(0)}, _), None{{}}) == {TGT} : {MP}}}')
         w.append(f'  %Equal.sym({MP}, Codec.parts({itm(0)}, {chain(0)}), Some{{{PSV}}}, partsw({CWA}, hchk, sv, esv)) : {{Codec.aggregate(_, None{{}}) == {TGT} : {MP}}}')
         w.append(f'  %Equal.sym({M}, Layout.encoding({PSV}), Some{{{LHS}}}, encw({CWA}, hchk)) : {{Codec.one(_, None{{}}) == {TGT} : {MP}}}')
@@ -1465,6 +1477,8 @@ def top_text(L, wmod):
     import var_rlist_er as ER
     import var_rlist as RL
     X = L.name
+    if getattr(L, 'generic', False):
+        return generic_top_text(L, wmod)
     txt = ER.top_text(RL.HEAD)
     txt = txt.replace('import ./var_winx_ExecutionRequests.bend as EW', f'import ./{wmod} as EW')
     txt = txt.replace('# GENERATED by codegen/var_rlist.py (codegen/var_rlist_er.py). Do not edit.', '# GENERATED by codegen/var_winb.py. Do not edit.')
@@ -1477,6 +1491,44 @@ def top_text(L, wmod):
     assert old in txt
     txt = txt.replace(old, f'UW.vsingle(v, {mc.group(1)}, {flds}, {{==}})')
     return txt
+
+
+def generic_unique_text(X, top):
+    """decode_unique of a generic container: the spec relation's validity, from decode_spec."""
+    return '\n'.join(['import Base', 'import ../../types/schema.bend as S', 'import ../../spec/decoding_relation.bend as Decoding',
+                      'import ../compact/found.bend as FD', 'import ../compact/arith.bend as A', 'import ./vbuf.bend as VB',
+                      'import ./generic_specs.bend as GS', f'import ./{top} as DC', 'import ../../proofs/decode_complete.bend as DCO', '',
+                      '# GENERATED by codegen/var_winb.py. Do not edit.', '# Every spec value of an accepted buffer\'s bytes is the decoded value.',
+                      'law decode_unique:', '  for +d: Nat', '  for +t: FD.array__Tree<U32>', '  for +n: U32',
+                      '  for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}', '  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}',
+                      '  for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}',
+                      '  for +hchk: {DC.CHK(t, n) == True{} : Bool}', '  for +v: S.Value',
+                      f'  for spec: Decoding.decodes(GS.{X}(), DC.VW(t, n), v)', '  {v == DC.VAL(t, n) : S.Value}',
+                      'def decode_unique(d, t, n, pf, hd, hn, hchk, v, spec):',
+                      f'  DCO.valid_unique(GS.{X}(), DC.VW(t, n), v, DC.VAL(t, n), {{==}}, spec, DC.decode_spec(d, t, n, pf, hd, hn, hchk))']) + '\n'
+
+
+def generic_top_text(L, wmod):
+    """The whole-buffer decoder laws of a generic container (types/generic_obj, generic_specs):
+    var_win's whole-buffer template at the window x = 0, its items' chain the container's fields."""
+    import types
+    X = L.name
+    _, kids, _ = generic_schema(X)
+    ch = 'S.End{}'
+    for k in reversed(kids):
+        ch = f'S.Chain{{{k}, {ch}}}'
+    txt = W.top_text(types.SimpleNamespace(n=X), wmod, [])
+    txt = txt.replace('Codec.parts(items, S.End{})', f'Codec.parts(items, {ch})')
+    txt = txt.replace('# GENERATED by codegen/var_win.py. Do not edit.', '# GENERATED by codegen/var_winb.py. Do not edit.')
+    old = f'def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> T.{X}: W.OBJw(t, 0n, 0, n)'
+    assert old in txt
+    txt = txt.replace(old, f'def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> T.{X}: W.OBJw(d, t, 0n, 0, n)').replace('OBJ(t, n)', 'OBJ(d, t, n)')
+    out = []
+    for ln in txt.split('\n'):
+        ln = ln.replace('import ../../types/fulu_obj.bend as T', 'import ../../types/generic_obj.bend as T')
+        ln = ln.replace('import ../../spec/fulu_schemas.bend as Spec', 'import ./generic_specs.bend as Spec')
+        out.append(ln)
+    return '\n'.join(out)
 
 
 def layout(name, sym=False, fixmod=None, generic=False):
@@ -1522,6 +1574,18 @@ def main():
             continue
         out[ROOT / 'proofs/obj' / fn] = module_text(L)
         out[ROOT / 'proofs/obj' / f'big_var_codec_{name}.bend'] = top_text(L, fn)
+    for name, kids in GENERIC:
+        CHILD_MOD.update(kids)
+        L = layout(name, True, FIXMOD, generic=True)
+        fn = f'var_winx_{name}.bend'
+        mods = [f['mod'] for f in L.vars] + sorted(set(L.fmods().values()))
+        missing = [m for m in mods if not (ROOT / 'proofs/obj' / m).exists()]
+        if missing:
+            print(f'{fn}: waits for ' + ', '.join(missing))
+            continue
+        out[ROOT / 'proofs/obj' / fn] = module_text(L)
+        out[ROOT / 'proofs/obj' / f'var_codec_{name}.bend'] = top_text(L, fn)
+        out[ROOT / 'proofs/obj' / f'var_codec_{name}_unique.bend'] = generic_unique_text(name, f'var_codec_{name}.bend')
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:
