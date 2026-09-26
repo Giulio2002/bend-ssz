@@ -359,6 +359,11 @@ def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {T.l1_AttesterSlashing_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}:
   rdz(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), {==}, hchk)
+def ecast(+v: S.Value, +ys: +List<U32>, +e: {Codec.parts(v, Spec.AttesterSlashing()) == Some{[S.Variable{ys}]} : Maybe<&2, +List<S.Part>>})
+    -> {Codec.parts(v, Spec.Schema47()) == Some{[S.Variable{ys}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(S.Schema, Spec.Schema47(), Spec.AttesterSlashing(), {==}) : {Codec.parts(v, _) == Some{[S.Variable{ys}]} : Maybe<&2, +List<S.Part>>}
+  e
+
 def elen1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hf: {Nat.is_le(Nat.add(4n, 0n), U32.to_nat(len)) == True{} : Bool}, +e0: {O0(t, x) == 4 : U32}, +ha1: {AC1_1(t, x, off, len) == True{} : Bool})
@@ -441,7 +446,7 @@ def specm1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: 
     VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==})))
   %enc1(d, t, n, x, off, len, eo, hd, hw, pf, hf, e0, ha1) : {Codec.parts(S.Sequence{S.Items{CH.VALw(t, 4n+x, U32.sub(len, 4)), S.EmptyItems{}}}, Spec.Schema98()) == Some{[S.Variable{_}]} : Maybe<&2, +List<S.Part>>}
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{CH.VALw(t, 4n+x, U32.sub(len, 4)), S.EmptyItems{}}, S.Repeat{Spec.Schema47()}), Some{[S.Variable{UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4)))}]},
-      VS.cat_var(Codec.parts(CH.VALw(t, 4n+x, U32.sub(len, 4)), Spec.Schema47()), UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4))), Codec.parts(S.EmptyItems{}, S.Repeat{Spec.Schema47()}), [], c0, {==})) :
+      VS.items_var(CH.VALw(t, 4n+x, U32.sub(len, 4)), S.EmptyItems{}, Spec.Schema47(), UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4))), [], ecast(CH.VALw(t, 4n+x, U32.sub(len, 4)), UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4))), c0), {==})) :
     {Codec.aggregate(_, None{}) == Some{[S.Variable{List.append(&2, U32, Layout.fixed_parts([S.Variable{UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4)))}], 4n), Layout.payloads([S.Variable{UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4)))}]))}]} : Maybe<&2, +List<S.Part>>}
   %Equal.sym(Bool, SP.bytes_domain(UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4)))), True{}, UW.domWX(t, 4n+x, U32.to_nat(U32.sub(len, 4)))) :
     {Codec.one(SP.optional(Bool.and(Bool.and(_, True{}), N.fits(4n, Nat.add(4n, List.length(&2, U32, Layout.payloads([S.Variable{UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4)))}]))))), List.append(&2, U32, Layout.fixed_parts([S.Variable{UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4)))}], 4n), Layout.payloads([S.Variable{UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4)))}]))), None{}) == Some{[S.Variable{List.append(&2, U32, Layout.fixed_parts([S.Variable{UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4)))}], 4n), Layout.payloads([S.Variable{UW.WX(t, 4n+x, U32.to_nat(U32.sub(len, 4)))}]))}]} : Maybe<&2, +List<S.Part>>}
@@ -478,6 +483,8 @@ def specq(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
       +e0 = FD.u32__injective(O0(t, x), 4, ev)
       %Equal.sym(U32, O0(t, x), 4, e0) :
         {Codec.parts(S.Sequence{S.Items{CH.VALw(t, Nat.add(U32.to_nat(_), x), U32.sub(len, _)), S.EmptyItems{}}}, Spec.Schema98()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
+      %Equal.sym(Nat, Nat.add(U32.to_nat(4), x), 4n+x, {==}) :
+        {Codec.parts(S.Sequence{S.Items{CH.VALw(t, _, U32.sub(len, 4)), S.EmptyItems{}}}, Spec.Schema98()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
       specm1(d, t, n, x, off, len, eo, hd, hw, pf, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, U32.to_nat(O0(t, x)), Nat.add(4n, 0n), ev, hfl), e0, hl)
     case 2n+r: Empty.absurd({Codec.parts(VQ(2n+r, t, x, len), Spec.Schema98()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}, FD.logic__false_true(hl))
 

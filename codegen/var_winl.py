@@ -630,6 +630,15 @@ def spec_top(LP, N, C, ESCH, LSCH, LIMN):
     L = []
     w = L.append
     WBL = 'UW.WX(t, x, U32.to_nat(len))'
+    # an element's parts at the list schema's own name for the element schema
+    # (the list unfolds to S.Repeat{ESCH}; CH.specw states Spec.<C>()): cast
+    # once here, so the element steps compare syntactically
+    MPX = 'Maybe<&2, +List<S.Part>>'
+    w(f'def ecast(+v: S.Value, +ys: +List<U32>, +e: {{Codec.parts(v, Spec.{C}()) == Some{{[S.Variable{{ys}}]}} : {MPX}}})')
+    w(f'    -> {{Codec.parts(v, {ESCH}) == Some{{[S.Variable{{ys}}]}} : {MPX}}}:')
+    w(f'  %Equal.sym(S.Schema, {ESCH}, Spec.{C}(), {{==}}) : {{Codec.parts(v, _) == Some{{[S.Variable{{ys}}]}} : {MPX}}}')
+    w('  e')
+    w('')
     for m in range(1, N + 1):
         F = 4 * m
         FH = f'+hf: {{Nat.is_le(Nat.add({F}n, 0n), U32.to_nat(len)) == True{{}} : Bool}}'
@@ -665,7 +674,8 @@ def spec_top(LP, N, C, ESCH, LSCH, LIMN):
             for k in range(m - 1, i, -1):
                 vk = f'CH.VALw(t, Nat.add({nat_o(k)}, x), U32.sub({B_(m, k)}, {O(k)}))'
                 sub = f'S.Items{{{vk}, {sub}}}'
-            cat = f'VS.cat_var(Codec.parts({v}, {ESCH}), {Y_(m, i)}, Codec.parts({sub}, S.Repeat{{{ESCH}}}), {rest}, c{i}, {cat})'
+            # items_var: each step in the exact Codec.parts form of its parent (vspec)
+            cat = f'VS.items_var({v}, {sub}, {ESCH}, {Y_(m, i)}, {rest}, ecast({v}, {Y_(m, i)}, c{i}), {cat})'
         w(f'  %Equal.sym({MP}, Codec.parts({items_(m, True)}, S.Repeat{{{ESCH}}}), Some{{{PL_(m)}}},')
         w(f'      {cat}) :')
         w(f'    {{Codec.aggregate(_, None{{}}) == Some{{[S.Variable{{{LSX}}}]}} : {MP}}}')
@@ -716,6 +726,10 @@ def VALw(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: VZ(U32.is_eq(l
         w(f'      +e0 = FD.u32__injective({O(0)}, {F}, ev)')
         w(f'      %Equal.sym(U32, {O(0)}, {F}, e0) :')
         w(f'        {{Codec.parts(S.Sequence{{{items_(m, False).replace(f"CH.VALw(t, Nat.add({nat_o(0)}, x), U32.sub({B_(m, 0)}, {O(0)}))", f"CH.VALw(t, Nat.add(U32.to_nat(_), x), U32.sub({B_(m, 0)}, _))")}}}, {LSCH}) == Some{{[S.Variable{{{WBL}}}]}} : {MP}}}')
+        # the first element's position as specm states it ({F}n+x), so the instance matches
+        pat0 = items_(m, False).replace(f"CH.VALw(t, Nat.add({nat_o(0)}, x), U32.sub({B_(m, 0)}, {O(0)}))", f"CH.VALw(t, _, U32.sub({B_(m, 0)}, {F}))")
+        w(f'      %Equal.sym(Nat, Nat.add(U32.to_nat({F}), x), {F}n+x, {{==}}) :')
+        w(f'        {{Codec.parts(S.Sequence{{{pat0}}}, {LSCH}) == Some{{[S.Variable{{{WBL}}}]}} : {MP}}}')
         w(f'      specm{m}({CWA}, FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(len)) == True{{}} : Bool}}, U32.to_nat({O(0)}), Nat.add({F}n, 0n), ev, hfl), e0, hl)')
     w(f'    case {N + 1}n+r: Empty.absurd({{Codec.parts(VQ({N + 1}n+r, t, x, len), {LSCH}) == Some{{[S.Variable{{{WBL}}}]}} : {MP}}}, FD.logic__false_true(hl))')
     SPEC_TOP = f"""

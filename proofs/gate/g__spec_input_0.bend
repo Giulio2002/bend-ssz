@@ -5,7 +5,7 @@ import ../../types/fulu_obj.bend as T
 import ../../proofs/compact/found.bend as FD
 import ../obj/repr.bend as R
 import ../obj/spec_fixed.bend as F
-import ../obj/load.bend as LD
+import ../obj/spec_load_0.bend as LD
 import ../obj/spec_codec_0.bend as C
 import ../obj/spec_input_0.bend as PRV
 
