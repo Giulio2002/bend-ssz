@@ -71,7 +71,7 @@ def rec_ft(n):
 
 
 # the packed byte vectors of fixed size written like the fixwords (codegen/var_uwv.py's FWORDS: vuwv_<p>)
-FIXW_PACKED = ('v4_b32', 'v6_b32', 'v7_b32')
+FIXW_PACKED = ('v4_b32', 'v6_b32', 'v7_b32', 'v8192_b32', 'v65536_b32', 'v8192_u64', 'v64_u64')
 
 
 def is_fixw(fs):
