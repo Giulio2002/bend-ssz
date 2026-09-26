@@ -122,17 +122,20 @@ def split_top(txt):
 
 
 def generic_schema(name):
-    """(names text, [field schema texts]) of generic container `name` (proofs/obj/generic_specs.bend)."""
+    """(names text, [field schema texts], kind) of generic container `name` (proofs/obj/generic_specs.bend);
+    kind is 'Container' or 'ProgressiveContainer' (encoded alike: spec/codec.bend)."""
     src = (ROOT / 'proofs/obj/generic_specs.bend').read_text()
-    m = re.search(rf'^def {name}\(\) -> S\.Schema: S\.Container\{{(\[.*?\]), (.*)\}}$', src, re.M)
-    names_txt, ch = m.group(1), m.group(2)
+    m = re.search(rf'^def {name}\(\) -> S\.Schema: S\.(Container|ProgressiveContainer)\{{(.*)\}}$', src, re.M)
+    kind = m.group(1)
+    top = split_top(m.group(2))
+    names_txt, ch = top[0], top[1]
     kids = []
     while ch != 'S.End{}':
         assert ch.startswith('S.Chain{') and ch.endswith('}'), ch
         a, b = split_top(ch[len('S.Chain{'):-1])
         kids.append(a)
         ch = b
-    return names_txt, kids
+    return names_txt, kids, kind
 
 
 class Layout:
@@ -147,12 +150,13 @@ class Layout:
         t = names[name]
         s = g.shape(t)
         if generic:
-            _, ktxt = generic_schema(name)
+            _, ktxt, self.CK = generic_schema(name)
             kids = [f'F{i}' for i in range(len(ktxt))]
             self.top = f'GS.{name}()'
         else:
             kids, _ = VL.spec_schemas(name)
             ktxt = [f'Spec.{k}()' for k in kids]
+            self.CK = 'Container'
             self.top = f'Spec.{name}()'
         self.defs = W.spec_defs()
         self.fields = []
@@ -828,17 +832,18 @@ def sym_schema_text(L):
     nf = L.nf
     X = L.top
     w = ['', '# ---- the schema, taken apart without unfolding it ----------------------------------------------', '']
-    w.append('def TL0(+sv: S.Schema) -> S.Schema: SH.Container_fields(sv)')
+    CK = L.CK
+    w.append(f'def TL0(+sv: S.Schema) -> S.Schema: SH.{CK}_fields(sv)')
     for i in range(nf):
         w.append(f'def TL{i + 1}(+sv: S.Schema) -> S.Schema: SH.Chain_tail(TL{i}(sv))')
     for i in range(nf):
         w.append(f'def HD{i}(+sv: S.Schema) -> S.Schema: SH.Chain_head(TL{i}(sv))')
     SVE = f'+sv: S.Schema, +esv: {{sv == {X} : S.Schema}}'
     TR = lambda body: f'FD.logic__subst(S.Schema, z => {{{body} : {"Bool" if "== True" in body else "S.Schema" if "Spec." in body or "S.End" in body else "Maybe<&2, Nat>"}}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})'
-    w.append(f'def isc({SVE}) -> {{SH.is_Container(sv) == True{{}} : Bool}}:')
-    w.append(f'  FD.logic__subst(S.Schema, z => {{SH.is_Container(z) == True{{}} : Bool}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
-    w.append(f'def fsn({SVE}) -> {{SS.fixed_size(SH.Container_fields(sv)) == None{{}} : Maybe<&2, Nat>}}:')
-    w.append(f'  FD.logic__subst(S.Schema, z => {{SS.fixed_size(SH.Container_fields(z)) == None{{}} : Maybe<&2, Nat>}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
+    w.append(f'def isc({SVE}) -> {{SH.is_{CK}(sv) == True{{}} : Bool}}:')
+    w.append(f'  FD.logic__subst(S.Schema, z => {{SH.is_{CK}(z) == True{{}} : Bool}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
+    w.append(f'def fsn({SVE}) -> {{SS.fixed_size(SH.{CK}_fields(sv)) == None{{}} : Maybe<&2, Nat>}}:')
+    w.append(f'  FD.logic__subst(S.Schema, z => {{SS.fixed_size(SH.{CK}_fields(z)) == None{{}} : Maybe<&2, Nat>}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
     for i, f in enumerate(L.fields):
         w.append(f'def es{i}({SVE}) -> {{HD{i}(sv) == {L.spec(f)} : S.Schema}}:')
         w.append(f'  FD.logic__subst(S.Schema, z => {{HD{i}(z) == {L.spec(f)} : S.Schema}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
@@ -1055,8 +1060,11 @@ def spec_text(L):
     if L.sym:
         w.append('# The spec parts of the value at the schema sv = the spec\'s (never unfolded here).')
         w.append(f'def specg({CW}, {HCHK}{SV}) -> {{Codec.parts(VALw(t, x, len), sv) == {TGT} : {MP}}}:')
-        w.append(f'  %Equal.sym(S.Schema, sv, S.Container{{SH.Container_names(sv), SH.Container_fields(sv)}}, SH.Container_shape(sv, isc(sv, esv))) : {{Codec.parts(VALw(t, x, len), _) == {TGT} : {MP}}}')
-        w.append(f'  %Equal.sym(Maybe<&2, Nat>, SS.fixed_size(SH.Container_fields(sv)), None{{}}, fsn(sv, esv)) : {{Codec.aggregate(Codec.parts({itm(0)}, SH.Container_fields(sv)), _) == {TGT} : {MP}}}')
+        CK = L.CK
+        SHP = (f'S.Container{{SH.Container_names(sv), SH.Container_fields(sv)}}' if CK == 'Container' else
+               f'S.ProgressiveContainer{{SH.ProgressiveContainer_names(sv), SH.ProgressiveContainer_fields(sv), SH.ProgressiveContainer_active(sv)}}')
+        w.append(f'  %Equal.sym(S.Schema, sv, {SHP}, SH.{CK}_shape(sv, isc(sv, esv))) : {{Codec.parts(VALw(t, x, len), _) == {TGT} : {MP}}}')
+        w.append(f'  %Equal.sym(Maybe<&2, Nat>, SS.fixed_size(SH.{CK}_fields(sv)), None{{}}, fsn(sv, esv)) : {{Codec.aggregate(Codec.parts({itm(0)}, SH.{CK}_fields(sv)), _) == {TGT} : {MP}}}')
         w.append(f'  %Equal.sym(S.Schema, TL0(sv), {chain(0)}, fe0(sv, esv)) : {{Codec.aggregate(Codec.parts({itm(0)}, _), None{{}}) == {TGT} : {MP}}}')
         w.append(f'  %Equal.sym({MP}, Codec.parts({itm(0)}, {chain(0)}), Some{{{PSV}}}, partsw({CWA}, hchk, sv, esv)) : {{Codec.aggregate(_, None{{}}) == {TGT} : {MP}}}')
         w.append(f'  %Equal.sym({M}, Layout.encoding({PSV}), Some{{{LHS}}}, encw({CWA}, hchk)) : {{Codec.one(_, None{{}}) == {TGT} : {MP}}}')
