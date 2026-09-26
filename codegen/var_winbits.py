@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import var_win as VW  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-LISTS = [5, 6]
+LISTS = [5, 6, 256, 257, 1280, 1281]
 
 
 def win_text(N):
