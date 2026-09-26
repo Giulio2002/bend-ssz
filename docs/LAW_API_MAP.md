@@ -216,6 +216,11 @@ What that means concretely:
   bounded by the length's, `big_vu40` compares the 2^40 limit as a capacity),
   `vu8` (a byte string's uint8 items), and `codegen/var_winv.py`
   (List[Validator, 2^40], 121-byte records at any phase: `big_var_winx_l1099511627776_Validator`, 51 s).
+  BeaconState (`big_var_winx_BeaconState`, 1910 s / 18.3 GB, and its decoder laws
+  `big_var_codec_BeaconState`, 2096 s / 21.3 GB): var_winb's symbolic fixed-part
+  path (fixed fields as window slices read by the vfx_<p> modules, the schema as a
+  variable), with every closed large number reached through nat__eq_from_is_eq
+  (U32.to_nat of literals, WFS/WPOS, split sums, fixed sizes) and lengths behind LY.LN.
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped

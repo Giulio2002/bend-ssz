@@ -67,7 +67,7 @@ CHILD_MOD = {
     'l262144_PendingConsolidation': 'big_var_winx_l262144_PendingConsolidation.bend',
 }
 # containers written only with --pending (not yet checked)
-PENDING = {'BeaconState'}
+PENDING = set()
 # the fixed-field modules (at any byte position) of the containers generated with window slices
 FIXMOD = {p: f'vfx_{p}.bend' for p in ['u64', 'b32', 'Fork', 'BeaconBlockHeader', 'v8192_b32', 'Eth1Data', 'v65536_b32', 'v8192_u64', 'bv4',
                                          'Checkpoint', 'SyncCommittee', 'v64_u64']}
@@ -1049,6 +1049,19 @@ def inv_text(L):
         w.append(f'def EVF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Data: {{Codec.parts(h, s) == Some{{[S.Variable{{y}}]}} : {MP}}}')
         w.append(f'def EXF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Data: {{Codec.parts(h, s) == Some{{[S.Fixed{{y}}]}} : {MP}}}')
         w.append(f'def LXF(+s: Nat, +xs: +List<U32>) -> Data: {{Some{{s}} == Some{{List.length(&2, U32, xs)}} : Maybe<&2, Nat>}}')
+        w.append('def mis(a: Maybe<&2, Nat>, +n: Nat) -> Bool:')
+        w.append('  match a:')
+        w.append('    case None{}: False{}')
+        w.append('    case Some{v}: Nat.is_eq(v, n)')
+        w.append('def eqM(+a: Maybe<&2, Nat>, +n: Nat, +e: {mis(a, n) == True{} : Bool}) -> {a == Some{n} : Maybe<&2, Nat>}:')
+        w.append('  match a:')
+        w.append('    case None{}: Empty.absurd({None{} == Some{n} : Maybe<&2, Nat>}, FD.logic__false_true(e))')
+        w.append('    case Some{+v}: Equal.cong(Nat, Maybe<&2, Nat>, z => Some{z}, v, n, FD.nat__eq_from_is_eq(v, n, e))')
+        seen = set()
+        for f in L.fields:
+            if f['kind'] == 'fix' and f['sk'] not in seen:
+                seen.add(f['sk'])
+                w.append(f'def fz{f["sk"]}() -> {{SS.fixed_size({L.spec(f)}) == Some{{{f["size"]}n}} : Maybe<&2, Nat>}}: eqM(SS.fixed_size({L.spec(f)}), {f["size"]}n, {{==}})')
         w.append(f'def LCH{nf}() -> S.Schema: S.End{{}}')
         for i in range(nf - 1, -1, -1):
             w.append(f'def LCH{i}() -> S.Schema: S.Chain{{{L.spec(L.fields[i])}, LCH{i + 1}()}}')
@@ -1250,6 +1263,8 @@ def inv_text(L):
         if f['kind'] == 'fix':
             wd = f'Some{{{f["size"]}n}}'
             fact = f'DS.facts(h, {sp}, {{==}})'
+            if CP:
+                fact = f'FD.logic__subst(Maybe<&2, Nat>, z => DF.single_result(z, Codec.parts(h, {sp})), SS.fixed_size({sp}), {wd}, fz{f["sk"]}(), {fact})'
         else:
             wd = 'None{}'
             body = L.defs[f['sk']]
