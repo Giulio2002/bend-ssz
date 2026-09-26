@@ -356,6 +356,13 @@ What that means concretely:
   but imports big children: checkq --big, 62 s / 5.4 GB), over `vwc.bend`
   (fp_fix/fp_var, bv_*, fs_*, fp_len, bdr_skip, lsingle; stock). Its standard
   interface is keyed on T.ExecutionPayload_ok / T.ExecutionPayload_read.
+  Whole-buffer decoder laws (ok_eval, decode_accept, decode_spec,
+  decode_unique, decode_reject, decode_none; the window at x = 0, buffers of
+  depth d < 28) from `codegen/var_top.py`: `big_var_codec_ExecutionPayload.bend`
+  (checkq --big PASS 90 s / 5.6 GB) and `big_var_codec_Transaction.bend` (from
+  `big_vvlb_bl1073741824`; Transaction's validator and reader are the
+  ByteList[2^30] ones; the rejection splits the value and keeps the limit test
+  `ByteList.domain(limit, xs)` a variable; PASS 58 s / 3.4 GB).
 * **Progressive lists** (`codegen/var_plist.py`): the generic forms
   ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
   Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,
