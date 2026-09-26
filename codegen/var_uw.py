@@ -975,6 +975,72 @@ def putwu(+dd: Nat, +U: FD.array__Tree<U32>, +pos: U32, +i: Nat, +ds: Nat, +TS: 
 '''
 
 
+HLE_O = """
+# 4 + 4 M <= 4 NW = L + @S: the words after the first lie in the first L bytes' window.
+def hle_o(+M: Nat, +NW: Nat, +L: Nat, +hL: {Nat.add(L, @Sn) == A.quad(NW) : Nat}, +h: {Nat.is_le(4n+A.quad(M), A.quad(NW)) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(@Rn, A.quad(M)), L) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(4n+A.quad(M), z) == True{} : Bool}, A.quad(NW), Nat.add(@Sn, L),
+    Equal.trans(Nat, A.quad(NW), Nat.add(L, @Sn), Nat.add(@Sn, L), Equal.sym(Nat, Nat.add(L, @Sn), A.quad(NW), hL), FD.nat__add_comm(L, @Sn)), h)
+
+"""
+
+PUTWO_EQS = """  +hLS = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.len(UW.SLW(TS))) == True{} : Bool}, NW, 1n+Nat.add(M, KN), Equal.sym(Nat, 1n+Nat.add(M, KN), NW, eNW),
+    FD.logic__subst(Nat, z => {Nat.is_le(NW, z) == True{} : Bool}, VB.pw(ds), VB.len(UW.SLW(TS)), Equal.sym(Nat, VB.len(UW.SLW(TS)), VB.pw(ds), FD.array__slots_length(U32, ds, TS, pfS)), hnw))
+  +eD = FD.logic__subst(Nat, z => {D3 == UW.SWo(@S, VS.wtake(z, UW.SLW(TS)), dd, U, i, 0) : FD.array__Tree<U32>}, 1n+Nat.add(M, KN), NW, eNW, UW.asm_o(@S, dd, U, i, UW.SLW(TS), M, KN, hLS))
+  +eC = FD.logic__subst(Nat, z => {C3 == UW.CRY(@S, VS.wtake(z, UW.SLW(TS)), 0) : U32}, 1n+Nat.add(M, KN), NW, eNW, UW.asm_c(@S, dd, U, i, UW.SLW(TS), M, KN, hLS))
+  +hc3 = FD.logic__subst(U32, z => {U32.is_eq(z, 0) == True{} : Bool}, UW.CRY(@S, VS.wtake(NW, UW.SLW(TS)), 0), C3, Equal.sym(U32, C3, UW.CRY(@S, VS.wtake(NW, UW.SLW(TS)), 0), eC), hc)
+"""
+
+PUTWO_END = """  %Equal.sym(Bool, U32.is_eq(C3, 0), True{}, hc3) :
+    {O.put_fin(n, O.pw_carry_skip(_, U32.add(Q, NWU), FD.array__thaw(U32, D3), FD.array__thaw(U32, TS), C3)) == (FD.array__thaw(U32, UW.SWo(@S, VS.wtake(VC.NW(n), UW.SLW(TS)), dd, U, i, 0)), O.Words{FD.array__thaw(U32, TS), n}) : Array<U32> & O.Words}
+  Equal.cong(FD.array__Tree<U32>, Array<U32> & O.Words, z => (FD.array__thaw(U32, z), O.Words{FD.array__thaw(U32, TS), n}), D3, UW.SWo(@S, VS.wtake(NW, UW.SLW(TS)), dd, U, i, 0), eD)
+"""
+
+
+def _putwo(t):
+    """putwu_o from putwu's text: room only for the run's own NW(n) words (i + NW <= pw),
+    zero bytes only up to the end of its last word (L = 4 NW - s), and a zero carry out,
+    so the write is the open model SWo (the runtime skips the zero carry)."""
+    i = t.index("# The runtime's byte-range write of the n > 0 bytes")
+    u = t[i:]
+
+    def rep(a, b):
+        nonlocal u
+        assert a in u, a[:90]
+        u = u.replace(a, b)
+    rep("# The runtime's byte-range write of the n > 0 bytes held in TS at byte @S of word i\n"
+        "# (pos = 4 i + @S) is the model SWc of the source's first NW(n) words, when the output's\n"
+        "# bytes there were zero.",
+        "# The same write when its carry out of the last word is zero: the open model SWo, with\n"
+        "# room for the run's own words only and zero bytes only up to the end of its last word.")
+    rep('def putwu(', 'def putwu_o(')
+    rep('+hl: {Nat.is_lt(Nat.add(VC.NW(n), i), VB.pw(dd)) == True{} : Bool},\n'
+        '    +hz: {VS.bt(A.quad(VC.NW(n)), VS.bdr(Nat.add(A.quad(i), @Sn), UA.BYT(U))) == UW.ZB(A.quad(VC.NW(n))) : +List<U32>},',
+        '+hl: {Nat.is_le(Nat.add(VC.NW(n), i), VB.pw(dd)) == True{} : Bool},\n'
+        '    +L: Nat, +hL: {Nat.add(L, @Sn) == A.quad(VC.NW(n)) : Nat},\n'
+        '    +hz: {VS.bt(L, VS.bdr(Nat.add(A.quad(i), @Sn), UA.BYT(U))) == UW.ZB(L) : +List<U32>},\n'
+        '    +hc: {U32.is_eq(UW.CRY(@S, VS.wtake(VC.NW(n), UW.SLW(TS)), 0), 0) == True{} : Bool},')
+    rep('UW.SWc(@S, VS.wtake(VC.NW(n), UW.SLW(TS)), dd, U, i, 0)', 'UW.SWo(@S, VS.wtake(VC.NW(n), UW.SLW(TS)), dd, U, i, 0)')
+    rep('FD.nat__lt_le(Nat.add(NW, i), VB.pw(dd), hl)', 'hl')
+    rep('+hi0 = FD.nat__le_lt_trans(i, Nat.add(NW, i), VB.pw(dd), Order.left_below_sum(NW, i), hl)',
+        '+hi0 = FD.nat__lt_le_trans(i, Nat.add(NW, i), VB.pw(dd), FD.nat__lt_le_trans(i, 1n+i, Nat.add(NW, i), FD.nat__lt_succ(i), Order.add_right(1n, NW, i, hNW1)), hl)')
+    rep('FD.nat__le_lt_trans(i, Nat.add(NW, i), VB.pw(dd), Order.left_below_sum(NW, i), hl), pf, pfS)', 'hi0, pf, pfS)')
+    rep('+hle = FD.nat__le_trans(Nat.add(@Rn, A.quad(M)), 4n+A.quad(M), A.quad(NW), Order.add_right(@Rn, 4n, A.quad(M), {==}), UW.quad_le(1n+M, NW, h1M))',
+        '+hle = hle_o(M, NW, L, hL, UW.quad_le(1n+M, NW, h1M))')
+    rep('VS.bdr(@Rn, VS.bt(A.quad(NW), VS.bdr(X0, B)))', 'VS.bdr(@Rn, VS.bt(L, VS.bdr(X0, B)))')
+    rep('UW.bt_bdr_bt(A.quad(M), @Rn, A.quad(NW), VS.bdr(X0, B), hle)', 'UW.bt_bdr_bt(A.quad(M), @Rn, L, VS.bdr(X0, B), hle)')
+    rep('UW.ZB(A.quad(NW)), VS.bt(A.quad(NW), VS.bdr(X0, B)),\n        Equal.sym(+List<U32>, VS.bt(A.quad(NW), VS.bdr(X0, B)), UW.ZB(A.quad(NW)), hz), UW.zb_win(@Rn, A.quad(M), A.quad(NW), hle)',
+        'UW.ZB(L), VS.bt(L, VS.bdr(X0, B)),\n        Equal.sym(+List<U32>, VS.bt(L, VS.bdr(X0, B)), UW.ZB(L), hz), UW.zb_win(@Rn, A.quad(M), L, hle)')
+    j = u.index('  +pc = pcarry_b(')
+    k = u.index('  %Equal.sym(Bool, U32.is_eq(n, 0), False{}, hn)')
+    u = u[:j] + PUTWO_EQS + u[k:]
+    j = u.index('  %Equal.sym(Array<U32> & Array<U32>, O.pw_carry_skip(U32.is_eq(C3, 0)')
+    u = u[:j] + PUTWO_END
+    return t + HLE_O + u
+
+
+PUTW = _putwo(PUTW)
+
 def putw_text(s):
     """proofs/obj/vuwp<s>.bend: O.put_words at byte s of a word is the model SWc (putwu)."""
     rep = {'@Sn': f'{s}n', '@Rn': f'{4 - s}n', '@SHn': f'{8 * s}n', '@UPn': f'{32 - 8 * s}n', '@MUL': str(256 ** s),

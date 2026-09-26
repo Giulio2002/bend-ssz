@@ -876,6 +876,111 @@ def asm(+S: U32, +dd: Nat, +U: FD.array__Tree<U32>, +i: Nat, +L: List<&2, U32>, 
     {ORS(dd, D3, Nat.add(1n+Nat.add(M, KN), i), C3) == ORS(dd, D3, Nat.add(1n+Nat.add(M, KN), i), _) : FD.array__Tree<U32>}
   {==}
 
+# The run's three pieces are the open model of the whole run, and their carry its carry.
+def asm_o(+S: U32, +dd: Nat, +U: FD.array__Tree<U32>, +i: Nat, +L: List<&2, U32>, +M: Nat, +KN: Nat,
+    +hl: {Nat.is_le(1n+Nat.add(M, KN), VB.len(L)) == True{} : Bool})
+    -> {SWo(S, VS.wtake(KN, VB.wdr(1n+M, L)), dd, SWo(S, VS.wtake(M, VB.wdr(1n, L)), dd, SWo(S, VS.wtake(1n, L), dd, U, i, 0), 1n+i, O.shr_over(FD.flat__nthc(L, 0n), S)), Nat.add(1n+M, i), CRY(S, VS.wtake(M, VB.wdr(1n, L)), O.shr_over(FD.flat__nthc(L, 0n), S))) == SWo(S, VS.wtake(1n+Nat.add(M, KN), L), dd, U, i, 0) : FD.array__Tree<U32>}:
+  +C1 = O.shr_over(FD.flat__nthc(L, 0n), S)
+  +A1 = VS.wtake(1n, L)
+  +A2 = VS.wtake(M, VB.wdr(1n, L))
+  +A3 = VS.wtake(KN, VB.wdr(1n+M, L))
+  +W = VS.wtake(1n+Nat.add(M, KN), L)
+  +D1 = SWo(S, A1, dd, U, i, 0)
+  +C2 = CRY(S, A2, C1)
+  +D2 = SWo(S, A2, dd, D1, 1n+i, C1)
+  +D3 = SWo(S, A3, dd, D2, Nat.add(1n+M, i), C2)
+  +C3 = CRY(S, A3, C2)
+  +h1 = FD.nat__le_trans(1n, 1n+Nat.add(M, KN), VB.len(L), FD.nat__zero_le(Nat.add(M, KN)), hl)
+  +hM = le_wdr(1n, M, L, FD.nat__le_trans(Nat.add(1n, M), 1n+Nat.add(M, KN), VB.len(L), Order.below_sum(M, KN), hl))
+  +eA1 = len_take(1n, L, h1)
+  +eA2 = len_take(M, VB.wdr(1n, L), hM)
+  +eW = len_take(1n+Nat.add(M, KN), L, hl)
+  +eC1 = cry_take(S, 0n, 0n, L, 0, FD.nat__lt_le_trans(0n, 1n, VB.len(L), {==}, h1))
+  +eL = Equal.trans(List<&2, U32>, W, VF.app(A1, VS.wtake(Nat.add(M, KN), VB.wdr(1n, L))), List.append(&2, U32, A1, List.append(&2, U32, A2, A3)),
+    VF.take_split(1n, Nat.add(M, KN), L),
+    Equal.trans(List<&2, U32>, VF.app(A1, VS.wtake(Nat.add(M, KN), VB.wdr(1n, L))), VF.app(A1, List.append(&2, U32, A2, A3)), List.append(&2, U32, A1, List.append(&2, U32, A2, A3)),
+      Equal.cong(List<&2, U32>, List<&2, U32>, z => VF.app(A1, z), VS.wtake(Nat.add(M, KN), VB.wdr(1n, L)), List.append(&2, U32, A2, A3),
+        Equal.trans(List<&2, U32>, VS.wtake(Nat.add(M, KN), VB.wdr(1n, L)), VF.app(A2, VS.wtake(KN, VB.wdr(M, VB.wdr(1n, L)))), List.append(&2, U32, A2, A3),
+          VF.take_split(M, KN, VB.wdr(1n, L)),
+          Equal.trans(List<&2, U32>, VF.app(A2, VS.wtake(KN, VB.wdr(M, VB.wdr(1n, L)))), VF.app(A2, A3), List.append(&2, U32, A2, A3),
+            Equal.cong(List<&2, U32>, List<&2, U32>, z => VF.app(A2, VS.wtake(KN, z)), VB.wdr(M, VB.wdr(1n, L)), VB.wdr(1n+M, L), VF.wdr_add(M, 1n, L)),
+            app_eq(A2, A3)))),
+      app_eq(A1, List.append(&2, U32, A2, A3))))
+  +s1 = swo_app(S, A1, List.append(&2, U32, A2, A3), dd, U, i, 0)
+  +s2 = swo_app(S, A2, A3, dd, D1, 1n+i, C1)
+  +eS = Equal.trans(FD.array__Tree<U32>, SWo(S, List.append(&2, U32, A1, List.append(&2, U32, A2, A3)), dd, U, i, 0),
+    SWo(S, List.append(&2, U32, A2, A3), dd, D1, Nat.add(List.length(&2, U32, A1), i), CRY(S, A1, 0)), D3, s1,
+    Equal.trans(FD.array__Tree<U32>, SWo(S, List.append(&2, U32, A2, A3), dd, D1, Nat.add(List.length(&2, U32, A1), i), CRY(S, A1, 0)),
+      SWo(S, List.append(&2, U32, A2, A3), dd, D1, 1n+i, C1), D3,
+      Equal.trans(FD.array__Tree<U32>, SWo(S, List.append(&2, U32, A2, A3), dd, D1, Nat.add(List.length(&2, U32, A1), i), CRY(S, A1, 0)),
+        SWo(S, List.append(&2, U32, A2, A3), dd, D1, Nat.add(1n, i), CRY(S, A1, 0)), SWo(S, List.append(&2, U32, A2, A3), dd, D1, 1n+i, C1),
+        Equal.cong(Nat, FD.array__Tree<U32>, z => SWo(S, List.append(&2, U32, A2, A3), dd, D1, Nat.add(z, i), CRY(S, A1, 0)), List.length(&2, U32, A1), 1n, eA1),
+        Equal.cong(U32, FD.array__Tree<U32>, z => SWo(S, List.append(&2, U32, A2, A3), dd, D1, 1n+i, z), CRY(S, A1, 0), C1, eC1)),
+      Equal.trans(FD.array__Tree<U32>, SWo(S, List.append(&2, U32, A2, A3), dd, D1, 1n+i, C1), SWo(S, A3, dd, D2, Nat.add(List.length(&2, U32, A2), 1n+i), C2), D3, s2,
+        Equal.cong(Nat, FD.array__Tree<U32>, z => SWo(S, A3, dd, D2, z, C2), Nat.add(List.length(&2, U32, A2), 1n+i), Nat.add(1n+M, i),
+          Equal.trans(Nat, Nat.add(List.length(&2, U32, A2), 1n+i), Nat.add(M, 1n+i), Nat.add(1n+M, i),
+            Equal.cong(Nat, Nat, z => Nat.add(z, 1n+i), List.length(&2, U32, A2), M, eA2), FD.nat__add_succ(M, i))))))
+  +eC = Equal.trans(U32, CRY(S, List.append(&2, U32, A1, List.append(&2, U32, A2, A3)), 0), CRY(S, List.append(&2, U32, A2, A3), CRY(S, A1, 0)), C3,
+    cry_app(S, A1, List.append(&2, U32, A2, A3), 0),
+    Equal.trans(U32, CRY(S, List.append(&2, U32, A2, A3), CRY(S, A1, 0)), CRY(S, List.append(&2, U32, A2, A3), C1), C3,
+      Equal.cong(U32, U32, z => CRY(S, List.append(&2, U32, A2, A3), z), CRY(S, A1, 0), C1, eC1),
+      cry_app(S, A2, A3, C1)))
+  Equal.sym(FD.array__Tree<U32>, SWo(S, W, dd, U, i, 0), D3,
+    Equal.trans(FD.array__Tree<U32>, SWo(S, W, dd, U, i, 0), SWo(S, List.append(&2, U32, A1, List.append(&2, U32, A2, A3)), dd, U, i, 0), D3,
+      Equal.cong(List<&2, U32>, FD.array__Tree<U32>, z => SWo(S, z, dd, U, i, 0), W, List.append(&2, U32, A1, List.append(&2, U32, A2, A3)), eL), eS))
+
+def asm_c(+S: U32, +dd: Nat, +U: FD.array__Tree<U32>, +i: Nat, +L: List<&2, U32>, +M: Nat, +KN: Nat,
+    +hl: {Nat.is_le(1n+Nat.add(M, KN), VB.len(L)) == True{} : Bool})
+    -> {CRY(S, VS.wtake(KN, VB.wdr(1n+M, L)), CRY(S, VS.wtake(M, VB.wdr(1n, L)), O.shr_over(FD.flat__nthc(L, 0n), S))) == CRY(S, VS.wtake(1n+Nat.add(M, KN), L), 0) : U32}:
+  +C1 = O.shr_over(FD.flat__nthc(L, 0n), S)
+  +A1 = VS.wtake(1n, L)
+  +A2 = VS.wtake(M, VB.wdr(1n, L))
+  +A3 = VS.wtake(KN, VB.wdr(1n+M, L))
+  +W = VS.wtake(1n+Nat.add(M, KN), L)
+  +D1 = SWo(S, A1, dd, U, i, 0)
+  +C2 = CRY(S, A2, C1)
+  +D2 = SWo(S, A2, dd, D1, 1n+i, C1)
+  +D3 = SWo(S, A3, dd, D2, Nat.add(1n+M, i), C2)
+  +C3 = CRY(S, A3, C2)
+  +h1 = FD.nat__le_trans(1n, 1n+Nat.add(M, KN), VB.len(L), FD.nat__zero_le(Nat.add(M, KN)), hl)
+  +hM = le_wdr(1n, M, L, FD.nat__le_trans(Nat.add(1n, M), 1n+Nat.add(M, KN), VB.len(L), Order.below_sum(M, KN), hl))
+  +eA1 = len_take(1n, L, h1)
+  +eA2 = len_take(M, VB.wdr(1n, L), hM)
+  +eW = len_take(1n+Nat.add(M, KN), L, hl)
+  +eC1 = cry_take(S, 0n, 0n, L, 0, FD.nat__lt_le_trans(0n, 1n, VB.len(L), {==}, h1))
+  +eL = Equal.trans(List<&2, U32>, W, VF.app(A1, VS.wtake(Nat.add(M, KN), VB.wdr(1n, L))), List.append(&2, U32, A1, List.append(&2, U32, A2, A3)),
+    VF.take_split(1n, Nat.add(M, KN), L),
+    Equal.trans(List<&2, U32>, VF.app(A1, VS.wtake(Nat.add(M, KN), VB.wdr(1n, L))), VF.app(A1, List.append(&2, U32, A2, A3)), List.append(&2, U32, A1, List.append(&2, U32, A2, A3)),
+      Equal.cong(List<&2, U32>, List<&2, U32>, z => VF.app(A1, z), VS.wtake(Nat.add(M, KN), VB.wdr(1n, L)), List.append(&2, U32, A2, A3),
+        Equal.trans(List<&2, U32>, VS.wtake(Nat.add(M, KN), VB.wdr(1n, L)), VF.app(A2, VS.wtake(KN, VB.wdr(M, VB.wdr(1n, L)))), List.append(&2, U32, A2, A3),
+          VF.take_split(M, KN, VB.wdr(1n, L)),
+          Equal.trans(List<&2, U32>, VF.app(A2, VS.wtake(KN, VB.wdr(M, VB.wdr(1n, L)))), VF.app(A2, A3), List.append(&2, U32, A2, A3),
+            Equal.cong(List<&2, U32>, List<&2, U32>, z => VF.app(A2, VS.wtake(KN, z)), VB.wdr(M, VB.wdr(1n, L)), VB.wdr(1n+M, L), VF.wdr_add(M, 1n, L)),
+            app_eq(A2, A3)))),
+      app_eq(A1, List.append(&2, U32, A2, A3))))
+  +s1 = swo_app(S, A1, List.append(&2, U32, A2, A3), dd, U, i, 0)
+  +s2 = swo_app(S, A2, A3, dd, D1, 1n+i, C1)
+  +eS = Equal.trans(FD.array__Tree<U32>, SWo(S, List.append(&2, U32, A1, List.append(&2, U32, A2, A3)), dd, U, i, 0),
+    SWo(S, List.append(&2, U32, A2, A3), dd, D1, Nat.add(List.length(&2, U32, A1), i), CRY(S, A1, 0)), D3, s1,
+    Equal.trans(FD.array__Tree<U32>, SWo(S, List.append(&2, U32, A2, A3), dd, D1, Nat.add(List.length(&2, U32, A1), i), CRY(S, A1, 0)),
+      SWo(S, List.append(&2, U32, A2, A3), dd, D1, 1n+i, C1), D3,
+      Equal.trans(FD.array__Tree<U32>, SWo(S, List.append(&2, U32, A2, A3), dd, D1, Nat.add(List.length(&2, U32, A1), i), CRY(S, A1, 0)),
+        SWo(S, List.append(&2, U32, A2, A3), dd, D1, Nat.add(1n, i), CRY(S, A1, 0)), SWo(S, List.append(&2, U32, A2, A3), dd, D1, 1n+i, C1),
+        Equal.cong(Nat, FD.array__Tree<U32>, z => SWo(S, List.append(&2, U32, A2, A3), dd, D1, Nat.add(z, i), CRY(S, A1, 0)), List.length(&2, U32, A1), 1n, eA1),
+        Equal.cong(U32, FD.array__Tree<U32>, z => SWo(S, List.append(&2, U32, A2, A3), dd, D1, 1n+i, z), CRY(S, A1, 0), C1, eC1)),
+      Equal.trans(FD.array__Tree<U32>, SWo(S, List.append(&2, U32, A2, A3), dd, D1, 1n+i, C1), SWo(S, A3, dd, D2, Nat.add(List.length(&2, U32, A2), 1n+i), C2), D3, s2,
+        Equal.cong(Nat, FD.array__Tree<U32>, z => SWo(S, A3, dd, D2, z, C2), Nat.add(List.length(&2, U32, A2), 1n+i), Nat.add(1n+M, i),
+          Equal.trans(Nat, Nat.add(List.length(&2, U32, A2), 1n+i), Nat.add(M, 1n+i), Nat.add(1n+M, i),
+            Equal.cong(Nat, Nat, z => Nat.add(z, 1n+i), List.length(&2, U32, A2), M, eA2), FD.nat__add_succ(M, i))))))
+  +eC = Equal.trans(U32, CRY(S, List.append(&2, U32, A1, List.append(&2, U32, A2, A3)), 0), CRY(S, List.append(&2, U32, A2, A3), CRY(S, A1, 0)), C3,
+    cry_app(S, A1, List.append(&2, U32, A2, A3), 0),
+    Equal.trans(U32, CRY(S, List.append(&2, U32, A2, A3), CRY(S, A1, 0)), CRY(S, List.append(&2, U32, A2, A3), C1), C3,
+      Equal.cong(U32, U32, z => CRY(S, List.append(&2, U32, A2, A3), z), CRY(S, A1, 0), C1, eC1),
+      cry_app(S, A2, A3, C1)))
+  Equal.sym(U32, CRY(S, W, 0), C3,
+    Equal.trans(U32, CRY(S, W, 0), CRY(S, List.append(&2, U32, A1, List.append(&2, U32, A2, A3)), 0), C3,
+      Equal.cong(List<&2, U32>, U32, z => CRY(S, z, 0), W, List.append(&2, U32, A1, List.append(&2, U32, A2, A3)), eL), eC))
+
 # The middle-word count the runtime picks is at most a = nw - 1.
 def mid_le_g(+b1: Bool, +b2: Bool, +a: U32, +t: U32, +eb2: {U32.is_lt(a, t) == b2 : Bool})
     -> {Nat.is_le(U32.to_nat(O.pick(b1, 0, O.pick(b2, a, t))), U32.to_nat(a)) == True{} : Bool}:
