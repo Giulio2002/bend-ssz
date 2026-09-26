@@ -979,12 +979,13 @@ def main():
                 for dft in f['ft'].deps():
                     if dft.p not in [q.p for q in fts]:
                         fts.append(dft)
-    out = {ROOT / 'proofs/obj/var_bytes_fix.bend': fix_module(fts)}
+    out = {ROOT / 'proofs/obj/var_bytes_fix.bend': fix_module(fts), ROOT / 'proofs/obj/var_bytes_wput.bend': VBE.wput_module(xs)}
     for x in xs:
         out[fname(x, '_win')] = win_text(x)
         out[fname(x)] = top_text(x)
         out[fname(x, '_unique')] = unique_text(x)
         out[fname(x, '_rej')] = rej_text(x)
+        out[fname(x, '_enc')] = VBE.enc_module_text(x)
     mine = sorted((ROOT / 'proofs/obj').glob('*var_bytes_*.bend'))
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
     if '--check' in sys.argv:
@@ -1001,6 +1002,8 @@ def main():
             p.write_text(text)
     print(f'{len(fts)} fixed field types, {len(xs)} names: ' + ', '.join(str(p.relative_to(ROOT)) for p in out))
 
+
+import var_bytes_enc as VBE  # noqa: E402
 
 if __name__ == '__main__':
     main()
