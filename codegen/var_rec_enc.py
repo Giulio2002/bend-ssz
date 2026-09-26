@@ -218,7 +218,8 @@ def module_text():
 
 # ---- lists of fixed records ----------------------------------------------------------------------
 
-LISTS = [('ExecutionPayload', 'withdrawals')]
+LISTS = [('ExecutionPayload', 'withdrawals'), ('BeaconState', 'eth1_data_votes'), ('BeaconState', 'historical_summaries'),
+         ('BeaconState', 'pending_deposits'), ('BeaconState', 'pending_partial_withdrawals'), ('BeaconState', 'pending_consolidations')]
 
 
 def lfile(p):
