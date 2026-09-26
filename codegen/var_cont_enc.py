@@ -50,8 +50,9 @@ def out_file(C):
 class Leaf:
     """A Data leaf written at any X by its dispatch lemma (vuwd, vuwv_<p>)."""
 
-    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz, rec=None):
+    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz, rec=None, sub=0):
         self.p, self.ctor, self.W, self.mod = p, ctor, W, mod
+        self.sub = sub    # a sub-word leaf (uint8 / uint16: its byte count), a piece at any byte (vpiece)
         self.model, self.rt, self.by, self.pf, self.rt_hz = model, rt, by, pf, rt_hz
         self.rec = rec    # a fixed record of codegen/var_rec_enc.py's RECS: its field tree (var_laws.FT)
 
@@ -78,6 +79,9 @@ def is_fixw(fs):
 
 
 def leaf_of(fs):
+    if fs.kind in ('u8', 'u16'):
+        m = 1 if fs.kind == 'u8' else 2
+        return Leaf(fs.p, 'U32', 0, 'import ./vpiece.bend as VPC', f'VPC.P{8 * m}', f'VPC.u{8 * m}piece', None, f'VPC.p{8 * m}_perfect', False, sub=m)
     if fs.kind == 'u64':
         return Leaf('u64', 'O.U64', 2, None, 'WD.W64X', 'WD.w64_any', 'WD.w64_any_bytes', 'WD.w64x_perfect', False)
     if fs.p == 'b20':
@@ -401,6 +405,25 @@ def generate_cont(g, names, C):
             HP += ch.hyps
             HA += ch.hargs
             OBJF[f] = ch.obj
+    # the runtime's check of the sub-word leaves, folded into the returned size (c .|. O.pz(V)): V is a hypothesis
+    K.pz = None
+    if not K.wide and any(fs.fixed and fs.data for _, fs in F):
+        npw = sum(1 for _, fs in F if not fs.fixed)
+        if npw:
+            b_ = fn_body(f'{p}_pw{npw - 1}')
+            j_ = b_.find('O.pz(')
+            if j_ >= 0:
+                d_, k_ = 0, j_ + len('O.pz(')
+                for k_ in range(j_ + len('O.pz('), len(b_)):
+                    if b_[k_] == '(':
+                        d_ += 1
+                    elif b_[k_] == ')':
+                        if d_ == 0:
+                            break
+                        d_ -= 1
+                K.pz = re.sub(r'(?<![\w.])([a-z_]\w*)\(', r'T.\1(', b_[j_ + len('O.pz('):k_])
+                HP.append(f'+hpz: {{{K.pz} == {TRUE}}}')
+                HA.append('hpz')
     OPS, OAS = ', '.join(OP), ', '.join(OA)
     HPS, HAS = ', '.join(HP), ', '.join(HA)
     if K.wide:
@@ -456,6 +479,8 @@ def generate_cont(g, names, C):
                 cur = f'O.padd({cur}, {K.children[f].sz})'
             else:
                 events.append(dict(kind='fixw', field=f, hoff=hoff[i]))
+        if K.pz is not None and psteps:
+            cur = f'({cur} .|. O.pz({K.pz}) : U32)'
         for i in idx:
             if F[i][1].fixed and F[i][1].data:
                 events.append(dict(kind='leaf', field=names_[i], hoff=hoff[i]))
@@ -471,12 +496,19 @@ def generate_cont(g, names, C):
     L = []
     w = L.append
     for lf in K.leaves.values():
-        w(leaf_text(lf))
+        if not lf.sub:
+            w(leaf_text(lf))
     w(f'''
 # ---- {C}: the object, its bytes and byte count ----
 def OBJC({OPS}) -> T.{C}: {OBJ}
 def LLC({OPS}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Nat: Nat.add({FIX}n, VCN.SUM({KS(ks_all)}))
 def SZC({OPS}) -> U32: {SZC}
+''')
+    if K.pz is not None:
+        core = SZC[1:SZC.index(f' .|. O.pz(')]
+        w(f'''# the returned size, the leaves valid
+def szpz({OPS}, +hpz: {{{K.pz} == {TRUE}}}) -> {{SZC({OAS}) == {core} : U32}}:
+  Equal.trans(U32, U32.or({core}, O.pz({K.pz})), U32.or({core}, 0), {core}, Equal.cong(Bool, U32, zb => U32.or({core}, O.pz(zb)), {K.pz}, True{{}}, hpz), UWB.or0r({core}))
 ''')
     # models M0..Mn
     w(f'def M0({MP}) -> {TR}: D')
@@ -486,7 +518,12 @@ def SZC({OPS}) -> U32: {SZC}
         prev = f'M{k}({MA})'
         f = ev['field']
         fs = fsd[f]
-        if ev['kind'] == 'leaf':
+        if ev['kind'] == 'leaf' and leaf_of(fs).sub:
+            mdl = f'{leaf_of(fs).model}(dd, {prev}, X, {ev["hoff"]}, {f})'
+        elif ev['kind'] == 'off' and ev['hoff'] % 4:
+            Xc = f'U32.add(X, {ev["hoff"]})'
+            mdl = f'WD.W32X(VCN.RX({Xc}), dd, {prev}, VCN.QX({Xc}), {ev["cur"]})'
+        elif ev['kind'] == 'leaf':
             lf = leaf_of(fs)
             kw = ev['hoff'] // 4
             mdl = f'PXo_{lf.p}({f}, dd, {prev}, Nat.add({kw}n, q), r)'
@@ -620,6 +657,8 @@ def putv_{f}({', '.join(ch.params)}, +D: {TR}, +D1: {TR}, +D2: {TR}, +X: U32, +h
                 steps.append((ctx, lhs, rhs, 'Array<U32> & (O.Words & U32)', f'f{kk}', f'{pw}({", ".join(args)}, {rhs})'))
                 cur = f'({cur} .|. 0 : U32)'
                 kk += 1
+        if K.pz is not None and psteps:
+            cur = f'({cur} .|. O.pz({K.pz}) : U32)'
         # the Data fields, innermost first
         dat = [i for i in idx if F[i][1].fixed and F[i][1].data]
 
@@ -734,6 +773,42 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
         fs = fsd[f]
         kind = ev['kind']
         UBk, UBn = BY(k), BY(k + 1)
+        if (kind == 'leaf' and leaf_of(fs).sub) or (kind == 'off' and ev['hoff'] % 4):
+            i = fidx[f]
+            c = ev['hoff']
+            size = 4 if kind == 'off' else leaf_of(fs).sub
+            pre = '[' + ', '.join(st[:i]) + ']'
+            post = '[' + ', '.join(st[i + 1:]) + ']'
+            Xc = f'U32.add(X, {c})'
+            rel = f'Nat.add({X0}, VCN.LN(VCN.CAT({pre})))'
+            hk = f'FD.nat__le_trans(Nat.add({c}n, {size}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)})))'
+            a(f'+z{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, {size}n, {post}, 0n, {UBk}, hX, I{k}, {{==}})')
+            if kind == 'leaf':
+                lf = leaf_of(fs)
+                m = lf.sub
+                a(f'+g{k} = {lf.rt}(dd, {Mk(k)}, X, {c}, {c}n, q, r, {LLv}, {f}, e, {{==}}, hd, {hk}, hl, pf{k}, z{k})')
+                Y = f'[U32.and({f}, 255)]' if m == 1 else f'[U32.and({f}, 255), U32.and(U32.shrn({f}, 8n), 255)]'
+                RT_ = f'{{T.{fs.p}_put(FD.array__thaw(U32, {Mk(k)}), {Xc}, {f}) == FD.array__thaw(U32, {lf.model}(dd, {Mk(k)}, X, {c}, {f})) : Array<U32>}}'
+                BY_ = f'{{UA.BYT({lf.model}(dd, {Mk(k)}, X, {c}, {f})) == UW.SPL(UA.BYT({Mk(k)}), Nat.add({X0}, {c}n), {Y}) : +List<U32>}}'
+                a(f'+rt{k} = PA({RT_}, {BY_}, g{k})')
+                a(f'+by{k} = PB({RT_}, {BY_}, g{k})')
+                a(f'+pf{k + 1} = {lf.pf}(dd, {Mk(k)}, X, {c}, {f}, pf{k})')
+            else:
+                cur = ev['cur']
+                QX, RX = f'VCN.QX({Xc})', f'VCN.RX({Xc})'
+                pos = f'Nat.add(A.quad({QX}), {RX})'
+                a(f'+ep{k} = VPC.ppos(X, {c}, {c}n, q, r, {LLv}, 4n, dd, e, {{==}}, hd, {hk}, hl)')
+                a(f'+hl{k} = VPC.proom(X, {c}, {c}n, q, r, {LLv}, 4n, dd, e, {{==}}, hd, {hk}, hl)')
+                a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt(4n, VS.bdr(zz, {UBk})) == UW.ZB(4n) : +List<U32>}}, Nat.add({X0}, {c}n), {pos}, ep{k}, z{k})')
+                a(f'+rt{k} = WD.w32_any(dd, {Mk(k)}, {Xc}, {QX}, {RX}, {cur}, VC.split4({Xc}), VCN.rx_lt({Xc}), hd, hl{k}, pf{k})')
+                a(f'+bw{k} = WD.w32_any_bytes(dd, {Mk(k)}, {Xc}, {QX}, {RX}, {cur}, VC.split4({Xc}), VCN.rx_lt({Xc}), hd, hl{k}, pf{k}, hz{k})')
+                Y = f'I.limb({cur})'
+                a(f'+by{k} = FD.logic__subst(Nat, zz => {{{UBn} == UW.SPL({UBk}, zz, {Y}) : +List<U32>}}, {pos}, Nat.add({X0}, {c}n), Equal.sym(Nat, Nat.add({X0}, {c}n), {pos}, ep{k}), bw{k})')
+                a(f'+pf{k + 1} = WD.w32x_perfect({RX}, dd, {Mk(k)}, {QX}, {cur}, pf{k})')
+            a(f'+I{k + 1} = VCN.reg_put0(UA.BYT(D), {X0}, {pre}, {size}n, {post}, {Y}, {UBk}, {UBn}, hX, I{k}, {{==}}, by{k})')
+            st[i] = Y
+            facts.append(f'rt{k}')
+            continue
         if kind in ('leaf', 'fixw', 'off'):
             i = fidx[f]
             c = ev['hoff']
@@ -866,6 +941,8 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
     pa = f'Nat.add(Nat.add({FIX}n, VCN.SUM({KS(ksl)})), {ks_all[-1]})'
     a(f'+szf = VCN.cnext({curs[fl]}, {K.children[fl].sz}, {FIX}n, {KS(ksl)}, {ks_all[-1]}, dd, hd, {ec_of[fl]}, {szx_of[fl]}, '
       f'VCN.pc_end(q, r, {LLv}, dd, {pa}, VCN.pc_room({FIX}n, {KS(ksl)}, {ks_all[-1]}, []), hl))')
+    if K.pz is not None:
+        a(f'+szf = FD.logic__subst(U32, zz => {{U32.to_nat(zz) == LLC({MA}) : Nat}}, {SZC[1:SZC.index(" .|. O.pz(")]}, SZC({OAS}), Equal.sym(U32, SZC({OAS}), {SZC[1:SZC.index(" .|. O.pz(")]}, szpz({OAS}, hpz)), szf)')
     body = '\n  '.join(ls)
     w(f'''
 def ENCC({OPS}) -> +List<U32>: {ENCC}
@@ -1498,7 +1575,7 @@ HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primi
 
 # The generic containers (types/generic_obj.bend, proofs/obj/generic_specs.bend) written by this generator:
 # every child in the encoder-window interface, every fixed piece word-aligned (so far).
-GCONTS = ['Gp4B0CA2906A']
+GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3']
 # the containers written in the encoder-window interface with their spec side (iface_text): (name, generic)
 ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False)]
 
@@ -1534,6 +1611,10 @@ def full_text(C, generic=False):
     for ch in K.children.values():
         if ch.mod not in mods:
             mods.append(ch.mod)
+    if any(ev['kind'] == 'off' and ev['hoff'] % 4 for ev in events) and 'import ./vpiece.bend as VPC' not in mods:
+        mods.append('import ./vpiece.bend as VPC')
+    if getattr(K, 'pz', None) is not None:
+        mods.append('import ./vuw_bits.bend as UWB')
     hd = [x.replace('../../types/fulu_obj.bend as T', '../../types/generic_obj.bend as T') for x in HEAD] if generic else HEAD
     head = hd + mods + ['', '# GENERATED by codegen/var_cont_enc.py. Do not edit.',
                           f'# {C} in the encoder-window interface: written at any byte position X = 4 q + r (see the generator).', '',
