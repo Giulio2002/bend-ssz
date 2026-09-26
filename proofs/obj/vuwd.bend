@@ -362,3 +362,41 @@ def b20_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, 
     case 2n: UB2.swcb([w0, w1, w2, w3, w4], dd, D, q, pf, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dd)) == True{} : Bool}, Nat.add(5n, q), Nat.add(q, 5n), FD.nat__add_comm(5n, q), le_q(q, 5n, VB.pw(dd), hl)), hz)
     case 3n: UB3.swcb([w0, w1, w2, w3, w4], dd, D, q, pf, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dd)) == True{} : Bool}, Nat.add(5n, q), Nat.add(q, 5n), FD.nat__add_comm(5n, q), le_q(q, 5n, VB.pw(dd), hl)), hz)
     case 4n+ +t: Empty.absurd({UA.BYT(B20X(4n+t, dd, D, q, w0, w1, w2, w3, w4)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), 4n+t), FX.limbs([w0, w1, w2, w3, w4])) : +List<U32>}, FD.nat__lt_zero_absurd(t, hr))
+
+# ---- the models are perfect trees ----------------------------------------------------------------
+
+def pwm_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +T: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {FD.array__perfect(U32, dd, PWM(r, dd, D, q, T, n)) == True{} : Bool}:
+  match r:
+    case 0n: VB.mone_perfect(VC.NW(n), 0n, q, dd, D, T, pf)
+    case 1n: UW.swc_perfect(1, VS.wtake(VC.NW(n), UW.SLW(T)), dd, D, q, 0, pf)
+    case 2n: UW.swc_perfect(2, VS.wtake(VC.NW(n), UW.SLW(T)), dd, D, q, 0, pf)
+    case 3n: UW.swc_perfect(3, VS.wtake(VC.NW(n), UW.SLW(T)), dd, D, q, 0, pf)
+    case 4n+ +t: pf
+
+def w32x_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +x: U32, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {FD.array__perfect(U32, dd, W32X(r, dd, D, q, x)) == True{} : Bool}:
+  match r:
+    case 0n: FD.array__upd_perfect(U32, dd, D, q, x, pf)
+    case 1n: UW.w32m_perfect(1, dd, D, q, x, pf)
+    case 2n: UW.w32m_perfect(2, dd, D, q, x, pf)
+    case 3n: UW.w32m_perfect(3, dd, D, q, x, pf)
+    case 4n+ +t: pf
+
+def w64x_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +lo: U32, +hi: U32, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {FD.array__perfect(U32, dd, W64X(r, dd, D, q, lo, hi)) == True{} : Bool}:
+  match r:
+    case 0n: VF.updv_perfect([lo, hi], dd, D, q, pf)
+    case 1n: UW.w32m_perfect(1, dd, UW.W32M(1, dd, D, q, lo), 1n+q, hi, UW.w32m_perfect(1, dd, D, q, lo, pf))
+    case 2n: UW.w32m_perfect(2, dd, UW.W32M(2, dd, D, q, lo), 1n+q, hi, UW.w32m_perfect(2, dd, D, q, lo, pf))
+    case 3n: UW.w32m_perfect(3, dd, UW.W32M(3, dd, D, q, lo), 1n+q, hi, UW.w32m_perfect(3, dd, D, q, lo, pf))
+    case 4n+ +t: pf
+
+def b20x_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {FD.array__perfect(U32, dd, B20X(r, dd, D, q, w0, w1, w2, w3, w4)) == True{} : Bool}:
+  match r:
+    case 0n: VF.updv_perfect([w0, w1, w2, w3, w4], dd, D, q, pf)
+    case 1n: UW.swc_perfect(1, [w0, w1, w2, w3, w4], dd, D, q, 0, pf)
+    case 2n: UW.swc_perfect(2, [w0, w1, w2, w3, w4], dd, D, q, 0, pf)
+    case 3n: UW.swc_perfect(3, [w0, w1, w2, w3, w4], dd, D, q, 0, pf)
+    case 4n+ +t: pf
