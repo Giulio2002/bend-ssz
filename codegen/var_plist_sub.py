@@ -1118,6 +1118,28 @@ def plu64_text():
 
 PLU64_FNAME = ROOT / 'proofs/obj/big_var_winp_pl_u64.bend'
 
+# ProgressiveList[uint64] (pl_u64) in encx form, over its window big_var_winp_pl_u64 (unit 8).
+PLU64X_FNAME = ROOT / 'proofs/obj/big_encx_pl_u64.bend'
+U64EX = 'Bool.and(U32.is_eq(U32.and(N, 7), 0), W.CHKw(T, 0n, 0, N))'
+
+
+def plu64x_text():
+    kd = dict(EXTRA=U64EX, OKDOC=', a multiple of 8',
+              CHK='FD.logic__and_right(U32.is_eq(U32.and(N, 7), 0), W.CHKw(T, 0n, 0, N), ok_ex(dw, T, N, hok))', VALID="""
+def valid(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +h: {OKT(dw, T, N) == True{} : Bool})
+    -> {T.pl_u64_valid(O.Words{FD.array__thaw(U32, T), N}) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}:
+  wok(dw, T, N, 8, ok_pf(dw, T, N, h), ok_hd(dw, T, N, h), ok_hN(dw, T, N, h), ok_tz(dw, T, N, h),
+    FD.logic__and_left(U32.is_eq(U32.and(N, 7), 0), W.CHKw(T, 0n, 0, N), ok_ex(dw, T, N, h)))
+""")
+    body = ENCX.replace('@PRE', '').replace('@VALID', kd['VALID']).replace('@EXTRA', kd['EXTRA']).replace('@OKDOC', kd['OKDOC']).replace('@CHK', kd['CHK'])
+    body = body.replace('@X(', 'GtE83F21B20A(').replace('@p_', 'pl_u64_')
+    L = generic(VW.HEADX) + ['import ./venc.bend as VE', 'import ./vbenc.bend as VBE', 'import ./vbytes.bend as VYS', 'import ./vua.bend as UA',
+                             'import ./vuw.bend as UWW', 'import ./vuwd.bend as VWD', 'import ../compact/reads.bend as RD',
+                             f'import ./{PLU64_FNAME.name} as W', '', HDR,
+                             '# GtE83F21B20A (T.pl_u64_*) in the encoder-window interface: the list written at any byte position',
+                             '# X = 4 q + r of a perfect tree D of depth dd < 29 (vuwd.putw_any / putw_any_bytes).', '']
+    return '\n'.join(L) + body
+
 
 DONE = ['u8', 'u16', 'bool']
 
@@ -1132,6 +1154,7 @@ def outputs(no_big):
     for _q, _N in GBL:
         out[gbl_fname(_q)] = gbl_text(_q, _N)
     out[PLU64_FNAME] = plu64_text()
+    out[PLU64X_FNAME] = plu64x_text()
     for k in DONE:
         X, p = KINDS[k]
         out[win_fname(k)] = win_text(k)
@@ -1146,7 +1169,7 @@ def outputs(no_big):
 def main():
     no_big = '--no-big' in sys.argv
     out = outputs(no_big)
-    mine = sorted((ROOT / 'proofs/obj').glob('big_var_winp_*.bend')) + [encx_fname(k) for k in KINDS if encx_fname(k).exists()] + [l16_fname(N) for N in L16 if l16_fname(N).exists()] + [gbl_fname(q) for q, N in GBL if gbl_fname(q).exists()]
+    mine = sorted((ROOT / 'proofs/obj').glob('big_var_winp_*.bend')) + [encx_fname(k) for k in KINDS if encx_fname(k).exists()] + [l16_fname(N) for N in L16 if l16_fname(N).exists()] + [gbl_fname(q) for q, N in GBL if gbl_fname(q).exists()] + ([PLU64X_FNAME] if PLU64X_FNAME.exists() else [])
     for X, _ in KINDS.values():
         mine += sorted((ROOT / 'proofs/obj').glob(f'big_var_plist_{X}*.bend'))
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not no_big]
