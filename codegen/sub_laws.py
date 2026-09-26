@@ -612,6 +612,56 @@ def prt_u16(ws, tl, tp, h):
         u16lo_part(w),
         SF.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{hi16(w), 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U16{}}), [B.byte_sel(2, w), B.byte_sel(3, w)],
           Codec.parts(vu16(t, tl), S.Repeat{S.Unsigned{P.U16{}}}), fx16(t, tp), u16hi_part(w), prt_u16(t, tl, tp, h)))
+
+# ---- counts and lengths, for the laws stated over any list -------------------------------
+
+law cnt_vu8:
+  for +xs: +List<U32>
+  {Codec.count(vu8(xs)) == List.length(&2, U32, xs) : Nat}
+def cnt_vu8(xs):
+  match xs:
+    case Nil{}: {==}
+    case Con{x, +t}: F.nat__succ_cong(Codec.count(vu8(t)), List.length(&2, U32, t), cnt_vu8(t))
+
+law cnt_vbool:
+  for +xs: +List<U32>
+  {Codec.count(vbool(xs)) == List.length(&2, U32, xs) : Nat}
+def cnt_vbool(xs):
+  match xs:
+    case Nil{}: {==}
+    case Con{x, +t}: F.nat__succ_cong(Codec.count(vbool(t)), List.length(&2, U32, t), cnt_vbool(t))
+
+def c16(+n: Nat, +c: Nat) -> Nat:
+  match n:
+    case 0n: c
+    case 1n+ +k: 2n+c16(k, c)
+
+def l16(+n: Nat, +c: Nat) -> Nat:
+  match n:
+    case 0n: c
+    case 1n+ +k: 4n+l16(k, c)
+
+law cnt_vu16:
+  for +ws: +List<U32>
+  for +tl: S.Value
+  {Codec.count(vu16(ws, tl)) == c16(List.length(&2, U32, ws), Codec.count(tl)) : Nat}
+def cnt_vu16(ws, tl):
+  match ws:
+    case Nil{}: {==}
+    case Con{w, +t}: F.nat__succ_cong(1n+Codec.count(vu16(t, tl)), 1n+c16(List.length(&2, U32, t), Codec.count(tl)), F.nat__succ_cong(Codec.count(vu16(t, tl)), c16(List.length(&2, U32, t), Codec.count(tl)), cnt_vu16(t, tl)))
+
+law len_fx16:
+  for +ws: +List<U32>
+  for +tp: +List<S.Part>
+  {List.length(&2, U32, fcat(fx16(ws, tp))) == l16(List.length(&2, U32, ws), List.length(&2, U32, fcat(tp))) : Nat}
+def len_fx16(ws, tp):
+  match ws:
+    case Nil{}: {==}
+    case Con{w, +t}:
+      F.nat__succ_cong(3n+List.length(&2, U32, fcat(fx16(t, tp))), 3n+l16(List.length(&2, U32, t), List.length(&2, U32, fcat(tp))),
+        F.nat__succ_cong(2n+List.length(&2, U32, fcat(fx16(t, tp))), 2n+l16(List.length(&2, U32, t), List.length(&2, U32, fcat(tp))),
+          F.nat__succ_cong(1n+List.length(&2, U32, fcat(fx16(t, tp))), 1n+l16(List.length(&2, U32, t), List.length(&2, U32, fcat(tp))),
+            F.nat__succ_cong(List.length(&2, U32, fcat(fx16(t, tp))), l16(List.length(&2, U32, t), List.length(&2, U32, fcat(tp))), len_fx16(t, tp)))))
 '''
 
 
@@ -661,6 +711,20 @@ def bd_proof(ws, r):
     if not q:
         return tp
     return f'SP2.bd_app(SF.limbs({wl(q)}), {tail}, SP2.bd_limbs({wl(q)}), {tp})'
+
+
+def vec_spec(w, n, kind, cnt, size, spec, sig, hb, hba, args, V, BY, E, PL, hp, hall, hv, hN, cat):
+    w(f'# ---- {n}: Vector[{kind}, {cnt}], {size} bytes ----')
+    w(f'def {n}_spec_parts({sig}{hb})')
+    w(f'    -> {{Codec.parts(S.Sequence{{{V}}}, {spec}) == Some{{[S.Fixed{{{BY}}}]}} : Maybe<&2, +List<S.Part>>}}:')
+    w(f'  %{cat} : {{Codec.parts(S.Sequence{{{V}}}, {spec}) == Some{{[S.Fixed{{_}}]}} : Maybe<&2, +List<S.Part>>}}')
+    w(f'  SP2.vparts({spec}, {V}, {E}, {cnt}n, {PL}, {size}n, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {hp}, {hall}, {hv}, {hN}, {{==}}, {size}n, {{==}})')
+    w('')
+    w(f'def {n}_spec_encode({sig}{hb})')
+    w(f'    -> Decoding.decodes({spec}, {BY}, S.Sequence{{{V}}}):')
+    w(f'  SF.encoding_of_parts({spec}, S.Sequence{{{V}}}, {BY}, {n}_spec_parts({args}{hba}))')
+    w('')
+
 
 
 def vec_laws(w, n, kind, cnt, P, src):
@@ -715,19 +779,72 @@ def vec_laws(w, n, kind, cnt, P, src):
         hall = f'SP2.fx16_all({wl(full)}, {tp}, {{==}})'
         cat = f'SP2.fx16_cat({wl(full)}, {tp})'
         hdom = bd_proof(xs, r)
+    if size > 256:
+        # the spec side over ANY list of the length (a law over the literal words would
+        # normalize the spec encoding of every element at each step)
+        full = xs if r == 0 else xs[:-1]
+        q = len(full)
+        if kind == 'u16':
+            xt = xs[-1] if r else None
+            BY = 'SF.limbs(ws)' if not r else f'List.append(&2, U32, SF.limbs(ws), [B.byte_sel(0, {xt}), B.byte_sel(1, {xt})])'
+            sig = f'+ws: +List<U32>, +hl: {{List.length(&2, U32, ws) == {q}n : Nat}}' + (f', +{xt}: U32' if r else '')
+            args = 'ws, hl' + (f', {xt}' if r else '')
+            hb, hba = '', ''
+            V = f'SP2.vu16(ws, {tl})'
+            PL = f'SP2.fx16(ws, {tp})'
+            hc = (f'Equal.trans(Nat, Codec.count({V}), SP2.c16(List.length(&2, U32, ws), Codec.count({tl})), {cnt}n, SP2.cnt_vu16(ws, {tl}), '
+                  f'Equal.cong(Nat, Nat, z => SP2.c16(z, Codec.count({tl})), List.length(&2, U32, ws), {q}n, hl))')
+            hp = f'SP2.prt_u16(ws, {tl}, {tp}, {htl})'
+            hall = f'SP2.fx16_all(ws, {tp}, {{==}})'
+            cat = f'SP2.fx16_cat(ws, {tp})'
+            if not r:
+                cat = (f'Equal.trans(+List<U32>, SP2.fcat(SP2.fx16(ws, [])), List.append(&2, U32, SF.limbs(ws), []), SF.limbs(ws), '
+                       f'SP2.fx16_cat(ws, []), SP2.app_nil(SF.limbs(ws)))')
+            if r:
+                tail = f'[B.byte_sel(0, {xt}), B.byte_sel(1, {xt})]'
+                hdom = f'SP2.bd_app(SF.limbs(ws), {tail}, SP2.bd_limbs(ws), SP2.bd_l({tail}, [B.byte_sel(2, {xt}), B.byte_sel(3, {xt})], SP2.bd_limbs([{xt}])))'
+            else:
+                hdom = 'SP2.bd_limbs(ws)'
+            hN = (f'Equal.trans(Nat, List.length(&2, U32, SP2.fcat({PL})), SP2.l16(List.length(&2, U32, ws), List.length(&2, U32, SP2.fcat({tp}))), {size}n, SP2.len_fx16(ws, {tp}), '
+                  f'Equal.cong(Nat, Nat, z => SP2.l16(z, List.length(&2, U32, SP2.fcat({tp}))), List.length(&2, U32, ws), {q}n, hl))')
+        else:
+            BY = 'xs'
+            hname = 'hd' if kind == 'u8' else 'hb'
+            hty = '{SP.bytes_domain(xs) == True{} : Bool}' if kind == 'u8' else '{SP2.ble(xs) == True{} : Bool}'
+            sig = f'+xs: +List<U32>, +hl: {{List.length(&2, U32, xs) == {size}n : Nat}}, +{hname}: {hty}'
+            args = f'xs, hl, {hname}'
+            hb, hba = '', ''
+            V = f'SP2.vu8(xs)' if kind == 'u8' else 'SP2.vbool(xs)'
+            PL = 'SP2.fx1(xs)'
+            hc = f'Equal.trans(Nat, Codec.count({V}), List.length(&2, U32, xs), {cnt}n, SP2.cnt_v{"u8" if kind == "u8" else "bool"}(xs), hl)'
+            hp = f'SP2.prt_u8(xs, hd)' if kind == 'u8' else 'SP2.prt_bool(xs, hb)'
+            hall = 'SP2.fx1_all(xs)'
+            cat = 'SP2.fx1_cat(xs)'
+            hdom = 'hd' if kind == 'u8' else 'SP2.ble_bd(xs, hb)'
+            hN = f'Equal.trans(Nat, List.length(&2, U32, SP2.fcat({PL})), List.length(&2, U32, xs), {size}n, Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), SP2.fcat({PL}), xs, {cat}), hl)'
+        hv = f'F.logic__subst(+List<U32>, z => {{SP.bytes_domain(z) == True{{}} : Bool}}, {BY}, SP2.fcat({PL}), Equal.sym(+List<U32>, SP2.fcat({PL}), {BY}, {cat}), {hdom})'
+        w(f'# ---- {n}: Vector[{kind}, {cnt}], {size} bytes ----')
+        w(f'# the spec side over every list of the length (the buffer\'s bytes are one: {n}_spec_view)')
+        w(f'def {n}_spec_parts({sig})')
+        w(f'    -> {{Codec.parts(S.Sequence{{{V}}}, {spec}) == Some{{[S.Fixed{{{BY}}}]}} : Maybe<&2, +List<S.Part>>}}:')
+        w(f'  %{cat} : {{Codec.parts(S.Sequence{{{V}}}, {spec}) == Some{{[S.Fixed{{_}}]}} : Maybe<&2, +List<S.Part>>}}')
+        w(f'  SP2.vparts({spec}, {V}, {E}, {cnt}n, {PL}, {size}n, {{==}}, {{==}}, {{==}}, {{==}}, {hc}, {hp}, {hall}, {hv}, {hN}, {{==}}, {size}n, {{==}})')
+        w('')
+        w(f'def {n}_spec_encode({sig})')
+        w(f'    -> Decoding.decodes({spec}, {BY}, S.Sequence{{{V}}}):')
+        w(f'  SF.encoding_of_parts({spec}, S.Sequence{{{V}}}, {BY}, {n}_spec_parts({args}))')
+        w('')
+        ret = (sig, args, BY, f'S.Sequence{{{V}}}')
+        BY = bytes_of(xs, r)
+        sig = ', '.join(f'+{x}: U32' for x in xs)
+        args = ', '.join(xs)
+        hb = f', +hb: {{SP2.lf({BY}, True{{}}) == True{{}} : Bool}}' if kind == 'bool' else ''
+        hba = ', hb' if kind == 'bool' else ''
     # the value's parts
     hv = f'F.logic__subst(+List<U32>, z => {{SP.bytes_domain(z) == True{{}} : Bool}}, {BY}, SP2.fcat({PL}), Equal.sym(+List<U32>, SP2.fcat({PL}), {BY}, {cat}), {hdom})'
     hN = f'F.logic__subst(+List<U32>, z => {{List.length(&2, U32, z) == {size}n : Nat}}, {BY}, SP2.fcat({PL}), Equal.sym(+List<U32>, SP2.fcat({PL}), {BY}, {cat}), {{==}})'
-    w(f'# ---- {n}: Vector[{kind}, {cnt}], {size} bytes ----')
-    w(f'def {n}_spec_parts({sig}{hb})')
-    w(f'    -> {{Codec.parts(S.Sequence{{{V}}}, {spec}) == Some{{[S.Fixed{{{BY}}}]}} : Maybe<&2, +List<S.Part>>}}:')
-    w(f'  %{cat} : {{Codec.parts(S.Sequence{{{V}}}, {spec}) == Some{{[S.Fixed{{_}}]}} : Maybe<&2, +List<S.Part>>}}')
-    w(f'  SP2.vparts({spec}, {V}, {E}, {cnt}n, {PL}, {size}n, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {hp}, {hall}, {hv}, {hN}, {{==}}, {size}n, {{==}})')
-    w('')
-    w(f'def {n}_spec_encode({sig}{hb})')
-    w(f'    -> Decoding.decodes({spec}, {BY}, S.Sequence{{{V}}}):')
-    w(f'  SF.encoding_of_parts({spec}, S.Sequence{{{V}}}, {BY}, {n}_spec_parts({args}{hba}))')
-    w('')
+    if size <= 256:
+        vec_spec(w, n, kind, cnt, size, spec, sig, hb, hba, args, V, BY, E, PL, hp, hall, hv, hN, cat)
     w(f'def {n}_spec_decode({psig}{hb})')
     w(f'    -> {{T.{n}_decode({buf}, {size}) == ({buf}, Some{{{dec}}}) : {RT}}}:')
     if kind == 'bool':
@@ -757,7 +874,8 @@ def vec_laws(w, n, kind, cnt, P, src):
     w(f'  %Equal.sym(Bool, U32.is_eq(m, {size}), False{{}}, e) : {{T.{n}_built(m, T.{P}_ok_len(_, buf, 0)) == (buf, None{{}}) : {RT}}}')
     w('  {==}')
     w('')
-    ret = (f'{sig}{hb}', f'{args}{hba}', BY, f'S.Sequence{{{V}}}')
+    if size <= 256:
+        ret = (f'{sig}{hb}', f'{args}{hba}', BY, f'S.Sequence{{{V}}}')
     if kind == 'bool':
         w(f'# a buffer with a byte above 1 is refused')
         w(f'def {n}_spec_reject_bool({psig}, +hb: {{SP2.lf({BY}, True{{}}) == False{{}} : Bool}})')
@@ -842,11 +960,8 @@ def scalar_laws(w, n, kind, P):
         w(f'    -> {{B.emit({E}, 0, 2) == ({E}, [B.byte_sel(0, y), B.byte_sel(1, y)]) : B.Buf & +List<U32>}}:')
         w(f'  %SP2.w16_b0(y) : {{B.emit({E}, 0, 2) == ({E}, [_, B.byte_sel(1, y)]) : B.Buf & +List<U32>}}')
         w(f'  %SP2.w16_b1(y) : {{B.emit({E}, 0, 2) == ({E}, [B.byte_sel(0, {W0}), _]) : B.Buf & +List<U32>}}')
-        for k in (0, 1):
-            ctx = [f'B.byte_sel(0, {W0.replace("U32.shln(", "U32.mul(").replace(", 8n))", ", 256))") if False else "_"})']
         W1 = 'U32.or(U32.and(y, 255), U32.mul(U32.and(U32.shrn(y, 8n), 255), 256))'
         for k in (0, 1):
-            other = [f'B.byte_sel(0, {W1})', f'B.byte_sel(1, {W0})'] if k == 1 else None
             bs = [f'B.byte_sel(0, U32.or(U32.and(y, 255), _))' if k == 0 else f'B.byte_sel(0, {W1})',
                   f'B.byte_sel(1, {W0})' if k == 0 else f'B.byte_sel(1, U32.or(U32.and(y, 255), _))']
             w(f'  %WM.mul256(U32.and(U32.shrn(y, 8n), 255)) : {{B.emit({E}, 0, 2) == ({E}, [{", ".join(bs)}]) : B.Buf & +List<U32>}}')
@@ -869,7 +984,8 @@ UHEAD = ['import Base', 'import ../../types/schema.bend as S', 'import ../../typ
          'import ../../src/buffer.bend as B', 'import ../../spec/decoding_relation.bend as Decoding',
          'import ./generic_specs.bend as Spec', 'import ../decode_complete.bend as E',
          'import ../type_validator_soundness.bend as VS', 'import ./spec_fixed.bend as SF',
-         'import ../../proofs/compact/found.bend as F', 'import ./sub_pack.bend as SP2']
+         'import ../../proofs/compact/found.bend as F', 'import ./sub_pack.bend as SP2', 'import ./spec_bits.bend as FB',
+         'import ../../spec/primitives.bend as SP']
 
 
 def unique(w, n, sig, args, BY, V, big):
@@ -1030,9 +1146,6 @@ def bits_laws(w, n, nbits, rec, P, BB='SP2'):
     yl = ys[-1]
     for kk in range(rb if r else 0):
         tl = [f'B.byte_sel({j}, U32.or(0, {yl}))' if j < kk else (f'B.byte_sel({j}, _)' if j == kk else f'B.byte_sel({j}, {yl})') for j in range(rb)]
-        if r == 0:
-            pre = f'SF.limbs({wl(ys[:-1] + ["LAST"])})'
-            tl2 = None
         pre = f'List.append(&2, U32, SF.limbs({wl(ys[:-1])}), {wl(tl)})' if len(ys) > 1 else wl(tl)
         w(f'  %SP2.or0({yl}) : {{B.emit({E}, 0, {nw}) == ({E}, {pre}) : B.Buf & +List<U32>}}')
     w('  {==}')
@@ -1242,8 +1355,6 @@ def cont_bytes(w, n, fields, rec, pr):
     eqs = [pr.eq(e, t) for e, t in zip(emitted, targets)]
     obj = f'T.{rec}{{{", ".join(objf)}}}'
     E = f'T.{n}_encode({obj})'
-    for l in pr.L.lines[len(getattr(pr, "_seen_b", [])):]:
-        pass
     ts = [SC.src(t) for t in targets]
     lines = []
     lines.append(f'def {n}_spec_bytes({", ".join(f"+{y}: U32" for y in ys)})')
@@ -1288,7 +1399,7 @@ def main():
             big = False
         else:
             sig, args, BY, V = vec_laws(L.append, n, arg[0], arg[1], P, src)
-            big = arg[1] * (2 if arg[0] == 'u16' else 1) > 256
+            big = False
         out[ROOT / f'proofs/obj/sub_{n}.bend'] = '\n'.join(L) + '\n'
         U = list(UHEAD) + [f'import ./sub_{n}.bend as C', '', '# GENERATED by codegen/sub_laws.py. Do not edit.',
                            '# Completeness of the decoder\'s answer (decode_complete.image_unique; legality of the', '# generic schema from the checked validator).', '']

@@ -834,3 +834,53 @@ def prt_u16(ws, tl, tp, h):
         SF.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{hi16(w), 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U16{}}), [B.byte_sel(2, w), B.byte_sel(3, w)],
           Codec.parts(vu16(t, tl), S.Repeat{S.Unsigned{P.U16{}}}), fx16(t, tp), u16hi_part(w), prt_u16(t, tl, tp, h)))
 
+# ---- counts and lengths, for the laws stated over any list -------------------------------
+
+law cnt_vu8:
+  for +xs: +List<U32>
+  {Codec.count(vu8(xs)) == List.length(&2, U32, xs) : Nat}
+def cnt_vu8(xs):
+  match xs:
+    case Nil{}: {==}
+    case Con{x, +t}: F.nat__succ_cong(Codec.count(vu8(t)), List.length(&2, U32, t), cnt_vu8(t))
+
+law cnt_vbool:
+  for +xs: +List<U32>
+  {Codec.count(vbool(xs)) == List.length(&2, U32, xs) : Nat}
+def cnt_vbool(xs):
+  match xs:
+    case Nil{}: {==}
+    case Con{x, +t}: F.nat__succ_cong(Codec.count(vbool(t)), List.length(&2, U32, t), cnt_vbool(t))
+
+def c16(+n: Nat, +c: Nat) -> Nat:
+  match n:
+    case 0n: c
+    case 1n+ +k: 2n+c16(k, c)
+
+def l16(+n: Nat, +c: Nat) -> Nat:
+  match n:
+    case 0n: c
+    case 1n+ +k: 4n+l16(k, c)
+
+law cnt_vu16:
+  for +ws: +List<U32>
+  for +tl: S.Value
+  {Codec.count(vu16(ws, tl)) == c16(List.length(&2, U32, ws), Codec.count(tl)) : Nat}
+def cnt_vu16(ws, tl):
+  match ws:
+    case Nil{}: {==}
+    case Con{w, +t}: F.nat__succ_cong(1n+Codec.count(vu16(t, tl)), 1n+c16(List.length(&2, U32, t), Codec.count(tl)), F.nat__succ_cong(Codec.count(vu16(t, tl)), c16(List.length(&2, U32, t), Codec.count(tl)), cnt_vu16(t, tl)))
+
+law len_fx16:
+  for +ws: +List<U32>
+  for +tp: +List<S.Part>
+  {List.length(&2, U32, fcat(fx16(ws, tp))) == l16(List.length(&2, U32, ws), List.length(&2, U32, fcat(tp))) : Nat}
+def len_fx16(ws, tp):
+  match ws:
+    case Nil{}: {==}
+    case Con{w, +t}:
+      F.nat__succ_cong(3n+List.length(&2, U32, fcat(fx16(t, tp))), 3n+l16(List.length(&2, U32, t), List.length(&2, U32, fcat(tp))),
+        F.nat__succ_cong(2n+List.length(&2, U32, fcat(fx16(t, tp))), 2n+l16(List.length(&2, U32, t), List.length(&2, U32, fcat(tp))),
+          F.nat__succ_cong(1n+List.length(&2, U32, fcat(fx16(t, tp))), 1n+l16(List.length(&2, U32, t), List.length(&2, U32, fcat(tp))),
+            F.nat__succ_cong(List.length(&2, U32, fcat(fx16(t, tp))), l16(List.length(&2, U32, t), List.length(&2, U32, fcat(tp))), len_fx16(t, tp)))))
+

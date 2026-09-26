@@ -28,7 +28,8 @@ What that means concretely:
   definitional and need the bit lemmas and the offset development;
 * Since 2026-09-23 (Bend 2.0.25) the generated codec is also **connected to the
   independent specification** for 83 of the 109 Fulu names (88 since
-  2026-09-26: the array-backed names and Validator, see below)
+  2026-09-26: the array-backed names and Validator, see below; and every fixed-size
+  generic form)
   (`codegen/spec_laws.py` -> `proofs/obj/spec_fixed.bend`, `spec_bits.bend`,
   `spec_small.bend`, `spec_codec_{0..6}.bend`, `spec_unique_{0,1,small}.bend`):
   the bytes the encoder emits through `B.emit` satisfy
@@ -55,8 +56,10 @@ What that means concretely:
   buffer tree / storage tree (free trees, sizes symbolic: no closed size is
   compared or unfolded; BlobSidecar's blob sits at word 2, unaligned to the
   buffer's subtrees, and is handled by arr_shift/arr_enc). The loader law
-  (`*_spec_input`) exists for Blob, HistoricalBatch and SyncCommittee, not for
-  BlobSidecar (its blob is not aligned to the buffer's subtrees). The BlobSidecar
+  (`*_spec_input`) exists for all four; for BlobSidecar (its blob is not aligned
+  to the buffer's subtrees) the input bytes are the words of the left half
+  [x0, x1 | M1 .. M14] (every blob), the blob's last two words and the field
+  words, and the loaded buffer is proved for every depth (`arr_enc.load_tail`). The BlobSidecar
   uniqueness law takes the bytes as a variable `by` with `eby: by == <bytes>`
   (a parameter typed with the 212 literal field words overflows the checker's
   stack); it is the same statement at `eby := {==}`.
@@ -76,10 +79,21 @@ What that means concretely:
   Uniqueness is proved with `proofs/decode_complete.bend` `image_unique` (which
   END_TO_END's frozen `deserialize_unique` is): on Bend 2.0.28 a module that
   imports END_TO_END together with `spec_fixed.bend` fails to resolve names.
-  Not covered: the 21 variable-size names, the 53 generic forms with sub-word
-  leaves (bool, uint8, uint16 and vectors of them, bit vectors, the containers
-  Container(uint8), Container(uint16, uint16), Container(uint8, uint64, uint32),
-  a progressive container), and all roots.
+  **Generic forms with sub-word leaves** (all 53: bool, uint8, uint16,
+  Vector[bool/uint8/uint16, 1..513], BitVector[1..513] of partial words,
+  Container(uint8), Container(uint16, uint16), Container(uint8, uint64, uint32), the
+  progressive container of one uint8), `codegen/sub_laws.py` ->
+  `proofs/obj/sub_pack.bend`, `sub_<N>.bend`, `sub_unique_<N>.bend`: decode, view,
+  spec parts, encoding, the encoder's bytes, size rejection, uniqueness; for bool
+  elements and bit vectors the decoder's validity check (every byte at most 1; the
+  padding bits of the last byte clear) is the acceptance hypothesis and its failure
+  is refused. The spec side is proved once for every length over byte lists
+  (`sub_pack`: a byte of a word is below 256 by clearing its high bits one at a
+  time; clear padding bits likewise; no case split over byte values); the 512/513-
+  element vectors state it over every list of the length. The containers' joined
+  words and the encoders' bytes are proved bit by bit (`codegen/bitsim.py`: per-bit
+  lemmas of at most two variables).
+  Not covered: the 21 variable-size names and all roots.
 * Root equality (updated 2026-09-24, Linux host; see WORK_LOG "Iteration 23"):
   laws exist for 108 of the 109 Fulu names, for the ACTUAL public root
   `T.<Name>_hash_tree_root(h, o)`, against the independent relational
