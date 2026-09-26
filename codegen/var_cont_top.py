@@ -661,13 +661,16 @@ def validx(m, hok):
 # interface alone: the size pass is CI.sizex, its value CI.szx, the bound CI.bndx, the writer at X = 0 of
 # a zero tree CI.putx / putx_bytes, the spec CI.encx_spec.
 
-GTOPS = ['Gp4B0CA2906A', 'Gp66304057C3', 'Gp8A7851175B', 'Gc465214E502', 'Gc221EC01D83', 'Gc85FA758A04', 'BeaconBlock', 'SignedBeaconBlock']
+GTOPS = ['Gp4B0CA2906A', 'Gp66304057C3', 'Gp8A7851175B', 'Gc465214E502', 'Gc221EC01D83', 'Gc85FA758A04', 'Gc56D855869F', 'BeaconBlock', 'SignedBeaconBlock']
 
 
 def gtop_text(C):
     txt = (ROOT / f'proofs/obj/big_encx_{C}_iface.bend').read_text()
     imps = [ln for ln in txt.split('\n') if ln.startswith('import ') and ' as K' not in ln]
     imps = [x for x in imps if not x.endswith(' as B')]
+    # the interface's own imports whose alias HEADX takes (vuw_bits as UWB) are not needed here
+    hx = {x.rsplit(' as ', 1)[1] for x in HEADX}
+    imps = [x for x in imps if ' as ' not in x or x.rsplit(' as ', 1)[1] not in hx]
     TH = 'CI.TH(m)'
     S = 'CI.SZ(m)'
     Dd = f'VL.DO({S})'
