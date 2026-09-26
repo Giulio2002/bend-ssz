@@ -1439,3 +1439,85 @@ def rs2_swo(S, ws, js, dd, D, q, i, J, prev, eq, hj, hd, pf, hl, hz):
       %Equal.sym(Array<U32>, Array.set(U32, FD.array__thaw(U32, D), U32.add(q, j), v), FD.array__thaw(U32, D1), es) :
         {RS2(S, t, jt, _, q, w) == FD.array__thaw(U32, SWo(S, Con{w, t}, dd, D, K, O.shr_over(prev, S))) : Array<U32>}
       ih
+
+# ---- the aligned runs, generically -------------------------------------------------------------
+
+# The runtime's stores of the words ws at word positions q + j for the offsets j in js.
+def AS2(ws: +List<U32>, js: List<&2, U32>, out: Array<U32>, +q: U32) -> Array<U32>:
+  match ws js:
+    case Nil{} _: out
+    case Con{+w, t} Nil{}: out
+    case Con{+w, t} Con{+j, jt}: AS2(t, jt, Array.set(U32, out, U32.add(q, j), w), q)
+
+# They are the aligned run VF.updv.
+law as2_updv:
+  for +ws: +List<U32>
+  for +js: List<&2, U32>
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +q: U32
+  for +i: Nat
+  for +J: Nat
+  for +eq: {U32.to_nat(q) == i : Nat}
+  for +hj: {CJ(List.length(&2, U32, ws), js, J) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(Nat.add(J, i), List.length(&2, U32, ws)), VB.pw(dd)) == True{} : Bool}
+  {AS2(ws, js, FD.array__thaw(U32, D), q) == FD.array__thaw(U32, VF.updv(ws, dd, D, Nat.add(J, i))) : Array<U32>}
+def as2_updv(ws, js, dd, D, q, i, J, eq, hj, hd, pf, hl):
+  match ws js:
+    case Nil{} _: {==}
+    case Con{+w, +t} Nil{}: Empty.absurd({AS2(Con{w, t}, Nil{}, FD.array__thaw(U32, D), q) == FD.array__thaw(U32, VF.updv(Con{w, t}, dd, D, Nat.add(J, i))) : Array<U32>}, FD.logic__false_true(hj))
+    case Con{+w, +t} Con{+j, +jt}:
+      +ej = FD.nat__eq_from_is_eq(U32.to_nat(j), J, FD.logic__and_left(Nat.is_eq(U32.to_nat(j), J), CJ(List.length(&2, U32, t), jt, 1n+J), hj))
+      +hjt = FD.logic__and_right(Nat.is_eq(U32.to_nat(j), J), CJ(List.length(&2, U32, t), jt, 1n+J), hj)
+      +K = Nat.add(J, i)
+      +p = List.length(&2, U32, t)
+      +hd32 = FD.nat__lt_trans(dd, 31n, 32n, hd, {==})
+      +hl1 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(K, 1n+p), 1n+Nat.add(K, p), FD.nat__add_succ(K, p), hl)
+      +hK = FD.nat__lt_le_trans(K, 1n+Nat.add(K, p), VB.pw(dd), FD.nat__le_lt_succ(K, Nat.add(K, p), Order.below_sum(K, p)), hl1)
+      +eqK = FD.logic__subst(Nat, z => {U32.to_nat(U32.add(q, j)) == Nat.add(z, i) : Nat}, U32.to_nat(j), J, ej,
+        VB.add_at(q, j, i, dd, eq, hd32, FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, i), VB.pw(dd)) == True{} : Bool}, J, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), J, ej), hK)))
+      +D1 = FD.array__upd(U32, dd, D, K, w)
+      +es = VB.set_n(dd, D, U32.add(q, j), K, w, eqK, hd32, hK, pf)
+      +ih = as2_updv(t, jt, dd, D1, q, i, 1n+J, eq, hjt, hd, FD.array__upd_perfect(U32, dd, D, K, w, pf), hl1)
+      %Equal.sym(Array<U32>, Array.set(U32, FD.array__thaw(U32, D), U32.add(q, j), w), FD.array__thaw(U32, D1), es) :
+        {AS2(t, jt, _, q) == FD.array__thaw(U32, VF.updv(Con{w, t}, dd, D, K)) : Array<U32>}
+      ih
+
+# An OR that contributes nothing is skipped.
+def orskip0(+dd: Nat, +D: FD.array__Tree<U32>, +i: U32, +x: U32, +h: {x == 0 : U32})
+    -> {O.or_skip(FD.array__thaw(U32, D), i, x) == FD.array__thaw(U32, D) : Array<U32>}:
+  %Equal.sym(U32, x, 0, h) : {O.or_skip(FD.array__thaw(U32, D), i, _) == FD.array__thaw(U32, D) : Array<U32>}
+  {==}
+
+# A word past an aligned run is the tree's.
+law slot_updv_ge:
+  for +V: List<&2, U32>
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +j: Nat
+  for +k: Nat
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hk: {Nat.is_lt(Nat.add(j, VB.len(V)), 1n+k) == True{} : Bool}
+  for +hp: {Nat.is_lt(k, VB.pw(dd)) == True{} : Bool}
+  {VB.slot(VF.updv(V, dd, D, j), k) == VB.slot(D, k) : U32}
+def slot_updv_ge(V, dd, D, j, k, pf, hk, hp):
+  match V:
+    case Nil{}: {==}
+    case Con{+v, +t}:
+      +hk1 = FD.logic__subst(Nat, z => {Nat.is_lt(z, 1n+k) == True{} : Bool}, Nat.add(j, 1n+VB.len(t)), Nat.add(1n+j, VB.len(t)), FD.nat__add_succ(j, VB.len(t)), hk)
+      +hjk = FD.nat__le_lt_trans(1n+j, Nat.add(1n+j, VB.len(t)), 1n+k, Order.below_sum(1n+j, VB.len(t)), hk1)
+      +hj = FD.nat__lt_trans(j, k, VB.pw(dd), hjk, hp)
+      +ne = FD.nat__is_eq_lt(j, k, hjk)
+      +ih = slot_updv_ge(t, dd, FD.array__upd(U32, dd, D, j, v), 1n+j, k, FD.array__upd_perfect(U32, dd, D, j, v, pf), hk1, hp)
+      Equal.trans(U32, VB.slot(VF.updv(t, dd, FD.array__upd(U32, dd, D, j, v), 1n+j), k), VB.slot(FD.array__upd(U32, dd, D, j, v), k), VB.slot(D, k), ih,
+        Equal.trans(U32, VB.slot(FD.array__upd(U32, dd, D, j, v), k), FD.flat__nthc(FD.spec_common__update(U32, SLW(D), j, v), k), VB.slot(D, k),
+          Equal.cong(List<&2, U32>, U32, z => FD.flat__nthc(z, k), SLW(FD.array__upd(U32, dd, D, j, v)), FD.spec_common__update(U32, SLW(D), j, v), FD.array__upd_slots(U32, dd, D, j, v, hj, pf)),
+          nthc_upd_other(SLW(D), j, k, v, ne)))
+
+# An OR into a zero word is a store.
+def orw_zero(+dd: Nat, +D: FD.array__Tree<U32>, +i: Nat, +x: U32, +hz: {VB.slot(D, i) == 0 : U32})
+    -> {ORW(dd, D, i, x) == FD.array__upd(U32, dd, D, i, x) : FD.array__Tree<U32>}:
+  %Equal.sym(U32, VB.slot(D, i), 0, hz) : {FD.array__upd(U32, dd, D, i, U32.or(_, x)) == FD.array__upd(U32, dd, D, i, x) : FD.array__Tree<U32>}
+  Equal.cong(U32, FD.array__Tree<U32>, z => FD.array__upd(U32, dd, D, i, z), U32.or(0, x), x, or0l(x))
