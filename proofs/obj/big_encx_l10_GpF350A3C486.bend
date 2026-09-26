@@ -583,6 +583,14 @@ def sizex(m, hok):
         {(T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, O.pick(_, U32.mul(N, 1), 2147483648)) == (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, U32.mul(N, 1)) : T.l10_GpF350A3C486_Seq & U32}
       {==}
 
+law validx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  {T.l10_GpF350A3C486_valid(TH(m)) == (TH(m), True{}) : T.l10_GpF350A3C486_Seq & Bool}
+def validx(m, hok):
+  match m:
+    case MW{+da, +A, +N}: valid(da, A, N, hok)
+
 law encx_spec:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}

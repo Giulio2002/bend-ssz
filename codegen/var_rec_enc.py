@@ -24,6 +24,7 @@ proofs/obj/big_encx_<p>.bend (generated, big) for the lists of SUBLISTS, whose r
 uint16 fields: the list in var_plist_sub's encoder-window interface, its records written byte by
 byte at any byte position (hand-written helpers: proofs/obj/vrecb.bend; see sub_text).
 """
+import re
 import sys
 from pathlib import Path
 
@@ -2130,6 +2131,14 @@ def sizex(m, hok):
         {(T.@p_Seq{@TH, N}, O.pick(_, U32.mul(N, @RS), 2147483648)) == (T.@p_Seq{@TH, N}, U32.mul(N, @RS)) : T.@p_Seq & U32}
       {==}
 
+law validx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  {T.@p_valid(TH(m)) == (TH(m), True{}) : T.@p_Seq & Bool}
+def validx(m, hok):
+  match m:
+    case MW{+da, +A, +N}: valid(da, A, N, hok)
+
 law encx_spec:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
@@ -2200,11 +2209,428 @@ def sub_text(p, R, LIM):
     return '\n'.join(L) + sub_rec_text(R, RS, sch, fields) + body
 
 
+
+# ---- lists of boxed fixed-size elements (a swap loop over O.Boxed) --------------------------------
+# proofs/obj/encx_<p>.bend: the element's writer on its root_types mirror M_<E> (its fields boxed Data
+# records, written through encx_recs' putx_<R> in the object form of obj_text), then the list of
+# codegen/vrlb_list.bend.in: element i at X + RS i through T.<p>_pt's swap loop (vcont / vrecx for the
+# positions and the bytes).
+BLISTS_BOX = [('BeaconBlockBody', 'proposer_slashings'), ('BeaconBlockBody', 'deposits')]
+
+
+def _brec_fields(g, names, E):
+    """[(field, record type, byte offset)] of an element whose fields are boxed Data records."""
+    t = names[E]
+    s = g.shape(t)
+    out, c = [], 0
+    for (f, ft), (_, fs) in zip(t.fields, s.fields):
+        if fs.kind != 'box':
+            raise SystemExit(f'{E}.{f}: {fs.kind} is not a boxed record')
+        out.append((f, ft, c))
+        c += ft.fixed_size()
+    return out, c
+
+
+
+def _em_text(M, E, RS):
+    """The element on its box (MB): model, bytes, perfect, length, and its boxed write."""
+    X0 = 'Nat.add(A.quad(q), r)'
+    ty = f'Array<U32> & T.{E}'
+    return f'''
+def PXEm(+m: MB<{M}>, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> {TR}:
+  match m:
+    case MNone{{}}: D
+    case MSome{{+v}}: PXE(v, dd, D, q, r)
+def YEm(+m: MB<{M}>) -> +List<U32>:
+  match m:
+    case MNone{{}}: []
+    case MSome{{+v}}: YE(v)
+def pfEm(+m: MB<{M}>, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
+    -> {{FD.array__perfect(U32, dd, PXEm(m, dd, D, q, r)) == {TRUE}}}:
+  match m:
+    case MNone{{}}: pf
+    case MSome{{+v}}: pfE(v, dd, D, q, r, pf)
+def lenEm(+m: MB<{M}>, +h: {{EOK(m) == {TRUE}}}) -> {{VRX.LN(YEm(m)) == {RS}n : Nat}}:
+  match m:
+    case MNone{{}}: Empty.absurd({{VRX.LN(YEm(MNone{{}})) == {RS}n : Nat}}, FD.logic__false_true(h))
+    case MSome{{+v}}: lenE(v, h)
+def RTEm(+m: MB<{M}>, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {{T.{E}_bx_put(FD.array__thaw(U32, D), X, th_{E}_bx(m)) == (FD.array__thaw(U32, PXEm(m, dd, D, q, r)), th_{E}_bx(m)) : Array<U32> & O.Boxed<T.{E}>}}
+def BYEm(+m: MB<{M}>, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> Data:
+  {{UA.BYT(PXEm(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), {X0}, YEm(m)) : +List<U32>}}
+def mkEm(+m: MB<{M}>, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +a: RTEm(m, dd, D, X, q, r), +b: BYEm(m, dd, D, q, r)) -> DK.P2(RTEm(m, dd, D, X, q, r), BYEm(m, dd, D, q, r)):
+  (a, b)
+def putxEm(+m: MB<{M}>, +h: {{EOK(m) == {TRUE}}}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
+    +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}}, +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}},
+    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, {RS}n))), VB.pw(dd)) == {TRUE}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}},
+    +hz: {{VS.bt({RS}n, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({RS}n) : +List<U32>}})
+    -> DK.P2(RTEm(m, dd, D, X, q, r), BYEm(m, dd, D, q, r)):
+  match m:
+    case MNone{{}}: Empty.absurd(DK.P2(RTEm(MNone{{}}, dd, D, X, q, r), BYEm(MNone{{}}, dd, D, q, r)), FD.logic__false_true(h))
+    case MSome{{+v}}:
+      +g = putxE(v, h, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+      +rt = PA(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r), g)
+      +by = PB(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r), g)
+      mkEm(MSome{{v}}, dd, D, X, q, r, Equal.cong({ty}, Array<U32> & O.Boxed<T.{E}>, z => T.{E}_bx_put_back(z), T.{E}_put(FD.array__thaw(U32, D), X, th_{E}(v)),
+        (FD.array__thaw(U32, PXE(v, dd, D, q, r)), th_{E}(v)), rt), by)
+'''
+
+def belem_text(VLW, EN, g, names, E):
+    fields, RS = _brec_fields(g, names, E)
+    M = f'M_{E}'
+    X0 = 'Nat.add(A.quad(q), r)'
+    n = len(fields)
+    av = [f'a{k}' for k in range(n)]
+    pat = f'{M}{{' + ', '.join('+' + x for x in av) + '}'
+    L = []
+    w = L.append
+    done = set()
+    for f, rt, c in fields:
+        if rt.name not in done:
+            done.add(rt.name)
+            nd = VLW.SL.walk(g, rt, iter(range(100000)))
+            w(obj_text(VLW, EN, g, rt, (nd.val, nd.sch, nd.proof)))
+    R = [rt.name for _, rt, _ in fields]
+    C = [c for _, _, c in fields]
+    S = [rt.fixed_size() for _, rt, _ in fields]
+    Y = [f'F.limbs(RWD_{R[k]}(a{k}))' for k in range(n)]
+    qk = [f'Nat.add({C[k] // 4}n, q)' for k in range(n)]
+
+    def model(k):
+        D = 'D' if k == 0 else model(k - 1)
+        return f'PXo_{R[k]}(a{k}, dd, {D}, {qk[k]}, r)' if k >= 0 else 'D'
+
+    def cat(k):
+        return Y[k] if k == n - 1 else f'VRX.AP({Y[k]}, {cat(k + 1)})'
+
+    def lenp(k):
+        """LN(cat(k)) == sum of S[k:]"""
+        tot = sum(S[k:])
+        if k == n - 1:
+            return f'lenb_{R[k]}(a{k})'
+        rest = sum(S[k + 1:])
+        return (f'Equal.trans(Nat, VRX.LN({cat(k)}), Nat.add(VRX.LN({Y[k]}), VRX.LN({cat(k + 1)})), {tot}n, VCN.len_app({Y[k]}, {cat(k + 1)}), '
+                f'Equal.trans(Nat, Nat.add(VRX.LN({Y[k]}), VRX.LN({cat(k + 1)})), Nat.add({S[k]}n, VRX.LN({cat(k + 1)})), {tot}n, '
+                f'Equal.cong(Nat, Nat, z => Nat.add(z, VRX.LN({cat(k + 1)})), VRX.LN({Y[k]}), {S[k]}n, lenb_{R[k]}(a{k})), '
+                f'Equal.cong(Nat, Nat, z => Nat.add({S[k]}n, z), VRX.LN({cat(k + 1)}), {rest}n, {lenp(k + 1)})))')
+
+    def pfs(k):
+        if k < 0:
+            return 'pf'
+        D = 'D' if k == 0 else model(k - 1)
+        return f'pfo_{R[k]}(a{k}, dd, {D}, {qk[k]}, r, {pfs(k - 1)})'
+    w(f'''
+# ---- {E}: its writer on the mirror ----
+
+def OKE(+v: {M}) -> Bool: True{{}}
+def EOK(+m: MB<{M}>) -> Bool:
+  match m:
+    case MNone{{}}: False{{}}
+    case MSome{{+v}}: OKE(v)
+def PXE(+v: {M}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> {TR}:
+  match v:
+    case {pat}: {model(n - 1)}
+def YE(+v: {M}) -> +List<U32>:
+  match v:
+    case {pat}: {cat(0)}
+def lenE(+v: {M}, +h: {{OKE(v) == {TRUE}}}) -> {{VRX.LN(YE(v)) == {RS}n : Nat}}:
+  match v:
+    case {pat}: {lenp(0)}
+def pfE(+v: {M}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
+    -> {{FD.array__perfect(U32, dd, PXE(v, dd, D, q, r)) == {TRUE}}}:
+  match v:
+    case {pat}: {pfs(n - 1)}
+def validE(+v: {M}, +h: {{OKE(v) == {TRUE}}}) -> {{T.{E}_valid(th_{E}(v)) == (th_{E}(v), True{{}}) : T.{E} & Bool}}:
+  match v:
+    case {pat}: {{==}}
+def RTE(+v: {M}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {{T.{E}_put(FD.array__thaw(U32, D), X, th_{E}(v)) == (FD.array__thaw(U32, PXE(v, dd, D, q, r)), th_{E}(v)) : Array<U32> & T.{E}}}
+def BYE(+v: {M}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> Data:
+  {{UA.BYT(PXE(v, dd, D, q, r)) == UW.SPL(UA.BYT(D), {X0}, YE(v)) : +List<U32>}}
+def mkE(+v: {M}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +a: RTE(v, dd, D, X, q, r), +b: BYE(v, dd, D, q, r)) -> DK.P2(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r)):
+  (a, b)
+''')
+    # putxE
+    ls = []
+    a = ls.append
+    Dk = lambda k: 'D' if k == 0 else model(k - 1)
+    Xk = lambda k: f'Nat.add(A.quad({qk[k]}), r)'
+    for k in range(n):
+        rem = RS - C[k] - S[k]
+        Zk = 'hz' if k == 0 else f'Z{k}'
+        a(f'+ep{k} = VRX.fpos(X, q, r, {C[k] // 4}n, {C[k]}, {RS}n, dd, e, {{==}}, hd, {{==}}, hl)')
+        a(f'+hl{k} = VRX.froom(q, r, dd, {C[k] // 4}n, {S[k]}n, {RS}n, {{==}}, hl)')
+        a(f'+hz{k} = VRX.zhead({S[k]}n, {rem}n, VS.bdr({Xk(k)}, UA.BYT({Dk(k)})), {Zk})')
+        pfk = 'pf' if k == 0 else f'pf{k}'
+        a(f'+g{k} = putxo_{R[k]}(a{k}, dd, {Dk(k)}, U32.add(X, {C[k]}), {qk[k]}, r, ep{k}, hr, hd, hl{k}, {pfk}, hz{k})')
+        a(f'+rt{k} = PA(RTo_{R[k]}(a{k}, dd, {Dk(k)}, U32.add(X, {C[k]}), {qk[k]}, r), BYo_{R[k]}(a{k}, dd, {Dk(k)}, {qk[k]}, r), g{k})')
+        a(f'+by{k} = PB(RTo_{R[k]}(a{k}, dd, {Dk(k)}, U32.add(X, {C[k]}), {qk[k]}, r), BYo_{R[k]}(a{k}, dd, {Dk(k)}, {qk[k]}, r), g{k})')
+        a(f'+pf{k + 1} = pfo_{R[k]}(a{k}, dd, {Dk(k)}, {qk[k]}, r, {pfk})')
+        a(f'+hX{k} = VRX.xstart({qk[k]}, r, {S[k]}n, dd, {Dk(k)}, {pfk}, hl{k})')
+        if k < n - 1:
+            a(f'+eX{k} = UW.pos_eq({S[k] // 4}n, {qk[k]}, r)')
+            a(f'+Z{k + 1} = VRX.znext(UA.BYT({Dk(k)}), {Xk(k)}, {Y[k]}, {Xk(k + 1)}, {S[k]}n, {rem}n, UA.BYT({model(k)}), hX{k}, lenb_{R[k]}(a{k}), eX{k}, by{k}, {Zk})')
+    # bytes, from the last field back
+    a(f'+S{n - 1} = by{n - 1}')
+    for k in range(n - 2, -1, -1):
+        a(f'+eXn{k} = Equal.trans(Nat, {Xk(k + 1)}, Nat.add({Xk(k)}, {S[k]}n), Nat.add({Xk(k)}, VRX.LN({Y[k]})), eX{k}, '
+          f'Equal.cong(Nat, Nat, z => Nat.add({Xk(k)}, z), {S[k]}n, VRX.LN({Y[k]}), Equal.sym(Nat, VRX.LN({Y[k]}), {S[k]}n, lenb_{R[k]}(a{k}))))')
+        a(f'+S{k} = Equal.trans(+List<U32>, UA.BYT({model(n - 1)}), UW.SPL(UA.BYT({model(k)}), {Xk(k + 1)}, {cat(k + 1)}), UW.SPL(UA.BYT({Dk(k)}), {Xk(k)}, {cat(k)}), S{k + 1}, '
+          f'VRX.spl_catx(UA.BYT({Dk(k)}), {Xk(k)}, {Y[k]}, {cat(k + 1)}, {Xk(k + 1)}, UA.BYT({model(k)}), hX{k}, eXn{k}, by{k}))')
+    # the runtime chain
+    objs = [f'O.BSome{{a{k}, O.BNone{{}}}}' for k in range(n)]
+    ty = f'Array<U32> & T.{E}'
+    cur = ['0']
+    for k in range(n):
+        cur.append(f'({cur[k]} .|. O.pz(T.{R[k]}_valid(a{k})) : U32)')
+    steps = []
+    for k in range(n):
+        held = [objs[i] for i in range(n) if i != k]
+        ctx = f'T.{E}_put_drop(T.{E}_pw{k}(X, {cur[k]}, {", ".join(held)}, (z, ({objs[k]}, O.pz(T.{R[k]}_valid(a{k}))))))'
+        lhs = f'T.{R[k]}_put(FD.array__thaw(U32, {Dk(k)}), U32.add(X, {C[k]}), a{k})'
+        rhs = f'FD.array__thaw(U32, {model(k)})'
+        steps.append((ctx, lhs, rhs))
+    start = f'T.{E}_put(FD.array__thaw(U32, D), X, th_{E}({M}{{{", ".join(av)}}}))'
+    end = f'(FD.array__thaw(U32, {model(n - 1)}), th_{E}({M}{{{", ".join(av)}}}))'
+
+    def chain(j, first):
+        ctx, lhs, rhs = steps[j]
+        e = f'Equal.cong(Array<U32>, {ty}, z => {ctx}, {lhs}, {rhs}, rt{j})'
+        if j == n - 1:
+            return e
+        after = ctx.replace('(z, (', f'({rhs}, (', 1)
+        nxt_lhs = steps[j + 1][0].replace('(z, (', f'({steps[j + 1][1]}, (', 1)
+        return f'Equal.trans({ty}, {first}, {after}, {end}, {e}, {chain(j + 1, nxt_lhs)})'
+    body = '\n      '.join(ls)
+    w(f'''def putxE(+v: {M}, +h: {{OKE(v) == {TRUE}}}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
+    +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}}, +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}},
+    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, {RS}n))), VB.pw(dd)) == {TRUE}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}},
+    +hz: {{VS.bt({RS}n, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({RS}n) : +List<U32>}})
+    -> DK.P2(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r)):
+  match v:
+    case {pat}:
+      {body}
+      mkE({M}{{{", ".join(av)}}}, dd, D, X, q, r, {chain(0, start)}, S0)
+''')
+    w(_em_text(M, E, RS))
+    return '\n'.join(L), RS
+
+
+
+def belem_deposit_text(VLW, EN, g, names):
+    """Deposit on its mirror M_Deposit{WMr{t, n}, DepositData}: the 33-word proof by vuwd.putw_any
+    (its validity O.words_ok(1056, 1056, 32)), then the boxed DepositData through encx_recs; the bytes
+    over vcont's pieces [1056 | 184] (the proof's trailing zeros fall on the DepositData piece)."""
+    E, M = 'Deposit', 'M_Deposit'
+    rt = names['DepositData']
+    nd = VLW.SL.walk(g, rt, iter(range(100000)))
+    L = [obj_text(VLW, EN, g, rt, (nd.val, nd.sch, nd.proof))]
+    X0 = 'Nat.add(A.quad(q), r)'
+    WOB = 'O.Words{FD.array__thaw(U32, t), 1056}'
+    Y1 = 'VS.bt(1056n, F.limbs(UW.SLW(t)))'
+    Y2 = 'F.limbs(RWD_DepositData(a1))'
+    OBJ = f'T.Deposit{{{WOB}, O.BSome{{a1, O.BNone{{}}}}}}'
+    D1 = 'WD.PWM(r, dd, D, q, t, 1056)'
+    D2 = f'PXo_DepositData(a1, dd, {D1}, Nat.add(264n, q), r)'
+    PT = 'WD.PADB(r, 1056n)'
+    OKW = ('Bool.and(Nat.is_lt(TDW(t), 28n), Bool.and(FD.array__perfect(U32, TDW(t), t), Bool.and(Nat.is_le(264n, VB.pw(TDW(t))), U32.is_eq(n, 1056))))')
+    L.append(f'''
+# ---- Deposit: its writer on the mirror ----
+
+def TDW(t: FD.array__Tree<U32>) -> Nat:
+  match t:
+    case FD.TLeaf{{x}}: 0n
+    case FD.TNode{{l, r}}: 1n+TDW(l)
+# The proof's storage: a perfect tree of depth < 28 with room for its 264 words, 1056 bytes.
+def OKW(+t: FD.array__Tree<U32>, +n: U32) -> Bool: {OKW}
+def okw_d(+t: FD.array__Tree<U32>, +n: U32, +h: {{OKW(t, n) == {TRUE}}}) -> {{Nat.is_lt(TDW(t), 28n) == {TRUE}}}:
+  and_l(Nat.is_lt(TDW(t), 28n), Bool.and(FD.array__perfect(U32, TDW(t), t), Bool.and(Nat.is_le(264n, VB.pw(TDW(t))), U32.is_eq(n, 1056))), h)
+def okw_1(+t: FD.array__Tree<U32>, +n: U32, +h: {{OKW(t, n) == {TRUE}}}) -> {{Bool.and(FD.array__perfect(U32, TDW(t), t), Bool.and(Nat.is_le(264n, VB.pw(TDW(t))), U32.is_eq(n, 1056))) == {TRUE}}}:
+  and_r(Nat.is_lt(TDW(t), 28n), Bool.and(FD.array__perfect(U32, TDW(t), t), Bool.and(Nat.is_le(264n, VB.pw(TDW(t))), U32.is_eq(n, 1056))), h)
+def okw_pf(+t: FD.array__Tree<U32>, +n: U32, +h: {{OKW(t, n) == {TRUE}}}) -> {{FD.array__perfect(U32, TDW(t), t) == {TRUE}}}:
+  and_l(FD.array__perfect(U32, TDW(t), t), Bool.and(Nat.is_le(264n, VB.pw(TDW(t))), U32.is_eq(n, 1056)), okw_1(t, n, h))
+def okw_2(+t: FD.array__Tree<U32>, +n: U32, +h: {{OKW(t, n) == {TRUE}}}) -> {{Bool.and(Nat.is_le(264n, VB.pw(TDW(t))), U32.is_eq(n, 1056)) == {TRUE}}}:
+  and_r(FD.array__perfect(U32, TDW(t), t), Bool.and(Nat.is_le(264n, VB.pw(TDW(t))), U32.is_eq(n, 1056)), okw_1(t, n, h))
+def okw_room(+t: FD.array__Tree<U32>, +n: U32, +h: {{OKW(t, n) == {TRUE}}}) -> {{Nat.is_le(264n, VB.pw(TDW(t))) == {TRUE}}}:
+  and_l(Nat.is_le(264n, VB.pw(TDW(t))), U32.is_eq(n, 1056), okw_2(t, n, h))
+def okw_n(+t: FD.array__Tree<U32>, +n: U32, +h: {{OKW(t, n) == {TRUE}}}) -> {{n == 1056 : U32}}:
+  FD.u32alg__eq_of(n, 1056, and_r(Nat.is_le(264n, VB.pw(TDW(t))), U32.is_eq(n, 1056), okw_2(t, n, h)))
+# its bytes fit its tree: 1056 <= 4 2^d
+def okw_hn(+t: FD.array__Tree<U32>, +n: U32, +h: {{OKW(t, n) == {TRUE}}}) -> {{Nat.is_le(1056n, A.quad(VB.pw(TDW(t)))) == {TRUE}}}:
+  VCN.VME4(264n, VB.pw(TDW(t)), okw_room(t, n, h))
+
+def OKE(+v: {M}) -> Bool:
+  match v:
+    case {M}{{+a0, +a1}}:
+      match a0:
+        case WMr{{+t, +n}}: OKW(t, n)
+def EOK(+m: MB<{M}>) -> Bool:
+  match m:
+    case MNone{{}}: False{{}}
+    case MSome{{+v}}: OKE(v)
+def TW(+v: {M}) -> FD.array__Tree<U32>:
+  match v:
+    case {M}{{+a0, +a1}}:
+      match a0:
+        case WMr{{+t, +n}}: t
+def PXE(+v: {M}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> {TR}:
+  match v:
+    case {M}{{+a0, +a1}}:
+      match a0:
+        case WMr{{+t, +n}}: {D2}
+def YE(+v: {M}) -> +List<U32>:
+  match v:
+    case {M}{{+a0, +a1}}:
+      match a0:
+        case WMr{{+t, +n}}: VCN.CAT([VCN.PC(1056n, {Y1}), VCN.PC(184n, {Y2})])
+def lenE(+v: {M}, +h: {{OKE(v) == {TRUE}}}) -> {{VRX.LN(YE(v)) == 1240n : Nat}}:
+  match v:
+    case {M}{{+a0, +a1}}:
+      match a0:
+        case WMr{{+t, +n}}: {{==}}
+def pfE(+v: {M}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
+    -> {{FD.array__perfect(U32, dd, PXE(v, dd, D, q, r)) == {TRUE}}}:
+  match v:
+    case {M}{{+a0, +a1}}:
+      match a0:
+        case WMr{{+t, +n}}: pfo_DepositData(a1, dd, {D1}, Nat.add(264n, q), r, WD.pwm_perfect(r, dd, D, q, t, 1056, pf))
+
+# The proof's validity check, for its 1056 bytes.
+def wvalid(+t: FD.array__Tree<U32>, +n: U32, +h: {{OKW(t, n) == {TRUE}}}) -> {{T.v33_b32_valid({WOB}) == ({WOB}, True{{}}) : O.Words & Bool}}:
+  +d = TDW(t)
+  +hd = okw_d(t, n, h)
+  VBE.words_ok_b(d, t, 1056, 1056, 1056, VL.KK(d), okw_pf(t, n, h), FD.nat__lt_trans(d, 28n, 31n, hd, {{==}}), VL.kk_lt(d, hd), VL.hyn(d, 1056, okw_hn(t, n, h)),
+    {{==}}, {{==}}, okw_room(t, n, h), {{==}}, 32, {{==}})
+
+def validE(+v: {M}, +h: {{OKE(v) == {TRUE}}}) -> {{T.{E}_valid(th_{E}(v)) == (th_{E}(v), True{{}}) : T.{E} & Bool}}:
+  match v:
+    case {M}{{+a0, +a1}}:
+      match a0:
+        case WMr{{+t, +n}}:
+          %Equal.sym(U32, n, 1056, okw_n(t, n, h)) : {{T.{E}_valid(T.Deposit{{O.Words{{FD.array__thaw(U32, t), _}}, O.BSome{{a1, O.BNone{{}}}}}}) == (T.Deposit{{O.Words{{FD.array__thaw(U32, t), _}}, O.BSome{{a1, O.BNone{{}}}}}}, True{{}}) : T.{E} & Bool}}
+          %Equal.sym(O.Words & Bool, T.v33_b32_valid({WOB}), ({WOB}, True{{}}), wvalid(t, n, h)) :
+            {{T.{E}_va0(O.BSome{{a1, O.BNone{{}}}}, True{{}}, _) == ({OBJ}, True{{}}) : T.{E} & Bool}}
+          {{==}}
+
+def RTE(+v: {M}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {{T.{E}_put(FD.array__thaw(U32, D), X, th_{E}(v)) == (FD.array__thaw(U32, PXE(v, dd, D, q, r)), th_{E}(v)) : Array<U32> & T.{E}}}
+def BYE(+v: {M}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> Data:
+  {{UA.BYT(PXE(v, dd, D, q, r)) == UW.SPL(UA.BYT(D), {X0}, YE(v)) : +List<U32>}}
+def mkE(+v: {M}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +a: RTE(v, dd, D, X, q, r), +b: BYE(v, dd, D, q, r)) -> DK.P2(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r)):
+  (a, b)
+
+# With the proof's length n, then 1056 (its storage t).
+def RTEn(+t: FD.array__Tree<U32>, +n: U32, +a1: T.DepositData, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {{T.{E}_put(FD.array__thaw(U32, D), X, T.Deposit{{O.Words{{FD.array__thaw(U32, t), n}}, O.BSome{{a1, O.BNone{{}}}}}}) == (FD.array__thaw(U32, {D2}), T.Deposit{{O.Words{{FD.array__thaw(U32, t), n}}, O.BSome{{a1, O.BNone{{}}}}}}) : Array<U32> & T.{E}}}
+def RTE1(+t: FD.array__Tree<U32>, +a1: T.DepositData, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {{T.{E}_put(FD.array__thaw(U32, D), X, {OBJ}) == (FD.array__thaw(U32, {D2}), {OBJ}) : Array<U32> & T.{E}}}
+def BYE1(+t: FD.array__Tree<U32>, +a1: T.DepositData, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> Data:
+  {{UA.BYT({D2}) == UW.SPL(UA.BYT(D), {X0}, VCN.CAT([VCN.PC(1056n, {Y1}), VCN.PC(184n, {Y2})])) : +List<U32>}}
+def mkE1(+t: FD.array__Tree<U32>, +a1: T.DepositData, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +a: RTE1(t, a1, dd, D, X, q, r), +b: BYE1(t, a1, dd, D, q, r))
+    -> DK.P2(RTE1(t, a1, dd, D, X, q, r), BYE1(t, a1, dd, D, q, r)):
+  (a, b)
+
+def putx1(+t: FD.array__Tree<U32>, +n: U32, +a1: T.DepositData, +h: {{OKW(t, n) == {TRUE}}}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
+    +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}}, +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}},
+    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1240n))), VB.pw(dd)) == {TRUE}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}},
+    +hz: {{VS.bt(1240n, VS.bdr({X0}, UA.BYT(D))) == UW.ZB(1240n) : +List<U32>}})
+    -> DK.P2(RTE1(t, a1, dd, D, X, q, r), BYE1(t, a1, dd, D, q, r)):
+  +dw = TDW(t)
+  +hdw = okw_d(t, n, h)
+  +pfT = okw_pf(t, n, h)
+  +B0 = UA.BYT(D)
+  +hX = VRX.xstart(q, r, 1240n, dd, D, pf, hl)
+  +I0 = VCN.reg_init(B0, {X0}, [1056n, 184n], hz)
+  +ep0 = VRX.fpos(X, q, r, 0n, 0, 1240n, dd, e, {{==}}, hd, {{==}}, hl)
+  +hl0 = VRX.froom(q, r, dd, 0n, 1056n, 1240n, {{==}}, hl)
+  +hp0 = VCN.zb_pre(184n, [], {PT}, FD.nat__le_trans({PT}, 3n, 184n, VCN.padb3(r, 1056n), {{==}}))
+  +z0 = VCN.reg_zero(B0, {X0}, [], 1056n, [UW.ZB(184n)], {PT}, B0, hX, I0, hp0)
+  +hz0 = FD.logic__subst(Nat, zz => {{VS.bt(Nat.add(1056n, {PT}), VS.bdr(zz, B0)) == UW.ZB(Nat.add(1056n, {PT})) : +List<U32>}}, Nat.add({X0}, 0n), Nat.add(A.quad(Nat.add(0n, q)), r),
+    FD.nat__add_zero({X0}), z0)
+  +hsrc = FD.nat__le_trans(Nat.add(VC.NW(1056), 0n), 264n, VB.pw(dw), {{==}}, okw_room(t, n, h))
+  +w0 = WD.putw_any(dd, D, U32.add(X, 0), Nat.add(0n, q), r, dw, t, 1056, VL.KK(dw), ep0, hr, hd, FD.nat__lt_trans(dw, 28n, 31n, hdw, {{==}}), VL.kk_lt(dw, hdw),
+    VL.hyn(dw, 1056, okw_hn(t, n, h)), hsrc, hl0, pf, pfT, {{==}}, hz0)
+  +b0 = WD.putw_any_bytes(dd, D, U32.add(X, 0), Nat.add(0n, q), r, dw, t, 1056, VL.KK(dw), ep0, hr, hd, FD.nat__lt_trans(dw, 28n, 31n, hdw, {{==}}), VL.kk_lt(dw, hdw),
+    VL.hyn(dw, 1056, okw_hn(t, n, h)), hsrc, hl0, pf, pfT, {{==}}, hz0)
+  +hop0 = FD.logic__subst(Nat, zz => {{UA.BYT({D1}) == UW.SPL(B0, zz, VCN.AP({Y1}, UW.ZB({PT}))) : +List<U32>}}, Nat.add(A.quad(Nat.add(0n, q)), r), Nat.add({X0}, 0n),
+    Equal.sym(Nat, Nat.add({X0}, 0n), {X0}, FD.nat__add_zero({X0})), b0)
+  +h264 = FD.logic__subst(Nat, zz => {{Nat.is_le(264n, zz) == {TRUE}}}, VB.pw(dw), List.length(&2, U32, UW.SLW(t)), Equal.sym(Nat, List.length(&2, U32, UW.SLW(t)), VB.pw(dw),
+    Equal.trans(Nat, List.length(&2, U32, UW.SLW(t)), FD.spec_common__length(U32, UW.SLW(t)), VB.pw(dw), VMR.len_eq(UW.SLW(t)), FD.array__slots_length(U32, dw, t, pfT))), okw_room(t, n, h))
+  +h1056 = FD.logic__subst(Nat, zz => {{Nat.is_le(1056n, zz) == {TRUE}}}, A.quad(List.length(&2, U32, UW.SLW(t))), List.length(&2, U32, F.limbs(UW.SLW(t))),
+    Equal.sym(Nat, List.length(&2, U32, F.limbs(UW.SLW(t))), A.quad(List.length(&2, U32, UW.SLW(t))), UW.len_limbs_q(UW.SLW(t))), VCN.VME4(264n, List.length(&2, U32, UW.SLW(t)), h264))
+  +I1 = VCN.reg_putc(B0, {X0}, [], 1056n, [UW.ZB(184n)], {Y1}, {PT}, B0, UA.BYT({D1}), hX, I0, VS.bt_len(1056n, F.limbs(UW.SLW(t)), h1056), hp0, hop0)
+  +pf1 = WD.pwm_perfect(r, dd, D, q, t, 1056, pf)
+  +ep1 = VRX.fpos(X, q, r, 264n, 1056, 1240n, dd, e, {{==}}, hd, {{==}}, hl)
+  +hl1 = VRX.froom(q, r, dd, 264n, 184n, 1240n, {{==}}, hl)
+  +z1 = VCN.reg_zero(B0, {X0}, [VCN.PC(1056n, {Y1})], 184n, [], 0n, UA.BYT({D1}), hX, I1, {{==}})
+  +hz1 = FD.logic__subst(Nat, zz => {{VS.bt(184n, VS.bdr(zz, UA.BYT({D1}))) == UW.ZB(184n) : +List<U32>}}, Nat.add({X0}, VCN.LN(VCN.CAT([VCN.PC(1056n, {Y1})]))), Nat.add(A.quad(Nat.add(264n, q)), r),
+    VRX.fpx(q, r, 264n), z1)
+  +g1 = putxo_DepositData(a1, dd, {D1}, U32.add(X, 1056), Nat.add(264n, q), r, ep1, hr, hd, hl1, pf1, hz1)
+  +rt1 = PA(RTo_DepositData(a1, dd, {D1}, U32.add(X, 1056), Nat.add(264n, q), r), BYo_DepositData(a1, dd, {D1}, Nat.add(264n, q), r), g1)
+  +by1 = PB(RTo_DepositData(a1, dd, {D1}, U32.add(X, 1056), Nat.add(264n, q), r), BYo_DepositData(a1, dd, {D1}, Nat.add(264n, q), r), g1)
+  +hop1 = FD.logic__subst(Nat, zz => {{UA.BYT({D2}) == UW.SPL(UA.BYT({D1}), zz, {Y2}) : +List<U32>}}, Nat.add(A.quad(Nat.add(264n, q)), r),
+    Nat.add({X0}, VCN.LN(VCN.CAT([VCN.PC(1056n, {Y1})]))), Equal.sym(Nat, Nat.add({X0}, VCN.LN(VCN.CAT([VCN.PC(1056n, {Y1})]))), Nat.add(A.quad(Nat.add(264n, q)), r), VRX.fpx(q, r, 264n)), by1)
+  +I2 = VCN.reg_putc0(B0, {X0}, [VCN.PC(1056n, {Y1})], 184n, [], {Y2}, UA.BYT({D1}), UA.BYT({D2}), hX, I1, lenb_DepositData(a1), hop1)
+  +s1 = Equal.cong(O.Words & Bool, Array<U32> & (O.Words & U32), z => T.v33_b32_pk(FD.array__thaw(U32, D), U32.add(X, 0), z), T.v33_b32_valid({WOB}), ({WOB}, True{{}}), wvalid(t, n, h))
+  +s2 = Equal.cong(Array<U32> & O.Words, Array<U32> & (O.Words & U32), z => T.v33_b32_pk_ok(z), O.put_words(FD.array__thaw(U32, D), U32.add(X, 0), {WOB}), (FD.array__thaw(U32, {D1}), {WOB}), w0)
+  +pw = Equal.trans(Array<U32> & (O.Words & U32), T.v33_b32_pk(FD.array__thaw(U32, D), U32.add(X, 0), T.v33_b32_valid({WOB})), T.v33_b32_pk(FD.array__thaw(U32, D), U32.add(X, 0), ({WOB}, True{{}})),
+    (FD.array__thaw(U32, {D1}), ({WOB}, 0)), s1, s2)
+  +c1 = Equal.cong(Array<U32> & (O.Words & U32), Array<U32> & T.{E}, z => T.{E}_put_drop(T.{E}_pw0(X, 0, O.BSome{{a1, O.BNone{{}}}}, z)),
+    T.v33_b32_putk(FD.array__thaw(U32, D), U32.add(X, 0), {WOB}), (FD.array__thaw(U32, {D1}), ({WOB}, 0)), pw)
+  +c2 = Equal.cong(Array<U32>, Array<U32> & T.{E}, z => T.{E}_put_drop(T.{E}_pw1(X, (0 .|. 0 : U32), {WOB}, (z, (O.BSome{{a1, O.BNone{{}}}}, O.pz(T.DepositData_valid(a1)))))),
+    T.DepositData_put(FD.array__thaw(U32, {D1}), U32.add(X, 1056), a1), FD.array__thaw(U32, {D2}), rt1)
+  +rtf = Equal.trans(Array<U32> & T.{E}, T.{E}_put_drop(T.{E}_pw0(X, 0, O.BSome{{a1, O.BNone{{}}}}, T.v33_b32_putk(FD.array__thaw(U32, D), U32.add(X, 0), {WOB}))),
+    T.{E}_put_drop(T.{E}_pw0(X, 0, O.BSome{{a1, O.BNone{{}}}}, (FD.array__thaw(U32, {D1}), ({WOB}, 0)))), (FD.array__thaw(U32, {D2}), {OBJ}), c1, c2)
+  mkE1(t, a1, dd, D, X, q, r, rtf, I2)
+
+def putxE(+v: {M}, +h: {{OKE(v) == {TRUE}}}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
+    +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}}, +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}},
+    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1240n))), VB.pw(dd)) == {TRUE}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}},
+    +hz: {{VS.bt(1240n, VS.bdr({X0}, UA.BYT(D))) == UW.ZB(1240n) : +List<U32>}})
+    -> DK.P2(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r)):
+  match v:
+    case {M}{{+a0, +a1}}:
+      match a0:
+        case WMr{{+t, +n}}:
+          FD.logic__subst(U32, z => DK.P2(RTEn(t, z, a1, dd, D, X, q, r), BYE1(t, a1, dd, D, q, r)), 1056, n, Equal.sym(U32, n, 1056, okw_n(t, n, h)),
+            putx1(t, n, a1, h, dd, D, X, q, r, e, hr, hd, hl, pf, hz))
+''')
+    L.append(_em_text(M, E, 1240))
+    return '\n'.join(L), 1240
+
+
+def blist_box_text(g, names, parent, field):
+    import var_rlist as VRG
+    import var_rlist_enc as EN
+    import var_vlist_enc as VV
+    ft = dict(names[parent].fields)[field]
+    s = g.shape(ft)
+    p = s.p
+    E = ft.elem.name
+    LIM = ft.size
+    etext, RS = belem_deposit_text(VL, EN, g, names) if E == 'Deposit' else belem_text(VL, EN, g, names, E)
+    bl = VV.blocks((ROOT / 'proofs/obj/root_types.bend').read_text())
+    COPYB = (['WMr', 'th_w'] if E == 'Deposit' else []) + ['MB', f'M_{E}', f'th_{E}', f'th_{E}_bx', f'am_{p}', f'amsize_{p}', f'amswap_go_{p}', f'amswap_{p}', f'amset_{p}', f'amswap_back_{p}',
+             f'xat_{p}', f'nth_{p}']
+    cp = [re.sub(r'\bF\.', 'FD.', bl[c]) for c in COPYB]
+    tmpl = (ROOT / 'codegen/vrlb_list.bend.in').read_text()
+    body = (tmpl.replace('@P', p).replace('@E', E).replace('@M', f'M_{E}').replace('@RSn', f'{RS}n').replace('@RS', str(RS))
+            .replace('@Wn', f'{RS // 4}n').replace('@LIM', str(LIM)))
+    assert '@' not in body.replace('&2', ''), [ln for ln in body.split('\n') if '@' in ln.replace('&2', '')][:3]
+    L = LHEAD + ['import ./vcont.bend as VCN', 'import ./amap.bend as AM', 'import ./mtree_defs.bend as MD', 'import ./vbenc.bend as VBE', 'import ./vlist.bend as VL', 'import ./vcopy.bend as VC', '', '# GENERATED by codegen/var_rec_enc.py. Do not edit.',
+                 f'# {p}: a list of boxed {E} (fixed size, {RS} bytes) in the encoder-window interface (see the generator).', '', COMMON,
+                 '# ---- mirrors of the boxed elements (copied from proofs/obj/root_types.bend) ----'] + cp
+    return p, '\n'.join(L) + '\n' + etext + '\n' + body
+
+
 def main():
     out = {OUT: module_text()}
     g, names = layout()
     for parent, field in LISTS:
         p, t = list_module(g, names, parent, field)
+        out[lfile(p)] = t
+    for parent, field in BLISTS_BOX:
+        p, t = blist_box_text(g, names, parent, field)
         out[lfile(p)] = t
     if '--no-big' not in sys.argv:
         for p, X, LIM in BLISTS:
