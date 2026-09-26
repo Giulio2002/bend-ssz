@@ -186,6 +186,22 @@ class Layout:
 # ---------------------------------------------------------------------------------------------------
 # definitions and the facts the checks give
 
+def EU(L, c):
+    return f'eU{c}()' if L.sym else '{==}'
+
+
+def LEF(L, h):
+    """FS <= len from U32.is_le(FS, len) == True (h)."""
+    if not L.sym:
+        return f'le_nat({L.FS}, len, {h})'
+    return (f'FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(len)) == {TRUE}}}, U32.to_nat({L.FS}), {L.FS}n, eU{L.FS}(), le_nat({L.FS}, len, {h}))')
+
+
+def EUDEFS(L):
+    cs = sorted({L.FS} | {f['c'] for f in L.fields})
+    return '\n'.join(f'def eU{c}() -> {{U32.to_nat({c}) == {c}n : Nat}}: FD.nat__eq_from_is_eq(U32.to_nat({c}), {c}n, {{==}})' for c in cs) + '\n'
+
+
 def RDF(L):
     return 'rdFX' if L.sym else 'rdF'
 
@@ -211,6 +227,12 @@ def splitX(+t: FD.array__Tree<U32>, +x: Nat, +c: Nat, +s: Nat, +r: Nat)
     Equal.cong(Nat, Nat, z => Nat.add(x, z), Nat.add(s, c), Nat.add(c, s), FD.nat__add_comm(s, c)))
   FD.logic__subst(Nat, z => {UW.WX(t, Nat.add(x, c), Nat.add(s, r)) == List.append(&2, U32, UW.WX(t, Nat.add(x, c), s), UW.WX(t, z, r)) : +List<U32>}, Nat.add(s, Nat.add(x, c)), Nat.add(x, Nat.add(c, s)), e,
     UW.splitWX(t, Nat.add(x, c), s, r))
+
+def splitXe(+t: FD.array__Tree<U32>, +x: Nat, +c: Nat, +s: Nat, +r: Nat, +T: Nat, +c2: Nat, +eT: {Nat.add(s, r) == T : Nat}, +e2: {Nat.add(c, s) == c2 : Nat})
+    -> {UW.WX(t, Nat.add(x, c), T) == List.append(&2, U32, UW.WX(t, Nat.add(x, c), s), UW.WX(t, Nat.add(x, c2), r)) : +List<U32>}:
+  %eT : {UW.WX(t, Nat.add(x, c), _) == List.append(&2, U32, UW.WX(t, Nat.add(x, c), s), UW.WX(t, Nat.add(x, c2), r)) : +List<U32>}
+  %e2 : {UW.WX(t, Nat.add(x, c), Nat.add(s, r)) == List.append(&2, U32, UW.WX(t, Nat.add(x, c), s), UW.WX(t, Nat.add(x, _), r)) : +List<U32>}
+  splitX(t, x, c, s, r)
 
 def splitR(+t: FD.array__Tree<U32>, +x: Nat, +s: Nat, +r: Nat)
     -> {UW.WX(t, x, Nat.add(s, r)) == List.append(&2, U32, UW.WX(t, x, s), UW.WX(t, Nat.add(x, s), r)) : +List<U32>}:
@@ -376,9 +398,12 @@ def facts_text(L):
             w.append(f'def it{m}({TXO}, {H}) -> {{IT{m}({TXOA}) == {TRUE}}}: kk{m}({TXOA}, h)')
         else:
             w.append(f'def it{m}({TXO}, {H}) -> {{IT{m}({TXOA}) == {TRUE}}}: and_l(IT{m}({TXOA}), K{m + 1}({TXOA}), kk{m}({TXOA}, h))')
-    w.append(f'def hFc({TXO}, {H}) -> {{Nat.is_le({L.FS}n, U32.to_nat(len)) == {TRUE}}}: le_nat({L.FS}, len, it0({TXOA}, h))')
+    w.append(f'def hFc({TXO}, {H}) -> {{Nat.is_le({L.FS}n, U32.to_nat(len)) == {TRUE}}}: {LEF(L, "it0(" + TXOA + ", h)")}')
     w.append(f'def eO0({TXO}, {H}) -> {{U32.to_nat({L.O(0)}) == {L.FS}n : Nat}}:')
-    w.append(f'  Equal.cong(U32, Nat, z => U32.to_nat(z), {L.O(0)}, {L.FS}, FD.u32alg__eq_of({L.O(0)}, {L.FS}, it1({TXOA}, h)))')
+    if L.sym:
+        w.append(f'  Equal.trans(Nat, U32.to_nat({L.O(0)}), U32.to_nat({L.FS}), {L.FS}n, Equal.cong(U32, Nat, z => U32.to_nat(z), {L.O(0)}, {L.FS}, FD.u32alg__eq_of({L.O(0)}, {L.FS}, it1({TXOA}, h))), eU{L.FS}())')
+    else:
+        w.append(f'  Equal.cong(U32, Nat, z => U32.to_nat(z), {L.O(0)}, {L.FS}, FD.u32alg__eq_of({L.O(0)}, {L.FS}, it1({TXOA}, h)))')
     for j in range(k):
         E = L.E(j)
         if j + 1 < k:
@@ -459,13 +484,13 @@ def validator_text(L):
         if i < k - 1:
             f = L.vars[i + 1]
             c = f['c']
-            w.append(f'      %Equal.sym(B.Buf & U32, B.read32({BUF}, U32.add(off, {c})), ({BUF}, {L.O(i + 1)}), {RDF(L)}({CWA}, hF, {c}, {c}n, {{==}}, {{==}})) :')
+            w.append(f'      %Equal.sym(B.Buf & U32, B.read32({BUF}, U32.add(off, {c})), ({BUF}, {L.O(i + 1)}), {RDF(L)}({CWA}, hF, {c}, {c}n, {EU(L, c)}, {{==}})) :')
             w.append(f'        {{{Tn}_v{i + 1}(off, len, {OS(i)}, _) == {GOALT}}}')
         elif i < k - 1 + m:
             f = L.fchk[i - (k - 1)]
             c = f['c']
             w.append(f'      %Equal.sym(B.Buf & Bool, T.{f["rt"]}_ok_at({BUF}, U32.add(off, {c})), ({BUF}, {f["fa"]}.CHK(t, {L.pos(c)})),')
-            w.append(f'          {f["fa"]}.ok(d, t, n, U32.add(off, {c}), {L.pos(c)}, eocX({CWA}, hF, {c}, {c}n, {{==}}, {{==}}), hd, pf, roomFX({CWA}, hF, {c}n, 4n, {{==}}))) :')
+            w.append(f'          {f["fa"]}.ok(d, t, n, U32.add(off, {c}), {L.pos(c)}, eocX({CWA}, hF, {c}, {c}n, {EU(L, c)}, {{==}}), hd, pf, roomFX({CWA}, hF, {c}n, 4n, {{==}}))) :')
             w.append(f'        {{{Tn}_v{i + 1}(off, len, {OS(k - 1)}, _) == {GOALT}}}')
         else:
             j = i - (k - 1) - m
@@ -483,9 +508,9 @@ def validator_text(L):
     w.append('  match a:')
     w.append('    case False{}: {==}')
     w.append('    case True{}:')
-    w.append(f'      +hF = le_nat({L.FS}, len, ea)')
+    w.append(f'      +hF = {LEF(L, "ea")}')
     c0 = L.vars[0]['c']
-    w.append(f'      %Equal.sym(B.Buf & U32, B.read32({BUF}, U32.add(off, {c0})), ({BUF}, {L.O(0)}), {RDF(L)}({CWA}, hF, {c0}, {c0}n, {{==}}, {{==}})) :')
+    w.append(f'      %Equal.sym(B.Buf & U32, B.read32({BUF}, U32.add(off, {c0})), ({BUF}, {L.O(0)}), {RDF(L)}({CWA}, hF, {c0}, {c0}n, {EU(L, c0)}, {{==}})) :')
     w.append(f'        {{{Tn}_v0(off, len, _) == ({BUF}, K1({TXOA})) : B.Buf & Bool}}')
     w.append(f'      okc0({CWA}, hF, IT1({TXOA}), {{==}})')
     w.append('')
@@ -518,8 +543,8 @@ def read_step(L, f):
         c = f['c']
         sz = f['size']
         call = f'T.{f["rt"]}_read({BUF}, U32.add(off, {c}), {sz})'
-        prf = (f'{f["fa"]}.rdx(d, t, n, U32.add(off, {c}), {L.pos(c)}, eocX({CWA}, hF, {c}, {c}n, {{==}}, {{==}}), hd, pf,\n'
-               f'        roomFX({CWA}, hF, {c}n, {sz}n, {{==}}))')
+        prf = (f'{f["fa"]}.rdx(d, t, n, U32.add(off, {c}), {L.pos(c)}, eocX({CWA}, hF, {c}, {c}n, {EU(L, c)}, {{==}}), hd, pf,\n'
+               f'        roomFX({CWA}, hF, {c}n, {max(sz, 4) if f.get("chk") else sz}n, {{==}}))')
         ty = f'B.Buf & {f["rep"]}'
         base = f['rt']
     elif f['kind'] == 'fix':
@@ -554,7 +579,7 @@ def fieldset_reader(L, name, prefix, R, fs, vend):
     for s, f in enumerate(vs):
         c = f['c']
         pre = ', '.join(['off', 'len'] + ([vend] if vend else []) + done)
-        w.append(f'  %Equal.sym(B.Buf & U32, B.read32({BUF}, U32.add(off, {c})), ({BUF}, {L.O(f["j"])}), {RDF(L)}({CWA}, hF, {c}, {c}n, {{==}}, {{==}})) :')
+        w.append(f'  %Equal.sym(B.Buf & U32, B.read32({BUF}, U32.add(off, {c})), ({BUF}, {L.O(f["j"])}), {RDF(L)}({CWA}, hF, {c}, {c}n, {EU(L, c)}, {{==}})) :')
         w.append(f'    {{T.{prefix}_rd{s}({pre}, _) == {RHS}}}')
         done.append(L.O(f['j']))
     for q, f in enumerate(fs):
@@ -611,7 +636,7 @@ def reader_text(L):
     for gk in vg:
         c = firstvar[gk]['c']
         pre = ', '.join(['off', 'len'] + done)
-        out.append(f'  %Equal.sym(B.Buf & U32, B.read32({BUF}, U32.add(off, {c})), ({BUF}, {L.O(firstvar[gk]["j"])}), {RDF(L)}({CWA}, hF, {c}, {c}n, {{==}}, {{==}})) :')
+        out.append(f'  %Equal.sym(B.Buf & U32, B.read32({BUF}, U32.add(off, {c})), ({BUF}, {L.O(firstvar[gk]["j"])}), {RDF(L)}({CWA}, hF, {c}, {c}n, {EU(L, c)}, {{==}})) :')
         out.append(f'    {{{Tn}_rd{s}({pre}, _) == {RHS}}}')
         done.append(L.O(firstvar[gk]['j']))
         s += 1
@@ -655,8 +680,8 @@ def sym_header_text(L, PSV, OSL, H):
     w.append('  {==}')
     w.append('')
     w.append(f'def efsw({CW}, {H}) -> {{Layout.fixed_size({PSV}) == {FS}n : Nat}}:')
-    w.append(f'  Equal.trans(Nat, Layout.fixed_size({PSV}), LY.WFS(LY.WID({PSV})), {FS}n, LY.fs_w({PSV}),')
-    w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WFS(z), LY.WID({PSV}), {WS}, ewidw({CWA}, h)))')
+    w.append(f'  Equal.trans(Nat, Layout.fixed_size({PSV}), LY.WFS({WS}), {FS}n, Equal.trans(Nat, Layout.fixed_size({PSV}), LY.WFS(LY.WID({PSV})), LY.WFS({WS}), LY.fs_w({PSV}),')
+    w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WFS(z), LY.WID({PSV}), {WS}, ewidw({CWA}, h))), FD.nat__eq_from_is_eq(LY.WFS({WS}), {FS}n, {{==}}))')
     w.append('')
     # the fixed region's bytes
     pieces = []
@@ -675,8 +700,10 @@ def sym_header_text(L, PSV, OSL, H):
         sz = f['size'] if f['kind'] == 'fix' else 4
         P = L.pos(c)
         rest = FS - c - sz
-        cur = f'UW.WX(t, {P}, Nat.add({sz}n, {rest}n))'
-        w.append(f'  %Equal.sym(+List<U32>, {cur}, List.append(&2, U32, UW.WX(t, {P}, {sz}n), UW.WX(t, Nat.add(x, Nat.add({c}n, {sz}n)), {rest}n)), splitX(t, x, {c}n, {sz}n, {rest}n)) :')
+        cur = f'UW.WX(t, {P}, {sz + rest}n)'
+        ea = f'FD.nat__eq_from_is_eq(Nat.add({sz}n, {rest}n), {sz + rest}n, {{==}})'
+        eb = f'FD.nat__eq_from_is_eq(Nat.add({c}n, {sz}n), {c + sz}n, {{==}})'
+        w.append(f'  %Equal.sym(+List<U32>, {cur}, List.append(&2, U32, UW.WX(t, {P}, {sz}n), UW.WX(t, Nat.add(x, {c + sz}n), {rest}n)), splitXe(t, x, {c}n, {sz}n, {rest}n, {sz + rest}n, {c + sz}n, {ea}, {eb})) :')
         w.append(f'    {{LY.HDRW({PSV}, {OSL}) == {pre(i, "_")} : +List<U32>}}')
         if f['kind'] == 'var':
             w.append(f'  %UR.rwn_bytes(d, t, {P}, pf, roomFX({CWA}, hF, {c}n, 4n, {{==}})) :')
@@ -765,8 +792,13 @@ def spec_text(L):
         f = L.fields[i]
         if f['kind'] == 'fix' and L.sym:
             P, sz = L.pos(f['c']), f['size']
+            ex = ''
+            hb = sz
+            if f.get('chk'):
+                ex = f', it{1 + L.k + L.fchk.index(f)}({TXOA}, hchk)'
+                hb = max(sz, 4)
             return (f'F.cat_fixed(Codec.parts({vals[i]}, {sch(i)}), UW.WX(t, {P}, {sz}n), Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, '
-                    f'{f["fa"]}.prt(d, t, {P}, pf, roomFX({CWA}, hFc({TXOA}, hchk), {f["c"]}n, {sz}n, {{==}}), HD{i}(sv), es{i}(sv, esv)),\n      {cat(i + 1)})')
+                    f'{f["fa"]}.prt(d, t, {P}, pf, roomFX({CWA}, hFc({TXOA}, hchk), {f["c"]}n, {hb}n, {{==}}), HD{i}(sv), es{i}(sv, esv){ex}),\n      {cat(i + 1)})')
         if f['kind'] == 'fix':
             nd = L.nodes[i]
             return (f'F.cat_fixed(Codec.parts({vals[i]}, {nd["sch"]}), F.limbs([{", ".join(nd["words"])}]), '
@@ -1053,8 +1085,12 @@ def inv_text(L):
     w.append('')
     EW = 'ew' if CP else f'ewid({sargs(nf)}Unit{{}})'
     w.append(f'def efs({SD}) -> {{Layout.fixed_size({PS}) == {FS}n : Nat}}:')
-    w.append(f'  Equal.trans(Nat, Layout.fixed_size({PS}), LY.WFS(LY.WID({PS})), {FS}n, LY.fs_w({PS}),')
-    w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WFS(z), LY.WID({PS}), {WS}, {EW}))')
+    if CP:
+        w.append(f'  Equal.trans(Nat, Layout.fixed_size({PS}), LY.WFS({WS}), {FS}n, Equal.trans(Nat, Layout.fixed_size({PS}), LY.WFS(LY.WID({PS})), LY.WFS({WS}), LY.fs_w({PS}),')
+        w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WFS(z), LY.WID({PS}), {WS}, {EW})), FD.nat__eq_from_is_eq(LY.WFS({WS}), {FS}n, {{==}}))')
+    else:
+        w.append(f'  Equal.trans(Nat, Layout.fixed_size({PS}), LY.WFS(LY.WID({PS})), {FS}n, LY.fs_w({PS}),')
+        w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WFS(z), LY.WID({PS}), {WS}, {EW}))')
     w.append('')
     END = f'LY.END({PS}, {FS}n)'
     LPL = f'LY.LN({PL})' if CP else f'List.length(&2, U32, {PL})'
@@ -1077,8 +1113,12 @@ def inv_text(L):
         OFF = f'LY.OFF({PS}, {i}n, {FS}n)'
         OFFS.append(OFF)
         w.append(f'def epos{j}({PLD + "+ew: {LY.WID(" + PS + ") == " + WS + " : +List<Maybe<&2, Nat>>}" if CP else sdecl(nf) + "+u: Unit"}) -> {{LY.FPOS({PS}, {i}n) == {c}n : Nat}}:')
-        w.append(f'  Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS(LY.WID({PS}), {i}n), {c}n, LY.fpos_w({PS}, {i}n),')
-        w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WPOS(z, {i}n), LY.WID({PS}), {WS}, {EW}))')
+        if CP:
+            w.append(f'  Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS({WS}, {i}n), {c}n, Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS(LY.WID({PS}), {i}n), LY.WPOS({WS}, {i}n), LY.fpos_w({PS}, {i}n),')
+            w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WPOS(z, {i}n), LY.WID({PS}), {WS}, {EW})), FD.nat__eq_from_is_eq(LY.WPOS({WS}, {i}n), {c}n, {{==}}))')
+        else:
+            w.append(f'  Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS(LY.WID({PS}), {i}n), {c}n, LY.fpos_w({PS}, {i}n),')
+            w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WPOS(z, {i}n), LY.WID({PS}), {WS}, {EW}))')
         w.append(f'def eb{j}({SD}) -> {{VS.bt(4n, VS.bdr({c}n, {WBL})) == N.digits(4n, {OFF}) : +List<U32>}}:')
         w.append(f'  %eq : {{VS.bt(4n, VS.bdr({c}n, _)) == N.digits(4n, {OFF}) : +List<U32>}}')
         w.append(f'  %efs({SA}) : {{VS.bt(4n, VS.bdr({c}n, {BYTES})) == N.digits(4n, LY.OFF({PS}, {i}n, _)) : +List<U32>}}')
@@ -1136,8 +1176,12 @@ def inv_text(L):
     for f in L.fchk:
         i, c, sz, P = f['i'], f['c'], f['size'], L.pos(f['c'])
         w.append(f'def eposF{i}({PLD + "+ew: {LY.WID(" + PS + ") == " + WS + " : +List<Maybe<&2, Nat>>}" if CP else sdecl(nf) + "+u: Unit"}) -> {{LY.FPOS({PS}, {i}n) == {c}n : Nat}}:')
-        w.append(f'  Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS(LY.WID({PS}), {i}n), {c}n, LY.fpos_w({PS}, {i}n),')
-        w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WPOS(z, {i}n), LY.WID({PS}), {WS}, {EW}))')
+        if CP:
+            w.append(f'  Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS({WS}, {i}n), {c}n, Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS(LY.WID({PS}), {i}n), LY.WPOS({WS}, {i}n), LY.fpos_w({PS}, {i}n),')
+            w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WPOS(z, {i}n), LY.WID({PS}), {WS}, {EW})), FD.nat__eq_from_is_eq(LY.WPOS({WS}, {i}n), {c}n, {{==}}))')
+        else:
+            w.append(f'  Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS(LY.WID({PS}), {i}n), {c}n, LY.fpos_w({PS}, {i}n),')
+            w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WPOS(z, {i}n), LY.WID({PS}), {WS}, {EW}))')
         w.append(f'def fx{i}({SD}{", +lx" + str(i) + ": {Some{" + str(sz) + "n} == Some{List.length(&2, U32, xs" + str(i) + ")} : Maybe<&2, Nat>}" if CP else ""}) -> {{UW.WX(t, {P}, {sz}n) == xs{i} : +List<U32>}}:')
         w.append(f'  +hl = FD.nat__le_trans(Nat.add({c}n, {sz}n), {FS}n, U32.to_nat(len), {{==}},')
         w.append(f'    FD.logic__subst(Nat, z => {{Nat.is_le({FS}n, z) == {TRUE}}}, {END}, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), {END}, eL({SA})), LY.end_ge({PS}, {FS}n)))')
@@ -1152,8 +1196,13 @@ def inv_text(L):
     if L.fchk:
         w.append('')
     its = items(L)
-    prfs = [f'VMR.u32le({FS}, len, FD.logic__subst(Nat, z => {{Nat.is_le({FS}n, z) == {TRUE}}}, {END}, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), {END}, eL({SA})), LY.end_ge({PS}, {FS}n)))',
-            f'FD.u32alg__eq_true({L.O(0)}, {FS}, FD.u32__injective({L.O(0)}, {FS}, ov0({SA})))']
+    h0 = f'FD.logic__subst(Nat, z => {{Nat.is_le({FS}n, z) == {TRUE}}}, {END}, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), {END}, eL({SA})), LY.end_ge({PS}, {FS}n))'
+    o0 = f'ov0({SA})'
+    if CP:
+        h0 = f'FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat(len)) == {TRUE}}}, {FS}n, U32.to_nat({FS}), Equal.sym(Nat, U32.to_nat({FS}), {FS}n, eU{FS}()), {h0})'
+        o0 = f'Equal.trans(Nat, U32.to_nat({L.O(0)}), {FS}n, U32.to_nat({FS}), {o0}, Equal.sym(Nat, U32.to_nat({FS}), {FS}n, eU{FS}()))'
+    prfs = [f'VMR.u32le({FS}, len, {h0})',
+            f'FD.u32alg__eq_true({L.O(0)}, {FS}, FD.u32__injective({L.O(0)}, {FS}, {o0}))']
     for j in range(1, k):
         prfs.append(f'FD.logic__and_intro(U32.is_le({L.O(j - 1)}, {L.O(j)}), U32.is_le({L.O(j)}, len), VMR.u32le({L.O(j - 1)}, {L.O(j)}, nle{j - 1}({SA})), VMR.u32le({L.O(j)}, len, nle2{j - 1}({SA})))')
     for f in L.fchk:
@@ -1256,7 +1305,7 @@ def module_text(L):
     head = imps + ['', '# GENERATED by codegen/var_winb.py. Do not edit.',
                    f'# {L.name} at a window at any byte offset: the interface of proofs/obj/vua_win.bend.', '']
     body = (defs_text(L) + common_text(L) + OFFW.replace('@CWA', CWA).replace('@CW', CW)
-            + (SYMX.replace('@CWA', CWA).replace('@CW', CW).replace('@FSn', f'{L.FS}n') if L.sym else '') + facts_text(L) + validator_text(L) + reader_text(L)
+            + (SYMX.replace('@CWA', CWA).replace('@CW', CW).replace('@FSn', f'{L.FS}n') + EUDEFS(L) if L.sym else '') + facts_text(L) + validator_text(L) + reader_text(L)
             + spec_text(L) + inv_text(L))
     return '\n'.join(head) + W.COMMONX + '\n' + body
 
