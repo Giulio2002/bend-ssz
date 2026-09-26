@@ -7207,7 +7207,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_Validator.bend",
+     "law": "Validator_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "spec_rec_Validator.bend",
@@ -7234,7 +7240,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_Validator.bend",
+     "law": "Validator_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "spec_rec_Validator.bend",

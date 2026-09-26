@@ -161,6 +161,7 @@ def outputs():
         sub = [r for r in rs if r[1] == tag]
         if sub:
             out[ROOT / f'proofs/obj/fixchk_bool{tag}.bend'] = module(tag, sub)
+    out[ROOT / 'proofs/obj/fixchk_Validator.bend'] = validator_text()
     return out
 
 
@@ -176,6 +177,187 @@ def main():
     for p, t in out.items():
         p.write_text(t)
     print(f'{len(out)} files: ' + ', '.join(r[0] for r in rows()))
+
+
+
+# ---- Validator: the slashed byte at 88 -------------------------------------------------------------
+
+VAL_OTHERS = ['BooleanValue{+b}', 'UnsignedValue{+u}', 'BytesValue{+xs}', 'BitsValue{+bb}', 'Sequence{+it}', 'Items{+hh, +tt}',
+              'EmptyItems{}', 'Selected{+sel, +sv}', 'NullValue{}']
+
+
+def validator_text():
+    """Validator (121 bytes; its validator checks byte 88, the slashed boolean, is at most 1)."""
+    X, p, N, K = 'Validator', 'Validator', 121, 88
+    TR = 'FD.array__Tree<U32>'
+    BF = 'UA.BF(t, n)'
+    W = f'UW.WX(t, x, {N}n)'
+    CK = lambda bs: f'U32.is_le(VBL.nthb({bs}, {K}n), 1)'
+    BY = lambda ps: f'List.append(&2, U32, Layout.fixed_parts({ps}, o), Layout.payloads({ps}))'
+    # the chain from each field on
+    fields = ['Spec.Schema8()', 'Spec.Schema7()', 'Spec.Schema3()', 'Spec.Schema0()'] + ['Spec.Schema3()'] * 4
+    def chain(i):
+        return 'S.End{}' if i == len(fields) else f'S.Chain{{{fields[i]}, {chain(i + 1)}}}'
+    sig = (f'+d: Nat, +t: {TR}, +n: U32, +off: U32, +x: Nat, +e: {{U32.to_nat(off) == x : Nat}},\n'
+           f'    +hd: {{Nat.is_lt(d, 28n) == {TRUE}}}, +pf: {{FD.array__perfect(U32, d, t) == {TRUE}}},\n'
+           f'    +hb: {{Nat.is_le(Nat.add(x, {N}n), {P}) == {TRUE}}}')
+    args = 'd, t, n, off, x, e, hd, pf, hb'
+    y = f'Nat.add({K}n, x)'
+    goalK = lambda ps, k: f'{{U32.is_le(VBL.nthb({BY(ps)}, {k}), 1) == {TRUE}}}'
+    L = [f'''# ---- {X} ({N} bytes; validator T.{p}_ok: the slashed byte {K} at most 1) ----
+
+# byte k of (a ++ b) ++ c past a
+def nth_skip(+a: +List<U32>, +b: +List<U32>, +c: +List<U32>, +k: Nat)
+    -> {{VBL.nthb(List.append(&2, U32, List.append(&2, U32, a, b), c), Nat.add(List.length(&2, U32, a), k)) == VBL.nthb(List.append(&2, U32, b, c), k) : U32}}:
+  match a:
+    case Nil{{}}: {{==}}
+    case Con{{+h, +r}}: nth_skip(r, b, c, k)
+
+# a fixed field of w bytes, then the rest (whose byte K is checked by k)
+def skip(+w: Nat, +K: Nat, +o: Nat, +m1: Maybe<&2, +List<S.Part>>, hf: DF.single_result(Some{{w}}, m1), +m2: Maybe<&2, +List<S.Part>>, +ps: +List<S.Part>,
+    +e: {{Codec.concatenate(m1, m2) == Some{{ps}} : Maybe<&2, +List<S.Part>>}},
+    k: @+q: +List<S.Part> -> {{m2 == Some{{q}} : Maybe<&2, +List<S.Part>>}} -> {goalK("q", "K")})
+    -> {goalK("ps", "Nat.add(w, K)")}:
+  match m1:
+    case None{{}}: Empty.absurd({goalK("ps", "Nat.add(w, K)")}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case Some{{+p1}}:
+      match p1:
+        case Nil{{}}: Empty.absurd({goalK("ps", "Nat.add(w, K)")}, hf)
+        case Con{{S.Variable{{+x1}}, +r1}}: Empty.absurd({goalK("ps", "Nat.add(w, K)")}, vk(w, x1, r1, hf))
+        case Con{{S.Fixed{{+x1}}, +r1}}:
+          match r1:
+            case Con{{+a1, +b1}}: Empty.absurd({goalK("ps", "Nat.add(w, K)")}, hf)
+            case Nil{{}}:
+              match m2:
+                case None{{}}: Empty.absurd({goalK("ps", "Nat.add(w, K)")}, FD.logic__none_some(+List<S.Part>, ps, e))
+                case Some{{+q}}:
+                  +eps = FD.logic__some_inj(+List<S.Part>, S.Fixed{{x1}} <> q, ps, e)
+                  +ew = FD.logic__some_inj(Nat, w, List.length(&2, U32, x1), hf)
+                  %Equal.sym(+List<S.Part>, ps, S.Fixed{{x1}} <> q, Equal.sym(+List<S.Part>, S.Fixed{{x1}} <> q, ps, eps)) : {goalK("_", "Nat.add(w, K)")}
+                  %Equal.sym(Nat, w, List.length(&2, U32, x1), ew) : {{U32.is_le(VBL.nthb({BY("S.Fixed{x1} <> q")}, Nat.add(_, K)), 1) == {TRUE}}}
+                  %Equal.sym(U32, VBL.nthb({BY("S.Fixed{x1} <> q")}, Nat.add(List.length(&2, U32, x1), K)), VBL.nthb({BY("q")}, K),
+                      nth_skip(x1, Layout.fixed_parts(q, o), Layout.payloads(q), K)) : {{U32.is_le(_, 1) == {TRUE}}}
+                  k(q, {{==}})
+''']
+    # vk: a variable part where a fixed one of width w is expected
+    L.insert(0, f'''def vk(+w: Nat, +x1: +List<U32>, +r1: +List<S.Part>, hf: DF.single(Some{{w}}, S.Variable{{x1}} <> r1)) -> Empty:
+  match r1:
+    case Nil{{}}: FD.logic__none_some(Nat, w, Equal.sym(Maybe<&2, Nat>, Some{{w}}, None{{}}, hf))
+    case Con{{+a, +b}}: hf
+''')
+    # the levels: fields 0..2 fixed (48, 32, 8 bytes), field 3 the boolean
+    widths = [48, 32, 8]
+    rest = [K - sum(widths[:i + 1]) for i in range(3)]      # 40, 8, 0
+    for i in (3, 2, 1, 0):
+        Ki = K - sum(widths[:i])
+        head = f'def lvl{i}(+items: S.Value, +ps: +List<S.Part>, +o: Nat, +em: {{Codec.parts(items, {chain(i)}) == Some{{ps}} : Maybe<&2, +List<S.Part>>}})\n    -> {goalK("ps", f"{Ki}n")}:'
+        absurd = f'Empty.absurd({goalK("ps", f"{Ki}n")}, FD.logic__none_some(+List<S.Part>, ps, em))'
+        body = ['  match items:']
+        if i < 3:
+            body.append(f'    case S.Items{{+h, +r}}: skip({widths[i]}n, {rest[i]}n, o, Codec.parts(h, {fields[i]}), DS.facts(h, {fields[i]}, {{==}}), Codec.parts(r, {chain(i + 1)}), ps, em, q => eq => lvl{i + 1}(r, q, o, eq))')
+        else:
+            body.append('    case S.Items{+h, +r}:')
+            body.append('      match h:')
+            body.append(f'        case S.BooleanValue{{+b}}: bat(b, Codec.parts(r, {chain(4)}), ps, o, em)')
+            for c in VAL_OTHERS:
+                if c != 'BooleanValue{+b}':
+                    body.append(f'        case S.{c}: {absurd}')
+        for c in VAL_OTHERS:
+            if not c.startswith('Items'):
+                body.append(f'    case S.{c}: {absurd}')
+        L.append(head + '\n' + '\n'.join(body) + '\n')
+    lv = L[2:]
+    L = L[:2] + [f'''# the boolean field: its byte is 0 or 1
+def bat2(+b: Bool, +q: +List<S.Part>, +o: Nat) -> {goalK("S.Fixed{SP.boolean_encoding(b)} <> q", "0n")}:
+  match b:
+    case True{{}}: {{==}}
+    case False{{}}: {{==}}
+def bat(+b: Bool, +m2: Maybe<&2, +List<S.Part>>, +ps: +List<S.Part>, +o: Nat,
+    +e: {{Codec.concatenate(Some{{[S.Fixed{{SP.boolean_encoding(b)}}]}}, m2) == Some{{ps}} : Maybe<&2, +List<S.Part>>}})
+    -> {goalK("ps", "0n")}:
+  match m2:
+    case None{{}}: Empty.absurd({goalK("ps", "0n")}, FD.logic__none_some(+List<S.Part>, ps, e))
+    case Some{{+q}}:
+      +eps = FD.logic__some_inj(+List<S.Part>, S.Fixed{{SP.boolean_encoding(b)}} <> q, ps, e)
+      %Equal.sym(+List<S.Part>, ps, S.Fixed{{SP.boolean_encoding(b)}} <> q, Equal.sym(+List<S.Part>, S.Fixed{{SP.boolean_encoding(b)}} <> q, ps, eps)) : {goalK("_", "0n")}
+      bat2(b, q, o)
+'''] + lv
+    ABS = lambda: ''.join(f"    case S.{c}: Empty.absurd({{{CK('bs')} == {TRUE}}}, FD.logic__none_some(+List<U32>, bs, e))\n" for c in VAL_OTHERS if not c.startswith('Sequence'))
+    L.append(f'''# every encoding at Validator: its byte {K} is 0 or 1
+def pv_r(+ps: +List<S.Part>, +items: S.Value, +em: {{Codec.parts(items, {chain(0)}) == Some{{ps}} : Maybe<&2, +List<S.Part>>}},
+    +w: Maybe<&2, Nat>, +bs: +List<U32>, +r: Maybe<&2, +List<U32>>, +er: {{Layout.encoding(ps) == r : Maybe<&2, +List<U32>>}},
+    +e: {{Codec.bytes(Codec.one(r, w)) == Some{{bs}} : Maybe<&2, +List<U32>>}})
+    -> {{{CK("bs")} == {TRUE}}}:
+  match r:
+    case None{{}}: Empty.absurd({{{CK("bs")} == {TRUE}}}, FD.logic__none_some(+List<U32>, bs, e))
+    case Some{{+xs}}:
+      +c = Bool.and(Layout.bytes_valid(ps), N.fits(4n, Nat.add(Layout.fixed_size(ps), List.length(&2, U32, Layout.payloads(ps)))))
+      +e1 = VRB.opt_some(c, List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps)), xs, er)
+      FD.logic__subst(+List<U32>, z => {{{CK("z")} == {TRUE}}}, List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps)), bs,
+        Equal.trans(+List<U32>, List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps)), xs, bs, e1, VRB.frag(w, xs, bs, e)),
+        lvl0(items, ps, Layout.fixed_size(ps), em))
+def pv_m(+items: S.Value, +m: Maybe<&2, +List<S.Part>>, +em: {{Codec.parts(items, {chain(0)}) == m : Maybe<&2, +List<S.Part>>}},
+    +w: Maybe<&2, Nat>, +bs: +List<U32>, +e: {{Codec.bytes(Codec.aggregate(m, w)) == Some{{bs}} : Maybe<&2, +List<U32>>}})
+    -> {{{CK("bs")} == {TRUE}}}:
+  match m:
+    case None{{}}: Empty.absurd({{{CK("bs")} == {TRUE}}}, FD.logic__none_some(+List<U32>, bs, e))
+    case Some{{+ps}}: pv_r(ps, items, em, w, bs, Layout.encoding(ps), {{==}}, e)
+def pv(+v: S.Value, +bs: +List<U32>, +e: {{Codec.encoding_for_legal_type(Spec.{X}(), v) == Some{{bs}} : Maybe<&2, +List<U32>>}})
+    -> {{{CK("bs")} == {TRUE}}}:
+  match v:
+    case S.Sequence{{+items}}: pv_m(items, Codec.parts(items, {chain(0)}), {{==}}, SS.fixed_size({chain(0)}), bs, e)
+{ABS()}
+def c0id(+c: Bool, buf: B.Buf, +off: U32) -> {{T.{p}_c0(c, buf, off) == (buf, c) : B.Buf & Bool}}:
+  match c:
+    case True{{}}: {{==}}
+    case False{{}}: {{==}}
+
+def {X}_at({sig})
+    -> {{T.{p}_ok_at({BF}, off) == ({BF}, {CK(W)}) : B.Buf & Bool}}:
+  +hk = FD.nat__lt_le_trans(Nat.add(x, {K}n), Nat.add(x, {N}n), {P}, FD.nat__lt_add_left({K}n, {N}n, x, {{==}}), hb)
+  +hy = FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P}) == {TRUE}}}, Nat.add(x, {K}n), {y}, FD.nat__add_comm(x, {K}n), hk)
+  +ey = UR.offx(d, off, {K}, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {{==}}), hy)
+  %Equal.sym(B.Buf & Bool, O.ok_bool({BF}, U32.add(off, {K})), ({BF}, U32.is_le(VRB.BX(t, {y}), 1)), VRB.okb(d, t, n, U32.add(off, {K}), {y}, ey, hd, pf, hy)) :
+    {{T.{p}_v0(off, _) == ({BF}, {CK(W)}) : B.Buf & Bool}}
+  %Equal.sym(B.Buf & Bool, T.{p}_c0(U32.is_le(VRB.BX(t, {y}), 1), {BF}, off), ({BF}, U32.is_le(VRB.BX(t, {y}), 1)), c0id(U32.is_le(VRB.BX(t, {y}), 1), {BF}, off)) :
+    {{_ == ({BF}, {CK(W)}) : B.Buf & Bool}}
+  %Equal.sym(U32, VBL.nthb({W}, {K}n), VBL.nthb(UA.BYT(t), Nat.add(x, {K}n)),
+      Equal.trans(U32, VBL.nthb({W}, {K}n), VBL.nthb(VS.bdr(x, UA.BYT(t)), {K}n), VBL.nthb(UA.BYT(t), Nat.add(x, {K}n)),
+        VR.nth_bt({N}n, VS.bdr(x, UA.BYT(t)), {K}n, {{==}}), VR.nth_bdr(x, UA.BYT(t), {K}n))) :
+    {{({BF}, U32.is_le(VRB.BX(t, {y}), 1)) == ({BF}, U32.is_le(_, 1)) : B.Buf & Bool}}
+  %Equal.sym(Nat, Nat.add(x, {K}n), {y}, FD.nat__add_comm(x, {K}n)) :
+    {{({BF}, U32.is_le(VRB.BX(t, {y}), 1)) == ({BF}, U32.is_le(VBL.nthb(UA.BYT(t), _), 1)) : B.Buf & Bool}}
+  {{==}}
+
+def {X}_okl({sig}, +b: Bool)
+    -> {{T.{p}_ok_len(b, {BF}, off) == ({BF}, Bool.and(b, {CK(W)})) : B.Buf & Bool}}:
+  match b:
+    case True{{}}: {X}_at({args})
+    case False{{}}: {{==}}
+
+# the validator returns the length check and the slashed byte's check
+def {X}_ok_eval({sig}, +len: U32)
+    -> {{T.{p}_ok({BF}, off, len) == ({BF}, Bool.and(U32.is_eq(len, {N}), {CK(W)})) : B.Buf & Bool}}:
+  {X}_okl({args}, U32.is_eq(len, {N}))
+
+def {X}_rj(+bs: +List<U32>, +h: {{Bool.and(Nat.is_eq(List.length(&2, U32, bs), {N}n), {CK("bs")}) == False{{}} : Bool}}, +v: S.Value,
+    +e: {{Codec.encoding_for_legal_type(Spec.{X}(), v) == Some{{bs}} : Maybe<&2, +List<U32>>}}) -> Empty:
+  VRB.chk_true(Nat.is_eq(List.length(&2, U32, bs), {N}n), {CK("bs")},
+    VRB.len_eq(SS.fixed_size(Spec.{X}()), {N}n, bs, Codec.parts(v, Spec.{X}()), DS.facts(v, Spec.{X}(), {{==}}), {{==}}, e), pv(v, bs, e), h)
+
+# a byte list of another length, or whose slashed byte is above 1, is no encoding
+def {X}_decode_reject(+bs: +List<U32>, +h: {{Bool.and(Nat.is_eq(List.length(&2, U32, bs), {N}n), {CK("bs")}) == False{{}} : Bool}}) -> Decoding.outside_image(Spec.{X}(), bs):
+  v => e => {X}_rj(bs, h, v, e)
+''')
+    head = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O', 'import ../../types/fulu_obj.bend as T',
+            'import ../../types/schema.bend as S', 'import ../../spec/codec.bend as Codec', 'import ../../spec/layout.bend as Layout',
+            'import ../../spec/primitives.bend as SP', 'import ../../spec/nat_bytes.bend as N', 'import ../../spec/decoding_relation.bend as Decoding',
+            'import ../../spec/schema.bend as SS', 'import ../../proofs/decode_shape.bend as DS', 'import ../../proofs/decode_facts.bend as DF',
+            'import ../../spec/fulu_schemas.bend as Spec', 'import ../compact/found.bend as FD', 'import ../compact/arith.bend as A',
+            'import ./vbuf.bend as VB', 'import ./vspec.bend as VS', 'import ./vbrt.bend as VR', 'import ./vbitl.bend as VBL', 'import ./vua.bend as UA',
+            'import ./vua_rd.bend as UR', 'import ./vua_win.bend as UW', 'import ./vrejb.bend as VRB', '',
+            '# GENERATED by codegen/fix_reject_chk.py. Do not edit.', '# Validator: ok_eval and decode_reject (its slashed byte at 88 is a boolean).', '']
+    return '\n'.join(head + L) + '\n'
 
 
 if __name__ == '__main__':
