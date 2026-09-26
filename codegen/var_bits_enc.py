@@ -456,7 +456,7 @@ def cont_module(g, x, src):
     assert po == 0 and FS == 4 * H
     vi = [f['kind'] for f in x.fields].index('bits')
     LIMN = VBI.spec_bits_lim(n, vi)
-    assert LIMN == f'{N}n', LIMN
+    assert LIMN in (f'{N}n', f'U32.to_nat({N})'), LIMN
     Tn = f'T.{n}'
     # the runtime shapes this proof follows
     assert f'def {n}_encode(o: {n}) -> {n} & B.Buf: {n}_enc_sized({n}_size(o))' in src
@@ -487,7 +487,7 @@ def cont_module(g, x, src):
     NCa = 'K, hN'
     ALLP = (f'{WS}, +dw: Nat, +T: FD.array__Tree<U32>, +K: U32,\n'
             '    +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},\n'
-            f'    +rep: BO.rep_bits(OB(T, K), S.BitList{{{N}n}}),\n'
+            f'    +rep: BO.rep_bits(OB(T, K), S.BitList{{{LIMN}}}),\n'
             '    +hcap: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool},\n'
             '    +hv: {O.bits_above_zero(U32.and(K, 31), VB.slot(T, VBT.QK(K))) == True{} : Bool}')
     ALLa = f'{WA}, dw, T, K, pfT, hdw, rep, hcap, hv'
@@ -506,7 +506,7 @@ def cont_module(g, x, src):
     MP = 'Maybe<&2, +List<S.Part>>'
     q = 'VBT.QK(K)'
     L = list(VL.DEC_HEAD) + ['import ./venc.bend as VE', 'import ./venc2.bend as V2', 'import ./vbspec.bend as VZ', 'import ./vbytes.bend as VY',
-                             'import ./vbitc.bend as VBC', 'import ../../spec/bitfields.bend as Bits', 'import ../../spec/bit_packing.bend as Bp',
+                             'import ./vbitc.bend as VBC', 'import ./spec_bits.bend as FB', 'import ../../spec/bitfields.bend as Bits', 'import ../../spec/bit_packing.bend as Bp',
                              'import ./bitlist_pack.bend as BK', 'import ./bitlist_obj.bend as BO', 'import ./vbitenc.bend as VBT',
                              'import ./vbitdl.bend as DL', 'import ./vbitcore.bend as CO', 'import ./vbitcont.bend as CT', 'import ./vbitrep.bend as VR',
                              'import ./var_bits_enc_bw.bend as BW', 'import ../compact/reads.bend as RD', '',
@@ -534,19 +534,28 @@ def cont_module(g, x, src):
   +cf = BW.cfj(j, b, hj, hb)
   +cD = DL.p1(DL.TD(j), DL.CE(j, b), DL.p2(DL.TC(j, b), DL.CD(j, b), DL.p2(DL.TB(b), DL.CC(j, b), DL.p2(DL.TA(j, b), DL.CB(j, b), cf))))'''
     w(f"""
-def hKk({NC}) -> VBT.HK(K, {kb}n):
-  FD.nat__le_trans(Nat.add(U32.to_nat(K), 8n), Nat.add({N}n, 8n), O.pow2n({kb}n), Order.add_right(U32.to_nat(K), {N}n, 8n, hN), {{==}})
+# The closed bounds, compared on VB.pw.
+def hNk0() -> {{Nat.is_le(Nat.add({N}n, 8n), O.pow2n({kb}n)) == True{{}} : Bool}}:
+  %VD.s_pow2_eq({kb}n) : {{Nat.is_le(Nat.add({N}n, 8n), _) == True{{}} : Bool}}
+  {{==}}
 
-def eNK({NC}) -> {{Nat.is_le(U32.to_nat(CO.NK(K)), {N + 1}n) == True{{}} : Bool}}:
-  CO.nk_le(K, {kb}n, {N}n, {{==}}, hN, {{==}})
+def hNk2() -> {{Nat.is_le(Nat.add(Nat.add({FS}n, Nat.add({N}n, 1n)), 3n), O.pow2n({kb2}n)) == True{{}} : Bool}}:
+  %VD.s_pow2_eq({kb2}n) : {{Nat.is_le(Nat.add(Nat.add({FS}n, Nat.add({N}n, 1n)), 3n), _) == True{{}} : Bool}}
+  {{==}}
+
+def hKk({NC}) -> VBT.HK(K, {kb}n):
+  FD.nat__le_trans(Nat.add(U32.to_nat(K), 8n), Nat.add({N}n, 8n), O.pow2n({kb}n), Order.add_right(U32.to_nat(K), {N}n, 8n, hN), hNk0())
+
+def eNK({NC}) -> {{Nat.is_le(U32.to_nat(CO.NK(K)), Nat.add({N}n, 1n)) == True{{}} : Bool}}:
+  CO.nk_le(K, {kb}n, {N}n, {{==}}, hN, hNk0())
 
 def eS({NC}) -> {{U32.to_nat(SFS(K)) == Nat.add({FS}n, U32.to_nat(CO.NK(K))) : Nat}}:
-  A.add_le({FS}, CO.NK(K), {FS + N + 1}, FD.nat__le_trans(Nat.add({FS}n, U32.to_nat(CO.NK(K))), Nat.add({FS}n, {N + 1}n), U32.to_nat({FS + N + 1}),
-    Order.add_left({FS}n, U32.to_nat(CO.NK(K)), {N + 1}n, eNK({NCa})), {{==}}))
+  A.add_le({FS}, CO.NK(K), {FS + N + 1}, FD.nat__le_trans(Nat.add({FS}n, U32.to_nat(CO.NK(K))), Nat.add({FS}n, Nat.add({N}n, 1n)), U32.to_nat({FS + N + 1}),
+    Order.add_left({FS}n, U32.to_nat(CO.NK(K)), Nat.add({N}n, 1n), eNK({NCa})), {{==}}))
 
 def padd({NC}) -> {{O.padd({FS}, CO.NK(K)) == SFS(K) : U32}}:
   VE.padd_ok({FS}, CO.NK(K), VE.winit(31n, VE.bits32({FS})), VE.winit(31n, VE.bits32(CO.NK(K))), {{==}},
-    VE.small_pad(CO.NK(K), {PB}n, {{==}}, FD.nat__le_lt_trans(U32.to_nat(CO.NK(K)), {N + 1}n, FD.spec_common__pow2({PB}n), eNK({NCa}), {{==}})))
+    VE.small_pad(CO.NK(K), {PB}n, {{==}}, FD.nat__le_lt_trans(U32.to_nat(CO.NK(K)), Nat.add({N}n, 1n), FD.spec_common__pow2({PB}n), eNK({NCa}), {{==}})))
 
 # The encoding's words: the header's {H}, then the bit list's q + 1.
 def nwS({NC}) -> {{VC.NW(SFS(K)) == Nat.add({H}n, Nat.add({q}, 1n)) : Nat}}:
@@ -558,19 +567,25 @@ def nwS({NC}) -> {{VC.NW(SFS(K)) == Nat.add({H}n, Nat.add({q}, 1n)) : Nat}}:
         Equal.sym(Nat, Nat.add(Nat.add(A.quad({H}n), A.quad({q})), Nat.add(j, 1n)), Nat.add(A.quad({H}n), Nat.add(A.quad({q}), Nat.add(j, 1n))), FD.nat__add_assoc(A.quad({H}n), A.quad({q}), Nat.add(j, 1n))),
         Equal.cong(Nat, Nat, z => Nat.add(z, Nat.add(j, 1n)), Nat.add(A.quad({H}n), A.quad({q})), A.quad(Nat.add({H}n, {q})), VF.quad_add({H}n, {q})))))
   +h3 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, 3n), O.pow2n({kb2}n)) == True{{}} : Bool}}, Nat.add({FS}n, U32.to_nat(CO.NK(K))), U32.to_nat(SFS(K)), Equal.sym(Nat, U32.to_nat(SFS(K)), Nat.add({FS}n, U32.to_nat(CO.NK(K))), eS({NCa})),
-    FD.nat__le_trans(Nat.add(Nat.add({FS}n, U32.to_nat(CO.NK(K))), 3n), Nat.add(Nat.add({FS}n, {N + 1}n), 3n), O.pow2n({kb2}n),
-      Order.add_right(Nat.add({FS}n, U32.to_nat(CO.NK(K))), Nat.add({FS}n, {N + 1}n), 3n, Order.add_left({FS}n, U32.to_nat(CO.NK(K)), {N + 1}n, eNK({NCa}))), {{==}}))
+    FD.nat__le_trans(Nat.add(Nat.add({FS}n, U32.to_nat(CO.NK(K))), 3n), Nat.add(Nat.add({FS}n, Nat.add({N}n, 1n)), 3n), O.pow2n({kb2}n),
+      Order.add_right(Nat.add({FS}n, U32.to_nat(CO.NK(K))), Nat.add({FS}n, Nat.add({N}n, 1n)), 3n, Order.add_left({FS}n, U32.to_nat(CO.NK(K)), Nat.add({N}n, 1n), eNK({NCa}))), hNk2()))
   +e2 = VBT.NWq(SFS(K), Nat.add({H}n, {q}), Nat.add(j, 1n), {kb2}n, {{==}}, h3, e1)
   Equal.trans(Nat, VC.NW(SFS(K)), Nat.add(Nat.add({H}n, {q}), VD.s_rng(2n, Nat.add(Nat.add(j, 1n), 3n))), Nat.add({H}n, Nat.add({q}, 1n)), e2,
     Equal.trans(Nat, Nat.add(Nat.add({H}n, {q}), VD.s_rng(2n, Nat.add(Nat.add(j, 1n), 3n))), Nat.add(Nat.add({H}n, {q}), 1n), Nat.add({H}n, Nat.add({q}, 1n)),
       Equal.cong(Nat, Nat, z => Nat.add(Nat.add({H}n, {q}), z), VD.s_rng(2n, Nat.add(Nat.add(j, 1n), 3n)), 1n, cD),
       FD.nat__add_assoc({H}n, {q}, 1n)))
 
+# (N >> 5) + 1 words past the header fit 2^{KO}: computed on U32.
+def e5le() -> {{Nat.is_le(Nat.add({H}n, Nat.add(VD.s_rng(5n, {N}n), 1n)), O.pow2n({KO}n)) == True{{}} : Bool}}:
+  %VD.shrk(5n, {N}) : {{Nat.is_le(Nat.add({H}n, Nat.add(_, 1n)), O.pow2n({KO}n)) == True{{}} : Bool}}
+  %VD.s_pow2_eq({KO}n) : {{Nat.is_le(Nat.add({H}n, Nat.add(U32.to_nat(U32.shrn({N}, 5n)), 1n)), _) == True{{}} : Bool}}
+  {{==}}
+
 def hwO({NC}) -> {{Nat.is_le(U32.to_nat(VC.nwu(SFS(K))), O.pow2n({KO}n)) == True{{}} : Bool}}:
   FD.logic__subst(Nat, z => {{Nat.is_le(z, O.pow2n({KO}n)) == True{{}} : Bool}}, Nat.add({H}n, Nat.add({q}, 1n)), U32.to_nat(VC.nwu(SFS(K))),
     Equal.sym(Nat, U32.to_nat(VC.nwu(SFS(K))), Nat.add({H}n, Nat.add({q}, 1n)), nwS({NCa})),
     FD.nat__le_trans(Nat.add({H}n, Nat.add({q}, 1n)), Nat.add({H}n, Nat.add(VD.s_rng(5n, {N}n), 1n)), O.pow2n({KO}n),
-      Order.add_left({H}n, Nat.add({q}, 1n), Nat.add(VD.s_rng(5n, {N}n), 1n), CO.qle(K, {kb}n, {N}n, {{==}}, hN, {{==}})), {{==}}))
+      Order.add_left({H}n, Nat.add({q}, 1n), Nat.add(VD.s_rng(5n, {N}n), 1n), CO.qle(K, {kb}n, {N}n, {{==}}, hN, hNk0())), e5le()))
 
 def hDOK({NC}) -> {{Nat.is_le(DO(K), {KO}n) == True{{}} : Bool}}: VD.wd_min(VC.nwu(SFS(K)), {KO}n, hwO({NCa}))
 def hDO29({NC}) -> {{Nat.is_lt(DO(K), 29n) == True{{}} : Bool}}: FD.nat__le_lt_trans(DO(K), {KO}n, 29n, hDOK({NCa}), {{==}})
@@ -618,9 +633,9 @@ def sl1({NC}, +k: Nat, +hk: {{Nat.is_le({H}n, k) == True{{}} : Bool}}) -> {{VB.s
 def cra({ALLP}) -> CT.CRA(DO(K), OUT1(K), T, U32.add(0, {FS}), {H}n, K):
   (+wf, +r1) = rep
   +hN = {HN}
-  +hz = VR.rep_hz(dw, T, K, {kb}n, {N}n, pfT, {{==}}, hN, {{==}}, CO.qs_sized(dw, K, {kb}n, {N}n, {{==}}, hN, {{==}}, hcap), wf)
+  +hz = VR.rep_hz(dw, T, K, {kb}n, {N}n, pfT, {{==}}, hN, hNk0(), CO.qs_sized(dw, K, {kb}n, {N}n, {{==}}, hN, hNk0(), hcap), wf)
   CT.enc_at(DO(K), dw, OUT1(K), T, U32.add(0, {FS}), {H}n, K, {kb}n, {KY}n, {N}n, pf1(K), pfT, hDO29({NCa}), hdw, {{==}}, {{==}},
-    {{==}}, {{==}}, {{==}}, hN, {{==}}, {{==}}, hDq({NCa}), hcap, hz,
+    {{==}}, {{==}}, {{==}}, hN, hNk0(), {{==}}, hDq({NCa}), hcap, hz,
     sl1({NCa}, Nat.add({H}n, {q}), Order.below_sum({H}n, {q})),
     sl1({NCa}, Nat.add(VY.QL(O.bits_nbytes(K)), {H}n), FD.logic__subst(Nat, z => {{Nat.is_le({H}n, z) == True{{}} : Bool}}, Nat.add({H}n, VY.QL(O.bits_nbytes(K))), Nat.add(VY.QL(O.bits_nbytes(K)), {H}n),
       FD.nat__add_comm({H}n, VY.QL(O.bits_nbytes(K))), Order.below_sum({H}n, VY.QL(O.bits_nbytes(K))))))
@@ -652,7 +667,7 @@ def cra({ALLP}) -> CT.CRA(DO(K), OUT1(K), T, U32.add(0, {FS}), {H}n, K):
     w(f'      VB.set_n(DO(K), VC.ZT(DO(K)), {po}, {po}n, {FS}, {{==}}, VB.lt32(DO(K), hDO31({NCa})), FD.nat__lt_le_trans({po}n, {H}n, VB.pw(DO(K)), {{==}}, hbk({H}n, {NCa}, {{==}})), pf0(K))) :')
     w(f'    {{{Tn}_pw0(0, {FIXOBJS}, T.{lp}_pvb({FS}, T.{lp}_pk(_, U32.add(0, {FS}), T.{lp}_valid({OBB})))) == {RP} : {TP}}}')
     w(f'  %Equal.sym(O.Bits & Bool, T.{lp}_valid({OBB}), ({OBB}, True{{}}),')
-    w(f'      CT.valid_eval(dw, T, K, {kb}n, {N}n, {N}, pfT, hdw, {{==}}, {{==}}, hN, {{==}}, hcap, hv)) :')
+    w(f'      CT.valid_eval(dw, T, K, {kb}n, {N}n, {N}, pfT, hdw, {{==}}, {{==}}, hN, hNk0(), hcap, hv)) :')
     w(f'    {{{Tn}_pw0(0, {FIXOBJS}, T.{lp}_pvb({FS}, T.{lp}_pk(FD.array__thaw(U32, OUT1(K)), U32.add(0, {FS}), _))) == {RP} : {TP}}}')
     w(f'  %Equal.sym(Array<U32> & (O.Bits & U32), O.put_bits_n(FD.array__thaw(U32, OUT1(K)), U32.add(0, {FS}), {OBB}), (FD.array__thaw(U32, OUTA(T, K)), ({OBB}, CO.NK(K))),')
     w(f'      CT.cra1(DO(K), OUT1(K), T, U32.add(0, {FS}), {H}n, K, c)) :')
@@ -879,9 +894,9 @@ def bparts({ALLP})
 def fitY({ALLP})
     -> {{N.fits(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, {Y}))) == True{{}} : Bool}}:
   +hN = {HN}
-  VS.fits_mono(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, {Y})), Nat.add({FS}n, {N + 1}n),
-    Order.add_left({FS}n, List.length(&2, U32, {Y}), {N + 1}n,
-      FD.nat__le_trans(List.length(&2, U32, {Y}), U32.to_nat(CO.NK(K)), {N + 1}n, VZ.bt_len_le(U32.to_nat(CO.NK(K)), F.limbs(VB.wdr({H}n, {SA}))), eNK({NCa}))),
+  VS.fits_mono(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, {Y})), Nat.add({FS}n, Nat.add({N}n, 1n)),
+    Order.add_left({FS}n, List.length(&2, U32, {Y}), Nat.add({N}n, 1n),
+      FD.nat__le_trans(List.length(&2, U32, {Y}), U32.to_nat(CO.NK(K)), Nat.add({N}n, 1n), VZ.bt_len_le(U32.to_nat(CO.NK(K)), F.limbs(VB.wdr({H}n, {SA}))), eNK({NCa}))),
     {{==}})
 
 # The spec encoding of the object's value: the header words' limbs, then the window's bytes.
@@ -903,7 +918,10 @@ def encE({ALLP})
     w(f'  Equal.trans({M}, Codec.encoding_for_legal_type(Spec.{n}(), VAL({WA}, T, K)), {RHSk}, Some{{{BY}}},')
     w(f'    encE({ALLa}),')
     w(f'    Equal.cong(+List<U32>, {M}, z => Some{{z}}, {RHS}, {BY}, Equal.sym(+List<U32>, {BY}, {RHS}, out_eq({ALLa}))))')
-    return '\n'.join(L) + '\n'
+    txt = '\n'.join(L) + '\n'
+    if LIMN != f'{N}n':
+        txt = re.sub(rf'\b{N}n\b', LIMN, txt)
+    return txt
 
 
 def main():
