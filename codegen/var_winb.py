@@ -1477,7 +1477,7 @@ def top_text(L, wmod):
     import var_rlist_er as ER
     import var_rlist as RL
     X = L.name
-    if L.generic:
+    if getattr(L, 'generic', False):
         return generic_top_text(L, wmod)
     txt = ER.top_text(RL.HEAD)
     txt = txt.replace('import ./var_winx_ExecutionRequests.bend as EW', f'import ./{wmod} as EW')
