@@ -2,7 +2,7 @@
 """Byte-offset window modules (the interface of proofs/obj/vua_win.bend) of LISTS OF
 FIXED-SIZE RECORDS, e.g. ExecutionRequests' deposits.
 
-    python3 codegen/var_rlist.py [--check]
+    python3 codegen/var_rlist.py [--check] [--no-big]
 
 Writes proofs/obj/vrl.bend (from codegen/vrl.bend.in: Array.set on a perfect tree of
 any element type, positions of consecutive records) and, for each list type below,
@@ -25,6 +25,11 @@ import var_laws as VLW  # noqa: E402
 
 LISTS = [('ExecutionRequests', 'deposits'), ('ExecutionRequests', 'withdrawals'), ('ExecutionRequests', 'consolidations'),
          ('BeaconBlockBody', 'voluntary_exits'), ('BeaconBlockBody', 'bls_to_execution_changes'), ('ExecutionPayload', 'withdrawals')]
+
+# lists of boxed records (codegen/var_rlist_box.py)
+BOXLISTS = [('BeaconBlockBody', 'proposer_slashings'), ('BeaconBlockBody', 'deposits')]
+# packed lists of byte vectors (codegen/var_rlist_bv.py)
+BVLISTS = [('BeaconBlockBody', 'blob_kzg_commitments')]
 
 HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
         'import ../../types/fulu_obj.bend as T', 'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P',
@@ -64,10 +69,10 @@ def rec_node(g, rt):
     return obj, VLW.subst_words(nd.val, mp), nd.sch, VLW.subst_words(nd.proof, mp), ftp.p
 
 
-def list_text(g, names, parent, field):
+def list_text(g, names, parent, field, rec=None):
     I = info(g, names, parent, field)
     p, R, RS, W, LIM, KL = I['p'], I['R'], I['RS'], I['W'], I['LIM'], I['KL']
-    obj, val, sch, proof, rp = rec_node(g, I['rt'])
+    obj, val, sch, proof, rp = rec or rec_node(g, I['rt'])
     TR = 'FD.array__Tree<U32>'
     TRR = f'FD.array__Tree<T.{R}>'
     TRUE = 'True{} : Bool'
@@ -282,8 +287,17 @@ def specw({CW}, {HC})
     {{Codec.one(Some{{_}}, None{{}}) == RHS : Maybe<&2, +List<S.Part>>}}
   %ec : {{Codec.one(Some{{UW.WX(t, x, _)}}, None{{}}) == RHS : Maybe<&2, +List<S.Part>>}}
   {{==}}
+''')
+    w(inv_text(sch, RS, LIM, LSCH, CW, CA))
+    out = '\n'.join(L) + '\n'
+    return out.replace('\n  +RHS = Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]}\n', '\n').replace(' == RHS :', ' == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} :')
 
-# ---- the inversion ------------------------------------------------------------------------------
+
+
+def inv_text(sch, RS, LIM, LSCH, CW, CA):
+    """The inversion: every value whose parts are the window's bytes passes CHKw (whole records of RS bytes)."""
+    TRUE = 'True{} : Bool'
+    return f'''# ---- the inversion ------------------------------------------------------------------------------
 
 def rp_t(+xs: +List<U32>, +el: S.Value, +tl: S.Value, +ps: +List<S.Part>, +mB: Maybe<&2, +List<S.Part>>,
     +eB: {{Codec.parts(tl, S.Repeat{{{sch}}}) == mB : Maybe<&2, +List<S.Part>>}},
@@ -397,9 +411,7 @@ def invw({CW}, +v: S.Value,
     -> {{CHKw(t, x, off, len) == {TRUE}}}:
   chk_i({CA}, linvr(v, UW.WX(t, x, U32.to_nat(len)),
     Equal.cong(Maybe<&2, +List<S.Part>>, Maybe<&2, +List<U32>>, z => Codec.bytes(z), Codec.parts(v, {LSCH}), Some{{[S.Variable{{UW.WX(t, x, U32.to_nat(len))}}]}}, e)))
-''')
-    out = '\n'.join(L) + '\n'
-    return out.replace('\n  +RHS = Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]}\n', '\n').replace(' == RHS :', ' == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} :')
+'''
 
 
 def outputs():
@@ -412,6 +424,19 @@ def outputs():
     for parent, field in LISTS:
         I = info(g, names, parent, field)
         out[ROOT / f'proofs/obj/var_winx_{I["p"]}.bend'] = list_text(g, names, parent, field)
+    import var_rlist_box as BX
+    out[ROOT / 'proofs/obj/vua_fixb.bend'] = BX.fixb_module(g, [dict(names[pa].fields)[f].elem for pa, f in BOXLISTS])
+    for parent, field in BOXLISTS:
+        I = info(g, names, parent, field)
+        rec, needs_d = BX.list_rec(g, I['rt'])
+        out[ROOT / f'proofs/obj/var_winx_{I["p"]}.bend'] = BX.post_box(list_text(g, names, parent, field, rec), I['p'], I['R'], I['RS'], needs_d)
+    import var_rlist_bv as BV
+    import var_win as VWN
+    for parent, field in BVLISTS:
+        ft = dict(names[parent].fields)[field]
+        B, N, p = ft.elem.fixed_size(), ft.size, g.shape(ft).p
+        out[ROOT / f'proofs/obj/var_winx_{p}.bend'] = BV.bvx_text(HEAD, VWN.zeros_at_text, inv_text, p, B, N, f'S.ByteVector{{{B}n}}',
+                                                                  f'S.ListOf{{S.ByteVector{{{B}n}}, U32.to_nat({N})}}')
     import var_rlist_er as ER
     LS = []
     for field in ('deposits', 'withdrawals', 'consolidations'):
@@ -454,6 +479,8 @@ def outputs():
 
 def main():
     out = outputs()
+    if '--no-big' in sys.argv:
+        out = {p: t for p, t in out.items() if not p.name.startswith('big_')}
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:
