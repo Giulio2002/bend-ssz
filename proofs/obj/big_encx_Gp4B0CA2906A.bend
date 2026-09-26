@@ -119,3 +119,9 @@ def putx(+m_f_C: EX_pbits.MB, +hok_f_C: {EX_pbits.OK(m_f_C) == True{} : Bool}, +
   +szf = VCN.cnext(4, EX_pbits.SZ(m_f_C), 4n, [], List.length(&2, U32, EX_pbits.ENC(m_f_C)), dd, hd, ec1, sz1, VCN.pc_end(q, r, LLC(m_f_C, dd, D, X, q, r), dd, Nat.add(Nat.add(4n, VCN.SUM([])), List.length(&2, U32, EX_pbits.ENC(m_f_C))), VCN.pc_room(4n, [], List.length(&2, U32, EX_pbits.ENC(m_f_C)), []), hl))
   mk4(m_f_C, dd, D, X, q, r, rt_all(m_f_C, dd, D, X, q, r, rt0, rt1), byf, pf2, szf)
 
+
+# The container's checked writer T.Gp4B0CA2906A_putk is its putn (one definitional step): the writer's fact
+# as a parent's putv states it.
+def putk_bridge(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +h: RTC(m_f_C, dd, D, X, q, r))
+    -> {T.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), X, OBJC(m_f_C)) == (FD.array__thaw(U32, PUTC(m_f_C, dd, D, X, q, r)), (OBJC(m_f_C), SZC(m_f_C))) : Array<U32> & (T.Gp4B0CA2906A & U32)}:
+  h

@@ -279,6 +279,14 @@ law sizex:
 def sizex(m, hok):
   match m:
     case MB{{+dw, +T, +K, +B, +kb, +KY}}: size_go({A_}, hok)
+
+law validx:
+  for +m: MB
+  for +hok: {{OK(m) == {TRUE}}}
+  {{T.{p}_valid(TH(m)) == (TH(m), True{{}}) : O.Bits & Bool}}
+def validx(m, hok):
+  match m:
+    case MB{{+dw, +T, +K, +B, +kb, +KY}}: valid({A_}, hok)
 ''')
     if NB:
         dom = f'Nat.is_le(List.length(&2, Bool, CO.BITS(T, K)), U32.to_nat({NB}))'

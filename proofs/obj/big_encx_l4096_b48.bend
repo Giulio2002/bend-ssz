@@ -255,3 +255,11 @@ law encx_spec:
 def encx_spec(m, hok):
   match m:
     case MW{+dw, +T, +N}: W.specw(dw, T, N, 0n, 0, N, {==}, ok_hd(dw, T, N, hok), ok_hN(dw, T, N, hok), ok_pf(dw, T, N, hok), FD.logic__and_right(U32.is_eq(U32.mod(N, 48), 0), W.CHKw(T, 0n, 0, N), FD.logic__and_right(U32.is_le(N, 196608), Bool.and(U32.is_eq(U32.mod(N, 48), 0), W.CHKw(T, 0n, 0, N)), ok_ex(dw, T, N, hok))))
+
+law validx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  {T.l4096_b48_valid(TH(m)) == (TH(m), True{}) : O.Words & Bool}
+def validx(m, hok):
+  match m:
+    case MW{+dw, +T, +N}: valid(dw, T, N, hok)
