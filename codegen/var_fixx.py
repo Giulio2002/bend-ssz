@@ -50,7 +50,7 @@ def sig(name, S, rest=''):
             f'    +hb: {{Nat.is_le(Nat.add(x, {S}n), A.quad(VB.pw(d))) == {TRUE}}}){rest}')
 
 
-GEN_HEAD = HEAD + ['import ./vcopy.bend as VC', 'import ./schema_shapes.bend as SH']
+GEN_HEAD = HEAD + ['import ./vcopy.bend as VC', 'import ./schema_shapes.bend as SH', 'import ./arr_spec.bend as AS', 'import ../../spec/schema.bend as SSC']
 
 
 def gen_text():
@@ -64,6 +64,56 @@ def CNT(+x: Nat, +M: Nat) -> Nat: Nat.add(Nat.sub(x, x), M)
 def cnt_eq(+x: Nat, +M: Nat) -> {{CNT(x, M) == M : Nat}}:
   %Equal.sym(Nat, Nat.sub(x, x), 0n, FD.nat__sub_self(x)) : {{Nat.add(_, M) == M : Nat}}
   {{==}}
+
+''')
+    L.append(f'''# ---- positions and splits ----------------------------------------------------------------------
+
+def lenC(+t: {TR}, +x: Nat, +M: Nat) -> {{FD.spec_common__length(U32, UR.RWS(CNT(x, M), t, x)) == M : Nat}}:
+  %Equal.sym(Nat, CNT(x, M), M, cnt_eq(x, M)) : {{FD.spec_common__length(U32, UR.RWS(_, t, x)) == M : Nat}}
+  UR.rws_len(M, t, x)
+
+# x < P from x + S <= P, S > 0
+def ltx(+x: Nat, +S: Nat, +P: Nat, +h0: {{Nat.is_lt(0n, S) == {TRUE}}}, +hb: {{Nat.is_le(Nat.add(x, S), P) == {TRUE}}}) -> {{Nat.is_lt(x, P) == {TRUE}}}:
+  FD.nat__lt_le_trans(x, Nat.add(x, S), P, FD.logic__subst(Nat, z => {{Nat.is_lt(z, Nat.add(x, S)) == {TRUE}}}, Nat.add(x, 0n), x, FD.nat__add_zero(x),
+    FD.nat__lt_add_left(0n, S, x, h0)), hb)
+
+# off + c is at byte C + x, for C < S the field size
+def offc(+d: Nat, +off: U32, +c: U32, +C: Nat, +x: Nat, +S: Nat, +e: {{U32.to_nat(off) == x : Nat}}, +hd: {{Nat.is_lt(d, 28n) == {TRUE}}},
+    +eC: {{Nat.is_eq(U32.to_nat(c), C) == {TRUE}}}, +hC: {{Nat.is_lt(C, S) == {TRUE}}}, +hb: {{Nat.is_le(Nat.add(x, S), {P}) == {TRUE}}})
+    -> {{U32.to_nat(U32.add(off, c)) == Nat.add(x, C) : Nat}}:
+  %FD.nat__add_comm(C, x) : {{U32.to_nat(U32.add(off, c)) == _ : Nat}}
+  offc0(d, off, c, C, x, S, e, hd, eC, hC, hb)
+def offc0(+d: Nat, +off: U32, +c: U32, +C: Nat, +x: Nat, +S: Nat, +e: {{U32.to_nat(off) == x : Nat}}, +hd: {{Nat.is_lt(d, 28n) == {TRUE}}},
+    +eC: {{Nat.is_eq(U32.to_nat(c), C) == {TRUE}}}, +hC: {{Nat.is_lt(C, S) == {TRUE}}}, +hb: {{Nat.is_le(Nat.add(x, S), {P}) == {TRUE}}})
+    -> {{U32.to_nat(U32.add(off, c)) == Nat.add(C, x) : Nat}}:
+  +ec = FD.nat__eq_from_is_eq(U32.to_nat(c), C, eC)
+  +h = FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P}) == {TRUE}}}, Nat.add(x, C), Nat.add(C, x), FD.nat__add_comm(x, C),
+    FD.nat__lt_le_trans(Nat.add(x, C), Nat.add(x, S), {P}, FD.nat__lt_add_left(C, S, x, hC), hb))
+  %Equal.sym(Nat, C, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), C, ec)) : {{U32.to_nat(U32.add(off, c)) == Nat.add(_, x) : Nat}}
+  UR.offx(d, off, c, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {{==}}), FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add(z, x), {P}) == {TRUE}}}, C, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), C, ec), h))
+
+# room for S2 bytes at x + C inside a field of S bytes at x
+def roomc(+x: Nat, +S: Nat, +C: Nat, +S2: Nat, +P: Nat, +hb: {{Nat.is_le(Nat.add(x, S), P) == {TRUE}}}, +hc: {{Nat.is_le(Nat.add(C, S2), S) == {TRUE}}})
+    -> {{Nat.is_le(Nat.add(Nat.add(x, C), S2), P) == {TRUE}}}:
+  FD.logic__subst(Nat, z => {{Nat.is_le(z, P) == {TRUE}}}, Nat.add(x, Nat.add(C, S2)), Nat.add(Nat.add(x, C), S2), Equal.sym(Nat, Nat.add(Nat.add(x, C), S2), Nat.add(x, Nat.add(C, S2)), FD.nat__add_assoc(x, C, S2)),
+    FD.nat__le_trans(Nat.add(x, Nat.add(C, S2)), Nat.add(x, S), P, Order.add_left(x, Nat.add(C, S2), S, hc), hb))
+
+# the window's S = S1 + S2 bytes: the limbs of the M words at x (4 M = S1), then S2 bytes at S1 + x
+def splitC(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE}}}, +M: Nat, +S1: Nat, +S2: Nat, +S: Nat,
+    +eS: {{Nat.is_eq(A.quad(M), S1) == {TRUE}}}, +hS: {{Nat.is_eq(Nat.add(S1, S2), S) == {TRUE}}}, +hw: {{Nat.is_le(Nat.add(x, S), {P}) == {TRUE}}})
+    -> {{UW.WX(t, x, S) == List.append(&2, U32, F.limbs(UR.RWS(CNT(x, M), t, x)), UW.WX(t, Nat.add(x, S1), S2)) : +List<U32>}}:
+  %FD.nat__add_comm(S1, x) : {{UW.WX(t, x, S) == List.append(&2, U32, F.limbs(UR.RWS(CNT(x, M), t, x)), UW.WX(t, _, S2)) : +List<U32>}}
+  splitC0(d, t, x, pf, M, S1, S2, S, eS, hS, hw)
+def splitC0(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE}}}, +M: Nat, +S1: Nat, +S2: Nat, +S: Nat,
+    +eS: {{Nat.is_eq(A.quad(M), S1) == {TRUE}}}, +hS: {{Nat.is_eq(Nat.add(S1, S2), S) == {TRUE}}}, +hw: {{Nat.is_le(Nat.add(x, S), {P}) == {TRUE}}})
+    -> {{UW.WX(t, x, S) == List.append(&2, U32, F.limbs(UR.RWS(CNT(x, M), t, x)), UW.WX(t, Nat.add(S1, x), S2)) : +List<U32>}}:
+  +eq = FD.nat__eq_from_is_eq(A.quad(M), S1, eS)
+  +es = FD.nat__eq_from_is_eq(Nat.add(S1, S2), S, hS)
+  %Equal.sym(Nat, CNT(x, M), M, cnt_eq(x, M)) : {{UW.WX(t, x, S) == List.append(&2, U32, F.limbs(UR.RWS(_, t, x)), UW.WX(t, Nat.add(S1, x), S2)) : +List<U32>}}
+  %es : {{UW.WX(t, x, _) == List.append(&2, U32, F.limbs(UR.RWS(M, t, x)), UW.WX(t, Nat.add(S1, x), S2)) : +List<U32>}}
+  %eq : {{UW.WX(t, x, Nat.add(_, S2)) == List.append(&2, U32, F.limbs(UR.RWS(M, t, x)), UW.WX(t, Nat.add(_, x), S2)) : +List<U32>}}
+  UW.headWX(d, t, x, M, S2, pf, FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), {P}) == {TRUE}}}, S, Nat.add(A.quad(M), S2),
+    Equal.trans(Nat, S, Nat.add(S1, S2), Nat.add(A.quad(M), S2), Equal.sym(Nat, Nat.add(S1, S2), S, es), Equal.cong(Nat, Nat, z => Nat.add(z, S2), S1, A.quad(M), Equal.sym(Nat, A.quad(M), S1, eq))), hw))
 
 ''')
     L.append(f'''# copy_into of L bytes (S = L) at off (byte position x) into a zero storage of depth dz
@@ -101,14 +151,88 @@ def prt0_{ch}(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) ==
   %UR.rws_bytes(M, d, t, x, pf, hq) : {{Codec.parts(S.Sequence{{AV.{ch}({W})}}, s) == Some{{[S.Fixed{{_}}]}} : Maybe<&2, +List<S.Part>>}}
   AV.{vp}(s, {W}, k, M, S, hs, he, hk, hk0, UR.rws_len(M, t, x), hL, hN, hf)
 ''')
+    L.append(sc_text())
     out = []
     for blk in L:
-        if 'def prt0_' in blk:
-            a = blk.index('def prt_')
-            b = blk.index('def prt0_')
-            blk = blk[:a] + blk[b:].rstrip('\n') + '\n\n' + blk[a:b]
+        for X, X0 in (('prt_', 'prt0_'), ('offc(', 'offc0('), ('splitC(', 'splitC0(')):
+            if f'def {X0}' in blk:
+                a = blk.index(f'def {X}')
+                b = blk.index(f'def {X0}')
+                e = blk.find('\n\n', b)
+                e = len(blk) if e < 0 else e + 1
+                blk = blk[:a] + blk[b:e].rstrip('\n') + '\n' + blk[a:b] + blk[e:]
         out.append(blk)
     return '\n'.join(out) + '\n'
+
+
+def sc_text():
+    """SyncCommittee's parts over any 6144 pubkey words W and aggregate words g (after
+    codegen/spec_arr.py sync_committee, with W a variable), and the window splits."""
+    import re
+    import spec_arr as SA
+    P = 'A.quad(VB.pw(d))'
+    g = [f'g{i}' for i in range(12)]
+    G = '[' + ', '.join(g) + ']'
+    gsig = ', '.join(f'+{x}: U32' for x in g)
+    spec = 'Spec.SyncCommittee()'
+    WA = 'W'
+    VAL = f'S.Sequence{{S.Items{{S.Sequence{{AV.ch12({WA})}}, S.Items{{S.BytesValue{{SF.limbs({G})}}, S.EmptyItems{{}}}}}}}}'
+    PT = 'Maybe<&2, +List<S.Part>>'
+    FL = f'SF.flat([{WA}, {G}])'
+    RHSF = f'Some{{[S.Fixed{{{FL}}}]}}'
+    fs = 'SH.Container_fields(s)'
+    h1, t1 = f'SH.Chain_head({fs})', f'SH.Chain_tail({fs})'
+    h2, t2 = f'SH.Chain_head({t1})', f'SH.Chain_tail({t1})'
+    BV = 'S.ByteVector{48n}'
+    V1 = f'S.Vector{{{BV}, SH.Vector_length({h1})}}'
+    names = 'SH.Container_names(s)'
+    gg = lambda sch, rhs: f'{{Codec.parts({VAL}, {sch}) == {rhs} : {PT}}}'
+    la, lg = f'SF.limbs({WA})', f'SF.limbs({G})'
+    L = [f'# SyncCommittee\'s parts over any M = 6144 pubkey words W and any aggregate words g',
+         f'def sc_parts(+s: S.Schema, +es: {{s == {spec} : S.Schema}}, +W: List<&2, U32>, +M: Nat, +S1: Nat, +Sn: Nat, {gsig},',
+         f'    +hl: {{F.spec_common__length(U32, W) == M : Nat}}, +hm: {{Nat.is_eq(AV.m12(512n), M) == True{{}} : Bool}},',
+         f'    +h1: {{Nat.is_eq(A.quad(M), S1) == True{{}} : Bool}}, +hS: {{Nat.is_eq(Nat.add(S1, Nat.add(48n, 0n)), Sn) == True{{}} : Bool}},',
+         f'    +hf: {{NB.fits(4n, Nat.add(Sn, 0n)) == True{{}} : Bool}}, +hf1: {{NB.fits(4n, Nat.add(S1, 0n)) == True{{}} : Bool}})',
+         f'    -> {{Codec.parts({VAL}, s) == Some{{[S.Fixed{{List.append(&2, U32, {la}, {lg})}}]}} : {PT}}}:']
+    w = L.append
+    w(f'  %AS.app_nil({lg}) :')
+    w('    ' + gg('s', f'Some{{[S.Fixed{{List.append(&2, U32, {la}, _)}}]}}'))
+    steps = [
+        (f'Equal.sym(S.Schema, s, S.Container{{{names}, {fs}}}, SH.Container_shape(s, {SA.bfact(spec, "SH.is_Container(s)")}))', '_'),
+        (f'Equal.sym(S.Schema, {fs}, S.Chain{{{h1}, {t1}}}, SH.Chain_shape({fs}, {SA.bfact(spec, f"SH.is_Chain({fs})")}))', f'S.Container{{{names}, _}}'),
+        (f'Equal.sym(S.Schema, {t1}, S.Chain{{{h2}, {t2}}}, SH.Chain_shape({t1}, {SA.bfact(spec, f"SH.is_Chain({t1})")}))', f'S.Container{{{names}, S.Chain{{{h1}, _}}}}'),
+        (f'Equal.sym(S.Schema, {t2}, S.End{{}}, SH.End_shape({t2}, {SA.bfact(spec, f"SH.is_End({t2})")}))', f'S.Container{{{names}, S.Chain{{{h1}, S.Chain{{{h2}, _}}}}}}'),
+        (f'Equal.sym(S.Schema, {h1}, S.Vector{{SH.Vector_element({h1}), SH.Vector_length({h1})}}, SH.Vector_shape({h1}, {SA.bfact(spec, f"SH.is_Vector({h1})")}))', f'S.Container{{{names}, S.Chain{{_, S.Chain{{{h2}, S.End{{}}}}}}}}'),
+        (f'Equal.sym(S.Schema, SH.Vector_element({h1}), {BV}, {SA.sfact(spec, f"SH.Vector_element({h1})", BV)})', f'S.Container{{{names}, S.Chain{{S.Vector{{_, SH.Vector_length({h1})}}, S.Chain{{{h2}, S.End{{}}}}}}}}'),
+        (f'Equal.sym(S.Schema, {h2}, {BV}, {SA.sfact(spec, h2, BV)})', f'S.Container{{{names}, S.Chain{{{V1}, S.Chain{{_, S.End{{}}}}}}}}'),
+    ]
+    for eq, sch in steps:
+        w(f'  %{eq} :')
+        w('    ' + gg(sch, RHSF))
+    FIELDS = f'S.Chain{{{V1}, S.Chain{{{BV}, S.End{{}}}}}}'
+    agg = lambda a_, b_: f'{{Codec.aggregate(Codec.concatenate({a_}, Codec.concatenate({b_}, Some{{[]}})), SSC.fixed_size({FIELDS})) == {RHSF} : {PT}}}'
+    kf = SA.bfact(spec, f'Nat.is_eq(SH.Vector_length({h1}), 512n)')
+    eq1 = 'F.nat__eq_from_is_eq(A.quad(M), S1, h1)'
+    hN = (f'Equal.trans(Nat, SF.wlen(W), A.quad(M), S1, Equal.trans(Nat, SF.wlen(W), A.quad(List.length(&2, U32, W)), A.quad(M), VS.wlen_quad(W), '
+          f'Equal.cong(Nat, Nat, z => A.quad(z), List.length(&2, U32, W), M, Equal.trans(Nat, List.length(&2, U32, W), F.spec_common__length(U32, W), M, VMR.len_eq(W), hl))), {eq1})')
+    vp = (f'AV.vparts12({V1}, {WA}, 512n, M, S1, {{==}}, {{==}}, {kf}, {{==}}, hl, hm, {hN}, hf1)')
+    P1 = f'Codec.parts(S.Sequence{{AV.ch12({WA})}}, {V1})'
+    P2 = f'Codec.parts(S.BytesValue{{{lg}}}, {BV})'
+    F1 = f'Some{{[S.Fixed{{SF.limbs({WA})}}]}}'
+    F2 = f'Some{{[S.Fixed{{{lg}}}]}}'
+    w(f'  %Equal.sym({PT}, {P1}, {F1}, {vp}) :')
+    w('    ' + agg('_', P2))
+    w(f'  %Equal.sym({PT}, {P2}, {F2}, SF.bytes_part(g0, [{", ".join(g[1:])}], {{==}})) :')
+    w('    ' + agg(F1, '_'))
+    x = f'Nat.add(Nat.mul(SH.Vector_length({h1}), 48n), Nat.add(48n, 0n))'
+    ea = f'Equal.trans(Nat, List.length(&2, U32, SF.limbs({WA})), SF.wlen({WA}), S1, AS.len_limbs({WA}), {hN})'
+    w(f'  AS.agg([{WA}, {G}], {x}, Sn,')
+    w(f'    AS.add2(List.length(&2, U32, SF.limbs({WA})), List.length(&2, U32, {lg}), S1, 48n, Sn, {ea}, {{==}}, hS), hf)')
+    t = '\n'.join(L) + '\n'
+    t = t.replace('SF.', '@SF@')
+    t = re.sub(r'(?<![A-Za-z_@])F\.', 'FD.', t)
+    t = t.replace('@SF@', 'F.').replace('NB.', 'N.')
+    return t
 
 
 def rt_depth(p):
@@ -147,13 +271,125 @@ def prt(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE
     return '\n'.join(L) + '\n'
 
 
+def sc_mod():
+    """SyncCommittee: Vector[BLSPubkey, 512] (copy_into), then a Bytes48."""
+    S, S1, M, dz = 24624, 24576, 6144, rt_depth('v512_b48')
+    ky = log2c(S1 + 31)
+    P = 'A.quad(VB.pw(d))'
+    y = f'Nat.add(x, {S1}n)'
+    G = [f'UR.RWN(t, {y})' if k == 0 else f'UR.RWN(t, {4 * k}n+{y})' for k in range(12)]
+    PK = f'O.Words{{FD.array__thaw(U32, VXB.CTN(d, t, x, {S1}, {dz}n)), {S1}}}'
+    B48 = 'T.Bytes48{' + ', '.join(G) + '}'
+    OBJ = f'T.SyncCommittee{{{PK}, {B48}}}'
+    VAL = f'S.Sequence{{S.Items{{S.Sequence{{AV.ch12(UR.RWS(VXG.CNT(x, {M}n), t, x))}}, S.Items{{S.BytesValue{{F.limbs([{", ".join(G)}])}}, S.EmptyItems{{}}}}}}}}'
+    RHS = f'(UA.BF(t, n), OBJ(d, t, x))'
+    L = list(HEAD) + ['import ./schema_shapes.bend as SH', 'import ./vfxg.bend as VXG', '', '# GENERATED by codegen/var_fixx.py. Do not edit.',
+                      f'# SyncCommittee ({S} bytes) at any byte position: see codegen/var_fixx.py.', '']
+    L.append(f'''def OBJ(+d: Nat, +t: {TR}, +x: Nat) -> T.SyncCommittee: {OBJ}
+
+{sig('rdx', S)}
+    -> {{T.SyncCommittee_read(UA.BF(t, n), off, {S}) == {RHS} : B.Buf & T.SyncCommittee}}:
+  %Equal.sym(B.Buf & O.Words, T.v512_b48_read(UA.BF(t, n), U32.add(off, 0), {S1}), (UA.BF(t, n), {PK}),
+      VXG.rdg(d, t, n, U32.add(off, 0), x, Equal.trans(Nat, U32.to_nat(U32.add(off, 0)), Nat.add(x, 0n), x, VXG.offc(d, off, 0, 0n, x, {S}n, e, hd, {{==}}, {{==}}, hb), FD.nat__add_zero(x)),
+        hd, pf, {S1}, {S1}n, {dz}n, {ky}n, {{==}}, {{==}}, {{==}}, {{==}}, {{==}},
+        FD.nat__le_trans(Nat.add(x, {S1}n), Nat.add(x, {S}n), {P}, Order.add_left(x, {S1}n, {S}n, {{==}}), hb))) :
+    {{T.SyncCommittee_rd0(off, {S}, _) == {RHS} : B.Buf & T.SyncCommittee}}
+  %Equal.sym(B.Buf & T.Bytes48, T.b48_read(UA.BF(t, n), U32.add(off, {S1}), 48), (UA.BF(t, n), {B48}),
+      VTX.rdx_b48(d, t, n, U32.add(off, {S1}), {y}, VXG.offc(d, off, {S1}, {S1}n, x, {S}n, e, hd, {{==}}, {{==}}, hb), FD.nat__lt_trans(d, 28n, 30n, hd, {{==}}), pf,
+        VXG.roomc(x, {S}n, {S1}n, 48n, {P}, hb, {{==}}))) :
+    {{T.SyncCommittee_rd1(off, {S}, {PK}, _) == {RHS} : B.Buf & T.SyncCommittee}}
+  {{==}}
+
+def VAL(+t: {TR}, +x: Nat) -> S.Value: {VAL}
+
+def prt(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE}}}, +hb: {{Nat.is_le(Nat.add(x, {S}n), {P}) == {TRUE}}},
+    +s: S.Schema, +es: {{s == Spec.SyncCommittee() : S.Schema}})
+    -> {{Codec.parts(VAL(t, x), s) == Some{{[S.Fixed{{UW.WX(t, x, {S}n)}}]}} : Maybe<&2, +List<S.Part>>}}:
+  %Equal.sym(+List<U32>, UW.WX(t, x, {S}n), List.append(&2, U32, F.limbs(UR.RWS(VXG.CNT(x, {M}n), t, x)), UW.WX(t, {y}, 48n)), VXG.splitC(d, t, x, pf, {M}n, {S1}n, 48n, {S}n, {{==}}, {{==}}, hb)) : {{Codec.parts(VAL(t, x), s) == Some{{[S.Fixed{{_}}]}} : Maybe<&2, +List<S.Part>>}}
+  %UR.rws_bytes(12n, d, t, {y}, pf, VXG.roomc(x, {S}n, {S1}n, 48n, {P}, hb, {{==}})) :
+    {{Codec.parts(VAL(t, x), s) == Some{{[S.Fixed{{List.append(&2, U32, F.limbs(UR.RWS(VXG.CNT(x, {M}n), t, x)), _)}}]}} : Maybe<&2, +List<S.Part>>}}
+  VXG.sc_parts(s, es, UR.RWS(VXG.CNT(x, {M}n), t, x), {M}n, {S1}n, {S}n, {", ".join(G)}, VXG.lenC(t, x, {M}n), {{==}}, {{==}}, {{==}}, {{==}}, {{==}})
+''')
+    return '\n'.join(L) + '\n'
+
+
 VECS = [('v8192_b32', 262144, 8192, 'Spec.Schema32()', 'ch8', 'Bytes32'),
         ('v65536_b32', 2097152, 65536, 'Spec.Schema80()', 'ch8', 'Bytes32'),
-        ('v8192_u64', 65536, 8192, 'Spec.Schema81()', 'chu2', 'uint64')]
+        ('v8192_u64', 65536, 8192, 'Spec.Schema81()', 'chu2', 'uint64'),
+        ('v64_u64', 512, 64, 'Spec.Schema88()', 'chu2', 'uint64')]
+
+# fixed field types read word by word (vua_fix / vbx_fix readers), by BeaconState field
+SMALL = [('genesis_time', 'Spec.Schema3()'), ('genesis_validators_root', 'Spec.Schema7()'), ('fork', 'Spec.Fork()'),
+         ('latest_block_header', 'Spec.BeaconBlockHeader()'), ('eth1_data', 'Spec.Eth1Data()'), ('finalized_checkpoint', 'Spec.Checkpoint()')]
+
+
+def have(f):
+    src = (ROOT / f'proofs/obj/{f}').read_text()
+    return {ln.split('(')[0][len('def rdx_'):] for ln in src.splitlines() if ln.startswith('def rdx_')}
+
+
+def small_mod(g, t, sch):
+    """A fixed type read word by word: thin wrappers over vua_fix / vbx_fix (or a reader here)."""
+    import var_laws as VLW
+    import var_ua as VUA
+    ft = VLW.FT(g, t)
+    p, S, W = ft.p, ft.size, ft.W
+    vtx, xf = have('vua_fix.bend'), have('vbx_fix.bend')
+    word = lambda k: 'UR.RWN(t, x)' if k == 0 else f'UR.RWN(t, {4 * k}n+x)'
+    OBJ = ft.obj([word(k) for k in range(W)])
+    nd = VLW.SL.walk(g, t, iter(range(100000)))
+    mp = {int(w_[1:]): word(j) for j, w_ in enumerate(nd.words)}
+    val, proof = VLW.subst_words(nd.val, mp), VLW.subst_words(nd.proof, mp)
+    L = list(HEAD) + ['', '# GENERATED by codegen/var_fixx.py. Do not edit.', f'# {p} ({S} bytes) at any byte position: see codegen/var_fixx.py.', '']
+    local = []
+    for dep in ft.deps():
+        if dep.p in vtx or dep.p in xf:
+            continue
+        for ln in VUA.rdx_lemma(dep):
+            ln = ln.replace('ltp(', 'VTX.ltp(').replace('F.', 'FD.')
+            for kp in vtx:
+                ln = ln.replace(f'rdx_{kp}(', f'VTX.rdx_{kp}(')
+            for kp in xf:
+                ln = ln.replace(f'rdx_{kp}(', f'XF.rdx_{kp}(')
+            L.append(ln)
+        L.append('')
+        local.append(dep.p)
+    ref = f'VTX.rdx_{p}' if p in vtx else (f'XF.rdx_{p}' if p in xf else f'rdx_{p}')
+    if p in xf:
+        L.insert(L.index('import ./vua_fix.bend as VTX') + 1, 'import ./vbx_fix.bend as XF')
+    P = 'A.quad(VB.pw(d))'
+    L.append(f'''def OBJ(+d: Nat, +t: {TR}, +x: Nat) -> {ft.rep()}: {OBJ}
+
+{sig('rdx', S)}
+    -> {{T.{p}_read(UA.BF(t, n), off, {S}) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & {ft.rep()}}}:
+  {ref}(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {{==}}), pf, hb)
+
+def VAL(+t: {TR}, +x: Nat) -> S.Value: {val}
+
+def prt(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE}}}, +hb: {{Nat.is_le(Nat.add(x, {S}n), {P}) == {TRUE}}},
+    +s: S.Schema, +es: {{s == {sch} : S.Schema}})
+    -> {{Codec.parts(VAL(t, x), s) == Some{{[S.Fixed{{UW.WX(t, x, {S}n)}}]}} : Maybe<&2, +List<S.Part>>}}:
+  %Equal.sym(S.Schema, s, {sch}, es) : {{Codec.parts(VAL(t, x), _) == Some{{[S.Fixed{{UW.WX(t, x, {S}n)}}]}} : Maybe<&2, +List<S.Part>>}}
+  %UR.rws_bytes({W}n, d, t, x, pf, hb) : {{Codec.parts(VAL(t, x), {sch}) == Some{{[S.Fixed{{_}}]}} : Maybe<&2, +List<S.Part>>}}
+  {proof}
+''')
+    return p, '\n'.join(L) + '\n'
+
 
 
 def outputs(no_big=False):
-    out = {ROOT / 'proofs/obj/vfxg.bend': gen_text()}
+    import var_fixx_bv4 as BV4
+    out = {ROOT / 'proofs/obj/vfxg.bend': gen_text(), ROOT / 'proofs/obj/vfx_SyncCommittee.bend': sc_mod(),
+           ROOT / 'proofs/obj/vfx_bv4.bend': BV4.bv4_mod(HEAD, sig, TR, TRUE)}
+    import schema
+    import generate as G
+    names = schema.load(ROOT / 'codegen/fulu.yaml')
+    g = G.Gen()
+    for n_, t_ in names.items():
+        g.shape(t_)
+    for fld, sch in SMALL:
+        p, txt = small_mod(g, dict(names['BeaconState'].fields)[fld], sch)
+        out[ROOT / f'proofs/obj/vfx_{p}.bend'] = txt
     for p, S, k, sch, ch, el in VECS:
         big = S > BIG
         if big and no_big:
