@@ -186,6 +186,38 @@ def bits_obj(lf, f):
     """The object of a bit-vector byte leaf held as its word f."""
     return f'T.Bitvector{lf.bits}{{{f}}}'
 
+def fixw_spec_field(g, names, fw, f, fs, sch):
+    """The spec side of a FixW field for iface_text: its value, part, bytes (the writer's piece) and parts proof
+    (proofs/obj/vfixw_spec.bend: the word vectors, SyncCommittee; a boxed record: its record's walk)."""
+    import spec_laws as SLW
+    by = f'VCN.PC({fs.fsize}n, {fw.Y})'
+    d = dict(kind='fix', f=f, sch=sch, part=f'S.Fixed{{{by}}}', bytes=by, psch=sch)
+    if fs.kind == 'packed' and fs.p in FIXW_PACKED:
+        k = int(fs.p.split('_')[0][1:])
+        S_, W = fs.fsize, fs.fsize // 4
+        if fs.p.endswith('_b32'):
+            d.update(val=f'FWS.VV8({W}n, TB_{f})',
+                     prf=f'FWS.wv8({sch}, dB_{f}, TB_{f}, {k}n, {W}n, {S_}n, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, OKA_pfB_{f}, OKA_hrB_{f})')
+        else:
+            d.update(val=f'FWS.VU2({W}n, TB_{f})',
+                     prf=f'FWS.wvu2({sch}, dB_{f}, TB_{f}, {k}n, {W}n, {S_}n, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, OKA_pfB_{f}, OKA_hrB_{f})')
+    elif fs.kind == 'container' and fs.p == 'SyncCommittee':
+        A_ = ', '.join(fw.oargs[2:])
+        d.update(val=f'FWS.SCV(TB_{f}, {A_})',
+                 prf=f'FWS.scp({sch}, {{==}}, dB_{f}, TB_{f}, {A_}, OKA_pfB_{f}, OKA_hrB_{f}, V_SyncCommittee.SyncCommittee_len(dB_{f}, TB_{f}, {A_}, OKA_pfB_{f}, OKA_hrB_{f}))')
+    elif fs.kind == 'box':
+        R = fs.p[:-3]
+        nd = SLW.walk(g, names[R], iter(range(1000000)))
+        ren = {x: w for x, w in zip(nd.words, fw.oargs)}
+        sub = lambda t: re.sub(r'\bx(\d+)\b', lambda mm: ren[mm.group(0)], t)  # noqa: E731
+        fx = lambda t: re.sub(r'(?<![\w.])F\.', 'FX.', t)  # noqa: E731
+        val = fx(sub(nd.val))
+        d.update(val=val, psch=fx(nd.sch),
+                 prf=f'CS.pcfix({val}, {fx(nd.sch)}, {fw.Y}, {fs.fsize}n, {{==}}, {fx(sub(nd.proof))})')
+    else:
+        raise SystemExit(f'no spec row for the FixW field {f}: {fs.kind}/{fs.p}')
+    return d
+
 
 def leaf_of(fs):
     if fs.kind in ('u8', 'u16'):
@@ -1392,6 +1424,8 @@ def lvp_{lf.p}(+o: {lf.ctor}) -> {{Codec.parts(LV_{lf.p}(o), {fx(nd.sch)}) == So
             by = f'VCN.PC(A.quad({nW}n), CS.WT({nW}n, TB_{f}))'
             fields.append(dict(kind='fix', f=f, val=f'S.BytesValue{{CS.WT({nW}n, TB_{f})}}', sch=sch, part=f'S.Fixed{{{by}}}', bytes=by,
                                prf=f'CS.bvw({nW}n, dB_{f}, TB_{f}, OKA_pfB_{f}, OKA_hrB_{f}, {{==}}, {{==}})', psch=f'S.ByteVector{{A.quad({nW}n)}}'))
+        elif f in K.fixw:
+            fields.append(fixw_spec_field(g, names, K.fixw[f], f, fs, sch))
         else:
             ch = K.children[f]
             d = dict(kind='var', f=f, sch=sch, enc=ch.enc, sz=ch.sz, cur=curs[f])
@@ -1517,6 +1551,11 @@ def okbk({OPS}, +h: {{OKT({OAS}) == {TRUE_}}}, +k: Nat, +ek: {{k == 28n : Nat}})
         ESZ = f'K.szpz({OAS}, ok_hpz({OAS}, h))'
     else:
         SZCORE, ESZ = SZC, f'eSZ({OAS}, Unit{{}})'
+        # the checked fixed writers' flags (.|. 0) peeled with UWB.or0r
+        while SZCORE.startswith('(') and SZCORE.endswith(' .|. 0 : U32)'):
+            inner = SZCORE[1:-len(' .|. 0 : U32)')]
+            ESZ = f'Equal.trans(U32, K.SZC({OAS}), {SZCORE}, {inner}, {ESZ}, UWB.or0r({inner}))'
+            SZCORE = inner
     w(f'''
 def partsC({OPS}, +h: {{OKT({OAS}) == {TRUE_}}}, +k: Nat, +ek: {{k == 28n : Nat}})
     -> {{Codec.parts({items(0)}, {chain(0)}) == Some{{PSC({OAS})}} : Maybe<&2, +List<S.Part>>}}:
@@ -1836,9 +1875,19 @@ def maxx(m, hok):
             return re.sub(r'(?<![\w.])([A-Za-z_]\w*)\b(?![({])', lambda z: d.get(z.group(1), z.group(1)), t)
         cur = rq(subst(mm.group(3).strip(), sub))
         steps = []
+        SZR0 = None
         if getattr(K, 'pz', None) is not None:
             core_ = SZC[1:SZC.index(' .|. O.pz(')]
             steps.append(f'  %Equal.sym(U32, K.SZC({OAS}), {core_}, K.szpz({OAS}, ok_hpz({OAS}, h))) :\n    {{T.{K.p}_size(K.OBJC({OAS})) == (K.OBJC({OAS}), _) : T.{C} & U32}}')
+        elif SZC.endswith(' .|. 0 : U32)'):
+            # the checked fixed writers' flags (.|. 0): the size pass returns the core
+            core_, prf_ = SZC, f'eSZ({OAS}, Unit{{}})'
+            while core_.startswith('(') and core_.endswith(' .|. 0 : U32)'):
+                inner = core_[1:-len(' .|. 0 : U32)')]
+                prf_ = f'Equal.trans(U32, K.SZC({OAS}), {core_}, {inner}, {prf_}, UWB.or0r({inner}))'
+                core_ = inner
+            steps.append(f'  %Equal.sym(U32, K.SZC({OAS}), {core_}, {prf_}) :\n    {{T.{K.p}_size(K.OBJC({OAS})) == (K.OBJC({OAS}), _) : T.{C} & U32}}')
+            SZR0 = core_
         while True:
             m2 = re.fullmatch(r'T\.(\w+_sz\d+)\((.*)\)', cur)
             if not m2:
@@ -1856,7 +1905,7 @@ def maxx(m, hok):
                 break
             sz_prf, vt, _, SZj, hokn, _v = cands[0]
             ctx = f'T.{fname}(' + ', '.join(args[:-1] + ['_']) + ')'
-            SZR = SZC[1:SZC.index(' .|. O.pz(')] if getattr(K, 'pz', None) is not None else f'K.SZC({OAS})'
+            SZR = SZC[1:SZC.index(' .|. O.pz(')] if getattr(K, 'pz', None) is not None else (SZR0 or f'K.SZC({OAS})')
             steps.append(f'  %Equal.sym({vt} & U32, {last}, ({V}, {SZj}), {sz_prf.replace("@HOK", f"{hokn}({OAS}, h)")}) :\n    {{{ctx} == (K.OBJC({OAS}), {SZR}) : T.{C} & U32}}')
             fb = fn_body(fname)
             params = fn_params(fname)
@@ -1940,6 +1989,10 @@ def iface_full(C, generic=False):
         mods.append('import ./vrecb.bend as VRB')
     if 'VBB.' in body:
         mods.append('import ./vbitb.bend as VBB')
+    if 'FWS.' in body:
+        mods.append('import ./vfixw_spec.bend as FWS')
+    if 'UWB.' in body and 'import ./vuw_bits.bend as UWB' not in mods + hd:
+        mods.append('import ./vuw_bits.bend as UWB')
     head = hd + mods + [f'import ./{main} as K', '', '# GENERATED by codegen/var_cont_enc.py. Do not edit.',
                         f'# {C} in the encoder-window interface, with its spec side (see the generator: iface_text).', '',
                         'def PA(-A: Data, -B: Data, +p: DK.P2(A, B)) -> A:', '  (+a, +b) = p', '  a',
