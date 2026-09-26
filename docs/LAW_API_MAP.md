@@ -162,6 +162,20 @@ What that means concretely:
   depth d < 28. The value of a decoded bit list is stated from the buffer's
   bytes (`bl`); relating it to the decoded object's own bits (a view law) and
   the bit-list encoder laws are open.
+* **Unaligned offsets** (`codegen/var_ua.py`, hand-written `vua.bend`,
+  `vua_copy.bend`; 2026-09-26, stock). Generic in the offset and length, for
+  a buffer of depth d < 31. U1: `B.read32` at ANY byte offset X returns
+  `RW(t, X)` (`vua.rd_any`), whose limbs are the spec bytes [X, X + 4)
+  (`vua.rd_bytes`); the word joins `B.join_sel(j, lo, hi)` have limbs
+  j..3 of lo then 0..j - 1 of hi (`vua_bits.join1/2/3`, generated). U2:
+  the shifted copies `O.scopy1/2/3` build the model `vua_copy.smone`
+  (`vua_sc.scopy{1,2,3}_ok`, generated; U32.mul by 2^k is `word_mul`'s
+  shift). The last source read may be one past the array, where Base Array
+  masks the index to 0 (`vua_copy.get_wrap`). `copy_in` / `copy_into` of any
+  length L at an offset with off & 3 = s (s = 1, 2, 3) returns
+  `MK(L, dz, smone(s, NW(L), off >> 2, ...))` (`vua_sc.copy_in_ua{s}`,
+  `copy_into_ua{s}`; the aligned case is `vbytes.copy_in_any`), and its first
+  L bytes are the buffer's spec bytes [off, off + L) (`vua_copy.ci_bytes`).
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped

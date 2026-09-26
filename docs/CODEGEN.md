@@ -63,6 +63,7 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/var_bits.py          # bit-list byte facts, generic BitList[N] laws [--no-big]
 /opt/homebrew/bin/python3 codegen/var_bitc.py          # Attestation, PendingAttestation [--no-big]
 /opt/homebrew/bin/python3 codegen/var_win.py           # window laws; AggregateAndProof, SignedAggregateAndProof [--no-big]
+/opt/homebrew/bin/python3 codegen/var_ua.py            # unaligned offsets: word-join limbs, shifted-copy loops (vua_bits, vua_sc)
 /opt/homebrew/bin/python3 codegen/var_bytes.py         # byte lists at any length, and the names nesting them [--no-big]
 /opt/homebrew/bin/python3 codegen/sha_laws.py          # SHA node bridge
 /opt/homebrew/bin/python3 codegen/schema_shapes.py     # schema shape laws
