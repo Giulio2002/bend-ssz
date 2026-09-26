@@ -865,7 +865,7 @@ def scalar_laws(w, n, kind, P):
     return f'+x0: U32{hb}', 'x0' + hba, BY, V
 
 
-UHEAD = ['import Base', 'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P',
+UHEAD = ['import Base', 'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P', 'import ../../src/obj.bend as O',
          'import ../../src/buffer.bend as B', 'import ../../spec/decoding_relation.bend as Decoding',
          'import ./generic_specs.bend as Spec', 'import ../decode_complete.bend as E',
          'import ../type_validator_soundness.bend as VS', 'import ./spec_fixed.bend as SF',
