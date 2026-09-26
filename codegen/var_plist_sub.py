@@ -962,6 +962,47 @@ def encx_text(k):
     return '\n'.join(L) + body
 
 
+# ---- bounded lists of uint16 (List[uint16, N], codec-var's windows var_winx_l<N>_u16) in encx form ---------
+
+L16 = [1024, 128, 123]
+
+
+def l16_kind(N):
+    C1 = f'Nat.is_le(U32.to_nat(N), U32.to_nat({2 * N}))'
+    C2 = 'U32.is_eq(U32.and(N, 1), 0)'
+    C3 = 'W.CHKw(T, 0n, 0, N)'
+    EX = f'Bool.and({C1}, Bool.and({C2}, {C3}))'
+    return dict(EXTRA=EX, OKDOC=f', at most {2 * N} bytes, an even length', CHK=f'FD.logic__and_right({C2}, {C3}, FD.logic__and_right({C1}, Bool.and({C2}, {C3}), ok_ex(dw, T, N, hok)))',
+                VALID=f"""
+def valid(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +h: {{OKT(dw, T, N) == True{{}} : Bool}})
+    -> {{T.l{N}_u16_valid(O.Words{{FD.array__thaw(U32, T), N}}) == (O.Words{{FD.array__thaw(U32, T), N}}, True{{}}) : O.Words & Bool}}:
+  +ex = ok_ex(dw, T, N, h)
+  +hdw = ok_hd(dw, T, N, h)
+  +hN = ok_hN(dw, T, N, h)
+  VBE.words_ok_b(dw, T, N, 0, {2 * N}, VLS.KK(dw), ok_pf(dw, T, N, h), FD.nat__lt_trans(dw, 28n, 31n, hdw, {{==}}), VLS.kk_lt(dw, hdw), VLS.hyn(dw, N, hN),
+    FD.nat__zero_le(U32.to_nat(N)), FD.logic__and_left({C1}, Bool.and({C2}, {C3}), ex), hsrc(dw, N, hdw, hN), ok_tz(dw, T, N, h), 2,
+    FD.logic__and_left({C2}, {C3}, FD.logic__and_right({C1}, Bool.and({C2}, {C3}), ex)))
+""")
+
+
+def l16_fname(N):
+    return ROOT / f'proofs/obj/big_encx_l{N}_u16.bend'
+
+
+def l16_text(N):
+    kd = l16_kind(N)
+    p = f'l{N}_u16'
+    body = ENCX.replace('@PRE', '').replace('@VALID', kd['VALID']).replace('@EXTRA', kd['EXTRA']).replace('@OKDOC', kd['OKDOC']).replace('@CHK', kd['CHK'])
+    body = body.replace('Spec.@X()', f'S.ListOf{{S.Unsigned{{P.U16{{}}}}, {N}n}}').replace('@p_', f'{p}_')
+    assert '@' not in body.replace('&2', ''), [l for l in body.split('\n') if '@' in l.replace('&2', '')][:3]
+    L = generic(VW.HEADX) + ['import ./venc.bend as VE', 'import ./vbenc.bend as VBE', 'import ./vbytes.bend as VYS', 'import ./vua.bend as UA',
+                             'import ./vuw.bend as UWW', 'import ./vuwd.bend as VWD', 'import ../compact/reads.bend as RD',
+                             f'import ./var_winx_{p}.bend as W', '', HDR,
+                             f'# List[uint16, {N}] (T.{p}_*) in the encoder-window interface: the list written at any byte position',
+                             '# X = 4 q + r of a perfect tree D of depth dd < 29 (vuwd.putw_any / putw_any_bytes).', '']
+    return '\n'.join(L) + body
+
+
 # ---- ProgressiveBits at a byte-offset window (var_win's BitList window with no bound) ----------
 
 def cut(text, start, end):
@@ -1069,6 +1110,8 @@ def outputs(no_big):
     if no_big:
         return out
     out[PBITS_FNAME] = pbits_text()
+    for _N in L16:
+        out[l16_fname(_N)] = l16_text(_N)
     out[PLU64_FNAME] = plu64_text()
     for k in DONE:
         X, p = KINDS[k]
@@ -1084,7 +1127,7 @@ def outputs(no_big):
 def main():
     no_big = '--no-big' in sys.argv
     out = outputs(no_big)
-    mine = sorted((ROOT / 'proofs/obj').glob('big_var_winp_*.bend')) + [encx_fname(k) for k in KINDS if encx_fname(k).exists()]
+    mine = sorted((ROOT / 'proofs/obj').glob('big_var_winp_*.bend')) + [encx_fname(k) for k in KINDS if encx_fname(k).exists()] + [l16_fname(N) for N in L16 if l16_fname(N).exists()]
     for X, _ in KINDS.values():
         mine += sorted((ROOT / 'proofs/obj').glob(f'big_var_plist_{X}*.bend'))
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not no_big]
