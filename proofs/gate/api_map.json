@@ -11325,12 +11325,48 @@
      "big": false
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
+   "ok_eval": [
+    {
+     "file": "big_var_codec_Gp8A7851175B.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "big_var_codec_Gp8A7851175B.bend",
+     "law": "decode_accept",
+     "big": true
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "big_var_codec_Gp8A7851175B.bend",
+     "law": "decode_spec",
+     "big": true
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "big_var_codec_Gp8A7851175B_unique.bend",
+     "law": "decode_unique",
+     "big": true
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "big_var_codec_Gp8A7851175B.bend",
+     "law": "decode_reject",
+     "big": true
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "big_var_codec_Gp8A7851175B.bend",
+     "law": "decode_none",
+     "big": true
+    }
+   ],
    "encode_eval": [],
    "encode_spec": [],
    "roundtrip": [],
