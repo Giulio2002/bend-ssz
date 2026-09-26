@@ -407,10 +407,20 @@ def outputs():
     g = G.Gen()
     for n, t in names.items():
         g.shape(t)
-    out = {ROOT / 'proofs/obj/vrl.bend': (ROOT / 'codegen/vrl.bend.in').read_text()}
+    out = {ROOT / 'proofs/obj/vrl.bend': (ROOT / 'codegen/vrl.bend.in').read_text(),
+           ROOT / 'proofs/obj/vrc.bend': (ROOT / 'codegen/vrc.bend.in').read_text()}
     for parent, field in LISTS:
         I = info(g, names, parent, field)
         out[ROOT / f'proofs/obj/var_winx_{I["p"]}.bend'] = list_text(g, names, parent, field)
+    import var_rlist_er as ER
+    LS = []
+    for field in ('deposits', 'withdrawals', 'consolidations'):
+        I = info(g, names, 'ExecutionRequests', field)
+        sch = rec_node(g, I['rt'])[2]
+        LS.append(dict(p=I['p'], RS=I['RS'], LIM=I['LIM'], LSCH=f'S.ListOf{{{sch}, U32.to_nat({I["LIM"]})}}'))
+    L, _ = ER.er_text(HEAD, LS)
+    out[ROOT / 'proofs/obj/var_winx_ExecutionRequests.bend'] = '\n'.join(L) + '\n'
+    out[ROOT / 'proofs/obj/var_codec_ExecutionRequests.bend'] = ER.top_text(HEAD)
     return out
 
 
