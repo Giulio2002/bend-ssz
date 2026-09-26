@@ -28,13 +28,16 @@ For each name X the generator writes
     proofs/obj/var_codec_<X>_unique.bend
         decode_unique  every spec value of an accepted buffer's bytes is VAL.
 
-and proofs/obj/var_fix_types.bend: the reader and writer lemmas of the fixed
-field types at a symbolic word-aligned offset.
+(the _enc file is written by codegen/var_enc.py) and proofs/obj/var_fix_types.bend:
+the reader and writer lemmas of the fixed field types at a symbolic word-aligned
+offset. A name whose list limit is 2^16 or more writes big_var_codec_<X>*.bend
+instead (its limit appears in the laws' types; checked with `checkq --big`);
+with --no-big those files are neither written nor required.
 
 The laws quantify over every buffer B.Buf{thaw(t), n} on a perfect word tree
 t of depth d < 29 with n <= 4 2^d, and over every object whose list storage is
 a perfect tree with room for its words. The generic development is
-proofs/obj/v{spec,buf,u32,depth,copy,enc,fix}.bend.
+proofs/obj/v{spec,buf,u32,depth,copy,enc,enc2,fix,rej}.bend.
 """
 import re
 import sys

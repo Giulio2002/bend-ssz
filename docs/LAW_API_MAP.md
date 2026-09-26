@@ -49,6 +49,38 @@ What that means concretely:
   Not covered: HistoricalBatch, SyncCommittee, Blob, BlobSidecar (packed storage
   beyond 512 words: need loop induction over the array model), Validator (a
   boolean inside an unaligned record), the 21 variable-size names, and all roots.
+* Since 2026-09-26 the spec connection covers **2 of the 21 variable-size names**:
+  the family "word-aligned fixed Data fields around ONE `List[uint64, N]`"
+  (`codegen/var_laws.py`, `codegen/var_enc.py`): DataColumnsByRootIdentifier
+  (`proofs/obj/var_codec_DataColumnsByRootIdentifier{,_unique,_rej,_enc}.bend`,
+  stock) and IndexedAttestation (`proofs/obj/big_var_codec_IndexedAttestation*.bend`,
+  `checkq --big`: its 2^17 list limit appears in the laws' types, which stock
+  Bend overflows on). For every buffer `B.Buf{thaw(t), n}` on a perfect word
+  tree of depth d < 29 with n <= 4 2^d: `ok_eval` (the validator returns
+  `CHK(t, n)`, the Bool of the offset/length checks), `decode_accept` (CHK
+  holds: the decoder returns `Some{OBJ(t, n)}`, an explicit object whose list
+  storage is a copy of the buffer's words), `decode_spec` (then the buffer's
+  bytes are the spec encoding of `VAL(t, n)`), `decode_unique` (every spec
+  value of those bytes is `VAL(t, n)`), `decode_reject` (CHK fails: no spec
+  value is related to the bytes) and `decode_none` (then the decoder returns
+  None); for every object whose list storage is a perfect tree with room for
+  its words: `encode_eval` (the encoder returns the object and an explicit
+  output buffer) and `encode_spec` (whose bytes are the spec encoding of the
+  object's value). The generic development (offsets, U32 division, aligned
+  word copies, the spec layout of fixed parts around one variable part and its
+  inversion) is `proofs/obj/v{spec,buf,u32,depth,copy,enc,enc2,fix,rej}.bend`.
+  Not covered, and why: the 19 other variable-size names need, respectively,
+  bit lists (Attestation, PendingAttestation: the runtime `O.ok_bitlist` /
+  `O.bits_in` delimiter search), byte lists at unaligned lengths
+  (ExecutionPayloadHeader: the masked last word of `O.copy_in`; it is also a
+  grouped container), several variable fields and non-uint64 list elements
+  (DataColumnSidecar: 3 lists of 48/2048-byte elements, a boxed field;
+  ExecutionRequests: lists of records), and variable-size fields that are
+  themselves variable-size containers (AttesterSlashing, AggregateAndProof,
+  SignedAggregateAndProof, LightClient*, BeaconBlockBody, BeaconBlock,
+  SignedBeaconBlock, ExecutionPayload, BeaconState): the decoder laws above are
+  stated at buffer offset 0 and would have to be restated for a window at a
+  symbolic offset to compose.
 * Root equality (updated 2026-09-24, Linux host; see WORK_LOG "Iteration 23"):
   laws exist for 108 of the 109 Fulu names, for the ACTUAL public root
   `T.<Name>_hash_tree_root(h, o)`, against the independent relational
