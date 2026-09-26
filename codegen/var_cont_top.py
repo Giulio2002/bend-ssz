@@ -662,7 +662,7 @@ def validx(m, hok):
 # interface alone: the size pass is CI.sizex, its value CI.szx, the bound CI.bndx, the writer at X = 0 of
 # a zero tree CI.putx / putx_bytes, the spec CI.encx_spec.
 
-GTOPS = ['Gp4B0CA2906A', 'Gp66304057C3', 'Gp8A7851175B', 'Gc465214E502', 'Gc221EC01D83']
+GTOPS = ['Gp4B0CA2906A', 'Gp66304057C3', 'Gp8A7851175B', 'Gc465214E502', 'Gc221EC01D83', 'Gc85FA758A04']
 
 
 def gtop_text(C):
@@ -672,6 +672,18 @@ def gtop_text(C):
     TH = 'CI.TH(m)'
     S = 'CI.SZ(m)'
     Dd = f'VL.DO({S})'
+    # a fixed-depth encoder (the runtime's buffer is O.out_at(d), its size masked): the bytes' bound CI.maxx
+    src = (ROOT / 'types/generic_obj.bend').read_text()
+    em = re.search(rf'^def {C}_encode\(o: {C}\) -> {C} & B\.Buf: {C}_enc_put\({C}_putn\(O\.out_at\((\d+)n\), 0, o\)\)$', src, re.M)
+    fixd = None
+    if em:
+        fixd = int(em.group(1))
+        mx = re.search(r'^law maxx:\n.*\n.*\n  \{Nat\.is_le\(List\.length\(&2, U32, ENC\(m\)\), (\d+)n\)', txt, re.M)
+        assert mx, f'{C}: a fixed-depth encoder needs its interface\'s maxx'
+        MX = int(mx.group(1))
+        assert MX <= 4 * 2 ** fixd, (C, MX, fixd)
+        kb = MX.bit_length()
+        Dd = f'{fixd}n'
     L = 'List.length(&2, U32, CI.ENC(m))'
     OUT = f'OUTE(m)'
     RTT = f'Array<U32> & (T.{C} & U32)'
@@ -706,7 +718,7 @@ def room(+m: CI.MW, +hok: {{CI.OK(m) == {TRUE}}}, +k: Nat, +ek: {{k == 28n : Nat
   +hz = FD.logic__subst(+List<U32>, z => {{VS.bt(M, VS.bdr(Nat.add(A.quad(0n), 0n), z)) == UW.ZB(M) : +List<U32>}}, UW.ZB(A.quad(VB.pw({Dd}))), UA.BYT(VC.ZT({Dd})),
     Equal.sym(+List<U32>, UA.BYT(VC.ZT({Dd})), UW.ZB(A.quad(VB.pw({Dd}))), UWB.zt_bytes({Dd})), VE2.bt_zb_le(M, A.quad(VB.pw({Dd})), hm))
   mk3(m, hd, hl, hz)
-
+@ROOMF
 def RT0(+m: CI.MW) -> Data: {{T.{C}_putk(FD.array__thaw(U32, VC.ZT({Dd})), 0, {TH}) == (FD.array__thaw(U32, {OUT}), ({TH}, {S})) : {RTT}}}
 
 def rt0(+m: CI.MW, +hok: {{CI.OK(m) == {TRUE}}}, +g: DK.P2(HD(m), DK.P2(HL(m), HZ(m)))) -> RT0(m):
@@ -723,6 +735,7 @@ def by0(+m: CI.MW, +hok: {{CI.OK(m) == {TRUE}}}, +g: DK.P2(HD(m), DK.P2(HL(m), H
   +hz = CI.PB(HL(m), HZ(m), CI.PB(HD(m), DK.P2(HL(m), HZ(m)), g))
   CI.putx_bytes(m, {Dd}, VC.ZT({Dd}), 0, 0n, 0n, {{==}}, {{==}}, hd, FD.array__trep_perfect(U32, {Dd}, 0), hl, hz, hok)
 
+@EVALF
 def eval_go(+m: CI.MW, +hok: {{CI.OK(m) == {TRUE}}})
     -> {{T.{C}_encode({TH}) == ({TH}, B.Buf{{FD.array__thaw(U32, {OUT}), {S}}}) : T.{C} & B.Buf}}:
   +rt = rt0(m, hok, room(m, hok, 28n, {{==}}))
@@ -766,6 +779,53 @@ def encode_spec(m, hok):
     {{Some{{CI.ENC(m)}} == Some{{_}} : Maybe<&2, +List<U32>>}}
   {{==}}
 """
+    if fixd is None:
+        body = body.replace('@ROOMF\n', '\n').replace('@EVALF\n', '')
+    else:
+        L_ = L
+        roomf = f'''
+# the fixed depth {fixd}: the bytes within its {4 * 2 ** fixd} (CI.maxx: at most {MX})
+def roomf(+m: CI.MW, +hok: {{CI.OK(m) == {TRUE}}}) -> DK.P2(HD(m), DK.P2(HL(m), HZ(m))):
+  +hq = FD.nat__le_trans({L_}, {MX}n, A.quad(VB.pw({Dd})), CI.maxx(m, hok), {{==}})
+  +hl = VRX.nwn_le({L_}, VB.pw({Dd}), hq)
+  +M = Nat.add({L_}, WD.PADB(0n, {L_}))
+  +hm = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw({Dd}))) == {TRUE}}}, A.quad(WD.NWN({L_})), M, Equal.sym(Nat, M, A.quad(WD.NWN({L_})), VCN.padb_id(0n, {L_})),
+    VCN.VME4(WD.NWN({L_}), VB.pw({Dd}), hl))
+  +hz = FD.logic__subst(+List<U32>, z => {{VS.bt(M, VS.bdr(Nat.add(A.quad(0n), 0n), z)) == UW.ZB(M) : +List<U32>}}, UW.ZB(A.quad(VB.pw({Dd}))), UA.BYT(VC.ZT({Dd})),
+    Equal.sym(+List<U32>, UA.BYT(VC.ZT({Dd})), UW.ZB(A.quad(VB.pw({Dd}))), UWB.zt_bytes({Dd})), VE2.bt_zb_le(M, A.quad(VB.pw({Dd})), hm))
+  mk3(m, {{==}}, hl, hz)
+'''
+        OUTB = f'B.Buf{{FD.array__thaw(U32, {OUT}), {S}}}'
+        evalf = f'''
+# the size under the mask 0x7fffffff: below 2^{kb} (CI.szx, CI.maxx)
+def a31(+m: CI.MW, +hok: {{CI.OK(m) == {TRUE}}}) -> {{U32.and({S}, 2147483647) == {S} : U32}}:
+  +hs = FD.logic__subst(Nat, z => {{Nat.is_le(z, {MX}n) == {TRUE}}}, {L_}, U32.to_nat({S}), Equal.sym(Nat, U32.to_nat({S}), {L_}, CI.szx(m, hok)), CI.maxx(m, hok))
+  VBE.and31({S}, {kb}n, {{==}}, FD.nat__le_lt_trans(U32.to_nat({S}), {MX}n, FD.spec_common__pow2({kb}n), hs, {{==}}))
+
+def eval_go(+m: CI.MW, +hok: {{CI.OK(m) == {TRUE}}})
+    -> {{T.{C}_encode({TH}) == ({TH}, {OUTB}) : T.{C} & B.Buf}}:
+  +rt = rt0(m, hok, roomf(m, hok))
+  %Equal.sym(Array<U32>, Array.new(U32, {Dd}, 0), FD.array__thaw(U32, VC.ZT({Dd})), FD.array__new(U32, {Dd}, 0)) :
+    {{T.{C}_enc_put(T.{C}_putn(_, 0, {TH})) == ({TH}, {OUTB}) : T.{C} & B.Buf}}
+  %Equal.sym({RTT}, T.{C}_putk(FD.array__thaw(U32, VC.ZT({Dd})), 0, {TH}), (FD.array__thaw(U32, {OUT}), ({TH}, {S})), rt) :
+    {{T.{C}_enc_put(_) == ({TH}, {OUTB}) : T.{C} & B.Buf}}
+  %Equal.sym(U32, U32.and({S}, 2147483647), {S}, a31(m, hok)) :
+    {{({TH}, B.Buf{{FD.array__thaw(U32, {OUT}), _}}) == ({TH}, {OUTB}) : T.{C} & B.Buf}}
+  {{==}}
+
+def eval_go_sized(+m: CI.MW, +hok: {{CI.OK(m) == {TRUE}}})
+'''
+        body = body.replace('@ROOMF\n', roomf + '\n')
+        # the size-depth room (bndx, 2^28) is not used at a fixed depth
+        j0 = body.index("# the writer's hypotheses at X = 0")
+        j1 = body.index('\n# the fixed depth')
+        body = body[:j0] + body[j1 + 1:].replace('@EVALF\n', evalf)
+        # the fixed encoder has no size pass: its eval is eval_go above; the sized one is dropped
+        i0 = body.index('def eval_go_sized(')
+        i1 = body.index('# The output\'s first bytes')
+        body = body[:i0] + body[i1:]
+        body = body.replace('room(m, hok, 28n, {==})', 'roomf(m, hok)')
+        imps = imps + ['import ./vbenc.bend as VBE']
     hs = imps + HEADX + [f'import ./big_encx_{C}_iface.bend as CI', '', '# GENERATED by codegen/var_cont_top.py. Do not edit.',
                          f'# {C}: the encoder laws at X = 0, from its encoder window\'s interface (see the generator: gtop_text).', '']
     return '\n'.join(hs) + '\n' + body
