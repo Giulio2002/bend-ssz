@@ -826,7 +826,7 @@ def main():
         out[fname(x)] = dec_text(g, x) + spec_text(g, x)
         out[fname(x, '_unique')] = unique_text(x)
         out[fname(x, '_rej')] = rej_text(g, x)
-    mine = [q for q in (ROOT / 'proofs/obj').glob('*var_bitc_*.bend') if q.name.startswith(('var_bitc_', 'big_var_bitc_'))]
+    mine = [q for q in (ROOT / 'proofs/obj').glob('*var_bitc_*.bend') if q.name.startswith(('var_bitc_', 'big_var_bitc_')) and not q.name.startswith(('var_bitc_enc_', 'big_var_bitc_enc_'))]
     orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out and not (no_big and q.name.startswith('big_')))
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t] + orphans
