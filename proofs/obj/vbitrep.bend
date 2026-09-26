@@ -4,7 +4,7 @@ import ../../types/schema.bend as S
 import ../../spec/primitives.bend as SP
 import ../compact/found.bend as F
 import ./bitlist_pack.bend as BK
-import ./bitlist_obj.bend as BO
+import ./bitlist_rep.bend as BO
 import ./words_spec.bend as WS
 import ./vbuf.bend as VB
 import ./vbitenc.bend as VBT

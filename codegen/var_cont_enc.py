@@ -71,12 +71,100 @@ def rec_ft(n):
 
 
 # the packed byte vectors of fixed size written like the fixwords (codegen/var_uwv.py's FWORDS: vuwv_<p>)
-FIXW_PACKED = ('v4_b32', 'v6_b32', 'v7_b32')
+FIXW_PACKED = ('v4_b32', 'v6_b32', 'v7_b32', 'v8192_b32', 'v65536_b32', 'v8192_u64', 'v64_u64')
 
 
 def is_fixw(fs):
     return fs.fixed and (fs.kind == 'fixwords' or (fs.kind == 'packed' and fs.p in FIXW_PACKED))
 
+
+# ---- FixW: the fixed non-Data fields written by a checked writer T.<p>_putk returning size 0 ----------------
+# (the fixwords / packed word vectors, SyncCommittee, a boxed fixed record); the rt_* put step and putx_text's
+# fixw branch read these fields.
+
+class FixW:
+    def __init__(self, f, fs):
+        self.f, self.fs, self.p = f, fs, fs.p
+        self.text = ''
+        if fs.kind == 'container' and fs.p == 'SyncCommittee':
+            ws = [f'{f}_a{j}' for j in range(12)]
+            A_ = ', '.join(ws)
+            a = 'V_SyncCommittee'
+            self.mod = f'import ./vuwv_SyncCommittee.bend as {a}'
+            self.params = [f'+dB_{f}: Nat', f'+TB_{f}: {TR}'] + [f'+{w}: U32' for w in ws]
+            self.oargs = [f'dB_{f}', f'TB_{f}'] + ws
+            self.hyps = [f'+pfB_{f}: {{FD.array__perfect(U32, dB_{f}, TB_{f}) == {TRUE}}}', f'+hdB_{f}: {{Nat.is_lt(dB_{f}, 31n) == {TRUE}}}',
+                         f'+hrB_{f}: {{Nat.is_le(6144n, VB.pw(dB_{f})) == {TRUE}}}']
+            self.hargs = [f'pfB_{f}', f'hdB_{f}', f'hrB_{f}']
+            self.obj = f'T.SyncCommittee{{O.Words{{FD.array__thaw(U32, TB_{f}), 24576}}, T.Bytes48{{{A_}}}}}'
+            self.vt = 'T.SyncCommittee'
+            self.model = lambda r, D, q: f'{a}.PX_SyncCommittee({r}, dd, {D}, {q}, TB_{f}, {A_})'
+            self.pf = lambda r, D, q, pf: f'{a}.SyncCommitteex_perfect({r}, dd, {D}, {q}, TB_{f}, {A_}, {pf})'
+            args = lambda D, X, q, r, e, hr, hl, pf, hz: f'dd, {D}, {X}, {q}, {r}, dB_{f}, TB_{f}, {A_}, {e}, {hr}, hd, {hl}, {pf}, pfB_{f}, hdB_{f}, hrB_{f}, {hz}'  # noqa: E731
+            self.rt = lambda *x: f'{a}.SyncCommittee_any({args(*x)})'
+            self.by = lambda *x: f'{a}.SyncCommittee_any_bytes({args(*x)})'
+            self.Y = f'List.append(&2, U32, VS.bt(U32.to_nat(24576), FX.limbs(UW.SLW(TB_{f}))), FX.limbs([{A_}]))'
+            self.hY = f'{a}.SyncCommittee_len(dB_{f}, TB_{f}, {A_}, pfB_{f}, hrB_{f})'
+        elif fs.kind == 'box' and rec_ft(fs.p[:-3]) is not None:
+            R = fs.p[:-3]
+            ft = rec_ft(R)
+            ws = [f'{f}_w{j}' for j in range(ft.W)]
+            W = ', '.join(ws)
+            v = ft.obj(ws)
+            self.mod = 'import ./encx_recs.bend as ER'
+            self.params = [f'+{w}: U32' for w in ws]
+            self.oargs = ws
+            self.hyps, self.hargs = [], []
+            self.obj = f'O.BSome{{{v}, O.BNone{{}}}}'
+            self.vt = f'O.Boxed<T.{R}>'
+            self.model = lambda r, D, q: f'ER.PX_{R}({W}, dd, {D}, {q}, {r})'
+            self.pf = lambda r, D, q, pf: f'ER.pf_{R}({W}, dd, {D}, {q}, {r}, {pf})'
+            args = lambda D, X, q, r, e, hr, hl, pf, hz: f'{W}, dd, {D}, {X}, {q}, {r}, {e}, {hr}, hd, {hl}, {pf}, {hz}'  # noqa: E731
+            self.rt = lambda *x: f'bxrt_{f}({args(*x)})'
+            self.by = lambda *x: f'PB(ER.RT_{R}({W}, dd, {x[0]}, {x[1]}, {x[2]}, {x[3]}), ER.BY_{R}({W}, dd, {x[0]}, {x[2]}, {x[3]}), ER.putx_{R}({args(*x)}))'
+            self.Y = f'FX.limbs([{W}])'
+            self.hY = '{==}'
+            X0 = 'Nat.add(A.quad(q), r)'
+            TY = f'Array<U32> & ({self.vt} & U32)'
+            self.text = f'''
+# ---- {f}: the boxed {R}, its runtime writer T.{fs.p}_putk (encx_recs.putx_{R}; its check is True) ----
+def bxrt_{f}({", ".join(self.params)}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
+    +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}}, +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}},
+    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, {4 * ft.W}n))), VB.pw(dd)) == {TRUE}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}},
+    +hz: {{VS.bt({4 * ft.W}n, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({4 * ft.W}n) : +List<U32>}})
+    -> {{T.{fs.p}_putk(FD.array__thaw(U32, D), X, {self.obj}) == (FD.array__thaw(U32, ER.PX_{R}({W}, dd, D, q, r)), ({self.obj}, 0)) : {TY}}}:
+  +g = ER.putx_{R}({W}, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+  +rt = PA(ER.RT_{R}({W}, dd, D, X, q, r), ER.BY_{R}({W}, dd, D, q, r), g)
+  Equal.cong(Array<U32>, {TY}, z => (z, ({self.obj}, 0)), T.{R}_put(FD.array__thaw(U32, D), X, {v}), FD.array__thaw(U32, ER.PX_{R}({W}, dd, D, q, r)), rt)
+'''
+        else:
+            nW = fs.fsize // 4
+            a = f'V_{fs.p}'
+            self.mod = f'import ./vuwv_{fs.p}.bend as {a}'
+            self.params = [f'+dB_{f}: Nat', f'+TB_{f}: {TR}']
+            self.oargs = [f'dB_{f}', f'TB_{f}']
+            self.hyps = [f'+pfB_{f}: {{FD.array__perfect(U32, dB_{f}, TB_{f}) == {TRUE}}}', f'+hdB_{f}: {{Nat.is_lt(dB_{f}, 31n) == {TRUE}}}',
+                         f'+hrB_{f}: {{Nat.is_le({nW}n, VB.pw(dB_{f})) == {TRUE}}}']
+            self.hargs = [f'pfB_{f}', f'hdB_{f}', f'hrB_{f}']
+            self.obj = f'O.Words{{FD.array__thaw(U32, TB_{f}), {fs.fsize}}}'
+            self.vt = 'O.Words'
+            self.model = lambda r, D, q: f'{a}.PX_{fs.p}({r}, dd, {D}, {q}, TB_{f})'
+            self.pf = lambda r, D, q, pf: f'{a}.{fs.p}x_perfect({r}, dd, {D}, {q}, TB_{f}, {pf})'
+            args = lambda D, X, q, r, e, hr, hl, pf, hz: f'dd, {D}, {X}, {q}, {r}, dB_{f}, TB_{f}, {e}, {hr}, hd, {hl}, {pf}, pfB_{f}, hdB_{f}, hrB_{f}, {hz}'  # noqa: E731
+            self.rt = lambda *x: f'{a}.{fs.p}_any({args(*x)})'
+            self.by = lambda *x: f'{a}.{fs.p}_any_bytes({args(*x)})'
+            self.Y = f'FX.limbs(VS.wtake({nW}n, UW.SLW(TB_{f})))'
+            h64 = (f'FD.logic__subst(Nat, zz => {{Nat.is_le({nW}n, zz) == {TRUE}}}, VB.pw(dB_{f}), List.length(&2, U32, UW.SLW(TB_{f})), '
+                   f'Equal.sym(Nat, List.length(&2, U32, UW.SLW(TB_{f})), VB.pw(dB_{f}), Equal.trans(Nat, List.length(&2, U32, UW.SLW(TB_{f})), '
+                   f'FD.spec_common__length(U32, UW.SLW(TB_{f})), VB.pw(dB_{f}), VMR.len_eq(UW.SLW(TB_{f})), FD.array__slots_length(U32, dB_{f}, TB_{f}, pfB_{f}))), hrB_{f})')
+            self.hY = f'VCN.len_wt({nW}n, UW.SLW(TB_{f}), {h64})'
+        self.rtype = f'Array<U32> & ({self.vt} & U32)'
+
+
+def is_fixw_ext(fs):
+    """is_fixw, and the fixed non-Data fields with a FixW entry: SyncCommittee, a boxed record of var_rec_enc."""
+    return is_fixw(fs) or (fs.fixed and not fs.data and ((fs.kind == 'container' and fs.p == 'SyncCommittee')
+                                                        or (fs.kind == 'box' and fs.p.endswith('_bx') and rec_ft(fs.p[:-3]) is not None)))
 
 def leaf_of(fs):
     if fs.kind in ('u8', 'u16'):
@@ -369,8 +457,8 @@ class Cont:
             if fs.fixed and fs.data:
                 lf = leaf_of(fs)
                 self.leaves.setdefault(lf.p, lf)
-            elif is_fixw(fs):
-                self.fixw[f] = fs
+            elif is_fixw_ext(fs):
+                self.fixw[f] = FixW(f, fs)
             elif not fs.fixed:
                 self.children[f] = Child(f, fs)
             else:
@@ -390,14 +478,13 @@ def generate_cont(g, names, C):
             OP.append(f'+{f}: {leaf_of(fs).ctor}')
             OA.append(f)
             OBJF[f] = f
-        elif is_fixw(fs):
-            nW = fs.fsize // 4
-            OP += [f'+dB_{f}: Nat', f'+TB_{f}: {TR}']
-            OA += [f'dB_{f}', f'TB_{f}']
-            HP += [f'+pfB_{f}: {{FD.array__perfect(U32, dB_{f}, TB_{f}) == {TRUE}}}', f'+hdB_{f}: {{Nat.is_lt(dB_{f}, 31n) == {TRUE}}}',
-                   f'+hrB_{f}: {{Nat.is_le({nW}n, VB.pw(dB_{f})) == {TRUE}}}']
-            HA += [f'pfB_{f}', f'hdB_{f}', f'hrB_{f}']
-            OBJF[f] = f'O.Words{{FD.array__thaw(U32, TB_{f}), {fs.fsize}}}'
+        elif f in K.fixw:
+            fw = K.fixw[f]
+            OP += fw.params
+            OA += fw.oargs
+            HP += fw.hyps
+            HA += fw.hargs
+            OBJF[f] = fw.obj
         else:
             ch = K.children[f]
             OP += ch.params
@@ -498,6 +585,9 @@ def generate_cont(g, names, C):
     for lf in K.leaves.values():
         if not lf.sub:
             w(leaf_text(lf))
+    for fw in K.fixw.values():
+        if fw.text:
+            w(fw.text)
     w(f'''
 # ---- {C}: the object, its bytes and byte count ----
 def OBJC({OPS}) -> T.{C}: {OBJ}
@@ -529,7 +619,7 @@ def szpz({OPS}, +hpz: {{{K.pz} == {TRUE}}}) -> {{SZC({OAS}) == {core} : U32}}:
             mdl = f'PXo_{lf.p}({f}, dd, {prev}, Nat.add({kw}n, q), r)'
         elif ev['kind'] == 'fixw':
             kw = ev['hoff'] // 4
-            mdl = f'V_{fs.p}.PX_{fs.p}(r, dd, {prev}, Nat.add({kw}n, q), TB_{f})'
+            mdl = K.fixw[f].model('r', prev, f'Nat.add({kw}n, q)')
         elif ev['kind'] == 'off':
             kw = ev['hoff'] // 4
             mdl = f'WD.W32X(r, dd, {prev}, Nat.add({kw}n, q), {ev["cur"]})'
@@ -581,7 +671,7 @@ def putv_{f}({', '.join(ch.params)}, +D: {TR}, +D1: {TR}, +D2: {TR}, +X: U32, +h
             return f'T.{leaf_of(fs).p}_put({TH(k)}, U32.add(X, {ev["hoff"]}), {f})', TH(k + 1), 'Array<U32>'
         if ev['kind'] == 'fixw':
             o = OBJF[f]
-            return f'T.{fs.p}_putk({TH(k)}, U32.add(X, {ev["hoff"]}), {o})', f'({TH(k + 1)}, ({o}, 0))', 'Array<U32> & (O.Words & U32)'
+            return f'T.{fs.p}_putk({TH(k)}, U32.add(X, {ev["hoff"]}), {o})', f'({TH(k + 1)}, ({o}, 0))', K.fixw[f].rtype
         if ev['kind'] == 'off':
             return f'O.w32({TH(k)}, U32.add(X, {ev["hoff"]}), {ev["cur"]})', TH(k + 1), 'Array<U32>'
         ch = K.children[f]
@@ -654,7 +744,7 @@ def putv_{f}({', '.join(ch.params)}, +D: {TR}, +D1: {TR}, +D2: {TR}, +X: U32, +h
                 o = OBJF[f]
                 lhs = f'T.{fs.p}_putk({TH(kk)}, U32.add(X, {hoff[i]}), {o})'
                 rhs = f'({TH(kk + 1)}, ({o}, 0))'
-                steps.append((ctx, lhs, rhs, 'Array<U32> & (O.Words & U32)', f'f{kk}', f'{pw}({", ".join(args)}, {rhs})'))
+                steps.append((ctx, lhs, rhs, K.fixw[f].rtype, f'f{kk}', f'{pw}({", ".join(args)}, {rhs})'))
                 cur = f'({cur} .|. 0 : U32)'
                 kk += 1
         if K.pz is not None and psteps:
@@ -835,17 +925,13 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
                 piece = f'VCN.PC({size}n, {Y})'
                 reg = 'reg_putc0'
             elif kind == 'fixw':
-                M = f'V_{fs.p}'
-                args = f'dd, {Mk(k)}, {Xc}, {qk}, r, dB_{f}, TB_{f}, ep{k}, hr, hd, hl{k}, pf{k}, pfB_{f}, hdB_{f}, hrB_{f}, hz{k}'
-                a(f'+rt{k} = {M}.{fs.p}_any({args})')
-                a(f'+by{k} = {M}.{fs.p}_any_bytes({args})')
-                nW = fs.fsize // 4
-                Y = f'FX.limbs(VS.wtake({nW}n, UW.SLW(TB_{f})))'
-                h64 = (f'FD.logic__subst(Nat, zz => {{Nat.is_le({nW}n, zz) == {TRUE}}}, VB.pw(dB_{f}), List.length(&2, U32, UW.SLW(TB_{f})), '
-                       f'Equal.sym(Nat, List.length(&2, U32, UW.SLW(TB_{f})), VB.pw(dB_{f}), Equal.trans(Nat, List.length(&2, U32, UW.SLW(TB_{f})), '
-                       f'FD.spec_common__length(U32, UW.SLW(TB_{f})), VB.pw(dB_{f}), VMR.len_eq(UW.SLW(TB_{f})), FD.array__slots_length(U32, dB_{f}, TB_{f}, pfB_{f}))), hrB_{f})')
-                hY = f'VCN.len_wt({nW}n, UW.SLW(TB_{f}), {h64})'
-                a(f'+pf{k + 1} = {M}.{fs.p}x_perfect(r, dd, {Mk(k)}, {qk}, TB_{f}, pf{k})')
+                fw = K.fixw[f]
+                xs = (Mk(k), Xc, qk, 'r', f'ep{k}', 'hr', f'hl{k}', f'pf{k}', f'hz{k}')
+                a(f'+rt{k} = {fw.rt(*xs)}')
+                a(f'+by{k} = {fw.by(*xs)}')
+                Y = fw.Y
+                hY = fw.hY
+                a(f'+pf{k + 1} = {fw.pf("r", Mk(k), qk, f"pf{k}")}')
                 piece = f'VCN.PC({size}n, {Y})'
                 reg = 'reg_putc0'
             else:
@@ -1426,7 +1512,7 @@ def domx(m, hok):
         elif ev['kind'] == 'leaf':
             pfs = f'K.pfo_{leaf_of(fs).p}({f}, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), r, {pfs})'
         elif ev['kind'] == 'fixw':
-            pfs = f'V_{fs.p}.{fs.p}x_perfect(r, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), TB_{f}, {pfs})'
+            pfs = K.fixw[f].pf('r', Mk(k), f'Nat.add({ev["hoff"] // 4}n, q)', pfs)
         elif ev['kind'] == 'off':
             pfs = f'WD.w32x_perfect(r, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), {ev["cur"]}, {pfs})'
         else:
@@ -1649,10 +1735,9 @@ def full_text(C, generic=False):
     for lf in K.leaves.values():
         if lf.mod and lf.mod not in mods:
             mods.append(lf.mod)
-    for f, fs in K.fixw.items():
-        m = f'import ./vuwv_{fs.p}.bend as V_{fs.p}'
-        if m not in mods:
-            mods.append(m)
+    for f, fw in K.fixw.items():
+        if fw.mod not in mods:
+            mods.append(fw.mod)
     for ch in K.children.values():
         if ch.mod not in mods:
             mods.append(ch.mod)
