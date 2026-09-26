@@ -417,6 +417,31 @@ def copy_in_any(d, t, n, off, i, L, dz, k, pf, hd, hdz, ez, h3, ei, hs, hr, hk, 
     {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, MK(L, dz, VB.mone(VC.NW(L), i, 0n, dz, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
   ci_any(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy, U32.is_eq(L, 0), {==})
 
+# The same copy into a given zero array (a fixed-size field's Array.new at a literal depth).
+law copy_into_any:
+  for +d: Nat
+  for +t: F.array__Tree<U32>
+  for +n: U32
+  for +off: U32
+  for +i: Nat
+  for +L: U32
+  for +dz: Nat
+  for +k: Nat
+  for +pf: {F.array__perfect(U32, d, t) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
+  for +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}
+  for +h3: {U32.and(off, 3) == 0 : U32}
+  for +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}
+  for +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}
+  for +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}
+  for +hk: {Nat.is_lt(k, 31n) == True{} : Bool}
+  for +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool}
+  {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, Array.new(U32, dz, 0)) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, MK(L, dz, VB.mone(VC.NW(L), i, 0n, dz, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+def copy_into_any(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy):
+  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
+    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, MK(L, dz, VB.mone(VC.NW(L), i, 0n, dz, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+  ci_any(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy, U32.is_eq(L, 0), {==})
+
 # ---- room -------------------------------------------------------------------------------------
 
 # 4 ((y >> 2)) <= y
