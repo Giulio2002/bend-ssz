@@ -240,6 +240,17 @@ def szx(m, hok):
   match m:
     case MW{+A_deposits, +N_deposits, +A_withdrawals, +N_withdrawals, +A_consolidations, +N_consolidations}: Equal.trans(Nat, U32.to_nat(K.SZC(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations)), ENDC(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations), List.length(&2, U32, K.ENCC(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations)), szC(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations, hok, 28n, {==}), Equal.sym(Nat, List.length(&2, U32, K.ENCC(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations)), ENDC(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations), lenE(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations, hok)))
 
+# The bytes within 4 2^k (k = 28, kept symbolic).
+law bndx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  for +k: Nat
+  for +ek: {k == 28n : Nat}
+  {Nat.is_le(List.length(&2, U32, ENC(m)), A.quad(VB.pw(k))) == True{} : Bool}
+def bndx(m, hok, k, ek):
+  match m:
+    case MW{+A_deposits, +N_deposits, +A_withdrawals, +N_withdrawals, +A_consolidations, +N_consolidations}: FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(k))) == True{} : Bool}, ENDC(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations), List.length(&2, U32, K.ENCC(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations)), ENDC(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations), lenE(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations, hok)), okbk(A_deposits, N_deposits, A_withdrawals, N_withdrawals, A_consolidations, N_consolidations, hok, k, ek))
+
 law encx_spec:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}

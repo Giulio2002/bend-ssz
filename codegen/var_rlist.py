@@ -125,7 +125,11 @@ def RX(+t: {TR}, +y: Nat) -> T.{R}: {obj}
 
 # its spec value, and that value's parts: the limbs of those words
 def RVAL(+t: {TR}, +y: Nat) -> S.Value: {val}
+# (RVAL unfolded by a rewrite: comparing parts(RVAL(t, y), s) with parts(<its body>, s) evaluates the parts)
+def RVQ(+t: {TR}, +y: Nat) -> {{{val} == RVAL(t, y) : S.Value}}:
+  {{==}}
 def RPRF(+t: {TR}, +y: Nat) -> {{Codec.parts(RVAL(t, y), {sch}) == Some{{[S.Fixed{{F.limbs(UR.RWS({W}n, t, y))}}]}} : Maybe<&2, +List<S.Part>>}}:
+  %RVQ(t, y) : {{Codec.parts(_, {sch}) == Some{{[S.Fixed{{F.limbs(UR.RWS({W}n, t, y))}}]}} : Maybe<&2, +List<S.Part>>}}
   {proof}
 
 # the records j, j + 1, ..., j + k written into a record tree D
@@ -244,6 +248,9 @@ def RITEMS(c: Nat, +t: {TR}, +y: Nat) -> S.Value:
     case 0n: S.EmptyItems{{}}
     case 1n+q: S.Items{{RVAL(t, y), RITEMS(q, t, Nat.add({RS}n, y))}}
 
+def RIT1(+q: Nat, +t: {TR}, +y: Nat) -> {{S.Items{{RVAL(t, y), RITEMS(q, t, Nat.add({RS}n, y))}} == RITEMS(1n+q, t, y) : S.Value}}:
+  {{==}}
+
 def CHUNKS(c: Nat, +t: {TR}, +y: Nat) -> +List<+List<U32>>:
   match c:
     case 0n: []
@@ -268,7 +275,8 @@ def prt_items(c, t, y):
   match c:
     case 0n: {{==}}
     case 1n+ +q:
-      F.cat_fixed(Codec.parts(RVAL(t, y), {sch}), F.limbs(UR.RWS({W}n, t, y)), Codec.parts(RITEMS(q, t, Nat.add({RS}n, y)), S.Repeat{{{sch}}}),
+      %RIT1(q, t, y) : {{Codec.parts(_, S.Repeat{{{sch}}}) == Some{{F.fparts(CHUNKS(1n+q, t, y))}} : Maybe<&2, +List<S.Part>>}}
+      F.items_rep(RVAL(t, y), RITEMS(q, t, Nat.add({RS}n, y)), {sch}, F.limbs(UR.RWS({W}n, t, y)),
         F.fparts(CHUNKS(q, t, Nat.add({RS}n, y))), RPRF(t, y), prt_items(q, t, Nat.add({RS}n, y)))
 
 law flat_chunks:
@@ -451,7 +459,11 @@ def outputs():
            ROOT / 'proofs/obj/vrc.bend': (ROOT / 'codegen/vrc.bend.in').read_text()}
     for parent, field in LISTS:
         I = info(g, names, parent, field)
+        VLW.SL.HOIST = True   # nested fixed records' proofs as lemmas over their words (spec_laws.HOIST)
+        VLW.SL.hoist_take()
         txt = list_text(g, names, parent, field)
+        VLW.SL.HOIST = False
+        txt = txt.replace('\ndef RX(', '\n' + VLW.SL.hoist_take() + 'def RX(', 1)
         if I['LIM'] > BIG_LIM:
             txt = sym_depth(txt, I['RS'], I['KL'])
         out[ROOT / f'proofs/obj/{winx_name(I["p"], I["LIM"])}'] = txt
@@ -459,8 +471,13 @@ def outputs():
     out[ROOT / 'proofs/obj/vua_fixb.bend'] = BX.fixb_module(g, [dict(names[pa].fields)[f].elem for pa, f in BOXLISTS])
     for parent, field in BOXLISTS:
         I = info(g, names, parent, field)
+        VLW.SL.HOIST = True
+        VLW.SL.hoist_take()
         rec, needs_d = BX.list_rec(g, I['rt'])
-        out[ROOT / f'proofs/obj/var_winx_{I["p"]}.bend'] = BX.post_box(list_text(g, names, parent, field, rec), I['p'], I['R'], I['RS'], needs_d)
+        VLW.SL.HOIST = False
+        hz = VLW.SL.hoist_take()
+        txt = list_text(g, names, parent, field, rec).replace('\ndef RX(', '\n' + hz + 'def RX(', 1)
+        out[ROOT / f'proofs/obj/var_winx_{I["p"]}.bend'] = BX.post_box(txt, I['p'], I['R'], I['RS'], needs_d)
     import var_rlist_bv as BV
     import var_win as VWN
     for parent, field in BVLISTS:

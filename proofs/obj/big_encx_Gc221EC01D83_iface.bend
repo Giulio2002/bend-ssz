@@ -247,6 +247,17 @@ def szx(m, hok):
   match m:
     case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: Equal.trans(Nat, U32.to_nat(K.SZC(m_f_A, m_f_B, m_f_C, m_f_D)), ENDC(m_f_A, m_f_B, m_f_C, m_f_D), List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), szC(m_f_A, m_f_B, m_f_C, m_f_D, hok, 28n, {==}), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), ENDC(m_f_A, m_f_B, m_f_C, m_f_D), lenE(m_f_A, m_f_B, m_f_C, m_f_D, hok)))
 
+# The bytes within 4 2^k (k = 28, kept symbolic).
+law bndx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  for +k: Nat
+  for +ek: {k == 28n : Nat}
+  {Nat.is_le(List.length(&2, U32, ENC(m)), A.quad(VB.pw(k))) == True{} : Bool}
+def bndx(m, hok, k, ek):
+  match m:
+    case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(k))) == True{} : Bool}, ENDC(m_f_A, m_f_B, m_f_C, m_f_D), List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), ENDC(m_f_A, m_f_B, m_f_C, m_f_D), lenE(m_f_A, m_f_B, m_f_C, m_f_D, hok)), okbk(m_f_A, m_f_B, m_f_C, m_f_D, hok, k, ek))
+
 law encx_spec:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
