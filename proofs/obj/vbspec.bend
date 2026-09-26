@@ -16,6 +16,7 @@ import ./vdepth.bend as VD
 import ./vcopy.bend as VC
 import ./vbytes.bend as VY
 import ./vfix.bend as VF
+import ./vrej.bend as VR
 
 # Byte lists at any length, specification side (codegen/var_bytes.py): the
 # parts of a ByteList value, the offset layout of fixed parts of words around
@@ -228,3 +229,25 @@ def win_room(+d: Nat, +t: F.array__Tree<U32>, +i: Nat, +len: U32, +pf: {F.array_
   %Equal.sym(Nat, List.length(&2, U32, VB.wdr(i, S)), VB.len(VB.wdr(i, S)), len_list(VB.wdr(i, S))) : {Nat.is_le(U32.to_nat(len), A.quad(_)) == True{} : Bool}
   le_cancel(A.quad(i), U32.to_nat(len), A.quad(VB.len(VB.wdr(i, S))),
     F.logic__subst(Nat, z => {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), z) == True{} : Bool}, A.quad(VB.pw(d)), Nat.add(A.quad(i), A.quad(VB.len(VB.wdr(i, S)))), Equal.sym(Nat, Nat.add(A.quad(i), A.quad(VB.len(VB.wdr(i, S)))), A.quad(VB.pw(d)), e2), hw))
+
+# The payload of the offset layout starts after the fixed size.
+law out_dr:
+  for +pre: +List<+List<U32>>
+  for +Y: +List<U32>
+  for +post: +List<+List<U32>>
+  {VS.bdr(Nat.add(VR.lens(pre), 4n+VR.lens(post)), VR.OUT(pre, Y, post)) == Y : +List<U32>}
+def out_dr(pre, Y, post):
+  +D = List.append(&2, U32, N.digits(4n, VR.FZ(pre, post)), VR.bcat(post))
+  +Pf = List.append(&2, U32, VR.bcat(pre), D)
+  +eL = Equal.trans(Nat, List.length(&2, U32, Pf), Nat.add(List.length(&2, U32, VR.bcat(pre)), List.length(&2, U32, D)), Nat.add(VR.lens(pre), 4n+VR.lens(post)),
+    VS.len_app(VR.bcat(pre), D),
+    Equal.trans(Nat, Nat.add(List.length(&2, U32, VR.bcat(pre)), List.length(&2, U32, D)), Nat.add(VR.lens(pre), List.length(&2, U32, D)), Nat.add(VR.lens(pre), 4n+VR.lens(post)),
+      Equal.cong(Nat, Nat, z => Nat.add(z, List.length(&2, U32, D)), List.length(&2, U32, VR.bcat(pre)), VR.lens(pre), VR.len_bcat(pre)),
+      Equal.cong(Nat, Nat, z => Nat.add(VR.lens(pre), z), List.length(&2, U32, D), 4n+VR.lens(post),
+        Equal.trans(Nat, List.length(&2, U32, D), Nat.add(List.length(&2, U32, N.digits(4n, VR.FZ(pre, post))), List.length(&2, U32, VR.bcat(post))), 4n+VR.lens(post),
+          VS.len_app(N.digits(4n, VR.FZ(pre, post)), VR.bcat(post)),
+          Equal.cong(Nat, Nat, z => 4n+z, List.length(&2, U32, VR.bcat(post)), VR.lens(post), VR.len_bcat(post))))))
+  %Equal.sym(+List<U32>, VR.OUT(pre, Y, post), VR.OUTX(pre, Y, post), VR.out_eq(pre, Y, post)) :
+    {VS.bdr(Nat.add(VR.lens(pre), 4n+VR.lens(post)), _) == Y : +List<U32>}
+  %eL : {VS.bdr(_, List.append(&2, U32, Pf, Y)) == Y : +List<U32>}
+  VS.bdr_app(Pf, Y)
