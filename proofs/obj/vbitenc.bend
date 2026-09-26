@@ -9,6 +9,8 @@ import ./vspec.bend as VS
 import ./vbuf.bend as VB
 import ./vbitl.bend as VBL
 import ./dk.bend as DK
+import ./vu32.bend as VU
+import ../compact/reads.bend as RD
 import ./vdepth.bend as VD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -500,4 +502,148 @@ def NWE(+L: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +h: {Nat
     -> {VC.NW(L) == VD.s_rng(2n, Nat.add(U32.to_nat(L), 3n)) : Nat}:
   %Equal.sym(Nat, U32.to_nat(U32.shrn(U32.add(L, 3), 2n)), VD.s_rng(2n, U32.to_nat(U32.add(L, 3))), VD.shrk(2n, U32.add(L, 3))) : {_ == VD.s_rng(2n, Nat.add(U32.to_nat(L), 3n)) : Nat}
   %Equal.sym(Nat, U32.to_nat(U32.add(L, 3)), Nat.add(U32.to_nat(L), 3n), VD.s_add_nat(L, 3, kb, hkb, h)) : {VD.s_rng(2n, _) == VD.s_rng(2n, Nat.add(U32.to_nat(L), 3n)) : Nat}
+  {==}
+
+law x8q:
+  for +q: Nat
+  for +j: Nat
+  {VS.x8(Nat.add(A.quad(q), j)) == Nat.add(m32(q), VS.x8(j)) : Nat}
+def x8q(q, j):
+  match q:
+    case 0n: {==}
+    case 1n+ +p:
+      %Equal.sym(Nat, VS.x8(Nat.add(A.quad(p), j)), Nat.add(m32(p), VS.x8(j)), x8q(p, j)) : {32n+_ == 32n+Nat.add(m32(p), VS.x8(j)) : Nat}
+      {==}
+
+law bc32:
+  for +q: Nat
+  for +s: Nat
+  {Bp.byte_count(Nat.add(m32(q), s)) == Nat.add(A.quad(q), Bp.byte_count(s)) : Nat}
+def bc32(q, s):
+  match q:
+    case 0n: {==}
+    case 1n+ +p:
+      %Equal.sym(Nat, Bp.byte_count(Nat.add(m32(p), s)), Nat.add(A.quad(p), Bp.byte_count(s)), bc32(p, s)) : {4n+_ == 4n+Nat.add(A.quad(p), Bp.byte_count(s)) : Nat}
+      {==}
+
+# K = 32 q + 8 j + b.
+def Ka(+K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hK: HK(K, kb), +j: Nat, +b: Nat,
+    +ej: {JK(K) == j : Nat}, +eb: {BKk(K) == b : Nat})
+    -> {U32.to_nat(K) == Nat.add(m32(QK(K)), Nat.add(VS.x8(j), b)) : Nat}:
+  %Equal.sym(Nat, U32.to_nat(K), Nat.add(VS.x8(AK(K)), BKk(K)), E1(K)) : {_ == Nat.add(m32(QK(K)), Nat.add(VS.x8(j), b)) : Nat}
+  %Equal.sym(Nat, AK(K), Nat.add(A.quad(QK(K)), JK(K)), E2(K, kb, hkb, hK)) : {Nat.add(VS.x8(_), BKk(K)) == Nat.add(m32(QK(K)), Nat.add(VS.x8(j), b)) : Nat}
+  %Equal.sym(Nat, JK(K), j, ej) : {Nat.add(VS.x8(Nat.add(A.quad(QK(K)), _)), BKk(K)) == Nat.add(m32(QK(K)), Nat.add(VS.x8(j), b)) : Nat}
+  %Equal.sym(Nat, BKk(K), b, eb) : {Nat.add(VS.x8(Nat.add(A.quad(QK(K)), j)), _) == Nat.add(m32(QK(K)), Nat.add(VS.x8(j), b)) : Nat}
+  %Equal.sym(Nat, VS.x8(Nat.add(A.quad(QK(K)), j)), Nat.add(m32(QK(K)), VS.x8(j)), x8q(QK(K), j)) : {Nat.add(_, b) == Nat.add(m32(QK(K)), Nat.add(VS.x8(j), b)) : Nat}
+  F.nat__add_assoc(m32(QK(K)), VS.x8(j), b)
+
+# x = 4 Q + R, R < 4: the low two bits are R.
+def T4(+x: U32, +Q: Nat, +R: Nat, +e: {U32.to_nat(x) == Nat.add(A.quad(Q), R) : Nat}, +hR: {Nat.is_lt(R, 4n) == True{} : Bool})
+    -> {U32.to_nat(U32.and(x, 3)) == R : Nat}:
+  +Qx = U32.to_nat(U32.shrn(x, 2n))
+  +Rx = U32.to_nat(U32.and(x, 3))
+  +e1 = Equal.trans(Nat, Nat.add(Nat.mul(Qx, 4n), Rx), Nat.add(A.quad(Qx), Rx), Nat.add(Nat.mul(Q, 4n), R),
+    Equal.cong(Nat, Nat, z => Nat.add(z, Rx), Nat.mul(Qx, 4n), A.quad(Qx), VC.quad_mul(Qx)),
+    Equal.trans(Nat, Nat.add(A.quad(Qx), Rx), U32.to_nat(x), Nat.add(Nat.mul(Q, 4n), R), Equal.sym(Nat, U32.to_nat(x), Nat.add(A.quad(Qx), Rx), VC.split4(x)),
+      Equal.trans(Nat, U32.to_nat(x), Nat.add(A.quad(Q), R), Nat.add(Nat.mul(Q, 4n), R), e,
+        Equal.cong(Nat, Nat, z => Nat.add(z, R), A.quad(Q), Nat.mul(Q, 4n), Equal.sym(Nat, Nat.mul(Q, 4n), A.quad(Q), VC.quad_mul(Q))))))
+  Pair.snd({Qx == Q : Nat}, {Rx == R : Nat}, VU.dm_unique(Qx, Rx, Q, R, 4n, e1, F.nat__le_lt_trans(Rx, 3n, 4n, RD.and_le(x, 3), {==}), hR))
+
+def sub1(+x: U32, +m: Nat, +e: {U32.to_nat(x) == 1n+m : Nat}) -> {U32.to_nat(U32.sub(x, 1)) == m : Nat}:
+  +h1 = F.logic__subst(Nat, z => {Nat.is_le(1n, z) == True{} : Bool}, 1n+m, U32.to_nat(x), Equal.sym(Nat, U32.to_nat(x), 1n+m, e), F.nat__zero_le(m))
+  %Equal.sym(Nat, U32.to_nat(U32.sub(x, 1)), Nat.sub(U32.to_nat(x), 1n), F.u32__sub_nat(x, 1, h1)) : {_ == m : Nat}
+  %Equal.sym(Nat, U32.to_nat(x), 1n+m, e) : {Nat.sub(_, 1n) == m : Nat}
+  F.nat__add_sub_cancel(1n, m)
+
+# ceil(L / 4) for L = 4 q + c.
+def NWq(+L: U32, +q: Nat, +c: Nat, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+    +h: {Nat.is_le(Nat.add(U32.to_nat(L), 3n), O.pow2n(kb)) == True{} : Bool}, +e: {U32.to_nat(L) == Nat.add(A.quad(q), c) : Nat})
+    -> {VC.NW(L) == Nat.add(q, VD.s_rng(2n, Nat.add(c, 3n))) : Nat}:
+  %Equal.sym(Nat, VC.NW(L), VD.s_rng(2n, Nat.add(U32.to_nat(L), 3n)), NWE(L, kb, hkb, h)) : {_ == Nat.add(q, VD.s_rng(2n, Nat.add(c, 3n))) : Nat}
+  %Equal.sym(Nat, U32.to_nat(L), Nat.add(A.quad(q), c), e) : {VD.s_rng(2n, Nat.add(_, 3n)) == Nat.add(q, VD.s_rng(2n, Nat.add(c, 3n))) : Nat}
+  %Equal.sym(Nat, Nat.add(Nat.add(A.quad(q), c), 3n), Nat.add(A.quad(q), Nat.add(c, 3n)), F.nat__add_assoc(A.quad(q), c, 3n)) : {VD.s_rng(2n, _) == Nat.add(q, VD.s_rng(2n, Nat.add(c, 3n))) : Nat}
+  r2a(q, Nat.add(c, 3n))
+
+# The byte count, for K = 32 q + 8 j + b.
+def G2(+K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hK: HK(K, kb), +j: Nat, +b: Nat,
+    +ej: {JK(K) == j : Nat}, +eb: {BKk(K) == b : Nat})
+    -> {U32.to_nat(O.bits_nbytes(K)) == Nat.add(A.quad(QK(K)), Nat.add(j, VD.s_rng(3n, Nat.add(b, 7n)))) : Nat}:
+  %Equal.sym(Nat, U32.to_nat(O.bits_nbytes(K)), Nat.add(AK(K), VD.s_rng(3n, Nat.add(BKk(K), 7n))), E3(K, kb, hkb, hK)) :
+    {_ == Nat.add(A.quad(QK(K)), Nat.add(j, VD.s_rng(3n, Nat.add(b, 7n)))) : Nat}
+  %Equal.sym(Nat, AK(K), Nat.add(A.quad(QK(K)), JK(K)), E2(K, kb, hkb, hK)) : {Nat.add(_, VD.s_rng(3n, Nat.add(BKk(K), 7n))) == Nat.add(A.quad(QK(K)), Nat.add(j, VD.s_rng(3n, Nat.add(b, 7n)))) : Nat}
+  %Equal.sym(Nat, JK(K), j, ej) : {Nat.add(Nat.add(A.quad(QK(K)), _), VD.s_rng(3n, Nat.add(BKk(K), 7n))) == Nat.add(A.quad(QK(K)), Nat.add(j, VD.s_rng(3n, Nat.add(b, 7n)))) : Nat}
+  %Equal.sym(Nat, BKk(K), b, eb) : {Nat.add(Nat.add(A.quad(QK(K)), j), VD.s_rng(3n, Nat.add(_, 7n))) == Nat.add(A.quad(QK(K)), Nat.add(j, VD.s_rng(3n, Nat.add(b, 7n)))) : Nat}
+  F.nat__add_assoc(A.quad(QK(K)), j, VD.s_rng(3n, Nat.add(b, 7n)))
+
+def G4(+K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hK: HK(K, kb), +j: Nat, +ej: {JK(K) == j : Nat})
+    -> {U32.to_nat(U32.add(U32.shrn(K, 3n), 1)) == Nat.add(A.quad(QK(K)), Nat.add(j, 1n)) : Nat}:
+  %Equal.sym(Nat, U32.to_nat(U32.add(U32.shrn(K, 3n), 1)), Nat.add(AK(K), 1n), E4(K, kb, hkb, hK)) : {_ == Nat.add(A.quad(QK(K)), Nat.add(j, 1n)) : Nat}
+  %Equal.sym(Nat, AK(K), Nat.add(A.quad(QK(K)), JK(K)), E2(K, kb, hkb, hK)) : {Nat.add(_, 1n) == Nat.add(A.quad(QK(K)), Nat.add(j, 1n)) : Nat}
+  %Equal.sym(Nat, JK(K), j, ej) : {Nat.add(Nat.add(A.quad(QK(K)), _), 1n) == Nat.add(A.quad(QK(K)), Nat.add(j, 1n)) : Nat}
+  F.nat__add_assoc(A.quad(QK(K)), j, 1n)
+
+def G6(+K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hK: HK(K, kb), +j: Nat, +b: Nat,
+    +ej: {JK(K) == j : Nat}, +eb: {BKk(K) == b : Nat})
+    -> {U32.to_nat(U32.shrn(K, 5n)) == Nat.add(QK(K), VD.s_rng(2n, Nat.add(j, VD.s_rng(3n, b)))) : Nat}:
+  %Equal.sym(Nat, U32.to_nat(U32.shrn(K, 5n)), Nat.add(QK(K), VD.s_rng(2n, Nat.add(JK(K), VD.s_rng(3n, BKk(K))))), E5(K, kb, hkb, hK)) :
+    {_ == Nat.add(QK(K), VD.s_rng(2n, Nat.add(j, VD.s_rng(3n, b)))) : Nat}
+  %Equal.sym(Nat, JK(K), j, ej) : {Nat.add(QK(K), VD.s_rng(2n, Nat.add(_, VD.s_rng(3n, BKk(K))))) == Nat.add(QK(K), VD.s_rng(2n, Nat.add(j, VD.s_rng(3n, b)))) : Nat}
+  %Equal.sym(Nat, BKk(K), b, eb) : {Nat.add(QK(K), VD.s_rng(2n, Nat.add(j, VD.s_rng(3n, _)))) == Nat.add(QK(K), VD.s_rng(2n, Nat.add(j, VD.s_rng(3n, b)))) : Nat}
+  {==}
+
+# ---- more structure ---------------------------------------------------------------------------
+
+# put_words of a whole number of words: a copy (also for n = 0: NW(0) = 0).
+def pwt_zt(+z: Bool, +dd: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +n: U32, +P: Nat, +ez: {U32.is_eq(n, 0) == z : Bool})
+    -> {pwt(z, True{}, dd, D, T, n, P) == VB.mone(VC.NW(n), 0n, P, dd, D, T) : F.array__Tree<U32>}:
+  match z:
+    case False{}: {==}
+    case True{}:
+      %Equal.sym(U32, n, 0, F.u32alg__eq_of(n, 0, ez)) : {D == VB.mone(VC.NW(_), 0n, P, dd, D, T) : F.array__Tree<U32>}
+      {==}
+
+law m32_mono:
+  for +a: Nat
+  for +b: Nat
+  for +h: {Nat.is_le(a, b) == True{} : Bool}
+  {Nat.is_le(m32(a), m32(b)) == True{} : Bool}
+def m32_mono(a, b, h):
+  match a b:
+    case 0n _: F.nat__zero_le(m32(b))
+    case 1n+ +p 0n: Empty.absurd({Nat.is_le(m32(1n+p), m32(0n)) == True{} : Bool}, F.logic__false_true(h))
+    case 1n+ +p 1n+ +q: m32_mono(p, q, h)
+
+law len_btk:
+  for +k: Nat
+  for +xs: +List<Bool>
+  for +h: {Nat.is_le(k, List.length(&2, Bool, xs)) == True{} : Bool}
+  {List.length(&2, Bool, BK.btk(k, xs)) == k : Nat}
+def len_btk(k, xs, h):
+  match k xs:
+    case 0n _: {==}
+    case 1n+ +p Nil{}: Empty.absurd({List.length(&2, Bool, BK.btk(1n+p, Nil{})) == 1n+p : Nat}, F.logic__false_true(h))
+    case 1n+ +p Con{+b, +t}:
+      %Equal.sym(Nat, List.length(&2, Bool, BK.btk(p, t)), p, len_btk(p, t, h)) : {1n+_ == 1n+p : Nat}
+      {==}
+
+law len_bitsof:
+  for +ws: List<&2, U32>
+  {List.length(&2, Bool, BK.bitsof(ws)) == m32(VB.len(ws)) : Nat}
+def len_bitsof(ws):
+  match ws:
+    case Nil{}: {==}
+    case Con{+x, +t}:
+      %Equal.sym(Nat, List.length(&2, Bool, List.append(&2, Bool, BLf.wbits(x), BK.bitsof(t))), Nat.add(List.length(&2, Bool, BLf.wbits(x)), List.length(&2, Bool, BK.bitsof(t))),
+          VBL.lenB_app(BLf.wbits(x), BK.bitsof(t))) : {_ == 32n+m32(VB.len(t)) : Nat}
+      %Equal.sym(Nat, List.length(&2, Bool, BLf.wbits(x)), 32n, len_wbits(x)) : {Nat.add(_, List.length(&2, Bool, BK.bitsof(t))) == 32n+m32(VB.len(t)) : Nat}
+      %Equal.sym(Nat, List.length(&2, Bool, BK.bitsof(t)), m32(VB.len(t)), len_bitsof(t)) : {Nat.add(32n, _) == 32n+m32(VB.len(t)) : Nat}
+      {==}
+
+def cq(+c: Nat, +q: Nat) -> {Nat.add(A.quad(q), c) == Nat.add(c, A.quad(q)) : Nat}: F.nat__add_comm(A.quad(q), c)
+
+# U32.is_eq(x, 0) is False for x = 4 q + c, c >= 1.
+def nz_of(+x: U32, +q: Nat, +c: Nat, +e: {U32.to_nat(x) == Nat.add(A.quad(q), 1n+c) : Nat}) -> {U32.is_eq(x, 0) == False{} : Bool}:
+  %Equal.sym(Cmp, U32.cmp(x, 0), Nat.cmp(U32.to_nat(x), 0n), F.u32__u32_cmp(x, 0)) : {Cmp.is_eq(_) == False{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(x), Nat.add(A.quad(q), 1n+c), e) : {Cmp.is_eq(Nat.cmp(_, 0n)) == False{} : Bool}
+  %Equal.sym(Nat, Nat.add(A.quad(q), 1n+c), 1n+Nat.add(A.quad(q), c), F.nat__add_succ(A.quad(q), c)) : {Cmp.is_eq(Nat.cmp(_, 0n)) == False{} : Bool}
   {==}
