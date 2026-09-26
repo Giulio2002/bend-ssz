@@ -77,7 +77,7 @@ def fname(x, part=''):
     return ROOT / f'proofs/obj/{"big_" if is_big(x) else ""}var_bitc_{x.n}{part}.bend'
 
 
-HEAD = list(VL.DEC_HEAD) + ['import ./spec_bits.bend as FB', 'import ./vlist.bend as VLS', 'import ./vbitl.bend as VBL',
+HEAD = list(VL.DEC_HEAD) + ['import ./spec_bits.bend as FB', 'import ./vfits.bend as VFT', 'import ./vlist.bend as VLS', 'import ./vbitl.bend as VBL',
                             'import ./vbyte.bend as VY', 'import ./vbrt.bend as VR', 'import ./vbitc.bend as VBC',
                             'import ../../spec/bitfields.bend as Bits', 'import ../../spec/bit_packing.bend as Bp']
 
@@ -402,6 +402,158 @@ def decode_none(d, t, n, pf, hd, hn, hchk):
     return '\n'.join(L) + '\n'
 
 
+def spec_bits_lim(n, j):
+    src = (ROOT / 'spec/fulu_schemas.bend').read_text()
+    defs = dict(re.findall(r'^def (\w+)\(\) -> T\.Schema: (.*)$', src, re.M))
+    kids, _ = VL.spec_schemas(n)
+    m = re.fullmatch(r'T\.BitList\{(.*)\}', defs[kids[j]])
+    return m.group(1)
+
+
+def spec_text(g, x):
+    n, FS, H, po = x.n, x.FS, x.H, x.po
+    vi = [f['kind'] for f in x.fields].index('bits')
+    LIMN = spec_bits_lim(n, vi)
+    nodes = VL.field_nodes(g, x, lambda k: f'VB.slot(t, {k}n)')
+    W1 = f'VR.WB(t, {H}n, 1n+M1(n))'
+    vals, schs, parts = [], [], []
+    for f, nd in zip(x.fields, nodes):
+        if f['kind'] == 'fix':
+            vals.append(nd['val'])
+            schs.append(nd['sch'])
+            parts.append(f'S.Fixed{{F.limbs([{", ".join(nd["words"])}])}}')
+        else:
+            vals.append(f'S.BitsValue{{VBL.bl({W1})}}')
+            schs.append(f'S.BitList{{{LIMN}}}')
+            parts.append(f'S.Variable{{{W1}}}')
+
+    def items(i, W=W1):
+        if i == len(vals):
+            return 'S.EmptyItems{}'
+        v = vals[i].replace(W1, W)
+        return f'S.Items{{{v}, {items(i + 1, W)}}}'
+
+    def chain(i):
+        return 'S.End{}' if i == len(vals) else f'S.Chain{{{schs[i]}, {chain(i + 1)}}}'
+
+    def cat(i):
+        if i == len(vals):
+            return '{==}'
+        rest = '[' + ', '.join(parts[i + 1:]) + ']'
+        if x.fields[i]['kind'] == 'fix':
+            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs([{", ".join(nodes[i]["words"])}]), '
+                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
+        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), {W1}, Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
+                f'VBC.bl_parts({W1}, {LIMN}, dom, nzl, hl), {cat(i + 1)})')
+    PRE = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[:vi]) + ']'
+    POST = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[vi + 1:]) + ']'
+    hdr = []
+    for f, nd in zip(x.fields, nodes):
+        hdr += nd['words'] if f['kind'] == 'fix' else [str(FS)]
+    HDR = '[' + ', '.join(hdr) + ']'
+    HDRh = '[' + ', '.join(h if i != po else '_' for i, h in enumerate(hdr)) + ']'
+    ENCR = f'List.append(&2, U32, List.append(&2, U32, F.flat({PRE}), List.append(&2, U32, N.digits(4n, VS.FSZ({PRE}, {POST})), F.flat({POST}))), {W1})'
+    RHS = f'Some{{List.append(&2, U32, F.limbs({HDR}), {W1})}}'
+    M = 'Maybe<&2, +List<U32>>'
+    MP = 'Maybe<&2, +List<S.Part>>'
+    s = 'FD.array__slots(U32, t)'
+    Wn = f'VR.WB(t, {H}n, U32.to_nat(LL(n)))'
+    return subst(f"""
+# ---- the spec side -------------------------------------------------------------------------
+
+def VW(+t: FD.array__Tree<U32>, +n: U32) -> +List<U32>: VS.bt(U32.to_nat(n), F.limbs({s}))
+def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: S.Sequence{{{items(0, Wn)}}}
+
+def fitN(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {{Nat.is_lt(d, 28n) == True{{}} : Bool}}, +hn: {{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{{}} : Bool}},
+    +ha: {{U32.is_le(@FS, n) == True{{}} : Bool}}, +el: {{List.length(&2, U32, {W1}) == U32.to_nat(LL(n)) : Nat}})
+    -> {{N.fits(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, {W1}))) == True{{}} : Bool}}:
+  %Equal.sym(Nat, List.length(&2, U32, {W1}), U32.to_nat(LL(n)), el) : {{N.fits(4n, Nat.add(@FSn, _)) == True{{}} : Bool}}
+  %Equal.sym(Nat, Nat.add(@FSn, U32.to_nat(LL(n))), U32.to_nat(n), enFS(n, ha)) : {{N.fits(4n, _) == True{{}} : Bool}}
+  VFT.fits4(2n+d, U32.to_nat(n), hn, FD.nat__lt_trans(d, 28n, 30n, hd, {{==}}))
+
+# The spec encoding of the value: the header words' limbs (offset @FS), then the window's bytes.
+def enc_spec(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {{Nat.is_lt(d, 28n) == True{{}} : Bool}}, +hn: {{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{{}} : Bool}},
+    +ha: {{U32.is_le(@FS, n) == True{{}} : Bool}}, +el: {{List.length(&2, U32, {W1}) == U32.to_nat(LL(n)) : Nat}},
+    +dom: {{SP.bytes_domain({W1}) == True{{}} : Bool}}, +nzl: {{U32.is_eq(VBL.lastb({W1}), 0) == False{{}} : Bool}},
+    +hl: {{Nat.is_le(List.length(&2, Bool, VBL.bl({W1})), {LIMN}) == True{{}} : Bool}})
+    -> {{Codec.encoding_for_legal_type(Spec.{n}(), S.Sequence{{{items(0)}}}) == {RHS} : {M}}}:
+  %Equal.sym({MP}, Codec.parts({items(0)}, {chain(0)}), Some{{[{', '.join(parts)}]}},
+      {cat(0)}) :
+    {{Codec.bytes(Codec.aggregate(_, None{{}})) == {RHS} : {M}}}
+  %Equal.sym({M}, Layout.encoding(VS.fpv({PRE}, {W1}, {POST})), Some{{{ENCR}}}, VBC.enc_fpvb({PRE}, {W1}, {POST}, dom, fitN(d, t, n, hd, hn, ha, el))) :
+    {{Codec.bytes(Codec.one(_, None{{}})) == {RHS} : {M}}}
+  {{==}}
+
+# The header's limbs and the window's bytes are the buffer's bytes.
+def lim_eq(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, 28n) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{{}} : Bool}}, +ha: {{U32.is_le(@FS, n) == True{{}} : Bool}}, +epo: {{SPO(t) == @FS : U32}})
+    -> {{List.append(&2, U32, F.limbs({HDR}), {Wn}) == VW(t, n) : +List<U32>}}:
+  +hs = VBC.nwH(d, LL(n), @Hn, hd, hwL(d, n, ha, hn))
+  +hpre = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(@Hn, 0n), z) == True{{}} : Bool}}, VB.pw(d), VB.len({s}), Equal.sym(Nat, VB.len({s}), VB.pw(d), FD.array__slots_length(U32, d, t, pf)),
+    FD.nat__le_trans(@Hn, Nat.add(VC.NW(LL(n)), @Hn), VB.pw(d), Order.left_below_sum(VC.NW(LL(n)), @Hn), hs))
+  %enFS(n, ha) : {{List.append(&2, U32, F.limbs({HDR}), {Wn}) == VS.bt(_, F.limbs({s})) : +List<U32>}}
+  %Equal.sym(+List<U32>, VS.bt(Nat.add(@FSn, U32.to_nat(LL(n))), F.limbs({s})), List.append(&2, U32, VS.bt(@FSn, F.limbs({s})), VS.bt(U32.to_nat(LL(n)), VS.bdr(@FSn, F.limbs({s})))),
+      VBC.bt_split(@FSn, U32.to_nat(LL(n)), F.limbs({s}))) :
+    {{List.append(&2, U32, F.limbs({HDR}), {Wn}) == _ : +List<U32>}}
+  %Equal.sym(+List<U32>, VS.bt(A.quad(@Hn), F.limbs({s})), F.limbs(VS.wtake(@Hn, {s})), VS.bt_limbs(@Hn, {s})) :
+    {{List.append(&2, U32, F.limbs({HDR}), {Wn}) == List.append(&2, U32, _, {Wn}) : +List<U32>}}
+  %Equal.sym(List<&2, U32>, VS.wtake(Nat.add(@Hn, 0n), VB.wdr(0n, {s})), VF.app(VF.wpre(@Hn, 0n, {s}), VS.wtake(0n, VB.wdr(Nat.add(@Hn, 0n), {s}))), VF.wt_pre(@Hn, 0n, 0n, {s}, hpre)) :
+    {{List.append(&2, U32, F.limbs({HDR}), {Wn}) == List.append(&2, U32, F.limbs(_), {Wn}) : +List<U32>}}
+  %epo : {{List.append(&2, U32, F.limbs({HDRh}), {Wn}) == List.append(&2, U32, F.limbs(VF.app(VF.wpre(@Hn, 0n, {s}), [])), {Wn}) : +List<U32>}}
+  {{==}}
+
+def spec_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, 28n) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{{}} : Bool}}, +ha: {{U32.is_le(@FS, n) == True{{}} : Bool}}, +epo: {{SPO(t) == @FS : U32}},
+    +hw: {{CHKW(t, n) == True{{}} : Bool}})
+    -> Decoding.decodes(Spec.{n}(), VW(t, n), VAL(t, n)):
+  +e1 = cwE(t, n, hw)
+  +h1 = cw1(t, n, hw)
+  +nz = cwB(t, n, h1)
+  +bd = cwC(t, n, h1, nz)
+  +m = M1(n)
+  +hw1 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(A.quad(@Hn), z), A.quad(VB.pw(d))) == True{{}} : Bool}}, U32.to_nat(LL(n)), 1n+m, e1, hwL(d, n, ha, hn))
+  +el = Equal.trans(Nat, List.length(&2, U32, {W1}), 1n+m, U32.to_nat(LL(n)), VR.lenWB(d, t, @Hn, 1n+m, pf, hw1), Equal.sym(Nat, U32.to_nat(LL(n)), 1n+m, e1))
+  +lw = VR.lastWB(d, t, @Hn, m, XW(n), pf, hw1, eXW(d, n, hd, ha, hn, e1))
+  +nzl = FD.logic__subst(U32, z => {{U32.is_eq(z, 0) == False{{}} : Bool}}, VWB(t, n), VBL.lastb({W1}), Equal.sym(U32, VBL.lastb({W1}), VWB(t, n), lw), nz)
+  +dom = VR.domWB(t, @Hn, 1n+m)
+  +len = Equal.trans(Nat, List.length(&2, Bool, VBL.bl({W1})), VBL.blen({W1}), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(VWB(t, n)))), VBL.bl_len({W1}, dom, nzl),
+    Equal.trans(Nat, VBL.blen({W1}), Nat.add(VS.x8(m), VY.hb(VBL.lastb({W1}))), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(VWB(t, n)))),
+      VR.blen_m({W1}, m, VR.lenWB(d, t, @Hn, 1n+m, pf, hw1)),
+      Equal.cong(U32, Nat, z => Nat.add(VS.x8(m), VY.hb(z)), VBL.lastb({W1}), VWB(t, n), lw)))
+  +bd1 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, U32.to_nat(O.high_bit(VWB(t, n)))), U32.to_nat(@N)) == True{{}} : Bool}}, Nat.mul(8n, m), VS.x8(m), VR.mul8(m), bd)
+  +hl = FD.logic__subst(Nat, z => {{Nat.is_le(z, {LIMN}) == True{{}} : Bool}}, Nat.add(VS.x8(m), U32.to_nat(O.high_bit(VWB(t, n)))), List.length(&2, Bool, VBL.bl({W1})),
+    Equal.sym(Nat, List.length(&2, Bool, VBL.bl({W1})), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(VWB(t, n)))), len), bd1)
+  %Equal.sym(Nat, U32.to_nat(LL(n)), 1n+m, e1) :
+    {{Codec.encoding_for_legal_type(Spec.{n}(), S.Sequence{{{items(0, f'VR.WB(t, {H}n, _)')}}}) == Some{{VW(t, n)}} : {M}}}
+  %lim_eq(d, t, n, pf, hd, hn, ha, epo) :
+    {{Codec.encoding_for_legal_type(Spec.{n}(), S.Sequence{{{items(0)}}}) == Some{{_}} : {M}}}
+  %Equal.sym(Nat, U32.to_nat(LL(n)), 1n+m, e1) :
+    {{Codec.encoding_for_legal_type(Spec.{n}(), S.Sequence{{{items(0)}}}) == Some{{List.append(&2, U32, F.limbs({HDR}), VR.WB(t, {H}n, _))}} : {M}}}
+  enc_spec(d, t, n, hd, hn, ha, el, dom, nzl, hl)
+
+# The bytes of every buffer the validator accepts are the spec encoding of VAL(t, n).
+law decode_spec:
+  for +d: Nat
+  for +t: FD.array__Tree<U32>
+  for +n: U32
+  for +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}
+  for +hd: {{Nat.is_lt(d, 28n) == True{{}} : Bool}}
+  for +hn: {{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{{}} : Bool}}
+  for +hchk: {{CHK(t, n) == True{{}} : Bool}}
+  Decoding.decodes(Spec.{n}(), VW(t, n), VAL(t, n))
+def decode_spec(d, t, n, pf, hd, hn, hchk):
+  +a = U32.is_le(@FS, n)
+  +b = U32.is_eq(SPO(t), @FS)
+  +c = CHKW(t, n)
+  spec_go(d, t, n, pf, hd, hn, ch_a(a, b, c, hchk), FD.u32alg__eq_of(SPO(t), @FS, ch_b(a, b, c, hchk)), ch_c(a, b, c, hchk))
+""", x)
+
+
+def unique_text(x):
+    return VL.unique_text(None, x.n, fname(x).name).replace('GENERATED by codegen/var_laws.py', 'GENERATED by codegen/var_bitc.py').replace(
+        'for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}', 'for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}')
+
+
 def main():
     names = schema.load(ROOT / 'codegen/fulu.yaml')
     g = G.Gen()
@@ -413,7 +565,8 @@ def main():
         x = BName(g, n, names[n])
         if no_big and is_big(x):
             continue
-        out[fname(x)] = dec_text(g, x)
+        out[fname(x)] = dec_text(g, x) + spec_text(g, x)
+        out[fname(x, '_unique')] = unique_text(x)
     mine = [q for q in (ROOT / 'proofs/obj').glob('*var_bitc_*.bend') if q.name.startswith(('var_bitc_', 'big_var_bitc_'))]
     orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out and not (no_big and q.name.startswith('big_')))
     if '--check' in sys.argv:
