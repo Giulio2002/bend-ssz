@@ -12,6 +12,9 @@ import ./vfix.bend as VF
 import ./vbspec.bend as VZ
 import ./vuwd.bend as WD
 import ./vrecx.bend as VRX
+import ./spec_fixed.bend as FX
+import ../../src/obj.bend as O
+import ./venc.bend as VE
 
 # A container's bytes as a list of pieces (hand-written; for codegen/var_cont_enc.py).
 #
@@ -360,3 +363,173 @@ def padb3(+r: Nat, +m: Nat) -> {Nat.is_le(WD.PADB(r, m), 3n) == True{} : Bool}:
   +h2 = F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(3n, y)) == True{} : Bool}, A.quad(WD.NWN(y)), Nat.add(y, WD.PADB(r, m)), Equal.sym(Nat, Nat.add(y, WD.PADB(r, m)), A.quad(WD.NWN(y)), e1), h1)
   VZ.le_cancel(y, WD.PADB(r, m), 3n, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(y, WD.PADB(r, m)), z) == True{} : Bool}, Nat.add(3n, y), Nat.add(y, 3n), F.nat__add_comm(3n, y), h2))
 
+
+# ---- written pieces --------------------------------------------------------------------------------
+
+# A write that installs Y as the m-cell piece PC(m, Y).
+def reg_putc(+B0: +List<U32>, +X0: Nat, +pre: +List<+List<U32>>, +m: Nat, +post: +List<+List<U32>>, +Y: +List<U32>, +p: Nat,
+    +UB: +List<U32>, +UB2: +List<U32>, +hX: {Nat.is_le(X0, LN(B0)) == True{} : Bool},
+    +hI: {UB == UW.SPL(B0, X0, SEG(pre, m, post)) : +List<U32>},
+    +hY: {LN(Y) == m : Nat}, +hp: {VS.bt(p, CAT(post)) == UW.ZB(p) : +List<U32>},
+    +hop: {UB2 == UW.SPL(UB, Nat.add(X0, LN(CAT(pre))), AP(Y, UW.ZB(p))) : +List<U32>})
+    -> {UB2 == UW.SPL(B0, X0, CAT(LAP(pre, Con{PC(m, Y), post}))) : +List<U32>}:
+  F.logic__subst(+List<U32>, z => {UB2 == UW.SPL(B0, X0, CAT(LAP(pre, Con{z, post}))) : +List<U32>}, Y, PC(m, Y), Equal.sym(+List<U32>, PC(m, Y), Y, pc_id(m, Y, hY)),
+    reg_put(B0, X0, pre, m, post, Y, p, UB, UB2, hX, hI, hY, hp, hop))
+def reg_putc0(+B0: +List<U32>, +X0: Nat, +pre: +List<+List<U32>>, +m: Nat, +post: +List<+List<U32>>, +Y: +List<U32>,
+    +UB: +List<U32>, +UB2: +List<U32>, +hX: {Nat.is_le(X0, LN(B0)) == True{} : Bool},
+    +hI: {UB == UW.SPL(B0, X0, SEG(pre, m, post)) : +List<U32>},
+    +hY: {LN(Y) == m : Nat}, +hop: {UB2 == UW.SPL(UB, Nat.add(X0, LN(CAT(pre))), Y) : +List<U32>})
+    -> {UB2 == UW.SPL(B0, X0, CAT(LAP(pre, Con{PC(m, Y), post}))) : +List<U32>}:
+  F.logic__subst(+List<U32>, z => {UB2 == UW.SPL(B0, X0, CAT(LAP(pre, Con{z, post}))) : +List<U32>}, Y, PC(m, Y), Equal.sym(+List<U32>, PC(m, Y), Y, pc_id(m, Y, hY)),
+    reg_put0(B0, X0, pre, m, post, Y, UB, UB2, hX, hI, hY, hop))
+
+# The region before the writer: all its pieces zero.
+def reg_init(+B: +List<U32>, +X0: Nat, +ms: List<&2, Nat>, +hz: {VS.bt(SUM(ms), VS.bdr(X0, B)) == UW.ZB(SUM(ms)) : +List<U32>})
+    -> {B == UW.SPL(B, X0, CAT(ZBS(ms))) : +List<U32>}:
+  +i0 = UW.inv_init(B, X0, SUM(ms), UW.ZB(SUM(ms)), hz, VE2.bt_zb_le(SUM(ms), SUM(ms), F.nat__le_refl(SUM(ms))))
+  +i1 = F.logic__subst(+List<U32>, z => {B == UW.SPL(B, X0, z) : +List<U32>}, VS.bt(SUM(ms), UW.ZB(SUM(ms))), UW.ZB(SUM(ms)), VE2.bt_zb_le(SUM(ms), SUM(ms), F.nat__le_refl(SUM(ms))), i0)
+  F.logic__subst(+List<U32>, z => {B == UW.SPL(B, X0, z) : +List<U32>}, UW.ZB(SUM(ms)), CAT(ZBS(ms)), Equal.sym(+List<U32>, CAT(ZBS(ms)), UW.ZB(SUM(ms)), cat_zbs(ms)), i1)
+
+# Pieces PC(k, y) of a list of lengths ks, and their byte count.
+def HDL(ps: +List<+List<U32>>) -> +List<U32>:
+  match ps:
+    case Nil{}: []
+    case Con{y, t}: y
+def TLL(ps: +List<+List<U32>>) -> +List<+List<U32>>:
+  match ps:
+    case Nil{}: []
+    case Con{y, t}: t
+def PCL(ks: List<&2, Nat>, +ps: +List<+List<U32>>) -> +List<+List<U32>>:
+  match ks:
+    case Nil{}: []
+    case Con{k, t}: Con{PC(k, HDL(ps)), PCL(t, TLL(ps))}
+law len_pcl:
+  for +ks: List<&2, Nat>
+  for +ps: +List<+List<U32>>
+  {LN(CAT(PCL(ks, ps))) == SUM(ks) : Nat}
+def len_pcl(ks, ps):
+  match ks:
+    case Nil{}: {==}
+    case Con{+k, +t}:
+      Equal.trans(Nat, LN(CAT(PCL(Con{k, t}, ps))), Nat.add(LN(PC(k, HDL(ps))), LN(CAT(PCL(t, TLL(ps))))), Nat.add(k, SUM(t)),
+        len_app(PC(k, HDL(ps)), CAT(PCL(t, TLL(ps)))),
+        Equal.trans(Nat, Nat.add(LN(PC(k, HDL(ps))), LN(CAT(PCL(t, TLL(ps))))), Nat.add(k, LN(CAT(PCL(t, TLL(ps))))), Nat.add(k, SUM(t)),
+          Equal.cong(Nat, Nat, z => Nat.add(z, LN(CAT(PCL(t, TLL(ps))))), LN(PC(k, HDL(ps))), k, len_pc(k, HDL(ps))),
+          Equal.cong(Nat, Nat, z => Nat.add(k, z), LN(CAT(PCL(t, TLL(ps)))), SUM(t), len_pcl(t, TLL(ps)))))
+
+# The position of a variable piece: the fixed pieces' bytes, then the earlier variable pieces'.
+def eposv(+fw: +List<+List<U32>>, +ps: +List<+List<U32>>, +ks: List<&2, Nat>)
+    -> {LN(CAT(LAP(fw, PCL(ks, ps)))) == Nat.add(LN(CAT(fw)), SUM(ks)) : Nat}:
+  Equal.trans(Nat, LN(CAT(LAP(fw, PCL(ks, ps)))), LN(AP(CAT(fw), CAT(PCL(ks, ps)))), Nat.add(LN(CAT(fw)), SUM(ks)),
+    Equal.cong(+List<U32>, Nat, z => LN(z), CAT(LAP(fw, PCL(ks, ps))), AP(CAT(fw), CAT(PCL(ks, ps))), cat_lap(fw, PCL(ks, ps))),
+    Equal.trans(Nat, LN(AP(CAT(fw), CAT(PCL(ks, ps)))), Nat.add(LN(CAT(fw)), LN(CAT(PCL(ks, ps)))), Nat.add(LN(CAT(fw)), SUM(ks)),
+      len_app(CAT(fw), CAT(PCL(ks, ps))),
+      Equal.cong(Nat, Nat, z => Nat.add(LN(CAT(fw)), z), LN(CAT(PCL(ks, ps))), SUM(ks), len_pcl(ks, ps))))
+
+def APPN(+a: List<&2, Nat>, +b: List<&2, Nat>) -> List<&2, Nat>: List.append(&2, Nat, a, b)
+law sum_app:
+  for +a: List<&2, Nat>
+  for +b: List<&2, Nat>
+  {SUM(APPN(a, b)) == Nat.add(SUM(a), SUM(b)) : Nat}
+def sum_app(a, b):
+  match a:
+    case Nil{}: {==}
+    case Con{+m, +t}:
+      %Equal.sym(Nat, SUM(APPN(t, b)), Nat.add(SUM(t), SUM(b)), sum_app(t, b)) : {Nat.add(m, _) == Nat.add(Nat.add(m, SUM(t)), SUM(b)) : Nat}
+      Equal.sym(Nat, Nat.add(Nat.add(m, SUM(t)), SUM(b)), Nat.add(m, Nat.add(SUM(t), SUM(b))), F.nat__add_assoc(m, SUM(t), SUM(b)))
+
+# The next cursor: F + SUM(ks) + k = F + SUM(ks ++ [k]).
+def sum_snoc(+F0: Nat, +ks: List<&2, Nat>, +k: Nat) -> {Nat.add(Nat.add(F0, SUM(ks)), k) == Nat.add(F0, SUM(APPN(ks, [k]))) : Nat}:
+  +e1 = Equal.trans(Nat, SUM(APPN(ks, [k])), Nat.add(SUM(ks), Nat.add(k, 0n)), Nat.add(SUM(ks), k), sum_app(ks, [k]),
+    Equal.cong(Nat, Nat, z => Nat.add(SUM(ks), z), Nat.add(k, 0n), k, F.nat__add_zero(k)))
+  Equal.trans(Nat, Nat.add(Nat.add(F0, SUM(ks)), k), Nat.add(F0, Nat.add(SUM(ks), k)), Nat.add(F0, SUM(APPN(ks, [k]))), F.nat__add_assoc(F0, SUM(ks), k),
+    Equal.cong(Nat, Nat, z => Nat.add(F0, z), Nat.add(SUM(ks), k), SUM(APPN(ks, [k])), Equal.sym(Nat, SUM(APPN(ks, [k])), Nat.add(SUM(ks), k), e1)))
+
+# A variable piece a..a+m of the region's L = F + SUM(pre ++ [m] ++ rest) bytes: a + m <= L.
+def pc_room(+F0: Nat, +pre: List<&2, Nat>, +m: Nat, +rest: List<&2, Nat>)
+    -> {Nat.is_le(Nat.add(Nat.add(F0, SUM(pre)), m), Nat.add(F0, SUM(APPN(APPN(pre, [m]), rest)))) == True{} : Bool}:
+  +e1 = sum_snoc(F0, pre, m)
+  F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(F0, SUM(APPN(APPN(pre, [m]), rest)))) == True{} : Bool}, Nat.add(F0, SUM(APPN(pre, [m]))), Nat.add(Nat.add(F0, SUM(pre)), m),
+    Equal.sym(Nat, Nat.add(Nat.add(F0, SUM(pre)), m), Nat.add(F0, SUM(APPN(pre, [m]))), e1),
+    Order.add_left(F0, SUM(APPN(pre, [m])), SUM(APPN(APPN(pre, [m]), rest)),
+      F.logic__subst(Nat, z => {Nat.is_le(SUM(APPN(pre, [m])), z) == True{} : Bool}, Nat.add(SUM(APPN(pre, [m])), SUM(rest)), SUM(APPN(APPN(pre, [m]), rest)),
+        Equal.sym(Nat, SUM(APPN(APPN(pre, [m]), rest)), Nat.add(SUM(APPN(pre, [m])), SUM(rest)), sum_app(APPN(pre, [m]), rest)),
+        Order.below_sum(SUM(APPN(pre, [m])), SUM(rest)))))
+
+# The bytes after a variable piece: a + m + (SUM(rest) + P) = L + P.
+def pc_after(+F0: Nat, +pre: List<&2, Nat>, +m: Nat, +rest: List<&2, Nat>, +P: Nat)
+    -> {Nat.add(Nat.add(Nat.add(F0, SUM(pre)), m), SUM(APPN(rest, [P]))) == Nat.add(Nat.add(F0, SUM(APPN(APPN(pre, [m]), rest))), P) : Nat}:
+  +a = Nat.add(F0, SUM(APPN(pre, [m])))
+  +e1 = sum_snoc(F0, pre, m)
+  +e2 = Equal.trans(Nat, SUM(APPN(rest, [P])), Nat.add(SUM(rest), Nat.add(P, 0n)), Nat.add(SUM(rest), P), sum_app(rest, [P]),
+    Equal.cong(Nat, Nat, z => Nat.add(SUM(rest), z), Nat.add(P, 0n), P, F.nat__add_zero(P)))
+  +e3 = Equal.trans(Nat, Nat.add(F0, SUM(APPN(APPN(pre, [m]), rest))), Nat.add(F0, Nat.add(SUM(APPN(pre, [m])), SUM(rest))), Nat.add(a, SUM(rest)),
+    Equal.cong(Nat, Nat, z => Nat.add(F0, z), SUM(APPN(APPN(pre, [m]), rest)), Nat.add(SUM(APPN(pre, [m])), SUM(rest)), sum_app(APPN(pre, [m]), rest)),
+    Equal.sym(Nat, Nat.add(a, SUM(rest)), Nat.add(F0, Nat.add(SUM(APPN(pre, [m])), SUM(rest))), F.nat__add_assoc(F0, SUM(APPN(pre, [m])), SUM(rest))))
+  Equal.trans(Nat, Nat.add(Nat.add(Nat.add(F0, SUM(pre)), m), SUM(APPN(rest, [P]))), Nat.add(a, Nat.add(SUM(rest), P)), Nat.add(Nat.add(F0, SUM(APPN(APPN(pre, [m]), rest))), P),
+    Equal.trans(Nat, Nat.add(Nat.add(Nat.add(F0, SUM(pre)), m), SUM(APPN(rest, [P]))), Nat.add(a, SUM(APPN(rest, [P]))), Nat.add(a, Nat.add(SUM(rest), P)),
+      Equal.cong(Nat, Nat, z => Nat.add(z, SUM(APPN(rest, [P]))), Nat.add(Nat.add(F0, SUM(pre)), m), a, e1),
+      Equal.cong(Nat, Nat, z => Nat.add(a, z), SUM(APPN(rest, [P])), Nat.add(SUM(rest), P), e2)),
+    Equal.trans(Nat, Nat.add(a, Nat.add(SUM(rest), P)), Nat.add(Nat.add(a, SUM(rest)), P), Nat.add(Nat.add(F0, SUM(APPN(APPN(pre, [m]), rest))), P),
+      Equal.sym(Nat, Nat.add(Nat.add(a, SUM(rest)), P), Nat.add(a, Nat.add(SUM(rest), P)), F.nat__add_assoc(a, SUM(rest), P)),
+      Equal.cong(Nat, Nat, z => Nat.add(z, P), Nat.add(a, SUM(rest)), Nat.add(F0, SUM(APPN(APPN(pre, [m]), rest))), Equal.sym(Nat, Nat.add(F0, SUM(APPN(APPN(pre, [m]), rest))), Nat.add(a, SUM(rest)), e3))))
+
+# The bytes of k words taken from a list of at least k.
+law len_wt:
+  for +k: Nat
+  for +W: List<&2, U32>
+  for +h: {Nat.is_le(k, List.length(&2, U32, W)) == True{} : Bool}
+  {LN(FX.limbs(VS.wtake(k, W))) == A.quad(k) : Nat}
+def len_wt(k, W, h):
+  match k W:
+    case 0n _: {==}
+    case 1n+ +p Nil{}: Empty.absurd({LN(FX.limbs(VS.wtake(1n+p, Nil{}))) == A.quad(1n+p) : Nat}, F.logic__false_true(h))
+    case 1n+ +p Con{+x, +t}: Equal.cong(Nat, Nat, z => 4n+z, LN(FX.limbs(VS.wtake(p, t))), A.quad(p), len_wt(p, t, h))
+
+# ---- the running cursor ------------------------------------------------------------------------------
+
+# O.padd adds when the sum fits a tree of depth dd < 29's bytes.
+def padd_dd(+a: U32, +b: U32, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +h: {Nat.is_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), A.quad(VB.pw(dd))) == True{} : Bool})
+    -> {U32.to_nat(O.padd(a, b)) == Nat.add(U32.to_nat(a), U32.to_nat(b)) : Nat}:
+  +k = Nat.add(3n, dd)
+  +hk = F.nat__lt_succ_le(dd, 28n, hd)
+  +hq = F.nat__le_lt_trans(A.quad(VB.pw(dd)), VB.pw(2n+dd), VB.pw(k), F.nat__le_refl(A.quad(VB.pw(dd))), F.nat__pow2_lt_succ(2n+dd))
+  +hs = F.nat__le_lt_trans(Nat.add(U32.to_nat(a), U32.to_nat(b)), A.quad(VB.pw(dd)), VB.pw(k), h, hq)
+  +ha = F.nat__le_lt_trans(U32.to_nat(a), Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(k), Order.below_sum(U32.to_nat(a), U32.to_nat(b)), hs)
+  +hb = F.nat__le_lt_trans(U32.to_nat(b), Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(k), Order.left_below_sum(U32.to_nat(a), U32.to_nat(b)), hs)
+  %Equal.sym(U32, O.padd(a, b), U32.add(a, b), VE.padd_ok(a, b, VE.winit(31n, VE.bits32(a)), VE.winit(31n, VE.bits32(b)), VE.small_pad(a, k, hk, ha), VE.small_pad(b, k, hk, hb))) :
+    {U32.to_nat(_) == Nat.add(U32.to_nat(a), U32.to_nat(b)) : Nat}
+  A.add_le(a, b, F.u32__pow2u(k), F.logic__subst(Nat, z => {Nat.is_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), z) == True{} : Bool}, VB.pw(k), U32.to_nat(F.u32__pow2u(k)),
+    Equal.sym(Nat, U32.to_nat(F.u32__pow2u(k)), VB.pw(k), F.u32__pow2u_value(k, F.nat__le_lt_trans(k, 31n, 32n, hk, {==}))), F.nat__lt_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(k), hs)))
+
+# The cursor after a variable piece of k bytes: F + SUM(ks ++ [k]).
+def cnext(+cur: U32, +sz: U32, +F0: Nat, +ks: List<&2, Nat>, +k: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +ec: {U32.to_nat(cur) == Nat.add(F0, SUM(ks)) : Nat}, +es: {U32.to_nat(sz) == k : Nat},
+    +hb: {Nat.is_le(Nat.add(Nat.add(F0, SUM(ks)), k), A.quad(VB.pw(dd))) == True{} : Bool})
+    -> {U32.to_nat(O.padd(cur, sz)) == Nat.add(F0, SUM(APPN(ks, [k]))) : Nat}:
+  +e1 = Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), k),
+    Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(sz)), U32.to_nat(cur), Nat.add(F0, SUM(ks)), ec),
+    Equal.cong(Nat, Nat, z => Nat.add(Nat.add(F0, SUM(ks)), z), U32.to_nat(sz), k, es))
+  +hb2 = F.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(dd))) == True{} : Bool}, Nat.add(Nat.add(F0, SUM(ks)), k), Nat.add(U32.to_nat(cur), U32.to_nat(sz)),
+    Equal.sym(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), k), e1), hb)
+  Equal.trans(Nat, U32.to_nat(O.padd(cur, sz)), Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(F0, SUM(APPN(ks, [k]))), padd_dd(cur, sz, dd, hd, hb2),
+    Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), k), Nat.add(F0, SUM(APPN(ks, [k]))), e1, sum_snoc(F0, ks, k)))
+
+# The region's pieces: the fixed ones, the variable ones, the trailing zeros.
+def sum_region(+fs: List<&2, Nat>, +ks: List<&2, Nat>, +P: Nat) -> {SUM(APPN(fs, APPN(ks, [P]))) == Nat.add(Nat.add(SUM(fs), SUM(ks)), P) : Nat}:
+  +e2 = Equal.trans(Nat, SUM(APPN(ks, [P])), Nat.add(SUM(ks), Nat.add(P, 0n)), Nat.add(SUM(ks), P), sum_app(ks, [P]),
+    Equal.cong(Nat, Nat, z => Nat.add(SUM(ks), z), Nat.add(P, 0n), P, F.nat__add_zero(P)))
+  Equal.trans(Nat, SUM(APPN(fs, APPN(ks, [P]))), Nat.add(SUM(fs), SUM(APPN(ks, [P]))), Nat.add(Nat.add(SUM(fs), SUM(ks)), P), sum_app(fs, APPN(ks, [P])),
+    Equal.trans(Nat, Nat.add(SUM(fs), SUM(APPN(ks, [P]))), Nat.add(SUM(fs), Nat.add(SUM(ks), P)), Nat.add(Nat.add(SUM(fs), SUM(ks)), P),
+      Equal.cong(Nat, Nat, z => Nat.add(SUM(fs), z), SUM(APPN(ks, [P])), Nat.add(SUM(ks), P), e2),
+      Equal.sym(Nat, Nat.add(Nat.add(SUM(fs), SUM(ks)), P), Nat.add(SUM(fs), Nat.add(SUM(ks), P)), F.nat__add_assoc(SUM(fs), SUM(ks), P))))
+
+# A variable piece's end, a + m <= L <= 4 2^dd (for the cursor bound).
+def pc_end(+q: Nat, +r: Nat, +L: Nat, +dd: Nat, +x: Nat, +h: {Nat.is_le(x, L) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool}) -> {Nat.is_le(x, A.quad(VB.pw(dd))) == True{} : Bool}:
+  F.nat__le_trans(x, L, A.quad(VB.pw(dd)), h,
+    F.nat__le_trans(L, Nat.add(Nat.add(A.quad(q), r), L), A.quad(VB.pw(dd)), Order.left_below_sum(Nat.add(A.quad(q), r), L), VRX.xend(q, r, L, dd, hl)))
+
+# An equation, with its type written out.
+def EQN(+a: Nat, +b: Nat, +e: {a == b : Nat}) -> {a == b : Nat}: e
