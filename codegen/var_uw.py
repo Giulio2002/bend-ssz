@@ -377,6 +377,22 @@ def emit():
             g.L.extend(lines)
             w('      ' + g.weq(shrn(X, 32 - 8 * s2), zero, facts))
             w('')
+    # a byte OR-ed in at byte s: limb s of w gains the byte, the others stay
+    V = bits('v')
+    vb = w_and(V, const(255))
+    for s2 in (0, 1, 2, 3):
+        x = vb if s2 == 0 else shln(vb, 8 * s2)
+        xs = 'U32.and(v, 255)' if s2 == 0 else f'U32.shln(U32.and(v, 255), {8 * s2}n)'
+        lw = limb(W)
+        rw = [lw[j] if j != s2 else w_or(lw[j], vb) for j in range(4)]
+        names = ['U32.and(w, 255)', 'U32.and(U32.shrn(w, 8n), 255)', 'U32.and(U32.shrn(w, 16n), 255)', 'U32.shrn(w, 24n)']
+        names[s2] = f'U32.or({names[s2]}, U32.and(v, 255))'
+        w(f'# The byte v OR-ed in at byte {s2} of w.')
+        w(f'def orbl{s2}(+w: U32, +v: U32) -> {{I.limb(U32.or(w, {xs})) == [{", ".join(names)}] : +List<U32>}}:')
+        w('  match w v:')
+        w(f'    case {pat("w")} {pat("v")}:')
+        w('      ' + g.l4(limb(w_or(W, x)), rw))
+        w('')
     # zw
     lw = limb(W)
     w('# All four bytes of w are zero: w is zero.')

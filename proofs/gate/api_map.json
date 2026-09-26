@@ -9454,12 +9454,48 @@
      "big": false
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
+   "ok_eval": [
+    {
+     "file": "var_codec_LightClientUpdate.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "var_codec_LightClientUpdate.bend",
+     "law": "decode_accept",
+     "big": false
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "var_codec_LightClientUpdate.bend",
+     "law": "decode_spec",
+     "big": false
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "var_codec_LightClientUpdate.bend",
+     "law": "decode_unique",
+     "big": false
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "var_codec_LightClientUpdate.bend",
+     "law": "decode_reject",
+     "big": false
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "var_codec_LightClientUpdate.bend",
+     "law": "decode_none",
+     "big": false
+    }
+   ],
    "encode_eval": [],
    "encode_spec": [],
    "roundtrip": [],
@@ -11373,14 +11409,62 @@
      "big": false
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
-   "encode_eval": [],
-   "encode_spec": [],
+   "ok_eval": [
+    {
+     "file": "big_var_plist_Gt83D8B3D008_top.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "big_var_plist_Gt83D8B3D008_top.bend",
+     "law": "decode_accept",
+     "big": true
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "big_var_plist_Gt83D8B3D008_top.bend",
+     "law": "decode_spec",
+     "big": true
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "big_var_plist_Gt83D8B3D008_top_unique.bend",
+     "law": "decode_unique",
+     "big": true
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "big_var_plist_Gt83D8B3D008_top.bend",
+     "law": "decode_reject",
+     "big": true
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "big_var_plist_Gt83D8B3D008_top.bend",
+     "law": "decode_none",
+     "big": true
+    }
+   ],
+   "encode_eval": [
+    {
+     "file": "big_var_plist_Gt83D8B3D008_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_plist_Gt83D8B3D008_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -13859,14 +13943,62 @@
      "big": false
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
-   "encode_eval": [],
-   "encode_spec": [],
+   "ok_eval": [
+    {
+     "file": "big_var_plist_GtF23A2FB97E_top.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "big_var_plist_GtF23A2FB97E_top.bend",
+     "law": "decode_accept",
+     "big": true
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "big_var_plist_GtF23A2FB97E_top.bend",
+     "law": "decode_spec",
+     "big": true
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "big_var_plist_GtF23A2FB97E_top_unique.bend",
+     "law": "decode_unique",
+     "big": true
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "big_var_plist_GtF23A2FB97E_top.bend",
+     "law": "decode_reject",
+     "big": true
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "big_var_plist_GtF23A2FB97E_top.bend",
+     "law": "decode_none",
+     "big": true
+    }
+   ],
+   "encode_eval": [
+    {
+     "file": "big_var_plist_GtF23A2FB97E_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_plist_GtF23A2FB97E_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],

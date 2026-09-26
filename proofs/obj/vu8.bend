@@ -10,7 +10,7 @@ import ../compact/found.bend as F
 import ./spec_fixed.bend as FX
 import ./vspec.bend as VS
 import ./vmv.bend as VMV
-import ./packed_bytes.bend as PB
+import ./pb_min.bend as PB
 
 # Lists of uint8 (List[uint8, N]): the items of a byte string (PB.it1) have
 # the string's bytes as their spec parts, one fixed byte each, and the list's
