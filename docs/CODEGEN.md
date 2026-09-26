@@ -91,6 +91,7 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/var_winx_c.py        # containers with several variable fields over child windows (ExecutionPayload; big children) [--no-big]
 /opt/homebrew/bin/python3 codegen/var_top.py           # whole-buffer decoder laws of Transaction and ExecutionPayload; Transaction encoder [--no-big]
 /opt/homebrew/bin/python3 codegen/var_agg_enc.py       # Attestation writer at a word position; AggregateAndProof, SignedAggregateAndProof encoders [--no-big]
+/opt/homebrew/bin/python3 codegen/var_vlist_enc.py     # encoder window of the transactions list (List[ByteList[2^30], 2^20]) at any byte X [--no-big]
 /opt/homebrew/bin/python3 codegen/sha_laws.py          # SHA node bridge
 /opt/homebrew/bin/python3 codegen/schema_shapes.py     # schema shape laws
 /opt/homebrew/bin/python3 codegen/root_laws.py         # phase-A root laws, validity agreement

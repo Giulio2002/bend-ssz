@@ -8,6 +8,7 @@ import ./vspec.bend as VS
 import ./vrej.bend as VR
 import ./vvl.bend as VVL
 import ./vuw.bend as UW
+import ./vfix.bend as VF
 
 # The encoder of a list of variable-size elements, byte side (hand-written): the bytes of
 # the list's region while the runtime's writer (offset j, then element j, for j = 0 .. n-1)
@@ -238,3 +239,91 @@ def el_step(+p: +List<+List<U32>>, +y: +List<U32>, +r: +List<+List<U32>>, +off: 
   %Equal.sym(+List<U32>, APP(APP(bp, y), UW.ZB(zr)), APP(bp, APP(y, UW.ZB(zr))), VS.app_assoc(bp, y, UW.ZB(zr))) :
     {APP(O, APP(Z4, APP(bp, APP(y, UW.ZB(zr))))) == APP(O, APP(Z4, _)) : +List<U32>}
   {==}
+
+# ---- lengths and zero windows of the region --------------------------------------------------------
+
+law bt_zb:
+  for +m: Nat
+  for +k: Nat
+  {VS.bt(m, UW.ZB(Nat.add(m, k))) == UW.ZB(m) : +List<U32>}
+def bt_zb(m, k):
+  match m:
+    case 0n: {==}
+    case 1n+ +p: Equal.cong(+List<U32>, +List<U32>, z => Con{0, z}, VS.bt(p, UW.ZB(Nat.add(p, k))), UW.ZB(p), bt_zb(p, k))
+
+# m zeros taken from z >= m zeros.
+def bt_zb_le(+m: Nat, +z: Nat, +h: {Nat.is_le(m, z) == True{} : Bool}) -> {VS.bt(m, UW.ZB(z)) == UW.ZB(m) : +List<U32>}:
+  %F.nat__sub_add(z, m, h) : {VS.bt(m, UW.ZB(_)) == UW.ZB(m) : +List<U32>}
+  bt_zb(m, Nat.sub(z, m))
+
+def bt_app_zb(+m: Nat, +z: Nat, +c: +List<U32>, +h: {Nat.is_le(m, z) == True{} : Bool}) -> {VS.bt(m, APP(UW.ZB(z), c)) == UW.ZB(m) : +List<U32>}:
+  %F.nat__sub_add(z, m, h) : {VS.bt(m, APP(UW.ZB(_), c)) == UW.ZB(m) : +List<U32>}
+  %Equal.sym(+List<U32>, UW.ZB(Nat.add(m, Nat.sub(z, m))), APP(UW.ZB(m), UW.ZB(Nat.sub(z, m))), zb_add(m, Nat.sub(z, m))) : {VS.bt(m, APP(_, c)) == UW.ZB(m) : +List<U32>}
+  %Equal.sym(+List<U32>, APP(APP(UW.ZB(m), UW.ZB(Nat.sub(z, m))), c), APP(UW.ZB(m), APP(UW.ZB(Nat.sub(z, m)), c)), VS.app_assoc(UW.ZB(m), UW.ZB(Nat.sub(z, m)), c)) :
+    {VS.bt(m, _) == UW.ZB(m) : +List<U32>}
+  %len_zb(m) : {VS.bt(_, APP(UW.ZB(m), APP(UW.ZB(Nat.sub(z, m)), c))) == UW.ZB(m) : +List<U32>}
+  bt_app(UW.ZB(m), APP(UW.ZB(Nat.sub(z, m)), c))
+
+law len_ei:
+  for +p: +List<+List<U32>>
+  for +r: +List<+List<U32>>
+  for +off: Nat
+  for +z: Nat
+  {LEN(EI(p, r, off, z)) == Nat.add(A.quad(VVL.CNT(p)), Nat.add(A.quad(VVL.CNT(r)), Nat.add(LEN(VR.bcat(p)), z))) : Nat}
+def len_ei(p, r, off, z):
+  +O = VVL.OFFS(p, off)
+  +Z4 = UW.ZB(A.quad(VVL.CNT(r)))
+  +bp = VR.bcat(p)
+  %Equal.sym(Nat, LEN(APP(O, APP(Z4, APP(bp, UW.ZB(z))))), Nat.add(LEN(O), LEN(APP(Z4, APP(bp, UW.ZB(z))))), VS.len_app(O, APP(Z4, APP(bp, UW.ZB(z))))) :
+    {_ == Nat.add(A.quad(VVL.CNT(p)), Nat.add(A.quad(VVL.CNT(r)), Nat.add(LEN(bp), z))) : Nat}
+  %Equal.sym(Nat, LEN(APP(Z4, APP(bp, UW.ZB(z)))), Nat.add(LEN(Z4), LEN(APP(bp, UW.ZB(z)))), VS.len_app(Z4, APP(bp, UW.ZB(z)))) :
+    {Nat.add(LEN(O), _) == Nat.add(A.quad(VVL.CNT(p)), Nat.add(A.quad(VVL.CNT(r)), Nat.add(LEN(bp), z))) : Nat}
+  %Equal.sym(Nat, LEN(APP(bp, UW.ZB(z))), Nat.add(LEN(bp), LEN(UW.ZB(z))), VS.len_app(bp, UW.ZB(z))) :
+    {Nat.add(LEN(O), Nat.add(LEN(Z4), _)) == Nat.add(A.quad(VVL.CNT(p)), Nat.add(A.quad(VVL.CNT(r)), Nat.add(LEN(bp), z))) : Nat}
+  %Equal.sym(Nat, LEN(O), A.quad(VVL.CNT(p)), VVL.len_offs(p, off)) :
+    {Nat.add(_, Nat.add(LEN(Z4), Nat.add(LEN(bp), LEN(UW.ZB(z))))) == Nat.add(A.quad(VVL.CNT(p)), Nat.add(A.quad(VVL.CNT(r)), Nat.add(LEN(bp), z))) : Nat}
+  %Equal.sym(Nat, LEN(Z4), A.quad(VVL.CNT(r)), len_zb(A.quad(VVL.CNT(r)))) :
+    {Nat.add(A.quad(VVL.CNT(p)), Nat.add(_, Nat.add(LEN(bp), LEN(UW.ZB(z))))) == Nat.add(A.quad(VVL.CNT(p)), Nat.add(A.quad(VVL.CNT(r)), Nat.add(LEN(bp), z))) : Nat}
+  %Equal.sym(Nat, LEN(UW.ZB(z)), z, len_zb(z)) :
+    {Nat.add(A.quad(VVL.CNT(p)), Nat.add(A.quad(VVL.CNT(r)), Nat.add(LEN(bp), _))) == Nat.add(A.quad(VVL.CNT(p)), Nat.add(A.quad(VVL.CNT(r)), Nat.add(LEN(bp), z))) : Nat}
+  {==}
+
+# The four bytes of the next offset are zero.
+def win_off(+p: +List<+List<U32>>, +y: +List<U32>, +r: +List<+List<U32>>, +off: Nat, +z: Nat)
+    -> {VS.bt(4n, VS.bdr(A.quad(VVL.CNT(p)), EI(p, Con{y, r}, off, z))) == UW.ZB(4n) : +List<U32>}:
+  +O = VVL.OFFS(p, off)
+  %VVL.len_offs(p, off) : {VS.bt(4n, VS.bdr(_, EI(p, Con{y, r}, off, z))) == UW.ZB(4n) : +List<U32>}
+  %F.nat__add_zero(LEN(O)) : {VS.bt(4n, VS.bdr(_, EI(p, Con{y, r}, off, z))) == UW.ZB(4n) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bdr(Nat.add(LEN(O), 0n), EI(p, Con{y, r}, off, z)), APP(UW.ZB(A.quad(VVL.CNT(Con{y, r}))), APP(VR.bcat(p), UW.ZB(z))),
+      bdr_app(O, 0n, APP(UW.ZB(A.quad(VVL.CNT(Con{y, r}))), APP(VR.bcat(p), UW.ZB(z))))) :
+    {VS.bt(4n, _) == UW.ZB(4n) : +List<U32>}
+  {==}
+
+def len_pj(+p: +List<+List<U32>>, +y: +List<U32>, +r: +List<+List<U32>>, +off: Nat)
+    -> {LEN(PJ(p, y, r, off)) == Nat.add(A.quad(Nat.add(Nat.add(VVL.CNT(p), 1n), VVL.CNT(r))), LEN(VR.bcat(p))) : Nat}:
+  +O = VVL.OFFS(LAPP(p, [y]), off)
+  +Z4 = UW.ZB(A.quad(VVL.CNT(r)))
+  +bp = VR.bcat(p)
+  +c = Nat.add(VVL.CNT(p), 1n)
+  %Equal.sym(Nat, LEN(APP(O, APP(Z4, bp))), Nat.add(LEN(O), LEN(APP(Z4, bp))), VS.len_app(O, APP(Z4, bp))) :
+    {_ == Nat.add(A.quad(Nat.add(c, VVL.CNT(r))), LEN(bp)) : Nat}
+  %Equal.sym(Nat, LEN(APP(Z4, bp)), Nat.add(LEN(Z4), LEN(bp)), VS.len_app(Z4, bp)) :
+    {Nat.add(LEN(O), _) == Nat.add(A.quad(Nat.add(c, VVL.CNT(r))), LEN(bp)) : Nat}
+  %Equal.sym(Nat, LEN(O), A.quad(VVL.CNT(LAPP(p, [y]))), VVL.len_offs(LAPP(p, [y]), off)) :
+    {Nat.add(_, Nat.add(LEN(Z4), LEN(bp))) == Nat.add(A.quad(Nat.add(c, VVL.CNT(r))), LEN(bp)) : Nat}
+  %Equal.sym(Nat, VVL.CNT(LAPP(p, [y])), c, cnt_snoc(p, y)) :
+    {Nat.add(A.quad(_), Nat.add(LEN(Z4), LEN(bp))) == Nat.add(A.quad(Nat.add(c, VVL.CNT(r))), LEN(bp)) : Nat}
+  %Equal.sym(Nat, LEN(Z4), A.quad(VVL.CNT(r)), len_zb(A.quad(VVL.CNT(r)))) :
+    {Nat.add(A.quad(c), Nat.add(_, LEN(bp))) == Nat.add(A.quad(Nat.add(c, VVL.CNT(r))), LEN(bp)) : Nat}
+  %Equal.sym(Nat, A.quad(Nat.add(c, VVL.CNT(r))), Nat.add(A.quad(c), A.quad(VVL.CNT(r))), Equal.sym(Nat, Nat.add(A.quad(c), A.quad(VVL.CNT(r))), A.quad(Nat.add(c, VVL.CNT(r))), VF.quad_add(c, VVL.CNT(r)))) :
+    {Nat.add(A.quad(c), Nat.add(A.quad(VVL.CNT(r)), LEN(bp))) == Nat.add(_, LEN(bp)) : Nat}
+  Equal.sym(Nat, Nat.add(Nat.add(A.quad(c), A.quad(VVL.CNT(r))), LEN(bp)), Nat.add(A.quad(c), Nat.add(A.quad(VVL.CNT(r)), LEN(bp))), F.nat__add_assoc(A.quad(c), A.quad(VVL.CNT(r)), LEN(bp)))
+
+# The bytes after y's position in EJ are zeros: m of them, when m <= z.
+def win_el(+p: +List<+List<U32>>, +y: +List<U32>, +r: +List<+List<U32>>, +off: Nat, +z: Nat, +m: Nat, +h: {Nat.is_le(m, z) == True{} : Bool})
+    -> {VS.bt(m, VS.bdr(LEN(PJ(p, y, r, off)), EJ(p, y, r, off, z))) == UW.ZB(m) : +List<U32>}:
+  +Q = PJ(p, y, r, off)
+  %Equal.sym(+List<U32>, EJ(p, y, r, off, z), APP(Q, UW.ZB(z)), ej_pj(p, y, r, off, z)) : {VS.bt(m, VS.bdr(LEN(Q), _)) == UW.ZB(m) : +List<U32>}
+  %F.nat__add_zero(LEN(Q)) : {VS.bt(m, VS.bdr(_, APP(Q, UW.ZB(z)))) == UW.ZB(m) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bdr(Nat.add(LEN(Q), 0n), APP(Q, UW.ZB(z))), UW.ZB(z), bdr_app(Q, 0n, UW.ZB(z))) : {VS.bt(m, _) == UW.ZB(m) : +List<U32>}
+  bt_zb_le(m, z, h)
