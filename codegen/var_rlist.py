@@ -509,6 +509,7 @@ def outputs():
 
 
 def main():
+    VLW.SL.EXACT = True   # the exact spec-parts proofs (codegen/spec_laws.py), before any walk
     out = outputs()
     if '--no-big' in sys.argv:
         out = {p: t for p, t in out.items() if not p.name.startswith('big_')}

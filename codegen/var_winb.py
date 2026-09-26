@@ -42,8 +42,8 @@ CHECKED = {'bv4', 'bv1', 'bv2', 'bv257', 'bv1281'}
 READROOM = {'bv4': 4}
 CHILD_MOD = {
     'l16_ProposerSlashing': 'var_winx_l16_ProposerSlashing.bend',
-    'l1_AttesterSlashing': 'big_var_winx_l1_AttesterSlashing.bend',
-    'l8_Attestation': 'big_var_winx_l8_Attestation.bend',
+    'l1_AttesterSlashing': 'big_vvl_l1_AttesterSlashing.bend',
+    'l8_Attestation': 'big_vvl_l8_Attestation.bend',
     'l16_Deposit': 'var_winx_l16_Deposit.bend',
     'l16_SignedVoluntaryExit': 'var_winx_l16_SignedVoluntaryExit.bend',
     'ExecutionPayload': 'var_winx_ExecutionPayload.bend',
@@ -927,6 +927,13 @@ def spec_text(L):
                     f'{f["fa"]}.prt(d, t, {P}, pf, {L.ROOM(f["c"], hb, hF=f"hFc({TXOA}, hchk)")}, HD{i}(sv), es{i}(sv, esv){ex}),\n      {cat(i + 1)})')
         if f['kind'] == 'fix':
             nd = L.nodes[i]
+            if VL.SL.EXACT:
+                # the field's statement at its spec schema name, closed by node.proof at the schema's body
+                # (the conversion then never runs the leaf encoders)
+                lw = f'F.limbs([{", ".join(nd["words"])}])'
+                prf = (f'FD.logic__subst(S.Schema, z => {{Codec.parts({vals[i]}, z) == Some{{[S.Fixed{{{lw}}}]}} : {MP}}}, {nd["sch"]}, {sch(i)}, {{==}},\n        {nd["proof"]})')
+                return (f'F.cat_fixed(Codec.parts({vals[i]}, {sch(i)}), {lw}, '
+                        f'Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, {prf},\n      {cat(i + 1)})')
             return (f'F.cat_fixed(Codec.parts({vals[i]}, {nd["sch"]}), F.limbs([{", ".join(nd["words"])}]), '
                     f'Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, {nd["proof"]},\n      {cat(i + 1)})')
         j = f['j']
@@ -1551,6 +1558,7 @@ def layout(name, sym=False, fixmod=None, generic=False):
 
 
 def main():
+    VL.SL.EXACT = True   # the exact spec-parts proofs (codegen/spec_laws.py), before any walk
     if '--test-sym' in sys.argv:
         # a container whose fixed fields are read by the modules given as prefix=module pairs
         a = sys.argv.index('--test-sym')
