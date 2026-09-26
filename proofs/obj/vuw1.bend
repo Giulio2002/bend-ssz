@@ -122,3 +122,17 @@ def swcb(+ws: +List<U32>, +dd: Nat, +D: FD.array__Tree<U32>, +i: Nat, +pf: {FD.a
   %UW.len_limbs_q(ws) :
     {List.append(&2, U32, VS.bt(A.quad(i), UA.BYT(D)), List.append(&2, U32, VS.bt(1n, VS.bdr(A.quad(i), UA.BYT(D))), List.append(&2, U32, FX.limbs(ws), VS.bdr(Nat.add(1n, _), VS.bdr(A.quad(i), UA.BYT(D)))))) == RHS : +List<U32>}
   UW.spl_comb(UA.BYT(D), A.quad(i), 1n, FX.limbs(ws))
+# The four-byte write at byte 1 of word i splices the limbs of x in.
+def w32b(+x: U32, +dd: Nat, +D: FD.array__Tree<U32>, +i: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hr: {Nat.is_lt(1n+i, VB.pw(dd)) == True{} : Bool},
+    +hz: {VS.bt(4n, VS.bdr(Nat.add(A.quad(i), 1n), UA.BYT(D))) == UW.ZB(4n) : +List<U32>})
+    -> {UA.BYT(UW.W32M(1, dd, D, i, x)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(i), 1n), I.limb(x)) : +List<U32>}:
+  +D1 = UW.ORW(dd, D, i, O.shl_bytes(x, 1))
+  +hr1 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dd)) == True{} : Bool}, 1n+i, Nat.add(i, 1n), Equal.sym(Nat, Nat.add(i, 1n), 1n+i, Equal.trans(Nat, Nat.add(i, 1n), 1n+Nat.add(i, 0n), 1n+i, FD.nat__add_succ(i, 0n), Equal.cong(Nat, Nat, z => 1n+z, Nat.add(i, 0n), i, FD.nat__add_zero(i)))), hr)
+  +es = UW.orw_ors_slots(dd, D1, 1n+i, O.shr_over(x, 1), UW.orw_perfect(dd, D, i, O.shl_bytes(x, 1), pf), hr)
+  +b = swcb([x], dd, D, i, pf, hr1, hz)
+  +e1 = Equal.cong(List<&2, U32>, +List<U32>, z => FX.limbs(z), UW.SLW(UW.W32M(1, dd, D, i, x)), UW.SLW(UW.ORS(dd, D1, 1n+i, O.shr_over(x, 1))), es)
+  +e2 = Equal.cong(U32, +List<U32>, z => FX.limbs(UW.SLW(UW.ORS(dd, UW.ORW(dd, D, i, z), 1n+i, O.shr_over(x, 1)))), O.shl_bytes(x, 1), U32.or(O.shl_bytes(x, 1), 0),
+    Equal.sym(U32, U32.or(O.shl_bytes(x, 1), 0), O.shl_bytes(x, 1), UWB.or0r(O.shl_bytes(x, 1))))
+  Equal.trans(+List<U32>, UA.BYT(UW.W32M(1, dd, D, i, x)), UA.BYT(UW.SWc(1, [x], dd, D, i, 0)), UW.SPL(UA.BYT(D), Nat.add(A.quad(i), 1n), I.limb(x)),
+    Equal.trans(+List<U32>, UA.BYT(UW.W32M(1, dd, D, i, x)), FX.limbs(UW.SLW(UW.ORS(dd, D1, 1n+i, O.shr_over(x, 1)))), UA.BYT(UW.SWc(1, [x], dd, D, i, 0)), e1, e2), b)
