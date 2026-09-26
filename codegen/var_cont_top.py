@@ -24,7 +24,7 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 import var_cont_enc as CE  # noqa: E402
 
 TOPS = ['ExecutionPayload']
-SIZES = ['ExecutionPayload', 'ExecutionRequests']
+SIZES = ['ExecutionPayload']
 TRUE = 'True{} : Bool'
 
 

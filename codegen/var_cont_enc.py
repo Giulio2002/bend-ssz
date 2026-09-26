@@ -35,7 +35,7 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 import generate as G  # noqa: E402
 import schema  # noqa: E402
 
-CONTS = ['ExecutionPayload', 'ExecutionPayloadHeader', 'ExecutionRequests', 'Attestation']
+CONTS = ['ExecutionPayload', 'ExecutionPayloadHeader', 'ExecutionRequests', 'Attestation', 'IndexedAttestation', 'AttesterSlashing']
 TR = 'FD.array__Tree<U32>'
 TRUE = 'True{} : Bool'
 GROUP = G.GROUP
@@ -350,6 +350,27 @@ class Child:
             self.hY = '{==}'
             self.alias = a
             self.std = True
+        elif fs.kind in ('container', 'box') and not fs.fixed and _has_iface(fs.p[:-3] if fs.kind == 'box' else fs.rep):
+            # a variable-size container child (or one in a box) through its interface module big_encx_<C>_iface (codegen/var_cont_enc.py)
+            X = fs.p[:-3] if fs.kind == 'box' else fs.rep
+            a = f'EC_{X}'
+            m = f'm_{f}'
+            self.mod = f'import ./big_encx_{X}_iface.bend as {a}'
+            self.params = [f'+{m}: {a}.MW']
+            self.hyps = [f'+hok_{f}: {{{a}.OK({m}) == {TRUE}}}']
+            self.oargs = [m]
+            self.hargs = [f'hok_{f}']
+            self.obj = f'O.BSome{{{a}.TH({m}), O.BNone{{}}}}' if fs.kind == 'box' else f'{a}.TH({m})'
+            self.vt = f'O.Boxed<T.{X}>' if fs.kind == 'box' else f'T.{X}'
+            self.enc = f'{a}.ENC({m})'
+            self.len = f'List.length(&2, U32, {a}.ENC({m}))'
+            self.sz = f'{a}.SZ({m})'
+            self.pad = True
+            self.model = lambda dd, D, X_, q, r: f'{a}.PUTX({m}, {dd}, {D}, {q}, {r})'
+            self.hY = '{==}'
+            self.alias = a
+            self.std = True
+            self.box = X if fs.kind == 'box' else None
         else:
             raise SystemExit(f'no child window for {fs.kind}/{fs.p}')
 
@@ -363,7 +384,12 @@ class Child:
         if getattr(self, 'std', False):
             m, al = f'm_{f}', self.alias
             a = f'{m}, {dd}, {D}, {X}, {q}, {r}, {e}, {hr}, {hd}, {pf}, {hl}, {hz}, hok_{f}'
-            return f'{al}.putx({a})', f'{al}.putx_bytes({a})', f'{al}.pfx({m}, {dd}, {D}, {q}, {r}, {pf})', None
+            rt = f'{al}.putx({a})'
+            if getattr(self, 'box', None):
+                B = self.box
+                rt = (f'Equal.cong(Array<U32> & (T.{B} & U32), Array<U32> & (O.Boxed<T.{B}> & U32), z => T.{B}_bx_pk_back(z), '
+                      f'T.{B}_putk(FD.array__thaw(U32, {D}), {X}, {al}.TH({m})), (FD.array__thaw(U32, {al}.PUTX({m}, {dd}, {D}, {q}, {r})), ({al}.TH({m}), {al}.SZ({m}))), {rt})')
+            return rt, f'{al}.putx_bytes({a})', f'{al}.pfx({m}, {dd}, {D}, {q}, {r}, {pf})', None
         t, N = self.oargs
         if p == 'l1048576_bl1073741824':
             g = f'ET.putx({t}, {N}, h_{f}, {dd}, {D}, {X}, {q}, {r}, {e}, {hr}, {hd}, {hl}, {pf}, {hz})'
@@ -1556,12 +1582,18 @@ def domx(m, hok):
             ch = K.children[x['f']]
             if ch.p == 'bl32' or getattr(ch, 'std', False):
                 a = 'EB' if ch.p == 'bl32' else ch.alias
-                cs[ch.p] = (f'{a}.sizex(m_{x["f"]}, @HOK)', ch.vt, ch.obj, ch.sz, f'ok_hok_{x["f"]}', f'{a}.validx(m_{x["f"]}, @HOK)')
+                szp, vap = f'{a}.sizex(m_{x["f"]}, @HOK)', f'{a}.validx(m_{x["f"]}, @HOK)'
+                if getattr(ch, 'box', None):
+                    # a boxed child: T.<B>_bx_size / _bx_valid unwrap the box and rebox through _bx_size_back / _bx_va_back
+                    B, th = ch.box, f'{a}.TH(m_{x["f"]})'
+                    szp = f'Equal.cong(T.{B} & U32, O.Boxed<T.{B}> & U32, z => T.{B}_bx_size_back(z), T.{B}_size({th}), ({th}, {ch.sz}), {szp})'
+                    vap = f'Equal.cong(T.{B} & Bool, O.Boxed<T.{B}> & Bool, z => T.{B}_bx_va_back(z), T.{B}_valid({th}), ({th}, True{{}}), {vap})'
+                cs.setdefault(ch.p, []).append((szp, ch.vt, ch.obj, ch.sz, f'ok_hok_{x["f"]}', vap))
             elif ch.p == 'l1048576_bl1073741824':
                 szx_ok = False
             else:
                 A_, N_ = ch.oargs
-                cs[ch.p] = (f'{ch.alias}.sizex_{ch.p}({A_}, {N_}, @HOK)', ch.vt, ch.obj, ch.sz, f'ok_h_{x["f"]}', f'{ch.alias}.valid_{ch.p}({A_}, {N_}, @HOK)')
+                cs.setdefault(ch.p, []).append((f'{ch.alias}.sizex_{ch.p}({A_}, {N_}, @HOK)', ch.vt, ch.obj, ch.sz, f'ok_h_{x["f"]}', f'{ch.alias}.valid_{ch.p}({A_}, {N_}, @HOK)'))
     def chain_rt(entry, lawname, result_t, final_rhs, pair_second):
         """The runtime's pass `entry` (size / valid) over the children, each child's call rewritten by its law."""
         body_ = fn_body(f'{K.p}_{entry}')
@@ -1586,8 +1618,12 @@ def domx(m, hok):
             if not m3 or m3.group(1) not in cs:
                 return None
             cp, V = m3.group(1), m3.group(2)
-            vt, SZj, hokn = cs[cp][1], cs[cp][3], cs[cp][4]
-            prf = cs[cp][0] if entry == 'size' else cs[cp][5]
+            # children of one type are told apart by their object term
+            cands = [c for c in cs[cp] if c[2] == V] if len(cs[cp]) > 1 else cs[cp]
+            if len(cands) != 1:
+                return None
+            vt, SZj, hokn = cands[0][1], cands[0][3], cands[0][4]
+            prf = cands[0][0] if entry == 'size' else cands[0][5]
             second = SZj if entry == 'size' else 'True{}'
             ctx = f'T.{fname}(' + ', '.join(args[:-1] + ['_']) + ')'
             steps.append(f'  %Equal.sym({vt} & {pair_second}, {last}, ({V}, {second}), {prf.replace("@HOK", f"{hokn}({OAS}, h)")}) :\n    {{{ctx} == {final_rhs} : {result_t}}}')
@@ -1627,7 +1663,11 @@ def domx(m, hok):
             if cp not in cs:
                 szx_ok = False
                 break
-            sz_prf, vt, _, SZj, hokn, _v = cs[cp]
+            cands = [c for c in cs[cp] if c[2] == V] if len(cs[cp]) > 1 else cs[cp]
+            if len(cands) != 1:
+                szx_ok = False
+                break
+            sz_prf, vt, _, SZj, hokn, _v = cands[0]
             ctx = f'T.{fname}(' + ', '.join(args[:-1] + ['_']) + ')'
             SZR = SZC[1:SZC.index(' .|. O.pz(')] if getattr(K, 'pz', None) is not None else f'K.SZC({OAS})'
             steps.append(f'  %Equal.sym({vt} & U32, {last}, ({V}, {SZj}), {sz_prf.replace("@HOK", f"{hokn}({OAS}, h)")}) :\n    {{{ctx} == (K.OBJC({OAS}), {SZR}) : T.{C} & U32}}')
@@ -1730,8 +1770,14 @@ HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primi
 # every child in the encoder-window interface, every fixed piece word-aligned (so far).
 GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3', 'Gp8A7851175B', 'Gc221EC01D83']
 # the containers written in the encoder-window interface with their spec side (iface_text): (name, generic)
+def _has_iface(X):
+    # a container child has an encoder window when its iface is generated here (ICONTS) or already on disk
+    return X in dict(ICONTS) or (ROOT / 'proofs/obj' / f'big_encx_{X}_iface.bend').exists()
+
+
 ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True),
-          ('Gp8A7851175B', True), ('Gc221EC01D83', True), ('ExecutionRequests', False), ('Attestation', False)]
+          ('Gp8A7851175B', True), ('Gc221EC01D83', True), ('ExecutionRequests', False), ('Attestation', False),
+          ('IndexedAttestation', False), ('AttesterSlashing', False)]
 
 
 def gfile_c(C):
