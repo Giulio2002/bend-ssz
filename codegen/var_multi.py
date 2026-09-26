@@ -20,6 +20,7 @@ depth at most 23, whose zero arrays stock Bend compares case by case), n <= 4 2^
 
 `--no-big` is accepted: this generator writes no big_* file.
 """
+import os
 import sys
 from pathlib import Path
 
@@ -330,6 +331,7 @@ def rd_ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U3
     {RP(8, OO + ", " + UO + ", " + LWg(0, "dz0") + ", " + LWg(1, "dz1") + ", " + LWg(2, "dz2") + ", O.BSome{" + HOBJ + ", O.BNone{}}, _")}
   {{==}}
 """)
+    w(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'var_multi_acc.bend.in')).read().replace('@OBJ', OBJ).replace('@X', X))
     return '\n'.join(W)
 
 

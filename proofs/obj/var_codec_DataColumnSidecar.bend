@@ -252,3 +252,93 @@ def rd_ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
     {T.DataColumnSidecar_rd8(0, n, O0(t), O1(t), O2(t), O.U64{VB.slot(t, 0n), VB.slot(t, 1n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(L0(t)), 89n, 0n, dz0, VC.ZT(dz0), t)), L0(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(L1(t)), Q1(t), 0n, dz1, VC.ZT(dz1), t)), L1(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(L2(t, n)), Q2(t), 0n, dz2, VC.ZT(dz2), t)), L2(t, n)}, O.BSome{T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{VB.slot(t, 5n), VB.slot(t, 6n)}, O.U64{VB.slot(t, 7n), VB.slot(t, 8n)}, T.Bytes32{VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n), VB.slot(t, 13n), VB.slot(t, 14n), VB.slot(t, 15n), VB.slot(t, 16n)}, T.Bytes32{VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n), VB.slot(t, 23n), VB.slot(t, 24n)}, T.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}, T.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}}, O.BNone{}}, _) == (BF(t, n), T.DataColumnSidecar{O.U64{VB.slot(t, 0n), VB.slot(t, 1n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(L0(t)), 89n, 0n, dz0, VC.ZT(dz0), t)), L0(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(L1(t)), Q1(t), 0n, dz1, VC.ZT(dz1), t)), L1(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(L2(t, n)), Q2(t), 0n, dz2, VC.ZT(dz2), t)), L2(t, n)}, O.BSome{T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{VB.slot(t, 5n), VB.slot(t, 6n)}, O.U64{VB.slot(t, 7n), VB.slot(t, 8n)}, T.Bytes32{VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n), VB.slot(t, 13n), VB.slot(t, 14n), VB.slot(t, 15n), VB.slot(t, 16n)}, T.Bytes32{VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n), VB.slot(t, 23n), VB.slot(t, 24n)}, T.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}, T.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}}, O.BNone{}}, O.Words{FD.array__thaw(U32, VB.mone(32n, 57n, 0n, 6n, VC.ZT(6n), t)), 128}}) : B.Buf & T.DataColumnSidecar}
   {==}
 
+
+def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> T.DataColumnSidecar: T.DataColumnSidecar{O.U64{VB.slot(t, 0n), VB.slot(t, 1n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(L0(t)), 89n, 0n, VL.DZ(L0(t)), VC.ZT(VL.DZ(L0(t))), t)), L0(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(L1(t)), Q1(t), 0n, VL.DZ(L1(t)), VC.ZT(VL.DZ(L1(t))), t)), L1(t)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(L2(t, n)), Q2(t), 0n, VL.DZ(L2(t, n)), VC.ZT(VL.DZ(L2(t, n))), t)), L2(t, n)}, O.BSome{T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{VB.slot(t, 5n), VB.slot(t, 6n)}, O.U64{VB.slot(t, 7n), VB.slot(t, 8n)}, T.Bytes32{VB.slot(t, 9n), VB.slot(t, 10n), VB.slot(t, 11n), VB.slot(t, 12n), VB.slot(t, 13n), VB.slot(t, 14n), VB.slot(t, 15n), VB.slot(t, 16n)}, T.Bytes32{VB.slot(t, 17n), VB.slot(t, 18n), VB.slot(t, 19n), VB.slot(t, 20n), VB.slot(t, 21n), VB.slot(t, 22n), VB.slot(t, 23n), VB.slot(t, 24n)}, T.Bytes32{VB.slot(t, 25n), VB.slot(t, 26n), VB.slot(t, 27n), VB.slot(t, 28n), VB.slot(t, 29n), VB.slot(t, 30n), VB.slot(t, 31n), VB.slot(t, 32n)}}, T.Bytes96{VB.slot(t, 33n), VB.slot(t, 34n), VB.slot(t, 35n), VB.slot(t, 36n), VB.slot(t, 37n), VB.slot(t, 38n), VB.slot(t, 39n), VB.slot(t, 40n), VB.slot(t, 41n), VB.slot(t, 42n), VB.slot(t, 43n), VB.slot(t, 44n), VB.slot(t, 45n), VB.slot(t, 46n), VB.slot(t, 47n), VB.slot(t, 48n), VB.slot(t, 49n), VB.slot(t, 50n), VB.slot(t, 51n), VB.slot(t, 52n), VB.slot(t, 53n), VB.slot(t, 54n), VB.slot(t, 55n), VB.slot(t, 56n)}}, O.BNone{}}, O.Words{FD.array__thaw(U32, VB.mone(32n, 57n, 0n, 6n, VC.ZT(6n), t)), 128}}
+
+# a list of quad(m) bytes, m <= 2^d, lies within 4 2^d bytes
+def hLq(+d: Nat, +L: U32, +m: Nat, +em: {U32.to_nat(L) == A.quad(m) : Nat}, +hm: {Nat.is_le(m, VB.pw(d)) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(L), A.quad(VB.pw(d))) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, A.quad(m), U32.to_nat(L), Equal.sym(Nat, U32.to_nat(L), A.quad(m), em),
+    FD.nat__double_le(Nat.double(m), Nat.double(VB.pw(d)), FD.nat__double_le(m, VB.pw(d), hm)))
+
+# the list's storage depth is at most 23
+def hz(+d: Nat, +L: U32, +hd: {Nat.is_lt(d, 23n) == True{} : Bool}, +hL: {Nat.is_le(U32.to_nat(L), A.quad(VB.pw(d))) == True{} : Bool},
+    +h15: {Nat.is_le(15n, VB.pw(d)) == True{} : Bool})
+    -> {Nat.is_le(VL.DZ(L), 23n) == True{} : Bool}:
+  FD.nat__le_trans(VL.DZ(L), 1n+d, 23n, VM.dz_le(d, L, FD.nat__lt_trans(d, 23n, 28n, hd, {==}), hL, h15), FD.nat__lt_succ_le_succ(d, 23n, hd))
+
+# the list's words, from word q on, lie in the buffer
+def hsg(+d: Nat, +L: U32, +m: Nat, +q: Nat, +hd: {Nat.is_lt(d, 23n) == True{} : Bool},
+    +hL: {Nat.is_le(U32.to_nat(L), A.quad(VB.pw(d))) == True{} : Bool}, +em: {U32.to_nat(L) == A.quad(m) : Nat},
+    +h: {Nat.is_le(Nat.add(q, m), VB.pw(d)) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(VC.NW(L), q), VB.pw(d)) == True{} : Bool}:
+  %Equal.sym(Nat, VC.NW(L), m, VL.nwm(d, L, m, FD.nat__lt_trans(d, 23n, 28n, hd, {==}), hL, em)) : {Nat.is_le(Nat.add(_, q), VB.pw(d)) == True{} : Bool}
+  %FD.nat__add_comm(q, m) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
+  h
+
+def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == True{} : Bool},
+    +hb: {CB(t) == True{} : Bool}, +hc: {CC(t, n) == True{} : Bool}, +hdd: {CD(t, n) == True{} : Bool},
+    +he: {CE(t) == True{} : Bool}, +hf: {CF(t) == True{} : Bool}, +hg: {CG(t, n) == True{} : Bool})
+    -> {T.DataColumnSidecar_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.DataColumnSidecar>}:
+  +hd28 = FD.nat__lt_trans(d, 23n, 28n, hd, {==})
+  +hd31 = FD.nat__lt_trans(d, 23n, 31n, hd, {==})
+  +hN = hQN(d, t, n, pf, hd, hn, hb, hc, hdd, he, hf, hg)
+  +hQ2 = FD.nat__le_trans(Q2(t), QN(t, n), VB.pw(d), Order.below_sum(Q2(t), M2(t, n)), hN)
+  +hQ1 = FD.nat__le_trans(Q1(t), Q2(t), VB.pw(d), Order.below_sum(Q1(t), M1(t)), hQ2)
+  +h89 = FD.nat__le_trans(89n, Q1(t), VB.pw(d), Order.below_sum(89n, M0(t)), hQ1)
+  +h15 = FD.nat__le_trans(15n, 89n, VB.pw(d), {==}, h89)
+  +eM0 = eL0(t, he)
+  +eM1 = eL1(t, hf)
+  +eM2 = eL2(t, n, hg)
+  +hL0 = hLq(d, L0(t), M0(t), eM0, FD.nat__le_trans(M0(t), Q1(t), VB.pw(d), Order.left_below_sum(89n, M0(t)), hQ1))
+  +hL1 = hLq(d, L1(t), M1(t), eM1, FD.nat__le_trans(M1(t), Q2(t), VB.pw(d), Order.left_below_sum(Q1(t), M1(t)), hQ2))
+  +hL2 = hLq(d, L2(t, n), M2(t, n), eM2, FD.nat__le_trans(M2(t, n), QN(t, n), VB.pw(d), Order.left_below_sum(Q2(t), M2(t, n)), hN))
+  +z0 = hz(d, L0(t), hd, hL0, h15)
+  +z1 = hz(d, L1(t), hd, hL1, h15)
+  +z2 = hz(d, L2(t, n), hd, hL2, h15)
+  %Equal.sym(B.Buf & Bool, T.DataColumnSidecar_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, VB.lt32(d, hd31), FD.nat__lt_le_trans(4n, 89n, VB.pw(d), {==}, h89), pf)) :
+    {T.DataColumnSidecar_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.DataColumnSidecar>}
+  %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
+    {T.DataColumnSidecar_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.DataColumnSidecar>}
+  %Equal.sym(B.Buf & T.DataColumnSidecar, T.DataColumnSidecar_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)),
+      rd_ok(d, t, n, pf, hd, VL.DZ(L0(t)), VL.DZ(L1(t)), VL.DZ(L2(t, n)),
+        FD.nat__le_lt_trans(VL.DZ(L0(t)), 23n, 31n, z0, {==}), FD.nat__le_lt_trans(VL.DZ(L1(t)), 23n, 31n, z1, {==}), FD.nat__le_lt_trans(VL.DZ(L2(t, n)), 23n, 31n, z2, {==}),
+        VZ.zat(B.words_depth_u(VC.WZ(L0(t))), VL.DZ(L0(t)), VD.wdu(VC.WZ(L0(t))), z0),
+        VZ.zat(B.words_depth_u(VC.WZ(L1(t))), VL.DZ(L1(t)), VD.wdu(VC.WZ(L1(t))), z1),
+        VZ.zat(B.words_depth_u(VC.WZ(L2(t, n))), VL.DZ(L2(t, n)), VD.wdu(VC.WZ(L2(t, n))), z2),
+        FD.u32alg__eq_of(O0(t), 356, hb), eO1(t, n, hb, hc, he), eO2(t, n, hb, hc, hdd, he, hf),
+        VL.and3_q(L0(t), M0(t), eM0), VL.and3_q(L1(t), M1(t), eM1), VL.and3_q(L2(t, n), M2(t, n), eM2),
+        hsg(d, L0(t), M0(t), 89n, hd, hL0, eM0, hQ1), hsg(d, L1(t), M1(t), Q1(t), hd, hL1, eM1, hQ2), hsg(d, L2(t, n), M2(t, n), Q2(t), hd, hL2, eM2, hN),
+        VL.hrg(d, L0(t), hd28, hL0), VL.hrg(d, L1(t), hd28, hL1), VL.hrg(d, L2(t, n), hd28, hL2),
+        h89)) :
+    {T.DataColumnSidecar_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.DataColumnSidecar>}
+  {==}
+
+# the tails of CHK
+def K5(+t: FD.array__Tree<U32>, +n: U32) -> Bool: Bool.and(CF(t), CG(t, n))
+def K4(+t: FD.array__Tree<U32>, +n: U32) -> Bool: Bool.and(CE(t), K5(t, n))
+def K3(+t: FD.array__Tree<U32>, +n: U32) -> Bool: Bool.and(CD(t, n), K4(t, n))
+def K2(+t: FD.array__Tree<U32>, +n: U32) -> Bool: Bool.and(CC(t, n), K3(t, n))
+def K1(+t: FD.array__Tree<U32>, +n: U32) -> Bool: Bool.and(CB(t), K2(t, n))
+
+# Every buffer the validator accepts decodes to OBJ(t, n).
+law decode_accept:
+  for +d: Nat
+  for +t: FD.array__Tree<U32>
+  for +n: U32
+  for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 23n) == True{} : Bool}
+  for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hchk: {CHK(t, n) == True{} : Bool}
+  {T.DataColumnSidecar_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.DataColumnSidecar>}
+def decode_accept(d, t, n, pf, hd, hn, hchk):
+  +k1 = FD.logic__and_right(CA(n), K1(t, n), hchk)
+  +k2 = FD.logic__and_right(CB(t), K2(t, n), k1)
+  +k3 = FD.logic__and_right(CC(t, n), K3(t, n), k2)
+  +k4 = FD.logic__and_right(CD(t, n), K4(t, n), k3)
+  +k5 = FD.logic__and_right(CE(t), K5(t, n), k4)
+  acc_go(d, t, n, pf, hd, hn, hchk,
+    FD.logic__and_left(CB(t), K2(t, n), k1), FD.logic__and_left(CC(t, n), K3(t, n), k2), FD.logic__and_left(CD(t, n), K4(t, n), k3),
+    FD.logic__and_left(CE(t), K5(t, n), k4), FD.logic__and_left(CF(t), CG(t, n), k5), FD.logic__and_right(CF(t), CG(t, n), k5))
+
