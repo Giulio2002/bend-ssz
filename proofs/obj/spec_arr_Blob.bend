@@ -25,7 +25,7 @@ import ./arr_vec.bend as AV
 def Blob_spec_decode(+t: F.array__Tree<U32>, +pt: {F.array__perfect(U32, 15n, t) == True{} : Bool})
     -> {T.Blob_decode(B.Buf{F.array__thaw(U32, t), 131072}, 131072) == (B.Buf{F.array__thaw(U32, t), 131072}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, 131072}}) : B.Buf & Maybe<&1, O.Words>}:
   %Equal.sym(Array<U32> & Array<U32>, O.acopy(32768, 0, 0, Array.new(U32, 16n, 0), F.array__thaw(U32, t)), (ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, F.array__thaw(U32, t)),
-      AC.zl1(15n, 32768, 0, 0, t, {==}, {==}, {==}, {==}, {==}, pt)) :
+      AC.zl1(15n, 32768, 0, 0, t, {==}, {==}, AC.oct_pow(32768, 15n, 12n, {==}, {==}, {==}, {==}, {==}, {==}), {==}, {==}, pt)) :
     {T.Blob_some(O.ci_fin(131072, 131072, _)) == (B.Buf{F.array__thaw(U32, t), 131072}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, 131072}}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
@@ -47,7 +47,7 @@ def Blob_spec_input(+t: F.array__Tree<U32>, +pt: {F.array__perfect(U32, 15n, t) 
 def Blob_spec_bytes(+l: F.array__Tree<U32>, +r: F.array__Tree<U32>, +pl: {F.array__perfect(U32, 15n, l) == True{} : Bool}, +pr: {F.array__perfect(U32, 15n, r) == True{} : Bool}, +k: U32, +ek: {k == 32768 : U32})
     -> {SF.emitted(O.Words, T.Blob_encode(O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}), k) == (O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}, SF.limbs(F.array__slots(U32, l))) : O.Words & +List<U32>}:
   %Equal.sym(Array<U32> & Array<U32>, O.acopy(32768, 0, 0, Array.new(U32, 15n, 0), F.array__thaw(U32, F.TNode{l, r})), (F.array__thaw(U32, l), F.array__thaw(U32, F.TNode{l, r})),
-      AC.ov(15n, 32768, 0, 0, l, r, {==}, {==}, {==}, {==}, {==}, pl, pr)) :
+      AC.ov(15n, 32768, 0, 0, l, r, {==}, {==}, AC.oct_pow(32768, 15n, 12n, {==}, {==}, {==}, {==}, {==}, {==}), {==}, {==}, pl, pr)) :
     {SF.emitted(O.Words, T.Blob_enc_out(O.put_fin(131072, _)), k) == (O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}, SF.limbs(F.array__slots(U32, l))) : O.Words & +List<U32>}
   %Equal.sym(B.Buf & +List<U32>, B.emit(B.Buf{F.array__thaw(U32, l), 131072}, 0, k), (B.Buf{F.array__thaw(U32, l), 131072}, SF.limbs(F.array__slots(U32, l))), Blob_spec_view(l, pl, k, ek)) :
     {(O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}, SF.listed(_)) == (O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}, SF.limbs(F.array__slots(U32, l))) : O.Words & +List<U32>}
