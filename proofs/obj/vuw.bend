@@ -1323,3 +1323,48 @@ def inv_init(+B: +List<U32>, +X0: Nat, +L: Nat, +E0: +List<U32>,
   %e3 : {List.append(&2, U32, VS.bt(X0, B), List.append(&2, U32, Z, _)) == SPL(B, X0, Z) : +List<U32>}
   %Equal.sym(Nat, List.length(&2, U32, Z), L, eL) : {List.append(&2, U32, VS.bt(X0, B), List.append(&2, U32, Z, VS.bdr(Nat.add(X0, L), B))) == List.append(&2, U32, VS.bt(X0, B), List.append(&2, U32, Z, VS.bdr(Nat.add(X0, _), B))) : +List<U32>}
   {==}
+
+# ---- the open model's words ----------------------------------------------------------------------
+
+# The list model of the open write SWo: the words ws at byte S of the first of the words W,
+# nothing after the last (its carry out is dropped).
+def SWLo(+S: U32, ws: +List<U32>, W: List<&2, U32>, +c: U32) -> List<&2, U32>:
+  match ws W:
+    case Nil{} _: W
+    case Con{+w, r} Nil{}: []
+    case Con{+w, r} Con{+h, t}: Con{U32.or(h, U32.or(O.shl_bytes(w, S), c)), SWLo(S, r, t, O.shr_over(w, S))}
+
+law swo_slots:
+  for +S: U32
+  for +ws: +List<U32>
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +i: Nat
+  for +c: U32
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hr: {Nat.is_le(Nat.add(i, List.length(&2, U32, ws)), VB.pw(dd)) == True{} : Bool}
+  {SLW(SWo(S, ws, dd, D, i, c)) == VF.app(VS.wtake(i, SLW(D)), SWLo(S, ws, VB.wdr(i, SLW(D)), c)) : List<&2, U32>}
+def swo_slots(S, ws, dd, D, i, c, pf, hr):
+  match ws:
+    case Nil{}: Equal.sym(List<&2, U32>, VF.app(VS.wtake(i, SLW(D)), VB.wdr(i, SLW(D))), SLW(D), take_drop(i, SLW(D)))
+    case Con{+w, +r}:
+      +v = U32.or(O.shl_bytes(w, S), c)
+      +V1 = U32.or(VB.slot(D, i), v)
+      +D1 = ORW(dd, D, i, v)
+      +hr2 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(i, 1n+List.length(&2, U32, r)), 1n+Nat.add(i, List.length(&2, U32, r)), FD.nat__add_succ(i, List.length(&2, U32, r)), hr)
+      +hi = lt_add_l(i, List.length(&2, U32, r), VB.pw(dd), FD.nat__succ_le_lt(Nat.add(i, List.length(&2, U32, r)), VB.pw(dd), hr2))
+      +hl = FD.array__len_lt(U32, dd, D, i, pf, hi)
+      +ih = swo_slots(S, r, dd, D1, 1n+i, O.shr_over(w, S), orw_perfect(dd, D, i, v, pf), hr2)
+      %Equal.sym(List<&2, U32>, VB.wdr(i, SLW(D)), Con{FD.flat__nthc(SLW(D), i), VB.wdr(1n+i, SLW(D))}, wdr_con(SLW(D), i, hl)) :
+        {SLW(SWo(S, Con{w, r}, dd, D, i, c)) == VF.app(VS.wtake(i, SLW(D)), SWLo(S, Con{w, r}, _, c)) : List<&2, U32>}
+      %Equal.sym(List<&2, U32>, SLW(SWo(S, r, dd, D1, 1n+i, O.shr_over(w, S))), VF.app(VS.wtake(1n+i, SLW(D1)), SWLo(S, r, VB.wdr(1n+i, SLW(D1)), O.shr_over(w, S))), ih) :
+        {_ == VF.app(VS.wtake(i, SLW(D)), Con{V1, SWLo(S, r, VB.wdr(1n+i, SLW(D)), O.shr_over(w, S))}) : List<&2, U32>}
+      %Equal.sym(List<&2, U32>, SLW(D1), FD.spec_common__update(U32, SLW(D), i, V1), FD.array__upd_slots(U32, dd, D, i, V1, hi, pf)) :
+        {VF.app(VS.wtake(1n+i, _), SWLo(S, r, VB.wdr(1n+i, SLW(D1)), O.shr_over(w, S))) == VF.app(VS.wtake(i, SLW(D)), Con{V1, SWLo(S, r, VB.wdr(1n+i, SLW(D)), O.shr_over(w, S))}) : List<&2, U32>}
+      %Equal.sym(List<&2, U32>, SLW(D1), FD.spec_common__update(U32, SLW(D), i, V1), FD.array__upd_slots(U32, dd, D, i, V1, hi, pf)) :
+        {VF.app(VS.wtake(1n+i, FD.spec_common__update(U32, SLW(D), i, V1)), SWLo(S, r, VB.wdr(1n+i, _), O.shr_over(w, S))) == VF.app(VS.wtake(i, SLW(D)), Con{V1, SWLo(S, r, VB.wdr(1n+i, SLW(D)), O.shr_over(w, S))}) : List<&2, U32>}
+      %Equal.sym(List<&2, U32>, VS.wtake(1n+i, FD.spec_common__update(U32, SLW(D), i, V1)), VF.app(VS.wtake(i, SLW(D)), [V1]), take_upd(SLW(D), i, V1, hl)) :
+        {VF.app(_, SWLo(S, r, VB.wdr(1n+i, FD.spec_common__update(U32, SLW(D), i, V1)), O.shr_over(w, S))) == VF.app(VS.wtake(i, SLW(D)), Con{V1, SWLo(S, r, VB.wdr(1n+i, SLW(D)), O.shr_over(w, S))}) : List<&2, U32>}
+      %Equal.sym(List<&2, U32>, VB.wdr(1n+i, FD.spec_common__update(U32, SLW(D), i, V1)), VB.wdr(1n+i, SLW(D)), drop_upd(SLW(D), i, V1)) :
+        {VF.app(VF.app(VS.wtake(i, SLW(D)), [V1]), SWLo(S, r, _, O.shr_over(w, S))) == VF.app(VS.wtake(i, SLW(D)), Con{V1, SWLo(S, r, VB.wdr(1n+i, SLW(D)), O.shr_over(w, S))}) : List<&2, U32>}
+      app_assoc_l(VS.wtake(i, SLW(D)), [V1], SWLo(S, r, VB.wdr(1n+i, SLW(D)), O.shr_over(w, S)))
