@@ -195,6 +195,12 @@ What that means concretely:
   `codegen/var_win.py` (WINX); two variable fields of one child:
   `big_var_winx_AttesterSlashing` (offsets 8 and O1, both windows
   checked, inverted from the spec's two-part layout).
+  Lists of variable-size elements (`codegen/var_winl.py`):
+  `big_var_winx_l1_AttesterSlashing`, `big_var_winx_l8_Attestation`, proved
+  per element count m (the runtime's offset walk unrolls; CK_m / OBJ_m /
+  VAL_m), the inversion recovering m from the value; `vua_rd.rd_lt` covers
+  the first read of a window shorter than 4 bytes, `vua_win.vsingle` the
+  one-part shape of a variable container's spec parts.
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
@@ -257,6 +263,13 @@ What that means concretely:
   and decode_none (the window at x = 0; d < 28). Libraries `vrl.bend` (Array.set
   of any element type on a perfect tree; positions of consecutive records),
   `vrc.bend` (window splits, the offset layout of three variable parts).
+  Encoder (`codegen/var_rlist_enc.py`): `var_rlenc_ExecutionRequests.bend`
+  (stock) has per list the write loop's model (WT/LW: the records' words at
+  Q + W j), the putv run lemma (pvl), and the spec side (RWA: the records'
+  words; lpart: the list's parts; LWlo/LWhi/LWown: windows of the output after
+  the list write); `big_var_codec_ExecutionRequests_enc.bend` (checkq --big;
+  closed 2^24-byte size bounds) has encode_eval and encode_spec for counts
+  within the limits (hl_k) and record arrays on perfect trees (da_k < 31).
   after its header. LightClientBootstrap (a LightClientHeader, a SyncCommittee
   whose 6144 packed words are one symbolic segment of the header, `vsc.bend`
   `sc_parts`, and the branch) has ok_eval, decode_accept, decode_spec and

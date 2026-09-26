@@ -45,6 +45,8 @@ them, and every official case that uses one is an invalid case.
 | `proofs/obj/var_codec_DataColumnSidecar{,_acc,_unique,_rej}.bend`, `big_var_codec_DataColumnSidecar_enc.bend`, `v{mul,mv,mr,me,zeros}.bend`, `var_fix_types_m.bend` | DataColumnSidecar (three lists of byte vectors): decoder laws (stock) and encoder laws (big) (`codegen/var_multi.py`, `var_multi_enc.py`) |
 | `proofs/obj/var_winx_<list>.bend`, `var_winx_ExecutionRequests.bend`, `var_codec_ExecutionRequests.bend`, `v{rl,rc}.bend` | byte-offset window modules of lists of fixed records and of ExecutionRequests, and its whole-buffer decoder laws (`codegen/var_rlist.py`, `var_rlist_er.py`); stock |
 | `proofs/obj/var_bytesx_<Name>{,_inv}.bend`, `vbx_fix.bend` | the same names at a window at any byte offset (the `vua_win.bend` interface), for nesting at unaligned offsets (`codegen/var_bytes_x.py`; library `proofs/obj/vbx.bend`); ExecutionPayloadHeader, LightClientHeader; and LightClientFinalityUpdate (two leading variable fields, `codegen/var_bytes_x2.py`, library `vbx2.bend`) with its whole-buffer decoder laws `_dec`; stock |
+| `proofs/obj/var_winx_<list>.bend`, `var_winx_ExecutionRequests.bend`, `var_codec_ExecutionRequests.bend`, `v{rl,rc}.bend` | byte-offset window modules of lists of fixed records and of ExecutionRequests, its whole-buffer decoder laws (`codegen/var_rlist.py`, `var_rlist_er.py`; stock), and its encoder laws `var_rlenc_ExecutionRequests.bend` (stock) and `big_var_codec_ExecutionRequests_enc.bend` (big; `var_rlist_enc.py`) |
+| `proofs/obj/var_bytesx_<Name>{,_inv}.bend`, `vbx_fix.bend` | the same names at a window at any byte offset (the `vua_win.bend` interface), for nesting at unaligned offsets (`codegen/var_bytes_x.py`; library `proofs/obj/vbx.bend`); ExecutionPayloadHeader, LightClientHeader; stock |
 | `proofs/obj/sha_node.bend` | the SHA node bridge: runtime node = spec 64-byte message hash, via the pinned package law (`codegen/sha_laws.py`) |
 | `proofs/obj/schema_shapes.bend` | Bool shape tests and shape laws for every schema constructor (`codegen/schema_shapes.py`) |
 | `proofs/obj/root_names.bend`, `bits_leaf.bend`, `valid_names.bend` | phase-A root laws (Data-kind names: `X_root_correct`, `X_decoded_root_correct`) and generated-validity agreement (`codegen/root_laws.py`) |
@@ -66,7 +68,8 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/var_bits.py          # bit-list byte facts, generic BitList[N] laws [--no-big]
 /opt/homebrew/bin/python3 codegen/var_bitc.py          # Attestation, PendingAttestation [--no-big]
 /opt/homebrew/bin/python3 codegen/var_win.py           # window laws; AggregateAndProof, SignedAggregateAndProof [--no-big]
-/opt/homebrew/bin/python3 codegen/var_ua.py            # unaligned offsets: word-join limbs, shifted-copy loops (vua_bits, vua_sc)
+/opt/homebrew/bin/python3 codegen/var_ua.py            # unaligned offsets: word-join limbs, shifted-copy loops (vua_bits, vua_sc, vua_fix)
+/opt/homebrew/bin/python3 codegen/var_winl.py          # byte-offset windows of List[AttesterSlashing,1], List[Attestation,8] [--no-big]
 /opt/homebrew/bin/python3 codegen/var_bytes.py         # byte lists at any length, and the names nesting them [--no-big]
 /opt/homebrew/bin/python3 codegen/var_multi.py         # DataColumnSidecar (three lists of byte vectors); encoder big_ file
 /opt/homebrew/bin/python3 codegen/var_rlist.py         # lists of fixed records (byte-offset windows), ExecutionRequests

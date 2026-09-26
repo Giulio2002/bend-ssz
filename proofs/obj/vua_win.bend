@@ -1,5 +1,10 @@
 import Base
 import ../../spec/primitives.bend as SP
+import ../../types/schema.bend as S
+import ../../spec/codec.bend as Codec
+import ../../spec/schema.bend as SS
+import ../../spec/layout.bend as Layout
+import ../../proofs/decode_facts.bend as DF
 import ../compact/found.bend as F
 import ../compact/arith.bend as A
 import ../compact/reads.bend as RD
@@ -193,3 +198,35 @@ def subWX(+t: F.array__Tree<U32>, +x: Nat, +h: Nat, +m: Nat, +L: Nat, +hl: {Nat.
   %eL : {VS.bt(m, VS.bdr(h, WX(t, x, _))) == WX(t, Nat.add(h, x), m) : +List<U32>}
   %Equal.sym(+List<U32>, VS.bdr(h, WX(t, x, Nat.add(h, R))), WX(t, Nat.add(h, x), R), tailWX(t, x, h, R)) : {VS.bt(m, _) == WX(t, Nat.add(h, x), m) : +List<U32>}
   btWX(t, Nat.add(h, x), m, R, le_cancel(h, m, R, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(h, m), z) == True{} : Bool}, L, Nat.add(h, R), Equal.sym(Nat, Nat.add(h, R), L, eL), hl)))
+
+# ---- the spec parts of a variable-size container value are one variable part ---------------
+
+def vs_enc(+m: Maybe<&2, +List<U32>>) -> DF.single_result(None{}, Codec.one(m, None{})):
+  match m:
+    case None{}: Unit{}
+    case Some{+xs}: {==}
+
+def vs_agg(+m: Maybe<&2, +List<S.Part>>) -> DF.single_result(None{}, Codec.aggregate(m, None{})):
+  match m:
+    case None{}: Unit{}
+    case Some{+ps}: vs_enc(Layout.encoding(ps))
+
+law vsingle:
+  for +h: S.Value
+  for +names: +List<String>
+  for +fields: S.Schema
+  for +e: {SS.fixed_size(fields) == None{} : Maybe<&2, Nat>}
+  DF.single_result(None{}, Codec.parts(h, S.Container{names, fields}))
+def vsingle(h, names, fields, e):
+  match h:
+    case S.Sequence{+items}:
+      F.logic__subst(Maybe<&2, Nat>, z => DF.single_result(None{}, Codec.aggregate(Codec.parts(items, fields), z)), None{}, SS.fixed_size(fields), Equal.sym(Maybe<&2, Nat>, SS.fixed_size(fields), None{}, e),
+        vs_agg(Codec.parts(items, fields)))
+    case S.BooleanValue{+b0}: Unit{}
+    case S.UnsignedValue{+u0}: Unit{}
+    case S.BytesValue{+xs0}: Unit{}
+    case S.BitsValue{+bs0}: Unit{}
+    case S.Items{+hd0, +tl0}: Unit{}
+    case S.EmptyItems{}: Unit{}
+    case S.Selected{+sel0, +sv0}: Unit{}
+    case S.NullValue{}: Unit{}
