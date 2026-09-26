@@ -82,6 +82,13 @@ GENERIC = [('Gc465214E502', {'l1024_u16': 'var_winx_l1024_u16.bend'}),
                              'pl_pl_Gc465214E502': 'big_vvl_pl_pl_Gc465214E502.bend'}),
            ('Gc56D855869F', {'l128_u16': 'var_winx_l128_u16.bend', 'bl256': 'big_vvlb_bl256.bend', 'Gc465214E502': 'var_winx_Gc465214E502.bend',
                              'v2_Gc465214E502': 'big_vvl_v2_Gc465214E502.bend'})]
+# the generic progressive containers whose children include unbounded lists: written as big_var_winx_<X>,
+# big_var_codec_<X>(_unique), skipped with --no-big
+GENERIC_BIG = [('Gp4B0CA2906A', {'pbits': 'big_var_winp_pbits.bend'}),
+               ('Gp66304057C3', {'l123_u16': 'var_winx_l123_u16.bend', 'pbits': 'big_var_winp_pbits.bend'}),
+               ('Gp8A7851175B', {'l123_u16': 'var_winx_l123_u16.bend', 'pbits': 'big_var_winp_pbits.bend', 'pl_u64': 'big_var_winp_pl_u64.bend',
+                                 'pl_Gc4ED9619F50': 'big_var_winx_pl_Gc4ED9619F50.bend', 'pl_pl_Gc465214E502': 'big_vvl_pl_pl_Gc465214E502.bend',
+                                 'l10_GpF350A3C486': 'var_winx_l10_GpF350A3C486.bend', 'pl_Gp66304057C3': 'big_vvl_pl_Gp66304057C3.bend'})]
 # (container, output file) of the tracked modules
 MODULES = [('BeaconBlockBody', 'big_var_winx_BeaconBlockBody.bend', False), ('BeaconBlock', 'big_var_winx_BeaconBlock.bend', False),
            ('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock.bend', False), ('BeaconState', 'big_var_winx_BeaconState.bend', True)]
@@ -1581,18 +1588,18 @@ def main():
             continue
         out[ROOT / 'proofs/obj' / fn] = module_text(L)
         out[ROOT / 'proofs/obj' / f'big_var_codec_{name}.bend'] = top_text(L, fn)
-    for name, kids in GENERIC:
+    for name, kids, big in [(n, k, '') for n, k in GENERIC] + ([] if no_big else [(n, k, 'big_') for n, k in GENERIC_BIG]):
         CHILD_MOD.update(kids)
         L = layout(name, True, FIXMOD, generic=True)
-        fn = f'var_winx_{name}.bend'
+        fn = f'{big}var_winx_{name}.bend'
         mods = [f['mod'] for f in L.vars] + sorted(set(L.fmods().values()))
         missing = [m for m in mods if not (ROOT / 'proofs/obj' / m).exists()]
         if missing:
             print(f'{fn}: waits for ' + ', '.join(missing))
             continue
         out[ROOT / 'proofs/obj' / fn] = module_text(L)
-        out[ROOT / 'proofs/obj' / f'var_codec_{name}.bend'] = top_text(L, fn)
-        out[ROOT / 'proofs/obj' / f'var_codec_{name}_unique.bend'] = generic_unique_text(name, f'var_codec_{name}.bend')
+        out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}.bend'] = top_text(L, fn)
+        out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}_unique.bend'] = generic_unique_text(name, f'{big}var_codec_{name}.bend')
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:
