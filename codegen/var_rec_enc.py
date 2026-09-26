@@ -639,10 +639,25 @@ def valid(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +h: {{OKT(dw, T, N) == Tru
   wok(dw, T, N, 48, ok_pf(dw, T, N, h), ok_hd(dw, T, N, h), ok_hN(dw, T, N, h), ok_tz(dw, T, N, h),
     FD.logic__and_left(U32.is_eq(U32.mod(N, 48), 0), W.CHKw(T, 0n, 0, N), FD.logic__and_right(U32.is_le(N, 196608), Bool.and(U32.is_eq(U32.mod(N, 48), 0), W.CHKw(T, 0n, 0, N)), ex)))
 """),
+        # IndexedAttestation's attesting_indices: at most 131072 uint64 (codec-var's big_var_winx_l131072_u64)
+        'l131072_u64': dict(X='Spec.Schema45()',
+                            EXTRA=f'Bool.and(U32.is_le(N, 1048576), Bool.and(U32.is_eq(U32.and(N, 7), 0), W.CHKw(T, 0n, 0, N)))',
+                            OKDOC=', at most 1048576 bytes, a multiple of 8',
+                            CHK='FD.logic__and_right(U32.is_eq(U32.and(N, 7), 0), W.CHKw(T, 0n, 0, N), FD.logic__and_right(U32.is_le(N, 1048576), '
+                                'Bool.and(U32.is_eq(U32.and(N, 7), 0), W.CHKw(T, 0n, 0, N)), ok_ex(dw, T, N, hok)))',
+                            VALID=f"""
+def valid(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +h: {{OKT(dw, T, N) == True{{}} : Bool}})
+    -> {{T.l131072_u64_valid(O.Words{{FD.array__thaw(U32, T), N}}) == (O.Words{{FD.array__thaw(U32, T), N}}, True{{}}) : O.Words & Bool}}:
+  +ex = ok_ex(dw, T, N, h)
+  %Equal.sym(Bool, U32.is_le(N, 1048576), True{{}}, FD.logic__and_left(U32.is_le(N, 1048576), Bool.and(U32.is_eq(U32.and(N, 7), 0), W.CHKw(T, 0n, 0, N)), ex)) :
+    {{O.wk_cap(Bool.and(Bool.and(U32.is_le(0, N), Bool.or(False{{}}, _)), O.unit_ok(8, N)), N, Array.size(U32, FD.array__thaw(U32, T))) == (O.Words{{FD.array__thaw(U32, T), N}}, True{{}}) : O.Words & Bool}}
+  wok(dw, T, N, 8, ok_pf(dw, T, N, h), ok_hd(dw, T, N, h), ok_hN(dw, T, N, h), ok_tz(dw, T, N, h),
+    FD.logic__and_left(U32.is_eq(U32.and(N, 7), 0), W.CHKw(T, 0n, 0, N), FD.logic__and_right(U32.is_le(N, 1048576), Bool.and(U32.is_eq(U32.and(N, 7), 0), W.CHKw(T, 0n, 0, N)), ex)))
+"""),
     }
 
 
-FLISTS = ['l1099511627776_u64', 'l1099511627776_u8', 'l16777216_b32', 'l4096_b48']
+FLISTS = ['l1099511627776_u64', 'l1099511627776_u8', 'l16777216_b32', 'l4096_b48', 'l131072_u64']
 
 
 def flist_text(p):
