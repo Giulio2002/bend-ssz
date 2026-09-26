@@ -25,6 +25,8 @@ import ./vbuf.bend as VB
 import ./vu32.bend as VU
 import ./vcopy.bend as VC
 import ./vrej.bend as VR
+import ./vfix.bend as VF
+import ./vbspec.bend as VZ
 import ./var_bytes_ExecutionPayloadHeader_win.bend as W
 import ./var_bytes_ExecutionPayloadHeader.bend as DC
 
@@ -738,4 +740,68 @@ def decode_none(d, t, n, pf, hd, hn, hchk):
   %Equal.sym(Bool, DC.CHK(t, n), False{}, hchk) :
     {T.ExecutionPayloadHeader_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.ExecutionPayloadHeader>}
   {==}
+
+# ---- the window's bytes (for nesting) ------------------------------------------------------
+
+def WV(t: F.array__Tree<U32>, +i: Nat, +len: U32) -> +List<U32>: VS.bt(U32.to_nat(len), FX.limbs(VB.wdr(i, SL(t))))
+
+# Every value whose spec parts are one variable part has its bytes in the checked shape.
+def inv_p(+v: S.Value, +bs: +List<U32>, +e: {Codec.parts(v, Spec.ExecutionPayloadHeader()) == Some{[S.Variable{bs}]} : Maybe<&2, +List<S.Part>>}) -> FACTS(bs):
+  inv_v(v, bs, Equal.cong(Maybe<&2, +List<S.Part>>, Maybe<&2, +List<U32>>, z => Codec.bytes(z), Codec.parts(v, Spec.ExecutionPayloadHeader()), Some{[S.Variable{bs}]}, e))
+
+def lenWV(+d: Nat, +t: F.array__Tree<U32>, +i: Nat, +len: U32, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {List.length(&2, U32, WV(t, i, len)) == U32.to_nat(len) : Nat}:
+  VS.bt_len(U32.to_nat(len), FX.limbs(VB.wdr(i, SL(t))), VZ.win_room(d, t, i, len, pf, hw))
+
+def haw(+len: U32, +X: Nat, +en: {U32.to_nat(len) == 584n+X : Nat}) -> {U32.is_le(584, len) == True{} : Bool}:
+  F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(584n, U32.to_nat(len)), U32.is_le(584, len), Equal.sym(Bool, U32.is_le(584, len), Nat.is_le(584n, U32.to_nat(len)), VU.le_u32(584, len)),
+    F.logic__subst(Nat, z => {Nat.is_le(584n, z) == True{} : Bool}, 584n+X, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), 584n+X, en), Order.below_sum(584n, X)))
+
+# The four bytes at the window's offset field are the limbs of its offset word.
+def bytePw(+d: Nat, +t: F.array__Tree<U32>, +i: Nat, +len: U32, +X: Nat, +en: {U32.to_nat(len) == 584n+X : Nat},
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {VS.bt(4n, VS.bdr(436n, WV(t, i, len))) == FX.limbs([W.SPOw(t, i)]) : +List<U32>}:
+  +hp = F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(109n, i), z) == True{} : Bool}, VB.pw(d), VB.len(SL(t)), Equal.sym(Nat, VB.len(SL(t)), VB.pw(d), F.array__slots_length(U32, d, t, pf)),
+    W.hiw(d, i, len, 109n, {==}, hw, haw(len, X, en)))
+  %Equal.sym(Nat, U32.to_nat(len), 584n+X, en) : {VS.bt(4n, VS.bdr(436n, VS.bt(_, FX.limbs(VB.wdr(i, SL(t)))))) == FX.limbs([W.SPOw(t, i)]) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bdr(436n, VS.bt(584n+X, FX.limbs(VB.wdr(i, SL(t))))), VS.bt(148n+X, VS.bdr(436n, FX.limbs(VB.wdr(i, SL(t))))), VS.bdr_bt(436n, 148n+X, FX.limbs(VB.wdr(i, SL(t))))) :
+    {VS.bt(4n, _) == FX.limbs([W.SPOw(t, i)]) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bt(4n, VS.bt(148n+X, VS.bdr(436n, FX.limbs(VB.wdr(i, SL(t)))))), VS.bt(4n, VS.bdr(436n, FX.limbs(VB.wdr(i, SL(t))))), VS.bt_bt(4n, 144n+X, VS.bdr(436n, FX.limbs(VB.wdr(i, SL(t)))))) :
+    {_ == FX.limbs([W.SPOw(t, i)]) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bdr(436n, FX.limbs(VB.wdr(i, SL(t)))), FX.limbs(VS.wdr0(109n, VB.wdr(i, SL(t)))), VS.bdr_limbs(109n, VB.wdr(i, SL(t)))) :
+    {VS.bt(4n, _) == FX.limbs([W.SPOw(t, i)]) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bt(4n, FX.limbs(VS.wdr0(109n, VB.wdr(i, SL(t))))), FX.limbs(VS.wtake(1n, VS.wdr0(109n, VB.wdr(i, SL(t))))), VS.bt_limbs(1n, VS.wdr0(109n, VB.wdr(i, SL(t))))) :
+    {_ == FX.limbs([W.SPOw(t, i)]) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VS.wdr0(109n, VB.wdr(i, SL(t))), VB.wdr(109n, VB.wdr(i, SL(t))), wdr0_eq(109n, VB.wdr(i, SL(t)))) :
+    {FX.limbs(VS.wtake(1n, _)) == FX.limbs([W.SPOw(t, i)]) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VB.wdr(109n, VB.wdr(i, SL(t))), VB.wdr(Nat.add(i, 109n), SL(t)), VF.wdr_add(109n, i, SL(t))) :
+    {FX.limbs(VS.wtake(1n, _)) == FX.limbs([W.SPOw(t, i)]) : +List<U32>}
+  %Equal.sym(Nat, Nat.add(i, 109n), Nat.add(109n, i), F.nat__add_comm(i, 109n)) :
+    {FX.limbs(VS.wtake(1n, VB.wdr(_, SL(t)))) == FX.limbs([W.SPOw(t, i)]) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VS.wtake(1n, VB.wdr(Nat.add(109n, i), SL(t))), Con{F.flat__nthc(SL(t), Nat.add(109n, i)), VS.wtake(0n, VB.wdr(1n+Nat.add(109n, i), SL(t)))}, VB.wt_eta(0n, Nat.add(109n, i), SL(t), hp)) :
+    {FX.limbs(_) == FX.limbs([W.SPOw(t, i)]) : +List<U32>}
+  {==}
+
+# The window's checks hold for every window whose bytes have the shape.
+def chk_truew(+t: F.array__Tree<U32>, +i: Nat, +len: U32, +k: Nat, +en: {U32.to_nat(len) == Nat.add(584n, k) : Nat}, +hk: {Nat.is_le(k, 32n) == True{} : Bool},
+    +epo: {W.SPOw(t, i) == 584 : U32}) -> {W.CHKw(t, i, len) == True{} : Bool}:
+  +hL = F.logic__subst(Nat, z => {Nat.is_le(z, 32n) == True{} : Bool}, k, U32.to_nat(W.LL(len)), Equal.sym(Nat, U32.to_nat(W.LL(len)), k, ek_sub(len, k, en)), hk)
+  %Equal.sym(Bool, U32.is_le(584, len), True{}, haw(len, k, en)) :
+    {W.chk3(_, U32.is_eq(W.SPOw(t, i), 584), W.BLW(U32.sub(len, W.SPOw(t, i)))) == True{} : Bool}
+  %Equal.sym(U32, W.SPOw(t, i), 584, epo) :
+    {W.chk3(True{}, U32.is_eq(_, 584), W.BLW(U32.sub(len, _))) == True{} : Bool}
+  F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(W.LL(len)), U32.to_nat(32)), U32.is_le(W.LL(len), 32), Equal.sym(Bool, U32.is_le(W.LL(len), 32), Nat.is_le(U32.to_nat(W.LL(len)), U32.to_nat(32)), VU.le_u32(W.LL(len), 32)), hL)
+
+# A window whose bytes have the checked shape passes the window's checks.
+def rej_facts(+d: Nat, +t: F.array__Tree<U32>, +i: Nat, +len: U32, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, facts: FACTS(WV(t, i, len)))
+    -> {W.CHKw(t, i, len) == True{} : Bool}:
+  (+hb, ex) = facts
+  (+k, +pr) = ex
+  (+hlen, +hk) = pr
+  +en = Equal.trans(Nat, U32.to_nat(len), List.length(&2, U32, WV(t, i, len)), Nat.add(584n, k), Equal.sym(Nat, List.length(&2, U32, WV(t, i, len)), U32.to_nat(len), lenWV(d, t, i, len, pf, hw)), hlen)
+  +epo = wordFS(W.SPOw(t, i), Equal.trans(+List<U32>, FX.limbs([W.SPOw(t, i)]), VS.bt(4n, VS.bdr(436n, WV(t, i, len))), [72, 2, 0, 0],
+    Equal.sym(+List<U32>, VS.bt(4n, VS.bdr(436n, WV(t, i, len))), FX.limbs([W.SPOw(t, i)]), bytePw(d, t, i, len, k, en, pf, hw)), hb))
+  chk_truew(t, i, len, k, en, hk, epo)
 

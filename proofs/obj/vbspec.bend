@@ -15,6 +15,7 @@ import ./vbuf.bend as VB
 import ./vdepth.bend as VD
 import ./vcopy.bend as VC
 import ./vbytes.bend as VY
+import ./vfix.bend as VF
 
 # Byte lists at any length, specification side (codegen/var_bytes.py): the
 # parts of a ByteList value, the offset layout of fixed parts of words around
@@ -176,3 +177,54 @@ def wdr_len_le(H, i, W, h):
         F.logic__subst(Nat, z => {Nat.is_le(z, 0n) == True{} : Bool}, Nat.add(H, 1n+p), 1n+Nat.add(H, p), F.nat__add_succ(H, p), h)))
     case 1n+ +p Con{+x, +t}:
       wdr_len_le(H, p, t, F.logic__subst(Nat, z => {Nat.is_le(z, 1n+VB.len(t)) == True{} : Bool}, Nat.add(H, 1n+p), 1n+Nat.add(H, p), F.nat__add_succ(H, p), h))
+
+law wdr_len:
+  for +i: Nat
+  for +W: List<&2, U32>
+  for +h: {Nat.is_le(i, VB.len(W)) == True{} : Bool}
+  {Nat.add(i, VB.len(VB.wdr(i, W))) == VB.len(W) : Nat}
+def wdr_len(i, W, h):
+  match i W:
+    case 0n +W0: {==}
+    case 1n+ +p Nil{}: Empty.absurd({Nat.add(1n+p, VB.len(VB.wdr(1n+p, Nil{}))) == VB.len(Nil{}) : Nat}, F.logic__false_true(h))
+    case 1n+ +p Con{+x, +t}:
+      %Equal.sym(Nat, Nat.add(p, VB.len(VB.wdr(p, t))), VB.len(t), wdr_len(p, t, h)) : {1n+_ == 1n+VB.len(t) : Nat}
+      {==}
+
+law le_cancel:
+  for +a: Nat
+  for +x: Nat
+  for +y: Nat
+  for +h: {Nat.is_le(Nat.add(a, x), Nat.add(a, y)) == True{} : Bool}
+  {Nat.is_le(x, y) == True{} : Bool}
+def le_cancel(a, x, y, h):
+  match a:
+    case 0n: h
+    case 1n+ +p: le_cancel(p, x, y, h)
+
+law len_list:
+  for +W: List<&2, U32>
+  {List.length(&2, U32, W) == F.spec_common__length(U32, W) : Nat}
+def len_list(W):
+  match W:
+    case Nil{}: {==}
+    case Con{+h, +t}:
+      %Equal.sym(Nat, List.length(&2, U32, t), F.spec_common__length(U32, t), len_list(t)) : {1n+_ == 1n+F.spec_common__length(U32, t) : Nat}
+      {==}
+
+# The limbs of the words from i on of a tree of 2^d words hold every window of 4 i + len <= 4 2^d bytes.
+def win_room(+d: Nat, +t: F.array__Tree<U32>, +i: Nat, +len: U32, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(len), List.length(&2, U32, FX.limbs(VB.wdr(i, F.array__slots(U32, t))))) == True{} : Bool}:
+  +S = F.array__slots(U32, t)
+  +eS = F.array__slots_length(U32, d, t, pf)
+  +hiS = F.logic__subst(Nat, z => {Nat.is_le(i, z) == True{} : Bool}, VB.pw(d), VB.len(S), Equal.sym(Nat, VB.len(S), VB.pw(d), eS),
+    VC.quad_inv(i, VB.pw(d), F.nat__le_trans(A.quad(i), Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d)), Order.below_sum(A.quad(i), U32.to_nat(len)), hw)))
+  +e1 = Equal.trans(Nat, Nat.add(i, VB.len(VB.wdr(i, S))), VB.len(S), VB.pw(d), wdr_len(i, S, hiS), eS)
+  +e2 = Equal.trans(Nat, Nat.add(A.quad(i), A.quad(VB.len(VB.wdr(i, S)))), A.quad(Nat.add(i, VB.len(VB.wdr(i, S)))), A.quad(VB.pw(d)),
+    VF.quad_add(i, VB.len(VB.wdr(i, S))), Equal.cong(Nat, Nat, z => A.quad(z), Nat.add(i, VB.len(VB.wdr(i, S))), VB.pw(d), e1))
+  %Equal.sym(Nat, List.length(&2, U32, FX.limbs(VB.wdr(i, S))), FX.wlen(VB.wdr(i, S)), VS.len_limbs(VB.wdr(i, S))) : {Nat.is_le(U32.to_nat(len), _) == True{} : Bool}
+  %Equal.sym(Nat, FX.wlen(VB.wdr(i, S)), A.quad(List.length(&2, U32, VB.wdr(i, S))), VS.wlen_quad(VB.wdr(i, S))) : {Nat.is_le(U32.to_nat(len), _) == True{} : Bool}
+  %Equal.sym(Nat, List.length(&2, U32, VB.wdr(i, S)), VB.len(VB.wdr(i, S)), len_list(VB.wdr(i, S))) : {Nat.is_le(U32.to_nat(len), A.quad(_)) == True{} : Bool}
+  le_cancel(A.quad(i), U32.to_nat(len), A.quad(VB.len(VB.wdr(i, S))),
+    F.logic__subst(Nat, z => {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), z) == True{} : Bool}, A.quad(VB.pw(d)), Nat.add(A.quad(i), A.quad(VB.len(VB.wdr(i, S)))), Equal.sym(Nat, Nat.add(A.quad(i), A.quad(VB.len(VB.wdr(i, S)))), A.quad(VB.pw(d)), e2), hw))
