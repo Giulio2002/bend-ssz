@@ -24,7 +24,17 @@ import schema  # noqa: E402
 import var_laws as VLW  # noqa: E402
 
 LISTS = [('ExecutionRequests', 'deposits'), ('ExecutionRequests', 'withdrawals'), ('ExecutionRequests', 'consolidations'),
-         ('BeaconBlockBody', 'voluntary_exits'), ('BeaconBlockBody', 'bls_to_execution_changes'), ('ExecutionPayload', 'withdrawals')]
+         ('BeaconBlockBody', 'voluntary_exits'), ('BeaconBlockBody', 'bls_to_execution_changes'), ('ExecutionPayload', 'withdrawals'),
+         ('BeaconState', 'eth1_data_votes'), ('BeaconState', 'historical_summaries'), ('BeaconState', 'pending_deposits'),
+         ('BeaconState', 'pending_partial_withdrawals'), ('BeaconState', 'pending_consolidations')]
+
+# A closed limit above this is evaluated only by checkq --big (stock Bend's stack holds unary
+# numbers of a few thousand): such modules are big_ files.
+BIG_LIM = 8192
+
+
+def winx_name(p, LIM):
+    return f'{"big_" if LIM > BIG_LIM else ""}var_winx_{p}.bend'
 
 # lists of boxed records (codegen/var_rlist_box.py)
 BOXLISTS = [('BeaconBlockBody', 'proposer_slashings'), ('BeaconBlockBody', 'deposits')]
@@ -423,7 +433,7 @@ def outputs():
            ROOT / 'proofs/obj/vrc.bend': (ROOT / 'codegen/vrc.bend.in').read_text()}
     for parent, field in LISTS:
         I = info(g, names, parent, field)
-        out[ROOT / f'proofs/obj/var_winx_{I["p"]}.bend'] = list_text(g, names, parent, field)
+        out[ROOT / f'proofs/obj/{winx_name(I["p"], I["LIM"])}'] = list_text(g, names, parent, field)
     import var_rlist_box as BX
     out[ROOT / 'proofs/obj/vua_fixb.bend'] = BX.fixb_module(g, [dict(names[pa].fields)[f].elem for pa, f in BOXLISTS])
     for parent, field in BOXLISTS:
