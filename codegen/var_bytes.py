@@ -184,7 +184,8 @@ class Name:
 
 
 def fname(x, part=''):
-    return ROOT / f'proofs/obj/var_bytes_{x.n}{part}.bend'
+    big = 'big_' if getattr(x, 'big', False) else ''
+    return ROOT / f'proofs/obj/{big}var_bytes_{x.n}{part}.bend'
 
 
 HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
@@ -721,7 +722,8 @@ def unique_text(x):
 
 # ---- the rejection laws ----------------------------------------------------------------------
 
-def rej_text(x):
+def rej_text(x, pure=False):
+    """pure: only the lines up to inv_v (no window or whole-buffer facts), for codegen/var_bytes_x.py."""
     n, FS, H, po, LIM = x.n, x.FS, x.H, x.po, x.LIM
     P = 4 * po
     kids, _ = VL.spec_schemas(n)
@@ -898,6 +900,8 @@ def rej_text(x):
     w('def inv_v(v, bs, e):')
     L.extend(match_value('v', ('Sequence', ['items']), 'st0(items, bs, e)'))
     w('')
+    if pure:
+        return L
     R = FS - P
     body = REJ + REJW + REJW_BL
     for a, b in [('@Tn', Tn), ('@n', n), ('@FSL', FSL), ('@FS', str(FS)), ('@PO', str(po)), ('@P', str(P)), ('@H', str(H)),
@@ -1016,8 +1020,8 @@ def main():
     fts = []
     for x in xs + [VBN.NName(g, nm, names[nm]) for nm in VBN.ORDER]:
         for f in x.fields:
-            if f['kind'] == 'fix':
-                for dft in f['ft'].deps():
+            if f['kind'] in ('fix', 'comp'):
+                for dft in (f['ft'] if f['kind'] == 'fix' else f['rft']).deps():
                     if dft.p not in [q.p for q in fts]:
                         fts.append(dft)
     out = {ROOT / 'proofs/obj/var_bytes_fix.bend': fix_module(fts),
@@ -1031,7 +1035,8 @@ def main():
     out.update(VBN.outputs(g, names, '--no-big' in sys.argv))
     out.update(VBNE.outputs(g, names, '--no-big' in sys.argv))
     mine = sorted((ROOT / 'proofs/obj').glob('*var_bytes_*.bend'))
-    orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
+    nb = '--no-big' in sys.argv
+    orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not (nb and q.name.startswith('big_'))]
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, text in out.items() if not p.exists() or p.read_text() != text]
         if stale or orphans:
