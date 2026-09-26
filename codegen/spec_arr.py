@@ -31,6 +31,28 @@ def PN(words, p):
     return f'AC.pow2u_is({words}, {p}n, {{==}}, {{==}})'
 
 
+
+def split_params(ps):
+    """'+a: T, +b: {x == y : U}' -> ['+a: T', ...] (commas at depth 0 only)."""
+    out, cur, d = [], '', 0
+    for c in ps:
+        if c in '([{<':
+            d += 1
+        elif c in ')]}>':
+            d -= 1
+        if c == ',' and d == 0:
+            out.append(cur.strip())
+            cur = ''
+        else:
+            cur += c
+    if cur.strip():
+        out.append(cur.strip())
+    return out
+
+
+def pname(p):
+    return p.split(':')[0].strip().lstrip('+-~').strip()
+
 def th(t):
     return f'F.array__thaw(U32, {t})'
 
@@ -470,15 +492,15 @@ def sync_committee(name='SyncCommittee'):
     w(f'def {name}_spec_load({zparams})')
     w(f'    -> {{B.fill_at(B.alloc({n}), 0, SF.limbs({WI})) == {BUFZ} : B.Buf}}:')
     w(f'  %Equal.sym(Nat, B.capacity({n}), 13n, {{==}}) : {{B.Buf{{B.fill_go(SF.limbs({WI}), Array.new(U32, _, 0), U32.shrn(0, 2n)), {n}}} == {BUFZ} : B.Buf}}')
-    w(f'  %Equal.sym(Array<U32>, Array.new(U32, 13n, 0), {th(D13)}, F.array__new(U32, 13n, 0)) : {{B.Buf{{B.fill_go(SF.limbs({WI}), _, 0), {n}}} == {BUFZ} : B.Buf}}')
-    w(f'  %Equal.sym(Array<U32>, B.fill_go(SF.limbs({WI}), {th(D13)}, 0), {th(f"AC.cpt(13n, F.spec_common__length(U32, {WI}), 0n, 0n, {D13}, {WI})")}, '
-      f'AE.fill({WI}, 13n, {D13}, 0, 0n, {{==}}, {{==}}, {hfill}, F.array__trep_perfect(U32, 13n, 0))) :')
+    w(f'  %Equal.sym(Array<U32>, Array.new(U32, 13n, 0), {th(D13)}, F.array__new(U32, 13n, 0)) : {{B.Buf{{B.fill_go(SF.limbs({WI}), _, U32.shrn(0, 2n)), {n}}} == {BUFZ} : B.Buf}}')
+    w(f'  %Equal.sym(Array<U32>, B.fill_go(SF.limbs({WI}), {th(D13)}, U32.shrn(0, 2n)), {th(f"AC.cpt(13n, F.spec_common__length(U32, {WI}), 0n, 0n, {D13}, {WI})")}, '
+      f'AE.fill({WI}, 13n, {D13}, U32.shrn(0, 2n), 0n, {{==}}, {{==}}, {hfill}, F.array__trep_perfect(U32, 13n, 0))) :')
     w(f'    {{B.Buf{{_, {n}}} == {BUFZ} : B.Buf}}')
     w(f'  %Equal.sym(Nat, F.spec_common__length(U32, {WI}), {C1}, {eL}) :')
     w(f'    {{B.Buf{{{th(f"AC.cpt(13n, _, 0n, 0n, {D13}, {WI})")}, {n}}} == {BUFZ} : B.Buf}}')
-    w(f'  %Equal.sym(F.array__Tree<U32>, AC.cpt(13n, {C1}, 0n, 0n, {D13}, {WI}), F.TNode{{{SA}, AC.cpt(12n, {C2}, 0n, 0n, F.array__trep(U32, 12n, 0), {TB})}}, AN.cpt_tail(12n, {C2}, {SA}, {TB}, {pSA})) :')
+    w(f'  %Equal.sym(F.array__Tree<U32>, AC.cpt(13n, {C1}, 0n, 0n, {D13}, {WI}), F.TNode{{{SA}, AC.cpt(12n, {C2}, 0n, 0n, F.array__trep(U32, 12n, 0), {TB})}}, AN.cpt_tail_q(12n, 13n, {{==}}, {C2}, {SA}, {TB}, {pSA})) :')
     w(f'    {{B.Buf{{{th("_")}, {n}}} == {BUFZ} : B.Buf}}')
-    w(f'  %Equal.sym(F.array__Tree<U32>, AC.cpt(12n, {C2}, 0n, 0n, F.array__trep(U32, 12n, 0), {TB}), F.TNode{{bb, AC.cpt(11n, 12n, 0n, 0n, F.array__trep(U32, 11n, 0), {G})}}, AN.cpt_tail(11n, 12n, bb, {G}, pbb)) :')
+    w(f'  %Equal.sym(F.array__Tree<U32>, AC.cpt(12n, {C2}, 0n, 0n, F.array__trep(U32, 12n, 0), {TB}), F.TNode{{bb, AC.cpt(11n, 12n, 0n, 0n, F.array__trep(U32, 11n, 0), {G})}}, AN.cpt_tail_q(11n, 12n, {{==}}, 12n, bb, {G}, pbb)) :')
     w(f'    {{B.Buf{{{th(f"F.TNode{{{SA}, _}}")}, {n}}} == {BUFZ} : B.Buf}}')
     w('  {==}')
     w('')
@@ -963,16 +985,40 @@ def uvec_tail(name, e, fname):
                          f'{{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {pS}, F.array__trep_perfect(U32, {p + 1}n, 0))')
     CP = lambda Tl, Tr: f'AC.cpt({p + 1}n, Nat.add(F.spec_common__pow2({p}n), {Eb}n), 0n, 0n, {D1}, {slots(f"F.TNode{{{Tl}, {Tr}}}")})'
     TAILC = lambda Tr: f'AC.cpt({p}n, {Eb}n, 0n, 0n, F.array__trep(U32, {p}n, 0), {slots(Tr)})'
+    # the copies in the reader's / writer's own terms (arr_copy read_al / put_al):
+    # no copy or fill loop is run on the literal sizes
+    NWt = f'U32.shrn(({n} + 3 : U32), 2n)'
+    N13 = f'Array.new(U32, {p + 1}n, 0)'
+    ZOF = {}
+    RDC = lambda S, T: f'({th(f"F.TNode{{{S}, {ZOF[T]}}}")}, {th(f"F.TNode{{{S}, {T}}}")})'
+    def copy_def(dname, params, S, T, pS, a, b):
+        w(f'def {dname}({params})')
+        w(f'    -> {{O.acopy({NWt}, {a}, {b}, {N13}, {th(f"F.TNode{{{S}, {T}}}")}) == {RDC(S, T)} : Array<U32> & Array<U32>}}:')
+        w(f'  %Equal.sym(Array<U32>, {N13}, {th(D1)}, F.array__new(U32, {p + 1}n, 0)) :')
+        w(f'    {{O.acopy({NWt}, {a}, {b}, _, {th(f"F.TNode{{{S}, {T}}}")}) == {RDC(S, T)} : Array<U32> & Array<U32>}}')
+        TW = f'F.TNode{{{S}, {T}}}'
+        tl = f'O.ac_tail(U32.to_nat(({NWt} .&. 7 : U32)), ({a} + {NWt} - ({NWt} .&. 7 : U32) : U32), ({b} + {NWt} - ({NWt} .&. 7 : U32) : U32), @@)'
+        blkx = (f'AC.blk(U32.to_nat(U32.shrn({NWt}, 3n)), Nat.add(F.spec_common__pow2({p}n), {Eb}n), {a}, {b}, 0n, 0n, {p + 1}n, {p + 1}n, {TW}, {D1}, '
+                f'{{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {pS}, F.array__trep_perfect(U32, {p + 1}n, 0))')
+        w(f'  %Equal.sym(Array<U32> & Array<U32>, O.ac_blk(U32.to_nat(U32.shrn({NWt}, 3n)), {a}, {b}, ({th(D1)}, {th(TW)})), ({th(CP(S, T))}, {th(TW)}), {blkx}) :')
+        w(f'    {{{tl.replace("@@", "_")} == {RDC(S, T)} : Array<U32> & Array<U32>}}')
+        CPa = f'AC.cpt({p + 1}n, Nat.add(F.spec_common__pow2({p}n), {Eb}n), 0n, 0n, {D1}, F.spec_common__append(U32, {slots(S)}, {slots(T)}))'
+        w(f'  %Equal.sym(List<&2, U32>, {slots(TW)}, F.spec_common__append(U32, {slots(S)}, {slots(T)}), AC.slots_node({S}, {T})) :')
+        w(f'    {{{tl.replace("@@", f"({th(f'AC.cpt({p + 1}n, Nat.add(F.spec_common__pow2({p}n), {Eb}n), 0n, 0n, {D1}, _)')}, {th(TW)})")} == {RDC(S, T)} : Array<U32> & Array<U32>}}')
+        w(f'  %Equal.sym(F.array__Tree<U32>, {CPa}, F.TNode{{{S}, {TAILC(T)}}}, AN.cpt_tail_q({p}n, {p + 1}n, {{==}}, {Eb}n, {S}, {slots(T)}, {pA if S == A else pSE_})) :')
+        w(f'    {{{tl.replace("@@", f"({th(chr(95))}, {th(TW)})")} == {RDC(S, T)} : Array<U32> & Array<U32>}}'.replace(th(chr(95)), th("_")))
+        w('  {==}')
+        w('')
+    pSE_ = None
+    ZOF[Rt] = Rz
+    w(f'# the reader\'s copy of the first {nw} words into zero storage')
+    copy_def(f'{name}_dec_copy', iparams, A, Rt, pTIN, 'U32.shrn(0, 2n)', '0')
     w(f'# decoding any buffer of {n} bytes accepts: the storage is the first {nw} words')
     w(f'def {name}_spec_decode({iparams})')
     w(f'    -> {{T.{name}_decode({BUF}, {n}) == ({BUF}, Some{{{OBJ}}}) : {RT}}}:')
-    ctx = lambda inner: f'{{T.{name}_some(O.ci_fin({n}, {n}, {inner})) == ({BUF}, Some{{{OBJ}}}) : {RT}}}'
-    w(f'  %Equal.sym(Array<U32>, Array.new(U32, {p + 1}n, 0), {th(D1)}, F.array__new(U32, {p + 1}n, 0)) :')
-    w('    ' + ctx(f'O.acopy({nw}, 0, 0, _, {th(TIN)})'))
-    w(f'  %Equal.sym(Array<U32> & Array<U32>, O.ac_blk(U32.to_nat(U32.shrn({nw}, 3n)), 0, 0, ({th(D1)}, {th(TIN)})), ({th(CP(A, Rt))}, {th(TIN)}), {blk(TIN, pTIN)}) :')
-    w('    ' + ctx(f'O.ac_tail({tn}, {m}, {m}, _)'))
-    w(f'  %Equal.sym(F.array__Tree<U32>, {CP(A, Rt)}, F.TNode{{{A}, {TAILC(Rt)}}}, AN.cpt_tail({p}n, {Eb}n, {A}, {slots(Rt)}, {pA})) :')
-    w('    ' + ctx(f'O.ac_tail({tn}, {m}, {m}, ({th("_")}, {th(TIN)}))'))
+    w(f'  %Equal.sym(B.Buf & O.Words, O.copy_into({BUF}, 0, {n}, {N13}), O.ci_fin({n}, {n}, {RDC(A, Rt)}),')
+    w(f'      AC.read_al({th(TIN)}, {N13}, {n}, 0, {n}, {RDC(A, Rt)}, {{==}}, {{==}}, {name}_dec_copy({", ".join(pname(x) for x in split_params(iparams))}))) :')
+    w(f'    {{T.{name}_some(_) == ({BUF}, Some{{{OBJ}}}) : {RT}}}')
     w('  {==}')
     w('')
     W_ = f'F.spec_common__append(U32, {slots(A)}, {GL})'
@@ -1007,13 +1053,13 @@ def uvec_tail(name, e, fname):
     w(f'def {name}_spec_load({zparams})')
     w(f'    -> {{B.fill_at(B.alloc({n}), 0, SF.limbs({W_})) == {BUFZ} : B.Buf}}:')
     w(f'  %Equal.sym(Nat, B.capacity({n}), {p + 1}n, {{==}}) : {{B.Buf{{B.fill_go(SF.limbs({W_}), Array.new(U32, _, 0), U32.shrn(0, 2n)), {n}}} == {BUFZ} : B.Buf}}')
-    w(f'  %Equal.sym(Array<U32>, Array.new(U32, {p + 1}n, 0), {th(D1)}, F.array__new(U32, {p + 1}n, 0)) : {{B.Buf{{B.fill_go(SF.limbs({W_}), _, 0), {n}}} == {BUFZ} : B.Buf}}')
-    w(f'  %Equal.sym(Array<U32>, B.fill_go(SF.limbs({W_}), {th(D1)}, 0), {th(f"AC.cpt({p + 1}n, F.spec_common__length(U32, {W_}), 0n, 0n, {D1}, {W_})")}, '
-      f'AE.fill({W_}, {p + 1}n, {D1}, 0, 0n, {{==}}, {{==}}, {hfill}, F.array__trep_perfect(U32, {p + 1}n, 0))) :')
+    w(f'  %Equal.sym(Array<U32>, Array.new(U32, {p + 1}n, 0), {th(D1)}, F.array__new(U32, {p + 1}n, 0)) : {{B.Buf{{B.fill_go(SF.limbs({W_}), _, U32.shrn(0, 2n)), {n}}} == {BUFZ} : B.Buf}}')
+    w(f'  %Equal.sym(Array<U32>, B.fill_go(SF.limbs({W_}), {th(D1)}, U32.shrn(0, 2n)), {th(f"AC.cpt({p + 1}n, F.spec_common__length(U32, {W_}), 0n, 0n, {D1}, {W_})")}, '
+      f'AE.fill({W_}, {p + 1}n, {D1}, U32.shrn(0, 2n), 0n, {{==}}, {{==}}, {hfill}, F.array__trep_perfect(U32, {p + 1}n, 0))) :')
     w(f'    {{B.Buf{{_, {n}}} == {BUFZ} : B.Buf}}')
     w(f'  %Equal.sym(Nat, F.spec_common__length(U32, {W_}), Nat.add(F.spec_common__pow2({p}n), {e}n), {eL}) :')
     w(f'    {{B.Buf{{{th(f"AC.cpt({p + 1}n, _, 0n, 0n, {D1}, {W_})")}, {n}}} == {BUFZ} : B.Buf}}')
-    w(f'  %Equal.sym(F.array__Tree<U32>, AC.cpt({p + 1}n, Nat.add(F.spec_common__pow2({p}n), {e}n), 0n, 0n, {D1}, {W_}), F.TNode{{{A}, AC.cpt({p}n, {e}n, 0n, 0n, F.array__trep(U32, {p}n, 0), {GL})}}, AN.cpt_tail({p}n, {e}n, {A}, {GL}, {pA})) :')
+    w(f'  %Equal.sym(F.array__Tree<U32>, AC.cpt({p + 1}n, Nat.add(F.spec_common__pow2({p}n), {e}n), 0n, 0n, {D1}, {W_}), F.TNode{{{A}, AC.cpt({p}n, {e}n, 0n, 0n, F.array__trep(U32, {p}n, 0), {GL})}}, AN.cpt_tail_q({p}n, {p + 1}n, {{==}}, {e}n, {A}, {GL}, {pA})) :')
     w(f'    {{B.Buf{{{th("_")}, {n}}} == {BUFZ} : B.Buf}}')
     w('  {==}')
     w('')
@@ -1039,15 +1085,17 @@ def uvec_tail(name, e, fname):
     ectx = lambda inner: f'{{SF.emitted({R_}, T.{name}_enc_out(O.put_fin({n}, {inner})), k) == {RHS} : {ET}}}'
     TOUT = f'F.TNode{{{SE}, {ZT}}}'
     pTOUT = f'F.logic__and_intro(F.array__perfect(U32, {p}n, {SE}), F.array__perfect(U32, {p}n, {ZT}), {pSE}, {pZT})'
+    pSE_ = pSE
+    ZOF[RE] = ZT
+    w(f'# the writer\'s copy of the object\'s first {nw} words into the zero output')
+    hsig = ', '.join(f'+{x}: U32' for x in H)
+    copy_def(f'{name}_enc_copy', f'{separams}, {hsig}, {reparams}', SE, RE, pST, '0', 'U32.shrn(0, 2n)')
     w(f'# the encoder emits the words of the storage\'s first {nw} words (storage [A | R], R\'s words past them free)')
     w(f'def {name}_spec_bytes({eparams})')
     w(f'    -> {{SF.emitted({R_}, T.{name}_encode({OBJE}), k) == {RHS} : {ET}}}:')
-    w(f'  %Equal.sym(Array<U32>, Array.new(U32, {p + 1}n, 0), {th(D1)}, F.array__new(U32, {p + 1}n, 0)) :')
-    w('    ' + ectx(f'O.acopy({nw}, 0, 0, _, {th(ST)})'))
-    w(f'  %Equal.sym(Array<U32> & Array<U32>, O.ac_blk(U32.to_nat(U32.shrn({nw}, 3n)), 0, 0, ({th(D1)}, {th(ST)})), ({th(CP(SE, RE))}, {th(ST)}), {blk(ST, pST)}) :')
-    w('    ' + ectx(f'O.ac_tail({tn}, {m}, {m}, _)'))
-    w(f'  %Equal.sym(F.array__Tree<U32>, {CP(SE, RE)}, F.TNode{{{SE}, {TAILC(RE)}}}, AN.cpt_tail({p}n, {Eb}n, {SE}, {slots(RE)}, {pSE})) :')
-    w('    ' + ectx(f'O.ac_tail({tn}, {m}, {m}, ({th("_")}, {th(ST)}))'))
+    w(f'  %Equal.sym(Array<U32> & O.Words, O.put_words({N13}, 0, {OBJE}), O.put_fin({n}, {RDC(SE, RE)}),')
+    w(f'      AC.put_al({N13}, {th(ST)}, 0, {n}, {RDC(SE, RE)}, {{==}}, {{==}}, {{==}}, {name}_enc_copy({", ".join(pname(x) for x in split_params(f"{separams}, {hsig}, {reparams}"))}))) :')
+    w(f'    {{SF.emitted({R_}, T.{name}_enc_out(_), k) == {RHS} : {ET}}}')
     BUFO = f'B.Buf{{{th(TOUT)}, {n}}}'
     w(f'  %Equal.sym(B.Buf & +List<U32>, B.emit({BUFO}, 0, k), ({BUFO}, SF.limbs(F.spec_common__append(U32, {slots(SE)}, AH.tk({slots(ZT)}, {e}n)))),')
     w(f'      AN.emit_split({p}n, {SE}, {ZT}, {n}, k, {nw - 1}n, {P}n, {e}n,')

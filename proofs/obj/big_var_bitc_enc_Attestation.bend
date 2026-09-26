@@ -30,7 +30,7 @@ import ./spec_bits.bend as FB
 import ../../spec/bitfields.bend as Bits
 import ../../spec/bit_packing.bend as Bp
 import ./bitlist_pack.bend as BK
-import ./bitlist_obj.bend as BO
+import ./bitlist_rep.bend as BO
 import ./vbitenc.bend as VBT
 import ./vbitdl.bend as DL
 import ./vbitcore.bend as CO

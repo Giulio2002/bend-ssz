@@ -53,7 +53,9 @@ def outputs(no_big=False):
     g = G.Gen()
     for t in names.values():
         g.shape(t)
-    p, txt = FX.small_mod(g, names['SyncAggregate'], 'Spec.SyncAggregate()')
+    import spec_laws as SL
+    SL.EXACT = True   # spec_laws exact spec-parts proofs
+    p, txt = FX.small_mod(g, names['SyncAggregate'], 'Spec.SyncAggregate()', exact=True)
     if 'FB.' in txt and 'as FB\n' not in txt:
         txt = txt.replace('import ./vua_fix.bend as VTX\n', 'import ./vua_fix.bend as VTX\nimport ./spec_bits.bend as FB\n', 1)
     out[ROOT / f'proofs/obj/vfx_{p}.bend'] = txt

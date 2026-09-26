@@ -302,6 +302,14 @@ def sizex(m, hok):
   match m:
     case MB{+dw, +T, +K, +B, +kb, +KY}: size_go(dw, T, K, B, kb, KY, hok)
 
+law validx:
+  for +m: MB
+  for +hok: {OK(m) == True{} : Bool}
+  {T.bits131072_valid(TH(m)) == (TH(m), True{}) : O.Bits & Bool}
+def validx(m, hok):
+  match m:
+    case MB{+dw, +T, +K, +B, +kb, +KY}: valid(dw, T, K, B, kb, KY, hok)
+
 law encx_spec:
   for +m: MB
   for +hok: {OK(m) == True{} : Bool}

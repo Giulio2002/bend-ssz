@@ -31,7 +31,7 @@ import ../obj/spec_bits.bend as FB
 import ../../spec/bitfields.bend as Bits
 import ../../spec/bit_packing.bend as Bp
 import ../obj/bitlist_pack.bend as BK
-import ../obj/bitlist_obj.bend as BO
+import ../obj/bitlist_rep.bend as BO
 import ../obj/vbitenc.bend as VBT
 import ../obj/vbitdl.bend as DL
 import ../obj/vbitcore.bend as CO

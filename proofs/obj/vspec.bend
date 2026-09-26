@@ -729,3 +729,31 @@ def cat_var(a, xs, b, rest, ea, eb):
   %Equal.sym(Maybe<&2, +List<S.Part>>, b, Some{rest}, eb) :
     {Codec.concatenate(Some{[S.Variable{xs}]}, _) == Some{S.Variable{xs} <> rest} : Maybe<&2, +List<S.Part>>}
   {==}
+
+# cat_var in the exact form of the parts term its parent unfolds to (a list's
+# elements / a container's fields): the enclosing step then compares
+# syntactically instead of running the element's spec encoder.
+law items_var:
+  for +h: S.Value
+  for +t: S.Value
+  for +s: S.Schema
+  for +xs: +List<U32>
+  for +ps: +List<S.Part>
+  for +ea: {Codec.parts(h, s) == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}
+  for +eb: {Codec.parts(t, S.Repeat{s}) == Some{ps} : Maybe<&2, +List<S.Part>>}
+  {Codec.parts(S.Items{h, t}, S.Repeat{s}) == Some{S.Variable{xs} <> ps} : Maybe<&2, +List<S.Part>>}
+def items_var(h, t, s, xs, ps, ea, eb):
+  cat_var(Codec.parts(h, s), xs, Codec.parts(t, S.Repeat{s}), ps, ea, eb)
+
+law chain_var:
+  for +h: S.Value
+  for +t: S.Value
+  for +s: S.Schema
+  for +rest: S.Schema
+  for +xs: +List<U32>
+  for +ps: +List<S.Part>
+  for +ea: {Codec.parts(h, s) == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}
+  for +eb: {Codec.parts(t, rest) == Some{ps} : Maybe<&2, +List<S.Part>>}
+  {Codec.parts(S.Items{h, t}, S.Chain{s, rest}) == Some{S.Variable{xs} <> ps} : Maybe<&2, +List<S.Part>>}
+def chain_var(h, t, s, rest, xs, ps, ea, eb):
+  cat_var(Codec.parts(h, s), xs, Codec.parts(t, rest), ps, ea, eb)

@@ -328,8 +328,9 @@ def have(f):
     return {ln.split('(')[0][len('def rdx_'):] for ln in src.splitlines() if ln.startswith('def rdx_')}
 
 
-def small_mod(g, t, sch):
-    """A fixed type read word by word: thin wrappers over vua_fix / vbx_fix (or a reader here)."""
+def small_mod(g, t, sch, exact=False):
+    """A fixed type read word by word: thin wrappers over vua_fix / vbx_fix (or a reader here).
+    exact: the spec-parts proof in spec_laws' SL.EXACT form, the schema rewritten to its node's first."""
     import var_laws as VLW
     import var_ua as VUA
     ft = VLW.FT(g, t)
@@ -358,6 +359,8 @@ def small_mod(g, t, sch):
     if p in xf:
         L.insert(L.index('import ./vua_fix.bend as VTX') + 1, 'import ./vbx_fix.bend as XF')
     P = 'A.quad(VB.pw(d))'
+    xrw = (f'  %Equal.sym(S.Schema, {sch}, {nd.sch}, {{==}}) : {{Codec.parts(VAL(t, x), _) == Some{{[S.Fixed{{F.limbs(UR.RWS({W}n, t, x))}}]}} : Maybe<&2, +List<S.Part>>}}\n'
+           if exact else '')
     L.append(f'''def OBJ(+d: Nat, +t: {TR}, +x: Nat) -> {ft.rep()}: {OBJ}
 
 {sig('rdx', S)}
@@ -371,7 +374,7 @@ def prt(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE
     -> {{Codec.parts(VAL(t, x), s) == Some{{[S.Fixed{{UW.WX(t, x, {S}n)}}]}} : Maybe<&2, +List<S.Part>>}}:
   %Equal.sym(S.Schema, s, {sch}, es) : {{Codec.parts(VAL(t, x), _) == Some{{[S.Fixed{{UW.WX(t, x, {S}n)}}]}} : Maybe<&2, +List<S.Part>>}}
   %UR.rws_bytes({W}n, d, t, x, pf, hb) : {{Codec.parts(VAL(t, x), {sch}) == Some{{[S.Fixed{{_}}]}} : Maybe<&2, +List<S.Part>>}}
-  {proof}
+{xrw}  {proof}
 ''')
     return p, '\n'.join(L) + '\n'
 
