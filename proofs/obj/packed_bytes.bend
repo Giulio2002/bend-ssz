@@ -640,3 +640,4 @@ def v2_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +depth: 
   %Equal.sym(P.Width, SH.Unsigned_width(SH.Vector_element(s)), P.U16{}, is_U16_shape(SH.Unsigned_width(SH.Vector_element(s)), c2)) :
     RR.roots(vview2(o), S.Vector{S.Unsigned{_}, SH.Vector_length(s)}, [D.bytes(WO.wdig(hl, o, depth))])
   v2_body(hl, ehl, o, SH.Vector_length(s), depth, wf, eN, hq, c3, hdep)
+

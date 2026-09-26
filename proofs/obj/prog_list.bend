@@ -782,3 +782,4 @@ def plb_rs(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Words, +s: S.Schema, +rep: r
   %Equal.sym(S.Schema, SH.ProgressiveList_element(s), S.Boolean{}, SH.Boolean_shape(SH.ProgressiveList_element(s), k1)) :
     RR.roots(PB.vviewb(o), S.ProgressiveList{_}, [D.bytes(pdig(hl, o, 0n))])
   plb_body(hl, ehl, o, wf, hb)
+
