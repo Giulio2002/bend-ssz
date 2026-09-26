@@ -792,7 +792,7 @@ def spec_text(L):
         PSV = 'PSW(t, x, len)'
     OSL = '[' + ', '.join(L.O(j) for j in range(k)) + ']'
     Ln = [f'U32.to_nat({L.LJ(j)})' for j in range(k)]
-    lenY = [f'List.length(&2, U32, {L.Y(j)})' for j in range(k)]
+    lenY = [(f'LY.LN({L.Y(j)})' if L.sym else f'List.length(&2, U32, {L.Y(j)})') for j in range(k)]
     H = f'+h: {{CHKw(t, x, off, len) == {TRUE}}}'
     if L.sym:
         w.append(sym_schema_text(L))
@@ -893,14 +893,15 @@ def spec_text(L):
         rest = f'RST{i}(t, x, len)' if L.sym else '[' + ', '.join(parts[i + 1:]) + ']'
         hv = f'FD.logic__and_intro({doms[i][0]}, Layout.bytes_valid({rest}), {doms[i][1]},\n      {hv})'
     PL = f'Layout.payloads({PSV})'
-    w.append(f'def fitw({CW}, {H}) -> {{N.fits(4n, Nat.add({FS}n, List.length(&2, U32, {PL}))) == {TRUE}}}:')
-    w.append(f'  FD.logic__subst(Nat, z => {{N.fits(4n, z) == {TRUE}}}, U32.to_nat(len), Nat.add({FS}n, List.length(&2, U32, {PL})),')
-    w.append(f'    Equal.trans(Nat, U32.to_nat(len), {Q[k]}, Nat.add({FS}n, List.length(&2, U32, {PL})), eq{k}({CWA}, h),')
-    w.append(f'      Equal.sym(Nat, Nat.add({FS}n, List.length(&2, U32, {PL})), LY.END({PSV}, {FS}n), LY.lay_end({PSV}, {FS}n))),')
+    LPL = f'LY.LN({PL})' if L.sym else f'List.length(&2, U32, {PL})'
+    w.append(f'def fitw({CW}, {H}) -> {{N.fits(4n, Nat.add({FS}n, {LPL})) == {TRUE}}}:')
+    w.append(f'  FD.logic__subst(Nat, z => {{N.fits(4n, z) == {TRUE}}}, U32.to_nat(len), Nat.add({FS}n, {LPL}),')
+    w.append(f'    Equal.trans(Nat, U32.to_nat(len), {Q[k]}, Nat.add({FS}n, {LPL}), eq{k}({CWA}, h),')
+    w.append(f'      Equal.sym(Nat, Nat.add({FS}n, {LPL}), LY.END({PSV}, {FS}n), LY.lay_end({PSV}, {FS}n))),')
     w.append(f'    VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {{==}})))')
     w.append('')
     w.append(f'def encw({CW}, {H}) -> {{Layout.encoding({PSV}) == Some{{{LHS}}} : {M}}}:')
-    w.append(f'  VMV.enc_gen({PSV}, {FS}n, LY.HDRW({PSV}, {OSL}), {PL}, {"efsw(" + CWA + ", h)" if L.sym else "{==}"},')
+    w.append(f'  {"LY.enc_genL" if L.sym else "VMV.enc_gen"}({PSV}, {FS}n, LY.HDRW({PSV}, {OSL}), {PL}, {"efsw(" + CWA + ", h)" if L.sym else "{==}"},')
     w.append(f'    LY.hdr_fp({PSV}, {FS}n, {OSL}, {oko}), {{==}},')
     w.append(f'    {hv},')
     w.append(f'    fitw({CWA}, h))')
@@ -1056,11 +1057,12 @@ def inv_text(L):
     w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WFS(z), LY.WID({PS}), {WS}, {EW}))')
     w.append('')
     END = f'LY.END({PS}, {FS}n)'
+    LPL = f'LY.LN({PL})' if CP else f'List.length(&2, U32, {PL})'
     w.append(f'def eL({SD}) -> {{U32.to_nat(len) == {END} : Nat}}:')
     w.append(f'  +FPt = {FP}')
-    w.append(f'  +lenB = Equal.trans(Nat, List.length(&2, U32, {BYTES}), Nat.add(List.length(&2, U32, FPt), List.length(&2, U32, {PL})), {END}, VS.len_app(FPt, {PL}),')
-    w.append(f'    Equal.trans(Nat, Nat.add(List.length(&2, U32, FPt), List.length(&2, U32, {PL})), Nat.add({FS}n, List.length(&2, U32, {PL})), {END},')
-    w.append(f'      Equal.cong(Nat, Nat, z => Nat.add(z, List.length(&2, U32, {PL})), List.length(&2, U32, FPt), {FS}n,')
+    w.append(f'  +lenB = Equal.trans(Nat, List.length(&2, U32, {BYTES}), Nat.add(List.length(&2, U32, FPt), {LPL}), {END}, VS.len_app(FPt, {PL}),')
+    w.append(f'    Equal.trans(Nat, Nat.add(List.length(&2, U32, FPt), {LPL}), Nat.add({FS}n, {LPL}), {END},')
+    w.append(f'      Equal.cong(Nat, Nat, z => Nat.add(z, {LPL}), List.length(&2, U32, FPt), {FS}n,')
     w.append(f'        Equal.trans(Nat, List.length(&2, U32, FPt), Layout.fixed_size({PS}), {FS}n, LY.lay_len({PS}, Layout.fixed_size({PS})), efs({SA}))),')
     w.append(f'      LY.lay_end({PS}, {FS}n)))')
     w.append(f'  Equal.trans(Nat, U32.to_nat(len), List.length(&2, U32, {WBL}), {END}, Equal.sym(Nat, List.length(&2, U32, {WBL}), U32.to_nat(len), UW.lenWX(d, t, x, U32.to_nat(len), pf, hw)),')
@@ -1099,7 +1101,7 @@ def inv_text(L):
         j = f['j']
         i = f['i']
         OFF = OFFS[j]
-        ly = f'List.length(&2, U32, y{j})'
+        ly = f'LY.LN(y{j})' if CP else f'List.length(&2, U32, y{j})'
         E = L.E(j)
         ovE = f'ov{j + 1}({SA})' if j + 1 < k else f'eL({SA})'
         OFFE = OFFS[j + 1] if j + 1 < k else END
