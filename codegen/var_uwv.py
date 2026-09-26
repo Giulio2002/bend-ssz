@@ -616,6 +616,229 @@ def {p}_any_bytes({P})
         what = f'T.{p}_putk (the {S}-byte O.Words)'
     return module(imports, what, '\n'.join(out))
 
+
+# ---- SyncCommittee: the 512 pubkeys' packed words (put_words) then the aggregate pubkey (b48) ----
+
+def sc_text():
+    """T.SyncCommittee_putk at any X = 4 q + r: its pubkeys' storage check and O.put_words of
+    their 24576 bytes (vuwd.putw_any), then the aggregate pubkey's b48_put at X + 24576
+    (vuwv_b48); its bytes the pubkeys' 24576 bytes then the aggregate's 48. One proof at a
+    symbolic r (the models PWM / PX_b48 stay stuck on r, so no big tree is ever unfolded); only
+    the byte counts 24624 = (24576 + pad) + (48 - pad) are split on r."""
+    ws = [f'a{k}' for k in range(12)]
+    A_ = ', '.join(ws)
+    AP = ', '.join(f'+{w}: U32' for w in ws)
+    WO = 'O.Words{FD.array__thaw(U32, TB), 24576}'
+    AGG = f'T.Bytes48{{{A_}}}'
+    OBJ = f'T.SyncCommittee{{{WO}, {AGG}}}'
+    TY = 'Array<U32> & (T.SyncCommittee & U32)'
+    NB = 'U32.to_nat(24576)'
+    DATA = f'VS.bt({NB}, FX.limbs(UW.SLW(TB)))'
+    Y48 = f'FX.limbs([{A_}])'
+    TD = TH.format('D')
+    PX = lambda r: f'PX_SyncCommittee({r}, dd, D, q, TB, {A_})'  # noqa: E731
+    RT = lambda r: f'{{T.SyncCommittee_putk({TD}, X, {OBJ}) == ({TH.format(PX(r))}, ({OBJ}, 0)) : {TY}}}'  # noqa: E731
+    BY = lambda r, x: f'{{UA.BYT({PX(r)}) == UW.SPL(UA.BYT(D), {x}, List.append(&2, U32, {DATA}, {Y48})) : +List<U32>}}'  # noqa: E731
+    P = ('+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, ' + AP + ', ' + E_ + ',\n'
+         '    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 24624n))), VB.pw(dd)) == True{} : Bool},\n'
+         '    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},\n'
+         '    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool},\n'
+         '    +hz: {VS.bt(24624n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(24624n) : +List<U32>}')
+    ARGS = f'dd, D, X, q, r, dB, TB, {A_}, e, hr, hd, hl, pf, pfB, hdB, hrB, hz'
+    X0 = 'Nat.add(A.quad(q), r)'
+    PAD = f'UWD.PADB(r, {NB})'
+    DL = f'Nat.sub(48n, {PAD})'
+    W1 = f'Nat.add({NB}, {PAD})'
+    Y0 = f'List.append(&2, U32, {DATA}, UW.ZB({PAD}))'
+    Z = f'List.append(&2, U32, {DATA}, UW.ZB(48n))'
+    PW = 'UWD.PWM(r, dd, D, q, TB, 24576)'
+    PB48 = f'V_b48.PX_b48(r, dd, {PW}, Nat.add(6144n, q), {A_})'
+    POS = 'Nat.add(A.quad(Nat.add(6144n, q)), r)'
+    K = 'A.quad(6144n)'
+    XK = f'Nat.add({X0}, {K})'
+    NBv = 'U32.to_nat(n)'
+    WOv = 'O.Words{FD.array__thaw(U32, TB), n}'
+    OBJv = f'T.SyncCommittee{{{WOv}, {AGG}}}'
+    DATAv = f'VS.bt({NBv}, FX.limbs(UW.SLW(TB)))'
+    PADv = f'UWD.PADB(r, {NBv})'
+    DLv = f'Nat.sub(48n, {PADv})'
+    W1v = f'Nat.add({NBv}, {PADv})'
+    Y0v = f'List.append(&2, U32, {DATAv}, UW.ZB({PADv}))'
+    Zv = f'List.append(&2, U32, {DATAv}, UW.ZB(48n))'
+    PWv = 'UWD.PWM(r, dd, D, q, TB, n)'
+    PB48v = f'V_b48.PX_b48(r, dd, {PWv}, Nat.add(6144n, q), {A_})'
+    XKv = 'Nat.add(Nat.add(A.quad(q), r), K)'
+    RTv = f'{{T.SyncCommittee_putk({TD}, X, {OBJv}) == ({TH.format(PB48v)}, ({OBJv}, 0)) : {TY}}}'
+    BYv = f'{{UA.BYT({PB48v}) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, {DATAv}, {Y48})) : +List<U32>}}'
+    LEN = lambda x: f'List.length(&2, U32, {x})'  # noqa: E731
+    LB = '+List<U32>'
+    ab = lambda t: f'Empty.absurd({t}, FD.nat__lt_zero_absurd(t, hr))'  # noqa: E731
+
+    def cases(goal, a, b):
+        return '\n'.join([f'    case {k}n: FD.nat__eq_from_is_eq({a(f"{k}n")}, {b(f"{k}n")}, {{==}})' for k in range(4)] + [f'    case 4n+ +t: {ab(goal)}'])
+
+    E24 = f'{{24624n == Nat.add({W1}, {DL}) : Nat}}'
+    E24T = lambda r, m: f'Nat.add(Nat.add({m}, UWD.PADB({r}, {m})), Nat.sub(48n, UWD.PADB({r}, {m})))'  # noqa: E731
+    E24M = lambda r, m: f'{{24624n == {E24T(r, m)} : Nat}}'  # noqa: E731
+    E24C = '\n'.join(f'    case {k}n:\n      %em : {E24M(f"{k}n", "_")}\n      FD.nat__eq_from_is_eq(24624n, {E24T(f"{k}n", NB)}, {{==}})' for k in range(4))
+    EDL = f'{{Nat.add({PAD}, {DL}) == 48n : Nat}}'
+    body = f'''
+def DK2(-A: Data, -B: Data, +p: DK.P2(A, B)) -> A:
+  (+a, +b) = p
+  a
+
+def DK3(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:
+  (+a, +b) = p
+  b
+
+def PX_SyncCommittee(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +TB: FD.array__Tree<U32>, {AP}) -> FD.array__Tree<U32>:
+  V_b48.PX_b48(r, dd, UWD.PWM(r, dd, D, q, TB, 24576), Nat.add(6144n, q), {A_})
+
+def SyncCommitteex_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +TB: FD.array__Tree<U32>, {AP}, +pf: {{FD.array__perfect(U32, dd, D) == True{{}} : Bool}})
+    -> {{FD.array__perfect(U32, dd, {PX("r")}) == True{{}} : Bool}}:
+  V_b48.b48x_perfect(r, dd, UWD.PWM(r, dd, D, q, TB, 24576), Nat.add(6144n, q), {A_}, UWD.pwm_perfect(r, dd, D, q, TB, 24576, pf))
+
+# The byte counts at r < 4: 24624 = (24576 + pad) + (48 - pad) (m for 24576 keeps the match's
+# motive small; each case is decided by Nat.is_eq).
+def sc_e24(+r: Nat, +hr: {{Nat.is_lt(r, 4n) == True{{}} : Bool}}, +m: Nat, +em: {{{NB} == m : Nat}}) -> {E24M("r", "m")}:
+  match r:
+{E24C}
+    case 4n+ +t: {ab(E24M("4n+t", "m"))}
+
+def sc_edl(+r: Nat, +hr: {{Nat.is_lt(r, 4n) == True{{}} : Bool}}) -> {EDL}:
+  match r:
+{cases(EDL.replace("(r,", "(4n+t,"), lambda k: f'Nat.add({PAD}, {DL})'.replace('(r,', f'({k},'), lambda k: '48n')}
+
+# The runtime, over any byte count n and models PW (after the pubkeys) and PXt (after the aggregate).
+def sc_rt(+D: FD.array__Tree<U32>, +X: U32, +TB: FD.array__Tree<U32>, {AP}, +n: U32, +PW: FD.array__Tree<U32>, +PXt: FD.array__Tree<U32>,
+    +hv: {{T.v512_b48_valid({WOv}) == ({WOv}, True{{}}) : O.Words & Bool}},
+    +pw1: {{O.put_words({TD}, U32.add(X, 0), {WOv}) == ({TH.format("PW")}, {WOv}) : Array<U32> & O.Words}},
+    +g48: {{T.b48_put({TH.format("PW")}, U32.add(X, 24576), {AGG}) == {TH.format("PXt")} : Array<U32>}})
+    -> {{T.SyncCommittee_putk({TD}, X, {OBJv}) == ({TH.format("PXt")}, ({OBJv}, 0)) : {TY}}}:
+  %Equal.sym(O.Words & Bool, T.v512_b48_valid({WOv}), ({WOv}, True{{}}), hv) :
+    {{T.SyncCommittee_pw0(X, 0, {AGG}, T.v512_b48_pk({TD}, U32.add(X, 0), _)) == ({TH.format("PXt")}, ({OBJv}, 0)) : {TY}}}
+  %Equal.sym(Array<U32> & O.Words, O.put_words({TD}, U32.add(X, 0), {WOv}), ({TH.format("PW")}, {WOv}), pw1) :
+    {{T.SyncCommittee_pw0(X, 0, {AGG}, T.v512_b48_pk_ok(_)) == ({TH.format("PXt")}, ({OBJv}, 0)) : {TY}}}
+  %Equal.sym(Array<U32>, T.b48_put({TH.format("PW")}, U32.add(X, 24576), {AGG}), {TH.format("PXt")}, g48) :
+    {{(_, ({OBJv}, 0)) == ({TH.format("PXt")}, ({OBJv}, 0)) : {TY}}}
+  {{==}}
+
+# A splice of the 48 aggregate bytes over the 48 zeros after the pubkeys' bytes.
+def sc_cat(+n: Nat, +L: {LB}, +K: Nat, {AP}, +eL: {{{LEN("VS.bt(n, L)")} == n : Nat}}, +eK: {{n == K : Nat}})
+    -> {{UW.SPL(List.append(&2, U32, VS.bt(n, L), UW.ZB(48n)), K, {Y48}) == List.append(&2, U32, VS.bt(n, L), {Y48}) : {LB}}}:
+  +DT = VS.bt(n, L)
+  +Zl = List.append(&2, U32, DT, UW.ZB(48n))
+  +eL2 = Equal.trans(Nat, {LEN("DT")}, n, K, eL, eK)
+  +e0 = FD.logic__subst(Nat, z => {{VS.bt(Nat.add(z, 0n), Zl) == List.append(&2, U32, DT, VS.bt(0n, UW.ZB(48n))) : {LB}}}, {LEN("DT")}, K, eL2, UW.bt_app_len(DT, 0n, UW.ZB(48n)))
+  +e1 = FD.logic__subst(Nat, z => {{VS.bt(z, Zl) == List.append(&2, U32, DT, VS.bt(0n, UW.ZB(48n))) : {LB}}}, Nat.add(K, 0n), K, FD.nat__add_zero(K), e0)
+  +e2 = FD.logic__subst(Nat, z => {{VS.bdr(Nat.add(z, 48n), Zl) == VS.bdr(48n, UW.ZB(48n)) : {LB}}}, {LEN("DT")}, K, eL2, UW.bdr_app_len(DT, 48n, UW.ZB(48n)))
+  %Equal.sym({LB}, VS.bt(K, Zl), List.append(&2, U32, DT, VS.bt(0n, UW.ZB(48n))), e1) :
+    {{List.append(&2, U32, _, List.append(&2, U32, {Y48}, VS.bdr(Nat.add(K, 48n), Zl))) == List.append(&2, U32, DT, {Y48}) : {LB}}}
+  %Equal.sym({LB}, VS.bdr(Nat.add(K, 48n), Zl), VS.bdr(48n, UW.ZB(48n)), e2) :
+    {{List.append(&2, U32, List.append(&2, U32, DT, Nil{{}}), List.append(&2, U32, {Y48}, _)) == List.append(&2, U32, DT, {Y48}) : {LB}}}
+  %Equal.sym({LB}, List.append(&2, U32, DT, Nil{{}}), DT, VS.app_nil(DT)) :
+    {{List.append(&2, U32, _, List.append(&2, U32, {Y48}, Nil{{}})) == List.append(&2, U32, DT, {Y48}) : {LB}}}
+  {{==}}
+
+# The runtime and the bytes at any r < 4, over a symbolic byte count n (K its value): no closed
+# 24576-sized Nat is ever reduced here (a reduced Nat.add(24576, _) overflows the checker's stack).
+def sc_core(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, {AP}, +n: U32, +K: Nat, {E_},
+    +hd: {{Nat.is_lt(dd, 29n) == True{{}} : Bool}}, +hl: {{Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 24624n))), VB.pw(dd)) == True{{}} : Bool}},
+    +pf: {{FD.array__perfect(U32, dd, D) == True{{}} : Bool}}, +pfB: {{FD.array__perfect(U32, dB, TB) == True{{}} : Bool}}, +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}},
+    +hv: {{T.v512_b48_valid({WOv}) == ({WOv}, True{{}}) : O.Words & Bool}},
+    +hy: {{Nat.is_le(VC.YL(n), VB.pw(15n)) == True{{}} : Bool}}, +htz: {{O.tail_zero(U32.and(n, 3), VB.slot(TB, VY.QL(n))) == True{{}} : Bool}},
+    +hsrc: {{Nat.is_le(VC.NW(n), VB.pw(dB)) == True{{}} : Bool}}, +hlw: {{Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, {NBv}))), VB.pw(dd)) == True{{}} : Bool}},
+    +hq: {{Nat.is_le({NBv}, A.quad(VB.pw(dB))) == True{{}} : Bool}}, +eK: {{{NBv} == K : Nat}},
+    +hz1: {{VS.bt(Nat.add({W1v}, {DLv}), VS.bdr({X0}, UA.BYT(D))) == UW.ZB(Nat.add({W1v}, {DLv})) : {LB}}}, +edl: {{Nat.add({PADv}, {DLv}) == 48n : Nat}},
+    +e48: {{U32.to_nat(U32.add(X, 24576)) == {POS} : Nat}}, +hl48: {{Nat.is_le(Nat.add(Nat.add(6144n, q), UWD.NWN(Nat.add(r, 48n))), VB.pw(dd)) == True{{}} : Bool}},
+    +epos: {{Nat.add({X0}, K) == {POS} : Nat}})
+    -> DK.P2({RTv}, {BYv}):
+  +B = UA.BYT(D)
+  +SL = UW.SLW(TB)
+  +e0 = VRX.fpos(X, q, r, 0n, 0, 24624n, dd, e, {{==}}, hd, {{==}}, hl)
+  +hzw = UWD.zpre({W1v}, {DLv}, VS.bdr({X0}, B), hz1)
+  +pw1 = UWD.putw_any(dd, D, U32.add(X, 0), q, r, dB, TB, n, 15n, e0, hr, hd, hdB, {{==}}, hy, hsrc, hlw, pf, pfB, htz, hzw)
+  +b1 = UWD.putw_any_bytes(dd, D, U32.add(X, 0), q, r, dB, TB, n, 15n, e0, hr, hd, hdB, {{==}}, hy, hsrc, hlw, pf, pfB, htz, hzw)
+  +pfW = UWD.pwm_perfect(r, dd, D, q, TB, n, pf)
+  # the pubkeys' bytes, extended by the zeros up to the aggregate's end
+  +eLS = Equal.trans(Nat, {LEN("FX.limbs(SL)")}, A.quad(VB.len(SL)), A.quad(VB.pw(dB)), UW.len_limbs_v(SL),
+    Equal.cong(Nat, Nat, z => A.quad(z), VB.len(SL), VB.pw(dB), FD.array__slots_length(U32, dB, TB, pfB)))
+  +hLS = FD.logic__subst(Nat, z => {{Nat.is_le({NBv}, z) == True{{}} : Bool}}, A.quad(VB.pw(dB)), {LEN("FX.limbs(SL)")},
+    Equal.sym(Nat, {LEN("FX.limbs(SL)")}, A.quad(VB.pw(dB)), eLS), hq)
+  +eLD = VS.bt_len({NBv}, FX.limbs(SL), hLS)
+  +eLY0 = Equal.trans(Nat, {LEN(Y0v)}, Nat.add({LEN(DATAv)}, {LEN(f"UW.ZB({PADv})")}), {W1v}, VS.len_app({DATAv}, UW.ZB({PADv})),
+    Equal.trans(Nat, Nat.add({LEN(DATAv)}, {LEN(f"UW.ZB({PADv})")}), Nat.add({NBv}, {LEN(f"UW.ZB({PADv})")}), {W1v},
+      Equal.cong(Nat, Nat, z => Nat.add(z, {LEN(f"UW.ZB({PADv})")}), {LEN(DATAv)}, {NBv}, eLD),
+      Equal.cong(Nat, Nat, z => Nat.add({NBv}, z), {LEN(f"UW.ZB({PADv})")}, {PADv}, UW.len_zb({PADv}))))
+  +hzd = FD.logic__subst(Nat, z => {{VS.bt({DLv}, VS.bdr(Nat.add({X0}, z), B)) == UW.ZB({DLv}) : {LB}}}, {W1v}, {LEN(Y0v)}, Equal.sym(Nat, {LEN(Y0v)}, {W1v}, eLY0),
+    FD.logic__subst({LB}, z => {{VS.bt({DLv}, z) == UW.ZB({DLv}) : {LB}}}, VS.bdr({W1v}, VS.bdr({X0}, B)), VS.bdr(Nat.add({X0}, {W1v}), B),
+      Equal.sym({LB}, VS.bdr(Nat.add({X0}, {W1v}), B), VS.bdr({W1v}, VS.bdr({X0}, B)), UW.bdr_add({X0}, {W1v}, B)),
+      UWD.zsuf({W1v}, {DLv}, VS.bdr({X0}, B), hz1)))
+  +ee = UWD.spl_ext(B, {X0}, {Y0v}, {DLv}, hzd)
+  +eZ = Equal.trans({LB}, List.append(&2, U32, {Y0v}, UW.ZB({DLv})), List.append(&2, U32, {DATAv}, List.append(&2, U32, UW.ZB({PADv}), UW.ZB({DLv}))), {Zv},
+    VS.app_assoc({DATAv}, UW.ZB({PADv}), UW.ZB({DLv})),
+    Equal.cong({LB}, {LB}, z => List.append(&2, U32, {DATAv}, z), List.append(&2, U32, UW.ZB({PADv}), UW.ZB({DLv})), UW.ZB(48n),
+      Equal.trans({LB}, List.append(&2, U32, UW.ZB({PADv}), UW.ZB({DLv})), UW.ZB(Nat.add({PADv}, {DLv})), UW.ZB(48n), UWD.zb_app({PADv}, {DLv}),
+        Equal.cong(Nat, {LB}, z => UW.ZB(z), Nat.add({PADv}, {DLv}), 48n, edl))))
+  +eP1 = Equal.trans({LB}, UA.BYT({PWv}), UW.SPL(B, {X0}, {Y0v}), UW.SPL(B, {X0}, {Zv}), b1,
+    Equal.trans({LB}, UW.SPL(B, {X0}, {Y0v}), UW.SPL(B, {X0}, List.append(&2, U32, {Y0v}, UW.ZB({DLv}))), UW.SPL(B, {X0}, {Zv}), ee,
+      Equal.cong({LB}, {LB}, z => UW.SPL(B, {X0}, z), List.append(&2, U32, {Y0v}, UW.ZB({DLv})), {Zv}, eZ)))
+  +eLZ = Equal.trans(Nat, {LEN(Zv)}, Nat.add({LEN(DATAv)}, {LEN("UW.ZB(48n)")}), Nat.add(K, 48n), VS.len_app({DATAv}, UW.ZB(48n)),
+    Equal.trans(Nat, Nat.add({LEN(DATAv)}, {LEN("UW.ZB(48n)")}), Nat.add(K, {LEN("UW.ZB(48n)")}), Nat.add(K, 48n),
+      Equal.cong(Nat, Nat, z => Nat.add(z, {LEN("UW.ZB(48n)")}), {LEN(DATAv)}, K, Equal.trans(Nat, {LEN(DATAv)}, {NBv}, K, eLD, eK)),
+      Equal.cong(Nat, Nat, z => Nat.add(K, z), {LEN("UW.ZB(48n)")}, 48n, UW.len_zb(48n))))
+  +hZ = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(K, 48n), z) == True{{}} : Bool}}, Nat.add(K, 48n), {LEN(Zv)}, Equal.sym(Nat, {LEN(Zv)}, Nat.add(K, 48n), eLZ), FD.nat__le_refl(Nat.add(K, 48n)))
+  +hX = VRX.xstart(q, r, 24624n, dd, D, pf, hl)
+  +ew = UW.win_spl(B, {X0}, {Zv}, K, 48n, hX, hZ)
+  +eL2 = Equal.trans(Nat, {LEN(DATAv)}, {NBv}, K, eLD, eK)
+  +ebd0 = FD.logic__subst(Nat, z => {{VS.bdr(Nat.add(z, 0n), {Zv}) == VS.bdr(0n, UW.ZB(48n)) : {LB}}}, {LEN(DATAv)}, K, eL2, UW.bdr_app_len({DATAv}, 0n, UW.ZB(48n)))
+  +ebd = FD.logic__subst(Nat, z => {{VS.bdr(z, {Zv}) == VS.bdr(0n, UW.ZB(48n)) : {LB}}}, Nat.add(K, 0n), K, FD.nat__add_zero(K), ebd0)
+  +hz48 = Equal.trans({LB}, VS.bt(48n, VS.bdr({POS}, UA.BYT({PWv}))), VS.bt(48n, VS.bdr({XKv}, UW.SPL(B, {X0}, {Zv}))), UW.ZB(48n),
+    Equal.trans({LB}, VS.bt(48n, VS.bdr({POS}, UA.BYT({PWv}))), VS.bt(48n, VS.bdr({XKv}, UA.BYT({PWv}))), VS.bt(48n, VS.bdr({XKv}, UW.SPL(B, {X0}, {Zv}))),
+      Equal.cong(Nat, {LB}, z => VS.bt(48n, VS.bdr(z, UA.BYT({PWv}))), {POS}, {XKv}, Equal.sym(Nat, {XKv}, {POS}, epos)),
+      Equal.cong({LB}, {LB}, z => VS.bt(48n, VS.bdr({XKv}, z)), UA.BYT({PWv}), UW.SPL(B, {X0}, {Zv}), eP1)),
+    Equal.trans({LB}, VS.bt(48n, VS.bdr({XKv}, UW.SPL(B, {X0}, {Zv}))), VS.bt(48n, VS.bdr(K, {Zv})), UW.ZB(48n), ew,
+      Equal.cong({LB}, {LB}, z => VS.bt(48n, z), VS.bdr(K, {Zv}), VS.bdr(0n, UW.ZB(48n)), ebd)))
+  +g48 = V_b48.b48_any(dd, {PWv}, U32.add(X, 24576), Nat.add(6144n, q), r, {A_}, e48, hr, hd, hl48, pfW, hz48)
+  +b2 = V_b48.b48_any_bytes(dd, {PWv}, U32.add(X, 24576), Nat.add(6144n, q), r, {A_}, e48, hr, hd, hl48, pfW, hz48)
+  +rt = sc_rt(D, X, TB, {A_}, n, {PWv}, {PB48v}, hv, pw1, g48)
+  +by = Equal.trans({LB}, UA.BYT({PB48v}), UW.SPL(UA.BYT({PWv}), {POS}, {Y48}), UW.SPL(B, {X0}, List.append(&2, U32, {DATAv}, {Y48})), b2,
+    Equal.trans({LB}, UW.SPL(UA.BYT({PWv}), {POS}, {Y48}), UW.SPL(UW.SPL(B, {X0}, {Zv}), {XKv}, {Y48}), UW.SPL(B, {X0}, List.append(&2, U32, {DATAv}, {Y48})),
+      Equal.trans({LB}, UW.SPL(UA.BYT({PWv}), {POS}, {Y48}), UW.SPL(UA.BYT({PWv}), {XKv}, {Y48}), UW.SPL(UW.SPL(B, {X0}, {Zv}), {XKv}, {Y48}),
+        Equal.cong(Nat, {LB}, z => UW.SPL(UA.BYT({PWv}), z, {Y48}), {POS}, {XKv}, Equal.sym(Nat, {XKv}, {POS}, epos)),
+        Equal.cong({LB}, {LB}, z => UW.SPL(z, {XKv}, {Y48}), UA.BYT({PWv}), UW.SPL(B, {X0}, {Zv}), eP1)),
+      Equal.trans({LB}, UW.SPL(UW.SPL(B, {X0}, {Zv}), {XKv}, {Y48}), UW.SPL(B, {X0}, UW.SPL({Zv}, K, {Y48})), UW.SPL(B, {X0}, List.append(&2, U32, {DATAv}, {Y48})),
+        UW.spl_spl(B, {X0}, {Zv}, K, {Y48}, hX, hZ),
+        Equal.cong({LB}, {LB}, z => UW.SPL(B, {X0}, z), UW.SPL({Zv}, K, {Y48}), List.append(&2, U32, {DATAv}, {Y48}), sc_cat({NBv}, FX.limbs(SL), K, {A_}, eLD, eK)))))
+  (rt, by)
+
+# The core at n = 24576 (K = 4 * 6144), its facts on the byte count decided by Nat.is_eq / is_le.
+def sc_at({P})
+    -> DK.P2({RT("r")}, {BY("r", X0)}):
+  +eK = FD.nat__eq_from_is_eq({NB}, {K}, {{==}})
+  +hlw = VRX.froom(q, r, dd, 0n, {NB}, 24624n, {{==}}, hl)
+  +hsrc = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, 6144n, VC.NW(24576), FD.nat__eq_from_is_eq(6144n, VC.NW(24576), {{==}}), hrB)
+  +hroom = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, 6144n, Nat.add(VC.NW(24576), 0n), FD.nat__eq_from_is_eq(6144n, Nat.add(VC.NW(24576), 0n), {{==}}), hrB)
+  +hq = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(dB))) == True{{}} : Bool}}, {K}, {NB}, Equal.sym(Nat, {NB}, {K}, eK), UW.quad_le(6144n, VB.pw(dB), hrB))
+  +hz1 = FD.logic__subst(Nat, z => {{VS.bt(z, VS.bdr({X0}, UA.BYT(D))) == UW.ZB(z) : {LB}}}, 24624n, Nat.add({W1}, {DL}), sc_e24(r, hr, {NB}, {{==}}), hz)
+  +hv = VBE.words_ok_b(dB, TB, 24576, 24576, 24576, 15n, pfB, hdB, {{==}}, {{==}}, {{==}}, {{==}}, hroom, {{==}}, 48, {{==}})
+  +e48 = VRX.fpos(X, q, r, 6144n, 24576, 24624n, dd, e, eK, hd, {{==}}, hl)
+  +hl48 = VRX.froom(q, r, dd, 6144n, 48n, 24624n, {{==}}, hl)
+  sc_core(dd, D, X, q, r, dB, TB, {A_}, 24576, {K}, e, hr, hd, hl, pf, pfB, hdB, hv, {{==}}, {{==}}, hsrc, hlw, hq, eK, hz1, sc_edl(r, hr), e48, hl48, VRX.fpx(q, r, 6144n))
+
+# T.SyncCommittee_putk at any byte position X = 4 q + r.
+def SyncCommittee_any({P})
+    -> {RT("r")}:
+  DK2({RT("r")}, {BY("r", X0)}, sc_at({ARGS}))
+
+# Its bytes: the pubkeys' 24576 bytes then the aggregate pubkey's 48, when the bytes there were zero.
+def SyncCommittee_any_bytes({P})
+    -> {BY("r", X0)}:
+  DK3({RT("r")}, {BY("r", X0)}, sc_at({ARGS}))
+'''
+    imports = ['import ./vbenc.bend as VBE', 'import ./vuwv_b48.bend as V_b48', 'import ./vrecx.bend as VRX', 'import ./dk.bend as DK', 'import ./vcopy.bend as VC', 'import ./vbytes.bend as VY']
+    return module(imports, 'T.SyncCommittee_putk (512 pubkeys and the aggregate pubkey, 24624 bytes)', body)
+
 def module(imports, what, body):
     head = HEAD
     if any('generic_obj' in i for i in imports):
@@ -640,6 +863,7 @@ def outputs():
         out[ROOT / f'proofs/obj/vuwg_{g[0]}.bend'] = gwords_text(*g)
     for g in FWORDS:
         out[ROOT / f'proofs/obj/vuwv_{g[0]}.bend'] = gwords_text(g[0], g[1], g[2], g[3], generic=False)
+    out[ROOT / 'proofs/obj/vuwv_SyncCommittee.bend'] = sc_text()
     return out
 
 
