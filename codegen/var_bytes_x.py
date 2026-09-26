@@ -782,8 +782,10 @@ def main():
         g.shape(t)
     xs = [XName(g, nm, names[nm]) for nm in NAMES]
     ns = [XNName(g, nm, names[nm]) for nm in NEST]
+    import var_bytes_x2 as VX2
+    x2s = [VX2.X2Name(g, nm, names[nm]) for nm in VX2.X2]
     fts = []
-    for x in xs + ns:
+    for x in xs + ns + x2s:
         for f in x.fields:
             if f['kind'] == 'fix':
                 for dft in f['ft'].deps():
@@ -796,6 +798,10 @@ def main():
     for x in ns:
         out[fname(x, '_inv')] = xn_inv_text(x)
         out[fname(x)] = xn_win_text(x)
+    for x in x2s:
+        out[fname(x, '_inv')] = VX2.inv_text(x)
+        out[fname(x)] = VX2.win_text(x)
+        out[fname(x, '_dec')] = VX2.dec_text(x)
     mine = sorted((ROOT / 'proofs/obj').glob('var_bytesx_*.bend'))
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
     if '--check' in sys.argv:
@@ -809,7 +815,7 @@ def main():
         p.write_text(text)
     for q in orphans:
         (ROOT / q).unlink()
-    print(f'{len(xs) + len(ns)} names: ' + ', '.join(str(p.relative_to(ROOT)) for p in out))
+    print(f'{len(xs) + len(ns) + len(x2s)} names: ' + ', '.join(str(p.relative_to(ROOT)) for p in out))
 
 
 if __name__ == '__main__':
