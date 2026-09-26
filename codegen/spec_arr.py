@@ -18,6 +18,19 @@ that the checker evaluates, and an emit count above 2^14 words is a variable
 TV = 'F.array__Tree<U32>'
 
 
+
+def HK(p, words):
+    """oct(words >> 3) == 2^p, closed from words == u32__pow2u(p) (no unary 2^p)."""
+    assert words == 1 << p and p >= 3
+    return f'AC.oct_pow({words}, {p}n, {p - 3}n, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}})'
+
+
+def PN(words, p):
+    """to_nat(words) == 2^p, likewise."""
+    assert words == 1 << p
+    return f'AC.pow2u_is({words}, {p}n, {{==}}, {{==}})'
+
+
 def th(t):
     return f'F.array__thaw(U32, {t})'
 
@@ -114,7 +127,7 @@ def blob(name, p, okname):
     w(f'def {name}_spec_decode(+t: {TV}, +pt: {pf(p, "t")})')
     w(f'    -> {{T.{name}_decode({buf("t")}, {n}) == ({buf("t")}, Some{{{dec}}}) : B.Buf & Maybe<&1, {R}>}}:')
     w(f'  %Equal.sym(Array<U32> & Array<U32>, O.acopy({words}, 0, 0, Array.new(U32, {p + 1}n, 0), {th("t")}), (ANode{{{th("t")}, Array.new(U32, {p}n, 0)}}, {th("t")}),')
-    w(f'      AC.zl1({p}n, {words}, 0, 0, t, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, pt)) :')
+    w(f'      AC.zl1({p}n, {words}, 0, 0, t, {{==}}, {{==}}, {HK(p, words)}, {{==}}, {{==}}, pt)) :')
     w(f'    {{T.{name}_some(O.ci_fin({n}, {n}, _)) == ({buf("t")}, Some{{{dec}}}) : B.Buf & Maybe<&1, {R}>}}')
     w('  {==}')
     w('')
@@ -136,7 +149,7 @@ def blob(name, p, okname):
     w(f'def {name}_spec_bytes({trees(["l", "r"], p)}, +k: U32, +ek: {{k == {words} : U32}})')
     w(f'    -> {{SF.emitted({R}, T.{name}_encode({obj}), k) == ({obj}, SF.limbs({slots("l")})) : {R} & +List<U32>}}:')
     w(f'  %Equal.sym(Array<U32> & Array<U32>, O.acopy({words}, 0, 0, Array.new(U32, {p}n, 0), {th("F.TNode{l, r}")}), ({th("l")}, {th("F.TNode{l, r}")}),')
-    w(f'      AC.ov({p}n, {words}, 0, 0, l, r, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, pl, pr)) :')
+    w(f'      AC.ov({p}n, {words}, 0, 0, l, r, {{==}}, {{==}}, {HK(p, words)}, {{==}}, {{==}}, pl, pr)) :')
     w(f'    {{SF.emitted({R}, T.{name}_enc_out(O.put_fin({n}, _)), k) == ({obj}, SF.limbs({slots("l")})) : {R} & +List<U32>}}')
     w(f'  %Equal.sym(B.Buf & +List<U32>, B.emit(B.Buf{{{th("l")}, {n}}}, 0, k), (B.Buf{{{th("l")}, {n}}}, SF.limbs({slots("l")})), {name}_spec_view(l, pl, k, ek)) :')
     w(f'    {{({obj}, SF.listed(_)) == ({obj}, SF.limbs({slots("l")})) : {R} & +List<U32>}}')
@@ -183,12 +196,22 @@ def pair_vec(name, p, e, fname):
     w(f'def {name}_spec_decode({trees(["u", "v"], p)})')
     w(f'    -> {{T.{name}_decode({B2("u", "v")}, {n}) == {RHS} : {RT}}}:')
     A1 = f'ANode{{{th("u")}, Array.new(U32, {p}n, 0)}}'
-    w(f'  %Equal.sym(Array<U32> & Array<U32>, O.acopy({words}, 0, 0, Array.new(U32, {p + 1}n, 0), {th("F.TNode{u, v}")}), ({A1}, {th("F.TNode{u, v}")}),')
-    w(f'      AC.zl2({p}n, {words}, 0, 0, u, v, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, pu, pv)) :')
-    w(f'    {{T.{name}_some(T.{name}_rd0(0, {n}, O.ci_fin({n}, {fb}, _))) == {RHS} : {RT}}}')
-    w(f'  %Equal.sym(Array<U32> & Array<U32>, O.acopy({words}, {words}, 0, Array.new(U32, {p + 1}n, 0), {th("F.TNode{u, v}")}), (ANode{{{th("v")}, Array.new(U32, {p}n, 0)}}, {th("F.TNode{u, v}")}),')
-    w(f'      AC.zl3({p}n, {words}, {words}, 0, u, v, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, pu, pv)) :')
-    w(f'    {{T.{name}_some(T.{name}_rd1(0, {n}, O.Words{{{A1}, {fb}}}, O.ci_fin({n}, {fb}, _))) == {RHS} : {RT}}}')
+    # every step names the reader's own terms (see arr_copy read_al): no copy loop is run
+    WSn = f'ANode{{{th("u")}, {th("v")}}}'
+    N17 = f'Array.new(U32, {p + 1}n, 0)'
+    o0, o1 = '(0 + 0 : U32)', f'(0 + {fb} : U32)'
+    NWt = f'U32.shrn(({fb} + 3 : U32), 2n)'
+    HKt = f'AC.oct_pow({NWt}, {p}n, {p - 3}n, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}})'
+    P0 = f'({A1}, {WSn})'
+    P1 = f'(ANode{{{th("v")}, Array.new(U32, {p}n, 0)}}, {WSn})'
+    w(f'  %Equal.sym(B.Buf & O.Words, O.copy_into(B.Buf{{{WSn}, {n}}}, {o0}, {fb}, {N17}), O.ci_fin({n}, {fb}, {P0}),')
+    w(f'      AC.read_al({WSn}, {N17}, {n}, {o0}, {fb}, {P0}, {{==}}, {{==}},')
+    w(f'        AC.zl2n({p}n, {NWt}, U32.shrn({o0}, 2n), 0, u, v, {{==}}, {{==}}, {HKt}, {{==}}, {{==}}, pu, pv))) :')
+    w(f'    {{T.{name}_some(T.{name}_rd0(0, {n}, _)) == {RHS} : {RT}}}')
+    w(f'  %Equal.sym(B.Buf & O.Words, O.copy_into(B.Buf{{{WSn}, {n}}}, {o1}, {fb}, {N17}), O.ci_fin({n}, {fb}, {P1}),')
+    w(f'      AC.read_al({WSn}, {N17}, {n}, {o1}, {fb}, {P1}, {{==}}, {{==}},')
+    w(f'        AC.zl3n({p}n, {NWt}, U32.shrn({o1}, 2n), 0, u, v, {{==}}, {{==}}, {HKt}, AC.pow2u_is(U32.shrn({o1}, 2n), {p}n, {{==}}, {{==}}), {{==}}, pu, pv))) :')
+    w(f'    {{T.{name}_some(T.{name}_rd1(0, {n}, O.Words{{{A1}, {fb}}}, _)) == {RHS} : {RT}}}')
     w('  {==}')
     w('')
     w(f'# the bytes of that buffer are the limbs of the words of u, then v')
@@ -217,14 +240,23 @@ def pair_vec(name, p, e, fname):
     vok = lambda l, r: f'AC.vok({p + 1}n, F.TNode{{{l}, {r}}}, {fb}, {fb}, {fb}, False{{}}, {4 * e}, {{==}}, {{==}}, {{==}}, {{==}}, {andp(p, l, r)})'
     w(f'  %Equal.sym(O.Words & Bool, O.words_ok({BR}, {fb}, {fb}, False{{}}, {4 * e}), ({BR}, True{{}}), {vok("l1", "r1")}) :')
     w('    ' + ctx(f'T.{name}_pw0(0, 0, {SR}, T.{fname}_pk(Array.new(U32, {p + 1}n, 0), (0 + 0 : U32), _))'))
-    w(f'  %Equal.sym(Array<U32> & Array<U32>, O.acopy({words}, 0, 0, Array.new(U32, {p + 1}n, 0), {th("F.TNode{l1, r1}")}), ({A1}, {th("F.TNode{l1, r1}")}),')
-    w(f'      AC.zl2({p}n, {words}, 0, 0, l1, r1, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, pl1, pr1)) :')
-    w('    ' + ctx(f'T.{name}_pw0(0, 0, {SR}, T.{fname}_pk_ok(O.put_fin({fb}, _)))'))
+    AN1, AN2 = f'ANode{{{th("l1")}, {th("r1")}}}', f'ANode{{{th("l2")}, {th("r2")}}}'
+    N17 = f'Array.new(U32, {p + 1}n, 0)'
+    o0, o1 = '(0 + 0 : U32)', f'(0 + {fb} : U32)'
+    NWt = f'U32.shrn(({fb} + 3 : U32), 2n)'
+    HKt = f'AC.oct_pow({NWt}, {p}n, {p - 3}n, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}})'
+    E0 = f'({A1}, {AN1})'
+    E1 = f'(ANode{{{th("l1")}, {th("l2")}}}, {AN2})'
+    w(f'  %Equal.sym(Array<U32> & O.Words, O.put_words({N17}, {o0}, {BR}), O.put_fin({fb}, {E0}),')
+    w(f'      AC.put_al({N17}, {AN1}, {o0}, {fb}, {E0}, {{==}}, {{==}}, {{==}},')
+    w(f'        AC.zl2n({p}n, {NWt}, 0, U32.shrn({o0}, 2n), l1, r1, {{==}}, {{==}}, {HKt}, {{==}}, {{==}}, pl1, pr1))) :')
+    w('    ' + ctx(f'T.{name}_pw0(0, 0, {SR}, T.{fname}_pk_ok(_))'))
     w(f'  %Equal.sym(O.Words & Bool, O.words_ok({SR}, {fb}, {fb}, False{{}}, {4 * e}), ({SR}, True{{}}), {vok("l2", "r2")}) :')
     w('    ' + ctx(f'T.{name}_pw1(0, 0, {BR}, T.{fname}_pk({A1}, (0 + {fb} : U32), _))'))
-    w(f'  %Equal.sym(Array<U32> & Array<U32>, O.acopy({words}, 0, {words}, {A1}, {th("F.TNode{l2, r2}")}), (ANode{{{th("l1")}, {th("l2")}}}, {th("F.TNode{l2, r2}")}),')
-    w(f'      AC.zr({p}n, {words}, 0, {words}, l1, l2, r2, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, pl1, pl2, pr2)) :')
-    w('    ' + ctx(f'T.{name}_pw1(0, 0, {BR}, T.{fname}_pk_ok(O.put_fin({fb}, _)))'))
+    w(f'  %Equal.sym(Array<U32> & O.Words, O.put_words({A1}, {o1}, {SR}), O.put_fin({fb}, {E1}),')
+    w(f'      AC.put_al({A1}, {AN2}, {o1}, {fb}, {E1}, {{==}}, {{==}}, {{==}},')
+    w(f'        AC.zrn({p}n, {NWt}, 0, U32.shrn({o1}, 2n), l1, l2, r2, {{==}}, {{==}}, {HKt}, {{==}}, AC.pow2u_is(U32.shrn({o1}, 2n), {p}n, {{==}}, {{==}}), pl1, pl2, pr2))) :')
+    w('    ' + ctx(f'T.{name}_pw1(0, 0, {BR}, T.{fname}_pk_ok(_))'))
     w(f'  %Equal.sym(B.Buf & +List<U32>, B.emit(B.Buf{{ANode{{{th("l1")}, {th("l2")}}}, {n}}}, 0, k), (B.Buf{{ANode{{{th("l1")}, {th("l2")}}}, {n}}}, SF.limbs({slots("F.TNode{l1, l2}")})),')
     w(f'      {name}_spec_view(l1, l2, pl1, pl2, k, ek)) :')
     w(f'    {{({OBJ}, SF.listed(_)) == {BRHS} : {TY}}}')
@@ -1066,7 +1098,7 @@ def uvec(name, p, e, fname):
     w(f'def {name}_spec_decode(+t: {TV}, +pt: {pf(p, "t")})')
     w(f'    -> {{T.{name}_decode({buf("t")}, {n}) == ({buf("t")}, Some{{{dec}}}) : B.Buf & Maybe<&1, {R}>}}:')
     w(f'  %Equal.sym(Array<U32> & Array<U32>, O.acopy({words}, 0, 0, Array.new(U32, {p + 1}n, 0), {th("t")}), (ANode{{{th("t")}, Array.new(U32, {p}n, 0)}}, {th("t")}),')
-    w(f'      AC.zl1({p}n, {words}, 0, 0, t, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, pt)) :')
+    w(f'      AC.zl1({p}n, {words}, 0, 0, t, {{==}}, {{==}}, {HK(p, words)}, {{==}}, {{==}}, pt)) :')
     w(f'    {{T.{name}_some(O.ci_fin({n}, {n}, _)) == ({buf("t")}, Some{{{dec}}}) : B.Buf & Maybe<&1, {R}>}}')
     w('  {==}')
     w('')
@@ -1084,7 +1116,7 @@ def uvec(name, p, e, fname):
     w(f'def {name}_spec_bytes({trees(["l", "r"], p)})')
     w(f'    -> {{SF.emitted({R}, T.{name}_encode({obj}), {words}) == ({obj}, SF.limbs({slots("l")})) : {R} & +List<U32>}}:')
     w(f'  %Equal.sym(Array<U32> & Array<U32>, O.acopy({words}, 0, 0, Array.new(U32, {p}n, 0), {th("F.TNode{l, r}")}), ({th("l")}, {th("F.TNode{l, r}")}),')
-    w(f'      AC.ov({p}n, {words}, 0, 0, l, r, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, pl, pr)) :')
+    w(f'      AC.ov({p}n, {words}, 0, 0, l, r, {{==}}, {{==}}, {HK(p, words)}, {{==}}, {{==}}, pl, pr)) :')
     w(f'    {{SF.emitted({R}, T.{name}_enc_out(O.put_fin({n}, _)), {words}) == ({obj}, SF.limbs({slots("l")})) : {R} & +List<U32>}}')
     w(f'  %Equal.sym(B.Buf & +List<U32>, B.emit(B.Buf{{{th("l")}, {n}}}, 0, {words}), (B.Buf{{{th("l")}, {n}}}, SF.limbs({slots("l")})), {name}_spec_view(l, pl)) :')
     w(f'    {{({obj}, SF.listed(_)) == ({obj}, SF.limbs({slots("l")})) : {R} & +List<U32>}}')
