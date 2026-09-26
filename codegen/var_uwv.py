@@ -155,6 +155,13 @@ def wl_b256(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {{FD.array__perfect(U32, d
   Equal.sym(List<&2, U32>, {WS}, VW.WL_b256(TB),
     tks(64n, 0n, UW.SLW(TB), FD.logic__subst(Nat, z => {{Nat.is_le(64n, z) == True{{}} : Bool}}, VB.pw(dB), VB.len(UW.SLW(TB)), Equal.sym(Nat, VB.len(UW.SLW(TB)), VB.pw(dB), FD.array__slots_length(U32, dB, TB, pfB)), hrB)))
 
+
+# Its storage check holds on a valid storage tree (the runtime's T.b256_valid).
+def b256_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {{FD.array__perfect(U32, dB, TB) == True{{}} : Bool}},
+    +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}}, +hrB: {{Nat.is_le(64n, VB.pw(dB)) == True{{}} : Bool}})
+    -> {{T.b256_valid(O.Words{{FD.array__thaw(U32, TB), 256}}) == (O.Words{{FD.array__thaw(U32, TB), 256}}, True{{}}) : O.Words & Bool}}:
+  VBE.words_ok_b(dB, TB, 256, 256, 256, 9n, pfB, hdB, {{==}}, {{==}}, {{==}}, {{==}}, hrB, {{==}}, 1, {{==}})
+
 def PX_b256(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +TB: FD.array__Tree<U32>) -> FD.array__Tree<U32>:
   match r:
     case 0n: VF.updv({WS}, dd, D, q)
@@ -555,6 +562,13 @@ def wl_{p}(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {{FD.array__perfect(U32, dB
   Equal.sym(List<&2, U32>, {WS}, WL_{p}(TB),
     VWB.tks({W}n, 0n, UW.SLW(TB), FD.logic__subst(Nat, z => {{Nat.is_le({W}n, z) == True{{}} : Bool}}, VB.pw(dB), VB.len(UW.SLW(TB)), Equal.sym(Nat, VB.len(UW.SLW(TB)), VB.pw(dB), FD.array__slots_length(U32, dB, TB, pfB)), hrB)))
 
+
+# Its storage check holds on a valid storage tree (the runtime's T.{p}_valid).
+def {p}_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {{FD.array__perfect(U32, dB, TB) == True{{}} : Bool}},
+    +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}}, +hrB: {{Nat.is_le({W}n, VB.pw(dB)) == True{{}} : Bool}})
+    -> {{T.{p}_valid(O.Words{{FD.array__thaw(U32, TB), {S}}}) == (O.Words{{FD.array__thaw(U32, TB), {S}}}, True{{}}) : O.Words & Bool}}:
+  VBE.words_ok_b(dB, TB, {S}, {S}, {S}, {kw}n, pfB, hdB, {{==}}, {{==}}, {{==}}, {{==}}, hrB, {{==}}, {unit}, {{==}})
+
 def PX_{p}(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +TB: FD.array__Tree<U32>) -> FD.array__Tree<U32>:
   match r:
     case 0n: VF.updv({WS}, dd, D, q)
@@ -692,6 +706,15 @@ def DK2(-A: Data, -B: Data, +p: DK.P2(A, B)) -> A:
 def DK3(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:
   (+a, +b) = p
   b
+
+# Its storage check holds on a valid pubkeys tree (the runtime's T.SyncCommittee_valid).
+def SyncCommittee_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, {AP}, +pfB: {{FD.array__perfect(U32, dB, TB) == True{{}} : Bool}},
+    +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}}, +hrB: {{Nat.is_le(6144n, VB.pw(dB)) == True{{}} : Bool}})
+    -> {{T.SyncCommittee_valid({OBJ}) == ({OBJ}, True{{}}) : T.SyncCommittee & Bool}}:
+  +hroom = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, 6144n, Nat.add(VC.NW(24576), 0n), FD.nat__eq_from_is_eq(6144n, Nat.add(VC.NW(24576), 0n), {{==}}), hrB)
+  %Equal.sym(O.Words & Bool, T.v512_b48_valid({WO}), ({WO}, True{{}}), VBE.words_ok_b(dB, TB, 24576, 24576, 24576, 15n, pfB, hdB, {{==}}, {{==}}, {{==}}, {{==}}, hroom, {{==}}, 48, {{==}})) :
+    {{T.SyncCommittee_va0({AGG}, True{{}}, _) == ({OBJ}, True{{}}) : T.SyncCommittee & Bool}}
+  {{==}}
 
 def PX_SyncCommittee(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +TB: FD.array__Tree<U32>, {AP}) -> FD.array__Tree<U32>:
   V_b48.PX_b48(r, dd, UWD.PWM(r, dd, D, q, TB, 24576), Nat.add(6144n, q), {A_})
@@ -975,6 +998,15 @@ def core(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat,
 @CASES
     case 4n+ +t: Empty.absurd(DK.P2({RTn.replace("(r,", "(4n+t,")}, {BYn.replace("(r,", "(4n+t,").replace(X0, "Nat.add(A.quad(q), 4n+t)")}), FD.nat__lt_zero_absurd(t, hr))
 
+# Its storage check holds on a valid storage tree (the runtime's T.{p}_valid), its closed facts by Nat.is_eq.
+def {p}_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {{FD.array__perfect(U32, dB, TB) == True{{}} : Bool}},
+    +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}}, +hrB: {{Nat.is_le({W}n, VB.pw(dB)) == True{{}} : Bool}})
+    -> {{T.{p}_valid(O.Words{{FD.array__thaw(U32, TB), {S}}}) == (O.Words{{FD.array__thaw(U32, TB), {S}}}, True{{}}) : O.Words & Bool}}:
+  +eW = FD.nat__eq_from_is_eq(VC.NW({S}), {W}n, {{==}})
+  +hsrc = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, {W}n, VC.NW({S}), Equal.sym(Nat, VC.NW({S}), {W}n, eW), hrB)
+  +hroom = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, VC.NW({S}), Nat.add(VC.NW({S}), 0n), Equal.sym(Nat, Nat.add(VC.NW({S}), 0n), VC.NW({S}), FD.nat__add_zero(VC.NW({S}))), hsrc)
+  VBE.words_ok_b(dB, TB, {S}, {S}, {S}, {kw}n, pfB, hdB, {{==}}, {{==}}, {{==}}, {{==}}, hroom, {{==}}, {unit}, {{==}})
+
 # The instance at n = {S} (K = {W}): its facts on the byte count decided by Nat.is_eq / is_le.
 def at({P})
     -> DK.P2({RT}, {BY}):
@@ -1020,7 +1052,7 @@ def outputs():
     uf4 = [f'import ./vuwf{s}_b4.bend as UF{s}' for s in (1, 2, 3)]
     out[ROOT / 'proofs/obj/vuwv_b4.bend'] = module(uf4, 'T.b4_put (Bytes4, 1 word)', B4_ALIGNED + vec_text('b4', 'Bytes4', 1, 'put_b4'))
     uk = [f'import ./vuwk{s}.bend as UK{s}' for s in (1, 2, 3)] + ['import ./var_bytes_wput.bend as VW']
-    out[ROOT / 'proofs/obj/vuwv_b256.bend'] = module(uk, 'T.b256_putk (the 256-byte O.Words)', b256_text())
+    out[ROOT / 'proofs/obj/vuwv_b256.bend'] = module(uk + ['import ./vbenc.bend as VBE'], 'T.b256_putk (the 256-byte O.Words)', b256_text())
     for g in GFULL:
         out[ROOT / f'proofs/obj/vuwg_{g[0]}.bend'] = gfull_text(*g)
     for g in GPART:
