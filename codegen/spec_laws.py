@@ -79,6 +79,7 @@ containers, bit vectors of partial words, variable-size shapes, roots.
 
 `--no-big` is accepted: this generator writes no big_* file in any case.
 """
+import re
 import sys
 from pathlib import Path
 
@@ -124,6 +125,46 @@ VEC_MAX_WORDS = 512
 # older form until their owners regenerate with SL.EXACT = True.
 EXACT = False
 VEC_MAX_ELEMS = 256
+# HOIST (opt-in, off by default): every container / vector node's value and parts proof become calls
+# of lemmas over its words, hv<k>(w..) / hp<k>(w..), emitted once per distinct shape (identical
+# sub-records share one), so a parent's proof only sees its children as small calls: the untyped
+# F.*_fixed steps are otherwise re-checked inline over terms past the identity budget
+# (var_rlist's ProposerSlashing RPRF: 4.2 s). Callers take the lemmas with hoist_take().
+HOIST = False
+_HOISTED = {}
+
+
+def hoist_take():
+    '''The hoisted lemmas since the last call, as module text; resets the registry.'''
+    txt = ''.join(d for _, d in sorted(_HOISTED.values()))
+    _HOISTED.clear()
+    return txt
+
+
+def _hoist(node):
+    if not HOIST:
+        return node
+    ws = node.words
+    loc = {w: f'w{j}' for j, w in enumerate(ws)}
+    ren = lambda s: re.sub(r'\bx\d+\b', lambda m: loc[m.group(0)], s)
+    key = (ren(node.val), node.sch, ren(node.proof), len(ws))
+    if key not in _HOISTED:
+        k = len(_HOISTED)
+        ps = ', '.join(f'+w{j}: U32' for j in range(len(ws)))
+        args = ', '.join(f'w{j}' for j in range(len(ws)))
+        # hq<k> unfolds hv<k> outside Codec.parts: comparing parts(hv<k>(..), s) with parts(<body>, s)
+        # would evaluate the parts (1 s per record)
+        R = f'Some{{[S.Fixed{{F.limbs([{args}])}}]}} : Maybe<&2, +List<S.Part>>'
+        d = (f'def hv{k}({ps}) -> S.Value: {key[0]}\n\n'
+             f'def hq{k}({ps}) -> {{{key[0]} == hv{k}({args}) : S.Value}}:\n  {{==}}\n\n'
+             f'def hp{k}({ps}) -> {{Codec.parts(hv{k}({args}), {node.sch}) == {R}}}:\n'
+             f'  %hq{k}({args}) : {{Codec.parts(_, {node.sch}) == {R}}}\n'
+             f'  {key[2]}\n\n')
+        _HOISTED[key] = (k, d)
+    k = _HOISTED[key][0]
+    a = ', '.join(ws)
+    node.val, node.proof = f'hv{k}({a})', f'hp{k}({a})'
+    return node
 
 
 def words_depth(w):
@@ -197,9 +238,9 @@ def walk(g, t, c):
         # so the checker compares syntactically instead of running the encoders
         proof = (f'F.vector_fixed({esch}, {t.size}n, {vitems(0)}, {wss}, {n}n, {wl(ws)}, {vcat(0)}, {{==}}, {{==}}, {{==}}, {{==}})'
                  if EXACT else f'F.aggregate_fixed(Codec.parts({vitems(0)}, S.Repeat{{{esch}}}), {wss}, {n}n, {vcat(0)}, {{==}})')
-        return Node(f'O.Words{{{tree(ws + op)}, {n}}}', ws, f'S.Sequence{{{vitems(0)}}}',
+        return _hoist(Node(f'O.Words{{{tree(ws + op)}, {n}}}', ws, f'S.Sequence{{{vitems(0)}}}',
                     f'S.Vector{{{esch}, {t.size}n}}', proof,
-                    dec=f'O.Words{{{tree(ws + ["0"] * len(op))}, {n}}}', opads=op)
+                    dec=f'O.Words{{{tree(ws + ["0"] * len(op))}, {n}}}', opads=op))
     if t.kind == 'bytes':
         if s.kind != 'rec':
             raise Skip('array-backed byte vector (needs the array induction)')
@@ -253,8 +294,8 @@ def walk(g, t, c):
                  f'F.aggregate_fixed(Codec.parts({items(0)}, {chain(0)}), {wss}, {t.fixed_size()}n, {cat(0)}, {{==}})')
         obj = f'T.{s.t.name}{{' + ', '.join(k.obj for k in kids) + '}'
         dec = f'T.{s.t.name}{{' + ', '.join(k.dec for k in kids) + '}'
-        return Node(obj, words, f'S.Sequence{{{items(0)}}}', f'S.Container{{{names}, {chain(0)}}}', proof,
-                    dec=dec, opads=[q for k in kids for q in k.opads])
+        return _hoist(Node(obj, words, f'S.Sequence{{{items(0)}}}', f'S.Container{{{names}, {chain(0)}}}', proof,
+                    dec=dec, opads=[q for k in kids for q in k.opads]))
     raise Skip(t.kind + ' (array-backed; needs the array induction)' if t.kind == 'vector' else t.kind)
 
 
