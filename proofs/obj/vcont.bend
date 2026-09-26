@@ -487,6 +487,17 @@ def len_wt(k, W, h):
     case 1n+ +p Nil{}: Empty.absurd({LN(FX.limbs(VS.wtake(1n+p, Nil{}))) == A.quad(1n+p) : Nat}, F.logic__false_true(h))
     case 1n+ +p Con{+x, +t}: Equal.cong(Nat, Nat, z => 4n+z, LN(FX.limbs(VS.wtake(p, t))), A.quad(p), len_wt(p, t, h))
 
+law len_wtk:
+  for +k: Nat
+  for +W: List<&2, U32>
+  for +h: {Nat.is_le(k, List.length(&2, U32, W)) == True{} : Bool}
+  {F.spec_common__length(U32, VS.wtake(k, W)) == k : Nat}
+def len_wtk(k, W, h):
+  match k W:
+    case 0n _: {==}
+    case 1n+ +p Nil{}: Empty.absurd({F.spec_common__length(U32, VS.wtake(1n+p, Nil{})) == 1n+p : Nat}, F.logic__false_true(h))
+    case 1n+ +p Con{+x, +t}: F.nat__succ_cong(F.spec_common__length(U32, VS.wtake(p, t)), p, len_wtk(p, t, h))
+
 # ---- the running cursor ------------------------------------------------------------------------------
 
 # O.padd adds when the sum fits a tree of depth dd < 29's bytes.

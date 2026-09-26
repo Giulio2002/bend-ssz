@@ -2247,10 +2247,45 @@ def _brec_fields(g, names, E):
 
 
 
+def _spec_def(name):
+    """The body of `def <name>() -> T.Schema: ...` in spec/fulu_schemas.bend."""
+    txt = (ROOT / 'spec/fulu_schemas.bend').read_text()
+    m = re.search(rf'^def {name}\(\) -> T\.Schema: (.*)$', txt, re.M)
+    return m.group(1).strip()
+
+
+def _espec(E):
+    """(element schema, [field schemas]) of the container E, in this module's names (Spec., S.)."""
+    sn = re.fullmatch(r'(Schema\d+)\(\)', _spec_def(E)).group(1)
+    body = _spec_def(sn)
+    fx = lambda t: re.sub(r'(?<![\w.])(Schema\d+)\(\)', r'Spec.\1()', t).replace('T.', 'S.')
+    ch = body[body.index('], ') + 3:-1]
+    import var_winb
+    fl = []
+    while ch.startswith('T.Chain{'):
+        a, b = var_winb.split_top(ch[len('T.Chain{'):-1])
+        fl.append(fx(a.strip()))
+        ch = b.strip()
+    return f'Spec.{sn}()', fl
+
+
+_ETOT = """
+# The encoding of fixed parts of words, as aggregate_fixed takes it.
+def etot(+wss: +List<+List<U32>>, +n: Nat, +fit: {N.fits(4n, List.length(&2, U32, F.flat(wss))) == True{} : Bool})
+    -> {Codec.one(Layout.encoding(F.fparts(wss)), Some{n}) == Codec.one(SP.optional(Bool.and(Layout.bytes_valid(F.fparts(wss)), True{}), F.flat(wss)), Some{n}) : Maybe<&2, +List<S.Part>>}:
+  Equal.trans(Maybe<&2, +List<S.Part>>, Codec.one(Layout.encoding(F.fparts(wss)), Some{n}), Codec.one(Some{F.flat(wss)}, Some{n}),
+    Codec.one(SP.optional(Bool.and(Layout.bytes_valid(F.fparts(wss)), True{}), F.flat(wss)), Some{n}),
+    Equal.cong(Maybe<&2, +List<U32>>, Maybe<&2, +List<S.Part>>, z => Codec.one(z, Some{n}), Layout.encoding(F.fparts(wss)), Some{F.flat(wss)}, VS.encoding_fparts(wss, fit)),
+    Equal.cong(Bool, Maybe<&2, +List<S.Part>>, z => Codec.one(SP.optional(Bool.and(z, True{}), F.flat(wss)), Some{n}), True{}, Layout.bytes_valid(F.fparts(wss)),
+      Equal.sym(Bool, Layout.bytes_valid(F.fparts(wss)), True{}, F.valid_fparts(wss))))
+"""
+
+
 def _em_text(M, E, RS):
-    """The element on its box (MB): model, bytes, perfect, length, and its boxed write."""
+    """The element on its box (MB): model, bytes, perfect, length, and its boxed write; its value and parts."""
     X0 = 'Nat.add(A.quad(q), r)'
     ty = f'Array<U32> & T.{E}'
+    ES = _espec(E)[0]
     return f'''
 def PXEm(+m: MB<{M}>, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> {TR}:
   match m:
@@ -2258,17 +2293,18 @@ def PXEm(+m: MB<{M}>, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> {TR}:
     case MSome{{+v}}: PXE(v, dd, D, q, r)
 def YEm(+m: MB<{M}>) -> +List<U32>:
   match m:
-    case MNone{{}}: []
+    case MNone{{}}: UW.ZB({RS}n)
     case MSome{{+v}}: YE(v)
 def pfEm(+m: MB<{M}>, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
     -> {{FD.array__perfect(U32, dd, PXEm(m, dd, D, q, r)) == {TRUE}}}:
   match m:
     case MNone{{}}: pf
     case MSome{{+v}}: pfE(v, dd, D, q, r, pf)
-def lenEm(+m: MB<{M}>, +h: {{EOK(m) == {TRUE}}}) -> {{VRX.LN(YEm(m)) == {RS}n : Nat}}:
+def lenEz(+m: MB<{M}>) -> {{VRX.LN(YEm(m)) == {RS}n : Nat}}:
   match m:
-    case MNone{{}}: Empty.absurd({{VRX.LN(YEm(MNone{{}})) == {RS}n : Nat}}, FD.logic__false_true(h))
-    case MSome{{+v}}: lenE(v, h)
+    case MNone{{}}: {{==}}
+    case MSome{{+v}}: lenE0(v)
+def lenEm(+m: MB<{M}>, +h: {{EOK(m) == {TRUE}}}) -> {{VRX.LN(YEm(m)) == {RS}n : Nat}}: lenEz(m)
 def RTEm(+m: MB<{M}>, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
   {{T.{E}_bx_put(FD.array__thaw(U32, D), X, th_{E}_bx(m)) == (FD.array__thaw(U32, PXEm(m, dd, D, q, r)), th_{E}_bx(m)) : Array<U32> & O.Boxed<T.{E}>}}
 def BYEm(+m: MB<{M}>, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> Data:
@@ -2288,6 +2324,14 @@ def putxEm(+m: MB<{M}>, +h: {{EOK(m) == {TRUE}}}, +dd: Nat, +D: {TR}, +X: U32, +
       +by = PB(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r), g)
       mkEm(MSome{{v}}, dd, D, X, q, r, Equal.cong({ty}, Array<U32> & O.Boxed<T.{E}>, z => T.{E}_bx_put_back(z), T.{E}_put(FD.array__thaw(U32, D), X, th_{E}(v)),
         (FD.array__thaw(U32, PXE(v, dd, D, q, r)), th_{E}(v)), rt), by)
+def EVm(+m: MB<{M}>) -> S.Value:
+  match m:
+    case MNone{{}}: S.NullValue{{}}
+    case MSome{{+v}}: EV(v)
+def specEm(+m: MB<{M}>, +h: {{EOK(m) == {TRUE}}}) -> {{Codec.parts(EVm(m), {ES}) == Some{{[S.Fixed{{YEm(m)}}]}} : Maybe<&2, +List<S.Part>>}}:
+  match m:
+    case MNone{{}}: Empty.absurd({{Codec.parts(EVm(MNone{{}}), {ES}) == Some{{[S.Fixed{{YEm(MNone{{}})}}]}} : Maybe<&2, +List<S.Part>>}}, FD.logic__false_true(h))
+    case MSome{{+v}}: specE(v, h)
 '''
 
 def belem_text(VLW, EN, g, names, E):
@@ -2348,9 +2392,10 @@ def PXE(+v: {M}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> {TR}:
 def YE(+v: {M}) -> +List<U32>:
   match v:
     case {pat}: {cat(0)}
-def lenE(+v: {M}, +h: {{OKE(v) == {TRUE}}}) -> {{VRX.LN(YE(v)) == {RS}n : Nat}}:
+def lenE0(+v: {M}) -> {{VRX.LN(YE(v)) == {RS}n : Nat}}:
   match v:
     case {pat}: {lenp(0)}
+def lenE(+v: {M}, +h: {{OKE(v) == {TRUE}}}) -> {{VRX.LN(YE(v)) == {RS}n : Nat}}: lenE0(v)
 def pfE(+v: {M}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
     -> {{FD.array__perfect(U32, dd, PXE(v, dd, D, q, r)) == {TRUE}}}:
   match v:
@@ -2427,6 +2472,49 @@ def mkE(+v: {M}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +a: RTE(v, dd, D
       {body}
       mkE({M}{{{", ".join(av)}}}, dd, D, X, q, r, {chain(0, start)}, S0)
 ''')
+    # its value and parts: a container of fixed records (spec_fixed's aggregate_fixed over their words)
+    ES, FS = _espec(E)
+    assert len(FS) == n, (E, FS)
+    V = [f'RVW_{R[k]}(a{k})' for k in range(n)]
+    WS = [f'RWD_{R[k]}(a{k})' for k in range(n)]
+    wss = '[' + ', '.join(WS) + ']'
+
+    def items(k):
+        return 'S.EmptyItems{}' if k == n else f'S.Items{{{V[k]}, {items(k + 1)}}}'
+
+    def chn(k):
+        return 'S.End{}' if k == n else f'S.Chain{{{FS[k]}, {chn(k + 1)}}}'
+
+    def rest(k):
+        return '[' + ', '.join(f'S.Fixed{{{Y[j]}}}' for j in range(k, n)) + ']'
+
+    def cf(k):
+        if k == n:
+            return '{==}'
+        return (f'F.cat_fixed(Codec.parts({V[k]}, {FS[k]}), {Y[k]}, Codec.parts({items(k + 1)}, {chn(k + 1)}), {rest(k + 1)}, '
+                f'rparts_{R[k]}(a{k}), {cf(k + 1)})')
+    # F.flat(wss) == cat(0): the last piece's trailing []
+    last = f'List.append(&2, U32, {Y[n - 1]}, [])'
+    ctx = 'z'
+    for k in range(n - 2, -1, -1):
+        ctx = f'List.append(&2, U32, {Y[k]}, {ctx})'
+    ef = f'Equal.cong(+List<U32>, +List<U32>, z => {ctx}, {last}, {Y[n - 1]}, VS.app_nil({Y[n - 1]}))' if n > 1 else f'VS.app_nil({Y[0]})'
+    c0 = cat(0)
+    w(_ETOT)
+    w(f"""
+# ---- {E}: its value (its records' values) and its parts, one fixed part of its bytes ----
+def EV(+v: {M}) -> S.Value:
+  match v:
+    case {pat}: S.Sequence{{{items(0)}}}
+def specE(+v: {M}, +h: {{OKE(v) == {TRUE}}}) -> {{Codec.parts(EV(v), {ES}) == Some{{[S.Fixed{{YE(v)}}]}} : Maybe<&2, +List<S.Part>>}}:
+  match v:
+    case {pat}:
+      +ef = {ef}
+      +fit = FD.logic__subst(+List<U32>, z => {{N.fits(4n, List.length(&2, U32, z)) == {TRUE}}}, {c0}, F.flat({wss}), Equal.sym(+List<U32>, F.flat({wss}), {c0}, ef),
+        FD.logic__subst(Nat, z => {{N.fits(4n, z) == {TRUE}}}, {RS}n, VRX.LN({c0}), Equal.sym(Nat, VRX.LN({c0}), {RS}n, {lenp(0)}), {{==}}))
+      FD.logic__subst(+List<U32>, z => {{Codec.parts(S.Sequence{{{items(0)}}}, {ES}) == Some{{[S.Fixed{{z}}]}} : Maybe<&2, +List<S.Part>>}}, F.flat({wss}), {c0}, ef,
+        F.aggregate_fixed(Codec.parts({items(0)}, {chn(0)}), {wss}, {RS}n, {cf(0)}, etot({wss}, {RS}n, fit)))
+""")
     w(_em_text(M, E, RS))
     return '\n'.join(L), RS
 
@@ -2498,11 +2586,12 @@ def YE(+v: {M}) -> +List<U32>:
     case {M}{{+a0, +a1}}:
       match a0:
         case WMr{{+t, +n}}: VCN.CAT([VCN.PC(1056n, {Y1}), VCN.PC(184n, {Y2})])
-def lenE(+v: {M}, +h: {{OKE(v) == {TRUE}}}) -> {{VRX.LN(YE(v)) == 1240n : Nat}}:
+def lenE0(+v: {M}) -> {{VRX.LN(YE(v)) == 1240n : Nat}}:
   match v:
     case {M}{{+a0, +a1}}:
       match a0:
         case WMr{{+t, +n}}: {{==}}
+def lenE(+v: {M}, +h: {{OKE(v) == {TRUE}}}) -> {{VRX.LN(YE(v)) == 1240n : Nat}}: lenE0(v)
 def pfE(+v: {M}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
     -> {{FD.array__perfect(U32, dd, PXE(v, dd, D, q, r)) == {TRUE}}}:
   match v:
@@ -2610,6 +2699,47 @@ def putxE(+v: {M}, +h: {{OKE(v) == {TRUE}}}, +dd: Nat, +D: {TR}, +X: U32, +q: Na
           FD.logic__subst(U32, z => DK.P2(RTEn(t, z, a1, dd, D, X, q, r), BYE1(t, a1, dd, D, q, r)), 1056, n, Equal.sym(U32, n, 1056, okw_n(t, n, h)),
             putx1(t, n, a1, h, dd, D, X, q, r, e, hr, hd, hl, pf, hz))
 ''')
+    ES, FS = _espec(E)
+    WSP = 'VS.wtake(264n, UW.SLW(t))'
+    wss = f'[{WSP}, RWD_DepositData(a1)]'
+    ITEMS = f'S.Items{{S.Sequence{{AV.ch8({WSP})}}, S.Items{{RVW_DepositData(a1), S.EmptyItems{{}}}}}}'
+    CH = f'S.Chain{{{FS[0]}, S.Chain{{{FS[1]}, S.End{{}}}}}}'
+    YEv = f'VCN.CAT([VCN.PC(1056n, {Y1}), VCN.PC(184n, {Y2})])'
+    L.append(_ETOT)
+    L.append(f"""
+# ---- Deposit: its value (the proof's 33 byte vectors, then the DepositData) and its parts ----
+def EV(+v: {M}) -> S.Value:
+  match v:
+    case {M}{{+a0, +a1}}:
+      match a0:
+        case WMr{{+t, +n}}: S.Sequence{{{ITEMS}}}
+def specE(+v: {M}, +h: {{OKE(v) == {TRUE}}}) -> {{Codec.parts(EV(v), {ES}) == Some{{[S.Fixed{{YE(v)}}]}} : Maybe<&2, +List<S.Part>>}}:
+  match v:
+    case {M}{{+a0, +a1}}:
+      match a0:
+        case WMr{{+t, +n}}:
+          +dw = TDW(t)
+          +pfT = okw_pf(t, n, h)
+          +h264 = FD.logic__subst(Nat, zz => {{Nat.is_le(264n, zz) == {TRUE}}}, VB.pw(dw), List.length(&2, U32, UW.SLW(t)), Equal.sym(Nat, List.length(&2, U32, UW.SLW(t)), VB.pw(dw),
+            Equal.trans(Nat, List.length(&2, U32, UW.SLW(t)), FD.spec_common__length(U32, UW.SLW(t)), VB.pw(dw), VMR.len_eq(UW.SLW(t)), FD.array__slots_length(U32, dw, t, pfT))), okw_room(t, n, h))
+          +h1056 = FD.logic__subst(Nat, zz => {{Nat.is_le(1056n, zz) == {TRUE}}}, A.quad(List.length(&2, U32, UW.SLW(t))), List.length(&2, U32, F.limbs(UW.SLW(t))),
+            Equal.sym(Nat, List.length(&2, U32, F.limbs(UW.SLW(t))), A.quad(List.length(&2, U32, UW.SLW(t))), UW.len_limbs_q(UW.SLW(t))), VCN.VME4(264n, List.length(&2, U32, UW.SLW(t)), h264))
+          +hN = Equal.trans(Nat, F.wlen({WSP}), List.length(&2, U32, F.limbs({WSP})), 1056n, Equal.sym(Nat, List.length(&2, U32, F.limbs({WSP})), F.wlen({WSP}), VS.len_limbs({WSP})),
+            VCN.len_wt(264n, UW.SLW(t), h264))
+          +vp = AV.vparts8({FS[0]}, {WSP}, 33n, 264n, 1056n, {{==}}, {{==}}, {{==}}, {{==}}, VCN.len_wtk(264n, UW.SLW(t), h264), {{==}}, hN, {{==}})
+          +e1 = Equal.trans(+List<U32>, F.limbs({WSP}), {Y1}, VCN.PC(1056n, {Y1}), Equal.sym(+List<U32>, {Y1}, F.limbs({WSP}), VS.bt_limbs(264n, UW.SLW(t))),
+            Equal.sym(+List<U32>, VCN.PC(1056n, {Y1}), {Y1}, VCN.pc_id(1056n, {Y1}, VS.bt_len(1056n, F.limbs(UW.SLW(t)), h1056))))
+          +eA = Equal.cong(+List<U32>, +List<U32>, z => List.append(&2, U32, z, List.append(&2, U32, {Y2}, [])), F.limbs({WSP}), VCN.PC(1056n, {Y1}), e1)
+          +eB = Equal.cong(+List<U32>, +List<U32>, z => List.append(&2, U32, VCN.PC(1056n, {Y1}), List.append(&2, U32, z, [])), {Y2}, VCN.PC(184n, {Y2}),
+            Equal.sym(+List<U32>, VCN.PC(184n, {Y2}), {Y2}, VCN.pc_id(184n, {Y2}, lenb_DepositData(a1))))
+          +ef = Equal.trans(+List<U32>, F.flat({wss}), List.append(&2, U32, VCN.PC(1056n, {Y1}), List.append(&2, U32, {Y2}, [])), {YEv}, eA, eB)
+          +fit = FD.logic__subst(+List<U32>, z => {{N.fits(4n, List.length(&2, U32, z)) == {TRUE}}}, {YEv}, F.flat({wss}), Equal.sym(+List<U32>, F.flat({wss}), {YEv}, ef), {{==}})
+          FD.logic__subst(+List<U32>, z => {{Codec.parts(S.Sequence{{{ITEMS}}}, {ES}) == Some{{[S.Fixed{{z}}]}} : Maybe<&2, +List<S.Part>>}}, F.flat({wss}), {YEv}, ef,
+            F.aggregate_fixed(Codec.parts({ITEMS}, {CH}), {wss}, 1240n,
+              F.cat_fixed(Codec.parts(S.Sequence{{AV.ch8({WSP})}}, {FS[0]}), F.limbs({WSP}), Codec.parts(S.Items{{RVW_DepositData(a1), S.EmptyItems{{}}}}, S.Chain{{{FS[1]}, S.End{{}}}}),
+                [S.Fixed{{{Y2}}}], vp, F.cat_fixed(Codec.parts(RVW_DepositData(a1), {FS[1]}), {Y2}, Codec.parts(S.EmptyItems{{}}, S.End{{}}), [], rparts_DepositData(a1), {{==}})),
+              etot({wss}, 1240n, fit)))
+""")
     L.append(_em_text(M, E, 1240))
     return '\n'.join(L), 1240
 
@@ -2629,10 +2759,17 @@ def blist_box_text(g, names, parent, field):
              f'xat_{p}', f'nth_{p}']
     cp = [re.sub(r'\bF\.', 'FD.', bl[c]) for c in COPYB]
     tmpl = (ROOT / 'codegen/vrlb_list.bend.in').read_text()
-    body = (tmpl.replace('@P', p).replace('@E', E).replace('@M', f'M_{E}').replace('@RSn', f'{RS}n').replace('@RS', str(RS))
-            .replace('@Wn', f'{RS // 4}n').replace('@LIM', str(LIM)))
+    ES = _espec(E)[0]
+    LS = re.search(rf'^def (Schema\d+)\(\) -> T\.Schema: T\.ListOf\{{{re.escape(ES[5:])}, {LIM}n\}}$', (ROOT / 'spec/fulu_schemas.bend').read_text(), re.M).group(1)
+    body = (tmpl.replace('@P', p).replace('@ESCH', ES).replace('@LSCH', f'Spec.{LS}()').replace('@E', E).replace('@M', f'M_{E}').replace('@RSn', f'{RS}n').replace('@RS', str(RS))
+            .replace('@Wn', f'{RS // 4}n').replace('@LIMn', f'{LIM}n').replace('@LIM', str(LIM)))
     assert '@' not in body.replace('&2', ''), [ln for ln in body.split('\n') if '@' in ln.replace('&2', '')][:3]
-    L = LHEAD + ['import ./vcont.bend as VCN', 'import ./amap.bend as AM', 'import ./mtree_defs.bend as MD', 'import ./vbenc.bend as VBE', 'import ./vlist.bend as VL', 'import ./vcopy.bend as VC', '', '# GENERATED by codegen/var_rec_enc.py. Do not edit.',
+    # the list's interface under the record lists' names (<name>_<p>, var_cont_enc's list child)
+    for nm in ['THL', 'OKL', 'ENCL', 'LL', 'PUTLb', 'PUTL', 'RTL', 'BYL', 'PFL', 'putx', 'sizex', 'szx', 'pfLb', 'VALL', 'encx_spec', 'len_encl']:
+        body = re.sub(rf'(?<![\w.]){nm}\(', f'{nm}_{p}(', body)
+    body = re.sub(r'(?<![\w.])valid_l\(', f'valid_{p}(', body)
+    L = LHEAD + ['import ./vcont.bend as VCN', 'import ./amap.bend as AM', 'import ./mtree_defs.bend as MD', 'import ./vbenc.bend as VBE', 'import ./vlist.bend as VL', 'import ./vcopy.bend as VC',
+                 'import ./vconts.bend as CS', 'import ./arr_vec.bend as AV', '', '# GENERATED by codegen/var_rec_enc.py. Do not edit.',
                  f'# {p}: a list of boxed {E} (fixed size, {RS} bytes) in the encoder-window interface (see the generator).', '', COMMON,
                  '# ---- mirrors of the boxed elements (copied from proofs/obj/root_types.bend) ----'] + cp
     return p, '\n'.join(L) + '\n' + etext + '\n' + body
