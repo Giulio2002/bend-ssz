@@ -12,6 +12,8 @@ import ./vbuf.bend as VB
 import ./vcopy.bend as VC
 import ./vbitl.bend as VBL
 import ./vbyte.bend as VY
+import ./vdepth.bend as VD
+import ./vlist.bend as VL
 
 # Bit lists, runtime side: the byte the validator reads is the last byte of
 # the spec's byte string, and copy_in of an arbitrary length at a word-aligned
@@ -268,3 +270,75 @@ def copy_in_ok2(d, t, n, off, i, L, dz, pf, hd, hdz, ez, h3, ei, hs, hr):
   %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
     {O.copy_into(BF(t, n), off, L, _) == (BF(t, n), O.Words{O.mask_last(L, F.array__thaw(U32, VB.mone(VC.NW(L), i, 0n, dz, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
   ci_case2(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, U32.is_eq(L, 0), {==})
+
+# ---- lengths ---------------------------------------------------------------------------------
+
+def lt_u32(+a: U32, +b: U32) -> {U32.is_lt(a, b) == Nat.is_lt(U32.to_nat(a), U32.to_nat(b)) : Bool}:
+  %Equal.sym(Cmp, U32.cmp(a, b), Nat.cmp(U32.to_nat(a), U32.to_nat(b)), F.u32__u32_cmp(a, b)) : {Cmp.is_lt(_) == Nat.is_lt(U32.to_nat(a), U32.to_nat(b)) : Bool}
+  {==}
+
+def pos1(+n: U32, +h: {U32.is_lt(0, n) == True{} : Bool}) -> {Nat.is_le(1n, U32.to_nat(n)) == True{} : Bool}:
+  F.nat__lt_succ_le_succ(0n, U32.to_nat(n), F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(0, n), Nat.is_lt(0n, U32.to_nat(n)), lt_u32(0, n), h))
+
+# n = 1 + (n - 1).
+def e1n(+n: U32, +h: {Nat.is_le(1n, U32.to_nat(n)) == True{} : Bool}) -> {U32.to_nat(n) == 1n+U32.to_nat(U32.sub(n, 1)) : Nat}:
+  %Equal.sym(Nat, U32.to_nat(U32.sub(n, 1)), Nat.sub(U32.to_nat(n), 1n), F.u32__sub_nat(n, 1, h)) : {U32.to_nat(n) == 1n+_ : Nat}
+  Equal.sym(Nat, Nat.add(1n, Nat.sub(U32.to_nat(n), 1n)), U32.to_nat(n), F.nat__sub_add(U32.to_nat(n), 1n, h))
+
+def XN(+off: U32, +n: U32) -> U32: U32.sub(U32.add(off, n), 1)
+
+# The last byte's position: 4 i + m, for a window 4 i + (1 + m) <= 4 2^d.
+def eXN(+d: Nat, +off: U32, +i: Nat, +n: U32, +m: Nat, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(n)), A.quad(VB.pw(d))) == True{} : Bool},
+    +e1: {U32.to_nat(n) == 1n+m : Nat})
+    -> {U32.to_nat(XN(off, n)) == Nat.add(A.quad(i), m) : Nat}:
+  +h0 = F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(2n+d)) == True{} : Bool}, Nat.add(A.quad(i), U32.to_nat(n)), Nat.add(U32.to_nat(n), A.quad(i)), F.nat__add_comm(A.quad(i), U32.to_nat(n)), hw)
+  +ea = VB.add_le_at(off, n, A.quad(i), 2n+d, eo, hd, h0)
+  +ea2 = Equal.trans(Nat, U32.to_nat(U32.add(off, n)), Nat.add(U32.to_nat(n), A.quad(i)), 1n+Nat.add(m, A.quad(i)), ea,
+    Equal.cong(Nat, Nat, z => Nat.add(z, A.quad(i)), U32.to_nat(n), 1n+m, e1))
+  +h1 = F.logic__subst(Nat, z => {Nat.is_le(1n, z) == True{} : Bool}, 1n+Nat.add(m, A.quad(i)), U32.to_nat(U32.add(off, n)), Equal.sym(Nat, U32.to_nat(U32.add(off, n)), 1n+Nat.add(m, A.quad(i)), ea2), F.nat__zero_le(Nat.add(m, A.quad(i))))
+  %Equal.sym(Nat, U32.to_nat(XN(off, n)), Nat.sub(U32.to_nat(U32.add(off, n)), 1n), F.u32__sub_nat(U32.add(off, n), 1, h1)) : {_ == Nat.add(A.quad(i), m) : Nat}
+  %Equal.sym(Nat, U32.to_nat(U32.add(off, n)), 1n+Nat.add(m, A.quad(i)), ea2) : {Nat.sub(_, 1n) == Nat.add(A.quad(i), m) : Nat}
+  %Equal.sym(Nat, Nat.sub(Nat.add(1n, Nat.add(m, A.quad(i))), 1n), Nat.add(m, A.quad(i)), F.nat__add_sub_cancel(1n, Nat.add(m, A.quad(i)))) : {_ == Nat.add(A.quad(i), m) : Nat}
+  F.nat__add_comm(m, A.quad(i))
+
+law lt_quad:
+  for +a: Nat
+  for +b: Nat
+  for +h: {Nat.is_lt(A.quad(a), A.quad(b)) == True{} : Bool}
+  {Nat.is_lt(a, b) == True{} : Bool}
+def lt_quad(a, b, h):
+  match a b:
+    case _ 0n: Empty.absurd({Nat.is_lt(a, 0n) == True{} : Bool}, F.nat__lt_zero_absurd(A.quad(a), h))
+    case 0n 1n+ +q: {==}
+    case 1n+ +p 1n+ +q: lt_quad(p, q, h)
+
+# The last byte's word lies in the buffer.
+def hiX(+d: Nat, +X: U32, +k: Nat, +eX: {U32.to_nat(X) == k : Nat}, +hk: {Nat.is_lt(k, A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_lt(QX(X), VB.pw(d)) == True{} : Bool}:
+  +h1 = F.logic__subst(Nat, z => {Nat.is_le(A.quad(QX(X)), z) == True{} : Bool}, Nat.add(A.quad(QX(X)), RX(X)), k,
+    Equal.trans(Nat, Nat.add(A.quad(QX(X)), RX(X)), U32.to_nat(X), k, Equal.sym(Nat, U32.to_nat(X), Nat.add(A.quad(QX(X)), RX(X)), VC.split4(X)), eX),
+    F.nat__le_add_right(A.quad(QX(X)), RX(X)))
+  lt_quad(QX(X), VB.pw(d), F.nat__le_lt_trans(A.quad(QX(X)), k, A.quad(VB.pw(d)), h1, hk))
+
+law x8_inv:
+  for +m: Nat
+  for +c: Nat
+  for +h: {Nat.is_le(VS.x8(m), Nat.add(VS.x8(c), 7n)) == True{} : Bool}
+  {Nat.is_le(m, c) == True{} : Bool}
+def x8_inv(m, c, h):
+  match m c:
+    case 0n _: F.nat__zero_le(c)
+    case 1n+ +p 0n: Empty.absurd({Nat.is_le(1n+p, 0n) == True{} : Bool}, F.logic__false_true(h))
+    case 1n+ +p 1n+ +q: x8_inv(p, q, h)
+
+def mul8(+m: Nat) -> {Nat.mul(8n, m) == VS.x8(m) : Nat}:
+  Equal.trans(Nat, Nat.mul(8n, m), Nat.mul(m, 8n), VS.x8(m), F.lru_nat_algebra__mul_comm(8n, m), VC.x8_mul(m))
+
+# ceil(n / 4) words for n <= 4 2^d bytes.
+def nwle(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(d)) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), F.nat__add_zero(VC.NW(n))) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
+  %Equal.sym(Nat, VC.NW(n), VD.s_rng(2n, 3n+U32.to_nat(n)), VC.eNW(n, VL.KK(d), VL.kk_lt(d, hd), VL.hyn(d, n, hn))) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
+  %VL.rng2_q(VB.pw(d)) : {Nat.is_le(VD.s_rng(2n, 3n+U32.to_nat(n)), _) == True{} : Bool}
+  VC.rng_mono(2n, 3n+U32.to_nat(n), 3n+A.quad(VB.pw(d)), hn)
