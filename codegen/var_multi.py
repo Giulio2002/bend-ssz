@@ -448,6 +448,172 @@ def decode_unique(d, t, n, pf, hd, hn, hchk, v, spec):
 '''
 
 
+REJ_HEAD = ['import ../compact/bits.bend as BT', 'import ../../proofs/decode_shape.bend as DS', 'import ../../proofs/decode_facts.bend as DF',
+            'import ./dk.bend as DK', 'import ./vrej.bend as VR', 'import ./vnest.bend as VN', 'import ./vdig.bend as VG', 'import ./vmr.bend as VMR',
+            f'import ./var_codec_{X}.bend as DC']
+
+
+def rej_file():
+    """Rejection: the spec's image has the shape the validator checks (inversion down to
+    vmr's layout of three variable parts), so a refused buffer is outside it; and the
+    decoder returns None."""
+    SCH = ['Spec.Schema3()', 'Spec.Schema114()', 'Spec.Schema103()', 'Spec.Schema103()', 'Spec.Schema30()', 'Spec.Schema90()']
+    FIX = {0: ('x0', 'l0', 8), 4: ('xh', 'lh', 208), 5: ('xp', 'lp', 128)}
+    VAR = {1: ('y0', 'f0', 2048), 2: ('y1', 'f1', 48), 3: ('y2', 'f2', 48)}
+    VWt = 'DC.VW(t, n)'
+    CTXT = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool},\n'
+            '    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool}')
+    CTX = 'd, t, n, pf, hd, hn, hchk'
+
+    def ch(i):
+        return 'S.End{}' if i == 6 else f'S.Chain{{{SCH[i]}, {ch(i + 1)}}}'
+
+    def part(j):
+        return f'S.Fixed{{{FIX[j][0]}}}' if j in FIX else f'S.Variable{{{VAR[j][0]}}}'
+
+    def cc(i, tail):
+        out = tail
+        for j in reversed(range(i)):
+            out = f'Codec.concatenate(Some{{[{part(j)}]}}, {out})'
+        return out
+
+    def E(i, tail):
+        return f'{{Codec.bytes(Codec.aggregate({cc(i, tail)}, None{{}})) == Some{{{VWt}}} : Maybe<&2, +List<U32>>}}'
+
+    def acc_t(i):
+        L = []
+        for j in range(i):
+            if j in FIX:
+                x, l, w_ = FIX[j]
+                L.append(f'+{x}: +List<U32>, +{l}: {{List.length(&2, U32, {x}) == {w_}n : Nat}}')
+            else:
+                y, f, b = VAR[j]
+                L.append(f'+{y}: +List<U32>, {f}: VMR.LF({y}, {b}n, U32.to_nat(4096))')
+        return ''.join(', ' + a for a in L)
+
+    def acc_a(i):
+        L = []
+        for j in range(i):
+            L += [FIX[j][0], FIX[j][1]] if j in FIX else [VAR[j][0], VAR[j][1]]
+        return ''.join(', ' + a for a in L)
+    NONE = f'FD.logic__none_some(+List<U32>, {VWt}, e)'
+    CONS = ['S.BooleanValue{+b0}', 'S.UnsignedValue{+u0}', 'S.BytesValue{+xs0}', 'S.BitsValue{+bs0}', 'S.Sequence{+it0}',
+            'S.Items{+hd0, +tl0}', 'S.EmptyItems{}', 'S.Selected{+sel0, +sv0}', 'S.NullValue{}']
+    W = []
+    w = W.append
+    w(TPL('var_multi_rej.bend.in'))
+    PS = f'[{part(0)}, {part(1)}, {part(2)}, {part(3)}, {part(4)}, {part(5)}]'
+    w(f"""
+def fin({CTXT}{acc_t(6)}, +b5: Bool,
+    +e: {{Codec.bytes(Codec.one(SP.optional(b5, VMR.OUTR(x0, y0, y1, y2, [xh, xp])), None{{}})) == Some{{{VWt}}} : Maybe<&2, +List<U32>>}}) -> Empty:
+  match b5:
+    case False{{}}: {NONE}
+    case True{{}}: contra({CTX}{acc_a(6)}, FD.logic__some_inj(+List<U32>, VMR.OUTR(x0, y0, y1, y2, [xh, xp]), {VWt}, e))
+""")
+    for i in reversed(range(7)):
+        # st_i: the items from field i on
+        cases = []
+        for c in CONS:
+            if i < 6 and c.startswith('S.Items'):
+                cases.append(f'    case S.Items{{+h, +r}}: fm{i}({CTX}{acc_a(i)}, h, Codec.parts(h, {SCH[i]}), DS.facts(h, {SCH[i]}, {{==}}), {{==}}, r, e)')
+            elif i == 6 and c == 'S.EmptyItems{}':
+                cases.append(f'    case S.EmptyItems{{}}: fin({CTX}{acc_a(6)}, Bool.and(Layout.bytes_valid({PS}), N.fits(4n, Nat.add(Layout.fixed_size({PS}), '
+                             f'List.length(&2, U32, Layout.payloads({PS}))))), e)')
+            else:
+                cases.append(f'    case {c}: {NONE}')
+        ST = (f"""
+def st{i}({CTXT}{acc_t(i)}, +items: S.Value,
+    +e: {E(i, f'Codec.parts(items, {ch(i)})')}) -> Empty:
+  match items:
+""" + '\n'.join(cases) + '\n')
+
+        if i == 6:
+            w(ST)
+            continue
+        WID = 'None{}' if i in VAR else f'Some{{{FIX[i][2]}n}}'
+        if i in FIX:
+            cf = f'st{i + 1}({CTX}{acc_a(i)}, xs, Equal.sym(Nat, {FIX[i][2]}n, List.length(&2, U32, xs), FD.logic__some_inj(Nat, {FIX[i][2]}n, List.length(&2, U32, xs), hf)), r, e)'
+            cv = f'FD.logic__none_some(Nat, {FIX[i][2]}n, Equal.sym(Maybe<&2, Nat>, Some{{{FIX[i][2]}n}}, None{{}}, hf))'
+        else:
+            cf = 'FD.logic__none_some(Nat, List.length(&2, U32, xs), hf)'
+            cv = (f'st{i + 1}({CTX}{acc_a(i)}, xs, VMR.linv(h, xs, {VAR[i][2] - 1}n, U32.to_nat(4096), '
+                  f'Equal.cong(Maybe<&2, +List<S.Part>>, Maybe<&2, +List<U32>>, z => Codec.bytes(z), Codec.parts(h, {SCH[i]}), Some{{[S.Variable{{xs}}]}}, em)), r, e)')
+        w(f"""
+def fp{i}({CTXT}{acc_t(i)}, +h: S.Value, +ps: +List<S.Part>, hf: DF.single({WID}, ps),
+    +em: {{Codec.parts(h, {SCH[i]}) == Some{{ps}} : Maybe<&2, +List<S.Part>>}}, +r: S.Value,
+    +e: {E(i, f'Codec.concatenate(Some{{ps}}, Codec.parts(r, {ch(i + 1)}))')}) -> Empty:
+  match ps:
+    case Nil{{}}: hf
+    case Con{{S.Fixed{{+xs}}, Nil{{}}}}: {cf}
+    case Con{{S.Variable{{+xs}}, Nil{{}}}}: {cv}
+    case Con{{S.Fixed{{+xs}}, Con{{+a, +b}}}}: hf
+    case Con{{S.Variable{{+xs}}, Con{{+a, +b}}}}: hf
+
+def fm{i}({CTXT}{acc_t(i)}, +h: S.Value, +mm: Maybe<&2, +List<S.Part>>, hf: DF.single_result({WID}, mm),
+    +em: {{Codec.parts(h, {SCH[i]}) == mm : Maybe<&2, +List<S.Part>>}}, +r: S.Value,
+    +e: {E(i, f'Codec.concatenate(mm, Codec.parts(r, {ch(i + 1)}))')}) -> Empty:
+  match mm:
+    case None{{}}: {NONE}
+    case Some{{+ps}}: fp{i}({CTX}{acc_a(i)}, h, ps, hf, em, r, e)
+""")
+        w(ST)
+    vcases = '\n'.join(f'    case S.Sequence{{+items}}: st0({CTX}, items, e)' if c.startswith('S.Sequence') else f'    case {c}: {NONE}' for c in CONS)
+    w(f"""
+def inv_v({CTXT}, +v: S.Value,
+    +e: {{Codec.encoding_for_legal_type(Spec.{X}(), v) == Some{{{VWt}}} : Maybe<&2, +List<U32>>}}) -> Empty:
+  match v:
+{vcases}
+
+# When the validator refuses, no value is related to the buffer's bytes.
+law decode_reject:
+  for +d: Nat
+  for +t: FD.array__Tree<U32>
+  for +n: U32
+  for +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}
+  for +hd: {{Nat.is_lt(d, 23n) == True{{}} : Bool}}
+  for +hn: {{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{{}} : Bool}}
+  for +hchk: {{DC.CHK(t, n) == False{{}} : Bool}}
+  Decoding.outside_image(Spec.{X}(), {VWt})
+def decode_reject(d, t, n, pf, hd, hn, hchk):
+  v => e => inv_v({CTX}, v, e)
+
+def none_go({CTXT}, +a: Bool, +ea: {{U32.is_le(356, n) == a : Bool}})
+    -> {{T.{X}_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{{}}) : B.Buf & Maybe<&1, T.{X}>}}:
+  match a:
+    case False{{}}:
+      %Equal.sym(Bool, U32.is_le(356, n), False{{}}, ea) :
+        {{T.{X}_built(n, T.{X}_ok_len(_, DC.BF(t, n), 0, n)) == (DC.BF(t, n), None{{}}) : B.Buf & Maybe<&1, T.{X}>}}
+      {{==}}
+    case True{{}}:
+      +hF2 = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(356, n), Nat.is_le(356n, U32.to_nat(n)), VU.le_u32(356, n), ea)
+      +h89 = VC.quad_inv(89n, VB.pw(d), FD.nat__le_trans(356n, U32.to_nat(n), A.quad(VB.pw(d)), hF2, hn))
+      %Equal.sym(B.Buf & Bool, T.{X}_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)),
+          DC.ok_eval(d, t, n, VB.lt32(d, FD.nat__lt_trans(d, 23n, 31n, hd, {{==}})), FD.nat__lt_le_trans(4n, 89n, VB.pw(d), {{==}}, h89), pf)) :
+        {{T.{X}_built(n, _) == (DC.BF(t, n), None{{}}) : B.Buf & Maybe<&1, T.{X}>}}
+      %Equal.sym(Bool, DC.CHK(t, n), False{{}}, hchk) :
+        {{T.{X}_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{{}}) : B.Buf & Maybe<&1, T.{X}>}}
+      {{==}}
+
+# When the validator refuses, the decoder returns None and the buffer.
+law decode_none:
+  for +d: Nat
+  for +t: FD.array__Tree<U32>
+  for +n: U32
+  for +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}
+  for +hd: {{Nat.is_lt(d, 23n) == True{{}} : Bool}}
+  for +hn: {{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{{}} : Bool}}
+  for +hchk: {{DC.CHK(t, n) == False{{}} : Bool}}
+  {{T.{X}_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{{}}) : B.Buf & Maybe<&1, T.{X}>}}
+def decode_none(d, t, n, pf, hd, hn, hchk):
+  none_go({CTX}, U32.is_le(356, n), {{==}})
+""")
+    L = list(DEC_HEAD) + REJ_HEAD + ['', '# GENERATED by codegen/var_multi.py. Do not edit.',
+                                      f'# Rejection of {X} is exactly the complement of the spec image: every byte string the',
+                                      '# spec relates to a value is [8 bytes | three lists of byte vectors | 208 + 128 bytes] behind',
+                                      '# the three offsets, and then every check of the validator passes (contra).', '']
+    return '\n'.join(L) + '\n' + '\n'.join(W)
+
+
 def outputs():
     names = schema.load(ROOT / 'codegen/fulu.yaml')
     g = G.Gen()
@@ -455,11 +621,13 @@ def outputs():
         g.shape(t)
     out = {ROOT / 'proofs/obj/vmul.bend': (ROOT / 'codegen/vmul.bend.in').read_text(),
            ROOT / 'proofs/obj/vmv.bend': (ROOT / 'codegen/vmv.bend.in').read_text(),
+           ROOT / 'proofs/obj/vmr.bend': (ROOT / 'codegen/vmr.bend.in').read_text(),
            ROOT / 'proofs/obj/var_fix_types_m.bend': fix_types(g, names),
            ROOT / 'proofs/obj/vzeros.bend': zeros_text(),
            ROOT / f'proofs/obj/var_codec_{X}.bend': dec_text(g, names),
            ROOT / f'proofs/obj/var_codec_{X}_acc.bend': acc_file(g, names),
-           ROOT / f'proofs/obj/var_codec_{X}_unique.bend': unique_text()}
+           ROOT / f'proofs/obj/var_codec_{X}_unique.bend': unique_text(),
+           ROOT / f'proofs/obj/var_codec_{X}_rej.bend': rej_file()}
     return out
 
 
