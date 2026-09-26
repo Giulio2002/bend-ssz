@@ -1249,8 +1249,11 @@ def readw({CW}, +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{{Tn}_re
     M = 'Maybe<&2, +List<U32>>'
     LLn = 'U32.to_nat(LLw(len))'
     TXL = '+t: FD.array__Tree<U32>, +x: Nat, +len: U32'
+    FXR = lambda i: f'Some{{[S.Fixed{{F.limbs([{", ".join(nodes[i]["words"])}])}}]}} : {MP}'
     fxdefs = ''.join(f'def FVc{i}(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: {vals[i]}\n\n'
-                     f'def fxc{i}(+t: FD.array__Tree<U32>, +x: Nat) -> {{Codec.parts(FVc{i}(t, x), {schs[i]}) == Some{{[S.Fixed{{F.limbs([{", ".join(nodes[i]["words"])}])}}]}} : {MP}}}:\n'
+                     f'def fvq{i}(+t: FD.array__Tree<U32>, +x: Nat) -> {{{vals[i]} == FVc{i}(t, x) : S.Value}}:\n  {{==}}\n\n'
+                     f'def fxc{i}(+t: FD.array__Tree<U32>, +x: Nat) -> {{Codec.parts(FVc{i}(t, x), {schs[i]}) == {FXR(i)}}}:\n'
+                     f'  %fvq{i}(t, x) : {{Codec.parts(_, {schs[i]}) == {FXR(i)}}}\n'
                      f'  {nodes[i]["proof"]}\n\n' for i, f in enumerate(x.fields) if f['kind'] == 'fix')
     LH = 'LHc(t, x, len)'
     SMALL = (f'def ITc({TXL}) -> S.Value: {sitems(0)}\n\n'

@@ -241,7 +241,11 @@ def gcf_(+v: S.Value, +vs: S.Value, +s: S.Schema, +rs: S.Schema, +xs: +List<U32>
 
 def FVc0(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.BytesValue{F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])}
 
+def fvq0(+t: FD.array__Tree<U32>, +x: Nat) -> {S.BytesValue{F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])} == FVc0(t, x) : S.Value}:
+  {==}
+
 def fxc0(+t: FD.array__Tree<U32>, +x: Nat) -> {Codec.parts(FVc0(t, x), S.ByteVector{32n}) == Some{[S.Fixed{F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])}]} : Maybe<&2, +List<S.Part>>}:
+  %fvq0(t, x) : {Codec.parts(_, S.ByteVector{32n}) == Some{[S.Fixed{F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])}]} : Maybe<&2, +List<S.Part>>}
   F.bytes_part_n(UR.RWN(t, x), [UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)], 32n, {==}, {==})
 
 def ITc(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: S.Items{FVc0(t, x), S.Items{CH.VALw(t, JW(x), LLw(len)), S.EmptyItems{}}}
