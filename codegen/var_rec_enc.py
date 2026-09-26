@@ -2131,6 +2131,14 @@ def sizex(m, hok):
         {(T.@p_Seq{@TH, N}, O.pick(_, U32.mul(N, @RS), 2147483648)) == (T.@p_Seq{@TH, N}, U32.mul(N, @RS)) : T.@p_Seq & U32}
       {==}
 
+law validx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  {T.@p_valid(TH(m)) == (TH(m), True{}) : T.@p_Seq & Bool}
+def validx(m, hok):
+  match m:
+    case MW{+da, +A, +N}: valid(da, A, N, hok)
+
 law encx_spec:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
