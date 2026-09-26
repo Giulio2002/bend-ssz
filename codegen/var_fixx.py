@@ -378,7 +378,9 @@ def prt(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE
 
 
 def outputs(no_big=False):
-    out = {ROOT / 'proofs/obj/vfxg.bend': gen_text(), ROOT / 'proofs/obj/vfx_SyncCommittee.bend': sc_mod()}
+    import var_fixx_bv4 as BV4
+    out = {ROOT / 'proofs/obj/vfxg.bend': gen_text(), ROOT / 'proofs/obj/vfx_SyncCommittee.bend': sc_mod(),
+           ROOT / 'proofs/obj/vfx_bv4.bend': BV4.bv4_mod(HEAD, sig, TR, TRUE)}
     import schema
     import generate as G
     names = schema.load(ROOT / 'codegen/fulu.yaml')
