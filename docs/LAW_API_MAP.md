@@ -208,7 +208,9 @@ What that means concretely:
   and the inversion reading the value's parts back part by part
   (`vua_lay`: lay_off, lay_pay, lay_end, fpos_w, fs_w, for any part list).
   `big_var_winx_BeaconBlockBody` (240 s), `big_var_winx_BeaconBlock` and
-  `big_var_winx_SignedBeaconBlock` (about 250 s each; checkq --big).
+  `big_var_winx_SignedBeaconBlock` (about 250 s each; checkq --big), and
+  their whole-buffer decoder laws `big_var_codec_<Name>` (ok_eval,
+  decode_accept/spec/unique/reject/none from the window at x = 0).
   BeaconState's children: `big_var_winx_l1099511627776_u64` and
   `big_var_winx_l1099511627776_u8` (List[uint64/uint8, 2^40]: the count is
   bounded by the length's, `big_vu40` compares the 2^40 limit as a capacity),
