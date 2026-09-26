@@ -386,6 +386,10 @@ def outputs(no_big=False):
     out[ROOT / 'proofs/obj/vfx_u16.bend'] = GEN.u16_mod(HEAD, sig, TR, TRUE)
     for N in (1, 2, 8):
         out[ROOT / f'proofs/obj/vfx_bv{N}.bend'] = GEN.bvn_mod(N, HEAD, sig, TR, TRUE)
+    import generic as GN
+    gnames = {n: t for n, t, err in GN.inventory_all() if err is None}
+    for p, txt in GEN.generic_small(gnames, small_mod).items():
+        out[ROOT / f'proofs/obj/vfx_{p}.bend'] = txt
     import schema
     import generate as G
     names = schema.load(ROOT / 'codegen/fulu.yaml')
