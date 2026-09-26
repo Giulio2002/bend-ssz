@@ -330,6 +330,10 @@ class Child:
             self.model = lambda dd, D, X, q, r: f'{a}.PUTL_{p}({A_}, {N}, {dd}, {D}, {q}, {r})'
             self.hY = f'{a}.len_encl_{p}({A_}, {N})'
             self.alias = a
+            # the Validator list (var_rec_enc.vlist_text): records at any byte phase, its model and laws take X
+            self.xform = p == 'l1099511627776_Validator'
+            if self.xform:
+                self.model = lambda dd, D, X, q, r: f'{a}.PUTL_{p}({A_}, {N}, {dd}, {D}, {X})'
         elif fs.p in STD_CHILDREN():
             # a child in var_plist_sub's encoder-window interface (codegen/encx_children.py)
             c = STD_CHILDREN()[fs.p]
@@ -403,6 +407,9 @@ class Child:
         RT = f'{a}.RTL_{p}({t}, {N}, {dd}, {D}, {X}, {q}, {r})'
         BY = f'{a}.BYL_{p}({t}, {N}, {dd}, {D}, {q}, {r})'
         PF = f'{a}.PFL_{p}({t}, {N}, {dd}, {D}, {q}, {r})'
+        if getattr(self, 'xform', False):
+            BY = f'{a}.BYL_{p}({t}, {N}, {dd}, {D}, {X}, {q}, {r})'
+            PF = f'{a}.PFL_{p}({t}, {N}, {dd}, {D}, {X})'
         return g, (RT, BY, PF), None, 'P3'
 
     def szx(self, qc, rc, dd, hd, hlc):
@@ -1263,6 +1270,8 @@ def lvp_{lf.p}(+o: {lf.ctor}) -> {{Codec.parts(LV_{lf.p}(o), {fx(nd.sch)}) == So
                 d.update(val=f'{a}.VALL_{p}({A_}, {N_})', prf=f'{a}.encx_spec_{p}({A_}, {N_}, OKA_h_{f}, k, CS.hk30(k, ek), @HLL)',
                          szx=f'Equal.trans(Nat, U32.to_nat({ch.sz}), {a}.LL_{p}({A_}, {N_}), LY.LN({ch.enc}), {a}.szx_{p}({A_}, {N_}, 0n, 0n, k, CS.hk29(k, ek), VRX.nwn_le({a}.LL_{p}({A_}, {N_}), VB.pw(k), @HLL)), Equal.sym(Nat, LY.LN({ch.enc}), {a}.LL_{p}({A_}, {N_}), {a}.len_encl_{p}({A_}, {N_})))',
                          pfx=f'{a}.pfLb_{p}(U32.is_eq({N_}, 0), {A_}, {N_}, dd, @D, @Q, @R, @PF)', LL=f'{a}.LL_{p}({A_}, {N_})', hY=f'{a}.len_encl_{p}({A_}, {N_})')
+                if getattr(ch, 'xform', False):
+                    d['pfx'] = f'{a}.pfLb_{p}(U32.is_eq({N_}, 0), {A_}, {N_}, dd, @D, @X, @PF)'
             d['part'] = f'S.Variable{{{ch.enc}}}'
             d['bytes'] = ch.enc
             fields.append(d)
@@ -1581,7 +1590,7 @@ def domx(m, hok):
                 okpf = False
                 break
             Xc = f'U32.add(XQ(q, r), {ev["cur"]})'
-            pfs = x['pfx'].replace('@D', Mk(k)).replace('@Q', f'VCN.QX({Xc})').replace('@R', f'VCN.RX({Xc})').replace('@PF', pfs)
+            pfs = x['pfx'].replace('@D', Mk(k)).replace('@Q', f'VCN.QX({Xc})').replace('@R', f'VCN.RX({Xc})').replace('@X', Xc).replace('@PF', pfs)
     # ---- sizex: the runtime's size pass, child by child (narrow containers whose children state it) ----
     szx_ok = not K.wide
     RTS = ''
