@@ -270,6 +270,13 @@ def wl_v4_b32(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, 
   Equal.sym(List<&2, U32>, VS.wtake(32n, UW.SLW(TB)), WL_v4_b32(TB),
     VWB.tks(32n, 0n, UW.SLW(TB), FD.logic__subst(Nat, z => {Nat.is_le(32n, z) == True{} : Bool}, VB.pw(dB), VB.len(UW.SLW(TB)), Equal.sym(Nat, VB.len(UW.SLW(TB)), VB.pw(dB), FD.array__slots_length(U32, dB, TB, pfB)), hrB)))
 
+
+# Its storage check holds on a valid storage tree (the runtime's T.v4_b32_valid).
+def v4_b32_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
+    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(32n, VB.pw(dB)) == True{} : Bool})
+    -> {T.v4_b32_valid(O.Words{FD.array__thaw(U32, TB), 128}) == (O.Words{FD.array__thaw(U32, TB), 128}, True{}) : O.Words & Bool}:
+  VBE.words_ok_b(dB, TB, 128, 128, 128, 8n, pfB, hdB, {==}, {==}, {==}, {==}, hrB, {==}, 32, {==})
+
 def PX_v4_b32(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +TB: FD.array__Tree<U32>) -> FD.array__Tree<U32>:
   match r:
     case 0n: VF.updv(VS.wtake(32n, UW.SLW(TB)), dd, D, q)
