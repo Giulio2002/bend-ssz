@@ -450,6 +450,24 @@ def cpt_tail(+p: Nat, +E: Nat, +A: F.array__Tree<U32>, +G: List<&2, U32>, +pA: {
     {F.TNode{A, _} == F.TNode{A, AC.cpt(p, E, 0n, 0n, z, G)} : F.array__Tree<U32>}
   {==}
 
+# cpt_tail with the outer depth as its own parameter q == 1 + p. An instance of
+# `1n+p` at a literal p is not syntactically the literal 1 + p, so a use at
+# literal depths would make the checker compare the two copy models by running
+# them (2^p + E updates: 137 s at p = 12); with q the instance is exact.
+law cpt_tail_q:
+  for +p: Nat
+  for +q: Nat
+  for +eq: {q == 1n+p : Nat}
+  for +E: Nat
+  for +A: F.array__Tree<U32>
+  for +G: List<&2, U32>
+  for +pA: {F.array__perfect(U32, p, A) == True{} : Bool}
+  {AC.cpt(q, Nat.add(F.spec_common__pow2(p), E), 0n, 0n, F.array__trep(U32, q, 0), F.spec_common__append(U32, F.array__slots(U32, A), G)) == F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)} : F.array__Tree<U32>}
+def cpt_tail_q(p, q, eq, E, A, G, pA):
+  %Equal.sym(Nat, q, 1n+p, eq) :
+    {AC.cpt(_, Nat.add(F.spec_common__pow2(p), E), 0n, 0n, F.array__trep(U32, _, 0), F.spec_common__append(U32, F.array__slots(U32, A), G)) == F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)} : F.array__Tree<U32>}
+  cpt_tail(p, E, A, G, pA)
+
 # The first n words of [X | c] are the first n of X when X has at least n.
 def tk_left(+d: Nat, +X: F.array__Tree<U32>, +c: F.array__Tree<U32>, +n: Nat, +pX: {F.array__perfect(U32, d, X) == True{} : Bool},
     +h: {Nat.is_le(n, F.spec_common__pow2(d)) == True{} : Bool})
