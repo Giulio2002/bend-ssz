@@ -98,3 +98,16 @@ def haw_g(+F: U32, +Fn: Nat, +eF: {U32.to_nat(F) == Fn : Nat}, +len: U32, +X: Na
   FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(F), U32.to_nat(len)), U32.is_le(F, len), Equal.sym(Bool, U32.is_le(F, len), Nat.is_le(U32.to_nat(F), U32.to_nat(len)), VU.le_u32(F, len)),
     FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, Fn, U32.to_nat(F), Equal.sym(Nat, U32.to_nat(F), Fn, eF),
       FD.logic__subst(Nat, z => {Nat.is_le(Fn, z) == True{} : Bool}, Nat.add(Fn, X), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), Nat.add(Fn, X), en), Order.below_sum(Fn, X))))
+
+def hd0(l: List<&2, U32>) -> U32:
+  match l:
+    case Con{h, t}: h
+    case Nil{}: 0
+
+# Two word lists whose one-word windows at k agree have the same word k.
+def win1_slot(+X: List<&2, U32>, +Y: List<&2, U32>, +k: Nat, +hx: {Nat.is_lt(k, VB.len(X)) == True{} : Bool}, +hy: {Nat.is_lt(k, VB.len(Y)) == True{} : Bool},
+    +h: {VF.WIN(1n, k, X) == VF.WIN(1n, k, Y) : List<&2, U32>}) -> {FD.flat__nthc(X, k) == FD.flat__nthc(Y, k) : U32}:
+  Equal.cong(List<&2, U32>, U32, z => hd0(z), Con{FD.flat__nthc(X, k), VS.wtake(0n, VB.wdr(1n+k, X))}, Con{FD.flat__nthc(Y, k), VS.wtake(0n, VB.wdr(1n+k, Y))},
+    Equal.trans(List<&2, U32>, Con{FD.flat__nthc(X, k), VS.wtake(0n, VB.wdr(1n+k, X))}, VF.WIN(1n, k, X), Con{FD.flat__nthc(Y, k), VS.wtake(0n, VB.wdr(1n+k, Y))},
+      Equal.sym(List<&2, U32>, VF.WIN(1n, k, X), Con{FD.flat__nthc(X, k), VS.wtake(0n, VB.wdr(1n+k, X))}, VB.wt_eta(0n, k, X, hx)),
+      Equal.trans(List<&2, U32>, VF.WIN(1n, k, X), VF.WIN(1n, k, Y), Con{FD.flat__nthc(Y, k), VS.wtake(0n, VB.wdr(1n+k, Y))}, h, VB.wt_eta(0n, k, Y, hy))))

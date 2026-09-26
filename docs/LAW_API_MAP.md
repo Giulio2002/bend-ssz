@@ -323,8 +323,14 @@ What that means concretely:
   the big-name branches of `var_bytes_nest.rej_text` keep the literal header size
   away from stuck lengths (sizes summed symbolically then closed by
   `Nat.is_eq`, `vbsize.LN` for lengths beside the literal, `sfix` for a fixed
-  field's size, `wv_g`/`haw_g` stated for a symbolic size). Not covered yet:
-  Bootstrap's encoder laws.
+  field's size, `wv_g`/`haw_g` stated for a symbolic size). Its encoder laws
+  (encode_eval, encode_spec) are in `big_var_bytes_LightClientBootstrap_enc.bend`
+  (`codegen/var_bytes_benc.py`, called by `var_bytes_nenc.py`; checkq --big, 48 s /
+  3.1 GB): the SyncCommittee's pubkeys are copied as one `VB.mone` run
+  (`vbenc.put_words_any`, `words_ok_b`) and its header segment is
+  `VS.wtake(NW(24576), slots TS)`, never unfolded; the output tree's layers are
+  written inline (a def around the 6144-word run is evaluated when compared with its
+  body), and the law's bytes keep the `VB.wdr(0n, ..)` of the window form.
   LightClientFinalityUpdate (two leading LightClientHeaders, the second at the
   runtime offset o1 + x) has ok_eval, decode_accept, decode_spec,
   decode_unique, decode_reject and decode_none in

@@ -25,7 +25,7 @@ ROOT = VBY.ROOT
 NEST = {'LightClientHeader': 'ExecutionPayloadHeader', 'LightClientOptimisticUpdate': 'LightClientHeader',
         'LightClientBootstrap': 'LightClientHeader'}
 ORDER = ['LightClientHeader', 'LightClientOptimisticUpdate', 'LightClientBootstrap']
-NO_ENC = {'LightClientBootstrap'}  # its encoder laws: not yet
+NO_ENC = {'LightClientBootstrap'}  # its encoder laws: codegen/var_bytes_benc.py (big)
 
 
 class NName(VBY.Name):
