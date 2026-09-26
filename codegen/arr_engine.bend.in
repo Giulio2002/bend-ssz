@@ -1,0 +1,535 @@
+# ---- the model: splitting and placing the copies ------------------------------------
+
+law split:
+  for +dd: Nat
+  for +k1: Nat
+  for +k2: Nat
+  for +a: Nat
+  for +b: Nat
+  for +D: F.array__Tree<U32>
+  for +sl: List<&2, U32>
+  {cpt(dd, Nat.add(k1, k2), a, b, D, sl) == cpt(dd, k2, Nat.add(k1, a), Nat.add(k1, b), cpt(dd, k1, a, b, D, sl), sl) : F.array__Tree<U32>}
+def split(dd, k1, k2, a, b, D, sl):
+  match k1:
+    case 0n: {==}
+    case 1n+ +q:
+      +D1 = F.array__upd(U32, dd, D, b, F.flat__nthc(sl, a))
+      %F.nat__add_succ(q, a) : {cpt(dd, Nat.add(q, k2), 1n+a, 1n+b, D1, sl) == cpt(dd, k2, _, 1n+Nat.add(q, b), cpt(dd, q, 1n+a, 1n+b, D1, sl), sl) : F.array__Tree<U32>}
+      %F.nat__add_succ(q, b) : {cpt(dd, Nat.add(q, k2), 1n+a, 1n+b, D1, sl) == cpt(dd, k2, Nat.add(q, 1n+a), _, cpt(dd, q, 1n+a, 1n+b, D1, sl), sl) : F.array__Tree<U32>}
+      split(dd, q, k2, 1n+a, 1n+b, D1, sl)
+
+# A write below 2^p goes to the left half, at or above it to the right half.
+def upd_left(+p: Nat, +l: F.array__Tree<U32>, +r: F.array__Tree<U32>, +j: Nat, +v: U32,
+    +h: {Nat.is_lt(j, F.spec_common__pow2(p)) == True{} : Bool})
+    -> {F.array__upd(U32, 1n+p, F.TNode{l, r}, j, v) == F.TNode{F.array__upd(U32, p, l, j, v), r} : F.array__Tree<U32>}:
+  %Equal.sym(Bool, Nat.is_lt(j, F.spec_common__pow2(p)), True{}, h) :
+    {F.array__tupd(U32, 1n+p, F.TNode{l, r}, j, v, _) == F.TNode{F.array__upd(U32, p, l, j, v), r} : F.array__Tree<U32>}
+  {==}
+
+def upd_right(+p: Nat, +l: F.array__Tree<U32>, +r: F.array__Tree<U32>, +j: Nat, +v: U32,
+    +h: {Nat.is_lt(j, F.spec_common__pow2(p)) == False{} : Bool})
+    -> {F.array__upd(U32, 1n+p, F.TNode{l, r}, j, v) == F.TNode{l, F.array__upd(U32, p, r, Nat.sub(j, F.spec_common__pow2(p)), v)} : F.array__Tree<U32>}:
+  %Equal.sym(Bool, Nat.is_lt(j, F.spec_common__pow2(p)), False{}, h) :
+    {F.array__tupd(U32, 1n+p, F.TNode{l, r}, j, v, _) == F.TNode{l, F.array__upd(U32, p, r, Nat.sub(j, F.spec_common__pow2(p)), v)} : F.array__Tree<U32>}
+  {==}
+
+# k copies that all land in the left half.
+law left:
+  for +p: Nat
+  for +k: Nat
+  for +a: Nat
+  for +b: Nat
+  for +l: F.array__Tree<U32>
+  for +r: F.array__Tree<U32>
+  for +sl: List<&2, U32>
+  for +h: {Nat.is_le(Nat.add(k, b), F.spec_common__pow2(p)) == True{} : Bool}
+  {cpt(1n+p, k, a, b, F.TNode{l, r}, sl) == F.TNode{cpt(p, k, a, b, l, sl), r} : F.array__Tree<U32>}
+def left(p, k, a, b, l, r, sl, h):
+  match k:
+    case 0n: {==}
+    case 1n+ +q:
+      +v = F.flat__nthc(sl, a)
+      +hb = F.nat__lt_le_trans(b, 1n+Nat.add(q, b), F.spec_common__pow2(p), F.nat__le_lt_succ(b, Nat.add(q, b), le_addl(q, b)), h)
+      +h1 = F.logic__subst(Nat, z => {Nat.is_le(z, F.spec_common__pow2(p)) == True{} : Bool}, 1n+Nat.add(q, b), Nat.add(q, 1n+b), Equal.sym(Nat, Nat.add(q, 1n+b), 1n+Nat.add(q, b), F.nat__add_succ(q, b)), h)
+      %Equal.sym(F.array__Tree<U32>, F.array__upd(U32, 1n+p, F.TNode{l, r}, b, v), F.TNode{F.array__upd(U32, p, l, b, v), r}, upd_left(p, l, r, b, v, hb)) :
+        {cpt(1n+p, q, 1n+a, 1n+b, _, sl) == F.TNode{cpt(p, 1n+q, a, b, l, sl), r} : F.array__Tree<U32>}
+      left(p, q, 1n+a, 1n+b, F.array__upd(U32, p, l, b, v), r, sl, h1)
+
+# k copies that all land in the right half.
+law right:
+  for +p: Nat
+  for +k: Nat
+  for +a: Nat
+  for +b: Nat
+  for +l: F.array__Tree<U32>
+  for +r: F.array__Tree<U32>
+  for +sl: List<&2, U32>
+  for +h: {Nat.is_le(F.spec_common__pow2(p), b) == True{} : Bool}
+  {cpt(1n+p, k, a, b, F.TNode{l, r}, sl) == F.TNode{l, cpt(p, k, a, Nat.sub(b, F.spec_common__pow2(p)), r, sl)} : F.array__Tree<U32>}
+def right(p, k, a, b, l, r, sl, h):
+  match k:
+    case 0n: {==}
+    case 1n+ +q:
+      +v = F.flat__nthc(sl, a)
+      +P = F.spec_common__pow2(p)
+      +hb = F.nat__le_not_lt(b, P, h)
+      +h1 = F.nat__le_trans(P, b, 1n+b, h, F.nat__le_succ(b))
+      %Equal.sym(F.array__Tree<U32>, F.array__upd(U32, 1n+p, F.TNode{l, r}, b, v), F.TNode{l, F.array__upd(U32, p, r, Nat.sub(b, P), v)}, upd_right(p, l, r, b, v, hb)) :
+        {cpt(1n+p, q, 1n+a, 1n+b, _, sl) == F.TNode{l, cpt(p, 1n+q, a, Nat.sub(b, P), r, sl)} : F.array__Tree<U32>}
+      %F.nat__sub_succ_left(b, P, h) :
+        {cpt(1n+p, q, 1n+a, 1n+b, F.TNode{l, F.array__upd(U32, p, r, Nat.sub(b, P), v)}, sl) == F.TNode{l, cpt(p, q, 1n+a, _, F.array__upd(U32, p, r, Nat.sub(b, P), v), sl)} : F.array__Tree<U32>}
+      right(p, q, 1n+a, 1n+b, l, F.array__upd(U32, p, r, Nat.sub(b, P), v), sl, h1)
+
+# The tree of 2^d consecutive words of sl from a.
+def segt(+d: Nat, +a: Nat, +sl: List<&2, U32>) -> F.array__Tree<U32>:
+  match d:
+    case 0n: F.TLeaf{F.flat__nthc(sl, a)}
+    case 1n+ +p: F.TNode{segt(p, a, sl), segt(p, Nat.add(F.spec_common__pow2(p), a), sl)}
+
+# Copying 2^d words over a whole perfect tree of depth d.
+law full:
+  for +d: Nat
+  for +a: Nat
+  for +D: F.array__Tree<U32>
+  for +sl: List<&2, U32>
+  for +pd: {F.array__perfect(U32, d, D) == True{} : Bool}
+  {cpt(d, F.spec_common__pow2(d), a, 0n, D, sl) == segt(d, a, sl) : F.array__Tree<U32>}
+def full(d, a, D, sl, pd):
+  match d D:
+    case 0n F.TLeaf{y}: {==}
+    case 0n F.TNode{l, r}:
+      Empty.absurd({cpt(0n, 1n, a, 0n, F.TNode{l, r}, sl) == segt(0n, a, sl) : F.array__Tree<U32>}, F.logic__false_true(pd))
+    case 1n+p F.TLeaf{y}:
+      Empty.absurd({cpt(1n+p, F.spec_common__pow2(1n+p), a, 0n, F.TLeaf{y}, sl) == segt(1n+p, a, sl) : F.array__Tree<U32>}, F.logic__false_true(pd))
+    case 1n+ +p F.TNode{+l, +r}:
+      +P = F.spec_common__pow2(p)
+      +pl = F.array__pf_left(U32, p, l, r, pd)
+      +pr = F.array__pf_right(U32, p, l, r, pd)
+      %Equal.sym(Nat, F.spec_common__pow2(1n+p), Nat.add(P, P), F.flat__pow2_split(p)) :
+        {cpt(1n+p, _, a, 0n, F.TNode{l, r}, sl) == segt(1n+p, a, sl) : F.array__Tree<U32>}
+      %Equal.sym(F.array__Tree<U32>, cpt(1n+p, Nat.add(P, P), a, 0n, F.TNode{l, r}, sl), cpt(1n+p, P, Nat.add(P, a), Nat.add(P, 0n), cpt(1n+p, P, a, 0n, F.TNode{l, r}, sl), sl), split(1n+p, P, P, a, 0n, F.TNode{l, r}, sl)) :
+        {_ == segt(1n+p, a, sl) : F.array__Tree<U32>}
+      %Equal.sym(F.array__Tree<U32>, cpt(1n+p, P, a, 0n, F.TNode{l, r}, sl), F.TNode{cpt(p, P, a, 0n, l, sl), r}, left(p, P, a, 0n, l, r, sl, F.nat__eq_le(Nat.add(P, 0n), P, F.nat__add_zero(P)))) :
+        {cpt(1n+p, P, Nat.add(P, a), Nat.add(P, 0n), _, sl) == segt(1n+p, a, sl) : F.array__Tree<U32>}
+      %Equal.sym(F.array__Tree<U32>, cpt(p, P, a, 0n, l, sl), segt(p, a, sl), full(p, a, l, sl, pl)) :
+        {cpt(1n+p, P, Nat.add(P, a), Nat.add(P, 0n), F.TNode{_, r}, sl) == segt(1n+p, a, sl) : F.array__Tree<U32>}
+      %Equal.sym(F.array__Tree<U32>, cpt(1n+p, P, Nat.add(P, a), Nat.add(P, 0n), F.TNode{segt(p, a, sl), r}, sl), F.TNode{segt(p, a, sl), cpt(p, P, Nat.add(P, a), Nat.sub(Nat.add(P, 0n), P), r, sl)},
+          right(p, P, Nat.add(P, a), Nat.add(P, 0n), segt(p, a, sl), r, sl, F.nat__le_add_right(P, 0n))) :
+        {_ == segt(1n+p, a, sl) : F.array__Tree<U32>}
+      %Equal.sym(Nat, Nat.sub(Nat.add(P, 0n), P), 0n, F.nat__add_sub_cancel(P, 0n)) :
+        {F.TNode{segt(p, a, sl), cpt(p, P, Nat.add(P, a), _, r, sl)} == segt(1n+p, a, sl) : F.array__Tree<U32>}
+      %Equal.sym(F.array__Tree<U32>, cpt(p, P, Nat.add(P, a), 0n, r, sl), segt(p, Nat.add(P, a), sl), full(p, Nat.add(P, a), r, sl, pr)) :
+        {F.TNode{segt(p, a, sl), _} == segt(1n+p, a, sl) : F.array__Tree<U32>}
+      {==}
+
+# ---- segments of appended lists ------------------------------------------------------
+
+law nthc_app:
+  for +xs: List<&2, U32>
+  for +ys: List<&2, U32>
+  for +a: Nat
+  {F.flat__nthc(F.spec_common__append(U32, xs, ys), Nat.add(F.spec_common__length(U32, xs), a)) == F.flat__nthc(ys, a) : U32}
+def nthc_app(xs, ys, a):
+  match xs:
+    case Nil{}: {==}
+    case Con{h, t}: nthc_app(t, ys, a)
+
+law seg_shift:
+  for +d: Nat
+  for +xs: List<&2, U32>
+  for +ys: List<&2, U32>
+  for +a: Nat
+  {segt(d, Nat.add(F.spec_common__length(U32, xs), a), F.spec_common__append(U32, xs, ys)) == segt(d, a, ys) : F.array__Tree<U32>}
+def seg_shift(d, xs, ys, a):
+  match d:
+    case 0n:
+      %Equal.sym(U32, F.flat__nthc(F.spec_common__append(U32, xs, ys), Nat.add(F.spec_common__length(U32, xs), a)), F.flat__nthc(ys, a), nthc_app(xs, ys, a)) :
+        {F.TLeaf{_} == F.TLeaf{F.flat__nthc(ys, a)} : F.array__Tree<U32>}
+      {==}
+    case 1n+ +p:
+      +P = F.spec_common__pow2(p)
+      +L = F.spec_common__length(U32, xs)
+      +zs = F.spec_common__append(U32, xs, ys)
+      %Equal.sym(F.array__Tree<U32>, segt(p, Nat.add(L, a), zs), segt(p, a, ys), seg_shift(p, xs, ys, a)) :
+        {F.TNode{_, segt(p, Nat.add(P, Nat.add(L, a)), zs)} == F.TNode{segt(p, a, ys), segt(p, Nat.add(P, a), ys)} : F.array__Tree<U32>}
+      %F.lru_nat_algebra__add_swap(L, P, a) :
+        {F.TNode{segt(p, a, ys), segt(p, _, zs)} == F.TNode{segt(p, a, ys), segt(p, Nat.add(P, a), ys)} : F.array__Tree<U32>}
+      %Equal.sym(F.array__Tree<U32>, segt(p, Nat.add(L, Nat.add(P, a)), zs), segt(p, Nat.add(P, a), ys), seg_shift(p, xs, ys, Nat.add(P, a))) :
+        {F.TNode{segt(p, a, ys), _} == F.TNode{segt(p, a, ys), segt(p, Nat.add(P, a), ys)} : F.array__Tree<U32>}
+      {==}
+
+# The segment at 0 of a perfect tree's words (followed by anything) is the tree.
+law seg_self:
+  for +d: Nat
+  for +U: F.array__Tree<U32>
+  for +rest: List<&2, U32>
+  for +pu: {F.array__perfect(U32, d, U) == True{} : Bool}
+  {segt(d, 0n, F.spec_common__append(U32, F.array__slots(U32, U), rest)) == U : F.array__Tree<U32>}
+def seg_self(d, U, rest, pu):
+  match d U:
+    case 0n F.TLeaf{x}: {==}
+    case 0n F.TNode{l, r}:
+      Empty.absurd({segt(0n, 0n, F.spec_common__append(U32, F.array__slots(U32, F.TNode{l, r}), rest)) == F.TNode{l, r} : F.array__Tree<U32>}, F.logic__false_true(pu))
+    case 1n+p F.TLeaf{x}:
+      Empty.absurd({segt(1n+p, 0n, F.spec_common__append(U32, F.array__slots(U32, F.TLeaf{x}), rest)) == F.TLeaf{x} : F.array__Tree<U32>}, F.logic__false_true(pu))
+    case 1n+ +p F.TNode{+l, +r}:
+      +P = F.spec_common__pow2(p)
+      +pl = F.array__pf_left(U32, p, l, r, pu)
+      +pr = F.array__pf_right(U32, p, l, r, pu)
+      +sl = F.array__slots(U32, l)
+      +sr = F.array__slots(U32, r)
+      +zs = F.spec_common__append(U32, sl, F.spec_common__append(U32, sr, rest))
+      %Equal.sym(List<&2, U32>, F.spec_common__append(U32, F.spec_common__append(U32, sl, sr), rest), F.spec_common__append(U32, sl, F.spec_common__append(U32, sr, rest)), F.list__append_assoc(U32, sl, sr, rest)) :
+        {F.TNode{segt(p, 0n, _), segt(p, Nat.add(P, 0n), _)} == F.TNode{l, r} : F.array__Tree<U32>}
+      %Equal.sym(F.array__Tree<U32>, segt(p, 0n, zs), l, seg_self(p, l, F.spec_common__append(U32, sr, rest), pl)) :
+        {F.TNode{_, segt(p, Nat.add(P, 0n), zs)} == F.TNode{l, r} : F.array__Tree<U32>}
+      %F.array__slots_length(U32, p, l, pl) :
+        {F.TNode{l, segt(p, Nat.add(_, 0n), zs)} == F.TNode{l, r} : F.array__Tree<U32>}
+      %Equal.sym(F.array__Tree<U32>, segt(p, Nat.add(F.spec_common__length(U32, sl), 0n), zs), segt(p, 0n, F.spec_common__append(U32, sr, rest)), seg_shift(p, sl, F.spec_common__append(U32, sr, rest), 0n)) :
+        {F.TNode{l, _} == F.TNode{l, r} : F.array__Tree<U32>}
+      %Equal.sym(F.array__Tree<U32>, segt(p, 0n, F.spec_common__append(U32, sr, rest)), r, seg_self(p, r, rest, pr)) :
+        {F.TNode{l, _} == F.TNode{l, r} : F.array__Tree<U32>}
+      {==}
+
+# ---- the runtime copy -------------------------------------------------------------------
+
+# acopy with a word count that is a whole number of blocks is the model.
+def acp(+nw: U32, +m: Nat, +a: U32, +b: U32, +A: Nat, +Bn: Nat, +ds: Nat, +dd: Nat, +S: F.array__Tree<U32>, +D: F.array__Tree<U32>,
+    +h7: {U32.and(nw, 7) == 0 : U32},
+    +hm: {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), m) == True{} : Bool},
+    +ea: {U32.to_nat(a) == A : Nat}, +eb: {U32.to_nat(b) == Bn : Nat},
+    +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool},
+    +hA: {Nat.is_le(Nat.add(m, A), F.spec_common__pow2(ds)) == True{} : Bool},
+    +hB: {Nat.is_le(Nat.add(m, Bn), F.spec_common__pow2(dd)) == True{} : Bool},
+    +ps: {F.array__perfect(U32, ds, S) == True{} : Bool}, +pd: {F.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {O.acopy(nw, a, b, F.array__thaw(U32, D), F.array__thaw(U32, S)) == (F.array__thaw(U32, cpt(dd, m, A, Bn, D, F.array__slots(U32, S))), F.array__thaw(U32, S)) : Array<U32> & Array<U32>}:
+  %Equal.sym(U32, U32.and(nw, 7), 0, h7) :
+    {O.ac_tail(U32.to_nat(_), (a + nw - (nw .&. 7 : U32) : U32), (b + nw - (nw .&. 7 : U32) : U32),
+       O.ac_blk(U32.to_nat(U32.shrn(nw, 3n)), a, b, (F.array__thaw(U32, D), F.array__thaw(U32, S))))
+     == (F.array__thaw(U32, cpt(dd, m, A, Bn, D, F.array__slots(U32, S))), F.array__thaw(U32, S)) : Array<U32> & Array<U32>}
+  blk(U32.to_nat(U32.shrn(nw, 3n)), m, a, b, A, Bn, ds, dd, S, D, hm, ea, eb, hs, hdd, hA, hB, ps, pd)
+
+def lt31(+p: Nat, +hp: {Nat.is_lt(p, 31n) == True{} : Bool}) -> {Nat.is_lt(p, 32n) == True{} : Bool}:
+  F.nat__lt_trans(p, 31n, 32n, hp, {==})
+
+def lt31s(+p: Nat, +hp: {Nat.is_lt(p, 31n) == True{} : Bool}) -> {Nat.is_lt(1n+p, 32n) == True{} : Bool}: hp
+
+def le_p0(+P: Nat) -> {Nat.is_le(Nat.add(P, 0n), P) == True{} : Bool}: F.nat__eq_le(Nat.add(P, 0n), P, F.nat__add_zero(P))
+
+def le_p1(+p: Nat) -> {Nat.is_le(Nat.add(F.spec_common__pow2(p), 0n), F.spec_common__pow2(1n+p)) == True{} : Bool}:
+  F.nat__le_trans(Nat.add(F.spec_common__pow2(p), 0n), F.spec_common__pow2(p), F.spec_common__pow2(1n+p), le_p0(F.spec_common__pow2(p)), F.nat__lt_le(F.spec_common__pow2(p), F.spec_common__pow2(1n+p), F.nat__pow2_lt_succ(p)))
+
+def u0(+a: U32, +ha: {Nat.is_eq(U32.to_nat(a), 0n) == True{} : Bool}) -> {U32.to_nat(a) == 0n : Nat}:
+  F.nat__eq_from_is_eq(U32.to_nat(a), 0n, ha)
+
+# ---- the copy shapes of the fixed-size codecs ----------------------------------------
+
+# Decode of a whole perfect tree U into zero storage twice its size: [U | 0].
+law zl1:
+  for +p: Nat
+  for +nw: U32
+  for +a: U32
+  for +b: U32
+  for +U: F.array__Tree<U32>
+  for +hp: {Nat.is_lt(p, 31n) == True{} : Bool}
+  for +h7: {U32.and(nw, 7) == 0 : U32}
+  for +hk: {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), F.spec_common__pow2(p)) == True{} : Bool}
+  for +ha: {Nat.is_eq(U32.to_nat(a), 0n) == True{} : Bool}
+  for +hb: {Nat.is_eq(U32.to_nat(b), 0n) == True{} : Bool}
+  for +pu: {F.array__perfect(U32, p, U) == True{} : Bool}
+  {O.acopy(nw, a, b, Array.new(U32, 1n+p, 0), F.array__thaw(U32, U)) == (ANode{F.array__thaw(U32, U), Array.new(U32, p, 0)}, F.array__thaw(U32, U)) : Array<U32> & Array<U32>}
+def zl1(p, nw, a, b, U, hp, h7, hk, ha, hb, pu):
+  +P = F.spec_common__pow2(p)
+  +z = F.array__trep(U32, p, 0)
+  +sl = F.array__slots(U32, U)
+  %Equal.sym(Array<U32>, Array.new(U32, 1n+p, 0), F.array__thaw(U32, F.array__trep(U32, 1n+p, 0)), F.array__new(U32, 1n+p, 0)) :
+    {O.acopy(nw, a, b, _, F.array__thaw(U32, U)) == (ANode{F.array__thaw(U32, U), Array.new(U32, p, 0)}, F.array__thaw(U32, U)) : Array<U32> & Array<U32>}
+  %Equal.sym(Array<U32>, Array.new(U32, p, 0), F.array__thaw(U32, F.array__trep(U32, p, 0)), F.array__new(U32, p, 0)) :
+    {O.acopy(nw, a, b, F.array__thaw(U32, F.array__trep(U32, 1n+p, 0)), F.array__thaw(U32, U)) == (ANode{F.array__thaw(U32, U), _}, F.array__thaw(U32, U)) : Array<U32> & Array<U32>}
+  %Equal.sym(Array<U32> & Array<U32>, O.acopy(nw, a, b, F.array__thaw(U32, F.array__trep(U32, 1n+p, 0)), F.array__thaw(U32, U)),
+      (F.array__thaw(U32, cpt(1n+p, P, 0n, 0n, F.array__trep(U32, 1n+p, 0), sl)), F.array__thaw(U32, U)),
+      acp(nw, P, a, b, 0n, 0n, p, 1n+p, U, F.array__trep(U32, 1n+p, 0), h7, hk, u0(a, ha), u0(b, hb), lt31(p, hp), lt31s(p, hp),
+        le_p0(P), le_p1(p), pu, F.array__trep_perfect(U32, 1n+p, 0))) :
+    {_ == (ANode{F.array__thaw(U32, U), F.array__thaw(U32, z)}, F.array__thaw(U32, U)) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(1n+p, P, 0n, 0n, F.TNode{z, z}, sl), F.TNode{cpt(p, P, 0n, 0n, z, sl), z}, left(p, P, 0n, 0n, z, z, sl, le_p0(P))) :
+    {(F.array__thaw(U32, _), F.array__thaw(U32, U)) == (ANode{F.array__thaw(U32, U), F.array__thaw(U32, z)}, F.array__thaw(U32, U)) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(p, P, 0n, 0n, z, sl), segt(p, 0n, sl), full(p, 0n, z, sl, F.array__trep_perfect(U32, p, 0))) :
+    {(F.array__thaw(U32, F.TNode{_, z}), F.array__thaw(U32, U)) == (ANode{F.array__thaw(U32, U), F.array__thaw(U32, z)}, F.array__thaw(U32, U)) : Array<U32> & Array<U32>}
+  %F.list__append_nil(U32, sl) :
+    {(F.array__thaw(U32, F.TNode{segt(p, 0n, _), z}), F.array__thaw(U32, U)) == (ANode{F.array__thaw(U32, U), F.array__thaw(U32, z)}, F.array__thaw(U32, U)) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, segt(p, 0n, F.spec_common__append(U32, sl, Nil{})), U, seg_self(p, U, Nil{}, pu)) :
+    {(F.array__thaw(U32, F.TNode{_, z}), F.array__thaw(U32, U)) == (ANode{F.array__thaw(U32, U), F.array__thaw(U32, z)}, F.array__thaw(U32, U)) : Array<U32> & Array<U32>}
+  {==}
+
+# Encode of the first half of a storage tree [U | V] into an output of U's size: U.
+law ov:
+  for +p: Nat
+  for +nw: U32
+  for +a: U32
+  for +b: U32
+  for +U: F.array__Tree<U32>
+  for +V: F.array__Tree<U32>
+  for +hp: {Nat.is_lt(p, 31n) == True{} : Bool}
+  for +h7: {U32.and(nw, 7) == 0 : U32}
+  for +hk: {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), F.spec_common__pow2(p)) == True{} : Bool}
+  for +ha: {Nat.is_eq(U32.to_nat(a), 0n) == True{} : Bool}
+  for +hb: {Nat.is_eq(U32.to_nat(b), 0n) == True{} : Bool}
+  for +pu: {F.array__perfect(U32, p, U) == True{} : Bool}
+  for +pv: {F.array__perfect(U32, p, V) == True{} : Bool}
+  {O.acopy(nw, a, b, Array.new(U32, p, 0), F.array__thaw(U32, F.TNode{U, V})) == (F.array__thaw(U32, U), F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+def ov(p, nw, a, b, U, V, hp, h7, hk, ha, hb, pu, pv):
+  +P = F.spec_common__pow2(p)
+  +z = F.array__trep(U32, p, 0)
+  +sl = F.array__slots(U32, F.TNode{U, V})
+  %Equal.sym(Array<U32>, Array.new(U32, p, 0), F.array__thaw(U32, z), F.array__new(U32, p, 0)) :
+    {O.acopy(nw, a, b, _, F.array__thaw(U32, F.TNode{U, V})) == (F.array__thaw(U32, U), F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(Array<U32> & Array<U32>, O.acopy(nw, a, b, F.array__thaw(U32, z), F.array__thaw(U32, F.TNode{U, V})),
+      (F.array__thaw(U32, cpt(p, P, 0n, 0n, z, sl)), F.array__thaw(U32, F.TNode{U, V})),
+      acp(nw, P, a, b, 0n, 0n, 1n+p, p, F.TNode{U, V}, z, h7, hk, u0(a, ha), u0(b, hb), lt31s(p, hp), lt31(p, hp),
+        le_p1(p), le_p0(P), F.logic__and_intro(F.array__perfect(U32, p, U), F.array__perfect(U32, p, V), pu, pv), F.array__trep_perfect(U32, p, 0))) :
+    {_ == (F.array__thaw(U32, U), F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(p, P, 0n, 0n, z, sl), segt(p, 0n, sl), full(p, 0n, z, sl, F.array__trep_perfect(U32, p, 0))) :
+    {(F.array__thaw(U32, _), F.array__thaw(U32, F.TNode{U, V})) == (F.array__thaw(U32, U), F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, segt(p, 0n, sl), U, seg_self(p, U, F.array__slots(U32, V), pu)) :
+    {(F.array__thaw(U32, _), F.array__thaw(U32, F.TNode{U, V})) == (F.array__thaw(U32, U), F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  {==}
+
+# ---- a read at any index, and the storage check of the encoder ------------------------
+
+def get_any(+d: Nat, +t: F.array__Tree<U32>, +q: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool},
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
+    -> {Array.get(U32, F.array__thaw(U32, t), q) == (F.array__thaw(U32, t), RD.wd(t, d, q)) : Array<U32> & U32}:
+  +m = RD.masked(q, d)
+  +hm = RD.mask_lt(q, d, hd)
+  +x = F.flat__nthc(F.array__slots(U32, t), U32.to_nat(m))
+  +hx = F.flat__nthc_nth(F.array__slots(U32, t), U32.to_nat(m), F.array__len_lt(U32, d, t, U32.to_nat(m), pf, hm))
+  %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, t)), (F.array__thaw(U32, t), F.u32__pow2u(d)), F.array__size_thaw(U32, d, t, pf)) : {Array.get.at(U32, q, _) == (F.array__thaw(U32, t), RD.wd(t, d, q)) : Array<U32> & U32}
+  F.array__get_go(U32, d, t, m, x, hd, hm, hx, U32.is_lt(m, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
+
+# The encoder's storage check of a word object on a perfect tree of depth d:
+# it accepts, whatever the words are (length and capacity are as given).
+law vok:
+  for +d: Nat
+  for +T: F.array__Tree<U32>
+  for +n: U32
+  for +lo: U32
+  for +hi: U32
+  for +big: Bool
+  for +unit: U32
+  for +hok: {Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), O.unit_ok(unit, n)) == True{} : Bool}
+  for +hcap: {U32.is_le(U32.shrn(U32.add(n, 3), 2n), F.u32__pow2u(d)) == True{} : Bool}
+  for +h3: {U32.and(n, 3) == 0 : U32}
+  for +hd: {Nat.is_lt(d, 32n) == True{} : Bool}
+  for +pf: {F.array__perfect(U32, d, T) == True{} : Bool}
+  {O.words_ok(O.Words{F.array__thaw(U32, T), n}, lo, hi, big, unit) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+def vok(d, T, n, lo, hi, big, unit, hok, hcap, h3, hd, pf):
+  %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, T)), (F.array__thaw(U32, T), F.u32__pow2u(d)), F.array__size_thaw(U32, d, T, pf)) :
+    {O.wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), O.unit_ok(unit, n)), n, _) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+  %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, T), U32.shrn(n, 2n)), (F.array__thaw(U32, T), RD.wd(T, d, U32.shrn(n, 2n))), get_any(d, T, U32.shrn(n, 2n), hd, pf)) :
+    {O.wk_last(Bool.and(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), O.unit_ok(unit, n)), U32.is_le(U32.shrn(U32.add(n, 3), 2n), F.u32__pow2u(d))), n, _) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+  %Equal.sym(Bool, Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(big, U32.is_le(n, hi))), O.unit_ok(unit, n)), True{}, hok) :
+    {(O.Words{F.array__thaw(U32, T), n}, Bool.and(Bool.and(_, U32.is_le(U32.shrn(U32.add(n, 3), 2n), F.u32__pow2u(d))), O.tail_zero(U32.and(n, 3), RD.wd(T, d, U32.shrn(n, 2n))))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+  %Equal.sym(Bool, U32.is_le(U32.shrn(U32.add(n, 3), 2n), F.u32__pow2u(d)), True{}, hcap) :
+    {(O.Words{F.array__thaw(U32, T), n}, Bool.and(Bool.and(True{}, _), O.tail_zero(U32.and(n, 3), RD.wd(T, d, U32.shrn(n, 2n))))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+  %Equal.sym(U32, U32.and(n, 3), 0, h3) :
+    {(O.Words{F.array__thaw(U32, T), n}, Bool.and(True{}, O.tail_zero(_, RD.wd(T, d, U32.shrn(n, 2n))))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+  {==}
+
+def u0p(+a: U32, +P: Nat, +ha: {Nat.is_eq(U32.to_nat(a), P) == True{} : Bool}) -> {U32.to_nat(a) == P : Nat}:
+  F.nat__eq_from_is_eq(U32.to_nat(a), P, ha)
+
+def le_pp(+p: Nat) -> {Nat.is_le(Nat.add(F.spec_common__pow2(p), F.spec_common__pow2(p)), F.spec_common__pow2(1n+p)) == True{} : Bool}:
+  F.nat__eq_le(Nat.add(F.spec_common__pow2(p), F.spec_common__pow2(p)), F.spec_common__pow2(1n+p), Equal.sym(Nat, F.spec_common__pow2(1n+p), Nat.add(F.spec_common__pow2(p), F.spec_common__pow2(p)), F.flat__pow2_split(p)))
+
+# Decode of the first half U of a source [U | V] into zero storage of the source's size: [U | 0].
+law zl2:
+  for +p: Nat
+  for +nw: U32
+  for +a: U32
+  for +b: U32
+  for +U: F.array__Tree<U32>
+  for +V: F.array__Tree<U32>
+  for +hp: {Nat.is_lt(p, 31n) == True{} : Bool}
+  for +h7: {U32.and(nw, 7) == 0 : U32}
+  for +hk: {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), F.spec_common__pow2(p)) == True{} : Bool}
+  for +ha: {Nat.is_eq(U32.to_nat(a), 0n) == True{} : Bool}
+  for +hb: {Nat.is_eq(U32.to_nat(b), 0n) == True{} : Bool}
+  for +pu: {F.array__perfect(U32, p, U) == True{} : Bool}
+  for +pv: {F.array__perfect(U32, p, V) == True{} : Bool}
+  {O.acopy(nw, a, b, Array.new(U32, 1n+p, 0), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, U), Array.new(U32, p, 0)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+def zl2(p, nw, a, b, U, V, hp, h7, hk, ha, hb, pu, pv):
+  +P = F.spec_common__pow2(p)
+  +z = F.array__trep(U32, p, 0)
+  +sl = F.array__slots(U32, F.TNode{U, V})
+  %Equal.sym(Array<U32>, Array.new(U32, 1n+p, 0), F.array__thaw(U32, F.array__trep(U32, 1n+p, 0)), F.array__new(U32, 1n+p, 0)) :
+    {O.acopy(nw, a, b, _, F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, U), Array.new(U32, p, 0)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(Array<U32>, Array.new(U32, p, 0), F.array__thaw(U32, z), F.array__new(U32, p, 0)) :
+    {O.acopy(nw, a, b, F.array__thaw(U32, F.array__trep(U32, 1n+p, 0)), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, U), _}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(Array<U32> & Array<U32>, O.acopy(nw, a, b, F.array__thaw(U32, F.array__trep(U32, 1n+p, 0)), F.array__thaw(U32, F.TNode{U, V})),
+      (F.array__thaw(U32, cpt(1n+p, P, 0n, 0n, F.array__trep(U32, 1n+p, 0), sl)), F.array__thaw(U32, F.TNode{U, V})),
+      acp(nw, P, a, b, 0n, 0n, 1n+p, 1n+p, F.TNode{U, V}, F.array__trep(U32, 1n+p, 0), h7, hk, u0(a, ha), u0(b, hb), lt31s(p, hp), lt31s(p, hp),
+        le_p1(p), le_p1(p), F.logic__and_intro(F.array__perfect(U32, p, U), F.array__perfect(U32, p, V), pu, pv), F.array__trep_perfect(U32, 1n+p, 0))) :
+    {_ == (ANode{F.array__thaw(U32, U), F.array__thaw(U32, z)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(1n+p, P, 0n, 0n, F.TNode{z, z}, sl), F.TNode{cpt(p, P, 0n, 0n, z, sl), z}, left(p, P, 0n, 0n, z, z, sl, le_p0(P))) :
+    {(F.array__thaw(U32, _), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, U), F.array__thaw(U32, z)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(p, P, 0n, 0n, z, sl), segt(p, 0n, sl), full(p, 0n, z, sl, F.array__trep_perfect(U32, p, 0))) :
+    {(F.array__thaw(U32, F.TNode{_, z}), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, U), F.array__thaw(U32, z)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, segt(p, 0n, sl), U, seg_self(p, U, F.array__slots(U32, V), pu)) :
+    {(F.array__thaw(U32, F.TNode{_, z}), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, U), F.array__thaw(U32, z)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  {==}
+
+# Decode of the second half V of a source [U | V] into zero storage of the source's size: [V | 0].
+law zl3:
+  for +p: Nat
+  for +nw: U32
+  for +a: U32
+  for +b: U32
+  for +U: F.array__Tree<U32>
+  for +V: F.array__Tree<U32>
+  for +hp: {Nat.is_lt(p, 31n) == True{} : Bool}
+  for +h7: {U32.and(nw, 7) == 0 : U32}
+  for +hk: {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), F.spec_common__pow2(p)) == True{} : Bool}
+  for +ha: {Nat.is_eq(U32.to_nat(a), F.spec_common__pow2(p)) == True{} : Bool}
+  for +hb: {Nat.is_eq(U32.to_nat(b), 0n) == True{} : Bool}
+  for +pu: {F.array__perfect(U32, p, U) == True{} : Bool}
+  for +pv: {F.array__perfect(U32, p, V) == True{} : Bool}
+  {O.acopy(nw, a, b, Array.new(U32, 1n+p, 0), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, V), Array.new(U32, p, 0)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+def zl3(p, nw, a, b, U, V, hp, h7, hk, ha, hb, pu, pv):
+  +P = F.spec_common__pow2(p)
+  +z = F.array__trep(U32, p, 0)
+  +sU = F.array__slots(U32, U)
+  +sV = F.array__slots(U32, V)
+  +sl = F.array__slots(U32, F.TNode{U, V})
+  +eP = Equal.trans(Nat, Nat.add(F.spec_common__length(U32, sU), 0n), F.spec_common__length(U32, sU), P, F.nat__add_zero(F.spec_common__length(U32, sU)), F.array__slots_length(U32, p, U, pu))
+  %Equal.sym(Array<U32>, Array.new(U32, 1n+p, 0), F.array__thaw(U32, F.array__trep(U32, 1n+p, 0)), F.array__new(U32, 1n+p, 0)) :
+    {O.acopy(nw, a, b, _, F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, V), Array.new(U32, p, 0)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(Array<U32>, Array.new(U32, p, 0), F.array__thaw(U32, z), F.array__new(U32, p, 0)) :
+    {O.acopy(nw, a, b, F.array__thaw(U32, F.array__trep(U32, 1n+p, 0)), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, V), _}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(Array<U32> & Array<U32>, O.acopy(nw, a, b, F.array__thaw(U32, F.array__trep(U32, 1n+p, 0)), F.array__thaw(U32, F.TNode{U, V})),
+      (F.array__thaw(U32, cpt(1n+p, P, P, 0n, F.array__trep(U32, 1n+p, 0), sl)), F.array__thaw(U32, F.TNode{U, V})),
+      acp(nw, P, a, b, P, 0n, 1n+p, 1n+p, F.TNode{U, V}, F.array__trep(U32, 1n+p, 0), h7, hk, u0p(a, P, ha), u0(b, hb), lt31s(p, hp), lt31s(p, hp),
+        le_pp(p), le_p1(p), F.logic__and_intro(F.array__perfect(U32, p, U), F.array__perfect(U32, p, V), pu, pv), F.array__trep_perfect(U32, 1n+p, 0))) :
+    {_ == (ANode{F.array__thaw(U32, V), F.array__thaw(U32, z)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(1n+p, P, P, 0n, F.TNode{z, z}, sl), F.TNode{cpt(p, P, P, 0n, z, sl), z}, left(p, P, P, 0n, z, z, sl, le_p0(P))) :
+    {(F.array__thaw(U32, _), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, V), F.array__thaw(U32, z)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(p, P, P, 0n, z, sl), segt(p, P, sl), full(p, P, z, sl, F.array__trep_perfect(U32, p, 0))) :
+    {(F.array__thaw(U32, F.TNode{_, z}), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, V), F.array__thaw(U32, z)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %eP : {(F.array__thaw(U32, F.TNode{segt(p, _, sl), z}), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, V), F.array__thaw(U32, z)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, segt(p, Nat.add(F.spec_common__length(U32, sU), 0n), sl), segt(p, 0n, sV), seg_shift(p, sU, sV, 0n)) :
+    {(F.array__thaw(U32, F.TNode{_, z}), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, V), F.array__thaw(U32, z)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %F.list__append_nil(U32, sV) :
+    {(F.array__thaw(U32, F.TNode{segt(p, 0n, _), z}), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, V), F.array__thaw(U32, z)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, segt(p, 0n, F.spec_common__append(U32, sV, Nil{})), V, seg_self(p, V, Nil{}, pv)) :
+    {(F.array__thaw(U32, F.TNode{_, z}), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, V), F.array__thaw(U32, z)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  {==}
+
+# Encode of the first half U of a storage [U | V] into the zero right half of an output [X | 0]: [X | U].
+law zr:
+  for +p: Nat
+  for +nw: U32
+  for +a: U32
+  for +b: U32
+  for +X: F.array__Tree<U32>
+  for +U: F.array__Tree<U32>
+  for +V: F.array__Tree<U32>
+  for +hp: {Nat.is_lt(p, 31n) == True{} : Bool}
+  for +h7: {U32.and(nw, 7) == 0 : U32}
+  for +hk: {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), F.spec_common__pow2(p)) == True{} : Bool}
+  for +ha: {Nat.is_eq(U32.to_nat(a), 0n) == True{} : Bool}
+  for +hb: {Nat.is_eq(U32.to_nat(b), F.spec_common__pow2(p)) == True{} : Bool}
+  for +px: {F.array__perfect(U32, p, X) == True{} : Bool}
+  for +pu: {F.array__perfect(U32, p, U) == True{} : Bool}
+  for +pv: {F.array__perfect(U32, p, V) == True{} : Bool}
+  {O.acopy(nw, a, b, ANode{F.array__thaw(U32, X), Array.new(U32, p, 0)}, F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, X), F.array__thaw(U32, U)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+def zr(p, nw, a, b, X, U, V, hp, h7, hk, ha, hb, px, pu, pv):
+  +P = F.spec_common__pow2(p)
+  +z = F.array__trep(U32, p, 0)
+  +sl = F.array__slots(U32, F.TNode{U, V})
+  %Equal.sym(Array<U32>, Array.new(U32, p, 0), F.array__thaw(U32, z), F.array__new(U32, p, 0)) :
+    {O.acopy(nw, a, b, ANode{F.array__thaw(U32, X), _}, F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, X), F.array__thaw(U32, U)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(Array<U32> & Array<U32>, O.acopy(nw, a, b, F.array__thaw(U32, F.TNode{X, z}), F.array__thaw(U32, F.TNode{U, V})),
+      (F.array__thaw(U32, cpt(1n+p, P, 0n, P, F.TNode{X, z}, sl)), F.array__thaw(U32, F.TNode{U, V})),
+      acp(nw, P, a, b, 0n, P, 1n+p, 1n+p, F.TNode{U, V}, F.TNode{X, z}, h7, hk, u0(a, ha), u0p(b, P, hb), lt31s(p, hp), lt31s(p, hp),
+        le_p1(p), le_pp(p), F.logic__and_intro(F.array__perfect(U32, p, U), F.array__perfect(U32, p, V), pu, pv),
+        F.logic__and_intro(F.array__perfect(U32, p, X), F.array__perfect(U32, p, z), px, F.array__trep_perfect(U32, p, 0)))) :
+    {_ == (ANode{F.array__thaw(U32, X), F.array__thaw(U32, U)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(1n+p, P, 0n, P, F.TNode{X, z}, sl), F.TNode{X, cpt(p, P, 0n, Nat.sub(P, P), z, sl)}, right(p, P, 0n, P, X, z, sl, F.nat__le_refl(P))) :
+    {(F.array__thaw(U32, _), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, X), F.array__thaw(U32, U)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(Nat, Nat.sub(P, P), 0n, F.nat__sub_self(P)) :
+    {(F.array__thaw(U32, F.TNode{X, cpt(p, P, 0n, _, z, sl)}), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, X), F.array__thaw(U32, U)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(p, P, 0n, 0n, z, sl), segt(p, 0n, sl), full(p, 0n, z, sl, F.array__trep_perfect(U32, p, 0))) :
+    {(F.array__thaw(U32, F.TNode{X, _}), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, X), F.array__thaw(U32, U)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, segt(p, 0n, sl), U, seg_self(p, U, F.array__slots(U32, V), pu)) :
+    {(F.array__thaw(U32, F.TNode{X, _}), F.array__thaw(U32, F.TNode{U, V})) == (ANode{F.array__thaw(U32, X), F.array__thaw(U32, U)}, F.array__thaw(U32, F.TNode{U, V})) : Array<U32> & Array<U32>}
+  {==}
+
+# 2^(1+p) + 2^p + 0 <= 2^(2+p)
+def le_3q(+p: Nat) -> {Nat.is_le(Nat.add(Nat.add(F.spec_common__pow2(1n+p), F.spec_common__pow2(p)), 0n), F.spec_common__pow2(2n+p)) == True{} : Bool}:
+  +P1 = F.spec_common__pow2(1n+p)
+  +P0 = F.spec_common__pow2(p)
+  +h1 = F.nat__le_add_left(P0, P1, P1, F.nat__lt_le(P0, P1, F.nat__pow2_lt_succ(p)))
+  +h2 = F.nat__le_trans(Nat.add(Nat.add(P1, P0), 0n), Nat.add(P1, P0), Nat.add(P1, P1), le_p0(Nat.add(P1, P0)), h1)
+  F.logic__subst(Nat, z => {Nat.is_le(Nat.add(Nat.add(P1, P0), 0n), z) == True{} : Bool}, Nat.add(P1, P1), F.spec_common__pow2(2n+p), Equal.sym(Nat, F.spec_common__pow2(2n+p), Nat.add(P1, P1), F.flat__pow2_split(1n+p)), h2)
+
+# Decode of the first three quarters [A | B] of a source [A | B | C] (A of depth 1 + p,
+# B and C of depth p) into zero storage of the source's size: [A | B | 0].
+law sc3:
+  for +p: Nat
+  for +nw: U32
+  for +a: U32
+  for +b: U32
+  for +A: F.array__Tree<U32>
+  for +Bt: F.array__Tree<U32>
+  for +C: F.array__Tree<U32>
+  for +hp: {Nat.is_lt(p, 30n) == True{} : Bool}
+  for +h7: {U32.and(nw, 7) == 0 : U32}
+  for +hk: {Nat.is_eq(oct(U32.to_nat(U32.shrn(nw, 3n))), Nat.add(F.spec_common__pow2(1n+p), F.spec_common__pow2(p))) == True{} : Bool}
+  for +ha: {Nat.is_eq(U32.to_nat(a), 0n) == True{} : Bool}
+  for +hb: {Nat.is_eq(U32.to_nat(b), 0n) == True{} : Bool}
+  for +pa: {F.array__perfect(U32, 1n+p, A) == True{} : Bool}
+  for +pb: {F.array__perfect(U32, p, Bt) == True{} : Bool}
+  for +pc: {F.array__perfect(U32, p, C) == True{} : Bool}
+  {O.acopy(nw, a, b, Array.new(U32, 2n+p, 0), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), Array.new(U32, p, 0)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+def sc3(p, nw, a, b, A, Bt, C, hp, h7, hk, ha, hb, pa, pb, pc):
+  +P1 = F.spec_common__pow2(1n+p)
+  +P0 = F.spec_common__pow2(p)
+  +z = F.array__trep(U32, p, 0)
+  +z1 = F.array__trep(U32, 1n+p, 0)
+  +sA = F.array__slots(U32, A)
+  +sR = F.spec_common__append(U32, F.array__slots(U32, Bt), F.array__slots(U32, C))
+  +sl = F.array__slots(U32, F.TNode{A, F.TNode{Bt, C}})
+  +hp1 = F.nat__lt_trans(p, 30n, 31n, hp, {==})
+  +pS = F.logic__and_intro(F.array__perfect(U32, 1n+p, A), F.array__perfect(U32, 1n+p, F.TNode{Bt, C}), pa, F.logic__and_intro(F.array__perfect(U32, p, Bt), F.array__perfect(U32, p, C), pb, pc))
+  %Equal.sym(Array<U32>, Array.new(U32, 2n+p, 0), F.array__thaw(U32, F.array__trep(U32, 2n+p, 0)), F.array__new(U32, 2n+p, 0)) :
+    {O.acopy(nw, a, b, _, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), Array.new(U32, p, 0)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(Array<U32>, Array.new(U32, p, 0), F.array__thaw(U32, z), F.array__new(U32, p, 0)) :
+    {O.acopy(nw, a, b, F.array__thaw(U32, F.array__trep(U32, 2n+p, 0)), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), _}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(Array<U32> & Array<U32>, O.acopy(nw, a, b, F.array__thaw(U32, F.array__trep(U32, 2n+p, 0)), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})),
+      (F.array__thaw(U32, cpt(2n+p, Nat.add(P1, P0), 0n, 0n, F.array__trep(U32, 2n+p, 0), sl)), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})),
+      acp(nw, Nat.add(P1, P0), a, b, 0n, 0n, 2n+p, 2n+p, F.TNode{A, F.TNode{Bt, C}}, F.array__trep(U32, 2n+p, 0), h7, hk, u0(a, ha), u0(b, hb), hp, hp,
+        le_3q(p), le_3q(p), pS, F.array__trep_perfect(U32, 2n+p, 0))) :
+    {_ == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(2n+p, Nat.add(P1, P0), 0n, 0n, F.TNode{z1, F.TNode{z, z}}, sl), cpt(2n+p, P0, Nat.add(P1, 0n), Nat.add(P1, 0n), cpt(2n+p, P1, 0n, 0n, F.TNode{z1, F.TNode{z, z}}, sl), sl), split(2n+p, P1, P0, 0n, 0n, F.TNode{z1, F.TNode{z, z}}, sl)) :
+    {(F.array__thaw(U32, _), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(2n+p, P1, 0n, 0n, F.TNode{z1, F.TNode{z, z}}, sl), F.TNode{cpt(1n+p, P1, 0n, 0n, z1, sl), F.TNode{z, z}}, left(1n+p, P1, 0n, 0n, z1, F.TNode{z, z}, sl, le_p0(P1))) :
+    {(F.array__thaw(U32, cpt(2n+p, P0, Nat.add(P1, 0n), Nat.add(P1, 0n), _, sl)), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(1n+p, P1, 0n, 0n, z1, sl), segt(1n+p, 0n, sl), full(1n+p, 0n, z1, sl, F.array__trep_perfect(U32, 1n+p, 0))) :
+    {(F.array__thaw(U32, cpt(2n+p, P0, Nat.add(P1, 0n), Nat.add(P1, 0n), F.TNode{_, F.TNode{z, z}}, sl)), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, segt(1n+p, 0n, sl), A, seg_self(1n+p, A, sR, pa)) :
+    {(F.array__thaw(U32, cpt(2n+p, P0, Nat.add(P1, 0n), Nat.add(P1, 0n), F.TNode{_, F.TNode{z, z}}, sl)), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(2n+p, P0, Nat.add(P1, 0n), Nat.add(P1, 0n), F.TNode{A, F.TNode{z, z}}, sl), F.TNode{A, cpt(1n+p, P0, Nat.add(P1, 0n), Nat.sub(Nat.add(P1, 0n), P1), F.TNode{z, z}, sl)},
+      right(1n+p, P0, Nat.add(P1, 0n), Nat.add(P1, 0n), A, F.TNode{z, z}, sl, F.nat__le_add_right(P1, 0n))) :
+    {(F.array__thaw(U32, _), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(Nat, Nat.sub(Nat.add(P1, 0n), P1), 0n, F.nat__add_sub_cancel(P1, 0n)) :
+    {(F.array__thaw(U32, F.TNode{A, cpt(1n+p, P0, Nat.add(P1, 0n), _, F.TNode{z, z}, sl)}), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(1n+p, P0, Nat.add(P1, 0n), 0n, F.TNode{z, z}, sl), F.TNode{cpt(p, P0, Nat.add(P1, 0n), 0n, z, sl), z}, left(p, P0, Nat.add(P1, 0n), 0n, z, z, sl, le_p0(P0))) :
+    {(F.array__thaw(U32, F.TNode{A, _}), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, cpt(p, P0, Nat.add(P1, 0n), 0n, z, sl), segt(p, Nat.add(P1, 0n), sl), full(p, Nat.add(P1, 0n), z, sl, F.array__trep_perfect(U32, p, 0))) :
+    {(F.array__thaw(U32, F.TNode{A, F.TNode{_, z}}), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %F.array__slots_length(U32, 1n+p, A, pa) :
+    {(F.array__thaw(U32, F.TNode{A, F.TNode{segt(p, Nat.add(_, 0n), sl), z}}), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, segt(p, Nat.add(F.spec_common__length(U32, sA), 0n), sl), segt(p, 0n, sR), seg_shift(p, sA, sR, 0n)) :
+    {(F.array__thaw(U32, F.TNode{A, F.TNode{_, z}}), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  %Equal.sym(F.array__Tree<U32>, segt(p, 0n, sR), Bt, seg_self(p, Bt, F.array__slots(U32, C), pb)) :
+    {(F.array__thaw(U32, F.TNode{A, F.TNode{_, z}}), F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) == (ANode{F.array__thaw(U32, A), ANode{F.array__thaw(U32, Bt), F.array__thaw(U32, z)}}, F.array__thaw(U32, F.TNode{A, F.TNode{Bt, C}})) : Array<U32> & Array<U32>}
+  {==}

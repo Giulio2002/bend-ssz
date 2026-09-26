@@ -38,7 +38,8 @@ them, and every official case that uses one is an invalid case.
 | `types/generic_obj_g<k>.bend`, `benchmarks/objprog/x<k>.bend` | the generic conformance programs, eight schemas each |
 | `types/obj_groups.json`, `types/obj_fuzz_ops.json`, `types/generic_obj_index.json` | the name → program/index tables the checks and benchmarks dispatch on |
 | `proofs/obj/*.bend` | the generated mutation, collection, cache and cost laws (`codegen/laws.py`) |
-| `proofs/obj/spec_*.bend`, `serialize_*.bend` | codec laws against the independent spec (`codegen/spec_laws.py`) |
+| `proofs/obj/spec_*.bend`, `serialize_*.bend` | codec laws against the independent spec (`codegen/spec_laws.py`); `spec_g*` the same for the generic forms; `spec_arr_*`/`spec_garr_*` the names with array-backed storage (`codegen/spec_arr.py`); `spec_rec_Validator` with `word_mul.bend` (`U32.mul(w, 256) == U32.shln(w, 8n)`, from `codegen/word_mul.bend.in`) |
+| `proofs/obj/arr_copy.bend`, `arr_emit.bend`, `arr_shift.bend`, `arr_spec.bend`, `arr_vec.bend` | the loop laws of the runtime copy (`acopy`), emit and loader over perfect array trees for symbolic counts, and the spec side of word lists of symbolic length (`codegen/arr_laws.py`, called by `spec_laws.py`) |
 | `proofs/obj/sha_node.bend` | the SHA node bridge: runtime node = spec 64-byte message hash, via the pinned package law (`codegen/sha_laws.py`) |
 | `proofs/obj/schema_shapes.bend` | Bool shape tests and shape laws for every schema constructor (`codegen/schema_shapes.py`) |
 | `proofs/obj/root_names.bend`, `bits_leaf.bend`, `valid_names.bend` | phase-A root laws (Data-kind names: `X_root_correct`, `X_decoded_root_correct`) and generated-validity agreement (`codegen/root_laws.py`) |
@@ -53,7 +54,7 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/check_schema.py      # YAML vs frozen inventory
 /opt/homebrew/bin/python3 codegen/generate.py          # types/, benchmarks/objprog/
 /opt/homebrew/bin/python3 codegen/laws.py              # proofs/obj/
-/opt/homebrew/bin/python3 codegen/spec_laws.py         # codec spec laws
+/opt/homebrew/bin/python3 codegen/spec_laws.py         # codec spec laws (also writes arr_*.bend; --no-big accepted)
 /opt/homebrew/bin/python3 codegen/sha_laws.py          # SHA node bridge
 /opt/homebrew/bin/python3 codegen/schema_shapes.py     # schema shape laws
 /opt/homebrew/bin/python3 codegen/root_laws.py         # phase-A root laws, validity agreement
