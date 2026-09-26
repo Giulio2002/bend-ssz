@@ -151,3 +151,28 @@ def ybytes(L, dz, j, t, k, hk, hy, hr, hs):
       VB.lm_win(VC.NW(L), j, 0n, F.array__slots(U32, VC.ZT(dz)), F.array__slots(U32, t), hz, hs)) :
     {VS.bt(U32.to_nat(L), FX.limbs(_)) == VS.bt(U32.to_nat(L), FX.limbs(VB.wdr(j, F.array__slots(U32, t)))) : +List<U32>}
   VY.bt_take(VC.NW(L), U32.to_nat(L), VB.wdr(j, F.array__slots(U32, t)), hq)
+
+law bt_len_le:
+  for +m: Nat
+  for +X: +List<U32>
+  {Nat.is_le(List.length(&2, U32, VS.bt(m, X)), m) == True{} : Bool}
+def bt_len_le(m, X):
+  match m X:
+    case 0n +X0: {==}
+    case 1n+ +p Nil{}: Order.zero_le(1n+p)
+    case 1n+ +p Con{+x, +t}: bt_len_le(p, t)
+
+law wdr_len_le:
+  for +H: Nat
+  for +i: Nat
+  for +W: List<&2, U32>
+  for +h: {Nat.is_le(Nat.add(H, i), VB.len(W)) == True{} : Bool}
+  {Nat.is_le(H, VB.len(VB.wdr(i, W))) == True{} : Bool}
+def wdr_len_le(H, i, W, h):
+  match i W:
+    case 0n +W0: F.logic__subst(Nat, z => {Nat.is_le(z, VB.len(W0)) == True{} : Bool}, Nat.add(H, 0n), H, F.nat__add_zero(H), h)
+    case 1n+ +p Nil{}:
+      Empty.absurd({Nat.is_le(H, VB.len(VB.wdr(1n+p, Nil{}))) == True{} : Bool}, F.logic__false_true(
+        F.logic__subst(Nat, z => {Nat.is_le(z, 0n) == True{} : Bool}, Nat.add(H, 1n+p), 1n+Nat.add(H, p), F.nat__add_succ(H, p), h)))
+    case 1n+ +p Con{+x, +t}:
+      wdr_len_le(H, p, t, F.logic__subst(Nat, z => {Nat.is_le(z, 1n+VB.len(t)) == True{} : Bool}, Nat.add(H, 1n+p), 1n+Nat.add(H, p), F.nat__add_succ(H, p), h))
