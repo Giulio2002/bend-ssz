@@ -256,3 +256,25 @@ def put_b96(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_na
     {_ == F.array__thaw(U32, VF.updv([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23], dd, D, P)) : Array<U32>}
   {==}
 
+def rd_bv64(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +e: {U32.to_nat(off) == A.quad(i) : Nat},
+    +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(2n, i), VB.pw(d)) == True{} : Bool})
+    -> {T.bv64_read(VF.BF(t, n), off, 8) == (VF.BF(t, n), T.Bitvector64{VB.slot(t, i), VB.slot(t, 1n+i)}) : B.Buf & T.Bitvector64}:
+  %Equal.sym(B.Buf & U32, B.read32(VF.BF(t, n), off), (VF.BF(t, n), VB.slot(t, i)), VF.rd32a(d, t, n, off, i, e, VB.lt32(d, F.nat__lt_trans(d, 29n, 31n, hd, {==})), VF.in_lt(0n, 2n, i, VB.pw(d), {==}, hb), pf)) :
+    {T.bv64_r0(off, _) == (VF.BF(t, n), T.Bitvector64{VB.slot(t, i), VB.slot(t, 1n+i)}) : B.Buf & T.Bitvector64}
+  %Equal.sym(B.Buf & U32, B.read32(VF.BF(t, n), U32.add(off, 4)), (VF.BF(t, n), VB.slot(t, 1n+i)), VF.rd32a(d, t, n, U32.add(off, 4), 1n+i, VF.off_add(off, 4, i, 1n, 2n+d, e, {==}, hd, VF.in_q(1n, i, d, VF.lt_le1(1n, i, VB.pw(d), VF.in_lt(1n, 2n, i, VB.pw(d), {==}, hb)))), VB.lt32(d, F.nat__lt_trans(d, 29n, 31n, hd, {==})), VF.in_lt(1n, 2n, i, VB.pw(d), {==}, hb), pf)) :
+    {T.bv64_r1(off, VB.slot(t, i), _) == (VF.BF(t, n), T.Bitvector64{VB.slot(t, i), VB.slot(t, 1n+i)}) : B.Buf & T.Bitvector64}
+  {==}
+
+def put_bv64(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {F.array__perfect(U32, dd, D) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(2n, P), VB.pw(dd)) == True{} : Bool}, +x0: U32, +x1: U32)
+    -> {T.bv64_put(F.array__thaw(U32, D), pos, T.Bitvector64{x0, x1}) == F.array__thaw(U32, VF.updv([x0, x1], dd, D, P)) : Array<U32>}:
+  %Equal.sym(U32, U32.and(pos, 3), 0, VF.al_3(pos, P, e)) :
+    {T.bv64_pwd(U32.is_eq(_, 0), _, F.array__thaw(U32, D), U32.shrn(pos, 2n), x0, x1) == F.array__thaw(U32, VF.updv([x0, x1], dd, D, P)) : Array<U32>}
+  %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), U32.add(U32.shrn(pos, 2n), 0), x0), F.array__thaw(U32, F.array__upd(U32, dd, D, P, x0)), VB.set_at(dd, D, U32.shrn(pos, 2n), 0, P, x0, VF.al_q(pos, P, e), VB.lt32(dd, F.nat__lt_trans(dd, 29n, 31n, hdd, {==})), VF.in_lt(0n, 2n, P, VB.pw(dd), {==}, hb), pf)) :
+    {Array.set(U32, _, U32.add(U32.shrn(pos, 2n), 1), x1) == F.array__thaw(U32, VF.updv([x0, x1], dd, D, P)) : Array<U32>}
+  %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, F.array__upd(U32, dd, D, P, x0)), U32.add(U32.shrn(pos, 2n), 1), x1), F.array__thaw(U32, F.array__upd(U32, dd, F.array__upd(U32, dd, D, P, x0), 1n+P, x1)), VB.set_at(dd, F.array__upd(U32, dd, D, P, x0), U32.shrn(pos, 2n), 1, P, x1, VF.al_q(pos, P, e), VB.lt32(dd, F.nat__lt_trans(dd, 29n, 31n, hdd, {==})), VF.in_lt(1n, 2n, P, VB.pw(dd), {==}, hb), F.array__upd_perfect(U32, dd, D, P, x0, pf))) :
+    {_ == F.array__thaw(U32, VF.updv([x0, x1], dd, D, P)) : Array<U32>}
+  {==}
+
