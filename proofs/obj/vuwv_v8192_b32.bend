@@ -102,6 +102,15 @@ def core(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat,
       (rt(D, X, TB, n, UWD.PWM(3n, dd, D, q, TB, n), hv, w), b)
     case 4n+ +t: Empty.absurd(DK.P2({T.v8192_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), n}) == (FD.array__thaw(U32, UWD.PWM(4n+t, dd, D, q, TB, n)), (O.Words{FD.array__thaw(U32, TB), n}, 0)) : Array<U32> & (O.Words & U32)}, {UA.BYT(UWD.PWM(4n+t, dd, D, q, TB, n)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), 4n+t), FX.limbs(VS.wtake(K, UW.SLW(TB)))) : +List<U32>}), FD.nat__lt_zero_absurd(t, hr))
 
+# Its storage check holds on a valid storage tree (the runtime's T.v8192_b32_valid), its closed facts by Nat.is_eq.
+def v8192_b32_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
+    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(65536n, VB.pw(dB)) == True{} : Bool})
+    -> {T.v8192_b32_valid(O.Words{FD.array__thaw(U32, TB), 262144}) == (O.Words{FD.array__thaw(U32, TB), 262144}, True{}) : O.Words & Bool}:
+  +eW = FD.nat__eq_from_is_eq(VC.NW(262144), 65536n, {==})
+  +hsrc = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, 65536n, VC.NW(262144), Equal.sym(Nat, VC.NW(262144), 65536n, eW), hrB)
+  +hroom = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, VC.NW(262144), Nat.add(VC.NW(262144), 0n), Equal.sym(Nat, Nat.add(VC.NW(262144), 0n), VC.NW(262144), FD.nat__add_zero(VC.NW(262144))), hsrc)
+  VBE.words_ok_b(dB, TB, 262144, 262144, 262144, 19n, pfB, hdB, {==}, {==}, {==}, {==}, hroom, {==}, 32, {==})
+
 # The instance at n = 262144 (K = 65536): its facts on the byte count decided by Nat.is_eq / is_le.
 def at(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 262144n))), VB.pw(dd)) == True{} : Bool},

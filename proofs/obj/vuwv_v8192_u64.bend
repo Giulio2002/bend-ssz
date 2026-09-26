@@ -102,6 +102,15 @@ def core(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat,
       (rt(D, X, TB, n, UWD.PWM(3n, dd, D, q, TB, n), hv, w), b)
     case 4n+ +t: Empty.absurd(DK.P2({T.v8192_u64_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), n}) == (FD.array__thaw(U32, UWD.PWM(4n+t, dd, D, q, TB, n)), (O.Words{FD.array__thaw(U32, TB), n}, 0)) : Array<U32> & (O.Words & U32)}, {UA.BYT(UWD.PWM(4n+t, dd, D, q, TB, n)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), 4n+t), FX.limbs(VS.wtake(K, UW.SLW(TB)))) : +List<U32>}), FD.nat__lt_zero_absurd(t, hr))
 
+# Its storage check holds on a valid storage tree (the runtime's T.v8192_u64_valid), its closed facts by Nat.is_eq.
+def v8192_u64_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
+    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(16384n, VB.pw(dB)) == True{} : Bool})
+    -> {T.v8192_u64_valid(O.Words{FD.array__thaw(U32, TB), 65536}) == (O.Words{FD.array__thaw(U32, TB), 65536}, True{}) : O.Words & Bool}:
+  +eW = FD.nat__eq_from_is_eq(VC.NW(65536), 16384n, {==})
+  +hsrc = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, 16384n, VC.NW(65536), Equal.sym(Nat, VC.NW(65536), 16384n, eW), hrB)
+  +hroom = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, VC.NW(65536), Nat.add(VC.NW(65536), 0n), Equal.sym(Nat, Nat.add(VC.NW(65536), 0n), VC.NW(65536), FD.nat__add_zero(VC.NW(65536))), hsrc)
+  VBE.words_ok_b(dB, TB, 65536, 65536, 65536, 17n, pfB, hdB, {==}, {==}, {==}, {==}, hroom, {==}, 8, {==})
+
 # The instance at n = 65536 (K = 16384): its facts on the byte count decided by Nat.is_eq / is_le.
 def at(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 65536n))), VB.pw(dd)) == True{} : Bool},

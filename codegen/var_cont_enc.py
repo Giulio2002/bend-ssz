@@ -163,6 +163,20 @@ def bxrt_{f}({", ".join(self.params)}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r:
             self.hY = f'VCN.len_wt({nW}n, UW.SLW(TB_{f}), {h64})'
         self.rtype = f'Array<U32> & ({self.vt} & U32)'
 
+    # the field's storage check: valid(hargs) proves {T.<p>_valid(obj) == (obj, True)} from the field's hypotheses,
+    # passed in the order of self.hargs (an entry without hypotheses ignores them)
+    def valid(self, hargs=None):
+        hargs = list(self.hargs if hargs is None else hargs)
+        fs, f = self.fs, self.f
+        if fs.kind == 'box':
+            return '{==}'
+        if fs.kind == 'container' and fs.p == 'SyncCommittee':
+            return f'V_SyncCommittee.SyncCommittee_valid_ok(dB_{f}, TB_{f}, {", ".join(self.oargs[2:])}, {", ".join(hargs)})'
+        return f'V_{fs.p}.{fs.p}_valid_ok(dB_{f}, TB_{f}, {", ".join(hargs)})'
+
+    def valid_stmt(self):
+        return f'{{T.{self.p}_valid({self.obj}) == ({self.obj}, True{{}}) : {self.vt} & Bool}}'
+
 
 def is_fixw_ext(fs):
     """is_fixw, and the fixed non-Data fields with a FixW entry: SyncCommittee, a boxed record of var_rec_enc."""
