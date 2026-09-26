@@ -352,9 +352,10 @@ def PXE(+v: M_ProposerSlashing, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: 
 def YE(+v: M_ProposerSlashing) -> +List<U32>:
   match v:
     case M_ProposerSlashing{+a0, +a1}: VRX.AP(F.limbs(RWD_SignedBeaconBlockHeader(a0)), F.limbs(RWD_SignedBeaconBlockHeader(a1)))
-def lenE(+v: M_ProposerSlashing, +h: {OKE(v) == True{} : Bool}) -> {VRX.LN(YE(v)) == 416n : Nat}:
+def lenE0(+v: M_ProposerSlashing) -> {VRX.LN(YE(v)) == 416n : Nat}:
   match v:
     case M_ProposerSlashing{+a0, +a1}: Equal.trans(Nat, VRX.LN(VRX.AP(F.limbs(RWD_SignedBeaconBlockHeader(a0)), F.limbs(RWD_SignedBeaconBlockHeader(a1)))), Nat.add(VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a0))), VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a1)))), 416n, VCN.len_app(F.limbs(RWD_SignedBeaconBlockHeader(a0)), F.limbs(RWD_SignedBeaconBlockHeader(a1))), Equal.trans(Nat, Nat.add(VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a0))), VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a1)))), Nat.add(208n, VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a1)))), 416n, Equal.cong(Nat, Nat, z => Nat.add(z, VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a1)))), VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a0))), 208n, lenb_SignedBeaconBlockHeader(a0)), Equal.cong(Nat, Nat, z => Nat.add(208n, z), VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a1))), 208n, lenb_SignedBeaconBlockHeader(a1))))
+def lenE(+v: M_ProposerSlashing, +h: {OKE(v) == True{} : Bool}) -> {VRX.LN(YE(v)) == 416n : Nat}: lenE0(v)
 def pfE(+v: M_ProposerSlashing, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PXE(v, dd, D, q, r)) == True{} : Bool}:
   match v:
@@ -430,17 +431,18 @@ def PXEm(+m: MB<M_ProposerSlashing>, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat,
     case MSome{+v}: PXE(v, dd, D, q, r)
 def YEm(+m: MB<M_ProposerSlashing>) -> +List<U32>:
   match m:
-    case MNone{}: []
+    case MNone{}: UW.ZB(416n)
     case MSome{+v}: YE(v)
 def pfEm(+m: MB<M_ProposerSlashing>, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PXEm(m, dd, D, q, r)) == True{} : Bool}:
   match m:
     case MNone{}: pf
     case MSome{+v}: pfE(v, dd, D, q, r, pf)
-def lenEm(+m: MB<M_ProposerSlashing>, +h: {EOK(m) == True{} : Bool}) -> {VRX.LN(YEm(m)) == 416n : Nat}:
+def lenEz(+m: MB<M_ProposerSlashing>) -> {VRX.LN(YEm(m)) == 416n : Nat}:
   match m:
-    case MNone{}: Empty.absurd({VRX.LN(YEm(MNone{})) == 416n : Nat}, FD.logic__false_true(h))
-    case MSome{+v}: lenE(v, h)
+    case MNone{}: {==}
+    case MSome{+v}: lenE0(v)
+def lenEm(+m: MB<M_ProposerSlashing>, +h: {EOK(m) == True{} : Bool}) -> {VRX.LN(YEm(m)) == 416n : Nat}: lenEz(m)
 def RTEm(+m: MB<M_ProposerSlashing>, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {T.ProposerSlashing_bx_put(FD.array__thaw(U32, D), X, th_ProposerSlashing_bx(m)) == (FD.array__thaw(U32, PXEm(m, dd, D, q, r)), th_ProposerSlashing_bx(m)) : Array<U32> & O.Boxed<T.ProposerSlashing>}
 def BYEm(+m: MB<M_ProposerSlashing>, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
@@ -586,47 +588,47 @@ def va_go(k, d, t, i, s, n, ei, ek, pf, hd, hn, hok):
 
 # ---- the list object and its facts -----------------------------------------------------------------
 
-def THL(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> T.l16_ProposerSlashing_Seq: T.l16_ProposerSlashing_Seq{AR(t), N}
-def OKL(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> Bool:
+def THL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> T.l16_ProposerSlashing_Seq: T.l16_ProposerSlashing_Seq{AR(t), N}
+def OKL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> Bool:
   Bool.and(Nat.is_lt(TDM(t), 31n), Bool.and(FD.array__perfect(MB<M_ProposerSlashing>, TDM(t), t), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))),
     Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n)))))
-def okl_d(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {Nat.is_lt(TDM(t), 31n) == True{} : Bool}:
+def okl_d(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {Nat.is_lt(TDM(t), 31n) == True{} : Bool}:
   and_l(Nat.is_lt(TDM(t), 31n), Bool.and(FD.array__perfect(MB<M_ProposerSlashing>, TDM(t), t), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))), Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n)))), h)
-def okl_1(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool})
+def okl_1(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool})
     -> {Bool.and(FD.array__perfect(MB<M_ProposerSlashing>, TDM(t), t), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))), Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n)))) == True{} : Bool}:
   and_r(Nat.is_lt(TDM(t), 31n), Bool.and(FD.array__perfect(MB<M_ProposerSlashing>, TDM(t), t), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))), Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n)))), h)
-def okl_pf(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {FD.array__perfect(MB<M_ProposerSlashing>, TDM(t), t) == True{} : Bool}:
+def okl_pf(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {FD.array__perfect(MB<M_ProposerSlashing>, TDM(t), t) == True{} : Bool}:
   and_l(FD.array__perfect(MB<M_ProposerSlashing>, TDM(t), t), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))), Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n))), okl_1(t, N, h))
-def okl_2(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool})
+def okl_2(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool})
     -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))), Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n))) == True{} : Bool}:
   and_r(FD.array__perfect(MB<M_ProposerSlashing>, TDM(t), t), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))), Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n))), okl_1(t, N, h))
-def okl_n(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))) == True{} : Bool}:
+def okl_n(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))) == True{} : Bool}:
   and_l(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))), Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n)), okl_2(t, N, h))
-def okl_3(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n)) == True{} : Bool}:
+def okl_3(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n)) == True{} : Bool}:
   and_r(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))), Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n)), okl_2(t, N, h))
-def okl_lim(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {U32.is_le(N, 16) == True{} : Bool}:
+def okl_lim(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {U32.is_le(N, 16) == True{} : Bool}:
   and_l(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n), okl_3(t, N, h))
-def okl_e(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {EOKS(U32.to_nat(N), SL(t), 0n) == True{} : Bool}:
+def okl_e(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {EOKS(U32.to_nat(N), SL(t), 0n) == True{} : Bool}:
   and_r(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n), okl_3(t, N, h))
 
 # N <= 2^d as the runtime compares it.
-def le_cap(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(TDM(t))) == True{} : Bool}:
+def le_cap(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(TDM(t))) == True{} : Bool}:
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(TDM(t))), Nat.is_le(U32.to_nat(N), U32.to_nat(FD.u32__pow2u(TDM(t)))), VU.le_u32(N, FD.u32__pow2u(TDM(t)))) : {_ == True{} : Bool}
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(TDM(t))), VB.pw(TDM(t)), FD.u32__pow2u_value(TDM(t), FD.nat__lt_trans(TDM(t), 31n, 32n, okl_d(t, N, h), {==}))) : {Nat.is_le(U32.to_nat(N), _) == True{} : Bool}
   okl_n(t, N, h)
 
 # The runtime's validity check of the list.
-def valid_l(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {T.l16_ProposerSlashing_valid(THL(t, N)) == (THL(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}:
+def valid_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {T.l16_ProposerSlashing_valid(THL_l16_ProposerSlashing(t, N)) == (THL_l16_ProposerSlashing(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}:
   +d = TDM(t)
   %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & U32, Array.size(O.Boxed<T.ProposerSlashing>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_l16_ProposerSlashing(d, t, okl_pf(t, N, h))) :
-    {T.l16_ProposerSlashing_va_cap(Bool.or(False{}, U32.is_le(N, 16)), N, _) == (THL(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
+    {T.l16_ProposerSlashing_va_cap(Bool.or(False{}, U32.is_le(N, 16)), N, _) == (THL_l16_ProposerSlashing(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, 16), True{}, okl_lim(t, N, h)) :
-    {T.l16_ProposerSlashing_va_go(Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d))), N, AR(t)) == (THL(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
+    {T.l16_ProposerSlashing_va_go(Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d))), N, AR(t)) == (THL_l16_ProposerSlashing(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap(t, N, h)) :
-    {T.l16_ProposerSlashing_va_go(Bool.and(True{}, _), N, AR(t)) == (THL(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
+    {T.l16_ProposerSlashing_va_go(Bool.and(True{}, _), N, AR(t)) == (THL_l16_ProposerSlashing(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
   %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & Bool, T.l16_ProposerSlashing_va(U32.to_nat(N), 0, (AR(t), True{})), (AR(t), True{}),
       va_go(U32.to_nat(N), d, t, 0, 0n, U32.to_nat(N), {==}, {==}, okl_pf(t, N, h), okl_d(t, N, h), okl_n(t, N, h), okl_e(t, N, h))) :
-    {T.l16_ProposerSlashing_va_fin(N, True{}, _) == (THL(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
+    {T.l16_ProposerSlashing_va_fin(N, True{}, _) == (THL_l16_ProposerSlashing(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
   {==}
 
 # ---- the write loop ------------------------------------------------------------------------------
@@ -734,30 +736,30 @@ def ptx(k: Nat, +i: U32, +j: Nat, +n: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, 
 
 # ---- the list's encoder window ---------------------------------------------------------------------
 
-def LL(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> Nat: A.quad(Nat.mul(U32.to_nat(N), 104n))
-def ENCL(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> +List<U32>: CATE(U32.to_nat(N), SL(t), 0n)
-def PUTLb(b: Bool, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+def LL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> Nat: A.quad(Nat.mul(U32.to_nat(N), 104n))
+def ENCL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> +List<U32>: CATE(U32.to_nat(N), SL(t), 0n)
+def PUTLb_l16_ProposerSlashing(b: Bool, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match b:
     case True{}: D
     case False{}: WX(U32.to_nat(N), 0n, dd, D, q, r, t)
-def PUTL(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PUTLb(U32.is_eq(N, 0), t, N, dd, D, q, r)
-def pfLb(+b: Bool, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
-    -> {FD.array__perfect(U32, dd, PUTLb(b, t, N, dd, D, q, r)) == True{} : Bool}:
+def PUTL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PUTLb_l16_ProposerSlashing(U32.is_eq(N, 0), t, N, dd, D, q, r)
+def pfLb_l16_ProposerSlashing(+b: Bool, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {FD.array__perfect(U32, dd, PUTLb_l16_ProposerSlashing(b, t, N, dd, D, q, r)) == True{} : Bool}:
   match b:
     case True{}: pf
     case False{}: pfWX(U32.to_nat(N), 0n, dd, D, q, r, t, pf)
 
 def RTN(+b: Bool, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l16_ProposerSlashing_pt_nz(b, X, N, FD.array__thaw(U32, D), AR(t)) == (FD.array__thaw(U32, PUTLb(b, t, N, dd, D, q, r)), THL(t, N)) : Array<U32> & T.l16_ProposerSlashing_Seq}
+  {T.l16_ProposerSlashing_pt_nz(b, X, N, FD.array__thaw(U32, D), AR(t)) == (FD.array__thaw(U32, PUTLb_l16_ProposerSlashing(b, t, N, dd, D, q, r)), THL_l16_ProposerSlashing(t, N)) : Array<U32> & T.l16_ProposerSlashing_Seq}
 def BYN(+b: Bool, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
-  {UA.BYT(PUTLb(b, t, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL(t, N)) : +List<U32>}
+  {UA.BYT(PUTLb_l16_ProposerSlashing(b, t, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l16_ProposerSlashing(t, N)) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL(t, N) == True{} : Bool},
+def ptnz(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool},
     +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL(t, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
-    +hz: {VS.bt(LL(t, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL(t, N)) : +List<U32>})
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l16_ProposerSlashing(t, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16_ProposerSlashing(t, N)) : +List<U32>})
     -> DK.P2(RTN(b, t, N, dd, D, X, q, r), BYN(b, t, N, dd, D, q, r)):
   match b:
     case True{}:
@@ -766,64 +768,64 @@ def ptnz(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +b: Bool, +eb: {U3
         Equal.sym(+List<U32>, UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), []), UA.BYT(D), VRX.spl_nil(UA.BYT(D), Nat.add(A.quad(q), r)))))
     case False{}:
       +c = U32.to_nat(N)
-      +g = ptx(c, 0, 0n, c, X, q, r, dd, D, TDM(t), t, LL(t, N), {==}, {==}, e, hr, hd, pf,
-        FD.logic__subst(Nat, z => {Nat.is_le(A.quad(Nat.mul(z, 104n)), LL(t, N)) == True{} : Bool}, c, Nat.add(c, 0n), Equal.sym(Nat, Nat.add(c, 0n), c, FD.nat__add_zero(c)), FD.nat__le_refl(LL(t, N))), hl, hz,
+      +g = ptx(c, 0, 0n, c, X, q, r, dd, D, TDM(t), t, LL_l16_ProposerSlashing(t, N), {==}, {==}, e, hr, hd, pf,
+        FD.logic__subst(Nat, z => {Nat.is_le(A.quad(Nat.mul(z, 104n)), LL_l16_ProposerSlashing(t, N)) == True{} : Bool}, c, Nat.add(c, 0n), Equal.sym(Nat, Nat.add(c, 0n), c, FD.nat__add_zero(c)), FD.nat__le_refl(LL_l16_ProposerSlashing(t, N))), hl, hz,
         okl_pf(t, N, h), okl_d(t, N, h), okl_n(t, N, h), okl_e(t, N, h))
       +rt = PA(RTK(c, 0, 0n, X, q, r, dd, D, t), BYK(c, 0n, q, r, dd, D, t), g)
       +by = PB(RTK(c, 0, 0n, X, q, r, dd, D, t), BYK(c, 0n, q, r, dd, D, t), g)
       (Equal.cong(Array<U32> & (Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>), Array<U32> & T.l16_ProposerSlashing_Seq, z => T.l16_ProposerSlashing_pt_fin(N, z),
          T.l16_ProposerSlashing_pt(c, 0, X, (FD.array__thaw(U32, D), (AR(t), O.BNone{}))), (FD.array__thaw(U32, WX(c, 0n, dd, D, q, r, t)), (AR(t), O.BNone{})), rt), by)
 
-def RTL(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l16_ProposerSlashing_putk(FD.array__thaw(U32, D), X, THL(t, N)) == (FD.array__thaw(U32, PUTL(t, N, dd, D, q, r)), (THL(t, N), U32.mul(N, 416))) : Array<U32> & (T.l16_ProposerSlashing_Seq & U32)}
-def BYL(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
-  {UA.BYT(PUTL(t, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL(t, N)) : +List<U32>}
-def PFL(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
-  {FD.array__perfect(U32, dd, PUTL(t, N, dd, D, q, r)) == True{} : Bool}
+def RTL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {T.l16_ProposerSlashing_putk(FD.array__thaw(U32, D), X, THL_l16_ProposerSlashing(t, N)) == (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416))) : Array<U32> & (T.l16_ProposerSlashing_Seq & U32)}
+def BYL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+  {UA.BYT(PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l16_ProposerSlashing(t, N)) : +List<U32>}
+def PFL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+  {FD.array__perfect(U32, dd, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)) == True{} : Bool}
 
 # The runtime's write, with its validity check.
-def putk_rt(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +rtb: RTN(U32.is_eq(N, 0), t, N, dd, D, X, q, r)) -> RTL(t, N, dd, D, X, q, r):
-  %Equal.sym(T.l16_ProposerSlashing_Seq & Bool, T.l16_ProposerSlashing_valid(THL(t, N)), (THL(t, N), True{}), valid_l(t, N, h)) :
-    {T.l16_ProposerSlashing_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL(t, N, dd, D, q, r)), (THL(t, N), U32.mul(N, 416))) : Array<U32> & (T.l16_ProposerSlashing_Seq & U32)}
-  %Equal.sym(Array<U32> & T.l16_ProposerSlashing_Seq, T.l16_ProposerSlashing_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), AR(t)), (FD.array__thaw(U32, PUTL(t, N, dd, D, q, r)), THL(t, N)), rtb) :
-    {T.l16_ProposerSlashing_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL(t, N, dd, D, q, r)), (THL(t, N), U32.mul(N, 416))) : Array<U32> & (T.l16_ProposerSlashing_Seq & U32)}
+def putk_rt(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +rtb: RTN(U32.is_eq(N, 0), t, N, dd, D, X, q, r)) -> RTL_l16_ProposerSlashing(t, N, dd, D, X, q, r):
+  %Equal.sym(T.l16_ProposerSlashing_Seq & Bool, T.l16_ProposerSlashing_valid(THL_l16_ProposerSlashing(t, N)), (THL_l16_ProposerSlashing(t, N), True{}), valid_l16_ProposerSlashing(t, N, h)) :
+    {T.l16_ProposerSlashing_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416))) : Array<U32> & (T.l16_ProposerSlashing_Seq & U32)}
+  %Equal.sym(Array<U32> & T.l16_ProposerSlashing_Seq, T.l16_ProposerSlashing_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), AR(t)), (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), THL_l16_ProposerSlashing(t, N)), rtb) :
+    {T.l16_ProposerSlashing_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416))) : Array<U32> & (T.l16_ProposerSlashing_Seq & U32)}
   {==}
 
 def mk3(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +a: RTL(t, N, dd, D, X, q, r), +b: BYL(t, N, dd, D, q, r), +c: PFL(t, N, dd, D, q, r))
-    -> DK.P2(RTL(t, N, dd, D, X, q, r), DK.P2(BYL(t, N, dd, D, q, r), PFL(t, N, dd, D, q, r))):
+    +a: RTL_l16_ProposerSlashing(t, N, dd, D, X, q, r), +b: BYL_l16_ProposerSlashing(t, N, dd, D, q, r), +c: PFL_l16_ProposerSlashing(t, N, dd, D, q, r))
+    -> DK.P2(RTL_l16_ProposerSlashing(t, N, dd, D, X, q, r), DK.P2(BYL_l16_ProposerSlashing(t, N, dd, D, q, r), PFL_l16_ProposerSlashing(t, N, dd, D, q, r))):
   (a, (b, c))
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
 # into D's (its elements write their data bytes only), and whose tree is perfect.
-def putx(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putx_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL(t, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
-    +hz: {VS.bt(LL(t, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL(t, N)) : +List<U32>})
-    -> DK.P2(RTL(t, N, dd, D, X, q, r), DK.P2(BYL(t, N, dd, D, q, r), PFL(t, N, dd, D, q, r))):
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l16_ProposerSlashing(t, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16_ProposerSlashing(t, N)) : +List<U32>})
+    -> DK.P2(RTL_l16_ProposerSlashing(t, N, dd, D, X, q, r), DK.P2(BYL_l16_ProposerSlashing(t, N, dd, D, q, r), PFL_l16_ProposerSlashing(t, N, dd, D, q, r))):
   +b = U32.is_eq(N, 0)
   +g = ptnz(t, N, b, {==}, h, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
   +rtb = PA(RTN(b, t, N, dd, D, X, q, r), BYN(b, t, N, dd, D, q, r), g)
   +byb = PB(RTN(b, t, N, dd, D, X, q, r), BYN(b, t, N, dd, D, q, r), g)
-  mk3(t, N, dd, D, X, q, r, putk_rt(t, N, h, dd, D, X, q, r, rtb), byb, pfLb(b, t, N, dd, D, q, r, pf))
+  mk3(t, N, dd, D, X, q, r, putk_rt(t, N, h, dd, D, X, q, r, rtb), byb, pfLb_l16_ProposerSlashing(b, t, N, dd, D, q, r, pf))
 
 # ---- sizes ----
 
 # The runtime's size pass.
-def sizex(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {T.l16_ProposerSlashing_size(THL(t, N)) == (THL(t, N), U32.mul(N, 416)) : T.l16_ProposerSlashing_Seq & U32}:
+def sizex_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {T.l16_ProposerSlashing_size(THL_l16_ProposerSlashing(t, N)) == (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416)) : T.l16_ProposerSlashing_Seq & U32}:
   +d = TDM(t)
   %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & U32, Array.size(O.Boxed<T.ProposerSlashing>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_l16_ProposerSlashing(d, t, okl_pf(t, N, h))) :
-    {T.l16_ProposerSlashing_szf(N, _) == (THL(t, N), U32.mul(N, 416)) : T.l16_ProposerSlashing_Seq & U32}
+    {T.l16_ProposerSlashing_szf(N, _) == (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416)) : T.l16_ProposerSlashing_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap(t, N, h)) :
-    {(THL(t, N), O.pick(_, U32.mul(N, 416), 2147483648)) == (THL(t, N), U32.mul(N, 416)) : T.l16_ProposerSlashing_Seq & U32}
+    {(THL_l16_ProposerSlashing(t, N), O.pick(_, U32.mul(N, 416), 2147483648)) == (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416)) : T.l16_ProposerSlashing_Seq & U32}
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
-def szx(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL(t, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 416)) == LL(t, N) : Nat}:
+def szx_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_ProposerSlashing(t, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 416)) == LL_l16_ProposerSlashing(t, N) : Nat}:
   VRX.mulq(dd, N, U32.to_nat(N), 416, 104n, {==}, {==}, hd,
-    FD.nat__le_trans(LL(t, N), Nat.add(Nat.add(A.quad(q), r), LL(t, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL(t, N)), VRX.xend(q, r, LL(t, N), dd, hl)))
+    FD.nat__le_trans(LL_l16_ProposerSlashing(t, N), Nat.add(Nat.add(A.quad(q), r), LL_l16_ProposerSlashing(t, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL_l16_ProposerSlashing(t, N)), VRX.xend(q, r, LL_l16_ProposerSlashing(t, N), dd, hl)))
 
 # ---- the spec side: the list's value, its parts, one variable part of its bytes ---------------------
 
@@ -911,14 +913,13 @@ def pyE(c, W, i):
     case 0n: {==}
     case 1n+ +q: pyE(q, W, 1n+i)
 
-# The elements' bytes: 416 each.
+# The elements' bytes: 416 each (an absent element's bytes are 416 zero bytes).
 law lenC:
   for +c: Nat
   for +W: List<&2, MB<M_ProposerSlashing>>
   for +i: Nat
-  for +hok: {EOKS(c, W, i) == True{} : Bool}
   {VCN.LN(CATE(c, W, i)) == A.quad(Nat.mul(c, 104n)) : Nat}
-def lenC(c, W, i, hok):
+def lenC(c, W, i):
   match c:
     case 0n: {==}
     case 1n+ +q:
@@ -926,8 +927,8 @@ def lenC(c, W, i, hok):
       +Y = YEm(x)
       %Equal.sym(Nat, VCN.LN(VCN.AP(Y, CATE(q, W, 1n+i))), Nat.add(VCN.LN(Y), VCN.LN(CATE(q, W, 1n+i))), VCN.len_app(Y, CATE(q, W, 1n+i))) :
         {_ == A.quad(Nat.mul(1n+q, 104n)) : Nat}
-      %Equal.sym(Nat, VCN.LN(Y), 416n, lenEm(x, and_l(EOK(x), EOKS(q, W, 1n+i), hok))) : {Nat.add(_, VCN.LN(CATE(q, W, 1n+i))) == A.quad(Nat.mul(1n+q, 104n)) : Nat}
-      %Equal.sym(Nat, VCN.LN(CATE(q, W, 1n+i)), A.quad(Nat.mul(q, 104n)), lenC(q, W, 1n+i, and_r(EOK(x), EOKS(q, W, 1n+i), hok))) : {Nat.add(416n, _) == A.quad(Nat.mul(1n+q, 104n)) : Nat}
+      %Equal.sym(Nat, VCN.LN(Y), 416n, lenEz(x)) : {Nat.add(_, VCN.LN(CATE(q, W, 1n+i))) == A.quad(Nat.mul(1n+q, 104n)) : Nat}
+      %Equal.sym(Nat, VCN.LN(CATE(q, W, 1n+i)), A.quad(Nat.mul(q, 104n)), lenC(q, W, 1n+i)) : {Nat.add(416n, _) == A.quad(Nat.mul(1n+q, 104n)) : Nat}
       {==}
 
 # The layout of the elements' fixed parts is their bytes.
@@ -966,15 +967,15 @@ def lpartE(+c: Nat, +W: List<&2, MB<M_ProposerSlashing>>, +hok: {EOKS(c, W, 0n) 
   {==}
 
 # The list's value and its bytes' length.
-def VALL(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> S.Value: S.Sequence{ITE(U32.to_nat(N), SL(t), 0n)}
-def len_encl(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {List.length(&2, U32, ENCL(t, N)) == LL(t, N) : Nat}:
-  lenC(U32.to_nat(N), SL(t), 0n, okl_e(t, N, h))
+def VALL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> S.Value: S.Sequence{ITE(U32.to_nat(N), SL(t), 0n)}
+def len_encl_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> {List.length(&2, U32, ENCL_l16_ProposerSlashing(t, N)) == LL_l16_ProposerSlashing(t, N) : Nat}:
+  lenC(U32.to_nat(N), SL(t), 0n)
 
 # encx_spec: the list's value has its bytes as one variable part, when they fit a tree of depth dx < 30.
-def encx_spec(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}, +dx: Nat, +hdx: {Nat.is_lt(dx, 30n) == True{} : Bool},
-    +hL: {Nat.is_le(LL(t, N), A.quad(VB.pw(dx))) == True{} : Bool})
-    -> {Codec.parts(VALL(t, N), Spec.Schema97()) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}:
+def encx_spec_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}, +dx: Nat, +hdx: {Nat.is_lt(dx, 30n) == True{} : Bool},
+    +hL: {Nat.is_le(LL_l16_ProposerSlashing(t, N), A.quad(VB.pw(dx))) == True{} : Bool})
+    -> {Codec.parts(VALL_l16_ProposerSlashing(t, N), Spec.Schema97()) == Some{[S.Variable{ENCL_l16_ProposerSlashing(t, N)}]} : Maybe<&2, +List<S.Part>>}:
   +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 16), Nat.is_le(U32.to_nat(N), U32.to_nat(16)), VU.le_u32(N, 16), okl_lim(t, N, h))
-  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL(t, N), List.length(&2, U32, ENCL(t, N)), Equal.sym(Nat, List.length(&2, U32, ENCL(t, N)), LL(t, N), len_encl(t, N, h)),
-    VBZ.fitq(dx, LL(t, N), hL, hdx))
+  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL_l16_ProposerSlashing(t, N), List.length(&2, U32, ENCL_l16_ProposerSlashing(t, N)), Equal.sym(Nat, List.length(&2, U32, ENCL_l16_ProposerSlashing(t, N)), LL_l16_ProposerSlashing(t, N), len_encl_l16_ProposerSlashing(t, N)),
+    VBZ.fitq(dx, LL_l16_ProposerSlashing(t, N), hL, hdx))
   lpartE(U32.to_nat(N), SL(t), okl_e(t, N, h), hlim, fit)
