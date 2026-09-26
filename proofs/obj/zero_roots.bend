@@ -21,10 +21,49 @@ def false_true(e: {False{} == True{} : Bool}) -> Empty:
   %Equal.sym(Bool, False{}, True{}, e) : disc(_)
   Unit{}
 
+def be_bytesf(+x: U32, tail: +List<U32>) -> +List<U32>:
+  (SF.shr24(x) .&. 255 : U32) <> ((SF.shr16(x) .&. 255 : U32) <> ((SF.shr8(x) .&. 255 : U32) <> ((x .&. 255 : U32) <> tail)))
+law be_bytes_eq:
+  for +x: U32
+  for +tail: +List<U32>
+  {be_bytesf(x, tail) == D.be_bytes(x, tail) : +List<U32>}
+def be_bytes_eq(x, tail):
+  %Equal.sym(U32, SF.shr24(x), U32.shrn(x, 24n), SF.shr24_eq(x)) : {(_ .&. 255 : U32) <> ((SF.shr16(x) .&. 255 : U32) <> ((SF.shr8(x) .&. 255 : U32) <> ((x .&. 255 : U32) <> tail))) == D.be_bytes(x, tail) : +List<U32>}
+  %Equal.sym(U32, SF.shr16(x), U32.shrn(x, 16n), SF.shr16_eq(x)) : {(U32.shrn(x, 24n) .&. 255 : U32) <> ((_ .&. 255 : U32) <> ((SF.shr8(x) .&. 255 : U32) <> ((x .&. 255 : U32) <> tail))) == D.be_bytes(x, tail) : +List<U32>}
+  %Equal.sym(U32, SF.shr8(x), U32.shrn(x, 8n), SF.shr8_eq(x)) : {(U32.shrn(x, 24n) .&. 255 : U32) <> ((U32.shrn(x, 16n) .&. 255 : U32) <> ((_ .&. 255 : U32) <> ((x .&. 255 : U32) <> tail))) == D.be_bytes(x, tail) : +List<U32>}
+  {==}
+
+def bytesf(d: D.Digest) -> +List<U32>:
+  match d:
+    case D.D{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: be_bytesf(w0, be_bytesf(w1, be_bytesf(w2, be_bytesf(w3, be_bytesf(w4, be_bytesf(w5, be_bytesf(w6, be_bytesf(w7, []))))))))
+law bytes_eq:
+  for +d: D.Digest
+  {bytesf(d) == D.bytes(d) : +List<U32>}
+def bytes_eq(d):
+  match d:
+    case D.D{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
+      %Equal.sym(+List<U32>, be_bytesf(w7, []), D.be_bytes(w7, []), be_bytes_eq(w7, [])) :
+        {be_bytesf(w0, be_bytesf(w1, be_bytesf(w2, be_bytesf(w3, be_bytesf(w4, be_bytesf(w5, be_bytesf(w6, _))))))) == D.bytes(D.D{w0, w1, w2, w3, w4, w5, w6, w7}) : +List<U32>}
+      %Equal.sym(+List<U32>, be_bytesf(w6, D.be_bytes(w7, [])), D.be_bytes(w6, D.be_bytes(w7, [])), be_bytes_eq(w6, D.be_bytes(w7, []))) :
+        {be_bytesf(w0, be_bytesf(w1, be_bytesf(w2, be_bytesf(w3, be_bytesf(w4, be_bytesf(w5, _)))))) == D.bytes(D.D{w0, w1, w2, w3, w4, w5, w6, w7}) : +List<U32>}
+      %Equal.sym(+List<U32>, be_bytesf(w5, D.be_bytes(w6, D.be_bytes(w7, []))), D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, []))), be_bytes_eq(w5, D.be_bytes(w6, D.be_bytes(w7, [])))) :
+        {be_bytesf(w0, be_bytesf(w1, be_bytesf(w2, be_bytesf(w3, be_bytesf(w4, _))))) == D.bytes(D.D{w0, w1, w2, w3, w4, w5, w6, w7}) : +List<U32>}
+      %Equal.sym(+List<U32>, be_bytesf(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, [])))), D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, [])))), be_bytes_eq(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, []))))) :
+        {be_bytesf(w0, be_bytesf(w1, be_bytesf(w2, be_bytesf(w3, _)))) == D.bytes(D.D{w0, w1, w2, w3, w4, w5, w6, w7}) : +List<U32>}
+      %Equal.sym(+List<U32>, be_bytesf(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, []))))), D.be_bytes(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, []))))), be_bytes_eq(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, [])))))) :
+        {be_bytesf(w0, be_bytesf(w1, be_bytesf(w2, _))) == D.bytes(D.D{w0, w1, w2, w3, w4, w5, w6, w7}) : +List<U32>}
+      %Equal.sym(+List<U32>, be_bytesf(w2, D.be_bytes(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, [])))))), D.be_bytes(w2, D.be_bytes(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, [])))))), be_bytes_eq(w2, D.be_bytes(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, []))))))) :
+        {be_bytesf(w0, be_bytesf(w1, _)) == D.bytes(D.D{w0, w1, w2, w3, w4, w5, w6, w7}) : +List<U32>}
+      %Equal.sym(+List<U32>, be_bytesf(w1, D.be_bytes(w2, D.be_bytes(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, []))))))), D.be_bytes(w1, D.be_bytes(w2, D.be_bytes(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, []))))))), be_bytes_eq(w1, D.be_bytes(w2, D.be_bytes(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, [])))))))) :
+        {be_bytesf(w0, _) == D.bytes(D.D{w0, w1, w2, w3, w4, w5, w6, w7}) : +List<U32>}
+      %Equal.sym(+List<U32>, be_bytesf(w0, D.be_bytes(w1, D.be_bytes(w2, D.be_bytes(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, [])))))))), D.be_bytes(w0, D.be_bytes(w1, D.be_bytes(w2, D.be_bytes(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, [])))))))), be_bytes_eq(w0, D.be_bytes(w1, D.be_bytes(w2, D.be_bytes(w3, D.be_bytes(w4, D.be_bytes(w5, D.be_bytes(w6, D.be_bytes(w7, []))))))))) :
+        {_ == D.bytes(D.D{w0, w1, w2, w3, w4, w5, w6, w7}) : +List<U32>}
+      {==}
+
 law zconst_fast:
   for +k: Nat
   for +hk: {Nat.is_lt(k, 63n) == True{} : Bool}
-  {D.bytes(D.zconst(1n+k)) == SF.sha256_bytesf(List.append(&2, U32, D.bytes(D.zconst(k)), D.bytes(D.zconst(k)))) : List<&2, U32>}
+  {bytesf(D.zconst(1n+k)) == SF.sha256_bytesf(List.append(&2, U32, bytesf(D.zconst(k)), bytesf(D.zconst(k)))) : List<&2, U32>}
 def zconst_fast(k, hk):
   match k:
     case 0n: {==}
@@ -215,15 +254,19 @@ def zconst_fast(k, hk):
                                                                                                                               match k62:
                                                                                                                                 case 0n: {==}
                                                                                                                                 case 1n+ +k63:
-                                                                                                                                  Empty.absurd({D.bytes(D.zconst(1n+63n+k63)) == SF.sha256_bytesf(List.append(&2, U32, D.bytes(D.zconst(63n+k63)), D.bytes(D.zconst(63n+k63)))) : List<&2, U32>}, false_true(Equal.trans(Bool, False{}, Nat.is_lt(k63, 0n), True{}, Equal.sym(Bool, Nat.is_lt(k63, 0n), False{}, F.nat__not_lt_zero(k63)), hk)))
+                                                                                                                                  Empty.absurd({bytesf(D.zconst(1n+63n+k63)) == SF.sha256_bytesf(List.append(&2, U32, bytesf(D.zconst(63n+k63)), bytesf(D.zconst(63n+k63)))) : List<&2, U32>}, false_true(Equal.trans(Bool, False{}, Nat.is_lt(k63, 0n), True{}, Equal.sym(Bool, Nat.is_lt(k63, 0n), False{}, F.nat__not_lt_zero(k63)), hk)))
 
 law zconst_step:
   for +k: Nat
   for +hk: {Nat.is_lt(k, 63n) == True{} : Bool}
   {D.bytes(D.zconst(1n+k)) == VF.sha256_bytes(List.append(&2, U32, D.bytes(D.zconst(k)), D.bytes(D.zconst(k)))) : List<&2, U32>}
 def zconst_step(k, hk):
-  Equal.trans(List<&2, U32>, D.bytes(D.zconst(1n+k)), SF.sha256_bytesf(List.append(&2, U32, D.bytes(D.zconst(k)), D.bytes(D.zconst(k)))), VF.sha256_bytes(List.append(&2, U32, D.bytes(D.zconst(k)), D.bytes(D.zconst(k)))),
-    zconst_fast(k, hk), SF.sha256_bytes_eq(List.append(&2, U32, D.bytes(D.zconst(k)), D.bytes(D.zconst(k)))))
+  %Equal.sym(+List<U32>, D.bytes(D.zconst(1n+k)), bytesf(D.zconst(1n+k)), Equal.sym(+List<U32>, bytesf(D.zconst(1n+k)), D.bytes(D.zconst(1n+k)), bytes_eq(D.zconst(1n+k)))) :
+    {_ == VF.sha256_bytes(List.append(&2, U32, D.bytes(D.zconst(k)), D.bytes(D.zconst(k)))) : List<&2, U32>}
+  %Equal.sym(+List<U32>, D.bytes(D.zconst(k)), bytesf(D.zconst(k)), Equal.sym(+List<U32>, bytesf(D.zconst(k)), D.bytes(D.zconst(k)), bytes_eq(D.zconst(k)))) :
+    {bytesf(D.zconst(1n+k)) == VF.sha256_bytes(List.append(&2, U32, _, _)) : List<&2, U32>}
+  Equal.trans(List<&2, U32>, bytesf(D.zconst(1n+k)), SF.sha256_bytesf(List.append(&2, U32, bytesf(D.zconst(k)), bytesf(D.zconst(k)))), VF.sha256_bytes(List.append(&2, U32, bytesf(D.zconst(k)), bytesf(D.zconst(k)))),
+    zconst_fast(k, hk), SF.sha256_bytes_eq(List.append(&2, U32, bytesf(D.zconst(k)), bytesf(D.zconst(k)))))
 
 law zconst_spec:
   for +k: Nat

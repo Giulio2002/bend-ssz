@@ -619,10 +619,56 @@ def emit_zero():
     w('  Unit{}')
     w('')
     Z = lambda k: f'D.zconst({k})'
+    # the digests' bytes on sha_fast's one-pattern shifts too (D.be_bytes shifts by 24/16/8)
+    w('def be_bytesf(+x: U32, tail: +List<U32>) -> +List<U32>:')
+    w('  (SF.shr24(x) .&. 255 : U32) <> ((SF.shr16(x) .&. 255 : U32) <> ((SF.shr8(x) .&. 255 : U32) <> ((x .&. 255 : U32) <> tail)))')
+    w('law be_bytes_eq:')
+    w('  for +x: U32')
+    w('  for +tail: +List<U32>')
+    w('  {be_bytesf(x, tail) == D.be_bytes(x, tail) : +List<U32>}')
+    w('def be_bytes_eq(x, tail):')
+    BB = lambda a, b, c: f'({a} .&. 255 : U32) <> (({b} .&. 255 : U32) <> (({c} .&. 255 : U32) <> ((x .&. 255 : U32) <> tail)))'
+    w(f'  %Equal.sym(U32, SF.shr24(x), U32.shrn(x, 24n), SF.shr24_eq(x)) : {{{BB("_", "SF.shr16(x)", "SF.shr8(x)")} == D.be_bytes(x, tail) : +List<U32>}}')
+    w(f'  %Equal.sym(U32, SF.shr16(x), U32.shrn(x, 16n), SF.shr16_eq(x)) : {{{BB("U32.shrn(x, 24n)", "_", "SF.shr8(x)")} == D.be_bytes(x, tail) : +List<U32>}}')
+    w(f'  %Equal.sym(U32, SF.shr8(x), U32.shrn(x, 8n), SF.shr8_eq(x)) : {{{BB("U32.shrn(x, 24n)", "U32.shrn(x, 16n)", "_")} == D.be_bytes(x, tail) : +List<U32>}}')
+    w('  {==}')
+    w('')
+    ws = [f'w{i}' for i in range(8)]
+    def chainb(fs, tail='[]'):
+        t = tail
+        for f_, x_ in reversed(list(zip(fs, ws))):
+            t = f'{f_}({x_}, {t})'
+        return t
+    w('def bytesf(d: D.Digest) -> +List<U32>:')
+    w('  match d:')
+    w(f'    case D.D{{{", ".join("+" + x for x in ws)}}}: {chainb(["be_bytesf"] * 8)}')
+    w('law bytes_eq:')
+    w('  for +d: D.Digest')
+    w('  {bytesf(d) == D.bytes(d) : +List<U32>}')
+    w('def bytes_eq(d):')
+    w('  match d:')
+    w(f'    case D.D{{{", ".join("+" + x for x in ws)}}}:')
+    goal = f'D.bytes(D.D{{{", ".join(ws)}}})'
+    for i in reversed(range(8)):
+        tail = chainb(['D.be_bytes'] * 8)  # placeholder, rebuilt below
+        # term with be_bytesf for j < i, '_' at i, D.be_bytes for j > i
+        t = '[]'
+        for j in reversed(range(8)):
+            if j > i:
+                t = f'D.be_bytes(w{j}, {t})'
+            elif j == i:
+                inner_tail = t
+                t = '_'
+            else:
+                t = f'be_bytesf(w{j}, {t})'
+        w(f'      %Equal.sym(+List<U32>, be_bytesf(w{i}, {inner_tail}), D.be_bytes(w{i}, {inner_tail}), be_bytes_eq(w{i}, {inner_tail})) :')
+        w(f'        {{{t} == {goal} : +List<U32>}}')
+    w('      {==}')
+    w('')
     w('law zconst_fast:')
     w('  for +k: Nat')
     w('  for +hk: {Nat.is_lt(k, 63n) == True{} : Bool}')
-    w(f'  {{D.bytes(D.zconst(1n+k)) == SF.sha256_bytesf(List.append(&2, U32, D.bytes(D.zconst(k)), D.bytes(D.zconst(k)))) : List<&2, U32>}}')
+    w(f'  {{bytesf(D.zconst(1n+k)) == SF.sha256_bytesf(List.append(&2, U32, bytesf(D.zconst(k)), bytesf(D.zconst(k)))) : List<&2, U32>}}')
     w('def zconst_fast(k, hk):')
     cur = 'k'
     for i in range(63):
@@ -635,7 +681,7 @@ def emit_zero():
         else:
             kk = f'{i + 1}n+{nxt}'
             w(f'{pad}  case 1n+ +{nxt}:')
-            w(f'{pad}    Empty.absurd({{D.bytes(D.zconst(1n+{kk})) == SF.sha256_bytesf(List.append(&2, U32, D.bytes(D.zconst({kk})), D.bytes(D.zconst({kk})))) : List<&2, U32>}}, false_true(Equal.trans(Bool, False{{}}, Nat.is_lt({nxt}, 0n), True{{}}, Equal.sym(Bool, Nat.is_lt({nxt}, 0n), False{{}}, F.nat__not_lt_zero({nxt})), hk)))')
+            w(f'{pad}    Empty.absurd({{bytesf(D.zconst(1n+{kk})) == SF.sha256_bytesf(List.append(&2, U32, bytesf(D.zconst({kk})), bytesf(D.zconst({kk})))) : List<&2, U32>}}, false_true(Equal.trans(Bool, False{{}}, Nat.is_lt({nxt}, 0n), True{{}}, Equal.sym(Bool, Nat.is_lt({nxt}, 0n), False{{}}, F.nat__not_lt_zero({nxt})), hk)))')
         cur = nxt
     w('')
     MSG = 'List.append(&2, U32, D.bytes(D.zconst(k)), D.bytes(D.zconst(k)))'
@@ -644,8 +690,13 @@ def emit_zero():
     w('  for +hk: {Nat.is_lt(k, 63n) == True{} : Bool}')
     w(f'  {{D.bytes(D.zconst(1n+k)) == VF.sha256_bytes({MSG}) : List<&2, U32>}}')
     w('def zconst_step(k, hk):')
-    w(f'  Equal.trans(List<&2, U32>, D.bytes(D.zconst(1n+k)), SF.sha256_bytesf({MSG}), VF.sha256_bytes({MSG}),')
-    w(f'    zconst_fast(k, hk), SF.sha256_bytes_eq({MSG}))')
+    MSGF = 'List.append(&2, U32, bytesf(D.zconst(k)), bytesf(D.zconst(k)))'
+    w(f'  %Equal.sym(+List<U32>, D.bytes(D.zconst(1n+k)), bytesf(D.zconst(1n+k)), Equal.sym(+List<U32>, bytesf(D.zconst(1n+k)), D.bytes(D.zconst(1n+k)), bytes_eq(D.zconst(1n+k)))) :')
+    w(f'    {{_ == VF.sha256_bytes({MSG}) : List<&2, U32>}}')
+    w(f'  %Equal.sym(+List<U32>, D.bytes(D.zconst(k)), bytesf(D.zconst(k)), Equal.sym(+List<U32>, bytesf(D.zconst(k)), D.bytes(D.zconst(k)), bytes_eq(D.zconst(k)))) :')
+    w(f'    {{bytesf(D.zconst(1n+k)) == VF.sha256_bytes(List.append(&2, U32, _, _)) : List<&2, U32>}}')
+    w(f'  Equal.trans(List<&2, U32>, bytesf(D.zconst(1n+k)), SF.sha256_bytesf({MSGF}), VF.sha256_bytes({MSGF}),')
+    w(f'    zconst_fast(k, hk), SF.sha256_bytes_eq({MSGF}))')
     w('')
     w('law zconst_spec:')
     w('  for +k: Nat')

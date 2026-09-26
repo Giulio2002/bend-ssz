@@ -48,7 +48,7 @@ HEAD = ['import Base', 'import ../compact/found.bend as F', 'import ../../src/bu
         'import ./schema_shapes.bend as SH', 'import ./dk.bend as DK', 'import ./mtree_defs.bend as MD',
         'import ./root_support.bend as RS', 'import ./words_obj.bend as WO', 'import ./list_obj.bend as LO',
         'import ./pv_obj.bend as PV', 'import ./bitlist_obj.bend as BO', 'import ./cells.bend as CE', 'import ./obj_support.bend as OS', 'import ./root_names.bend as RN',
-        'import ./ulist_obj.bend as UL', 'import ./packed_obj.bend as PK', 'import ./elems48.bend as E48', 'import ./xlist_support.bend as XS',
+        'import ./ulist_obj.bend as UL', 'import ./lim_ul.bend as LUL', 'import ./packed_obj.bend as PK', 'import ./elems48.bend as E48', 'import ./xlist_support.bend as XS',
         'import ./mtree_run.bend as MR', 'import ./list_root.bend as LR', 'import ../../spec/codec.bend as Codec',
         'import ../../spec/limits.bend as Lim', 'import ../../spec/bit_root.bend as Mix', 'import ../../spec/nat_bytes.bend as Len', 'import ../../spec/byte_list.bend as BL']
 
@@ -70,7 +70,9 @@ SYMBOLIC_BL = {'bl1073741824': (25, 'LBL.tx_ok_at')}
 SYMBOLIC = {'l16777216_b32': 'LST.hr_ok_at', 'l1099511627776_Validator': 'LST.val_ok_at',
             'l1099511627776_u64': 'LST.bal_ok_at', 'l1099511627776_u8': 'LST.part_ok_at',
             'l16777216_HistoricalSummary': 'LST.hs_ok_at', 'l134217728_PendingDeposit': 'LST.pd_ok_at',
-            'l134217728_PendingPartialWithdrawal': 'LST.ppw_ok_at'}
+            'l134217728_PendingPartialWithdrawal': 'LST.ppw_ok_at',
+            # IndexedAttestation's attesting_indices (2^17), for root_types' names too (proofs/obj/lim_ul.bend)
+            'l131072_u64': 'LUL.ia_ok_at'}
 # Names whose laws are generated after all others, into their own files: their
 # new shapes into proofs/obj/root_state.bend (importing root_types as RT, so
 # root_types does not grow), their name law into a big_root_<Name>.bend.
@@ -2770,7 +2772,7 @@ class Gen:
         hs = ', '.join(f'+h{j}: {{{c} == True{{}} : Bool}}' for j, c in enumerate(cs))
         t = f'h{len(cs) - 1}'
         for j in range(len(cs) - 2, -1, -1):
-            t = f'LBL.and_t({cs[j]}, {fold_and(cs[j + 1:])}, h{j}, {t})'
+            t = f'LUL.and_t({cs[j]}, {fold_and(cs[j + 1:])}, h{j}, {t})'
         w(f'def okI_{p}(+s: S.Schema, +dv: OS.DV, {hs}) -> {{{Q}ok_{p}(s, dv) == True{{}} : Bool}}:')
         w(f'  {t}')
 
@@ -2806,6 +2808,8 @@ class Gen:
                 pf.append('{==}')
         return f'okI_{p}({S}, OS.DV0(), ' + ', '.join(pf) + ')'
 
+    okI_seen = set()
+
     def name_law(self, name, s, q='', sym=False):
         p = s.p
         Q = q
@@ -2817,8 +2821,9 @@ class Gen:
         # the closed schema fact is the last argument of ok_at: evaluated once
         # ({==}), or, for a BIG name, built from okI lemmas (okproof)
         closed = '{==}'
-        if (Q or sym) and self.has_symbolic(p):
-            self.ok_intros(p, Q, L, set())
+        if self.has_symbolic(p):
+            # root_types' own names share one set of okI lemmas; a big file has its own
+            self.ok_intros(p, Q, L, self.okI_seen if not (Q or sym) else set())
             closed = self.okproof(p, f'Spec.{name}()', Q)
         w(f'def {name}_ok(+s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}, +dv: OS.DV, +edv: {{dv == OS.DV0() : OS.DV}}) -> {{{Q}ok_{p}(s, dv) == True{{}} : Bool}}:')
         w(f'  OS.ok_at(y => d => {Q}ok_{p}(y, d), s, Spec.{name}(), dv, es, edv, {closed})')

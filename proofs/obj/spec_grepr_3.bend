@@ -13,23 +13,31 @@ import ./spec_gcodec_3.bend as C
 
 def Gt7B8507E2C2_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {T.Gt7B8507E2C2_decode(B.Buf{FD.array__thaw(U32, t), 4}, 4) == (B.Buf{FD.array__thaw(U32, t), 4}, Some{R.w(t, 0n)}) : B.Buf & Maybe<&1, U32>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {T.Gt7B8507E2C2_decode(B.Buf{FD.array__thaw(U32, u), 4}, 4) == (B.Buf{FD.array__thaw(U32, u), 4}, Some{R.w(t, 0n)}) : B.Buf & Maybe<&1, U32>},
-    R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf),
-    C.Gt7B8507E2C2_spec_decode(R.w(t, 0n)))
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ALeaf{R.w(t, 0n)},
+      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t)))), ALeaf{R.w(t, 0n)},
+        Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf))), {==})) :
+    {T.Gt7B8507E2C2_decode(B.Buf{_, 4}, 4) == (B.Buf{_, 4}, Some{R.w(t, 0n)}) : B.Buf & Maybe<&1, U32>}
+  C.Gt7B8507E2C2_spec_decode(R.w(t, 0n))
 def Gt7B8507E2C2_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 4}, 0, 1) == (B.Buf{FD.array__thaw(U32, t), 4}, F.limbs([R.w(t, 0n)])) : B.Buf & +List<U32>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {B.emit(B.Buf{FD.array__thaw(U32, u), 4}, 0, 1) == (B.Buf{FD.array__thaw(U32, u), 4}, F.limbs([R.w(t, 0n)])) : B.Buf & +List<U32>},
-    R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf),
-    C.Gt7B8507E2C2_spec_view(R.w(t, 0n)))
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ALeaf{R.w(t, 0n)},
+      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t)))), ALeaf{R.w(t, 0n)},
+        Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf))), {==})) :
+    {B.emit(B.Buf{_, 4}, 0, 1) == (B.Buf{_, 4}, F.limbs([R.w(t, 0n)])) : B.Buf & +List<U32>}
+  C.Gt7B8507E2C2_spec_view(R.w(t, 0n))
 
 def Gt62B0093BE7_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
     -> {T.Gt62B0093BE7_decode(B.Buf{FD.array__thaw(U32, t), 8}, 8) == (B.Buf{FD.array__thaw(U32, t), 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {T.Gt62B0093BE7_decode(B.Buf{FD.array__thaw(U32, u), 8}, 8) == (B.Buf{FD.array__thaw(U32, u), 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>},
-    R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), t, R.tree_words(1n, t, pf),
-    C.Gt62B0093BE7_spec_decode(R.w(t, 0n), R.w(t, 1n)))
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
+      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t)))), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
+        Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), t, R.tree_words(1n, t, pf))), {==})) :
+    {T.Gt62B0093BE7_decode(B.Buf{_, 8}, 8) == (B.Buf{_, 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}
+  C.Gt62B0093BE7_spec_decode(R.w(t, 0n), R.w(t, 1n))
 def Gt62B0093BE7_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 8}, 0, 2) == (B.Buf{FD.array__thaw(U32, t), 8}, F.limbs([R.w(t, 0n), R.w(t, 1n)])) : B.Buf & +List<U32>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {B.emit(B.Buf{FD.array__thaw(U32, u), 8}, 0, 2) == (B.Buf{FD.array__thaw(U32, u), 8}, F.limbs([R.w(t, 0n), R.w(t, 1n)])) : B.Buf & +List<U32>},
-    R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), t, R.tree_words(1n, t, pf),
-    C.Gt62B0093BE7_spec_view(R.w(t, 0n), R.w(t, 1n)))
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
+      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t)))), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
+        Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), t, R.tree_words(1n, t, pf))), {==})) :
+    {B.emit(B.Buf{_, 8}, 0, 2) == (B.Buf{_, 8}, F.limbs([R.w(t, 0n), R.w(t, 1n)])) : B.Buf & +List<U32>}
+  C.Gt62B0093BE7_spec_view(R.w(t, 0n), R.w(t, 1n))
 
