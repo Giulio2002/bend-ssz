@@ -363,6 +363,11 @@ What that means concretely:
   `big_vvlb_bl1073741824`; Transaction's validator and reader are the
   ByteList[2^30] ones; the rejection splits the value and keeps the limit test
   `ByteList.domain(limit, xs)` a variable; PASS 58 s / 3.4 GB).
+  Transaction's encoder laws (encode_eval, encode_spec) are in
+  `big_var_codec_Transaction_enc.bend` (PASS 43 s / 1.5 GB): storage on a perfect
+  tree of depth dw < 28 holding N <= 4 2^dw bytes, N <= 2^30 (the runtime check);
+  the output is the zero tree with the storage's first ceil(N/4) words copied by
+  `vbenc.put_words_any` (any N at position 0), its N bytes the storage's first N.
 * **Progressive lists** (`codegen/var_plist.py`): the generic forms
   ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
   Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,
