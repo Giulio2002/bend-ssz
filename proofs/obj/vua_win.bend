@@ -13,6 +13,9 @@ import ./vlist.bend as VL
 import ./vbytes.bend as VBY
 import ./vbrt.bend as VR
 import ./vua.bend as UA
+import ./vua_rd.bend as UR
+import ./vnest.bend as VN
+import ./vbitc.bend as VBC
 
 # The unaligned-offset layer, U4 (windows): the spec bytes of a window at ANY
 # byte position x of a buffer, WX(t, x, L) = bytes [x, x + L), and the facts
@@ -102,3 +105,44 @@ def hsx(+d: Nat, +off: U32, +x: Nat, +L: U32, +eo: {U32.to_nat(off) == x : Nat},
   +hL = F.nat__le_trans(U32.to_nat(L), Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(L)), hw)
   VBY.nw_room(q, L, VB.pw(d), VL.KK(d), VL.kk_lt(d, hd), VL.hyn(d, L, hL),
     F.nat__le_trans(Nat.add(A.quad(q), U32.to_nat(L)), Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d)), Order.add_right(A.quad(q), x, U32.to_nat(L), hq), hw))
+
+# ---- splitting a window -----------------------------------------------------------------------
+
+# The window after its first h bytes.
+def tailWX(+t: F.array__Tree<U32>, +x: Nat, +h: Nat, +L: Nat) -> {VS.bdr(h, WX(t, x, Nat.add(h, L))) == WX(t, Nat.add(h, x), L) : +List<U32>}:
+  %Equal.sym(+List<U32>, VS.bdr(h, VS.bt(Nat.add(h, L), VS.bdr(x, UA.BYT(t)))), VS.bt(L, VS.bdr(h, VS.bdr(x, UA.BYT(t)))), VS.bdr_bt(h, L, VS.bdr(x, UA.BYT(t)))) :
+    {_ == WX(t, Nat.add(h, x), L) : +List<U32>}
+  %VN.bdr_add(x, h, UA.BYT(t)) : {VS.bt(L, _) == WX(t, Nat.add(h, x), L) : +List<U32>}
+  %F.nat__add_comm(x, h) : {VS.bt(L, VS.bdr(Nat.add(x, h), UA.BYT(t))) == VS.bt(L, VS.bdr(_, UA.BYT(t))) : +List<U32>}
+  {==}
+
+# A window is the words of its first 4 H bytes, then the window after them.
+def headWX(+d: Nat, +t: F.array__Tree<U32>, +x: Nat, +H: Nat, +L: Nat, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, Nat.add(A.quad(H), L)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {WX(t, x, Nat.add(A.quad(H), L)) == List.append(&2, U32, FX.limbs(UR.RWS(H, t, x)), WX(t, Nat.add(A.quad(H), x), L)) : +List<U32>}:
+  +hh = F.nat__le_trans(Nat.add(x, A.quad(H)), Nat.add(x, Nat.add(A.quad(H), L)), A.quad(VB.pw(d)),
+    Order.add_left(x, A.quad(H), Nat.add(A.quad(H), L), Order.below_sum(A.quad(H), L)), hw)
+  %Equal.sym(+List<U32>, VS.bt(Nat.add(A.quad(H), L), VS.bdr(x, UA.BYT(t))), List.append(&2, U32, VS.bt(A.quad(H), VS.bdr(x, UA.BYT(t))), VS.bt(L, VS.bdr(A.quad(H), VS.bdr(x, UA.BYT(t))))),
+      VBC.bt_split(A.quad(H), L, VS.bdr(x, UA.BYT(t)))) :
+    {_ == List.append(&2, U32, FX.limbs(UR.RWS(H, t, x)), WX(t, Nat.add(A.quad(H), x), L)) : +List<U32>}
+  %VN.bdr_add(x, A.quad(H), UA.BYT(t)) :
+    {List.append(&2, U32, VS.bt(A.quad(H), VS.bdr(x, UA.BYT(t))), VS.bt(L, _)) == List.append(&2, U32, FX.limbs(UR.RWS(H, t, x)), WX(t, Nat.add(A.quad(H), x), L)) : +List<U32>}
+  %F.nat__add_comm(x, A.quad(H)) :
+    {List.append(&2, U32, VS.bt(A.quad(H), VS.bdr(x, UA.BYT(t))), VS.bt(L, VS.bdr(Nat.add(x, A.quad(H)), UA.BYT(t)))) == List.append(&2, U32, FX.limbs(UR.RWS(H, t, x)), VS.bt(L, VS.bdr(_, UA.BYT(t)))) : +List<U32>}
+  %Equal.sym(+List<U32>, FX.limbs(UR.RWS(H, t, x)), VS.bt(A.quad(H), VS.bdr(x, UA.BYT(t))), UR.rws_bytes(H, d, t, x, pf, hh)) :
+    {List.append(&2, U32, VS.bt(A.quad(H), VS.bdr(x, UA.BYT(t))), VS.bt(L, VS.bdr(Nat.add(x, A.quad(H)), UA.BYT(t)))) == List.append(&2, U32, _, VS.bt(L, VS.bdr(Nat.add(x, A.quad(H)), UA.BYT(t)))) : +List<U32>}
+  {==}
+
+# The four bytes at P of a window are the word at P + x.
+def byteWX(+d: Nat, +t: F.array__Tree<U32>, +x: Nat, +P: Nat, +R: Nat, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, Nat.add(P, 4n+R)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {VS.bt(4n, VS.bdr(P, WX(t, x, Nat.add(P, 4n+R)))) == FX.limbs([UR.RWN(t, Nat.add(P, x))]) : +List<U32>}:
+  +h4 = F.nat__le_trans(Nat.add(Nat.add(P, x), 4n), Nat.add(x, Nat.add(P, 4n+R)), A.quad(VB.pw(d)),
+    F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(x, Nat.add(P, 4n+R))) == True{} : Bool}, Nat.add(x, Nat.add(P, 4n)), Nat.add(Nat.add(P, x), 4n),
+      Equal.trans(Nat, Nat.add(x, Nat.add(P, 4n)), Nat.add(P, Nat.add(x, 4n)), Nat.add(Nat.add(P, x), 4n), F.lru_nat_algebra__add_swap(x, P, 4n), Equal.sym(Nat, Nat.add(Nat.add(P, x), 4n), Nat.add(P, Nat.add(x, 4n)), F.nat__add_assoc(P, x, 4n))),
+      Order.add_left(x, Nat.add(P, 4n), Nat.add(P, 4n+R), Order.add_left(P, 4n, 4n+R, Order.below_sum(4n, R)))),
+    hw)
+  %Equal.sym(+List<U32>, VS.bdr(P, WX(t, x, Nat.add(P, 4n+R))), WX(t, Nat.add(P, x), 4n+R), tailWX(t, x, P, 4n+R)) : {VS.bt(4n, _) == FX.limbs([UR.RWN(t, Nat.add(P, x))]) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bt(4n, VS.bt(4n+R, VS.bdr(Nat.add(P, x), UA.BYT(t)))), VS.bt(4n, VS.bdr(Nat.add(P, x), UA.BYT(t))), VS.bt_bt(4n, R, VS.bdr(Nat.add(P, x), UA.BYT(t)))) :
+    {_ == FX.limbs([UR.RWN(t, Nat.add(P, x))]) : +List<U32>}
+  Equal.sym(+List<U32>, FX.limbs([UR.RWN(t, Nat.add(P, x))]), VS.bt(4n, VS.bdr(Nat.add(P, x), UA.BYT(t))), UR.rwn_bytes(d, t, Nat.add(P, x), pf, h4))
