@@ -76,6 +76,15 @@ def eLc(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hc: {CHKw(t, x,
   %VC.x8_mul(CQ(len)) : {U32.to_nat(len) == _ : Nat}
   V40.whole_e(len, 8, v8(), {==}, {==}, {==}, FD.logic__and_left(U32.is_eq(len, (U32.div(len, 8) * 8 : U32)), True{}, hc))
 
+def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
+    -> {T.pl_u64_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+  {==}
+
+
+
+
 def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> O.Words: O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, len, VLS.DZ(len))), len}
 
 # The reader on the window, when the checks hold.

@@ -1036,7 +1036,8 @@ def plu64_text():
     body = VW.listx40_text('pl_u64', 'Spec.GtE83F21B20A()', 'S.Unsigned{P.U64{}}', 'LIMX')
     head, body = body.split('\ndef BF(', 1)
     body = '\ndef BF(' + body
-    body = cut(body, 'def hcL(', 'def OBJw(')
+    a = body.index('def hcL(')
+    body = body[:a] + body[body.index('\ndef ', a) + 1:]
     a = body.index('  V40.list_u64_partsk(k, W, LIMX, hcL(t, x, off, len, hchk),')
     b = body.index('\n', body.index('FD.nat__le_refl(Nat.double(k))))', a))
     call = body[a:b]
