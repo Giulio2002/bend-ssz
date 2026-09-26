@@ -1507,6 +1507,17 @@ def szx(m, hok):
   match m:
     case {MP}: Equal.trans(Nat, U32.to_nat(K.SZC({OAS})), ENDC({OAS}), List.length(&2, U32, {ENCCt}), szC({OAS}, hok, 28n, {{==}}), Equal.sym(Nat, List.length(&2, U32, {ENCCt}), ENDC({OAS}), lenE({OAS}, hok)))
 
+# The bytes within 4 2^k (k = 28, kept symbolic).
+law bndx:
+  for +m: MW
+  for +hok: {{OK(m) == True{{}} : Bool}}
+  for +k: Nat
+  for +ek: {{k == 28n : Nat}}
+  {{Nat.is_le(List.length(&2, U32, ENC(m)), A.quad(VB.pw(k))) == True{{}} : Bool}}
+def bndx(m, hok, k, ek):
+  match m:
+    case {MP}: FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(k))) == True{{}} : Bool}}, ENDC({OAS}), List.length(&2, U32, {ENCCt}), Equal.sym(Nat, List.length(&2, U32, {ENCCt}), ENDC({OAS}), lenE({OAS}, hok)), okbk({OAS}, hok, k, ek))
+
 law encx_spec:
   for +m: MW
   for +hok: {{OK(m) == True{{}} : Bool}}
