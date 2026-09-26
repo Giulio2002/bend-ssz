@@ -252,7 +252,7 @@ law pfx:
   {FD.array__perfect(U32, dd, PUTX(m, dd, D, q, r)) == True{} : Bool}
 def pfx(m, dd, D, q, r, pf):
   match m:
-    case MW{+m_f_C}: EX_pbits.pfx(m_f_C, dd, K.M1(m_f_C, dd, D, XQ(q, r), q, r), VCN.QX(U32.add(XQ(q, r), 4)), VCN.RX(U32.add(XQ(q, r), 4)), WD.w32x_perfect(r, dd, K.M0(m_f_C, dd, D, XQ(q, r), q, r), Nat.add(0n, q), 4, pf))
+    case MW{+m_f_C}: K.pfC(m_f_C, dd, D, XQ(q, r), q, r, pf)
 
 def sizeC(+m_f_C: EX_pbits.MB, +h: {OKT(m_f_C) == True{} : Bool}) -> {T.Gp4B0CA2906A_size(K.OBJC(m_f_C)) == (K.OBJC(m_f_C), K.SZC(m_f_C)) : T.Gp4B0CA2906A & U32}:
   %Equal.sym(O.Bits & U32, T.pbits_size(EX_pbits.TH(m_f_C)), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C)), EX_pbits.sizex(m_f_C, ok_hok_f_C(m_f_C, h))) :

@@ -328,3 +328,15 @@ law domx:
 def domx(m, hok):
   match m:
     case MW{+parent_hash, +fee_recipient, +state_root, +receipts_root, +dB_logs_bloom, +TB_logs_bloom, +prev_randao, +block_number, +gas_limit, +gas_used, +timestamp, +m_extra_data, +base_fee_per_gas, +block_hash, +t_transactions, +N_transactions, +A_withdrawals, +N_withdrawals, +blob_gas_used, +excess_blob_gas}: CS.domv(VALC(parent_hash, fee_recipient, state_root, receipts_root, dB_logs_bloom, TB_logs_bloom, prev_randao, block_number, gas_limit, gas_used, timestamp, m_extra_data, base_fee_per_gas, block_hash, t_transactions, N_transactions, A_withdrawals, N_withdrawals, blob_gas_used, excess_blob_gas), Spec.ExecutionPayload(), K.ENCC(parent_hash, fee_recipient, state_root, receipts_root, dB_logs_bloom, TB_logs_bloom, prev_randao, block_number, gas_limit, gas_used, timestamp, m_extra_data, base_fee_per_gas, block_hash, t_transactions, N_transactions, A_withdrawals, N_withdrawals, blob_gas_used, excess_blob_gas), {==}, specC(parent_hash, fee_recipient, state_root, receipts_root, dB_logs_bloom, TB_logs_bloom, prev_randao, block_number, gas_limit, gas_used, timestamp, m_extra_data, base_fee_per_gas, block_hash, t_transactions, N_transactions, A_withdrawals, N_withdrawals, blob_gas_used, excess_blob_gas, hok, 28n, {==}))
+
+law pfx:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +q: Nat
+  for +r: Nat
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  {FD.array__perfect(U32, dd, PUTX(m, dd, D, q, r)) == True{} : Bool}
+def pfx(m, dd, D, q, r, pf):
+  match m:
+    case MW{+parent_hash, +fee_recipient, +state_root, +receipts_root, +dB_logs_bloom, +TB_logs_bloom, +prev_randao, +block_number, +gas_limit, +gas_used, +timestamp, +m_extra_data, +base_fee_per_gas, +block_hash, +t_transactions, +N_transactions, +A_withdrawals, +N_withdrawals, +blob_gas_used, +excess_blob_gas}: K.pfC(parent_hash, fee_recipient, state_root, receipts_root, dB_logs_bloom, TB_logs_bloom, prev_randao, block_number, gas_limit, gas_used, timestamp, m_extra_data, base_fee_per_gas, block_hash, t_transactions, N_transactions, A_withdrawals, N_withdrawals, blob_gas_used, excess_blob_gas, dd, D, XQ(q, r), q, r, pf)

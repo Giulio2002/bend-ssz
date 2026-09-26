@@ -125,3 +125,7 @@ def putx(+m_f_C: EX_pbits.MB, +hok_f_C: {EX_pbits.OK(m_f_C) == True{} : Bool}, +
 def putk_bridge(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +h: RTC(m_f_C, dd, D, X, q, r))
     -> {T.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), X, OBJC(m_f_C)) == (FD.array__thaw(U32, PUTC(m_f_C, dd, D, X, q, r)), (OBJC(m_f_C), SZC(m_f_C))) : Array<U32> & (T.Gp4B0CA2906A & U32)}:
   h
+
+# pfC: the writer's tree is perfect (no hypothesis).
+def pfC(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}) -> PFC(m_f_C, dd, D, X, q, r):
+  EX_pbits.pfx(m_f_C, dd, M1(m_f_C, dd, D, X, q, r), VCN.QX(U32.add(X, 4)), VCN.RX(U32.add(X, 4)), WD.w32x_perfect(r, dd, M0(m_f_C, dd, D, X, q, r), Nat.add(0n, q), 4, pf))
