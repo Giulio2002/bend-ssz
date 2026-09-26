@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Readable names for every type of the object API: the 109 Fulu names (as they are) and every
-form of the official ssz_generic suite (codegen/generic.py's hashed names Gc / Gp / Gu / Gt).
+"""Readable names for every type of the object API: the 109 Fulu names under the fork's prefix and
+every form of the official ssz_generic suite (codegen/generic.py's hashed names Gc / Gp / Gu / Gt).
 
     python3 codegen/names.py            # the full mapping, generated name -> readable name
     python3 codegen/names.py --check    # only the no-collision check
@@ -13,8 +13,14 @@ takes a structural name: bool, uint8, bitvector_4, bitlist_33, progbitlist, vec_
 list_uint8_1024, proglist_bool (an element's name inside, a container element by its class name).
 A schema generic.py refuses (a zero-length vector) keeps a structural name and is marked refused.
 
-The check: the readable names are distinct, and none is a Fulu name (but a basic type's: uint8 is
-Fulu's uint8, the same type).
+A Fulu name takes the fork's prefix (codegen/fulu.yaml's `prefix:`, "Fulu"): FuluBeaconState,
+FuluAttestation, FuluBytes32, FuluSlot, ... . The fork-independent SSZ basic types keep their plain
+names and are shared by the fork and the generic suite: boolean and uint8 .. uint256 (the generic
+suite's bool form is named boolean, the same type; inside a compound name the element is spelled
+bool: vec_bool_4, proglist_bool).
+
+The check: the readable names are distinct, with one allowed exception: a basic type's name
+(boolean, uintN) names the same type in the fork and in the generic suite.
 """
 import sys
 from pathlib import Path
@@ -50,7 +56,7 @@ def raw_name(s, off):
             raise SystemExit(f'a class schema with no official name: {n}')
         return off[n]
     if k == 'bool':
-        return 'bool'
+        return 'bool'    # (a standalone bool form: boolean, see generic_names)
     if k == 'uint':
         return f'uint{8 * s["size"]}'
     if k == 'bytes':
@@ -93,7 +99,8 @@ def generic_names():
     assert len(inv) == len(raws)
     nested = {}
     for (n, t, err), raw in zip(inv, raws):
-        rows.append((n, raw_name(raw, off), 'refused: ' + err if err else ('class' if raw['kind'] in PREFIX else 'form')))
+        r = 'boolean' if raw['kind'] == 'bool' else raw_name(raw, off)
+        rows.append((n, r, 'refused: ' + err if err else ('class' if raw['kind'] in PREFIX else 'form')))
         seen[n] = True
         walk_raw(raw, nested)
     for n, s in sorted(nested.items()):
@@ -108,9 +115,25 @@ def fulu_names():
     return list(schema.load(ROOT / 'codegen/fulu.yaml').keys())
 
 
+BASIC = {'boolean'} | {f'uint{8 * k}' for k in (1, 2, 4, 8, 16, 32)}
+
+
+def is_basic(name, t):
+    """A fork-independent SSZ basic type under its own name (boolean, uintN)."""
+    return name in BASIC and ((t.kind == 'bool' and name == 'boolean') or (t.kind == 'uint' and name == f'uint{8 * t.size}'))
+
+
+def fulu_readable():
+    """{Fulu name: readable name}: the fork's prefix, but on the basic types."""
+    import schema
+    pre = schema.load_prefix(ROOT / 'codegen/fulu.yaml')
+    fd = schema.load(ROOT / 'codegen/fulu.yaml')
+    return {n: (n if is_basic(n, t) else pre + n) for n, t in fd.items()}
+
+
 def mapping():
-    """{generated or Fulu name: readable name} over the whole API (Fulu names map to themselves)."""
-    out = {n: n for n in fulu_names()}
+    """{generated or Fulu name: readable name} over the whole API."""
+    out = dict(fulu_readable())
     for n, r, _ in generic_names():
         out[n] = r
     return out
@@ -118,26 +141,27 @@ def mapping():
 
 def check():
     rows = generic_names()
-    fulu = set(fulu_names())
+    fr = fulu_readable()
     by = {}
+    for n, r in fr.items():
+        by.setdefault(r, []).append(n)
     for n, r, st in rows:
         by.setdefault(r, []).append(n)
-    bad = {r: ns for r, ns in by.items() if len(ns) > 1}
-    # a basic type's name is shared with Fulu's own basic name (the same type: uint8 is uint8)
-    import schema
-    fd = schema.load(ROOT / 'codegen/fulu.yaml')
-    gen = dict((n, r) for n, r, _ in rows)
-    clash = sorted(r for r in by if r in fulu and not (fd[r].kind in ('uint', 'bool') and r in ('bool', f'uint{8 * (fd[r].size or 0)}')))
-    if bad or clash:
-        raise SystemExit(f'name collisions: {bad} {clash}')
-    return rows, fulu
+    # the one allowed share: a basic type's name, the fork's and the generic suite's same type
+    bad = {r: ns for r, ns in by.items() if len(ns) > 1 and not (r in BASIC and len(ns) == 2 and fr.get(ns[0]) == r)}
+    if bad:
+        raise SystemExit(f'name collisions: {bad}')
+    return rows, fr
 
 
 if __name__ == '__main__':
-    rows, fulu = check()
+    rows, fr = check()
     if '--check' in sys.argv:
-        print(f'readable names are distinct ({len(rows)} generic, {len(fulu)} Fulu)')
+        print(f'readable names are distinct ({len(rows)} generic, {len(fr)} Fulu; basic types shared)')
         sys.exit(0)
-    print(f'# {len(rows)} generic forms ({sum(1 for r in rows if r[2].startswith("class"))} classes), {len(fulu)} Fulu names (unchanged)')
+    print(f'# {len(fr)} Fulu names')
+    for n, r in fr.items():
+        print(f'{n:40} {r}')
+    print(f'# {len(rows)} generic forms ({sum(1 for r in rows if r[2].startswith("class"))} classes)')
     for n, r, st in sorted(rows, key=lambda x: (not x[2].startswith('class'), x[1])):
         print(f'{n:14} {r:48} {st}')

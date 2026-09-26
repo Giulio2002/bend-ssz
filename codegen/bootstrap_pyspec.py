@@ -107,6 +107,9 @@ def main():
     print('# Type expressions: boolean, uintN, BytesN, ByteVector[N], ByteList[N],')
     print('# Bitvector[N], Bitlist[N], Vector[T, N], List[T, N], or a type name; N is')
     print('# an integer, a constant, or +, -, *, exact //, parentheses and floorlog2(...).')
+    print('# prefix: the hardfork\'s name, prepended to its type names in the readable API names')
+    print('# (codegen/names.py; the fork-independent basic types boolean, uintN stay unprefixed).')
+    print('prefix: Fulu')
     print('constants:')
     for c in sorted(used):
         print(f'  {c}: {consts[c]}')

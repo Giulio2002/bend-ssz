@@ -5,6 +5,9 @@
 # Type expressions: boolean, uintN, BytesN, ByteVector[N], ByteList[N],
 # Bitvector[N], Bitlist[N], Vector[T, N], List[T, N], or a type name; N is
 # an integer, a constant, or +, -, *, exact //, parentheses and floorlog2(...).
+# prefix: the hardfork's name, prepended to its type names in the readable API names
+# (codegen/names.py; the fork-independent basic types boolean, uintN stay unprefixed).
+prefix: Fulu
 constants:
   BYTES_PER_FIELD_ELEMENT: 32
   BYTES_PER_LOGS_BLOOM: 256
