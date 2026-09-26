@@ -79,7 +79,7 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/var_uw.py            # unaligned writes: bit lemmas, SWc bytes, the writers at byte s (vuw_bits, vuw{1,2,3}, vuwf{1,2,3}, vuwp{1,2,3})
 /opt/homebrew/bin/python3 codegen/var_winl.py          # byte-offset windows of List[AttesterSlashing,1], List[Attestation,8] [--no-big]
 /opt/homebrew/bin/python3 codegen/var_winb.py          # byte-offset windows of containers with several variable fields (BeaconBlockBody, once its children exist) [--no-big]
-/opt/homebrew/bin/python3 codegen/var_winb_lc.py       # LightClientUpdate's fixed-field modules; its window (var_winb's symbolic path) with --window, not yet checking
+/opt/homebrew/bin/python3 codegen/var_winb_lc.py       # LightClientUpdate's fixed-field modules, its window (var_winb's symbolic path) and decoder laws
 /opt/homebrew/bin/python3 codegen/var_winv.py          # byte-offset window of List[Validator, 2^40] (121-byte records at any phase) [--no-big]
 /opt/homebrew/bin/python3 codegen/var_bytes.py         # byte lists at any length, and the names nesting them [--no-big]
 /opt/homebrew/bin/python3 codegen/var_multi.py         # DataColumnSidecar (three lists of byte vectors); encoder big_ file

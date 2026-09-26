@@ -348,6 +348,51 @@ def emit():
         w(f'    case {pat("x")}:')
         w('      ' + g.weq(shrn(X, up), w_and(shrn(X, up), const(M))))
         w('')
+    # tail zeros: x >> 8R == 0 (O.tail_zero for R = n & 3)
+    def u32_facts(hname, sh):
+        facts, lines = {}, []
+        for i in range(32 - sh):
+            a = f'x{i + sh}'
+            e = f'Equal.cong(U32, Bool, z => B{i}(z), U32.shrn({word(X)}, {sh}n), 0, {hname})'
+            lines.append(f'      +f{a} = {e}')
+            facts[a] = f'f{a}'
+        return facts, lines
+    for R in (1, 2, 3):
+        w(f'# Bytes {R}..3 of x are zero (x >> {8 * R} == 0): its limbs are its first {R}, then zeros.')
+        w(f'def tzl{R}(+x: U32, +h: {{U32.shrn(x, {8 * R}n) == 0 : U32}}) -> {{I.limb(x) == List.append(&2, U32, VS.bt({R}n, I.limb(x)), {zs(4 - R)}) : +List<U32>}}:')
+        w('  match x:')
+        w(f'    case {pat("x")}:')
+        facts, lines = u32_facts('h', 8 * R)
+        g.L.extend(lines)
+        w('      ' + g.l4(limb(X), limb(X)[:R] + [zero] * (4 - R), facts))
+        w('')
+        for s2 in (1, 2, 3):
+            if s2 + R > 4:
+                continue
+            w(f'# ... and its top {s2} byte{"s" if s2 > 1 else ""} (the carry of a write at byte {s2}) are zero.')
+            w(f'def tzc{s2}{R}(+x: U32, +h: {{U32.shrn(x, {8 * R}n) == 0 : U32}}) -> {{U32.shrn(x, {32 - 8 * s2}n) == 0 : U32}}:')
+            w('  match x:')
+            w(f'    case {pat("x")}:')
+            facts, lines = u32_facts('h', 8 * R)
+            g.L.extend(lines)
+            w('      ' + g.weq(shrn(X, 32 - 8 * s2), zero, facts))
+            w('')
+    # a byte OR-ed in at byte s: limb s of w gains the byte, the others stay
+    V = bits('v')
+    vb = w_and(V, const(255))
+    for s2 in (0, 1, 2, 3):
+        x = vb if s2 == 0 else shln(vb, 8 * s2)
+        xs = 'U32.and(v, 255)' if s2 == 0 else f'U32.shln(U32.and(v, 255), {8 * s2}n)'
+        lw = limb(W)
+        rw = [lw[j] if j != s2 else w_or(lw[j], vb) for j in range(4)]
+        names = ['U32.and(w, 255)', 'U32.and(U32.shrn(w, 8n), 255)', 'U32.and(U32.shrn(w, 16n), 255)', 'U32.shrn(w, 24n)']
+        names[s2] = f'U32.or({names[s2]}, U32.and(v, 255))'
+        w(f'# The byte v OR-ed in at byte {s2} of w.')
+        w(f'def orbl{s2}(+w: U32, +v: U32) -> {{I.limb(U32.or(w, {xs})) == [{", ".join(names)}] : +List<U32>}}:')
+        w('  match w v:')
+        w(f'    case {pat("w")} {pat("v")}:')
+        w('      ' + g.l4(limb(w_or(W, x)), rw))
+        w('')
     # zw
     lw = limb(W)
     w('# All four bytes of w are zero: w is zero.')
