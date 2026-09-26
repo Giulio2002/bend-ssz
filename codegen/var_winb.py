@@ -104,22 +104,61 @@ def qual(rep):
     return rep if rep.startswith('O.') else f'T.{rep}'
 
 
+def split_top(txt):
+    """Split txt at its top-level commas."""
+    out, depth, cur = [], 0, ''
+    for ch in txt:
+        if ch in '{[(<':
+            depth += 1
+        elif ch in '}])>':
+            depth -= 1
+        if ch == ',' and depth == 0:
+            out.append(cur.strip())
+            cur = ''
+        else:
+            cur += ch
+    out.append(cur.strip())
+    return out
+
+
+def generic_schema(name):
+    """(names text, [field schema texts]) of generic container `name` (proofs/obj/generic_specs.bend)."""
+    src = (ROOT / 'proofs/obj/generic_specs.bend').read_text()
+    m = re.search(rf'^def {name}\(\) -> S\.Schema: S\.Container\{{(\[.*?\]), (.*)\}}$', src, re.M)
+    names_txt, ch = m.group(1), m.group(2)
+    kids = []
+    while ch != 'S.End{}':
+        assert ch.startswith('S.Chain{') and ch.endswith('}'), ch
+        a, b = split_top(ch[len('S.Chain{'):-1])
+        kids.append(a)
+        ch = b
+    return names_txt, kids
+
+
 class Layout:
     """The fields of container `name`: kind, byte position c, spec schema sk;
     fixed fields their FT, variable ones their index j, child prefix and module."""
 
-    def __init__(self, name, g, names, sym=False, fixmod=None):
+    def __init__(self, name, g, names, sym=False, fixmod=None, generic=False):
         self.name = name
         self.sym = sym
+        self.generic = generic
         self.g = g
         t = names[name]
         s = g.shape(t)
-        kids, _ = VL.spec_schemas(name)
+        if generic:
+            _, ktxt = generic_schema(name)
+            kids = [f'F{i}' for i in range(len(ktxt))]
+            self.top = f'GS.{name}()'
+        else:
+            kids, _ = VL.spec_schemas(name)
+            ktxt = [f'Spec.{k}()' for k in kids]
+            self.top = f'Spec.{name}()'
         self.defs = W.spec_defs()
         self.fields = []
         p = 0
         for i, ((fn, ft), (_, fs), k) in enumerate(zip(t.fields, s.fields, kids)):
-            f = {'i': i, 'name': fn, 'c': p, 'k': p // 4, 't': ft, 'sk': k, 'box': fs.kind == 'box', 'rep': qual(fs.rep)}
+            f = {'i': i, 'name': fn, 'c': p, 'k': p // 4, 't': ft, 'sk': k, 'sch': ktxt[i], 'box': fs.kind == 'box', 'rep': qual(fs.rep)}
             if ft.fixed():
                 f['kind'] = 'fix'
                 f['size'] = ft.fixed_size()
@@ -182,7 +221,7 @@ class Layout:
         return f'UW.WX(t, {self.XJ(j)}, U32.to_nat({self.LJ(j)}))'
 
     def spec(self, f):
-        return f'Spec.{f["sk"]}()'
+        return f['sch']
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -719,7 +758,7 @@ def sym_schema_text(L):
     """The spec schema as a variable sv = Spec.<name>(): its fields' chain, taken apart
     one head at a time (each fact closed at the literal, then transported to sv)."""
     nf = L.nf
-    X = f'Spec.{L.name}()'
+    X = L.top
     w = ['', '# ---- the schema, taken apart without unfolding it ----------------------------------------------', '']
     w.append('def TL0(+sv: S.Schema) -> S.Schema: SH.Container_fields(sv)')
     for i in range(nf):
@@ -956,12 +995,12 @@ def spec_text(L):
         w.append('  {==}')
         w.append('')
         w.append('# The spec parts of the value: one variable part, the window\'s bytes.')
-        w.append(f'def specw({CW}, {HCHK}) -> {{Codec.parts(VALw(t, x, len), Spec.{L.name}()) == {TGT} : {MP}}}:')
-        w.append(f'  specg({CWA}, hchk, Spec.{L.name}(), {{==}})')
+        w.append(f'def specw({CW}, {HCHK}) -> {{Codec.parts(VALw(t, x, len), {L.top}) == {TGT} : {MP}}}:')
+        w.append(f'  specg({CWA}, hchk, {L.top}, {{==}})')
         w.append('')
         return '\n'.join(w)
     w.append('# The spec parts of the value: one variable part, the window\'s bytes.')
-    w.append(f'def specw({CW}, {HCHK}) -> {{Codec.parts(VALw(t, x, len), Spec.{L.name}()) == {TGT} : {MP}}}:')
+    w.append(f'def specw({CW}, {HCHK}) -> {{Codec.parts(VALw(t, x, len), {L.top}) == {TGT} : {MP}}}:')
     w.append(f'  %Equal.sym({MP}, Codec.parts({itm(0)}, {chain(0)}), Some{{{PSV}}}, partsw({CWA}, hchk)) : {{Codec.aggregate(_, None{{}}) == {TGT} : {MP}}}')
     w.append(f'  %Equal.sym({M}, Layout.encoding({PSV}), Some{{{LHS}}}, encw({CWA}, hchk)) : {{Codec.one(_, None{{}}) == {TGT} : {MP}}}')
     w.append(f'  %Equal.sym(+List<U32>, {LHS}, {WBL}, winE({CWA}, hchk)) : {{Codec.one(Some{{_}}, None{{}}) == {TGT} : {MP}}}')
@@ -1267,10 +1306,23 @@ def inv_text(L):
                 fact = f'FD.logic__subst(Maybe<&2, Nat>, z => DF.single_result(z, Codec.parts(h, {sp})), SS.fixed_size({sp}), {wd}, fz{f["sk"]}(), {fact})'
         else:
             wd = 'None{}'
-            body = L.defs[f['sk']]
-            mc = re.fullmatch(r'T\.Container\{(\[.*?\]), (.*)\}', body)
-            ml = re.fullmatch(r'T\.ListOf\{(Schema\d+)\(\), (.*)\}', body)
-            if mc:
+            if L.generic:
+                mc = re.fullmatch(r'S\.Container\{(\[.*?\]), (.*)\}', sp)
+                ml = re.fullmatch(r'S\.ListOf\{(.*)\}', sp)
+                if mc:
+                    fact = f'UW.vsingle(h, {mc.group(1)}, {mc.group(2)}, {{==}})'
+                elif ml:
+                    e_, n_ = split_top(ml.group(1))
+                    fact = f'LY.lsingle(h, {e_}, {n_})'
+                else:
+                    fact = f'DS.facts(h, {sp}, {{==}})'
+            else:
+                body = L.defs[f['sk']]
+                mc = re.fullmatch(r'T\.Container\{(\[.*?\]), (.*)\}', body)
+                ml = re.fullmatch(r'T\.ListOf\{(Schema\d+)\(\), (.*)\}', body)
+            if L.generic:
+                pass
+            elif mc:
                 flds = re.sub(r'\bSchema(\d+)\(\)', r'Spec.Schema\1()', mc.group(2)).replace('T.', 'S.')
                 fact = f'UW.vsingle(h, {mc.group(1)}, {flds}, {{==}})'
             else:
@@ -1302,14 +1354,17 @@ def inv_text(L):
         w.extend(match_items('items', 'Items', ('S.Items{+h, +r}', f'fm{i}({CWA}, {sargs(i)}h, Codec.parts(h, {sp}), {fact}, {{==}}, r, e)')))
         w.append('')
     w.append('# Every value whose parts are the window\'s bytes passes the checks.')
-    w.append(f'def invw({CW}, +v: S.Value, +e: {{Codec.parts(v, Spec.{L.name}()) == {TGT} : {MP}}}) -> {GOAL}:')
+    w.append(f'def invw({CW}, +v: S.Value, +e: {{Codec.parts(v, {L.top}) == {TGT} : {MP}}}) -> {GOAL}:')
     w.extend(match_items('v', 'Sequence', ('S.Sequence{+items}', f'st0({CWA}, items, e)')))
     w.append('')
     return '\n'.join(w)
 
 
 def module_text(L):
-    imps = W.HEADX + ['import ../../src/primitives.bend as I', 'import ./vua_rd.bend as UR', 'import ./vua_fix.bend as VTX', 'import ./vua_lay.bend as LY',
+    head0 = W.HEADX
+    if L.generic:
+        head0 = [x.replace('../../types/fulu_obj.bend as T', '../../types/generic_obj.bend as T') for x in head0] + ['import ./generic_specs.bend as GS']
+    imps = head0 + ['import ../../src/primitives.bend as I', 'import ./vua_rd.bend as UR', 'import ./vua_fix.bend as VTX', 'import ./vua_lay.bend as LY',
                       'import ./vmv.bend as VMV', 'import ./vdig.bend as VG', 'import ./vmr.bend as VMR', 'import ./vmul.bend as VM', 'import ./vrc.bend as VRC',
                       'import ../../proofs/decode_shape.bend as DS', 'import ../../proofs/decode_facts.bend as DF']
     for f in L.vars:
@@ -1347,12 +1402,16 @@ def top_text(L, wmod):
     return txt
 
 
-def layout(name, sym=False, fixmod=None):
-    names = schema.load(ROOT / 'codegen/fulu.yaml')
+def layout(name, sym=False, fixmod=None, generic=False):
+    if generic:
+        import generic as GN
+        names = {n: t for n, t, err in GN.inventory_all() if err is None}
+    else:
+        names = schema.load(ROOT / 'codegen/fulu.yaml')
     g = G.Gen()
     for n, t in names.items():
         g.shape(t)
-    return Layout(name, g, names, sym, fixmod)
+    return Layout(name, g, names, sym, fixmod, generic)
 
 
 def main():
