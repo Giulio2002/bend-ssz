@@ -57,7 +57,7 @@ HEAD = list(VL.DEC_HEAD) + [
     'import ./venc.bend as VE', 'import ./venc2.bend as V2', 'import ./vnenc.bend as VN', 'import ./vbspec.bend as VZ',
     'import ./vbytes.bend as VY', 'import ./vbitc.bend as VBC', 'import ./spec_bits.bend as FB',
     'import ../../spec/bitfields.bend as Bits', 'import ../../spec/bit_packing.bend as Bp', 'import ./bitlist_pack.bend as BK',
-    'import ./bitlist_obj.bend as BO', 'import ./vbitenc.bend as VBT', 'import ./vbitdl.bend as DL', 'import ./vbitcore.bend as CO',
+    'import ./bitlist_rep.bend as BO', 'import ./vbitenc.bend as VBT', 'import ./vbitdl.bend as DL', 'import ./vbitcore.bend as CO',
     'import ./vbitcont.bend as CT', 'import ./vbitrep.bend as VR', 'import ./var_bits_enc_bw.bend as BW', 'import ../compact/reads.bend as RD',
     'import ../../proofs/primitive_invariants.bend as V', 'import ./big_var_bitc_enc_Attestation.bend as E']
 

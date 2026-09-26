@@ -37,7 +37,9 @@ PREFIXES = ['pl_u8', 'pl_u16', 'pl_bool', 'pl_u64', 'l1024_u16', 'l128_u16', 'l1
             # containers (codegen/var_cont_enc.py's interface modules, big_encx_<C>_iface)
             'Gc465214E502', 'Gp66304057C3',
             # Fulu (codegen/var_rec_enc.py's FLISTS)
-            'l4096_b48', 'l131072_u64']
+            'l4096_b48', 'l131072_u64',
+            # BeaconState's packed lists (codegen/var_rec_enc.py FLISTS)
+            'l16777216_b32', 'l1099511627776_u64', 'l1099511627776_u8']
 LAWS = ['putx', 'putx_bytes', 'pfx', 'szx', 'sizex', 'encx_spec']
 DEFS = ['TH', 'OK', 'ENC', 'VAL', 'SZ', 'PUTX', 'PADB']
 

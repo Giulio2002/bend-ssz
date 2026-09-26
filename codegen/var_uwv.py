@@ -828,6 +828,29 @@ def sc_at({P})
   +hl48 = VRX.froom(q, r, dd, 6144n, 48n, 24624n, {{==}}, hl)
   sc_core(dd, D, X, q, r, dB, TB, {A_}, 24576, {K}, e, hr, hd, hl, pf, pfB, hdB, hv, {{==}}, {{==}}, hsrc, hlw, hq, eK, hz1, sc_edl(r, hr), e48, hl48, VRX.fpx(q, r, 6144n))
 
+# |a ++ b| = T when |a| = m, |b| = 48 and m + 48 = T (over symbolic m: no closed 24576 in a conversion).
+def sc_len3(+m: Nat, +a: +List<U32>, +b: +List<U32>, +T: Nat, +ea: {{List.length(&2, U32, a) == m : Nat}}, +eb: {{List.length(&2, U32, b) == 48n : Nat}},
+    +e: {{Nat.add(m, 48n) == T : Nat}}) -> {{List.length(&2, U32, List.append(&2, U32, a, b)) == T : Nat}}:
+  Equal.trans(Nat, List.length(&2, U32, List.append(&2, U32, a, b)), Nat.add(List.length(&2, U32, a), List.length(&2, U32, b)), T, VS.len_app(a, b),
+    Equal.trans(Nat, Nat.add(List.length(&2, U32, a), List.length(&2, U32, b)), Nat.add(m, 48n), T,
+      Equal.trans(Nat, Nat.add(List.length(&2, U32, a), List.length(&2, U32, b)), Nat.add(m, List.length(&2, U32, b)), Nat.add(m, 48n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, List.length(&2, U32, b)), List.length(&2, U32, a), m, ea),
+        Equal.cong(Nat, Nat, z => Nat.add(m, z), List.length(&2, U32, b), 48n, eb)), e))
+
+# The bytes' count: 24576 + 48.
+def SyncCommittee_len(+dB: Nat, +TB: FD.array__Tree<U32>, {AP}, +pfB: {{FD.array__perfect(U32, dB, TB) == True{{}} : Bool}},
+    +hrB: {{Nat.is_le(6144n, VB.pw(dB)) == True{{}} : Bool}})
+    -> {{{LEN(f"List.append(&2, U32, {DATA}, {Y48})")} == 24624n : Nat}}:
+  +SL = UW.SLW(TB)
+  +eK = FD.nat__eq_from_is_eq({NB}, {K}, {{==}})
+  +eLS = Equal.trans(Nat, {LEN("FX.limbs(SL)")}, A.quad(VB.len(SL)), A.quad(VB.pw(dB)), UW.len_limbs_v(SL),
+    Equal.cong(Nat, Nat, z => A.quad(z), VB.len(SL), VB.pw(dB), FD.array__slots_length(U32, dB, TB, pfB)))
+  +hq = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(dB))) == True{{}} : Bool}}, {K}, {NB}, Equal.sym(Nat, {NB}, {K}, eK), UW.quad_le(6144n, VB.pw(dB), hrB))
+  +hLS = FD.logic__subst(Nat, z => {{Nat.is_le({NB}, z) == True{{}} : Bool}}, A.quad(VB.pw(dB)), {LEN("FX.limbs(SL)")},
+    Equal.sym(Nat, {LEN("FX.limbs(SL)")}, A.quad(VB.pw(dB)), eLS), hq)
+  +eLD = VS.bt_len({NB}, FX.limbs(SL), hLS)
+  sc_len3({NB}, {DATA}, {Y48}, 24624n, eLD, {{==}}, FD.nat__eq_from_is_eq(Nat.add({NB}, 48n), 24624n, {{==}}))
+
 # T.SyncCommittee_putk at any byte position X = 4 q + r.
 def SyncCommittee_any({P})
     -> {RT("r")}:
