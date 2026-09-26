@@ -212,15 +212,25 @@ What that means concretely:
   specw; `_rej`: inv_p, rej_facts; `_enc`: putw at pos = 4 P over any tree,
   frame_lo, partsw) and the whole-buffer laws are the window laws at i = 0; a
   container nesting a covered name uses the child's window laws at the window
-  after its header. Not covered, and why: LightClientBootstrap and
-  LightClientUpdate hold a SyncCommittee (6156 words, array-backed: its value's
-  parts are those of spec_arr_SyncCommittee, which the header layout here does
-  not yet take as a symbolic word segment); LightClientUpdate and
-  LightClientFinalityUpdate hold a second LightClientHeader whose offset is
-  4k + (extra_data length), in general not word-aligned, so its reads and
-  copies go through the runtime's shifted paths (`B.read32` split reads,
-  `O.scopy1..3`), which have no laws yet; ExecutionPayload likewise (its
-  transactions and withdrawals start after extra_data).
+  after its header. LightClientBootstrap (a LightClientHeader, a SyncCommittee
+  whose 6144 packed words are one symbolic segment of the header, `vsc.bend`
+  `sc_parts`, and the branch) has ok_eval, decode_accept, decode_spec and
+  decode_unique in `big_var_bytes_LightClientBootstrap{,_win,_unique}.bend`
+  (checkq --big: its 24820-byte header makes stock Bend compare unary Nats past
+  its stack; the size facts go through `vbsize.bend` with the size symbolic).
+  Byte-offset windows (the `vua_win.bend` interface: CHKw, ok_evalw, OBJw,
+  readw, VALw, specw with bytes `UW.WX(t, x, len)`, invw) for
+  ExecutionPayloadHeader and LightClientHeader are in
+  `var_bytesx_<Name>{,_inv}.bend` (`codegen/var_bytes_x.py`, stock; fixed fields
+  via the rdx readers at `UR.RWN` words, byte vectors via `vbx.bend`
+  `copy_into_at`, the byte list via `vua_ct.copy_in_at`; the child's window at
+  FS + x). Not covered yet: Bootstrap's decode_reject, decode_none and encoder
+  laws (its rejection facts compare 24820-byte literal sums against symbolic
+  lengths: the treatment of the spec side is still to be carried over);
+  LightClientUpdate and LightClientFinalityUpdate (two variable fields, the
+  second at the runtime offset o1 + x: a two-variable header layout is still
+  to be written); ExecutionPayload (lists of byte lists and of records after
+  extra_data).
 * **Progressive lists** (`codegen/var_plist.py`): the generic forms
   ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
   Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,

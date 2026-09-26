@@ -42,6 +42,7 @@ them, and every official case that uses one is an invalid case.
 | `proofs/obj/arr_copy.bend`, `arr_emit.bend`, `arr_shift.bend`, `arr_spec.bend`, `arr_vec.bend` | the loop laws of the runtime copy (`acopy`), emit and loader over perfect array trees for symbolic counts, and the spec side of word lists of symbolic length (`codegen/arr_laws.py`, called by `spec_laws.py`) |
 | `proofs/obj/var_codec_<Name>{,_unique,_rej,_enc}.bend`, `big_var_codec_<Name>*.bend`, `var_fix_types.bend` | spec-connected codec laws of the variable-size names with word-aligned fixed fields around one `List[uint64, N]` (`codegen/var_laws.py`, encoder laws `codegen/var_enc.py`); a name whose list limit is 2^16 or more (IndexedAttestation) goes to `big_*` |
 | `proofs/obj/var_bytes_<Name>{,_win,_unique,_rej,_enc}.bend`, `var_bytes_fix.bend`, `var_bytes_wput.bend` | spec-connected codec laws of the names whose variable part is a byte list at any length (ExecutionPayloadHeader) or a covered name (LightClientHeader, LightClientOptimisticUpdate), at a word-aligned window and on the whole buffer (`codegen/var_bytes.py`, encoders `var_bytes_enc.py`, nesting `var_bytes_nest.py`/`var_bytes_nenc.py`; libraries `proofs/obj/v{bytes,bspec,benc}.bend`); all stock |
+| `proofs/obj/var_bytesx_<Name>{,_inv}.bend`, `vbx_fix.bend` | the same names at a window at any byte offset (the `vua_win.bend` interface), for nesting at unaligned offsets (`codegen/var_bytes_x.py`; library `proofs/obj/vbx.bend`); ExecutionPayloadHeader, LightClientHeader; stock |
 | `proofs/obj/sha_node.bend` | the SHA node bridge: runtime node = spec 64-byte message hash, via the pinned package law (`codegen/sha_laws.py`) |
 | `proofs/obj/schema_shapes.bend` | Bool shape tests and shape laws for every schema constructor (`codegen/schema_shapes.py`) |
 | `proofs/obj/root_names.bend`, `bits_leaf.bend`, `valid_names.bend` | phase-A root laws (Data-kind names: `X_root_correct`, `X_decoded_root_correct`) and generated-validity agreement (`codegen/root_laws.py`) |
@@ -65,6 +66,7 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/var_win.py           # window laws; AggregateAndProof, SignedAggregateAndProof [--no-big]
 /opt/homebrew/bin/python3 codegen/var_ua.py            # unaligned offsets: word-join limbs, shifted-copy loops (vua_bits, vua_sc)
 /opt/homebrew/bin/python3 codegen/var_bytes.py         # byte lists at any length, and the names nesting them [--no-big]
+/opt/homebrew/bin/python3 codegen/var_bytes_x.py       # the same names at any byte offset
 /opt/homebrew/bin/python3 codegen/sha_laws.py          # SHA node bridge
 /opt/homebrew/bin/python3 codegen/schema_shapes.py     # schema shape laws
 /opt/homebrew/bin/python3 codegen/root_laws.py         # phase-A root laws, validity agreement
