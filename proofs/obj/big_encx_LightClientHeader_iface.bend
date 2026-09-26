@@ -299,6 +299,18 @@ def domx(m, hok):
   match m:
     case MW{+beacon, +m_execution, +dB_execution_branch, +TB_execution_branch}: CS.domv(VALC(beacon, m_execution, dB_execution_branch, TB_execution_branch), Spec.LightClientHeader(), K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch), {==}, specC(beacon, m_execution, dB_execution_branch, TB_execution_branch, hok, 28n, {==}))
 
+# The bytes' bound: the fixed part and the children's bounds.
+def maxC(+beacon: T.BeaconBlockHeader, +m_execution: EC_ExecutionPayloadHeader.MW, +dB_execution_branch: Nat, +TB_execution_branch: FD.array__Tree<U32>, +h: {OKT(beacon, m_execution, dB_execution_branch, TB_execution_branch) == True{} : Bool}) -> {Nat.is_le(ENDC(beacon, m_execution, dB_execution_branch, TB_execution_branch), 860n) == True{} : Bool}:
+  FD.nat__le_trans(Nat.add(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution))), Nat.add(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution))), 860n, Order.add_right(244n, 244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution)), {==}), Order.add_left(244n, LY.LN(EC_ExecutionPayloadHeader.ENC(m_execution)), 616n, EC_ExecutionPayloadHeader.maxx(m_execution, ok_hok_execution(beacon, m_execution, dB_execution_branch, TB_execution_branch, h))))
+
+law maxx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  {Nat.is_le(List.length(&2, U32, ENC(m)), 860n) == True{} : Bool}
+def maxx(m, hok):
+  match m:
+    case MW{+beacon, +m_execution, +dB_execution_branch, +TB_execution_branch}: FD.logic__subst(Nat, z => {Nat.is_le(z, 860n) == True{} : Bool}, ENDC(beacon, m_execution, dB_execution_branch, TB_execution_branch), List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(beacon, m_execution, dB_execution_branch, TB_execution_branch)), ENDC(beacon, m_execution, dB_execution_branch, TB_execution_branch), lenE(beacon, m_execution, dB_execution_branch, TB_execution_branch, hok)), maxC(beacon, m_execution, dB_execution_branch, TB_execution_branch, hok))
+
 law pfx:
   for +m: MW
   for +dd: Nat

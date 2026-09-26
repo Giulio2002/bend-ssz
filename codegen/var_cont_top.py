@@ -662,7 +662,7 @@ def validx(m, hok):
 # a zero tree CI.putx / putx_bytes, the spec CI.encx_spec.
 
 GTOPS = ['Gp4B0CA2906A', 'Gp66304057C3', 'Gp8A7851175B', 'Gc465214E502', 'Gc221EC01D83', 'Gc85FA758A04', 'Gc56D855869F', 'BeaconBlock', 'SignedBeaconBlock',
-         'GuA2212AE21F', 'GuAD91DEB870', 'Gu6DDF182530']
+         'GuA2212AE21F', 'GuAD91DEB870', 'Gu6DDF182530', 'LightClientFinalityUpdate']
 
 
 def gtop_text(C):
@@ -677,6 +677,8 @@ def gtop_text(C):
     Dd = f'VL.DO({S})'
     # a fixed-depth encoder (the runtime's buffer is O.out_at(d), its size masked): the bytes' bound CI.maxx
     src = (ROOT / 'types/generic_obj.bend').read_text()
+    if 'types/generic_obj.bend as T' not in txt:
+        src = (ROOT / 'types/fulu_obj.bend').read_text()
     em = re.search(rf'^def {C}_encode\(o: {C}\) -> {C} & B\.Buf: {C}_enc_put\({C}_putn\(O\.out_at\((\d+)n\), 0, o\)\)$', src, re.M)
     fixd = None
     if em:
