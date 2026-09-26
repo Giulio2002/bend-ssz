@@ -90,6 +90,7 @@ def rest_term(E, P):
 
 def enc_module_text(x, E):
     n, FS, H, po, cvar, Y = x.n, x.FS, x.H, x.po, x.cvar, x.Y
+    FSN = x.FSN
     C = E.C
     HY = C.x.H
     Tn = f'T.{n}'
@@ -124,13 +125,13 @@ def room_hp(+N: U32, +P: Nat) -> {{Nat.is_le(P, ROOM(N, P)) == True{{}} : Bool}}
 def kz_hp(+N: U32, +P: Nat) -> {{Nat.is_le({PC}, KZ(N, P)) == True{{}} : Bool}}:
   FD.nat__le_trans({PC}, Nat.add({HY}n, {PC}), KZ(N, P), Order.left_below_sum({HY}n, {PC}), YE.kz_hp(N, {PC}))
 
-def eS(+N: U32, {HN}) -> {{U32.to_nat(SFS(N)) == Nat.add({FS}n, U32.to_nat(YE.SFS(N))) : Nat}}:
-  A.add_le({FS}, YE.SFS(N), {MAX}, FD.nat__le_trans(Nat.add({FS}n, U32.to_nat(YE.SFS(N))), Nat.add({FS}n, {CM}n), U32.to_nat({MAX}),
-    Order.add_left({FS}n, U32.to_nat(YE.SFS(N)), {CM}n, YE.hSle(N, hN)), {{==}}))
+def eS(+N: U32, {HN}) -> {{U32.to_nat(SFS(N)) == Nat.add({FSN}, U32.to_nat(YE.SFS(N))) : Nat}}:
+  A.add_le({FS}, YE.SFS(N), {MAX}, FD.nat__le_trans(Nat.add({FSN}, U32.to_nat(YE.SFS(N))), Nat.add({FSN}, {CM}n), U32.to_nat({MAX}),
+    Order.add_left({FSN}, U32.to_nat(YE.SFS(N)), {CM}n, YE.hSle(N, hN)), {{==}}))
 
 def hSle(+N: U32, {HN}) -> {{Nat.is_le(U32.to_nat(SFS(N)), {MAX}n) == True{{}} : Bool}}:
-  %Equal.sym(Nat, U32.to_nat(SFS(N)), Nat.add({FS}n, U32.to_nat(YE.SFS(N))), eS(N, hN)) : {{Nat.is_le(_, {MAX}n) == True{{}} : Bool}}
-  Order.add_left({FS}n, U32.to_nat(YE.SFS(N)), {CM}n, YE.hSle(N, hN))
+  %Equal.sym(Nat, U32.to_nat(SFS(N)), Nat.add({FSN}, U32.to_nat(YE.SFS(N))), eS(N, hN)) : {{Nat.is_le(_, {MAX}n) == True{{}} : Bool}}
+  Order.add_left({FSN}, U32.to_nat(YE.SFS(N)), {CM}n, YE.hSle(N, hN))
 
 def hS(+N: U32, {HN}) -> {{Nat.is_lt(U32.to_nat(SFS(N)), VB.pw({KS}n)) == True{{}} : Bool}}:
   FD.nat__le_lt_trans(U32.to_nat(SFS(N)), {MAX}n, VB.pw({KS}n), hSle(N, hN), {{==}})
@@ -304,6 +305,7 @@ def vput(+dd: Nat, +D1: FD.array__Tree<U32>, +pos: U32, +P: Nat, +eP: {{U32.to_n
 
 def spec_text(x, E, layers, NL, tree, pfl, vterm, hbw, d2):
     n, FS, H, po, Y = x.n, x.FS, x.H, x.po, x.Y
+    FSN = x.FSN
     C = E.C
     Tn = f'T.{n}'
     L = []
@@ -415,7 +417,7 @@ def bytesw_enc({WP_}, {HDD})
     -> {{{BYTES} == {RB} : +List<U32>}}:
   +hls = FD.logic__subst(Nat, z => {{Nat.is_le({PC}, z) == True{{}} : Bool}}, VB.pw(dd), VB.len({S_}),
     Equal.sym(Nat, VB.len({S_}), VB.pw(dd), FD.array__slots_length(U32, dd, OUTW({DA}), pfO({DA}, pf))), hHP(N, dd, P, hdst))
-  %Equal.sym(Nat, U32.to_nat(SFS(N)), Nat.add({FS}n, U32.to_nat(YE.SFS(N))), eS(N, hN)) : {{VS.bt(_, F.limbs(VB.wdr(P, {S_}))) == {RB} : +List<U32>}}
+  %Equal.sym(Nat, U32.to_nat(SFS(N)), Nat.add({FSN}, U32.to_nat(YE.SFS(N))), eS(N, hN)) : {{VS.bt(_, F.limbs(VB.wdr(P, {S_}))) == {RB} : +List<U32>}}
   %Equal.sym(+List<U32>, VS.bt(Nat.add(A.quad({H}n), U32.to_nat(YE.SFS(N))), F.limbs(VB.wdr(P, {S_}))),
       List.append(&2, U32, F.limbs(VS.wtake({H}n, VB.wdr(P, {S_}))), VS.bt(U32.to_nat(YE.SFS(N)), F.limbs(VB.wdr({H}n, VB.wdr(P, {S_}))))),
       VY.bt_split({H}n, U32.to_nat(YE.SFS(N)), VB.wdr(P, {S_}), VZ.wdr_len_le({H}n, P, {S_}, hls))) :
@@ -479,9 +481,9 @@ def encE({OWN}, +V: S.Value, +Yb: +List<U32>,
 def XE({E.P}) -> S.Value: XEY({OWA}, YE.XE({C.A}))
 
 def fitE({WP_}) -> {{N.fits(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, {YBW}))) == True{{}} : Bool}}:
-  VFT.fits4({E.KS}n, Nat.add({FS}n, List.length(&2, U32, {YBW})),
-    FD.nat__le_trans(Nat.add({FS}n, List.length(&2, U32, {YBW})), {E.MAX}n, VB.pw({E.KS}n),
-      Order.add_left({FS}n, List.length(&2, U32, {YBW}), {C.MAX}n,
+  VFT.fits4({E.KS}n, Nat.add({FSN}, List.length(&2, U32, {YBW})),
+    FD.nat__le_trans(Nat.add({FSN}, List.length(&2, U32, {YBW})), {E.MAX}n, VB.pw({E.KS}n),
+      Order.add_left({FSN}, List.length(&2, U32, {YBW}), {C.MAX}n,
         FD.nat__le_trans(List.length(&2, U32, {YBW}), U32.to_nat(YE.SFS(N)), {C.MAX}n, VZ.bt_len_le(U32.to_nat(YE.SFS(N)), F.limbs(VB.wdr({PC}, {S_}))), YE.hSle(N, hN))),
       {{==}}),
     {{==}})
@@ -552,6 +554,8 @@ def encode_spec({E.AH}):
 def outputs(g, names, no_big):
     out = {}
     for n in VBN.ORDER:
+        if n in VBN.NO_ENC:
+            continue
         E = child_enc(n, g, names)
         out[VBY.fname(E.x, '_enc')] = enc_module_text(E.x, E)
     return out

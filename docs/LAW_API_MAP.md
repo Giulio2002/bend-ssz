@@ -226,6 +226,56 @@ What that means concretely:
   copies go through the runtime's shifted paths (`B.read32` split reads,
   `O.scopy1..3`), which have no laws yet; ExecutionPayload likewise (its
   transactions and withdrawals start after extra_data).
+* **Several variable fields: DataColumnSidecar** (`codegen/var_multi.py` with
+  `var_multi_enc.py`; 2026-09-26). Three lists of byte vectors (2048/48/48-byte
+  elements, `O.Words` storage) between a uint64 and a boxed SignedBeaconBlockHeader
+  and a `Vector[Bytes32, 4]`. For a buffer on a perfect word tree of depth d < 23
+  with n <= 4 2^d: `ok_eval`, `decode_spec`
+  (`var_codec_DataColumnSidecar.bend`, stock), `decode_accept`
+  (`var_codec_DataColumnSidecar_acc.bend`, stock; the only importer of
+  `vzeros.bend`, the zero trees up to depth 23), `decode_unique` (`_unique`),
+  `decode_reject`, `decode_none` (`_rej`); for every object whose three list
+  storages are perfect trees with room for their c0/c1/c2 elements (c <= 4096):
+  `encode_eval`, `encode_spec` (`big_var_codec_DataColumnSidecar_enc.bend`, big:
+  the output's size bounds, up to 8.8 MB, are closed facts). Libraries:
+  `vmul.bend` (spec parts of a list of byte vectors), `vmv.bend` (the layout of
+  one fixed part, three variable parts and fixed parts; list windows),
+  `vmr.bend` (rejection: lists of byte vectors are whole elements; the inverse
+  layout of three variable parts), `vme.bend` (storage checks of such lists;
+  windows of a tree after a list copy).
+* **Lists of fixed records, ExecutionRequests** (`codegen/var_rlist.py` with
+  `var_rlist_er.py`; 2026-09-26, stock). Byte-offset window modules (the
+  `vua_win.bend` interface: CHKw, ok_evalw, OBJw, readw, VALw, specw, invw, plus
+  `linvr`: the spec bytes of any value of the list are whole records) for
+  `l8192_DepositRequest`, `l16_WithdrawalRequest`, `l2_ConsolidationRequest`,
+  `l16_SignedVoluntaryExit`, `l16_SignedBLSToExecutionChange`
+  (`var_winx_<p>.bend`): the reader's record array is the tree of the records
+  read at x + R j (`vua_fix.rdx_<record>`), the value's items the records' values
+  over the same words. `var_winx_ExecutionRequests.bend` composes the three list
+  windows at byte position x; `var_codec_ExecutionRequests.bend` gives the
+  whole-buffer ok_eval, decode_accept, decode_spec, decode_unique, decode_reject
+  and decode_none (the window at x = 0; d < 28). Libraries `vrl.bend` (Array.set
+  of any element type on a perfect tree; positions of consecutive records),
+  `vrc.bend` (window splits, the offset layout of three variable parts).
+  after its header. LightClientBootstrap (a LightClientHeader, a SyncCommittee
+  whose 6144 packed words are one symbolic segment of the header, `vsc.bend`
+  `sc_parts`, and the branch) has ok_eval, decode_accept, decode_spec and
+  decode_unique in `big_var_bytes_LightClientBootstrap{,_win,_unique}.bend`
+  (checkq --big: its 24820-byte header makes stock Bend compare unary Nats past
+  its stack; the size facts go through `vbsize.bend` with the size symbolic).
+  Byte-offset windows (the `vua_win.bend` interface: CHKw, ok_evalw, OBJw,
+  readw, VALw, specw with bytes `UW.WX(t, x, len)`, invw) for
+  ExecutionPayloadHeader and LightClientHeader are in
+  `var_bytesx_<Name>{,_inv}.bend` (`codegen/var_bytes_x.py`, stock; fixed fields
+  via the rdx readers at `UR.RWN` words, byte vectors via `vbx.bend`
+  `copy_into_at`, the byte list via `vua_ct.copy_in_at`; the child's window at
+  FS + x). Not covered yet: Bootstrap's decode_reject, decode_none and encoder
+  laws (its rejection facts compare 24820-byte literal sums against symbolic
+  lengths: the treatment of the spec side is still to be carried over);
+  LightClientUpdate and LightClientFinalityUpdate (two variable fields, the
+  second at the runtime offset o1 + x: a two-variable header layout is still
+  to be written); ExecutionPayload (lists of byte lists and of records after
+  extra_data).
 * **Progressive lists** (`codegen/var_plist.py`): the generic forms
   ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
   Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,

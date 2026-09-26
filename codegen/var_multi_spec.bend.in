@@ -1,0 +1,162 @@
+
+# ---- the spec side -------------------------------------------------------------------------
+
+def SW(+t: FD.array__Tree<U32>) -> List<&2, U32>: FD.array__slots(U32, t)
+
+# the lists' storage words, and their first M_i words
+def WL0(+t: FD.array__Tree<U32>) -> List<&2, U32>: FD.array__slots(U32, VB.mone(VC.NW(L0(t)), 89n, 0n, VL.DZ(L0(t)), VC.ZT(VL.DZ(L0(t))), t))
+def WL1(+t: FD.array__Tree<U32>) -> List<&2, U32>: FD.array__slots(U32, VB.mone(VC.NW(L1(t)), Q1(t), 0n, VL.DZ(L1(t)), VC.ZT(VL.DZ(L1(t))), t))
+def WL2(+t: FD.array__Tree<U32>, +n: U32) -> List<&2, U32>: FD.array__slots(U32, VB.mone(VC.NW(L2(t, n)), Q2(t), 0n, VL.DZ(L2(t, n)), VC.ZT(VL.DZ(L2(t, n))), t))
+def Y0(+t: FD.array__Tree<U32>) -> List<&2, U32>: VS.wtake(M0(t), WL0(t))
+def Y1(+t: FD.array__Tree<U32>) -> List<&2, U32>: VS.wtake(M1(t), WL1(t))
+def Y2(+t: FD.array__Tree<U32>, +n: U32) -> List<&2, U32>: VS.wtake(M2(t, n), WL2(t, n))
+
+# the same words, as windows of the buffer
+def X0(+t: FD.array__Tree<U32>) -> List<&2, U32>: VS.wtake(M0(t), VB.wdr(89n, SW(t)))
+def X1(+t: FD.array__Tree<U32>) -> List<&2, U32>: VS.wtake(M1(t), VB.wdr(Q1(t), SW(t)))
+def X2(+t: FD.array__Tree<U32>, +n: U32) -> List<&2, U32>: VS.wtake(M2(t, n), VB.wdr(Q2(t), SW(t)))
+
+# the value of the buffer: header fields from the header words, lists from the lists' storage
+def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: S.Sequence{@ITEMS}
+
+def VW(+t: FD.array__Tree<U32>, +n: U32) -> +List<U32>: VS.bt(U32.to_nat(n), F.limbs(SW(t)))
+
+# the header bytes and the encoding
+def HDB(+t: FD.array__Tree<U32>) -> +List<U32>: List.append(&2, U32, F.limbs(@AW), List.append(&2, U32, F.limbs([O0(t), O1(t), O2(t)]), F.flat(@POST)))
+def ENC(+t: FD.array__Tree<U32>, +n: U32) -> +List<U32>: List.append(&2, U32, HDB(t), List.append(&2, U32, F.limbs(Y0(t)), List.append(&2, U32, F.limbs(Y1(t)), F.limbs(Y2(t, n)))))
+
+def enc_spec(+t: FD.array__Tree<U32>, +n: U32,
+    +hk0: {Nat.is_le(C0(t), U32.to_nat(4096)) == True{} : Bool}, +hk1: {Nat.is_le(C1(t), U32.to_nat(4096)) == True{} : Bool}, +hk2: {Nat.is_le(C2(t, n), U32.to_nat(4096)) == True{} : Bool},
+    +hl0: {Nat.is_le(M0(t), FD.spec_common__length(U32, WL0(t))) == True{} : Bool},
+    +hl1: {Nat.is_le(M1(t), FD.spec_common__length(U32, WL1(t))) == True{} : Bool},
+    +hl2: {Nat.is_le(M2(t, n), FD.spec_common__length(U32, WL2(t, n))) == True{} : Bool},
+    +ft0: {N.fits(4n, A.quad(M0(t))) == True{} : Bool}, +ft1: {N.fits(4n, A.quad(M1(t))) == True{} : Bool}, +ft2: {N.fits(4n, A.quad(M2(t, n))) == True{} : Bool},
+    +e0: {U32.to_nat(O0(t)) == VV.F3(@AW, @POST) : Nat},
+    +e1: {U32.to_nat(O1(t)) == Nat.add(U32.to_nat(O0(t)), List.length(&2, U32, F.limbs(Y0(t)))) : Nat},
+    +e2: {U32.to_nat(O2(t)) == Nat.add(U32.to_nat(O1(t)), List.length(&2, U32, F.limbs(Y1(t)))) : Nat},
+    +fit: {N.fits(4n, Nat.add(U32.to_nat(O2(t)), List.length(&2, U32, F.limbs(Y2(t, n))))) == True{} : Bool})
+    -> {Codec.encoding_for_legal_type(Spec.@X(), VAL(t, n)) == Some{ENC(t, n)} : Maybe<&2, +List<U32>>}:
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(@ITEMS, @CHAIN), Some{@PL}, @CAT) :
+    {Codec.bytes(Codec.aggregate(_, None{})) == Some{ENC(t, n)} : Maybe<&2, +List<U32>>}
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(@PL), Some{ENC(t, n)}, VV.enc3(@AW, Y0(t), Y1(t), Y2(t, n), @POST, O0(t), O1(t), O2(t), e0, e1, e2, fit)) :
+    {Codec.bytes(Codec.one(_, None{})) == Some{ENC(t, n)} : Maybe<&2, +List<U32>>}
+  {==}
+
+# The encoding is the buffer's first n bytes.
+def lim3(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +eN: {U32.to_nat(n) == A.quad(QN(t, n)) : Nat}, +h89: {Nat.is_le(89n, VB.pw(d)) == True{} : Bool},
+    +w0: {Y0(t) == X0(t) : List<&2, U32>}, +w1: {Y1(t) == X1(t) : List<&2, U32>}, +w2: {Y2(t, n) == X2(t, n) : List<&2, U32>})
+    -> {ENC(t, n) == VW(t, n) : +List<U32>}:
+  +S = SW(t)
+  +h89L = FD.logic__subst(Nat, z => {Nat.is_le(89n, z) == True{} : Bool}, VB.pw(d), VB.len(S), Equal.sym(Nat, VB.len(S), VB.pw(d), FD.array__slots_length(U32, d, t, pf)), h89)
+  +LH = F.limbs(VF.app(VF.wpre(89n, 0n, S), VS.wtake(0n, VB.wdr(Nat.add(89n, 0n), S))))
+  %Equal.sym(Nat, U32.to_nat(n), A.quad(QN(t, n)), eN) : {ENC(t, n) == VS.bt(_, F.limbs(S)) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bt(A.quad(QN(t, n)), F.limbs(S)), F.limbs(VS.wtake(QN(t, n), S)), VS.bt_limbs(QN(t, n), S)) : {ENC(t, n) == _ : +List<U32>}
+  %Equal.sym(List<&2, U32>, VS.wtake(QN(t, n), S), VF.app(VS.wtake(Q2(t), S), X2(t, n)), VF.take_split(Q2(t), M2(t, n), S)) : {ENC(t, n) == F.limbs(_) : +List<U32>}
+  %Equal.sym(+List<U32>, F.limbs(VF.app(VS.wtake(Q2(t), S), X2(t, n))), List.append(&2, U32, F.limbs(VS.wtake(Q2(t), S)), F.limbs(X2(t, n))), VF.limbs_app(VS.wtake(Q2(t), S), X2(t, n))) :
+    {ENC(t, n) == _ : +List<U32>}
+  %Equal.sym(List<&2, U32>, VS.wtake(Q2(t), S), VF.app(VS.wtake(Q1(t), S), X1(t)), VF.take_split(Q1(t), M1(t), S)) :
+    {ENC(t, n) == List.append(&2, U32, F.limbs(_), F.limbs(X2(t, n))) : +List<U32>}
+  %Equal.sym(+List<U32>, F.limbs(VF.app(VS.wtake(Q1(t), S), X1(t))), List.append(&2, U32, F.limbs(VS.wtake(Q1(t), S)), F.limbs(X1(t))), VF.limbs_app(VS.wtake(Q1(t), S), X1(t))) :
+    {ENC(t, n) == List.append(&2, U32, _, F.limbs(X2(t, n))) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VS.wtake(Q1(t), S), VF.app(VS.wtake(89n, S), X0(t)), VF.take_split(89n, M0(t), S)) :
+    {ENC(t, n) == List.append(&2, U32, List.append(&2, U32, F.limbs(_), F.limbs(X1(t))), F.limbs(X2(t, n))) : +List<U32>}
+  %Equal.sym(+List<U32>, F.limbs(VF.app(VS.wtake(89n, S), X0(t))), List.append(&2, U32, F.limbs(VS.wtake(89n, S)), F.limbs(X0(t))), VF.limbs_app(VS.wtake(89n, S), X0(t))) :
+    {ENC(t, n) == List.append(&2, U32, List.append(&2, U32, _, F.limbs(X1(t))), F.limbs(X2(t, n))) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VS.wtake(Nat.add(89n, 0n), VB.wdr(0n, S)), VF.app(VF.wpre(89n, 0n, S), VS.wtake(0n, VB.wdr(Nat.add(89n, 0n), S))), VF.wt_pre(89n, 0n, 0n, S, h89L)) :
+    {ENC(t, n) == List.append(&2, U32, List.append(&2, U32, List.append(&2, U32, F.limbs(_), F.limbs(X0(t))), F.limbs(X1(t))), F.limbs(X2(t, n))) : +List<U32>}
+  %Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, List.append(&2, U32, LH, F.limbs(X0(t))), F.limbs(X1(t))), F.limbs(X2(t, n))),
+      List.append(&2, U32, List.append(&2, U32, LH, F.limbs(X0(t))), List.append(&2, U32, F.limbs(X1(t)), F.limbs(X2(t, n)))),
+      VS.app_assoc(List.append(&2, U32, LH, F.limbs(X0(t))), F.limbs(X1(t)), F.limbs(X2(t, n)))) :
+    {ENC(t, n) == _ : +List<U32>}
+  %Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, LH, F.limbs(X0(t))), List.append(&2, U32, F.limbs(X1(t)), F.limbs(X2(t, n)))),
+      List.append(&2, U32, LH, List.append(&2, U32, F.limbs(X0(t)), List.append(&2, U32, F.limbs(X1(t)), F.limbs(X2(t, n))))),
+      VS.app_assoc(LH, F.limbs(X0(t)), List.append(&2, U32, F.limbs(X1(t)), F.limbs(X2(t, n))))) :
+    {ENC(t, n) == _ : +List<U32>}
+  %Equal.sym(List<&2, U32>, Y0(t), X0(t), w0) :
+    {List.append(&2, U32, HDB(t), List.append(&2, U32, F.limbs(_), List.append(&2, U32, F.limbs(Y1(t)), F.limbs(Y2(t, n))))) == List.append(&2, U32, LH, List.append(&2, U32, F.limbs(X0(t)), List.append(&2, U32, F.limbs(X1(t)), F.limbs(X2(t, n))))) : +List<U32>}
+  %Equal.sym(List<&2, U32>, Y1(t), X1(t), w1) :
+    {List.append(&2, U32, HDB(t), List.append(&2, U32, F.limbs(X0(t)), List.append(&2, U32, F.limbs(_), F.limbs(Y2(t, n))))) == List.append(&2, U32, LH, List.append(&2, U32, F.limbs(X0(t)), List.append(&2, U32, F.limbs(X1(t)), F.limbs(X2(t, n))))) : +List<U32>}
+  %Equal.sym(List<&2, U32>, Y2(t, n), X2(t, n), w2) :
+    {List.append(&2, U32, HDB(t), List.append(&2, U32, F.limbs(X0(t)), List.append(&2, U32, F.limbs(X1(t)), F.limbs(_)))) == List.append(&2, U32, LH, List.append(&2, U32, F.limbs(X0(t)), List.append(&2, U32, F.limbs(X1(t)), F.limbs(X2(t, n))))) : +List<U32>}
+  {==}
+
+# the offsets and the size bound of enc3
+def cz0(+t: FD.array__Tree<U32>, +eo0: {O0(t) == 356 : U32}) -> {U32.to_nat(O0(t)) == VV.F3(@AW, @POST) : Nat}:
+  %Equal.sym(U32, O0(t), 356, eo0) : {U32.to_nat(_) == VV.F3(@AW, @POST) : Nat}
+  {==}
+
+def cz1(+t: FD.array__Tree<U32>, +hl0: {Nat.is_le(M0(t), FD.spec_common__length(U32, WL0(t))) == True{} : Bool},
+    +eo0: {O0(t) == 356 : U32}, +e1: {U32.to_nat(O1(t)) == A.quad(Q1(t)) : Nat})
+    -> {U32.to_nat(O1(t)) == Nat.add(U32.to_nat(O0(t)), List.length(&2, U32, F.limbs(Y0(t)))) : Nat}:
+  %Equal.sym(Nat, List.length(&2, U32, F.limbs(Y0(t))), A.quad(M0(t)), VM.len_lwt(M0(t), WL0(t), hl0)) : {U32.to_nat(O1(t)) == Nat.add(U32.to_nat(O0(t)), _) : Nat}
+  %Equal.sym(U32, O0(t), 356, eo0) : {U32.to_nat(O1(t)) == Nat.add(U32.to_nat(_), A.quad(M0(t))) : Nat}
+  e1
+
+def cz2(+t: FD.array__Tree<U32>, +hl1: {Nat.is_le(M1(t), FD.spec_common__length(U32, WL1(t))) == True{} : Bool},
+    +e1: {U32.to_nat(O1(t)) == A.quad(Q1(t)) : Nat}, +e2: {U32.to_nat(O2(t)) == A.quad(Q2(t)) : Nat})
+    -> {U32.to_nat(O2(t)) == Nat.add(U32.to_nat(O1(t)), List.length(&2, U32, F.limbs(Y1(t)))) : Nat}:
+  %Equal.sym(Nat, List.length(&2, U32, F.limbs(Y1(t))), A.quad(M1(t)), VM.len_lwt(M1(t), WL1(t), hl1)) : {U32.to_nat(O2(t)) == Nat.add(U32.to_nat(O1(t)), _) : Nat}
+  %Equal.sym(Nat, U32.to_nat(O1(t)), A.quad(Q1(t)), e1) : {U32.to_nat(O2(t)) == Nat.add(_, A.quad(M1(t))) : Nat}
+  Equal.trans(Nat, U32.to_nat(O2(t)), A.quad(Q2(t)), Nat.add(A.quad(Q1(t)), A.quad(M1(t))), e2, VM.quad_add(Q1(t), M1(t)))
+
+def cz3(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd28: {Nat.is_lt(d, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
+    +hl2: {Nat.is_le(M2(t, n), FD.spec_common__length(U32, WL2(t, n))) == True{} : Bool},
+    +e2: {U32.to_nat(O2(t)) == A.quad(Q2(t)) : Nat}, +eN: {U32.to_nat(n) == A.quad(QN(t, n)) : Nat})
+    -> {N.fits(4n, Nat.add(U32.to_nat(O2(t)), List.length(&2, U32, F.limbs(Y2(t, n))))) == True{} : Bool}:
+  %Equal.sym(Nat, List.length(&2, U32, F.limbs(Y2(t, n))), A.quad(M2(t, n)), VM.len_lwt(M2(t, n), WL2(t, n), hl2)) : {N.fits(4n, Nat.add(U32.to_nat(O2(t)), _)) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(O2(t)), A.quad(Q2(t)), e2) : {N.fits(4n, Nat.add(_, A.quad(M2(t, n)))) == True{} : Bool}
+  %VM.quad_add(Q2(t), M2(t, n)) : {N.fits(4n, _) == True{} : Bool}
+  %eN : {N.fits(4n, _) == True{} : Bool}
+  VL.hfit(d, n, hd28, hn)
+
+def spec_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
+    +hb: {CB(t) == True{} : Bool}, +hc: {CC(t, n) == True{} : Bool}, +hdd: {CD(t, n) == True{} : Bool},
+    +he: {CE(t) == True{} : Bool}, +hf: {CF(t) == True{} : Bool}, +hg: {CG(t, n) == True{} : Bool})
+    -> Decoding.decodes(Spec.@X(), VW(t, n), VAL(t, n)):
+@FACTS
+  +eo0 = FD.u32alg__eq_of(O0(t), 356, hb)
+  +e1 = eO1(t, n, hb, hc, he)
+  +e2 = eO2(t, n, hb, hc, hdd, he, hf)
+  +eN = eN(t, n, hb, hc, hdd, he, hf, hg)
+  +hr0 = VL.hrg(d, L0(t), hd28, hL0)
+  +hr1 = VL.hrg(d, L1(t), hd28, hL1)
+  +hr2 = VL.hrg(d, L2(t, n), hd28, hL2)
+  +hl0 = VV.hl_st(d, t, L0(t), M0(t), 89n, hd28, hL0, eM0, hr0)
+  +hl1 = VV.hl_st(d, t, L1(t), M1(t), Q1(t), hd28, hL1, eM1, hr1)
+  +hl2 = VV.hl_st(d, t, L2(t, n), M2(t, n), Q2(t), hd28, hL2, eM2, hr2)
+  +w0 = VV.win(d, t, L0(t), M0(t), 89n, pf, hd28, hL0, eM0, hr0, hsg(d, L0(t), M0(t), 89n, hd, hL0, eM0, hQ1))
+  +w1 = VV.win(d, t, L1(t), M1(t), Q1(t), pf, hd28, hL1, eM1, hr1, hsg(d, L1(t), M1(t), Q1(t), hd, hL1, eM1, hQ2))
+  +w2 = VV.win(d, t, L2(t, n), M2(t, n), Q2(t), pf, hd28, hL2, eM2, hr2, hsg(d, L2(t, n), M2(t, n), Q2(t), hd, hL2, eM2, hN))
+  +c0 = cz0(t, eo0)
+  +c1 = cz1(t, hl0, eo0, e1)
+  +c2 = cz2(t, hl1, e1, e2)
+  +c3 = cz3(d, t, n, hd28, hn, hl2, e2, eN)
+  +ft0 = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(L0(t)), A.quad(M0(t)), eM0, VL.hfit(d, L0(t), hd28, hL0))
+  +ft1 = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(L1(t)), A.quad(M1(t)), eM1, VL.hfit(d, L1(t), hd28, hL1))
+  +ft2 = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(L2(t, n)), A.quad(M2(t, n)), eM2, VL.hfit(d, L2(t, n), hd28, hL2))
+  Equal.trans(Maybe<&2, +List<U32>>, Codec.encoding_for_legal_type(Spec.@X(), VAL(t, n)), Some{ENC(t, n)}, Some{VW(t, n)},
+    enc_spec(t, n, @HK, hl0, hl1, hl2, ft0, ft1, ft2, c0, c1, c2, c3),
+    Equal.cong(+List<U32>, Maybe<&2, +List<U32>>, z => Some{z}, ENC(t, n), VW(t, n), lim3(d, t, n, pf, eN, h89, w0, w1, w2)))
+
+# The bytes of every buffer the validator accepts are the spec encoding of the
+# buffer's value (its lists: the decoded object's list storage).
+law decode_spec:
+  for +d: Nat
+  for +t: FD.array__Tree<U32>
+  for +n: U32
+  for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 23n) == True{} : Bool}
+  for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hchk: {CHK(t, n) == True{} : Bool}
+  Decoding.decodes(Spec.@X(), VW(t, n), VAL(t, n))
+def decode_spec(d, t, n, pf, hd, hn, hchk):
+  +k1 = FD.logic__and_right(CA(n), K1(t, n), hchk)
+  +k2 = FD.logic__and_right(CB(t), K2(t, n), k1)
+  +k3 = FD.logic__and_right(CC(t, n), K3(t, n), k2)
+  +k4 = FD.logic__and_right(CD(t, n), K4(t, n), k3)
+  +k5 = FD.logic__and_right(CE(t), K5(t, n), k4)
+  spec_go(d, t, n, pf, hd, hn,
+    FD.logic__and_left(CB(t), K2(t, n), k1), FD.logic__and_left(CC(t, n), K3(t, n), k2), FD.logic__and_left(CD(t, n), K4(t, n), k3),
+    FD.logic__and_left(CE(t), K5(t, n), k4), FD.logic__and_left(CF(t), CG(t, n), k5), FD.logic__and_right(CF(t), CG(t, n), k5))

@@ -18,11 +18,14 @@ import generate as G
 import spec_laws as SL
 import var_laws as VL
 import var_bytes as VBY
+import var_bytes_boot as VBB
 
 ROOT = VBY.ROOT
 # parent -> child (the variable field's type)
-NEST = {'LightClientHeader': 'ExecutionPayloadHeader', 'LightClientOptimisticUpdate': 'LightClientHeader'}
-ORDER = ['LightClientHeader', 'LightClientOptimisticUpdate']
+NEST = {'LightClientHeader': 'ExecutionPayloadHeader', 'LightClientOptimisticUpdate': 'LightClientHeader',
+        'LightClientBootstrap': 'LightClientHeader'}
+ORDER = ['LightClientHeader', 'LightClientOptimisticUpdate', 'LightClientBootstrap']
+NO_ENC = {'LightClientBootstrap'}  # its encoder laws: not yet
 
 
 class NName(VBY.Name):
@@ -50,10 +53,15 @@ class NName(VBY.Name):
                     if not m:
                         raise VBY.Skip(f'words field {fname}: reader shape')
                     f = {'kind': 'words', 'dz': int(m.group(1)), 'p': fs.p, 'size': size, 'W': size // 4}
+                elif inner.kind == 'container' and not inner.data and not box:
+                    # a Type record of packed words and Data records (SyncCommittee): its value's
+                    # parts come from codegen/var_bytes_boot.py
+                    f = VBB.comp_field(g, ft, inner, size)
                 else:
                     ft_ = VBY.FTW(g, ft)
                     f = {'kind': 'fix', 'ft': ft_, 'p': ft_.p, 'size': size, 'W': size // 4, 'box': box}
-                f['node'] = SL.walk(g, ft, c)
+                if f['kind'] != 'comp':
+                    f['node'] = SL.walk(g, ft, c)
                 f.update({'name': fname, 't': ft, 'c': pos, 'k': pos // 4})
                 self.fields.append(f)
                 pos += size
@@ -68,6 +76,10 @@ class NName(VBY.Name):
         if var is None:
             raise VBY.Skip('no variable field')
         self.FS, self.H = pos, pos // 4
+        # past BIGFS header bytes the name's files are big_* files (checkq --big): their closed Nat
+        # facts go through Nat.is_eq and the size lemmas of proofs/obj/vbsize.bend (see BIGFS)
+        self.big = pos > BIGFS
+        self.FSN = f'{pos}n'
         self.var = var
         self.po, self.cvar = var['k'], var['c']
         self.Y = var['Y']
@@ -87,6 +99,8 @@ class NName(VBY.Name):
                 raise VBY.Skip('runtime shape differs: ' + x)
 
     def obj(self, f):
+        if f['kind'] == 'comp':
+            return VBB.comp_obj(self, f)
         if f['kind'] == 'fix':
             o = f['ft'].obj(self.words(f))
             return f'O.BSome{{{o}, O.BNone{{}}}}' if f['box'] else o
@@ -105,6 +119,16 @@ def rmod(Y):
 
 
 HEAD = VBY.HEAD + ['import ../../spec/nat_bytes.bend as NBx', 'import ./vfits.bend as VFT', 'import ./spec_bits.bend as FB']
+# A header of more bytes than this makes the stock checker compare unary Nats deeper than its
+# stack (it evaluates both sides of every conversion first); such names get big_* files.
+BIGFS = 4096
+def ecq(k, c):
+    """A proof of U32.to_nat(c) == A.quad(k) for closed k, c: past BIGFS through Nat.is_eq."""
+    return '{==}' if c <= BIGFS else f'FD.nat__eq_from_is_eq(U32.to_nat({c}), A.quad({k}n), {{==}})'
+
+
+HEAD_BIG = ['import ./vbsize.bend as VBZ']
+HEAD_COMP = ['import ./arr_vec.bend as AV', 'import ./vsc.bend as VSC', 'import ./vbsize.bend as VBZ', 'import ./vbenc.bend as VBE']
 
 
 def read_plan(x):
@@ -125,6 +149,10 @@ def read_plan(x):
             call = f'T.{x.Y}_read(VF.BF(t, n), U32.add(off, {x.FS}), U32.sub(len, {x.FS}))'
             inner = f'YW.OBJw(t, Nat.add({x.H}n, i), LL(len))'
             ctx = frame.replace('@', f'T.{x.Y}_bx_rd(@)') if f['box'] else frame
+        elif f['kind'] == 'comp':
+            call = f'T.{f["p"]}_read(VF.BF(t, n), U32.add(off, {f["c"]}), {f["size"]})'
+            inner = x.obj(f)
+            ctx = frame
         elif f['kind'] == 'fix':
             ft = f['ft']
             call = f'T.{ft.p}_read(VF.BF(t, n), U32.add(off, {f["c"]}), {f["size"]})'
@@ -145,9 +173,32 @@ PF = VBY.PF
 
 def win_text(x):
     n, FS, H, po, cvar, Y = x.n, x.FS, x.H, x.po, x.cvar, x.Y
+    FSN = x.FSN
+    if x.big:
+        EF = f'FD.nat__eq_from_is_eq(U32.to_nat({FS}), {FSN}, {{==}})'
+        LEB = f'  VBZ.le_fs({FS}, {FSN}, {EF}, len, ha)'
+        ENB = f'  VBZ.en_fs({FS}, {FSN}, {EF}, len, LL(len), {{==}}, ha)'
+        HWB = f'  VBZ.hw_y(d, i, len, {H}n, {FSN}, LL(len), FD.nat__eq_from_is_eq(A.quad({H}n), {FSN}, {{==}}), enFS(len, ha), hw)'
+        LEHC = 'leH(len, ha)'
+        LEHD = (f'def leH(+len: U32, +ha: {{U32.is_le({FS}, len) == True{{}} : Bool}}) -> {{Nat.is_le(A.quad({H}n), U32.to_nat(len)) == True{{}} : Bool}}:\n'
+                f'  VBZ.le_fs({FS}, A.quad({H}n), FD.nat__eq_from_is_eq(U32.to_nat({FS}), A.quad({H}n), {{==}}), len, ha)\n\n'
+                f'def enH(+len: U32, +ha: {{U32.is_le({FS}, len) == True{{}} : Bool}}) -> {{Nat.add(A.quad({H}n), U32.to_nat(LL(len))) == U32.to_nat(len) : Nat}}:\n'
+                f'  VBZ.en_fs({FS}, A.quad({H}n), FD.nat__eq_from_is_eq(U32.to_nat({FS}), A.quad({H}n), {{==}}), len, LL(len), {{==}}, ha)\n\n')
+    else:
+        LEHC, LEHD = 'leFS(len, ha)', ''
+        LEB = f'''  FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le({FS}, len), Nat.is_le({FSN}, U32.to_nat(len)), VU.le_u32({FS}, len), ha)'''
+        ENB = f'''  %Equal.sym(Nat, U32.to_nat(LL(len)), Nat.sub(U32.to_nat(len), {FSN}), FD.u32__sub_nat(len, {FS}, leFS(len, ha))) : {{Nat.add({FSN}, _) == U32.to_nat(len) : Nat}}
+  FD.nat__sub_add(U32.to_nat(len), {FSN}, leFS(len, ha))'''
+        HWB = f'''  +e1 = Equal.cong(Nat, Nat, z => Nat.add(A.quad(i), z), U32.to_nat(len), Nat.add({FSN}, U32.to_nat(LL(len))), Equal.sym(Nat, Nat.add({FSN}, U32.to_nat(LL(len))), U32.to_nat(len), enFS(len, ha)))
+  +e2 = Equal.sym(Nat, Nat.add(Nat.add(A.quad(i), {FSN}), U32.to_nat(LL(len))), Nat.add(A.quad(i), Nat.add({FSN}, U32.to_nat(LL(len)))), FD.nat__add_assoc(A.quad(i), {FSN}, U32.to_nat(LL(len))))
+  +e3 = Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(LL(len))), Nat.add(A.quad(i), {FSN}), Nat.add({FSN}, A.quad(i)), FD.nat__add_comm(A.quad(i), {FSN}))
+  +e = Equal.trans(Nat, Nat.add(A.quad(i), U32.to_nat(len)), Nat.add(A.quad(i), Nat.add({FSN}, U32.to_nat(LL(len)))), Nat.add(A.quad(Nat.add({H}n, i)), U32.to_nat(LL(len))), e1,
+    Equal.trans(Nat, Nat.add(A.quad(i), Nat.add({FSN}, U32.to_nat(LL(len)))), Nat.add(Nat.add(A.quad(i), {FSN}), U32.to_nat(LL(len))), Nat.add(A.quad(Nat.add({H}n, i)), U32.to_nat(LL(len))), e2, e3))
+  FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(d))) == True{{}} : Bool}}, Nat.add(A.quad(i), U32.to_nat(len)), Nat.add(A.quad(Nat.add({H}n, i)), U32.to_nat(LL(len))), e, hw)'''
     Tn = f'T.{n}'
     HA = f'+ha: {{U32.is_le({FS}, len) == True{{}} : Bool}}'
-    L = list(HEAD) + [f'import ./{wmod(Y)} as YW', '', '# GENERATED by codegen/var_bytes_nest.py. Do not edit.',
+    comp = any(f['kind'] == 'comp' for f in x.fields)
+    L = list(HEAD) + (HEAD_COMP if comp else []) + (HEAD_BIG if x.big and not comp else []) + [f'import ./{wmod(Y)} as YW', '', '# GENERATED by codegen/var_bytes_nest.py. Do not edit.',
                       f'# {n} at a word-aligned window (off = 4 i, len) of a buffer: the validator,',
                       f'# the reader and the spec parts of the value, on {Y}\'s window laws at word {H} + i',
                       '# (see the module docstring of codegen/var_bytes_nest.py).', '']
@@ -190,14 +241,13 @@ def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {{{Tn}_c1(ok
     case True{{}}: {{==}}
     case False{{}}: {{==}}
 
-def leFS(+len: U32, {HA}) -> {{Nat.is_le({FS}n, U32.to_nat(len)) == True{{}} : Bool}}:
-  FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le({FS}, len), Nat.is_le({FS}n, U32.to_nat(len)), VU.le_u32({FS}, len), ha)
+def leFS(+len: U32, {HA}) -> {{Nat.is_le({FSN}, U32.to_nat(len)) == True{{}} : Bool}}:
+{LEB}
 
-def enFS(+len: U32, {HA}) -> {{Nat.add({FS}n, U32.to_nat(LL(len))) == U32.to_nat(len) : Nat}}:
-  %Equal.sym(Nat, U32.to_nat(LL(len)), Nat.sub(U32.to_nat(len), {FS}n), FD.u32__sub_nat(len, {FS}, leFS(len, ha))) : {{Nat.add({FS}n, _) == U32.to_nat(len) : Nat}}
-  FD.nat__sub_add(U32.to_nat(len), {FS}n, leFS(len, ha))
+def enFS(+len: U32, {HA}) -> {{Nat.add({FSN}, U32.to_nat(LL(len))) == U32.to_nat(len) : Nat}}:
+{ENB}
 
-def winb(+k: Nat, +i: Nat, +len: U32, +P: Nat, +hk: {{Nat.is_le(A.quad(k), U32.to_nat(len)) == True{{}} : Bool}},
+{LEHD}def winb(+k: Nat, +i: Nat, +len: U32, +P: Nat, +hk: {{Nat.is_le(A.quad(k), U32.to_nat(len)) == True{{}} : Bool}},
     +hw: {{Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), P) == True{{}} : Bool}}) -> {{Nat.is_le(A.quad(Nat.add(k, i)), P) == True{{}} : Bool}}:
   %VF.quad_add(k, i) : {{Nat.is_le(_, P) == True{{}} : Bool}}
   FD.nat__le_trans(Nat.add(A.quad(k), A.quad(i)), Nat.add(U32.to_nat(len), A.quad(i)), P, Order.add_right(A.quad(k), U32.to_nat(len), A.quad(i), hk),
@@ -205,30 +255,25 @@ def winb(+k: Nat, +i: Nat, +len: U32, +P: Nat, +hk: {{Nat.is_le(A.quad(k), U32.t
 
 # The byte offset off + c of header byte c = 4 k (k <= H) is word k + i.
 def eoc(+d: Nat, +i: Nat, +off: U32, +len: U32, +k: Nat, +c: U32, +ec: {{U32.to_nat(c) == A.quad(k) : Nat}},
-    +hkF: {{Nat.is_le(A.quad(k), {FS}n) == True{{}} : Bool}}, {WH}, {HA})
+    +hkF: {{Nat.is_le(A.quad(k), {FSN}) == True{{}} : Bool}}, {WH}, {HA})
     -> {{U32.to_nat(U32.add(off, c)) == A.quad(Nat.add(k, i)) : Nat}}:
   VF.off_add(off, c, i, k, 2n+d, eo, ec, hd,
-    winb(k, i, len, A.quad(VB.pw(d)), FD.nat__le_trans(A.quad(k), {FS}n, U32.to_nat(len), hkF, leFS(len, ha)), hw))
+    winb(k, i, len, A.quad(VB.pw(d)), FD.nat__le_trans(A.quad(k), {FSN}, U32.to_nat(len), hkF, leFS(len, ha)), hw))
 
 # Header words k < H of the window are below 2^d.
 def hiw(+d: Nat, +i: Nat, +len: U32, +k: Nat, +hk: {{Nat.is_lt(k, {H}n) == True{{}} : Bool}},
     +hw: {{Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, {HA})
     -> {{Nat.is_lt(Nat.add(k, i), VB.pw(d)) == True{{}} : Bool}}:
   FD.nat__lt_le_trans(Nat.add(k, i), Nat.add({H}n, i), VB.pw(d), VB.lt_kk(k, {H}n, i, hk),
-    VC.quad_inv(Nat.add({H}n, i), VB.pw(d), winb({H}n, i, len, A.quad(VB.pw(d)), leFS(len, ha), hw)))
+    VC.quad_inv(Nat.add({H}n, i), VB.pw(d), winb({H}n, i, len, A.quad(VB.pw(d)), {LEHC}, hw)))
 
 # The child's window (4 (H + i), len - {FS}) lies in the buffer.
 def hwY(+d: Nat, +i: Nat, +len: U32, +hw: {{Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, {HA})
     -> {{Nat.is_le(Nat.add(A.quad(Nat.add({H}n, i)), U32.to_nat(LL(len))), A.quad(VB.pw(d))) == True{{}} : Bool}}:
-  +e1 = Equal.cong(Nat, Nat, z => Nat.add(A.quad(i), z), U32.to_nat(len), Nat.add({FS}n, U32.to_nat(LL(len))), Equal.sym(Nat, Nat.add({FS}n, U32.to_nat(LL(len))), U32.to_nat(len), enFS(len, ha)))
-  +e2 = Equal.sym(Nat, Nat.add(Nat.add(A.quad(i), {FS}n), U32.to_nat(LL(len))), Nat.add(A.quad(i), Nat.add({FS}n, U32.to_nat(LL(len)))), FD.nat__add_assoc(A.quad(i), {FS}n, U32.to_nat(LL(len))))
-  +e3 = Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(LL(len))), Nat.add(A.quad(i), {FS}n), Nat.add({FS}n, A.quad(i)), FD.nat__add_comm(A.quad(i), {FS}n))
-  +e = Equal.trans(Nat, Nat.add(A.quad(i), U32.to_nat(len)), Nat.add(A.quad(i), Nat.add({FS}n, U32.to_nat(LL(len)))), Nat.add(A.quad(Nat.add({H}n, i)), U32.to_nat(LL(len))), e1,
-    Equal.trans(Nat, Nat.add(A.quad(i), Nat.add({FS}n, U32.to_nat(LL(len)))), Nat.add(Nat.add(A.quad(i), {FS}n), U32.to_nat(LL(len))), Nat.add(A.quad(Nat.add({H}n, i)), U32.to_nat(LL(len))), e2, e3))
-  FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(d))) == True{{}} : Bool}}, Nat.add(A.quad(i), U32.to_nat(len)), Nat.add(A.quad(Nat.add({H}n, i)), U32.to_nat(LL(len))), e, hw)
+{HWB}
 
 def ecY(+d: Nat, +i: Nat, +off: U32, +len: U32, {WH}, {HA}) -> {{U32.to_nat(U32.add(off, {FS})) == A.quad(Nat.add({H}n, i)) : Nat}}:
-  eoc(d, i, off, len, {H}n, {FS}, {{==}}, {{==}}, eo, hd, hw, ha)
+  eoc(d, i, off, len, {H}n, {FS}, {ecq(H, FS)}, {{==}}, eo, hd, hw, ha)
 
 def okw_c1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, {WH}, {PF}, {HA}, +epo: {{SPOw(t, i) == {FS} : U32}})
     -> {{{Tn}_c0(True{{}}, VF.BF(t, n), off, len, SPOw(t, i)) == (VF.BF(t, n), YW.CHKw(t, Nat.add({H}n, i), LL(len))) : B.Buf & Bool}}:
@@ -265,7 +310,7 @@ def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len
 
 def hHi(+d: Nat, +i: Nat, +len: U32, +hw: {{Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, {HA})
     -> {{Nat.is_le(Nat.add({H}n, i), VB.pw(d)) == True{{}} : Bool}}:
-  VC.quad_inv(Nat.add({H}n, i), VB.pw(d), winb({H}n, i, len, A.quad(VB.pw(d)), leFS(len, ha), hw))
+  VC.quad_inv(Nat.add({H}n, i), VB.pw(d), winb({H}n, i, len, A.quad(VB.pw(d)), {LEHC}, hw))
 
 # The offset word, once checked, reads as {FS}.
 def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, {WH}, {PF}, {HA}, +epo: {{SPOw(t, i) == {FS} : U32}})
@@ -277,6 +322,9 @@ def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32
   %Equal.sym(U32, SPOw(t, i), {FS}, epo) : {{(VF.BF(t, n), _) == (VF.BF(t, n), {FS}) : B.Buf & U32}}
   {{==}}
 ''')
+    for f in x.fields:
+        if f['kind'] == 'comp':
+            L.extend(VBB.rd_comp_lemma(f))
     leaves, OBJ = read_plan(x)
     RHS = '(VF.BF(t, n), OBJw(t, i, len))'
     TY = f'B.Buf & {Tn}'
@@ -290,7 +338,7 @@ def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32
     w('  +hH = hHi(d, i, len, hw, ha)')
 
     def ecf(k, c):
-        return f'eoc(d, i, off, len, {k}n, {c}, {{==}}, {{==}}, eo, hd, hw, ha)'
+        return f'eoc(d, i, off, len, {k}n, {c}, {ecq(k, c)}, {{==}}, eo, hd, hw, ha)'
 
     def hb(W, k):
         return (f'FD.nat__le_trans(Nat.add({W}n, Nat.add({k}n, i)), Nat.add({H}n, i), VB.pw(d), '
@@ -303,6 +351,9 @@ def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32
             ft = f['ft']
             w(f'  %Equal.sym(B.Buf & {ft.rep()}, {call}, (VF.BF(t, n), {val}),')
             w(f'      VT.rd_{ft.p}(d, t, n, U32.add(off, {f["c"]}), Nat.add({f["k"]}n, i), {ecf(f["k"], f["c"])}, hd, pf, {hb(f["W"], f["k"])})) :')
+        elif kind == 'comp':
+            w(f'  %Equal.sym(B.Buf & T.{f["p"]}, {call}, (VF.BF(t, n), {val}),')
+            w(f'      rd_comp_{f["p"]}(d, t, n, U32.add(off, {f["c"]}), Nat.add({f["k"]}n, i), {ecf(f["k"], f["c"])}, hd, pf, {hb(f["W"], f["k"])})) :')
         elif kind == 'words':
             e = ecf(f['k'], f['c'])
             kw = VBY.kfit(31 + f['size'])
@@ -326,7 +377,10 @@ def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U
   +epo = FD.u32alg__eq_of(SPOw(t, i), {FS}, chk_b(a, b, c, hchk))
   rdw_go(d, t, n, i, off, len, eo, hd, hw, pf, chk_a(a, b, c, hchk), epo, chk_c(a, b, c, hchk))
 ''')
-    L.extend(spec_part(x))
+    if any(f['kind'] == 'comp' for f in x.fields):
+        L.extend(VBB.spec_part_seg(x))
+    else:
+        L.extend(spec_part(x))
     return '\n'.join(L) + '\n'
 
 
@@ -373,6 +427,7 @@ def spec_items(x, V, Yb, hv, wt=None):
 
 def spec_part(x):
     n, FS, H, po, Y = x.n, x.FS, x.H, x.po, x.Y
+    FSN = x.FSN
     HA = f'+ha: {{U32.is_le({FS}, len) == True{{}} : Bool}}'
     ITEMS, CHAIN, PL, CAT, PRE, POST, hdr = spec_items(x, 'V', 'Yb', 'hv')
     HDR = '[' + ', '.join(hdr) + ']'
@@ -430,10 +485,10 @@ def fitw(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +len: U32, +hd: {{Nat.is_lt(
     +hw: {{Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, {HA})
     -> {{N.fits(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, {YT}))) == True{{}} : Bool}}:
   +hl = FD.nat__le_trans(U32.to_nat(len), Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(A.quad(i), U32.to_nat(len)), hw)
-  +h1 = FD.nat__le_trans(Nat.add({FS}n, List.length(&2, U32, {YT})), Nat.add({FS}n, U32.to_nat(LL(len))), A.quad(VB.pw(d)),
-    Order.add_left({FS}n, List.length(&2, U32, {YT}), U32.to_nat(LL(len)), VZ.bt_len_le(U32.to_nat(LL(len)), F.limbs(VB.wdr(Nat.add({H}n, i), {s})))),
-    FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(d))) == True{{}} : Bool}}, U32.to_nat(len), Nat.add({FS}n, U32.to_nat(LL(len))), Equal.sym(Nat, Nat.add({FS}n, U32.to_nat(LL(len))), U32.to_nat(len), enFS(len, ha)), hl))
-  VFT.fits4(2n+d, Nat.add({FS}n, List.length(&2, U32, {YT})), h1, FD.nat__lt_trans(d, 29n, 30n, hd, {{==}}))
+  +h1 = FD.nat__le_trans(Nat.add({FSN}, List.length(&2, U32, {YT})), Nat.add({FSN}, U32.to_nat(LL(len))), A.quad(VB.pw(d)),
+    Order.add_left({FSN}, List.length(&2, U32, {YT}), U32.to_nat(LL(len)), VZ.bt_len_le(U32.to_nat(LL(len)), F.limbs(VB.wdr(Nat.add({H}n, i), {s})))),
+    FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(d))) == True{{}} : Bool}}, U32.to_nat(len), Nat.add({FSN}, U32.to_nat(LL(len))), Equal.sym(Nat, Nat.add({FSN}, U32.to_nat(LL(len))), U32.to_nat(len), enFS(len, ha)), hl))
+  VFT.fits4(2n+d, Nat.add({FSN}, List.length(&2, U32, {YT})), h1, FD.nat__lt_trans(d, 29n, 30n, hd, {{==}}))
 
 def specw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +len: U32, {PF}, +hd: {{Nat.is_lt(d, 29n) == True{{}} : Bool}},
     +hw: {{Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, {HA}, +epo: {{SPOw(t, i) == {FS} : U32}},
@@ -458,8 +513,10 @@ def specw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +len: U32, {PF}, +
 
 # ---- the rejection laws ----------------------------------------------------------------------
 
-def rej_text(x):
+def rej_text(x, pure=False):
+    """pure: only the lines up to inv_v (no window or whole-buffer facts), for codegen/var_bytes_x.py."""
     n, FS, H, po, Y = x.n, x.FS, x.H, x.po, x.Y
+    FSN = x.FSN
     P = 4 * po
     kids, _ = VL.spec_schemas(n)
     m = len(x.fields)
@@ -488,8 +545,8 @@ def rej_text(x):
     MP = 'Maybe<&2, +List<S.Part>>'
     w('def FACTS(bs: +List<U32>) -> Type:')
     w(f'  {{VS.bt(4n, VS.bdr({P}n, bs)) == {FSL} : +List<U32>}} & DK.Ex(S.Value, hv0 => DK.Ex(+List<U32>, ys => '
-      f'DK.P2({{List.length(&2, U32, bs) == Nat.add({FS}n, List.length(&2, U32, ys)) : Nat}}, '
-      f'DK.P2({{VS.bdr({FS}n, bs) == ys : +List<U32>}}, {{Codec.parts(hv0, Spec.{Y}()) == Some{{[S.Variable{{ys}}]}} : {MP}}}))))')
+      f'DK.P2({{List.length(&2, U32, bs) == Nat.add({FSN}, List.length(&2, U32, ys)) : Nat}}, '
+      f'DK.P2({{VS.bdr({FSN}, bs) == ys : +List<U32>}}, {{Codec.parts(hv0, Spec.{Y}()) == Some{{[S.Variable{{ys}}]}} : {MP}}}))))')
     w('')
 
     def absurd(e='e'):
@@ -567,12 +624,12 @@ def rej_text(x):
     w(f'  %eQ({ALL}) : {{VS.bt(4n, VS.bdr(VR.lens({PRE}), {OUT})) == N.digits(4n, Nat.add(VR.lens({PRE}), 4n+_)) : +List<U32>}}')
     w(f'  VR.out_off({PRE}, ys, {POST})')
     w('')
-    w('def f_len(' + ', '.join(decl_m) + f') -> {{List.length(&2, U32, {OUT}) == Nat.add({FS}n, List.length(&2, U32, ys)) : Nat}}:')
+    w('def f_len(' + ', '.join(decl_m) + f') -> {{List.length(&2, U32, {OUT}) == Nat.add({FSN}, List.length(&2, U32, ys)) : Nat}}:')
     w(f'  %eP({ALL}) : {{List.length(&2, U32, {OUT}) == Nat.add(Nat.add(_, 4n+{Qz}n), List.length(&2, U32, ys)) : Nat}}')
     w(f'  %eQ({ALL}) : {{List.length(&2, U32, {OUT}) == Nat.add(Nat.add(VR.lens({PRE}), 4n+_), List.length(&2, U32, ys)) : Nat}}')
     w(f'  VR.out_len({PRE}, ys, {POST})')
     w('')
-    w('def f_dr(' + ', '.join(decl_m) + f') -> {{VS.bdr({FS}n, {OUT}) == ys : +List<U32>}}:')
+    w('def f_dr(' + ', '.join(decl_m) + f') -> {{VS.bdr({FSN}, {OUT}) == ys : +List<U32>}}:')
     w(f'  %eP({ALL}) : {{VS.bdr(Nat.add(_, 4n+{Qz}n), {OUT}) == ys : +List<U32>}}')
     w(f'  %eQ({ALL}) : {{VS.bdr(Nat.add(VR.lens({PRE}), 4n+_), {OUT}) == ys : +List<U32>}}')
     w(f'  VZ.out_dr({PRE}, ys, {POST})')
@@ -651,9 +708,11 @@ def rej_text(x):
     w('def inv_v(v, bs, e):')
     L.extend(match_value('v', ('Sequence', ['items']), 'st0(items, bs, e)'))
     w('')
+    if pure:
+        return L
     R = FS - P
     body = VBY.REJ.split('def ek_sub(')[0] + VBY.REJW + NREJ
-    for a, b in [('@Tn', Tn), ('@n', n), ('@FSL', FSL), ('@FS', str(FS)), ('@PO', str(po)), ('@P', str(P)), ('@H', str(H)),
+    for a, b in [('@Tn', Tn), ('@n', n), ('@FSL', FSL), ('@FSn', x.FSN), ('@FS', str(FS)), ('@PO', str(po)), ('@P', str(P)), ('@H', str(H)),
                  ('@R4', str(R - 4)), ('@R', str(R)), ('@Y', Y),
                  ('@B0', str(fsb[0])), ('@B1', str(fsb[1])), ('@B2', str(fsb[2])), ('@B3', str(fsb[3]))]:
         body = body.replace(a, b)
@@ -759,8 +818,14 @@ def outputs(g, names, no_big):
     out = {}
     for n in ORDER:
         x = NName(g, n, names[n])
+        if x.big and no_big:
+            continue
         out[VBY.fname(x, '_win')] = win_text(x)
         out[VBY.fname(x)] = VBY.top_text(x).replace('codegen/var_bytes.py', 'codegen/var_bytes_nest.py')
         out[VBY.fname(x, '_unique')] = VBY.unique_text(x).replace('codegen/var_bytes.py', 'codegen/var_bytes_nest.py')
-        out[VBY.fname(x, '_rej')] = rej_text(x)
+        if not x.big:
+            # open for big names: rej_text's closed length facts (Nat.add(24820n, List.length(&2, ..)))
+            # need the symbolic treatment spec_part_seg gives the spec side; not done yet
+            out[VBY.fname(x, '_rej')] = rej_text(x)
+    out.update(VBB.outputs())
     return out
