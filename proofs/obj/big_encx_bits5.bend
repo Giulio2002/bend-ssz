@@ -321,3 +321,26 @@ def encx_spec(m, hok):
         {Codec.one(Bits.encoding(_, List.append(&2, Bool, CO.BITS(T, K), [True{}])), None{}) == Some{[S.Variable{Bp.pack(List.append(&2, Bool, CO.BITS(T, K), [True{}]))}]} : Maybe<&2, +List<S.Part>>}
       {==}
 
+# ---- the bound: at most 1 bytes (K <= 5) ----
+def x8le(+a: Nat, +M: Nat, +h: {Nat.is_le(VS.x8(a), Nat.add(VS.x8(M), 7n)) == True{} : Bool}) -> {Nat.is_le(a, M) == True{} : Bool}:
+  match a M:
+    case 0n _: FD.nat__zero_le(M)
+    case 1n+ +p 0n: Empty.absurd({Nat.is_le(1n+p, 0n) == True{} : Bool}, FD.logic__false_true(h))
+    case 1n+ +p 1n+ +c: x8le(p, c, h)
+def maxg(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +B: Nat, +kb: Nat, +KY: Nat, +h: {OKT(dw, T, K, B, kb, KY) == True{} : Bool}) -> {Nat.is_le(List.length(&2, U32, ENC(MB{dw, T, K, B, kb, KY})), 1n) == True{} : Bool}:
+  +hk = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(K, 5), Nat.is_le(U32.to_nat(K), U32.to_nat(5)), VU.le_u32(K, 5), ok_hlim(dw, T, K, B, kb, KY, h))
+  +h8 = FD.nat__le_trans(VS.x8(VBT.AK(K)), Nat.add(VS.x8(VBT.AK(K)), VBT.BKk(K)), Nat.add(VS.x8(0n), 7n), FD.nat__le_add_right(VS.x8(VBT.AK(K)), VBT.BKk(K)),
+    FD.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(VS.x8(0n), 7n)) == True{} : Bool}, U32.to_nat(K), Nat.add(VS.x8(VBT.AK(K)), VBT.BKk(K)), VBT.E1(K),
+      FD.nat__le_trans(U32.to_nat(K), U32.to_nat(5), Nat.add(VS.x8(0n), 7n), hk, {==})))
+  +hA = Order.add_right(VBT.AK(K), 0n, 1n, x8le(VBT.AK(K), 0n, h8))
+  +eN = Equal.trans(Nat, List.length(&2, U32, ENC(MB{dw, T, K, B, kb, KY})), U32.to_nat(CO.NK(K)), Nat.add(VBT.AK(K), 1n), eL(dw, T, K, B, kb, KY, h), VBT.E4(K, kb, ok_hkb(dw, T, K, B, kb, KY, h), hK(dw, T, K, B, kb, KY, h)))
+  FD.logic__subst(Nat, z => {Nat.is_le(z, 1n) == True{} : Bool}, Nat.add(VBT.AK(K), 1n), List.length(&2, U32, ENC(MB{dw, T, K, B, kb, KY})), Equal.sym(Nat, List.length(&2, U32, ENC(MB{dw, T, K, B, kb, KY})), Nat.add(VBT.AK(K), 1n), eN), hA)
+
+law maxx:
+  for +m: MB
+  for +hok: {OK(m) == True{} : Bool}
+  {Nat.is_le(List.length(&2, U32, ENC(m)), 1n) == True{} : Bool}
+def maxx(m, hok):
+  match m:
+    case MB{+dw, +T, +K, +B, +kb, +KY}: maxg(dw, T, K, B, kb, KY, hok)
+
