@@ -37,6 +37,7 @@ import generate as G  # noqa: E402
 ROOT = VL.ROOT
 GROUP = 8
 # the child window module of each variable field's runtime prefix (boxes stripped)
+CHECKED = {'bv4'}
 CHILD_MOD = {
     'l16_ProposerSlashing': 'var_winx_l16_ProposerSlashing.bend',
     'l1_AttesterSlashing': 'big_var_winx_l1_AttesterSlashing.bend',
@@ -53,10 +54,24 @@ CHILD_MOD = {
     'l128_u64': 'var_winx_l128_u64.bend',
     'BeaconBlockBody': 'big_var_winx_BeaconBlockBody.bend',
     'BeaconBlock': 'big_var_winx_BeaconBlock.bend',
+    # BeaconState's lists
+    'l16777216_b32': 'big_var_winx_l16777216_b32.bend',
+    'l2048_Eth1Data': 'var_winx_l2048_Eth1Data.bend',
+    'l1099511627776_Validator': 'big_var_winx_l1099511627776_Validator.bend',
+    'l1099511627776_u64': 'big_var_winx_l1099511627776_u64.bend',
+    'l1099511627776_u8': 'big_var_winx_l1099511627776_u8.bend',
+    'ExecutionPayloadHeader': 'var_bytesx_ExecutionPayloadHeader.bend',
+    'l16777216_HistoricalSummary': 'big_var_winx_l16777216_HistoricalSummary.bend',
+    'l134217728_PendingDeposit': 'big_var_winx_l134217728_PendingDeposit.bend',
+    'l134217728_PendingPartialWithdrawal': 'big_var_winx_l134217728_PendingPartialWithdrawal.bend',
+    'l262144_PendingConsolidation': 'big_var_winx_l262144_PendingConsolidation.bend',
 }
+# the fixed-field modules (at any byte position) of the containers generated with window slices
+FIXMOD = {p: f'vfx_{p}.bend' for p in ['u64', 'b32', 'Fork', 'BeaconBlockHeader', 'v8192_b32', 'Eth1Data', 'v65536_b32', 'v8192_u64', 'bv4',
+                                         'Checkpoint', 'SyncCommittee', 'v64_u64']}
 # (container, output file) of the tracked modules
-MODULES = [('BeaconBlockBody', 'big_var_winx_BeaconBlockBody.bend'), ('BeaconBlock', 'big_var_winx_BeaconBlock.bend'),
-           ('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock.bend')]
+MODULES = [('BeaconBlockBody', 'big_var_winx_BeaconBlockBody.bend', False), ('BeaconBlock', 'big_var_winx_BeaconBlock.bend', False),
+           ('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock.bend', False), ('BeaconState', 'big_var_winx_BeaconState.bend', True)]
 
 CW = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},\n'
       '    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},\n'
@@ -91,8 +106,9 @@ class Layout:
     """The fields of container `name`: kind, byte position c, spec schema sk;
     fixed fields their FT, variable ones their index j, child prefix and module."""
 
-    def __init__(self, name, g, names):
+    def __init__(self, name, g, names, sym=False, fixmod=None):
         self.name = name
+        self.sym = sym
         self.g = g
         t = names[name]
         s = g.shape(t)
@@ -104,8 +120,16 @@ class Layout:
             f = {'i': i, 'name': fn, 'c': p, 'k': p // 4, 't': ft, 'sk': k, 'box': fs.kind == 'box', 'rep': qual(fs.rep)}
             if ft.fixed():
                 f['kind'] = 'fix'
-                f['ft'] = VL.FT(g, ft)
-                p += f['ft'].size
+                f['size'] = ft.fixed_size()
+                if sym:
+                    # read by a fixed-field module at any byte position (FIXMOD)
+                    f['rt'] = fs.p
+                    f['fmod'] = fixmod[fs.p]
+                    f['fa'] = f'FX_{fs.p}'
+                    f['chk'] = fs.p in CHECKED
+                else:
+                    f['ft'] = VL.FT(g, ft)
+                p += f['size']
             else:
                 f['kind'] = 'var'
                 base = fs.p[:-3] if f['box'] else fs.p
@@ -116,13 +140,25 @@ class Layout:
                 p += 4
             self.fields.append(f)
         self.FS = p
-        assert p % 4 == 0
-        self.H = p // 4
         self.vars = [f for f in self.fields if f['kind'] == 'var']
         self.k = len(self.vars)
         self.nf = len(self.fields)
         self.grouped = self.nf > GROUP
-        self.nodes = VL.field_nodes(g, self, lambda k: f'UR.RWN(t, {pos(4 * k)})')
+        self.fchk = [f for f in self.fields if f.get('chk')]
+        if not sym:
+            assert p % 4 == 0
+            self.H = p // 4
+            self.nodes = VL.field_nodes(g, self, lambda k: f'UR.RWN(t, {pos(4 * k)})')
+
+    def pos(self, c):
+        return f'Nat.add({c}n, x)' if self.sym else pos(c)
+
+    def fmods(self):
+        out = {}
+        for f in self.fields:
+            if f.get('fmod'):
+                out[f['fa']] = f['fmod']
+        return out
 
     # ---- terms ----
     def O(self, j):
@@ -154,6 +190,8 @@ def items(L):
     its = [f'U32.is_le({L.FS}, len)', f'U32.is_eq({L.O(0)}, {L.FS})']
     for j in range(1, L.k):
         its.append(f'Bool.and(U32.is_le({L.O(j - 1)}, {L.O(j)}), U32.is_le({L.O(j)}, len))')
+    for f in L.fchk:
+        its.append(f'{f["fa"]}.CHK(t, {L.pos(f["c"])})')
     for f in L.vars:
         j = f['j']
         its.append(f'CH{j}.CHKw(t, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)})')
@@ -164,7 +202,7 @@ def defs_text(L):
     w = []
     for f in L.vars:
         j = f['j']
-        w.append(f'def O{j}(+t: FD.array__Tree<U32>, +x: Nat) -> U32: UR.RWN(t, {pos(f["c"])})')
+        w.append(f'def O{j}(+t: FD.array__Tree<U32>, +x: Nat) -> U32: UR.RWN(t, {L.pos(f["c"])})')
     for f in L.vars:
         j = f['j']
         w.append(f'def XJ{j}(+t: FD.array__Tree<U32>, +x: Nat) -> Nat: Nat.add(U32.to_nat({L.O(j)}), x)')
@@ -306,7 +344,7 @@ def facts_text(L):
         E = L.E(j)
         w.append(f'def eoJ{j}({CW}, {H}) -> {{U32.to_nat({L.FJ(j)}) == {L.XJ(j)} : Nat}}: eoW({CWA}, {L.O(j)}, {E}, r1{j}({TXOA}, h), r2{j}({TXOA}, h))')
         w.append(f'def hwJ{j}({CW}, {H}) -> {{Nat.is_le(Nat.add({L.XJ(j)}, U32.to_nat({L.LJ(j)})), {PW}) == {TRUE}}}: hwj({CWA}, {L.O(j)}, {E}, r1{j}({TXOA}, h), r2{j}({TXOA}, h))')
-        w.append(f'def itD{j}({TXO}, {H}) -> {{CH{j}.CHKw(t, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}) == {TRUE}}}: it{k + 1 + j}({TXOA}, h)')
+        w.append(f'def itD{j}({TXO}, {H}) -> {{CH{j}.CHKw(t, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}) == {TRUE}}}: it{k + 1 + len(L.fchk) + j}({TXOA}, h)')
         w.append(f'def eE{j}({TXO}, {H}) -> {{U32.to_nat({E}) == Nat.add(U32.to_nat({L.O(j)}), U32.to_nat({L.LJ(j)})) : Nat}}:')
         w.append(f'  Equal.sym(Nat, Nat.add(U32.to_nat({L.O(j)}), U32.to_nat(U32.sub({E}, {L.O(j)}))), U32.to_nat({E}), VM.sub_eq({E}, {L.O(j)}, VMR.u32le({L.O(j)}, {E}, r1{j}({TXOA}, h))))')
     w.append('')
@@ -341,12 +379,14 @@ def validator_text(L):
     def OS(i):
         return ', '.join(L.O(j) for j in range(min(i, k - 1) + 1))
 
-    for i in range(2 * k - 1, -1, -1):
+    m = len(L.fchk)
+    last = 2 * k + m - 1
+    for i in range(last, -1, -1):
         nfacts = min(i, k)
         decl = ', '.join([HF] + [hI(m) for m in range(1, nfacts + 1)])
         args = ', '.join(['hF'] + [f'hI{m}' for m in range(1, nfacts + 1)])
         cur = f'{Tn}_c{i}(b, {BUF}, off, len, {OS(i)})'
-        if i == 2 * k - 1:
+        if i == last:
             w.append(f'def okc{i}({CW}, {decl}, +b: Bool, +eb: {{IT{i + 1}({TXOA}) == b : Bool}}) -> {{{cur} == ({BUF}, b) : B.Buf & Bool}}:')
             w.append('  match b:')
             w.append('    case True{}: {==}')
@@ -367,8 +407,14 @@ def validator_text(L):
             c = f['c']
             w.append(f'      %Equal.sym(B.Buf & U32, B.read32({BUF}, U32.add(off, {c})), ({BUF}, {L.O(i + 1)}), rdF({CWA}, hF, {c}, {c}n, {{==}}, {{==}})) :')
             w.append(f'        {{{Tn}_v{i + 1}(off, len, {OS(i)}, _) == {GOALT}}}')
+        elif i < k - 1 + m:
+            f = L.fchk[i - (k - 1)]
+            c = f['c']
+            w.append(f'      %Equal.sym(B.Buf & Bool, T.{f["rt"]}_ok_at({BUF}, U32.add(off, {c})), ({BUF}, {f["fa"]}.CHK(t, {L.pos(c)})),')
+            w.append(f'          {f["fa"]}.ok(d, t, n, U32.add(off, {c}), {L.pos(c)}, eoc({CWA}, hF, {c}, {c}n, {{==}}, {{==}}), hd, pf, roomF({CWA}, hF, {c}n, 4n, {{==}}))) :')
+            w.append(f'        {{{Tn}_v{i + 1}(off, len, {OS(k - 1)}, _) == {GOALT}}}')
         else:
-            j = i - (k - 1)
+            j = i - (k - 1) - m
             f = L.vars[j]
             h1, h2 = rng(j)
             okf = f'T.{f["p"]}_bx_ok' if f['box'] else f'T.{f["p"]}_ok'
@@ -401,7 +447,9 @@ def validator_text(L):
 
 def field_obj(L, f):
     """The object field f reads, and the one the record holds (boxed if the field is)."""
-    if f['kind'] == 'fix':
+    if f['kind'] == 'fix' and L.sym:
+        o = f'{f["fa"]}.OBJ(d, t, {L.pos(f["c"])})'
+    elif f['kind'] == 'fix':
         o = L.nodes[f['i']]['obj']
     else:
         j = f['j']
@@ -412,7 +460,15 @@ def field_obj(L, f):
 def read_step(L, f):
     """(runtime call, value, equation type, proof, hole) of reading field f."""
     o, _ = field_obj(L, f)
-    if f['kind'] == 'fix':
+    if f['kind'] == 'fix' and L.sym:
+        c = f['c']
+        sz = f['size']
+        call = f'T.{f["rt"]}_read({BUF}, U32.add(off, {c}), {sz})'
+        prf = (f'{f["fa"]}.rdx(d, t, n, U32.add(off, {c}), {L.pos(c)}, eoc({CWA}, hF, {c}, {c}n, {{==}}, {{==}}), hd, pf,\n'
+               f'        roomF({CWA}, hF, {c}n, {sz}n, {{==}}))')
+        ty = f'B.Buf & {f["rep"]}'
+        base = f['rt']
+    elif f['kind'] == 'fix':
         ft = f['ft']
         c = f['c']
         call = f'T.{ft.p}_read({BUF}, U32.add(off, {c}), {ft.size})'
@@ -519,13 +575,112 @@ def reader_text(L):
 # ---------------------------------------------------------------------------------------------------
 # the spec side
 
+def sym_header_text(L, PSV, OSL, H):
+    """The fixed region of a container whose fixed fields are window slices: its widths
+    and size, and its bytes (the slices and the offset words) as the window's first FS bytes."""
+    FS = L.FS
+    w = []
+    WS = '[' + ', '.join(f'Some{{{f["size"]}n}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields) + ']'
+    fixed = [f for f in L.fields if f['kind'] == 'fix']
+    w.append(f'def ewidw({CW}, {H}) -> {{LY.WID({PSV}) == {WS} : +List<Maybe<&2, Nat>>}}:')
+    w.append(f'  +hF = hFc({TXOA}, h)')
+    for f in fixed:
+        els = []
+        for g2 in L.fields:
+            if g2['kind'] == 'var':
+                els.append('None{}')
+            elif g2['i'] < f['i']:
+                els.append(f'Some{{{g2["size"]}n}}')
+            elif g2['i'] == f['i']:
+                els.append('Some{_}')
+            else:
+                els.append(f'Some{{List.length(&2, U32, UW.WX(t, {L.pos(g2["c"])}, {g2["size"]}n))}}')
+        P, sz = L.pos(f['c']), f['size']
+        w.append(f'  %Equal.sym(Nat, List.length(&2, U32, UW.WX(t, {P}, {sz}n)), {sz}n, UW.lenWX(d, t, {P}, {sz}n, pf, roomF({CWA}, hF, {f["c"]}n, {sz}n, {{==}}))) :')
+        w.append(f'    {{[{", ".join(els)}] == {WS} : +List<Maybe<&2, Nat>>}}')
+    w.append('  {==}')
+    w.append('')
+    w.append(f'def efsw({CW}, {H}) -> {{Layout.fixed_size({PSV}) == {FS}n : Nat}}:')
+    w.append(f'  Equal.trans(Nat, Layout.fixed_size({PSV}), LY.WFS(LY.WID({PSV})), {FS}n, LY.fs_w({PSV}),')
+    w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WFS(z), LY.WID({PSV}), {WS}, ewidw({CWA}, h)))')
+    w.append('')
+    # the fixed region's bytes
+    pieces = []
+    for f in L.fields:
+        P = L.pos(f['c'])
+        pieces.append(f'UW.WX(t, {P}, {f["size"]}n)' if f['kind'] == 'fix' else f'F.limbs([UR.RWN(t, {P})])')
+
+    def pre(i, hole):
+        return ''.join(f'List.append(&2, U32, {pc}, ' for pc in pieces[:i]) + hole + ')' * i
+    w.append(f'# The fixed region: the fixed fields\' slices and the offset words, the window\'s first {FS} bytes.')
+    w.append(f'def hdrE({CW}, {H}) -> {{LY.HDRW({PSV}, {OSL}) == UW.WX(t, x, {FS}n) : +List<U32>}}:')
+    w.append(f'  +hF = hFc({TXOA}, h)')
+    for i, f in enumerate(L.fields):
+        c = f['c']
+        sz = f['size'] if f['kind'] == 'fix' else 4
+        P = L.pos(c)
+        rest = FS - c - sz
+        cur = f'UW.WX(t, {P}, Nat.add({sz}n, {rest}n))'
+        w.append(f'  %Equal.sym(+List<U32>, {cur}, List.append(&2, U32, UW.WX(t, {P}, {sz}n), UW.WX(t, Nat.add({sz}n, {P}), {rest}n)), UW.splitWX(t, {P}, {sz}n, {rest}n)) :')
+        w.append(f'    {{LY.HDRW({PSV}, {OSL}) == {pre(i, "_")} : +List<U32>}}')
+        if f['kind'] == 'var':
+            w.append(f'  %UR.rwn_bytes(d, t, {P}, pf, roomF({CWA}, hF, {c}n, 4n, {{==}})) :')
+            w.append(f'    {{LY.HDRW({PSV}, {OSL}) == {pre(i, f"List.append(&2, U32, _, UW.WX(t, {L.pos(c + 4)}, {rest}n))")} : +List<U32>}}')
+    w.append('  {==}')
+    w.append('')
+    return '\n'.join(w)
+
+
+def sym_schema_text(L):
+    """The spec schema as a variable sv = Spec.<name>(): its fields' chain, taken apart
+    one head at a time (each fact closed at the literal, then transported to sv)."""
+    nf = L.nf
+    X = f'Spec.{L.name}()'
+    w = ['', '# ---- the schema, taken apart without unfolding it ----------------------------------------------', '']
+    w.append('def TL0(+sv: S.Schema) -> S.Schema: SH.Container_fields(sv)')
+    for i in range(nf):
+        w.append(f'def TL{i + 1}(+sv: S.Schema) -> S.Schema: SH.Chain_tail(TL{i}(sv))')
+    for i in range(nf):
+        w.append(f'def HD{i}(+sv: S.Schema) -> S.Schema: SH.Chain_head(TL{i}(sv))')
+    SVE = f'+sv: S.Schema, +esv: {{sv == {X} : S.Schema}}'
+    TR = lambda body: f'FD.logic__subst(S.Schema, z => {{{body} : {"Bool" if "== True" in body else "S.Schema" if "Spec." in body or "S.End" in body else "Maybe<&2, Nat>"}}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})'
+    w.append(f'def isc({SVE}) -> {{SH.is_Container(sv) == True{{}} : Bool}}:')
+    w.append(f'  FD.logic__subst(S.Schema, z => {{SH.is_Container(z) == True{{}} : Bool}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
+    w.append(f'def fsn({SVE}) -> {{SS.fixed_size(SH.Container_fields(sv)) == None{{}} : Maybe<&2, Nat>}}:')
+    w.append(f'  FD.logic__subst(S.Schema, z => {{SS.fixed_size(SH.Container_fields(z)) == None{{}} : Maybe<&2, Nat>}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
+    for i, f in enumerate(L.fields):
+        w.append(f'def es{i}({SVE}) -> {{HD{i}(sv) == {L.spec(f)} : S.Schema}}:')
+        w.append(f'  FD.logic__subst(S.Schema, z => {{HD{i}(z) == {L.spec(f)} : S.Schema}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
+        w.append(f'def isch{i}({SVE}) -> {{SH.is_Chain(TL{i}(sv)) == True{{}} : Bool}}:')
+        w.append(f'  FD.logic__subst(S.Schema, z => {{SH.is_Chain(TL{i}(z)) == True{{}} : Bool}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
+    w.append(f'def isend({SVE}) -> {{SH.is_End(TL{nf}(sv)) == True{{}} : Bool}}:')
+    w.append(f'  FD.logic__subst(S.Schema, z => {{SH.is_End(TL{nf}(z)) == True{{}} : Bool}}, {X}, sv, Equal.sym(S.Schema, sv, {X}, esv), {{==}})')
+
+    w.append(f'def CHS{nf}(+sv: S.Schema) -> S.Schema: S.End{{}}')
+    for i in range(nf - 1, -1, -1):
+        w.append(f'def CHS{i}(+sv: S.Schema) -> S.Schema: S.Chain{{HD{i}(sv), CHS{i + 1}(sv)}}')
+
+    def ch(i):
+        return f'CHS{i}(sv)'
+    w.append(f'def fe{nf}({SVE}) -> {{TL{nf}(sv) == S.End{{}} : S.Schema}}: SH.End_shape(TL{nf}(sv), isend(sv, esv))')
+    for i in range(nf - 1, -1, -1):
+        w.append(f'def fe{i}({SVE}) -> {{TL{i}(sv) == {ch(i)} : S.Schema}}:')
+        w.append(f'  Equal.trans(S.Schema, TL{i}(sv), S.Chain{{HD{i}(sv), TL{i + 1}(sv)}}, {ch(i)}, SH.Chain_shape(TL{i}(sv), isch{i}(sv, esv)),')
+        w.append(f'    Equal.cong(S.Schema, S.Schema, z => S.Chain{{HD{i}(sv), z}}, TL{i + 1}(sv), {ch(i + 1)}, fe{i + 1}(sv, esv)))')
+    w.append('')
+    return '\n'.join(w)
+
+
 def spec_text(L):
     k = L.k
     FS = L.FS
     w = []
     vals, parts = [], []
     for f in L.fields:
-        if f['kind'] == 'fix':
+        if f['kind'] == 'fix' and L.sym:
+            vals.append(f'{f["fa"]}.VAL(t, {L.pos(f["c"])})')
+            parts.append(f'S.Fixed{{UW.WX(t, {L.pos(f["c"])}, {f["size"]}n)}}')
+        elif f['kind'] == 'fix':
             nd = L.nodes[f['i']]
             vals.append(nd['val'])
             parts.append(f'S.Fixed{{F.limbs([{", ".join(nd["words"])}])}}')
@@ -536,28 +691,56 @@ def spec_text(L):
     nf = L.nf
 
     def itm(i):
+        if L.sym:
+            return f'ITS{i}(t, x, len)'
         return 'S.EmptyItems{}' if i == nf else f'S.Items{{{vals[i]}, {itm(i + 1)}}}'
 
     def chain(i):
+        if L.sym:
+            return f'CHS{i}(sv)'
         return 'S.End{}' if i == nf else f'S.Chain{{{L.spec(L.fields[i])}, {chain(i + 1)}}}'
+
+    def sch(i):
+        return f'HD{i}(sv)' if L.sym else L.spec(L.fields[i])
 
     def cat(i):
         if i == nf:
             return '{==}'
-        rest = '[' + ', '.join(parts[i + 1:]) + ']'
+        rest = f'RST{i}(t, x, len)' if L.sym else '[' + ', '.join(parts[i + 1:]) + ']'
         f = L.fields[i]
+        if f['kind'] == 'fix' and L.sym:
+            P, sz = L.pos(f['c']), f['size']
+            return (f'F.cat_fixed(Codec.parts({vals[i]}, {sch(i)}), UW.WX(t, {P}, {sz}n), Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, '
+                    f'{f["fa"]}.prt(d, t, {P}, pf, roomF({CWA}, hFc({TXOA}, hchk), {f["c"]}n, {sz}n, {{==}}), HD{i}(sv), es{i}(sv, esv)),\n      {cat(i + 1)})')
         if f['kind'] == 'fix':
             nd = L.nodes[i]
             return (f'F.cat_fixed(Codec.parts({vals[i]}, {nd["sch"]}), F.limbs([{", ".join(nd["words"])}]), '
                     f'Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, {nd["proof"]},\n      {cat(i + 1)})')
         j = f['j']
-        return (f'VS.cat_var(Codec.parts({vals[i]}, {L.spec(f)}), {L.Y(j)}, Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, '
-                f'CH{j}.specw(d, t, n, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}, eoJ{j}({CWA}, hchk), hd, hwJ{j}({CWA}, hchk), pf, itD{j}({TXOA}, hchk)),\n      {cat(i + 1)})')
+        cs = f'CH{j}.specw(d, t, n, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}, eoJ{j}({CWA}, hchk), hd, hwJ{j}({CWA}, hchk), pf, itD{j}({TXOA}, hchk))'
+        if L.sym:
+            cs = (f'FD.logic__subst(S.Schema, z => {{Codec.parts({vals[i]}, z) == Some{{[S.Variable{{{L.Y(j)}}}]}} : {MP}}}, {L.spec(f)}, HD{i}(sv), '
+                  f'Equal.sym(S.Schema, HD{i}(sv), {L.spec(f)}, es{i}(sv, esv)), {cs})')
+        return (f'VS.cat_var(Codec.parts({vals[i]}, {sch(i)}), {L.Y(j)}, Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, '
+                f'{cs},\n      {cat(i + 1)})')
     PSV = '[' + ', '.join(parts) + ']'
+    if L.sym:
+        TXL = '+t: FD.array__Tree<U32>, +x: Nat, +len: U32'
+        w.append(f'def PSW({TXL}) -> +List<S.Part>: {PSV}')
+        w.append(f'def RST{nf - 1}({TXL}) -> +List<S.Part>: []')
+        for i in range(nf - 2, -1, -1):
+            w.append(f'def RST{i}({TXL}) -> +List<S.Part>: Con{{{parts[i + 1]}, RST{i + 1}(t, x, len)}}')
+        w.append(f'def ITS{nf}({TXL}) -> S.Value: S.EmptyItems{{}}')
+        for i in range(nf - 1, -1, -1):
+            w.append(f'def ITS{i}({TXL}) -> S.Value: S.Items{{{vals[i]}, ITS{i + 1}(t, x, len)}}')
+        w.append('')
+        PSV = 'PSW(t, x, len)'
     OSL = '[' + ', '.join(L.O(j) for j in range(k)) + ']'
     Ln = [f'U32.to_nat({L.LJ(j)})' for j in range(k)]
     lenY = [f'List.length(&2, U32, {L.Y(j)})' for j in range(k)]
     H = f'+h: {{CHKw(t, x, off, len) == {TRUE}}}'
+    if L.sym:
+        w.append(sym_schema_text(L))
     w.append(f'def VALw(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: S.Sequence{{{itm(0)}}}')
     w.append('')
     for j in range(k):
@@ -591,6 +774,8 @@ def spec_text(L):
     w.append(f'  Equal.trans(Nat, U32.to_nat(len), Nat.add(U32.to_nat({L.O(0)}), {RS[0]}), Nat.add({FS}n, {RS[0]}), eln0({TXOA}, h),')
     w.append(f'    Equal.cong(Nat, Nat, z => Nat.add(z, {RS[0]}), U32.to_nat({L.O(0)}), {FS}n, eO0({TXOA}, h)))')
     w.append('')
+    if L.sym:
+        w.append(sym_header_text(L, PSV, OSL, H))
     # the window's bytes: the header words, then the children's windows
     PAYt = ''.join(f'List.append(&2, U32, {L.Y(j)}, ' for j in range(k - 1)) + L.Y(k - 1) + ')' * (k - 1)
     LHS = f'List.append(&2, U32, LY.HDRW({PSV}, {OSL}), Layout.payloads({PSV}))'
@@ -602,10 +787,17 @@ def spec_text(L):
     w.append(f'    {{List.append(&2, U32, LY.HDRW({PSV}, {OSL}), {inner}) == {WBL} : +List<U32>}}')
     CUR = f'List.append(&2, U32, LY.HDRW({PSV}, {OSL}), {PAYt})'
     w.append(f'  %Equal.sym(Nat, U32.to_nat(len), Nat.add({FS}n, {RS[0]}), elen({TXOA}, h)) : {{{CUR} == UW.WX(t, x, _) : +List<U32>}}')
-    w.append(f'  %Equal.sym(+List<U32>, UW.WX(t, x, Nat.add(A.quad({L.H}n), {RS[0]})), List.append(&2, U32, F.limbs(UR.RWS({L.H}n, t, x)), UW.WX(t, Nat.add(A.quad({L.H}n), x), {RS[0]})),')
-    w.append(f'      UW.headWX(d, t, x, {L.H}n, {RS[0]}, pf, hwR)) :')
-    w.append(f'    {{{CUR} == _ : +List<U32>}}')
-    HD = f'F.limbs(UR.RWS({L.H}n, t, x))'
+    if L.sym:
+        w.append(f'  %Equal.sym(+List<U32>, UW.WX(t, x, Nat.add({FS}n, {RS[0]})), List.append(&2, U32, UW.WX(t, x, {FS}n), UW.WX(t, Nat.add({FS}n, x), {RS[0]})),')
+        w.append(f'      UW.splitWX(t, x, {FS}n, {RS[0]})) :')
+        w.append(f'    {{{CUR} == _ : +List<U32>}}')
+        w.append(f'  %hdrE({CWA}, h) : {{{CUR} == List.append(&2, U32, _, UW.WX(t, Nat.add({FS}n, x), {RS[0]})) : +List<U32>}}')
+        HD = f'LY.HDRW({PSV}, {OSL})'
+    else:
+        w.append(f'  %Equal.sym(+List<U32>, UW.WX(t, x, Nat.add(A.quad({L.H}n), {RS[0]})), List.append(&2, U32, F.limbs(UR.RWS({L.H}n, t, x)), UW.WX(t, Nat.add(A.quad({L.H}n), x), {RS[0]})),')
+        w.append(f'      UW.headWX(d, t, x, {L.H}n, {RS[0]}, pf, hwR)) :')
+        w.append(f'    {{{CUR} == _ : +List<U32>}}')
+        HD = f'F.limbs(UR.RWS({L.H}n, t, x))'
 
     def rhs(j, hole):
         """The right side after j splits, with `hole` in the last window."""
@@ -627,7 +819,9 @@ def spec_text(L):
         oko = f'(eq{j}({CWA}, h), {oko})'
     doms = []
     for f in L.fields:
-        if f['kind'] == 'fix':
+        if f['kind'] == 'fix' and L.sym:
+            doms.append((f'SP.bytes_domain(UW.WX(t, {L.pos(f["c"])}, {f["size"]}n))', f'UW.domWX(t, {L.pos(f["c"])}, {f["size"]}n)'))
+        elif f['kind'] == 'fix':
             ws = ', '.join(L.nodes[f['i']]['words'])
             doms.append((f'SP.bytes_domain(F.limbs([{ws}]))', f'F.domain_limbs([{ws}])'))
         else:
@@ -635,7 +829,7 @@ def spec_text(L):
             doms.append((f'SP.bytes_domain({L.Y(j)})', f'UW.domWX(t, {L.XJ(j)}, {Ln[j]})'))
     hv = '{==}'
     for i in range(nf - 1, -1, -1):
-        rest = '[' + ', '.join(parts[i + 1:]) + ']'
+        rest = f'RST{i}(t, x, len)' if L.sym else '[' + ', '.join(parts[i + 1:]) + ']'
         hv = f'FD.logic__and_intro({doms[i][0]}, Layout.bytes_valid({rest}), {doms[i][1]},\n      {hv})'
     PL = f'Layout.payloads({PSV})'
     w.append(f'def fitw({CW}, {H}) -> {{N.fits(4n, Nat.add({FS}n, List.length(&2, U32, {PL}))) == {TRUE}}}:')
@@ -645,14 +839,31 @@ def spec_text(L):
     w.append(f'    VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {{==}})))')
     w.append('')
     w.append(f'def encw({CW}, {H}) -> {{Layout.encoding({PSV}) == Some{{{LHS}}} : {M}}}:')
-    w.append(f'  VMV.enc_gen({PSV}, {FS}n, LY.HDRW({PSV}, {OSL}), {PL}, {{==}},')
+    w.append(f'  VMV.enc_gen({PSV}, {FS}n, LY.HDRW({PSV}, {OSL}), {PL}, {"efsw(" + CWA + ", h)" if L.sym else "{==}"},')
     w.append(f'    LY.hdr_fp({PSV}, {FS}n, {OSL}, {oko}), {{==}},')
     w.append(f'    {hv},')
     w.append(f'    fitw({CWA}, h))')
     w.append('')
-    w.append(f'def partsw({CW}, {HCHK}) -> {{Codec.parts({itm(0)}, {chain(0)}) == Some{{{PSV}}} : {MP}}}:')
+    SV = ', +sv: S.Schema, +esv: {sv == Spec.' + L.name + '() : S.Schema}' if L.sym else ''
+    w.append(f'def partsw({CW}, {HCHK}{SV}) -> {{Codec.parts({itm(0)}, {chain(0)}) == Some{{{PSV}}} : {MP}}}:')
     w.append(f'  {cat(0)}')
     w.append('')
+    if L.sym:
+        w.append('# The spec parts of the value at the schema sv = the spec\'s (never unfolded here).')
+        w.append(f'def specg({CW}, {HCHK}{SV}) -> {{Codec.parts(VALw(t, x, len), sv) == {TGT} : {MP}}}:')
+        w.append(f'  %Equal.sym(S.Schema, sv, S.Container{{SH.Container_names(sv), SH.Container_fields(sv)}}, SH.Container_shape(sv, isc(sv, esv))) : {{Codec.parts(VALw(t, x, len), _) == {TGT} : {MP}}}')
+        w.append(f'  %Equal.sym(Maybe<&2, Nat>, SS.fixed_size(SH.Container_fields(sv)), None{{}}, fsn(sv, esv)) : {{Codec.aggregate(Codec.parts({itm(0)}, SH.Container_fields(sv)), _) == {TGT} : {MP}}}')
+        w.append(f'  %Equal.sym(S.Schema, TL0(sv), {chain(0)}, fe0(sv, esv)) : {{Codec.aggregate(Codec.parts({itm(0)}, _), None{{}}) == {TGT} : {MP}}}')
+        w.append(f'  %Equal.sym({MP}, Codec.parts({itm(0)}, {chain(0)}), Some{{{PSV}}}, partsw({CWA}, hchk, sv, esv)) : {{Codec.aggregate(_, None{{}}) == {TGT} : {MP}}}')
+        w.append(f'  %Equal.sym({M}, Layout.encoding({PSV}), Some{{{LHS}}}, encw({CWA}, hchk)) : {{Codec.one(_, None{{}}) == {TGT} : {MP}}}')
+        w.append(f'  %Equal.sym(+List<U32>, {LHS}, {WBL}, winE({CWA}, hchk)) : {{Codec.one(Some{{_}}, None{{}}) == {TGT} : {MP}}}')
+        w.append('  {==}')
+        w.append('')
+        w.append('# The spec parts of the value: one variable part, the window\'s bytes.')
+        w.append(f'def specw({CW}, {HCHK}) -> {{Codec.parts(VALw(t, x, len), Spec.{L.name}()) == {TGT} : {MP}}}:')
+        w.append(f'  specg({CWA}, hchk, Spec.{L.name}(), {{==}})')
+        w.append('')
+        return '\n'.join(w)
     w.append('# The spec parts of the value: one variable part, the window\'s bytes.')
     w.append(f'def specw({CW}, {HCHK}) -> {{Codec.parts(VALw(t, x, len), Spec.{L.name}()) == {TGT} : {MP}}}:')
     w.append(f'  %Equal.sym({MP}, Codec.parts({itm(0)}, {chain(0)}), Some{{{PSV}}}, partsw({CWA}, hchk)) : {{Codec.aggregate(_, None{{}}) == {TGT} : {MP}}}')
@@ -683,51 +894,94 @@ def inv_text(L):
         out = []
         for f in L.fields[:i]:
             if f['kind'] == 'fix':
-                s = f['ft'].size
-                out.append(f'+xs{f["i"]}: +List<U32>, +lx{f["i"]}: {{Some{{{s}n}} == Some{{List.length(&2, U32, xs{f["i"]})}} : Maybe<&2, Nat>}}')
+                s = f['size']
+                if L.sym:
+                    out.append(f'+xs{f["i"]}: +List<U32>, +lx{f["i"]}: LXF({s}n, xs{f["i"]})')
+                else:
+                    out.append(f'+xs{f["i"]}: +List<U32>, +lx{f["i"]}: {{Some{{{s}n}} == Some{{List.length(&2, U32, xs{f["i"]})}} : Maybe<&2, Nat>}}')
+                if f.get('chk'):
+                    out.append(f'+hx{f["i"]}: S.Value, +ex{f["i"]}: EXF(hx{f["i"]}, {L.spec(f)}, xs{f["i"]})')
             else:
                 j = f['j']
-                out.append(f'+y{j}: +List<U32>, +h{j}: S.Value, +ev{j}: {{Codec.parts(h{j}, {L.spec(f)}) == Some{{[S.Variable{{y{j}}}]}} : {MP}}}')
+                if L.sym:
+                    out.append(f'+y{j}: +List<U32>, +h{j}: S.Value, +ev{j}: EVF(h{j}, {L.spec(f)}, y{j})')
+                else:
+                    out.append(f'+y{j}: +List<U32>, +h{j}: S.Value, +ev{j}: {{Codec.parts(h{j}, {L.spec(f)}) == Some{{[S.Variable{{y{j}}}]}} : {MP}}}')
         return ''.join(x + ', ' for x in out)
 
     def sargs(i):
         out = []
         for f in L.fields[:i]:
             if f['kind'] == 'fix':
-                out.append(f'xs{f["i"]}, lx{f["i"]}')
+                out.append(f'xs{f["i"]}, lx{f["i"]}' + (f', hx{f["i"]}, ex{f["i"]}' if f.get('chk') else ''))
             else:
                 j = f['j']
                 out.append(f'y{j}, h{j}, ev{j}')
         return ''.join(x + ', ' for x in out)
 
-    def prefix(i, inner):
+    def prefix0(i, inner):
         s = inner
         for f in reversed(L.fields[:i]):
             s = f'Codec.concatenate(Some{{[{part(f)}]}}, {s})'
         return s
 
+    def pargs(i):
+        return ''.join(f'xs{f["i"]}, ' if f['kind'] == 'fix' else f'y{f["j"]}, ' for f in L.fields[:i])
+
+    def prefix(i, inner):
+        return f'PFX{i}({pargs(i)}{inner})' if L.sym else prefix0(i, inner)
+
+    def chain0(i):
+        return 'S.End{}' if i == nf else f'S.Chain{{{L.spec(L.fields[i])}, {chain0(i + 1)}}}'
+
     def chain(i):
-        return 'S.End{}' if i == nf else f'S.Chain{{{L.spec(L.fields[i])}, {chain(i + 1)}}}'
+        return f'LCH{i}()' if L.sym else chain0(i)
 
     def absurd():
         return f'Empty.absurd({GOAL}, FD.logic__none_some(+List<S.Part>, [S.Variable{{{WBL}}}], e))'
+    CP = L.sym
     PS = '[' + ', '.join(part(f) for f in L.fields) + ']'
+    WS = '[' + ', '.join(f'Some{{{f["size"]}n}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields) + ']'
+    PLD = ''.join(f'+xs{f["i"]}: +List<U32>, ' if f['kind'] == 'fix' else f'+y{f["j"]}: +List<U32>, ' for f in L.fields)
+    PLA = ''.join(f'xs{f["i"]}, ' if f['kind'] == 'fix' else f'y{f["j"]}, ' for f in L.fields)
+    if CP:
+        # the parts, their bytes and widths as definitions (the lemmas below take the payloads only)
+        w.append(f'def PSX({PLD[:-2]}) -> +List<S.Part>: {PS}')
+        PS = f'PSX({PLA[:-2]})'
+        w.append(f'def BYX({PLD[:-2]}) -> +List<U32>: List.append(&2, U32, Layout.fixed_parts({PS}, Layout.fixed_size({PS})), Layout.payloads({PS}))')
+        w.append(f'def WSX() -> +List<Maybe<&2, Nat>>: {WS}')
+        w.append(f'def EVF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Data: {{Codec.parts(h, s) == Some{{[S.Variable{{y}}]}} : {MP}}}')
+        w.append(f'def EXF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Data: {{Codec.parts(h, s) == Some{{[S.Fixed{{y}}]}} : {MP}}}')
+        w.append(f'def LXF(+s: Nat, +xs: +List<U32>) -> Data: {{Some{{s}} == Some{{List.length(&2, U32, xs)}} : Maybe<&2, Nat>}}')
+        w.append(f'def LCH{nf}() -> S.Schema: S.End{{}}')
+        for i in range(nf - 1, -1, -1):
+            w.append(f'def LCH{i}() -> S.Schema: S.Chain{{{L.spec(L.fields[i])}, LCH{i + 1}()}}')
+        for i in range(nf + 1):
+            pd = ''.join(f'+xs{f["i"]}: +List<U32>, ' if f['kind'] == 'fix' else f'+y{f["j"]}: +List<U32>, ' for f in L.fields[:i])
+            w.append(f'def PFX{i}({pd}+m: {MP}) -> {MP}: {prefix0(i, "m")}')
+        w.append('')
+        WS = 'WSX()'
     FP = f'Layout.fixed_parts({PS}, Layout.fixed_size({PS}))'
     PL = f'Layout.payloads({PS})'
-    BYTES = f'List.append(&2, U32, {FP}, {PL})'
-    SD = f'{CW}, {sdecl(nf)}+eq: {{{BYTES} == {WBL} : +List<U32>}}'
-    SA = f'{CWA}, {sargs(nf)}eq'
-    WS = '[' + ', '.join(f'Some{{{f["ft"].size}n}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields) + ']'
+    BYTES = f'BYX({PLA[:-2]})' if CP else f'List.append(&2, U32, {FP}, {PL})'
+    if CP:
+        SD = f'{CW}, {PLD}+ew: {{LY.WID({PS}) == {WS} : +List<Maybe<&2, Nat>>}}, +eq: {{{BYTES} == {WBL} : +List<U32>}}'
+        SA = f'{CWA}, {PLA}ew, eq'
+    else:
+        SD = f'{CW}, {sdecl(nf)}+eq: {{{BYTES} == {WBL} : +List<U32>}}'
+        SA = f'{CWA}, {sargs(nf)}eq'
     fixed = [f for f in L.fields if f['kind'] == 'fix']
     # the widths of the parts
-    w.append(f'def ewid({sdecl(nf)}+u: Unit) -> {{LY.WID({PS}) == {WS} : +List<Maybe<&2, Nat>>}}:')
+    LXD = ''.join(f'+lx{f["i"]}: {{Some{{{f["size"]}n}} == Some{{List.length(&2, U32, xs{f["i"]})}} : Maybe<&2, Nat>}}, ' for f in L.fields if f['kind'] == 'fix')
+    LXA = ''.join(f'lx{f["i"]}, ' for f in L.fields if f['kind'] == 'fix')
+    w.append(f'def ewid({PLD + LXD if CP else sdecl(nf)}+u: Unit) -> {{LY.WID({PS}) == {WS} : +List<Maybe<&2, Nat>>}}:')
     for f in fixed:
         els = []
         for g2 in L.fields:
             if g2['kind'] == 'var':
                 els.append('None{}')
             elif g2['i'] < f['i']:
-                els.append(f'Some{{{g2["ft"].size}n}}')
+                els.append(f'Some{{{g2["size"]}n}}')
             elif g2['i'] == f['i']:
                 els.append('_')
             else:
@@ -735,7 +989,7 @@ def inv_text(L):
         w.append(f'  %lx{f["i"]} : {{[{", ".join(els)}] == {WS} : +List<Maybe<&2, Nat>>}}')
     w.append('  {==}')
     w.append('')
-    EW = f'ewid({sargs(nf)}Unit{{}})'
+    EW = 'ew' if CP else f'ewid({sargs(nf)}Unit{{}})'
     w.append(f'def efs({SD}) -> {{Layout.fixed_size({PS}) == {FS}n : Nat}}:')
     w.append(f'  Equal.trans(Nat, Layout.fixed_size({PS}), LY.WFS(LY.WID({PS})), {FS}n, LY.fs_w({PS}),')
     w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WFS(z), LY.WID({PS}), {WS}, {EW}))')
@@ -759,13 +1013,13 @@ def inv_text(L):
         c = f['c']
         OFF = f'LY.OFF({PS}, {i}n, {FS}n)'
         OFFS.append(OFF)
-        w.append(f'def epos{j}({sdecl(nf)}+u: Unit) -> {{LY.FPOS({PS}, {i}n) == {c}n : Nat}}:')
+        w.append(f'def epos{j}({PLD + "+ew: {LY.WID(" + PS + ") == " + WS + " : +List<Maybe<&2, Nat>>}" if CP else sdecl(nf) + "+u: Unit"}) -> {{LY.FPOS({PS}, {i}n) == {c}n : Nat}}:')
         w.append(f'  Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS(LY.WID({PS}), {i}n), {c}n, LY.fpos_w({PS}, {i}n),')
         w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WPOS(z, {i}n), LY.WID({PS}), {WS}, {EW}))')
         w.append(f'def eb{j}({SD}) -> {{VS.bt(4n, VS.bdr({c}n, {WBL})) == N.digits(4n, {OFF}) : +List<U32>}}:')
         w.append(f'  %eq : {{VS.bt(4n, VS.bdr({c}n, _)) == N.digits(4n, {OFF}) : +List<U32>}}')
         w.append(f'  %efs({SA}) : {{VS.bt(4n, VS.bdr({c}n, {BYTES})) == N.digits(4n, LY.OFF({PS}, {i}n, _)) : +List<U32>}}')
-        w.append(f'  %epos{j}({sargs(nf)}Unit{{}}) : {{VS.bt(4n, VS.bdr(_, {BYTES})) == N.digits(4n, LY.OFF({PS}, {i}n, Layout.fixed_size({PS}))) : +List<U32>}}')
+        w.append(f'  %epos{j}({PLA + "ew" if CP else sargs(nf) + "Unit{}"}) : {{VS.bt(4n, VS.bdr(_, {BYTES})) == N.digits(4n, LY.OFF({PS}, {i}n, Layout.fixed_size({PS}))) : +List<U32>}}')
         w.append(f'  LY.lay_off({PS}, Layout.fixed_size({PS}), {i}n, y{j}, {PL}, {{==}})')
         RF = FS - c - 4
         w.append(f'def ov{j}({SD}) -> {{U32.to_nat({L.O(j)}) == {OFF} : Nat}}:')
@@ -805,23 +1059,47 @@ def inv_text(L):
         w.append(f'  %eq : {{VS.bt({ly}, VS.bdr({OFF}, _)) == y{j} : +List<U32>}}')
         w.append(f'  %efs({SA}) : {{VS.bt({ly}, VS.bdr(LY.OFF({PS}, {i}n, _), {BYTES})) == y{j} : +List<U32>}}')
         w.append(f'  LY.lay_pay({PS}, {i}n, y{j}, Layout.fixed_size({PS}), {FP}, LY.lay_len({PS}, Layout.fixed_size({PS})), {{==}})')
-        w.append(f'def dch{j}({SD}) -> {{CH{j}.CHKw(t, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}) == {TRUE}}}:')
+        w.append(f'def dch{j}({SD}{", +h" + str(j) + ": S.Value, +ev" + str(j) + ": EVF(h" + str(j) + ", " + L.spec(f) + ", y" + str(j) + ")" if CP else ""}) -> {{CH{j}.CHKw(t, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}) == {TRUE}}}:')
         w.append(f'  CH{j}.invw(d, t, n, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}, eoW({CWA}, {L.O(j)}, {E}, nle{j}({SA}), nle2{j}({SA})), hd,')
         w.append(f'    hwj({CWA}, {L.O(j)}, {E}, nle{j}({SA}), nle2{j}({SA})), pf, h{j},')
         w.append(f'    FD.logic__subst(+List<U32>, z => {{Codec.parts(h{j}, {L.spec(f)}) == Some{{[S.Variable{{z}}]}} : {MP}}}, y{j}, {L.Y(j)}, Equal.sym(+List<U32>, {L.Y(j)}, y{j}, ypay{j}({SA})), ev{j}))')
     w.append('')
+    for f in L.fchk:
+        i, c, sz, P = f['i'], f['c'], f['size'], L.pos(f['c'])
+        w.append(f'def eposF{i}({PLD + "+ew: {LY.WID(" + PS + ") == " + WS + " : +List<Maybe<&2, Nat>>}" if CP else sdecl(nf) + "+u: Unit"}) -> {{LY.FPOS({PS}, {i}n) == {c}n : Nat}}:')
+        w.append(f'  Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS(LY.WID({PS}), {i}n), {c}n, LY.fpos_w({PS}, {i}n),')
+        w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WPOS(z, {i}n), LY.WID({PS}), {WS}, {EW}))')
+        w.append(f'def fx{i}({SD}{", +lx" + str(i) + ": {Some{" + str(sz) + "n} == Some{List.length(&2, U32, xs" + str(i) + ")} : Maybe<&2, Nat>}" if CP else ""}) -> {{UW.WX(t, {P}, {sz}n) == xs{i} : +List<U32>}}:')
+        w.append(f'  +hl = FD.nat__le_trans(Nat.add({c}n, {sz}n), {FS}n, U32.to_nat(len), {{==}},')
+        w.append(f'    FD.logic__subst(Nat, z => {{Nat.is_le({FS}n, z) == {TRUE}}}, {END}, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), {END}, eL({SA})), LY.end_ge({PS}, {FS}n)))')
+        w.append(f'  %UW.subWX(t, x, {c}n, {sz}n, U32.to_nat(len), hl) : {{_ == xs{i} : +List<U32>}}')
+        w.append(f'  %eq : {{VS.bt({sz}n, VS.bdr({c}n, _)) == xs{i} : +List<U32>}}')
+        w.append(f'  %eposF{i}({PLA + "ew" if CP else sargs(nf) + "Unit{}"}) : {{VS.bt({sz}n, VS.bdr(_, {BYTES})) == xs{i} : +List<U32>}}')
+        w.append(f'  %Equal.sym(Nat, {sz}n, List.length(&2, U32, xs{i}), LY.mnat({sz}n, List.length(&2, U32, xs{i}), lx{i})) : {{VS.bt(_, VS.bdr(LY.FPOS({PS}, {i}n), {BYTES})) == xs{i} : +List<U32>}}')
+        w.append(f'  LY.lay_fix({PS}, Layout.fixed_size({PS}), {i}n, xs{i}, {PL}, {{==}})')
+        w.append(f'def fch{i}({SD}{", +lx" + str(i) + ": {Some{" + str(sz) + "n} == Some{List.length(&2, U32, xs" + str(i) + ")} : Maybe<&2, Nat>}, +hx" + str(i) + ": S.Value, +ex" + str(i) + ": {Codec.parts(hx" + str(i) + ", " + L.spec(f) + ") == Some{[S.Fixed{xs" + str(i) + "}]} : " + MP + "}" if CP else ""}) -> {{{f["fa"]}.CHK(t, {P}) == {TRUE}}}:')
+        w.append(f'  {f["fa"]}.inv(t, {P}, hx{i}, FD.logic__subst(+List<U32>, z => {{Codec.parts(hx{i}, {L.spec(f)}) == Some{{[S.Fixed{{z}}]}} : {MP}}}, xs{i}, UW.WX(t, {P}, {sz}n),')
+        w.append(f'    Equal.sym(+List<U32>, UW.WX(t, {P}, {sz}n), xs{i}, fx{i}({SA}{", lx" + str(i) if CP else ""})), ex{i}))')
+    if L.fchk:
+        w.append('')
     its = items(L)
     prfs = [f'VMR.u32le({FS}, len, FD.logic__subst(Nat, z => {{Nat.is_le({FS}n, z) == {TRUE}}}, {END}, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), {END}, eL({SA})), LY.end_ge({PS}, {FS}n)))',
             f'FD.u32alg__eq_true({L.O(0)}, {FS}, FD.u32__injective({L.O(0)}, {FS}, ov0({SA})))']
     for j in range(1, k):
         prfs.append(f'FD.logic__and_intro(U32.is_le({L.O(j - 1)}, {L.O(j)}), U32.is_le({L.O(j)}, len), VMR.u32le({L.O(j - 1)}, {L.O(j)}, nle{j - 1}({SA})), VMR.u32le({L.O(j)}, len, nle2{j - 1}({SA})))')
+    for f in L.fchk:
+        prfs.append(f'fch{f["i"]}({SA}' + (f', lx{f["i"]}, hx{f["i"]}, ex{f["i"]})' if CP else ')'))
     for j in range(k):
-        prfs.append(f'dch{j}({SA})')
+        prfs.append(f'dch{j}({SA}' + (f', h{j}, ev{j})' if CP else ')'))
     n = len(its)
     body = prfs[n - 1]
     for m in range(n - 2, -1, -1):
         body = f'FD.logic__and_intro(IT{m}({TXOA}), K{m + 1}({TXOA}), {prfs[m]},\n    {body})'
-    w.append(f'def contra({SD}) -> {GOAL}:')
+    if CP:
+        w.append(f'def contra({CW}, {sdecl(nf)}+eq: {{{BYTES} == {WBL} : +List<U32>}}) -> {GOAL}:')
+        w.append(f'  +ew = ewid({PLA}{LXA}Unit{{}})')
+    else:
+        w.append(f'def contra({SD}) -> {GOAL}:')
     w.append(f'  {body}')
     w.append('')
     bexpr = f'Bool.and(Layout.bytes_valid({PS}), N.fits(4n, Nat.add(Layout.fixed_size({PS}), List.length(&2, U32, {PL}))))'
@@ -850,7 +1128,7 @@ def inv_text(L):
         f = L.fields[i]
         sp = L.spec(f)
         if f['kind'] == 'fix':
-            wd = f'Some{{{f["ft"].size}n}}'
+            wd = f'Some{{{f["size"]}n}}'
             fact = f'DS.facts(h, {sp}, {{==}})'
         else:
             wd = 'None{}'
@@ -869,8 +1147,8 @@ def inv_text(L):
         w.append('  match ps:')
         w.append(f'    case Nil{{}}: Empty.absurd({GOAL}, hf)')
         if f['kind'] == 'fix':
-            w.append(f'    case Con{{S.Fixed{{+xs}}, Nil{{}}}}: st{i + 1}({CWA}, {sargs(i)}xs, hf, r, e)')
-            w.append(f'    case Con{{S.Variable{{+ys}}, Nil{{}}}}: Empty.absurd({GOAL}, FD.logic__none_some(Nat, {f["ft"].size}n, Equal.sym(Maybe<&2, Nat>, {wd}, None{{}}, hf)))')
+            w.append(f'    case Con{{S.Fixed{{+xs}}, Nil{{}}}}: st{i + 1}({CWA}, {sargs(i)}xs, hf, {"h, em, " if f.get("chk") else ""}r, e)')
+            w.append(f'    case Con{{S.Variable{{+ys}}, Nil{{}}}}: Empty.absurd({GOAL}, FD.logic__none_some(Nat, {f["size"]}n, Equal.sym(Maybe<&2, Nat>, {wd}, None{{}}, hf)))')
         else:
             w.append(f'    case Con{{S.Fixed{{+xs}}, Nil{{}}}}: Empty.absurd({GOAL}, FD.logic__none_some(Nat, List.length(&2, U32, xs), hf))')
             w.append(f'    case Con{{S.Variable{{+ys}}, Nil{{}}}}: st{i + 1}({CWA}, {sargs(i)}ys, h, em, r, e)')
@@ -901,6 +1179,11 @@ def module_text(L):
                       'import ../../proofs/decode_shape.bend as DS', 'import ../../proofs/decode_facts.bend as DF']
     for f in L.vars:
         imps.append(f'import ./{f["mod"]} as CH{f["j"]}')
+    if L.sym:
+        imps += ['import ../../spec/schema.bend as SS', './schema_shapes.bend']
+        imps[-1] = 'import ./schema_shapes.bend as SH'
+        for a, m in sorted(L.fmods().items()):
+            imps.append(f'import ./{m} as {a}')
     head = imps + ['', '# GENERATED by codegen/var_winb.py. Do not edit.',
                    f'# {L.name} at a window at any byte offset: the interface of proofs/obj/vua_win.bend.', '']
     body = (defs_text(L) + common_text(L) + OFFW.replace('@CWA', CWA).replace('@CW', CW) + facts_text(L) + validator_text(L) + reader_text(L)
@@ -908,15 +1191,43 @@ def module_text(L):
     return '\n'.join(head) + W.COMMONX + '\n' + body
 
 
-def layout(name):
+def top_text(L, wmod):
+    """The whole-buffer decoder laws of the container: its window at x = 0, off = 0, len = n
+    (after codegen/var_rlist_er.py's top_text)."""
+    import var_rlist_er as ER
+    import var_rlist as RL
+    X = L.name
+    txt = ER.top_text(RL.HEAD)
+    txt = txt.replace('import ./var_winx_ExecutionRequests.bend as EW', f'import ./{wmod} as EW')
+    txt = txt.replace('# GENERATED by codegen/var_rlist.py (codegen/var_rlist_er.py). Do not edit.', '# GENERATED by codegen/var_winb.py. Do not edit.')
+    txt = txt.replace('ExecutionRequests', X)
+    # the value's one variable part, without evaluating the schema's legality
+    body = W.spec_defs()[X] if not W.spec_defs()[X].endswith('()') else W.spec_defs()[W.spec_defs()[X][:-2]]
+    mc = re.fullmatch(r'T\.Container\{(\[.*?\]), (.*)\}', body)
+    flds = re.sub(r'\bSchema(\d+)\(\)', r'Spec.Schema\1()', mc.group(2)).replace('T.', 'S.')
+    old = f'DS.facts(v, Spec.{X}(), {{==}})'
+    assert old in txt
+    txt = txt.replace(old, f'UW.vsingle(v, {mc.group(1)}, {flds}, {{==}})')
+    return txt
+
+
+def layout(name, sym=False, fixmod=None):
     names = schema.load(ROOT / 'codegen/fulu.yaml')
     g = G.Gen()
     for n, t in names.items():
         g.shape(t)
-    return Layout(name, g, names)
+    return Layout(name, g, names, sym, fixmod)
 
 
 def main():
+    if '--test-sym' in sys.argv:
+        # a container whose fixed fields are read by the modules given as prefix=module pairs
+        a = sys.argv.index('--test-sym')
+        name, out = sys.argv[a + 1], sys.argv[a + 2]
+        fm = dict(kv.split('=') for kv in sys.argv[a + 3].split(','))
+        Path(out).write_text(module_text(layout(name, True, fm)))
+        print('wrote ' + out)
+        return
     if '--test' in sys.argv:
         a = sys.argv.index('--test')
         name, out = sys.argv[a + 1], sys.argv[a + 2]
@@ -925,16 +1236,18 @@ def main():
         return
     no_big = '--no-big' in sys.argv
     out = {}
-    for name, fn in MODULES:
+    for name, fn, sym in MODULES:
         if no_big and fn.startswith('big_'):
             continue
-        L = layout(name)
-        # a container is generated once all its children's window modules exist
-        missing = [f['mod'] for f in L.vars if not (ROOT / 'proofs/obj' / f['mod']).exists() and ROOT / 'proofs/obj' / f['mod'] not in out]
+        L = layout(name, sym, FIXMOD)
+        # a container is generated once all its children's (and fixed fields') modules exist
+        mods = [f['mod'] for f in L.vars] + sorted(set(L.fmods().values()))
+        missing = [m for m in mods if not (ROOT / 'proofs/obj' / m).exists() and ROOT / 'proofs/obj' / m not in out]
         if missing:
             print(f'{fn}: waits for ' + ', '.join(missing))
             continue
         out[ROOT / 'proofs/obj' / fn] = module_text(L)
+        out[ROOT / 'proofs/obj' / f'big_var_codec_{name}.bend'] = top_text(L, fn)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

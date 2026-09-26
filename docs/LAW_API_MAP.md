@@ -207,8 +207,15 @@ What that means concretely:
   (by groups of eight fields), the spec parts laid out by `vua_lay.hdr_fp`,
   and the inversion reading the value's parts back part by part
   (`vua_lay`: lay_off, lay_pay, lay_end, fpos_w, fs_w, for any part list).
-  `big_var_winx_BeaconBlockBody` is written once its children's window
-  modules exist (l16_ProposerSlashing, l16_Deposit, ExecutionPayload: `var_winx_ExecutionPayload.bend`).
+  `big_var_winx_BeaconBlockBody` (240 s), `big_var_winx_BeaconBlock` and
+  `big_var_winx_SignedBeaconBlock` (about 250 s each; checkq --big), and
+  their whole-buffer decoder laws `big_var_codec_<Name>` (ok_eval,
+  decode_accept/spec/unique/reject/none from the window at x = 0).
+  BeaconState's children: `big_var_winx_l1099511627776_u64` and
+  `big_var_winx_l1099511627776_u8` (List[uint64/uint8, 2^40]: the count is
+  bounded by the length's, `big_vu40` compares the 2^40 limit as a capacity),
+  `vu8` (a byte string's uint8 items), and `codegen/var_winv.py`
+  (List[Validator, 2^40], 121-byte records at any phase: `big_var_winx_l1099511627776_Validator`, 51 s).
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped

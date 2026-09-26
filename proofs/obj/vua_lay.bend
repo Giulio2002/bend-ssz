@@ -77,6 +77,19 @@ def fv(+a: +List<U32>, +b: +List<U32>, +e: {Some{S.Fixed{a}} == Some{S.Variable{
 def vinj(+a: +List<U32>, +b: +List<U32>, +e: {Some{S.Variable{a}} == Some{S.Variable{b}} : Maybe<&2, S.Part>}) -> {a == b : +List<U32>}:
   Equal.cong(Maybe<&2, S.Part>, +List<U32>, m => vpay(m), Some{S.Variable{a}}, Some{S.Variable{b}}, e)
 
+def fpp(p: S.Part) -> +List<U32>:
+  match p:
+    case S.Fixed{xs}: xs
+    case S.Variable{xs}: []
+
+def fpay(m: Maybe<&2, S.Part>) -> +List<U32>:
+  match m:
+    case None{}: []
+    case Some{p}: fpp(p)
+
+def vf(+a: +List<U32>, +b: +List<U32>, +e: {Some{S.Variable{a}} == Some{S.Fixed{b}} : Maybe<&2, S.Part>}) -> Empty:
+  F.logic__true_false(Equal.cong(Maybe<&2, S.Part>, Bool, m => isv(m), Some{S.Variable{a}}, Some{S.Fixed{b}}, e))
+
 def mval(m: Maybe<&2, Nat>) -> Nat:
   match m:
     case None{}: 0n
@@ -123,6 +136,52 @@ def lay_off(ps, o, i, y, R, e):
     case Nil{} _: Empty.absurd({VS.bt(4n, VS.bdr(0n, List.append(&2, U32, [], R))) == N.digits(4n, o) : +List<U32>}, F.logic__none_some(S.Part, S.Variable{y}, e))
     case Con{+h, +t} 0n: off0(h, t, o, y, R, e)
     case Con{+h, +t} 1n+ +q: offs(h, t, o, q, y, R, lay_off(t, NX(h, o), q, y, R, e))
+
+# ---- the fixed parts -------------------------------------------------------------------------------
+
+def fix0(+h: S.Part, +t: +List<S.Part>, +o: Nat, +xs: +List<U32>, +R: +List<U32>, +e: {Some{h} == Some{S.Fixed{xs}} : Maybe<&2, S.Part>})
+    -> {VS.bt(List.length(&2, U32, xs), VS.bdr(0n, List.append(&2, U32, Layout.fixed_parts(Con{h, t}, o), R))) == xs : +List<U32>}:
+  match h:
+    case S.Fixed{+z}:
+      %Equal.sym(+List<U32>, z, xs, Equal.cong(Maybe<&2, S.Part>, +List<U32>, m => fpay(m), Some{S.Fixed{z}}, Some{S.Fixed{xs}}, e)) :
+        {VS.bt(List.length(&2, U32, xs), List.append(&2, U32, List.append(&2, U32, _, Layout.fixed_parts(t, o)), R)) == xs : +List<U32>}
+      %Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, xs, Layout.fixed_parts(t, o)), R), List.append(&2, U32, xs, List.append(&2, U32, Layout.fixed_parts(t, o), R)),
+          VS.app_assoc(xs, Layout.fixed_parts(t, o), R)) :
+        {VS.bt(List.length(&2, U32, xs), _) == xs : +List<U32>}
+      Equal.trans(+List<U32>, VS.bt(List.length(&2, U32, xs), List.append(&2, U32, xs, List.append(&2, U32, Layout.fixed_parts(t, o), R))), VS.bt(List.length(&2, U32, xs), xs), xs,
+        VN.bt_app(List.length(&2, U32, xs), xs, List.append(&2, U32, Layout.fixed_parts(t, o), R), F.nat__le_refl(List.length(&2, U32, xs))), UW.bt_self(xs))
+    case S.Variable{+z}: Empty.absurd({VS.bt(List.length(&2, U32, xs), VS.bdr(0n, List.append(&2, U32, Layout.fixed_parts(Con{S.Variable{z}, t}, o), R))) == xs : +List<U32>}, vf(z, xs, e))
+
+def fixs(+h: S.Part, +t: +List<S.Part>, +o: Nat, +q: Nat, +xs: +List<U32>, +R: +List<U32>,
+    ih: {VS.bt(List.length(&2, U32, xs), VS.bdr(FPOS(t, q), List.append(&2, U32, Layout.fixed_parts(t, NX(h, o)), R))) == xs : +List<U32>})
+    -> {VS.bt(List.length(&2, U32, xs), VS.bdr(FPOS(Con{h, t}, 1n+q), List.append(&2, U32, Layout.fixed_parts(Con{h, t}, o), R))) == xs : +List<U32>}:
+  match h:
+    case S.Fixed{+ys}:
+      +FP = Layout.fixed_parts(t, o)
+      %Equal.sym(+List<U32>, VS.bdr(Nat.add(List.length(&2, U32, ys), FPOS(t, q)), List.append(&2, U32, List.append(&2, U32, ys, FP), R)),
+          VS.bdr(FPOS(t, q), VS.bdr(List.length(&2, U32, ys), List.append(&2, U32, List.append(&2, U32, ys, FP), R))), VN.bdr_add(List.length(&2, U32, ys), FPOS(t, q), List.append(&2, U32, List.append(&2, U32, ys, FP), R))) :
+        {VS.bt(List.length(&2, U32, xs), _) == xs : +List<U32>}
+      %Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, ys, FP), R), List.append(&2, U32, ys, List.append(&2, U32, FP, R)), VS.app_assoc(ys, FP, R)) :
+        {VS.bt(List.length(&2, U32, xs), VS.bdr(FPOS(t, q), VS.bdr(List.length(&2, U32, ys), _))) == xs : +List<U32>}
+      %Equal.sym(+List<U32>, VS.bdr(List.length(&2, U32, ys), List.append(&2, U32, ys, List.append(&2, U32, FP, R))), List.append(&2, U32, FP, R), VS.bdr_app(ys, List.append(&2, U32, FP, R))) :
+        {VS.bt(List.length(&2, U32, xs), VS.bdr(FPOS(t, q), _)) == xs : +List<U32>}
+      ih
+    case S.Variable{+z}: ih
+
+# The bytes of fixed part i, at its position in the fixed region.
+law lay_fix:
+  for +ps: +List<S.Part>
+  for +o: Nat
+  for +i: Nat
+  for +xs: +List<U32>
+  for +R: +List<U32>
+  for +e: {nthp(ps, i) == Some{S.Fixed{xs}} : Maybe<&2, S.Part>}
+  {VS.bt(List.length(&2, U32, xs), VS.bdr(FPOS(ps, i), List.append(&2, U32, Layout.fixed_parts(ps, o), R))) == xs : +List<U32>}
+def lay_fix(ps, o, i, xs, R, e):
+  match ps i:
+    case Nil{} _: Empty.absurd({VS.bt(List.length(&2, U32, xs), VS.bdr(0n, List.append(&2, U32, [], R))) == xs : +List<U32>}, F.logic__none_some(S.Part, S.Fixed{xs}, e))
+    case Con{+h, +t} 0n: fix0(h, t, o, xs, R, e)
+    case Con{+h, +t} 1n+ +q: fixs(h, t, o, q, xs, R, lay_fix(t, NX(h, o), q, xs, R, e))
 
 # ---- the fixed region's length ------------------------------------------------------------------------
 
