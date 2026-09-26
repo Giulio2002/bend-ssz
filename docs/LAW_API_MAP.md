@@ -195,6 +195,12 @@ What that means concretely:
   `codegen/var_win.py` (WINX); two variable fields of one child:
   `big_var_winx_AttesterSlashing` (offsets 8 and O1, both windows
   checked, inverted from the spec's two-part layout).
+  Lists of variable-size elements (`codegen/var_winl.py`):
+  `big_var_winx_l1_AttesterSlashing`, `big_var_winx_l8_Attestation`, proved
+  per element count m (the runtime's offset walk unrolls; CK_m / OBJ_m /
+  VAL_m), the inversion recovering m from the value; `vua_rd.rd_lt` covers
+  the first read of a window shorter than 4 bytes, `vua_win.vsingle` the
+  one-part shape of a variable container's spec parts.
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
