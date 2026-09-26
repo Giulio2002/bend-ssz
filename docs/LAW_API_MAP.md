@@ -390,6 +390,23 @@ What that means concretely:
   `big_vvlb_bl1073741824`; Transaction's validator and reader are the
   ByteList[2^30] ones; the rejection splits the value and keeps the limit test
   `ByteList.domain(limit, xs)` a variable; PASS 58 s / 3.4 GB).
+  Transaction's encoder laws (encode_eval, encode_spec) are in
+  `big_var_codec_Transaction_enc.bend` (PASS 43 s / 1.5 GB): storage on a perfect
+  tree of depth dw < 28 holding N <= 4 2^dw bytes, N <= 2^30 (the runtime check);
+  the output is the zero tree with the storage's first ceil(N/4) words copied by
+  `vbenc.put_words_any` (any N at position 0), its N bytes the storage's first N.
+* **Encoders of AggregateAndProof and SignedAggregateAndProof** (`codegen/var_agg_enc.py`,
+  2026-09-26, checkq --big). A writer interface at a symbolic word position pos = 4 P
+  of an existing output tree D (putw: T.X_putn(thaw D, pos, obj) == (thaw W, (obj, size));
+  hdrw: the flat header words at P; payw: the bit list's bytes after them; ow_hi: windows
+  below P are D's; partsE: the value's spec parts): for Attestation
+  (`big_var_bitc_encw_Attestation.bend`, over `vbitcont.enc_at` at P + 59; 211 s / 6.0 GB),
+  and for each parent over its child's at P + H. `big_var_codec_AggregateAndProof_enc.bend`
+  (212 s / 6.1 GB) and `big_var_codec_SignedAggregateAndProof_enc.bend` (200 s / 5.5 GB)
+  hold encode_eval and encode_spec: the interface at P = 0 of the zero output tree, for
+  every object whose bit list is a value within BitList[2^17] (BO.rep_bits) and passes
+  the runtime's checks (capacity, zero bits past K); the value's bit-list bytes are those
+  of the pos-0 Attestation encoder (`big_var_bitc_enc_Attestation.bend`).
 * **Progressive lists** (`codegen/var_plist.py`): the generic forms
   ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
   Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,

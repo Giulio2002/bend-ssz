@@ -5725,8 +5725,20 @@
      "big": true
     }
    ],
-   "encode_eval": [],
-   "encode_spec": [],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_AggregateAndProof_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_AggregateAndProof_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -5785,8 +5797,20 @@
      "big": true
     }
    ],
-   "encode_eval": [],
-   "encode_spec": [],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_SignedAggregateAndProof_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_SignedAggregateAndProof_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -7936,8 +7960,20 @@
      "big": true
     }
    ],
-   "encode_eval": [],
-   "encode_spec": [],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_Transaction_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_Transaction_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
