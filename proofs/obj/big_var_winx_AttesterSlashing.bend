@@ -334,6 +334,36 @@ def lpay(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
   %Equal.sym(Nat, List.length(&2, U32, Y1(t, x, len)), a1, UW.lenWX(d, t, J1(t, x), a1, pf, hw1)) : {U32.to_nat(len) == Nat.add(8n, Nat.add(a0, _)) : Nat}
   elen(t, x, len, h81, h1n)
 
+# Definitions per step: a container's parts one step down and one field before the rest, over opaque values
+# (a conversion that is not a syntactic match would evaluate the fields' parts).
+def gcv_(+v: S.Value, +vs: S.Value, +s: S.Schema, +rs: S.Schema, +y: +List<U32>, +rest: +List<S.Part>,
+    +ea: {Codec.parts(v, s) == Some{[S.Variable{y}]} : Maybe<&2, +List<S.Part>>}, +eb: {Codec.parts(vs, rs) == Some{rest} : Maybe<&2, +List<S.Part>>})
+    -> {Codec.parts(S.Items{v, vs}, S.Chain{s, rs}) == Some{S.Variable{y} <> rest} : Maybe<&2, +List<S.Part>>}:
+  VS.cat_var(Codec.parts(v, s), y, Codec.parts(vs, rs), rest, ea, eb)
+
+def gcf_(+v: S.Value, +vs: S.Value, +s: S.Schema, +rs: S.Schema, +xs: +List<U32>, +rest: +List<S.Part>,
+    +ea: {Codec.parts(v, s) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}, +eb: {Codec.parts(vs, rs) == Some{rest} : Maybe<&2, +List<S.Part>>})
+    -> {Codec.parts(S.Items{v, vs}, S.Chain{s, rs}) == Some{S.Fixed{xs} <> rest} : Maybe<&2, +List<S.Part>>}:
+  F.cat_fixed(Codec.parts(v, s), xs, Codec.parts(vs, rs), rest, ea, eb)
+
+def vw0(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> {S.Sequence{S.Items{CH.VALw(t, J0(t, x), L0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}} == VALw(t, x, len) : S.Value}:
+  {==}
+
+def j0e(+t: FD.array__Tree<U32>, +x: Nat) -> {Nat.add(U32.to_nat(O0(t, x)), x) == J0(t, x) : Nat}:
+  {==}
+
+def l0e(+t: FD.array__Tree<U32>, +x: Nat) -> {U32.sub(O1(t, x), O0(t, x)) == L0(t, x) : U32}:
+  {==}
+
+def e8x(+x: Nat) -> {8n+x == Nat.add(U32.to_nat(8), x) : Nat}:
+  {==}
+
+def a0e(+t: FD.array__Tree<U32>, +x: Nat) -> {A0(t, x) == U32.sub(O1(t, x), 8) : U32}:
+  {==}
+
+def lct2(+it: S.Value) -> {Codec.aggregate(Codec.parts(it, S.Chain{Spec.IndexedAttestation(), S.Chain{Spec.IndexedAttestation(), S.End{}}}), None{}) == Codec.parts(S.Sequence{it}, Spec.AttesterSlashing()) : Maybe<&2, +List<S.Part>>}:
+  {==}
+
 def specg8(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h81: {Nat.is_le(8n, U32.to_nat(O1(t, x))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t, x)), U32.to_nat(len)) == True{} : Bool},
@@ -344,9 +374,10 @@ def specg8(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: 
   +hf = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(len), Nat.add(8n, List.length(&2, U32, Layout.payloads(PL(t, x, len)))), lpay(d, t, n, x, off, len, eo, hd, hw, pf, h81, h1n),
     VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==})))
   %enc8(d, t, n, x, off, len, eo, hd, hw, pf, h81, h1n, e0) : {Codec.parts(S.Sequence{S.Items{CH.VALw(t, 8n+x, A0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{_}]} : Maybe<&2, +List<S.Part>>}
-  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{CH.VALw(t, 8n+x, A0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}, S.Chain{Spec.Schema46(), S.Chain{Spec.Schema46(), S.End{}}}), Some{PL(t, x, len)},
-      VS.cat_var(Codec.parts(CH.VALw(t, 8n+x, A0(t, x)), Spec.Schema46()), Y0(t, x), Codec.parts(S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}, S.Chain{Spec.Schema46(), S.End{}}), [S.Variable{Y1(t, x, len)}], c0,
-        VS.cat_var(Codec.parts(CH.VALw(t, J1(t, x), L1(t, x, len)), Spec.Schema46()), Y1(t, x, len), Codec.parts(S.EmptyItems{}, S.End{}), [], c1, {==}))) :
+  %lct2(S.Items{CH.VALw(t, 8n+x, A0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}) : {_ == Some{[S.Variable{LS(t, x, len)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{CH.VALw(t, 8n+x, A0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}, S.Chain{Spec.IndexedAttestation(), S.Chain{Spec.IndexedAttestation(), S.End{}}}), Some{PL(t, x, len)},
+      gcv_(CH.VALw(t, 8n+x, A0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}, Spec.IndexedAttestation(), S.Chain{Spec.IndexedAttestation(), S.End{}}, Y0(t, x), [S.Variable{Y1(t, x, len)}], c0,
+        gcv_(CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}, Spec.IndexedAttestation(), S.End{}, Y1(t, x, len), [], c1, {==}))) :
     {Codec.aggregate(_, None{}) == Some{[S.Variable{LS(t, x, len)}]} : Maybe<&2, +List<S.Part>>}
   %Equal.sym(Bool, SP.bytes_domain(Y0(t, x)), True{}, UW.domWX(t, 8n+x, U32.to_nat(A0(t, x)))) :
     {Codec.one(SP.optional(Bool.and(Bool.and(_, Bool.and(SP.bytes_domain(Y1(t, x, len)), True{})), N.fits(4n, Nat.add(8n, List.length(&2, U32, Layout.payloads(PL(t, x, len)))))), LS(t, x, len)), None{}) == Some{[S.Variable{LS(t, x, len)}]} : Maybe<&2, +List<S.Part>>}
@@ -364,8 +395,13 @@ def specg(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
     -> {Codec.parts(VALw(t, x, len), Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}:
   +h81 = FD.logic__subst(U32, z => {Nat.is_le(U32.to_nat(z), U32.to_nat(O1(t, x))) == True{} : Bool}, O0(t, x), 8, e0, h01)
   +hk08 = FD.logic__subst(U32, z => {CH.CHKw(t, Nat.add(U32.to_nat(z), x), U32.add(off, z), U32.sub(O1(t, x), z)) == True{} : Bool}, O0(t, x), 8, e0, hk0)
+  %vw0(t, x, len) : {Codec.parts(_, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
+  %j0e(t, x) : {Codec.parts(S.Sequence{S.Items{CH.VALw(t, _, L0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
+  %l0e(t, x) : {Codec.parts(S.Sequence{S.Items{CH.VALw(t, Nat.add(U32.to_nat(O0(t, x)), x), _), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
   %Equal.sym(U32, O0(t, x), 8, e0) :
     {Codec.parts(S.Sequence{S.Items{CH.VALw(t, Nat.add(U32.to_nat(_), x), U32.sub(O1(t, x), _)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
+  %e8x(x) : {Codec.parts(S.Sequence{S.Items{CH.VALw(t, _, U32.sub(O1(t, x), 8)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
+  %a0e(t, x) : {Codec.parts(S.Sequence{S.Items{CH.VALw(t, 8n+x, _), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
   specg8(d, t, n, x, off, len, eo, hd, hw, pf, h81, h1n, e0, hk08, hk1)
 
 # The spec parts of the value: one variable part, the window's bytes.

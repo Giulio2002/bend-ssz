@@ -547,6 +547,9 @@ def parts_of(x):
     return out
 
 
+GC = "# Definitions per step: a container's parts one step down and one field before the rest, over opaque values\n# (a conversion that is not a syntactic match would evaluate the fields' parts).\ndef gcv_(+v: S.Value, +vs: S.Value, +s: S.Schema, +rs: S.Schema, +y: +List<U32>, +rest: +List<S.Part>,\n    +ea: {Codec.parts(v, s) == Some{[S.Variable{y}]} : Maybe<&2, +List<S.Part>>}, +eb: {Codec.parts(vs, rs) == Some{rest} : Maybe<&2, +List<S.Part>>})\n    -> {Codec.parts(S.Items{v, vs}, S.Chain{s, rs}) == Some{S.Variable{y} <> rest} : Maybe<&2, +List<S.Part>>}:\n  VS.cat_var(Codec.parts(v, s), y, Codec.parts(vs, rs), rest, ea, eb)\n\ndef gcf_(+v: S.Value, +vs: S.Value, +s: S.Schema, +rs: S.Schema, +xs: +List<U32>, +rest: +List<S.Part>,\n    +ea: {Codec.parts(v, s) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}, +eb: {Codec.parts(vs, rs) == Some{rest} : Maybe<&2, +List<S.Part>>})\n    -> {Codec.parts(S.Items{v, vs}, S.Chain{s, rs}) == Some{S.Fixed{xs} <> rest} : Maybe<&2, +List<S.Part>>}:\n  F.cat_fixed(Codec.parts(v, s), xs, Codec.parts(vs, rs), rest, ea, eb)\n"
+
+
 def spec_part(x):
     FS, H, K, m = x.FS, x.H, x.K, x.m
     O, L, X, Fk, E, Y = x.O, x.L, x.X, x.F, x.E, x.Y
@@ -579,11 +582,11 @@ def spec_part(x):
         f = ps[i][4]
         if f['kind'] == 'var':
             j = f['j']
-            return (f'VS.cat_var(Codec.parts({ps[i][0]}, {ps[i][1]}), {Y(j)}, Codec.parts({items(i + 1)}, {chain(i + 1)}), {plist(i + 1)}, '
+            return (f'gcv_({ps[i][0]}, {items(i + 1)}, {ps[i][1]}, {chain(i + 1)}, {Y(j)}, {plist(i + 1)}, '
                     f'C{j}.specw(d, t, n, {X(j)}, {Fk(j)}, {L(j)}, eoc{j}({CA}, {cfor(j)}), hd, hwc{j}({CA}, {cfor(j)}), pf, q{K + 1 + j}(t, x, off, len, hchk)), {cat(i + 1)})')
         nd = x.node(f)
-        return (f'F.cat_fixed(Codec.parts({ps[i][0]}, {ps[i][1]}), F.limbs([{", ".join(nd["words"])}]), '
-                f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {plist(i + 1)}, {nd["proof"]}, {cat(i + 1)})')
+        return (f'gcf_({ps[i][0]}, {items(i + 1)}, {ps[i][1]}, {chain(i + 1)}, F.limbs([{", ".join(nd["words"])}]), '
+                f'{plist(i + 1)}, {nd["proof"]}, {cat(i + 1)})')
     # offsets along the parts (in |Y_j|), and the fixed section piecewise
     a = [f'U32.to_nat({L(j)})' for j in range(K)]
     ly = [ln(Y(j)) for j in range(K)]
@@ -660,10 +663,19 @@ def VALw(+t: {TR}, +x: Nat, +len: U32) -> S.Value: S.Sequence{{{ITEMS}}}
 ''']
     lines = []
     lw = lines.append
+    lw(GC)
     for i in range(m - 1, -1, -1):
+        # ITQ/PSQ unfold ITS<i>/PST<i> by rewrites (a def against its body under Codec.parts evaluates the parts)
+        lw(f'def ITQ{i}(+t: {TR}, +x: Nat, +len: U32) -> {{{items0(i)} == {items(i)} : S.Value}}:\n  {{==}}\n')
+        lw(f'def PSQ{i}(+t: {TR}, +x: Nat, +len: U32) -> {{{plist0(i)} == {plist(i)} : +List<S.Part>}}:\n  {{==}}\n')
         lw(f'def cp{i}({CW}, +hchk: {GOAL}) -> {{Codec.parts({items(i)}, {chain(i)}) == Some{{{plist(i)}}} : {MP}}}:')
+        lw(f'  %ITQ{i}(t, x, len) : {{Codec.parts(_, {chain(i)}) == Some{{{plist(i)}}} : {MP}}}')
+        lw(f'  %PSQ{i}(t, x, len) : {{Codec.parts({items0(i)}, {chain(i)}) == Some{{_}} : {MP}}}')
         lw(f'  {cat_step(i)}')
     lw('')
+    lw(f'def vwE(+t: {TR}, +x: Nat, +len: U32) -> {{S.Sequence{{{ITEMS}}} == VALw(t, x, len) : S.Value}}:\n  {{==}}\n')
+    lw(f'def lctE(+it: S.Value) -> {{Codec.aggregate(Codec.parts(it, {CHAIN}), None{{}}) == Codec.parts(S.Sequence{{it}}, Spec.{x.n}()) : {MP}}}:\n  {{==}}\n')
+    lw(f'def aggE(+xs: +List<S.Part>, +w: Maybe<&2, Nat>) -> {{Codec.one(Layout.encoding(xs), w) == Codec.aggregate(Some{{xs}}, w) : {MP}}}:\n  {{==}}\n')
     lw(f'def specw({CW}, +hchk: {GOAL})')
     lw(f'    -> {{Codec.parts(VALw(t, x, len), Spec.{x.n}()) == {RHSV} : {MP}}}:')
     for j in range(K):
@@ -732,9 +744,14 @@ def VALw(+t: {TR}, +x: Nat, +len: U32) -> S.Value: S.Sequence{{{ITEMS}}}
     wx.append('  {==}')
     out.append('\n'.join(wx) + '\n')
     lines.append(f'    wxw({CA}, hchk, hwR, eO0{"".join(f", eOn{j}" for j in range(1, K))}))')
+    # the container one step down and aggregate -> one by rewrites over small terms (conversions between
+    # the heads would evaluate the parts or the encoding)
+    lw(f'  %vwE(t, x, len) : {{Codec.parts(_, Spec.{x.n}()) == {RHSV} : {MP}}}')
+    lw(f'  %lctE({ITEMS}) : {{_ == {RHSV} : {MP}}}')
     lw(f'  %Equal.sym({MP}, Codec.parts({ITEMS}, {CHAIN}), Some{{{PS}}},')
     lw(f'      {cat(0)}) :')
     lw(f'    {{Codec.aggregate(_, None{{}}) == {RHSV} : {MP}}}')
+    lw(f'  %aggE({PS}, None{{}}) : {{_ == {RHSV} : {MP}}}')
     lw(f'  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding({PS}), Some{{{RHSW}}},')
     lw(f'      VV.enc_gen({PS}, {FS}n, {FP0}, {PAY}, {{==}}, {hf(0)}, {hp(0)}, {hv(0)}, fit)) :')
     lw(f'    {{Codec.one(_, None{{}}) == {RHSV} : {MP}}}')
