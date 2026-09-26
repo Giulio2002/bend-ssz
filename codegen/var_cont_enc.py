@@ -249,8 +249,9 @@ def leaf_of(fs):
         return Leaf(fs.p, f'T.{fs.rep}', fs.fsize // 4, f'import ./vuwv_{fs.p}.bend as {a}', f'{a}.PX_{fs.p}', f'{a}.{fs.p}_any',
                     f'{a}.{fs.p}_any_bytes', f'{a}.{fs.p}x_perfect', True)
     if fs.p == 'bv4':
-        return Leaf('bv4', 'T.Bitvector4', 1, 'import ./vuwv_bv4.bend as V_bv4', 'V_bv4.PX_bv4', 'V_bv4.bv4_any', 'V_bv4.bv4_any_bytes',
-                    'V_bv4.bv4x_perfect', True, pad=True)
+        PADCTOR['bv4'] = Leaf('bv4', 'T.Bitvector4', 1, 'import ./vuwv_bv4.bend as V_bv4', 'V_bv4.PX_bv4', 'V_bv4.bv4_any', 'V_bv4.bv4_any_bytes',
+                              'V_bv4.bv4x_perfect', True, pad=True)
+        return PADCTOR['bv4']
     if fs.kind == 'container' and rec_ft(fs.p) is not None:
         return Leaf(fs.p, f'T.{fs.p}', fs.fsize // 4, 'import ./encx_recs.bend as ER', f'ER.PX_{fs.p}', f'ER.putx_{fs.p}', None,
                     f'ER.pf_{fs.p}', True, rec=rec_ft(fs.p))
@@ -307,7 +308,7 @@ def pad_leaf_text(lf):
 # ---- {p}: its writer on the object (one byte, zero-padded to its word's end; vuwv_{p}) ----
 def OK_{p}(o: {lf.ctor}) -> Bool:
   match o:
-    case {lf.ctor}{{+w0}}: U32.is_eq(U32.shrn(w0, 8n), 0)
+    case {lf.ctor}{{+w0}}: Bool.and(U32.is_eq(U32.and(w0, U32.not(O.low_mask(4))), 0), U32.is_lt(w0, 256))
 def RW_{p}(o: {lf.ctor}) -> List<&2, U32>:
   match o:
     case {lf.ctor}{{+w0}}: [w0]
@@ -329,11 +330,38 @@ def putxo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
     -> DK.P2(RTo_{p}(o, dd, D, X, q, r), BYo_{p}(o, dd, D, q, r)):
   match o:
     case {lf.ctor}{{+w0}}:
-      +vt = FD.u32alg__eq_of(U32.shrn(w0, 8n), 0, hv)
+      +vt = VBB.z8(w0, FD.logic__and_right(U32.is_eq(U32.and(w0, U32.not(O.low_mask(4))), 0), U32.is_lt(w0, 256), hv))
       ({lf.rt}(dd, D, X, q, r, w0, e, hr, hd, hl, pf, vt, hz), {lf.by}(dd, D, X, q, r, w0, e, hr, hd, hl, pf, vt, hz))
 def lenb_{p}(+o: {lf.ctor}) -> {{VCN.LN(VS.bt(1n, FX.limbs(RW_{p}(o)))) == 1n : Nat}}:
   match o:
     case {lf.ctor}{{+w0}}: {{==}}
+'''
+
+
+PADCTOR = {}   # p -> its Leaf, for the zero-padded leaves (filled by leaf_of)
+
+
+def pad_spec_text(lf):
+    """The zero-padded bv4 leaf's spec value and parts, for the interface module (the decoder's vfx_bv4)."""
+    p, TRUE_ = lf.p, TRUE
+    return f'''
+# its spec value and parts (the decoder's vfx_{p}: VB4, bvp)
+def VBo_{p}(o: {lf.ctor}) -> S.Value:
+  match o:
+    case {lf.ctor}{{+w0}}: VFB4.VB4(w0)
+def bt1_{p}(+w0: U32) -> {{VS.bt(1n, FX.limbs([w0])) == [U32.and(w0, 255)] : +List<U32>}}:
+  {{==}}
+def prto_{p}(+o: {lf.ctor}, +hv: {{K.OK_{p}(o) == {TRUE_}}})
+    -> {{Codec.parts(VBo_{p}(o), S.BitVector{{4n}}) == Some{{[S.Fixed{{VS.bt(1n, FX.limbs(K.RW_{p}(o)))}}]}} : Maybe<&2, +List<S.Part>>}}:
+  match o:
+    case {lf.ctor}{{+w0}}:
+      +hc = FD.logic__and_left(U32.is_eq(U32.and(w0, U32.not(O.low_mask(4))), 0), U32.is_lt(w0, 256), hv)
+      +hl = FD.logic__and_right(U32.is_eq(U32.and(w0, U32.not(O.low_mask(4))), 0), U32.is_lt(w0, 256), hv)
+      %Equal.sym(+List<U32>, VS.bt(1n, FX.limbs([w0])), [U32.and(w0, 255)], bt1_{p}(w0)) :
+        {{Codec.parts(VFB4.VB4(w0), S.BitVector{{4n}}) == Some{{[S.Fixed{{_}}]}} : Maybe<&2, +List<S.Part>>}}
+      %Equal.sym(U32, U32.and(w0, 255), w0, VBB.ea(w0, hl)) :
+        {{Codec.parts(VFB4.VB4(w0), S.BitVector{{4n}}) == Some{{[S.Fixed{{[_]}}]}} : Maybe<&2, +List<S.Part>>}}
+      VFB4.bvp(w0, hc)
 '''
 
 
@@ -1385,6 +1413,11 @@ def iface_text(C, generic=False):
             Y = f'[U32.and({f}, 255)]'
             fields.append(dict(kind='fix', f=f, val=f'VBB.V{n_}({f})', sch=sch, part=f'S.Fixed{{{Y}}}', bytes=Y,
                                prf=f'VBB.prt{n_}({f}, OKA_hv_{f})', psch=f'S.BitVector{{{n_}n}}'))
+        elif fs.fixed and fs.data and leaf_of(fs).pad:
+            lf_ = leaf_of(fs)
+            Y = f'VS.bt(1n, FX.limbs(RW_{lf_.p}({f})))'
+            fields.append(dict(kind='fix', f=f, val=f'VBo_{lf_.p}({f})', sch=sch, part=f'S.Fixed{{{Y}}}', bytes=Y,
+                               prf=f'prto_{lf_.p}({f}, OKA_hv_{f})', psch='S.BitVector{4n}'))
         elif fs.fixed and fs.data and leaf_of(fs).sub:
             m_ = leaf_of(fs).sub
             Y = f'[U32.and({f}, 255)]' if m_ == 1 else f'[U32.and({f}, 255), U32.and(U32.shrn({f}, 8n), 255)]'
@@ -2001,6 +2034,10 @@ def iface_full(C, generic=False):
         hd = [x.replace('../../types/fulu_obj.bend as T', '../../types/generic_obj.bend as T').replace('../../spec/fulu_schemas.bend as Spec', './generic_specs.bend as Spec') for x in hd]
     if 'VRB.' in body:
         mods.append('import ./vrecb.bend as VRB')
+    pads = sorted(set(re.findall(r'\bVBo_(\w+)\(', body)))
+    if pads:   # the zero-padded bv4 leaf's spec value and parts (pad_spec_text), before the body
+        body = ''.join(pad_spec_text(PADCTOR[p_]) for p_ in pads) + body
+        mods.append('import ./vfx_bv4.bend as VFB4')
     if 'VBB.' in body:
         mods.append('import ./vbitb.bend as VBB')
     if 'FWS.' in body:
@@ -2072,6 +2109,8 @@ def full_text(C, generic=False):
     if getattr(K, 'pz', None) is not None or ' .|. 0 : U32)' in SZC or getattr(K, 'or0', False):
         mods.append('import ./vuw_bits.bend as UWB')
     if any(lf.bits for lf in K.leaves.values()):
+        mods.append('import ./vbitb.bend as VBB')
+    if any(lf.pad for lf in K.leaves.values()):   # the zero-padded bv4 leaf: its validity and spec (vbitb, vfx_bv4)
         mods.append('import ./vbitb.bend as VBB')
     hd = [x.replace('../../types/fulu_obj.bend as T', '../../types/generic_obj.bend as T') for x in HEAD] if generic else HEAD
     head = hd + mods + ['', '# GENERATED by codegen/var_cont_enc.py. Do not edit.',
