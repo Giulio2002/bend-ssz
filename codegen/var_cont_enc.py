@@ -2033,7 +2033,8 @@ def _has_iface(X):
 
 ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True),
           ('Gp8A7851175B', True), ('Gc221EC01D83', True), ('ExecutionRequests', False), ('Attestation', False),
-          ('IndexedAttestation', False), ('AttesterSlashing', False), ('Gc85FA758A04', True)]
+          ('IndexedAttestation', False), ('AttesterSlashing', False), ('Gc85FA758A04', True),
+          ('LightClientHeader', False)]
 
 
 def gfile_c(C):
