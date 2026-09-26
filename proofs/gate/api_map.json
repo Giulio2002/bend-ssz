@@ -20446,12 +20446,48 @@
      "big": false
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
+   "ok_eval": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "decode_accept",
+     "big": false
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "decode_spec",
+     "big": false
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "var_pbits_GtF7582E0E9A_unique.bend",
+     "law": "decode_unique",
+     "big": false
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "var_pbits_GtF7582E0E9A_rej.bend",
+     "law": "decode_reject",
+     "big": false
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "decode_none",
+     "big": false
+    }
+   ],
    "encode_eval": [],
    "encode_spec": [],
    "roundtrip": [],
