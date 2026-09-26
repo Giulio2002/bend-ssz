@@ -666,6 +666,57 @@ def blob_sidecar(name='BlobSidecar'):
     w(f'    {{T.{name}_some(T.{name}_rd1(0, {n}, O.U64{{x0, x1}}, O.ci_fin({n}, 131072, _))) == ({BUF}, Some{{{OBJ}}}) : {RT}}}')
     w('  {==}')
     w('')
+    # the loader: the input bytes are the words of the left half [x0, x1 | M1 .. M14]
+    # (so the blob is the words after the first two, whatever they are) then the last
+    # two blob words and the field words; the loaded buffer's right half is those
+    # words then zeros (arr_enc.cpt_tail)
+    RL = '[t0, t1, ' + ', '.join(FS) + ']'
+    WI = f'F.spec_common__append(U32, {slots(Lt)}, {RL})'
+    RZ = ttree(['t0', 't1'] + FS + ['0'] * 42)
+    for j in range(8, 15):
+        RZ = f'F.TNode{{{RZ}, F.array__trep(U32, {j}n, 0)}}'
+    IZ = f'F.TNode{{{Lt}, {RZ}}}'
+    BUFZ = f'B.Buf{{{th(IZ)}, {n}}}'
+    zparams = ('+x0: U32, +x1: U32, ' + ', '.join(f'+m{j}: {TV}' for j in range(1, 15)) + ', '
+               + ', '.join(f'+pm{j}: {pf(j, f"m{j}")}' for j in range(1, 15)) + ', +t0: U32, +t1: U32, '
+               + ', '.join(f'+{x}: U32' for x in FS))
+    zargs = ', '.join(['x0', 'x1'] + [f'm{j}' for j in range(1, 15)] + [f'pm{j}' for j in range(1, 15)] + ['t0', 't1'] + FS)
+    w(f'# the buffer the loader builds from the bytes of the words of [x0, x1 | M1 .. M14], then')
+    w(f'# the blob\'s last two words and the field words')
+    w(f'def {name}_spec_load({zparams})')
+    w(f'    -> {{B.fill_at(B.alloc({n}), 0, SF.limbs({WI})) == {BUFZ} : B.Buf}}:')
+    w(f'  AN.load_tail(15n, 214n, {n}, {Lt}, {RL}, {pL}, {{==}}, {{==}}, {{==}}, {{==}})')
+    w('')
+    # the input law keeps the zero subtrees of the right half as trees p_j equal to zero
+    # trees: with them literal, the blob storage's word list (its slots) would unfold them
+    RP = ttree(['t0', 't1'] + FS + ['0'] * 42)
+    for j in range(8, 15):
+        RP = f'F.TNode{{{RP}, p{j}}}'
+    IP = f'F.TNode{{{Lt}, {RP}}}'
+    BUFP = f'B.Buf{{{th(IP)}, {n}}}'
+    pparams = zparams + ', ' + ', '.join(f'+p{j}: {TV}' for j in range(8, 15)) + ', ' + ', '.join(f'+hp{j}: {{p{j} == F.array__trep(U32, {j}n, 0) : {TV}}}' for j in range(8, 15))
+    pargs = zargs + ', ' + ', '.join(f'p{j}' for j in range(8, 15)) + ', ' + ', '.join(f'hp{j}' for j in range(8, 15))
+    w(f'def {name}_spec_load_p({pparams})')
+    w(f'    -> {{B.fill_at(B.alloc({n}), 0, SF.limbs({WI})) == {BUFP} : B.Buf}}:')
+    cur = RP
+    done = RP
+    for j in range(14, 7, -1):
+        mot = done.replace(f', p{j}}}', ', _}')
+        w(f'  %Equal.sym({TV}, p{j}, F.array__trep(U32, {j}n, 0), hp{j}) : {{B.fill_at(B.alloc({n}), 0, SF.limbs({WI})) == B.Buf{{{th(f"F.TNode{{{Lt}, {mot}}}")}, {n}}} : B.Buf}}')
+        done = done.replace(f', p{j}}}', f', F.array__trep(U32, {j}n, 0)}}')
+    w(f'  {name}_spec_load({zargs})')
+    w('')
+    ppf = lambda j: f'F.logic__subst({TV}, z => {{F.array__perfect(U32, {j}n, z) == True{{}} : Bool}}, F.array__trep(U32, {j}n, 0), p{j}, Equal.sym({TV}, p{j}, F.array__trep(U32, {j}n, 0), hp{j}), F.array__trep_perfect(U32, {j}n, 0))'
+    decargs = ', '.join(['x0', 'x1'] + [f'm{j}' for j in range(1, 15)] + [f'pm{j}' for j in range(1, 15)] + ['t0', 't1'] + FS + ['0'] * 42
+                        + [f'p{j}' for j in range(8, 15)] + [ppf(j) for j in range(8, 15)])
+    OBJP = OBJ.replace(I, IP)
+    w(f'# decoding the buffer the loader builds from those bytes (p_j: the zero subtrees)')
+    w(f'def {name}_spec_input({pparams})')
+    w(f'    -> {{T.{name}_decode(B.fill_at(B.alloc({n}), 0, SF.limbs({WI})), {n}) == ({BUFP}, Some{{{OBJP}}}) : {RT}}}:')
+    w(f'  %Equal.sym(B.Buf, B.fill_at(B.alloc({n}), 0, SF.limbs({WI})), {BUFP}, {name}_spec_load_p({pargs})) :')
+    w(f'    {{T.{name}_decode(_, {n}) == ({BUFP}, Some{{{OBJP}}}) : {RT}}}')
+    w(f'  {name}_spec_decode({decargs})')
+    w('')
     BY = lambda bw: f'SF.limbs(F.spec_common__append(U32, [x0, x1], F.spec_common__append(U32, {bw}, {FSL})))'
     SL_, SR_ = slots(Lt), slots(Rt)
     TKR = f'AH.tk(AH.dp({SR_}, 2n), 212n)'

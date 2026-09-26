@@ -457,3 +457,37 @@ def tk_left(+d: Nat, +X: F.array__Tree<U32>, +c: F.array__Tree<U32>, +n: Nat, +p
   F.list__sc_take_append_left(U32, F.array__slots(U32, X), F.array__slots(U32, c), n,
     F.logic__subst(Nat, z => {Nat.is_le(n, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(U32, F.array__slots(U32, X)),
       Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, X)), F.spec_common__pow2(d), F.array__slots_length(U32, d, X, pX)), h))
+
+# cpt_tail with the count as a literal K (a closed 2^p + E above 2^15 must not be unfolded)
+def cpt_tail_lit(+p: Nat, +E: Nat, +K: Nat, +A: F.array__Tree<U32>, +G: List<&2, U32>, +pA: {F.array__perfect(U32, p, A) == True{} : Bool},
+    +hK: {Nat.is_eq(Nat.add(F.spec_common__pow2(p), E), K) == True{} : Bool})
+    -> {AC.cpt(1n+p, K, 0n, 0n, F.array__trep(U32, 1n+p, 0), F.spec_common__append(U32, F.array__slots(U32, A), G)) == F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)} : F.array__Tree<U32>}:
+  %F.nat__eq_from_is_eq(Nat.add(F.spec_common__pow2(p), E), K, hK) :
+    {AC.cpt(1n+p, _, 0n, 0n, F.array__trep(U32, 1n+p, 0), F.spec_common__append(U32, F.array__slots(U32, A), G)) == F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)} : F.array__Tree<U32>}
+  cpt_tail(p, E, A, G, pA)
+
+# The loader's buffer of the bytes of a perfect tree A then words G: [A | G then zeros],
+# for every depth (no closed size is unfolded).
+def load_tail(+p: Nat, +E: Nat, +n: U32, +A: F.array__Tree<U32>, +G: List<&2, U32>, +pA: {F.array__perfect(U32, p, A) == True{} : Bool},
+    +hc: {B.capacity(n) == 1n+p : Nat}, +hd: {Nat.is_lt(1n+p, 32n) == True{} : Bool},
+    +hG: {F.spec_common__length(U32, G) == E : Nat}, +hE: {Nat.is_le(E, F.spec_common__pow2(p)) == True{} : Bool})
+    -> {B.fill_at(B.alloc(n), 0, SF.limbs(F.spec_common__append(U32, F.array__slots(U32, A), G))) == B.Buf{F.array__thaw(U32, F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)}), n} : B.Buf}:
+  +W = F.spec_common__append(U32, F.array__slots(U32, A), G)
+  +z = F.array__trep(U32, 1n+p, 0)
+  +P = F.spec_common__pow2(p)
+  +hl = Equal.trans(Nat, F.spec_common__length(U32, W), Nat.add(F.spec_common__length(U32, F.array__slots(U32, A)), F.spec_common__length(U32, G)), Nat.add(P, E),
+    F.list__length_append(U32, F.array__slots(U32, A), G),
+    Equal.trans(Nat, Nat.add(F.spec_common__length(U32, F.array__slots(U32, A)), F.spec_common__length(U32, G)), Nat.add(P, F.spec_common__length(U32, G)), Nat.add(P, E),
+      Equal.cong(Nat, Nat, q => Nat.add(q, F.spec_common__length(U32, G)), F.spec_common__length(U32, F.array__slots(U32, A)), P, F.array__slots_length(U32, p, A, pA)),
+      Equal.cong(Nat, Nat, q => Nat.add(P, q), F.spec_common__length(U32, G), E, hG)))
+  +hf = F.nat__le_trans(Nat.add(Nat.add(P, E), 0n), Nat.add(P, E), F.spec_common__pow2(1n+p), AC.le_p0(Nat.add(P, E)),
+    F.logic__subst(Nat, q => {Nat.is_le(Nat.add(P, E), q) == True{} : Bool}, Nat.add(P, P), F.spec_common__pow2(1n+p), Equal.sym(Nat, F.spec_common__pow2(1n+p), Nat.add(P, P), F.flat__pow2_split(p)), F.nat__le_add_left(E, P, P, hE)))
+  +h = F.logic__subst(Nat, q => {Nat.is_le(Nat.add(q, 0n), F.spec_common__pow2(1n+p)) == True{} : Bool}, Nat.add(P, E), F.spec_common__length(U32, W), Equal.sym(Nat, F.spec_common__length(U32, W), Nat.add(P, E), hl), hf)
+  %Equal.sym(Nat, B.capacity(n), 1n+p, hc) : {B.Buf{B.fill_go(SF.limbs(W), Array.new(U32, _, 0), U32.shrn(0, 2n)), n} == B.Buf{F.array__thaw(U32, F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)}), n} : B.Buf}
+  %Equal.sym(Array<U32>, Array.new(U32, 1n+p, 0), F.array__thaw(U32, z), F.array__new(U32, 1n+p, 0)) : {B.Buf{B.fill_go(SF.limbs(W), _, 0), n} == B.Buf{F.array__thaw(U32, F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)}), n} : B.Buf}
+  %Equal.sym(Array<U32>, B.fill_go(SF.limbs(W), F.array__thaw(U32, z), 0), F.array__thaw(U32, AC.cpt(1n+p, F.spec_common__length(U32, W), 0n, 0n, z, W)), AE.fill(W, 1n+p, z, 0, 0n, {==}, hd, h, F.array__trep_perfect(U32, 1n+p, 0))) :
+    {B.Buf{_, n} == B.Buf{F.array__thaw(U32, F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)}), n} : B.Buf}
+  %Equal.sym(Nat, F.spec_common__length(U32, W), Nat.add(P, E), hl) : {B.Buf{F.array__thaw(U32, AC.cpt(1n+p, _, 0n, 0n, z, W)), n} == B.Buf{F.array__thaw(U32, F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)}), n} : B.Buf}
+  %Equal.sym(F.array__Tree<U32>, AC.cpt(1n+p, Nat.add(P, E), 0n, 0n, z, W), F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)}, cpt_tail(p, E, A, G, pA)) :
+    {B.Buf{F.array__thaw(U32, _), n} == B.Buf{F.array__thaw(U32, F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)}), n} : B.Buf}
+  {==}
