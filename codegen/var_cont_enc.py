@@ -50,9 +50,31 @@ def out_file(C):
 class Leaf:
     """A Data leaf written at any X by its dispatch lemma (vuwd, vuwv_<p>)."""
 
-    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz):
+    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz, rec=None):
         self.p, self.ctor, self.W, self.mod = p, ctor, W, mod
         self.model, self.rt, self.by, self.pf, self.rt_hz = model, rt, by, pf, rt_hz
+        self.rec = rec    # a fixed record of codegen/var_rec_enc.py's RECS: its field tree (var_laws.FT)
+
+
+# the fixed records written by codegen/var_rec_enc.py (proofs/obj/encx_recs.bend), by name: their field trees
+_RECFT = None
+
+
+def rec_ft(n):
+    global _RECFT
+    if _RECFT is None:
+        import var_rec_enc as VRE
+        g, names = VRE.layout()
+        _RECFT = {m: ft for m, ft in VRE.order(g, names, VRE.RECS)}
+    return _RECFT.get(n)
+
+
+# the packed byte vectors of fixed size written like the fixwords (codegen/var_uwv.py's FWORDS: vuwv_<p>)
+FIXW_PACKED = ('v4_b32', 'v6_b32', 'v7_b32')
+
+
+def is_fixw(fs):
+    return fs.fixed and (fs.kind == 'fixwords' or (fs.kind == 'packed' and fs.p in FIXW_PACKED))
 
 
 def leaf_of(fs):
@@ -64,10 +86,55 @@ def leaf_of(fs):
         a = f'V_{fs.p}'
         return Leaf(fs.p, f'T.{fs.rep}', fs.fsize // 4, f'import ./vuwv_{fs.p}.bend as {a}', f'{a}.PX_{fs.p}', f'{a}.{fs.p}_any',
                     f'{a}.{fs.p}_any_bytes', f'{a}.{fs.p}x_perfect', True)
+    if fs.kind == 'container' and rec_ft(fs.p) is not None:
+        return Leaf(fs.p, f'T.{fs.p}', fs.fsize // 4, 'import ./encx_recs.bend as ER', f'ER.PX_{fs.p}', f'ER.putx_{fs.p}', None,
+                    f'ER.pf_{fs.p}', True, rec=rec_ft(fs.p))
     raise SystemExit(f'no leaf writer for {fs.kind}/{fs.p}')
 
 
+def rec_leaf_text(lf):
+    """A fixed record's writer on the object: nested matches exposing its words, then encx_recs' lemmas."""
+    import var_rlist_enc as EN
+    p = lf.p
+    words = []
+    ls, ind = EN.nest(lf.rec, 'o', words, 2)
+    body = '\n'.join(ls)
+    pad = ' ' * ind
+    WA = ', '.join(words)
+    X0 = 'Nat.add(A.quad(q), r)'
+    B = 4 * lf.W
+    return f'''
+# ---- {p}: its writer on the object (the record's words; proofs/obj/encx_recs.bend) ----
+def RW_{p}(o: {lf.ctor}) -> List<&2, U32>:
+{body}
+{pad}[{WA}]
+def PXo_{p}(o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> {TR}:
+{body}
+{pad}ER.PX_{p}({WA}, dd, D, q, r)
+def pfo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
+    -> {{FD.array__perfect(U32, dd, PXo_{p}(o, dd, D, q, r)) == {TRUE}}}:
+{body}
+{pad}ER.pf_{p}({WA}, dd, D, q, r, pf)
+def RTo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {{T.{p}_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_{p}(o, dd, D, q, r)) : Array<U32>}}
+def BYo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> Data:
+  {{UA.BYT(PXo_{p}(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), {X0}, FX.limbs(RW_{p}(o))) : +List<U32>}}
+def putxo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
+    +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}}, +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}},
+    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, {B}n))), VB.pw(dd)) == {TRUE}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}},
+    +hz: {{VS.bt({B}n, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({B}n) : +List<U32>}})
+    -> DK.P2(RTo_{p}(o, dd, D, X, q, r), BYo_{p}(o, dd, D, q, r)):
+{body}
+{pad}ER.putx_{p}({WA}, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+def lenb_{p}(+o: {lf.ctor}) -> {{VCN.LN(FX.limbs(RW_{p}(o))) == {B}n : Nat}}:
+{body}
+{pad}{{==}}
+'''
+
+
 def leaf_text(lf):
+    if lf.rec is not None:
+        return rec_leaf_text(lf)
     p, W = lf.p, lf.W
     ws = [f'w{i}' for i in range(W)]
     pat = f'{lf.ctor}{{' + ', '.join('+' + w for w in ws) + '}'
@@ -298,7 +365,7 @@ class Cont:
             if fs.fixed and fs.data:
                 lf = leaf_of(fs)
                 self.leaves.setdefault(lf.p, lf)
-            elif fs.fixed and fs.kind == 'fixwords':
+            elif is_fixw(fs):
                 self.fixw[f] = fs
             elif not fs.fixed:
                 self.children[f] = Child(f, fs)
@@ -319,7 +386,7 @@ def generate_cont(g, names, C):
             OP.append(f'+{f}: {leaf_of(fs).ctor}')
             OA.append(f)
             OBJF[f] = f
-        elif fs.fixed and fs.kind == 'fixwords':
+        elif is_fixw(fs):
             nW = fs.fsize // 4
             OP += [f'+dB_{f}: Nat', f'+TB_{f}: {TR}']
             OA += [f'dB_{f}', f'TB_{f}']
