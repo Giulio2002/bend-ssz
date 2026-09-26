@@ -555,18 +555,27 @@ def spec_part(x):
     cfor = lambda j: hcc(j + 1 if j < K - 1 else K - 1)  # noqa: E731
     ps = parts_of(x)
 
+    # the items and the parts from field i on, as definitions (the checker then compares them by name)
     def items(i):
+        return f'ITS{i}(t, x, len)'
+
+    def items0(i):
         return 'S.EmptyItems{}' if i == m else f'S.Items{{{ps[i][0]}, {items(i + 1)}}}'
 
     def chain(i):
         return 'S.End{}' if i == m else f'S.Chain{{{ps[i][1]}, {chain(i + 1)}}}'
 
     def plist(i):
-        return '[' + ', '.join(p[2] for p in ps[i:]) + ']'
+        return f'PST{i}(t, x, len)'
 
+    def plist0(i):
+        return '[]' if i == m else f'Con{{{ps[i][2]}, {plist(i + 1)}}}'
+
+    # the parts from field i on, one lemma per field (cp<i>, below)
     def cat(i):
-        if i == m:
-            return '{==}'
+        return '{==}' if i == m else f'cp{i}({CA}, hchk)'
+
+    def cat_step(i):
         f = ps[i][4]
         if f['kind'] == 'var':
             j = f['j']
@@ -638,13 +647,23 @@ def spec_part(x):
         offa.append(nadd(offa[-1], a[j]))
     left, right, eassoc = lassoc(f'{FS}n', a)
     ITEMS, CHAIN = items(0), chain(0)
+    defs = []
+    for i in range(m, -1, -1):
+        defs.append(f'def ITS{i}(+t: {TR}, +x: Nat, +len: U32) -> S.Value: {items0(i)}')
+        defs.append(f'def PST{i}(+t: {TR}, +x: Nat, +len: U32) -> +List<S.Part>: {plist0(i)}')
     out = [f'''
 # ---- the spec side ------------------------------------------------------------------------------
+
+''' + '\n'.join(defs) + f'''
 
 def VALw(+t: {TR}, +x: Nat, +len: U32) -> S.Value: S.Sequence{{{ITEMS}}}
 ''']
     lines = []
     lw = lines.append
+    for i in range(m - 1, -1, -1):
+        lw(f'def cp{i}({CW}, +hchk: {GOAL}) -> {{Codec.parts({items(i)}, {chain(i)}) == Some{{{plist(i)}}} : {MP}}}:')
+        lw(f'  {cat_step(i)}')
+    lw('')
     lw(f'def specw({CW}, +hchk: {GOAL})')
     lw(f'    -> {{Codec.parts(VALw(t, x, len), Spec.{x.n}()) == {RHSV} : {MP}}}:')
     for j in range(K):
@@ -1019,6 +1038,7 @@ def invw({CW}, +v: S.Value,
 
 
 def main():
+    SL.EXACT = True   # the exact spec-parts proofs (codegen/spec_laws.py), before any walk
     nb = '--no-big' in sys.argv
     out = {}
     if not nb:
