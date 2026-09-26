@@ -61,7 +61,9 @@ Vector[uint32/64/128/256, 512] (vectors of more than VEC_MAX_ELEMS elements go
 there: the element-by-element proof is quadratic in the count): the same laws for EVERY perfect buffer tree (and
 every storage tree), proved with the loop laws of proofs/obj/arr_*.bend
 (codegen/arr_laws.py) for symbolic counts; no closed size is compared. The
-loader law (*_spec_input) is generated for Blob and HistoricalBatch.
+loader law (*_spec_input) is generated for Blob, HistoricalBatch, SyncCommittee
+and the generic Vector[uintN, 512/513] forms; Vector[uintN, 513] (spec_arr.uvec_tail)
+is a whole tree then the last element's words (arr_enc.cpt_tail).
 
 Validator (a boolean inside an unaligned record), validator_module ->
 proofs/obj/spec_rec_Validator.bend: the same laws (encoder bytes, decoder

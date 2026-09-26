@@ -55,7 +55,8 @@ What that means concretely:
   buffer tree / storage tree (free trees, sizes symbolic: no closed size is
   compared or unfolded; BlobSidecar's blob sits at word 2, unaligned to the
   buffer's subtrees, and is handled by arr_shift/arr_enc). The loader law
-  (`*_spec_input`) exists for Blob and HistoricalBatch only. The BlobSidecar
+  (`*_spec_input`) exists for Blob, HistoricalBatch and SyncCommittee, not for
+  BlobSidecar (its blob is not aligned to the buffer's subtrees). The BlobSidecar
   uniqueness law takes the bytes as a variable `by` with `eby: by == <bytes>`
   (a parameter typed with the 212 literal field words overflows the checker's
   stack); it is the same statement at `eby := {==}`.
@@ -69,14 +70,16 @@ What that means concretely:
   through `proofs/obj/word_mul.bend` `mul256`: `U32.mul(w, 256) == U32.shln(w,
   8n)` for every w), uniqueness.
   **Generic forms**: the aligned family covers 38 generic forms
-  (`spec_gcodec/grepr/ginput/gunique_*`), Vector[uint32/64/128/256, 512]
-  go through the array route (`spec_garr_*`).
+  (`spec_gcodec/grepr/ginput/gunique_*`), Vector[uint32/64/128/256, 512] and
+  Vector[uint32/64/128/256, 513] go through the array route (`spec_garr_*`:
+  decode, view, loader, encoder bytes, parts, encoding, rejection, uniqueness).
   Uniqueness is proved with `proofs/decode_complete.bend` `image_unique` (which
   END_TO_END's frozen `deserialize_unique` is): on Bend 2.0.28 a module that
   imports END_TO_END together with `spec_fixed.bend` fails to resolve names.
-  Not covered: the 21 variable-size names, the generic sub-word forms (vectors
-  of bool/uint8/uint16, bit vectors of partial words, small containers), and
-  all roots.
+  Not covered: the 21 variable-size names, the 53 generic forms with sub-word
+  leaves (bool, uint8, uint16 and vectors of them, bit vectors, the containers
+  Container(uint8), Container(uint16, uint16), Container(uint8, uint64, uint32),
+  a progressive container), and all roots.
 * Root equality (updated 2026-09-24, Linux host; see WORK_LOG "Iteration 23"):
   laws exist for 108 of the 109 Fulu names, for the ACTUAL public root
   `T.<Name>_hash_tree_root(h, o)`, against the independent relational

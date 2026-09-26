@@ -404,3 +404,56 @@ def emit_split(+d: Nat, +L: F.array__Tree<U32>, +R: F.array__Tree<U32>, +n: U32,
   %take_app(F.array__slots(U32, L), F.array__slots(U32, R), 1n+K, P, M, AS.len_tree(d, L, P, F.array__pf_left(U32, d, L, R, pf), hP), hM) :
     {B.emit(B.Buf{F.array__thaw(U32, F.TNode{L, R}), n}, 0, k) == (B.Buf{F.array__thaw(U32, F.TNode{L, R}), n}, SF.limbs(_)) : B.Buf & +List<U32>}
   AE.emit_take(1n+d, F.TNode{L, R}, n, k, K, hk, hd, hK, hn, pf)
+
+# ---- a whole tree then a few words (Vector[uintN, 513]) ----
+
+law cpt_app:
+  for +xs: List<&2, U32>
+  for +dd: Nat
+  for +k: Nat
+  for +a: Nat
+  for +b: Nat
+  for +D: F.array__Tree<U32>
+  for +ys: List<&2, U32>
+  {AC.cpt(dd, k, Nat.add(F.spec_common__length(U32, xs), a), b, D, F.spec_common__append(U32, xs, ys)) == AC.cpt(dd, k, a, b, D, ys) : F.array__Tree<U32>}
+def cpt_app(xs, dd, k, a, b, D, ys):
+  match xs:
+    case Nil{}: {==}
+    case Con{+x, +t}:
+      %Equal.sym(F.array__Tree<U32>, AC.cpt(dd, k, 1n+Nat.add(F.spec_common__length(U32, t), a), b, D, Con{x, F.spec_common__append(U32, t, ys)}), AC.cpt(dd, k, Nat.add(F.spec_common__length(U32, t), a), b, D, F.spec_common__append(U32, t, ys)), AE.cpt_shift(dd, k, Nat.add(F.spec_common__length(U32, t), a), b, D, x, F.spec_common__append(U32, t, ys))) :
+        {_ == AC.cpt(dd, k, a, b, D, ys) : F.array__Tree<U32>}
+      cpt_app(t, dd, k, a, b, D, ys)
+
+# Copying a perfect tree A of depth p then E more words G into zero storage of
+# depth 1 + p: [A | the words G at the start of zero storage of depth p].
+def cpt_tail(+p: Nat, +E: Nat, +A: F.array__Tree<U32>, +G: List<&2, U32>, +pA: {F.array__perfect(U32, p, A) == True{} : Bool})
+    -> {AC.cpt(1n+p, Nat.add(F.spec_common__pow2(p), E), 0n, 0n, F.array__trep(U32, 1n+p, 0), F.spec_common__append(U32, F.array__slots(U32, A), G)) == F.TNode{A, AC.cpt(p, E, 0n, 0n, F.array__trep(U32, p, 0), G)} : F.array__Tree<U32>}:
+  +P = F.spec_common__pow2(p)
+  +z = F.array__trep(U32, p, 0)
+  +sl = F.spec_common__append(U32, F.array__slots(U32, A), G)
+  +P0 = Nat.add(P, 0n)
+  %Equal.sym(F.array__Tree<U32>, AC.cpt(1n+p, Nat.add(P, E), 0n, 0n, F.TNode{z, z}, sl), AC.cpt(1n+p, E, P0, P0, AC.cpt(1n+p, P, 0n, 0n, F.TNode{z, z}, sl), sl), AC.split(1n+p, P, E, 0n, 0n, F.TNode{z, z}, sl)) :
+    {_ == F.TNode{A, AC.cpt(p, E, 0n, 0n, z, G)} : F.array__Tree<U32>}
+  %Equal.sym(F.array__Tree<U32>, AC.cpt(1n+p, P, 0n, 0n, F.TNode{z, z}, sl), F.TNode{AC.cpt(p, P, 0n, 0n, z, sl), z}, AC.left(p, P, 0n, 0n, z, z, sl, AC.le_p0(P))) :
+    {AC.cpt(1n+p, E, P0, P0, _, sl) == F.TNode{A, AC.cpt(p, E, 0n, 0n, z, G)} : F.array__Tree<U32>}
+  %Equal.sym(F.array__Tree<U32>, AC.cpt(p, P, 0n, 0n, z, sl), AC.segt(p, 0n, sl), AC.full(p, 0n, z, sl, F.array__trep_perfect(U32, p, 0))) :
+    {AC.cpt(1n+p, E, P0, P0, F.TNode{_, z}, sl) == F.TNode{A, AC.cpt(p, E, 0n, 0n, z, G)} : F.array__Tree<U32>}
+  %Equal.sym(F.array__Tree<U32>, AC.segt(p, 0n, sl), A, AC.seg_self(p, A, G, pA)) :
+    {AC.cpt(1n+p, E, P0, P0, F.TNode{_, z}, sl) == F.TNode{A, AC.cpt(p, E, 0n, 0n, z, G)} : F.array__Tree<U32>}
+  %Equal.sym(F.array__Tree<U32>, AC.cpt(1n+p, E, P0, P0, F.TNode{A, z}, sl), F.TNode{A, AC.cpt(p, E, P0, Nat.sub(P0, P), z, sl)}, AC.right(p, E, P0, P0, A, z, sl, F.nat__eq_le(P, P0, Equal.sym(Nat, P0, P, F.nat__add_zero(P))))) :
+    {_ == F.TNode{A, AC.cpt(p, E, 0n, 0n, z, G)} : F.array__Tree<U32>}
+  %Equal.sym(Nat, P0, P, F.nat__add_zero(P)) : {F.TNode{A, AC.cpt(p, E, P0, Nat.sub(_, P), z, sl)} == F.TNode{A, AC.cpt(p, E, 0n, 0n, z, G)} : F.array__Tree<U32>}
+  %Equal.sym(Nat, Nat.sub(P, P), 0n, F.nat__sub_self(P)) : {F.TNode{A, AC.cpt(p, E, P0, _, z, sl)} == F.TNode{A, AC.cpt(p, E, 0n, 0n, z, G)} : F.array__Tree<U32>}
+  %F.array__slots_length(U32, p, A, pA) :
+    {F.TNode{A, AC.cpt(p, E, Nat.add(_, 0n), 0n, z, sl)} == F.TNode{A, AC.cpt(p, E, 0n, 0n, z, G)} : F.array__Tree<U32>}
+  %Equal.sym(F.array__Tree<U32>, AC.cpt(p, E, Nat.add(F.spec_common__length(U32, F.array__slots(U32, A)), 0n), 0n, z, sl), AC.cpt(p, E, 0n, 0n, z, G), cpt_app(F.array__slots(U32, A), p, E, 0n, 0n, z, G)) :
+    {F.TNode{A, _} == F.TNode{A, AC.cpt(p, E, 0n, 0n, z, G)} : F.array__Tree<U32>}
+  {==}
+
+# The first n words of [X | c] are the first n of X when X has at least n.
+def tk_left(+d: Nat, +X: F.array__Tree<U32>, +c: F.array__Tree<U32>, +n: Nat, +pX: {F.array__perfect(U32, d, X) == True{} : Bool},
+    +h: {Nat.is_le(n, F.spec_common__pow2(d)) == True{} : Bool})
+    -> {AH.tk(F.array__slots(U32, F.TNode{X, c}), n) == AH.tk(F.array__slots(U32, X), n) : List<&2, U32>}:
+  F.list__sc_take_append_left(U32, F.array__slots(U32, X), F.array__slots(U32, c), n,
+    F.logic__subst(Nat, z => {Nat.is_le(n, z) == True{} : Bool}, F.spec_common__pow2(d), F.spec_common__length(U32, F.array__slots(U32, X)),
+      Equal.sym(Nat, F.spec_common__length(U32, F.array__slots(U32, X)), F.spec_common__pow2(d), F.array__slots_length(U32, d, X, pX)), h))
