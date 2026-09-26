@@ -162,6 +162,20 @@ What that means concretely:
   depth d < 28. The value of a decoded bit list is stated from the buffer's
   bytes (`bl`); relating it to the decoded object's own bits (a view law) and
   the bit-list encoder laws are open.
+* **Unaligned writes** (`codegen/var_uw.py`, hand-written `vuw.bend`;
+  2026-09-26). The runtime's writers at a byte position X = 4 i + s
+  (s = 1, 2, 3) of an output tree (any depth, any word count). Models: `ORW`
+  (or_word), `ORS` (or_skip), `SWc(S, ws, dd, D, i, c)` (the words ws written at
+  byte s of word i after the carry c; `SWo`/`CRY` its open part and last carry),
+  `W32M` (a four-byte write). Runtime = model: `vuw.w32u_rt` (`O.w32`),
+  `vuwf<s>.putu_{b32,b20,u256}` (the word-by-word writers `<p>_pw<s>`, their
+  interior stores into zero words), `vuwp<s>.putwu` (`O.put_words` of n > 0
+  bytes: first word, the shifted copy `scopy` = `vuwp<s>.sm_swo`, the OR loop
+  = `pwor`, the carry; for every middle count the runtime picks). Bytes:
+  `vuw<s>.swcb` — `UA.BYT(SWc(S, ws, dd, D, i, 0))` is the splice
+  `SPL(BYT(D), 4 i + s, limbs(ws))` when those bytes were zero (`swlb`: the
+  list model; bit lemmas `vuw_bits`, generated); `vuw<s>.w32b` for `W32M`;
+  `vuw.updv_bytes`: an aligned run `VF.updv` at word j is `SPL(BYT, 4 j, ...)`.
 * **Unaligned offsets** (`codegen/var_ua.py`, hand-written `vua.bend`,
   `vua_copy.bend`; 2026-09-26, stock). Generic in the offset and length, for
   a buffer of depth d < 31. U1: `B.read32` at ANY byte offset X returns
