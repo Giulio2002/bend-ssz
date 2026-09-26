@@ -93,7 +93,10 @@ What that means concretely:
   element vectors state it over every list of the length. The containers' joined
   words and the encoders' bytes are proved bit by bit (`codegen/bitsim.py`: per-bit
   lemmas of at most two variables).
-* Since 2026-09-26 the spec connection covers **3 of the 21 variable-size names**
+* Since 2026-09-26 the spec connection covers **7 of the 21 variable-size names**
+  (DataColumnsByRootIdentifier, IndexedAttestation, AttesterSlashing, Attestation,
+  PendingAttestation, AggregateAndProof, SignedAggregateAndProof; the last four
+  decode-side only, see "Bit lists")
   (see below and the AttesterSlashing paragraph after it) and 4 variable-size
   generic forms:
   the family "word-aligned fixed Data fields around ONE `List[uint64, N]`"
@@ -139,6 +142,79 @@ What that means concretely:
   Supporting stock libraries: `vnest.bend` (a word from its limbs, bytes at 4 k
   are word k), `vdig.bend` (the spec's four offset digits of a word's value are
   its limbs), `vfits.bend` (N.fits(4n, x) for x <= 2^a, a < 32, symbolically).
+* **Bit lists** (`codegen/var_bits.py`, `var_bitc.py`, `var_win.py`; 2026-09-26):
+  the runtime's delimiter search (`O.ok_bitlist`, `O.bits_in`) is related to the
+  spec's delimiter encoding (spec/bitfields.bend) through byte facts proved by
+  exhaustive case analysis over a byte's eight bits (`vbyte.bend`, generated)
+  and the byte-string development `vbitl.bend` (the value bits `bl(bytes)` =
+  every byte's bits, the last one cut before its highest set bit, pack with the
+  delimiter back to the bytes; every delimiter encoding has that shape), with
+  the runtime bridge `vbrt.bend` (the byte the validator reads is the spec's
+  last byte; `copy_in` of any length). Laws (ok_eval, decode_accept,
+  decode_none, decode_spec, decode_unique, decode_reject) for: the 18 generic
+  BitList[N] forms (`var_bits_<X>{,_unique,_rej}.bend`, stock); PendingAttestation
+  (`var_bitc_PendingAttestation*.bend`, stock) and Attestation
+  (`big_var_bitc_Attestation*.bend`, big: its 131072-bit limit); and, through
+  window laws (`var_win.py`: `big_var_win_bits131072.bend`,
+  `big_var_win_Attestation.bend`, a uniform interface CHKw/ok_evalw/readw/
+  specw/invw at a symbolic word-aligned window), AggregateAndProof and
+  SignedAggregateAndProof (`big_var_win_<X>{,_top,_unique}.bend`). Buffers of
+  depth d < 28. The value of a decoded bit list is stated from the buffer's
+  bytes (`bl`); relating it to the decoded object's own bits (a view law) and
+  the bit-list encoder laws are open.
+* **Unaligned offsets** (`codegen/var_ua.py`, hand-written `vua.bend`,
+  `vua_copy.bend`; 2026-09-26, stock). Generic in the offset and length, for
+  a buffer of depth d < 31. U1: `B.read32` at ANY byte offset X returns
+  `RW(t, X)` (`vua.rd_any`), whose limbs are the spec bytes [X, X + 4)
+  (`vua.rd_bytes`); the word joins `B.join_sel(j, lo, hi)` have limbs
+  j..3 of lo then 0..j - 1 of hi (`vua_bits.join1/2/3`, generated). U2:
+  the shifted copies `O.scopy1/2/3` build the model `vua_copy.smone`
+  (`vua_sc.scopy{1,2,3}_ok`, generated; U32.mul by 2^k is `word_mul`'s
+  shift). The last source read may be one past the array, where Base Array
+  masks the index to 0 (`vua_copy.get_wrap`). `copy_in` / `copy_into` of any
+  length L at an offset with off & 3 = s (s = 1, 2, 3) returns
+  `MK(L, dz, smone(s, NW(L), off >> 2, ...))` (`vua_sc.copy_in_ua{s}`,
+  `copy_into_ua{s}`; the aligned case is `vbytes.copy_in_any`), and its first
+  L bytes are the buffer's spec bytes [off, off + L) (`vua_copy.ci_bytes`).
+  U3: a uint64 at any offset X is two four-byte reads
+  (`vua_rd.rd64_any`, O.U64{RW(t, X), RW(t, X + 4)}) whose limbs are the
+  spec bytes [X, X + 8) (`vua_rd.rd64_bytes`); bytes and bools are
+  `vbrt.byte_at_ok` at any offset.
+  U4 (copies): `vua_ct.copy_in_at` — copy_in of any length at ANY offset
+  returns the storage `CT(d, t, off, L, dz)` (the aligned or the shifted copy
+  by off & 3), whose first L bytes are the spec bytes [off, off + L)
+  (`vua_ct.ct_bytes`).
+* **Byte lists at any length, and the names nesting them** (2026-09-26,
+  agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
+  `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
+  container of word-aligned fixed fields, two packed-word byte vectors and one
+  `ByteList[32]`), LightClientHeader (a boxed ExecutionPayloadHeader after its
+  header) and LightClientOptimisticUpdate (a LightClientHeader, a boxed
+  SyncAggregate) have the full law set (ok_eval, decode_accept, decode_spec,
+  decode_unique, decode_reject, decode_none, encode_eval, encode_spec) in
+  `proofs/obj/var_bytes_<Name>{,_unique,_rej,_enc}.bend`, all stock-checkable,
+  over the same quantifiers as above (buffers on perfect trees of depth d < 29
+  with n <= 4 2^d; objects whose storage trees are perfect with room for their
+  words, the byte list's last storage word having no bytes past its length, the
+  runtime's storage check). The masked last word of `O.copy_in` / `O.put_words`
+  is proved once, symbolically in the length (`proofs/obj/vbytes.bend`
+  `copy_in_any`, `mk_bytes`: the masked storage has the copied words' first L
+  bytes, by clearing high bytes bit by bit; `vbenc.bend` `put_words_any`,
+  `words_ok_b`); the value of the decoded byte list is the first L bytes of its
+  storage (`vbspec.bend` `ybytes`). Every name's laws are first stated at a
+  word-aligned window (off = 4 i, len) of a buffer (`_win`: ok_evalw, readw,
+  specw; `_rej`: inv_p, rej_facts; `_enc`: putw at pos = 4 P over any tree,
+  frame_lo, partsw) and the whole-buffer laws are the window laws at i = 0; a
+  container nesting a covered name uses the child's window laws at the window
+  after its header. Not covered, and why: LightClientBootstrap and
+  LightClientUpdate hold a SyncCommittee (6156 words, array-backed: its value's
+  parts are those of spec_arr_SyncCommittee, which the header layout here does
+  not yet take as a symbolic word segment); LightClientUpdate and
+  LightClientFinalityUpdate hold a second LightClientHeader whose offset is
+  4k + (extra_data length), in general not word-aligned, so its reads and
+  copies go through the runtime's shifted paths (`B.read32` split reads,
+  `O.scopy1..3`), which have no laws yet; ExecutionPayload likewise (its
+  transactions and withdrawals start after extra_data).
 * **Progressive lists** (`codegen/var_plist.py`): the generic forms
   ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
   Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,
