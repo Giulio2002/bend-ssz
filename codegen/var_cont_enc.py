@@ -35,7 +35,7 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 import generate as G  # noqa: E402
 import schema  # noqa: E402
 
-CONTS = ['ExecutionPayload', 'ExecutionPayloadHeader']
+CONTS = ['ExecutionPayload', 'ExecutionPayloadHeader', 'ExecutionRequests', 'Attestation']
 TR = 'FD.array__Tree<U32>'
 TRUE = 'True{} : Bool'
 GROUP = G.GROUP
@@ -1074,7 +1074,25 @@ def iface_text(C, generic=False):
                 ws = [f'w{j}' for j in range(lf.W)]
                 pat = f'{lf.ctor}{{' + ', '.join('+' + x for x in ws) + '}'
                 B = 4 * lf.W
-                w(f'''
+                if lf.rec is not None:
+                    # a fixed record: nested matches expose its words (var_rlist_enc.nest), named as walk names them
+                    import var_rlist_enc as EN
+                    words = []
+                    ls, ind = EN.nest(lf.rec, 'o', words, 2)
+                    assert words == nd.words, (words[:4], nd.words[:4])
+                    bodyn = '\n'.join(ls)
+                    padn = ' ' * ind
+                    w(f'''
+# ---- {lf.p}: its value, read back from its words, and its parts (a fixed record) ----
+def LV_{lf.p}(o: {lf.ctor}) -> S.Value:
+{bodyn}
+{padn}{fx(nd.val)}
+def lvp_{lf.p}(+o: {lf.ctor}) -> {{Codec.parts(LV_{lf.p}(o), {fx(nd.sch)}) == Some{{[S.Fixed{{VCN.PC({B}n, FX.limbs(K.RW_{lf.p}(o)))}}]}} : Maybe<&2, +List<S.Part>>}}:
+{bodyn}
+{padn}CS.pcfix(LV_{lf.p}({fx(nd.obj)}), {fx(nd.sch)}, FX.limbs([{", ".join(nd.words)}]), {B}n, {{==}}, {fx(nd.proof)})
+''')
+                else:
+                    w(f'''
 # ---- {lf.p}: its value, read back from its words, and its parts ----
 def LV_{lf.p}(o: {lf.ctor}) -> S.Value:
   match o:
@@ -1603,7 +1621,8 @@ HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primi
 # every child in the encoder-window interface, every fixed piece word-aligned (so far).
 GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3', 'Gp8A7851175B', 'Gc221EC01D83']
 # the containers written in the encoder-window interface with their spec side (iface_text): (name, generic)
-ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True), ('Gp8A7851175B', True), ('Gc221EC01D83', True)]
+ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True),
+          ('Gp8A7851175B', True), ('Gc221EC01D83', True), ('ExecutionRequests', False), ('Attestation', False)]
 
 
 def gfile_c(C):
