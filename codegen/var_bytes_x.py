@@ -37,6 +37,7 @@ import schema  # noqa: E402
 import var_laws as VL  # noqa: E402
 import var_ua as VUA  # noqa: E402
 import var_bytes as VBY  # noqa: E402
+import spec_laws as SL  # noqa: E402
 import var_bytes_nest as VBN  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -776,6 +777,7 @@ def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
 
 
 def main():
+    SL.EXACT = True   # spec_laws' exact spec-parts proofs (F.items_fixed, container_fixed, ...)
     names = schema.load(ROOT / 'codegen/fulu.yaml')
     g = G.Gen()
     for nm, t in names.items():
