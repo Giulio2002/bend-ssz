@@ -87,6 +87,7 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/var_bytes_x.py       # the same names at any byte offset
 /opt/homebrew/bin/python3 codegen/var_vlist.py         # lists of variable-size elements (transactions), ByteList[N] windows [--no-big]
 /opt/homebrew/bin/python3 codegen/var_winx_c.py        # containers with several variable fields over child windows (ExecutionPayload; big children) [--no-big]
+/opt/homebrew/bin/python3 codegen/var_top.py           # whole-buffer decoder laws of Transaction and ExecutionPayload from their windows [--no-big]
 /opt/homebrew/bin/python3 codegen/sha_laws.py          # SHA node bridge
 /opt/homebrew/bin/python3 codegen/schema_shapes.py     # schema shape laws
 /opt/homebrew/bin/python3 codegen/root_laws.py         # phase-A root laws, validity agreement
