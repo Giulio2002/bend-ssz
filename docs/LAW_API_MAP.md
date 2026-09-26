@@ -176,6 +176,10 @@ What that means concretely:
   `MK(L, dz, smone(s, NW(L), off >> 2, ...))` (`vua_sc.copy_in_ua{s}`,
   `copy_into_ua{s}`; the aligned case is `vbytes.copy_in_any`), and its first
   L bytes are the buffer's spec bytes [off, off + L) (`vua_copy.ci_bytes`).
+  U3: a uint64 at any offset X is two four-byte reads
+  (`vua_rd.rd64_any`, O.U64{RW(t, X), RW(t, X + 4)}) whose limbs are the
+  spec bytes [X, X + 8) (`vua_rd.rd64_bytes`); bytes and bools are
+  `vbrt.byte_at_ok` at any offset.
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
