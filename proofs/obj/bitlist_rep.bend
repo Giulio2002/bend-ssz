@@ -57,3 +57,23 @@ def rep_wf(-o: O.Bits, +s: S.Schema, +rep: rep_bits(o, s)) -> wfb(o):
 
 def blen_at(-o: O.Bits, +t: F.array__Tree<U32>, +K: U32, +eo: {o == O.Bits{F.array__thaw(U32, t), K} : O.Bits}) -> {blen(o) == K : U32}:
   Equal.cong(O.Bits, U32, blen, o, O.Bits{F.array__thaw(U32, t), K}, eo)
+
+def CFB(o: O.Bits) -> Data:
+  DK.Ex(F.array__Tree<U32>, t => DK.Ex(U32, K => {o == O.Bits{F.array__thaw(U32, t), K} : O.Bits}))
+
+def bcf(-o: O.Bits, +w: wfb(o)) -> CFB(o):
+  match w:
+    case Inl{+a}:
+      (+t, +a1) = a
+      (+dw, +a2) = a1
+      (+K, +a3) = a2
+      (+eo, +a4) = a3
+      (t, (K, eo))
+    case Inr{+b}:
+      (+t, +b1) = b
+      (+dw, +b2) = b1
+      (+K, +b3) = b2
+      (+q, +b4) = b3
+      (+r, +b5) = b4
+      (+eo, +b6) = b5
+      (t, (K, eo))

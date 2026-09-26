@@ -19,9 +19,9 @@ import ../obj/vbitenc.bend as VBT
 import ../obj/vbitdl.bend as DL
 import ../obj/vbitcore.bend as CO
 import ../obj/bitlist_pack.bend as BK
-import ../obj/bitlist_obj.bend as BO
+import ../obj/bitlist_rep.bend as BO
 import ../obj/vbitrep.bend as VR
-import ../obj/bitlist_obj.bend as BOb
+import ../obj/bitlist_rep.bend as BOb
 import ../obj/big_vvlz.bend as VZG
 import ../obj/var_pbits_GtF7582E0E9A_enc.bend as PRV
 

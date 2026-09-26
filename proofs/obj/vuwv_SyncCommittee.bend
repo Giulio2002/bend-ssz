@@ -188,6 +188,29 @@ def sc_at(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat
   +hl48 = VRX.froom(q, r, dd, 6144n, 48n, 24624n, {==}, hl)
   sc_core(dd, D, X, q, r, dB, TB, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, 24576, A.quad(6144n), e, hr, hd, hl, pf, pfB, hdB, hv, {==}, {==}, hsrc, hlw, hq, eK, hz1, sc_edl(r, hr), e48, hl48, VRX.fpx(q, r, 6144n))
 
+# |a ++ b| = T when |a| = m, |b| = 48 and m + 48 = T (over symbolic m: no closed 24576 in a conversion).
+def sc_len3(+m: Nat, +a: +List<U32>, +b: +List<U32>, +T: Nat, +ea: {List.length(&2, U32, a) == m : Nat}, +eb: {List.length(&2, U32, b) == 48n : Nat},
+    +e: {Nat.add(m, 48n) == T : Nat}) -> {List.length(&2, U32, List.append(&2, U32, a, b)) == T : Nat}:
+  Equal.trans(Nat, List.length(&2, U32, List.append(&2, U32, a, b)), Nat.add(List.length(&2, U32, a), List.length(&2, U32, b)), T, VS.len_app(a, b),
+    Equal.trans(Nat, Nat.add(List.length(&2, U32, a), List.length(&2, U32, b)), Nat.add(m, 48n), T,
+      Equal.trans(Nat, Nat.add(List.length(&2, U32, a), List.length(&2, U32, b)), Nat.add(m, List.length(&2, U32, b)), Nat.add(m, 48n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, List.length(&2, U32, b)), List.length(&2, U32, a), m, ea),
+        Equal.cong(Nat, Nat, z => Nat.add(m, z), List.length(&2, U32, b), 48n, eb)), e))
+
+# The bytes' count: 24576 + 48.
+def SyncCommittee_len(+dB: Nat, +TB: FD.array__Tree<U32>, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, +a7: U32, +a8: U32, +a9: U32, +a10: U32, +a11: U32, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
+    +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool})
+    -> {List.length(&2, U32, List.append(&2, U32, VS.bt(U32.to_nat(24576), FX.limbs(UW.SLW(TB))), FX.limbs([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11]))) == 24624n : Nat}:
+  +SL = UW.SLW(TB)
+  +eK = FD.nat__eq_from_is_eq(U32.to_nat(24576), A.quad(6144n), {==})
+  +eLS = Equal.trans(Nat, List.length(&2, U32, FX.limbs(SL)), A.quad(VB.len(SL)), A.quad(VB.pw(dB)), UW.len_limbs_v(SL),
+    Equal.cong(Nat, Nat, z => A.quad(z), VB.len(SL), VB.pw(dB), FD.array__slots_length(U32, dB, TB, pfB)))
+  +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(dB))) == True{} : Bool}, A.quad(6144n), U32.to_nat(24576), Equal.sym(Nat, U32.to_nat(24576), A.quad(6144n), eK), UW.quad_le(6144n, VB.pw(dB), hrB))
+  +hLS = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(24576), z) == True{} : Bool}, A.quad(VB.pw(dB)), List.length(&2, U32, FX.limbs(SL)),
+    Equal.sym(Nat, List.length(&2, U32, FX.limbs(SL)), A.quad(VB.pw(dB)), eLS), hq)
+  +eLD = VS.bt_len(U32.to_nat(24576), FX.limbs(SL), hLS)
+  sc_len3(U32.to_nat(24576), VS.bt(U32.to_nat(24576), FX.limbs(UW.SLW(TB))), FX.limbs([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11]), 24624n, eLD, {==}, FD.nat__eq_from_is_eq(Nat.add(U32.to_nat(24576), 48n), 24624n, {==}))
+
 # T.SyncCommittee_putk at any byte position X = 4 q + r.
 def SyncCommittee_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, +a7: U32, +a8: U32, +a9: U32, +a10: U32, +a11: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 24624n))), VB.pw(dd)) == True{} : Bool},
