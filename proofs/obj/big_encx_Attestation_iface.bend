@@ -300,6 +300,17 @@ def szx(m, hok):
   match m:
     case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: Equal.trans(Nat, U32.to_nat(K.SZC(m_aggregation_bits, data, signature, committee_bits)), ENDC(m_aggregation_bits, data, signature, committee_bits), List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), szC(m_aggregation_bits, data, signature, committee_bits, hok, 28n, {==}), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), ENDC(m_aggregation_bits, data, signature, committee_bits), lenE(m_aggregation_bits, data, signature, committee_bits, hok)))
 
+# The bytes within 4 2^k (k = 28, kept symbolic).
+law bndx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  for +k: Nat
+  for +ek: {k == 28n : Nat}
+  {Nat.is_le(List.length(&2, U32, ENC(m)), A.quad(VB.pw(k))) == True{} : Bool}
+def bndx(m, hok, k, ek):
+  match m:
+    case MW{+m_aggregation_bits, +data, +signature, +committee_bits}: FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(k))) == True{} : Bool}, ENDC(m_aggregation_bits, data, signature, committee_bits), List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_aggregation_bits, data, signature, committee_bits)), ENDC(m_aggregation_bits, data, signature, committee_bits), lenE(m_aggregation_bits, data, signature, committee_bits, hok)), okbk(m_aggregation_bits, data, signature, committee_bits, hok, k, ek))
+
 law encx_spec:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
