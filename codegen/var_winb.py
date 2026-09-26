@@ -66,6 +66,8 @@ CHILD_MOD = {
     'l134217728_PendingPartialWithdrawal': 'big_var_winx_l134217728_PendingPartialWithdrawal.bend',
     'l262144_PendingConsolidation': 'big_var_winx_l262144_PendingConsolidation.bend',
 }
+# containers written only with --pending (not yet checked)
+PENDING = {'BeaconState'}
 # the fixed-field modules (at any byte position) of the containers generated with window slices
 FIXMOD = {p: f'vfx_{p}.bend' for p in ['u64', 'b32', 'Fork', 'BeaconBlockHeader', 'v8192_b32', 'Eth1Data', 'v65536_b32', 'v8192_u64', 'bv4',
                                          'Checkpoint', 'SyncCommittee', 'v64_u64']}
@@ -1357,6 +1359,8 @@ def main():
     out = {}
     for name, fn, sym in MODULES:
         if no_big and fn.startswith('big_'):
+            continue
+        if name in PENDING and '--pending' not in sys.argv:
             continue
         L = layout(name, sym, FIXMOD)
         # a container is generated once all its children's (and fixed fields') modules exist
