@@ -54,10 +54,24 @@ CHILD_MOD = {
     'l128_u64': 'var_winx_l128_u64.bend',
     'BeaconBlockBody': 'big_var_winx_BeaconBlockBody.bend',
     'BeaconBlock': 'big_var_winx_BeaconBlock.bend',
+    # BeaconState's lists
+    'l16777216_b32': 'big_var_winx_l16777216_b32.bend',
+    'l2048_Eth1Data': 'var_winx_l2048_Eth1Data.bend',
+    'l1099511627776_Validator': 'big_var_winx_l1099511627776_Validator.bend',
+    'l1099511627776_u64': 'big_var_winx_l1099511627776_u64.bend',
+    'l1099511627776_u8': 'big_var_winx_l1099511627776_u8.bend',
+    'ExecutionPayloadHeader': 'var_bytesx_ExecutionPayloadHeader.bend',
+    'l16777216_HistoricalSummary': 'big_var_winx_l16777216_HistoricalSummary.bend',
+    'l134217728_PendingDeposit': 'big_var_winx_l134217728_PendingDeposit.bend',
+    'l134217728_PendingPartialWithdrawal': 'big_var_winx_l134217728_PendingPartialWithdrawal.bend',
+    'l262144_PendingConsolidation': 'big_var_winx_l262144_PendingConsolidation.bend',
 }
+# the fixed-field modules (at any byte position) of the containers generated with window slices
+FIXMOD = {p: f'vfx_{p}.bend' for p in ['u64', 'b32', 'Fork', 'BeaconBlockHeader', 'v8192_b32', 'Eth1Data', 'v65536_b32', 'v8192_u64', 'bv4',
+                                         'Checkpoint', 'SyncCommittee', 'v64_u64']}
 # (container, output file) of the tracked modules
-MODULES = [('BeaconBlockBody', 'big_var_winx_BeaconBlockBody.bend'), ('BeaconBlock', 'big_var_winx_BeaconBlock.bend'),
-           ('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock.bend')]
+MODULES = [('BeaconBlockBody', 'big_var_winx_BeaconBlockBody.bend', False), ('BeaconBlock', 'big_var_winx_BeaconBlock.bend', False),
+           ('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock.bend', False), ('BeaconState', 'big_var_winx_BeaconState.bend', True)]
 
 CW = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},\n'
       '    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},\n'
@@ -1140,12 +1154,13 @@ def main():
         return
     no_big = '--no-big' in sys.argv
     out = {}
-    for name, fn in MODULES:
+    for name, fn, sym in MODULES:
         if no_big and fn.startswith('big_'):
             continue
-        L = layout(name)
-        # a container is generated once all its children's window modules exist
-        missing = [f['mod'] for f in L.vars if not (ROOT / 'proofs/obj' / f['mod']).exists() and ROOT / 'proofs/obj' / f['mod'] not in out]
+        L = layout(name, sym, FIXMOD)
+        # a container is generated once all its children's (and fixed fields') modules exist
+        mods = [f['mod'] for f in L.vars] + sorted(set(L.fmods().values()))
+        missing = [m for m in mods if not (ROOT / 'proofs/obj' / m).exists() and ROOT / 'proofs/obj' / m not in out]
         if missing:
             print(f'{fn}: waits for ' + ', '.join(missing))
             continue
