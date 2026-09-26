@@ -919,14 +919,23 @@ def inv_text(L):
                 out.append(f'y{j}, h{j}, ev{j}')
         return ''.join(x + ', ' for x in out)
 
-    def prefix(i, inner):
+    def prefix0(i, inner):
         s = inner
         for f in reversed(L.fields[:i]):
             s = f'Codec.concatenate(Some{{[{part(f)}]}}, {s})'
         return s
 
+    def pargs(i):
+        return ''.join(f'xs{f["i"]}, ' if f['kind'] == 'fix' else f'y{f["j"]}, ' for f in L.fields[:i])
+
+    def prefix(i, inner):
+        return f'PFX{i}({pargs(i)}{inner})' if L.sym else prefix0(i, inner)
+
+    def chain0(i):
+        return 'S.End{}' if i == nf else f'S.Chain{{{L.spec(L.fields[i])}, {chain0(i + 1)}}}'
+
     def chain(i):
-        return 'S.End{}' if i == nf else f'S.Chain{{{L.spec(L.fields[i])}, {chain(i + 1)}}}'
+        return f'LCH{i}()' if L.sym else chain0(i)
 
     def absurd():
         return f'Empty.absurd({GOAL}, FD.logic__none_some(+List<S.Part>, [S.Variable{{{WBL}}}], e))'
@@ -944,6 +953,12 @@ def inv_text(L):
         w.append(f'def EVF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Data: {{Codec.parts(h, s) == Some{{[S.Variable{{y}}]}} : {MP}}}')
         w.append(f'def EXF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Data: {{Codec.parts(h, s) == Some{{[S.Fixed{{y}}]}} : {MP}}}')
         w.append(f'def LXF(+s: Nat, +xs: +List<U32>) -> Data: {{Some{{s}} == Some{{List.length(&2, U32, xs)}} : Maybe<&2, Nat>}}')
+        w.append(f'def LCH{nf}() -> S.Schema: S.End{{}}')
+        for i in range(nf - 1, -1, -1):
+            w.append(f'def LCH{i}() -> S.Schema: S.Chain{{{L.spec(L.fields[i])}, LCH{i + 1}()}}')
+        for i in range(nf + 1):
+            pd = ''.join(f'+xs{f["i"]}: +List<U32>, ' if f['kind'] == 'fix' else f'+y{f["j"]}: +List<U32>, ' for f in L.fields[:i])
+            w.append(f'def PFX{i}({pd}+m: {MP}) -> {MP}: {prefix0(i, "m")}')
         w.append('')
         WS = 'WSX()'
     FP = f'Layout.fixed_parts({PS}, Layout.fixed_size({PS}))'
