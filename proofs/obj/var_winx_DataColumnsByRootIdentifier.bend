@@ -227,18 +227,67 @@ def limw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
   %epo : {List.append(&2, U32, F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), _]), UW.WX(t, JW(x), U32.to_nat(LLw(len)))) == List.append(&2, U32, F.limbs(UR.RWS(9n, t, x)), UW.WX(t, JW(x), U32.to_nat(LLw(len)))) : +List<U32>}
   {==}
 
+# Definitions per step: a container's parts one step down and one field before the rest, over opaque values
+# (a conversion that is not a syntactic match would evaluate the fields' parts).
+def gcv_(+v: S.Value, +vs: S.Value, +s: S.Schema, +rs: S.Schema, +y: +List<U32>, +rest: +List<S.Part>,
+    +ea: {Codec.parts(v, s) == Some{[S.Variable{y}]} : Maybe<&2, +List<S.Part>>}, +eb: {Codec.parts(vs, rs) == Some{rest} : Maybe<&2, +List<S.Part>>})
+    -> {Codec.parts(S.Items{v, vs}, S.Chain{s, rs}) == Some{S.Variable{y} <> rest} : Maybe<&2, +List<S.Part>>}:
+  VS.cat_var(Codec.parts(v, s), y, Codec.parts(vs, rs), rest, ea, eb)
+
+def gcf_(+v: S.Value, +vs: S.Value, +s: S.Schema, +rs: S.Schema, +xs: +List<U32>, +rest: +List<S.Part>,
+    +ea: {Codec.parts(v, s) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}, +eb: {Codec.parts(vs, rs) == Some{rest} : Maybe<&2, +List<S.Part>>})
+    -> {Codec.parts(S.Items{v, vs}, S.Chain{s, rs}) == Some{S.Fixed{xs} <> rest} : Maybe<&2, +List<S.Part>>}:
+  F.cat_fixed(Codec.parts(v, s), xs, Codec.parts(vs, rs), rest, ea, eb)
+
+def FVc0(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.BytesValue{F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])}
+
+def fxc0(+t: FD.array__Tree<U32>, +x: Nat) -> {Codec.parts(FVc0(t, x), S.ByteVector{32n}) == Some{[S.Fixed{F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])}]} : Maybe<&2, +List<S.Part>>}:
+  F.bytes_part_n(UR.RWN(t, x), [UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)], 32n, {==}, {==})
+
+def ITc(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: S.Items{FVc0(t, x), S.Items{CH.VALw(t, JW(x), LLw(len)), S.EmptyItems{}}}
+
+def PSc(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> +List<S.Part>: VS.fpv([[UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)]], UW.WX(t, JW(x), U32.to_nat(LLw(len))), [])
+
+def ENCc(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> +List<U32>: List.append(&2, U32, List.append(&2, U32, F.flat([[UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)]]), List.append(&2, U32, N.digits(4n, VS.FSZ([[UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)]], [])), F.flat([]))), UW.WX(t, JW(x), U32.to_nat(LLw(len))))
+
+def LHc(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> +List<U32>: List.append(&2, U32, F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), 36]), UW.WX(t, JW(x), U32.to_nat(LLw(len))))
+
+def vwc(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> {S.Sequence{ITc(t, x, len)} == VALw(t, x, len) : S.Value}:
+  {==}
+
+def lct(+it: S.Value) -> {Codec.aggregate(Codec.parts(it, S.Chain{S.ByteVector{32n}, S.Chain{Spec.Schema111(), S.End{}}}), None{}) == Codec.parts(S.Sequence{it}, Spec.DataColumnsByRootIdentifier()) : Maybe<&2, +List<S.Part>>}:
+  {==}
+
+def aggS(+xs: +List<S.Part>, +w: Maybe<&2, Nat>) -> {Codec.one(Layout.encoding(xs), w) == Codec.aggregate(Some{xs}, w) : Maybe<&2, +List<S.Part>>}:
+  {==}
+
+def limwS(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(36, len) == True{} : Bool}, +epo: {SPOw(t, x) == 36 : U32}) -> {LHc(t, x, len) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>}:
+  limw(d, t, n, x, off, len, eo, hd, hw, pf, ha, epo)
+
+def catS(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(36, len) == True{} : Bool}, +hc: {CH.CHKw(t, JW(x), OWc(off), LLw(len)) == True{} : Bool}) -> {Codec.parts(ITc(t, x, len), S.Chain{S.ByteVector{32n}, S.Chain{Spec.Schema111(), S.End{}}}) == Some{PSc(t, x, len)} : Maybe<&2, +List<S.Part>>}:
+  gcf_(FVc0(t, x), S.Items{CH.VALw(t, JW(x), LLw(len)), S.EmptyItems{}}, S.ByteVector{32n}, S.Chain{Spec.Schema111(), S.End{}}, F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)]), [S.Variable{UW.WX(t, JW(x), U32.to_nat(LLw(len)))}], fxc0(t, x), gcv_(CH.VALw(t, JW(x), LLw(len)), S.EmptyItems{}, Spec.Schema111(), S.End{}, UW.WX(t, JW(x), U32.to_nat(LLw(len))), [], CH.specw(d, t, n, JW(x), OWc(off), LLw(len), eoF(d, t, n, x, off, len, eo, hd, hw, pf, ha), hd, hwc(d, t, n, x, off, len, eo, hd, hw, pf, ha), pf, hc), {==}))
+
+def encS(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(36, len) == True{} : Bool}) -> {Layout.encoding(PSc(t, x, len)) == Some{ENCc(t, x, len)} : Maybe<&2, +List<U32>>}:
+  VBC.enc_fpvb([[UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)]], UW.WX(t, JW(x), U32.to_nat(LLw(len))), [], UW.domWX(t, JW(x), U32.to_nat(LLw(len))), fitw(d, t, n, x, off, len, eo, hd, hw, pf, ha))
+
 def specg(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(36, len) == True{} : Bool}, +epo: {SPOw(t, x) == 36 : U32}, +hc: {CH.CHKw(t, JW(x), OWc(off), LLw(len)) == True{} : Bool})
     -> {Codec.parts(VALw(t, x, len), Spec.DataColumnsByRootIdentifier()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}:
-  +dom = UW.domWX(t, JW(x), U32.to_nat(LLw(len)))
-  %limw(d, t, n, x, off, len, eo, hd, hw, pf, ha, epo) :
-    {Codec.parts(VALw(t, x, len), Spec.DataColumnsByRootIdentifier()) == Some{[S.Variable{_}]} : Maybe<&2, +List<S.Part>>}
-  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{S.BytesValue{F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])}, S.Items{CH.VALw(t, JW(x), LLw(len)), S.EmptyItems{}}}, S.Chain{S.ByteVector{32n}, S.Chain{Spec.Schema111(), S.End{}}}), Some{[S.Fixed{F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])}, S.Variable{UW.WX(t, JW(x), U32.to_nat(LLw(len)))}]},
-      F.cat_fixed(Codec.parts(S.BytesValue{F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])}, S.ByteVector{32n}), F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)]), Codec.parts(S.Items{CH.VALw(t, JW(x), LLw(len)), S.EmptyItems{}}, S.Chain{Spec.Schema111(), S.End{}}), [S.Variable{UW.WX(t, JW(x), U32.to_nat(LLw(len)))}], F.bytes_part_n(UR.RWN(t, x), [UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)], 32n, {==}, {==}), VS.cat_var(Codec.parts(CH.VALw(t, JW(x), LLw(len)), Spec.Schema111()), UW.WX(t, JW(x), U32.to_nat(LLw(len))), Codec.parts(S.EmptyItems{}, S.End{}), [], CH.specw(d, t, n, JW(x), OWc(off), LLw(len), eoF(d, t, n, x, off, len, eo, hd, hw, pf, ha), hd, hwc(d, t, n, x, off, len, eo, hd, hw, pf, ha), pf, hc), {==}))) :
-    {Codec.aggregate(_, None{}) == Some{[S.Variable{List.append(&2, U32, F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), 36]), UW.WX(t, JW(x), U32.to_nat(LLw(len))))}]} : Maybe<&2, +List<S.Part>>}
-  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(VS.fpv([[UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)]], UW.WX(t, JW(x), U32.to_nat(LLw(len))), [])), Some{List.append(&2, U32, List.append(&2, U32, F.flat([[UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)]]), List.append(&2, U32, N.digits(4n, VS.FSZ([[UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)]], [])), F.flat([]))), UW.WX(t, JW(x), U32.to_nat(LLw(len))))}, VBC.enc_fpvb([[UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)]], UW.WX(t, JW(x), U32.to_nat(LLw(len))), [], dom, fitw(d, t, n, x, off, len, eo, hd, hw, pf, ha))) :
-    {Codec.one(_, None{}) == Some{[S.Variable{List.append(&2, U32, F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), 36]), UW.WX(t, JW(x), U32.to_nat(LLw(len))))}]} : Maybe<&2, +List<S.Part>>}
+  %limwS(d, t, n, x, off, len, eo, hd, hw, pf, ha, epo) : {Codec.parts(VALw(t, x, len), Spec.DataColumnsByRootIdentifier()) == Some{[S.Variable{_}]} : Maybe<&2, +List<S.Part>>}
+  %vwc(t, x, len) : {Codec.parts(_, Spec.DataColumnsByRootIdentifier()) == Some{[S.Variable{LHc(t, x, len)}]} : Maybe<&2, +List<S.Part>>}
+  %lct(ITc(t, x, len)) : {_ == Some{[S.Variable{LHc(t, x, len)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(ITc(t, x, len), S.Chain{S.ByteVector{32n}, S.Chain{Spec.Schema111(), S.End{}}}), Some{PSc(t, x, len)}, catS(d, t, n, x, off, len, eo, hd, hw, pf, ha, hc)) :
+    {Codec.aggregate(_, None{}) == Some{[S.Variable{LHc(t, x, len)}]} : Maybe<&2, +List<S.Part>>}
+  %aggS(PSc(t, x, len), None{}) : {_ == Some{[S.Variable{LHc(t, x, len)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(PSc(t, x, len)), Some{ENCc(t, x, len)}, encS(d, t, n, x, off, len, eo, hd, hw, pf, ha)) :
+    {Codec.one(_, None{}) == Some{[S.Variable{LHc(t, x, len)}]} : Maybe<&2, +List<S.Part>>}
   {==}
 
 # The spec parts of the value: one variable part, the window's bytes.
