@@ -50,8 +50,9 @@ def out_file(C):
 class Leaf:
     """A Data leaf written at any X by its dispatch lemma (vuwd, vuwv_<p>)."""
 
-    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz, rec=None, sub=0):
+    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz, rec=None, sub=0, pad=False):
         self.p, self.ctor, self.W, self.mod = p, ctor, W, mod
+        self.pad = pad    # a one-byte leaf in the zero-padded form (vuwv_bv4): its bytes and the zeros to its word's end
         self.sub = sub    # a sub-word leaf (uint8 / uint16: its byte count), a piece at any byte (vpiece)
         self.model, self.rt, self.by, self.pf, self.rt_hz = model, rt, by, pf, rt_hz
         self.rec = rec    # a fixed record of codegen/var_rec_enc.py's RECS: its field tree (var_laws.FT)
@@ -187,6 +188,9 @@ def leaf_of(fs):
         a = f'V_{fs.p}'
         return Leaf(fs.p, f'T.{fs.rep}', fs.fsize // 4, f'import ./vuwv_{fs.p}.bend as {a}', f'{a}.PX_{fs.p}', f'{a}.{fs.p}_any',
                     f'{a}.{fs.p}_any_bytes', f'{a}.{fs.p}x_perfect', True)
+    if fs.p == 'bv4':
+        return Leaf('bv4', 'T.Bitvector4', 1, 'import ./vuwv_bv4.bend as V_bv4', 'V_bv4.PX_bv4', 'V_bv4.bv4_any', 'V_bv4.bv4_any_bytes',
+                    'V_bv4.bv4x_perfect', True, pad=True)
     if fs.kind == 'container' and rec_ft(fs.p) is not None:
         return Leaf(fs.p, f'T.{fs.p}', fs.fsize // 4, 'import ./encx_recs.bend as ER', f'ER.PX_{fs.p}', f'ER.putx_{fs.p}', None,
                     f'ER.pf_{fs.p}', True, rec=rec_ft(fs.p))
@@ -233,7 +237,49 @@ def lenb_{p}(+o: {lf.ctor}) -> {{VCN.LN(FX.limbs(RW_{p}(o))) == {B}n : Nat}}:
 '''
 
 
+def pad_leaf_text(lf):
+    """Bitvector[4] (justification_bits): one byte, written in vuwv_bv4's zero-padded form (its byte and the
+    zeros to its word's end, which the next field's still-zero bytes supply), valid when its word is below 256."""
+    p = lf.p
+    X0 = 'Nat.add(A.quad(q), r)'
+    PD = 'WD.PADB(r, 1n)'
+    return f'''
+# ---- {p}: its writer on the object (one byte, zero-padded to its word's end; vuwv_{p}) ----
+def OK_{p}(o: {lf.ctor}) -> Bool:
+  match o:
+    case {lf.ctor}{{+w0}}: U32.is_eq(U32.shrn(w0, 8n), 0)
+def RW_{p}(o: {lf.ctor}) -> List<&2, U32>:
+  match o:
+    case {lf.ctor}{{+w0}}: [w0]
+def PXo_{p}(o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> {TR}:
+  match o:
+    case {lf.ctor}{{+w0}}: {lf.model}(r, dd, D, q, w0)
+def pfo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
+    -> {{FD.array__perfect(U32, dd, PXo_{p}(o, dd, D, q, r)) == {TRUE}}}:
+  match o:
+    case {lf.ctor}{{+w0}}: {lf.pf}(r, dd, D, q, w0, pf)
+def RTo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {{T.{p}_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_{p}(o, dd, D, q, r)) : Array<U32>}}
+def BYo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> Data:
+  {{UA.BYT(PXo_{p}(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), {X0}, List.append(&2, U32, VS.bt(1n, FX.limbs(RW_{p}(o))), UW.ZB({PD}))) : +List<U32>}}
+def putxo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
+    +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}}, +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}},
+    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1n))), VB.pw(dd)) == {TRUE}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}},
+    +hv: {{OK_{p}(o) == {TRUE}}}, +hz: {{VS.bt(Nat.add(1n, {PD}), VS.bdr({X0}, UA.BYT(D))) == UW.ZB(Nat.add(1n, {PD})) : +List<U32>}})
+    -> DK.P2(RTo_{p}(o, dd, D, X, q, r), BYo_{p}(o, dd, D, q, r)):
+  match o:
+    case {lf.ctor}{{+w0}}:
+      +vt = FD.u32alg__eq_of(U32.shrn(w0, 8n), 0, hv)
+      ({lf.rt}(dd, D, X, q, r, w0, e, hr, hd, hl, pf, vt, hz), {lf.by}(dd, D, X, q, r, w0, e, hr, hd, hl, pf, vt, hz))
+def lenb_{p}(+o: {lf.ctor}) -> {{VCN.LN(VS.bt(1n, FX.limbs(RW_{p}(o)))) == 1n : Nat}}:
+  match o:
+    case {lf.ctor}{{+w0}}: {{==}}
+'''
+
+
 def leaf_text(lf):
+    if lf.pad:
+        return pad_leaf_text(lf)
     if lf.rec is not None:
         return rec_leaf_text(lf)
     p, W = lf.p, lf.W
@@ -330,6 +376,10 @@ class Child:
             self.model = lambda dd, D, X, q, r: f'{a}.PUTL_{p}({A_}, {N}, {dd}, {D}, {q}, {r})'
             self.hY = f'{a}.len_encl_{p}({A_}, {N})'
             self.alias = a
+            # the Validator list (var_rec_enc.vlist_text): records at any byte phase, its model and laws take X
+            self.xform = p == 'l1099511627776_Validator'
+            if self.xform:
+                self.model = lambda dd, D, X, q, r: f'{a}.PUTL_{p}({A_}, {N}, {dd}, {D}, {X})'
         elif fs.p in STD_CHILDREN():
             # a child in var_plist_sub's encoder-window interface (codegen/encx_children.py)
             c = STD_CHILDREN()[fs.p]
@@ -403,6 +453,9 @@ class Child:
         RT = f'{a}.RTL_{p}({t}, {N}, {dd}, {D}, {X}, {q}, {r})'
         BY = f'{a}.BYL_{p}({t}, {N}, {dd}, {D}, {q}, {r})'
         PF = f'{a}.PFL_{p}({t}, {N}, {dd}, {D}, {q}, {r})'
+        if getattr(self, 'xform', False):
+            BY = f'{a}.BYL_{p}({t}, {N}, {dd}, {D}, {X}, {q}, {r})'
+            PF = f'{a}.PFL_{p}({t}, {N}, {dd}, {D}, {X})'
         return g, (RT, BY, PF), None, 'P3'
 
     def szx(self, qc, rc, dd, hd, hlc):
@@ -513,6 +566,9 @@ def generate_cont(g, names, C):
             OP.append(f'+{f}: {leaf_of(fs).ctor}')
             OA.append(f)
             OBJF[f] = f
+            if leaf_of(fs).pad:
+                HP.append(f'+hv_{f}: {{OK_{leaf_of(fs).p}({f}) == {TRUE}}}')
+                HA.append(f'hv_{f}')
         elif f in K.fixw:
             fw = K.fixw[f]
             OP += fw.params
@@ -961,6 +1017,26 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
                 a(f'+ep{k} = VRX.fpos(X, q, r, {kw}n, {c}, {LLv}, dd, e, {{==}}, hd, {{==}}, hl)')
                 a(f'+hl{k} = VRX.froom(q, r, dd, {kw}n, {size}n, {LLv}, FD.nat__le_trans(Nat.add(A.quad({kw}n), {size}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)}))), hl)')
                 hrk, eqpos = 'hr', f'VRX.fpx(q, r, {kw}n)'
+            if kind == 'leaf' and leaf_of(fs).pad:
+                # the zero-padded one-byte leaf: its byte and the zeros to its word's end, from the next piece's zeros
+                lf = leaf_of(fs)
+                PDk = f'WD.PADB({rk}, 1n)'
+                nx = st[i + 1]
+                assert nx.startswith('UW.ZB(') and nx.endswith('n)'), nx
+                rest = '[' + ', '.join(st[i + 2:]) + ']'
+                a(f'+hp{k} = VCN.zb_pre({nx[6:-1]}, {rest}, {PDk}, FD.nat__le_trans({PDk}, 3n, {nx[6:-1]}, VCN.padb3({rk}, 1n), {{==}}))')
+                a(f'+zp{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, 1n, {post}, {PDk}, {UBk}, hX, I{k}, hp{k})')
+                a(f'+hzp{k} = FD.logic__subst(Nat, zz => {{VS.bt(Nat.add(1n, {PDk}), VS.bdr(zz, {UBk})) == UW.ZB(Nat.add(1n, {PDk})) : +List<U32>}}, {rel}, {pos}, {eqpos}, zp{k})')
+                a(f'+g{k} = putxo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}, ep{k}, {hrk}, hd, hl{k}, pf{k}, hv_{f}, hzp{k})')
+                a(f'+rt{k} = PA(RTo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}), BYo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}), g{k})')
+                a(f'+by{k} = PB(RTo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}), BYo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}), g{k})')
+                Y = f'VS.bt(1n, FX.limbs(RW_{lf.p}({f})))'
+                a(f'+pf{k + 1} = pfo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}, pf{k})')
+                a(f'+hop{k} = FD.logic__subst(Nat, zz => {{{UBn} == UW.SPL({UBk}, zz, List.append(&2, U32, {Y}, UW.ZB({PDk}))) : +List<U32>}}, {pos}, {rel}, Equal.sym(Nat, {rel}, {pos}, {eqpos}), by{k})')
+                a(f'+I{k + 1} = VCN.reg_putc(UA.BYT(D), {X0}, {pre}, 1n, {post}, {Y}, {PDk}, {UBk}, {UBn}, hX, I{k}, lenb_{lf.p}({f}), hp{k}, hop{k})')
+                st[i] = f'VCN.PC(1n, {Y})'
+                facts.append(f'rt{k}')
+                continue
             if kind == 'leaf':
                 lf = leaf_of(fs)
                 a(f'+g{k} = putxo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}, ep{k}, {hrk}, hd, hl{k}, pf{k}, hz{k})')
@@ -1263,6 +1339,8 @@ def lvp_{lf.p}(+o: {lf.ctor}) -> {{Codec.parts(LV_{lf.p}(o), {fx(nd.sch)}) == So
                 d.update(val=f'{a}.VALL_{p}({A_}, {N_})', prf=f'{a}.encx_spec_{p}({A_}, {N_}, OKA_h_{f}, k, CS.hk30(k, ek), @HLL)',
                          szx=f'Equal.trans(Nat, U32.to_nat({ch.sz}), {a}.LL_{p}({A_}, {N_}), LY.LN({ch.enc}), {a}.szx_{p}({A_}, {N_}, 0n, 0n, k, CS.hk29(k, ek), VRX.nwn_le({a}.LL_{p}({A_}, {N_}), VB.pw(k), @HLL)), Equal.sym(Nat, LY.LN({ch.enc}), {a}.LL_{p}({A_}, {N_}), {a}.len_encl_{p}({A_}, {N_})))',
                          pfx=f'{a}.pfLb_{p}(U32.is_eq({N_}, 0), {A_}, {N_}, dd, @D, @Q, @R, @PF)', LL=f'{a}.LL_{p}({A_}, {N_})', hY=f'{a}.len_encl_{p}({A_}, {N_})')
+                if getattr(ch, 'xform', False):
+                    d['pfx'] = f'{a}.pfLb_{p}(U32.is_eq({N_}, 0), {A_}, {N_}, dd, @D, @X, @PF)'
             d['part'] = f'S.Variable{{{ch.enc}}}'
             d['bytes'] = ch.enc
             fields.append(d)
@@ -1581,7 +1659,7 @@ def domx(m, hok):
                 okpf = False
                 break
             Xc = f'U32.add(XQ(q, r), {ev["cur"]})'
-            pfs = x['pfx'].replace('@D', Mk(k)).replace('@Q', f'VCN.QX({Xc})').replace('@R', f'VCN.RX({Xc})').replace('@PF', pfs)
+            pfs = x['pfx'].replace('@D', Mk(k)).replace('@Q', f'VCN.QX({Xc})').replace('@R', f'VCN.RX({Xc})').replace('@X', Xc).replace('@PF', pfs)
     # ---- sizex: the runtime's size pass, child by child (narrow containers whose children state it) ----
     szx_ok = not K.wide
     RTS = ''
