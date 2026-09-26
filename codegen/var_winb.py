@@ -42,8 +42,8 @@ CHECKED = {'bv4', 'bv1', 'bv2', 'bv257', 'bv1281'}
 READROOM = {'bv4': 4}
 CHILD_MOD = {
     'l16_ProposerSlashing': 'var_winx_l16_ProposerSlashing.bend',
-    'l1_AttesterSlashing': 'big_var_winx_l1_AttesterSlashing.bend',
-    'l8_Attestation': 'big_var_winx_l8_Attestation.bend',
+    'l1_AttesterSlashing': 'big_vvl_l1_AttesterSlashing.bend',
+    'l8_Attestation': 'big_vvl_l8_Attestation.bend',
     'l16_Deposit': 'var_winx_l16_Deposit.bend',
     'l16_SignedVoluntaryExit': 'var_winx_l16_SignedVoluntaryExit.bend',
     'ExecutionPayload': 'var_winx_ExecutionPayload.bend',

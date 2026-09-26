@@ -47,8 +47,8 @@ import ./vrc.bend as VRC
 import ../../proofs/decode_shape.bend as DS
 import ../../proofs/decode_facts.bend as DF
 import ./var_winx_l16_ProposerSlashing.bend as CH0
-import ./big_var_winx_l1_AttesterSlashing.bend as CH1
-import ./big_var_winx_l8_Attestation.bend as CH2
+import ./big_vvl_l1_AttesterSlashing.bend as CH1
+import ./big_vvl_l8_Attestation.bend as CH2
 import ./var_winx_l16_Deposit.bend as CH3
 import ./var_winx_l16_SignedVoluntaryExit.bend as CH4
 import ./var_winx_ExecutionPayload.bend as CH5
