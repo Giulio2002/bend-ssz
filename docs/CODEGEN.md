@@ -53,7 +53,8 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/generate.py          # types/, benchmarks/objprog/
 /opt/homebrew/bin/python3 codegen/laws.py              # proofs/obj/
 /opt/homebrew/bin/python3 codegen/spec_laws.py         # codec spec laws
-/opt/homebrew/bin/python3 codegen/var_laws.py          # variable-size codec spec laws [--no-big]
+/opt/homebrew/bin/python3 codegen/var_laws.py          # variable-size codec spec laws, incl. nesting (var_nest.py) [--no-big]
+/opt/homebrew/bin/python3 codegen/var_plist.py         # progressive-list generic forms [--no-big]
 /opt/homebrew/bin/python3 codegen/sha_laws.py          # SHA node bridge
 /opt/homebrew/bin/python3 codegen/schema_shapes.py     # schema shape laws
 /opt/homebrew/bin/python3 codegen/root_laws.py         # phase-A root laws, validity agreement
@@ -164,5 +165,7 @@ Every generator takes `--no-big`: it then writes no `big_*` file, and every
 file it writes checks on stock Bend. The laws of the `big_*` files are the
 only ones missing from that stock-checkable set. `codegen/var_laws.py` writes
 `big_var_codec_IndexedAttestation*.bend` (the 131072-element list limit sits in
-the laws' types; stock 2.0.28 overflows its stack on `U32.to_nat(131072)` there). `proofs/obj/big_root_all.bend`
+the laws' types; stock 2.0.28 overflows its stack on `U32.to_nat(131072)` there)
+and the AttesterSlashing files built on it; `codegen/var_plist.py` writes
+`big_var_plist_*.bend` (unbounded list storage depth; see LAW_API_MAP.md). `proofs/obj/big_root_all.bend`
 checks the five big root laws in one process (332 s, 3.9 GB with #1075).

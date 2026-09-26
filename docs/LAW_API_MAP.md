@@ -49,7 +49,9 @@ What that means concretely:
   Not covered: HistoricalBatch, SyncCommittee, Blob, BlobSidecar (packed storage
   beyond 512 words: need loop induction over the array model), Validator (a
   boolean inside an unaligned record), the 21 variable-size names, and all roots.
-* Since 2026-09-26 the spec connection covers **2 of the 21 variable-size names**:
+* Since 2026-09-26 the spec connection covers **3 of the 21 variable-size names**
+  (see below and the AttesterSlashing paragraph after it) and 4 variable-size
+  generic forms:
   the family "word-aligned fixed Data fields around ONE `List[uint64, N]`"
   (`codegen/var_laws.py`, `codegen/var_enc.py`): DataColumnsByRootIdentifier
   (`proofs/obj/var_codec_DataColumnsByRootIdentifier{,_unique,_rej,_enc}.bend`,
@@ -81,6 +83,25 @@ What that means concretely:
   SignedBeaconBlock, ExecutionPayload, BeaconState): the decoder laws above are
   stated at buffer offset 0 and would have to be restated for a window at a
   symbolic offset to compose.
+* **Nesting** (`codegen/var_nest.py`): `big_var_codec_IndexedAttestation_win.bend`
+  restates the IndexedAttestation validator, reader and spec parts at a symbolic
+  word-aligned window (off = 4 i, len) of a buffer; through them
+  `big_var_codec_AttesterSlashing{,_unique,_rej}.bend` prove ok_eval,
+  decode_accept, decode_spec, decode_unique, decode_reject and decode_none for
+  AttesterSlashing (two IndexedAttestation fields). Its encoder laws are open.
+  Supporting stock libraries: `vnest.bend` (a word from its limbs, bytes at 4 k
+  are word k), `vdig.bend` (the spec's four offset digits of a word's value are
+  its limbs), `vfits.bend` (N.fits(4n, x) for x <= 2^a, a < 32, symbolically).
+* **Progressive lists** (`codegen/var_plist.py`): the generic forms
+  ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
+  Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,
+  decode_spec, decode_unique, decode_reject, decode_none, encode_eval,
+  encode_spec) in `big_var_plist_<X>*.bend`, for buffer and storage depth < 28
+  (n <= 2^29 bytes: the vcopy overflow lemmas need k < 31). They are big files
+  because the unbounded list's storage depth (up to 2^27 words) makes the
+  runtime's `B.zeros` cascade compare closed Array trees, which only the
+  identity check of bendlang/bend#1075 does cheaply
+  (`big_var_plist_zeros.bend`). Stock: `vlist.bend`, `var_elems.bend`.
 * Root equality (updated 2026-09-24, Linux host; see WORK_LOG "Iteration 23"):
   laws exist for 108 of the 109 Fulu names, for the ACTUAL public root
   `T.<Name>_hash_tree_root(h, o)`, against the independent relational
