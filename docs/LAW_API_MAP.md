@@ -180,6 +180,10 @@ What that means concretely:
   (`vua_rd.rd64_any`, O.U64{RW(t, X), RW(t, X + 4)}) whose limbs are the
   spec bytes [X, X + 8) (`vua_rd.rd64_bytes`); bytes and bools are
   `vbrt.byte_at_ok` at any offset.
+  U4 (copies): `vua_ct.copy_in_at` — copy_in of any length at ANY offset
+  returns the storage `CT(d, t, off, L, dz)` (the aligned or the shifted copy
+  by off & 3), whose first L bytes are the spec bytes [off, off + L)
+  (`vua_ct.ct_bytes`).
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
