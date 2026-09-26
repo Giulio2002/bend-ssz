@@ -1040,3 +1040,100 @@ def spl_spl(+B0: +List<U32>, +X0: Nat, +Z: +List<U32>, +a: Nat, +Y: +List<U32>,
       Equal.trans(+List<U32>, List.append(&2, U32, SPL(Z, a, Y), R0), List.append(&2, U32, Q, List.append(&2, U32, List.append(&2, U32, Y, Dz), R0)), List.append(&2, U32, Q, List.append(&2, U32, Y, List.append(&2, U32, Dz, R0))),
         VS.app_assoc(Q, List.append(&2, U32, Y, Dz), R0),
         Equal.cong(+List<U32>, +List<U32>, z => List.append(&2, U32, Q, z), List.append(&2, U32, List.append(&2, U32, Y, Dz), R0), List.append(&2, U32, Y, List.append(&2, U32, Dz, R0)), VS.app_assoc(Y, Dz, R0)))))
+
+# ---- the aligned copy's bytes ----------------------------------------------------------------
+
+law lm_lmv:
+  for +n: Nat
+  for +i: Nat
+  for +j: Nat
+  for +L: List<&2, U32>
+  for +SL: List<&2, U32>
+  for +h: {Nat.is_le(Nat.add(i, n), VB.len(SL)) == True{} : Bool}
+  {VB.lm(n, i, j, L, SL) == VF.lmv(VS.wtake(n, VB.wdr(i, SL)), j, L) : List<&2, U32>}
+def lm_lmv(n, i, j, L, SL, h):
+  match n:
+    case 0n: {==}
+    case 1n+ +p:
+      +hi = FD.nat__lt_le_trans(i, Nat.add(i, 1n+p), VB.len(SL), FD.logic__subst(Nat, z => {Nat.is_lt(i, z) == True{} : Bool}, 1n+Nat.add(i, p), Nat.add(i, 1n+p), Equal.sym(Nat, Nat.add(i, 1n+p), 1n+Nat.add(i, p), FD.nat__add_succ(i, p)), FD.nat__le_lt_succ(i, Nat.add(i, p), Order.below_sum(i, p))), h)
+      +h1 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.len(SL)) == True{} : Bool}, Nat.add(i, 1n+p), 1n+Nat.add(i, p), FD.nat__add_succ(i, p), h)
+      %Equal.sym(List<&2, U32>, VB.wdr(i, SL), Con{FD.flat__nthc(SL, i), VB.wdr(1n+i, SL)}, wdr_con(SL, i, hi)) :
+        {VB.lm(1n+p, i, j, L, SL) == VF.lmv(VS.wtake(1n+p, _), j, L) : List<&2, U32>}
+      lm_lmv(p, 1n+i, 1n+j, FD.spec_common__update(U32, L, j, FD.flat__nthc(SL, i)), SL, h1)
+
+# The aligned copy of n source words from word i to word j splices their bytes in.
+def mone_bytes(+n: Nat, +i: Nat, +j: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +ds: Nat, +S: FD.array__Tree<U32>,
+    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfS: {FD.array__perfect(U32, ds, S) == True{} : Bool},
+    +hj: {Nat.is_le(Nat.add(n, j), VB.pw(dd)) == True{} : Bool}, +hi: {Nat.is_le(Nat.add(i, n), VB.pw(ds)) == True{} : Bool})
+    -> {UA.BYT(VB.mone(n, i, j, dd, D, S)) == SPL(UA.BYT(D), A.quad(j), FX.limbs(VS.wtake(n, VB.wdr(i, SLW(S))))) : +List<U32>}:
+  +V = VS.wtake(n, VB.wdr(i, SLW(S)))
+  +eS = Equal.sym(Nat, VB.len(SLW(S)), VB.pw(ds), FD.array__slots_length(U32, ds, S, pfS))
+  +eD = Equal.sym(Nat, VB.len(SLW(D)), VB.pw(dd), FD.array__slots_length(U32, dd, D, pf))
+  +hi2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(i, n), z) == True{} : Bool}, VB.pw(ds), VB.len(SLW(S)), eS, hi)
+  +hn = le_wdr(i, n, SLW(S), hi2)
+  +eV = len_take(n, VB.wdr(i, SLW(S)), hn)
+  +hjn = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(n, j), Nat.add(j, n), FD.nat__add_comm(n, j), hj)
+  +hjv = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(j, z), VB.len(SLW(D))) == True{} : Bool}, n, VB.len(V), Equal.sym(Nat, VB.len(V), n, Equal.trans(Nat, VB.len(V), List.length(&2, U32, V), n, Equal.sym(Nat, List.length(&2, U32, V), VB.len(V), VR.len_eq(V)), eV)),
+    FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(j, n), z) == True{} : Bool}, VB.pw(dd), VB.len(SLW(D)), eD, hjn))
+  %Equal.sym(List<&2, U32>, SLW(VB.mone(n, i, j, dd, D, S)), VB.lm(n, i, j, SLW(D), SLW(S)), VB.slots_mone(n, i, j, dd, D, S, pf, hj)) : {FX.limbs(_) == SPL(UA.BYT(D), A.quad(j), FX.limbs(V)) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VB.lm(n, i, j, SLW(D), SLW(S)), VF.lmv(V, j, SLW(D)), lm_lmv(n, i, j, SLW(D), SLW(S), hi2)) : {FX.limbs(_) == SPL(UA.BYT(D), A.quad(j), FX.limbs(V)) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VF.lmv(V, j, SLW(D)), VF.app(VS.wtake(j, SLW(D)), VF.app(V, VB.wdr(Nat.add(j, VB.len(V)), SLW(D)))), lmv_split(V, j, SLW(D), hjv)) : {FX.limbs(_) == SPL(UA.BYT(D), A.quad(j), FX.limbs(V)) : +List<U32>}
+  limbs_tvd(j, V, SLW(D))
+
+# ---- the byte invariant of an unaligned write ------------------------------------------------
+
+# Writing Y at a inside the first L bytes (a + |Y| + r = L).
+def bt_spl(+L: Nat, +E: +List<U32>, +a: Nat, +Y: +List<U32>, +r: Nat,
+    +hL: {Nat.add(Nat.add(a, List.length(&2, U32, Y)), r) == L : Nat}, +ha: {Nat.is_le(a, List.length(&2, U32, E)) == True{} : Bool})
+    -> {SPL(VS.bt(L, E), a, Y) == VS.bt(L, SPL(E, a, Y)) : +List<U32>}:
+  +m = List.length(&2, U32, Y)
+  +P = VS.bt(a, E)
+  +R = VS.bdr(Nat.add(a, m), E)
+  +eP = VS.bt_len(a, E, ha)
+  +haL = FD.logic__subst(Nat, z => {Nat.is_le(a, z) == True{} : Bool}, Nat.add(Nat.add(a, m), r), L, hL,
+    FD.nat__le_trans(a, Nat.add(a, m), Nat.add(Nat.add(a, m), r), Order.below_sum(a, m), Order.below_sum(Nat.add(a, m), r)))
+  +e1 = UC.bt_le(a, L, E, haL)
+  +e2 = FD.logic__subst(Nat, z => {VS.bdr(Nat.add(a, m), VS.bt(z, E)) == VS.bt(r, R) : +List<U32>}, Nat.add(Nat.add(a, m), r), L, hL, VS.bdr_bt(Nat.add(a, m), r, E))
+  +eLr = Equal.trans(Nat, L, Nat.add(Nat.add(a, m), r), Nat.add(List.length(&2, U32, P), Nat.add(m, r)), Equal.sym(Nat, Nat.add(Nat.add(a, m), r), L, hL),
+    Equal.trans(Nat, Nat.add(Nat.add(a, m), r), Nat.add(a, Nat.add(m, r)), Nat.add(List.length(&2, U32, P), Nat.add(m, r)), FD.nat__add_assoc(a, m, r),
+      Equal.cong(Nat, Nat, z => Nat.add(z, Nat.add(m, r)), a, List.length(&2, U32, P), Equal.sym(Nat, List.length(&2, U32, P), a, eP))))
+  +eR = Equal.trans(+List<U32>, VS.bt(L, List.append(&2, U32, P, List.append(&2, U32, Y, R))), VS.bt(Nat.add(List.length(&2, U32, P), Nat.add(m, r)), List.append(&2, U32, P, List.append(&2, U32, Y, R))), List.append(&2, U32, P, List.append(&2, U32, Y, VS.bt(r, R))),
+    Equal.cong(Nat, +List<U32>, z => VS.bt(z, List.append(&2, U32, P, List.append(&2, U32, Y, R))), L, Nat.add(List.length(&2, U32, P), Nat.add(m, r)), eLr),
+    Equal.trans(+List<U32>, VS.bt(Nat.add(List.length(&2, U32, P), Nat.add(m, r)), List.append(&2, U32, P, List.append(&2, U32, Y, R))), List.append(&2, U32, P, VS.bt(Nat.add(m, r), List.append(&2, U32, Y, R))), List.append(&2, U32, P, List.append(&2, U32, Y, VS.bt(r, R))),
+      bt_app_len(P, Nat.add(m, r), List.append(&2, U32, Y, R)),
+      Equal.cong(+List<U32>, +List<U32>, z => List.append(&2, U32, P, z), VS.bt(Nat.add(m, r), List.append(&2, U32, Y, R)), List.append(&2, U32, Y, VS.bt(r, R)), bt_app_len(Y, r, R))))
+  %Equal.sym(+List<U32>, VS.bt(a, VS.bt(L, E)), VS.bt(a, E), e1) : {List.append(&2, U32, _, List.append(&2, U32, Y, VS.bdr(Nat.add(a, m), VS.bt(L, E)))) == VS.bt(L, SPL(E, a, Y)) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bdr(Nat.add(a, m), VS.bt(L, E)), VS.bt(r, R), e2) : {List.append(&2, U32, P, List.append(&2, U32, Y, _)) == VS.bt(L, SPL(E, a, Y)) : +List<U32>}
+  Equal.sym(+List<U32>, VS.bt(L, SPL(E, a, Y)), List.append(&2, U32, P, List.append(&2, U32, Y, VS.bt(r, R))), eR)
+
+# The invariant of an unaligned writer at X0: its bytes are B0 spliced with the first L
+# bytes of E. A write of Y at X0 + a (inside, and the bytes under it zero in E)
+# keeps it, with Y spliced into E.
+def inv_step(+B0: +List<U32>, +X0: Nat, +L: Nat, +E: +List<U32>, +a: Nat, +Y: +List<U32>, +r: Nat, +UB: +List<U32>, +UB2: +List<U32>,
+    +hX: {Nat.is_le(X0, List.length(&2, U32, B0)) == True{} : Bool}, +hI: {UB == SPL(B0, X0, VS.bt(L, E)) : +List<U32>},
+    +hop: {UB2 == SPL(UB, Nat.add(X0, a), Y) : +List<U32>},
+    +hL: {Nat.add(Nat.add(a, List.length(&2, U32, Y)), r) == L : Nat}, +hE: {Nat.is_le(L, List.length(&2, U32, E)) == True{} : Bool})
+    -> {UB2 == SPL(B0, X0, VS.bt(L, SPL(E, a, Y))) : +List<U32>}:
+  +m = List.length(&2, U32, Y)
+  +hLl = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(a, m), z) == True{} : Bool}, Nat.add(Nat.add(a, m), r), L, hL, Order.below_sum(Nat.add(a, m), r))
+  +eBL = VS.bt_len(L, E, hE)
+  +h2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(a, m), z) == True{} : Bool}, L, List.length(&2, U32, VS.bt(L, E)), Equal.sym(Nat, List.length(&2, U32, VS.bt(L, E)), L, eBL), hLl)
+  +ha = FD.nat__le_trans(a, L, List.length(&2, U32, E), FD.nat__le_trans(a, Nat.add(a, m), L, Order.below_sum(a, m), hLl), hE)
+  %Equal.sym(+List<U32>, UB2, SPL(UB, Nat.add(X0, a), Y), hop) : {_ == SPL(B0, X0, VS.bt(L, SPL(E, a, Y))) : +List<U32>}
+  %Equal.sym(+List<U32>, UB, SPL(B0, X0, VS.bt(L, E)), hI) : {SPL(_, Nat.add(X0, a), Y) == SPL(B0, X0, VS.bt(L, SPL(E, a, Y))) : +List<U32>}
+  %Equal.sym(+List<U32>, SPL(SPL(B0, X0, VS.bt(L, E)), Nat.add(X0, a), Y), SPL(B0, X0, SPL(VS.bt(L, E), a, Y)), spl_spl(B0, X0, VS.bt(L, E), a, Y, hX, h2)) :
+    {_ == SPL(B0, X0, VS.bt(L, SPL(E, a, Y))) : +List<U32>}
+  Equal.cong(+List<U32>, +List<U32>, z => SPL(B0, X0, z), SPL(VS.bt(L, E), a, Y), VS.bt(L, SPL(E, a, Y)), bt_spl(L, E, a, Y, r, hL, ha))
+
+# The zero bytes an unaligned write needs, from the invariant.
+def inv_zero(+B0: +List<U32>, +X0: Nat, +L: Nat, +E: +List<U32>, +a: Nat, +m: Nat, +UB: +List<U32>,
+    +hX: {Nat.is_le(X0, List.length(&2, U32, B0)) == True{} : Bool}, +hI: {UB == SPL(B0, X0, VS.bt(L, E)) : +List<U32>},
+    +hm: {Nat.is_le(Nat.add(a, m), L) == True{} : Bool}, +hE: {Nat.is_le(L, List.length(&2, U32, E)) == True{} : Bool},
+    +hz: {VS.bt(m, VS.bdr(a, E)) == ZB(m) : +List<U32>})
+    -> {VS.bt(m, VS.bdr(Nat.add(X0, a), UB)) == ZB(m) : +List<U32>}:
+  +eBL = VS.bt_len(L, E, hE)
+  +h2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(a, m), z) == True{} : Bool}, L, List.length(&2, U32, VS.bt(L, E)), Equal.sym(Nat, List.length(&2, U32, VS.bt(L, E)), L, eBL), hm)
+  %Equal.sym(+List<U32>, UB, SPL(B0, X0, VS.bt(L, E)), hI) : {VS.bt(m, VS.bdr(Nat.add(X0, a), _)) == ZB(m) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bt(m, VS.bdr(Nat.add(X0, a), SPL(B0, X0, VS.bt(L, E)))), VS.bt(m, VS.bdr(a, VS.bt(L, E))), win_spl(B0, X0, VS.bt(L, E), a, m, hX, h2)) : {_ == ZB(m) : +List<U32>}
+  %bt_bdr_bt(m, a, L, E, hm) : {_ == ZB(m) : +List<U32>}
+  hz
