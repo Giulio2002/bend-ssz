@@ -286,7 +286,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolf.bend",
+     "law": "boolean_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "spec_small.bend",
@@ -324,6 +330,11 @@
     }
    ],
    "decode_reject": [
+    {
+     "file": "fixchk_boolf.bend",
+     "law": "boolean_decode_reject",
+     "big": false
+    },
     {
      "file": "spec_small.bend",
      "law": "boolean_outside",
@@ -5714,8 +5725,20 @@
      "big": true
     }
    ],
-   "encode_eval": [],
-   "encode_spec": [],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_AggregateAndProof_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_AggregateAndProof_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -5774,8 +5797,20 @@
      "big": true
     }
    ],
-   "encode_eval": [],
-   "encode_spec": [],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_SignedAggregateAndProof_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_SignedAggregateAndProof_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -7196,7 +7231,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_Validator.bend",
+     "law": "Validator_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "spec_rec_Validator.bend",
@@ -7223,7 +7264,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_Validator.bend",
+     "law": "Validator_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "spec_rec_Validator.bend",
@@ -7871,14 +7918,62 @@
      "big": true
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
-   "encode_eval": [],
-   "encode_spec": [],
+   "ok_eval": [
+    {
+     "file": "big_var_codec_Transaction.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "big_var_codec_Transaction.bend",
+     "law": "decode_accept",
+     "big": true
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "big_var_codec_Transaction.bend",
+     "law": "decode_spec",
+     "big": true
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "big_var_codec_Transaction.bend",
+     "law": "decode_unique",
+     "big": true
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "big_var_codec_Transaction.bend",
+     "law": "decode_reject",
+     "big": true
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "big_var_codec_Transaction.bend",
+     "law": "decode_none",
+     "big": true
+    }
+   ],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_Transaction_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_Transaction_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -8951,12 +9046,48 @@
      "big": true
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
+   "ok_eval": [
+    {
+     "file": "big_var_codec_ExecutionPayload.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "big_var_codec_ExecutionPayload.bend",
+     "law": "decode_accept",
+     "big": true
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "big_var_codec_ExecutionPayload.bend",
+     "law": "decode_spec",
+     "big": true
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "big_var_codec_ExecutionPayload.bend",
+     "law": "decode_unique",
+     "big": true
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "big_var_codec_ExecutionPayload.bend",
+     "law": "decode_reject",
+     "big": true
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "big_var_codec_ExecutionPayload.bend",
+     "law": "decode_none",
+     "big": true
+    }
+   ],
    "encode_eval": [],
    "encode_spec": [],
    "roundtrip": [],
@@ -8975,12 +9106,48 @@
      "big": true
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
+   "ok_eval": [
+    {
+     "file": "big_var_codec_BeaconState.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "big_var_codec_BeaconState.bend",
+     "law": "decode_accept",
+     "big": true
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "big_var_codec_BeaconState.bend",
+     "law": "decode_spec",
+     "big": true
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "big_var_codec_BeaconState.bend",
+     "law": "decode_unique",
+     "big": true
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "big_var_codec_BeaconState.bend",
+     "law": "decode_reject",
+     "big": true
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "big_var_codec_BeaconState.bend",
+     "law": "decode_none",
+     "big": true
+    }
+   ],
    "encode_eval": [],
    "encode_spec": [],
    "roundtrip": [],
@@ -11230,7 +11397,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt1D9B3E1871_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt1D9B3E1871.bend",
@@ -11252,7 +11425,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt1D9B3E1871_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt1D9B3E1871.bend",
@@ -11295,7 +11474,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "GtAE3EF932C2_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_GtAE3EF932C2.bend",
@@ -11317,7 +11502,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "GtAE3EF932C2_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_GtAE3EF932C2.bend",
@@ -11360,7 +11551,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt3771256492_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt3771256492.bend",
@@ -11382,7 +11579,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt3771256492_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt3771256492.bend",
@@ -11425,7 +11628,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt9DF37A5216_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt9DF37A5216.bend",
@@ -11447,7 +11656,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt9DF37A5216_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt9DF37A5216.bend",
@@ -11490,7 +11705,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt57090094FA_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt57090094FA.bend",
@@ -11512,7 +11733,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt57090094FA_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt57090094FA.bend",
@@ -11555,7 +11782,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "GtC57121EA56_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_GtC57121EA56.bend",
@@ -11577,7 +11810,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "GtC57121EA56_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_GtC57121EA56.bend",
@@ -11620,7 +11859,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt34AE45611E_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt34AE45611E.bend",
@@ -11642,7 +11887,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt34AE45611E_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt34AE45611E.bend",
@@ -11685,7 +11936,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "GtEB2FD43D9B_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_GtEB2FD43D9B.bend",
@@ -11707,7 +11964,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "GtEB2FD43D9B_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_GtEB2FD43D9B.bend",
@@ -11750,7 +12013,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt7FBB1934E8_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt7FBB1934E8.bend",
@@ -11772,7 +12041,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt7FBB1934E8_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt7FBB1934E8.bend",
@@ -11815,7 +12090,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt526892A4DC_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt526892A4DC.bend",
@@ -11837,7 +12118,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "Gt526892A4DC_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt526892A4DC.bend",
@@ -12780,14 +13067,62 @@
      "big": false
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
-   "encode_eval": [],
-   "encode_spec": [],
+   "ok_eval": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top.bend",
+     "law": "decode_accept",
+     "big": true
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top.bend",
+     "law": "decode_spec",
+     "big": true
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top_unique.bend",
+     "law": "decode_unique",
+     "big": true
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top.bend",
+     "law": "decode_reject",
+     "big": true
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_top.bend",
+     "law": "decode_none",
+     "big": true
+    }
+   ],
+   "encode_eval": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_plist_GtDE4B86A990_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -18600,7 +18935,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtEDF530C7B9_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_GtEDF530C7B9.bend",
@@ -18622,7 +18963,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtEDF530C7B9_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_GtEDF530C7B9.bend",
@@ -18737,7 +19084,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtFF7C03E8A0_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_GtFF7C03E8A0.bend",
@@ -18759,7 +19112,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtFF7C03E8A0_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_GtFF7C03E8A0.bend",
@@ -18802,7 +19161,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtFCF8066C33_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_GtFCF8066C33.bend",
@@ -18824,7 +19189,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtFCF8066C33_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_GtFCF8066C33.bend",
@@ -18867,7 +19238,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt9368483BAB_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt9368483BAB.bend",
@@ -18889,7 +19266,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt9368483BAB_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt9368483BAB.bend",
@@ -18932,7 +19315,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtEDFB713194_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_GtEDFB713194.bend",
@@ -18954,7 +19343,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtEDFB713194_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_GtEDFB713194.bend",
@@ -19105,7 +19500,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt6F0D97A69E_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt6F0D97A69E.bend",
@@ -19127,7 +19528,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt6F0D97A69E_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt6F0D97A69E.bend",
@@ -19170,7 +19577,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt9579E0A2FD_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt9579E0A2FD.bend",
@@ -19192,7 +19605,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt9579E0A2FD_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt9579E0A2FD.bend",
@@ -19235,7 +19654,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtB1E9093D65_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_GtB1E9093D65.bend",
@@ -19257,7 +19682,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtB1E9093D65_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_GtB1E9093D65.bend",
@@ -19300,7 +19731,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt05340E1F7E_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt05340E1F7E.bend",
@@ -19322,7 +19759,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt05340E1F7E_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt05340E1F7E.bend",
@@ -19473,7 +19916,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt0B0C03B454_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt0B0C03B454.bend",
@@ -19495,7 +19944,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt0B0C03B454_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt0B0C03B454.bend",
@@ -19538,7 +19993,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt27CDB122DD_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt27CDB122DD.bend",
@@ -19560,7 +20021,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt27CDB122DD_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt27CDB122DD.bend",
@@ -19603,7 +20070,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtAD3CF815B7_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_GtAD3CF815B7.bend",
@@ -19625,7 +20098,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtAD3CF815B7_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_GtAD3CF815B7.bend",
@@ -19668,7 +20147,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtAA8D1478A7_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_GtAA8D1478A7.bend",
@@ -19690,7 +20175,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "GtAA8D1478A7_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_GtAA8D1478A7.bend",
@@ -19805,7 +20296,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt1BD4B4358D_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_Gt1BD4B4358D.bend",
@@ -19827,7 +20324,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_pad.bend",
+     "law": "Gt1BD4B4358D_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_Gt1BD4B4358D.bend",
@@ -19870,7 +20373,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "GtAD72FD256A_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "sub_GtAD72FD256A.bend",
@@ -19892,7 +20401,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixchk_boolg.bend",
+     "law": "GtAD72FD256A_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "sub_GtAD72FD256A.bend",
@@ -20051,14 +20566,62 @@
      "big": false
     }
    ],
-   "ok_eval": [],
-   "decode_accept": [],
-   "decode_spec": [],
-   "decode_unique": [],
-   "decode_reject": [],
-   "decode_none": [],
-   "encode_eval": [],
-   "encode_spec": [],
+   "ok_eval": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
+   "decode_accept": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "decode_accept",
+     "big": false
+    }
+   ],
+   "decode_spec": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "decode_spec",
+     "big": false
+    }
+   ],
+   "decode_unique": [
+    {
+     "file": "var_pbits_GtF7582E0E9A_unique.bend",
+     "law": "decode_unique",
+     "big": false
+    }
+   ],
+   "decode_reject": [
+    {
+     "file": "var_pbits_GtF7582E0E9A_rej.bend",
+     "law": "decode_reject",
+     "big": false
+    }
+   ],
+   "decode_none": [
+    {
+     "file": "var_pbits_GtF7582E0E9A.bend",
+     "law": "decode_none",
+     "big": false
+    }
+   ],
+   "encode_eval": [
+    {
+     "file": "var_pbits_GtF7582E0E9A_enc.bend",
+     "law": "encode_eval",
+     "big": false
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "var_pbits_GtF7582E0E9A_enc.bend",
+     "law": "encode_spec",
+     "big": false
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],

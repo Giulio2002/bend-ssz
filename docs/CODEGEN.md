@@ -43,6 +43,7 @@ them, and every official case that uses one is an invalid case.
 | `proofs/obj/var_codec_<Name>{,_unique,_rej,_enc}.bend`, `big_var_codec_<Name>*.bend`, `var_fix_types.bend` | spec-connected codec laws of the variable-size names with word-aligned fixed fields around one `List[uint64, N]` (`codegen/var_laws.py`, encoder laws `codegen/var_enc.py`); a name whose list limit is 2^16 or more (IndexedAttestation) goes to `big_*` |
 | `proofs/obj/var_bytes_<Name>{,_win,_unique,_rej,_enc}.bend`, `var_bytes_fix.bend`, `var_bytes_wput.bend` | spec-connected codec laws of the names whose variable part is a byte list at any length (ExecutionPayloadHeader) or a covered name (LightClientHeader, LightClientOptimisticUpdate), at a word-aligned window and on the whole buffer (`codegen/var_bytes.py`, encoders `var_bytes_enc.py`, nesting `var_bytes_nest.py`/`var_bytes_nenc.py`; libraries `proofs/obj/v{bytes,bspec,benc}.bend`); all stock |
 | `proofs/obj/var_codec_DataColumnSidecar{,_acc,_unique,_rej}.bend`, `big_var_codec_DataColumnSidecar_enc.bend`, `v{mul,mv,mr,me,zeros}.bend`, `var_fix_types_m.bend` | DataColumnSidecar (three lists of byte vectors): decoder laws (stock) and encoder laws (big) (`codegen/var_multi.py`, `var_multi_enc.py`) |
+| `proofs/obj/vrejf.bend`, `fixrej_*.bend`; `vrejb.bend`, `fixchk_bool{f,g}.bend`, `fixchk_Validator.bend`; `vrejp.bend`, `fixchk_pad.bend` | ok_eval (the validator T.<p>_ok on any buffer / a window at byte position x returns the length check and the byte checks of the window's bytes) and decode_reject (a byte list that fails those checks is outside the spec image) for every fixed-size Fulu name and generic form: length-only validators (`codegen/fix_reject.py`), booleans and boolean vectors and Validator's slashed byte (`fix_reject_chk.py`), bit vectors' padding bits (`fix_reject_pad.py`) |
 | `proofs/gate/api_map.json`, `proofs/gate/MISSING.txt`, `proofs/gate/{big_,}g_<Name>__<file>.bend` | the object API's coverage map (every Fulu name and generic form, every law, the proving file and law, stock or big), the missing (name, law) pairs, and the gate: per (name, proving file) a module restating each proving law and discharging it by application (`codegen/api_gate.py`, derived by parsing proofs/obj) |
 | `proofs/obj/vuw_bits.bend`, `vuw{1,2,3}.bend`, `vuwf{1,2,3}.bend`, `vuwp{1,2,3}.bend`; `vuw.bend` (hand-written) | the runtime's writers at an unaligned byte position 4 i + s: bit lemmas, the model SWc and its bytes, O.w32, the word-by-word writers, O.put_words (`codegen/var_uw.py`) |
 | `proofs/obj/vfx_<p>.bend`, `vfxg.bend` | BeaconState's fixed fields at any byte position (`codegen/var_fixx.py`, `var_fixx_bv4.py`); stock |
@@ -82,11 +83,14 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/var_winv.py          # byte-offset window of List[Validator, 2^40] (121-byte records at any phase) [--no-big]
 /opt/homebrew/bin/python3 codegen/var_bytes.py         # byte lists at any length, and the names nesting them [--no-big]
 /opt/homebrew/bin/python3 codegen/var_multi.py         # DataColumnSidecar (three lists of byte vectors); encoder big_ file
+/opt/homebrew/bin/python3 codegen/fix_reject.py        # ok_eval / decode_reject, fixed-size names (also fix_reject_chk.py, fix_reject_pad.py)
 /opt/homebrew/bin/python3 codegen/api_gate.py         # object API coverage map, missing list, gate modules (proofs/gate)
 /opt/homebrew/bin/python3 codegen/var_rlist.py         # lists of fixed records (byte-offset windows), ExecutionRequests
 /opt/homebrew/bin/python3 codegen/var_bytes_x.py       # the same names at any byte offset
 /opt/homebrew/bin/python3 codegen/var_vlist.py         # lists of variable-size elements (transactions), ByteList[N] windows [--no-big]
 /opt/homebrew/bin/python3 codegen/var_winx_c.py        # containers with several variable fields over child windows (ExecutionPayload; big children) [--no-big]
+/opt/homebrew/bin/python3 codegen/var_top.py           # whole-buffer decoder laws of Transaction and ExecutionPayload; Transaction encoder [--no-big]
+/opt/homebrew/bin/python3 codegen/var_agg_enc.py       # Attestation writer at a word position; AggregateAndProof, SignedAggregateAndProof encoders [--no-big]
 /opt/homebrew/bin/python3 codegen/sha_laws.py          # SHA node bridge
 /opt/homebrew/bin/python3 codegen/schema_shapes.py     # schema shape laws
 /opt/homebrew/bin/python3 codegen/root_laws.py         # phase-A root laws, validity agreement

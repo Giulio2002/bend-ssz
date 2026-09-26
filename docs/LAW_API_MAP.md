@@ -230,6 +230,11 @@ What that means concretely:
   bounded by the length's, `big_vu40` compares the 2^40 limit as a capacity),
   `vu8` (a byte string's uint8 items), and `codegen/var_winv.py`
   (List[Validator, 2^40], 121-byte records at any phase: `big_var_winx_l1099511627776_Validator`, 51 s).
+  BeaconState (`big_var_winx_BeaconState`, 1910 s / 18.3 GB, and its decoder laws
+  `big_var_codec_BeaconState`, 2096 s / 21.3 GB): var_winb's symbolic fixed-part
+  path (fixed fields as window slices read by the vfx_<p> modules, the schema as a
+  variable), with every closed large number reached through nat__eq_from_is_eq
+  (U32.to_nat of literals, WFS/WPOS, split sums, fixed sizes) and lengths behind LY.LN.
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
@@ -303,6 +308,14 @@ What that means concretely:
   take d. Packed lists of byte vectors (`codegen/var_rlist_bv.py`): `l4096_b48`
   (stock; the copy's depth bounded from the limit by right shifts only) and
   `big_var_winx_l16777216_b32` (depth from the window, zero arrays by `big_vvlz`).
+  ok_eval and decode_reject for every FIXED-SIZE name (all 87 Fulu names and 99 generic
+  forms of fixed size; `codegen/fix_reject.py`, `fix_reject_chk.py`, `fix_reject_pad.py`):
+  `<X>_ok_eval` (T.<p>_ok, the name's validator, returns the length check, and for
+  booleans / boolean vectors / Validator's slashed byte / bit vectors' padding the byte
+  checks of the window's bytes: ALLB, byte 88 <= 1, PADK) and `<X>_decode_reject` (a byte
+  list failing that check - another length, or a failing byte - is outside the spec image,
+  from the shape of every encoding at the schema: decode_shape.facts for the size,
+  vrejb/vrejp for the bytes). The large names state the length against VRF.SZ(schema).
   BeaconState's fixed fields at any byte position (`codegen/var_fixx.py`, all stock):
   `vfx_<p>.bend` for u64, b32, Fork, Checkpoint, BeaconBlockHeader, Eth1Data,
   SyncCommittee, v8192_b32, v65536_b32, v8192_u64, v64_u64 export OBJ(d, t, x),
@@ -370,6 +383,30 @@ What that means concretely:
   but imports big children: checkq --big, 62 s / 5.4 GB), over `vwc.bend`
   (fp_fix/fp_var, bv_*, fs_*, fp_len, bdr_skip, lsingle; stock). Its standard
   interface is keyed on T.ExecutionPayload_ok / T.ExecutionPayload_read.
+  Whole-buffer decoder laws (ok_eval, decode_accept, decode_spec,
+  decode_unique, decode_reject, decode_none; the window at x = 0, buffers of
+  depth d < 28) from `codegen/var_top.py`: `big_var_codec_ExecutionPayload.bend`
+  (checkq --big PASS 90 s / 5.6 GB) and `big_var_codec_Transaction.bend` (from
+  `big_vvlb_bl1073741824`; Transaction's validator and reader are the
+  ByteList[2^30] ones; the rejection splits the value and keeps the limit test
+  `ByteList.domain(limit, xs)` a variable; PASS 58 s / 3.4 GB).
+  Transaction's encoder laws (encode_eval, encode_spec) are in
+  `big_var_codec_Transaction_enc.bend` (PASS 43 s / 1.5 GB): storage on a perfect
+  tree of depth dw < 28 holding N <= 4 2^dw bytes, N <= 2^30 (the runtime check);
+  the output is the zero tree with the storage's first ceil(N/4) words copied by
+  `vbenc.put_words_any` (any N at position 0), its N bytes the storage's first N.
+* **Encoders of AggregateAndProof and SignedAggregateAndProof** (`codegen/var_agg_enc.py`,
+  2026-09-26, checkq --big). A writer interface at a symbolic word position pos = 4 P
+  of an existing output tree D (putw: T.X_putn(thaw D, pos, obj) == (thaw W, (obj, size));
+  hdrw: the flat header words at P; payw: the bit list's bytes after them; ow_hi: windows
+  below P are D's; partsE: the value's spec parts): for Attestation
+  (`big_var_bitc_encw_Attestation.bend`, over `vbitcont.enc_at` at P + 59; 211 s / 6.0 GB),
+  and for each parent over its child's at P + H. `big_var_codec_AggregateAndProof_enc.bend`
+  (212 s / 6.1 GB) and `big_var_codec_SignedAggregateAndProof_enc.bend` (200 s / 5.5 GB)
+  hold encode_eval and encode_spec: the interface at P = 0 of the zero output tree, for
+  every object whose bit list is a value within BitList[2^17] (BO.rep_bits) and passes
+  the runtime's checks (capacity, zero bits past K); the value's bit-list bytes are those
+  of the pos-0 Attestation encoder (`big_var_bitc_enc_Attestation.bend`).
 * **Progressive lists** (`codegen/var_plist.py`): the generic forms
   ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
   Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,
