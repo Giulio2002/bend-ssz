@@ -27,6 +27,7 @@ import ./vbrt.bend as VR
 import ../../types/fulu_obj.bend as T
 import ./var_bytes_fix.bend as VBF
 import ./vdepth.bend as VD
+import ../compact/buf.bend as BF
 
 # The unaligned write layer's dispatch: the runtime's writers at ANY byte position
 # X = 4 q + r (r < 4, symbolic), each the model of its case (the aligned runs of
@@ -36,6 +37,12 @@ import ./vdepth.bend as VD
 #   W32X / w32_any / w32_any_bytes    O.w32
 #   W64X / w64_any / w64_any_bytes    O.w64 (T.u64_put)
 #   B20X / b20_any / b20_any_bytes    T.b20_put
+# Room is tight: q + NWN(r + m) <= 2^dd words for a value of m bytes (no word past the
+# value's own). put_words's bytes are the n data bytes then PADB(r, n) zeros to the end of
+# its last word (the source's tail bytes, zero by its storage check htz); its runtime
+# lemma splits on n & 3 and r: a carry word inside the value (c1_*: the loose form
+# putw_loose) or none (c2_*<s>: the open model, vuwp<s>.putwu_o). *_perfect: the models
+# are perfect trees.
 
 # The words a value of x bytes at byte r of a word spans (ceil((r + x) / 4) for r + x),
 # and the zero bytes after m data bytes at byte r up to the end of the last of them.
@@ -958,3 +965,949 @@ def c2_bytes3(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +dw: Nat, +T:
         Equal.cong(List<&2, U32>, FD.array__Tree<U32>, z => UW.SWo(3, z, dd, D, q, 0), W, Con{x0, VS.wtake(Q, R1)}, eWc))),
     Equal.trans(+List<U32>, UA.BYT(UW.SWo(3, Con{x0, VS.wtake(Q, R1)}, dd, D, q, 0)), UW.SPL(B, X0, VS.bt(Nat.add(1n, A.quad(List.length(&2, U32, VS.wtake(Q, R1)))), FX.limbs(Con{x0, VS.wtake(Q, R1)}))), UW.SPL(B, X0, List.append(&2, U32, VS.bt(N, FX.limbs(SL)), UW.ZB(P))), sw,
       Equal.cong(+List<U32>, +List<U32>, z => UW.SPL(B, X0, z), VS.bt(Nat.add(1n, A.quad(List.length(&2, U32, VS.wtake(Q, R1)))), FX.limbs(Con{x0, VS.wtake(Q, R1)})), List.append(&2, U32, VS.bt(N, FX.limbs(SL)), UW.ZB(P)), eDat)))
+
+# ---- the tight put_words at an aligned position -------------------------------------------------
+
+def r0_rt(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +n: U32, +k: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), 0n) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool}, +hsrc: {Nat.is_le(VC.NW(n), VB.pw(dw)) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, NWN(Nat.add(0n, U32.to_nat(n)))), VB.pw(dd)) == True{} : Bool}, +hz: {VS.bt(Nat.add(U32.to_nat(n), PADB(0n, U32.to_nat(n))), VS.bdr(Nat.add(A.quad(q), 0n), UA.BYT(D))) == UW.ZB(Nat.add(U32.to_nat(n), PADB(0n, U32.to_nat(n)))) : +List<U32>}, +hN: {Nat.is_le(U32.to_nat(n), A.quad(VC.NW(n))) == True{} : Bool})
+    -> {O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, T), n}) == (FD.array__thaw(U32, PWM(0n, dd, D, q, T, n)), O.Words{FD.array__thaw(U32, T), n}) : Array<U32> & O.Words}:
+  +N = U32.to_nat(n)
+  +NW = VC.NW(n)
+  +eNW = VC.eNW(n, k, hk, hy)
+  +hdst = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(q, NW), Nat.add(NW, q), FD.nat__add_comm(q, NW),
+    FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, z), VB.pw(dd)) == True{} : Bool}, NWN(Nat.add(0n, N)), NW, Equal.sym(Nat, NW, NWN(Nat.add(0n, N)), eNW), hl))
+  +eP0 = Equal.trans(Nat, PADB(0n, N), Nat.sub(Nat.sub(A.quad(NW), 0n), N), Nat.sub(A.quad(NW), N),
+    Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 0n), N), NWN(Nat.add(0n, N)), NW, Equal.sym(Nat, NW, NWN(Nat.add(0n, N)), eNW)),
+    Equal.cong(Nat, Nat, z => Nat.sub(z, N), Nat.sub(A.quad(NW), 0n), A.quad(NW), FD.nat__sub_zero(A.quad(NW))))
+  +eWin = Equal.trans(Nat, Nat.add(N, PADB(0n, N)), Nat.add(N, Nat.sub(A.quad(NW), N)), A.quad(NW),
+    Equal.cong(Nat, Nat, z => Nat.add(N, z), PADB(0n, N), Nat.sub(A.quad(NW), N), eP0), FD.nat__sub_add(A.quad(NW), N, hN))
+  +hzw = FD.logic__subst(Nat, z => {VS.bt(z, VS.bdr(Nat.add(A.quad(q), 0n), UA.BYT(D))) == UW.ZB(z) : +List<U32>}, Nat.add(N, PADB(0n, N)), A.quad(NW), eWin, hz)
+  pwn2(dd, dw, D, T, X, q, n, k, pf, pfT, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hdw, UW.ua_3(X, q, 0n, 0, {==}, e, {==}), UW.ua_q(X, q, 0n, e, {==}), hk, hy,
+    FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, VC.NW(n), Nat.add(VC.NW(n), 0n), Equal.sym(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), FD.nat__add_zero(VC.NW(n))), hsrc),
+    hdst, hzw, U32.is_eq(n, 0), {==})
+
+def r0_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +n: U32, +k: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), 0n) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool}, +hsrc: {Nat.is_le(VC.NW(n), VB.pw(dw)) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, NWN(Nat.add(0n, U32.to_nat(n)))), VB.pw(dd)) == True{} : Bool}, +hz: {VS.bt(Nat.add(U32.to_nat(n), PADB(0n, U32.to_nat(n))), VS.bdr(Nat.add(A.quad(q), 0n), UA.BYT(D))) == UW.ZB(Nat.add(U32.to_nat(n), PADB(0n, U32.to_nat(n)))) : +List<U32>}, +hN: {Nat.is_le(U32.to_nat(n), A.quad(VC.NW(n))) == True{} : Bool},
+    +eK: {FX.limbs(VS.wtake(VC.NW(n), UW.SLW(T))) == List.append(&2, U32, VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T))), UW.ZB(Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n)))) : +List<U32>})
+    -> {UA.BYT(PWM(0n, dd, D, q, T, n)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), 0n), List.append(&2, U32, VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T))), UW.ZB(PADB(0n, U32.to_nat(n))))) : +List<U32>}:
+  +N = U32.to_nat(n)
+  +NW = VC.NW(n)
+  +eNW = VC.eNW(n, k, hk, hy)
+  +hdst = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(q, NW), Nat.add(NW, q), FD.nat__add_comm(q, NW),
+    FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, z), VB.pw(dd)) == True{} : Bool}, NWN(Nat.add(0n, N)), NW, Equal.sym(Nat, NW, NWN(Nat.add(0n, N)), eNW), hl))
+  +eP0 = Equal.trans(Nat, PADB(0n, N), Nat.sub(Nat.sub(A.quad(NW), 0n), N), Nat.sub(A.quad(NW), N),
+    Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 0n), N), NWN(Nat.add(0n, N)), NW, Equal.sym(Nat, NW, NWN(Nat.add(0n, N)), eNW)),
+    Equal.cong(Nat, Nat, z => Nat.sub(z, N), Nat.sub(A.quad(NW), 0n), A.quad(NW), FD.nat__sub_zero(A.quad(NW))))
+  +eWin = Equal.trans(Nat, Nat.add(N, PADB(0n, N)), Nat.add(N, Nat.sub(A.quad(NW), N)), A.quad(NW),
+    Equal.cong(Nat, Nat, z => Nat.add(N, z), PADB(0n, N), Nat.sub(A.quad(NW), N), eP0), FD.nat__sub_add(A.quad(NW), N, hN))
+  +hzw = FD.logic__subst(Nat, z => {VS.bt(z, VS.bdr(Nat.add(A.quad(q), 0n), UA.BYT(D))) == UW.ZB(z) : +List<U32>}, Nat.add(N, PADB(0n, N)), A.quad(NW), eWin, hz)
+  +DT = VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T)))
+  %Equal.sym(Nat, Nat.add(A.quad(q), 0n), A.quad(q), FD.nat__add_zero(A.quad(q))) : {UA.BYT(PWM(0n, dd, D, q, T, n)) == UW.SPL(UA.BYT(D), _, List.append(&2, U32, DT, UW.ZB(PADB(0n, N)))) : +List<U32>}
+  %Equal.sym(Nat, PADB(0n, N), Nat.sub(A.quad(NW), N), eP0) : {UA.BYT(PWM(0n, dd, D, q, T, n)) == UW.SPL(UA.BYT(D), A.quad(q), List.append(&2, U32, DT, UW.ZB(_))) : +List<U32>}
+  %eK : {UA.BYT(PWM(0n, dd, D, q, T, n)) == UW.SPL(UA.BYT(D), A.quad(q), _) : +List<U32>}
+  UW.mone_bytes(VC.NW(n), 0n, q, dd, D, dw, T, pf, pfT, hdst, hsrc)
+
+def pwd_rt(+b0: Bool, +b1: Bool,
+    +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +n: U32, +k: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool}, +hsrc: {Nat.is_le(VC.NW(n), VB.pw(dw)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, NWN(Nat.add(r, U32.to_nat(n)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
+    +htz: {O.tail_zero(U32.and(n, 3), VB.slot(T, VY.QL(n))) == True{} : Bool},
+    +hz: {VS.bt(Nat.add(U32.to_nat(n), PADB(r, U32.to_nat(n))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(U32.to_nat(n), PADB(r, U32.to_nat(n)))) : +List<U32>},
+    +eb: {U32.and(n, 3) == U32{WCon{b0, WCon{b1, Word.zero(30n)}}} : U32})
+    -> {O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, T), n}) == (FD.array__thaw(U32, PWM(r, dd, D, q, T, n)), O.Words{FD.array__thaw(U32, T), n}) : Array<U32> & O.Words}:
+  match b0 b1 r:
+    case False{} False{} 0n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +eNWq = Equal.trans(Nat, VC.NW(n), Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Q, nw_qr(n, k, hk, hy),
+        Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Nat.add(Q, 0n), Q, Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+z)), RR(n), 0n, eR), FD.nat__add_zero(Q)))
+      +eK = key0(n, T, k, hk, hy, eR)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 0n), Nat.add(0n, qQ), n_qr(n, 0n, eR), FD.nat__add_comm(qQ, 0n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(Q), N), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(Q), N), Nat.sub(A.quad(Q), Nat.add(0n, qQ)), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(Q), z), N, Nat.add(0n, qQ), eNp), subq(0n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(0n, qQ), N, Equal.sym(Nat, N, Nat.add(0n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(0n, qQ), A.quad(z)) == True{} : Bool}, Q, NW, Equal.sym(Nat, NW, Q, eNWq), Order.add_right(0n, 0n, qQ, {==})))
+r0_rt(dd, D, X, q, dw, T, n, k, e, hd, hdw, hk, hy, hsrc, pf, pfT, hl, hz, hN)
+    case False{} False{} 1n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +eNWq = Equal.trans(Nat, VC.NW(n), Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Q, nw_qr(n, k, hk, hy),
+        Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Nat.add(Q, 0n), Q, Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+z)), RR(n), 0n, eR), FD.nat__add_zero(Q)))
+      +eK = key0(n, T, k, hk, hy, eR)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 0n), Nat.add(0n, qQ), n_qr(n, 0n, eR), FD.nat__add_comm(qQ, 0n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(Q), N), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(Q), N), Nat.sub(A.quad(Q), Nat.add(0n, qQ)), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(Q), z), N, Nat.add(0n, qQ), eNp), subq(0n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(0n, qQ), N, Equal.sym(Nat, N, Nat.add(0n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(0n, qQ), A.quad(z)) == True{} : Bool}, Q, NW, Equal.sym(Nat, NW, Q, eNWq), Order.add_right(0n, 0n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(1n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), 1n+Q, nwn_qr(n, 1n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, z))), RR(n), 0n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(1n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), 3n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 1n), N), NWN(Nat.add(1n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), Nat.add(0n, qQ)), 3n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 1n), z), N, Nat.add(0n, qQ), eNp), subq(3n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(1n, N)), 1n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, Q, NW, Equal.sym(Nat, NW, Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(1n, N), 3n, Nat.add(EE, 3n), ePv, Equal.sym(Nat, Nat.add(EE, 3n), 3n, Equal.cong(Nat, Nat, z => Nat.add(z, 3n), EE, 0n, eE)))
+      c1_rt(dd, D, X, q, 1n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 3n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN))
+    case False{} False{} 2n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +eNWq = Equal.trans(Nat, VC.NW(n), Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Q, nw_qr(n, k, hk, hy),
+        Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Nat.add(Q, 0n), Q, Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+z)), RR(n), 0n, eR), FD.nat__add_zero(Q)))
+      +eK = key0(n, T, k, hk, hy, eR)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 0n), Nat.add(0n, qQ), n_qr(n, 0n, eR), FD.nat__add_comm(qQ, 0n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(Q), N), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(Q), N), Nat.sub(A.quad(Q), Nat.add(0n, qQ)), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(Q), z), N, Nat.add(0n, qQ), eNp), subq(0n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(0n, qQ), N, Equal.sym(Nat, N, Nat.add(0n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(0n, qQ), A.quad(z)) == True{} : Bool}, Q, NW, Equal.sym(Nat, NW, Q, eNWq), Order.add_right(0n, 0n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(2n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), 1n+Q, nwn_qr(n, 2n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, z))), RR(n), 0n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(2n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), 2n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 2n), N), NWN(Nat.add(2n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), Nat.add(0n, qQ)), 2n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 2n), z), N, Nat.add(0n, qQ), eNp), subq(2n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(2n, N)), 1n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, Q, NW, Equal.sym(Nat, NW, Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(2n, N), 2n, Nat.add(EE, 2n), ePv, Equal.sym(Nat, Nat.add(EE, 2n), 2n, Equal.cong(Nat, Nat, z => Nat.add(z, 2n), EE, 0n, eE)))
+      c1_rt(dd, D, X, q, 2n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 2n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN))
+    case False{} False{} 3n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +eNWq = Equal.trans(Nat, VC.NW(n), Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Q, nw_qr(n, k, hk, hy),
+        Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Nat.add(Q, 0n), Q, Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+z)), RR(n), 0n, eR), FD.nat__add_zero(Q)))
+      +eK = key0(n, T, k, hk, hy, eR)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 0n), Nat.add(0n, qQ), n_qr(n, 0n, eR), FD.nat__add_comm(qQ, 0n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(Q), N), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(Q), N), Nat.sub(A.quad(Q), Nat.add(0n, qQ)), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(Q), z), N, Nat.add(0n, qQ), eNp), subq(0n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(0n, qQ), N, Equal.sym(Nat, N, Nat.add(0n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(0n, qQ), A.quad(z)) == True{} : Bool}, Q, NW, Equal.sym(Nat, NW, Q, eNWq), Order.add_right(0n, 0n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(3n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), 1n+Q, nwn_qr(n, 3n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, z))), RR(n), 0n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(3n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 3n), N), 1n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 3n), N), NWN(Nat.add(3n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 3n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 3n), Nat.add(0n, qQ)), 1n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 3n), z), N, Nat.add(0n, qQ), eNp), subq(1n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(3n, N)), 1n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, Q, NW, Equal.sym(Nat, NW, Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(3n, N), 1n, Nat.add(EE, 1n), ePv, Equal.sym(Nat, Nat.add(EE, 1n), 1n, Equal.cong(Nat, Nat, z => Nat.add(z, 1n), EE, 0n, eE)))
+      c1_rt(dd, D, X, q, 3n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 1n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN))
+    case False{} False{} 4n+ +t: Empty.absurd({O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, T), n}) == (FD.array__thaw(U32, PWM(4n+t, dd, D, q, T, n)), O.Words{FD.array__thaw(U32, T), n}) : Array<U32> & O.Words}, FD.nat__lt_zero_absurd(t, hr))
+    case True{} False{} 0n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 8n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 1n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key1(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 1n), Nat.add(1n, qQ), n_qr(n, 1n, eR), FD.nat__add_comm(qQ, 1n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(1n, qQ)), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(1n, qQ), eNp), subq(3n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(1n, qQ), N, Equal.sym(Nat, N, Nat.add(1n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(1n, 4n, qQ, {==})))
+r0_rt(dd, D, X, q, dw, T, n, k, e, hd, hdw, hk, hy, hsrc, pf, pfT, hl, hz, hN)
+    case True{} False{} 1n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 8n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 1n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key1(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 1n), Nat.add(1n, qQ), n_qr(n, 1n, eR), FD.nat__add_comm(qQ, 1n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(1n, qQ)), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(1n, qQ), eNp), subq(3n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(1n, qQ), N, Equal.sym(Nat, N, Nat.add(1n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(1n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(1n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), 1n+Q, nwn_qr(n, 1n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, z))), RR(n), 1n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(1n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), 2n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 1n), N), NWN(Nat.add(1n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), Nat.add(1n, qQ)), 2n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 1n), z), N, Nat.add(1n, qQ), eNp), subq(2n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(1n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 1n), 2n), Nat.add(3n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 1n), PADB(1n, N)), Nat.add(Nat.add(qQ, 1n), 2n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(1n, N)), N, Nat.add(qQ, 1n), n_qr(n, 1n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 1n), z), PADB(1n, N), 2n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 1n), 2n), Nat.add(qQ, 3n), Nat.add(3n, qQ), FD.nat__add_assoc(qQ, 1n, 2n), FD.nat__add_comm(qQ, 3n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 2n, PADB(1n, N), Equal.sym(Nat, PADB(1n, N), 2n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(2n, z) == True{} : Bool}, 3n, EE, Equal.sym(Nat, EE, 3n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(1n, qQ), eNp))
+      c2_rt1(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc11(VB.slot(T, Q), ht), hn)
+    case True{} False{} 2n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 8n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 1n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key1(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 1n), Nat.add(1n, qQ), n_qr(n, 1n, eR), FD.nat__add_comm(qQ, 1n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(1n, qQ)), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(1n, qQ), eNp), subq(3n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(1n, qQ), N, Equal.sym(Nat, N, Nat.add(1n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(1n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(2n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), 1n+Q, nwn_qr(n, 2n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, z))), RR(n), 1n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(2n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), 1n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 2n), N), NWN(Nat.add(2n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), Nat.add(1n, qQ)), 1n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 2n), z), N, Nat.add(1n, qQ), eNp), subq(1n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(2n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(2n, N)), Nat.add(Nat.add(qQ, 1n), 1n), Nat.add(2n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(2n, N)), Nat.add(Nat.add(qQ, 1n), PADB(2n, N)), Nat.add(Nat.add(qQ, 1n), 1n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(2n, N)), N, Nat.add(qQ, 1n), n_qr(n, 1n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 1n), z), PADB(2n, N), 1n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 1n), 1n), Nat.add(qQ, 2n), Nat.add(2n, qQ), FD.nat__add_assoc(qQ, 1n, 1n), FD.nat__add_comm(qQ, 2n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 1n, PADB(2n, N), Equal.sym(Nat, PADB(2n, N), 1n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(1n, z) == True{} : Bool}, 3n, EE, Equal.sym(Nat, EE, 3n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(1n, qQ), eNp))
+      c2_rt2(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc21(VB.slot(T, Q), ht), hn)
+    case True{} False{} 3n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 8n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 1n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key1(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 1n), Nat.add(1n, qQ), n_qr(n, 1n, eR), FD.nat__add_comm(qQ, 1n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(1n, qQ)), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(1n, qQ), eNp), subq(3n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(1n, qQ), N, Equal.sym(Nat, N, Nat.add(1n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(1n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(3n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), 1n+Q, nwn_qr(n, 3n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, z))), RR(n), 1n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(3n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 3n), N), 0n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 3n), N), NWN(Nat.add(3n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 3n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 3n), Nat.add(1n, qQ)), 0n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 3n), z), N, Nat.add(1n, qQ), eNp), subq(0n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(3n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(3n, N)), Nat.add(Nat.add(qQ, 1n), 0n), Nat.add(1n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(3n, N)), Nat.add(Nat.add(qQ, 1n), PADB(3n, N)), Nat.add(Nat.add(qQ, 1n), 0n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(3n, N)), N, Nat.add(qQ, 1n), n_qr(n, 1n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 1n), z), PADB(3n, N), 0n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 1n), 0n), Nat.add(qQ, 1n), Nat.add(1n, qQ), FD.nat__add_assoc(qQ, 1n, 0n), FD.nat__add_comm(qQ, 1n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 0n, PADB(3n, N), Equal.sym(Nat, PADB(3n, N), 0n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(0n, z) == True{} : Bool}, 3n, EE, Equal.sym(Nat, EE, 3n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(1n, qQ), eNp))
+      c2_rt3(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc31(VB.slot(T, Q), ht), hn)
+    case True{} False{} 4n+ +t: Empty.absurd({O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, T), n}) == (FD.array__thaw(U32, PWM(4n+t, dd, D, q, T, n)), O.Words{FD.array__thaw(U32, T), n}) : Array<U32> & O.Words}, FD.nat__lt_zero_absurd(t, hr))
+    case False{} True{} 0n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 16n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 2n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key2(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 2n), Nat.add(2n, qQ), n_qr(n, 2n, eR), FD.nat__add_comm(qQ, 2n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(2n, qQ)), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(2n, qQ), eNp), subq(2n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(2n, qQ), N, Equal.sym(Nat, N, Nat.add(2n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(2n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(2n, 4n, qQ, {==})))
+r0_rt(dd, D, X, q, dw, T, n, k, e, hd, hdw, hk, hy, hsrc, pf, pfT, hl, hz, hN)
+    case False{} True{} 1n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 16n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 2n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key2(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 2n), Nat.add(2n, qQ), n_qr(n, 2n, eR), FD.nat__add_comm(qQ, 2n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(2n, qQ)), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(2n, qQ), eNp), subq(2n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(2n, qQ), N, Equal.sym(Nat, N, Nat.add(2n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(2n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(2n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(1n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), 1n+Q, nwn_qr(n, 1n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, z))), RR(n), 2n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(1n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), 1n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 1n), N), NWN(Nat.add(1n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), Nat.add(2n, qQ)), 1n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 1n), z), N, Nat.add(2n, qQ), eNp), subq(1n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(1n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 2n), 1n), Nat.add(3n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 2n), PADB(1n, N)), Nat.add(Nat.add(qQ, 2n), 1n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(1n, N)), N, Nat.add(qQ, 2n), n_qr(n, 2n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 2n), z), PADB(1n, N), 1n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 2n), 1n), Nat.add(qQ, 3n), Nat.add(3n, qQ), FD.nat__add_assoc(qQ, 2n, 1n), FD.nat__add_comm(qQ, 3n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 1n, PADB(1n, N), Equal.sym(Nat, PADB(1n, N), 1n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(1n, z) == True{} : Bool}, 2n, EE, Equal.sym(Nat, EE, 2n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(2n, qQ), eNp))
+      c2_rt1(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc12(VB.slot(T, Q), ht), hn)
+    case False{} True{} 2n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 16n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 2n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key2(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 2n), Nat.add(2n, qQ), n_qr(n, 2n, eR), FD.nat__add_comm(qQ, 2n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(2n, qQ)), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(2n, qQ), eNp), subq(2n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(2n, qQ), N, Equal.sym(Nat, N, Nat.add(2n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(2n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(2n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(2n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), 1n+Q, nwn_qr(n, 2n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, z))), RR(n), 2n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(2n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), 0n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 2n), N), NWN(Nat.add(2n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), Nat.add(2n, qQ)), 0n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 2n), z), N, Nat.add(2n, qQ), eNp), subq(0n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(2n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(2n, N)), Nat.add(Nat.add(qQ, 2n), 0n), Nat.add(2n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(2n, N)), Nat.add(Nat.add(qQ, 2n), PADB(2n, N)), Nat.add(Nat.add(qQ, 2n), 0n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(2n, N)), N, Nat.add(qQ, 2n), n_qr(n, 2n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 2n), z), PADB(2n, N), 0n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 2n), 0n), Nat.add(qQ, 2n), Nat.add(2n, qQ), FD.nat__add_assoc(qQ, 2n, 0n), FD.nat__add_comm(qQ, 2n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 0n, PADB(2n, N), Equal.sym(Nat, PADB(2n, N), 0n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(0n, z) == True{} : Bool}, 2n, EE, Equal.sym(Nat, EE, 2n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(2n, qQ), eNp))
+      c2_rt2(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc22(VB.slot(T, Q), ht), hn)
+    case False{} True{} 3n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 16n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 2n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key2(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 2n), Nat.add(2n, qQ), n_qr(n, 2n, eR), FD.nat__add_comm(qQ, 2n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(2n, qQ)), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(2n, qQ), eNp), subq(2n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(2n, qQ), N, Equal.sym(Nat, N, Nat.add(2n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(2n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(2n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(3n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), 2n+Q, nwn_qr(n, 3n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), Nat.add(Q, 2n), 2n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, z))), RR(n), 2n, eR), FD.nat__add_comm(Q, 2n)))
+      +ePv = Equal.trans(Nat, PADB(3n, N), Nat.sub(Nat.sub(A.quad(2n+Q), 3n), N), 3n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 3n), N), NWN(Nat.add(3n, N)), 2n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(2n+Q), 3n), N), Nat.sub(Nat.sub(A.quad(2n+Q), 3n), Nat.add(2n, qQ)), 3n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(2n+Q), 3n), z), N, Nat.add(2n, qQ), eNp), subq(3n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(3n, N)), 2n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(3n, N), 3n, Nat.add(EE, 1n), ePv, Equal.sym(Nat, Nat.add(EE, 1n), 3n, Equal.cong(Nat, Nat, z => Nat.add(z, 1n), EE, 2n, eE)))
+      c1_rt(dd, D, X, q, 3n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 1n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN))
+    case False{} True{} 4n+ +t: Empty.absurd({O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, T), n}) == (FD.array__thaw(U32, PWM(4n+t, dd, D, q, T, n)), O.Words{FD.array__thaw(U32, T), n}) : Array<U32> & O.Words}, FD.nat__lt_zero_absurd(t, hr))
+    case True{} True{} 0n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 24n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 3n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key3(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 3n), Nat.add(3n, qQ), n_qr(n, 3n, eR), FD.nat__add_comm(qQ, 3n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(3n, qQ)), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(3n, qQ), eNp), subq(1n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(3n, qQ), N, Equal.sym(Nat, N, Nat.add(3n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(3n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(3n, 4n, qQ, {==})))
+r0_rt(dd, D, X, q, dw, T, n, k, e, hd, hdw, hk, hy, hsrc, pf, pfT, hl, hz, hN)
+    case True{} True{} 1n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 24n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 3n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key3(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 3n), Nat.add(3n, qQ), n_qr(n, 3n, eR), FD.nat__add_comm(qQ, 3n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(3n, qQ)), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(3n, qQ), eNp), subq(1n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(3n, qQ), N, Equal.sym(Nat, N, Nat.add(3n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(3n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(3n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(1n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), 1n+Q, nwn_qr(n, 1n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, z))), RR(n), 3n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(1n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), 0n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 1n), N), NWN(Nat.add(1n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), Nat.add(3n, qQ)), 0n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 1n), z), N, Nat.add(3n, qQ), eNp), subq(0n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(1n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 3n), 0n), Nat.add(3n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 3n), PADB(1n, N)), Nat.add(Nat.add(qQ, 3n), 0n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(1n, N)), N, Nat.add(qQ, 3n), n_qr(n, 3n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 3n), z), PADB(1n, N), 0n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 3n), 0n), Nat.add(qQ, 3n), Nat.add(3n, qQ), FD.nat__add_assoc(qQ, 3n, 0n), FD.nat__add_comm(qQ, 3n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 0n, PADB(1n, N), Equal.sym(Nat, PADB(1n, N), 0n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(0n, z) == True{} : Bool}, 1n, EE, Equal.sym(Nat, EE, 1n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(3n, qQ), eNp))
+      c2_rt1(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc13(VB.slot(T, Q), ht), hn)
+    case True{} True{} 2n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 24n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 3n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key3(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 3n), Nat.add(3n, qQ), n_qr(n, 3n, eR), FD.nat__add_comm(qQ, 3n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(3n, qQ)), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(3n, qQ), eNp), subq(1n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(3n, qQ), N, Equal.sym(Nat, N, Nat.add(3n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(3n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(3n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(2n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), 2n+Q, nwn_qr(n, 2n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), Nat.add(Q, 2n), 2n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, z))), RR(n), 3n, eR), FD.nat__add_comm(Q, 2n)))
+      +ePv = Equal.trans(Nat, PADB(2n, N), Nat.sub(Nat.sub(A.quad(2n+Q), 2n), N), 3n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 2n), N), NWN(Nat.add(2n, N)), 2n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(2n+Q), 2n), N), Nat.sub(Nat.sub(A.quad(2n+Q), 2n), Nat.add(3n, qQ)), 3n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(2n+Q), 2n), z), N, Nat.add(3n, qQ), eNp), subq(3n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(2n, N)), 2n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(2n, N), 3n, Nat.add(EE, 2n), ePv, Equal.sym(Nat, Nat.add(EE, 2n), 3n, Equal.cong(Nat, Nat, z => Nat.add(z, 2n), EE, 1n, eE)))
+      c1_rt(dd, D, X, q, 2n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 2n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN))
+    case True{} True{} 3n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 24n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 3n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key3(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 3n), Nat.add(3n, qQ), n_qr(n, 3n, eR), FD.nat__add_comm(qQ, 3n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(3n, qQ)), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(3n, qQ), eNp), subq(1n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(3n, qQ), N, Equal.sym(Nat, N, Nat.add(3n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(3n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(3n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(3n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), 2n+Q, nwn_qr(n, 3n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), Nat.add(Q, 2n), 2n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, z))), RR(n), 3n, eR), FD.nat__add_comm(Q, 2n)))
+      +ePv = Equal.trans(Nat, PADB(3n, N), Nat.sub(Nat.sub(A.quad(2n+Q), 3n), N), 2n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 3n), N), NWN(Nat.add(3n, N)), 2n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(2n+Q), 3n), N), Nat.sub(Nat.sub(A.quad(2n+Q), 3n), Nat.add(3n, qQ)), 2n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(2n+Q), 3n), z), N, Nat.add(3n, qQ), eNp), subq(2n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(3n, N)), 2n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(3n, N), 2n, Nat.add(EE, 1n), ePv, Equal.sym(Nat, Nat.add(EE, 1n), 2n, Equal.cong(Nat, Nat, z => Nat.add(z, 1n), EE, 1n, eE)))
+      c1_rt(dd, D, X, q, 3n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 1n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN))
+    case True{} True{} 4n+ +t: Empty.absurd({O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, T), n}) == (FD.array__thaw(U32, PWM(4n+t, dd, D, q, T, n)), O.Words{FD.array__thaw(U32, T), n}) : Array<U32> & O.Words}, FD.nat__lt_zero_absurd(t, hr))
+
+def pwd_bytes(+b0: Bool, +b1: Bool,
+    +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +n: U32, +k: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool}, +hsrc: {Nat.is_le(VC.NW(n), VB.pw(dw)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, NWN(Nat.add(r, U32.to_nat(n)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
+    +htz: {O.tail_zero(U32.and(n, 3), VB.slot(T, VY.QL(n))) == True{} : Bool},
+    +hz: {VS.bt(Nat.add(U32.to_nat(n), PADB(r, U32.to_nat(n))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(U32.to_nat(n), PADB(r, U32.to_nat(n)))) : +List<U32>},
+    +eb: {U32.and(n, 3) == U32{WCon{b0, WCon{b1, Word.zero(30n)}}} : U32})
+    -> {UA.BYT(PWM(r, dd, D, q, T, n)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T))), UW.ZB(PADB(r, U32.to_nat(n))))) : +List<U32>}:
+  match b0 b1 r:
+    case False{} False{} 0n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +eNWq = Equal.trans(Nat, VC.NW(n), Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Q, nw_qr(n, k, hk, hy),
+        Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Nat.add(Q, 0n), Q, Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+z)), RR(n), 0n, eR), FD.nat__add_zero(Q)))
+      +eK = key0(n, T, k, hk, hy, eR)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 0n), Nat.add(0n, qQ), n_qr(n, 0n, eR), FD.nat__add_comm(qQ, 0n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(Q), N), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(Q), N), Nat.sub(A.quad(Q), Nat.add(0n, qQ)), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(Q), z), N, Nat.add(0n, qQ), eNp), subq(0n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(0n, qQ), N, Equal.sym(Nat, N, Nat.add(0n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(0n, qQ), A.quad(z)) == True{} : Bool}, Q, NW, Equal.sym(Nat, NW, Q, eNWq), Order.add_right(0n, 0n, qQ, {==})))
+r0_bytes(dd, D, X, q, dw, T, n, k, e, hd, hdw, hk, hy, hsrc, pf, pfT, hl, hz, hN, eK)
+    case False{} False{} 1n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +eNWq = Equal.trans(Nat, VC.NW(n), Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Q, nw_qr(n, k, hk, hy),
+        Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Nat.add(Q, 0n), Q, Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+z)), RR(n), 0n, eR), FD.nat__add_zero(Q)))
+      +eK = key0(n, T, k, hk, hy, eR)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 0n), Nat.add(0n, qQ), n_qr(n, 0n, eR), FD.nat__add_comm(qQ, 0n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(Q), N), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(Q), N), Nat.sub(A.quad(Q), Nat.add(0n, qQ)), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(Q), z), N, Nat.add(0n, qQ), eNp), subq(0n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(0n, qQ), N, Equal.sym(Nat, N, Nat.add(0n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(0n, qQ), A.quad(z)) == True{} : Bool}, Q, NW, Equal.sym(Nat, NW, Q, eNWq), Order.add_right(0n, 0n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(1n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), 1n+Q, nwn_qr(n, 1n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, z))), RR(n), 0n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(1n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), 3n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 1n), N), NWN(Nat.add(1n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), Nat.add(0n, qQ)), 3n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 1n), z), N, Nat.add(0n, qQ), eNp), subq(3n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(1n, N)), 1n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, Q, NW, Equal.sym(Nat, NW, Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(1n, N), 3n, Nat.add(EE, 3n), ePv, Equal.sym(Nat, Nat.add(EE, 3n), 3n, Equal.cong(Nat, Nat, z => Nat.add(z, 3n), EE, 0n, eE)))
+      c1_bytes(dd, D, X, q, 1n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 3n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN), eK)
+    case False{} False{} 2n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +eNWq = Equal.trans(Nat, VC.NW(n), Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Q, nw_qr(n, k, hk, hy),
+        Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Nat.add(Q, 0n), Q, Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+z)), RR(n), 0n, eR), FD.nat__add_zero(Q)))
+      +eK = key0(n, T, k, hk, hy, eR)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 0n), Nat.add(0n, qQ), n_qr(n, 0n, eR), FD.nat__add_comm(qQ, 0n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(Q), N), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(Q), N), Nat.sub(A.quad(Q), Nat.add(0n, qQ)), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(Q), z), N, Nat.add(0n, qQ), eNp), subq(0n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(0n, qQ), N, Equal.sym(Nat, N, Nat.add(0n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(0n, qQ), A.quad(z)) == True{} : Bool}, Q, NW, Equal.sym(Nat, NW, Q, eNWq), Order.add_right(0n, 0n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(2n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), 1n+Q, nwn_qr(n, 2n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, z))), RR(n), 0n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(2n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), 2n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 2n), N), NWN(Nat.add(2n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), Nat.add(0n, qQ)), 2n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 2n), z), N, Nat.add(0n, qQ), eNp), subq(2n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(2n, N)), 1n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, Q, NW, Equal.sym(Nat, NW, Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(2n, N), 2n, Nat.add(EE, 2n), ePv, Equal.sym(Nat, Nat.add(EE, 2n), 2n, Equal.cong(Nat, Nat, z => Nat.add(z, 2n), EE, 0n, eE)))
+      c1_bytes(dd, D, X, q, 2n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 2n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN), eK)
+    case False{} False{} 3n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +eNWq = Equal.trans(Nat, VC.NW(n), Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Q, nw_qr(n, k, hk, hy),
+        Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+RR(n))), Nat.add(Q, 0n), Q, Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+z)), RR(n), 0n, eR), FD.nat__add_zero(Q)))
+      +eK = key0(n, T, k, hk, hy, eR)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 0n), Nat.add(0n, qQ), n_qr(n, 0n, eR), FD.nat__add_comm(qQ, 0n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(Q), N), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(Q), N), Nat.sub(A.quad(Q), Nat.add(0n, qQ)), 0n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(Q), z), N, Nat.add(0n, qQ), eNp), subq(0n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(0n, qQ), N, Equal.sym(Nat, N, Nat.add(0n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(0n, qQ), A.quad(z)) == True{} : Bool}, Q, NW, Equal.sym(Nat, NW, Q, eNWq), Order.add_right(0n, 0n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(3n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), 1n+Q, nwn_qr(n, 3n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, z))), RR(n), 0n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(3n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 3n), N), 1n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 3n), N), NWN(Nat.add(3n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 3n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 3n), Nat.add(0n, qQ)), 1n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 3n), z), N, Nat.add(0n, qQ), eNp), subq(1n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(3n, N)), 1n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, Q, NW, Equal.sym(Nat, NW, Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(3n, N), 1n, Nat.add(EE, 1n), ePv, Equal.sym(Nat, Nat.add(EE, 1n), 1n, Equal.cong(Nat, Nat, z => Nat.add(z, 1n), EE, 0n, eE)))
+      c1_bytes(dd, D, X, q, 3n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 1n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN), eK)
+    case False{} False{} 4n+ +t: Empty.absurd({UA.BYT(PWM(4n+t, dd, D, q, T, n)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), 4n+t), List.append(&2, U32, VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T))), UW.ZB(PADB(4n+t, U32.to_nat(n))))) : +List<U32>}, FD.nat__lt_zero_absurd(t, hr))
+    case True{} False{} 0n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 8n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 1n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key1(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 1n), Nat.add(1n, qQ), n_qr(n, 1n, eR), FD.nat__add_comm(qQ, 1n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(1n, qQ)), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(1n, qQ), eNp), subq(3n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(1n, qQ), N, Equal.sym(Nat, N, Nat.add(1n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(1n, 4n, qQ, {==})))
+r0_bytes(dd, D, X, q, dw, T, n, k, e, hd, hdw, hk, hy, hsrc, pf, pfT, hl, hz, hN, eK)
+    case True{} False{} 1n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 8n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 1n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key1(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 1n), Nat.add(1n, qQ), n_qr(n, 1n, eR), FD.nat__add_comm(qQ, 1n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(1n, qQ)), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(1n, qQ), eNp), subq(3n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(1n, qQ), N, Equal.sym(Nat, N, Nat.add(1n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(1n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(1n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), 1n+Q, nwn_qr(n, 1n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, z))), RR(n), 1n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(1n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), 2n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 1n), N), NWN(Nat.add(1n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), Nat.add(1n, qQ)), 2n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 1n), z), N, Nat.add(1n, qQ), eNp), subq(2n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(1n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 1n), 2n), Nat.add(3n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 1n), PADB(1n, N)), Nat.add(Nat.add(qQ, 1n), 2n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(1n, N)), N, Nat.add(qQ, 1n), n_qr(n, 1n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 1n), z), PADB(1n, N), 2n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 1n), 2n), Nat.add(qQ, 3n), Nat.add(3n, qQ), FD.nat__add_assoc(qQ, 1n, 2n), FD.nat__add_comm(qQ, 3n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 2n, PADB(1n, N), Equal.sym(Nat, PADB(1n, N), 2n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(2n, z) == True{} : Bool}, 3n, EE, Equal.sym(Nat, EE, 3n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(1n, qQ), eNp))
+      c2_bytes1(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc11(VB.slot(T, Q), ht), hPE, hN, eK)
+    case True{} False{} 2n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 8n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 1n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key1(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 1n), Nat.add(1n, qQ), n_qr(n, 1n, eR), FD.nat__add_comm(qQ, 1n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(1n, qQ)), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(1n, qQ), eNp), subq(3n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(1n, qQ), N, Equal.sym(Nat, N, Nat.add(1n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(1n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(2n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), 1n+Q, nwn_qr(n, 2n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, z))), RR(n), 1n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(2n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), 1n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 2n), N), NWN(Nat.add(2n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), Nat.add(1n, qQ)), 1n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 2n), z), N, Nat.add(1n, qQ), eNp), subq(1n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(2n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(2n, N)), Nat.add(Nat.add(qQ, 1n), 1n), Nat.add(2n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(2n, N)), Nat.add(Nat.add(qQ, 1n), PADB(2n, N)), Nat.add(Nat.add(qQ, 1n), 1n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(2n, N)), N, Nat.add(qQ, 1n), n_qr(n, 1n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 1n), z), PADB(2n, N), 1n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 1n), 1n), Nat.add(qQ, 2n), Nat.add(2n, qQ), FD.nat__add_assoc(qQ, 1n, 1n), FD.nat__add_comm(qQ, 2n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 1n, PADB(2n, N), Equal.sym(Nat, PADB(2n, N), 1n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(1n, z) == True{} : Bool}, 3n, EE, Equal.sym(Nat, EE, 3n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(1n, qQ), eNp))
+      c2_bytes2(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc21(VB.slot(T, Q), ht), hPE, hN, eK)
+    case True{} False{} 3n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 8n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{False{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 1n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key1(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 1n), Nat.add(1n, qQ), n_qr(n, 1n, eR), FD.nat__add_comm(qQ, 1n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(1n, qQ)), 3n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(1n, qQ), eNp), subq(3n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(1n, qQ), N, Equal.sym(Nat, N, Nat.add(1n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(1n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(1n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(3n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), 1n+Q, nwn_qr(n, 3n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, z))), RR(n), 1n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(3n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 3n), N), 0n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 3n), N), NWN(Nat.add(3n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 3n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 3n), Nat.add(1n, qQ)), 0n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 3n), z), N, Nat.add(1n, qQ), eNp), subq(0n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(3n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(3n, N)), Nat.add(Nat.add(qQ, 1n), 0n), Nat.add(1n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(3n, N)), Nat.add(Nat.add(qQ, 1n), PADB(3n, N)), Nat.add(Nat.add(qQ, 1n), 0n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(3n, N)), N, Nat.add(qQ, 1n), n_qr(n, 1n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 1n), z), PADB(3n, N), 0n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 1n), 0n), Nat.add(qQ, 1n), Nat.add(1n, qQ), FD.nat__add_assoc(qQ, 1n, 0n), FD.nat__add_comm(qQ, 1n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 0n, PADB(3n, N), Equal.sym(Nat, PADB(3n, N), 0n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(0n, z) == True{} : Bool}, 3n, EE, Equal.sym(Nat, EE, 3n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(1n, qQ), eNp))
+      c2_bytes3(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc31(VB.slot(T, Q), ht), hPE, hN, eK)
+    case True{} False{} 4n+ +t: Empty.absurd({UA.BYT(PWM(4n+t, dd, D, q, T, n)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), 4n+t), List.append(&2, U32, VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T))), UW.ZB(PADB(4n+t, U32.to_nat(n))))) : +List<U32>}, FD.nat__lt_zero_absurd(t, hr))
+    case False{} True{} 0n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 16n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 2n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key2(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 2n), Nat.add(2n, qQ), n_qr(n, 2n, eR), FD.nat__add_comm(qQ, 2n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(2n, qQ)), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(2n, qQ), eNp), subq(2n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(2n, qQ), N, Equal.sym(Nat, N, Nat.add(2n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(2n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(2n, 4n, qQ, {==})))
+r0_bytes(dd, D, X, q, dw, T, n, k, e, hd, hdw, hk, hy, hsrc, pf, pfT, hl, hz, hN, eK)
+    case False{} True{} 1n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 16n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 2n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key2(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 2n), Nat.add(2n, qQ), n_qr(n, 2n, eR), FD.nat__add_comm(qQ, 2n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(2n, qQ)), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(2n, qQ), eNp), subq(2n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(2n, qQ), N, Equal.sym(Nat, N, Nat.add(2n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(2n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(2n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(1n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), 1n+Q, nwn_qr(n, 1n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, z))), RR(n), 2n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(1n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), 1n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 1n), N), NWN(Nat.add(1n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), Nat.add(2n, qQ)), 1n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 1n), z), N, Nat.add(2n, qQ), eNp), subq(1n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(1n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 2n), 1n), Nat.add(3n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 2n), PADB(1n, N)), Nat.add(Nat.add(qQ, 2n), 1n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(1n, N)), N, Nat.add(qQ, 2n), n_qr(n, 2n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 2n), z), PADB(1n, N), 1n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 2n), 1n), Nat.add(qQ, 3n), Nat.add(3n, qQ), FD.nat__add_assoc(qQ, 2n, 1n), FD.nat__add_comm(qQ, 3n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 1n, PADB(1n, N), Equal.sym(Nat, PADB(1n, N), 1n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(1n, z) == True{} : Bool}, 2n, EE, Equal.sym(Nat, EE, 2n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(2n, qQ), eNp))
+      c2_bytes1(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc12(VB.slot(T, Q), ht), hPE, hN, eK)
+    case False{} True{} 2n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 16n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 2n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key2(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 2n), Nat.add(2n, qQ), n_qr(n, 2n, eR), FD.nat__add_comm(qQ, 2n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(2n, qQ)), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(2n, qQ), eNp), subq(2n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(2n, qQ), N, Equal.sym(Nat, N, Nat.add(2n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(2n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(2n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(2n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), 1n+Q, nwn_qr(n, 2n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, z))), RR(n), 2n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(2n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), 0n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 2n), N), NWN(Nat.add(2n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 2n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 2n), Nat.add(2n, qQ)), 0n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 2n), z), N, Nat.add(2n, qQ), eNp), subq(0n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(2n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(2n, N)), Nat.add(Nat.add(qQ, 2n), 0n), Nat.add(2n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(2n, N)), Nat.add(Nat.add(qQ, 2n), PADB(2n, N)), Nat.add(Nat.add(qQ, 2n), 0n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(2n, N)), N, Nat.add(qQ, 2n), n_qr(n, 2n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 2n), z), PADB(2n, N), 0n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 2n), 0n), Nat.add(qQ, 2n), Nat.add(2n, qQ), FD.nat__add_assoc(qQ, 2n, 0n), FD.nat__add_comm(qQ, 2n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 0n, PADB(2n, N), Equal.sym(Nat, PADB(2n, N), 0n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(0n, z) == True{} : Bool}, 2n, EE, Equal.sym(Nat, EE, 2n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(2n, qQ), eNp))
+      c2_bytes2(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc22(VB.slot(T, Q), ht), hPE, hN, eK)
+    case False{} True{} 3n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 16n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{False{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 2n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key2(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 2n), Nat.add(2n, qQ), n_qr(n, 2n, eR), FD.nat__add_comm(qQ, 2n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(2n, qQ)), 2n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(2n, qQ), eNp), subq(2n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(2n, qQ), N, Equal.sym(Nat, N, Nat.add(2n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(2n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(2n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(3n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), 2n+Q, nwn_qr(n, 3n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), Nat.add(Q, 2n), 2n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, z))), RR(n), 2n, eR), FD.nat__add_comm(Q, 2n)))
+      +ePv = Equal.trans(Nat, PADB(3n, N), Nat.sub(Nat.sub(A.quad(2n+Q), 3n), N), 3n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 3n), N), NWN(Nat.add(3n, N)), 2n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(2n+Q), 3n), N), Nat.sub(Nat.sub(A.quad(2n+Q), 3n), Nat.add(2n, qQ)), 3n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(2n+Q), 3n), z), N, Nat.add(2n, qQ), eNp), subq(3n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(3n, N)), 2n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(3n, N), 3n, Nat.add(EE, 1n), ePv, Equal.sym(Nat, Nat.add(EE, 1n), 3n, Equal.cong(Nat, Nat, z => Nat.add(z, 1n), EE, 2n, eE)))
+      c1_bytes(dd, D, X, q, 3n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 1n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN), eK)
+    case False{} True{} 4n+ +t: Empty.absurd({UA.BYT(PWM(4n+t, dd, D, q, T, n)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), 4n+t), List.append(&2, U32, VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T))), UW.ZB(PADB(4n+t, U32.to_nat(n))))) : +List<U32>}, FD.nat__lt_zero_absurd(t, hr))
+    case True{} True{} 0n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 24n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 3n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key3(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 3n), Nat.add(3n, qQ), n_qr(n, 3n, eR), FD.nat__add_comm(qQ, 3n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(3n, qQ)), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(3n, qQ), eNp), subq(1n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(3n, qQ), N, Equal.sym(Nat, N, Nat.add(3n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(3n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(3n, 4n, qQ, {==})))
+r0_bytes(dd, D, X, q, dw, T, n, k, e, hd, hdw, hk, hy, hsrc, pf, pfT, hl, hz, hN, eK)
+    case True{} True{} 1n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 24n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 3n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key3(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 3n), Nat.add(3n, qQ), n_qr(n, 3n, eR), FD.nat__add_comm(qQ, 3n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(3n, qQ)), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(3n, qQ), eNp), subq(1n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(3n, qQ), N, Equal.sym(Nat, N, Nat.add(3n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(3n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(3n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(1n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), 1n+Q, nwn_qr(n, 1n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, RR(n)))), Nat.add(Q, 1n), 1n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(1n, z))), RR(n), 3n, eR), FD.nat__add_comm(Q, 1n)))
+      +ePv = Equal.trans(Nat, PADB(1n, N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), 0n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 1n), N), NWN(Nat.add(1n, N)), 1n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(1n+Q), 1n), N), Nat.sub(Nat.sub(A.quad(1n+Q), 1n), Nat.add(3n, qQ)), 0n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(1n+Q), 1n), z), N, Nat.add(3n, qQ), eNp), subq(0n, qQ)))
+      +eNWN0 = Equal.trans(Nat, NWN(Nat.add(1n, N)), 1n+Q, NW, eNWNb, Equal.sym(Nat, NW, 1n+Q, eNWq))
+      +eL = Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 3n), 0n), Nat.add(3n, qQ),
+      Equal.trans(Nat, Nat.add(N, PADB(1n, N)), Nat.add(Nat.add(qQ, 3n), PADB(1n, N)), Nat.add(Nat.add(qQ, 3n), 0n),
+        Equal.cong(Nat, Nat, z => Nat.add(z, PADB(1n, N)), N, Nat.add(qQ, 3n), n_qr(n, 3n, eR)),
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(qQ, 3n), z), PADB(1n, N), 0n, ePv)),
+      Equal.trans(Nat, Nat.add(Nat.add(qQ, 3n), 0n), Nat.add(qQ, 3n), Nat.add(3n, qQ), FD.nat__add_assoc(qQ, 3n, 0n), FD.nat__add_comm(qQ, 3n)))
+      +hPE = FD.logic__subst(Nat, z => {Nat.is_le(z, EE) == True{} : Bool}, 0n, PADB(1n, N), Equal.sym(Nat, PADB(1n, N), 0n, ePv),
+      FD.logic__subst(Nat, z => {Nat.is_le(0n, z) == True{} : Bool}, 1n, EE, Equal.sym(Nat, EE, 1n, eE), {==}))
+      +hn = Equal.trans(Bool, U32.is_eq(n, 0), Nat.is_eq(N, 0n), False{}, VD.eq0(n), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), N, Nat.add(3n, qQ), eNp))
+      c2_bytes1(dd, D, X, q, dw, T, n, e, hd, hdw, hsrc, pf, pfT, EE, hl, hz, eNWN0, eNWq, eL, UWB.tzc13(VB.slot(T, Q), ht), hPE, hN, eK)
+    case True{} True{} 2n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 24n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 3n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key3(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 3n), Nat.add(3n, qQ), n_qr(n, 3n, eR), FD.nat__add_comm(qQ, 3n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(3n, qQ)), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(3n, qQ), eNp), subq(1n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(3n, qQ), N, Equal.sym(Nat, N, Nat.add(3n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(3n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(3n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(2n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), 2n+Q, nwn_qr(n, 2n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, RR(n)))), Nat.add(Q, 2n), 2n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(2n, z))), RR(n), 3n, eR), FD.nat__add_comm(Q, 2n)))
+      +ePv = Equal.trans(Nat, PADB(2n, N), Nat.sub(Nat.sub(A.quad(2n+Q), 2n), N), 3n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 2n), N), NWN(Nat.add(2n, N)), 2n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(2n+Q), 2n), N), Nat.sub(Nat.sub(A.quad(2n+Q), 2n), Nat.add(3n, qQ)), 3n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(2n+Q), 2n), z), N, Nat.add(3n, qQ), eNp), subq(3n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(2n, N)), 2n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(2n, N), 3n, Nat.add(EE, 2n), ePv, Equal.sym(Nat, Nat.add(EE, 2n), 3n, Equal.cong(Nat, Nat, z => Nat.add(z, 2n), EE, 1n, eE)))
+      c1_bytes(dd, D, X, q, 2n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 2n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN), eK)
+    case True{} True{} 3n:
+      +N = U32.to_nat(n)
+      +NW = VC.NW(n)
+      +Q = VY.QL(n)
+      +qQ = A.quad(VY.QL(n))
+      +EE = Nat.sub(A.quad(VC.NW(n)), U32.to_nat(n))
+      +eR = Equal.cong(U32, Nat, z => U32.to_nat(z), U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb)
+      +ht = FD.u32alg__eq_of(U32.shrn(VB.slot(T, VY.QL(n)), 24n), 0, FD.logic__subst(U32, z => {O.tail_zero(z, VB.slot(T, VY.QL(n))) == True{} : Bool}, U32.and(n, 3), U32{WCon{True{}, WCon{True{}, Word.zero(30n)}}}, eb, htz))
+      +hb = Equal.trans(Bool, U32.is_eq(VY.RM(n), 0), Nat.is_eq(U32.to_nat(VY.RM(n)), 0n), False{}, VD.eq0(VY.RM(n)), Equal.cong(Nat, Bool, z => Nat.is_eq(z, 0n), RR(n), 3n, eR))
+      +eNWq = VY.nw_q(n, k, hk, hy, hb)
+      +eK = key3(n, dw, T, k, pfT, hk, hy, hsrc, eR, ht)
+      +eNp = Equal.trans(Nat, N, Nat.add(qQ, 3n), Nat.add(3n, qQ), n_qr(n, 3n, eR), FD.nat__add_comm(qQ, 3n))
+      +eE = Equal.trans(Nat, EE, Nat.sub(A.quad(1n+Q), N), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(z), N), NW, 1n+Q, eNWq),
+        Equal.trans(Nat, Nat.sub(A.quad(1n+Q), N), Nat.sub(A.quad(1n+Q), Nat.add(3n, qQ)), 1n, Equal.cong(Nat, Nat, z => Nat.sub(A.quad(1n+Q), z), N, Nat.add(3n, qQ), eNp), subq(1n, qQ)))
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, Nat.add(3n, qQ), N, Equal.sym(Nat, N, Nat.add(3n, qQ), eNp),
+        FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(3n, qQ), A.quad(z)) == True{} : Bool}, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq), Order.add_right(3n, 4n, qQ, {==})))
+      +eNWNb = Equal.trans(Nat, NWN(Nat.add(3n, N)), Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), 2n+Q, nwn_qr(n, 3n),
+      Equal.trans(Nat, Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, RR(n)))), Nat.add(Q, 2n), 2n+Q,
+        Equal.cong(Nat, Nat, z => Nat.add(Q, VD.s_rng(2n, 3n+Nat.add(3n, z))), RR(n), 3n, eR), FD.nat__add_comm(Q, 2n)))
+      +ePv = Equal.trans(Nat, PADB(3n, N), Nat.sub(Nat.sub(A.quad(2n+Q), 3n), N), 2n,
+      Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(z), 3n), N), NWN(Nat.add(3n, N)), 2n+Q, eNWNb),
+      Equal.trans(Nat, Nat.sub(Nat.sub(A.quad(2n+Q), 3n), N), Nat.sub(Nat.sub(A.quad(2n+Q), 3n), Nat.add(3n, qQ)), 2n,
+        Equal.cong(Nat, Nat, z => Nat.sub(Nat.sub(A.quad(2n+Q), 3n), z), N, Nat.add(3n, qQ), eNp), subq(2n, qQ)))
+      +eNWN1 = Equal.trans(Nat, NWN(Nat.add(3n, N)), 2n+Q, 1n+NW, eNWNb, Equal.cong(Nat, Nat, z => 1n+z, 1n+Q, NW, Equal.sym(Nat, NW, 1n+Q, eNWq)))
+      +eP = Equal.trans(Nat, PADB(3n, N), 2n, Nat.add(EE, 1n), ePv, Equal.sym(Nat, Nat.add(EE, 1n), 2n, Equal.cong(Nat, Nat, z => Nat.add(z, 1n), EE, 1n, eE)))
+      c1_bytes(dd, D, X, q, 3n, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, pf, pfT, 1n, EE, hl, hz, eNWN1, eP, FD.nat__sub_add(A.quad(NW), N, hN), eK)
+    case True{} True{} 4n+ +t: Empty.absurd({UA.BYT(PWM(4n+t, dd, D, q, T, n)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), 4n+t), List.append(&2, U32, VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T))), UW.ZB(PADB(4n+t, U32.to_nat(n))))) : +List<U32>}, FD.nat__lt_zero_absurd(t, hr))
+
+# The low two bits of a word, as the word's own bits.
+def LB0(+n: U32) -> Bool:
+  match n:
+    case U32{WCon{+b0, WCon{+b1, +t}}}: b0
+def LB1(+n: U32) -> Bool:
+  match n:
+    case U32{WCon{+b0, WCon{+b1, +t}}}: b1
+def rmv(+n: U32) -> {U32.and(n, 3) == U32{WCon{LB0(n), WCon{LB1(n), Word.zero(30n)}}} : U32}:
+  match n:
+    case U32{WCon{+b0, WCon{+b1, +t}}}: Equal.sym(U32, U32{WCon{b0, WCon{b1, Word.zero(30n)}}}, U32.and(U32{WCon{b0, WCon{b1, t}}}, 3), BF.low_sel(b0, b1, t))
+
+# O.put_words at any byte position X = 4 q + r: room for the value's own words only
+# (q + NWN(r + n) <= 2^dd), zero bytes up to the end of its last word, and the source's
+# bytes past n zero (its storage check).
+def putw_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +n: U32, +k: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool}, +hsrc: {Nat.is_le(VC.NW(n), VB.pw(dw)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, NWN(Nat.add(r, U32.to_nat(n)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
+    +htz: {O.tail_zero(U32.and(n, 3), VB.slot(T, VY.QL(n))) == True{} : Bool},
+    +hz: {VS.bt(Nat.add(U32.to_nat(n), PADB(r, U32.to_nat(n))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(U32.to_nat(n), PADB(r, U32.to_nat(n)))) : +List<U32>})
+    -> {O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, T), n}) == (FD.array__thaw(U32, PWM(r, dd, D, q, T, n)), O.Words{FD.array__thaw(U32, T), n}) : Array<U32> & O.Words}:
+  pwd_rt(LB0(n), LB1(n), dd, D, X, q, r, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, hl, pf, pfT, htz, hz, rmv(n))
+
+# Its bytes: the n bytes, then zeros to the end of the last word written.
+def putw_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dw: Nat, +T: FD.array__Tree<U32>, +n: U32, +k: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool}, +hsrc: {Nat.is_le(VC.NW(n), VB.pw(dw)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, NWN(Nat.add(r, U32.to_nat(n)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool},
+    +htz: {O.tail_zero(U32.and(n, 3), VB.slot(T, VY.QL(n))) == True{} : Bool},
+    +hz: {VS.bt(Nat.add(U32.to_nat(n), PADB(r, U32.to_nat(n))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(U32.to_nat(n), PADB(r, U32.to_nat(n)))) : +List<U32>})
+    -> {UA.BYT(PWM(r, dd, D, q, T, n)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, VS.bt(U32.to_nat(n), FX.limbs(UW.SLW(T))), UW.ZB(PADB(r, U32.to_nat(n))))) : +List<U32>}:
+  pwd_bytes(LB0(n), LB1(n), dd, D, X, q, r, dw, T, n, k, e, hr, hd, hdw, hk, hy, hsrc, hl, pf, pfT, htz, hz, rmv(n))
