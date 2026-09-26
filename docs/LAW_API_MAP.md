@@ -192,7 +192,9 @@ What that means concretely:
   `big_var_winx_Attestation` (big), and List[uint64, N] children
   (`var_winx_l128_u64`, `var_winx_DataColumnsByRootIdentifier` stock;
   `big_var_winx_l131072_u64`, `big_var_winx_IndexedAttestation` big), from
-  `codegen/var_win.py` (WINX).
+  `codegen/var_win.py` (WINX); two variable fields of one child:
+  `big_var_winx_AttesterSlashing` (offsets 8 and O1, both windows
+  checked, inverted from the spec's two-part layout).
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
