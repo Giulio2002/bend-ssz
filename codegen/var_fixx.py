@@ -384,6 +384,15 @@ def outputs(no_big=False):
     import var_fixx_gen as GEN   # the generic containers' short fields (types/generic_obj.bend)
     out[ROOT / 'proofs/obj/vfx_u8.bend'] = GEN.u8_mod(HEAD, sig, TR, TRUE)
     out[ROOT / 'proofs/obj/vfx_u16.bend'] = GEN.u16_mod(HEAD, sig, TR, TRUE)
+    out[ROOT / 'proofs/obj/vfx_u32.bend'] = GEN.u32_mod(HEAD, sig, TR, TRUE)
+    import generic as GN0
+    import generate as G0
+    gn0 = {n_: t_ for n_, t_, err in GN0.inventory_all() if err is None}
+    g0 = G0.Gen()
+    for t_ in gn0.values():
+        g0.shape(t_)
+    for P_, R_, K_ in GEN.RECVECS:
+        out[ROOT / f'proofs/obj/vfx_{P_}.bend'] = GEN.recvec_mod(gn0, g0, P_, R_, K_, HEAD, sig, TR, TRUE)
     for N in (1, 2, 8):
         out[ROOT / f'proofs/obj/vfx_bv{N}.bend'] = GEN.bvn_mod(N, HEAD, sig, TR, TRUE)
     import generic as GN
