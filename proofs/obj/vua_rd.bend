@@ -261,3 +261,25 @@ def offx(+d: Nat, +off: U32, +c: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +h: {Nat.is_lt(Nat.add(U32.to_nat(c), x), A.quad(VB.pw(d))) == True{} : Bool})
     -> {U32.to_nat(U32.add(off, c)) == Nat.add(U32.to_nat(c), x) : Nat}:
   VB.add_at(off, c, x, 2n+d, e, hd, h)
+
+law rws_len:
+  for +m: Nat
+  for +t: F.array__Tree<U32>
+  for +k: Nat
+  {VB.len(RWS(m, t, k)) == m : Nat}
+def rws_len(m, t, k):
+  match m:
+    case 0n: {==}
+    case 1n+ +p: Equal.cong(Nat, Nat, z => 1n+z, VB.len(RWS(p, t, 4n+k)), p, rws_len(p, t, 4n+k))
+
+law wtake_rws:
+  for +m: Nat
+  for +t: F.array__Tree<U32>
+  for +k: Nat
+  {VS.wtake(m, RWS(m, t, k)) == RWS(m, t, k) : List<&2, U32>}
+def wtake_rws(m, t, k):
+  match m:
+    case 0n: {==}
+    case 1n+ +p:
+      %wtake_rws(p, t, 4n+k) : {Con{RWN(t, k), VS.wtake(p, RWS(p, t, 4n+k))} == Con{RWN(t, k), _} : List<&2, U32>}
+      {==}

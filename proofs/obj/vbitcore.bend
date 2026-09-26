@@ -233,3 +233,18 @@ def CR3(+T: F.array__Tree<U32>, +K: U32) -> Data: {List.length(&2, Bool, BITS(T,
 def cr1(+dd: Nat, +T: F.array__Tree<U32>, +K: U32, +c: CR(dd, T, K)) -> CR1(dd, T, K): DL.p1(CR1(dd, T, K), DK.P2(CR2(dd, T, K), CR3(T, K)), c)
 def cr2(+dd: Nat, +T: F.array__Tree<U32>, +K: U32, +c: CR(dd, T, K)) -> CR2(dd, T, K): DL.p1(CR2(dd, T, K), CR3(T, K), DL.p2(CR1(dd, T, K), DK.P2(CR2(dd, T, K), CR3(T, K)), c))
 def cr3(+dd: Nat, +T: F.array__Tree<U32>, +K: U32, +c: CR(dd, T, K)) -> CR3(T, K): DL.p2(CR2(dd, T, K), CR3(T, K), DL.p2(CR1(dd, T, K), DK.P2(CR2(dd, T, K), CR3(T, K)), c))
+
+# The word index K / 32 is inside the storage.
+def qs_small(+dw: Nat, +K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+    +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
+    +hN5: {Nat.is_le(Nat.add(VD.s_rng(5n, N), 1n), 1n) == True{} : Bool})
+    -> {Nat.is_lt(VBT.QK(K), VB.pw(dw)) == True{} : Bool}:
+  F.nat__lt_le_trans(VBT.QK(K), Nat.add(VBT.QK(K), 1n), VB.pw(dw), DL.lt_add1(VBT.QK(K)),
+    F.nat__le_trans(Nat.add(VBT.QK(K), 1n), 1n, VB.pw(dw), F.nat__le_trans(Nat.add(VBT.QK(K), 1n), Nat.add(VD.s_rng(5n, N), 1n), 1n, qle(K, kb, N, hkb, hN, hNk), hN5), pw_pos(dw)))
+
+def qs_sized(+dw: Nat, +K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+    +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
+    +hcap: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool})
+    -> {Nat.is_lt(VBT.QK(K), VB.pw(dw)) == True{} : Bool}:
+  F.nat__lt_le_trans(VBT.QK(K), Nat.add(VBT.QK(K), 1n), VB.pw(dw), DL.lt_add1(VBT.QK(K)),
+    F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 1n), VB.pw(dw)) == True{} : Bool}, U32.to_nat(U32.shrn(K, 5n)), VBT.QK(K), eq5(K, kb, N, hkb, hN, hNk), hcap))

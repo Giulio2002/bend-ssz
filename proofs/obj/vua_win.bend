@@ -14,6 +14,7 @@ import ./vbytes.bend as VBY
 import ./vbrt.bend as VR
 import ./vua.bend as UA
 import ./vua_rd.bend as UR
+import ./vua_copy.bend as UC
 import ./vnest.bend as VN
 import ./vbitc.bend as VBC
 
@@ -146,3 +147,49 @@ def byteWX(+d: Nat, +t: F.array__Tree<U32>, +x: Nat, +P: Nat, +R: Nat, +pf: {F.a
   %Equal.sym(+List<U32>, VS.bt(4n, VS.bt(4n+R, VS.bdr(Nat.add(P, x), UA.BYT(t)))), VS.bt(4n, VS.bdr(Nat.add(P, x), UA.BYT(t))), VS.bt_bt(4n, R, VS.bdr(Nat.add(P, x), UA.BYT(t)))) :
     {_ == FX.limbs([UR.RWN(t, Nat.add(P, x))]) : +List<U32>}
   Equal.sym(+List<U32>, FX.limbs([UR.RWN(t, Nat.add(P, x))]), VS.bt(4n, VS.bdr(Nat.add(P, x), UA.BYT(t))), UR.rwn_bytes(d, t, Nat.add(P, x), pf, h4))
+
+# A window is its first L1 bytes, then the L2 bytes after them.
+def splitWX(+t: F.array__Tree<U32>, +a: Nat, +L1: Nat, +L2: Nat)
+    -> {WX(t, a, Nat.add(L1, L2)) == List.append(&2, U32, WX(t, a, L1), WX(t, Nat.add(L1, a), L2)) : +List<U32>}:
+  %Equal.sym(+List<U32>, VS.bt(Nat.add(L1, L2), VS.bdr(a, UA.BYT(t))), List.append(&2, U32, VS.bt(L1, VS.bdr(a, UA.BYT(t))), VS.bt(L2, VS.bdr(L1, VS.bdr(a, UA.BYT(t))))),
+      VBC.bt_split(L1, L2, VS.bdr(a, UA.BYT(t)))) :
+    {_ == List.append(&2, U32, WX(t, a, L1), WX(t, Nat.add(L1, a), L2)) : +List<U32>}
+  %VN.bdr_add(a, L1, UA.BYT(t)) : {List.append(&2, U32, WX(t, a, L1), VS.bt(L2, _)) == List.append(&2, U32, WX(t, a, L1), WX(t, Nat.add(L1, a), L2)) : +List<U32>}
+  %F.nat__add_comm(a, L1) : {List.append(&2, U32, WX(t, a, L1), VS.bt(L2, VS.bdr(Nat.add(a, L1), UA.BYT(t)))) == List.append(&2, U32, WX(t, a, L1), VS.bt(L2, VS.bdr(_, UA.BYT(t)))) : +List<U32>}
+  {==}
+
+# The first m <= L bytes of a window of L bytes.
+def btWX(+t: F.array__Tree<U32>, +x: Nat, +m: Nat, +L: Nat, +h: {Nat.is_le(m, L) == True{} : Bool})
+    -> {VS.bt(m, WX(t, x, L)) == WX(t, x, m) : +List<U32>}:
+  UC.bt_le(m, L, VS.bdr(x, UA.BYT(t)), h)
+
+law bt_self:
+  for +xs: +List<U32>
+  {VS.bt(List.length(&2, U32, xs), xs) == xs : +List<U32>}
+def bt_self(xs):
+  match xs:
+    case Nil{}: {==}
+    case Con{+h, +r}:
+      %bt_self(r) : {h <> VS.bt(List.length(&2, U32, r), r) == h <> _ : +List<U32>}
+      {==}
+
+law le_cancel:
+  for +a: Nat
+  for +m: Nat
+  for +r: Nat
+  for +h: {Nat.is_le(Nat.add(a, m), Nat.add(a, r)) == True{} : Bool}
+  {Nat.is_le(m, r) == True{} : Bool}
+def le_cancel(a, m, r, h):
+  match a:
+    case 0n: h
+    case 1n+ +p: le_cancel(p, m, r, h)
+
+# The m bytes at h of a window of L >= h + m bytes.
+def subWX(+t: F.array__Tree<U32>, +x: Nat, +h: Nat, +m: Nat, +L: Nat, +hl: {Nat.is_le(Nat.add(h, m), L) == True{} : Bool})
+    -> {VS.bt(m, VS.bdr(h, WX(t, x, L))) == WX(t, Nat.add(h, x), m) : +List<U32>}:
+  +hle = F.nat__le_trans(h, Nat.add(h, m), L, Order.below_sum(h, m), hl)
+  +R = Nat.sub(L, h)
+  +eL = F.nat__sub_add(L, h, hle)
+  %eL : {VS.bt(m, VS.bdr(h, WX(t, x, _))) == WX(t, Nat.add(h, x), m) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bdr(h, WX(t, x, Nat.add(h, R))), WX(t, Nat.add(h, x), R), tailWX(t, x, h, R)) : {VS.bt(m, _) == WX(t, Nat.add(h, x), m) : +List<U32>}
+  btWX(t, Nat.add(h, x), m, R, le_cancel(h, m, R, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(h, m), z) == True{} : Bool}, L, Nat.add(h, R), Equal.sym(Nat, Nat.add(h, R), L, eL), hl)))
