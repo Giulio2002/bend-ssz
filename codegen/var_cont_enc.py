@@ -35,7 +35,7 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 import generate as G  # noqa: E402
 import schema  # noqa: E402
 
-CONTS = ['ExecutionPayload', 'ExecutionPayloadHeader']
+CONTS = ['ExecutionPayload', 'ExecutionPayloadHeader', 'ExecutionRequests', 'Attestation']
 TR = 'FD.array__Tree<U32>'
 TRUE = 'True{} : Bool'
 GROUP = G.GROUP
@@ -1601,7 +1601,7 @@ HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primi
 # every child in the encoder-window interface, every fixed piece word-aligned (so far).
 GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3']
 # the containers written in the encoder-window interface with their spec side (iface_text): (name, generic)
-ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True)]
+ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True), ('ExecutionRequests', False)]
 
 
 def gfile_c(C):
