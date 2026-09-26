@@ -398,7 +398,10 @@ def main():
         out[ROOT / f'proofs/obj/{pre}var_codec_{parent}_rej.bend'] = var_nest.as_rej_text(g, xc, parent)
         out[fname(xc, '_encw')] = var_nest_enc.encw_text(g, xc)
         out[ROOT / f'proofs/obj/{pre}var_codec_{parent}_enc.bend'] = var_nest_enc.as_enc_text(g, xc, parent)
-    mine = [q for q in (ROOT / 'proofs/obj').glob('*var_codec_*.bend') if q.name.startswith(('var_codec_', 'big_var_codec_'))]
+    # the names codegen/var_multi.py owns
+    multi = tuple(f'{p}var_codec_{n}' for p in ('', 'big_') for n in ('DataColumnSidecar', 'ExecutionRequests'))
+    mine = [q for q in (ROOT / 'proofs/obj').glob('*var_codec_*.bend') if q.name.startswith(('var_codec_', 'big_var_codec_'))
+            and not q.name.startswith(multi)]
     orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out
                      and not (no_big and q.name.startswith('big_')))
     if '--check' in sys.argv:

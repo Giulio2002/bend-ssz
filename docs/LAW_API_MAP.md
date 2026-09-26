@@ -162,6 +162,34 @@ What that means concretely:
   depth d < 28. The value of a decoded bit list is stated from the buffer's
   bytes (`bl`); relating it to the decoded object's own bits (a view law) and
   the bit-list encoder laws are open.
+* **Unaligned offsets** (`codegen/var_ua.py`, hand-written `vua.bend`,
+  `vua_copy.bend`; 2026-09-26, stock). Generic in the offset and length, for
+  a buffer of depth d < 31. U1: `B.read32` at ANY byte offset X returns
+  `RW(t, X)` (`vua.rd_any`), whose limbs are the spec bytes [X, X + 4)
+  (`vua.rd_bytes`); the word joins `B.join_sel(j, lo, hi)` have limbs
+  j..3 of lo then 0..j - 1 of hi (`vua_bits.join1/2/3`, generated). U2:
+  the shifted copies `O.scopy1/2/3` build the model `vua_copy.smone`
+  (`vua_sc.scopy{1,2,3}_ok`, generated; U32.mul by 2^k is `word_mul`'s
+  shift). The last source read may be one past the array, where Base Array
+  masks the index to 0 (`vua_copy.get_wrap`). `copy_in` / `copy_into` of any
+  length L at an offset with off & 3 = s (s = 1, 2, 3) returns
+  `MK(L, dz, smone(s, NW(L), off >> 2, ...))` (`vua_sc.copy_in_ua{s}`,
+  `copy_into_ua{s}`; the aligned case is `vbytes.copy_in_any`), and its first
+  L bytes are the buffer's spec bytes [off, off + L) (`vua_copy.ci_bytes`).
+  U3: a uint64 at any offset X is two four-byte reads
+  (`vua_rd.rd64_any`, O.U64{RW(t, X), RW(t, X + 4)}) whose limbs are the
+  spec bytes [X, X + 8) (`vua_rd.rd64_bytes`); bytes and bools are
+  `vbrt.byte_at_ok` at any offset.
+  U4 (copies): `vua_ct.copy_in_at` — copy_in of any length at ANY offset
+  returns the storage `CT(d, t, off, L, dz)` (the aligned or the shifted copy
+  by off & 3), whose first L bytes are the spec bytes [off, off + L)
+  (`vua_ct.ct_bytes`).
+  U4 (windows): the byte-offset window interface (`vua_win.bend`'s header:
+  CHKw/ok_evalw/OBJw/readw/VALw/specw/invw at byte position x, window bytes
+  `WX(t, x, L)`), with fixed-size readers at any offset (`vua_fix.rdx_<p>`,
+  words `UR.RWN(t, x + 4 k)`); modules `var_winx_bits2048`,
+  `var_winx_PendingAttestation` (stock), `big_var_winx_bits131072`,
+  `big_var_winx_Attestation` (big), from `codegen/var_win.py` (WINX).
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped

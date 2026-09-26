@@ -1,0 +1,67 @@
+
+def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> T.@X: @OBJ
+
+# the list's storage depth is at most 23
+def hz(+d: Nat, +L: U32, +hd: {Nat.is_lt(d, 23n) == True{} : Bool}, +hL: {Nat.is_le(U32.to_nat(L), A.quad(VB.pw(d))) == True{} : Bool},
+    +h15: {Nat.is_le(15n, VB.pw(d)) == True{} : Bool})
+    -> {Nat.is_le(VL.DZ(L), 23n) == True{} : Bool}:
+  FD.nat__le_trans(VL.DZ(L), 1n+d, 23n, VM.dz_le(d, L, FD.nat__lt_trans(d, 23n, 28n, hd, {==}), hL, h15), FD.nat__lt_succ_le_succ(d, 23n, hd))
+
+def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == True{} : Bool},
+    +hb: {CB(t) == True{} : Bool}, +hc: {CC(t, n) == True{} : Bool}, +hdd: {CD(t, n) == True{} : Bool},
+    +he: {CE(t) == True{} : Bool}, +hf: {CF(t) == True{} : Bool}, +hg: {CG(t, n) == True{} : Bool})
+    -> {T.@X_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.@X>}:
+  +hd28 = FD.nat__lt_trans(d, 23n, 28n, hd, {==})
+  +hd31 = FD.nat__lt_trans(d, 23n, 31n, hd, {==})
+  +hN = hQN(d, t, n, pf, hd, hn, hb, hc, hdd, he, hf, hg)
+  +hQ2 = FD.nat__le_trans(Q2(t), QN(t, n), VB.pw(d), Order.below_sum(Q2(t), M2(t, n)), hN)
+  +hQ1 = FD.nat__le_trans(Q1(t), Q2(t), VB.pw(d), Order.below_sum(Q1(t), M1(t)), hQ2)
+  +h89 = FD.nat__le_trans(89n, Q1(t), VB.pw(d), Order.below_sum(89n, M0(t)), hQ1)
+  +h15 = FD.nat__le_trans(15n, 89n, VB.pw(d), {==}, h89)
+  +eM0 = eL0(t, he)
+  +eM1 = eL1(t, hf)
+  +eM2 = eL2(t, n, hg)
+  +hL0 = hLq(d, L0(t), M0(t), eM0, FD.nat__le_trans(M0(t), Q1(t), VB.pw(d), Order.left_below_sum(89n, M0(t)), hQ1))
+  +hL1 = hLq(d, L1(t), M1(t), eM1, FD.nat__le_trans(M1(t), Q2(t), VB.pw(d), Order.left_below_sum(Q1(t), M1(t)), hQ2))
+  +hL2 = hLq(d, L2(t, n), M2(t, n), eM2, FD.nat__le_trans(M2(t, n), QN(t, n), VB.pw(d), Order.left_below_sum(Q2(t), M2(t, n)), hN))
+  +z0 = hz(d, L0(t), hd, hL0, h15)
+  +z1 = hz(d, L1(t), hd, hL1, h15)
+  +z2 = hz(d, L2(t, n), hd, hL2, h15)
+  %Equal.sym(B.Buf & Bool, T.@X_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, VB.lt32(d, hd31), FD.nat__lt_le_trans(4n, 89n, VB.pw(d), {==}, h89), pf)) :
+    {T.@X_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.@X>}
+  %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
+    {T.@X_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.@X>}
+  %Equal.sym(B.Buf & T.@X, T.@X_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)),
+      rd_ok(d, t, n, pf, hd, VL.DZ(L0(t)), VL.DZ(L1(t)), VL.DZ(L2(t, n)),
+        FD.nat__le_lt_trans(VL.DZ(L0(t)), 23n, 31n, z0, {==}), FD.nat__le_lt_trans(VL.DZ(L1(t)), 23n, 31n, z1, {==}), FD.nat__le_lt_trans(VL.DZ(L2(t, n)), 23n, 31n, z2, {==}),
+        VZ.zat(B.words_depth_u(VC.WZ(L0(t))), VL.DZ(L0(t)), VD.wdu(VC.WZ(L0(t))), z0),
+        VZ.zat(B.words_depth_u(VC.WZ(L1(t))), VL.DZ(L1(t)), VD.wdu(VC.WZ(L1(t))), z1),
+        VZ.zat(B.words_depth_u(VC.WZ(L2(t, n))), VL.DZ(L2(t, n)), VD.wdu(VC.WZ(L2(t, n))), z2),
+        FD.u32alg__eq_of(O0(t), 356, hb), eO1(t, n, hb, hc, he), eO2(t, n, hb, hc, hdd, he, hf),
+        VL.and3_q(L0(t), M0(t), eM0), VL.and3_q(L1(t), M1(t), eM1), VL.and3_q(L2(t, n), M2(t, n), eM2),
+        hsg(d, L0(t), M0(t), 89n, hd, hL0, eM0, hQ1), hsg(d, L1(t), M1(t), Q1(t), hd, hL1, eM1, hQ2), hsg(d, L2(t, n), M2(t, n), Q2(t), hd, hL2, eM2, hN),
+        VL.hrg(d, L0(t), hd28, hL0), VL.hrg(d, L1(t), hd28, hL1), VL.hrg(d, L2(t, n), hd28, hL2),
+        h89)) :
+    {T.@X_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.@X>}
+  {==}
+
+# Every buffer the validator accepts decodes to OBJ(t, n).
+law decode_accept:
+  for +d: Nat
+  for +t: FD.array__Tree<U32>
+  for +n: U32
+  for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 23n) == True{} : Bool}
+  for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hchk: {CHK(t, n) == True{} : Bool}
+  {T.@X_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.@X>}
+def decode_accept(d, t, n, pf, hd, hn, hchk):
+  +k1 = FD.logic__and_right(CA(n), K1(t, n), hchk)
+  +k2 = FD.logic__and_right(CB(t), K2(t, n), k1)
+  +k3 = FD.logic__and_right(CC(t, n), K3(t, n), k2)
+  +k4 = FD.logic__and_right(CD(t, n), K4(t, n), k3)
+  +k5 = FD.logic__and_right(CE(t), K5(t, n), k4)
+  acc_go(d, t, n, pf, hd, hn, hchk,
+    FD.logic__and_left(CB(t), K2(t, n), k1), FD.logic__and_left(CC(t, n), K3(t, n), k2), FD.logic__and_left(CD(t, n), K4(t, n), k3),
+    FD.logic__and_left(CE(t), K5(t, n), k4), FD.logic__and_left(CF(t), CG(t, n), k5), FD.logic__and_right(CF(t), CG(t, n), k5))
