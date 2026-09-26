@@ -17,6 +17,7 @@ import ./vcopy.bend as VC
 import ./vdepth.bend as VD
 import ./vlist.bend as VLS
 import ./vbitl.bend as VBL
+import ./vrej.bend as VRJ
 
 # Containers of fixed fields around one bit list: the offset layout with an
 # arbitrary (byte-domain) payload, the spec parts of a bit list value, and the
@@ -135,3 +136,30 @@ def nwH(+d: Nat, +L: U32, +h: Nat, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
   VC.rng_mono(2n, Nat.add(A.quad(h), 3n+U32.to_nat(L)), 3n+A.quad(VB.pw(d)),
     F.logic__subst(Nat, z => {Nat.is_le(z, 3n+A.quad(VB.pw(d))) == True{} : Bool}, 3n+Nat.add(A.quad(h), U32.to_nat(L)), Nat.add(A.quad(h), 3n+U32.to_nat(L)),
       Equal.sym(Nat, Nat.add(A.quad(h), 3n+U32.to_nat(L)), 3n+Nat.add(A.quad(h), U32.to_nat(L)), F.lru_nat_algebra__add_swap(A.quad(h), 3n, U32.to_nat(L))), hw))
+
+# ---- the offset layout's payload -----------------------------------------------------------------
+
+def lenHead(+pre: +List<+List<U32>>, +post: +List<+List<U32>>)
+    -> {List.length(&2, U32, List.append(&2, U32, VRJ.bcat(pre), List.append(&2, U32, N.digits(4n, VRJ.FZ(pre, post)), VRJ.bcat(post)))) == VRJ.FZ(pre, post) : Nat}:
+  +D = List.append(&2, U32, N.digits(4n, VRJ.FZ(pre, post)), VRJ.bcat(post))
+  %Equal.sym(Nat, List.length(&2, U32, List.append(&2, U32, VRJ.bcat(pre), D)), Nat.add(List.length(&2, U32, VRJ.bcat(pre)), List.length(&2, U32, D)), VS.len_app(VRJ.bcat(pre), D)) :
+    {_ == VRJ.FZ(pre, post) : Nat}
+  %Equal.sym(Nat, List.length(&2, U32, D), Nat.add(List.length(&2, U32, N.digits(4n, VRJ.FZ(pre, post))), List.length(&2, U32, VRJ.bcat(post))), VS.len_app(N.digits(4n, VRJ.FZ(pre, post)), VRJ.bcat(post))) :
+    {Nat.add(List.length(&2, U32, VRJ.bcat(pre)), _) == VRJ.FZ(pre, post) : Nat}
+  %Equal.sym(Nat, List.length(&2, U32, VRJ.bcat(pre)), VRJ.lens(pre), VRJ.len_bcat(pre)) :
+    {Nat.add(_, Nat.add(List.length(&2, U32, N.digits(4n, VRJ.FZ(pre, post))), List.length(&2, U32, VRJ.bcat(post)))) == VRJ.FZ(pre, post) : Nat}
+  %Equal.sym(Nat, List.length(&2, U32, VRJ.bcat(post)), VRJ.lens(post), VRJ.len_bcat(post)) :
+    {Nat.add(VRJ.lens(pre), Nat.add(List.length(&2, U32, N.digits(4n, VRJ.FZ(pre, post))), _)) == VRJ.FZ(pre, post) : Nat}
+  {==}
+
+# The payload follows the FZ bytes of the fixed region.
+law out_tail:
+  for +pre: +List<+List<U32>>
+  for +Y: +List<U32>
+  for +post: +List<+List<U32>>
+  {VS.bdr(VRJ.FZ(pre, post), VRJ.OUT(pre, Y, post)) == Y : +List<U32>}
+def out_tail(pre, Y, post):
+  +A = List.append(&2, U32, VRJ.bcat(pre), List.append(&2, U32, N.digits(4n, VRJ.FZ(pre, post)), VRJ.bcat(post)))
+  %Equal.sym(+List<U32>, VRJ.OUT(pre, Y, post), VRJ.OUTX(pre, Y, post), VRJ.out_eq(pre, Y, post)) : {VS.bdr(VRJ.FZ(pre, post), _) == Y : +List<U32>}
+  %lenHead(pre, post) : {VS.bdr(_, List.append(&2, U32, A, Y)) == Y : +List<U32>}
+  VS.bdr_app(A, Y)
