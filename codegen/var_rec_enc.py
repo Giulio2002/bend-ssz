@@ -639,6 +639,174 @@ def flist_text(p):
     return '\n'.join(L) + body
 
 
+# ---- fixed records with fields at any byte offset (Validator: 121 bytes, a one-byte bool) --------------
+# Each field is written by the runtime at Xc = X + c, placed at the word position 4 QX(Xc) + RX(Xc)
+# (vpiece.ppos / proom, vcont.vpos / croom, vcopy.split4), its bytes spliced at X0 + c of the record's
+# region (vuw.inv_init / inv_zero / inv_step).
+
+URECS = ['Validator']
+
+
+def urec_file(n):
+    return ROOT / f'proofs/obj/encx_{n}.bend'
+
+
+def _uleaf(fs, f, k):
+    """(words, object term, model(r, dd, D, q), rt(D, X, q, r, e, hr, hd, hl, pf), by(.., hz), perfect(r, dd, D, q, pf), bytes, runtime prefix, m)."""
+    if fs.kind == 'u64':
+        ws = [f'{f}_lo', f'{f}_hi']
+        W = ', '.join(ws)
+        return dict(ws=ws, obj=f'O.U64{{{W}}}', model=lambda r, dd, D, q: f'WD.W64X({r}, {dd}, {D}, {q}, {W})',
+                    rt=lambda D, X, q, r: f'WD.w64_any(dd, {D}, {X}, {q}, {r}, {W}, @e, @hr, hd, @hl, @pf)',
+                    by=lambda D, X, q, r: f'WD.w64_any_bytes(dd, {D}, {X}, {q}, {r}, {W}, @e, @hr, hd, @hl, @pf, @hz)',
+                    pf=lambda r, D, q, p: f'WD.w64x_perfect({r}, dd, {D}, {q}, {W}, {p})', Y=f'FX.limbs([{W}])', put='u64', m=8)
+    if fs.kind == 'bool':
+        return dict(ws=[f], obj=f, model=lambda r, dd, D, q: f'PBo({f}, {r}, {dd}, {D}, {q})',
+                    rt=lambda D, X, q, r: f'bool_any(dd, {D}, {X}, {q}, {r}, {f}, @e, @hr, hd, @hl, @pf)',
+                    by=lambda D, X, q, r: f'bool_any_bytes(dd, {D}, {X}, {q}, {r}, {f}, @e, @hr, hd, @hl, @pf, @hz)',
+                    pf=lambda r, D, q, p: f'boolx_perfect({f}, {r}, dd, {D}, {q}, {p})', Y=f'[BB({f})]', put='bool', m=1)
+    p = fs.p
+    N = fs.fsize // 4
+    ws = [f'{f}_{j}' for j in range(N)]
+    W = ', '.join(ws)
+    a = f'V_{p}'
+    return dict(ws=ws, obj=f'T.{fs.rep}{{{W}}}', model=lambda r, dd, D, q: f'{a}.PX_{p}({r}, {dd}, {D}, {q}, {W})',
+                rt=lambda D, X, q, r: f'{a}.{p}_any(dd, {D}, {X}, {q}, {r}, {W}, @e, @hr, hd, @hl, @pf, @hz)',
+                by=lambda D, X, q, r: f'{a}.{p}_any_bytes(dd, {D}, {X}, {q}, {r}, {W}, @e, @hr, hd, @hl, @pf, @hz)',
+                pf=lambda r, D, q, p_: f'{a}.{p}x_perfect({r}, dd, {D}, {q}, {W}, {p_})', Y=f'FX.limbs([{W}])', put=p, m=fs.fsize, mod=f'import ./vuwv_{p}.bend as {a}')
+
+
+UREC_PRE = """
+# ---- the one-byte bool: True writes 1 (vuwl_u8's w8 at any X), False leaves the (zero) byte ----
+def BB(b: Bool) -> U32:
+  match b:
+    case True{}: 1
+    case False{}: 0
+def PBo(b: Bool, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat) -> FD.array__Tree<U32>:
+  match b:
+    case True{}: W8.W8X(r, dd, D, q, 1)
+    case False{}: D
+def boolx_perfect(+b: Bool, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {FD.array__perfect(U32, dd, PBo(b, r, dd, D, q)) == True{} : Bool}:
+  match b:
+    case True{}: W8.w8x_perfect(r, dd, D, q, 1, pf)
+    case False{}: pf
+def bool_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +b: Bool, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {T.bool_put(FD.array__thaw(U32, D), X, b) == FD.array__thaw(U32, PBo(b, r, dd, D, q)) : Array<U32>}:
+  match b:
+    case True{}: W8.w8_any(dd, D, X, q, r, 1, e, hr, hd, hl, pf)
+    case False{}: {==}
+def bool_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +b: Bool, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(1n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(1n) : +List<U32>})
+    -> {UA.BYT(PBo(b, r, dd, D, q)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), [BB(b)]) : +List<U32>}:
+  match b:
+    case True{}: W8.w8_any_bytes(dd, D, X, q, r, 1, e, hr, hd, hl, pf, hz)
+    case False{}: UW.inv_init(UA.BYT(D), Nat.add(A.quad(q), r), 1n, [0], hz, {==})
+"""
+
+
+def urec_text(n):
+    import generate as G
+    g, names = layout()
+    s = g.shape(names[n])
+    F = s.fields
+    hoff, L = G.container_layout(F)
+    Ln = f'{L}n'
+    lv = [_uleaf(fs, f, k) for k, (f, fs) in enumerate(F)]
+    ws = [w for x in lv for w in x['ws']]
+    WSIG = ', '.join(f'+{w}: Bool' if (fs.kind == 'bool') else f'+{w}: U32' for x, (f, fs) in zip(lv, F) for w in x['ws'])
+    WA = ', '.join(ws)
+    OBJ = f'T.{n}{{' + ', '.join(x['obj'] for x in lv) + '}'
+    X0 = 'Nat.add(A.quad(q), r)'
+    QC = lambda c: f'VCN.QX(U32.add(X, {c}))'  # noqa: E731
+    RC = lambda c: f'VCN.RX(U32.add(X, {c}))'  # noqa: E731
+
+    def tree(i):
+        t = 'D'
+        for j in range(i):
+            t = lv[j]['model'](RC(hoff[j]), 'dd', t, QC(hoff[j]))
+        return t
+    BYTES = 'List.append(&2, U32, ' + ', List.append(&2, U32, '.join(x['Y'] for x in lv[:-1]) + ', ' + lv[-1]['Y'] + ')' * (len(lv) - 1)
+    out = [UREC_PRE]
+    w = out.append
+    w(f'# ---- {n}: {len(F)} fields, {L} bytes ----')
+    w(f'def PX_{n}({WSIG}, +dd: Nat, +D: {TR}, +X: U32) -> {TR}: {tree(len(F))}')
+    pfs = 'pf'
+    for i in range(len(F)):
+        pfs = lv[i]['pf'](RC(hoff[i]), tree(i), QC(hoff[i]), pfs)
+    w(f'def pf_{n}({WSIG}, +dd: Nat, +D: {TR}, +X: U32, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})')
+    w(f'    -> {{FD.array__perfect(U32, dd, PX_{n}({WA}, dd, D, X)) == {TRUE}}}:')
+    w(f'  {pfs}')
+    w(f'def BY_{n}({WSIG}) -> +List<U32>: {BYTES}')
+    RT = f'{{T.{n}_put(FD.array__thaw(U32, D), X, {OBJ}) == FD.array__thaw(U32, PX_{n}({WA}, dd, D, X)) : Array<U32>}}'
+    BY = f'{{UA.BYT(PX_{n}({WA}, dd, D, X)) == UW.SPL(UA.BYT(D), {X0}, BY_{n}({WA})) : +List<U32>}}'
+    w(f'''def RTR_{n}({WSIG}, +dd: Nat, +D: {TR}, +X: U32) -> Data: {RT}
+def BYR_{n}({WSIG}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data: {BY}
+def lenb_{n}({WSIG}) -> {{List.length(&2, U32, BY_{n}({WA})) == {Ln} : Nat}}: {{==}}
+''')
+
+    def put_expr(i, inner):
+        return f'T.{lv[i]["put"]}_put({inner}, U32.add(X, {hoff[i]}), {lv[i]["obj"]})'
+    rts = []
+    body = [f'''# T.{n}_put at X = 4 q + r writes the value's {L} bytes (BY_{n}) into the zero bytes there.
+def putx_{n}({WSIG}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
+    +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}}, +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}},
+    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, {Ln}))), VB.pw(dd)) == {TRUE}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}},
+    +hz: {{VS.bt({Ln}, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({Ln}) : +List<U32>}})
+    -> DK.P2(RTR_{n}({WA}, dd, D, X), BYR_{n}({WA}, dd, D, X, q, r)):
+  +hX = VRX.xstart(q, r, {Ln}, dd, D, pf, hl)
+  +I0 = UW.inv_init(UA.BYT(D), {X0}, {Ln}, UW.ZB({Ln}), hz, {{==}})''']
+    b = body.append
+    E = f'UW.ZB({Ln})'
+    pf_cur = 'pf'
+    for i, (f, fs) in enumerate(F):
+        c, m, x = hoff[i], lv[i]['m'], lv[i]
+        Di, Dn = tree(i), tree(i + 1)
+        Xc = f'U32.add(X, {c})'
+        pos = f'Nat.add(A.quad({QC(c)}), {RC(c)})'
+        b(f'  +pp{i} = VP.ppos(X, {c}, {c}n, q, r, {Ln}, {m}n, dd, e, {{==}}, hd, {{==}}, hl)')
+        b(f'  +hl{i} = VP.proom(X, {c}, {c}n, q, r, {Ln}, {m}n, dd, e, {{==}}, hd, {{==}}, hl)')
+        b(f'  +z{i} = UW.inv_zero(UA.BYT(D), {X0}, {Ln}, {E}, {c}n, {m}n, UA.BYT({Di}), hX, I{i}, {{==}}, {{==}}, {{==}})')
+        b(f'  +hz{i} = FD.logic__subst(Nat, zz => {{VS.bt({m}n, VS.bdr(zz, UA.BYT({Di}))) == UW.ZB({m}n) : +List<U32>}}, Nat.add({X0}, {c}n), {pos}, pp{i}, z{i})')
+        sub = lambda t: t.replace('@e', f'VC.split4({Xc})').replace('@hr', f'VCN.rx_lt({Xc})').replace('@hl', f'hl{i}').replace('@pf', pf_cur).replace('@hz', f'hz{i}')  # noqa: E731
+        b(f'  +rt{i} = {sub(x["rt"](Di, Xc, QC(c), RC(c)))}')
+        b(f'  +by{i} = {sub(x["by"](Di, Xc, QC(c), RC(c)))}')
+        Y = x['Y']
+        b(f'  +hop{i} = FD.logic__subst(Nat, zz => {{UA.BYT({Dn}) == UW.SPL(UA.BYT({Di}), zz, {Y}) : +List<U32>}}, {pos}, Nat.add({X0}, {c}n), Equal.sym(Nat, Nat.add({X0}, {c}n), {pos}, pp{i}), by{i})')
+        rr = L - c - m
+        b(f'  +I{i + 1} = UW.inv_step(UA.BYT(D), {X0}, {Ln}, {E}, {c}n, {Y}, {rr}n, UA.BYT({Di}), UA.BYT({Dn}), hX, I{i}, hop{i}, {{==}}, {{==}})')
+        E = f'UW.SPL({E}, {c}n, {Y})'
+        rts.append((i, Di, Dn))
+        pf_cur = x['pf'](RC(c), Di, QC(c), pf_cur)
+    b(f'  +byf = FD.logic__subst(+List<U32>, zz => {{UA.BYT(PX_{n}({WA}, dd, D, X)) == UW.SPL(UA.BYT(D), {X0}, zz) : +List<U32>}}, VS.bt({Ln}, {E}), BY_{n}({WA}), {{==}}, I{len(F)})')
+    b(f'  (rt_{n}({WA}, dd, D, X, {", ".join(f"rt{i}" for i in range(len(F)))}), byf)')
+
+    def outer(i, hole):
+        t = hole
+        for j in range(i + 1, len(F)):
+            t = put_expr(j, t)
+        return t
+    RTP = [f'+rt{i}: {{{put_expr(i, f"FD.array__thaw(U32, {Di})")} == FD.array__thaw(U32, {Dn}) : Array<U32>}}' for i, Di, Dn in rts]
+    w(f'def rt_{n}({WSIG}, +dd: Nat, +D: {TR}, +X: U32,\n    ' + ',\n    '.join(RTP) + f')\n    -> {RT}:')
+    for i, Di, Dn in rts:
+        w(f'  %Equal.sym(Array<U32>, {put_expr(i, f"FD.array__thaw(U32, {Di})")}, FD.array__thaw(U32, {Dn}), rt{i}) :')
+        w(f'    {{{outer(i, "_")} == FD.array__thaw(U32, PX_{n}({WA}, dd, D, X)) : Array<U32>}}')
+    w('  {==}')
+    w('')
+    out += body
+    mods = []
+    for x in lv:
+        if x.get('mod') and x['mod'] not in mods:
+            mods.append(x['mod'])
+    Lh = HEAD + ['import ./vcont.bend as VCN', 'import ./vcopy.bend as VC', 'import ./vpiece.bend as VP', 'import ./vuwl_u8.bend as W8'] + mods + [
+        '', '# GENERATED by codegen/var_rec_enc.py. Do not edit.',
+        f'# {n} ({L} bytes, fields at any byte offset) written at any byte position X = 4 q + r (see the generator).', '',
+        'def PA(-A: Data, -B: Data, +p: DK.P2(A, B)) -> A:', '  (+a, +b) = p', '  a',
+        'def PB(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:', '  (+a, +b) = p', '  b']
+    return '\n'.join(Lh) + '\n' + '\n'.join(out) + '\n'
+
 LHEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/obj.bend as O',
          'import ../../types/fulu_obj.bend as T', 'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P',
          'import ../compact/found.bend as FD', 'import ../compact/arith.bend as A', 'import ../../proofs/nat_order.bend as Order',
@@ -1466,6 +1634,8 @@ def main():
             out[sub_file(p)] = sub_text(p, R, LIM)
         for p in FLISTS:
             out[bl_file(p)] = flist_text(p)
+    for n in URECS:
+        out[urec_file(n)] = urec_text(n)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:
