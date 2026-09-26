@@ -184,6 +184,12 @@ What that means concretely:
   returns the storage `CT(d, t, off, L, dz)` (the aligned or the shifted copy
   by off & 3), whose first L bytes are the spec bytes [off, off + L)
   (`vua_ct.ct_bytes`).
+  U4 (windows): the byte-offset window interface (`vua_win.bend`'s header:
+  CHKw/ok_evalw/OBJw/readw/VALw/specw/invw at byte position x, window bytes
+  `WX(t, x, L)`), with fixed-size readers at any offset (`vua_fix.rdx_<p>`,
+  words `UR.RWN(t, x + 4 k)`); modules `var_winx_bits2048`,
+  `var_winx_PendingAttestation` (stock), `big_var_winx_bits131072`,
+  `big_var_winx_Attestation` (big), from `codegen/var_win.py` (WINX).
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
