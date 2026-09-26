@@ -348,6 +348,35 @@ def emit():
         w(f'    case {pat("x")}:')
         w('      ' + g.weq(shrn(X, up), w_and(shrn(X, up), const(M))))
         w('')
+    # tail zeros: x >> 8R == 0 (O.tail_zero for R = n & 3)
+    def u32_facts(hname, sh):
+        facts, lines = {}, []
+        for i in range(32 - sh):
+            a = f'x{i + sh}'
+            e = f'Equal.cong(U32, Bool, z => B{i}(z), U32.shrn({word(X)}, {sh}n), 0, {hname})'
+            lines.append(f'      +f{a} = {e}')
+            facts[a] = f'f{a}'
+        return facts, lines
+    for R in (1, 2, 3):
+        w(f'# Bytes {R}..3 of x are zero (x >> {8 * R} == 0): its limbs are its first {R}, then zeros.')
+        w(f'def tzl{R}(+x: U32, +h: {{U32.shrn(x, {8 * R}n) == 0 : U32}}) -> {{I.limb(x) == List.append(&2, U32, VS.bt({R}n, I.limb(x)), {zs(4 - R)}) : +List<U32>}}:')
+        w('  match x:')
+        w(f'    case {pat("x")}:')
+        facts, lines = u32_facts('h', 8 * R)
+        g.L.extend(lines)
+        w('      ' + g.l4(limb(X), limb(X)[:R] + [zero] * (4 - R), facts))
+        w('')
+        for s2 in (1, 2, 3):
+            if s2 + R > 4:
+                continue
+            w(f'# ... and its top {s2} byte{"s" if s2 > 1 else ""} (the carry of a write at byte {s2}) are zero.')
+            w(f'def tzc{s2}{R}(+x: U32, +h: {{U32.shrn(x, {8 * R}n) == 0 : U32}}) -> {{U32.shrn(x, {32 - 8 * s2}n) == 0 : U32}}:')
+            w('  match x:')
+            w(f'    case {pat("x")}:')
+            facts, lines = u32_facts('h', 8 * R)
+            g.L.extend(lines)
+            w('      ' + g.weq(shrn(X, 32 - 8 * s2), zero, facts))
+            w('')
     # zw
     lw = limb(W)
     w('# All four bytes of w are zero: w is zero.')
