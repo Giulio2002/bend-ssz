@@ -1,6 +1,7 @@
 import Base
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
+import ../../spec/schema.bend as SS
 import ../../proofs/decode_facts.bend as DF
 import ../compact/found.bend as FD
 
@@ -22,6 +23,14 @@ def lp(+w: Maybe<&2, Nat>, +N: Nat, +bs: +List<U32>, +ps: +List<S.Part>, hf: DF.
     case Con{S.Variable{+xs}, Nil{}}: FD.logic__none_some(Nat, N, Equal.trans(Maybe<&2, Nat>, None{}, w, Some{N}, Equal.sym(Maybe<&2, Nat>, w, None{}, hf), hw))
     case Con{S.Fixed{+xs}, Con{+a, +b}}: hf
     case Con{S.Variable{+xs}, Con{+a, +b}}: hf
+
+# The fixed size of a schema, as the spec computes it (0 for a variable-size one); the large
+# names state their length condition with it, so no closed size is compared in unary.
+def SZm(+m: Maybe<&2, Nat>) -> Nat:
+  match m:
+    case Some{n}: n
+    case None{}: 0n
+def SZ(+s: S.Schema) -> Nat: SZm(SS.fixed_size(s))
 
 # m: the spec parts of a value at a schema of width w = Some{N} (decode_shape.facts: one
 # fixed part of w bytes); its bytes are bs, whose length is not N: impossible.

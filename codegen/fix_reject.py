@@ -8,7 +8,8 @@ For a name X of fixed size N whose decoder is X_built(size, T.<p>_ok(buf, 0, siz
   <X>_ok_eval(buf, off, len)      : {T.<p>_ok(buf, off, len) == (buf, U32.is_eq(len, N))}
       the validator returns exactly the length check, for every buffer and offset;
   <X>_decode_reject(bs, hn)       : Decoding.outside_image(<schema of X>, bs)
-      for every byte list bs whose length is not N (the only buffers the decoder
+      for every byte list bs whose length is not N (for names of SOLO bytes or more: not
+      VRF.SZ(<schema>), the spec's fixed size of the schema, which is N) (the only buffers the decoder
       refuses): no spec value has bs as its encoding.
 decode_reject goes through proofs/obj/vrejf.bend `lo`: the spec parts of any value at a
 fixed-size schema are one fixed part of the schema's size (decode_shape.facts), so an
@@ -31,6 +32,7 @@ TRUE = 'True{} : Bool'
 LIB = """import Base
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
+import ../../spec/schema.bend as SS
 import ../../proofs/decode_facts.bend as DF
 import ../compact/found.bend as FD
 
@@ -52,6 +54,14 @@ def lp(+w: Maybe<&2, Nat>, +N: Nat, +bs: +List<U32>, +ps: +List<S.Part>, hf: DF.
     case Con{S.Variable{+xs}, Nil{}}: FD.logic__none_some(Nat, N, Equal.trans(Maybe<&2, Nat>, None{}, w, Some{N}, Equal.sym(Maybe<&2, Nat>, w, None{}, hf), hw))
     case Con{S.Fixed{+xs}, Con{+a, +b}}: hf
     case Con{S.Variable{+xs}, Con{+a, +b}}: hf
+
+# The fixed size of a schema, as the spec computes it (0 for a variable-size one); the large
+# names state their length condition with it, so no closed size is compared in unary.
+def SZm(+m: Maybe<&2, Nat>) -> Nat:
+  match m:
+    case Some{n}: n
+    case None{}: 0n
+def SZ(+s: S.Schema) -> Nat: SZm(SS.fixed_size(s))
 
 # m: the spec parts of a value at a schema of width w = Some{N} (decode_shape.facts: one
 # fixed part of w bytes); its bytes are bs, whose length is not N: impossible.
@@ -88,7 +98,7 @@ def names():
     return [(X,) + rt[X] for X in fulu + gen if X in rt]
 
 
-def chunk_text(tag, rows):
+def chunk_text(tag, rows, solo=False):
     T = '../../types/fulu_obj.bend' if tag == 'f' else '../../types/generic_obj.bend'
     SCH = 'Spec' if tag == 'f' else 'GS'
     L = ['import Base', 'import ../../src/buffer.bend as B', f'import {T} as T', 'import ../../types/schema.bend as S',
@@ -100,6 +110,7 @@ def chunk_text(tag, rows):
          '# Fixed-size names whose validator checks only the length: ok_eval and decode_reject', '# (see codegen/fix_reject.py).', '']
     for X, _, P, N in rows:
         s = f'{SCH}.{X}()'
+        NN = f'VRF.SZ({s})' if solo else f'{N}n'
         L.append(f'''# ---- {X} ({N} bytes; validator T.{P}_ok) ----
 def {X}_okb(buf: B.Buf, +off: U32, +b: Bool) -> {{T.{P}_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}}:
   match b:
@@ -107,9 +118,9 @@ def {X}_okb(buf: B.Buf, +off: U32, +b: Bool) -> {{T.{P}_ok_len(b, buf, off) == (
     case False{{}}: {{==}}
 def {X}_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {{T.{P}_ok(buf, off, len) == (buf, U32.is_eq(len, {N})) : B.Buf & Bool}}:
   {X}_okb(buf, off, U32.is_eq(len, {N}))
-def {X}_rj(+bs: +List<U32>, +hn: {{Nat.is_eq(List.length(&2, U32, bs), {N}n) == False{{}} : Bool}}, +v: S.Value, e: Decoding.decodes({s}, bs, v)) -> Empty:
-  VRF.lo(SS.fixed_size({s}), {N}n, bs, Codec.parts(v, {s}), DS.facts(v, {s}, {{==}}), {{==}}, e, hn)
-def {X}_decode_reject(+bs: +List<U32>, +hn: {{Nat.is_eq(List.length(&2, U32, bs), {N}n) == False{{}} : Bool}}) -> Decoding.outside_image({s}, bs):
+def {X}_rj(+bs: +List<U32>, +hn: {{Nat.is_eq(List.length(&2, U32, bs), {NN}) == False{{}} : Bool}}, +v: S.Value, e: Decoding.decodes({s}, bs, v)) -> Empty:
+  VRF.lo(SS.fixed_size({s}), {NN}, bs, Codec.parts(v, {s}), DS.facts(v, {s}, {{==}}), {{==}}, e, hn)
+def {X}_decode_reject(+bs: +List<U32>, +hn: {{Nat.is_eq(List.length(&2, U32, bs), {NN}) == False{{}} : Bool}}) -> Decoding.outside_image({s}, bs):
   v => e => {X}_rj(bs, hn, v, e)
 ''')
     return '\n'.join(L) + '\n'
@@ -118,8 +129,9 @@ def {X}_decode_reject(+bs: +List<U32>, +hn: {{Nat.is_eq(List.length(&2, U32, bs)
 def outputs():
     rows = names()
     out = {ROOT / 'proofs/obj/vrejf.bend': LIB}
-    # (names of SOLO bytes or more: their schema's size is a product the direct route would
-    # compare in unary; not yet emitted)
+    for r in rows:
+        if r[3] >= SOLO:
+            out[ROOT / f'proofs/obj/fixrej_{r[0]}.bend'] = chunk_text(r[1], [r], solo=True)
     for tag in ('f', 'g'):
         rs = [r for r in rows if r[1] == tag and r[3] < SOLO]
         for k in range(0, len(rs), CHUNK):

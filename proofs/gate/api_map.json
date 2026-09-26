@@ -5066,7 +5066,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixrej_HistoricalBatch.bend",
+     "law": "HistoricalBatch_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "spec_arr_HistoricalBatch.bend",
@@ -5088,7 +5094,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixrej_HistoricalBatch.bend",
+     "law": "HistoricalBatch_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "spec_arr_HistoricalBatch.bend",
@@ -6794,7 +6806,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixrej_SyncCommittee.bend",
+     "law": "SyncCommittee_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "spec_arr_SyncCommittee.bend",
@@ -6816,7 +6834,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixrej_SyncCommittee.bend",
+     "law": "SyncCommittee_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "spec_arr_SyncCommittee.bend",
@@ -9983,7 +10007,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixrej_Blob.bend",
+     "law": "Blob_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "spec_arr_Blob.bend",
@@ -10005,7 +10035,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixrej_Blob.bend",
+     "law": "Blob_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "spec_arr_Blob.bend",
@@ -10049,7 +10085,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixrej_BlobSidecar.bend",
+     "law": "BlobSidecar_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "spec_arr_BlobSidecar.bend",
@@ -10071,7 +10113,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixrej_BlobSidecar.bend",
+     "law": "BlobSidecar_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "spec_arr_BlobSidecar.bend",
@@ -12390,7 +12438,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixrej_Gt7274F61A0F.bend",
+     "law": "Gt7274F61A0F_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "spec_garr_Gt7274F61A0F.bend",
@@ -12412,7 +12466,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixrej_Gt7274F61A0F.bend",
+     "law": "Gt7274F61A0F_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "spec_garr_Gt7274F61A0F.bend",
@@ -12456,7 +12516,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixrej_Gt9EA902108D.bend",
+     "law": "Gt9EA902108D_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "spec_garr_Gt9EA902108D.bend",
@@ -12478,7 +12544,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixrej_Gt9EA902108D.bend",
+     "law": "Gt9EA902108D_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "spec_garr_Gt9EA902108D.bend",
@@ -14748,7 +14820,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixrej_Gt274A0B8DC2.bend",
+     "law": "Gt274A0B8DC2_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "spec_garr_Gt274A0B8DC2.bend",
@@ -14770,7 +14848,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixrej_Gt274A0B8DC2.bend",
+     "law": "Gt274A0B8DC2_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "spec_garr_Gt274A0B8DC2.bend",
@@ -14814,7 +14898,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "fixrej_Gt0A3B6B4128.bend",
+     "law": "Gt0A3B6B4128_ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "spec_garr_Gt0A3B6B4128.bend",
@@ -14836,7 +14926,13 @@
      "big": false
     }
    ],
-   "decode_reject": [],
+   "decode_reject": [
+    {
+     "file": "fixrej_Gt0A3B6B4128.bend",
+     "law": "Gt0A3B6B4128_decode_reject",
+     "big": false
+    }
+   ],
    "decode_none": [
     {
      "file": "spec_garr_Gt0A3B6B4128.bend",
