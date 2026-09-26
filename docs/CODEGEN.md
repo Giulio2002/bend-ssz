@@ -41,6 +41,7 @@ them, and every official case that uses one is an invalid case.
 | `proofs/obj/spec_*.bend`, `serialize_*.bend` | codec laws against the independent spec (`codegen/spec_laws.py`); `spec_g*` the same for the generic forms; `spec_arr_*`/`spec_garr_*` the names with array-backed storage (`codegen/spec_arr.py`); `spec_rec_Validator` with `word_mul.bend` (`U32.mul(w, 2^8k) == U32.shln(w, 8k)`, from `codegen/word_mul.bend.in`); `sub_pack`, `sub_*` the generic forms with sub-word leaves (`codegen/sub_laws.py`, with `bitsim.py`, `sub_cont.py`) |
 | `proofs/obj/arr_copy.bend`, `arr_emit.bend`, `arr_shift.bend`, `arr_spec.bend`, `arr_vec.bend` | the loop laws of the runtime copy (`acopy`), emit and loader over perfect array trees for symbolic counts, and the spec side of word lists of symbolic length (`codegen/arr_laws.py`, called by `spec_laws.py`) |
 | `proofs/obj/var_codec_<Name>{,_unique,_rej,_enc}.bend`, `big_var_codec_<Name>*.bend`, `var_fix_types.bend` | spec-connected codec laws of the variable-size names with word-aligned fixed fields around one `List[uint64, N]` (`codegen/var_laws.py`, encoder laws `codegen/var_enc.py`); a name whose list limit is 2^16 or more (IndexedAttestation) goes to `big_*` |
+| `proofs/obj/var_bytes_<Name>{,_win,_unique,_rej,_enc}.bend`, `var_bytes_fix.bend`, `var_bytes_wput.bend` | spec-connected codec laws of the names whose variable part is a byte list at any length (ExecutionPayloadHeader) or a covered name (LightClientHeader, LightClientOptimisticUpdate), at a word-aligned window and on the whole buffer (`codegen/var_bytes.py`, encoders `var_bytes_enc.py`, nesting `var_bytes_nest.py`/`var_bytes_nenc.py`; libraries `proofs/obj/v{bytes,bspec,benc}.bend`); all stock |
 | `proofs/obj/sha_node.bend` | the SHA node bridge: runtime node = spec 64-byte message hash, via the pinned package law (`codegen/sha_laws.py`) |
 | `proofs/obj/schema_shapes.bend` | Bool shape tests and shape laws for every schema constructor (`codegen/schema_shapes.py`) |
 | `proofs/obj/root_names.bend`, `bits_leaf.bend`, `valid_names.bend` | phase-A root laws (Data-kind names: `X_root_correct`, `X_decoded_root_correct`) and generated-validity agreement (`codegen/root_laws.py`) |
@@ -59,6 +60,7 @@ them, and every official case that uses one is an invalid case.
 /opt/homebrew/bin/python3 codegen/sub_laws.py          # codec spec laws of the generic sub-word forms (--no-big accepted)
 /opt/homebrew/bin/python3 codegen/var_laws.py          # variable-size codec spec laws, incl. nesting (var_nest.py) [--no-big]
 /opt/homebrew/bin/python3 codegen/var_plist.py         # progressive-list generic forms [--no-big]
+/opt/homebrew/bin/python3 codegen/var_bytes.py         # byte lists at any length, and the names nesting them [--no-big]
 /opt/homebrew/bin/python3 codegen/sha_laws.py          # SHA node bridge
 /opt/homebrew/bin/python3 codegen/schema_shapes.py     # schema shape laws
 /opt/homebrew/bin/python3 codegen/root_laws.py         # phase-A root laws, validity agreement

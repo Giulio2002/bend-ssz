@@ -139,6 +139,37 @@ What that means concretely:
   Supporting stock libraries: `vnest.bend` (a word from its limbs, bytes at 4 k
   are word k), `vdig.bend` (the spec's four offset digits of a word's value are
   its limbs), `vfits.bend` (N.fits(4n, x) for x <= 2^a, a < 32, symbolically).
+* **Byte lists at any length, and the names nesting them** (2026-09-26,
+  agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
+  `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
+  container of word-aligned fixed fields, two packed-word byte vectors and one
+  `ByteList[32]`), LightClientHeader (a boxed ExecutionPayloadHeader after its
+  header) and LightClientOptimisticUpdate (a LightClientHeader, a boxed
+  SyncAggregate) have the full law set (ok_eval, decode_accept, decode_spec,
+  decode_unique, decode_reject, decode_none, encode_eval, encode_spec) in
+  `proofs/obj/var_bytes_<Name>{,_unique,_rej,_enc}.bend`, all stock-checkable,
+  over the same quantifiers as above (buffers on perfect trees of depth d < 29
+  with n <= 4 2^d; objects whose storage trees are perfect with room for their
+  words, the byte list's last storage word having no bytes past its length, the
+  runtime's storage check). The masked last word of `O.copy_in` / `O.put_words`
+  is proved once, symbolically in the length (`proofs/obj/vbytes.bend`
+  `copy_in_any`, `mk_bytes`: the masked storage has the copied words' first L
+  bytes, by clearing high bytes bit by bit; `vbenc.bend` `put_words_any`,
+  `words_ok_b`); the value of the decoded byte list is the first L bytes of its
+  storage (`vbspec.bend` `ybytes`). Every name's laws are first stated at a
+  word-aligned window (off = 4 i, len) of a buffer (`_win`: ok_evalw, readw,
+  specw; `_rej`: inv_p, rej_facts; `_enc`: putw at pos = 4 P over any tree,
+  frame_lo, partsw) and the whole-buffer laws are the window laws at i = 0; a
+  container nesting a covered name uses the child's window laws at the window
+  after its header. Not covered, and why: LightClientBootstrap and
+  LightClientUpdate hold a SyncCommittee (6156 words, array-backed: its value's
+  parts are those of spec_arr_SyncCommittee, which the header layout here does
+  not yet take as a symbolic word segment); LightClientUpdate and
+  LightClientFinalityUpdate hold a second LightClientHeader whose offset is
+  4k + (extra_data length), in general not word-aligned, so its reads and
+  copies go through the runtime's shifted paths (`B.read32` split reads,
+  `O.scopy1..3`), which have no laws yet; ExecutionPayload likewise (its
+  transactions and withdrawals start after extra_data).
 * **Progressive lists** (`codegen/var_plist.py`): the generic forms
   ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
   Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,
