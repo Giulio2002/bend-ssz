@@ -1516,6 +1516,8 @@ def domx(m, hok):
             RTS = '\n'.join(steps) + '\n  {==}'
     body = '\n'.join(L2)
     body = OKA(body)
+    okpf = True
+    pfs = f'K.pfC({OAS}, dd, D, XQ(q, r), q, r, pf)'
     if okpf:
         ifc += f'''
 law pfx:
@@ -1652,7 +1654,76 @@ def full_text(C, generic=False):
 def putk_bridge({OPS_}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +h: RTC({MA_}))
     -> {{T.{K.p}_putk(FD.array__thaw(U32, D), X, OBJC({OAS_})) == (FD.array__thaw(U32, PUTC({MA_})), (OBJC({OAS_}), SZC({OAS_}))) : Array<U32> & (T.{C} & U32)}}:
   h''')
+    L.append(pfc_text(K, events, OP, OA, C))
     return '\n'.join(head) + '\n' + '\n'.join(L) + '\n'
+
+
+def pfc_text(K, events, OP, OA, C):
+    """pfC: the writer's tree is perfect, with no hypothesis (the writes' perfect lemmas in order)."""
+    OPS_, OAS_ = ', '.join(OP), ', '.join(OA)
+    MA_ = f'{OAS_}, dd, D, X, q, r'
+    fsd = dict(K.F)
+    Mk = lambda k: f'M{k}({MA_})'
+    pfs = 'pf'
+    pre = ''
+    for k, ev in enumerate(events):
+        f = ev['field']
+        fs = fsd[f]
+        if ev['kind'] == 'leaf' and leaf_of(fs).sub:
+            pfs = f'{leaf_of(fs).pf}(dd, {Mk(k)}, X, {ev["hoff"]}, {f}, {pfs})'
+        elif ev['kind'] == 'off' and ev['hoff'] % 4:
+            Xc_ = f'U32.add(X, {ev["hoff"]})'
+            pfs = f'WD.w32x_perfect(VCN.RX({Xc_}), dd, {Mk(k)}, VCN.QX({Xc_}), {ev["cur"]}, {pfs})'
+        elif ev['kind'] == 'leaf':
+            pfs = f'pfo_{leaf_of(fs).p}({f}, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), r, {pfs})'
+        elif ev['kind'] == 'fixw':
+            pfs = f'V_{fs.p}.{fs.p}x_perfect(r, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), TB_{f}, {pfs})'
+        elif ev['kind'] == 'off':
+            pfs = f'WD.w32x_perfect(r, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), {ev["cur"]}, {pfs})'
+        else:
+            ch = K.children[f]
+            Xc = f'U32.add(X, {ev["cur"]})'
+            QX, RX = f'VCN.QX({Xc})', f'VCN.RX({Xc})'
+            if ch.p == 'bl32' or getattr(ch, 'std', False):
+                a = 'EB' if ch.p == 'bl32' else ch.alias
+                pfs = f'{a}.pfx(m_{f}, dd, {Mk(k)}, {QX}, {RX}, {pfs})'
+            elif ch.p == 'l1048576_bl1073741824':
+                t_, N_ = ch.oargs
+                pfs = f'etpflb(U32.is_eq({N_}, 0), {t_}, {N_}, dd, {Mk(k)}, {Xc}, {QX}, {RX}, {pfs})'
+                P = ch.p
+                pre = f'''
+# the transactions list's writer: its tree is perfect
+law etwlm:
+  for +k: Nat
+  for +W: List<&2, ET.MB<ET.WMr>>
+  for +s: Nat
+  for +cur: U32
+  for +dd: Nat
+  for +D: {TR}
+  for +X: U32
+  for +q: Nat
+  for +r: Nat
+  for +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}}
+  {{FD.array__perfect(U32, dd, ET.WLM(k, W, s, cur, dd, D, X, q, r)) == {TRUE}}}
+def etwlm(k, W, s, cur, dd, D, X, q, r, pf):
+  match k:
+    case 0n: pf
+    case 1n+ +j:
+      etwlm(j, W, 1n+s, O.padd(cur, ET.NE(ET.xat_{P}(W, s))), dd, ET.PWE(ET.xat_{P}(W, s), dd, WD.W32X(r, dd, D, Nat.add(s, q), cur), ET.QX(U32.add(X, cur)), ET.RX(U32.add(X, cur))), X, q, r,
+        ET.pwe_perfect(ET.xat_{P}(W, s), dd, WD.W32X(r, dd, D, Nat.add(s, q), cur), ET.QX(U32.add(X, cur)), ET.RX(U32.add(X, cur)), WD.w32x_perfect(r, dd, D, Nat.add(s, q), cur, pf)))
+def etpflb(+b: Bool, +t: FD.array__Tree<ET.MB<ET.WMr>>, +N: U32, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
+    -> {{FD.array__perfect(U32, dd, ET.PUTLb(b, t, N, dd, D, X, q, r)) == {TRUE}}}:
+  match b:
+    case True{{}}: pf
+    case False{{}}: etwlm(U32.to_nat(N), ET.SL(t), 0n, U32.mul(4, N), dd, D, X, q, r, pf)
+'''
+            else:
+                A_, N_ = ch.oargs
+                pfs = f'{ch.alias}.pfLb_{ch.p}(U32.is_eq({N_}, 0), {A_}, {N_}, dd, {Mk(k)}, {QX}, {RX}, {pfs})'
+    return pre + f'''
+# pfC: the writer's tree is perfect (no hypothesis).
+def pfC({OPS_}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}}) -> PFC({MA_}):
+  {pfs}'''
 
 
 def main():

@@ -183,3 +183,7 @@ def putx(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +hok_f_B: {EX_l
 def putk_bridge(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +h: RTC(f_A, m_f_B, m_f_C, dd, D, X, q, r))
     -> {T.Gp66304057C3_putk(FD.array__thaw(U32, D), X, OBJC(f_A, m_f_B, m_f_C)) == (FD.array__thaw(U32, PUTC(f_A, m_f_B, m_f_C, dd, D, X, q, r)), (OBJC(f_A, m_f_B, m_f_C), SZC(f_A, m_f_B, m_f_C))) : Array<U32> & (T.Gp66304057C3 & U32)}:
   h
+
+# pfC: the writer's tree is perfect (no hypothesis).
+def pfC(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}) -> PFC(f_A, m_f_B, m_f_C, dd, D, X, q, r):
+  VPC.p8_perfect(dd, M4(f_A, m_f_B, m_f_C, dd, D, X, q, r), X, 0, f_A, EX_pbits.pfx(m_f_C, dd, M3(f_A, m_f_B, m_f_C, dd, D, X, q, r), VCN.QX(U32.add(X, O.padd(9, EX_l123_u16.SZ(m_f_B)))), VCN.RX(U32.add(X, O.padd(9, EX_l123_u16.SZ(m_f_B)))), WD.w32x_perfect(VCN.RX(U32.add(X, 5)), dd, M2(f_A, m_f_B, m_f_C, dd, D, X, q, r), VCN.QX(U32.add(X, 5)), O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_l123_u16.pfx(m_f_B, dd, M1(f_A, m_f_B, m_f_C, dd, D, X, q, r), VCN.QX(U32.add(X, 9)), VCN.RX(U32.add(X, 9)), WD.w32x_perfect(VCN.RX(U32.add(X, 1)), dd, M0(f_A, m_f_B, m_f_C, dd, D, X, q, r), VCN.QX(U32.add(X, 1)), 9, pf)))))

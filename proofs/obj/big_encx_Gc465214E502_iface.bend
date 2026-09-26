@@ -260,7 +260,7 @@ law pfx:
   {FD.array__perfect(U32, dd, PUTX(m, dd, D, q, r)) == True{} : Bool}
 def pfx(m, dd, D, q, r, pf):
   match m:
-    case MW{+f_A, +m_f_B, +f_C}: VPC.p8_perfect(dd, K.M3(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), XQ(q, r), 6, f_C, VPC.p16_perfect(dd, K.M2(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), XQ(q, r), 0, f_A, EX_l1024_u16.pfx(m_f_B, dd, K.M1(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), VCN.QX(U32.add(XQ(q, r), 7)), VCN.RX(U32.add(XQ(q, r), 7)), WD.w32x_perfect(VCN.RX(U32.add(XQ(q, r), 2)), dd, K.M0(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), VCN.QX(U32.add(XQ(q, r), 2)), 7, pf))))
+    case MW{+f_A, +m_f_B, +f_C}: K.pfC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r, pf)
 
 def sizeC(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {T.Gc465214E502_size(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), K.SZC(f_A, m_f_B, f_C)) : T.Gc465214E502 & U32}:
   %Equal.sym(U32, K.SZC(f_A, m_f_B, f_C), O.padd(7, EX_l1024_u16.SZ(m_f_B)), K.szpz(f_A, m_f_B, f_C, ok_hpz(f_A, m_f_B, f_C, h))) :

@@ -265,7 +265,7 @@ law pfx:
   {FD.array__perfect(U32, dd, PUTX(m, dd, D, q, r)) == True{} : Bool}
 def pfx(m, dd, D, q, r, pf):
   match m:
-    case MW{+f_A, +m_f_B, +m_f_C}: VPC.p8_perfect(dd, K.M4(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), XQ(q, r), 0, f_A, EX_pbits.pfx(m_f_C, dd, K.M3(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), VCN.QX(U32.add(XQ(q, r), O.padd(9, EX_l123_u16.SZ(m_f_B)))), VCN.RX(U32.add(XQ(q, r), O.padd(9, EX_l123_u16.SZ(m_f_B)))), WD.w32x_perfect(VCN.RX(U32.add(XQ(q, r), 5)), dd, K.M2(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), VCN.QX(U32.add(XQ(q, r), 5)), O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_l123_u16.pfx(m_f_B, dd, K.M1(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), VCN.QX(U32.add(XQ(q, r), 9)), VCN.RX(U32.add(XQ(q, r), 9)), WD.w32x_perfect(VCN.RX(U32.add(XQ(q, r), 1)), dd, K.M0(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), VCN.QX(U32.add(XQ(q, r), 1)), 9, pf)))))
+    case MW{+f_A, +m_f_B, +m_f_C}: K.pfC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r, pf)
 
 def sizeC(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {T.Gp66304057C3_size(K.OBJC(f_A, m_f_B, m_f_C)) == (K.OBJC(f_A, m_f_B, m_f_C), K.SZC(f_A, m_f_B, m_f_C)) : T.Gp66304057C3 & U32}:
   %Equal.sym(U32, K.SZC(f_A, m_f_B, m_f_C), O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C)), K.szpz(f_A, m_f_B, m_f_C, ok_hpz(f_A, m_f_B, m_f_C, h))) :
