@@ -67,11 +67,16 @@ def rt_all(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: 
 
 def ENCC(+m_f_C: EX_pbits.MB) -> +List<U32>: VCN.CAT([I.limb(4), VCN.PC(List.length(&2, U32, EX_pbits.ENC(m_f_C)), EX_pbits.ENC(m_f_C))])
 def RTC(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), X, OBJC(m_f_C)) == (FD.array__thaw(U32, PUTC(m_f_C, dd, D, X, q, r)), (OBJC(m_f_C), SZC(m_f_C))) : Array<U32> & (T.Gp4B0CA2906A & U32)}
+  {T.Gp4B0CA2906A_putn(FD.array__thaw(U32, D), X, OBJC(m_f_C)) == (FD.array__thaw(U32, PUTC(m_f_C, dd, D, X, q, r)), (OBJC(m_f_C), SZC(m_f_C))) : Array<U32> & (T.Gp4B0CA2906A & U32)}
 def BYC(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTC(m_f_C, dd, D, X, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(ENCC(m_f_C), UW.ZB(WD.PADB(r, LLC(m_f_C, dd, D, X, q, r))))) : +List<U32>}
 def PFC(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data: {FD.array__perfect(U32, dd, PUTC(m_f_C, dd, D, X, q, r)) == True{} : Bool}
 def SZXC(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data: {U32.to_nat(SZC(m_f_C)) == LLC(m_f_C, dd, D, X, q, r) : Nat}
+
+# The four facts as one (built from variables, so no fact's proof term enters another's type).
+def mk4(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTC(m_f_C, dd, D, X, q, r), +b: BYC(m_f_C, dd, D, X, q, r), +c: PFC(m_f_C, dd, D, X, q, r), +d: SZXC(m_f_C, dd, D, X, q, r))
+    -> DK.P2(RTC(m_f_C, dd, D, X, q, r), DK.P2(BYC(m_f_C, dd, D, X, q, r), DK.P2(PFC(m_f_C, dd, D, X, q, r), SZXC(m_f_C, dd, D, X, q, r)))):
+  (a, (b, (c, d)))
 
 # putx: the runtime's writer of Gp4B0CA2906A at X = 4 q + r is the model PUTC, whose bytes splice the
 # container's bytes (and the zeros to the end of the last word) into D's, whose tree is perfect,
@@ -112,5 +117,11 @@ def putx(+m_f_C: EX_pbits.MB, +hok_f_C: {EX_pbits.OK(m_f_C) == True{} : Bool}, +
   +ef = Equal.trans(+List<U32>, VCN.CAT(VCN.LAP([I.limb(4), VCN.PC(List.length(&2, U32, EX_pbits.ENC(m_f_C)), EX_pbits.ENC(m_f_C))], [UW.ZB(WD.PADB(r, LLC(m_f_C, dd, D, X, q, r)))])), VCN.AP(VCN.CAT([I.limb(4), VCN.PC(List.length(&2, U32, EX_pbits.ENC(m_f_C)), EX_pbits.ENC(m_f_C))]), VCN.CAT([UW.ZB(WD.PADB(r, LLC(m_f_C, dd, D, X, q, r)))])), VCN.AP(VCN.CAT([I.limb(4), VCN.PC(List.length(&2, U32, EX_pbits.ENC(m_f_C)), EX_pbits.ENC(m_f_C))]), UW.ZB(WD.PADB(r, LLC(m_f_C, dd, D, X, q, r)))), VCN.cat_lap([I.limb(4), VCN.PC(List.length(&2, U32, EX_pbits.ENC(m_f_C)), EX_pbits.ENC(m_f_C))], [UW.ZB(WD.PADB(r, LLC(m_f_C, dd, D, X, q, r)))]), Equal.cong(+List<U32>, +List<U32>, zz => VCN.AP(VCN.CAT([I.limb(4), VCN.PC(List.length(&2, U32, EX_pbits.ENC(m_f_C)), EX_pbits.ENC(m_f_C))]), zz), VCN.AP(UW.ZB(WD.PADB(r, LLC(m_f_C, dd, D, X, q, r))), []), UW.ZB(WD.PADB(r, LLC(m_f_C, dd, D, X, q, r))), VS.app_nil(UW.ZB(WD.PADB(r, LLC(m_f_C, dd, D, X, q, r))))))
   +byf = FD.logic__subst(+List<U32>, zz => {UA.BYT(M2(m_f_C, dd, D, X, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), zz) : +List<U32>}, VCN.CAT(VCN.LAP([I.limb(4), VCN.PC(List.length(&2, U32, EX_pbits.ENC(m_f_C)), EX_pbits.ENC(m_f_C))], [UW.ZB(WD.PADB(r, LLC(m_f_C, dd, D, X, q, r)))])), VCN.AP(VCN.CAT([I.limb(4), VCN.PC(List.length(&2, U32, EX_pbits.ENC(m_f_C)), EX_pbits.ENC(m_f_C))]), UW.ZB(WD.PADB(r, LLC(m_f_C, dd, D, X, q, r)))), ef, I2)
   +szf = VCN.cnext(4, EX_pbits.SZ(m_f_C), 4n, [], List.length(&2, U32, EX_pbits.ENC(m_f_C)), dd, hd, ec1, sz1, VCN.pc_end(q, r, LLC(m_f_C, dd, D, X, q, r), dd, Nat.add(Nat.add(4n, VCN.SUM([])), List.length(&2, U32, EX_pbits.ENC(m_f_C))), VCN.pc_room(4n, [], List.length(&2, U32, EX_pbits.ENC(m_f_C)), []), hl))
-  (rt_all(m_f_C, dd, D, X, q, r, rt0, rt1), (byf, (pf2, szf)))
+  mk4(m_f_C, dd, D, X, q, r, rt_all(m_f_C, dd, D, X, q, r, rt0, rt1), byf, pf2, szf)
 
+
+# The container's checked writer T.Gp4B0CA2906A_putk is its putn (one definitional step): the writer's fact
+# as a parent's putv states it.
+def putk_bridge(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +h: RTC(m_f_C, dd, D, X, q, r))
+    -> {T.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), X, OBJC(m_f_C)) == (FD.array__thaw(U32, PUTC(m_f_C, dd, D, X, q, r)), (OBJC(m_f_C), SZC(m_f_C))) : Array<U32> & (T.Gp4B0CA2906A & U32)}:
+  h

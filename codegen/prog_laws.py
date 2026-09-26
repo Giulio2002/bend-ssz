@@ -214,7 +214,7 @@ def kind_law(K, w):
     w(f'        RR.roots(S.Sequence{{{it0.replace(cN, "_", 1)}}}, {V_}, [D.bytes(pdig(hl, O.Words{{F.array__thaw(U32, t), N}}, {sh}n))])')
     w('      %Equal.sym(Nat, U32.to_nat(N), 0n, en0) :')
     w(f'        RR.roots(S.Sequence{{S.EmptyItems{{}}}}, {V_}, [D.bytes(O.mix_len(hl, PR.pr(1n+Nat.div(Nat.add(_, 31n), 32n), Nat.is_lt(0n, Nat.div(Nat.add(_, 31n), 32n)), hl, 0n, 0n, Nat.div(Nat.add(_, 31n), 32n), MR.clist(Nat.div(Nat.add(_, 31n), 32n), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), U32.shrn(N, {sh}n)))])')
-    w(f'      ([], (([], ({{==}}, {{==}})), (D.bytes(PR.pr(1n, False{{}}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n))), ({{==}}, plen0(hl, ehl, N, {sh}n, PR.pr(1n, False{{}}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), {"c0" if sh else "c0"})))))')
+    w(f'      ([], (([], ({{==}}, {{==}})), (D.bytes(PR.pr(1n, False{{}}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n))), (pl_empty(hl, t), plen0(hl, ehl, N, {sh}n, PR.pr(1n, False{{}}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), {"c0" if sh else "c0"})))))')
     w('    case Inr{w}:')
     for i, (a, b) in enumerate([('t', 'w1'), ('dw', 'w2'), ('N', 'w3'), ('q', 'w4'), ('r', 'w5'), ('eo', 'w6'), ('pf', 'w7'), ('hd', 'w8'), ('enq', 'w9'), ('h1', 'w10'), ('h32', 'w11')]):
         w(f'      (+{a}, {b}) = {"w" if i == 0 else "w" + str(i)}')
@@ -421,6 +421,12 @@ def plen(+hl: Nat, +ehl: {hl == 64n : Nat}, +N: U32, +sh: Nat, +R: D.Digest, +c:
     -> {Mix.mix_length_bytes(Some{D.bytes(R)}, Len.encoding(32n, c)) == Some{D.bytes(O.mix_len(hl, R, U32.shrn(N, sh)))} : Maybe<&2, +List<U32>>}:
   %Equal.sym(Nat, c, U32.to_nat(U32.shrn(N, sh)), ec) : {Mix.mix_length_bytes(Some{D.bytes(R)}, Len.encoding(32n, _)) == Some{D.bytes(O.mix_len(hl, R, U32.shrn(N, sh)))} : Maybe<&2, +List<U32>>}
   LR.mix_bytes(hl, ehl, R, U32.shrn(N, sh))
+
+# The progressive root of no chunks, once (every empty-list case uses it; it
+# evaluates one spec hash, which the seven list bodies each re-ran).
+def pl_empty(+hl: Nat, +t: F.array__Tree<U32>)
+    -> {PS.merkleize([]) == Some{D.bytes(PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)))} : Maybe<&2, +List<U32>>}:
+  {==}
 
 def plen0(+hl: Nat, +ehl: {hl == 64n : Nat}, +N: U32, +sh: Nat, +R: D.Digest, +c0: {U32.to_nat(U32.shrn(N, sh)) == 0n : Nat})
     -> {Mix.mix_length_bytes(Some{D.bytes(R)}, Len.encoding(32n, 0n)) == Some{D.bytes(O.mix_len(hl, R, U32.shrn(N, sh)))} : Maybe<&2, +List<U32>>}:

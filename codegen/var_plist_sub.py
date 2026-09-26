@@ -882,6 +882,14 @@ law encx_spec:
 def encx_spec(m, hok):
   match m:
     case MW{+dw, +T, +N}: W.specw(dw, T, N, 0n, 0, N, {==}, ok_hd(dw, T, N, hok), ok_hN(dw, T, N, hok), ok_pf(dw, T, N, hok), @CHK)
+
+law validx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  {T.@p_valid(TH(m)) == (TH(m), True{}) : O.Words & Bool}
+def validx(m, hok):
+  match m:
+    case MW{+dw, +T, +N}: valid(dw, T, N, hok)
 """
 
 ENCX_KIND = {
