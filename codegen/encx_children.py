@@ -33,9 +33,9 @@ PREFIXES = ['pl_u8', 'pl_u16', 'pl_bool', 'pl_u64', 'l1024_u16', 'l128_u16', 'l1
             'bits5', 'bits6', 'bits256', 'bits257', 'bits1280', 'bits1281', 'bits131072', 'pbits',
             'pl_Gc4ED9619F50', 'l10_GpF350A3C486',
             # lists of variable-size elements (codegen/var_vlist_enc.py GLISTS)
-            'pl_Gc465214E502', 'pl_pl_Gc465214E502', 'pl_Gp66304057C3', 'v2_Gc465214E502',
+            'pl_Gc465214E502', 'pl_pl_Gc465214E502', 'pl_Gp66304057C3', 'v2_Gc465214E502', 'l1_AttesterSlashing', 'l8_Attestation',
             # containers (codegen/var_cont_enc.py's interface modules, big_encx_<C>_iface)
-            'Gc465214E502', 'Gp66304057C3',
+            'Gc465214E502', 'Gp66304057C3', 'IndexedAttestation', 'AttesterSlashing', 'Attestation', 'ExecutionRequests',
             # Fulu (codegen/var_rec_enc.py's FLISTS)
             'l4096_b48', 'l131072_u64',
             # BeaconState's packed lists (codegen/var_rec_enc.py FLISTS)
