@@ -13,6 +13,7 @@ import ./vcopy.bend as VC
 import ./vfix.bend as VF
 import ./venc.bend as VE
 import ./vbytes.bend as VY
+import ./spec_fixed.bend as FX
 
 # The encoder's runtime pieces for byte lists at any length (codegen/var_bytes.py):
 # the aligned bulk write O.put_words of a partial last word (put_words_any), the
@@ -376,3 +377,11 @@ def win_splitP(+a: Nat, +b: Nat, +k: Nat, +P: Nat, +X: List<&2, U32>)
       Equal.sym(Nat, Nat.add(Nat.add(k, a), P), Nat.add(k, Nat.add(a, P)), F.nat__add_assoc(k, a, P))))
   %e : {VF.WIN(Nat.add(a, b), Nat.add(k, P), X) == VF.app(VF.WIN(a, Nat.add(k, P), X), VF.WIN(b, _, X)) : List<&2, U32>}
   VF.win_split(a, b, Nat.add(k, P), X)
+
+# Byte prefixes of two word lists at p agree when the windows of m >= L/4 words there agree.
+def bytes_frame(+L: Nat, +m: Nat, +p: Nat, +X1: List<&2, U32>, +X2: List<&2, U32>, +hq: {Nat.is_le(L, A.quad(m)) == True{} : Bool},
+    +h: {VF.WIN(m, p, X1) == VF.WIN(m, p, X2) : List<&2, U32>})
+    -> {VS.bt(L, FX.limbs(VB.wdr(p, X1))) == VS.bt(L, FX.limbs(VB.wdr(p, X2))) : +List<U32>}:
+  %VY.bt_take(m, L, VB.wdr(p, X1), hq) : {_ == VS.bt(L, FX.limbs(VB.wdr(p, X2))) : +List<U32>}
+  %VY.bt_take(m, L, VB.wdr(p, X2), hq) : {VS.bt(L, FX.limbs(VS.wtake(m, VB.wdr(p, X1)))) == _ : +List<U32>}
+  Equal.cong(List<&2, U32>, +List<U32>, z => VS.bt(L, FX.limbs(z)), VF.WIN(m, p, X1), VF.WIN(m, p, X2), h)

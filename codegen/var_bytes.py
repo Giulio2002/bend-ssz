@@ -1020,7 +1020,8 @@ def main():
                 for dft in f['ft'].deps():
                     if dft.p not in [q.p for q in fts]:
                         fts.append(dft)
-    out = {ROOT / 'proofs/obj/var_bytes_fix.bend': fix_module(fts), ROOT / 'proofs/obj/var_bytes_wput.bend': VBE.wput_module(xs)}
+    out = {ROOT / 'proofs/obj/var_bytes_fix.bend': fix_module(fts),
+           ROOT / 'proofs/obj/var_bytes_wput.bend': VBE.wput_module(xs + [VBN.NName(g, nm, names[nm]) for nm in VBN.ORDER])}
     for x in xs:
         out[fname(x, '_win')] = win_text(x)
         out[fname(x)] = top_text(x)
@@ -1028,6 +1029,7 @@ def main():
         out[fname(x, '_rej')] = rej_text(x)
         out[fname(x, '_enc')] = VBE.enc_module_text(x)
     out.update(VBN.outputs(g, names, '--no-big' in sys.argv))
+    out.update(VBNE.outputs(g, names, '--no-big' in sys.argv))
     mine = sorted((ROOT / 'proofs/obj').glob('*var_bytes_*.bend'))
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
     if '--check' in sys.argv:
@@ -1094,6 +1096,7 @@ def bytePw(+d: Nat, +t: F.array__Tree<U32>, +i: Nat, +len: U32, +X: Nat, +en: {U
 
 import var_bytes_enc as VBE  # noqa: E402
 import var_bytes_nest as VBN  # noqa: E402
+import var_bytes_nenc as VBNE  # noqa: E402
 
 if __name__ == '__main__':
     main()

@@ -330,7 +330,7 @@ def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U
     return '\n'.join(L) + '\n'
 
 
-def spec_items(x, V, Yb, hv):
+def spec_items(x, V, Yb, hv, wt=None):
     """ITEMS, CHAIN, PL, CAT, PRE, POST, HDR with the child's value V, bytes Yb and parts proof hv."""
     vals, schs, parts, nodes = [], [], [], []
     for f in x.fields:
@@ -340,7 +340,7 @@ def spec_items(x, V, Yb, hv):
             parts.append(f'S.Variable{{{Yb}}}')
             nodes.append(None)
         else:
-            nd = x.node(f)
+            nd = x.node(f, wt)
             nodes.append(nd)
             vals.append(nd['val'])
             schs.append(nd['sch'])

@@ -158,8 +158,7 @@ def plan(x, E):
     word writes over D, and the leaf steps (context with '@', field, layer before,
     layer after, kind, cursor) in evaluation order. Mirrors codegen/generate.py
     emit_fieldset / emit_wide."""
-    g = x.g
-    F = [(fn, g.shape(ft)) for fn, ft in x.t.fields]
+    F = [(fn, fs) for (fn, _), (_, fs) in zip(x.t.fields, x.s.fields)]
     hoff, fixed_part = G.container_layout(F)
     layers = []
     leaves = []
@@ -251,6 +250,8 @@ def enc_text(x):
     w(f'def KZ(+N: U32, +P: Nat) -> Nat: Nat.add(VY.QL(N), Nat.add({H}n, P))')
     w(f'def room_hp(+N: U32, +P: Nat) -> {{Nat.is_le(P, ROOM(N, P)) == True{{}} : Bool}}:')
     w(f'  FD.nat__le_trans(P, Nat.add({H}n, P), ROOM(N, P), Order.left_below_sum({H}n, P), Order.left_below_sum(VC.NW(N), Nat.add({H}n, P)))')
+    w(f'def kz_hp(+N: U32, +P: Nat) -> {{Nat.is_le(Nat.add({H}n, P), KZ(N, P)) == True{{}} : Bool}}:')
+    w(f'  Order.left_below_sum(VY.QL(N), Nat.add({H}n, P))')
     layers, leaves = plan(x, E)
     NL = len(layers)
 
@@ -326,6 +327,7 @@ def hbz(+W: Nat, +k: Nat, +N: U32, +P: Nat, +hWk: {{Nat.is_le(Nat.add(W, k), {H}
             pr = f'VF.updv_perfect({vterm(kind, V, i)}, dd, {tree(j)}, Nat.add({k}n, P), {prev})'
         w(f'def pfL{j + 1}({DP}, {PFD}) -> {{FD.array__perfect(U32, dd, {tree(j + 1)}) == True{{}} : Bool}}:')
         w(f'  {pr}')
+    w(f'def pfO({DP}, {PFD}) -> {{FD.array__perfect(U32, dd, OUTW({DA})) == True{{}} : Bool}}: pfL{NL}({DA}, pf)')
     vj = [j for j, l in enumerate(layers) if l[0] == 'var'][0]
     for j in range(vj):
         kind, V, k, i = layers[j]
@@ -454,6 +456,10 @@ def enc_spec_text(x, E, layers, NL):
 def hNW(+N: U32, {HN}) -> {{Nat.is_le(VC.NW(N), {NWM}n) == True{{}} : Bool}}:
   %Equal.sym(Nat, VC.NW(N), VD.s_rng(2n, 3n+U32.to_nat(N)), VC.eNW(N, {KY}n, {{==}}, hyN(N, hN))) : {{Nat.is_le(_, {NWM}n) == True{{}} : Bool}}
   VC.rng_mono(2n, 3n+U32.to_nat(N), {3 + LIM}n, hN)
+
+def hSle(+N: U32, {HN}) -> {{Nat.is_le(U32.to_nat(SFS(N)), {FS + LIM}n) == True{{}} : Bool}}:
+  %Equal.sym(Nat, U32.to_nat(SFS(N)), Nat.add({FS}n, U32.to_nat(N)), eS(N, hN)) : {{Nat.is_le(_, {FS + LIM}n) == True{{}} : Bool}}
+  Order.add_left({FS}n, U32.to_nat(N), {LIM}n, hN)
 
 def hS(+N: U32, {HN}) -> {{Nat.is_lt(U32.to_nat(SFS(N)), VB.pw({KS}n)) == True{{}} : Bool}}:
   %Equal.sym(Nat, U32.to_nat(SFS(N)), Nat.add({FS}n, U32.to_nat(N)), eS(N, hN)) : {{Nat.is_lt(_, VB.pw({KS}n)) == True{{}} : Bool}}
