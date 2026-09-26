@@ -7,6 +7,7 @@ import ../compact/found.bend as F
 import ../compact/arith.bend as A
 import ./vspec.bend as VS
 import ./vrej.bend as VR
+import ../../proofs/nat_bytes.bend as Digits
 
 # The offset layout of a list of n variable parts y_0 .. y_{n-1} (spec/layout.bend),
 # over arbitrary byte lists: n offsets of four bytes (the j-th is 4 n + |y_0| + .. +
@@ -92,3 +93,19 @@ law len_bcat_cons:
   {List.length(&2, U32, VR.bcat(Con{y, r})) == Nat.add(List.length(&2, U32, y), List.length(&2, U32, VR.bcat(r))) : Nat}
 def len_bcat_cons(y, r):
   VS.len_app(y, VR.bcat(r))
+
+law len_offs:
+  for +ys: +List<+List<U32>>
+  for +off: Nat
+  {List.length(&2, U32, OFFS(ys, off)) == A.quad(CNT(ys)) : Nat}
+def len_offs(ys, off):
+  match ys:
+    case Nil{}: {==}
+    case Con{+y, +r}:
+      %Equal.sym(Nat, List.length(&2, U32, List.append(&2, U32, N.digits(4n, off), OFFS(r, Nat.add(off, List.length(&2, U32, y))))),
+          Nat.add(List.length(&2, U32, N.digits(4n, off)), List.length(&2, U32, OFFS(r, Nat.add(off, List.length(&2, U32, y))))),
+          VS.len_app(N.digits(4n, off), OFFS(r, Nat.add(off, List.length(&2, U32, y))))) :
+        {_ == A.quad(1n+CNT(r)) : Nat}
+      %Equal.sym(Nat, List.length(&2, U32, N.digits(4n, off)), 4n, Digits.digits_length(4n, off)) :
+        {Nat.add(_, List.length(&2, U32, OFFS(r, Nat.add(off, List.length(&2, U32, y))))) == A.quad(1n+CNT(r)) : Nat}
+      Equal.cong(Nat, Nat, z => 4n+z, List.length(&2, U32, OFFS(r, Nat.add(off, List.length(&2, U32, y)))), A.quad(CNT(r)), len_offs(r, Nat.add(off, List.length(&2, U32, y))))
