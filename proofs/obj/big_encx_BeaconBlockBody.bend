@@ -25,6 +25,7 @@ import ./big_encx_l8_Attestation.bend as EX_l8_Attestation
 import ./encx_l16_Deposit.bend as EW_l16_Deposit
 import ./encx_l16_SignedVoluntaryExit.bend as EW_l16_SignedVoluntaryExit
 import ./big_encx_ExecutionPayload_iface.bend as EC_ExecutionPayload
+import ./big_encx_ExecutionPayload_size.bend as ES_ExecutionPayload
 import ./encx_l16_SignedBLSToExecutionChange.bend as EW_l16_SignedBLSToExecutionChange
 import ./big_encx_l4096_b48.bend as EX_l4096_b48
 import ./big_encx_ExecutionRequests_iface.bend as EX_ExecutionRequests

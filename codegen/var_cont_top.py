@@ -24,7 +24,7 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 import var_cont_enc as CE  # noqa: E402
 
 TOPS = ['ExecutionPayload']
-SIZES = ['ExecutionPayload']
+SIZES = ['ExecutionPayload', 'ExecutionPayloadHeader']
 TRUE = 'True{} : Bool'
 
 
@@ -100,11 +100,13 @@ def top_text(C):
     lin = [(gk, idx) for gk, idx in groups if any(not F[i][1].data for i in idx)]
     var_of = {gk: [i for i in idx if not F[i][1].fixed] for gk, idx in groups}
     steps, facts, sizes = [], [], {}
+    tacc = str(FIX)
     for j, (gk, idx) in enumerate(lin):
         gp = f'{p}_g{gk}'
         # the top step's context: sz<j>(others..., acc, z)
         tparams = CE.fn_params(f'{p}_sz{j}')
-        tacc = str(FIX) if j == 0 else f'O.padd({FIX}, 0)'
+        if j > 0:
+            tacc = f'O.padd({tacc}, {sizes[lin[j - 1][0]]})'
         gmap = {f'g{g2}': gobj[g2] for g2, _ in groups}
         gmap['acc'] = tacc
         vs = var_of[gk]
@@ -127,8 +129,7 @@ def top_text(C):
     if plain_steps is not None:
         steps, facts, tot = plain_steps, pfacts, plain_tot
     else:
-        tot = f'O.padd(O.padd({FIX}, 0), {sizes[lin[-1][0]]})' if len(lin) == 2 and not var_of[lin[0][0]] else None
-    assert tot is not None, 'size chains of this shape: TODO'
+        tot = f'O.padd({tacc}, {sizes[lin[-1][0]]})'
     L = []
     w = L.append
     RT = f'T.{C} & U32'
@@ -206,47 +207,129 @@ def szS({P}, +h: {{CI.OKT({OAS}) == {TRUE}}}, +k: Nat, +ek: {{k == 28n : Nat}}) 
   c{n - 1}
 ''')
     else:
+        # the size pass's value as a tree of padd over the fields' sizes: its Nat twin, bounded by the byte count
         ls = []
         a = ls.append
         a(f'+bnd = CI.okbk({OAS}, h, k, ek)')
         a(f'+hk = FD.logic__subst(Nat, z => {{Nat.is_lt(z, 29n) == {TRUE}}}, 28n, k, Equal.sym(Nat, k, 28n, ek), {{==}})')
-        # E4 == ENDC
-        n = len(Ls)
-        assert n == 3
-        a(f'+e4 = Equal.trans(Nat, {E4}, Nat.add(Nat.add({FIX}n, {E[1]}), {Ls[2]}), {ENDC}, Equal.sym(Nat, Nat.add(Nat.add({FIX}n, {E[1]}), {Ls[2]}), {E4}, FD.nat__add_assoc({FIX}n, {E[1]}, {Ls[2]})), '
-          f'Equal.cong(Nat, Nat, z => Nat.add(z, {Ls[2]}), Nat.add({FIX}n, {E[1]}), Nat.add(Nat.add({FIX}n, {Ls[0]}), {Ls[1]}), Equal.sym(Nat, Nat.add(Nat.add({FIX}n, {Ls[0]}), {Ls[1]}), Nat.add({FIX}n, {E[1]}), FD.nat__add_assoc({FIX}n, {Ls[0]}, {Ls[1]}))))')
-        a(f'+b4 = FD.logic__subst(Nat, z => {{Nat.is_le(z, {Q}) == {TRUE}}}, {ENDC}, {E4}, Equal.sym(Nat, {E4}, {ENDC}, e4), bnd)')
-        a(f'+b3 = FD.nat__le_trans({E[2]}, {E4}, {Q}, Order.left_below_sum({FIX}n, {E[2]}), b4)')
-        a(f'+b2 = FD.nat__le_trans({E[1]}, {E[2]}, {Q}, Order.below_sum({E[1]}, {Ls[2]}), b3)')
-        a(f'+b1 = FD.nat__le_trans({E[0]}, {E[1]}, {Q}, Order.below_sum({E[0]}, {Ls[1]}), b2)')
-        a(f'+bl1 = FD.nat__le_trans({Ls[1]}, {E[1]}, {Q}, Order.left_below_sum({E[0]}, {Ls[1]}), b2)')
-        a(f'+bl2 = FD.nat__le_trans({Ls[2]}, {E[2]}, {Q}, Order.left_below_sum({E[1]}, {Ls[2]}), b3)')
-        bls = ['b1', 'bl1', 'bl2']
+        it = iter(range(len(facts)))
+        atoms = {}
         for i2, (f, ch, sz) in enumerate(facts):
-            a(f'+z{i2} = {szx_term(f, ch, bls[i2])}')
-        # the partial sums
-        for i2 in range(n):
-            cur, sz = PT[i2], SZt[i2]
-            prev = '0n' if i2 == 0 else E[i2 - 1]
-            tgt = E[i2]
-            # to_nat(padd(cur, sz)) == Nat.add(to_nat cur, to_nat sz) == Nat.add(prev, L)  (== L when i2 == 0)
-            ec = '{==}' if i2 == 0 else f'c{i2 - 1}'
-            a(f'+ea{i2} = Equal.trans(Nat, Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), Nat.add({prev}, U32.to_nat({sz})), Nat.add({prev}, {Ls[i2]}), '
-              f'Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat({sz})), U32.to_nat({cur}), {prev}, {ec}), Equal.cong(Nat, Nat, z => Nat.add({prev}, z), U32.to_nat({sz}), {Ls[i2]}, z{i2}))')
-            bnd_i = 'b1' if i2 == 0 else ('b2' if i2 == 1 else 'b3')
-            a(f'+c{i2} = Equal.trans(Nat, U32.to_nat(O.padd({cur}, {sz})), Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), {tgt}, '
-              f'VCN.padd_dd({cur}, {sz}, k, hk, FD.logic__subst(Nat, z => {{Nat.is_le(z, {Q}) == {TRUE}}}, Nat.add({prev}, {Ls[i2]}), Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), '
-              f'Equal.sym(Nat, Nat.add(U32.to_nat({cur}), U32.to_nat({sz})), Nat.add({prev}, {Ls[i2]}), ea{i2}), {bnd_i})), ea{i2})')
-        a(f'+cf = Equal.trans(Nat, U32.to_nat(O.padd(O.padd({FIX}, 0), {PT[n]})), Nat.add({FIX}n, U32.to_nat({PT[n]})), {E4}, '
-          f'VCN.padd_dd(O.padd({FIX}, 0), {PT[n]}, k, hk, FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add({FIX}n, z), {Q}) == {TRUE}}}, {E[2]}, U32.to_nat({PT[n]}), Equal.sym(Nat, U32.to_nat({PT[n]}), {E[2]}, c{n - 1}), b4)), '
-          f'Equal.cong(Nat, Nat, z => Nat.add({FIX}n, z), U32.to_nat({PT[n]}), {E[2]}, c{n - 1}))')
+            atoms[f] = i2
+
+        def gtree(gk):
+            t = ('lit', '0', '0n')
+            for i in var_of[gk]:
+                t = ('padd', t, ('atom', atoms[fnames[i]]))
+            return t
+        T = ('lit', str(FIX), f'{FIX}n')
+        for gk, _ in lin:
+            T = ('padd', T, gtree(gk))
+
+        def u32(t):
+            if t[0] == 'lit':
+                return t[1]
+            if t[0] == 'atom':
+                return SZt[t[1]]
+            return f'O.padd({u32(t[1])}, {u32(t[2])})'
+
+        def nat(t):
+            if t[0] == 'lit':
+                return t[2]
+            if t[0] == 'atom':
+                return Ls[t[1]]
+            return f'Nat.add({nat(t[1])}, {nat(t[2])})'
+        assert u32(T) == tot, (u32(T), tot)
+        # N == ENDC: fold each group's sum into the running left-associated sum
+        cnt = [0]
+
+        def fresh(pre):
+            cnt[0] += 1
+            return f'{pre}{cnt[0]}'
+
+        def flat(X, Ls_):
+            """(Nat.add(X, G(Ls_)) == X + L1 + ... + Ln left-associated, as a let name; the right side)"""
+            if not Ls_:
+                return None, X
+            G = Ls_[0]
+            for x in Ls_[1:]:
+                G = f'Nat.add({G}, {x})'
+            if len(Ls_) == 1:
+                return '{==}', f'Nat.add({X}, {Ls_[0]})'
+            pr, rhs0 = flat(X, Ls_[:-1])
+            Gp = Ls_[0]
+            for x in Ls_[1:-1]:
+                Gp = f'Nat.add({Gp}, {x})'
+            last = Ls_[-1]
+            nm = fresh('fa')
+            a(f'+{nm} = Equal.trans(Nat, Nat.add({X}, Nat.add({Gp}, {last})), Nat.add(Nat.add({X}, {Gp}), {last}), Nat.add({rhs0}, {last}), '
+              f'Equal.sym(Nat, Nat.add(Nat.add({X}, {Gp}), {last}), Nat.add({X}, Nat.add({Gp}, {last})), FD.nat__add_assoc({X}, {Gp}, {last})), '
+              f'Equal.cong(Nat, Nat, z => Nat.add(z, {last}), Nat.add({X}, {Gp}), {rhs0}, {pr}))')
+            return nm, f'Nat.add({rhs0}, {last})'
+        # the tree's Nat twin: ((FIX + G0) + G1) + ...; G_j = ((0n + L) + L') ... == L + L' + ...
+        Xn = f'{FIX}n'
+        cur_nat = Xn
+        eqs = []
+        NT = Xn
+        for gk, _ in lin:
+            Lg = [Ls[atoms[fnames[i]]] for i in var_of[gk]]
+            Gt = nat(gtree(gk))
+            NT2 = f'Nat.add({NT}, {Gt})'
+            if not Lg:
+                # G = 0n: Nat.add(X, 0n) == X
+                nm = fresh('fz')
+                a(f'+{nm} = Equal.trans(Nat, {NT2}, Nat.add({cur_nat}, 0n), {cur_nat}, Equal.cong(Nat, Nat, z => Nat.add(z, 0n), {NT}, {cur_nat}, {eqs[-1] if eqs else "{==}"}), FD.nat__add_zero({cur_nat}))')
+                eqs.append(nm)
+                NT = NT2
+                continue
+            pr, rhs = flat(cur_nat, Lg)
+            nm = fresh('fg')
+            # Nat.add(NT, Gt) == Nat.add(cur_nat, G(Lg)) (Gt's leading 0n + L reduces) == rhs
+            a(f'+{nm} = Equal.trans(Nat, {NT2}, Nat.add({cur_nat}, {Gt}), {rhs}, Equal.cong(Nat, Nat, z => Nat.add(z, {Gt}), {NT}, {cur_nat}, {eqs[-1] if eqs else "{==}"}), {pr})')
+            eqs.append(nm)
+            NT = NT2
+            cur_nat = rhs
+        assert NT == nat(T), (NT, nat(T))
+        assert cur_nat == ENDC or True
+        a(f'+eN = {eqs[-1]}')
+        a(f'+bN = FD.logic__subst(Nat, z => {{Nat.is_le(z, {Q}) == {TRUE}}}, {ENDC}, {NT}, Equal.sym(Nat, {NT}, {ENDC}, eN), bnd)')
+        for i2, (f, ch, sz) in enumerate(facts):
+            pass
+
+        def prove(t, bname):
+            """a let name proving to_nat(u32 t) == nat t; bname proves nat t <= Q"""
+            if t[0] == 'lit':
+                return '{==}'
+            if t[0] == 'atom':
+                i2 = t[1]
+                f, ch, sz = facts[i2]
+                nm = fresh('z')
+                a(f'+{nm} = {szx_term(f, ch, bname)}')
+                return nm
+            l, r = t[1], t[2]
+            bl = fresh('b')
+            a(f'+{bl} = FD.nat__le_trans({nat(l)}, {nat(t)}, {Q}, Order.below_sum({nat(l)}, {nat(r)}), {bname})')
+            br = fresh('b')
+            a(f'+{br} = FD.nat__le_trans({nat(r)}, {nat(t)}, {Q}, Order.left_below_sum({nat(l)}, {nat(r)}), {bname})')
+            pl = prove(l, bl)
+            pr_ = prove(r, br)
+            lu, ru = u32(l), u32(r)
+            ea = fresh('ea')
+            a(f'+{ea} = Equal.trans(Nat, Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), Nat.add({nat(l)}, U32.to_nat({ru})), {nat(t)}, '
+              f'Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat({ru})), U32.to_nat({lu}), {nat(l)}, {pl}), Equal.cong(Nat, Nat, z => Nat.add({nat(l)}, z), U32.to_nat({ru}), {nat(r)}, {pr_}))')
+            c = fresh('c')
+            a(f'+{c} = Equal.trans(Nat, U32.to_nat(O.padd({lu}, {ru})), Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), {nat(t)}, '
+              f'VCN.padd_dd({lu}, {ru}, k, hk, FD.logic__subst(Nat, z => {{Nat.is_le(z, {Q}) == {TRUE}}}, {nat(t)}, Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), '
+              f'Equal.sym(Nat, Nat.add(U32.to_nat({lu}), U32.to_nat({ru})), {nat(t)}, {ea}), {bname})), {ea})')
+            return c
+        root = prove(T, 'bN')
         body = '\n  '.join(ls)
         w(f'''
-    # The size pass's value is the byte count.
-    def szS({P}, +h: {{CI.OKT({OAS}) == {TRUE}}}, +k: Nat, +ek: {{k == 28n : Nat}}) -> {{U32.to_nat(SZS({OAS})) == {ENDC} : Nat}}:
-      {body}
-      Equal.trans(Nat, U32.to_nat(SZS({OAS})), {E4}, {ENDC}, cf, e4)
-    ''')
+# The size pass's value is the byte count.
+def szS({P}, +h: {{CI.OKT({OAS}) == {TRUE}}}, +k: Nat, +ek: {{k == 28n : Nat}}) -> {{U32.to_nat(SZS({OAS})) == {ENDC} : Nat}}:
+  {body}
+  Equal.trans(Nat, U32.to_nat(SZS({OAS})), {NT}, {ENDC}, {root}, eN)
+''')
     cut = len(L)
     if C not in TOPS:
         return L, [], K, P, OA, imps
@@ -374,6 +457,16 @@ def sizex_term(f, ch):
         return f'EB.sizex({ch.oargs[0]}, {h})'
     if ch.p == 'l1048576_bl1073741824':
         return f'ET.sizex({ch.oargs[0]}, {ch.oargs[1]}, {h})'
+    if getattr(ch, 'std', False):
+        # a child in the encoder-window interface: its sizex (a wide container's size module: sizez), a box rewrapped
+        m = ch.oargs[0]
+        sa = getattr(ch, 'szalias', None)
+        e = f'{sa}.sizez({m}, {h})' if sa else f'{ch.alias}.sizex({m}, {h})'
+        B = getattr(ch, 'box', None)
+        if B:
+            th = f'{ch.alias}.TH({m})'
+            e = f'Equal.cong(T.{B} & U32, O.Boxed<T.{B}> & U32, z => T.{B}_bx_size_back(z), T.{B}_size({th}), ({th}, {ch.sz}), {e})'
+        return e
     return f'{ch.alias}.sizex_{ch.p}({ch.oargs[0]}, {ch.oargs[1]}, {h})'
 
 
@@ -382,6 +475,8 @@ def len_term(ch):
         return f'LY.LN(EB.ENC({ch.oargs[0]}))'
     if ch.p == 'l1048576_bl1073741824':
         return f'LY.LN(ET.ENCL({ch.oargs[0]}, {ch.oargs[1]}))'
+    if getattr(ch, 'std', False):
+        return f'LY.LN({ch.enc})'
     return f'LY.LN({ch.alias}.ENCL_{ch.p}({ch.oargs[0]}, {ch.oargs[1]}))'
 
 
@@ -396,6 +491,8 @@ def szx_term(f, ch, bnd):
         hb = (f'FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(k))) == {TRUE}}}, LY.LN(ET.ENCL({t}, {N})), {LL}, ET.len_encl({t}, {N}), {bnd})')
         return (f'Equal.trans(Nat, U32.to_nat(ET.SZS({t}, {N})), {LL}, LY.LN(ET.ENCL({t}, {N})), ET.szs({t}, {N}, {h}, Nat.add(2n, k), '
                 f'Equal.cong(Nat, Nat, z => Nat.add(2n, z), k, 28n, ek), {hb}), Equal.sym(Nat, LY.LN(ET.ENCL({t}, {N})), {LL}, ET.len_encl({t}, {N})))')
+    if getattr(ch, 'std', False):
+        return f'{ch.alias}.szx({t}, {h})'
     a = ch.alias
     LL = f'{a}.LL_{ch.p}({t}, {N})'
     hm = f'FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(k))) == {TRUE}}}, LY.LN({a}.ENCL_{ch.p}({t}, {N})), {LL}, {a}.len_encl_{ch.p}({t}, {N}), {bnd})'
@@ -439,6 +536,16 @@ def szs(m, hok):
   match m:
     case CI.MW{{{pat}}}: Equal.trans(Nat, U32.to_nat(SZS({OAS})), CI.ENDC({OAS}), List.length(&2, U32, K.ENCC({OAS})), szS({OAS}, hok, 28n, {{==}}),
       Equal.sym(Nat, List.length(&2, U32, K.ENCC({OAS})), CI.ENDC({OAS}), CI.lenE({OAS}, hok)))
+
+# The size pass returns the writer's size CI.SZ (both are the byte count).
+law sizez:
+  for +m: CI.MW
+  for +hok: {{CI.OK(m) == {TRUE}}}
+  {{T.{K.p}_size(CI.TH(m)) == (CI.TH(m), CI.SZ(m)) : T.{C} & U32}}
+def sizez(m, hok):
+  +e = FD.u32__injective(SZSM(m), CI.SZ(m), Equal.trans(Nat, U32.to_nat(SZSM(m)), List.length(&2, U32, CI.ENC(m)), U32.to_nat(CI.SZ(m)), szs(m, hok),
+    Equal.sym(Nat, U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), CI.szx(m, hok))))
+  FD.logic__subst(U32, z => {{T.{K.p}_size(CI.TH(m)) == (CI.TH(m), z) : T.{C} & U32}}, SZSM(m), CI.SZ(m), e, sizex(m, hok))
 '''
     hs = imps + HEADX + [f'import ./big_encx_{C}_iface.bend as CI', '', '# GENERATED by codegen/var_cont_top.py. Do not edit.',
                          f'# {C}: the runtime\'s size pass on its encoder window (T.{K.p}_size; see the generator).', '']

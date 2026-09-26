@@ -424,6 +424,12 @@ class Child:
             self.alias = a
             self.std = True
             self.box = X if fs.kind == 'box' else None
+            # a wide container's interface states no sizex / validx: its size module big_encx_<X>_size does (sizez, validx)
+            fi = ROOT / 'proofs/obj' / f'big_encx_{X}_iface.bend'
+            self.szalias = None
+            if fi.exists() and '\nlaw sizex:' not in fi.read_text():
+                self.szalias = f'ES_{X}'
+                self.mod += f'\nimport ./big_encx_{X}_size.bend as ES_{X}'
         else:
             raise SystemExit(f'no child window for {fs.kind}/{fs.p}')
 
@@ -1693,7 +1699,9 @@ def domx(m, hok):
             ch = K.children[x['f']]
             if ch.p == 'bl32' or getattr(ch, 'std', False):
                 a = 'EB' if ch.p == 'bl32' else ch.alias
-                szp, vap = f'{a}.sizex(m_{x["f"]}, @HOK)', f'{a}.validx(m_{x["f"]}, @HOK)'
+                sa = getattr(ch, 'szalias', None)
+                szp = f'{sa}.sizez(m_{x["f"]}, @HOK)' if sa else f'{a}.sizex(m_{x["f"]}, @HOK)'
+                vap = f'{sa or a}.validx(m_{x["f"]}, @HOK)'
                 if getattr(ch, 'box', None):
                     # a boxed child: T.<B>_bx_size / _bx_valid unwrap the box and rebox through _bx_size_back / _bx_va_back
                     B, th = ch.box, f'{a}.TH(m_{x["f"]})'
