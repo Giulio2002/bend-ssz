@@ -34,7 +34,10 @@ import var_laws as VL  # noqa: E402
 
 OUT = ROOT / 'proofs/obj/encx_recs.bend'
 RECS = ['Withdrawal', 'SyncAggregate', 'BeaconBlockHeader', 'Fork', 'Checkpoint', 'Eth1Data', 'HistoricalSummary', 'PendingDeposit',
-        'PendingPartialWithdrawal', 'PendingConsolidation']
+        'PendingPartialWithdrawal', 'PendingConsolidation',
+        # BeaconBlockBody's and ExecutionRequests' records
+        'AttestationData', 'DepositRequest', 'WithdrawalRequest', 'ConsolidationRequest', 'SignedVoluntaryExit', 'SignedBLSToExecutionChange',
+        'SignedBeaconBlockHeader', 'DepositData']
 # the word-vector leaves written by their own modules (codegen/var_uwv.py's vuwv_<p>)
 VLEAVES = ('b32', 'u256', 'b48', 'b96', 'bv512', 'bv64', 'b4')
 TR = 'FD.array__Tree<U32>'
@@ -219,7 +222,9 @@ def module_text():
 # ---- lists of fixed records ----------------------------------------------------------------------
 
 LISTS = [('ExecutionPayload', 'withdrawals'), ('BeaconState', 'eth1_data_votes'), ('BeaconState', 'historical_summaries'),
-         ('BeaconState', 'pending_deposits'), ('BeaconState', 'pending_partial_withdrawals'), ('BeaconState', 'pending_consolidations')]
+         ('BeaconState', 'pending_deposits'), ('BeaconState', 'pending_partial_withdrawals'), ('BeaconState', 'pending_consolidations'),
+         ('ExecutionRequests', 'deposits'), ('ExecutionRequests', 'withdrawals'), ('ExecutionRequests', 'consolidations'),
+         ('BeaconBlockBody', 'voluntary_exits'), ('BeaconBlockBody', 'bls_to_execution_changes')]
 
 
 def lfile(p):
