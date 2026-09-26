@@ -289,6 +289,16 @@ What that means concretely:
   take d. Packed lists of byte vectors (`codegen/var_rlist_bv.py`): `l4096_b48`
   (stock; the copy's depth bounded from the limit by right shifts only) and
   `big_var_winx_l16777216_b32` (depth from the window, zero arrays by `big_vvlz`).
+  BeaconState's fixed fields at any byte position (`codegen/var_fixx.py`, all stock):
+  `vfx_<p>.bend` for u64, b32, Fork, Checkpoint, BeaconBlockHeader, Eth1Data,
+  SyncCommittee, v8192_b32, v65536_b32, v8192_u64, v64_u64 export OBJ(d, t, x),
+  rdx (T.<p>_read at off = x), VAL(t, x) and prt(d, t, x, pf, hb, s, es) (the value's
+  parts are the window slice UW.WX(t, x, S)); `vfx_bv4.bend` adds CHK, ok (bv4_ok_at)
+  and inv. `vfxg.bend` proves them for every size: vectors are copied (vua_fixb.CTN),
+  their values are arr_vec chunkings over UR.RWS(CNT(x, M), t, x) (CNT keeps the word
+  count neutral, so no statement unfolds 2^16 elements), schemas are variables s with
+  es: s == Spec.SchemaNN(), and positions are written x + C (a literal first argument of
+  Nat.add unfolds in unary).
   Encoder (`codegen/var_rlist_enc.py`): `var_rlenc_ExecutionRequests.bend`
   (stock) has per list the write loop's model (WT/LW: the records' words at
   Q + W j), the putv run lemma (pvl), and the spec side (RWA: the records'
@@ -308,9 +318,13 @@ What that means concretely:
   `var_bytesx_<Name>{,_inv}.bend` (`codegen/var_bytes_x.py`, stock; fixed fields
   via the rdx readers at `UR.RWN` words, byte vectors via `vbx.bend`
   `copy_into_at`, the byte list via `vua_ct.copy_in_at`; the child's window at
-  FS + x). Not covered yet: Bootstrap's decode_reject, decode_none and encoder
-  laws (its rejection facts compare 24820-byte literal sums against symbolic
-  lengths: the treatment of the spec side is still to be carried over).
+  FS + x). Bootstrap's decode_reject and decode_none are in
+  `big_var_bytes_LightClientBootstrap_rej.bend` (checkq --big, 277 s / 3.9 GB):
+  the big-name branches of `var_bytes_nest.rej_text` keep the literal header size
+  away from stuck lengths (sizes summed symbolically then closed by
+  `Nat.is_eq`, `vbsize.LN` for lengths beside the literal, `sfix` for a fixed
+  field's size, `wv_g`/`haw_g` stated for a symbolic size). Not covered yet:
+  Bootstrap's encoder laws.
   LightClientFinalityUpdate (two leading LightClientHeaders, the second at the
   runtime offset o1 + x) has ok_eval, decode_accept, decode_spec,
   decode_unique, decode_reject and decode_none in

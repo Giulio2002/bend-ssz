@@ -15,6 +15,10 @@ import ../../proofs/nat_order.bend as Order
 # bytes) instantiates them with closed proofs of eF and eH; stated at the literal, the same facts
 # make the checker compare 24820-deep unary Nats against symbolic ones and overflow its stack.
 
+# A list's length behind a name: Nat.add(<large literal>, List.length(&2, ..)) is not recognised as
+# the same term by the checker, which then unfolds the literal; Nat.add(<literal>, LN(..)) is.
+def LN(+xs: +List<U32>) -> Nat: List.length(&2, U32, xs)
+
 def le_fs(+F: U32, +Fn: Nat, +eF: {U32.to_nat(F) == Fn : Nat}, +len: U32, +ha: {U32.is_le(F, len) == True{} : Bool})
     -> {Nat.is_le(Fn, U32.to_nat(len)) == True{} : Bool}:
   %eF : {Nat.is_le(_, U32.to_nat(len)) == True{} : Bool}
@@ -87,3 +91,10 @@ def fit_b(+d: Nat, +F: Nat, +l: U32, +len: U32, +Y: +List<U32>, +hY: {Nat.is_le(
     +hd: {Nat.is_lt(d, 30n) == True{} : Bool}) -> {N.fits(4n, Nat.add(F, List.length(&2, U32, Y))) == True{} : Bool}:
   +h0 = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, U32.to_nat(len), Nat.add(F, U32.to_nat(l)), Equal.sym(Nat, Nat.add(F, U32.to_nat(l)), U32.to_nat(len), en), hl)
   fitq(d, Nat.add(F, List.length(&2, U32, Y)), FD.nat__le_trans(Nat.add(F, List.length(&2, U32, Y)), Nat.add(F, U32.to_nat(l)), A.quad(VB.pw(d)), Order.add_left(F, List.length(&2, U32, Y), U32.to_nat(l), hY), h0), hd)
+
+# A window of Fn + X bytes holds the header.
+def haw_g(+F: U32, +Fn: Nat, +eF: {U32.to_nat(F) == Fn : Nat}, +len: U32, +X: Nat, +en: {U32.to_nat(len) == Nat.add(Fn, X) : Nat})
+    -> {U32.is_le(F, len) == True{} : Bool}:
+  FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(F), U32.to_nat(len)), U32.is_le(F, len), Equal.sym(Bool, U32.is_le(F, len), Nat.is_le(U32.to_nat(F), U32.to_nat(len)), VU.le_u32(F, len)),
+    FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, Fn, U32.to_nat(F), Equal.sym(Nat, U32.to_nat(F), Fn, eF),
+      FD.logic__subst(Nat, z => {Nat.is_le(Fn, z) == True{} : Bool}, Nat.add(Fn, X), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), Nat.add(Fn, X), en), Order.below_sum(Fn, X))))
