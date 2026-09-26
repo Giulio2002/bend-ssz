@@ -11319,8 +11319,20 @@
      "big": true
     }
    ],
-   "encode_eval": [],
-   "encode_spec": [],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_Gp4B0CA2906A_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_Gp4B0CA2906A_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -11379,8 +11391,20 @@
      "big": true
     }
    ],
-   "encode_eval": [],
-   "encode_spec": [],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_Gp8A7851175B_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_Gp8A7851175B_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -11439,8 +11463,20 @@
      "big": true
     }
    ],
-   "encode_eval": [],
-   "encode_spec": [],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_Gp66304057C3_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_Gp66304057C3_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -17597,8 +17633,20 @@
      "big": false
     }
    ],
-   "encode_eval": [],
-   "encode_spec": [],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_Gc221EC01D83_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_Gc221EC01D83_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
@@ -17921,8 +17969,20 @@
      "big": false
     }
    ],
-   "encode_eval": [],
-   "encode_spec": [],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_Gc465214E502_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_Gc465214E502_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],
