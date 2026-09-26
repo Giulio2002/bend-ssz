@@ -1423,7 +1423,7 @@ def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
 def listx_text(N, p, sch, el, limn):
     YMAX = 31 + 8 * N
     K = ceil_log2((YMAX >> 2) + 8)
-    body = LISTX.replace('@ZEROS', '')
+    body = LISTX.replace('@ZEROS', '\n' + zeros_at_text(K))
     body = body.replace('@ABSURDV', absurd_cases('Sequence', '{CHKw(t, x, off, len) == True{} : Bool}', target='[S.Variable{UW.WX(t, x, U32.to_nat(len))}]'))
     for k, v in [('@Kn', f'{K}n'), ('@LIMN', limn), ('@SCH', sch), ('@EL', el), ('@N', str(N)), ('@p_', f'{p}_')]:
         body = body.replace(k, v)
