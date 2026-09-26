@@ -109,6 +109,29 @@ class FixW:
             self.by = lambda *x: f'{a}.SyncCommittee_any_bytes({args(*x)})'
             self.Y = f'List.append(&2, U32, VS.bt(U32.to_nat(24576), FX.limbs(UW.SLW(TB_{f}))), FX.limbs([{A_}]))'
             self.hY = f'{a}.SyncCommittee_len(dB_{f}, TB_{f}, {A_}, pfB_{f}, hrB_{f})'
+        elif fs.kind == 'fixwords' and fs.p == 'bv1281':
+            # Bitvector[1281] (161 bytes held as O.Words), data-only (vbv1281d over vputwd): only its bytes zero,
+            # room for one more word after them (room_extra)
+            a = 'V_bv1281'
+            self.mod = 'import ./vbv1281d.bend as V_bv1281'
+            self.params = [f'+dB_{f}: Nat', f'+TB_{f}: {TR}']
+            self.oargs = [f'dB_{f}', f'TB_{f}']
+            self.hyps = [f'+pfB_{f}: {{FD.array__perfect(U32, dB_{f}, TB_{f}) == {TRUE}}}', f'+hdB_{f}: {{Nat.is_lt(dB_{f}, 28n) == {TRUE}}}',
+                         f'+hrB_{f}: {{Nat.is_le(161n, A.quad(VB.pw(dB_{f}))) == {TRUE}}}', f'+htz_{f}: {{{a}.HTZ(TB_{f}) == {TRUE}}}',
+                         f'+hbz_{f}: {{{a}.HBZ(dB_{f}, TB_{f}) == {TRUE}}}']
+            self.hargs = [f'pfB_{f}', f'hdB_{f}', f'hrB_{f}', f'htz_{f}', f'hbz_{f}']
+            self.obj = f'O.Words{{FD.array__thaw(U32, TB_{f}), 161}}'
+            self.vt = 'O.Words'
+            self.model = lambda r, D, q: f'{a}.PXD({r}, dd, {D}, {q}, TB_{f})'
+            self.pf = lambda r, D, q, pf: f'{a}.pxd_perfect({r}, dd, {D}, {q}, TB_{f}, {pf})'
+            self.rt = lambda D, X, q, r, e, hr, hl, pf, hz: (f'{a}.bv1281d_any(dd, {D}, {X}, {q}, {r}, dB_{f}, TB_{f}, {e}, {hr}, hd, {hl}, {pf}, pfB_{f}, hdB_{f}, hrB_{f}, '
+                                                             f'htz_{f}, hbz_{f}, {hz})')
+            self.by = lambda D, X, q, r, e, hr, hl, pf, hz: (f'{a}.bv1281d_any_bytes(dd, {D}, {X}, {q}, {r}, dB_{f}, TB_{f}, {e}, {hr}, hd, {hl}, {pf}, pfB_{f}, hdB_{f}, hrB_{f}, '
+                                                             f'htz_{f}, {hz})')
+            self.Y = f'VS.bt(161n, FX.limbs(UW.SLW(TB_{f})))'
+            self.hY = f'{a}.lenY(dB_{f}, TB_{f}, pfB_{f}, hrB_{f})'
+            self.alias = a
+            self.room_extra = 4
         elif fs.p in rvec_names():
             # a vector of records (var_rec_enc.RVECS): big_encx_<p>'s FixW-form laws fwrt / fwby / lenv / pfx / validx
             a = f'RV_{fs.p}'
@@ -163,7 +186,9 @@ def bxrt_{f}({", ".join(self.params)}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r:
         else:
             nW = fs.fsize // 4
             a = f'V_{fs.p}'
-            self.mod = f'import ./vuwv_{fs.p}.bend as {a}'
+            # the word vector's module: vuwv_<p>, or the generic containers' data-only vuwg_<p> (bv1280)
+            m_ = 'vuwv' if (ROOT / f'proofs/obj/vuwv_{fs.p}.bend').exists() or not (ROOT / f'proofs/obj/vuwg_{fs.p}.bend').exists() else 'vuwg'
+            self.mod = f'import ./{m_}_{fs.p}.bend as {a}'
             self.params = [f'+dB_{f}: Nat', f'+TB_{f}: {TR}']
             self.oargs = [f'dB_{f}', f'TB_{f}']
             self.hyps = [f'+pfB_{f}: {{FD.array__perfect(U32, dB_{f}, TB_{f}) == {TRUE}}}', f'+hdB_{f}: {{Nat.is_lt(dB_{f}, 31n) == {TRUE}}}',
@@ -192,6 +217,8 @@ def bxrt_{f}({", ".join(self.params)}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r:
             return '{==}'
         if fs.p in rvec_names():
             return f'{self.alias}.validx(m_{f}, {hargs[0]})'
+        if fs.kind == 'fixwords' and fs.p == 'bv1281':
+            return f'V_bv1281.valid_ok(dB_{f}, TB_{f}, {", ".join(hargs)})'
         if fs.kind == 'container' and fs.p == 'SyncCommittee':
             return f'V_SyncCommittee.SyncCommittee_valid_ok(dB_{f}, TB_{f}, {", ".join(self.oargs[2:])}, {", ".join(hargs)})'
         return f'V_{fs.p}.{fs.p}_valid_ok(dB_{f}, TB_{f}, {", ".join(hargs)})'
@@ -759,6 +786,29 @@ def generate_cont(g, names, C):
                         K.pz = re.sub(rf'(?<![\w.{{]){f_}\b', bits_obj(leaf_of(fs_), f_), K.pz)
                 HP.append(f'+hpz: {{{K.pz} == {TRUE}}}')
                 HA.append('hpz')
+    # a wide container's groups' own checks of their Data fields, folded into the group's size (c .|. O.pz(V))
+    K.gpz = {}
+    if K.wide:
+        for gk_ in range(0, (len(F) + GROUP - 1) // GROUP):
+            idx_ = list(range(gk_ * GROUP, min(gk_ * GROUP + GROUP, len(F))))
+            nps_ = sum(1 for i_ in idx_ if not F[i_][1].data)
+            if not nps_ or not any(F[i_][1].fixed and F[i_][1].data for i_ in idx_):
+                continue
+            b_ = fn_body(f'{p}_g{gk_}_pw{nps_ - 1}')
+            j_ = b_.find('O.pz(')
+            if j_ < 0:
+                continue
+            d_ = 0
+            for k_ in range(j_ + len('O.pz('), len(b_)):
+                if b_[k_] == '(':
+                    d_ += 1
+                elif b_[k_] == ')':
+                    if d_ == 0:
+                        break
+                    d_ -= 1
+            K.gpz[gk_] = re.sub(r'(?<![\w.])([a-z_]\w*)\(', r'T.\1(', b_[j_ + len('O.pz('):k_])
+            HP.append(f'+hpz_g{gk_}: {{{K.gpz[gk_]} == {TRUE}}}')
+            HA.append(f'hpz_g{gk_}')
     OPS, OAS = ', '.join(OP), ', '.join(OA)
     HPS, HAS = ', '.join(HP), ', '.join(HA)
     if K.wide:
@@ -999,6 +1049,8 @@ def putv_{f}({', '.join(ch.params)}, +D: {TR}, +D1: {TR}, +D2: {TR}, +X: U32, +h
                 kk += 1
         if K.pz is not None and psteps:
             cur = f'({cur} .|. O.pz({K.pz}) : U32)'
+        if K.wide and psteps and gk in K.gpz:
+            cur = f'({cur} .|. O.pz({K.gpz[gk]}) : U32)'
         # the Data fields, innermost first
         dat = [i for i in idx if F[i][1].fixed and F[i][1].data]
 
@@ -1055,6 +1107,16 @@ def rt_{gp.replace(p, "G") if gk is not None else "C"}({MP},
             steps.append((ctx, start, end, RTg, prf, after))
             # a group ending in FixW writes returns (c .|. 0): back to c (vuw_bits.or0r; a literal c evaluates)
             clean = cur
+            if gk in K.gpz and clean.endswith(f' .|. O.pz({K.gpz[gk]}) : U32)'):
+                # its Data fields' check (c .|. O.pz(V)), V true: back to c
+                inner_ = clean[1:-len(f' .|. O.pz({K.gpz[gk]}) : U32)')]
+                ctx3 = ctx.replace('z)', f'({TH(kB)}, ({gobj}, z)))')
+                V_ = K.gpz[gk]
+                prf_ = (f'Equal.trans(U32, U32.or({inner_}, O.pz({V_})), U32.or({inner_}, 0), {inner_}, '
+                        f'Equal.cong(Bool, U32, zb => U32.or({inner_}, O.pz(zb)), {V_}, True{{}}, hpz_g{gk}), UWB.or0r({inner_}))')
+                steps.append((ctx3, clean, inner_, 'U32', prf_, ctx.replace('z)', f'({TH(kB)}, ({gobj}, {inner_})))')))
+                clean = inner_
+                K.or0 = True
             while re.fullmatch(r'\((.*) \.\|\. 0 : U32\)', clean) and not re.fullmatch(r'\((\d+) \.\|\. 0 : U32\)', clean):
                 inner_ = re.fullmatch(r'\((.*) \.\|\. 0 : U32\)', clean).group(1)
                 ctx3 = ctx.replace('z)', f'({TH(kB)}, ({gobj}, z)))')
@@ -1073,10 +1135,11 @@ def rt_{gp.replace(p, "G") if gk is not None else "C"}({MP},
         chain_rt = chain(RTC, steps, START, ENDC)
     else:
         chain_rt = f'rt_C({MA}, {FAS})'
+    GPZP = ''.join(f',\n    +hpz_g{gk_}: {{{V_} == {TRUE}}}' for gk_, V_ in sorted(K.gpz.items()))
     w(f'''
 # the runtime's put of {C} at X
 def rt_all({MP},
-    {FPS})
+    {FPS}{GPZP})
     -> {{{START} == {ENDC} : {RTC}}}:
   {chain_rt}
 ''')
@@ -1175,21 +1238,24 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
             rel = f'Nat.add({X0}, VCN.LN(VCN.CAT({pre})))'
             Xc = f'U32.add(X, {c})'
             qk, rk = qr_at(c)
+            # the room a checked fixed writer asks for past its bytes (FixW.room_extra, e.g. vbv1281d's carry word)
+            rsize = size + (getattr(K.fixw.get(f), 'room_extra', 0) if kind == 'fixw' else 0)
             if c % 4:
                 # a field at a byte offset: its word position (QX, RX) of X + c (vpiece.ppos / proom)
                 pos = f'Nat.add(A.quad({qk}), {rk})'
                 hk_ = f'FD.nat__le_trans(Nat.add({c}n, {size}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)})))'
+                hkr_ = f'FD.nat__le_trans(Nat.add({c}n, {rsize}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)})))'
                 a(f'+z{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, {size}n, {post}, 0n, {UBk}, hX, I{k}, {{==}})')
                 a(f'+pp{k} = VPC.ppos(X, {c}, {c}n, q, r, {LLv}, {size}n, dd, e, {{==}}, hd, {hk_}, hl)')
                 a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt({size}n, VS.bdr(zz, {UBk})) == UW.ZB({size}n) : +List<U32>}}, {rel}, {pos}, pp{k}, z{k})')
                 a(f'+ep{k} = VC.split4({Xc})')
-                a(f'+hl{k} = VPC.proom(X, {c}, {c}n, q, r, {LLv}, {size}n, dd, e, {{==}}, hd, {hk_}, hl)')
+                a(f'+hl{k} = VPC.proom(X, {c}, {c}n, q, r, {LLv}, {rsize}n, dd, e, {{==}}, hd, {hkr_}, hl)')
                 hrk, eqpos = f'VCN.rx_lt({Xc})', f'pp{k}'
             else:
                 a(f'+z{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, {size}n, {post}, 0n, {UBk}, hX, I{k}, {{==}})')
                 a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt({size}n, VS.bdr(zz, {UBk})) == UW.ZB({size}n) : +List<U32>}}, {rel}, {pos}, VRX.fpx(q, r, {kw}n), z{k})')
                 a(f'+ep{k} = VRX.fpos(X, q, r, {kw}n, {c}, {LLv}, dd, e, {{==}}, hd, {{==}}, hl)')
-                a(f'+hl{k} = VRX.froom(q, r, dd, {kw}n, {size}n, {LLv}, FD.nat__le_trans(Nat.add(A.quad({kw}n), {size}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)}))), hl)')
+                a(f'+hl{k} = VRX.froom(q, r, dd, {kw}n, {rsize}n, {LLv}, FD.nat__le_trans(Nat.add(A.quad({kw}n), {rsize}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)}))), hl)')
                 hrk, eqpos = 'hr', f'VRX.fpx(q, r, {kw}n)'
             if kind == 'leaf' and leaf_of(fs).pad:
                 # the zero-padded one-byte leaf: its byte and the zeros to its word's end, from the next piece's zeros
@@ -1359,7 +1425,7 @@ def putx({OPS}, {HPS}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
     +hz: {{VS.bt(Nat.add(LLC({MA}), WD.PADB(r, LLC({MA}))), VS.bdr({X0}, UA.BYT(D))) == UW.ZB(Nat.add(LLC({MA}), WD.PADB(r, LLC({MA})))) : +List<U32>}})
     -> DK.P2(RTC({MA}), DK.P2(BYC({MA}), DK.P2(PFC({MA}), SZXC({MA})))):
   {body}
-  mk4({MA}, rt_all({MA}, {", ".join(facts)}), byf, pf{n}, szf)
+  mk4({MA}, rt_all({MA}, {", ".join(facts + [f"hpz_g{gk_}" for gk_ in sorted(K.gpz)])}), byf, pf{n}, szf)
 ''')
     return L
 
@@ -1542,6 +1608,21 @@ def lvp_{lf.p}(+o: {lf.ctor}) -> {{Codec.parts(LV_{lf.p}(o), {fx(nd.sch)}) == So
             prf_ = (f'FD.logic__subst(+List<U32>, zz => {{Codec.parts({a_}.VAL(m_{f}), {sch}) == Some{{[S.Fixed{{zz}}]}} : Maybe<&2, +List<S.Part>>}}, {E_}, {B_}, '
                     f'Equal.sym(+List<U32>, {B_}, {E_}, VCN.pc_id({fs.fsize}n, {E_}, {a_}.lenv(m_{f}, OKA_hok_{f}))), {a_}.vspec(m_{f}, OKA_hok_{f}))')
             fields.append(dict(kind='fix', f=f, val=f'{a_}.VAL(m_{f})', sch=sch, part=f'S.Fixed{{{B_}}}', bytes=B_, prf=prf_, psch=sch))
+        elif f in K.fixw and fs.kind == 'fixwords' and fs.p in ('bv1280', 'bv1281'):
+            # the word-held bit vectors of the generic containers (vbv128s)
+            fw8 = K.fixw[f]
+            nB = fs.fsize
+            B_ = f'VCN.PC({nB}n, {fw8.Y})'
+            if fs.p == 'bv1281':
+                val = f'V2S8.V1281(TB_{f})'
+                hY_ = f'V_bv1281.lenY(dB_{f}, TB_{f}, OKA_pfB_{f}, OKA_hrB_{f})'
+                prt_ = f'V2S8.prt1281(dB_{f}, TB_{f}, OKA_pfB_{f}, OKA_hdB_{f}, OKA_hrB_{f}, OKA_hbz_{f})'
+            else:
+                val = f'V2S8.V1280(TB_{f})'
+                hY_ = re.sub(r'(?<![\w_])(pfB|hrB)_' + f, lambda mm: 'OKA_' + mm.group(0), fw8.hY)
+                prt_ = f'V2S8.prt1280(dB_{f}, TB_{f}, OKA_pfB_{f}, OKA_hrB_{f})'
+            fields.append(dict(kind='fix', f=f, val=val, sch=sch, part=f'S.Fixed{{{B_}}}', bytes=B_, psch=sch,
+                               prf=f'CS.pcfix({val}, {sch}, {fw8.Y}, {nB}n, {hY_}, {prt_})'))
         elif fs.fixed and fs.kind == 'fixwords':
             nW = fs.fsize // 4
             by = f'VCN.PC(A.quad({nW}n), CS.WT({nW}n, TB_{f}))'
@@ -2127,6 +2208,10 @@ def iface_full(C, generic=False):
         mods.append('import ./vbitb.bend as VBB')
     if 'V2S.' in body:
         mods.append('import ./vbv257s.bend as V2S')
+    if 'V2S8.' in body:
+        mods.append('import ./vbv128s.bend as V2S8')
+    if 'VMR.' in body and 'import ./vmr.bend as VMR' not in mods + hd:
+        mods.append('import ./vmr.bend as VMR')
     if 'FWS.' in body:
         mods.append('import ./vfixw_spec.bend as FWS')
     if 'UWB.' in body and 'import ./vuw_bits.bend as UWB' not in mods + hd:
@@ -2148,7 +2233,7 @@ HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primi
 
 # The generic containers (types/generic_obj.bend, proofs/obj/generic_specs.bend) written by this generator:
 # every child in the encoder-window interface, every fixed piece word-aligned (so far).
-GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3', 'Gp8A7851175B', 'Gc221EC01D83', 'Gc85FA758A04', 'Gc56D855869F']
+GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3', 'Gp8A7851175B', 'Gc221EC01D83', 'Gc85FA758A04', 'Gc56D855869F', 'Gc60805EC295']
 # the containers written in the encoder-window interface with their spec side (iface_text): (name, generic)
 def _has_iface(X):
     # a container child has an encoder window when its iface is generated here (ICONTS) or already on disk
@@ -2158,7 +2243,7 @@ def _has_iface(X):
 ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True),
           ('Gp8A7851175B', True), ('Gc221EC01D83', True), ('ExecutionRequests', False), ('Attestation', False),
           ('IndexedAttestation', False), ('AttesterSlashing', False), ('Gc85FA758A04', True),
-          ('LightClientHeader', False), ('BeaconBlockBody', False), ('BeaconBlock', False), ('SignedBeaconBlock', False), ('Gc56D855869F', True)]
+          ('LightClientHeader', False), ('BeaconBlockBody', False), ('BeaconBlock', False), ('SignedBeaconBlock', False), ('Gc56D855869F', True), ('Gc60805EC295', True)]
 
 
 def gfile_c(C):
