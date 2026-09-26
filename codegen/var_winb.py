@@ -37,7 +37,9 @@ import generate as G  # noqa: E402
 ROOT = VL.ROOT
 GROUP = 8
 # the child window module of each variable field's runtime prefix (boxes stripped)
-CHECKED = {'bv4'}
+CHECKED = {'bv4', 'bv1', 'bv2'}
+# the room a fixed-field module's reader needs past its field (default: the field's size)
+READROOM = {'bv4': 4}
 CHILD_MOD = {
     'l16_ProposerSlashing': 'var_winx_l16_ProposerSlashing.bend',
     'l1_AttesterSlashing': 'big_var_winx_l1_AttesterSlashing.bend',
@@ -70,7 +72,7 @@ CHILD_MOD = {
 PENDING = set()
 # the fixed-field modules (at any byte position) of the containers generated with window slices
 FIXMOD = {p: f'vfx_{p}.bend' for p in ['u64', 'b32', 'Fork', 'BeaconBlockHeader', 'v8192_b32', 'Eth1Data', 'v65536_b32', 'v8192_u64', 'bv4',
-                                         'Checkpoint', 'SyncCommittee', 'v64_u64', 'u8', 'u16']}
+                                         'Checkpoint', 'SyncCommittee', 'v64_u64', 'u8', 'u16', 'bv1', 'bv2', 'bv8']}
 # the generic containers (types/generic_obj.bend, generic_specs.bend): (name, their variable fields' child windows)
 GENERIC = [('Gc465214E502', {'l1024_u16': 'var_winx_l1024_u16.bend'})]
 # (container, output file) of the tracked modules
@@ -174,6 +176,7 @@ class Layout:
                     f['fmod'] = fixmod[fs.p]
                     f['fa'] = f'FX_{fs.p}'
                     f['chk'] = fs.p in CHECKED
+                    f['rs'] = READROOM.get(fs.p, f['size'])
                 else:
                     f['ft'] = VL.FT(g, ft)
                 p += f['size']
@@ -600,7 +603,7 @@ def validator_text(L):
             f = L.fchk[i - (k - 1)]
             c = f['c']
             w.append(f'      %Equal.sym(B.Buf & Bool, T.{f["rt"]}_ok_at({BUF}, U32.add(off, {c})), ({BUF}, {f["fa"]}.CHK(t, {L.pos(c)})),')
-            w.append(f'          {f["fa"]}.ok(d, t, n, U32.add(off, {c}), {L.pos(c)}, {L.EOC(c)}, hd, pf, {L.ROOM(c, 4)})) :')
+            w.append(f'          {f["fa"]}.ok(d, t, n, U32.add(off, {c}), {L.pos(c)}, {L.EOC(c)}, hd, pf, {L.ROOM(c, f["rs"])})) :')
             w.append(f'        {{{Tn}_v{i + 1}(off, len, {OS(k - 1)}, _) == {GOALT}}}')
         else:
             j = i - (k - 1) - m
@@ -654,7 +657,7 @@ def read_step(L, f):
         sz = f['size']
         call = f'T.{f["rt"]}_read({BUF}, U32.add(off, {c}), {sz})'
         prf = (f'{f["fa"]}.rdx(d, t, n, U32.add(off, {c}), {L.pos(c)}, {L.EOC(c)}, hd, pf,\n'
-               f'        {L.ROOM(c, max(sz, 4) if f.get("chk") else sz)})')
+               f'        {L.ROOM(c, f["rs"])})')
         ty = f'B.Buf & {f["rep"]}'
         base = f['rt']
     elif f['kind'] == 'fix':
@@ -910,10 +913,9 @@ def spec_text(L):
         if f['kind'] == 'fix' and L.sym:
             P, sz = L.pos(f['c']), f['size']
             ex = ''
-            hb = sz
+            hb = f['rs']
             if f.get('chk'):
                 ex = f', it{1 + L.k + L.fchk.index(f)}({TXOA}, hchk)'
-                hb = max(sz, 4)
             return (f'F.cat_fixed(Codec.parts({vals[i]}, {sch(i)}), UW.WX(t, {P}, {sz}n), Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, '
                     f'{f["fa"]}.prt(d, t, {P}, pf, {L.ROOM(f["c"], hb, hF=f"hFc({TXOA}, hchk)")}, HD{i}(sv), es{i}(sv, esv){ex}),\n      {cat(i + 1)})')
         if f['kind'] == 'fix':
