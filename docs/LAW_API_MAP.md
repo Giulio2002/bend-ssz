@@ -318,9 +318,13 @@ What that means concretely:
   `var_bytesx_<Name>{,_inv}.bend` (`codegen/var_bytes_x.py`, stock; fixed fields
   via the rdx readers at `UR.RWN` words, byte vectors via `vbx.bend`
   `copy_into_at`, the byte list via `vua_ct.copy_in_at`; the child's window at
-  FS + x). Not covered yet: Bootstrap's decode_reject, decode_none and encoder
-  laws (its rejection facts compare 24820-byte literal sums against symbolic
-  lengths: the treatment of the spec side is still to be carried over).
+  FS + x). Bootstrap's decode_reject and decode_none are in
+  `big_var_bytes_LightClientBootstrap_rej.bend` (checkq --big, 277 s / 3.9 GB):
+  the big-name branches of `var_bytes_nest.rej_text` keep the literal header size
+  away from stuck lengths (sizes summed symbolically then closed by
+  `Nat.is_eq`, `vbsize.LN` for lengths beside the literal, `sfix` for a fixed
+  field's size, `wv_g`/`haw_g` stated for a symbolic size). Not covered yet:
+  Bootstrap's encoder laws.
   LightClientFinalityUpdate (two leading LightClientHeaders, the second at the
   runtime offset o1 + x) has ok_eval, decode_accept, decode_spec,
   decode_unique, decode_reject and decode_none in
