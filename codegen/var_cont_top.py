@@ -661,7 +661,7 @@ def validx(m, hok):
 # interface alone: the size pass is CI.sizex, its value CI.szx, the bound CI.bndx, the writer at X = 0 of
 # a zero tree CI.putx / putx_bytes, the spec CI.encx_spec.
 
-GTOPS = ['Gp4B0CA2906A', 'Gp66304057C3', 'Gp8A7851175B', 'Gc465214E502', 'Gc221EC01D83', 'Gc85FA758A04']
+GTOPS = ['Gp4B0CA2906A', 'Gp66304057C3', 'Gp8A7851175B', 'Gc465214E502', 'Gc221EC01D83', 'Gc85FA758A04', 'BeaconBlock', 'SignedBeaconBlock']
 
 
 def gtop_text(C):
