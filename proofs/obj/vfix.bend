@@ -360,3 +360,31 @@ def in_q(+k: Nat, +i: Nat, +d: Nat, +h: {Nat.is_le(Nat.add(k, i), VB.pw(d)) == T
 
 def lt_le1(+k: Nat, +i: Nat, +P: Nat, +h: {Nat.is_lt(Nat.add(k, i), P) == True{} : Bool}) -> {Nat.is_le(Nat.add(k, i), P) == True{} : Bool}:
   F.nat__lt_le(Nat.add(k, i), P, h)
+
+# ---- a prefix of H words of a list ----------------------------------------------------------
+
+def wpre(n: Nat, +i: Nat, +W: List<&2, U32>) -> List<&2, U32>:
+  match n:
+    case 0n: []
+    case 1n+p: Con{F.flat__nthc(W, i), wpre(p, 1n+i, W)}
+
+law wt_pre:
+  for +H: Nat
+  for +K: Nat
+  for +i: Nat
+  for +W: List<&2, U32>
+  for +h: {Nat.is_le(Nat.add(H, i), VB.len(W)) == True{} : Bool}
+  {VS.wtake(Nat.add(H, K), VB.wdr(i, W)) == app(wpre(H, i, W), VS.wtake(K, VB.wdr(Nat.add(H, i), W))) : List<&2, U32>}
+def wt_pre(H, K, i, W, h):
+  match H:
+    case 0n: {==}
+    case 1n+ +p:
+      +hi = F.nat__lt_le_trans(i, 1n+Nat.add(p, i), VB.len(W), VB.lt_kk(0n, 1n+p, i, {==}), h)
+      +h2 = F.logic__subst(Nat, z => {Nat.is_le(z, VB.len(W)) == True{} : Bool}, 1n+Nat.add(p, i), Nat.add(p, 1n+i), Equal.sym(Nat, Nat.add(p, 1n+i), 1n+Nat.add(p, i), F.nat__add_succ(p, i)), h)
+      %Equal.sym(List<&2, U32>, VS.wtake(1n+Nat.add(p, K), VB.wdr(i, W)), Con{F.flat__nthc(W, i), VS.wtake(Nat.add(p, K), VB.wdr(1n+i, W))}, VB.wt_eta(Nat.add(p, K), i, W, hi)) :
+        {_ == app(wpre(1n+p, i, W), VS.wtake(K, VB.wdr(1n+Nat.add(p, i), W))) : List<&2, U32>}
+      %F.nat__add_succ(p, i) :
+        {Con{F.flat__nthc(W, i), VS.wtake(Nat.add(p, K), VB.wdr(1n+i, W))} == Con{F.flat__nthc(W, i), app(wpre(p, 1n+i, W), VS.wtake(K, VB.wdr(_, W)))} : List<&2, U32>}
+      %Equal.sym(List<&2, U32>, VS.wtake(Nat.add(p, K), VB.wdr(1n+i, W)), app(wpre(p, 1n+i, W), VS.wtake(K, VB.wdr(Nat.add(p, 1n+i), W))), wt_pre(p, K, 1n+i, W, h2)) :
+        {Con{F.flat__nthc(W, i), _} == Con{F.flat__nthc(W, i), app(wpre(p, 1n+i, W), VS.wtake(K, VB.wdr(Nat.add(p, 1n+i), W)))} : List<&2, U32>}
+      {==}

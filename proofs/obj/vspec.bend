@@ -677,3 +677,55 @@ def enc_go(+pre: +List<+List<U32>>, +Ys: List<&2, U32>, +post: +List<+List<U32>>
   %Equal.sym(Bool, N.fits(4n, Nat.add(Layout.fixed_size(fpv(pre, FX.limbs(Ys), post)), List.length(&2, U32, Layout.payloads(fpv(pre, FX.limbs(Ys), post))))), True{}, Equal.trans(Bool, N.fits(4n, Nat.add(Layout.fixed_size(fpv(pre, FX.limbs(Ys), post)), List.length(&2, U32, Layout.payloads(fpv(pre, FX.limbs(Ys), post))))), b, True{}, eb, fit)) :
     {SP.optional(Bool.and(True{}, _), List.append(&2, U32, Layout.fixed_parts(fpv(pre, FX.limbs(Ys), post), Layout.fixed_size(fpv(pre, FX.limbs(Ys), post))), Layout.payloads(fpv(pre, FX.limbs(Ys), post)))) == Some{List.append(&2, U32, Layout.fixed_parts(fpv(pre, FX.limbs(Ys), post), Layout.fixed_size(fpv(pre, FX.limbs(Ys), post))), Layout.payloads(fpv(pre, FX.limbs(Ys), post)))} : Maybe<&2, +List<U32>>}
   {==}
+
+def FSZ(+pre: +List<+List<U32>>, +post: +List<+List<U32>>) -> Nat:
+  Nat.add(List.length(&2, U32, FX.flat(pre)), 4n+List.length(&2, U32, FX.flat(post)))
+
+def enc_eb(+pre: +List<+List<U32>>, +Ys: List<&2, U32>, +post: +List<+List<U32>>,
+    +fit: {N.fits(4n, Nat.add(FSZ(pre, post), List.length(&2, U32, FX.limbs(Ys)))) == True{} : Bool})
+    -> {N.fits(4n, Nat.add(Layout.fixed_size(fpv(pre, FX.limbs(Ys), post)), List.length(&2, U32, Layout.payloads(fpv(pre, FX.limbs(Ys), post))))) == True{} : Bool}:
+  %Equal.sym(Nat, Layout.fixed_size(fpv(pre, FX.limbs(Ys), post)), FSZ(pre, post), fpv_size(pre, FX.limbs(Ys), post)) :
+    {N.fits(4n, Nat.add(_, List.length(&2, U32, Layout.payloads(fpv(pre, FX.limbs(Ys), post))))) == True{} : Bool}
+  %Equal.sym(+List<U32>, Layout.payloads(fpv(pre, FX.limbs(Ys), post)), List.append(&2, U32, FX.limbs(Ys), []), fpv_pay(pre, FX.limbs(Ys), post)) :
+    {N.fits(4n, Nat.add(FSZ(pre, post), List.length(&2, U32, _))) == True{} : Bool}
+  %Equal.sym(+List<U32>, List.append(&2, U32, FX.limbs(Ys), []), FX.limbs(Ys), app_nil(FX.limbs(Ys))) :
+    {N.fits(4n, Nat.add(FSZ(pre, post), List.length(&2, U32, _))) == True{} : Bool}
+  fit
+
+# The offset encoding of fixed parts of words around one variable part: the
+# fixed words, the offset FSZ, the fixed words after, then the payload.
+law enc_fpv:
+  for +pre: +List<+List<U32>>
+  for +Ys: List<&2, U32>
+  for +post: +List<+List<U32>>
+  for +fit: {N.fits(4n, Nat.add(FSZ(pre, post), List.length(&2, U32, FX.limbs(Ys)))) == True{} : Bool}
+  {Layout.encoding(fpv(pre, FX.limbs(Ys), post)) == Some{List.append(&2, U32, List.append(&2, U32, FX.flat(pre), List.append(&2, U32, N.digits(4n, FSZ(pre, post)), FX.flat(post))), FX.limbs(Ys))} : Maybe<&2, +List<U32>>}
+def enc_fpv(pre, Ys, post, fit):
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(fpv(pre, FX.limbs(Ys), post)),
+      Some{List.append(&2, U32, Layout.fixed_parts(fpv(pre, FX.limbs(Ys), post), Layout.fixed_size(fpv(pre, FX.limbs(Ys), post))), Layout.payloads(fpv(pre, FX.limbs(Ys), post)))},
+      enc_go(pre, Ys, post, True{}, enc_eb(pre, Ys, post, fit), {==})) :
+    {_ == Some{List.append(&2, U32, List.append(&2, U32, FX.flat(pre), List.append(&2, U32, N.digits(4n, FSZ(pre, post)), FX.flat(post))), FX.limbs(Ys))} : Maybe<&2, +List<U32>>}
+  %Equal.sym(Nat, Layout.fixed_size(fpv(pre, FX.limbs(Ys), post)), FSZ(pre, post), fpv_size(pre, FX.limbs(Ys), post)) :
+    {Some{List.append(&2, U32, Layout.fixed_parts(fpv(pre, FX.limbs(Ys), post), _), Layout.payloads(fpv(pre, FX.limbs(Ys), post)))} == Some{List.append(&2, U32, List.append(&2, U32, FX.flat(pre), List.append(&2, U32, N.digits(4n, FSZ(pre, post)), FX.flat(post))), FX.limbs(Ys))} : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<U32>, Layout.fixed_parts(fpv(pre, FX.limbs(Ys), post), FSZ(pre, post)), List.append(&2, U32, FX.flat(pre), List.append(&2, U32, N.digits(4n, FSZ(pre, post)), FX.flat(post))), fpv_fp(pre, FX.limbs(Ys), post, FSZ(pre, post))) :
+    {Some{List.append(&2, U32, _, Layout.payloads(fpv(pre, FX.limbs(Ys), post)))} == Some{List.append(&2, U32, List.append(&2, U32, FX.flat(pre), List.append(&2, U32, N.digits(4n, FSZ(pre, post)), FX.flat(post))), FX.limbs(Ys))} : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<U32>, Layout.payloads(fpv(pre, FX.limbs(Ys), post)), List.append(&2, U32, FX.limbs(Ys), []), fpv_pay(pre, FX.limbs(Ys), post)) :
+    {Some{List.append(&2, U32, List.append(&2, U32, FX.flat(pre), List.append(&2, U32, N.digits(4n, FSZ(pre, post)), FX.flat(post))), _)} == Some{List.append(&2, U32, List.append(&2, U32, FX.flat(pre), List.append(&2, U32, N.digits(4n, FSZ(pre, post)), FX.flat(post))), FX.limbs(Ys))} : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<U32>, List.append(&2, U32, FX.limbs(Ys), []), FX.limbs(Ys), app_nil(FX.limbs(Ys))) :
+    {Some{List.append(&2, U32, List.append(&2, U32, FX.flat(pre), List.append(&2, U32, N.digits(4n, FSZ(pre, post)), FX.flat(post))), _)} == Some{List.append(&2, U32, List.append(&2, U32, FX.flat(pre), List.append(&2, U32, N.digits(4n, FSZ(pre, post)), FX.flat(post))), FX.limbs(Ys))} : Maybe<&2, +List<U32>>}
+  {==}
+
+law cat_var:
+  for +a: Maybe<&2, +List<S.Part>>
+  for +xs: +List<U32>
+  for +b: Maybe<&2, +List<S.Part>>
+  for +rest: +List<S.Part>
+  for +ea: {a == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}
+  for +eb: {b == Some{rest} : Maybe<&2, +List<S.Part>>}
+  {Codec.concatenate(a, b) == Some{S.Variable{xs} <> rest} : Maybe<&2, +List<S.Part>>}
+def cat_var(a, xs, b, rest, ea, eb):
+  %Equal.sym(Maybe<&2, +List<S.Part>>, a, Some{[S.Variable{xs}]}, ea) :
+    {Codec.concatenate(_, b) == Some{S.Variable{xs} <> rest} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<S.Part>>, b, Some{rest}, eb) :
+    {Codec.concatenate(Some{[S.Variable{xs}]}, _) == Some{S.Variable{xs} <> rest} : Maybe<&2, +List<S.Part>>}
+  {==}
