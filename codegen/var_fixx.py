@@ -388,6 +388,9 @@ def outputs(no_big=False):
         out[ROOT / f'proofs/obj/vfx_bv{N}.bend'] = GEN.bvn_mod(N, HEAD, sig, TR, TRUE)
     import generic as GN
     gnames = {n: t for n, t, err in GN.inventory_all() if err is None}
+    out[ROOT / 'proofs/obj/vfx_bv257.bend'] = GEN.bvw1_mod(HEAD, sig, TR, TRUE)
+    out[ROOT / 'proofs/obj/vfx_bv1281.bend'] = GEN.bvw1_mod(HEAD, sig, TR, TRUE, 1281)
+    out[ROOT / 'proofs/obj/vfx_bv1280.bend'] = GEN.bvc_mod(1280, HEAD, sig, TR, TRUE)
     for p, txt in GEN.generic_small(gnames, small_mod).items():
         out[ROOT / f'proofs/obj/vfx_{p}.bend'] = txt
     import schema

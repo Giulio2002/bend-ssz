@@ -37,7 +37,7 @@ import generate as G  # noqa: E402
 ROOT = VL.ROOT
 GROUP = 8
 # the child window module of each variable field's runtime prefix (boxes stripped)
-CHECKED = {'bv4', 'bv1', 'bv2'}
+CHECKED = {'bv4', 'bv1', 'bv2', 'bv257', 'bv1281'}
 # the room a fixed-field module's reader needs past its field (default: the field's size)
 READROOM = {'bv4': 4}
 CHILD_MOD = {
@@ -72,10 +72,12 @@ CHILD_MOD = {
 PENDING = set()
 # the fixed-field modules (at any byte position) of the containers generated with window slices
 FIXMOD = {p: f'vfx_{p}.bend' for p in ['u64', 'b32', 'Fork', 'BeaconBlockHeader', 'v8192_b32', 'Eth1Data', 'v65536_b32', 'v8192_u64', 'bv4',
-                                         'Checkpoint', 'SyncCommittee', 'v64_u64', 'u8', 'u16', 'bv1', 'bv2', 'bv8']}
+                                         'Checkpoint', 'SyncCommittee', 'v64_u64', 'u8', 'u16', 'bv1', 'bv2', 'bv8', 'bv256', 'bv257', 'bv1280', 'bv1281']}
 # the generic containers (types/generic_obj.bend, generic_specs.bend): (name, their variable fields' child windows)
 GENERIC = [('Gc465214E502', {'l1024_u16': 'var_winx_l1024_u16.bend'}),
-           ('Gc85FA758A04', {'bits5': 'var_winx_g_bits5.bend', 'bits6': 'var_winx_g_bits6.bend'})]
+           ('Gc85FA758A04', {'bits5': 'var_winx_g_bits5.bend', 'bits6': 'var_winx_g_bits6.bend'}),
+           ('Gc60805EC295', {'bits256': 'var_winx_g_bits256.bend', 'bits257': 'var_winx_g_bits257.bend', 'bits1280': 'var_winx_g_bits1280.bend',
+                             'bits1281': 'var_winx_g_bits1281.bend', 'pbits': 'big_var_winp_pbits.bend'})]
 # (container, output file) of the tracked modules
 MODULES = [('BeaconBlockBody', 'big_var_winx_BeaconBlockBody.bend', False), ('BeaconBlock', 'big_var_winx_BeaconBlock.bend', False),
            ('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock.bend', False), ('BeaconState', 'big_var_winx_BeaconState.bend', True)]
