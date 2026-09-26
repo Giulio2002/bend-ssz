@@ -352,3 +352,8 @@ def bv257d_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Na
   +b2 = W8.w8_any_bytes(dd, M, U32.add(X, 32), Nat.add(8n, q), r, w8, e1, hr, hd, hl1, G256.bv256x_perfect(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, pf), z1)
   Equal.trans(+List<U32>, UA.BYT(PXD(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8)), UW.SPL(UA.BYT(M), Nat.add(32n, P), [U32.and(w8, 255)]), UW.SPL(B, P, List.append(&2, U32, L8, [U32.and(w8, 255)])), b2,
     VRX.spl_catx(B, P, L8, [U32.and(w8, 255)], Nat.add(32n, P), UA.BYT(M), hX, VRB.pcx(P, 32n), b1))
+
+# The object's 33 bytes (the eight words' limbs, then the last byte).
+def BYW(o: T.Bitvector257) -> +List<U32>:
+  match o:
+    case T.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: List.append(&2, U32, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), [U32.and(w8, 255)])

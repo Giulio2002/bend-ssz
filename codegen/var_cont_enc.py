@@ -51,8 +51,9 @@ def out_file(C):
 class Leaf:
     """A Data leaf written at any X by its dispatch lemma (vuwd, vuwv_<p>)."""
 
-    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz, rec=None, sub=0, pad=False, bits=0):
+    def __init__(self, p, ctor, W, mod, model, rt, by, pf, rt_hz, rec=None, sub=0, pad=False, bits=0, tail=False):
         self.p, self.ctor, self.W, self.mod = p, ctor, W, mod
+        self.tail = tail  # W words and then one byte (Bitvector[257]: vbv257, data-only; its check T.<p>_valid a hypothesis)
         self.bits = bits  # a one-byte bit vector (Bitvector[1/2/8]): a byte leaf on its word (vbitb), valid below 2^bits
         self.pad = pad    # a one-byte leaf in the zero-padded form (vuwv_bv4): its bytes and the zeros to its word's end
         self.sub = sub    # a sub-word leaf (uint8 / uint16: its byte count), a piece at any byte (vpiece)
@@ -277,6 +278,12 @@ def leaf_of(fs):
         a = f'V_{fs.p}'
         return Leaf(fs.p, f'T.{fs.rep}', fs.fsize // 4, f'import ./vuwv_{fs.p}.bend as {a}', f'{a}.PX_{fs.p}', f'{a}.{fs.p}_any',
                     f'{a}.{fs.p}_any_bytes', f'{a}.{fs.p}x_perfect', True)
+    if fs.p == 'bv256':
+        return Leaf('bv256', 'T.Bitvector256', 8, 'import ./vuwg_bv256.bend as V_bv256', 'V_bv256.PX_bv256', 'V_bv256.bv256_any',
+                    'V_bv256.bv256_any_bytes', 'V_bv256.bv256x_perfect', True)
+    if fs.p == 'bv257':
+        return Leaf('bv257', 'T.Bitvector257', 8, 'import ./vbv257.bend as V_bv257', 'V_bv257.PXD', 'V_bv257.bv257d_any',
+                    'V_bv257.bv257d_any_bytes', 'V_bv257.pxd_perfect', True, tail=True)
     if fs.p == 'bv4':
         return Leaf('bv4', 'T.Bitvector4', 1, 'import ./vuwv_bv4.bend as V_bv4', 'V_bv4.PX_bv4', 'V_bv4.bv4_any', 'V_bv4.bv4_any_bytes',
                     'V_bv4.bv4x_perfect', True, pad=True)
@@ -366,9 +373,52 @@ def lenb_{p}(+o: {lf.ctor}) -> {{VCN.LN(VS.bt(1n, FX.limbs(RW_{p}(o)))) == 1n : 
 '''
 
 
+def leaf_bytes(lf, f):
+    """A leaf's bytes, as a term of its object f."""
+    return f'V_{lf.p}.BYW({f})' if lf.tail else f'FX.limbs(RW_{lf.p}({f}))'
+
+
+def tail_leaf_text(lf):
+    """W words and then one byte (Bitvector[257]): written data-only (vbv257), its check a hypothesis."""
+    p, W = lf.p, lf.W
+    ws = [f'w{i}' for i in range(W + 1)]
+    pat = f'{lf.ctor}{{' + ', '.join('+' + w for w in ws) + '}'
+    WA = ', '.join(ws)
+    X0 = 'Nat.add(A.quad(q), r)'
+    B = 4 * W + 1
+    return f'''
+# ---- {p}: its writer on the object ({B} bytes, data-only; vbv257) ----
+def PXo_{p}(o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> {TR}:
+  match o:
+    case {pat}: {lf.model}(r, dd, D, q, {WA})
+def pfo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}})
+    -> {{FD.array__perfect(U32, dd, PXo_{p}(o, dd, D, q, r)) == {TRUE}}}:
+  match o:
+    case {pat}: {lf.pf}(r, dd, D, q, {WA}, pf)
+def RTo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {{T.{p}_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_{p}(o, dd, D, q, r)) : Array<U32>}}
+def BYo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +q: Nat, +r: Nat) -> Data:
+  {{UA.BYT(PXo_{p}(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), {X0}, V_{p}.BYW(o)) : +List<U32>}}
+def putxo_{p}(+o: {lf.ctor}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
+    +e: {{U32.to_nat(X) == {X0} : Nat}}, +hr: {{Nat.is_lt(r, 4n) == {TRUE}}}, +hd: {{Nat.is_lt(dd, 29n) == {TRUE}}},
+    +hl: {{Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, {B}n))), VB.pw(dd)) == {TRUE}}}, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}},
+    +hv: {{T.{p}_valid(o) == {TRUE}}}, +hz: {{VS.bt({B}n, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({B}n) : +List<U32>}})
+    -> DK.P2(RTo_{p}(o, dd, D, X, q, r), BYo_{p}(o, dd, D, q, r)):
+  match o:
+    case {pat}:
+      +e8 = VBB.e1(w{W}, hv)
+      ({lf.rt}(dd, D, X, q, r, {WA}, e, hr, hd, hl, pf, e8, hz), {lf.by}(dd, D, X, q, r, {WA}, e, hr, hd, hl, pf, e8, hz))
+def lenb_{p}(+o: {lf.ctor}) -> {{VCN.LN(V_{p}.BYW(o)) == {B}n : Nat}}:
+  match o:
+    case {pat}: {{==}}
+'''
+
+
 def leaf_text(lf):
     if lf.pad:
         return pad_leaf_text(lf)
+    if lf.tail:
+        return tail_leaf_text(lf)
     if lf.rec is not None:
         return rec_leaf_text(lf)
     p, W = lf.p, lf.W
@@ -669,6 +719,9 @@ def generate_cont(g, names, C):
                 HA.append(f'hv_{f}')
             if leaf_of(fs).pad:
                 HP.append(f'+hv_{f}: {{OK_{leaf_of(fs).p}({f}) == {TRUE}}}')
+                HA.append(f'hv_{f}')
+            if leaf_of(fs).tail:
+                HP.append(f'+hv_{f}: {{T.{leaf_of(fs).p}_valid({f}) == {TRUE}}}')
                 HA.append(f'hv_{f}')
         elif f in K.fixw:
             fw = K.fixw[f]
@@ -1160,10 +1213,11 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
                 continue
             if kind == 'leaf':
                 lf = leaf_of(fs)
-                a(f'+g{k} = putxo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}, ep{k}, {hrk}, hd, hl{k}, pf{k}, hz{k})')
+                hv_ = f', hv_{f}' if lf.tail else ''
+                a(f'+g{k} = putxo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}, ep{k}, {hrk}, hd, hl{k}, pf{k}{hv_}, hz{k})')
                 a(f'+rt{k} = PA(RTo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}), BYo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}), g{k})')
                 a(f'+by{k} = PB(RTo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}), BYo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}), g{k})')
-                Y = f'FX.limbs(RW_{lf.p}({f}))'
+                Y = leaf_bytes(lf, f)
                 hY = f'lenb_{lf.p}({f})'
                 a(f'+pf{k + 1} = pfo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}, pf{k})')
                 piece = f'VCN.PC({size}n, {Y})'
@@ -1422,7 +1476,13 @@ def iface_text(C, generic=False):
     curs = {ev['field']: ev['cur'] for ev in events if ev['kind'] == 'var'}
     for i, (f, fs) in enumerate(F):
         sch = kids[i]
-        if fs.fixed and fs.data and leaf_of(fs).bits:
+        if fs.fixed and fs.data and leaf_of(fs).tail:
+            # Bitvector[257]: its value and parts (vbv257s), its bytes vbv257.BYW
+            B_ = f'VCN.PC({4 * leaf_of(fs).W + 1}n, V_{fs.p}.BYW({f}))'
+            prf_ = (f'FD.logic__subst(+List<U32>, zz => {{Codec.parts(V2S.V257({f}), {sch}) == Some{{[S.Fixed{{zz}}]}} : Maybe<&2, +List<S.Part>>}}, V_{fs.p}.BYW({f}), {B_}, '
+                    f'Equal.sym(+List<U32>, {B_}, V_{fs.p}.BYW({f}), VCN.pc_id({4 * leaf_of(fs).W + 1}n, V_{fs.p}.BYW({f}), K.lenb_{fs.p}({f}))), V2S.prt257({f}, OKA_hv_{f}))')
+            fields.append(dict(kind='fix', f=f, val=f'V2S.V257({f})', sch=sch, part=f'S.Fixed{{{B_}}}', bytes=B_, prf=prf_, psch=sch))
+        elif fs.fixed and fs.data and leaf_of(fs).bits:
             n_ = leaf_of(fs).bits
             Y = f'[U32.and({f}, 255)]'
             fields.append(dict(kind='fix', f=f, val=f'VBB.V{n_}({f})', sch=sch, part=f'S.Fixed{{{Y}}}', bytes=Y,
@@ -2065,6 +2125,8 @@ def iface_full(C, generic=False):
         mods.append('import ./vrecb.bend as VRB')
     if 'VBB.' in body:
         mods.append('import ./vbitb.bend as VBB')
+    if 'V2S.' in body:
+        mods.append('import ./vbv257s.bend as V2S')
     if 'FWS.' in body:
         mods.append('import ./vfixw_spec.bend as FWS')
     if 'UWB.' in body and 'import ./vuw_bits.bend as UWB' not in mods + hd:
@@ -2133,7 +2195,7 @@ def full_text(C, generic=False):
         mods.append('import ./vpiece.bend as VPC')
     if getattr(K, 'pz', None) is not None or ' .|. 0 : U32)' in SZC or getattr(K, 'or0', False):
         mods.append('import ./vuw_bits.bend as UWB')
-    if any(lf.bits for lf in K.leaves.values()):
+    if any(lf.bits or lf.tail for lf in K.leaves.values()):
         mods.append('import ./vbitb.bend as VBB')
     hd = [x.replace('../../types/fulu_obj.bend as T', '../../types/generic_obj.bend as T') for x in HEAD] if generic else HEAD
     head = hd + mods + ['', '# GENERATED by codegen/var_cont_enc.py. Do not edit.',
