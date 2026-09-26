@@ -13,6 +13,7 @@ import ./vua_copy.bend as UC
 import ./vbrt.bend as VR
 import ./vu32.bend as VU
 import ./vcopy.bend as VC
+import ./vdepth.bend as VD
 import ../compact/reads.bend as RD
 import ./vuw_bits.bend as UWB
 import ./word_mul.bend as WM
@@ -1137,3 +1138,16 @@ def inv_zero(+B0: +List<U32>, +X0: Nat, +L: Nat, +E: +List<U32>, +a: Nat, +m: Na
   %Equal.sym(+List<U32>, VS.bt(m, VS.bdr(Nat.add(X0, a), SPL(B0, X0, VS.bt(L, E)))), VS.bt(m, VS.bdr(a, VS.bt(L, E))), win_spl(B0, X0, VS.bt(L, E), a, m, hX, h2)) : {_ == ZB(m) : +List<U32>}
   %bt_bdr_bt(m, a, L, E, hm) : {_ == ZB(m) : +List<U32>}
   hz
+
+# A non-empty byte count has a word.
+def nw_pos_m(+N: U32, +m: Nat, +em: {U32.to_nat(N) == m : Nat}, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(N), VB.pw(k)) == True{} : Bool},
+    +hn: {U32.is_eq(N, 0) == False{} : Bool}) -> {Nat.is_le(1n, VC.NW(N)) == True{} : Bool}:
+  match m:
+    case 0n: Empty.absurd({Nat.is_le(1n, VC.NW(N)) == True{} : Bool}, FD.logic__true_false(FD.logic__subst(U32, z => {U32.is_eq(z, 0) == False{} : Bool}, N, 0, FD.u32__injective(N, 0, em), hn)))
+    case 1n+ +p:
+      +e = Equal.trans(Nat, VC.NW(N), VD.s_rng(2n, 3n+U32.to_nat(N)), VD.s_rng(2n, 4n+p), VC.eNW(N, k, hk, hy), Equal.cong(Nat, Nat, z => VD.s_rng(2n, 3n+z), U32.to_nat(N), 1n+p, em))
+      FD.logic__subst(Nat, z => {Nat.is_le(1n, z) == True{} : Bool}, VD.s_rng(2n, 4n+p), VC.NW(N), Equal.sym(Nat, VC.NW(N), VD.s_rng(2n, 4n+p), e), FD.nat__zero_le(VD.s_h2(VD.s_h2(p))))
+
+def nw_pos(+N: U32, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(N), VB.pw(k)) == True{} : Bool},
+    +hn: {U32.is_eq(N, 0) == False{} : Bool}) -> {Nat.is_le(1n, VC.NW(N)) == True{} : Bool}:
+  nw_pos_m(N, U32.to_nat(N), {==}, k, hk, hy, hn)
