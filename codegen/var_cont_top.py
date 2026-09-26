@@ -338,12 +338,11 @@ def szS({P}, +h: {{CI.OKT({OAS}) == {TRUE}}}, +k: Nat, +ek: {{k == 28n : Nat}}) 
     if C not in TOPS:
         return L, [], K, P, OA, imps
     # ---- encode_eval / encode_spec ----
-    HA = []
-    for f, fs in F:
-        if fs.fixed and fs.kind == 'fixwords':
-            HA += [f'pfB_{f}', f'hdB_{f}', f'hrB_{f}']
-        elif not fs.fixed:
-            HA += K.children[f].hargs
+    # the writer's hypotheses, as the window's putx lists them (after the object's parameters, before dd)
+    ptxt = (ROOT / f'proofs/obj/big_encx_{C}.bend').read_text()
+    ph = re.search(r'^def putx\((.*?)\+dd: Nat, \+D: ', ptxt, re.M | re.S).group(1)
+    pn = [x.split(':')[0].strip().lstrip('+') for x in CE_split(ph.rstrip().rstrip(','))]
+    HA = pn[len(OA):]
     HAC = ', '.join(f'CI.ok_{x}({OAS}, h)' for x in HA)
     S = f'SZS({OAS})'
     Dd = f'VL.DO({S})'
