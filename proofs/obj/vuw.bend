@@ -1151,3 +1151,70 @@ def nw_pos_m(+N: U32, +m: Nat, +em: {U32.to_nat(N) == m : Nat}, +k: Nat, +hk: {N
 def nw_pos(+N: U32, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(N), VB.pw(k)) == True{} : Bool},
     +hn: {U32.is_eq(N, 0) == False{} : Bool}) -> {Nat.is_le(1n, VC.NW(N)) == True{} : Bool}:
   nw_pos_m(N, U32.to_nat(N), {==}, k, hk, hy, hn)
+
+# ---- positions inside a value written at 4 i + s ------------------------------------------------
+
+def pos_eq(+k: Nat, +i: Nat, +s: Nat) -> {Nat.add(A.quad(Nat.add(k, i)), s) == Nat.add(Nat.add(A.quad(i), s), A.quad(k)) : Nat}:
+  Equal.trans(Nat, Nat.add(A.quad(Nat.add(k, i)), s), Nat.add(Nat.add(A.quad(k), A.quad(i)), s), Nat.add(Nat.add(A.quad(i), s), A.quad(k)),
+    Equal.cong(Nat, Nat, z => Nat.add(z, s), A.quad(Nat.add(k, i)), Nat.add(A.quad(k), A.quad(i)), Equal.sym(Nat, Nat.add(A.quad(k), A.quad(i)), A.quad(Nat.add(k, i)), VF.quad_add(k, i))),
+    Equal.trans(Nat, Nat.add(Nat.add(A.quad(k), A.quad(i)), s), Nat.add(A.quad(k), Nat.add(A.quad(i), s)), Nat.add(Nat.add(A.quad(i), s), A.quad(k)),
+      FD.nat__add_assoc(A.quad(k), A.quad(i), s), FD.nat__add_comm(A.quad(k), Nat.add(A.quad(i), s))))
+
+# W words from word k + i lie below word R + i < 2^dd (k + W <= R).
+def lt_idx(+k: Nat, +W: Nat, +i: Nat, +R: Nat, +dd: Nat, +hR: {Nat.is_lt(Nat.add(R, i), VB.pw(dd)) == True{} : Bool}, +hk: {Nat.is_le(Nat.add(k, W), R) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(W, Nat.add(k, i)), VB.pw(dd)) == True{} : Bool}:
+  FD.nat__le_lt_trans(Nat.add(W, Nat.add(k, i)), Nat.add(R, i), VB.pw(dd),
+    FD.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(R, i)) == True{} : Bool}, Nat.add(Nat.add(k, W), i), Nat.add(W, Nat.add(k, i)),
+      Equal.trans(Nat, Nat.add(Nat.add(k, W), i), Nat.add(Nat.add(W, k), i), Nat.add(W, Nat.add(k, i)), Equal.cong(Nat, Nat, z => Nat.add(z, i), Nat.add(k, W), Nat.add(W, k), FD.nat__add_comm(k, W)), FD.nat__add_assoc(W, k, i)),
+      Order.add_right(Nat.add(k, W), R, i, hk)),
+    hR)
+
+# The byte position 4 (k + i) + s is below 4 2^dd (k < R, R + i < 2^dd, s < 4).
+def room_q(+k: Nat, +i: Nat, +R: Nat, +s: Nat, +dd: Nat, +hR: {Nat.is_lt(Nat.add(R, i), VB.pw(dd)) == True{} : Bool}, +hk: {Nat.is_lt(k, R) == True{} : Bool},
+    +hs: {Nat.is_lt(s, 4n) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(A.quad(k), Nat.add(A.quad(i), s)), A.quad(VB.pw(dd))) == True{} : Bool}:
+  +h1 = lt_idx(k, 1n, i, R, dd, hR, FD.logic__subst(Nat, z => {Nat.is_le(z, R) == True{} : Bool}, 1n+k, Nat.add(k, 1n), Equal.sym(Nat, Nat.add(k, 1n), 1n+k, Equal.trans(Nat, Nat.add(k, 1n), 1n+Nat.add(k, 0n), 1n+k, FD.nat__add_succ(k, 0n), Equal.cong(Nat, Nat, z => 1n+z, Nat.add(k, 0n), k, FD.nat__add_zero(k)))), FD.nat__lt_succ_le_succ(k, R, hk)))
+  +h2 = quad_le(1n+Nat.add(k, i), VB.pw(dd), FD.nat__lt_le(1n+Nat.add(k, i), VB.pw(dd), h1))
+  +e1 = Equal.trans(Nat, Nat.add(A.quad(k), Nat.add(A.quad(i), s)), Nat.add(Nat.add(A.quad(k), A.quad(i)), s), Nat.add(A.quad(Nat.add(k, i)), s),
+    Equal.sym(Nat, Nat.add(Nat.add(A.quad(k), A.quad(i)), s), Nat.add(A.quad(k), Nat.add(A.quad(i), s)), FD.nat__add_assoc(A.quad(k), A.quad(i), s)),
+    Equal.cong(Nat, Nat, z => Nat.add(z, s), Nat.add(A.quad(k), A.quad(i)), A.quad(Nat.add(k, i)), VF.quad_add(k, i)))
+  FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(dd))) == True{} : Bool}, Nat.add(A.quad(Nat.add(k, i)), s), Nat.add(A.quad(k), Nat.add(A.quad(i), s)), Equal.sym(Nat, Nat.add(A.quad(k), Nat.add(A.quad(i), s)), Nat.add(A.quad(Nat.add(k, i)), s), e1),
+    FD.nat__le_trans(Nat.add(A.quad(Nat.add(k, i)), s), 4n+A.quad(Nat.add(k, i)), A.quad(VB.pw(dd)),
+      FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(A.quad(Nat.add(k, i)), s), z) == True{} : Bool}, Nat.add(A.quad(Nat.add(k, i)), 4n), 4n+A.quad(Nat.add(k, i)), FD.nat__add_comm(A.quad(Nat.add(k, i)), 4n),
+        Order.add_left(A.quad(Nat.add(k, i)), s, 4n, FD.nat__lt_le(s, 4n, hs))),
+      h2))
+
+law bt_bdr_split:
+  for +a: Nat
+  for +xs: +List<U32>
+  {List.append(&2, U32, VS.bt(a, xs), VS.bdr(a, xs)) == xs : +List<U32>}
+def bt_bdr_split(a, xs):
+  match a xs:
+    case 0n _: {==}
+    case 1n+ +p Nil{}: {==}
+    case 1n+ +p Con{+x, +t}: Equal.cong(+List<U32>, +List<U32>, z => Con{x, z}, List.append(&2, U32, VS.bt(p, t), VS.bdr(p, t)), t, bt_bdr_split(p, t))
+
+law len_zb:
+  for +n: Nat
+  {List.length(&2, U32, ZB(n)) == n : Nat}
+def len_zb(n):
+  match n:
+    case 0n: {==}
+    case 1n+ +p: Equal.cong(Nat, Nat, z => 1n+z, List.length(&2, U32, ZB(p)), p, len_zb(p))
+
+# The invariant holds before any write: the L bytes at X0 are zero, as are E's first L.
+def inv_init(+B: +List<U32>, +X0: Nat, +L: Nat, +E0: +List<U32>,
+    +hz: {VS.bt(L, VS.bdr(X0, B)) == ZB(L) : +List<U32>}, +hE: {VS.bt(L, E0) == ZB(L) : +List<U32>})
+    -> {B == SPL(B, X0, VS.bt(L, E0)) : +List<U32>}:
+  +Z = VS.bt(L, E0)
+  +eZ = Equal.trans(+List<U32>, VS.bt(L, VS.bdr(X0, B)), ZB(L), Z, hz, Equal.sym(+List<U32>, Z, ZB(L), hE))
+  +eL = Equal.trans(Nat, List.length(&2, U32, Z), List.length(&2, U32, ZB(L)), L, Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), Z, ZB(L), hE), len_zb(L))
+  +e1 = bt_bdr_split(X0, B)
+  +e2 = bt_bdr_split(L, VS.bdr(X0, B))
+  +e3 = bdr_add(X0, L, B)
+  %e1 : {_ == SPL(B, X0, Z) : +List<U32>}
+  %e2 : {List.append(&2, U32, VS.bt(X0, B), _) == SPL(B, X0, Z) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bt(L, VS.bdr(X0, B)), Z, eZ) : {List.append(&2, U32, VS.bt(X0, B), List.append(&2, U32, _, VS.bdr(L, VS.bdr(X0, B)))) == SPL(B, X0, Z) : +List<U32>}
+  %e3 : {List.append(&2, U32, VS.bt(X0, B), List.append(&2, U32, Z, _)) == SPL(B, X0, Z) : +List<U32>}
+  %Equal.sym(Nat, List.length(&2, U32, Z), L, eL) : {List.append(&2, U32, VS.bt(X0, B), List.append(&2, U32, Z, VS.bdr(Nat.add(X0, L), B))) == List.append(&2, U32, VS.bt(X0, B), List.append(&2, U32, Z, VS.bdr(Nat.add(X0, _), B))) : +List<U32>}
+  {==}
