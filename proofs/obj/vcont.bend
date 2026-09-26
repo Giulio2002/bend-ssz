@@ -1,0 +1,362 @@
+import Base
+import ../compact/found.bend as F
+import ../compact/arith.bend as A
+import ../../proofs/nat_order.bend as Order
+import ./vspec.bend as VS
+import ./vuw.bend as UW
+import ./vvle.bend as VE2
+import ../compact/reads.bend as RD
+import ./vbuf.bend as VB
+import ./vcopy.bend as VC
+import ./vfix.bend as VF
+import ./vbspec.bend as VZ
+import ./vuwd.bend as WD
+import ./vrecx.bend as VRX
+
+# A container's bytes as a list of pieces (hand-written; for codegen/var_cont_enc.py).
+#
+# The region of a container written at X0 is the concatenation CAT of its pieces in byte order:
+# its fixed fields and offsets, then its variable fields, then the zeros to the end of the last
+# word. Before the writer runs, every piece is zeros (UW.ZB); each write turns one piece into its
+# bytes (seg_put: a piece of m bytes, written with p zeros after it that fall on the next
+# pieces, still zero), and reg_put / reg_zero carry this over the tree's bytes, spliced at X0
+# (UW.SPL). A piece whose structure is not closed is kept as PC(m, Y): m bytes, the length
+# closed whenever m is (pc_id: it is Y).
+
+def LN(+a: +List<U32>) -> Nat: List.length(&2, U32, a)
+def AP(+a: +List<U32>, +b: +List<U32>) -> +List<U32>: List.append(&2, U32, a, b)
+def LAP(+a: +List<+List<U32>>, +b: +List<+List<U32>>) -> +List<+List<U32>>: List.append(&2, +List<U32>, a, b)
+
+def CAT(ss: +List<+List<U32>>) -> +List<U32>:
+  match ss:
+    case Nil{}: []
+    case Con{s, t}: List.append(&2, U32, s, CAT(t))
+
+def HD(xs: +List<U32>) -> U32:
+  match xs:
+    case Nil{}: 0
+    case Con{x, t}: x
+def TL(xs: +List<U32>) -> +List<U32>:
+  match xs:
+    case Nil{}: []
+    case Con{x, t}: t
+
+# The first k bytes of xs, as k cells.
+def PC(k: Nat, +xs: +List<U32>) -> +List<U32>:
+  match k:
+    case 0n: []
+    case 1n+p: Con{HD(xs), PC(p, TL(xs))}
+
+law pc_id:
+  for +k: Nat
+  for +xs: +List<U32>
+  for +h: {LN(xs) == k : Nat}
+  {PC(k, xs) == xs : +List<U32>}
+def pc_id(k, xs, h):
+  match k xs:
+    case 0n Nil{}: {==}
+    case 0n Con{+x, +t}: Empty.absurd({PC(0n, Con{x, t}) == Con{x, t} : +List<U32>}, F.nat__succ_zero(LN(t), h))
+    case 1n+ +p Nil{}: Empty.absurd({PC(1n+p, Nil{}) == Nil{} : +List<U32>}, F.nat__zero_succ(p, h))
+    case 1n+ +p Con{+x, +t}: Equal.cong(+List<U32>, +List<U32>, z => Con{x, z}, PC(p, t), t, pc_id(p, t, F.nat__succ_inj(LN(t), p, h)))
+
+law len_pc:
+  for +k: Nat
+  for +xs: +List<U32>
+  {LN(PC(k, xs)) == k : Nat}
+def len_pc(k, xs):
+  match k:
+    case 0n: {==}
+    case 1n+ +p: F.nat__succ_cong(LN(PC(p, TL(xs))), p, len_pc(p, TL(xs)))
+
+law cat_lap:
+  for +a: +List<+List<U32>>
+  for +b: +List<+List<U32>>
+  {CAT(LAP(a, b)) == AP(CAT(a), CAT(b)) : +List<U32>}
+def cat_lap(a, b):
+  match a:
+    case Nil{}: {==}
+    case Con{+s, +t}:
+      %Equal.sym(+List<U32>, CAT(LAP(t, b)), AP(CAT(t), CAT(b)), cat_lap(t, b)) : {AP(s, _) == AP(AP(s, CAT(t)), CAT(b)) : +List<U32>}
+      Equal.sym(+List<U32>, AP(AP(s, CAT(t)), CAT(b)), AP(s, AP(CAT(t), CAT(b))), VS.app_assoc(s, CAT(t), CAT(b)))
+
+law len_app:
+  for +a: +List<U32>
+  for +b: +List<U32>
+  {LN(AP(a, b)) == Nat.add(LN(a), LN(b)) : Nat}
+def len_app(a, b):
+  match a:
+    case Nil{}: {==}
+    case Con{+x, +t}: F.nat__succ_cong(LN(AP(t, b)), Nat.add(LN(t), LN(b)), len_app(t, b))
+
+law bdr_all:
+  for +a: +List<U32>
+  for +b: +List<U32>
+  {VS.bdr(LN(a), AP(a, b)) == b : +List<U32>}
+def bdr_all(a, b):
+  match a:
+    case Nil{}: {==}
+    case Con{+x, +t}: bdr_all(t, b)
+
+# A zero prefix of p bytes is at most the list's length.
+law bt_short:
+  for +p: Nat
+  for +c: +List<U32>
+  for +h: {VS.bt(p, c) == UW.ZB(p) : +List<U32>}
+  {Nat.is_le(p, LN(c)) == True{} : Bool}
+def bt_short(p, c, h):
+  match p c:
+    case 0n _: F.nat__zero_le(LN(c))
+    case 1n+ +q Nil{}: Empty.absurd({Nat.is_le(1n+q, 0n) == True{} : Bool}, F.nat__zero_succ(LN(UW.ZB(q)), Equal.cong(+List<U32>, Nat, z => LN(z), Nil{}, Con{0, UW.ZB(q)}, h)))
+    case 1n+ +q Con{+x, +t}: bt_short(q, t, Equal.cong(+List<U32>, +List<U32>, z => TL(z), Con{x, VS.bt(q, t)}, Con{0, UW.ZB(q)}, h))
+
+# c as its p zero bytes then the rest.
+def zrest(+p: Nat, +c: +List<U32>, +hp: {VS.bt(p, c) == UW.ZB(p) : +List<U32>}) -> {AP(UW.ZB(p), VS.bdr(p, c)) == c : +List<U32>}:
+  %hp : {AP(_, VS.bdr(p, c)) == c : +List<U32>}
+  UW.bt_bdr_split(p, c)
+
+# ---- one piece ------------------------------------------------------------------------------------
+
+def SEG(+pre: +List<+List<U32>>, +m: Nat, +post: +List<+List<U32>>) -> +List<U32>: CAT(LAP(pre, Con{UW.ZB(m), post}))
+
+def seg_split(+pre: +List<+List<U32>>, +y: +List<U32>, +post: +List<+List<U32>>) -> {CAT(LAP(pre, Con{y, post})) == AP(CAT(pre), AP(y, CAT(post))) : +List<U32>}:
+  cat_lap(pre, Con{y, post})
+
+# Writing Y (m bytes) and p zeros at the piece: the piece is Y.
+def seg_put(+pre: +List<+List<U32>>, +m: Nat, +post: +List<+List<U32>>, +Y: +List<U32>, +p: Nat,
+    +hY: {LN(Y) == m : Nat}, +hp: {VS.bt(p, CAT(post)) == UW.ZB(p) : +List<U32>})
+    -> {UW.SPL(SEG(pre, m, post), LN(CAT(pre)), AP(Y, UW.ZB(p))) == CAT(LAP(pre, Con{Y, post})) : +List<U32>}:
+  +a = CAT(pre)
+  +c = CAT(post)
+  +Yp = AP(Y, UW.ZB(p))
+  +e0 = seg_split(pre, UW.ZB(m), post)
+  +e1 = VE2.spl_mid(a, AP(UW.ZB(m), c), Yp)
+  +eL = Equal.trans(Nat, LN(Yp), Nat.add(LN(Y), LN(UW.ZB(p))), Nat.add(m, p), len_app(Y, UW.ZB(p)),
+    Equal.trans(Nat, Nat.add(LN(Y), LN(UW.ZB(p))), Nat.add(m, LN(UW.ZB(p))), Nat.add(m, p), Equal.cong(Nat, Nat, z => Nat.add(z, LN(UW.ZB(p))), LN(Y), m, hY),
+      Equal.cong(Nat, Nat, z => Nat.add(m, z), LN(UW.ZB(p)), p, VE2.len_zb(p))))
+  +eZ = F.logic__subst(Nat, z => {VS.bdr(z, AP(UW.ZB(m), c)) == c : +List<U32>}, LN(UW.ZB(m)), m, VE2.len_zb(m), bdr_all(UW.ZB(m), c))
+  +eB = Equal.trans(+List<U32>, VS.bdr(LN(Yp), AP(UW.ZB(m), c)), VS.bdr(Nat.add(m, p), AP(UW.ZB(m), c)), VS.bdr(p, c),
+    Equal.cong(Nat, +List<U32>, z => VS.bdr(z, AP(UW.ZB(m), c)), LN(Yp), Nat.add(m, p), eL),
+    Equal.trans(+List<U32>, VS.bdr(Nat.add(m, p), AP(UW.ZB(m), c)), VS.bdr(p, VS.bdr(m, AP(UW.ZB(m), c))), VS.bdr(p, c), UW.bdr_add(m, p, AP(UW.ZB(m), c)),
+      Equal.cong(+List<U32>, +List<U32>, z => VS.bdr(p, z), VS.bdr(m, AP(UW.ZB(m), c)), c, eZ)))
+  +eT = Equal.trans(+List<U32>, AP(Yp, VS.bdr(LN(Yp), AP(UW.ZB(m), c))), AP(Yp, VS.bdr(p, c)), AP(Y, c),
+    Equal.cong(+List<U32>, +List<U32>, z => AP(Yp, z), VS.bdr(LN(Yp), AP(UW.ZB(m), c)), VS.bdr(p, c), eB),
+    Equal.trans(+List<U32>, AP(Yp, VS.bdr(p, c)), AP(Y, AP(UW.ZB(p), VS.bdr(p, c))), AP(Y, c), VS.app_assoc(Y, UW.ZB(p), VS.bdr(p, c)),
+      Equal.cong(+List<U32>, +List<U32>, z => AP(Y, z), AP(UW.ZB(p), VS.bdr(p, c)), c, zrest(p, c, hp))))
+  %Equal.sym(+List<U32>, SEG(pre, m, post), AP(a, AP(UW.ZB(m), c)), e0) : {UW.SPL(_, LN(a), Yp) == CAT(LAP(pre, Con{Y, post})) : +List<U32>}
+  %Equal.sym(+List<U32>, UW.SPL(AP(a, AP(UW.ZB(m), c)), LN(a), Yp), AP(a, AP(Yp, VS.bdr(LN(Yp), AP(UW.ZB(m), c)))), e1) : {_ == CAT(LAP(pre, Con{Y, post})) : +List<U32>}
+  %Equal.sym(+List<U32>, AP(Yp, VS.bdr(LN(Yp), AP(UW.ZB(m), c))), AP(Y, c), eT) : {AP(a, _) == CAT(LAP(pre, Con{Y, post})) : +List<U32>}
+  Equal.sym(+List<U32>, CAT(LAP(pre, Con{Y, post})), AP(a, AP(Y, c)), seg_split(pre, Y, post))
+
+# The zero window at the piece: its m bytes and the p after it.
+def seg_zero(+pre: +List<+List<U32>>, +m: Nat, +post: +List<+List<U32>>, +p: Nat, +hp: {VS.bt(p, CAT(post)) == UW.ZB(p) : +List<U32>})
+    -> {VS.bt(Nat.add(m, p), VS.bdr(LN(CAT(pre)), SEG(pre, m, post))) == UW.ZB(Nat.add(m, p)) : +List<U32>}:
+  +a = CAT(pre)
+  +c = CAT(post)
+  %Equal.sym(+List<U32>, SEG(pre, m, post), AP(a, AP(UW.ZB(m), c)), seg_split(pre, UW.ZB(m), post)) : {VS.bt(Nat.add(m, p), VS.bdr(LN(a), _)) == UW.ZB(Nat.add(m, p)) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bdr(LN(a), AP(a, AP(UW.ZB(m), c))), AP(UW.ZB(m), c), bdr_all(a, AP(UW.ZB(m), c))) : {VS.bt(Nat.add(m, p), _) == UW.ZB(Nat.add(m, p)) : +List<U32>}
+  %VE2.len_zb(m) : {VS.bt(Nat.add(_, p), AP(UW.ZB(m), c)) == UW.ZB(Nat.add(m, p)) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bt(Nat.add(LN(UW.ZB(m)), p), AP(UW.ZB(m), c)), AP(UW.ZB(m), VS.bt(p, c)), UW.bt_app_len(UW.ZB(m), p, c)) : {_ == UW.ZB(Nat.add(m, p)) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bt(p, c), UW.ZB(p), hp) : {AP(UW.ZB(m), _) == UW.ZB(Nat.add(m, p)) : +List<U32>}
+  Equal.sym(+List<U32>, UW.ZB(Nat.add(m, p)), AP(UW.ZB(m), UW.ZB(p)), VE2.zb_add(m, p))
+
+# The piece and its p zeros lie in the region.
+def seg_room(+pre: +List<+List<U32>>, +m: Nat, +post: +List<+List<U32>>, +p: Nat, +hp: {VS.bt(p, CAT(post)) == UW.ZB(p) : +List<U32>})
+    -> {Nat.is_le(Nat.add(LN(CAT(pre)), Nat.add(m, p)), LN(SEG(pre, m, post))) == True{} : Bool}:
+  +a = CAT(pre)
+  +c = CAT(post)
+  +eL = Equal.trans(Nat, LN(SEG(pre, m, post)), LN(AP(a, AP(UW.ZB(m), c))), Nat.add(LN(a), Nat.add(m, LN(c))),
+    Equal.cong(+List<U32>, Nat, z => LN(z), SEG(pre, m, post), AP(a, AP(UW.ZB(m), c)), seg_split(pre, UW.ZB(m), post)),
+    Equal.trans(Nat, LN(AP(a, AP(UW.ZB(m), c))), Nat.add(LN(a), LN(AP(UW.ZB(m), c))), Nat.add(LN(a), Nat.add(m, LN(c))), len_app(a, AP(UW.ZB(m), c)),
+      Equal.cong(Nat, Nat, z => Nat.add(LN(a), z), LN(AP(UW.ZB(m), c)), Nat.add(m, LN(c)),
+        Equal.trans(Nat, LN(AP(UW.ZB(m), c)), Nat.add(LN(UW.ZB(m)), LN(c)), Nat.add(m, LN(c)), len_app(UW.ZB(m), c),
+          Equal.cong(Nat, Nat, z => Nat.add(z, LN(c)), LN(UW.ZB(m)), m, VE2.len_zb(m))))))
+  F.logic__subst(Nat, z => {Nat.is_le(Nat.add(LN(a), Nat.add(m, p)), z) == True{} : Bool}, Nat.add(LN(a), Nat.add(m, LN(c))), LN(SEG(pre, m, post)), Equal.sym(Nat, LN(SEG(pre, m, post)), Nat.add(LN(a), Nat.add(m, LN(c))), eL),
+    Order.add_left(LN(a), Nat.add(m, p), Nat.add(m, LN(c)), Order.add_left(m, p, LN(c), bt_short(p, c, hp))))
+
+# ---- the region in the tree's bytes ---------------------------------------------------------------
+
+# A write of Y (m bytes) and p zeros at the piece, at X0 + |pre|.
+def reg_put(+B0: +List<U32>, +X0: Nat, +pre: +List<+List<U32>>, +m: Nat, +post: +List<+List<U32>>, +Y: +List<U32>, +p: Nat,
+    +UB: +List<U32>, +UB2: +List<U32>, +hX: {Nat.is_le(X0, LN(B0)) == True{} : Bool},
+    +hI: {UB == UW.SPL(B0, X0, SEG(pre, m, post)) : +List<U32>},
+    +hY: {LN(Y) == m : Nat}, +hp: {VS.bt(p, CAT(post)) == UW.ZB(p) : +List<U32>},
+    +hop: {UB2 == UW.SPL(UB, Nat.add(X0, LN(CAT(pre))), AP(Y, UW.ZB(p))) : +List<U32>})
+    -> {UB2 == UW.SPL(B0, X0, CAT(LAP(pre, Con{Y, post}))) : +List<U32>}:
+  +Z = SEG(pre, m, post)
+  +a = LN(CAT(pre))
+  +Yp = AP(Y, UW.ZB(p))
+  +eL = Equal.trans(Nat, LN(Yp), Nat.add(LN(Y), LN(UW.ZB(p))), Nat.add(m, p), len_app(Y, UW.ZB(p)),
+    Equal.trans(Nat, Nat.add(LN(Y), LN(UW.ZB(p))), Nat.add(m, LN(UW.ZB(p))), Nat.add(m, p), Equal.cong(Nat, Nat, z => Nat.add(z, LN(UW.ZB(p))), LN(Y), m, hY),
+      Equal.cong(Nat, Nat, z => Nat.add(m, z), LN(UW.ZB(p)), p, VE2.len_zb(p))))
+  +hroom = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(a, z), LN(Z)) == True{} : Bool}, Nat.add(m, p), LN(Yp), Equal.sym(Nat, LN(Yp), Nat.add(m, p), eL), seg_room(pre, m, post, p, hp))
+  +e1 = F.logic__subst(+List<U32>, z => {UB2 == UW.SPL(z, Nat.add(X0, a), Yp) : +List<U32>}, UB, UW.SPL(B0, X0, Z), hI, hop)
+  +e2 = Equal.trans(+List<U32>, UB2, UW.SPL(UW.SPL(B0, X0, Z), Nat.add(X0, a), Yp), UW.SPL(B0, X0, UW.SPL(Z, a, Yp)), e1, UW.spl_spl(B0, X0, Z, a, Yp, hX, hroom))
+  Equal.trans(+List<U32>, UB2, UW.SPL(B0, X0, UW.SPL(Z, a, Yp)), UW.SPL(B0, X0, CAT(LAP(pre, Con{Y, post}))), e2,
+    Equal.cong(+List<U32>, +List<U32>, z => UW.SPL(B0, X0, z), UW.SPL(Z, a, Yp), CAT(LAP(pre, Con{Y, post})), seg_put(pre, m, post, Y, p, hY, hp)))
+
+# The same with no zeros after Y.
+def reg_put0(+B0: +List<U32>, +X0: Nat, +pre: +List<+List<U32>>, +m: Nat, +post: +List<+List<U32>>, +Y: +List<U32>,
+    +UB: +List<U32>, +UB2: +List<U32>, +hX: {Nat.is_le(X0, LN(B0)) == True{} : Bool},
+    +hI: {UB == UW.SPL(B0, X0, SEG(pre, m, post)) : +List<U32>},
+    +hY: {LN(Y) == m : Nat}, +hop: {UB2 == UW.SPL(UB, Nat.add(X0, LN(CAT(pre))), Y) : +List<U32>})
+    -> {UB2 == UW.SPL(B0, X0, CAT(LAP(pre, Con{Y, post}))) : +List<U32>}:
+  reg_put(B0, X0, pre, m, post, Y, 0n, UB, UB2, hX, hI, hY, {==},
+    F.logic__subst(+List<U32>, z => {UB2 == UW.SPL(UB, Nat.add(X0, LN(CAT(pre))), z) : +List<U32>}, Y, AP(Y, UW.ZB(0n)), Equal.sym(+List<U32>, AP(Y, []), Y, VS.app_nil(Y)), hop))
+
+# The zero window of the piece and the p bytes after it, in the tree's bytes.
+def reg_zero(+B0: +List<U32>, +X0: Nat, +pre: +List<+List<U32>>, +m: Nat, +post: +List<+List<U32>>, +p: Nat,
+    +UB: +List<U32>, +hX: {Nat.is_le(X0, LN(B0)) == True{} : Bool},
+    +hI: {UB == UW.SPL(B0, X0, SEG(pre, m, post)) : +List<U32>}, +hp: {VS.bt(p, CAT(post)) == UW.ZB(p) : +List<U32>})
+    -> {VS.bt(Nat.add(m, p), VS.bdr(Nat.add(X0, LN(CAT(pre))), UB)) == UW.ZB(Nat.add(m, p)) : +List<U32>}:
+  +Z = SEG(pre, m, post)
+  +a = LN(CAT(pre))
+  +hroom = seg_room(pre, m, post, p, hp)
+  %Equal.sym(+List<U32>, UB, UW.SPL(B0, X0, Z), hI) : {VS.bt(Nat.add(m, p), VS.bdr(Nat.add(X0, a), _)) == UW.ZB(Nat.add(m, p)) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bt(Nat.add(m, p), VS.bdr(Nat.add(X0, a), UW.SPL(B0, X0, Z))), VS.bt(Nat.add(m, p), VS.bdr(a, Z)), UW.win_spl(B0, X0, Z, a, Nat.add(m, p), hX, hroom)) :
+    {_ == UW.ZB(Nat.add(m, p)) : +List<U32>}
+  seg_zero(pre, m, post, p, hp)
+
+# The pieces after a piece, all zero: p zeros from them when p fits.
+def ZBS(ms: List<&2, Nat>) -> +List<+List<U32>>:
+  match ms:
+    case Nil{}: []
+    case Con{m, t}: Con{UW.ZB(m), ZBS(t)}
+def SUM(ms: List<&2, Nat>) -> Nat:
+  match ms:
+    case Nil{}: 0n
+    case Con{m, t}: Nat.add(m, SUM(t))
+law cat_zbs:
+  for +ms: List<&2, Nat>
+  {CAT(ZBS(ms)) == UW.ZB(SUM(ms)) : +List<U32>}
+def cat_zbs(ms):
+  match ms:
+    case Nil{}: {==}
+    case Con{+m, +t}:
+      %Equal.sym(+List<U32>, CAT(ZBS(t)), UW.ZB(SUM(t)), cat_zbs(t)) : {AP(UW.ZB(m), _) == UW.ZB(Nat.add(m, SUM(t))) : +List<U32>}
+      Equal.sym(+List<U32>, UW.ZB(Nat.add(m, SUM(t))), AP(UW.ZB(m), UW.ZB(SUM(t))), VE2.zb_add(m, SUM(t)))
+def zbs_pre(+ms: List<&2, Nat>, +p: Nat, +h: {Nat.is_le(p, SUM(ms)) == True{} : Bool}) -> {VS.bt(p, CAT(ZBS(ms))) == UW.ZB(p) : +List<U32>}:
+  %Equal.sym(+List<U32>, CAT(ZBS(ms)), UW.ZB(SUM(ms)), cat_zbs(ms)) : {VS.bt(p, _) == UW.ZB(p) : +List<U32>}
+  VE2.bt_zb_le(p, SUM(ms), h)
+# p <= m zeros from a zero piece followed by anything.
+def zb_pre(+m: Nat, +t: +List<+List<U32>>, +p: Nat, +h: {Nat.is_le(p, m) == True{} : Bool}) -> {VS.bt(p, CAT(Con{UW.ZB(m), t})) == UW.ZB(p) : +List<U32>}:
+  VE2.bt_app_zb(p, m, CAT(t), h)
+
+# ---- positions of the variable pieces --------------------------------------------------------------
+
+def QX(+y: U32) -> Nat: U32.to_nat(U32.shrn(y, 2n))
+def RX(+y: U32) -> Nat: U32.to_nat(U32.and(y, 3))
+def rx_lt(+y: U32) -> {Nat.is_lt(RX(y), 4n) == True{} : Bool}: F.nat__le_lt_trans(RX(y), 3n, 4n, RD.and_le(y, 3), {==})
+
+def padb_id(+r: Nat, +m: Nat) -> {Nat.add(Nat.add(r, m), WD.PADB(r, m)) == A.quad(WD.NWN(Nat.add(r, m))) : Nat}:
+  +Q = A.quad(WD.NWN(Nat.add(r, m)))
+  +hq = VRX.nwn_ge(Nat.add(r, m))
+  +hr = F.nat__le_trans(r, Nat.add(r, m), Q, Order.below_sum(r, m), hq)
+  +er = F.nat__sub_add(Q, r, hr)
+  +hm = VZ.le_cancel(r, m, Nat.sub(Q, r), F.logic__subst(Nat, z => {Nat.is_le(Nat.add(r, m), z) == True{} : Bool}, Q, Nat.add(r, Nat.sub(Q, r)), Equal.sym(Nat, Nat.add(r, Nat.sub(Q, r)), Q, er), hq))
+  +em = F.nat__sub_add(Nat.sub(Q, r), m, hm)
+  Equal.trans(Nat, Nat.add(Nat.add(r, m), WD.PADB(r, m)), Nat.add(r, Nat.add(m, WD.PADB(r, m))), Q, F.nat__add_assoc(r, m, WD.PADB(r, m)),
+    Equal.trans(Nat, Nat.add(r, Nat.add(m, WD.PADB(r, m))), Nat.add(r, Nat.sub(Q, r)), Q, Equal.cong(Nat, Nat, z => Nat.add(r, z), Nat.add(m, WD.PADB(r, m)), Nat.sub(Q, r), em), er))
+
+# The end of L bytes at X0 = 4 q + r, with the zeros to the end of the last word, is a word end.
+def e_end2(+q: Nat, +r: Nat, +L: Nat)
+    -> {Nat.add(Nat.add(A.quad(q), r), Nat.add(L, WD.PADB(r, L))) == A.quad(WD.NWN(Nat.add(Nat.add(A.quad(q), r), L))) : Nat}:
+  +Pd = WD.PADB(r, L)
+  +e1 = Equal.trans(Nat, Nat.add(Nat.add(A.quad(q), r), Nat.add(L, Pd)), Nat.add(A.quad(q), Nat.add(Nat.add(r, L), Pd)), A.quad(Nat.add(q, WD.NWN(Nat.add(r, L)))),
+    Equal.trans(Nat, Nat.add(Nat.add(A.quad(q), r), Nat.add(L, Pd)), Nat.add(A.quad(q), Nat.add(r, Nat.add(L, Pd))), Nat.add(A.quad(q), Nat.add(Nat.add(r, L), Pd)),
+      F.nat__add_assoc(A.quad(q), r, Nat.add(L, Pd)),
+      Equal.cong(Nat, Nat, z => Nat.add(A.quad(q), z), Nat.add(r, Nat.add(L, Pd)), Nat.add(Nat.add(r, L), Pd), Equal.sym(Nat, Nat.add(Nat.add(r, L), Pd), Nat.add(r, Nat.add(L, Pd)), F.nat__add_assoc(r, L, Pd)))),
+    Equal.trans(Nat, Nat.add(A.quad(q), Nat.add(Nat.add(r, L), Pd)), Nat.add(A.quad(q), A.quad(WD.NWN(Nat.add(r, L)))), A.quad(Nat.add(q, WD.NWN(Nat.add(r, L)))),
+      Equal.cong(Nat, Nat, z => Nat.add(A.quad(q), z), Nat.add(Nat.add(r, L), Pd), A.quad(WD.NWN(Nat.add(r, L))), padb_id(r, L)),
+      VF.quad_add(q, WD.NWN(Nat.add(r, L)))))
+  Equal.trans(Nat, Nat.add(Nat.add(A.quad(q), r), Nat.add(L, Pd)), A.quad(Nat.add(q, WD.NWN(Nat.add(r, L)))), A.quad(WD.NWN(Nat.add(Nat.add(A.quad(q), r), L))),
+    e1,
+    Equal.cong(Nat, Nat, z => A.quad(z), Nat.add(q, WD.NWN(Nat.add(r, L))), WD.NWN(Nat.add(Nat.add(A.quad(q), r), L)),
+      Equal.trans(Nat, Nat.add(q, WD.NWN(Nat.add(r, L))), WD.NWN(Nat.add(A.quad(q), Nat.add(r, L))), WD.NWN(Nat.add(Nat.add(A.quad(q), r), L)),
+        Equal.sym(Nat, WD.NWN(Nat.add(A.quad(q), Nat.add(r, L))), Nat.add(q, WD.NWN(Nat.add(r, L))), VRX.nwn_quad(q, Nat.add(r, L))),
+        Equal.cong(Nat, Nat, z => WD.NWN(z), Nat.add(A.quad(q), Nat.add(r, L)), Nat.add(Nat.add(A.quad(q), r), L), Equal.sym(Nat, Nat.add(Nat.add(A.quad(q), r), L), Nat.add(A.quad(q), Nat.add(r, L)), F.nat__add_assoc(A.quad(q), r, L))))))
+
+# A piece at a (a <= L) of a region of L bytes at X = 4 q + r: its byte position.
+def vpos(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +ec: {U32.to_nat(c) == a : Nat},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +ha: {Nat.is_le(a, L) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(X, c)) == Nat.add(Nat.add(A.quad(q), r), a) : Nat}:
+  +X0 = Nat.add(A.quad(q), r)
+  +hb = F.nat__le_trans(Nat.add(a, X0), Nat.add(X0, L), VB.pw(2n+dd),
+    F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(X0, L)) == True{} : Bool}, Nat.add(X0, a), Nat.add(a, X0), F.nat__add_comm(X0, a), Order.add_left(X0, a, L, ha)),
+    VRX.xend(q, r, L, dd, hl))
+  +e1 = VB.add_le_at(X, c, X0, 2n+dd, e, hd,
+    F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, X0), VB.pw(2n+dd)) == True{} : Bool}, a, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), a, ec), hb))
+  Equal.trans(Nat, U32.to_nat(U32.add(X, c)), Nat.add(U32.to_nat(c), X0), Nat.add(X0, a), e1,
+    Equal.trans(Nat, Nat.add(U32.to_nat(c), X0), Nat.add(a, X0), Nat.add(X0, a), Equal.cong(Nat, Nat, z => Nat.add(z, X0), U32.to_nat(c), a, ec), F.nat__add_comm(a, X0)))
+
+# The piece's m bytes at Xc = X0 + a, a + m <= L: the room of its writer.
+def croom(+Xc: U32, +q: Nat, +r: Nat, +a: Nat, +m: Nat, +L: Nat, +dd: Nat,
+    +epos: {U32.to_nat(Xc) == Nat.add(Nat.add(A.quad(q), r), a) : Nat}, +hk: {Nat.is_le(Nat.add(a, m), L) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(QX(Xc), WD.NWN(Nat.add(RX(Xc), m))), VB.pw(dd)) == True{} : Bool}:
+  +X0 = Nat.add(A.quad(q), r)
+  +y1 = Nat.add(A.quad(QX(Xc)), Nat.add(RX(Xc), m))
+  +e1 = Equal.trans(Nat, y1, Nat.add(Nat.add(A.quad(QX(Xc)), RX(Xc)), m), Nat.add(X0, Nat.add(a, m)),
+    Equal.sym(Nat, Nat.add(Nat.add(A.quad(QX(Xc)), RX(Xc)), m), y1, F.nat__add_assoc(A.quad(QX(Xc)), RX(Xc), m)),
+    Equal.trans(Nat, Nat.add(Nat.add(A.quad(QX(Xc)), RX(Xc)), m), Nat.add(Nat.add(X0, a), m), Nat.add(X0, Nat.add(a, m)),
+      Equal.cong(Nat, Nat, z => Nat.add(z, m), Nat.add(A.quad(QX(Xc)), RX(Xc)), Nat.add(X0, a), Equal.trans(Nat, Nat.add(A.quad(QX(Xc)), RX(Xc)), U32.to_nat(Xc), Nat.add(X0, a), Equal.sym(Nat, U32.to_nat(Xc), Nat.add(A.quad(QX(Xc)), RX(Xc)), VC.split4(Xc)), epos)),
+      F.nat__add_assoc(X0, a, m)))
+  +h1 = F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(X0, L)) == True{} : Bool}, Nat.add(X0, Nat.add(a, m)), y1, Equal.sym(Nat, y1, Nat.add(X0, Nat.add(a, m)), e1), Order.add_left(X0, Nat.add(a, m), L, hk))
+  +h2 = F.logic__subst(Nat, z => {Nat.is_le(y1, z) == True{} : Bool}, Nat.add(X0, L), Nat.add(A.quad(q), Nat.add(r, L)), F.nat__add_assoc(A.quad(q), r, L), h1)
+  +h3 = VRX.nwn_mono(y1, Nat.add(A.quad(q), Nat.add(r, L)), h2)
+  F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, WD.NWN(y1), Nat.add(QX(Xc), WD.NWN(Nat.add(RX(Xc), m))), VRX.nwn_quad(QX(Xc), Nat.add(RX(Xc), m)),
+    F.nat__le_trans(WD.NWN(y1), WD.NWN(Nat.add(A.quad(q), Nat.add(r, L))), VB.pw(dd), h3,
+      F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(q, WD.NWN(Nat.add(r, L))), WD.NWN(Nat.add(A.quad(q), Nat.add(r, L))),
+        Equal.sym(Nat, WD.NWN(Nat.add(A.quad(q), Nat.add(r, L))), Nat.add(q, WD.NWN(Nat.add(r, L))), VRX.nwn_quad(q, Nat.add(r, L))), hl)))
+
+def VME4(+a: Nat, +b: Nat, +h: {Nat.is_le(a, b) == True{} : Bool}) -> {Nat.is_le(A.quad(a), A.quad(b)) == True{} : Bool}:
+  F.nat__double_le(Nat.double(a), Nat.double(b), F.nat__double_le(a, b, h))
+
+# The zeros a piece's writer puts after it (to the end of its last word) fit in the S bytes after
+# it in the region, when the region ends at a word end: a + m + S = L + PADB(r, L).
+def padfit(+Xc: U32, +q: Nat, +r: Nat, +a: Nat, +m: Nat, +L: Nat, +S: Nat,
+    +epos: {U32.to_nat(Xc) == Nat.add(Nat.add(A.quad(q), r), a) : Nat}, +hk: {Nat.is_le(Nat.add(a, m), L) == True{} : Bool},
+    +eS: {Nat.add(Nat.add(a, m), S) == Nat.add(L, WD.PADB(r, L)) : Nat})
+    -> {Nat.is_le(WD.PADB(RX(Xc), m), S) == True{} : Bool}:
+  +X0 = Nat.add(A.quad(q), r)
+  +pc = WD.PADB(RX(Xc), m)
+  +xc = Nat.add(X0, a)
+  +ex = Equal.trans(Nat, Nat.add(A.quad(QX(Xc)), RX(Xc)), U32.to_nat(Xc), xc, Equal.sym(Nat, U32.to_nat(Xc), Nat.add(A.quad(QX(Xc)), RX(Xc)), VC.split4(Xc)), epos)
+  # the child's end: xc + (m + pc) = 4 NWN(xc + m)
+  +ec = F.logic__subst(Nat, z => {Nat.add(z, Nat.add(m, pc)) == A.quad(WD.NWN(Nat.add(z, m))) : Nat}, Nat.add(A.quad(QX(Xc)), RX(Xc)), xc, ex, e_end2(QX(Xc), RX(Xc), m))
+  # the region's end: X0 + (L + PADB) = 4 NWN(X0 + L)
+  +eR = e_end2(q, r, L)
+  +hxm = F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(X0, L)) == True{} : Bool}, Nat.add(X0, Nat.add(a, m)), Nat.add(xc, m), Equal.sym(Nat, Nat.add(xc, m), Nat.add(X0, Nat.add(a, m)), F.nat__add_assoc(X0, a, m)),
+    Order.add_left(X0, Nat.add(a, m), L, hk))
+  +hq = VME4(WD.NWN(Nat.add(xc, m)), WD.NWN(Nat.add(X0, L)), VRX.nwn_mono(Nat.add(xc, m), Nat.add(X0, L), hxm))
+  +h1 = F.logic__subst(Nat, z => {Nat.is_le(z, A.quad(WD.NWN(Nat.add(X0, L)))) == True{} : Bool}, A.quad(WD.NWN(Nat.add(xc, m))), Nat.add(xc, Nat.add(m, pc)), Equal.sym(Nat, Nat.add(xc, Nat.add(m, pc)), A.quad(WD.NWN(Nat.add(xc, m))), ec), hq)
+  +h2 = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(xc, Nat.add(m, pc)), z) == True{} : Bool}, A.quad(WD.NWN(Nat.add(X0, L))), Nat.add(X0, Nat.add(L, WD.PADB(r, L))), Equal.sym(Nat, Nat.add(X0, Nat.add(L, WD.PADB(r, L))), A.quad(WD.NWN(Nat.add(X0, L))), eR), h1)
+  # X0 + (L + PADB) = X0 + ((a + m) + S) = (xc + m) + S; xc + (m + pc) = (xc + m) + pc
+  +eRS = Equal.trans(Nat, Nat.add(X0, Nat.add(L, WD.PADB(r, L))), Nat.add(X0, Nat.add(Nat.add(a, m), S)), Nat.add(Nat.add(xc, m), S),
+    Equal.cong(Nat, Nat, z => Nat.add(X0, z), Nat.add(L, WD.PADB(r, L)), Nat.add(Nat.add(a, m), S), Equal.sym(Nat, Nat.add(Nat.add(a, m), S), Nat.add(L, WD.PADB(r, L)), eS)),
+    Equal.trans(Nat, Nat.add(X0, Nat.add(Nat.add(a, m), S)), Nat.add(Nat.add(X0, Nat.add(a, m)), S), Nat.add(Nat.add(xc, m), S),
+      Equal.sym(Nat, Nat.add(Nat.add(X0, Nat.add(a, m)), S), Nat.add(X0, Nat.add(Nat.add(a, m), S)), F.nat__add_assoc(X0, Nat.add(a, m), S)),
+      Equal.cong(Nat, Nat, z => Nat.add(z, S), Nat.add(X0, Nat.add(a, m)), Nat.add(xc, m), Equal.sym(Nat, Nat.add(xc, m), Nat.add(X0, Nat.add(a, m)), F.nat__add_assoc(X0, a, m)))))
+  +h3 = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(xc, Nat.add(m, pc)), z) == True{} : Bool}, Nat.add(X0, Nat.add(L, WD.PADB(r, L))), Nat.add(Nat.add(xc, m), S), eRS, h2)
+  +h4 = F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(Nat.add(xc, m), S)) == True{} : Bool}, Nat.add(xc, Nat.add(m, pc)), Nat.add(Nat.add(xc, m), pc), Equal.sym(Nat, Nat.add(Nat.add(xc, m), pc), Nat.add(xc, Nat.add(m, pc)), F.nat__add_assoc(xc, m, pc)), h3)
+  VZ.le_cancel(Nat.add(xc, m), pc, S, h4)
+
+law nwn_up:
+  for +y: Nat
+  {Nat.is_le(A.quad(WD.NWN(y)), Nat.add(3n, y)) == True{} : Bool}
+def nwn_up(y):
+  match y:
+    case 0n: {==}
+    case 1n: {==}
+    case 2n: {==}
+    case 3n: {==}
+    case 4n+ +z: nwn_up(z)
+
+# The zeros after an unaligned write of whole words' worth: at most 3.
+def padb3(+r: Nat, +m: Nat) -> {Nat.is_le(WD.PADB(r, m), 3n) == True{} : Bool}:
+  +y = Nat.add(r, m)
+  +e1 = padb_id(r, m)
+  +h1 = nwn_up(y)
+  +h2 = F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(3n, y)) == True{} : Bool}, A.quad(WD.NWN(y)), Nat.add(y, WD.PADB(r, m)), Equal.sym(Nat, Nat.add(y, WD.PADB(r, m)), A.quad(WD.NWN(y)), e1), h1)
+  VZ.le_cancel(y, WD.PADB(r, m), 3n, F.logic__subst(Nat, z => {Nat.is_le(Nat.add(y, WD.PADB(r, m)), z) == True{} : Bool}, Nat.add(3n, y), Nat.add(y, 3n), F.nat__add_comm(3n, y), h2))
+
