@@ -51,9 +51,12 @@ CHILD_MOD = {
     'l16_WithdrawalRequest': 'var_winx_l16_WithdrawalRequest.bend',
     'l2_ConsolidationRequest': 'var_winx_l2_ConsolidationRequest.bend',
     'l128_u64': 'var_winx_l128_u64.bend',
+    'BeaconBlockBody': 'big_var_winx_BeaconBlockBody.bend',
+    'BeaconBlock': 'big_var_winx_BeaconBlock.bend',
 }
 # (container, output file) of the tracked modules
-MODULES = [('BeaconBlockBody', 'big_var_winx_BeaconBlockBody.bend')]
+MODULES = [('BeaconBlockBody', 'big_var_winx_BeaconBlockBody.bend'), ('BeaconBlock', 'big_var_winx_BeaconBlock.bend'),
+           ('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock.bend')]
 
 CW = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},\n'
       '    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},\n'
@@ -927,7 +930,7 @@ def main():
             continue
         L = layout(name)
         # a container is generated once all its children's window modules exist
-        missing = [f['mod'] for f in L.vars if not (ROOT / 'proofs/obj' / f['mod']).exists()]
+        missing = [f['mod'] for f in L.vars if not (ROOT / 'proofs/obj' / f['mod']).exists() and ROOT / 'proofs/obj' / f['mod'] not in out]
         if missing:
             print(f'{fn}: waits for ' + ', '.join(missing))
             continue
