@@ -53,11 +53,11 @@ CORE = KINDS[:9]
 # law-name forms per kind (<X> the name; bare names are the per-name modules' laws)
 LAW_FORMS = {
     'root': [r'<X>_root_correct'],
-    'ok_eval': [r'ok_eval'],
+    'ok_eval': [r'ok_eval', r'<X>_ok_eval'],
     'decode_accept': [r'decode_accept', r'<X>_spec_decode', r'<X>_spec_decode_[01]'],
     'decode_spec': [r'decode_spec', r'<X>_spec_decoded', r'<X>_spec_encode', r'<X>_(true|false)_spec_encode', r'<X>_spec_value'],
     'decode_unique': [r'decode_unique', r'<X>_spec_unique', r'<X>_spec_unique_[01]'],
-    'decode_reject': [r'decode_reject', r'<X>_outside', r'<X>_spec_reject_outside'],
+    'decode_reject': [r'decode_reject', r'<X>_outside', r'<X>_spec_reject_outside', r'<X>_decode_reject'],
     'decode_none': [r'decode_none', r'<X>_spec_reject', r'<X>_spec_reject_(bool|pad)', r'<X>_spec_decode_reject'],
     'encode_eval': [r'encode_eval', r'<X>_spec_bytes', r'<X>_(true|false)_spec_bytes'],
     'encode_spec': [r'encode_spec', r'<X>_spec_encode', r'<X>_(true|false)_spec_encode'],
@@ -81,7 +81,7 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'root':
         return 'RR.roots(' in concl and f'T.{X}_hash_tree_root(' in concl
     if kind == 'ok_eval':
-        return concl.startswith(f'{{T.{X}_ok(')
+        return concl.startswith(f'{{T.{X}_ok(') or (X in VALIDATOR and concl.startswith(f'{{T.{VALIDATOR[X]}_ok('))
     if kind in ('decode_accept', 'decode_input', 'decode_tree'):
         return concl.startswith('{' + dec) and 'Some{' in concl
     if kind in ('decode_none', 'reject_short', 'reject_long'):
@@ -101,6 +101,19 @@ def SHAPE(kind, X, concl, hyps):
     if kind == 'serialize_valid':
         return concl.startswith(f'{{T.{X}_serialize(')
     return False
+
+
+def validators():
+    """{name: the runtime prefix of its decoder's validator} (X_decode = X_built(size, P_ok(buf, 0, size)))"""
+    out = {}
+    for f in ('types/fulu_obj.bend', 'types/generic_obj.bend'):
+        src = (ROOT / f).read_text()
+        for m in re.finditer(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
+            out[m.group(1)] = m.group(2)
+    return out
+
+
+VALIDATOR = validators()
 
 
 def universe():
@@ -213,6 +226,8 @@ def scan():
         for k, n, params, st in bl:
             hyps = ' '.join(params)
             xs = {m.group(1) for m in api.finditer(st)} | {m.group(1) or m.group(2) for m in spc.finditer(st + ' ' + hyps)}
+            if n.endswith('_ok_eval'):
+                xs.add(n[:-len('_ok_eval')])
             for X in xs & U:
                 for kind in KINDS:
                     if any(re.fullmatch(pat.replace('<X>', re.escape(X)), n) for pat in LAW_FORMS[kind]) and SHAPE(kind, X, st, hyps):
