@@ -134,11 +134,15 @@ def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
       +hb = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(z, 16n, x), P) == True{} : Bool}, c, Nat.add(1n+k, 0n),
         Equal.trans(Nat, c, 1n+k, Nat.add(1n+k, 0n), Equal.sym(Nat, 1n+k, c, e1), Equal.sym(Nat, Nat.add(1n+k, 0n), 1n+k, FD.nat__add_zero(1n+k))), hLc)
       +hcl = hcw(len, hchk)
-      +hcp = VD.wd_cover(NN(len), 18n, {==}, FD.nat__le_trans(c, U32.to_nat(262144), O.pow2n(18n), hcl, {==}))
+      +hcN = FD.logic__subst(Nat, z => {Nat.is_le(c, z) == True{} : Bool}, VB.pw(2n+d), O.pow2n(2n+d), VD.s_pow2_eq(2n+d),
+        FD.nat__le_trans(c, Nat.mul(c, 16n), VB.pw(2n+d), VRL.le_mul(c, 15n),
+          FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(2n+d)) == True{} : Bool}, U32.to_nat(len), Nat.mul(c, 16n), ec,
+            FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw))))
+      +hcp = VD.wd_cover(NN(len), 2n+d, FD.nat__lt_le(d, 30n, FD.nat__lt_trans(d, 28n, 30n, hd, {==})), hcN)
       +hcP = FD.logic__subst(Nat, z => {Nat.is_le(c, z) == True{} : Bool}, O.pow2n(B.words_depth(NN(len))), VB.pw(B.words_depth(NN(len))), Equal.sym(Nat, VB.pw(B.words_depth(NN(len))), O.pow2n(B.words_depth(NN(len))), VD.s_pow2_eq(B.words_depth(NN(len)))), hcp)
       +hk = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(B.words_depth(NN(len)))) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)),
         FD.nat__lt_le_trans(k, c, VB.pw(B.words_depth(NN(len))), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hcP))
-      +hdd = FD.nat__le_lt_trans(B.words_depth(NN(len)), 18n, 32n, VD.wd_min(NN(len), 18n, FD.nat__le_trans(c, U32.to_nat(262144), O.pow2n(18n), hcl, {==})), {==})
+      +hdd = FD.nat__le_lt_trans(B.words_depth(NN(len)), 2n+d, 32n, VD.wd_min(NN(len), 2n+d, hcN), FD.nat__lt_trans(d, 28n, 30n, hd, {==}))
       +hb0 = FD.nat__le_trans(Nat.add(x, 16n), Nat.add(x, U32.to_nat(len)), P,
         Order.add_left(x, 16n, U32.to_nat(len), FD.logic__subst(Nat, z => {Nat.is_le(16n, z) == True{} : Bool}, Nat.mul(c, 16n), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), Nat.mul(c, 16n), ec),
           FD.logic__subst(Nat, z => {Nat.is_le(16n, Nat.mul(z, 16n)) == True{} : Bool}, 1n+k, c, e1, Order.below_sum(16n, Nat.mul(k, 16n))))), hw)

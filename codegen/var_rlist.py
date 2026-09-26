@@ -33,6 +33,24 @@ LISTS = [('ExecutionRequests', 'deposits'), ('ExecutionRequests', 'withdrawals')
 BIG_LIM = 8192
 
 
+def sym_depth(text, RS, KL):
+    """rd_go's bound on the record storage depth from the window (count <= len <= 2^(d+2)),
+    not from the closed limit (whose unary value exhausts the checker's memory)."""
+    T = 'True{} : Bool'
+    hcp = f'      +hcp = VD.wd_cover(NN(len), {KL}n, {{==}}, FD.nat__le_trans(c, U32.to_nat('
+    a = text.index(hcp)
+    text = text[:a] + (f'      +hcN = FD.logic__subst(Nat, z => {{Nat.is_le(c, z) == {T}}}, VB.pw(2n+d), O.pow2n(2n+d), VD.s_pow2_eq(2n+d),\n'
+                       f'        FD.nat__le_trans(c, Nat.mul(c, {RS}n), VB.pw(2n+d), VRL.le_mul(c, {RS - 1}n),\n'
+                       f'          FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(2n+d)) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec,\n'
+                       f'            FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw))))\n'
+                       f'      +hcp = VD.wd_cover(NN(len), 2n+d, FD.nat__lt_le(d, 30n, FD.nat__lt_trans(d, 28n, 30n, hd, {{==}})), hcN)\n') + text[text.index('\n', a) + 1:]
+    hdd = '      +hdd = FD.nat__le_lt_trans(B.words_depth(NN(len)), '
+    a = text.index(hdd)
+    text = text[:a] + '      +hdd = FD.nat__le_lt_trans(B.words_depth(NN(len)), 2n+d, 32n, VD.wd_min(NN(len), 2n+d, hcN), FD.nat__lt_trans(d, 28n, 30n, hd, {==}))\n' + text[text.index('\n', a) + 1:]
+    assert f'O.pow2n({KL}n)' not in text
+    return text
+
+
 def winx_name(p, LIM):
     return f'{"big_" if LIM > BIG_LIM else ""}var_winx_{p}.bend'
 
@@ -433,7 +451,10 @@ def outputs():
            ROOT / 'proofs/obj/vrc.bend': (ROOT / 'codegen/vrc.bend.in').read_text()}
     for parent, field in LISTS:
         I = info(g, names, parent, field)
-        out[ROOT / f'proofs/obj/{winx_name(I["p"], I["LIM"])}'] = list_text(g, names, parent, field)
+        txt = list_text(g, names, parent, field)
+        if I['LIM'] > BIG_LIM:
+            txt = sym_depth(txt, I['RS'], I['KL'])
+        out[ROOT / f'proofs/obj/{winx_name(I["p"], I["LIM"])}'] = txt
     import var_rlist_box as BX
     out[ROOT / 'proofs/obj/vua_fixb.bend'] = BX.fixb_module(g, [dict(names[pa].fields)[f].elem for pa, f in BOXLISTS])
     for parent, field in BOXLISTS:
