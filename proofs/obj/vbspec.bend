@@ -251,3 +251,92 @@ def out_dr(pre, Y, post):
     {VS.bdr(Nat.add(VR.lens(pre), 4n+VR.lens(post)), _) == Y : +List<U32>}
   %eL : {VS.bdr(_, List.append(&2, U32, Pf, Y)) == Y : +List<U32>}
   VS.bdr_app(Pf, Y)
+
+# ---- headers of word segments (some of them symbolic) ------------------------------------------
+
+def cat(wss: +List<+List<U32>>) -> List<&2, U32>:
+  match wss:
+    case Nil{}: []
+    case Con{ws, t}: VF.app(ws, cat(t))
+
+law flat_cat:
+  for +wss: +List<+List<U32>>
+  {FX.flat(wss) == FX.limbs(cat(wss)) : +List<U32>}
+def flat_cat(wss):
+  match wss:
+    case Nil{}: {==}
+    case Con{+ws, +t}:
+      %Equal.sym(+List<U32>, FX.flat(t), FX.limbs(cat(t)), flat_cat(t)) : {List.append(&2, U32, FX.limbs(ws), _) == FX.limbs(VF.app(ws, cat(t))) : +List<U32>}
+      Equal.sym(+List<U32>, FX.limbs(VF.app(ws, cat(t))), List.append(&2, U32, FX.limbs(ws), FX.limbs(cat(t))), VF.limbs_app(ws, cat(t)))
+
+# The offset layout's fixed bytes are the limbs of the concatenated segments.
+law hdr_flat:
+  for +pre: +List<+List<U32>>
+  for +x: U32
+  for +post: +List<+List<U32>>
+  {List.append(&2, U32, FX.flat(pre), List.append(&2, U32, FX.limbs([x]), FX.flat(post))) == FX.limbs(cat(List.append(&2, +List<U32>, pre, Con{[x], post}))) : +List<U32>}
+def hdr_flat(pre, x, post):
+  match pre:
+    case Nil{}:
+      %Equal.sym(+List<U32>, FX.flat(post), FX.limbs(cat(post)), flat_cat(post)) : {List.append(&2, U32, FX.limbs([x]), _) == FX.limbs(VF.app([x], cat(post))) : +List<U32>}
+      Equal.sym(+List<U32>, FX.limbs(VF.app([x], cat(post))), List.append(&2, U32, FX.limbs([x]), FX.limbs(cat(post))), VF.limbs_app([x], cat(post)))
+    case Con{+ws, +t}:
+      +R = List.append(&2, U32, FX.limbs([x]), FX.flat(post))
+      %Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, FX.limbs(ws), FX.flat(t)), R), List.append(&2, U32, FX.limbs(ws), List.append(&2, U32, FX.flat(t), R)), VS.app_assoc(FX.limbs(ws), FX.flat(t), R)) : {_ == FX.limbs(VF.app(ws, cat(List.append(&2, +List<U32>, t, Con{[x], post})))) : +List<U32>}
+      %Equal.sym(+List<U32>, List.append(&2, U32, FX.flat(t), R), FX.limbs(cat(List.append(&2, +List<U32>, t, Con{[x], post}))), hdr_flat(t, x, post)) :
+        {List.append(&2, U32, FX.limbs(ws), _) == FX.limbs(VF.app(ws, cat(List.append(&2, +List<U32>, t, Con{[x], post})))) : +List<U32>}
+      Equal.sym(+List<U32>, FX.limbs(VF.app(ws, cat(List.append(&2, +List<U32>, t, Con{[x], post})))), List.append(&2, U32, FX.limbs(ws), FX.limbs(cat(List.append(&2, +List<U32>, t, Con{[x], post})))),
+        VF.limbs_app(ws, cat(List.append(&2, +List<U32>, t, Con{[x], post}))))
+
+def lsum(wss: +List<+List<U32>>) -> Nat:
+  match wss:
+    case Nil{}: 0n
+    case Con{ws, t}: Nat.add(List.length(&2, U32, ws), lsum(t))
+
+law len_flat:
+  for +wss: +List<+List<U32>>
+  {List.length(&2, U32, FX.flat(wss)) == A.quad(lsum(wss)) : Nat}
+def len_flat(wss):
+  match wss:
+    case Nil{}: {==}
+    case Con{+ws, +t}:
+      %Equal.sym(Nat, List.length(&2, U32, List.append(&2, U32, FX.limbs(ws), FX.flat(t))), Nat.add(List.length(&2, U32, FX.limbs(ws)), List.length(&2, U32, FX.flat(t))), VS.len_app(FX.limbs(ws), FX.flat(t))) :
+        {_ == A.quad(Nat.add(List.length(&2, U32, ws), lsum(t))) : Nat}
+      %Equal.sym(Nat, List.length(&2, U32, FX.flat(t)), A.quad(lsum(t)), len_flat(t)) : {Nat.add(List.length(&2, U32, FX.limbs(ws)), _) == A.quad(Nat.add(List.length(&2, U32, ws), lsum(t))) : Nat}
+      %Equal.sym(Nat, List.length(&2, U32, FX.limbs(ws)), FX.wlen(ws), VS.len_limbs(ws)) : {Nat.add(_, A.quad(lsum(t))) == A.quad(Nat.add(List.length(&2, U32, ws), lsum(t))) : Nat}
+      %Equal.sym(Nat, FX.wlen(ws), A.quad(List.length(&2, U32, ws)), VS.wlen_quad(ws)) : {Nat.add(_, A.quad(lsum(t))) == A.quad(Nat.add(List.length(&2, U32, ws), lsum(t))) : Nat}
+      VF.quad_add(List.length(&2, U32, ws), lsum(t))
+
+def fsz_eq(+pre: +List<+List<U32>>, +post: +List<+List<U32>>) -> {VS.FSZ(pre, post) == Nat.add(A.quad(lsum(pre)), 4n+A.quad(lsum(post))) : Nat}:
+  %Equal.sym(Nat, List.length(&2, U32, FX.flat(pre)), A.quad(lsum(pre)), len_flat(pre)) : {Nat.add(_, 4n+List.length(&2, U32, FX.flat(post))) == Nat.add(A.quad(lsum(pre)), 4n+A.quad(lsum(post))) : Nat}
+  %Equal.sym(Nat, List.length(&2, U32, FX.flat(post)), A.quad(lsum(post)), len_flat(post)) : {Nat.add(A.quad(lsum(pre)), 4n+_) == Nat.add(A.quad(lsum(pre)), 4n+A.quad(lsum(post))) : Nat}
+  {==}
+
+law len_sapp:
+  for +a: List<&2, U32>
+  for +b: List<&2, U32>
+  {List.length(&2, U32, VF.app(a, b)) == Nat.add(List.length(&2, U32, a), List.length(&2, U32, b)) : Nat}
+def len_sapp(a, b):
+  match a:
+    case Nil{}: {==}
+    case Con{+h, +t}:
+      %Equal.sym(Nat, List.length(&2, U32, VF.app(t, b)), Nat.add(List.length(&2, U32, t), List.length(&2, U32, b)), len_sapp(t, b)) : {1n+_ == 1n+Nat.add(List.length(&2, U32, t), List.length(&2, U32, b)) : Nat}
+      {==}
+
+law len_take:
+  for +m: Nat
+  for +W: List<&2, U32>
+  for +h: {Nat.is_le(m, VB.len(W)) == True{} : Bool}
+  {F.spec_common__length(U32, VS.wtake(m, W)) == m : Nat}
+def len_take(m, W, h):
+  match m W:
+    case 0n +W0: {==}
+    case 1n+ +p Nil{}: Empty.absurd({F.spec_common__length(U32, VS.wtake(1n+p, Nil{})) == 1n+p : Nat}, F.logic__false_true(h))
+    case 1n+ +p Con{+x, +t}:
+      %Equal.sym(Nat, F.spec_common__length(U32, VS.wtake(p, t)), p, len_take(p, t, h)) : {1n+_ == 1n+p : Nat}
+      {==}
+
+# A window of m words at p of a list of length at least m + p has m words.
+def len_win(+m: Nat, +p: Nat, +X: List<&2, U32>, +h: {Nat.is_le(Nat.add(m, p), VB.len(X)) == True{} : Bool})
+    -> {F.spec_common__length(U32, VS.wtake(m, VB.wdr(p, X))) == m : Nat}:
+  len_take(m, VB.wdr(p, X), wdr_len_le(m, p, X, h))
