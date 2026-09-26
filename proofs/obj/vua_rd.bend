@@ -13,6 +13,7 @@ import ./vcopy.bend as VC
 import ./vbrt.bend as VR
 import ../../proofs/nat_order.bend as Order
 import ./vua.bend as UA
+import ./vua_copy.bend as UC
 
 # The unaligned-offset layer, U3: the runtime's fixed-size scalar reads at ANY
 # byte offset X. A uint64 is two four-byte reads (rd64_any), whose limbs are
@@ -283,3 +284,68 @@ def wtake_rws(m, t, k):
     case 1n+ +p:
       %wtake_rws(p, t, 4n+k) : {Con{RWN(t, k), VS.wtake(p, RWS(p, t, 4n+k))} == Con{RWN(t, k), _} : List<&2, U32>}
       {==}
+
+# ---- a four-byte read that may reach one word past the array -------------------------------
+
+def RWW(+d: Nat, +t: F.array__Tree<U32>, +X: U32) -> U32: UA.jn(VR.RX(X), VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))
+
+def wrs(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +q: U32, +k: Nat, +eq: {U32.to_nat(q) == k : Nat},
+    +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hk: {Nat.is_le(k, VB.pw(d)) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool})
+    -> {B.word(UA.BF(t, n), q) == (UA.BF(t, n), UC.RS(d, t, k)) : B.Buf & U32}:
+  %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), q), (F.array__thaw(U32, t), UC.RS(d, t, k)), UC.get_rs(d, t, q, k, eq, hd, hk, pf)) :
+    {B.rewrap(n, _) == (UA.BF(t, n), UC.RS(d, t, k)) : B.Buf & U32}
+  {==}
+
+def w1f(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +X: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hq: {Nat.is_lt(VR.QX(X), VB.pw(d)) == True{} : Bool})
+    -> {B.word(UA.BF(t, n), U32.add(U32.shrn(X, 2n), 1)) == (UA.BF(t, n), UC.RS(d, t, 1n+VR.QX(X))) : B.Buf & U32}:
+  +hq1 = F.nat__lt_succ_le_succ(VR.QX(X), VB.pw(d), hq)
+  wrs(d, t, n, U32.add(U32.shrn(X, 2n), 1), 1n+VR.QX(X), VB.add_le_at(U32.shrn(X, 2n), 1, VR.QX(X), d, {==}, hd, hq1), VB.lt32(d, hd), hq1, pf)
+
+def rdl_r(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +X: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hq: {Nat.is_lt(VR.QX(X), VB.pw(d)) == True{} : Bool},
+    +r: Nat, +er: {VR.RX(X) == r : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool})
+    -> {B.read32(UA.BF(t, n), X) == (UA.BF(t, n), UA.jn(r, VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))) : B.Buf & U32}:
+  match r:
+    case 0n:
+      +e3 = F.u32__injective(U32.and(X, 3), 0, er)
+      %Equal.sym(U32, U32.and(X, 3), 0, e3) : {B.read32_choose(X, _, U32.is_eq(_, 0), UA.BF(t, n)) == (UA.BF(t, n), VB.slot(t, VR.QX(X))) : B.Buf & U32}
+      VR.rdw(d, t, n, U32.shrn(X, 2n), VR.QX(X), {==}, VB.lt32(d, hd), hq, pf)
+    case 1n:
+      +e3 = F.u32__injective(U32.and(X, 3), 1, er)
+      %Equal.sym(U32, U32.and(X, 3), 1, e3) : {B.read32_choose(X, _, U32.is_eq(_, 0), UA.BF(t, n)) == (UA.BF(t, n), B.join_sel(1, VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))) : B.Buf & U32}
+      %Equal.sym(B.Buf & U32, B.word(UA.BF(t, n), U32.shrn(X, 2n)), (UA.BF(t, n), VB.slot(t, VR.QX(X))), VR.rdw(d, t, n, U32.shrn(X, 2n), VR.QX(X), {==}, VB.lt32(d, hd), hq, pf)) :
+        {B.read32_split(X, 1, _) == (UA.BF(t, n), B.join_sel(1, VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))) : B.Buf & U32}
+      %Equal.sym(B.Buf & U32, B.word(UA.BF(t, n), U32.add(U32.shrn(X, 2n), 1)), (UA.BF(t, n), UC.RS(d, t, 1n+VR.QX(X))), w1f(d, t, n, X, hd, pf, hq)) :
+        {B.join_words(1, VB.slot(t, VR.QX(X)), _) == (UA.BF(t, n), B.join_sel(1, VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))) : B.Buf & U32}
+      {==}
+    case 2n:
+      +e3 = F.u32__injective(U32.and(X, 3), 2, er)
+      %Equal.sym(U32, U32.and(X, 3), 2, e3) : {B.read32_choose(X, _, U32.is_eq(_, 0), UA.BF(t, n)) == (UA.BF(t, n), B.join_sel(2, VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))) : B.Buf & U32}
+      %Equal.sym(B.Buf & U32, B.word(UA.BF(t, n), U32.shrn(X, 2n)), (UA.BF(t, n), VB.slot(t, VR.QX(X))), VR.rdw(d, t, n, U32.shrn(X, 2n), VR.QX(X), {==}, VB.lt32(d, hd), hq, pf)) :
+        {B.read32_split(X, 2, _) == (UA.BF(t, n), B.join_sel(2, VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))) : B.Buf & U32}
+      %Equal.sym(B.Buf & U32, B.word(UA.BF(t, n), U32.add(U32.shrn(X, 2n), 1)), (UA.BF(t, n), UC.RS(d, t, 1n+VR.QX(X))), w1f(d, t, n, X, hd, pf, hq)) :
+        {B.join_words(2, VB.slot(t, VR.QX(X)), _) == (UA.BF(t, n), B.join_sel(2, VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))) : B.Buf & U32}
+      {==}
+    case 3n:
+      +e3 = F.u32__injective(U32.and(X, 3), 3, er)
+      %Equal.sym(U32, U32.and(X, 3), 3, e3) : {B.read32_choose(X, _, U32.is_eq(_, 0), UA.BF(t, n)) == (UA.BF(t, n), B.join_sel(3, VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))) : B.Buf & U32}
+      %Equal.sym(B.Buf & U32, B.word(UA.BF(t, n), U32.shrn(X, 2n)), (UA.BF(t, n), VB.slot(t, VR.QX(X))), VR.rdw(d, t, n, U32.shrn(X, 2n), VR.QX(X), {==}, VB.lt32(d, hd), hq, pf)) :
+        {B.read32_split(X, 3, _) == (UA.BF(t, n), B.join_sel(3, VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))) : B.Buf & U32}
+      %Equal.sym(B.Buf & U32, B.word(UA.BF(t, n), U32.add(U32.shrn(X, 2n), 1)), (UA.BF(t, n), UC.RS(d, t, 1n+VR.QX(X))), w1f(d, t, n, X, hd, pf, hq)) :
+        {B.join_words(3, VB.slot(t, VR.QX(X)), _) == (UA.BF(t, n), B.join_sel(3, VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))) : B.Buf & U32}
+      {==}
+    case 4n+s: Empty.absurd({B.read32(UA.BF(t, n), X) == (UA.BF(t, n), UA.jn(4n+s, VB.slot(t, VR.QX(X)), UC.RS(d, t, 1n+VR.QX(X)))) : B.Buf & U32}, F.nat__lt_zero_absurd(s, hr))
+
+# A four-byte read at any X inside the array (X < 4 2^d) leaves the buffer.
+law rd_lt:
+  for +d: Nat
+  for +t: F.array__Tree<U32>
+  for +n: U32
+  for +X: U32
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
+  for +pf: {F.array__perfect(U32, d, t) == True{} : Bool}
+  for +h: {Nat.is_lt(U32.to_nat(X), A.quad(VB.pw(d))) == True{} : Bool}
+  {B.read32(UA.BF(t, n), X) == (UA.BF(t, n), RWW(d, t, X)) : B.Buf & U32}
+def rd_lt(d, t, n, X, hd, pf, h):
+  rdl_r(d, t, n, X, hd, pf, VR.hiX(d, X, U32.to_nat(X), {==}, h), VR.RX(X), {==}, UA.rx_lt(X))
