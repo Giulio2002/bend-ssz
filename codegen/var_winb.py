@@ -77,7 +77,9 @@ FIXMOD = {p: f'vfx_{p}.bend' for p in ['u64', 'b32', 'Fork', 'BeaconBlockHeader'
 GENERIC = [('Gc465214E502', {'l1024_u16': 'var_winx_l1024_u16.bend'}),
            ('Gc85FA758A04', {'bits5': 'var_winx_g_bits5.bend', 'bits6': 'var_winx_g_bits6.bend'}),
            ('Gc60805EC295', {'bits256': 'var_winx_g_bits256.bend', 'bits257': 'var_winx_g_bits257.bend', 'bits1280': 'var_winx_g_bits1280.bend',
-                             'bits1281': 'var_winx_g_bits1281.bend', 'pbits': 'big_var_winp_pbits.bend'})]
+                             'bits1281': 'var_winx_g_bits1281.bend', 'pbits': 'big_var_winp_pbits.bend'}),
+           ('Gc221EC01D83', {'pl_u8': 'big_var_winp_u8.bend', 'pl_u64': 'big_var_winp_pl_u64.bend', 'pl_Gc4ED9619F50': 'big_var_winx_pl_Gc4ED9619F50.bend',
+                             'pl_pl_Gc465214E502': 'big_vvl_pl_pl_Gc465214E502.bend'})]
 # (container, output file) of the tracked modules
 MODULES = [('BeaconBlockBody', 'big_var_winx_BeaconBlockBody.bend', False), ('BeaconBlock', 'big_var_winx_BeaconBlock.bend', False),
            ('SignedBeaconBlock', 'big_var_winx_SignedBeaconBlock.bend', False), ('BeaconState', 'big_var_winx_BeaconState.bend', True)]
