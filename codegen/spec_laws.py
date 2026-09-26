@@ -931,12 +931,19 @@ def repr_law(w, n, depth, size, nw, R, obj, law, rhs_of):
     tree of its words) and found.bend `logic__subst`."""
     tv = 'FD.array__Tree<U32>'
     words = [f'R.w(t, {i}n)' for i in range(1 << depth)]
-    ty = rhs_of('u', words)
+    # rewrite the buffer's array to the literal tree of its words first, so the
+    # law's instance matches syntactically (a motive over thaw(build(..)) made the
+    # checker compare the two decodes by running them: MatrixEntry 52 s)
+    LIT = tree(words)
+    BUILD = f'R.build({depth}n, R.lits(FD.spec_common__pow2({depth}n), FD.array__slots(U32, t)))'
+    pat = rhs_of('t', words).replace('FD.array__thaw(U32, t)', '_')
     w(f'def {law}_tree(+t: {tv}, +pf: {{FD.array__perfect(U32, {depth}n, t) == True{{}} : Bool}})')
     w(f'    -> {rhs_of("t", words)}:')
-    w(f'  FD.logic__subst({tv}, u => {ty},')
-    w(f'    R.build({depth}n, R.lits(FD.spec_common__pow2({depth}n), FD.array__slots(U32, t))), t, R.tree_words({depth}n, t, pf),')
-    w(f'    C.{law}({", ".join(words)}))')
+    w(f'  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), {LIT},')
+    w(f'      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, {BUILD}), {LIT},')
+    w(f'        Equal.cong({tv}, Array<U32>, v => FD.array__thaw(U32, v), t, {BUILD}, Equal.sym({tv}, {BUILD}, t, R.tree_words({depth}n, t, pf))), {{==}})) :')
+    w(f'    {pat}')
+    w(f'  C.{law}({", ".join(words)})')
 
 
 def emit_repr(w, n, node, size, R):

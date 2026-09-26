@@ -11,39 +11,53 @@ import ./spec_small.bend as C
 
 def uint8_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {T.uint8_decode(B.Buf{FD.array__thaw(U32, t), 1}, 1) == (B.Buf{FD.array__thaw(U32, t), 1}, Some{B.byte_sel(0, R.w(t, 0n))}) : B.Buf & Maybe<&1, U32>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {T.uint8_decode(B.Buf{FD.array__thaw(U32, u), 1}, 1) == (B.Buf{FD.array__thaw(U32, u), 1}, Some{B.byte_sel(0, R.w(t, 0n))}) : B.Buf & Maybe<&1, U32>},
-    R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf),
-    C.uint8_spec_decode(R.w(t, 0n)))
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ALeaf{R.w(t, 0n)},
+      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t)))), ALeaf{R.w(t, 0n)},
+        Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf))), {==})) :
+    {T.uint8_decode(B.Buf{_, 1}, 1) == (B.Buf{_, 1}, Some{B.byte_sel(0, R.w(t, 0n))}) : B.Buf & Maybe<&1, U32>}
+  C.uint8_spec_decode(R.w(t, 0n))
 def ParticipationFlags_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {T.ParticipationFlags_decode(B.Buf{FD.array__thaw(U32, t), 1}, 1) == (B.Buf{FD.array__thaw(U32, t), 1}, Some{B.byte_sel(0, R.w(t, 0n))}) : B.Buf & Maybe<&1, U32>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {T.ParticipationFlags_decode(B.Buf{FD.array__thaw(U32, u), 1}, 1) == (B.Buf{FD.array__thaw(U32, u), 1}, Some{B.byte_sel(0, R.w(t, 0n))}) : B.Buf & Maybe<&1, U32>},
-    R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf),
-    C.ParticipationFlags_spec_decode(R.w(t, 0n)))
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ALeaf{R.w(t, 0n)},
+      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t)))), ALeaf{R.w(t, 0n)},
+        Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf))), {==})) :
+    {T.ParticipationFlags_decode(B.Buf{_, 1}, 1) == (B.Buf{_, 1}, Some{B.byte_sel(0, R.w(t, 0n))}) : B.Buf & Maybe<&1, U32>}
+  C.ParticipationFlags_spec_decode(R.w(t, 0n))
 def Bytes1_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {T.Bytes1_decode(B.Buf{FD.array__thaw(U32, t), 1}, 1) == (B.Buf{FD.array__thaw(U32, t), 1}, Some{T.Bytes1{B.byte_sel(0, R.w(t, 0n))}}) : B.Buf & Maybe<&1, T.Bytes1>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {T.Bytes1_decode(B.Buf{FD.array__thaw(U32, u), 1}, 1) == (B.Buf{FD.array__thaw(U32, u), 1}, Some{T.Bytes1{B.byte_sel(0, R.w(t, 0n))}}) : B.Buf & Maybe<&1, T.Bytes1>},
-    R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf),
-    C.Bytes1_spec_decode(R.w(t, 0n)))
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ALeaf{R.w(t, 0n)},
+      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t)))), ALeaf{R.w(t, 0n)},
+        Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf))), {==})) :
+    {T.Bytes1_decode(B.Buf{_, 1}, 1) == (B.Buf{_, 1}, Some{T.Bytes1{B.byte_sel(0, R.w(t, 0n))}}) : B.Buf & Maybe<&1, T.Bytes1>}
+  C.Bytes1_spec_decode(R.w(t, 0n))
 def uint8_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 1}, 0, 1) == (B.Buf{FD.array__thaw(U32, t), 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {B.emit(B.Buf{FD.array__thaw(U32, u), 1}, 0, 1) == (B.Buf{FD.array__thaw(U32, u), 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>},
-    R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf),
-    C.uint8_spec_view(R.w(t, 0n)))
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ALeaf{R.w(t, 0n)},
+      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t)))), ALeaf{R.w(t, 0n)},
+        Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf))), {==})) :
+    {B.emit(B.Buf{_, 1}, 0, 1) == (B.Buf{_, 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>}
+  C.uint8_spec_view(R.w(t, 0n))
 def ParticipationFlags_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 1}, 0, 1) == (B.Buf{FD.array__thaw(U32, t), 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {B.emit(B.Buf{FD.array__thaw(U32, u), 1}, 0, 1) == (B.Buf{FD.array__thaw(U32, u), 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>},
-    R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf),
-    C.ParticipationFlags_spec_view(R.w(t, 0n)))
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ALeaf{R.w(t, 0n)},
+      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t)))), ALeaf{R.w(t, 0n)},
+        Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf))), {==})) :
+    {B.emit(B.Buf{_, 1}, 0, 1) == (B.Buf{_, 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>}
+  C.ParticipationFlags_spec_view(R.w(t, 0n))
 def Bytes1_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 1}, 0, 1) == (B.Buf{FD.array__thaw(U32, t), 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {B.emit(B.Buf{FD.array__thaw(U32, u), 1}, 0, 1) == (B.Buf{FD.array__thaw(U32, u), 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>},
-    R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf),
-    C.Bytes1_spec_view(R.w(t, 0n)))
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ALeaf{R.w(t, 0n)},
+      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t)))), ALeaf{R.w(t, 0n)},
+        Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf))), {==})) :
+    {B.emit(B.Buf{_, 1}, 0, 1) == (B.Buf{_, 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>}
+  C.Bytes1_spec_view(R.w(t, 0n))
 def boolean_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 1}, 0, 1) == (B.Buf{FD.array__thaw(U32, t), 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>}:
-  FD.logic__subst(FD.array__Tree<U32>, u => {B.emit(B.Buf{FD.array__thaw(U32, u), 1}, 0, 1) == (B.Buf{FD.array__thaw(U32, u), 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>},
-    R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf),
-    C.boolean_spec_view(R.w(t, 0n)))
+  %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ALeaf{R.w(t, 0n)},
+      Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t)))), ALeaf{R.w(t, 0n)},
+        Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf))), {==})) :
+    {B.emit(B.Buf{_, 1}, 0, 1) == (B.Buf{_, 1}, [B.byte_sel(0, R.w(t, 0n))]) : B.Buf & +List<U32>}
+  C.boolean_spec_view(R.w(t, 0n))
 def boolean_spec_decode_0_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool}, +h: {B.byte_sel(0, R.w(t, 0n)) == 0 : U32})
     -> {T.boolean_decode(B.Buf{FD.array__thaw(U32, t), 1}, 1) == (B.Buf{FD.array__thaw(U32, t), 1}, Some{False{}}) : B.Buf & Maybe<&1, Bool>}:
   FD.logic__subst(FD.array__Tree<U32>, u => {T.boolean_decode(B.Buf{FD.array__thaw(U32, u), 1}, 1) == (B.Buf{FD.array__thaw(U32, u), 1}, Some{False{}}) : B.Buf & Maybe<&1, Bool>},
