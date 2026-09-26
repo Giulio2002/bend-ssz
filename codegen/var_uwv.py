@@ -247,7 +247,7 @@ def gfull_text(p, C, N):
     return module(GHEAD_IMPORTS + uf, f'T.{p}_put (generic {C}, {N} words)', body)
 
 
-def gpart_text(p, C, N):
+def gpart_text(p, C, N, fulu=False):
     """A vector whose last word holds one byte: at r = 0 the run VF.updv (its last word OR-ed
     into a zero word), at r = s the open model SWo (the carry out of the last word is zero)."""
     ws = [f'w{k}' for k in range(N)]
@@ -493,6 +493,8 @@ def {p}_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, 
       UB{s}.swcbo(w0, [{", ".join(ws[1:])}], dd, D, q, pf, hl, hz)''')
     out.append(f'''    case 4n+ +t: Empty.absurd({BY("4n+t", "Nat.add(A.quad(q), 4n+t)")}, FD.nat__lt_zero_absurd(t, hr))
 ''')
+    if fulu:
+        return module(GHEAD_IMPORTS[1:] + ['import ../../src/primitives.bend as I'], f'T.{p}_put ({C}, {m} bytes)', '\n'.join(out))
     return module(GHEAD_IMPORTS + ['import ../../src/primitives.bend as I'], f'T.{p}_put (generic {C}, {m} bytes)', '\n'.join(out))
 
 def gwords_text(p, S, W, unit=1, generic=True):
@@ -853,6 +855,130 @@ def put_b4(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_na
 """
 
 
+
+
+# ---- big fixed vectors of packed words (BeaconState's block_roots, randao_mixes, slashings, ...) ----
+
+PWORDS = [('v8192_b32', 262144, 65536, 32), ('v65536_b32', 2097152, 524288, 32), ('v8192_u64', 65536, 16384, 8), ('v64_u64', 512, 128, 8)]
+
+
+def pwords_text(p, S, W, unit):
+    """A fixed vector of S = 4 W bytes held as packed words: its storage check, then O.put_words at
+    any X = 4 q + r (at r = 0 vuwd.pwn2 / mone_bytes, else vuwd.putw_loose), data-only. One core over a
+    symbolic byte count n = 4 K (no closed S- or W-sized Nat is ever reduced); the instance at n = S."""
+    import math
+    kw = math.ceil(math.log2(31 + S))
+    TD = TH.format('D')
+    WOn = 'O.Words{FD.array__thaw(U32, TB), n}'
+    PWn = 'UWD.PWM(r, dd, D, q, TB, n)'
+    TY = 'Array<U32> & (O.Words & U32)'
+    X0 = 'Nat.add(A.quad(q), r)'
+    LB = '+List<U32>'
+    RTn = f'{{T.{p}_putk({TD}, X, {WOn}) == ({TH.format(PWn)}, ({WOn}, 0)) : {TY}}}'
+    BYn = f'{{UA.BYT({PWn}) == UW.SPL(UA.BYT(D), {X0}, FX.limbs(VS.wtake(K, UW.SLW(TB)))) : {LB}}}'
+    WO = f'O.Words{{FD.array__thaw(U32, TB), {S}}}'
+    PX = lambda r: f'PX_{p}({r}, dd, D, q, TB)'  # noqa: E731
+    RT = f'{{T.{p}_putk({TD}, X, {WO}) == ({TH.format(PX("r"))}, ({WO}, 0)) : {TY}}}'
+    BY = f'{{UA.BYT({PX("r")}) == UW.SPL(UA.BYT(D), {X0}, FX.limbs(VS.wtake({W}n, UW.SLW(TB)))) : {LB}}}'
+    P = ('+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, ' + E_ + ',\n'
+         f'    +hd: {{Nat.is_lt(dd, 29n) == True{{}} : Bool}}, +hl: {{Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, {S}n))), VB.pw(dd)) == True{{}} : Bool}},\n'
+         '    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},\n'
+         f'    +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}}, +hrB: {{Nat.is_le({W}n, VB.pw(dB)) == True{{}} : Bool}},\n'
+         f'    +hz: {{VS.bt({S}n, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({S}n) : {LB}}}')
+    ARGS = 'dd, D, X, q, r, dB, TB, e, hr, hd, hl, pf, pfB, hdB, hrB, hz'
+    HZn = lambda m: f'{{VS.bt({m}, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({m}) : {LB}}}'  # noqa: E731
+    HZ0 = f'{{VS.bt(A.quad(VC.NW(n)), VS.bdr(Nat.add(A.quad(q), 0n), UA.BYT(D))) == UW.ZB(A.quad(VC.NW(n))) : {LB}}}'
+    cases = []
+    for s in (1, 2, 3):
+        cases.append(f'''    case {s}n:
+      +hls = UWD.le_q(q, VC.NW(n), VB.pw(dd), FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(q, z), VB.pw(dd)) == True{{}} : Bool}}, UWD.NWN(Nat.add({s}n, U32.to_nat(n))), 1n+VC.NW(n),
+        Equal.trans(Nat, UWD.NWN(Nat.add({s}n, U32.to_nat(n))), Nat.add(K, UWD.NWN({s}n)), 1n+VC.NW(n), nwk({s}n, n, K, eK),
+          Equal.trans(Nat, Nat.add(K, 1n), Nat.add(1n, K), 1n+VC.NW(n), FD.nat__add_comm(K, 1n), Equal.cong(Nat, Nat, z => 1n+z, K, VC.NW(n), Equal.sym(Nat, VC.NW(n), K, eW)))), hl))
+      +hzs = FD.logic__subst(Nat, z => {HZn("z")}, U32.to_nat(n), A.quad(VC.NW(n)), Equal.trans(Nat, U32.to_nat(n), A.quad(K), A.quad(VC.NW(n)), eK, Equal.cong(Nat, Nat, z => A.quad(z), K, VC.NW(n), Equal.sym(Nat, VC.NW(n), K, eW))), hz)
+      +w = UWD.putw_loose(dd, D, X, q, {s}n, dB, TB, n, {kw}n, e, hr, hd, hdB, {{==}}, hy, hsrc, hls, pf, pfB, hzs)
+      +b = UWD.putw_loose_bytes(dd, D, X, q, {s}n, dB, TB, n, {kw}n, e, hr, hd, hdB, {{==}}, hy, hsrc, hls, pf, pfB, hzs)
+      %eW : DK.P2({RTn.replace("(r,", f"({s}n,")}, {BYn.replace("(r,", f"({s}n,").replace(X0, f"Nat.add(A.quad(q), {s}n)").replace("VS.wtake(K,", "VS.wtake(_,")})
+      (rt(D, X, TB, n, UWD.PWM({s}n, dd, D, q, TB, n), hv, w), b)''')
+    body = f'''
+def DK2(-A: Data, -B: Data, +p: DK.P2(A, B)) -> A:
+  (+a, +b) = p
+  a
+
+def DK3(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:
+  (+a, +b) = p
+  b
+
+def PX_{p}(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +TB: FD.array__Tree<U32>) -> FD.array__Tree<U32>: UWD.PWM(r, dd, D, q, TB, {S})
+
+def {p}x_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +TB: FD.array__Tree<U32>, +pf: {{FD.array__perfect(U32, dd, D) == True{{}} : Bool}})
+    -> {{FD.array__perfect(U32, dd, {PX("r")}) == True{{}} : Bool}}:
+  UWD.pwm_perfect(r, dd, D, q, TB, {S}, pf)
+
+# NWN(s + 4 K) = K + NWN(s).
+def nwk(+s: Nat, +n: U32, +K: Nat, +eK: {{U32.to_nat(n) == A.quad(K) : Nat}}) -> {{UWD.NWN(Nat.add(s, U32.to_nat(n))) == Nat.add(K, UWD.NWN(s)) : Nat}}:
+  %Equal.sym(Nat, U32.to_nat(n), A.quad(K), eK) : {{UWD.NWN(Nat.add(s, _)) == Nat.add(K, UWD.NWN(s)) : Nat}}
+  %FD.nat__add_comm(A.quad(K), s) : {{UWD.NWN(_) == Nat.add(K, UWD.NWN(s)) : Nat}}
+  VRX.nwn_quad(K, s)
+
+# The runtime, from the storage check and the put_words fact.
+def rt(+D: FD.array__Tree<U32>, +X: U32, +TB: FD.array__Tree<U32>, +n: U32, +PW: FD.array__Tree<U32>,
+    +hv: {{T.{p}_valid({WOn}) == ({WOn}, True{{}}) : O.Words & Bool}},
+    +w: {{O.put_words({TD}, X, {WOn}) == ({TH.format("PW")}, {WOn}) : Array<U32> & O.Words}})
+    -> {{T.{p}_putk({TD}, X, {WOn}) == ({TH.format("PW")}, ({WOn}, 0)) : {TY}}}:
+  %Equal.sym(O.Words & Bool, T.{p}_valid({WOn}), ({WOn}, True{{}}), hv) : {{T.{p}_pk({TD}, X, _) == ({TH.format("PW")}, ({WOn}, 0)) : {TY}}}
+  %Equal.sym(Array<U32> & O.Words, O.put_words({TD}, X, {WOn}), ({TH.format("PW")}, {WOn}), w) : {{T.{p}_pk_ok(_) == ({TH.format("PW")}, ({WOn}, 0)) : {TY}}}
+  {{==}}
+
+# The core over a symbolic byte count n = 4 K.
+def core(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +n: U32, +K: Nat, {E_},
+    +hd: {{Nat.is_lt(dd, 29n) == True{{}} : Bool}}, +pf: {{FD.array__perfect(U32, dd, D) == True{{}} : Bool}}, +pfB: {{FD.array__perfect(U32, dB, TB) == True{{}} : Bool}},
+    +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}}, +hv: {{T.{p}_valid({WOn}) == ({WOn}, True{{}}) : O.Words & Bool}},
+    +hy: {{Nat.is_le(VC.YL(n), VB.pw({kw}n)) == True{{}} : Bool}}, +hsrc: {{Nat.is_le(VC.NW(n), VB.pw(dB)) == True{{}} : Bool}},
+    +eK: {{U32.to_nat(n) == A.quad(K) : Nat}}, +eW: {{VC.NW(n) == K : Nat}},
+    +hl: {{Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(n)))), VB.pw(dd)) == True{{}} : Bool}}, +hz: {HZn("U32.to_nat(n)")})
+    -> DK.P2({RTn}, {BYn}):
+  match r:
+    case 0n:
+      +h0 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(q, z), VB.pw(dd)) == True{{}} : Bool}}, UWD.NWN(Nat.add(0n, U32.to_nat(n))), VC.NW(n),
+        Equal.trans(Nat, UWD.NWN(Nat.add(0n, U32.to_nat(n))), Nat.add(K, 0n), VC.NW(n), nwk(0n, n, K, eK), Equal.trans(Nat, Nat.add(K, 0n), K, VC.NW(n), FD.nat__add_zero(K), Equal.sym(Nat, VC.NW(n), K, eW))), hl)
+      +hdst = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dd)) == True{{}} : Bool}}, Nat.add(q, VC.NW(n)), Nat.add(VC.NW(n), q), FD.nat__add_comm(q, VC.NW(n)), h0)
+      +hz0 = FD.logic__subst(Nat, z => {HZ0.replace("A.quad(VC.NW(n))", "z")}, U32.to_nat(n), A.quad(VC.NW(n)), Equal.trans(Nat, U32.to_nat(n), A.quad(K), A.quad(VC.NW(n)), eK, Equal.cong(Nat, Nat, z => A.quad(z), K, VC.NW(n), Equal.sym(Nat, VC.NW(n), K, eW))), hz)
+      +w = UWD.pwn2(dd, dB, D, TB, X, q, n, {kw}n, pf, pfB, FD.nat__lt_trans(dd, 29n, 31n, hd, {{==}}), hdB, UW.ua_3(X, q, 0n, 0, {{==}}, e, {{==}}), UW.ua_q(X, q, 0n, e, {{==}}), {{==}}, hy,
+        FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, VC.NW(n), Nat.add(VC.NW(n), 0n), Equal.sym(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), FD.nat__add_zero(VC.NW(n))), hsrc),
+        hdst, hz0, U32.is_eq(n, 0), {{==}})
+      %eW : DK.P2({RTn.replace("(r,", "(0n,")}, {BYn.replace("(r,", "(0n,").replace(X0, "Nat.add(A.quad(q), 0n)").replace("VS.wtake(K,", "VS.wtake(_,")})
+      %Equal.sym(Nat, Nat.add(A.quad(q), 0n), A.quad(q), FD.nat__add_zero(A.quad(q))) : DK.P2({RTn.replace("(r,", "(0n,")}, {BYn.replace("(r,", "(0n,").replace(X0, "_").replace("VS.wtake(K,", "VS.wtake(VC.NW(n),")})
+      (rt(D, X, TB, n, UWD.PWM(0n, dd, D, q, TB, n), hv, w), UW.mone_bytes(VC.NW(n), 0n, q, dd, D, dB, TB, pf, pfB, hdst, hsrc))
+@CASES
+    case 4n+ +t: Empty.absurd(DK.P2({RTn.replace("(r,", "(4n+t,")}, {BYn.replace("(r,", "(4n+t,").replace(X0, "Nat.add(A.quad(q), 4n+t)")}), FD.nat__lt_zero_absurd(t, hr))
+
+# The instance at n = {S} (K = {W}): its facts on the byte count decided by Nat.is_eq / is_le.
+def at({P})
+    -> DK.P2({RT}, {BY}):
+  +eS = FD.nat__eq_from_is_eq({S}n, U32.to_nat({S}), {{==}})
+  +eK = FD.nat__eq_from_is_eq(U32.to_nat({S}), A.quad({W}n), {{==}})
+  +eW = FD.nat__eq_from_is_eq(VC.NW({S}), {W}n, {{==}})
+  +hsrc = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, {W}n, VC.NW({S}), Equal.sym(Nat, VC.NW({S}), {W}n, eW), hrB)
+  +hroom = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, VC.NW({S}), Nat.add(VC.NW({S}), 0n), Equal.sym(Nat, Nat.add(VC.NW({S}), 0n), VC.NW({S}), FD.nat__add_zero(VC.NW({S}))), hsrc)
+  +hv = VBE.words_ok_b(dB, TB, {S}, {S}, {S}, {kw}n, pfB, hdB, {{==}}, {{==}}, {{==}}, {{==}}, hroom, {{==}}, {unit}, {{==}})
+  +hl2 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{{}} : Bool}}, {S}n, U32.to_nat({S}), eS, hl)
+  +hz2 = FD.logic__subst(Nat, z => {HZn("z")}, {S}n, U32.to_nat({S}), eS, hz)
+  core(dd, D, X, q, r, dB, TB, {S}, {W}n, e, hr, hd, pf, pfB, hdB, hv, {{==}}, hsrc, eK, eW, hl2, hz2)
+
+# T.{p}_putk at any byte position X = 4 q + r.
+def {p}_any({P})
+    -> {RT}:
+  DK2({RT}, {BY}, at({ARGS}))
+
+# Its bytes: the {S} bytes of TB's first {W} words at X, when the bytes there were zero.
+def {p}_any_bytes({P})
+    -> {BY}:
+  DK3({RT}, {BY}, at({ARGS}))
+'''
+    body = body.replace('@CASES', '\n'.join(cases))
+    return module(['import ./vbenc.bend as VBE', 'import ./vrecx.bend as VRX', 'import ./dk.bend as DK', 'import ./vcopy.bend as VC'],
+                  f'T.{p}_putk (the {S}-byte O.Words)', body)
+
 def module(imports, what, body):
     head = HEAD
     if any('generic_obj' in i for i in imports):
@@ -881,6 +1007,10 @@ def outputs():
     for g in FWORDS:
         out[ROOT / f'proofs/obj/vuwv_{g[0]}.bend'] = gwords_text(g[0], g[1], g[2], g[3], generic=False)
     out[ROOT / 'proofs/obj/vuwv_SyncCommittee.bend'] = sc_text()
+    # BeaconState's justification_bits (one byte, the partial-word form of vuwg_bv8)
+    out[ROOT / 'proofs/obj/vuwv_bv4.bend'] = gpart_text('bv4', 'Bitvector4', 1, fulu=True)
+    for g in PWORDS:
+        out[ROOT / f'proofs/obj/vuwv_{g[0]}.bend'] = pwords_text(*g)
     return out
 
 
