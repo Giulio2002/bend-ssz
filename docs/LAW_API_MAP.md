@@ -263,6 +263,13 @@ What that means concretely:
   and decode_none (the window at x = 0; d < 28). Libraries `vrl.bend` (Array.set
   of any element type on a perfect tree; positions of consecutive records),
   `vrc.bend` (window splits, the offset layout of three variable parts).
+  Encoder (`codegen/var_rlist_enc.py`): `var_rlenc_ExecutionRequests.bend`
+  (stock) has per list the write loop's model (WT/LW: the records' words at
+  Q + W j), the putv run lemma (pvl), and the spec side (RWA: the records'
+  words; lpart: the list's parts; LWlo/LWhi/LWown: windows of the output after
+  the list write); `big_var_codec_ExecutionRequests_enc.bend` (checkq --big;
+  closed 2^24-byte size bounds) has encode_eval and encode_spec for counts
+  within the limits (hl_k) and record arrays on perfect trees (da_k < 31).
   after its header. LightClientBootstrap (a LightClientHeader, a SyncCommittee
   whose 6144 packed words are one symbolic segment of the header, `vsc.bend`
   `sc_parts`, and the branch) has ok_eval, decode_accept, decode_spec and
@@ -277,11 +284,20 @@ What that means concretely:
   `copy_into_at`, the byte list via `vua_ct.copy_in_at`; the child's window at
   FS + x). Not covered yet: Bootstrap's decode_reject, decode_none and encoder
   laws (its rejection facts compare 24820-byte literal sums against symbolic
-  lengths: the treatment of the spec side is still to be carried over);
-  LightClientUpdate and LightClientFinalityUpdate (two variable fields, the
-  second at the runtime offset o1 + x: a two-variable header layout is still
-  to be written); ExecutionPayload (lists of byte lists and of records after
-  extra_data).
+  lengths: the treatment of the spec side is still to be carried over).
+  LightClientFinalityUpdate (two leading LightClientHeaders, the second at the
+  runtime offset o1 + x) has ok_eval, decode_accept, decode_spec,
+  decode_unique, decode_reject and decode_none in
+  `var_bytesx_LightClientFinalityUpdate_dec.bend` over buffers of depth d < 28,
+  from its byte-offset window `var_bytesx_LightClientFinalityUpdate{,_inv}.bend`
+  (`codegen/var_bytes_x2.py`; the layout of two variable parts and windows split
+  in two in `vbx2.bend`; stock, the _dec module peaks at 11.5 GB). Not covered
+  yet: its encoder laws; LightClientUpdate (its two headers are separated by a
+  SyncCommittee: the two-part layout with fixed parts between them and the
+  big-header treatment of Bootstrap); ExecutionPayload: its withdrawals list has
+  a byte-offset window (`var_winx_l16_Withdrawal.bend`, `codegen/var_rlist.py`),
+  its transactions (List[ByteList[2^30], 2^20], a list of variable-size
+  elements) have none yet.
 * **Progressive lists** (`codegen/var_plist.py`): the generic forms
   ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
   Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,
