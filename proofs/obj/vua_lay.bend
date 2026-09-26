@@ -10,6 +10,7 @@ import ./vspec.bend as VS
 import ./vnest.bend as VN
 import ./vdig.bend as VG
 import ./vua_win.bend as UW
+import ./vmv.bend as VMV
 
 # The spec's container layout (spec/layout.bend) read part by part, for a part
 # list of any shape: the offset word the fixed region holds for variable part i
@@ -32,11 +33,16 @@ def FPOS(ps: +List<S.Part>, i: Nat) -> Nat:
     case Con{h, t} 0n: 0n
     case Con{h, t} 1n+q: Nat.add(Layout.slot(h), FPOS(t, q))
 
+# A list's length behind a name: Nat.add(<large literal>, List.length(&2, ..)) is not
+# recognised as the same term by the big checker, which then unfolds the literal;
+# Nat.add(<literal>, LN(..)) is.
+def LN(+xs: +List<U32>) -> Nat: List.length(&2, U32, xs)
+
 # The running offset after part h.
 def NX(h: S.Part, +o: Nat) -> Nat:
   match h:
     case S.Fixed{xs}: o
-    case S.Variable{xs}: Nat.add(o, List.length(&2, U32, xs))
+    case S.Variable{xs}: Nat.add(o, LN(xs))
 
 # The offset of part i when the payloads start at o.
 def OFF(ps: +List<S.Part>, i: Nat, +o: Nat) -> Nat:
@@ -256,8 +262,8 @@ def lay_pay(ps, i, y, o, pre, hl, e):
 
 # ---- the total length -----------------------------------------------------------------------------
 
-def endh(+h: S.Part, +t: +List<S.Part>, +o: Nat, ih: {Nat.add(NX(h, o), List.length(&2, U32, Layout.payloads(t))) == END(t, NX(h, o)) : Nat})
-    -> {Nat.add(o, List.length(&2, U32, Layout.payloads(Con{h, t}))) == END(Con{h, t}, o) : Nat}:
+def endh(+h: S.Part, +t: +List<S.Part>, +o: Nat, ih: {Nat.add(NX(h, o), LN(Layout.payloads(t))) == END(t, NX(h, o)) : Nat})
+    -> {Nat.add(o, LN(Layout.payloads(Con{h, t}))) == END(Con{h, t}, o) : Nat}:
   match h:
     case S.Fixed{+xs}: ih
     case S.Variable{+z}:
@@ -270,7 +276,7 @@ def endh(+h: S.Part, +t: +List<S.Part>, +o: Nat, ih: {Nat.add(NX(h, o), List.len
 law lay_end:
   for +ps: +List<S.Part>
   for +o: Nat
-  {Nat.add(o, List.length(&2, U32, Layout.payloads(ps))) == END(ps, o) : Nat}
+  {Nat.add(o, LN(Layout.payloads(ps))) == END(ps, o) : Nat}
 def lay_end(ps, o):
   match ps:
     case Nil{}: F.nat__add_zero(o)
@@ -382,7 +388,7 @@ def OKO(ps: +List<S.Part>, +o: Nat, os: +List<U32>) -> Type:
         case S.Variable{+xs}:
           match os:
             case Nil{}: Empty
-            case Con{w, r}: {U32.to_nat(w) == o : Nat} & OKO(t, Nat.add(o, List.length(&2, U32, xs)), r)
+            case Con{w, r}: {U32.to_nat(w) == o : Nat} & OKO(t, Nat.add(o, LN(xs)), r)
 
 law hdr_fp:
   for +ps: +List<S.Part>
@@ -431,3 +437,17 @@ def lsingle(h, s, n):
     case S.EmptyItems{}: Unit{}
     case S.Selected{+sel0, +sv0}: Unit{}
     case S.NullValue{}: Unit{}
+
+# Layout.encoding from its pieces, the size check stated through LN.
+law enc_genL:
+  for +ps: +List<S.Part>
+  for +FS: Nat
+  for +FP: +List<U32>
+  for +PAY: +List<U32>
+  for +hs: {Layout.fixed_size(ps) == FS : Nat}
+  for +hf: {Layout.fixed_parts(ps, FS) == FP : +List<U32>}
+  for +hp: {Layout.payloads(ps) == PAY : +List<U32>}
+  for +hv: {Layout.bytes_valid(ps) == True{} : Bool}
+  for +fit: {N.fits(4n, Nat.add(FS, LN(PAY))) == True{} : Bool}
+  {Layout.encoding(ps) == Some{List.append(&2, U32, FP, PAY)} : Maybe<&2, +List<U32>>}
+def enc_genL(ps, FS, FP, PAY, hs, hf, hp, hv, fit): VMV.enc_gen(ps, FS, FP, PAY, hs, hf, hp, hv, fit)
