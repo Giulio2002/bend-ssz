@@ -257,6 +257,17 @@ What that means concretely:
   and decode_none (the window at x = 0; d < 28). Libraries `vrl.bend` (Array.set
   of any element type on a perfect tree; positions of consecutive records),
   `vrc.bend` (window splits, the offset layout of three variable parts).
+  Also (same interface): BeaconState's `l2048_Eth1Data` (stock) and, as `big_`
+  files (the schema's limit is closed; the record storage depth is bounded from the
+  window, not the limit), `l16777216_HistoricalSummary`, `l134217728_PendingDeposit`,
+  `l134217728_PendingPartialWithdrawal`, `l262144_PendingConsolidation`. Boxed
+  records (`codegen/var_rlist_box.py`): `l16_ProposerSlashing`, `l16_Deposit`, over
+  `vua_fixb.bend` (readers at any byte position of records with boxed fields and
+  packed vectors; Deposit.proof by copy_into, `CTN`: vua_ct's copy at a Nat position);
+  the storage is the runtime array with the records set in turn, and Deposit's RX/RT/LOBJ
+  take d. Packed lists of byte vectors (`codegen/var_rlist_bv.py`): `l4096_b48`
+  (stock; the copy's depth bounded from the limit by right shifts only) and
+  `big_var_winx_l16777216_b32` (depth from the window, zero arrays by `big_vvlz`).
   Encoder (`codegen/var_rlist_enc.py`): `var_rlenc_ExecutionRequests.bend`
   (stock) has per list the write loop's model (WT/LW: the records' words at
   Q + W j), the putv run lemma (pvl), and the spec side (RWA: the records'
