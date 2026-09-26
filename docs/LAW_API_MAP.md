@@ -208,7 +208,7 @@ What that means concretely:
   and the inversion reading the value's parts back part by part
   (`vua_lay`: lay_off, lay_pay, lay_end, fpos_w, fs_w, for any part list).
   `big_var_winx_BeaconBlockBody` is written once its children's window
-  modules exist (l16_ProposerSlashing, l16_Deposit, ExecutionPayload pending).
+  modules exist (l16_ProposerSlashing, l16_Deposit, ExecutionPayload: `var_winx_ExecutionPayload.bend`).
 * **Byte lists at any length, and the names nesting them** (2026-09-26,
   agent/codec-var-bytes; `codegen/var_bytes.py` with `var_bytes_enc.py`,
   `var_bytes_nest.py`, `var_bytes_nenc.py`): ExecutionPayloadHeader (a grouped
@@ -313,10 +313,22 @@ What that means concretely:
   in two in `vbx2.bend`; stock, the _dec module peaks at 11.5 GB). Not covered
   yet: its encoder laws; LightClientUpdate (its two headers are separated by a
   SyncCommittee: the two-part layout with fixed parts between them and the
-  big-header treatment of Bootstrap); ExecutionPayload: its withdrawals list has
-  a byte-offset window (`var_winx_l16_Withdrawal.bend`, `codegen/var_rlist.py`),
-  its transactions (List[ByteList[2^30], 2^20], a list of variable-size
-  elements) have none yet.
+  big-header treatment of Bootstrap).
+* **Lists of variable-size elements, and ExecutionPayload** (2026-09-26,
+  agent/codec-var-bytes). `codegen/var_vlist.py`: the generic byte-offset window
+  of a list of variable-size elements over any element window module (symbolic
+  element count; the runtime's offsets-table loop by induction), instantiated for
+  transactions, `big_vvl_l1048576_bl1073741824.bend` (checkq --big: CHKw,
+  ok_evalw, OBJw, readw, VALw, specw, invw), with the ByteList[N] element windows
+  `big_vvlb_bl1073741824`, `big_vvlb_bl32` and the libraries `vvl.bend` (the
+  layout of n variable parts; the inversion YP/ALL/REP/LST, rep_h, inv_enc; stock),
+  `vvlr.bend` (stock), `big_vvlu.bend`, `big_vvlz.bend`.
+  `codegen/var_winx_c.py`: containers with several variable fields among fixed
+  ones, each a child window module: `var_winx_ExecutionPayload.bend` (extra_data,
+  transactions, withdrawals; keeps the var_winx_ name BeaconBlockBody imports,
+  but imports big children: checkq --big, 62 s / 5.4 GB), over `vwc.bend`
+  (fp_fix/fp_var, bv_*, fs_*, fp_len, bdr_skip, lsingle; stock). Its standard
+  interface is keyed on T.ExecutionPayload_ok / T.ExecutionPayload_read.
 * **Progressive lists** (`codegen/var_plist.py`): the generic forms
   ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
   Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,

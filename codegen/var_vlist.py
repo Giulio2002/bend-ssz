@@ -28,7 +28,7 @@ import var_laws as VL  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 
 # (element runtime prefix, byte-list limit, spec schema of the element)
-BYTELISTS = [('bl1073741824', 1073741824, 'Transaction')]
+BYTELISTS = [('bl1073741824', 1073741824, 'Transaction'), ('bl32', 32, 'Schema70')]
 # lists of variable-size elements: (list runtime prefix, limit, element runtime prefix, element window module,
 # list schema, element schema)
 # The one-part fact of an element value h (proofs/decode_facts.bend single_result), per element module.
