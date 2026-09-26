@@ -50,6 +50,8 @@ import spec_laws as SL  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 FAMILY = ['DataColumnsByRootIdentifier', 'IndexedAttestation']
+# Containers of two variable-size family fields (codegen/var_nest.py): parent -> child.
+NESTED = {'AttesterSlashing': 'IndexedAttestation'}
 
 
 class Skip(Exception):
@@ -322,9 +324,9 @@ def fname(x, part=''):
     return ROOT / f'proofs/obj/{"big_" if is_big(x) else ""}var_codec_{x.n}{part}.bend'
 
 
-def unique_text(x):
-    n = x.n
-    D = fname(x).name
+def unique_text(x, n=None, D=None):
+    n = n or x.n
+    D = D or fname(x).name
     return f'''import Base
 import ../../types/schema.bend as S
 import ../../spec/decoding_relation.bend as Decoding
@@ -380,6 +382,15 @@ def main():
         out[fname(x, '_unique')] = unique_text(x)
         out[fname(x, '_rej')] = rej_module_text(g, x)
         out[fname(x, '_enc')] = var_enc.enc_module_text(g, x)
+    for parent, child in NESTED.items():
+        xc = [x for x in xs if x.n == child][0]
+        if no_big and is_big(xc):
+            continue
+        pre = 'big_' if is_big(xc) else ''
+        out[fname(xc, '_win')] = var_nest.win_module_text(g, xc)
+        pf = ROOT / f'proofs/obj/{pre}var_codec_{parent}.bend'
+        out[pf] = var_nest.as_module_text(g, xc, parent)
+        out[ROOT / f'proofs/obj/{pre}var_codec_{parent}_unique.bend'] = unique_text(xc, parent, pf.name)
     mine = [q for q in (ROOT / 'proofs/obj').glob('*var_codec_*.bend') if q.name.startswith(('var_codec_', 'big_var_codec_'))]
     orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out
                      and not (no_big and q.name.startswith('big_')))
@@ -1275,6 +1286,7 @@ def decode_none(d, t, n, pf, hd, hn, hchk):
 
 
 import var_enc  # noqa: E402  (uses the definitions above)
+import var_nest  # noqa: E402
 
 
 if __name__ == '__main__':
