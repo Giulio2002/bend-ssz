@@ -472,4 +472,20 @@ def decode_spec(d, t, n, pf, hd, hn, hchk):
   +h1n = le_nat(O1(t), n, FD.logic__and_right(U32.is_le(O0(t), O1(t)), U32.is_le(O1(t), n), ec))
   +h8 = le_nat(8, O1(t), FD.logic__subst(U32, z => {U32.is_le(z, O1(t)) == True{} : Bool}, O0(t), 8, e0, h01))
   spec_go(d, t, n, pf, hd, hn, e0, h8, h1n, c5d(a, b, c, dd, e, hchk), c5e(a, b, c, dd, e, hchk))
+# When the validator refuses, the decoder returns None and the buffer.
+law decode_none:
+  for +d: Nat
+  for +t: FD.array__Tree<U32>
+  for +n: U32
+  for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
+  for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hchk: {CHK(t, n) == False{} : Bool}
+  {T.AttesterSlashing_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.AttesterSlashing>}
+def decode_none(d, t, n, pf, hd, hn, hchk):
+  %Equal.sym(B.Buf & Bool, T.AttesterSlashing_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {T.AttesterSlashing_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.AttesterSlashing>}
+  %Equal.sym(Bool, CHK(t, n), False{}, hchk) :
+    {T.AttesterSlashing_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.AttesterSlashing>}
+  {==}
 
