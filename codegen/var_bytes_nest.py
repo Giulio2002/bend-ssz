@@ -543,6 +543,23 @@ def rej_text(x, pure=False):
     w = L.append
     MB = 'Maybe<&2, +List<U32>>'
     MP = 'Maybe<&2, +List<S.Part>>'
+    if x.big:
+        # a fixed field's one fixed part, its size compared through Nat.is_eq (a closed product of
+        # the schema's widths, e.g. 512 * 48, is otherwise compared unary)
+        w('def mis(m: Maybe<&2, Nat>, +n: Nat) -> Bool:')
+        w('  match m:')
+        w('    case Some{v}: Nat.is_eq(v, n)')
+        w('    case None{}: False{}')
+        w('')
+        w('def fs_of(+m: Maybe<&2, Nat>, +n: Nat, +h: {mis(m, n) == True{} : Bool}) -> {m == Some{n} : Maybe<&2, Nat>}:')
+        w('  match m:')
+        w('    case Some{+v}: Equal.cong(Nat, Maybe<&2, Nat>, z => Some{z}, v, n, F.nat__eq_from_is_eq(v, n, h))')
+        w('    case None{}: Empty.absurd({None{} == Some{n} : Maybe<&2, Nat>}, F.logic__false_true(h))')
+        w('')
+        w('def sfix(+sch: S.Schema, +n: Nat, +h: S.Value, +hn: {mis(SS.fixed_size(sch), n) == True{} : Bool},')
+        w('    hf: DF.single_result(SS.fixed_size(sch), Codec.parts(h, sch))) -> DF.single_result(Some{n}, Codec.parts(h, sch)):')
+        w('  F.logic__subst(Maybe<&2, Nat>, z => DF.single_result(z, Codec.parts(h, sch)), SS.fixed_size(sch), Some{n}, fs_of(SS.fixed_size(sch), n, hn), hf)')
+        w('')
     w('def FACTS(bs: +List<U32>) -> Type:')
     w(f'  {{VS.bt(4n, VS.bdr({P}n, bs)) == {FSL} : +List<U32>}} & DK.Ex(S.Value, hv0 => DK.Ex(+List<U32>, ys => '
       f'DK.P2({{List.length(&2, U32, bs) == Nat.add({FSN}, List.length(&2, U32, ys)) : Nat}}, '
@@ -601,6 +618,38 @@ def rej_text(x, pure=False):
     assert Pz == P and Pz + 4 + Qz == FS
 
     def lens_eq(name, idx, total):
+        if x.big and idx:
+            # symbolic lengths first (a closed big sum compared against a stuck term unrolls it)
+            k = len(idx)
+
+            def tm(v):
+                t = '0n'
+                for q in reversed(v):
+                    t = f'Nat.add({q}, {t})'
+                return t
+            av, Av = [f'a{q}' for q in range(k)], [f'A{q}' for q in range(k)]
+            w(f'def {name}_s(' + ', '.join([f'+a{q}: Nat' for q in range(k)] + [f'+A{q}: Nat' for q in range(k)] + [f'+h{q}: {{a{q} == A{q} : Nat}}' for q in range(k)])
+              + f') -> {{{tm(av)} == {tm(Av)} : Nat}}:')
+            steps = []
+            for q in range(k):
+                lo = tm(Av[:q] + av[q:])
+                hi = tm(Av[:q + 1] + av[q + 1:])
+                mot = tm(Av[:q] + ['z'] + av[q + 1:])
+                steps.append((lo, hi, f'Equal.cong(Nat, Nat, z => {mot}, a{q}, A{q}, h{q})'))
+
+            def chain(st):
+                if len(st) == 1:
+                    return st[0][2]
+                return f'Equal.trans(Nat, {st[0][0]}, {st[0][1]}, {st[-1][1]}, {st[0][2]}, {chain(st[1:])})'
+            w('  ' + chain(steps))
+            w('')
+            lits = [f'{x.fields[j]["size"]}n' for j in idx]
+            w(f'def {name}(' + ', '.join(decl_m) + f') -> {{VR.lens([' + ', '.join(f'xs{j}' for j in idx) + f']) == {total}n : Nat}}:')
+            w(f'  Equal.trans(Nat, VR.lens([' + ', '.join(f'xs{j}' for j in idx) + f']), {tm(lits)}, {total}n, {name}_s('
+              + ', '.join([f'List.length(&2, U32, xs{j})' for j in idx] + lits + [f'lx{j}' for j in idx])
+              + f'), F.nat__eq_from_is_eq({tm(lits)}, {total}n, {{==}}))')
+            w('')
+            return
         w(f'def {name}(' + ', '.join(decl_m) + f') -> {{VR.lens([' + ', '.join(f'xs{j}' for j in idx) + f']) == {total}n : Nat}}:')
         cur = [f'List.length(&2, U32, xs{j})' for j in idx]
 
@@ -624,16 +673,43 @@ def rej_text(x, pure=False):
     w(f'  %eQ({ALL}) : {{VS.bt(4n, VS.bdr(VR.lens({PRE}), {OUT})) == N.digits(4n, Nat.add(VR.lens({PRE}), 4n+_)) : +List<U32>}}')
     w(f'  VR.out_off({PRE}, ys, {POST})')
     w('')
-    w('def f_len(' + ', '.join(decl_m) + f') -> {{List.length(&2, U32, {OUT}) == Nat.add({FSN}, List.length(&2, U32, ys)) : Nat}}:')
-    w(f'  %eP({ALL}) : {{List.length(&2, U32, {OUT}) == Nat.add(Nat.add(_, 4n+{Qz}n), List.length(&2, U32, ys)) : Nat}}')
-    w(f'  %eQ({ALL}) : {{List.length(&2, U32, {OUT}) == Nat.add(Nat.add(VR.lens({PRE}), 4n+_), List.length(&2, U32, ys)) : Nat}}')
-    w(f'  VR.out_len({PRE}, ys, {POST})')
-    w('')
-    w('def f_dr(' + ', '.join(decl_m) + f') -> {{VS.bdr({FSN}, {OUT}) == ys : +List<U32>}}:')
-    w(f'  %eP({ALL}) : {{VS.bdr(Nat.add(_, 4n+{Qz}n), {OUT}) == ys : +List<U32>}}')
-    w(f'  %eQ({ALL}) : {{VS.bdr(Nat.add(VR.lens({PRE}), 4n+_), {OUT}) == ys : +List<U32>}}')
-    w(f'  VZ.out_dr({PRE}, ys, {POST})')
-    w('')
+    if x.big:
+        # the header size through one closed equality (no big sum compared against a stuck term)
+        LP, LQ = f'VR.lens({PRE})', f'VR.lens({POST})'
+        OFS = f'Nat.add({LP}, 4n+{LQ})'
+        w('def eF(' + ', '.join(decl_m) + f') -> {{{OFS} == {FSN} : Nat}}:')
+        w(f'  Equal.trans(Nat, {OFS}, Nat.add({Pz}n, 4n+{Qz}n), {FSN},')
+        w(f'    Equal.trans(Nat, {OFS}, Nat.add({Pz}n, 4n+{LQ}), Nat.add({Pz}n, 4n+{Qz}n),')
+        w(f'      Equal.cong(Nat, Nat, z => Nat.add(z, 4n+{LQ}), {LP}, {Pz}n, eP({ALL})), Equal.cong(Nat, Nat, z => Nat.add({Pz}n, 4n+z), {LQ}, {Qz}n, eQ({ALL}))),')
+        w(f'    F.nat__eq_from_is_eq(Nat.add({Pz}n, 4n+{Qz}n), {FSN}, {{==}}))')
+        w('')
+        # stated for a symbolic size fs (proof terms holding Nat.add(<big literal>, <stuck>) overflow the post-check)
+        FSD = ', '.join(decl_m + ['+fs: Nat', f'+ef: {{{OFS} == fs : Nat}}'])
+        w(f'def f_len_g({FSD}) -> {{List.length(&2, U32, {OUT}) == Nat.add(fs, VBZ.LN(ys)) : Nat}}:')
+        w(f'  Equal.trans(Nat, List.length(&2, U32, {OUT}), Nat.add({OFS}, List.length(&2, U32, ys)), Nat.add(fs, VBZ.LN(ys)), VR.out_len({PRE}, ys, {POST}),')
+        w(f'    Equal.cong(Nat, Nat, z => Nat.add(z, List.length(&2, U32, ys)), {OFS}, fs, ef))')
+        w('')
+        w('def f_len(' + ', '.join(decl_m) + f') -> {{List.length(&2, U32, {OUT}) == Nat.add({FSN}, List.length(&2, U32, ys)) : Nat}}:')
+        w(f'  f_len_g({ALL}, {FSN}, eF({ALL}))')
+        w('')
+        w(f'def f_dr_g({FSD}) -> {{VS.bdr(fs, {OUT}) == ys : +List<U32>}}:')
+        w(f'  Equal.trans(+List<U32>, VS.bdr(fs, {OUT}), VS.bdr({OFS}, {OUT}), ys,')
+        w(f'    Equal.cong(Nat, +List<U32>, z => VS.bdr(z, {OUT}), fs, {OFS}, Equal.sym(Nat, {OFS}, fs, ef)), VZ.out_dr({PRE}, ys, {POST}))')
+        w('')
+        w('def f_dr(' + ', '.join(decl_m) + f') -> {{VS.bdr({FSN}, {OUT}) == ys : +List<U32>}}:')
+        w(f'  f_dr_g({ALL}, {FSN}, eF({ALL}))')
+        w('')
+    else:
+        w('def f_len(' + ', '.join(decl_m) + f') -> {{List.length(&2, U32, {OUT}) == Nat.add({FSN}, List.length(&2, U32, ys)) : Nat}}:')
+        w(f'  %eP({ALL}) : {{List.length(&2, U32, {OUT}) == Nat.add(Nat.add(_, 4n+{Qz}n), List.length(&2, U32, ys)) : Nat}}')
+        w(f'  %eQ({ALL}) : {{List.length(&2, U32, {OUT}) == Nat.add(Nat.add(VR.lens({PRE}), 4n+_), List.length(&2, U32, ys)) : Nat}}')
+        w(f'  VR.out_len({PRE}, ys, {POST})')
+        w('')
+        w('def f_dr(' + ', '.join(decl_m) + f') -> {{VS.bdr({FSN}, {OUT}) == ys : +List<U32>}}:')
+        w(f'  %eP({ALL}) : {{VS.bdr(Nat.add(_, 4n+{Qz}n), {OUT}) == ys : +List<U32>}}')
+        w(f'  %eQ({ALL}) : {{VS.bdr(Nat.add(VR.lens({PRE}), 4n+_), {OUT}) == ys : +List<U32>}}')
+        w(f'  VZ.out_dr({PRE}, ys, {POST})')
+        w('')
     PLIST = '[' + ', '.join(parts_m) + ']'
     w(sig('inv_fin', decl_m, ['+bs: +List<U32>', '+b5: Bool',
           f'+e: {{Codec.bytes(Codec.one(SP.optional(b5, {OUT}), None{{}})) == Some{{bs}} : {MB}}}']))
@@ -672,7 +748,8 @@ def rej_text(x, pure=False):
             w('')
             w(sig(f'fd{i}', decl, ['+h: S.Value', '+t: S.Value', '+bs: +List<U32>',
                                    '+e: ' + E(parts, f'Codec.concatenate(Codec.parts(h, {sch}), {nxt})')]))
-            w(f'  fm{i}({A_}Codec.parts(h, {sch}), DS.facts(h, {sch}, {{==}}), t, bs, e)')
+            fct = f'sfix({sch}, {z}n, h, {{==}}, DS.facts(h, {sch}, {{==}}))' if x.big else f'DS.facts(h, {sch}, {{==}})'
+            w(f'  fm{i}({A_}Codec.parts(h, {sch}), {fct}, t, bs, e)')
             w('')
         else:
             w(sig(f'fp{i}', decl, ['+h: S.Value', '+ps: +List<S.Part>', 'hf: DF.single(None{}, ps)',
@@ -717,8 +794,50 @@ def rej_text(x, pure=False):
                  ('@B0', str(fsb[0])), ('@B1', str(fsb[1])), ('@B2', str(fsb[2])), ('@B3', str(fsb[3]))]:
         body = body.replace(a, b)
     w(body)
-    return '\n'.join(L) + '\n'
+    out = '\n'.join(L) + '\n'
+    if x.big:
+        out = out.replace("import ./vbspec.bend as VZ", "import ./vbspec.bend as VZ\nimport ./vbsize.bend as VBZ\nimport ../../spec/schema.bend as SS", 1)
+        out = re.sub(rf'Nat\.add\({FS}n, List\.length\(&2, U32, (\w+)\)\)', rf'Nat.add({FS}n, VBZ.LN(\1))', out)
+        out = re.sub(rf'\b({FS}|{FS - 4})n\+X\b', r'Nat.add(\1n, X)', out)
+        out = out.replace('List.length(&2, U32, ys), en', 'VBZ.LN(ys), en')
+        # the whole-buffer offset facts (unused: decode_reject goes through the window at i = 0)
+        # compare the literal header size with stuck lengths; dropped for big names
+        blocks = re.split(r'(?m)^(?=def |law |# )', out)
+        drop = ('def lenS(', 'def lenVW(', 'def hpoS(', 'def byteP(', '# The offset word\'s index', '# The four bytes at the offset field')
+        out = ''.join(b for b in blocks if not b.startswith(drop))
+        wvg = WVG.replace('@FSn', f'{FS}n').replace('@Hn', f'{H}n')
+        blocks = re.split(r'(?m)^(?=def |law |# )', out)
+        out = ''.join(wvg if b.startswith('def wv_dr(') else b for b in blocks)
+        out = re.sub(r'(def haw\(\+len: U32, \+X: Nat, \+en: \{U32\.to_nat\(len\) == Nat\.add\(\d+n, X\) : Nat\}\) -> \{U32\.is_le\(\d+, len\) == True\{\} : Bool\}:\n)(?:  .*\n)+',
+                     lambda m_: m_.group(1) + f'  VBZ.haw_g({FS}, {FS}n, F.nat__eq_from_is_eq(U32.to_nat({FS}), {FS}n, {{==}}), len, X, en)\n', out)
+    return out
 
+
+# The child's window after a big header (codegen/var_bytes_nest.py big names): stated for symbolic
+# sizes h = 4 H and instantiated once (the literal would otherwise meet stuck lengths).
+WVG = """def wv_g(+t: F.array__Tree<U32>, +i: Nat, +len: U32, +h: Nat, +H: Nat, +eH: {A.quad(H) == h : Nat}, +l: U32, +en: {Nat.add(h, U32.to_nat(l)) == U32.to_nat(len) : Nat})
+    -> {VS.bdr(h, WV(t, i, len)) == YR.WV(t, Nat.add(H, i), l) : +List<U32>}:
+  %Equal.sym(Nat, U32.to_nat(len), Nat.add(h, U32.to_nat(l)), Equal.sym(Nat, Nat.add(h, U32.to_nat(l)), U32.to_nat(len), en)) :
+    {VS.bdr(h, VS.bt(_, FX.limbs(VB.wdr(i, SL(t))))) == YR.WV(t, Nat.add(H, i), l) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bdr(h, VS.bt(Nat.add(h, U32.to_nat(l)), FX.limbs(VB.wdr(i, SL(t))))), VS.bt(U32.to_nat(l), VS.bdr(h, FX.limbs(VB.wdr(i, SL(t))))),
+      VS.bdr_bt(h, U32.to_nat(l), FX.limbs(VB.wdr(i, SL(t))))) :
+    {_ == YR.WV(t, Nat.add(H, i), l) : +List<U32>}
+  %eH : {VS.bt(U32.to_nat(l), VS.bdr(_, FX.limbs(VB.wdr(i, SL(t))))) == YR.WV(t, Nat.add(H, i), l) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bdr(A.quad(H), FX.limbs(VB.wdr(i, SL(t)))), FX.limbs(VS.wdr0(H, VB.wdr(i, SL(t)))), VS.bdr_limbs(H, VB.wdr(i, SL(t)))) :
+    {VS.bt(U32.to_nat(l), _) == YR.WV(t, Nat.add(H, i), l) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VS.wdr0(H, VB.wdr(i, SL(t))), VB.wdr(H, VB.wdr(i, SL(t))), wdr0_eq(H, VB.wdr(i, SL(t)))) :
+    {VS.bt(U32.to_nat(l), FX.limbs(_)) == YR.WV(t, Nat.add(H, i), l) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VB.wdr(H, VB.wdr(i, SL(t))), VB.wdr(Nat.add(i, H), SL(t)), VF.wdr_add(H, i, SL(t))) :
+    {VS.bt(U32.to_nat(l), FX.limbs(_)) == YR.WV(t, Nat.add(H, i), l) : +List<U32>}
+  %Equal.sym(Nat, Nat.add(i, H), Nat.add(H, i), F.nat__add_comm(i, H)) :
+    {VS.bt(U32.to_nat(l), FX.limbs(VB.wdr(_, SL(t)))) == YR.WV(t, Nat.add(H, i), l) : +List<U32>}
+  {==}
+
+def wv_dr(+t: F.array__Tree<U32>, +i: Nat, +len: U32, +X: Nat, +en: {U32.to_nat(len) == Nat.add(@FSn, X) : Nat})
+    -> {VS.bdr(@FSn, WV(t, i, len)) == YR.WV(t, Nat.add(@Hn, i), W.LL(len)) : +List<U32>}:
+  wv_g(t, i, len, @FSn, @Hn, F.nat__eq_from_is_eq(A.quad(@Hn), @FSn, {==}), W.LL(len), W.enFS(len, haw(len, X, en)))
+
+"""
 
 NREJ = """
 # The child's window: the bytes after the header.
@@ -823,9 +942,7 @@ def outputs(g, names, no_big):
         out[VBY.fname(x, '_win')] = win_text(x)
         out[VBY.fname(x)] = VBY.top_text(x).replace('codegen/var_bytes.py', 'codegen/var_bytes_nest.py')
         out[VBY.fname(x, '_unique')] = VBY.unique_text(x).replace('codegen/var_bytes.py', 'codegen/var_bytes_nest.py')
-        if not x.big:
-            # open for big names: rej_text's closed length facts (Nat.add(24820n, List.length(&2, ..)))
-            # need the symbolic treatment spec_part_seg gives the spec side; not done yet
-            out[VBY.fname(x, '_rej')] = rej_text(x)
+        # big names: rej_text states the header size's facts symbolically (x.big branches)
+        out[VBY.fname(x, '_rej')] = rej_text(x)
     out.update(VBB.outputs())
     return out
