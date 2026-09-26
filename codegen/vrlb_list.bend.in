@@ -353,3 +353,157 @@ def szx(+t: FD.array__Tree<MB<@M>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {N
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL(t, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, @RS)) == LL(t, N) : Nat}:
   VRX.mulq(dd, N, U32.to_nat(N), @RS, @Wn, {==}, {==}, hd,
     FD.nat__le_trans(LL(t, N), Nat.add(Nat.add(A.quad(q), r), LL(t, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL(t, N)), VRX.xend(q, r, LL(t, N), dd, hl)))
+
+# ---- the spec side: the list's value, its parts, one variable part of its bytes ---------------------
+
+# The values of elements i .. i + c - 1 of W, and their fixed parts.
+def ITE(c: Nat, +W: List<&2, MB<@M>>, +i: Nat) -> S.Value:
+  match c:
+    case 0n: S.EmptyItems{}
+    case 1n+q: S.Items{EVm(xat_@P(W, i)), ITE(q, W, 1n+i)}
+def FPE(c: Nat, +W: List<&2, MB<@M>>, +i: Nat) -> +List<S.Part>:
+  match c:
+    case 0n: []
+    case 1n+q: S.Fixed{YEm(xat_@P(W, i))} <> FPE(q, W, 1n+i)
+
+law cntE:
+  for +c: Nat
+  for +W: List<&2, MB<@M>>
+  for +i: Nat
+  {Codec.count(ITE(c, W, i)) == c : Nat}
+def cntE(c, W, i):
+  match c:
+    case 0n: {==}
+    case 1n+ +q: FD.nat__succ_cong(Codec.count(ITE(q, W, 1n+i)), q, cntE(q, W, 1n+i))
+
+law prtE:
+  for +c: Nat
+  for +W: List<&2, MB<@M>>
+  for +i: Nat
+  for +hok: {EOKS(c, W, i) == True{} : Bool}
+  {Codec.parts(ITE(c, W, i), S.Repeat{@ESCH}) == Some{FPE(c, W, i)} : Maybe<&2, +List<S.Part>>}
+def prtE(c, W, i, hok):
+  match c:
+    case 0n: {==}
+    case 1n+ +q:
+      +x = xat_@P(W, i)
+      F.cat_fixed(Codec.parts(EVm(x), @ESCH), YEm(x), Codec.parts(ITE(q, W, 1n+i), S.Repeat{@ESCH}), FPE(q, W, 1n+i),
+        specEm(x, and_l(EOK(x), EOKS(q, W, 1n+i), hok)), prtE(q, W, 1n+i, and_r(EOK(x), EOKS(q, W, 1n+i), hok)))
+
+law vfE:
+  for +c: Nat
+  for +W: List<&2, MB<@M>>
+  for +i: Nat
+  for +hok: {EOKS(c, W, i) == True{} : Bool}
+  {Layout.bytes_valid(FPE(c, W, i)) == True{} : Bool}
+def vfE(c, W, i, hok):
+  match c:
+    case 0n: {==}
+    case 1n+ +q:
+      +x = xat_@P(W, i)
+      FD.logic__and_intro(SP.bytes_domain(YEm(x)), Layout.bytes_valid(FPE(q, W, 1n+i)),
+        CS.domf(EVm(x), @ESCH, YEm(x), {==}, specEm(x, and_l(EOK(x), EOKS(q, W, 1n+i), hok))), vfE(q, W, 1n+i, and_r(EOK(x), EOKS(q, W, 1n+i), hok)))
+
+law fsE:
+  for +c: Nat
+  for +W: List<&2, MB<@M>>
+  for +i: Nat
+  {Layout.fixed_size(FPE(c, W, i)) == VCN.LN(CATE(c, W, i)) : Nat}
+def fsE(c, W, i):
+  match c:
+    case 0n: {==}
+    case 1n+ +q:
+      +Y = YEm(xat_@P(W, i))
+      Equal.trans(Nat, Nat.add(VCN.LN(Y), Layout.fixed_size(FPE(q, W, 1n+i))), Nat.add(VCN.LN(Y), VCN.LN(CATE(q, W, 1n+i))), VCN.LN(VCN.AP(Y, CATE(q, W, 1n+i))),
+        Equal.cong(Nat, Nat, z => Nat.add(VCN.LN(Y), z), Layout.fixed_size(FPE(q, W, 1n+i)), VCN.LN(CATE(q, W, 1n+i)), fsE(q, W, 1n+i)),
+        Equal.sym(Nat, VCN.LN(VCN.AP(Y, CATE(q, W, 1n+i))), Nat.add(VCN.LN(Y), VCN.LN(CATE(q, W, 1n+i))), VCN.len_app(Y, CATE(q, W, 1n+i))))
+
+law fpE:
+  for +c: Nat
+  for +W: List<&2, MB<@M>>
+  for +i: Nat
+  for +off: Nat
+  {Layout.fixed_parts(FPE(c, W, i), off) == CATE(c, W, i) : +List<U32>}
+def fpE(c, W, i, off):
+  match c:
+    case 0n: {==}
+    case 1n+ +q:
+      Equal.cong(+List<U32>, +List<U32>, z => List.append(&2, U32, YEm(xat_@P(W, i)), z), Layout.fixed_parts(FPE(q, W, 1n+i), off), CATE(q, W, 1n+i), fpE(q, W, 1n+i, off))
+
+law pyE:
+  for +c: Nat
+  for +W: List<&2, MB<@M>>
+  for +i: Nat
+  {Layout.payloads(FPE(c, W, i)) == [] : +List<U32>}
+def pyE(c, W, i):
+  match c:
+    case 0n: {==}
+    case 1n+ +q: pyE(q, W, 1n+i)
+
+# The elements' bytes: @RS each.
+law lenC:
+  for +c: Nat
+  for +W: List<&2, MB<@M>>
+  for +i: Nat
+  for +hok: {EOKS(c, W, i) == True{} : Bool}
+  {VCN.LN(CATE(c, W, i)) == A.quad(Nat.mul(c, @Wn)) : Nat}
+def lenC(c, W, i, hok):
+  match c:
+    case 0n: {==}
+    case 1n+ +q:
+      +x = xat_@P(W, i)
+      +Y = YEm(x)
+      %Equal.sym(Nat, VCN.LN(VCN.AP(Y, CATE(q, W, 1n+i))), Nat.add(VCN.LN(Y), VCN.LN(CATE(q, W, 1n+i))), VCN.len_app(Y, CATE(q, W, 1n+i))) :
+        {_ == A.quad(Nat.mul(1n+q, @Wn)) : Nat}
+      %Equal.sym(Nat, VCN.LN(Y), @RSn, lenEm(x, and_l(EOK(x), EOKS(q, W, 1n+i), hok))) : {Nat.add(_, VCN.LN(CATE(q, W, 1n+i))) == A.quad(Nat.mul(1n+q, @Wn)) : Nat}
+      %Equal.sym(Nat, VCN.LN(CATE(q, W, 1n+i)), A.quad(Nat.mul(q, @Wn)), lenC(q, W, 1n+i, and_r(EOK(x), EOKS(q, W, 1n+i), hok))) : {Nat.add(@RSn, _) == A.quad(Nat.mul(1n+q, @Wn)) : Nat}
+      {==}
+
+# The layout of the elements' fixed parts is their bytes.
+def encE(+c: Nat, +W: List<&2, MB<@M>>, +hok: {EOKS(c, W, 0n) == True{} : Bool}, +fit: {N.fits(4n, VCN.LN(CATE(c, W, 0n))) == True{} : Bool})
+    -> {Layout.encoding(FPE(c, W, 0n)) == Some{CATE(c, W, 0n)} : Maybe<&2, +List<U32>>}:
+  +ps = FPE(c, W, 0n)
+  +Y = CATE(c, W, 0n)
+  %Equal.sym(Bool, Layout.bytes_valid(ps), True{}, vfE(c, W, 0n, hok)) :
+    {SP.optional(Bool.and(_, N.fits(4n, Nat.add(Layout.fixed_size(ps), List.length(&2, U32, Layout.payloads(ps))))), List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), Layout.payloads(ps))) == Some{Y} : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<U32>, Layout.payloads(ps), [], pyE(c, W, 0n)) :
+    {SP.optional(Bool.and(True{}, N.fits(4n, Nat.add(Layout.fixed_size(ps), List.length(&2, U32, _)))), List.append(&2, U32, Layout.fixed_parts(ps, Layout.fixed_size(ps)), _)) == Some{Y} : Maybe<&2, +List<U32>>}
+  %Equal.sym(Nat, Layout.fixed_size(ps), VCN.LN(Y), fsE(c, W, 0n)) :
+    {SP.optional(Bool.and(True{}, N.fits(4n, Nat.add(_, List.length(&2, U32, [])))), List.append(&2, U32, Layout.fixed_parts(ps, _), [])) == Some{Y} : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<U32>, Layout.fixed_parts(ps, VCN.LN(Y)), Y, fpE(c, W, 0n, VCN.LN(Y))) :
+    {SP.optional(Bool.and(True{}, N.fits(4n, Nat.add(VCN.LN(Y), List.length(&2, U32, [])))), List.append(&2, U32, _, [])) == Some{Y} : Maybe<&2, +List<U32>>}
+  %Equal.sym(Nat, Nat.add(VCN.LN(Y), List.length(&2, U32, [])), VCN.LN(Y), FD.nat__add_zero(VCN.LN(Y))) :
+    {SP.optional(Bool.and(True{}, N.fits(4n, _)), List.append(&2, U32, Y, [])) == Some{Y} : Maybe<&2, +List<U32>>}
+  %Equal.sym(Bool, N.fits(4n, VCN.LN(Y)), True{}, fit) :
+    {SP.optional(Bool.and(True{}, _), List.append(&2, U32, Y, [])) == Some{Y} : Maybe<&2, +List<U32>>}
+  %Equal.sym(+List<U32>, List.append(&2, U32, Y, []), Y, VS.app_nil(Y)) :
+    {SP.optional(Bool.and(True{}, True{}), _) == Some{Y} : Maybe<&2, +List<U32>>}
+  {==}
+
+# c elements, at most @LIM: one variable part, their bytes.
+def lpartE(+c: Nat, +W: List<&2, MB<@M>>, +hok: {EOKS(c, W, 0n) == True{} : Bool}, +hl: {Nat.is_le(c, @LIMn) == True{} : Bool},
+    +fit: {N.fits(4n, VCN.LN(CATE(c, W, 0n))) == True{} : Bool})
+    -> {Codec.parts(S.Sequence{ITE(c, W, 0n)}, @LSCH) == Some{[S.Variable{CATE(c, W, 0n)}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(Nat, Codec.count(ITE(c, W, 0n)), c, cntE(c, W, 0n)) :
+    {Codec.require(Nat.is_le(_, @LIMn), Codec.aggregate(Codec.parts(ITE(c, W, 0n), S.Repeat{@ESCH}), None{})) == Some{[S.Variable{CATE(c, W, 0n)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Bool, Nat.is_le(c, @LIMn), True{}, hl) :
+    {Codec.require(_, Codec.aggregate(Codec.parts(ITE(c, W, 0n), S.Repeat{@ESCH}), None{})) == Some{[S.Variable{CATE(c, W, 0n)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(ITE(c, W, 0n), S.Repeat{@ESCH}), Some{FPE(c, W, 0n)}, prtE(c, W, 0n, hok)) :
+    {Codec.require(True{}, Codec.aggregate(_, None{})) == Some{[S.Variable{CATE(c, W, 0n)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding(FPE(c, W, 0n)), Some{CATE(c, W, 0n)}, encE(c, W, hok, fit)) :
+    {Codec.one(_, None{}) == Some{[S.Variable{CATE(c, W, 0n)}]} : Maybe<&2, +List<S.Part>>}
+  {==}
+
+# The list's value and its bytes' length.
+def VALL(+t: FD.array__Tree<MB<@M>>, +N: U32) -> S.Value: S.Sequence{ITE(U32.to_nat(N), SL(t), 0n)}
+def len_encl(+t: FD.array__Tree<MB<@M>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {List.length(&2, U32, ENCL(t, N)) == LL(t, N) : Nat}:
+  lenC(U32.to_nat(N), SL(t), 0n, okl_e(t, N, h))
+
+# encx_spec: the list's value has its bytes as one variable part, when they fit a tree of depth dx < 30.
+def encx_spec(+t: FD.array__Tree<MB<@M>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}, +dx: Nat, +hdx: {Nat.is_lt(dx, 30n) == True{} : Bool},
+    +hL: {Nat.is_le(LL(t, N), A.quad(VB.pw(dx))) == True{} : Bool})
+    -> {Codec.parts(VALL(t, N), @LSCH) == Some{[S.Variable{ENCL(t, N)}]} : Maybe<&2, +List<S.Part>>}:
+  +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, @LIM), Nat.is_le(U32.to_nat(N), U32.to_nat(@LIM)), VU.le_u32(N, @LIM), okl_lim(t, N, h))
+  +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, LL(t, N), List.length(&2, U32, ENCL(t, N)), Equal.sym(Nat, List.length(&2, U32, ENCL(t, N)), LL(t, N), len_encl(t, N, h)),
+    VBZ.fitq(dx, LL(t, N), hL, hdx))
+  lpartE(U32.to_nat(N), SL(t), okl_e(t, N, h), hlim, fit)
