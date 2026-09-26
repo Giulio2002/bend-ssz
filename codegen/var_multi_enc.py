@@ -384,3 +384,234 @@ def inline_rhs(block):
             line = line.replace(' == RHS :', f' == {rhs} :')
         out.append(line)
     return '\n'.join(out)
+
+
+def spec_text(P, IDX, HDR, PV):
+    """encode_spec: the output's bytes are the spec encoding of the object's value."""
+    NP, NA, DP, DA, ALLP, ALLA, OE, DOe = (P[k] for k in ('NP', 'NA', 'DP', 'DA', 'ALLP', 'ALLA', 'OE', 'DOe'))
+    TRUE = 'True{} : Bool'
+    NH = NA
+    W = []
+    w = W.append
+    SD = f'FD.array__slots(U32, D9({DA}))'
+    SL = lambda n: f'FD.array__slots(U32, {n}({DA}))'
+    S1, S2, S3 = 'S1(N0)', 'S2(N0, N1)', 'S3(N0, N1, N2)'
+    CN = ['c0', 'c1', 'c2']
+    TN = ['T0', 'T1', 'T2']
+    MN = ['M0(c0)', 'M1(c1)', 'M2(c2)']
+    QN_ = ['89n', 'Q1(c0)', 'Q2(c0, c1)']
+    ZN = [f'VS.wtake({MN[i]}, FD.array__slots(U32, {TN[i]}))' for i in range(3)]
+    EB = [(512, 2048), (12, 48), (12, 48)]
+    AW = wl(IDX['words'])
+    POST = '[' + wl(HDR['words']) + ', ' + wl(PV['words']) + ']'
+    vals = [IDX['val']] + [f'S.Sequence{{VM.bvit({CN[i]}, {EB[i][0]}n, FD.array__slots(U32, {TN[i]}))}}' for i in range(3)] + [HDR['val'], PV['val']]
+    schs = [IDX['sch']] + [f'S.ListOf{{S.ByteVector{{{EB[i][1]}n}}, U32.to_nat(4096)}}' for i in range(3)] + [HDR['sch'], PV['sch']]
+    parts = ([f'S.Fixed{{F.limbs({AW})}}'] + [f'S.Variable{{F.limbs({ZN[i]})}}' for i in range(3)]
+             + [f'S.Fixed{{F.limbs({wl(HDR["words"])})}}', f'S.Fixed{{F.limbs({wl(PV["words"])})}}'])
+    fixed = {0: IDX, 4: HDR, 5: PV}
+
+    def items(i):
+        return 'S.EmptyItems{}' if i == 6 else f'S.Items{{{vals[i]}, {items(i + 1)}}}'
+
+    def chain(i):
+        return 'S.End{}' if i == 6 else f'S.Chain{{{schs[i]}, {chain(i + 1)}}}'
+
+    def cat(i):
+        if i == 6:
+            return '{==}'
+        rest = '[' + ', '.join(parts[i + 1:]) + ']'
+        if i in fixed:
+            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs({wl(fixed[i]["words"])}), '
+                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {fixed[i]["proof"]}, {cat(i + 1)})')
+        j = i - 1
+        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), F.limbs({ZN[j]}), Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
+                f'VM.list_bv({CN[j]}, {EB[j][0]}n, {EB[j][1]}n, FD.array__slots(U32, {TN[j]}), U32.to_nat(4096), {{==}}, {{==}}, {{==}}, hc{j}, hl{j}({ALLA}), ft{j}({ALLA})), {cat(i + 1)})')
+    ENC = (f'List.append(&2, U32, List.append(&2, U32, F.limbs({AW}), List.append(&2, U32, F.limbs([356, {S1}, {S2}]), F.flat({POST}))), '
+           f'List.append(&2, U32, F.limbs({ZN[0]}), List.append(&2, U32, F.limbs({ZN[1]}), F.limbs({ZN[2]}))))')
+    XE = f'S.Sequence{{{items(0)}}}'
+    w(f'''
+# ---- the spec side ------------------------------------------------------------------------------
+
+def XE({ALLP}) -> S.Value: {XE}
+def ENC({ALLP}) -> +List<U32>: {ENC}
+''')
+    for j in range(3):
+        w(f'''def hl{j}({ALLP}) -> {{Nat.is_le({MN[j]}, FD.spec_common__length(U32, FD.array__slots(U32, {TN[j]}))) == {TRUE}}}:
+  %Equal.sym(Nat, FD.spec_common__length(U32, FD.array__slots(U32, {TN[j]})), VB.pw(dw{j}), FD.array__slots_length(U32, dw{j}, {TN[j]}, pf{j})) : {{Nat.is_le({MN[j]}, _) == {TRUE}}}
+  %eNW{j}({NH}) : {{Nat.is_le(_, VB.pw(dw{j})) == {TRUE}}}
+  FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dw{j})) == {TRUE}}}, Nat.add(VC.NW(N{j}), 0n), VC.NW(N{j}), FD.nat__add_zero(VC.NW(N{j})), hr{j})
+def ft{j}({ALLP}) -> {{N.fits(4n, A.quad({MN[j]})) == {TRUE}}}:
+  VFT.fits4(24n, A.quad({MN[j]}), FD.nat__le_trans(A.quad({MN[j]}), Nat.add(31n, A.quad({MN[j]})), VB.pw(24n), Order.left_below_sum(31n, A.quad({MN[j]})), qy({NH}, {MN[j]}, lM{j}N(c0, c1, c2))), {{==}})
+''')
+    w(f'''
+def encE({ALLP}) -> {{Codec.encoding_for_legal_type(Spec.{X}(), XE({ALLA})) == Some{{ENC({ALLA})}} : Maybe<&2, +List<U32>>}}:
+  +e1 = %Equal.sym(Nat, List.length(&2, U32, F.limbs({ZN[0]})), A.quad(M0(c0)), VM.len_lwt(M0(c0), FD.array__slots(U32, T0), hl0({ALLA}))) : {{U32.to_nat({S1}) == Nat.add(U32.to_nat(356), _) : Nat}}
+    eS1({NH})
+  {{==}}
+''')
+    W.pop()   # (lets of rewrites are not allowed: the offsets' equations are separate lemmas)
+    w(f'''
+def ce1({ALLP}) -> {{U32.to_nat({S1}) == Nat.add(U32.to_nat(356), List.length(&2, U32, F.limbs({ZN[0]}))) : Nat}}:
+  %Equal.sym(Nat, List.length(&2, U32, F.limbs({ZN[0]})), A.quad(M0(c0)), VM.len_lwt(M0(c0), FD.array__slots(U32, T0), hl0({ALLA}))) : {{U32.to_nat({S1}) == Nat.add(U32.to_nat(356), _) : Nat}}
+  eS1({NH})
+def ce2({ALLP}) -> {{U32.to_nat({S2}) == Nat.add(U32.to_nat({S1}), List.length(&2, U32, F.limbs({ZN[1]}))) : Nat}}:
+  %Equal.sym(Nat, List.length(&2, U32, F.limbs({ZN[1]})), A.quad(M1(c1)), VM.len_lwt(M1(c1), FD.array__slots(U32, T1), hl1({ALLA}))) : {{U32.to_nat({S2}) == Nat.add(U32.to_nat({S1}), _) : Nat}}
+  %Equal.sym(Nat, U32.to_nat({S1}), A.quad(Q1(c0)), eS1({NH})) : {{U32.to_nat({S2}) == Nat.add(_, A.quad(M1(c1))) : Nat}}
+  Equal.trans(Nat, U32.to_nat({S2}), A.quad(Q2(c0, c1)), Nat.add(A.quad(Q1(c0)), A.quad(M1(c1))), eS2({NH}), VM.quad_add(Q1(c0), M1(c1)))
+def cfit({ALLP}) -> {{N.fits(4n, Nat.add(U32.to_nat({S2}), List.length(&2, U32, F.limbs({ZN[2]})))) == {TRUE}}}:
+  %Equal.sym(Nat, List.length(&2, U32, F.limbs({ZN[2]})), A.quad(M2(c2)), VM.len_lwt(M2(c2), FD.array__slots(U32, T2), hl2({ALLA}))) : {{N.fits(4n, Nat.add(U32.to_nat({S2}), _)) == {TRUE}}}
+  %Equal.sym(Nat, U32.to_nat({S2}), A.quad(Q2(c0, c1)), eS2({NH})) : {{N.fits(4n, Nat.add(_, A.quad(M2(c2)))) == {TRUE}}}
+  %VM.quad_add(Q2(c0, c1), M2(c2)) : {{N.fits(4n, _) == {TRUE}}}
+  VFT.fits4(24n, A.quad(QN(c0, c1, c2)), FD.nat__le_trans(A.quad(QN(c0, c1, c2)), Nat.add(31n, A.quad(QN(c0, c1, c2))), VB.pw(24n), Order.left_below_sum(31n, A.quad(QN(c0, c1, c2))), qy({NH}, QN(c0, c1, c2), Order.reflexive(QN(c0, c1, c2)))), {{==}})
+
+def encE({ALLP}) -> {{Codec.encoding_for_legal_type(Spec.{X}(), XE({ALLA})) == Some{{ENC({ALLA})}} : Maybe<&2, +List<U32>>}}:
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts({items(0)}, {chain(0)}), Some{{[{", ".join(parts)}]}}, {cat(0)}) :
+    {{Codec.bytes(Codec.aggregate(_, None{{}})) == Some{{ENC({ALLA})}} : Maybe<&2, +List<U32>>}}
+  %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding([{", ".join(parts)}]), Some{{ENC({ALLA})}},
+      VV.enc3({AW}, {ZN[0]}, {ZN[1]}, {ZN[2]}, {POST}, 356, {S1}, {S2}, {{==}}, ce1({ALLA}), ce2({ALLA}), cfit({ALLA}))) :
+    {{Codec.bytes(Codec.one(_, None{{}})) == Some{{ENC({ALLA})}} : Maybe<&2, +List<U32>>}}
+  {{==}}
+''')
+    # ---- the output's windows ----
+    LAYS = [('D9', 'v', '[i0, i1]', '0n', None, 2), ('D8', 'v', wl(PW), '57n', None, 32), ('D7', 'v', wl(HW), '5n', None, 52),
+            ('D6', 'm', 'VC.NW(N2)', 'Q2(c0, c1)', 'T2', 'hdst2'), ('D5', 'v', '[S2(N0, N1)]', '4n', None, 1),
+            ('D4', 'm', 'VC.NW(N1)', 'Q1(c0)', 'T1', 'hdst1'), ('D3', 'v', '[S1(N0)]', '3n', None, 1),
+            ('D2', 'm', 'VC.NW(N0)', '89n', 'T0', 'hdst0'), ('D1', 'v', '[356]', '2n', None, 1)]
+    PREV = {'D9': 'D8', 'D8': 'D7', 'D7': 'D6', 'D6': 'D5', 'D5': 'D4', 'D4': 'D3', 'D3': 'D2', 'D2': 'D1', 'D1': 'ZD'}
+    DW = {'T0': 'dw0', 'T1': 'dw1', 'T2': 'dw2'}
+    PFT = {'T0': 'pf0', 'T1': 'pf1', 'T2': 'pf2'}
+    HR = {'T0': 'hr0', 'T1': 'hr1', 'T2': 'hr2'}
+
+    def chain_proof(m, p, owner, conds, rhs):
+        """WIN(m, p, slots D9) == rhs: peel the layers above `owner`, then own it.
+        conds[layer] = the proof of the peel condition at that layer."""
+        steps = []
+        for (n, k, V, j, src, extra) in LAYS:
+            prev = PREV[n]
+            if n == owner:
+                if k == 'v':
+                    steps.append((n, f'V2.own({V}, {DOe}, {prev}({DA}), {j}, pf{prev}({DA}), lkP({NH}, Nat.add(FD.spec_common__length(U32, {V}), {j}), {{==}}))', rhs))
+                else:
+                    steps.append((n, f'VME.mown({V}, {j}, {DOe}, {prev}({DA}), {DW[src]}, {src}, pf{prev}({DA}), {PFT[src]}, {extra}({NH}), {HR[src]})', rhs))
+                break
+            c, side = conds[n]
+            if k == 'v':
+                lem = 'V2.peel_lo' if side == 'lo' else 'V2.peel_hi'
+                steps.append((n, f'{lem}({V}, {DOe}, {prev}({DA}), {j}, {m}, {p}, pf{prev}({DA}), lkP({NH}, Nat.add(FD.spec_common__length(U32, {V}), {j}), {{==}}), {c})',
+                              f'VF.WIN({m}, {p}, {SL(prev)})'))
+            else:
+                lem = 'VME.mpeel_lo' if side == 'lo' else 'VME.mpeel_hi'
+                steps.append((n, f'{lem}({V}, {j}, {DOe}, {prev}({DA}), {src}, {m}, {p}, pf{prev}({DA}), {extra}({NH}), {c})',
+                              f'VF.WIN({m}, {p}, {SL(prev)})'))
+        # fold into Equal.trans
+        cur = f'VF.WIN({m}, {p}, {SD})'
+        out = None
+        for n, prf, nxt in reversed(steps):
+            pass
+        expr = steps[-1][1]
+        right = steps[-1][2]
+        for idx in range(len(steps) - 2, -1, -1):
+            n, prf, nxt = steps[idx]
+            left = f'VF.WIN({m}, {p}, {SL(n)})'
+            expr = f'Equal.trans(List<&2, U32>, {left}, {nxt}, {right}, {prf}, {expr})'
+        return expr
+
+    def hc(k, j):
+        return '{==}'
+    # header segments
+    SEG = [('s0', '2n', '0n', 'D9', '[i0, i1]', {}),
+           ('s2', '1n', '2n', 'D1', '[356]', {'D9': ('{==}', 'lo'), 'D8': ('{==}', 'hi'), 'D7': ('{==}', 'hi'), 'D6': (f'lkQ2(c0, c1, 3n, {{==}})', 'hi'),
+                                             'D5': ('{==}', 'hi'), 'D4': (f'lkQ1(c0, 3n, {{==}})', 'hi'), 'D3': ('{==}', 'hi'), 'D2': ('{==}', 'hi')}),
+           ('s3', '1n', '3n', 'D3', f'[{S1}]', {'D9': ('{==}', 'lo'), 'D8': ('{==}', 'hi'), 'D7': ('{==}', 'hi'), 'D6': (f'lkQ2(c0, c1, 4n, {{==}})', 'hi'),
+                                                'D5': ('{==}', 'hi'), 'D4': (f'lkQ1(c0, 4n, {{==}})', 'hi')}),
+           ('s4', '1n', '4n', 'D5', f'[{S2}]', {'D9': ('{==}', 'lo'), 'D8': ('{==}', 'hi'), 'D7': ('{==}', 'hi'), 'D6': (f'lkQ2(c0, c1, 5n, {{==}})', 'hi')}),
+           ('s5', '52n', '5n', 'D7', wl(HW), {'D9': ('{==}', 'lo'), 'D8': ('{==}', 'hi')}),
+           ('s57', '32n', '57n', 'D8', wl(PW), {'D9': ('{==}', 'lo')})]
+    for name, m, p, owner, rhs, conds in SEG:
+        w(f'def {name}({ALLP}) -> {{VF.WIN({m}, {p}, {SD}) == {rhs} : List<&2, U32>}}:\n  {chain_proof(m, p, owner, conds, rhs)}\n')
+    # the header window: split 89 = 2 + 1 + 1 + 1 + 52 + 32
+    HW89 = wl(['i0', 'i1', '356', S1, S2] + HW + PW)
+    w(f'''def hdrW({ALLP}) -> {{VF.WIN(89n, 0n, {SD}) == {HW89} : List<&2, U32>}}:
+  %Equal.sym(List<&2, U32>, VF.WIN(Nat.add(2n, 87n), 0n, {SD}), VF.app(VF.WIN(2n, 0n, {SD}), VF.WIN(87n, Nat.add(0n, 2n), {SD})), VF.win_split(2n, 87n, 0n, {SD})) : {{_ == {HW89} : List<&2, U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(Nat.add(1n, 86n), 2n, {SD}), VF.app(VF.WIN(1n, 2n, {SD}), VF.WIN(86n, Nat.add(2n, 1n), {SD})), VF.win_split(1n, 86n, 2n, {SD})) : {{VF.app(VF.WIN(2n, 0n, {SD}), _) == {HW89} : List<&2, U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(Nat.add(1n, 85n), 3n, {SD}), VF.app(VF.WIN(1n, 3n, {SD}), VF.WIN(85n, Nat.add(3n, 1n), {SD})), VF.win_split(1n, 85n, 3n, {SD})) : {{VF.app(VF.WIN(2n, 0n, {SD}), VF.app(VF.WIN(1n, 2n, {SD}), _)) == {HW89} : List<&2, U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(Nat.add(1n, 84n), 4n, {SD}), VF.app(VF.WIN(1n, 4n, {SD}), VF.WIN(84n, Nat.add(4n, 1n), {SD})), VF.win_split(1n, 84n, 4n, {SD})) : {{VF.app(VF.WIN(2n, 0n, {SD}), VF.app(VF.WIN(1n, 2n, {SD}), VF.app(VF.WIN(1n, 3n, {SD}), _))) == {HW89} : List<&2, U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(Nat.add(52n, 32n), 5n, {SD}), VF.app(VF.WIN(52n, 5n, {SD}), VF.WIN(32n, Nat.add(5n, 52n), {SD})), VF.win_split(52n, 32n, 5n, {SD})) : {{VF.app(VF.WIN(2n, 0n, {SD}), VF.app(VF.WIN(1n, 2n, {SD}), VF.app(VF.WIN(1n, 3n, {SD}), VF.app(VF.WIN(1n, 4n, {SD}), _)))) == {HW89} : List<&2, U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(2n, 0n, {SD}), [i0, i1], s0({ALLA})) : {{VF.app(_, VF.app(VF.WIN(1n, 2n, {SD}), VF.app(VF.WIN(1n, 3n, {SD}), VF.app(VF.WIN(1n, 4n, {SD}), VF.app(VF.WIN(52n, 5n, {SD}), VF.WIN(32n, 57n, {SD})))))) == {HW89} : List<&2, U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(1n, 2n, {SD}), [356], s2({ALLA})) : {{VF.app([i0, i1], VF.app(_, VF.app(VF.WIN(1n, 3n, {SD}), VF.app(VF.WIN(1n, 4n, {SD}), VF.app(VF.WIN(52n, 5n, {SD}), VF.WIN(32n, 57n, {SD})))))) == {HW89} : List<&2, U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(1n, 3n, {SD}), [{S1}], s3({ALLA})) : {{VF.app([i0, i1], VF.app([356], VF.app(_, VF.app(VF.WIN(1n, 4n, {SD}), VF.app(VF.WIN(52n, 5n, {SD}), VF.WIN(32n, 57n, {SD})))))) == {HW89} : List<&2, U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(1n, 4n, {SD}), [{S2}], s4({ALLA})) : {{VF.app([i0, i1], VF.app([356], VF.app([{S1}], VF.app(_, VF.app(VF.WIN(52n, 5n, {SD}), VF.WIN(32n, 57n, {SD})))))) == {HW89} : List<&2, U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(52n, 5n, {SD}), {wl(HW)}, s5({ALLA})) : {{VF.app([i0, i1], VF.app([356], VF.app([{S1}], VF.app([{S2}], VF.app(_, VF.WIN(32n, 57n, {SD})))))) == {HW89} : List<&2, U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(32n, 57n, {SD}), {wl(PW)}, s57({ALLA})) : {{VF.app([i0, i1], VF.app([356], VF.app([{S1}], VF.app([{S2}], VF.app({wl(HW)}, _))))) == {HW89} : List<&2, U32>}}
+  {{==}}
+''')
+    # the lists' windows
+    LC = [{'D9': ('lo', 0), 'D8': ('lo', 0), 'D7': ('lo', 0), 'D6': (f'lW0Q2({NH})', 'hi'), 'D5': ('lo', 0), 'D4': (f'lW0({NH})', 'hi'), 'D3': ('lo', 0)},
+          {'D9': ('lo', 1), 'D8': ('lo', 1), 'D7': ('lo', 1), 'D6': (f'lW1({NH})', 'hi'), 'D5': ('lo', 1)},
+          {'D9': ('lo', 2), 'D8': ('lo', 2), 'D7': ('lo', 2)}]
+    LAYD = {n: (k, V, j) for (n, k, V, j, src, extra) in LAYS}
+    for i in range(3):
+        conds = {}
+        for n, v in LC[i].items():
+            if v[0] == 'lo':
+                k, V, j = LAYD[n]
+                kk = f'Nat.add(FD.spec_common__length(U32, {V}), {j})'
+                c = '{==}' if i == 0 else (f'lkQ1(c0, {kk}, {{==}})' if i == 1 else f'lkQ2(c0, c1, {kk}, {{==}})')
+                conds[n] = (c, 'lo')
+            else:
+                conds[n] = v
+        NWi = f'VC.NW(N{i})'
+        owner = ['D2', 'D4', 'D6'][i]
+        w(f'''def lWn{i}({ALLP}) -> {{VF.WIN({NWi}, {QN_[i]}, {SD}) == VS.wtake({NWi}, FD.array__slots(U32, {TN[i]})) : List<&2, U32>}}:
+  {chain_proof(NWi, QN_[i], owner, conds, f"VS.wtake({NWi}, FD.array__slots(U32, {TN[i]}))")}
+def lW{i}w({ALLP}) -> {{VF.WIN({MN[i]}, {QN_[i]}, {SD}) == {ZN[i]} : List<&2, U32>}}:
+  %eNW{i}({NH}) : {{VF.WIN(_, {QN_[i]}, {SD}) == VS.wtake(_, FD.array__slots(U32, {TN[i]})) : List<&2, U32>}}
+  lWn{i}({ALLA})
+''')
+    # out_eq, as lim3
+    X0 = f'VS.wtake(M0(c0), VB.wdr(89n, {SD}))'
+    X1 = f'VS.wtake(M1(c1), VB.wdr(Q1(c0), {SD}))'
+    X2 = f'VS.wtake(M2(c2), VB.wdr(Q2(c0, c1), {SD}))'
+    Ew = f'ENC({ALLA})'
+    LH = f'F.limbs({HW89})'
+    w(f'''
+# The output's bytes are the encoding.
+def out_eq({ALLP}) -> {{{Ew} == VS.bt(U32.to_nat({S3}), F.limbs({SD})) : +List<U32>}}:
+  %Equal.sym(Nat, U32.to_nat({S3}), A.quad(QN(c0, c1, c2)), eS3({NH})) : {{{Ew} == VS.bt(_, F.limbs({SD})) : +List<U32>}}
+  %Equal.sym(+List<U32>, VS.bt(A.quad(QN(c0, c1, c2)), F.limbs({SD})), F.limbs(VS.wtake(QN(c0, c1, c2), {SD})), VS.bt_limbs(QN(c0, c1, c2), {SD})) : {{{Ew} == _ : +List<U32>}}
+  %Equal.sym(List<&2, U32>, VS.wtake(QN(c0, c1, c2), {SD}), VF.app(VS.wtake(Q2(c0, c1), {SD}), {X2}), VF.take_split(Q2(c0, c1), M2(c2), {SD})) : {{{Ew} == F.limbs(_) : +List<U32>}}
+  %Equal.sym(+List<U32>, F.limbs(VF.app(VS.wtake(Q2(c0, c1), {SD}), {X2})), List.append(&2, U32, F.limbs(VS.wtake(Q2(c0, c1), {SD})), F.limbs({X2})), VF.limbs_app(VS.wtake(Q2(c0, c1), {SD}), {X2})) :
+    {{{Ew} == _ : +List<U32>}}
+  %Equal.sym(List<&2, U32>, VS.wtake(Q2(c0, c1), {SD}), VF.app(VS.wtake(Q1(c0), {SD}), {X1}), VF.take_split(Q1(c0), M1(c1), {SD})) :
+    {{{Ew} == List.append(&2, U32, F.limbs(_), F.limbs({X2})) : +List<U32>}}
+  %Equal.sym(+List<U32>, F.limbs(VF.app(VS.wtake(Q1(c0), {SD}), {X1})), List.append(&2, U32, F.limbs(VS.wtake(Q1(c0), {SD})), F.limbs({X1})), VF.limbs_app(VS.wtake(Q1(c0), {SD}), {X1})) :
+    {{{Ew} == List.append(&2, U32, _, F.limbs({X2})) : +List<U32>}}
+  %Equal.sym(List<&2, U32>, VS.wtake(Q1(c0), {SD}), VF.app(VS.wtake(89n, {SD}), {X0}), VF.take_split(89n, M0(c0), {SD})) :
+    {{{Ew} == List.append(&2, U32, List.append(&2, U32, F.limbs(_), F.limbs({X1})), F.limbs({X2})) : +List<U32>}}
+  %Equal.sym(+List<U32>, F.limbs(VF.app(VS.wtake(89n, {SD}), {X0})), List.append(&2, U32, F.limbs(VS.wtake(89n, {SD})), F.limbs({X0})), VF.limbs_app(VS.wtake(89n, {SD}), {X0})) :
+    {{{Ew} == List.append(&2, U32, List.append(&2, U32, _, F.limbs({X1})), F.limbs({X2})) : +List<U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(89n, 0n, {SD}), {HW89}, hdrW({ALLA})) :
+    {{{Ew} == List.append(&2, U32, List.append(&2, U32, List.append(&2, U32, F.limbs(_), F.limbs({X0})), F.limbs({X1})), F.limbs({X2})) : +List<U32>}}
+  %Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, List.append(&2, U32, {LH}, F.limbs({X0})), F.limbs({X1})), F.limbs({X2})),
+      List.append(&2, U32, List.append(&2, U32, {LH}, F.limbs({X0})), List.append(&2, U32, F.limbs({X1}), F.limbs({X2}))),
+      VS.app_assoc(List.append(&2, U32, {LH}, F.limbs({X0})), F.limbs({X1}), F.limbs({X2}))) :
+    {{{Ew} == _ : +List<U32>}}
+  %Equal.sym(+List<U32>, List.append(&2, U32, List.append(&2, U32, {LH}, F.limbs({X0})), List.append(&2, U32, F.limbs({X1}), F.limbs({X2}))),
+      List.append(&2, U32, {LH}, List.append(&2, U32, F.limbs({X0}), List.append(&2, U32, F.limbs({X1}), F.limbs({X2})))),
+      VS.app_assoc({LH}, F.limbs({X0}), List.append(&2, U32, F.limbs({X1}), F.limbs({X2})))) :
+    {{{Ew} == _ : +List<U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(M0(c0), 89n, {SD}), {ZN[0]}, lW0w({ALLA})) :
+    {{{Ew} == List.append(&2, U32, {LH}, List.append(&2, U32, F.limbs(_), List.append(&2, U32, F.limbs({X1}), F.limbs({X2})))) : +List<U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(M1(c1), Q1(c0), {SD}), {ZN[1]}, lW1w({ALLA})) :
+    {{{Ew} == List.append(&2, U32, {LH}, List.append(&2, U32, F.limbs({ZN[0]}), List.append(&2, U32, F.limbs(_), F.limbs({X2})))) : +List<U32>}}
+  %Equal.sym(List<&2, U32>, VF.WIN(M2(c2), Q2(c0, c1), {SD}), {ZN[2]}, lW2w({ALLA})) :
+    {{{Ew} == List.append(&2, U32, {LH}, List.append(&2, U32, F.limbs({ZN[0]}), List.append(&2, U32, F.limbs({ZN[1]}), F.limbs(_)))) : +List<U32>}}
+  {{==}}
+
+# The bytes the encoder writes are the spec/codec.bend encoding of the object's value.
+def encode_spec({ALLP})
+    -> Decoding.decodes(Spec.{X}(), VS.bt(U32.to_nat({S3}), F.limbs({SD})), XE({ALLA})):
+  Equal.trans(Maybe<&2, +List<U32>>, Codec.encoding_for_legal_type(Spec.{X}(), XE({ALLA})), Some{{{Ew}}}, Some{{VS.bt(U32.to_nat({S3}), F.limbs({SD}))}},
+    encE({ALLA}), Equal.cong(+List<U32>, Maybe<&2, +List<U32>>, z => Some{{z}}, {Ew}, VS.bt(U32.to_nat({S3}), F.limbs({SD})), out_eq({ALLA})))
+''')
+    return W
