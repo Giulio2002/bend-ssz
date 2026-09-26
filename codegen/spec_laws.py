@@ -116,6 +116,13 @@ class Node:
 
 
 VEC_MAX_WORDS = 512
+# EXACT: emit container/vector proofs whose every step states exactly the
+# Codec.parts term its parent unfolds to (F.items_fixed / F.container_fixed /
+# F.vector_fixed / F.bytes_part_n), so the checker compares syntactically and
+# never runs the spec encoders to compare two forms (spec_codec_3: 55 s -> 5 s).
+# This generator's own files use it; generators that import walk() keep the
+# older form until their owners regenerate with SL.EXACT = True.
+EXACT = False
 VEC_MAX_ELEMS = 256
 
 
@@ -154,7 +161,7 @@ def walk(g, t, c):
         ws = [f'x{next(c)}' for _ in range(t.size // 4)]
         op = [f'q{next(c)}' for _ in range((1 << storage(t.size)) - len(ws))]
         return Node(f'O.Words{{{tree(ws + op)}, {t.size}}}', ws, f'S.BytesValue{{F.limbs({wl(ws)})}}',
-                    f'S.ByteVector{{{t.size}n}}', f'F.bytes_part({ws[0]}, {wl(ws[1:])}, {{==}})',
+                    f'S.ByteVector{{{t.size}n}}', (f'F.bytes_part_n({ws[0]}, {wl(ws[1:])}, {t.size}n, {{==}}, {{==}})' if EXACT else f'F.bytes_part({ws[0]}, {wl(ws[1:])}, {{==}})'),
                     dec=f'O.Words{{{tree(ws + ["0"] * len(op))}, {t.size}}}', opads=op)
     if t.kind == 'vector' and s.kind in ('packed', 'packed_elems'):
         e = t.elem
@@ -180,10 +187,16 @@ def walk(g, t, c):
             if i == len(kids):
                 return '{==}'
             rest = '[' + ', '.join(f'S.Fixed{{F.limbs({wl(k.words)})}}' for k in kids[i + 1:]) + ']'
-            return (f'F.cat_fixed(Codec.parts({kids[i].val}, {esch}), F.limbs({wl(kids[i].words)}), '
-                    f'Codec.parts({vitems(i + 1)}, S.Repeat{{{esch}}}), {rest}, {kids[i].proof}, {vcat(i + 1)})')
+            if not EXACT:
+                return (f'F.cat_fixed(Codec.parts({kids[i].val}, {esch}), F.limbs({wl(kids[i].words)}), '
+                        f'Codec.parts({vitems(i + 1)}, S.Repeat{{{esch}}}), {rest}, {kids[i].proof}, {vcat(i + 1)})')
+            return (f'F.items_rep({kids[i].val}, {vitems(i + 1)}, {esch}, F.limbs({wl(kids[i].words)}), '
+                    f'{rest}, {kids[i].proof}, {vcat(i + 1)})')
         wss = '[' + ', '.join(wl(k.words) for k in kids) + ']'
-        proof = f'F.aggregate_fixed(Codec.parts({vitems(0)}, S.Repeat{{{esch}}}), {wss}, {n}n, {vcat(0)}, {{==}})'
+        # every step states exactly the Codec.parts term its parent unfolds to,
+        # so the checker compares syntactically instead of running the encoders
+        proof = (f'F.vector_fixed({esch}, {t.size}n, {vitems(0)}, {wss}, {n}n, {wl(ws)}, {vcat(0)}, {{==}}, {{==}}, {{==}}, {{==}})'
+                 if EXACT else f'F.aggregate_fixed(Codec.parts({vitems(0)}, S.Repeat{{{esch}}}), {wss}, {n}n, {vcat(0)}, {{==}})')
         return Node(f'O.Words{{{tree(ws + op)}, {n}}}', ws, f'S.Sequence{{{vitems(0)}}}',
                     f'S.Vector{{{esch}, {t.size}n}}', proof,
                     dec=f'O.Words{{{tree(ws + ["0"] * len(op))}, {n}}}', opads=op)
@@ -195,7 +208,7 @@ def walk(g, t, c):
         ws = [f'x{next(c)}' for _ in range(t.size // 4)]
         obj = f'T.{s.rep}{{' + ', '.join(ws) + '}'
         return Node(obj, ws, f'S.BytesValue{{F.limbs({wl(ws)})}}', f'S.ByteVector{{{t.size}n}}',
-                    f'F.bytes_part({ws[0]}, {wl(ws[1:])}, {{==}})')
+                    (f'F.bytes_part_n({ws[0]}, {wl(ws[1:])}, {t.size}n, {{==}}, {{==}})' if EXACT else f'F.bytes_part({ws[0]}, {wl(ws[1:])}, {{==}})'))
     if t.kind == 'bits':
         if s.kind != 'rec':
             raise Skip('array-backed bit vector (needs the array induction)')
@@ -228,11 +241,16 @@ def walk(g, t, c):
             if i == len(kids):
                 return '{==}'
             rest = '[' + ', '.join(f'S.Fixed{{F.limbs({wl(k.words)})}}' for k in kids[i + 1:]) + ']'
-            return (f'F.cat_fixed(Codec.parts({kids[i].val}, {kids[i].sch}), F.limbs({wl(kids[i].words)}), '
-                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {kids[i].proof}, {cat(i + 1)})')
+            if not EXACT:
+                return (f'F.cat_fixed(Codec.parts({kids[i].val}, {kids[i].sch}), F.limbs({wl(kids[i].words)}), '
+                        f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {kids[i].proof}, {cat(i + 1)})')
+            return (f'F.items_fixed({kids[i].val}, {items(i + 1)}, {kids[i].sch}, {chain(i + 1)}, F.limbs({wl(kids[i].words)}), '
+                    f'{rest}, {kids[i].proof}, {cat(i + 1)})')
         words = [w for k in kids for w in k.words]
         wss = '[' + ', '.join(wl(k.words) for k in kids) + ']'
-        proof = f'F.aggregate_fixed(Codec.parts({items(0)}, {chain(0)}), {wss}, {t.fixed_size()}n, {cat(0)}, {{==}})'
+        proof = (f'F.container_fixed({names}, {chain(0)}, {items(0)}, {wss}, {t.fixed_size()}n, {wl(words)}, '
+                 f'{cat(0)}, {{==}}, {{==}}, {{==}})' if EXACT else
+                 f'F.aggregate_fixed(Codec.parts({items(0)}, {chain(0)}), {wss}, {t.fixed_size()}n, {cat(0)}, {{==}})')
         obj = f'T.{s.t.name}{{' + ', '.join(k.obj for k in kids) + '}'
         dec = f'T.{s.t.name}{{' + ', '.join(k.dec for k in kids) + '}'
         return Node(obj, words, f'S.Sequence{{{items(0)}}}', f'S.Container{{{names}, {chain(0)}}}', proof,
@@ -1000,6 +1018,9 @@ def emit_name(w, n, t, node, size, R, P, data):
     w('  {==}')
     w(f'def {n}_spec_parts({sig})')
     w(f'    -> {{Codec.parts({node.val}, Spec.{n}()) == Some{{[S.Fixed{{{L}}}]}} : Maybe<&2, +List<S.Part>>}}:')
+    if EXACT:
+        w(f'  %Equal.sym(S.Schema, Spec.{n}(), {node.sch}, {{==}}) :')
+        w(f'    {{Codec.parts({node.val}, _) == Some{{[S.Fixed{{{L}}}]}} : Maybe<&2, +List<S.Part>>}}')
     w(f'  {node.proof}')
     w(f'def {n}_spec_encode({sig})')
     w(f'    -> Decoding.decodes(Spec.{n}(), {L}, {node.val}):')
@@ -1092,6 +1113,8 @@ def family(out, chosen, g, src, tag, head, rhead, uimports, legal=None):
 
 
 def main():
+    global EXACT
+    EXACT = True
     names = schema.load(ROOT / 'codegen/fulu.yaml')
     g = G.Gen()
     for n, t in names.items():

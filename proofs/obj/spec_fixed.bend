@@ -5,6 +5,7 @@ import ../../spec/primitives.bend as SP
 import ../../spec/bytes.bend as Bytes
 import ../../spec/layout.bend as Layout
 import ../../spec/codec.bend as Codec
+import ../../spec/schema.bend as SS
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../proofs/primitive_invariants.bend as V
@@ -72,6 +73,19 @@ def bytes_part(h, t, fit):
   %Equal.sym(Bool, Bytes.size_fits(wlen(h <> t)), True{}, fit) :
     {Codec.one(SP.optional(Bool.and(True{}, _), limbs(h <> t)), Some{wlen(h <> t)}) == Some{[S.Fixed{limbs(h <> t)}]} : Maybe<&2, +List<S.Part>>}
   {==}
+
+# The same with the vector length as the enclosing schema states it.
+law bytes_part_n:
+  for +h: U32
+  for +t: +List<U32>
+  for +n: Nat
+  for en: {n == wlen(h <> t) : Nat}
+  for fit: {Bytes.size_fits(wlen(h <> t)) == True{} : Bool}
+  {Codec.parts(S.BytesValue{limbs(h <> t)}, S.ByteVector{n}) == Some{[S.Fixed{limbs(h <> t)}]} : Maybe<&2, +List<S.Part>>}
+def bytes_part_n(h, t, n, en, fit):
+  %Equal.sym(Nat, n, wlen(h <> t), en) :
+    {Codec.parts(S.BytesValue{limbs(h <> t)}, S.ByteVector{_}) == Some{[S.Fixed{limbs(h <> t)}]} : Maybe<&2, +List<S.Part>>}
+  bytes_part(h, t, fit)
 
 law uint32_part:
   for +x0: U32
@@ -169,6 +183,112 @@ def aggregate_fixed(a, wss, n, ea, total):
   %Equal.sym(Bool, Layout.bytes_valid(fparts(wss)), True{}, valid_fparts(wss)) :
     {Codec.one(SP.optional(Bool.and(_, True{}), flat(wss)), Some{n}) == Some{[S.Fixed{flat(wss)}]} : Maybe<&2, +List<S.Part>>}
   {==}
+
+# ---- composition in the exact form of the parts terms ------------------------
+# The generated spec_parts proofs chain these so that every hypothesis already
+# has the syntactic form the enclosing Codec.parts term unfolds to; the checker
+# then never evaluates the spec encoders of the leaves to compare two forms.
+
+def wcat(wss: +List<+List<U32>>) -> +List<U32>:
+  match wss:
+    case Nil{}: []
+    case Con{ws, t}: List.append(&2, U32, ws, wcat(t))
+
+law limbs_append:
+  for +a: +List<U32>
+  for +b: +List<U32>
+  {limbs(List.append(&2, U32, a, b)) == List.append(&2, U32, limbs(a), limbs(b)) : +List<U32>}
+def limbs_append(a, b):
+  match a:
+    case Nil{}: {==}
+    case Con{h, t}:
+      Equal.cong(+List<U32>, +List<U32>, r => List.append(&2, U32, I.limb(h), r),
+        limbs(List.append(&2, U32, t, b)), List.append(&2, U32, limbs(t), limbs(b)), limbs_append(t, b))
+
+law limbs_flat:
+  for +wss: +List<+List<U32>>
+  {limbs(wcat(wss)) == flat(wss) : +List<U32>}
+def limbs_flat(wss):
+  match wss:
+    case Nil{}: {==}
+    case Con{ws, t}:
+      %Equal.sym(+List<U32>, limbs(List.append(&2, U32, ws, wcat(t))), List.append(&2, U32, limbs(ws), limbs(wcat(t))), limbs_append(ws, wcat(t))) :
+        {_ == List.append(&2, U32, limbs(ws), flat(t)) : +List<U32>}
+      Equal.cong(+List<U32>, +List<U32>, r => List.append(&2, U32, limbs(ws), r), limbs(wcat(t)), flat(t), limbs_flat(t))
+
+# A field in front of the remaining fields.
+law items_fixed:
+  for +h: S.Value
+  for +t: S.Value
+  for +s: S.Schema
+  for +rest: S.Schema
+  for +xs: +List<U32>
+  for +ps: +List<S.Part>
+  for ea: {Codec.parts(h, s) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}
+  for eb: {Codec.parts(t, rest) == Some{ps} : Maybe<&2, +List<S.Part>>}
+  {Codec.parts(S.Items{h, t}, S.Chain{s, rest}) == Some{S.Fixed{xs} <> ps} : Maybe<&2, +List<S.Part>>}
+def items_fixed(h, t, s, rest, xs, ps, ea, eb):
+  cat_fixed(Codec.parts(h, s), xs, Codec.parts(t, rest), ps, ea, eb)
+
+# An element in front of the remaining elements of a vector.
+law items_rep:
+  for +h: S.Value
+  for +t: S.Value
+  for +s: S.Schema
+  for +xs: +List<U32>
+  for +ps: +List<S.Part>
+  for ea: {Codec.parts(h, s) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}
+  for eb: {Codec.parts(t, S.Repeat{s}) == Some{ps} : Maybe<&2, +List<S.Part>>}
+  {Codec.parts(S.Items{h, t}, S.Repeat{s}) == Some{S.Fixed{xs} <> ps} : Maybe<&2, +List<S.Part>>}
+def items_rep(h, t, s, xs, ps, ea, eb):
+  cat_fixed(Codec.parts(h, s), xs, Codec.parts(t, S.Repeat{s}), ps, ea, eb)
+
+# A container of fixed fields whose words, in order, are ws.
+law container_fixed:
+  for +names: +List<String>
+  for +fields: S.Schema
+  for +items: S.Value
+  for +wss: +List<+List<U32>>
+  for +n: Nat
+  for +ws: +List<U32>
+  for ea: {Codec.parts(items, fields) == Some{fparts(wss)} : Maybe<&2, +List<S.Part>>}
+  for en: {SS.fixed_size(fields) == Some{n} : Maybe<&2, Nat>}
+  for total: {Codec.one(Layout.encoding(fparts(wss)), Some{n}) == Codec.one(SP.optional(Bool.and(Layout.bytes_valid(fparts(wss)), True{}), flat(wss)), Some{n}) : Maybe<&2, +List<S.Part>>}
+  for ew: {ws == wcat(wss) : +List<U32>}
+  {Codec.parts(S.Sequence{items}, S.Container{names, fields}) == Some{[S.Fixed{limbs(ws)}]} : Maybe<&2, +List<S.Part>>}
+def container_fixed(names, fields, items, wss, n, ws, ea, en, total, ew):
+  %Equal.sym(+List<U32>, ws, wcat(wss), ew) :
+    {Codec.parts(S.Sequence{items}, S.Container{names, fields}) == Some{[S.Fixed{limbs(_)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(+List<U32>, limbs(wcat(wss)), flat(wss), limbs_flat(wss)) :
+    {Codec.parts(S.Sequence{items}, S.Container{names, fields}) == Some{[S.Fixed{_}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, Nat>, SS.fixed_size(fields), Some{n}, en) :
+    {Codec.aggregate(Codec.parts(items, fields), _) == Some{[S.Fixed{flat(wss)}]} : Maybe<&2, +List<S.Part>>}
+  aggregate_fixed(Codec.parts(items, fields), wss, n, ea, total)
+
+# A vector of k fixed elements whose words, in order, are ws.
+law vector_fixed:
+  for +s: S.Schema
+  for +k: Nat
+  for +items: S.Value
+  for +wss: +List<+List<U32>>
+  for +n: Nat
+  for +ws: +List<U32>
+  for ea: {Codec.parts(items, S.Repeat{s}) == Some{fparts(wss)} : Maybe<&2, +List<S.Part>>}
+  for ek: {Bool.and(Nat.is_lt(0n, k), Nat.is_eq(Codec.count(items), k)) == True{} : Bool}
+  for en: {SS.times(k, SS.fixed_size(s)) == Some{n} : Maybe<&2, Nat>}
+  for total: {Codec.one(Layout.encoding(fparts(wss)), Some{n}) == Codec.one(SP.optional(Bool.and(Layout.bytes_valid(fparts(wss)), True{}), flat(wss)), Some{n}) : Maybe<&2, +List<S.Part>>}
+  for ew: {ws == wcat(wss) : +List<U32>}
+  {Codec.parts(S.Sequence{items}, S.Vector{s, k}) == Some{[S.Fixed{limbs(ws)}]} : Maybe<&2, +List<S.Part>>}
+def vector_fixed(s, k, items, wss, n, ws, ea, ek, en, total, ew):
+  %Equal.sym(+List<U32>, ws, wcat(wss), ew) :
+    {Codec.parts(S.Sequence{items}, S.Vector{s, k}) == Some{[S.Fixed{limbs(_)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(+List<U32>, limbs(wcat(wss)), flat(wss), limbs_flat(wss)) :
+    {Codec.parts(S.Sequence{items}, S.Vector{s, k}) == Some{[S.Fixed{_}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Bool, Bool.and(Nat.is_lt(0n, k), Nat.is_eq(Codec.count(items), k)), True{}, ek) :
+    {Codec.require(_, Codec.aggregate(Codec.parts(items, S.Repeat{s}), SS.times(k, SS.fixed_size(s)))) == Some{[S.Fixed{flat(wss)}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Maybe<&2, Nat>, SS.times(k, SS.fixed_size(s)), Some{n}, en) :
+    {Codec.aggregate(Codec.parts(items, S.Repeat{s}), _) == Some{[S.Fixed{flat(wss)}]} : Maybe<&2, +List<S.Part>>}
+  aggregate_fixed(Codec.parts(items, S.Repeat{s}), wss, n, ea, total)
 
 # The top-level encoding from the parts of a fixed value.
 law encoding_of_parts:

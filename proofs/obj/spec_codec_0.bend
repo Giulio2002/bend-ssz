@@ -21,6 +21,8 @@ def uint32_spec_bytes(+x0: U32)
   {==}
 def uint32_spec_parts(+x0: U32)
     -> {Codec.parts(S.UnsignedValue{P.UInt{x0, 0, 0, 0, 0, 0, 0, 0}}, Spec.uint32()) == Some{[S.Fixed{F.limbs([x0])}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(S.Schema, Spec.uint32(), S.Unsigned{P.U32Width{}}, {==}) :
+    {Codec.parts(S.UnsignedValue{P.UInt{x0, 0, 0, 0, 0, 0, 0, 0}}, _) == Some{[S.Fixed{F.limbs([x0])}]} : Maybe<&2, +List<S.Part>>}
   F.uint32_part(x0)
 def uint32_spec_encode(+x0: U32)
     -> Decoding.decodes(Spec.uint32(), F.limbs([x0]), S.UnsignedValue{P.UInt{x0, 0, 0, 0, 0, 0, 0, 0}}):
@@ -42,6 +44,8 @@ def uint64_spec_bytes(+x0: U32, +x1: U32)
   {==}
 def uint64_spec_parts(+x0: U32, +x1: U32)
     -> {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, Spec.uint64()) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(S.Schema, Spec.uint64(), S.Unsigned{P.U64{}}, {==}) :
+    {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, _) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}
   F.uint64_part(x0, x1)
 def uint64_spec_encode(+x0: U32, +x1: U32)
     -> Decoding.decodes(Spec.uint64(), F.limbs([x0, x1]), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}):
@@ -63,6 +67,8 @@ def uint256_spec_bytes(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U3
   {==}
 def uint256_spec_parts(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
     -> {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, x2, x3, x4, x5, x6, x7}}, Spec.uint256()) == Some{[S.Fixed{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(S.Schema, Spec.uint256(), S.Unsigned{P.U256{}}, {==}) :
+    {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, x2, x3, x4, x5, x6, x7}}, _) == Some{[S.Fixed{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}]} : Maybe<&2, +List<S.Part>>}
   F.uint256_part(x0, x1, x2, x3, x4, x5, x6, x7)
 def uint256_spec_encode(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
     -> Decoding.decodes(Spec.uint256(), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7]), S.UnsignedValue{P.UInt{x0, x1, x2, x3, x4, x5, x6, x7}}):
@@ -84,7 +90,9 @@ def Bytes4_spec_bytes(+x0: U32)
   {==}
 def Bytes4_spec_parts(+x0: U32)
     -> {Codec.parts(S.BytesValue{F.limbs([x0])}, Spec.Bytes4()) == Some{[S.Fixed{F.limbs([x0])}]} : Maybe<&2, +List<S.Part>>}:
-  F.bytes_part(x0, [], {==})
+  %Equal.sym(S.Schema, Spec.Bytes4(), S.ByteVector{4n}, {==}) :
+    {Codec.parts(S.BytesValue{F.limbs([x0])}, _) == Some{[S.Fixed{F.limbs([x0])}]} : Maybe<&2, +List<S.Part>>}
+  F.bytes_part_n(x0, [], 4n, {==}, {==})
 def Bytes4_spec_encode(+x0: U32)
     -> Decoding.decodes(Spec.Bytes4(), F.limbs([x0]), S.BytesValue{F.limbs([x0])}):
   F.encoding_of_parts(Spec.Bytes4(), S.BytesValue{F.limbs([x0])}, F.limbs([x0]), Bytes4_spec_parts(x0))
@@ -105,7 +113,9 @@ def Bytes32_spec_bytes(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U3
   {==}
 def Bytes32_spec_parts(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
     -> {Codec.parts(S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, Spec.Bytes32()) == Some{[S.Fixed{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}]} : Maybe<&2, +List<S.Part>>}:
-  F.bytes_part(x0, [x1, x2, x3, x4, x5, x6, x7], {==})
+  %Equal.sym(S.Schema, Spec.Bytes32(), S.ByteVector{32n}, {==}) :
+    {Codec.parts(S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, _) == Some{[S.Fixed{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}]} : Maybe<&2, +List<S.Part>>}
+  F.bytes_part_n(x0, [x1, x2, x3, x4, x5, x6, x7], 32n, {==}, {==})
 def Bytes32_spec_encode(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32)
     -> Decoding.decodes(Spec.Bytes32(), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7]), S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}):
   F.encoding_of_parts(Spec.Bytes32(), S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7]), Bytes32_spec_parts(x0, x1, x2, x3, x4, x5, x6, x7))
@@ -126,7 +136,9 @@ def Bytes48_spec_bytes(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U3
   {==}
 def Bytes48_spec_parts(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32)
     -> {Codec.parts(S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, Spec.Bytes48()) == Some{[S.Fixed{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}]} : Maybe<&2, +List<S.Part>>}:
-  F.bytes_part(x0, [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11], {==})
+  %Equal.sym(S.Schema, Spec.Bytes48(), S.ByteVector{48n}, {==}) :
+    {Codec.parts(S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, _) == Some{[S.Fixed{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}]} : Maybe<&2, +List<S.Part>>}
+  F.bytes_part_n(x0, [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11], 48n, {==}, {==})
 def Bytes48_spec_encode(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32)
     -> Decoding.decodes(Spec.Bytes48(), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11]), S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}):
   F.encoding_of_parts(Spec.Bytes48(), S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11]), Bytes48_spec_parts(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11))
@@ -147,7 +159,9 @@ def Bytes96_spec_bytes(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U3
   {==}
 def Bytes96_spec_parts(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32)
     -> {Codec.parts(S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])}, Spec.Bytes96()) == Some{[S.Fixed{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])}]} : Maybe<&2, +List<S.Part>>}:
-  F.bytes_part(x0, [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23], {==})
+  %Equal.sym(S.Schema, Spec.Bytes96(), S.ByteVector{96n}, {==}) :
+    {Codec.parts(S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])}, _) == Some{[S.Fixed{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])}]} : Maybe<&2, +List<S.Part>>}
+  F.bytes_part_n(x0, [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23], 96n, {==}, {==})
 def Bytes96_spec_encode(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32)
     -> Decoding.decodes(Spec.Bytes96(), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23]), S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])}):
   F.encoding_of_parts(Spec.Bytes96(), S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])}, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23]), Bytes96_spec_parts(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23))
@@ -168,7 +182,9 @@ def Bytes8_spec_bytes(+x0: U32, +x1: U32)
   {==}
 def Bytes8_spec_parts(+x0: U32, +x1: U32)
     -> {Codec.parts(S.BytesValue{F.limbs([x0, x1])}, Spec.Bytes8()) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}:
-  F.bytes_part(x0, [x1], {==})
+  %Equal.sym(S.Schema, Spec.Bytes8(), S.ByteVector{8n}, {==}) :
+    {Codec.parts(S.BytesValue{F.limbs([x0, x1])}, _) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}
+  F.bytes_part_n(x0, [x1], 8n, {==}, {==})
 def Bytes8_spec_encode(+x0: U32, +x1: U32)
     -> Decoding.decodes(Spec.Bytes8(), F.limbs([x0, x1]), S.BytesValue{F.limbs([x0, x1])}):
   F.encoding_of_parts(Spec.Bytes8(), S.BytesValue{F.limbs([x0, x1])}, F.limbs([x0, x1]), Bytes8_spec_parts(x0, x1))
@@ -189,7 +205,9 @@ def Bytes20_spec_bytes(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32)
   {==}
 def Bytes20_spec_parts(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32)
     -> {Codec.parts(S.BytesValue{F.limbs([x0, x1, x2, x3, x4])}, Spec.Bytes20()) == Some{[S.Fixed{F.limbs([x0, x1, x2, x3, x4])}]} : Maybe<&2, +List<S.Part>>}:
-  F.bytes_part(x0, [x1, x2, x3, x4], {==})
+  %Equal.sym(S.Schema, Spec.Bytes20(), S.ByteVector{20n}, {==}) :
+    {Codec.parts(S.BytesValue{F.limbs([x0, x1, x2, x3, x4])}, _) == Some{[S.Fixed{F.limbs([x0, x1, x2, x3, x4])}]} : Maybe<&2, +List<S.Part>>}
+  F.bytes_part_n(x0, [x1, x2, x3, x4], 20n, {==}, {==})
 def Bytes20_spec_encode(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32)
     -> Decoding.decodes(Spec.Bytes20(), F.limbs([x0, x1, x2, x3, x4]), S.BytesValue{F.limbs([x0, x1, x2, x3, x4])}):
   F.encoding_of_parts(Spec.Bytes20(), S.BytesValue{F.limbs([x0, x1, x2, x3, x4])}, F.limbs([x0, x1, x2, x3, x4]), Bytes20_spec_parts(x0, x1, x2, x3, x4))
@@ -210,6 +228,8 @@ def Slot_spec_bytes(+x0: U32, +x1: U32)
   {==}
 def Slot_spec_parts(+x0: U32, +x1: U32)
     -> {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, Spec.Slot()) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(S.Schema, Spec.Slot(), S.Unsigned{P.U64{}}, {==}) :
+    {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, _) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}
   F.uint64_part(x0, x1)
 def Slot_spec_encode(+x0: U32, +x1: U32)
     -> Decoding.decodes(Spec.Slot(), F.limbs([x0, x1]), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}):
@@ -231,6 +251,8 @@ def Epoch_spec_bytes(+x0: U32, +x1: U32)
   {==}
 def Epoch_spec_parts(+x0: U32, +x1: U32)
     -> {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, Spec.Epoch()) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(S.Schema, Spec.Epoch(), S.Unsigned{P.U64{}}, {==}) :
+    {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, _) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}
   F.uint64_part(x0, x1)
 def Epoch_spec_encode(+x0: U32, +x1: U32)
     -> Decoding.decodes(Spec.Epoch(), F.limbs([x0, x1]), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}):
@@ -252,6 +274,8 @@ def Gwei_spec_bytes(+x0: U32, +x1: U32)
   {==}
 def Gwei_spec_parts(+x0: U32, +x1: U32)
     -> {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, Spec.Gwei()) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(S.Schema, Spec.Gwei(), S.Unsigned{P.U64{}}, {==}) :
+    {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, _) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}
   F.uint64_part(x0, x1)
 def Gwei_spec_encode(+x0: U32, +x1: U32)
     -> Decoding.decodes(Spec.Gwei(), F.limbs([x0, x1]), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}):
