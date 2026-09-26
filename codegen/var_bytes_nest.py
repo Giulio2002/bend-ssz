@@ -513,7 +513,8 @@ def specw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +len: U32, {PF}, +
 
 # ---- the rejection laws ----------------------------------------------------------------------
 
-def rej_text(x):
+def rej_text(x, pure=False):
+    """pure: only the lines up to inv_v (no window or whole-buffer facts), for codegen/var_bytes_x.py."""
     n, FS, H, po, Y = x.n, x.FS, x.H, x.po, x.Y
     FSN = x.FSN
     P = 4 * po
@@ -707,6 +708,8 @@ def rej_text(x):
     w('def inv_v(v, bs, e):')
     L.extend(match_value('v', ('Sequence', ['items']), 'st0(items, bs, e)'))
     w('')
+    if pure:
+        return L
     R = FS - P
     body = VBY.REJ.split('def ek_sub(')[0] + VBY.REJW + NREJ
     for a, b in [('@Tn', Tn), ('@n', n), ('@FSL', FSL), ('@FSn', x.FSN), ('@FS', str(FS)), ('@PO', str(po)), ('@P', str(P)), ('@H', str(H)),
