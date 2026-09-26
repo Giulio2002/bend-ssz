@@ -61,6 +61,19 @@ class Leaf:
         self.rec = rec    # a fixed record of codegen/var_rec_enc.py's RECS: its field tree (var_laws.FT)
 
 
+# The modules this generator writes, as this run computes them (read before the disk copy, so one
+# run reaches its fixed point: an interface's maxx / sizex reads its children's interfaces).
+GEN = {}
+
+
+def obj_text(path):
+    """A proofs/obj module's text: this run's, else the disk's (None when neither)."""
+    path = Path(path)
+    if path in GEN:
+        return GEN[path]
+    return path.read_text() if path.exists() else None
+
+
 # the fixed records written by codegen/var_rec_enc.py (proofs/obj/encx_recs.bend), by name: their field trees
 _RECFT = None
 
@@ -635,7 +648,8 @@ class Child:
             # a wide container's interface states no sizex / validx: its size module big_encx_<X>_size does (sizez, validx)
             fi = ROOT / 'proofs/obj' / f'big_encx_{X}_iface.bend'
             self.szalias = None
-            if fi.exists() and '\nlaw sizex:' not in fi.read_text():
+            ft_ = obj_text(fi)
+            if ft_ is not None and '\nlaw sizex:' not in ft_:
                 self.szalias = f'ES_{X}'
                 self.mod += f'\nimport ./big_encx_{X}_size.bend as ES_{X}'
         else:
@@ -703,7 +717,16 @@ def STD_CHILDREN():
     global _STD
     if _STD is None:
         import encx_children as EC
-        _STD = {p: c for p, c in EC.CHILDREN.items() if p != 'bl32'}
+        _STD = {}
+        for p in EC.PREFIXES:
+            if p == 'bl32':
+                continue
+            # this run's interface module first (GEN), else the disk's
+            fi = EC.OBJ / f'big_encx_{p}_iface.bend'
+            if fi in GEN:
+                _STD[p] = EC.read_child(p, GEN[fi], fi.name)
+            elif p in EC.CHILDREN:
+                _STD[p] = EC.CHILDREN[p]
     return _STD
 
 
@@ -1552,9 +1575,9 @@ def child_max(ch):
     if ch.p != 'bl32' and not getattr(ch, 'std', False) and not getattr(ch, 'alias', '').startswith('EC_'):
         return None
     m = re.match(r'import \./(\S+) as ', ch.mod or '')
-    if not m or not (ROOT / 'proofs/obj' / m.group(1)).exists():
+    t = obj_text(ROOT / 'proofs/obj' / m.group(1)) if m else None
+    if t is None:
         return None
-    t = (ROOT / 'proofs/obj' / m.group(1)).read_text()
     mm = re.search(r'^law maxx:\n.*\n.*\n  \{Nat\.is_le\(List\.length\(&2, U32, ENC\(m\)\), (\d+)n\) == True\{\} : Bool\}', t, re.M)
     return int(mm.group(1)) if mm else None
 
@@ -2461,7 +2484,7 @@ def union_arms(U):
         j, A = int(mm.group(1)), mm.group(2)
         pt = re.search(rf'^def {U}_pt{j}\(.*\n  (.*)$', src, re.M).group(1)
         s = int(re.search(r'O\.w8\(out, pos, (\d+)\)', pt).group(1))
-        if (ROOT / f'proofs/obj/big_encx_{A}_iface.bend').exists():
+        if _has_iface(A):
             pk = re.search(rf'^def {A}_putk\(out: Array<U32>, \+pos: U32, o: {A}\) -> .*: (.*)$', src, re.M).group(1)
             assert pk == f'{A}_putn(out, pos, o)', (A, pk)
             arms.append(dict(j=j, A=A, s=s, kind='if'))
@@ -2792,6 +2815,26 @@ def main():
             out[iface_file(C)] = iface_full(C, gen)
         for U in UCONTS:
             out[ufile(U)] = union_text(U)
+        # to the fixed point, in this run: a module's text may read its children's (GEN)
+        global _STD
+        for _ in range(8):
+            GEN.clear()
+            GEN.update(out)
+            _STD = None
+            nxt = {}
+            for C in CONTS:
+                nxt[out_file(C)] = full_text(C)
+            for C in GCONTS:
+                nxt[gfile_c(C)] = full_text(C, generic=True)
+            for C, gen in ICONTS:
+                nxt[iface_file(C)] = iface_full(C, gen)
+            for U in UCONTS:
+                nxt[ufile(U)] = union_text(U)
+            if nxt == out:
+                break
+            out = nxt
+        else:
+            raise SystemExit('var_cont_enc: no fixed point in 8 rounds')
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale:
