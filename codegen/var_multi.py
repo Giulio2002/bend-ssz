@@ -39,7 +39,7 @@ DEC_HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../sr
             'import ../../spec/decoding_relation.bend as Decoding', 'import ../../spec/nat_bytes.bend as N',
             'import ../../spec/fulu_schemas.bend as Spec', 'import ./spec_fixed.bend as F', 'import ./vspec.bend as VS',
             'import ./vbuf.bend as VB', 'import ./vu32.bend as VU', 'import ./vcopy.bend as VC', 'import ./vdepth.bend as VD',
-            'import ./vfix.bend as VF', 'import ./vlist.bend as VL', 'import ./vmul.bend as VM', 'import ./vzeros.bend as VZ', 'import ./var_fix_types_m.bend as VT']
+            'import ./vfix.bend as VF', 'import ./vlist.bend as VL', 'import ./vmul.bend as VM', 'import ./vmv.bend as VV', 'import ./vzeros.bend as VZ', 'import ./var_fix_types_m.bend as VT']
 
 
 def fix_types(g, names):
@@ -332,7 +332,65 @@ def rd_ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U3
   {{==}}
 """)
     w(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'var_multi_acc.bend.in')).read().replace('@OBJ', OBJ).replace('@X', X))
+    w(spec_text(g, names))
     return '\n'.join(W)
+
+
+def spec_text(g, names):
+    """The spec side: the value of the buffer, its encoding (vmv.enc3), and decode_spec."""
+    t = names[X]
+    word = lambda k: f'VB.slot(t, {k}n)'
+
+    def node(ft, k0):
+        nd = VLW.SL.walk(g, ft, iter(range(100000)))
+        mp = {int(w_[1:]): word(k0 + j) for j, w_ in enumerate(nd.words)}
+        return {'val': VLW.subst_words(nd.val, mp), 'sch': nd.sch, 'proof': VLW.subst_words(nd.proof, mp),
+                'words': [mp[int(w_[1:])] for w_ in nd.words]}
+    IDX, HDR, PV = node(t.fields[0][1], 0), node(t.fields[4][1], 5), node(t.fields[5][1], 57)
+    assert len(IDX['words']) == 2 and len(HDR['words']) == 52 and len(PV['words']) == 32
+    wl = lambda ws: '[' + ', '.join(ws) + ']'
+    AW = wl(IDX['words'])
+    POST = '[' + wl(HDR['words']) + ', ' + wl(PV['words']) + ']'
+    LN = ['L0(t)', 'L1(t)', 'L2(t, n)']
+    CN = ['C0(t)', 'C1(t)', 'C2(t, n)']
+    WLN = ['WL0(t)', 'WL1(t)', 'WL2(t, n)']
+    YN = ['Y0(t)', 'Y1(t)', 'Y2(t, n)']
+    EB = [(512, 2048), (12, 48), (12, 48)]
+    vals = [IDX['val']] + [f'S.Sequence{{VM.bvit({CN[i]}, {EB[i][0]}n, {WLN[i]})}}' for i in range(3)] + [HDR['val'], PV['val']]
+    schs = [IDX['sch']] + [f'S.ListOf{{S.ByteVector{{{EB[i][1]}n}}, U32.to_nat(4096)}}' for i in range(3)] + [HDR['sch'], PV['sch']]
+    parts = ([f'S.Fixed{{F.limbs({AW})}}'] + [f'S.Variable{{F.limbs({YN[i]})}}' for i in range(3)]
+             + [f'S.Fixed{{F.limbs({wl(HDR["words"])})}}', f'S.Fixed{{F.limbs({wl(PV["words"])})}}'])
+    fixed = {0: IDX, 4: HDR, 5: PV}
+
+    def items(i):
+        return 'S.EmptyItems{}' if i == 6 else f'S.Items{{{vals[i]}, {items(i + 1)}}}'
+
+    def chain(i):
+        return 'S.End{}' if i == 6 else f'S.Chain{{{schs[i]}, {chain(i + 1)}}}'
+
+    def cat(i):
+        if i == 6:
+            return '{==}'
+        rest = '[' + ', '.join(parts[i + 1:]) + ']'
+        if i in fixed:
+            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs({wl(fixed[i]["words"])}), '
+                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {fixed[i]["proof"]}, {cat(i + 1)})')
+        j = i - 1
+        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), F.limbs({YN[j]}), Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
+                f'VM.list_bv({CN[j]}, {EB[j][0]}n, {EB[j][1]}n, {WLN[j]}, U32.to_nat(4096), {{==}}, {{==}}, {{==}}, hk{j}, hl{j}, ft{j}), {cat(i + 1)})')
+    HK = ', '.join(
+        f'Pair.snd({{U32.to_nat({LN[j]}) == Nat.mul({CN[j]}, U32.to_nat({EB[j][1]})) : Nat}}, {{Nat.is_le({CN[j]}, U32.to_nat(4096)) == True{{}} : Bool}}, '
+        f'VU.whole_t({LN[j]}, {EB[j][1]}, 4096, v{EB[j][1]}(), {{==}}, {{==}}, {{==}}, {["he", "hf", "hg"][j]}))' for j in range(3))
+    acc = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'var_multi_acc.bend.in')).read()
+    fl = acc.splitlines()
+    a = next(k for k, l in enumerate(fl) if l.startswith('  +hd28 = '))
+    b = next(k for k, l in enumerate(fl) if l.startswith('  +hL2 = '))
+    FACTS = '\n'.join(fl[a:b + 1])
+    txt = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'var_multi_spec.bend.in')).read()
+    for k, v in [('@ITEMS', items(0)), ('@CHAIN', chain(0)), ('@PL', '[' + ', '.join(parts) + ']'), ('@CAT', cat(0)),
+                 ('@AW', AW), ('@POST', POST), ('@HK', HK), ('@FACTS', FACTS), ('@X', X)]:
+        txt = txt.replace(k, v)
+    return txt
 
 
 def outputs():
@@ -341,6 +399,7 @@ def outputs():
     for n, t in names.items():
         g.shape(t)
     out = {ROOT / 'proofs/obj/vmul.bend': (ROOT / 'codegen/vmul.bend.in').read_text(),
+           ROOT / 'proofs/obj/vmv.bend': (ROOT / 'codegen/vmv.bend.in').read_text(),
            ROOT / 'proofs/obj/var_fix_types_m.bend': fix_types(g, names),
            ROOT / 'proofs/obj/vzeros.bend': zeros_text(),
            ROOT / f'proofs/obj/var_codec_{X}.bend': dec_text(g, names)}
