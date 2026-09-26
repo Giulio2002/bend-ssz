@@ -213,7 +213,7 @@ class Child:
             self.pad = True
             self.model = lambda dd, D, X, q, r: f'ET.PUTL({t}, {N}, {dd}, {D}, {X}, {q}, {r})'
             self.hY = f'ET.len_encl({t}, {N})'
-        elif fs.kind == 'seq' and fs.p.startswith('l') and '_' in fs.p:
+        elif fs.kind == 'seq' and fs.p.startswith('l') and '_' in fs.p and fs.p not in STD_CHILDREN():
             A_, N = f'A_{f}', f'N_{f}'
             p = fs.p
             R = p.split('_', 1)[1]
@@ -1575,7 +1575,7 @@ def iface_file(C):
 def iface_full(C, generic=False):
     body = iface_text(C, generic)
     main = (out_file(C) if not generic else gfile_c(C)).name
-    heads = (out_file(C) if not generic else gfile_c(C)).read_text().split('\n')
+    heads = full_text(C, generic).split('\n')
     mods = [l for l in heads if l.startswith('import ./') and (' as E' in l or ' as V_' in l or l.endswith(' as VPC'))]
     hd = IHEAD
     if generic:
@@ -1599,9 +1599,9 @@ HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primi
 
 # The generic containers (types/generic_obj.bend, proofs/obj/generic_specs.bend) written by this generator:
 # every child in the encoder-window interface, every fixed piece word-aligned (so far).
-GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3']
+GCONTS = ['Gp4B0CA2906A', 'Gc465214E502', 'Gp66304057C3', 'Gp8A7851175B', 'Gc221EC01D83']
 # the containers written in the encoder-window interface with their spec side (iface_text): (name, generic)
-ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True)]
+ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloadHeader', False), ('Gc465214E502', True), ('Gp66304057C3', True), ('Gp8A7851175B', True), ('Gc221EC01D83', True)]
 
 
 def gfile_c(C):
