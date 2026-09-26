@@ -431,6 +431,21 @@ What that means concretely:
   every object whose bit list is a value within BitList[2^17] (BO.rep_bits) and passes
   the runtime's checks (capacity, zero bits past K); the value's bit-list bytes are those
   of the pos-0 Attestation encoder (`big_var_bitc_enc_Attestation.bend`).
+* **Encoder windows at any byte position** (2026-09-26, codec-top; the counterpart of the
+  vua_win decoder windows, over the bytes worker's `vuwd.bend` tight writers). The list of
+  transactions: `big_encx_l1048576_bl1073741824.bend` (`codegen/var_vlist_enc.py` with the
+  template `codegen/vvle_list.bend.in`; checkq --big 45 s / 2.8 GB). The object is
+  `Seq{am(t), N}` over a Data mirror tree t of its boxed elements (the root laws' mirrors,
+  copied by name from root_types), with `OKL(t, N)`: a perfect mirror tree, N within the
+  limit, every element a perfect storage tree of depth < 28 with no bytes past its length.
+  `putx`: the runtime `putk` at X = 4 q + r (any r) is the model `PUTL` (validity pass
+  `valid_l`, the write loop `pv_go` by induction: offset j by `w32_any`, element j by
+  `putw_any` into the boxed slot swapped out and back), its bytes are
+  `SPL(BYT D, X, ENCL ++ ZB(PADB(r, |ENCL|)))` when those bytes were zero (the region
+  invariant of `vvle.bend` through `UW.inv_step`/`inv_zero`), and it is perfect; `szx`,
+  `sizex`/`szs`: the sizes the writer and the size pass return are |ENCL|; `encx_spec`:
+  the value's spec parts are `[Variable ENCL]`; `domx`. `vvle.bend` (hand-written): the
+  list region's bytes while the writer runs (EI/EJ, off_step, el_step, windows, lengths).
 * **Progressive lists** (`codegen/var_plist.py`): the generic forms
   ProgressiveList[uint32/uint64/uint128/uint256] (Gt3A9420DD8E, GtE83F21B20A,
   Gt1C2FA69562, GtA8457965E2) have the full set (ok_eval, decode_accept,

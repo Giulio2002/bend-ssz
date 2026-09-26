@@ -24,7 +24,7 @@ import ./arr_vec.bend as AV
 def Gt7274F61A0F_spec_decode(+t: F.array__Tree<U32>, +pt: {F.array__perfect(U32, 11n, t) == True{} : Bool})
     -> {T.Gt7274F61A0F_decode(B.Buf{F.array__thaw(U32, t), 8192}, 8192) == (B.Buf{F.array__thaw(U32, t), 8192}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 11n, 0)}, 8192}}) : B.Buf & Maybe<&1, O.Words>}:
   %Equal.sym(Array<U32> & Array<U32>, O.acopy(2048, 0, 0, Array.new(U32, 12n, 0), F.array__thaw(U32, t)), (ANode{F.array__thaw(U32, t), Array.new(U32, 11n, 0)}, F.array__thaw(U32, t)),
-      AC.zl1(11n, 2048, 0, 0, t, {==}, {==}, {==}, {==}, {==}, pt)) :
+      AC.zl1(11n, 2048, 0, 0, t, {==}, {==}, AC.oct_pow(2048, 11n, 8n, {==}, {==}, {==}, {==}, {==}, {==}), {==}, {==}, pt)) :
     {T.Gt7274F61A0F_some(O.ci_fin(8192, 8192, _)) == (B.Buf{F.array__thaw(U32, t), 8192}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 11n, 0)}, 8192}}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
@@ -41,7 +41,7 @@ def Gt7274F61A0F_spec_input(+t: F.array__Tree<U32>, +pt: {F.array__perfect(U32, 
 def Gt7274F61A0F_spec_bytes(+l: F.array__Tree<U32>, +r: F.array__Tree<U32>, +pl: {F.array__perfect(U32, 11n, l) == True{} : Bool}, +pr: {F.array__perfect(U32, 11n, r) == True{} : Bool})
     -> {SF.emitted(O.Words, T.Gt7274F61A0F_encode(O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 8192}), 2048) == (O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 8192}, SF.limbs(F.array__slots(U32, l))) : O.Words & +List<U32>}:
   %Equal.sym(Array<U32> & Array<U32>, O.acopy(2048, 0, 0, Array.new(U32, 11n, 0), F.array__thaw(U32, F.TNode{l, r})), (F.array__thaw(U32, l), F.array__thaw(U32, F.TNode{l, r})),
-      AC.ov(11n, 2048, 0, 0, l, r, {==}, {==}, {==}, {==}, {==}, pl, pr)) :
+      AC.ov(11n, 2048, 0, 0, l, r, {==}, {==}, AC.oct_pow(2048, 11n, 8n, {==}, {==}, {==}, {==}, {==}, {==}), {==}, {==}, pl, pr)) :
     {SF.emitted(O.Words, T.Gt7274F61A0F_enc_out(O.put_fin(8192, _)), 2048) == (O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 8192}, SF.limbs(F.array__slots(U32, l))) : O.Words & +List<U32>}
   %Equal.sym(B.Buf & +List<U32>, B.emit(B.Buf{F.array__thaw(U32, l), 8192}, 0, 2048), (B.Buf{F.array__thaw(U32, l), 8192}, SF.limbs(F.array__slots(U32, l))), Gt7274F61A0F_spec_view(l, pl)) :
     {(O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 8192}, SF.listed(_)) == (O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 8192}, SF.limbs(F.array__slots(U32, l))) : O.Words & +List<U32>}

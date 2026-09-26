@@ -21,6 +21,8 @@ def Gt7B8507E2C2_spec_bytes(+x0: U32)
   {==}
 def Gt7B8507E2C2_spec_parts(+x0: U32)
     -> {Codec.parts(S.UnsignedValue{P.UInt{x0, 0, 0, 0, 0, 0, 0, 0}}, Spec.Gt7B8507E2C2()) == Some{[S.Fixed{F.limbs([x0])}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(S.Schema, Spec.Gt7B8507E2C2(), S.Unsigned{P.U32Width{}}, {==}) :
+    {Codec.parts(S.UnsignedValue{P.UInt{x0, 0, 0, 0, 0, 0, 0, 0}}, _) == Some{[S.Fixed{F.limbs([x0])}]} : Maybe<&2, +List<S.Part>>}
   F.uint32_part(x0)
 def Gt7B8507E2C2_spec_encode(+x0: U32)
     -> Decoding.decodes(Spec.Gt7B8507E2C2(), F.limbs([x0]), S.UnsignedValue{P.UInt{x0, 0, 0, 0, 0, 0, 0, 0}}):
@@ -42,6 +44,8 @@ def Gt62B0093BE7_spec_bytes(+x0: U32, +x1: U32)
   {==}
 def Gt62B0093BE7_spec_parts(+x0: U32, +x1: U32)
     -> {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, Spec.Gt62B0093BE7()) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}:
+  %Equal.sym(S.Schema, Spec.Gt62B0093BE7(), S.Unsigned{P.U64{}}, {==}) :
+    {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, _) == Some{[S.Fixed{F.limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}
   F.uint64_part(x0, x1)
 def Gt62B0093BE7_spec_encode(+x0: U32, +x1: U32)
     -> Decoding.decodes(Spec.Gt62B0093BE7(), F.limbs([x0, x1]), S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}):
