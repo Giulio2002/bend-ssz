@@ -722,7 +722,8 @@ def unique_text(x):
 
 # ---- the rejection laws ----------------------------------------------------------------------
 
-def rej_text(x):
+def rej_text(x, pure=False):
+    """pure: only the lines up to inv_v (no window or whole-buffer facts), for codegen/var_bytes_x.py."""
     n, FS, H, po, LIM = x.n, x.FS, x.H, x.po, x.LIM
     P = 4 * po
     kids, _ = VL.spec_schemas(n)
@@ -899,6 +900,8 @@ def rej_text(x):
     w('def inv_v(v, bs, e):')
     L.extend(match_value('v', ('Sequence', ['items']), 'st0(items, bs, e)'))
     w('')
+    if pure:
+        return L
     R = FS - P
     body = REJ + REJW + REJW_BL
     for a, b in [('@Tn', Tn), ('@n', n), ('@FSL', FSL), ('@FS', str(FS)), ('@PO', str(po)), ('@P', str(P)), ('@H', str(H)),
