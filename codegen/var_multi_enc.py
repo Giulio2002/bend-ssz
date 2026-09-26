@@ -62,27 +62,19 @@ def M2(+c2: Nat) -> Nat: VM.mulE(12n, c2)
 def Q1(+c0: Nat) -> Nat: Nat.add(89n, M0(c0))
 def Q2(+c0: Nat, +c1: Nat) -> Nat: Nat.add(Q1(c0), M1(c1))
 def QN(+c0: Nat, +c1: Nat, +c2: Nat) -> Nat: Nat.add(Q2(c0, c1), M2(c2))
-def MX0() -> Nat: VM.mulE(512n, U32.to_nat(4096))
-def MX1() -> Nat: VM.mulE(12n, U32.to_nat(4096))
-def QX() -> Nat: Nat.add(Nat.add(Nat.add(89n, MX0()), MX1()), MX1())
 def S1(+N0: U32) -> U32: U32.add(356, N0)
 def S2(+N0: U32, +N1: U32) -> U32: U32.add(S1(N0), N1)
 def S3(+N0: U32, +N1: U32, +N2: U32) -> U32: U32.add(S2(N0, N1), N2)
 def DO(+N0: U32, +N1: U32, +N2: U32) -> Nat: B.words_depth(VC.nwu(S3(N0, N1, N2)))
 
-# the closed bounds (big)
-def cQ() -> {{Nat.is_le(Nat.add(31n, A.quad(QX())), VB.pw(24n)) == {TRUE}}}: {{==}}
-def cS() -> {{Nat.is_le(A.quad(QX()), U32.to_nat(16777216)) == {TRUE}}}: {{==}}
-def cD() -> {{Nat.is_le(QX(), O.pow2n(23n)) == {TRUE}}}: {{==}}
-def cH0() -> {{Nat.is_le(A.quad(MX0()), U32.to_nat(8388608)) == {TRUE}}}: {{==}}
-def cH1() -> {{Nat.is_le(A.quad(MX1()), U32.to_nat(196608)) == {TRUE}}}: {{==}}
-
+@U32BOUNDS
 def lQX({NP}) -> {{Nat.is_le(QN(c0, c1, c2), QX()) == {TRUE}}}:
-  +l1 = Order.add_left(89n, M0(c0), MX0(), VME.mulE_mono(512n, c0, U32.to_nat(4096), hc0))
+  +l1 = Order.add_left(89n, M0(c0), MX0(), lM512(c0, hc0))
   +l2 = FD.nat__le_trans(Q2(c0, c1), Nat.add(Nat.add(89n, MX0()), M1(c1)), Nat.add(Nat.add(89n, MX0()), MX1()),
-    Order.add_right(Q1(c0), Nat.add(89n, MX0()), M1(c1), l1), Order.add_left(Nat.add(89n, MX0()), M1(c1), MX1(), VME.mulE_mono(12n, c1, U32.to_nat(4096), hc1)))
-  FD.nat__le_trans(QN(c0, c1, c2), Nat.add(Nat.add(Nat.add(89n, MX0()), MX1()), M2(c2)), QX(),
-    Order.add_right(Q2(c0, c1), Nat.add(Nat.add(89n, MX0()), MX1()), M2(c2), l2), Order.add_left(Nat.add(Nat.add(89n, MX0()), MX1()), M2(c2), MX1(), VME.mulE_mono(12n, c2, U32.to_nat(4096), hc2)))
+    Order.add_right(Q1(c0), Nat.add(89n, MX0()), M1(c1), l1), Order.add_left(Nat.add(89n, MX0()), M1(c1), MX1(), lM12(c1, hc1)))
+  FD.logic__subst(Nat, z => {{Nat.is_le(QN(c0, c1, c2), z) == {TRUE}}}, Nat.add(Nat.add(Nat.add(89n, MX0()), MX1()), MX1()), QX(), eQX(),
+    FD.nat__le_trans(QN(c0, c1, c2), Nat.add(Nat.add(Nat.add(89n, MX0()), MX1()), M2(c2)), Nat.add(Nat.add(Nat.add(89n, MX0()), MX1()), MX1()),
+      Order.add_right(Q2(c0, c1), Nat.add(Nat.add(89n, MX0()), MX1()), M2(c2), l2), Order.add_left(Nat.add(Nat.add(89n, MX0()), MX1()), M2(c2), MX1(), lM12(c2, hc2))))
 
 def lQ1N(+c0: Nat, +c1: Nat, +c2: Nat) -> {{Nat.is_le(Q1(c0), QN(c0, c1, c2)) == {TRUE}}}:
   FD.nat__le_trans(Q1(c0), Q2(c0, c1), QN(c0, c1, c2), Order.below_sum(Q1(c0), M1(c1)), Order.below_sum(Q2(c0, c1), M2(c2)))
@@ -284,7 +276,7 @@ def pvP({ALLP})
         w(f'''
 def hhi{k}({NP}) -> {{U32.is_le({N}, {L["hi"]}) == {TRUE}}}:
   VE.le_hi({N}, {L["hi"]}, FD.logic__subst(Nat, z => {{Nat.is_le(z, U32.to_nat({L["hi"]})) == {TRUE}}}, A.quad({M}), U32.to_nat({N}), Equal.sym(Nat, U32.to_nat({N}), A.quad({M}), ec{k}),
-    FD.nat__le_trans(A.quad({M}), A.quad({L["Mx"]}), U32.to_nat({L["hi"]}), VME.quad_mono({M}, {L["Mx"]}, VME.mulE_mono({L["E"]}n, {c}, U32.to_nat(4096), hc{k})), {L["cH"]})))
+    FD.nat__le_trans(A.quad({M}), A.quad({L["Mx"]}), U32.to_nat({L["hi"]}), VME.quad_mono({M}, {L["Mx"]}, lM{L["E"]}({c}, hc{k})), {L["cH"]})))
 def hu{k}({NP}) -> {{O.unit_ok({L["B"]}, {N}) == {TRUE}}}:
   VME.mod0({N}, {L["B"]}, {L["v"]}, {{==}}, {{==}}, {{==}}, {c}, Equal.trans(Nat, U32.to_nat({N}), A.quad({M}), Nat.mul({c}, U32.to_nat({L["B"]})), ec{k}, Equal.sym(Nat, Nat.mul({c}, A.quad({L["E"]}n)), A.quad({M}), VM.mulq({c}, {L["E"]}n))))
 

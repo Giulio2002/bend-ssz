@@ -23,6 +23,7 @@ import ../obj/vfix.bend as VF
 import ../obj/vlist.bend as VL
 import ../obj/vmul.bend as VM
 import ../obj/vmv.bend as VV
+import ../obj/vadd.bend as VA
 import ../obj/venc.bend as VE
 import ../obj/venc2.bend as V2
 import ../obj/vme.bend as VME

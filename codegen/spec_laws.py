@@ -132,6 +132,11 @@ VEC_MAX_ELEMS = 256
 # (var_rlist's ProposerSlashing RPRF: 4.2 s). Callers take the lemmas with hoist_take().
 HOIST = False
 _HOISTED = {}
+# VLCT (opt-in, off by default; main() turns it on for spec_rec_Validator): the container's parts one
+# step down by a rewrite with a lemma over an opaque value (lct), and the fields by the typed
+# F.items_fixed: the aggregate-vs-parts and concatenate-vs-parts conversions evaluated all of the
+# record's parts (Validator_parts_true/false: 11.6 s each).
+VLCT = False
 
 
 def hoist_take():
@@ -653,6 +658,11 @@ def validator_module(src):
             out = f'S.Items{{{it}, {out}}}'
         return f'S.Sequence{{{out}}}'
     split = ['  match b:', '    case True{}: {==}', '    case False{}: {==}']
+    if VLCT:
+        w('# a container\'s parts, one step, over an opaque value (the rewrite below compares no parts)')
+        w('def lct(+it: S.Value, +nm: +List<String>, +fs: S.Schema) -> {Codec.aggregate(Codec.parts(it, fs), SSC.fixed_size(fs)) == Codec.parts(S.Sequence{it}, S.Container{nm, fs}) : Maybe<&2, +List<S.Part>>}:')
+        w('  {==}')
+        w('')
     # spec parts, over free words
     xsig = ', '.join(f'+{x}: U32' for x in xs)
     esig = ', '.join(f'+{e}: U32' for e in es)
@@ -687,11 +697,15 @@ def validator_module(src):
             if i == 8:
                 return '{==}'
             rest = '[' + ', '.join(f'S.Fixed{{{q}}}' for q in parts[i + 1:]) + ']'
+            if VLCT:
+                return f'F.items_fixed({itv[i]}, {items(i + 1)}, {schs[i]}, {ch(i + 1)}, {parts[i]}, {rest}, {prf[i]}, {cat(i + 1)})'
             return (f'F.cat_fixed(Codec.parts({itv[i]}, {schs[i]}), {parts[i]}, Codec.parts({items(i + 1)}, {ch(i + 1)}), {rest}, {prf[i]}, {cat(i + 1)})')
         bsv = f'[{1 if bv == "True" else 0}]'
         w(f'def Validator_parts_{bv.lower()}({xsig}, {esig})')
         w(f'    -> {{Codec.parts({vb}, Spec.Validator()) == Some{{[S.Fixed{{{byts(xs, bv + "{}", es)}}}]}} : Maybe<&2, +List<S.Part>>}}:')
         allp = '[' + ', '.join(f'S.Fixed{{{q}}}' for q in parts) + ']'
+        if VLCT:
+            w(f'  %lct({items(0)}, {names}, {ch(0)}) : {{_ == Some{{[S.Fixed{{{byts(xs, bv + "{}", es)}}}]}} : Maybe<&2, +List<S.Part>>}}')
         w(f'  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts({items(0)}, {ch(0)}), Some{{{allp}}}, {cat(0)}) :')
         w(f'    {{Codec.aggregate(_, SSC.fixed_size({ch(0)})) == Some{{[S.Fixed{{{byts(xs, bv + "{}", es)}}}]}} : Maybe<&2, +List<S.Part>>}}')
         w(f'  AS.agg_m({wa}, {bsv}, {wb}, 121n, 121n, {{==}}, {{==}}, {{==}})')
@@ -1243,7 +1257,10 @@ def main():
                     legal=lambda n: f'VS.public_sound(Spec.{n}(), {{==}})')
     out[ROOT / 'proofs/obj/load_words.bend'] = load_words()
     arr_out, arr_names = SA.outputs(ROOT)
+    global VLCT
+    VLCT = True   # spec_rec_Validator: the exact one-step parts (VLCT above)
     vt, vu = validator_module(src)
+    VLCT = False
     arr_out[ROOT / 'proofs/obj/spec_rec_Validator.bend'] = vt
     arr_out[ROOT / 'proofs/obj/spec_rec_unique_Validator.bend'] = vu
     arr_out[ROOT / 'proofs/obj/word_mul.bend'] = (ROOT / 'codegen/word_mul.bend.in').read_text()
