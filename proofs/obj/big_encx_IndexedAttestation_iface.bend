@@ -288,6 +288,17 @@ def szx(m, hok):
   match m:
     case MW{+m_attesting_indices, +data, +signature}: Equal.trans(Nat, U32.to_nat(K.SZC(m_attesting_indices, data, signature)), ENDC(m_attesting_indices, data, signature), List.length(&2, U32, K.ENCC(m_attesting_indices, data, signature)), szC(m_attesting_indices, data, signature, hok, 28n, {==}), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_attesting_indices, data, signature)), ENDC(m_attesting_indices, data, signature), lenE(m_attesting_indices, data, signature, hok)))
 
+# The bytes within 4 2^k (k = 28, kept symbolic).
+law bndx:
+  for +m: MW
+  for +hok: {OK(m) == True{} : Bool}
+  for +k: Nat
+  for +ek: {k == 28n : Nat}
+  {Nat.is_le(List.length(&2, U32, ENC(m)), A.quad(VB.pw(k))) == True{} : Bool}
+def bndx(m, hok, k, ek):
+  match m:
+    case MW{+m_attesting_indices, +data, +signature}: FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(k))) == True{} : Bool}, ENDC(m_attesting_indices, data, signature), List.length(&2, U32, K.ENCC(m_attesting_indices, data, signature)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_attesting_indices, data, signature)), ENDC(m_attesting_indices, data, signature), lenE(m_attesting_indices, data, signature, hok)), okbk(m_attesting_indices, data, signature, hok, k, ek))
+
 law encx_spec:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}

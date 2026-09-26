@@ -166,6 +166,15 @@ def is_fixw_ext(fs):
     return is_fixw(fs) or (fs.fixed and not fs.data and ((fs.kind == 'container' and fs.p == 'SyncCommittee')
                                                         or (fs.kind == 'box' and fs.p.endswith('_bx') and rec_ft(fs.p[:-3]) is not None)))
 
+
+def qr_at(c, X='X'):
+    """A fixed field's word position (q', r') at byte c of the container at X = 4 q + r: (c / 4 + q, r) when
+    c is word-aligned, else (QX, RX) of U32.add(X, c) (vcont; placed through vpiece.ppos / proom)."""
+    if c % 4 == 0:
+        return f'Nat.add({c // 4}n, q)', 'r'
+    return f'VCN.QX(U32.add({X}, {c}))', f'VCN.RX(U32.add({X}, {c}))'
+
+
 def leaf_of(fs):
     if fs.kind in ('u8', 'u16'):
         m = 1 if fs.kind == 'u8' else 2
@@ -641,11 +650,11 @@ def szpz({OPS}, +hpz: {{{K.pz} == {TRUE}}}) -> {{SZC({OAS}) == {core} : U32}}:
             mdl = f'WD.W32X(VCN.RX({Xc}), dd, {prev}, VCN.QX({Xc}), {ev["cur"]})'
         elif ev['kind'] == 'leaf':
             lf = leaf_of(fs)
-            kw = ev['hoff'] // 4
-            mdl = f'PXo_{lf.p}({f}, dd, {prev}, Nat.add({kw}n, q), r)'
+            qk_, rk_ = qr_at(ev['hoff'])
+            mdl = f'PXo_{lf.p}({f}, dd, {prev}, {qk_}, {rk_})'
         elif ev['kind'] == 'fixw':
-            kw = ev['hoff'] // 4
-            mdl = K.fixw[f].model('r', prev, f'Nat.add({kw}n, q)')
+            qk_, rk_ = qr_at(ev['hoff'])
+            mdl = K.fixw[f].model(rk_, prev, qk_)
         elif ev['kind'] == 'off':
             kw = ev['hoff'] // 4
             mdl = f'WD.W32X(r, dd, {prev}, Nat.add({kw}n, q), {ev["cur"]})'
@@ -934,30 +943,42 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
             post = '[' + ', '.join(st[i + 1:]) + ']'
             pos = f'Nat.add(A.quad(Nat.add({kw}n, q)), r)'
             rel = f'Nat.add({X0}, VCN.LN(VCN.CAT({pre})))'
-            a(f'+z{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, {size}n, {post}, 0n, {UBk}, hX, I{k}, {{==}})')
-            a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt({size}n, VS.bdr(zz, {UBk})) == UW.ZB({size}n) : +List<U32>}}, {rel}, {pos}, VRX.fpx(q, r, {kw}n), z{k})')
-            a(f'+ep{k} = VRX.fpos(X, q, r, {kw}n, {c}, {LLv}, dd, e, {{==}}, hd, {{==}}, hl)')
-            a(f'+hl{k} = VRX.froom(q, r, dd, {kw}n, {size}n, {LLv}, FD.nat__le_trans(Nat.add(A.quad({kw}n), {size}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)}))), hl)')
             Xc = f'U32.add(X, {c})'
-            qk = f'Nat.add({kw}n, q)'
+            qk, rk = qr_at(c)
+            if c % 4:
+                # a field at a byte offset: its word position (QX, RX) of X + c (vpiece.ppos / proom)
+                pos = f'Nat.add(A.quad({qk}), {rk})'
+                hk_ = f'FD.nat__le_trans(Nat.add({c}n, {size}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)})))'
+                a(f'+z{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, {size}n, {post}, 0n, {UBk}, hX, I{k}, {{==}})')
+                a(f'+pp{k} = VPC.ppos(X, {c}, {c}n, q, r, {LLv}, {size}n, dd, e, {{==}}, hd, {hk_}, hl)')
+                a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt({size}n, VS.bdr(zz, {UBk})) == UW.ZB({size}n) : +List<U32>}}, {rel}, {pos}, pp{k}, z{k})')
+                a(f'+ep{k} = VC.split4({Xc})')
+                a(f'+hl{k} = VPC.proom(X, {c}, {c}n, q, r, {LLv}, {size}n, dd, e, {{==}}, hd, {hk_}, hl)')
+                hrk, eqpos = f'VCN.rx_lt({Xc})', f'pp{k}'
+            else:
+                a(f'+z{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, {size}n, {post}, 0n, {UBk}, hX, I{k}, {{==}})')
+                a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt({size}n, VS.bdr(zz, {UBk})) == UW.ZB({size}n) : +List<U32>}}, {rel}, {pos}, VRX.fpx(q, r, {kw}n), z{k})')
+                a(f'+ep{k} = VRX.fpos(X, q, r, {kw}n, {c}, {LLv}, dd, e, {{==}}, hd, {{==}}, hl)')
+                a(f'+hl{k} = VRX.froom(q, r, dd, {kw}n, {size}n, {LLv}, FD.nat__le_trans(Nat.add(A.quad({kw}n), {size}n), {FIX}n, {LLv}, {{==}}, Order.below_sum({FIX}n, VCN.SUM({KS(ks_all)}))), hl)')
+                hrk, eqpos = 'hr', f'VRX.fpx(q, r, {kw}n)'
             if kind == 'leaf':
                 lf = leaf_of(fs)
-                a(f'+g{k} = putxo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, r, ep{k}, hr, hd, hl{k}, pf{k}, hz{k})')
-                a(f'+rt{k} = PA(RTo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, r), BYo_{lf.p}({f}, dd, {Mk(k)}, {qk}, r), g{k})')
-                a(f'+by{k} = PB(RTo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, r), BYo_{lf.p}({f}, dd, {Mk(k)}, {qk}, r), g{k})')
+                a(f'+g{k} = putxo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}, ep{k}, {hrk}, hd, hl{k}, pf{k}, hz{k})')
+                a(f'+rt{k} = PA(RTo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}), BYo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}), g{k})')
+                a(f'+by{k} = PB(RTo_{lf.p}({f}, dd, {Mk(k)}, {Xc}, {qk}, {rk}), BYo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}), g{k})')
                 Y = f'FX.limbs(RW_{lf.p}({f}))'
                 hY = f'lenb_{lf.p}({f})'
-                a(f'+pf{k + 1} = pfo_{lf.p}({f}, dd, {Mk(k)}, {qk}, r, pf{k})')
+                a(f'+pf{k + 1} = pfo_{lf.p}({f}, dd, {Mk(k)}, {qk}, {rk}, pf{k})')
                 piece = f'VCN.PC({size}n, {Y})'
                 reg = 'reg_putc0'
             elif kind == 'fixw':
                 fw = K.fixw[f]
-                xs = (Mk(k), Xc, qk, 'r', f'ep{k}', 'hr', f'hl{k}', f'pf{k}', f'hz{k}')
+                xs = (Mk(k), Xc, qk, rk, f'ep{k}', hrk, f'hl{k}', f'pf{k}', f'hz{k}')
                 a(f'+rt{k} = {fw.rt(*xs)}')
                 a(f'+by{k} = {fw.by(*xs)}')
                 Y = fw.Y
                 hY = fw.hY
-                a(f'+pf{k + 1} = {fw.pf("r", Mk(k), qk, f"pf{k}")}')
+                a(f'+pf{k + 1} = {fw.pf(rk, Mk(k), qk, f"pf{k}")}')
                 piece = f'VCN.PC({size}n, {Y})'
                 reg = 'reg_putc0'
             else:
@@ -969,7 +990,7 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
                 a(f'+pf{k + 1} = WD.w32x_perfect(r, dd, {Mk(k)}, {qk}, {cur}, pf{k})')
                 piece = Y
                 reg = 'reg_put0'
-            a(f'+hop{k} = FD.logic__subst(Nat, zz => {{{UBn} == UW.SPL({UBk}, zz, {Y}) : +List<U32>}}, {pos}, {rel}, Equal.sym(Nat, {rel}, {pos}, VRX.fpx(q, r, {kw}n)), by{k})')
+            a(f'+hop{k} = FD.logic__subst(Nat, zz => {{{UBn} == UW.SPL({UBk}, zz, {Y}) : +List<U32>}}, {pos}, {rel}, Equal.sym(Nat, {rel}, {pos}, {eqpos}), by{k})')
             a(f'+I{k + 1} = VCN.{reg}(UA.BYT(D), {X0}, {pre}, {size}n, {post}, {Y}, {UBk}, {UBn}, hX, I{k}, {hY}, hop{k})')
             st[i] = piece
             facts.append(f'rt{k}')
@@ -1507,6 +1528,17 @@ def szx(m, hok):
   match m:
     case {MP}: Equal.trans(Nat, U32.to_nat(K.SZC({OAS})), ENDC({OAS}), List.length(&2, U32, {ENCCt}), szC({OAS}, hok, 28n, {{==}}), Equal.sym(Nat, List.length(&2, U32, {ENCCt}), ENDC({OAS}), lenE({OAS}, hok)))
 
+# The bytes within 4 2^k (k = 28, kept symbolic).
+law bndx:
+  for +m: MW
+  for +hok: {{OK(m) == True{{}} : Bool}}
+  for +k: Nat
+  for +ek: {{k == 28n : Nat}}
+  {{Nat.is_le(List.length(&2, U32, ENC(m)), A.quad(VB.pw(k))) == True{{}} : Bool}}
+def bndx(m, hok, k, ek):
+  match m:
+    case {MP}: FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(k))) == True{{}} : Bool}}, ENDC({OAS}), List.length(&2, U32, {ENCCt}), Equal.sym(Nat, List.length(&2, U32, {ENCCt}), ENDC({OAS}), lenE({OAS}, hok)), okbk({OAS}, hok, k, ek))
+
 law encx_spec:
   for +m: MW
   for +hok: {{OK(m) == True{{}} : Bool}}
@@ -1536,9 +1568,11 @@ def domx(m, hok):
             Xc_ = f'U32.add(XQ(q, r), {ev["hoff"]})'
             pfs = f'WD.w32x_perfect(VCN.RX({Xc_}), dd, {Mk(k)}, VCN.QX({Xc_}), {ev["cur"]}, {pfs})'
         elif ev['kind'] == 'leaf':
-            pfs = f'K.pfo_{leaf_of(fs).p}({f}, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), r, {pfs})'
+            qk_, rk_ = qr_at(ev['hoff'], 'XQ(q, r)')
+            pfs = f'K.pfo_{leaf_of(fs).p}({f}, dd, {Mk(k)}, {qk_}, {rk_}, {pfs})'
         elif ev['kind'] == 'fixw':
-            pfs = K.fixw[f].pf('r', Mk(k), f'Nat.add({ev["hoff"] // 4}n, q)', pfs)
+            qk_, rk_ = qr_at(ev['hoff'], 'XQ(q, r)')
+            pfs = K.fixw[f].pf(rk_, Mk(k), qk_, pfs)
         elif ev['kind'] == 'off':
             pfs = f'WD.w32x_perfect(r, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), {ev["cur"]}, {pfs})'
         else:
@@ -1787,7 +1821,7 @@ def full_text(C, generic=False):
     for ch in K.children.values():
         if ch.mod not in mods:
             mods.append(ch.mod)
-    if any(ev['kind'] == 'off' and ev['hoff'] % 4 for ev in events) and 'import ./vpiece.bend as VPC' not in mods:
+    if any(ev['kind'] in ('off', 'leaf', 'fixw') and ev['hoff'] % 4 for ev in events) and 'import ./vpiece.bend as VPC' not in mods:
         mods.append('import ./vpiece.bend as VPC')
     if getattr(K, 'pz', None) is not None:
         mods.append('import ./vuw_bits.bend as UWB')
@@ -1825,9 +1859,11 @@ def pfc_text(K, events, OP, OA, C):
             Xc_ = f'U32.add(X, {ev["hoff"]})'
             pfs = f'WD.w32x_perfect(VCN.RX({Xc_}), dd, {Mk(k)}, VCN.QX({Xc_}), {ev["cur"]}, {pfs})'
         elif ev['kind'] == 'leaf':
-            pfs = f'pfo_{leaf_of(fs).p}({f}, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), r, {pfs})'
+            qk_, rk_ = qr_at(ev['hoff'])
+            pfs = f'pfo_{leaf_of(fs).p}({f}, dd, {Mk(k)}, {qk_}, {rk_}, {pfs})'
         elif ev['kind'] == 'fixw':
-            pfs = f'V_{fs.p}.{fs.p}x_perfect(r, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), TB_{f}, {pfs})'
+            qk_, rk_ = qr_at(ev['hoff'])
+            pfs = K.fixw[f].pf(rk_, Mk(k), qk_, pfs)
         elif ev['kind'] == 'off':
             pfs = f'WD.w32x_perfect(r, dd, {Mk(k)}, Nat.add({ev["hoff"] // 4}n, q), {ev["cur"]}, {pfs})'
         else:
