@@ -228,6 +228,8 @@ def scan():
             xs = {m.group(1) for m in api.finditer(st)} | {m.group(1) or m.group(2) for m in spc.finditer(st + ' ' + hyps)}
             if n.endswith('_ok_eval'):
                 xs.add(n[:-len('_ok_eval')])
+            if n == 'ok_eval':      # a per-name module's validator law: the name is in the file name
+                xs |= set(f.stem.split('_')) & U
             for X in xs & U:
                 for kind in KINDS:
                     if any(re.fullmatch(pat.replace('<X>', re.escape(X)), n) for pat in LAW_FORMS[kind]) and SHAPE(kind, X, st, hyps):

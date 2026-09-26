@@ -11868,7 +11868,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "big_var_plist_Gt1C2FA69562.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
    "decode_accept": [
     {
      "file": "big_var_plist_Gt1C2FA69562.bend",
@@ -14250,7 +14256,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "big_var_plist_GtA8457965E2.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
    "decode_accept": [
     {
      "file": "big_var_plist_GtA8457965E2.bend",
@@ -15144,7 +15156,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "big_var_plist_Gt3A9420DD8E.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
    "decode_accept": [
     {
      "file": "big_var_plist_Gt3A9420DD8E.bend",
@@ -16038,7 +16056,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "big_var_plist_GtE83F21B20A.bend",
+     "law": "ok_eval",
+     "big": true
+    }
+   ],
    "decode_accept": [
     {
      "file": "big_var_plist_GtE83F21B20A.bend",
@@ -17268,7 +17292,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_GtDB1482527D.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_GtDB1482527D.bend",
@@ -17334,7 +17364,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_Gt7C1C13B292.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_Gt7C1C13B292.bend",
@@ -17400,7 +17436,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_GtAA99FAAC9D.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_GtAA99FAAC9D.bend",
@@ -17466,7 +17508,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_Gt94B70684B5.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_Gt94B70684B5.bend",
@@ -17532,7 +17580,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_GtCF587DD386.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_GtCF587DD386.bend",
@@ -17598,7 +17652,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_Gt4B1BA0C81D.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_Gt4B1BA0C81D.bend",
@@ -17664,7 +17724,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_Gt2F34855D3D.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_Gt2F34855D3D.bend",
@@ -17730,7 +17796,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_Gt039DD44FD8.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_Gt039DD44FD8.bend",
@@ -17796,7 +17868,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_GtC847E618FA.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_GtC847E618FA.bend",
@@ -17862,7 +17940,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_Gt484D1ADAFE.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_Gt484D1ADAFE.bend",
@@ -17928,7 +18012,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_Gt21E1483EE1.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_Gt21E1483EE1.bend",
@@ -17994,7 +18084,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_Gt38F5890C13.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_Gt38F5890C13.bend",
@@ -18060,7 +18156,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_Gt44F1B6940F.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_Gt44F1B6940F.bend",
@@ -18126,7 +18228,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_GtF91FD5FC73.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_GtF91FD5FC73.bend",
@@ -18192,7 +18300,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_Gt98B8C9F262.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_Gt98B8C9F262.bend",
@@ -18258,7 +18372,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_GtC063F5D9E0.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_GtC063F5D9E0.bend",
@@ -18324,7 +18444,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_GtD291A17219.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_GtD291A17219.bend",
@@ -18390,7 +18516,13 @@
      "big": false
     }
    ],
-   "ok_eval": [],
+   "ok_eval": [
+    {
+     "file": "var_bits_Gt9D356BAF82.bend",
+     "law": "ok_eval",
+     "big": false
+    }
+   ],
    "decode_accept": [
     {
      "file": "var_bits_Gt9D356BAF82.bend",
