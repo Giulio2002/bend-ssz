@@ -895,13 +895,16 @@ def inv_text(L):
         for f in L.fields[:i]:
             if f['kind'] == 'fix':
                 s = f['size']
-                out.append(f'+xs{f["i"]}: +List<U32>, +lx{f["i"]}: {{Some{{{s}n}} == Some{{List.length(&2, U32, xs{f["i"]})}} : Maybe<&2, Nat>}}')
+                if L.sym:
+                    out.append(f'+xs{f["i"]}: +List<U32>, +lx{f["i"]}: LXF({s}n, xs{f["i"]})')
+                else:
+                    out.append(f'+xs{f["i"]}: +List<U32>, +lx{f["i"]}: {{Some{{{s}n}} == Some{{List.length(&2, U32, xs{f["i"]})}} : Maybe<&2, Nat>}}')
                 if f.get('chk'):
-                    out.append(f'+hx{f["i"]}: S.Value, +ex{f["i"]}: {{Codec.parts(hx{f["i"]}, {L.spec(f)}) == Some{{[S.Fixed{{xs{f["i"]}}}]}} : {MP}}}')
+                    out.append(f'+hx{f["i"]}: S.Value, +ex{f["i"]}: EXF(hx{f["i"]}, {L.spec(f)}, xs{f["i"]})')
             else:
                 j = f['j']
                 if L.sym:
-                    out.append(f'+y{j}: +List<U32>, +h{j}: S.Value, ev{j}: EVF(h{j}, {L.spec(f)}, y{j})')
+                    out.append(f'+y{j}: +List<U32>, +h{j}: S.Value, +ev{j}: EVF(h{j}, {L.spec(f)}, y{j})')
                 else:
                     out.append(f'+y{j}: +List<U32>, +h{j}: S.Value, +ev{j}: {{Codec.parts(h{j}, {L.spec(f)}) == Some{{[S.Variable{{y{j}}}]}} : {MP}}}')
         return ''.join(x + ', ' for x in out)
@@ -938,7 +941,9 @@ def inv_text(L):
         PS = f'PSX({PLA[:-2]})'
         w.append(f'def BYX({PLD[:-2]}) -> +List<U32>: List.append(&2, U32, Layout.fixed_parts({PS}, Layout.fixed_size({PS})), Layout.payloads({PS}))')
         w.append(f'def WSX() -> +List<Maybe<&2, Nat>>: {WS}')
-        w.append(f'def EVF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Type: {{Codec.parts(h, s) == Some{{[S.Variable{{y}}]}} : {MP}}}')
+        w.append(f'def EVF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Data: {{Codec.parts(h, s) == Some{{[S.Variable{{y}}]}} : {MP}}}')
+        w.append(f'def EXF(+h: S.Value, +s: S.Schema, +y: +List<U32>) -> Data: {{Codec.parts(h, s) == Some{{[S.Fixed{{y}}]}} : {MP}}}')
+        w.append(f'def LXF(+s: Nat, +xs: +List<U32>) -> Data: {{Some{{s}} == Some{{List.length(&2, U32, xs)}} : Maybe<&2, Nat>}}')
         w.append('')
         WS = 'WSX()'
     FP = f'Layout.fixed_parts({PS}, Layout.fixed_size({PS}))'
@@ -1039,7 +1044,7 @@ def inv_text(L):
         w.append(f'  %eq : {{VS.bt({ly}, VS.bdr({OFF}, _)) == y{j} : +List<U32>}}')
         w.append(f'  %efs({SA}) : {{VS.bt({ly}, VS.bdr(LY.OFF({PS}, {i}n, _), {BYTES})) == y{j} : +List<U32>}}')
         w.append(f'  LY.lay_pay({PS}, {i}n, y{j}, Layout.fixed_size({PS}), {FP}, LY.lay_len({PS}, Layout.fixed_size({PS})), {{==}})')
-        w.append(f'def dch{j}({SD}{", +h" + str(j) + ": S.Value, ev" + str(j) + ": EVF(h" + str(j) + ", " + L.spec(f) + ", y" + str(j) + ")" if CP else ""}) -> {{CH{j}.CHKw(t, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}) == {TRUE}}}:')
+        w.append(f'def dch{j}({SD}{", +h" + str(j) + ": S.Value, +ev" + str(j) + ": EVF(h" + str(j) + ", " + L.spec(f) + ", y" + str(j) + ")" if CP else ""}) -> {{CH{j}.CHKw(t, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}) == {TRUE}}}:')
         w.append(f'  CH{j}.invw(d, t, n, {L.XJ(j)}, {L.FJ(j)}, {L.LJ(j)}, eoW({CWA}, {L.O(j)}, {E}, nle{j}({SA}), nle2{j}({SA})), hd,')
         w.append(f'    hwj({CWA}, {L.O(j)}, {E}, nle{j}({SA}), nle2{j}({SA})), pf, h{j},')
         w.append(f'    FD.logic__subst(+List<U32>, z => {{Codec.parts(h{j}, {L.spec(f)}) == Some{{[S.Variable{{z}}]}} : {MP}}}, y{j}, {L.Y(j)}, Equal.sym(+List<U32>, {L.Y(j)}, y{j}, ypay{j}({SA})), ev{j}))')
