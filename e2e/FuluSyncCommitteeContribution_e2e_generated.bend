@@ -10,11 +10,6 @@ import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluSyncCommitteeContribution_def_generated.bend as FuluSyncCommitteeContribution_d
 import ../types/FuluSyncCommitteeContribution_encode_ssz_generated.bend as FuluSyncCommitteeContribution_e
 import ../types/FuluSyncCommitteeContribution_hashtreeroot_generated.bend as FuluSyncCommitteeContribution_h
-import ../types/FuluSyncCommitteeMessage_def_generated.bend as FuluSyncCommitteeMessage_d
-import ../types/FuluSyncCommitteeMessage_encode_ssz_generated.bend as FuluSyncCommitteeMessage_e
-import ../types/FuluSyncCommitteeMessage_hashtreeroot_generated.bend as FuluSyncCommitteeMessage_h
-import ../types/FuluValidatorIndex_encode_ssz_generated.bend as FuluValidatorIndex_e
-import ../types/FuluValidatorIndex_hashtreeroot_generated.bend as FuluValidatorIndex_h
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
@@ -23,7 +18,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_2.bend as M0
+import ../proofs/obj/spec_codec_SyncCommitteeContribution.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 import ../proofs/obj/spec_bits.bend as FB
@@ -55,32 +50,4 @@ def FuluSyncCommitteeContribution_e2e_encode(+o: FuluSyncCommitteeContribution_d
 def FuluSyncCommitteeContribution_e2e_root(h: B.Buf, +o: FuluSyncCommitteeContribution_d.SyncCommitteeContribution) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluSyncCommitteeContribution_h.SyncCommitteeContribution_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.SyncCommitteeContribution(), M1.v_SyncCommitteeContribution(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.SyncCommitteeContribution(), M1.v_SyncCommitteeContribution(o), VS.public_sound(Spec.SyncCommitteeContribution(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluSyncCommitteeContribution_h.SyncCommitteeContribution_hash_tree_root(h, o))),
     M2.rv_SyncCommitteeContribution(o), M1.SyncCommitteeContribution_root_correct(h, o))
-
-# FuluSyncCommitteeMessage (SyncCommitteeMessage)
-def FuluSyncCommitteeMessage_e2e_encode(+o: FuluSyncCommitteeMessage_d.SyncCommitteeMessage) -> {Some{E.obytes(FuluSyncCommitteeMessage_e.SyncCommitteeMessage_encode(o))} == API.serialize(Spec.SyncCommitteeMessage(), M1.v_SyncCommitteeMessage(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluSyncCommitteeMessage_d.SyncCommitteeMessage{O.U64{+x0, +x1}, FuluBytes32_d.Bytes32{+x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9}, O.U64{+x10, +x11}, FuluBytes96_d.Bytes96{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35}}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluSyncCommitteeMessage_e.SyncCommitteeMessage_encode(FuluSyncCommitteeMessage_d.SyncCommitteeMessage{O.U64{x0, x1}, FuluBytes32_d.Bytes32{x2, x3, x4, x5, x6, x7, x8, x9}, O.U64{x10, x11}, FuluBytes96_d.Bytes96{x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35}}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35])}, API.serialize(Spec.SyncCommitteeMessage(), M1.v_SyncCommitteeMessage(FuluSyncCommitteeMessage_d.SyncCommitteeMessage{O.U64{x0, x1}, FuluBytes32_d.Bytes32{x2, x3, x4, x5, x6, x7, x8, x9}, O.U64{x10, x11}, FuluBytes96_d.Bytes96{x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35}})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluSyncCommitteeMessage_e.SyncCommitteeMessage_encode(FuluSyncCommitteeMessage_d.SyncCommitteeMessage{O.U64{x0, x1}, FuluBytes32_d.Bytes32{x2, x3, x4, x5, x6, x7, x8, x9}, O.U64{x10, x11}, FuluBytes96_d.Bytes96{x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35}}), 0, 36), (FuluSyncCommitteeMessage_e.SyncCommitteeMessage_encode(FuluSyncCommitteeMessage_d.SyncCommitteeMessage{O.U64{x0, x1}, FuluBytes32_d.Bytes32{x2, x3, x4, x5, x6, x7, x8, x9}, O.U64{x10, x11}, FuluBytes96_d.Bytes96{x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35}}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35])), M0.SyncCommitteeMessage_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.SyncCommitteeMessage(), M1.v_SyncCommitteeMessage(FuluSyncCommitteeMessage_d.SyncCommitteeMessage{O.U64{x0, x1}, FuluBytes32_d.Bytes32{x2, x3, x4, x5, x6, x7, x8, x9}, O.U64{x10, x11}, FuluBytes96_d.Bytes96{x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.SyncCommitteeMessage(), M1.v_SyncCommitteeMessage(FuluSyncCommitteeMessage_d.SyncCommitteeMessage{O.U64{x0, x1}, FuluBytes32_d.Bytes32{x2, x3, x4, x5, x6, x7, x8, x9}, O.U64{x10, x11}, FuluBytes96_d.Bytes96{x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35}})), Encoding.encoding_for_legal_type(Spec.SyncCommitteeMessage(), M1.v_SyncCommitteeMessage(FuluSyncCommitteeMessage_d.SyncCommitteeMessage{O.U64{x0, x1}, FuluBytes32_d.Bytes32{x2, x3, x4, x5, x6, x7, x8, x9}, O.U64{x10, x11}, FuluBytes96_d.Bytes96{x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35])},
-            E.serialize_legal(Spec.SyncCommitteeMessage(), M1.v_SyncCommitteeMessage(FuluSyncCommitteeMessage_d.SyncCommitteeMessage{O.U64{x0, x1}, FuluBytes32_d.Bytes32{x2, x3, x4, x5, x6, x7, x8, x9}, O.U64{x10, x11}, FuluBytes96_d.Bytes96{x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35}}), VS.public_sound(Spec.SyncCommitteeMessage(), {==})), M0.SyncCommitteeMessage_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35))))
-
-def FuluSyncCommitteeMessage_e2e_root(h: B.Buf, +o: FuluSyncCommitteeMessage_d.SyncCommitteeMessage) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluSyncCommitteeMessage_h.SyncCommitteeMessage_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.SyncCommitteeMessage(), M1.v_SyncCommitteeMessage(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.SyncCommitteeMessage(), M1.v_SyncCommitteeMessage(o), VS.public_sound(Spec.SyncCommitteeMessage(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluSyncCommitteeMessage_h.SyncCommitteeMessage_hash_tree_root(h, o))),
-    M2.rv_SyncCommitteeMessage(o), M1.SyncCommitteeMessage_root_correct(h, o))
-
-# FuluValidatorIndex (ValidatorIndex)
-def FuluValidatorIndex_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluValidatorIndex_e.ValidatorIndex_encode(o))} == API.serialize(Spec.ValidatorIndex(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case O.U64{+x0, +x1}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluValidatorIndex_e.ValidatorIndex_encode(O.U64{x0, x1}))}, Some{F.limbs([x0, x1])}, API.serialize(Spec.ValidatorIndex(), M1.v_u64(O.U64{x0, x1})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluValidatorIndex_e.ValidatorIndex_encode(O.U64{x0, x1}), 0, 2), (FuluValidatorIndex_e.ValidatorIndex_encode(O.U64{x0, x1}), F.limbs([x0, x1])), M0.ValidatorIndex_spec_bytes(x0, x1)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.ValidatorIndex(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.ValidatorIndex(), M1.v_u64(O.U64{x0, x1})), Encoding.encoding_for_legal_type(Spec.ValidatorIndex(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-            E.serialize_legal(Spec.ValidatorIndex(), M1.v_u64(O.U64{x0, x1}), VS.public_sound(Spec.ValidatorIndex(), {==})), M0.ValidatorIndex_spec_encode(x0, x1))))
-
-def FuluValidatorIndex_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluValidatorIndex_h.ValidatorIndex_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.ValidatorIndex(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.ValidatorIndex(), M1.v_u64(o), VS.public_sound(Spec.ValidatorIndex(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluValidatorIndex_h.ValidatorIndex_hash_tree_root(h, o))),
-    M2.rv_u64(o), M1.ValidatorIndex_root_correct(h, o))
 

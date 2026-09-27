@@ -4,8 +4,6 @@ import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
-import ../types/FuluRowIndex_encode_ssz_generated.bend as FuluRowIndex_e
-import ../types/FuluRowIndex_hashtreeroot_generated.bend as FuluRowIndex_h
 import ../types/FuluCustodyIndex_encode_ssz_generated.bend as FuluCustodyIndex_e
 import ../types/FuluCustodyIndex_hashtreeroot_generated.bend as FuluCustodyIndex_h
 import ../types/schema.bend as S
@@ -16,7 +14,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_6.bend as M0
+import ../proofs/obj/spec_codec_CustodyIndex.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -36,18 +34,4 @@ def FuluCustodyIndex_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluCustodyIndex_e.
 def FuluCustodyIndex_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluCustodyIndex_h.CustodyIndex_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.CustodyIndex(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.CustodyIndex(), M1.v_u64(o), VS.public_sound(Spec.CustodyIndex(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluCustodyIndex_h.CustodyIndex_hash_tree_root(h, o))),
     M2.rv_u64(o), M1.CustodyIndex_root_correct(h, o))
-
-# FuluRowIndex (RowIndex)
-def FuluRowIndex_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluRowIndex_e.RowIndex_encode(o))} == API.serialize(Spec.RowIndex(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case O.U64{+x0, +x1}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluRowIndex_e.RowIndex_encode(O.U64{x0, x1}))}, Some{F.limbs([x0, x1])}, API.serialize(Spec.RowIndex(), M1.v_u64(O.U64{x0, x1})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluRowIndex_e.RowIndex_encode(O.U64{x0, x1}), 0, 2), (FuluRowIndex_e.RowIndex_encode(O.U64{x0, x1}), F.limbs([x0, x1])), M0.RowIndex_spec_bytes(x0, x1)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.RowIndex(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.RowIndex(), M1.v_u64(O.U64{x0, x1})), Encoding.encoding_for_legal_type(Spec.RowIndex(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-            E.serialize_legal(Spec.RowIndex(), M1.v_u64(O.U64{x0, x1}), VS.public_sound(Spec.RowIndex(), {==})), M0.RowIndex_spec_encode(x0, x1))))
-
-def FuluRowIndex_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluRowIndex_h.RowIndex_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.RowIndex(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.RowIndex(), M1.v_u64(o), VS.public_sound(Spec.RowIndex(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluRowIndex_h.RowIndex_hash_tree_root(h, o))),
-    M2.rv_u64(o), M1.RowIndex_root_correct(h, o))
 

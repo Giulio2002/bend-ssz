@@ -6,16 +6,9 @@ import ../src/digest.bend as D
 import ../src/obj.bend as O
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes4_def_generated.bend as FuluBytes4_d
-import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
-import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
-import ../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
-import ../types/FuluSignedBeaconBlockHeader_encode_ssz_generated.bend as FuluSignedBeaconBlockHeader_e
-import ../types/FuluSignedBeaconBlockHeader_hashtreeroot_generated.bend as FuluSignedBeaconBlockHeader_h
 import ../types/FuluForkData_def_generated.bend as FuluForkData_d
 import ../types/FuluForkData_encode_ssz_generated.bend as FuluForkData_e
 import ../types/FuluForkData_hashtreeroot_generated.bend as FuluForkData_h
-import ../types/FuluForkDigest_encode_ssz_generated.bend as FuluForkDigest_e
-import ../types/FuluForkDigest_hashtreeroot_generated.bend as FuluForkDigest_h
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
@@ -24,7 +17,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_3.bend as M0
+import ../proofs/obj/spec_codec_ForkData.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -44,32 +37,4 @@ def FuluForkData_e2e_encode(+o: FuluForkData_d.ForkData) -> {Some{E.obytes(FuluF
 def FuluForkData_e2e_root(h: B.Buf, +o: FuluForkData_d.ForkData) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluForkData_h.ForkData_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.ForkData(), M1.v_ForkData(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.ForkData(), M1.v_ForkData(o), VS.public_sound(Spec.ForkData(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluForkData_h.ForkData_hash_tree_root(h, o))),
     M2.rv_ForkData(o), M1.ForkData_root_correct(h, o))
-
-# FuluForkDigest (ForkDigest)
-def FuluForkDigest_e2e_encode(+o: FuluBytes4_d.Bytes4) -> {Some{E.obytes(FuluForkDigest_e.ForkDigest_encode(o))} == API.serialize(Spec.ForkDigest(), M1.v_b4(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluBytes4_d.Bytes4{+x0}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluForkDigest_e.ForkDigest_encode(FuluBytes4_d.Bytes4{x0}))}, Some{F.limbs([x0])}, API.serialize(Spec.ForkDigest(), M1.v_b4(FuluBytes4_d.Bytes4{x0})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluForkDigest_e.ForkDigest_encode(FuluBytes4_d.Bytes4{x0}), 0, 1), (FuluForkDigest_e.ForkDigest_encode(FuluBytes4_d.Bytes4{x0}), F.limbs([x0])), M0.ForkDigest_spec_bytes(x0)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.ForkDigest(), M1.v_b4(FuluBytes4_d.Bytes4{x0})), Some{F.limbs([x0])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.ForkDigest(), M1.v_b4(FuluBytes4_d.Bytes4{x0})), Encoding.encoding_for_legal_type(Spec.ForkDigest(), M1.v_b4(FuluBytes4_d.Bytes4{x0})), Some{F.limbs([x0])},
-            E.serialize_legal(Spec.ForkDigest(), M1.v_b4(FuluBytes4_d.Bytes4{x0}), VS.public_sound(Spec.ForkDigest(), {==})), M0.ForkDigest_spec_encode(x0))))
-
-def FuluForkDigest_e2e_root(h: B.Buf, +o: FuluBytes4_d.Bytes4) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluForkDigest_h.ForkDigest_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.ForkDigest(), M1.v_b4(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.ForkDigest(), M1.v_b4(o), VS.public_sound(Spec.ForkDigest(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluForkDigest_h.ForkDigest_hash_tree_root(h, o))),
-    M2.rv_b4(o), M1.ForkDigest_root_correct(h, o))
-
-# FuluSignedBeaconBlockHeader (SignedBeaconBlockHeader)
-def FuluSignedBeaconBlockHeader_e2e_encode(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader) -> {Some{E.obytes(FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_encode(o))} == API.serialize(Spec.SignedBeaconBlockHeader(), M1.v_SignedBeaconBlockHeader(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{+x0, +x1}, O.U64{+x2, +x3}, FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}, FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}, FuluBytes32_d.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}}, FuluBytes96_d.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_encode(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, FuluBytes32_d.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, FuluBytes32_d.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, FuluBytes96_d.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])}, API.serialize(Spec.SignedBeaconBlockHeader(), M1.v_SignedBeaconBlockHeader(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, FuluBytes32_d.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, FuluBytes32_d.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, FuluBytes96_d.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_encode(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, FuluBytes32_d.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, FuluBytes32_d.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, FuluBytes96_d.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}), 0, 52), (FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_encode(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, FuluBytes32_d.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, FuluBytes32_d.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, FuluBytes96_d.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])), M0.SignedBeaconBlockHeader_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.SignedBeaconBlockHeader(), M1.v_SignedBeaconBlockHeader(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, FuluBytes32_d.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, FuluBytes32_d.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, FuluBytes96_d.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.SignedBeaconBlockHeader(), M1.v_SignedBeaconBlockHeader(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, FuluBytes32_d.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, FuluBytes32_d.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, FuluBytes96_d.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}})), Encoding.encoding_for_legal_type(Spec.SignedBeaconBlockHeader(), M1.v_SignedBeaconBlockHeader(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, FuluBytes32_d.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, FuluBytes32_d.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, FuluBytes96_d.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])},
-            E.serialize_legal(Spec.SignedBeaconBlockHeader(), M1.v_SignedBeaconBlockHeader(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, FuluBytes32_d.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, FuluBytes32_d.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, FuluBytes96_d.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}), VS.public_sound(Spec.SignedBeaconBlockHeader(), {==})), M0.SignedBeaconBlockHeader_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51))))
-
-def FuluSignedBeaconBlockHeader_e2e_root(h: B.Buf, +o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluSignedBeaconBlockHeader_h.SignedBeaconBlockHeader_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.SignedBeaconBlockHeader(), M1.v_SignedBeaconBlockHeader(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.SignedBeaconBlockHeader(), M1.v_SignedBeaconBlockHeader(o), VS.public_sound(Spec.SignedBeaconBlockHeader(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluSignedBeaconBlockHeader_h.SignedBeaconBlockHeader_hash_tree_root(h, o))),
-    M2.rv_SignedBeaconBlockHeader(o), M1.SignedBeaconBlockHeader_root_correct(h, o))
 

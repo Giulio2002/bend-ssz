@@ -4,11 +4,6 @@ import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
-import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
-import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
-import ../types/FuluWithdrawalRequest_def_generated.bend as FuluWithdrawalRequest_d
-import ../types/FuluWithdrawalRequest_encode_ssz_generated.bend as FuluWithdrawalRequest_e
-import ../types/FuluWithdrawalRequest_hashtreeroot_generated.bend as FuluWithdrawalRequest_h
 import ../types/FuluWithdrawalIndex_encode_ssz_generated.bend as FuluWithdrawalIndex_e
 import ../types/FuluWithdrawalIndex_hashtreeroot_generated.bend as FuluWithdrawalIndex_h
 import ../types/schema.bend as S
@@ -19,7 +14,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_5.bend as M0
+import ../proofs/obj/spec_codec_WithdrawalIndex.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -39,18 +34,4 @@ def FuluWithdrawalIndex_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluWithdrawalIn
 def FuluWithdrawalIndex_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluWithdrawalIndex_h.WithdrawalIndex_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.WithdrawalIndex(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.WithdrawalIndex(), M1.v_u64(o), VS.public_sound(Spec.WithdrawalIndex(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluWithdrawalIndex_h.WithdrawalIndex_hash_tree_root(h, o))),
     M2.rv_u64(o), M1.WithdrawalIndex_root_correct(h, o))
-
-# FuluWithdrawalRequest (WithdrawalRequest)
-def FuluWithdrawalRequest_e2e_encode(+o: FuluWithdrawalRequest_d.WithdrawalRequest) -> {Some{E.obytes(FuluWithdrawalRequest_e.WithdrawalRequest_encode(o))} == API.serialize(Spec.WithdrawalRequest(), M1.v_WithdrawalRequest(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluWithdrawalRequest_d.WithdrawalRequest{FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4}, FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}, O.U64{+x17, +x18}}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluWithdrawalRequest_e.WithdrawalRequest_encode(FuluWithdrawalRequest_d.WithdrawalRequest{FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}, FuluBytes48_d.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, O.U64{x17, x18}}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18])}, API.serialize(Spec.WithdrawalRequest(), M1.v_WithdrawalRequest(FuluWithdrawalRequest_d.WithdrawalRequest{FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}, FuluBytes48_d.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, O.U64{x17, x18}})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluWithdrawalRequest_e.WithdrawalRequest_encode(FuluWithdrawalRequest_d.WithdrawalRequest{FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}, FuluBytes48_d.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, O.U64{x17, x18}}), 0, 19), (FuluWithdrawalRequest_e.WithdrawalRequest_encode(FuluWithdrawalRequest_d.WithdrawalRequest{FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}, FuluBytes48_d.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, O.U64{x17, x18}}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18])), M0.WithdrawalRequest_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.WithdrawalRequest(), M1.v_WithdrawalRequest(FuluWithdrawalRequest_d.WithdrawalRequest{FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}, FuluBytes48_d.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, O.U64{x17, x18}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.WithdrawalRequest(), M1.v_WithdrawalRequest(FuluWithdrawalRequest_d.WithdrawalRequest{FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}, FuluBytes48_d.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, O.U64{x17, x18}})), Encoding.encoding_for_legal_type(Spec.WithdrawalRequest(), M1.v_WithdrawalRequest(FuluWithdrawalRequest_d.WithdrawalRequest{FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}, FuluBytes48_d.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, O.U64{x17, x18}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18])},
-            E.serialize_legal(Spec.WithdrawalRequest(), M1.v_WithdrawalRequest(FuluWithdrawalRequest_d.WithdrawalRequest{FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}, FuluBytes48_d.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, O.U64{x17, x18}}), VS.public_sound(Spec.WithdrawalRequest(), {==})), M0.WithdrawalRequest_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18))))
-
-def FuluWithdrawalRequest_e2e_root(h: B.Buf, +o: FuluWithdrawalRequest_d.WithdrawalRequest) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluWithdrawalRequest_h.WithdrawalRequest_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.WithdrawalRequest(), M1.v_WithdrawalRequest(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.WithdrawalRequest(), M1.v_WithdrawalRequest(o), VS.public_sound(Spec.WithdrawalRequest(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluWithdrawalRequest_h.WithdrawalRequest_hash_tree_root(h, o))),
-    M2.rv_WithdrawalRequest(o), M1.WithdrawalRequest_root_correct(h, o))
 
