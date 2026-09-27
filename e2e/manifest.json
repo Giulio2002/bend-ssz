@@ -3593,6 +3593,7 @@
   }
  },
  "root_awaiting": {},
+ "fixed_size": {},
  "variable_size": {
   "FuluDataColumnsByRootIdentifier": {
    "generated_name": "DataColumnsByRootIdentifier",

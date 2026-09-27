@@ -2661,6 +2661,7 @@ VENC_SHAPES = {'DataColumnsByRootIdentifier': venc_dc}
 
 import e2e_var_b as EVB  # noqa: E402  (the second variable-size worker's entries)
 import e2e_var_c as EVC  # noqa: E402  (the third's: u-lists and unions)
+import e2e_fix_d as EFD  # noqa: E402  (the fourth's: fixed-size leftovers)
 for _m in (EVB, EVC):
     for _k, _v in _m.VDEC_VIEWS.items():
         VDEC_VIEWS.setdefault(_k, _v)
@@ -3084,6 +3085,30 @@ def outputs():
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_root'], 'premise': 'rep: bitlist_obj.rep_bits(o, GS.X())'} for R0, X0 in rows]
         for R0, X0 in rows:
             uncovered[R0]['root'] = fn
+    fd = EFD.build(sys.modules[__name__], amap, cache, vidx)
+    for _f, _txt in list(fd['support'].items()) + list(fd['files'].items()):
+        out[OUT / _f] = _txt
+    inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
+    man['fixed_size'] = {}
+    for X0, cv in sorted(fd['cover'].items()):
+        R0 = inv.get(X0)
+        if R0 is None:
+            continue
+        laws = {'i': [f'{R0}_e2e_encode'], 'iv': [f'{R0}_e2e_root'],
+                'ii_iii': [f'{R0}_e2e_decode_view' if cv.get('ii') == 'view' else f'{R0}_e2e_decode_accept', f'{R0}_e2e_decode_reject']}
+        for k in ('i', 'ii_iii', 'iv'):
+            if k in cv:
+                e = {'name': R0, 'generated_name': X0, 'laws': laws[k]}
+                if k == 'ii_iii':
+                    e['ii'] = cv.get('ii', 'exact')
+                if cv.get('premise'):
+                    e['premise'] = cv['premise']
+                man['files'].setdefault(cv[k], []).append(e)
+        if all(k in cv for k in ('i', 'ii_iii', 'iv')):
+            man['fixed_size'][R0] = {'generated_name': X0, 'i': cv['i'], 'ii_iii': cv['ii_iii'], 'iv': cv['iv']}
+            del uncovered[R0]
+        else:
+            uncovered[R0].update({k: cv[k] for k in ('i', 'ii_iii', 'iv') if k in cv})
     man['variable_size'] = {}
     for R0 in sorted(uncovered):
         u = uncovered[R0]
