@@ -1344,7 +1344,7 @@
   },
   "FuluBeaconState": {
    "generated_name": "BeaconState",
-   "reason": "no encode_eval / encode_spec / root law"
+   "reason": "encode laws not over the same free words / bits"
   },
   "FuluExecutionBranch": {
    "generated_name": "ExecutionBranch",
