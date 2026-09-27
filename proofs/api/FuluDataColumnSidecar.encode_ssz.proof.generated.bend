@@ -23,6 +23,7 @@ import ../obj/vfix.bend as P0_VF
 import ../obj/vlist.bend as P0_VL
 import ../obj/vmul.bend as P0_VM
 import ../obj/vmv.bend as P0_VV
+import ../obj/vadd.bend as P0_VA
 import ../obj/venc.bend as P0_VE
 import ../obj/venc2.bend as P0_V2
 import ../obj/vme.bend as P0_VME
