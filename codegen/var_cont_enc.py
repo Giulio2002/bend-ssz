@@ -36,7 +36,7 @@ import generate as G  # noqa: E402
 import schema  # noqa: E402
 
 CONTS = ['ExecutionPayload', 'ExecutionPayloadHeader', 'ExecutionRequests', 'Attestation', 'IndexedAttestation', 'AttesterSlashing',
-         'LightClientHeader', 'BeaconBlockBody', 'LightClientFinalityUpdate', 'LightClientUpdate', 'BeaconBlock', 'SignedBeaconBlock']
+         'LightClientHeader', 'BeaconBlockBody', 'LightClientFinalityUpdate', 'LightClientUpdate', 'BeaconBlock', 'SignedBeaconBlock', 'BeaconState']
 TR = 'FD.array__Tree<U32>'
 TRUE = 'True{} : Bool'
 GROUP = G.GROUP
@@ -101,6 +101,7 @@ def is_fixw(fs):
 
 class FixW:
     def __init__(self, f, fs):
+        self.packed = False
         self.f, self.fs, self.p = f, fs, fs.p
         self.text = ''
         if fs.kind == 'container' and fs.p == 'SyncCommittee':
@@ -204,8 +205,14 @@ def bxrt_{f}({", ".join(self.params)}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r:
             self.mod = f'import ./{m_}_{fs.p}.bend as {a}'
             self.params = [f'+dB_{f}: Nat', f'+TB_{f}: {TR}']
             self.oargs = [f'dB_{f}', f'TB_{f}']
+            # a packed vector module (vuwv_v8192_b32, ..: its statements name the sizes U32.to_nat(S) / VC.NW(S),
+            # never a closed Nat literal; see var_uwv.pwords_text)
+            src_ = (ROOT / f'proofs/obj/{m_}_{fs.p}.bend')
+            self.packed = src_.exists() and f'+hrB: {{Nat.is_le(VC.NW({fs.fsize}), VB.pw(dB))' in src_.read_text()
+            self.S = fs.fsize
+            NWt = f'VC.NW({fs.fsize})' if self.packed else f'{nW}n'
             self.hyps = [f'+pfB_{f}: {{FD.array__perfect(U32, dB_{f}, TB_{f}) == {TRUE}}}', f'+hdB_{f}: {{Nat.is_lt(dB_{f}, 31n) == {TRUE}}}',
-                         f'+hrB_{f}: {{Nat.is_le({nW}n, VB.pw(dB_{f})) == {TRUE}}}']
+                         f'+hrB_{f}: {{Nat.is_le({NWt}, VB.pw(dB_{f})) == {TRUE}}}']
             self.hargs = [f'pfB_{f}', f'hdB_{f}', f'hrB_{f}']
             self.obj = f'O.Words{{FD.array__thaw(U32, TB_{f}), {fs.fsize}}}'
             self.vt = 'O.Words'
@@ -214,11 +221,15 @@ def bxrt_{f}({", ".join(self.params)}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r:
             args = lambda D, X, q, r, e, hr, hl, pf, hz: f'dd, {D}, {X}, {q}, {r}, dB_{f}, TB_{f}, {e}, {hr}, hd, {hl}, {pf}, pfB_{f}, hdB_{f}, hrB_{f}, {hz}'  # noqa: E731
             self.rt = lambda *x: f'{a}.{fs.p}_any({args(*x)})'
             self.by = lambda *x: f'{a}.{fs.p}_any_bytes({args(*x)})'
-            self.Y = f'FX.limbs(VS.wtake({nW}n, UW.SLW(TB_{f})))'
-            h64 = (f'FD.logic__subst(Nat, zz => {{Nat.is_le({nW}n, zz) == {TRUE}}}, VB.pw(dB_{f}), List.length(&2, U32, UW.SLW(TB_{f})), '
+            self.Y = f'FX.limbs(VS.wtake({NWt}, UW.SLW(TB_{f})))'
+            h64 = (f'FD.logic__subst(Nat, zz => {{Nat.is_le({NWt}, zz) == {TRUE}}}, VB.pw(dB_{f}), List.length(&2, U32, UW.SLW(TB_{f})), '
                    f'Equal.sym(Nat, List.length(&2, U32, UW.SLW(TB_{f})), VB.pw(dB_{f}), Equal.trans(Nat, List.length(&2, U32, UW.SLW(TB_{f})), '
                    f'FD.spec_common__length(U32, UW.SLW(TB_{f})), VB.pw(dB_{f}), VMR.len_eq(UW.SLW(TB_{f})), FD.array__slots_length(U32, dB_{f}, TB_{f}, pfB_{f}))), hrB_{f})')
-            self.hY = f'VCN.len_wt({nW}n, UW.SLW(TB_{f}), {h64})'
+            self.hY = f'VCN.len_wt({NWt}, UW.SLW(TB_{f}), {h64})'
+            if self.packed:
+                # {LN(Y) == U32.to_nat(S)} (putx_text carries it to the region's size)
+                self.hY = (f'Equal.trans(Nat, VCN.LN({self.Y}), A.quad({NWt}), U32.to_nat({fs.fsize}), {self.hY}, '
+                           f'Equal.sym(Nat, U32.to_nat({fs.fsize}), A.quad({NWt}), {a}.{fs.p}_eK()))')
         self.rtype = f'Array<U32> & ({self.vt} & U32)'
 
     # the field's storage check: valid(hargs) proves {T.<p>_valid(obj) == (obj, True)} from the field's hypotheses,
@@ -256,6 +267,81 @@ def is_fixw_ext(fs):
 
 
 BIGPIECE = 4096   # a fixed piece this large: its region offsets are proved (ln_cat), never evaluated
+
+# U32 mode (a fixed part of U32FIX bytes or more, BeaconState's 2.7M): the writer states no closed big Nat. A
+# fixed field's position is U32.to_nat(c) (its word position QX/RX of X + c), the fixed size F is U32.to_nat(F),
+# the region's lengths are summed into positions by vpos32 (U32 sums, their carries: closed U32 terms), bounds
+# by vadd.lea; the big piece sizes stay variables SZ<v>, uSZ<v> relating them to U32.to_nat(v).
+U32FIX = 1 << 20
+U32M = False
+U32PK = set()       # the big sizes of packed vectors (their eSZ<v> is stated at U32.to_nat(v))
+ELNS = {}           # slot -> the sizes summed by elnS<slot>
+
+
+def nat_u(szn):
+    """A proof of {<szn> == U32.to_nat(v)} for the Nat literal szn = 'vn' (a big one by its size variable)."""
+    v = int(szn[:-1])
+    if v >= BIGPIECE:
+        return f'uSZ{v}({szn}, eSZ{v})'
+    return '{==}' if v < 1024 else f'FD.nat__eq_from_is_eq({szn}, U32.to_nat({v}), {{==}})'
+
+
+def u_nat(v, szt):
+    """A proof of {U32.to_nat(v) == szt}, szt the field's size term (U32.to_nat(v) or the literal vn)."""
+    if szt == f'U32.to_nat({v})':
+        return '{==}'
+    return '{==}' if v < 1024 else f'FD.nat__eq_from_is_eq(U32.to_nat({v}), {szt}, {{==}})'
+
+
+def ln_u(pc):
+    """(v, proof of {VCN.LN(pc) == U32.to_nat(v)}) of a region piece."""
+    m = re.fullmatch(r'UW\.ZB\((\d+)n\)', pc)
+    if m:
+        return int(m.group(1)), f'P32.lnzb({m.group(1)}n, {m.group(1)}, {nat_u(m.group(1) + "n")})'
+    m = re.fullmatch(r'VCN\.PC\((\d+)n, (.*)\)', pc)
+    if m:
+        return int(m.group(1)), f'P32.lnpc({m.group(1)}n, {m.group(2)}, {m.group(1)}, {nat_u(m.group(1) + "n")})'
+    if pc.startswith('I.limb('):
+        return 4, '{==}'
+    raise ValueError(f'ln_u: piece {pc[:60]}')
+
+
+def eln_u(pcs):
+    """(c, proof of {VCN.LN(VCN.CAT([pcs])) == U32.to_nat(c)}) by elnS<len(pcs)> (written by eln_defs)."""
+    szs, prs = zip(*[ln_u(x) for x in pcs]) if pcs else ((), ())
+    i = len(pcs)
+    if i in ELNS:
+        assert ELNS[i] == tuple(szs), (i, ELNS[i], szs)
+    ELNS[i] = tuple(szs)
+    return sum(szs), f'elnS{i}(' + ', '.join(list(pcs) + list(prs)) + ')'
+
+
+def eln_defs():
+    """elnS<i>: the length of i pieces of the fixed sizes ELNS[i], at the U32 sum (vpos32.lnc, U32 constants)."""
+    out = []
+    for i, szs in sorted(ELNS.items()):
+        ps = [f'p{j}' for j in range(i)]
+        suf = [0] * (i + 1)
+        for j in reversed(range(i)):
+            suf[j] = suf[j + 1] + szs[j]
+        prf = 'P32.lnnil()'
+        for j in reversed(range(i)):
+            prf = f'P32.lnc({ps[j]}, [{", ".join(ps[j + 1:])}], {szs[j]}, {suf[j + 1]}, {suf[j]}, e{j}, {prf}, {{==}}, {{==}})'
+        sig = ', '.join([f'+{x}: +List<U32>' for x in ps] + [f'+e{j}: {{VCN.LN({ps[j]}) == U32.to_nat({szs[j]}) : Nat}}' for j in range(i)])
+        out.append(f'def elnS{i}({sig})\n    -> {{VCN.LN(VCN.CAT([{", ".join(ps)}])) == U32.to_nat({suf[0]}) : Nat}}:\n  {prf}\n')
+    return '\n'.join(out)
+
+
+def sum_u(szs):
+    """A proof of {VCN.SUM([szs]) == U32.to_nat(total)} for Nat literals szs (vpos32.sumc)."""
+    vals = [int(x[:-1]) for x in szs]
+    suf = [0] * (len(vals) + 1)
+    for j in reversed(range(len(vals))):
+        suf[j] = suf[j + 1] + vals[j]
+    prf = 'P32.sumnil()'
+    for j in reversed(range(len(vals))):
+        prf = f'P32.sumc({szs[j]}, [{", ".join(szs[j + 1:])}], {vals[j]}, {suf[j + 1]}, {suf[j]}, {nat_u(szs[j])}, {prf}, {{==}}, {{==}})'
+    return prf
 
 
 def piece_len(pc):
@@ -318,7 +404,7 @@ def ln_cat(pcs, target):
 def qr_at(c, X='X'):
     """A fixed field's word position (q', r') at byte c of the container at X = 4 q + r: (c / 4 + q, r) when
     c is word-aligned, else (QX, RX) of U32.add(X, c) (vcont; placed through vpiece.ppos / proom)."""
-    if c % 4 == 0:
+    if c % 4 == 0 and not U32M:
         return f'Nat.add({c // 4}n, q)', 'r'
     return f'VCN.QX(U32.add({X}, {c}))', f'VCN.RX(U32.add({X}, {c}))'
 
@@ -840,8 +926,12 @@ class Cont:
 
 
 def generate_cont(g, names, C):
+    global U32M
     K = Cont(g, names, C)
     F, hoff, FIX, p = K.F, K.hoff, K.fixed, K.p
+    U32M = FIX >= U32FIX
+    U32PK.clear()
+    ELNS.clear()
     names_ = [f for f, _ in F]
     fsd = dict(F)
     # ---- parameters and the object ----
@@ -1000,7 +1090,7 @@ def generate_cont(g, names, C):
     for fw in K.fixw.values():
         if fw.text:
             w(fw.text)
-    LLCB = fadd(big_fixed(pieces), f'{FIX}n', f'VCN.SUM({KS(ks_all)})')
+    LLCB = fadd(big_fixed(pieces), f'U32.to_nat({FIX})' if U32M else f'{FIX}n', f'VCN.SUM({KS(ks_all)})')
     w(f'''
 # ---- {C}: the object, its bytes and byte count ----
 def OBJC({OPS}) -> T.{C}: {OBJ}
@@ -1023,7 +1113,7 @@ def szpz({OPS}, +hpz: {{{K.pz} == {TRUE}}}) -> {{SZC({OAS}) == {core} : U32}}:
         fs = fsd[f]
         if ev['kind'] == 'leaf' and leaf_of(fs).sub:
             mdl = f'{leaf_of(fs).model}(dd, {prev}, X, {ev["hoff"]}, {f})'
-        elif ev['kind'] == 'off' and ev['hoff'] % 4:
+        elif ev['kind'] == 'off' and (ev['hoff'] % 4 or U32M):
             Xc = f'U32.add(X, {ev["hoff"]})'
             mdl = f'WD.W32X(VCN.RX({Xc}), dd, {prev}, VCN.QX({Xc}), {ev["cur"]})'
         elif ev['kind'] == 'leaf':
@@ -1284,18 +1374,31 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
     a(f'+hX = VRX.xstart(q, r, {LLv}, dd, D, pf, hl)')
     esr = f'VCN.sum_region({FS}, {KS(ks_all)}, {PTr})'
     big_region = big_fixed(pieces)
-    if big_region:
+    u32m = U32M
+    # F: the literal here, a variable SZ<F> in putx_core (U32 mode: eSZ<F> states it at U32.to_nat(F))
+    FIXT = f'{FIX}n'
+    eLF = 'eLF'
+    UF = f'U32.to_nat({FIX})'
+    eUF = f'Equal.sym(Nat, {FIXT}, {UF}, eSZ{FIX})'     # {U32.to_nat(F) == F}
+    if u32m:
+        assert big_region
+        SK = f'VCN.SUM({KS(ks_all)})'
+        szs_ = split_args(FS[1:-1])
+        esr = (f'Equal.trans(Nat, VCN.SUM({MS}), Nat.add(Nat.add({SK}, {FIXT}), {PTr}), Nat.add({LLv}, {PTr}), '
+               f'VCN.sum_region_r({FS}, {KS(ks_all)}, {PTr}, {FIXT}, Equal.trans(Nat, VCN.SUM({FS}), {UF}, {FIXT}, {sum_u(szs_)}, {eUF})), '
+               f'Equal.cong(Nat, Nat, zz => Nat.add(zz, {PTr}), Nat.add({SK}, {FIXT}), {LLv}, eLF))')
+    elif big_region:
         # a large fixed region: F last (vcont's F0-last lemmas); the fixed pieces' sum by Nat.is_eq
         SK = f'VCN.SUM({KS(ks_all)})'
         esr = (f'Equal.trans(Nat, VCN.SUM({MS}), Nat.add(Nat.add({SK}, {FIX}n), {PTr}), Nat.add({LLv}, {PTr}), '
                f'VCN.sum_region_r({FS}, {KS(ks_all)}, {PTr}, {FIX}n, FD.nat__eq_from_is_eq(VCN.SUM({FS}), {FIX}n, {{==}})), '
                f'Equal.cong(Nat, Nat, zz => Nat.add(zz, {PTr}), Nat.add({SK}, {FIX}n), {LLv}, eLF))')
     BS = (lambda a_, b_: f'Order.left_below_sum({b_}, {a_})') if big_region else (lambda a_, b_: f'Order.below_sum({a_}, {b_})')
-    FA = lambda S: fadd(big_region, f'{FIX}n', S)  # noqa: E731
+    FA = lambda S: fadd(big_region, FIXT, S)  # noqa: E731
     RV = '_r' if big_region else ''
     # eLF: {SUM(ks) + F == LLC} (a parameter of putx_core, which holds F as a variable)
-    LE = f', {LLv}, {KS(ks_all)}, {{==}}, eLF' if big_region else ''
-    BSF = BS(f'{FIX}n', f'VCN.SUM({KS(ks_all)})')
+    LE = f', {LLv}, {KS(ks_all)}, {{==}}, {eLF}' if big_region else ''
+    BSF = BS(FIXT, f'VCN.SUM({KS(ks_all)})')
     a(f'+hz0 = FD.logic__subst(Nat, zz => {{VS.bt(zz, VS.bdr({X0}, UA.BYT(D))) == UW.ZB(zz) : +List<U32>}}, Nat.add({LLv}, {PTr}), VCN.SUM({MS}), '
       f'Equal.sym(Nat, VCN.SUM({MS}), Nat.add({LLv}, {PTr}), {esr}), hz)')
     if big_pieces(st):
@@ -1306,6 +1409,14 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
     else:
         a(f'+I0 = VCN.reg_init(UA.BYT(D), {X0}, {MS}, hz0)')
     a('+pf0 = pf')
+    if u32m:
+        # a fixed piece's end within F (vadd.lea on U32 constants, carried to F), F within LLC (hF, by eLF: LLC
+        # states F at U32.to_nat(F), putx_core's F is a variable)
+        SK = f'VCN.SUM({KS(ks_all)})'
+        a(f'+hF = FD.logic__subst(Nat, zz => {{Nat.is_le({FIXT}, zz) == {TRUE}}}, Nat.add({SK}, {FIXT}), {LLv}, eLF, Order.left_below_sum({SK}, {FIXT}))')
+        hle = lambda c_, v_, szt: (f'FD.nat__le_trans(Nat.add(U32.to_nat({c_}), {szt}), {FIXT}, {LLv}, '  # noqa: E731
+                                   f'FD.logic__subst(Nat, zz => {{Nat.is_le(Nat.add(U32.to_nat({c_}), {szt}), zz) == {TRUE}}}, {UF}, {FIXT}, {eUF}, '
+                                   f'AD.lea({c_}, {v_}, {FIX}, {szt}, {u_nat(v_, szt)}, {{==}}, {{==}})), hF)')
     facts = []
     curs = {}
     enc_of = {}
@@ -1318,7 +1429,8 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
         fs = fsd[f]
         kind = ev['kind']
         UBk, UBn = BY(k), BY(k + 1)
-        if (kind == 'leaf' and leaf_of(fs).sub) or (kind == 'off' and ev['hoff'] % 4):
+        if (kind == 'leaf' and leaf_of(fs).sub) or (kind == 'off' and (ev['hoff'] % 4 or u32m)):
+            assert not (u32m and kind == 'leaf'), 'U32 mode: a sub-word leaf'
             i = fidx[f]
             c = ev['hoff']
             size = 4 if kind == 'off' else leaf_of(fs).sub
@@ -1327,6 +1439,9 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
             Xc = f'U32.add(X, {c})'
             rel = f'Nat.add({X0}, VCN.LN(VCN.CAT({pre})))'
             hk = f'FD.nat__le_trans(Nat.add({c}n, {size}n), {FIX}n, {LLv}, {{==}}, {BSF})'
+            cn_ = f'{c}n'
+            if u32m:
+                hk, cn_ = hle(c, size, f'{size}n'), f'U32.to_nat({c})'
             a(f'+z{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, {size}n, {post}, 0n, {UBk}, hX, I{k}, {{==}})')
             if kind == 'leaf':
                 lf = leaf_of(fs)
@@ -1348,13 +1463,24 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
                 cur = ev['cur']
                 QX, RX = f'VCN.QX({Xc})', f'VCN.RX({Xc})'
                 pos = f'Nat.add(A.quad({QX}), {RX})'
-                a(f'+ep{k} = VPC.ppos(X, {c}, {c}n, q, r, {LLv}, 4n, dd, e, {{==}}, hd, {hk}, hl)')
-                a(f'+hl{k} = VPC.proom(X, {c}, {c}n, q, r, {LLv}, 4n, dd, e, {{==}}, hd, {hk}, hl)')
-                a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt(4n, VS.bdr(zz, {UBk})) == UW.ZB(4n) : +List<U32>}}, Nat.add({X0}, {c}n), {pos}, ep{k}, z{k})')
+                a(f'+ep{k} = VPC.ppos(X, {c}, {cn_}, q, r, {LLv}, 4n, dd, e, {{==}}, hd, {hk}, hl)')
+                a(f'+hl{k} = VPC.proom(X, {c}, {cn_}, q, r, {LLv}, 4n, dd, e, {{==}}, hd, {hk}, hl)')
+                if u32m:
+                    # the offset's place: the pieces before it sum to c (vpos32), then vpiece.ppos
+                    c_, eln_ = eln_u(st[:i])
+                    assert c_ == c, (f, c_, c)
+                    a(f'+eln{k} = {eln_}')
+                    a(f'+rp{k} = Equal.trans(Nat, {rel}, Nat.add({X0}, {cn_}), {pos}, Equal.cong(Nat, Nat, zz => Nat.add({X0}, zz), VCN.LN(VCN.CAT({pre})), {cn_}, eln{k}), ep{k})')
+                    a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt(4n, VS.bdr(zz, {UBk})) == UW.ZB(4n) : +List<U32>}}, {rel}, {pos}, rp{k}, z{k})')
+                else:
+                    a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt(4n, VS.bdr(zz, {UBk})) == UW.ZB(4n) : +List<U32>}}, Nat.add({X0}, {c}n), {pos}, ep{k}, z{k})')
                 a(f'+rt{k} = WD.w32_any(dd, {Mk(k)}, {Xc}, {QX}, {RX}, {cur}, VC.split4({Xc}), VCN.rx_lt({Xc}), hd, hl{k}, pf{k})')
                 a(f'+bw{k} = WD.w32_any_bytes(dd, {Mk(k)}, {Xc}, {QX}, {RX}, {cur}, VC.split4({Xc}), VCN.rx_lt({Xc}), hd, hl{k}, pf{k}, hz{k})')
                 Y = f'I.limb({cur})'
-                a(f'+by{k} = FD.logic__subst(Nat, zz => {{{UBn} == UW.SPL({UBk}, zz, {Y}) : +List<U32>}}, {pos}, Nat.add({X0}, {c}n), Equal.sym(Nat, Nat.add({X0}, {c}n), {pos}, ep{k}), bw{k})')
+                if u32m:
+                    a(f'+by{k} = FD.logic__subst(Nat, zz => {{{UBn} == UW.SPL({UBk}, zz, {Y}) : +List<U32>}}, {pos}, {rel}, Equal.sym(Nat, {rel}, {pos}, rp{k}), bw{k})')
+                else:
+                    a(f'+by{k} = FD.logic__subst(Nat, zz => {{{UBn} == UW.SPL({UBk}, zz, {Y}) : +List<U32>}}, {pos}, Nat.add({X0}, {c}n), Equal.sym(Nat, Nat.add({X0}, {c}n), {pos}, ep{k}), bw{k})')
                 a(f'+pf{k + 1} = WD.w32x_perfect({RX}, dd, {Mk(k)}, {QX}, {cur}, pf{k})')
             a(f'+I{k + 1} = VCN.reg_put0(UA.BYT(D), {X0}, {pre}, {size}n, {post}, {Y}, {UBk}, {UBn}, hX, I{k}, {{==}}, by{k})')
             st[i] = Y
@@ -1374,7 +1500,32 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
             # the room a checked fixed writer asks for past its bytes (FixW.room_extra, e.g. vbv1281d's carry word)
             rsize = size + (getattr(K.fixw.get(f), 'room_extra', 0) if kind == 'fixw' else 0)
             bigp = big_pieces(st[:i])
-            if c % 4:
+            fwp = K.fixw.get(f) if kind == 'fixw' else None
+            pk = fwp is not None and fwp.packed
+            hzn = f'hz{k}'
+            if u32m:
+                # U32 mode: every fixed field at its byte position U32.to_nat(c) (QX/RX of X + c), the pieces
+                # before it summed to c (vpos32), its end within F (vadd.lea); a packed vector's size U32.to_nat(S)
+                SZT = f'U32.to_nat({size})' if pk else f'{size}n'
+                RSZT = f'U32.to_nat({rsize})' if pk else f'{rsize}n'
+                if pk and size >= BIGPIECE:
+                    U32PK.add(size)
+                pos = f'Nat.add(A.quad({qk}), {rk})'
+                cn_ = f'U32.to_nat({c})'
+                a(f'+z{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, {size}n, {post}, 0n, {UBk}, hX, I{k}, {{==}})')
+                a(f'+pp{k} = VPC.ppos(X, {c}, {cn_}, q, r, {LLv}, {SZT}, dd, e, {{==}}, hd, {hle(c, size, SZT)}, hl)')
+                c_, eln_ = eln_u(st[:i])
+                assert c_ == c, (f, c_, c)
+                a(f'+eln{k} = {eln_}')
+                a(f'+rp{k} = Equal.trans(Nat, {rel}, Nat.add({X0}, {cn_}), {pos}, Equal.cong(Nat, Nat, zz => Nat.add({X0}, zz), VCN.LN(VCN.CAT({pre})), {cn_}, eln{k}), pp{k})')
+                a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt({size}n, VS.bdr(zz, {UBk})) == UW.ZB({size}n) : +List<U32>}}, {rel}, {pos}, rp{k}, z{k})')
+                if pk:
+                    a(f'+hzU{k} = FD.logic__subst(Nat, zz => {{VS.bt(zz, VS.bdr({pos}, {UBk})) == UW.ZB(zz) : +List<U32>}}, {size}n, {SZT}, {nat_u(f"{size}n")}, hz{k})')
+                    hzn = f'hzU{k}'
+                a(f'+ep{k} = VC.split4({Xc})')
+                a(f'+hl{k} = VPC.proom(X, {c}, {cn_}, q, r, {LLv}, {RSZT}, dd, e, {{==}}, hd, {hle(c, rsize, RSZT)}, hl)')
+                hrk, eqpos = f'VCN.rx_lt({Xc})', f'rp{k}'
+            elif c % 4:
                 # a field at a byte offset: its word position (QX, RX) of X + c (vpiece.ppos / proom)
                 pos = f'Nat.add(A.quad({qk}), {rk})'
                 hk_ = f'FD.nat__le_trans(Nat.add({c}n, {size}n), {FIX}n, {LLv}, {{==}}, {BSF})'
@@ -1432,11 +1583,13 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
                 reg = 'reg_putc0'
             elif kind == 'fixw':
                 fw = K.fixw[f]
-                xs = (Mk(k), Xc, qk, rk, f'ep{k}', hrk, f'hl{k}', f'pf{k}', f'hz{k}')
+                xs = (Mk(k), Xc, qk, rk, f'ep{k}', hrk, f'hl{k}', f'pf{k}', hzn)
                 a(f'+rt{k} = {fw.rt(*xs)}')
                 a(f'+by{k} = {fw.by(*xs)}')
                 Y = fw.Y
                 hY = fw.hY
+                if u32m and pk:
+                    hY = f'Equal.trans(Nat, VCN.LN({Y}), U32.to_nat({size}), {size}n, {hY}, Equal.sym(Nat, {size}n, U32.to_nat({size}), {nat_u(f"{size}n")}))'
                 a(f'+pf{k + 1} = {fw.pf(rk, Mk(k), qk, f"pf{k}")}')
                 piece = f'VCN.PC({size}n, {Y})'
                 reg = 'reg_putc0'
@@ -1465,16 +1618,19 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
         aj = FA(f'VCN.SUM({KS(ks_j)})')
         Xc = f'U32.add(X, {cur})'
         QX, RX = f'VCN.QX({Xc})', f'VCN.RX({Xc})'
-        if j == 0:
+        if j == 0 and u32m:
+            assert cur == f'{FIX}' and aj == f'Nat.add(VCN.SUM([]), {FIXT})', (cur, aj)
+            a(f'+ec{k} = Equal.trans(Nat, {UF}, {FIXT}, {aj}, {eUF}, Equal.sym(Nat, {aj}, {FIXT}, P32.snil({FIXT})))')
+        elif j == 0:
             a(f'+ec{k} = VCN.EQN(U32.to_nat({cur}), {aj}, {{==}})')
         else:
             fp = var[j - 1]
             pa = f'Nat.add({FA(f"VCN.SUM({KS(ks_all[:j - 1])})")}, {ks_all[j - 1]})'
-            a(f'+ec{k} = VCN.cnext{RV}({curs[fp]}, {K.children[fp].sz}, {FIX}n, {KS(ks_all[:j - 1])}, {ks_all[j - 1]}, dd, hd, {ec_of[fp]}, {szx_of[fp]}, '
-              f'VCN.pc_end(q, r, {LLv}, dd, {pa}, VCN.pc_room{RV}({FIX}n, {KS(ks_all[:j - 1])}, {ks_all[j - 1]}, {KS(ks_all[j:])}{LE}), hl))')
+            a(f'+ec{k} = VCN.cnext{RV}({curs[fp]}, {K.children[fp].sz}, {FIXT}, {KS(ks_all[:j - 1])}, {ks_all[j - 1]}, dd, hd, {ec_of[fp]}, {szx_of[fp]}, '
+              f'VCN.pc_end(q, r, {LLv}, dd, {pa}, VCN.pc_room{RV}({FIXT}, {KS(ks_all[:j - 1])}, {ks_all[j - 1]}, {KS(ks_all[j:])}{LE}), hl))')
         ec_of[f] = f'ec{k}'
         curs[f] = cur
-        a(f'+hk{k} = VCN.pc_room{RV}({FIX}n, {KS(ks_j)}, {Lj}, {KS(rest)}{LE})')
+        a(f'+hk{k} = VCN.pc_room{RV}({FIXT}, {KS(ks_j)}, {Lj}, {KS(rest)}{LE})')
         a(f'+ha{k} = FD.nat__le_trans({aj}, Nat.add({aj}, {Lj}), {LLv}, Order.below_sum({aj}, {Lj}), hk{k})')
         a(f'+ep{k} = VCN.vpos(X, {cur}, {aj}, q, r, {LLv}, dd, e, ec{k}, hd, ha{k}, hl)')
         a(f'+hlc{k} = VCN.croom({Xc}, q, r, {aj}, {Lj}, {LLv}, dd, ep{k}, hk{k}, hl)')
@@ -1485,12 +1641,17 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
         rel = f'Nat.add({X0}, VCN.LN(VCN.CAT({pre})))'
         pos = f'Nat.add(A.quad({QX}), {RX})'
         epv = f'VCN.eposv{RV}([{", ".join(fw)}], {ps}, {KS(ks_j)})'
-        if big_pieces(fw):
-            a(f'+efw{k} = {ln_cat(fw, f"{FIX}n")}')
+        if u32m or big_pieces(fw):
+            if u32m:
+                c_, efw_ = eln_u(fw)
+                assert c_ == FIX, (c_, FIX)
+                a(f'+efw{k} = Equal.trans(Nat, VCN.LN(VCN.CAT([{", ".join(fw)}])), {UF}, {FIXT}, {efw_}, {eUF})')
+            else:
+                a(f'+efw{k} = {ln_cat(fw, f"{FIX}n")}')
             LF_ = f'VCN.LN(VCN.CAT([{", ".join(fw)}]))'
             SJ_ = f'VCN.SUM({KS(ks_j)})'
             epv = (f'Equal.trans(Nat, VCN.LN(VCN.CAT({pre})), {fadd(big_region, LF_, SJ_)}, {aj}, {epv}, '
-                   f'Equal.cong(Nat, Nat, zz => {fadd(big_region, "zz", SJ_)}, {LF_}, {FIX}n, efw{k}))')
+                   f'Equal.cong(Nat, Nat, zz => {fadd(big_region, "zz", SJ_)}, {LF_}, {FIXT}, efw{k}))')
         a(f'+epc{k} = Equal.trans(Nat, {rel}, Nat.add({X0}, {aj}), {pos}, Equal.cong(Nat, Nat, zz => Nat.add({X0}, zz), VCN.LN(VCN.CAT({pre})), {aj}, '
           f'{epv}), '
           f'Equal.trans(Nat, Nat.add({X0}, {aj}), U32.to_nat({Xc}), {pos}, Equal.sym(Nat, U32.to_nat({Xc}), Nat.add({X0}, {aj}), ep{k}), VC.split4({Xc})))')
@@ -1498,7 +1659,7 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
             pc = f'WD.PADB({RX}, {Lj})'
             MSr = f'VCN.APPN({KS(rest)}, [{PTr}])'
             a(f'+hp{k} = VCN.zbs_pre({MSr}, {pc}, VCN.padfit({Xc}, q, r, {aj}, {Lj}, {LLv}, VCN.SUM({MSr}), ep{k}, hk{k}, '
-              f'VCN.pc_after{RV}({FIX}n, {KS(ks_j)}, {Lj}, {KS(rest)}, {PTr}{LE})))')
+              f'VCN.pc_after{RV}({FIXT}, {KS(ks_j)}, {Lj}, {KS(rest)}, {PTr}{LE})))')
             a(f'+z{k} = VCN.reg_zero(UA.BYT(D), {X0}, {pre}, {Lj}, {post}, {pc}, {UBk}, hX, I{k}, hp{k})')
             win = f'Nat.add({Lj}, {pc})'
             a(f'+hz{k} = FD.logic__subst(Nat, zz => {{VS.bt({win}, VS.bdr(zz, {UBk})) == UW.ZB({win}) : +List<U32>}}, {rel}, {pos}, epc{k}, z{k})')
@@ -1538,12 +1699,12 @@ def putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, 
     fl = var[-1]
     ksl = ks_all[:-1]
     pa = f'Nat.add({FA(f"VCN.SUM({KS(ksl)})")}, {ks_all[-1]})'
-    a(f'+szf = VCN.cnext{RV}({curs[fl]}, {K.children[fl].sz}, {FIX}n, {KS(ksl)}, {ks_all[-1]}, dd, hd, {ec_of[fl]}, {szx_of[fl]}, '
-      f'VCN.pc_end(q, r, {LLv}, dd, {pa}, VCN.pc_room{RV}({FIX}n, {KS(ksl)}, {ks_all[-1]}, []{LE}), hl))')
+    a(f'+szf = VCN.cnext{RV}({curs[fl]}, {K.children[fl].sz}, {FIXT}, {KS(ksl)}, {ks_all[-1]}, dd, hd, {ec_of[fl]}, {szx_of[fl]}, '
+      f'VCN.pc_end(q, r, {LLv}, dd, {pa}, VCN.pc_room{RV}({FIXT}, {KS(ksl)}, {ks_all[-1]}, []{LE}), hl))')
     if big_region:
-        SA_ = f'Nat.add(VCN.SUM(VCN.APPN({KS(ksl)}, [{ks_all[-1]}])), {FIX}n)'
-        SKF_ = f'Nat.add(VCN.SUM({KS(ks_all)}), {FIX}n)'
-        a(f'+szf = Equal.trans(Nat, U32.to_nat(O.padd({curs[fl]}, {K.children[fl].sz})), {SA_}, {LLv}, szf, Equal.trans(Nat, {SA_}, {SKF_}, {LLv}, {{==}}, eLF))')
+        SA_ = f'Nat.add(VCN.SUM(VCN.APPN({KS(ksl)}, [{ks_all[-1]}])), {FIXT})'
+        SKF_ = f'Nat.add(VCN.SUM({KS(ks_all)}), {FIXT})'
+        a(f'+szf = Equal.trans(Nat, U32.to_nat(O.padd({curs[fl]}, {K.children[fl].sz})), {SA_}, {LLv}, szf, Equal.trans(Nat, {SA_}, {SKF_}, {LLv}, {{==}}, {eLF}))')
     if True:
         # the checked fixed writers' flags (0) OR-ed into the size (narrow containers): peel them with or0r
         t_, layers = (SZC if K.pz is None else SZC[1:SZC.index(' .|. O.pz(')]), []
@@ -1580,6 +1741,8 @@ def putx({OPS}, {HPS}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat,
   {body}
   mk4({MA}, rt_all({MA}, {", ".join(facts + [f"hpz_g{gk_}" for gk_ in sorted(K.gpz)])}), byf, pf{n}, szf)
 ''')
+    if u32m:
+        L.insert(0, "\n# the lengths of the first pieces of the fixed part, as U32 sums (vpos32)\n" + eln_defs())
     return L
 
 
@@ -2140,7 +2303,7 @@ def maxx(m, hok):
         fs = fsd[f]
         if ev['kind'] == 'leaf' and leaf_of(fs).sub:
             pfs = f'{leaf_of(fs).pf}(dd, {Mk(k)}, XQ(q, r), {ev["hoff"]}, {f}, {pfs})'
-        elif ev['kind'] == 'off' and ev['hoff'] % 4:
+        elif ev['kind'] == 'off' and (ev['hoff'] % 4 or U32M):
             Xc_ = f'U32.add(XQ(q, r), {ev["hoff"]})'
             pfs = f'WD.w32x_perfect(VCN.RX({Xc_}), dd, {Mk(k)}, VCN.QX({Xc_}), {ev["cur"]}, {pfs})'
         elif ev['kind'] == 'leaf':
@@ -2407,7 +2570,7 @@ ICONTS = [('Gp4B0CA2906A', True), ('ExecutionPayload', False), ('ExecutionPayloa
           ('Gp8A7851175B', True), ('Gc221EC01D83', True), ('ExecutionRequests', False), ('Attestation', False),
           ('IndexedAttestation', False), ('AttesterSlashing', False), ('Gc85FA758A04', True),
           ('LightClientHeader', False), ('BeaconBlockBody', False), ('BeaconBlock', False), ('SignedBeaconBlock', False), ('Gc56D855869F', True),
-          ('LightClientFinalityUpdate', False), ('LightClientUpdate', False), ('Gc60805EC295', True)]
+          ('LightClientFinalityUpdate', False), ('LightClientUpdate', False), ('Gc60805EC295', True)]  # BeaconState's interface: next
 
 
 def gfile_c(C):
@@ -2644,6 +2807,24 @@ def lit_sub(t, v, rep):
     return re.sub(rf'(?<![\w.]){v}n\b', rep, t)
 
 
+def lit_sub_nw(t, v, rep):
+    """lit_sub, a word count (VS.wtake's) equal to a big byte size staying a literal (BeaconState: the 65536
+    words of block_roots, the 65536 bytes of slashings)."""
+    keep = []
+    while True:
+        c = find_call(t, 'VCN.len_wt')
+        if c is None:
+            break
+        keep.append(t[c[0]:c[1]])
+        t = t[:c[0]] + f'@LW{len(keep) - 1}@' + t[c[1]:]
+    t = re.sub(r'VS\.wtake\((\d+)n, ', r'VS.wtake(@WT\1@, ', t)
+    t = lit_sub(t, v, rep)
+    t = re.sub(r'VS\.wtake\(@WT(\d+)@, ', r'VS.wtake(\1n, ', t)
+    for k in reversed(range(len(keep))):
+        t = t.replace(f'@LW{k}@', keep[k])
+    return t
+
+
 def sz_is_eq(text, bigs):
     """FD.nat__eq_from_is_eq(a, b, {==}) with a big size variable SZ<v> in a or b: the size variables replaced by
     their literals (logic__subst on eSZ<v>), then decided by Nat.is_eq."""
@@ -2709,11 +2890,13 @@ def putx_core(text, bigs):
     body = block[b + 2:]
     stm = re.split(r'\n(?=  \S)', body)
     # the fixed size F (LLC = SUM(ks) + F) is a variable too, with eLF: SUM(ks) + F == LLC
-    mL = re.search(r'\ndef LLC\(.*\) -> Nat: Nat\.add\((VCN\.SUM\(.*\)), (\d+)n\)\n', text)
-    SK, FIX = mL.group(1), int(mL.group(2))
     LLv = re.search(r'LLC\([^()]*\)', block).group(0)
+    mL = re.search(r'\ndef LLC\(.*\) -> Nat: Nat\.add\((VCN\.SUM\(.*\)), (?:U32\.to_nat\((\d+)\)|(\d+)n)\)\n', text)
+    SK, FIX = mL.group(1), int(mL.group(2) or mL.group(3))
     bigs = sorted(set(bigs) | {FIX})
-    SZP = ', '.join(f'+SZ{v}: Nat, +eSZ{v}: {{SZ{v} == {v}n : Nat}}' for v in bigs) + f', +eLF: {{Nat.add({SK}, SZ{FIX}) == {LLv} : Nat}}'
+    # U32 mode: F and the packed vectors' sizes stated at U32.to_nat(v) (F's LLC is), the others at the literal
+    FORM = lambda v: f'U32.to_nat({v})' if (U32M and (v in U32PK or v == FIX)) else f'{v}n'  # noqa: E731
+    SZP = ', '.join(f'+SZ{v}: Nat, +eSZ{v}: {{SZ{v} == {FORM(v)} : Nat}}' for v in bigs) + f', +eLF: {{Nat.add({SK}, SZ{FIX}) == {LLv} : Nat}}'
     out = []
     ren = {}
     putc_lemmas = []
@@ -2721,12 +2904,15 @@ def putx_core(text, bigs):
         m = re.match(r'  \+(\w+) = ', st_)
         nm = m.group(1) if m else None
         if nm and (re.fullmatch(r'(hl|pp)\d+', nm) or (re.fullmatch(r'ep\d+', nm) and 'VRX.fpos(' in st_)):
-            # a fixed field's position and room: stated on LLC with the literal sizes (no region piece)
-            out.append(st_)
+            # a fixed field's position and room: stated on LLC with the literal sizes (no region piece); in U32
+            # mode F (bounding its end) is the variable
+            out.append(lit_sub_nw(st_, FIX, f'SZ{FIX}') if U32M else st_)
             continue
         t = st_
+        # a word count equal to a big byte size (BeaconState: 65536 words of block_roots, 65536 bytes of
+        # slashings) stays a literal
         for v in bigs:
-            t = lit_sub(t, v, f'SZ{v}')
+            t = lit_sub_nw(t, v, f'SZ{v}')
         for old, new_ in ren.items():
             t = re.sub(rf'\b{old}\b', new_, t)
         if nm and re.fullmatch(r'z\d+', nm) and t.startswith(f'  +{nm} = VCN.reg_zero('):
@@ -2739,7 +2925,7 @@ def putx_core(text, bigs):
                            f'FD.nat__add_zero({args[3]}), {nm})')
                 ren[nm] = nm + 'b'
                 continue
-        if nm and re.fullmatch(r'hz\d+', nm) and 'VS.bt(SZ' in t:
+        if nm and re.fullmatch(r'hz\d+', nm) and 'VS.bt(SZ' in t and not (U32M and int(re.search(r'VS\.bt\(SZ(\d+),', t).group(1)) in U32PK):
             c = find_call(t, 'FD.logic__subst')
             args = c[2]
             v = re.search(r'VS\.bt\(SZ(\d+),', args[1]).group(1)
@@ -2753,7 +2939,7 @@ def putx_core(text, bigs):
             c = find_call(t, fn)
             args = c[2]
             mv = re.fullmatch(r'SZ(\d+)', args[3])
-            if mv:
+            if mv and not (U32M and int(mv.group(1)) in U32PK):
                 v = mv.group(1)
                 hi = 10
                 HY, Y = args[hi], args[5]
@@ -2787,8 +2973,8 @@ def putx_core(text, bigs):
             for v in vs:
                 bz = cur.replace(f'SZ{v}', 'zz2')
                 out.append(f'  +{prev}L = FD.logic__subst(Nat, zz2 => {{UA.BYT(PUTC{margs}) == {spl.replace(", zz)", ", VCN.AP(" + bz + ", " + ap[1] + "))", 1)} : +List<U32>}}, '
-                           f'SZ{v}, {v}n, eSZ{v}, {prev})')
-                cur = cur.replace(f'SZ{v}', f'{v}n')
+                           f'SZ{v}, {FORM(v)}, eSZ{v}, {prev})')
+                cur = cur.replace(f'SZ{v}', FORM(v))
                 prev = prev + 'L'
             ren['byf'] = prev
             putc_lemmas.append((mcall, margs, ap[0], oas, vs))
@@ -2797,7 +2983,7 @@ def putx_core(text, bigs):
     core_body = sz_le(sz_is_eq('\n'.join(out), bigs), bigs)
     names = [x.split(':')[0].strip().lstrip('+') for x in split_args(params)]
     core = f'def putx_core({params}, {SZP})\n    -> {ret}:\n{core_body}'
-    wrap = f'def putx({params})\n    -> {ret}:\n  putx_core({", ".join(names)}, ' + ', '.join(f'{v}n, {{==}}' for v in bigs) + ', {==})'
+    wrap = f'def putx({params})\n    -> {ret}:\n  putx_core({", ".join(names)}, ' + ', '.join(f'{FORM(v)}, {{==}}' for v in bigs) + ', {==})'
     lem = ''
     for mcall, margs, cat, oas, vs in putc_lemmas:
         pp = re.search(r'\ndef PUTC\((.*?)\) -> ', text).group(1)
@@ -2810,9 +2996,20 @@ def putx_core(text, bigs):
         m_ = re.search(r'\ndef ENCC\((.*?)\) -> \+List<U32>: (.*)\n', text)
         body_ = m_.group(2)
         for v in vs:
-            body_ = lit_sub(body_, v, f'SZ{v}')
+            body_ = lit_sub_nw(body_, v, f'SZ{v}')
         text = (text[:m_.start()] + f'\ndef ENCCs({pe}, {szp}) -> +List<U32>: {body_}\n'
-                + f'def ENCC({pe}) -> +List<U32>: ENCCs({oas}, ' + ', '.join(f'{v}n' for v in vs) + ')\n' + text[m_.end():])
+                + f'def ENCC({pe}) -> +List<U32>: ENCCs({oas}, ' + ', '.join(FORM(v) for v in vs) + ')\n' + text[m_.end():])
+        i = text.index('\ndef putx(') + 1
+        j = text.index('\n\n', i)
+    if U32M:
+        # a big size variable at its U32 (a packed vector's eSZ states it so; the others' by Nat.is_eq, once)
+        for v in bigs:
+            prf = 'e' if FORM(v) != f'{v}n' else f'Equal.trans(Nat, z, {v}n, U32.to_nat({v}), e, FD.nat__eq_from_is_eq({v}n, U32.to_nat({v}), {{==}}))'
+            lem += f'def uSZ{v}(+z: Nat, +e: {{z == {FORM(v)} : Nat}}) -> {{z == U32.to_nat({v}) : Nat}}: {prf}\n'
+        lem += '\n'
+        for imp in ('import ./vpos32.bend as P32', 'import ./vadd.bend as AD', 'import ./vpiece.bend as VPC'):
+            if imp not in text:
+                text = text.replace('\nimport ./dk.bend as DK\n', f'\nimport ./dk.bend as DK\n{imp}\n', 1)
         i = text.index('\ndef putx(') + 1
         j = text.index('\n\n', i)
     return (text[:i] + lem + '# putx over symbolic sizes of its big fixed pieces (see putx_core in codegen/var_cont_enc.py)\n'
@@ -3127,6 +3324,10 @@ def enc_fixed_size(text, bigs):
             slots.append('4n')
             continue
         pc = find_call(it, 'VCN.PC')
+        if pc is None:
+            # a short piece (the bv4 bits: VS.bt(kn, ..))
+            slots.append(re.match(r'S\.Fixed\{VS\.bt\((\d+n), ', it).group(1))
+            continue
         k_, xs_ = pc[2]
         if re.fullmatch(r'SZ\d+', k_):
             slots.append(f'VCN.LN(VCN.PC({k_}, {xs_}))')
@@ -3398,6 +3599,121 @@ def reduce_sz(t, vs):
     return t
 
 
+
+CHUNK_MAX = 200     # putx_core statements above which its let chain is cut into chunk defs
+CHUNK_LEN = 90      # statements per chunk (a let chain's depth is the checker's recursion depth)
+
+
+def chunk_putx(text):
+    """A wide container's putx_core (BeaconState: 660 statements) cut into chunk defs of about CHUNK_LEN
+    statements at I<k> boundaries: a chunk takes putx_core's parameters and the facts it reads from earlier
+    chunks, typed as their producers (the region invariant I<k>) or consumers (rt_all's facts, cnext's ec/es)
+    state them, and returns the facts later statements read as a DK.P2 chain (CT<c>_<i>)."""
+    i = text.index('\ndef putx_core(') + 1
+    j = text.index('\n\n', i)
+    block = text[i:j]
+    a = block.index('\n    -> ')
+    b = block.index(':\n', a)
+    params = block[len('def putx_core('):a - 1]
+    body = block[b + 2:]
+    stm = re.split(r'\n(?=  \S)', body)
+    if len(stm) <= CHUNK_MAX:
+        return text
+    pnames = [x.split(':')[0].strip().lstrip('+') for x in split_args(params)]
+    ALL = ', '.join(pnames)
+    nm = [(re.match(r'  \+(\w+) = ', t) or [None, None])[1] for t in stm]
+    tail0 = nm.index('ef')
+    ib = [k for k, n in enumerate(nm) if n and re.fullmatch(r'I\d+', n) and k < tail0]
+    pro = ib[0] + 1                      # the prologue (hX .. I0, pf0) stays in putx_core
+    while nm[pro] and nm[pro].startswith('pf'):
+        pro += 1
+    cuts, last = [], pro
+    for k in ib[1:]:
+        nx = nm[k + 1] if k + 1 < len(nm) else None
+        if nx and (nx.startswith('sz') or nx.startswith('hlc')):
+            continue
+        if k + 1 - last >= CHUNK_LEN or k == ib[-1]:
+            cuts.append((last, k + 1))
+            last = k + 1
+    if last < tail0:
+        cuts.append((last, tail0))
+    defd = {n: k for k, n in enumerate(nm) if n}
+    words = [set(re.findall(r'\b\w+\b', t)) for t in stm]
+    mcall = re.search(r'\bM0(\(.*?, dd, D, X, q, r\))', body).group(1)
+    ra = re.search(r'\ndef rt_all\((.*?)\)\n    -> ', text, re.S).group(1)
+    ra_types = {x.split(':')[0].strip().lstrip('+'): x.split(':', 1)[1].strip() for x in split_args(ra)}
+    fin = find_call(stm[-1], 'rt_all')[2]
+    fact_ty = {n: ra_types[p] for n, p in zip(fin, [x.split(':')[0].strip().lstrip('+') for x in split_args(ra)]) if n != p}
+
+    def consumer(n, after):
+        for k in range(after, len(stm)):
+            if n in words[k]:
+                c = find_call(stm[k], 'VCN.cnext_r') or find_call(stm[k], 'VCN.cnext')
+                if c and n in c[2]:
+                    return c[2]
+        return None
+
+    def ty(n, after):
+        k = defd[n]
+        t = stm[k]
+        if n == 'hX':
+            return '{Nat.is_le(Nat.add(A.quad(q), r), List.length(&2, U32, UA.BYT(D))) == True{} : Bool}'
+        if n in fact_ty:
+            return fact_ty[n]
+        if re.fullmatch(r'I\d+', n):
+            for fn, ub in (('VCN.reg_putc0', 7), ('VCN.reg_put0', 7), ('VCN.reg_putc', 8)):
+                c = find_call(t, fn)
+                if c and t.startswith(f'  +{n} = {fn}('):
+                    g = c[2]
+                    Y = g[5] if fn == 'VCN.reg_put0' else f'VCN.PC({g[3]}, {g[5]})'
+                    return f'{{{g[ub]} == UW.SPL({g[0]}, {g[1]}, VCN.CAT(VCN.LAP({g[2]}, Con{{{Y}, {g[4]}}}))) : +List<U32>}}'
+        if t.startswith(f'  +{n} = FD.logic__subst('):
+            g = find_call(t, 'FD.logic__subst')[2]
+            v_, bd = g[1].split(' => ', 1)
+            return re.sub(rf'\b{v_}\b', lambda _: g[3], bd)
+        if re.fullmatch(r'pf\d+', n):
+            return f'{{FD.array__perfect(U32, dd, M{n[2:]}{mcall}) == True{{}} : Bool}}'
+        if re.fullmatch(r'(ec|sz)\d+', n):
+            g = consumer(n, after)
+            if g is not None:
+                if g[7] == n:
+                    return (f'{{U32.to_nat({g[0]}) == Nat.add(VCN.SUM({g[3]}), {g[2]}) : Nat}}' if 'cnext_r' in t or True else None)
+                if g[8] == n:
+                    return f'{{U32.to_nat({g[1]}) == {g[4]} : Nat}}'
+        raise ValueError(f'chunk_putx: no type for {n}')
+
+    out_top = stm[:pro]
+    defs = []
+    for c, (s0, s1) in enumerate(cuts):
+        ins = sorted({n for k in range(s0, s1) for n in words[k] if n in defd and defd[n] < s0}, key=lambda n: defd[n])
+        outs = [n for n in nm[s0:s1] if n and any(n in words[k] for k in range(s1, len(stm)))]
+        # cnext's ec is typed by the cnext form (cnext_r in the big-region containers)
+        tys_in = [(n, ty(n, s0)) for n in ins]
+        tys_out = [(n, ty(n, s1)) for n in outs]
+        for n_, t_ in tys_out:
+            fact_ty.setdefault(n_, t_) if n_.startswith('rt') else None
+        ct = []
+        for i_, (n_, t_) in enumerate(tys_out):
+            nxt = f'CT{c}_{i_ + 1}({ALL})' if i_ + 1 < len(tys_out) else None
+            ct.append(f'def CT{c}_{i_}({params}) -> Data: ' + (f'DK.P2({t_}, {nxt})' if nxt else t_))
+        tup = outs[-1]
+        for n_ in reversed(outs[:-1]):
+            tup = f'({n_}, {tup})'
+        sig = ', '.join([params] + [f'+{n_}: {t_}' for n_, t_ in tys_in])
+        defs.append('\n'.join(ct) + f'\n\ndef putx_ch{c}({sig})\n    -> CT{c}_0({ALL}):\n' + '\n'.join(stm[s0:s1]) + f'\n  {tup}\n')
+        out_top.append(f'  +K{c}_0 = putx_ch{c}({", ".join(pnames + ins)})')
+        for i_, (n_, t_) in enumerate(tys_out):
+            if i_ + 1 < len(tys_out):
+                B_ = f'CT{c}_{i_ + 1}({ALL})'
+                out_top.append(f'  +{n_} = PA({t_}, {B_}, K{c}_{i_})')
+                out_top.append(f'  +K{c}_{i_ + 1} = PB({t_}, {B_}, K{c}_{i_})')
+            else:
+                out_top.append(f'  +{n_} = K{c}_{i_}')
+    out_top += stm[tail0:]
+    nb = block[:b + 2] + '\n'.join(out_top)
+    return text[:i] + '\n'.join(defs) + '\n' + nb + text[j:]
+
+
 def bigify(C, generic, text):
     """In a container with fixed pieces of BIGPIECE bytes or more: putx's body over their sizes as variables
     (putx_core), closed Nat equations by Nat.is_eq, and the length lemmas the region proofs use; other containers'
@@ -3410,6 +3726,7 @@ def bigify(C, generic, text):
         text = text.replace('\nimport ./dk.bend as DK\n', '\nimport ./dk.bend as DK\nimport ./vfixw_spec.bend as FWS\n', 1)
     if '\ndef putx(+' in text and 'def putx_core(' not in text:
         text = putx_core(text, bigs)
+        text = chunk_putx(text)
     if '\ndef partsC(' in text:
         text = typed_parts(text, bigs)
         text = iface_eqs(text, bigs)
@@ -3445,7 +3762,7 @@ def pfc_text(K, events, OP, OA, C):
         fs = fsd[f]
         if ev['kind'] == 'leaf' and leaf_of(fs).sub:
             pfs = f'{leaf_of(fs).pf}(dd, {Mk(k)}, X, {ev["hoff"]}, {f}, {pfs})'
-        elif ev['kind'] == 'off' and ev['hoff'] % 4:
+        elif ev['kind'] == 'off' and (ev['hoff'] % 4 or U32M):
             Xc_ = f'U32.add(X, {ev["hoff"]})'
             pfs = f'WD.w32x_perfect(VCN.RX({Xc_}), dd, {Mk(k)}, VCN.QX({Xc_}), {ev["cur"]}, {pfs})'
         elif ev['kind'] == 'leaf':
@@ -3495,7 +3812,11 @@ def etpflb(+b: Bool, +t: FD.array__Tree<ET.MB<ET.WMr>>, +N: U32, +dd: Nat, +D: {
 '''
             else:
                 A_, N_ = ch.oargs
-                pfs = f'{ch.alias}.pfLb_{ch.p}(U32.is_eq({N_}, 0), {A_}, {N_}, dd, {Mk(k)}, {QX}, {RX}, {pfs})'
+                if getattr(ch, 'xform', False):
+                    # a list of records in the X form (its perfect lemma at X, not q, r)
+                    pfs = f'{ch.alias}.pfLb_{ch.p}(U32.is_eq({N_}, 0), {A_}, {N_}, dd, {Mk(k)}, {Xc}, {pfs})'
+                else:
+                    pfs = f'{ch.alias}.pfLb_{ch.p}(U32.is_eq({N_}, 0), {A_}, {N_}, dd, {Mk(k)}, {QX}, {RX}, {pfs})'
     return pre + f'''
 # pfC: the writer's tree is perfect (no hypothesis).
 def pfC({OPS_}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +pf: {{FD.array__perfect(U32, dd, D) == {TRUE}}}) -> PFC({MA_}):
