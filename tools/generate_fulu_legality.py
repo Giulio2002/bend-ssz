@@ -16,14 +16,26 @@ def legal(s):
  if k=='list':return pair('{==}',legal(s['element']))
  if k=='container':return pair('{==}',pair(pair('{==}',pair('{==}','{==}')),forest(s['fields'])))
  raise ValueError(k)
-lines=['import Base','import ../types/fulu_model.bend as F','import ../spec/type_legality.bend as S','import ../src/schema.bend as Actual','']
+# fulu_normative.bend: the normative legality witnesses alone (fulu_named, and through it
+# END_TO_END, needs only these: the validator laws evaluated every schema's validator on
+# each import); fulu_legality.bend re-exports them next to the validator laws.
+norm=['import Base','import ../types/fulu_model.bend as F','import ../spec/type_legality.bend as S','',
+      '# The normative legality of every Fulu name (spec/type_legality), alone: fulu_named',
+      '# (and through it END_TO_END) needs only these; fulu_legality.bend re-exports them next',
+      "# to the validator's acceptance laws.",'']
+lines=['import Base','import ../types/fulu_model.bend as F','import ../spec/type_legality.bend as S','import ./fulu_normative.bend as N','import ../src/schema.bend as Actual','']
 for name,s in frozen.items():
- lines += [f'''law {name}_normative_legal:
+ norm += [f'''law {name}_normative_legal:
   S.type_legal(F.{name}.schema())
 def {name}_normative_legal(): {legal(s)}
+''']
+ lines += [f'''law {name}_normative_legal:
+  S.type_legal(F.{name}.schema())
+def {name}_normative_legal(): N.{name}_normative_legal()
 
 law {name}_validator_accepts:
   {{Actual.valid(F.{name}.schema()) == True{{}} : Bool}}
 def {name}_validator_accepts(): {{==}}
 ''']
+(ROOT/'proofs/fulu_normative.bend').write_text('\n'.join(norm))
 (ROOT/'proofs/fulu_legality.bend').write_text('\n'.join(lines))
