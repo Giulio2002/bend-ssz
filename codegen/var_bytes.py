@@ -517,7 +517,26 @@ def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U
     return '\n'.join(L) + '\n'
 
 
-def spec_items(x, Y, wt=None):
+def chain_defs(pfx, decl, args, pdecl, pargs, vals, schs, parts):
+    """Named suffixes of a container's parts chain (callee first): <pfx>V<i>(args) the items
+    from field i on, <pfx>S<i>() their schemas, <pfx>P<i>(pargs) their parts. The chain's
+    F.cat_fixed / VS.cat_var levels then carry these small calls instead of the whole
+    remaining terms, which past the checker's identity budget (4096 visits) were compared
+    by evaluating Codec.parts at every level."""
+    m = len(vals)
+    L = []
+    for i in range(m, -1, -1):
+        if i == m:
+            L += [f'def {pfx}V{i}({decl}) -> S.Value: S.EmptyItems{{}}', f'def {pfx}S{i}() -> S.Schema: S.End{{}}',
+                  f'def {pfx}P{i}({pdecl}) -> +List<S.Part>: Nil{{}}']
+        else:
+            L += [f'def {pfx}V{i}({decl}) -> S.Value: S.Items{{{vals[i]}, {pfx}V{i + 1}({args})}}',
+                  f'def {pfx}S{i}() -> S.Schema: S.Chain{{{schs[i]}, {pfx}S{i + 1}()}}',
+                  f'def {pfx}P{i}({pdecl}) -> +List<S.Part>: Con{{{parts[i]}, {pfx}P{i + 1}({pargs})}}']
+    return L
+
+
+def spec_items(x, Y, wt=None, named=None):
     """ITEMS, CHAIN, PL, CAT, PRE, POST, HDR of the window's value with byte list Y."""
     vals, schs, parts, nodes = [], [], [], []
     for f in x.fields:
@@ -535,15 +554,19 @@ def spec_items(x, Y, wt=None):
     m = len(vals)
 
     def items(i):
+        if named:
+            return f'{named[0]}V{i}({named[2]})'
         return 'S.EmptyItems{}' if i == m else f'S.Items{{{vals[i]}, {items(i + 1)}}}'
 
     def chain(i):
+        if named:
+            return f'{named[0]}S{i}()'
         return 'S.End{}' if i == m else f'S.Chain{{{schs[i]}, {chain(i + 1)}}}'
 
     def cat(i):
         if i == m:
             return '{==}'
-        rest = '[' + ', '.join(parts[i + 1:]) + ']'
+        rest = f'{named[0]}P{i + 1}({named[4]})' if named else '[' + ', '.join(parts[i + 1:]) + ']'
         if nodes[i] is not None:
             return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs([{", ".join(nodes[i]["words"])}]), '
                     f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
@@ -555,6 +578,8 @@ def spec_items(x, Y, wt=None):
     hdr = []
     for f, nd in zip(x.fields, nodes):
         hdr += nd['words'] if nd is not None else [str(x.FS)]
+    if named:
+        return items(0), chain(0), f'{named[0]}P0({named[4]})', cat(0), PRE, POST, hdr, chain_defs(*named, vals, schs, parts)
     return items(0), chain(0), '[' + ', '.join(parts) + ']', cat(0), PRE, POST, hdr
 
 
