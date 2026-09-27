@@ -3348,6 +3348,28 @@
     "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    }
   ],
+  "vec_bool_16_e2e_generated.bend": [
+   {
+    "name": "vec_bool_16",
+    "generated_name": "Gt1D9B3E1871",
+    "laws": [
+     "vec_bool_16_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_16_e2e_dec_generated.bend": [
+   {
+    "name": "vec_bool_16",
+    "generated_name": "Gt1D9B3E1871",
+    "laws": [
+     "vec_bool_16_e2e_decode_view",
+     "vec_bool_16_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
   "vec_bool_1_e2e_root_generated.bend": [
    {
     "name": "vec_bool_16",
@@ -3355,7 +3377,7 @@
     "laws": [
      "vec_bool_16_e2e_root"
     ],
-    "premise": "+rep: PB.rep_vb(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    },
    {
     "name": "vec_bool_2",
@@ -3363,7 +3385,7 @@
     "laws": [
      "vec_bool_2_e2e_root"
     ],
-    "premise": "+rep: PB.rep_vb(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    },
    {
     "name": "vec_bool_1",
@@ -3371,7 +3393,7 @@
     "laws": [
      "vec_bool_1_e2e_root"
     ],
-    "premise": "+rep: PB.rep_vb(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    }
   ],
   "vec_uint8_512_e2e_generated.bend": [
@@ -3562,6 +3584,28 @@
     "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    }
   ],
+  "vec_bool_512_e2e_generated.bend": [
+   {
+    "name": "vec_bool_512",
+    "generated_name": "Gt34AE45611E",
+    "laws": [
+     "vec_bool_512_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_512_e2e_dec_generated.bend": [
+   {
+    "name": "vec_bool_512",
+    "generated_name": "Gt34AE45611E",
+    "laws": [
+     "vec_bool_512_e2e_decode_view",
+     "vec_bool_512_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
   "vec_bool_5_e2e_root_generated.bend": [
    {
     "name": "vec_bool_512",
@@ -3569,7 +3613,7 @@
     "laws": [
      "vec_bool_512_e2e_root"
     ],
-    "premise": "+rep: PB.rep_vb(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    },
    {
     "name": "vec_bool_5",
@@ -3577,7 +3621,7 @@
     "laws": [
      "vec_bool_5_e2e_root"
     ],
-    "premise": "+rep: PB.rep_vb(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    },
    {
     "name": "vec_bool_513",
@@ -3585,7 +3629,29 @@
     "laws": [
      "vec_bool_513_e2e_root"
     ],
-    "premise": "+rep: PB.rep_vb(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_2_e2e_generated.bend": [
+   {
+    "name": "vec_bool_2",
+    "generated_name": "Gt3771256492",
+    "laws": [
+     "vec_bool_2_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_2_e2e_dec_generated.bend": [
+   {
+    "name": "vec_bool_2",
+    "generated_name": "Gt3771256492",
+    "laws": [
+     "vec_bool_2_e2e_decode_view",
+     "vec_bool_2_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    }
   ],
   "vec_uint16_8_e2e_generated.bend": [
@@ -3636,6 +3702,28 @@
     "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    }
   ],
+  "vec_bool_8_e2e_generated.bend": [
+   {
+    "name": "vec_bool_8",
+    "generated_name": "Gt526892A4DC",
+    "laws": [
+     "vec_bool_8_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_8_e2e_dec_generated.bend": [
+   {
+    "name": "vec_bool_8",
+    "generated_name": "Gt526892A4DC",
+    "laws": [
+     "vec_bool_8_e2e_decode_view",
+     "vec_bool_8_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
   "vec_bool_8_e2e_root_generated.bend": [
    {
     "name": "vec_bool_8",
@@ -3643,7 +3731,7 @@
     "laws": [
      "vec_bool_8_e2e_root"
     ],
-    "premise": "+rep: PB.rep_vb(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    },
    {
     "name": "vec_uint16_16",
@@ -3662,6 +3750,28 @@
     "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    }
   ],
+  "vec_bool_3_e2e_generated.bend": [
+   {
+    "name": "vec_bool_3",
+    "generated_name": "Gt57090094FA",
+    "laws": [
+     "vec_bool_3_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_3_e2e_dec_generated.bend": [
+   {
+    "name": "vec_bool_3",
+    "generated_name": "Gt57090094FA",
+    "laws": [
+     "vec_bool_3_e2e_decode_view",
+     "vec_bool_3_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
   "vec_bool_3_e2e_root_generated.bend": [
    {
     "name": "vec_bool_3",
@@ -3669,7 +3779,7 @@
     "laws": [
      "vec_bool_3_e2e_root"
     ],
-    "premise": "+rep: PB.rep_vb(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    },
    {
     "name": "vec_bool_31",
@@ -3677,7 +3787,7 @@
     "laws": [
      "vec_bool_31_e2e_root"
     ],
-    "premise": "+rep: PB.rep_vb(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    },
    {
     "name": "vec_bool_4",
@@ -3685,7 +3795,7 @@
     "laws": [
      "vec_bool_4_e2e_root"
     ],
-    "premise": "+rep: PB.rep_vb(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    }
   ],
   "vec_uint16_513_e2e_generated.bend": [
@@ -3873,6 +3983,28 @@
     "ii": "exact"
    }
   ],
+  "vec_bool_5_e2e_generated.bend": [
+   {
+    "name": "vec_bool_5",
+    "generated_name": "Gt7FBB1934E8",
+    "laws": [
+     "vec_bool_5_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_5_e2e_dec_generated.bend": [
+   {
+    "name": "vec_bool_5",
+    "generated_name": "Gt7FBB1934E8",
+    "laws": [
+     "vec_bool_5_e2e_decode_view",
+     "vec_bool_5_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
   "vec_uint16_5_e2e_generated.bend": [
    {
     "name": "vec_uint16_5",
@@ -3939,6 +4071,28 @@
     "premise": "+rp: rp_u8(o)"
    }
   ],
+  "vec_bool_31_e2e_generated.bend": [
+   {
+    "name": "vec_bool_31",
+    "generated_name": "Gt9DF37A5216",
+    "laws": [
+     "vec_bool_31_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_31_e2e_dec_generated.bend": [
+   {
+    "name": "vec_bool_31",
+    "generated_name": "Gt9DF37A5216",
+    "laws": [
+     "vec_bool_31_e2e_decode_view",
+     "vec_bool_31_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
   "vec_uint8_8_e2e_generated.bend": [
    {
     "name": "vec_uint8_8",
@@ -3968,6 +4122,39 @@
     "laws": [
      "boolean_e2e_encode"
     ]
+   }
+  ],
+  "boolean_e2e_dec_generated.bend": [
+   {
+    "name": "boolean",
+    "generated_name": "GtAD72FD256A",
+    "laws": [
+     "boolean_e2e_decode_accept",
+     "boolean_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "vec_bool_1_e2e_generated.bend": [
+   {
+    "name": "vec_bool_1",
+    "generated_name": "GtAE3EF932C2",
+    "laws": [
+     "vec_bool_1_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_bool_1",
+    "generated_name": "GtAE3EF932C2",
+    "laws": [
+     "vec_bool_1_e2e_decode_view",
+     "vec_bool_1_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    }
   ],
   "vec_uint16_16_e2e_generated.bend": [
@@ -4058,6 +4245,28 @@
     "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    }
   ],
+  "vec_bool_4_e2e_generated.bend": [
+   {
+    "name": "vec_bool_4",
+    "generated_name": "GtC57121EA56",
+    "laws": [
+     "vec_bool_4_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_4_e2e_dec_generated.bend": [
+   {
+    "name": "vec_bool_4",
+    "generated_name": "GtC57121EA56",
+    "laws": [
+     "vec_bool_4_e2e_decode_view",
+     "vec_bool_4_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
   "vec_uint16_1_e2e_generated.bend": [
    {
     "name": "vec_uint16_1",
@@ -4075,6 +4284,28 @@
     "laws": [
      "vec_uint16_1_e2e_decode_view",
      "vec_uint16_1_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_513_e2e_generated.bend": [
+   {
+    "name": "vec_bool_513",
+    "generated_name": "GtEB2FD43D9B",
+    "laws": [
+     "vec_bool_513_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "vec_bool_513_e2e_dec_generated.bend": [
+   {
+    "name": "vec_bool_513",
+    "generated_name": "GtEB2FD43D9B",
+    "laws": [
+     "vec_bool_513_e2e_decode_view",
+     "vec_bool_513_e2e_decode_reject"
     ],
     "ii": "view",
     "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
@@ -4148,12 +4379,6 @@
   ]
  },
  "uncovered": {
-  "boolean": {
-   "generated_name": "GtAD72FD256A",
-   "reason": "encode laws not over the same free words / bits",
-   "i": "boolean_e2e_generated.bend",
-   "iv": "FixedTestStruct_e2e_root_generated.bend"
-  },
   "FuluContributionAndProof": {
    "generated_name": "ContributionAndProof",
    "reason": "encode_eval not an emit of the encoder"
@@ -4295,56 +4520,6 @@
   "proglist_bool": {
    "generated_name": "Gt83D8B3D008",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_bool_16": {
-   "generated_name": "Gt1D9B3E1871",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "vec_bool_1_e2e_root_generated.bend"
-  },
-  "vec_bool_1": {
-   "generated_name": "GtAE3EF932C2",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "vec_bool_1_e2e_root_generated.bend"
-  },
-  "vec_bool_2": {
-   "generated_name": "Gt3771256492",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "vec_bool_1_e2e_root_generated.bend"
-  },
-  "vec_bool_31": {
-   "generated_name": "Gt9DF37A5216",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "vec_bool_3_e2e_root_generated.bend"
-  },
-  "vec_bool_3": {
-   "generated_name": "Gt57090094FA",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "vec_bool_3_e2e_root_generated.bend"
-  },
-  "vec_bool_4": {
-   "generated_name": "GtC57121EA56",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "vec_bool_3_e2e_root_generated.bend"
-  },
-  "vec_bool_512": {
-   "generated_name": "Gt34AE45611E",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "vec_bool_5_e2e_root_generated.bend"
-  },
-  "vec_bool_513": {
-   "generated_name": "GtEB2FD43D9B",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "vec_bool_5_e2e_root_generated.bend"
-  },
-  "vec_bool_5": {
-   "generated_name": "Gt7FBB1934E8",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "vec_bool_5_e2e_root_generated.bend"
-  },
-  "vec_bool_8": {
-   "generated_name": "Gt526892A4DC",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "vec_bool_8_e2e_root_generated.bend"
   },
   "proglist_uint128": {
    "generated_name": "Gt1C2FA69562",
@@ -4639,6 +4814,12 @@
    "ii_iii": "vec_uint16_3_e2e_dec_generated.bend",
    "iv": "vec_uint16_2_e2e_root_generated.bend"
   },
+  "vec_bool_16": {
+   "generated_name": "Gt1D9B3E1871",
+   "i": "vec_bool_16_e2e_generated.bend",
+   "ii_iii": "vec_bool_16_e2e_dec_generated.bend",
+   "iv": "vec_bool_1_e2e_root_generated.bend"
+  },
   "vec_uint8_512": {
    "generated_name": "Gt28605B5D5C",
    "i": "vec_uint8_512_e2e_generated.bend",
@@ -4669,11 +4850,35 @@
    "ii_iii": "vec_uint8_2_e2e_dec_generated.bend",
    "iv": "vec_uint8_16_e2e_root_generated.bend"
   },
+  "vec_bool_512": {
+   "generated_name": "Gt34AE45611E",
+   "i": "vec_bool_512_e2e_generated.bend",
+   "ii_iii": "vec_bool_512_e2e_dec_generated.bend",
+   "iv": "vec_bool_5_e2e_root_generated.bend"
+  },
+  "vec_bool_2": {
+   "generated_name": "Gt3771256492",
+   "i": "vec_bool_2_e2e_generated.bend",
+   "ii_iii": "vec_bool_2_e2e_dec_generated.bend",
+   "iv": "vec_bool_1_e2e_root_generated.bend"
+  },
   "vec_uint16_8": {
    "generated_name": "Gt39CAD03032",
    "i": "vec_uint16_8_e2e_generated.bend",
    "ii_iii": "vec_uint16_8_e2e_dec_generated.bend",
    "iv": "vec_uint16_513_e2e_root_generated.bend"
+  },
+  "vec_bool_8": {
+   "generated_name": "Gt526892A4DC",
+   "i": "vec_bool_8_e2e_generated.bend",
+   "ii_iii": "vec_bool_8_e2e_dec_generated.bend",
+   "iv": "vec_bool_8_e2e_root_generated.bend"
+  },
+  "vec_bool_3": {
+   "generated_name": "Gt57090094FA",
+   "i": "vec_bool_3_e2e_generated.bend",
+   "ii_iii": "vec_bool_3_e2e_dec_generated.bend",
+   "iv": "vec_bool_3_e2e_root_generated.bend"
   },
   "vec_uint16_513": {
    "generated_name": "Gt5BE68AF2C7",
@@ -4699,6 +4904,12 @@
    "ii_iii": "uint32_e2e_dec_generated.bend",
    "iv": "uint32_e2e_generated.bend"
   },
+  "vec_bool_5": {
+   "generated_name": "Gt7FBB1934E8",
+   "i": "vec_bool_5_e2e_generated.bend",
+   "ii_iii": "vec_bool_5_e2e_dec_generated.bend",
+   "iv": "vec_bool_5_e2e_root_generated.bend"
+  },
   "vec_uint16_5": {
    "generated_name": "Gt89824BEACE",
    "i": "vec_uint16_5_e2e_generated.bend",
@@ -4717,11 +4928,29 @@
    "ii_iii": "uint8_e2e_dec_generated.bend",
    "iv": "FixedTestStruct_e2e_root_generated.bend"
   },
+  "vec_bool_31": {
+   "generated_name": "Gt9DF37A5216",
+   "i": "vec_bool_31_e2e_generated.bend",
+   "ii_iii": "vec_bool_31_e2e_dec_generated.bend",
+   "iv": "vec_bool_3_e2e_root_generated.bend"
+  },
   "vec_uint8_8": {
    "generated_name": "GtA8100D747D",
    "i": "vec_uint8_8_e2e_generated.bend",
    "ii_iii": "vec_uint8_8_e2e_dec_generated.bend",
    "iv": "vec_uint8_512_e2e_root_generated.bend"
+  },
+  "boolean": {
+   "generated_name": "GtAD72FD256A",
+   "i": "boolean_e2e_generated.bend",
+   "ii_iii": "boolean_e2e_dec_generated.bend",
+   "iv": "FixedTestStruct_e2e_root_generated.bend"
+  },
+  "vec_bool_1": {
+   "generated_name": "GtAE3EF932C2",
+   "i": "vec_bool_1_e2e_generated.bend",
+   "ii_iii": "vec_bool_1_e2e_dec_generated.bend",
+   "iv": "vec_bool_1_e2e_root_generated.bend"
   },
   "vec_uint16_16": {
    "generated_name": "GtAEB382AD1F",
@@ -4747,11 +4976,23 @@
    "ii_iii": "vec_uint8_3_e2e_dec_generated.bend",
    "iv": "vec_uint8_16_e2e_root_generated.bend"
   },
+  "vec_bool_4": {
+   "generated_name": "GtC57121EA56",
+   "i": "vec_bool_4_e2e_generated.bend",
+   "ii_iii": "vec_bool_4_e2e_dec_generated.bend",
+   "iv": "vec_bool_3_e2e_root_generated.bend"
+  },
   "vec_uint16_1": {
    "generated_name": "GtE6006F6F55",
    "i": "vec_uint16_1_e2e_generated.bend",
    "ii_iii": "vec_uint16_1_e2e_dec_generated.bend",
    "iv": "vec_bool_8_e2e_root_generated.bend"
+  },
+  "vec_bool_513": {
+   "generated_name": "GtEB2FD43D9B",
+   "i": "vec_bool_513_e2e_generated.bend",
+   "ii_iii": "vec_bool_513_e2e_dec_generated.bend",
+   "iv": "vec_bool_5_e2e_root_generated.bend"
   },
   "uint16": {
    "generated_name": "GtECF9BB18D8",

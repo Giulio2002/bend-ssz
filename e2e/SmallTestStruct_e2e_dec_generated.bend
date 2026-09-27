@@ -1,5 +1,6 @@
 import Base
 import ./e2e_fixd.bend as X
+import ../proofs/compact/bits.bend as BT
 import ./e2e_fixd16.bend as X16
 import ../proofs/primitive_invariants.bend as V
 import ../proofs/word_facts.bend as WF
@@ -49,6 +50,10 @@ def SmallTestStruct_d_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, 
 
 def SmallTestStruct_d_anone(+bs: +List<U32>, +ec: {Nat.is_eq(List.length(&2, U32, bs), 4n) == False{} : Bool}) -> {API.deserialize(Spec.Gc4ED9619F50(), bs) == None{} : Maybe<&2, S.Value>}:
   EY.outside_none(Spec.Gc4ED9619F50(), bs, M2.Gc4ED9619F50_decode_reject(bs, ec))
+
+def SmallTestStruct_d_lb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 4n) == True{} : Bool}) -> {B.fill_at(B.alloc(n), 0, bs) == B.Buf{ALeaf{FD.flat__nthc(L.wlp(bs), 0n)}, n} : B.Buf}:
+  %Equal.sym(U32, n, 4, EY.u32_len(n, List.length(&2, U32, bs), 4, hn, ec)) : {B.fill_at(B.alloc(_), 0, bs) == B.Buf{ALeaf{FD.flat__nthc(L.wlp(bs), 0n)}, _} : B.Buf}
+  SmallTestStruct_d_ld(bs, hd, ec)
 
 def SmallTestStruct_d_some(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 4n) == True{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{SmallTestStruct_d.Gc4ED9619F50{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), U32.and(B.join_sel(2, FD.flat__nthc(L.wlp(bs), 0n), FD.flat__nthc(L.wlp(bs), 0n)), 65535)}} : Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>}:
   %Equal.sym(U32, n, 4, EY.u32_len(n, List.length(&2, U32, bs), 4, hn, ec)) :
@@ -107,18 +112,15 @@ def SmallTestStruct_e2e_decode_accept(+bs: +List<U32>, +n: U32, +o: SmallTestStr
      Equal.cong(Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, Maybe<&2, S.Value>, q => SmallTestStruct_mv(q), Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{o}, da)),
    aa => SmallTestStruct_d_bk(Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)), o, Equal.trans(Maybe<&2, S.Value>, SmallTestStruct_mv(Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n))), API.deserialize(Spec.Gc4ED9619F50(), bs), Some{M0.v_Gc4ED9619F50(o)}, SmallTestStruct_e2e_decode_view(bs, n, hn, hd), aa)))
 
-def SmallTestStruct_d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 4n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>}) -> {API.deserialize(Spec.Gc4ED9619F50(), bs) == None{} : Maybe<&2, S.Value>}:
-  match c:
-    case False{}: SmallTestStruct_d_anone(bs, ec)
-    case True{}: Empty.absurd({API.deserialize(Spec.Gc4ED9619F50(), bs) == None{} : Maybe<&2, S.Value>}, EY.none_someT(SmallTestStruct_d.Gc4ED9619F50, SmallTestStruct_d.Gc4ED9619F50{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), U32.and(B.join_sel(2, FD.flat__nthc(L.wlp(bs), 0n), FD.flat__nthc(L.wlp(bs), 0n)), 65535)}, Equal.trans(Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, None{}, Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{SmallTestStruct_d.Gc4ED9619F50{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), U32.and(B.join_sel(2, FD.flat__nthc(L.wlp(bs), 0n), FD.flat__nthc(L.wlp(bs), 0n)), 65535)}}, Equal.sym(Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, dn), SmallTestStruct_d_some(bs, n, hn, hd, ec))))
-
-def SmallTestStruct_d_rb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 4n) == c : Bool}, +an: {API.deserialize(Spec.Gc4ED9619F50(), bs) == None{} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>}:
-  match c:
-    case False{}: SmallTestStruct_d_none(bs, n, hn, ec)
-    case True{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>}, FD.logic__none_some(S.Value, S.Sequence{S.Items{S.UnsignedValue{P.UInt{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), 0, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{U32.and(B.join_sel(2, FD.flat__nthc(L.wlp(bs), 0n), FD.flat__nthc(L.wlp(bs), 0n)), 65535), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}, Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.Gc4ED9619F50(), bs), Some{S.Sequence{S.Items{S.UnsignedValue{P.UInt{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), 0, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{U32.and(B.join_sel(2, FD.flat__nthc(L.wlp(bs), 0n), FD.flat__nthc(L.wlp(bs), 0n)), 65535), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.Gc4ED9619F50(), bs), None{}, an), SmallTestStruct_d_asome(bs, hd, ec))))
+def SmallTestStruct_d_bn(m: Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, +e: {Maybe.is_some(&2, S.Value, SmallTestStruct_mv(m)) == False{} : Bool}) -> {m == None{} : Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>}:
+  match m:
+    case None{}: {==}
+    case Some{x}: Empty.absurd({Some{x} == None{} : Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>}, FD.logic__false_true(Equal.sym(Bool, True{}, False{}, e)))
 
 # (iii) the object decoder fails exactly when END_TO_END's deserialize does.
 def SmallTestStruct_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>} -> {API.deserialize(Spec.Gc4ED9619F50(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.Gc4ED9619F50(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>}):
-  (dn => SmallTestStruct_d_ra(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 4n), {==}, dn), an => SmallTestStruct_d_rb(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 4n), {==}, an))
+  (dn => Equal.trans(Maybe<&2, S.Value>, API.deserialize(Spec.Gc4ED9619F50(), bs), SmallTestStruct_mv(Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n))), None{}, Equal.sym(Maybe<&2, S.Value>, SmallTestStruct_mv(Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n))), API.deserialize(Spec.Gc4ED9619F50(), bs), SmallTestStruct_e2e_decode_view(bs, n, hn, hd)),
+     Equal.cong(Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, Maybe<&2, S.Value>, q => SmallTestStruct_mv(q), Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, dn)),
+   an => SmallTestStruct_d_bn(Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n)), Equal.cong(Maybe<&2, S.Value>, Bool, z => Maybe.is_some(&2, S.Value, z), SmallTestStruct_mv(Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n))), None{}, Equal.trans(Maybe<&2, S.Value>, SmallTestStruct_mv(Pair.snd(B.Buf, Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>, SmallTestStruct_r.Gc4ED9619F50_decode(B.fill_at(B.alloc(n), 0, bs), n))), API.deserialize(Spec.Gc4ED9619F50(), bs), None{}, SmallTestStruct_e2e_decode_view(bs, n, hn, hd), an))))
 

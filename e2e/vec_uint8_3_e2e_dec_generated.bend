@@ -1,5 +1,6 @@
 import Base
 import ./e2e_fixd.bend as X
+import ../proofs/compact/bits.bend as BT
 import ./e2e_fixd16.bend as X16
 import ../proofs/primitive_invariants.bend as V
 import ../proofs/word_facts.bend as WF
@@ -51,6 +52,10 @@ def vec_uint8_3_d_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) 
 def vec_uint8_3_d_anone(+bs: +List<U32>, +ec: {Nat.is_eq(List.length(&2, U32, bs), 3n) == False{} : Bool}) -> {API.deserialize(Spec.GtC19E8053EB(), bs) == None{} : Maybe<&2, S.Value>}:
   EY.outside_none(Spec.GtC19E8053EB(), bs, M3.GtC19E8053EB_decode_reject(bs, ec))
 
+def vec_uint8_3_d_lb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 3n) == True{} : Bool}) -> {B.fill_at(B.alloc(n), 0, bs) == B.Buf{ALeaf{FD.flat__nthc(L.wlp(bs), 0n)}, n} : B.Buf}:
+  %Equal.sym(U32, n, 3, EY.u32_len(n, List.length(&2, U32, bs), 3, hn, ec)) : {B.fill_at(B.alloc(_), 0, bs) == B.Buf{ALeaf{FD.flat__nthc(L.wlp(bs), 0n)}, _} : B.Buf}
+  vec_uint8_3_d_ld(bs, hd, ec)
+
 def vec_uint8_3_d_some(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 3n) == True{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{O.Words{ANode{ANode{ANode{ANode{ALeaf{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 16777215)}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 3}} : Maybe<&1, O.Words>}:
   %Equal.sym(U32, n, 3, EY.u32_len(n, List.length(&2, U32, bs), 3, hn, ec)) :
     {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(_), 0, bs), _)) == Some{O.Words{ANode{ANode{ANode{ANode{ALeaf{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 16777215)}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 3}} : Maybe<&1, O.Words>}
@@ -85,18 +90,15 @@ def vec_uint8_3_d_v(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == 
 def vec_uint8_3_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {vec_uint8_3_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(Spec.GtC19E8053EB(), bs) : Maybe<&2, S.Value>}:
   vec_uint8_3_d_v(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 3n), {==})
 
-def vec_uint8_3_d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 3n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}) -> {API.deserialize(Spec.GtC19E8053EB(), bs) == None{} : Maybe<&2, S.Value>}:
-  match c:
-    case False{}: vec_uint8_3_d_anone(bs, ec)
-    case True{}: Empty.absurd({API.deserialize(Spec.GtC19E8053EB(), bs) == None{} : Maybe<&2, S.Value>}, EY.none_someT(O.Words, O.Words{ANode{ANode{ANode{ANode{ALeaf{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 16777215)}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 3}, Equal.trans(Maybe<&1, O.Words>, None{}, Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{O.Words{ANode{ANode{ANode{ANode{ALeaf{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 16777215)}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 3}}, Equal.sym(Maybe<&1, O.Words>, Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, dn), vec_uint8_3_d_some(bs, n, hn, hd, ec))))
-
-def vec_uint8_3_d_rb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 3n) == c : Bool}, +an: {API.deserialize(Spec.GtC19E8053EB(), bs) == None{} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}:
-  match c:
-    case False{}: vec_uint8_3_d_none(bs, n, hn, ec)
-    case True{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}, FD.logic__none_some(S.Value, S.Sequence{M2_SP2.vu8([B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n)), B.byte_sel(1, FD.flat__nthc(L.wlp(bs), 0n)), B.byte_sel(2, FD.flat__nthc(L.wlp(bs), 0n))])}, Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.GtC19E8053EB(), bs), Some{S.Sequence{M2_SP2.vu8([B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n)), B.byte_sel(1, FD.flat__nthc(L.wlp(bs), 0n)), B.byte_sel(2, FD.flat__nthc(L.wlp(bs), 0n))])}}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.GtC19E8053EB(), bs), None{}, an), vec_uint8_3_d_asome(bs, hd, ec))))
+def vec_uint8_3_d_bn(m: Maybe<&1, O.Words>, +e: {Maybe.is_some(&2, S.Value, vec_uint8_3_mv(m)) == False{} : Bool}) -> {m == None{} : Maybe<&1, O.Words>}:
+  match m:
+    case None{}: {==}
+    case Some{x}: Empty.absurd({Some{x} == None{} : Maybe<&1, O.Words>}, FD.logic__false_true(Equal.sym(Bool, True{}, False{}, e)))
 
 # (iii) the object decoder fails exactly when END_TO_END's deserialize does.
 def vec_uint8_3_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>} -> {API.deserialize(Spec.GtC19E8053EB(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.GtC19E8053EB(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.Words>}):
-  (dn => vec_uint8_3_d_ra(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 3n), {==}, dn), an => vec_uint8_3_d_rb(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 3n), {==}, an))
+  (dn => Equal.trans(Maybe<&2, S.Value>, API.deserialize(Spec.GtC19E8053EB(), bs), vec_uint8_3_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n))), None{}, Equal.sym(Maybe<&2, S.Value>, vec_uint8_3_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n))), API.deserialize(Spec.GtC19E8053EB(), bs), vec_uint8_3_e2e_decode_view(bs, n, hn, hd)),
+     Equal.cong(Maybe<&1, O.Words>, Maybe<&2, S.Value>, q => vec_uint8_3_mv(q), Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, dn)),
+   an => vec_uint8_3_d_bn(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n)), Equal.cong(Maybe<&2, S.Value>, Bool, z => Maybe.is_some(&2, S.Value, z), vec_uint8_3_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n))), None{}, Equal.trans(Maybe<&2, S.Value>, vec_uint8_3_mv(Pair.snd(B.Buf, Maybe<&1, O.Words>, vec_uint8_3_r.GtC19E8053EB_decode(B.fill_at(B.alloc(n), 0, bs), n))), API.deserialize(Spec.GtC19E8053EB(), bs), None{}, vec_uint8_3_e2e_decode_view(bs, n, hn, hd), an))))
 
