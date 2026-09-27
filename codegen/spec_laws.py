@@ -124,6 +124,11 @@ VEC_MAX_WORDS = 512
 # This generator's own files use it; generators that import walk() keep the
 # older form until their owners regenerate with SL.EXACT = True.
 EXACT = False
+# TOTAL (opt-in, off by default): in the EXACT container / vector proofs, the fixed parts' layout
+# `total` by vspec.agg_total (encoding_fparts, valid_fparts) instead of {==}, which evaluates the
+# bytes' domain over the symbolic words (encx_l134217728_PendingPartialWithdrawal: 1.1 s). The module
+# must import ./vspec.bend as VS.
+TOTAL = False
 VEC_MAX_ELEMS = 256
 # HOIST (opt-in, off by default): every container / vector node's value and parts proof become calls
 # of lemmas over its words, hv<k>(w..) / hp<k>(w..), emitted once per distinct shape (identical
@@ -241,7 +246,8 @@ def walk(g, t, c):
         wss = '[' + ', '.join(wl(k.words) for k in kids) + ']'
         # every step states exactly the Codec.parts term its parent unfolds to,
         # so the checker compares syntactically instead of running the encoders
-        proof = (f'F.vector_fixed({esch}, {t.size}n, {vitems(0)}, {wss}, {n}n, {wl(ws)}, {vcat(0)}, {{==}}, {{==}}, {{==}}, {{==}})'
+        tot = f'VS.agg_total({wss}, {n}n, {{==}})' if TOTAL else '{==}'
+        proof = (f'F.vector_fixed({esch}, {t.size}n, {vitems(0)}, {wss}, {n}n, {wl(ws)}, {vcat(0)}, {{==}}, {{==}}, {tot}, {{==}})'
                  if EXACT else f'F.aggregate_fixed(Codec.parts({vitems(0)}, S.Repeat{{{esch}}}), {wss}, {n}n, {vcat(0)}, {{==}})')
         return _hoist(Node(f'O.Words{{{tree(ws + op)}, {n}}}', ws, f'S.Sequence{{{vitems(0)}}}',
                     f'S.Vector{{{esch}, {t.size}n}}', proof,
@@ -294,8 +300,9 @@ def walk(g, t, c):
                     f'{rest}, {kids[i].proof}, {cat(i + 1)})')
         words = [w for k in kids for w in k.words]
         wss = '[' + ', '.join(wl(k.words) for k in kids) + ']'
+        tot = f'VS.agg_total({wss}, {t.fixed_size()}n, {{==}})' if TOTAL else '{==}'
         proof = (f'F.container_fixed({names}, {chain(0)}, {items(0)}, {wss}, {t.fixed_size()}n, {wl(words)}, '
-                 f'{cat(0)}, {{==}}, {{==}}, {{==}})' if EXACT else
+                 f'{cat(0)}, {{==}}, {tot}, {{==}})' if EXACT else
                  f'F.aggregate_fixed(Codec.parts({items(0)}, {chain(0)}), {wss}, {t.fixed_size()}n, {cat(0)}, {{==}})')
         obj = f'T.{s.t.name}{{' + ', '.join(k.obj for k in kids) + '}'
         dec = f'T.{s.t.name}{{' + ', '.join(k.dec for k in kids) + '}'
@@ -658,7 +665,13 @@ def validator_module(src):
             out = f'S.Items{{{it}, {out}}}'
         return f'S.Sequence{{{out}}}'
     split = ['  match b:', '    case True{}: {==}', '    case False{}: {==}']
+    names_ = '["pubkey", "withdrawal_credentials", "effective_balance", "slashed", "activation_eligibility_epoch", "activation_epoch", "exit_epoch", "withdrawable_epoch"]'
+    chain_ = 'S.End{}'
+    for sch_ in reversed(['S.ByteVector{48n}', 'S.ByteVector{32n}', 'S.Unsigned{P.U64{}}', 'S.Boolean{}'] + ['S.Unsigned{P.U64{}}'] * 4):
+        chain_ = f'S.Chain{{{sch_}, {chain_}}}'
     if VLCT:
+        w('# the schema as its container term (a rewrite on schemas: no parts are compared)')
+        w(f'def vsq() -> {{S.Container{{{names_}, {chain_}}} == Spec.Validator() : S.Schema}}: {{==}}')
         w('# a container\'s parts, one step, over an opaque value (the rewrite below compares no parts)')
         w('def lct(+it: S.Value, +nm: +List<String>, +fs: S.Schema) -> {Codec.aggregate(Codec.parts(it, fs), SSC.fixed_size(fs)) == Codec.parts(S.Sequence{it}, S.Container{nm, fs}) : Maybe<&2, +List<S.Part>>}:')
         w('  {==}')
@@ -705,6 +718,7 @@ def validator_module(src):
         w(f'    -> {{Codec.parts({vb}, Spec.Validator()) == Some{{[S.Fixed{{{byts(xs, bv + "{}", es)}}}]}} : Maybe<&2, +List<S.Part>>}}:')
         allp = '[' + ', '.join(f'S.Fixed{{{q}}}' for q in parts) + ']'
         if VLCT:
+            w(f'  %vsq() : {{Codec.parts({vb}, _) == Some{{[S.Fixed{{{byts(xs, bv + "{}", es)}}}]}} : Maybe<&2, +List<S.Part>>}}')
             w(f'  %lct({items(0)}, {names}, {ch(0)}) : {{_ == Some{{[S.Fixed{{{byts(xs, bv + "{}", es)}}}]}} : Maybe<&2, +List<S.Part>>}}')
         w(f'  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts({items(0)}, {ch(0)}), Some{{{allp}}}, {cat(0)}) :')
         w(f'    {{Codec.aggregate(_, SSC.fixed_size({ch(0)})) == Some{{[S.Fixed{{{byts(xs, bv + "{}", es)}}}]}} : Maybe<&2, +List<S.Part>>}}')

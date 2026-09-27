@@ -48,10 +48,15 @@ def nest(ft, var, words, ind, plus=True):
 
 
 def rec_text(VLW, g, rt, walk):
-    """RWD, RVW, rparts, rlen, putR of record type rt; walk = (val, sch, proof) over x0.. words."""
+    """RWD, RVW, rparts, rlen, putR of record type rt; walk = (val, sch, proof) over x0.. words, or
+    (val, sch, proof, obj): then rparts goes through rpc_<R> over the words (its statement the value
+    and object terms themselves) after rewriting RVW_<R>(obj) to the value (rvq_<R>), so the checker
+    never compares Codec.parts(RVW_<R>(..), s) with Codec.parts(<value>, s) by running the parts
+    (encx_l134217728_PendingPartialWithdrawal's rparts: 1.1 s)."""
     ft = VLW.FT(g, rt)
     R, W = rt.name, ft.W
-    val, sch, proof = walk
+    obj = walk[3] if len(walk) > 3 else None
+    val, sch, proof = walk[:3]
     words = []
     ls, ind = nest(ft, 'r', words, 2)
     body = '\n'.join(ls)
@@ -68,9 +73,7 @@ def RVW_{R}(r: T.{R}) -> S.Value:
 {body}
 {pad}{val}
 
-def rparts_{R}(+r: T.{R}) -> {{Codec.parts(RVW_{R}(r), {sch}) == Some{{[S.Fixed{{F.limbs(RWD_{R}(r))}}]}} : Maybe<&2, +List<S.Part>>}}:
-{body}
-{pad}{proof}
+@RPARTS
 
 def rlen_{R}(+r: T.{R}) -> {{VF.slen(RWD_{R}(r)) == {W}n : Nat}}:
 {body}
@@ -83,6 +86,23 @@ def putR_{R}(+dd: Nat, +D: {TR}, +pos: U32, +P: Nat, +e: {{U32.to_nat(pos) == A.
 {body}
 {pad}VT2.put_{ft.p}(dd, D, pos, P, e, hdd, pf, hb, {", ".join(words)})
 '''
+    RP = f'''def rparts_{R}(+r: T.{R}) -> {{Codec.parts(RVW_{R}(r), {sch}) == Some{{[S.Fixed{{F.limbs(RWD_{R}(r))}}]}} : Maybe<&2, +List<S.Part>>}}:
+{body}
+{pad}{proof}
+'''
+    if obj is not None:
+        ws_ = ', '.join(f'+{x}: U32' for x in words)
+        wa = ', '.join(words)
+        RS_ = 'Some{[S.Fixed{F.limbs(RWD_' + R + '(' + obj + '))}]} : Maybe<&2, +List<S.Part>>'
+        RP = ('# its parts over the words: the value and the object as terms (rparts rewrites RVW_' + R + ' to the value first)\n'
+              f'def rvq_{R}({ws_}) -> {{{val} == RVW_{R}({obj}) : S.Value}}: {{==}}\n'
+              f'def rpc_{R}({ws_}) -> {{Codec.parts({val}, {sch}) == {RS_}}}:\n'
+              f'  {proof}\n'
+              f'def rparts_{R}(+r: T.{R}) -> {{Codec.parts(RVW_{R}(r), {sch}) == Some{{[S.Fixed{{F.limbs(RWD_{R}(r))}}]}} : Maybe<&2, +List<S.Part>>}}:\n'
+              f'{body}\n'
+              f'{pad}%rvq_{R}({wa}) : {{Codec.parts(_, {sch}) == {RS_}}}\n'
+              f'{pad}rpc_{R}({wa})\n')
+    out = out.replace('@RPARTS\n', RP, 1)
     return out, ft
 
 

@@ -143,6 +143,16 @@ def encoding_fparts(wss, fit):
     {SP.optional(Bool.and(_, True{}), FX.flat(wss)) == Some{FX.flat(wss)} : Maybe<&2, +List<U32>>}
   {==}
 
+# aggregate_fixed's / container_fixed's `total`, by encoding_fparts and valid_fparts: the fixed parts'
+# layout is never evaluated (their bytes' domain check runs the words' byte compares otherwise).
+def agg_total(+wss: +List<+List<U32>>, +n: Nat, +fit: {N.fits(4n, List.length(&2, U32, FX.flat(wss))) == True{} : Bool})
+    -> {Codec.one(Layout.encoding(FX.fparts(wss)), Some{n}) == Codec.one(SP.optional(Bool.and(Layout.bytes_valid(FX.fparts(wss)), True{}), FX.flat(wss)), Some{n}) : Maybe<&2, +List<S.Part>>}:
+  Equal.trans(Maybe<&2, +List<S.Part>>, Codec.one(Layout.encoding(FX.fparts(wss)), Some{n}), Codec.one(Some{FX.flat(wss)}, Some{n}),
+    Codec.one(SP.optional(Bool.and(Layout.bytes_valid(FX.fparts(wss)), True{}), FX.flat(wss)), Some{n}),
+    Equal.cong(Maybe<&2, +List<U32>>, Maybe<&2, +List<S.Part>>, z => Codec.one(z, Some{n}), Layout.encoding(FX.fparts(wss)), Some{FX.flat(wss)}, encoding_fparts(wss, fit)),
+    Equal.cong(Bool, Maybe<&2, +List<S.Part>>, z => Codec.one(SP.optional(Bool.and(z, True{}), FX.flat(wss)), Some{n}), True{}, Layout.bytes_valid(FX.fparts(wss)),
+      Equal.sym(Bool, Layout.bytes_valid(FX.fparts(wss)), True{}, FX.valid_fparts(wss))))
+
 # ---- lists of uint64 held as words ------------------------------------------------------
 
 # k uint64 elements from a word list: element j is words 2j, 2j + 1 (low, high).

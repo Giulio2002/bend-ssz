@@ -68,6 +68,10 @@ def RVW_PendingConsolidation(r: T.PendingConsolidation) -> S.Value:
             case O.U64{+x2, +x3}:
               S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}
 
+# its parts over the words: the value and the object as terms (rparts rewrites RVW_PendingConsolidation to the value first)
+def rvq_PendingConsolidation(+x0: U32, +x1: U32, +x2: U32, +x3: U32) -> {S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}} == RVW_PendingConsolidation(T.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}) : S.Value}: {==}
+def rpc_PendingConsolidation(+x0: U32, +x1: U32, +x2: U32, +x3: U32) -> {Codec.parts(S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}, S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_PendingConsolidation(T.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}))}]} : Maybe<&2, +List<S.Part>>}:
+  F.container_fixed(["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}, S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}, [[x0, x1], [x2, x3]], 16n, [x0, x1, x2, x3], F.items_fixed(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}, S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}, F.limbs([x0, x1]), [S.Fixed{F.limbs([x2, x3])}], F.uint64_part(x0, x1), F.items_fixed(S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}, S.Unsigned{P.U64{}}, S.End{}, F.limbs([x2, x3]), [], F.uint64_part(x2, x3), {==})), {==}, VS.agg_total([[x0, x1], [x2, x3]], 16n, {==}), {==})
 def rparts_PendingConsolidation(+r: T.PendingConsolidation) -> {Codec.parts(RVW_PendingConsolidation(r), S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_PendingConsolidation(r))}]} : Maybe<&2, +List<S.Part>>}:
   match r:
     case T.PendingConsolidation{+r_0, +r_1}:
@@ -75,7 +79,8 @@ def rparts_PendingConsolidation(+r: T.PendingConsolidation) -> {Codec.parts(RVW_
         case O.U64{+x0, +x1}:
           match r_1:
             case O.U64{+x2, +x3}:
-              F.aggregate_fixed(Codec.parts(S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}), [[x0, x1], [x2, x3]], 16n, F.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U64{}}), F.limbs([x0, x1]), Codec.parts(S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}), [S.Fixed{F.limbs([x2, x3])}], F.uint64_part(x0, x1), F.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U64{}}), F.limbs([x2, x3]), Codec.parts(S.EmptyItems{}, S.End{}), [], F.uint64_part(x2, x3), {==})), {==})
+              %rvq_PendingConsolidation(x0, x1, x2, x3) : {Codec.parts(_, S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_PendingConsolidation(T.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}))}]} : Maybe<&2, +List<S.Part>>}
+              rpc_PendingConsolidation(x0, x1, x2, x3)
 
 def rlen_PendingConsolidation(+r: T.PendingConsolidation) -> {VF.slen(RWD_PendingConsolidation(r)) == 4n : Nat}:
   match r:
