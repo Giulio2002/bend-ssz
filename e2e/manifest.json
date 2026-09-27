@@ -2522,6 +2522,16 @@
     "ii": "view",
     "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 29)"
    }
+  ],
+  "FuluDataColumnsByRootIdentifier_e2e_root_generated.bend": [
+   {
+    "name": "FuluDataColumnsByRootIdentifier",
+    "generated_name": "DataColumnsByRootIdentifier",
+    "laws": [
+     "FuluDataColumnsByRootIdentifier_e2e_root"
+    ],
+    "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) (the root law's representation invariant)"
+   }
   ]
  },
  "uncovered": {
@@ -2660,7 +2670,8 @@
   "FuluDataColumnsByRootIdentifier": {
    "generated_name": "DataColumnsByRootIdentifier",
    "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend"
+   "decode": "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend",
+   "root": "FuluDataColumnsByRootIdentifier_e2e_root_generated.bend"
   },
   "FuluMatrixEntry": {
    "generated_name": "MatrixEntry",

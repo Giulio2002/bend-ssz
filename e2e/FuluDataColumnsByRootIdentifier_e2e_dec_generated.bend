@@ -23,6 +23,7 @@ import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/ulist_obj.bend as UL
 import ../proofs/obj/root_types.bend as RT
+import ./e2e_ulist.bend as U
 import ../proofs/obj/var_codec_DataColumnsByRootIdentifier.bend as DC
 import ../proofs/obj/var_codec_DataColumnsByRootIdentifier_rej.bend as DN
 
@@ -34,45 +35,10 @@ import ../proofs/obj/var_codec_DataColumnsByRootIdentifier_rej.bend as DN
 
 # ---- the view of a decoded object is the codec law's value ----
 
-def ue2(+c: Nat, +a: U32, +t: List<&2, U32>, rec: @+r: List<&2, U32> -> {UL.uitems(c, r) == VSP.uitems(c, r) : S.Value})
-    -> {UL.uitems(1n+c, Con{a, t}) == VSP.uitems(1n+c, Con{a, t}) : S.Value}:
-  match t:
-    case Nil{}: {==}
-    case Con{+b, +rest}: Equal.cong(S.Value, S.Value, z => S.Items{S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, z}, UL.uitems(c, rest), VSP.uitems(c, rest), rec(rest))
-
-law ue:
-  for +k: Nat
-  for +W: List<&2, U32>
-  {UL.uitems(k, W) == VSP.uitems(k, W) : S.Value}
-def ue(k, W):
-  match k W:
-    case 0n _: {==}
-    case 1n+ +c Nil{}: {==}
-    case 1n+ +c Con{+a, +t}: ue2(c, a, t, r => ue(c, r))
-
-law r8:
-  for +c: Nat
-  {VD.s_rng(3n, VSP.x8(c)) == c : Nat}
-def r8(c):
-  match c:
-    case 0n: {==}
-    case 1n+ +p:
-      %Equal.sym(Nat, VD.s_rng(3n, VSP.x8(p)), p, r8(p)) : {1n+_ == 1n+p : Nat}
-      {==}
-
 def cnt(+n: U32, +hc: {DC.whole(DC.LL(n)) == True{} : Bool}) -> {U32.to_nat(U32.shrn(DC.LL(n), 3n)) == DC.CQ(n) : Nat}:
   Equal.trans(Nat, U32.to_nat(U32.shrn(DC.LL(n), 3n)), VD.s_rng(3n, U32.to_nat(DC.LL(n))), DC.CQ(n), VD.shrk(3n, DC.LL(n)),
     Equal.trans(Nat, VD.s_rng(3n, U32.to_nat(DC.LL(n))), VD.s_rng(3n, VSP.x8(DC.CQ(n))), DC.CQ(n),
-      Equal.cong(Nat, Nat, z => VD.s_rng(3n, z), U32.to_nat(DC.LL(n)), VSP.x8(DC.CQ(n)), DC.eLc(n, hc)), r8(DC.CQ(n))))
-
-def uv(+t: FD.array__Tree<U32>, +n: U32, +hc: {DC.whole(DC.LL(n)) == True{} : Bool})
-    -> {UL.uview(O.Words{FD.array__thaw(U32, DC.MM(t, n)), DC.LL(n)}) == S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))} : S.Value}:
-  %Equal.sym(Nat, U32.to_nat(U32.shrn(DC.LL(n), 3n)), DC.CQ(n), cnt(n, hc)) :
-    {S.Sequence{UL.uitems(_, FD.array__slots(U32, FD.array__freeze(U32, FD.array__thaw(U32, DC.MM(t, n)))))} == S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))} : S.Value}
-  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, DC.MM(t, n))), DC.MM(t, n), FD.array__freeze_thaw(U32, DC.MM(t, n))) :
-    {S.Sequence{UL.uitems(DC.CQ(n), FD.array__slots(U32, _))} == S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))} : S.Value}
-  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, UL.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n))), VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n))),
-    ue(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n))))
+      Equal.cong(Nat, Nat, z => VD.s_rng(3n, z), U32.to_nat(DC.LL(n)), VSP.x8(DC.CQ(n)), DC.eLc(n, hc)), U.r8(DC.CQ(n))))
 
 def wh(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {DC.whole(DC.LL(n)) == True{} : Bool}:
   +a = U32.is_le(36, n)
@@ -83,7 +49,7 @@ def wh(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool})
 
 def vv(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_DataColumnsByRootIdentifier(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}:
   Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{S.BytesValue{F.limbs([VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)])}, S.Items{z, S.EmptyItems{}}}}, UL.uview(O.Words{FD.array__thaw(U32, DC.MM(t, n)), DC.LL(n)}),
-    S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))}, uv(t, n, wh(t, n, hchk)))
+    S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))}, U.uvw(DC.MM(t, n), DC.LL(n), DC.CQ(n), cnt(n, wh(t, n, hchk))))
 
 # ---- the loaded buffer ----
 
