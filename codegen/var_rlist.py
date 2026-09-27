@@ -51,6 +51,172 @@ def sym_depth(text, RS, KL):
     return text
 
 
+def deep_rlist(text, RS, big):
+    """A record list's window at any depth d < 31: the records' offsets below 2^32 (hw32, carried by the
+    read loop as hb32), the storage depth from the window's records (at most 2^d of them: records of at
+    least four bytes), the deep interface with the old one as wrappers (codegen/deep.py)."""
+    import var_win as VWN
+    T = 'True{} : Bool'
+    P32 = 'FD.spec_common__pow2(32n)'
+    POS = lambda j: f'VRL.pos({j}, {RS}n, x)'
+    reps = [
+        # the read loop carries the record end below 2^32
+        (f"+hb: {{Nat.is_le({POS('Nat.add(1n+k, j)')}, A.quad(VB.pw(d))) == {T}}},\n",
+         f"+hb: {{Nat.is_le({POS('Nat.add(1n+k, j)')}, A.quad(VB.pw(d))) == {T}}}, +hb32: {{Nat.is_lt({POS('Nat.add(1n+k, j)')}, {P32}) == {T}}},\n"),
+        (f"      +hx = VRL.nextfit(j, q, {RS}n, x, A.quad(VB.pw(d)), hb)\n",
+         f"      +hx = VRL.nextfit(j, q, {RS}n, x, A.quad(VB.pw(d)), hb)\n"
+         f"      +hx32 = FD.nat__le_lt_trans(Nat.add({POS('1n+j')}, {RS}n), {POS('Nat.add(2n+q, j)')}, {P32},\n"
+         f"        VRL.nextfit(j, q, {RS}n, x, {POS('Nat.add(2n+q, j)')}, FD.nat__le_refl({POS('Nat.add(2n+q, j)')})), hb32)\n"
+         f"      +hb232 = FD.logic__subst(Nat, z => {{Nat.is_lt(VRL.pos(1n+z, {RS}n, x), {P32}) == {T}}}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb32)\n"),
+        (f"      +ex = VRL.posU(d, off, x, i, j, {RS}, {RS - 1}n, {{==}}, eo, ej, hd, hx)", f"      +ex = VRL.posU32(off, x, i, j, {RS}, {RS - 1}n, {{==}}, eo, ej, hx32)"),
+        (f"VRL.succU(d, i, j, {RS - 1}n, x, ej, hd, hx), hd, pf, hb2, hdd, hk2,", f"VRL.succU32(i, j, {RS - 1}n, x, ej, hx32), hd, pf, hb2, hb232, hdd, hk2,"),
+        ("eo, {==}, hd, pf, hb, hdd, hk,", "eo, {==}, hd, pf, hb, hb32, hdd, hk,"),
+        ("      +hcl = hcw(len, hchk)\n",
+         f"      +hL32 = FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == {T}}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw32)\n"
+         f"      +hLc32 = FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add(z, x), {P32}) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hL32)\n"
+         f"      +hb32 = FD.logic__subst(Nat, z => {{Nat.is_lt({POS('z')}, {P32}) == {T}}}, c, Nat.add(1n+k, 0n),\n"
+         f"        Equal.trans(Nat, c, 1n+k, Nat.add(1n+k, 0n), Equal.sym(Nat, 1n+k, c, e1), Equal.sym(Nat, Nat.add(1n+k, 0n), 1n+k, FD.nat__add_zero(1n+k))), hLc32)\n"
+         "      +hcl = hcw(len, hchk)\n"),
+        ("FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hx)", "hd, pf, hx)"),
+        ("FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb0)", "hd, pf, hb0)"),
+        (f"  +hf = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hw)\n",
+         f"  +hf = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hw)\n"
+         f"  +hf32 = FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add(x, z), {P32}) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hw32)\n"),
+        (f"VFT.fits4(2n+d, Nat.mul(c, {RS}n), FD.nat__le_trans(Nat.mul(c, {RS}n), Nat.add(x, Nat.mul(c, {RS}n)), A.quad(VB.pw(d)), Order.left_below_sum(x, Nat.mul(c, {RS}n)), hf), FD.nat__lt_trans(d, 28n, 30n, hd, {{==}}))",
+         f"VFT.fits4lt(Nat.mul(c, {RS}n), FD.nat__le_lt_trans(Nat.mul(c, {RS}n), Nat.add(x, Nat.mul(c, {RS}n)), {P32}, Order.left_below_sum(x, Nat.mul(c, {RS}n)), hf32))"),
+    ]
+    for a, b in reps:
+        assert text.count(a) == 1, (text.count(a), a[:90])
+        text = text.replace(a, b)
+    text = text.replace('VTX.rdx_', 'VTX.rdxd_')
+    if big:
+        a = text.index('      +hcN = ')
+        b = text.index('      +hcP = ')
+        text = text[:a] + (
+            f'      +hcN = FD.logic__subst(Nat, z => {{Nat.is_le(c, z) == {T}}}, VB.pw(d), O.pow2n(d), VD.s_pow2_eq(d),\n'
+            f'        VC.quad_inv(c, VB.pw(d), FD.nat__le_trans(A.quad(c), Nat.mul(c, {RS}n), A.quad(VB.pw(d)), VRL.quad_le_mul(c, {RS - 4}n),\n'
+            f'          FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(d))) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec,\n'
+            f'            FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw)))))\n'
+            f'      +hcp = VD.wd_cover(NN(len), d, FD.nat__lt_le(d, 32n, FD.nat__lt_trans(d, 31n, 32n, hd, {{==}})), hcN)\n') + text[b:]
+        a = text.index('      +hdd = ')
+        text = text[:a] + '      +hdd = FD.nat__le_lt_trans(B.words_depth(NN(len)), d, 32n, VD.wd_min(NN(len), d, hcN), FD.nat__lt_trans(d, 31n, 32n, hd, {==}))\n' + text[text.index('\n', a) + 1:]
+    assert 'nat__lt_trans(d, 28n' not in text, [l for l in text.split('\n') if 'nat__lt_trans(d, 28n' in l][:2]
+    return VWN.deep_x(text)
+
+
+def deep_box(text, RS, R):
+    """deep_rlist for the boxed-record lists (codegen/var_rlist_box.py's reader: no record tree)."""
+    import var_win as VWN
+    T = 'True{} : Bool'
+    P32 = 'FD.spec_common__pow2(32n)'
+    POS = lambda j: f'VRL.pos({j}, {RS}n, x)'
+    HB = f"+hb: {{Nat.is_le({POS('Nat.add(1n+k, j)')}, A.quad(VB.pw(d))) == {T}}}"
+    reps = [
+        (HB + ')', HB + f", +hb32: {{Nat.is_lt({POS('Nat.add(1n+k, j)')}, {P32}) == {T}}})"),
+        (f"      +hx = VRL.nextfit(j, q, {RS}n, x, A.quad(VB.pw(d)), hb)\n",
+         f"      +hx = VRL.nextfit(j, q, {RS}n, x, A.quad(VB.pw(d)), hb)\n"
+         f"      +hx32 = FD.nat__le_lt_trans(Nat.add({POS('1n+j')}, {RS}n), {POS('Nat.add(2n+q, j)')}, {P32},\n"
+         f"        VRL.nextfit(j, q, {RS}n, x, {POS('Nat.add(2n+q, j)')}, FD.nat__le_refl({POS('Nat.add(2n+q, j)')})), hb32)\n"
+         f"      +hb232 = FD.logic__subst(Nat, z => {{Nat.is_lt(VRL.pos(1n+z, {RS}n, x), {P32}) == {T}}}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb32)\n"),
+        (f"      +ex = VRL.posU(d, off, x, i, j, {RS}, {RS - 1}n, {{==}}, eo, ej, hd, hx)", f"      +ex = VRL.posU32(off, x, i, j, {RS}, {RS - 1}n, {{==}}, eo, ej, hx32)"),
+        (f"VRL.succU(d, i, j, {RS - 1}n, x, ej, hd, hx), hd, pf, hb2)", f"VRL.succU32(i, j, {RS - 1}n, x, ej, hx32), hd, pf, hb2, hb232)"),
+        ("eo, {==}, hd, pf, hb)) :", "eo, {==}, hd, pf, hb, hb32)) :"),
+        ("      +hb0 = ",
+         f"      +hL32 = FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == {T}}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw32)\n"
+         f"      +hLc32 = FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add(z, x), {P32}) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hL32)\n"
+         f"      +hb32 = FD.logic__subst(Nat, z => {{Nat.is_lt({POS('z')}, {P32}) == {T}}}, c, Nat.add(1n+k, 0n),\n"
+         f"        Equal.trans(Nat, c, 1n+k, Nat.add(1n+k, 0n), Equal.sym(Nat, 1n+k, c, e1), Equal.sym(Nat, Nat.add(1n+k, 0n), 1n+k, FD.nat__add_zero(1n+k))), hLc32)\n"
+         "      +hb0 = "),
+        (f"  +hf = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hw)\n",
+         f"  +hf = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hw)\n"
+         f"  +hf32 = FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add(x, z), {P32}) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hw32)\n"),
+        (f"VFT.fits4(2n+d, Nat.mul(c, {RS}n), FD.nat__le_trans(Nat.mul(c, {RS}n), Nat.add(x, Nat.mul(c, {RS}n)), A.quad(VB.pw(d)), Order.left_below_sum(x, Nat.mul(c, {RS}n)), hf), FD.nat__lt_trans(d, 28n, 30n, hd, {{==}}))",
+         f"VFT.fits4lt(Nat.mul(c, {RS}n), FD.nat__le_lt_trans(Nat.mul(c, {RS}n), Nat.add(x, Nat.mul(c, {RS}n)), {P32}, Order.left_below_sum(x, Nat.mul(c, {RS}n)), hf32))"),
+    ]
+    for a, b in reps:
+        assert text.count(a) == 1, (text.count(a), a[:90])
+        text = text.replace(a, b)
+    text = text.replace(f'VXB.rdbx_{R}(', f'VXB.rdbxd_{R}(').replace('FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hx)', 'hd, pf, hx)').replace('FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb0)', 'hd, pf, hb0)')
+    assert 'nat__lt_trans(d, 28n' not in text, [l for l in text.split('\n') if 'nat__lt_trans(d, 28n' in l][:2]
+    return VWN.deep_x(text)
+
+
+def deep_er(text):
+    """ExecutionRequests' window at any depth d < 31 (the children's deep interface, offsets below 2^32)."""
+    import re as _re
+    import var_win as VWN
+    CA = 'd, t, n, x, off, len, eo, hd, hw, pf'
+    P32 = 'FD.spec_common__pow2(32n)'
+    T = 'True{} : Bool'
+    reps = [
+        ('UR.offx(d, off, c, x, eo, FD.nat__lt_trans(d, 28n, 30n, hd, {==}),', 'UR.offx31(d, off, c, x, eo, hd,'),
+        (f"""  VB.add_le_at(off, c, x, 2n+d, eo, FD.nat__lt_trans(2n+d, 30n, 31n, hd, {{==}}),
+    FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(d))) == {T}}}, Nat.add(x, U32.to_nat(c)), Nat.add(U32.to_nat(c), x), FD.nat__add_comm(x, U32.to_nat(c)), xle({CA}, c, hc)))""",
+         f"""  VB.add_lt32(off, c, x, eo,
+    FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == {T}}}, Nat.add(x, U32.to_nat(c)), Nat.add(U32.to_nat(c), x), FD.nat__add_comm(x, U32.to_nat(c)),
+      FD.nat__le_lt_trans(Nat.add(x, U32.to_nat(c)), Nat.add(x, U32.to_nat(len)), {P32}, Order.add_left(x, U32.to_nat(c), U32.to_nat(len), hc), hw32)))"""),
+        ("VFT.fits4(2n+d, U32.to_nat(len), FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==}))",
+         "VFT.fits4lt(U32.to_nat(len), VB.u32_lt(len))"),
+    ]
+    for a, b in reps:
+        assert text.count(a) == 1, (text.count(a), a[:80])
+        text = text.replace(a, b)
+    # the offset words' digits: every value within a U32 length is below 2^32
+    a = text.index('VMR.fitsn(d, len, v, FD.nat__lt_trans(d, 28n, 29n, hd, {==}),')
+    b = text.index('hv),', a) + len('hv),')
+    text = text[:a] + 'VFT.fits4lt(v, VB.le_n_lt32(v, len, hv)),' + text[b:]
+    # the children's windows end below 2^32
+    add = []
+    for k in range(3):
+        a = text.index(f'\ndef hw{k}(')
+        b = text.index('\n  VRC.winb(', a)
+        hdr = text[a + 1:b].replace(f'def hw{k}(', f'def hw{k}_32(')
+        hdr = hdr.replace('A.quad(VB.pw(d))) == True{} : Bool}:', f'{P32}) == True{{}} : Bool}}:').replace('-> {Nat.is_le(Nat.add(X', '-> {Nat.is_lt(Nat.add(X')
+        body = text[b + 1:text.index('\n', b + 1)]
+        assert body.startswith('  VRC.winb(') and body.endswith(')'), body
+        wa = [x_.strip() for x_ in _split(body[len('  VRC.winb('):-1])]
+        o, e, lk, xl = wa[0], wa[1], wa[4], wa[5]
+        assert wa[2] == 'x' and xl.startswith('xle(') and xl.endswith(')'), wa
+        xa = [x_.strip() for x_ in _split(xl[len('xle('):-1])]
+        assert xa[-2] == e, (xa, e)
+        he = xa[-1]
+        E = f'Nat.add(x, U32.to_nat({e}))'
+        add.append(hdr + f'\n  FD.nat__le_lt_trans(Nat.add(X{k}(t, x), U32.to_nat({["L0(t, x)", "L1(t, x)", "L2(t, x, len)"][k]})), {E}, {P32},\n'
+                   f'    VRC.winb({o}, {e}, x, {E}, {lk}, FD.nat__le_refl({E})),\n'
+                   f'    FD.nat__le_lt_trans({E}, Nat.add(x, U32.to_nat(len)), {P32}, Order.add_left(x, U32.to_nat({e}), U32.to_nat(len), {he}), hw32))\n')
+    a = text.index('\ndef eo0(')
+    text = text[:a + 1] + '\n'.join(add) + text[a + 1:]
+    for k in range(3):
+        for nm in ('readw', 'specw'):
+            pat = f'C{k}.{nm}('
+            i = text.index(pat)
+            j = VWN_close(text, i + len(pat))
+            args = _split(text[i + len(pat):j])
+            h = args[8].strip()
+            h32 = f'hw{k}_32({CA}, hchk)'
+            args.insert(9, ' ' + h32)
+            text = text[:i] + f'C{k}.{nm}D(' + ','.join(args) + text[j:]
+    return VWN.deep_x(text)
+
+
+def VWN_close(s, i):
+    import deep
+    return deep._close(s, i)
+
+
+def _split(s):
+    import deep
+    return deep._split_args(s)
+
+
+def deep_er_top(text):
+    """The whole-buffer laws at any depth d < 31: the window at 0 ends at n < 2^32."""
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)').replace(', hd, hn, pf', ', hd, hn, VB.u32_lt(n), pf')
+    for nm in ('ok_evalw', 'readw', 'specw', 'invw'):
+        text = text.replace(f'EW.{nm}(', f'EW.{nm}D(')
+    return text
+
+
 def winx_name(p, LIM):
     return f'{"big_" if LIM > BIG_LIM else ""}var_winx_{p}.bend'
 
@@ -466,6 +632,7 @@ def outputs():
         txt = txt.replace('\ndef RX(', '\n' + VLW.SL.hoist_take() + 'def RX(', 1)
         if I['LIM'] > BIG_LIM:
             txt = sym_depth(txt, I['RS'], I['KL'])
+        txt = deep_rlist(txt, I['RS'], I['LIM'] > BIG_LIM)
         out[ROOT / f'proofs/obj/{winx_name(I["p"], I["LIM"])}'] = txt
     import var_rlist_box as BX
     out[ROOT / 'proofs/obj/vua_fixb.bend'] = BX.fixb_module(g, [dict(names[pa].fields)[f].elem for pa, f in BOXLISTS])
@@ -477,14 +644,14 @@ def outputs():
         VLW.SL.HOIST = False
         hz = VLW.SL.hoist_take()
         txt = list_text(g, names, parent, field, rec).replace('\ndef RX(', '\n' + hz + 'def RX(', 1)
-        out[ROOT / f'proofs/obj/var_winx_{I["p"]}.bend'] = BX.post_box(txt, I['p'], I['R'], I['RS'], needs_d)
+        out[ROOT / f'proofs/obj/var_winx_{I["p"]}.bend'] = deep_box(BX.post_box(txt, I['p'], I['R'], I['RS'], needs_d), I['RS'], I['R'])
     import var_rlist_bv as BV
     import var_win as VWN
     for parent, field in BVLISTS:
         ft = dict(names[parent].fields)[field]
         B, N, p = ft.elem.fixed_size(), ft.size, g.shape(ft).p
         out[ROOT / f'proofs/obj/{winx_name(p, N)}'] = BV.bvx_text(HEAD, VWN.zeros_at_text, inv_text, p, B, N, f'S.ByteVector{{{B}n}}',
-                                                                  f'S.ListOf{{S.ByteVector{{{B}n}}, U32.to_nat({N})}}', N > BIG_LIM)
+                                                                  f'S.ListOf{{S.ByteVector{{{B}n}}, U32.to_nat({N})}}', N > BIG_LIM, deep=True)
     import var_rlist_er as ER
     LS = []
     for field in ('deposits', 'withdrawals', 'consolidations'):
@@ -492,8 +659,8 @@ def outputs():
         sch = rec_node(g, I['rt'])[2]
         LS.append(dict(p=I['p'], RS=I['RS'], LIM=I['LIM'], LSCH=f'S.ListOf{{{sch}, U32.to_nat({I["LIM"]})}}'))
     L, _ = ER.er_text(HEAD, LS)
-    out[ROOT / 'proofs/obj/var_winx_ExecutionRequests.bend'] = '\n'.join(L) + '\n'
-    out[ROOT / 'proofs/obj/var_codec_ExecutionRequests.bend'] = ER.top_text(HEAD)
+    out[ROOT / 'proofs/obj/var_winx_ExecutionRequests.bend'] = deep_er('\n'.join(L) + '\n')
+    out[ROOT / 'proofs/obj/var_codec_ExecutionRequests.bend'] = deep_er_top(ER.top_text(HEAD))
     import var_rlist_enc as EN
     fts, recs = [], []
     for field in ('deposits', 'withdrawals', 'consolidations'):

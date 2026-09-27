@@ -2693,6 +2693,30 @@
     "premise": "the root law's binders (t, dw, hd, pf, cap)"
    }
   ],
+  "CompatibleUnionA_e2e_dec_generated.bend": [
+   {
+    "name": "CompatibleUnionA",
+    "generated_name": "GuA2212AE21F",
+    "laws": [
+     "CompatibleUnionA_e2e_decode_view",
+     "CompatibleUnionA_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "FuluAttesterSlashing_e2e_dec_generated.bend": [
+   {
+    "name": "FuluAttesterSlashing",
+    "generated_name": "AttesterSlashing",
+    "laws": [
+     "FuluAttesterSlashing_e2e_decode_view",
+     "FuluAttesterSlashing_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
   "FuluDataColumnSidecar_e2e_dec_generated.bend": [
    {
     "name": "FuluDataColumnSidecar",
@@ -2738,7 +2762,7 @@
      "FuluExecutionRequests_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "FuluIndexedAttestation_e2e_dec_generated.bend": [
@@ -2796,6 +2820,18 @@
     "laws": [
      "FuluTransaction_e2e_decode_view",
      "FuluTransaction_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "VarTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "VarTestStruct",
+    "generated_name": "Gc465214E502",
+    "laws": [
+     "VarTestStruct_e2e_decode_view",
+     "VarTestStruct_e2e_decode_reject"
     ],
     "ii": "view",
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
@@ -3101,6 +3137,36 @@
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
    }
   ],
+  "CompatibleUnionA_e2e_root_generated.bend": [
+   {
+    "name": "CompatibleUnionA",
+    "generated_name": "GuA2212AE21F",
+    "laws": [
+     "CompatibleUnionA_e2e_root"
+    ],
+    "premise": "rep: RT.rep_GuA2212AE21F(o, Spec.GuA2212AE21F()) (the root law's representation invariant)"
+   }
+  ],
+  "ComplexTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "ComplexTestStruct",
+    "generated_name": "Gc56D855869F",
+    "laws": [
+     "ComplexTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) (the root law's representation invariant)"
+   }
+  ],
+  "FuluAttesterSlashing_e2e_root_generated.bend": [
+   {
+    "name": "FuluAttesterSlashing",
+    "generated_name": "AttesterSlashing",
+    "laws": [
+     "FuluAttesterSlashing_e2e_root"
+    ],
+    "premise": "rep: RT.rep_AttesterSlashing(o, Spec.AttesterSlashing()) (the root law's representation invariant)"
+   }
+  ],
   "FuluDataColumnSidecar_e2e_root_generated.bend": [
    {
     "name": "FuluDataColumnSidecar",
@@ -3191,6 +3257,16 @@
     "premise": "rep: RT.rep_Transaction(o, Spec.Transaction()) (the root law's representation invariant)"
    }
   ],
+  "VarTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "VarTestStruct",
+    "generated_name": "Gc465214E502",
+    "laws": [
+     "VarTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) (the root law's representation invariant)"
+   }
+  ],
   "proglist_bool_e2e_root_generated.bend": [
    {
     "name": "proglist_bool",
@@ -3259,6 +3335,26 @@
      "proglist_uint8_e2e_root"
     ],
     "premise": "rep: RT.rep_GtDE4B86A990(o, Spec.GtDE4B86A990()) (the root law's representation invariant)"
+   }
+  ],
+  "CompatibleUnionA_e2e_generated.bend": [
+   {
+    "name": "CompatibleUnionA",
+    "generated_name": "GuA2212AE21F",
+    "laws": [
+     "CompatibleUnionA_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_GuA2212AE21F(o) (the root law's representation invariant; no storage premise)"
+   }
+  ],
+  "FuluAttesterSlashing_e2e_generated.bend": [
+   {
+    "name": "FuluAttesterSlashing",
+    "generated_name": "AttesterSlashing",
+    "laws": [
+     "FuluAttesterSlashing_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_AttesterSlashing(o, Spec.AttesterSlashing()) and hs1, hs2: U.sd(each child's list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32)"
    }
   ],
   "FuluDataColumnSidecar_e2e_generated.bend": [
@@ -3349,6 +3445,16 @@
      "FuluTransaction_e2e_encode"
     ],
     "premise": "rep: LO.rep_bl(o, Spec.Transaction()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "VarTestStruct_e2e_generated.bend": [
+   {
+    "name": "VarTestStruct",
+    "generated_name": "Gc465214E502",
+    "laws": [
+     "VarTestStruct_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), 28n) (the list field's storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_bool_e2e_generated.bend": [
@@ -3801,10 +3907,6 @@
    "generated_name": "PendingAttestation",
    "reason": "encode laws not over the same free words / bits"
   },
-  "FuluAttesterSlashing": {
-   "generated_name": "AttesterSlashing",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "FuluSyncCommittee": {
    "generated_name": "SyncCommittee",
    "reason": "encode laws not over the same free words / bits"
@@ -4017,13 +4119,10 @@
    "generated_name": "Gc74A8F5F17F",
    "reason": "encode laws not over the same free words / bits"
   },
-  "VarTestStruct": {
-   "generated_name": "Gc465214E502",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "ComplexTestStruct": {
    "generated_name": "Gc56D855869F",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "ComplexTestStruct_e2e_root_generated.bend"
   },
   "SmallTestStruct": {
    "generated_name": "Gc4ED9619F50",
@@ -4101,10 +4200,6 @@
    "generated_name": "Gu6DDF182530",
    "reason": "encode laws not over the same free words / bits"
   },
-  "CompatibleUnionA": {
-   "generated_name": "GuA2212AE21F",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
    "reason": "encode laws not over the same free words / bits"
@@ -4123,6 +4218,18 @@
  "root_awaiting": {},
  "fixed_size": {},
  "variable_size": {
+  "CompatibleUnionA": {
+   "generated_name": "GuA2212AE21F",
+   "i": "CompatibleUnionA_e2e_generated.bend",
+   "ii_iii": "CompatibleUnionA_e2e_dec_generated.bend",
+   "iv": "CompatibleUnionA_e2e_root_generated.bend"
+  },
+  "FuluAttesterSlashing": {
+   "generated_name": "AttesterSlashing",
+   "i": "FuluAttesterSlashing_e2e_generated.bend",
+   "ii_iii": "FuluAttesterSlashing_e2e_dec_generated.bend",
+   "iv": "FuluAttesterSlashing_e2e_root_generated.bend"
+  },
   "FuluDataColumnSidecar": {
    "generated_name": "DataColumnSidecar",
    "i": "FuluDataColumnSidecar_e2e_generated.bend",
@@ -4176,6 +4283,12 @@
    "i": "FuluTransaction_e2e_generated.bend",
    "ii_iii": "FuluTransaction_e2e_dec_generated.bend",
    "iv": "FuluTransaction_e2e_root_generated.bend"
+  },
+  "VarTestStruct": {
+   "generated_name": "Gc465214E502",
+   "i": "VarTestStruct_e2e_generated.bend",
+   "ii_iii": "VarTestStruct_e2e_dec_generated.bend",
+   "iv": "VarTestStruct_e2e_root_generated.bend"
   },
   "bitlist_1": {
    "generated_name": "Gt94B70684B5",
@@ -4376,9 +4489,9 @@
   },
   "FuluAggregateAndProof": {
    "generated_name": "AggregateAndProof",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 16729,
    "covered": true,
    "bridged": null
@@ -4466,9 +4579,9 @@
   },
   "FuluExecutionRequests": {
    "generated_name": "ExecutionRequests",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1574324,
    "covered": true,
    "bridged": null
@@ -4538,9 +4651,9 @@
   },
   "FuluSignedAggregateAndProof": {
    "generated_name": "SignedAggregateAndProof",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 16829,
    "covered": true,
    "bridged": null

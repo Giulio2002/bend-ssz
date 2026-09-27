@@ -1264,11 +1264,18 @@ POW2_MIN = 5
 
 
 def pow2_words(t, g):
-    """p when t is a byte vector stored as words (O.Words) of 2^p words, p >= POW2_MIN."""
-    if t.kind != 'bytes' or g.shape(t).kind != 'fixwords' or t.size % 4:
+    """p when t is a byte vector or a packed vector stored as words (O.Words) of 2^p words, p >= POW2_MIN."""
+    sh = g.shape(t)
+    if not ((t.kind == 'bytes' and sh.kind == 'fixwords') or (t.kind == 'vector' and sh.kind in ('packed', 'packed_elems'))) \
+            or t.fixed_size() % 4:
         return None
-    nw = t.size // 4
+    nw = t.fixed_size() // 4
     p = nw.bit_length() - 1
+    if t.kind == 'vector':
+        # the vector's writer must be the word copy (small vectors write element by element)
+        rt = RR.mono_text('generic') + RR.mono_text('fulu')
+        if f'def {sh.p}_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)' not in rt:
+            return None
     return p if nw == 1 << p and p >= POW2_MIN else None
 
 
@@ -1393,6 +1400,24 @@ def ltail(t, g, node):
     return p, E, fs.p, int(m.group(3))
 
 
+def vtail(t, g, node):
+    """(p, E) when t is a packed vector stored as words (O.Words) of W = 2^p + E words
+    (0 < E < 2^p, W a multiple of 8) whose buffer and storage both have depth p + 1 and whose
+    writer is the word copy (Gt6E9B243B7C: 248 = 128 + 120 words)."""
+    sh = g.shape(t)
+    if t.kind != 'vector' or sh.kind not in ('packed', 'packed_elems') or t.fixed_size() % 32:
+        return None
+    W = t.fixed_size() // 4
+    p = W.bit_length() - 1
+    E = W - (1 << p)
+    if E <= 0 or storage(t.fixed_size()) != p + 1 or len(node.opads) != (2 << p) - W:
+        return None
+    rt = RR.mono_text('generic') + RR.mono_text('fulu')
+    if f'def {sh.p}_put(out: Array<U32>, +pos: U32, o: O.Words) -> Array<U32> & O.Words: O.put_words(out, pos, o)' not in rt:
+        return None
+    return p, E
+
+
 def spine(y0, ms):
     """[..[y0 | m0] | m1] .. | m_k]: a perfect tree whose leftmost path is literal (so
     Array.size and the reads past the first word compute) and the rest free trees."""
@@ -1419,10 +1444,12 @@ def spine_args(xs):
     return xs[0], [ttree(xs[1 << j:2 << j]) for j in range(p)]
 
 
-def emit_name(w, n, t, node, size, R, P, data, p2=None, lh=None, lt=None):
+def emit_name(w, n, t, node, size, R, P, data, p2=None, lh=None, lt=None, vt=None):
     nw = size // 4
     if p2 is not None:
         return emit_pow2(w, n, t, node, size, R, P, p2)
+    if vt is not None:
+        return emit_vtail(w, n, node, size, R, P, vt)
     tview = nw >= VIEW_MIN or lt is not None
     sig = ', '.join(f'+{v}: U32' for v in node.words)
     args = ', '.join(node.words)
@@ -1744,6 +1771,147 @@ def emit_ltail(w, n, node, size, R, lt, pads):
     w('')
 
 
+def emit_vtail(w, n, node, size, R, P, vt):
+    """The literal laws of a lone vector of W = 2^p + E words (vtail), statements as
+    emit_name's: decode and encoder bytes over [spine | literal right half] (the copy by
+    <n>_cps: arr_copy.acp + arr_enc.cpt_tail_q, emit_ltail's), the emitted words by
+    arr_emit.emit_take; the literal laws instantiate them at the spine of the words."""
+    p, E = vt
+    H = 1 << p
+    W = H + E
+    nw = W
+    depth = p + 1
+    TV = 'FD.array__Tree<U32>'
+    th = lambda u: f'FD.array__thaw(U32, {u})'
+    xs, Q = node.words, node.opads
+    pads = [f'p{i}' for i in range((1 << depth) - nw)]
+    ms = [f'm{j}' for j in range(p)]
+    pms = [f'pm{j}' for j in range(p)]
+    U = spine('y0', ms)
+    pU = spine_pf('y0', ms, pms)
+    sp = ('+y0: U32, ' + ', '.join(f'+{m}: {TV}' for m in ms) + ', '
+          + ', '.join(f'+pm{j}: {{FD.array__perfect(U32, {j}n, m{j}) == True{{}} : Bool}}' for j in range(p)))
+    spa = 'y0, ' + ', '.join(ms) + ', ' + ', '.join(pms)
+    vs = lambda l: ', '.join(f'+{x}: U32' for x in l)
+    M = f'Nat.add(FD.spec_common__pow2({p}n), {E}n)'
+    Z = lambda d: f'FD.array__trep(U32, {d}n, 0)'
+    # the copy lemma (as emit_ltail's)
+    CPT = f'AC.cpt({p}n, {E}n, 0n, 0n, {Z(p)}, FD.array__slots(U32, r))'
+    SRCr = f'ANode{{{th(U)}, {th("r")}}}'
+    RHS = f'({th(f"FD.TNode{{{U}, {CPT}}}")}, {SRCr})'
+    ty = lambda a, s_: f'{{O.acopy({W}, 0, 0, {a}, {s_}) == {RHS} : Array<U32> & Array<U32>}}'
+    w(f'def {n}_tn(+a: {TV}, +b: {TV}) -> {{{th("FD.TNode{a, b}")} == ANode{{{th("a")}, {th("b")}}} : Array<U32>}}:')
+    w('  {==}')
+    w(f'def {n}_cps({sp}, +r: {TV}, +pr: {{FD.array__perfect(U32, {p}n, r) == True{{}} : Bool}})')
+    w(f'    -> {ty(f"Array.new(U32, {depth}n, 0)", SRCr)}:')
+    w(f'  %Equal.sym(Array<U32>, Array.new(U32, {depth}n, 0), {th(Z(depth))}, FD.array__new(U32, {depth}n, 0)) : {ty("_", SRCr)}')
+    T_ = f'FD.TNode{{{U}, r}}'
+    w(f'  %{n}_tn({U}, r) : {ty(th(Z(depth)), "_")}')
+    pS = f'FD.logic__and_intro(FD.array__perfect(U32, {p}n, {U}), FD.array__perfect(U32, {p}n, r), {pU}, pr)'
+    SL = f'FD.array__slots(U32, {T_})'
+    CP = f'({th(f"AC.cpt({depth}n, {M}, 0n, 0n, {Z(depth)}, {SL})")}, {th(T_)})'
+    w(f'  %Equal.sym(Array<U32> & Array<U32>, O.acopy({W}, 0, 0, {th(Z(depth))}, {th(T_)}), {CP},')
+    w(f'      AC.acp({W}, {M}, 0, 0, 0n, 0n, {depth}n, {depth}n, {T_}, {Z(depth)}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {{==}}, {pS}, FD.array__trep_perfect(U32, {depth}n, 0))) :')
+    w(f'    {{_ == {RHS} : Array<U32> & Array<U32>}}')
+    AP = f'FD.spec_common__append(U32, FD.array__slots(U32, {U}), FD.array__slots(U32, r))'
+    w(f'  %Equal.sym(List<&2, U32>, {SL}, {AP}, AC.slots_node({U}, r)) :')
+    w(f'    {{({th(f"AC.cpt({depth}n, {M}, 0n, 0n, {Z(depth)}, _)")}, {th(T_)}) == {RHS} : Array<U32> & Array<U32>}}')
+    w(f'  %Equal.sym({TV}, AC.cpt({depth}n, {M}, 0n, 0n, {Z(depth)}, {AP}), FD.TNode{{{U}, {CPT}}},')
+    w(f'      AN.cpt_tail_q({p}n, {depth}n, {{==}}, {E}n, {U}, FD.array__slots(U32, r), {pU})) :')
+    w(f'    {{({th("_")}, {th(T_)}) == {RHS} : Array<U32> & Array<U32>}}')
+    w('  {==}')
+    X, G = xs[:H], xs[H:]
+    Rw = G + pads
+    Sr = G + Q
+    LX, TX = tree(X), ttree(X)
+    w(f'def {n}_lx({vs(X)}) -> {{{th(TX)} == {LX} : Array<U32>}}:')
+    w('  {==}')
+    w(f'def {n}_lr({vs(Rw)}) -> {{{th(ttree(Rw))} == {tree(Rw)} : Array<U32>}}:')
+    w('  {==}')
+    w(f'def {n}_lxs({vs(X + Sr)}) -> {{{th(f"FD.TNode{{{TX}, {ttree(Sr)}}}")} == ANode{{{LX}, {tree(Sr)}}} : Array<U32>}}:')
+    w('  {==}')
+    # decode over [spine | literal right half]
+    TR = ttree(Rw)
+    SRC = f'ANode{{{th(U)}, {th(TR)}}}'
+    BUF = f'B.Buf{{{SRC}, {size}}}'
+    CPTR = f'AC.cpt({p}n, {E}n, 0n, 0n, {Z(p)}, FD.array__slots(U32, {TR}))'
+    OBJ = f'O.Words{{{th(f"FD.TNode{{{U}, {CPTR}}}")}, {size}}}'
+    RT = f'B.Buf & Maybe<&1, {R}>'
+    w(f'def {n}_vtd({sp}, {vs(Rw)})')
+    w(f'    -> {{T.{n}_decode({BUF}, {size}) == ({BUF}, Some{{{OBJ}}}) : {RT}}}:')
+    w(f'  %Equal.sym(Array<U32> & Array<U32>, O.acopy({W}, 0, 0, Array.new(U32, {depth}n, 0), {SRC}), ({th(f"FD.TNode{{{U}, {CPTR}}}")}, {SRC}),')
+    w(f'      {n}_cps({spa}, {TR}, {{==}})) :')
+    w(f'    {{T.{n}_some(O.ci_fin({size}, {size}, _)) == ({BUF}, Some{{{OBJ}}}) : {RT}}}')
+    w('  {==}')
+    # encoder bytes over storage [spine | literal E words and pads]
+    TQR = ttree(Sr)
+    WS = f'O.Words{{{th(f"FD.TNode{{{U}, {TQR}}}")}, {size}}}'
+    TRo = ttree(G + ['0'] * (H - len(G)))
+    UR = f'FD.TNode{{{U}, {TRo}}}'
+    RHSE = f'({WS}, F.limbs(FD.spec_common__take(U32, FD.array__slots(U32, {UR}), {nw}n)))'
+    ET = f'{R} & +List<U32>'
+    SRCQ = f'ANode{{{th(U)}, {th(TQR)}}}'
+    CPTQ = f'AC.cpt({p}n, {E}n, 0n, 0n, {Z(p)}, FD.array__slots(U32, {TQR}))'
+    pUR = f'FD.logic__and_intro(FD.array__perfect(U32, {p}n, {U}), FD.array__perfect(U32, {p}n, {TRo}), {pU}, {{==}})'
+    FB_ = f'B.Buf{{{th(UR)}, {size}}}'
+    w(f'def {n}_vtb({sp}, {vs(Sr)})')
+    w(f'    -> {{F.emitted({R}, T.{n}_encode({WS}), {nw}) == {RHSE} : {ET}}}:')
+    w(f'  %Equal.sym(Array<U32> & Array<U32>, O.acopy({W}, 0, 0, Array.new(U32, {depth}n, 0), {SRCQ}), ({th(f"FD.TNode{{{U}, {CPTQ}}}")}, {SRCQ}),')
+    w(f'      {n}_cps({spa}, {TQR}, {{==}})) :')
+    w(f'    {{F.emitted({R}, T.{n}_enc_out(O.put_fin({size}, O.pw_al_tail(True{{}}, {W}, 0, _))), {nw}) == {RHSE} : {ET}}}')
+    w(f'  %Equal.sym(B.Buf & +List<U32>, B.emit({FB_}, 0, {nw}), ({FB_}, F.limbs(FD.spec_common__take(U32, FD.array__slots(U32, {UR}), 1n+{nw - 1}n))),')
+    w(f'      AE.emit_take({depth}n, {UR}, {size}, {nw}, {nw - 1}n, {{==}}, {{==}}, {{==}}, {{==}}, {pUR})) :')
+    w(f'    {{({WS}, F.listed(_)) == {RHSE} : {ET}}}')
+    w('  {==}')
+    # the literal laws
+    sig = vs(xs)
+    L = f'F.limbs({wl(xs)})'
+    psig = ', '.join([sig] + [f'+{q}: U32' for q in pads])
+    osig = ', '.join([sig] + [f'+{q}: U32' for q in Q])
+    y0, mss = spine_args(X)
+    eqs = ', '.join(['{==}'] * p)
+    OBJL = node.obj
+    objp = f'O.Words{{_, {size}}}'
+    w(f'def {n}_spec_bytes({osig})')
+    w(f'    -> {{F.emitted({R}, T.{n}_encode({OBJL}), {nw}) == ({OBJL}, {L}) : {R} & +List<U32>}}:')
+    w(f'  %{n}_lxs({", ".join(X + Sr)}) :')
+    w(f'    {{F.emitted({R}, T.{n}_encode({objp}), {nw}) == ({objp}, {L}) : {R} & +List<U32>}}')
+    w(f'  {n}_vtb({y0}, {", ".join(mss)}, {eqs}, {", ".join(Sr)})')
+    w(f'def {n}_spec_parts({sig})')
+    w(f'    -> {{Codec.parts({node.val}, Spec.{n}()) == Some{{[S.Fixed{{{L}}}]}} : Maybe<&2, +List<S.Part>>}}:')
+    w(f'  %Equal.sym(S.Schema, Spec.{n}(), {node.sch}, {{==}}) :')
+    w(f'    {{Codec.parts({node.val}, _) == Some{{[S.Fixed{{{L}}}]}} : Maybe<&2, +List<S.Part>>}}')
+    w(f'  {node.proof}')
+    w(f'def {n}_spec_encode({sig})')
+    w(f'    -> Decoding.decodes(Spec.{n}(), {L}, {node.val}):')
+    w(f'  F.encoding_of_parts(Spec.{n}(), {node.val}, {L}, {n}_spec_parts({", ".join(xs)}))')
+    buf = f'B.Buf{{{tree(xs + pads)}, {size}}}'
+    DZ = tree(G + ['0'] * (H - E))
+    assert node.dec == f'O.Words{{{tree(xs + ["0"] * (len(pads)))}, {size}}}', n
+    pat = lambda a, b: (f'{{T.{n}_decode(B.Buf{{ANode{{{a}, {b}}}, {size}}}, {size}) == (B.Buf{{ANode{{{a}, {b}}}, {size}}}, '
+                        f'Some{{O.Words{{ANode{{{a}, {DZ}}}, {size}}}}}) : B.Buf & Maybe<&1, {R}>}}')
+    w(f'def {n}_spec_decode({psig})')
+    w(f'    -> {{T.{n}_decode({buf}, {size}) == ({buf}, Some{{{node.dec}}}) : B.Buf & Maybe<&1, {R}>}}:')
+    w(f'  %{n}_lx({", ".join(X)}) :')
+    w(f'    {pat("_", tree(Rw))}')
+    w(f'  %{n}_lr({", ".join(Rw)}) :')
+    w(f'    {pat(th(TX), "_")}')
+    w(f'  {n}_vtd({y0}, {", ".join(mss)}, {eqs}, {", ".join(Rw)})')
+    TT = ttree(xs + pads)
+    w(f'def {n}_lb({psig}) -> {{FD.array__thaw(U32, {TT}) == {tree(xs + pads)} : Array<U32>}}:')
+    w('  {==}')
+    w(f'def {n}_spec_view({psig})')
+    w(f'    -> {{B.emit({buf}, 0, {nw}) == ({buf}, {L}) : B.Buf & +List<U32>}}:')
+    w(f'  %{n}_lb({", ".join(xs + pads)}) :')
+    w(f'    {{B.emit(B.Buf{{_, {size}}}, 0, {nw}) == (B.Buf{{_, {size}}}, {L}) : B.Buf & +List<U32>}}')
+    w(f'  AE.emit_take({depth}n, {TT}, {size}, {nw}, {nw - 1}n, {{==}}, {{==}}, {{==}}, {{==}}, {{==}})')
+    w(f'def {n}_spec_reject(buf: B.Buf, +m: U32, e: {{U32.is_eq(m, {size}) == False{{}} : Bool}})')
+    w(f'    -> {{T.{n}_decode(buf, m) == (buf, None{{}}) : B.Buf & Maybe<&1, {R}>}}:')
+    w(f'  %Equal.sym(Bool, U32.is_eq(m, {size}), False{{}}, e) : '
+      f'{{T.{n}_built(m, T.{P}_ok_len(_, buf, 0)) == (buf, None{{}}) : B.Buf & Maybe<&1, {R}>}}')
+    w('  {==}')
+
+
 def emit_pow2(w, n, t, node, size, R, P, p):
     """The literal laws of a 2^p-word byte vector (statements as emit_name's), from the
     tree forms at the tree of the words: `<n>_lx` / `<n>_lxq` rewrite the literal arrays
@@ -1833,16 +2001,17 @@ def family(out, chosen, g, src, tag, head, rhead, uimports, legal=None):
         assert p2 is None or not g.shape(t).data, n
         lh = lhalf(t, g, node)
         lt = None if lh is not None or p2 is not None else ltail(t, g, node)
+        vt = None if lh is not None or p2 is not None or lt is not None else vtail(t, g, node)
         tv = size // 4 >= VIEW_MIN
-        lines = list(head[:-1]) + (POW2_IMPORTS if p2 is not None or lh is not None or tv or lt is not None else []) + \
-            (['import ./arr_enc.bend as AN'] if lt is not None else []) + [''] + [
+        lines = list(head[:-1]) + (POW2_IMPORTS if p2 is not None or lh is not None or tv or lt is not None or vt is not None else []) + \
+            (['import ./arr_enc.bend as AN'] if lt is not None or vt is not None else []) + [''] + [
             '# GENERATED by codegen/spec_laws.py. Do not edit.',
             f'# Spec-connected codec laws of {n}: the emitted bytes, their relation to the',
             '# object value in the independent spec/codec.bend, acceptance of every buffer',
             '# of the size, and rejection of every other size.', '']
         w = lines.append
         w(f'# ---- {n} ({size} bytes) ----')
-        emit_name(w, n, t, node, size, R, okname(src, n), g.shape(t).data, p2, lh, lt)
+        emit_name(w, n, t, node, size, R, okname(src, n), g.shape(t).data, p2, lh, lt, vt)
         w('')
         out[ROOT / f'proofs/obj/spec_{tag}codec_{n}.bend'] = '\n'.join(lines) + '\n'
         rl = rhead + [REPR_SEG, f'import ./spec_{tag}codec_{n}.bend as C', '',

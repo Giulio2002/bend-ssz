@@ -119,6 +119,16 @@ def fix_module(fts):
                 ln = ln.replace(f'rdx_{kp}(', f'VTX.rdx_{kp}(')
             L.append(ln)
         L.append('')
+    # the same at any tree depth d < 31 (rdxd_: the offsets below 2^32)
+    for ft in fts:
+        if ft.p in have:
+            continue
+        for ln in VUA.rdx_lemma(ft, deep=True):
+            ln = ln.replace('ltp(', 'VTX.ltp(')
+            for kp in have:
+                ln = ln.replace(f'rdxd_{kp}(', f'VTX.rdxd_{kp}(')
+            L.append(ln)
+        L.append('')
     return '\n'.join(L) + '\n'
 
 

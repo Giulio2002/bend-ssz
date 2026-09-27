@@ -349,3 +349,9 @@ law rd_lt:
   {B.read32(UA.BF(t, n), X) == (UA.BF(t, n), RWW(d, t, X)) : B.Buf & U32}
 def rd_lt(d, t, n, X, hd, pf, h):
   rdl_r(d, t, n, X, hd, pf, VR.hiX(d, X, U32.to_nat(X), {==}, h), VR.RX(X), {==}, UA.rx_lt(X))
+
+# off + c at position c + x, for c + x < 4 2^d, any tree depth d < 31 (the sum is below 2^32).
+def offx31(+d: Nat, +off: U32, +c: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +h: {Nat.is_lt(Nat.add(U32.to_nat(c), x), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {U32.to_nat(U32.add(off, c)) == Nat.add(U32.to_nat(c), x) : Nat}:
+  VB.add_lt32(off, c, x, e, F.nat__lt_le_trans(Nat.add(U32.to_nat(c), x), VB.pw(2n+d), F.spec_common__pow2(32n), h, VB.pw2d32(d, hd)))

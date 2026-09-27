@@ -15,23 +15,36 @@ import ./vua_ct.bend as UCT
 # vector, into a fresh zero storage of depth dz) of L bytes at off returns the same
 # storage UCT.CT(d, t, off, L, dz) as copy_in (vua_ct.copy_in_at).
 
+def cti_rU(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +L: U32, +dz: Nat,
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool},
+    +hs: {Nat.is_le(Nat.add(VC.NW(L), VR.QX(off)), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
+    +r: Nat, +er: {VR.RX(off) == r : Nat}, +hr4: {Nat.is_lt(r, 4n) == True{} : Bool})
+    -> {O.copy_into(VR.BF(t, n), off, L, Array.new(U32, dz, 0)) == (VR.BF(t, n), O.Words{F.array__thaw(U32, UCT.cts(r, d, t, off, L, dz)), L}) : B.Buf & O.Words}:
+  match r:
+    case 0n: VBY.copy_into_anyU(d, t, n, off, VR.QX(off), L, dz, pf, hd, hdz, F.u32__injective(U32.and(off, 3), 0, er), {==}, hs, hr, hy)
+    case 1n: USC.copy_into_ua1U(d, t, n, off, VR.QX(off), L, dz, pf, hd, hdz, F.u32__injective(U32.and(off, 3), 1, er), {==}, hs, hr, hy)
+    case 2n: USC.copy_into_ua2U(d, t, n, off, VR.QX(off), L, dz, pf, hd, hdz, F.u32__injective(U32.and(off, 3), 2, er), {==}, hs, hr, hy)
+    case 3n: USC.copy_into_ua3U(d, t, n, off, VR.QX(off), L, dz, pf, hd, hdz, F.u32__injective(U32.and(off, 3), 3, er), {==}, hs, hr, hy)
+    case 4n+s: Empty.absurd({O.copy_into(VR.BF(t, n), off, L, Array.new(U32, dz, 0)) == (VR.BF(t, n), O.Words{F.array__thaw(U32, UCT.cts(4n+s, d, t, off, L, dz)), L}) : B.Buf & O.Words}, F.nat__lt_zero_absurd(s, hr4))
+
 def cti_r(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +L: U32, +dz: Nat, +k: Nat,
     +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool},
     +hs: {Nat.is_le(Nat.add(VC.NW(L), VR.QX(off)), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool},
     +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
     +r: Nat, +er: {VR.RX(off) == r : Nat}, +hr4: {Nat.is_lt(r, 4n) == True{} : Bool})
     -> {O.copy_into(VR.BF(t, n), off, L, Array.new(U32, dz, 0)) == (VR.BF(t, n), O.Words{F.array__thaw(U32, UCT.cts(r, d, t, off, L, dz)), L}) : B.Buf & O.Words}:
-  match r:
-    case 0n: VBY.copy_into_any(d, t, n, off, VR.QX(off), L, dz, k, pf, hd, hdz, F.u32__injective(U32.and(off, 3), 0, er), {==}, hs, hr, hk, hy)
-    case 1n: USC.copy_into_ua1(d, t, n, off, VR.QX(off), L, dz, k, pf, hd, hdz, F.u32__injective(U32.and(off, 3), 1, er), {==}, hs, hr, hk, hy)
-    case 2n: USC.copy_into_ua2(d, t, n, off, VR.QX(off), L, dz, k, pf, hd, hdz, F.u32__injective(U32.and(off, 3), 2, er), {==}, hs, hr, hk, hy)
-    case 3n: USC.copy_into_ua3(d, t, n, off, VR.QX(off), L, dz, k, pf, hd, hdz, F.u32__injective(U32.and(off, 3), 3, er), {==}, hs, hr, hk, hy)
-    case 4n+s: Empty.absurd({O.copy_into(VR.BF(t, n), off, L, Array.new(U32, dz, 0)) == (VR.BF(t, n), O.Words{F.array__thaw(U32, UCT.cts(4n+s, d, t, off, L, dz)), L}) : B.Buf & O.Words}, F.nat__lt_zero_absurd(s, hr4))
+  cti_rU(d, t, n, off, L, dz, pf, hd, hdz, hs, hr, VC.hyU(L, k, hk, hy), r, er, hr4)
 
 # copy_into of L bytes at any offset off.
+def copy_into_atU(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +L: U32, +dz: Nat,
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool},
+    +hs: {Nat.is_le(Nat.add(VC.NW(L), VR.QX(off)), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {O.copy_into(VR.BF(t, n), off, L, Array.new(U32, dz, 0)) == (VR.BF(t, n), O.Words{F.array__thaw(U32, UCT.CT(d, t, off, L, dz)), L}) : B.Buf & O.Words}:
+  cti_rU(d, t, n, off, L, dz, pf, hd, hdz, hs, hr, hy, VR.RX(off), {==}, UA.rx_lt(off))
+
 def copy_into_at(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +L: U32, +dz: Nat, +k: Nat,
     +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool},
     +hs: {Nat.is_le(Nat.add(VC.NW(L), VR.QX(off)), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool},
     +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool})
     -> {O.copy_into(VR.BF(t, n), off, L, Array.new(U32, dz, 0)) == (VR.BF(t, n), O.Words{F.array__thaw(U32, UCT.CT(d, t, off, L, dz)), L}) : B.Buf & O.Words}:
-  cti_r(d, t, n, off, L, dz, k, pf, hd, hdz, hs, hr, hk, hy, VR.RX(off), {==}, UA.rx_lt(off))
+  copy_into_atU(d, t, n, off, L, dz, pf, hd, hdz, hs, hr, VC.hyU(L, k, hk, hy))

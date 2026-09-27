@@ -516,14 +516,40 @@ def sm_bytes(s, n, L, i, dd, ds, D, S, pfD, pfS, hr, hn, hi, hL, hB):
   VN.bt_app(L, VS.bdr(P, UA.BYT(S)), R, VR.bdr_len(P, UA.BYT(S), L, hB2))
 
 # L <= 4 ceil(L / 4).
-def lquad(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool})
+def lquadU(+L: U32, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
     -> {Nat.is_le(U32.to_nat(L), A.quad(VC.NW(L))) == True{} : Bool}:
-  %Equal.sym(Nat, VC.NW(L), VD.s_rng(2n, 3n+U32.to_nat(L)), VC.eNW(L, k, hk, hy)) : {Nat.is_le(U32.to_nat(L), A.quad(_)) == True{} : Bool}
+  %Equal.sym(Nat, VC.NW(L), VD.s_rng(2n, 3n+U32.to_nat(L)), VC.eNWu(L, hy)) : {Nat.is_le(U32.to_nat(L), A.quad(_)) == True{} : Bool}
   F.nat__le_trans(3n+U32.to_nat(L), 1n+Nat.double(VD.s_h2(3n+U32.to_nat(L))), 3n+A.quad(VD.s_h2(VD.s_h2(3n+U32.to_nat(L)))), VC.h2_up(3n+U32.to_nat(L)),
     Order.double_monotone(VD.s_h2(3n+U32.to_nat(L)), 1n+Nat.double(VD.s_h2(VD.s_h2(3n+U32.to_nat(L)))), VC.h2_up(VD.s_h2(3n+U32.to_nat(L)))))
 
+def lquad(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(L), A.quad(VC.NW(L))) == True{} : Bool}:
+  lquadU(L, VC.hyU(L, k, hk, hy))
+
 # U2, bytes of the copy: copy_in's storage at byte s = 1, 2, 3 (MK of smone,
 # see vua_sc.ci_any*) has the buffer's spec bytes [4 i + s, 4 i + s + L) first.
+law ci_bytesU:
+  for +s: Nat
+  for +L: U32
+  for +i: Nat
+  for +dz: Nat
+  for +d: Nat
+  for +t: F.array__Tree<U32>
+  for +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool}
+  for +pf: {F.array__perfect(U32, d, t) == True{} : Bool}
+  for +hr: {Nat.is_lt(s, 4n) == True{} : Bool}
+  for +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}
+  for +hz: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}
+  for +hB: {Nat.is_le(Nat.add(Nat.add(A.quad(i), s), U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}
+  {VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, VBY.MK(L, dz, smone(s, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))))) == VS.bt(U32.to_nat(L), VS.bdr(Nat.add(A.quad(i), s), UA.BYT(t))) : +List<U32>}
+def ci_bytesU(s, L, i, dz, d, t, hy, pf, hr, hs, hz, hB):
+  +M = smone(s, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t)
+  +pz = F.array__trep_perfect(U32, dz, 0)
+  Equal.trans(+List<U32>, VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, VBY.MK(L, dz, M)))), VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, M))), VS.bt(U32.to_nat(L), VS.bdr(Nat.add(A.quad(i), s), UA.BYT(t))),
+    VBY.mk_bytesU(L, dz, M, hy, F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dz)) == True{} : Bool}, Nat.add(VC.NW(L), 0n), VC.NW(L), F.nat__add_zero(VC.NW(L)), hz),
+      smone_perfect(s, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t, pz)),
+    sm_bytes(s, VC.NW(L), U32.to_nat(L), i, dz, d, VC.ZT(dz), t, pz, pf, hr, hz, hs, lquadU(L, hy), hB))
+
 law ci_bytes:
   for +s: Nat
   for +L: U32
@@ -541,9 +567,4 @@ law ci_bytes:
   for +hB: {Nat.is_le(Nat.add(Nat.add(A.quad(i), s), U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}
   {VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, VBY.MK(L, dz, smone(s, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))))) == VS.bt(U32.to_nat(L), VS.bdr(Nat.add(A.quad(i), s), UA.BYT(t))) : +List<U32>}
 def ci_bytes(s, L, i, dz, d, t, k, hk, hy, pf, hr, hs, hz, hB):
-  +M = smone(s, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t)
-  +pz = F.array__trep_perfect(U32, dz, 0)
-  Equal.trans(+List<U32>, VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, VBY.MK(L, dz, M)))), VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, M))), VS.bt(U32.to_nat(L), VS.bdr(Nat.add(A.quad(i), s), UA.BYT(t))),
-    VBY.mk_bytes(L, dz, M, k, hk, hy, F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dz)) == True{} : Bool}, Nat.add(VC.NW(L), 0n), VC.NW(L), F.nat__add_zero(VC.NW(L)), hz),
-      smone_perfect(s, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t, pz)),
-    sm_bytes(s, VC.NW(L), U32.to_nat(L), i, dz, d, VC.ZT(dz), t, pz, pf, hr, hz, hs, lquad(L, k, hk, hy), hB))
+  ci_bytesU(s, L, i, dz, d, t, VC.hyU(L, k, hk, hy), pf, hr, hs, hz, hB)
