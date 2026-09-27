@@ -2293,7 +2293,7 @@ def vdec_info(R):
     if not mb or not mdc or mdc.group(1) not in imp:
         return None
     acc = re.search(r'__decode_accept__decode_accept\(.*\) -> \{(\w+)\.(\w+)\(\w+\.BF\(t, n\), n\) == \(\w+\.BF\(t, n\), Some\{\w+\.OBJ\(((?:d, )?)t, n\)\}\) : \w+\.Buf & Maybe<&1, ([\w.]+)>\}', s)
-    spec = re.search(r'__decode_spec__decode_spec\(.*\) -> \w+\.decodes\((?:\w+_)?(GS|Spec)\.\w+\(\), \w+\.VW\(t, n\), \w+\.VAL\(((?:d, )?)t, n\)\)', s)
+    spec = re.search(r'__decode_spec__decode_spec\(.*\) -> \w+\.decodes\((\w+)\.\w+\(\), \w+\.VW\(t, n\), \w+\.VAL\(((?:d, )?)t, n\)\)', s)
     if not acc or not spec:
         return None
     ot = acc.group(4)
@@ -2304,7 +2304,7 @@ def vdec_info(R):
         return None
     return {'bound': int(mb.group(1)), 'dc': imp[mdc.group(1)], 'acc': mods['decode_accept'][0], 'spec': mods['decode_spec'][0],
             'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0],
-            'dfn': f'T.{acc.group(2)}', 'objd': bool(acc.group(3)), 'vald': bool(spec.group(2)), 'otype': otype, 'sch': spec.group(1),
+            'dfn': f'T.{acc.group(2)}', 'objd': bool(acc.group(3)), 'vald': bool(spec.group(2)), 'otype': otype, 'sch': 'GS' if imp.get(spec.group(1)) == 'generic_specs.bend' else 'Spec',
             'rejhd': '+hd:' in mods['decode_reject'][1],
             'chk1': bool(re.search(r'\+hchk: \{\w+\.CHK\(n\)', sig)),
             'noneshort': bool(re.search(r'__decode_none__decode_none\(\+t:', s))}
