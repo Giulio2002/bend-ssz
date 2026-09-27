@@ -2705,6 +2705,18 @@
     "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
+  "FuluIndexedAttestation_e2e_dec_generated.bend": [
+   {
+    "name": "FuluIndexedAttestation",
+    "generated_name": "IndexedAttestation",
+    "laws": [
+     "FuluIndexedAttestation_e2e_decode_view",
+     "FuluIndexedAttestation_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
   "FuluDataColumnsByRootIdentifier_e2e_root_generated.bend": [
    {
     "name": "FuluDataColumnsByRootIdentifier",
@@ -2715,6 +2727,16 @@
     "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) (the root law's representation invariant)"
    }
   ],
+  "FuluIndexedAttestation_e2e_root_generated.bend": [
+   {
+    "name": "FuluIndexedAttestation",
+    "generated_name": "IndexedAttestation",
+    "laws": [
+     "FuluIndexedAttestation_e2e_root"
+    ],
+    "premise": "rep: RT.rep_IndexedAttestation(o, Spec.IndexedAttestation()) (the root law's representation invariant)"
+   }
+  ],
   "FuluDataColumnsByRootIdentifier_e2e_generated.bend": [
    {
     "name": "FuluDataColumnsByRootIdentifier",
@@ -2723,6 +2745,16 @@
      "FuluDataColumnsByRootIdentifier_e2e_encode"
     ],
     "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "FuluIndexedAttestation_e2e_generated.bend": [
+   {
+    "name": "FuluIndexedAttestation",
+    "generated_name": "IndexedAttestation",
+    "laws": [
+     "FuluIndexedAttestation_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_IndexedAttestation(o, Spec.IndexedAttestation()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "bitlist_33_e2e_generated.bend": [
@@ -3103,10 +3135,6 @@
   },
   "FuluPendingAttestation": {
    "generated_name": "PendingAttestation",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluIndexedAttestation": {
-   "generated_name": "IndexedAttestation",
    "reason": "encode laws not over the same free words / bits"
   },
   "FuluAttesterSlashing": {
@@ -3599,6 +3627,12 @@
    "i": "FuluDataColumnsByRootIdentifier_e2e_generated.bend",
    "ii_iii": "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend",
    "iv": "FuluDataColumnsByRootIdentifier_e2e_root_generated.bend"
+  },
+  "FuluIndexedAttestation": {
+   "generated_name": "IndexedAttestation",
+   "i": "FuluIndexedAttestation_e2e_generated.bend",
+   "ii_iii": "FuluIndexedAttestation_e2e_dec_generated.bend",
+   "iv": "FuluIndexedAttestation_e2e_root_generated.bend"
   }
  },
  "input_bounds": {

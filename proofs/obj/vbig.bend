@@ -311,3 +311,8 @@ def bles(+x: Nat, +r: Nat, +hx: {Nat.is_le(x, VB.pw(r)) == True{} : Bool}) -> {N
 def bfit(+x: Nat, +r: Nat, +hx: {Nat.is_le(x, VB.pw(r)) == True{} : Bool}, +hr: {Nat.is_lt(r, 32n) == True{} : Bool})
     -> {N.fits(4n, x) == True{} : Bool}:
   VFT.fits4(r, x, hx, hr)
+
+# 4 * 2^k = 2^r, r = 2 + k (e2e_cap states its bounds as A.quad(2^k)).
+def quadpw(+k: Nat, +r: Nat, +er: {r == 2n+k : Nat}) -> {A.quad(F.spec_common__pow2(k)) == F.spec_common__pow2(r) : Nat}:
+  %Equal.sym(Nat, r, 2n+k, er) : {A.quad(F.spec_common__pow2(k)) == F.spec_common__pow2(_) : Nat}
+  {==}
