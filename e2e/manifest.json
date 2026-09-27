@@ -2705,6 +2705,18 @@
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
    }
   ],
+  "ComplexTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "ComplexTestStruct",
+    "generated_name": "Gc56D855869F",
+    "laws": [
+     "ComplexTestStruct_e2e_decode_view",
+     "ComplexTestStruct_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "FuluAttesterSlashing_e2e_dec_generated.bend": [
    {
     "name": "FuluAttesterSlashing",
@@ -4038,6 +4050,7 @@
   "ComplexTestStruct": {
    "generated_name": "Gc56D855869F",
    "reason": "encode laws not over the same free words / bits",
+   "decode": "ComplexTestStruct_e2e_dec_generated.bend",
    "root": "ComplexTestStruct_e2e_root_generated.bend"
   },
   "SmallTestStruct": {
@@ -4383,7 +4396,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 6756,
    "covered": true,
-   "bridged": null
+   "bridged": "ComplexTestStruct_e2e_dec_generated.bend"
   },
   "FuluAggregateAndProof": {
    "generated_name": "AggregateAndProof",
