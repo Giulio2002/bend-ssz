@@ -112,6 +112,34 @@ def hsx(+d: Nat, +off: U32, +x: Nat, +L: U32, +eo: {U32.to_nat(off) == x : Nat},
   VBY.nw_room(q, L, VB.pw(d), VL.KK(d), VL.kk_lt(d, hd), VL.hyn(d, L, hL),
     F.nat__le_trans(Nat.add(A.quad(q), U32.to_nat(L)), Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d)), Order.add_right(A.quad(q), x, U32.to_nat(L), hq), hw))
 
+# ---- any tree depth d < 31 ---------------------------------------------------------------------
+
+# The last byte's position x + m, for a window that ends below 2^32.
+def eXNw(+off: U32, +x: Nat, +n: U32, +m: Nat, +eo: {U32.to_nat(off) == x : Nat},
+    +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(n)), F.spec_common__pow2(32n)) == True{} : Bool},
+    +e1: {U32.to_nat(n) == 1n+m : Nat})
+    -> {U32.to_nat(VR.XN(off, n)) == Nat.add(x, m) : Nat}:
+  +h0 = F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_common__pow2(32n)) == True{} : Bool}, Nat.add(x, U32.to_nat(n)), Nat.add(U32.to_nat(n), x), F.nat__add_comm(x, U32.to_nat(n)), hw32)
+  +ea = VB.add_lt32(off, n, x, eo, h0)
+  +ea2 = Equal.trans(Nat, U32.to_nat(U32.add(off, n)), Nat.add(U32.to_nat(n), x), 1n+Nat.add(m, x), ea,
+    Equal.cong(Nat, Nat, z => Nat.add(z, x), U32.to_nat(n), 1n+m, e1))
+  +h1 = F.logic__subst(Nat, z => {Nat.is_le(1n, z) == True{} : Bool}, 1n+Nat.add(m, x), U32.to_nat(U32.add(off, n)), Equal.sym(Nat, U32.to_nat(U32.add(off, n)), 1n+Nat.add(m, x), ea2), F.nat__zero_le(Nat.add(m, x)))
+  %Equal.sym(Nat, U32.to_nat(VR.XN(off, n)), Nat.sub(U32.to_nat(U32.add(off, n)), 1n), F.u32__sub_nat(U32.add(off, n), 1, h1)) : {_ == Nat.add(x, m) : Nat}
+  %Equal.sym(Nat, U32.to_nat(U32.add(off, n)), 1n+Nat.add(m, x), ea2) : {Nat.sub(_, 1n) == Nat.add(x, m) : Nat}
+  %Equal.sym(Nat, Nat.sub(Nat.add(1n, Nat.add(m, x)), 1n), Nat.add(m, x), F.nat__add_sub_cancel(1n, Nat.add(m, x))) : {_ == Nat.add(x, m) : Nat}
+  F.nat__add_comm(m, x)
+
+# The window's words lie in the buffer, the list storage bounded by 31 + L <= 2^k (k < 31).
+def hsxB(+d: Nat, +off: U32, +x: Nat, +L: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(VC.NW(L), VR.QX(off)), VB.pw(d)) == True{} : Bool}:
+  +q = VR.QX(off)
+  +ex = Equal.trans(Nat, x, U32.to_nat(off), Nat.add(A.quad(q), VR.RX(off)), Equal.sym(Nat, U32.to_nat(off), x, eo), VC.split4(off))
+  +hq = F.logic__subst(Nat, z => {Nat.is_le(A.quad(q), z) == True{} : Bool}, Nat.add(A.quad(q), VR.RX(off)), x, Equal.sym(Nat, x, Nat.add(A.quad(q), VR.RX(off)), ex), F.nat__le_add_right(A.quad(q), VR.RX(off)))
+  VBY.nw_room(q, L, VB.pw(d), k, hk, hy,
+    F.nat__le_trans(Nat.add(A.quad(q), U32.to_nat(L)), Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d)), Order.add_right(A.quad(q), x, U32.to_nat(L), hq), hw))
+
 # ---- splitting a window -----------------------------------------------------------------------
 
 # The window after its first h bytes.

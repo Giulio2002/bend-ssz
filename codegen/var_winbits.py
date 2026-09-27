@@ -17,7 +17,7 @@ LISTS = [5, 6, 256, 257, 1280, 1281]
 
 def win_text(N):
     b = VW.Bits(N, f'bits{N}', f'S.BitList{{{N}n}}', f'{N}n')
-    txt = VW.bitsx_text(b)
+    txt = VW.bitsx_text(b, deep=True)
     out = []
     for ln in txt.split('\n'):
         ln = ln.replace('import ../../types/fulu_obj.bend as T', 'import ../../types/generic_obj.bend as T')

@@ -105,3 +105,45 @@ def thread(text, hw_decl, hw32_decl, hw='hw', hw32='hw32', callee_ok=None):
             out.append(t[i:a] + ','.join(args) + ')')
             i = b + 1
     return calls(text)
+
+
+def _defs(text):
+    """{name: (start, header end, params [str], rest of the header after ')')} of the top-level defs."""
+    out = {}
+    for m in re.finditer(r'^def (\w+)\(', text, re.M):
+        a = m.end()
+        b = _close(text, a)
+        e = text.index(':\n', b)
+        out[m.group(1)] = (m.start(), a, b, [p.strip() for p in _split_args(text[a:b])], text[b + 1:e])
+    return out
+
+
+def compat(text, names, hw_decl, hw32_decl, sum_term, db_old=28, db=31, suffix='D', hw='hw', hw32='hw32'):
+    """Rename the deep interface defs `names` to name+suffix and add wrappers under the old names with the old
+    hypotheses (d < db_old, no hw32): the deep def's hw32 is VB.hw32of of the old window bound. sum_term: the
+    window's end (the hw bound's left side). Callers of the old interface stay as they are."""
+    P = f'+{hw}: {hw_decl}'
+    Q = f'+{hw32}: {hw32_decl}'
+    HD = '+hd: {Nat.is_lt(d, %dn) == True{} : Bool}'
+    ds = _defs(text)
+    for nm in names:
+        if nm not in ds:
+            raise SystemExit(f'deep.compat: no def {nm}')
+    pat = re.compile(r'(?<![\w.])(' + '|'.join(sorted(names, key=len, reverse=True)) + r')\(')
+    text = pat.sub(lambda m: m.group(1) + suffix + '(', text)
+    wrappers = []
+    for nm in names:
+        _, a, b, ps, rest = ds[nm]
+        assert P in ps and Q in ps and HD % db in ps, (nm, ps)
+        old = [HD % db_old if p == HD % db else p for p in ps if p != Q]
+        args = []
+        for p in ps:
+            name = p.split(':')[0].strip().lstrip('+')
+            if p == HD % db:
+                args.append(f'FD.nat__lt_trans(d, {db_old}n, {db}n, hd, {{==}})')
+            elif p == Q:
+                args.append(f'VB.hw32of(d, {sum_term}, FD.nat__lt_trans(d, {db_old}n, 30n, hd, {{==}}), {hw})')
+            else:
+                args.append(name)
+        wrappers.append(f'def {nm}(' + ', '.join(old) + ')' + rest + ':\n  ' + nm + suffix + '(' + ', '.join(args) + ')\n')
+    return text.rstrip('\n') + '\n\n# ---- the window interface as it was (d < %d, no hw32), for the callers not yet deep ----\n\n' % db_old + '\n'.join(wrappers)
