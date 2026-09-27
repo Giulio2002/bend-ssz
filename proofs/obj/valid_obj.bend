@@ -6,6 +6,7 @@ import ../../spec/value_domain.bend as VD
 import ../../spec/primitives.bend as SP
 import ../../spec/bit_root.bend as Bm
 import ../../spec/limits.bend as Lim
+import ../../spec/tree.bend as Tr
 import ../../spec/byte_list.bend as BL
 import ../compact/found.bend as F
 import ./dk.bend as DK
@@ -402,3 +403,24 @@ def vtrans(-v: S.Value, -s: S.Schema, -E: S.Schema, +e: {s == E : S.Schema}, +h:
 def le_rw(+a: Nat, +b: Nat, +c: Nat, +e: {a == b : Nat}, +h: {Nat.is_le(a, c) == True{} : Bool}) -> {Nat.is_le(b, c) == True{} : Bool}:
   %e : {Nat.is_le(_, c) == True{} : Bool}
   h
+
+# ---- vectors of items -----------------------------------------------------------
+
+def lt0_rw(+a: Nat, +b: Nat, +e: {a == b : Nat}, +h: {Nat.is_lt(0n, b) == True{} : Bool}) -> {Nat.is_lt(0n, a) == True{} : Bool}:
+  %Equal.sym(Nat, a, b, e) : {Nat.is_lt(0n, _) == True{} : Bool}
+  h
+
+# A minimal depth above 0 covers at least one chunk.
+def min_pos(+n: Nat, +p: Nat, +h: {Lim.minimal(n, 1n+p) == True{} : Bool}) -> {Nat.is_lt(0n, n) == True{} : Bool}:
+  F.nat__le_lt_trans(0n, Tr.capacity(p), n, zero_le(Tr.capacity(p)), DK.and_r(Nat.is_le(n, Tr.capacity(1n+p)), Nat.is_lt(Tr.capacity(p), n), h))
+
+# A vector view of k items of length k, positive, every item valid, is valid.
+def vfin(+k: Nat, +items: S.Value, +E: S.Schema, +kp: {Nat.is_lt(0n, k) == True{} : Bool},
+    +le: {VD.items_length(items) == k : Nat}, +rv: {VD.root_valid(items, S.Repeat{E}) == True{} : Bool})
+    -> {VD.root_valid(S.Sequence{items}, S.Vector{E, k}) == True{} : Bool}:
+  %Equal.sym(Bool, VD.root_valid(items, S.Repeat{E}), True{}, rv) :
+    {Bool.and(Bool.and(Nat.is_lt(0n, k), Nat.is_eq(VD.items_length(items), k)), _) == True{} : Bool}
+  %Equal.sym(Nat, VD.items_length(items), k, le) : {Bool.and(Bool.and(Nat.is_lt(0n, k), Nat.is_eq(_, k)), True{}) == True{} : Bool}
+  %Equal.sym(Bool, Nat.is_eq(k, k), True{}, F.nat__is_eq_refl(k)) : {Bool.and(Bool.and(Nat.is_lt(0n, k), _), True{}) == True{} : Bool}
+  %Equal.sym(Bool, Nat.is_lt(0n, k), True{}, kp) : {Bool.and(Bool.and(_, True{}), True{}) == True{} : Bool}
+  {==}
