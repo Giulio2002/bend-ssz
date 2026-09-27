@@ -8,8 +8,7 @@ import ../compact/arith.bend as P0_A
 import ../../spec/codec.bend as P0_Codec
 import ../../spec/decoding_relation.bend as P0_Decoding
 import ../../spec/fulu_schemas.bend as P0_Spec
-import ../../proofs/fulu_legality.bend as P0_Legal
-import ../../proofs/decode_complete.bend as P0_DCO
+import ../../proofs/decode_unique.bend as P0_DCO
 import ../obj/spec_fixed.bend as P0_F
 import ../obj/vspec.bend as P0_VS
 import ../obj/vbuf.bend as P0_VB

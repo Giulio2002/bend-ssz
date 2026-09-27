@@ -8,8 +8,7 @@ import ../compact/arith.bend as A
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
 import ../../spec/fulu_schemas.bend as Spec
-import ../../proofs/fulu_legality.bend as Legal
-import ../../proofs/decode_complete.bend as DCO
+import ../../proofs/decode_unique.bend as DCO
 import ./spec_fixed.bend as F
 import ./vspec.bend as VS
 import ./vbuf.bend as VB
@@ -87,7 +86,9 @@ law decode_unique:
   for spec: Decoding.decodes(Spec.LightClientFinalityUpdate(), VW(t, n), v)
   {v == VAL(t, n) : S.Value}
 def decode_unique(d, t, n, pf, hd, hn, hchk, v, spec):
-  DCO.image_unique(Spec.LightClientFinalityUpdate(), VW(t, n), v, VAL(t, n), Legal.LightClientFinalityUpdate_normative_legal(), spec, decode_spec(d, t, n, pf, hd, hn, hchk))
+  # the validator's acceptance of the schema by evaluation (decode_unique.valid_unique): image_unique's
+  # legality form imports the compatibility_* chain and every name's legality witness
+  DCO.valid_unique(Spec.LightClientFinalityUpdate(), VW(t, n), v, VAL(t, n), {==}, spec, decode_spec(d, t, n, pf, hd, hn, hchk))
 
 # When the validator refuses, no value is related to the buffer's bytes.
 law decode_reject:
