@@ -2569,6 +2569,15 @@ def venc_dc(R, X):
 
 VENC_SHAPES = {'DataColumnsByRootIdentifier': venc_dc}
 
+import e2e_var_b as EVB  # noqa: E402  (the second variable-size worker's entries)
+for _k, _v in EVB.VDEC_VIEWS.items():
+    VDEC_VIEWS.setdefault(_k, _v)
+for _k, _v in EVB.VROOT_SHAPES.items():
+    VROOT_SHAPES.setdefault(_k, _v)
+for _k, _v in EVB.VENC_SHAPES.items():
+    VENC_SHAPES.setdefault(_k, _v)
+
+
 def outputs():
     import names as NM
     amap = json.loads((ROOT / 'proofs/gate/api_map.json').read_text())
@@ -2612,6 +2621,8 @@ def outputs():
     out = {OUT / 'e2e_support.bend': SUPPORT, OUT / 'e2e_bytes.bend': BYTES_HEAD + lwb_text() + '\n' + BYTES_TAIL,
            OUT / 'e2e_bits.bend': BITS, OUT / 'e2e_tree.bend': TREE, OUT / 'e2e_load.bend': LOAD,
            OUT / 'e2e_cap.bend': CAP, OUT / 'e2e_ulist.bend': ULIST, OUT / 'e2e_emit.bend': emit_text()}
+    for _f, _txt in EVB.SUPPORT_OUT.items():
+        out[OUT / _f] = _txt
     wrows = []
     for R0, u in list(uncovered.items()):
         w = family_w(u['generated_name'], amap['map'][u['generated_name']], cache)
