@@ -189,7 +189,7 @@ def bs_blist(+E: S.Schema, +k: {SH.is_ByteList(E) == True{} : Bool}) -> {RR.basi
 # 131072 -> chunk limit 32768, `Lim.minimal(32768, 15)`). A closed definition
 # evaluates it (1 s), but after the `s -> Spec.Name()` rewrite the checker's
 # evaluation of `Nat.is_le` at 2^15 fails and printing the error overflows the
-# stack (probes: build/zz_ok_all.bend, WORK_LOG).
+# stack.
 NAME_SKIP = {}
 
 

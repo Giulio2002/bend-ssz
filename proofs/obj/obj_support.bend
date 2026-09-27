@@ -42,7 +42,7 @@ def dwe(-x: D.Digest, +p: DW(x)) -> {x == dwv(x, p) : D.Digest}:
 # equation dv == DV0()). A law over a schema variable s must not mention a
 # closed capacity 2^d for large d: the checker compares two copies of
 # `Nat.is_le(<stuck>, capacity(15n))` by unrolling the bound in unary and
-# overflows (WORK_LOG, iteration 22, "capacity comparison"). With the depth a
+# overflows. With the depth a
 # variable, capacity(dv_15(dv)) stays stuck. Closed schema facts are proved
 # once at DV0() (a closed definition evaluates them) and moved by ok_at.
 type DV is Data:
