@@ -72,3 +72,16 @@ def u64dom(+a: U32, +b: U32) -> {SP.uint_domain(P.U64{}, P.UInt{a, b, 0, 0, 0, 0
   %Equal.sym(Bool, SP.zero_suffix(PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), SP.limb_digits(0))))))), True{}, zt6()) :
     {_ == True{} : Bool}
   {==}
+
+# uint128: any four words (the four zero high limbs through lz).
+def zt4() -> {SP.zero_suffix(PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), SP.limb_digits(0))))) == True{} : Bool}:
+  %Equal.sym(+List<U32>, SP.limb_digits(0), [0, 0, 0, 0], PBM.lz()) :
+    {SP.zero_suffix(PBM.ap(_, PBM.ap(_, PBM.ap(_, _)))) == True{} : Bool}
+  {==}
+
+def u128dom(+a: U32, +b: U32, +c: U32, +d: U32) -> {SP.uint_domain(P.U128{}, P.UInt{a, b, c, d, 0, 0, 0, 0}) == True{} : Bool}:
+  %Equal.sym(Bool, SP.zero_suffix(PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), SP.limb_digits(0))))), True{}, zt4()) :
+    {_ == True{} : Bool}
+  {==}
+
+def u256dom(+a: U32, +b: U32, +c: U32, +d: U32, +e: U32, +f: U32, +g: U32, +h: U32) -> {SP.uint_domain(P.U256{}, P.UInt{a, b, c, d, e, f, g, h}) == True{} : Bool}: {==}
