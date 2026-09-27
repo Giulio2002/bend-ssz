@@ -174,6 +174,26 @@ def pb_mix1(+hl: Nat, +ehl: {hl == 64n : Nat}, +t: F.array__Tree<U32>, +K: U32, 
 
 # The digest of a represented progressive bit list aggregates, progressively
 # and with its bit count, from the chunks of its bits.
+# The digest of any storage and length is its tree's length mix (symbolic: nothing is hashed).
+def pb_dig(+hl: Nat, -ws: Array<U32>, +k: U32) -> {pbdig(hl, O.Bits{ws, k}) == O.mix_len(hl, PR.pr(1n+O.chunks_of(O.bits_nbytes(k)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(k))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(k)), MR.clist(O.chunks_of(O.bits_nbytes(k)), F.array__slots(U32, F.array__freeze(U32, ws)), 0n)), k) : D.Digest}:
+  {==}
+
+# No bits: the view's length is U32.to_nat(0).
+def pb_len0(+t: F.array__Tree<U32>) -> {U32.to_nat(0) == List.length(&2, Bool, BO.bview(O.Bits{F.array__thaw(U32, t), 0})) : Nat}:
+  {==}
+
+# The aggregate from its parts, over variables (the pair built in place was checked by
+# comparing it with its expected type by evaluation: two SHA-256s, 4 s).
+def pb_agg(+pg: Bool, +lim: Nat, +ch: +List<+List<U32>>, +len: Maybe<&2, Nat>, +outs: +List<+List<U32>>, +root: +List<U32>,
+    e1: RR.tree(pg, lim, ch, root), e2: RR.length_mixed(root, len, outs)) -> RR.aggregate(pg, lim, ch, len, outs):
+  (root, (e1, e2))
+
+def pb_tree0(+hl: Nat, +t: F.array__Tree<U32>) -> RR.tree(True{}, 0n, Bm.chunks(BO.bview(O.Bits{F.array__thaw(U32, t), 0})), D.bytes(PR.pr(1n+O.chunks_of(O.bits_nbytes(0)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(0))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(0)), MR.clist(O.chunks_of(O.bits_nbytes(0)), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)))):
+  {==}
+
+def pb_mix0(+hl: Nat, +ehl: {hl == 64n : Nat}, +t: F.array__Tree<U32>) -> RR.length_mixed(D.bytes(PR.pr(1n+O.chunks_of(O.bits_nbytes(0)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(0))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(0)), MR.clist(O.chunks_of(O.bits_nbytes(0)), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n))), Some{U32.to_nat(0)}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(O.bits_nbytes(0)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(0))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(0)), MR.clist(O.chunks_of(O.bits_nbytes(0)), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), 0))]):
+  LR.mix_bytes(hl, ehl, PR.pr(1n+O.chunks_of(O.bits_nbytes(0)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(0))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(0)), MR.clist(O.chunks_of(O.bits_nbytes(0)), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), 0)
+
 def pbagg(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Bits, +wf: BO.wfb(o))
     -> RR.aggregate(True{}, 0n, Bm.chunks(BO.bview(o)), Some{List.length(&2, Bool, BO.bview(o))}, [D.bytes(pbdig(hl, o))]):
   match wf:
@@ -187,10 +207,16 @@ def pbagg(+hl: Nat, +ehl: {hl == 64n : Nat}, -o: O.Bits, +wf: BO.wfb(o))
       +kz = F.u32__injective(K, 0, ek)
       %Equal.sym(O.Bits, o, O.Bits{F.array__thaw(U32, t), K}, eo) :
         RR.aggregate(True{}, 0n, Bm.chunks(BO.bview(_)), Some{List.length(&2, Bool, BO.bview(_))}, [D.bytes(pbdig(hl, _))])
+      # the digest opened for symbolic K first (pb_dig: nothing is hashed), so the final
+      # step's outputs are syntactically mix_bytes' (comparing pbdig with its body at K = 0
+      # ran two SHA-256s: 4 s); the length as mix_bytes states it (pb_len0)
+      %Equal.sym(D.Digest, pbdig(hl, O.Bits{F.array__thaw(U32, t), K}), O.mix_len(hl, PR.pr(1n+O.chunks_of(O.bits_nbytes(K)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(K))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(K)), MR.clist(O.chunks_of(O.bits_nbytes(K)), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), K), pb_dig(hl, F.array__thaw(U32, t), K)) :
+        RR.aggregate(True{}, 0n, Bm.chunks(BO.bview(O.Bits{F.array__thaw(U32, t), K})), Some{List.length(&2, Bool, BO.bview(O.Bits{F.array__thaw(U32, t), K}))}, [D.bytes(_)])
       %Equal.sym(U32, K, 0, kz) :
-        RR.aggregate(True{}, 0n, Bm.chunks(BO.bview(O.Bits{F.array__thaw(U32, t), _})), Some{List.length(&2, Bool, BO.bview(O.Bits{F.array__thaw(U32, t), _}))}, [D.bytes(pbdig(hl, O.Bits{F.array__thaw(U32, t), _}))])
-      (D.bytes(PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n))), ({==},
-        LR.mix_bytes(hl, ehl, PR.pr(1n, False{}, hl, 0n, 0n, 0n, MR.clist(0n, F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), 0)))
+        RR.aggregate(True{}, 0n, Bm.chunks(BO.bview(O.Bits{F.array__thaw(U32, t), _})), Some{List.length(&2, Bool, BO.bview(O.Bits{F.array__thaw(U32, t), _}))}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(O.bits_nbytes(_)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(_))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(_)), MR.clist(O.chunks_of(O.bits_nbytes(_)), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), _))])
+      %pb_len0(t) :
+        RR.aggregate(True{}, 0n, Bm.chunks(BO.bview(O.Bits{F.array__thaw(U32, t), 0})), Some{_}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(O.bits_nbytes(0)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(0))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(0)), MR.clist(O.chunks_of(O.bits_nbytes(0)), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), 0))])
+      pb_agg(True{}, 0n, Bm.chunks(BO.bview(O.Bits{F.array__thaw(U32, t), 0})), Some{U32.to_nat(0)}, [D.bytes(O.mix_len(hl, PR.pr(1n+O.chunks_of(O.bits_nbytes(0)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(0))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(0)), MR.clist(O.chunks_of(O.bits_nbytes(0)), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n)), 0))], D.bytes(PR.pr(1n+O.chunks_of(O.bits_nbytes(0)), Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(0))), hl, 0n, 0n, O.chunks_of(O.bits_nbytes(0)), MR.clist(O.chunks_of(O.bits_nbytes(0)), F.array__slots(U32, F.array__freeze(U32, F.array__thaw(U32, t))), 0n))), pb_tree0(hl, t), pb_mix0(hl, ehl, t))
     case Inr{w}:
       (+t, w1) = w
       (+dw, w2) = w1
