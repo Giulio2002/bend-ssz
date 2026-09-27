@@ -622,28 +622,40 @@ def spec_items(x):
             parts.append(f'S.Fixed{{F.limbs([{", ".join(nd["words"])}])}}')
     m = len(vals)
 
+    # named field suffixes (var_bytes.chain_defs): the chain's levels carry small calls
+    NV = ('XC', '+t: FD.array__Tree<U32>, +x: Nat, +V0: S.Value, +V1: S.Value', 't, x, V0, V1',
+          '+t: FD.array__Tree<U32>, +x: Nat, +Y0: +List<U32>, +Y1: +List<U32>', 't, x, Y0, Y1')
+
     def items(i):
-        return 'S.EmptyItems{}' if i == m else f'S.Items{{{vals[i]}, {items(i + 1)}}}'
+        return f'XCV{i}({NV[2]})'
 
     def chain(i):
-        return 'S.End{}' if i == m else f'S.Chain{{{schs[i]}, {chain(i + 1)}}}'
+        return f'XCS{i}()'
 
     def cat(i):
         if i == m:
             return '{==}'
-        rest = '[' + ', '.join(parts[i + 1:]) + ']'
+        rest = f'XCP{i + 1}({NV[4]})'
         if nodes[i] is not None:
             return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs([{", ".join(nodes[i]["words"])}]), '
                     f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
         return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), Y{i}, Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
                 f'hv{i}, {cat(i + 1)})')
     POSTb = '[' + ', '.join(f'F.limbs([{", ".join(nd["words"])}])' for nd in nodes[2:]) + ']'
-    return items(0), chain(0), '[' + ', '.join(parts) + ']', cat(0), POSTb, nodes[2:]
+    import var_bytes as VBY
+    proofs = [('fixed', f'F.limbs([{", ".join(nodes[i]["words"])}])', nodes[i]['proof']) if nodes[i] is not None else ('var', f'Y{i}', f'hv{i}')
+              for i in range(m)]
+    CD = ('+t: FD.array__Tree<U32>, +x: Nat, +V0: S.Value, +V1: S.Value, +Y0: +List<U32>, +Y1: +List<U32>, '
+          f'+hv0: {{Codec.parts(V0, Spec.{x.Y}()) == Some{{[S.Variable{{Y0}}]}} : Maybe<&2, +List<S.Part>>}}, '
+          f'+hv1: {{Codec.parts(V1, Spec.{x.Y}()) == Some{{[S.Variable{{Y1}}]}} : Maybe<&2, +List<S.Part>>}}')
+    return (items(0), chain(0), f'XCP0({NV[4]})', 'XCT0(t, x, V0, V1, Y0, Y1, hv0, hv1)', POSTb, nodes[2:],
+            VBY.chain_defs(*NV, vals, schs, parts, CD, 't, x, V0, V1, Y0, Y1, hv0, hv1', proofs))
 
 
 def spec_part(x, mp):
     n, FS, H, Y = x.n, x.FS, x.H, x.Y
-    ITEMS, CHAIN, PL, CAT, POSTb, pnodes = spec_items(x)
+    ITEMS, CHAIN, PL, CAT, POSTb, pnodes, CDEFS = spec_items(x)
+    CDEF = '\n'.join(CDEFS)
     MP = 'Maybe<&2, +List<S.Part>>'
     M = 'Maybe<&2, +List<U32>>'
 
@@ -673,7 +685,8 @@ def spec_part(x, mp):
     s = f'''
 # ---- the spec side ------------------------------------------------------------------------------
 
-# The value of the window's fixed words and the children's values V0, V1.
+# The value of the window's fixed words and the children's values V0, V1, through its named field suffixes.
+{CDEF}
 def XVw(+t: FD.array__Tree<U32>, +x: Nat, +V0: S.Value, +V1: S.Value) -> S.Value: S.Sequence{{{ITEMS}}}
 
 # Its spec parts: one variable part, the layout of the children's bytes Y0, Y1 and the fixed words.

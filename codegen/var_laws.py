@@ -47,6 +47,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import generate as G  # noqa: E402
 import schema  # noqa: E402
 import spec_laws as SL  # noqa: E402
+import zeros_dispatch as ZD  # noqa: E402
 import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -519,15 +520,7 @@ def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32,
   ok_len(d, t, n, U32.is_le({FS}, n), hd, hpo, pf)
 ''')
     # zeros
-    w(f'def zeros_at(+du: U32, +k: Nat, +e: {{U32.to_nat(du) == k : Nat}}, +hk: {{Nat.is_le(k, {max(K, x.KO)}n) == True{{}} : Bool}})')
-    w('    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:')
-    w('  match k:')
-    for j in range(max(K, x.KO) + 1):
-        w(f'    case {j}n:')
-        w(f'      %Equal.sym(U32, du, {j}, FD.u32__injective(du, {j}, e)) : {{B.zeros(_) == Array.new(U32, {j}n, 0) : Array<U32>}}')
-        w('      {==}')
-    KK = max(K, x.KO) + 1
-    w(f'    case {KK}n+p: Empty.absurd({{B.zeros(du) == Array.new(U32, {KK}n+p, 0) : Array<U32>}}, FD.logic__false_true(hk))')
+    w(ZD.zeros_at_text(max(K, x.KO), 'FD'))
     X8L = 8 * LIM
     Y = 31 + X8L
     RB = (Y >> 2) + 8
