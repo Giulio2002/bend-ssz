@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/proglist_uint256_decode_ssz_generated.bend as proglist_uint256_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -33,6 +33,6 @@ import ../obj/big_var_plist_GtA8457965E2_rej.bend as PRV
 def GtA8457965E2__decode_reject__decode_reject(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(n) == False{} : Bool}) -> Decoding.outside_image(GS.GtA8457965E2(), DC.VW(t, n)):
   PRV.decode_reject(d, t, n, pf, hn, hchk)
 
-def GtA8457965E2__decode_none__decode_none(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(n) == False{} : Bool}) -> {T.GtA8457965E2_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}:
+def GtA8457965E2__decode_none__decode_none(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(n) == False{} : Bool}) -> {proglist_uint256_r.GtA8457965E2_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}:
   PRV.decode_none(t, n, hchk)
 

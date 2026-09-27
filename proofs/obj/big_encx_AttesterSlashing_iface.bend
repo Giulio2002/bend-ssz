@@ -1,7 +1,10 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d
+import ../../types/FuluIndexedAttestation_encode_ssz_generated.bend as FuluIndexedAttestation_e
+import ../../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d
+import ../../types/FuluAttesterSlashing_encode_ssz_generated.bend as FuluAttesterSlashing_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -137,7 +140,7 @@ def lenE(+m_attestation_1: EC_IndexedAttestation.MW, +m_attestation_2: EC_Indexe
 type MW is Data:
   MW{m_attestation_1: EC_IndexedAttestation.MW, m_attestation_2: EC_IndexedAttestation.MW}
 
-def TH(m: MW) -> T.AttesterSlashing:
+def TH(m: MW) -> FuluAttesterSlashing_d.AttesterSlashing:
   match m:
     case MW{+m_attestation_1, +m_attestation_2}: K.OBJC(m_attestation_1, m_attestation_2)
 def OK(m: MW) -> Bool:
@@ -159,7 +162,7 @@ def PUTX(m: MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array
 def PADB(+r: Nat, m: MW) -> Nat: WD.PADB(r, List.length(&2, U32, ENC(m)))
 
 def RTX(+m_attestation_1: EC_IndexedAttestation.MW, +m_attestation_2: EC_IndexedAttestation.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.AttesterSlashing_putk(FD.array__thaw(U32, D), X, K.OBJC(m_attestation_1, m_attestation_2)) == (FD.array__thaw(U32, K.PUTC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r)), (K.OBJC(m_attestation_1, m_attestation_2), K.SZC(m_attestation_1, m_attestation_2))) : Array<U32> & (T.AttesterSlashing & U32)}
+  {FuluAttesterSlashing_e.AttesterSlashing_putk(FD.array__thaw(U32, D), X, K.OBJC(m_attestation_1, m_attestation_2)) == (FD.array__thaw(U32, K.PUTC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r)), (K.OBJC(m_attestation_1, m_attestation_2), K.SZC(m_attestation_1, m_attestation_2))) : Array<U32> & (FuluAttesterSlashing_d.AttesterSlashing & U32)}
 def BYX(+m_attestation_1: EC_IndexedAttestation.MW, +m_attestation_2: EC_IndexedAttestation.MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(K.PUTC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(m_attestation_1, m_attestation_2), UW.ZB(WD.PADB(r, List.length(&2, U32, K.ENCC(m_attestation_1, m_attestation_2)))))) : +List<U32>}
 
@@ -178,7 +181,7 @@ def go(+m_attestation_1: EC_IndexedAttestation.MW, +m_attestation_2: EC_IndexedA
   +rt = K.putk_bridge(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r, PA(K.RTC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r), K.SZXC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r))), g))
   +g2 = PB(K.RTC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r), K.SZXC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r))), g)
   +by = PA(K.BYC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r), K.SZXC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r)), g2)
-  +rt2 = FD.logic__subst(U32, z => {T.AttesterSlashing_putk(FD.array__thaw(U32, D), z, K.OBJC(m_attestation_1, m_attestation_2)) == (FD.array__thaw(U32, K.PUTC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r)), (K.OBJC(m_attestation_1, m_attestation_2), K.SZC(m_attestation_1, m_attestation_2))) : Array<U32> & (T.AttesterSlashing & U32)},
+  +rt2 = FD.logic__subst(U32, z => {FuluAttesterSlashing_e.AttesterSlashing_putk(FD.array__thaw(U32, D), z, K.OBJC(m_attestation_1, m_attestation_2)) == (FD.array__thaw(U32, K.PUTC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r)), (K.OBJC(m_attestation_1, m_attestation_2), K.SZC(m_attestation_1, m_attestation_2))) : Array<U32> & (FuluAttesterSlashing_d.AttesterSlashing & U32)},
     XQ(q, r), X, Equal.sym(U32, X, XQ(q, r), ex), rt)
   +by2 = FD.logic__subst(Nat, z => {UA.BYT(K.PUTC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(m_attestation_1, m_attestation_2), UW.ZB(WD.PADB(r, z)))) : +List<U32>},
     LLv, List.length(&2, U32, K.ENCC(m_attestation_1, m_attestation_2)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_attestation_1, m_attestation_2)), LLv, el), by)
@@ -200,7 +203,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.AttesterSlashing_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (T.AttesterSlashing & U32)}
+  {FuluAttesterSlashing_e.AttesterSlashing_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (FuluAttesterSlashing_d.AttesterSlashing & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW{+m_attestation_1, +m_attestation_2}: PA(RTX(m_attestation_1, m_attestation_2, dd, D, X, q, r), BYX(m_attestation_1, m_attestation_2, dd, D, q, r), go(m_attestation_1, m_attestation_2, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hz))
@@ -271,32 +274,32 @@ def pfx(m, dd, D, q, r, pf):
   match m:
     case MW{+m_attestation_1, +m_attestation_2}: K.pfC(m_attestation_1, m_attestation_2, dd, D, XQ(q, r), q, r, pf)
 
-def sizeC(+m_attestation_1: EC_IndexedAttestation.MW, +m_attestation_2: EC_IndexedAttestation.MW, +h: {OKT(m_attestation_1, m_attestation_2) == True{} : Bool}) -> {T.AttesterSlashing_size(K.OBJC(m_attestation_1, m_attestation_2)) == (K.OBJC(m_attestation_1, m_attestation_2), K.SZC(m_attestation_1, m_attestation_2)) : T.AttesterSlashing & U32}:
-  %Equal.sym(O.Boxed<T.IndexedAttestation> & U32, T.IndexedAttestation_bx_size(O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}), (O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}, EC_IndexedAttestation.SZ(m_attestation_1)), Equal.cong(T.IndexedAttestation & U32, O.Boxed<T.IndexedAttestation> & U32, z => T.IndexedAttestation_bx_size_back(z), T.IndexedAttestation_size(EC_IndexedAttestation.TH(m_attestation_1)), (EC_IndexedAttestation.TH(m_attestation_1), EC_IndexedAttestation.SZ(m_attestation_1)), EC_IndexedAttestation.sizex(m_attestation_1, ok_hok_attestation_1(m_attestation_1, m_attestation_2, h)))) :
-    {T.AttesterSlashing_sz0(O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}, 8, _) == (K.OBJC(m_attestation_1, m_attestation_2), K.SZC(m_attestation_1, m_attestation_2)) : T.AttesterSlashing & U32}
-  %Equal.sym(O.Boxed<T.IndexedAttestation> & U32, T.IndexedAttestation_bx_size(O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}), (O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}, EC_IndexedAttestation.SZ(m_attestation_2)), Equal.cong(T.IndexedAttestation & U32, O.Boxed<T.IndexedAttestation> & U32, z => T.IndexedAttestation_bx_size_back(z), T.IndexedAttestation_size(EC_IndexedAttestation.TH(m_attestation_2)), (EC_IndexedAttestation.TH(m_attestation_2), EC_IndexedAttestation.SZ(m_attestation_2)), EC_IndexedAttestation.sizex(m_attestation_2, ok_hok_attestation_2(m_attestation_1, m_attestation_2, h)))) :
-    {T.AttesterSlashing_sz1(O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}, O.padd(8, EC_IndexedAttestation.SZ(m_attestation_1)), _) == (K.OBJC(m_attestation_1, m_attestation_2), K.SZC(m_attestation_1, m_attestation_2)) : T.AttesterSlashing & U32}
+def sizeC(+m_attestation_1: EC_IndexedAttestation.MW, +m_attestation_2: EC_IndexedAttestation.MW, +h: {OKT(m_attestation_1, m_attestation_2) == True{} : Bool}) -> {FuluAttesterSlashing_e.AttesterSlashing_size(K.OBJC(m_attestation_1, m_attestation_2)) == (K.OBJC(m_attestation_1, m_attestation_2), K.SZC(m_attestation_1, m_attestation_2)) : FuluAttesterSlashing_d.AttesterSlashing & U32}:
+  %Equal.sym(O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32, FuluIndexedAttestation_e.IndexedAttestation_bx_size(O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}), (O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}, EC_IndexedAttestation.SZ(m_attestation_1)), Equal.cong(FuluIndexedAttestation_d.IndexedAttestation & U32, O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32, z => FuluIndexedAttestation_d.IndexedAttestation_bx_size_back(z), FuluIndexedAttestation_e.IndexedAttestation_size(EC_IndexedAttestation.TH(m_attestation_1)), (EC_IndexedAttestation.TH(m_attestation_1), EC_IndexedAttestation.SZ(m_attestation_1)), EC_IndexedAttestation.sizex(m_attestation_1, ok_hok_attestation_1(m_attestation_1, m_attestation_2, h)))) :
+    {FuluAttesterSlashing_e.AttesterSlashing_sz0(O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}, 8, _) == (K.OBJC(m_attestation_1, m_attestation_2), K.SZC(m_attestation_1, m_attestation_2)) : FuluAttesterSlashing_d.AttesterSlashing & U32}
+  %Equal.sym(O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32, FuluIndexedAttestation_e.IndexedAttestation_bx_size(O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}), (O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}, EC_IndexedAttestation.SZ(m_attestation_2)), Equal.cong(FuluIndexedAttestation_d.IndexedAttestation & U32, O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & U32, z => FuluIndexedAttestation_d.IndexedAttestation_bx_size_back(z), FuluIndexedAttestation_e.IndexedAttestation_size(EC_IndexedAttestation.TH(m_attestation_2)), (EC_IndexedAttestation.TH(m_attestation_2), EC_IndexedAttestation.SZ(m_attestation_2)), EC_IndexedAttestation.sizex(m_attestation_2, ok_hok_attestation_2(m_attestation_1, m_attestation_2, h)))) :
+    {FuluAttesterSlashing_e.AttesterSlashing_sz1(O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}, O.padd(8, EC_IndexedAttestation.SZ(m_attestation_1)), _) == (K.OBJC(m_attestation_1, m_attestation_2), K.SZC(m_attestation_1, m_attestation_2)) : FuluAttesterSlashing_d.AttesterSlashing & U32}
   {==}
 
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.AttesterSlashing_size(TH(m)) == (TH(m), SZ(m)) : T.AttesterSlashing & U32}
+  {FuluAttesterSlashing_e.AttesterSlashing_size(TH(m)) == (TH(m), SZ(m)) : FuluAttesterSlashing_d.AttesterSlashing & U32}
 def sizex(m, hok):
   match m:
     case MW{+m_attestation_1, +m_attestation_2}: sizeC(m_attestation_1, m_attestation_2, hok)
 
-def rvalidC(+m_attestation_1: EC_IndexedAttestation.MW, +m_attestation_2: EC_IndexedAttestation.MW, +h: {OKT(m_attestation_1, m_attestation_2) == True{} : Bool}) -> {T.AttesterSlashing_valid(K.OBJC(m_attestation_1, m_attestation_2)) == (K.OBJC(m_attestation_1, m_attestation_2), True{}) : T.AttesterSlashing & Bool}:
-  %Equal.sym(O.Boxed<T.IndexedAttestation> & Bool, T.IndexedAttestation_bx_valid(O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}), (O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}, True{}), Equal.cong(T.IndexedAttestation & Bool, O.Boxed<T.IndexedAttestation> & Bool, z => T.IndexedAttestation_bx_va_back(z), T.IndexedAttestation_valid(EC_IndexedAttestation.TH(m_attestation_1)), (EC_IndexedAttestation.TH(m_attestation_1), True{}), EC_IndexedAttestation.validx(m_attestation_1, ok_hok_attestation_1(m_attestation_1, m_attestation_2, h)))) :
-    {T.AttesterSlashing_va0(O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}, True{}, _) == (K.OBJC(m_attestation_1, m_attestation_2), True{}) : T.AttesterSlashing & Bool}
-  %Equal.sym(O.Boxed<T.IndexedAttestation> & Bool, T.IndexedAttestation_bx_valid(O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}), (O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}, True{}), Equal.cong(T.IndexedAttestation & Bool, O.Boxed<T.IndexedAttestation> & Bool, z => T.IndexedAttestation_bx_va_back(z), T.IndexedAttestation_valid(EC_IndexedAttestation.TH(m_attestation_2)), (EC_IndexedAttestation.TH(m_attestation_2), True{}), EC_IndexedAttestation.validx(m_attestation_2, ok_hok_attestation_2(m_attestation_1, m_attestation_2, h)))) :
-    {T.AttesterSlashing_va1(O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}, Bool.and(True{}, True{}), _) == (K.OBJC(m_attestation_1, m_attestation_2), True{}) : T.AttesterSlashing & Bool}
+def rvalidC(+m_attestation_1: EC_IndexedAttestation.MW, +m_attestation_2: EC_IndexedAttestation.MW, +h: {OKT(m_attestation_1, m_attestation_2) == True{} : Bool}) -> {FuluAttesterSlashing_e.AttesterSlashing_valid(K.OBJC(m_attestation_1, m_attestation_2)) == (K.OBJC(m_attestation_1, m_attestation_2), True{}) : FuluAttesterSlashing_d.AttesterSlashing & Bool}:
+  %Equal.sym(O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & Bool, FuluIndexedAttestation_e.IndexedAttestation_bx_valid(O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}), (O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}, True{}), Equal.cong(FuluIndexedAttestation_d.IndexedAttestation & Bool, O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & Bool, z => FuluIndexedAttestation_e.IndexedAttestation_bx_va_back(z), FuluIndexedAttestation_e.IndexedAttestation_valid(EC_IndexedAttestation.TH(m_attestation_1)), (EC_IndexedAttestation.TH(m_attestation_1), True{}), EC_IndexedAttestation.validx(m_attestation_1, ok_hok_attestation_1(m_attestation_1, m_attestation_2, h)))) :
+    {FuluAttesterSlashing_e.AttesterSlashing_va0(O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}, True{}, _) == (K.OBJC(m_attestation_1, m_attestation_2), True{}) : FuluAttesterSlashing_d.AttesterSlashing & Bool}
+  %Equal.sym(O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & Bool, FuluIndexedAttestation_e.IndexedAttestation_bx_valid(O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}), (O.BSome{EC_IndexedAttestation.TH(m_attestation_2), O.BNone{}}, True{}), Equal.cong(FuluIndexedAttestation_d.IndexedAttestation & Bool, O.Boxed<FuluIndexedAttestation_d.IndexedAttestation> & Bool, z => FuluIndexedAttestation_e.IndexedAttestation_bx_va_back(z), FuluIndexedAttestation_e.IndexedAttestation_valid(EC_IndexedAttestation.TH(m_attestation_2)), (EC_IndexedAttestation.TH(m_attestation_2), True{}), EC_IndexedAttestation.validx(m_attestation_2, ok_hok_attestation_2(m_attestation_1, m_attestation_2, h)))) :
+    {FuluAttesterSlashing_e.AttesterSlashing_va1(O.BSome{EC_IndexedAttestation.TH(m_attestation_1), O.BNone{}}, Bool.and(True{}, True{}), _) == (K.OBJC(m_attestation_1, m_attestation_2), True{}) : FuluAttesterSlashing_d.AttesterSlashing & Bool}
   {==}
 
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.AttesterSlashing_valid(TH(m)) == (TH(m), True{}) : T.AttesterSlashing & Bool}
+  {FuluAttesterSlashing_e.AttesterSlashing_valid(TH(m)) == (TH(m), True{}) : FuluAttesterSlashing_d.AttesterSlashing & Bool}
 def validx(m, hok):
   match m:
     case MW{+m_attestation_1, +m_attestation_2}: rvalidC(m_attestation_1, m_attestation_2, hok)

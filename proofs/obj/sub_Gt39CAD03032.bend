@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/vec_uint16_8_decode_ssz_generated.bend as vec_uint16_8_r
+import ../../types/vec_uint16_8_encode_ssz_generated.bend as vec_uint16_8_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -28,7 +29,7 @@ def Gt39CAD03032_spec_encode(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
   SF.encoding_of_parts(Spec.Gt39CAD03032(), S.Sequence{SP2.vu16([x0, x1, x2, x3], S.EmptyItems{})}, SF.limbs([x0, x1, x2, x3]), Gt39CAD03032_spec_parts(x0, x1, x2, x3))
 
 def Gt39CAD03032_spec_decode(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
-    -> {T.Gt39CAD03032_decode(B.Buf{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, 16}, 16) == (B.Buf{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, 16}, Some{O.Words{ANode{ANode{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 16}}) : B.Buf & Maybe<&1, O.Words>}:
+    -> {vec_uint16_8_r.Gt39CAD03032_decode(B.Buf{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, 16}, 16) == (B.Buf{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, 16}, Some{O.Words{ANode{ANode{ANode{ANode{ALeaf{x0}, ALeaf{x1}}, ANode{ALeaf{x2}, ALeaf{x3}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 16}}) : B.Buf & Maybe<&1, O.Words>}:
   {==}
 
 def Gt39CAD03032_spec_view(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
@@ -36,11 +37,11 @@ def Gt39CAD03032_spec_view(+x0: U32, +x1: U32, +x2: U32, +x3: U32)
   {==}
 
 def Gt39CAD03032_spec_bytes(+y0: U32, +y1: U32, +y2: U32, +y3: U32, +q0: U32, +q1: U32, +q2: U32, +q3: U32, +q4: U32, +q5: U32, +q6: U32, +q7: U32, +q8: U32, +q9: U32, +q10: U32, +q11: U32)
-    -> {SF.emitted(O.Words, T.Gt39CAD03032_encode(O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{y1}}, ANode{ALeaf{y2}, ALeaf{y3}}}, ANode{ANode{ALeaf{q0}, ALeaf{q1}}, ANode{ALeaf{q2}, ALeaf{q3}}}}, ANode{ANode{ANode{ALeaf{q4}, ALeaf{q5}}, ANode{ALeaf{q6}, ALeaf{q7}}}, ANode{ANode{ALeaf{q8}, ALeaf{q9}}, ANode{ALeaf{q10}, ALeaf{q11}}}}}, 16}), 4) == (O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{y1}}, ANode{ALeaf{y2}, ALeaf{y3}}}, ANode{ANode{ALeaf{q0}, ALeaf{q1}}, ANode{ALeaf{q2}, ALeaf{q3}}}}, ANode{ANode{ANode{ALeaf{q4}, ALeaf{q5}}, ANode{ALeaf{q6}, ALeaf{q7}}}, ANode{ANode{ALeaf{q8}, ALeaf{q9}}, ANode{ALeaf{q10}, ALeaf{q11}}}}}, 16}, SF.limbs([y0, y1, y2, y3])) : O.Words & +List<U32>}:
+    -> {SF.emitted(O.Words, vec_uint16_8_e.Gt39CAD03032_encode(O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{y1}}, ANode{ALeaf{y2}, ALeaf{y3}}}, ANode{ANode{ALeaf{q0}, ALeaf{q1}}, ANode{ALeaf{q2}, ALeaf{q3}}}}, ANode{ANode{ANode{ALeaf{q4}, ALeaf{q5}}, ANode{ALeaf{q6}, ALeaf{q7}}}, ANode{ANode{ALeaf{q8}, ALeaf{q9}}, ANode{ALeaf{q10}, ALeaf{q11}}}}}, 16}), 4) == (O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{y1}}, ANode{ALeaf{y2}, ALeaf{y3}}}, ANode{ANode{ALeaf{q0}, ALeaf{q1}}, ANode{ALeaf{q2}, ALeaf{q3}}}}, ANode{ANode{ANode{ALeaf{q4}, ALeaf{q5}}, ANode{ALeaf{q6}, ALeaf{q7}}}, ANode{ANode{ALeaf{q8}, ALeaf{q9}}, ANode{ALeaf{q10}, ALeaf{q11}}}}}, 16}, SF.limbs([y0, y1, y2, y3])) : O.Words & +List<U32>}:
   {==}
 
 def Gt39CAD03032_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 16) == False{} : Bool})
-    -> {T.Gt39CAD03032_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_eq(m, 16), False{}, e) : {T.Gt39CAD03032_built(m, T.v8_u16_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+    -> {vec_uint16_8_r.Gt39CAD03032_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, U32.is_eq(m, 16), False{}, e) : {vec_uint16_8_r.Gt39CAD03032_built(m, vec_uint16_8_r.v8_u16_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 

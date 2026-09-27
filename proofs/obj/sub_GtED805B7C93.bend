@@ -1,7 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_16_def_generated.bend as bitvector_16_d
+import ../../types/bitvector_16_decode_ssz_generated.bend as bitvector_16_r
+import ../../types/bitvector_16_encode_ssz_generated.bend as bitvector_16_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -53,7 +55,7 @@ def GtED805B7C93_spec_encode(+x0: U32)
   SF.encoding_of_parts(Spec.GtED805B7C93(), S.BitsValue{GtED805B7C93_tb(x0)}, [B.byte_sel(0, x0), B.byte_sel(1, x0)], GtED805B7C93_spec_parts(x0))
 
 def GtED805B7C93_spec_decode(+x0: U32)
-    -> {T.GtED805B7C93_decode(B.Buf{ALeaf{x0}, 2}, 2) == (B.Buf{ALeaf{x0}, 2}, Some{T.Bitvector16{U32.and(x0, 65535)}}) : B.Buf & Maybe<&1, T.Bitvector16>}:
+    -> {bitvector_16_r.GtED805B7C93_decode(B.Buf{ALeaf{x0}, 2}, 2) == (B.Buf{ALeaf{x0}, 2}, Some{bitvector_16_d.Bitvector16{U32.and(x0, 65535)}}) : B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>}:
   {==}
 
 def GtED805B7C93_spec_view(+x0: U32)
@@ -61,13 +63,13 @@ def GtED805B7C93_spec_view(+x0: U32)
   {==}
 
 def GtED805B7C93_spec_bytes(+y0: U32)
-    -> {B.emit(T.GtED805B7C93_encode(T.Bitvector16{y0}), 0, 1) == (T.GtED805B7C93_encode(T.Bitvector16{y0}), [B.byte_sel(0, y0), B.byte_sel(1, y0)]) : B.Buf & +List<U32>}:
-  %SP2.or0(y0) : {B.emit(T.GtED805B7C93_encode(T.Bitvector16{y0}), 0, 1) == (T.GtED805B7C93_encode(T.Bitvector16{y0}), [B.byte_sel(0, _), B.byte_sel(1, y0)]) : B.Buf & +List<U32>}
-  %SP2.or0(y0) : {B.emit(T.GtED805B7C93_encode(T.Bitvector16{y0}), 0, 1) == (T.GtED805B7C93_encode(T.Bitvector16{y0}), [B.byte_sel(0, U32.or(0, y0)), B.byte_sel(1, _)]) : B.Buf & +List<U32>}
+    -> {B.emit(bitvector_16_e.GtED805B7C93_encode(bitvector_16_d.Bitvector16{y0}), 0, 1) == (bitvector_16_e.GtED805B7C93_encode(bitvector_16_d.Bitvector16{y0}), [B.byte_sel(0, y0), B.byte_sel(1, y0)]) : B.Buf & +List<U32>}:
+  %SP2.or0(y0) : {B.emit(bitvector_16_e.GtED805B7C93_encode(bitvector_16_d.Bitvector16{y0}), 0, 1) == (bitvector_16_e.GtED805B7C93_encode(bitvector_16_d.Bitvector16{y0}), [B.byte_sel(0, _), B.byte_sel(1, y0)]) : B.Buf & +List<U32>}
+  %SP2.or0(y0) : {B.emit(bitvector_16_e.GtED805B7C93_encode(bitvector_16_d.Bitvector16{y0}), 0, 1) == (bitvector_16_e.GtED805B7C93_encode(bitvector_16_d.Bitvector16{y0}), [B.byte_sel(0, U32.or(0, y0)), B.byte_sel(1, _)]) : B.Buf & +List<U32>}
   {==}
 
 def GtED805B7C93_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 2) == False{} : Bool})
-    -> {T.GtED805B7C93_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, T.Bitvector16>}:
-  %Equal.sym(Bool, U32.is_eq(m, 2), False{}, e) : {T.GtED805B7C93_built(m, T.bv16_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, T.Bitvector16>}
+    -> {bitvector_16_r.GtED805B7C93_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>}:
+  %Equal.sym(Bool, U32.is_eq(m, 2), False{}, e) : {bitvector_16_r.GtED805B7C93_built(m, bitvector_16_r.bv16_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_16_d.Bitvector16>}
   {==}
 

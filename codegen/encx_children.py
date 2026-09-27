@@ -53,6 +53,7 @@ def read_child(p, text=None, fname=None):
     """A child's interface record, from its module (or the given text of the module fname)."""
     f = child_file(p) if fname is None else OBJ / fname
     s = f.read_text() if text is None else text
+    s = __import__('runtime_refs').unwire(s)   # the runtime split: its T.<sym> spelling
     m = re.search(r'^type (\w+) is Data:\n  \1\{([^}]*)\}', s, re.M)
     mt, fields = m.group(1), [tuple(x.strip() for x in fd.split(':', 1)) for fd in m.group(2).split(',')]
     th = re.search(rf'^def TH\(m: {mt}\) -> ([^:]+):', s, re.M).group(1).strip()

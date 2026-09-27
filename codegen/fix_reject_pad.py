@@ -16,6 +16,7 @@ import itertools
 import re
 import sys
 from pathlib import Path
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'codegen'))
@@ -27,7 +28,7 @@ B = lambda b: 'True{}' if b else 'False{}'
 def rows():
     import generic
     gen = {n for n, t, e in generic.inventory_all() if e is None}
-    src = (ROOT / 'types/generic_obj.bend').read_text()
+    src = RR.mono_text('generic')
     specs = (ROOT / 'proofs/obj/generic_specs.bend').read_text()
     out = []
     for m in re.finditer(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
@@ -194,6 +195,7 @@ def outputs():
 
 def main():
     out = outputs()
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

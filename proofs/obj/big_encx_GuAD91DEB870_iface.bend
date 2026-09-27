@@ -1,7 +1,12 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as ProgressiveSingleListContainerTestStruct_d
+import ../../types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend as ProgressiveSingleListContainerTestStruct_e
+import ../../types/ProgressiveVarTestStruct_def_generated.bend as ProgressiveVarTestStruct_d
+import ../../types/ProgressiveVarTestStruct_encode_ssz_generated.bend as ProgressiveVarTestStruct_e
+import ../../types/CompatibleUnionBC_def_generated.bend as CompatibleUnionBC_d
+import ../../types/CompatibleUnionBC_encode_ssz_generated.bend as CompatibleUnionBC_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -42,14 +47,14 @@ def and_l(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {a == Tr
 def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == True{} : Bool}: FD.logic__and_right(a, b, h)
 
 # ---- arm 0: Gp4B0CA2906A, selector 2 ----
-def TH0(+x: EA_Gp4B0CA2906A.MW) -> T.GuAD91DEB870: T.GuAD91DEB870_c0{EA_Gp4B0CA2906A.TH(x)}
+def TH0(+x: EA_Gp4B0CA2906A.MW) -> CompatibleUnionBC_d.GuAD91DEB870: CompatibleUnionBC_d.GuAD91DEB870_c0{EA_Gp4B0CA2906A.TH(x)}
 def OK0(+x: EA_Gp4B0CA2906A.MW) -> Bool: Bool.and(EA_Gp4B0CA2906A.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp4B0CA2906A.ENC(x)), A.quad(VB.pw(28n))))
 def ENC0(+x: EA_Gp4B0CA2906A.MW) -> +List<U32>: Con{U32.and(2, 255), EA_Gp4B0CA2906A.ENC(x)}
 def VAL0(+x: EA_Gp4B0CA2906A.MW) -> S.Value: S.Selected{2, EA_Gp4B0CA2906A.VAL(x)}
 def SZ0(+x: EA_Gp4B0CA2906A.MW) -> U32: (EA_Gp4B0CA2906A.SZ(x) + 1 : U32)
 def PUTX0(+x: EA_Gp4B0CA2906A.MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: EA_Gp4B0CA2906A.PUTX(x, dd, VU.DS(dd, D, q, r, 2), VU.AQ(q, r), VU.AR(r))
 def RT0(+x: EA_Gp4B0CA2906A.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.GuAD91DEB870_putk(FD.array__thaw(U32, D), X, TH0(x)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (T.GuAD91DEB870 & U32)}
+  {CompatibleUnionBC_e.GuAD91DEB870_putk(FD.array__thaw(U32, D), X, TH0(x)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (CompatibleUnionBC_d.GuAD91DEB870 & U32)}
 def BY0(+x: EA_Gp4B0CA2906A.MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTX0(x, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, ENC0(x), UW.ZB(WD.PADB(r, List.length(&2, U32, ENC0(x)))))) : +List<U32>}
 def mk0(+x: EA_Gp4B0CA2906A.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RT0(x, dd, D, X, q, r), +b: BY0(x, dd, D, q, r)) -> DK.P2(RT0(x, dd, D, X, q, r), BY0(x, dd, D, q, r)):
@@ -57,16 +62,16 @@ def mk0(+x: EA_Gp4B0CA2906A.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: 
 
 def rt0(+x: EA_Gp4B0CA2906A.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +hok0: {EA_Gp4B0CA2906A.OK(x) == True{} : Bool},
     +rts: {O.w8(FD.array__thaw(U32, D), X, 2) == FD.array__thaw(U32, VU.DS(dd, D, q, r, 2)) : Array<U32>},
-    +rta: {T.Gp4B0CA2906A_putk(FD.array__thaw(U32, VU.DS(dd, D, q, r, 2)), U32.add(X, 1), EA_Gp4B0CA2906A.TH(x)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (EA_Gp4B0CA2906A.TH(x), EA_Gp4B0CA2906A.SZ(x))) : Array<U32> & (T.Gp4B0CA2906A & U32)})
+    +rta: {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_putk(FD.array__thaw(U32, VU.DS(dd, D, q, r, 2)), U32.add(X, 1), EA_Gp4B0CA2906A.TH(x)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (EA_Gp4B0CA2906A.TH(x), EA_Gp4B0CA2906A.SZ(x))) : Array<U32> & (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32)})
     -> RT0(x, dd, D, X, q, r):
-  %Equal.sym(T.Gp4B0CA2906A & Bool, T.Gp4B0CA2906A_valid(EA_Gp4B0CA2906A.TH(x)), (EA_Gp4B0CA2906A.TH(x), True{}), EA_Gp4B0CA2906A.validx(x, hok0)) :
-    {T.GuAD91DEB870_pk(FD.array__thaw(U32, D), X, T.GuAD91DEB870_va0(_)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (T.GuAD91DEB870 & U32)}
-  %Equal.sym(T.Gp4B0CA2906A & U32, T.Gp4B0CA2906A_size(EA_Gp4B0CA2906A.TH(x)), (EA_Gp4B0CA2906A.TH(x), EA_Gp4B0CA2906A.SZ(x)), EA_Gp4B0CA2906A.sizex(x, hok0)) :
-    {T.GuAD91DEB870_putn_sz(FD.array__thaw(U32, D), X, T.GuAD91DEB870_sz0(_)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (T.GuAD91DEB870 & U32)}
+  %Equal.sym(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & Bool, ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_valid(EA_Gp4B0CA2906A.TH(x)), (EA_Gp4B0CA2906A.TH(x), True{}), EA_Gp4B0CA2906A.validx(x, hok0)) :
+    {CompatibleUnionBC_e.GuAD91DEB870_pk(FD.array__thaw(U32, D), X, CompatibleUnionBC_e.GuAD91DEB870_va0(_)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (CompatibleUnionBC_d.GuAD91DEB870 & U32)}
+  %Equal.sym(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32, ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_size(EA_Gp4B0CA2906A.TH(x)), (EA_Gp4B0CA2906A.TH(x), EA_Gp4B0CA2906A.SZ(x)), EA_Gp4B0CA2906A.sizex(x, hok0)) :
+    {CompatibleUnionBC_e.GuAD91DEB870_putn_sz(FD.array__thaw(U32, D), X, CompatibleUnionBC_e.GuAD91DEB870_sz0(_)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (CompatibleUnionBC_d.GuAD91DEB870 & U32)}
   %Equal.sym(Array<U32>, O.w8(FD.array__thaw(U32, D), X, 2), FD.array__thaw(U32, VU.DS(dd, D, q, r, 2)), rts) :
-    {T.GuAD91DEB870_putn_fin(SZ0(x), T.GuAD91DEB870_pb0(T.Gp4B0CA2906A_put(_, U32.add(X, 1), EA_Gp4B0CA2906A.TH(x)))) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (T.GuAD91DEB870 & U32)}
-  %Equal.sym(Array<U32> & (T.Gp4B0CA2906A & U32), T.Gp4B0CA2906A_putk(FD.array__thaw(U32, VU.DS(dd, D, q, r, 2)), U32.add(X, 1), EA_Gp4B0CA2906A.TH(x)), (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (EA_Gp4B0CA2906A.TH(x), EA_Gp4B0CA2906A.SZ(x))), rta) :
-    {T.GuAD91DEB870_putn_fin(SZ0(x), T.GuAD91DEB870_pb0(T.Gp4B0CA2906A_put_drop(_))) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (T.GuAD91DEB870 & U32)}
+    {CompatibleUnionBC_e.GuAD91DEB870_putn_fin(SZ0(x), CompatibleUnionBC_e.GuAD91DEB870_pb0(ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_put(_, U32.add(X, 1), EA_Gp4B0CA2906A.TH(x)))) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (CompatibleUnionBC_d.GuAD91DEB870 & U32)}
+  %Equal.sym(Array<U32> & (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32), ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_putk(FD.array__thaw(U32, VU.DS(dd, D, q, r, 2)), U32.add(X, 1), EA_Gp4B0CA2906A.TH(x)), (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (EA_Gp4B0CA2906A.TH(x), EA_Gp4B0CA2906A.SZ(x))), rta) :
+    {CompatibleUnionBC_e.GuAD91DEB870_putn_fin(SZ0(x), CompatibleUnionBC_e.GuAD91DEB870_pb0(ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_put_drop(_))) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (CompatibleUnionBC_d.GuAD91DEB870 & U32)}
   {==}
 def go0(+x: EA_Gp4B0CA2906A.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
@@ -99,22 +104,22 @@ def szk0(+x: EA_Gp4B0CA2906A.MW, +hok: {OK0(x) == True{} : Bool}, +k: Nat, +ek: 
     FD.logic__subst(Nat, z => {Nat.is_lt(2n+z, 31n) == True{} : Bool}, 28n, k, Equal.sym(Nat, k, 28n, ek), {==}), bnd0(x, hok, k, ek))
 def spec0(+x: EA_Gp4B0CA2906A.MW, +hok: {OK0(x) == True{} : Bool}) -> {Codec.parts(VAL0(x), Spec.GuAD91DEB870()) == Some{[S.Variable{ENC0(x)}]} : Maybe<&2, +List<S.Part>>}:
   VU.tag_v(2, EA_Gp4B0CA2906A.VAL(x), Spec.Gp4B0CA2906A(), EA_Gp4B0CA2906A.ENC(x), EA_Gp4B0CA2906A.encx_spec(x, and_l(EA_Gp4B0CA2906A.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp4B0CA2906A.ENC(x)), A.quad(VB.pw(28n))), hok)))
-def size0(+x: EA_Gp4B0CA2906A.MW, +hok: {OK0(x) == True{} : Bool}) -> {T.GuAD91DEB870_size(TH0(x)) == (TH0(x), SZ0(x)) : T.GuAD91DEB870 & U32}:
-  %Equal.sym(T.Gp4B0CA2906A & U32, T.Gp4B0CA2906A_size(EA_Gp4B0CA2906A.TH(x)), (EA_Gp4B0CA2906A.TH(x), EA_Gp4B0CA2906A.SZ(x)), EA_Gp4B0CA2906A.sizex(x, and_l(EA_Gp4B0CA2906A.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp4B0CA2906A.ENC(x)), A.quad(VB.pw(28n))), hok))) : {T.GuAD91DEB870_sz0(_) == (TH0(x), SZ0(x)) : T.GuAD91DEB870 & U32}
+def size0(+x: EA_Gp4B0CA2906A.MW, +hok: {OK0(x) == True{} : Bool}) -> {CompatibleUnionBC_e.GuAD91DEB870_size(TH0(x)) == (TH0(x), SZ0(x)) : CompatibleUnionBC_d.GuAD91DEB870 & U32}:
+  %Equal.sym(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32, ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_size(EA_Gp4B0CA2906A.TH(x)), (EA_Gp4B0CA2906A.TH(x), EA_Gp4B0CA2906A.SZ(x)), EA_Gp4B0CA2906A.sizex(x, and_l(EA_Gp4B0CA2906A.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp4B0CA2906A.ENC(x)), A.quad(VB.pw(28n))), hok))) : {CompatibleUnionBC_e.GuAD91DEB870_sz0(_) == (TH0(x), SZ0(x)) : CompatibleUnionBC_d.GuAD91DEB870 & U32}
   {==}
-def valid0(+x: EA_Gp4B0CA2906A.MW, +hok: {OK0(x) == True{} : Bool}) -> {T.GuAD91DEB870_valid(TH0(x)) == (TH0(x), True{}) : T.GuAD91DEB870 & Bool}:
-  %Equal.sym(T.Gp4B0CA2906A & Bool, T.Gp4B0CA2906A_valid(EA_Gp4B0CA2906A.TH(x)), (EA_Gp4B0CA2906A.TH(x), True{}), EA_Gp4B0CA2906A.validx(x, and_l(EA_Gp4B0CA2906A.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp4B0CA2906A.ENC(x)), A.quad(VB.pw(28n))), hok))) : {T.GuAD91DEB870_va0(_) == (TH0(x), True{}) : T.GuAD91DEB870 & Bool}
+def valid0(+x: EA_Gp4B0CA2906A.MW, +hok: {OK0(x) == True{} : Bool}) -> {CompatibleUnionBC_e.GuAD91DEB870_valid(TH0(x)) == (TH0(x), True{}) : CompatibleUnionBC_d.GuAD91DEB870 & Bool}:
+  %Equal.sym(ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & Bool, ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_valid(EA_Gp4B0CA2906A.TH(x)), (EA_Gp4B0CA2906A.TH(x), True{}), EA_Gp4B0CA2906A.validx(x, and_l(EA_Gp4B0CA2906A.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp4B0CA2906A.ENC(x)), A.quad(VB.pw(28n))), hok))) : {CompatibleUnionBC_e.GuAD91DEB870_va0(_) == (TH0(x), True{}) : CompatibleUnionBC_d.GuAD91DEB870 & Bool}
   {==}
 
 # ---- arm 1: Gp66304057C3, selector 3 ----
-def TH1(+x: EA_Gp66304057C3.MW) -> T.GuAD91DEB870: T.GuAD91DEB870_c1{EA_Gp66304057C3.TH(x)}
+def TH1(+x: EA_Gp66304057C3.MW) -> CompatibleUnionBC_d.GuAD91DEB870: CompatibleUnionBC_d.GuAD91DEB870_c1{EA_Gp66304057C3.TH(x)}
 def OK1(+x: EA_Gp66304057C3.MW) -> Bool: Bool.and(EA_Gp66304057C3.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp66304057C3.ENC(x)), A.quad(VB.pw(28n))))
 def ENC1(+x: EA_Gp66304057C3.MW) -> +List<U32>: Con{U32.and(3, 255), EA_Gp66304057C3.ENC(x)}
 def VAL1(+x: EA_Gp66304057C3.MW) -> S.Value: S.Selected{3, EA_Gp66304057C3.VAL(x)}
 def SZ1(+x: EA_Gp66304057C3.MW) -> U32: (EA_Gp66304057C3.SZ(x) + 1 : U32)
 def PUTX1(+x: EA_Gp66304057C3.MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: EA_Gp66304057C3.PUTX(x, dd, VU.DS(dd, D, q, r, 3), VU.AQ(q, r), VU.AR(r))
 def RT1(+x: EA_Gp66304057C3.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.GuAD91DEB870_putk(FD.array__thaw(U32, D), X, TH1(x)) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (TH1(x), SZ1(x))) : Array<U32> & (T.GuAD91DEB870 & U32)}
+  {CompatibleUnionBC_e.GuAD91DEB870_putk(FD.array__thaw(U32, D), X, TH1(x)) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (TH1(x), SZ1(x))) : Array<U32> & (CompatibleUnionBC_d.GuAD91DEB870 & U32)}
 def BY1(+x: EA_Gp66304057C3.MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTX1(x, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, ENC1(x), UW.ZB(WD.PADB(r, List.length(&2, U32, ENC1(x)))))) : +List<U32>}
 def mk1(+x: EA_Gp66304057C3.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RT1(x, dd, D, X, q, r), +b: BY1(x, dd, D, q, r)) -> DK.P2(RT1(x, dd, D, X, q, r), BY1(x, dd, D, q, r)):
@@ -122,16 +127,16 @@ def mk1(+x: EA_Gp66304057C3.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: 
 
 def rt1(+x: EA_Gp66304057C3.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +hok0: {EA_Gp66304057C3.OK(x) == True{} : Bool},
     +rts: {O.w8(FD.array__thaw(U32, D), X, 3) == FD.array__thaw(U32, VU.DS(dd, D, q, r, 3)) : Array<U32>},
-    +rta: {T.Gp66304057C3_putk(FD.array__thaw(U32, VU.DS(dd, D, q, r, 3)), U32.add(X, 1), EA_Gp66304057C3.TH(x)) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (EA_Gp66304057C3.TH(x), EA_Gp66304057C3.SZ(x))) : Array<U32> & (T.Gp66304057C3 & U32)})
+    +rta: {ProgressiveVarTestStruct_e.Gp66304057C3_putk(FD.array__thaw(U32, VU.DS(dd, D, q, r, 3)), U32.add(X, 1), EA_Gp66304057C3.TH(x)) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (EA_Gp66304057C3.TH(x), EA_Gp66304057C3.SZ(x))) : Array<U32> & (ProgressiveVarTestStruct_d.Gp66304057C3 & U32)})
     -> RT1(x, dd, D, X, q, r):
-  %Equal.sym(T.Gp66304057C3 & Bool, T.Gp66304057C3_valid(EA_Gp66304057C3.TH(x)), (EA_Gp66304057C3.TH(x), True{}), EA_Gp66304057C3.validx(x, hok0)) :
-    {T.GuAD91DEB870_pk(FD.array__thaw(U32, D), X, T.GuAD91DEB870_va1(_)) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (TH1(x), SZ1(x))) : Array<U32> & (T.GuAD91DEB870 & U32)}
-  %Equal.sym(T.Gp66304057C3 & U32, T.Gp66304057C3_size(EA_Gp66304057C3.TH(x)), (EA_Gp66304057C3.TH(x), EA_Gp66304057C3.SZ(x)), EA_Gp66304057C3.sizex(x, hok0)) :
-    {T.GuAD91DEB870_putn_sz(FD.array__thaw(U32, D), X, T.GuAD91DEB870_sz1(_)) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (TH1(x), SZ1(x))) : Array<U32> & (T.GuAD91DEB870 & U32)}
+  %Equal.sym(ProgressiveVarTestStruct_d.Gp66304057C3 & Bool, ProgressiveVarTestStruct_e.Gp66304057C3_valid(EA_Gp66304057C3.TH(x)), (EA_Gp66304057C3.TH(x), True{}), EA_Gp66304057C3.validx(x, hok0)) :
+    {CompatibleUnionBC_e.GuAD91DEB870_pk(FD.array__thaw(U32, D), X, CompatibleUnionBC_e.GuAD91DEB870_va1(_)) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (TH1(x), SZ1(x))) : Array<U32> & (CompatibleUnionBC_d.GuAD91DEB870 & U32)}
+  %Equal.sym(ProgressiveVarTestStruct_d.Gp66304057C3 & U32, ProgressiveVarTestStruct_e.Gp66304057C3_size(EA_Gp66304057C3.TH(x)), (EA_Gp66304057C3.TH(x), EA_Gp66304057C3.SZ(x)), EA_Gp66304057C3.sizex(x, hok0)) :
+    {CompatibleUnionBC_e.GuAD91DEB870_putn_sz(FD.array__thaw(U32, D), X, CompatibleUnionBC_e.GuAD91DEB870_sz1(_)) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (TH1(x), SZ1(x))) : Array<U32> & (CompatibleUnionBC_d.GuAD91DEB870 & U32)}
   %Equal.sym(Array<U32>, O.w8(FD.array__thaw(U32, D), X, 3), FD.array__thaw(U32, VU.DS(dd, D, q, r, 3)), rts) :
-    {T.GuAD91DEB870_putn_fin(SZ1(x), T.GuAD91DEB870_pb1(T.Gp66304057C3_put(_, U32.add(X, 1), EA_Gp66304057C3.TH(x)))) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (TH1(x), SZ1(x))) : Array<U32> & (T.GuAD91DEB870 & U32)}
-  %Equal.sym(Array<U32> & (T.Gp66304057C3 & U32), T.Gp66304057C3_putk(FD.array__thaw(U32, VU.DS(dd, D, q, r, 3)), U32.add(X, 1), EA_Gp66304057C3.TH(x)), (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (EA_Gp66304057C3.TH(x), EA_Gp66304057C3.SZ(x))), rta) :
-    {T.GuAD91DEB870_putn_fin(SZ1(x), T.GuAD91DEB870_pb1(T.Gp66304057C3_put_drop(_))) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (TH1(x), SZ1(x))) : Array<U32> & (T.GuAD91DEB870 & U32)}
+    {CompatibleUnionBC_e.GuAD91DEB870_putn_fin(SZ1(x), CompatibleUnionBC_e.GuAD91DEB870_pb1(ProgressiveVarTestStruct_e.Gp66304057C3_put(_, U32.add(X, 1), EA_Gp66304057C3.TH(x)))) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (TH1(x), SZ1(x))) : Array<U32> & (CompatibleUnionBC_d.GuAD91DEB870 & U32)}
+  %Equal.sym(Array<U32> & (ProgressiveVarTestStruct_d.Gp66304057C3 & U32), ProgressiveVarTestStruct_e.Gp66304057C3_putk(FD.array__thaw(U32, VU.DS(dd, D, q, r, 3)), U32.add(X, 1), EA_Gp66304057C3.TH(x)), (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (EA_Gp66304057C3.TH(x), EA_Gp66304057C3.SZ(x))), rta) :
+    {CompatibleUnionBC_e.GuAD91DEB870_putn_fin(SZ1(x), CompatibleUnionBC_e.GuAD91DEB870_pb1(ProgressiveVarTestStruct_e.Gp66304057C3_put_drop(_))) == (FD.array__thaw(U32, PUTX1(x, dd, D, q, r)), (TH1(x), SZ1(x))) : Array<U32> & (CompatibleUnionBC_d.GuAD91DEB870 & U32)}
   {==}
 def go1(+x: EA_Gp66304057C3.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
@@ -164,18 +169,18 @@ def szk1(+x: EA_Gp66304057C3.MW, +hok: {OK1(x) == True{} : Bool}, +k: Nat, +ek: 
     FD.logic__subst(Nat, z => {Nat.is_lt(2n+z, 31n) == True{} : Bool}, 28n, k, Equal.sym(Nat, k, 28n, ek), {==}), bnd1(x, hok, k, ek))
 def spec1(+x: EA_Gp66304057C3.MW, +hok: {OK1(x) == True{} : Bool}) -> {Codec.parts(VAL1(x), Spec.GuAD91DEB870()) == Some{[S.Variable{ENC1(x)}]} : Maybe<&2, +List<S.Part>>}:
   VU.tag_v(3, EA_Gp66304057C3.VAL(x), Spec.Gp66304057C3(), EA_Gp66304057C3.ENC(x), EA_Gp66304057C3.encx_spec(x, and_l(EA_Gp66304057C3.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp66304057C3.ENC(x)), A.quad(VB.pw(28n))), hok)))
-def size1(+x: EA_Gp66304057C3.MW, +hok: {OK1(x) == True{} : Bool}) -> {T.GuAD91DEB870_size(TH1(x)) == (TH1(x), SZ1(x)) : T.GuAD91DEB870 & U32}:
-  %Equal.sym(T.Gp66304057C3 & U32, T.Gp66304057C3_size(EA_Gp66304057C3.TH(x)), (EA_Gp66304057C3.TH(x), EA_Gp66304057C3.SZ(x)), EA_Gp66304057C3.sizex(x, and_l(EA_Gp66304057C3.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp66304057C3.ENC(x)), A.quad(VB.pw(28n))), hok))) : {T.GuAD91DEB870_sz1(_) == (TH1(x), SZ1(x)) : T.GuAD91DEB870 & U32}
+def size1(+x: EA_Gp66304057C3.MW, +hok: {OK1(x) == True{} : Bool}) -> {CompatibleUnionBC_e.GuAD91DEB870_size(TH1(x)) == (TH1(x), SZ1(x)) : CompatibleUnionBC_d.GuAD91DEB870 & U32}:
+  %Equal.sym(ProgressiveVarTestStruct_d.Gp66304057C3 & U32, ProgressiveVarTestStruct_e.Gp66304057C3_size(EA_Gp66304057C3.TH(x)), (EA_Gp66304057C3.TH(x), EA_Gp66304057C3.SZ(x)), EA_Gp66304057C3.sizex(x, and_l(EA_Gp66304057C3.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp66304057C3.ENC(x)), A.quad(VB.pw(28n))), hok))) : {CompatibleUnionBC_e.GuAD91DEB870_sz1(_) == (TH1(x), SZ1(x)) : CompatibleUnionBC_d.GuAD91DEB870 & U32}
   {==}
-def valid1(+x: EA_Gp66304057C3.MW, +hok: {OK1(x) == True{} : Bool}) -> {T.GuAD91DEB870_valid(TH1(x)) == (TH1(x), True{}) : T.GuAD91DEB870 & Bool}:
-  %Equal.sym(T.Gp66304057C3 & Bool, T.Gp66304057C3_valid(EA_Gp66304057C3.TH(x)), (EA_Gp66304057C3.TH(x), True{}), EA_Gp66304057C3.validx(x, and_l(EA_Gp66304057C3.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp66304057C3.ENC(x)), A.quad(VB.pw(28n))), hok))) : {T.GuAD91DEB870_va1(_) == (TH1(x), True{}) : T.GuAD91DEB870 & Bool}
+def valid1(+x: EA_Gp66304057C3.MW, +hok: {OK1(x) == True{} : Bool}) -> {CompatibleUnionBC_e.GuAD91DEB870_valid(TH1(x)) == (TH1(x), True{}) : CompatibleUnionBC_d.GuAD91DEB870 & Bool}:
+  %Equal.sym(ProgressiveVarTestStruct_d.Gp66304057C3 & Bool, ProgressiveVarTestStruct_e.Gp66304057C3_valid(EA_Gp66304057C3.TH(x)), (EA_Gp66304057C3.TH(x), True{}), EA_Gp66304057C3.validx(x, and_l(EA_Gp66304057C3.OK(x), Nat.is_le(1n+List.length(&2, U32, EA_Gp66304057C3.ENC(x)), A.quad(VB.pw(28n))), hok))) : {CompatibleUnionBC_e.GuAD91DEB870_va1(_) == (TH1(x), True{}) : CompatibleUnionBC_d.GuAD91DEB870 & Bool}
   {==}
 
 # ---- the union's mirror and its interface ----
 type MW is Data:
   MW0{x: EA_Gp4B0CA2906A.MW}
   MW1{x: EA_Gp66304057C3.MW}
-def TH(m: MW) -> T.GuAD91DEB870:
+def TH(m: MW) -> CompatibleUnionBC_d.GuAD91DEB870:
   match m:
     case MW0{+x}: TH0(x)
     case MW1{+x}: TH1(x)
@@ -215,7 +220,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.GuAD91DEB870_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (T.GuAD91DEB870 & U32)}
+  {CompatibleUnionBC_e.GuAD91DEB870_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (CompatibleUnionBC_d.GuAD91DEB870 & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW0{+x}: PA(RT0(x, dd, D, X, q, r), BY0(x, dd, D, q, r), go0(x, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok))
@@ -292,7 +297,7 @@ def pfx(m, dd, D, q, r, pf):
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.GuAD91DEB870_size(TH(m)) == (TH(m), SZ(m)) : T.GuAD91DEB870 & U32}
+  {CompatibleUnionBC_e.GuAD91DEB870_size(TH(m)) == (TH(m), SZ(m)) : CompatibleUnionBC_d.GuAD91DEB870 & U32}
 def sizex(m, hok):
   match m:
     case MW0{+x}: size0(x, hok)
@@ -301,7 +306,7 @@ def sizex(m, hok):
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.GuAD91DEB870_valid(TH(m)) == (TH(m), True{}) : T.GuAD91DEB870 & Bool}
+  {CompatibleUnionBC_e.GuAD91DEB870_valid(TH(m)) == (TH(m), True{}) : CompatibleUnionBC_d.GuAD91DEB870 & Bool}
 def validx(m, hok):
   match m:
     case MW0{+x}: valid0(x, hok)

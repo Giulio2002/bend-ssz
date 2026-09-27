@@ -3,7 +3,7 @@ import ../compact/found.bend as F
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluTransaction_hashtreeroot_generated.bend as FuluTransaction_h
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ./cform.bend as CF
@@ -45,7 +45,7 @@ import ./big_lim_bl.bend as LBL
 def Transaction_ok(+s: S.Schema, +es: {s == Spec.Transaction() : S.Schema}, +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}) -> {LO.ok_bl(s, OS.dv_25(dv)) == True{} : Bool}:
   OS.ok_at(y => e => LO.ok_bl(y, OS.dv_25(e)), s, Spec.Transaction(), dv, es, edv, LBL.tx_ok_at(Spec.Transaction(), {==}))
 def Transaction_rc(-h: B.Buf, -o: O.Words, +s: S.Schema, +es: {s == Spec.Transaction() : S.Schema}, +rep: LO.rep_bl(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV})
-    -> RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.Transaction_hash_tree_root(h, o))))]):
+    -> RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluTransaction_h.Transaction_hash_tree_root(h, o))))]):
   %Equal.sym(B.Buf & (O.Words & D.Digest), O.mix_count(64n, 0n, O.words_root(64n, h, o, 25, 0)), (h, (o, LO.ldig(64n, o, 25n))), LO.bl_st(64n, h, o, 25, 0, 25n, LO.rep_wf(o, s, rep), {==})) :
     RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, _)))])
   OS.dtrans(S.BytesValue{WO.wview(o)}, s, LO.ldig(64n, o, 25n), LO.ldig(64n, o, OS.dv_25(dv)), Equal.cong(Nat, D.Digest, y => LO.ldig(64n, o, y), OS.dv_25(dv), 25n, OS.dveq(OS.dv_25, dv, edv)), LO.bl_rs(64n, {==}, h, o, s, OS.dv_25(dv), 25, 0, rep, Transaction_ok(s, es, dv, edv), OS.dvu(OS.dv_25, dv, edv, 25, {==}), OS.dvl(OS.dv_25, dv, edv, {==})))
@@ -55,6 +55,6 @@ law Transaction_root_correct:
   for +s: S.Schema
   for +es: {s == Spec.Transaction() : S.Schema}
   for +rep: LO.rep_bl(o, s)
-  RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.Transaction_hash_tree_root(h, o))))])
+  RR.roots(S.BytesValue{WO.wview(o)}, s, [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluTransaction_h.Transaction_hash_tree_root(h, o))))])
 def Transaction_root_correct(h, o, s, es, rep): Transaction_rc(h, o, s, es, rep, OS.DV0(), {==})
 

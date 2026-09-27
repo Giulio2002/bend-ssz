@@ -1,7 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
+import ../../types/ProgressiveSingleFieldContainerTestStruct_decode_ssz_generated.bend as ProgressiveSingleFieldContainerTestStruct_r
+import ../../types/ProgressiveSingleFieldContainerTestStruct_encode_ssz_generated.bend as ProgressiveSingleFieldContainerTestStruct_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -58,7 +60,7 @@ def GpF350A3C486_spec_encode(+x0: U32)
   SF.encoding_of_parts(Spec.GpF350A3C486(), S.Sequence{S.Items{S.UnsignedValue{P.UInt{B.byte_sel(0, x0), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}, [B.byte_sel(0, x0)], GpF350A3C486_spec_parts(x0))
 
 def GpF350A3C486_spec_decode(+x0: U32)
-    -> {T.GpF350A3C486_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{T.GpF350A3C486{B.byte_sel(0, x0)}}) : B.Buf & Maybe<&1, T.GpF350A3C486>}:
+    -> {ProgressiveSingleFieldContainerTestStruct_r.GpF350A3C486_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{B.byte_sel(0, x0)}}) : B.Buf & Maybe<&1, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>}:
   {==}
 
 def GpF350A3C486_spec_view(+x0: U32)
@@ -66,12 +68,12 @@ def GpF350A3C486_spec_view(+x0: U32)
   {==}
 
 def GpF350A3C486_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})
-    -> {T.GpF350A3C486_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, T.GpF350A3C486>}:
-  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {T.GpF350A3C486_built(m, T.GpF350A3C486_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, T.GpF350A3C486>}
+    -> {ProgressiveSingleFieldContainerTestStruct_r.GpF350A3C486_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>}:
+  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {ProgressiveSingleFieldContainerTestStruct_r.GpF350A3C486_built(m, ProgressiveSingleFieldContainerTestStruct_r.GpF350A3C486_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>}
   {==}
 
 def GpF350A3C486_spec_bytes(+y0: U32)
-    -> {B.emit(T.GpF350A3C486_encode(T.GpF350A3C486{y0}), 0, 1) == (T.GpF350A3C486_encode(T.GpF350A3C486{y0}), [B.byte_sel(0, y0)]) : B.Buf & +List<U32>}:
-  %GpF350A3C486_e1(y0) : {B.emit(T.GpF350A3C486_encode(T.GpF350A3C486{y0}), 0, 1) == (T.GpF350A3C486_encode(T.GpF350A3C486{y0}), [_]) : B.Buf & +List<U32>}
+    -> {B.emit(ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_encode(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{y0}), 0, 1) == (ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_encode(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{y0}), [B.byte_sel(0, y0)]) : B.Buf & +List<U32>}:
+  %GpF350A3C486_e1(y0) : {B.emit(ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_encode(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{y0}), 0, 1) == (ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_encode(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{y0}), [_]) : B.Buf & +List<U32>}
   {==}
 

@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_decode_ssz_generated.bend as uint8_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -85,7 +85,7 @@ def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> U32: BX(t, x)
 def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.u8_read(UA.BF(t, n), off, 1) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}:
+    -> {uint8_r.u8_read(UA.BF(t, n), off, 1) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}:
   %Equal.sym(B.Buf & U32, B.byte_at(UA.BF(t, n), off), (UA.BF(t, n), VR.VX(t, off)),
       VR.byte_at_ok(d, t, n, off, FD.nat__lt_trans(d, 28n, 32n, hd, {==}), VR.hiX(d, off, x, e, VXG.ltx(x, 1n, A.quad(VB.pw(d)), {==}, hb)), pf)) :
     {_ == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}

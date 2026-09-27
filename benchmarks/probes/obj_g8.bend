@@ -2,146 +2,177 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
+import ../../types/FuluAttestation_decode_ssz_generated.bend as FuluAttestation_r
+import ../../types/FuluAttestation_encode_ssz_generated.bend as FuluAttestation_e
+import ../../types/FuluAttestation_hashtreeroot_generated.bend as FuluAttestation_h
+import ../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
+import ../../types/FuluExecutionPayloadHeader_decode_ssz_generated.bend as FuluExecutionPayloadHeader_r
+import ../../types/FuluExecutionPayloadHeader_encode_ssz_generated.bend as FuluExecutionPayloadHeader_e
+import ../../types/FuluExecutionPayloadHeader_hashtreeroot_generated.bend as FuluExecutionPayloadHeader_h
+import ../../types/FuluExecutionPayload_def_generated.bend as FuluExecutionPayload_d
+import ../../types/FuluExecutionPayload_decode_ssz_generated.bend as FuluExecutionPayload_r
+import ../../types/FuluExecutionPayload_encode_ssz_generated.bend as FuluExecutionPayload_e
+import ../../types/FuluExecutionPayload_hashtreeroot_generated.bend as FuluExecutionPayload_h
+import ../../types/FuluBeaconState_def_generated.bend as FuluBeaconState_d
+import ../../types/FuluBeaconState_decode_ssz_generated.bend as FuluBeaconState_r
+import ../../types/FuluBeaconState_encode_ssz_generated.bend as FuluBeaconState_e
+import ../../types/FuluBeaconState_hashtreeroot_generated.bend as FuluBeaconState_h
+import ../../types/FuluLightClientUpdate_def_generated.bend as FuluLightClientUpdate_d
+import ../../types/FuluLightClientUpdate_decode_ssz_generated.bend as FuluLightClientUpdate_r
+import ../../types/FuluLightClientUpdate_encode_ssz_generated.bend as FuluLightClientUpdate_e
+import ../../types/FuluLightClientUpdate_hashtreeroot_generated.bend as FuluLightClientUpdate_h
+import ../../types/FuluBeaconBlockBody_def_generated.bend as FuluBeaconBlockBody_d
+import ../../types/FuluBeaconBlockBody_decode_ssz_generated.bend as FuluBeaconBlockBody_r
+import ../../types/FuluBeaconBlockBody_encode_ssz_generated.bend as FuluBeaconBlockBody_e
+import ../../types/FuluBeaconBlockBody_hashtreeroot_generated.bend as FuluBeaconBlockBody_h
+import ../../types/FuluSignedBeaconBlock_def_generated.bend as FuluSignedBeaconBlock_d
+import ../../types/FuluSignedBeaconBlock_decode_ssz_generated.bend as FuluSignedBeaconBlock_r
+import ../../types/FuluSignedBeaconBlock_encode_ssz_generated.bend as FuluSignedBeaconBlock_e
+import ../../types/FuluSignedBeaconBlock_hashtreeroot_generated.bend as FuluSignedBeaconBlock_h
+import ../../types/FuluDataColumnSidecar_def_generated.bend as FuluDataColumnSidecar_d
+import ../../types/FuluDataColumnSidecar_decode_ssz_generated.bend as FuluDataColumnSidecar_r
+import ../../types/FuluDataColumnSidecar_encode_ssz_generated.bend as FuluDataColumnSidecar_e
+import ../../types/FuluDataColumnSidecar_hashtreeroot_generated.bend as FuluDataColumnSidecar_h
 import ../compact/io.bend as IOx
 
 # Compile-cost probe: eight types, decode + encode + root.
 type Any is Type:
-  A_BeaconState{v: T.BeaconState}
-  A_BeaconBlockBody{v: T.BeaconBlockBody}
-  A_ExecutionPayload{v: T.ExecutionPayload}
-  A_LightClientUpdate{v: T.LightClientUpdate}
-  A_DataColumnSidecar{v: T.DataColumnSidecar}
-  A_SignedBeaconBlock{v: T.SignedBeaconBlock}
-  A_Attestation{v: T.Attestation}
-  A_ExecutionPayloadHeader{v: T.ExecutionPayloadHeader}
-def some_BeaconState(pair: B.Buf & Maybe<&1, T.BeaconState>) -> B.Buf & Maybe<&1, Any>:
+  A_BeaconState{v: FuluBeaconState_d.BeaconState}
+  A_BeaconBlockBody{v: FuluBeaconBlockBody_d.BeaconBlockBody}
+  A_ExecutionPayload{v: FuluExecutionPayload_d.ExecutionPayload}
+  A_LightClientUpdate{v: FuluLightClientUpdate_d.LightClientUpdate}
+  A_DataColumnSidecar{v: FuluDataColumnSidecar_d.DataColumnSidecar}
+  A_SignedBeaconBlock{v: FuluSignedBeaconBlock_d.SignedBeaconBlock}
+  A_Attestation{v: FuluAttestation_d.Attestation}
+  A_ExecutionPayloadHeader{v: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader}
+def some_BeaconState(pair: B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>) -> B.Buf & Maybe<&1, Any>:
   (buf, m) = pair
   match m:
     case Some{v}: (buf, Some{A_BeaconState{v}})
     case None{}: (buf, None{})
-def some_BeaconBlockBody(pair: B.Buf & Maybe<&1, T.BeaconBlockBody>) -> B.Buf & Maybe<&1, Any>:
+def some_BeaconBlockBody(pair: B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>) -> B.Buf & Maybe<&1, Any>:
   (buf, m) = pair
   match m:
     case Some{v}: (buf, Some{A_BeaconBlockBody{v}})
     case None{}: (buf, None{})
-def some_ExecutionPayload(pair: B.Buf & Maybe<&1, T.ExecutionPayload>) -> B.Buf & Maybe<&1, Any>:
+def some_ExecutionPayload(pair: B.Buf & Maybe<&1, FuluExecutionPayload_d.ExecutionPayload>) -> B.Buf & Maybe<&1, Any>:
   (buf, m) = pair
   match m:
     case Some{v}: (buf, Some{A_ExecutionPayload{v}})
     case None{}: (buf, None{})
-def some_LightClientUpdate(pair: B.Buf & Maybe<&1, T.LightClientUpdate>) -> B.Buf & Maybe<&1, Any>:
+def some_LightClientUpdate(pair: B.Buf & Maybe<&1, FuluLightClientUpdate_d.LightClientUpdate>) -> B.Buf & Maybe<&1, Any>:
   (buf, m) = pair
   match m:
     case Some{v}: (buf, Some{A_LightClientUpdate{v}})
     case None{}: (buf, None{})
-def some_DataColumnSidecar(pair: B.Buf & Maybe<&1, T.DataColumnSidecar>) -> B.Buf & Maybe<&1, Any>:
+def some_DataColumnSidecar(pair: B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>) -> B.Buf & Maybe<&1, Any>:
   (buf, m) = pair
   match m:
     case Some{v}: (buf, Some{A_DataColumnSidecar{v}})
     case None{}: (buf, None{})
-def some_SignedBeaconBlock(pair: B.Buf & Maybe<&1, T.SignedBeaconBlock>) -> B.Buf & Maybe<&1, Any>:
+def some_SignedBeaconBlock(pair: B.Buf & Maybe<&1, FuluSignedBeaconBlock_d.SignedBeaconBlock>) -> B.Buf & Maybe<&1, Any>:
   (buf, m) = pair
   match m:
     case Some{v}: (buf, Some{A_SignedBeaconBlock{v}})
     case None{}: (buf, None{})
-def some_Attestation(pair: B.Buf & Maybe<&1, T.Attestation>) -> B.Buf & Maybe<&1, Any>:
+def some_Attestation(pair: B.Buf & Maybe<&1, FuluAttestation_d.Attestation>) -> B.Buf & Maybe<&1, Any>:
   (buf, m) = pair
   match m:
     case Some{v}: (buf, Some{A_Attestation{v}})
     case None{}: (buf, None{})
-def some_ExecutionPayloadHeader(pair: B.Buf & Maybe<&1, T.ExecutionPayloadHeader>) -> B.Buf & Maybe<&1, Any>:
+def some_ExecutionPayloadHeader(pair: B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>) -> B.Buf & Maybe<&1, Any>:
   (buf, m) = pair
   match m:
     case Some{v}: (buf, Some{A_ExecutionPayloadHeader{v}})
     case None{}: (buf, None{})
 def decode(+i: U32, buf: B.Buf, +size: U32) -> B.Buf & Maybe<&1, Any>:
   match i:
-    case 84: some_BeaconState(T.BeaconState_decode(buf, size))
-    case 94: some_BeaconBlockBody(T.BeaconBlockBody_decode(buf, size))
-    case 83: some_ExecutionPayload(T.ExecutionPayload_decode(buf, size))
-    case 89: some_LightClientUpdate(T.LightClientUpdate_decode(buf, size))
-    case 107: some_DataColumnSidecar(T.DataColumnSidecar_decode(buf, size))
-    case 65: some_SignedBeaconBlock(T.SignedBeaconBlock_decode(buf, size))
-    case 48: some_Attestation(T.Attestation_decode(buf, size))
-    case 45: some_ExecutionPayloadHeader(T.ExecutionPayloadHeader_decode(buf, size))
+    case 84: some_BeaconState(FuluBeaconState_r.BeaconState_decode(buf, size))
+    case 94: some_BeaconBlockBody(FuluBeaconBlockBody_r.BeaconBlockBody_decode(buf, size))
+    case 83: some_ExecutionPayload(FuluExecutionPayload_r.ExecutionPayload_decode(buf, size))
+    case 89: some_LightClientUpdate(FuluLightClientUpdate_r.LightClientUpdate_decode(buf, size))
+    case 107: some_DataColumnSidecar(FuluDataColumnSidecar_r.DataColumnSidecar_decode(buf, size))
+    case 65: some_SignedBeaconBlock(FuluSignedBeaconBlock_r.SignedBeaconBlock_decode(buf, size))
+    case 48: some_Attestation(FuluAttestation_r.Attestation_decode(buf, size))
+    case 45: some_ExecutionPayloadHeader(FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_decode(buf, size))
     case _: (buf, None{})
-def enc_BeaconState(pair: T.BeaconState & B.Buf) -> Any & B.Buf:
+def enc_BeaconState(pair: FuluBeaconState_d.BeaconState & B.Buf) -> Any & B.Buf:
   (v, out) = pair
   (A_BeaconState{v}, out)
-def root_BeaconState(pair: B.Buf & (T.BeaconState & D.Digest)) -> B.Buf & (Any & D.Digest):
+def root_BeaconState(pair: B.Buf & (FuluBeaconState_d.BeaconState & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
   (h, (A_BeaconState{v}, d))
-def enc_BeaconBlockBody(pair: T.BeaconBlockBody & B.Buf) -> Any & B.Buf:
+def enc_BeaconBlockBody(pair: FuluBeaconBlockBody_d.BeaconBlockBody & B.Buf) -> Any & B.Buf:
   (v, out) = pair
   (A_BeaconBlockBody{v}, out)
-def root_BeaconBlockBody(pair: B.Buf & (T.BeaconBlockBody & D.Digest)) -> B.Buf & (Any & D.Digest):
+def root_BeaconBlockBody(pair: B.Buf & (FuluBeaconBlockBody_d.BeaconBlockBody & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
   (h, (A_BeaconBlockBody{v}, d))
-def enc_ExecutionPayload(pair: T.ExecutionPayload & B.Buf) -> Any & B.Buf:
+def enc_ExecutionPayload(pair: FuluExecutionPayload_d.ExecutionPayload & B.Buf) -> Any & B.Buf:
   (v, out) = pair
   (A_ExecutionPayload{v}, out)
-def root_ExecutionPayload(pair: B.Buf & (T.ExecutionPayload & D.Digest)) -> B.Buf & (Any & D.Digest):
+def root_ExecutionPayload(pair: B.Buf & (FuluExecutionPayload_d.ExecutionPayload & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
   (h, (A_ExecutionPayload{v}, d))
-def enc_LightClientUpdate(pair: T.LightClientUpdate & B.Buf) -> Any & B.Buf:
+def enc_LightClientUpdate(pair: FuluLightClientUpdate_d.LightClientUpdate & B.Buf) -> Any & B.Buf:
   (v, out) = pair
   (A_LightClientUpdate{v}, out)
-def root_LightClientUpdate(pair: B.Buf & (T.LightClientUpdate & D.Digest)) -> B.Buf & (Any & D.Digest):
+def root_LightClientUpdate(pair: B.Buf & (FuluLightClientUpdate_d.LightClientUpdate & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
   (h, (A_LightClientUpdate{v}, d))
-def enc_DataColumnSidecar(pair: T.DataColumnSidecar & B.Buf) -> Any & B.Buf:
+def enc_DataColumnSidecar(pair: FuluDataColumnSidecar_d.DataColumnSidecar & B.Buf) -> Any & B.Buf:
   (v, out) = pair
   (A_DataColumnSidecar{v}, out)
-def root_DataColumnSidecar(pair: B.Buf & (T.DataColumnSidecar & D.Digest)) -> B.Buf & (Any & D.Digest):
+def root_DataColumnSidecar(pair: B.Buf & (FuluDataColumnSidecar_d.DataColumnSidecar & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
   (h, (A_DataColumnSidecar{v}, d))
-def enc_SignedBeaconBlock(pair: T.SignedBeaconBlock & B.Buf) -> Any & B.Buf:
+def enc_SignedBeaconBlock(pair: FuluSignedBeaconBlock_d.SignedBeaconBlock & B.Buf) -> Any & B.Buf:
   (v, out) = pair
   (A_SignedBeaconBlock{v}, out)
-def root_SignedBeaconBlock(pair: B.Buf & (T.SignedBeaconBlock & D.Digest)) -> B.Buf & (Any & D.Digest):
+def root_SignedBeaconBlock(pair: B.Buf & (FuluSignedBeaconBlock_d.SignedBeaconBlock & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
   (h, (A_SignedBeaconBlock{v}, d))
-def enc_Attestation(pair: T.Attestation & B.Buf) -> Any & B.Buf:
+def enc_Attestation(pair: FuluAttestation_d.Attestation & B.Buf) -> Any & B.Buf:
   (v, out) = pair
   (A_Attestation{v}, out)
-def root_Attestation(pair: B.Buf & (T.Attestation & D.Digest)) -> B.Buf & (Any & D.Digest):
+def root_Attestation(pair: B.Buf & (FuluAttestation_d.Attestation & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
   (h, (A_Attestation{v}, d))
-def enc_ExecutionPayloadHeader(pair: T.ExecutionPayloadHeader & B.Buf) -> Any & B.Buf:
+def enc_ExecutionPayloadHeader(pair: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & B.Buf) -> Any & B.Buf:
   (v, out) = pair
   (A_ExecutionPayloadHeader{v}, out)
-def root_ExecutionPayloadHeader(pair: B.Buf & (T.ExecutionPayloadHeader & D.Digest)) -> B.Buf & (Any & D.Digest):
+def root_ExecutionPayloadHeader(pair: B.Buf & (FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & D.Digest)) -> B.Buf & (Any & D.Digest):
   (h, r) = pair
   (v, d) = r
   (h, (A_ExecutionPayloadHeader{v}, d))
 def encode(a: Any) -> Any & B.Buf:
   match a:
-    case A_BeaconState{v}: enc_BeaconState(T.BeaconState_encode(v))
-    case A_BeaconBlockBody{v}: enc_BeaconBlockBody(T.BeaconBlockBody_encode(v))
-    case A_ExecutionPayload{v}: enc_ExecutionPayload(T.ExecutionPayload_encode(v))
-    case A_LightClientUpdate{v}: enc_LightClientUpdate(T.LightClientUpdate_encode(v))
-    case A_DataColumnSidecar{v}: enc_DataColumnSidecar(T.DataColumnSidecar_encode(v))
-    case A_SignedBeaconBlock{v}: enc_SignedBeaconBlock(T.SignedBeaconBlock_encode(v))
-    case A_Attestation{v}: enc_Attestation(T.Attestation_encode(v))
-    case A_ExecutionPayloadHeader{v}: enc_ExecutionPayloadHeader(T.ExecutionPayloadHeader_encode(v))
+    case A_BeaconState{v}: enc_BeaconState(FuluBeaconState_e.BeaconState_encode(v))
+    case A_BeaconBlockBody{v}: enc_BeaconBlockBody(FuluBeaconBlockBody_e.BeaconBlockBody_encode(v))
+    case A_ExecutionPayload{v}: enc_ExecutionPayload(FuluExecutionPayload_e.ExecutionPayload_encode(v))
+    case A_LightClientUpdate{v}: enc_LightClientUpdate(FuluLightClientUpdate_e.LightClientUpdate_encode(v))
+    case A_DataColumnSidecar{v}: enc_DataColumnSidecar(FuluDataColumnSidecar_e.DataColumnSidecar_encode(v))
+    case A_SignedBeaconBlock{v}: enc_SignedBeaconBlock(FuluSignedBeaconBlock_e.SignedBeaconBlock_encode(v))
+    case A_Attestation{v}: enc_Attestation(FuluAttestation_e.Attestation_encode(v))
+    case A_ExecutionPayloadHeader{v}: enc_ExecutionPayloadHeader(FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(v))
 def root(h: B.Buf, a: Any) -> B.Buf & (Any & D.Digest):
   match a:
-    case A_BeaconState{v}: root_BeaconState(T.BeaconState_hash_tree_root(h, v))
-    case A_BeaconBlockBody{v}: root_BeaconBlockBody(T.BeaconBlockBody_hash_tree_root(h, v))
-    case A_ExecutionPayload{v}: root_ExecutionPayload(T.ExecutionPayload_hash_tree_root(h, v))
-    case A_LightClientUpdate{v}: root_LightClientUpdate(T.LightClientUpdate_hash_tree_root(h, v))
-    case A_DataColumnSidecar{v}: root_DataColumnSidecar(T.DataColumnSidecar_hash_tree_root(h, v))
-    case A_SignedBeaconBlock{v}: root_SignedBeaconBlock(T.SignedBeaconBlock_hash_tree_root(h, v))
-    case A_Attestation{v}: root_Attestation(T.Attestation_hash_tree_root(h, v))
-    case A_ExecutionPayloadHeader{v}: root_ExecutionPayloadHeader(T.ExecutionPayloadHeader_hash_tree_root(h, v))
+    case A_BeaconState{v}: root_BeaconState(FuluBeaconState_h.BeaconState_hash_tree_root(h, v))
+    case A_BeaconBlockBody{v}: root_BeaconBlockBody(FuluBeaconBlockBody_h.BeaconBlockBody_hash_tree_root(h, v))
+    case A_ExecutionPayload{v}: root_ExecutionPayload(FuluExecutionPayload_h.ExecutionPayload_hash_tree_root(h, v))
+    case A_LightClientUpdate{v}: root_LightClientUpdate(FuluLightClientUpdate_h.LightClientUpdate_hash_tree_root(h, v))
+    case A_DataColumnSidecar{v}: root_DataColumnSidecar(FuluDataColumnSidecar_h.DataColumnSidecar_hash_tree_root(h, v))
+    case A_SignedBeaconBlock{v}: root_SignedBeaconBlock(FuluSignedBeaconBlock_h.SignedBeaconBlock_hash_tree_root(h, v))
+    case A_Attestation{v}: root_Attestation(FuluAttestation_h.Attestation_hash_tree_root(h, v))
+    case A_ExecutionPayloadHeader{v}: root_ExecutionPayloadHeader(FuluExecutionPayloadHeader_h.ExecutionPayloadHeader_hash_tree_root(h, v))
 def shown(pair: B.Buf & (Any & D.Digest)) -> IO(Unit):
   (h, r) = pair
   (a, d) = r

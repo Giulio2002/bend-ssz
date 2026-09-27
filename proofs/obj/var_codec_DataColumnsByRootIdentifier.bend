@@ -1,7 +1,10 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBytes32_decode_ssz_generated.bend as FuluBytes32_r
+import ../../types/FuluDataColumnsByRootIdentifier_def_generated.bend as FuluDataColumnsByRootIdentifier_d
+import ../../types/FuluDataColumnsByRootIdentifier_decode_ssz_generated.bend as FuluDataColumnsByRootIdentifier_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -48,13 +51,13 @@ def whole(+L: U32) -> Bool: Bool.and(U32.is_eq(L, (U32.div(L, 8) * 8 : U32)), U3
 
 def SPO(t: FD.array__Tree<U32>) -> U32: VB.slot(t, 8n)
 
-def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {T.DataColumnsByRootIdentifier_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
+def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
   match ok:
     case True{}: {==}
     case False{}: {==}
 
 def ok_c0(+t: FD.array__Tree<U32>, +n: U32, +b: Bool)
-    -> {T.DataColumnsByRootIdentifier_c0(b, BF(t, n), 0, n, SPO(t)) == (BF(t, n), chk3(True{}, b, whole(U32.sub(n, SPO(t))))) : B.Buf & Bool}:
+    -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_c0(b, BF(t, n), 0, n, SPO(t)) == (BF(t, n), chk3(True{}, b, whole(U32.sub(n, SPO(t))))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}: c1_id(whole(U32.sub(n, SPO(t))), BF(t, n), 0, n, SPO(t))
@@ -64,19 +67,19 @@ def CHK(+t: FD.array__Tree<U32>, +n: U32) -> Bool: chk3(U32.is_le(36, n), U32.is
 def ok_len(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +a: Bool,
     +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hpo: {Nat.is_lt(8n, VB.pw(d)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
-    -> {T.DataColumnsByRootIdentifier_ok_len(a, BF(t, n), 0, n) == (BF(t, n), chk3(a, U32.is_eq(SPO(t), 36), whole(U32.sub(n, SPO(t))))) : B.Buf & Bool}:
+    -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_ok_len(a, BF(t, n), 0, n) == (BF(t, n), chk3(a, U32.is_eq(SPO(t), 36), whole(U32.sub(n, SPO(t))))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       %Equal.sym(B.Buf & U32, B.word(BF(t, n), 8), (BF(t, n), SPO(t)), rd32(d, t, n, 8, 8n, {==}, hd, hpo, pf)) :
-        {T.DataColumnsByRootIdentifier_v0(0, n, _) == (BF(t, n), chk3(True{}, U32.is_eq(SPO(t), 36), whole(U32.sub(n, SPO(t))))) : B.Buf & Bool}
+        {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_v0(0, n, _) == (BF(t, n), chk3(True{}, U32.is_eq(SPO(t), 36), whole(U32.sub(n, SPO(t))))) : B.Buf & Bool}
       ok_c0(t, n, U32.is_eq(SPO(t), 36))
 
 # The validator returns the buffer and CHK(t, n).
 def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32,
     +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hpo: {Nat.is_lt(8n, VB.pw(d)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
-    -> {T.DataColumnsByRootIdentifier_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
+    -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
   ok_len(d, t, n, U32.is_le(36, n), hd, hpo, pf)
 
 def zeros_at(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 9n) == True{} : Bool})
@@ -198,22 +201,22 @@ def rd_ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +dz: Nat, +pf: {FD.array__p
     +hs0: {Nat.is_le(Nat.add(VC.NW(LL(n)), 9n), VB.pw(d)) == True{} : Bool}, +epo: {SPO(t) == 36 : U32},
     +ez: {B.zeros(B.words_depth_u(VC.WZ(LL(n)))) == Array.new(U32, dz, 0) : Array<U32>},
     +hL3: {U32.and(LL(n), 3) == 0 : U32}, +hr0: {Nat.is_le(Nat.add(VC.NW(LL(n)), 0n), VB.pw(dz)) == True{} : Bool})
-    -> {T.DataColumnsByRootIdentifier_read(BF(t, n), 0, n) == (BF(t, n), T.DataColumnsByRootIdentifier{T.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, dz, VC.ZT(dz), t)), LL(n)}}) : B.Buf & T.DataColumnsByRootIdentifier}:
+    -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_read(BF(t, n), 0, n) == (BF(t, n), FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{FuluBytes32_d.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, dz, VC.ZT(dz), t)), LL(n)}}) : B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier}:
   +hd31 = FD.nat__lt_trans(d, 29n, 31n, hd, {==})
   +hd32 = VB.lt32(d, hd31)
   %Equal.sym(B.Buf & U32, B.word(BF(t, n), 8), (BF(t, n), SPO(t)), rd32(d, t, n, 8, 8n, {==}, hd32, hk(8n, d, n, {==}, hs0), pf)) :
-    {T.DataColumnsByRootIdentifier_rd0(0, n, _) == (BF(t, n), T.DataColumnsByRootIdentifier{T.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, dz, VC.ZT(dz), t)), LL(n)}}) : B.Buf & T.DataColumnsByRootIdentifier}
+    {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_rd0(0, n, _) == (BF(t, n), FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{FuluBytes32_d.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, dz, VC.ZT(dz), t)), LL(n)}}) : B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier}
   %Equal.sym(U32, SPO(t), 36, epo) :
-    {T.DataColumnsByRootIdentifier_rd1(0, n, _, T.b32_read(BF(t, n), U32.add(0, 0), 32)) == (BF(t, n), T.DataColumnsByRootIdentifier{T.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, dz, VC.ZT(dz), t)), LL(n)}}) : B.Buf & T.DataColumnsByRootIdentifier}
-  %Equal.sym(B.Buf & T.Bytes32, T.b32_read(BF(t, n), U32.add(0, 0), 32), (BF(t, n), T.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}),
+    {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_rd1(0, n, _, FuluBytes32_r.b32_read(BF(t, n), U32.add(0, 0), 32)) == (BF(t, n), FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{FuluBytes32_d.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, dz, VC.ZT(dz), t)), LL(n)}}) : B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier}
+  %Equal.sym(B.Buf & FuluBytes32_d.Bytes32, FuluBytes32_r.b32_read(BF(t, n), U32.add(0, 0), 32), (BF(t, n), FuluBytes32_d.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}),
       VT.rd_b32(d, t, n, U32.add(0, 0), 0n, {==}, hd, pf, FD.nat__le_trans(Nat.add(8n, 0n), 9n, VB.pw(d), {==}, FD.nat__le_trans(9n, Nat.add(VC.NW(LL(n)), 9n), VB.pw(d), Order.left_below_sum(VC.NW(LL(n)), 9n), hs0)))) :
-    {T.DataColumnsByRootIdentifier_rd1(0, n, 36, _) == (BF(t, n), T.DataColumnsByRootIdentifier{T.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, dz, VC.ZT(dz), t)), LL(n)}}) : B.Buf & T.DataColumnsByRootIdentifier}
+    {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_rd1(0, n, 36, _) == (BF(t, n), FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{FuluBytes32_d.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, dz, VC.ZT(dz), t)), LL(n)}}) : B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier}
   %Equal.sym(B.Buf & O.Words, O.copy_in(BF(t, n), U32.add(0, 36), LL(n)), (BF(t, n), O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, dz, VC.ZT(dz), t)), LL(n)}),
       VC.copy_in_ok(d, t, n, U32.add(0, 36), 9n, LL(n), dz, pf, hd31, hdz, ez, {==}, {==}, hL3, hs0, hr0)) :
-    {T.DataColumnsByRootIdentifier_rd2(0, n, 36, T.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, _) == (BF(t, n), T.DataColumnsByRootIdentifier{T.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, dz, VC.ZT(dz), t)), LL(n)}}) : B.Buf & T.DataColumnsByRootIdentifier}
+    {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_rd2(0, n, 36, FuluBytes32_d.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, _) == (BF(t, n), FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{FuluBytes32_d.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, dz, VC.ZT(dz), t)), LL(n)}}) : B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier}
   {==}
 
-def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> T.DataColumnsByRootIdentifier: T.DataColumnsByRootIdentifier{T.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, DZ(n), VC.ZT(DZ(n)), t)), LL(n)}}
+def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier: FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{FuluBytes32_d.Bytes32{VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)}, O.Words{FD.array__thaw(U32, VB.mone(VC.NW(LL(n)), 9n, 0n, DZ(n), VC.ZT(DZ(n)), t)), LL(n)}}
 
 def chk_a(+a: Bool, +b: Bool, +c: Bool, +h: {chk3(a, b, c) == True{} : Bool}) -> {a == True{} : Bool}:
   match a:
@@ -237,18 +240,18 @@ def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32,
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
     +hchk: {CHK(t, n) == True{} : Bool},
     +ha: {U32.is_le(36, n) == True{} : Bool}, +epo: {SPO(t) == 36 : U32}, +hc: {whole(LL(n)) == True{} : Bool})
-    -> {T.DataColumnsByRootIdentifier_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.DataColumnsByRootIdentifier>}:
+    -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
   +hs0 = hs(d, n, hd, ha, hn, hc)
   +hd31 = FD.nat__lt_trans(d, 29n, 31n, hd, {==})
   +hz = hdzK(d, n, hd, ha, hn, hc)
   +ez = zeros_at(B.words_depth_u(VC.WZ(LL(n))), DZ(n), VD.wdu(VC.WZ(LL(n))), FD.nat__le_trans(DZ(n), 9n, 9n, hz, {==}))
-  %Equal.sym(B.Buf & Bool, T.DataColumnsByRootIdentifier_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, VB.lt32(d, hd31), hk(8n, d, n, {==}, hs0), pf)) :
-    {T.DataColumnsByRootIdentifier_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.DataColumnsByRootIdentifier>}
+  %Equal.sym(B.Buf & Bool, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, VB.lt32(d, hd31), hk(8n, d, n, {==}, hs0), pf)) :
+    {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
-    {T.DataColumnsByRootIdentifier_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.DataColumnsByRootIdentifier>}
-  %Equal.sym(B.Buf & T.DataColumnsByRootIdentifier, T.DataColumnsByRootIdentifier_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)),
+    {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}
+  %Equal.sym(B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)),
       rd_ok(d, t, n, DZ(n), pf, hd, FD.nat__le_lt_trans(DZ(n), 9n, 31n, hz, {==}), hs0, epo, ez, VC.and3_x8(LL(n), CQ(n), eLc(n, hc)), hr(d, n, hd, ha, hn, hc))) :
-    {T.DataColumnsByRootIdentifier_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.DataColumnsByRootIdentifier>}
+    {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}
   {==}
 
 # Every buffer the validator accepts decodes to OBJ(t, n).
@@ -260,7 +263,7 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
-  {T.DataColumnsByRootIdentifier_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.DataColumnsByRootIdentifier>}
+  {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}
 def decode_accept(d, t, n, pf, hd, hn, hchk):
   +a = U32.is_le(36, n)
   +b = U32.is_eq(SPO(t), 36)

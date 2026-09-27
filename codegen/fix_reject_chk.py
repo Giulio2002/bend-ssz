@@ -20,6 +20,7 @@ from the runtime (types/*_obj.bend: a validator O.ok_bool, or <p>_ok_n over O.ok
 import re
 import sys
 from pathlib import Path
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'codegen'))
@@ -33,8 +34,8 @@ def rows():
     fulu = list(schema.load(ROOT / 'codegen/fulu.yaml'))
     gen = [n for n, t, e in generic.inventory_all() if e is None]
     out = []
-    for f, tag in (('types/fulu_obj.bend', 'f'), ('types/generic_obj.bend', 'g')):
-        src = (ROOT / f).read_text()
+    for f, tag in (('fulu', 'f'), ('generic', 'g')):
+        src = RR.mono_text(f)
         for m in re.finditer(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
             X, p = m.group(1), m.group(2)
             if X not in fulu and X not in gen:
@@ -167,6 +168,7 @@ def outputs():
 
 def main():
     out = outputs()
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

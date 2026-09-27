@@ -2,7 +2,10 @@ import Base
 import ../src/buffer.bend as B
 import ../src/obj.bend as O
 import ../src/digest.bend as D
-import ../types/fulu_obj.bend as T
+import ../types/FuluBeaconState_def_generated.bend as FuluBeaconState_d
+import ../types/FuluBeaconState_decode_ssz_generated.bend as FuluBeaconState_r
+import ../types/FuluBeaconState_encode_ssz_generated.bend as FuluBeaconState_e
+import ../types/FuluBeaconState_hashtreeroot_generated.bend as FuluBeaconState_h
 
 # Native driver for the compact primary path, speaking the same protocol as
 # native_bench/fastssz: SSZ_INPUT, SSZ_OUTPUT, SSZ_PHASES=input|decode|root|all,
@@ -132,14 +135,14 @@ def close_out(pair: File & B.Buf) -> IO(Unit):
   (file, buf) = pair
   File.close(file)
 
-def keep_obj(obj: T.BeaconState) -> IO(Unit):
+def keep_obj(obj: FuluBeaconState_d.BeaconState) -> IO(Unit):
   do IO<Unit>:
     settle()
 
 # ---------------------------------------------------------------------------
 # root
 
-def written(obj: T.BeaconState, +out: String, +t0: Nat, pair: B.Buf & U32) -> IO(Unit):
+def written(obj: FuluBeaconState_d.BeaconState, +out: String, +t0: Nat, pair: B.Buf & U32) -> IO(Unit):
   (enc, +n) = pair
   do IO<Unit>:
     file : File <- IO.try(File, File.open(out, "w"))
@@ -154,31 +157,31 @@ def written(obj: T.BeaconState, +out: String, +t0: Nat, pair: B.Buf & U32) -> IO
 
 # The decoded object stays live to the very end of the measurement.
 
-def encoded(+out: String, +t0: Nat, pair: T.BeaconState & B.Buf) -> IO(Unit):
+def encoded(+out: String, +t0: Nat, pair: FuluBeaconState_d.BeaconState & B.Buf) -> IO(Unit):
   (obj, enc) = pair
   written(obj, out, t0, B.size(enc))
 
-def phase_serialize(+out: String, obj: T.BeaconState) -> IO(Unit):
+def phase_serialize(+out: String, obj: FuluBeaconState_d.BeaconState) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    encoded(out, t0, T.BeaconState_encode(obj))
+    encoded(out, t0, FuluBeaconState_e.BeaconState_encode(obj))
 
 def byte_sum(xs: +List<U32>, +acc: U32) -> U32:
   match xs:
     case Nil{}: acc
     case Con{+h, t}: byte_sum(t, (acc + h : U32))
 
-def stop_obj(obj: T.BeaconState) -> IO(Unit):
+def stop_obj(obj: FuluBeaconState_d.BeaconState) -> IO(Unit):
   do IO<Unit>:
     IO.print("PHASE=stopped")
     settle()
 
-def after_root(stop: Bool, +out: String, obj: T.BeaconState) -> IO(Unit):
+def after_root(stop: Bool, +out: String, obj: FuluBeaconState_d.BeaconState) -> IO(Unit):
   match stop:
     case True{}: stop_obj(obj)
     case False{}: phase_serialize(out, obj)
 
-def root_show(+mode: String, +out: String, +t0: Nat, obj: T.BeaconState, +d: D.Digest) -> IO(Unit):
+def root_show(+mode: String, +out: String, +t0: Nat, obj: FuluBeaconState_d.BeaconState, +d: D.Digest) -> IO(Unit):
   do IO<Unit>:
     IO.print("ROOTSUM=" ++ U32.show(byte_sum(D.bytes(d), 0)))
     t1 : Nat <- IO.now()
@@ -187,25 +190,25 @@ def root_show(+mode: String, +out: String, +t0: Nat, obj: T.BeaconState, +d: D.D
     settle()
     after_root(String.eq(mode, "root"), out, obj)
 
-def rooted(+mode: String, +out: String, +t0: Nat, pair: B.Buf & (T.BeaconState & D.Digest)) -> IO(Unit):
+def rooted(+mode: String, +out: String, +t0: Nat, pair: B.Buf & (FuluBeaconState_d.BeaconState & D.Digest)) -> IO(Unit):
   (h, r) = pair
   (obj, d) = r
   root_show(mode, out, t0, obj, d)
 
-def phase_root(+mode: String, +out: String, obj: T.BeaconState) -> IO(Unit):
+def phase_root(+mode: String, +out: String, obj: FuluBeaconState_d.BeaconState) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    rooted(mode, out, t0, T.BeaconState_hash_tree_root(O.hasher(), obj))
+    rooted(mode, out, t0, FuluBeaconState_h.BeaconState_hash_tree_root(O.hasher(), obj))
 
 # ---------------------------------------------------------------------------
 # decode: bytes to a fully constructed typed object
 
-def after_decode(stop: Bool, +mode: String, +out: String, obj: T.BeaconState) -> IO(Unit):
+def after_decode(stop: Bool, +mode: String, +out: String, obj: FuluBeaconState_d.BeaconState) -> IO(Unit):
   match stop:
     case True{}: stop_obj(obj)
     case False{}: phase_root(mode, out, obj)
 
-def forced_obj(+mode: String, +out: String, +t0: Nat, pair: T.BeaconState & U32) -> IO(Unit):
+def forced_obj(+mode: String, +out: String, +t0: Nat, pair: FuluBeaconState_d.BeaconState & U32) -> IO(Unit):
   (obj, +x) = pair
   do IO<Unit>:
     t1 : Nat <- IO.now()
@@ -214,19 +217,19 @@ def forced_obj(+mode: String, +out: String, +t0: Nat, pair: T.BeaconState & U32)
     settle_long()
     after_decode(String.eq(mode, "decode"), mode, out, obj)
 
-def decoded_gate(m: Maybe<&1, T.BeaconState>, +mode: String, +out: String, +t0: Nat) -> IO(Unit):
+def decoded_gate(m: Maybe<&1, FuluBeaconState_d.BeaconState>, +mode: String, +out: String, +t0: Nat) -> IO(Unit):
   match m:
     case None{}: IO.die(Unit, 1, "decode rejected")
-    case Some{obj}: forced_obj(mode, out, t0, T.BeaconState_force(obj))
+    case Some{obj}: forced_obj(mode, out, t0, FuluBeaconState_d.BeaconState_force(obj))
 
-def decoded(+mode: String, +out: String, +t0: Nat, pair: B.Buf & Maybe<&1, T.BeaconState>) -> IO(Unit):
+def decoded(+mode: String, +out: String, +t0: Nat, pair: B.Buf & Maybe<&1, FuluBeaconState_d.BeaconState>) -> IO(Unit):
   (buf, m) = pair
   decoded_gate(m, mode, out, t0)
 
 def phase_decode(+mode: String, +out: String, +size: U32, buf: B.Buf) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    decoded(mode, out, t0, T.BeaconState_decode(buf, size))
+    decoded(mode, out, t0, FuluBeaconState_r.BeaconState_decode(buf, size))
 
 def after_input(stop: Bool, +mode: String, +out: String, +size: U32, buf: B.Buf) -> IO(Unit):
   match stop:

@@ -1,7 +1,14 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_list_DepositRequest_8192_def_generated.bend as Fulu_list_DepositRequest_8192_d
+import ../../types/Fulu_list_DepositRequest_8192_decode_ssz_generated.bend as Fulu_list_DepositRequest_8192_r
+import ../../types/Fulu_list_WithdrawalRequest_16_def_generated.bend as Fulu_list_WithdrawalRequest_16_d
+import ../../types/Fulu_list_WithdrawalRequest_16_decode_ssz_generated.bend as Fulu_list_WithdrawalRequest_16_r
+import ../../types/Fulu_list_ConsolidationRequest_2_def_generated.bend as Fulu_list_ConsolidationRequest_2_d
+import ../../types/Fulu_list_ConsolidationRequest_2_decode_ssz_generated.bend as Fulu_list_ConsolidationRequest_2_r
+import ../../types/FuluExecutionRequests_def_generated.bend as FuluExecutionRequests_d
+import ../../types/FuluExecutionRequests_decode_ssz_generated.bend as FuluExecutionRequests_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -71,22 +78,22 @@ def K1(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool: Bool.and
 def CHKw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool: Bool.and(CA(len), K1(t, x, off, len))
 
 def okG(+t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +g: Bool)
-    -> {T.ExecutionRequests_c5(g, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x)) == (BF(t, n), g) : B.Buf & Bool}:
+    -> {FuluExecutionRequests_r.ExecutionRequests_c5(g, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x)) == (BF(t, n), g) : B.Buf & Bool}:
   match g:
     case True{}: {==}
     case False{}: {==}
 def okF(+t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +f: Bool)
-    -> {T.ExecutionRequests_c4(f, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x)) == (BF(t, n), Bool.and(f, CG(t, x, off, len))) : B.Buf & Bool}:
+    -> {FuluExecutionRequests_r.ExecutionRequests_c4(f, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x)) == (BF(t, n), Bool.and(f, CG(t, x, off, len))) : B.Buf & Bool}:
   match f:
     case True{}: okG(t, n, x, off, len, CG(t, x, off, len))
     case False{}: {==}
 def okE(+t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +e: Bool)
-    -> {T.ExecutionRequests_c3(e, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x)) == (BF(t, n), Bool.and(e, K5(t, x, off, len))) : B.Buf & Bool}:
+    -> {FuluExecutionRequests_r.ExecutionRequests_c3(e, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x)) == (BF(t, n), Bool.and(e, K5(t, x, off, len))) : B.Buf & Bool}:
   match e:
     case True{}: okF(t, n, x, off, len, CF(t, x, off, len))
     case False{}: {==}
 def okD(+t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +c: Bool)
-    -> {T.ExecutionRequests_c2(c, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x)) == (BF(t, n), Bool.and(c, K4(t, x, off, len))) : B.Buf & Bool}:
+    -> {FuluExecutionRequests_r.ExecutionRequests_c2(c, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x)) == (BF(t, n), Bool.and(c, K4(t, x, off, len))) : B.Buf & Bool}:
   match c:
     case True{}: okE(t, n, x, off, len, CE(t, x, off, len))
     case False{}: {==}
@@ -115,38 +122,38 @@ def h12of(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
 def okC(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h12: {Nat.is_le(Nat.add(x, 12n), A.quad(VB.pw(d))) == True{} : Bool}, +c: Bool)
-    -> {T.ExecutionRequests_c1(c, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(c, K3(t, x, off, len))) : B.Buf & Bool}:
+    -> {FuluExecutionRequests_r.ExecutionRequests_c1(c, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(c, K3(t, x, off, len))) : B.Buf & Bool}:
   match c:
     case True{}:
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 8)), (BF(t, n), O2(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, pf, 8n, 8, {==}, {==}, h12)) :
-        {T.ExecutionRequests_v2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K3(t, x, off, len)) : B.Buf & Bool}
+        {FuluExecutionRequests_r.ExecutionRequests_v2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K3(t, x, off, len)) : B.Buf & Bool}
       okD(t, n, x, off, len, CD(t, x, len))
     case False{}: {==}
 def okB(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h12: {Nat.is_le(Nat.add(x, 12n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.ExecutionRequests_c0(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), Bool.and(b, K2(t, x, off, len))) : B.Buf & Bool}:
+    -> {FuluExecutionRequests_r.ExecutionRequests_c0(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), Bool.and(b, K2(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case True{}:
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 4)), (BF(t, n), O1(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, pf, 4n, 4, {==}, {==}, h12)) :
-        {T.ExecutionRequests_v1(off, len, O0(t, x), _) == (BF(t, n), K2(t, x, off, len)) : B.Buf & Bool}
+        {FuluExecutionRequests_r.ExecutionRequests_v1(off, len, O0(t, x), _) == (BF(t, n), K2(t, x, off, len)) : B.Buf & Bool}
       okC(d, t, n, x, off, len, eo, hd, hw, pf, h12, CC(t, x, len))
     case False{}: {==}
 def okA(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool, +ea: {U32.is_le(12, len) == a : Bool})
-    -> {T.ExecutionRequests_ok_len(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K1(t, x, off, len))) : B.Buf & Bool}:
+    -> {FuluExecutionRequests_r.ExecutionRequests_ok_len(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K1(t, x, off, len))) : B.Buf & Bool}:
   match a:
     case True{}:
       +h12 = h12of(d, t, n, x, off, len, eo, hd, hw, pf, ea)
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, pf, 0n, 0, {==}, {==}, h12)) :
-        {T.ExecutionRequests_v0(off, len, _) == (BF(t, n), K1(t, x, off, len)) : B.Buf & Bool}
+        {FuluExecutionRequests_r.ExecutionRequests_v0(off, len, _) == (BF(t, n), K1(t, x, off, len)) : B.Buf & Bool}
       okB(d, t, n, x, off, len, eo, hd, hw, pf, h12, CB(t, x))
     case False{}: {==}
 
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.ExecutionRequests_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {FuluExecutionRequests_r.ExecutionRequests_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   okA(d, t, n, x, off, len, eo, hd, hw, pf, CA(len), {==})
 
 # ---- what the checks give -----------------------------------------------------------------------
@@ -209,29 +216,29 @@ def eo2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
 
 # ---- the reader ---------------------------------------------------------------------------------
 
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.ExecutionRequests:
-  T.ExecutionRequests{C0.OBJw(d, t, X0(t, x), F0(off, t, x), L0(t, x)), C1.OBJw(d, t, X1(t, x), F1(off, t, x), L1(t, x)), C2.OBJw(d, t, X2(t, x), F2(off, t, x), L2(t, x, len))}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> FuluExecutionRequests_d.ExecutionRequests:
+  FuluExecutionRequests_d.ExecutionRequests{C0.OBJw(d, t, X0(t, x), F0(off, t, x), L0(t, x)), C1.OBJw(d, t, X1(t, x), F1(off, t, x), L1(t, x)), C2.OBJw(d, t, X2(t, x), F2(off, t, x), L2(t, x, len))}
 
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool})
-    -> {T.ExecutionRequests_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.ExecutionRequests}:
+    -> {FuluExecutionRequests_r.ExecutionRequests_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluExecutionRequests_d.ExecutionRequests}:
   +h12 = h12of(d, t, n, x, off, len, eo, hd, hw, pf, hA(t, x, off, len, hchk))
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, pf, 0n, 0, {==}, {==}, h12)) :
-    {T.ExecutionRequests_rd0(off, len, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.ExecutionRequests}
+    {FuluExecutionRequests_r.ExecutionRequests_rd0(off, len, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluExecutionRequests_d.ExecutionRequests}
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 4)), (BF(t, n), O1(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, pf, 4n, 4, {==}, {==}, h12)) :
-    {T.ExecutionRequests_rd1(off, len, O0(t, x), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.ExecutionRequests}
+    {FuluExecutionRequests_r.ExecutionRequests_rd1(off, len, O0(t, x), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluExecutionRequests_d.ExecutionRequests}
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 8)), (BF(t, n), O2(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, pf, 8n, 8, {==}, {==}, h12)) :
-    {T.ExecutionRequests_rd2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.ExecutionRequests}
-  %Equal.sym(B.Buf & T.l8192_DepositRequest_Seq, T.l8192_DepositRequest_read(BF(t, n), F0(off, t, x), L0(t, x)), (BF(t, n), C0.OBJw(d, t, X0(t, x), F0(off, t, x), L0(t, x))),
+    {FuluExecutionRequests_r.ExecutionRequests_rd2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluExecutionRequests_d.ExecutionRequests}
+  %Equal.sym(B.Buf & Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq, Fulu_list_DepositRequest_8192_r.l8192_DepositRequest_read(BF(t, n), F0(off, t, x), L0(t, x)), (BF(t, n), C0.OBJw(d, t, X0(t, x), F0(off, t, x), L0(t, x))),
       C0.readw(d, t, n, X0(t, x), F0(off, t, x), L0(t, x), eo0(d, t, n, x, off, len, eo, hd, hw, pf, hchk), hd, hw0(d, t, n, x, off, len, eo, hd, hw, pf, hchk), pf, hE(t, x, off, len, hchk))) :
-    {T.ExecutionRequests_rd3(off, len, O0(t, x), O1(t, x), O2(t, x), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.ExecutionRequests}
-  %Equal.sym(B.Buf & T.l16_WithdrawalRequest_Seq, T.l16_WithdrawalRequest_read(BF(t, n), F1(off, t, x), L1(t, x)), (BF(t, n), C1.OBJw(d, t, X1(t, x), F1(off, t, x), L1(t, x))),
+    {FuluExecutionRequests_r.ExecutionRequests_rd3(off, len, O0(t, x), O1(t, x), O2(t, x), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluExecutionRequests_d.ExecutionRequests}
+  %Equal.sym(B.Buf & Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq, Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_read(BF(t, n), F1(off, t, x), L1(t, x)), (BF(t, n), C1.OBJw(d, t, X1(t, x), F1(off, t, x), L1(t, x))),
       C1.readw(d, t, n, X1(t, x), F1(off, t, x), L1(t, x), eo1(d, t, n, x, off, len, eo, hd, hw, pf, hchk), hd, hw1(d, t, n, x, off, len, eo, hd, hw, pf, hchk), pf, hF(t, x, off, len, hchk))) :
-    {T.ExecutionRequests_rd4(off, len, O0(t, x), O1(t, x), O2(t, x), C0.OBJw(d, t, X0(t, x), F0(off, t, x), L0(t, x)), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.ExecutionRequests}
-  %Equal.sym(B.Buf & T.l2_ConsolidationRequest_Seq, T.l2_ConsolidationRequest_read(BF(t, n), F2(off, t, x), L2(t, x, len)), (BF(t, n), C2.OBJw(d, t, X2(t, x), F2(off, t, x), L2(t, x, len))),
+    {FuluExecutionRequests_r.ExecutionRequests_rd4(off, len, O0(t, x), O1(t, x), O2(t, x), C0.OBJw(d, t, X0(t, x), F0(off, t, x), L0(t, x)), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluExecutionRequests_d.ExecutionRequests}
+  %Equal.sym(B.Buf & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, Fulu_list_ConsolidationRequest_2_r.l2_ConsolidationRequest_read(BF(t, n), F2(off, t, x), L2(t, x, len)), (BF(t, n), C2.OBJw(d, t, X2(t, x), F2(off, t, x), L2(t, x, len))),
       C2.readw(d, t, n, X2(t, x), F2(off, t, x), L2(t, x, len), eo2(d, t, n, x, off, len, eo, hd, hw, pf, hchk), hd, hw2(d, t, n, x, off, len, eo, hd, hw, pf, hchk), pf, hG(t, x, off, len, hchk))) :
-    {T.ExecutionRequests_rd5(off, len, O0(t, x), O1(t, x), O2(t, x), C0.OBJw(d, t, X0(t, x), F0(off, t, x), L0(t, x)), C1.OBJw(d, t, X1(t, x), F1(off, t, x), L1(t, x)), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.ExecutionRequests}
+    {FuluExecutionRequests_r.ExecutionRequests_rd5(off, len, O0(t, x), O1(t, x), O2(t, x), C0.OBJw(d, t, X0(t, x), F0(off, t, x), L0(t, x)), C1.OBJw(d, t, X1(t, x), F1(off, t, x), L1(t, x)), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluExecutionRequests_d.ExecutionRequests}
   {==}
 
 # ---- the spec side ------------------------------------------------------------------------------

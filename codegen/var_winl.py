@@ -1206,6 +1206,8 @@ def main():
             continue
         ESCH, LSCH, LIMN = lsch[ELEM[C]]
         out[ROOT / f'proofs/obj/big_var_winx_{LP}.bend'] = module_text(LP, N, C, chmod, ESCH, LSCH, LIMN)
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

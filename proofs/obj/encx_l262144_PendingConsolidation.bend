@@ -1,7 +1,10 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluPendingConsolidation_def_generated.bend as FuluPendingConsolidation_d
+import ../../types/FuluPendingConsolidation_encode_ssz_generated.bend as FuluPendingConsolidation_e
+import ../../types/Fulu_list_PendingConsolidation_262144_def_generated.bend as Fulu_list_PendingConsolidation_262144_d
+import ../../types/Fulu_list_PendingConsolidation_262144_encode_ssz_generated.bend as Fulu_list_PendingConsolidation_262144_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -50,18 +53,18 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 
 # ---- PendingConsolidation: its 4 words, value, parts and writer ----
 
-def RWD_PendingConsolidation(r: T.PendingConsolidation) -> List<&2, U32>:
+def RWD_PendingConsolidation(r: FuluPendingConsolidation_d.PendingConsolidation) -> List<&2, U32>:
   match r:
-    case T.PendingConsolidation{+r_0, +r_1}:
+    case FuluPendingConsolidation_d.PendingConsolidation{+r_0, +r_1}:
       match r_0:
         case O.U64{+x0, +x1}:
           match r_1:
             case O.U64{+x2, +x3}:
               [x0, x1, x2, x3]
 
-def RVW_PendingConsolidation(r: T.PendingConsolidation) -> S.Value:
+def RVW_PendingConsolidation(r: FuluPendingConsolidation_d.PendingConsolidation) -> S.Value:
   match r:
-    case T.PendingConsolidation{+r_0, +r_1}:
+    case FuluPendingConsolidation_d.PendingConsolidation{+r_0, +r_1}:
       match r_0:
         case O.U64{+x0, +x1}:
           match r_1:
@@ -69,22 +72,22 @@ def RVW_PendingConsolidation(r: T.PendingConsolidation) -> S.Value:
               S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}
 
 # its parts over the words: the value and the object as terms (rparts rewrites RVW_PendingConsolidation to the value first)
-def rvq_PendingConsolidation(+x0: U32, +x1: U32, +x2: U32, +x3: U32) -> {S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}} == RVW_PendingConsolidation(T.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}) : S.Value}: {==}
-def rpc_PendingConsolidation(+x0: U32, +x1: U32, +x2: U32, +x3: U32) -> {Codec.parts(S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}, S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_PendingConsolidation(T.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}))}]} : Maybe<&2, +List<S.Part>>}:
+def rvq_PendingConsolidation(+x0: U32, +x1: U32, +x2: U32, +x3: U32) -> {S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}} == RVW_PendingConsolidation(FuluPendingConsolidation_d.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}) : S.Value}: {==}
+def rpc_PendingConsolidation(+x0: U32, +x1: U32, +x2: U32, +x3: U32) -> {Codec.parts(S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}, S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_PendingConsolidation(FuluPendingConsolidation_d.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}))}]} : Maybe<&2, +List<S.Part>>}:
   F.container_fixed(["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}, S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}, [[x0, x1], [x2, x3]], 16n, [x0, x1, x2, x3], F.items_fixed(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}, S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}, F.limbs([x0, x1]), [S.Fixed{F.limbs([x2, x3])}], F.uint64_part(x0, x1), F.items_fixed(S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}, S.Unsigned{P.U64{}}, S.End{}, F.limbs([x2, x3]), [], F.uint64_part(x2, x3), {==})), {==}, VS.agg_total([[x0, x1], [x2, x3]], 16n, {==}), {==})
-def rparts_PendingConsolidation(+r: T.PendingConsolidation) -> {Codec.parts(RVW_PendingConsolidation(r), S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_PendingConsolidation(r))}]} : Maybe<&2, +List<S.Part>>}:
+def rparts_PendingConsolidation(+r: FuluPendingConsolidation_d.PendingConsolidation) -> {Codec.parts(RVW_PendingConsolidation(r), S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_PendingConsolidation(r))}]} : Maybe<&2, +List<S.Part>>}:
   match r:
-    case T.PendingConsolidation{+r_0, +r_1}:
+    case FuluPendingConsolidation_d.PendingConsolidation{+r_0, +r_1}:
       match r_0:
         case O.U64{+x0, +x1}:
           match r_1:
             case O.U64{+x2, +x3}:
-              %rvq_PendingConsolidation(x0, x1, x2, x3) : {Codec.parts(_, S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_PendingConsolidation(T.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}))}]} : Maybe<&2, +List<S.Part>>}
+              %rvq_PendingConsolidation(x0, x1, x2, x3) : {Codec.parts(_, S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_PendingConsolidation(FuluPendingConsolidation_d.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}))}]} : Maybe<&2, +List<S.Part>>}
               rpc_PendingConsolidation(x0, x1, x2, x3)
 
-def rlen_PendingConsolidation(+r: T.PendingConsolidation) -> {VF.slen(RWD_PendingConsolidation(r)) == 4n : Nat}:
+def rlen_PendingConsolidation(+r: FuluPendingConsolidation_d.PendingConsolidation) -> {VF.slen(RWD_PendingConsolidation(r)) == 4n : Nat}:
   match r:
-    case T.PendingConsolidation{+r_0, +r_1}:
+    case FuluPendingConsolidation_d.PendingConsolidation{+r_0, +r_1}:
       match r_0:
         case O.U64{+x0, +x1}:
           match r_1:
@@ -94,74 +97,74 @@ def rlen_PendingConsolidation(+r: T.PendingConsolidation) -> {VF.slen(RWD_Pendin
 
 # ---- PendingConsolidation: its writer at any byte position, on the object ----
 
-def PXo_PendingConsolidation(o: T.PendingConsolidation, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+def PXo_PendingConsolidation(o: FuluPendingConsolidation_d.PendingConsolidation, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match o:
-    case T.PendingConsolidation{+o_0, +o_1}:
+    case FuluPendingConsolidation_d.PendingConsolidation{+o_0, +o_1}:
       match o_0:
         case O.U64{+x0, +x1}:
           match o_1:
             case O.U64{+x2, +x3}:
               ERC.PX_PendingConsolidation(x0, x1, x2, x3, dd, D, q, r)
 
-def pfo_PendingConsolidation(+o: T.PendingConsolidation, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def pfo_PendingConsolidation(+o: FuluPendingConsolidation_d.PendingConsolidation, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PXo_PendingConsolidation(o, dd, D, q, r)) == True{} : Bool}:
   match o:
-    case T.PendingConsolidation{+o_0, +o_1}:
+    case FuluPendingConsolidation_d.PendingConsolidation{+o_0, +o_1}:
       match o_0:
         case O.U64{+x0, +x1}:
           match o_1:
             case O.U64{+x2, +x3}:
               ERC.pf_PendingConsolidation(x0, x1, x2, x3, dd, D, q, r, pf)
 
-def RTo_PendingConsolidation(+o: T.PendingConsolidation, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.PendingConsolidation_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_PendingConsolidation(o, dd, D, q, r)) : Array<U32>}
-def BYo_PendingConsolidation(+o: T.PendingConsolidation, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTo_PendingConsolidation(+o: FuluPendingConsolidation_d.PendingConsolidation, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluPendingConsolidation_e.PendingConsolidation_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_PendingConsolidation(o, dd, D, q, r)) : Array<U32>}
+def BYo_PendingConsolidation(+o: FuluPendingConsolidation_d.PendingConsolidation, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_PendingConsolidation(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.limbs(RWD_PendingConsolidation(o))) : +List<U32>}
 
-def putxo_PendingConsolidation(+o: T.PendingConsolidation, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putxo_PendingConsolidation(+o: FuluPendingConsolidation_d.PendingConsolidation, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 16n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(16n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(16n) : +List<U32>})
     -> DK.P2(RTo_PendingConsolidation(o, dd, D, X, q, r), BYo_PendingConsolidation(o, dd, D, q, r)):
   match o:
-    case T.PendingConsolidation{+o_0, +o_1}:
+    case FuluPendingConsolidation_d.PendingConsolidation{+o_0, +o_1}:
       match o_0:
         case O.U64{+x0, +x1}:
           match o_1:
             case O.U64{+x2, +x3}:
               ERC.putx_PendingConsolidation(x0, x1, x2, x3, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
 
-def lenb_PendingConsolidation(+o: T.PendingConsolidation) -> {VRX.LN(F.limbs(RWD_PendingConsolidation(o))) == 16n : Nat}:
+def lenb_PendingConsolidation(+o: FuluPendingConsolidation_d.PendingConsolidation) -> {VRX.LN(F.limbs(RWD_PendingConsolidation(o))) == 16n : Nat}:
   match o:
-    case T.PendingConsolidation{+o_0, +o_1}:
+    case FuluPendingConsolidation_d.PendingConsolidation{+o_0, +o_1}:
       match o_0:
         case O.U64{+x0, +x1}:
           match o_1:
             case O.U64{+x2, +x3}:
               {==}
 
-def EL_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +j: Nat) -> T.PendingConsolidation: VRL.mget(T.PendingConsolidation, FD.spec_common__nth(T.PendingConsolidation, FD.array__slots(T.PendingConsolidation, A), j), T.PendingConsolidation_default())
+def EL_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +j: Nat) -> FuluPendingConsolidation_d.PendingConsolidation: VRL.mget(FuluPendingConsolidation_d.PendingConsolidation, FD.spec_common__nth(FuluPendingConsolidation_d.PendingConsolidation, FD.array__slots(FuluPendingConsolidation_d.PendingConsolidation, A), j), FuluPendingConsolidation_d.PendingConsolidation_default())
 
 # ---- l262144_PendingConsolidation: the object's value, and the windows of its writes ----
 
-def ITW_l262144_PendingConsolidation(c: Nat, +A: FD.array__Tree<T.PendingConsolidation>, +j: Nat) -> S.Value:
+def ITW_l262144_PendingConsolidation(c: Nat, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +j: Nat) -> S.Value:
   match c:
     case 0n: S.EmptyItems{}
     case 1n+q: S.Items{RVW_PendingConsolidation(EL_l262144_PendingConsolidation(A, j)), ITW_l262144_PendingConsolidation(q, A, 1n+j)}
 
-def CHW_l262144_PendingConsolidation(c: Nat, +A: FD.array__Tree<T.PendingConsolidation>, +j: Nat) -> +List<+List<U32>>:
+def CHW_l262144_PendingConsolidation(c: Nat, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +j: Nat) -> +List<+List<U32>>:
   match c:
     case 0n: []
     case 1n+q: Con{RWD_PendingConsolidation(EL_l262144_PendingConsolidation(A, j)), CHW_l262144_PendingConsolidation(q, A, 1n+j)}
 
-def RWA_l262144_PendingConsolidation(c: Nat, +A: FD.array__Tree<T.PendingConsolidation>, +j: Nat) -> List<&2, U32>:
+def RWA_l262144_PendingConsolidation(c: Nat, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +j: Nat) -> List<&2, U32>:
   match c:
     case 0n: []
     case 1n+q: VF.app(RWD_PendingConsolidation(EL_l262144_PendingConsolidation(A, j)), RWA_l262144_PendingConsolidation(q, A, 1n+j))
 
 law cntW_l262144_PendingConsolidation:
   for +c: Nat
-  for +A: FD.array__Tree<T.PendingConsolidation>
+  for +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>
   for +j: Nat
   {Codec.count(ITW_l262144_PendingConsolidation(c, A, j)) == c : Nat}
 def cntW_l262144_PendingConsolidation(c, A, j):
@@ -171,7 +174,7 @@ def cntW_l262144_PendingConsolidation(c, A, j):
 
 law prtW_l262144_PendingConsolidation:
   for +c: Nat
-  for +A: FD.array__Tree<T.PendingConsolidation>
+  for +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>
   for +j: Nat
   {Codec.parts(ITW_l262144_PendingConsolidation(c, A, j), S.Repeat{S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}) == Some{F.fparts(CHW_l262144_PendingConsolidation(c, A, j))} : Maybe<&2, +List<S.Part>>}
 def prtW_l262144_PendingConsolidation(c, A, j):
@@ -183,7 +186,7 @@ def prtW_l262144_PendingConsolidation(c, A, j):
 
 law flatW_l262144_PendingConsolidation:
   for +c: Nat
-  for +A: FD.array__Tree<T.PendingConsolidation>
+  for +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>
   for +j: Nat
   {F.flat(CHW_l262144_PendingConsolidation(c, A, j)) == F.limbs(RWA_l262144_PendingConsolidation(c, A, j)) : +List<U32>}
 def flatW_l262144_PendingConsolidation(c, A, j):
@@ -197,7 +200,7 @@ def flatW_l262144_PendingConsolidation(c, A, j):
 
 law lenW_l262144_PendingConsolidation:
   for +c: Nat
-  for +A: FD.array__Tree<T.PendingConsolidation>
+  for +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>
   for +j: Nat
   {VF.slen(RWA_l262144_PendingConsolidation(c, A, j)) == Nat.mul(c, 4n) : Nat}
 def lenW_l262144_PendingConsolidation(c, A, j):
@@ -211,7 +214,7 @@ def lenW_l262144_PendingConsolidation(c, A, j):
       {==}
 
 # The value of c records, a list of at most 262144: one variable part, the limbs of their words.
-def lpart_l262144_PendingConsolidation(+c: Nat, +A: FD.array__Tree<T.PendingConsolidation>, +hl: {Nat.is_le(c, U32.to_nat(262144)) == True{} : Bool},
+def lpart_l262144_PendingConsolidation(+c: Nat, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +hl: {Nat.is_le(c, U32.to_nat(262144)) == True{} : Bool},
     +fit: {N.fits(4n, List.length(&2, U32, F.limbs(RWA_l262144_PendingConsolidation(c, A, 0n)))) == True{} : Bool})
     -> {Codec.parts(S.Sequence{ITW_l262144_PendingConsolidation(c, A, 0n)}, S.ListOf{S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, U32.to_nat(262144)}) == Some{[S.Variable{F.limbs(RWA_l262144_PendingConsolidation(c, A, 0n))}]} : Maybe<&2, +List<S.Part>>}:
   +fit2 = FD.logic__subst(+List<U32>, z => {N.fits(4n, List.length(&2, U32, z)) == True{} : Bool}, F.limbs(RWA_l262144_PendingConsolidation(c, A, 0n)), F.flat(CHW_l262144_PendingConsolidation(c, A, 0n)),
@@ -233,10 +236,10 @@ def lpart_l262144_PendingConsolidation(+c: Nat, +A: FD.array__Tree<T.PendingCons
 # ---- l262144_PendingConsolidation: the write loop at X = 4 q + r (record j at byte X + 16 j) ----
 
 
-def AG_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +i: U32) -> Array<T.PendingConsolidation> & T.PendingConsolidation: Array.get(T.PendingConsolidation, FD.array__thaw(T.PendingConsolidation, A), i)
+def AG_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +i: U32) -> Array<FuluPendingConsolidation_d.PendingConsolidation> & FuluPendingConsolidation_d.PendingConsolidation: Array.get(FuluPendingConsolidation_d.PendingConsolidation, FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), i)
 
 # the records j, j + 1, ..., j + k of A written from byte X + 16 j on
-def WX_l262144_PendingConsolidation(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +A: FD.array__Tree<T.PendingConsolidation>) -> FD.array__Tree<U32>:
+def WX_l262144_PendingConsolidation(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>) -> FD.array__Tree<U32>:
   match k:
     case 0n: PXo_PendingConsolidation(EL_l262144_PendingConsolidation(A, j), dd, D, Nat.add(Nat.mul(j, 4n), q), r)
     case 1n+p: WX_l262144_PendingConsolidation(p, 1n+j, dd, PXo_PendingConsolidation(EL_l262144_PendingConsolidation(A, j), dd, D, Nat.add(Nat.mul(j, 4n), q), r), q, r, A)
@@ -248,7 +251,7 @@ law pfWX_l262144_PendingConsolidation:
   for +D: FD.array__Tree<U32>
   for +q: Nat
   for +r: Nat
-  for +A: FD.array__Tree<T.PendingConsolidation>
+  for +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>
   for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
   {FD.array__perfect(U32, dd, WX_l262144_PendingConsolidation(k, j, dd, D, q, r, A)) == True{} : Bool}
 def pfWX_l262144_PendingConsolidation(k, j, dd, D, q, r, A, pf):
@@ -256,18 +259,18 @@ def pfWX_l262144_PendingConsolidation(k, j, dd, D, q, r, A, pf):
     case 0n: pfo_PendingConsolidation(EL_l262144_PendingConsolidation(A, j), dd, D, Nat.add(Nat.mul(j, 4n), q), r, pf)
     case 1n+ +p: pfWX_l262144_PendingConsolidation(p, 1n+j, dd, PXo_PendingConsolidation(EL_l262144_PendingConsolidation(A, j), dd, D, Nat.add(Nat.mul(j, 4n), q), r), q, r, A, pfo_PendingConsolidation(EL_l262144_PendingConsolidation(A, j), dd, D, Nat.add(Nat.mul(j, 4n), q), r, pf))
 
-def RTK_l262144_PendingConsolidation(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<T.PendingConsolidation>) -> Data:
-  {T.l262144_PendingConsolidation_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(T.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, j))) == (FD.array__thaw(U32, WX_l262144_PendingConsolidation(k, j, dd, D, q, r, A)), FD.array__thaw(T.PendingConsolidation, A)) : Array<U32> & Array<T.PendingConsolidation>}
-def BYK_l262144_PendingConsolidation(k: Nat, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<T.PendingConsolidation>) -> Data:
+def RTK_l262144_PendingConsolidation(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>) -> Data:
+  {Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, j))) == (FD.array__thaw(U32, WX_l262144_PendingConsolidation(k, j, dd, D, q, r, A)), FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A)) : Array<U32> & Array<FuluPendingConsolidation_d.PendingConsolidation>}
+def BYK_l262144_PendingConsolidation(k: Nat, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>) -> Data:
   {UA.BYT(WX_l262144_PendingConsolidation(k, j, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), VRX.YP(j, 4n, q, r), F.flat(CHW_l262144_PendingConsolidation(1n+k, A, j))) : +List<U32>}
 
 # The loop from record j (index i) on, k + 1 records, into LT bytes at X whose last k + 1 records' bytes are zero.
-def ptx_l262144_PendingConsolidation(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<T.PendingConsolidation>, +LT: Nat,
+def ptx_l262144_PendingConsolidation(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +LT: Nat,
     +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), 4n)), LT) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
     +hz: {VS.bt(A.quad(Nat.mul(1n+k, 4n)), VS.bdr(VRX.YP(j, 4n, q, r), UA.BYT(D))) == UW.ZB(A.quad(Nat.mul(1n+k, 4n))) : +List<U32>},
-    +pfA: {FD.array__perfect(T.PendingConsolidation, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    +pfA: {FD.array__perfect(FuluPendingConsolidation_d.PendingConsolidation, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> DK.P2(RTK_l262144_PendingConsolidation(k, i, j, X, q, r, dd, D, A), BYK_l262144_PendingConsolidation(k, j, q, r, dd, D, A)):
   match k:
     case 0n:
@@ -281,7 +284,7 @@ def ptx_l262144_PendingConsolidation(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat,
       +by = PB(RTo_PendingConsolidation(o, dd, D, Xj, qj, r), BYo_PendingConsolidation(o, dd, D, qj, r), g)
       +D1 = PXo_PendingConsolidation(o, dd, D, qj, r)
       +Y = F.limbs(RWD_PendingConsolidation(o))
-      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<T.PendingConsolidation>, z => (z, FD.array__thaw(T.PendingConsolidation, A)), T.PendingConsolidation_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<FuluPendingConsolidation_d.PendingConsolidation>, z => (z, FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A)), FuluPendingConsolidation_e.PendingConsolidation_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
       +by0 = FD.logic__subst(+List<U32>, z => {UA.BYT(D1) == UW.SPL(UA.BYT(D), VRX.YP(j, 4n, q, r), z) : +List<U32>}, Y, List.append(&2, U32, Y, []),
         Equal.sym(+List<U32>, List.append(&2, U32, Y, []), Y, VS.app_nil(Y)), by)
       (rt0, by0)
@@ -307,20 +310,20 @@ def ptx_l262144_PendingConsolidation(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat,
       +h1 = FD.nat__le_lt_trans(1n+j, 1n+Nat.add(p, j), VB.pw(da), Order.left_below_sum(p, j), hk)
       +ei1 = VB.add_le_at(i, 1, j, da, ei, hda, FD.nat__lt_le(1n+j, VB.pw(da), h1))
       +hi1 = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(da)) == True{} : Bool}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1), h1)
-      +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(T.PendingConsolidation, FD.array__slots(T.PendingConsolidation, A), z) == Some{EL_l262144_PendingConsolidation(A, 1n+j)} : Maybe<&2, T.PendingConsolidation>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
-        VRL.nth_get(T.PendingConsolidation, FD.array__slots(T.PendingConsolidation, A), 1n+j, T.PendingConsolidation_default(), FD.array__len_lt(T.PendingConsolidation, da, A, 1n+j, pfA, h1)))
-      +eg = FD.array__get(T.PendingConsolidation, da, A, U32.add(i, 1), EL_l262144_PendingConsolidation(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
+      +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(FuluPendingConsolidation_d.PendingConsolidation, FD.array__slots(FuluPendingConsolidation_d.PendingConsolidation, A), z) == Some{EL_l262144_PendingConsolidation(A, 1n+j)} : Maybe<&2, FuluPendingConsolidation_d.PendingConsolidation>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
+        VRL.nth_get(FuluPendingConsolidation_d.PendingConsolidation, FD.array__slots(FuluPendingConsolidation_d.PendingConsolidation, A), 1n+j, FuluPendingConsolidation_d.PendingConsolidation_default(), FD.array__len_lt(FuluPendingConsolidation_d.PendingConsolidation, da, A, 1n+j, pfA, h1)))
+      +eg = FD.array__get(FuluPendingConsolidation_d.PendingConsolidation, da, A, U32.add(i, 1), EL_l262144_PendingConsolidation(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
       +hj2 = FD.logic__subst(Nat, z => {Nat.is_le(A.quad(Nat.mul(1n+z, 4n)), LT) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hj)
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hk)
       +ih = ptx_l262144_PendingConsolidation(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hr, hd, pf1, hj2, hl, z1, pfA, hda, hk2)
       +rt2 = PA(RTK_l262144_PendingConsolidation(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l262144_PendingConsolidation(p, 1n+j, q, r, dd, D1, A), ih)
       +by2 = PB(RTK_l262144_PendingConsolidation(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l262144_PendingConsolidation(p, 1n+j, q, r, dd, D1, A), ih)
-      +ea = Equal.cong(Array<U32>, Array<U32> & Array<T.PendingConsolidation>, z => T.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, z, AG_l262144_PendingConsolidation(A, U32.add(i, 1))), T.PendingConsolidation_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
-      +eb = Equal.cong(Array<T.PendingConsolidation> & T.PendingConsolidation, Array<U32> & Array<T.PendingConsolidation>, z => T.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG_l262144_PendingConsolidation(A, U32.add(i, 1)), (FD.array__thaw(T.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, 1n+j)), eg)
-      +rt3 = Equal.trans(Array<U32> & Array<T.PendingConsolidation>, T.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, T.PendingConsolidation_put(FD.array__thaw(U32, D), Xj, o), AG_l262144_PendingConsolidation(A, U32.add(i, 1))), T.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l262144_PendingConsolidation(A, U32.add(i, 1))),
-        (FD.array__thaw(U32, WX_l262144_PendingConsolidation(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(T.PendingConsolidation, A)), ea,
-        Equal.trans(Array<U32> & Array<T.PendingConsolidation>, T.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l262144_PendingConsolidation(A, U32.add(i, 1))), T.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(T.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, 1n+j))),
-          (FD.array__thaw(U32, WX_l262144_PendingConsolidation(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(T.PendingConsolidation, A)), eb, rt2))
+      +ea = Equal.cong(Array<U32>, Array<U32> & Array<FuluPendingConsolidation_d.PendingConsolidation>, z => Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, z, AG_l262144_PendingConsolidation(A, U32.add(i, 1))), FuluPendingConsolidation_e.PendingConsolidation_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +eb = Equal.cong(Array<FuluPendingConsolidation_d.PendingConsolidation> & FuluPendingConsolidation_d.PendingConsolidation, Array<U32> & Array<FuluPendingConsolidation_d.PendingConsolidation>, z => Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG_l262144_PendingConsolidation(A, U32.add(i, 1)), (FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, 1n+j)), eg)
+      +rt3 = Equal.trans(Array<U32> & Array<FuluPendingConsolidation_d.PendingConsolidation>, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, FuluPendingConsolidation_e.PendingConsolidation_put(FD.array__thaw(U32, D), Xj, o), AG_l262144_PendingConsolidation(A, U32.add(i, 1))), Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l262144_PendingConsolidation(A, U32.add(i, 1))),
+        (FD.array__thaw(U32, WX_l262144_PendingConsolidation(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A)), ea,
+        Equal.trans(Array<U32> & Array<FuluPendingConsolidation_d.PendingConsolidation>, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l262144_PendingConsolidation(A, U32.add(i, 1))), Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, 1n+j))),
+          (FD.array__thaw(U32, WX_l262144_PendingConsolidation(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A)), eb, rt2))
       +rest = F.flat(CHW_l262144_PendingConsolidation(1n+p, A, 1n+j))
       +eXn = Equal.trans(Nat, VRX.YP(1n+j, 4n, q, r), Nat.add(Yj, A.quad(4n)), Nat.add(Yj, VRX.LN(Y)), ey,
         Equal.cong(Nat, Nat, z => Nat.add(Yj, z), A.quad(4n), VRX.LN(Y), Equal.sym(Nat, VRX.LN(Y), A.quad(4n), lenb_PendingConsolidation(o))))
@@ -330,57 +333,57 @@ def ptx_l262144_PendingConsolidation(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat,
 
 # ---- l262144_PendingConsolidation: the list's encoder window ----
 
-def TDM_l262144_PendingConsolidation(t: FD.array__Tree<T.PendingConsolidation>) -> Nat:
+def TDM_l262144_PendingConsolidation(t: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>) -> Nat:
   match t:
     case FD.TLeaf{x}: 0n
     case FD.TNode{l, r}: 1n+TDM_l262144_PendingConsolidation(l)
 
 # The list object Seq{thaw(A), N} and its facts: a perfect tree of depth < 31 holding the N records,
 # N within the limit 262144.
-def THL_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32) -> T.l262144_PendingConsolidation_Seq: T.l262144_PendingConsolidation_Seq{FD.array__thaw(T.PendingConsolidation, A), N}
-def OKL_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32) -> Bool:
-  Bool.and(Nat.is_lt(TDM_l262144_PendingConsolidation(A), 31n), Bool.and(FD.array__perfect(T.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144))))
-def okl_d_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {Nat.is_lt(TDM_l262144_PendingConsolidation(A), 31n) == True{} : Bool}:
-  and_l(Nat.is_lt(TDM_l262144_PendingConsolidation(A), 31n), Bool.and(FD.array__perfect(T.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144))), h)
-def okl_1_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool})
-    -> {Bool.and(FD.array__perfect(T.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144))) == True{} : Bool}:
-  and_r(Nat.is_lt(TDM_l262144_PendingConsolidation(A), 31n), Bool.and(FD.array__perfect(T.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144))), h)
-def okl_pf_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {FD.array__perfect(T.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A) == True{} : Bool}:
-  and_l(FD.array__perfect(T.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144)), okl_1_l262144_PendingConsolidation(A, N, h))
-def okl_2_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144)) == True{} : Bool}:
-  and_r(FD.array__perfect(T.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144)), okl_1_l262144_PendingConsolidation(A, N, h))
-def okl_n_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))) == True{} : Bool}:
+def THL_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32) -> Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq: Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq{FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), N}
+def OKL_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32) -> Bool:
+  Bool.and(Nat.is_lt(TDM_l262144_PendingConsolidation(A), 31n), Bool.and(FD.array__perfect(FuluPendingConsolidation_d.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144))))
+def okl_d_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {Nat.is_lt(TDM_l262144_PendingConsolidation(A), 31n) == True{} : Bool}:
+  and_l(Nat.is_lt(TDM_l262144_PendingConsolidation(A), 31n), Bool.and(FD.array__perfect(FuluPendingConsolidation_d.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144))), h)
+def okl_1_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool})
+    -> {Bool.and(FD.array__perfect(FuluPendingConsolidation_d.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144))) == True{} : Bool}:
+  and_r(Nat.is_lt(TDM_l262144_PendingConsolidation(A), 31n), Bool.and(FD.array__perfect(FuluPendingConsolidation_d.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144))), h)
+def okl_pf_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {FD.array__perfect(FuluPendingConsolidation_d.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A) == True{} : Bool}:
+  and_l(FD.array__perfect(FuluPendingConsolidation_d.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144)), okl_1_l262144_PendingConsolidation(A, N, h))
+def okl_2_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144)) == True{} : Bool}:
+  and_r(FD.array__perfect(FuluPendingConsolidation_d.PendingConsolidation, TDM_l262144_PendingConsolidation(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144)), okl_1_l262144_PendingConsolidation(A, N, h))
+def okl_n_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))) == True{} : Bool}:
   and_l(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144), okl_2_l262144_PendingConsolidation(A, N, h))
-def okl_lim_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {U32.is_le(N, 262144) == True{} : Bool}:
+def okl_lim_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {U32.is_le(N, 262144) == True{} : Bool}:
   and_r(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l262144_PendingConsolidation(A))), U32.is_le(N, 262144), okl_2_l262144_PendingConsolidation(A, N, h))
 
 # N <= 2^d as the runtime compares it.
-def le_cap_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(TDM_l262144_PendingConsolidation(A))) == True{} : Bool}:
+def le_cap_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(TDM_l262144_PendingConsolidation(A))) == True{} : Bool}:
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(TDM_l262144_PendingConsolidation(A))), Nat.is_le(U32.to_nat(N), U32.to_nat(FD.u32__pow2u(TDM_l262144_PendingConsolidation(A)))), VU.le_u32(N, FD.u32__pow2u(TDM_l262144_PendingConsolidation(A)))) : {_ == True{} : Bool}
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(TDM_l262144_PendingConsolidation(A))), VB.pw(TDM_l262144_PendingConsolidation(A)), FD.u32__pow2u_value(TDM_l262144_PendingConsolidation(A), FD.nat__lt_trans(TDM_l262144_PendingConsolidation(A), 31n, 32n, okl_d_l262144_PendingConsolidation(A, N, h), {==}))) : {Nat.is_le(U32.to_nat(N), _) == True{} : Bool}
   okl_n_l262144_PendingConsolidation(A, N, h)
 
 # The list's bytes, their count, and the writer's model.
-def LL_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32) -> Nat: A.quad(Nat.mul(U32.to_nat(N), 4n))
-def ENCL_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32) -> +List<U32>: F.limbs(RWA_l262144_PendingConsolidation(U32.to_nat(N), A, 0n))
-def PUTLb_l262144_PendingConsolidation(b: Bool, +A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+def LL_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32) -> Nat: A.quad(Nat.mul(U32.to_nat(N), 4n))
+def ENCL_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32) -> +List<U32>: F.limbs(RWA_l262144_PendingConsolidation(U32.to_nat(N), A, 0n))
+def PUTLb_l262144_PendingConsolidation(b: Bool, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match b:
     case True{}: D
     case False{}: WX_l262144_PendingConsolidation(U32.to_nat(U32.sub(N, 1)), 0n, dd, D, q, r, A)
-def PUTL_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PUTLb_l262144_PendingConsolidation(U32.is_eq(N, 0), A, N, dd, D, q, r)
-def pfLb_l262144_PendingConsolidation(+b: Bool, +A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def PUTL_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PUTLb_l262144_PendingConsolidation(U32.is_eq(N, 0), A, N, dd, D, q, r)
+def pfLb_l262144_PendingConsolidation(+b: Bool, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PUTLb_l262144_PendingConsolidation(b, A, N, dd, D, q, r)) == True{} : Bool}:
   match b:
     case True{}: pf
     case False{}: pfWX_l262144_PendingConsolidation(U32.to_nat(U32.sub(N, 1)), 0n, dd, D, q, r, A, pf)
 
-def RTN_l262144_PendingConsolidation(+b: Bool, +A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l262144_PendingConsolidation_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(T.PendingConsolidation, A)) == (FD.array__thaw(U32, PUTLb_l262144_PendingConsolidation(b, A, N, dd, D, q, r)), THL_l262144_PendingConsolidation(A, N)) : Array<U32> & T.l262144_PendingConsolidation_Seq}
-def BYN_l262144_PendingConsolidation(+b: Bool, +A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTN_l262144_PendingConsolidation(+b: Bool, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A)) == (FD.array__thaw(U32, PUTLb_l262144_PendingConsolidation(b, A, N, dd, D, q, r)), THL_l262144_PendingConsolidation(A, N)) : Array<U32> & Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq}
+def BYN_l262144_PendingConsolidation(+b: Bool, +A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTLb_l262144_PendingConsolidation(b, A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l262144_PendingConsolidation(U32.to_nat(N), A, 0n))) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def ptnz_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l262144_PendingConsolidation(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l262144_PendingConsolidation(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l262144_PendingConsolidation(A, N)) : +List<U32>})
@@ -405,46 +408,46 @@ def ptnz_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>
       +hk = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)),
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
-      +eg0 = FD.array__get(T.PendingConsolidation, da, A, 0, EL_l262144_PendingConsolidation(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(T.PendingConsolidation, FD.array__slots(T.PendingConsolidation, A), 0n, T.PendingConsolidation_default(), FD.array__len_lt(T.PendingConsolidation, da, A, 0n, pfA, h0)), pfA)
+      +eg0 = FD.array__get(FuluPendingConsolidation_d.PendingConsolidation, da, A, 0, EL_l262144_PendingConsolidation(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(FuluPendingConsolidation_d.PendingConsolidation, FD.array__slots(FuluPendingConsolidation_d.PendingConsolidation, A), 0n, FuluPendingConsolidation_d.PendingConsolidation_default(), FD.array__len_lt(FuluPendingConsolidation_d.PendingConsolidation, da, A, 0n, pfA, h0)), pfA)
       +g = ptx_l262144_PendingConsolidation(k, 0, 0n, X, q, r, dd, D, da, A, LL_l262144_PendingConsolidation(A, N), {==}, e, hr, hd, pf, hj, hl, hz2, pfA, hda, hk)
       +rt = PA(RTK_l262144_PendingConsolidation(k, 0, 0n, X, q, r, dd, D, A), BYK_l262144_PendingConsolidation(k, 0n, q, r, dd, D, A), g)
       +by = PB(RTK_l262144_PendingConsolidation(k, 0, 0n, X, q, r, dd, D, A), BYK_l262144_PendingConsolidation(k, 0n, q, r, dd, D, A), g)
-      +ea = Equal.cong(Array<T.PendingConsolidation> & T.PendingConsolidation, Array<U32> & T.l262144_PendingConsolidation_Seq, z => T.l262144_PendingConsolidation_pt_fin(N, T.l262144_PendingConsolidation_pt(k, 0, X, FD.array__thaw(U32, D), z)), Array.get(T.PendingConsolidation, FD.array__thaw(T.PendingConsolidation, A), 0), (FD.array__thaw(T.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, 0n)), eg0)
-      +eb2 = Equal.cong(Array<U32> & Array<T.PendingConsolidation>, Array<U32> & T.l262144_PendingConsolidation_Seq, z => T.l262144_PendingConsolidation_pt_fin(N, z), T.l262144_PendingConsolidation_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, 0n))), (FD.array__thaw(U32, WX_l262144_PendingConsolidation(k, 0n, dd, D, q, r, A)), FD.array__thaw(T.PendingConsolidation, A)), rt)
-      (Equal.trans(Array<U32> & T.l262144_PendingConsolidation_Seq, T.l262144_PendingConsolidation_pt_fin(N, T.l262144_PendingConsolidation_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(T.PendingConsolidation, FD.array__thaw(T.PendingConsolidation, A), 0))), T.l262144_PendingConsolidation_pt_fin(N, T.l262144_PendingConsolidation_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, 0n)))),
-         T.l262144_PendingConsolidation_pt_fin(N, (FD.array__thaw(U32, WX_l262144_PendingConsolidation(k, 0n, dd, D, q, r, A)), FD.array__thaw(T.PendingConsolidation, A))), ea, eb2),
+      +ea = Equal.cong(Array<FuluPendingConsolidation_d.PendingConsolidation> & FuluPendingConsolidation_d.PendingConsolidation, Array<U32> & Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq, z => Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt_fin(N, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt(k, 0, X, FD.array__thaw(U32, D), z)), Array.get(FuluPendingConsolidation_d.PendingConsolidation, FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), 0), (FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, 0n)), eg0)
+      +eb2 = Equal.cong(Array<U32> & Array<FuluPendingConsolidation_d.PendingConsolidation>, Array<U32> & Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq, z => Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt_fin(N, z), Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, 0n))), (FD.array__thaw(U32, WX_l262144_PendingConsolidation(k, 0n, dd, D, q, r, A)), FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A)), rt)
+      (Equal.trans(Array<U32> & Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt_fin(N, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(FuluPendingConsolidation_d.PendingConsolidation, FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), 0))), Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt_fin(N, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), EL_l262144_PendingConsolidation(A, 0n)))),
+         Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt_fin(N, (FD.array__thaw(U32, WX_l262144_PendingConsolidation(k, 0n, dd, D, q, r, A)), FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A))), ea, eb2),
        FD.logic__subst(Nat, z => {UA.BYT(WX_l262144_PendingConsolidation(k, 0n, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l262144_PendingConsolidation(z, A, 0n))) : +List<U32>}, 1n+k, c, e1, by))
 
 # The runtime's validity check of the list.
-def valid_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {T.l262144_PendingConsolidation_valid(THL_l262144_PendingConsolidation(A, N)) == (THL_l262144_PendingConsolidation(A, N), True{}) : T.l262144_PendingConsolidation_Seq & Bool}:
+def valid_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_valid(THL_l262144_PendingConsolidation(A, N)) == (THL_l262144_PendingConsolidation(A, N), True{}) : Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & Bool}:
   +d = TDM_l262144_PendingConsolidation(A)
-  %Equal.sym(Array<T.PendingConsolidation> & U32, Array.size(T.PendingConsolidation, FD.array__thaw(T.PendingConsolidation, A)), (FD.array__thaw(T.PendingConsolidation, A), FD.u32__pow2u(d)), FD.array__size_thaw(T.PendingConsolidation, d, A, okl_pf_l262144_PendingConsolidation(A, N, h))) :
-    {T.l262144_PendingConsolidation_va_cap(Bool.or(False{}, U32.is_le(N, 262144)), N, _) == (THL_l262144_PendingConsolidation(A, N), True{}) : T.l262144_PendingConsolidation_Seq & Bool}
+  %Equal.sym(Array<FuluPendingConsolidation_d.PendingConsolidation> & U32, Array.size(FuluPendingConsolidation_d.PendingConsolidation, FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A)), (FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), FD.u32__pow2u(d)), FD.array__size_thaw(FuluPendingConsolidation_d.PendingConsolidation, d, A, okl_pf_l262144_PendingConsolidation(A, N, h))) :
+    {Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_va_cap(Bool.or(False{}, U32.is_le(N, 262144)), N, _) == (THL_l262144_PendingConsolidation(A, N), True{}) : Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, 262144), True{}, okl_lim_l262144_PendingConsolidation(A, N, h)) :
-    {(THL_l262144_PendingConsolidation(A, N), Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d)))) == (THL_l262144_PendingConsolidation(A, N), True{}) : T.l262144_PendingConsolidation_Seq & Bool}
+    {(THL_l262144_PendingConsolidation(A, N), Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d)))) == (THL_l262144_PendingConsolidation(A, N), True{}) : Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_l262144_PendingConsolidation(A, N, h)) :
-    {(THL_l262144_PendingConsolidation(A, N), Bool.and(Bool.or(False{}, True{}), _)) == (THL_l262144_PendingConsolidation(A, N), True{}) : T.l262144_PendingConsolidation_Seq & Bool}
+    {(THL_l262144_PendingConsolidation(A, N), Bool.and(Bool.or(False{}, True{}), _)) == (THL_l262144_PendingConsolidation(A, N), True{}) : Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & Bool}
   {==}
 
-def RTL_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l262144_PendingConsolidation_putk(FD.array__thaw(U32, D), X, THL_l262144_PendingConsolidation(A, N)) == (FD.array__thaw(U32, PUTL_l262144_PendingConsolidation(A, N, dd, D, q, r)), (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16))) : Array<U32> & (T.l262144_PendingConsolidation_Seq & U32)}
-def BYL_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTL_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_putk(FD.array__thaw(U32, D), X, THL_l262144_PendingConsolidation(A, N)) == (FD.array__thaw(U32, PUTL_l262144_PendingConsolidation(A, N, dd, D, q, r)), (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16))) : Array<U32> & (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32)}
+def BYL_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL_l262144_PendingConsolidation(A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l262144_PendingConsolidation(A, N)) : +List<U32>}
-def PFL_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def PFL_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {FD.array__perfect(U32, dd, PUTL_l262144_PendingConsolidation(A, N, dd, D, q, r)) == True{} : Bool}
 
 # The runtime's write, with its validity check.
-def putk_rt_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putk_rt_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN_l262144_PendingConsolidation(U32.is_eq(N, 0), A, N, dd, D, X, q, r)) -> RTL_l262144_PendingConsolidation(A, N, dd, D, X, q, r):
-  %Equal.sym(T.l262144_PendingConsolidation_Seq & Bool, T.l262144_PendingConsolidation_valid(THL_l262144_PendingConsolidation(A, N)), (THL_l262144_PendingConsolidation(A, N), True{}), valid_l262144_PendingConsolidation(A, N, h)) :
-    {T.l262144_PendingConsolidation_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l262144_PendingConsolidation(A, N, dd, D, q, r)), (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16))) : Array<U32> & (T.l262144_PendingConsolidation_Seq & U32)}
-  %Equal.sym(Array<U32> & T.l262144_PendingConsolidation_Seq, T.l262144_PendingConsolidation_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(T.PendingConsolidation, A)), (FD.array__thaw(U32, PUTL_l262144_PendingConsolidation(A, N, dd, D, q, r)), THL_l262144_PendingConsolidation(A, N)), rtb) :
-    {T.l262144_PendingConsolidation_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l262144_PendingConsolidation(A, N, dd, D, q, r)), (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16))) : Array<U32> & (T.l262144_PendingConsolidation_Seq & U32)}
+  %Equal.sym(Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & Bool, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_valid(THL_l262144_PendingConsolidation(A, N)), (THL_l262144_PendingConsolidation(A, N), True{}), valid_l262144_PendingConsolidation(A, N, h)) :
+    {Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l262144_PendingConsolidation(A, N, dd, D, q, r)), (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16))) : Array<U32> & (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32)}
+  %Equal.sym(Array<U32> & Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq, Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A)), (FD.array__thaw(U32, PUTL_l262144_PendingConsolidation(A, N, dd, D, q, r)), THL_l262144_PendingConsolidation(A, N)), rtb) :
+    {Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l262144_PendingConsolidation(A, N, dd, D, q, r)), (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16))) : Array<U32> & (Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32)}
   {==}
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
 # into D's (its records write their data bytes only), and whose tree is perfect.
-def putx_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putx_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l262144_PendingConsolidation(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l262144_PendingConsolidation(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l262144_PendingConsolidation(A, N)) : +List<U32>})
@@ -460,16 +463,16 @@ def putx_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>
 # ---- sizes ----
 
 # The runtime's size pass.
-def sizex_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {T.l262144_PendingConsolidation_size(THL_l262144_PendingConsolidation(A, N)) == (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16)) : T.l262144_PendingConsolidation_Seq & U32}:
+def sizex_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}) -> {Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_size(THL_l262144_PendingConsolidation(A, N)) == (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16)) : Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32}:
   +d = TDM_l262144_PendingConsolidation(A)
-  %Equal.sym(Array<T.PendingConsolidation> & U32, Array.size(T.PendingConsolidation, FD.array__thaw(T.PendingConsolidation, A)), (FD.array__thaw(T.PendingConsolidation, A), FD.u32__pow2u(d)), FD.array__size_thaw(T.PendingConsolidation, d, A, okl_pf_l262144_PendingConsolidation(A, N, h))) :
-    {T.l262144_PendingConsolidation_szf(N, _) == (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16)) : T.l262144_PendingConsolidation_Seq & U32}
+  %Equal.sym(Array<FuluPendingConsolidation_d.PendingConsolidation> & U32, Array.size(FuluPendingConsolidation_d.PendingConsolidation, FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A)), (FD.array__thaw(FuluPendingConsolidation_d.PendingConsolidation, A), FD.u32__pow2u(d)), FD.array__size_thaw(FuluPendingConsolidation_d.PendingConsolidation, d, A, okl_pf_l262144_PendingConsolidation(A, N, h))) :
+    {Fulu_list_PendingConsolidation_262144_e.l262144_PendingConsolidation_szf(N, _) == (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16)) : Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_l262144_PendingConsolidation(A, N, h)) :
-    {(THL_l262144_PendingConsolidation(A, N), O.pick(_, U32.mul(N, 16), 2147483648)) == (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16)) : T.l262144_PendingConsolidation_Seq & U32}
+    {(THL_l262144_PendingConsolidation(A, N), O.pick(_, U32.mul(N, 16), 2147483648)) == (THL_l262144_PendingConsolidation(A, N), U32.mul(N, 16)) : Fulu_list_PendingConsolidation_262144_d.l262144_PendingConsolidation_Seq & U32}
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
-def szx_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def szx_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l262144_PendingConsolidation(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 16)) == LL_l262144_PendingConsolidation(A, N) : Nat}:
   VRX.mulq(dd, N, U32.to_nat(N), 16, 4n, {==}, {==}, hd,
     FD.nat__le_trans(LL_l262144_PendingConsolidation(A, N), Nat.add(Nat.add(A.quad(q), r), LL_l262144_PendingConsolidation(A, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL_l262144_PendingConsolidation(A, N)), VRX.xend(q, r, LL_l262144_PendingConsolidation(A, N), dd, hl)))
@@ -478,9 +481,9 @@ def szx_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>,
 # ---- l262144_PendingConsolidation: the spec side ----
 
 # The value of the list: the records' values.
-def VALL_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32) -> S.Value: S.Sequence{ITW_l262144_PendingConsolidation(U32.to_nat(N), A, 0n)}
+def VALL_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32) -> S.Value: S.Sequence{ITW_l262144_PendingConsolidation(U32.to_nat(N), A, 0n)}
 
-def len_encl_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32) -> {List.length(&2, U32, ENCL_l262144_PendingConsolidation(A, N)) == LL_l262144_PendingConsolidation(A, N) : Nat}:
+def len_encl_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32) -> {List.length(&2, U32, ENCL_l262144_PendingConsolidation(A, N)) == LL_l262144_PendingConsolidation(A, N) : Nat}:
   %Equal.sym(Nat, List.length(&2, U32, F.limbs(RWA_l262144_PendingConsolidation(U32.to_nat(N), A, 0n))), F.wlen(RWA_l262144_PendingConsolidation(U32.to_nat(N), A, 0n)), VS.len_limbs(RWA_l262144_PendingConsolidation(U32.to_nat(N), A, 0n))) : {_ == LL_l262144_PendingConsolidation(A, N) : Nat}
   %Equal.sym(Nat, F.wlen(RWA_l262144_PendingConsolidation(U32.to_nat(N), A, 0n)), A.quad(List.length(&2, U32, RWA_l262144_PendingConsolidation(U32.to_nat(N), A, 0n))), VS.wlen_quad(RWA_l262144_PendingConsolidation(U32.to_nat(N), A, 0n))) : {_ == LL_l262144_PendingConsolidation(A, N) : Nat}
   %Equal.sym(Nat, List.length(&2, U32, RWA_l262144_PendingConsolidation(U32.to_nat(N), A, 0n)), FD.spec_common__length(U32, RWA_l262144_PendingConsolidation(U32.to_nat(N), A, 0n)), VMR.len_eq(RWA_l262144_PendingConsolidation(U32.to_nat(N), A, 0n))) : {A.quad(_) == LL_l262144_PendingConsolidation(A, N) : Nat}
@@ -488,7 +491,7 @@ def len_encl_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidat
   {==}
 
 # encx_spec: the list's value has its bytes as one variable part, when they fit a tree of depth dx < 30.
-def encx_spec_l262144_PendingConsolidation(+A: FD.array__Tree<T.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}, +dx: Nat, +hdx: {Nat.is_lt(dx, 30n) == True{} : Bool},
+def encx_spec_l262144_PendingConsolidation(+A: FD.array__Tree<FuluPendingConsolidation_d.PendingConsolidation>, +N: U32, +h: {OKL_l262144_PendingConsolidation(A, N) == True{} : Bool}, +dx: Nat, +hdx: {Nat.is_lt(dx, 30n) == True{} : Bool},
     +hL: {Nat.is_le(LL_l262144_PendingConsolidation(A, N), A.quad(VB.pw(dx))) == True{} : Bool})
     -> {Codec.parts(VALL_l262144_PendingConsolidation(A, N), S.ListOf{S.Container{["source_index", "target_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, U32.to_nat(262144)}) == Some{[S.Variable{ENCL_l262144_PendingConsolidation(A, N)}]} : Maybe<&2, +List<S.Part>>}:
   +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 262144), Nat.is_le(U32.to_nat(N), U32.to_nat(262144)), VU.le_u32(N, 262144), okl_lim_l262144_PendingConsolidation(A, N, h))

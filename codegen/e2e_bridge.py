@@ -68,6 +68,7 @@ DWORDS = 24  # and at most this many words in a file (a name's decode proof grow
 VIEW_TODO = set()  # (the bit vectors are bridged by e2e_bits.bw)
 
 import api_gate as AG  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the modules import the per-name files they use
 
 HEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
         'import ../src/buffer.bend as B', 'import ../src/digest.bend as D', 'import ../src/obj.bend as O',
@@ -461,7 +462,8 @@ def bw(+ws: +List<U32>) -> {FB.bitsof(ws) == wcat(ws) : +List<Bool>}:
 
 def blocks_of(f, cache):
     if f not in cache:
-        cache[f] = AG.blocks((OBJ / f).read_text())
+        # the runtime's symbols read as T.<sym> (a proving module imports the split files: RR.unwire)
+        cache[f] = AG.blocks(RR.unwire((OBJ / f).read_text()))
     return cache[f]
 
 
@@ -667,6 +669,8 @@ def file_aliases(f):
         t = known.get(base)
         if t:
             out[a] = t
+        elif base.endswith('_generated.bend') and '/types/' in '/' + path:
+            out['T'] = 'T'   # a runtime split file: its symbols read as T.<sym> (blocks_of)
     return out
 
 
@@ -799,6 +803,7 @@ def outputs():
 def main():
     out = outputs()
     mine = list(OUT.glob('*_generated.bend')) if OUT.exists() else []
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]

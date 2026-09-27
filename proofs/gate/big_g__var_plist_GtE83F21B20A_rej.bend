@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/proglist_uint64_decode_ssz_generated.bend as proglist_uint64_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -33,6 +33,6 @@ import ../obj/big_var_plist_GtE83F21B20A_rej.bend as PRV
 def GtE83F21B20A__decode_reject__decode_reject(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(n) == False{} : Bool}) -> Decoding.outside_image(GS.GtE83F21B20A(), DC.VW(t, n)):
   PRV.decode_reject(d, t, n, pf, hn, hchk)
 
-def GtE83F21B20A__decode_none__decode_none(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(n) == False{} : Bool}) -> {T.GtE83F21B20A_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}:
+def GtE83F21B20A__decode_none__decode_none(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(n) == False{} : Bool}) -> {proglist_uint64_r.GtE83F21B20A_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}:
   PRV.decode_none(t, n, hchk)
 

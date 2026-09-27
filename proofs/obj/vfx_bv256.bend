@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_256_def_generated.bend as bitvector_256_d
+import ../../types/bitvector_256_decode_ssz_generated.bend as bitvector_256_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -30,31 +31,31 @@ import ./spec_bits.bend as FB
 def rdx_bv256(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 30n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 32n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv256_read(UA.BF(t, n), off, 32) == (UA.BF(t, n), T.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & T.Bitvector256}:
+    -> {bitvector_256_r.bv256_read(UA.BF(t, n), off, 32) == (UA.BF(t, n), bitvector_256_d.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & bitvector_256_d.Bitvector256}:
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), off), (UA.BF(t, n), UR.RWN(t, x)), UR.rwx(d, t, n, off, x, e, FD.nat__lt_trans(d, 30n, 31n, hd, {==}), pf, UR.roomw(x, 32n, 0n, A.quad(VB.pw(d)), hb, {==}))) :
-    {T.bv256_r0(off, _) == (UA.BF(t, n), T.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & T.Bitvector256}
+    {bitvector_256_r.bv256_r0(off, _) == (UA.BF(t, n), bitvector_256_d.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & bitvector_256_d.Bitvector256}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 4)), (UA.BF(t, n), UR.RWN(t, 4n+x)), UR.rwx(d, t, n, U32.add(off, 4), 4n+x, UR.offx(d, off, 4, x, e, hd, FD.nat__lt_le_trans(4n+x, Nat.add(4n+x, 4n), A.quad(VB.pw(d)), VTX.ltp(4n+x, 3n), UR.roomw(x, 32n, 4n, A.quad(VB.pw(d)), hb, {==}))), FD.nat__lt_trans(d, 30n, 31n, hd, {==}), pf, UR.roomw(x, 32n, 4n, A.quad(VB.pw(d)), hb, {==}))) :
-    {T.bv256_r1(off, UR.RWN(t, x), _) == (UA.BF(t, n), T.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & T.Bitvector256}
+    {bitvector_256_r.bv256_r1(off, UR.RWN(t, x), _) == (UA.BF(t, n), bitvector_256_d.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & bitvector_256_d.Bitvector256}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 8)), (UA.BF(t, n), UR.RWN(t, 8n+x)), UR.rwx(d, t, n, U32.add(off, 8), 8n+x, UR.offx(d, off, 8, x, e, hd, FD.nat__lt_le_trans(8n+x, Nat.add(8n+x, 4n), A.quad(VB.pw(d)), VTX.ltp(8n+x, 3n), UR.roomw(x, 32n, 8n, A.quad(VB.pw(d)), hb, {==}))), FD.nat__lt_trans(d, 30n, 31n, hd, {==}), pf, UR.roomw(x, 32n, 8n, A.quad(VB.pw(d)), hb, {==}))) :
-    {T.bv256_r2(off, UR.RWN(t, x), UR.RWN(t, 4n+x), _) == (UA.BF(t, n), T.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & T.Bitvector256}
+    {bitvector_256_r.bv256_r2(off, UR.RWN(t, x), UR.RWN(t, 4n+x), _) == (UA.BF(t, n), bitvector_256_d.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & bitvector_256_d.Bitvector256}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 12)), (UA.BF(t, n), UR.RWN(t, 12n+x)), UR.rwx(d, t, n, U32.add(off, 12), 12n+x, UR.offx(d, off, 12, x, e, hd, FD.nat__lt_le_trans(12n+x, Nat.add(12n+x, 4n), A.quad(VB.pw(d)), VTX.ltp(12n+x, 3n), UR.roomw(x, 32n, 12n, A.quad(VB.pw(d)), hb, {==}))), FD.nat__lt_trans(d, 30n, 31n, hd, {==}), pf, UR.roomw(x, 32n, 12n, A.quad(VB.pw(d)), hb, {==}))) :
-    {T.bv256_r3(off, UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), _) == (UA.BF(t, n), T.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & T.Bitvector256}
+    {bitvector_256_r.bv256_r3(off, UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), _) == (UA.BF(t, n), bitvector_256_d.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & bitvector_256_d.Bitvector256}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 16)), (UA.BF(t, n), UR.RWN(t, 16n+x)), UR.rwx(d, t, n, U32.add(off, 16), 16n+x, UR.offx(d, off, 16, x, e, hd, FD.nat__lt_le_trans(16n+x, Nat.add(16n+x, 4n), A.quad(VB.pw(d)), VTX.ltp(16n+x, 3n), UR.roomw(x, 32n, 16n, A.quad(VB.pw(d)), hb, {==}))), FD.nat__lt_trans(d, 30n, 31n, hd, {==}), pf, UR.roomw(x, 32n, 16n, A.quad(VB.pw(d)), hb, {==}))) :
-    {T.bv256_r4(off, UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), _) == (UA.BF(t, n), T.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & T.Bitvector256}
+    {bitvector_256_r.bv256_r4(off, UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), _) == (UA.BF(t, n), bitvector_256_d.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & bitvector_256_d.Bitvector256}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 20)), (UA.BF(t, n), UR.RWN(t, 20n+x)), UR.rwx(d, t, n, U32.add(off, 20), 20n+x, UR.offx(d, off, 20, x, e, hd, FD.nat__lt_le_trans(20n+x, Nat.add(20n+x, 4n), A.quad(VB.pw(d)), VTX.ltp(20n+x, 3n), UR.roomw(x, 32n, 20n, A.quad(VB.pw(d)), hb, {==}))), FD.nat__lt_trans(d, 30n, 31n, hd, {==}), pf, UR.roomw(x, 32n, 20n, A.quad(VB.pw(d)), hb, {==}))) :
-    {T.bv256_r5(off, UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), _) == (UA.BF(t, n), T.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & T.Bitvector256}
+    {bitvector_256_r.bv256_r5(off, UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), _) == (UA.BF(t, n), bitvector_256_d.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & bitvector_256_d.Bitvector256}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 24)), (UA.BF(t, n), UR.RWN(t, 24n+x)), UR.rwx(d, t, n, U32.add(off, 24), 24n+x, UR.offx(d, off, 24, x, e, hd, FD.nat__lt_le_trans(24n+x, Nat.add(24n+x, 4n), A.quad(VB.pw(d)), VTX.ltp(24n+x, 3n), UR.roomw(x, 32n, 24n, A.quad(VB.pw(d)), hb, {==}))), FD.nat__lt_trans(d, 30n, 31n, hd, {==}), pf, UR.roomw(x, 32n, 24n, A.quad(VB.pw(d)), hb, {==}))) :
-    {T.bv256_r6(off, UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), _) == (UA.BF(t, n), T.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & T.Bitvector256}
+    {bitvector_256_r.bv256_r6(off, UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), _) == (UA.BF(t, n), bitvector_256_d.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & bitvector_256_d.Bitvector256}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 28)), (UA.BF(t, n), UR.RWN(t, 28n+x)), UR.rwx(d, t, n, U32.add(off, 28), 28n+x, UR.offx(d, off, 28, x, e, hd, FD.nat__lt_le_trans(28n+x, Nat.add(28n+x, 4n), A.quad(VB.pw(d)), VTX.ltp(28n+x, 3n), UR.roomw(x, 32n, 28n, A.quad(VB.pw(d)), hb, {==}))), FD.nat__lt_trans(d, 30n, 31n, hd, {==}), pf, UR.roomw(x, 32n, 28n, A.quad(VB.pw(d)), hb, {==}))) :
-    {T.bv256_r7(off, UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), _) == (UA.BF(t, n), T.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & T.Bitvector256}
+    {bitvector_256_r.bv256_r7(off, UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), _) == (UA.BF(t, n), bitvector_256_d.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}) : B.Buf & bitvector_256_d.Bitvector256}
   {==}
 
-def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> T.Bitvector256: T.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}
+def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> bitvector_256_d.Bitvector256: bitvector_256_d.Bitvector256{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}
 
 def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 32n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv256_read(UA.BF(t, n), off, 32) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector256}:
+    -> {bitvector_256_r.bv256_read(UA.BF(t, n), off, 32) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_256_d.Bitvector256}:
   rdx_bv256(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.BitsValue{FB.bitsof([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])}

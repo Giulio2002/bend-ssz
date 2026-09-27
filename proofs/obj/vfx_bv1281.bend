@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_1281_decode_ssz_generated.bend as bitvector_1281_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -102,14 +102,14 @@ def rm(+x: Nat, +C: Nat, +s: Nat, +hc: {Nat.is_le(Nat.add(C, s), 161n) == True{}
 def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 161n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv1281_read(UA.BF(t, n), off, 161) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
+    -> {bitvector_1281_r.bv1281_read(UA.BF(t, n), off, 161) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
   VXG.rdg(d, t, n, off, x, e, hd, pf, 161, 161n, 6n, 8n, {==}, {==}, {==}, {==}, {==}, hb)
 
 # the validator on the last byte returns CHK
 def ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 161n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv1281_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), CHK(t, x)) : B.Buf & Bool}:
+    -> {bitvector_1281_r.bv1281_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), CHK(t, x)) : B.Buf & Bool}:
   +e32 = ec(d, off, x, 160, 160n, e, hd, {==}, {==}, hb)
   +hi = VR.hiX(d, U32.add(off, 160), Nat.add(160n, x), e32, VXG.ltx(Nat.add(160n, x), 1n, A.quad(VB.pw(d)), {==}, rm(x, 160n, 1n, {==}, A.quad(VB.pw(d)), hb)))
   %Equal.sym(B.Buf & U32, B.byte_at(UA.BF(t, n), U32.add(off, 160)), (UA.BF(t, n), VR.VX(t, U32.add(off, 160))), VR.byte_at_ok(d, t, n, U32.add(off, 160), FD.nat__lt_trans(d, 28n, 32n, hd, {==}), hi, pf)) :

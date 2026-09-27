@@ -1,7 +1,8 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/ProgressiveBitsStruct_def_generated.bend as ProgressiveBitsStruct_d
+import ../../types/ProgressiveBitsStruct_encode_ssz_generated.bend as ProgressiveBitsStruct_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -82,7 +83,7 @@ def room(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +k: Nat, +ek: {k == 28n :
     Equal.sym(+List<U32>, UA.BYT(VC.ZT(VL.DO(CI.SZ(m)))), UW.ZB(A.quad(VB.pw(VL.DO(CI.SZ(m))))), UWB.zt_bytes(VL.DO(CI.SZ(m)))), VE2.bt_zb_le(M, A.quad(VB.pw(VL.DO(CI.SZ(m)))), hm))
   mk3(m, hd, hl, hz)
 
-def RT0(+m: CI.MW) -> Data: {T.Gc60805EC295_putk(FD.array__thaw(U32, VC.ZT(VL.DO(CI.SZ(m)))), 0, CI.TH(m)) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (T.Gc60805EC295 & U32)}
+def RT0(+m: CI.MW) -> Data: {ProgressiveBitsStruct_e.Gc60805EC295_putk(FD.array__thaw(U32, VC.ZT(VL.DO(CI.SZ(m)))), 0, CI.TH(m)) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (ProgressiveBitsStruct_d.Gc60805EC295 & U32)}
 
 def rt0(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +g: DK.P2(HD(m), DK.P2(HL(m), HZ(m)))) -> RT0(m):
   +hd = CI.PA(HD(m), DK.P2(HL(m), HZ(m)), g)
@@ -99,17 +100,17 @@ def by0(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +g: DK.P2(HD(m), DK.P2(HL(
   CI.putx_bytes(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0), hl, hz, hok)
 
 def eval_go(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool})
-    -> {T.Gc60805EC295_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gc60805EC295 & B.Buf}:
+    -> {ProgressiveBitsStruct_e.Gc60805EC295_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveBitsStruct_d.Gc60805EC295 & B.Buf}:
   +rt = rt0(m, hok, room(m, hok, 28n, {==}))
-  %Equal.sym(T.Gc60805EC295 & U32, T.Gc60805EC295_size(CI.TH(m)), (CI.TH(m), CI.SZ(m)), Z.sizez(m, hok)) :
-    {T.Gc60805EC295_enc_sized(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gc60805EC295 & B.Buf}
+  %Equal.sym(ProgressiveBitsStruct_d.Gc60805EC295 & U32, ProgressiveBitsStruct_e.Gc60805EC295_size(CI.TH(m)), (CI.TH(m), CI.SZ(m)), Z.sizez(m, hok)) :
+    {ProgressiveBitsStruct_e.Gc60805EC295_enc_sized(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveBitsStruct_d.Gc60805EC295 & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(CI.SZ(m)))), Array.new(U32, VL.DO(CI.SZ(m)), 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(CI.SZ(m)))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(CI.SZ(m)))), VL.DO(CI.SZ(m)), VD.wdu(VC.nwu(CI.SZ(m))), VZG.zg(B.words_depth_u(VC.nwu(CI.SZ(m)))))) :
-    {T.Gc60805EC295_enc_put(CI.SZ(m), T.Gc60805EC295_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gc60805EC295 & B.Buf}
+    {ProgressiveBitsStruct_e.Gc60805EC295_enc_put(CI.SZ(m), ProgressiveBitsStruct_e.Gc60805EC295_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveBitsStruct_d.Gc60805EC295 & B.Buf}
   %Equal.sym(Array<U32>, Array.new(U32, VL.DO(CI.SZ(m)), 0), FD.array__thaw(U32, VC.ZT(VL.DO(CI.SZ(m)))), FD.array__new(U32, VL.DO(CI.SZ(m)), 0)) :
-    {T.Gc60805EC295_enc_put(CI.SZ(m), T.Gc60805EC295_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gc60805EC295 & B.Buf}
-  %Equal.sym(Array<U32> & (T.Gc60805EC295 & U32), T.Gc60805EC295_putk(FD.array__thaw(U32, VC.ZT(VL.DO(CI.SZ(m)))), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
-    {T.Gc60805EC295_enc_put(CI.SZ(m), _) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gc60805EC295 & B.Buf}
+    {ProgressiveBitsStruct_e.Gc60805EC295_enc_put(CI.SZ(m), ProgressiveBitsStruct_e.Gc60805EC295_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveBitsStruct_d.Gc60805EC295 & B.Buf}
+  %Equal.sym(Array<U32> & (ProgressiveBitsStruct_d.Gc60805EC295 & U32), ProgressiveBitsStruct_e.Gc60805EC295_putk(FD.array__thaw(U32, VC.ZT(VL.DO(CI.SZ(m)))), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
+    {ProgressiveBitsStruct_e.Gc60805EC295_enc_put(CI.SZ(m), _) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveBitsStruct_d.Gc60805EC295 & B.Buf}
   {==}
 
 # The output's first bytes, as many as the size, are the container's bytes.
@@ -126,7 +127,7 @@ def obytes(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {VS.bt(U32.to_nat(CI
 law encode_eval:
   for +m: CI.MW
   for +hok: {CI.OK(m) == True{} : Bool}
-  {T.Gc60805EC295_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), SZSM(m)}) : T.Gc60805EC295 & B.Buf}
+  {ProgressiveBitsStruct_e.Gc60805EC295_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), SZSM(m)}) : ProgressiveBitsStruct_d.Gc60805EC295 & B.Buf}
 def encode_eval(m, hok): eval_go(m, hok)
 
 # The buffer's bytes are the spec encoding of the object's value.

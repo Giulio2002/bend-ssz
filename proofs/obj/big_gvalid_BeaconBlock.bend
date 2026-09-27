@@ -3,7 +3,7 @@ import ../compact/found.bend as F
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ./cform.bend as CF
@@ -45,6 +45,6 @@ import ./gvalid_types.bend as GVT
 # BIG: BeaconBlock's root view is structurally valid under its root law's hypotheses; the
 # closed schema facts come from its big root law file (big_root_<Name>.bend).
 
-def BeaconBlock_root_valid(-o: T.BeaconBlock, +s: S.Schema, +es: {s == Spec.BeaconBlock() : S.Schema}, +rep: RT.rep_BeaconBlock(o, s))
+def BeaconBlock_root_valid(-o: FuluBeaconBlock_d.BeaconBlock, +s: S.Schema, +es: {s == Spec.BeaconBlock() : S.Schema}, +rep: RT.rep_BeaconBlock(o, s))
     -> {VD.root_valid(RT.v_BeaconBlock(o), s) == True{} : Bool}:
   GVT.vr_BeaconBlock(o, s, rep, OS.DV0(), {==}, BR.BeaconBlock_ok(s, es, OS.DV0(), {==}), BR.BeaconBlock_eqs(s, es))

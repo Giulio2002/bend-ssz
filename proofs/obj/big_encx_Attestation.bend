@@ -1,7 +1,17 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluBytes96_encode_ssz_generated.bend as FuluBytes96_e
+import ../../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d
+import ../../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
+import ../../types/FuluAttestationData_encode_ssz_generated.bend as FuluAttestationData_e
+import ../../types/Fulu_bitlist_131072_encode_ssz_generated.bend as Fulu_bitlist_131072_e
+import ../../types/Fulu_bitvector_64_encode_ssz_generated.bend as Fulu_bitvector_64_e
+import ../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
+import ../../types/FuluAttestation_encode_ssz_generated.bend as FuluAttestation_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -32,244 +42,244 @@ def PB(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:
   b
 
 # ---- AttestationData: its writer on the object (the record's words; proofs/obj/encx_recs.bend) ----
-def RW_AttestationData(o: T.AttestationData) -> List<&2, U32>:
+def RW_AttestationData(o: FuluAttestationData_d.AttestationData) -> List<&2, U32>:
   match o:
-    case T.AttestationData{+o_0, +o_1, +o_2, +o_3, +o_4}:
+    case FuluAttestationData_d.AttestationData{+o_0, +o_1, +o_2, +o_3, +o_4}:
       match o_0:
         case O.U64{+x0, +x1}:
           match o_1:
             case O.U64{+x2, +x3}:
               match o_2:
-                case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                   match o_3:
-                    case T.Checkpoint{+o_3_0, +o_3_1}:
+                    case FuluCheckpoint_d.Checkpoint{+o_3_0, +o_3_1}:
                       match o_3_0:
                         case O.U64{+x12, +x13}:
                           match o_3_1:
-                            case T.Bytes32{+x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21}:
+                            case FuluBytes32_d.Bytes32{+x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21}:
                               match o_4:
-                                case T.Checkpoint{+o_4_0, +o_4_1}:
+                                case FuluCheckpoint_d.Checkpoint{+o_4_0, +o_4_1}:
                                   match o_4_0:
                                     case O.U64{+x22, +x23}:
                                       match o_4_1:
-                                        case T.Bytes32{+x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31}:
+                                        case FuluBytes32_d.Bytes32{+x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31}:
                                           [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31]
-def PXo_AttestationData(o: T.AttestationData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+def PXo_AttestationData(o: FuluAttestationData_d.AttestationData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match o:
-    case T.AttestationData{+o_0, +o_1, +o_2, +o_3, +o_4}:
+    case FuluAttestationData_d.AttestationData{+o_0, +o_1, +o_2, +o_3, +o_4}:
       match o_0:
         case O.U64{+x0, +x1}:
           match o_1:
             case O.U64{+x2, +x3}:
               match o_2:
-                case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                   match o_3:
-                    case T.Checkpoint{+o_3_0, +o_3_1}:
+                    case FuluCheckpoint_d.Checkpoint{+o_3_0, +o_3_1}:
                       match o_3_0:
                         case O.U64{+x12, +x13}:
                           match o_3_1:
-                            case T.Bytes32{+x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21}:
+                            case FuluBytes32_d.Bytes32{+x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21}:
                               match o_4:
-                                case T.Checkpoint{+o_4_0, +o_4_1}:
+                                case FuluCheckpoint_d.Checkpoint{+o_4_0, +o_4_1}:
                                   match o_4_0:
                                     case O.U64{+x22, +x23}:
                                       match o_4_1:
-                                        case T.Bytes32{+x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31}:
+                                        case FuluBytes32_d.Bytes32{+x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31}:
                                           ER.PX_AttestationData(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, dd, D, q, r)
-def pfo_AttestationData(+o: T.AttestationData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def pfo_AttestationData(+o: FuluAttestationData_d.AttestationData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PXo_AttestationData(o, dd, D, q, r)) == True{} : Bool}:
   match o:
-    case T.AttestationData{+o_0, +o_1, +o_2, +o_3, +o_4}:
+    case FuluAttestationData_d.AttestationData{+o_0, +o_1, +o_2, +o_3, +o_4}:
       match o_0:
         case O.U64{+x0, +x1}:
           match o_1:
             case O.U64{+x2, +x3}:
               match o_2:
-                case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                   match o_3:
-                    case T.Checkpoint{+o_3_0, +o_3_1}:
+                    case FuluCheckpoint_d.Checkpoint{+o_3_0, +o_3_1}:
                       match o_3_0:
                         case O.U64{+x12, +x13}:
                           match o_3_1:
-                            case T.Bytes32{+x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21}:
+                            case FuluBytes32_d.Bytes32{+x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21}:
                               match o_4:
-                                case T.Checkpoint{+o_4_0, +o_4_1}:
+                                case FuluCheckpoint_d.Checkpoint{+o_4_0, +o_4_1}:
                                   match o_4_0:
                                     case O.U64{+x22, +x23}:
                                       match o_4_1:
-                                        case T.Bytes32{+x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31}:
+                                        case FuluBytes32_d.Bytes32{+x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31}:
                                           ER.pf_AttestationData(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, dd, D, q, r, pf)
-def RTo_AttestationData(+o: T.AttestationData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.AttestationData_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_AttestationData(o, dd, D, q, r)) : Array<U32>}
-def BYo_AttestationData(+o: T.AttestationData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTo_AttestationData(+o: FuluAttestationData_d.AttestationData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluAttestationData_e.AttestationData_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_AttestationData(o, dd, D, q, r)) : Array<U32>}
+def BYo_AttestationData(+o: FuluAttestationData_d.AttestationData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_AttestationData(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(RW_AttestationData(o))) : +List<U32>}
-def putxo_AttestationData(+o: T.AttestationData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putxo_AttestationData(+o: FuluAttestationData_d.AttestationData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 128n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(128n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(128n) : +List<U32>})
     -> DK.P2(RTo_AttestationData(o, dd, D, X, q, r), BYo_AttestationData(o, dd, D, q, r)):
   match o:
-    case T.AttestationData{+o_0, +o_1, +o_2, +o_3, +o_4}:
+    case FuluAttestationData_d.AttestationData{+o_0, +o_1, +o_2, +o_3, +o_4}:
       match o_0:
         case O.U64{+x0, +x1}:
           match o_1:
             case O.U64{+x2, +x3}:
               match o_2:
-                case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                   match o_3:
-                    case T.Checkpoint{+o_3_0, +o_3_1}:
+                    case FuluCheckpoint_d.Checkpoint{+o_3_0, +o_3_1}:
                       match o_3_0:
                         case O.U64{+x12, +x13}:
                           match o_3_1:
-                            case T.Bytes32{+x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21}:
+                            case FuluBytes32_d.Bytes32{+x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21}:
                               match o_4:
-                                case T.Checkpoint{+o_4_0, +o_4_1}:
+                                case FuluCheckpoint_d.Checkpoint{+o_4_0, +o_4_1}:
                                   match o_4_0:
                                     case O.U64{+x22, +x23}:
                                       match o_4_1:
-                                        case T.Bytes32{+x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31}:
+                                        case FuluBytes32_d.Bytes32{+x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31}:
                                           ER.putx_AttestationData(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
-def lenb_AttestationData(+o: T.AttestationData) -> {VCN.LN(FX.limbs(RW_AttestationData(o))) == 128n : Nat}:
+def lenb_AttestationData(+o: FuluAttestationData_d.AttestationData) -> {VCN.LN(FX.limbs(RW_AttestationData(o))) == 128n : Nat}:
   match o:
-    case T.AttestationData{+o_0, +o_1, +o_2, +o_3, +o_4}:
+    case FuluAttestationData_d.AttestationData{+o_0, +o_1, +o_2, +o_3, +o_4}:
       match o_0:
         case O.U64{+x0, +x1}:
           match o_1:
             case O.U64{+x2, +x3}:
               match o_2:
-                case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                   match o_3:
-                    case T.Checkpoint{+o_3_0, +o_3_1}:
+                    case FuluCheckpoint_d.Checkpoint{+o_3_0, +o_3_1}:
                       match o_3_0:
                         case O.U64{+x12, +x13}:
                           match o_3_1:
-                            case T.Bytes32{+x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21}:
+                            case FuluBytes32_d.Bytes32{+x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21}:
                               match o_4:
-                                case T.Checkpoint{+o_4_0, +o_4_1}:
+                                case FuluCheckpoint_d.Checkpoint{+o_4_0, +o_4_1}:
                                   match o_4_0:
                                     case O.U64{+x22, +x23}:
                                       match o_4_1:
-                                        case T.Bytes32{+x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31}:
+                                        case FuluBytes32_d.Bytes32{+x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31}:
                                           {==}
 
 
 # ---- b96: its writer on the object ----
-def RW_b96(o: T.Bytes96) -> List<&2, U32>:
+def RW_b96(o: FuluBytes96_d.Bytes96) -> List<&2, U32>:
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]
-def PXo_b96(o: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]
+def PXo_b96(o: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: V_b96.PX_b96(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23)
-def pfo_b96(+o: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: V_b96.PX_b96(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23)
+def pfo_b96(+o: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PXo_b96(o, dd, D, q, r)) == True{} : Bool}:
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: V_b96.b96x_perfect(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, pf)
-def RTo_b96(+o: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.b96_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_b96(o, dd, D, q, r)) : Array<U32>}
-def BYo_b96(+o: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: V_b96.b96x_perfect(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, pf)
+def RTo_b96(+o: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluBytes96_e.b96_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_b96(o, dd, D, q, r)) : Array<U32>}
+def BYo_b96(+o: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_b96(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(RW_b96(o))) : +List<U32>}
-def putxo_b96(+o: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putxo_b96(+o: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 96n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(96n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(96n) : +List<U32>})
     -> DK.P2(RTo_b96(o, dd, D, X, q, r), BYo_b96(o, dd, D, q, r)):
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: (V_b96.b96_any(dd, D, X, q, r, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, e, hr, hd, hl, pf, hz), V_b96.b96_any_bytes(dd, D, X, q, r, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, e, hr, hd, hl, pf, hz))
-def lenb_b96(+o: T.Bytes96) -> {VCN.LN(FX.limbs(RW_b96(o))) == 96n : Nat}:
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: (V_b96.b96_any(dd, D, X, q, r, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, e, hr, hd, hl, pf, hz), V_b96.b96_any_bytes(dd, D, X, q, r, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, e, hr, hd, hl, pf, hz))
+def lenb_b96(+o: FuluBytes96_d.Bytes96) -> {VCN.LN(FX.limbs(RW_b96(o))) == 96n : Nat}:
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: {==}
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: {==}
 
 
 # ---- bv64: its writer on the object ----
-def RW_bv64(o: T.Bitvector64) -> List<&2, U32>:
+def RW_bv64(o: Fulu_bitvector_64_d.Bitvector64) -> List<&2, U32>:
   match o:
-    case T.Bitvector64{+w0, +w1}: [w0, w1]
-def PXo_bv64(o: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+    case Fulu_bitvector_64_d.Bitvector64{+w0, +w1}: [w0, w1]
+def PXo_bv64(o: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match o:
-    case T.Bitvector64{+w0, +w1}: V_bv64.PX_bv64(r, dd, D, q, w0, w1)
-def pfo_bv64(+o: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    case Fulu_bitvector_64_d.Bitvector64{+w0, +w1}: V_bv64.PX_bv64(r, dd, D, q, w0, w1)
+def pfo_bv64(+o: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PXo_bv64(o, dd, D, q, r)) == True{} : Bool}:
   match o:
-    case T.Bitvector64{+w0, +w1}: V_bv64.bv64x_perfect(r, dd, D, q, w0, w1, pf)
-def RTo_bv64(+o: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.bv64_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_bv64(o, dd, D, q, r)) : Array<U32>}
-def BYo_bv64(+o: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+    case Fulu_bitvector_64_d.Bitvector64{+w0, +w1}: V_bv64.bv64x_perfect(r, dd, D, q, w0, w1, pf)
+def RTo_bv64(+o: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {Fulu_bitvector_64_e.bv64_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_bv64(o, dd, D, q, r)) : Array<U32>}
+def BYo_bv64(+o: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_bv64(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(RW_bv64(o))) : +List<U32>}
-def putxo_bv64(+o: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putxo_bv64(+o: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 8n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(8n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(8n) : +List<U32>})
     -> DK.P2(RTo_bv64(o, dd, D, X, q, r), BYo_bv64(o, dd, D, q, r)):
   match o:
-    case T.Bitvector64{+w0, +w1}: (V_bv64.bv64_any(dd, D, X, q, r, w0, w1, e, hr, hd, hl, pf, hz), V_bv64.bv64_any_bytes(dd, D, X, q, r, w0, w1, e, hr, hd, hl, pf, hz))
-def lenb_bv64(+o: T.Bitvector64) -> {VCN.LN(FX.limbs(RW_bv64(o))) == 8n : Nat}:
+    case Fulu_bitvector_64_d.Bitvector64{+w0, +w1}: (V_bv64.bv64_any(dd, D, X, q, r, w0, w1, e, hr, hd, hl, pf, hz), V_bv64.bv64_any_bytes(dd, D, X, q, r, w0, w1, e, hr, hd, hl, pf, hz))
+def lenb_bv64(+o: Fulu_bitvector_64_d.Bitvector64) -> {VCN.LN(FX.limbs(RW_bv64(o))) == 8n : Nat}:
   match o:
-    case T.Bitvector64{+w0, +w1}: {==}
+    case Fulu_bitvector_64_d.Bitvector64{+w0, +w1}: {==}
 
 
 # ---- Attestation: the object, its bytes and byte count ----
-def OBJC(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64) -> T.Attestation: T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}
-def LLC(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Nat: Nat.add(236n, VCN.SUM([List.length(&2, U32, EX_bits131072.ENC(m_aggregation_bits))]))
-def SZC(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64) -> U32: O.padd(236, EX_bits131072.SZ(m_aggregation_bits))
+def OBJC(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64) -> FuluAttestation_d.Attestation: FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}
+def LLC(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Nat: Nat.add(236n, VCN.SUM([List.length(&2, U32, EX_bits131072.ENC(m_aggregation_bits))]))
+def SZC(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64) -> U32: O.padd(236, EX_bits131072.SZ(m_aggregation_bits))
 
-def M0(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: D
-def M1(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: WD.W32X(r, dd, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(0n, q), 236)
-def M2(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: EX_bits131072.PUTX(m_aggregation_bits, dd, M1(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), VCN.QX(U32.add(X, 236)), VCN.RX(U32.add(X, 236)))
-def M3(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PXo_AttestationData(data, dd, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(1n, q), r)
-def M4(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PXo_b96(signature, dd, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(33n, q), r)
-def M5(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PXo_bv64(committee_bits, dd, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(57n, q), r)
-def PUTC(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)
+def M0(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: D
+def M1(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: WD.W32X(r, dd, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(0n, q), 236)
+def M2(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: EX_bits131072.PUTX(m_aggregation_bits, dd, M1(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), VCN.QX(U32.add(X, 236)), VCN.RX(U32.add(X, 236)))
+def M3(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PXo_AttestationData(data, dd, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(1n, q), r)
+def M4(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PXo_b96(signature, dd, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(33n, q), r)
+def M5(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PXo_bv64(committee_bits, dd, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(57n, q), r)
+def PUTC(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)
 
 # aggregation_bits: its offset word, then its bytes (T.bits131072_putv).
 def putv_aggregation_bits(+m_aggregation_bits: EX_bits131072.MB, +D: FD.array__Tree<U32>, +D1: FD.array__Tree<U32>, +D2: FD.array__Tree<U32>, +X: U32, +hoff: U32, +cur: U32,
     +e1: {O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur) == FD.array__thaw(U32, D1) : Array<U32>},
-    +e2: {T.bits131072_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_bits131072.TH(m_aggregation_bits)) == (FD.array__thaw(U32, D2), (EX_bits131072.TH(m_aggregation_bits), EX_bits131072.SZ(m_aggregation_bits))) : Array<U32> & (O.Bits & U32)})
-    -> {T.bits131072_putv(FD.array__thaw(U32, D), X, hoff, cur, EX_bits131072.TH(m_aggregation_bits)) == (FD.array__thaw(U32, D2), (EX_bits131072.TH(m_aggregation_bits), O.padd(cur, EX_bits131072.SZ(m_aggregation_bits)))) : Array<U32> & (O.Bits & U32)}:
-  Equal.trans(Array<U32> & (O.Bits & U32), T.bits131072_pvb(cur, T.bits131072_putk(O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), U32.add(X, cur), EX_bits131072.TH(m_aggregation_bits))),
-    T.bits131072_pvb(cur, T.bits131072_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_bits131072.TH(m_aggregation_bits))), (FD.array__thaw(U32, D2), (EX_bits131072.TH(m_aggregation_bits), O.padd(cur, EX_bits131072.SZ(m_aggregation_bits)))),
-    Equal.cong(Array<U32>, Array<U32> & (O.Bits & U32), z => T.bits131072_pvb(cur, T.bits131072_putk(z, U32.add(X, cur), EX_bits131072.TH(m_aggregation_bits))), O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), FD.array__thaw(U32, D1), e1),
-    Equal.cong(Array<U32> & (O.Bits & U32), Array<U32> & (O.Bits & U32), z => T.bits131072_pvb(cur, z), T.bits131072_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_bits131072.TH(m_aggregation_bits)), (FD.array__thaw(U32, D2), (EX_bits131072.TH(m_aggregation_bits), EX_bits131072.SZ(m_aggregation_bits))), e2))
+    +e2: {Fulu_bitlist_131072_e.bits131072_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_bits131072.TH(m_aggregation_bits)) == (FD.array__thaw(U32, D2), (EX_bits131072.TH(m_aggregation_bits), EX_bits131072.SZ(m_aggregation_bits))) : Array<U32> & (O.Bits & U32)})
+    -> {Fulu_bitlist_131072_e.bits131072_putv(FD.array__thaw(U32, D), X, hoff, cur, EX_bits131072.TH(m_aggregation_bits)) == (FD.array__thaw(U32, D2), (EX_bits131072.TH(m_aggregation_bits), O.padd(cur, EX_bits131072.SZ(m_aggregation_bits)))) : Array<U32> & (O.Bits & U32)}:
+  Equal.trans(Array<U32> & (O.Bits & U32), Fulu_bitlist_131072_e.bits131072_pvb(cur, Fulu_bitlist_131072_e.bits131072_putk(O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), U32.add(X, cur), EX_bits131072.TH(m_aggregation_bits))),
+    Fulu_bitlist_131072_e.bits131072_pvb(cur, Fulu_bitlist_131072_e.bits131072_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_bits131072.TH(m_aggregation_bits))), (FD.array__thaw(U32, D2), (EX_bits131072.TH(m_aggregation_bits), O.padd(cur, EX_bits131072.SZ(m_aggregation_bits)))),
+    Equal.cong(Array<U32>, Array<U32> & (O.Bits & U32), z => Fulu_bitlist_131072_e.bits131072_pvb(cur, Fulu_bitlist_131072_e.bits131072_putk(z, U32.add(X, cur), EX_bits131072.TH(m_aggregation_bits))), O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), FD.array__thaw(U32, D1), e1),
+    Equal.cong(Array<U32> & (O.Bits & U32), Array<U32> & (O.Bits & U32), z => Fulu_bitlist_131072_e.bits131072_pvb(cur, z), Fulu_bitlist_131072_e.bits131072_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_bits131072.TH(m_aggregation_bits)), (FD.array__thaw(U32, D2), (EX_bits131072.TH(m_aggregation_bits), EX_bits131072.SZ(m_aggregation_bits))), e2))
 
 
 # the runtime's Attestation writes, from its writes' facts
-def rt_C(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def rt_C(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +f0: {O.w32(FD.array__thaw(U32, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 0), 236) == FD.array__thaw(U32, M1(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>},
-    +f1: {T.bits131072_putk(FD.array__thaw(U32, M1(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 236), EX_bits131072.TH(m_aggregation_bits)) == (FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (EX_bits131072.TH(m_aggregation_bits), EX_bits131072.SZ(m_aggregation_bits))) : Array<U32> & (O.Bits & U32)},
-    +f2: {T.AttestationData_put(FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 4), data) == FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>},
-    +f3: {T.b96_put(FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 132), signature) == FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>},
-    +f4: {T.bv64_put(FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 228), committee_bits) == FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>})
-    -> {T.Attestation_putn(FD.array__thaw(U32, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), X, T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}) == (FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))) : Array<U32> & (T.Attestation & U32)}:
-  Equal.trans(Array<U32> & (T.Attestation & U32), T.Attestation_putn(FD.array__thaw(U32, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), X, T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}), T.Attestation_pw0(X, data, signature, committee_bits, (FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (EX_bits131072.TH(m_aggregation_bits), O.padd(236, EX_bits131072.SZ(m_aggregation_bits))))), (FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), Equal.cong(Array<U32> & (O.Bits & U32), Array<U32> & (T.Attestation & U32), z => T.Attestation_pw0(X, data, signature, committee_bits, z), T.bits131072_putv(FD.array__thaw(U32, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), X, 0, 236, EX_bits131072.TH(m_aggregation_bits)), (FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (EX_bits131072.TH(m_aggregation_bits), O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), putv_aggregation_bits(m_aggregation_bits, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), M1(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), X, 0, 236, f0, f1)), Equal.trans(Array<U32> & (T.Attestation & U32), T.Attestation_pw0(X, data, signature, committee_bits, (FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (EX_bits131072.TH(m_aggregation_bits), O.padd(236, EX_bits131072.SZ(m_aggregation_bits))))), (T.bv64_put(T.b96_put(FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 132), signature), U32.add(X, 228), committee_bits), (T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), (FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), Equal.cong(Array<U32>, Array<U32> & (T.Attestation & U32), z => (T.bv64_put(T.b96_put(z, U32.add(X, 132), signature), U32.add(X, 228), committee_bits), (T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), T.AttestationData_put(FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 4), data), FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), f2), Equal.trans(Array<U32> & (T.Attestation & U32), (T.bv64_put(T.b96_put(FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 132), signature), U32.add(X, 228), committee_bits), (T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), (T.bv64_put(FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 228), committee_bits), (T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), (FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), Equal.cong(Array<U32>, Array<U32> & (T.Attestation & U32), z => (T.bv64_put(z, U32.add(X, 228), committee_bits), (T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), T.b96_put(FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 132), signature), FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), f3), Equal.cong(Array<U32>, Array<U32> & (T.Attestation & U32), z => (z, (T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), T.bv64_put(FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 228), committee_bits), FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), f4))))
+    +f1: {Fulu_bitlist_131072_e.bits131072_putk(FD.array__thaw(U32, M1(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 236), EX_bits131072.TH(m_aggregation_bits)) == (FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (EX_bits131072.TH(m_aggregation_bits), EX_bits131072.SZ(m_aggregation_bits))) : Array<U32> & (O.Bits & U32)},
+    +f2: {FuluAttestationData_e.AttestationData_put(FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 4), data) == FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>},
+    +f3: {FuluBytes96_e.b96_put(FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 132), signature) == FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>},
+    +f4: {Fulu_bitvector_64_e.bv64_put(FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 228), committee_bits) == FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>})
+    -> {FuluAttestation_e.Attestation_putn(FD.array__thaw(U32, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), X, FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}) == (FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))) : Array<U32> & (FuluAttestation_d.Attestation & U32)}:
+  Equal.trans(Array<U32> & (FuluAttestation_d.Attestation & U32), FuluAttestation_e.Attestation_putn(FD.array__thaw(U32, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), X, FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}), FuluAttestation_e.Attestation_pw0(X, data, signature, committee_bits, (FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (EX_bits131072.TH(m_aggregation_bits), O.padd(236, EX_bits131072.SZ(m_aggregation_bits))))), (FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), Equal.cong(Array<U32> & (O.Bits & U32), Array<U32> & (FuluAttestation_d.Attestation & U32), z => FuluAttestation_e.Attestation_pw0(X, data, signature, committee_bits, z), Fulu_bitlist_131072_e.bits131072_putv(FD.array__thaw(U32, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), X, 0, 236, EX_bits131072.TH(m_aggregation_bits)), (FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (EX_bits131072.TH(m_aggregation_bits), O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), putv_aggregation_bits(m_aggregation_bits, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), M1(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), X, 0, 236, f0, f1)), Equal.trans(Array<U32> & (FuluAttestation_d.Attestation & U32), FuluAttestation_e.Attestation_pw0(X, data, signature, committee_bits, (FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (EX_bits131072.TH(m_aggregation_bits), O.padd(236, EX_bits131072.SZ(m_aggregation_bits))))), (Fulu_bitvector_64_e.bv64_put(FuluBytes96_e.b96_put(FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 132), signature), U32.add(X, 228), committee_bits), (FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), (FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), Equal.cong(Array<U32>, Array<U32> & (FuluAttestation_d.Attestation & U32), z => (Fulu_bitvector_64_e.bv64_put(FuluBytes96_e.b96_put(z, U32.add(X, 132), signature), U32.add(X, 228), committee_bits), (FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), FuluAttestationData_e.AttestationData_put(FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 4), data), FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), f2), Equal.trans(Array<U32> & (FuluAttestation_d.Attestation & U32), (Fulu_bitvector_64_e.bv64_put(FuluBytes96_e.b96_put(FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 132), signature), U32.add(X, 228), committee_bits), (FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), (Fulu_bitvector_64_e.bv64_put(FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 228), committee_bits), (FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), (FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), Equal.cong(Array<U32>, Array<U32> & (FuluAttestation_d.Attestation & U32), z => (Fulu_bitvector_64_e.bv64_put(z, U32.add(X, 228), committee_bits), (FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), FuluBytes96_e.b96_put(FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 132), signature), FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), f3), Equal.cong(Array<U32>, Array<U32> & (FuluAttestation_d.Attestation & U32), z => (z, (FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))), Fulu_bitvector_64_e.bv64_put(FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 228), committee_bits), FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), f4))))
 
 
 # the runtime's put of Attestation at X
-def rt_all(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def rt_all(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +f0: {O.w32(FD.array__thaw(U32, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 0), 236) == FD.array__thaw(U32, M1(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>},
-    +f1: {T.bits131072_putk(FD.array__thaw(U32, M1(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 236), EX_bits131072.TH(m_aggregation_bits)) == (FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (EX_bits131072.TH(m_aggregation_bits), EX_bits131072.SZ(m_aggregation_bits))) : Array<U32> & (O.Bits & U32)},
-    +f2: {T.AttestationData_put(FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 4), data) == FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>},
-    +f3: {T.b96_put(FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 132), signature) == FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>},
-    +f4: {T.bv64_put(FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 228), committee_bits) == FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>})
-    -> {T.Attestation_putn(FD.array__thaw(U32, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), X, T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}) == (FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (T.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))) : Array<U32> & (T.Attestation & U32)}:
+    +f1: {Fulu_bitlist_131072_e.bits131072_putk(FD.array__thaw(U32, M1(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 236), EX_bits131072.TH(m_aggregation_bits)) == (FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (EX_bits131072.TH(m_aggregation_bits), EX_bits131072.SZ(m_aggregation_bits))) : Array<U32> & (O.Bits & U32)},
+    +f2: {FuluAttestationData_e.AttestationData_put(FD.array__thaw(U32, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 4), data) == FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>},
+    +f3: {FuluBytes96_e.b96_put(FD.array__thaw(U32, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 132), signature) == FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>},
+    +f4: {Fulu_bitvector_64_e.bv64_put(FD.array__thaw(U32, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), U32.add(X, 228), committee_bits) == FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) : Array<U32>})
+    -> {FuluAttestation_e.Attestation_putn(FD.array__thaw(U32, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), X, FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}) == (FD.array__thaw(U32, M5(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (FuluAttestation_d.Attestation{EX_bits131072.TH(m_aggregation_bits), data, signature, committee_bits}, O.padd(236, EX_bits131072.SZ(m_aggregation_bits)))) : Array<U32> & (FuluAttestation_d.Attestation & U32)}:
   rt_C(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r, f0, f1, f2, f3, f4)
 
 
-def ENCC(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64) -> +List<U32>: VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(RW_AttestationData(data))), VCN.PC(96n, FX.limbs(RW_b96(signature))), VCN.PC(8n, FX.limbs(RW_bv64(committee_bits))), VCN.PC(List.length(&2, U32, EX_bits131072.ENC(m_aggregation_bits)), EX_bits131072.ENC(m_aggregation_bits))])
-def RTC(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Attestation_putn(FD.array__thaw(U32, D), X, OBJC(m_aggregation_bits, data, signature, committee_bits)) == (FD.array__thaw(U32, PUTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (OBJC(m_aggregation_bits, data, signature, committee_bits), SZC(m_aggregation_bits, data, signature, committee_bits))) : Array<U32> & (T.Attestation & U32)}
-def BYC(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+def ENCC(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64) -> +List<U32>: VCN.CAT([I.limb(236), VCN.PC(128n, FX.limbs(RW_AttestationData(data))), VCN.PC(96n, FX.limbs(RW_b96(signature))), VCN.PC(8n, FX.limbs(RW_bv64(committee_bits))), VCN.PC(List.length(&2, U32, EX_bits131072.ENC(m_aggregation_bits)), EX_bits131072.ENC(m_aggregation_bits))])
+def RTC(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluAttestation_e.Attestation_putn(FD.array__thaw(U32, D), X, OBJC(m_aggregation_bits, data, signature, committee_bits)) == (FD.array__thaw(U32, PUTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (OBJC(m_aggregation_bits, data, signature, committee_bits), SZC(m_aggregation_bits, data, signature, committee_bits))) : Array<U32> & (FuluAttestation_d.Attestation & U32)}
+def BYC(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(ENCC(m_aggregation_bits, data, signature, committee_bits), UW.ZB(WD.PADB(r, LLC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r))))) : +List<U32>}
-def PFC(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data: {FD.array__perfect(U32, dd, PUTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) == True{} : Bool}
-def SZXC(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data: {U32.to_nat(SZC(m_aggregation_bits, data, signature, committee_bits)) == LLC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r) : Nat}
+def PFC(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data: {FD.array__perfect(U32, dd, PUTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)) == True{} : Bool}
+def SZXC(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data: {U32.to_nat(SZC(m_aggregation_bits, data, signature, committee_bits)) == LLC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r) : Nat}
 
 # The four facts as one (built from variables, so no fact's proof term enters another's type).
-def mk4(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), +b: BYC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), +c: PFC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), +d: SZXC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r))
+def mk4(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), +b: BYC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), +c: PFC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), +d: SZXC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r))
     -> DK.P2(RTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), DK.P2(BYC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), DK.P2(PFC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), SZXC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)))):
   (a, (b, (c, d)))
 
 # putx: the runtime's writer of Attestation at X = 4 q + r is the model PUTC, whose bytes splice the
 # container's bytes (and the zeros to the end of the last word) into D's, whose tree is perfect,
 # and whose returned size is the byte count.
-def putx(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +hok_aggregation_bits: {EX_bits131072.OK(m_aggregation_bits) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putx(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +hok_aggregation_bits: {EX_bits131072.OK(m_aggregation_bits) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LLC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(Nat.add(LLC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), WD.PADB(r, LLC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(LLC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), WD.PADB(r, LLC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)))) : +List<U32>})
@@ -340,10 +350,10 @@ def putx(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signa
 
 # The container's checked writer T.Attestation_putk is its putn (one definitional step): the writer's fact
 # as a parent's putv states it.
-def putk_bridge(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +h: RTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r))
-    -> {T.Attestation_putk(FD.array__thaw(U32, D), X, OBJC(m_aggregation_bits, data, signature, committee_bits)) == (FD.array__thaw(U32, PUTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (OBJC(m_aggregation_bits, data, signature, committee_bits), SZC(m_aggregation_bits, data, signature, committee_bits))) : Array<U32> & (T.Attestation & U32)}:
+def putk_bridge(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +h: RTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r))
+    -> {FuluAttestation_e.Attestation_putk(FD.array__thaw(U32, D), X, OBJC(m_aggregation_bits, data, signature, committee_bits)) == (FD.array__thaw(U32, PUTC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r)), (OBJC(m_aggregation_bits, data, signature, committee_bits), SZC(m_aggregation_bits, data, signature, committee_bits))) : Array<U32> & (FuluAttestation_d.Attestation & U32)}:
   h
 
 # pfC: the writer's tree is perfect (no hypothesis).
-def pfC(+m_aggregation_bits: EX_bits131072.MB, +data: T.AttestationData, +signature: T.Bytes96, +committee_bits: T.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}) -> PFC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r):
+def pfC(+m_aggregation_bits: EX_bits131072.MB, +data: FuluAttestationData_d.AttestationData, +signature: FuluBytes96_d.Bytes96, +committee_bits: Fulu_bitvector_64_d.Bitvector64, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}) -> PFC(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r):
   pfo_bv64(committee_bits, dd, M4(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(57n, q), r, pfo_b96(signature, dd, M3(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(33n, q), r, pfo_AttestationData(data, dd, M2(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(1n, q), r, EX_bits131072.pfx(m_aggregation_bits, dd, M1(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), VCN.QX(U32.add(X, 236)), VCN.RX(U32.add(X, 236)), WD.w32x_perfect(r, dd, M0(m_aggregation_bits, data, signature, committee_bits, dd, D, X, q, r), Nat.add(0n, q), 236, pf)))))

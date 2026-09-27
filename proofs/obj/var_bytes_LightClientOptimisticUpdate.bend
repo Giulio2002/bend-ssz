@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluLightClientOptimisticUpdate_def_generated.bend as FuluLightClientOptimisticUpdate_d
+import ../../types/FuluLightClientOptimisticUpdate_decode_ssz_generated.bend as FuluLightClientOptimisticUpdate_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -31,7 +32,7 @@ import ./var_bytes_LightClientOptimisticUpdate_win.bend as W
 
 def BF(t: FD.array__Tree<U32>, +n: U32) -> B.Buf: VF.BF(t, n)
 def CHK(+t: FD.array__Tree<U32>, +n: U32) -> Bool: W.CHKw(t, 0n, n)
-def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> T.LightClientOptimisticUpdate: W.OBJw(t, 0n, n)
+def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate: W.OBJw(t, 0n, n)
 def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: W.VALw(t, 0n, n)
 def VW(+t: FD.array__Tree<U32>, +n: U32) -> +List<U32>: VS.bt(U32.to_nat(n), F.limbs(FD.array__slots(U32, t)))
 
@@ -43,7 +44,7 @@ law ok_eval:
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
   for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
-  {T.LightClientOptimisticUpdate_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
+  {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
 def ok_eval(d, t, n, pf, hd, hn):
   W.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
 
@@ -56,14 +57,14 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
-  {T.LightClientOptimisticUpdate_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.LightClientOptimisticUpdate>}
+  {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}
 def decode_accept(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.LightClientOptimisticUpdate_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.LightClientOptimisticUpdate_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.LightClientOptimisticUpdate>}
+  %Equal.sym(B.Buf & Bool, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
-    {T.LightClientOptimisticUpdate_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.LightClientOptimisticUpdate>}
-  %Equal.sym(B.Buf & T.LightClientOptimisticUpdate, T.LightClientOptimisticUpdate_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
-    {T.LightClientOptimisticUpdate_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.LightClientOptimisticUpdate>}
+    {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}
+  %Equal.sym(B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+    {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}
   {==}
 
 # The bytes of every buffer the validator accepts are the spec encoding of the

@@ -1,6 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/fulu_obj.bend as T
+import ../../types/uint64_decode_ssz_generated.bend as uint64_r
+import ../../types/FuluMatrixEntry_decode_ssz_generated.bend as FuluMatrixEntry_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -14,11 +15,11 @@ import ./vrejf.bend as VRF
 # (see codegen/fix_reject.py).
 
 # ---- MatrixEntry (2112 bytes; validator T.MatrixEntry_ok) ----
-def MatrixEntry_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.MatrixEntry_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def MatrixEntry_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluMatrixEntry_r.MatrixEntry_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def MatrixEntry_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.MatrixEntry_ok(buf, off, len) == (buf, U32.is_eq(len, 2112)) : B.Buf & Bool}:
+def MatrixEntry_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluMatrixEntry_r.MatrixEntry_ok(buf, off, len) == (buf, U32.is_eq(len, 2112)) : B.Buf & Bool}:
   MatrixEntry_okb(buf, off, U32.is_eq(len, 2112))
 def MatrixEntry_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 2112n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.MatrixEntry(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.MatrixEntry()), 2112n, bs, Codec.parts(v, Spec.MatrixEntry()), DS.facts(v, Spec.MatrixEntry(), {==}), {==}, e, hn)
@@ -26,11 +27,11 @@ def MatrixEntry_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U
   v => e => MatrixEntry_rj(bs, hn, v, e)
 
 # ---- CustodyIndex (8 bytes; validator T.u64_ok) ----
-def CustodyIndex_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.u64_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def CustodyIndex_okb(buf: B.Buf, +off: U32, +b: Bool) -> {uint64_r.u64_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def CustodyIndex_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.u64_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
+def CustodyIndex_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {uint64_r.u64_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
   CustodyIndex_okb(buf, off, U32.is_eq(len, 8))
 def CustodyIndex_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.CustodyIndex(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.CustodyIndex()), 8n, bs, Codec.parts(v, Spec.CustodyIndex()), DS.facts(v, Spec.CustodyIndex(), {==}), {==}, e, hn)

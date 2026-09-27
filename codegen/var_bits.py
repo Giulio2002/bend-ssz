@@ -568,6 +568,8 @@ def main():
         out[ROOT / f'proofs/obj/var_bits_{X}_unique.bend'] = gbits_unique(X)
         out[ROOT / f'proofs/obj/var_bits_{X}_rej.bend'] = gbits_rej(X, N)
     orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('var_bits_*.bend') if q not in out and not q.name.startswith('var_bits_enc_'))
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t] + orphans
         if stale:

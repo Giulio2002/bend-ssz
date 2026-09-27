@@ -1,7 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/SingleFieldTestStruct_def_generated.bend as SingleFieldTestStruct_d
+import ../../types/SingleFieldTestStruct_decode_ssz_generated.bend as SingleFieldTestStruct_r
+import ../../types/SingleFieldTestStruct_encode_ssz_generated.bend as SingleFieldTestStruct_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -58,7 +60,7 @@ def Gc74A8F5F17F_spec_encode(+x0: U32)
   SF.encoding_of_parts(Spec.Gc74A8F5F17F(), S.Sequence{S.Items{S.UnsignedValue{P.UInt{B.byte_sel(0, x0), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}, [B.byte_sel(0, x0)], Gc74A8F5F17F_spec_parts(x0))
 
 def Gc74A8F5F17F_spec_decode(+x0: U32)
-    -> {T.Gc74A8F5F17F_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{T.Gc74A8F5F17F{B.byte_sel(0, x0)}}) : B.Buf & Maybe<&1, T.Gc74A8F5F17F>}:
+    -> {SingleFieldTestStruct_r.Gc74A8F5F17F_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{SingleFieldTestStruct_d.Gc74A8F5F17F{B.byte_sel(0, x0)}}) : B.Buf & Maybe<&1, SingleFieldTestStruct_d.Gc74A8F5F17F>}:
   {==}
 
 def Gc74A8F5F17F_spec_view(+x0: U32)
@@ -66,12 +68,12 @@ def Gc74A8F5F17F_spec_view(+x0: U32)
   {==}
 
 def Gc74A8F5F17F_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})
-    -> {T.Gc74A8F5F17F_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, T.Gc74A8F5F17F>}:
-  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {T.Gc74A8F5F17F_built(m, T.Gc74A8F5F17F_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, T.Gc74A8F5F17F>}
+    -> {SingleFieldTestStruct_r.Gc74A8F5F17F_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, SingleFieldTestStruct_d.Gc74A8F5F17F>}:
+  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {SingleFieldTestStruct_r.Gc74A8F5F17F_built(m, SingleFieldTestStruct_r.Gc74A8F5F17F_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, SingleFieldTestStruct_d.Gc74A8F5F17F>}
   {==}
 
 def Gc74A8F5F17F_spec_bytes(+y0: U32)
-    -> {B.emit(T.Gc74A8F5F17F_encode(T.Gc74A8F5F17F{y0}), 0, 1) == (T.Gc74A8F5F17F_encode(T.Gc74A8F5F17F{y0}), [B.byte_sel(0, y0)]) : B.Buf & +List<U32>}:
-  %Gc74A8F5F17F_e1(y0) : {B.emit(T.Gc74A8F5F17F_encode(T.Gc74A8F5F17F{y0}), 0, 1) == (T.Gc74A8F5F17F_encode(T.Gc74A8F5F17F{y0}), [_]) : B.Buf & +List<U32>}
+    -> {B.emit(SingleFieldTestStruct_e.Gc74A8F5F17F_encode(SingleFieldTestStruct_d.Gc74A8F5F17F{y0}), 0, 1) == (SingleFieldTestStruct_e.Gc74A8F5F17F_encode(SingleFieldTestStruct_d.Gc74A8F5F17F{y0}), [B.byte_sel(0, y0)]) : B.Buf & +List<U32>}:
+  %Gc74A8F5F17F_e1(y0) : {B.emit(SingleFieldTestStruct_e.Gc74A8F5F17F_encode(SingleFieldTestStruct_d.Gc74A8F5F17F{y0}), 0, 1) == (SingleFieldTestStruct_e.Gc74A8F5F17F_encode(SingleFieldTestStruct_d.Gc74A8F5F17F{y0}), [_]) : B.Buf & +List<U32>}
   {==}
 

@@ -1,5 +1,5 @@
 import Base
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_513_def_generated.bend as bitvector_513_d
 import ../../types/schema.bend as S
 import ../../spec/value_domain.bend as VD
 import ./generic_specs.bend as Spec
@@ -16,9 +16,9 @@ def vlh_Gt0B0C03B454(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32,
   %Equal.sym(Nat, List.length(&2, Bool, BLP.bitsof([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16])), GB.bl32([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16]), GB.len_bitsof([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16])) :
     {Nat.is_le(513n, _) == True{} : Bool}
   {==}
-def Gt0B0C03B454_root_valid(+o: T.Bitvector513, +e: {GB.Gt0B0C03B454_last(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(GB.Gt0B0C03B454_last(o))), Word.zero(31n))} : U32}) -> {VD.root_valid(S.BitsValue{GB.Gt0B0C03B454_bits(o)}, Spec.Gt0B0C03B454()) == True{} : Bool}:
+def Gt0B0C03B454_root_valid(+o: bitvector_513_d.Bitvector513, +e: {GB.Gt0B0C03B454_last(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(GB.Gt0B0C03B454_last(o))), Word.zero(31n))} : U32}) -> {VD.root_valid(S.BitsValue{GB.Gt0B0C03B454_bits(o)}, Spec.Gt0B0C03B454()) == True{} : Bool}:
   match o:
-    case T.Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}:
+    case bitvector_513_d.Bitvector513{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16}:
       %Equal.sym(Nat, List.length(&2, Bool, BLP.btk(513n, BLP.bitsof([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16]))), 513n, GB.btk_len(513n, BLP.bitsof([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16]), vlh_Gt0B0C03B454(w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16))) :
         {Bool.and(Nat.is_lt(0n, 513n), Nat.is_eq(_, 513n)) == True{} : Bool}
       {==}

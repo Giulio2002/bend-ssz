@@ -26,6 +26,7 @@ import generate as G  # noqa: E402
 import laws as LW  # noqa: E402
 import schema  # noqa: E402
 import spec_laws as SL  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
 LEAF = ROOT / 'proofs/obj/root_leaf.bend'
@@ -1019,7 +1020,7 @@ def emit_valid():
             good.append(s)
         except Skip:
             pass
-    src = (ROOT / 'types/fulu_obj.bend').read_text()
+    src = RR.mono_text('fulu')
     true_valid = set(_re.findall(r'^def (\w+)_valid\(\+o: [\w.]+\) -> Bool: True\{\}$', src, _re.M))
     L = ['import Base', 'import ../../src/obj.bend as O', 'import ../../types/fulu_obj.bend as T',
          'import ../../types/schema.bend as S', 'import ../../types/primitive.bend as P',
@@ -1102,6 +1103,7 @@ def main():
         for n, st in status.items():
             print(f'{n}: {st}')
         return
+    outs = RR.rewire_out(outs)
     if '--check' in sys.argv:
         for path, text in outs:
             if path.read_text() != text:

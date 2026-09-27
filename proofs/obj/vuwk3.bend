@@ -1,6 +1,7 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_bytevec_256_encode_ssz_generated.bend as Fulu_bytevec_256_e
+import ../../types/FuluExecutionBranch_encode_ssz_generated.bend as FuluExecutionBranch_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ./vspec.bend as VS
@@ -19,14 +20,14 @@ def wputu_b256(+dd: Nat, +U: FD.array__Tree<U32>, +pos: U32, +i: Nat, +dB: Nat, 
     +hl: {Nat.is_lt(Nat.add(64n, i), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, U) == True{} : Bool},
     +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(64n, VB.pw(dB)) == True{} : Bool},
     +hz: {VS.bt(256n, VS.bdr(Nat.add(A.quad(i), 3n), UA.BYT(U))) == UW.ZB(256n) : +List<U32>})
-    -> {T.b256_putk(FD.array__thaw(U32, U), pos, O.Words{FD.array__thaw(U32, TB), 256}) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(64n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}:
+    -> {Fulu_bytevec_256_e.b256_putk(FD.array__thaw(U32, U), pos, O.Words{FD.array__thaw(U32, TB), 256}) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(64n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}:
   +e3 = UW.ua_3(pos, i, 3n, 3, {==}, e, {==})
-  %Equal.sym(O.Words & Bool, T.b256_valid(O.Words{FD.array__thaw(U32, TB), 256}), (O.Words{FD.array__thaw(U32, TB), 256}, True{}), VBE.words_ok_b(dB, TB, 256, 256, 256, 9n, pfB, hdB, {==}, {==}, {==}, {==}, hrB, {==}, 1, {==})) :
-    {T.b256_pk(FD.array__thaw(U32, U), pos, _) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(64n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}
-  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {T.b256_pk_ok(T.b256_pw(U32.is_eq(_, 0), FD.array__thaw(U32, U), pos, FD.array__thaw(U32, TB), 256)) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(64n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}
+  %Equal.sym(O.Words & Bool, Fulu_bytevec_256_e.b256_valid(O.Words{FD.array__thaw(U32, TB), 256}), (O.Words{FD.array__thaw(U32, TB), 256}, True{}), VBE.words_ok_b(dB, TB, 256, 256, 256, 9n, pfB, hdB, {==}, {==}, {==}, {==}, hrB, {==}, 1, {==})) :
+    {Fulu_bytevec_256_e.b256_pk(FD.array__thaw(U32, U), pos, _) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(64n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}
+  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {Fulu_bytevec_256_e.b256_pk_ok(Fulu_bytevec_256_e.b256_pw(U32.is_eq(_, 0), FD.array__thaw(U32, U), pos, FD.array__thaw(U32, TB), 256)) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(64n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}
   %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, U), pos, O.Words{FD.array__thaw(U32, TB), 256}), (FD.array__thaw(U32, UW.SWc(3, VS.wtake(64n, UW.SLW(TB)), dd, U, i, 0)), O.Words{FD.array__thaw(U32, TB), 256}),
       UP.putwu(dd, U, pos, i, dB, TB, 256, e, {==}, hd, hdB, {==}, hrB, hl, hz, pf, pfB)) :
-    {T.b256_pk_ok(_) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(64n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}
+    {Fulu_bytevec_256_e.b256_pk_ok(_) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(64n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}
   {==}
 
 # v4_b32 (128 bytes) at byte 3 of word i.
@@ -35,13 +36,13 @@ def wputu_v4_b32(+dd: Nat, +U: FD.array__Tree<U32>, +pos: U32, +i: Nat, +dB: Nat
     +hl: {Nat.is_lt(Nat.add(32n, i), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, U) == True{} : Bool},
     +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(32n, VB.pw(dB)) == True{} : Bool},
     +hz: {VS.bt(128n, VS.bdr(Nat.add(A.quad(i), 3n), UA.BYT(U))) == UW.ZB(128n) : +List<U32>})
-    -> {T.v4_b32_putk(FD.array__thaw(U32, U), pos, O.Words{FD.array__thaw(U32, TB), 128}) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(32n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 128}, 0)) : Array<U32> & (O.Words & U32)}:
+    -> {FuluExecutionBranch_e.v4_b32_putk(FD.array__thaw(U32, U), pos, O.Words{FD.array__thaw(U32, TB), 128}) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(32n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 128}, 0)) : Array<U32> & (O.Words & U32)}:
   +e3 = UW.ua_3(pos, i, 3n, 3, {==}, e, {==})
-  %Equal.sym(O.Words & Bool, T.v4_b32_valid(O.Words{FD.array__thaw(U32, TB), 128}), (O.Words{FD.array__thaw(U32, TB), 128}, True{}), VBE.words_ok_b(dB, TB, 128, 128, 128, 8n, pfB, hdB, {==}, {==}, {==}, {==}, hrB, {==}, 32, {==})) :
-    {T.v4_b32_pk(FD.array__thaw(U32, U), pos, _) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(32n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 128}, 0)) : Array<U32> & (O.Words & U32)}
-  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {T.v4_b32_pk_ok(T.v4_b32_pw(U32.is_eq(_, 0), FD.array__thaw(U32, U), pos, FD.array__thaw(U32, TB), 128)) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(32n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 128}, 0)) : Array<U32> & (O.Words & U32)}
+  %Equal.sym(O.Words & Bool, FuluExecutionBranch_e.v4_b32_valid(O.Words{FD.array__thaw(U32, TB), 128}), (O.Words{FD.array__thaw(U32, TB), 128}, True{}), VBE.words_ok_b(dB, TB, 128, 128, 128, 8n, pfB, hdB, {==}, {==}, {==}, {==}, hrB, {==}, 32, {==})) :
+    {FuluExecutionBranch_e.v4_b32_pk(FD.array__thaw(U32, U), pos, _) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(32n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 128}, 0)) : Array<U32> & (O.Words & U32)}
+  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {FuluExecutionBranch_e.v4_b32_pk_ok(FuluExecutionBranch_e.v4_b32_pw(U32.is_eq(_, 0), FD.array__thaw(U32, U), pos, FD.array__thaw(U32, TB), 128)) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(32n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 128}, 0)) : Array<U32> & (O.Words & U32)}
   %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, U), pos, O.Words{FD.array__thaw(U32, TB), 128}), (FD.array__thaw(U32, UW.SWc(3, VS.wtake(32n, UW.SLW(TB)), dd, U, i, 0)), O.Words{FD.array__thaw(U32, TB), 128}),
       UP.putwu(dd, U, pos, i, dB, TB, 128, e, {==}, hd, hdB, {==}, hrB, hl, hz, pf, pfB)) :
-    {T.v4_b32_pk_ok(_) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(32n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 128}, 0)) : Array<U32> & (O.Words & U32)}
+    {FuluExecutionBranch_e.v4_b32_pk_ok(_) == (FD.array__thaw(U32, UW.SWc(3, VS.wtake(32n, UW.SLW(TB)), dd, U, i, 0)), (O.Words{FD.array__thaw(U32, TB), 128}, 0)) : Array<U32> & (O.Words & U32)}
   {==}
 

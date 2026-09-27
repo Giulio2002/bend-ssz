@@ -1,7 +1,11 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
+import ../../types/FuluBeaconBlock_encode_ssz_generated.bend as FuluBeaconBlock_e
+import ../../types/FuluSignedBeaconBlock_def_generated.bend as FuluSignedBeaconBlock_d
+import ../../types/FuluSignedBeaconBlock_encode_ssz_generated.bend as FuluSignedBeaconBlock_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -41,60 +45,60 @@ def and_l(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {a == Tr
 def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == True{} : Bool}: FD.logic__and_right(a, b, h)
 
 # ---- b96: its value, read back from its words, and its parts ----
-def LV_b96(o: T.Bytes96) -> S.Value:
+def LV_b96(o: FuluBytes96_d.Bytes96) -> S.Value:
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23])}
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23])}
 # its value by its body (LV_b96 against the walk's value under Codec.parts would evaluate the parts)
-def lvq_b96(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32, +w17: U32, +w18: U32, +w19: U32, +w20: U32, +w21: U32, +w22: U32, +w23: U32) -> {S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23])} == LV_b96(T.Bytes96{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23}) : S.Value}: {==}
-def lvp_b96(+o: T.Bytes96) -> {Codec.parts(LV_b96(o), S.ByteVector{96n}) == Some{[S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(o)))}]} : Maybe<&2, +List<S.Part>>}:
+def lvq_b96(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32, +w17: U32, +w18: U32, +w19: U32, +w20: U32, +w21: U32, +w22: U32, +w23: U32) -> {S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23])} == LV_b96(FuluBytes96_d.Bytes96{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23}) : S.Value}: {==}
+def lvp_b96(+o: FuluBytes96_d.Bytes96) -> {Codec.parts(LV_b96(o), S.ByteVector{96n}) == Some{[S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(o)))}]} : Maybe<&2, +List<S.Part>>}:
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}:
-      %lvq_b96(w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23) : {Codec.parts(_, S.ByteVector{96n}) == Some{[S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(T.Bytes96{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23})))}]} : Maybe<&2, +List<S.Part>>}
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}:
+      %lvq_b96(w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23) : {Codec.parts(_, S.ByteVector{96n}) == Some{[S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(FuluBytes96_d.Bytes96{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23})))}]} : Maybe<&2, +List<S.Part>>}
       CS.pcfix(S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23])}, S.ByteVector{96n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]), 96n, {==}, FX.bytes_part(w0, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], {==}))
 
 
 # ---- SignedBeaconBlock: its value, parts, layout, and bytes ----
 
-def OKT(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96) -> Bool: Bool.and(EC_BeaconBlock.OK(m_message), Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))))
-def okr1(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))) == True{} : Bool}: and_r(EC_BeaconBlock.OK(m_message), Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))), h)
-def ok_hok_message(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {EC_BeaconBlock.OK(m_message) == True{} : Bool}: and_l(EC_BeaconBlock.OK(m_message), Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))), h)
-def ok_bnd(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))) == True{} : Bool}: okr1(m_message, signature, h)
+def OKT(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96) -> Bool: Bool.and(EC_BeaconBlock.OK(m_message), Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))))
+def okr1(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))) == True{} : Bool}: and_r(EC_BeaconBlock.OK(m_message), Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))), h)
+def ok_hok_message(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {EC_BeaconBlock.OK(m_message) == True{} : Bool}: and_l(EC_BeaconBlock.OK(m_message), Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))), h)
+def ok_bnd(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {Nat.is_le(Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message))), A.quad(VB.pw(28n))) == True{} : Bool}: okr1(m_message, signature, h)
 
-def VALC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96) -> S.Value: S.Sequence{S.Items{EC_BeaconBlock.VAL(m_message), S.Items{LV_b96(signature), S.EmptyItems{}}}}
-def PSC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96) -> +List<S.Part>: [S.Variable{EC_BeaconBlock.ENC(m_message)}, S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(signature)))}]
-def OSC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96) -> +List<U32>: [100]
-def ENDC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96) -> Nat: Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message)))
+def VALC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96) -> S.Value: S.Sequence{S.Items{EC_BeaconBlock.VAL(m_message), S.Items{LV_b96(signature), S.EmptyItems{}}}}
+def PSC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96) -> +List<S.Part>: [S.Variable{EC_BeaconBlock.ENC(m_message)}, S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(signature)))}]
+def OSC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96) -> +List<U32>: [100]
+def ENDC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96) -> Nat: Nat.add(100n, LY.LN(EC_BeaconBlock.ENC(m_message)))
 
 # the bound with its exponent symbolic (k = 28)
-def okbk(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {Nat.is_le(ENDC(m_message, signature), A.quad(VB.pw(k))) == True{} : Bool}:
+def okbk(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {Nat.is_le(ENDC(m_message, signature), A.quad(VB.pw(k))) == True{} : Bool}:
   FD.logic__subst(Nat, z => {Nat.is_le(ENDC(m_message, signature), A.quad(VB.pw(z))) == True{} : Bool}, 28n, k, Equal.sym(Nat, k, 28n, ek), ok_bnd(m_message, signature, h))
 
 
-def partsC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat})
+def partsC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat})
     -> {Codec.parts(S.Items{EC_BeaconBlock.VAL(m_message), S.Items{LV_b96(signature), S.EmptyItems{}}}, S.Chain{Spec.Schema105(), S.Chain{Spec.Schema9(), S.End{}}}) == Some{PSC(m_message, signature)} : Maybe<&2, +List<S.Part>>}:
   VS.cat_var(Codec.parts(EC_BeaconBlock.VAL(m_message), Spec.Schema105()), EC_BeaconBlock.ENC(m_message), Codec.parts(S.Items{LV_b96(signature), S.EmptyItems{}}, S.Chain{Spec.Schema9(), S.End{}}), [S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(signature)))}],
     EC_BeaconBlock.encx_spec(m_message, ok_hok_message(m_message, signature, h)), FX.cat_fixed(Codec.parts(LV_b96(signature), Spec.Schema9()), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), Codec.parts(S.EmptyItems{}, S.End{}), [],
     lvp_b96(signature), {==}))
 
-def validC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {Layout.bytes_valid(PSC(m_message, signature)) == True{} : Bool}:
+def validC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {Layout.bytes_valid(PSC(m_message, signature)) == True{} : Bool}:
   FD.logic__and_intro(SP.bytes_domain(EC_BeaconBlock.ENC(m_message)), Layout.bytes_valid([S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(signature)))}]), CS.domv(EC_BeaconBlock.VAL(m_message), Spec.Schema105(), EC_BeaconBlock.ENC(m_message), {==}, EC_BeaconBlock.encx_spec(m_message, ok_hok_message(m_message, signature, h))),
     FD.logic__and_intro(SP.bytes_domain(VCN.PC(96n, FX.limbs(K.RW_b96(signature)))), Layout.bytes_valid([]), CS.domf(LV_b96(signature), S.ByteVector{96n}, VCN.PC(96n, FX.limbs(K.RW_b96(signature))), {==}, lvp_b96(signature)),
     {==}))
 
 # the offsets the writer writes are the layout's
-def okoC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> LY.OKO(PSC(m_message, signature), 100n, OSC(m_message, signature)):
+def okoC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> LY.OKO(PSC(m_message, signature), 100n, OSC(m_message, signature)):
   ({==}, Unit{})
 
 # the returned size is the bytes' end
-def eSZ(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +u: Unit) -> {K.SZC(m_message, signature) == O.padd(100, EC_BeaconBlock.SZ(m_message)) : U32}: {==}
-def szC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {U32.to_nat(K.SZC(m_message, signature)) == ENDC(m_message, signature) : Nat}:
+def eSZ(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +u: Unit) -> {K.SZC(m_message, signature) == O.padd(100, EC_BeaconBlock.SZ(m_message)) : U32}: {==}
+def szC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {U32.to_nat(K.SZC(m_message, signature)) == ENDC(m_message, signature) : Nat}:
   FD.logic__subst(U32, z => {U32.to_nat(z) == ENDC(m_message, signature) : Nat}, O.padd(100, EC_BeaconBlock.SZ(m_message)), K.SZC(m_message, signature), Equal.sym(U32, K.SZC(m_message, signature), O.padd(100, EC_BeaconBlock.SZ(m_message)), eSZ(m_message, signature, Unit{})),
     CS.pstep(100, EC_BeaconBlock.SZ(m_message), 100n, LY.LN(EC_BeaconBlock.ENC(m_message)), k, CS.hk29(k, ek), {==}, EC_BeaconBlock.szx(m_message, ok_hok_message(m_message, signature, h)), okbk(m_message, signature, h, k, ek)))
 
 # the writer's bytes: the fixed region (the layout's header), then the payloads
-def eENC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +u: Unit) -> {K.ENCC(m_message, signature) == VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(List.length(&2, U32, EC_BeaconBlock.ENC(m_message)), EC_BeaconBlock.ENC(m_message))]) : +List<U32>}: {==}
-def eLLC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> {K.LLC(m_message, signature, dd, D, X, q, r) == Nat.add(100n, VCN.SUM([List.length(&2, U32, EC_BeaconBlock.ENC(m_message))])) : Nat}: {==}
-def cellsC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {K.ENCC(m_message, signature) == VCN.AP(VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature)))]), Layout.payloads(PSC(m_message, signature))) : +List<U32>}:
+def eENC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +u: Unit) -> {K.ENCC(m_message, signature) == VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(List.length(&2, U32, EC_BeaconBlock.ENC(m_message)), EC_BeaconBlock.ENC(m_message))]) : +List<U32>}: {==}
+def eLLC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> {K.LLC(m_message, signature, dd, D, X, q, r) == Nat.add(100n, VCN.SUM([List.length(&2, U32, EC_BeaconBlock.ENC(m_message))])) : Nat}: {==}
+def cellsC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {K.ENCC(m_message, signature) == VCN.AP(VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature)))]), Layout.payloads(PSC(m_message, signature))) : +List<U32>}:
   %Equal.sym(+List<U32>, K.ENCC(m_message, signature), VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(List.length(&2, U32, EC_BeaconBlock.ENC(m_message)), EC_BeaconBlock.ENC(m_message))]), eENC(m_message, signature, Unit{})) :
     {_ == VCN.AP(VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature)))]), Layout.payloads(PSC(m_message, signature))) : +List<U32>}
   %Equal.sym(+List<U32>, VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(List.length(&2, U32, EC_BeaconBlock.ENC(m_message)), EC_BeaconBlock.ENC(m_message))]), VCN.AP(VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature)))]), VCN.CAT([VCN.PC(List.length(&2, U32, EC_BeaconBlock.ENC(m_message)), EC_BeaconBlock.ENC(m_message))])), VCN.cat_lap([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature)))], [VCN.PC(List.length(&2, U32, EC_BeaconBlock.ENC(m_message)), EC_BeaconBlock.ENC(m_message))])) :
@@ -103,7 +107,7 @@ def cellsC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_mess
     {VCN.AP(VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature)))]), VCN.CAT([_])) == VCN.AP(VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature)))]), Layout.payloads(PSC(m_message, signature))) : +List<U32>}
   {==}
 
-def encE(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat})
+def encE(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat})
     -> {Layout.encoding(PSC(m_message, signature)) == Some{K.ENCC(m_message, signature)} : Maybe<&2, +List<U32>>}:
   +FP = LY.HDRW(PSC(m_message, signature), OSC(m_message, signature))
   +PAY = Layout.payloads(PSC(m_message, signature))
@@ -114,7 +118,7 @@ def encE(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_messag
     Equal.sym(+List<U32>, K.ENCC(m_message, signature), VCN.AP(FP, PAY), cellsC(m_message, signature, h)), e1)
 
 # encx_spec, on the parameters
-def specC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat})
+def specC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat})
     -> {Codec.parts(VALC(m_message, signature), Spec.SignedBeaconBlock()) == Some{[S.Variable{K.ENCC(m_message, signature)}]} : Maybe<&2, +List<S.Part>>}:
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{EC_BeaconBlock.VAL(m_message), S.Items{LV_b96(signature), S.EmptyItems{}}}, S.Chain{Spec.Schema105(), S.Chain{Spec.Schema9(), S.End{}}}), Some{PSC(m_message, signature)}, partsC(m_message, signature, h, k, ek)) :
     {Codec.aggregate(_, None{}) == Some{[S.Variable{K.ENCC(m_message, signature)}]} : Maybe<&2, +List<S.Part>>}
@@ -123,12 +127,12 @@ def specC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_messa
   {==}
 
 # the writer's byte count
-def lenC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> {List.length(&2, U32, K.ENCC(m_message, signature)) == K.LLC(m_message, signature, dd, D, X, q, r) : Nat}:
+def lenC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> {List.length(&2, U32, K.ENCC(m_message, signature)) == K.LLC(m_message, signature, dd, D, X, q, r) : Nat}:
   +SL = Nat.add(100n, VCN.SUM([List.length(&2, U32, EC_BeaconBlock.ENC(m_message))]))
   +e1 = FD.logic__subst(+List<U32>, z => {List.length(&2, U32, z) == SL : Nat}, VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(List.length(&2, U32, EC_BeaconBlock.ENC(m_message)), EC_BeaconBlock.ENC(m_message))]), K.ENCC(m_message, signature), Equal.sym(+List<U32>, K.ENCC(m_message, signature), VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature))), VCN.PC(List.length(&2, U32, EC_BeaconBlock.ENC(m_message)), EC_BeaconBlock.ENC(m_message))]), eENC(m_message, signature, Unit{})),
     VCN.eposv([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature)))], [EC_BeaconBlock.ENC(m_message)], [List.length(&2, U32, EC_BeaconBlock.ENC(m_message))]))
   Equal.trans(Nat, List.length(&2, U32, K.ENCC(m_message, signature)), SL, K.LLC(m_message, signature, dd, D, X, q, r), e1, Equal.sym(Nat, K.LLC(m_message, signature, dd, D, X, q, r), SL, eLLC(m_message, signature, dd, D, X, q, r)))
-def lenE(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {List.length(&2, U32, K.ENCC(m_message, signature)) == ENDC(m_message, signature) : Nat}:
+def lenE(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {List.length(&2, U32, K.ENCC(m_message, signature)) == ENDC(m_message, signature) : Nat}:
   +PAY = Layout.payloads(PSC(m_message, signature))
   +FP = LY.HDRW(PSC(m_message, signature), OSC(m_message, signature))
   +e1 = Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), K.ENCC(m_message, signature), VCN.AP(VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(K.RW_b96(signature)))]), PAY), cellsC(m_message, signature, h))
@@ -145,9 +149,9 @@ def lenE(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_messag
 # ==== SignedBeaconBlock in the encoder-window interface ====
 
 type MW is Data:
-  MW{m_message: EC_BeaconBlock.MW, signature: T.Bytes96}
+  MW{m_message: EC_BeaconBlock.MW, signature: FuluBytes96_d.Bytes96}
 
-def TH(m: MW) -> T.SignedBeaconBlock:
+def TH(m: MW) -> FuluSignedBeaconBlock_d.SignedBeaconBlock:
   match m:
     case MW{+m_message, +signature}: K.OBJC(m_message, signature)
 def OK(m: MW) -> Bool:
@@ -168,12 +172,12 @@ def PUTX(m: MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array
     case MW{+m_message, +signature}: K.PUTC(m_message, signature, dd, D, XQ(q, r), q, r)
 def PADB(+r: Nat, m: MW) -> Nat: WD.PADB(r, List.length(&2, U32, ENC(m)))
 
-def RTX(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.SignedBeaconBlock_putk(FD.array__thaw(U32, D), X, K.OBJC(m_message, signature)) == (FD.array__thaw(U32, K.PUTC(m_message, signature, dd, D, XQ(q, r), q, r)), (K.OBJC(m_message, signature), K.SZC(m_message, signature))) : Array<U32> & (T.SignedBeaconBlock & U32)}
-def BYX(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTX(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluSignedBeaconBlock_e.SignedBeaconBlock_putk(FD.array__thaw(U32, D), X, K.OBJC(m_message, signature)) == (FD.array__thaw(U32, K.PUTC(m_message, signature, dd, D, XQ(q, r), q, r)), (K.OBJC(m_message, signature), K.SZC(m_message, signature))) : Array<U32> & (FuluSignedBeaconBlock_d.SignedBeaconBlock & U32)}
+def BYX(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(K.PUTC(m_message, signature, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(m_message, signature), UW.ZB(WD.PADB(r, List.length(&2, U32, K.ENCC(m_message, signature)))))) : +List<U32>}
 
-def go(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def go(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, K.ENCC(m_message, signature))))), VB.pw(dd)) == True{} : Bool},
     +hz: {VS.bt(Nat.add(List.length(&2, U32, K.ENCC(m_message, signature)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_message, signature)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, K.ENCC(m_message, signature)), WD.PADB(r, List.length(&2, U32, K.ENCC(m_message, signature))))) : +List<U32>})
@@ -188,7 +192,7 @@ def go(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message,
   +rt = K.putk_bridge(m_message, signature, dd, D, XQ(q, r), q, r, PA(K.RTC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_message, signature, dd, D, XQ(q, r), q, r), K.SZXC(m_message, signature, dd, D, XQ(q, r), q, r))), g))
   +g2 = PB(K.RTC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_message, signature, dd, D, XQ(q, r), q, r), K.SZXC(m_message, signature, dd, D, XQ(q, r), q, r))), g)
   +by = PA(K.BYC(m_message, signature, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_message, signature, dd, D, XQ(q, r), q, r), K.SZXC(m_message, signature, dd, D, XQ(q, r), q, r)), g2)
-  +rt2 = FD.logic__subst(U32, z => {T.SignedBeaconBlock_putk(FD.array__thaw(U32, D), z, K.OBJC(m_message, signature)) == (FD.array__thaw(U32, K.PUTC(m_message, signature, dd, D, XQ(q, r), q, r)), (K.OBJC(m_message, signature), K.SZC(m_message, signature))) : Array<U32> & (T.SignedBeaconBlock & U32)},
+  +rt2 = FD.logic__subst(U32, z => {FuluSignedBeaconBlock_e.SignedBeaconBlock_putk(FD.array__thaw(U32, D), z, K.OBJC(m_message, signature)) == (FD.array__thaw(U32, K.PUTC(m_message, signature, dd, D, XQ(q, r), q, r)), (K.OBJC(m_message, signature), K.SZC(m_message, signature))) : Array<U32> & (FuluSignedBeaconBlock_d.SignedBeaconBlock & U32)},
     XQ(q, r), X, Equal.sym(U32, X, XQ(q, r), ex), rt)
   +by2 = FD.logic__subst(Nat, z => {UA.BYT(K.PUTC(m_message, signature, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(m_message, signature), UW.ZB(WD.PADB(r, z)))) : +List<U32>},
     LLv, List.length(&2, U32, K.ENCC(m_message, signature)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_message, signature)), LLv, el), by)
@@ -210,7 +214,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.SignedBeaconBlock_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (T.SignedBeaconBlock & U32)}
+  {FuluSignedBeaconBlock_e.SignedBeaconBlock_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (FuluSignedBeaconBlock_d.SignedBeaconBlock & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW{+m_message, +signature}: PA(RTX(m_message, signature, dd, D, X, q, r), BYX(m_message, signature, dd, D, q, r), go(m_message, signature, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hz))
@@ -281,28 +285,28 @@ def pfx(m, dd, D, q, r, pf):
   match m:
     case MW{+m_message, +signature}: K.pfC(m_message, signature, dd, D, XQ(q, r), q, r, pf)
 
-def sizeC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {T.SignedBeaconBlock_size(K.OBJC(m_message, signature)) == (K.OBJC(m_message, signature), K.SZC(m_message, signature)) : T.SignedBeaconBlock & U32}:
-  %Equal.sym(T.BeaconBlock & U32, T.BeaconBlock_size(EC_BeaconBlock.TH(m_message)), (EC_BeaconBlock.TH(m_message), EC_BeaconBlock.SZ(m_message)), EC_BeaconBlock.sizex(m_message, ok_hok_message(m_message, signature, h))) :
-    {T.SignedBeaconBlock_sz0(signature, 100, _) == (K.OBJC(m_message, signature), K.SZC(m_message, signature)) : T.SignedBeaconBlock & U32}
+def sizeC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_size(K.OBJC(m_message, signature)) == (K.OBJC(m_message, signature), K.SZC(m_message, signature)) : FuluSignedBeaconBlock_d.SignedBeaconBlock & U32}:
+  %Equal.sym(FuluBeaconBlock_d.BeaconBlock & U32, FuluBeaconBlock_e.BeaconBlock_size(EC_BeaconBlock.TH(m_message)), (EC_BeaconBlock.TH(m_message), EC_BeaconBlock.SZ(m_message)), EC_BeaconBlock.sizex(m_message, ok_hok_message(m_message, signature, h))) :
+    {FuluSignedBeaconBlock_e.SignedBeaconBlock_sz0(signature, 100, _) == (K.OBJC(m_message, signature), K.SZC(m_message, signature)) : FuluSignedBeaconBlock_d.SignedBeaconBlock & U32}
   {==}
 
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.SignedBeaconBlock_size(TH(m)) == (TH(m), SZ(m)) : T.SignedBeaconBlock & U32}
+  {FuluSignedBeaconBlock_e.SignedBeaconBlock_size(TH(m)) == (TH(m), SZ(m)) : FuluSignedBeaconBlock_d.SignedBeaconBlock & U32}
 def sizex(m, hok):
   match m:
     case MW{+m_message, +signature}: sizeC(m_message, signature, hok)
 
-def rvalidC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {T.SignedBeaconBlock_valid(K.OBJC(m_message, signature)) == (K.OBJC(m_message, signature), True{}) : T.SignedBeaconBlock & Bool}:
-  %Equal.sym(T.BeaconBlock & Bool, T.BeaconBlock_valid(EC_BeaconBlock.TH(m_message)), (EC_BeaconBlock.TH(m_message), True{}), EC_BeaconBlock.validx(m_message, ok_hok_message(m_message, signature, h))) :
-    {T.SignedBeaconBlock_va0(signature, True{}, _) == (K.OBJC(m_message, signature), True{}) : T.SignedBeaconBlock & Bool}
+def rvalidC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +h: {OKT(m_message, signature) == True{} : Bool}) -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_valid(K.OBJC(m_message, signature)) == (K.OBJC(m_message, signature), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}:
+  %Equal.sym(FuluBeaconBlock_d.BeaconBlock & Bool, FuluBeaconBlock_e.BeaconBlock_valid(EC_BeaconBlock.TH(m_message)), (EC_BeaconBlock.TH(m_message), True{}), EC_BeaconBlock.validx(m_message, ok_hok_message(m_message, signature, h))) :
+    {FuluSignedBeaconBlock_e.SignedBeaconBlock_va0(signature, True{}, _) == (K.OBJC(m_message, signature), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
   {==}
 
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.SignedBeaconBlock_valid(TH(m)) == (TH(m), True{}) : T.SignedBeaconBlock & Bool}
+  {FuluSignedBeaconBlock_e.SignedBeaconBlock_valid(TH(m)) == (TH(m), True{}) : FuluSignedBeaconBlock_d.SignedBeaconBlock & Bool}
 def validx(m, hok):
   match m:
     case MW{+m_message, +signature}: rvalidC(m_message, signature, hok)

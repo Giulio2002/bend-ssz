@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluSignedAggregateAndProof_def_generated.bend as FuluSignedAggregateAndProof_d
+import ../../types/FuluSignedAggregateAndProof_decode_ssz_generated.bend as FuluSignedAggregateAndProof_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -41,13 +42,13 @@ import ./big_var_win_SignedAggregateAndProof.bend as W
 def BF(t: FD.array__Tree<U32>, +n: U32) -> B.Buf: VR.BF(t, n)
 def VW(+t: FD.array__Tree<U32>, +n: U32) -> +List<U32>: VS.bt(U32.to_nat(n), F.limbs(FD.array__slots(U32, t)))
 def CHK(+t: FD.array__Tree<U32>, +n: U32) -> Bool: W.CHKw(t, 0n, 0, n)
-def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> T.SignedAggregateAndProof: W.OBJw(t, 0n, 0, n)
+def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> FuluSignedAggregateAndProof_d.SignedAggregateAndProof: W.OBJw(t, 0n, 0, n)
 def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: W.VALw(t, 0n, n)
 
 # The validator returns the buffer and CHK(t, n).
 def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.SignedAggregateAndProof_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
+    -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
   W.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
 
 # Every buffer the validator accepts decodes to OBJ(t, n).
@@ -59,14 +60,14 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
-  {T.SignedAggregateAndProof_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.SignedAggregateAndProof>}
+  {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}
 def decode_accept(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.SignedAggregateAndProof_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.SignedAggregateAndProof_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.SignedAggregateAndProof>}
+  %Equal.sym(B.Buf & Bool, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
-    {T.SignedAggregateAndProof_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.SignedAggregateAndProof>}
-  %Equal.sym(B.Buf & T.SignedAggregateAndProof, T.SignedAggregateAndProof_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
-    {T.SignedAggregateAndProof_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.SignedAggregateAndProof>}
+    {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}
+  %Equal.sym(B.Buf & FuluSignedAggregateAndProof_d.SignedAggregateAndProof, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+    {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}
   {==}
 
 # When the validator refuses, the decoder returns None and the buffer.
@@ -78,12 +79,12 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
-  {T.SignedAggregateAndProof_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.SignedAggregateAndProof>}
+  {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.SignedAggregateAndProof_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.SignedAggregateAndProof_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.SignedAggregateAndProof>}
+  %Equal.sym(B.Buf & Bool, FuluSignedAggregateAndProof_r.SignedAggregateAndProof_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}
   %Equal.sym(Bool, CHK(t, n), False{}, hchk) :
-    {T.SignedAggregateAndProof_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.SignedAggregateAndProof>}
+    {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluSignedAggregateAndProof_d.SignedAggregateAndProof>}
   {==}
 
 # The bytes of every buffer the validator accepts are the spec encoding of VAL(t, n).

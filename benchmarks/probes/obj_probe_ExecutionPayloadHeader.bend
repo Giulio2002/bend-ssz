@@ -1,16 +1,17 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
+import ../../types/FuluExecutionPayloadHeader_decode_ssz_generated.bend as FuluExecutionPayloadHeader_r
 import ../compact/io.bend as IOx
 
 # Compile-cost probe: one type's build (no validation) from the generated module.
-def done(pair: B.Buf & T.ExecutionPayloadHeader) -> IO(Unit):
+def done(pair: B.Buf & FuluExecutionPayloadHeader_d.ExecutionPayloadHeader) -> IO(Unit):
   (buf, v) = pair
-  IO.print("OK " ++ U32.show(Pair.snd(T.ExecutionPayloadHeader, U32, T.ExecutionPayloadHeader_force(v))))
+  IO.print("OK " ++ U32.show(Pair.snd(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, U32, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_force(v))))
 
 def with_input(pair: B.Buf & U32) -> IO(Unit):
   (buf, +size) = pair
-  done(T.ExecutionPayloadHeader_build(buf, size))
+  done(FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_build(buf, size))
 
 def main() -> IO(Unit):
   do IO<Unit>:

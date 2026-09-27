@@ -1,7 +1,9 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/progbitlist_encode_ssz_generated.bend as progbitlist_e
+import ../../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as ProgressiveSingleListContainerTestStruct_d
+import ../../types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend as ProgressiveSingleListContainerTestStruct_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -29,7 +31,7 @@ def PB(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:
   b
 
 # ---- Gp4B0CA2906A: the object, its bytes and byte count ----
-def OBJC(+m_f_C: EX_pbits.MB) -> T.Gp4B0CA2906A: T.Gp4B0CA2906A{EX_pbits.TH(m_f_C)}
+def OBJC(+m_f_C: EX_pbits.MB) -> ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{EX_pbits.TH(m_f_C)}
 def LLC(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Nat: Nat.add(4n, VCN.SUM([List.length(&2, U32, EX_pbits.ENC(m_f_C))]))
 def SZC(+m_f_C: EX_pbits.MB) -> U32: O.padd(4, EX_pbits.SZ(m_f_C))
 
@@ -41,33 +43,33 @@ def PUTC(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Na
 # f_C: its offset word, then its bytes (T.pbits_putv).
 def putv_f_C(+m_f_C: EX_pbits.MB, +D: FD.array__Tree<U32>, +D1: FD.array__Tree<U32>, +D2: FD.array__Tree<U32>, +X: U32, +hoff: U32, +cur: U32,
     +e1: {O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur) == FD.array__thaw(U32, D1) : Array<U32>},
-    +e2: {T.pbits_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_pbits.TH(m_f_C)) == (FD.array__thaw(U32, D2), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C))) : Array<U32> & (O.Bits & U32)})
-    -> {T.pbits_putv(FD.array__thaw(U32, D), X, hoff, cur, EX_pbits.TH(m_f_C)) == (FD.array__thaw(U32, D2), (EX_pbits.TH(m_f_C), O.padd(cur, EX_pbits.SZ(m_f_C)))) : Array<U32> & (O.Bits & U32)}:
-  Equal.trans(Array<U32> & (O.Bits & U32), T.pbits_pvb(cur, T.pbits_putk(O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), U32.add(X, cur), EX_pbits.TH(m_f_C))),
-    T.pbits_pvb(cur, T.pbits_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_pbits.TH(m_f_C))), (FD.array__thaw(U32, D2), (EX_pbits.TH(m_f_C), O.padd(cur, EX_pbits.SZ(m_f_C)))),
-    Equal.cong(Array<U32>, Array<U32> & (O.Bits & U32), z => T.pbits_pvb(cur, T.pbits_putk(z, U32.add(X, cur), EX_pbits.TH(m_f_C))), O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), FD.array__thaw(U32, D1), e1),
-    Equal.cong(Array<U32> & (O.Bits & U32), Array<U32> & (O.Bits & U32), z => T.pbits_pvb(cur, z), T.pbits_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_pbits.TH(m_f_C)), (FD.array__thaw(U32, D2), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C))), e2))
+    +e2: {progbitlist_e.pbits_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_pbits.TH(m_f_C)) == (FD.array__thaw(U32, D2), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C))) : Array<U32> & (O.Bits & U32)})
+    -> {progbitlist_e.pbits_putv(FD.array__thaw(U32, D), X, hoff, cur, EX_pbits.TH(m_f_C)) == (FD.array__thaw(U32, D2), (EX_pbits.TH(m_f_C), O.padd(cur, EX_pbits.SZ(m_f_C)))) : Array<U32> & (O.Bits & U32)}:
+  Equal.trans(Array<U32> & (O.Bits & U32), progbitlist_e.pbits_pvb(cur, progbitlist_e.pbits_putk(O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), U32.add(X, cur), EX_pbits.TH(m_f_C))),
+    progbitlist_e.pbits_pvb(cur, progbitlist_e.pbits_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_pbits.TH(m_f_C))), (FD.array__thaw(U32, D2), (EX_pbits.TH(m_f_C), O.padd(cur, EX_pbits.SZ(m_f_C)))),
+    Equal.cong(Array<U32>, Array<U32> & (O.Bits & U32), z => progbitlist_e.pbits_pvb(cur, progbitlist_e.pbits_putk(z, U32.add(X, cur), EX_pbits.TH(m_f_C))), O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), FD.array__thaw(U32, D1), e1),
+    Equal.cong(Array<U32> & (O.Bits & U32), Array<U32> & (O.Bits & U32), z => progbitlist_e.pbits_pvb(cur, z), progbitlist_e.pbits_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EX_pbits.TH(m_f_C)), (FD.array__thaw(U32, D2), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C))), e2))
 
 
 # the runtime's Gp4B0CA2906A writes, from its writes' facts
 def rt_C(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +f0: {O.w32(FD.array__thaw(U32, M0(m_f_C, dd, D, X, q, r)), U32.add(X, 0), 4) == FD.array__thaw(U32, M1(m_f_C, dd, D, X, q, r)) : Array<U32>},
-    +f1: {T.pbits_putk(FD.array__thaw(U32, M1(m_f_C, dd, D, X, q, r)), U32.add(X, 4), EX_pbits.TH(m_f_C)) == (FD.array__thaw(U32, M2(m_f_C, dd, D, X, q, r)), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C))) : Array<U32> & (O.Bits & U32)})
-    -> {T.Gp4B0CA2906A_putn(FD.array__thaw(U32, M0(m_f_C, dd, D, X, q, r)), X, T.Gp4B0CA2906A{EX_pbits.TH(m_f_C)}) == (FD.array__thaw(U32, M2(m_f_C, dd, D, X, q, r)), (T.Gp4B0CA2906A{EX_pbits.TH(m_f_C)}, O.padd(4, EX_pbits.SZ(m_f_C)))) : Array<U32> & (T.Gp4B0CA2906A & U32)}:
-  Equal.cong(Array<U32> & (O.Bits & U32), Array<U32> & (T.Gp4B0CA2906A & U32), z => T.Gp4B0CA2906A_pw0(X, z), T.pbits_putv(FD.array__thaw(U32, M0(m_f_C, dd, D, X, q, r)), X, 0, 4, EX_pbits.TH(m_f_C)), (FD.array__thaw(U32, M2(m_f_C, dd, D, X, q, r)), (EX_pbits.TH(m_f_C), O.padd(4, EX_pbits.SZ(m_f_C)))), putv_f_C(m_f_C, M0(m_f_C, dd, D, X, q, r), M1(m_f_C, dd, D, X, q, r), M2(m_f_C, dd, D, X, q, r), X, 0, 4, f0, f1))
+    +f1: {progbitlist_e.pbits_putk(FD.array__thaw(U32, M1(m_f_C, dd, D, X, q, r)), U32.add(X, 4), EX_pbits.TH(m_f_C)) == (FD.array__thaw(U32, M2(m_f_C, dd, D, X, q, r)), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C))) : Array<U32> & (O.Bits & U32)})
+    -> {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_putn(FD.array__thaw(U32, M0(m_f_C, dd, D, X, q, r)), X, ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{EX_pbits.TH(m_f_C)}) == (FD.array__thaw(U32, M2(m_f_C, dd, D, X, q, r)), (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{EX_pbits.TH(m_f_C)}, O.padd(4, EX_pbits.SZ(m_f_C)))) : Array<U32> & (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32)}:
+  Equal.cong(Array<U32> & (O.Bits & U32), Array<U32> & (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32), z => ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_pw0(X, z), progbitlist_e.pbits_putv(FD.array__thaw(U32, M0(m_f_C, dd, D, X, q, r)), X, 0, 4, EX_pbits.TH(m_f_C)), (FD.array__thaw(U32, M2(m_f_C, dd, D, X, q, r)), (EX_pbits.TH(m_f_C), O.padd(4, EX_pbits.SZ(m_f_C)))), putv_f_C(m_f_C, M0(m_f_C, dd, D, X, q, r), M1(m_f_C, dd, D, X, q, r), M2(m_f_C, dd, D, X, q, r), X, 0, 4, f0, f1))
 
 
 # the runtime's put of Gp4B0CA2906A at X
 def rt_all(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +f0: {O.w32(FD.array__thaw(U32, M0(m_f_C, dd, D, X, q, r)), U32.add(X, 0), 4) == FD.array__thaw(U32, M1(m_f_C, dd, D, X, q, r)) : Array<U32>},
-    +f1: {T.pbits_putk(FD.array__thaw(U32, M1(m_f_C, dd, D, X, q, r)), U32.add(X, 4), EX_pbits.TH(m_f_C)) == (FD.array__thaw(U32, M2(m_f_C, dd, D, X, q, r)), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C))) : Array<U32> & (O.Bits & U32)})
-    -> {T.Gp4B0CA2906A_putn(FD.array__thaw(U32, M0(m_f_C, dd, D, X, q, r)), X, T.Gp4B0CA2906A{EX_pbits.TH(m_f_C)}) == (FD.array__thaw(U32, M2(m_f_C, dd, D, X, q, r)), (T.Gp4B0CA2906A{EX_pbits.TH(m_f_C)}, O.padd(4, EX_pbits.SZ(m_f_C)))) : Array<U32> & (T.Gp4B0CA2906A & U32)}:
+    +f1: {progbitlist_e.pbits_putk(FD.array__thaw(U32, M1(m_f_C, dd, D, X, q, r)), U32.add(X, 4), EX_pbits.TH(m_f_C)) == (FD.array__thaw(U32, M2(m_f_C, dd, D, X, q, r)), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C))) : Array<U32> & (O.Bits & U32)})
+    -> {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_putn(FD.array__thaw(U32, M0(m_f_C, dd, D, X, q, r)), X, ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{EX_pbits.TH(m_f_C)}) == (FD.array__thaw(U32, M2(m_f_C, dd, D, X, q, r)), (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{EX_pbits.TH(m_f_C)}, O.padd(4, EX_pbits.SZ(m_f_C)))) : Array<U32> & (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32)}:
   rt_C(m_f_C, dd, D, X, q, r, f0, f1)
 
 
 def ENCC(+m_f_C: EX_pbits.MB) -> +List<U32>: VCN.CAT([I.limb(4), VCN.PC(List.length(&2, U32, EX_pbits.ENC(m_f_C)), EX_pbits.ENC(m_f_C))])
 def RTC(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Gp4B0CA2906A_putn(FD.array__thaw(U32, D), X, OBJC(m_f_C)) == (FD.array__thaw(U32, PUTC(m_f_C, dd, D, X, q, r)), (OBJC(m_f_C), SZC(m_f_C))) : Array<U32> & (T.Gp4B0CA2906A & U32)}
+  {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_putn(FD.array__thaw(U32, D), X, OBJC(m_f_C)) == (FD.array__thaw(U32, PUTC(m_f_C, dd, D, X, q, r)), (OBJC(m_f_C), SZC(m_f_C))) : Array<U32> & (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32)}
 def BYC(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTC(m_f_C, dd, D, X, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(ENCC(m_f_C), UW.ZB(WD.PADB(r, LLC(m_f_C, dd, D, X, q, r))))) : +List<U32>}
 def PFC(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data: {FD.array__perfect(U32, dd, PUTC(m_f_C, dd, D, X, q, r)) == True{} : Bool}
@@ -123,7 +125,7 @@ def putx(+m_f_C: EX_pbits.MB, +hok_f_C: {EX_pbits.OK(m_f_C) == True{} : Bool}, +
 # The container's checked writer T.Gp4B0CA2906A_putk is its putn (one definitional step): the writer's fact
 # as a parent's putv states it.
 def putk_bridge(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +h: RTC(m_f_C, dd, D, X, q, r))
-    -> {T.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), X, OBJC(m_f_C)) == (FD.array__thaw(U32, PUTC(m_f_C, dd, D, X, q, r)), (OBJC(m_f_C), SZC(m_f_C))) : Array<U32> & (T.Gp4B0CA2906A & U32)}:
+    -> {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), X, OBJC(m_f_C)) == (FD.array__thaw(U32, PUTC(m_f_C, dd, D, X, q, r)), (OBJC(m_f_C), SZC(m_f_C))) : Array<U32> & (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32)}:
   h
 
 # pfC: the writer's tree is perfect (no hypothesis).

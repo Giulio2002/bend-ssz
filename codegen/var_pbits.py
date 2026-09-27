@@ -20,12 +20,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'codegen'))
 import var_bits as VB  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 
 def names():
     out = []
     specs = (ROOT / 'proofs/obj/generic_specs.bend').read_text()
-    src = (ROOT / 'types/generic_obj.bend').read_text()
+    src = RR.mono_text('generic')
     for m in re.finditer(r'^def (G\w+)\(\) -> S\.Schema: S\.ProgressiveBits\{\}$', specs, re.M):
         X = m.group(1)
         d = re.search(rf'^def {X}_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M)
@@ -114,7 +115,7 @@ def enc_text(X, p):
     """encode_eval / encode_spec: var_bits_enc's sized encoder with the bound N (and the bit
     widths kb, KY, KO it needs) as law parameters under their arithmetic hypotheses."""
     import var_bits_enc as VE
-    src = (ROOT / 'types/generic_obj.bend').read_text()
+    src = RR.mono_text('generic')
     assert f'def {X}_encode(o: O.Bits) -> O.Bits & B.Buf: {X}_enc_sized({p}_size(o))' in src
     assert f'  {X}_enc_put(n, {p}_putn(O.out_new(n), 0, o))' in src
     OBJ = 'O.Bits{F.array__thaw(U32, T), K}'
@@ -199,6 +200,7 @@ def outputs():
 
 def main():
     out = outputs()
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

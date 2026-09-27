@@ -21,6 +21,7 @@ choice, layout and every emitted definition - is a deterministic function of
 the resolved schema tree printed by this script.
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -3920,6 +3921,10 @@ def main():
     # the runtime split, additive stage (codegen/runtime_refs.py; the monoliths stay the runtime)
     import runtime_refs
     outputs.update(runtime_refs.outputs([(text, g, names, schema.load_prefix(ROOT / 'codegen/fulu.yaml'))] + list(SPLIT_CTX)))
+    # the group modules import the split files they use (against the index written with them)
+    runtime_refs.use_index(outputs[runtime_refs.INDEX])
+    for p in [p for p in outputs if p.parent == ROOT / 'types' and re.fullmatch(r'(fulu|generic)_obj_[gf]\d+\.bend', p.name)]:
+        outputs[p] = runtime_refs.rewire(outputs[p])
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in outputs.items() if not p.exists() or p.read_text() != t]
         if stale:

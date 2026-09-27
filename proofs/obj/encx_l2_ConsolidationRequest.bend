@@ -1,7 +1,12 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes20_def_generated.bend as FuluBytes20_d
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
+import ../../types/FuluConsolidationRequest_def_generated.bend as FuluConsolidationRequest_d
+import ../../types/FuluConsolidationRequest_encode_ssz_generated.bend as FuluConsolidationRequest_e
+import ../../types/Fulu_list_ConsolidationRequest_2_def_generated.bend as Fulu_list_ConsolidationRequest_2_d
+import ../../types/Fulu_list_ConsolidationRequest_2_encode_ssz_generated.bend as Fulu_list_ConsolidationRequest_2_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -50,134 +55,134 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 
 # ---- ConsolidationRequest: its 29 words, value, parts and writer ----
 
-def RWD_ConsolidationRequest(r: T.ConsolidationRequest) -> List<&2, U32>:
+def RWD_ConsolidationRequest(r: FuluConsolidationRequest_d.ConsolidationRequest) -> List<&2, U32>:
   match r:
-    case T.ConsolidationRequest{+r_0, +r_1, +r_2}:
+    case FuluConsolidationRequest_d.ConsolidationRequest{+r_0, +r_1, +r_2}:
       match r_0:
-        case T.Bytes20{+x0, +x1, +x2, +x3, +x4}:
+        case FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4}:
           match r_1:
-            case T.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
+            case FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
               match r_2:
-                case T.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
+                case FuluBytes48_d.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
                   [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28]
 
-def RVW_ConsolidationRequest(r: T.ConsolidationRequest) -> S.Value:
+def RVW_ConsolidationRequest(r: FuluConsolidationRequest_d.ConsolidationRequest) -> S.Value:
   match r:
-    case T.ConsolidationRequest{+r_0, +r_1, +r_2}:
+    case FuluConsolidationRequest_d.ConsolidationRequest{+r_0, +r_1, +r_2}:
       match r_0:
-        case T.Bytes20{+x0, +x1, +x2, +x3, +x4}:
+        case FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4}:
           match r_1:
-            case T.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
+            case FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
               match r_2:
-                case T.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
+                case FuluBytes48_d.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
                   S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4])}, S.Items{S.BytesValue{F.limbs([x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16])}, S.Items{S.BytesValue{F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28])}, S.EmptyItems{}}}}}
 
 # its parts over the words: the value and the object as terms (rparts rewrites RVW_ConsolidationRequest to the value first)
-def rvq_ConsolidationRequest(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32) -> {S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4])}, S.Items{S.BytesValue{F.limbs([x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16])}, S.Items{S.BytesValue{F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28])}, S.EmptyItems{}}}}} == RVW_ConsolidationRequest(T.ConsolidationRequest{T.Bytes20{x0, x1, x2, x3, x4}, T.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, T.Bytes48{x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28}}) : S.Value}: {==}
-def rpc_ConsolidationRequest(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32) -> {Codec.parts(S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4])}, S.Items{S.BytesValue{F.limbs([x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16])}, S.Items{S.BytesValue{F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28])}, S.EmptyItems{}}}}}, S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_ConsolidationRequest(T.ConsolidationRequest{T.Bytes20{x0, x1, x2, x3, x4}, T.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, T.Bytes48{x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28}}))}]} : Maybe<&2, +List<S.Part>>}:
+def rvq_ConsolidationRequest(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32) -> {S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4])}, S.Items{S.BytesValue{F.limbs([x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16])}, S.Items{S.BytesValue{F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28])}, S.EmptyItems{}}}}} == RVW_ConsolidationRequest(FuluConsolidationRequest_d.ConsolidationRequest{FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}, FuluBytes48_d.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, FuluBytes48_d.Bytes48{x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28}}) : S.Value}: {==}
+def rpc_ConsolidationRequest(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32) -> {Codec.parts(S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4])}, S.Items{S.BytesValue{F.limbs([x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16])}, S.Items{S.BytesValue{F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28])}, S.EmptyItems{}}}}}, S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_ConsolidationRequest(FuluConsolidationRequest_d.ConsolidationRequest{FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}, FuluBytes48_d.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, FuluBytes48_d.Bytes48{x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28}}))}]} : Maybe<&2, +List<S.Part>>}:
   F.container_fixed(["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}, S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4])}, S.Items{S.BytesValue{F.limbs([x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16])}, S.Items{S.BytesValue{F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28])}, S.EmptyItems{}}}}, [[x0, x1, x2, x3, x4], [x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16], [x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28]], 116n, [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28], F.items_fixed(S.BytesValue{F.limbs([x0, x1, x2, x3, x4])}, S.Items{S.BytesValue{F.limbs([x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16])}, S.Items{S.BytesValue{F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28])}, S.EmptyItems{}}}, S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}, F.limbs([x0, x1, x2, x3, x4]), [S.Fixed{F.limbs([x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16])}, S.Fixed{F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28])}], F.bytes_part_n(x0, [x1, x2, x3, x4], 20n, {==}, {==}), F.items_fixed(S.BytesValue{F.limbs([x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16])}, S.Items{S.BytesValue{F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28])}, S.EmptyItems{}}, S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}, F.limbs([x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16]), [S.Fixed{F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28])}], F.bytes_part_n(x5, [x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16], 48n, {==}, {==}), F.items_fixed(S.BytesValue{F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28])}, S.EmptyItems{}, S.ByteVector{48n}, S.End{}, F.limbs([x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28]), [], F.bytes_part_n(x17, [x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28], 48n, {==}, {==}), {==}))), {==}, VS.agg_total([[x0, x1, x2, x3, x4], [x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16], [x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28]], 116n, {==}), {==})
-def rparts_ConsolidationRequest(+r: T.ConsolidationRequest) -> {Codec.parts(RVW_ConsolidationRequest(r), S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_ConsolidationRequest(r))}]} : Maybe<&2, +List<S.Part>>}:
+def rparts_ConsolidationRequest(+r: FuluConsolidationRequest_d.ConsolidationRequest) -> {Codec.parts(RVW_ConsolidationRequest(r), S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_ConsolidationRequest(r))}]} : Maybe<&2, +List<S.Part>>}:
   match r:
-    case T.ConsolidationRequest{+r_0, +r_1, +r_2}:
+    case FuluConsolidationRequest_d.ConsolidationRequest{+r_0, +r_1, +r_2}:
       match r_0:
-        case T.Bytes20{+x0, +x1, +x2, +x3, +x4}:
+        case FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4}:
           match r_1:
-            case T.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
+            case FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
               match r_2:
-                case T.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
-                  %rvq_ConsolidationRequest(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28) : {Codec.parts(_, S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_ConsolidationRequest(T.ConsolidationRequest{T.Bytes20{x0, x1, x2, x3, x4}, T.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, T.Bytes48{x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28}}))}]} : Maybe<&2, +List<S.Part>>}
+                case FuluBytes48_d.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
+                  %rvq_ConsolidationRequest(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28) : {Codec.parts(_, S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_ConsolidationRequest(FuluConsolidationRequest_d.ConsolidationRequest{FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}, FuluBytes48_d.Bytes48{x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16}, FuluBytes48_d.Bytes48{x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28}}))}]} : Maybe<&2, +List<S.Part>>}
                   rpc_ConsolidationRequest(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28)
 
-def rlen_ConsolidationRequest(+r: T.ConsolidationRequest) -> {VF.slen(RWD_ConsolidationRequest(r)) == 29n : Nat}:
+def rlen_ConsolidationRequest(+r: FuluConsolidationRequest_d.ConsolidationRequest) -> {VF.slen(RWD_ConsolidationRequest(r)) == 29n : Nat}:
   match r:
-    case T.ConsolidationRequest{+r_0, +r_1, +r_2}:
+    case FuluConsolidationRequest_d.ConsolidationRequest{+r_0, +r_1, +r_2}:
       match r_0:
-        case T.Bytes20{+x0, +x1, +x2, +x3, +x4}:
+        case FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4}:
           match r_1:
-            case T.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
+            case FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
               match r_2:
-                case T.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
+                case FuluBytes48_d.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
                   {==}
 
 
 # ---- ConsolidationRequest: its writer at any byte position, on the object ----
 
-def PXo_ConsolidationRequest(o: T.ConsolidationRequest, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+def PXo_ConsolidationRequest(o: FuluConsolidationRequest_d.ConsolidationRequest, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match o:
-    case T.ConsolidationRequest{+o_0, +o_1, +o_2}:
+    case FuluConsolidationRequest_d.ConsolidationRequest{+o_0, +o_1, +o_2}:
       match o_0:
-        case T.Bytes20{+x0, +x1, +x2, +x3, +x4}:
+        case FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4}:
           match o_1:
-            case T.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
+            case FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
               match o_2:
-                case T.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
+                case FuluBytes48_d.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
                   ERC.PX_ConsolidationRequest(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, dd, D, q, r)
 
-def pfo_ConsolidationRequest(+o: T.ConsolidationRequest, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def pfo_ConsolidationRequest(+o: FuluConsolidationRequest_d.ConsolidationRequest, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PXo_ConsolidationRequest(o, dd, D, q, r)) == True{} : Bool}:
   match o:
-    case T.ConsolidationRequest{+o_0, +o_1, +o_2}:
+    case FuluConsolidationRequest_d.ConsolidationRequest{+o_0, +o_1, +o_2}:
       match o_0:
-        case T.Bytes20{+x0, +x1, +x2, +x3, +x4}:
+        case FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4}:
           match o_1:
-            case T.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
+            case FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
               match o_2:
-                case T.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
+                case FuluBytes48_d.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
                   ERC.pf_ConsolidationRequest(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, dd, D, q, r, pf)
 
-def RTo_ConsolidationRequest(+o: T.ConsolidationRequest, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.ConsolidationRequest_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_ConsolidationRequest(o, dd, D, q, r)) : Array<U32>}
-def BYo_ConsolidationRequest(+o: T.ConsolidationRequest, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTo_ConsolidationRequest(+o: FuluConsolidationRequest_d.ConsolidationRequest, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluConsolidationRequest_e.ConsolidationRequest_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_ConsolidationRequest(o, dd, D, q, r)) : Array<U32>}
+def BYo_ConsolidationRequest(+o: FuluConsolidationRequest_d.ConsolidationRequest, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_ConsolidationRequest(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.limbs(RWD_ConsolidationRequest(o))) : +List<U32>}
 
-def putxo_ConsolidationRequest(+o: T.ConsolidationRequest, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putxo_ConsolidationRequest(+o: FuluConsolidationRequest_d.ConsolidationRequest, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 116n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(116n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(116n) : +List<U32>})
     -> DK.P2(RTo_ConsolidationRequest(o, dd, D, X, q, r), BYo_ConsolidationRequest(o, dd, D, q, r)):
   match o:
-    case T.ConsolidationRequest{+o_0, +o_1, +o_2}:
+    case FuluConsolidationRequest_d.ConsolidationRequest{+o_0, +o_1, +o_2}:
       match o_0:
-        case T.Bytes20{+x0, +x1, +x2, +x3, +x4}:
+        case FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4}:
           match o_1:
-            case T.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
+            case FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
               match o_2:
-                case T.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
+                case FuluBytes48_d.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
                   ERC.putx_ConsolidationRequest(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
 
-def lenb_ConsolidationRequest(+o: T.ConsolidationRequest) -> {VRX.LN(F.limbs(RWD_ConsolidationRequest(o))) == 116n : Nat}:
+def lenb_ConsolidationRequest(+o: FuluConsolidationRequest_d.ConsolidationRequest) -> {VRX.LN(F.limbs(RWD_ConsolidationRequest(o))) == 116n : Nat}:
   match o:
-    case T.ConsolidationRequest{+o_0, +o_1, +o_2}:
+    case FuluConsolidationRequest_d.ConsolidationRequest{+o_0, +o_1, +o_2}:
       match o_0:
-        case T.Bytes20{+x0, +x1, +x2, +x3, +x4}:
+        case FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4}:
           match o_1:
-            case T.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
+            case FuluBytes48_d.Bytes48{+x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16}:
               match o_2:
-                case T.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
+                case FuluBytes48_d.Bytes48{+x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27, +x28}:
                   {==}
 
-def EL_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +j: Nat) -> T.ConsolidationRequest: VRL.mget(T.ConsolidationRequest, FD.spec_common__nth(T.ConsolidationRequest, FD.array__slots(T.ConsolidationRequest, A), j), T.ConsolidationRequest_default())
+def EL_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +j: Nat) -> FuluConsolidationRequest_d.ConsolidationRequest: VRL.mget(FuluConsolidationRequest_d.ConsolidationRequest, FD.spec_common__nth(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), j), FuluConsolidationRequest_d.ConsolidationRequest_default())
 
 # ---- l2_ConsolidationRequest: the object's value, and the windows of its writes ----
 
-def ITW_l2_ConsolidationRequest(c: Nat, +A: FD.array__Tree<T.ConsolidationRequest>, +j: Nat) -> S.Value:
+def ITW_l2_ConsolidationRequest(c: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +j: Nat) -> S.Value:
   match c:
     case 0n: S.EmptyItems{}
     case 1n+q: S.Items{RVW_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j)), ITW_l2_ConsolidationRequest(q, A, 1n+j)}
 
-def CHW_l2_ConsolidationRequest(c: Nat, +A: FD.array__Tree<T.ConsolidationRequest>, +j: Nat) -> +List<+List<U32>>:
+def CHW_l2_ConsolidationRequest(c: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +j: Nat) -> +List<+List<U32>>:
   match c:
     case 0n: []
     case 1n+q: Con{RWD_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j)), CHW_l2_ConsolidationRequest(q, A, 1n+j)}
 
-def RWA_l2_ConsolidationRequest(c: Nat, +A: FD.array__Tree<T.ConsolidationRequest>, +j: Nat) -> List<&2, U32>:
+def RWA_l2_ConsolidationRequest(c: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +j: Nat) -> List<&2, U32>:
   match c:
     case 0n: []
     case 1n+q: VF.app(RWD_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j)), RWA_l2_ConsolidationRequest(q, A, 1n+j))
 
 law cntW_l2_ConsolidationRequest:
   for +c: Nat
-  for +A: FD.array__Tree<T.ConsolidationRequest>
+  for +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>
   for +j: Nat
   {Codec.count(ITW_l2_ConsolidationRequest(c, A, j)) == c : Nat}
 def cntW_l2_ConsolidationRequest(c, A, j):
@@ -187,7 +192,7 @@ def cntW_l2_ConsolidationRequest(c, A, j):
 
 law prtW_l2_ConsolidationRequest:
   for +c: Nat
-  for +A: FD.array__Tree<T.ConsolidationRequest>
+  for +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>
   for +j: Nat
   {Codec.parts(ITW_l2_ConsolidationRequest(c, A, j), S.Repeat{S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}}) == Some{F.fparts(CHW_l2_ConsolidationRequest(c, A, j))} : Maybe<&2, +List<S.Part>>}
 def prtW_l2_ConsolidationRequest(c, A, j):
@@ -199,7 +204,7 @@ def prtW_l2_ConsolidationRequest(c, A, j):
 
 law flatW_l2_ConsolidationRequest:
   for +c: Nat
-  for +A: FD.array__Tree<T.ConsolidationRequest>
+  for +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>
   for +j: Nat
   {F.flat(CHW_l2_ConsolidationRequest(c, A, j)) == F.limbs(RWA_l2_ConsolidationRequest(c, A, j)) : +List<U32>}
 def flatW_l2_ConsolidationRequest(c, A, j):
@@ -213,7 +218,7 @@ def flatW_l2_ConsolidationRequest(c, A, j):
 
 law lenW_l2_ConsolidationRequest:
   for +c: Nat
-  for +A: FD.array__Tree<T.ConsolidationRequest>
+  for +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>
   for +j: Nat
   {VF.slen(RWA_l2_ConsolidationRequest(c, A, j)) == Nat.mul(c, 29n) : Nat}
 def lenW_l2_ConsolidationRequest(c, A, j):
@@ -227,7 +232,7 @@ def lenW_l2_ConsolidationRequest(c, A, j):
       {==}
 
 # The value of c records, a list of at most 2: one variable part, the limbs of their words.
-def lpart_l2_ConsolidationRequest(+c: Nat, +A: FD.array__Tree<T.ConsolidationRequest>, +hl: {Nat.is_le(c, U32.to_nat(2)) == True{} : Bool},
+def lpart_l2_ConsolidationRequest(+c: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +hl: {Nat.is_le(c, U32.to_nat(2)) == True{} : Bool},
     +fit: {N.fits(4n, List.length(&2, U32, F.limbs(RWA_l2_ConsolidationRequest(c, A, 0n)))) == True{} : Bool})
     -> {Codec.parts(S.Sequence{ITW_l2_ConsolidationRequest(c, A, 0n)}, S.ListOf{S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}, U32.to_nat(2)}) == Some{[S.Variable{F.limbs(RWA_l2_ConsolidationRequest(c, A, 0n))}]} : Maybe<&2, +List<S.Part>>}:
   +fit2 = FD.logic__subst(+List<U32>, z => {N.fits(4n, List.length(&2, U32, z)) == True{} : Bool}, F.limbs(RWA_l2_ConsolidationRequest(c, A, 0n)), F.flat(CHW_l2_ConsolidationRequest(c, A, 0n)),
@@ -249,10 +254,10 @@ def lpart_l2_ConsolidationRequest(+c: Nat, +A: FD.array__Tree<T.ConsolidationReq
 # ---- l2_ConsolidationRequest: the write loop at X = 4 q + r (record j at byte X + 116 j) ----
 
 
-def AG_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +i: U32) -> Array<T.ConsolidationRequest> & T.ConsolidationRequest: Array.get(T.ConsolidationRequest, FD.array__thaw(T.ConsolidationRequest, A), i)
+def AG_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +i: U32) -> Array<FuluConsolidationRequest_d.ConsolidationRequest> & FuluConsolidationRequest_d.ConsolidationRequest: Array.get(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), i)
 
 # the records j, j + 1, ..., j + k of A written from byte X + 116 j on
-def WX_l2_ConsolidationRequest(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +A: FD.array__Tree<T.ConsolidationRequest>) -> FD.array__Tree<U32>:
+def WX_l2_ConsolidationRequest(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>) -> FD.array__Tree<U32>:
   match k:
     case 0n: PXo_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j), dd, D, Nat.add(Nat.mul(j, 29n), q), r)
     case 1n+p: WX_l2_ConsolidationRequest(p, 1n+j, dd, PXo_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j), dd, D, Nat.add(Nat.mul(j, 29n), q), r), q, r, A)
@@ -264,7 +269,7 @@ law pfWX_l2_ConsolidationRequest:
   for +D: FD.array__Tree<U32>
   for +q: Nat
   for +r: Nat
-  for +A: FD.array__Tree<T.ConsolidationRequest>
+  for +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>
   for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
   {FD.array__perfect(U32, dd, WX_l2_ConsolidationRequest(k, j, dd, D, q, r, A)) == True{} : Bool}
 def pfWX_l2_ConsolidationRequest(k, j, dd, D, q, r, A, pf):
@@ -272,18 +277,18 @@ def pfWX_l2_ConsolidationRequest(k, j, dd, D, q, r, A, pf):
     case 0n: pfo_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j), dd, D, Nat.add(Nat.mul(j, 29n), q), r, pf)
     case 1n+ +p: pfWX_l2_ConsolidationRequest(p, 1n+j, dd, PXo_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j), dd, D, Nat.add(Nat.mul(j, 29n), q), r), q, r, A, pfo_ConsolidationRequest(EL_l2_ConsolidationRequest(A, j), dd, D, Nat.add(Nat.mul(j, 29n), q), r, pf))
 
-def RTK_l2_ConsolidationRequest(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<T.ConsolidationRequest>) -> Data:
-  {T.l2_ConsolidationRequest_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(T.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, j))) == (FD.array__thaw(U32, WX_l2_ConsolidationRequest(k, j, dd, D, q, r, A)), FD.array__thaw(T.ConsolidationRequest, A)) : Array<U32> & Array<T.ConsolidationRequest>}
-def BYK_l2_ConsolidationRequest(k: Nat, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<T.ConsolidationRequest>) -> Data:
+def RTK_l2_ConsolidationRequest(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>) -> Data:
+  {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, j))) == (FD.array__thaw(U32, WX_l2_ConsolidationRequest(k, j, dd, D, q, r, A)), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)) : Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>}
+def BYK_l2_ConsolidationRequest(k: Nat, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>) -> Data:
   {UA.BYT(WX_l2_ConsolidationRequest(k, j, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), VRX.YP(j, 29n, q, r), F.flat(CHW_l2_ConsolidationRequest(1n+k, A, j))) : +List<U32>}
 
 # The loop from record j (index i) on, k + 1 records, into LT bytes at X whose last k + 1 records' bytes are zero.
-def ptx_l2_ConsolidationRequest(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<T.ConsolidationRequest>, +LT: Nat,
+def ptx_l2_ConsolidationRequest(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +LT: Nat,
     +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), 29n)), LT) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
     +hz: {VS.bt(A.quad(Nat.mul(1n+k, 29n)), VS.bdr(VRX.YP(j, 29n, q, r), UA.BYT(D))) == UW.ZB(A.quad(Nat.mul(1n+k, 29n))) : +List<U32>},
-    +pfA: {FD.array__perfect(T.ConsolidationRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    +pfA: {FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> DK.P2(RTK_l2_ConsolidationRequest(k, i, j, X, q, r, dd, D, A), BYK_l2_ConsolidationRequest(k, j, q, r, dd, D, A)):
   match k:
     case 0n:
@@ -297,7 +302,7 @@ def ptx_l2_ConsolidationRequest(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: 
       +by = PB(RTo_ConsolidationRequest(o, dd, D, Xj, qj, r), BYo_ConsolidationRequest(o, dd, D, qj, r), g)
       +D1 = PXo_ConsolidationRequest(o, dd, D, qj, r)
       +Y = F.limbs(RWD_ConsolidationRequest(o))
-      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<T.ConsolidationRequest>, z => (z, FD.array__thaw(T.ConsolidationRequest, A)), T.ConsolidationRequest_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>, z => (z, FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)), FuluConsolidationRequest_e.ConsolidationRequest_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
       +by0 = FD.logic__subst(+List<U32>, z => {UA.BYT(D1) == UW.SPL(UA.BYT(D), VRX.YP(j, 29n, q, r), z) : +List<U32>}, Y, List.append(&2, U32, Y, []),
         Equal.sym(+List<U32>, List.append(&2, U32, Y, []), Y, VS.app_nil(Y)), by)
       (rt0, by0)
@@ -323,20 +328,20 @@ def ptx_l2_ConsolidationRequest(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: 
       +h1 = FD.nat__le_lt_trans(1n+j, 1n+Nat.add(p, j), VB.pw(da), Order.left_below_sum(p, j), hk)
       +ei1 = VB.add_le_at(i, 1, j, da, ei, hda, FD.nat__lt_le(1n+j, VB.pw(da), h1))
       +hi1 = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(da)) == True{} : Bool}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1), h1)
-      +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(T.ConsolidationRequest, FD.array__slots(T.ConsolidationRequest, A), z) == Some{EL_l2_ConsolidationRequest(A, 1n+j)} : Maybe<&2, T.ConsolidationRequest>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
-        VRL.nth_get(T.ConsolidationRequest, FD.array__slots(T.ConsolidationRequest, A), 1n+j, T.ConsolidationRequest_default(), FD.array__len_lt(T.ConsolidationRequest, da, A, 1n+j, pfA, h1)))
-      +eg = FD.array__get(T.ConsolidationRequest, da, A, U32.add(i, 1), EL_l2_ConsolidationRequest(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
+      +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), z) == Some{EL_l2_ConsolidationRequest(A, 1n+j)} : Maybe<&2, FuluConsolidationRequest_d.ConsolidationRequest>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
+        VRL.nth_get(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), 1n+j, FuluConsolidationRequest_d.ConsolidationRequest_default(), FD.array__len_lt(FuluConsolidationRequest_d.ConsolidationRequest, da, A, 1n+j, pfA, h1)))
+      +eg = FD.array__get(FuluConsolidationRequest_d.ConsolidationRequest, da, A, U32.add(i, 1), EL_l2_ConsolidationRequest(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
       +hj2 = FD.logic__subst(Nat, z => {Nat.is_le(A.quad(Nat.mul(1n+z, 29n)), LT) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hj)
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hk)
       +ih = ptx_l2_ConsolidationRequest(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hr, hd, pf1, hj2, hl, z1, pfA, hda, hk2)
       +rt2 = PA(RTK_l2_ConsolidationRequest(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l2_ConsolidationRequest(p, 1n+j, q, r, dd, D1, A), ih)
       +by2 = PB(RTK_l2_ConsolidationRequest(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l2_ConsolidationRequest(p, 1n+j, q, r, dd, D1, A), ih)
-      +ea = Equal.cong(Array<U32>, Array<U32> & Array<T.ConsolidationRequest>, z => T.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, z, AG_l2_ConsolidationRequest(A, U32.add(i, 1))), T.ConsolidationRequest_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
-      +eb = Equal.cong(Array<T.ConsolidationRequest> & T.ConsolidationRequest, Array<U32> & Array<T.ConsolidationRequest>, z => T.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG_l2_ConsolidationRequest(A, U32.add(i, 1)), (FD.array__thaw(T.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 1n+j)), eg)
-      +rt3 = Equal.trans(Array<U32> & Array<T.ConsolidationRequest>, T.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, T.ConsolidationRequest_put(FD.array__thaw(U32, D), Xj, o), AG_l2_ConsolidationRequest(A, U32.add(i, 1))), T.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l2_ConsolidationRequest(A, U32.add(i, 1))),
-        (FD.array__thaw(U32, WX_l2_ConsolidationRequest(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(T.ConsolidationRequest, A)), ea,
-        Equal.trans(Array<U32> & Array<T.ConsolidationRequest>, T.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l2_ConsolidationRequest(A, U32.add(i, 1))), T.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(T.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 1n+j))),
-          (FD.array__thaw(U32, WX_l2_ConsolidationRequest(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(T.ConsolidationRequest, A)), eb, rt2))
+      +ea = Equal.cong(Array<U32>, Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>, z => Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, z, AG_l2_ConsolidationRequest(A, U32.add(i, 1))), FuluConsolidationRequest_e.ConsolidationRequest_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +eb = Equal.cong(Array<FuluConsolidationRequest_d.ConsolidationRequest> & FuluConsolidationRequest_d.ConsolidationRequest, Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>, z => Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG_l2_ConsolidationRequest(A, U32.add(i, 1)), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 1n+j)), eg)
+      +rt3 = Equal.trans(Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, FuluConsolidationRequest_e.ConsolidationRequest_put(FD.array__thaw(U32, D), Xj, o), AG_l2_ConsolidationRequest(A, U32.add(i, 1))), Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l2_ConsolidationRequest(A, U32.add(i, 1))),
+        (FD.array__thaw(U32, WX_l2_ConsolidationRequest(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)), ea,
+        Equal.trans(Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l2_ConsolidationRequest(A, U32.add(i, 1))), Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 1n+j))),
+          (FD.array__thaw(U32, WX_l2_ConsolidationRequest(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)), eb, rt2))
       +rest = F.flat(CHW_l2_ConsolidationRequest(1n+p, A, 1n+j))
       +eXn = Equal.trans(Nat, VRX.YP(1n+j, 29n, q, r), Nat.add(Yj, A.quad(29n)), Nat.add(Yj, VRX.LN(Y)), ey,
         Equal.cong(Nat, Nat, z => Nat.add(Yj, z), A.quad(29n), VRX.LN(Y), Equal.sym(Nat, VRX.LN(Y), A.quad(29n), lenb_ConsolidationRequest(o))))
@@ -346,57 +351,57 @@ def ptx_l2_ConsolidationRequest(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: 
 
 # ---- l2_ConsolidationRequest: the list's encoder window ----
 
-def TDM_l2_ConsolidationRequest(t: FD.array__Tree<T.ConsolidationRequest>) -> Nat:
+def TDM_l2_ConsolidationRequest(t: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>) -> Nat:
   match t:
     case FD.TLeaf{x}: 0n
     case FD.TNode{l, r}: 1n+TDM_l2_ConsolidationRequest(l)
 
 # The list object Seq{thaw(A), N} and its facts: a perfect tree of depth < 31 holding the N records,
 # N within the limit 2.
-def THL_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32) -> T.l2_ConsolidationRequest_Seq: T.l2_ConsolidationRequest_Seq{FD.array__thaw(T.ConsolidationRequest, A), N}
-def OKL_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32) -> Bool:
-  Bool.and(Nat.is_lt(TDM_l2_ConsolidationRequest(A), 31n), Bool.and(FD.array__perfect(T.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2))))
-def okl_d_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {Nat.is_lt(TDM_l2_ConsolidationRequest(A), 31n) == True{} : Bool}:
-  and_l(Nat.is_lt(TDM_l2_ConsolidationRequest(A), 31n), Bool.and(FD.array__perfect(T.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2))), h)
-def okl_1_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool})
-    -> {Bool.and(FD.array__perfect(T.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2))) == True{} : Bool}:
-  and_r(Nat.is_lt(TDM_l2_ConsolidationRequest(A), 31n), Bool.and(FD.array__perfect(T.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2))), h)
-def okl_pf_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {FD.array__perfect(T.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A) == True{} : Bool}:
-  and_l(FD.array__perfect(T.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2)), okl_1_l2_ConsolidationRequest(A, N, h))
-def okl_2_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2)) == True{} : Bool}:
-  and_r(FD.array__perfect(T.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2)), okl_1_l2_ConsolidationRequest(A, N, h))
-def okl_n_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))) == True{} : Bool}:
+def THL_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32) -> Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), N}
+def OKL_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32) -> Bool:
+  Bool.and(Nat.is_lt(TDM_l2_ConsolidationRequest(A), 31n), Bool.and(FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2))))
+def okl_d_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {Nat.is_lt(TDM_l2_ConsolidationRequest(A), 31n) == True{} : Bool}:
+  and_l(Nat.is_lt(TDM_l2_ConsolidationRequest(A), 31n), Bool.and(FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2))), h)
+def okl_1_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool})
+    -> {Bool.and(FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2))) == True{} : Bool}:
+  and_r(Nat.is_lt(TDM_l2_ConsolidationRequest(A), 31n), Bool.and(FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2))), h)
+def okl_pf_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A) == True{} : Bool}:
+  and_l(FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2)), okl_1_l2_ConsolidationRequest(A, N, h))
+def okl_2_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2)) == True{} : Bool}:
+  and_r(FD.array__perfect(FuluConsolidationRequest_d.ConsolidationRequest, TDM_l2_ConsolidationRequest(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2)), okl_1_l2_ConsolidationRequest(A, N, h))
+def okl_n_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))) == True{} : Bool}:
   and_l(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2), okl_2_l2_ConsolidationRequest(A, N, h))
-def okl_lim_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {U32.is_le(N, 2) == True{} : Bool}:
+def okl_lim_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {U32.is_le(N, 2) == True{} : Bool}:
   and_r(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2_ConsolidationRequest(A))), U32.is_le(N, 2), okl_2_l2_ConsolidationRequest(A, N, h))
 
 # N <= 2^d as the runtime compares it.
-def le_cap_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(TDM_l2_ConsolidationRequest(A))) == True{} : Bool}:
+def le_cap_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(TDM_l2_ConsolidationRequest(A))) == True{} : Bool}:
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(TDM_l2_ConsolidationRequest(A))), Nat.is_le(U32.to_nat(N), U32.to_nat(FD.u32__pow2u(TDM_l2_ConsolidationRequest(A)))), VU.le_u32(N, FD.u32__pow2u(TDM_l2_ConsolidationRequest(A)))) : {_ == True{} : Bool}
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(TDM_l2_ConsolidationRequest(A))), VB.pw(TDM_l2_ConsolidationRequest(A)), FD.u32__pow2u_value(TDM_l2_ConsolidationRequest(A), FD.nat__lt_trans(TDM_l2_ConsolidationRequest(A), 31n, 32n, okl_d_l2_ConsolidationRequest(A, N, h), {==}))) : {Nat.is_le(U32.to_nat(N), _) == True{} : Bool}
   okl_n_l2_ConsolidationRequest(A, N, h)
 
 # The list's bytes, their count, and the writer's model.
-def LL_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32) -> Nat: A.quad(Nat.mul(U32.to_nat(N), 29n))
-def ENCL_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32) -> +List<U32>: F.limbs(RWA_l2_ConsolidationRequest(U32.to_nat(N), A, 0n))
-def PUTLb_l2_ConsolidationRequest(b: Bool, +A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+def LL_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32) -> Nat: A.quad(Nat.mul(U32.to_nat(N), 29n))
+def ENCL_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32) -> +List<U32>: F.limbs(RWA_l2_ConsolidationRequest(U32.to_nat(N), A, 0n))
+def PUTLb_l2_ConsolidationRequest(b: Bool, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match b:
     case True{}: D
     case False{}: WX_l2_ConsolidationRequest(U32.to_nat(U32.sub(N, 1)), 0n, dd, D, q, r, A)
-def PUTL_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PUTLb_l2_ConsolidationRequest(U32.is_eq(N, 0), A, N, dd, D, q, r)
-def pfLb_l2_ConsolidationRequest(+b: Bool, +A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def PUTL_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PUTLb_l2_ConsolidationRequest(U32.is_eq(N, 0), A, N, dd, D, q, r)
+def pfLb_l2_ConsolidationRequest(+b: Bool, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PUTLb_l2_ConsolidationRequest(b, A, N, dd, D, q, r)) == True{} : Bool}:
   match b:
     case True{}: pf
     case False{}: pfWX_l2_ConsolidationRequest(U32.to_nat(U32.sub(N, 1)), 0n, dd, D, q, r, A, pf)
 
-def RTN_l2_ConsolidationRequest(+b: Bool, +A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l2_ConsolidationRequest_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(T.ConsolidationRequest, A)) == (FD.array__thaw(U32, PUTLb_l2_ConsolidationRequest(b, A, N, dd, D, q, r)), THL_l2_ConsolidationRequest(A, N)) : Array<U32> & T.l2_ConsolidationRequest_Seq}
-def BYN_l2_ConsolidationRequest(+b: Bool, +A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTN_l2_ConsolidationRequest(+b: Bool, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)) == (FD.array__thaw(U32, PUTLb_l2_ConsolidationRequest(b, A, N, dd, D, q, r)), THL_l2_ConsolidationRequest(A, N)) : Array<U32> & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq}
+def BYN_l2_ConsolidationRequest(+b: Bool, +A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTLb_l2_ConsolidationRequest(b, A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l2_ConsolidationRequest(U32.to_nat(N), A, 0n))) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def ptnz_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l2_ConsolidationRequest(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l2_ConsolidationRequest(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l2_ConsolidationRequest(A, N)) : +List<U32>})
@@ -421,46 +426,46 @@ def ptnz_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N:
       +hk = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)),
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
-      +eg0 = FD.array__get(T.ConsolidationRequest, da, A, 0, EL_l2_ConsolidationRequest(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(T.ConsolidationRequest, FD.array__slots(T.ConsolidationRequest, A), 0n, T.ConsolidationRequest_default(), FD.array__len_lt(T.ConsolidationRequest, da, A, 0n, pfA, h0)), pfA)
+      +eg0 = FD.array__get(FuluConsolidationRequest_d.ConsolidationRequest, da, A, 0, EL_l2_ConsolidationRequest(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, A), 0n, FuluConsolidationRequest_d.ConsolidationRequest_default(), FD.array__len_lt(FuluConsolidationRequest_d.ConsolidationRequest, da, A, 0n, pfA, h0)), pfA)
       +g = ptx_l2_ConsolidationRequest(k, 0, 0n, X, q, r, dd, D, da, A, LL_l2_ConsolidationRequest(A, N), {==}, e, hr, hd, pf, hj, hl, hz2, pfA, hda, hk)
       +rt = PA(RTK_l2_ConsolidationRequest(k, 0, 0n, X, q, r, dd, D, A), BYK_l2_ConsolidationRequest(k, 0n, q, r, dd, D, A), g)
       +by = PB(RTK_l2_ConsolidationRequest(k, 0, 0n, X, q, r, dd, D, A), BYK_l2_ConsolidationRequest(k, 0n, q, r, dd, D, A), g)
-      +ea = Equal.cong(Array<T.ConsolidationRequest> & T.ConsolidationRequest, Array<U32> & T.l2_ConsolidationRequest_Seq, z => T.l2_ConsolidationRequest_pt_fin(N, T.l2_ConsolidationRequest_pt(k, 0, X, FD.array__thaw(U32, D), z)), Array.get(T.ConsolidationRequest, FD.array__thaw(T.ConsolidationRequest, A), 0), (FD.array__thaw(T.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 0n)), eg0)
-      +eb2 = Equal.cong(Array<U32> & Array<T.ConsolidationRequest>, Array<U32> & T.l2_ConsolidationRequest_Seq, z => T.l2_ConsolidationRequest_pt_fin(N, z), T.l2_ConsolidationRequest_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 0n))), (FD.array__thaw(U32, WX_l2_ConsolidationRequest(k, 0n, dd, D, q, r, A)), FD.array__thaw(T.ConsolidationRequest, A)), rt)
-      (Equal.trans(Array<U32> & T.l2_ConsolidationRequest_Seq, T.l2_ConsolidationRequest_pt_fin(N, T.l2_ConsolidationRequest_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(T.ConsolidationRequest, FD.array__thaw(T.ConsolidationRequest, A), 0))), T.l2_ConsolidationRequest_pt_fin(N, T.l2_ConsolidationRequest_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 0n)))),
-         T.l2_ConsolidationRequest_pt_fin(N, (FD.array__thaw(U32, WX_l2_ConsolidationRequest(k, 0n, dd, D, q, r, A)), FD.array__thaw(T.ConsolidationRequest, A))), ea, eb2),
+      +ea = Equal.cong(Array<FuluConsolidationRequest_d.ConsolidationRequest> & FuluConsolidationRequest_d.ConsolidationRequest, Array<U32> & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, z => Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_fin(N, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(k, 0, X, FD.array__thaw(U32, D), z)), Array.get(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), 0), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 0n)), eg0)
+      +eb2 = Equal.cong(Array<U32> & Array<FuluConsolidationRequest_d.ConsolidationRequest>, Array<U32> & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, z => Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_fin(N, z), Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 0n))), (FD.array__thaw(U32, WX_l2_ConsolidationRequest(k, 0n, dd, D, q, r, A)), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)), rt)
+      (Equal.trans(Array<U32> & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_fin(N, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), 0))), Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_fin(N, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), EL_l2_ConsolidationRequest(A, 0n)))),
+         Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_fin(N, (FD.array__thaw(U32, WX_l2_ConsolidationRequest(k, 0n, dd, D, q, r, A)), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A))), ea, eb2),
        FD.logic__subst(Nat, z => {UA.BYT(WX_l2_ConsolidationRequest(k, 0n, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l2_ConsolidationRequest(z, A, 0n))) : +List<U32>}, 1n+k, c, e1, by))
 
 # The runtime's validity check of the list.
-def valid_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {T.l2_ConsolidationRequest_valid(THL_l2_ConsolidationRequest(A, N)) == (THL_l2_ConsolidationRequest(A, N), True{}) : T.l2_ConsolidationRequest_Seq & Bool}:
+def valid_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_valid(THL_l2_ConsolidationRequest(A, N)) == (THL_l2_ConsolidationRequest(A, N), True{}) : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & Bool}:
   +d = TDM_l2_ConsolidationRequest(A)
-  %Equal.sym(Array<T.ConsolidationRequest> & U32, Array.size(T.ConsolidationRequest, FD.array__thaw(T.ConsolidationRequest, A)), (FD.array__thaw(T.ConsolidationRequest, A), FD.u32__pow2u(d)), FD.array__size_thaw(T.ConsolidationRequest, d, A, okl_pf_l2_ConsolidationRequest(A, N, h))) :
-    {T.l2_ConsolidationRequest_va_cap(Bool.or(False{}, U32.is_le(N, 2)), N, _) == (THL_l2_ConsolidationRequest(A, N), True{}) : T.l2_ConsolidationRequest_Seq & Bool}
+  %Equal.sym(Array<FuluConsolidationRequest_d.ConsolidationRequest> & U32, Array.size(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), FD.u32__pow2u(d)), FD.array__size_thaw(FuluConsolidationRequest_d.ConsolidationRequest, d, A, okl_pf_l2_ConsolidationRequest(A, N, h))) :
+    {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_va_cap(Bool.or(False{}, U32.is_le(N, 2)), N, _) == (THL_l2_ConsolidationRequest(A, N), True{}) : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, 2), True{}, okl_lim_l2_ConsolidationRequest(A, N, h)) :
-    {(THL_l2_ConsolidationRequest(A, N), Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d)))) == (THL_l2_ConsolidationRequest(A, N), True{}) : T.l2_ConsolidationRequest_Seq & Bool}
+    {(THL_l2_ConsolidationRequest(A, N), Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d)))) == (THL_l2_ConsolidationRequest(A, N), True{}) : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_l2_ConsolidationRequest(A, N, h)) :
-    {(THL_l2_ConsolidationRequest(A, N), Bool.and(Bool.or(False{}, True{}), _)) == (THL_l2_ConsolidationRequest(A, N), True{}) : T.l2_ConsolidationRequest_Seq & Bool}
+    {(THL_l2_ConsolidationRequest(A, N), Bool.and(Bool.or(False{}, True{}), _)) == (THL_l2_ConsolidationRequest(A, N), True{}) : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & Bool}
   {==}
 
-def RTL_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l2_ConsolidationRequest_putk(FD.array__thaw(U32, D), X, THL_l2_ConsolidationRequest(A, N)) == (FD.array__thaw(U32, PUTL_l2_ConsolidationRequest(A, N, dd, D, q, r)), (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116))) : Array<U32> & (T.l2_ConsolidationRequest_Seq & U32)}
-def BYL_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTL_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_putk(FD.array__thaw(U32, D), X, THL_l2_ConsolidationRequest(A, N)) == (FD.array__thaw(U32, PUTL_l2_ConsolidationRequest(A, N, dd, D, q, r)), (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116))) : Array<U32> & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32)}
+def BYL_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL_l2_ConsolidationRequest(A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l2_ConsolidationRequest(A, N)) : +List<U32>}
-def PFL_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def PFL_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {FD.array__perfect(U32, dd, PUTL_l2_ConsolidationRequest(A, N, dd, D, q, r)) == True{} : Bool}
 
 # The runtime's write, with its validity check.
-def putk_rt_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putk_rt_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN_l2_ConsolidationRequest(U32.is_eq(N, 0), A, N, dd, D, X, q, r)) -> RTL_l2_ConsolidationRequest(A, N, dd, D, X, q, r):
-  %Equal.sym(T.l2_ConsolidationRequest_Seq & Bool, T.l2_ConsolidationRequest_valid(THL_l2_ConsolidationRequest(A, N)), (THL_l2_ConsolidationRequest(A, N), True{}), valid_l2_ConsolidationRequest(A, N, h)) :
-    {T.l2_ConsolidationRequest_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l2_ConsolidationRequest(A, N, dd, D, q, r)), (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116))) : Array<U32> & (T.l2_ConsolidationRequest_Seq & U32)}
-  %Equal.sym(Array<U32> & T.l2_ConsolidationRequest_Seq, T.l2_ConsolidationRequest_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(T.ConsolidationRequest, A)), (FD.array__thaw(U32, PUTL_l2_ConsolidationRequest(A, N, dd, D, q, r)), THL_l2_ConsolidationRequest(A, N)), rtb) :
-    {T.l2_ConsolidationRequest_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l2_ConsolidationRequest(A, N, dd, D, q, r)), (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116))) : Array<U32> & (T.l2_ConsolidationRequest_Seq & U32)}
+  %Equal.sym(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & Bool, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_valid(THL_l2_ConsolidationRequest(A, N)), (THL_l2_ConsolidationRequest(A, N), True{}), valid_l2_ConsolidationRequest(A, N, h)) :
+    {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l2_ConsolidationRequest(A, N, dd, D, q, r)), (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116))) : Array<U32> & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32)}
+  %Equal.sym(Array<U32> & Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)), (FD.array__thaw(U32, PUTL_l2_ConsolidationRequest(A, N, dd, D, q, r)), THL_l2_ConsolidationRequest(A, N)), rtb) :
+    {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l2_ConsolidationRequest(A, N, dd, D, q, r)), (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116))) : Array<U32> & (Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32)}
   {==}
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
 # into D's (its records write their data bytes only), and whose tree is perfect.
-def putx_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putx_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l2_ConsolidationRequest(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l2_ConsolidationRequest(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l2_ConsolidationRequest(A, N)) : +List<U32>})
@@ -476,16 +481,16 @@ def putx_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N:
 # ---- sizes ----
 
 # The runtime's size pass.
-def sizex_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {T.l2_ConsolidationRequest_size(THL_l2_ConsolidationRequest(A, N)) == (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116)) : T.l2_ConsolidationRequest_Seq & U32}:
+def sizex_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}) -> {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_size(THL_l2_ConsolidationRequest(A, N)) == (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116)) : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32}:
   +d = TDM_l2_ConsolidationRequest(A)
-  %Equal.sym(Array<T.ConsolidationRequest> & U32, Array.size(T.ConsolidationRequest, FD.array__thaw(T.ConsolidationRequest, A)), (FD.array__thaw(T.ConsolidationRequest, A), FD.u32__pow2u(d)), FD.array__size_thaw(T.ConsolidationRequest, d, A, okl_pf_l2_ConsolidationRequest(A, N, h))) :
-    {T.l2_ConsolidationRequest_szf(N, _) == (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116)) : T.l2_ConsolidationRequest_Seq & U32}
+  %Equal.sym(Array<FuluConsolidationRequest_d.ConsolidationRequest> & U32, Array.size(FuluConsolidationRequest_d.ConsolidationRequest, FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A)), (FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, A), FD.u32__pow2u(d)), FD.array__size_thaw(FuluConsolidationRequest_d.ConsolidationRequest, d, A, okl_pf_l2_ConsolidationRequest(A, N, h))) :
+    {Fulu_list_ConsolidationRequest_2_e.l2_ConsolidationRequest_szf(N, _) == (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116)) : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_l2_ConsolidationRequest(A, N, h)) :
-    {(THL_l2_ConsolidationRequest(A, N), O.pick(_, U32.mul(N, 116), 2147483648)) == (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116)) : T.l2_ConsolidationRequest_Seq & U32}
+    {(THL_l2_ConsolidationRequest(A, N), O.pick(_, U32.mul(N, 116), 2147483648)) == (THL_l2_ConsolidationRequest(A, N), U32.mul(N, 116)) : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq & U32}
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
-def szx_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def szx_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l2_ConsolidationRequest(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 116)) == LL_l2_ConsolidationRequest(A, N) : Nat}:
   VRX.mulq(dd, N, U32.to_nat(N), 116, 29n, {==}, {==}, hd,
     FD.nat__le_trans(LL_l2_ConsolidationRequest(A, N), Nat.add(Nat.add(A.quad(q), r), LL_l2_ConsolidationRequest(A, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL_l2_ConsolidationRequest(A, N)), VRX.xend(q, r, LL_l2_ConsolidationRequest(A, N), dd, hl)))
@@ -494,9 +499,9 @@ def szx_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: 
 # ---- l2_ConsolidationRequest: the spec side ----
 
 # The value of the list: the records' values.
-def VALL_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32) -> S.Value: S.Sequence{ITW_l2_ConsolidationRequest(U32.to_nat(N), A, 0n)}
+def VALL_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32) -> S.Value: S.Sequence{ITW_l2_ConsolidationRequest(U32.to_nat(N), A, 0n)}
 
-def len_encl_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32) -> {List.length(&2, U32, ENCL_l2_ConsolidationRequest(A, N)) == LL_l2_ConsolidationRequest(A, N) : Nat}:
+def len_encl_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32) -> {List.length(&2, U32, ENCL_l2_ConsolidationRequest(A, N)) == LL_l2_ConsolidationRequest(A, N) : Nat}:
   %Equal.sym(Nat, List.length(&2, U32, F.limbs(RWA_l2_ConsolidationRequest(U32.to_nat(N), A, 0n))), F.wlen(RWA_l2_ConsolidationRequest(U32.to_nat(N), A, 0n)), VS.len_limbs(RWA_l2_ConsolidationRequest(U32.to_nat(N), A, 0n))) : {_ == LL_l2_ConsolidationRequest(A, N) : Nat}
   %Equal.sym(Nat, F.wlen(RWA_l2_ConsolidationRequest(U32.to_nat(N), A, 0n)), A.quad(List.length(&2, U32, RWA_l2_ConsolidationRequest(U32.to_nat(N), A, 0n))), VS.wlen_quad(RWA_l2_ConsolidationRequest(U32.to_nat(N), A, 0n))) : {_ == LL_l2_ConsolidationRequest(A, N) : Nat}
   %Equal.sym(Nat, List.length(&2, U32, RWA_l2_ConsolidationRequest(U32.to_nat(N), A, 0n)), FD.spec_common__length(U32, RWA_l2_ConsolidationRequest(U32.to_nat(N), A, 0n)), VMR.len_eq(RWA_l2_ConsolidationRequest(U32.to_nat(N), A, 0n))) : {A.quad(_) == LL_l2_ConsolidationRequest(A, N) : Nat}
@@ -504,7 +509,7 @@ def len_encl_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>,
   {==}
 
 # encx_spec: the list's value has its bytes as one variable part, when they fit a tree of depth dx < 30.
-def encx_spec_l2_ConsolidationRequest(+A: FD.array__Tree<T.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}, +dx: Nat, +hdx: {Nat.is_lt(dx, 30n) == True{} : Bool},
+def encx_spec_l2_ConsolidationRequest(+A: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +h: {OKL_l2_ConsolidationRequest(A, N) == True{} : Bool}, +dx: Nat, +hdx: {Nat.is_lt(dx, 30n) == True{} : Bool},
     +hL: {Nat.is_le(LL_l2_ConsolidationRequest(A, N), A.quad(VB.pw(dx))) == True{} : Bool})
     -> {Codec.parts(VALL_l2_ConsolidationRequest(A, N), S.ListOf{S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}, U32.to_nat(2)}) == Some{[S.Variable{ENCL_l2_ConsolidationRequest(A, N)}]} : Maybe<&2, +List<S.Part>>}:
   +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 2), Nat.is_le(U32.to_nat(N), U32.to_nat(2)), VU.le_u32(N, 2), okl_lim_l2_ConsolidationRequest(A, N, h))

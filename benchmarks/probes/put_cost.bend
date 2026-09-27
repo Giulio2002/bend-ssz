@@ -1,7 +1,14 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluBytes96_encode_ssz_generated.bend as FuluBytes96_e
+import ../../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
+import ../../types/FuluAttestationData_encode_ssz_generated.bend as FuluAttestationData_e
+import ../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
+import ../../types/FuluAttestation_encode_ssz_generated.bend as FuluAttestation_e
+import ../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
+import ../../types/FuluExecutionPayloadHeader_encode_ssz_generated.bend as FuluExecutionPayloadHeader_e
 import ../compact/objio.bend as IOx
 
 # Is what is left of an encode memory traffic or per-call overhead?
@@ -23,7 +30,7 @@ def took(pair: Array<U32> & U32) -> U32:
   w
 
 def one(+pos: U32, +acc: U32) -> U32:
-  (acc .^. took(first(T.AttestationData_put(O.out_at(6n), pos, T.AttestationData_default()))) : U32)
+  (acc .^. took(first(FuluAttestationData_e.AttestationData_put(O.out_at(6n), pos, FuluAttestationData_d.AttestationData_default()))) : U32)
 
 def ploop(+k: Nat, +pos: U32, +acc: U32) -> U32:
   match k:
@@ -47,47 +54,47 @@ def cloop(+k: Nat, +acc: U32) -> U32:
 # no dispatch sum between the loop and the codec. Mode 4: the same for
 # ExecutionPayloadHeader. Compared with the benchmark harness's per-workload
 # number, this separates the codec from the harness's Any wrapper.
-def enc_a(pair: T.Attestation & B.Buf) -> T.Attestation & U32:
+def enc_a(pair: FuluAttestation_d.Attestation & B.Buf) -> FuluAttestation_d.Attestation & U32:
   (o, out) = pair
   (o, IOx.word_out_of(B.size(out)))
 
-def aloop(+k: Nat, +acc: U32, pair: T.Attestation & U32) -> U32:
+def aloop(+k: Nat, +acc: U32, pair: FuluAttestation_d.Attestation & U32) -> U32:
   match k:
     case 0n:
       (o, +x) = pair
       (acc .^. x : U32)
     case 1n+p:
       (o, +x) = pair
-      aloop(p, (acc .^. x : U32), enc_a(T.Attestation_encode(o)))
+      aloop(p, (acc .^. x : U32), enc_a(FuluAttestation_e.Attestation_encode(o)))
 
-def enc_h(pair: T.ExecutionPayloadHeader & B.Buf) -> T.ExecutionPayloadHeader & U32:
+def enc_h(pair: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & B.Buf) -> FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & U32:
   (o, out) = pair
   (o, IOx.word_out_of(B.size(out)))
 
-def hloop(+k: Nat, +acc: U32, pair: T.ExecutionPayloadHeader & U32) -> U32:
+def hloop(+k: Nat, +acc: U32, pair: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & U32) -> U32:
   match k:
     case 0n:
       (o, +x) = pair
       (acc .^. x : U32)
     case 1n+p:
       (o, +x) = pair
-      hloop(p, (acc .^. x : U32), enc_h(T.ExecutionPayloadHeader_encode(o)))
+      hloop(p, (acc .^. x : U32), enc_h(FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(o)))
 
 # Mode 5: Attestation_size alone. Mode 6: just the output allocation an
 # Attestation encode makes. Mode 7: the Bytes96 field write alone. Together
 # with modes 0 and 3 these account for the parts of one public encode.
-def sz_a(pair: T.Attestation & U32) -> T.Attestation & U32:
+def sz_a(pair: FuluAttestation_d.Attestation & U32) -> FuluAttestation_d.Attestation & U32:
   (o, +n) = pair
   (o, n)
 
-def sloop(+k: Nat, +acc: U32, pair: T.Attestation & U32) -> U32:
+def sloop(+k: Nat, +acc: U32, pair: FuluAttestation_d.Attestation & U32) -> U32:
   match k:
     case 0n:
       (o, +x) = pair
       (acc .^. x : U32)
     case 1n+p:
       (o, +x) = pair
-      sloop(p, (acc .^. x : U32), T.Attestation_size(o))
+      sloop(p, (acc .^. x : U32), FuluAttestation_e.Attestation_size(o))
 
 def one_new(+acc: U32) -> U32:
   (acc .^. took(first(O.out_new(229))) : U32)
@@ -98,7 +105,7 @@ def nloop(+k: Nat, +acc: U32) -> U32:
     case 1n+p: nloop(p, one_new(acc))
 
 def one_b96(+acc: U32) -> U32:
-  (acc .^. took(first(T.b96_put(O.out_at(6n), 1, T.b96_default()))) : U32)
+  (acc .^. took(first(FuluBytes96_e.b96_put(O.out_at(6n), 1, FuluBytes96_d.b96_default()))) : U32)
 
 def bloop(+k: Nat, +acc: U32) -> U32:
   match k:
@@ -125,28 +132,28 @@ def lloop(+k: Nat, +acc: U32) -> U32:
 
 # Mode 10: ExecutionPayloadHeader_size alone - the traversal an encode makes
 # before it can allocate, duplicating the structural walk the write then does.
-def hsloop(+k: Nat, +acc: U32, pair: T.ExecutionPayloadHeader & U32) -> U32:
+def hsloop(+k: Nat, +acc: U32, pair: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader & U32) -> U32:
   match k:
     case 0n:
       (o, +x) = pair
       (acc .^. x : U32)
     case 1n+p:
       (o, +x) = pair
-      hsloop(p, (acc .^. x : U32), T.ExecutionPayloadHeader_size(o))
+      hsloop(p, (acc .^. x : U32), FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_size(o))
 
 def pick_acc(+mode: U32, +ops: U32) -> U32:
   match mode:
     case 0: ploop(U32.to_nat(ops), 0, 0)
     case 1: ploop(U32.to_nat(ops), 1, 0)
     case 2: cloop(U32.to_nat(ops), 0)
-    case 3: aloop(U32.to_nat(ops), 0, enc_a(T.Attestation_encode(T.Attestation_default())))
-    case 4: hloop(U32.to_nat(ops), 0, enc_h(T.ExecutionPayloadHeader_encode(T.ExecutionPayloadHeader_default())))
-    case 5: sloop(U32.to_nat(ops), 0, T.Attestation_size(T.Attestation_default()))
+    case 3: aloop(U32.to_nat(ops), 0, enc_a(FuluAttestation_e.Attestation_encode(FuluAttestation_d.Attestation_default())))
+    case 4: hloop(U32.to_nat(ops), 0, enc_h(FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_encode(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_default())))
+    case 5: sloop(U32.to_nat(ops), 0, FuluAttestation_e.Attestation_size(FuluAttestation_d.Attestation_default()))
     case 6: nloop(U32.to_nat(ops), 0)
     case 7: bloop(U32.to_nat(ops), 0)
     case 8: kloop(U32.to_nat(ops), 0)
     case 9: lloop(U32.to_nat(ops), 0)
-    case _: hsloop(U32.to_nat(ops), 0, T.ExecutionPayloadHeader_size(T.ExecutionPayloadHeader_default()))
+    case _: hsloop(U32.to_nat(ops), 0, FuluExecutionPayloadHeader_e.ExecutionPayloadHeader_size(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_default()))
 
 def report(+t0: Nat, +acc: U32) -> IO(Unit):
   do IO<Unit>:

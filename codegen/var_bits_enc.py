@@ -25,6 +25,7 @@ vbitcore.bend (enc_core, enc_small, enc_sized).
 import re
 import sys
 from pathlib import Path
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -927,10 +928,10 @@ def encE({ALLP})
 def main():
     no_big = '--no-big' in sys.argv
     out = {BW: bw_module(), PAD: pad_module()}
-    src = (ROOT / 'types/generic_obj.bend').read_text()
+    src = RR.mono_text('generic')
     for X, N, p in names():
         out[ROOT / f'proofs/obj/var_bits_enc_{X}.bend'] = name_module(X, N, p, src)
-    fsrc = (ROOT / 'types/fulu_obj.bend').read_text()
+    fsrc = RR.mono_text('fulu')
     g, xs = cont_names()
     import var_bitc as VBI
     for x in xs:
@@ -939,6 +940,7 @@ def main():
         out[cont_fname(x)] = cont_module(g, x, fsrc)
     mine = [q for q in (ROOT / 'proofs/obj').glob('*.bend') if q.name.startswith(('var_bits_enc_', 'var_bitc_enc_', 'big_var_bitc_enc_'))]
     orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out and not (no_big and q.name.startswith('big_')))
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t] + orphans
         if stale:

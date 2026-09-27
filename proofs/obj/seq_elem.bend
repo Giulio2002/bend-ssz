@@ -1,6 +1,7 @@
 import Base
 import ../compact/found.bend as F
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluValidator_def_generated.bend as FuluValidator_d
+import ../../types/Fulu_list_Validator_1099511627776_def_generated.bend as Fulu_list_Validator_1099511627776_d
 
 # Element laws of a list of objects: BeaconState.validators, whose elements are
 # whole Validator objects held in one packed native array (no linked list).
@@ -16,60 +17,60 @@ import ../../types/fulu_obj.bend as T
 # The proof rewrites the two range guards to True with the index premise, then
 # uses get-after-set on the underlying array.
 
-def validators_read_after_write(+d: Nat, +t: F.array__Tree<T.Validator>, +n: U32, +i: U32, +v: T.Validator, +x: T.Validator,
+def validators_read_after_write(+d: Nat, +t: F.array__Tree<FuluValidator_d.Validator>, +n: U32, +i: U32, +v: FuluValidator_d.Validator, +x: FuluValidator_d.Validator,
     +hd: {Nat.is_lt(d, 32n) == True{} : Bool},
     +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool},
-    +hx: {F.spec_common__nth(T.Validator, F.array__slots(T.Validator, t), U32.to_nat(i)) == Some{x} : Maybe<&2, T.Validator>},
-    +pf: {F.array__perfect(T.Validator, d, t) == True{} : Bool},
+    +hx: {F.spec_common__nth(FuluValidator_d.Validator, F.array__slots(FuluValidator_d.Validator, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluValidator_d.Validator>},
+    +pf: {F.array__perfect(FuluValidator_d.Validator, d, t) == True{} : Bool},
     +hn: {U32.is_lt(i, n) == True{} : Bool})
-    -> {T.l1099511627776_Validator_get(Pair.fst(T.l1099511627776_Validator_Seq, Bool,
-          T.l1099511627776_Validator_set(T.l1099511627776_Validator_Seq{F.array__thaw(T.Validator, t), n}, i, v)), i)
-        == (T.l1099511627776_Validator_Seq{F.array__thaw(T.Validator, F.array__upd(T.Validator, d, t, U32.to_nat(i), v)), n}, Some{v})
-        : T.l1099511627776_Validator_Seq & Maybe<&1, T.Validator>}:
-  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hn) : {T.l1099511627776_Validator_get(Pair.fst(T.l1099511627776_Validator_Seq, Bool,
-      T.l1099511627776_Validator_put_in(_, F.array__thaw(T.Validator, t), n, i, v)), i)
-    == (T.l1099511627776_Validator_Seq{F.array__thaw(T.Validator, F.array__upd(T.Validator, d, t, U32.to_nat(i), v)), n}, Some{v})
-    : T.l1099511627776_Validator_Seq & Maybe<&1, T.Validator>}
-  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hn) : {T.l1099511627776_Validator_get_in(_,
-      Array.set(T.Validator, F.array__thaw(T.Validator, t), i, v), n, i)
-    == (T.l1099511627776_Validator_Seq{F.array__thaw(T.Validator, F.array__upd(T.Validator, d, t, U32.to_nat(i), v)), n}, Some{v})
-    : T.l1099511627776_Validator_Seq & Maybe<&1, T.Validator>}
-  %Equal.sym(Array<T.Validator> & T.Validator,
-      Array.get(T.Validator, Array.set(T.Validator, F.array__thaw(T.Validator, t), i, v), i),
-      (F.array__thaw(T.Validator, F.array__upd(T.Validator, d, t, U32.to_nat(i), v)), v),
-      F.array__get_set_same(T.Validator, d, t, i, v, x, hd, hi, hx, pf))
-    : {T.l1099511627776_Validator_took(n, _)
-    == (T.l1099511627776_Validator_Seq{F.array__thaw(T.Validator, F.array__upd(T.Validator, d, t, U32.to_nat(i), v)), n}, Some{v})
-    : T.l1099511627776_Validator_Seq & Maybe<&1, T.Validator>}
+    -> {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_get(Pair.fst(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Bool,
+          Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_set(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{F.array__thaw(FuluValidator_d.Validator, t), n}, i, v)), i)
+        == (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{F.array__thaw(FuluValidator_d.Validator, F.array__upd(FuluValidator_d.Validator, d, t, U32.to_nat(i), v)), n}, Some{v})
+        : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Maybe<&1, FuluValidator_d.Validator>}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hn) : {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_get(Pair.fst(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Bool,
+      Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_put_in(_, F.array__thaw(FuluValidator_d.Validator, t), n, i, v)), i)
+    == (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{F.array__thaw(FuluValidator_d.Validator, F.array__upd(FuluValidator_d.Validator, d, t, U32.to_nat(i), v)), n}, Some{v})
+    : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Maybe<&1, FuluValidator_d.Validator>}
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hn) : {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_get_in(_,
+      Array.set(FuluValidator_d.Validator, F.array__thaw(FuluValidator_d.Validator, t), i, v), n, i)
+    == (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{F.array__thaw(FuluValidator_d.Validator, F.array__upd(FuluValidator_d.Validator, d, t, U32.to_nat(i), v)), n}, Some{v})
+    : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Maybe<&1, FuluValidator_d.Validator>}
+  %Equal.sym(Array<FuluValidator_d.Validator> & FuluValidator_d.Validator,
+      Array.get(FuluValidator_d.Validator, Array.set(FuluValidator_d.Validator, F.array__thaw(FuluValidator_d.Validator, t), i, v), i),
+      (F.array__thaw(FuluValidator_d.Validator, F.array__upd(FuluValidator_d.Validator, d, t, U32.to_nat(i), v)), v),
+      F.array__get_set_same(FuluValidator_d.Validator, d, t, i, v, x, hd, hi, hx, pf))
+    : {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_took(n, _)
+    == (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{F.array__thaw(FuluValidator_d.Validator, F.array__upd(FuluValidator_d.Validator, d, t, U32.to_nat(i), v)), n}, Some{v})
+    : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Maybe<&1, FuluValidator_d.Validator>}
   {==}
 
-def validators_other_unchanged(+d: Nat, +t: F.array__Tree<T.Validator>, +n: U32, +i: U32, +j: U32, +v: T.Validator, +x: T.Validator, +y: T.Validator,
+def validators_other_unchanged(+d: Nat, +t: F.array__Tree<FuluValidator_d.Validator>, +n: U32, +i: U32, +j: U32, +v: FuluValidator_d.Validator, +x: FuluValidator_d.Validator, +y: FuluValidator_d.Validator,
     +hd: {Nat.is_lt(d, 32n) == True{} : Bool},
     +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool},
     +hj: {Nat.is_lt(U32.to_nat(j), F.spec_common__pow2(d)) == True{} : Bool},
     +ne: {Nat.is_eq(U32.to_nat(i), U32.to_nat(j)) == False{} : Bool},
-    +hx: {F.spec_common__nth(T.Validator, F.array__slots(T.Validator, t), U32.to_nat(i)) == Some{x} : Maybe<&2, T.Validator>},
-    +hy: {F.spec_common__nth(T.Validator, F.array__slots(T.Validator, t), U32.to_nat(j)) == Some{y} : Maybe<&2, T.Validator>},
-    +pf: {F.array__perfect(T.Validator, d, t) == True{} : Bool},
+    +hx: {F.spec_common__nth(FuluValidator_d.Validator, F.array__slots(FuluValidator_d.Validator, t), U32.to_nat(i)) == Some{x} : Maybe<&2, FuluValidator_d.Validator>},
+    +hy: {F.spec_common__nth(FuluValidator_d.Validator, F.array__slots(FuluValidator_d.Validator, t), U32.to_nat(j)) == Some{y} : Maybe<&2, FuluValidator_d.Validator>},
+    +pf: {F.array__perfect(FuluValidator_d.Validator, d, t) == True{} : Bool},
     +hn: {U32.is_lt(i, n) == True{} : Bool},
     +hm: {U32.is_lt(j, n) == True{} : Bool})
-    -> {T.l1099511627776_Validator_get(Pair.fst(T.l1099511627776_Validator_Seq, Bool,
-          T.l1099511627776_Validator_set(T.l1099511627776_Validator_Seq{F.array__thaw(T.Validator, t), n}, i, v)), j)
-        == (T.l1099511627776_Validator_Seq{F.array__thaw(T.Validator, F.array__upd(T.Validator, d, t, U32.to_nat(i), v)), n}, Some{y})
-        : T.l1099511627776_Validator_Seq & Maybe<&1, T.Validator>}:
-  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hn) : {T.l1099511627776_Validator_get(Pair.fst(T.l1099511627776_Validator_Seq, Bool,
-      T.l1099511627776_Validator_put_in(_, F.array__thaw(T.Validator, t), n, i, v)), j)
-    == (T.l1099511627776_Validator_Seq{F.array__thaw(T.Validator, F.array__upd(T.Validator, d, t, U32.to_nat(i), v)), n}, Some{y})
-    : T.l1099511627776_Validator_Seq & Maybe<&1, T.Validator>}
-  %Equal.sym(Bool, U32.is_lt(j, n), True{}, hm) : {T.l1099511627776_Validator_get_in(_,
-      Array.set(T.Validator, F.array__thaw(T.Validator, t), i, v), n, j)
-    == (T.l1099511627776_Validator_Seq{F.array__thaw(T.Validator, F.array__upd(T.Validator, d, t, U32.to_nat(i), v)), n}, Some{y})
-    : T.l1099511627776_Validator_Seq & Maybe<&1, T.Validator>}
-  %Equal.sym(Array<T.Validator> & T.Validator,
-      Array.get(T.Validator, Array.set(T.Validator, F.array__thaw(T.Validator, t), i, v), j),
-      (F.array__thaw(T.Validator, F.array__upd(T.Validator, d, t, U32.to_nat(i), v)), y),
-      F.array__get_set_other(T.Validator, d, t, i, j, v, x, y, hd, hi, hj, ne, hx, hy, pf))
-    : {T.l1099511627776_Validator_took(n, _)
-    == (T.l1099511627776_Validator_Seq{F.array__thaw(T.Validator, F.array__upd(T.Validator, d, t, U32.to_nat(i), v)), n}, Some{y})
-    : T.l1099511627776_Validator_Seq & Maybe<&1, T.Validator>}
+    -> {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_get(Pair.fst(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Bool,
+          Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_set(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{F.array__thaw(FuluValidator_d.Validator, t), n}, i, v)), j)
+        == (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{F.array__thaw(FuluValidator_d.Validator, F.array__upd(FuluValidator_d.Validator, d, t, U32.to_nat(i), v)), n}, Some{y})
+        : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Maybe<&1, FuluValidator_d.Validator>}:
+  %Equal.sym(Bool, U32.is_lt(i, n), True{}, hn) : {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_get(Pair.fst(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Bool,
+      Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_put_in(_, F.array__thaw(FuluValidator_d.Validator, t), n, i, v)), j)
+    == (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{F.array__thaw(FuluValidator_d.Validator, F.array__upd(FuluValidator_d.Validator, d, t, U32.to_nat(i), v)), n}, Some{y})
+    : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Maybe<&1, FuluValidator_d.Validator>}
+  %Equal.sym(Bool, U32.is_lt(j, n), True{}, hm) : {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_get_in(_,
+      Array.set(FuluValidator_d.Validator, F.array__thaw(FuluValidator_d.Validator, t), i, v), n, j)
+    == (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{F.array__thaw(FuluValidator_d.Validator, F.array__upd(FuluValidator_d.Validator, d, t, U32.to_nat(i), v)), n}, Some{y})
+    : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Maybe<&1, FuluValidator_d.Validator>}
+  %Equal.sym(Array<FuluValidator_d.Validator> & FuluValidator_d.Validator,
+      Array.get(FuluValidator_d.Validator, Array.set(FuluValidator_d.Validator, F.array__thaw(FuluValidator_d.Validator, t), i, v), j),
+      (F.array__thaw(FuluValidator_d.Validator, F.array__upd(FuluValidator_d.Validator, d, t, U32.to_nat(i), v)), y),
+      F.array__get_set_other(FuluValidator_d.Validator, d, t, i, j, v, x, y, hd, hi, hj, ne, hx, hy, pf))
+    : {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_took(n, _)
+    == (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{F.array__thaw(FuluValidator_d.Validator, F.array__upd(FuluValidator_d.Validator, d, t, U32.to_nat(i), v)), n}, Some{y})
+    : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Maybe<&1, FuluValidator_d.Validator>}
   {==}

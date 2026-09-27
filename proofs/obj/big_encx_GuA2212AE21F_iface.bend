@@ -1,7 +1,11 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_encode_ssz_generated.bend as uint8_e
+import ../../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
+import ../../types/ProgressiveSingleFieldContainerTestStruct_encode_ssz_generated.bend as ProgressiveSingleFieldContainerTestStruct_e
+import ../../types/CompatibleUnionA_def_generated.bend as CompatibleUnionA_d
+import ../../types/CompatibleUnionA_encode_ssz_generated.bend as CompatibleUnionA_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -48,14 +52,14 @@ def rprf(+x: U32) -> {Codec.parts(RV8(x), Spec.GpF350A3C486()) == Some{[S.Fixed{
   SP2.agg([S.Fixed{[U32.and(x, 255)]}], 1n, 1n, {==}, SP2.bd_app([U32.and(x, 255)], [], VRB.dom8(x), {==}), {==}, {==})
 
 # ---- arm 0: GpF350A3C486, selector 1 ----
-def TH0(+x: U32) -> T.GuA2212AE21F: T.GuA2212AE21F_c0{T.GpF350A3C486{x}}
+def TH0(+x: U32) -> CompatibleUnionA_d.GuA2212AE21F: CompatibleUnionA_d.GuA2212AE21F_c0{ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{x}}
 def OK0(+x: U32) -> Bool: U32.is_le(x, 255)
 def ENC0(+x: U32) -> +List<U32>: Con{U32.and(1, 255), [U32.and(x, 255)]}
 def VAL0(+x: U32) -> S.Value: S.Selected{1, RV8(x)}
 def SZ0(+x: U32) -> U32: 2
 def PUTX0(+x: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: VRB.W8P(dd, VU.DS(dd, D, q, r, 1), Nat.add(0n, 1n+VU.X0(q, r)), x)
 def RT0(+x: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.GuA2212AE21F_putk(FD.array__thaw(U32, D), X, TH0(x)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (T.GuA2212AE21F & U32)}
+  {CompatibleUnionA_e.GuA2212AE21F_putk(FD.array__thaw(U32, D), X, TH0(x)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (CompatibleUnionA_d.GuA2212AE21F & U32)}
 def BY0(+x: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTX0(x, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, ENC0(x), UW.ZB(WD.PADB(r, List.length(&2, U32, ENC0(x)))))) : +List<U32>}
 def mk0(+x: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RT0(x, dd, D, X, q, r), +b: BY0(x, dd, D, q, r)) -> DK.P2(RT0(x, dd, D, X, q, r), BY0(x, dd, D, q, r)):
@@ -63,14 +67,14 @@ def mk0(+x: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +
 
 def rt0(+x: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +hok: {OK0(x) == True{} : Bool},
     +rts: {O.w8(FD.array__thaw(U32, D), X, 1) == FD.array__thaw(U32, VU.DS(dd, D, q, r, 1)) : Array<U32>},
-    +rtw: {T.u8_put(FD.array__thaw(U32, VU.DS(dd, D, q, r, 1)), U32.add(U32.add(X, 1), 0), x) == FD.array__thaw(U32, PUTX0(x, dd, D, q, r)) : Array<U32>})
+    +rtw: {uint8_e.u8_put(FD.array__thaw(U32, VU.DS(dd, D, q, r, 1)), U32.add(U32.add(X, 1), 0), x) == FD.array__thaw(U32, PUTX0(x, dd, D, q, r)) : Array<U32>})
     -> RT0(x, dd, D, X, q, r):
   %Equal.sym(Bool, U32.is_le(x, 255), True{}, hok) :
-    {T.GuA2212AE21F_pk(FD.array__thaw(U32, D), X, (TH0(x), _)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (T.GuA2212AE21F & U32)}
+    {CompatibleUnionA_e.GuA2212AE21F_pk(FD.array__thaw(U32, D), X, (TH0(x), _)) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (CompatibleUnionA_d.GuA2212AE21F & U32)}
   %Equal.sym(Array<U32>, O.w8(FD.array__thaw(U32, D), X, 1), FD.array__thaw(U32, VU.DS(dd, D, q, r, 1)), rts) :
-    {T.GuA2212AE21F_putn_fin(2, (T.GpF350A3C486_put(_, U32.add(X, 1), T.GpF350A3C486{x}), TH0(x))) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (T.GuA2212AE21F & U32)}
-  %Equal.sym(Array<U32>, T.u8_put(FD.array__thaw(U32, VU.DS(dd, D, q, r, 1)), U32.add(U32.add(X, 1), 0), x), FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), rtw) :
-    {T.GuA2212AE21F_putn_fin(2, (_, TH0(x))) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (T.GuA2212AE21F & U32)}
+    {CompatibleUnionA_e.GuA2212AE21F_putn_fin(2, (ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_put(_, U32.add(X, 1), ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{x}), TH0(x))) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (CompatibleUnionA_d.GuA2212AE21F & U32)}
+  %Equal.sym(Array<U32>, uint8_e.u8_put(FD.array__thaw(U32, VU.DS(dd, D, q, r, 1)), U32.add(U32.add(X, 1), 0), x), FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), rtw) :
+    {CompatibleUnionA_e.GuA2212AE21F_putn_fin(2, (_, TH0(x))) == (FD.array__thaw(U32, PUTX0(x, dd, D, q, r)), (TH0(x), SZ0(x))) : Array<U32> & (CompatibleUnionA_d.GuA2212AE21F & U32)}
   {==}
 def go0(+x: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
@@ -111,15 +115,15 @@ def bnd0(+x: U32, +hok: {OK0(x) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat
 def szk0(+x: U32, +hok: {OK0(x) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {U32.to_nat(SZ0(x)) == List.length(&2, U32, ENC0(x)) : Nat}: {==}
 def spec0(+x: U32, +hok: {OK0(x) == True{} : Bool}) -> {Codec.parts(VAL0(x), Spec.GuA2212AE21F()) == Some{[S.Variable{ENC0(x)}]} : Maybe<&2, +List<S.Part>>}:
   VU.tag_f(1, RV8(x), Spec.GpF350A3C486(), [U32.and(x, 255)], rprf(x))
-def size0(+x: U32, +hok: {OK0(x) == True{} : Bool}) -> {T.GuA2212AE21F_size(TH0(x)) == (TH0(x), SZ0(x)) : T.GuA2212AE21F & U32}: {==}
-def valid0(+x: U32, +hok: {OK0(x) == True{} : Bool}) -> {T.GuA2212AE21F_valid(TH0(x)) == (TH0(x), True{}) : T.GuA2212AE21F & Bool}:
-  %Equal.sym(Bool, U32.is_le(x, 255), True{}, hok) : {(TH0(x), _) == (TH0(x), True{}) : T.GuA2212AE21F & Bool}
+def size0(+x: U32, +hok: {OK0(x) == True{} : Bool}) -> {CompatibleUnionA_e.GuA2212AE21F_size(TH0(x)) == (TH0(x), SZ0(x)) : CompatibleUnionA_d.GuA2212AE21F & U32}: {==}
+def valid0(+x: U32, +hok: {OK0(x) == True{} : Bool}) -> {CompatibleUnionA_e.GuA2212AE21F_valid(TH0(x)) == (TH0(x), True{}) : CompatibleUnionA_d.GuA2212AE21F & Bool}:
+  %Equal.sym(Bool, U32.is_le(x, 255), True{}, hok) : {(TH0(x), _) == (TH0(x), True{}) : CompatibleUnionA_d.GuA2212AE21F & Bool}
   {==}
 
 # ---- the union's mirror and its interface ----
 type MW is Data:
   MW0{x: U32}
-def TH(m: MW) -> T.GuA2212AE21F:
+def TH(m: MW) -> CompatibleUnionA_d.GuA2212AE21F:
   match m:
     case MW0{+x}: TH0(x)
 def OK(m: MW) -> Bool:
@@ -153,7 +157,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.GuA2212AE21F_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (T.GuA2212AE21F & U32)}
+  {CompatibleUnionA_e.GuA2212AE21F_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (CompatibleUnionA_d.GuA2212AE21F & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW0{+x}: PA(RT0(x, dd, D, X, q, r), BY0(x, dd, D, q, r), go0(x, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok))
@@ -224,7 +228,7 @@ def pfx(m, dd, D, q, r, pf):
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.GuA2212AE21F_size(TH(m)) == (TH(m), SZ(m)) : T.GuA2212AE21F & U32}
+  {CompatibleUnionA_e.GuA2212AE21F_size(TH(m)) == (TH(m), SZ(m)) : CompatibleUnionA_d.GuA2212AE21F & U32}
 def sizex(m, hok):
   match m:
     case MW0{+x}: size0(x, hok)
@@ -232,7 +236,7 @@ def sizex(m, hok):
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.GuA2212AE21F_valid(TH(m)) == (TH(m), True{}) : T.GuA2212AE21F & Bool}
+  {CompatibleUnionA_e.GuA2212AE21F_valid(TH(m)) == (TH(m), True{}) : CompatibleUnionA_d.GuA2212AE21F & Bool}
 def validx(m, hok):
   match m:
     case MW0{+x}: valid0(x, hok)

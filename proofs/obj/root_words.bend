@@ -4,7 +4,11 @@ import ./mtree_run.bend as MR
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluFinalityBranch_hashtreeroot_generated.bend as FuluFinalityBranch_h
+import ../../types/FuluCurrentSyncCommitteeBranch_hashtreeroot_generated.bend as FuluCurrentSyncCommitteeBranch_h
+import ../../types/FuluExecutionBranch_hashtreeroot_generated.bend as FuluExecutionBranch_h
+import ../../types/FuluCell_hashtreeroot_generated.bend as FuluCell_h
+import ../../types/FuluNextSyncCommitteeBranch_hashtreeroot_generated.bend as FuluNextSyncCommitteeBranch_h
 import ../../types/schema.bend as S
 import ../../spec/root_relation.bend as RR
 import ../../spec/fulu_schemas.bend as Spec
@@ -23,7 +27,7 @@ law FinalityBranch_root_correct:
   for +hd: {Nat.is_lt(dw, 32n) == True{} : Bool}
   for +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}
   for +cap: {Nat.is_le(O.e8(7n), F.spec_common__pow2(dw)) == True{} : Bool}
-  RR.roots(S.Sequence{WR.items(7n, F.array__slots(U32, t), 0n)}, Spec.FinalityBranch(), [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.FinalityBranch_hash_tree_root(h, O.Words{F.array__thaw(U32, t), 224}))))])
+  RR.roots(S.Sequence{WR.items(7n, F.array__slots(U32, t), 0n)}, Spec.FinalityBranch(), [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluFinalityBranch_h.FinalityBranch_hash_tree_root(h, O.Words{F.array__thaw(U32, t), 224}))))])
 def FinalityBranch_root_correct(h, t, dw, hd, pf, cap):
   WR.pv_full(64n, h, 3, 0, 224, 3n, 6n, dw, t, {==}, pf, cap, {==}, hd, {==}, {==}, {==})
 
@@ -35,7 +39,7 @@ law CurrentSyncCommitteeBranch_root_correct:
   for +hd: {Nat.is_lt(dw, 32n) == True{} : Bool}
   for +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}
   for +cap: {Nat.is_le(O.e8(6n), F.spec_common__pow2(dw)) == True{} : Bool}
-  RR.roots(S.Sequence{WR.items(6n, F.array__slots(U32, t), 0n)}, Spec.CurrentSyncCommitteeBranch(), [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.CurrentSyncCommitteeBranch_hash_tree_root(h, O.Words{F.array__thaw(U32, t), 192}))))])
+  RR.roots(S.Sequence{WR.items(6n, F.array__slots(U32, t), 0n)}, Spec.CurrentSyncCommitteeBranch(), [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluCurrentSyncCommitteeBranch_h.CurrentSyncCommitteeBranch_hash_tree_root(h, O.Words{F.array__thaw(U32, t), 192}))))])
 def CurrentSyncCommitteeBranch_root_correct(h, t, dw, hd, pf, cap):
   WR.pv_full(64n, h, 3, 0, 192, 3n, 5n, dw, t, {==}, pf, cap, {==}, hd, {==}, {==}, {==})
 
@@ -47,7 +51,7 @@ law NextSyncCommitteeBranch_root_correct:
   for +hd: {Nat.is_lt(dw, 32n) == True{} : Bool}
   for +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}
   for +cap: {Nat.is_le(O.e8(6n), F.spec_common__pow2(dw)) == True{} : Bool}
-  RR.roots(S.Sequence{WR.items(6n, F.array__slots(U32, t), 0n)}, Spec.NextSyncCommitteeBranch(), [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.NextSyncCommitteeBranch_hash_tree_root(h, O.Words{F.array__thaw(U32, t), 192}))))])
+  RR.roots(S.Sequence{WR.items(6n, F.array__slots(U32, t), 0n)}, Spec.NextSyncCommitteeBranch(), [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluNextSyncCommitteeBranch_h.NextSyncCommitteeBranch_hash_tree_root(h, O.Words{F.array__thaw(U32, t), 192}))))])
 def NextSyncCommitteeBranch_root_correct(h, t, dw, hd, pf, cap):
   WR.pv_full(64n, h, 3, 0, 192, 3n, 5n, dw, t, {==}, pf, cap, {==}, hd, {==}, {==}, {==})
 
@@ -59,7 +63,7 @@ law ExecutionBranch_root_correct:
   for +hd: {Nat.is_lt(dw, 32n) == True{} : Bool}
   for +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}
   for +cap: {Nat.is_le(O.e8(4n), F.spec_common__pow2(dw)) == True{} : Bool}
-  RR.roots(S.Sequence{WR.items(4n, F.array__slots(U32, t), 0n)}, Spec.ExecutionBranch(), [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.ExecutionBranch_hash_tree_root(h, O.Words{F.array__thaw(U32, t), 128}))))])
+  RR.roots(S.Sequence{WR.items(4n, F.array__slots(U32, t), 0n)}, Spec.ExecutionBranch(), [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluExecutionBranch_h.ExecutionBranch_hash_tree_root(h, O.Words{F.array__thaw(U32, t), 128}))))])
 def ExecutionBranch_root_correct(h, t, dw, hd, pf, cap):
   WR.pv_full(64n, h, 2, 0, 128, 2n, 3n, dw, t, {==}, pf, cap, {==}, hd, {==}, {==}, {==})
 
@@ -71,7 +75,7 @@ law Cell_root_correct:
   for +hd: {Nat.is_lt(dw, 32n) == True{} : Bool}
   for +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}
   for +cap: {Nat.is_le(O.e8(64n), F.spec_common__pow2(dw)) == True{} : Bool}
-  RR.roots(S.BytesValue{WR.view(t, 2048)}, Spec.Cell(), [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.Cell_hash_tree_root(h, O.Words{F.array__thaw(U32, t), 2048}))))])
+  RR.roots(S.BytesValue{WR.view(t, 2048)}, Spec.Cell(), [D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluCell_h.Cell_hash_tree_root(h, O.Words{F.array__thaw(U32, t), 2048}))))])
 def Cell_root_correct(h, t, dw, hd, pf, cap):
   WR.bv_full(64n, h, 6, 0, 2048, 6n, 63n, 32n, dw, t, {==}, {==}, {==}, pf, cap, {==}, {==}, hd, {==}, {==}, {==})
 

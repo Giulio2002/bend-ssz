@@ -522,6 +522,8 @@ def emit_fix():
 
 def main():
     outs = [(OUT, emit()), (OUT_SC, emit_sc()), (OUT_FIX, emit_fix())]
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    outs = RR.rewire_out(outs)
     if '--check' in sys.argv:
         stale = [p.relative_to(ROOT) for p, text in outs if not p.exists() or p.read_text() != text]
         if stale:

@@ -886,6 +886,8 @@ def main():
             print(f'{n}: {st}')
         return 0
     outs = [(SPECS, specs), (PCF, PCL.emit_file(pcont_patterns(names), union_selectors(names))), (GA, ta), (GB, tb), (GB2, tb2), (GL, tl)] + sorted(tbits.items())
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    outs = RR.rewire_out(outs)
     if '--check' in sys.argv:
         for path, text in outs:
             if not path.exists() or path.read_text() != text:

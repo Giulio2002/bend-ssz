@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluValidator_decode_ssz_generated.bend as FuluValidator_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/layout.bend as Layout
@@ -175,7 +175,7 @@ def pv(+v: S.Value, +bs: +List<U32>, +e: {Codec.encoding_for_legal_type(Spec.Val
     case S.Selected{+sel, +sv}: Empty.absurd({U32.is_le(VBL.nthb(bs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<U32>, bs, e))
     case S.NullValue{}: Empty.absurd({U32.is_le(VBL.nthb(bs, 88n), 1) == True{} : Bool}, FD.logic__none_some(+List<U32>, bs, e))
 
-def c0id(+c: Bool, buf: B.Buf, +off: U32) -> {T.Validator_c0(c, buf, off) == (buf, c) : B.Buf & Bool}:
+def c0id(+c: Bool, buf: B.Buf, +off: U32) -> {FuluValidator_r.Validator_c0(c, buf, off) == (buf, c) : B.Buf & Bool}:
   match c:
     case True{}: {==}
     case False{}: {==}
@@ -183,13 +183,13 @@ def c0id(+c: Bool, buf: B.Buf, +off: U32) -> {T.Validator_c0(c, buf, off) == (bu
 def Validator_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 121n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.Validator_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1)) : B.Buf & Bool}:
+    -> {FuluValidator_r.Validator_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 88n), Nat.add(x, 121n), A.quad(VB.pw(d)), FD.nat__lt_add_left(88n, 121n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 88n), Nat.add(88n, x), FD.nat__add_comm(x, 88n), hk)
   +ey = UR.offx(d, off, 88, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, 88)), (UA.BF(t, n), U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1)), VRB.okb(d, t, n, U32.add(off, 88), Nat.add(88n, x), ey, hd, pf, hy)) :
-    {T.Validator_v0(off, _) == (UA.BF(t, n), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1)) : B.Buf & Bool}
-  %Equal.sym(B.Buf & Bool, T.Validator_c0(U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1), UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1)), c0id(U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1), UA.BF(t, n), off)) :
+    {FuluValidator_r.Validator_v0(off, _) == (UA.BF(t, n), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1)) : B.Buf & Bool}
+  %Equal.sym(B.Buf & Bool, FuluValidator_r.Validator_c0(U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1), UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1)), c0id(U32.is_le(VRB.BX(t, Nat.add(88n, x)), 1), UA.BF(t, n), off)) :
     {_ == (UA.BF(t, n), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1)) : B.Buf & Bool}
   %Equal.sym(U32, VBL.nthb(UW.WX(t, x, 121n), 88n), VBL.nthb(UA.BYT(t), Nat.add(x, 88n)),
       Equal.trans(U32, VBL.nthb(UW.WX(t, x, 121n), 88n), VBL.nthb(VS.bdr(x, UA.BYT(t)), 88n), VBL.nthb(UA.BYT(t), Nat.add(x, 88n)),
@@ -202,7 +202,7 @@ def Validator_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, 
 def Validator_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 121n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.Validator_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1))) : B.Buf & Bool}:
+    -> {FuluValidator_r.Validator_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1))) : B.Buf & Bool}:
   match b:
     case True{}: Validator_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -211,7 +211,7 @@ def Validator_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat,
 def Validator_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 121n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.Validator_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 121), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1))) : B.Buf & Bool}:
+    -> {FuluValidator_r.Validator_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 121), U32.is_le(VBL.nthb(UW.WX(t, x, 121n), 88n), 1))) : B.Buf & Bool}:
   Validator_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 121))
 
 def Validator_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 121n), U32.is_le(VBL.nthb(bs, 88n), 1)) == False{} : Bool}, +v: S.Value,

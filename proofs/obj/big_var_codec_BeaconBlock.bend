@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
+import ../../types/FuluBeaconBlock_decode_ssz_generated.bend as FuluBeaconBlock_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -37,7 +38,7 @@ import ./big_var_winx_BeaconBlock.bend as EW
 
 def BF(t: FD.array__Tree<U32>, +n: U32) -> B.Buf: UA.BF(t, n)
 def CHK(+t: FD.array__Tree<U32>, +n: U32) -> Bool: EW.CHKw(t, 0n, 0, n)
-def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> T.BeaconBlock: EW.OBJw(d, t, 0n, 0, n)
+def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> FuluBeaconBlock_d.BeaconBlock: EW.OBJw(d, t, 0n, 0, n)
 def VW(+t: FD.array__Tree<U32>, +n: U32) -> +List<U32>: VS.bt(U32.to_nat(n), F.limbs(FD.array__slots(U32, t)))
 def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: EW.VALw(t, 0n, n)
 
@@ -49,7 +50,7 @@ law ok_eval:
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
-  {T.BeaconBlock_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
+  {FuluBeaconBlock_r.BeaconBlock_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
 def ok_eval(d, t, n, pf, hd, hn): EW.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
 
 # Every buffer the validator accepts decodes to OBJ(d, t, n).
@@ -61,14 +62,14 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
-  {T.BeaconBlock_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.BeaconBlock>}
+  {FuluBeaconBlock_r.BeaconBlock_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}
 def decode_accept(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.BeaconBlock_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.BeaconBlock_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.BeaconBlock>}
+  %Equal.sym(B.Buf & Bool, FuluBeaconBlock_r.BeaconBlock_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {FuluBeaconBlock_r.BeaconBlock_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
-    {T.BeaconBlock_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.BeaconBlock>}
-  %Equal.sym(B.Buf & T.BeaconBlock, T.BeaconBlock_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), EW.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
-    {T.BeaconBlock_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.BeaconBlock>}
+    {FuluBeaconBlock_r.BeaconBlock_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}
+  %Equal.sym(B.Buf & FuluBeaconBlock_d.BeaconBlock, FuluBeaconBlock_r.BeaconBlock_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), EW.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+    {FuluBeaconBlock_r.BeaconBlock_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}
   {==}
 
 # The bytes of every buffer the validator accepts are the spec encoding of VAL(t, n).
@@ -142,11 +143,11 @@ def decode_reject(d, t, n, pf, hd, hn, hchk):
 
 def none_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == False{} : Bool})
-    -> {T.BeaconBlock_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.BeaconBlock>}:
-  %Equal.sym(B.Buf & Bool, T.BeaconBlock_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.BeaconBlock_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.BeaconBlock>}
+    -> {FuluBeaconBlock_r.BeaconBlock_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}:
+  %Equal.sym(B.Buf & Bool, FuluBeaconBlock_r.BeaconBlock_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {FuluBeaconBlock_r.BeaconBlock_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}
   %Equal.sym(Bool, CHK(t, n), False{}, hchk) :
-    {T.BeaconBlock_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.BeaconBlock>}
+    {FuluBeaconBlock_r.BeaconBlock_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}
   {==}
 
 # When the validator refuses, the decoder returns None and the buffer.
@@ -158,6 +159,6 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
-  {T.BeaconBlock_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.BeaconBlock>}
+  {FuluBeaconBlock_r.BeaconBlock_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>}
 def decode_none(d, t, n, pf, hd, hn, hchk): none_go(d, t, n, pf, hd, hn, hchk)
 

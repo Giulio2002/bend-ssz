@@ -1,7 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_decode_ssz_generated.bend as uint8_r
+import ../../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
+import ../../types/ProgressiveSingleFieldContainerTestStruct_decode_ssz_generated.bend as ProgressiveSingleFieldContainerTestStruct_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -67,7 +69,7 @@ def CHKw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool: U32.is
 
 def okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool) -> {T.GpF350A3C486_ok_len(a, BF(t, n), off) == (BF(t, n), a) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool) -> {ProgressiveSingleFieldContainerTestStruct_r.GpF350A3C486_ok_len(a, BF(t, n), off) == (BF(t, n), a) : B.Buf & Bool}:
   match a:
     case True{}: {==}
     case False{}: {==}
@@ -75,7 +77,7 @@ def okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
 # The validator on the window returns the buffer and CHKw.
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.GpF350A3C486_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}: okl(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 1))
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {ProgressiveSingleFieldContainerTestStruct_r.GpF350A3C486_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}: okl(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 1))
 
 def el1(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +h: {CHKw(t, x, off, len) == True{} : Bool}) -> {U32.to_nat(len) == 1n : Nat}: Equal.cong(U32, Nat, z => U32.to_nat(z), len, 1, FD.u32alg__eq_of(len, 1, h))
 def hb1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
@@ -83,15 +85,15 @@ def hb1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: {CHKw(t, x, off, len) == True{} : Bool}) -> {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}:
   FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == True{} : Bool}, U32.to_nat(len), 1n, el1(t, x, off, len, h), hw)
 
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.GpF350A3C486: T.GpF350A3C486{FX.OBJ(d, t, x)}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{FX.OBJ(d, t, x)}
 
 # The reader on the window, when the checks hold.
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {T.GpF350A3C486_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.GpF350A3C486}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {ProgressiveSingleFieldContainerTestStruct_r.GpF350A3C486_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486}:
   +e0 = Equal.trans(Nat, U32.to_nat(U32.add(off, 0)), U32.to_nat(off), x, Equal.cong(U32, Nat, z => U32.to_nat(z), U32.add(off, 0), off, FD.u32alg__add_zero(off)), eo)
-  %Equal.sym(B.Buf & U32, T.u8_read(BF(t, n), U32.add(off, 0), 1), (BF(t, n), FX.OBJ(d, t, x)), FX.rdx(d, t, n, U32.add(off, 0), x, e0, hd, pf, hb1(d, t, n, x, off, len, eo, hd, hw, pf, hchk))) :
-    {T.GpF350A3C486_rd0(off, len, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.GpF350A3C486}
+  %Equal.sym(B.Buf & U32, uint8_r.u8_read(BF(t, n), U32.add(off, 0), 1), (BF(t, n), FX.OBJ(d, t, x)), FX.rdx(d, t, n, U32.add(off, 0), x, e0, hd, pf, hb1(d, t, n, x, off, len, eo, hd, hw, pf, hchk))) :
+    {ProgressiveSingleFieldContainerTestStruct_r.GpF350A3C486_rd0(off, len, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486}
   {==}
 
 def VALw(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: S.Sequence{S.Items{FX.VAL(t, x), S.EmptyItems{}}}

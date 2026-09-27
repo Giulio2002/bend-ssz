@@ -1,7 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_15_def_generated.bend as bitvector_15_d
+import ../../types/bitvector_15_decode_ssz_generated.bend as bitvector_15_r
+import ../../types/bitvector_15_encode_ssz_generated.bend as bitvector_15_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -53,14 +55,14 @@ def GtEDF530C7B9_spec_encode(+x0: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(1, x0)
   SF.encoding_of_parts(Spec.GtEDF530C7B9(), S.BitsValue{GtEDF530C7B9_tb(x0)}, [B.byte_sel(0, x0), B.byte_sel(1, x0)], GtEDF530C7B9_spec_parts(x0, hp))
 
 def GtEDF530C7B9_spec_decode(+x0: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(1, x0), U32.not(O.low_mask(7))), 0) == True{} : Bool})
-    -> {T.GtEDF530C7B9_decode(B.Buf{ALeaf{x0}, 2}, 2) == (B.Buf{ALeaf{x0}, 2}, Some{T.Bitvector15{U32.and(x0, 65535)}}) : B.Buf & Maybe<&1, T.Bitvector15>}:
-  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(1, x0), U32.not(O.low_mask(7))), 0), True{}, hp) : {T.GtEDF530C7B9_built(2, (B.Buf{ALeaf{x0}, 2}, _)) == (B.Buf{ALeaf{x0}, 2}, Some{T.Bitvector15{U32.and(x0, 65535)}}) : B.Buf & Maybe<&1, T.Bitvector15>}
+    -> {bitvector_15_r.GtEDF530C7B9_decode(B.Buf{ALeaf{x0}, 2}, 2) == (B.Buf{ALeaf{x0}, 2}, Some{bitvector_15_d.Bitvector15{U32.and(x0, 65535)}}) : B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>}:
+  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(1, x0), U32.not(O.low_mask(7))), 0), True{}, hp) : {bitvector_15_r.GtEDF530C7B9_built(2, (B.Buf{ALeaf{x0}, 2}, _)) == (B.Buf{ALeaf{x0}, 2}, Some{bitvector_15_d.Bitvector15{U32.and(x0, 65535)}}) : B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>}
   {==}
 
 # a buffer with a padding bit set is refused
 def GtEDF530C7B9_spec_reject_pad(+x0: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(1, x0), U32.not(O.low_mask(7))), 0) == False{} : Bool})
-    -> {T.GtEDF530C7B9_decode(B.Buf{ALeaf{x0}, 2}, 2) == (B.Buf{ALeaf{x0}, 2}, None{}) : B.Buf & Maybe<&1, T.Bitvector15>}:
-  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(1, x0), U32.not(O.low_mask(7))), 0), False{}, hp) : {T.GtEDF530C7B9_built(2, (B.Buf{ALeaf{x0}, 2}, _)) == (B.Buf{ALeaf{x0}, 2}, None{}) : B.Buf & Maybe<&1, T.Bitvector15>}
+    -> {bitvector_15_r.GtEDF530C7B9_decode(B.Buf{ALeaf{x0}, 2}, 2) == (B.Buf{ALeaf{x0}, 2}, None{}) : B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>}:
+  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(1, x0), U32.not(O.low_mask(7))), 0), False{}, hp) : {bitvector_15_r.GtEDF530C7B9_built(2, (B.Buf{ALeaf{x0}, 2}, _)) == (B.Buf{ALeaf{x0}, 2}, None{}) : B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>}
   {==}
 
 def GtEDF530C7B9_spec_view(+x0: U32)
@@ -68,13 +70,13 @@ def GtEDF530C7B9_spec_view(+x0: U32)
   {==}
 
 def GtEDF530C7B9_spec_bytes(+y0: U32)
-    -> {B.emit(T.GtEDF530C7B9_encode(T.Bitvector15{y0}), 0, 1) == (T.GtEDF530C7B9_encode(T.Bitvector15{y0}), [B.byte_sel(0, y0), B.byte_sel(1, y0)]) : B.Buf & +List<U32>}:
-  %SP2.or0(y0) : {B.emit(T.GtEDF530C7B9_encode(T.Bitvector15{y0}), 0, 1) == (T.GtEDF530C7B9_encode(T.Bitvector15{y0}), [B.byte_sel(0, _), B.byte_sel(1, y0)]) : B.Buf & +List<U32>}
-  %SP2.or0(y0) : {B.emit(T.GtEDF530C7B9_encode(T.Bitvector15{y0}), 0, 1) == (T.GtEDF530C7B9_encode(T.Bitvector15{y0}), [B.byte_sel(0, U32.or(0, y0)), B.byte_sel(1, _)]) : B.Buf & +List<U32>}
+    -> {B.emit(bitvector_15_e.GtEDF530C7B9_encode(bitvector_15_d.Bitvector15{y0}), 0, 1) == (bitvector_15_e.GtEDF530C7B9_encode(bitvector_15_d.Bitvector15{y0}), [B.byte_sel(0, y0), B.byte_sel(1, y0)]) : B.Buf & +List<U32>}:
+  %SP2.or0(y0) : {B.emit(bitvector_15_e.GtEDF530C7B9_encode(bitvector_15_d.Bitvector15{y0}), 0, 1) == (bitvector_15_e.GtEDF530C7B9_encode(bitvector_15_d.Bitvector15{y0}), [B.byte_sel(0, _), B.byte_sel(1, y0)]) : B.Buf & +List<U32>}
+  %SP2.or0(y0) : {B.emit(bitvector_15_e.GtEDF530C7B9_encode(bitvector_15_d.Bitvector15{y0}), 0, 1) == (bitvector_15_e.GtEDF530C7B9_encode(bitvector_15_d.Bitvector15{y0}), [B.byte_sel(0, U32.or(0, y0)), B.byte_sel(1, _)]) : B.Buf & +List<U32>}
   {==}
 
 def GtEDF530C7B9_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 2) == False{} : Bool})
-    -> {T.GtEDF530C7B9_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, T.Bitvector15>}:
-  %Equal.sym(Bool, U32.is_eq(m, 2), False{}, e) : {T.GtEDF530C7B9_built(m, T.bv15_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, T.Bitvector15>}
+    -> {bitvector_15_r.GtEDF530C7B9_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>}:
+  %Equal.sym(Bool, U32.is_eq(m, 2), False{}, e) : {bitvector_15_r.GtEDF530C7B9_built(m, bitvector_15_r.bv15_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_15_d.Bitvector15>}
   {==}
 

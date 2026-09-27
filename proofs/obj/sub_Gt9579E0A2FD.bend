@@ -1,7 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_3_def_generated.bend as bitvector_3_d
+import ../../types/bitvector_3_decode_ssz_generated.bend as bitvector_3_r
+import ../../types/bitvector_3_encode_ssz_generated.bend as bitvector_3_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -51,14 +53,14 @@ def Gt9579E0A2FD_spec_encode(+x0: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(0, x0)
   SF.encoding_of_parts(Spec.Gt9579E0A2FD(), S.BitsValue{Gt9579E0A2FD_tb(x0)}, [B.byte_sel(0, x0)], Gt9579E0A2FD_spec_parts(x0, hp))
 
 def Gt9579E0A2FD_spec_decode(+x0: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(0, x0), U32.not(O.low_mask(3))), 0) == True{} : Bool})
-    -> {T.Gt9579E0A2FD_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{T.Bitvector3{U32.and(x0, 255)}}) : B.Buf & Maybe<&1, T.Bitvector3>}:
-  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(0, x0), U32.not(O.low_mask(3))), 0), True{}, hp) : {T.Gt9579E0A2FD_built(1, (B.Buf{ALeaf{x0}, 1}, _)) == (B.Buf{ALeaf{x0}, 1}, Some{T.Bitvector3{U32.and(x0, 255)}}) : B.Buf & Maybe<&1, T.Bitvector3>}
+    -> {bitvector_3_r.Gt9579E0A2FD_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{bitvector_3_d.Bitvector3{U32.and(x0, 255)}}) : B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>}:
+  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(0, x0), U32.not(O.low_mask(3))), 0), True{}, hp) : {bitvector_3_r.Gt9579E0A2FD_built(1, (B.Buf{ALeaf{x0}, 1}, _)) == (B.Buf{ALeaf{x0}, 1}, Some{bitvector_3_d.Bitvector3{U32.and(x0, 255)}}) : B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>}
   {==}
 
 # a buffer with a padding bit set is refused
 def Gt9579E0A2FD_spec_reject_pad(+x0: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(0, x0), U32.not(O.low_mask(3))), 0) == False{} : Bool})
-    -> {T.Gt9579E0A2FD_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, None{}) : B.Buf & Maybe<&1, T.Bitvector3>}:
-  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(0, x0), U32.not(O.low_mask(3))), 0), False{}, hp) : {T.Gt9579E0A2FD_built(1, (B.Buf{ALeaf{x0}, 1}, _)) == (B.Buf{ALeaf{x0}, 1}, None{}) : B.Buf & Maybe<&1, T.Bitvector3>}
+    -> {bitvector_3_r.Gt9579E0A2FD_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, None{}) : B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>}:
+  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(0, x0), U32.not(O.low_mask(3))), 0), False{}, hp) : {bitvector_3_r.Gt9579E0A2FD_built(1, (B.Buf{ALeaf{x0}, 1}, _)) == (B.Buf{ALeaf{x0}, 1}, None{}) : B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>}
   {==}
 
 def Gt9579E0A2FD_spec_view(+x0: U32)
@@ -66,12 +68,12 @@ def Gt9579E0A2FD_spec_view(+x0: U32)
   {==}
 
 def Gt9579E0A2FD_spec_bytes(+y0: U32)
-    -> {B.emit(T.Gt9579E0A2FD_encode(T.Bitvector3{y0}), 0, 1) == (T.Gt9579E0A2FD_encode(T.Bitvector3{y0}), [B.byte_sel(0, y0)]) : B.Buf & +List<U32>}:
-  %SP2.or0(y0) : {B.emit(T.Gt9579E0A2FD_encode(T.Bitvector3{y0}), 0, 1) == (T.Gt9579E0A2FD_encode(T.Bitvector3{y0}), [B.byte_sel(0, _)]) : B.Buf & +List<U32>}
+    -> {B.emit(bitvector_3_e.Gt9579E0A2FD_encode(bitvector_3_d.Bitvector3{y0}), 0, 1) == (bitvector_3_e.Gt9579E0A2FD_encode(bitvector_3_d.Bitvector3{y0}), [B.byte_sel(0, y0)]) : B.Buf & +List<U32>}:
+  %SP2.or0(y0) : {B.emit(bitvector_3_e.Gt9579E0A2FD_encode(bitvector_3_d.Bitvector3{y0}), 0, 1) == (bitvector_3_e.Gt9579E0A2FD_encode(bitvector_3_d.Bitvector3{y0}), [B.byte_sel(0, _)]) : B.Buf & +List<U32>}
   {==}
 
 def Gt9579E0A2FD_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})
-    -> {T.Gt9579E0A2FD_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, T.Bitvector3>}:
-  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {T.Gt9579E0A2FD_built(m, T.bv3_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, T.Bitvector3>}
+    -> {bitvector_3_r.Gt9579E0A2FD_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>}:
+  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {bitvector_3_r.Gt9579E0A2FD_built(m, bitvector_3_r.bv3_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_3_d.Bitvector3>}
   {==}
 

@@ -1,7 +1,14 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
+import ../../types/FuluBeaconBlockHeader_decode_ssz_generated.bend as FuluBeaconBlockHeader_r
+import ../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
+import ../../types/FuluExecutionPayloadHeader_decode_ssz_generated.bend as FuluExecutionPayloadHeader_r
+import ../../types/FuluExecutionBranch_decode_ssz_generated.bend as FuluExecutionBranch_r
+import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
+import ../../types/FuluLightClientHeader_decode_ssz_generated.bend as FuluLightClientHeader_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -71,7 +78,7 @@ def CHKw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool:
   chk3(U32.is_le(244, len), U32.is_eq(SPOw(t, x), 244), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len)))
 
 
-def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {T.LightClientHeader_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
+def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {FuluLightClientHeader_r.LightClientHeader_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
   match ok:
     case True{}: {==}
     case False{}: {==}
@@ -123,18 +130,18 @@ def rdoff(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
 
 def okw_c1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(244, len) == True{} : Bool}, +epo: {SPOw(t, x) == 244 : U32})
-    -> {T.LightClientHeader_c0(True{}, UA.BF(t, n), off, len, SPOw(t, x)) == (UA.BF(t, n), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len))) : B.Buf & Bool}:
+    -> {FuluLightClientHeader_r.LightClientHeader_c0(True{}, UA.BF(t, n), off, len, SPOw(t, x)) == (UA.BF(t, n), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len))) : B.Buf & Bool}:
   %Equal.sym(U32, SPOw(t, x), 244, epo) :
-    {T.LightClientHeader_v1(off, len, _, T.ExecutionPayloadHeader_bx_ok(UA.BF(t, n), U32.add(off, _), U32.sub(len, _))) == (UA.BF(t, n), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len))) : B.Buf & Bool}
-  %Equal.sym(B.Buf & Bool, T.ExecutionPayloadHeader_ok(UA.BF(t, n), U32.add(off, 244), LL(len)), (UA.BF(t, n), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len))),
+    {FuluLightClientHeader_r.LightClientHeader_v1(off, len, _, FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_bx_ok(UA.BF(t, n), U32.add(off, _), U32.sub(len, _))) == (UA.BF(t, n), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len))) : B.Buf & Bool}
+  %Equal.sym(B.Buf & Bool, FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_ok(UA.BF(t, n), U32.add(off, 244), LL(len)), (UA.BF(t, n), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len))),
       YW.ok_evalw(d, t, n, 244n+x, U32.add(off, 244), LL(len), ecY(d, x, off, len, eo, hd, hw, ha), hd, hwY(d, x, len, hw, ha), pf)) :
-    {T.LightClientHeader_v1(off, len, 244, _) == (UA.BF(t, n), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len))) : B.Buf & Bool}
+    {FuluLightClientHeader_r.LightClientHeader_v1(off, len, 244, _) == (UA.BF(t, n), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len))) : B.Buf & Bool}
   c1_id(YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len)), UA.BF(t, n), off, len, 244)
 
 def okw_c0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(244, len) == True{} : Bool},
     +b: Bool, +eb: {U32.is_eq(SPOw(t, x), 244) == b : Bool})
-    -> {T.LightClientHeader_c0(b, UA.BF(t, n), off, len, SPOw(t, x)) == (UA.BF(t, n), chk3(True{}, b, YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len)))) : B.Buf & Bool}:
+    -> {FuluLightClientHeader_r.LightClientHeader_c0(b, UA.BF(t, n), off, len, SPOw(t, x)) == (UA.BF(t, n), chk3(True{}, b, YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len)))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}: okw_c1(d, t, n, x, off, len, eo, hd, hw, pf, ha, FD.u32alg__eq_of(SPOw(t, x), 244, eb))
@@ -142,18 +149,18 @@ def okw_c0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: 
 def okw_len(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +a: Bool, +ea: {U32.is_le(244, len) == a : Bool})
-    -> {T.LightClientHeader_ok_len(a, UA.BF(t, n), off, len) == (UA.BF(t, n), chk3(a, U32.is_eq(SPOw(t, x), 244), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len)))) : B.Buf & Bool}:
+    -> {FuluLightClientHeader_r.LightClientHeader_ok_len(a, UA.BF(t, n), off, len) == (UA.BF(t, n), chk3(a, U32.is_eq(SPOw(t, x), 244), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len)))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 112)), (UA.BF(t, n), SPOw(t, x)), rdoff(d, t, n, x, off, len, eo, hd, hw, pf, ea)) :
-        {T.LightClientHeader_v0(off, len, _) == (UA.BF(t, n), chk3(True{}, U32.is_eq(SPOw(t, x), 244), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len)))) : B.Buf & Bool}
+        {FuluLightClientHeader_r.LightClientHeader_v0(off, len, _) == (UA.BF(t, n), chk3(True{}, U32.is_eq(SPOw(t, x), 244), YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len)))) : B.Buf & Bool}
       okw_c0(d, t, n, x, off, len, eo, hd, hw, pf, ea, U32.is_eq(SPOw(t, x), 244), {==})
 
 # The validator on the window returns the buffer and CHKw(t, x, off, len).
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
-    -> {T.LightClientHeader_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    -> {FuluLightClientHeader_r.LightClientHeader_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   okw_len(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_le(244, len), {==})
 
 # The offset word, once checked, reads as 244.
@@ -165,33 +172,33 @@ def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
   %Equal.sym(U32, SPOw(t, x), 244, epo) : {(UA.BF(t, n), _) == (UA.BF(t, n), 244) : B.Buf & U32}
   {==}
 
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.LightClientHeader: T.LightClientHeader{T.BeaconBlockHeader{O.U64{UR.RWN(t, x), UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}, T.Bytes32{UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x)}, T.Bytes32{UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x)}, T.Bytes32{UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x)}}, O.BSome{YW.OBJw(d, t, 244n+x, U32.add(off, 244), LL(len)), O.BNone{}}, O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 116), 128, 6n)), 128}}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> FuluLightClientHeader_d.LightClientHeader: FuluLightClientHeader_d.LightClientHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{UR.RWN(t, x), UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x)}}, O.BSome{YW.OBJw(d, t, 244n+x, U32.add(off, 244), LL(len)), O.BNone{}}, O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 116), 128, 6n)), 128}}
 
 # The reader on the window, when the checks hold.
 def rdw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +ha: {U32.is_le(244, len) == True{} : Bool}, +epo: {SPOw(t, x) == 244 : U32}, +hY: {YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len)) == True{} : Bool})
-    -> {T.LightClientHeader_read(UA.BF(t, n), off, len) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientHeader}:
+    -> {FuluLightClientHeader_r.LightClientHeader_read(UA.BF(t, n), off, len) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientHeader_d.LightClientHeader}:
   +hd30 = FD.nat__lt_trans(d, 28n, 30n, hd, {==})
   +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 112)), (UA.BF(t, n), 244), rdo(d, t, n, x, off, len, eo, hd, hw, pf, ha, epo)) :
-    {T.LightClientHeader_rd0(off, len, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientHeader}
-  %Equal.sym(B.Buf & T.BeaconBlockHeader, T.BeaconBlockHeader_read(UA.BF(t, n), U32.add(off, 0), 112), (UA.BF(t, n), T.BeaconBlockHeader{O.U64{UR.RWN(t, x), UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}, T.Bytes32{UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x)}, T.Bytes32{UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x)}, T.Bytes32{UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x)}}),
+    {FuluLightClientHeader_r.LightClientHeader_rd0(off, len, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientHeader_d.LightClientHeader}
+  %Equal.sym(B.Buf & FuluBeaconBlockHeader_d.BeaconBlockHeader, FuluBeaconBlockHeader_r.BeaconBlockHeader_read(UA.BF(t, n), U32.add(off, 0), 112), (UA.BF(t, n), FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{UR.RWN(t, x), UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x)}}),
       XF.rdx_BeaconBlockHeader(d, t, n, U32.add(off, 0), x, eoc(d, x, off, len, 0, {==}, eo, hd, hw, ha), hd30, pf, roomc(d, x, len, 0n, 112n, {==}, hw, ha))) :
-    {T.LightClientHeader_rd1(off, len, 244, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientHeader}
-  %Equal.sym(B.Buf & T.ExecutionPayloadHeader, T.ExecutionPayloadHeader_read(UA.BF(t, n), U32.add(off, 244), U32.sub(len, 244)), (UA.BF(t, n), YW.OBJw(d, t, 244n+x, U32.add(off, 244), LL(len))),
+    {FuluLightClientHeader_r.LightClientHeader_rd1(off, len, 244, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientHeader_d.LightClientHeader}
+  %Equal.sym(B.Buf & FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_read(UA.BF(t, n), U32.add(off, 244), U32.sub(len, 244)), (UA.BF(t, n), YW.OBJw(d, t, 244n+x, U32.add(off, 244), LL(len))),
       YW.readw(d, t, n, 244n+x, U32.add(off, 244), LL(len), ecY(d, x, off, len, eo, hd, hw, ha), hd, hwY(d, x, len, hw, ha), pf, hY)) :
-    {T.LightClientHeader_rd2(off, len, 244, T.BeaconBlockHeader{O.U64{UR.RWN(t, x), UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}, T.Bytes32{UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x)}, T.Bytes32{UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x)}, T.Bytes32{UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x)}}, T.ExecutionPayloadHeader_bx_rd(_)) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientHeader}
-  %Equal.sym(B.Buf & O.Words, T.v4_b32_read(UA.BF(t, n), U32.add(off, 116), 128), (UA.BF(t, n), O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 116), 128, 6n)), 128}),
+    {FuluLightClientHeader_r.LightClientHeader_rd2(off, len, 244, FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{UR.RWN(t, x), UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x)}}, FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_bx_rd(_)) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientHeader_d.LightClientHeader}
+  %Equal.sym(B.Buf & O.Words, FuluExecutionBranch_r.v4_b32_read(UA.BF(t, n), U32.add(off, 116), 128), (UA.BF(t, n), O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 116), 128, 6n)), 128}),
       VBX.copy_into_at(d, t, n, U32.add(off, 116), 128, 6n, 8n, pf, hd31, {==}, UW.hsx(d, U32.add(off, 116), Nat.add(U32.to_nat(116), x), 128, eoc(d, x, off, len, 116, {==}, eo, hd, hw, ha), hd, roomc(d, x, len, U32.to_nat(116), U32.to_nat(128), {==}, hw, ha)), {==}, {==}, {==})) :
-    {T.LightClientHeader_rd3(off, len, 244, T.BeaconBlockHeader{O.U64{UR.RWN(t, x), UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}, T.Bytes32{UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x)}, T.Bytes32{UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x)}, T.Bytes32{UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x)}}, O.BSome{YW.OBJw(d, t, 244n+x, U32.add(off, 244), LL(len)), O.BNone{}}, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientHeader}
+    {FuluLightClientHeader_r.LightClientHeader_rd3(off, len, 244, FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{UR.RWN(t, x), UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x)}}, O.BSome{YW.OBJw(d, t, 244n+x, U32.add(off, 244), LL(len)), O.BNone{}}, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientHeader_d.LightClientHeader}
   {==}
 
 # When the window's checks hold, the reader returns OBJw(d, t, x, off, len).
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hchk: {CHKw(t, x, off, len) == True{} : Bool})
-    -> {T.LightClientHeader_read(UA.BF(t, n), off, len) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientHeader}:
+    -> {FuluLightClientHeader_r.LightClientHeader_read(UA.BF(t, n), off, len) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientHeader_d.LightClientHeader}:
   +a = U32.is_le(244, len)
   +b = U32.is_eq(SPOw(t, x), 244)
   +c = YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len))

@@ -1,6 +1,6 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluSyncCommittee_decode_ssz_generated.bend as FuluSyncCommittee_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -14,11 +14,11 @@ import ./vrejf.bend as VRF
 # (see codegen/fix_reject.py).
 
 # ---- SyncCommittee (24624 bytes; validator T.SyncCommittee_ok) ----
-def SyncCommittee_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.SyncCommittee_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def SyncCommittee_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluSyncCommittee_r.SyncCommittee_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def SyncCommittee_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.SyncCommittee_ok(buf, off, len) == (buf, U32.is_eq(len, 24624)) : B.Buf & Bool}:
+def SyncCommittee_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluSyncCommittee_r.SyncCommittee_ok(buf, off, len) == (buf, U32.is_eq(len, 24624)) : B.Buf & Bool}:
   SyncCommittee_okb(buf, off, U32.is_eq(len, 24624))
 def SyncCommittee_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(Spec.SyncCommittee())) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.SyncCommittee(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.SyncCommittee()), VRF.SZ(Spec.SyncCommittee()), bs, Codec.parts(v, Spec.SyncCommittee()), DS.facts(v, Spec.SyncCommittee(), {==}), {==}, e, hn)

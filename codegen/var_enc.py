@@ -19,13 +19,14 @@ header (VB.mone) and the fixed fields' words written by runs of word writes
 import re
 
 import var_laws as VL
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 
 def enc_module_text(g, x):
     n, FS, H, po, LIM, lp = x.n, x.FS, x.H, x.po, x.LIM, x.lp
     KO, KK = x.KO, max(x.K, x.KO)
     Tn = f'T.{n}'
-    src = (VL.ROOT / 'types/fulu_obj.bend').read_text()
+    src = RR.mono_text('fulu')
     m = re.search(rf'def {lp}_valid\(o: O\.Words\) -> O\.Words & Bool: O\.words_ok\(o, 0, (\d+), False\{{\}}, 8\)', src)
     if not m or int(m.group(1)) != 8 * LIM:
         raise VL.Skip('list storage check differs')

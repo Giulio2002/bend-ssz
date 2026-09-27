@@ -1,7 +1,11 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_encode_ssz_generated.bend as uint8_e
+import ../../types/progbitlist_encode_ssz_generated.bend as progbitlist_e
+import ../../types/list_uint16_123_encode_ssz_generated.bend as list_uint16_123_e
+import ../../types/ProgressiveVarTestStruct_def_generated.bend as ProgressiveVarTestStruct_d
+import ../../types/ProgressiveVarTestStruct_encode_ssz_generated.bend as ProgressiveVarTestStruct_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -44,13 +48,13 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 
 # ---- Gp66304057C3: its value, parts, layout, and bytes ----
 
-def OKT(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB) -> Bool: Bool.and(EX_l123_u16.OK(m_f_B), Bool.and(EX_pbits.OK(m_f_C), Bool.and(T.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))))))
-def okr1(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {Bool.and(EX_pbits.OK(m_f_C), Bool.and(T.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))))) == True{} : Bool}: and_r(EX_l123_u16.OK(m_f_B), Bool.and(EX_pbits.OK(m_f_C), Bool.and(T.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))))), h)
-def okr2(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {Bool.and(T.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n)))) == True{} : Bool}: and_r(EX_pbits.OK(m_f_C), Bool.and(T.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n)))), okr1(f_A, m_f_B, m_f_C, h))
-def okr3(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))) == True{} : Bool}: and_r(T.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), okr2(f_A, m_f_B, m_f_C, h))
-def ok_hok_f_B(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {EX_l123_u16.OK(m_f_B) == True{} : Bool}: and_l(EX_l123_u16.OK(m_f_B), Bool.and(EX_pbits.OK(m_f_C), Bool.and(T.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))))), h)
-def ok_hok_f_C(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {EX_pbits.OK(m_f_C) == True{} : Bool}: and_l(EX_pbits.OK(m_f_C), Bool.and(T.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n)))), okr1(f_A, m_f_B, m_f_C, h))
-def ok_hpz(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {T.u8_valid(f_A) == True{} : Bool}: and_l(T.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), okr2(f_A, m_f_B, m_f_C, h))
+def OKT(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB) -> Bool: Bool.and(EX_l123_u16.OK(m_f_B), Bool.and(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))))))
+def okr1(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {Bool.and(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))))) == True{} : Bool}: and_r(EX_l123_u16.OK(m_f_B), Bool.and(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))))), h)
+def okr2(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n)))) == True{} : Bool}: and_r(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n)))), okr1(f_A, m_f_B, m_f_C, h))
+def okr3(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))) == True{} : Bool}: and_r(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), okr2(f_A, m_f_B, m_f_C, h))
+def ok_hok_f_B(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {EX_l123_u16.OK(m_f_B) == True{} : Bool}: and_l(EX_l123_u16.OK(m_f_B), Bool.and(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))))), h)
+def ok_hok_f_C(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {EX_pbits.OK(m_f_C) == True{} : Bool}: and_l(EX_pbits.OK(m_f_C), Bool.and(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n)))), okr1(f_A, m_f_B, m_f_C, h))
+def ok_hpz(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {uint8_e.u8_valid(f_A) == True{} : Bool}: and_l(uint8_e.u8_valid(f_A), Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))), okr2(f_A, m_f_B, m_f_C, h))
 def ok_bnd(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {Nat.is_le(Nat.add(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C))), A.quad(VB.pw(28n))) == True{} : Bool}: okr3(f_A, m_f_B, m_f_C, h)
 
 def VALC(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB) -> S.Value: S.Sequence{S.Items{VRB.UV8(f_A), S.Items{EX_l123_u16.VAL(m_f_B), S.Items{EX_pbits.VAL(m_f_C), S.EmptyItems{}}}}}
@@ -81,7 +85,7 @@ def okoC(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m
   ({==}, (CS.pstep(9, EX_l123_u16.SZ(m_f_B), 9n, LY.LN(EX_l123_u16.ENC(m_f_B)), k, CS.hk29(k, ek), {==}, EX_l123_u16.szx(m_f_B, ok_hok_f_B(f_A, m_f_B, m_f_C, h)), CS.lel(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C)), A.quad(VB.pw(k)), okbk(f_A, m_f_B, m_f_C, h, k, ek))), Unit{}))
 
 # the returned size is the bytes' end
-def eSZ(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +u: Unit) -> {K.SZC(f_A, m_f_B, m_f_C) == (O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C)) .|. O.pz(T.u8_valid(f_A)) : U32) : U32}: {==}
+def eSZ(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +u: Unit) -> {K.SZC(f_A, m_f_B, m_f_C) == (O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C)) .|. O.pz(uint8_e.u8_valid(f_A)) : U32) : U32}: {==}
 def szC(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {U32.to_nat(K.SZC(f_A, m_f_B, m_f_C)) == ENDC(f_A, m_f_B, m_f_C) : Nat}:
   FD.logic__subst(U32, z => {U32.to_nat(z) == ENDC(f_A, m_f_B, m_f_C) : Nat}, O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C)), K.SZC(f_A, m_f_B, m_f_C), Equal.sym(U32, K.SZC(f_A, m_f_B, m_f_C), O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C)), K.szpz(f_A, m_f_B, m_f_C, ok_hpz(f_A, m_f_B, m_f_C, h))),
     CS.pstep(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C), Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C)), k, CS.hk29(k, ek), CS.pstep(9, EX_l123_u16.SZ(m_f_B), 9n, LY.LN(EX_l123_u16.ENC(m_f_B)), k, CS.hk29(k, ek), {==}, EX_l123_u16.szx(m_f_B, ok_hok_f_B(f_A, m_f_B, m_f_C, h)), CS.lel(Nat.add(9n, LY.LN(EX_l123_u16.ENC(m_f_B))), LY.LN(EX_pbits.ENC(m_f_C)), A.quad(VB.pw(k)), okbk(f_A, m_f_B, m_f_C, h, k, ek))), EX_pbits.szx(m_f_C, ok_hok_f_C(f_A, m_f_B, m_f_C, h)), okbk(f_A, m_f_B, m_f_C, h, k, ek)))
@@ -144,7 +148,7 @@ def lenE(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m
 type MW is Data:
   MW{f_A: U32, m_f_B: EX_l123_u16.MW, m_f_C: EX_pbits.MB}
 
-def TH(m: MW) -> T.Gp66304057C3:
+def TH(m: MW) -> ProgressiveVarTestStruct_d.Gp66304057C3:
   match m:
     case MW{+f_A, +m_f_B, +m_f_C}: K.OBJC(f_A, m_f_B, m_f_C)
 def OK(m: MW) -> Bool:
@@ -166,7 +170,7 @@ def PUTX(m: MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array
 def PADB(+r: Nat, m: MW) -> Nat: WD.PADB(r, List.length(&2, U32, ENC(m)))
 
 def RTX(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Gp66304057C3_putk(FD.array__thaw(U32, D), X, K.OBJC(f_A, m_f_B, m_f_C)) == (FD.array__thaw(U32, K.PUTC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(f_A, m_f_B, m_f_C), K.SZC(f_A, m_f_B, m_f_C))) : Array<U32> & (T.Gp66304057C3 & U32)}
+  {ProgressiveVarTestStruct_e.Gp66304057C3_putk(FD.array__thaw(U32, D), X, K.OBJC(f_A, m_f_B, m_f_C)) == (FD.array__thaw(U32, K.PUTC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(f_A, m_f_B, m_f_C), K.SZC(f_A, m_f_B, m_f_C))) : Array<U32> & (ProgressiveVarTestStruct_d.Gp66304057C3 & U32)}
 def BYX(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(K.PUTC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(f_A, m_f_B, m_f_C), UW.ZB(WD.PADB(r, List.length(&2, U32, K.ENCC(f_A, m_f_B, m_f_C)))))) : +List<U32>}
 
@@ -185,7 +189,7 @@ def go(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f
   +rt = K.putk_bridge(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r, PA(K.RTC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), K.SZXC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r))), g))
   +g2 = PB(K.RTC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), K.SZXC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r))), g)
   +by = PA(K.BYC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r), K.SZXC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r)), g2)
-  +rt2 = FD.logic__subst(U32, z => {T.Gp66304057C3_putk(FD.array__thaw(U32, D), z, K.OBJC(f_A, m_f_B, m_f_C)) == (FD.array__thaw(U32, K.PUTC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(f_A, m_f_B, m_f_C), K.SZC(f_A, m_f_B, m_f_C))) : Array<U32> & (T.Gp66304057C3 & U32)},
+  +rt2 = FD.logic__subst(U32, z => {ProgressiveVarTestStruct_e.Gp66304057C3_putk(FD.array__thaw(U32, D), z, K.OBJC(f_A, m_f_B, m_f_C)) == (FD.array__thaw(U32, K.PUTC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(f_A, m_f_B, m_f_C), K.SZC(f_A, m_f_B, m_f_C))) : Array<U32> & (ProgressiveVarTestStruct_d.Gp66304057C3 & U32)},
     XQ(q, r), X, Equal.sym(U32, X, XQ(q, r), ex), rt)
   +by2 = FD.logic__subst(Nat, z => {UA.BYT(K.PUTC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(f_A, m_f_B, m_f_C), UW.ZB(WD.PADB(r, z)))) : +List<U32>},
     LLv, List.length(&2, U32, K.ENCC(f_A, m_f_B, m_f_C)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(f_A, m_f_B, m_f_C)), LLv, el), by)
@@ -207,7 +211,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gp66304057C3_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (T.Gp66304057C3 & U32)}
+  {ProgressiveVarTestStruct_e.Gp66304057C3_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (ProgressiveVarTestStruct_d.Gp66304057C3 & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW{+f_A, +m_f_B, +m_f_C}: PA(RTX(f_A, m_f_B, m_f_C, dd, D, X, q, r), BYX(f_A, m_f_B, m_f_C, dd, D, q, r), go(f_A, m_f_B, m_f_C, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hz))
@@ -278,36 +282,36 @@ def pfx(m, dd, D, q, r, pf):
   match m:
     case MW{+f_A, +m_f_B, +m_f_C}: K.pfC(f_A, m_f_B, m_f_C, dd, D, XQ(q, r), q, r, pf)
 
-def sizeC(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {T.Gp66304057C3_size(K.OBJC(f_A, m_f_B, m_f_C)) == (K.OBJC(f_A, m_f_B, m_f_C), K.SZC(f_A, m_f_B, m_f_C)) : T.Gp66304057C3 & U32}:
+def sizeC(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {ProgressiveVarTestStruct_e.Gp66304057C3_size(K.OBJC(f_A, m_f_B, m_f_C)) == (K.OBJC(f_A, m_f_B, m_f_C), K.SZC(f_A, m_f_B, m_f_C)) : ProgressiveVarTestStruct_d.Gp66304057C3 & U32}:
   %Equal.sym(U32, K.SZC(f_A, m_f_B, m_f_C), O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C)), K.szpz(f_A, m_f_B, m_f_C, ok_hpz(f_A, m_f_B, m_f_C, h))) :
-    {T.Gp66304057C3_size(K.OBJC(f_A, m_f_B, m_f_C)) == (K.OBJC(f_A, m_f_B, m_f_C), _) : T.Gp66304057C3 & U32}
-  %Equal.sym(O.Words & U32, T.l123_u16_size(EX_l123_u16.TH(m_f_B)), (EX_l123_u16.TH(m_f_B), EX_l123_u16.SZ(m_f_B)), EX_l123_u16.sizex(m_f_B, ok_hok_f_B(f_A, m_f_B, m_f_C, h))) :
-    {T.Gp66304057C3_sz0(f_A, EX_pbits.TH(m_f_C), 9, _) == (K.OBJC(f_A, m_f_B, m_f_C), O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C))) : T.Gp66304057C3 & U32}
-  %Equal.sym(O.Bits & U32, T.pbits_size(EX_pbits.TH(m_f_C)), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C)), EX_pbits.sizex(m_f_C, ok_hok_f_C(f_A, m_f_B, m_f_C, h))) :
-    {T.Gp66304057C3_sz1(f_A, EX_l123_u16.TH(m_f_B), O.padd(9, EX_l123_u16.SZ(m_f_B)), _) == (K.OBJC(f_A, m_f_B, m_f_C), O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C))) : T.Gp66304057C3 & U32}
+    {ProgressiveVarTestStruct_e.Gp66304057C3_size(K.OBJC(f_A, m_f_B, m_f_C)) == (K.OBJC(f_A, m_f_B, m_f_C), _) : ProgressiveVarTestStruct_d.Gp66304057C3 & U32}
+  %Equal.sym(O.Words & U32, list_uint16_123_e.l123_u16_size(EX_l123_u16.TH(m_f_B)), (EX_l123_u16.TH(m_f_B), EX_l123_u16.SZ(m_f_B)), EX_l123_u16.sizex(m_f_B, ok_hok_f_B(f_A, m_f_B, m_f_C, h))) :
+    {ProgressiveVarTestStruct_e.Gp66304057C3_sz0(f_A, EX_pbits.TH(m_f_C), 9, _) == (K.OBJC(f_A, m_f_B, m_f_C), O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C))) : ProgressiveVarTestStruct_d.Gp66304057C3 & U32}
+  %Equal.sym(O.Bits & U32, progbitlist_e.pbits_size(EX_pbits.TH(m_f_C)), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C)), EX_pbits.sizex(m_f_C, ok_hok_f_C(f_A, m_f_B, m_f_C, h))) :
+    {ProgressiveVarTestStruct_e.Gp66304057C3_sz1(f_A, EX_l123_u16.TH(m_f_B), O.padd(9, EX_l123_u16.SZ(m_f_B)), _) == (K.OBJC(f_A, m_f_B, m_f_C), O.padd(O.padd(9, EX_l123_u16.SZ(m_f_B)), EX_pbits.SZ(m_f_C))) : ProgressiveVarTestStruct_d.Gp66304057C3 & U32}
   {==}
 
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gp66304057C3_size(TH(m)) == (TH(m), SZ(m)) : T.Gp66304057C3 & U32}
+  {ProgressiveVarTestStruct_e.Gp66304057C3_size(TH(m)) == (TH(m), SZ(m)) : ProgressiveVarTestStruct_d.Gp66304057C3 & U32}
 def sizex(m, hok):
   match m:
     case MW{+f_A, +m_f_B, +m_f_C}: sizeC(f_A, m_f_B, m_f_C, hok)
 
-def rvalidC(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {T.Gp66304057C3_valid(K.OBJC(f_A, m_f_B, m_f_C)) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : T.Gp66304057C3 & Bool}:
-  %Equal.sym(Bool, T.u8_valid(f_A), True{}, ok_hpz(f_A, m_f_B, m_f_C, h)) :
-    {T.Gp66304057C3_va0(f_A, EX_pbits.TH(m_f_C), _, T.l123_u16_valid(EX_l123_u16.TH(m_f_B))) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : T.Gp66304057C3 & Bool}
-  %Equal.sym(O.Words & Bool, T.l123_u16_valid(EX_l123_u16.TH(m_f_B)), (EX_l123_u16.TH(m_f_B), True{}), EX_l123_u16.validx(m_f_B, ok_hok_f_B(f_A, m_f_B, m_f_C, h))) :
-    {T.Gp66304057C3_va0(f_A, EX_pbits.TH(m_f_C), True{}, _) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : T.Gp66304057C3 & Bool}
-  %Equal.sym(O.Bits & Bool, T.pbits_valid(EX_pbits.TH(m_f_C)), (EX_pbits.TH(m_f_C), True{}), EX_pbits.validx(m_f_C, ok_hok_f_C(f_A, m_f_B, m_f_C, h))) :
-    {T.Gp66304057C3_va1(f_A, EX_l123_u16.TH(m_f_B), Bool.and(True{}, True{}), _) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : T.Gp66304057C3 & Bool}
+def rvalidC(+f_A: U32, +m_f_B: EX_l123_u16.MW, +m_f_C: EX_pbits.MB, +h: {OKT(f_A, m_f_B, m_f_C) == True{} : Bool}) -> {ProgressiveVarTestStruct_e.Gp66304057C3_valid(K.OBJC(f_A, m_f_B, m_f_C)) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : ProgressiveVarTestStruct_d.Gp66304057C3 & Bool}:
+  %Equal.sym(Bool, uint8_e.u8_valid(f_A), True{}, ok_hpz(f_A, m_f_B, m_f_C, h)) :
+    {ProgressiveVarTestStruct_e.Gp66304057C3_va0(f_A, EX_pbits.TH(m_f_C), _, list_uint16_123_e.l123_u16_valid(EX_l123_u16.TH(m_f_B))) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : ProgressiveVarTestStruct_d.Gp66304057C3 & Bool}
+  %Equal.sym(O.Words & Bool, list_uint16_123_e.l123_u16_valid(EX_l123_u16.TH(m_f_B)), (EX_l123_u16.TH(m_f_B), True{}), EX_l123_u16.validx(m_f_B, ok_hok_f_B(f_A, m_f_B, m_f_C, h))) :
+    {ProgressiveVarTestStruct_e.Gp66304057C3_va0(f_A, EX_pbits.TH(m_f_C), True{}, _) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : ProgressiveVarTestStruct_d.Gp66304057C3 & Bool}
+  %Equal.sym(O.Bits & Bool, progbitlist_e.pbits_valid(EX_pbits.TH(m_f_C)), (EX_pbits.TH(m_f_C), True{}), EX_pbits.validx(m_f_C, ok_hok_f_C(f_A, m_f_B, m_f_C, h))) :
+    {ProgressiveVarTestStruct_e.Gp66304057C3_va1(f_A, EX_l123_u16.TH(m_f_B), Bool.and(True{}, True{}), _) == (K.OBJC(f_A, m_f_B, m_f_C), True{}) : ProgressiveVarTestStruct_d.Gp66304057C3 & Bool}
   {==}
 
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gp66304057C3_valid(TH(m)) == (TH(m), True{}) : T.Gp66304057C3 & Bool}
+  {ProgressiveVarTestStruct_e.Gp66304057C3_valid(TH(m)) == (TH(m), True{}) : ProgressiveVarTestStruct_d.Gp66304057C3 & Bool}
 def validx(m, hok):
   match m:
     case MW{+f_A, +m_f_B, +m_f_C}: rvalidC(f_A, m_f_B, m_f_C, hok)

@@ -3,7 +3,11 @@ import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes1_def_generated.bend as FuluBytes1_d
+import ../../types/uint8_hashtreeroot_generated.bend as uint8_h
+import ../../types/uint32_hashtreeroot_generated.bend as uint32_h
+import ../../types/FuluBytes1_hashtreeroot_generated.bend as FuluBytes1_h
+import ../../types/FuluParticipationFlags_hashtreeroot_generated.bend as FuluParticipationFlags_h
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/root_relation.bend as RR
@@ -1084,10 +1088,10 @@ law uint8_root_correct:
   for -h: B.Buf
   for +o: U32
   for +e: {U32.is_lt(o, 256) == True{} : Bool}
-  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.uint8(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.uint8_hash_tree_root(h, o)))])
+  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.uint8(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint8_h.uint8_hash_tree_root(h, o)))])
 def uint8_root_correct(h, o, e):
   %Equal.sym(U32, o, PD.embed8(WSp.take(8n, 32n, PD.bits(o))), ID.byte_shape(o, e)) :
-    RR.roots(S.UnsignedValue{P.UInt{_, 0, 0, 0, 0, 0, 0, 0}}, Spec.uint8(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.uint8_hash_tree_root(h, _)))])
+    RR.roots(S.UnsignedValue{P.UInt{_, 0, 0, 0, 0, 0, 0, 0}}, Spec.uint8(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint8_h.uint8_hash_tree_root(h, _)))])
   u8_w(WSp.take(8n, 32n, PD.bits(o)))
 
 # ParticipationFlags: every value below 256.
@@ -1095,32 +1099,32 @@ law ParticipationFlags_root_correct:
   for -h: B.Buf
   for +o: U32
   for +e: {U32.is_lt(o, 256) == True{} : Bool}
-  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.ParticipationFlags(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.ParticipationFlags_hash_tree_root(h, o)))])
+  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.ParticipationFlags(), [D.bytes(Pair.snd(B.Buf, D.Digest, FuluParticipationFlags_h.ParticipationFlags_hash_tree_root(h, o)))])
 def ParticipationFlags_root_correct(h, o, e):
   %Equal.sym(U32, o, PD.embed8(WSp.take(8n, 32n, PD.bits(o))), ID.byte_shape(o, e)) :
-    RR.roots(S.UnsignedValue{P.UInt{_, 0, 0, 0, 0, 0, 0, 0}}, Spec.ParticipationFlags(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.ParticipationFlags_hash_tree_root(h, _)))])
+    RR.roots(S.UnsignedValue{P.UInt{_, 0, 0, 0, 0, 0, 0, 0}}, Spec.ParticipationFlags(), [D.bytes(Pair.snd(B.Buf, D.Digest, FuluParticipationFlags_h.ParticipationFlags_hash_tree_root(h, _)))])
   u8_w(WSp.take(8n, 32n, PD.bits(o)))
 
 # uint32: every value.
 law uint32_root_correct:
   for -h: B.Buf
   for +o: U32
-  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.uint32(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.uint32_hash_tree_root(h, o)))])
+  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.uint32(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint32_h.uint32_hash_tree_root(h, o)))])
 def uint32_root_correct(h, o): u32_root(o)
 
-def b1_byte(o: T.Bytes1) -> U32:
+def b1_byte(o: FuluBytes1_d.Bytes1) -> U32:
   match o:
-    case T.Bytes1{+w0}: w0
+    case FuluBytes1_d.Bytes1{+w0}: w0
 
 # Bytes1: every object whose one byte is below 256 (the word holds the byte).
 law Bytes1_root_correct:
   for -h: B.Buf
-  for +o: T.Bytes1
+  for +o: FuluBytes1_d.Bytes1
   for +e: {U32.is_lt(b1_byte(o), 256) == True{} : Bool}
-  RR.roots(S.BytesValue{[b1_byte(o)]}, Spec.Bytes1(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Bytes1_hash_tree_root(h, o)))])
+  RR.roots(S.BytesValue{[b1_byte(o)]}, Spec.Bytes1(), [D.bytes(Pair.snd(B.Buf, D.Digest, FuluBytes1_h.Bytes1_hash_tree_root(h, o)))])
 def Bytes1_root_correct(h, o, e):
   match o:
-    case T.Bytes1{+w0}:
+    case FuluBytes1_d.Bytes1{+w0}:
       %Equal.sym(U32, w0, PD.embed8(WSp.take(8n, 32n, PD.bits(w0))), ID.byte_shape(w0, e)) :
-        RR.roots(S.BytesValue{[_]}, Spec.Bytes1(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Bytes1_hash_tree_root(h, T.Bytes1{_})))])
+        RR.roots(S.BytesValue{[_]}, Spec.Bytes1(), [D.bytes(Pair.snd(B.Buf, D.Digest, FuluBytes1_h.Bytes1_hash_tree_root(h, FuluBytes1_d.Bytes1{_})))])
       b1_w(WSp.take(8n, 32n, PD.bits(w0)))

@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitlist_5_encode_ssz_generated.bend as bitlist_5_e
 import ../../types/schema.bend as S
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
@@ -175,7 +175,7 @@ def eL(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +B: Nat, +kb: Nat, +KY: Nat, 
 # ---- the runtime's check and size ---------------------------------------------------------------
 
 def valid(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +B: Nat, +kb: Nat, +KY: Nat, +h: {OKT(dw, T, K, B, kb, KY) == True{} : Bool})
-    -> {T.bits5_valid(O.Bits{FD.array__thaw(U32, T), K}) == (O.Bits{FD.array__thaw(U32, T), K}, True{}) : O.Bits & Bool}:
+    -> {bitlist_5_e.bits5_valid(O.Bits{FD.array__thaw(U32, T), K}) == (O.Bits{FD.array__thaw(U32, T), K}, True{}) : O.Bits & Bool}:
   +hd31 = hdw31(dw, T, K, B, kb, KY, h)
   %Equal.sym(Bool, U32.is_le(K, 5), True{}, ok_hlim(dw, T, K, B, kb, KY, h)) :
     {O.bk_cap(Bool.or(False{}, _), K, Array.size(U32, FD.array__thaw(U32, T))) == (O.Bits{FD.array__thaw(U32, T), K}, True{}) : O.Bits & Bool}
@@ -191,7 +191,7 @@ def valid(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +B: Nat, +kb: Nat, +KY: Na
   {==}
 
 def size_go(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +B: Nat, +kb: Nat, +KY: Nat, +h: {OKT(dw, T, K, B, kb, KY) == True{} : Bool})
-    -> {T.bits5_size(O.Bits{FD.array__thaw(U32, T), K}) == (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K)) : O.Bits & U32}:
+    -> {bitlist_5_e.bits5_size(O.Bits{FD.array__thaw(U32, T), K}) == (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K)) : O.Bits & U32}:
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, ok_pf(dw, T, K, B, kb, KY, h))) :
     {O.bsz_pick(K, _) == (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K)) : O.Bits & U32}
   %Equal.sym(Bool, U32.is_le(U32.add(U32.shrn(K, 5n), 1), FD.u32__pow2u(dw)), True{}, CO.capT(K, dw, hdw31(dw, T, K, B, kb, KY, h), ok_hcap(dw, T, K, B, kb, KY, h))) :
@@ -204,9 +204,9 @@ def putx_go(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +B: Nat, +kb: Nat, +KY: 
     +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(CO.NK(K))))), VB.pw(dd)) == True{} : Bool},
     +hz: {VS.bt(Nat.add(U32.to_nat(CO.NK(K)), UWD.PADB(r, U32.to_nat(CO.NK(K)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(U32.to_nat(CO.NK(K)), UWD.PADB(r, U32.to_nat(CO.NK(K))))) : +List<U32>},
     +h: {OKT(dw, T, K, B, kb, KY) == True{} : Bool})
-    -> {T.bits5_putk(FD.array__thaw(U32, D), X, O.Bits{FD.array__thaw(U32, T), K}) == (FD.array__thaw(U32, VWB.PBX(r, dd, D, q, T, K)), (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K))) : Array<U32> & (O.Bits & U32)}:
-  %Equal.sym(O.Bits & Bool, T.bits5_valid(O.Bits{FD.array__thaw(U32, T), K}), (O.Bits{FD.array__thaw(U32, T), K}, True{}), valid(dw, T, K, B, kb, KY, h)) :
-    {T.bits5_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, VWB.PBX(r, dd, D, q, T, K)), (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K))) : Array<U32> & (O.Bits & U32)}
+    -> {bitlist_5_e.bits5_putk(FD.array__thaw(U32, D), X, O.Bits{FD.array__thaw(U32, T), K}) == (FD.array__thaw(U32, VWB.PBX(r, dd, D, q, T, K)), (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K))) : Array<U32> & (O.Bits & U32)}:
+  %Equal.sym(O.Bits & Bool, bitlist_5_e.bits5_valid(O.Bits{FD.array__thaw(U32, T), K}), (O.Bits{FD.array__thaw(U32, T), K}, True{}), valid(dw, T, K, B, kb, KY, h)) :
+    {bitlist_5_e.bits5_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, VWB.PBX(r, dd, D, q, T, K)), (O.Bits{FD.array__thaw(U32, T), K}, CO.NK(K))) : Array<U32> & (O.Bits & U32)}
   %Equal.sym(Array<U32> & O.Bits, O.put_bits(FD.array__thaw(U32, D), X, O.Bits{FD.array__thaw(U32, T), K}), (FD.array__thaw(U32, VWB.PBX(r, dd, D, q, T, K)), O.Bits{FD.array__thaw(U32, T), K}),
       VWB.pbx_any(dd, D, X, q, r, dw, T, K, kb, KY, B, e, hr, hd, hdw31(dw, T, K, B, kb, KY, h), ok_hkb(dw, T, K, B, kb, KY, h), ok_hKY(dw, T, K, B, kb, KY, h), ok_hN(dw, T, K, B, kb, KY, h), ok_hNk(dw, T, K, B, kb, KY, h), ok_hNY(dw, T, K, B, kb, KY, h),
       hWq(dw, T, K, B, kb, KY, h), hl, pf, ok_pf(dw, T, K, B, kb, KY, h), ok_htz(dw, T, K, B, kb, KY, h), ok_hbz(dw, T, K, B, kb, KY, h), hz)) :
@@ -239,7 +239,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.bits5_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (O.Bits & U32)}
+  {bitlist_5_e.bits5_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (O.Bits & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MB{+dw, +T, +K, +B, +kb, +KY}:
@@ -297,7 +297,7 @@ def szx(m, hok):
 law sizex:
   for +m: MB
   for +hok: {OK(m) == True{} : Bool}
-  {T.bits5_size(TH(m)) == (TH(m), SZ(m)) : O.Bits & U32}
+  {bitlist_5_e.bits5_size(TH(m)) == (TH(m), SZ(m)) : O.Bits & U32}
 def sizex(m, hok):
   match m:
     case MB{+dw, +T, +K, +B, +kb, +KY}: size_go(dw, T, K, B, kb, KY, hok)
@@ -305,7 +305,7 @@ def sizex(m, hok):
 law validx:
   for +m: MB
   for +hok: {OK(m) == True{} : Bool}
-  {T.bits5_valid(TH(m)) == (TH(m), True{}) : O.Bits & Bool}
+  {bitlist_5_e.bits5_valid(TH(m)) == (TH(m), True{}) : O.Bits & Bool}
 def validx(m, hok):
   match m:
     case MB{+dw, +T, +K, +B, +kb, +KY}: valid(dw, T, K, B, kb, KY, hok)

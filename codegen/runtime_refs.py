@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""The runtime split (docs/RUNTIME_SPLIT.md), additive stage: the generated runtime monoliths
-types/fulu_obj.bend and types/generic_obj.bend, cut per readable name and operation into
+"""The runtime split (docs/RUNTIME_SPLIT.md): the typed object runtime codegen/generate.py computes as two
+monoliths (types/fulu_obj.bend and types/generic_obj.bend), cut per readable name and operation into
 
     types/<Name>_def_generated.bend            the name's types, default, field access, update, force, dump, fuzz
     types/<Name>_encode_ssz_generated.bend     what its encoder, serializer, writers, size and validity pass reach
@@ -9,17 +9,26 @@ types/fulu_obj.bend and types/generic_obj.bend, cut per readable name and operat
 
 (Bend imports only plain path segments; the spelling is split_rel's).
 
-next to the monoliths, which stay the runtime every proof imports (nothing imports these yet).
-Called by codegen/generate.py (so its --check covers them); `python3 codegen/runtime_refs.py --check`
+and their index types/runtime_index.json (every symbol's file; each monolith's imports and definitions in
+order). Called by codegen/generate.py (so its --check covers them); `python3 codegen/runtime_refs.py --check`
 runs the split's own check alone.
+
+Consumers. A generator writes its modules as before, against the runtime as one module
+(`import <p>types/fulu_obj.bend as T` / generic_obj.bend, and T.<sym>), and passes each module through
+rewire (rewire_out) before its --check comparison and its write: the monolith import becomes the imports
+of exactly the split files the module uses, T.<sym> their alias's. A generator that parses another
+generated module reads it through unwire (its split qualifiers as T. again); one that reads the runtime's
+definitions reads mono_text. Hand-written modules are rewired once, by the same function.
+
+Shared basic types. The generic runtime's definitions that Fulu's has with the same text (boolean /
+uintN helpers, Bitvector4, ...) are Fulu's; its own definitions of those owners go in the same files.
 
 Owners. Every top-level definition of a monolith has an owner: the longest runtime prefix it
 extends (a shape's p, an API name, a word record's name), a boxed shape's (X_bx) being its container's.
 An owner's readable name is codegen/names.py's for an API name (FuluBeaconBlock, ComplexTestStruct,
 uint8, ...); a shape that is some API name's representation takes the first such name's (b32 is
 FuluBytes32's); a shape no name has takes a structural name (Fulu_list_Withdrawal_16,
-Fulu_bitlist_131072, list_uint16_1024, ...). Owners with one readable name share its files. The
-generic runtime's own copies of the basic types boolean / uintN are Generic_<name> in this stage.
+Fulu_bitlist_131072, list_uint16_1024, ...). Owners with one readable name share its files.
 
 Operations. Within an owner, a definition belongs to the operation whose entry points (decode: _decode,
 _ok, _read, _build; encode: _encode, _serialize, _putk, _putn, _put, _putv, _size, _valid;
@@ -161,16 +170,20 @@ def owners_of(g, names, readable, fork):
     return file_of, cands
 
 
-def split(text, g, names, readable, fork, taken=()):
-    """({path: text}, files, file of each name, imports, header) of one monolith's split files.
-    taken: file names another runtime writes (the fork-independent basic types, boolean and uintN, which
-    the generic runtime also generates: its copies are Generic_<name> until the rewiring shares them)."""
+def assign(text, g, names, readable, fork, prior=None):
+    """(head, blocks, fk, files) of one monolith: every definition's file key (readable name, operation) and
+    the files' definitions in the monolith's order. prior: an earlier runtime's (fk, {name: block}); a
+    definition it has with the same text (the fork-independent basic types' helpers, boolean / uintN)
+    is that runtime's, not copied; this runtime's own definitions of those owners share their files."""
     head, bl = blocks(text)
+    pfk, pblk = prior if prior else ({}, {})
+    shared = {nm for nm, _, b in bl if pblk.get(nm) == b}
     file_of, cands = owners_of(g, names, readable, fork)
-    file_of = {k: (f'Generic_{v}' if v in taken else v) for k, v in file_of.items()}
     top = {}
     owner = {}
     for nm, kind, b in bl:
+        if nm in shared:
+            continue
         o = None
         for c in cands:
             if nm == c or nm.startswith(c + '_'):
@@ -225,40 +238,67 @@ def split(text, g, names, readable, fork, taken=()):
     fk = {nm: (file_of[owner[nm]], op[nm]) for nm in top}
     for c, tn in ctor_of.items():
         fk.setdefault(c, fk[tn])
-    # per file: its definitions (monolith order) and references
+    for nm, kind, b in bl:
+        if nm in shared:
+            fk[nm] = pfk[nm]
+            for c in (ctors(b) if kind == 'type' else ()):
+                fk[c] = pfk[c]
     files = {}
     for nm, kind, b in bl:
-        files.setdefault(fk[nm], []).append((nm, b))
+        if nm not in shared:
+            files.setdefault(fk[nm], []).append((nm, b))
+    return head, bl, fk, files
 
-    def alias(key):
-        f, o = key
-        return re.sub(r'\W', '_', f) + '_' + LETTER[o]
+
+def alias(key):
+    """A split file's import alias: its readable name and its operation's letter (the one place it is spelled)."""
+    f, o = key
+    return re.sub(r'\W', '_', f) + '_' + LETTER[o]
+
+
+def render(runtimes):
+    """{path: text} and the import graph of the split files of all runtimes together.
+    runtimes: [(head, fk, files, fork)]; a file key two runtimes share holds the first's definitions, then
+    the next's. A reference is qualified by its own runtime's fk."""
+    order, keyed = [], {}
+    for head, fk, files, fork in runtimes:
+        for key, defs in files.items():
+            if key not in keyed:
+                keyed[key] = []
+                order.append(key)
+            keyed[key].append((head, fk, defs, fork))
+    pos = {k: i for i, k in enumerate(order)}
     out, deps = {}, {}
-    for key, defs in files.items():
+    for key in order:
         f, o = key
-        used = []
-        body = []
-        for nm, b in defs:
-            def q(m):
-                x = m.group(1)
-                if x in fk and fk[x] != key and not _is_local(x, b):
-                    if fk[x] not in used:
-                        used.append(fk[x])
-                    return f'{alias(fk[x])}.{x}'
-                return x
-            body.append(IDENT.sub(q, b))
+        used, body, heads, monos = [], [], [], []
+        for head, fk, defs, fork in keyed[key]:
+            for l in head:
+                if l not in heads:
+                    heads.append(l)
+            monos.append(RTNAME[fork])
+            for nm, b in defs:
+                def q(m):
+                    x = m.group(1)
+                    if x in fk and fk[x] != key and not _is_local(x, b):
+                        if fk[x] not in used:
+                            used.append(fk[x])
+                        return f'{alias(fk[x])}.{x}'
+                    return x
+                body.append(IDENT.sub(q, b))
         deps[key] = used
-        imps = [l.replace('import ../', 'import ' + TO_ROOT, 1) for l in head]
-        order = {k: i for i, k in enumerate(files)}
-        for k in sorted(used, key=lambda k: order[k]):
+        imps = [l.replace('import ../', 'import ' + TO_ROOT, 1) for l in heads]
+        for k in sorted(used, key=lambda k: pos[k]):
             imps.append(f'import {TO_SPLIT}{split_rel(k[0], k[1])} as {alias(k)}')
-        text_ = '\n'.join(imps) + '\n\n# GENERATED by codegen/generate.py (codegen/runtime_refs.py): the runtime split, ' \
-            f'additive stage; the runtime is still {MONO[fork]}.\n# {f}: {DOC[o]}\n\n' + '\n\n'.join(body) + '\n'
+        src = ' and '.join(monos)
+        text_ = '\n'.join(imps) + '\n\n# GENERATED by codegen/generate.py (codegen/runtime_refs.py): the typed object runtime ' \
+            f'({src}), split per name and operation.\n# {f}: {DOC[o]}\n\n' + '\n\n'.join(body) + '\n'
         out[OUT / split_rel(f, o)] = text_
-    return out, files, fk, deps, head
+    return out, deps, order
 
 
-MONO = {'Fulu': 'types/fulu_obj.bend', '': 'types/generic_obj.bend'}
+RTNAME = {'Fulu': 'Fulu', '': 'generic'}
+RUNTIME = {'Fulu': 'fulu', '': 'generic'}
 DOC = {'def': 'its types, default, field access, update, force, dump and fuzz helpers',
        'encode_ssz': 'its encoder, serializer, writers, size and validity pass',
        'decode_ssz': 'its decoder, validator, reader and builder',
@@ -271,70 +311,254 @@ def _is_local(x, b):
     return False
 
 
-def split_check(mono_text, out_files, files, fk, deps):
-    """The split files' definitions, qualifiers removed, are the monolith's; the imports are acyclic."""
+def strip_q(b):
+    """A split file's definition with its file qualifiers removed (the monolith's text)."""
+    return re.sub(r'(?<![\w.])[A-Za-z_]\w*_[derh]\.(?=[A-Za-z_])', '', b)
+
+
+def split_check(mono_text, out_files, fk, files):
+    """The split files hold every definition of the monolith, text for text (qualifiers removed): its own
+    in its files, the ones it shares with an earlier runtime in that runtime's files."""
     _, bl = blocks(mono_text)
     want = {nm: b for nm, _, b in bl}
     got = {}
-    for key, defs in files.items():
-        p = OUT / split_rel(key[0], key[1])
-        t = out_files[p]
-        _, gb = blocks(t)
-        for nm, _, b in gb:
+    for p, t in out_files.items():
+        for nm, _, b in blocks(t)[1]:
             if nm in got:
                 raise SystemExit(f'runtime split: {nm} defined twice')
-            got[nm] = re.sub(r'(?<![\w.])[A-Za-z_]\w*_[derh]\.(?=[A-Za-z_])', '', b)
-    if set(got) != set(want):
-        raise SystemExit(f'runtime split: definitions differ: {sorted(set(want) ^ set(got))[:10]}')
-    bad = [nm for nm in want if got[nm] != want[nm]]
+            got[nm] = (p, strip_q(b))
+    miss = [nm for nm in want if nm not in got]
+    if miss:
+        raise SystemExit(f'runtime split: definitions missing: {miss[:10]}')
+    bad = [nm for nm in want if got[nm][1] != want[nm] or got[nm][0] != OUT / split_rel(*fk[nm])]
     if bad:
-        raise SystemExit(f'runtime split: {len(bad)} definitions changed, e.g. {bad[:5]}')
-    # acyclic
+        raise SystemExit(f'runtime split: {len(bad)} definitions changed or misplaced, e.g. {bad[:5]}')
+    return len(want)
+
+
+def acyclic(deps):
     state = {}
 
-    def visit(k, stack):
+    def visit(k):
         if state.get(k) == 2:
             return
         if state.get(k) == 1:
             raise SystemExit(f'runtime split: an import cycle through {k}')
         state[k] = 1
         for d in deps.get(k, []):
-            visit(d, stack)
+            visit(d)
         state[k] = 2
     for k in deps:
-        visit(k, ())
-    return len(want)
+        visit(k)
+
+
+INDEX = OUT / 'runtime_index.json'
 
 
 def outputs(ctx=None):
-    """{path: text} of both monoliths' split files. ctx: [(monolith text, Gen, names, fork prefix)] as
-    codegen/generate.py computed them (standalone: recomputed through generate.py)."""
+    """{path: text} of the split files of both monoliths and their index (INDEX). ctx: [(monolith text, Gen,
+    names, fork prefix)] as codegen/generate.py computed them (standalone: recomputed through generate.py)."""
+    import json
     import names as NM
     if ctx is None:
         import generate as G
         ctx = G.split_contexts()
     readable = NM.mapping()
-    out = {}
-    taken = set()
+    rts, prior, monos = [], ({}, {}), []
     for text, g, names, fork in ctx:
-        o, files, fk, deps, _ = split(text, g, names, readable, fork, taken)
-        taken |= {f for f, _ in files}
-        split_check(text, o, files, fk, deps)
-        clash = sorted(str(p.relative_to(ROOT)) for p in o if p in out)
-        if clash:
-            raise SystemExit(f'runtime split: two runtimes write {clash[:6]}')
-        if len(o) != len(files):
-            raise SystemExit('runtime split: two files of one runtime share a path')
-        out.update(o)
+        head, bl, fk, files = assign(text, g, names, readable, fork, prior)
+        rts.append((head, fk, files, fork))
+        monos.append((text, fk, files, fork, head, bl))
+        pfk, pblk = prior
+        prior = ({**pfk, **fk}, {**pblk, **{nm: b for nm, _, b in bl}})
+    out, deps, order = render(rts)
+    acyclic(deps)
+    for text, fk, files, fork, head, bl in monos:
+        split_check(text, out, fk, files)
+    # the index: every symbol's file (both runtimes; a shared one is the first runtime's), each monolith's
+    # imports and definitions in order (mono_text rebuilds it from the split files)
+    allfk = prior[0]
+    pos = {k: i for i, k in enumerate(order)}
+    idx = {'files': [list(k) for k in order],
+           'symbols': {s: pos[k] for s, k in sorted(allfk.items())},
+           'monoliths': {RUNTIME[fork]: {'head': head, 'defs': [nm for nm, _, _ in bl]}
+                         for text, fk, files, fork, head, bl in monos}}
+    out[INDEX] = json.dumps(idx, indent=0, sort_keys=True) + '\n'
     # no split file may take a path of types/ that is not a split file (the monoliths, the index files,
     # the hand-written types); split files are exactly the SPLIT_GLOB names
     import fnmatch
     others = [q for q in OUT.iterdir() if q.is_file() and not fnmatch.fnmatch(q.name, SPLIT_GLOB)]
-    hit = sorted(q.name for q in others if q in out)
-    stray = sorted(str(p.relative_to(ROOT)) for p in out if not fnmatch.fnmatch(p.name, SPLIT_GLOB) or p.parent != OUT)
+    hit = sorted(q.name for q in others if q in out and q != INDEX)
+    stray = sorted(str(p.relative_to(ROOT)) for p in out if p != INDEX and (not fnmatch.fnmatch(p.name, SPLIT_GLOB) or p.parent != OUT))
     if hit or stray:
         raise SystemExit(f'runtime split: a name collision in types/: {hit[:6]} {stray[:6]}')
     return out
+
+
+# ==== the consumers: rewire a module's monolith imports to the split files it uses ====
+
+_IX = None
+
+
+def index():
+    """The split's index (INDEX): (files [(name, op)], {symbol: file number}, monoliths)."""
+    global _IX
+    if _IX is None:
+        import json
+        d = json.loads(INDEX.read_text())
+        _IX = ([tuple(k) for k in d['files']], d['symbols'], d['monoliths'])
+    return _IX
+
+
+MONO_IMP = re.compile(r'^import (\S*?)(fulu_obj|generic_obj)\.bend as (\w+)[ \t]*$', re.M)
+SPLIT_IMP = re.compile(r'^import (\S*?)([A-Za-z0-9_]+)_(def|encode_ssz|decode_ssz|hashtreeroot)_generated\.bend as (\w+)[ \t]*$', re.M)
+# the monolith aliases a generator may use without importing them (a text built around import lines
+# copied from an already rewired module)
+BARE = ('T', 'TG')
+
+
+def rewire(text, missing=None):
+    """text with its monolith imports (import <p>fulu_obj.bend / generic_obj.bend as A) replaced by the
+    imports of exactly the split files it uses (import <p><Name>_<op>_generated.bend as <alias>), every
+    A.<sym> by <alias>.<sym>. Idempotent: split imports already present are recomputed the same way, and
+    a bare T. / TG. (a module built around copied, already rewired imports) resolves too. A text importing
+    neither is returned unchanged. A symbol the runtime does not define is an error, unless missing='owner'
+    (a program that must fail to compile for naming it): it is then qualified by the file of its longest
+    defined prefix (or that prefix's _default)."""
+    mi = list(MONO_IMP.finditer(text))
+    si = list(SPLIT_IMP.finditer(text))
+    files, syms, _ = index()
+    known = _aliases()
+    copied = {m.group(1) for m in re.finditer(r'(?<![\w.])([A-Za-z_]\w*_[derh])\.[A-Za-z_]', text) if m.group(1) in known}
+    if not mi and not si:
+        if any(re.search(rf'(?<![\w.]){a}\.[A-Za-z_]', l.split('#')[0]) for a in copied for l in text.split('\n')):
+            raise SystemExit(f'runtime_refs.rewire: split references ({sorted(copied)[:3]}) but no runtime import')
+        return text
+    pre = {m.group(1) for m in mi} | {m.group(1) for m in si}
+    if len(pre) != 1:
+        raise SystemExit(f'runtime_refs.rewire: runtime imports from several places: {sorted(pre)}')
+    P = pre.pop()
+    res = {m.group(3) for m in mi} | {m.group(4) for m in si} | copied
+    lines = text.split('\n')
+    drop = {m.group(0) for m in mi} | {m.group(0) for m in si}
+    first = min(i for i, l in enumerate(lines) if l in drop)
+    kept = [l for l in lines if l not in drop]
+    bound = {m.group(1) for m in re.finditer(r'^import \S+ as (\w+)', '\n'.join(kept), re.M)}
+    body = '\n'.join(kept)
+    res |= {a for a in BARE if a not in bound and re.search(rf'(?<![\w.]){a}\.[A-Za-z_]', body)}
+    used = set()
+    pat = re.compile(r'(?<![\w.])(' + '|'.join(sorted(res, key=len, reverse=True)) + r')\.([A-Za-z_]\w*)')
+
+    def q(m):
+        x = m.group(2)
+        k = syms.get(x)
+        if k is None and missing == 'owner':
+            ps = x.split('_')
+            for j in range(len(ps) - 1, 0, -1):
+                p_ = '_'.join(ps[:j])
+                k = syms.get(p_, syms.get(p_ + '_default'))
+                if k is not None:
+                    break
+        if k is None:
+            raise SystemExit(f'runtime_refs.rewire: {m.group(1)}.{x} is not a runtime symbol')
+        used.add(k)
+        return f'{alias(files[k])}.{x}'
+    kept = [_code_sub(pat, q, l) for l in kept]
+    at = sum(1 for l in lines[:first] if l not in drop)
+    imps = [f'import {P}{split_rel(*files[k])} as {alias(files[k])}' for k in sorted(used)]
+    return '\n'.join(kept[:at] + imps + kept[at:])
+
+
+def use_index(json_text):
+    """Rewire against this index text (generate.py: the one it is about to write) instead of INDEX's."""
+    global _IX, _AL, _GEN
+    import json
+    d = json.loads(json_text)
+    _IX = ([tuple(k) for k in d['files']], d['symbols'], d['monoliths'])
+    _AL = _GEN = None
+
+
+_AL = None
+
+
+def _aliases():
+    global _AL
+    if _AL is None:
+        _AL = {alias(k) for k in index()[0]}
+    return _AL
+
+
+def rewire_out(out):
+    """A generator's outputs ({path: text} or [(path, text)]) with every Bend module rewired."""
+    if isinstance(out, dict):
+        return {p: (rewire(t) if str(p).endswith('.bend') else t) for p, t in out.items()}
+    return [(p, (rewire(t) if str(p).endswith('.bend') else t)) for p, t in out]
+
+
+def unwire(text, to='T'):
+    """A rewired module's text with its split qualifiers spelled as the monolith's alias again (to.<sym>),
+    for generators that parse another generated module by its T.<sym> references."""
+    known = _aliases()
+    pat = re.compile(r'(?<![\w.])([A-Za-z_]\w*_[derh])\.([A-Za-z_]\w*)')
+    return '\n'.join(_code_sub(pat, lambda m: f'{to}.{m.group(2)}' if m.group(1) in known else m.group(0), l)
+                     for l in text.split('\n'))
+
+
+def _code_sub(pat, q, line):
+    """pat.sub(q, ..) on a line's code, not its comment or strings."""
+    out, i, n = [], 0, len(line)
+    while i < n:
+        c = line[i]
+        if c == '#':
+            out.append(line[i:])
+            break
+        if c == '"':
+            j = line.find('"', i + 1)
+            j = n if j < 0 else j + 1
+            out.append(line[i:j])
+            i = j
+            continue
+        j = i
+        while j < n and line[j] not in '#"':
+            j += 1
+        out.append(pat.sub(q, line[i:j]))
+        i = j
+    return ''.join(out)
+
+
+def runtime_of(text):
+    """'generic' when a module uses the generic runtime (imports its monolith, or a symbol only it defines),
+    else 'fulu'."""
+    if re.search(r'^import \S*generic_obj\.bend as ', text, re.M):
+        return 'generic'
+    if re.search(r'^import \S*fulu_obj\.bend as ', text, re.M):
+        return 'fulu'
+    files, syms, monos = index()
+    global _GEN
+    if _GEN is None:
+        _GEN = set(monos['generic']['defs']) - set(monos['fulu']['defs'])
+    for m in re.finditer(r'(?<![\w.])([A-Za-z_]\w*_[derh])\.([A-Za-z_]\w*)', text):
+        if m.group(2) in _GEN:
+            return 'generic'
+    return 'fulu'
+
+
+_GEN = None
+
+
+def mono_text(runtime):
+    """A monolith's text as the split files hold it (its imports, then its definitions in order, qualifiers
+    removed), for generators that read the runtime's definitions."""
+    files, syms, monos = index()
+    m = monos[runtime]
+    cache = {}
+    out = list(m['head']) + ['']
+    for nm in m['defs']:
+        p = OUT / split_rel(*files[syms[nm]])
+        if p not in cache:
+            cache[p] = {n: b for n, _, b in blocks(p.read_text())[1]}
+        out.append(strip_q(cache[p][nm]) + '\n')
+    return '\n'.join(out)
 
 
 def main():

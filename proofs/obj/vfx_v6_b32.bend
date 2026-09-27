@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluCurrentSyncCommitteeBranch_decode_ssz_generated.bend as FuluCurrentSyncCommitteeBranch_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -33,7 +33,7 @@ def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> O.Words: O.Words{FD.array_
 def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 192n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v6_b32_read(UA.BF(t, n), off, 192) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
+    -> {FuluCurrentSyncCommitteeBranch_r.v6_b32_read(UA.BF(t, n), off, 192) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
   VXG.rdg(d, t, n, off, x, e, hd, pf, 192, 192n, 6n, 8n, {==}, {==}, {==}, {==}, {==}, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.Sequence{AV.ch8(UR.RWS(VXG.CNT(x, 48n), t, x))}

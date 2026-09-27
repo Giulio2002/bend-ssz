@@ -1,7 +1,16 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_1_def_generated.bend as bitvector_1_d
+import ../../types/bitvector_2_def_generated.bend as bitvector_2_d
+import ../../types/bitvector_8_def_generated.bend as bitvector_8_d
+import ../../types/bitlist_5_decode_ssz_generated.bend as bitlist_5_r
+import ../../types/bitvector_2_decode_ssz_generated.bend as bitvector_2_r
+import ../../types/bitvector_1_decode_ssz_generated.bend as bitvector_1_r
+import ../../types/bitlist_6_decode_ssz_generated.bend as bitlist_6_r
+import ../../types/bitvector_8_decode_ssz_generated.bend as bitvector_8_r
+import ../../types/BitsStruct_def_generated.bend as BitsStruct_d
+import ../../types/BitsStruct_decode_ssz_generated.bend as BitsStruct_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -340,121 +349,121 @@ def eE1(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +h: {CHKw(t, x, 
   Equal.sym(Nat, Nat.add(U32.to_nat(O1(t, x)), U32.to_nat(U32.sub(len, O1(t, x)))), U32.to_nat(len), VM.sub_eq(len, O1(t, x), VMR.u32le(O1(t, x), len, r11(t, x, off, len, h))))
 def okc5(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT6(t, x, off, len) == b : Bool}) -> {T.Gc85FA758A04_c5(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), b) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT6(t, x, off, len) == b : Bool}) -> {BitsStruct_r.Gc85FA758A04_c5(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
 
 def okc4(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT5(t, x, off, len) == b : Bool}) -> {T.Gc85FA758A04_c4(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(b, K6(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT5(t, x, off, len) == b : Bool}) -> {BitsStruct_r.Gc85FA758A04_c4(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(b, K6(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
-      %Equal.sym(B.Buf & Bool, T.bits6_ok(BF(t, n), FJ1(off, t, x), LJ1(t, x, len)), (BF(t, n), CH1.CHKw(t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len))),
+      %Equal.sym(B.Buf & Bool, bitlist_6_r.bits6_ok(BF(t, n), FJ1(off, t, x), LJ1(t, x, len)), (BF(t, n), CH1.CHKw(t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len))),
           CH1.ok_evalw(d, t, n, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len), eoW(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), len, le_nat(O1(t, x), len, and_r(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hI2)), Order.reflexive(U32.to_nat(len))), hd,
             hwj(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), len, le_nat(O1(t, x), len, and_r(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hI2)), Order.reflexive(U32.to_nat(len))), pf)) :
-        {T.Gc85FA758A04_v5(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K6(t, x, off, len)) : B.Buf & Bool}
+        {BitsStruct_r.Gc85FA758A04_v5(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K6(t, x, off, len)) : B.Buf & Bool}
       okc5(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, hI2, IT6(t, x, off, len), {==})
 
 def okc3(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT4(t, x, off, len) == b : Bool}) -> {T.Gc85FA758A04_c3(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(b, K5(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT4(t, x, off, len) == b : Bool}) -> {BitsStruct_r.Gc85FA758A04_c3(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(b, K5(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
-      %Equal.sym(B.Buf & Bool, T.bits5_ok(BF(t, n), FJ0(off, t, x), LJ0(t, x)), (BF(t, n), CH0.CHKw(t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x))),
+      %Equal.sym(B.Buf & Bool, bitlist_5_r.bits5_ok(BF(t, n), FJ0(off, t, x), LJ0(t, x)), (BF(t, n), CH0.CHKw(t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x))),
           CH0.ok_evalw(d, t, n, XJ0(t, x), FJ0(off, t, x), LJ0(t, x), eoW(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), O1(t, x), le_nat(O0(t, x), O1(t, x), and_l(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hI2)), le_nat(O1(t, x), len, and_r(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hI2))), hd,
             hwj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), O1(t, x), le_nat(O0(t, x), O1(t, x), and_l(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hI2)), le_nat(O1(t, x), len, and_r(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hI2))), pf)) :
-        {T.Gc85FA758A04_v4(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K5(t, x, off, len)) : B.Buf & Bool}
+        {BitsStruct_r.Gc85FA758A04_v4(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K5(t, x, off, len)) : B.Buf & Bool}
       okc4(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, hI2, IT5(t, x, off, len), {==})
 
 def okc2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT3(t, x, off, len) == b : Bool}) -> {T.Gc85FA758A04_c2(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(b, K4(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT3(t, x, off, len) == b : Bool}) -> {BitsStruct_r.Gc85FA758A04_c2(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(b, K4(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
-      %Equal.sym(B.Buf & Bool, T.bv1_ok_at(BF(t, n), U32.add(off, 5)), (BF(t, n), FX_bv1.CHK(t, Nat.add(x, U32.to_nat(5)))),
+      %Equal.sym(B.Buf & Bool, bitvector_1_r.bv1_ok_at(BF(t, n), U32.add(off, 5)), (BF(t, n), FX_bv1.CHK(t, Nat.add(x, U32.to_nat(5)))),
           FX_bv1.ok(d, t, n, U32.add(off, 5), Nat.add(x, U32.to_nat(5)), eocX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 5, U32.to_nat(5), {==}, VA.le_nat(5, 11, {==})), hd, pf, roomFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, U32.to_nat(5), 1n, VA.lea(5, 1, 11, 1n, {==}, {==}, {==})))) :
-        {T.Gc85FA758A04_v3(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K4(t, x, off, len)) : B.Buf & Bool}
+        {BitsStruct_r.Gc85FA758A04_v3(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K4(t, x, off, len)) : B.Buf & Bool}
       okc3(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, hI2, IT4(t, x, off, len), {==})
 
 def okc1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT2(t, x, off, len) == b : Bool}) -> {T.Gc85FA758A04_c1(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(b, K3(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT2(t, x, off, len) == b : Bool}) -> {BitsStruct_r.Gc85FA758A04_c1(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(b, K3(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +hI2 = eb
-      %Equal.sym(B.Buf & Bool, T.bv2_ok_at(BF(t, n), U32.add(off, 4)), (BF(t, n), FX_bv2.CHK(t, Nat.add(x, U32.to_nat(4)))),
+      %Equal.sym(B.Buf & Bool, bitvector_2_r.bv2_ok_at(BF(t, n), U32.add(off, 4)), (BF(t, n), FX_bv2.CHK(t, Nat.add(x, U32.to_nat(4)))),
           FX_bv2.ok(d, t, n, U32.add(off, 4), Nat.add(x, U32.to_nat(4)), eocX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 4, U32.to_nat(4), {==}, VA.le_nat(4, 11, {==})), hd, pf, roomFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, U32.to_nat(4), 1n, VA.lea(4, 1, 11, 1n, {==}, {==}, {==})))) :
-        {T.Gc85FA758A04_v2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K3(t, x, off, len)) : B.Buf & Bool}
+        {BitsStruct_r.Gc85FA758A04_v2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K3(t, x, off, len)) : B.Buf & Bool}
       okc2(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, hI2, IT3(t, x, off, len), {==})
 
 def okc0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +b: Bool, +eb: {IT1(t, x, off, len) == b : Bool}) -> {T.Gc85FA758A04_c0(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), Bool.and(b, K2(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(11), U32.to_nat(len)) == True{} : Bool}, +b: Bool, +eb: {IT1(t, x, off, len) == b : Bool}) -> {BitsStruct_r.Gc85FA758A04_c0(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), Bool.and(b, K2(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +hI1 = eb
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 6)), (BF(t, n), O1(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 6, U32.to_nat(6), {==}, VA.lea(6, 4, 11, 4n, {==}, {==}, {==}))) :
-        {T.Gc85FA758A04_v1(off, len, O0(t, x), _) == (BF(t, n), K2(t, x, off, len)) : B.Buf & Bool}
+        {BitsStruct_r.Gc85FA758A04_v1(off, len, O0(t, x), _) == (BF(t, n), K2(t, x, off, len)) : B.Buf & Bool}
       okc1(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, IT2(t, x, off, len), {==})
 
 def okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool, +ea: {IT0(t, x, off, len) == a : Bool})
-    -> {T.Gc85FA758A04_ok_len(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K1(t, x, off, len))) : B.Buf & Bool}:
+    -> {BitsStruct_r.Gc85FA758A04_ok_len(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K1(t, x, off, len))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       +hF = le_nat(11, len, ea)
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 0, U32.to_nat(0), {==}, VA.lea(0, 4, 11, 4n, {==}, {==}, {==}))) :
-        {T.Gc85FA758A04_v0(off, len, _) == (BF(t, n), K1(t, x, off, len)) : B.Buf & Bool}
+        {BitsStruct_r.Gc85FA758A04_v0(off, len, _) == (BF(t, n), K1(t, x, off, len)) : B.Buf & Bool}
       okc0(d, t, n, x, off, len, eo, hd, hw, pf, hF, IT1(t, x, off, len), {==})
 
 # The validator on the window returns the buffer and CHKw.
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.Gc85FA758A04_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {BitsStruct_r.Gc85FA758A04_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   okl(d, t, n, x, off, len, eo, hd, hw, pf, IT0(t, x, off, len), {==})
 def rd_all(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool})
-    -> {T.Gc85FA758A04_read(BF(t, n), off, len) == (BF(t, n), T.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & T.Gc85FA758A04}:
+    -> {BitsStruct_r.Gc85FA758A04_read(BF(t, n), off, len) == (BF(t, n), BitsStruct_d.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & BitsStruct_d.Gc85FA758A04}:
   +hF = hFc(t, x, off, len, hchk)
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 0, U32.to_nat(0), {==}, VA.lea(0, 4, 11, 4n, {==}, {==}, {==}))) :
-    {T.Gc85FA758A04_rd0(off, len, _) == (BF(t, n), T.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & T.Gc85FA758A04}
+    {BitsStruct_r.Gc85FA758A04_rd0(off, len, _) == (BF(t, n), BitsStruct_d.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & BitsStruct_d.Gc85FA758A04}
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 6)), (BF(t, n), O1(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 6, U32.to_nat(6), {==}, VA.lea(6, 4, 11, 4n, {==}, {==}, {==}))) :
-    {T.Gc85FA758A04_rd1(off, len, O0(t, x), _) == (BF(t, n), T.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & T.Gc85FA758A04}
-  %Equal.sym(B.Buf & O.Bits, T.bits5_read(BF(t, n), FJ0(off, t, x), LJ0(t, x)), (BF(t, n), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x))),
+    {BitsStruct_r.Gc85FA758A04_rd1(off, len, O0(t, x), _) == (BF(t, n), BitsStruct_d.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & BitsStruct_d.Gc85FA758A04}
+  %Equal.sym(B.Buf & O.Bits, bitlist_5_r.bits5_read(BF(t, n), FJ0(off, t, x), LJ0(t, x)), (BF(t, n), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x))),
       CH0.readw(d, t, n, XJ0(t, x), FJ0(off, t, x), LJ0(t, x), eoJ0(d, t, n, x, off, len, eo, hd, hw, pf, hchk), hd, hwJ0(d, t, n, x, off, len, eo, hd, hw, pf, hchk), pf, itD0(t, x, off, len, hchk))) :
-    {T.Gc85FA758A04_rd2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), T.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & T.Gc85FA758A04}
-  %Equal.sym(B.Buf & T.Bitvector2, T.bv2_read(BF(t, n), U32.add(off, 4), 1), (BF(t, n), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4)))),
+    {BitsStruct_r.Gc85FA758A04_rd2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), BitsStruct_d.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & BitsStruct_d.Gc85FA758A04}
+  %Equal.sym(B.Buf & bitvector_2_d.Bitvector2, bitvector_2_r.bv2_read(BF(t, n), U32.add(off, 4), 1), (BF(t, n), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4)))),
       FX_bv2.rdx(d, t, n, U32.add(off, 4), Nat.add(x, U32.to_nat(4)), eocX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 4, U32.to_nat(4), {==}, VA.le_nat(4, 11, {==})), hd, pf,
         roomFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, U32.to_nat(4), 1n, VA.lea(4, 1, 11, 1n, {==}, {==}, {==})))) :
-    {T.Gc85FA758A04_rd3(off, len, O0(t, x), O1(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), _) == (BF(t, n), T.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & T.Gc85FA758A04}
-  %Equal.sym(B.Buf & T.Bitvector1, T.bv1_read(BF(t, n), U32.add(off, 5), 1), (BF(t, n), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5)))),
+    {BitsStruct_r.Gc85FA758A04_rd3(off, len, O0(t, x), O1(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), _) == (BF(t, n), BitsStruct_d.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & BitsStruct_d.Gc85FA758A04}
+  %Equal.sym(B.Buf & bitvector_1_d.Bitvector1, bitvector_1_r.bv1_read(BF(t, n), U32.add(off, 5), 1), (BF(t, n), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5)))),
       FX_bv1.rdx(d, t, n, U32.add(off, 5), Nat.add(x, U32.to_nat(5)), eocX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 5, U32.to_nat(5), {==}, VA.le_nat(5, 11, {==})), hd, pf,
         roomFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, U32.to_nat(5), 1n, VA.lea(5, 1, 11, 1n, {==}, {==}, {==})))) :
-    {T.Gc85FA758A04_rd4(off, len, O0(t, x), O1(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), _) == (BF(t, n), T.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & T.Gc85FA758A04}
-  %Equal.sym(B.Buf & O.Bits, T.bits6_read(BF(t, n), FJ1(off, t, x), LJ1(t, x, len)), (BF(t, n), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len))),
+    {BitsStruct_r.Gc85FA758A04_rd4(off, len, O0(t, x), O1(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), _) == (BF(t, n), BitsStruct_d.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & BitsStruct_d.Gc85FA758A04}
+  %Equal.sym(B.Buf & O.Bits, bitlist_6_r.bits6_read(BF(t, n), FJ1(off, t, x), LJ1(t, x, len)), (BF(t, n), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len))),
       CH1.readw(d, t, n, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len), eoJ1(d, t, n, x, off, len, eo, hd, hw, pf, hchk), hd, hwJ1(d, t, n, x, off, len, eo, hd, hw, pf, hchk), pf, itD1(t, x, off, len, hchk))) :
-    {T.Gc85FA758A04_rd5(off, len, O0(t, x), O1(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), _) == (BF(t, n), T.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & T.Gc85FA758A04}
-  %Equal.sym(B.Buf & T.Bitvector8, T.bv8_read(BF(t, n), U32.add(off, 10), 1), (BF(t, n), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))),
+    {BitsStruct_r.Gc85FA758A04_rd5(off, len, O0(t, x), O1(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), _) == (BF(t, n), BitsStruct_d.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & BitsStruct_d.Gc85FA758A04}
+  %Equal.sym(B.Buf & bitvector_8_d.Bitvector8, bitvector_8_r.bv8_read(BF(t, n), U32.add(off, 10), 1), (BF(t, n), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))),
       FX_bv8.rdx(d, t, n, U32.add(off, 10), Nat.add(x, U32.to_nat(10)), eocX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 10, U32.to_nat(10), {==}, VA.le_nat(10, 11, {==})), hd, pf,
         roomFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, U32.to_nat(10), 1n, VA.lea(10, 1, 11, 1n, {==}, {==}, {==})))) :
-    {T.Gc85FA758A04_rd6(off, len, O0(t, x), O1(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), _) == (BF(t, n), T.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & T.Gc85FA758A04}
+    {BitsStruct_r.Gc85FA758A04_rd6(off, len, O0(t, x), O1(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), _) == (BF(t, n), BitsStruct_d.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}) : B.Buf & BitsStruct_d.Gc85FA758A04}
   {==}
 
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.Gc85FA758A04: T.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> BitsStruct_d.Gc85FA758A04: BitsStruct_d.Gc85FA758A04{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), FX_bv2.OBJ(d, t, Nat.add(x, U32.to_nat(4))), FX_bv1.OBJ(d, t, Nat.add(x, U32.to_nat(5))), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x, len)), FX_bv8.OBJ(d, t, Nat.add(x, U32.to_nat(10)))}
 
 # The reader on the window, when the checks hold.
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {T.Gc85FA758A04_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.Gc85FA758A04}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {BitsStruct_r.Gc85FA758A04_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & BitsStruct_d.Gc85FA758A04}:
   rd_all(d, t, n, x, off, len, eo, hd, hw, pf, hchk)
 def PSW(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> +List<S.Part>: [S.Variable{UW.WX(t, XJ0(t, x), U32.to_nat(LJ0(t, x)))}, S.Fixed{UW.WX(t, Nat.add(x, U32.to_nat(4)), 1n)}, S.Fixed{UW.WX(t, Nat.add(x, U32.to_nat(5)), 1n)}, S.Variable{UW.WX(t, XJ1(t, x), U32.to_nat(LJ1(t, x, len)))}, S.Fixed{UW.WX(t, Nat.add(x, U32.to_nat(10)), 1n)}]
 def RST4(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> +List<S.Part>: []

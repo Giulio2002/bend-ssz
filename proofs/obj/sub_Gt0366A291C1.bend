@@ -1,7 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_8_def_generated.bend as bitvector_8_d
+import ../../types/bitvector_8_decode_ssz_generated.bend as bitvector_8_r
+import ../../types/bitvector_8_encode_ssz_generated.bend as bitvector_8_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -51,7 +53,7 @@ def Gt0366A291C1_spec_encode(+x0: U32)
   SF.encoding_of_parts(Spec.Gt0366A291C1(), S.BitsValue{Gt0366A291C1_tb(x0)}, [B.byte_sel(0, x0)], Gt0366A291C1_spec_parts(x0))
 
 def Gt0366A291C1_spec_decode(+x0: U32)
-    -> {T.Gt0366A291C1_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{T.Bitvector8{U32.and(x0, 255)}}) : B.Buf & Maybe<&1, T.Bitvector8>}:
+    -> {bitvector_8_r.Gt0366A291C1_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{bitvector_8_d.Bitvector8{U32.and(x0, 255)}}) : B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>}:
   {==}
 
 def Gt0366A291C1_spec_view(+x0: U32)
@@ -59,12 +61,12 @@ def Gt0366A291C1_spec_view(+x0: U32)
   {==}
 
 def Gt0366A291C1_spec_bytes(+y0: U32)
-    -> {B.emit(T.Gt0366A291C1_encode(T.Bitvector8{y0}), 0, 1) == (T.Gt0366A291C1_encode(T.Bitvector8{y0}), [B.byte_sel(0, y0)]) : B.Buf & +List<U32>}:
-  %SP2.or0(y0) : {B.emit(T.Gt0366A291C1_encode(T.Bitvector8{y0}), 0, 1) == (T.Gt0366A291C1_encode(T.Bitvector8{y0}), [B.byte_sel(0, _)]) : B.Buf & +List<U32>}
+    -> {B.emit(bitvector_8_e.Gt0366A291C1_encode(bitvector_8_d.Bitvector8{y0}), 0, 1) == (bitvector_8_e.Gt0366A291C1_encode(bitvector_8_d.Bitvector8{y0}), [B.byte_sel(0, y0)]) : B.Buf & +List<U32>}:
+  %SP2.or0(y0) : {B.emit(bitvector_8_e.Gt0366A291C1_encode(bitvector_8_d.Bitvector8{y0}), 0, 1) == (bitvector_8_e.Gt0366A291C1_encode(bitvector_8_d.Bitvector8{y0}), [B.byte_sel(0, _)]) : B.Buf & +List<U32>}
   {==}
 
 def Gt0366A291C1_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})
-    -> {T.Gt0366A291C1_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, T.Bitvector8>}:
-  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {T.Gt0366A291C1_built(m, T.bv8_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, T.Bitvector8>}
+    -> {bitvector_8_r.Gt0366A291C1_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>}:
+  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {bitvector_8_r.Gt0366A291C1_built(m, bitvector_8_r.bv8_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_8_d.Bitvector8>}
   {==}
 

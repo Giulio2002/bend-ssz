@@ -1,7 +1,8 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/CompatibleUnionA_def_generated.bend as CompatibleUnionA_d
+import ../../types/CompatibleUnionA_encode_ssz_generated.bend as CompatibleUnionA_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -62,13 +63,13 @@ def roomf(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> DK.P2(HD(m), DK.P2(HL
     Equal.sym(+List<U32>, UA.BYT(VC.ZT(0n)), UW.ZB(A.quad(VB.pw(0n))), UWB.zt_bytes(0n)), VE2.bt_zb_le(M, A.quad(VB.pw(0n)), hm))
   mk3(m, {==}, hl, hz)
 
-def RT0(+m: CI.MW) -> Data: {T.GuA2212AE21F_putn(FD.array__thaw(U32, VC.ZT(0n)), 0, CI.TH(m)) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (T.GuA2212AE21F & U32)}
+def RT0(+m: CI.MW) -> Data: {CompatibleUnionA_e.GuA2212AE21F_putn(FD.array__thaw(U32, VC.ZT(0n)), 0, CI.TH(m)) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (CompatibleUnionA_d.GuA2212AE21F & U32)}
 
 def rt0(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +g: DK.P2(HD(m), DK.P2(HL(m), HZ(m)))) -> RT0(m):
   +hd = CI.PA(HD(m), DK.P2(HL(m), HZ(m)), g)
   +hl = CI.PA(HL(m), HZ(m), CI.PB(HD(m), DK.P2(HL(m), HZ(m)), g))
   +hz = CI.PB(HL(m), HZ(m), CI.PB(HD(m), DK.P2(HL(m), HZ(m)), g))
-  FD.logic__subst(T.GuA2212AE21F & Bool, z => {T.GuA2212AE21F_pk(FD.array__thaw(U32, VC.ZT(0n)), 0, z) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (T.GuA2212AE21F & U32)}, T.GuA2212AE21F_valid(CI.TH(m)), (CI.TH(m), True{}), CI.validx(m, hok),
+  FD.logic__subst(CompatibleUnionA_d.GuA2212AE21F & Bool, z => {CompatibleUnionA_e.GuA2212AE21F_pk(FD.array__thaw(U32, VC.ZT(0n)), 0, z) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (CompatibleUnionA_d.GuA2212AE21F & U32)}, CompatibleUnionA_e.GuA2212AE21F_valid(CI.TH(m)), (CI.TH(m), True{}), CI.validx(m, hok),
   CI.putx(m, 0n, VC.ZT(0n), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, 0n, 0), hl, hz, hok))
 
 def BY0(+m: CI.MW) -> Data: {UA.BYT(OUTE(m)) == UW.SPL(UA.BYT(VC.ZT(0n)), Nat.add(A.quad(0n), 0n), List.append(&2, U32, CI.ENC(m), UW.ZB(CI.PADB(0n, m)))) : +List<U32>}
@@ -86,14 +87,14 @@ def a31(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {U32.and(CI.SZ(m), 2147
   VBE.and31(CI.SZ(m), 2n, {==}, FD.nat__le_lt_trans(U32.to_nat(CI.SZ(m)), 2n, FD.spec_common__pow2(2n), hs, {==}))
 
 def eval_go(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool})
-    -> {T.GuA2212AE21F_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.GuA2212AE21F & B.Buf}:
+    -> {CompatibleUnionA_e.GuA2212AE21F_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : CompatibleUnionA_d.GuA2212AE21F & B.Buf}:
   +rt = rt0(m, hok, roomf(m, hok))
   %Equal.sym(Array<U32>, Array.new(U32, 0n, 0), FD.array__thaw(U32, VC.ZT(0n)), FD.array__new(U32, 0n, 0)) :
-    {T.GuA2212AE21F_enc_put(T.GuA2212AE21F_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.GuA2212AE21F & B.Buf}
-  %Equal.sym(Array<U32> & (T.GuA2212AE21F & U32), T.GuA2212AE21F_putn(FD.array__thaw(U32, VC.ZT(0n)), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
-    {T.GuA2212AE21F_enc_put(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.GuA2212AE21F & B.Buf}
+    {CompatibleUnionA_e.GuA2212AE21F_enc_put(CompatibleUnionA_e.GuA2212AE21F_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : CompatibleUnionA_d.GuA2212AE21F & B.Buf}
+  %Equal.sym(Array<U32> & (CompatibleUnionA_d.GuA2212AE21F & U32), CompatibleUnionA_e.GuA2212AE21F_putn(FD.array__thaw(U32, VC.ZT(0n)), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
+    {CompatibleUnionA_e.GuA2212AE21F_enc_put(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : CompatibleUnionA_d.GuA2212AE21F & B.Buf}
   %Equal.sym(U32, U32.and(CI.SZ(m), 2147483647), CI.SZ(m), a31(m, hok)) :
-    {(CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), _}) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.GuA2212AE21F & B.Buf}
+    {(CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), _}) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : CompatibleUnionA_d.GuA2212AE21F & B.Buf}
   {==}
 
 # The output's first bytes, as many as the size, are the container's bytes.
@@ -110,7 +111,7 @@ def obytes(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {VS.bt(U32.to_nat(CI
 law encode_eval:
   for +m: CI.MW
   for +hok: {CI.OK(m) == True{} : Bool}
-  {T.GuA2212AE21F_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), SZSM(m)}) : T.GuA2212AE21F & B.Buf}
+  {CompatibleUnionA_e.GuA2212AE21F_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), SZSM(m)}) : CompatibleUnionA_d.GuA2212AE21F & B.Buf}
 def encode_eval(m, hok): eval_go(m, hok)
 
 # The buffer's bytes are the spec encoding of the object's value.

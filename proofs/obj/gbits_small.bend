@@ -3,7 +3,35 @@ import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d
+import ../../types/Fulu_bitvector_4_hashtreeroot_generated.bend as Fulu_bitvector_4_h
+import ../../types/bitvector_1_def_generated.bend as bitvector_1_d
+import ../../types/bitvector_15_def_generated.bend as bitvector_15_d
+import ../../types/bitvector_16_def_generated.bend as bitvector_16_d
+import ../../types/bitvector_17_def_generated.bend as bitvector_17_d
+import ../../types/bitvector_2_def_generated.bend as bitvector_2_d
+import ../../types/bitvector_3_def_generated.bend as bitvector_3_d
+import ../../types/bitvector_31_def_generated.bend as bitvector_31_d
+import ../../types/bitvector_33_def_generated.bend as bitvector_33_d
+import ../../types/bitvector_5_def_generated.bend as bitvector_5_d
+import ../../types/bitvector_6_def_generated.bend as bitvector_6_d
+import ../../types/bitvector_7_def_generated.bend as bitvector_7_d
+import ../../types/bitvector_8_def_generated.bend as bitvector_8_d
+import ../../types/bitvector_9_def_generated.bend as bitvector_9_d
+import ../../types/bitvector_2_hashtreeroot_generated.bend as bitvector_2_h
+import ../../types/bitvector_1_hashtreeroot_generated.bend as bitvector_1_h
+import ../../types/bitvector_8_hashtreeroot_generated.bend as bitvector_8_h
+import ../../types/bitvector_15_hashtreeroot_generated.bend as bitvector_15_h
+import ../../types/bitvector_16_hashtreeroot_generated.bend as bitvector_16_h
+import ../../types/bitvector_17_hashtreeroot_generated.bend as bitvector_17_h
+import ../../types/bitvector_31_hashtreeroot_generated.bend as bitvector_31_h
+import ../../types/bitvector_33_hashtreeroot_generated.bend as bitvector_33_h
+import ../../types/bitvector_3_hashtreeroot_generated.bend as bitvector_3_h
+import ../../types/bitvector_5_hashtreeroot_generated.bend as bitvector_5_h
+import ../../types/bitvector_6_hashtreeroot_generated.bend as bitvector_6_h
+import ../../types/bitvector_7_hashtreeroot_generated.bend as bitvector_7_h
+import ../../types/bitvector_9_hashtreeroot_generated.bend as bitvector_9_h
+import ../../types/bitvector_4_hashtreeroot_generated.bend as bitvector_4_h
 import ../../types/schema.bend as S
 import ../../spec/root_relation.bend as RR
 import ./generic_specs.bend as Spec
@@ -84,40 +112,40 @@ def GtEDF530C7B9_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool, +a2:
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(15n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(15n), 0n, hl, [D.D{B.swap32(U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def GtEDF530C7B9_last(o: T.Bitvector15) -> U32:
+def GtEDF530C7B9_last(o: bitvector_15_d.Bitvector15) -> U32:
   match o:
-    case T.Bitvector15{+w0}: w0
-def GtEDF530C7B9_bits(o: T.Bitvector15) -> +List<Bool>:
+    case bitvector_15_d.Bitvector15{+w0}: w0
+def GtEDF530C7B9_bits(o: bitvector_15_d.Bitvector15) -> +List<Bool>:
   match o:
-    case T.Bitvector15{+w0}: BLP.btk(15n, BLP.bitsof([w0]))
-def GtEDF530C7B9_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool) -> {T.bv15_root(hl, h, T.Bitvector15{U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def GtEDF530C7B9_htr(-h: B.Buf, +o: T.Bitvector15) -> {T.GtEDF530C7B9_hash_tree_root(h, o) == T.bv15_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_15_d.Bitvector15{+w0}: BLP.btk(15n, BLP.bitsof([w0]))
+def GtEDF530C7B9_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool) -> {bitvector_15_h.bv15_root(hl, h, bitvector_15_d.Bitvector15{U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def GtEDF530C7B9_htr(-h: B.Buf, +o: bitvector_15_d.Bitvector15) -> {bitvector_15_h.GtEDF530C7B9_hash_tree_root(h, o) == bitvector_15_h.bv15_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def GtEDF530C7B9_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool, +hg: {Bits.bitvector_at_depth(15n, 0n, BLP.btk(15n, BLP.bitsof([U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(15n, BLP.bitsof([U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}]))}, Spec.GtEDF530C7B9(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def GtEDF530C7B9_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(15n))
-    -> RR.roots(S.BitsValue{BLP.btk(15n, BLP.bitsof([U32{WSp.join(15n, 17n, t, Word.zero(17n))}]))}, Spec.GtEDF530C7B9(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv15_root(hl, h, T.Bitvector15{U32{WSp.join(15n, 17n, t, Word.zero(17n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(15n, BLP.bitsof([U32{WSp.join(15n, 17n, t, Word.zero(17n))}]))}, Spec.GtEDF530C7B9(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_15_h.bv15_root(hl, h, bitvector_15_d.Bitvector15{U32{WSp.join(15n, 17n, t, Word.zero(17n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, WCon{+a8, WCon{+a9, WCon{+a10, WCon{+a11, WCon{+a12, WCon{+a13, WCon{+a14, WNil{}}}}}}}}}}}}}}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv15_root(hl, h, T.Bitvector15{U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtEDF530C7B9_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_15_h.bv15_root(hl, h, bitvector_15_d.Bitvector15{U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtEDF530C7B9_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14)) :
         RR.roots(S.BitsValue{BLP.btk(15n, BLP.bitsof([U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}]))}, Spec.GtEDF530C7B9(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       GtEDF530C7B9_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(15n, 17n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WNil{}}}}}}}}}}}}}}}}, Word.zero(17n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, GtEDF530C7B9_g(hl, ehl, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14))
-def GtEDF530C7B9_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector15, +e: {GtEDF530C7B9_last(o) == U32{WSp.join(15n, 17n, WSp.take(15n, 32n, PD.bits(GtEDF530C7B9_last(o))), Word.zero(17n))} : U32})
-    -> RR.roots(S.BitsValue{GtEDF530C7B9_bits(o)}, Spec.GtEDF530C7B9(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv15_root(hl, h, o, 0)))]):
+def GtEDF530C7B9_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_15_d.Bitvector15, +e: {GtEDF530C7B9_last(o) == U32{WSp.join(15n, 17n, WSp.take(15n, 32n, PD.bits(GtEDF530C7B9_last(o))), Word.zero(17n))} : U32})
+    -> RR.roots(S.BitsValue{GtEDF530C7B9_bits(o)}, Spec.GtEDF530C7B9(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_15_h.bv15_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector15{+w0}:
+    case bitvector_15_d.Bitvector15{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(15n, 17n, WSp.take(15n, 32n, PD.bits(w0)), Word.zero(17n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(15n, BLP.bitsof([_]))}, Spec.GtEDF530C7B9(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv15_root(hl, h, T.Bitvector15{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(15n, BLP.bitsof([_]))}, Spec.GtEDF530C7B9(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_15_h.bv15_root(hl, h, bitvector_15_d.Bitvector15{_}, 0)))])
       GtEDF530C7B9_h(h, hl, ehl, WSp.take(15n, 32n, PD.bits(w0)))
 # GtEDF530C7B9: for every object whose bits past 15 are zero, the runtime root is a
 # specification root of its bits.
 law GtEDF530C7B9_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector15
+  for +o: bitvector_15_d.Bitvector15
   for +e: {GtEDF530C7B9_last(o) == U32{WSp.join(15n, 17n, WSp.take(15n, 32n, PD.bits(GtEDF530C7B9_last(o))), Word.zero(17n))} : U32}
-  RR.roots(S.BitsValue{GtEDF530C7B9_bits(o)}, Spec.GtEDF530C7B9(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtEDF530C7B9_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{GtEDF530C7B9_bits(o)}, Spec.GtEDF530C7B9(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_15_h.GtEDF530C7B9_hash_tree_root(h, o)))])
 def GtEDF530C7B9_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.GtEDF530C7B9_hash_tree_root(h, o), T.bv15_root(64n, h, o, 0), GtEDF530C7B9_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_15_h.GtEDF530C7B9_hash_tree_root(h, o), bitvector_15_h.bv15_root(64n, h, o, 0), GtEDF530C7B9_htr(h, o)) :
     RR.roots(S.BitsValue{GtEDF530C7B9_bits(o)}, Spec.GtEDF530C7B9(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   GtEDF530C7B9_lawg(h, 64n, {==}, o, e)
 
@@ -142,40 +170,40 @@ def GtED805B7C93_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool, +a2:
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(16n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(16n), 0n, hl, [D.D{B.swap32(U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def GtED805B7C93_last(o: T.Bitvector16) -> U32:
+def GtED805B7C93_last(o: bitvector_16_d.Bitvector16) -> U32:
   match o:
-    case T.Bitvector16{+w0}: w0
-def GtED805B7C93_bits(o: T.Bitvector16) -> +List<Bool>:
+    case bitvector_16_d.Bitvector16{+w0}: w0
+def GtED805B7C93_bits(o: bitvector_16_d.Bitvector16) -> +List<Bool>:
   match o:
-    case T.Bitvector16{+w0}: BLP.btk(16n, BLP.bitsof([w0]))
-def GtED805B7C93_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool, +a15: Bool) -> {T.bv16_root(hl, h, T.Bitvector16{U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def GtED805B7C93_htr(-h: B.Buf, +o: T.Bitvector16) -> {T.GtED805B7C93_hash_tree_root(h, o) == T.bv16_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_16_d.Bitvector16{+w0}: BLP.btk(16n, BLP.bitsof([w0]))
+def GtED805B7C93_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool, +a15: Bool) -> {bitvector_16_h.bv16_root(hl, h, bitvector_16_d.Bitvector16{U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def GtED805B7C93_htr(-h: B.Buf, +o: bitvector_16_d.Bitvector16) -> {bitvector_16_h.GtED805B7C93_hash_tree_root(h, o) == bitvector_16_h.bv16_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def GtED805B7C93_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool, +a15: Bool, +hg: {Bits.bitvector_at_depth(16n, 0n, BLP.btk(16n, BLP.bitsof([U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(16n, BLP.bitsof([U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}]))}, Spec.GtED805B7C93(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def GtED805B7C93_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(16n))
-    -> RR.roots(S.BitsValue{BLP.btk(16n, BLP.bitsof([U32{WSp.join(16n, 16n, t, Word.zero(16n))}]))}, Spec.GtED805B7C93(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv16_root(hl, h, T.Bitvector16{U32{WSp.join(16n, 16n, t, Word.zero(16n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(16n, BLP.bitsof([U32{WSp.join(16n, 16n, t, Word.zero(16n))}]))}, Spec.GtED805B7C93(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_16_h.bv16_root(hl, h, bitvector_16_d.Bitvector16{U32{WSp.join(16n, 16n, t, Word.zero(16n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, WCon{+a8, WCon{+a9, WCon{+a10, WCon{+a11, WCon{+a12, WCon{+a13, WCon{+a14, WCon{+a15, WNil{}}}}}}}}}}}}}}}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv16_root(hl, h, T.Bitvector16{U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtED805B7C93_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_16_h.bv16_root(hl, h, bitvector_16_d.Bitvector16{U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtED805B7C93_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15)) :
         RR.roots(S.BitsValue{BLP.btk(16n, BLP.bitsof([U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}]))}, Spec.GtED805B7C93(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       GtED805B7C93_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(16n, 16n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WNil{}}}}}}}}}}}}}}}}}, Word.zero(16n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, GtED805B7C93_g(hl, ehl, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15))
-def GtED805B7C93_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector16, +e: {GtED805B7C93_last(o) == U32{WSp.join(16n, 16n, WSp.take(16n, 32n, PD.bits(GtED805B7C93_last(o))), Word.zero(16n))} : U32})
-    -> RR.roots(S.BitsValue{GtED805B7C93_bits(o)}, Spec.GtED805B7C93(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv16_root(hl, h, o, 0)))]):
+def GtED805B7C93_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_16_d.Bitvector16, +e: {GtED805B7C93_last(o) == U32{WSp.join(16n, 16n, WSp.take(16n, 32n, PD.bits(GtED805B7C93_last(o))), Word.zero(16n))} : U32})
+    -> RR.roots(S.BitsValue{GtED805B7C93_bits(o)}, Spec.GtED805B7C93(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_16_h.bv16_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector16{+w0}:
+    case bitvector_16_d.Bitvector16{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(16n, 16n, WSp.take(16n, 32n, PD.bits(w0)), Word.zero(16n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(16n, BLP.bitsof([_]))}, Spec.GtED805B7C93(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv16_root(hl, h, T.Bitvector16{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(16n, BLP.bitsof([_]))}, Spec.GtED805B7C93(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_16_h.bv16_root(hl, h, bitvector_16_d.Bitvector16{_}, 0)))])
       GtED805B7C93_h(h, hl, ehl, WSp.take(16n, 32n, PD.bits(w0)))
 # GtED805B7C93: for every object whose bits past 16 are zero, the runtime root is a
 # specification root of its bits.
 law GtED805B7C93_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector16
+  for +o: bitvector_16_d.Bitvector16
   for +e: {GtED805B7C93_last(o) == U32{WSp.join(16n, 16n, WSp.take(16n, 32n, PD.bits(GtED805B7C93_last(o))), Word.zero(16n))} : U32}
-  RR.roots(S.BitsValue{GtED805B7C93_bits(o)}, Spec.GtED805B7C93(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtED805B7C93_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{GtED805B7C93_bits(o)}, Spec.GtED805B7C93(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_16_h.GtED805B7C93_hash_tree_root(h, o)))])
 def GtED805B7C93_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.GtED805B7C93_hash_tree_root(h, o), T.bv16_root(64n, h, o, 0), GtED805B7C93_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_16_h.GtED805B7C93_hash_tree_root(h, o), bitvector_16_h.bv16_root(64n, h, o, 0), GtED805B7C93_htr(h, o)) :
     RR.roots(S.BitsValue{GtED805B7C93_bits(o)}, Spec.GtED805B7C93(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   GtED805B7C93_lawg(h, 64n, {==}, o, e)
 
@@ -200,40 +228,40 @@ def GtFF7C03E8A0_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool, +a2:
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(17n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(17n), 0n, hl, [D.D{B.swap32(U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def GtFF7C03E8A0_last(o: T.Bitvector17) -> U32:
+def GtFF7C03E8A0_last(o: bitvector_17_d.Bitvector17) -> U32:
   match o:
-    case T.Bitvector17{+w0}: w0
-def GtFF7C03E8A0_bits(o: T.Bitvector17) -> +List<Bool>:
+    case bitvector_17_d.Bitvector17{+w0}: w0
+def GtFF7C03E8A0_bits(o: bitvector_17_d.Bitvector17) -> +List<Bool>:
   match o:
-    case T.Bitvector17{+w0}: BLP.btk(17n, BLP.bitsof([w0]))
-def GtFF7C03E8A0_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool, +a15: Bool, +a16: Bool) -> {T.bv17_root(hl, h, T.Bitvector17{U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def GtFF7C03E8A0_htr(-h: B.Buf, +o: T.Bitvector17) -> {T.GtFF7C03E8A0_hash_tree_root(h, o) == T.bv17_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_17_d.Bitvector17{+w0}: BLP.btk(17n, BLP.bitsof([w0]))
+def GtFF7C03E8A0_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool, +a15: Bool, +a16: Bool) -> {bitvector_17_h.bv17_root(hl, h, bitvector_17_d.Bitvector17{U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def GtFF7C03E8A0_htr(-h: B.Buf, +o: bitvector_17_d.Bitvector17) -> {bitvector_17_h.GtFF7C03E8A0_hash_tree_root(h, o) == bitvector_17_h.bv17_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def GtFF7C03E8A0_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool, +a15: Bool, +a16: Bool, +hg: {Bits.bitvector_at_depth(17n, 0n, BLP.btk(17n, BLP.bitsof([U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(17n, BLP.bitsof([U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}]))}, Spec.GtFF7C03E8A0(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def GtFF7C03E8A0_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(17n))
-    -> RR.roots(S.BitsValue{BLP.btk(17n, BLP.bitsof([U32{WSp.join(17n, 15n, t, Word.zero(15n))}]))}, Spec.GtFF7C03E8A0(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv17_root(hl, h, T.Bitvector17{U32{WSp.join(17n, 15n, t, Word.zero(15n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(17n, BLP.bitsof([U32{WSp.join(17n, 15n, t, Word.zero(15n))}]))}, Spec.GtFF7C03E8A0(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_17_h.bv17_root(hl, h, bitvector_17_d.Bitvector17{U32{WSp.join(17n, 15n, t, Word.zero(15n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, WCon{+a8, WCon{+a9, WCon{+a10, WCon{+a11, WCon{+a12, WCon{+a13, WCon{+a14, WCon{+a15, WCon{+a16, WNil{}}}}}}}}}}}}}}}}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv17_root(hl, h, T.Bitvector17{U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtFF7C03E8A0_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_17_h.bv17_root(hl, h, bitvector_17_d.Bitvector17{U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtFF7C03E8A0_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16)) :
         RR.roots(S.BitsValue{BLP.btk(17n, BLP.bitsof([U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}]))}, Spec.GtFF7C03E8A0(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       GtFF7C03E8A0_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(17n, 15n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WNil{}}}}}}}}}}}}}}}}}}, Word.zero(15n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, GtFF7C03E8A0_g(hl, ehl, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16))
-def GtFF7C03E8A0_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector17, +e: {GtFF7C03E8A0_last(o) == U32{WSp.join(17n, 15n, WSp.take(17n, 32n, PD.bits(GtFF7C03E8A0_last(o))), Word.zero(15n))} : U32})
-    -> RR.roots(S.BitsValue{GtFF7C03E8A0_bits(o)}, Spec.GtFF7C03E8A0(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv17_root(hl, h, o, 0)))]):
+def GtFF7C03E8A0_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_17_d.Bitvector17, +e: {GtFF7C03E8A0_last(o) == U32{WSp.join(17n, 15n, WSp.take(17n, 32n, PD.bits(GtFF7C03E8A0_last(o))), Word.zero(15n))} : U32})
+    -> RR.roots(S.BitsValue{GtFF7C03E8A0_bits(o)}, Spec.GtFF7C03E8A0(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_17_h.bv17_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector17{+w0}:
+    case bitvector_17_d.Bitvector17{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(17n, 15n, WSp.take(17n, 32n, PD.bits(w0)), Word.zero(15n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(17n, BLP.bitsof([_]))}, Spec.GtFF7C03E8A0(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv17_root(hl, h, T.Bitvector17{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(17n, BLP.bitsof([_]))}, Spec.GtFF7C03E8A0(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_17_h.bv17_root(hl, h, bitvector_17_d.Bitvector17{_}, 0)))])
       GtFF7C03E8A0_h(h, hl, ehl, WSp.take(17n, 32n, PD.bits(w0)))
 # GtFF7C03E8A0: for every object whose bits past 17 are zero, the runtime root is a
 # specification root of its bits.
 law GtFF7C03E8A0_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector17
+  for +o: bitvector_17_d.Bitvector17
   for +e: {GtFF7C03E8A0_last(o) == U32{WSp.join(17n, 15n, WSp.take(17n, 32n, PD.bits(GtFF7C03E8A0_last(o))), Word.zero(15n))} : U32}
-  RR.roots(S.BitsValue{GtFF7C03E8A0_bits(o)}, Spec.GtFF7C03E8A0(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtFF7C03E8A0_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{GtFF7C03E8A0_bits(o)}, Spec.GtFF7C03E8A0(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_17_h.GtFF7C03E8A0_hash_tree_root(h, o)))])
 def GtFF7C03E8A0_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.GtFF7C03E8A0_hash_tree_root(h, o), T.bv17_root(64n, h, o, 0), GtFF7C03E8A0_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_17_h.GtFF7C03E8A0_hash_tree_root(h, o), bitvector_17_h.bv17_root(64n, h, o, 0), GtFF7C03E8A0_htr(h, o)) :
     RR.roots(S.BitsValue{GtFF7C03E8A0_bits(o)}, Spec.GtFF7C03E8A0(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   GtFF7C03E8A0_lawg(h, 64n, {==}, o, e)
 
@@ -258,40 +286,40 @@ def GtFCF8066C33_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool) -> {Bits.bitvec
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(1n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(1n), 0n, hl, [D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def GtFCF8066C33_last(o: T.Bitvector1) -> U32:
+def GtFCF8066C33_last(o: bitvector_1_d.Bitvector1) -> U32:
   match o:
-    case T.Bitvector1{+w0}: w0
-def GtFCF8066C33_bits(o: T.Bitvector1) -> +List<Bool>:
+    case bitvector_1_d.Bitvector1{+w0}: w0
+def GtFCF8066C33_bits(o: bitvector_1_d.Bitvector1) -> +List<Bool>:
   match o:
-    case T.Bitvector1{+w0}: BLP.btk(1n, BLP.bitsof([w0]))
-def GtFCF8066C33_st(+hl: Nat, -h: B.Buf, +a0: Bool) -> {T.bv1_root(hl, h, T.Bitvector1{U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def GtFCF8066C33_htr(-h: B.Buf, +o: T.Bitvector1) -> {T.GtFCF8066C33_hash_tree_root(h, o) == T.bv1_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_1_d.Bitvector1{+w0}: BLP.btk(1n, BLP.bitsof([w0]))
+def GtFCF8066C33_st(+hl: Nat, -h: B.Buf, +a0: Bool) -> {bitvector_1_h.bv1_root(hl, h, bitvector_1_d.Bitvector1{U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def GtFCF8066C33_htr(-h: B.Buf, +o: bitvector_1_d.Bitvector1) -> {bitvector_1_h.GtFCF8066C33_hash_tree_root(h, o) == bitvector_1_h.bv1_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def GtFCF8066C33_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +hg: {Bits.bitvector_at_depth(1n, 0n, BLP.btk(1n, BLP.bitsof([U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(1n, BLP.bitsof([U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}]))}, Spec.GtFCF8066C33(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def GtFCF8066C33_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(1n))
-    -> RR.roots(S.BitsValue{BLP.btk(1n, BLP.bitsof([U32{WSp.join(1n, 31n, t, Word.zero(31n))}]))}, Spec.GtFCF8066C33(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv1_root(hl, h, T.Bitvector1{U32{WSp.join(1n, 31n, t, Word.zero(31n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(1n, BLP.bitsof([U32{WSp.join(1n, 31n, t, Word.zero(31n))}]))}, Spec.GtFCF8066C33(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_1_h.bv1_root(hl, h, bitvector_1_d.Bitvector1{U32{WSp.join(1n, 31n, t, Word.zero(31n))}}, 0)))]):
   match t:
     case WCon{+a0, WNil{}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv1_root(hl, h, T.Bitvector1{U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtFCF8066C33_st(hl, h, a0)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_1_h.bv1_root(hl, h, bitvector_1_d.Bitvector1{U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtFCF8066C33_st(hl, h, a0)) :
         RR.roots(S.BitsValue{BLP.btk(1n, BLP.bitsof([U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}]))}, Spec.GtFCF8066C33(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       GtFCF8066C33_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, GtFCF8066C33_g(hl, ehl, a0))
-def GtFCF8066C33_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector1, +e: {GtFCF8066C33_last(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(GtFCF8066C33_last(o))), Word.zero(31n))} : U32})
-    -> RR.roots(S.BitsValue{GtFCF8066C33_bits(o)}, Spec.GtFCF8066C33(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv1_root(hl, h, o, 0)))]):
+def GtFCF8066C33_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_1_d.Bitvector1, +e: {GtFCF8066C33_last(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(GtFCF8066C33_last(o))), Word.zero(31n))} : U32})
+    -> RR.roots(S.BitsValue{GtFCF8066C33_bits(o)}, Spec.GtFCF8066C33(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_1_h.bv1_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector1{+w0}:
+    case bitvector_1_d.Bitvector1{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(w0)), Word.zero(31n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(1n, BLP.bitsof([_]))}, Spec.GtFCF8066C33(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv1_root(hl, h, T.Bitvector1{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(1n, BLP.bitsof([_]))}, Spec.GtFCF8066C33(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_1_h.bv1_root(hl, h, bitvector_1_d.Bitvector1{_}, 0)))])
       GtFCF8066C33_h(h, hl, ehl, WSp.take(1n, 32n, PD.bits(w0)))
 # GtFCF8066C33: for every object whose bits past 1 are zero, the runtime root is a
 # specification root of its bits.
 law GtFCF8066C33_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector1
+  for +o: bitvector_1_d.Bitvector1
   for +e: {GtFCF8066C33_last(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(GtFCF8066C33_last(o))), Word.zero(31n))} : U32}
-  RR.roots(S.BitsValue{GtFCF8066C33_bits(o)}, Spec.GtFCF8066C33(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtFCF8066C33_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{GtFCF8066C33_bits(o)}, Spec.GtFCF8066C33(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_1_h.GtFCF8066C33_hash_tree_root(h, o)))])
 def GtFCF8066C33_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.GtFCF8066C33_hash_tree_root(h, o), T.bv1_root(64n, h, o, 0), GtFCF8066C33_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_1_h.GtFCF8066C33_hash_tree_root(h, o), bitvector_1_h.bv1_root(64n, h, o, 0), GtFCF8066C33_htr(h, o)) :
     RR.roots(S.BitsValue{GtFCF8066C33_bits(o)}, Spec.GtFCF8066C33(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   GtFCF8066C33_lawg(h, 64n, {==}, o, e)
 
@@ -316,40 +344,40 @@ def Gt9368483BAB_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool) -> {
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(2n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(2n), 0n, hl, [D.D{B.swap32(U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def Gt9368483BAB_last(o: T.Bitvector2) -> U32:
+def Gt9368483BAB_last(o: bitvector_2_d.Bitvector2) -> U32:
   match o:
-    case T.Bitvector2{+w0}: w0
-def Gt9368483BAB_bits(o: T.Bitvector2) -> +List<Bool>:
+    case bitvector_2_d.Bitvector2{+w0}: w0
+def Gt9368483BAB_bits(o: bitvector_2_d.Bitvector2) -> +List<Bool>:
   match o:
-    case T.Bitvector2{+w0}: BLP.btk(2n, BLP.bitsof([w0]))
-def Gt9368483BAB_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool) -> {T.bv2_root(hl, h, T.Bitvector2{U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def Gt9368483BAB_htr(-h: B.Buf, +o: T.Bitvector2) -> {T.Gt9368483BAB_hash_tree_root(h, o) == T.bv2_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_2_d.Bitvector2{+w0}: BLP.btk(2n, BLP.bitsof([w0]))
+def Gt9368483BAB_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool) -> {bitvector_2_h.bv2_root(hl, h, bitvector_2_d.Bitvector2{U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def Gt9368483BAB_htr(-h: B.Buf, +o: bitvector_2_d.Bitvector2) -> {bitvector_2_h.Gt9368483BAB_hash_tree_root(h, o) == bitvector_2_h.bv2_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def Gt9368483BAB_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +hg: {Bits.bitvector_at_depth(2n, 0n, BLP.btk(2n, BLP.bitsof([U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(2n, BLP.bitsof([U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}]))}, Spec.Gt9368483BAB(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def Gt9368483BAB_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(2n))
-    -> RR.roots(S.BitsValue{BLP.btk(2n, BLP.bitsof([U32{WSp.join(2n, 30n, t, Word.zero(30n))}]))}, Spec.Gt9368483BAB(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv2_root(hl, h, T.Bitvector2{U32{WSp.join(2n, 30n, t, Word.zero(30n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(2n, BLP.bitsof([U32{WSp.join(2n, 30n, t, Word.zero(30n))}]))}, Spec.Gt9368483BAB(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_2_h.bv2_root(hl, h, bitvector_2_d.Bitvector2{U32{WSp.join(2n, 30n, t, Word.zero(30n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WNil{}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv2_root(hl, h, T.Bitvector2{U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), Gt9368483BAB_st(hl, h, a0, a1)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_2_h.bv2_root(hl, h, bitvector_2_d.Bitvector2{U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), Gt9368483BAB_st(hl, h, a0, a1)) :
         RR.roots(S.BitsValue{BLP.btk(2n, BLP.bitsof([U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}]))}, Spec.Gt9368483BAB(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       Gt9368483BAB_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, Gt9368483BAB_g(hl, ehl, a0, a1))
-def Gt9368483BAB_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector2, +e: {Gt9368483BAB_last(o) == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(Gt9368483BAB_last(o))), Word.zero(30n))} : U32})
-    -> RR.roots(S.BitsValue{Gt9368483BAB_bits(o)}, Spec.Gt9368483BAB(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv2_root(hl, h, o, 0)))]):
+def Gt9368483BAB_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_2_d.Bitvector2, +e: {Gt9368483BAB_last(o) == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(Gt9368483BAB_last(o))), Word.zero(30n))} : U32})
+    -> RR.roots(S.BitsValue{Gt9368483BAB_bits(o)}, Spec.Gt9368483BAB(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_2_h.bv2_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector2{+w0}:
+    case bitvector_2_d.Bitvector2{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(w0)), Word.zero(30n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(2n, BLP.bitsof([_]))}, Spec.Gt9368483BAB(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv2_root(hl, h, T.Bitvector2{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(2n, BLP.bitsof([_]))}, Spec.Gt9368483BAB(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_2_h.bv2_root(hl, h, bitvector_2_d.Bitvector2{_}, 0)))])
       Gt9368483BAB_h(h, hl, ehl, WSp.take(2n, 32n, PD.bits(w0)))
 # Gt9368483BAB: for every object whose bits past 2 are zero, the runtime root is a
 # specification root of its bits.
 law Gt9368483BAB_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector2
+  for +o: bitvector_2_d.Bitvector2
   for +e: {Gt9368483BAB_last(o) == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(Gt9368483BAB_last(o))), Word.zero(30n))} : U32}
-  RR.roots(S.BitsValue{Gt9368483BAB_bits(o)}, Spec.Gt9368483BAB(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt9368483BAB_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{Gt9368483BAB_bits(o)}, Spec.Gt9368483BAB(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_2_h.Gt9368483BAB_hash_tree_root(h, o)))])
 def Gt9368483BAB_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.Gt9368483BAB_hash_tree_root(h, o), T.bv2_root(64n, h, o, 0), Gt9368483BAB_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_2_h.Gt9368483BAB_hash_tree_root(h, o), bitvector_2_h.bv2_root(64n, h, o, 0), Gt9368483BAB_htr(h, o)) :
     RR.roots(S.BitsValue{Gt9368483BAB_bits(o)}, Spec.Gt9368483BAB(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   Gt9368483BAB_lawg(h, 64n, {==}, o, e)
 
@@ -374,40 +402,40 @@ def GtEDFB713194_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool, +a2:
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(31n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(31n), 0n, hl, [D.D{B.swap32(U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def GtEDFB713194_last(o: T.Bitvector31) -> U32:
+def GtEDFB713194_last(o: bitvector_31_d.Bitvector31) -> U32:
   match o:
-    case T.Bitvector31{+w0}: w0
-def GtEDFB713194_bits(o: T.Bitvector31) -> +List<Bool>:
+    case bitvector_31_d.Bitvector31{+w0}: w0
+def GtEDFB713194_bits(o: bitvector_31_d.Bitvector31) -> +List<Bool>:
   match o:
-    case T.Bitvector31{+w0}: BLP.btk(31n, BLP.bitsof([w0]))
-def GtEDFB713194_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool, +a15: Bool, +a16: Bool, +a17: Bool, +a18: Bool, +a19: Bool, +a20: Bool, +a21: Bool, +a22: Bool, +a23: Bool, +a24: Bool, +a25: Bool, +a26: Bool, +a27: Bool, +a28: Bool, +a29: Bool, +a30: Bool) -> {T.bv31_root(hl, h, T.Bitvector31{U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def GtEDFB713194_htr(-h: B.Buf, +o: T.Bitvector31) -> {T.GtEDFB713194_hash_tree_root(h, o) == T.bv31_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_31_d.Bitvector31{+w0}: BLP.btk(31n, BLP.bitsof([w0]))
+def GtEDFB713194_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool, +a15: Bool, +a16: Bool, +a17: Bool, +a18: Bool, +a19: Bool, +a20: Bool, +a21: Bool, +a22: Bool, +a23: Bool, +a24: Bool, +a25: Bool, +a26: Bool, +a27: Bool, +a28: Bool, +a29: Bool, +a30: Bool) -> {bitvector_31_h.bv31_root(hl, h, bitvector_31_d.Bitvector31{U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def GtEDFB713194_htr(-h: B.Buf, +o: bitvector_31_d.Bitvector31) -> {bitvector_31_h.GtEDFB713194_hash_tree_root(h, o) == bitvector_31_h.bv31_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def GtEDFB713194_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +a9: Bool, +a10: Bool, +a11: Bool, +a12: Bool, +a13: Bool, +a14: Bool, +a15: Bool, +a16: Bool, +a17: Bool, +a18: Bool, +a19: Bool, +a20: Bool, +a21: Bool, +a22: Bool, +a23: Bool, +a24: Bool, +a25: Bool, +a26: Bool, +a27: Bool, +a28: Bool, +a29: Bool, +a30: Bool, +hg: {Bits.bitvector_at_depth(31n, 0n, BLP.btk(31n, BLP.bitsof([U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(31n, BLP.bitsof([U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}]))}, Spec.GtEDFB713194(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def GtEDFB713194_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(31n))
-    -> RR.roots(S.BitsValue{BLP.btk(31n, BLP.bitsof([U32{WSp.join(31n, 1n, t, Word.zero(1n))}]))}, Spec.GtEDFB713194(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv31_root(hl, h, T.Bitvector31{U32{WSp.join(31n, 1n, t, Word.zero(1n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(31n, BLP.bitsof([U32{WSp.join(31n, 1n, t, Word.zero(1n))}]))}, Spec.GtEDFB713194(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_31_h.bv31_root(hl, h, bitvector_31_d.Bitvector31{U32{WSp.join(31n, 1n, t, Word.zero(1n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, WCon{+a8, WCon{+a9, WCon{+a10, WCon{+a11, WCon{+a12, WCon{+a13, WCon{+a14, WCon{+a15, WCon{+a16, WCon{+a17, WCon{+a18, WCon{+a19, WCon{+a20, WCon{+a21, WCon{+a22, WCon{+a23, WCon{+a24, WCon{+a25, WCon{+a26, WCon{+a27, WCon{+a28, WCon{+a29, WCon{+a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv31_root(hl, h, T.Bitvector31{U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtEDFB713194_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_31_h.bv31_root(hl, h, bitvector_31_d.Bitvector31{U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtEDFB713194_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30)) :
         RR.roots(S.BitsValue{BLP.btk(31n, BLP.bitsof([U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}]))}, Spec.GtEDFB713194(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       GtEDFB713194_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(31n, 1n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WCon{a9, WCon{a10, WCon{a11, WCon{a12, WCon{a13, WCon{a14, WCon{a15, WCon{a16, WCon{a17, WCon{a18, WCon{a19, WCon{a20, WCon{a21, WCon{a22, WCon{a23, WCon{a24, WCon{a25, WCon{a26, WCon{a27, WCon{a28, WCon{a29, WCon{a30, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, Word.zero(1n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, GtEDFB713194_g(hl, ehl, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30))
-def GtEDFB713194_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector31, +e: {GtEDFB713194_last(o) == U32{WSp.join(31n, 1n, WSp.take(31n, 32n, PD.bits(GtEDFB713194_last(o))), Word.zero(1n))} : U32})
-    -> RR.roots(S.BitsValue{GtEDFB713194_bits(o)}, Spec.GtEDFB713194(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv31_root(hl, h, o, 0)))]):
+def GtEDFB713194_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_31_d.Bitvector31, +e: {GtEDFB713194_last(o) == U32{WSp.join(31n, 1n, WSp.take(31n, 32n, PD.bits(GtEDFB713194_last(o))), Word.zero(1n))} : U32})
+    -> RR.roots(S.BitsValue{GtEDFB713194_bits(o)}, Spec.GtEDFB713194(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_31_h.bv31_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector31{+w0}:
+    case bitvector_31_d.Bitvector31{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(31n, 1n, WSp.take(31n, 32n, PD.bits(w0)), Word.zero(1n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(31n, BLP.bitsof([_]))}, Spec.GtEDFB713194(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv31_root(hl, h, T.Bitvector31{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(31n, BLP.bitsof([_]))}, Spec.GtEDFB713194(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_31_h.bv31_root(hl, h, bitvector_31_d.Bitvector31{_}, 0)))])
       GtEDFB713194_h(h, hl, ehl, WSp.take(31n, 32n, PD.bits(w0)))
 # GtEDFB713194: for every object whose bits past 31 are zero, the runtime root is a
 # specification root of its bits.
 law GtEDFB713194_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector31
+  for +o: bitvector_31_d.Bitvector31
   for +e: {GtEDFB713194_last(o) == U32{WSp.join(31n, 1n, WSp.take(31n, 32n, PD.bits(GtEDFB713194_last(o))), Word.zero(1n))} : U32}
-  RR.roots(S.BitsValue{GtEDFB713194_bits(o)}, Spec.GtEDFB713194(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtEDFB713194_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{GtEDFB713194_bits(o)}, Spec.GtEDFB713194(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_31_h.GtEDFB713194_hash_tree_root(h, o)))])
 def GtEDFB713194_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.GtEDFB713194_hash_tree_root(h, o), T.bv31_root(64n, h, o, 0), GtEDFB713194_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_31_h.GtEDFB713194_hash_tree_root(h, o), bitvector_31_h.bv31_root(64n, h, o, 0), GtEDFB713194_htr(h, o)) :
     RR.roots(S.BitsValue{GtEDFB713194_bits(o)}, Spec.GtEDFB713194(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   GtEDFB713194_lawg(h, 64n, {==}, o, e)
 
@@ -432,40 +460,40 @@ def Gt6F0D97A69E_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +w0: U32, +a0: Bool) -> {B
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(33n), 0n, MD.bytes_list([D.D{B.swap32(w0), B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(w0), B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(w0), B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(33n), 0n, hl, [D.D{B.swap32(w0), B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(w0), B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def Gt6F0D97A69E_last(o: T.Bitvector33) -> U32:
+def Gt6F0D97A69E_last(o: bitvector_33_d.Bitvector33) -> U32:
   match o:
-    case T.Bitvector33{+w0, +w1}: w1
-def Gt6F0D97A69E_bits(o: T.Bitvector33) -> +List<Bool>:
+    case bitvector_33_d.Bitvector33{+w0, +w1}: w1
+def Gt6F0D97A69E_bits(o: bitvector_33_d.Bitvector33) -> +List<Bool>:
   match o:
-    case T.Bitvector33{+w0, +w1}: BLP.btk(33n, BLP.bitsof([w0, w1]))
-def Gt6F0D97A69E_st(+hl: Nat, -h: B.Buf, +w0: U32, +a0: Bool) -> {T.bv33_root(hl, h, T.Bitvector33{w0, U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(w0), B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def Gt6F0D97A69E_htr(-h: B.Buf, +o: T.Bitvector33) -> {T.Gt6F0D97A69E_hash_tree_root(h, o) == T.bv33_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_33_d.Bitvector33{+w0, +w1}: BLP.btk(33n, BLP.bitsof([w0, w1]))
+def Gt6F0D97A69E_st(+hl: Nat, -h: B.Buf, +w0: U32, +a0: Bool) -> {bitvector_33_h.bv33_root(hl, h, bitvector_33_d.Bitvector33{w0, U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(w0), B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def Gt6F0D97A69E_htr(-h: B.Buf, +o: bitvector_33_d.Bitvector33) -> {bitvector_33_h.Gt6F0D97A69E_hash_tree_root(h, o) == bitvector_33_h.bv33_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def Gt6F0D97A69E_fin(-h: B.Buf, +r: D.Digest, +w0: U32, +a0: Bool, +hg: {Bits.bitvector_at_depth(33n, 0n, BLP.btk(33n, BLP.bitsof([w0, U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(33n, BLP.bitsof([w0, U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}]))}, Spec.Gt6F0D97A69E(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def Gt6F0D97A69E_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +w0: U32, +t: Word(1n))
-    -> RR.roots(S.BitsValue{BLP.btk(33n, BLP.bitsof([w0, U32{WSp.join(1n, 31n, t, Word.zero(31n))}]))}, Spec.Gt6F0D97A69E(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv33_root(hl, h, T.Bitvector33{w0, U32{WSp.join(1n, 31n, t, Word.zero(31n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(33n, BLP.bitsof([w0, U32{WSp.join(1n, 31n, t, Word.zero(31n))}]))}, Spec.Gt6F0D97A69E(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_33_h.bv33_root(hl, h, bitvector_33_d.Bitvector33{w0, U32{WSp.join(1n, 31n, t, Word.zero(31n))}}, 0)))]):
   match t:
     case WCon{+a0, WNil{}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv33_root(hl, h, T.Bitvector33{w0, U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(w0), B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0}], 0n)), Gt6F0D97A69E_st(hl, h, w0, a0)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_33_h.bv33_root(hl, h, bitvector_33_d.Bitvector33{w0, U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(w0), B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0}], 0n)), Gt6F0D97A69E_st(hl, h, w0, a0)) :
         RR.roots(S.BitsValue{BLP.btk(33n, BLP.bitsof([w0, U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}]))}, Spec.Gt6F0D97A69E(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       Gt6F0D97A69E_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(w0), B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0}], 0n), w0, a0, Gt6F0D97A69E_g(hl, ehl, w0, a0))
-def Gt6F0D97A69E_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector33, +e: {Gt6F0D97A69E_last(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(Gt6F0D97A69E_last(o))), Word.zero(31n))} : U32})
-    -> RR.roots(S.BitsValue{Gt6F0D97A69E_bits(o)}, Spec.Gt6F0D97A69E(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv33_root(hl, h, o, 0)))]):
+def Gt6F0D97A69E_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_33_d.Bitvector33, +e: {Gt6F0D97A69E_last(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(Gt6F0D97A69E_last(o))), Word.zero(31n))} : U32})
+    -> RR.roots(S.BitsValue{Gt6F0D97A69E_bits(o)}, Spec.Gt6F0D97A69E(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_33_h.bv33_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector33{+w0, +w1}:
+    case bitvector_33_d.Bitvector33{+w0, +w1}:
       %Equal.sym(U32, w1, U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(w1)), Word.zero(31n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(33n, BLP.bitsof([w0, _]))}, Spec.Gt6F0D97A69E(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv33_root(hl, h, T.Bitvector33{w0, _}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(33n, BLP.bitsof([w0, _]))}, Spec.Gt6F0D97A69E(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_33_h.bv33_root(hl, h, bitvector_33_d.Bitvector33{w0, _}, 0)))])
       Gt6F0D97A69E_h(h, hl, ehl, w0, WSp.take(1n, 32n, PD.bits(w1)))
 # Gt6F0D97A69E: for every object whose bits past 33 are zero, the runtime root is a
 # specification root of its bits.
 law Gt6F0D97A69E_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector33
+  for +o: bitvector_33_d.Bitvector33
   for +e: {Gt6F0D97A69E_last(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(Gt6F0D97A69E_last(o))), Word.zero(31n))} : U32}
-  RR.roots(S.BitsValue{Gt6F0D97A69E_bits(o)}, Spec.Gt6F0D97A69E(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt6F0D97A69E_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{Gt6F0D97A69E_bits(o)}, Spec.Gt6F0D97A69E(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_33_h.Gt6F0D97A69E_hash_tree_root(h, o)))])
 def Gt6F0D97A69E_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.Gt6F0D97A69E_hash_tree_root(h, o), T.bv33_root(64n, h, o, 0), Gt6F0D97A69E_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_33_h.Gt6F0D97A69E_hash_tree_root(h, o), bitvector_33_h.bv33_root(64n, h, o, 0), Gt6F0D97A69E_htr(h, o)) :
     RR.roots(S.BitsValue{Gt6F0D97A69E_bits(o)}, Spec.Gt6F0D97A69E(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   Gt6F0D97A69E_lawg(h, 64n, {==}, o, e)
 
@@ -490,40 +518,40 @@ def Gt9579E0A2FD_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool, +a2:
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(3n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(3n), 0n, hl, [D.D{B.swap32(U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def Gt9579E0A2FD_last(o: T.Bitvector3) -> U32:
+def Gt9579E0A2FD_last(o: bitvector_3_d.Bitvector3) -> U32:
   match o:
-    case T.Bitvector3{+w0}: w0
-def Gt9579E0A2FD_bits(o: T.Bitvector3) -> +List<Bool>:
+    case bitvector_3_d.Bitvector3{+w0}: w0
+def Gt9579E0A2FD_bits(o: bitvector_3_d.Bitvector3) -> +List<Bool>:
   match o:
-    case T.Bitvector3{+w0}: BLP.btk(3n, BLP.bitsof([w0]))
-def Gt9579E0A2FD_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool) -> {T.bv3_root(hl, h, T.Bitvector3{U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def Gt9579E0A2FD_htr(-h: B.Buf, +o: T.Bitvector3) -> {T.Gt9579E0A2FD_hash_tree_root(h, o) == T.bv3_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_3_d.Bitvector3{+w0}: BLP.btk(3n, BLP.bitsof([w0]))
+def Gt9579E0A2FD_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool) -> {bitvector_3_h.bv3_root(hl, h, bitvector_3_d.Bitvector3{U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def Gt9579E0A2FD_htr(-h: B.Buf, +o: bitvector_3_d.Bitvector3) -> {bitvector_3_h.Gt9579E0A2FD_hash_tree_root(h, o) == bitvector_3_h.bv3_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def Gt9579E0A2FD_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +a2: Bool, +hg: {Bits.bitvector_at_depth(3n, 0n, BLP.btk(3n, BLP.bitsof([U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(3n, BLP.bitsof([U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}]))}, Spec.Gt9579E0A2FD(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def Gt9579E0A2FD_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(3n))
-    -> RR.roots(S.BitsValue{BLP.btk(3n, BLP.bitsof([U32{WSp.join(3n, 29n, t, Word.zero(29n))}]))}, Spec.Gt9579E0A2FD(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv3_root(hl, h, T.Bitvector3{U32{WSp.join(3n, 29n, t, Word.zero(29n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(3n, BLP.bitsof([U32{WSp.join(3n, 29n, t, Word.zero(29n))}]))}, Spec.Gt9579E0A2FD(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_3_h.bv3_root(hl, h, bitvector_3_d.Bitvector3{U32{WSp.join(3n, 29n, t, Word.zero(29n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WNil{}}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv3_root(hl, h, T.Bitvector3{U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), Gt9579E0A2FD_st(hl, h, a0, a1, a2)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_3_h.bv3_root(hl, h, bitvector_3_d.Bitvector3{U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), Gt9579E0A2FD_st(hl, h, a0, a1, a2)) :
         RR.roots(S.BitsValue{BLP.btk(3n, BLP.bitsof([U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}]))}, Spec.Gt9579E0A2FD(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       Gt9579E0A2FD_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(3n, 29n, WCon{a0, WCon{a1, WCon{a2, WNil{}}}}, Word.zero(29n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, Gt9579E0A2FD_g(hl, ehl, a0, a1, a2))
-def Gt9579E0A2FD_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector3, +e: {Gt9579E0A2FD_last(o) == U32{WSp.join(3n, 29n, WSp.take(3n, 32n, PD.bits(Gt9579E0A2FD_last(o))), Word.zero(29n))} : U32})
-    -> RR.roots(S.BitsValue{Gt9579E0A2FD_bits(o)}, Spec.Gt9579E0A2FD(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv3_root(hl, h, o, 0)))]):
+def Gt9579E0A2FD_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_3_d.Bitvector3, +e: {Gt9579E0A2FD_last(o) == U32{WSp.join(3n, 29n, WSp.take(3n, 32n, PD.bits(Gt9579E0A2FD_last(o))), Word.zero(29n))} : U32})
+    -> RR.roots(S.BitsValue{Gt9579E0A2FD_bits(o)}, Spec.Gt9579E0A2FD(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_3_h.bv3_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector3{+w0}:
+    case bitvector_3_d.Bitvector3{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(3n, 29n, WSp.take(3n, 32n, PD.bits(w0)), Word.zero(29n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(3n, BLP.bitsof([_]))}, Spec.Gt9579E0A2FD(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv3_root(hl, h, T.Bitvector3{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(3n, BLP.bitsof([_]))}, Spec.Gt9579E0A2FD(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_3_h.bv3_root(hl, h, bitvector_3_d.Bitvector3{_}, 0)))])
       Gt9579E0A2FD_h(h, hl, ehl, WSp.take(3n, 32n, PD.bits(w0)))
 # Gt9579E0A2FD: for every object whose bits past 3 are zero, the runtime root is a
 # specification root of its bits.
 law Gt9579E0A2FD_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector3
+  for +o: bitvector_3_d.Bitvector3
   for +e: {Gt9579E0A2FD_last(o) == U32{WSp.join(3n, 29n, WSp.take(3n, 32n, PD.bits(Gt9579E0A2FD_last(o))), Word.zero(29n))} : U32}
-  RR.roots(S.BitsValue{Gt9579E0A2FD_bits(o)}, Spec.Gt9579E0A2FD(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt9579E0A2FD_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{Gt9579E0A2FD_bits(o)}, Spec.Gt9579E0A2FD(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_3_h.Gt9579E0A2FD_hash_tree_root(h, o)))])
 def Gt9579E0A2FD_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.Gt9579E0A2FD_hash_tree_root(h, o), T.bv3_root(64n, h, o, 0), Gt9579E0A2FD_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_3_h.Gt9579E0A2FD_hash_tree_root(h, o), bitvector_3_h.bv3_root(64n, h, o, 0), Gt9579E0A2FD_htr(h, o)) :
     RR.roots(S.BitsValue{Gt9579E0A2FD_bits(o)}, Spec.Gt9579E0A2FD(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   Gt9579E0A2FD_lawg(h, 64n, {==}, o, e)
 
@@ -548,40 +576,40 @@ def GtB1E9093D65_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool, +a2:
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(4n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(4n), 0n, hl, [D.D{B.swap32(U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def GtB1E9093D65_last(o: T.Bitvector4) -> U32:
+def GtB1E9093D65_last(o: Fulu_bitvector_4_d.Bitvector4) -> U32:
   match o:
-    case T.Bitvector4{+w0}: w0
-def GtB1E9093D65_bits(o: T.Bitvector4) -> +List<Bool>:
+    case Fulu_bitvector_4_d.Bitvector4{+w0}: w0
+def GtB1E9093D65_bits(o: Fulu_bitvector_4_d.Bitvector4) -> +List<Bool>:
   match o:
-    case T.Bitvector4{+w0}: BLP.btk(4n, BLP.bitsof([w0]))
-def GtB1E9093D65_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool) -> {T.bv4_root(hl, h, T.Bitvector4{U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def GtB1E9093D65_htr(-h: B.Buf, +o: T.Bitvector4) -> {T.GtB1E9093D65_hash_tree_root(h, o) == T.bv4_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case Fulu_bitvector_4_d.Bitvector4{+w0}: BLP.btk(4n, BLP.bitsof([w0]))
+def GtB1E9093D65_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool) -> {Fulu_bitvector_4_h.bv4_root(hl, h, Fulu_bitvector_4_d.Bitvector4{U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def GtB1E9093D65_htr(-h: B.Buf, +o: Fulu_bitvector_4_d.Bitvector4) -> {bitvector_4_h.GtB1E9093D65_hash_tree_root(h, o) == Fulu_bitvector_4_h.bv4_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def GtB1E9093D65_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +hg: {Bits.bitvector_at_depth(4n, 0n, BLP.btk(4n, BLP.bitsof([U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(4n, BLP.bitsof([U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}]))}, Spec.GtB1E9093D65(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def GtB1E9093D65_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(4n))
-    -> RR.roots(S.BitsValue{BLP.btk(4n, BLP.bitsof([U32{WSp.join(4n, 28n, t, Word.zero(28n))}]))}, Spec.GtB1E9093D65(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv4_root(hl, h, T.Bitvector4{U32{WSp.join(4n, 28n, t, Word.zero(28n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(4n, BLP.bitsof([U32{WSp.join(4n, 28n, t, Word.zero(28n))}]))}, Spec.GtB1E9093D65(), [D.bytes(Pair.snd(B.Buf, D.Digest, Fulu_bitvector_4_h.bv4_root(hl, h, Fulu_bitvector_4_d.Bitvector4{U32{WSp.join(4n, 28n, t, Word.zero(28n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WNil{}}}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv4_root(hl, h, T.Bitvector4{U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtB1E9093D65_st(hl, h, a0, a1, a2, a3)) :
+      %Equal.sym(B.Buf & D.Digest, Fulu_bitvector_4_h.bv4_root(hl, h, Fulu_bitvector_4_d.Bitvector4{U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtB1E9093D65_st(hl, h, a0, a1, a2, a3)) :
         RR.roots(S.BitsValue{BLP.btk(4n, BLP.bitsof([U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}]))}, Spec.GtB1E9093D65(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       GtB1E9093D65_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(4n, 28n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WNil{}}}}}, Word.zero(28n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, a3, GtB1E9093D65_g(hl, ehl, a0, a1, a2, a3))
-def GtB1E9093D65_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector4, +e: {GtB1E9093D65_last(o) == U32{WSp.join(4n, 28n, WSp.take(4n, 32n, PD.bits(GtB1E9093D65_last(o))), Word.zero(28n))} : U32})
-    -> RR.roots(S.BitsValue{GtB1E9093D65_bits(o)}, Spec.GtB1E9093D65(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv4_root(hl, h, o, 0)))]):
+def GtB1E9093D65_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: Fulu_bitvector_4_d.Bitvector4, +e: {GtB1E9093D65_last(o) == U32{WSp.join(4n, 28n, WSp.take(4n, 32n, PD.bits(GtB1E9093D65_last(o))), Word.zero(28n))} : U32})
+    -> RR.roots(S.BitsValue{GtB1E9093D65_bits(o)}, Spec.GtB1E9093D65(), [D.bytes(Pair.snd(B.Buf, D.Digest, Fulu_bitvector_4_h.bv4_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector4{+w0}:
+    case Fulu_bitvector_4_d.Bitvector4{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(4n, 28n, WSp.take(4n, 32n, PD.bits(w0)), Word.zero(28n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(4n, BLP.bitsof([_]))}, Spec.GtB1E9093D65(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv4_root(hl, h, T.Bitvector4{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(4n, BLP.bitsof([_]))}, Spec.GtB1E9093D65(), [D.bytes(Pair.snd(B.Buf, D.Digest, Fulu_bitvector_4_h.bv4_root(hl, h, Fulu_bitvector_4_d.Bitvector4{_}, 0)))])
       GtB1E9093D65_h(h, hl, ehl, WSp.take(4n, 32n, PD.bits(w0)))
 # GtB1E9093D65: for every object whose bits past 4 are zero, the runtime root is a
 # specification root of its bits.
 law GtB1E9093D65_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector4
+  for +o: Fulu_bitvector_4_d.Bitvector4
   for +e: {GtB1E9093D65_last(o) == U32{WSp.join(4n, 28n, WSp.take(4n, 32n, PD.bits(GtB1E9093D65_last(o))), Word.zero(28n))} : U32}
-  RR.roots(S.BitsValue{GtB1E9093D65_bits(o)}, Spec.GtB1E9093D65(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtB1E9093D65_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{GtB1E9093D65_bits(o)}, Spec.GtB1E9093D65(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_4_h.GtB1E9093D65_hash_tree_root(h, o)))])
 def GtB1E9093D65_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.GtB1E9093D65_hash_tree_root(h, o), T.bv4_root(64n, h, o, 0), GtB1E9093D65_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_4_h.GtB1E9093D65_hash_tree_root(h, o), Fulu_bitvector_4_h.bv4_root(64n, h, o, 0), GtB1E9093D65_htr(h, o)) :
     RR.roots(S.BitsValue{GtB1E9093D65_bits(o)}, Spec.GtB1E9093D65(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   GtB1E9093D65_lawg(h, 64n, {==}, o, e)
 
@@ -606,40 +634,40 @@ def Gt27CDB122DD_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool, +a2:
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(5n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(5n), 0n, hl, [D.D{B.swap32(U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def Gt27CDB122DD_last(o: T.Bitvector5) -> U32:
+def Gt27CDB122DD_last(o: bitvector_5_d.Bitvector5) -> U32:
   match o:
-    case T.Bitvector5{+w0}: w0
-def Gt27CDB122DD_bits(o: T.Bitvector5) -> +List<Bool>:
+    case bitvector_5_d.Bitvector5{+w0}: w0
+def Gt27CDB122DD_bits(o: bitvector_5_d.Bitvector5) -> +List<Bool>:
   match o:
-    case T.Bitvector5{+w0}: BLP.btk(5n, BLP.bitsof([w0]))
-def Gt27CDB122DD_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool) -> {T.bv5_root(hl, h, T.Bitvector5{U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def Gt27CDB122DD_htr(-h: B.Buf, +o: T.Bitvector5) -> {T.Gt27CDB122DD_hash_tree_root(h, o) == T.bv5_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_5_d.Bitvector5{+w0}: BLP.btk(5n, BLP.bitsof([w0]))
+def Gt27CDB122DD_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool) -> {bitvector_5_h.bv5_root(hl, h, bitvector_5_d.Bitvector5{U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def Gt27CDB122DD_htr(-h: B.Buf, +o: bitvector_5_d.Bitvector5) -> {bitvector_5_h.Gt27CDB122DD_hash_tree_root(h, o) == bitvector_5_h.bv5_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def Gt27CDB122DD_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +hg: {Bits.bitvector_at_depth(5n, 0n, BLP.btk(5n, BLP.bitsof([U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(5n, BLP.bitsof([U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}]))}, Spec.Gt27CDB122DD(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def Gt27CDB122DD_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(5n))
-    -> RR.roots(S.BitsValue{BLP.btk(5n, BLP.bitsof([U32{WSp.join(5n, 27n, t, Word.zero(27n))}]))}, Spec.Gt27CDB122DD(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv5_root(hl, h, T.Bitvector5{U32{WSp.join(5n, 27n, t, Word.zero(27n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(5n, BLP.bitsof([U32{WSp.join(5n, 27n, t, Word.zero(27n))}]))}, Spec.Gt27CDB122DD(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_5_h.bv5_root(hl, h, bitvector_5_d.Bitvector5{U32{WSp.join(5n, 27n, t, Word.zero(27n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WNil{}}}}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv5_root(hl, h, T.Bitvector5{U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), Gt27CDB122DD_st(hl, h, a0, a1, a2, a3, a4)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_5_h.bv5_root(hl, h, bitvector_5_d.Bitvector5{U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), Gt27CDB122DD_st(hl, h, a0, a1, a2, a3, a4)) :
         RR.roots(S.BitsValue{BLP.btk(5n, BLP.bitsof([U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}]))}, Spec.Gt27CDB122DD(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       Gt27CDB122DD_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(5n, 27n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WNil{}}}}}}, Word.zero(27n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, a3, a4, Gt27CDB122DD_g(hl, ehl, a0, a1, a2, a3, a4))
-def Gt27CDB122DD_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector5, +e: {Gt27CDB122DD_last(o) == U32{WSp.join(5n, 27n, WSp.take(5n, 32n, PD.bits(Gt27CDB122DD_last(o))), Word.zero(27n))} : U32})
-    -> RR.roots(S.BitsValue{Gt27CDB122DD_bits(o)}, Spec.Gt27CDB122DD(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv5_root(hl, h, o, 0)))]):
+def Gt27CDB122DD_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_5_d.Bitvector5, +e: {Gt27CDB122DD_last(o) == U32{WSp.join(5n, 27n, WSp.take(5n, 32n, PD.bits(Gt27CDB122DD_last(o))), Word.zero(27n))} : U32})
+    -> RR.roots(S.BitsValue{Gt27CDB122DD_bits(o)}, Spec.Gt27CDB122DD(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_5_h.bv5_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector5{+w0}:
+    case bitvector_5_d.Bitvector5{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(5n, 27n, WSp.take(5n, 32n, PD.bits(w0)), Word.zero(27n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(5n, BLP.bitsof([_]))}, Spec.Gt27CDB122DD(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv5_root(hl, h, T.Bitvector5{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(5n, BLP.bitsof([_]))}, Spec.Gt27CDB122DD(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_5_h.bv5_root(hl, h, bitvector_5_d.Bitvector5{_}, 0)))])
       Gt27CDB122DD_h(h, hl, ehl, WSp.take(5n, 32n, PD.bits(w0)))
 # Gt27CDB122DD: for every object whose bits past 5 are zero, the runtime root is a
 # specification root of its bits.
 law Gt27CDB122DD_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector5
+  for +o: bitvector_5_d.Bitvector5
   for +e: {Gt27CDB122DD_last(o) == U32{WSp.join(5n, 27n, WSp.take(5n, 32n, PD.bits(Gt27CDB122DD_last(o))), Word.zero(27n))} : U32}
-  RR.roots(S.BitsValue{Gt27CDB122DD_bits(o)}, Spec.Gt27CDB122DD(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt27CDB122DD_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{Gt27CDB122DD_bits(o)}, Spec.Gt27CDB122DD(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_5_h.Gt27CDB122DD_hash_tree_root(h, o)))])
 def Gt27CDB122DD_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.Gt27CDB122DD_hash_tree_root(h, o), T.bv5_root(64n, h, o, 0), Gt27CDB122DD_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_5_h.Gt27CDB122DD_hash_tree_root(h, o), bitvector_5_h.bv5_root(64n, h, o, 0), Gt27CDB122DD_htr(h, o)) :
     RR.roots(S.BitsValue{Gt27CDB122DD_bits(o)}, Spec.Gt27CDB122DD(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   Gt27CDB122DD_lawg(h, 64n, {==}, o, e)
 
@@ -664,40 +692,40 @@ def GtAD3CF815B7_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool, +a2:
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(6n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(6n), 0n, hl, [D.D{B.swap32(U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def GtAD3CF815B7_last(o: T.Bitvector6) -> U32:
+def GtAD3CF815B7_last(o: bitvector_6_d.Bitvector6) -> U32:
   match o:
-    case T.Bitvector6{+w0}: w0
-def GtAD3CF815B7_bits(o: T.Bitvector6) -> +List<Bool>:
+    case bitvector_6_d.Bitvector6{+w0}: w0
+def GtAD3CF815B7_bits(o: bitvector_6_d.Bitvector6) -> +List<Bool>:
   match o:
-    case T.Bitvector6{+w0}: BLP.btk(6n, BLP.bitsof([w0]))
-def GtAD3CF815B7_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool) -> {T.bv6_root(hl, h, T.Bitvector6{U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def GtAD3CF815B7_htr(-h: B.Buf, +o: T.Bitvector6) -> {T.GtAD3CF815B7_hash_tree_root(h, o) == T.bv6_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_6_d.Bitvector6{+w0}: BLP.btk(6n, BLP.bitsof([w0]))
+def GtAD3CF815B7_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool) -> {bitvector_6_h.bv6_root(hl, h, bitvector_6_d.Bitvector6{U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def GtAD3CF815B7_htr(-h: B.Buf, +o: bitvector_6_d.Bitvector6) -> {bitvector_6_h.GtAD3CF815B7_hash_tree_root(h, o) == bitvector_6_h.bv6_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def GtAD3CF815B7_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +hg: {Bits.bitvector_at_depth(6n, 0n, BLP.btk(6n, BLP.bitsof([U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(6n, BLP.bitsof([U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}]))}, Spec.GtAD3CF815B7(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def GtAD3CF815B7_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(6n))
-    -> RR.roots(S.BitsValue{BLP.btk(6n, BLP.bitsof([U32{WSp.join(6n, 26n, t, Word.zero(26n))}]))}, Spec.GtAD3CF815B7(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv6_root(hl, h, T.Bitvector6{U32{WSp.join(6n, 26n, t, Word.zero(26n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(6n, BLP.bitsof([U32{WSp.join(6n, 26n, t, Word.zero(26n))}]))}, Spec.GtAD3CF815B7(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_6_h.bv6_root(hl, h, bitvector_6_d.Bitvector6{U32{WSp.join(6n, 26n, t, Word.zero(26n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WNil{}}}}}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv6_root(hl, h, T.Bitvector6{U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtAD3CF815B7_st(hl, h, a0, a1, a2, a3, a4, a5)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_6_h.bv6_root(hl, h, bitvector_6_d.Bitvector6{U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtAD3CF815B7_st(hl, h, a0, a1, a2, a3, a4, a5)) :
         RR.roots(S.BitsValue{BLP.btk(6n, BLP.bitsof([U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}]))}, Spec.GtAD3CF815B7(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       GtAD3CF815B7_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(6n, 26n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WNil{}}}}}}}, Word.zero(26n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, a3, a4, a5, GtAD3CF815B7_g(hl, ehl, a0, a1, a2, a3, a4, a5))
-def GtAD3CF815B7_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector6, +e: {GtAD3CF815B7_last(o) == U32{WSp.join(6n, 26n, WSp.take(6n, 32n, PD.bits(GtAD3CF815B7_last(o))), Word.zero(26n))} : U32})
-    -> RR.roots(S.BitsValue{GtAD3CF815B7_bits(o)}, Spec.GtAD3CF815B7(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv6_root(hl, h, o, 0)))]):
+def GtAD3CF815B7_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_6_d.Bitvector6, +e: {GtAD3CF815B7_last(o) == U32{WSp.join(6n, 26n, WSp.take(6n, 32n, PD.bits(GtAD3CF815B7_last(o))), Word.zero(26n))} : U32})
+    -> RR.roots(S.BitsValue{GtAD3CF815B7_bits(o)}, Spec.GtAD3CF815B7(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_6_h.bv6_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector6{+w0}:
+    case bitvector_6_d.Bitvector6{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(6n, 26n, WSp.take(6n, 32n, PD.bits(w0)), Word.zero(26n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(6n, BLP.bitsof([_]))}, Spec.GtAD3CF815B7(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv6_root(hl, h, T.Bitvector6{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(6n, BLP.bitsof([_]))}, Spec.GtAD3CF815B7(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_6_h.bv6_root(hl, h, bitvector_6_d.Bitvector6{_}, 0)))])
       GtAD3CF815B7_h(h, hl, ehl, WSp.take(6n, 32n, PD.bits(w0)))
 # GtAD3CF815B7: for every object whose bits past 6 are zero, the runtime root is a
 # specification root of its bits.
 law GtAD3CF815B7_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector6
+  for +o: bitvector_6_d.Bitvector6
   for +e: {GtAD3CF815B7_last(o) == U32{WSp.join(6n, 26n, WSp.take(6n, 32n, PD.bits(GtAD3CF815B7_last(o))), Word.zero(26n))} : U32}
-  RR.roots(S.BitsValue{GtAD3CF815B7_bits(o)}, Spec.GtAD3CF815B7(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtAD3CF815B7_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{GtAD3CF815B7_bits(o)}, Spec.GtAD3CF815B7(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_6_h.GtAD3CF815B7_hash_tree_root(h, o)))])
 def GtAD3CF815B7_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.GtAD3CF815B7_hash_tree_root(h, o), T.bv6_root(64n, h, o, 0), GtAD3CF815B7_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_6_h.GtAD3CF815B7_hash_tree_root(h, o), bitvector_6_h.bv6_root(64n, h, o, 0), GtAD3CF815B7_htr(h, o)) :
     RR.roots(S.BitsValue{GtAD3CF815B7_bits(o)}, Spec.GtAD3CF815B7(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   GtAD3CF815B7_lawg(h, 64n, {==}, o, e)
 
@@ -722,40 +750,40 @@ def GtAA8D1478A7_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool, +a2:
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(7n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(7n), 0n, hl, [D.D{B.swap32(U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def GtAA8D1478A7_last(o: T.Bitvector7) -> U32:
+def GtAA8D1478A7_last(o: bitvector_7_d.Bitvector7) -> U32:
   match o:
-    case T.Bitvector7{+w0}: w0
-def GtAA8D1478A7_bits(o: T.Bitvector7) -> +List<Bool>:
+    case bitvector_7_d.Bitvector7{+w0}: w0
+def GtAA8D1478A7_bits(o: bitvector_7_d.Bitvector7) -> +List<Bool>:
   match o:
-    case T.Bitvector7{+w0}: BLP.btk(7n, BLP.bitsof([w0]))
-def GtAA8D1478A7_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool) -> {T.bv7_root(hl, h, T.Bitvector7{U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def GtAA8D1478A7_htr(-h: B.Buf, +o: T.Bitvector7) -> {T.GtAA8D1478A7_hash_tree_root(h, o) == T.bv7_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_7_d.Bitvector7{+w0}: BLP.btk(7n, BLP.bitsof([w0]))
+def GtAA8D1478A7_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool) -> {bitvector_7_h.bv7_root(hl, h, bitvector_7_d.Bitvector7{U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def GtAA8D1478A7_htr(-h: B.Buf, +o: bitvector_7_d.Bitvector7) -> {bitvector_7_h.GtAA8D1478A7_hash_tree_root(h, o) == bitvector_7_h.bv7_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def GtAA8D1478A7_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +hg: {Bits.bitvector_at_depth(7n, 0n, BLP.btk(7n, BLP.bitsof([U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(7n, BLP.bitsof([U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}]))}, Spec.GtAA8D1478A7(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def GtAA8D1478A7_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(7n))
-    -> RR.roots(S.BitsValue{BLP.btk(7n, BLP.bitsof([U32{WSp.join(7n, 25n, t, Word.zero(25n))}]))}, Spec.GtAA8D1478A7(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv7_root(hl, h, T.Bitvector7{U32{WSp.join(7n, 25n, t, Word.zero(25n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(7n, BLP.bitsof([U32{WSp.join(7n, 25n, t, Word.zero(25n))}]))}, Spec.GtAA8D1478A7(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_7_h.bv7_root(hl, h, bitvector_7_d.Bitvector7{U32{WSp.join(7n, 25n, t, Word.zero(25n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WNil{}}}}}}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv7_root(hl, h, T.Bitvector7{U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtAA8D1478A7_st(hl, h, a0, a1, a2, a3, a4, a5, a6)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_7_h.bv7_root(hl, h, bitvector_7_d.Bitvector7{U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), GtAA8D1478A7_st(hl, h, a0, a1, a2, a3, a4, a5, a6)) :
         RR.roots(S.BitsValue{BLP.btk(7n, BLP.bitsof([U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}]))}, Spec.GtAA8D1478A7(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       GtAA8D1478A7_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(7n, 25n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WNil{}}}}}}}}, Word.zero(25n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, a3, a4, a5, a6, GtAA8D1478A7_g(hl, ehl, a0, a1, a2, a3, a4, a5, a6))
-def GtAA8D1478A7_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector7, +e: {GtAA8D1478A7_last(o) == U32{WSp.join(7n, 25n, WSp.take(7n, 32n, PD.bits(GtAA8D1478A7_last(o))), Word.zero(25n))} : U32})
-    -> RR.roots(S.BitsValue{GtAA8D1478A7_bits(o)}, Spec.GtAA8D1478A7(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv7_root(hl, h, o, 0)))]):
+def GtAA8D1478A7_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_7_d.Bitvector7, +e: {GtAA8D1478A7_last(o) == U32{WSp.join(7n, 25n, WSp.take(7n, 32n, PD.bits(GtAA8D1478A7_last(o))), Word.zero(25n))} : U32})
+    -> RR.roots(S.BitsValue{GtAA8D1478A7_bits(o)}, Spec.GtAA8D1478A7(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_7_h.bv7_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector7{+w0}:
+    case bitvector_7_d.Bitvector7{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(7n, 25n, WSp.take(7n, 32n, PD.bits(w0)), Word.zero(25n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(7n, BLP.bitsof([_]))}, Spec.GtAA8D1478A7(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv7_root(hl, h, T.Bitvector7{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(7n, BLP.bitsof([_]))}, Spec.GtAA8D1478A7(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_7_h.bv7_root(hl, h, bitvector_7_d.Bitvector7{_}, 0)))])
       GtAA8D1478A7_h(h, hl, ehl, WSp.take(7n, 32n, PD.bits(w0)))
 # GtAA8D1478A7: for every object whose bits past 7 are zero, the runtime root is a
 # specification root of its bits.
 law GtAA8D1478A7_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector7
+  for +o: bitvector_7_d.Bitvector7
   for +e: {GtAA8D1478A7_last(o) == U32{WSp.join(7n, 25n, WSp.take(7n, 32n, PD.bits(GtAA8D1478A7_last(o))), Word.zero(25n))} : U32}
-  RR.roots(S.BitsValue{GtAA8D1478A7_bits(o)}, Spec.GtAA8D1478A7(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtAA8D1478A7_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{GtAA8D1478A7_bits(o)}, Spec.GtAA8D1478A7(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_7_h.GtAA8D1478A7_hash_tree_root(h, o)))])
 def GtAA8D1478A7_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.GtAA8D1478A7_hash_tree_root(h, o), T.bv7_root(64n, h, o, 0), GtAA8D1478A7_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_7_h.GtAA8D1478A7_hash_tree_root(h, o), bitvector_7_h.bv7_root(64n, h, o, 0), GtAA8D1478A7_htr(h, o)) :
     RR.roots(S.BitsValue{GtAA8D1478A7_bits(o)}, Spec.GtAA8D1478A7(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   GtAA8D1478A7_lawg(h, 64n, {==}, o, e)
 
@@ -780,40 +808,40 @@ def Gt0366A291C1_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool, +a2:
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(8n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(8n), 0n, hl, [D.D{B.swap32(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def Gt0366A291C1_last(o: T.Bitvector8) -> U32:
+def Gt0366A291C1_last(o: bitvector_8_d.Bitvector8) -> U32:
   match o:
-    case T.Bitvector8{+w0}: w0
-def Gt0366A291C1_bits(o: T.Bitvector8) -> +List<Bool>:
+    case bitvector_8_d.Bitvector8{+w0}: w0
+def Gt0366A291C1_bits(o: bitvector_8_d.Bitvector8) -> +List<Bool>:
   match o:
-    case T.Bitvector8{+w0}: BLP.btk(8n, BLP.bitsof([w0]))
-def Gt0366A291C1_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool) -> {T.bv8_root(hl, h, T.Bitvector8{U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def Gt0366A291C1_htr(-h: B.Buf, +o: T.Bitvector8) -> {T.Gt0366A291C1_hash_tree_root(h, o) == T.bv8_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_8_d.Bitvector8{+w0}: BLP.btk(8n, BLP.bitsof([w0]))
+def Gt0366A291C1_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool) -> {bitvector_8_h.bv8_root(hl, h, bitvector_8_d.Bitvector8{U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def Gt0366A291C1_htr(-h: B.Buf, +o: bitvector_8_d.Bitvector8) -> {bitvector_8_h.Gt0366A291C1_hash_tree_root(h, o) == bitvector_8_h.bv8_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def Gt0366A291C1_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +hg: {Bits.bitvector_at_depth(8n, 0n, BLP.btk(8n, BLP.bitsof([U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(8n, BLP.bitsof([U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}]))}, Spec.Gt0366A291C1(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def Gt0366A291C1_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(8n))
-    -> RR.roots(S.BitsValue{BLP.btk(8n, BLP.bitsof([U32{WSp.join(8n, 24n, t, Word.zero(24n))}]))}, Spec.Gt0366A291C1(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv8_root(hl, h, T.Bitvector8{U32{WSp.join(8n, 24n, t, Word.zero(24n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(8n, BLP.bitsof([U32{WSp.join(8n, 24n, t, Word.zero(24n))}]))}, Spec.Gt0366A291C1(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_8_h.bv8_root(hl, h, bitvector_8_d.Bitvector8{U32{WSp.join(8n, 24n, t, Word.zero(24n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, WNil{}}}}}}}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv8_root(hl, h, T.Bitvector8{U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), Gt0366A291C1_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_8_h.bv8_root(hl, h, bitvector_8_d.Bitvector8{U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), Gt0366A291C1_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7)) :
         RR.roots(S.BitsValue{BLP.btk(8n, BLP.bitsof([U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}]))}, Spec.Gt0366A291C1(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       Gt0366A291C1_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, a3, a4, a5, a6, a7, Gt0366A291C1_g(hl, ehl, a0, a1, a2, a3, a4, a5, a6, a7))
-def Gt0366A291C1_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector8, +e: {Gt0366A291C1_last(o) == U32{WSp.join(8n, 24n, WSp.take(8n, 32n, PD.bits(Gt0366A291C1_last(o))), Word.zero(24n))} : U32})
-    -> RR.roots(S.BitsValue{Gt0366A291C1_bits(o)}, Spec.Gt0366A291C1(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv8_root(hl, h, o, 0)))]):
+def Gt0366A291C1_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_8_d.Bitvector8, +e: {Gt0366A291C1_last(o) == U32{WSp.join(8n, 24n, WSp.take(8n, 32n, PD.bits(Gt0366A291C1_last(o))), Word.zero(24n))} : U32})
+    -> RR.roots(S.BitsValue{Gt0366A291C1_bits(o)}, Spec.Gt0366A291C1(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_8_h.bv8_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector8{+w0}:
+    case bitvector_8_d.Bitvector8{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(8n, 24n, WSp.take(8n, 32n, PD.bits(w0)), Word.zero(24n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(8n, BLP.bitsof([_]))}, Spec.Gt0366A291C1(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv8_root(hl, h, T.Bitvector8{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(8n, BLP.bitsof([_]))}, Spec.Gt0366A291C1(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_8_h.bv8_root(hl, h, bitvector_8_d.Bitvector8{_}, 0)))])
       Gt0366A291C1_h(h, hl, ehl, WSp.take(8n, 32n, PD.bits(w0)))
 # Gt0366A291C1: for every object whose bits past 8 are zero, the runtime root is a
 # specification root of its bits.
 law Gt0366A291C1_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector8
+  for +o: bitvector_8_d.Bitvector8
   for +e: {Gt0366A291C1_last(o) == U32{WSp.join(8n, 24n, WSp.take(8n, 32n, PD.bits(Gt0366A291C1_last(o))), Word.zero(24n))} : U32}
-  RR.roots(S.BitsValue{Gt0366A291C1_bits(o)}, Spec.Gt0366A291C1(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt0366A291C1_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{Gt0366A291C1_bits(o)}, Spec.Gt0366A291C1(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_8_h.Gt0366A291C1_hash_tree_root(h, o)))])
 def Gt0366A291C1_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.Gt0366A291C1_hash_tree_root(h, o), T.bv8_root(64n, h, o, 0), Gt0366A291C1_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_8_h.Gt0366A291C1_hash_tree_root(h, o), bitvector_8_h.bv8_root(64n, h, o, 0), Gt0366A291C1_htr(h, o)) :
     RR.roots(S.BitsValue{Gt0366A291C1_bits(o)}, Spec.Gt0366A291C1(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   Gt0366A291C1_lawg(h, 64n, {==}, o, e)
 
@@ -838,40 +866,40 @@ def Gt1BD4B4358D_g(+hl: Nat, +ehl: {hl == 64n : Nat}, +a0: Bool, +a1: Bool, +a2:
   %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(9n), 0n, MD.bytes_list([D.D{B.swap32(U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}), 0, 0, 0, 0, 0, 0, 0}])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([D.D{B.swap32(U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}), 0, 0, 0, 0, 0, 0, 0}])), hl, [D.D{B.swap32(U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))}, RS.at_depth_tree(Bits.chunk_limit(9n), 0n, hl, [D.D{B.swap32(U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}), 0, 0, 0, 0, 0, 0, 0}], {==}, {==}, ehl)) :
     {_ == Some{D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))} : Maybe<&2, +List<U32>>}
   {==}
-def Gt1BD4B4358D_last(o: T.Bitvector9) -> U32:
+def Gt1BD4B4358D_last(o: bitvector_9_d.Bitvector9) -> U32:
   match o:
-    case T.Bitvector9{+w0}: w0
-def Gt1BD4B4358D_bits(o: T.Bitvector9) -> +List<Bool>:
+    case bitvector_9_d.Bitvector9{+w0}: w0
+def Gt1BD4B4358D_bits(o: bitvector_9_d.Bitvector9) -> +List<Bool>:
   match o:
-    case T.Bitvector9{+w0}: BLP.btk(9n, BLP.bitsof([w0]))
-def Gt1BD4B4358D_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool) -> {T.bv9_root(hl, h, T.Bitvector9{U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
-def Gt1BD4B4358D_htr(-h: B.Buf, +o: T.Bitvector9) -> {T.Gt1BD4B4358D_hash_tree_root(h, o) == T.bv9_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
+    case bitvector_9_d.Bitvector9{+w0}: BLP.btk(9n, BLP.bitsof([w0]))
+def Gt1BD4B4358D_st(+hl: Nat, -h: B.Buf, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool) -> {bitvector_9_h.bv9_root(hl, h, bitvector_9_d.Bitvector9{U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}}, 0) == (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)) : B.Buf & D.Digest}: {==}
+def Gt1BD4B4358D_htr(-h: B.Buf, +o: bitvector_9_d.Bitvector9) -> {bitvector_9_h.Gt1BD4B4358D_hash_tree_root(h, o) == bitvector_9_h.bv9_root(64n, h, o, 0) : B.Buf & D.Digest}: {==}
 def Gt1BD4B4358D_fin(-h: B.Buf, +r: D.Digest, +a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool, +a8: Bool, +hg: {Bits.bitvector_at_depth(9n, 0n, BLP.btk(9n, BLP.bitsof([U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}]))) == Some{D.bytes(r)} : Maybe<&2, +List<U32>>})
     -> RR.roots(S.BitsValue{BLP.btk(9n, BLP.bitsof([U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}]))}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, (h, r)))]):
   (0n, ({==}, hg))
 def Gt1BD4B4358D_h(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(9n))
-    -> RR.roots(S.BitsValue{BLP.btk(9n, BLP.bitsof([U32{WSp.join(9n, 23n, t, Word.zero(23n))}]))}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv9_root(hl, h, T.Bitvector9{U32{WSp.join(9n, 23n, t, Word.zero(23n))}}, 0)))]):
+    -> RR.roots(S.BitsValue{BLP.btk(9n, BLP.bitsof([U32{WSp.join(9n, 23n, t, Word.zero(23n))}]))}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_9_h.bv9_root(hl, h, bitvector_9_d.Bitvector9{U32{WSp.join(9n, 23n, t, Word.zero(23n))}}, 0)))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, WCon{+a8, WNil{}}}}}}}}}}:
-      %Equal.sym(B.Buf & D.Digest, T.bv9_root(hl, h, T.Bitvector9{U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), Gt1BD4B4358D_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7, a8)) :
+      %Equal.sym(B.Buf & D.Digest, bitvector_9_h.bv9_root(hl, h, bitvector_9_d.Bitvector9{U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}}, 0), (h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}), 0, 0, 0, 0, 0, 0, 0}], 0n)), Gt1BD4B4358D_st(hl, h, a0, a1, a2, a3, a4, a5, a6, a7, a8)) :
         RR.roots(S.BitsValue{BLP.btk(9n, BLP.bitsof([U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}]))}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
       Gt1BD4B4358D_fin(h, MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(9n, 23n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WCon{a8, WNil{}}}}}}}}}}, Word.zero(23n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, a3, a4, a5, a6, a7, a8, Gt1BD4B4358D_g(hl, ehl, a0, a1, a2, a3, a4, a5, a6, a7, a8))
-def Gt1BD4B4358D_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector9, +e: {Gt1BD4B4358D_last(o) == U32{WSp.join(9n, 23n, WSp.take(9n, 32n, PD.bits(Gt1BD4B4358D_last(o))), Word.zero(23n))} : U32})
-    -> RR.roots(S.BitsValue{Gt1BD4B4358D_bits(o)}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv9_root(hl, h, o, 0)))]):
+def Gt1BD4B4358D_lawg(-h: B.Buf, +hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_9_d.Bitvector9, +e: {Gt1BD4B4358D_last(o) == U32{WSp.join(9n, 23n, WSp.take(9n, 32n, PD.bits(Gt1BD4B4358D_last(o))), Word.zero(23n))} : U32})
+    -> RR.roots(S.BitsValue{Gt1BD4B4358D_bits(o)}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_9_h.bv9_root(hl, h, o, 0)))]):
   match o:
-    case T.Bitvector9{+w0}:
+    case bitvector_9_d.Bitvector9{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(9n, 23n, WSp.take(9n, 32n, PD.bits(w0)), Word.zero(23n))}, e) :
-        RR.roots(S.BitsValue{BLP.btk(9n, BLP.bitsof([_]))}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.bv9_root(hl, h, T.Bitvector9{_}, 0)))])
+        RR.roots(S.BitsValue{BLP.btk(9n, BLP.bitsof([_]))}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_9_h.bv9_root(hl, h, bitvector_9_d.Bitvector9{_}, 0)))])
       Gt1BD4B4358D_h(h, hl, ehl, WSp.take(9n, 32n, PD.bits(w0)))
 # Gt1BD4B4358D: for every object whose bits past 9 are zero, the runtime root is a
 # specification root of its bits.
 law Gt1BD4B4358D_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector9
+  for +o: bitvector_9_d.Bitvector9
   for +e: {Gt1BD4B4358D_last(o) == U32{WSp.join(9n, 23n, WSp.take(9n, 32n, PD.bits(Gt1BD4B4358D_last(o))), Word.zero(23n))} : U32}
-  RR.roots(S.BitsValue{Gt1BD4B4358D_bits(o)}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt1BD4B4358D_hash_tree_root(h, o)))])
+  RR.roots(S.BitsValue{Gt1BD4B4358D_bits(o)}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_9_h.Gt1BD4B4358D_hash_tree_root(h, o)))])
 def Gt1BD4B4358D_root_correct(h, o, e):
-  %Equal.sym(B.Buf & D.Digest, T.Gt1BD4B4358D_hash_tree_root(h, o), T.bv9_root(64n, h, o, 0), Gt1BD4B4358D_htr(h, o)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_9_h.Gt1BD4B4358D_hash_tree_root(h, o), bitvector_9_h.bv9_root(64n, h, o, 0), Gt1BD4B4358D_htr(h, o)) :
     RR.roots(S.BitsValue{Gt1BD4B4358D_bits(o)}, Spec.Gt1BD4B4358D(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   Gt1BD4B4358D_lawg(h, 64n, {==}, o, e)
 

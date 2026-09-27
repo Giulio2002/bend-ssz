@@ -1608,6 +1608,8 @@ def main():
         out[ROOT / 'proofs/obj' / fn] = module_text(L)
         out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}.bend'] = top_text(L, fn)
         out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}_unique.bend'] = generic_unique_text(name, f'{big}var_codec_{name}.bend')
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

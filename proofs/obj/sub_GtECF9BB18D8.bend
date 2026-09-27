@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint16_decode_ssz_generated.bend as uint16_r
+import ../../types/uint16_encode_ssz_generated.bend as uint16_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -28,7 +29,7 @@ def GtECF9BB18D8_spec_encode(+x0: U32)
   SF.encoding_of_parts(Spec.GtECF9BB18D8(), S.UnsignedValue{P.UInt{U32.and(x0, 65535), 0, 0, 0, 0, 0, 0, 0}}, [B.byte_sel(0, x0), B.byte_sel(1, x0)], GtECF9BB18D8_spec_parts(x0))
 
 def GtECF9BB18D8_spec_decode(+x0: U32)
-    -> {T.GtECF9BB18D8_decode(B.Buf{ALeaf{x0}, 2}, 2) == (B.Buf{ALeaf{x0}, 2}, Some{U32.and(x0, 65535)}) : B.Buf & Maybe<&1, U32>}:
+    -> {uint16_r.GtECF9BB18D8_decode(B.Buf{ALeaf{x0}, 2}, 2) == (B.Buf{ALeaf{x0}, 2}, Some{U32.and(x0, 65535)}) : B.Buf & Maybe<&1, U32>}:
   {==}
 
 def GtECF9BB18D8_spec_view(+x0: U32)
@@ -36,17 +37,17 @@ def GtECF9BB18D8_spec_view(+x0: U32)
   {==}
 
 def GtECF9BB18D8_spec_bytes(+y: U32)
-    -> {B.emit(T.GtECF9BB18D8_encode(y), 0, 2) == (T.GtECF9BB18D8_encode(y), [B.byte_sel(0, y), B.byte_sel(1, y)]) : B.Buf & +List<U32>}:
-  %SP2.w16_b0(y) : {B.emit(T.GtECF9BB18D8_encode(y), 0, 2) == (T.GtECF9BB18D8_encode(y), [_, B.byte_sel(1, y)]) : B.Buf & +List<U32>}
-  %SP2.w16_b1(y) : {B.emit(T.GtECF9BB18D8_encode(y), 0, 2) == (T.GtECF9BB18D8_encode(y), [B.byte_sel(0, U32.or(U32.and(y, 255), U32.shln(U32.and(U32.shrn(y, 8n), 255), 8n))), _]) : B.Buf & +List<U32>}
-  %WM.mul256(U32.and(U32.shrn(y, 8n), 255)) : {B.emit(T.GtECF9BB18D8_encode(y), 0, 2) == (T.GtECF9BB18D8_encode(y), [B.byte_sel(0, U32.or(U32.and(y, 255), _)), B.byte_sel(1, U32.or(U32.and(y, 255), U32.shln(U32.and(U32.shrn(y, 8n), 255), 8n)))]) : B.Buf & +List<U32>}
-  %WM.mul256(U32.and(U32.shrn(y, 8n), 255)) : {B.emit(T.GtECF9BB18D8_encode(y), 0, 2) == (T.GtECF9BB18D8_encode(y), [B.byte_sel(0, U32.or(U32.and(y, 255), U32.mul(U32.and(U32.shrn(y, 8n), 255), 256))), B.byte_sel(1, U32.or(U32.and(y, 255), _))]) : B.Buf & +List<U32>}
-  %SP2.or0(U32.and(y, 255)) : {B.emit(T.GtECF9BB18D8_encode(y), 0, 2) == (T.GtECF9BB18D8_encode(y), [B.byte_sel(0, U32.or(_, U32.mul(U32.and(U32.shrn(y, 8n), 255), 256))), B.byte_sel(1, U32.or(U32.and(y, 255), U32.mul(U32.and(U32.shrn(y, 8n), 255), 256)))]) : B.Buf & +List<U32>}
-  %SP2.or0(U32.and(y, 255)) : {B.emit(T.GtECF9BB18D8_encode(y), 0, 2) == (T.GtECF9BB18D8_encode(y), [B.byte_sel(0, U32.or(U32.or(0, U32.and(y, 255)), U32.mul(U32.and(U32.shrn(y, 8n), 255), 256))), B.byte_sel(1, U32.or(_, U32.mul(U32.and(U32.shrn(y, 8n), 255), 256)))]) : B.Buf & +List<U32>}
+    -> {B.emit(uint16_e.GtECF9BB18D8_encode(y), 0, 2) == (uint16_e.GtECF9BB18D8_encode(y), [B.byte_sel(0, y), B.byte_sel(1, y)]) : B.Buf & +List<U32>}:
+  %SP2.w16_b0(y) : {B.emit(uint16_e.GtECF9BB18D8_encode(y), 0, 2) == (uint16_e.GtECF9BB18D8_encode(y), [_, B.byte_sel(1, y)]) : B.Buf & +List<U32>}
+  %SP2.w16_b1(y) : {B.emit(uint16_e.GtECF9BB18D8_encode(y), 0, 2) == (uint16_e.GtECF9BB18D8_encode(y), [B.byte_sel(0, U32.or(U32.and(y, 255), U32.shln(U32.and(U32.shrn(y, 8n), 255), 8n))), _]) : B.Buf & +List<U32>}
+  %WM.mul256(U32.and(U32.shrn(y, 8n), 255)) : {B.emit(uint16_e.GtECF9BB18D8_encode(y), 0, 2) == (uint16_e.GtECF9BB18D8_encode(y), [B.byte_sel(0, U32.or(U32.and(y, 255), _)), B.byte_sel(1, U32.or(U32.and(y, 255), U32.shln(U32.and(U32.shrn(y, 8n), 255), 8n)))]) : B.Buf & +List<U32>}
+  %WM.mul256(U32.and(U32.shrn(y, 8n), 255)) : {B.emit(uint16_e.GtECF9BB18D8_encode(y), 0, 2) == (uint16_e.GtECF9BB18D8_encode(y), [B.byte_sel(0, U32.or(U32.and(y, 255), U32.mul(U32.and(U32.shrn(y, 8n), 255), 256))), B.byte_sel(1, U32.or(U32.and(y, 255), _))]) : B.Buf & +List<U32>}
+  %SP2.or0(U32.and(y, 255)) : {B.emit(uint16_e.GtECF9BB18D8_encode(y), 0, 2) == (uint16_e.GtECF9BB18D8_encode(y), [B.byte_sel(0, U32.or(_, U32.mul(U32.and(U32.shrn(y, 8n), 255), 256))), B.byte_sel(1, U32.or(U32.and(y, 255), U32.mul(U32.and(U32.shrn(y, 8n), 255), 256)))]) : B.Buf & +List<U32>}
+  %SP2.or0(U32.and(y, 255)) : {B.emit(uint16_e.GtECF9BB18D8_encode(y), 0, 2) == (uint16_e.GtECF9BB18D8_encode(y), [B.byte_sel(0, U32.or(U32.or(0, U32.and(y, 255)), U32.mul(U32.and(U32.shrn(y, 8n), 255), 256))), B.byte_sel(1, U32.or(_, U32.mul(U32.and(U32.shrn(y, 8n), 255), 256)))]) : B.Buf & +List<U32>}
   {==}
 
 def GtECF9BB18D8_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 2) == False{} : Bool})
-    -> {T.GtECF9BB18D8_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, U32>}:
-  %Equal.sym(Bool, U32.is_eq(m, 2), False{}, e) : {T.GtECF9BB18D8_built(m, T.u16_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, U32>}
+    -> {uint16_r.GtECF9BB18D8_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, U32>}:
+  %Equal.sym(Bool, U32.is_eq(m, 2), False{}, e) : {uint16_r.GtECF9BB18D8_built(m, uint16_r.u16_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, U32>}
   {==}
 

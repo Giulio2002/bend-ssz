@@ -1,6 +1,6 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluHistoricalBatch_decode_ssz_generated.bend as FuluHistoricalBatch_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -14,11 +14,11 @@ import ./vrejf.bend as VRF
 # (see codegen/fix_reject.py).
 
 # ---- HistoricalBatch (524288 bytes; validator T.HistoricalBatch_ok) ----
-def HistoricalBatch_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.HistoricalBatch_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def HistoricalBatch_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluHistoricalBatch_r.HistoricalBatch_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def HistoricalBatch_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.HistoricalBatch_ok(buf, off, len) == (buf, U32.is_eq(len, 524288)) : B.Buf & Bool}:
+def HistoricalBatch_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluHistoricalBatch_r.HistoricalBatch_ok(buf, off, len) == (buf, U32.is_eq(len, 524288)) : B.Buf & Bool}:
   HistoricalBatch_okb(buf, off, U32.is_eq(len, 524288))
 def HistoricalBatch_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(Spec.HistoricalBatch())) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.HistoricalBatch(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.HistoricalBatch()), VRF.SZ(Spec.HistoricalBatch()), bs, Codec.parts(v, Spec.HistoricalBatch()), DS.facts(v, Spec.HistoricalBatch(), {==}), {==}, e, hn)

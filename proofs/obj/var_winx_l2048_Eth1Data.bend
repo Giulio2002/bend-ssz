@@ -1,7 +1,11 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluEth1Data_def_generated.bend as FuluEth1Data_d
+import ../../types/FuluEth1Data_decode_ssz_generated.bend as FuluEth1Data_r
+import ../../types/Fulu_list_Eth1Data_2048_def_generated.bend as Fulu_list_Eth1Data_2048_d
+import ../../types/Fulu_list_Eth1Data_2048_decode_ssz_generated.bend as Fulu_list_Eth1Data_2048_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -46,7 +50,7 @@ def hp0(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w
   %hq0(w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17) : {Codec.parts(_, S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17])}]} : Maybe<&2, +List<S.Part>>}
   F.container_fixed(["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}, S.Items{S.BytesValue{F.limbs([w0, w1, w2, w3, w4, w5, w6, w7])}, S.Items{S.UnsignedValue{P.UInt{w8, w9, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([w10, w11, w12, w13, w14, w15, w16, w17])}, S.EmptyItems{}}}}, [[w0, w1, w2, w3, w4, w5, w6, w7], [w8, w9], [w10, w11, w12, w13, w14, w15, w16, w17]], 72n, [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17], F.items_fixed(S.BytesValue{F.limbs([w0, w1, w2, w3, w4, w5, w6, w7])}, S.Items{S.UnsignedValue{P.UInt{w8, w9, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([w10, w11, w12, w13, w14, w15, w16, w17])}, S.EmptyItems{}}}, S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}, F.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), [S.Fixed{F.limbs([w8, w9])}, S.Fixed{F.limbs([w10, w11, w12, w13, w14, w15, w16, w17])}], F.bytes_part_n(w0, [w1, w2, w3, w4, w5, w6, w7], 32n, {==}, {==}), F.items_fixed(S.UnsignedValue{P.UInt{w8, w9, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([w10, w11, w12, w13, w14, w15, w16, w17])}, S.EmptyItems{}}, S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}, F.limbs([w8, w9]), [S.Fixed{F.limbs([w10, w11, w12, w13, w14, w15, w16, w17])}], F.uint64_part(w8, w9), F.items_fixed(S.BytesValue{F.limbs([w10, w11, w12, w13, w14, w15, w16, w17])}, S.EmptyItems{}, S.ByteVector{32n}, S.End{}, F.limbs([w10, w11, w12, w13, w14, w15, w16, w17]), [], F.bytes_part_n(w10, [w11, w12, w13, w14, w15, w16, w17], 32n, {==}, {==}), {==}))), {==}, {==}, {==})
 
-def RX(+t: FD.array__Tree<U32>, +y: Nat) -> T.Eth1Data: T.Eth1Data{T.Bytes32{UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), UR.RWN(t, 16n+y), UR.RWN(t, 20n+y), UR.RWN(t, 24n+y), UR.RWN(t, 28n+y)}, O.U64{UR.RWN(t, 32n+y), UR.RWN(t, 36n+y)}, T.Bytes32{UR.RWN(t, 40n+y), UR.RWN(t, 44n+y), UR.RWN(t, 48n+y), UR.RWN(t, 52n+y), UR.RWN(t, 56n+y), UR.RWN(t, 60n+y), UR.RWN(t, 64n+y), UR.RWN(t, 68n+y)}}
+def RX(+t: FD.array__Tree<U32>, +y: Nat) -> FuluEth1Data_d.Eth1Data: FuluEth1Data_d.Eth1Data{FuluBytes32_d.Bytes32{UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), UR.RWN(t, 16n+y), UR.RWN(t, 20n+y), UR.RWN(t, 24n+y), UR.RWN(t, 28n+y)}, O.U64{UR.RWN(t, 32n+y), UR.RWN(t, 36n+y)}, FuluBytes32_d.Bytes32{UR.RWN(t, 40n+y), UR.RWN(t, 44n+y), UR.RWN(t, 48n+y), UR.RWN(t, 52n+y), UR.RWN(t, 56n+y), UR.RWN(t, 60n+y), UR.RWN(t, 64n+y), UR.RWN(t, 68n+y)}}
 
 # its spec value, and that value's parts: the limbs of those words
 def RVAL(+t: FD.array__Tree<U32>, +y: Nat) -> S.Value: hv0(UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), UR.RWN(t, 16n+y), UR.RWN(t, 20n+y), UR.RWN(t, 24n+y), UR.RWN(t, 28n+y), UR.RWN(t, 32n+y), UR.RWN(t, 36n+y), UR.RWN(t, 40n+y), UR.RWN(t, 44n+y), UR.RWN(t, 48n+y), UR.RWN(t, 52n+y), UR.RWN(t, 56n+y), UR.RWN(t, 60n+y), UR.RWN(t, 64n+y), UR.RWN(t, 68n+y))
@@ -58,10 +62,10 @@ def RPRF(+t: FD.array__Tree<U32>, +y: Nat) -> {Codec.parts(RVAL(t, y), S.Contain
   hp0(UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), UR.RWN(t, 16n+y), UR.RWN(t, 20n+y), UR.RWN(t, 24n+y), UR.RWN(t, 28n+y), UR.RWN(t, 32n+y), UR.RWN(t, 36n+y), UR.RWN(t, 40n+y), UR.RWN(t, 44n+y), UR.RWN(t, 48n+y), UR.RWN(t, 52n+y), UR.RWN(t, 56n+y), UR.RWN(t, 60n+y), UR.RWN(t, 64n+y), UR.RWN(t, 68n+y))
 
 # the records j, j + 1, ..., j + k written into a record tree D
-def RT(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<T.Eth1Data>, +t: FD.array__Tree<U32>, +x: Nat) -> FD.array__Tree<T.Eth1Data>:
+def RT(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +t: FD.array__Tree<U32>, +x: Nat) -> FD.array__Tree<FuluEth1Data_d.Eth1Data>:
   match k:
-    case 0n: FD.array__upd(T.Eth1Data, dd, D, j, RX(t, VRL.pos(j, 72n, x)))
-    case 1n+q: RT(q, 1n+j, dd, FD.array__upd(T.Eth1Data, dd, D, j, RX(t, VRL.pos(j, 72n, x))), t, x)
+    case 0n: FD.array__upd(FuluEth1Data_d.Eth1Data, dd, D, j, RX(t, VRL.pos(j, 72n, x)))
+    case 1n+q: RT(q, 1n+j, dd, FD.array__upd(FuluEth1Data_d.Eth1Data, dd, D, j, RX(t, VRL.pos(j, 72n, x))), t, x)
 
 # ---- the validator ------------------------------------------------------------------------------
 
@@ -70,7 +74,7 @@ def CHKw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool:
 
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.l2048_Eth1Data_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   {==}
 
 def vR() -> Word(31n): FD.spec_numeric__from_nat(31n, 72n)
@@ -87,39 +91,39 @@ def hcw(+len: U32, +h: {Bool.and(U32.is_eq(len, (U32.div(len, 72) * 72 : U32)), 
 
 # ---- the reader ---------------------------------------------------------------------------------
 
-def LOBJ(e: Bool, +t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> T.l2048_Eth1Data_Seq:
+def LOBJ(e: Bool, +t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq:
   match e:
-    case True{}: T.l2048_Eth1Data_Seq{T.l2048_Eth1Data_fill(0n), 0}
-    case False{}: T.l2048_Eth1Data_Seq{FD.array__thaw(T.Eth1Data, RT(U32.to_nat(U32.sub(NN(len), 1)), 0n, B.words_depth(NN(len)), FD.array__trep(T.Eth1Data, B.words_depth(NN(len)), T.Eth1Data_default()), t, x)), NN(len)}
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.l2048_Eth1Data_Seq: LOBJ(U32.is_eq(len, 0), t, x, len)
+    case True{}: Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_fill(0n), 0}
+    case False{}: Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{FD.array__thaw(FuluEth1Data_d.Eth1Data, RT(U32.to_nat(U32.sub(NN(len), 1)), 0n, B.words_depth(NN(len)), FD.array__trep(FuluEth1Data_d.Eth1Data, B.words_depth(NN(len)), FuluEth1Data_d.Eth1Data_default()), t, x)), NN(len)}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq: LOBJ(U32.is_eq(len, 0), t, x, len)
 
 # The read loop from record j (index i) on.
-def lp(k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +i: U32, +j: Nat, +dd: Nat, +D: FD.array__Tree<T.Eth1Data>,
+def lp(k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +i: U32, +j: Nat, +dd: Nat, +D: FD.array__Tree<FuluEth1Data_d.Eth1Data>,
     +eo: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 72n, x), A.quad(VB.pw(d))) == True{} : Bool},
     +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(dd)) == True{} : Bool},
-    +pfD: {FD.array__perfect(T.Eth1Data, dd, D) == True{} : Bool})
-    -> {T.l2048_Eth1Data_rd(k, i, off, FD.array__thaw(T.Eth1Data, D), (BF(t, n), RX(t, VRL.pos(j, 72n, x)))) == (BF(t, n), FD.array__thaw(T.Eth1Data, RT(k, j, dd, D, t, x))) : B.Buf & Array<T.Eth1Data>}:
+    +pfD: {FD.array__perfect(FuluEth1Data_d.Eth1Data, dd, D) == True{} : Bool})
+    -> {Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_rd(k, i, off, FD.array__thaw(FuluEth1Data_d.Eth1Data, D), (BF(t, n), RX(t, VRL.pos(j, 72n, x)))) == (BF(t, n), FD.array__thaw(FuluEth1Data_d.Eth1Data, RT(k, j, dd, D, t, x))) : B.Buf & Array<FuluEth1Data_d.Eth1Data>}:
   match k:
     case 0n:
-      %Equal.sym(Array<T.Eth1Data>, Array.set(T.Eth1Data, FD.array__thaw(T.Eth1Data, D), i, RX(t, VRL.pos(j, 72n, x))), FD.array__thaw(T.Eth1Data, FD.array__upd(T.Eth1Data, dd, D, j, RX(t, VRL.pos(j, 72n, x)))),
-          VRL.set_g(T.Eth1Data, dd, D, i, j, RX(t, VRL.pos(j, 72n, x)), T.Eth1Data_default(), ej, hdd, hk, pfD)) :
-        {(BF(t, n), _) == (BF(t, n), FD.array__thaw(T.Eth1Data, RT(0n, j, dd, D, t, x))) : B.Buf & Array<T.Eth1Data>}
+      %Equal.sym(Array<FuluEth1Data_d.Eth1Data>, Array.set(FuluEth1Data_d.Eth1Data, FD.array__thaw(FuluEth1Data_d.Eth1Data, D), i, RX(t, VRL.pos(j, 72n, x))), FD.array__thaw(FuluEth1Data_d.Eth1Data, FD.array__upd(FuluEth1Data_d.Eth1Data, dd, D, j, RX(t, VRL.pos(j, 72n, x)))),
+          VRL.set_g(FuluEth1Data_d.Eth1Data, dd, D, i, j, RX(t, VRL.pos(j, 72n, x)), FuluEth1Data_d.Eth1Data_default(), ej, hdd, hk, pfD)) :
+        {(BF(t, n), _) == (BF(t, n), FD.array__thaw(FuluEth1Data_d.Eth1Data, RT(0n, j, dd, D, t, x))) : B.Buf & Array<FuluEth1Data_d.Eth1Data>}
       {==}
     case 1n+ +q:
       +v = RX(t, VRL.pos(j, 72n, x))
-      +D1 = FD.array__upd(T.Eth1Data, dd, D, j, v)
+      +D1 = FD.array__upd(FuluEth1Data_d.Eth1Data, dd, D, j, v)
       +hkj = FD.nat__le_lt_trans(j, Nat.add(q, j), VB.pw(dd), Order.left_below_sum(q, j), FD.nat__lt_trans(Nat.add(q, j), 1n+Nat.add(q, j), VB.pw(dd), FD.nat__lt_succ(Nat.add(q, j)), hk))
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dd)) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hk)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 72n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       +hx = VRL.nextfit(j, q, 72n, x, A.quad(VB.pw(d)), hb)
       +ex = VRL.posU(d, off, x, i, j, 72, 71n, {==}, eo, ej, hd, hx)
-      %Equal.sym(Array<T.Eth1Data>, Array.set(T.Eth1Data, FD.array__thaw(T.Eth1Data, D), i, v), FD.array__thaw(T.Eth1Data, D1), VRL.set_g(T.Eth1Data, dd, D, i, j, v, T.Eth1Data_default(), ej, hdd, hkj, pfD)) :
-        {T.l2048_Eth1Data_rd(q, U32.add(i, 1), off, _, T.Eth1Data_read(BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 72)), 72)) == (BF(t, n), FD.array__thaw(T.Eth1Data, RT(1n+q, j, dd, D, t, x))) : B.Buf & Array<T.Eth1Data>}
-      %Equal.sym(B.Buf & T.Eth1Data, T.Eth1Data_read(BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 72)), 72), (BF(t, n), RX(t, VRL.pos(1n+j, 72n, x))),
+      %Equal.sym(Array<FuluEth1Data_d.Eth1Data>, Array.set(FuluEth1Data_d.Eth1Data, FD.array__thaw(FuluEth1Data_d.Eth1Data, D), i, v), FD.array__thaw(FuluEth1Data_d.Eth1Data, D1), VRL.set_g(FuluEth1Data_d.Eth1Data, dd, D, i, j, v, FuluEth1Data_d.Eth1Data_default(), ej, hdd, hkj, pfD)) :
+        {Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_rd(q, U32.add(i, 1), off, _, FuluEth1Data_r.Eth1Data_read(BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 72)), 72)) == (BF(t, n), FD.array__thaw(FuluEth1Data_d.Eth1Data, RT(1n+q, j, dd, D, t, x))) : B.Buf & Array<FuluEth1Data_d.Eth1Data>}
+      %Equal.sym(B.Buf & FuluEth1Data_d.Eth1Data, FuluEth1Data_r.Eth1Data_read(BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 72)), 72), (BF(t, n), RX(t, VRL.pos(1n+j, 72n, x))),
           VTX.rdx_Eth1Data(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 72)), VRL.pos(1n+j, 72n, x), ex, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hx)) :
-        {T.l2048_Eth1Data_rd(q, U32.add(i, 1), off, FD.array__thaw(T.Eth1Data, D1), _) == (BF(t, n), FD.array__thaw(T.Eth1Data, RT(1n+q, j, dd, D, t, x))) : B.Buf & Array<T.Eth1Data>}
-      lp(q, d, t, n, x, off, U32.add(i, 1), 1n+j, dd, D1, eo, VRL.succU(d, i, j, 71n, x, ej, hd, hx), hd, pf, hb2, hdd, hk2, FD.array__upd_perfect(T.Eth1Data, dd, D, j, v, pfD))
+        {Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_rd(q, U32.add(i, 1), off, FD.array__thaw(FuluEth1Data_d.Eth1Data, D1), _) == (BF(t, n), FD.array__thaw(FuluEth1Data_d.Eth1Data, RT(1n+q, j, dd, D, t, x))) : B.Buf & Array<FuluEth1Data_d.Eth1Data>}
+      lp(q, d, t, n, x, off, U32.add(i, 1), 1n+j, dd, D1, eo, VRL.succU(d, i, j, 71n, x, ej, hd, hx), hd, pf, hb2, hdd, hk2, FD.array__upd_perfect(FuluEth1Data_d.Eth1Data, dd, D, j, v, pfD))
 
 # A non-empty window holds c >= 1 records.
 def cpos(+len: U32, +c: Nat, +ec: {U32.to_nat(len) == Nat.mul(c, 72n) : Nat}, +eb: {U32.is_eq(len, 0) == False{} : Bool})
@@ -132,7 +136,7 @@ def cpos(+len: U32, +c: Nat, +ec: {U32.to_nat(len) == Nat.mul(c, 72n) : Nat}, +e
 def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(len, 0) == b : Bool})
-    -> {T.l2048_Eth1Data_rd_start(b, off, NN(len), BF(t, n)) == (BF(t, n), LOBJ(b, t, x, len)) : B.Buf & T.l2048_Eth1Data_Seq}:
+    -> {Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_rd_start(b, off, NN(len), BF(t, n)) == (BF(t, n), LOBJ(b, t, x, len)) : B.Buf & Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq}:
   match b:
     case True{}: {==}
     case False{}:
@@ -156,20 +160,20 @@ def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
         Order.add_left(x, 72n, U32.to_nat(len), FD.logic__subst(Nat, z => {Nat.is_le(72n, z) == True{} : Bool}, Nat.mul(c, 72n), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), Nat.mul(c, 72n), ec),
           FD.logic__subst(Nat, z => {Nat.is_le(72n, Nat.mul(z, 72n)) == True{} : Bool}, 1n+k, c, e1, Order.below_sum(72n, Nat.mul(k, 72n))))), hw)
       +cap = B.words_depth(NN(len))
-      %Equal.sym(B.Buf & T.Eth1Data, T.Eth1Data_read(BF(t, n), off, 72), (BF(t, n), RX(t, x)), VTX.rdx_Eth1Data(d, t, n, off, x, eo, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb0)) :
-        {T.l2048_Eth1Data_rd_fin(NN(len), T.l2048_Eth1Data_rd(k, 0, off, T.l2048_Eth1Data_fill(T.l2048_Eth1Data_cap(NN(len))), _)) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & T.l2048_Eth1Data_Seq}
-      %Equal.sym(Array<T.Eth1Data>, Array.new(T.Eth1Data, cap, T.Eth1Data_default()), FD.array__thaw(T.Eth1Data, FD.array__trep(T.Eth1Data, cap, T.Eth1Data_default())), FD.array__new(T.Eth1Data, cap, T.Eth1Data_default())) :
-        {T.l2048_Eth1Data_rd_fin(NN(len), T.l2048_Eth1Data_rd(k, 0, off, _, (BF(t, n), RX(t, x)))) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & T.l2048_Eth1Data_Seq}
-      %Equal.sym(B.Buf & Array<T.Eth1Data>, T.l2048_Eth1Data_rd(k, 0, off, FD.array__thaw(T.Eth1Data, FD.array__trep(T.Eth1Data, cap, T.Eth1Data_default())), (BF(t, n), RX(t, x))),
-          (BF(t, n), FD.array__thaw(T.Eth1Data, RT(k, 0n, cap, FD.array__trep(T.Eth1Data, cap, T.Eth1Data_default()), t, x))),
-          lp(k, d, t, n, x, off, 0, 0n, cap, FD.array__trep(T.Eth1Data, cap, T.Eth1Data_default()), eo, {==}, hd, pf, hb, hdd, hk, FD.array__trep_perfect(T.Eth1Data, cap, T.Eth1Data_default()))) :
-        {T.l2048_Eth1Data_rd_fin(NN(len), _) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & T.l2048_Eth1Data_Seq}
+      %Equal.sym(B.Buf & FuluEth1Data_d.Eth1Data, FuluEth1Data_r.Eth1Data_read(BF(t, n), off, 72), (BF(t, n), RX(t, x)), VTX.rdx_Eth1Data(d, t, n, off, x, eo, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb0)) :
+        {Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_rd_fin(NN(len), Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_rd(k, 0, off, Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_fill(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_cap(NN(len))), _)) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq}
+      %Equal.sym(Array<FuluEth1Data_d.Eth1Data>, Array.new(FuluEth1Data_d.Eth1Data, cap, FuluEth1Data_d.Eth1Data_default()), FD.array__thaw(FuluEth1Data_d.Eth1Data, FD.array__trep(FuluEth1Data_d.Eth1Data, cap, FuluEth1Data_d.Eth1Data_default())), FD.array__new(FuluEth1Data_d.Eth1Data, cap, FuluEth1Data_d.Eth1Data_default())) :
+        {Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_rd_fin(NN(len), Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_rd(k, 0, off, _, (BF(t, n), RX(t, x)))) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq}
+      %Equal.sym(B.Buf & Array<FuluEth1Data_d.Eth1Data>, Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_rd(k, 0, off, FD.array__thaw(FuluEth1Data_d.Eth1Data, FD.array__trep(FuluEth1Data_d.Eth1Data, cap, FuluEth1Data_d.Eth1Data_default())), (BF(t, n), RX(t, x))),
+          (BF(t, n), FD.array__thaw(FuluEth1Data_d.Eth1Data, RT(k, 0n, cap, FD.array__trep(FuluEth1Data_d.Eth1Data, cap, FuluEth1Data_d.Eth1Data_default()), t, x))),
+          lp(k, d, t, n, x, off, 0, 0n, cap, FD.array__trep(FuluEth1Data_d.Eth1Data, cap, FuluEth1Data_d.Eth1Data_default()), eo, {==}, hd, pf, hb, hdd, hk, FD.array__trep_perfect(FuluEth1Data_d.Eth1Data, cap, FuluEth1Data_d.Eth1Data_default()))) :
+        {Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_rd_fin(NN(len), _) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq}
       {==}
 
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool})
-    -> {T.l2048_Eth1Data_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.l2048_Eth1Data_Seq}:
+    -> {Fulu_list_Eth1Data_2048_r.l2048_Eth1Data_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq}:
   rd_go(d, t, n, x, off, len, eo, hd, hw, pf, hchk, U32.is_eq(len, 0), {==})
 
 # ---- the spec side ------------------------------------------------------------------------------

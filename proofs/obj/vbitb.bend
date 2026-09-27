@@ -1,6 +1,12 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_encode_ssz_generated.bend as uint8_e
+import ../../types/bitvector_1_def_generated.bend as bitvector_1_d
+import ../../types/bitvector_2_def_generated.bend as bitvector_2_d
+import ../../types/bitvector_8_def_generated.bend as bitvector_8_d
+import ../../types/bitvector_2_encode_ssz_generated.bend as bitvector_2_e
+import ../../types/bitvector_1_encode_ssz_generated.bend as bitvector_1_e
+import ../../types/bitvector_8_encode_ssz_generated.bend as bitvector_8_e
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/bit_packing.bend as Bp
@@ -68,7 +74,7 @@ def e2(+v: U32, +h: {U32.is_lt(v, 4) == True{} : Bool}) -> {U32.is_lt(v, 256) ==
 
 # ---- Bitvector[1]: its put is the byte write ----
 def pwd1(+c0: Bool, +c1: Bool, out: Array<U32>, +Q: U32, +w0: U32, +z24: {U32.shrn(w0, 24n) == 0 : U32}, +z16: {U32.shrn(w0, 16n) == 0 : U32}, +z8: {U32.shrn(w0, 8n) == 0 : U32})
-    -> {T.bv1_pwd(U32.is_eq(U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, 0), U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, out, Q, w0) == O.or_word(out, Q, O.shl_bytes(w0, U32{WCon{c0, WCon{c1, Word.zero(30n)}}})) : Array<U32>}:
+    -> {bitvector_1_e.bv1_pwd(U32.is_eq(U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, 0), U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, out, Q, w0) == O.or_word(out, Q, O.shl_bytes(w0, U32{WCon{c0, WCon{c1, Word.zero(30n)}}})) : Array<U32>}:
   match c0 c1:
     case False{} False{}: Equal.cong(U32, Array<U32>, z => O.or_word(out, z, w0), U32.add(Q, 0), Q, FD.u32alg__add_zero(Q))
     case True{} False{}:
@@ -81,18 +87,18 @@ def pwd1(+c0: Bool, +c1: Bool, out: Array<U32>, +Q: U32, +w0: U32, +z24: {U32.sh
       %Equal.sym(U32, U32.shrn(w0, 8n), 0, z8) : {O.or_skip(O.or_word(out, U32.add(Q, 0), U32.mul(w0, 16777216)), U32.add(Q, 1), _) == O.or_word(out, Q, U32.mul(w0, 16777216)) : Array<U32>}
       Equal.cong(U32, Array<U32>, z => O.or_word(out, z, U32.mul(w0, 16777216)), U32.add(Q, 0), Q, FD.u32alg__add_zero(Q))
 def put1(out: Array<U32>, +pos: U32, +w0: U32, +h: {U32.is_lt(w0, 2) == True{} : Bool})
-    -> {T.bv1_put(out, pos, T.Bitvector1{w0}) == T.u8_put(out, pos, w0) : Array<U32>}:
+    -> {bitvector_1_e.bv1_put(out, pos, bitvector_1_d.Bitvector1{w0}) == uint8_e.u8_put(out, pos, w0) : Array<U32>}:
   +e = e1(w0, h)
   +v8 = z8(w0, e)
   %Equal.sym(U32, U32.and(w0, 255), w0, ea(w0, e)) :
-    {T.bv1_pwd(U32.is_eq(U32.and(pos, 3), 0), U32.and(pos, 3), out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(_, U32.and(pos, 3))) : Array<U32>}
+    {bitvector_1_e.bv1_pwd(U32.is_eq(U32.and(pos, 3), 0), U32.and(pos, 3), out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(_, U32.and(pos, 3))) : Array<U32>}
   %Equal.sym(U32, U32.and(pos, 3), U32{WCon{UWD.LB0(pos), WCon{UWD.LB1(pos), Word.zero(30n)}}}, UWD.rmv(pos)) :
-    {T.bv1_pwd(U32.is_eq(_, 0), _, out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(w0, _)) : Array<U32>}
+    {bitvector_1_e.bv1_pwd(U32.is_eq(_, 0), _, out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(w0, _)) : Array<U32>}
   pwd1(UWD.LB0(pos), UWD.LB1(pos), out, U32.shrn(pos, 2n), w0, UWB.tzc11(w0, v8), UWB.tzc21(w0, v8), v8)
 
 # ---- Bitvector[2]: its put is the byte write ----
 def pwd2(+c0: Bool, +c1: Bool, out: Array<U32>, +Q: U32, +w0: U32, +z24: {U32.shrn(w0, 24n) == 0 : U32}, +z16: {U32.shrn(w0, 16n) == 0 : U32}, +z8: {U32.shrn(w0, 8n) == 0 : U32})
-    -> {T.bv2_pwd(U32.is_eq(U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, 0), U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, out, Q, w0) == O.or_word(out, Q, O.shl_bytes(w0, U32{WCon{c0, WCon{c1, Word.zero(30n)}}})) : Array<U32>}:
+    -> {bitvector_2_e.bv2_pwd(U32.is_eq(U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, 0), U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, out, Q, w0) == O.or_word(out, Q, O.shl_bytes(w0, U32{WCon{c0, WCon{c1, Word.zero(30n)}}})) : Array<U32>}:
   match c0 c1:
     case False{} False{}: Equal.cong(U32, Array<U32>, z => O.or_word(out, z, w0), U32.add(Q, 0), Q, FD.u32alg__add_zero(Q))
     case True{} False{}:
@@ -105,18 +111,18 @@ def pwd2(+c0: Bool, +c1: Bool, out: Array<U32>, +Q: U32, +w0: U32, +z24: {U32.sh
       %Equal.sym(U32, U32.shrn(w0, 8n), 0, z8) : {O.or_skip(O.or_word(out, U32.add(Q, 0), U32.mul(w0, 16777216)), U32.add(Q, 1), _) == O.or_word(out, Q, U32.mul(w0, 16777216)) : Array<U32>}
       Equal.cong(U32, Array<U32>, z => O.or_word(out, z, U32.mul(w0, 16777216)), U32.add(Q, 0), Q, FD.u32alg__add_zero(Q))
 def put2(out: Array<U32>, +pos: U32, +w0: U32, +h: {U32.is_lt(w0, 4) == True{} : Bool})
-    -> {T.bv2_put(out, pos, T.Bitvector2{w0}) == T.u8_put(out, pos, w0) : Array<U32>}:
+    -> {bitvector_2_e.bv2_put(out, pos, bitvector_2_d.Bitvector2{w0}) == uint8_e.u8_put(out, pos, w0) : Array<U32>}:
   +e = e2(w0, h)
   +v8 = z8(w0, e)
   %Equal.sym(U32, U32.and(w0, 255), w0, ea(w0, e)) :
-    {T.bv2_pwd(U32.is_eq(U32.and(pos, 3), 0), U32.and(pos, 3), out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(_, U32.and(pos, 3))) : Array<U32>}
+    {bitvector_2_e.bv2_pwd(U32.is_eq(U32.and(pos, 3), 0), U32.and(pos, 3), out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(_, U32.and(pos, 3))) : Array<U32>}
   %Equal.sym(U32, U32.and(pos, 3), U32{WCon{UWD.LB0(pos), WCon{UWD.LB1(pos), Word.zero(30n)}}}, UWD.rmv(pos)) :
-    {T.bv2_pwd(U32.is_eq(_, 0), _, out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(w0, _)) : Array<U32>}
+    {bitvector_2_e.bv2_pwd(U32.is_eq(_, 0), _, out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(w0, _)) : Array<U32>}
   pwd2(UWD.LB0(pos), UWD.LB1(pos), out, U32.shrn(pos, 2n), w0, UWB.tzc11(w0, v8), UWB.tzc21(w0, v8), v8)
 
 # ---- Bitvector[8]: its put is the byte write ----
 def pwd8(+c0: Bool, +c1: Bool, out: Array<U32>, +Q: U32, +w0: U32, +z24: {U32.shrn(w0, 24n) == 0 : U32}, +z16: {U32.shrn(w0, 16n) == 0 : U32}, +z8: {U32.shrn(w0, 8n) == 0 : U32})
-    -> {T.bv8_pwd(U32.is_eq(U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, 0), U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, out, Q, w0) == O.or_word(out, Q, O.shl_bytes(w0, U32{WCon{c0, WCon{c1, Word.zero(30n)}}})) : Array<U32>}:
+    -> {bitvector_8_e.bv8_pwd(U32.is_eq(U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, 0), U32{WCon{c0, WCon{c1, Word.zero(30n)}}}, out, Q, w0) == O.or_word(out, Q, O.shl_bytes(w0, U32{WCon{c0, WCon{c1, Word.zero(30n)}}})) : Array<U32>}:
   match c0 c1:
     case False{} False{}: Equal.cong(U32, Array<U32>, z => O.or_word(out, z, w0), U32.add(Q, 0), Q, FD.u32alg__add_zero(Q))
     case True{} False{}:
@@ -129,13 +135,13 @@ def pwd8(+c0: Bool, +c1: Bool, out: Array<U32>, +Q: U32, +w0: U32, +z24: {U32.sh
       %Equal.sym(U32, U32.shrn(w0, 8n), 0, z8) : {O.or_skip(O.or_word(out, U32.add(Q, 0), U32.mul(w0, 16777216)), U32.add(Q, 1), _) == O.or_word(out, Q, U32.mul(w0, 16777216)) : Array<U32>}
       Equal.cong(U32, Array<U32>, z => O.or_word(out, z, U32.mul(w0, 16777216)), U32.add(Q, 0), Q, FD.u32alg__add_zero(Q))
 def put8(out: Array<U32>, +pos: U32, +w0: U32, +h: {U32.is_lt(w0, 256) == True{} : Bool})
-    -> {T.bv8_put(out, pos, T.Bitvector8{w0}) == T.u8_put(out, pos, w0) : Array<U32>}:
+    -> {bitvector_8_e.bv8_put(out, pos, bitvector_8_d.Bitvector8{w0}) == uint8_e.u8_put(out, pos, w0) : Array<U32>}:
   +e = h
   +v8 = z8(w0, e)
   %Equal.sym(U32, U32.and(w0, 255), w0, ea(w0, e)) :
-    {T.bv8_pwd(U32.is_eq(U32.and(pos, 3), 0), U32.and(pos, 3), out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(_, U32.and(pos, 3))) : Array<U32>}
+    {bitvector_8_e.bv8_pwd(U32.is_eq(U32.and(pos, 3), 0), U32.and(pos, 3), out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(_, U32.and(pos, 3))) : Array<U32>}
   %Equal.sym(U32, U32.and(pos, 3), U32{WCon{UWD.LB0(pos), WCon{UWD.LB1(pos), Word.zero(30n)}}}, UWD.rmv(pos)) :
-    {T.bv8_pwd(U32.is_eq(_, 0), _, out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(w0, _)) : Array<U32>}
+    {bitvector_8_e.bv8_pwd(U32.is_eq(_, 0), _, out, U32.shrn(pos, 2n), w0) == O.or_word(out, U32.shrn(pos, 2n), O.shl_bytes(w0, _)) : Array<U32>}
   pwd8(UWD.LB0(pos), UWD.LB1(pos), out, U32.shrn(pos, 2n), w0, UWB.tzc11(w0, v8), UWB.tzc21(w0, v8), v8)
 
 # ---- the spec's value of the bits, and its parts: the byte ----

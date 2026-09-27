@@ -1,7 +1,14 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/proglist_uint64_decode_ssz_generated.bend as proglist_uint64_r
+import ../../types/proglist_SmallTestStruct_def_generated.bend as proglist_SmallTestStruct_d
+import ../../types/proglist_SmallTestStruct_decode_ssz_generated.bend as proglist_SmallTestStruct_r
+import ../../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_proglist_VarTestStruct_d
+import ../../types/proglist_proglist_VarTestStruct_decode_ssz_generated.bend as proglist_proglist_VarTestStruct_r
+import ../../types/proglist_uint8_decode_ssz_generated.bend as proglist_uint8_r
+import ../../types/ProgressiveTestStruct_def_generated.bend as ProgressiveTestStruct_d
+import ../../types/ProgressiveTestStruct_decode_ssz_generated.bend as ProgressiveTestStruct_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -373,143 +380,143 @@ def eE3(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +h: {CHKw(t, x, 
   Equal.sym(Nat, Nat.add(U32.to_nat(O3(t, x)), U32.to_nat(U32.sub(len, O3(t, x)))), U32.to_nat(len), VM.sub_eq(len, O3(t, x), VMR.u32le(O3(t, x), len, r13(t, x, off, len, h))))
 def okc7(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +hI3: {IT3(t, x, off, len) == True{} : Bool}, +hI4: {IT4(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT8(t, x, off, len) == b : Bool}) -> {T.Gc221EC01D83_c7(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x)) == (BF(t, n), b) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +hI3: {IT3(t, x, off, len) == True{} : Bool}, +hI4: {IT4(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT8(t, x, off, len) == b : Bool}) -> {ProgressiveTestStruct_r.Gc221EC01D83_c7(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x)) == (BF(t, n), b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
 
 def okc6(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +hI3: {IT3(t, x, off, len) == True{} : Bool}, +hI4: {IT4(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT7(t, x, off, len) == b : Bool}) -> {T.Gc221EC01D83_c6(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x)) == (BF(t, n), Bool.and(b, K8(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +hI3: {IT3(t, x, off, len) == True{} : Bool}, +hI4: {IT4(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT7(t, x, off, len) == b : Bool}) -> {ProgressiveTestStruct_r.Gc221EC01D83_c6(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x)) == (BF(t, n), Bool.and(b, K8(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
-      %Equal.sym(B.Buf & Bool, T.pl_pl_Gc465214E502_ok(BF(t, n), FJ3(off, t, x), LJ3(t, x, len)), (BF(t, n), CH3.CHKw(t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))),
+      %Equal.sym(B.Buf & Bool, proglist_proglist_VarTestStruct_r.pl_pl_Gc465214E502_ok(BF(t, n), FJ3(off, t, x), LJ3(t, x, len)), (BF(t, n), CH3.CHKw(t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))),
           CH3.ok_evalw(d, t, n, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len), eoW(d, t, n, x, off, len, eo, hd, hw, pf, O3(t, x), len, le_nat(O3(t, x), len, and_r(U32.is_le(O2(t, x), O3(t, x)), U32.is_le(O3(t, x), len), hI4)), Order.reflexive(U32.to_nat(len))), hd,
             hwj(d, t, n, x, off, len, eo, hd, hw, pf, O3(t, x), len, le_nat(O3(t, x), len, and_r(U32.is_le(O2(t, x), O3(t, x)), U32.is_le(O3(t, x), len), hI4)), Order.reflexive(U32.to_nat(len))), pf)) :
-        {T.Gc221EC01D83_v7(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), _) == (BF(t, n), K8(t, x, off, len)) : B.Buf & Bool}
+        {ProgressiveTestStruct_r.Gc221EC01D83_v7(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), _) == (BF(t, n), K8(t, x, off, len)) : B.Buf & Bool}
       okc7(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, hI2, hI3, hI4, IT8(t, x, off, len), {==})
 
 def okc5(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +hI3: {IT3(t, x, off, len) == True{} : Bool}, +hI4: {IT4(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT6(t, x, off, len) == b : Bool}) -> {T.Gc221EC01D83_c5(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x)) == (BF(t, n), Bool.and(b, K7(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +hI3: {IT3(t, x, off, len) == True{} : Bool}, +hI4: {IT4(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT6(t, x, off, len) == b : Bool}) -> {ProgressiveTestStruct_r.Gc221EC01D83_c5(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x)) == (BF(t, n), Bool.and(b, K7(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
-      %Equal.sym(B.Buf & Bool, T.pl_Gc4ED9619F50_ok(BF(t, n), FJ2(off, t, x), LJ2(t, x)), (BF(t, n), CH2.CHKw(t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x))),
+      %Equal.sym(B.Buf & Bool, proglist_SmallTestStruct_r.pl_Gc4ED9619F50_ok(BF(t, n), FJ2(off, t, x), LJ2(t, x)), (BF(t, n), CH2.CHKw(t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x))),
           CH2.ok_evalw(d, t, n, XJ2(t, x), FJ2(off, t, x), LJ2(t, x), eoW(d, t, n, x, off, len, eo, hd, hw, pf, O2(t, x), O3(t, x), le_nat(O2(t, x), O3(t, x), and_l(U32.is_le(O2(t, x), O3(t, x)), U32.is_le(O3(t, x), len), hI4)), le_nat(O3(t, x), len, and_r(U32.is_le(O2(t, x), O3(t, x)), U32.is_le(O3(t, x), len), hI4))), hd,
             hwj(d, t, n, x, off, len, eo, hd, hw, pf, O2(t, x), O3(t, x), le_nat(O2(t, x), O3(t, x), and_l(U32.is_le(O2(t, x), O3(t, x)), U32.is_le(O3(t, x), len), hI4)), le_nat(O3(t, x), len, and_r(U32.is_le(O2(t, x), O3(t, x)), U32.is_le(O3(t, x), len), hI4))), pf)) :
-        {T.Gc221EC01D83_v6(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), _) == (BF(t, n), K7(t, x, off, len)) : B.Buf & Bool}
+        {ProgressiveTestStruct_r.Gc221EC01D83_v6(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), _) == (BF(t, n), K7(t, x, off, len)) : B.Buf & Bool}
       okc6(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, hI2, hI3, hI4, IT7(t, x, off, len), {==})
 
 def okc4(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +hI3: {IT3(t, x, off, len) == True{} : Bool}, +hI4: {IT4(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT5(t, x, off, len) == b : Bool}) -> {T.Gc221EC01D83_c4(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x)) == (BF(t, n), Bool.and(b, K6(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +hI3: {IT3(t, x, off, len) == True{} : Bool}, +hI4: {IT4(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT5(t, x, off, len) == b : Bool}) -> {ProgressiveTestStruct_r.Gc221EC01D83_c4(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x)) == (BF(t, n), Bool.and(b, K6(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
-      %Equal.sym(B.Buf & Bool, T.pl_u64_ok(BF(t, n), FJ1(off, t, x), LJ1(t, x)), (BF(t, n), CH1.CHKw(t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x))),
+      %Equal.sym(B.Buf & Bool, proglist_uint64_r.pl_u64_ok(BF(t, n), FJ1(off, t, x), LJ1(t, x)), (BF(t, n), CH1.CHKw(t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x))),
           CH1.ok_evalw(d, t, n, XJ1(t, x), FJ1(off, t, x), LJ1(t, x), eoW(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), O2(t, x), le_nat(O1(t, x), O2(t, x), and_l(U32.is_le(O1(t, x), O2(t, x)), U32.is_le(O2(t, x), len), hI3)), le_nat(O2(t, x), len, and_r(U32.is_le(O1(t, x), O2(t, x)), U32.is_le(O2(t, x), len), hI3))), hd,
             hwj(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), O2(t, x), le_nat(O1(t, x), O2(t, x), and_l(U32.is_le(O1(t, x), O2(t, x)), U32.is_le(O2(t, x), len), hI3)), le_nat(O2(t, x), len, and_r(U32.is_le(O1(t, x), O2(t, x)), U32.is_le(O2(t, x), len), hI3))), pf)) :
-        {T.Gc221EC01D83_v5(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), _) == (BF(t, n), K6(t, x, off, len)) : B.Buf & Bool}
+        {ProgressiveTestStruct_r.Gc221EC01D83_v5(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), _) == (BF(t, n), K6(t, x, off, len)) : B.Buf & Bool}
       okc5(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, hI2, hI3, hI4, IT6(t, x, off, len), {==})
 
 def okc3(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +hI3: {IT3(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT4(t, x, off, len) == b : Bool}) -> {T.Gc221EC01D83_c3(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x)) == (BF(t, n), Bool.and(b, K5(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +hI3: {IT3(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT4(t, x, off, len) == b : Bool}) -> {ProgressiveTestStruct_r.Gc221EC01D83_c3(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x)) == (BF(t, n), Bool.and(b, K5(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +hI4 = eb
-      %Equal.sym(B.Buf & Bool, T.pl_u8_ok(BF(t, n), FJ0(off, t, x), LJ0(t, x)), (BF(t, n), CH0.CHKw(t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x))),
+      %Equal.sym(B.Buf & Bool, proglist_uint8_r.pl_u8_ok(BF(t, n), FJ0(off, t, x), LJ0(t, x)), (BF(t, n), CH0.CHKw(t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x))),
           CH0.ok_evalw(d, t, n, XJ0(t, x), FJ0(off, t, x), LJ0(t, x), eoW(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), O1(t, x), le_nat(O0(t, x), O1(t, x), and_l(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hI2)), le_nat(O1(t, x), len, and_r(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hI2))), hd,
             hwj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), O1(t, x), le_nat(O0(t, x), O1(t, x), and_l(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hI2)), le_nat(O1(t, x), len, and_r(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hI2))), pf)) :
-        {T.Gc221EC01D83_v4(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), _) == (BF(t, n), K5(t, x, off, len)) : B.Buf & Bool}
+        {ProgressiveTestStruct_r.Gc221EC01D83_v4(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), _) == (BF(t, n), K5(t, x, off, len)) : B.Buf & Bool}
       okc4(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, hI2, hI3, hI4, IT5(t, x, off, len), {==})
 
 def okc2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT3(t, x, off, len) == b : Bool}) -> {T.Gc221EC01D83_c2(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x)) == (BF(t, n), Bool.and(b, K4(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +hI2: {IT2(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT3(t, x, off, len) == b : Bool}) -> {ProgressiveTestStruct_r.Gc221EC01D83_c2(b, BF(t, n), off, len, O0(t, x), O1(t, x), O2(t, x)) == (BF(t, n), Bool.and(b, K4(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +hI3 = eb
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 12)), (BF(t, n), O3(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 12, U32.to_nat(12), {==}, VA.lea(12, 4, 16, 4n, {==}, {==}, {==}))) :
-        {T.Gc221EC01D83_v3(off, len, O0(t, x), O1(t, x), O2(t, x), _) == (BF(t, n), K4(t, x, off, len)) : B.Buf & Bool}
+        {ProgressiveTestStruct_r.Gc221EC01D83_v3(off, len, O0(t, x), O1(t, x), O2(t, x), _) == (BF(t, n), K4(t, x, off, len)) : B.Buf & Bool}
       okc3(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, hI2, hI3, IT4(t, x, off, len), {==})
 
 def okc1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT2(t, x, off, len) == b : Bool}) -> {T.Gc221EC01D83_c1(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(b, K3(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT2(t, x, off, len) == b : Bool}) -> {ProgressiveTestStruct_r.Gc221EC01D83_c1(b, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), Bool.and(b, K3(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +hI2 = eb
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 8)), (BF(t, n), O2(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 8, U32.to_nat(8), {==}, VA.lea(8, 4, 16, 4n, {==}, {==}, {==}))) :
-        {T.Gc221EC01D83_v2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K3(t, x, off, len)) : B.Buf & Bool}
+        {ProgressiveTestStruct_r.Gc221EC01D83_v2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), K3(t, x, off, len)) : B.Buf & Bool}
       okc2(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, hI2, IT3(t, x, off, len), {==})
 
 def okc0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +b: Bool, +eb: {IT1(t, x, off, len) == b : Bool}) -> {T.Gc221EC01D83_c0(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), Bool.and(b, K2(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(16), U32.to_nat(len)) == True{} : Bool}, +b: Bool, +eb: {IT1(t, x, off, len) == b : Bool}) -> {ProgressiveTestStruct_r.Gc221EC01D83_c0(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), Bool.and(b, K2(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +hI1 = eb
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 4)), (BF(t, n), O1(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 4, U32.to_nat(4), {==}, VA.lea(4, 4, 16, 4n, {==}, {==}, {==}))) :
-        {T.Gc221EC01D83_v1(off, len, O0(t, x), _) == (BF(t, n), K2(t, x, off, len)) : B.Buf & Bool}
+        {ProgressiveTestStruct_r.Gc221EC01D83_v1(off, len, O0(t, x), _) == (BF(t, n), K2(t, x, off, len)) : B.Buf & Bool}
       okc1(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, IT2(t, x, off, len), {==})
 
 def okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool, +ea: {IT0(t, x, off, len) == a : Bool})
-    -> {T.Gc221EC01D83_ok_len(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K1(t, x, off, len))) : B.Buf & Bool}:
+    -> {ProgressiveTestStruct_r.Gc221EC01D83_ok_len(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K1(t, x, off, len))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       +hF = le_nat(16, len, ea)
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 0, U32.to_nat(0), {==}, VA.lea(0, 4, 16, 4n, {==}, {==}, {==}))) :
-        {T.Gc221EC01D83_v0(off, len, _) == (BF(t, n), K1(t, x, off, len)) : B.Buf & Bool}
+        {ProgressiveTestStruct_r.Gc221EC01D83_v0(off, len, _) == (BF(t, n), K1(t, x, off, len)) : B.Buf & Bool}
       okc0(d, t, n, x, off, len, eo, hd, hw, pf, hF, IT1(t, x, off, len), {==})
 
 # The validator on the window returns the buffer and CHKw.
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.Gc221EC01D83_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {ProgressiveTestStruct_r.Gc221EC01D83_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   okl(d, t, n, x, off, len, eo, hd, hw, pf, IT0(t, x, off, len), {==})
 def rd_all(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool})
-    -> {T.Gc221EC01D83_read(BF(t, n), off, len) == (BF(t, n), T.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & T.Gc221EC01D83}:
+    -> {ProgressiveTestStruct_r.Gc221EC01D83_read(BF(t, n), off, len) == (BF(t, n), ProgressiveTestStruct_d.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & ProgressiveTestStruct_d.Gc221EC01D83}:
   +hF = hFc(t, x, off, len, hchk)
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 0, U32.to_nat(0), {==}, VA.lea(0, 4, 16, 4n, {==}, {==}, {==}))) :
-    {T.Gc221EC01D83_rd0(off, len, _) == (BF(t, n), T.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & T.Gc221EC01D83}
+    {ProgressiveTestStruct_r.Gc221EC01D83_rd0(off, len, _) == (BF(t, n), ProgressiveTestStruct_d.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & ProgressiveTestStruct_d.Gc221EC01D83}
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 4)), (BF(t, n), O1(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 4, U32.to_nat(4), {==}, VA.lea(4, 4, 16, 4n, {==}, {==}, {==}))) :
-    {T.Gc221EC01D83_rd1(off, len, O0(t, x), _) == (BF(t, n), T.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & T.Gc221EC01D83}
+    {ProgressiveTestStruct_r.Gc221EC01D83_rd1(off, len, O0(t, x), _) == (BF(t, n), ProgressiveTestStruct_d.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & ProgressiveTestStruct_d.Gc221EC01D83}
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 8)), (BF(t, n), O2(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 8, U32.to_nat(8), {==}, VA.lea(8, 4, 16, 4n, {==}, {==}, {==}))) :
-    {T.Gc221EC01D83_rd2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), T.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & T.Gc221EC01D83}
+    {ProgressiveTestStruct_r.Gc221EC01D83_rd2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), ProgressiveTestStruct_d.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & ProgressiveTestStruct_d.Gc221EC01D83}
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 12)), (BF(t, n), O3(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 12, U32.to_nat(12), {==}, VA.lea(12, 4, 16, 4n, {==}, {==}, {==}))) :
-    {T.Gc221EC01D83_rd3(off, len, O0(t, x), O1(t, x), O2(t, x), _) == (BF(t, n), T.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & T.Gc221EC01D83}
-  %Equal.sym(B.Buf & O.Words, T.pl_u8_read(BF(t, n), FJ0(off, t, x), LJ0(t, x)), (BF(t, n), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x))),
+    {ProgressiveTestStruct_r.Gc221EC01D83_rd3(off, len, O0(t, x), O1(t, x), O2(t, x), _) == (BF(t, n), ProgressiveTestStruct_d.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & ProgressiveTestStruct_d.Gc221EC01D83}
+  %Equal.sym(B.Buf & O.Words, proglist_uint8_r.pl_u8_read(BF(t, n), FJ0(off, t, x), LJ0(t, x)), (BF(t, n), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x))),
       CH0.readw(d, t, n, XJ0(t, x), FJ0(off, t, x), LJ0(t, x), eoJ0(d, t, n, x, off, len, eo, hd, hw, pf, hchk), hd, hwJ0(d, t, n, x, off, len, eo, hd, hw, pf, hchk), pf, itD0(t, x, off, len, hchk))) :
-    {T.Gc221EC01D83_rd4(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), _) == (BF(t, n), T.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & T.Gc221EC01D83}
-  %Equal.sym(B.Buf & O.Words, T.pl_u64_read(BF(t, n), FJ1(off, t, x), LJ1(t, x)), (BF(t, n), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x))),
+    {ProgressiveTestStruct_r.Gc221EC01D83_rd4(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), _) == (BF(t, n), ProgressiveTestStruct_d.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & ProgressiveTestStruct_d.Gc221EC01D83}
+  %Equal.sym(B.Buf & O.Words, proglist_uint64_r.pl_u64_read(BF(t, n), FJ1(off, t, x), LJ1(t, x)), (BF(t, n), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x))),
       CH1.readw(d, t, n, XJ1(t, x), FJ1(off, t, x), LJ1(t, x), eoJ1(d, t, n, x, off, len, eo, hd, hw, pf, hchk), hd, hwJ1(d, t, n, x, off, len, eo, hd, hw, pf, hchk), pf, itD1(t, x, off, len, hchk))) :
-    {T.Gc221EC01D83_rd5(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), _) == (BF(t, n), T.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & T.Gc221EC01D83}
-  %Equal.sym(B.Buf & T.pl_Gc4ED9619F50_Seq, T.pl_Gc4ED9619F50_read(BF(t, n), FJ2(off, t, x), LJ2(t, x)), (BF(t, n), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x))),
+    {ProgressiveTestStruct_r.Gc221EC01D83_rd5(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), _) == (BF(t, n), ProgressiveTestStruct_d.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & ProgressiveTestStruct_d.Gc221EC01D83}
+  %Equal.sym(B.Buf & proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq, proglist_SmallTestStruct_r.pl_Gc4ED9619F50_read(BF(t, n), FJ2(off, t, x), LJ2(t, x)), (BF(t, n), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x))),
       CH2.readw(d, t, n, XJ2(t, x), FJ2(off, t, x), LJ2(t, x), eoJ2(d, t, n, x, off, len, eo, hd, hw, pf, hchk), hd, hwJ2(d, t, n, x, off, len, eo, hd, hw, pf, hchk), pf, itD2(t, x, off, len, hchk))) :
-    {T.Gc221EC01D83_rd6(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), _) == (BF(t, n), T.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & T.Gc221EC01D83}
-  %Equal.sym(B.Buf & T.pl_pl_Gc465214E502_Seq, T.pl_pl_Gc465214E502_read(BF(t, n), FJ3(off, t, x), LJ3(t, x, len)), (BF(t, n), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))),
+    {ProgressiveTestStruct_r.Gc221EC01D83_rd6(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), _) == (BF(t, n), ProgressiveTestStruct_d.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & ProgressiveTestStruct_d.Gc221EC01D83}
+  %Equal.sym(B.Buf & proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq, proglist_proglist_VarTestStruct_r.pl_pl_Gc465214E502_read(BF(t, n), FJ3(off, t, x), LJ3(t, x, len)), (BF(t, n), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))),
       CH3.readw(d, t, n, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len), eoJ3(d, t, n, x, off, len, eo, hd, hw, pf, hchk), hd, hwJ3(d, t, n, x, off, len, eo, hd, hw, pf, hchk), pf, itD3(t, x, off, len, hchk))) :
-    {T.Gc221EC01D83_rd7(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), _) == (BF(t, n), T.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & T.Gc221EC01D83}
+    {ProgressiveTestStruct_r.Gc221EC01D83_rd7(off, len, O0(t, x), O1(t, x), O2(t, x), O3(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), _) == (BF(t, n), ProgressiveTestStruct_d.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}) : B.Buf & ProgressiveTestStruct_d.Gc221EC01D83}
   {==}
 
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.Gc221EC01D83: T.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> ProgressiveTestStruct_d.Gc221EC01D83: ProgressiveTestStruct_d.Gc221EC01D83{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x)), CH1.OBJw(d, t, XJ1(t, x), FJ1(off, t, x), LJ1(t, x)), CH2.OBJw(d, t, XJ2(t, x), FJ2(off, t, x), LJ2(t, x)), CH3.OBJw(d, t, XJ3(t, x), FJ3(off, t, x), LJ3(t, x, len))}
 
 # The reader on the window, when the checks hold.
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {T.Gc221EC01D83_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.Gc221EC01D83}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {ProgressiveTestStruct_r.Gc221EC01D83_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & ProgressiveTestStruct_d.Gc221EC01D83}:
   rd_all(d, t, n, x, off, len, eo, hd, hw, pf, hchk)
 def PSW(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> +List<S.Part>: [S.Variable{UW.WX(t, XJ0(t, x), U32.to_nat(LJ0(t, x)))}, S.Variable{UW.WX(t, XJ1(t, x), U32.to_nat(LJ1(t, x)))}, S.Variable{UW.WX(t, XJ2(t, x), U32.to_nat(LJ2(t, x)))}, S.Variable{UW.WX(t, XJ3(t, x), U32.to_nat(LJ3(t, x, len)))}]
 def RST3(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> +List<S.Part>: []

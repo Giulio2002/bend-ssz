@@ -4,7 +4,15 @@ import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
-import ../types/fulu_obj.bend as T
+import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
+import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../types/FuluHash32_encode_ssz_generated.bend as FuluHash32_e
+import ../types/FuluHash32_hashtreeroot_generated.bend as FuluHash32_h
+import ../types/FuluG1Point_encode_ssz_generated.bend as FuluG1Point_e
+import ../types/FuluG1Point_hashtreeroot_generated.bend as FuluG1Point_h
+import ../types/FuluG2Point_encode_ssz_generated.bend as FuluG2Point_e
+import ../types/FuluG2Point_hashtreeroot_generated.bend as FuluG2Point_h
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
@@ -21,44 +29,44 @@ import ../proofs/obj/valid_names.bend as M2
 # Batch 5 (family A): the object API's encoder bytes and roots are END_TO_END's model API's.
 
 # FuluG1Point (G1Point)
-def FuluG1Point_e2e_encode(+o: T.Bytes48) -> {Some{E.obytes(T.G1Point_encode(o))} == API.serialize(Spec.G1Point(), M1.v_b48(o)) : Maybe<&2, +List<U32>>}:
+def FuluG1Point_e2e_encode(+o: FuluBytes48_d.Bytes48) -> {Some{E.obytes(FuluG1Point_e.G1Point_encode(o))} == API.serialize(Spec.G1Point(), M1.v_b48(o)) : Maybe<&2, +List<U32>>}:
   match o:
-    case T.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(T.G1Point_encode(T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, API.serialize(Spec.G1Point(), M1.v_b48(T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(T.G1Point_encode(T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), 0, 12), (T.G1Point_encode(T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])), M0.G1Point_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.G1Point(), M1.v_b48(T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.G1Point(), M1.v_b48(T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Encoding.encoding_for_legal_type(Spec.G1Point(), M1.v_b48(T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])},
-            E.serialize_legal(Spec.G1Point(), M1.v_b48(T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), VS.public_sound(Spec.G1Point(), {==})), M0.G1Point_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11))))
+    case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluG1Point_e.G1Point_encode(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, API.serialize(Spec.G1Point(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})),
+        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluG1Point_e.G1Point_encode(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), 0, 12), (FuluG1Point_e.G1Point_encode(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])), M0.G1Point_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11)),
+        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.G1Point(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])},
+          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.G1Point(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Encoding.encoding_for_legal_type(Spec.G1Point(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])},
+            E.serialize_legal(Spec.G1Point(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), VS.public_sound(Spec.G1Point(), {==})), M0.G1Point_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11))))
 
-def FuluG1Point_e2e_root(h: B.Buf, +o: T.Bytes48) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, T.G1Point_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.G1Point(), M1.v_b48(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.G1Point(), M1.v_b48(o), VS.public_sound(Spec.G1Point(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, T.G1Point_hash_tree_root(h, o))),
+def FuluG1Point_e2e_root(h: B.Buf, +o: FuluBytes48_d.Bytes48) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluG1Point_h.G1Point_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.G1Point(), M1.v_b48(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.G1Point(), M1.v_b48(o), VS.public_sound(Spec.G1Point(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluG1Point_h.G1Point_hash_tree_root(h, o))),
     M2.rv_b48(o), M1.G1Point_root_correct(h, o))
 
 # FuluG2Point (G2Point)
-def FuluG2Point_e2e_encode(+o: T.Bytes96) -> {Some{E.obytes(T.G2Point_encode(o))} == API.serialize(Spec.G2Point(), M1.v_b96(o)) : Maybe<&2, +List<U32>>}:
+def FuluG2Point_e2e_encode(+o: FuluBytes96_d.Bytes96) -> {Some{E.obytes(FuluG2Point_e.G2Point_encode(o))} == API.serialize(Spec.G2Point(), M1.v_b96(o)) : Maybe<&2, +List<U32>>}:
   match o:
-    case T.Bytes96{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21, +x22, +x23}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(T.G2Point_encode(T.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])}, API.serialize(Spec.G2Point(), M1.v_b96(T.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(T.G2Point_encode(T.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23}), 0, 24), (T.G2Point_encode(T.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])), M0.G2Point_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.G2Point(), M1.v_b96(T.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.G2Point(), M1.v_b96(T.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23})), Encoding.encoding_for_legal_type(Spec.G2Point(), M1.v_b96(T.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])},
-            E.serialize_legal(Spec.G2Point(), M1.v_b96(T.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23}), VS.public_sound(Spec.G2Point(), {==})), M0.G2Point_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23))))
+    case FuluBytes96_d.Bytes96{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21, +x22, +x23}:
+      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluG2Point_e.G2Point_encode(FuluBytes96_d.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])}, API.serialize(Spec.G2Point(), M1.v_b96(FuluBytes96_d.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23})),
+        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluG2Point_e.G2Point_encode(FuluBytes96_d.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23}), 0, 24), (FuluG2Point_e.G2Point_encode(FuluBytes96_d.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])), M0.G2Point_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23)),
+        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.G2Point(), M1.v_b96(FuluBytes96_d.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])},
+          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.G2Point(), M1.v_b96(FuluBytes96_d.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23})), Encoding.encoding_for_legal_type(Spec.G2Point(), M1.v_b96(FuluBytes96_d.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23])},
+            E.serialize_legal(Spec.G2Point(), M1.v_b96(FuluBytes96_d.Bytes96{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23}), VS.public_sound(Spec.G2Point(), {==})), M0.G2Point_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23))))
 
-def FuluG2Point_e2e_root(h: B.Buf, +o: T.Bytes96) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, T.G2Point_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.G2Point(), M1.v_b96(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.G2Point(), M1.v_b96(o), VS.public_sound(Spec.G2Point(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, T.G2Point_hash_tree_root(h, o))),
+def FuluG2Point_e2e_root(h: B.Buf, +o: FuluBytes96_d.Bytes96) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluG2Point_h.G2Point_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.G2Point(), M1.v_b96(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.G2Point(), M1.v_b96(o), VS.public_sound(Spec.G2Point(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluG2Point_h.G2Point_hash_tree_root(h, o))),
     M2.rv_b96(o), M1.G2Point_root_correct(h, o))
 
 # FuluHash32 (Hash32)
-def FuluHash32_e2e_encode(+o: T.Bytes32) -> {Some{E.obytes(T.Hash32_encode(o))} == API.serialize(Spec.Hash32(), M1.v_b32(o)) : Maybe<&2, +List<U32>>}:
+def FuluHash32_e2e_encode(+o: FuluBytes32_d.Bytes32) -> {Some{E.obytes(FuluHash32_e.Hash32_encode(o))} == API.serialize(Spec.Hash32(), M1.v_b32(o)) : Maybe<&2, +List<U32>>}:
   match o:
-    case T.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(T.Hash32_encode(T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, API.serialize(Spec.Hash32(), M1.v_b32(T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(T.Hash32_encode(T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), 0, 8), (T.Hash32_encode(T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])), M0.Hash32_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.Hash32(), M1.v_b32(T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.Hash32(), M1.v_b32(T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Encoding.encoding_for_legal_type(Spec.Hash32(), M1.v_b32(T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
-            E.serialize_legal(Spec.Hash32(), M1.v_b32(T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), VS.public_sound(Spec.Hash32(), {==})), M0.Hash32_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7))))
+    case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
+      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluHash32_e.Hash32_encode(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, API.serialize(Spec.Hash32(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})),
+        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluHash32_e.Hash32_encode(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), 0, 8), (FuluHash32_e.Hash32_encode(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])), M0.Hash32_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7)),
+        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.Hash32(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
+          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.Hash32(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Encoding.encoding_for_legal_type(Spec.Hash32(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
+            E.serialize_legal(Spec.Hash32(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), VS.public_sound(Spec.Hash32(), {==})), M0.Hash32_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7))))
 
-def FuluHash32_e2e_root(h: B.Buf, +o: T.Bytes32) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, T.Hash32_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Hash32(), M1.v_b32(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Hash32(), M1.v_b32(o), VS.public_sound(Spec.Hash32(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, T.Hash32_hash_tree_root(h, o))),
+def FuluHash32_e2e_root(h: B.Buf, +o: FuluBytes32_d.Bytes32) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluHash32_h.Hash32_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Hash32(), M1.v_b32(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.Hash32(), M1.v_b32(o), VS.public_sound(Spec.Hash32(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluHash32_h.Hash32_hash_tree_root(h, o))),
     M2.rv_b32(o), M1.Hash32_root_correct(h, o))
 

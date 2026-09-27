@@ -3,7 +3,7 @@ import ../compact/found.bend as F
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluSignedBeaconBlock_def_generated.bend as FuluSignedBeaconBlock_d
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ./cform.bend as CF
@@ -45,6 +45,6 @@ import ./gvalid_types.bend as GVT
 # BIG: SignedBeaconBlock's root view is structurally valid under its root law's hypotheses; the
 # closed schema facts come from its big root law file (big_root_<Name>.bend).
 
-def SignedBeaconBlock_root_valid(-o: T.SignedBeaconBlock, +s: S.Schema, +es: {s == Spec.SignedBeaconBlock() : S.Schema}, +rep: RT.rep_SignedBeaconBlock(o, s))
+def SignedBeaconBlock_root_valid(-o: FuluSignedBeaconBlock_d.SignedBeaconBlock, +s: S.Schema, +es: {s == Spec.SignedBeaconBlock() : S.Schema}, +rep: RT.rep_SignedBeaconBlock(o, s))
     -> {VD.root_valid(RT.v_SignedBeaconBlock(o), s) == True{} : Bool}:
   GVT.vr_SignedBeaconBlock(o, s, rep, OS.DV0(), {==}, BR.SignedBeaconBlock_ok(s, es, OS.DV0(), {==}), BR.SignedBeaconBlock_eqs(s, es))

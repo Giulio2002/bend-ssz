@@ -1,6 +1,6 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBlob_decode_ssz_generated.bend as FuluBlob_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -14,11 +14,11 @@ import ./vrejf.bend as VRF
 # (see codegen/fix_reject.py).
 
 # ---- Blob (131072 bytes; validator T.b131072_ok) ----
-def Blob_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.b131072_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def Blob_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluBlob_r.b131072_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Blob_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.b131072_ok(buf, off, len) == (buf, U32.is_eq(len, 131072)) : B.Buf & Bool}:
+def Blob_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluBlob_r.b131072_ok(buf, off, len) == (buf, U32.is_eq(len, 131072)) : B.Buf & Bool}:
   Blob_okb(buf, off, U32.is_eq(len, 131072))
 def Blob_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(Spec.Blob())) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.Blob(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.Blob()), VRF.SZ(Spec.Blob()), bs, Codec.parts(v, Spec.Blob()), DS.facts(v, Spec.Blob(), {==}), {==}, e, hn)

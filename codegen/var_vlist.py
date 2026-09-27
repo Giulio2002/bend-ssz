@@ -24,6 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import var_laws as VL  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -59,7 +60,7 @@ HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/ob
 
 
 def src():
-    return (ROOT / 'types/fulu_obj.bend').read_text()
+    return RR.mono_text('fulu')
 
 
 def bl_fname(p):
@@ -182,7 +183,7 @@ def gbl_fname(p):
 
 def gbl_text(p, N):
     """bl_text over the generic runtime, the schema term S.ByteList{N} in place of a Spec name."""
-    gsrc = (ROOT / 'types/generic_obj.bend').read_text()
+    gsrc = RR.mono_text('generic')
     for w in [f'def {p}_ok(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & Bool: (buf, U32.is_le(len, {N}))',
               f'def {p}_read(buf: B.Buf, +off: U32, +len: U32) -> B.Buf & O.Words: O.copy_in(buf, off, len)']:
         assert w in gsrc, w
@@ -1816,6 +1817,7 @@ def main():
         return m is not None and m.group(1) != 'codegen/var_vlist.py'
     mine = [q for q in sorted((ROOT / 'proofs/obj').glob('*vvl*_*.bend')) if not foreign(q)]
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not (nb and q.name.startswith('big_'))]
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, text in out.items() if not q.exists() or q.read_text() != text]
         if stale or orphans:

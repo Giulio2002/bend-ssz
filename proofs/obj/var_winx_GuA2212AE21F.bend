@@ -1,7 +1,10 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
+import ../../types/ProgressiveSingleFieldContainerTestStruct_decode_ssz_generated.bend as ProgressiveSingleFieldContainerTestStruct_r
+import ../../types/CompatibleUnionA_def_generated.bend as CompatibleUnionA_d
+import ../../types/CompatibleUnionA_decode_ssz_generated.bend as CompatibleUnionA_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -171,7 +174,7 @@ def CHKw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool: Bool.a
 def ok0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h1: H1(t, x, off, len), +c: Bool)
-    -> {T.GuA2212AE21F_ok0(c, BX(t, x), BF(t, n), off, len) == (BF(t, n), K0(c, BX(t, x), t, x, off, len)) : B.Buf & Bool}:
+    -> {CompatibleUnionA_r.GuA2212AE21F_ok0(c, BX(t, x), BF(t, n), off, len) == (BF(t, n), K0(c, BX(t, x), t, x, off, len)) : B.Buf & Bool}:
   match c:
     case True{}: CH0.ok_evalw(d, t, n, XJ(t, x), FJ(off), LJ(len), eoJ(d, t, n, x, off, len, eo, hd, hw, pf, h1), hd, hwJ(d, t, n, x, off, len, eo, hd, hw, pf, h1), pf)
     case False{}: {==}
@@ -192,37 +195,37 @@ def rsel(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
 def okn(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool, +ea: {U32.is_le(1, len) == a : Bool})
-    -> {T.GuA2212AE21F_ok_nz(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K0(U32.is_eq(BX(t, x), 1), BX(t, x), t, x, off, len))) : B.Buf & Bool}:
+    -> {CompatibleUnionA_r.GuA2212AE21F_ok_nz(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K0(U32.is_eq(BX(t, x), 1), BX(t, x), t, x, off, len))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       +h1 = le_nat(1, len, ea)
-      %Equal.sym(B.Buf & U32, O.rd_u8(BF(t, n), off), (BF(t, n), BX(t, x)), rsel(d, t, n, x, off, len, eo, hd, hw, pf, h1)) : {T.GuA2212AE21F_ok_sel(off, len, _) == (BF(t, n), K0(U32.is_eq(BX(t, x), 1), BX(t, x), t, x, off, len)) : B.Buf & Bool}
+      %Equal.sym(B.Buf & U32, O.rd_u8(BF(t, n), off), (BF(t, n), BX(t, x)), rsel(d, t, n, x, off, len, eo, hd, hw, pf, h1)) : {CompatibleUnionA_r.GuA2212AE21F_ok_sel(off, len, _) == (BF(t, n), K0(U32.is_eq(BX(t, x), 1), BX(t, x), t, x, off, len)) : B.Buf & Bool}
       ok0(d, t, n, x, off, len, eo, hd, hw, pf, h1, U32.is_eq(BX(t, x), 1))
 
 # The validator on the window returns the buffer and CHKw.
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.GuA2212AE21F_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {CompatibleUnionA_r.GuA2212AE21F_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   okn(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_le(1, len), {==})
 
-def OB0(c: Bool, +s: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.GuA2212AE21F:
+def OB0(c: Bool, +s: U32, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> CompatibleUnionA_d.GuA2212AE21F:
   match c:
-    case True{}: T.GuA2212AE21F_c0{CH0.OBJw(d, t, XJ(t, x), FJ(off), LJ(len))}
-    case False{}: T.GuA2212AE21F_c0{CH0.OBJw(d, t, XJ(t, x), FJ(off), LJ(len))}
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.GuA2212AE21F: OB0(U32.is_eq(BX(t, x), 1), BX(t, x), d, t, x, off, len)
+    case True{}: CompatibleUnionA_d.GuA2212AE21F_c0{CH0.OBJw(d, t, XJ(t, x), FJ(off), LJ(len))}
+    case False{}: CompatibleUnionA_d.GuA2212AE21F_c0{CH0.OBJw(d, t, XJ(t, x), FJ(off), LJ(len))}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> CompatibleUnionA_d.GuA2212AE21F: OB0(U32.is_eq(BX(t, x), 1), BX(t, x), d, t, x, off, len)
 
 def rd0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h1: H1(t, x, off, len), +c: Bool, +hk: {K0(c, BX(t, x), t, x, off, len) == True{} : Bool})
-    -> {T.GuA2212AE21F_rd0(c, BX(t, x), BF(t, n), off, len) == (BF(t, n), OB0(c, BX(t, x), d, t, x, off, len)) : B.Buf & T.GuA2212AE21F}:
+    -> {CompatibleUnionA_r.GuA2212AE21F_rd0(c, BX(t, x), BF(t, n), off, len) == (BF(t, n), OB0(c, BX(t, x), d, t, x, off, len)) : B.Buf & CompatibleUnionA_d.GuA2212AE21F}:
   match c:
     case True{}:
-      %Equal.sym(B.Buf & T.GpF350A3C486, T.GpF350A3C486_read(BF(t, n), FJ(off), LJ(len)), (BF(t, n), CH0.OBJw(d, t, XJ(t, x), FJ(off), LJ(len))),
+      %Equal.sym(B.Buf & ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, ProgressiveSingleFieldContainerTestStruct_r.GpF350A3C486_read(BF(t, n), FJ(off), LJ(len)), (BF(t, n), CH0.OBJw(d, t, XJ(t, x), FJ(off), LJ(len))),
           CH0.readw(d, t, n, XJ(t, x), FJ(off), LJ(len), eoJ(d, t, n, x, off, len, eo, hd, hw, pf, h1), hd, hwJ(d, t, n, x, off, len, eo, hd, hw, pf, h1), pf, hk)) :
-        {T.GuA2212AE21F_rw0(_) == (BF(t, n), T.GuA2212AE21F_c0{CH0.OBJw(d, t, XJ(t, x), FJ(off), LJ(len))}) : B.Buf & T.GuA2212AE21F}
+        {CompatibleUnionA_r.GuA2212AE21F_rw0(_) == (BF(t, n), CompatibleUnionA_d.GuA2212AE21F_c0{CH0.OBJw(d, t, XJ(t, x), FJ(off), LJ(len))}) : B.Buf & CompatibleUnionA_d.GuA2212AE21F}
       {==}
-    case False{}: Empty.absurd({T.GuA2212AE21F_rd0(False{}, BX(t, x), BF(t, n), off, len) == (BF(t, n), OB0(False{}, BX(t, x), d, t, x, off, len)) : B.Buf & T.GuA2212AE21F}, FD.logic__false_true(hk))
+    case False{}: Empty.absurd({CompatibleUnionA_r.GuA2212AE21F_rd0(False{}, BX(t, x), BF(t, n), off, len) == (BF(t, n), OB0(False{}, BX(t, x), d, t, x, off, len)) : B.Buf & CompatibleUnionA_d.GuA2212AE21F}, FD.logic__false_true(hk))
 
 def hch1(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {U32.is_le(1, len) == True{} : Bool}: FD.logic__and_left(U32.is_le(1, len), K0(U32.is_eq(BX(t, x), 1), BX(t, x), t, x, off, len), hchk)
 def hchk0(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {K0(U32.is_eq(BX(t, x), 1), BX(t, x), t, x, off, len) == True{} : Bool}: FD.logic__and_right(U32.is_le(1, len), K0(U32.is_eq(BX(t, x), 1), BX(t, x), t, x, off, len), hchk)
@@ -230,9 +233,9 @@ def hchk0(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {CHKw(t
 # The reader on the window, when the checks hold.
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {T.GuA2212AE21F_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.GuA2212AE21F}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {CompatibleUnionA_r.GuA2212AE21F_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & CompatibleUnionA_d.GuA2212AE21F}:
   +h1 = le_nat(1, len, hch1(t, x, off, len, hchk))
-  %Equal.sym(B.Buf & U32, O.rd_u8(BF(t, n), off), (BF(t, n), BX(t, x)), rsel(d, t, n, x, off, len, eo, hd, hw, pf, h1)) : {T.GuA2212AE21F_rd_sel(off, len, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.GuA2212AE21F}
+  %Equal.sym(B.Buf & U32, O.rd_u8(BF(t, n), off), (BF(t, n), BX(t, x)), rsel(d, t, n, x, off, len, eo, hd, hw, pf, h1)) : {CompatibleUnionA_r.GuA2212AE21F_rd_sel(off, len, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & CompatibleUnionA_d.GuA2212AE21F}
   rd0(d, t, n, x, off, len, eo, hd, hw, pf, h1, U32.is_eq(BX(t, x), 1), hchk0(t, x, off, len, hchk))
 
 def VV0(c: Bool, +s: U32, +t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value:

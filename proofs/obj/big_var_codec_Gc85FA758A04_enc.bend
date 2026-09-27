@@ -1,7 +1,8 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/BitsStruct_def_generated.bend as BitsStruct_d
+import ../../types/BitsStruct_encode_ssz_generated.bend as BitsStruct_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -64,7 +65,7 @@ def roomf(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> DK.P2(HD(m), DK.P2(HL
     Equal.sym(+List<U32>, UA.BYT(VC.ZT(2n)), UW.ZB(A.quad(VB.pw(2n))), UWB.zt_bytes(2n)), VE2.bt_zb_le(M, A.quad(VB.pw(2n)), hm))
   mk3(m, {==}, hl, hz)
 
-def RT0(+m: CI.MW) -> Data: {T.Gc85FA758A04_putk(FD.array__thaw(U32, VC.ZT(2n)), 0, CI.TH(m)) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (T.Gc85FA758A04 & U32)}
+def RT0(+m: CI.MW) -> Data: {BitsStruct_e.Gc85FA758A04_putk(FD.array__thaw(U32, VC.ZT(2n)), 0, CI.TH(m)) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (BitsStruct_d.Gc85FA758A04 & U32)}
 
 def rt0(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +g: DK.P2(HD(m), DK.P2(HL(m), HZ(m)))) -> RT0(m):
   +hd = CI.PA(HD(m), DK.P2(HL(m), HZ(m)), g)
@@ -87,14 +88,14 @@ def a31(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {U32.and(CI.SZ(m), 2147
   VBE.and31(CI.SZ(m), 4n, {==}, FD.nat__le_lt_trans(U32.to_nat(CI.SZ(m)), 13n, FD.spec_common__pow2(4n), hs, {==}))
 
 def eval_go(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool})
-    -> {T.Gc85FA758A04_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gc85FA758A04 & B.Buf}:
+    -> {BitsStruct_e.Gc85FA758A04_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : BitsStruct_d.Gc85FA758A04 & B.Buf}:
   +rt = rt0(m, hok, roomf(m, hok))
   %Equal.sym(Array<U32>, Array.new(U32, 2n, 0), FD.array__thaw(U32, VC.ZT(2n)), FD.array__new(U32, 2n, 0)) :
-    {T.Gc85FA758A04_enc_put(T.Gc85FA758A04_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gc85FA758A04 & B.Buf}
-  %Equal.sym(Array<U32> & (T.Gc85FA758A04 & U32), T.Gc85FA758A04_putk(FD.array__thaw(U32, VC.ZT(2n)), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
-    {T.Gc85FA758A04_enc_put(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gc85FA758A04 & B.Buf}
+    {BitsStruct_e.Gc85FA758A04_enc_put(BitsStruct_e.Gc85FA758A04_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : BitsStruct_d.Gc85FA758A04 & B.Buf}
+  %Equal.sym(Array<U32> & (BitsStruct_d.Gc85FA758A04 & U32), BitsStruct_e.Gc85FA758A04_putk(FD.array__thaw(U32, VC.ZT(2n)), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
+    {BitsStruct_e.Gc85FA758A04_enc_put(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : BitsStruct_d.Gc85FA758A04 & B.Buf}
   %Equal.sym(U32, U32.and(CI.SZ(m), 2147483647), CI.SZ(m), a31(m, hok)) :
-    {(CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), _}) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gc85FA758A04 & B.Buf}
+    {(CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), _}) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : BitsStruct_d.Gc85FA758A04 & B.Buf}
   {==}
 
 # The output's first bytes, as many as the size, are the container's bytes.
@@ -111,7 +112,7 @@ def obytes(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {VS.bt(U32.to_nat(CI
 law encode_eval:
   for +m: CI.MW
   for +hok: {CI.OK(m) == True{} : Bool}
-  {T.Gc85FA758A04_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), SZSM(m)}) : T.Gc85FA758A04 & B.Buf}
+  {BitsStruct_e.Gc85FA758A04_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), SZSM(m)}) : BitsStruct_d.Gc85FA758A04 & B.Buf}
 def encode_eval(m, hok): eval_go(m, hok)
 
 # The buffer's bytes are the spec encoding of the object's value.

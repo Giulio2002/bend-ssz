@@ -1,6 +1,19 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/fulu_obj.bend as T
+import ../../types/uint64_decode_ssz_generated.bend as uint64_r
+import ../../types/FuluBytes4_decode_ssz_generated.bend as FuluBytes4_r
+import ../../types/FuluBytes32_decode_ssz_generated.bend as FuluBytes32_r
+import ../../types/FuluBytes48_decode_ssz_generated.bend as FuluBytes48_r
+import ../../types/FuluBytes96_decode_ssz_generated.bend as FuluBytes96_r
+import ../../types/FuluFinalityBranch_decode_ssz_generated.bend as FuluFinalityBranch_r
+import ../../types/FuluFork_decode_ssz_generated.bend as FuluFork_r
+import ../../types/FuluSyncAggregate_decode_ssz_generated.bend as FuluSyncAggregate_r
+import ../../types/FuluSyncAggregatorSelectionData_decode_ssz_generated.bend as FuluSyncAggregatorSelectionData_r
+import ../../types/FuluPowBlock_decode_ssz_generated.bend as FuluPowBlock_r
+import ../../types/FuluPendingConsolidation_decode_ssz_generated.bend as FuluPendingConsolidation_r
+import ../../types/FuluPendingPartialWithdrawal_decode_ssz_generated.bend as FuluPendingPartialWithdrawal_r
+import ../../types/FuluVoluntaryExit_decode_ssz_generated.bend as FuluVoluntaryExit_r
+import ../../types/FuluSignedVoluntaryExit_decode_ssz_generated.bend as FuluSignedVoluntaryExit_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -14,11 +27,11 @@ import ./vrejf.bend as VRF
 # (see codegen/fix_reject.py).
 
 # ---- DomainType (4 bytes; validator T.b4_ok) ----
-def DomainType_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.b4_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def DomainType_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluBytes4_r.b4_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def DomainType_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.b4_ok(buf, off, len) == (buf, U32.is_eq(len, 4)) : B.Buf & Bool}:
+def DomainType_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluBytes4_r.b4_ok(buf, off, len) == (buf, U32.is_eq(len, 4)) : B.Buf & Bool}:
   DomainType_okb(buf, off, U32.is_eq(len, 4))
 def DomainType_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 4n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.DomainType(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.DomainType()), 4n, bs, Codec.parts(v, Spec.DomainType()), DS.facts(v, Spec.DomainType(), {==}), {==}, e, hn)
@@ -26,11 +39,11 @@ def DomainType_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U3
   v => e => DomainType_rj(bs, hn, v, e)
 
 # ---- BLSSignature (96 bytes; validator T.b96_ok) ----
-def BLSSignature_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.b96_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def BLSSignature_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluBytes96_r.b96_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def BLSSignature_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.b96_ok(buf, off, len) == (buf, U32.is_eq(len, 96)) : B.Buf & Bool}:
+def BLSSignature_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluBytes96_r.b96_ok(buf, off, len) == (buf, U32.is_eq(len, 96)) : B.Buf & Bool}:
   BLSSignature_okb(buf, off, U32.is_eq(len, 96))
 def BLSSignature_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 96n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.BLSSignature(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.BLSSignature()), 96n, bs, Codec.parts(v, Spec.BLSSignature()), DS.facts(v, Spec.BLSSignature(), {==}), {==}, e, hn)
@@ -38,11 +51,11 @@ def BLSSignature_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, 
   v => e => BLSSignature_rj(bs, hn, v, e)
 
 # ---- FinalityBranch (224 bytes; validator T.v7_b32_ok) ----
-def FinalityBranch_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.v7_b32_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def FinalityBranch_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluFinalityBranch_r.v7_b32_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def FinalityBranch_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.v7_b32_ok(buf, off, len) == (buf, U32.is_eq(len, 224)) : B.Buf & Bool}:
+def FinalityBranch_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluFinalityBranch_r.v7_b32_ok(buf, off, len) == (buf, U32.is_eq(len, 224)) : B.Buf & Bool}:
   FinalityBranch_okb(buf, off, U32.is_eq(len, 224))
 def FinalityBranch_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 224n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.FinalityBranch(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.FinalityBranch()), 224n, bs, Codec.parts(v, Spec.FinalityBranch()), DS.facts(v, Spec.FinalityBranch(), {==}), {==}, e, hn)
@@ -50,11 +63,11 @@ def FinalityBranch_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2
   v => e => FinalityBranch_rj(bs, hn, v, e)
 
 # ---- VersionedHash (32 bytes; validator T.b32_ok) ----
-def VersionedHash_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.b32_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def VersionedHash_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluBytes32_r.b32_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def VersionedHash_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.b32_ok(buf, off, len) == (buf, U32.is_eq(len, 32)) : B.Buf & Bool}:
+def VersionedHash_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluBytes32_r.b32_ok(buf, off, len) == (buf, U32.is_eq(len, 32)) : B.Buf & Bool}:
   VersionedHash_okb(buf, off, U32.is_eq(len, 32))
 def VersionedHash_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.VersionedHash(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.VersionedHash()), 32n, bs, Codec.parts(v, Spec.VersionedHash()), DS.facts(v, Spec.VersionedHash(), {==}), {==}, e, hn)
@@ -62,11 +75,11 @@ def VersionedHash_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2,
   v => e => VersionedHash_rj(bs, hn, v, e)
 
 # ---- G1Point (48 bytes; validator T.b48_ok) ----
-def G1Point_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.b48_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def G1Point_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluBytes48_r.b48_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def G1Point_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.b48_ok(buf, off, len) == (buf, U32.is_eq(len, 48)) : B.Buf & Bool}:
+def G1Point_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluBytes48_r.b48_ok(buf, off, len) == (buf, U32.is_eq(len, 48)) : B.Buf & Bool}:
   G1Point_okb(buf, off, U32.is_eq(len, 48))
 def G1Point_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 48n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.G1Point(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.G1Point()), 48n, bs, Codec.parts(v, Spec.G1Point()), DS.facts(v, Spec.G1Point(), {==}), {==}, e, hn)
@@ -74,11 +87,11 @@ def G1Point_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, 
   v => e => G1Point_rj(bs, hn, v, e)
 
 # ---- G2Point (96 bytes; validator T.b96_ok) ----
-def G2Point_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.b96_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def G2Point_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluBytes96_r.b96_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def G2Point_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.b96_ok(buf, off, len) == (buf, U32.is_eq(len, 96)) : B.Buf & Bool}:
+def G2Point_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluBytes96_r.b96_ok(buf, off, len) == (buf, U32.is_eq(len, 96)) : B.Buf & Bool}:
   G2Point_okb(buf, off, U32.is_eq(len, 96))
 def G2Point_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 96n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.G2Point(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.G2Point()), 96n, bs, Codec.parts(v, Spec.G2Point()), DS.facts(v, Spec.G2Point(), {==}), {==}, e, hn)
@@ -86,11 +99,11 @@ def G2Point_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, 
   v => e => G2Point_rj(bs, hn, v, e)
 
 # ---- Fork (16 bytes; validator T.Fork_ok) ----
-def Fork_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.Fork_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def Fork_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluFork_r.Fork_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Fork_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.Fork_ok(buf, off, len) == (buf, U32.is_eq(len, 16)) : B.Buf & Bool}:
+def Fork_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluFork_r.Fork_ok(buf, off, len) == (buf, U32.is_eq(len, 16)) : B.Buf & Bool}:
   Fork_okb(buf, off, U32.is_eq(len, 16))
 def Fork_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 16n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.Fork(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.Fork()), 16n, bs, Codec.parts(v, Spec.Fork()), DS.facts(v, Spec.Fork(), {==}), {==}, e, hn)
@@ -98,11 +111,11 @@ def Fork_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs)
   v => e => Fork_rj(bs, hn, v, e)
 
 # ---- SyncAggregate (160 bytes; validator T.SyncAggregate_ok) ----
-def SyncAggregate_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.SyncAggregate_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def SyncAggregate_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluSyncAggregate_r.SyncAggregate_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def SyncAggregate_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.SyncAggregate_ok(buf, off, len) == (buf, U32.is_eq(len, 160)) : B.Buf & Bool}:
+def SyncAggregate_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluSyncAggregate_r.SyncAggregate_ok(buf, off, len) == (buf, U32.is_eq(len, 160)) : B.Buf & Bool}:
   SyncAggregate_okb(buf, off, U32.is_eq(len, 160))
 def SyncAggregate_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 160n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.SyncAggregate(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.SyncAggregate()), 160n, bs, Codec.parts(v, Spec.SyncAggregate()), DS.facts(v, Spec.SyncAggregate(), {==}), {==}, e, hn)
@@ -110,11 +123,11 @@ def SyncAggregate_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2,
   v => e => SyncAggregate_rj(bs, hn, v, e)
 
 # ---- SyncAggregatorSelectionData (16 bytes; validator T.SyncAggregatorSelectionData_ok) ----
-def SyncAggregatorSelectionData_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.SyncAggregatorSelectionData_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def SyncAggregatorSelectionData_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def SyncAggregatorSelectionData_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.SyncAggregatorSelectionData_ok(buf, off, len) == (buf, U32.is_eq(len, 16)) : B.Buf & Bool}:
+def SyncAggregatorSelectionData_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluSyncAggregatorSelectionData_r.SyncAggregatorSelectionData_ok(buf, off, len) == (buf, U32.is_eq(len, 16)) : B.Buf & Bool}:
   SyncAggregatorSelectionData_okb(buf, off, U32.is_eq(len, 16))
 def SyncAggregatorSelectionData_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 16n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.SyncAggregatorSelectionData(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.SyncAggregatorSelectionData()), 16n, bs, Codec.parts(v, Spec.SyncAggregatorSelectionData()), DS.facts(v, Spec.SyncAggregatorSelectionData(), {==}), {==}, e, hn)
@@ -122,11 +135,11 @@ def SyncAggregatorSelectionData_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(L
   v => e => SyncAggregatorSelectionData_rj(bs, hn, v, e)
 
 # ---- PowBlock (96 bytes; validator T.PowBlock_ok) ----
-def PowBlock_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.PowBlock_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def PowBlock_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluPowBlock_r.PowBlock_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def PowBlock_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.PowBlock_ok(buf, off, len) == (buf, U32.is_eq(len, 96)) : B.Buf & Bool}:
+def PowBlock_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluPowBlock_r.PowBlock_ok(buf, off, len) == (buf, U32.is_eq(len, 96)) : B.Buf & Bool}:
   PowBlock_okb(buf, off, U32.is_eq(len, 96))
 def PowBlock_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 96n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.PowBlock(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.PowBlock()), 96n, bs, Codec.parts(v, Spec.PowBlock()), DS.facts(v, Spec.PowBlock(), {==}), {==}, e, hn)
@@ -134,11 +147,11 @@ def PowBlock_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32,
   v => e => PowBlock_rj(bs, hn, v, e)
 
 # ---- CommitteeIndex (8 bytes; validator T.u64_ok) ----
-def CommitteeIndex_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.u64_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def CommitteeIndex_okb(buf: B.Buf, +off: U32, +b: Bool) -> {uint64_r.u64_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def CommitteeIndex_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.u64_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
+def CommitteeIndex_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {uint64_r.u64_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
   CommitteeIndex_okb(buf, off, U32.is_eq(len, 8))
 def CommitteeIndex_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.CommitteeIndex(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.CommitteeIndex()), 8n, bs, Codec.parts(v, Spec.CommitteeIndex()), DS.facts(v, Spec.CommitteeIndex(), {==}), {==}, e, hn)
@@ -146,11 +159,11 @@ def CommitteeIndex_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2
   v => e => CommitteeIndex_rj(bs, hn, v, e)
 
 # ---- ValidatorIndex (8 bytes; validator T.u64_ok) ----
-def ValidatorIndex_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.u64_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def ValidatorIndex_okb(buf: B.Buf, +off: U32, +b: Bool) -> {uint64_r.u64_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def ValidatorIndex_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.u64_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
+def ValidatorIndex_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {uint64_r.u64_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
   ValidatorIndex_okb(buf, off, U32.is_eq(len, 8))
 def ValidatorIndex_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.ValidatorIndex(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.ValidatorIndex()), 8n, bs, Codec.parts(v, Spec.ValidatorIndex()), DS.facts(v, Spec.ValidatorIndex(), {==}), {==}, e, hn)
@@ -158,11 +171,11 @@ def ValidatorIndex_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2
   v => e => ValidatorIndex_rj(bs, hn, v, e)
 
 # ---- PendingConsolidation (16 bytes; validator T.PendingConsolidation_ok) ----
-def PendingConsolidation_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.PendingConsolidation_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def PendingConsolidation_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluPendingConsolidation_r.PendingConsolidation_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def PendingConsolidation_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.PendingConsolidation_ok(buf, off, len) == (buf, U32.is_eq(len, 16)) : B.Buf & Bool}:
+def PendingConsolidation_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluPendingConsolidation_r.PendingConsolidation_ok(buf, off, len) == (buf, U32.is_eq(len, 16)) : B.Buf & Bool}:
   PendingConsolidation_okb(buf, off, U32.is_eq(len, 16))
 def PendingConsolidation_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 16n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.PendingConsolidation(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.PendingConsolidation()), 16n, bs, Codec.parts(v, Spec.PendingConsolidation()), DS.facts(v, Spec.PendingConsolidation(), {==}), {==}, e, hn)
@@ -170,11 +183,11 @@ def PendingConsolidation_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.len
   v => e => PendingConsolidation_rj(bs, hn, v, e)
 
 # ---- PendingPartialWithdrawal (24 bytes; validator T.PendingPartialWithdrawal_ok) ----
-def PendingPartialWithdrawal_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.PendingPartialWithdrawal_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def PendingPartialWithdrawal_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def PendingPartialWithdrawal_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.PendingPartialWithdrawal_ok(buf, off, len) == (buf, U32.is_eq(len, 24)) : B.Buf & Bool}:
+def PendingPartialWithdrawal_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluPendingPartialWithdrawal_r.PendingPartialWithdrawal_ok(buf, off, len) == (buf, U32.is_eq(len, 24)) : B.Buf & Bool}:
   PendingPartialWithdrawal_okb(buf, off, U32.is_eq(len, 24))
 def PendingPartialWithdrawal_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 24n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.PendingPartialWithdrawal(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.PendingPartialWithdrawal()), 24n, bs, Codec.parts(v, Spec.PendingPartialWithdrawal()), DS.facts(v, Spec.PendingPartialWithdrawal(), {==}), {==}, e, hn)
@@ -182,11 +195,11 @@ def PendingPartialWithdrawal_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List
   v => e => PendingPartialWithdrawal_rj(bs, hn, v, e)
 
 # ---- VoluntaryExit (16 bytes; validator T.VoluntaryExit_ok) ----
-def VoluntaryExit_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.VoluntaryExit_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def VoluntaryExit_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluVoluntaryExit_r.VoluntaryExit_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def VoluntaryExit_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.VoluntaryExit_ok(buf, off, len) == (buf, U32.is_eq(len, 16)) : B.Buf & Bool}:
+def VoluntaryExit_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluVoluntaryExit_r.VoluntaryExit_ok(buf, off, len) == (buf, U32.is_eq(len, 16)) : B.Buf & Bool}:
   VoluntaryExit_okb(buf, off, U32.is_eq(len, 16))
 def VoluntaryExit_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 16n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.VoluntaryExit(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.VoluntaryExit()), 16n, bs, Codec.parts(v, Spec.VoluntaryExit()), DS.facts(v, Spec.VoluntaryExit(), {==}), {==}, e, hn)
@@ -194,11 +207,11 @@ def VoluntaryExit_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2,
   v => e => VoluntaryExit_rj(bs, hn, v, e)
 
 # ---- SignedVoluntaryExit (112 bytes; validator T.SignedVoluntaryExit_ok) ----
-def SignedVoluntaryExit_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.SignedVoluntaryExit_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def SignedVoluntaryExit_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def SignedVoluntaryExit_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.SignedVoluntaryExit_ok(buf, off, len) == (buf, U32.is_eq(len, 112)) : B.Buf & Bool}:
+def SignedVoluntaryExit_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluSignedVoluntaryExit_r.SignedVoluntaryExit_ok(buf, off, len) == (buf, U32.is_eq(len, 112)) : B.Buf & Bool}:
   SignedVoluntaryExit_okb(buf, off, U32.is_eq(len, 112))
 def SignedVoluntaryExit_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 112n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.SignedVoluntaryExit(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.SignedVoluntaryExit()), 112n, bs, Codec.parts(v, Spec.SignedVoluntaryExit()), DS.facts(v, Spec.SignedVoluntaryExit(), {==}), {==}, e, hn)

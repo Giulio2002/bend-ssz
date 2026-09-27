@@ -1,6 +1,6 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_1281_encode_ssz_generated.bend as bitvector_1281_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -50,13 +50,13 @@ def bv1281d_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +d
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 28n) == True{} : Bool},
     +hrB: {Nat.is_le(161n, A.quad(VB.pw(dB))) == True{} : Bool}, +htz: {O.tail_zero(U32.and(161, 3), VB.slot(TB, VYS.QL(161))) == True{} : Bool},
     +hbz: {O.bits_above_zero(U32.and(1281, 31), RD.wd(TB, dB, U32.shrn(1281, 5n))) == True{} : Bool}, +hz: {VS.bt(161n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(161n) : +List<U32>})
-    -> {T.bv1281_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 161}) == (FD.array__thaw(U32, PXD(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 161}, 0)) : Array<U32> & (O.Words & U32)}:
-  %Equal.sym(O.Words & Bool, T.bv1281_valid(O.Words{FD.array__thaw(U32, TB), 161}), (O.Words{FD.array__thaw(U32, TB), 161}, True{}), W1281.valid(dB, TB, pfB, hdB, hrB, htz, hbz)) :
-    {T.bv1281_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PXD(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 161}, 0)) : Array<U32> & (O.Words & U32)}
+    -> {bitvector_1281_e.bv1281_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 161}) == (FD.array__thaw(U32, PXD(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 161}, 0)) : Array<U32> & (O.Words & U32)}:
+  %Equal.sym(O.Words & Bool, bitvector_1281_e.bv1281_valid(O.Words{FD.array__thaw(U32, TB), 161}), (O.Words{FD.array__thaw(U32, TB), 161}, True{}), W1281.valid(dB, TB, pfB, hdB, hrB, htz, hbz)) :
+    {bitvector_1281_e.bv1281_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PXD(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 161}, 0)) : Array<U32> & (O.Words & U32)}
   %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 161}), (FD.array__thaw(U32, PXD(r, dd, D, q, TB)), O.Words{FD.array__thaw(U32, TB), 161}),
       VPW.putwd_any(dd, D, X, q, r, dB, TB, 161, VLS.KK(dB), e, hr, hd, FD.nat__lt_trans(dB, 28n, 31n, hdB, {==}), VLS.kk_lt(dB, hdB), VLS.hyn(dB, 161, hrB),
         hsrc(dB, hdB, hrB), room(q, r, dd, hr, hl), pf, pfB, hz)) :
-    {T.bv1281_pk_ok(_) == (FD.array__thaw(U32, PXD(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 161}, 0)) : Array<U32> & (O.Words & U32)}
+    {bitvector_1281_e.bv1281_pk_ok(_) == (FD.array__thaw(U32, PXD(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 161}, 0)) : Array<U32> & (O.Words & U32)}
   {==}
 
 # Its bytes: the 161 bytes spliced in, the bytes after them kept.
@@ -77,5 +77,5 @@ def lenY(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, dB, T
     Equal.sym(Nat, List.length(&2, U32, FX.limbs(UW.SLW(TB))), A.quad(VB.pw(dB)), VR.lenS(dB, TB, pfB)), hrB))
 def valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 28n) == True{} : Bool},
     +hrB: {Nat.is_le(161n, A.quad(VB.pw(dB))) == True{} : Bool}, +htz: {HTZ(TB) == True{} : Bool}, +hbz: {HBZ(dB, TB) == True{} : Bool})
-    -> {T.bv1281_valid(O.Words{FD.array__thaw(U32, TB), 161}) == (O.Words{FD.array__thaw(U32, TB), 161}, True{}) : O.Words & Bool}:
+    -> {bitvector_1281_e.bv1281_valid(O.Words{FD.array__thaw(U32, TB), 161}) == (O.Words{FD.array__thaw(U32, TB), 161}, True{}) : O.Words & Bool}:
   W1281.valid(dB, TB, pfB, hdB, hrB, htz, hbz)

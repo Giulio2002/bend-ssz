@@ -1,7 +1,16 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/uint64_decode_ssz_generated.bend as uint64_r
+import ../../types/FuluFinalityBranch_decode_ssz_generated.bend as FuluFinalityBranch_r
+import ../../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
+import ../../types/FuluSyncAggregate_decode_ssz_generated.bend as FuluSyncAggregate_r
+import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
+import ../../types/FuluLightClientHeader_decode_ssz_generated.bend as FuluLightClientHeader_r
+import ../../types/FuluLightClientFinalityUpdate_def_generated.bend as FuluLightClientFinalityUpdate_d
+import ../../types/FuluLightClientFinalityUpdate_decode_ssz_generated.bend as FuluLightClientFinalityUpdate_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -82,7 +91,7 @@ def c5d(+d: Bool, +e: Bool, +h: {chk5(True{}, True{}, True{}, d, e) == True{} : 
 def c5e(+e: Bool, +h: {chk5(True{}, True{}, True{}, True{}, e) == True{} : Bool}) -> {e == True{} : Bool}:
   h
 
-def c3_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32, +o1: U32) -> {T.LightClientFinalityUpdate_c3(ok, buf, off, len, o0, o1) == (buf, ok) : B.Buf & Bool}:
+def c3_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32, +o1: U32) -> {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_c3(ok, buf, off, len, o0, o1) == (buf, ok) : B.Buf & Bool}:
   match ok:
     case True{}: {==}
     case False{}: {==}
@@ -201,56 +210,56 @@ def rdoff1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: 
 def okc2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hc: {CK(t, x, len) == True{} : Bool},
     +b: Bool, +eb: {D1(t, x, off) == b : Bool})
-    -> {T.LightClientFinalityUpdate_c2(b, UA.BF(t, n), off, len, 400, SPO1(t, x)) == (UA.BF(t, n), chk5(True{}, True{}, True{}, b, D2(t, x, off, len))) : B.Buf & Bool}:
+    -> {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_c2(b, UA.BF(t, n), off, len, 400, SPO1(t, x)) == (UA.BF(t, n), chk5(True{}, True{}, True{}, b, D2(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
-      %Equal.sym(B.Buf & Bool, T.LightClientHeader_ok(UA.BF(t, n), U32.add(off, SPO1(t, x)), U32.sub(len, SPO1(t, x))), (UA.BF(t, n), D2(t, x, off, len)),
+      %Equal.sym(B.Buf & Bool, FuluLightClientHeader_r.LightClientHeader_ok(UA.BF(t, n), U32.add(off, SPO1(t, x)), U32.sub(len, SPO1(t, x))), (UA.BF(t, n), D2(t, x, off, len)),
           YW.ok_evalw(d, t, n, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len), eo2(d, t, x, off, len, eo, hd, hw, hc), hd, hw2(d, t, x, len, hw, hc), pf)) :
-        {T.LightClientFinalityUpdate_v3(off, len, 400, SPO1(t, x), _) == (UA.BF(t, n), D2(t, x, off, len)) : B.Buf & Bool}
+        {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_v3(off, len, 400, SPO1(t, x), _) == (UA.BF(t, n), D2(t, x, off, len)) : B.Buf & Bool}
       c3_id(D2(t, x, off, len), UA.BF(t, n), off, len, 400, SPO1(t, x))
 
 def okc1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(400, len) == True{} : Bool},
     +b: Bool, +eb: {CK(t, x, len) == b : Bool})
-    -> {T.LightClientFinalityUpdate_c1(b, UA.BF(t, n), off, len, 400, SPO1(t, x)) == (UA.BF(t, n), chk5(True{}, True{}, b, D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}:
+    -> {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_c1(b, UA.BF(t, n), off, len, 400, SPO1(t, x)) == (UA.BF(t, n), chk5(True{}, True{}, b, D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
-      %Equal.sym(B.Buf & Bool, T.LightClientHeader_ok(UA.BF(t, n), U32.add(off, 400), U32.sub(SPO1(t, x), 400)), (UA.BF(t, n), D1(t, x, off)),
+      %Equal.sym(B.Buf & Bool, FuluLightClientHeader_r.LightClientHeader_ok(UA.BF(t, n), U32.add(off, 400), U32.sub(SPO1(t, x), 400)), (UA.BF(t, n), D1(t, x, off)),
           YW.ok_evalw(d, t, n, 256n+144n+x, U32.add(off, 400), L1(t, x), eo1(d, x, off, len, eo, hd, hw, ha), hd, hw1(d, t, x, len, hw, eb), pf)) :
-        {T.LightClientFinalityUpdate_v2(off, len, 400, SPO1(t, x), _) == (UA.BF(t, n), chk5(True{}, True{}, True{}, D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}
+        {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_v2(off, len, 400, SPO1(t, x), _) == (UA.BF(t, n), chk5(True{}, True{}, True{}, D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}
       okc2(d, t, n, x, off, len, eo, hd, hw, pf, eb, D1(t, x, off), {==})
 
 def okc0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(400, len) == True{} : Bool},
     +b: Bool, +eb: {U32.is_eq(SPO0(t, x), 400) == b : Bool})
-    -> {T.LightClientFinalityUpdate_c0(b, UA.BF(t, n), off, len, SPO0(t, x)) == (UA.BF(t, n), chk5(True{}, b, CK(t, x, len), D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}:
+    -> {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_c0(b, UA.BF(t, n), off, len, SPO0(t, x)) == (UA.BF(t, n), chk5(True{}, b, CK(t, x, len), D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +epo = FD.u32alg__eq_of(SPO0(t, x), 400, eb)
       %Equal.sym(U32, SPO0(t, x), 400, epo) :
-        {T.LightClientFinalityUpdate_v1(off, len, _, B.read32(UA.BF(t, n), U32.add(off, 4))) == (UA.BF(t, n), chk5(True{}, True{}, CK(t, x, len), D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}
+        {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_v1(off, len, _, B.read32(UA.BF(t, n), U32.add(off, 4))) == (UA.BF(t, n), chk5(True{}, True{}, CK(t, x, len), D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}
       %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 4)), (UA.BF(t, n), SPO1(t, x)), rdoff1(d, t, n, x, off, len, eo, hd, hw, pf, ha)) :
-        {T.LightClientFinalityUpdate_v1(off, len, 400, _) == (UA.BF(t, n), chk5(True{}, True{}, CK(t, x, len), D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}
+        {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_v1(off, len, 400, _) == (UA.BF(t, n), chk5(True{}, True{}, CK(t, x, len), D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}
       okc1(d, t, n, x, off, len, eo, hd, hw, pf, ha, CK(t, x, len), {==})
 
 def okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +a: Bool, +ea: {U32.is_le(400, len) == a : Bool})
-    -> {T.LightClientFinalityUpdate_ok_len(a, UA.BF(t, n), off, len) == (UA.BF(t, n), chk5(a, U32.is_eq(SPO0(t, x), 400), CK(t, x, len), D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}:
+    -> {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_ok_len(a, UA.BF(t, n), off, len) == (UA.BF(t, n), chk5(a, U32.is_eq(SPO0(t, x), 400), CK(t, x, len), D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 0)), (UA.BF(t, n), SPO0(t, x)), rdoff0(d, t, n, x, off, len, eo, hd, hw, pf, ea)) :
-        {T.LightClientFinalityUpdate_v0(off, len, _) == (UA.BF(t, n), chk5(True{}, U32.is_eq(SPO0(t, x), 400), CK(t, x, len), D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}
+        {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_v0(off, len, _) == (UA.BF(t, n), chk5(True{}, U32.is_eq(SPO0(t, x), 400), CK(t, x, len), D1(t, x, off), D2(t, x, off, len))) : B.Buf & Bool}
       okc0(d, t, n, x, off, len, eo, hd, hw, pf, ea, U32.is_eq(SPO0(t, x), 400), {==})
 
 # The validator on the window returns the buffer and CHKw(t, x, off, len).
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
-    -> {T.LightClientFinalityUpdate_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    -> {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   okl(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_le(400, len), {==})
 
 # The first offset word, once checked, reads as 400.
@@ -262,42 +271,42 @@ def rdo0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
   %Equal.sym(U32, SPO0(t, x), 400, epo) : {(UA.BF(t, n), _) == (UA.BF(t, n), 400) : B.Buf & U32}
   {==}
 
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.LightClientFinalityUpdate: T.LightClientFinalityUpdate{YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x)), YW.OBJw(d, t, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len)), O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 8), 224, 6n)), 224}, O.BSome{T.SyncAggregate{T.Bitvector512{UR.RWN(t, 232n+x), UR.RWN(t, 236n+x), UR.RWN(t, 240n+x), UR.RWN(t, 244n+x), UR.RWN(t, 248n+x), UR.RWN(t, 252n+x), UR.RWN(t, 256n+x), UR.RWN(t, 256n+4n+x), UR.RWN(t, 256n+8n+x), UR.RWN(t, 256n+12n+x), UR.RWN(t, 256n+16n+x), UR.RWN(t, 256n+20n+x), UR.RWN(t, 256n+24n+x), UR.RWN(t, 256n+28n+x), UR.RWN(t, 256n+32n+x), UR.RWN(t, 256n+36n+x)}, T.Bytes96{UR.RWN(t, 256n+40n+x), UR.RWN(t, 256n+44n+x), UR.RWN(t, 256n+48n+x), UR.RWN(t, 256n+52n+x), UR.RWN(t, 256n+56n+x), UR.RWN(t, 256n+60n+x), UR.RWN(t, 256n+64n+x), UR.RWN(t, 256n+68n+x), UR.RWN(t, 256n+72n+x), UR.RWN(t, 256n+76n+x), UR.RWN(t, 256n+80n+x), UR.RWN(t, 256n+84n+x), UR.RWN(t, 256n+88n+x), UR.RWN(t, 256n+92n+x), UR.RWN(t, 256n+96n+x), UR.RWN(t, 256n+100n+x), UR.RWN(t, 256n+104n+x), UR.RWN(t, 256n+108n+x), UR.RWN(t, 256n+112n+x), UR.RWN(t, 256n+116n+x), UR.RWN(t, 256n+120n+x), UR.RWN(t, 256n+124n+x), UR.RWN(t, 256n+128n+x), UR.RWN(t, 256n+132n+x)}}, O.BNone{}}, O.U64{UR.RWN(t, 256n+136n+x), UR.RWN(t, 256n+140n+x)}}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x)), YW.OBJw(d, t, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len)), O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 8), 224, 6n)), 224}, O.BSome{FuluSyncAggregate_d.SyncAggregate{Fulu_bitvector_512_d.Bitvector512{UR.RWN(t, 232n+x), UR.RWN(t, 236n+x), UR.RWN(t, 240n+x), UR.RWN(t, 244n+x), UR.RWN(t, 248n+x), UR.RWN(t, 252n+x), UR.RWN(t, 256n+x), UR.RWN(t, 256n+4n+x), UR.RWN(t, 256n+8n+x), UR.RWN(t, 256n+12n+x), UR.RWN(t, 256n+16n+x), UR.RWN(t, 256n+20n+x), UR.RWN(t, 256n+24n+x), UR.RWN(t, 256n+28n+x), UR.RWN(t, 256n+32n+x), UR.RWN(t, 256n+36n+x)}, FuluBytes96_d.Bytes96{UR.RWN(t, 256n+40n+x), UR.RWN(t, 256n+44n+x), UR.RWN(t, 256n+48n+x), UR.RWN(t, 256n+52n+x), UR.RWN(t, 256n+56n+x), UR.RWN(t, 256n+60n+x), UR.RWN(t, 256n+64n+x), UR.RWN(t, 256n+68n+x), UR.RWN(t, 256n+72n+x), UR.RWN(t, 256n+76n+x), UR.RWN(t, 256n+80n+x), UR.RWN(t, 256n+84n+x), UR.RWN(t, 256n+88n+x), UR.RWN(t, 256n+92n+x), UR.RWN(t, 256n+96n+x), UR.RWN(t, 256n+100n+x), UR.RWN(t, 256n+104n+x), UR.RWN(t, 256n+108n+x), UR.RWN(t, 256n+112n+x), UR.RWN(t, 256n+116n+x), UR.RWN(t, 256n+120n+x), UR.RWN(t, 256n+124n+x), UR.RWN(t, 256n+128n+x), UR.RWN(t, 256n+132n+x)}}, O.BNone{}}, O.U64{UR.RWN(t, 256n+136n+x), UR.RWN(t, 256n+140n+x)}}
 
 # The reader on the window, when the checks hold.
 def rdw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +ha: {U32.is_le(400, len) == True{} : Bool}, +epo: {SPO0(t, x) == 400 : U32}, +hc: {CK(t, x, len) == True{} : Bool},
     +h1: {D1(t, x, off) == True{} : Bool}, +h2: {D2(t, x, off, len) == True{} : Bool})
-    -> {T.LightClientFinalityUpdate_read(UA.BF(t, n), off, len) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientFinalityUpdate}:
+    -> {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_read(UA.BF(t, n), off, len) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate}:
   +hd30 = FD.nat__lt_trans(d, 28n, 30n, hd, {==})
   +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 0)), (UA.BF(t, n), 400), rdo0(d, t, n, x, off, len, eo, hd, hw, pf, ha, epo)) :
-    {T.LightClientFinalityUpdate_rd0(off, len, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientFinalityUpdate}
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_rd0(off, len, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 4)), (UA.BF(t, n), SPO1(t, x)), rdoff1(d, t, n, x, off, len, eo, hd, hw, pf, ha)) :
-    {T.LightClientFinalityUpdate_rd1(off, len, 400, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientFinalityUpdate}
-  %Equal.sym(B.Buf & T.LightClientHeader, T.LightClientHeader_read(UA.BF(t, n), U32.add(off, 400), U32.sub(SPO1(t, x), 400)), (UA.BF(t, n), YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x))),
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_rd1(off, len, 400, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate}
+  %Equal.sym(B.Buf & FuluLightClientHeader_d.LightClientHeader, FuluLightClientHeader_r.LightClientHeader_read(UA.BF(t, n), U32.add(off, 400), U32.sub(SPO1(t, x), 400)), (UA.BF(t, n), YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x))),
       YW.readw(d, t, n, 256n+144n+x, U32.add(off, 400), L1(t, x), eo1(d, x, off, len, eo, hd, hw, ha), hd, hw1(d, t, x, len, hw, hc), pf, h1)) :
-    {T.LightClientFinalityUpdate_rd2(off, len, 400, SPO1(t, x), _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientFinalityUpdate}
-  %Equal.sym(B.Buf & T.LightClientHeader, T.LightClientHeader_read(UA.BF(t, n), U32.add(off, SPO1(t, x)), U32.sub(len, SPO1(t, x))), (UA.BF(t, n), YW.OBJw(d, t, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len))),
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_rd2(off, len, 400, SPO1(t, x), _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate}
+  %Equal.sym(B.Buf & FuluLightClientHeader_d.LightClientHeader, FuluLightClientHeader_r.LightClientHeader_read(UA.BF(t, n), U32.add(off, SPO1(t, x)), U32.sub(len, SPO1(t, x))), (UA.BF(t, n), YW.OBJw(d, t, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len))),
       YW.readw(d, t, n, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len), eo2(d, t, x, off, len, eo, hd, hw, hc), hd, hw2(d, t, x, len, hw, hc), pf, h2)) :
-    {T.LightClientFinalityUpdate_rd3(off, len, 400, SPO1(t, x), YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x)), _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientFinalityUpdate}
-  %Equal.sym(B.Buf & O.Words, T.v7_b32_read(UA.BF(t, n), U32.add(off, 8), 224), (UA.BF(t, n), O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 8), 224, 6n)), 224}),
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_rd3(off, len, 400, SPO1(t, x), YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x)), _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate}
+  %Equal.sym(B.Buf & O.Words, FuluFinalityBranch_r.v7_b32_read(UA.BF(t, n), U32.add(off, 8), 224), (UA.BF(t, n), O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 8), 224, 6n)), 224}),
       VBX.copy_into_at(d, t, n, U32.add(off, 8), 224, 6n, 8n, pf, hd31, {==}, UW.hsx(d, U32.add(off, 8), Nat.add(U32.to_nat(8), x), 224, eoc(d, x, off, len, 8, hcF(len, 8n, {==}, ha), eo, hd, hw), hd, roomc(d, x, len, U32.to_nat(8), U32.to_nat(224), {==}, hw, ha)), {==}, {==}, {==})) :
-    {T.LightClientFinalityUpdate_rd4(off, len, 400, SPO1(t, x), YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x)), YW.OBJw(d, t, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len)), _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientFinalityUpdate}
-  %Equal.sym(B.Buf & T.SyncAggregate, T.SyncAggregate_read(UA.BF(t, n), U32.add(off, 232), 160), (UA.BF(t, n), T.SyncAggregate{T.Bitvector512{UR.RWN(t, 232n+x), UR.RWN(t, 236n+x), UR.RWN(t, 240n+x), UR.RWN(t, 244n+x), UR.RWN(t, 248n+x), UR.RWN(t, 252n+x), UR.RWN(t, 256n+x), UR.RWN(t, 256n+4n+x), UR.RWN(t, 256n+8n+x), UR.RWN(t, 256n+12n+x), UR.RWN(t, 256n+16n+x), UR.RWN(t, 256n+20n+x), UR.RWN(t, 256n+24n+x), UR.RWN(t, 256n+28n+x), UR.RWN(t, 256n+32n+x), UR.RWN(t, 256n+36n+x)}, T.Bytes96{UR.RWN(t, 256n+40n+x), UR.RWN(t, 256n+44n+x), UR.RWN(t, 256n+48n+x), UR.RWN(t, 256n+52n+x), UR.RWN(t, 256n+56n+x), UR.RWN(t, 256n+60n+x), UR.RWN(t, 256n+64n+x), UR.RWN(t, 256n+68n+x), UR.RWN(t, 256n+72n+x), UR.RWN(t, 256n+76n+x), UR.RWN(t, 256n+80n+x), UR.RWN(t, 256n+84n+x), UR.RWN(t, 256n+88n+x), UR.RWN(t, 256n+92n+x), UR.RWN(t, 256n+96n+x), UR.RWN(t, 256n+100n+x), UR.RWN(t, 256n+104n+x), UR.RWN(t, 256n+108n+x), UR.RWN(t, 256n+112n+x), UR.RWN(t, 256n+116n+x), UR.RWN(t, 256n+120n+x), UR.RWN(t, 256n+124n+x), UR.RWN(t, 256n+128n+x), UR.RWN(t, 256n+132n+x)}}),
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_rd4(off, len, 400, SPO1(t, x), YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x)), YW.OBJw(d, t, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len)), _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate}
+  %Equal.sym(B.Buf & FuluSyncAggregate_d.SyncAggregate, FuluSyncAggregate_r.SyncAggregate_read(UA.BF(t, n), U32.add(off, 232), 160), (UA.BF(t, n), FuluSyncAggregate_d.SyncAggregate{Fulu_bitvector_512_d.Bitvector512{UR.RWN(t, 232n+x), UR.RWN(t, 236n+x), UR.RWN(t, 240n+x), UR.RWN(t, 244n+x), UR.RWN(t, 248n+x), UR.RWN(t, 252n+x), UR.RWN(t, 256n+x), UR.RWN(t, 256n+4n+x), UR.RWN(t, 256n+8n+x), UR.RWN(t, 256n+12n+x), UR.RWN(t, 256n+16n+x), UR.RWN(t, 256n+20n+x), UR.RWN(t, 256n+24n+x), UR.RWN(t, 256n+28n+x), UR.RWN(t, 256n+32n+x), UR.RWN(t, 256n+36n+x)}, FuluBytes96_d.Bytes96{UR.RWN(t, 256n+40n+x), UR.RWN(t, 256n+44n+x), UR.RWN(t, 256n+48n+x), UR.RWN(t, 256n+52n+x), UR.RWN(t, 256n+56n+x), UR.RWN(t, 256n+60n+x), UR.RWN(t, 256n+64n+x), UR.RWN(t, 256n+68n+x), UR.RWN(t, 256n+72n+x), UR.RWN(t, 256n+76n+x), UR.RWN(t, 256n+80n+x), UR.RWN(t, 256n+84n+x), UR.RWN(t, 256n+88n+x), UR.RWN(t, 256n+92n+x), UR.RWN(t, 256n+96n+x), UR.RWN(t, 256n+100n+x), UR.RWN(t, 256n+104n+x), UR.RWN(t, 256n+108n+x), UR.RWN(t, 256n+112n+x), UR.RWN(t, 256n+116n+x), UR.RWN(t, 256n+120n+x), UR.RWN(t, 256n+124n+x), UR.RWN(t, 256n+128n+x), UR.RWN(t, 256n+132n+x)}}),
       VTX.rdx_SyncAggregate(d, t, n, U32.add(off, 232), 232n+x, eoc(d, x, off, len, 232, hcF(len, 232n, {==}, ha), eo, hd, hw), hd30, pf, roomc(d, x, len, 232n, 160n, {==}, hw, ha))) :
-    {T.LightClientFinalityUpdate_rd5(off, len, 400, SPO1(t, x), YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x)), YW.OBJw(d, t, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len)), O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 8), 224, 6n)), 224}, T.SyncAggregate_bx_rd(_)) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientFinalityUpdate}
-  %Equal.sym(B.Buf & O.U64, T.u64_read(UA.BF(t, n), U32.add(off, 392), 8), (UA.BF(t, n), O.U64{UR.RWN(t, 256n+136n+x), UR.RWN(t, 256n+140n+x)}),
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_rd5(off, len, 400, SPO1(t, x), YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x)), YW.OBJw(d, t, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len)), O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 8), 224, 6n)), 224}, FuluSyncAggregate_r.SyncAggregate_bx_rd(_)) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate}
+  %Equal.sym(B.Buf & O.U64, uint64_r.u64_read(UA.BF(t, n), U32.add(off, 392), 8), (UA.BF(t, n), O.U64{UR.RWN(t, 256n+136n+x), UR.RWN(t, 256n+140n+x)}),
       VTX.rdx_u64(d, t, n, U32.add(off, 392), 256n+136n+x, eoc(d, x, off, len, 392, hcF(len, 392n, {==}, ha), eo, hd, hw), hd30, pf, roomc(d, x, len, 392n, 8n, {==}, hw, ha))) :
-    {T.LightClientFinalityUpdate_rd6(off, len, 400, SPO1(t, x), YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x)), YW.OBJw(d, t, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len)), O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 8), 224, 6n)), 224}, O.BSome{T.SyncAggregate{T.Bitvector512{UR.RWN(t, 232n+x), UR.RWN(t, 236n+x), UR.RWN(t, 240n+x), UR.RWN(t, 244n+x), UR.RWN(t, 248n+x), UR.RWN(t, 252n+x), UR.RWN(t, 256n+x), UR.RWN(t, 256n+4n+x), UR.RWN(t, 256n+8n+x), UR.RWN(t, 256n+12n+x), UR.RWN(t, 256n+16n+x), UR.RWN(t, 256n+20n+x), UR.RWN(t, 256n+24n+x), UR.RWN(t, 256n+28n+x), UR.RWN(t, 256n+32n+x), UR.RWN(t, 256n+36n+x)}, T.Bytes96{UR.RWN(t, 256n+40n+x), UR.RWN(t, 256n+44n+x), UR.RWN(t, 256n+48n+x), UR.RWN(t, 256n+52n+x), UR.RWN(t, 256n+56n+x), UR.RWN(t, 256n+60n+x), UR.RWN(t, 256n+64n+x), UR.RWN(t, 256n+68n+x), UR.RWN(t, 256n+72n+x), UR.RWN(t, 256n+76n+x), UR.RWN(t, 256n+80n+x), UR.RWN(t, 256n+84n+x), UR.RWN(t, 256n+88n+x), UR.RWN(t, 256n+92n+x), UR.RWN(t, 256n+96n+x), UR.RWN(t, 256n+100n+x), UR.RWN(t, 256n+104n+x), UR.RWN(t, 256n+108n+x), UR.RWN(t, 256n+112n+x), UR.RWN(t, 256n+116n+x), UR.RWN(t, 256n+120n+x), UR.RWN(t, 256n+124n+x), UR.RWN(t, 256n+128n+x), UR.RWN(t, 256n+132n+x)}}, O.BNone{}}, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientFinalityUpdate}
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_rd6(off, len, 400, SPO1(t, x), YW.OBJw(d, t, 256n+144n+x, U32.add(off, 400), L1(t, x)), YW.OBJw(d, t, X2(t, x), U32.add(off, SPO1(t, x)), L2(t, x, len)), O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 8), 224, 6n)), 224}, O.BSome{FuluSyncAggregate_d.SyncAggregate{Fulu_bitvector_512_d.Bitvector512{UR.RWN(t, 232n+x), UR.RWN(t, 236n+x), UR.RWN(t, 240n+x), UR.RWN(t, 244n+x), UR.RWN(t, 248n+x), UR.RWN(t, 252n+x), UR.RWN(t, 256n+x), UR.RWN(t, 256n+4n+x), UR.RWN(t, 256n+8n+x), UR.RWN(t, 256n+12n+x), UR.RWN(t, 256n+16n+x), UR.RWN(t, 256n+20n+x), UR.RWN(t, 256n+24n+x), UR.RWN(t, 256n+28n+x), UR.RWN(t, 256n+32n+x), UR.RWN(t, 256n+36n+x)}, FuluBytes96_d.Bytes96{UR.RWN(t, 256n+40n+x), UR.RWN(t, 256n+44n+x), UR.RWN(t, 256n+48n+x), UR.RWN(t, 256n+52n+x), UR.RWN(t, 256n+56n+x), UR.RWN(t, 256n+60n+x), UR.RWN(t, 256n+64n+x), UR.RWN(t, 256n+68n+x), UR.RWN(t, 256n+72n+x), UR.RWN(t, 256n+76n+x), UR.RWN(t, 256n+80n+x), UR.RWN(t, 256n+84n+x), UR.RWN(t, 256n+88n+x), UR.RWN(t, 256n+92n+x), UR.RWN(t, 256n+96n+x), UR.RWN(t, 256n+100n+x), UR.RWN(t, 256n+104n+x), UR.RWN(t, 256n+108n+x), UR.RWN(t, 256n+112n+x), UR.RWN(t, 256n+116n+x), UR.RWN(t, 256n+120n+x), UR.RWN(t, 256n+124n+x), UR.RWN(t, 256n+128n+x), UR.RWN(t, 256n+132n+x)}}, O.BNone{}}, _) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate}
   {==}
 
 # When the window's checks hold, the reader returns OBJw(d, t, x, off, len).
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hchk: {CHKw(t, x, off, len) == True{} : Bool})
-    -> {T.LightClientFinalityUpdate_read(UA.BF(t, n), off, len) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.LightClientFinalityUpdate}:
+    -> {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_read(UA.BF(t, n), off, len) == (UA.BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate}:
   +a = U32.is_le(400, len)
   +b = U32.is_eq(SPO0(t, x), 400)
   +c = CK(t, x, len)

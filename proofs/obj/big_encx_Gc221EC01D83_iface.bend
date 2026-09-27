@@ -1,7 +1,14 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/proglist_uint64_encode_ssz_generated.bend as proglist_uint64_e
+import ../../types/proglist_SmallTestStruct_def_generated.bend as proglist_SmallTestStruct_d
+import ../../types/proglist_SmallTestStruct_encode_ssz_generated.bend as proglist_SmallTestStruct_e
+import ../../types/proglist_proglist_VarTestStruct_def_generated.bend as proglist_proglist_VarTestStruct_d
+import ../../types/proglist_proglist_VarTestStruct_encode_ssz_generated.bend as proglist_proglist_VarTestStruct_e
+import ../../types/proglist_uint8_encode_ssz_generated.bend as proglist_uint8_e
+import ../../types/ProgressiveTestStruct_def_generated.bend as ProgressiveTestStruct_d
+import ../../types/ProgressiveTestStruct_encode_ssz_generated.bend as ProgressiveTestStruct_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -152,7 +159,7 @@ def lenE(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.M
 type MW is Data:
   MW{m_f_A: EX_pl_u8.MW, m_f_B: EX_pl_u64.MW, m_f_C: EX_pl_Gc4ED9619F50.MW, m_f_D: EX_pl_pl_Gc465214E502.MW}
 
-def TH(m: MW) -> T.Gc221EC01D83:
+def TH(m: MW) -> ProgressiveTestStruct_d.Gc221EC01D83:
   match m:
     case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D)
 def OK(m: MW) -> Bool:
@@ -174,7 +181,7 @@ def PUTX(m: MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array
 def PADB(+r: Nat, m: MW) -> Nat: WD.PADB(r, List.length(&2, U32, ENC(m)))
 
 def RTX(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW, +m_f_D: EX_pl_pl_Gc465214E502.MW, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Gc221EC01D83_putk(FD.array__thaw(U32, D), X, K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D)) == (FD.array__thaw(U32, K.PUTC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r)), (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D))) : Array<U32> & (T.Gc221EC01D83 & U32)}
+  {ProgressiveTestStruct_e.Gc221EC01D83_putk(FD.array__thaw(U32, D), X, K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D)) == (FD.array__thaw(U32, K.PUTC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r)), (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D))) : Array<U32> & (ProgressiveTestStruct_d.Gc221EC01D83 & U32)}
 def BYX(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW, +m_f_D: EX_pl_pl_Gc465214E502.MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(K.PUTC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D), UW.ZB(WD.PADB(r, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)))))) : +List<U32>}
 
@@ -193,7 +200,7 @@ def go(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW,
   +rt = K.putk_bridge(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r, PA(K.RTC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), K.SZXC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r))), g))
   +g2 = PB(K.RTC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), K.SZXC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r))), g)
   +by = PA(K.BYC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r), K.SZXC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r)), g2)
-  +rt2 = FD.logic__subst(U32, z => {T.Gc221EC01D83_putk(FD.array__thaw(U32, D), z, K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D)) == (FD.array__thaw(U32, K.PUTC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r)), (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D))) : Array<U32> & (T.Gc221EC01D83 & U32)},
+  +rt2 = FD.logic__subst(U32, z => {ProgressiveTestStruct_e.Gc221EC01D83_putk(FD.array__thaw(U32, D), z, K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D)) == (FD.array__thaw(U32, K.PUTC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r)), (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D))) : Array<U32> & (ProgressiveTestStruct_d.Gc221EC01D83 & U32)},
     XQ(q, r), X, Equal.sym(U32, X, XQ(q, r), ex), rt)
   +by2 = FD.logic__subst(Nat, z => {UA.BYT(K.PUTC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D), UW.ZB(WD.PADB(r, z)))) : +List<U32>},
     LLv, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_f_A, m_f_B, m_f_C, m_f_D)), LLv, el), by)
@@ -215,7 +222,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gc221EC01D83_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (T.Gc221EC01D83 & U32)}
+  {ProgressiveTestStruct_e.Gc221EC01D83_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (ProgressiveTestStruct_d.Gc221EC01D83 & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: PA(RTX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, X, q, r), BYX(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, q, r), go(m_f_A, m_f_B, m_f_C, m_f_D, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hz))
@@ -286,40 +293,40 @@ def pfx(m, dd, D, q, r, pf):
   match m:
     case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: K.pfC(m_f_A, m_f_B, m_f_C, m_f_D, dd, D, XQ(q, r), q, r, pf)
 
-def sizeC(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW, +m_f_D: EX_pl_pl_Gc465214E502.MW, +h: {OKT(m_f_A, m_f_B, m_f_C, m_f_D) == True{} : Bool}) -> {T.Gc221EC01D83_size(K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D)) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D)) : T.Gc221EC01D83 & U32}:
-  %Equal.sym(O.Words & U32, T.pl_u8_size(EX_pl_u8.TH(m_f_A)), (EX_pl_u8.TH(m_f_A), EX_pl_u8.SZ(m_f_A)), EX_pl_u8.sizex(m_f_A, ok_hok_f_A(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
-    {T.Gc221EC01D83_sz0(EX_pl_u64.TH(m_f_B), EX_pl_Gc4ED9619F50.TH(m_f_C), EX_pl_pl_Gc465214E502.TH(m_f_D), 16, _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D)) : T.Gc221EC01D83 & U32}
-  %Equal.sym(O.Words & U32, T.pl_u64_size(EX_pl_u64.TH(m_f_B)), (EX_pl_u64.TH(m_f_B), EX_pl_u64.SZ(m_f_B)), EX_pl_u64.sizex(m_f_B, ok_hok_f_B(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
-    {T.Gc221EC01D83_sz1(EX_pl_Gc4ED9619F50.TH(m_f_C), EX_pl_pl_Gc465214E502.TH(m_f_D), EX_pl_u8.TH(m_f_A), O.padd(16, EX_pl_u8.SZ(m_f_A)), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D)) : T.Gc221EC01D83 & U32}
-  %Equal.sym(T.pl_Gc4ED9619F50_Seq & U32, T.pl_Gc4ED9619F50_size(EX_pl_Gc4ED9619F50.TH(m_f_C)), (EX_pl_Gc4ED9619F50.TH(m_f_C), EX_pl_Gc4ED9619F50.SZ(m_f_C)), EX_pl_Gc4ED9619F50.sizex(m_f_C, ok_hok_f_C(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
-    {T.Gc221EC01D83_sz2(EX_pl_pl_Gc465214E502.TH(m_f_D), EX_pl_u8.TH(m_f_A), EX_pl_u64.TH(m_f_B), O.padd(O.padd(16, EX_pl_u8.SZ(m_f_A)), EX_pl_u64.SZ(m_f_B)), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D)) : T.Gc221EC01D83 & U32}
-  %Equal.sym(T.pl_pl_Gc465214E502_Seq & U32, T.pl_pl_Gc465214E502_size(EX_pl_pl_Gc465214E502.TH(m_f_D)), (EX_pl_pl_Gc465214E502.TH(m_f_D), EX_pl_pl_Gc465214E502.SZ(m_f_D)), EX_pl_pl_Gc465214E502.sizex(m_f_D, ok_hok_f_D(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
-    {T.Gc221EC01D83_sz3(EX_pl_u8.TH(m_f_A), EX_pl_u64.TH(m_f_B), EX_pl_Gc4ED9619F50.TH(m_f_C), O.padd(O.padd(O.padd(16, EX_pl_u8.SZ(m_f_A)), EX_pl_u64.SZ(m_f_B)), EX_pl_Gc4ED9619F50.SZ(m_f_C)), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D)) : T.Gc221EC01D83 & U32}
+def sizeC(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW, +m_f_D: EX_pl_pl_Gc465214E502.MW, +h: {OKT(m_f_A, m_f_B, m_f_C, m_f_D) == True{} : Bool}) -> {ProgressiveTestStruct_e.Gc221EC01D83_size(K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D)) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D)) : ProgressiveTestStruct_d.Gc221EC01D83 & U32}:
+  %Equal.sym(O.Words & U32, proglist_uint8_e.pl_u8_size(EX_pl_u8.TH(m_f_A)), (EX_pl_u8.TH(m_f_A), EX_pl_u8.SZ(m_f_A)), EX_pl_u8.sizex(m_f_A, ok_hok_f_A(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
+    {ProgressiveTestStruct_e.Gc221EC01D83_sz0(EX_pl_u64.TH(m_f_B), EX_pl_Gc4ED9619F50.TH(m_f_C), EX_pl_pl_Gc465214E502.TH(m_f_D), 16, _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D)) : ProgressiveTestStruct_d.Gc221EC01D83 & U32}
+  %Equal.sym(O.Words & U32, proglist_uint64_e.pl_u64_size(EX_pl_u64.TH(m_f_B)), (EX_pl_u64.TH(m_f_B), EX_pl_u64.SZ(m_f_B)), EX_pl_u64.sizex(m_f_B, ok_hok_f_B(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
+    {ProgressiveTestStruct_e.Gc221EC01D83_sz1(EX_pl_Gc4ED9619F50.TH(m_f_C), EX_pl_pl_Gc465214E502.TH(m_f_D), EX_pl_u8.TH(m_f_A), O.padd(16, EX_pl_u8.SZ(m_f_A)), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D)) : ProgressiveTestStruct_d.Gc221EC01D83 & U32}
+  %Equal.sym(proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & U32, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_size(EX_pl_Gc4ED9619F50.TH(m_f_C)), (EX_pl_Gc4ED9619F50.TH(m_f_C), EX_pl_Gc4ED9619F50.SZ(m_f_C)), EX_pl_Gc4ED9619F50.sizex(m_f_C, ok_hok_f_C(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
+    {ProgressiveTestStruct_e.Gc221EC01D83_sz2(EX_pl_pl_Gc465214E502.TH(m_f_D), EX_pl_u8.TH(m_f_A), EX_pl_u64.TH(m_f_B), O.padd(O.padd(16, EX_pl_u8.SZ(m_f_A)), EX_pl_u64.SZ(m_f_B)), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D)) : ProgressiveTestStruct_d.Gc221EC01D83 & U32}
+  %Equal.sym(proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq & U32, proglist_proglist_VarTestStruct_e.pl_pl_Gc465214E502_size(EX_pl_pl_Gc465214E502.TH(m_f_D)), (EX_pl_pl_Gc465214E502.TH(m_f_D), EX_pl_pl_Gc465214E502.SZ(m_f_D)), EX_pl_pl_Gc465214E502.sizex(m_f_D, ok_hok_f_D(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
+    {ProgressiveTestStruct_e.Gc221EC01D83_sz3(EX_pl_u8.TH(m_f_A), EX_pl_u64.TH(m_f_B), EX_pl_Gc4ED9619F50.TH(m_f_C), O.padd(O.padd(O.padd(16, EX_pl_u8.SZ(m_f_A)), EX_pl_u64.SZ(m_f_B)), EX_pl_Gc4ED9619F50.SZ(m_f_C)), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), K.SZC(m_f_A, m_f_B, m_f_C, m_f_D)) : ProgressiveTestStruct_d.Gc221EC01D83 & U32}
   {==}
 
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gc221EC01D83_size(TH(m)) == (TH(m), SZ(m)) : T.Gc221EC01D83 & U32}
+  {ProgressiveTestStruct_e.Gc221EC01D83_size(TH(m)) == (TH(m), SZ(m)) : ProgressiveTestStruct_d.Gc221EC01D83 & U32}
 def sizex(m, hok):
   match m:
     case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: sizeC(m_f_A, m_f_B, m_f_C, m_f_D, hok)
 
-def rvalidC(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW, +m_f_D: EX_pl_pl_Gc465214E502.MW, +h: {OKT(m_f_A, m_f_B, m_f_C, m_f_D) == True{} : Bool}) -> {T.Gc221EC01D83_valid(K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D)) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : T.Gc221EC01D83 & Bool}:
-  %Equal.sym(O.Words & Bool, T.pl_u8_valid(EX_pl_u8.TH(m_f_A)), (EX_pl_u8.TH(m_f_A), True{}), EX_pl_u8.validx(m_f_A, ok_hok_f_A(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
-    {T.Gc221EC01D83_va0(EX_pl_u64.TH(m_f_B), EX_pl_Gc4ED9619F50.TH(m_f_C), EX_pl_pl_Gc465214E502.TH(m_f_D), True{}, _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : T.Gc221EC01D83 & Bool}
-  %Equal.sym(O.Words & Bool, T.pl_u64_valid(EX_pl_u64.TH(m_f_B)), (EX_pl_u64.TH(m_f_B), True{}), EX_pl_u64.validx(m_f_B, ok_hok_f_B(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
-    {T.Gc221EC01D83_va1(EX_pl_u8.TH(m_f_A), EX_pl_Gc4ED9619F50.TH(m_f_C), EX_pl_pl_Gc465214E502.TH(m_f_D), Bool.and(True{}, True{}), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : T.Gc221EC01D83 & Bool}
-  %Equal.sym(T.pl_Gc4ED9619F50_Seq & Bool, T.pl_Gc4ED9619F50_valid(EX_pl_Gc4ED9619F50.TH(m_f_C)), (EX_pl_Gc4ED9619F50.TH(m_f_C), True{}), EX_pl_Gc4ED9619F50.validx(m_f_C, ok_hok_f_C(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
-    {T.Gc221EC01D83_va2(EX_pl_u8.TH(m_f_A), EX_pl_u64.TH(m_f_B), EX_pl_pl_Gc465214E502.TH(m_f_D), Bool.and(Bool.and(True{}, True{}), True{}), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : T.Gc221EC01D83 & Bool}
-  %Equal.sym(T.pl_pl_Gc465214E502_Seq & Bool, T.pl_pl_Gc465214E502_valid(EX_pl_pl_Gc465214E502.TH(m_f_D)), (EX_pl_pl_Gc465214E502.TH(m_f_D), True{}), EX_pl_pl_Gc465214E502.validx(m_f_D, ok_hok_f_D(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
-    {T.Gc221EC01D83_va3(EX_pl_u8.TH(m_f_A), EX_pl_u64.TH(m_f_B), EX_pl_Gc4ED9619F50.TH(m_f_C), Bool.and(Bool.and(Bool.and(True{}, True{}), True{}), True{}), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : T.Gc221EC01D83 & Bool}
+def rvalidC(+m_f_A: EX_pl_u8.MW, +m_f_B: EX_pl_u64.MW, +m_f_C: EX_pl_Gc4ED9619F50.MW, +m_f_D: EX_pl_pl_Gc465214E502.MW, +h: {OKT(m_f_A, m_f_B, m_f_C, m_f_D) == True{} : Bool}) -> {ProgressiveTestStruct_e.Gc221EC01D83_valid(K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D)) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : ProgressiveTestStruct_d.Gc221EC01D83 & Bool}:
+  %Equal.sym(O.Words & Bool, proglist_uint8_e.pl_u8_valid(EX_pl_u8.TH(m_f_A)), (EX_pl_u8.TH(m_f_A), True{}), EX_pl_u8.validx(m_f_A, ok_hok_f_A(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
+    {ProgressiveTestStruct_e.Gc221EC01D83_va0(EX_pl_u64.TH(m_f_B), EX_pl_Gc4ED9619F50.TH(m_f_C), EX_pl_pl_Gc465214E502.TH(m_f_D), True{}, _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : ProgressiveTestStruct_d.Gc221EC01D83 & Bool}
+  %Equal.sym(O.Words & Bool, proglist_uint64_e.pl_u64_valid(EX_pl_u64.TH(m_f_B)), (EX_pl_u64.TH(m_f_B), True{}), EX_pl_u64.validx(m_f_B, ok_hok_f_B(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
+    {ProgressiveTestStruct_e.Gc221EC01D83_va1(EX_pl_u8.TH(m_f_A), EX_pl_Gc4ED9619F50.TH(m_f_C), EX_pl_pl_Gc465214E502.TH(m_f_D), Bool.and(True{}, True{}), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : ProgressiveTestStruct_d.Gc221EC01D83 & Bool}
+  %Equal.sym(proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & Bool, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_valid(EX_pl_Gc4ED9619F50.TH(m_f_C)), (EX_pl_Gc4ED9619F50.TH(m_f_C), True{}), EX_pl_Gc4ED9619F50.validx(m_f_C, ok_hok_f_C(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
+    {ProgressiveTestStruct_e.Gc221EC01D83_va2(EX_pl_u8.TH(m_f_A), EX_pl_u64.TH(m_f_B), EX_pl_pl_Gc465214E502.TH(m_f_D), Bool.and(Bool.and(True{}, True{}), True{}), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : ProgressiveTestStruct_d.Gc221EC01D83 & Bool}
+  %Equal.sym(proglist_proglist_VarTestStruct_d.pl_pl_Gc465214E502_Seq & Bool, proglist_proglist_VarTestStruct_e.pl_pl_Gc465214E502_valid(EX_pl_pl_Gc465214E502.TH(m_f_D)), (EX_pl_pl_Gc465214E502.TH(m_f_D), True{}), EX_pl_pl_Gc465214E502.validx(m_f_D, ok_hok_f_D(m_f_A, m_f_B, m_f_C, m_f_D, h))) :
+    {ProgressiveTestStruct_e.Gc221EC01D83_va3(EX_pl_u8.TH(m_f_A), EX_pl_u64.TH(m_f_B), EX_pl_Gc4ED9619F50.TH(m_f_C), Bool.and(Bool.and(Bool.and(True{}, True{}), True{}), True{}), _) == (K.OBJC(m_f_A, m_f_B, m_f_C, m_f_D), True{}) : ProgressiveTestStruct_d.Gc221EC01D83 & Bool}
   {==}
 
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gc221EC01D83_valid(TH(m)) == (TH(m), True{}) : T.Gc221EC01D83 & Bool}
+  {ProgressiveTestStruct_e.Gc221EC01D83_valid(TH(m)) == (TH(m), True{}) : ProgressiveTestStruct_d.Gc221EC01D83 & Bool}
 def validx(m, hok):
   match m:
     case MW{+m_f_A, +m_f_B, +m_f_C, +m_f_D}: rvalidC(m_f_A, m_f_B, m_f_C, m_f_D, hok)

@@ -1,6 +1,5 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../compact/found.bend as FD

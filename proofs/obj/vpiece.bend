@@ -1,6 +1,8 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_encode_ssz_generated.bend as uint8_e
+import ../../types/uint16_encode_ssz_generated.bend as uint16_e
+import ../../types/bitvector_1281_encode_ssz_generated.bend as bitvector_1281_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../compact/reads.bend as RD
@@ -56,7 +58,7 @@ def u8piece(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +c: U32, +a: Nat, +q: Na
     +e: {U32.to_nat(X) == X0(q, r) : Nat}, +ec: {U32.to_nat(c) == a : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hk: {Nat.is_le(Nat.add(a, 1n), L) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hz: {VS.bt(1n, VS.bdr(Nat.add(X0(q, r), a), UA.BYT(D))) == UW.ZB(1n) : +List<U32>})
-    -> DK.P2({T.u8_put(FD.array__thaw(U32, D), U32.add(X, c), x) == FD.array__thaw(U32, P8(dd, D, X, c, x)) : Array<U32>},
+    -> DK.P2({uint8_e.u8_put(FD.array__thaw(U32, D), U32.add(X, c), x) == FD.array__thaw(U32, P8(dd, D, X, c, x)) : Array<U32>},
              {UA.BYT(P8(dd, D, X, c, x)) == UW.SPL(UA.BYT(D), Nat.add(X0(q, r), a), [U32.and(x, 255)]) : +List<U32>}):
   +Xc = U32.add(X, c)
   +pos = Nat.add(A.quad(QC(X, c)), RC(X, c))
@@ -78,7 +80,7 @@ def u16piece(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +c: U32, +a: Nat, +q: N
     +e: {U32.to_nat(X) == X0(q, r) : Nat}, +ec: {U32.to_nat(c) == a : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hk: {Nat.is_le(Nat.add(a, 2n), L) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hz: {VS.bt(2n, VS.bdr(Nat.add(X0(q, r), a), UA.BYT(D))) == UW.ZB(2n) : +List<U32>})
-    -> DK.P2({T.u16_put(FD.array__thaw(U32, D), U32.add(X, c), x) == FD.array__thaw(U32, P16(dd, D, X, c, x)) : Array<U32>},
+    -> DK.P2({uint16_e.u16_put(FD.array__thaw(U32, D), U32.add(X, c), x) == FD.array__thaw(U32, P16(dd, D, X, c, x)) : Array<U32>},
              {UA.BYT(P16(dd, D, X, c, x)) == UW.SPL(UA.BYT(D), Nat.add(X0(q, r), a), [U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255)]) : +List<U32>}):
   +Xc = U32.add(X, c)
   +pos = Nat.add(A.quad(QC(X, c)), RC(X, c))
@@ -104,7 +106,7 @@ def bv1281piece(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +c: U32, +a: Nat, +q
     +hrB: {Nat.is_le(161n, A.quad(VB.pw(dB))) == True{} : Bool}, +htz: {O.tail_zero(U32.and(161, 3), VB.slot(TB, VYS.QL(161))) == True{} : Bool},
     +hbz: {O.bits_above_zero(U32.and(1281, 31), RD.wd(TB, dB, U32.shrn(1281, 5n))) == True{} : Bool},
     +hz: {VS.bt(Nat.add(161n, WD.PADB(RC(X, c), 161n)), VS.bdr(Nat.add(X0(q, r), a), UA.BYT(D))) == UW.ZB(Nat.add(161n, WD.PADB(RC(X, c), 161n))) : +List<U32>})
-    -> DK.P2({T.bv1281_putk(FD.array__thaw(U32, D), U32.add(X, c), O.Words{FD.array__thaw(U32, TB), 161}) == (FD.array__thaw(U32, P1281(dd, D, X, c, TB)), (O.Words{FD.array__thaw(U32, TB), 161}, 0)) : Array<U32> & (O.Words & U32)},
+    -> DK.P2({bitvector_1281_e.bv1281_putk(FD.array__thaw(U32, D), U32.add(X, c), O.Words{FD.array__thaw(U32, TB), 161}) == (FD.array__thaw(U32, P1281(dd, D, X, c, TB)), (O.Words{FD.array__thaw(U32, TB), 161}, 0)) : Array<U32> & (O.Words & U32)},
              {UA.BYT(P1281(dd, D, X, c, TB)) == UW.SPL(UA.BYT(D), Nat.add(X0(q, r), a), List.append(&2, U32, VS.bt(161n, FX.limbs(UW.SLW(TB))), UW.ZB(WD.PADB(RC(X, c), 161n)))) : +List<U32>}):
   +Xc = U32.add(X, c)
   +pos = Nat.add(A.quad(QC(X, c)), RC(X, c))

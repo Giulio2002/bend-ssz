@@ -1,6 +1,10 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint16_encode_ssz_generated.bend as uint16_e
+import ../../types/SmallTestStruct_def_generated.bend as SmallTestStruct_d
+import ../../types/SmallTestStruct_encode_ssz_generated.bend as SmallTestStruct_e
+import ../../types/proglist_SmallTestStruct_def_generated.bend as proglist_SmallTestStruct_d
+import ../../types/proglist_SmallTestStruct_encode_ssz_generated.bend as proglist_SmallTestStruct_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -46,40 +50,40 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 
 # ---- the record Gc4ED9619F50 (4 bytes) at a byte position P ----
 
-def RB_Gc4ED9619F50(o: T.Gc4ED9619F50) -> +List<U32>:
+def RB_Gc4ED9619F50(o: SmallTestStruct_d.Gc4ED9619F50) -> +List<U32>:
   match o:
-    case T.Gc4ED9619F50{+f_A, +f_B}: [U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255), U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)]
-def lenr_Gc4ED9619F50(+o: T.Gc4ED9619F50) -> {List.length(&2, U32, RB_Gc4ED9619F50(o)) == 4n : Nat}:
+    case SmallTestStruct_d.Gc4ED9619F50{+f_A, +f_B}: [U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255), U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)]
+def lenr_Gc4ED9619F50(+o: SmallTestStruct_d.Gc4ED9619F50) -> {List.length(&2, U32, RB_Gc4ED9619F50(o)) == 4n : Nat}:
   match o:
-    case T.Gc4ED9619F50{+f_A, +f_B}: {==}
-def PR_Gc4ED9619F50(o: T.Gc4ED9619F50, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat) -> FD.array__Tree<U32>:
+    case SmallTestStruct_d.Gc4ED9619F50{+f_A, +f_B}: {==}
+def PR_Gc4ED9619F50(o: SmallTestStruct_d.Gc4ED9619F50, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat) -> FD.array__Tree<U32>:
   match o:
-    case T.Gc4ED9619F50{+f_A, +f_B}: VRB.W16P(dd, VRB.W16P(dd, D, Nat.add(0n, P), f_A), Nat.add(2n, P), f_B)
-def pfr_Gc4ED9619F50(+o: T.Gc4ED9619F50, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    case SmallTestStruct_d.Gc4ED9619F50{+f_A, +f_B}: VRB.W16P(dd, VRB.W16P(dd, D, Nat.add(0n, P), f_A), Nat.add(2n, P), f_B)
+def pfr_Gc4ED9619F50(+o: SmallTestStruct_d.Gc4ED9619F50, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PR_Gc4ED9619F50(o, dd, D, P)) == True{} : Bool}:
   match o:
-    case T.Gc4ED9619F50{+f_A, +f_B}: VRB.w16p_perfect(dd, VRB.W16P(dd, D, Nat.add(0n, P), f_A), Nat.add(2n, P), f_B, VRB.w16p_perfect(dd, D, Nat.add(0n, P), f_A, pf))
+    case SmallTestStruct_d.Gc4ED9619F50{+f_A, +f_B}: VRB.w16p_perfect(dd, VRB.W16P(dd, D, Nat.add(0n, P), f_A), Nat.add(2n, P), f_B, VRB.w16p_perfect(dd, D, Nat.add(0n, P), f_A, pf))
 
-def RTR_Gc4ED9619F50(+o: T.Gc4ED9619F50, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat) -> Data:
-  {T.Gc4ED9619F50_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PR_Gc4ED9619F50(o, dd, D, P)) : Array<U32>}
-def BYR_Gc4ED9619F50(+o: T.Gc4ED9619F50, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat) -> Data:
+def RTR_Gc4ED9619F50(+o: SmallTestStruct_d.Gc4ED9619F50, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat) -> Data:
+  {SmallTestStruct_e.Gc4ED9619F50_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PR_Gc4ED9619F50(o, dd, D, P)) : Array<U32>}
+def BYR_Gc4ED9619F50(+o: SmallTestStruct_d.Gc4ED9619F50, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat) -> Data:
   {UA.BYT(PR_Gc4ED9619F50(o, dd, D, P)) == UW.SPL(UA.BYT(D), P, RB_Gc4ED9619F50(o)) : +List<U32>}
 
 def rtc_Gc4ED9619F50(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +f_A: U32, +f_B: U32,
-    +rt0: {T.u16_put(FD.array__thaw(U32, D), U32.add(X, 0), f_A) == FD.array__thaw(U32, VRB.W16P(dd, D, Nat.add(0n, P), f_A)) : Array<U32>},
-    +rt1: {T.u16_put(FD.array__thaw(U32, VRB.W16P(dd, D, Nat.add(0n, P), f_A)), U32.add(X, 2), f_B) == FD.array__thaw(U32, VRB.W16P(dd, VRB.W16P(dd, D, Nat.add(0n, P), f_A), Nat.add(2n, P), f_B)) : Array<U32>})
-    -> {T.u16_put(T.u16_put(FD.array__thaw(U32, D), U32.add(X, 0), f_A), U32.add(X, 2), f_B) == FD.array__thaw(U32, VRB.W16P(dd, VRB.W16P(dd, D, Nat.add(0n, P), f_A), Nat.add(2n, P), f_B)) : Array<U32>}:
-  %Equal.sym(Array<U32>, T.u16_put(FD.array__thaw(U32, D), U32.add(X, 0), f_A), FD.array__thaw(U32, VRB.W16P(dd, D, Nat.add(0n, P), f_A)), rt0) :
-    {T.u16_put(_, U32.add(X, 2), f_B) == FD.array__thaw(U32, VRB.W16P(dd, VRB.W16P(dd, D, Nat.add(0n, P), f_A), Nat.add(2n, P), f_B)) : Array<U32>}
+    +rt0: {uint16_e.u16_put(FD.array__thaw(U32, D), U32.add(X, 0), f_A) == FD.array__thaw(U32, VRB.W16P(dd, D, Nat.add(0n, P), f_A)) : Array<U32>},
+    +rt1: {uint16_e.u16_put(FD.array__thaw(U32, VRB.W16P(dd, D, Nat.add(0n, P), f_A)), U32.add(X, 2), f_B) == FD.array__thaw(U32, VRB.W16P(dd, VRB.W16P(dd, D, Nat.add(0n, P), f_A), Nat.add(2n, P), f_B)) : Array<U32>})
+    -> {uint16_e.u16_put(uint16_e.u16_put(FD.array__thaw(U32, D), U32.add(X, 0), f_A), U32.add(X, 2), f_B) == FD.array__thaw(U32, VRB.W16P(dd, VRB.W16P(dd, D, Nat.add(0n, P), f_A), Nat.add(2n, P), f_B)) : Array<U32>}:
+  %Equal.sym(Array<U32>, uint16_e.u16_put(FD.array__thaw(U32, D), U32.add(X, 0), f_A), FD.array__thaw(U32, VRB.W16P(dd, D, Nat.add(0n, P), f_A)), rt0) :
+    {uint16_e.u16_put(_, U32.add(X, 2), f_B) == FD.array__thaw(U32, VRB.W16P(dd, VRB.W16P(dd, D, Nat.add(0n, P), f_A), Nat.add(2n, P), f_B)) : Array<U32>}
   rt1
 
 # T.Gc4ED9619F50_put at X (byte P) writes the record's bytes into the 4 zero bytes there.
-def putr_Gc4ED9619F50(+o: T.Gc4ED9619F50, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def putr_Gc4ED9619F50(+o: SmallTestStruct_d.Gc4ED9619F50, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 4n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(4n, VS.bdr(P, UA.BYT(D))) == UW.ZB(4n) : +List<U32>})
     -> DK.P2(RTR_Gc4ED9619F50(o, dd, D, X, P), BYR_Gc4ED9619F50(o, dd, D, P)):
   match o:
-    case T.Gc4ED9619F50{+f_A, +f_B}:
+    case SmallTestStruct_d.Gc4ED9619F50{+f_A, +f_B}:
       +B = UA.BYT(D)
       +hX = VRB.hxb(P, 4n, dd, D, pf, hb)
       +ep0 = VRB.fposb(dd, X, 0, P, 4n, e, hd, hb, {==})
@@ -99,14 +103,14 @@ def putr_Gc4ED9619F50(+o: T.Gc4ED9619F50, +dd: Nat, +D: FD.array__Tree<U32>, +X:
       +rtf = rtc_Gc4ED9619F50(dd, D, X, P, f_A, f_B, rt0, rt1)
       (rtf, E2)
 
-def RV_Gc4ED9619F50(o: T.Gc4ED9619F50) -> S.Value:
+def RV_Gc4ED9619F50(o: SmallTestStruct_d.Gc4ED9619F50) -> S.Value:
   match o:
-    case T.Gc4ED9619F50{+f_A, +f_B}: S.Sequence{S.Items{VRB.UV16(f_A), S.Items{VRB.UV16(f_B), S.EmptyItems{}}}}
+    case SmallTestStruct_d.Gc4ED9619F50{+f_A, +f_B}: S.Sequence{S.Items{VRB.UV16(f_A), S.Items{VRB.UV16(f_B), S.EmptyItems{}}}}
 
 # Its parts: its bytes, one fixed part.
-def RPRF_Gc4ED9619F50(+o: T.Gc4ED9619F50) -> {Codec.parts(RV_Gc4ED9619F50(o), S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}) == Some{[S.Fixed{RB_Gc4ED9619F50(o)}]} : Maybe<&2, +List<S.Part>>}:
+def RPRF_Gc4ED9619F50(+o: SmallTestStruct_d.Gc4ED9619F50) -> {Codec.parts(RV_Gc4ED9619F50(o), S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}) == Some{[S.Fixed{RB_Gc4ED9619F50(o)}]} : Maybe<&2, +List<S.Part>>}:
   match o:
-    case T.Gc4ED9619F50{+f_A, +f_B}:
+    case SmallTestStruct_d.Gc4ED9619F50{+f_A, +f_B}:
       %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{VRB.UV16(f_A), S.Items{VRB.UV16(f_B), S.EmptyItems{}}}, S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}), Some{[S.Fixed{[U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255)]}, S.Fixed{[U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)]}]},
         F.cat_fixed(Codec.parts(VRB.UV16(f_A), S.Unsigned{P.U16{}}), [U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255)], Codec.parts(S.Items{VRB.UV16(f_B), S.EmptyItems{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}), [S.Fixed{[U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)]}],
         VRB.prt16(f_A), F.cat_fixed(Codec.parts(VRB.UV16(f_B), S.Unsigned{P.U16{}}), [U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)], Codec.parts(S.EmptyItems{}, S.End{}), [],
@@ -114,35 +118,35 @@ def RPRF_Gc4ED9619F50(+o: T.Gc4ED9619F50) -> {Codec.parts(RV_Gc4ED9619F50(o), S.
         {Codec.aggregate(_, Some{4n}) == Some{[S.Fixed{[U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255), U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)]}]} : Maybe<&2, +List<S.Part>>}
       SP2.agg([S.Fixed{[U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255)]}, S.Fixed{[U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)]}], 4n, 4n, {==}, SP2.bd_app([U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255)], [U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)], VRB.dom16(f_A), SP2.bd_app([U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)], [], VRB.dom16(f_B), {==})), {==}, {==})
 
-def domr_Gc4ED9619F50(+o: T.Gc4ED9619F50) -> {SP.bytes_domain(RB_Gc4ED9619F50(o)) == True{} : Bool}:
+def domr_Gc4ED9619F50(+o: SmallTestStruct_d.Gc4ED9619F50) -> {SP.bytes_domain(RB_Gc4ED9619F50(o)) == True{} : Bool}:
   match o:
-    case T.Gc4ED9619F50{+f_A, +f_B}: SP2.bd_app([U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255)], [U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)], VRB.dom16(f_A), SP2.bd_app([U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)], [], VRB.dom16(f_B), {==}))
+    case SmallTestStruct_d.Gc4ED9619F50{+f_A, +f_B}: SP2.bd_app([U32.and(f_A, 255), U32.and(U32.shrn(f_A, 8n), 255)], [U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)], VRB.dom16(f_A), SP2.bd_app([U32.and(f_B, 255), U32.and(U32.shrn(f_B, 8n), 255)], [], VRB.dom16(f_B), {==}))
 
 # ---- pl_Gc4ED9619F50: the list's bytes, value and parts ----
 
-def EL(+A: FD.array__Tree<T.Gc4ED9619F50>, +j: Nat) -> T.Gc4ED9619F50: VRL.mget(T.Gc4ED9619F50, FD.spec_common__nth(T.Gc4ED9619F50, FD.array__slots(T.Gc4ED9619F50, A), j), T.Gc4ED9619F50_default())
+def EL(+A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +j: Nat) -> SmallTestStruct_d.Gc4ED9619F50: VRL.mget(SmallTestStruct_d.Gc4ED9619F50, FD.spec_common__nth(SmallTestStruct_d.Gc4ED9619F50, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, A), j), SmallTestStruct_d.Gc4ED9619F50_default())
 
 # the records j, j + 1, ..., j + c - 1: their bytes, values, parts, and the runtime's validity of each
-def RBS(c: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +j: Nat) -> +List<U32>:
+def RBS(c: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +j: Nat) -> +List<U32>:
   match c:
     case 0n: []
     case 1n+p: VRX.AP(RB_Gc4ED9619F50(EL(A, j)), RBS(p, A, 1n+j))
-def ITS(c: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +j: Nat) -> S.Value:
+def ITS(c: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +j: Nat) -> S.Value:
   match c:
     case 0n: S.EmptyItems{}
     case 1n+p: S.Items{RV_Gc4ED9619F50(EL(A, j)), ITS(p, A, 1n+j)}
-def BPS(c: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +j: Nat) -> +List<S.Part>:
+def BPS(c: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +j: Nat) -> +List<S.Part>:
   match c:
     case 0n: []
     case 1n+p: Con{S.Fixed{RB_Gc4ED9619F50(EL(A, j))}, BPS(p, A, 1n+j)}
-def VOK(c: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +j: Nat) -> Bool:
+def VOK(c: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +j: Nat) -> Bool:
   match c:
     case 0n: True{}
-    case 1n+p: Bool.and(T.Gc4ED9619F50_valid(EL(A, j)), VOK(p, A, 1n+j))
+    case 1n+p: Bool.and(SmallTestStruct_e.Gc4ED9619F50_valid(EL(A, j)), VOK(p, A, 1n+j))
 
 law len_rbs:
   for +c: Nat
-  for +A: FD.array__Tree<T.Gc4ED9619F50>
+  for +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>
   for +j: Nat
   {List.length(&2, U32, RBS(c, A, j)) == Nat.mul(c, 4n) : Nat}
 def len_rbs(c, A, j):
@@ -157,7 +161,7 @@ def len_rbs(c, A, j):
 
 law dom_rbs:
   for +c: Nat
-  for +A: FD.array__Tree<T.Gc4ED9619F50>
+  for +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>
   for +j: Nat
   {SP.bytes_domain(RBS(c, A, j)) == True{} : Bool}
 def dom_rbs(c, A, j):
@@ -167,7 +171,7 @@ def dom_rbs(c, A, j):
 
 law cnt_its:
   for +c: Nat
-  for +A: FD.array__Tree<T.Gc4ED9619F50>
+  for +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>
   for +j: Nat
   {Codec.count(ITS(c, A, j)) == c : Nat}
 def cnt_its(c, A, j):
@@ -177,7 +181,7 @@ def cnt_its(c, A, j):
 
 law bps_all:
   for +c: Nat
-  for +A: FD.array__Tree<T.Gc4ED9619F50>
+  for +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>
   for +j: Nat
   {SP2.allfx(BPS(c, A, j)) == True{} : Bool}
 def bps_all(c, A, j):
@@ -187,7 +191,7 @@ def bps_all(c, A, j):
 
 law bps_cat:
   for +c: Nat
-  for +A: FD.array__Tree<T.Gc4ED9619F50>
+  for +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>
   for +j: Nat
   {SP2.fcat(BPS(c, A, j)) == RBS(c, A, j) : +List<U32>}
 def bps_cat(c, A, j):
@@ -197,7 +201,7 @@ def bps_cat(c, A, j):
 
 law prt_its:
   for +c: Nat
-  for +A: FD.array__Tree<T.Gc4ED9619F50>
+  for +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>
   for +j: Nat
   {Codec.parts(ITS(c, A, j), S.Repeat{S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}}) == Some{BPS(c, A, j)} : Maybe<&2, +List<S.Part>>}
 def prt_its(c, A, j):
@@ -209,44 +213,44 @@ def prt_its(c, A, j):
 
 # ---- pl_Gc4ED9619F50: the runtime's validity check ----
 
-def AG(+A: FD.array__Tree<T.Gc4ED9619F50>, +i: U32) -> Array<T.Gc4ED9619F50> & T.Gc4ED9619F50: Array.get(T.Gc4ED9619F50, FD.array__thaw(T.Gc4ED9619F50, A), i)
+def AG(+A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +i: U32) -> Array<SmallTestStruct_d.Gc4ED9619F50> & SmallTestStruct_d.Gc4ED9619F50: Array.get(SmallTestStruct_d.Gc4ED9619F50, FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), i)
 
 # get i+1 of the records' array, i = j and 1 + j < 2^da
-def geti(+i: U32, +j: Nat, +da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +ei: {U32.to_nat(i) == j : Nat}, +pfA: {FD.array__perfect(T.Gc4ED9619F50, da, A) == True{} : Bool},
+def geti(+i: U32, +j: Nat, +da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +ei: {U32.to_nat(i) == j : Nat}, +pfA: {FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A) == True{} : Bool},
     +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +h1: {Nat.is_lt(1n+j, VB.pw(da)) == True{} : Bool})
-    -> {AG(A, U32.add(i, 1)) == (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, 1n+j)) : Array<T.Gc4ED9619F50> & T.Gc4ED9619F50}:
+    -> {AG(A, U32.add(i, 1)) == (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, 1n+j)) : Array<SmallTestStruct_d.Gc4ED9619F50> & SmallTestStruct_d.Gc4ED9619F50}:
   +ei1 = VB.add_le_at(i, 1, j, da, ei, hda, FD.nat__lt_le(1n+j, VB.pw(da), h1))
   +hi1 = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(da)) == True{} : Bool}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1), h1)
-  +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(T.Gc4ED9619F50, FD.array__slots(T.Gc4ED9619F50, A), z) == Some{EL(A, 1n+j)} : Maybe<&2, T.Gc4ED9619F50>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
-    VRL.nth_get(T.Gc4ED9619F50, FD.array__slots(T.Gc4ED9619F50, A), 1n+j, T.Gc4ED9619F50_default(), FD.array__len_lt(T.Gc4ED9619F50, da, A, 1n+j, pfA, h1)))
-  FD.array__get(T.Gc4ED9619F50, da, A, U32.add(i, 1), EL(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
+  +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(SmallTestStruct_d.Gc4ED9619F50, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, A), z) == Some{EL(A, 1n+j)} : Maybe<&2, SmallTestStruct_d.Gc4ED9619F50>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
+    VRL.nth_get(SmallTestStruct_d.Gc4ED9619F50, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, A), 1n+j, SmallTestStruct_d.Gc4ED9619F50_default(), FD.array__len_lt(SmallTestStruct_d.Gc4ED9619F50, da, A, 1n+j, pfA, h1)))
+  FD.array__get(SmallTestStruct_d.Gc4ED9619F50, da, A, U32.add(i, 1), EL(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
 
-def get0(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +pfA: {FD.array__perfect(T.Gc4ED9619F50, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool},
+def get0(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +pfA: {FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool},
     +h0: {Nat.is_lt(0n, VB.pw(da)) == True{} : Bool})
-    -> {AG(A, 0) == (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, 0n)) : Array<T.Gc4ED9619F50> & T.Gc4ED9619F50}:
-  FD.array__get(T.Gc4ED9619F50, da, A, 0, EL(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(T.Gc4ED9619F50, FD.array__slots(T.Gc4ED9619F50, A), 0n, T.Gc4ED9619F50_default(), FD.array__len_lt(T.Gc4ED9619F50, da, A, 0n, pfA, h0)), pfA)
+    -> {AG(A, 0) == (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, 0n)) : Array<SmallTestStruct_d.Gc4ED9619F50> & SmallTestStruct_d.Gc4ED9619F50}:
+  FD.array__get(SmallTestStruct_d.Gc4ED9619F50, da, A, 0, EL(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(SmallTestStruct_d.Gc4ED9619F50, FD.array__slots(SmallTestStruct_d.Gc4ED9619F50, A), 0n, SmallTestStruct_d.Gc4ED9619F50_default(), FD.array__len_lt(SmallTestStruct_d.Gc4ED9619F50, da, A, 0n, pfA, h0)), pfA)
 
 # The validity loop from record j (index i) on, k + 1 records, all valid.
-def vax(k: Nat, +i: U32, +j: Nat, +da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +ei: {U32.to_nat(i) == j : Nat}, +h: {VOK(1n+k, A, j) == True{} : Bool},
-    +pfA: {FD.array__perfect(T.Gc4ED9619F50, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
-    -> {T.pl_Gc4ED9619F50_va(k, i, True{}, (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, j))) == (FD.array__thaw(T.Gc4ED9619F50, A), True{}) : Array<T.Gc4ED9619F50> & Bool}:
+def vax(k: Nat, +i: U32, +j: Nat, +da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +ei: {U32.to_nat(i) == j : Nat}, +h: {VOK(1n+k, A, j) == True{} : Bool},
+    +pfA: {FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    -> {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_va(k, i, True{}, (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, j))) == (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), True{}) : Array<SmallTestStruct_d.Gc4ED9619F50> & Bool}:
   match k:
     case 0n:
-      %Equal.sym(Bool, T.Gc4ED9619F50_valid(EL(A, j)), True{}, and_l(T.Gc4ED9619F50_valid(EL(A, j)), VOK(0n, A, 1n+j), h)) : {(FD.array__thaw(T.Gc4ED9619F50, A), _) == (FD.array__thaw(T.Gc4ED9619F50, A), True{}) : Array<T.Gc4ED9619F50> & Bool}
+      %Equal.sym(Bool, SmallTestStruct_e.Gc4ED9619F50_valid(EL(A, j)), True{}, and_l(SmallTestStruct_e.Gc4ED9619F50_valid(EL(A, j)), VOK(0n, A, 1n+j), h)) : {(FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), _) == (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), True{}) : Array<SmallTestStruct_d.Gc4ED9619F50> & Bool}
       {==}
     case 1n+ +p:
-      +hv = and_l(T.Gc4ED9619F50_valid(EL(A, j)), VOK(1n+p, A, 1n+j), h)
-      +hr = and_r(T.Gc4ED9619F50_valid(EL(A, j)), VOK(1n+p, A, 1n+j), h)
+      +hv = and_l(SmallTestStruct_e.Gc4ED9619F50_valid(EL(A, j)), VOK(1n+p, A, 1n+j), h)
+      +hr = and_r(SmallTestStruct_e.Gc4ED9619F50_valid(EL(A, j)), VOK(1n+p, A, 1n+j), h)
       +h1 = FD.nat__le_lt_trans(1n+j, 1n+Nat.add(p, j), VB.pw(da), Order.left_below_sum(p, j), hk)
       +ei1 = VB.add_le_at(i, 1, j, da, ei, hda, FD.nat__lt_le(1n+j, VB.pw(da), h1))
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hk)
-      %Equal.sym(Bool, T.Gc4ED9619F50_valid(EL(A, j)), True{}, hv) : {T.pl_Gc4ED9619F50_va(p, U32.add(i, 1), _, AG(A, U32.add(i, 1))) == (FD.array__thaw(T.Gc4ED9619F50, A), True{}) : Array<T.Gc4ED9619F50> & Bool}
-      %Equal.sym(Array<T.Gc4ED9619F50> & T.Gc4ED9619F50, AG(A, U32.add(i, 1)), (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, 1n+j)), geti(i, j, da, A, ei, pfA, hda, h1)) : {T.pl_Gc4ED9619F50_va(p, U32.add(i, 1), True{}, _) == (FD.array__thaw(T.Gc4ED9619F50, A), True{}) : Array<T.Gc4ED9619F50> & Bool}
+      %Equal.sym(Bool, SmallTestStruct_e.Gc4ED9619F50_valid(EL(A, j)), True{}, hv) : {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_va(p, U32.add(i, 1), _, AG(A, U32.add(i, 1))) == (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), True{}) : Array<SmallTestStruct_d.Gc4ED9619F50> & Bool}
+      %Equal.sym(Array<SmallTestStruct_d.Gc4ED9619F50> & SmallTestStruct_d.Gc4ED9619F50, AG(A, U32.add(i, 1)), (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, 1n+j)), geti(i, j, da, A, ei, pfA, hda, h1)) : {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_va(p, U32.add(i, 1), True{}, _) == (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), True{}) : Array<SmallTestStruct_d.Gc4ED9619F50> & Bool}
       vax(p, U32.add(i, 1), 1n+j, da, A, ei1, hr, pfA, hda, hk2)
 
 # ---- pl_Gc4ED9619F50: the write loop (record j at byte P0 + 4 j) ----
 
-def WX(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +P0: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>) -> FD.array__Tree<U32>:
+def WX(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +P0: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>) -> FD.array__Tree<U32>:
   match k:
     case 0n: PR_Gc4ED9619F50(EL(A, j), dd, D, VRL.pos(j, 4n, P0))
     case 1n+p: WX(p, 1n+j, dd, PR_Gc4ED9619F50(EL(A, j), dd, D, VRL.pos(j, 4n, P0)), P0, A)
@@ -257,7 +261,7 @@ law pfWX:
   for +dd: Nat
   for +D: FD.array__Tree<U32>
   for +P0: Nat
-  for +A: FD.array__Tree<T.Gc4ED9619F50>
+  for +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>
   for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
   {FD.array__perfect(U32, dd, WX(k, j, dd, D, P0, A)) == True{} : Bool}
 def pfWX(k, j, dd, D, P0, A, pf):
@@ -265,18 +269,18 @@ def pfWX(k, j, dd, D, P0, A, pf):
     case 0n: pfr_Gc4ED9619F50(EL(A, j), dd, D, VRL.pos(j, 4n, P0), pf)
     case 1n+ +p: pfWX(p, 1n+j, dd, PR_Gc4ED9619F50(EL(A, j), dd, D, VRL.pos(j, 4n, P0)), P0, A, pfr_Gc4ED9619F50(EL(A, j), dd, D, VRL.pos(j, 4n, P0), pf))
 
-def RTK(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<T.Gc4ED9619F50>) -> Data:
-  {T.pl_Gc4ED9619F50_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, j))) == (FD.array__thaw(U32, WX(k, j, dd, D, P0, A)), FD.array__thaw(T.Gc4ED9619F50, A)) : Array<U32> & Array<T.Gc4ED9619F50>}
-def BYK(k: Nat, +j: Nat, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<T.Gc4ED9619F50>) -> Data:
+def RTK(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>) -> Data:
+  {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, j))) == (FD.array__thaw(U32, WX(k, j, dd, D, P0, A)), FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A)) : Array<U32> & Array<SmallTestStruct_d.Gc4ED9619F50>}
+def BYK(k: Nat, +j: Nat, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>) -> Data:
   {UA.BYT(WX(k, j, dd, D, P0, A)) == UW.SPL(UA.BYT(D), VRL.pos(j, 4n, P0), RBS(1n+k, A, j)) : +List<U32>}
 
 # The loop from record j (index i) on, k + 1 records, into LT bytes at X (byte P0) whose last k + 1 records' bytes are zero.
-def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +LT: Nat,
+def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +LT: Nat,
     +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == P0 : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 4n), LT) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P0, LT), A.quad(VB.pw(dd))) == True{} : Bool},
     +hz: {VS.bt(Nat.mul(1n+k, 4n), VS.bdr(VRL.pos(j, 4n, P0), UA.BYT(D))) == UW.ZB(Nat.mul(1n+k, 4n)) : +List<U32>},
-    +pfA: {FD.array__perfect(T.Gc4ED9619F50, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    +pfA: {FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> DK.P2(RTK(k, i, j, X, P0, dd, D, A), BYK(k, j, P0, dd, D, A)):
   match k:
     case 0n:
@@ -290,7 +294,7 @@ def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tre
       +by = PB(RTR_Gc4ED9619F50(o, dd, D, Xj, Pj), BYR_Gc4ED9619F50(o, dd, D, Pj), g)
       +D1 = PR_Gc4ED9619F50(o, dd, D, Pj)
       +Y = RB_Gc4ED9619F50(o)
-      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<T.Gc4ED9619F50>, z => (z, FD.array__thaw(T.Gc4ED9619F50, A)), T.Gc4ED9619F50_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<SmallTestStruct_d.Gc4ED9619F50>, z => (z, FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A)), SmallTestStruct_e.Gc4ED9619F50_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
       +by0 = FD.logic__subst(+List<U32>, z => {UA.BYT(D1) == UW.SPL(UA.BYT(D), Pj, z) : +List<U32>}, Y, List.append(&2, U32, Y, []),
         Equal.sym(+List<U32>, List.append(&2, U32, Y, []), Y, VS.app_nil(Y)), by)
       (rt0, by0)
@@ -320,12 +324,12 @@ def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tre
       +ih = ptx(p, U32.add(i, 1), 1n+j, X, P0, dd, D1, da, A, LT, ei1, e, hd, pf1, hj2, hb, z1, pfA, hda, hk2)
       +rt2 = PA(RTK(p, U32.add(i, 1), 1n+j, X, P0, dd, D1, A), BYK(p, 1n+j, P0, dd, D1, A), ih)
       +by2 = PB(RTK(p, U32.add(i, 1), 1n+j, X, P0, dd, D1, A), BYK(p, 1n+j, P0, dd, D1, A), ih)
-      +ea = Equal.cong(Array<U32>, Array<U32> & Array<T.Gc4ED9619F50>, z => T.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, z, AG(A, U32.add(i, 1))), T.Gc4ED9619F50_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
-      +eb = Equal.cong(Array<T.Gc4ED9619F50> & T.Gc4ED9619F50, Array<U32> & Array<T.Gc4ED9619F50>, z => T.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG(A, U32.add(i, 1)), (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, 1n+j)), eg)
-      +rt3 = Equal.trans(Array<U32> & Array<T.Gc4ED9619F50>, T.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, T.Gc4ED9619F50_put(FD.array__thaw(U32, D), Xj, o), AG(A, U32.add(i, 1))), T.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG(A, U32.add(i, 1))),
-        (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, P0, A)), FD.array__thaw(T.Gc4ED9619F50, A)), ea,
-        Equal.trans(Array<U32> & Array<T.Gc4ED9619F50>, T.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG(A, U32.add(i, 1))), T.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, 1n+j))),
-          (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, P0, A)), FD.array__thaw(T.Gc4ED9619F50, A)), eb, rt2))
+      +ea = Equal.cong(Array<U32>, Array<U32> & Array<SmallTestStruct_d.Gc4ED9619F50>, z => proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, z, AG(A, U32.add(i, 1))), SmallTestStruct_e.Gc4ED9619F50_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +eb = Equal.cong(Array<SmallTestStruct_d.Gc4ED9619F50> & SmallTestStruct_d.Gc4ED9619F50, Array<U32> & Array<SmallTestStruct_d.Gc4ED9619F50>, z => proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG(A, U32.add(i, 1)), (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, 1n+j)), eg)
+      +rt3 = Equal.trans(Array<U32> & Array<SmallTestStruct_d.Gc4ED9619F50>, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, SmallTestStruct_e.Gc4ED9619F50_put(FD.array__thaw(U32, D), Xj, o), AG(A, U32.add(i, 1))), proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG(A, U32.add(i, 1))),
+        (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, P0, A)), FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A)), ea,
+        Equal.trans(Array<U32> & Array<SmallTestStruct_d.Gc4ED9619F50>, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG(A, U32.add(i, 1))), proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, 1n+j))),
+          (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, P0, A)), FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A)), eb, rt2))
       +rest = RBS(1n+p, A, 1n+j)
       +eXn = Equal.trans(Nat, VRL.pos(1n+j, 4n, P0), Nat.add(Pj, 4n), Nat.add(Pj, VRX.LN(Y)), ey,
         Equal.cong(Nat, Nat, z => Nat.add(Pj, z), 4n, VRX.LN(Y), Equal.sym(Nat, VRX.LN(Y), 4n, lenr_Gc4ED9619F50(o))))
@@ -337,33 +341,33 @@ def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tre
 
 # The object's Data mirror: the tree A of depth da holding the N records.
 type MW is Data:
-  MW{da: Nat, A: FD.array__Tree<T.Gc4ED9619F50>, N: U32}
+  MW{da: Nat, A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, N: U32}
 
-def TH(m: MW) -> T.pl_Gc4ED9619F50_Seq:
+def TH(m: MW) -> proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq:
   match m:
-    case MW{+da, +A, +N}: T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}
+    case MW{+da, +A, +N}: proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}
 
 # A valid object: a perfect tree of depth < 28 with room for the N records, whose 4 N bytes fit
 # 4 2^da, and whose records pass the runtime's check.
-def OKT(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32) -> Bool:
-  Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)))))
-def ok_r1(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)))) == True{} : Bool}:
-  and_r(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)))), h)
-def ok_r2(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))) == True{} : Bool}:
-  and_r(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))), ok_r1(da, A, N, h))
-def ok_r3(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)) == True{} : Bool}:
+def OKT(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32) -> Bool:
+  Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)))))
+def ok_r1(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)))) == True{} : Bool}:
+  and_r(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)))), h)
+def ok_r2(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))) == True{} : Bool}:
+  and_r(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))), ok_r1(da, A, N, h))
+def ok_r3(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)) == True{} : Bool}:
   and_r(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)), ok_r2(da, A, N, h))
-def ok_r4(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}:
+def ok_r4(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}:
   and_r(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n), ok_r3(da, A, N, h))
-def ok_0(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Nat.is_lt(da, 28n) == True{} : Bool}:
-  and_l(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)))), h)
-def ok_1(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {FD.array__perfect(T.Gc4ED9619F50, da, A) == True{} : Bool}:
-  and_l(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))), ok_r1(da, A, N, h))
-def ok_2(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(da)) == True{} : Bool}:
+def ok_0(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Nat.is_lt(da, 28n) == True{} : Bool}:
+  and_l(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)))), h)
+def ok_1(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A) == True{} : Bool}:
+  and_l(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))), ok_r1(da, A, N, h))
+def ok_2(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(da)) == True{} : Bool}:
   and_l(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n)), ok_r2(da, A, N, h))
-def ok_3(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))) == True{} : Bool}:
+def ok_3(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))) == True{} : Bool}:
   and_l(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n), ok_r3(da, A, N, h))
-def ok_4(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}: ok_r4(da, A, N, h)
+def ok_4(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(SmallTestStruct_d.Gc4ED9619F50, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 4n), A.quad(VB.pw(da))), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}: ok_r4(da, A, N, h)
 def OK(m: MW) -> Bool:
   match m:
     case MW{+da, +A, +N}: OKT(da, A, N)
@@ -377,7 +381,7 @@ def VAL(m: MW) -> S.Value:
 def SZ(m: MW) -> U32:
   match m:
     case MW{+da, +A, +N}: U32.mul(N, 4)
-def PUTLb(b: Bool, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat) -> FD.array__Tree<U32>:
+def PUTLb(b: Bool, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat) -> FD.array__Tree<U32>:
   match b:
     case True{}: D
     case False{}: WX(U32.to_nat(U32.sub(N, 1)), 0n, dd, D, P0, A)
@@ -386,23 +390,23 @@ def PUTX(m: MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array
     case MW{+da, +A, +N}: PUTLb(U32.is_eq(N, 0), A, N, dd, D, Nat.add(A.quad(q), r))
 def PADB(+r: Nat, m: MW) -> Nat: WD.PADB(r, List.length(&2, U32, ENC(m)))
 
-def pfLb(+b: Bool, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def pfLb(+b: Bool, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PUTLb(b, A, N, dd, D, P0)) == True{} : Bool}:
   match b:
     case True{}: pf
     case False{}: pfWX(U32.to_nat(U32.sub(N, 1)), 0n, dd, D, P0, A, pf)
 
 # N <= 2^da as the runtime compares it.
-def le_cap(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(da)) == True{} : Bool}:
+def le_cap(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(da)) == True{} : Bool}:
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(da)), Nat.is_le(U32.to_nat(N), U32.to_nat(FD.u32__pow2u(da))), VU.le_u32(N, FD.u32__pow2u(da))) : {_ == True{} : Bool}
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(da)), VB.pw(da), FD.u32__pow2u_value(da, FD.nat__lt_trans(da, 28n, 32n, ok_0(da, A, N, h), {==}))) : {Nat.is_le(U32.to_nat(N), _) == True{} : Bool}
   ok_2(da, A, N, h)
-def hda31(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {Nat.is_lt(da, 31n) == True{} : Bool}:
+def hda31(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {Nat.is_lt(da, 31n) == True{} : Bool}:
   FD.nat__lt_trans(da, 28n, 31n, ok_0(da, A, N, h), {==})
 
 # The runtime's validity check.
-def vnz(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKT(da, A, N) == True{} : Bool})
-    -> {T.pl_Gc4ED9619F50_va_fin(N, True{}, T.pl_Gc4ED9619F50_va_nz(b, N, FD.array__thaw(T.Gc4ED9619F50, A))) == (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, True{}) : T.pl_Gc4ED9619F50_Seq & Bool}:
+def vnz(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKT(da, A, N) == True{} : Bool})
+    -> {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_va_fin(N, True{}, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_va_nz(b, N, FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A))) == (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, True{}) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & Bool}:
   match b:
     case True{}: {==}
     case False{}:
@@ -416,26 +420,26 @@ def vnz(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +b: Bool, +eb: {U
       +hk = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)),
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
-      %Equal.sym(Array<T.Gc4ED9619F50> & T.Gc4ED9619F50, AG(A, 0), (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, 0n)), get0(da, A, pfA, hda31(da, A, N, h), h0)) :
-        {T.pl_Gc4ED9619F50_va_fin(N, True{}, T.pl_Gc4ED9619F50_va(k, 0, True{}, _)) == (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, True{}) : T.pl_Gc4ED9619F50_Seq & Bool}
-      %Equal.sym(Array<T.Gc4ED9619F50> & Bool, T.pl_Gc4ED9619F50_va(k, 0, True{}, (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, 0n))), (FD.array__thaw(T.Gc4ED9619F50, A), True{}), vax(k, 0, 0n, da, A, {==}, hv, pfA, hda31(da, A, N, h), hk)) :
-        {T.pl_Gc4ED9619F50_va_fin(N, True{}, _) == (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, True{}) : T.pl_Gc4ED9619F50_Seq & Bool}
+      %Equal.sym(Array<SmallTestStruct_d.Gc4ED9619F50> & SmallTestStruct_d.Gc4ED9619F50, AG(A, 0), (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, 0n)), get0(da, A, pfA, hda31(da, A, N, h), h0)) :
+        {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_va_fin(N, True{}, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_va(k, 0, True{}, _)) == (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, True{}) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & Bool}
+      %Equal.sym(Array<SmallTestStruct_d.Gc4ED9619F50> & Bool, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_va(k, 0, True{}, (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, 0n))), (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), True{}), vax(k, 0, 0n, da, A, {==}, hv, pfA, hda31(da, A, N, h), hk)) :
+        {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_va_fin(N, True{}, _) == (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, True{}) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & Bool}
       {==}
 
-def valid(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {T.pl_Gc4ED9619F50_valid(T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}) == (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, True{}) : T.pl_Gc4ED9619F50_Seq & Bool}:
-  %Equal.sym(Array<T.Gc4ED9619F50> & U32, Array.size(T.Gc4ED9619F50, FD.array__thaw(T.Gc4ED9619F50, A)), (FD.array__thaw(T.Gc4ED9619F50, A), FD.u32__pow2u(da)), FD.array__size_thaw(T.Gc4ED9619F50, da, A, ok_1(da, A, N, h))) :
-    {T.pl_Gc4ED9619F50_va_cap(True{}, N, _) == (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, True{}) : T.pl_Gc4ED9619F50_Seq & Bool}
+def valid(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_valid(proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}) == (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, True{}) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & Bool}:
+  %Equal.sym(Array<SmallTestStruct_d.Gc4ED9619F50> & U32, Array.size(SmallTestStruct_d.Gc4ED9619F50, FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A)), (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), FD.u32__pow2u(da)), FD.array__size_thaw(SmallTestStruct_d.Gc4ED9619F50, da, A, ok_1(da, A, N, h))) :
+    {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_va_cap(True{}, N, _) == (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, True{}) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(da)), True{}, le_cap(da, A, N, h)) :
-    {T.pl_Gc4ED9619F50_va_go(Bool.and(True{}, _), N, FD.array__thaw(T.Gc4ED9619F50, A)) == (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, True{}) : T.pl_Gc4ED9619F50_Seq & Bool}
+    {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_va_go(Bool.and(True{}, _), N, FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A)) == (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, True{}) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & Bool}
   vnz(da, A, N, U32.is_eq(N, 0), {==}, h)
 
-def RTN(+b: Bool, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat) -> Data:
-  {T.pl_Gc4ED9619F50_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(T.Gc4ED9619F50, A)) == (FD.array__thaw(U32, PUTLb(b, A, N, dd, D, P0)), T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}) : Array<U32> & T.pl_Gc4ED9619F50_Seq}
-def BYN(+b: Bool, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat) -> Data:
+def RTN(+b: Bool, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat) -> Data:
+  {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A)) == (FD.array__thaw(U32, PUTLb(b, A, N, dd, D, P0)), proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}) : Array<U32> & proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq}
+def BYN(+b: Bool, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat) -> Data:
   {UA.BYT(PUTLb(b, A, N, dd, D, P0)) == UW.SPL(UA.BYT(D), P0, RBS(U32.to_nat(N), A, 0n)) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
+def ptnz(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
     +e: {U32.to_nat(X) == P0 : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P0, Nat.mul(U32.to_nat(N), 4n)), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(Nat.mul(U32.to_nat(N), 4n), VS.bdr(P0, UA.BYT(D))) == UW.ZB(Nat.mul(U32.to_nat(N), 4n)) : +List<U32>})
@@ -464,36 +468,36 @@ def ptnz(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +b: Bool, +eb: {
       +g = ptx(k, 0, 0n, X, P0, dd, D, da, A, LL, {==}, e, hd, pf, hj, hb, hz2, pfA, hda, hk)
       +rt = PA(RTK(k, 0, 0n, X, P0, dd, D, A), BYK(k, 0n, P0, dd, D, A), g)
       +by = PB(RTK(k, 0, 0n, X, P0, dd, D, A), BYK(k, 0n, P0, dd, D, A), g)
-      +ea = Equal.cong(Array<T.Gc4ED9619F50> & T.Gc4ED9619F50, Array<U32> & T.pl_Gc4ED9619F50_Seq, z => T.pl_Gc4ED9619F50_pt_fin(N, T.pl_Gc4ED9619F50_pt(k, 0, X, FD.array__thaw(U32, D), z)), AG(A, 0), (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, 0n)), eg0)
-      +eb2 = Equal.cong(Array<U32> & Array<T.Gc4ED9619F50>, Array<U32> & T.pl_Gc4ED9619F50_Seq, z => T.pl_Gc4ED9619F50_pt_fin(N, z), T.pl_Gc4ED9619F50_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, 0n))), (FD.array__thaw(U32, WX(k, 0n, dd, D, P0, A)), FD.array__thaw(T.Gc4ED9619F50, A)), rt)
-      (Equal.trans(Array<U32> & T.pl_Gc4ED9619F50_Seq, T.pl_Gc4ED9619F50_pt_fin(N, T.pl_Gc4ED9619F50_pt(k, 0, X, FD.array__thaw(U32, D), AG(A, 0))), T.pl_Gc4ED9619F50_pt_fin(N, T.pl_Gc4ED9619F50_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.Gc4ED9619F50, A), EL(A, 0n)))),
-         T.pl_Gc4ED9619F50_pt_fin(N, (FD.array__thaw(U32, WX(k, 0n, dd, D, P0, A)), FD.array__thaw(T.Gc4ED9619F50, A))), ea, eb2),
+      +ea = Equal.cong(Array<SmallTestStruct_d.Gc4ED9619F50> & SmallTestStruct_d.Gc4ED9619F50, Array<U32> & proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq, z => proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt_fin(N, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt(k, 0, X, FD.array__thaw(U32, D), z)), AG(A, 0), (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, 0n)), eg0)
+      +eb2 = Equal.cong(Array<U32> & Array<SmallTestStruct_d.Gc4ED9619F50>, Array<U32> & proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq, z => proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt_fin(N, z), proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, 0n))), (FD.array__thaw(U32, WX(k, 0n, dd, D, P0, A)), FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A)), rt)
+      (Equal.trans(Array<U32> & proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt_fin(N, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt(k, 0, X, FD.array__thaw(U32, D), AG(A, 0))), proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt_fin(N, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), EL(A, 0n)))),
+         proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt_fin(N, (FD.array__thaw(U32, WX(k, 0n, dd, D, P0, A)), FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A))), ea, eb2),
        FD.logic__subst(Nat, z => {UA.BYT(WX(k, 0n, dd, D, P0, A)) == UW.SPL(UA.BYT(D), P0, RBS(z, A, 0n)) : +List<U32>}, 1n+k, c, e1, by))
 
 # The hypotheses of the interface, on the mirror's pieces.
-def hbx(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +dd: Nat, +q: Nat, +r: Nat,
+def hbx(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +dd: Nat, +q: Nat, +r: Nat,
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(MW{da, A, N}))))), VB.pw(dd)) == True{} : Bool})
     -> {Nat.is_le(Nat.add(Nat.add(A.quad(q), r), Nat.mul(U32.to_nat(N), 4n)), A.quad(VB.pw(dd))) == True{} : Bool}:
   FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(Nat.add(A.quad(q), r), z), A.quad(VB.pw(dd))) == True{} : Bool}, List.length(&2, U32, ENC(MW{da, A, N})), Nat.mul(U32.to_nat(N), 4n),
     len_rbs(U32.to_nat(N), A, 0n), VRX.xend(q, r, List.length(&2, U32, ENC(MW{da, A, N})), dd, hl))
-def hzx(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +r: Nat, +P0: Nat, +D: FD.array__Tree<U32>,
+def hzx(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +r: Nat, +P0: Nat, +D: FD.array__Tree<U32>,
     +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(MW{da, A, N})), PADB(r, MW{da, A, N})), VS.bdr(P0, UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(MW{da, A, N})), PADB(r, MW{da, A, N}))) : +List<U32>})
     -> {VS.bt(Nat.mul(U32.to_nat(N), 4n), VS.bdr(P0, UA.BYT(D))) == UW.ZB(Nat.mul(U32.to_nat(N), 4n)) : +List<U32>}:
   FD.logic__subst(Nat, z => {VS.bt(z, VS.bdr(P0, UA.BYT(D))) == UW.ZB(z) : +List<U32>}, List.length(&2, U32, ENC(MW{da, A, N})), Nat.mul(U32.to_nat(N), 4n),
     len_rbs(U32.to_nat(N), A, 0n), WD.zpre(List.length(&2, U32, ENC(MW{da, A, N})), PADB(r, MW{da, A, N}), VS.bdr(P0, UA.BYT(D)), hz))
 
-def RTX(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat) -> Data:
-  {T.pl_Gc4ED9619F50_putk(FD.array__thaw(U32, D), X, T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, U32.mul(N, 4))) : Array<U32> & (T.pl_Gc4ED9619F50_Seq & U32)}
+def RTX(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat) -> Data:
+  {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_putk(FD.array__thaw(U32, D), X, proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, U32.mul(N, 4))) : Array<U32> & (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & U32)}
 
-def putk_rt(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
+def putk_rt(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
     +rtb: RTN(U32.is_eq(N, 0), A, N, dd, D, X, P0)) -> RTX(da, A, N, dd, D, X, P0):
-  %Equal.sym(T.pl_Gc4ED9619F50_Seq & Bool, T.pl_Gc4ED9619F50_valid(T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}), (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, True{}), valid(da, A, N, h)) :
-    {T.pl_Gc4ED9619F50_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, U32.mul(N, 4))) : Array<U32> & (T.pl_Gc4ED9619F50_Seq & U32)}
-  %Equal.sym(Array<U32> & T.pl_Gc4ED9619F50_Seq, T.pl_Gc4ED9619F50_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(T.Gc4ED9619F50, A)), (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}), rtb) :
-    {T.pl_Gc4ED9619F50_ptn_fin(N, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, U32.mul(N, 4))) : Array<U32> & (T.pl_Gc4ED9619F50_Seq & U32)}
+  %Equal.sym(proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & Bool, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_valid(proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}), (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, True{}), valid(da, A, N, h)) :
+    {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, U32.mul(N, 4))) : Array<U32> & (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & U32)}
+  %Equal.sym(Array<U32> & proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq, proglist_SmallTestStruct_e.pl_Gc4ED9619F50_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A)), (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}), rtb) :
+    {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_ptn_fin(N, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, U32.mul(N, 4))) : Array<U32> & (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & U32)}
   {==}
 
-def go(+da: Nat, +A: FD.array__Tree<T.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def go(+da: Nat, +A: FD.array__Tree<SmallTestStruct_d.Gc4ED9619F50>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(MW{da, A, N}))))), VB.pw(dd)) == True{} : Bool},
     +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(MW{da, A, N})), PADB(r, MW{da, A, N})), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(MW{da, A, N})), PADB(r, MW{da, A, N}))) : +List<U32>},
@@ -517,7 +521,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.pl_Gc4ED9619F50_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (T.pl_Gc4ED9619F50_Seq & U32)}
+  {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW{+da, +A, +N}:
@@ -579,20 +583,20 @@ def szx(m, hok):
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.pl_Gc4ED9619F50_size(TH(m)) == (TH(m), SZ(m)) : T.pl_Gc4ED9619F50_Seq & U32}
+  {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_size(TH(m)) == (TH(m), SZ(m)) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & U32}
 def sizex(m, hok):
   match m:
     case MW{+da, +A, +N}:
-      %Equal.sym(Array<T.Gc4ED9619F50> & U32, Array.size(T.Gc4ED9619F50, FD.array__thaw(T.Gc4ED9619F50, A)), (FD.array__thaw(T.Gc4ED9619F50, A), FD.u32__pow2u(da)), FD.array__size_thaw(T.Gc4ED9619F50, da, A, ok_1(da, A, N, hok))) :
-        {T.pl_Gc4ED9619F50_szf(N, _) == (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, U32.mul(N, 4)) : T.pl_Gc4ED9619F50_Seq & U32}
+      %Equal.sym(Array<SmallTestStruct_d.Gc4ED9619F50> & U32, Array.size(SmallTestStruct_d.Gc4ED9619F50, FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A)), (FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), FD.u32__pow2u(da)), FD.array__size_thaw(SmallTestStruct_d.Gc4ED9619F50, da, A, ok_1(da, A, N, hok))) :
+        {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_szf(N, _) == (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, U32.mul(N, 4)) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & U32}
       %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(da)), True{}, le_cap(da, A, N, hok)) :
-        {(T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, O.pick(_, U32.mul(N, 4), 2147483648)) == (T.pl_Gc4ED9619F50_Seq{FD.array__thaw(T.Gc4ED9619F50, A), N}, U32.mul(N, 4)) : T.pl_Gc4ED9619F50_Seq & U32}
+        {(proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, O.pick(_, U32.mul(N, 4), 2147483648)) == (proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq{FD.array__thaw(SmallTestStruct_d.Gc4ED9619F50, A), N}, U32.mul(N, 4)) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & U32}
       {==}
 
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.pl_Gc4ED9619F50_valid(TH(m)) == (TH(m), True{}) : T.pl_Gc4ED9619F50_Seq & Bool}
+  {proglist_SmallTestStruct_e.pl_Gc4ED9619F50_valid(TH(m)) == (TH(m), True{}) : proglist_SmallTestStruct_d.pl_Gc4ED9619F50_Seq & Bool}
 def validx(m, hok):
   match m:
     case MW{+da, +A, +N}: valid(da, A, N, hok)

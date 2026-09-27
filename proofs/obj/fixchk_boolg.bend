@@ -1,7 +1,17 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/boolean_decode_ssz_generated.bend as boolean_r
+import ../../types/vec_bool_16_decode_ssz_generated.bend as vec_bool_16_r
+import ../../types/vec_bool_1_decode_ssz_generated.bend as vec_bool_1_r
+import ../../types/vec_bool_2_decode_ssz_generated.bend as vec_bool_2_r
+import ../../types/vec_bool_31_decode_ssz_generated.bend as vec_bool_31_r
+import ../../types/vec_bool_3_decode_ssz_generated.bend as vec_bool_3_r
+import ../../types/vec_bool_4_decode_ssz_generated.bend as vec_bool_4_r
+import ../../types/vec_bool_512_decode_ssz_generated.bend as vec_bool_512_r
+import ../../types/vec_bool_513_decode_ssz_generated.bend as vec_bool_513_r
+import ../../types/vec_bool_5_decode_ssz_generated.bend as vec_bool_5_r
+import ../../types/vec_bool_8_decode_ssz_generated.bend as vec_bool_8_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -25,7 +35,7 @@ import ./vrejb.bend as VRB
 def Gt1D9B3E1871_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +i: U32, +j: Nat, +acc: Bool,
     +e: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v16_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
+    -> {vec_bool_16_r.v16_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
   match k:
     case 0n:
     +hy = FD.nat__lt_le_trans(VRL.pos(j, 1n, x), 1n+VRL.pos(j, 1n, x), A.quad(VB.pw(d)), FD.nat__lt_succ(VRL.pos(j, 1n, x)), FD.nat__le_trans(1n+VRL.pos(j, 1n, x), VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d)), VRB.pmk(k, j, x), hb))
@@ -43,27 +53,27 @@ def Gt1D9B3E1871_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U3
       +hx1 = FD.nat__lt_le_trans(VRL.pos(1n+j, 1n, x), Nat.add(VRL.pos(1n+j, 1n, x), 1n), A.quad(VB.pw(d)), VTX.ltp(VRL.pos(1n+j, 1n, x), 0n), hx)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 1n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       %Equal.sym(+List<U32>, UW.WX(t, VRL.pos(j, 1n, x), 2n+q), Con{VRB.BX(t, VRL.pos(j, 1n, x)), UW.WX(t, 1n+VRL.pos(j, 1n, x), 1n+q)}, VRB.wxc(d, t, VRL.pos(j, 1n, x), 1n+q, pf, hy)) :
-        {T.v16_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
-      %VRB.and_assoc(acc, c, R) : {T.v16_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
+        {vec_bool_16_r.v16_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
+      %VRB.and_assoc(acc, c, R) : {vec_bool_16_r.v16_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 1))), (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(1n+j, 1n, x)), 1)),
           VRB.okb(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 1)), VRL.pos(1n+j, 1n, x), ex, hd, pf, hx1)) :
-        {T.v16_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
+        {vec_bool_16_r.v16_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
       Gt1D9B3E1871_ck(q, d, t, n, off, x, U32.add(i, 1), 1n+j, Bool.and(acc, c), e, VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)
 
 def Gt1D9B3E1871_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 16n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v16_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 16n))) : B.Buf & Bool}:
+    -> {vec_bool_16_r.v16_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 16n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 16n), A.quad(VB.pw(d)), VTX.ltp(x, 15n), hb)
   +hk = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 16n), Nat.add(16n, x), FD.nat__add_comm(x, 16n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
-    {T.v16_bool_ck(15n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 16n))) : B.Buf & Bool}
+    {vec_bool_16_r.v16_bool_ck(15n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 16n))) : B.Buf & Bool}
   Gt1D9B3E1871_ck(15n, d, t, n, off, x, 0, 0n, True{}, e, {==}, hd, pf, hk)
 
 def Gt1D9B3E1871_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 16n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.v16_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 16n)))) : B.Buf & Bool}:
+    -> {vec_bool_16_r.v16_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 16n)))) : B.Buf & Bool}:
   match b:
     case True{}: Gt1D9B3E1871_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -72,7 +82,7 @@ def Gt1D9B3E1871_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt1D9B3E1871_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 16n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.v16_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 16), VRB.ALLB(UW.WX(t, x, 16n)))) : B.Buf & Bool}:
+    -> {vec_bool_16_r.v16_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 16), VRB.ALLB(UW.WX(t, x, 16n)))) : B.Buf & Bool}:
   Gt1D9B3E1871_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 16))
 
 def Gt1D9B3E1871_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 16n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.Gt1D9B3E1871(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
@@ -89,7 +99,7 @@ def Gt1D9B3E1871_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def GtAE3EF932C2_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +i: U32, +j: Nat, +acc: Bool,
     +e: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v1_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
+    -> {vec_bool_1_r.v1_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
   match k:
     case 0n:
     +hy = FD.nat__lt_le_trans(VRL.pos(j, 1n, x), 1n+VRL.pos(j, 1n, x), A.quad(VB.pw(d)), FD.nat__lt_succ(VRL.pos(j, 1n, x)), FD.nat__le_trans(1n+VRL.pos(j, 1n, x), VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d)), VRB.pmk(k, j, x), hb))
@@ -107,27 +117,27 @@ def GtAE3EF932C2_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U3
       +hx1 = FD.nat__lt_le_trans(VRL.pos(1n+j, 1n, x), Nat.add(VRL.pos(1n+j, 1n, x), 1n), A.quad(VB.pw(d)), VTX.ltp(VRL.pos(1n+j, 1n, x), 0n), hx)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 1n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       %Equal.sym(+List<U32>, UW.WX(t, VRL.pos(j, 1n, x), 2n+q), Con{VRB.BX(t, VRL.pos(j, 1n, x)), UW.WX(t, 1n+VRL.pos(j, 1n, x), 1n+q)}, VRB.wxc(d, t, VRL.pos(j, 1n, x), 1n+q, pf, hy)) :
-        {T.v1_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
-      %VRB.and_assoc(acc, c, R) : {T.v1_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
+        {vec_bool_1_r.v1_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
+      %VRB.and_assoc(acc, c, R) : {vec_bool_1_r.v1_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 1))), (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(1n+j, 1n, x)), 1)),
           VRB.okb(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 1)), VRL.pos(1n+j, 1n, x), ex, hd, pf, hx1)) :
-        {T.v1_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
+        {vec_bool_1_r.v1_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
       GtAE3EF932C2_ck(q, d, t, n, off, x, U32.add(i, 1), 1n+j, Bool.and(acc, c), e, VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)
 
 def GtAE3EF932C2_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v1_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}:
+    -> {vec_bool_1_r.v1_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 1n), A.quad(VB.pw(d)), VTX.ltp(x, 0n), hb)
   +hk = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 1n), Nat.add(1n, x), FD.nat__add_comm(x, 1n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
-    {T.v1_bool_ck(0n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}
+    {vec_bool_1_r.v1_bool_ck(0n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}
   GtAE3EF932C2_ck(0n, d, t, n, off, x, 0, 0n, True{}, e, {==}, hd, pf, hk)
 
 def GtAE3EF932C2_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.v1_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
+    -> {vec_bool_1_r.v1_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
   match b:
     case True{}: GtAE3EF932C2_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -136,7 +146,7 @@ def GtAE3EF932C2_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def GtAE3EF932C2_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.v1_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
+    -> {vec_bool_1_r.v1_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
   GtAE3EF932C2_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 def GtAE3EF932C2_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 1n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.GtAE3EF932C2(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
@@ -153,7 +163,7 @@ def GtAE3EF932C2_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt3771256492_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +i: U32, +j: Nat, +acc: Bool,
     +e: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v2_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
+    -> {vec_bool_2_r.v2_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
   match k:
     case 0n:
     +hy = FD.nat__lt_le_trans(VRL.pos(j, 1n, x), 1n+VRL.pos(j, 1n, x), A.quad(VB.pw(d)), FD.nat__lt_succ(VRL.pos(j, 1n, x)), FD.nat__le_trans(1n+VRL.pos(j, 1n, x), VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d)), VRB.pmk(k, j, x), hb))
@@ -171,27 +181,27 @@ def Gt3771256492_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U3
       +hx1 = FD.nat__lt_le_trans(VRL.pos(1n+j, 1n, x), Nat.add(VRL.pos(1n+j, 1n, x), 1n), A.quad(VB.pw(d)), VTX.ltp(VRL.pos(1n+j, 1n, x), 0n), hx)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 1n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       %Equal.sym(+List<U32>, UW.WX(t, VRL.pos(j, 1n, x), 2n+q), Con{VRB.BX(t, VRL.pos(j, 1n, x)), UW.WX(t, 1n+VRL.pos(j, 1n, x), 1n+q)}, VRB.wxc(d, t, VRL.pos(j, 1n, x), 1n+q, pf, hy)) :
-        {T.v2_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
-      %VRB.and_assoc(acc, c, R) : {T.v2_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
+        {vec_bool_2_r.v2_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
+      %VRB.and_assoc(acc, c, R) : {vec_bool_2_r.v2_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 1))), (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(1n+j, 1n, x)), 1)),
           VRB.okb(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 1)), VRL.pos(1n+j, 1n, x), ex, hd, pf, hx1)) :
-        {T.v2_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
+        {vec_bool_2_r.v2_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
       Gt3771256492_ck(q, d, t, n, off, x, U32.add(i, 1), 1n+j, Bool.and(acc, c), e, VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)
 
 def Gt3771256492_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v2_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 2n))) : B.Buf & Bool}:
+    -> {vec_bool_2_r.v2_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 2n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 2n), A.quad(VB.pw(d)), VTX.ltp(x, 1n), hb)
   +hk = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 2n), Nat.add(2n, x), FD.nat__add_comm(x, 2n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
-    {T.v2_bool_ck(1n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 2n))) : B.Buf & Bool}
+    {vec_bool_2_r.v2_bool_ck(1n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 2n))) : B.Buf & Bool}
   Gt3771256492_ck(1n, d, t, n, off, x, 0, 0n, True{}, e, {==}, hd, pf, hk)
 
 def Gt3771256492_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.v2_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 2n)))) : B.Buf & Bool}:
+    -> {vec_bool_2_r.v2_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 2n)))) : B.Buf & Bool}:
   match b:
     case True{}: Gt3771256492_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -200,7 +210,7 @@ def Gt3771256492_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt3771256492_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.v2_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 2), VRB.ALLB(UW.WX(t, x, 2n)))) : B.Buf & Bool}:
+    -> {vec_bool_2_r.v2_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 2), VRB.ALLB(UW.WX(t, x, 2n)))) : B.Buf & Bool}:
   Gt3771256492_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 2))
 
 def Gt3771256492_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 2n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.Gt3771256492(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
@@ -217,7 +227,7 @@ def Gt3771256492_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt9DF37A5216_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +i: U32, +j: Nat, +acc: Bool,
     +e: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v31_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
+    -> {vec_bool_31_r.v31_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
   match k:
     case 0n:
     +hy = FD.nat__lt_le_trans(VRL.pos(j, 1n, x), 1n+VRL.pos(j, 1n, x), A.quad(VB.pw(d)), FD.nat__lt_succ(VRL.pos(j, 1n, x)), FD.nat__le_trans(1n+VRL.pos(j, 1n, x), VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d)), VRB.pmk(k, j, x), hb))
@@ -235,27 +245,27 @@ def Gt9DF37A5216_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U3
       +hx1 = FD.nat__lt_le_trans(VRL.pos(1n+j, 1n, x), Nat.add(VRL.pos(1n+j, 1n, x), 1n), A.quad(VB.pw(d)), VTX.ltp(VRL.pos(1n+j, 1n, x), 0n), hx)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 1n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       %Equal.sym(+List<U32>, UW.WX(t, VRL.pos(j, 1n, x), 2n+q), Con{VRB.BX(t, VRL.pos(j, 1n, x)), UW.WX(t, 1n+VRL.pos(j, 1n, x), 1n+q)}, VRB.wxc(d, t, VRL.pos(j, 1n, x), 1n+q, pf, hy)) :
-        {T.v31_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
-      %VRB.and_assoc(acc, c, R) : {T.v31_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
+        {vec_bool_31_r.v31_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
+      %VRB.and_assoc(acc, c, R) : {vec_bool_31_r.v31_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 1))), (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(1n+j, 1n, x)), 1)),
           VRB.okb(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 1)), VRL.pos(1n+j, 1n, x), ex, hd, pf, hx1)) :
-        {T.v31_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
+        {vec_bool_31_r.v31_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
       Gt9DF37A5216_ck(q, d, t, n, off, x, U32.add(i, 1), 1n+j, Bool.and(acc, c), e, VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)
 
 def Gt9DF37A5216_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 31n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v31_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 31n))) : B.Buf & Bool}:
+    -> {vec_bool_31_r.v31_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 31n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 31n), A.quad(VB.pw(d)), VTX.ltp(x, 30n), hb)
   +hk = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 31n), Nat.add(31n, x), FD.nat__add_comm(x, 31n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
-    {T.v31_bool_ck(30n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 31n))) : B.Buf & Bool}
+    {vec_bool_31_r.v31_bool_ck(30n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 31n))) : B.Buf & Bool}
   Gt9DF37A5216_ck(30n, d, t, n, off, x, 0, 0n, True{}, e, {==}, hd, pf, hk)
 
 def Gt9DF37A5216_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 31n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.v31_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 31n)))) : B.Buf & Bool}:
+    -> {vec_bool_31_r.v31_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 31n)))) : B.Buf & Bool}:
   match b:
     case True{}: Gt9DF37A5216_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -264,7 +274,7 @@ def Gt9DF37A5216_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt9DF37A5216_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 31n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.v31_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 31), VRB.ALLB(UW.WX(t, x, 31n)))) : B.Buf & Bool}:
+    -> {vec_bool_31_r.v31_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 31), VRB.ALLB(UW.WX(t, x, 31n)))) : B.Buf & Bool}:
   Gt9DF37A5216_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 31))
 
 def Gt9DF37A5216_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 31n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.Gt9DF37A5216(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
@@ -281,7 +291,7 @@ def Gt9DF37A5216_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt57090094FA_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +i: U32, +j: Nat, +acc: Bool,
     +e: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v3_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
+    -> {vec_bool_3_r.v3_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
   match k:
     case 0n:
     +hy = FD.nat__lt_le_trans(VRL.pos(j, 1n, x), 1n+VRL.pos(j, 1n, x), A.quad(VB.pw(d)), FD.nat__lt_succ(VRL.pos(j, 1n, x)), FD.nat__le_trans(1n+VRL.pos(j, 1n, x), VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d)), VRB.pmk(k, j, x), hb))
@@ -299,27 +309,27 @@ def Gt57090094FA_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U3
       +hx1 = FD.nat__lt_le_trans(VRL.pos(1n+j, 1n, x), Nat.add(VRL.pos(1n+j, 1n, x), 1n), A.quad(VB.pw(d)), VTX.ltp(VRL.pos(1n+j, 1n, x), 0n), hx)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 1n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       %Equal.sym(+List<U32>, UW.WX(t, VRL.pos(j, 1n, x), 2n+q), Con{VRB.BX(t, VRL.pos(j, 1n, x)), UW.WX(t, 1n+VRL.pos(j, 1n, x), 1n+q)}, VRB.wxc(d, t, VRL.pos(j, 1n, x), 1n+q, pf, hy)) :
-        {T.v3_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
-      %VRB.and_assoc(acc, c, R) : {T.v3_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
+        {vec_bool_3_r.v3_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
+      %VRB.and_assoc(acc, c, R) : {vec_bool_3_r.v3_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 1))), (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(1n+j, 1n, x)), 1)),
           VRB.okb(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 1)), VRL.pos(1n+j, 1n, x), ex, hd, pf, hx1)) :
-        {T.v3_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
+        {vec_bool_3_r.v3_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
       Gt57090094FA_ck(q, d, t, n, off, x, U32.add(i, 1), 1n+j, Bool.and(acc, c), e, VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)
 
 def Gt57090094FA_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 3n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v3_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 3n))) : B.Buf & Bool}:
+    -> {vec_bool_3_r.v3_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 3n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 3n), A.quad(VB.pw(d)), VTX.ltp(x, 2n), hb)
   +hk = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 3n), Nat.add(3n, x), FD.nat__add_comm(x, 3n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
-    {T.v3_bool_ck(2n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 3n))) : B.Buf & Bool}
+    {vec_bool_3_r.v3_bool_ck(2n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 3n))) : B.Buf & Bool}
   Gt57090094FA_ck(2n, d, t, n, off, x, 0, 0n, True{}, e, {==}, hd, pf, hk)
 
 def Gt57090094FA_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 3n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.v3_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 3n)))) : B.Buf & Bool}:
+    -> {vec_bool_3_r.v3_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 3n)))) : B.Buf & Bool}:
   match b:
     case True{}: Gt57090094FA_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -328,7 +338,7 @@ def Gt57090094FA_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt57090094FA_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 3n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.v3_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 3), VRB.ALLB(UW.WX(t, x, 3n)))) : B.Buf & Bool}:
+    -> {vec_bool_3_r.v3_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 3), VRB.ALLB(UW.WX(t, x, 3n)))) : B.Buf & Bool}:
   Gt57090094FA_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 3))
 
 def Gt57090094FA_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 3n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.Gt57090094FA(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
@@ -345,7 +355,7 @@ def Gt57090094FA_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def GtC57121EA56_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +i: U32, +j: Nat, +acc: Bool,
     +e: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v4_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
+    -> {vec_bool_4_r.v4_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
   match k:
     case 0n:
     +hy = FD.nat__lt_le_trans(VRL.pos(j, 1n, x), 1n+VRL.pos(j, 1n, x), A.quad(VB.pw(d)), FD.nat__lt_succ(VRL.pos(j, 1n, x)), FD.nat__le_trans(1n+VRL.pos(j, 1n, x), VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d)), VRB.pmk(k, j, x), hb))
@@ -363,27 +373,27 @@ def GtC57121EA56_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U3
       +hx1 = FD.nat__lt_le_trans(VRL.pos(1n+j, 1n, x), Nat.add(VRL.pos(1n+j, 1n, x), 1n), A.quad(VB.pw(d)), VTX.ltp(VRL.pos(1n+j, 1n, x), 0n), hx)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 1n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       %Equal.sym(+List<U32>, UW.WX(t, VRL.pos(j, 1n, x), 2n+q), Con{VRB.BX(t, VRL.pos(j, 1n, x)), UW.WX(t, 1n+VRL.pos(j, 1n, x), 1n+q)}, VRB.wxc(d, t, VRL.pos(j, 1n, x), 1n+q, pf, hy)) :
-        {T.v4_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
-      %VRB.and_assoc(acc, c, R) : {T.v4_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
+        {vec_bool_4_r.v4_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
+      %VRB.and_assoc(acc, c, R) : {vec_bool_4_r.v4_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 1))), (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(1n+j, 1n, x)), 1)),
           VRB.okb(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 1)), VRL.pos(1n+j, 1n, x), ex, hd, pf, hx1)) :
-        {T.v4_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
+        {vec_bool_4_r.v4_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
       GtC57121EA56_ck(q, d, t, n, off, x, U32.add(i, 1), 1n+j, Bool.and(acc, c), e, VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)
 
 def GtC57121EA56_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 4n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v4_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 4n))) : B.Buf & Bool}:
+    -> {vec_bool_4_r.v4_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 4n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 4n), A.quad(VB.pw(d)), VTX.ltp(x, 3n), hb)
   +hk = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 4n), Nat.add(4n, x), FD.nat__add_comm(x, 4n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
-    {T.v4_bool_ck(3n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 4n))) : B.Buf & Bool}
+    {vec_bool_4_r.v4_bool_ck(3n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 4n))) : B.Buf & Bool}
   GtC57121EA56_ck(3n, d, t, n, off, x, 0, 0n, True{}, e, {==}, hd, pf, hk)
 
 def GtC57121EA56_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 4n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.v4_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 4n)))) : B.Buf & Bool}:
+    -> {vec_bool_4_r.v4_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 4n)))) : B.Buf & Bool}:
   match b:
     case True{}: GtC57121EA56_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -392,7 +402,7 @@ def GtC57121EA56_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def GtC57121EA56_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 4n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.v4_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 4), VRB.ALLB(UW.WX(t, x, 4n)))) : B.Buf & Bool}:
+    -> {vec_bool_4_r.v4_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 4), VRB.ALLB(UW.WX(t, x, 4n)))) : B.Buf & Bool}:
   GtC57121EA56_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 4))
 
 def GtC57121EA56_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 4n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.GtC57121EA56(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
@@ -409,7 +419,7 @@ def GtC57121EA56_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt34AE45611E_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +i: U32, +j: Nat, +acc: Bool,
     +e: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v512_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
+    -> {vec_bool_512_r.v512_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
   match k:
     case 0n:
     +hy = FD.nat__lt_le_trans(VRL.pos(j, 1n, x), 1n+VRL.pos(j, 1n, x), A.quad(VB.pw(d)), FD.nat__lt_succ(VRL.pos(j, 1n, x)), FD.nat__le_trans(1n+VRL.pos(j, 1n, x), VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d)), VRB.pmk(k, j, x), hb))
@@ -427,27 +437,27 @@ def Gt34AE45611E_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U3
       +hx1 = FD.nat__lt_le_trans(VRL.pos(1n+j, 1n, x), Nat.add(VRL.pos(1n+j, 1n, x), 1n), A.quad(VB.pw(d)), VTX.ltp(VRL.pos(1n+j, 1n, x), 0n), hx)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 1n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       %Equal.sym(+List<U32>, UW.WX(t, VRL.pos(j, 1n, x), 2n+q), Con{VRB.BX(t, VRL.pos(j, 1n, x)), UW.WX(t, 1n+VRL.pos(j, 1n, x), 1n+q)}, VRB.wxc(d, t, VRL.pos(j, 1n, x), 1n+q, pf, hy)) :
-        {T.v512_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
-      %VRB.and_assoc(acc, c, R) : {T.v512_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
+        {vec_bool_512_r.v512_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
+      %VRB.and_assoc(acc, c, R) : {vec_bool_512_r.v512_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 1))), (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(1n+j, 1n, x)), 1)),
           VRB.okb(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 1)), VRL.pos(1n+j, 1n, x), ex, hd, pf, hx1)) :
-        {T.v512_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
+        {vec_bool_512_r.v512_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
       Gt34AE45611E_ck(q, d, t, n, off, x, U32.add(i, 1), 1n+j, Bool.and(acc, c), e, VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)
 
 def Gt34AE45611E_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 512n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v512_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 512n))) : B.Buf & Bool}:
+    -> {vec_bool_512_r.v512_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 512n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 512n), A.quad(VB.pw(d)), VTX.ltp(x, 511n), hb)
   +hk = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 512n), Nat.add(512n, x), FD.nat__add_comm(x, 512n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
-    {T.v512_bool_ck(511n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 512n))) : B.Buf & Bool}
+    {vec_bool_512_r.v512_bool_ck(511n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 512n))) : B.Buf & Bool}
   Gt34AE45611E_ck(511n, d, t, n, off, x, 0, 0n, True{}, e, {==}, hd, pf, hk)
 
 def Gt34AE45611E_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 512n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.v512_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 512n)))) : B.Buf & Bool}:
+    -> {vec_bool_512_r.v512_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 512n)))) : B.Buf & Bool}:
   match b:
     case True{}: Gt34AE45611E_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -456,7 +466,7 @@ def Gt34AE45611E_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt34AE45611E_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 512n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.v512_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 512), VRB.ALLB(UW.WX(t, x, 512n)))) : B.Buf & Bool}:
+    -> {vec_bool_512_r.v512_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 512), VRB.ALLB(UW.WX(t, x, 512n)))) : B.Buf & Bool}:
   Gt34AE45611E_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 512))
 
 def Gt34AE45611E_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 512n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.Gt34AE45611E(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
@@ -473,7 +483,7 @@ def Gt34AE45611E_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def GtEB2FD43D9B_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +i: U32, +j: Nat, +acc: Bool,
     +e: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v513_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
+    -> {vec_bool_513_r.v513_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
   match k:
     case 0n:
     +hy = FD.nat__lt_le_trans(VRL.pos(j, 1n, x), 1n+VRL.pos(j, 1n, x), A.quad(VB.pw(d)), FD.nat__lt_succ(VRL.pos(j, 1n, x)), FD.nat__le_trans(1n+VRL.pos(j, 1n, x), VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d)), VRB.pmk(k, j, x), hb))
@@ -491,27 +501,27 @@ def GtEB2FD43D9B_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U3
       +hx1 = FD.nat__lt_le_trans(VRL.pos(1n+j, 1n, x), Nat.add(VRL.pos(1n+j, 1n, x), 1n), A.quad(VB.pw(d)), VTX.ltp(VRL.pos(1n+j, 1n, x), 0n), hx)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 1n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       %Equal.sym(+List<U32>, UW.WX(t, VRL.pos(j, 1n, x), 2n+q), Con{VRB.BX(t, VRL.pos(j, 1n, x)), UW.WX(t, 1n+VRL.pos(j, 1n, x), 1n+q)}, VRB.wxc(d, t, VRL.pos(j, 1n, x), 1n+q, pf, hy)) :
-        {T.v513_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
-      %VRB.and_assoc(acc, c, R) : {T.v513_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
+        {vec_bool_513_r.v513_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
+      %VRB.and_assoc(acc, c, R) : {vec_bool_513_r.v513_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 1))), (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(1n+j, 1n, x)), 1)),
           VRB.okb(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 1)), VRL.pos(1n+j, 1n, x), ex, hd, pf, hx1)) :
-        {T.v513_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
+        {vec_bool_513_r.v513_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
       GtEB2FD43D9B_ck(q, d, t, n, off, x, U32.add(i, 1), 1n+j, Bool.and(acc, c), e, VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)
 
 def GtEB2FD43D9B_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 513n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v513_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 513n))) : B.Buf & Bool}:
+    -> {vec_bool_513_r.v513_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 513n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 513n), A.quad(VB.pw(d)), VTX.ltp(x, 512n), hb)
   +hk = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 513n), Nat.add(513n, x), FD.nat__add_comm(x, 513n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
-    {T.v513_bool_ck(512n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 513n))) : B.Buf & Bool}
+    {vec_bool_513_r.v513_bool_ck(512n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 513n))) : B.Buf & Bool}
   GtEB2FD43D9B_ck(512n, d, t, n, off, x, 0, 0n, True{}, e, {==}, hd, pf, hk)
 
 def GtEB2FD43D9B_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 513n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.v513_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 513n)))) : B.Buf & Bool}:
+    -> {vec_bool_513_r.v513_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 513n)))) : B.Buf & Bool}:
   match b:
     case True{}: GtEB2FD43D9B_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -520,7 +530,7 @@ def GtEB2FD43D9B_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def GtEB2FD43D9B_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 513n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.v513_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 513), VRB.ALLB(UW.WX(t, x, 513n)))) : B.Buf & Bool}:
+    -> {vec_bool_513_r.v513_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 513), VRB.ALLB(UW.WX(t, x, 513n)))) : B.Buf & Bool}:
   GtEB2FD43D9B_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 513))
 
 def GtEB2FD43D9B_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 513n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.GtEB2FD43D9B(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
@@ -537,7 +547,7 @@ def GtEB2FD43D9B_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt7FBB1934E8_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +i: U32, +j: Nat, +acc: Bool,
     +e: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v5_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
+    -> {vec_bool_5_r.v5_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
   match k:
     case 0n:
     +hy = FD.nat__lt_le_trans(VRL.pos(j, 1n, x), 1n+VRL.pos(j, 1n, x), A.quad(VB.pw(d)), FD.nat__lt_succ(VRL.pos(j, 1n, x)), FD.nat__le_trans(1n+VRL.pos(j, 1n, x), VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d)), VRB.pmk(k, j, x), hb))
@@ -555,27 +565,27 @@ def Gt7FBB1934E8_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U3
       +hx1 = FD.nat__lt_le_trans(VRL.pos(1n+j, 1n, x), Nat.add(VRL.pos(1n+j, 1n, x), 1n), A.quad(VB.pw(d)), VTX.ltp(VRL.pos(1n+j, 1n, x), 0n), hx)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 1n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       %Equal.sym(+List<U32>, UW.WX(t, VRL.pos(j, 1n, x), 2n+q), Con{VRB.BX(t, VRL.pos(j, 1n, x)), UW.WX(t, 1n+VRL.pos(j, 1n, x), 1n+q)}, VRB.wxc(d, t, VRL.pos(j, 1n, x), 1n+q, pf, hy)) :
-        {T.v5_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
-      %VRB.and_assoc(acc, c, R) : {T.v5_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
+        {vec_bool_5_r.v5_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
+      %VRB.and_assoc(acc, c, R) : {vec_bool_5_r.v5_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 1))), (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(1n+j, 1n, x)), 1)),
           VRB.okb(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 1)), VRL.pos(1n+j, 1n, x), ex, hd, pf, hx1)) :
-        {T.v5_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
+        {vec_bool_5_r.v5_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
       Gt7FBB1934E8_ck(q, d, t, n, off, x, U32.add(i, 1), 1n+j, Bool.and(acc, c), e, VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)
 
 def Gt7FBB1934E8_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 5n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v5_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 5n))) : B.Buf & Bool}:
+    -> {vec_bool_5_r.v5_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 5n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 5n), A.quad(VB.pw(d)), VTX.ltp(x, 4n), hb)
   +hk = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 5n), Nat.add(5n, x), FD.nat__add_comm(x, 5n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
-    {T.v5_bool_ck(4n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 5n))) : B.Buf & Bool}
+    {vec_bool_5_r.v5_bool_ck(4n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 5n))) : B.Buf & Bool}
   Gt7FBB1934E8_ck(4n, d, t, n, off, x, 0, 0n, True{}, e, {==}, hd, pf, hk)
 
 def Gt7FBB1934E8_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 5n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.v5_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 5n)))) : B.Buf & Bool}:
+    -> {vec_bool_5_r.v5_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 5n)))) : B.Buf & Bool}:
   match b:
     case True{}: Gt7FBB1934E8_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -584,7 +594,7 @@ def Gt7FBB1934E8_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt7FBB1934E8_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 5n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.v5_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 5), VRB.ALLB(UW.WX(t, x, 5n)))) : B.Buf & Bool}:
+    -> {vec_bool_5_r.v5_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 5), VRB.ALLB(UW.WX(t, x, 5n)))) : B.Buf & Bool}:
   Gt7FBB1934E8_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 5))
 
 def Gt7FBB1934E8_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 5n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.Gt7FBB1934E8(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
@@ -601,7 +611,7 @@ def Gt7FBB1934E8_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt526892A4DC_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +i: U32, +j: Nat, +acc: Bool,
     +e: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v8_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
+    -> {vec_bool_8_r.v8_bool_ck(k, i, off, acc, (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
   match k:
     case 0n:
     +hy = FD.nat__lt_le_trans(VRL.pos(j, 1n, x), 1n+VRL.pos(j, 1n, x), A.quad(VB.pw(d)), FD.nat__lt_succ(VRL.pos(j, 1n, x)), FD.nat__le_trans(1n+VRL.pos(j, 1n, x), VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d)), VRB.pmk(k, j, x), hb))
@@ -619,27 +629,27 @@ def Gt526892A4DC_ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U3
       +hx1 = FD.nat__lt_le_trans(VRL.pos(1n+j, 1n, x), Nat.add(VRL.pos(1n+j, 1n, x), 1n), A.quad(VB.pw(d)), VTX.ltp(VRL.pos(1n+j, 1n, x), 0n), hx)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 1n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       %Equal.sym(+List<U32>, UW.WX(t, VRL.pos(j, 1n, x), 2n+q), Con{VRB.BX(t, VRL.pos(j, 1n, x)), UW.WX(t, 1n+VRL.pos(j, 1n, x), 1n+q)}, VRB.wxc(d, t, VRL.pos(j, 1n, x), 1n+q, pf, hy)) :
-        {T.v8_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
-      %VRB.and_assoc(acc, c, R) : {T.v8_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
+        {vec_bool_8_r.v8_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
+      %VRB.and_assoc(acc, c, R) : {vec_bool_8_r.v8_bool_ck(1n+q, i, off, acc, (UA.BF(t, n), c)) == (UA.BF(t, n), _) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 1))), (UA.BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(1n+j, 1n, x)), 1)),
           VRB.okb(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 1)), VRL.pos(1n+j, 1n, x), ex, hd, pf, hx1)) :
-        {T.v8_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
+        {vec_bool_8_r.v8_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (UA.BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
       Gt526892A4DC_ck(q, d, t, n, off, x, U32.add(i, 1), 1n+j, Bool.and(acc, c), e, VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)
 
 def Gt526892A4DC_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 8n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v8_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 8n))) : B.Buf & Bool}:
+    -> {vec_bool_8_r.v8_bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 8n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 8n), A.quad(VB.pw(d)), VTX.ltp(x, 7n), hb)
   +hk = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 8n), Nat.add(8n, x), FD.nat__add_comm(x, 8n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
-    {T.v8_bool_ck(7n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 8n))) : B.Buf & Bool}
+    {vec_bool_8_r.v8_bool_ck(7n, 0, off, True{}, _) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 8n))) : B.Buf & Bool}
   Gt526892A4DC_ck(7n, d, t, n, off, x, 0, 0n, True{}, e, {==}, hd, pf, hk)
 
 def Gt526892A4DC_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 8n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.v8_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 8n)))) : B.Buf & Bool}:
+    -> {vec_bool_8_r.v8_bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 8n)))) : B.Buf & Bool}:
   match b:
     case True{}: Gt526892A4DC_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -648,7 +658,7 @@ def Gt526892A4DC_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt526892A4DC_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 8n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.v8_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 8), VRB.ALLB(UW.WX(t, x, 8n)))) : B.Buf & Bool}:
+    -> {vec_bool_8_r.v8_bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 8), VRB.ALLB(UW.WX(t, x, 8n)))) : B.Buf & Bool}:
   Gt526892A4DC_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 8))
 
 def Gt526892A4DC_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 8n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.Gt526892A4DC(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:
@@ -664,7 +674,7 @@ def Gt526892A4DC_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def GtAD72FD256A_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}:
+    -> {boolean_r.bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 1n), A.quad(VB.pw(d)), VTX.ltp(x, 0n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
     {_ == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}
@@ -677,7 +687,7 @@ def GtAD72FD256A_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def GtAD72FD256A_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
+    -> {boolean_r.bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
   match b:
     case True{}: GtAD72FD256A_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -686,7 +696,7 @@ def GtAD72FD256A_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def GtAD72FD256A_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
+    -> {boolean_r.bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
   GtAD72FD256A_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 def GtAD72FD256A_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 1n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.GtAD72FD256A(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:

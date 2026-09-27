@@ -1,6 +1,7 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
+import ../../types/Fulu_bitvector_64_encode_ssz_generated.bend as Fulu_bitvector_64_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -18,7 +19,7 @@ def putu_bv64(+dd: Nat, +U: FD.array__Tree<U32>, +pos: U32, +i: Nat, +w0: U32, +
     +e: {U32.to_nat(pos) == Nat.add(A.quad(i), 3n) : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +hl: {Nat.is_lt(Nat.add(2n, i), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, U) == True{} : Bool},
     +hz: {VS.bt(8n, VS.bdr(Nat.add(A.quad(i), 3n), UA.BYT(U))) == UW.ZB(8n) : +List<U32>})
-    -> {T.bv64_put(FD.array__thaw(U32, U), pos, T.Bitvector64{w0, w1}) == FD.array__thaw(U32, UW.SWc(3, [w0, w1], dd, U, i, 0)) : Array<U32>}:
+    -> {Fulu_bitvector_64_e.bv64_put(FD.array__thaw(U32, U), pos, Fulu_bitvector_64_d.Bitvector64{w0, w1}) == FD.array__thaw(U32, UW.SWc(3, [w0, w1], dd, U, i, 0)) : Array<U32>}:
   +e3 = UW.ua_3(pos, i, 3n, 3, {==}, e, {==})
   +eq = UW.ua_q(pos, i, 3n, e, {==})
   +hd32 = FD.nat__lt_trans(dd, 31n, 32n, hd, {==})
@@ -50,8 +51,8 @@ def putu_bv64(+dd: Nat, +U: FD.array__Tree<U32>, +pos: U32, +i: Nat, +w0: U32, +
   +eqN = FD.logic__subst(Nat, z => {U32.to_nat(U32.add(U32.shrn(pos, 2n), 2)) == z : Nat}, Nat.add(2n, i), Nat.add(List.length(&2, U32, [w1]), 1n+i), {==}, VB.add_at(U32.shrn(pos, 2n), 2, i, dd, eq, hd32, hl))
   +hlN = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dd)) == True{} : Bool}, Nat.add(2n, i), Nat.add(List.length(&2, U32, [w1]), 1n+i), {==}, hl)
   +eos = UW.orskip_rt(dd, UW.SWo(3, [w1], dd, D1, 1n+i, O.shr_over(w0, 3)), U32.add(U32.shrn(pos, 2n), 2), Nat.add(List.length(&2, U32, [w1]), 1n+i), UW.CRY(3, [w1], O.shr_over(w0, 3)), eqN, hd32, hlN, pfS)
-  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {T.bv64_pwd(U32.is_eq(_, 0), U32.and(pos, 3), FD.array__thaw(U32, U), U32.shrn(pos, 2n), w0, w1) == FD.array__thaw(U32, UW.SWc(3, [w0, w1], dd, U, i, 0)) : Array<U32>}
-  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {T.bv64_pwd(U32.is_eq(3, 0), _, FD.array__thaw(U32, U), U32.shrn(pos, 2n), w0, w1) == FD.array__thaw(U32, UW.SWc(3, [w0, w1], dd, U, i, 0)) : Array<U32>}
+  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {Fulu_bitvector_64_e.bv64_pwd(U32.is_eq(_, 0), U32.and(pos, 3), FD.array__thaw(U32, U), U32.shrn(pos, 2n), w0, w1) == FD.array__thaw(U32, UW.SWc(3, [w0, w1], dd, U, i, 0)) : Array<U32>}
+  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {Fulu_bitvector_64_e.bv64_pwd(U32.is_eq(3, 0), _, FD.array__thaw(U32, U), U32.shrn(pos, 2n), w0, w1) == FD.array__thaw(U32, UW.SWc(3, [w0, w1], dd, U, i, 0)) : Array<U32>}
   %Equal.sym(Array<U32>, O.or_word(FD.array__thaw(U32, U), U32.add(U32.shrn(pos, 2n), 0), U32.mul(w0, 16777216)), FD.array__thaw(U32, D1), UW.orw_rt(dd, U, U32.add(U32.shrn(pos, 2n), 0), i, U32.mul(w0, 16777216), eq0, hd32, hi0, pf)) :
     {O.or_skip(UW.RS2(3, [w1], [1], _, U32.shrn(pos, 2n), w0), U32.add(U32.shrn(pos, 2n), 2), U32.shrn(w1, 8n)) == FD.array__thaw(U32, UW.SWc(3, [w0, w1], dd, U, i, 0)) : Array<U32>}
   %Equal.sym(Array<U32>, UW.RS2(3, [w1], [1], FD.array__thaw(U32, D1), U32.shrn(pos, 2n), w0), FD.array__thaw(U32, UW.SWo(3, [w1], dd, D1, 1n+i, O.shr_over(w0, 3))), rs) :

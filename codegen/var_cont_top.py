@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'codegen'))
 
 import var_cont_enc as CE  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 TOPS = ['ExecutionPayload', 'BeaconBlockBody', 'BeaconState']
 SIZES = ['ExecutionPayload', 'ExecutionPayloadHeader', 'BeaconBlockBody', 'BeaconState']
@@ -902,9 +903,9 @@ def gtop_text(C):
     S = 'CI.SZ(m)'
     Dd = f'VL.DO({S})'
     # a fixed-depth encoder (the runtime's buffer is O.out_at(d), its size masked): the bytes' bound CI.maxx
-    src = (ROOT / 'types/generic_obj.bend').read_text()
-    if 'types/generic_obj.bend as T' not in txt:
-        src = (ROOT / 'types/fulu_obj.bend').read_text()
+    src = RR.mono_text('generic')
+    if RR.runtime_of(txt) != 'generic':
+        src = RR.mono_text('fulu')
     em = re.search(rf'^def {C}_encode\(o: {C}\) -> {C} & B\.Buf: {C}_enc_put\({C}_putn\(O\.out_at\((\d+)n\), 0, o\)\)$', src, re.M)
     fixd = None
     if em:
@@ -1057,7 +1058,7 @@ def eval_go_sized(+m: CI.MW, +hok: {{CI.OK(m) == {TRUE}}})
         body = body[:i0] + body[i1:]
         body = body.replace('room(m, hok, 28n, {==})', 'roomf(m, hok)')
         imps = imps + ['import ./vbenc.bend as VBE']
-    tsrc = src if 'types/generic_obj.bend as T' in txt else (ROOT / 'types/fulu_obj.bend').read_text()
+    tsrc = src if RR.runtime_of(txt) == 'generic' else RR.mono_text('fulu')
     pk = re.search(rf'^def {C}_putk\(out: Array<U32>, \+pos: U32, o: {C}\) -> .*: (.*)$', tsrc, re.M).group(1)
     if pk != f'{C}_putn(out, pos, o)':
         # a checked writer (a union: putk = pk(valid(o))): the encoder's putn is putk once the check passes (CI.validx)
@@ -1083,6 +1084,7 @@ def main():
             out.update(full_texts(C, generic=True))
         for C in GTOPS:
             out[out_file(C)] = gtop_text(C)
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale:

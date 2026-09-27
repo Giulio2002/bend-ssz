@@ -24,9 +24,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'codegen'))
 import schema as SC  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 RT_PATH = ROOT / 'proofs/obj/root_types.bend'
-TYPES = ROOT / 'types/fulu_obj.bend'
 OUT = ROOT / 'proofs/obj/prep_setters.bend'
 
 
@@ -84,7 +84,7 @@ def qual(n):
 
 
 def setters(name, nfields):
-    types = TYPES.read_text()
+    types = RR.mono_text('fulu')
     fields = [f for f, _ in SC.load(ROOT / 'codegen/fulu.yaml')[name].fields]
     assert len(fields) == nfields, (name, fields)
     out = []
@@ -144,7 +144,7 @@ def law(name, exs, args, comps):
 
 
 def build():
-    rt = RT_PATH.read_text()
+    rt = RR.unwire(RT_PATH.read_text())   # the runtime's symbols as T.<sym> (root_types imports the split files)
     imports = [l for l in rt.split('\n') if l.startswith('import')]
     imports = [l for l in imports if not l.endswith(' as RT')] + ['import ./root_types.bend as RT']
     head = imports + ['',
@@ -166,6 +166,7 @@ def build():
 
 def main():
     text, names = build()
+    text = RR.rewire(text)
     if '--check' in sys.argv:
         if not OUT.exists() or OUT.read_text() != text:
             print(f'{OUT} is stale; run codegen/rep_laws.py')
