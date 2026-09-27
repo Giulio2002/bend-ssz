@@ -432,14 +432,7 @@ def hdz(+len: U32, {HX}) -> {{Nat.is_le(DZ(len), {KZ}n) == True{{}} : Bool}}:
 def hdz31(+len: U32, {HX}) -> {{Nat.is_lt(DZ(len), 31n) == True{{}} : Bool}}:
   FD.nat__le_lt_trans(DZ(len), {KZ}n, 31n, hdz(len, hx), {{==}})
 ''')
-    w(f'def zeros_at(+du: U32, +k: Nat, +e: {{U32.to_nat(du) == k : Nat}}, +hk: {{Nat.is_le(k, {KZ}n) == True{{}} : Bool}})')
-    w('    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:')
-    w('  match k:')
-    for j in range(KZ + 1):
-        w(f'    case {j}n:')
-        w(f'      %Equal.sym(U32, du, {j}, FD.u32__injective(du, {j}, e)) : {{B.zeros(_) == Array.new(U32, {j}n, 0) : Array<U32>}}')
-        w('      {==}')
-    w(f'    case {KZ + 1}n+p: Empty.absurd({{B.zeros(du) == Array.new(U32, {KZ + 1}n+p, 0) : Array<U32>}}, FD.logic__false_true(hk))')
+    w(ZD.zeros_at_text(KZ, 'FD'))
     w(f'''
 def ez(+len: U32, {HX}) -> {{B.zeros(B.words_depth_u(VC.WZ(LL(len)))) == Array.new(U32, DZ(len), 0) : Array<U32>}}:
   zeros_at(B.words_depth_u(VC.WZ(LL(len))), DZ(len), VD.wdu(VC.WZ(LL(len))), hdz(len, hx))
@@ -1105,6 +1098,7 @@ def bytePw(+d: Nat, +t: F.array__Tree<U32>, +i: Nat, +len: U32, +X: Nat, +en: {U
 import var_bytes_enc as VBE  # noqa: E402
 import var_bytes_nest as VBN  # noqa: E402
 import var_bytes_nenc as VBNE  # noqa: E402
+import zeros_dispatch as ZD  # noqa: E402
 
 if __name__ == '__main__':
     main()
