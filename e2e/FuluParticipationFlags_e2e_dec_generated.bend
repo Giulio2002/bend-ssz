@@ -1,4 +1,7 @@
 import Base
+import ./e2e_fixd.bend as X
+import ../proofs/primitive_invariants.bend as V
+import ../proofs/word_facts.bend as WF
 import ../END_TO_END.bend as E2E
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -9,6 +12,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
+import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_bytes.bend as EY
 import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
@@ -57,6 +61,9 @@ def FuluParticipationFlags_d_asome(+bs: +List<U32>, +hd: {SP.bytes_domain(bs) ==
     %FuluParticipationFlags_d_by(bs, hd, ec) : {Encoding.encoding_for_legal_type(Spec.ParticipationFlags(), S.UnsignedValue{P.UInt{B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n)), 0, 0, 0, 0, 0, 0, 0}}) == Some{_} : Maybe<&2, +List<U32>>}
     M1.ParticipationFlags_spec_value(FD.flat__nthc(L.wlp(bs), 0n))))
 
+def FuluParticipationFlags_d_br(+bs: +List<U32>) -> {S.UnsignedValue{P.UInt{B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n)), 0, 0, 0, 0, 0, 0, 0}} == S.UnsignedValue{P.UInt{B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n)), 0, 0, 0, 0, 0, 0, 0}} : S.Value}:
+  {==}
+
 def FuluParticipationFlags_d_v(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 1n) == c : Bool}) -> {FuluParticipationFlags_mv(Pair.snd(B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(Spec.ParticipationFlags(), bs) : Maybe<&2, S.Value>}:
   match c:
     case False{}:
@@ -66,7 +73,7 @@ def FuluParticipationFlags_d_v(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U
     case True{}:
       %Equal.sym(Maybe<&1, U32>, Pair.snd(B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n))}, FuluParticipationFlags_d_some(bs, n, hn, hd, ec)) : {FuluParticipationFlags_mv(_) == API.deserialize(Spec.ParticipationFlags(), bs) : Maybe<&2, S.Value>}
       %Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.ParticipationFlags(), bs), Some{S.UnsignedValue{P.UInt{B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n)), 0, 0, 0, 0, 0, 0, 0}}}, FuluParticipationFlags_d_asome(bs, hd, ec)) : {FuluParticipationFlags_mv(Some{B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n))}) == _ : Maybe<&2, S.Value>}
-      {==}
+      Equal.cong(S.Value, Maybe<&2, S.Value>, v => Some{v}, S.UnsignedValue{P.UInt{B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n)), 0, 0, 0, 0, 0, 0, 0}}, S.UnsignedValue{P.UInt{B.byte_sel(0, FD.flat__nthc(L.wlp(bs), 0n)), 0, 0, 0, 0, 0, 0, 0}}, FuluParticipationFlags_d_br(bs))
 
 # the view of the decoder's result is END_TO_END's deserialize
 def FuluParticipationFlags_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {FuluParticipationFlags_mv(Pair.snd(B.Buf, Maybe<&1, U32>, FuluParticipationFlags_r.ParticipationFlags_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(Spec.ParticipationFlags(), bs) : Maybe<&2, S.Value>}:

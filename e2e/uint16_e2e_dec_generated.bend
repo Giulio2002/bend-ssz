@@ -1,4 +1,7 @@
 import Base
+import ./e2e_fixd.bend as X
+import ../proofs/primitive_invariants.bend as V
+import ../proofs/word_facts.bend as WF
 import ../END_TO_END.bend as E2E
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -9,6 +12,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
+import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_bytes.bend as EY
 import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
@@ -52,10 +56,13 @@ def uint16_d_some(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U3
   Equal.cong(B.Buf & Maybe<&1, U32>, Maybe<&1, U32>, q => Pair.snd(B.Buf, Maybe<&1, U32>, q), uint16_r.GtECF9BB18D8_decode(B.Buf{ALeaf{FD.flat__nthc(L.wlp(bs), 0n)}, 2}, 2), (B.Buf{ALeaf{FD.flat__nthc(L.wlp(bs), 0n)}, 2}, Some{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535)}),
     M1.GtECF9BB18D8_spec_decode(FD.flat__nthc(L.wlp(bs), 0n)))
 
-def uint16_d_asome(+bs: +List<U32>, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 2n) == True{} : Bool}) -> {API.deserialize(Spec.GtECF9BB18D8(), bs) == Some{M0.v_u16(U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535))} : Maybe<&2, S.Value>}:
-  E2E.spec_accepted(Spec.GtECF9BB18D8(), bs, M0.v_u16(U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535)), (VS.public_sound(Spec.GtECF9BB18D8(), {==}),
-    %uint16_d_by(bs, hd, ec) : {Encoding.encoding_for_legal_type(Spec.GtECF9BB18D8(), M0.v_u16(U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535))) == Some{_} : Maybe<&2, +List<U32>>}
+def uint16_d_asome(+bs: +List<U32>, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 2n) == True{} : Bool}) -> {API.deserialize(Spec.GtECF9BB18D8(), bs) == Some{S.UnsignedValue{P.UInt{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), 0, 0, 0, 0, 0, 0, 0}}} : Maybe<&2, S.Value>}:
+  E2E.spec_accepted(Spec.GtECF9BB18D8(), bs, S.UnsignedValue{P.UInt{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), 0, 0, 0, 0, 0, 0, 0}}, (VS.public_sound(Spec.GtECF9BB18D8(), {==}),
+    %uint16_d_by(bs, hd, ec) : {Encoding.encoding_for_legal_type(Spec.GtECF9BB18D8(), S.UnsignedValue{P.UInt{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), 0, 0, 0, 0, 0, 0, 0}}) == Some{_} : Maybe<&2, +List<U32>>}
     M1.GtECF9BB18D8_spec_encode(FD.flat__nthc(L.wlp(bs), 0n))))
+
+def uint16_d_br(+bs: +List<U32>) -> {M0.v_u16(U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535)) == S.UnsignedValue{P.UInt{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), 0, 0, 0, 0, 0, 0, 0}} : S.Value}:
+  {==}
 
 def uint16_d_v(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 2n) == c : Bool}) -> {uint16_mv(Pair.snd(B.Buf, Maybe<&1, U32>, uint16_r.GtECF9BB18D8_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(Spec.GtECF9BB18D8(), bs) : Maybe<&2, S.Value>}:
   match c:
@@ -65,8 +72,8 @@ def uint16_d_v(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.t
       {==}
     case True{}:
       %Equal.sym(Maybe<&1, U32>, Pair.snd(B.Buf, Maybe<&1, U32>, uint16_r.GtECF9BB18D8_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535)}, uint16_d_some(bs, n, hn, hd, ec)) : {uint16_mv(_) == API.deserialize(Spec.GtECF9BB18D8(), bs) : Maybe<&2, S.Value>}
-      %Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.GtECF9BB18D8(), bs), Some{M0.v_u16(U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535))}, uint16_d_asome(bs, hd, ec)) : {uint16_mv(Some{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535)}) == _ : Maybe<&2, S.Value>}
-      {==}
+      %Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.GtECF9BB18D8(), bs), Some{S.UnsignedValue{P.UInt{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), 0, 0, 0, 0, 0, 0, 0}}}, uint16_d_asome(bs, hd, ec)) : {uint16_mv(Some{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535)}) == _ : Maybe<&2, S.Value>}
+      Equal.cong(S.Value, Maybe<&2, S.Value>, v => Some{v}, M0.v_u16(U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535)), S.UnsignedValue{P.UInt{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), 0, 0, 0, 0, 0, 0, 0}}, uint16_d_br(bs))
 
 # the view of the decoder's result is END_TO_END's deserialize
 def uint16_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}) -> {uint16_mv(Pair.snd(B.Buf, Maybe<&1, U32>, uint16_r.GtECF9BB18D8_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(Spec.GtECF9BB18D8(), bs) : Maybe<&2, S.Value>}:
@@ -105,7 +112,7 @@ def uint16_d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.
 def uint16_d_rb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 2n) == c : Bool}, +an: {API.deserialize(Spec.GtECF9BB18D8(), bs) == None{} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, U32>, uint16_r.GtECF9BB18D8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, U32>}:
   match c:
     case False{}: uint16_d_none(bs, n, hn, ec)
-    case True{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, U32>, uint16_r.GtECF9BB18D8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, U32>}, FD.logic__none_some(S.Value, M0.v_u16(U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535)), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.GtECF9BB18D8(), bs), Some{M0.v_u16(U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535))}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.GtECF9BB18D8(), bs), None{}, an), uint16_d_asome(bs, hd, ec))))
+    case True{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, U32>, uint16_r.GtECF9BB18D8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, U32>}, FD.logic__none_some(S.Value, S.UnsignedValue{P.UInt{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), 0, 0, 0, 0, 0, 0, 0}}, Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.GtECF9BB18D8(), bs), Some{S.UnsignedValue{P.UInt{U32.and(FD.flat__nthc(L.wlp(bs), 0n), 65535), 0, 0, 0, 0, 0, 0, 0}}}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.GtECF9BB18D8(), bs), None{}, an), uint16_d_asome(bs, hd, ec))))
 
 # (iii) the object decoder fails exactly when END_TO_END's deserialize does.
 def uint16_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
