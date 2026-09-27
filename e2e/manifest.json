@@ -1,6 +1,6 @@
 {
  "files": {
-  "e2e_dec_0_generated.bend": [
+  "FuluBytes20_e2e_dec_generated.bend": [
    {
     "name": "FuluBytes20",
     "generated_name": "Bytes20",
@@ -18,7 +18,7 @@
     ]
    }
   ],
-  "e2e_dec_1_generated.bend": [
+  "FuluBytes4_e2e_dec_generated.bend": [
    {
     "name": "FuluBytes4",
     "generated_name": "Bytes4",
@@ -36,7 +36,7 @@
     ]
    }
   ],
-  "e2e_dec_2_generated.bend": [
+  "FuluBytes8_e2e_dec_generated.bend": [
    {
     "name": "FuluBytes8",
     "generated_name": "Bytes8",
@@ -46,7 +46,7 @@
     ]
    }
   ],
-  "e2e_dec_3_generated.bend": [
+  "FuluBytes96_e2e_dec_generated.bend": [
    {
     "name": "FuluBytes96",
     "generated_name": "Bytes96",
@@ -56,7 +56,33 @@
     ]
    }
   ],
-  "e2e_dec_4_generated.bend": [
+  "FuluEpoch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluEpoch",
+    "generated_name": "Epoch",
+    "laws": [
+     "FuluEpoch_e2e_decode_accept",
+     "FuluEpoch_e2e_decode_reject"
+    ]
+   },
+   {
+    "name": "FuluGwei",
+    "generated_name": "Gwei",
+    "laws": [
+     "FuluGwei_e2e_decode_accept",
+     "FuluGwei_e2e_decode_reject"
+    ]
+   }
+  ],
+  "FuluSlot_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSlot",
+    "generated_name": "Slot",
+    "laws": [
+     "FuluSlot_e2e_decode_accept",
+     "FuluSlot_e2e_decode_reject"
+    ]
+   },
    {
     "name": "uint256",
     "generated_name": "uint256",
@@ -66,7 +92,17 @@
     ]
    }
   ],
-  "e2e_dec_5_generated.bend": [
+  "uint64_e2e_dec_generated.bend": [
+   {
+    "name": "uint64",
+    "generated_name": "uint64",
+    "laws": [
+     "uint64_e2e_decode_accept",
+     "uint64_e2e_decode_reject"
+    ]
+   }
+  ],
+  "FuluBLSSignature_e2e_dec_generated.bend": [
    {
     "name": "FuluBLSSignature",
     "generated_name": "BLSSignature",
@@ -76,7 +112,7 @@
     ]
    }
   ],
-  "e2e_dec_6_generated.bend": [
+  "FuluDomainType_e2e_dec_generated.bend": [
    {
     "name": "FuluDomainType",
     "generated_name": "DomainType",
@@ -94,7 +130,7 @@
     ]
    }
   ],
-  "e2e_dec_7_generated.bend": [
+  "FuluG1Point_e2e_dec_generated.bend": [
    {
     "name": "FuluG1Point",
     "generated_name": "G1Point",
@@ -104,7 +140,7 @@
     ]
    }
   ],
-  "e2e_dec_8_generated.bend": [
+  "FuluG2Point_e2e_dec_generated.bend": [
    {
     "name": "FuluG2Point",
     "generated_name": "G2Point",
@@ -114,7 +150,7 @@
     ]
    }
   ],
-  "e2e_dec_9_generated.bend": [
+  "FuluHash32_e2e_dec_generated.bend": [
    {
     "name": "FuluHash32",
     "generated_name": "Hash32",
@@ -124,7 +160,7 @@
     ]
    }
   ],
-  "e2e_dec_10_generated.bend": [
+  "FuluPowBlock_e2e_dec_generated.bend": [
    {
     "name": "FuluPowBlock",
     "generated_name": "PowBlock",
@@ -134,7 +170,7 @@
     ]
    }
   ],
-  "e2e_dec_11_generated.bend": [
+  "FuluSyncAggregatorSelectionData_e2e_dec_generated.bend": [
    {
     "name": "FuluSyncAggregatorSelectionData",
     "generated_name": "SyncAggregatorSelectionData",
@@ -152,7 +188,7 @@
     ]
    }
   ],
-  "e2e_dec_12_generated.bend": [
+  "FuluVersionedHash_e2e_dec_generated.bend": [
    {
     "name": "FuluVersionedHash",
     "generated_name": "VersionedHash",
@@ -162,15 +198,23 @@
     ]
    },
    {
+    "name": "FuluCommitteeIndex",
+    "generated_name": "CommitteeIndex",
+    "laws": [
+     "FuluCommitteeIndex_e2e_decode_accept",
+     "FuluCommitteeIndex_e2e_decode_reject"
+    ]
+   }
+  ],
+  "FuluHistoricalSummary_e2e_dec_generated.bend": [
+   {
     "name": "FuluHistoricalSummary",
     "generated_name": "HistoricalSummary",
     "laws": [
      "FuluHistoricalSummary_e2e_decode_accept",
      "FuluHistoricalSummary_e2e_decode_reject"
     ]
-   }
-  ],
-  "e2e_dec_13_generated.bend": [
+   },
    {
     "name": "FuluPendingConsolidation",
     "generated_name": "PendingConsolidation",
@@ -178,7 +222,9 @@
      "FuluPendingConsolidation_e2e_decode_accept",
      "FuluPendingConsolidation_e2e_decode_reject"
     ]
-   },
+   }
+  ],
+  "FuluPendingPartialWithdrawal_e2e_dec_generated.bend": [
    {
     "name": "FuluPendingPartialWithdrawal",
     "generated_name": "PendingPartialWithdrawal",
@@ -186,9 +232,7 @@
      "FuluPendingPartialWithdrawal_e2e_decode_accept",
      "FuluPendingPartialWithdrawal_e2e_decode_reject"
     ]
-   }
-  ],
-  "e2e_dec_14_generated.bend": [
+   },
    {
     "name": "FuluRoot",
     "generated_name": "Root",
@@ -198,7 +242,7 @@
     ]
    }
   ],
-  "e2e_dec_15_generated.bend": [
+  "FuluSignedVoluntaryExit_e2e_dec_generated.bend": [
    {
     "name": "FuluSignedVoluntaryExit",
     "generated_name": "SignedVoluntaryExit",
@@ -208,7 +252,7 @@
     ]
    }
   ],
-  "e2e_dec_16_generated.bend": [
+  "FuluSyncCommitteeMessage_e2e_dec_generated.bend": [
    {
     "name": "FuluSyncCommitteeMessage",
     "generated_name": "SyncCommitteeMessage",
@@ -218,7 +262,15 @@
     ]
    }
   ],
-  "e2e_dec_17_generated.bend": [
+  "FuluValidatorIndex_e2e_dec_generated.bend": [
+   {
+    "name": "FuluValidatorIndex",
+    "generated_name": "ValidatorIndex",
+    "laws": [
+     "FuluValidatorIndex_e2e_decode_accept",
+     "FuluValidatorIndex_e2e_decode_reject"
+    ]
+   },
    {
     "name": "FuluVoluntaryExit",
     "generated_name": "VoluntaryExit",
@@ -228,7 +280,7 @@
     ]
    }
   ],
-  "e2e_dec_18_generated.bend": [
+  "FuluAttestationData_e2e_dec_generated.bend": [
    {
     "name": "FuluAttestationData",
     "generated_name": "AttestationData",
@@ -238,7 +290,7 @@
     ]
    }
   ],
-  "e2e_dec_19_generated.bend": [
+  "FuluBeaconBlockHeader_e2e_dec_generated.bend": [
    {
     "name": "FuluBeaconBlockHeader",
     "generated_name": "BeaconBlockHeader",
@@ -248,7 +300,7 @@
     ]
    }
   ],
-  "e2e_dec_20_generated.bend": [
+  "FuluCheckpoint_e2e_dec_generated.bend": [
    {
     "name": "FuluCheckpoint",
     "generated_name": "Checkpoint",
@@ -266,7 +318,7 @@
     ]
    }
   ],
-  "e2e_dec_21_generated.bend": [
+  "FuluEth1Block_e2e_dec_generated.bend": [
    {
     "name": "FuluEth1Block",
     "generated_name": "Eth1Block",
@@ -276,7 +328,7 @@
     ]
    }
   ],
-  "e2e_dec_22_generated.bend": [
+  "FuluEth1Data_e2e_dec_generated.bend": [
    {
     "name": "FuluEth1Data",
     "generated_name": "Eth1Data",
@@ -286,7 +338,7 @@
     ]
    }
   ],
-  "e2e_dec_23_generated.bend": [
+  "FuluForkData_e2e_dec_generated.bend": [
    {
     "name": "FuluForkData",
     "generated_name": "ForkData",
@@ -304,7 +356,7 @@
     ]
    }
   ],
-  "e2e_dec_24_generated.bend": [
+  "FuluSignedBeaconBlockHeader_e2e_dec_generated.bend": [
    {
     "name": "FuluSignedBeaconBlockHeader",
     "generated_name": "SignedBeaconBlockHeader",
@@ -314,7 +366,7 @@
     ]
    }
   ],
-  "e2e_dec_25_generated.bend": [
+  "FuluSigningData_e2e_dec_generated.bend": [
    {
     "name": "FuluSigningData",
     "generated_name": "SigningData",
@@ -324,7 +376,7 @@
     ]
    }
   ],
-  "e2e_dec_26_generated.bend": [
+  "FuluSingleAttestation_e2e_dec_generated.bend": [
    {
     "name": "FuluSingleAttestation",
     "generated_name": "SingleAttestation",
@@ -334,7 +386,7 @@
     ]
    }
   ],
-  "e2e_dec_27_generated.bend": [
+  "FuluBLSPubkey_e2e_dec_generated.bend": [
    {
     "name": "FuluBLSPubkey",
     "generated_name": "BLSPubkey",
@@ -344,7 +396,7 @@
     ]
    }
   ],
-  "e2e_dec_28_generated.bend": [
+  "FuluDepositData_e2e_dec_generated.bend": [
    {
     "name": "FuluDepositData",
     "generated_name": "DepositData",
@@ -354,7 +406,7 @@
     ]
    }
   ],
-  "e2e_dec_29_generated.bend": [
+  "FuluDepositMessage_e2e_dec_generated.bend": [
    {
     "name": "FuluDepositMessage",
     "generated_name": "DepositMessage",
@@ -364,7 +416,7 @@
     ]
    }
   ],
-  "e2e_dec_30_generated.bend": [
+  "FuluDepositRequest_e2e_dec_generated.bend": [
    {
     "name": "FuluDepositRequest",
     "generated_name": "DepositRequest",
@@ -374,7 +426,15 @@
     ]
    }
   ],
-  "e2e_dec_31_generated.bend": [
+  "FuluEther_e2e_dec_generated.bend": [
+   {
+    "name": "FuluEther",
+    "generated_name": "Ether",
+    "laws": [
+     "FuluEther_e2e_decode_accept",
+     "FuluEther_e2e_decode_reject"
+    ]
+   },
    {
     "name": "FuluExecutionAddress",
     "generated_name": "ExecutionAddress",
@@ -382,7 +442,9 @@
      "FuluExecutionAddress_e2e_decode_accept",
      "FuluExecutionAddress_e2e_decode_reject"
     ]
-   },
+   }
+  ],
+  "FuluNodeID_e2e_dec_generated.bend": [
    {
     "name": "FuluNodeID",
     "generated_name": "NodeID",
@@ -392,7 +454,7 @@
     ]
    }
   ],
-  "e2e_dec_32_generated.bend": [
+  "FuluPendingDeposit_e2e_dec_generated.bend": [
    {
     "name": "FuluPendingDeposit",
     "generated_name": "PendingDeposit",
@@ -402,7 +464,15 @@
     ]
    }
   ],
-  "e2e_dec_33_generated.bend": [
+  "FuluSubnetID_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSubnetID",
+    "generated_name": "SubnetID",
+    "laws": [
+     "FuluSubnetID_e2e_decode_accept",
+     "FuluSubnetID_e2e_decode_reject"
+    ]
+   },
    {
     "name": "FuluBLSToExecutionChange",
     "generated_name": "BLSToExecutionChange",
@@ -412,7 +482,7 @@
     ]
    }
   ],
-  "e2e_dec_34_generated.bend": [
+  "FuluBlobIdentifier_e2e_dec_generated.bend": [
    {
     "name": "FuluBlobIdentifier",
     "generated_name": "BlobIdentifier",
@@ -420,9 +490,17 @@
      "FuluBlobIdentifier_e2e_decode_accept",
      "FuluBlobIdentifier_e2e_decode_reject"
     ]
+   },
+   {
+    "name": "FuluBlobIndex",
+    "generated_name": "BlobIndex",
+    "laws": [
+     "FuluBlobIndex_e2e_decode_accept",
+     "FuluBlobIndex_e2e_decode_reject"
+    ]
    }
   ],
-  "e2e_dec_35_generated.bend": [
+  "FuluConsolidationRequest_e2e_dec_generated.bend": [
    {
     "name": "FuluConsolidationRequest",
     "generated_name": "ConsolidationRequest",
@@ -432,7 +510,7 @@
     ]
    }
   ],
-  "e2e_dec_36_generated.bend": [
+  "FuluKZGCommitment_e2e_dec_generated.bend": [
    {
     "name": "FuluKZGCommitment",
     "generated_name": "KZGCommitment",
@@ -450,7 +528,7 @@
     ]
    }
   ],
-  "e2e_dec_37_generated.bend": [
+  "FuluPayloadId_e2e_dec_generated.bend": [
    {
     "name": "FuluPayloadId",
     "generated_name": "PayloadId",
@@ -460,7 +538,7 @@
     ]
    }
   ],
-  "e2e_dec_38_generated.bend": [
+  "FuluSignedBLSToExecutionChange_e2e_dec_generated.bend": [
    {
     "name": "FuluSignedBLSToExecutionChange",
     "generated_name": "SignedBLSToExecutionChange",
@@ -470,7 +548,7 @@
     ]
    }
   ],
-  "e2e_dec_39_generated.bend": [
+  "FuluWithdrawal_e2e_dec_generated.bend": [
    {
     "name": "FuluWithdrawal",
     "generated_name": "Withdrawal",
@@ -478,9 +556,17 @@
      "FuluWithdrawal_e2e_decode_accept",
      "FuluWithdrawal_e2e_decode_reject"
     ]
+   },
+   {
+    "name": "FuluWithdrawalIndex",
+    "generated_name": "WithdrawalIndex",
+    "laws": [
+     "FuluWithdrawalIndex_e2e_decode_accept",
+     "FuluWithdrawalIndex_e2e_decode_reject"
+    ]
    }
   ],
-  "e2e_dec_40_generated.bend": [
+  "FuluWithdrawalRequest_e2e_dec_generated.bend": [
    {
     "name": "FuluWithdrawalRequest",
     "generated_name": "WithdrawalRequest",
@@ -488,9 +574,53 @@
      "FuluWithdrawalRequest_e2e_decode_accept",
      "FuluWithdrawalRequest_e2e_decode_reject"
     ]
+   },
+   {
+    "name": "FuluCellIndex",
+    "generated_name": "CellIndex",
+    "laws": [
+     "FuluCellIndex_e2e_decode_accept",
+     "FuluCellIndex_e2e_decode_reject"
+    ]
    }
   ],
-  "e2e_0_generated.bend": [
+  "FuluColumnIndex_e2e_dec_generated.bend": [
+   {
+    "name": "FuluColumnIndex",
+    "generated_name": "ColumnIndex",
+    "laws": [
+     "FuluColumnIndex_e2e_decode_accept",
+     "FuluColumnIndex_e2e_decode_reject"
+    ]
+   },
+   {
+    "name": "FuluCommitmentIndex",
+    "generated_name": "CommitmentIndex",
+    "laws": [
+     "FuluCommitmentIndex_e2e_decode_accept",
+     "FuluCommitmentIndex_e2e_decode_reject"
+    ]
+   }
+  ],
+  "FuluCustodyIndex_e2e_dec_generated.bend": [
+   {
+    "name": "FuluCustodyIndex",
+    "generated_name": "CustodyIndex",
+    "laws": [
+     "FuluCustodyIndex_e2e_decode_accept",
+     "FuluCustodyIndex_e2e_decode_reject"
+    ]
+   },
+   {
+    "name": "FuluRowIndex",
+    "generated_name": "RowIndex",
+    "laws": [
+     "FuluRowIndex_e2e_decode_accept",
+     "FuluRowIndex_e2e_decode_reject"
+    ]
+   }
+  ],
+  "FuluBytes20_e2e_generated.bend": [
    {
     "name": "FuluBytes20",
     "generated_name": "Bytes20",
@@ -516,7 +646,7 @@
     ]
    }
   ],
-  "e2e_1_generated.bend": [
+  "FuluBytes48_e2e_generated.bend": [
    {
     "name": "FuluBytes48",
     "generated_name": "Bytes48",
@@ -542,7 +672,33 @@
     ]
    }
   ],
-  "e2e_2_generated.bend": [
+  "FuluEpoch_e2e_generated.bend": [
+   {
+    "name": "FuluEpoch",
+    "generated_name": "Epoch",
+    "laws": [
+     "FuluEpoch_e2e_encode",
+     "FuluEpoch_e2e_root"
+    ]
+   },
+   {
+    "name": "FuluGwei",
+    "generated_name": "Gwei",
+    "laws": [
+     "FuluGwei_e2e_encode",
+     "FuluGwei_e2e_root"
+    ]
+   },
+   {
+    "name": "FuluSlot",
+    "generated_name": "Slot",
+    "laws": [
+     "FuluSlot_e2e_encode",
+     "FuluSlot_e2e_root"
+    ]
+   }
+  ],
+  "uint256_e2e_generated.bend": [
    {
     "name": "uint256",
     "generated_name": "uint256",
@@ -550,9 +706,17 @@
      "uint256_e2e_encode",
      "uint256_e2e_root"
     ]
+   },
+   {
+    "name": "uint64",
+    "generated_name": "uint64",
+    "laws": [
+     "uint64_e2e_encode",
+     "uint64_e2e_root"
+    ]
    }
   ],
-  "e2e_3_generated.bend": [
+  "FuluBLSSignature_e2e_generated.bend": [
    {
     "name": "FuluBLSSignature",
     "generated_name": "BLSSignature",
@@ -578,7 +742,7 @@
     ]
    }
   ],
-  "e2e_4_generated.bend": [
+  "FuluG1Point_e2e_generated.bend": [
    {
     "name": "FuluG1Point",
     "generated_name": "G1Point",
@@ -604,7 +768,7 @@
     ]
    }
   ],
-  "e2e_5_generated.bend": [
+  "FuluPowBlock_e2e_generated.bend": [
    {
     "name": "FuluPowBlock",
     "generated_name": "PowBlock",
@@ -630,7 +794,7 @@
     ]
    }
   ],
-  "e2e_6_generated.bend": [
+  "FuluVersionedHash_e2e_generated.bend": [
    {
     "name": "FuluVersionedHash",
     "generated_name": "VersionedHash",
@@ -640,7 +804,15 @@
     ]
    }
   ],
-  "e2e_7_generated.bend": [
+  "FuluCommitteeIndex_e2e_generated.bend": [
+   {
+    "name": "FuluCommitteeIndex",
+    "generated_name": "CommitteeIndex",
+    "laws": [
+     "FuluCommitteeIndex_e2e_encode",
+     "FuluCommitteeIndex_e2e_root"
+    ]
+   },
    {
     "name": "FuluHistoricalSummary",
     "generated_name": "HistoricalSummary",
@@ -656,7 +828,9 @@
      "FuluPendingConsolidation_e2e_encode",
      "FuluPendingConsolidation_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluPendingPartialWithdrawal_e2e_generated.bend": [
    {
     "name": "FuluPendingPartialWithdrawal",
     "generated_name": "PendingPartialWithdrawal",
@@ -664,9 +838,7 @@
      "FuluPendingPartialWithdrawal_e2e_encode",
      "FuluPendingPartialWithdrawal_e2e_root"
     ]
-   }
-  ],
-  "e2e_8_generated.bend": [
+   },
    {
     "name": "FuluRoot",
     "generated_name": "Root",
@@ -682,7 +854,9 @@
      "FuluSignedVoluntaryExit_e2e_encode",
      "FuluSignedVoluntaryExit_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluSyncCommitteeMessage_e2e_generated.bend": [
    {
     "name": "FuluSyncCommitteeMessage",
     "generated_name": "SyncCommitteeMessage",
@@ -690,9 +864,15 @@
      "FuluSyncCommitteeMessage_e2e_encode",
      "FuluSyncCommitteeMessage_e2e_root"
     ]
-   }
-  ],
-  "e2e_9_generated.bend": [
+   },
+   {
+    "name": "FuluValidatorIndex",
+    "generated_name": "ValidatorIndex",
+    "laws": [
+     "FuluValidatorIndex_e2e_encode",
+     "FuluValidatorIndex_e2e_root"
+    ]
+   },
    {
     "name": "FuluVoluntaryExit",
     "generated_name": "VoluntaryExit",
@@ -702,7 +882,7 @@
     ]
    }
   ],
-  "e2e_10_generated.bend": [
+  "FuluAttestationData_e2e_generated.bend": [
    {
     "name": "FuluAttestationData",
     "generated_name": "AttestationData",
@@ -728,7 +908,7 @@
     ]
    }
   ],
-  "e2e_11_generated.bend": [
+  "FuluDomain_e2e_generated.bend": [
    {
     "name": "FuluDomain",
     "generated_name": "Domain",
@@ -754,7 +934,7 @@
     ]
    }
   ],
-  "e2e_12_generated.bend": [
+  "FuluForkData_e2e_generated.bend": [
    {
     "name": "FuluForkData",
     "generated_name": "ForkData",
@@ -780,7 +960,7 @@
     ]
    }
   ],
-  "e2e_13_generated.bend": [
+  "FuluSigningData_e2e_generated.bend": [
    {
     "name": "FuluSigningData",
     "generated_name": "SigningData",
@@ -798,7 +978,7 @@
     ]
    }
   ],
-  "e2e_14_generated.bend": [
+  "FuluBLSPubkey_e2e_generated.bend": [
    {
     "name": "FuluBLSPubkey",
     "generated_name": "BLSPubkey",
@@ -824,7 +1004,7 @@
     ]
    }
   ],
-  "e2e_15_generated.bend": [
+  "FuluDepositRequest_e2e_generated.bend": [
    {
     "name": "FuluDepositRequest",
     "generated_name": "DepositRequest",
@@ -834,13 +1014,23 @@
     ]
    },
    {
+    "name": "FuluEther",
+    "generated_name": "Ether",
+    "laws": [
+     "FuluEther_e2e_encode",
+     "FuluEther_e2e_root"
+    ]
+   },
+   {
     "name": "FuluExecutionAddress",
     "generated_name": "ExecutionAddress",
     "laws": [
      "FuluExecutionAddress_e2e_encode",
      "FuluExecutionAddress_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluNodeID_e2e_generated.bend": [
    {
     "name": "FuluNodeID",
     "generated_name": "NodeID",
@@ -848,9 +1038,7 @@
      "FuluNodeID_e2e_encode",
      "FuluNodeID_e2e_root"
     ]
-   }
-  ],
-  "e2e_16_generated.bend": [
+   },
    {
     "name": "FuluPendingDeposit",
     "generated_name": "PendingDeposit",
@@ -858,9 +1046,17 @@
      "FuluPendingDeposit_e2e_encode",
      "FuluPendingDeposit_e2e_root"
     ]
+   },
+   {
+    "name": "FuluSubnetID",
+    "generated_name": "SubnetID",
+    "laws": [
+     "FuluSubnetID_e2e_encode",
+     "FuluSubnetID_e2e_root"
+    ]
    }
   ],
-  "e2e_17_generated.bend": [
+  "FuluBLSToExecutionChange_e2e_generated.bend": [
    {
     "name": "FuluBLSToExecutionChange",
     "generated_name": "BLSToExecutionChange",
@@ -878,15 +1074,23 @@
     ]
    },
    {
+    "name": "FuluBlobIndex",
+    "generated_name": "BlobIndex",
+    "laws": [
+     "FuluBlobIndex_e2e_encode",
+     "FuluBlobIndex_e2e_root"
+    ]
+   }
+  ],
+  "FuluConsolidationRequest_e2e_generated.bend": [
+   {
     "name": "FuluConsolidationRequest",
     "generated_name": "ConsolidationRequest",
     "laws": [
      "FuluConsolidationRequest_e2e_encode",
      "FuluConsolidationRequest_e2e_root"
     ]
-   }
-  ],
-  "e2e_18_generated.bend": [
+   },
    {
     "name": "FuluKZGCommitment",
     "generated_name": "KZGCommitment",
@@ -902,7 +1106,9 @@
      "FuluKZGProof_e2e_encode",
      "FuluKZGProof_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluPayloadId_e2e_generated.bend": [
    {
     "name": "FuluPayloadId",
     "generated_name": "PayloadId",
@@ -910,9 +1116,7 @@
      "FuluPayloadId_e2e_encode",
      "FuluPayloadId_e2e_root"
     ]
-   }
-  ],
-  "e2e_19_generated.bend": [
+   },
    {
     "name": "FuluSignedBLSToExecutionChange",
     "generated_name": "SignedBLSToExecutionChange",
@@ -928,6 +1132,16 @@
      "FuluWithdrawal_e2e_encode",
      "FuluWithdrawal_e2e_root"
     ]
+   }
+  ],
+  "FuluWithdrawalIndex_e2e_generated.bend": [
+   {
+    "name": "FuluWithdrawalIndex",
+    "generated_name": "WithdrawalIndex",
+    "laws": [
+     "FuluWithdrawalIndex_e2e_encode",
+     "FuluWithdrawalIndex_e2e_root"
+    ]
    },
    {
     "name": "FuluWithdrawalRequest",
@@ -938,7 +1152,51 @@
     ]
    }
   ],
-  "e2e_20_generated.bend": [
+  "FuluCellIndex_e2e_generated.bend": [
+   {
+    "name": "FuluCellIndex",
+    "generated_name": "CellIndex",
+    "laws": [
+     "FuluCellIndex_e2e_encode",
+     "FuluCellIndex_e2e_root"
+    ]
+   },
+   {
+    "name": "FuluColumnIndex",
+    "generated_name": "ColumnIndex",
+    "laws": [
+     "FuluColumnIndex_e2e_encode",
+     "FuluColumnIndex_e2e_root"
+    ]
+   },
+   {
+    "name": "FuluCommitmentIndex",
+    "generated_name": "CommitmentIndex",
+    "laws": [
+     "FuluCommitmentIndex_e2e_encode",
+     "FuluCommitmentIndex_e2e_root"
+    ]
+   }
+  ],
+  "FuluCustodyIndex_e2e_generated.bend": [
+   {
+    "name": "FuluCustodyIndex",
+    "generated_name": "CustodyIndex",
+    "laws": [
+     "FuluCustodyIndex_e2e_encode",
+     "FuluCustodyIndex_e2e_root"
+    ]
+   },
+   {
+    "name": "FuluRowIndex",
+    "generated_name": "RowIndex",
+    "laws": [
+     "FuluRowIndex_e2e_encode",
+     "FuluRowIndex_e2e_root"
+    ]
+   }
+  ],
+  "FuluValidator_e2e_generated.bend": [
    {
     "name": "FuluValidator",
     "generated_name": "Validator",
@@ -962,24 +1220,8 @@
    "generated_name": "Gt7B8507E2C2",
    "reason": "root law not over every object (hypotheses or a representation)"
   },
-  "uint64": {
-   "generated_name": "Gt62B0093BE7",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
   "FuluBytes1": {
    "generated_name": "Bytes1",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
-  "FuluSlot": {
-   "generated_name": "Slot",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
-  "FuluEpoch": {
-   "generated_name": "Epoch",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
-  "FuluGwei": {
-   "generated_name": "Gwei",
    "reason": "root law not over every object (hypotheses or a representation)"
   },
   "FuluFinalityBranch": {
@@ -989,14 +1231,6 @@
   "FuluSyncAggregate": {
    "generated_name": "SyncAggregate",
    "reason": "root view (wbits of the words) differs from encode_spec value (bitsof): needs a view lemma"
-  },
-  "FuluCommitteeIndex": {
-   "generated_name": "CommitteeIndex",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
-  "FuluValidatorIndex": {
-   "generated_name": "ValidatorIndex",
-   "reason": "root law not over every object (hypotheses or a representation)"
   },
   "FuluSyncCommitteeContribution": {
    "generated_name": "SyncCommitteeContribution",
@@ -1050,14 +1284,6 @@
    "generated_name": "Deposit",
    "reason": "encode laws not over the same free words / bits"
   },
-  "FuluSubnetID": {
-   "generated_name": "SubnetID",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
-  "FuluEther": {
-   "generated_name": "Ether",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
   "FuluParticipationFlags": {
    "generated_name": "ParticipationFlags",
    "reason": "root law not over every object (hypotheses or a representation)"
@@ -1081,10 +1307,6 @@
   "FuluExecutionPayloadHeader": {
    "generated_name": "ExecutionPayloadHeader",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluWithdrawalIndex": {
-   "generated_name": "WithdrawalIndex",
-   "reason": "root law not over every object (hypotheses or a representation)"
   },
   "FuluExecutionPayload": {
    "generated_name": "ExecutionPayload",
@@ -1118,10 +1340,6 @@
    "generated_name": "LightClientBootstrap",
    "reason": "encode laws not over the same free words / bits"
   },
-  "FuluBlobIndex": {
-   "generated_name": "BlobIndex",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",
    "reason": "encode laws not over the same free words / bits"
@@ -1146,22 +1364,6 @@
    "generated_name": "Cell",
    "reason": "encode laws not over the same free words / bits"
   },
-  "FuluCellIndex": {
-   "generated_name": "CellIndex",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
-  "FuluCommitmentIndex": {
-   "generated_name": "CommitmentIndex",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
-  "FuluRowIndex": {
-   "generated_name": "RowIndex",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
-  "FuluColumnIndex": {
-   "generated_name": "ColumnIndex",
-   "reason": "root law not over every object (hypotheses or a representation)"
-  },
   "FuluDataColumnsByRootIdentifier": {
    "generated_name": "DataColumnsByRootIdentifier",
    "reason": "encode laws not over the same free words / bits"
@@ -1173,10 +1375,6 @@
   "FuluDataColumnSidecar": {
    "generated_name": "DataColumnSidecar",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluCustodyIndex": {
-   "generated_name": "CustodyIndex",
-   "reason": "root law not over every object (hypotheses or a representation)"
   },
   "ProgressiveSingleListContainerTestStruct": {
    "generated_name": "Gp4B0CA2906A",
@@ -1704,6 +1902,10 @@
   },
   "uint256": {
    "generated_name": "Gt59DCDB2873",
+   "reason": "no structural-validity lemma for the view"
+  },
+  "uint64": {
+   "generated_name": "Gt62B0093BE7",
    "reason": "no structural-validity lemma for the view"
   }
  },

@@ -41,8 +41,8 @@ Families (the forms of the name's laws), and what is written for each:
      (i) and (iv).
 Every other name is listed in e2e/manifest.json with the reason it is not covered yet.
 
-Files: e2e/e2e_<k>_generated.bend ((i) and (iv)) and e2e/e2e_dec_<k>_generated.bend ((ii) and
-(iii)), each a batch of names sharing proving modules (a module at the
+Files: e2e/<Name>_e2e_generated.bend ((i) and (iv)) and e2e/<Name>_e2e_dec_generated.bend ((ii)
+and (iii)), each a batch named after its first name of names sharing proving modules (a module at the
 top level, one directory down, so END_TO_END's imports and the proving modules' resolve
 together), and e2e/manifest.json. Batches keep each file's check within 60 s / 8 GB.
 """
@@ -514,7 +514,7 @@ def family_a(X, m, cache, valid_idx):
         return None, 'encode_spec bytes differ from encode_eval bytes'
     rp = pvars(b_rt[2]) if all(not p.startswith('-') or p.startswith('-h') for p in b_rt[2]) else None
     rparams = [p.strip() for p in b_rt[2]]
-    if len(rparams) != 2 or not rparams[0].startswith('-h: B.Buf') or not rparams[1].startswith('+o: T.'):
+    if len(rparams) != 2 or not rparams[0].startswith('-h: B.Buf') or not re.match(r'\+o: (T|O)\.\w+$', rparams[1]):
         return None, 'root law not over every object (hypotheses or a representation)'
     otype = rparams[1][len('+o: '):]
     mr = re.match(r'RR\.roots\((\w+)\(o\), Spec\.' + sname + r'\(\), \[D\.bytes\(Pair\.snd\(B\.Buf, D\.Digest, T\.' + ename + r'_hash_tree_root\(h, o\)\)\)\]\)$', b_rt[3])
@@ -715,11 +715,11 @@ def outputs():
     if cur:
         dbatches.append(cur)
     for i, rows in enumerate(dbatches):
-        fn = f'e2e_dec_{i}_generated.bend'
+        fn = f'{rows[0]["R"]}_e2e_dec_generated.bend'
         out[OUT / fn] = text_dec(rows, i)
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_decode_accept', f'{r["R"]}_e2e_decode_reject']} for r in rows]
     for i, rows in enumerate(batches):
-        fn = f'e2e_{i}_generated.bend'
+        fn = f'{rows[0]["R"]}_e2e_generated.bend'
         out[OUT / fn] = text_a(rows, i)
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_encode', f'{r["R"]}_e2e_root']} for r in rows]
     out[OUT / 'manifest.json'] = json.dumps(man, indent=1) + '\n'
@@ -728,7 +728,7 @@ def outputs():
 
 def main():
     out = outputs()
-    mine = list(OUT.glob('e2e_*_generated.bend')) if OUT.exists() else []
+    mine = list(OUT.glob('*_generated.bend')) if OUT.exists() else []
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]
