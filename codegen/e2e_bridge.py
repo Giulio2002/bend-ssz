@@ -1953,10 +1953,20 @@ def vdec_info(R):
             'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0]}
 
 
+# The input-size bound of the variable-size bridges is a parameter: K = one below the codec
+# laws' depth bound, read from the laws (so it rises when they are extended to deeper buffers),
+# capped at CAP_KMAX, the largest K e2e_cap's lemmas cover (n + 3 must not overflow: K + 3 < 32).
+# Raising the cap to the U32 runtime limit is a change to e2e_cap (CAP) and this constant only.
+CAP_KMAX = 28
+
+
+def vdec_k(info):
+    return max(1, min(info['bound'] - 1, CAP_KMAX))
+
+
 def text_vdec(R, X, info):
     vw = VDEC_VIEWS[X]
-    K = info['bound'] - 1
-    assert 1 <= K <= 28
+    K = vdec_k(info)
     alias = {info['dc']: 'DC'}
     for k, a in (('acc', 'DA'), ('spec', 'DS'), ('none', 'DN'), ('rej', 'DR')):
         alias.setdefault(info[k], a)
@@ -2166,7 +2176,7 @@ def outputs():
         fn = f'{R0}_e2e_dec_generated.bend'
         out[OUT / fn] = text_vdec(R0, X0, info)
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_decode_view', f'{R0}_e2e_decode_reject'], 'ii': 'view',
-                             'premise': f'n <= 4 * 2^{info["bound"] - 1} (hS: the codec laws\' depth bound {info["bound"]})'}]
+                             'premise': f'n <= 4 * 2^{vdec_k(info)} (hS: K = min(codec laws\' depth bound {info["bound"]} - 1, CAP_KMAX {CAP_KMAX}); a parameter, raised by regenerating)'}]
         u['decode'] = fn
     man['word_storage'] = {r['R']: {'generated_name': r['X'], 'awaiting': ([] if 'vf' in r else ['(iv)']) + ([] if 'dd' in r else ['(ii)/(iii)'])} for r in wrows + wrows_extra}
     for f, rows_ in man['files'].items():
