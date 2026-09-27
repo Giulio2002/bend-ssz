@@ -16,7 +16,7 @@ import ./complete_regions.bend as CReg
 import ./layout.bend as LA
 import ./primitive_invariants.bend as V
 import ./word_facts.bend as F
-import ./root_total.bend as RT
+import ./uint_prefix.bend as RT
 import ./bit_packing.bend as BitPack
 import ./complete_decode.bend as CDec
 import ./complete_walk.bend as CWalk

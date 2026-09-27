@@ -39,6 +39,7 @@ import ./codec_helpers.bend as Helpers
 import ./codec_count.bend as Counts
 import ./validator_metadata.bend as Metadata
 import ./integer_encoding.bend as IntegerEnc
+import ./uint_prefix.bend as UPD
 import ./byte_root.bend as ByteRootLaws
 import ./byte_list.bend as ByteListLaws
 import ./bit_root.bend as BitRoot
@@ -385,28 +386,6 @@ def nat_of(r: Maybe<&2, Nat>) -> Nat:
     case None{}: 0n
     case Some{n}: n
 
-law result_domain:
-  for +r: Maybe<&2, +List<U32>>
-  for +x: +List<U32>
-  for +same: {r == Some{x} : Maybe<&2, +List<U32>>}
-  for known: V.byte_result(r)
-  {SP.bytes_domain(x) == True{} : Bool}
-def result_domain(r, x, same, known):
-  %same : V.byte_result(_)
-  known
-
-law uint_prefix_domain:
-  for +w: Prim.Width
-  for +v: Prim.UInt
-  for +valid: {SP.uint_domain(w, v) == True{} : Bool}
-  {SP.bytes_domain(SP.prefix(SP.byte_width(w), SP.full_digits(v))) == True{} : Bool}
-def uint_prefix_domain(w, v, valid):
-  result_domain(SP.uint_encoding(w, v), SP.prefix(SP.byte_width(w), SP.full_digits(v)),
-    %Equal.sym(Bool, SP.uint_domain(w, v), True{}, valid) : {SP.optional(_, SP.prefix(SP.byte_width(w), SP.full_digits(v))) == Some{SP.prefix(SP.byte_width(w), SP.full_digits(v))} : Maybe<&2, +List<U32>>}
-    {==},
-    %IntegerEnc.uint_serialize_correct(w, v) : V.byte_result(_)
-    V.uint_serialized_bytes(w, v))
-
 law uint_facts:
   for +w: Prim.Width
   for +v: Prim.UInt
@@ -416,7 +395,7 @@ law uint_facts:
   one_facts(n, SP.uint_encoding(w, v))
 def uint_facts(w, v, n, eq, valid):
   %Equal.sym(Bool, SP.uint_domain(w, v), True{}, valid) : one_facts(n, SP.optional(_, SP.prefix(SP.byte_width(w), SP.full_digits(v))))
-  (uint_prefix_domain(w, v, valid),
+  (UPD.uint_prefix_domain(w, v, valid),
    Equal.trans(Nat, List.length(&2, U32, SP.prefix(SP.byte_width(w), SP.full_digits(v))), SP.byte_width(w), n, Sizes.prefix_length(SP.byte_width(w), SP.full_digits(v), valid), eq))
 
 law boolean_facts:
