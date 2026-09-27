@@ -1,8 +1,8 @@
 # Proof plan for the generated production codec
 
 Status, 2026-09-21 (iteration 17). The production SSZ path is the **generated
-typed owning object API** (`types/fulu_obj.bend` for the 109 Fulu names,
-`types/generic_obj.bend` for the supported generic forms; see
+typed owning object API** (`types/<Name>_*_generated.bend` for the 109 Fulu names
+and the supported generic forms; see
 docs/CODEGEN.md). What is checked about it today:
 
 * `proofs/obj/fields_*.bend`, `collections_*.bend`, `seq_elem.bend`: field

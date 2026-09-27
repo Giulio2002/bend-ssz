@@ -3,12 +3,16 @@
 
     /opt/homebrew/bin/python3 codegen/generate.py [--check]
 
-Writes types/fulu_obj.bend: one Bend record per container (one field per SSZ
-field) and, for every distinct field shape, the decoder from a validated
+Generates the typed object runtime: one Bend record per container (one field per
+SSZ field) and, for every distinct field shape, the decoder from a validated
 window, the encoder into a pre-zeroed output, the size and the root, all
-composed from src/obj.bend. It also writes the public per-name operations
-(decode, encode, hash_tree_root) and field access for all 109 names, and
-types/fulu_obj_index.bend, the dispatch the benchmark programs use.
+composed from src/obj.bend, plus the public per-name operations (decode,
+encode, hash_tree_root) and field access for all 109 names. The runtime is
+written split per readable name and operation, types/<Name>_{def,encode_ssz,
+decode_ssz,hashtreeroot}_generated.bend (codegen/runtime_refs.py; the one-file
+monoliths types/fulu_obj.bend / generic_obj.bend are computed but not
+written), with types/fulu_obj_g<k>.bend / _f<k>.bend, the dispatch the
+benchmark programs use.
 
 The generator is not trusted: the output is ordinary Bend checked by the
 pinned compiler, its runtime behaviour is checked against the official cases
@@ -3871,7 +3875,7 @@ def generic_outputs():
         names[n] = t
     text = reorder(emit_all(g, names, title='Typed owning SSZ objects for the supported generic SSZ '
                                             'forms of the official ssz_generic suite', with_fuzz=False))
-    out = {ROOT / 'types/generic_obj.bend': text}
+    out = {}   # the monolith is not written: runtime_refs splits it (SPLIT_CTX)
     SPLIT_CTX.append((text, g, names, ''))
     order = list(names)
     table = {}
@@ -3893,7 +3897,7 @@ def main():
     names = schema.load(ROOT / 'codegen/fulu.yaml')
     g = Gen()
     text = reorder(emit_all(g, names))
-    outputs = {ROOT / 'types/fulu_obj.bend': text}
+    outputs = {}   # the monolith is not written: runtime_refs splits it
     order = list(names)
     groups = [order[i:i + GROUP_TYPES] for i in range(0, len(order), GROUP_TYPES)]
     table = {}
@@ -3925,17 +3929,23 @@ def main():
     runtime_refs.use_index(outputs[runtime_refs.INDEX])
     for p in [p for p in outputs if p.parent == ROOT / 'types' and re.fullmatch(r'(fulu|generic)_obj_[gf]\d+\.bend', p.name)]:
         outputs[p] = runtime_refs.rewire(outputs[p])
+    # the retired monoliths
+    retired = [ROOT / 'types/fulu_obj.bend', ROOT / 'types/generic_obj.bend']
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in outputs.items() if not p.exists() or p.read_text() != t]
+        stale += [str(p.relative_to(ROOT)) + ' (retired)' for p in retired if p.exists()]
         if stale:
             print('stale generated sources: ' + ', '.join(stale) + ' (run codegen/generate.py)')
             sys.exit(1)
         print('generated sources are current')
         return
+    for p in retired:
+        if p.exists():
+            p.unlink()
     for p, t in outputs.items():
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(t)
-    print(f'types/fulu_obj.bend: {len(g.order)} shapes, {len(names)} names, {len(text.splitlines())} lines; '
+    print(f'the Fulu runtime: {len(g.order)} shapes, {len(names)} names, {len(text.splitlines())} lines; '
           f'{len(groups)} groups of up to {GROUP_TYPES} names')
 
 

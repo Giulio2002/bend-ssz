@@ -1,9 +1,17 @@
 # Runtime split per name and operation
 
-Status: the additive stage is generated (codegen/runtime_refs.py, called by generate.py): the split files
-below exist next to the monoliths and nothing imports them yet. The rest of this note is the plan. `types/fulu_obj.bend` (29k lines, 7.4k defs),
-`types/generic_obj.bend` (24k lines) and every proof importing them stay as they are until this flips,
-off main, once the facade (`codegen/api_facade.py`, `proofs/api/`) covers every name.
+Status: flipped. The split files below are the runtime; the monoliths `types/fulu_obj.bend` /
+`types/generic_obj.bend` are computed by generate.py and split by codegen/runtime_refs.py, and no longer
+written. Every generated proof module is rewired by `runtime_refs.rewire` (in each generator's output loop,
+before its `--check` comparison and its write) to import exactly the split files it uses; the hand-written
+modules, benchmark programs and the group modules `types/*_obj_{g,f}<k>.bend` were rewired by the same
+function. The generic runtime's definitions that Fulu's has with the same text (the boolean / uintN
+helpers, Bitvector4/512, Uint256) live in Fulu's files, and its own definitions of those owners in the same
+files (no `Generic_<name>` files). `types/runtime_index.json` maps every symbol to its file; generators
+that parse other generated modules read them through `runtime_refs.unwire` (T.<sym> again), and those that
+read the runtime's definitions through `runtime_refs.mono_text`. The rest of this note is the original
+plan; where it differs (index file name, the rewire's handling of copied split imports), the code is the
+reference.
 
 ## Goal
 

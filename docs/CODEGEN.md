@@ -31,10 +31,10 @@ them, and every official case that uses one is an invalid case.
 
 | Output | Contents |
 | --- | --- |
-| `types/fulu_obj.bend` | the typed owning objects of the 109 Fulu names: a record per container, and per distinct shape a validator (`_ok`), reader (`_read`), size, writer (`_put`), root, force fold, field access/update, list append and the mutation entry point the fuzz campaign drives |
+| `types/<Name>_{def,encode_ssz,decode_ssz,hashtreeroot}_generated.bend` (Fulu names) | the typed owning objects of the 109 Fulu names, split per name and operation (codegen/runtime_refs.py, `types/runtime_index.json`): a record per container, and per distinct shape a validator (`_ok`), reader (`_read`), size, writer (`_put`), root, force fold, field access/update, list append and the mutation entry point the fuzz campaign drives |
 | `types/fulu_obj_g<k>.bend`, `benchmarks/objprog/g<k>.bend` | the measured programs, twelve names each |
 | `types/fulu_obj_f<k>.bend`, `benchmarks/objprog/f<k>.bend` | the mutation/fuzz drivers, four names each |
-| `types/generic_obj.bend` | the same generated code for the 136 supported generic SSZ forms |
+| `types/<Name>_*_generated.bend` (generic names) | the same generated code for the 136 supported generic SSZ forms (the basic types' files shared with Fulu's) |
 | `types/generic_obj_g<k>.bend`, `benchmarks/objprog/x<k>.bend` | the generic conformance programs, eight schemas each |
 | `types/obj_groups.json`, `types/obj_fuzz_ops.json`, `types/generic_obj_index.json` | the name → program/index tables the checks and benchmarks dispatch on |
 | `proofs/obj/*.bend` | the generated mutation, collection, cache and cost laws (`codegen/laws.py`) |
@@ -162,7 +162,7 @@ class of entry point reaches. Result on this source:
 
 | Entry points | Reaches, in `src/` |
 | --- | --- |
-| production: `types/fulu_obj.bend`, `types/generic_obj.bend` | `buffer`, `digest`, `merkle_fast`, `obj` - and nothing else |
+| production: `types/*_generated.bend` | `buffer`, `digest`, `merkle_fast`, `obj` - and nothing else |
 | the ten measured programs `benchmarks/objprog/g*.bend`, the seventeen generic programs `x*.bend`, `native_bench/driver.bend` | no module beyond the four above |
 | proof roots `PROOF`, `END_TO_END`, `ROOT_DOMAIN`, `HASH_PROOF` | 30 modules, **none shared with production** |
 | legacy list model `src/ssz.bend`, `types/fulu.bend` (frozen propositions, protected runtime tests) | 29 modules, **none shared with production** |

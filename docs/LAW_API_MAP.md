@@ -13,7 +13,7 @@ What that means concretely:
 * the 29 `END_TO_END` and 13 `ROOT_DOMAIN` propositions are byte-for-byte the
   frozen ones and are checked (`benchmarks/evidence/check_*.log`);
 * the production runtime is the generated typed owning object API
-  (`types/fulu_obj.bend`, `types/generic_obj.bend`), which carries checked
+  (`types/<Name>_*_generated.bend`), which carries checked
   mutation/collection/cache/cost laws (`proofs/obj/*.bend`) and native evidence
   for all 5,440 official cases. Since 2026-09-22 it also carries **codec
   correctness laws on one stated class**: `proofs/obj/codec_*.bend` and

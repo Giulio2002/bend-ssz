@@ -20,10 +20,9 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 IMPORT = re.compile(r'^\s*import\s+(\S+\.bend)\b', re.M)
 
 # The public/measured entry points. Anything these reach is production.
-PRODUCTION = [
-    'types/fulu_obj.bend',      # the 109 mainnet Fulu names, generated
-    'types/generic_obj.bend',   # the supported generic SSZ forms, generated
-]
+# the typed object runtime, generated split per name and operation (codegen/runtime_refs.py): the 109
+# mainnet Fulu names and the supported generic SSZ forms
+PRODUCTION = sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'types').glob('*_generated.bend'))
 MEASURED = sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'benchmarks/objprog').glob('g*.bend'))
 MEASURED += [str(p.relative_to(ROOT)) for p in (ROOT / 'benchmarks/objprog').glob('x*.bend')]
 MEASURED += ['native_bench/driver.bend']

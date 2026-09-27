@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """The runtime split (docs/RUNTIME_SPLIT.md): the typed object runtime codegen/generate.py computes as two
-monoliths (types/fulu_obj.bend and types/generic_obj.bend), cut per readable name and operation into
+monoliths (Fulu's and the generic forms'; neither is written), cut per readable name and operation into
 
     types/<Name>_def_generated.bend            the name's types, default, field access, update, force, dump, fuzz
     types/<Name>_encode_ssz_generated.bend     what its encoder, serializer, writers, size and validity pass reach
