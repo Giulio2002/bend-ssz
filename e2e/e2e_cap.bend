@@ -10,7 +10,9 @@ import ./e2e_load.bend as L
 # The capacity facts for the loader: a buffer of n bytes, n <= 4 * 2^k for some k < 29,
 # is allocated at a depth d = B.capacity(n) with d < 29 (cap_lt), 2^d holds the words the
 # loader packs its bytes into (cap_w) and 4 * 2^d holds its bytes (cap_q). The words of
-# n bytes are nwn(n) = (n + 3) / 4, as VD's halvings.
+# n bytes are nwn(n) = (n + 3) / 4, as VD's halvings. So the largest input covered is
+# n <= 4 * 2^28 = 2^30 bytes (1 GiB), the bound of the variable-size decode bridges (k = 28 is
+# the most here: the runtime's n + 3 must not wrap, n + 3 <= 2^(k + 3) < 2^32).
 
 def nwn(+x: Nat) -> Nat: VD.s_rng(2n, 3n+x)
 

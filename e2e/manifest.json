@@ -2520,7 +2520,7 @@
      "FuluDataColumnsByRootIdentifier_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 4 * 2^28 (hS: K = min(codec laws' depth bound 29 - 1, CAP_KMAX 28); a parameter, raised by regenerating)"
+    "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 29)"
    }
   ]
  },
