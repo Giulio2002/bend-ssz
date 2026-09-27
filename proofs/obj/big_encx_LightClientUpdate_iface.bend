@@ -56,9 +56,13 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 def LV_u64(o: O.U64) -> S.Value:
   match o:
     case O.U64{+w0, +w1}: S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}
+# its value by its body (LV_u64 against the walk's value under Codec.parts would evaluate the parts)
+def lvq_u64(+w0: U32, +w1: U32) -> {S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}} == LV_u64(O.U64{w0, w1}) : S.Value}: {==}
 def lvp_u64(+o: O.U64) -> {Codec.parts(LV_u64(o), S.Unsigned{P.U64{}}) == Some{[S.Fixed{VCN.PC(8n, FX.limbs(K.RW_u64(o)))}]} : Maybe<&2, +List<S.Part>>}:
   match o:
-    case O.U64{+w0, +w1}: CS.pcfix(LV_u64(O.U64{w0, w1}), S.Unsigned{P.U64{}}, FX.limbs([w0, w1]), 8n, {==}, FX.uint64_part(w0, w1))
+    case O.U64{+w0, +w1}:
+      %lvq_u64(w0, w1) : {Codec.parts(_, S.Unsigned{P.U64{}}) == Some{[S.Fixed{VCN.PC(8n, FX.limbs(K.RW_u64(O.U64{w0, w1})))}]} : Maybe<&2, +List<S.Part>>}
+      CS.pcfix(S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U64{}}, FX.limbs([w0, w1]), 8n, {==}, FX.uint64_part(w0, w1))
 
 
 # ---- LightClientUpdate: its value, parts, layout, and bytes ----

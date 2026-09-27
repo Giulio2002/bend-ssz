@@ -55,9 +55,13 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 def LV_bv256(o: T.Bitvector256) -> S.Value:
   match o:
     case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: S.BitsValue{FB.bitsof([w0, w1, w2, w3, w4, w5, w6, w7])}
+# its value by its body (LV_bv256 against the walk's value under Codec.parts would evaluate the parts)
+def lvq_bv256(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> {S.BitsValue{FB.bitsof([w0, w1, w2, w3, w4, w5, w6, w7])} == LV_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}) : S.Value}: {==}
 def lvp_bv256(+o: T.Bitvector256) -> {Codec.parts(LV_bv256(o), S.BitVector{256n}) == Some{[S.Fixed{VCN.PC(32n, FX.limbs(K.RW_bv256(o)))}]} : Maybe<&2, +List<S.Part>>}:
   match o:
-    case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: CS.pcfix(LV_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}), S.BitVector{256n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), 32n, {==}, FB.bits_part([w0, w1, w2, w3, w4, w5, w6, w7], 256n, {==}, {==}))
+    case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
+      %lvq_bv256(w0, w1, w2, w3, w4, w5, w6, w7) : {Codec.parts(_, S.BitVector{256n}) == Some{[S.Fixed{VCN.PC(32n, FX.limbs(K.RW_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})))}]} : Maybe<&2, +List<S.Part>>}
+      CS.pcfix(S.BitsValue{FB.bitsof([w0, w1, w2, w3, w4, w5, w6, w7])}, S.BitVector{256n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), 32n, {==}, FB.bits_part([w0, w1, w2, w3, w4, w5, w6, w7], 256n, {==}, {==}))
 
 
 # ---- Gc60805EC295: its value, parts, layout, and bytes ----

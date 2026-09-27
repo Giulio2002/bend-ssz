@@ -93,18 +93,26 @@ def lvp_AttestationData(+o: T.AttestationData) -> {Codec.parts(LV_AttestationDat
 def LV_b96(o: T.Bytes96) -> S.Value:
   match o:
     case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23])}
+# its value by its body (LV_b96 against the walk's value under Codec.parts would evaluate the parts)
+def lvq_b96(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +w8: U32, +w9: U32, +w10: U32, +w11: U32, +w12: U32, +w13: U32, +w14: U32, +w15: U32, +w16: U32, +w17: U32, +w18: U32, +w19: U32, +w20: U32, +w21: U32, +w22: U32, +w23: U32) -> {S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23])} == LV_b96(T.Bytes96{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23}) : S.Value}: {==}
 def lvp_b96(+o: T.Bytes96) -> {Codec.parts(LV_b96(o), S.ByteVector{96n}) == Some{[S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(o)))}]} : Maybe<&2, +List<S.Part>>}:
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: CS.pcfix(LV_b96(T.Bytes96{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23}), S.ByteVector{96n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]), 96n, {==}, FX.bytes_part(w0, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], {==}))
+    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}:
+      %lvq_b96(w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23) : {Codec.parts(_, S.ByteVector{96n}) == Some{[S.Fixed{VCN.PC(96n, FX.limbs(K.RW_b96(T.Bytes96{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23})))}]} : Maybe<&2, +List<S.Part>>}
+      CS.pcfix(S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23])}, S.ByteVector{96n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]), 96n, {==}, FX.bytes_part(w0, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], {==}))
 
 
 # ---- bv64: its value, read back from its words, and its parts ----
 def LV_bv64(o: T.Bitvector64) -> S.Value:
   match o:
     case T.Bitvector64{+w0, +w1}: S.BitsValue{FB.bitsof([w0, w1])}
+# its value by its body (LV_bv64 against the walk's value under Codec.parts would evaluate the parts)
+def lvq_bv64(+w0: U32, +w1: U32) -> {S.BitsValue{FB.bitsof([w0, w1])} == LV_bv64(T.Bitvector64{w0, w1}) : S.Value}: {==}
 def lvp_bv64(+o: T.Bitvector64) -> {Codec.parts(LV_bv64(o), S.BitVector{64n}) == Some{[S.Fixed{VCN.PC(8n, FX.limbs(K.RW_bv64(o)))}]} : Maybe<&2, +List<S.Part>>}:
   match o:
-    case T.Bitvector64{+w0, +w1}: CS.pcfix(LV_bv64(T.Bitvector64{w0, w1}), S.BitVector{64n}, FX.limbs([w0, w1]), 8n, {==}, FB.bits_part([w0, w1], 64n, {==}, {==}))
+    case T.Bitvector64{+w0, +w1}:
+      %lvq_bv64(w0, w1) : {Codec.parts(_, S.BitVector{64n}) == Some{[S.Fixed{VCN.PC(8n, FX.limbs(K.RW_bv64(T.Bitvector64{w0, w1})))}]} : Maybe<&2, +List<S.Part>>}
+      CS.pcfix(S.BitsValue{FB.bitsof([w0, w1])}, S.BitVector{64n}, FX.limbs([w0, w1]), 8n, {==}, FB.bits_part([w0, w1], 64n, {==}, {==}))
 
 
 # ---- Attestation: its value, parts, layout, and bytes ----
