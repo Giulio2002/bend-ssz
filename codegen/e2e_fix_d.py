@@ -795,7 +795,7 @@ def enc_vec(EB, imp, R, X, sn, m, cache, ri):
     f = ri['rt']['file']
     ee, es = m['encode_eval'][0], m['encode_spec'][0]
     b_ee, b_es = EB.law(cache, ee), EB.law(cache, es)
-    mt = re.match(r'\{SF\.emitted\(O\.Words, T\.(\w+)_encode\(O\.Words\{(.*), (\d+)\}\), (\d+)\) == \(O\.Words\{\2, \3\}, (.*)\) : O\.Words & \+List<U32>\}$', b_ee[3])
+    mt = re.match(r'\{(?:SF|F)\.emitted\(O\.Words, T\.(\w+)_encode\(O\.Words\{(.*), (\d+)\}\), (\d+)\) == \(O\.Words\{\2, \3\}, (.*)\) : O\.Words & \+List<U32>\}$', b_ee[3])
     if not mt:
         return None
     en, tree, N, NW, BY = mt.groups()
@@ -840,7 +840,7 @@ def enc_vec(EB, imp, R, X, sn, m, cache, ri):
     if [n for _, n, _ in rp] != ['rep']:
         return None
     REPF = subst_s(rp[0][2], sn)                 # e.g. M0_PB.rep_v1(o, Spec.X())
-    kind = re.search(r'\.rep_(v1|vb|v2)\(o, ', REPF)
+    kind = re.search(r'\.rep_(v1|vb|v2|bv)\(o, ', REPF)
     if not kind:
         return None
     kind = kind.group(1)
@@ -880,14 +880,15 @@ def enc_vec(EB, imp, R, X, sn, m, cache, ri):
          f'      Equal.trans({MB}, API.serialize(Spec.{sn}(), {VV}), Encoding.encoding_for_legal_type(Spec.{sn}(), {VV}), Some{{{BYq}}},',
          f'        E.serialize_legal(Spec.{sn}(), {VV}, VS.public_sound(Spec.{sn}(), {{==}})), {AS}.{es["law"]}({", ".join(esa)}))))', '']
     # the length fact of rep at the literal object: N is the vector's byte count
-    if kind in ('v1', 'vb'):
-        facts = '+cf: {Nat.is_eq(U32.to_nat(WO.len(' + ON + ')), SH.Vector_length(Spec.' + sn + '())) == True{} : Bool}'
-        ln = (f'  +ln = Equal.trans(Nat, U32.to_nat(N), SH.Vector_length(Spec.{sn}()), U32.to_nat({N}), '
-              f'FD.nat__eq_from_is_eq(U32.to_nat(WO.len({ON})), SH.Vector_length(Spec.{sn}()), cf), {{==}})')
-        fargs = 'cf' if kind == 'v1' else 'cf, bsc'
+    if kind in ('v1', 'vb', 'bv'):
+        VLn = 'SH.ByteVector_length' if kind == 'bv' else 'SH.Vector_length'
+        facts = '+cf: {Nat.is_eq(U32.to_nat(WO.len(' + ON + ')), ' + VLn + '(Spec.' + sn + '())) == True{} : Bool}'
+        ln = (f'  +ln = Equal.trans(Nat, U32.to_nat(N), {VLn}(Spec.{sn}()), U32.to_nat({N}), '
+              f'FD.nat__eq_from_is_eq(U32.to_nat(WO.len({ON})), {VLn}(Spec.{sn}()), cf), {{==}})')
+        fargs = 'cf, bsc' if kind == 'vb' else 'cf'
         if kind == 'vb':
             facts += ', +bsc: ' + BSC(ON)
-        dest = ['  (+w, +cf) = rep'] if kind == 'v1' else ['  (+w, +rest) = rep', '  (+cf, +bsc) = rest']
+        dest = ['  (+w, +rest) = rep', '  (+cf, +bsc) = rest'] if kind == 'vb' else ['  (+w, +cf) = rep']
     else:
         facts = ('+lf: {U32.to_nat(WO.len(' + ON + ')) == Nat.double(M_PB.cnt2(' + ON + ')) : Nat}, '
                  '+cf: {Nat.is_eq(M_PB.cnt2(' + ON + '), SH.Vector_length(Spec.' + sn + '())) == True{} : Bool}')
@@ -1639,7 +1640,7 @@ def build(EB, amap, cache, vidx):
             prem = [f'{md}{n}: {t}' for md, n, t in ri['ps'][1:] if n not in ('o', 's', 'es')]
             cover.setdefault(X, {})['iv'] = fn
             cover[X].setdefault('premise', '; '.join(prem))
-    for X in DEC_TRY + VEC_U8 + VEC_U16 + VEC_B + ['GtAD72FD256A'] + BVS + BOXC:
+    for X in DEC_TRY + VEC_U8 + VEC_U16 + VEC_B + ['GtAD72FD256A'] + BVS + BOXC + ['Cell']:
         if X not in todo:
             continue
         m0 = amap['map'][X]
@@ -1664,7 +1665,7 @@ def build(EB, amap, cache, vidx):
         fn = f'{readable[X]}_e2e_generated.bend'
         files[fn] = enc_file(EB, [(readable[X], X, X, ri[0], gen)], cache, amap)
         cover.setdefault(X, {})['i'] = fn
-    for X in VEC_U8 + VEC_U16 + VEC_B:
+    for X in VEC_U8 + VEC_U16 + VEC_B + ['Cell']:
         if X not in todo:
             continue
         ri = root_info(EB, X, amap['map'][X], cache)

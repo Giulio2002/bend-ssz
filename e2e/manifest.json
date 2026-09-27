@@ -3702,7 +3702,7 @@
     "laws": [
      "FuluCell_e2e_root"
     ],
-    "premise": "+rep: WO.rep_bv(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    },
    {
     "name": "FuluContributionAndProof",
@@ -3767,6 +3767,28 @@
      "FuluParticipationFlags_e2e_root"
     ],
     "premise": "+e: {U32.is_lt(o, 256) == True{} : Bool}"
+   }
+  ],
+  "FuluCell_e2e_generated.bend": [
+   {
+    "name": "FuluCell",
+    "generated_name": "Cell",
+    "laws": [
+     "FuluCell_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
+   }
+  ],
+  "FuluCell_e2e_dec_generated.bend": [
+   {
+    "name": "FuluCell",
+    "generated_name": "Cell",
+    "laws": [
+     "FuluCell_e2e_decode_view",
+     "FuluCell_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth"
    }
   ],
   "FuluContributionAndProof_e2e_generated.bend": [
@@ -5546,11 +5568,6 @@
    "generated_name": "BlobSidecar",
    "reason": "encode laws not over the same free words / bits"
   },
-  "FuluCell": {
-   "generated_name": "Cell",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "FuluBlob_e2e_root_generated.bend"
-  },
   "FuluMatrixEntry": {
    "generated_name": "MatrixEntry",
    "reason": "encode laws not over the same free words / bits"
@@ -5625,6 +5642,12 @@
    "i": "FuluBytes1_e2e_generated.bend",
    "ii_iii": "FuluBytes1_e2e_dec_generated.bend",
    "iv": "FuluBytes1_e2e_root_generated.bend"
+  },
+  "FuluCell": {
+   "generated_name": "Cell",
+   "i": "FuluCell_e2e_generated.bend",
+   "ii_iii": "FuluCell_e2e_dec_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
   },
   "FuluContributionAndProof": {
    "generated_name": "ContributionAndProof",
