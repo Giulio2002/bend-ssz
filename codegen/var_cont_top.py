@@ -23,8 +23,8 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 
 import var_cont_enc as CE  # noqa: E402
 
-TOPS = ['ExecutionPayload', 'BeaconBlockBody']
-SIZES = ['ExecutionPayload', 'ExecutionPayloadHeader', 'BeaconBlockBody']
+TOPS = ['ExecutionPayload', 'BeaconBlockBody', 'BeaconState']
+SIZES = ['ExecutionPayload', 'ExecutionPayloadHeader', 'BeaconBlockBody', 'BeaconState']
 # the generic wide containers' size modules (their interfaces state no sizex; gtop_text imports these)
 GSIZES = ['Gc60805EC295']
 TRUE = 'True{} : Bool'
@@ -673,6 +673,11 @@ def szx_term(f, ch, bnd):
     hm = f'FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(k))) == {TRUE}}}, LY.LN({a}.ENCL_{ch.p}({t}, {N})), {LL}, {a}.len_encl_{ch.p}({t}, {N}), {bnd})'
     rs = re.search(r'U32\.mul\(\w+, (\d+)\)', ch.sz).group(1)
     W = int(rs) // 4
+    if int(rs) % 4:
+        # records of a size off a word (Validator: 121 bytes): the list module's own size lemma
+        return (f'Equal.trans(Nat, U32.to_nat({ch.sz}), {LL}, LY.LN({a}.ENCL_{ch.p}({t}, {N})), '
+                f'{a}.szx_{ch.p}({t}, {N}, 0n, 0n, k, CS.hk29(k, ek), VRX.nwn_le({LL}, VB.pw(k), {hm})), '
+                f'Equal.sym(Nat, LY.LN({a}.ENCL_{ch.p}({t}, {N})), {LL}, {a}.len_encl_{ch.p}({t}, {N})))')
     return (f'Equal.trans(Nat, U32.to_nat({ch.sz}), {LL}, LY.LN({a}.ENCL_{ch.p}({t}, {N})), VRX.mulq(k, {N}, U32.to_nat({N}), {rs}, {W}n, {{==}}, {{==}}, hk, {hm}), '
             f'Equal.sym(Nat, LY.LN({a}.ENCL_{ch.p}({t}, {N})), {LL}, {a}.len_encl_{ch.p}({t}, {N})))')
 
@@ -683,6 +688,119 @@ HEADX = ['import ../../src/buffer.bend as B', 'import ../../spec/decoding_relati
 
 def size_file(C):
     return ROOT / f'proofs/obj/big_encx_{C}_size.bend'
+
+
+
+def u32_top(t, FIX):
+    """U32 mode (BeaconState, CE.U32M): CI.ENDC spelled CI.ENDCs(.., U32.to_nat(F)) (as the interface states it);
+    szS, summing from F, a core over F as a variable SZF (eSZF: SZF == U32.to_nat(F)), its bound carried once."""
+    UF = f'U32.to_nat({FIX})'
+    Fn = re.compile(rf'(?<![\w.]){FIX}n\b')
+    out, i = [], 0
+    while True:
+        m = re.compile(r'(?<![\w.])CI\.ENDC\(').search(t, i)
+        if m is None:
+            out.append(t[i:])
+            break
+        c = CE.find_call(t, 'CI.ENDC', m.start())
+        out.append(t[i:m.start()] + 'CI.ENDCs(' + ', '.join(c[2] + [UF]) + ')')
+        i = c[1]
+    t = ''.join(out)
+    # the writer's byte count as the interface states it (VCN.LN: its List.length at the literal sizes evaluates)
+    t = t.replace('List.length(&2, U32, K.ENCC(', 'VCN.LN(K.ENCC(')
+    # bt_all states VRX.LN / VRX.AP: the goal's VCN.LN / VCN.AP rewritten to them by name (generic lnq / apq)
+    j = 0
+    while True:
+        i = t.find('\n  VRX.bt_all(', j)
+        if i < 0:
+            break
+        c = CE.find_call(t, 'VRX.bt_all', i)
+        E_, B_ = c[2]
+        rw = (f'\n  %lnq({E_}) : {{VS.bt(_, VCN.AP({E_}, {B_})) == {E_} : +List<U32>}}'
+              f'\n  %apq({E_}, {B_}) : {{VS.bt(VRX.LN({E_}), _) == {E_} : +List<U32>}}')
+        t = t[:i] + rw + t[i:]
+        j = i + len(rw) + 5
+    # the output tree by its writer's name (OUTC against K.PUTC would evaluate the output's bytes)
+    mo = re.search(r'\ndef OUTC\((.*?)\) -> FD\.array__Tree<U32>: (.*)\n', t)
+    if mo:
+        body_ = mo.group(2)
+        out, i = [], 0
+        while True:
+            c = CE.find_call(t, 'OUTC', i)
+            if c is None:
+                out.append(t[i:])
+                break
+            if t[max(0, c[0] - 4):c[0]] == 'def ' or (c[0] > 0 and (t[c[0] - 1].isalnum() or t[c[0] - 1] in '_.')):
+                out.append(t[i:c[1]])
+                i = c[1]
+                continue
+            out.append(t[i:c[0]] + body_)
+            i = c[1]
+        t = ''.join(out)
+    # the output's bytes: the splice at 0 by the generic spl0 (unfolding SPL there would count the bytes)
+    j = 0
+    while True:
+        i = t.find('\n  +e1 = Equal.trans(+List<U32>, UA.BYT(', j)
+        if i < 0:
+            break
+        c = CE.find_call(t, 'Equal.trans', i)
+        T_, a_, b_, c_, p_, q_ = c[2]
+        if b_ == 'VCN.AP(Y, R)' and p_ == 'by':
+            mR = re.search(r'\n  \+R = VS\.bdr\(VCN\.LN\(Y\), (.*)\)\n', t[:i + 1])
+            BZ = mR.group(1)
+            S0 = f'UW.SPL({BZ}, Nat.add(A.quad(0n), 0n), Y)'
+            new = (f'Equal.trans(+List<U32>, {a_}, {S0}, {c_}, by, Equal.trans(+List<U32>, {S0}, VCN.AP(Y, R), {c_}, spl0({BZ}, Y), {q_}))')
+            t = t[:c[0]] + new + t[c[1]:]
+        j = i + 10
+    if 'VS.app_assoc(' in t:
+        # (VCN.AP's associativity by name: app_assoc states List.append, whose &2 defeats the identity check)
+        t = t.replace('VS.app_assoc(', 'apa(')
+        i = t.index('\ndef ')
+        t = (t[:i] + '\ndef apa(+a: +List<U32>, +b: +List<U32>, +c: +List<U32>) -> {VCN.AP(VCN.AP(a, b), c) == VCN.AP(a, VCN.AP(b, c)) : +List<U32>}: VS.app_assoc(a, b, c)\n'
+             + t[i:])
+    if 'spl0(' in t and '\ndef spl0(' not in t:
+        i = t.index('\ndef ')
+        t = (t[:i] + '\n# a splice at 0 (generic: nothing evaluates)\n'
+             + 'def spl0(+B: +List<U32>, +Y: +List<U32>) -> {UW.SPL(B, Nat.add(A.quad(0n), 0n), Y) == VCN.AP(Y, VS.bdr(VCN.LN(Y), B)) : +List<U32>}: {==}\n' + t[i:])
+    if 'VRX.bt_all(' in t and '\ndef lnq(' not in t:
+        i = t.index('\ndef ')
+        t = (t[:i] + '\n# vrecx\'s length and append by name (generic: nothing evaluates)\n'
+             + 'def lnq(+a: +List<U32>) -> {VRX.LN(a) == VCN.LN(a) : Nat}: {==}\n'
+             + 'def apq(+a: +List<U32>, +b: +List<U32>) -> {VRX.AP(a, b) == VCN.AP(a, b) : +List<U32>}: {==}\n' + t[i:])
+    if '\ndef szS(' not in t:
+        return t
+    a = t.index('\ndef szS(') + 1
+    b = t.index('\ndef ', a)
+    blk = t[a:b]
+    hd = blk[:blk.index(':\n')]
+    body = blk[len(hd) + 2:]
+    params = hd[len('def szS('):hd.rindex(') -> ')]
+    stmt = hd[hd.rindex(') -> ') + 5:]
+    names = [x.split(':')[0].strip().lstrip('+') for x in CE.split_args(params)]
+    OAS = ', '.join(names[:names.index('h')])
+    body = body.replace(f'FD.nat__eq_from_is_eq({UF}, {FIX}n, {{==}})', f'Equal.sym(Nat, SZF, {UF}, eSZF)')
+    body = Fn.sub('SZF', body)
+    body = body.replace(f'{UF}, SZF, {{==}})', f'{UF}, SZF, Equal.sym(Nat, SZF, {UF}, eSZF))')
+    body = body.replace(f'CI.ENDCs({OAS}, {UF})', f'CI.ENDCs({OAS}, SZF)')
+    bnd = (f'FD.logic__subst(Nat, zf => {{Nat.is_le(CI.ENDCs({OAS}, zf), A.quad(VB.pw(k))) == True{{}} : Bool}}, {UF}, SZF, '
+           f'Equal.sym(Nat, SZF, {UF}, eSZF), CI.okbk({OAS}, h, k, ek))')
+    body = body.replace(f'CI.okbk({OAS}, h, k, ek)', bnd)
+    st_c = stmt.replace(f'CI.ENDCs({OAS}, {UF})', f'CI.ENDCs({OAS}, SZF)')
+    core = f'def szS_core({params}, +SZF: Nat, +eSZF: {{SZF == {UF} : Nat}}) -> {st_c}:\n{body.rstrip()}\n'
+    wrap = f'def szS({params}) -> {stmt}:\n  szS_core({", ".join(names)}, {UF}, {{==}})\n\n'
+    t = t[:a] + core + '\n' + wrap + t[b:]
+    # szs through the interface's szx (its bytes' length as the law states it), the sizes' equation by match
+    m = re.search(r'\ndef szs\(m, hok\):\n  match m:\n    case (CI\.MW\{[^\n]*\}): Equal\.trans[^\n]*\n[^\n]*\n', t)
+    if m:
+        pat = m.group(1)
+        szsz = (f'\n# the size pass and the writer return the same size\n'
+                f'def szsz(m: CI.MW, +hok: {{CI.OK(m) == True{{}} : Bool}}) -> {{U32.to_nat(SZSM(m)) == U32.to_nat(CI.SZ(m)) : Nat}}:\n'
+                f'  match m:\n    case {pat}: Equal.trans(Nat, U32.to_nat(SZS({OAS})), CI.ENDCs({OAS}, {UF}), U32.to_nat(K.SZC({OAS})), szS({OAS}, hok, 28n, {{==}}),\n'
+                f'      Equal.sym(Nat, U32.to_nat(K.SZC({OAS})), CI.ENDCs({OAS}, {UF}), CI.szC({OAS}, hok, 28n, {{==}})))\n')
+        new = ('\ndef szs(m, hok):\n  Equal.trans(Nat, U32.to_nat(SZSM(m)), U32.to_nat(CI.SZ(m)), List.length(&2, U32, CI.ENC(m)), szsz(m, hok), CI.szx(m, hok))\n')
+        i = t.index('\nlaw szs:')
+        t = t[:i] + szsz + t[i:m.start()] + new + t[m.end():]
+    return t
 
 
 def full_texts(C, generic=False):
@@ -733,6 +851,8 @@ def validx(m, hok):
   match m:
     case CI.MW{{{pat}}}: validC({OAS}, hok)
 '''
+    if K.fixed >= CE.U32FIX:
+        sz = u32_top(sz, K.fixed)
     hs = imps + HEADX + [f'import ./big_encx_{C}_iface.bend as CI', '', '# GENERATED by codegen/var_cont_top.py. Do not edit.',
                          f'# {C}: the runtime\'s size pass on its encoder window (T.{K.p}_size; see the generator).', '']
     out = {size_file(C): '\n'.join(hs) + '\n' + sz + '\n'}
@@ -741,6 +861,8 @@ def validx(m, hok):
         top = re.sub(r'\bSZS\(', 'Z.SZS(', top)
         top = re.sub(r'\bsizeC\(', 'Z.sizeC(', top)
         top = re.sub(r'\bszS\(', 'Z.szS(', top)
+        if K.fixed >= CE.U32FIX:
+            top = u32_top(top, K.fixed)
         ht = imps + HEADX + [f'import ./big_encx_{C}_iface.bend as CI', f'import ./big_encx_{C}_size.bend as Z', '',
                              '# GENERATED by codegen/var_cont_top.py. Do not edit.',
                              f'# {C}: the encoder laws at X = 0 on its encoder window (see the generator).', '']

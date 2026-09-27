@@ -2794,6 +2794,15 @@
    ],
    "big": true
   },
+  "FuluBeaconState.encode_ssz.proof.generated.bend": {
+   "name": "FuluBeaconState",
+   "generated_name": "BeaconState",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_BeaconState_enc.bend"
+   ],
+   "big": true
+  },
   "FuluBeaconState.decode_ssz.proof.generated.bend": {
    "name": "FuluBeaconState",
    "generated_name": "BeaconState",
@@ -7414,12 +7423,5 @@
    "big": false
   }
  },
- "uncovered": {
-  "FuluBeaconState": {
-   "encode_ssz": [
-    "encode_eval",
-    "encode_spec"
-   ]
-  }
- }
+ "uncovered": {}
 }
