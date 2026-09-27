@@ -2693,6 +2693,18 @@
     "premise": "the root law's binders (t, dw, hd, pf, cap)"
    }
   ],
+  "CompatibleUnionA_e2e_dec_generated.bend": [
+   {
+    "name": "CompatibleUnionA",
+    "generated_name": "GuA2212AE21F",
+    "laws": [
+     "CompatibleUnionA_e2e_decode_view",
+     "CompatibleUnionA_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "FuluAttesterSlashing_e2e_dec_generated.bend": [
    {
     "name": "FuluAttesterSlashing",
@@ -3087,6 +3099,16 @@
     ],
     "ii": "view",
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "CompatibleUnionA_e2e_root_generated.bend": [
+   {
+    "name": "CompatibleUnionA",
+    "generated_name": "GuA2212AE21F",
+    "laws": [
+     "CompatibleUnionA_e2e_root"
+    ],
+    "premise": "rep: RT.rep_GuA2212AE21F(o, Spec.GuA2212AE21F()) (the root law's representation invariant)"
    }
   ],
   "FuluAttesterSlashing_e2e_root_generated.bend": [
@@ -4071,7 +4093,9 @@
   },
   "CompatibleUnionA": {
    "generated_name": "GuA2212AE21F",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "CompatibleUnionA_e2e_dec_generated.bend",
+   "root": "CompatibleUnionA_e2e_root_generated.bend"
   },
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
@@ -4310,7 +4334,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 2,
    "covered": true,
-   "bridged": null
+   "bridged": "CompatibleUnionA_e2e_dec_generated.bend"
   },
   "CompatibleUnionBC": {
    "generated_name": "GuAD91DEB870",

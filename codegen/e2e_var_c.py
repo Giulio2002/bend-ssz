@@ -1239,3 +1239,123 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
 
 
 VDEC_VIEWS['Gc465214E502'] = vartest_view('VarTestStruct', 'Gc465214E502')
+
+
+# ---- (ii)/(iii): CompatibleUnions (codegen/var_winu's layout: a selector byte, then the arm's window) ----
+# CHILD_VIEWS[arm window module] = f(obj, val, a) -> proof text of {view(obj) == val} at the arm's window
+# (a = its window args x, off, len, and the helpers' context); None: they convert.
+UNION_CHILD = {'var_winx_GpF350A3C486.bend': None}
+
+
+def union_view(R, X):
+    src = _dc_module(R).read_text()
+    wm = re.search(r'^import \./(\S+) as W$', src, re.M).group(1)
+    wsrc = (ROOT / 'proofs/obj' / wm).read_text()
+    alias_mod = dict((a, m) for m, a in re.findall(r'^import \./(\S+) as (CH\d+)$', wsrc, re.M))
+    ks = sorted(int(k) for k in re.findall(r'^def K(\d+)\(c: Bool', wsrc, re.M))
+    sels = {}
+    for k in ks:
+        sels[k] = None
+    s0 = re.search(r'^def CHKw\(.*?K0\(U32\.is_eq\(BX\(t, x\), (\d+)\)', wsrc, re.M).group(1)
+    sels[0] = s0
+    for k in ks[:-1]:
+        sels[k + 1] = re.search(rf'^def K{k}\(c: Bool.*?\n.*?\n.*?\n    case False{{}}: K{k + 1}\(U32\.is_eq\(s, (\d+)\)', wsrc, re.M | re.S).group(1)
+    arm = {}
+    for k in ks:
+        arm[k] = re.search(rf'^def K{k}\(c: Bool.*?\n.*?\n    case True{{}}: (CH\d+)\.CHKw', wsrc, re.M | re.S).group(1)
+    rt = 'root_gtypes2'
+    vsrc = (ROOT / f'proofs/obj/{rt}.bend').read_text()
+    vbody = re.search(rf'^def v_{X}\(o: .*?\n  match o:\n((?:    case .*\n)+)', vsrc, re.M).group(1)
+    ctor = dict((int(c), (sel, vw)) for c, sel, vw in re.findall(rf'case \w+\.{X}_c(\d+){{v}}: S\.Selected{{(\d+), ([\w.]+)\(v\)}}', vbody))
+    WIN = 'XJ(t, x), FJ(off), LJ(len)'
+    L = []
+    last = ks[-1]
+    for k in reversed(ks):
+        ch = arm[k]
+        # the object's constructor for arm k (OB_k's True case)
+        oc = re.search(rf'^def OB{k}\(c: Bool.*?\n.*?\n    case True{{}}: (\w+\.{X}_c(\d+))\{{', wsrc, re.M | re.S)
+        cidx = int(oc.group(2))
+        sel, vw = ctor[cidx]
+        assert sel == sels[k], (X, k, sel, sels[k])
+        vw = vw if '.' in vw else f'RT.{vw}'
+        obj = f'W.{ch}.OBJw(d, t, W.{WIN.replace("XJ(", "XJ(").replace("FJ(", "FJ(").replace("LJ(", "LJ(")})'
+        obj = f'{ch}.OBJw(d, t, W.XJ(t, x), W.FJ(off), W.LJ(len))'
+        val = f'{ch}.VALw(t, W.XJ(t, x), W.LJ(len))'
+        cv = UNION_CHILD[alias_mod[ch]]
+        cvp = '{==}' if cv is None else cv(obj, val)
+        GOAL = f'{{RT.v_{X}(W.OB{k}(c, W.BX(t, x), d, t, x, off, len)) == S.Selected{{W.BX(t, x), W.VV{k}(c, W.BX(t, x), t, x, len)}} : S.Value}}'
+        nxt = (f'      u{k + 1}(d, t, x, off, len, U32.is_eq(W.BX(t, x), {sels[k + 1]}), {{==}}, hk)' if k != last else
+               f'      Empty.absurd({GOAL.replace("(c, ", "(False{}, ")}, FD.logic__false_true(hk))')
+        L.append(f'''def u{k}(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +c: Bool, +ec: {{U32.is_eq(W.BX(t, x), {sel}) == c : Bool}},
+    +hk: {{W.K{k}(c, W.BX(t, x), t, x, off, len) == True{{}} : Bool}}) -> {GOAL}:
+  match c:
+    case True{{}}:
+      %Equal.sym(U32, W.BX(t, x), {sel}, FD.u32alg__eq_of(W.BX(t, x), {sel}, ec)) : {{RT.v_{X}(W.OB{k}(True{{}}, W.BX(t, x), d, t, x, off, len)) == S.Selected{{_, W.VV{k}(True{{}}, W.BX(t, x), t, x, len)}} : S.Value}}
+      Equal.cong(S.Value, S.Value, z => S.Selected{{{sel}, z}}, {vw}({obj}), {val}, {cvp})
+    case False{{}}:
+{nxt}
+''')
+    text = f'''# ---- the view of a decoded object is the codec law's value: the selected arm's view at its window ----
+
+{chr(10).join(L)}
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
+  u0(d, t, 0n, 0, n, U32.is_eq(W.BX(t, 0n), {sels[0]}), {{==}}, FD.logic__and_right(U32.is_le(1, n), W.K0(U32.is_eq(W.BX(t, 0n), {sels[0]}), W.BX(t, 0n), t, 0n, 0, n), hchk))
+
+'''
+    chs = sorted(set(arm.values()))
+    return {'view': f'RT.v_{X}',
+            'imports': [f'import ../proofs/obj/{rt}.bend as RT', 'import ../proofs/obj/root_gnames.bend as RN', f'import ../proofs/obj/{wm} as W']
+            + [f'import ../proofs/obj/{alias_mod[c]} as {c}' for c in chs],
+            'text': text}
+
+
+VDEC_VIEWS['GuA2212AE21F'] = union_view('CompatibleUnionA', 'GuA2212AE21F')
+
+
+# ---- (iv): CompatibleUnions, from rep (DK.Or2 over the arms' pc_X_k: the arm's value v and o == X_ck{v}) ----
+def vroot_union(R, X, rt='root_gtypes2', gv='gvalid_gtypes2'):
+    vsrc = (ROOT / f'proofs/obj/{rt}.bend').read_text()
+    rep = re.search(rf'^def rep_{X}\(o: \w+\.{X}\) -> Data: (.*)$', vsrc, re.M).group(1)
+    arms = [int(k) for k in re.findall(rf'pc_{X}_(\d+)\(o\)', rep)]
+    D = f'T.{X}'
+    ty = {}
+    for k in arms:
+        m = re.search(rf'^def pc_{X}_{k}\(o: .*?\) -> Data: DK\.Ex\((\w+)\.(\w+), v =>', vsrc, re.M)
+        ty[k] = f'T.{m.group(2)}'
+    CO = lambda k: f'{D}_c{k}{{v}}'  # noqa: E731
+    RX = lambda o: f'D.bytes(Pair.snd({D}, D.Digest, Pair.snd(B.Buf, {D} & D.Digest, T.{X}_hash_tree_root(h, {o}))))'  # noqa: E731
+    G = lambda o: f'{{Some{{{RX(o)}}} == API.hash_tree_root(Spec.{X}(), RT.v_{X}({o})) : Maybe<&2, +List<U32>>}}'  # noqa: E731
+    L = []
+    for k in arms:
+        L.append(f'''def rt1_{k}(h: B.Buf, +v: {ty[k]}, +rep: RT.rep_{X}({CO(k)})) -> {G(CO(k))}:
+  E.root_legal(Spec.{X}(), RT.v_{X}({CO(k)}), VS.public_sound(Spec.{X}(), {{==}}), {RX(CO(k))},
+    GV.{X}_root_valid({CO(k)}, rep), RT.{X}_root_correct(h, {CO(k)}, rep))
+
+def rt2_{k}(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o), +v: {ty[k]}, +eo: {{o == {CO(k)} : {D}}}) -> {G('o')}:
+  %Equal.sym({D}, o, {CO(k)}, eo) : {G('_')}
+  rt1_{k}(h, v, FD.logic__subst({D}, z => RT.rep_{X}(z), o, {CO(k)}, eo, rep))
+''')
+    # the Or2 tree over the arms: Or2(a0, Or2(a1, ..)) or a single pc
+    def arm_case(k, var, ind):
+        return (f'{ind}(+v, +q) = {var}\n{ind}(+eo, +rp) = q\n{ind}rt2_{k}(h, o, rep, v, eo)')
+    assert len(arms) == 1, (X, 'multi-arm unions: rep is por_X_0 (an Or over the arms), not written yet')
+    body = arm_case(arms[0], 'rep', '  ')
+    imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
+            'import ../src/digest.bend as D', 'import ../src/obj.bend as O', 'import ../types/generic_obj.bend as T', 'import ../types/schema.bend as S',
+            'import ../proofs/obj/generic_specs.bend as Spec', 'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
+            f'import ../proofs/obj/{rt}.bend as RT', f'import ../proofs/obj/{gv}.bend as GV', 'import ../proofs/obj/dk.bend as DK', 'import ./e2e_support.bend as E']
+    return '\n'.join(imps) + f"""
+
+# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
+# {R} (a CompatibleUnion): the object API's root is END_TO_END's hash_tree_root, for every object the
+# root law represents (rep_{X}: the selected arm's value, represented).
+
+""" + '\n'.join(L) + f"""
+# (iv)
+def {R}_e2e_root(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o)) -> {G('o')}:
+{body}
+"""
+
+
+VROOT_SHAPES['GuA2212AE21F'] = vroot_union
