@@ -1,6 +1,7 @@
-# Runtime split per name and operation (design, not implemented)
+# Runtime split per name and operation
 
-Status: proposal for review. Nothing here is generated yet. `types/fulu_obj.bend` (29k lines, 7.4k defs),
+Status: the additive stage is generated (codegen/runtime_refs.py, called by generate.py): the split files
+below exist next to the monoliths and nothing imports them yet. The rest of this note is the plan. `types/fulu_obj.bend` (29k lines, 7.4k defs),
 `types/generic_obj.bend` (24k lines) and every proof importing them stay as they are until this flips,
 off main, once the facade (`codegen/api_facade.py`, `proofs/api/`) covers every name.
 
@@ -11,10 +12,10 @@ official class or structural names) the runtime is four generated modules:
 
 | file | contents |
 |---|---|
-| `types/X.def.generated.bend` | the type (`type X is Type/Data`), its records' word types, `X_default`, field access, update, list append, `X_selector` / `X_force` |
-| `types/X.encode_ssz.generated.bend` | `X_size`, `X_valid`, `X_put*` / `X_putv` / `X_putn` / `X_putk` / `X_pk`, `X_encode`, `X_serialize` (+ `_enc_*`, `_senc_*` helpers) |
-| `types/X.decode_ssz.generated.bend` | `X_ok*`, `X_read*` / `X_rd*`, `X_decode`, `X_build` (+ `_some`, `_built`) |
-| `types/X.hashtreeroot.generated.bend` | `X_root*`, `X_rt*`, `X_fin`, `X_hash_tree_root` |
+| `types/X_def_generated.bend` | the type (`type X is Type/Data`), its records' word types, `X_default`, field access, update, list append, `X_selector` / `X_force` |
+| `types/X_encode_ssz_generated.bend` | `X_size`, `X_valid`, `X_put*` / `X_putv` / `X_putn` / `X_putk` / `X_pk`, `X_encode`, `X_serialize` (+ `_enc_*`, `_senc_*` helpers) |
+| `types/X_decode_ssz_generated.bend` | `X_ok*`, `X_read*` / `X_rd*`, `X_decode`, `X_build` (+ `_some`, `_built`) |
+| `types/X_hashtreeroot_generated.bend` | `X_root*`, `X_rt*`, `X_fin`, `X_hash_tree_root` |
 
 The proof facade already has this shape: `proofs/api/X.{encode_ssz,decode_ssz,hashtreeroot}.proof.generated.bend`.
 
