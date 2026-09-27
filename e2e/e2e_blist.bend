@@ -16,6 +16,11 @@ import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/vbytes.bend as VY
 import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/words_root.bend as WR
+import ../proofs/obj/vcopy.bend as VC
+import ../proofs/obj/vdepth.bend as VD
+import ../proofs/obj/vbrt.bend as VBR
+import ../proofs/obj/vbspec.bend as VBS
+import ./e2e_cap.bend as CQ4
 import ../types/schema.bend as S
 import ../spec/primitives.bend as SP
 
@@ -89,6 +94,27 @@ def pvh(+T: FD.array__Tree<U32>, +M: U32) -> {PV.pview(O.Words{FD.array__thaw(U3
   %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, T)), T, FD.array__freeze_thaw(U32, T)) :
     {S.Sequence{WR.items(O.chunks_of(M), FD.array__slots(U32, _), 0n)} == S.Sequence{WR.items(O.chunks_of(M), FD.array__slots(U32, T), 0n)} : S.Value}
   {==}
+
+# ---- the output buffer of a byte-storage encoder at depth DO(N) (vlist.OUTP), storage depth below 28 ----
+
+def nwp(+dw: Nat, +N: U32, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(VC.nwu(N)), O.pow2n(dw)) == True{} : Bool}:
+  +h0 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(VC.NW(N), 0n), VC.NW(N), FD.nat__add_zero(VC.NW(N)), VBR.nwle(dw, N, hdw, hn))
+  FD.logic__subst(Nat, z => {Nat.is_le(VC.NW(N), z) == True{} : Bool}, VB.pw(dw), O.pow2n(dw), VD.s_pow2_eq(dw), h0)
+
+def hdo(+dw: Nat, +N: U32, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool})
+    -> {Nat.is_lt(VLS.DO(N), 29n) == True{} : Bool}:
+  FD.nat__le_lt_trans(VLS.DO(N), dw, 29n, VD.wd_min(VC.nwu(N), dw, nwp(dw, N, hdw, hn)), FD.nat__lt_trans(dw, 28n, 29n, hdw, {==}))
+
+def hno(+dw: Nat, +N: U32, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(N), A.quad(FD.spec_common__pow2(VLS.DO(N)))) == True{} : Bool}:
+  +hc = VD.wd_cover(VC.nwu(N), dw, FD.nat__le_trans(dw, 28n, 32n, FD.nat__lt_le(dw, 28n, hdw), {==}), nwp(dw, N, hdw, hn))
+  +h0 = FD.logic__subst(Nat, z => {Nat.is_le(VC.NW(N), z) == True{} : Bool}, O.pow2n(VLS.DO(N)), VB.pw(VLS.DO(N)), Equal.sym(Nat, VB.pw(VLS.DO(N)), O.pow2n(VLS.DO(N)), VD.s_pow2_eq(VLS.DO(N))), hc)
+  FD.nat__le_trans(U32.to_nat(N), A.quad(VC.NW(N)), A.quad(FD.spec_common__pow2(VLS.DO(N))), VBS.quad_nw_ge(N, VLS.KK(dw), VLS.kk_lt(dw, hdw), VLS.hyn(dw, N, hn)),
+    CQ4.q4(VC.NW(N), FD.spec_common__pow2(VLS.DO(N)), h0))
+
+def pfo(+N: U32, +T: FD.array__Tree<U32>) -> {FD.array__perfect(U32, VLS.DO(N), VLS.OUTP(N, T)) == True{} : Bool}:
+  VB.mone_perfect(VC.NW(N), 0n, 0n, VLS.DO(N), VC.ZT(VLS.DO(N)), T, FD.array__trep_perfect(U32, VLS.DO(N), 0))
 
 # ---- the (i) premise: byte storage as the root law's invariant (list_obj.wfl), at depth below k ----
 # (the encode laws take storage depth below their own bound; the root law's invariant gives dw < 32)
