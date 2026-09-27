@@ -201,20 +201,6 @@ class Gen:
         return f'L{k}(' + ', '.join(word(b) for b in xw) + ', ' + ', '.join(word(b) for b in yw) + ', ' + ', '.join(self.weq(a, b, facts) for a, b in zip(xw, yw)) + ')'
 
 
-def facts_from(h, lhs_words, rhs_words, projs):
-    """Bit facts {var == False} from the hypothesis h : {lhs == rhs} over explicit word lists:
-    the projection of word j, bit i is lhs bit on one side and False on the other."""
-    out = {}
-    for j, (lw, rw) in enumerate(zip(lhs_words, rhs_words)):
-        for i in range(32):
-            lb, rb = lw[i], rw[i]
-            if lb == F or lb == T:
-                continue
-            assert rb == F, (lb, rb)
-            out[(j, i)] = lb
-    return out
-
-
 def emit():
     g = Gen()
     w = g.w

@@ -9,7 +9,7 @@ Outputs:
                                word, bool, uint64, ...)
 
 The rules that keep the checker from ever normalizing SHA-256 on a concretely
-shaped message (see codegen/sha_laws.py and WORK_LOG.md):
+shaped message (see codegen/sha_laws.py):
   * runtime roots are taken at an abstract message length `hl` (the public
     entry points pass 64n) and carry the equation `hl == 64n`;
   * the specification side only ever sees digests that are stuck on a

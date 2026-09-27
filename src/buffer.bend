@@ -162,8 +162,8 @@ def capacity_small(+w: U32) -> Nat:
 # Array depth for `w` words: the smallest d with 2^d >= w, which is the bit
 # length of w - 1. The halving loop above and the 17-case table below it both
 # cost far more than the allocation they size - measured at 54 ns against 5 ns
-# for the Array.new they precede (benchmarks/probes/put_cost.bend modes 8 and
-# 9) - because a long U32 match and a seven-step loop are many rewrites. This
+# for the Array.new they precede, in a native probe of the two sizing modes -
+# because a long U32 match and a seven-step loop are many rewrites. This
 # is five comparisons, each shifting by a literal. It returns exactly the same
 # depth as capacity_go for every w (checked against it over 0..2^16 and at the
 # 2^20 and 2^24 boundaries).
@@ -214,7 +214,7 @@ def capacity(+n: U32) -> Nat: words_depth(U32.shrn((n + 3 : U32), 2n))
 # `Array.new(U32, d, 0)` is emitted as a loop over 2^d words. When d is a
 # compile-time constant the C compiler turns that loop into bzero; when d is
 # computed at run time it stays a scalar store loop, measured about ten times
-# slower (8192 words: 2.2 us against 0.2 us, benchmarks/probes/zero_fill.bend).
+# slower (8192 words: 2.2 us against 0.2 us, native probe).
 # So each depth an encoding or a decoded field can need has its own
 # allocation function with a literal depth, reached through a chain of
 # comparisons. (A U32 `match` with literal cases is emitted as a decision tree

@@ -29,9 +29,8 @@ import ../obj/spec_garr_Gt7274F61A0F.bend as P1_PRV
 import ../../types/schema.bend as P2_S
 import ../../spec/decoding_relation.bend as P2_Decoding
 import ../obj/generic_specs.bend as P2_Spec
-import ../../spec/type_legality.bend as P2_TL
-import ../decode_complete.bend as P2_E
-import ../type_validator_soundness.bend as P2_VS
+import ../../src/schema.bend as P2_I
+import ../decode_unique.bend as P2_E
 import ../../proofs/compact/found.bend as P2_F
 import ../../types/primitive.bend as P2_P
 import ../obj/spec_fixed.bend as P2_SF

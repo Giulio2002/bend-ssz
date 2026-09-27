@@ -80,7 +80,7 @@ BEND_FLAGS = ['--threads', '1', '--gpu', 'off']
 MIN_SAMPLES = 5
 TARGET_SECONDS = 0.25
 MAX_OPS = 5_000_000
-CONTRACT = json.loads((ROOT / 'automation/performance_contract.json').read_text())
+CONTRACT = json.loads((ROOT / 'benchmarks/performance_contract.json').read_text())
 OPERATIONS = ['deserialize', 'serialize', 'hash_tree_root']
 
 
@@ -568,10 +568,8 @@ def source_manifest():
             continue
         for path in base.rglob('*'):
             relative = path.relative_to(ROOT)
-            # benchmarks/evidence is hashed too: the frozen gate
-            # (automation/performance_gate.py) requires a current hash for every
-            # .json/.py under benchmarks/, evidence included, and rejected a
-            # report that left them out. The runner never writes there; the
+            # benchmarks/evidence is hashed too: a report records a current hash
+            # for every .json/.py under benchmarks/, evidence included. The runner never writes there; the
             # evidence must simply stay unchanged while a run is in progress.
             if folder == 'benchmarks' and len(relative.parts) > 1 and relative.parts[1] == 'inputs':
                 continue

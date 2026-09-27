@@ -2122,4 +2122,4 @@ def width_cases(hh, wopt, G, wsame, fixedcase, varcase):
 # in proofs/cursor_leaves.bend; the missing ingredient is a legality predicate
 # usable inside unions: `src/schema.valid_go` rejects `Null` everywhere except
 # as a union's first option, so the recursion needs the structural predicate
-# that a union's option list satisfies (see WORK_LOG.md).
+# that a union's option list satisfies.

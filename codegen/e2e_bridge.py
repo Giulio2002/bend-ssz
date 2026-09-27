@@ -1579,6 +1579,7 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
+import ../proofs/obj/vbuf.bend as VB
 import ./e2e_load.bend as L
 
 # The capacity facts for the loader: a buffer of n bytes, n <= 4 * 2^k for some k < 29,
@@ -1739,6 +1740,47 @@ def cap_w(+bs: +List<U32>, +n: U32, +k: Nat, +hn: {List.length(&2, U32, bs) == U
   %Equal.sym(Nat, FD.spec_common__length(U32, L.wlp(bs)), nwn(List.length(&2, U32, bs)), ln(bs)) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   %Equal.sym(Nat, List.length(&2, U32, bs), U32.to_nat(n), hn) : {Nat.is_le(nwn(_), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   cap_n(n, k, hk, h)
+
+
+# ---- the object API's own input limit: n <= VB.NMAX() (2^32 - 32), depth at most 30 ----
+# The same facts for every input the object API accepts: n + 3 does not wrap (VB.nmax_lt), the
+# words of n bytes are at most 2^30 (n < 2^32), so d = B.capacity(n) <= 30.
+
+def nwM(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {U32.to_nat(nwu(n)) == nwn(U32.to_nat(n)) : Nat}:
+  +h3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(n)), Nat.add(31n, U32.to_nat(n)), FD.spec_common__pow2(32n), Order.add_right(3n, 31n, U32.to_nat(n), {==}), VB.nmax_lt(n, hN))
+  Equal.trans(Nat, U32.to_nat(nwu(n)), VD.s_rng(2n, U32.to_nat((n + 3 : U32))), nwn(U32.to_nat(n)), VD.shrk(2n, (n + 3 : U32)),
+    Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat((n + 3 : U32)), Nat.add(3n, U32.to_nat(n)), VB.add_lt32(n, 3, U32.to_nat(n), {==}, h3)))
+
+def nwkM(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(nwu(n)), O.pow2n(30n)) == True{} : Bool}:
+  +hq = FD.nat__lt_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(30n)), VB.u32_lt(n))
+  %Equal.sym(Nat, U32.to_nat(nwu(n)), nwn(U32.to_nat(n)), nwM(n, hN)) : {Nat.is_le(_, O.pow2n(30n)) == True{} : Bool}
+  %VD.s_pow2_eq(30n) : {Nat.is_le(nwn(U32.to_nat(n)), _) == True{} : Bool}
+  nle(U32.to_nat(n), FD.spec_common__pow2(30n), hq)
+
+# d = B.capacity(n) <= 30
+def capM_le(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(B.capacity(n), 30n) == True{} : Bool}:
+  VD.wd_min(nwu(n), 30n, nwkM(n, hN))
+
+def capM_lt(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_lt(B.capacity(n), 31n) == True{} : Bool}:
+  FD.nat__le_lt_trans(B.capacity(n), 30n, 31n, capM_le(n, hN), {==})
+
+def capM_32(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_lt(B.capacity(n), 32n) == True{} : Bool}:
+  FD.nat__le_lt_trans(B.capacity(n), 30n, 32n, capM_le(n, hN), {==})
+
+def capM_n(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(nwn(U32.to_nat(n)), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}:
+  %nwM(n, hN) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
+  %Equal.sym(Nat, FD.spec_common__pow2(B.capacity(n)), O.pow2n(B.capacity(n)), VD.s_pow2_eq(B.capacity(n))) : {Nat.is_le(U32.to_nat(nwu(n)), _) == True{} : Bool}
+  VD.wd_cover(nwu(n), 30n, {==}, nwkM(n, hN))
+
+def capM_q(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(B.capacity(n)))) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(n), A.quad(nwn(U32.to_nat(n))), A.quad(FD.spec_common__pow2(B.capacity(n))), ng(U32.to_nat(n)),
+    q4(nwn(U32.to_nat(n)), FD.spec_common__pow2(B.capacity(n)), capM_n(n, hN)))
+
+def capM_w(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool})
+    -> {Nat.is_le(FD.spec_common__length(U32, L.wlp(bs)), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}:
+  %Equal.sym(Nat, FD.spec_common__length(U32, L.wlp(bs)), nwn(List.length(&2, U32, bs)), ln(bs)) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
+  %Equal.sym(Nat, List.length(&2, U32, bs), U32.to_nat(n), hn) : {Nat.is_le(nwn(_), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
+  capM_n(n, hN)
 '''
 
 ULIST = r'''import Base
@@ -2269,16 +2311,19 @@ def vdec_info(R):
 # The input-size bound of the variable-size bridges is a parameter: K = one below the codec
 # laws' depth bound, read from the laws (so it rises when they are extended to deeper buffers),
 # capped at CAP_KMAX, the largest K e2e_cap's lemmas cover (n + 3 must not overflow: K + 3 < 32).
-# The input bound is n <= 2^30 bytes (1 GiB) at most today: every decode law takes buffers of depth
-# below 29 at most. Planned: codec-var extends the decode laws to the object API's own U32 limit; then
-# every variable-size bridge rises to that single runtime limit (e2e_cap's facts extended to the
-# runtime's max depth, CAP_KMAX raised, and the near-2^32 case where n + 3 wraps handled), and the
-# manifest's premise reads "any input the object API accepts (n <= <runtime limit>)".
+# Names whose decode laws cover every tree depth below 31 (codec-deep) take the object API's own limit
+# instead (vdec_nmax): hS is n <= VB.NMAX() (2^32 - 32), with e2e_cap's capM_* facts (depth at most 30).
+# The K bound remains for the names whose laws still stop at a smaller depth.
 CAP_KMAX = 28
 
 
 def vdec_k(info):
     return max(1, min(info['bound'] - 1, CAP_KMAX))
+
+
+def vdec_nmax(info):
+    """The decode laws cover every tree depth below 31: the bridge takes the object API's own limit n <= NMAX."""
+    return info['bound'] >= 31
 
 
 def vdec_size(K):
@@ -2307,11 +2352,24 @@ def text_vdec(R, X, info):
                             '.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(')
     if info['vald']:
         body = body.replace('DC.VAL(TT(bs, n), n)', 'DC.VAL(B.capacity(n), TT(bs, n), n)')
+    if vdec_nmax(info):
+        body = (body.replace('hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}', 'hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}')
+                .replace('FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==})', 'FD.nat__le_lt_trans(B.capacity(n), 30n, @BD@, C.capM_le(n, hS), {==})')
+                .replace('C.cap_q(n, @K@, {==}, hS)', 'C.capM_q(n, hS)').replace('C.cap_32(n, @K@, {==}, hS)', 'C.capM_32(n, hS)')
+                .replace('C.cap_w(bs, n, @K@, hn, {==}, hS)', 'C.capM_w(bs, n, hn, hS)'))
+        assert '@K@' not in body, 'NMAX mode: a K-bound left in the template'
     body = (body.replace('@X@', X).replace('@R@', R).replace('@VIEW@', vw['view'])
             .replace('@K@', f'{K}n').replace('@BD@', f'{info["bound"]}n'))
     imps = VDEC_HEAD + vw['imports'] + [f'import ../proofs/obj/{p} as {a}' for p, a in alias.items()]
     if info['sch'] == 'GS':
         imps = imps + ['import ../proofs/obj/generic_specs.bend as GS']
+    if vdec_nmax(info):
+        imps = imps + [x for x in ['import ../proofs/obj/vbuf.bend as VB'] if x not in imps]
+        head = ['# GENERATED by codegen/e2e_bridge.py. Do not edit.',
+                f'# {R} (variable size): the object API\'s decoder on a byte list against END_TO_END\'s deserialize,',
+                '# (ii) through the view and (iii), for any input the object API accepts: hS, n <= VB.NMAX() (2^32 - 32).',
+                '# The buffer is the loader\'s (e2e_load) at the capacity depth (e2e_cap: at most 30, the laws\' d < 31).']
+        return '\n'.join(imps) + '\n\n' + '\n'.join(head) + '\n\n' + vw['text'].replace('@BD@', f'{info["bound"]}n') + body
     head = ['# GENERATED by codegen/e2e_bridge.py. Do not edit.',
             f'# {R} (variable size): the object API\'s decoder on a byte list against END_TO_END\'s deserialize,',
             f'# (ii) through the view and (iii), for inputs of {vdec_size(K)}: the premise hS, n <= 4 * 2^{K},',
@@ -2386,15 +2444,16 @@ def input_bounds(readable, bridged):
             continue
         info = {'bound': int(mb.group(1))}
         K = vdec_k(info)
-        bound = 2 ** (K + 2)
+        bound = 2 ** 32 - 32 if vdec_nmax(info) else 2 ** (K + 2)
+        ibs = 'NMAX = 2^32 - 32 (the object API\'s limit)' if vdec_nmax(info) else f'2^{K + 2}'
         m = max_ssz_size(tys[inv[R]])
         cov = m is not None and m <= bound
-        rows[R] = {'generated_name': inv[R], 'depth_bound': info['bound'], 'input_bound': f'2^{K + 2}', 'input_bound_bytes': bound,
+        rows[R] = {'generated_name': inv[R], 'depth_bound': info['bound'], 'input_bound': ibs, 'input_bound_bytes': bound,
                    'max_ssz_size': 'unbounded' if m is None else m, 'covered': cov, 'bridged': bridged.get(R)}
         if not cov:
             why = ('unbounded (progressive list)' if m is None else
                    f'{m} bytes, beyond the U32 byte length the API takes' if m >= 2 ** 32 else f'{m} bytes')
-            short.append({'name': R, 'input_bound': f'2^{K + 2}', 'max_ssz_size': why,
+            short.append({'name': R, 'input_bound': ibs, 'max_ssz_size': why,
                           'closed_at_depth_29': m is not None and m <= 2 ** 30})
     return rows, short
 
@@ -2977,7 +3036,8 @@ def outputs():
         fn = f'{R0}_e2e_dec_generated.bend'
         out[OUT / fn] = text_vdec(R0, X0, info)
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_decode_view', f'{R0}_e2e_decode_reject'], 'ii': 'view',
-                             'premise': f'{vdec_size(vdec_k(info))} (hS: n <= 4 * 2^K with K = {vdec_k(info)}, a parameter; the codec laws take buffers of depth below {info["bound"]})'}]
+                             'premise': ('any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)' if vdec_nmax(info) else
+                                         f'{vdec_size(vdec_k(info))} (hS: n <= 4 * 2^K with K = {vdec_k(info)}, a parameter; the codec laws take buffers of depth below {info["bound"]})')}]
         u['decode'] = fn
     for R0, u in sorted(uncovered.items()):
         X0 = u['generated_name']

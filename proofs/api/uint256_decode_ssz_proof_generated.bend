@@ -25,8 +25,7 @@ import ../../types/schema.bend as P2_S
 import ../../types/primitive.bend as P2_P
 import ../../spec/decoding_relation.bend as P2_Decoding
 import ../../spec/fulu_schemas.bend as P2_Spec
-import ../decode_complete.bend as P2_E
-import ../../proofs/fulu_legality.bend as P2_Legal
+import ../decode_unique.bend as P2_E
 import ../obj/spec_fixed.bend as P2_F
 import ../obj/spec_bits.bend as P2_FB
 import ../obj/spec_codec_uint256.bend as P2_C0
@@ -73,8 +72,7 @@ import ../../types/schema.bend as P8_S
 import ../../types/primitive.bend as P8_P
 import ../../spec/decoding_relation.bend as P8_Decoding
 import ../obj/generic_specs.bend as P8_Spec
-import ../decode_complete.bend as P8_E
-import ../type_validator_soundness.bend as P8_VS
+import ../decode_unique.bend as P8_E
 import ../obj/spec_fixed.bend as P8_F
 import ../obj/spec_bits.bend as P8_FB
 import ../obj/spec_gcodec_Gt59DCDB2873.bend as P8_C0

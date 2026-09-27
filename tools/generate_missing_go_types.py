@@ -130,7 +130,7 @@ class Emitter:
 
 def main():
     schemas = Schemas()
-    contract = json.loads((ROOT / 'automation/performance_contract.json').read_text())
+    contract = json.loads((ROOT / 'benchmarks/performance_contract.json').read_text())
     names = sorted({op.rsplit('.', 1)[0] for op in contract['required_operations']})
     # Which container types the pinned go-eth2-client does not define.
     available = go_candidates()

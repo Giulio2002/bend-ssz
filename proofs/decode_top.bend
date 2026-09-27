@@ -18,6 +18,7 @@ import ./primitive_invariants.bend as V
 import ./nat_order.bend as NO
 import ./word_facts.bend as F
 import ./codec_composition.bend as Composition
+import ./decode_region.bend as DR
 
 # The public list entry point, tied to the frozen specification.
 #
@@ -49,9 +50,7 @@ law region_is_input:
   for +bytes: {List.take(&2, U32, P.chunks_bytes(chunks), List.length(&2, U32, xs)) == xs : +List<U32>}
   {P.slice_bytes(P.Slice{chunks, 0n, n}) == xs : +List<U32>}
 def region_is_input(xs, n, chunks, len, bytes):
-  %Equal.sym(+List<U32>, List.drop(&2, U32, P.chunks_bytes(chunks), 0n), P.chunks_bytes(chunks), PK.drop_zero(P.chunks_bytes(chunks))) : {List.take(&2, U32, _, n) == xs : +List<U32>}
-  %Equal.sym(Nat, n, List.length(&2, U32, xs), len) : {List.take(&2, U32, P.chunks_bytes(chunks), _) == xs : +List<U32>}
-  bytes
+  DR.region_is_input(xs, n, chunks, len, bytes)
 
 # From a parsed region to the specification's encoding of the decoded value.
 law take_all:
@@ -60,8 +59,7 @@ law take_all:
   for +len: {n == List.length(&2, U32, xs) : Nat}
   {List.take(&2, U32, xs, n) == xs : +List<U32>}
 def take_all(xs, n, len):
-  %Equal.sym(Nat, n, List.length(&2, U32, xs), len) : {List.take(&2, U32, xs, _) == xs : +List<U32>}
-  PK.take_length_all(xs)
+  DR.take_all(xs, n, len)
 
 law fragment_bytes:
   for +width: Maybe<&2, Nat>
@@ -103,8 +101,7 @@ law region_wf:
   for +bytes: {List.take(&2, U32, P.chunks_bytes(chunks), List.length(&2, U32, xs)) == xs : +List<U32>}
   {List.length(&2, U32, P.slice_bytes(P.Slice{chunks, 0n, n})) == P.slice_size(P.Slice{chunks, 0n, n}) : Nat}
 def region_wf(xs, n, chunks, len, bytes):
-  %Equal.sym(+List<U32>, P.slice_bytes(P.Slice{chunks, 0n, n}), xs, region_is_input(xs, n, chunks, len, bytes)) : {List.length(&2, U32, _) == n : Nat}
-  Equal.sym(Nat, n, List.length(&2, U32, xs), len)
+  DR.region_wf(xs, n, chunks, len, bytes)
 
 law out_encodes:
   for +schema: T.Schema

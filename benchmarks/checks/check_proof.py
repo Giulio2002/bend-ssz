@@ -55,8 +55,9 @@ def main():
     log = OUT / (name + '.log')
     started = time.monotonic()
     # The checker is a Bun program; this JavaScriptCore heap hint makes its
-    # collector keep up (WORK_LOG "The proof checker's peak, and the heap
-    # hint"). Host configuration only; recorded in every summary line.
+    # collector keep up (PROOF.bend peaked at 5.80 GB unset, 4.24 GB and ~30 %
+    # faster at 3,000,000,000). Host configuration only; recorded in every
+    # summary line.
     env = {**os.environ, 'BEND_NO_TELEMETRY': '1',
            'BUN_JSC_forceRAMSize': os.environ.get('BUN_JSC_forceRAMSize', '3000000000')}
     with open(log, 'w') as out:

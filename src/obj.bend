@@ -73,7 +73,7 @@ def keep(+k: U32, +w: U32) -> U32:
 # takes one word per iteration spends most of its time in the loop. These copy
 # eight words per iteration with straight-line reads and writes, and the
 # remainder one at a time. Measured: 0.26 ns against 0.085 ns per word for a
-# 4096-word copy (benchmarks/probes/copy_unroll.bend). The words moved are the
+# 4096-word copy (native probe). The words moved are the
 # same as a one-word loop's.
 
 # dst[b + j] = src[a + j] for j < nw. Returns (dst, src).

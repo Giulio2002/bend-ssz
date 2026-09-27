@@ -29,8 +29,7 @@ import ../../types/schema.bend as P2_S
 import ../../types/primitive.bend as P2_P
 import ../../spec/decoding_relation.bend as P2_Decoding
 import ../../spec/fulu_schemas.bend as P2_Spec
-import ../decode_complete.bend as P2_E
-import ../../proofs/fulu_legality.bend as P2_Legal
+import ../decode_unique.bend as P2_E
 import ../../proofs/compact/found.bend as P2_FD
 import ../obj/spec_small.bend as P2_SM
 import ../obj/spec_unique_small.bend as P2_PRV
