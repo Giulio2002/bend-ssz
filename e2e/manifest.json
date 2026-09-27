@@ -2532,6 +2532,16 @@
     ],
     "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) (the root law's representation invariant)"
    }
+  ],
+  "FuluDataColumnsByRootIdentifier_e2e_generated.bend": [
+   {
+    "name": "FuluDataColumnsByRootIdentifier",
+    "generated_name": "DataColumnsByRootIdentifier",
+    "laws": [
+     "FuluDataColumnsByRootIdentifier_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
   ]
  },
  "uncovered": {
@@ -2666,12 +2676,6 @@
   "FuluCell": {
    "generated_name": "Cell",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluDataColumnsByRootIdentifier": {
-   "generated_name": "DataColumnsByRootIdentifier",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend",
-   "root": "FuluDataColumnsByRootIdentifier_e2e_root_generated.bend"
   },
   "FuluMatrixEntry": {
    "generated_name": "MatrixEntry",
@@ -3041,6 +3045,14 @@
   }
  },
  "root_awaiting": {},
+ "variable_size": {
+  "FuluDataColumnsByRootIdentifier": {
+   "generated_name": "DataColumnsByRootIdentifier",
+   "i": "FuluDataColumnsByRootIdentifier_e2e_generated.bend",
+   "ii_iii": "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend",
+   "iv": "FuluDataColumnsByRootIdentifier_e2e_root_generated.bend"
+  }
+ },
  "input_bounds": {
   "BitsStruct": {
    "generated_name": "Gc85FA758A04",
@@ -3157,7 +3169,7 @@
    "input_bound_bytes": 1073741824,
    "max_ssz_size": 1060,
    "covered": true,
-   "bridged": "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluExecutionPayloadHeader": {
    "generated_name": "ExecutionPayloadHeader",
