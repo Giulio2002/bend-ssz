@@ -7,7 +7,8 @@
     "laws": [
      "bitvector_32_e2e_decode_accept",
      "bitvector_32_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "bitvector_512",
@@ -15,7 +16,8 @@
     "laws": [
      "bitvector_512_e2e_decode_accept",
      "bitvector_512_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "uint128_e2e_dec_generated.bend": [
@@ -25,7 +27,8 @@
     "laws": [
      "uint128_e2e_decode_accept",
      "uint128_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "uint256_Gt59DCDB2873",
@@ -33,7 +36,8 @@
     "laws": [
      "uint256_Gt59DCDB2873_e2e_decode_accept",
      "uint256_Gt59DCDB2873_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "uint64_Gt62B0093BE7_e2e_dec_generated.bend": [
@@ -43,7 +47,8 @@
     "laws": [
      "uint64_Gt62B0093BE7_e2e_decode_accept",
      "uint64_Gt62B0093BE7_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBytes20_e2e_dec_generated.bend": [
@@ -53,7 +58,8 @@
     "laws": [
      "FuluBytes20_e2e_decode_accept",
      "FuluBytes20_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluBytes32",
@@ -61,7 +67,8 @@
     "laws": [
      "FuluBytes32_e2e_decode_accept",
      "FuluBytes32_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBytes4_e2e_dec_generated.bend": [
@@ -71,7 +78,8 @@
     "laws": [
      "FuluBytes4_e2e_decode_accept",
      "FuluBytes4_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluBytes48",
@@ -79,7 +87,8 @@
     "laws": [
      "FuluBytes48_e2e_decode_accept",
      "FuluBytes48_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBytes8_e2e_dec_generated.bend": [
@@ -89,7 +98,8 @@
     "laws": [
      "FuluBytes8_e2e_decode_accept",
      "FuluBytes8_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBytes96_e2e_dec_generated.bend": [
@@ -99,7 +109,8 @@
     "laws": [
      "FuluBytes96_e2e_decode_accept",
      "FuluBytes96_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluEpoch_e2e_dec_generated.bend": [
@@ -109,7 +120,8 @@
     "laws": [
      "FuluEpoch_e2e_decode_accept",
      "FuluEpoch_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluGwei",
@@ -117,7 +129,8 @@
     "laws": [
      "FuluGwei_e2e_decode_accept",
      "FuluGwei_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSlot_e2e_dec_generated.bend": [
@@ -127,7 +140,8 @@
     "laws": [
      "FuluSlot_e2e_decode_accept",
      "FuluSlot_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "uint256",
@@ -135,7 +149,8 @@
     "laws": [
      "uint256_e2e_decode_accept",
      "uint256_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "uint64_e2e_dec_generated.bend": [
@@ -145,7 +160,8 @@
     "laws": [
      "uint64_e2e_decode_accept",
      "uint64_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBLSSignature_e2e_dec_generated.bend": [
@@ -155,7 +171,8 @@
     "laws": [
      "FuluBLSSignature_e2e_decode_accept",
      "FuluBLSSignature_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluDomainType_e2e_dec_generated.bend": [
@@ -165,7 +182,8 @@
     "laws": [
      "FuluDomainType_e2e_decode_accept",
      "FuluDomainType_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluFork",
@@ -173,7 +191,8 @@
     "laws": [
      "FuluFork_e2e_decode_accept",
      "FuluFork_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluG1Point_e2e_dec_generated.bend": [
@@ -183,7 +202,8 @@
     "laws": [
      "FuluG1Point_e2e_decode_accept",
      "FuluG1Point_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluG2Point_e2e_dec_generated.bend": [
@@ -193,7 +213,8 @@
     "laws": [
      "FuluG2Point_e2e_decode_accept",
      "FuluG2Point_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluHash32_e2e_dec_generated.bend": [
@@ -203,7 +224,8 @@
     "laws": [
      "FuluHash32_e2e_decode_accept",
      "FuluHash32_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluPowBlock_e2e_dec_generated.bend": [
@@ -213,7 +235,8 @@
     "laws": [
      "FuluPowBlock_e2e_decode_accept",
      "FuluPowBlock_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSyncAggregate_e2e_dec_generated.bend": [
@@ -223,7 +246,8 @@
     "laws": [
      "FuluSyncAggregate_e2e_decode_accept",
      "FuluSyncAggregate_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSyncAggregatorSelectionData_e2e_dec_generated.bend": [
@@ -233,7 +257,8 @@
     "laws": [
      "FuluSyncAggregatorSelectionData_e2e_decode_accept",
      "FuluSyncAggregatorSelectionData_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluVersion",
@@ -241,7 +266,8 @@
     "laws": [
      "FuluVersion_e2e_decode_accept",
      "FuluVersion_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluVersionedHash_e2e_dec_generated.bend": [
@@ -251,7 +277,8 @@
     "laws": [
      "FuluVersionedHash_e2e_decode_accept",
      "FuluVersionedHash_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluCommitteeIndex_e2e_dec_generated.bend": [
@@ -261,7 +288,8 @@
     "laws": [
      "FuluCommitteeIndex_e2e_decode_accept",
      "FuluCommitteeIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluHistoricalSummary",
@@ -269,7 +297,8 @@
     "laws": [
      "FuluHistoricalSummary_e2e_decode_accept",
      "FuluHistoricalSummary_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluPendingConsolidation_e2e_dec_generated.bend": [
@@ -279,7 +308,8 @@
     "laws": [
      "FuluPendingConsolidation_e2e_decode_accept",
      "FuluPendingConsolidation_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluPendingPartialWithdrawal",
@@ -287,7 +317,8 @@
     "laws": [
      "FuluPendingPartialWithdrawal_e2e_decode_accept",
      "FuluPendingPartialWithdrawal_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluRoot_e2e_dec_generated.bend": [
@@ -297,7 +328,8 @@
     "laws": [
      "FuluRoot_e2e_decode_accept",
      "FuluRoot_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSignedVoluntaryExit_e2e_dec_generated.bend": [
@@ -307,7 +339,8 @@
     "laws": [
      "FuluSignedVoluntaryExit_e2e_decode_accept",
      "FuluSignedVoluntaryExit_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSyncCommitteeContribution_e2e_dec_generated.bend": [
@@ -317,7 +350,8 @@
     "laws": [
      "FuluSyncCommitteeContribution_e2e_decode_accept",
      "FuluSyncCommitteeContribution_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSyncCommitteeMessage_e2e_dec_generated.bend": [
@@ -327,7 +361,8 @@
     "laws": [
      "FuluSyncCommitteeMessage_e2e_decode_accept",
      "FuluSyncCommitteeMessage_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluValidatorIndex_e2e_dec_generated.bend": [
@@ -337,7 +372,8 @@
     "laws": [
      "FuluValidatorIndex_e2e_decode_accept",
      "FuluValidatorIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluVoluntaryExit",
@@ -345,7 +381,8 @@
     "laws": [
      "FuluVoluntaryExit_e2e_decode_accept",
      "FuluVoluntaryExit_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluAttestationData_e2e_dec_generated.bend": [
@@ -355,7 +392,8 @@
     "laws": [
      "FuluAttestationData_e2e_decode_accept",
      "FuluAttestationData_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBeaconBlockHeader_e2e_dec_generated.bend": [
@@ -365,7 +403,8 @@
     "laws": [
      "FuluBeaconBlockHeader_e2e_decode_accept",
      "FuluBeaconBlockHeader_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluCheckpoint_e2e_dec_generated.bend": [
@@ -375,7 +414,8 @@
     "laws": [
      "FuluCheckpoint_e2e_decode_accept",
      "FuluCheckpoint_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluDomain",
@@ -383,7 +423,8 @@
     "laws": [
      "FuluDomain_e2e_decode_accept",
      "FuluDomain_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluEth1Block_e2e_dec_generated.bend": [
@@ -393,7 +434,8 @@
     "laws": [
      "FuluEth1Block_e2e_decode_accept",
      "FuluEth1Block_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluEth1Data_e2e_dec_generated.bend": [
@@ -403,7 +445,8 @@
     "laws": [
      "FuluEth1Data_e2e_decode_accept",
      "FuluEth1Data_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluForkData_e2e_dec_generated.bend": [
@@ -413,7 +456,8 @@
     "laws": [
      "FuluForkData_e2e_decode_accept",
      "FuluForkData_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluForkDigest",
@@ -421,7 +465,8 @@
     "laws": [
      "FuluForkDigest_e2e_decode_accept",
      "FuluForkDigest_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSignedBeaconBlockHeader_e2e_dec_generated.bend": [
@@ -431,7 +476,8 @@
     "laws": [
      "FuluSignedBeaconBlockHeader_e2e_decode_accept",
      "FuluSignedBeaconBlockHeader_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSigningData_e2e_dec_generated.bend": [
@@ -441,7 +487,8 @@
     "laws": [
      "FuluSigningData_e2e_decode_accept",
      "FuluSigningData_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSingleAttestation_e2e_dec_generated.bend": [
@@ -451,7 +498,8 @@
     "laws": [
      "FuluSingleAttestation_e2e_decode_accept",
      "FuluSingleAttestation_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBLSPubkey_e2e_dec_generated.bend": [
@@ -461,7 +509,8 @@
     "laws": [
      "FuluBLSPubkey_e2e_decode_accept",
      "FuluBLSPubkey_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluDepositData_e2e_dec_generated.bend": [
@@ -471,7 +520,8 @@
     "laws": [
      "FuluDepositData_e2e_decode_accept",
      "FuluDepositData_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluDepositMessage_e2e_dec_generated.bend": [
@@ -481,7 +531,8 @@
     "laws": [
      "FuluDepositMessage_e2e_decode_accept",
      "FuluDepositMessage_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluDepositRequest_e2e_dec_generated.bend": [
@@ -491,7 +542,8 @@
     "laws": [
      "FuluDepositRequest_e2e_decode_accept",
      "FuluDepositRequest_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluEther_e2e_dec_generated.bend": [
@@ -501,7 +553,8 @@
     "laws": [
      "FuluEther_e2e_decode_accept",
      "FuluEther_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluExecutionAddress",
@@ -509,7 +562,8 @@
     "laws": [
      "FuluExecutionAddress_e2e_decode_accept",
      "FuluExecutionAddress_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluNodeID_e2e_dec_generated.bend": [
@@ -519,7 +573,8 @@
     "laws": [
      "FuluNodeID_e2e_decode_accept",
      "FuluNodeID_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluPendingDeposit_e2e_dec_generated.bend": [
@@ -529,7 +584,8 @@
     "laws": [
      "FuluPendingDeposit_e2e_decode_accept",
      "FuluPendingDeposit_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSubnetID_e2e_dec_generated.bend": [
@@ -539,7 +595,8 @@
     "laws": [
      "FuluSubnetID_e2e_decode_accept",
      "FuluSubnetID_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBLSToExecutionChange_e2e_dec_generated.bend": [
@@ -549,7 +606,8 @@
     "laws": [
      "FuluBLSToExecutionChange_e2e_decode_accept",
      "FuluBLSToExecutionChange_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBlobIdentifier_e2e_dec_generated.bend": [
@@ -559,7 +617,8 @@
     "laws": [
      "FuluBlobIdentifier_e2e_decode_accept",
      "FuluBlobIdentifier_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluBlobIndex",
@@ -567,7 +626,8 @@
     "laws": [
      "FuluBlobIndex_e2e_decode_accept",
      "FuluBlobIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluConsolidationRequest_e2e_dec_generated.bend": [
@@ -577,7 +637,8 @@
     "laws": [
      "FuluConsolidationRequest_e2e_decode_accept",
      "FuluConsolidationRequest_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluKZGCommitment_e2e_dec_generated.bend": [
@@ -587,7 +648,8 @@
     "laws": [
      "FuluKZGCommitment_e2e_decode_accept",
      "FuluKZGCommitment_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluKZGProof",
@@ -595,7 +657,8 @@
     "laws": [
      "FuluKZGProof_e2e_decode_accept",
      "FuluKZGProof_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluPayloadId_e2e_dec_generated.bend": [
@@ -605,7 +668,8 @@
     "laws": [
      "FuluPayloadId_e2e_decode_accept",
      "FuluPayloadId_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSignedBLSToExecutionChange_e2e_dec_generated.bend": [
@@ -615,7 +679,8 @@
     "laws": [
      "FuluSignedBLSToExecutionChange_e2e_decode_accept",
      "FuluSignedBLSToExecutionChange_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluWithdrawal_e2e_dec_generated.bend": [
@@ -625,7 +690,8 @@
     "laws": [
      "FuluWithdrawal_e2e_decode_accept",
      "FuluWithdrawal_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluWithdrawalIndex",
@@ -633,7 +699,8 @@
     "laws": [
      "FuluWithdrawalIndex_e2e_decode_accept",
      "FuluWithdrawalIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluWithdrawalRequest_e2e_dec_generated.bend": [
@@ -643,7 +710,8 @@
     "laws": [
      "FuluWithdrawalRequest_e2e_decode_accept",
      "FuluWithdrawalRequest_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluCellIndex_e2e_dec_generated.bend": [
@@ -653,7 +721,8 @@
     "laws": [
      "FuluCellIndex_e2e_decode_accept",
      "FuluCellIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluColumnIndex",
@@ -661,7 +730,8 @@
     "laws": [
      "FuluColumnIndex_e2e_decode_accept",
      "FuluColumnIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluCommitmentIndex_e2e_dec_generated.bend": [
@@ -671,7 +741,8 @@
     "laws": [
      "FuluCommitmentIndex_e2e_decode_accept",
      "FuluCommitmentIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluCustodyIndex",
@@ -679,7 +750,8 @@
     "laws": [
      "FuluCustodyIndex_e2e_decode_accept",
      "FuluCustodyIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluRowIndex_e2e_dec_generated.bend": [
@@ -689,7 +761,8 @@
     "laws": [
      "FuluRowIndex_e2e_decode_accept",
      "FuluRowIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "bitvector_32_e2e_generated.bend": [
@@ -1619,6 +1692,346 @@
     ],
     "premise": "rep: PK.rep_v8(o, Spec.GtE470919895()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 5, which every decoded object has"
    }
+  ],
+  "vec_uint128_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_1",
+    "generated_name": "Gt3FD98F54A5",
+    "laws": [
+     "vec_uint128_1_e2e_decode_view",
+     "vec_uint128_1_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_16_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_16",
+    "generated_name": "Gt3EC8B89B94",
+    "laws": [
+     "vec_uint128_16_e2e_decode_view",
+     "vec_uint128_16_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_2_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_2",
+    "generated_name": "Gt7D65FF3A10",
+    "laws": [
+     "vec_uint128_2_e2e_decode_view",
+     "vec_uint128_2_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint128_3",
+    "generated_name": "Gt7600AB7870",
+    "laws": [
+     "vec_uint128_3_e2e_decode_view",
+     "vec_uint128_3_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_31_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_31",
+    "generated_name": "Gt6B1336E534",
+    "laws": [
+     "vec_uint128_31_e2e_decode_view",
+     "vec_uint128_31_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_4_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_4",
+    "generated_name": "GtB0CCEA154C",
+    "laws": [
+     "vec_uint128_4_e2e_decode_view",
+     "vec_uint128_4_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_5_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_5",
+    "generated_name": "GtBB42F83A45",
+    "laws": [
+     "vec_uint128_5_e2e_decode_view",
+     "vec_uint128_5_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_8_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_8",
+    "generated_name": "Gt3E2A057F33",
+    "laws": [
+     "vec_uint128_8_e2e_decode_view",
+     "vec_uint128_8_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_1",
+    "generated_name": "GtBBFD66E011",
+    "laws": [
+     "vec_uint256_1_e2e_decode_view",
+     "vec_uint256_1_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_16_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_16",
+    "generated_name": "Gt3E6E18CD57",
+    "laws": [
+     "vec_uint256_16_e2e_decode_view",
+     "vec_uint256_16_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_2_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_2",
+    "generated_name": "GtB91D4D285D",
+    "laws": [
+     "vec_uint256_2_e2e_decode_view",
+     "vec_uint256_2_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_31_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_31",
+    "generated_name": "Gt6E9B243B7C",
+    "laws": [
+     "vec_uint256_31_e2e_decode_view",
+     "vec_uint256_31_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_3_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_3",
+    "generated_name": "Gt2E7060B297",
+    "laws": [
+     "vec_uint256_3_e2e_decode_view",
+     "vec_uint256_3_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_4_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_4",
+    "generated_name": "Gt74B2AF1CB3",
+    "laws": [
+     "vec_uint256_4_e2e_decode_view",
+     "vec_uint256_4_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_5_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_5",
+    "generated_name": "Gt0B1B711C4D",
+    "laws": [
+     "vec_uint256_5_e2e_decode_view",
+     "vec_uint256_5_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_8_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_8",
+    "generated_name": "GtFAE59DA275",
+    "laws": [
+     "vec_uint256_8_e2e_decode_view",
+     "vec_uint256_8_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_1",
+    "generated_name": "Gt669C528764",
+    "laws": [
+     "vec_uint32_1_e2e_decode_view",
+     "vec_uint32_1_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint32_16",
+    "generated_name": "Gt3CC580499F",
+    "laws": [
+     "vec_uint32_16_e2e_decode_view",
+     "vec_uint32_16_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_2_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_2",
+    "generated_name": "GtF45E42B273",
+    "laws": [
+     "vec_uint32_2_e2e_decode_view",
+     "vec_uint32_2_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint32_3",
+    "generated_name": "GtD1AEF07F7D",
+    "laws": [
+     "vec_uint32_3_e2e_decode_view",
+     "vec_uint32_3_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_31_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_31",
+    "generated_name": "GtE528AAE3C6",
+    "laws": [
+     "vec_uint32_31_e2e_decode_view",
+     "vec_uint32_31_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_4_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_4",
+    "generated_name": "Gt240C147AA2",
+    "laws": [
+     "vec_uint32_4_e2e_decode_view",
+     "vec_uint32_4_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint32_5",
+    "generated_name": "Gt1719057EB7",
+    "laws": [
+     "vec_uint32_5_e2e_decode_view",
+     "vec_uint32_5_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_8_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_8",
+    "generated_name": "GtCCF6FFA0A0",
+    "laws": [
+     "vec_uint32_8_e2e_decode_view",
+     "vec_uint32_8_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_1",
+    "generated_name": "GtADC8DCD962",
+    "laws": [
+     "vec_uint64_1_e2e_decode_view",
+     "vec_uint64_1_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_16_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_16",
+    "generated_name": "Gt0B4EF17D71",
+    "laws": [
+     "vec_uint64_16_e2e_decode_view",
+     "vec_uint64_16_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_2_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_2",
+    "generated_name": "GtC923FCB2DA",
+    "laws": [
+     "vec_uint64_2_e2e_decode_view",
+     "vec_uint64_2_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint64_3",
+    "generated_name": "Gt8E507C4540",
+    "laws": [
+     "vec_uint64_3_e2e_decode_view",
+     "vec_uint64_3_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_31_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_31",
+    "generated_name": "Gt7D1CD7363A",
+    "laws": [
+     "vec_uint64_31_e2e_decode_view",
+     "vec_uint64_31_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_4_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_4",
+    "generated_name": "Gt46F5D7703F",
+    "laws": [
+     "vec_uint64_4_e2e_decode_view",
+     "vec_uint64_4_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint64_5",
+    "generated_name": "Gt8FB0CF9679",
+    "laws": [
+     "vec_uint64_5_e2e_decode_view",
+     "vec_uint64_5_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_8_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_8",
+    "generated_name": "GtE470919895",
+    "laws": [
+     "vec_uint64_8_e2e_decode_view",
+     "vec_uint64_8_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
   ]
  },
  "uncovered": {
@@ -2179,7 +2592,6 @@
    "generated_name": "Gt3FD98F54A5",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2187,7 +2599,6 @@
    "generated_name": "Gt3EC8B89B94",
    "depth": 7,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2195,7 +2606,6 @@
    "generated_name": "Gt7D65FF3A10",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2203,7 +2613,6 @@
    "generated_name": "Gt7600AB7870",
    "depth": 5,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2211,7 +2620,6 @@
    "generated_name": "Gt6B1336E534",
    "depth": 8,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2219,7 +2627,6 @@
    "generated_name": "GtB0CCEA154C",
    "depth": 5,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2227,7 +2634,6 @@
    "generated_name": "GtBB42F83A45",
    "depth": 5,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2235,7 +2641,6 @@
    "generated_name": "Gt3E2A057F33",
    "depth": 6,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2243,7 +2648,6 @@
    "generated_name": "GtBBFD66E011",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2251,7 +2655,6 @@
    "generated_name": "Gt3E6E18CD57",
    "depth": 8,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2259,7 +2662,6 @@
    "generated_name": "GtB91D4D285D",
    "depth": 5,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2267,7 +2669,6 @@
    "generated_name": "Gt6E9B243B7C",
    "depth": 8,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2275,7 +2676,6 @@
    "generated_name": "Gt2E7060B297",
    "depth": 5,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2283,7 +2683,6 @@
    "generated_name": "Gt74B2AF1CB3",
    "depth": 6,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2291,7 +2690,6 @@
    "generated_name": "Gt0B1B711C4D",
    "depth": 6,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2299,7 +2697,6 @@
    "generated_name": "GtFAE59DA275",
    "depth": 7,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2307,7 +2704,6 @@
    "generated_name": "Gt669C528764",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2315,7 +2711,6 @@
    "generated_name": "Gt3CC580499F",
    "depth": 5,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2323,7 +2718,6 @@
    "generated_name": "GtF45E42B273",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2331,7 +2725,6 @@
    "generated_name": "GtD1AEF07F7D",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2339,7 +2732,6 @@
    "generated_name": "GtE528AAE3C6",
    "depth": 6,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2347,7 +2739,6 @@
    "generated_name": "Gt240C147AA2",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2355,7 +2746,6 @@
    "generated_name": "Gt1719057EB7",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2363,7 +2753,6 @@
    "generated_name": "GtCCF6FFA0A0",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2371,7 +2760,6 @@
    "generated_name": "GtADC8DCD962",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2379,7 +2767,6 @@
    "generated_name": "Gt0B4EF17D71",
    "depth": 6,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2387,7 +2774,6 @@
    "generated_name": "GtC923FCB2DA",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2395,7 +2781,6 @@
    "generated_name": "Gt8E507C4540",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2403,7 +2788,6 @@
    "generated_name": "Gt7D1CD7363A",
    "depth": 7,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2411,7 +2795,6 @@
    "generated_name": "Gt46F5D7703F",
    "depth": 4,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2419,7 +2802,6 @@
    "generated_name": "Gt8FB0CF9679",
    "depth": 5,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   },
@@ -2427,7 +2809,6 @@
    "generated_name": "GtE470919895",
    "depth": 5,
    "awaiting": [
-    "(ii)/(iii): object identity vs view (see report)",
     "(iv)"
    ]
   }

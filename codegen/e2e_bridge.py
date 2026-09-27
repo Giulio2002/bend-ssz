@@ -325,6 +325,11 @@ def none_some1(-A: Data, x: A, e: {None{} == Some{x} : Maybe<&1, A>}) -> Empty:
   %Equal.sym(Maybe<&1, A>, None{}, Some{x}, e) : FD.logic__truth(Maybe.is_some(&1, A, _))
   Unit{}
 
+# the same for a storage-backed object (a Type)
+def none_someT(-A: Type, x: A, e: {None{} == Some{x} : Maybe<&1, A>}) -> Empty:
+  %Equal.sym(Maybe<&1, A>, None{}, Some{x}, e) : FD.logic__truth(Maybe.is_some(&1, A, _))
+  Unit{}
+
 def some_value1(-A: Data, m: Maybe<&1, A>, d: A) -> A:
   match m:
     case None{}: d
@@ -416,7 +421,7 @@ def {p}_ib(+bs: +List<U32>, +n: U32, +o: {ot}, +{HN}, +c: Bool, +{EC("c")}, +aa:
 def {p}_ra(+bs: +List<U32>, +n: U32, +{HN}, +{HD}, +c: Bool, +{EC("c")}, +dn: {{{RES} == None{{}} : {M1}}}) -> {{{API_} == None{{}} : {MV}}}:
   match c:
     case False{{}}: {p}_anone(bs, ec)
-    case True{{}}: Empty.absurd({{{API_} == None{{}} : {MV}}}, E.none_some1({ot}, {OW}, Equal.trans({M1}, None{{}}, {RES}, Some{{{OW}}}, Equal.sym({M1}, {RES}, None{{}}, dn), {p}_some(bs, n, hn, hd, ec))))
+    case True{{}}: Empty.absurd({{{API_} == None{{}} : {MV}}}, E.none_someT({ot}, {OW}, Equal.trans({M1}, None{{}}, {RES}, Some{{{OW}}}, Equal.sym({M1}, {RES}, None{{}}, dn), {p}_some(bs, n, hn, hd, ec))))
 
 def {p}_rb(+bs: +List<U32>, +n: U32, +{HN}, +{HD}, +c: Bool, +{EC("c")}, +an: {{{API_} == None{{}} : {MV}}}) -> {{{RES} == None{{}} : {M1}}}:
   match c:
@@ -853,7 +858,7 @@ def family_w(X, m, cache):
     K = mr.group(1)
     if not re.match(r'RR\.roots\(PK\.vview' + K + r'\(o\), s, ', b_rt[3]):
         return None
-    return {'X': X, 'ename': ename, 'sname': sname, 'N': N, 'NW': NW, 'd': d, 'leaves': leaves, 'xs': xs, 'K': K,
+    return {'X': X, 'ename': ename, 'sname': sname, 'N': N, 'NW': NW, 'd': d, 'leaves': leaves, 'xs': xs, 'K': K, 'value': ms.group(4),
             'ee': ee[0], 'es': es[0], 'rt': rt[0], 'generic': 'types/generic_obj.bend as T' in (OBJ / ee[0]['file']).read_text()}
 
 
@@ -927,6 +932,143 @@ def text_w(rows):
         L.append('  (+lf, +cf) = rest')
         L.append(f'  {R}_w1(o, w, lf, cf, hc)')
         L.append('')
+        if r['generic']:
+            L[n0:] = [gfix(x) for x in L[n0:]]
+    return '\n'.join(L) + '\n'
+
+
+# ---- (ii) on views, (iii): storage-backed names ----
+
+def dec_view_text(R, en, ot, sn, VIEWF, dobj, value, xs, SI, SIlaw, SR, SRlaw, DR, DRlaw, SE, SElaw):
+    """(ii) on views and (iii) for a storage-backed name: the decoder's result, seen through the
+    view, is END_TO_END's deserialize."""
+    W = len(xs)
+    KN, KU, WN = f'{4 * W}n', f'{4 * W}', f'{W}n'
+    M1 = f'Maybe<&1, {ot}>'
+    MV = 'Maybe<&2, S.Value>'
+    LEN = 'List.length(&2, U32, bs)'
+    IN = 'B.fill_at(B.alloc(n), 0, bs)'
+    DEC = f'T.{en}_decode({IN}, n)'
+    RES = f'Pair.snd(B.Buf, {M1}, {DEC})'
+    API_ = f'API.deserialize(Spec.{sn}(), bs)'
+    ws = [f'E.wn({i}n, bs)' for i in range(W)]
+
+    def sub(t, vals):
+        return re.sub(r'(?<![\w.])(' + '|'.join(xs) + r')(?![\w{(])', lambda m: vals[xs.index(m.group(1))], t)
+    OW = sub(dobj, ws)
+    VW = sub(value, ws)
+    lw = f'F.limbs([{", ".join(ws)}])'
+    HN = f'hn: {{{LEN} == U32.to_nat(n) : Nat}}'
+    HD = 'hd: {SP.bytes_domain(bs) == True{} : Bool}'
+    EC = lambda c: f'ec: {{Nat.is_eq({LEN}, {KN}) == {c} : Bool}}'  # noqa: E731
+    p = f'{R}_d'
+    return f'''# {R}: decoding a byte list against END_TO_END's deserialize, through the view.
+def {R}_mv(m: {M1}) -> {MV}:
+  match m:
+    case None{{}}: None{{}}
+    case Some{{o}}: Some{{{VIEWF}(o)}}
+
+def {p}_none(+bs: +List<U32>, +n: U32, +{HN}, +{EC("False{}")}) -> {{{RES} == None{{}} : {M1}}}:
+  Equal.cong(B.Buf & {M1}, {M1}, q => Pair.snd(B.Buf, {M1}, q), {DEC}, ({IN}, None{{}}), {SR}.{SRlaw}({IN}, n, E.ueq_false(n, {LEN}, {KU}, hn, ec)))
+
+def {p}_anone(+bs: +List<U32>, +{EC("False{}")}) -> {{{API_} == None{{}} : {MV}}}:
+  E.outside_none(Spec.{sn}(), bs, {DR}.{DRlaw}(bs, ec))
+
+def {p}_pk(+bs: +List<U32>, +{HD}, +{EC("True{}")}) -> {{F.limbs(E.wl({WN}, bs)) == bs : +List<U32>}}:
+  E.pk({WN}, bs, hd, FD.nat__eq_from_is_eq({LEN}, {KN}, ec))
+
+def {p}_some(+bs: +List<U32>, +n: U32, +{HN}, +{HD}, +{EC("True{}")}) -> {{{RES} == Some{{{OW}}} : {M1}}}:
+  %Equal.sym(U32, n, {KU}, E.u32_len(n, {LEN}, {KU}, hn, ec)) :
+    {{Pair.snd(B.Buf, {M1}, T.{en}_decode(B.fill_at(B.alloc(_), 0, bs), _)) == Some{{{OW}}} : {M1}}}
+  %{p}_pk(bs, hd, ec) :
+    {{Pair.snd(B.Buf, {M1}, T.{en}_decode(B.fill_at(B.alloc({KU}), 0, _), {KU})) == Some{{{OW}}} : {M1}}}
+  Equal.cong(B.Buf & {M1}, {M1}, q => Pair.snd(B.Buf, {M1}, q), T.{en}_decode(B.fill_at(B.alloc({KU}), 0, {lw}), {KU}), (B.fill_at(B.alloc({KU}), 0, {lw}), Some{{{OW}}}),
+    {SI}.{SIlaw}({", ".join(ws)}))
+
+def {p}_asome(+bs: +List<U32>, +{HD}, +{EC("True{}")}) -> {{{API_} == Some{{{VW}}} : {MV}}}:
+  E2E.spec_accepted(Spec.{sn}(), bs, {VW}, (VS.public_sound(Spec.{sn}(), {{==}}),
+    %{p}_pk(bs, hd, ec) : {{Encoding.encoding_for_legal_type(Spec.{sn}(), {VW}) == Some{{_}} : Maybe<&2, +List<U32>>}}
+    {SE}.{SElaw}({", ".join(ws)})))
+
+def {p}_v(+bs: +List<U32>, +n: U32, +{HN}, +{HD}, +c: Bool, +{EC("c")}) -> {{{R}_mv({RES}) == {API_} : {MV}}}:
+  match c:
+    case False{{}}:
+      %Equal.sym({M1}, {RES}, None{{}}, {p}_none(bs, n, hn, ec)) : {{{R}_mv(_) == {API_} : {MV}}}
+      %Equal.sym({MV}, {API_}, None{{}}, {p}_anone(bs, ec)) : {{{R}_mv(None{{}}) == _ : {MV}}}
+      {{==}}
+    case True{{}}:
+      %Equal.sym({M1}, {RES}, Some{{{OW}}}, {p}_some(bs, n, hn, hd, ec)) : {{{R}_mv(_) == {API_} : {MV}}}
+      %Equal.sym({MV}, {API_}, Some{{{VW}}}, {p}_asome(bs, hd, ec)) : {{{R}_mv(Some{{{OW}}}) == _ : {MV}}}
+      {{==}}
+
+def {p}_ra(+bs: +List<U32>, +n: U32, +{HN}, +{HD}, +c: Bool, +{EC("c")}, +dn: {{{RES} == None{{}} : {M1}}}) -> {{{API_} == None{{}} : {MV}}}:
+  match c:
+    case False{{}}: {p}_anone(bs, ec)
+    case True{{}}: Empty.absurd({{{API_} == None{{}} : {MV}}}, E.none_someT({ot}, {OW}, Equal.trans({M1}, None{{}}, {RES}, Some{{{OW}}}, Equal.sym({M1}, {RES}, None{{}}, dn), {p}_some(bs, n, hn, hd, ec))))
+
+def {p}_rb(+bs: +List<U32>, +n: U32, +{HN}, +{HD}, +c: Bool, +{EC("c")}, +an: {{{API_} == None{{}} : {MV}}}) -> {{{RES} == None{{}} : {M1}}}:
+  match c:
+    case False{{}}: {p}_none(bs, n, hn, ec)
+    case True{{}}: Empty.absurd({{{RES} == None{{}} : {M1}}}, FD.logic__none_some(S.Value, {VW}, Equal.trans({MV}, None{{}}, {API_}, Some{{{VW}}}, Equal.sym({MV}, {API_}, None{{}}, an), {p}_asome(bs, hd, ec))))
+
+# (ii), on views: the view of the object the decoder returns is END_TO_END's deserialize.
+def {R}_e2e_decode_view(+bs: +List<U32>, +n: U32, +{HN}, +{HD}) -> {{{R}_mv({RES}) == {API_} : {MV}}}:
+  {p}_v(bs, n, hn, hd, Nat.is_eq({LEN}, {KN}), {{==}})
+
+# (iii) the object decoder fails exactly when END_TO_END's deserialize does.
+def {R}_e2e_decode_reject(+bs: +List<U32>, +n: U32, +{HN}, +{HD})
+    -> ({{{RES} == None{{}} : {M1}}} -> {{{API_} == None{{}} : {MV}}}) & ({{{API_} == None{{}} : {MV}}} -> {{{RES} == None{{}} : {M1}}}):
+  (dn => {p}_ra(bs, n, hn, hd, Nat.is_eq({LEN}, {KN}), {{==}}, dn), an => {p}_rb(bs, n, hn, hd, Nat.is_eq({LEN}, {KN}), {{==}}, an))
+'''
+
+
+def decode_w(r, m, cache):
+    di, dn, dr = m.get('decode_input', []), m.get('decode_none', []), m.get('decode_reject', [])
+    if not (di and dn and dr):
+        return None
+    xs = r['xs']
+    K = 4 * len(xs)
+    lim = f'F.limbs([{", ".join(xs)}])'
+    b_di, b_dn, b_dr = law(cache, di[0]), law(cache, dn[0]), law(cache, dr[0])
+    en = r['ename']
+    mi = re.match(r'\{T\.' + en + r'_decode\(B\.fill_at\(B\.alloc\(' + str(K) + r'\), 0, ' + re.escape(lim) + r'\), ' + str(K) +
+                  r'\) == \(B\.fill_at\(B\.alloc\(' + str(K) + r'\), 0, ' + re.escape(lim) + r'\), Some\{(O\.Words\{.*\})\}\) : B\.Buf & Maybe<&1, O\.Words>\}$', b_di[3])
+    if not mi or [v for v, _ in (pvars(b_di[2]) or [])] != xs:
+        return None
+    if [q.strip() for q in b_dn[2]] != ['buf: B.Buf', '+m: U32', f'e: {{U32.is_eq(m, {K}) == False{{}} : Bool}}']:
+        return None
+    if [q.strip() for q in b_dr[2]] != ['+bs: +List<U32>', f'+hn: {{Nat.is_eq(List.length(&2, U32, bs), {K}n) == False{{}} : Bool}}']:
+        return None
+    return {'di': di[0], 'dn': dn[0], 'dr': dr[0], 'dobj': mi.group(1)}
+
+
+VDHEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
+          'import ../src/buffer.bend as B', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
+          'import ../types/primitive.bend as P', 'import ../spec/codec.bend as Encoding', 'import ../spec/primitives.bend as SP',
+          'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
+          'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/packed_obj.bend as PK', 'import ./e2e_bytes.bend as E']
+
+
+def text_wdec(rows):
+    files = []
+    for r in rows:
+        for f in (r['dd']['di']['file'], r['dd']['dn']['file'], r['dd']['dr']['file'], r['es']['file']):
+            if f not in files:
+                files.append(f)
+    al = {f: f'M{i}' for i, f in enumerate(files)}
+    L = list(VDHEAD) + (GEN_IMPORTS if any(r['generic'] for r in rows) else ['import ../types/fulu_obj.bend as T', 'import ../spec/fulu_schemas.bend as Spec'])
+    L += [f'import ../proofs/obj/{f} as {a}' for f, a in al.items()]
+    L += ['', '# GENERATED by codegen/e2e_bridge.py. Do not edit.',
+          f'# {rows[0]["R"]} and the next names (word storage): the object API\'s decoder on a byte list against',
+          '# END_TO_END\'s deserialize, (ii) through the view (storage words past the data are not part of the value).', '']
+    for r in rows:
+        n0 = len(L)
+        d = r['dd']
+        ea = file_aliases(r['es']['file'])
+        value = requal(r['value'], ea)
+        L.append(dec_view_text(r['R'], r['ename'], 'O.Words', r['sname'], f'PK.vview{r["K"]}', d['dobj'], value, r['xs'],
+                               al[d['di']['file']], d['di']['law'], al[d['dn']['file']], d['dn']['law'],
+                               al[d['dr']['file']], d['dr']['law'], al[r['es']['file']], r['es']['law']))
         if r['generic']:
             L[n0:] = [gfix(x) for x in L[n0:]]
     return '\n'.join(L) + '\n'
@@ -1022,7 +1164,29 @@ def outputs():
         out[OUT / fn] = text_w(rows)
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_encode'],
                              'premise': f'rep: PK.rep_v{r["K"]}(o, Spec.{r["sname"]}()) (the root law\'s representation invariant: the validity premise for generic forms); hc: storage at the canonical depth {r["d"]}, which every decoded object has'} for r in rows]
-    man['word_storage'] = {r['R']: {'generated_name': r['X'], 'depth': r['d'], 'awaiting': ['(ii)/(iii): object identity vs view (see report)', '(iv)']} for r in wrows}
+    wd = []
+    for r in wrows:
+        d = decode_w(r, amap['map'][r['X']], cache)
+        if d:
+            r['dd'] = d
+            wd.append(r)
+    wdb, cur = [], []
+    for r in wd:
+        if cur and (r['ee']['file'] != cur[0]['ee']['file'] or len(cur) >= DBATCH or sum(len(q['xs']) for q in cur) + len(r['xs']) > DWORDS):
+            wdb.append(cur)
+            cur = []
+        cur.append(r)
+    if cur:
+        wdb.append(cur)
+    for rows in wdb:
+        fn = f'{rows[0]["R"]}_e2e_dec_generated.bend'
+        out[OUT / fn] = text_wdec(rows)
+        man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_decode_view', f'{r["R"]}_e2e_decode_reject'], 'ii': 'view'} for r in rows]
+    man['word_storage'] = {r['R']: {'generated_name': r['X'], 'depth': r['d'], 'awaiting': ['(iv)'] + ([] if 'dd' in r else ['(ii)/(iii)'])} for r in wrows}
+    for f, rows_ in man['files'].items():
+        for e in rows_:
+            if any(l.endswith('_e2e_decode_accept') for l in e['laws']):
+                e['ii'] = 'exact'
     out[OUT / 'manifest.json'] = json.dumps(man, indent=1) + '\n'
     return out
 
