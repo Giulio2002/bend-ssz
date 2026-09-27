@@ -1,4 +1,5 @@
 import Base
+import ./e2e_bits.bend as EBT
 import ../proofs/obj/valid_lib.bend as VL
 import ./e2e_fixdb.bend as XB
 import ../proofs/obj/spec_fixed.bend as F

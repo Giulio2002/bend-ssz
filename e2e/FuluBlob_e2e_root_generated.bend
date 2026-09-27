@@ -1,4 +1,5 @@
 import Base
+import ./e2e_fixd.bend as X
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/words_obj.bend as WO
 import ../END_TO_END.bend as E2E
@@ -10,6 +11,15 @@ import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../proofs/type_validator_soundness.bend as VS
 import ./e2e_support.bend as E
+import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../types/FuluSyncCommitteeContribution_def_generated.bend as FuluSyncCommitteeContribution_d
+import ../types/FuluContributionAndProof_def_generated.bend as FuluContributionAndProof_d
+import ../types/FuluContributionAndProof_hashtreeroot_generated.bend as FuluContributionAndProof_h
+import ../types/FuluSignedContributionAndProof_def_generated.bend as FuluSignedContributionAndProof_d
+import ../types/FuluSignedContributionAndProof_hashtreeroot_generated.bend as FuluSignedContributionAndProof_h
+import ../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
+import ../types/FuluProposerSlashing_def_generated.bend as FuluProposerSlashing_d
+import ../types/FuluProposerSlashing_hashtreeroot_generated.bend as FuluProposerSlashing_h
 import ../types/FuluBlob_hashtreeroot_generated.bend as FuluBlob_h
 import ../types/FuluCell_hashtreeroot_generated.bend as FuluCell_h
 import ../spec/fulu_schemas.bend as Spec
@@ -59,4 +69,51 @@ def FuluCell_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: M0_WO.rep_bv(o, Spec
 def FuluCell_e2e_root(h: B.Buf, -o: O.Words, +rep: M0_WO.rep_bv(o, Spec.Cell())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, FuluCell_h.Cell_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Cell(), S.BytesValue{M0_WO.wview(o)}) : Maybe<&2, +List<U32>>}:
   (+w, +rest) = rep
   FuluCell_r1(h, o, w, rep)
+
+# FuluContributionAndProof (ContributionAndProof)
+def FuluContributionAndProof_r2(h: B.Buf, +w1: O.U64, +w3: FuluBytes96_d.Bytes96, +w7: FuluSyncCommitteeContribution_d.SyncCommitteeContribution, +rep: M0.rep_ContributionAndProof(FuluContributionAndProof_d.ContributionAndProof{w1, O.BSome{w7, O.BNone{}}, w3}, Spec.ContributionAndProof())) -> {Some{D.bytes(Pair.snd(FuluContributionAndProof_d.ContributionAndProof, D.Digest, Pair.snd(B.Buf, FuluContributionAndProof_d.ContributionAndProof & D.Digest, FuluContributionAndProof_h.ContributionAndProof_hash_tree_root(h, FuluContributionAndProof_d.ContributionAndProof{w1, O.BSome{w7, O.BNone{}}, w3}))))} == API.hash_tree_root(Spec.ContributionAndProof(), M0.v_ContributionAndProof(FuluContributionAndProof_d.ContributionAndProof{w1, O.BSome{w7, O.BNone{}}, w3})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.ContributionAndProof(), M0.v_ContributionAndProof(FuluContributionAndProof_d.ContributionAndProof{w1, O.BSome{w7, O.BNone{}}, w3}), VS.public_sound(Spec.ContributionAndProof(), {==}), D.bytes(Pair.snd(FuluContributionAndProof_d.ContributionAndProof, D.Digest, Pair.snd(B.Buf, FuluContributionAndProof_d.ContributionAndProof & D.Digest, FuluContributionAndProof_h.ContributionAndProof_hash_tree_root(h, FuluContributionAndProof_d.ContributionAndProof{w1, O.BSome{w7, O.BNone{}}, w3})))),
+    M1.ContributionAndProof_root_valid(FuluContributionAndProof_d.ContributionAndProof{w1, O.BSome{w7, O.BNone{}}, w3}, Spec.ContributionAndProof(), {==}, rep), M0.ContributionAndProof_root_correct(h, FuluContributionAndProof_d.ContributionAndProof{w1, O.BSome{w7, O.BNone{}}, w3}, Spec.ContributionAndProof(), {==}, rep))
+
+# (iv) under rep (the root law's invariant); the object is rebuilt from rep's witnesses.
+def FuluContributionAndProof_e2e_root(h: B.Buf, -o: FuluContributionAndProof_d.ContributionAndProof, +rep: M0.rep_ContributionAndProof(o, Spec.ContributionAndProof())) -> {Some{D.bytes(Pair.snd(FuluContributionAndProof_d.ContributionAndProof, D.Digest, Pair.snd(B.Buf, FuluContributionAndProof_d.ContributionAndProof & D.Digest, FuluContributionAndProof_h.ContributionAndProof_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.ContributionAndProof(), M0.v_ContributionAndProof(o)) : Maybe<&2, +List<U32>>}:
+  (+w1, +q2) = rep
+  (+w3, +q4) = q2
+  (+a5, +b6) = q4
+  (+w7, +q8) = b6
+  +eq = X.trans_e(FuluContributionAndProof_d.ContributionAndProof, o, FuluContributionAndProof_d.ContributionAndProof{w1, M0.pj_ContributionAndProof_1(o), w3}, FuluContributionAndProof_d.ContributionAndProof{w1, O.BSome{w7, O.BNone{}}, w3}, a5, X.cong_e(O.Boxed<FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluContributionAndProof_d.ContributionAndProof, z => FuluContributionAndProof_d.ContributionAndProof{w1, z, w3}, M0.pj_ContributionAndProof_1(o), O.BSome{w7, O.BNone{}}, q8))
+  %X.sym_e(FuluContributionAndProof_d.ContributionAndProof, o, FuluContributionAndProof_d.ContributionAndProof{w1, O.BSome{w7, O.BNone{}}, w3}, eq) : {Some{D.bytes(Pair.snd(FuluContributionAndProof_d.ContributionAndProof, D.Digest, Pair.snd(B.Buf, FuluContributionAndProof_d.ContributionAndProof & D.Digest, FuluContributionAndProof_h.ContributionAndProof_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.ContributionAndProof(), M0.v_ContributionAndProof(_)) : Maybe<&2, +List<U32>>}
+  FuluContributionAndProof_r2(h, w1, w3, w7, FD.logic__subst(FuluContributionAndProof_d.ContributionAndProof, z => M0.rep_ContributionAndProof(z, Spec.ContributionAndProof()), o, FuluContributionAndProof_d.ContributionAndProof{w1, O.BSome{w7, O.BNone{}}, w3}, eq, rep))
+
+# FuluProposerSlashing (ProposerSlashing)
+def FuluProposerSlashing_r2(h: B.Buf, +w5: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +w7: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +rep: M0.rep_ProposerSlashing(FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, O.BSome{w7, O.BNone{}}}, Spec.ProposerSlashing())) -> {Some{D.bytes(Pair.snd(FuluProposerSlashing_d.ProposerSlashing, D.Digest, Pair.snd(B.Buf, FuluProposerSlashing_d.ProposerSlashing & D.Digest, FuluProposerSlashing_h.ProposerSlashing_hash_tree_root(h, FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, O.BSome{w7, O.BNone{}}}))))} == API.hash_tree_root(Spec.ProposerSlashing(), M0.v_ProposerSlashing(FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, O.BSome{w7, O.BNone{}}})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.ProposerSlashing(), M0.v_ProposerSlashing(FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, O.BSome{w7, O.BNone{}}}), VS.public_sound(Spec.ProposerSlashing(), {==}), D.bytes(Pair.snd(FuluProposerSlashing_d.ProposerSlashing, D.Digest, Pair.snd(B.Buf, FuluProposerSlashing_d.ProposerSlashing & D.Digest, FuluProposerSlashing_h.ProposerSlashing_hash_tree_root(h, FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, O.BSome{w7, O.BNone{}}})))),
+    M1.ProposerSlashing_root_valid(FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, O.BSome{w7, O.BNone{}}}, Spec.ProposerSlashing(), {==}, rep), M0.ProposerSlashing_root_correct(h, FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, O.BSome{w7, O.BNone{}}}, Spec.ProposerSlashing(), {==}, rep))
+
+# (iv) under rep (the root law's invariant); the object is rebuilt from rep's witnesses.
+def FuluProposerSlashing_e2e_root(h: B.Buf, -o: FuluProposerSlashing_d.ProposerSlashing, +rep: M0.rep_ProposerSlashing(o, Spec.ProposerSlashing())) -> {Some{D.bytes(Pair.snd(FuluProposerSlashing_d.ProposerSlashing, D.Digest, Pair.snd(B.Buf, FuluProposerSlashing_d.ProposerSlashing & D.Digest, FuluProposerSlashing_h.ProposerSlashing_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.ProposerSlashing(), M0.v_ProposerSlashing(o)) : Maybe<&2, +List<U32>>}:
+  (+a1, +b2) = rep
+  (+a3, +b4) = b2
+  (+w5, +q6) = a3
+  (+w7, +q8) = b4
+  +eq = X.trans_e(FuluProposerSlashing_d.ProposerSlashing, o, FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, M0.pj_ProposerSlashing_1(o)}, FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, O.BSome{w7, O.BNone{}}}, X.trans_e(FuluProposerSlashing_d.ProposerSlashing, o, FuluProposerSlashing_d.ProposerSlashing{M0.pj_ProposerSlashing_0(o), M0.pj_ProposerSlashing_1(o)}, FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, M0.pj_ProposerSlashing_1(o)}, a1, X.cong_e(O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, FuluProposerSlashing_d.ProposerSlashing, z => FuluProposerSlashing_d.ProposerSlashing{z, M0.pj_ProposerSlashing_1(o)}, M0.pj_ProposerSlashing_0(o), O.BSome{w5, O.BNone{}}, q6)), X.cong_e(O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, FuluProposerSlashing_d.ProposerSlashing, z => FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, z}, M0.pj_ProposerSlashing_1(o), O.BSome{w7, O.BNone{}}, q8))
+  %X.sym_e(FuluProposerSlashing_d.ProposerSlashing, o, FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, O.BSome{w7, O.BNone{}}}, eq) : {Some{D.bytes(Pair.snd(FuluProposerSlashing_d.ProposerSlashing, D.Digest, Pair.snd(B.Buf, FuluProposerSlashing_d.ProposerSlashing & D.Digest, FuluProposerSlashing_h.ProposerSlashing_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.ProposerSlashing(), M0.v_ProposerSlashing(_)) : Maybe<&2, +List<U32>>}
+  FuluProposerSlashing_r2(h, w5, w7, FD.logic__subst(FuluProposerSlashing_d.ProposerSlashing, z => M0.rep_ProposerSlashing(z, Spec.ProposerSlashing()), o, FuluProposerSlashing_d.ProposerSlashing{O.BSome{w5, O.BNone{}}, O.BSome{w7, O.BNone{}}}, eq, rep))
+
+# FuluSignedContributionAndProof (SignedContributionAndProof)
+def FuluSignedContributionAndProof_r2(h: B.Buf, +w1: FuluBytes96_d.Bytes96, +w5: O.U64, +w7: FuluBytes96_d.Bytes96, +w11: FuluSyncCommitteeContribution_d.SyncCommitteeContribution, +rep: M0.rep_SignedContributionAndProof(FuluSignedContributionAndProof_d.SignedContributionAndProof{FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, w1}, Spec.SignedContributionAndProof())) -> {Some{D.bytes(Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, D.Digest, Pair.snd(B.Buf, FuluSignedContributionAndProof_d.SignedContributionAndProof & D.Digest, FuluSignedContributionAndProof_h.SignedContributionAndProof_hash_tree_root(h, FuluSignedContributionAndProof_d.SignedContributionAndProof{FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, w1}))))} == API.hash_tree_root(Spec.SignedContributionAndProof(), M0.v_SignedContributionAndProof(FuluSignedContributionAndProof_d.SignedContributionAndProof{FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, w1})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.SignedContributionAndProof(), M0.v_SignedContributionAndProof(FuluSignedContributionAndProof_d.SignedContributionAndProof{FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, w1}), VS.public_sound(Spec.SignedContributionAndProof(), {==}), D.bytes(Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, D.Digest, Pair.snd(B.Buf, FuluSignedContributionAndProof_d.SignedContributionAndProof & D.Digest, FuluSignedContributionAndProof_h.SignedContributionAndProof_hash_tree_root(h, FuluSignedContributionAndProof_d.SignedContributionAndProof{FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, w1})))),
+    M1.SignedContributionAndProof_root_valid(FuluSignedContributionAndProof_d.SignedContributionAndProof{FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, w1}, Spec.SignedContributionAndProof(), {==}, rep), M0.SignedContributionAndProof_root_correct(h, FuluSignedContributionAndProof_d.SignedContributionAndProof{FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, w1}, Spec.SignedContributionAndProof(), {==}, rep))
+
+# (iv) under rep (the root law's invariant); the object is rebuilt from rep's witnesses.
+def FuluSignedContributionAndProof_e2e_root(h: B.Buf, -o: FuluSignedContributionAndProof_d.SignedContributionAndProof, +rep: M0.rep_SignedContributionAndProof(o, Spec.SignedContributionAndProof())) -> {Some{D.bytes(Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, D.Digest, Pair.snd(B.Buf, FuluSignedContributionAndProof_d.SignedContributionAndProof & D.Digest, FuluSignedContributionAndProof_h.SignedContributionAndProof_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.SignedContributionAndProof(), M0.v_SignedContributionAndProof(o)) : Maybe<&2, +List<U32>>}:
+  (+w1, +q2) = rep
+  (+a3, +b4) = q2
+  (+w5, +q6) = b4
+  (+w7, +q8) = q6
+  (+a9, +b10) = q8
+  (+w11, +q12) = b10
+  +eq = X.trans_e(FuluSignedContributionAndProof_d.SignedContributionAndProof, o, FuluSignedContributionAndProof_d.SignedContributionAndProof{M0.pj_SignedContributionAndProof_0(o), w1}, FuluSignedContributionAndProof_d.SignedContributionAndProof{FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, w1}, a3, X.cong_e(FuluContributionAndProof_d.ContributionAndProof, FuluSignedContributionAndProof_d.SignedContributionAndProof, z => FuluSignedContributionAndProof_d.SignedContributionAndProof{z, w1}, M0.pj_SignedContributionAndProof_0(o), FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, X.trans_e(FuluContributionAndProof_d.ContributionAndProof, M0.pj_SignedContributionAndProof_0(o), FuluContributionAndProof_d.ContributionAndProof{w5, M0.pj_ContributionAndProof_1(M0.pj_SignedContributionAndProof_0(o)), w7}, FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, a9, X.cong_e(O.Boxed<FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, FuluContributionAndProof_d.ContributionAndProof, z => FuluContributionAndProof_d.ContributionAndProof{w5, z, w7}, M0.pj_ContributionAndProof_1(M0.pj_SignedContributionAndProof_0(o)), O.BSome{w11, O.BNone{}}, q12))))
+  %X.sym_e(FuluSignedContributionAndProof_d.SignedContributionAndProof, o, FuluSignedContributionAndProof_d.SignedContributionAndProof{FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, w1}, eq) : {Some{D.bytes(Pair.snd(FuluSignedContributionAndProof_d.SignedContributionAndProof, D.Digest, Pair.snd(B.Buf, FuluSignedContributionAndProof_d.SignedContributionAndProof & D.Digest, FuluSignedContributionAndProof_h.SignedContributionAndProof_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.SignedContributionAndProof(), M0.v_SignedContributionAndProof(_)) : Maybe<&2, +List<U32>>}
+  FuluSignedContributionAndProof_r2(h, w1, w5, w7, w11, FD.logic__subst(FuluSignedContributionAndProof_d.SignedContributionAndProof, z => M0.rep_SignedContributionAndProof(z, Spec.SignedContributionAndProof()), o, FuluSignedContributionAndProof_d.SignedContributionAndProof{FuluContributionAndProof_d.ContributionAndProof{w5, O.BSome{w11, O.BNone{}}, w7}, w1}, eq, rep))
 

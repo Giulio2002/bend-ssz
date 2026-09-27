@@ -1,5 +1,6 @@
 import Base
 import ./e2e_fixd.bend as X
+import ./e2e_bits.bend as EBT
 import ./e2e_fixdb.bend as XB
 import ../proofs/compact/bits.bend as BT
 import ./e2e_fixd16.bend as X16

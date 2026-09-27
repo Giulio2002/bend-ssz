@@ -3703,6 +3703,30 @@
      "FuluCell_e2e_root"
     ],
     "premise": "+rep: WO.rep_bv(o, s)"
+   },
+   {
+    "name": "FuluContributionAndProof",
+    "generated_name": "ContributionAndProof",
+    "laws": [
+     "FuluContributionAndProof_e2e_root"
+    ],
+    "premise": "+rep: rep_ContributionAndProof(o, s)"
+   },
+   {
+    "name": "FuluProposerSlashing",
+    "generated_name": "ProposerSlashing",
+    "laws": [
+     "FuluProposerSlashing_e2e_root"
+    ],
+    "premise": "+rep: rep_ProposerSlashing(o, s)"
+   },
+   {
+    "name": "FuluSignedContributionAndProof",
+    "generated_name": "SignedContributionAndProof",
+    "laws": [
+     "FuluSignedContributionAndProof_e2e_root"
+    ],
+    "premise": "+rep: rep_SignedContributionAndProof(o, s)"
    }
   ],
   "FuluBytes1_e2e_generated.bend": [
@@ -3743,6 +3767,28 @@
      "FuluParticipationFlags_e2e_root"
     ],
     "premise": "+e: {U32.is_lt(o, 256) == True{} : Bool}"
+   }
+  ],
+  "FuluContributionAndProof_e2e_generated.bend": [
+   {
+    "name": "FuluContributionAndProof",
+    "generated_name": "ContributionAndProof",
+    "laws": [
+     "FuluContributionAndProof_e2e_encode"
+    ],
+    "premise": "+rep: rep_ContributionAndProof(o, s)"
+   }
+  ],
+  "FuluContributionAndProof_e2e_dec_generated.bend": [
+   {
+    "name": "FuluContributionAndProof",
+    "generated_name": "ContributionAndProof",
+    "laws": [
+     "FuluContributionAndProof_e2e_decode_view",
+     "FuluContributionAndProof_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "+rep: rep_ContributionAndProof(o, s)"
    }
   ],
   "SmallTestStruct_e2e_generated.bend": [
@@ -5380,21 +5426,53 @@
     "ii": "exact",
     "premise": "+e: {U32.is_lt(o, 256) == True{} : Bool}"
    }
+  ],
+  "FuluProposerSlashing_e2e_generated.bend": [
+   {
+    "name": "FuluProposerSlashing",
+    "generated_name": "ProposerSlashing",
+    "laws": [
+     "FuluProposerSlashing_e2e_encode"
+    ],
+    "premise": "+rep: rep_ProposerSlashing(o, s)"
+   }
+  ],
+  "FuluProposerSlashing_e2e_dec_generated.bend": [
+   {
+    "name": "FuluProposerSlashing",
+    "generated_name": "ProposerSlashing",
+    "laws": [
+     "FuluProposerSlashing_e2e_decode_view",
+     "FuluProposerSlashing_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "+rep: rep_ProposerSlashing(o, s)"
+   }
+  ],
+  "FuluSignedContributionAndProof_e2e_generated.bend": [
+   {
+    "name": "FuluSignedContributionAndProof",
+    "generated_name": "SignedContributionAndProof",
+    "laws": [
+     "FuluSignedContributionAndProof_e2e_encode"
+    ],
+    "premise": "+rep: rep_SignedContributionAndProof(o, s)"
+   }
+  ],
+  "FuluSignedContributionAndProof_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSignedContributionAndProof",
+    "generated_name": "SignedContributionAndProof",
+    "laws": [
+     "FuluSignedContributionAndProof_e2e_decode_view",
+     "FuluSignedContributionAndProof_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "+rep: rep_SignedContributionAndProof(o, s)"
+   }
   ]
  },
  "uncovered": {
-  "FuluContributionAndProof": {
-   "generated_name": "ContributionAndProof",
-   "reason": "encode_eval not an emit of the encoder"
-  },
-  "FuluSignedContributionAndProof": {
-   "generated_name": "SignedContributionAndProof",
-   "reason": "encode_eval not an emit of the encoder"
-  },
-  "FuluProposerSlashing": {
-   "generated_name": "ProposerSlashing",
-   "reason": "encode_eval not an emit of the encoder"
-  },
   "FuluHistoricalBatch": {
    "generated_name": "HistoricalBatch",
    "reason": "encode laws not over the same free words / bits"
@@ -5547,6 +5625,12 @@
    "i": "FuluBytes1_e2e_generated.bend",
    "ii_iii": "FuluBytes1_e2e_dec_generated.bend",
    "iv": "FuluBytes1_e2e_root_generated.bend"
+  },
+  "FuluContributionAndProof": {
+   "generated_name": "ContributionAndProof",
+   "i": "FuluContributionAndProof_e2e_generated.bend",
+   "ii_iii": "FuluContributionAndProof_e2e_dec_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
   },
   "SmallTestStruct": {
    "generated_name": "Gc4ED9619F50",
@@ -5871,6 +5955,18 @@
    "i": "FuluParticipationFlags_e2e_generated.bend",
    "ii_iii": "FuluParticipationFlags_e2e_dec_generated.bend",
    "iv": "FuluBytes1_e2e_root_generated.bend"
+  },
+  "FuluProposerSlashing": {
+   "generated_name": "ProposerSlashing",
+   "i": "FuluProposerSlashing_e2e_generated.bend",
+   "ii_iii": "FuluProposerSlashing_e2e_dec_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
+  },
+  "FuluSignedContributionAndProof": {
+   "generated_name": "SignedContributionAndProof",
+   "i": "FuluSignedContributionAndProof_e2e_generated.bend",
+   "ii_iii": "FuluSignedContributionAndProof_e2e_dec_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
   }
  },
  "variable_size": {
