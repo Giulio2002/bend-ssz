@@ -546,7 +546,8 @@ def family_a(X, m, cache, valid_idx):
     if not mr:
         return None, 'root law not RR.roots of the view at Spec.X()'
     view = mr.group(1)
-    vx = valid_idx.get((rt[0]['file'], view))  # None: (iv) awaits root_valid(view)
+    # None: (iv) awaits root_valid(view)
+    vx = valid_idx.get((rt[0]['file'], view)) or valid_idx.get((rt[0]['file'], view, sname))
     del rp
     names = [v for v, _ in P]
     pat = re.sub(r'(?<![\w.])(' + '|'.join(map(re.escape, names)) + r')(?![\w{(])', r'+\1', obj)
@@ -564,6 +565,14 @@ def valid_index():
         for m in re.finditer(r'^def (rv_\w+)\(\+o: [\w.]+\) -> \{VD\.root_valid\((\w+)\.(\w+)\(o\), ', src, re.M):
             if m.group(2) in al:
                 idx[(al[m.group(2)], m.group(3))] = (f.name, m.group(1))
+    # the per-name lemmas at the Spec schema (codegen/valid_laws.py: gvalid_*.bend):
+    # <X>_root_valid(+o: R) -> {VD.root_valid(<alias>.<view>(o), Spec.<X>()) == True{} : Bool}
+    for f in sorted(OBJ.glob('gvalid_*.bend')):
+        src = f.read_text()
+        al = {m.group(2): m.group(1) for m in re.finditer(r'import \./(\w+\.bend) as (\w+)', src)}
+        for m in re.finditer(r'^def ((\w+)_root_valid)\(\+o: [\w.]+\) -> \{VD\.root_valid\((\w+)\.(\w+)\(o\), Spec\.(\w+)\(\)\) == True', src, re.M):
+            if m.group(3) in al and m.group(2) == m.group(5):
+                idx[(al[m.group(3)], m.group(4), m.group(2))] = (f.name, m.group(1))
     return idx
 
 

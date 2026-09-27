@@ -15,6 +15,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
 import ../proofs/obj/spec_gcodec_2.bend as M0
 import ../proofs/obj/root_gnames.bend as M1
+import ../proofs/obj/gvalid_gnames.bend as M2
 import ../types/generic_obj.bend as TG
 import ../proofs/obj/generic_specs.bend as GS
 
@@ -30,4 +31,8 @@ def uint256_Gt59DCDB2873_e2e_encode(+o: TG.Uint256) -> {Some{E.obytes(TG.Gt59DCD
         Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.Gt59DCDB2873(), M1.v_u256(TG.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
           Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.Gt59DCDB2873(), M1.v_u256(TG.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})), Encoding.encoding_for_legal_type(GS.Gt59DCDB2873(), M1.v_u256(TG.Uint256{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
             E.serialize_legal(GS.Gt59DCDB2873(), M1.v_u256(TG.Uint256{x0, x1, x2, x3, x4, x5, x6, x7}), VS.public_sound(GS.Gt59DCDB2873(), {==})), M0.Gt59DCDB2873_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7))))
+
+def uint256_Gt59DCDB2873_e2e_root(h: B.Buf, +o: TG.Uint256) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, TG.Gt59DCDB2873_hash_tree_root(h, o)))} == API.hash_tree_root(GS.Gt59DCDB2873(), M1.v_u256(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.Gt59DCDB2873(), M1.v_u256(o), VS.public_sound(GS.Gt59DCDB2873(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, TG.Gt59DCDB2873_hash_tree_root(h, o))),
+    M2.Gt59DCDB2873_root_valid(o), M1.Gt59DCDB2873_root_correct(h, o))
 

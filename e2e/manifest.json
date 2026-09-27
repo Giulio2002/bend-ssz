@@ -697,21 +697,24 @@
     "name": "bitvector_32",
     "generated_name": "GtBBF12DAB28",
     "laws": [
-     "bitvector_32_e2e_encode"
+     "bitvector_32_e2e_encode",
+     "bitvector_32_e2e_root"
     ]
    },
    {
     "name": "bitvector_512",
     "generated_name": "Gt0A390CB480",
     "laws": [
-     "bitvector_512_e2e_encode"
+     "bitvector_512_e2e_encode",
+     "bitvector_512_e2e_root"
     ]
    },
    {
     "name": "uint128",
     "generated_name": "Gt604E28A301",
     "laws": [
-     "uint128_e2e_encode"
+     "uint128_e2e_encode",
+     "uint128_e2e_root"
     ]
    }
   ],
@@ -720,7 +723,8 @@
     "name": "uint256_Gt59DCDB2873",
     "generated_name": "Gt59DCDB2873",
     "laws": [
-     "uint256_Gt59DCDB2873_e2e_encode"
+     "uint256_Gt59DCDB2873_e2e_encode",
+     "uint256_Gt59DCDB2873_e2e_root"
     ]
    }
   ],
@@ -729,7 +733,8 @@
     "name": "uint64_Gt62B0093BE7",
     "generated_name": "Gt62B0093BE7",
     "laws": [
-     "uint64_Gt62B0093BE7_e2e_encode"
+     "uint64_Gt62B0093BE7_e2e_encode",
+     "uint64_Gt62B0093BE7_e2e_root"
     ]
    }
   ],
@@ -2018,31 +2023,5 @@
    "reason": "no decode_input / decode_none / decode_reject law"
   }
  },
- "root_awaiting": {
-  "bitvector_32": {
-   "generated_name": "GtBBF12DAB28",
-   "awaiting": "root_valid(view)",
-   "view": "root_gnames.bend:v_bv32"
-  },
-  "bitvector_512": {
-   "generated_name": "Gt0A390CB480",
-   "awaiting": "root_valid(view)",
-   "view": "root_gnames.bend:v_bv512"
-  },
-  "uint128": {
-   "generated_name": "Gt604E28A301",
-   "awaiting": "root_valid(view)",
-   "view": "root_gnames.bend:v_u128"
-  },
-  "uint256_Gt59DCDB2873": {
-   "generated_name": "Gt59DCDB2873",
-   "awaiting": "root_valid(view)",
-   "view": "root_gnames.bend:v_u256"
-  },
-  "uint64_Gt62B0093BE7": {
-   "generated_name": "Gt62B0093BE7",
-   "awaiting": "root_valid(view)",
-   "view": "root_gnames.bend:v_u64"
-  }
- }
+ "root_awaiting": {}
 }

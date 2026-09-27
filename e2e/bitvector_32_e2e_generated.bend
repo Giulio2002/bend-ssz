@@ -15,6 +15,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
 import ../proofs/obj/spec_gcodec_2.bend as M0
 import ../proofs/obj/root_gnames.bend as M1
+import ../proofs/obj/gvalid_gnames.bend as M2
 import ../proofs/obj/spec_bits.bend as FB
 import ./e2e_bits.bend as EB
 import ../types/generic_obj.bend as TG
@@ -43,6 +44,10 @@ def bitvector_32_e2e_encode(+o: TG.Bitvector32) -> {Some{E.obytes(TG.GtBBF12DAB2
           Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.GtBBF12DAB28(), M1.v_bv32(TG.Bitvector32{x0})), Encoding.encoding_for_legal_type(GS.GtBBF12DAB28(), M1.v_bv32(TG.Bitvector32{x0})), Some{F.limbs([x0])},
             E.serialize_legal(GS.GtBBF12DAB28(), M1.v_bv32(TG.Bitvector32{x0}), VS.public_sound(GS.GtBBF12DAB28(), {==})), bitvector_32_e2e_enc(x0))))
 
+def bitvector_32_e2e_root(h: B.Buf, +o: TG.Bitvector32) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, TG.GtBBF12DAB28_hash_tree_root(h, o)))} == API.hash_tree_root(GS.GtBBF12DAB28(), M1.v_bv32(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.GtBBF12DAB28(), M1.v_bv32(o), VS.public_sound(GS.GtBBF12DAB28(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, TG.GtBBF12DAB28_hash_tree_root(h, o))),
+    M2.GtBBF12DAB28_root_valid(o), M1.GtBBF12DAB28_root_correct(h, o))
+
 # bitvector_512 (Gt0A390CB480)
 def bitvector_512_e2e_view(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32) -> {M1.v_bv512(TG.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}) == S.BitsValue{FB.bitsof([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15])} : S.Value}:
   %Equal.sym(+List<Bool>, FB.bitsof([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15]), EB.wcat([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15]), EB.bw([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15])) :
@@ -63,6 +68,10 @@ def bitvector_512_e2e_encode(+o: TG.Bitvector512) -> {Some{E.obytes(TG.Gt0A390CB
           Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.Gt0A390CB480(), M1.v_bv512(TG.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15})), Encoding.encoding_for_legal_type(GS.Gt0A390CB480(), M1.v_bv512(TG.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15])},
             E.serialize_legal(GS.Gt0A390CB480(), M1.v_bv512(TG.Bitvector512{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}), VS.public_sound(GS.Gt0A390CB480(), {==})), bitvector_512_e2e_enc(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15))))
 
+def bitvector_512_e2e_root(h: B.Buf, +o: TG.Bitvector512) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, TG.Gt0A390CB480_hash_tree_root(h, o)))} == API.hash_tree_root(GS.Gt0A390CB480(), M1.v_bv512(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.Gt0A390CB480(), M1.v_bv512(o), VS.public_sound(GS.Gt0A390CB480(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, TG.Gt0A390CB480_hash_tree_root(h, o))),
+    M2.Gt0A390CB480_root_valid(o), M1.Gt0A390CB480_root_correct(h, o))
+
 # uint128 (Gt604E28A301)
 def uint128_e2e_encode(+o: TG.Uint128) -> {Some{E.obytes(TG.Gt604E28A301_encode(o))} == API.serialize(GS.Gt604E28A301(), M1.v_u128(o)) : Maybe<&2, +List<U32>>}:
   match o:
@@ -72,4 +81,8 @@ def uint128_e2e_encode(+o: TG.Uint128) -> {Some{E.obytes(TG.Gt604E28A301_encode(
         Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.Gt604E28A301(), M1.v_u128(TG.Uint128{x0, x1, x2, x3})), Some{F.limbs([x0, x1, x2, x3])},
           Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.Gt604E28A301(), M1.v_u128(TG.Uint128{x0, x1, x2, x3})), Encoding.encoding_for_legal_type(GS.Gt604E28A301(), M1.v_u128(TG.Uint128{x0, x1, x2, x3})), Some{F.limbs([x0, x1, x2, x3])},
             E.serialize_legal(GS.Gt604E28A301(), M1.v_u128(TG.Uint128{x0, x1, x2, x3}), VS.public_sound(GS.Gt604E28A301(), {==})), M0.Gt604E28A301_spec_encode(x0, x1, x2, x3))))
+
+def uint128_e2e_root(h: B.Buf, +o: TG.Uint128) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, TG.Gt604E28A301_hash_tree_root(h, o)))} == API.hash_tree_root(GS.Gt604E28A301(), M1.v_u128(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.Gt604E28A301(), M1.v_u128(o), VS.public_sound(GS.Gt604E28A301(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, TG.Gt604E28A301_hash_tree_root(h, o))),
+    M2.Gt604E28A301_root_valid(o), M1.Gt604E28A301_root_correct(h, o))
 

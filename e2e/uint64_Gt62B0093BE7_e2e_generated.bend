@@ -15,6 +15,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
 import ../proofs/obj/spec_gcodec_3.bend as M0
 import ../proofs/obj/root_gnames.bend as M1
+import ../proofs/obj/gvalid_gnames.bend as M2
 import ../types/generic_obj.bend as TG
 import ../proofs/obj/generic_specs.bend as GS
 
@@ -30,4 +31,8 @@ def uint64_Gt62B0093BE7_e2e_encode(+o: O.U64) -> {Some{E.obytes(TG.Gt62B0093BE7_
         Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.Gt62B0093BE7(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
           Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.Gt62B0093BE7(), M1.v_u64(O.U64{x0, x1})), Encoding.encoding_for_legal_type(GS.Gt62B0093BE7(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
             E.serialize_legal(GS.Gt62B0093BE7(), M1.v_u64(O.U64{x0, x1}), VS.public_sound(GS.Gt62B0093BE7(), {==})), M0.Gt62B0093BE7_spec_encode(x0, x1))))
+
+def uint64_Gt62B0093BE7_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, TG.Gt62B0093BE7_hash_tree_root(h, o)))} == API.hash_tree_root(GS.Gt62B0093BE7(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.Gt62B0093BE7(), M1.v_u64(o), VS.public_sound(GS.Gt62B0093BE7(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, TG.Gt62B0093BE7_hash_tree_root(h, o))),
+    M2.Gt62B0093BE7_root_valid(o), M1.Gt62B0093BE7_root_correct(h, o))
 
