@@ -4,17 +4,12 @@ import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
-import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluDepositRequest_def_generated.bend as FuluDepositRequest_d
 import ../types/FuluDepositRequest_encode_ssz_generated.bend as FuluDepositRequest_e
 import ../types/FuluDepositRequest_hashtreeroot_generated.bend as FuluDepositRequest_h
-import ../types/FuluEther_encode_ssz_generated.bend as FuluEther_e
-import ../types/FuluEther_hashtreeroot_generated.bend as FuluEther_h
-import ../types/FuluExecutionAddress_encode_ssz_generated.bend as FuluExecutionAddress_e
-import ../types/FuluExecutionAddress_hashtreeroot_generated.bend as FuluExecutionAddress_h
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
@@ -23,7 +18,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_4.bend as M0
+import ../proofs/obj/spec_codec_DepositRequest.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -43,32 +38,4 @@ def FuluDepositRequest_e2e_encode(+o: FuluDepositRequest_d.DepositRequest) -> {S
 def FuluDepositRequest_e2e_root(h: B.Buf, +o: FuluDepositRequest_d.DepositRequest) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluDepositRequest_h.DepositRequest_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.DepositRequest(), M1.v_DepositRequest(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.DepositRequest(), M1.v_DepositRequest(o), VS.public_sound(Spec.DepositRequest(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluDepositRequest_h.DepositRequest_hash_tree_root(h, o))),
     M2.rv_DepositRequest(o), M1.DepositRequest_root_correct(h, o))
-
-# FuluEther (Ether)
-def FuluEther_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluEther_e.Ether_encode(o))} == API.serialize(Spec.Ether(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case O.U64{+x0, +x1}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluEther_e.Ether_encode(O.U64{x0, x1}))}, Some{F.limbs([x0, x1])}, API.serialize(Spec.Ether(), M1.v_u64(O.U64{x0, x1})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluEther_e.Ether_encode(O.U64{x0, x1}), 0, 2), (FuluEther_e.Ether_encode(O.U64{x0, x1}), F.limbs([x0, x1])), M0.Ether_spec_bytes(x0, x1)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.Ether(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.Ether(), M1.v_u64(O.U64{x0, x1})), Encoding.encoding_for_legal_type(Spec.Ether(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-            E.serialize_legal(Spec.Ether(), M1.v_u64(O.U64{x0, x1}), VS.public_sound(Spec.Ether(), {==})), M0.Ether_spec_encode(x0, x1))))
-
-def FuluEther_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluEther_h.Ether_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Ether(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Ether(), M1.v_u64(o), VS.public_sound(Spec.Ether(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluEther_h.Ether_hash_tree_root(h, o))),
-    M2.rv_u64(o), M1.Ether_root_correct(h, o))
-
-# FuluExecutionAddress (ExecutionAddress)
-def FuluExecutionAddress_e2e_encode(+o: FuluBytes20_d.Bytes20) -> {Some{E.obytes(FuluExecutionAddress_e.ExecutionAddress_encode(o))} == API.serialize(Spec.ExecutionAddress(), M1.v_b20(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluBytes20_d.Bytes20{+x0, +x1, +x2, +x3, +x4}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluExecutionAddress_e.ExecutionAddress_encode(FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}))}, Some{F.limbs([x0, x1, x2, x3, x4])}, API.serialize(Spec.ExecutionAddress(), M1.v_b20(FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluExecutionAddress_e.ExecutionAddress_encode(FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}), 0, 5), (FuluExecutionAddress_e.ExecutionAddress_encode(FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}), F.limbs([x0, x1, x2, x3, x4])), M0.ExecutionAddress_spec_bytes(x0, x1, x2, x3, x4)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.ExecutionAddress(), M1.v_b20(FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4})), Some{F.limbs([x0, x1, x2, x3, x4])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.ExecutionAddress(), M1.v_b20(FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4})), Encoding.encoding_for_legal_type(Spec.ExecutionAddress(), M1.v_b20(FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4})), Some{F.limbs([x0, x1, x2, x3, x4])},
-            E.serialize_legal(Spec.ExecutionAddress(), M1.v_b20(FuluBytes20_d.Bytes20{x0, x1, x2, x3, x4}), VS.public_sound(Spec.ExecutionAddress(), {==})), M0.ExecutionAddress_spec_encode(x0, x1, x2, x3, x4))))
-
-def FuluExecutionAddress_e2e_root(h: B.Buf, +o: FuluBytes20_d.Bytes20) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluExecutionAddress_h.ExecutionAddress_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.ExecutionAddress(), M1.v_b20(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.ExecutionAddress(), M1.v_b20(o), VS.public_sound(Spec.ExecutionAddress(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluExecutionAddress_h.ExecutionAddress_hash_tree_root(h, o))),
-    M2.rv_b20(o), M1.ExecutionAddress_root_correct(h, o))
 

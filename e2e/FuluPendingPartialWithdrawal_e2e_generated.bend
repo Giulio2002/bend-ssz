@@ -4,17 +4,9 @@ import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
-import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
-import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/FuluPendingPartialWithdrawal_def_generated.bend as FuluPendingPartialWithdrawal_d
 import ../types/FuluPendingPartialWithdrawal_encode_ssz_generated.bend as FuluPendingPartialWithdrawal_e
 import ../types/FuluPendingPartialWithdrawal_hashtreeroot_generated.bend as FuluPendingPartialWithdrawal_h
-import ../types/FuluVoluntaryExit_def_generated.bend as FuluVoluntaryExit_d
-import ../types/FuluSignedVoluntaryExit_def_generated.bend as FuluSignedVoluntaryExit_d
-import ../types/FuluSignedVoluntaryExit_encode_ssz_generated.bend as FuluSignedVoluntaryExit_e
-import ../types/FuluSignedVoluntaryExit_hashtreeroot_generated.bend as FuluSignedVoluntaryExit_h
-import ../types/FuluRoot_encode_ssz_generated.bend as FuluRoot_e
-import ../types/FuluRoot_hashtreeroot_generated.bend as FuluRoot_h
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
@@ -23,7 +15,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_2.bend as M0
+import ../proofs/obj/spec_codec_PendingPartialWithdrawal.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -43,32 +35,4 @@ def FuluPendingPartialWithdrawal_e2e_encode(+o: FuluPendingPartialWithdrawal_d.P
 def FuluPendingPartialWithdrawal_e2e_root(h: B.Buf, +o: FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluPendingPartialWithdrawal_h.PendingPartialWithdrawal_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.PendingPartialWithdrawal(), M1.v_PendingPartialWithdrawal(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.PendingPartialWithdrawal(), M1.v_PendingPartialWithdrawal(o), VS.public_sound(Spec.PendingPartialWithdrawal(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluPendingPartialWithdrawal_h.PendingPartialWithdrawal_hash_tree_root(h, o))),
     M2.rv_PendingPartialWithdrawal(o), M1.PendingPartialWithdrawal_root_correct(h, o))
-
-# FuluRoot (Root)
-def FuluRoot_e2e_encode(+o: FuluBytes32_d.Bytes32) -> {Some{E.obytes(FuluRoot_e.Root_encode(o))} == API.serialize(Spec.Root(), M1.v_b32(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluRoot_e.Root_encode(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, API.serialize(Spec.Root(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluRoot_e.Root_encode(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), 0, 8), (FuluRoot_e.Root_encode(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])), M0.Root_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.Root(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.Root(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Encoding.encoding_for_legal_type(Spec.Root(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
-            E.serialize_legal(Spec.Root(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), VS.public_sound(Spec.Root(), {==})), M0.Root_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7))))
-
-def FuluRoot_e2e_root(h: B.Buf, +o: FuluBytes32_d.Bytes32) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluRoot_h.Root_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Root(), M1.v_b32(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Root(), M1.v_b32(o), VS.public_sound(Spec.Root(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluRoot_h.Root_hash_tree_root(h, o))),
-    M2.rv_b32(o), M1.Root_root_correct(h, o))
-
-# FuluSignedVoluntaryExit (SignedVoluntaryExit)
-def FuluSignedVoluntaryExit_e2e_encode(+o: FuluSignedVoluntaryExit_d.SignedVoluntaryExit) -> {Some{E.obytes(FuluSignedVoluntaryExit_e.SignedVoluntaryExit_encode(o))} == API.serialize(Spec.SignedVoluntaryExit(), M1.v_SignedVoluntaryExit(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluSignedVoluntaryExit_d.SignedVoluntaryExit{FuluVoluntaryExit_d.VoluntaryExit{O.U64{+x0, +x1}, O.U64{+x2, +x3}}, FuluBytes96_d.Bytes96{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluSignedVoluntaryExit_e.SignedVoluntaryExit_encode(FuluSignedVoluntaryExit_d.SignedVoluntaryExit{FuluVoluntaryExit_d.VoluntaryExit{O.U64{x0, x1}, O.U64{x2, x3}}, FuluBytes96_d.Bytes96{x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27}}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27])}, API.serialize(Spec.SignedVoluntaryExit(), M1.v_SignedVoluntaryExit(FuluSignedVoluntaryExit_d.SignedVoluntaryExit{FuluVoluntaryExit_d.VoluntaryExit{O.U64{x0, x1}, O.U64{x2, x3}}, FuluBytes96_d.Bytes96{x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27}})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluSignedVoluntaryExit_e.SignedVoluntaryExit_encode(FuluSignedVoluntaryExit_d.SignedVoluntaryExit{FuluVoluntaryExit_d.VoluntaryExit{O.U64{x0, x1}, O.U64{x2, x3}}, FuluBytes96_d.Bytes96{x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27}}), 0, 28), (FuluSignedVoluntaryExit_e.SignedVoluntaryExit_encode(FuluSignedVoluntaryExit_d.SignedVoluntaryExit{FuluVoluntaryExit_d.VoluntaryExit{O.U64{x0, x1}, O.U64{x2, x3}}, FuluBytes96_d.Bytes96{x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27}}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27])), M0.SignedVoluntaryExit_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.SignedVoluntaryExit(), M1.v_SignedVoluntaryExit(FuluSignedVoluntaryExit_d.SignedVoluntaryExit{FuluVoluntaryExit_d.VoluntaryExit{O.U64{x0, x1}, O.U64{x2, x3}}, FuluBytes96_d.Bytes96{x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.SignedVoluntaryExit(), M1.v_SignedVoluntaryExit(FuluSignedVoluntaryExit_d.SignedVoluntaryExit{FuluVoluntaryExit_d.VoluntaryExit{O.U64{x0, x1}, O.U64{x2, x3}}, FuluBytes96_d.Bytes96{x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27}})), Encoding.encoding_for_legal_type(Spec.SignedVoluntaryExit(), M1.v_SignedVoluntaryExit(FuluSignedVoluntaryExit_d.SignedVoluntaryExit{FuluVoluntaryExit_d.VoluntaryExit{O.U64{x0, x1}, O.U64{x2, x3}}, FuluBytes96_d.Bytes96{x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27])},
-            E.serialize_legal(Spec.SignedVoluntaryExit(), M1.v_SignedVoluntaryExit(FuluSignedVoluntaryExit_d.SignedVoluntaryExit{FuluVoluntaryExit_d.VoluntaryExit{O.U64{x0, x1}, O.U64{x2, x3}}, FuluBytes96_d.Bytes96{x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27}}), VS.public_sound(Spec.SignedVoluntaryExit(), {==})), M0.SignedVoluntaryExit_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27))))
-
-def FuluSignedVoluntaryExit_e2e_root(h: B.Buf, +o: FuluSignedVoluntaryExit_d.SignedVoluntaryExit) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluSignedVoluntaryExit_h.SignedVoluntaryExit_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.SignedVoluntaryExit(), M1.v_SignedVoluntaryExit(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.SignedVoluntaryExit(), M1.v_SignedVoluntaryExit(o), VS.public_sound(Spec.SignedVoluntaryExit(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluSignedVoluntaryExit_h.SignedVoluntaryExit_hash_tree_root(h, o))),
-    M2.rv_SignedVoluntaryExit(o), M1.SignedVoluntaryExit_root_correct(h, o))
 

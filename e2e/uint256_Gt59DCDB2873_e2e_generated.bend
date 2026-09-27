@@ -15,7 +15,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_gcodec_2.bend as M0
+import ../proofs/obj/spec_gcodec_Gt59DCDB2873.bend as M0
 import ../proofs/obj/root_gnames.bend as M1
 import ../proofs/obj/gvalid_gnames.bend as M2
 import ../proofs/obj/generic_specs.bend as GS

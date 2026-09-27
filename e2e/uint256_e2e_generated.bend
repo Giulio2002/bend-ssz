@@ -5,8 +5,6 @@ import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
 import ../types/uint256_def_generated.bend as uint256_d
-import ../types/uint64_encode_ssz_generated.bend as uint64_e
-import ../types/uint64_hashtreeroot_generated.bend as uint64_h
 import ../types/uint256_encode_ssz_generated.bend as uint256_e
 import ../types/uint256_hashtreeroot_generated.bend as uint256_h
 import ../types/schema.bend as S
@@ -17,7 +15,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_0.bend as M0
+import ../proofs/obj/spec_codec_uint256.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -37,18 +35,4 @@ def uint256_e2e_encode(+o: uint256_d.Uint256) -> {Some{E.obytes(uint256_e.uint25
 def uint256_e2e_root(h: B.Buf, +o: uint256_d.Uint256) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint256_h.uint256_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.uint256(), M1.v_u256(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.uint256(), M1.v_u256(o), VS.public_sound(Spec.uint256(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, uint256_h.uint256_hash_tree_root(h, o))),
     M2.rv_u256(o), M1.uint256_root_correct(h, o))
-
-# uint64 (uint64)
-def uint64_e2e_encode(+o: O.U64) -> {Some{E.obytes(uint64_e.uint64_encode(o))} == API.serialize(Spec.uint64(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case O.U64{+x0, +x1}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(uint64_e.uint64_encode(O.U64{x0, x1}))}, Some{F.limbs([x0, x1])}, API.serialize(Spec.uint64(), M1.v_u64(O.U64{x0, x1})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(uint64_e.uint64_encode(O.U64{x0, x1}), 0, 2), (uint64_e.uint64_encode(O.U64{x0, x1}), F.limbs([x0, x1])), M0.uint64_spec_bytes(x0, x1)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.uint64(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.uint64(), M1.v_u64(O.U64{x0, x1})), Encoding.encoding_for_legal_type(Spec.uint64(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-            E.serialize_legal(Spec.uint64(), M1.v_u64(O.U64{x0, x1}), VS.public_sound(Spec.uint64(), {==})), M0.uint64_spec_encode(x0, x1))))
-
-def uint64_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint64_h.uint64_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.uint64(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.uint64(), M1.v_u64(o), VS.public_sound(Spec.uint64(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, uint64_h.uint64_hash_tree_root(h, o))),
-    M2.rv_u64(o), M1.uint64_root_correct(h, o))
 

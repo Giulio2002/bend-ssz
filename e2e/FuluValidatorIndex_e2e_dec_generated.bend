@@ -3,8 +3,6 @@ import ../END_TO_END.bend as E2E
 import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/obj.bend as O
-import ../types/FuluVoluntaryExit_def_generated.bend as FuluVoluntaryExit_d
-import ../types/FuluVoluntaryExit_decode_ssz_generated.bend as FuluVoluntaryExit_r
 import ../types/FuluValidatorIndex_decode_ssz_generated.bend as FuluValidatorIndex_r
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
@@ -15,8 +13,8 @@ import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_bytes.bend as E
-import ../proofs/obj/spec_input_2.bend as M0
-import ../proofs/obj/spec_codec_2.bend as M1
+import ../proofs/obj/spec_input_ValidatorIndex.bend as M0
+import ../proofs/obj/spec_codec_ValidatorIndex.bend as M1
 import ../proofs/obj/fixrej_f1.bend as M2
 import ../proofs/obj/root_names.bend as M3
 
@@ -91,73 +89,4 @@ def FuluValidatorIndex_e2e_decode_accept(+bs: +List<U32>, +n: U32, +o: O.U64, +h
 def FuluValidatorIndex_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluValidatorIndex_r.ValidatorIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.U64>} -> {API.deserialize(Spec.ValidatorIndex(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.ValidatorIndex(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, FuluValidatorIndex_r.ValidatorIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.U64>}):
   (dn => FuluValidatorIndex_d_ra(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, dn), an => FuluValidatorIndex_d_rb(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, an))
-
-# FuluVoluntaryExit: decoding a byte list against END_TO_END's deserialize.
-def FuluVoluntaryExit_d_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 16n) == False{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}:
-  Equal.cong(B.Buf & Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, q => Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, q), FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n), (B.fill_at(B.alloc(n), 0, bs), None{}), M1.VoluntaryExit_spec_reject(B.fill_at(B.alloc(n), 0, bs), n, E.ueq_false(n, List.length(&2, U32, bs), 16, hn, ec)))
-
-def FuluVoluntaryExit_d_anone(+bs: +List<U32>, +ec: {Nat.is_eq(List.length(&2, U32, bs), 16n) == False{} : Bool}) -> {API.deserialize(Spec.VoluntaryExit(), bs) == None{} : Maybe<&2, S.Value>}:
-  E.outside_none(Spec.VoluntaryExit(), bs, M2.VoluntaryExit_decode_reject(bs, ec))
-
-def FuluVoluntaryExit_d_pk(+bs: +List<U32>, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 16n) == True{} : Bool}) -> {F.limbs(E.wl(4n, bs)) == bs : +List<U32>}:
-  E.pk(4n, bs, hd, FD.nat__eq_from_is_eq(List.length(&2, U32, bs), 16n, ec))
-
-def FuluVoluntaryExit_d_some(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 16n) == True{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}}} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}:
-  %Equal.sym(U32, n, 16, E.u32_len(n, List.length(&2, U32, bs), 16, hn, ec)) :
-    {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(_), 0, bs), _)) == Some{FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}}} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}
-  %FuluVoluntaryExit_d_pk(bs, hd, ec) :
-    {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(16), 0, _), 16)) == Some{FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}}} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}
-  Equal.cong(B.Buf & Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, q => Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, q), FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(16), 0, F.limbs([E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs)])), 16), (B.fill_at(B.alloc(16), 0, F.limbs([E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs)])), Some{FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}}}),
-    M0.VoluntaryExit_spec_input(E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs)))
-
-def FuluVoluntaryExit_d_asome(+bs: +List<U32>, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 16n) == True{} : Bool}) -> {API.deserialize(Spec.VoluntaryExit(), bs) == Some{M3.v_VoluntaryExit(FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}})} : Maybe<&2, S.Value>}:
-  E2E.spec_accepted(Spec.VoluntaryExit(), bs, M3.v_VoluntaryExit(FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}}), (VS.public_sound(Spec.VoluntaryExit(), {==}),
-    %FuluVoluntaryExit_d_pk(bs, hd, ec) : {Encoding.encoding_for_legal_type(Spec.VoluntaryExit(), M3.v_VoluntaryExit(FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}})) == Some{_} : Maybe<&2, +List<U32>>}
-    M1.VoluntaryExit_spec_encode(E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs))))
-
-def FuluVoluntaryExit_d_ia(+bs: +List<U32>, +n: U32, +o: FuluVoluntaryExit_d.VoluntaryExit, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 16n) == c : Bool}, +da: {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}) -> {API.deserialize(Spec.VoluntaryExit(), bs) == Some{M3.v_VoluntaryExit(o)} : Maybe<&2, S.Value>}:
-  match c:
-    case False{}: Empty.absurd({API.deserialize(Spec.VoluntaryExit(), bs) == Some{M3.v_VoluntaryExit(o)} : Maybe<&2, S.Value>}, E.none_some1(FuluVoluntaryExit_d.VoluntaryExit, o, Equal.trans(Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, None{}, Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{o}, Equal.sym(Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, FuluVoluntaryExit_d_none(bs, n, hn, ec)), da)))
-    case True{}:
-      %E.some_inj1(FuluVoluntaryExit_d.VoluntaryExit, FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}}, o, Equal.trans(Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, Some{FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}}}, Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{o}, Equal.sym(Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}}}, FuluVoluntaryExit_d_some(bs, n, hn, hd, ec)), da)) :
-        {API.deserialize(Spec.VoluntaryExit(), bs) == Some{M3.v_VoluntaryExit(_)} : Maybe<&2, S.Value>}
-      FuluVoluntaryExit_d_asome(bs, hd, ec)
-
-def FuluVoluntaryExit_d_ibt(+bs: +List<U32>, +n: U32, +o: FuluVoluntaryExit_d.VoluntaryExit, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 16n) == True{} : Bool}, +aa: {API.deserialize(Spec.VoluntaryExit(), bs) == Some{M3.v_VoluntaryExit(o)} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}:
-  match o:
-    case FuluVoluntaryExit_d.VoluntaryExit{O.U64{+y0, +y1}, O.U64{+y2, +y3}}:
-      +eb = FD.logic__some_inj(+List<U32>, F.limbs([y0, y1, y2, y3]), bs, Equal.trans(Maybe<&2, +List<U32>>, Some{F.limbs([y0, y1, y2, y3])}, Encoding.encoding_for_legal_type(Spec.VoluntaryExit(), M3.v_VoluntaryExit(FuluVoluntaryExit_d.VoluntaryExit{O.U64{y0, y1}, O.U64{y2, y3}})), Some{bs},
-        Equal.sym(Maybe<&2, +List<U32>>, Encoding.encoding_for_legal_type(Spec.VoluntaryExit(), M3.v_VoluntaryExit(FuluVoluntaryExit_d.VoluntaryExit{O.U64{y0, y1}, O.U64{y2, y3}})), Some{F.limbs([y0, y1, y2, y3])}, M1.VoluntaryExit_spec_encode(y0, y1, y2, y3)),
-        E.acc_dec(Spec.VoluntaryExit(), bs, M3.v_VoluntaryExit(FuluVoluntaryExit_d.VoluntaryExit{O.U64{y0, y1}, O.U64{y2, y3}}), E2E.accepted_spec(Spec.VoluntaryExit(), bs, M3.v_VoluntaryExit(FuluVoluntaryExit_d.VoluntaryExit{O.U64{y0, y1}, O.U64{y2, y3}}), aa))))
-      %Equal.sym(U32, n, 16, E.u32_len(n, List.length(&2, U32, bs), 16, hn, ec)) :
-        {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(_), 0, bs), _)) == Some{FuluVoluntaryExit_d.VoluntaryExit{O.U64{y0, y1}, O.U64{y2, y3}}} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}
-      %eb :
-        {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(16), 0, _), 16)) == Some{FuluVoluntaryExit_d.VoluntaryExit{O.U64{y0, y1}, O.U64{y2, y3}}} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}
-      Equal.cong(B.Buf & Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, q => Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, q), FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(16), 0, F.limbs([y0, y1, y2, y3])), 16), (B.fill_at(B.alloc(16), 0, F.limbs([y0, y1, y2, y3])), Some{FuluVoluntaryExit_d.VoluntaryExit{O.U64{y0, y1}, O.U64{y2, y3}}}),
-        M0.VoluntaryExit_spec_input(y0, y1, y2, y3))
-
-def FuluVoluntaryExit_d_ib(+bs: +List<U32>, +n: U32, +o: FuluVoluntaryExit_d.VoluntaryExit, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 16n) == c : Bool}, +aa: {API.deserialize(Spec.VoluntaryExit(), bs) == Some{M3.v_VoluntaryExit(o)} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}:
-  match c:
-    case False{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}, FD.logic__none_some(S.Value, M3.v_VoluntaryExit(o), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.VoluntaryExit(), bs), Some{M3.v_VoluntaryExit(o)}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.VoluntaryExit(), bs), None{}, FuluVoluntaryExit_d_anone(bs, ec)), aa)))
-    case True{}: FuluVoluntaryExit_d_ibt(bs, n, o, hn, ec, aa)
-
-def FuluVoluntaryExit_d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 16n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}) -> {API.deserialize(Spec.VoluntaryExit(), bs) == None{} : Maybe<&2, S.Value>}:
-  match c:
-    case False{}: FuluVoluntaryExit_d_anone(bs, ec)
-    case True{}: Empty.absurd({API.deserialize(Spec.VoluntaryExit(), bs) == None{} : Maybe<&2, S.Value>}, E.none_someT(FuluVoluntaryExit_d.VoluntaryExit, FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}}, Equal.trans(Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, None{}, Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}}}, Equal.sym(Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, dn), FuluVoluntaryExit_d_some(bs, n, hn, hd, ec))))
-
-def FuluVoluntaryExit_d_rb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 16n) == c : Bool}, +an: {API.deserialize(Spec.VoluntaryExit(), bs) == None{} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}:
-  match c:
-    case False{}: FuluVoluntaryExit_d_none(bs, n, hn, ec)
-    case True{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}, FD.logic__none_some(S.Value, M3.v_VoluntaryExit(FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}}), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.VoluntaryExit(), bs), Some{M3.v_VoluntaryExit(FuluVoluntaryExit_d.VoluntaryExit{O.U64{E.wn(0n, bs), E.wn(1n, bs)}, O.U64{E.wn(2n, bs), E.wn(3n, bs)}})}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.VoluntaryExit(), bs), None{}, an), FuluVoluntaryExit_d_asome(bs, hd, ec))))
-
-# (ii) the object decoder returns o exactly when END_TO_END's deserialize returns VAL(o).
-def FuluVoluntaryExit_e2e_decode_accept(+bs: +List<U32>, +n: U32, +o: FuluVoluntaryExit_d.VoluntaryExit, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
-    -> ({Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>} -> {API.deserialize(Spec.VoluntaryExit(), bs) == Some{M3.v_VoluntaryExit(o)} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.VoluntaryExit(), bs) == Some{M3.v_VoluntaryExit(o)} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}):
-  (da => FuluVoluntaryExit_d_ia(bs, n, o, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 16n), {==}, da), aa => FuluVoluntaryExit_d_ib(bs, n, o, hn, Nat.is_eq(List.length(&2, U32, bs), 16n), {==}, aa))
-
-# (iii) the object decoder fails exactly when END_TO_END's deserialize does.
-def FuluVoluntaryExit_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
-    -> ({Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>} -> {API.deserialize(Spec.VoluntaryExit(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.VoluntaryExit(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>, FuluVoluntaryExit_r.VoluntaryExit_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluVoluntaryExit_d.VoluntaryExit>}):
-  (dn => FuluVoluntaryExit_d_ra(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 16n), {==}, dn), an => FuluVoluntaryExit_d_rb(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 16n), {==}, an))
 

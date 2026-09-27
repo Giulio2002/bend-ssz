@@ -4,12 +4,8 @@ import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
-import ../types/FuluSlot_encode_ssz_generated.bend as FuluSlot_e
-import ../types/FuluSlot_hashtreeroot_generated.bend as FuluSlot_h
 import ../types/FuluEpoch_encode_ssz_generated.bend as FuluEpoch_e
 import ../types/FuluEpoch_hashtreeroot_generated.bend as FuluEpoch_h
-import ../types/FuluGwei_encode_ssz_generated.bend as FuluGwei_e
-import ../types/FuluGwei_hashtreeroot_generated.bend as FuluGwei_h
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
@@ -18,7 +14,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_0.bend as M0
+import ../proofs/obj/spec_codec_Epoch.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -38,32 +34,4 @@ def FuluEpoch_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluEpoch_e.Epoch_encode(o
 def FuluEpoch_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluEpoch_h.Epoch_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Epoch(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.Epoch(), M1.v_u64(o), VS.public_sound(Spec.Epoch(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluEpoch_h.Epoch_hash_tree_root(h, o))),
     M2.rv_u64(o), M1.Epoch_root_correct(h, o))
-
-# FuluGwei (Gwei)
-def FuluGwei_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluGwei_e.Gwei_encode(o))} == API.serialize(Spec.Gwei(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case O.U64{+x0, +x1}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluGwei_e.Gwei_encode(O.U64{x0, x1}))}, Some{F.limbs([x0, x1])}, API.serialize(Spec.Gwei(), M1.v_u64(O.U64{x0, x1})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluGwei_e.Gwei_encode(O.U64{x0, x1}), 0, 2), (FuluGwei_e.Gwei_encode(O.U64{x0, x1}), F.limbs([x0, x1])), M0.Gwei_spec_bytes(x0, x1)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.Gwei(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.Gwei(), M1.v_u64(O.U64{x0, x1})), Encoding.encoding_for_legal_type(Spec.Gwei(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-            E.serialize_legal(Spec.Gwei(), M1.v_u64(O.U64{x0, x1}), VS.public_sound(Spec.Gwei(), {==})), M0.Gwei_spec_encode(x0, x1))))
-
-def FuluGwei_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluGwei_h.Gwei_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Gwei(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Gwei(), M1.v_u64(o), VS.public_sound(Spec.Gwei(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluGwei_h.Gwei_hash_tree_root(h, o))),
-    M2.rv_u64(o), M1.Gwei_root_correct(h, o))
-
-# FuluSlot (Slot)
-def FuluSlot_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluSlot_e.Slot_encode(o))} == API.serialize(Spec.Slot(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case O.U64{+x0, +x1}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluSlot_e.Slot_encode(O.U64{x0, x1}))}, Some{F.limbs([x0, x1])}, API.serialize(Spec.Slot(), M1.v_u64(O.U64{x0, x1})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluSlot_e.Slot_encode(O.U64{x0, x1}), 0, 2), (FuluSlot_e.Slot_encode(O.U64{x0, x1}), F.limbs([x0, x1])), M0.Slot_spec_bytes(x0, x1)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.Slot(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.Slot(), M1.v_u64(O.U64{x0, x1})), Encoding.encoding_for_legal_type(Spec.Slot(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-            E.serialize_legal(Spec.Slot(), M1.v_u64(O.U64{x0, x1}), VS.public_sound(Spec.Slot(), {==})), M0.Slot_spec_encode(x0, x1))))
-
-def FuluSlot_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluSlot_h.Slot_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Slot(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Slot(), M1.v_u64(o), VS.public_sound(Spec.Slot(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluSlot_h.Slot_hash_tree_root(h, o))),
-    M2.rv_u64(o), M1.Slot_root_correct(h, o))
 

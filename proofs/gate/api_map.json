@@ -557,21 +557,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint32.bend",
      "law": "uint32_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint32.bend",
      "law": "uint32_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_uint32.bend",
      "law": "uint32_spec_unique",
      "big": false
     }
@@ -585,21 +585,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint32.bend",
      "law": "uint32_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint32.bend",
      "law": "uint32_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint32.bend",
      "law": "uint32_spec_encode",
      "big": false
     }
@@ -634,14 +634,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_uint32.bend",
      "law": "uint32_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_uint32.bend",
      "law": "uint32_spec_input",
      "big": false
     }
@@ -671,21 +671,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint64.bend",
      "law": "uint64_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint64.bend",
      "law": "uint64_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_uint64.bend",
      "law": "uint64_spec_unique",
      "big": false
     }
@@ -699,21 +699,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint64.bend",
      "law": "uint64_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint64.bend",
      "law": "uint64_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint64.bend",
      "law": "uint64_spec_encode",
      "big": false
     }
@@ -748,14 +748,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_uint64.bend",
      "law": "uint64_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_uint64.bend",
      "law": "uint64_spec_input",
      "big": false
     }
@@ -785,21 +785,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint256.bend",
      "law": "uint256_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint256.bend",
      "law": "uint256_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_uint256.bend",
      "law": "uint256_spec_unique",
      "big": false
     }
@@ -813,21 +813,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint256.bend",
      "law": "uint256_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint256.bend",
      "law": "uint256_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_uint256.bend",
      "law": "uint256_spec_encode",
      "big": false
     }
@@ -862,14 +862,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_uint256.bend",
      "law": "uint256_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_uint256.bend",
      "law": "uint256_spec_input",
      "big": false
     }
@@ -988,21 +988,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes4.bend",
      "law": "Bytes4_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes4.bend",
      "law": "Bytes4_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Bytes4.bend",
      "law": "Bytes4_spec_unique",
      "big": false
     }
@@ -1016,21 +1016,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes4.bend",
      "law": "Bytes4_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes4.bend",
      "law": "Bytes4_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes4.bend",
      "law": "Bytes4_spec_encode",
      "big": false
     }
@@ -1065,14 +1065,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_Bytes4.bend",
      "law": "Bytes4_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_Bytes4.bend",
      "law": "Bytes4_spec_input",
      "big": false
     }
@@ -1102,21 +1102,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes32.bend",
      "law": "Bytes32_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes32.bend",
      "law": "Bytes32_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Bytes32.bend",
      "law": "Bytes32_spec_unique",
      "big": false
     }
@@ -1130,21 +1130,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes32.bend",
      "law": "Bytes32_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes32.bend",
      "law": "Bytes32_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes32.bend",
      "law": "Bytes32_spec_encode",
      "big": false
     }
@@ -1179,14 +1179,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_Bytes32.bend",
      "law": "Bytes32_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_Bytes32.bend",
      "law": "Bytes32_spec_input",
      "big": false
     }
@@ -1216,21 +1216,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes48.bend",
      "law": "Bytes48_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes48.bend",
      "law": "Bytes48_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Bytes48.bend",
      "law": "Bytes48_spec_unique",
      "big": false
     }
@@ -1244,21 +1244,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes48.bend",
      "law": "Bytes48_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes48.bend",
      "law": "Bytes48_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes48.bend",
      "law": "Bytes48_spec_encode",
      "big": false
     }
@@ -1293,14 +1293,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_Bytes48.bend",
      "law": "Bytes48_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_Bytes48.bend",
      "law": "Bytes48_spec_input",
      "big": false
     }
@@ -1330,21 +1330,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes96.bend",
      "law": "Bytes96_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes96.bend",
      "law": "Bytes96_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Bytes96.bend",
      "law": "Bytes96_spec_unique",
      "big": false
     }
@@ -1358,21 +1358,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes96.bend",
      "law": "Bytes96_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes96.bend",
      "law": "Bytes96_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes96.bend",
      "law": "Bytes96_spec_encode",
      "big": false
     }
@@ -1407,14 +1407,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_Bytes96.bend",
      "law": "Bytes96_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_Bytes96.bend",
      "law": "Bytes96_spec_input",
      "big": false
     }
@@ -1444,21 +1444,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes8.bend",
      "law": "Bytes8_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes8.bend",
      "law": "Bytes8_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Bytes8.bend",
      "law": "Bytes8_spec_unique",
      "big": false
     }
@@ -1472,21 +1472,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes8.bend",
      "law": "Bytes8_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes8.bend",
      "law": "Bytes8_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes8.bend",
      "law": "Bytes8_spec_encode",
      "big": false
     }
@@ -1521,14 +1521,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_Bytes8.bend",
      "law": "Bytes8_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_Bytes8.bend",
      "law": "Bytes8_spec_input",
      "big": false
     }
@@ -1558,21 +1558,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes20.bend",
      "law": "Bytes20_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes20.bend",
      "law": "Bytes20_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Bytes20.bend",
      "law": "Bytes20_spec_unique",
      "big": false
     }
@@ -1586,21 +1586,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes20.bend",
      "law": "Bytes20_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes20.bend",
      "law": "Bytes20_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Bytes20.bend",
      "law": "Bytes20_spec_encode",
      "big": false
     }
@@ -1635,14 +1635,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_Bytes20.bend",
      "law": "Bytes20_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_Bytes20.bend",
      "law": "Bytes20_spec_input",
      "big": false
     }
@@ -1672,21 +1672,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Slot.bend",
      "law": "Slot_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Slot.bend",
      "law": "Slot_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Slot.bend",
      "law": "Slot_spec_unique",
      "big": false
     }
@@ -1700,21 +1700,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Slot.bend",
      "law": "Slot_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Slot.bend",
      "law": "Slot_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Slot.bend",
      "law": "Slot_spec_encode",
      "big": false
     }
@@ -1749,14 +1749,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_Slot.bend",
      "law": "Slot_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_Slot.bend",
      "law": "Slot_spec_input",
      "big": false
     }
@@ -1786,21 +1786,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Epoch.bend",
      "law": "Epoch_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Epoch.bend",
      "law": "Epoch_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Epoch.bend",
      "law": "Epoch_spec_unique",
      "big": false
     }
@@ -1814,21 +1814,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Epoch.bend",
      "law": "Epoch_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Epoch.bend",
      "law": "Epoch_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Epoch.bend",
      "law": "Epoch_spec_encode",
      "big": false
     }
@@ -1863,14 +1863,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_Epoch.bend",
      "law": "Epoch_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_Epoch.bend",
      "law": "Epoch_spec_input",
      "big": false
     }
@@ -1900,21 +1900,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Gwei.bend",
      "law": "Gwei_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Gwei.bend",
      "law": "Gwei_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Gwei.bend",
      "law": "Gwei_spec_unique",
      "big": false
     }
@@ -1928,21 +1928,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Gwei.bend",
      "law": "Gwei_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Gwei.bend",
      "law": "Gwei_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_0.bend",
+     "file": "spec_codec_Gwei.bend",
      "law": "Gwei_spec_encode",
      "big": false
     }
@@ -1977,14 +1977,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_0.bend",
+     "file": "spec_repr_Gwei.bend",
      "law": "Gwei_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_0.bend",
+     "file": "spec_input_Gwei.bend",
      "law": "Gwei_spec_input",
      "big": false
     }
@@ -2014,21 +2014,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Hash32.bend",
      "law": "Hash32_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Hash32.bend",
      "law": "Hash32_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Hash32.bend",
      "law": "Hash32_spec_unique",
      "big": false
     }
@@ -2042,21 +2042,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Hash32.bend",
      "law": "Hash32_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Hash32.bend",
      "law": "Hash32_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Hash32.bend",
      "law": "Hash32_spec_encode",
      "big": false
     }
@@ -2091,14 +2091,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_Hash32.bend",
      "law": "Hash32_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_Hash32.bend",
      "law": "Hash32_spec_input",
      "big": false
     }
@@ -2128,21 +2128,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Version.bend",
      "law": "Version_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Version.bend",
      "law": "Version_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Version.bend",
      "law": "Version_spec_unique",
      "big": false
     }
@@ -2156,21 +2156,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Version.bend",
      "law": "Version_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Version.bend",
      "law": "Version_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Version.bend",
      "law": "Version_spec_encode",
      "big": false
     }
@@ -2205,14 +2205,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_Version.bend",
      "law": "Version_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_Version.bend",
      "law": "Version_spec_input",
      "big": false
     }
@@ -2242,21 +2242,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_DomainType.bend",
      "law": "DomainType_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_DomainType.bend",
      "law": "DomainType_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_DomainType.bend",
      "law": "DomainType_spec_unique",
      "big": false
     }
@@ -2270,21 +2270,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_DomainType.bend",
      "law": "DomainType_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_DomainType.bend",
      "law": "DomainType_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_DomainType.bend",
      "law": "DomainType_spec_encode",
      "big": false
     }
@@ -2319,14 +2319,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_DomainType.bend",
      "law": "DomainType_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_DomainType.bend",
      "law": "DomainType_spec_input",
      "big": false
     }
@@ -2356,21 +2356,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_BLSSignature.bend",
      "law": "BLSSignature_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_BLSSignature.bend",
      "law": "BLSSignature_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_BLSSignature.bend",
      "law": "BLSSignature_spec_unique",
      "big": false
     }
@@ -2384,21 +2384,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_BLSSignature.bend",
      "law": "BLSSignature_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_BLSSignature.bend",
      "law": "BLSSignature_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_BLSSignature.bend",
      "law": "BLSSignature_spec_encode",
      "big": false
     }
@@ -2433,14 +2433,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_BLSSignature.bend",
      "law": "BLSSignature_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_BLSSignature.bend",
      "law": "BLSSignature_spec_input",
      "big": false
     }
@@ -2470,21 +2470,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_FinalityBranch.bend",
      "law": "FinalityBranch_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_FinalityBranch.bend",
      "law": "FinalityBranch_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_FinalityBranch.bend",
      "law": "FinalityBranch_spec_unique",
      "big": false
     }
@@ -2498,21 +2498,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_FinalityBranch.bend",
      "law": "FinalityBranch_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_FinalityBranch.bend",
      "law": "FinalityBranch_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_FinalityBranch.bend",
      "law": "FinalityBranch_spec_encode",
      "big": false
     }
@@ -2523,14 +2523,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_FinalityBranch.bend",
      "law": "FinalityBranch_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_FinalityBranch.bend",
      "law": "FinalityBranch_spec_input",
      "big": false
     }
@@ -2554,21 +2554,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_VersionedHash.bend",
      "law": "VersionedHash_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_VersionedHash.bend",
      "law": "VersionedHash_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_VersionedHash.bend",
      "law": "VersionedHash_spec_unique",
      "big": false
     }
@@ -2582,21 +2582,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_VersionedHash.bend",
      "law": "VersionedHash_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_VersionedHash.bend",
      "law": "VersionedHash_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_VersionedHash.bend",
      "law": "VersionedHash_spec_encode",
      "big": false
     }
@@ -2631,14 +2631,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_VersionedHash.bend",
      "law": "VersionedHash_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_VersionedHash.bend",
      "law": "VersionedHash_spec_input",
      "big": false
     }
@@ -2668,21 +2668,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_G1Point.bend",
      "law": "G1Point_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_G1Point.bend",
      "law": "G1Point_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_G1Point.bend",
      "law": "G1Point_spec_unique",
      "big": false
     }
@@ -2696,21 +2696,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_G1Point.bend",
      "law": "G1Point_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_G1Point.bend",
      "law": "G1Point_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_G1Point.bend",
      "law": "G1Point_spec_encode",
      "big": false
     }
@@ -2745,14 +2745,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_G1Point.bend",
      "law": "G1Point_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_G1Point.bend",
      "law": "G1Point_spec_input",
      "big": false
     }
@@ -2782,21 +2782,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_G2Point.bend",
      "law": "G2Point_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_G2Point.bend",
      "law": "G2Point_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_G2Point.bend",
      "law": "G2Point_spec_unique",
      "big": false
     }
@@ -2810,21 +2810,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_G2Point.bend",
      "law": "G2Point_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_G2Point.bend",
      "law": "G2Point_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_G2Point.bend",
      "law": "G2Point_spec_encode",
      "big": false
     }
@@ -2859,14 +2859,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_G2Point.bend",
      "law": "G2Point_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_G2Point.bend",
      "law": "G2Point_spec_input",
      "big": false
     }
@@ -2896,21 +2896,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Fork.bend",
      "law": "Fork_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Fork.bend",
      "law": "Fork_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Fork.bend",
      "law": "Fork_spec_unique",
      "big": false
     }
@@ -2924,21 +2924,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Fork.bend",
      "law": "Fork_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Fork.bend",
      "law": "Fork_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_Fork.bend",
      "law": "Fork_spec_encode",
      "big": false
     }
@@ -2973,14 +2973,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_Fork.bend",
      "law": "Fork_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_Fork.bend",
      "law": "Fork_spec_input",
      "big": false
     }
@@ -3010,21 +3010,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_SyncAggregate.bend",
      "law": "SyncAggregate_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_SyncAggregate.bend",
      "law": "SyncAggregate_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_SyncAggregate.bend",
      "law": "SyncAggregate_spec_unique",
      "big": false
     }
@@ -3038,21 +3038,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_SyncAggregate.bend",
      "law": "SyncAggregate_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_SyncAggregate.bend",
      "law": "SyncAggregate_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_SyncAggregate.bend",
      "law": "SyncAggregate_spec_encode",
      "big": false
     }
@@ -3087,14 +3087,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_SyncAggregate.bend",
      "law": "SyncAggregate_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_SyncAggregate.bend",
      "law": "SyncAggregate_spec_input",
      "big": false
     }
@@ -3124,21 +3124,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_SyncAggregatorSelectionData.bend",
      "law": "SyncAggregatorSelectionData_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_SyncAggregatorSelectionData.bend",
      "law": "SyncAggregatorSelectionData_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_SyncAggregatorSelectionData.bend",
      "law": "SyncAggregatorSelectionData_spec_unique",
      "big": false
     }
@@ -3152,21 +3152,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_SyncAggregatorSelectionData.bend",
      "law": "SyncAggregatorSelectionData_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_SyncAggregatorSelectionData.bend",
      "law": "SyncAggregatorSelectionData_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_SyncAggregatorSelectionData.bend",
      "law": "SyncAggregatorSelectionData_spec_encode",
      "big": false
     }
@@ -3201,14 +3201,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_SyncAggregatorSelectionData.bend",
      "law": "SyncAggregatorSelectionData_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_SyncAggregatorSelectionData.bend",
      "law": "SyncAggregatorSelectionData_spec_input",
      "big": false
     }
@@ -3238,21 +3238,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_PowBlock.bend",
      "law": "PowBlock_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_PowBlock.bend",
      "law": "PowBlock_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_PowBlock.bend",
      "law": "PowBlock_spec_unique",
      "big": false
     }
@@ -3266,21 +3266,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_PowBlock.bend",
      "law": "PowBlock_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_PowBlock.bend",
      "law": "PowBlock_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_1.bend",
+     "file": "spec_codec_PowBlock.bend",
      "law": "PowBlock_spec_encode",
      "big": false
     }
@@ -3315,14 +3315,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_1.bend",
+     "file": "spec_repr_PowBlock.bend",
      "law": "PowBlock_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_1.bend",
+     "file": "spec_input_PowBlock.bend",
      "law": "PowBlock_spec_input",
      "big": false
     }
@@ -3352,21 +3352,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_CommitteeIndex.bend",
      "law": "CommitteeIndex_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_CommitteeIndex.bend",
      "law": "CommitteeIndex_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_CommitteeIndex.bend",
      "law": "CommitteeIndex_spec_unique",
      "big": false
     }
@@ -3380,21 +3380,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_CommitteeIndex.bend",
      "law": "CommitteeIndex_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_CommitteeIndex.bend",
      "law": "CommitteeIndex_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_CommitteeIndex.bend",
      "law": "CommitteeIndex_spec_encode",
      "big": false
     }
@@ -3429,14 +3429,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_CommitteeIndex.bend",
      "law": "CommitteeIndex_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_CommitteeIndex.bend",
      "law": "CommitteeIndex_spec_input",
      "big": false
     }
@@ -3466,21 +3466,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_ValidatorIndex.bend",
      "law": "ValidatorIndex_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_ValidatorIndex.bend",
      "law": "ValidatorIndex_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_ValidatorIndex.bend",
      "law": "ValidatorIndex_spec_unique",
      "big": false
     }
@@ -3494,21 +3494,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_ValidatorIndex.bend",
      "law": "ValidatorIndex_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_ValidatorIndex.bend",
      "law": "ValidatorIndex_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_ValidatorIndex.bend",
      "law": "ValidatorIndex_spec_encode",
      "big": false
     }
@@ -3543,14 +3543,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_ValidatorIndex.bend",
      "law": "ValidatorIndex_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_ValidatorIndex.bend",
      "law": "ValidatorIndex_spec_input",
      "big": false
     }
@@ -3580,21 +3580,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_PendingConsolidation.bend",
      "law": "PendingConsolidation_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_PendingConsolidation.bend",
      "law": "PendingConsolidation_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_PendingConsolidation.bend",
      "law": "PendingConsolidation_spec_unique",
      "big": false
     }
@@ -3608,21 +3608,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_PendingConsolidation.bend",
      "law": "PendingConsolidation_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_PendingConsolidation.bend",
      "law": "PendingConsolidation_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_PendingConsolidation.bend",
      "law": "PendingConsolidation_spec_encode",
      "big": false
     }
@@ -3657,14 +3657,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_PendingConsolidation.bend",
      "law": "PendingConsolidation_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_PendingConsolidation.bend",
      "law": "PendingConsolidation_spec_input",
      "big": false
     }
@@ -3694,21 +3694,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_PendingPartialWithdrawal.bend",
      "law": "PendingPartialWithdrawal_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_PendingPartialWithdrawal.bend",
      "law": "PendingPartialWithdrawal_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_PendingPartialWithdrawal.bend",
      "law": "PendingPartialWithdrawal_spec_unique",
      "big": false
     }
@@ -3722,21 +3722,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_PendingPartialWithdrawal.bend",
      "law": "PendingPartialWithdrawal_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_PendingPartialWithdrawal.bend",
      "law": "PendingPartialWithdrawal_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_PendingPartialWithdrawal.bend",
      "law": "PendingPartialWithdrawal_spec_encode",
      "big": false
     }
@@ -3771,14 +3771,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_PendingPartialWithdrawal.bend",
      "law": "PendingPartialWithdrawal_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_PendingPartialWithdrawal.bend",
      "law": "PendingPartialWithdrawal_spec_input",
      "big": false
     }
@@ -3808,21 +3808,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_VoluntaryExit.bend",
      "law": "VoluntaryExit_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_VoluntaryExit.bend",
      "law": "VoluntaryExit_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_VoluntaryExit.bend",
      "law": "VoluntaryExit_spec_unique",
      "big": false
     }
@@ -3836,21 +3836,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_VoluntaryExit.bend",
      "law": "VoluntaryExit_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_VoluntaryExit.bend",
      "law": "VoluntaryExit_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_VoluntaryExit.bend",
      "law": "VoluntaryExit_spec_encode",
      "big": false
     }
@@ -3885,14 +3885,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_VoluntaryExit.bend",
      "law": "VoluntaryExit_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_VoluntaryExit.bend",
      "law": "VoluntaryExit_spec_input",
      "big": false
     }
@@ -3922,21 +3922,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SignedVoluntaryExit.bend",
      "law": "SignedVoluntaryExit_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SignedVoluntaryExit.bend",
      "law": "SignedVoluntaryExit_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_SignedVoluntaryExit.bend",
      "law": "SignedVoluntaryExit_spec_unique",
      "big": false
     }
@@ -3950,21 +3950,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SignedVoluntaryExit.bend",
      "law": "SignedVoluntaryExit_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SignedVoluntaryExit.bend",
      "law": "SignedVoluntaryExit_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SignedVoluntaryExit.bend",
      "law": "SignedVoluntaryExit_spec_encode",
      "big": false
     }
@@ -3999,14 +3999,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_SignedVoluntaryExit.bend",
      "law": "SignedVoluntaryExit_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_SignedVoluntaryExit.bend",
      "law": "SignedVoluntaryExit_spec_input",
      "big": false
     }
@@ -4036,21 +4036,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_Root.bend",
      "law": "Root_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_Root.bend",
      "law": "Root_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Root.bend",
      "law": "Root_spec_unique",
      "big": false
     }
@@ -4064,21 +4064,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_Root.bend",
      "law": "Root_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_Root.bend",
      "law": "Root_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_Root.bend",
      "law": "Root_spec_encode",
      "big": false
     }
@@ -4113,14 +4113,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_Root.bend",
      "law": "Root_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_Root.bend",
      "law": "Root_spec_input",
      "big": false
     }
@@ -4150,21 +4150,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_HistoricalSummary.bend",
      "law": "HistoricalSummary_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_HistoricalSummary.bend",
      "law": "HistoricalSummary_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_HistoricalSummary.bend",
      "law": "HistoricalSummary_spec_unique",
      "big": false
     }
@@ -4178,21 +4178,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_HistoricalSummary.bend",
      "law": "HistoricalSummary_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_HistoricalSummary.bend",
      "law": "HistoricalSummary_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_HistoricalSummary.bend",
      "law": "HistoricalSummary_spec_encode",
      "big": false
     }
@@ -4227,14 +4227,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_HistoricalSummary.bend",
      "law": "HistoricalSummary_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_HistoricalSummary.bend",
      "law": "HistoricalSummary_spec_input",
      "big": false
     }
@@ -4264,21 +4264,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SyncCommitteeContribution.bend",
      "law": "SyncCommitteeContribution_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SyncCommitteeContribution.bend",
      "law": "SyncCommitteeContribution_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_SyncCommitteeContribution.bend",
      "law": "SyncCommitteeContribution_spec_unique",
      "big": false
     }
@@ -4292,21 +4292,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SyncCommitteeContribution.bend",
      "law": "SyncCommitteeContribution_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SyncCommitteeContribution.bend",
      "law": "SyncCommitteeContribution_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SyncCommitteeContribution.bend",
      "law": "SyncCommitteeContribution_spec_encode",
      "big": false
     }
@@ -4341,14 +4341,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_SyncCommitteeContribution.bend",
      "law": "SyncCommitteeContribution_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_SyncCommitteeContribution.bend",
      "law": "SyncCommitteeContribution_spec_input",
      "big": false
     }
@@ -4378,21 +4378,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_ContributionAndProof.bend",
      "law": "ContributionAndProof_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_ContributionAndProof.bend",
      "law": "ContributionAndProof_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_ContributionAndProof.bend",
      "law": "ContributionAndProof_spec_unique",
      "big": false
     }
@@ -4406,21 +4406,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_ContributionAndProof.bend",
      "law": "ContributionAndProof_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_ContributionAndProof.bend",
      "law": "ContributionAndProof_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_ContributionAndProof.bend",
      "law": "ContributionAndProof_spec_encode",
      "big": false
     }
@@ -4431,14 +4431,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_ContributionAndProof.bend",
      "law": "ContributionAndProof_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_ContributionAndProof.bend",
      "law": "ContributionAndProof_spec_input",
      "big": false
     }
@@ -4462,21 +4462,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_spec_unique",
      "big": false
     }
@@ -4490,21 +4490,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_spec_encode",
      "big": false
     }
@@ -4515,14 +4515,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_SignedContributionAndProof.bend",
      "law": "SignedContributionAndProof_spec_input",
      "big": false
     }
@@ -4546,21 +4546,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SyncCommitteeMessage.bend",
      "law": "SyncCommitteeMessage_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SyncCommitteeMessage.bend",
      "law": "SyncCommitteeMessage_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_SyncCommitteeMessage.bend",
      "law": "SyncCommitteeMessage_spec_unique",
      "big": false
     }
@@ -4574,21 +4574,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SyncCommitteeMessage.bend",
      "law": "SyncCommitteeMessage_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SyncCommitteeMessage.bend",
      "law": "SyncCommitteeMessage_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_2.bend",
+     "file": "spec_codec_SyncCommitteeMessage.bend",
      "law": "SyncCommitteeMessage_spec_encode",
      "big": false
     }
@@ -4623,14 +4623,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_2.bend",
+     "file": "spec_repr_SyncCommitteeMessage.bend",
      "law": "SyncCommitteeMessage_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_2.bend",
+     "file": "spec_input_SyncCommitteeMessage.bend",
      "law": "SyncCommitteeMessage_spec_input",
      "big": false
     }
@@ -4660,21 +4660,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Eth1Block.bend",
      "law": "Eth1Block_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Eth1Block.bend",
      "law": "Eth1Block_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_Eth1Block.bend",
      "law": "Eth1Block_spec_unique",
      "big": false
     }
@@ -4688,21 +4688,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Eth1Block.bend",
      "law": "Eth1Block_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Eth1Block.bend",
      "law": "Eth1Block_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Eth1Block.bend",
      "law": "Eth1Block_spec_encode",
      "big": false
     }
@@ -4737,14 +4737,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_Eth1Block.bend",
      "law": "Eth1Block_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_Eth1Block.bend",
      "law": "Eth1Block_spec_input",
      "big": false
     }
@@ -4774,21 +4774,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_BeaconBlockHeader.bend",
      "law": "BeaconBlockHeader_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_BeaconBlockHeader.bend",
      "law": "BeaconBlockHeader_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_BeaconBlockHeader.bend",
      "law": "BeaconBlockHeader_spec_unique",
      "big": false
     }
@@ -4802,21 +4802,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_BeaconBlockHeader.bend",
      "law": "BeaconBlockHeader_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_BeaconBlockHeader.bend",
      "law": "BeaconBlockHeader_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_BeaconBlockHeader.bend",
      "law": "BeaconBlockHeader_spec_encode",
      "big": false
     }
@@ -4851,14 +4851,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_BeaconBlockHeader.bend",
      "law": "BeaconBlockHeader_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_BeaconBlockHeader.bend",
      "law": "BeaconBlockHeader_spec_input",
      "big": false
     }
@@ -4888,21 +4888,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SignedBeaconBlockHeader.bend",
      "law": "SignedBeaconBlockHeader_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SignedBeaconBlockHeader.bend",
      "law": "SignedBeaconBlockHeader_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_SignedBeaconBlockHeader.bend",
      "law": "SignedBeaconBlockHeader_spec_unique",
      "big": false
     }
@@ -4916,21 +4916,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SignedBeaconBlockHeader.bend",
      "law": "SignedBeaconBlockHeader_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SignedBeaconBlockHeader.bend",
      "law": "SignedBeaconBlockHeader_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SignedBeaconBlockHeader.bend",
      "law": "SignedBeaconBlockHeader_spec_encode",
      "big": false
     }
@@ -4965,14 +4965,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_SignedBeaconBlockHeader.bend",
      "law": "SignedBeaconBlockHeader_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_SignedBeaconBlockHeader.bend",
      "law": "SignedBeaconBlockHeader_spec_input",
      "big": false
     }
@@ -5002,21 +5002,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ProposerSlashing.bend",
      "law": "ProposerSlashing_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ProposerSlashing.bend",
      "law": "ProposerSlashing_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_0.bend",
+     "file": "spec_unique_ProposerSlashing.bend",
      "law": "ProposerSlashing_spec_unique",
      "big": false
     }
@@ -5030,21 +5030,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ProposerSlashing.bend",
      "law": "ProposerSlashing_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ProposerSlashing.bend",
      "law": "ProposerSlashing_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ProposerSlashing.bend",
      "law": "ProposerSlashing_spec_encode",
      "big": false
     }
@@ -5055,14 +5055,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_ProposerSlashing.bend",
      "law": "ProposerSlashing_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_ProposerSlashing.bend",
      "law": "ProposerSlashing_spec_input",
      "big": false
     }
@@ -5164,21 +5164,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Eth1Data.bend",
      "law": "Eth1Data_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Eth1Data.bend",
      "law": "Eth1Data_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_Eth1Data.bend",
      "law": "Eth1Data_spec_unique",
      "big": false
     }
@@ -5192,21 +5192,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Eth1Data.bend",
      "law": "Eth1Data_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Eth1Data.bend",
      "law": "Eth1Data_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Eth1Data.bend",
      "law": "Eth1Data_spec_encode",
      "big": false
     }
@@ -5241,14 +5241,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_Eth1Data.bend",
      "law": "Eth1Data_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_Eth1Data.bend",
      "law": "Eth1Data_spec_input",
      "big": false
     }
@@ -5278,21 +5278,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Checkpoint.bend",
      "law": "Checkpoint_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Checkpoint.bend",
      "law": "Checkpoint_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_Checkpoint.bend",
      "law": "Checkpoint_spec_unique",
      "big": false
     }
@@ -5306,21 +5306,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Checkpoint.bend",
      "law": "Checkpoint_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Checkpoint.bend",
      "law": "Checkpoint_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Checkpoint.bend",
      "law": "Checkpoint_spec_encode",
      "big": false
     }
@@ -5355,14 +5355,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_Checkpoint.bend",
      "law": "Checkpoint_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_Checkpoint.bend",
      "law": "Checkpoint_spec_input",
      "big": false
     }
@@ -5392,21 +5392,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_AttestationData.bend",
      "law": "AttestationData_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_AttestationData.bend",
      "law": "AttestationData_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_AttestationData.bend",
      "law": "AttestationData_spec_unique",
      "big": false
     }
@@ -5420,21 +5420,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_AttestationData.bend",
      "law": "AttestationData_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_AttestationData.bend",
      "law": "AttestationData_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_AttestationData.bend",
      "law": "AttestationData_spec_encode",
      "big": false
     }
@@ -5469,14 +5469,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_AttestationData.bend",
      "law": "AttestationData_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_AttestationData.bend",
      "law": "AttestationData_spec_input",
      "big": false
     }
@@ -5506,21 +5506,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SingleAttestation.bend",
      "law": "SingleAttestation_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SingleAttestation.bend",
      "law": "SingleAttestation_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_SingleAttestation.bend",
      "law": "SingleAttestation_spec_unique",
      "big": false
     }
@@ -5534,21 +5534,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SingleAttestation.bend",
      "law": "SingleAttestation_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SingleAttestation.bend",
      "law": "SingleAttestation_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SingleAttestation.bend",
      "law": "SingleAttestation_spec_encode",
      "big": false
     }
@@ -5583,14 +5583,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_SingleAttestation.bend",
      "law": "SingleAttestation_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_SingleAttestation.bend",
      "law": "SingleAttestation_spec_input",
      "big": false
     }
@@ -6052,21 +6052,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ForkData.bend",
      "law": "ForkData_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ForkData.bend",
      "law": "ForkData_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_ForkData.bend",
      "law": "ForkData_spec_unique",
      "big": false
     }
@@ -6080,21 +6080,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ForkData.bend",
      "law": "ForkData_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ForkData.bend",
      "law": "ForkData_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ForkData.bend",
      "law": "ForkData_spec_encode",
      "big": false
     }
@@ -6129,14 +6129,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_ForkData.bend",
      "law": "ForkData_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_ForkData.bend",
      "law": "ForkData_spec_input",
      "big": false
     }
@@ -6166,21 +6166,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ForkDigest.bend",
      "law": "ForkDigest_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ForkDigest.bend",
      "law": "ForkDigest_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_ForkDigest.bend",
      "law": "ForkDigest_spec_unique",
      "big": false
     }
@@ -6194,21 +6194,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ForkDigest.bend",
      "law": "ForkDigest_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ForkDigest.bend",
      "law": "ForkDigest_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_ForkDigest.bend",
      "law": "ForkDigest_spec_encode",
      "big": false
     }
@@ -6243,14 +6243,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_ForkDigest.bend",
      "law": "ForkDigest_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_ForkDigest.bend",
      "law": "ForkDigest_spec_input",
      "big": false
     }
@@ -6280,21 +6280,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Domain.bend",
      "law": "Domain_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Domain.bend",
      "law": "Domain_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_Domain.bend",
      "law": "Domain_spec_unique",
      "big": false
     }
@@ -6308,21 +6308,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Domain.bend",
      "law": "Domain_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Domain.bend",
      "law": "Domain_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_Domain.bend",
      "law": "Domain_spec_encode",
      "big": false
     }
@@ -6357,14 +6357,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_Domain.bend",
      "law": "Domain_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_Domain.bend",
      "law": "Domain_spec_input",
      "big": false
     }
@@ -6394,21 +6394,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SigningData.bend",
      "law": "SigningData_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SigningData.bend",
      "law": "SigningData_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_SigningData.bend",
      "law": "SigningData_spec_unique",
      "big": false
     }
@@ -6422,21 +6422,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SigningData.bend",
      "law": "SigningData_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SigningData.bend",
      "law": "SigningData_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_3.bend",
+     "file": "spec_codec_SigningData.bend",
      "law": "SigningData_spec_encode",
      "big": false
     }
@@ -6471,14 +6471,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_3.bend",
+     "file": "spec_repr_SigningData.bend",
      "law": "SigningData_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_3.bend",
+     "file": "spec_input_SigningData.bend",
      "law": "SigningData_spec_input",
      "big": false
     }
@@ -6508,21 +6508,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_BLSPubkey.bend",
      "law": "BLSPubkey_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_BLSPubkey.bend",
      "law": "BLSPubkey_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_BLSPubkey.bend",
      "law": "BLSPubkey_spec_unique",
      "big": false
     }
@@ -6536,21 +6536,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_BLSPubkey.bend",
      "law": "BLSPubkey_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_BLSPubkey.bend",
      "law": "BLSPubkey_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_BLSPubkey.bend",
      "law": "BLSPubkey_spec_encode",
      "big": false
     }
@@ -6585,14 +6585,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_BLSPubkey.bend",
      "law": "BLSPubkey_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_BLSPubkey.bend",
      "law": "BLSPubkey_spec_input",
      "big": false
     }
@@ -6622,21 +6622,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositRequest.bend",
      "law": "DepositRequest_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositRequest.bend",
      "law": "DepositRequest_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_DepositRequest.bend",
      "law": "DepositRequest_spec_unique",
      "big": false
     }
@@ -6650,21 +6650,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositRequest.bend",
      "law": "DepositRequest_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositRequest.bend",
      "law": "DepositRequest_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositRequest.bend",
      "law": "DepositRequest_spec_encode",
      "big": false
     }
@@ -6699,14 +6699,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_DepositRequest.bend",
      "law": "DepositRequest_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_DepositRequest.bend",
      "law": "DepositRequest_spec_input",
      "big": false
     }
@@ -6736,21 +6736,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_PendingDeposit.bend",
      "law": "PendingDeposit_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_PendingDeposit.bend",
      "law": "PendingDeposit_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_PendingDeposit.bend",
      "law": "PendingDeposit_spec_unique",
      "big": false
     }
@@ -6764,21 +6764,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_PendingDeposit.bend",
      "law": "PendingDeposit_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_PendingDeposit.bend",
      "law": "PendingDeposit_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_PendingDeposit.bend",
      "law": "PendingDeposit_spec_encode",
      "big": false
     }
@@ -6813,14 +6813,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_PendingDeposit.bend",
      "law": "PendingDeposit_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_PendingDeposit.bend",
      "law": "PendingDeposit_spec_input",
      "big": false
     }
@@ -6928,21 +6928,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositData.bend",
      "law": "DepositData_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositData.bend",
      "law": "DepositData_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_DepositData.bend",
      "law": "DepositData_spec_unique",
      "big": false
     }
@@ -6956,21 +6956,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositData.bend",
      "law": "DepositData_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositData.bend",
      "law": "DepositData_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositData.bend",
      "law": "DepositData_spec_encode",
      "big": false
     }
@@ -7005,14 +7005,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_DepositData.bend",
      "law": "DepositData_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_DepositData.bend",
      "law": "DepositData_spec_input",
      "big": false
     }
@@ -7042,21 +7042,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_Deposit.bend",
      "law": "Deposit_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_Deposit.bend",
      "law": "Deposit_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_Deposit.bend",
      "law": "Deposit_spec_unique",
      "big": false
     }
@@ -7070,21 +7070,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_Deposit.bend",
      "law": "Deposit_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_Deposit.bend",
      "law": "Deposit_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_Deposit.bend",
      "law": "Deposit_spec_encode",
      "big": false
     }
@@ -7095,14 +7095,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_Deposit.bend",
      "law": "Deposit_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_Deposit.bend",
      "law": "Deposit_spec_input",
      "big": false
     }
@@ -7126,21 +7126,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositMessage.bend",
      "law": "DepositMessage_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositMessage.bend",
      "law": "DepositMessage_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_DepositMessage.bend",
      "law": "DepositMessage_spec_unique",
      "big": false
     }
@@ -7154,21 +7154,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositMessage.bend",
      "law": "DepositMessage_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositMessage.bend",
      "law": "DepositMessage_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_DepositMessage.bend",
      "law": "DepositMessage_spec_encode",
      "big": false
     }
@@ -7203,14 +7203,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_DepositMessage.bend",
      "law": "DepositMessage_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_DepositMessage.bend",
      "law": "DepositMessage_spec_input",
      "big": false
     }
@@ -7328,21 +7328,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_NodeID.bend",
      "law": "NodeID_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_NodeID.bend",
      "law": "NodeID_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_NodeID.bend",
      "law": "NodeID_spec_unique",
      "big": false
     }
@@ -7356,21 +7356,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_NodeID.bend",
      "law": "NodeID_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_NodeID.bend",
      "law": "NodeID_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_NodeID.bend",
      "law": "NodeID_spec_encode",
      "big": false
     }
@@ -7405,14 +7405,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_NodeID.bend",
      "law": "NodeID_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_NodeID.bend",
      "law": "NodeID_spec_input",
      "big": false
     }
@@ -7442,21 +7442,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_SubnetID.bend",
      "law": "SubnetID_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_SubnetID.bend",
      "law": "SubnetID_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_SubnetID.bend",
      "law": "SubnetID_spec_unique",
      "big": false
     }
@@ -7470,21 +7470,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_SubnetID.bend",
      "law": "SubnetID_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_SubnetID.bend",
      "law": "SubnetID_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_SubnetID.bend",
      "law": "SubnetID_spec_encode",
      "big": false
     }
@@ -7519,14 +7519,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_SubnetID.bend",
      "law": "SubnetID_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_SubnetID.bend",
      "law": "SubnetID_spec_input",
      "big": false
     }
@@ -7556,21 +7556,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_Ether.bend",
      "law": "Ether_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_Ether.bend",
      "law": "Ether_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_Ether.bend",
      "law": "Ether_spec_unique",
      "big": false
     }
@@ -7584,21 +7584,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_Ether.bend",
      "law": "Ether_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_Ether.bend",
      "law": "Ether_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_Ether.bend",
      "law": "Ether_spec_encode",
      "big": false
     }
@@ -7633,14 +7633,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_Ether.bend",
      "law": "Ether_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_Ether.bend",
      "law": "Ether_spec_input",
      "big": false
     }
@@ -7759,21 +7759,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_spec_unique",
      "big": false
     }
@@ -7787,21 +7787,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_spec_encode",
      "big": false
     }
@@ -7812,14 +7812,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_CurrentSyncCommitteeBranch.bend",
      "law": "CurrentSyncCommitteeBranch_spec_input",
      "big": false
     }
@@ -7843,21 +7843,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_spec_unique",
      "big": false
     }
@@ -7871,21 +7871,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_spec_encode",
      "big": false
     }
@@ -7896,14 +7896,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_NextSyncCommitteeBranch.bend",
      "law": "NextSyncCommitteeBranch_spec_input",
      "big": false
     }
@@ -7999,21 +7999,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_ExecutionAddress.bend",
      "law": "ExecutionAddress_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_ExecutionAddress.bend",
      "law": "ExecutionAddress_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_ExecutionAddress.bend",
      "law": "ExecutionAddress_spec_unique",
      "big": false
     }
@@ -8027,21 +8027,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_ExecutionAddress.bend",
      "law": "ExecutionAddress_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_ExecutionAddress.bend",
      "law": "ExecutionAddress_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_4.bend",
+     "file": "spec_codec_ExecutionAddress.bend",
      "law": "ExecutionAddress_spec_encode",
      "big": false
     }
@@ -8076,14 +8076,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_4.bend",
+     "file": "spec_repr_ExecutionAddress.bend",
      "law": "ExecutionAddress_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_4.bend",
+     "file": "spec_input_ExecutionAddress.bend",
      "law": "ExecutionAddress_spec_input",
      "big": false
     }
@@ -8113,21 +8113,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_ConsolidationRequest.bend",
      "law": "ConsolidationRequest_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_ConsolidationRequest.bend",
      "law": "ConsolidationRequest_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_ConsolidationRequest.bend",
      "law": "ConsolidationRequest_spec_unique",
      "big": false
     }
@@ -8141,21 +8141,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_ConsolidationRequest.bend",
      "law": "ConsolidationRequest_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_ConsolidationRequest.bend",
      "law": "ConsolidationRequest_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_ConsolidationRequest.bend",
      "law": "ConsolidationRequest_spec_encode",
      "big": false
     }
@@ -8190,14 +8190,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_ConsolidationRequest.bend",
      "law": "ConsolidationRequest_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_ConsolidationRequest.bend",
      "law": "ConsolidationRequest_spec_input",
      "big": false
     }
@@ -8227,21 +8227,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_WithdrawalRequest.bend",
      "law": "WithdrawalRequest_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_WithdrawalRequest.bend",
      "law": "WithdrawalRequest_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_WithdrawalRequest.bend",
      "law": "WithdrawalRequest_spec_unique",
      "big": false
     }
@@ -8255,21 +8255,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_WithdrawalRequest.bend",
      "law": "WithdrawalRequest_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_WithdrawalRequest.bend",
      "law": "WithdrawalRequest_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_WithdrawalRequest.bend",
      "law": "WithdrawalRequest_spec_encode",
      "big": false
     }
@@ -8304,14 +8304,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_WithdrawalRequest.bend",
      "law": "WithdrawalRequest_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_WithdrawalRequest.bend",
      "law": "WithdrawalRequest_spec_input",
      "big": false
     }
@@ -8413,21 +8413,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BLSToExecutionChange.bend",
      "law": "BLSToExecutionChange_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BLSToExecutionChange.bend",
      "law": "BLSToExecutionChange_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_BLSToExecutionChange.bend",
      "law": "BLSToExecutionChange_spec_unique",
      "big": false
     }
@@ -8441,21 +8441,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BLSToExecutionChange.bend",
      "law": "BLSToExecutionChange_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BLSToExecutionChange.bend",
      "law": "BLSToExecutionChange_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BLSToExecutionChange.bend",
      "law": "BLSToExecutionChange_spec_encode",
      "big": false
     }
@@ -8490,14 +8490,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_BLSToExecutionChange.bend",
      "law": "BLSToExecutionChange_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_BLSToExecutionChange.bend",
      "law": "BLSToExecutionChange_spec_input",
      "big": false
     }
@@ -8527,21 +8527,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_SignedBLSToExecutionChange.bend",
      "law": "SignedBLSToExecutionChange_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_SignedBLSToExecutionChange.bend",
      "law": "SignedBLSToExecutionChange_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_SignedBLSToExecutionChange.bend",
      "law": "SignedBLSToExecutionChange_spec_unique",
      "big": false
     }
@@ -8555,21 +8555,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_SignedBLSToExecutionChange.bend",
      "law": "SignedBLSToExecutionChange_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_SignedBLSToExecutionChange.bend",
      "law": "SignedBLSToExecutionChange_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_SignedBLSToExecutionChange.bend",
      "law": "SignedBLSToExecutionChange_spec_encode",
      "big": false
     }
@@ -8604,14 +8604,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_SignedBLSToExecutionChange.bend",
      "law": "SignedBLSToExecutionChange_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_SignedBLSToExecutionChange.bend",
      "law": "SignedBLSToExecutionChange_spec_input",
      "big": false
     }
@@ -8713,21 +8713,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_PayloadId.bend",
      "law": "PayloadId_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_PayloadId.bend",
      "law": "PayloadId_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_PayloadId.bend",
      "law": "PayloadId_spec_unique",
      "big": false
     }
@@ -8741,21 +8741,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_PayloadId.bend",
      "law": "PayloadId_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_PayloadId.bend",
      "law": "PayloadId_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_PayloadId.bend",
      "law": "PayloadId_spec_encode",
      "big": false
     }
@@ -8790,14 +8790,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_PayloadId.bend",
      "law": "PayloadId_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_PayloadId.bend",
      "law": "PayloadId_spec_input",
      "big": false
     }
@@ -8827,21 +8827,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_WithdrawalIndex.bend",
      "law": "WithdrawalIndex_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_WithdrawalIndex.bend",
      "law": "WithdrawalIndex_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_WithdrawalIndex.bend",
      "law": "WithdrawalIndex_spec_unique",
      "big": false
     }
@@ -8855,21 +8855,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_WithdrawalIndex.bend",
      "law": "WithdrawalIndex_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_WithdrawalIndex.bend",
      "law": "WithdrawalIndex_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_WithdrawalIndex.bend",
      "law": "WithdrawalIndex_spec_encode",
      "big": false
     }
@@ -8904,14 +8904,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_WithdrawalIndex.bend",
      "law": "WithdrawalIndex_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_WithdrawalIndex.bend",
      "law": "WithdrawalIndex_spec_input",
      "big": false
     }
@@ -8941,21 +8941,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_Withdrawal.bend",
      "law": "Withdrawal_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_Withdrawal.bend",
      "law": "Withdrawal_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_Withdrawal.bend",
      "law": "Withdrawal_spec_unique",
      "big": false
     }
@@ -8969,21 +8969,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_Withdrawal.bend",
      "law": "Withdrawal_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_Withdrawal.bend",
      "law": "Withdrawal_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_Withdrawal.bend",
      "law": "Withdrawal_spec_encode",
      "big": false
     }
@@ -9018,14 +9018,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_Withdrawal.bend",
      "law": "Withdrawal_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_Withdrawal.bend",
      "law": "Withdrawal_spec_input",
      "big": false
     }
@@ -9199,21 +9199,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_ExecutionBranch.bend",
      "law": "ExecutionBranch_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_ExecutionBranch.bend",
      "law": "ExecutionBranch_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_ExecutionBranch.bend",
      "law": "ExecutionBranch_spec_unique",
      "big": false
     }
@@ -9227,21 +9227,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_ExecutionBranch.bend",
      "law": "ExecutionBranch_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_ExecutionBranch.bend",
      "law": "ExecutionBranch_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_ExecutionBranch.bend",
      "law": "ExecutionBranch_spec_encode",
      "big": false
     }
@@ -9252,14 +9252,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_ExecutionBranch.bend",
      "law": "ExecutionBranch_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_ExecutionBranch.bend",
      "law": "ExecutionBranch_spec_input",
      "big": false
     }
@@ -9643,21 +9643,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BlobIndex.bend",
      "law": "BlobIndex_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BlobIndex.bend",
      "law": "BlobIndex_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_BlobIndex.bend",
      "law": "BlobIndex_spec_unique",
      "big": false
     }
@@ -9671,21 +9671,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BlobIndex.bend",
      "law": "BlobIndex_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BlobIndex.bend",
      "law": "BlobIndex_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BlobIndex.bend",
      "law": "BlobIndex_spec_encode",
      "big": false
     }
@@ -9720,14 +9720,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_BlobIndex.bend",
      "law": "BlobIndex_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_BlobIndex.bend",
      "law": "BlobIndex_spec_input",
      "big": false
     }
@@ -9757,21 +9757,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BlobIdentifier.bend",
      "law": "BlobIdentifier_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BlobIdentifier.bend",
      "law": "BlobIdentifier_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_BlobIdentifier.bend",
      "law": "BlobIdentifier_spec_unique",
      "big": false
     }
@@ -9785,21 +9785,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BlobIdentifier.bend",
      "law": "BlobIdentifier_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BlobIdentifier.bend",
      "law": "BlobIdentifier_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_BlobIdentifier.bend",
      "law": "BlobIdentifier_spec_encode",
      "big": false
     }
@@ -9834,14 +9834,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_BlobIdentifier.bend",
      "law": "BlobIdentifier_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_BlobIdentifier.bend",
      "law": "BlobIdentifier_spec_input",
      "big": false
     }
@@ -9871,21 +9871,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_KZGCommitment.bend",
      "law": "KZGCommitment_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_KZGCommitment.bend",
      "law": "KZGCommitment_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_KZGCommitment.bend",
      "law": "KZGCommitment_spec_unique",
      "big": false
     }
@@ -9899,21 +9899,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_KZGCommitment.bend",
      "law": "KZGCommitment_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_KZGCommitment.bend",
      "law": "KZGCommitment_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_KZGCommitment.bend",
      "law": "KZGCommitment_spec_encode",
      "big": false
     }
@@ -9948,14 +9948,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_KZGCommitment.bend",
      "law": "KZGCommitment_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_KZGCommitment.bend",
      "law": "KZGCommitment_spec_input",
      "big": false
     }
@@ -10201,21 +10201,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_KZGProof.bend",
      "law": "KZGProof_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_KZGProof.bend",
      "law": "KZGProof_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_KZGProof.bend",
      "law": "KZGProof_spec_unique",
      "big": false
     }
@@ -10229,21 +10229,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_KZGProof.bend",
      "law": "KZGProof_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_KZGProof.bend",
      "law": "KZGProof_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_5.bend",
+     "file": "spec_codec_KZGProof.bend",
      "law": "KZGProof_spec_encode",
      "big": false
     }
@@ -10278,14 +10278,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_5.bend",
+     "file": "spec_repr_KZGProof.bend",
      "law": "KZGProof_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_5.bend",
+     "file": "spec_input_KZGProof.bend",
      "law": "KZGProof_spec_input",
      "big": false
     }
@@ -10476,21 +10476,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_Cell.bend",
      "law": "Cell_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_Cell.bend",
      "law": "Cell_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_Cell.bend",
      "law": "Cell_spec_unique",
      "big": false
     }
@@ -10504,21 +10504,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_Cell.bend",
      "law": "Cell_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_Cell.bend",
      "law": "Cell_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_Cell.bend",
      "law": "Cell_spec_encode",
      "big": false
     }
@@ -10529,14 +10529,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_repr_6.bend",
+     "file": "spec_repr_Cell.bend",
      "law": "Cell_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_6.bend",
+     "file": "spec_input_Cell.bend",
      "law": "Cell_spec_input",
      "big": false
     }
@@ -10560,21 +10560,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CellIndex.bend",
      "law": "CellIndex_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CellIndex.bend",
      "law": "CellIndex_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_CellIndex.bend",
      "law": "CellIndex_spec_unique",
      "big": false
     }
@@ -10588,21 +10588,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CellIndex.bend",
      "law": "CellIndex_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CellIndex.bend",
      "law": "CellIndex_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CellIndex.bend",
      "law": "CellIndex_spec_encode",
      "big": false
     }
@@ -10637,14 +10637,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_6.bend",
+     "file": "spec_repr_CellIndex.bend",
      "law": "CellIndex_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_6.bend",
+     "file": "spec_input_CellIndex.bend",
      "law": "CellIndex_spec_input",
      "big": false
     }
@@ -10674,21 +10674,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CommitmentIndex.bend",
      "law": "CommitmentIndex_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CommitmentIndex.bend",
      "law": "CommitmentIndex_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_CommitmentIndex.bend",
      "law": "CommitmentIndex_spec_unique",
      "big": false
     }
@@ -10702,21 +10702,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CommitmentIndex.bend",
      "law": "CommitmentIndex_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CommitmentIndex.bend",
      "law": "CommitmentIndex_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CommitmentIndex.bend",
      "law": "CommitmentIndex_spec_encode",
      "big": false
     }
@@ -10751,14 +10751,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_6.bend",
+     "file": "spec_repr_CommitmentIndex.bend",
      "law": "CommitmentIndex_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_6.bend",
+     "file": "spec_input_CommitmentIndex.bend",
      "law": "CommitmentIndex_spec_input",
      "big": false
     }
@@ -10788,21 +10788,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_RowIndex.bend",
      "law": "RowIndex_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_RowIndex.bend",
      "law": "RowIndex_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_RowIndex.bend",
      "law": "RowIndex_spec_unique",
      "big": false
     }
@@ -10816,21 +10816,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_RowIndex.bend",
      "law": "RowIndex_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_RowIndex.bend",
      "law": "RowIndex_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_RowIndex.bend",
      "law": "RowIndex_spec_encode",
      "big": false
     }
@@ -10865,14 +10865,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_6.bend",
+     "file": "spec_repr_RowIndex.bend",
      "law": "RowIndex_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_6.bend",
+     "file": "spec_input_RowIndex.bend",
      "law": "RowIndex_spec_input",
      "big": false
     }
@@ -10902,21 +10902,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_ColumnIndex.bend",
      "law": "ColumnIndex_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_ColumnIndex.bend",
      "law": "ColumnIndex_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_ColumnIndex.bend",
      "law": "ColumnIndex_spec_unique",
      "big": false
     }
@@ -10930,21 +10930,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_ColumnIndex.bend",
      "law": "ColumnIndex_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_ColumnIndex.bend",
      "law": "ColumnIndex_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_ColumnIndex.bend",
      "law": "ColumnIndex_spec_encode",
      "big": false
     }
@@ -10979,14 +10979,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_6.bend",
+     "file": "spec_repr_ColumnIndex.bend",
      "law": "ColumnIndex_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_6.bend",
+     "file": "spec_input_ColumnIndex.bend",
      "law": "ColumnIndex_spec_input",
      "big": false
     }
@@ -11088,21 +11088,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_MatrixEntry.bend",
      "law": "MatrixEntry_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_MatrixEntry.bend",
      "law": "MatrixEntry_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_MatrixEntry.bend",
      "law": "MatrixEntry_spec_unique",
      "big": false
     }
@@ -11116,21 +11116,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_MatrixEntry.bend",
      "law": "MatrixEntry_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_MatrixEntry.bend",
      "law": "MatrixEntry_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_MatrixEntry.bend",
      "law": "MatrixEntry_spec_encode",
      "big": false
     }
@@ -11141,14 +11141,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_repr_6.bend",
+     "file": "spec_repr_MatrixEntry.bend",
      "law": "MatrixEntry_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_6.bend",
+     "file": "spec_input_MatrixEntry.bend",
      "law": "MatrixEntry_spec_input",
      "big": false
     }
@@ -11244,21 +11244,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CustodyIndex.bend",
      "law": "CustodyIndex_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CustodyIndex.bend",
      "law": "CustodyIndex_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_unique_1.bend",
+     "file": "spec_unique_CustodyIndex.bend",
      "law": "CustodyIndex_spec_unique",
      "big": false
     }
@@ -11272,21 +11272,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CustodyIndex.bend",
      "law": "CustodyIndex_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CustodyIndex.bend",
      "law": "CustodyIndex_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_codec_6.bend",
+     "file": "spec_codec_CustodyIndex.bend",
      "law": "CustodyIndex_spec_encode",
      "big": false
     }
@@ -11321,14 +11321,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_repr_6.bend",
+     "file": "spec_repr_CustodyIndex.bend",
      "law": "CustodyIndex_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_input_6.bend",
+     "file": "spec_input_CustodyIndex.bend",
      "law": "CustodyIndex_spec_input",
      "big": false
     }
@@ -12560,21 +12560,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3EC8B89B94.bend",
      "law": "Gt3EC8B89B94_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3EC8B89B94.bend",
      "law": "Gt3EC8B89B94_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_Gt3EC8B89B94.bend",
      "law": "Gt3EC8B89B94_spec_unique",
      "big": false
     }
@@ -12588,21 +12588,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3EC8B89B94.bend",
      "law": "Gt3EC8B89B94_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3EC8B89B94.bend",
      "law": "Gt3EC8B89B94_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3EC8B89B94.bend",
      "law": "Gt3EC8B89B94_spec_encode",
      "big": false
     }
@@ -12613,14 +12613,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_Gt3EC8B89B94.bend",
      "law": "Gt3EC8B89B94_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_Gt3EC8B89B94.bend",
      "law": "Gt3EC8B89B94_spec_input",
      "big": false
     }
@@ -12644,21 +12644,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3FD98F54A5.bend",
      "law": "Gt3FD98F54A5_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3FD98F54A5.bend",
      "law": "Gt3FD98F54A5_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_Gt3FD98F54A5.bend",
      "law": "Gt3FD98F54A5_spec_unique",
      "big": false
     }
@@ -12672,21 +12672,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3FD98F54A5.bend",
      "law": "Gt3FD98F54A5_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3FD98F54A5.bend",
      "law": "Gt3FD98F54A5_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3FD98F54A5.bend",
      "law": "Gt3FD98F54A5_spec_encode",
      "big": false
     }
@@ -12697,14 +12697,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_Gt3FD98F54A5.bend",
      "law": "Gt3FD98F54A5_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_Gt3FD98F54A5.bend",
      "law": "Gt3FD98F54A5_spec_input",
      "big": false
     }
@@ -12728,21 +12728,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt7D65FF3A10.bend",
      "law": "Gt7D65FF3A10_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt7D65FF3A10.bend",
      "law": "Gt7D65FF3A10_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_Gt7D65FF3A10.bend",
      "law": "Gt7D65FF3A10_spec_unique",
      "big": false
     }
@@ -12756,21 +12756,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt7D65FF3A10.bend",
      "law": "Gt7D65FF3A10_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt7D65FF3A10.bend",
      "law": "Gt7D65FF3A10_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt7D65FF3A10.bend",
      "law": "Gt7D65FF3A10_spec_encode",
      "big": false
     }
@@ -12781,14 +12781,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_Gt7D65FF3A10.bend",
      "law": "Gt7D65FF3A10_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_Gt7D65FF3A10.bend",
      "law": "Gt7D65FF3A10_spec_input",
      "big": false
     }
@@ -12812,21 +12812,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt6B1336E534.bend",
      "law": "Gt6B1336E534_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt6B1336E534.bend",
      "law": "Gt6B1336E534_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_Gt6B1336E534.bend",
      "law": "Gt6B1336E534_spec_unique",
      "big": false
     }
@@ -12840,21 +12840,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt6B1336E534.bend",
      "law": "Gt6B1336E534_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt6B1336E534.bend",
      "law": "Gt6B1336E534_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt6B1336E534.bend",
      "law": "Gt6B1336E534_spec_encode",
      "big": false
     }
@@ -12865,14 +12865,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_Gt6B1336E534.bend",
      "law": "Gt6B1336E534_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_Gt6B1336E534.bend",
      "law": "Gt6B1336E534_spec_input",
      "big": false
     }
@@ -12896,21 +12896,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt7600AB7870.bend",
      "law": "Gt7600AB7870_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt7600AB7870.bend",
      "law": "Gt7600AB7870_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_Gt7600AB7870.bend",
      "law": "Gt7600AB7870_spec_unique",
      "big": false
     }
@@ -12924,21 +12924,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt7600AB7870.bend",
      "law": "Gt7600AB7870_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt7600AB7870.bend",
      "law": "Gt7600AB7870_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt7600AB7870.bend",
      "law": "Gt7600AB7870_spec_encode",
      "big": false
     }
@@ -12949,14 +12949,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_Gt7600AB7870.bend",
      "law": "Gt7600AB7870_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_Gt7600AB7870.bend",
      "law": "Gt7600AB7870_spec_input",
      "big": false
     }
@@ -12980,21 +12980,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtB0CCEA154C.bend",
      "law": "GtB0CCEA154C_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtB0CCEA154C.bend",
      "law": "GtB0CCEA154C_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_GtB0CCEA154C.bend",
      "law": "GtB0CCEA154C_spec_unique",
      "big": false
     }
@@ -13008,21 +13008,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtB0CCEA154C.bend",
      "law": "GtB0CCEA154C_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtB0CCEA154C.bend",
      "law": "GtB0CCEA154C_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtB0CCEA154C.bend",
      "law": "GtB0CCEA154C_spec_encode",
      "big": false
     }
@@ -13033,14 +13033,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_GtB0CCEA154C.bend",
      "law": "GtB0CCEA154C_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_GtB0CCEA154C.bend",
      "law": "GtB0CCEA154C_spec_input",
      "big": false
     }
@@ -13220,21 +13220,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtBB42F83A45.bend",
      "law": "GtBB42F83A45_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtBB42F83A45.bend",
      "law": "GtBB42F83A45_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_GtBB42F83A45.bend",
      "law": "GtBB42F83A45_spec_unique",
      "big": false
     }
@@ -13248,21 +13248,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtBB42F83A45.bend",
      "law": "GtBB42F83A45_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtBB42F83A45.bend",
      "law": "GtBB42F83A45_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtBB42F83A45.bend",
      "law": "GtBB42F83A45_spec_encode",
      "big": false
     }
@@ -13273,14 +13273,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_GtBB42F83A45.bend",
      "law": "GtBB42F83A45_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_GtBB42F83A45.bend",
      "law": "GtBB42F83A45_spec_input",
      "big": false
     }
@@ -13304,21 +13304,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3E2A057F33.bend",
      "law": "Gt3E2A057F33_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3E2A057F33.bend",
      "law": "Gt3E2A057F33_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_Gt3E2A057F33.bend",
      "law": "Gt3E2A057F33_spec_unique",
      "big": false
     }
@@ -13332,21 +13332,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3E2A057F33.bend",
      "law": "Gt3E2A057F33_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3E2A057F33.bend",
      "law": "Gt3E2A057F33_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3E2A057F33.bend",
      "law": "Gt3E2A057F33_spec_encode",
      "big": false
     }
@@ -13357,14 +13357,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_Gt3E2A057F33.bend",
      "law": "Gt3E2A057F33_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_Gt3E2A057F33.bend",
      "law": "Gt3E2A057F33_spec_input",
      "big": false
     }
@@ -15044,21 +15044,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3E6E18CD57.bend",
      "law": "Gt3E6E18CD57_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3E6E18CD57.bend",
      "law": "Gt3E6E18CD57_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_Gt3E6E18CD57.bend",
      "law": "Gt3E6E18CD57_spec_unique",
      "big": false
     }
@@ -15072,21 +15072,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3E6E18CD57.bend",
      "law": "Gt3E6E18CD57_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3E6E18CD57.bend",
      "law": "Gt3E6E18CD57_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt3E6E18CD57.bend",
      "law": "Gt3E6E18CD57_spec_encode",
      "big": false
     }
@@ -15097,14 +15097,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_Gt3E6E18CD57.bend",
      "law": "Gt3E6E18CD57_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_Gt3E6E18CD57.bend",
      "law": "Gt3E6E18CD57_spec_input",
      "big": false
     }
@@ -15128,21 +15128,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtBBFD66E011.bend",
      "law": "GtBBFD66E011_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtBBFD66E011.bend",
      "law": "GtBBFD66E011_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_GtBBFD66E011.bend",
      "law": "GtBBFD66E011_spec_unique",
      "big": false
     }
@@ -15156,21 +15156,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtBBFD66E011.bend",
      "law": "GtBBFD66E011_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtBBFD66E011.bend",
      "law": "GtBBFD66E011_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtBBFD66E011.bend",
      "law": "GtBBFD66E011_spec_encode",
      "big": false
     }
@@ -15181,14 +15181,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_GtBBFD66E011.bend",
      "law": "GtBBFD66E011_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_GtBBFD66E011.bend",
      "law": "GtBBFD66E011_spec_input",
      "big": false
     }
@@ -15212,21 +15212,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtB91D4D285D.bend",
      "law": "GtB91D4D285D_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtB91D4D285D.bend",
      "law": "GtB91D4D285D_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_GtB91D4D285D.bend",
      "law": "GtB91D4D285D_spec_unique",
      "big": false
     }
@@ -15240,21 +15240,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtB91D4D285D.bend",
      "law": "GtB91D4D285D_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtB91D4D285D.bend",
      "law": "GtB91D4D285D_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_GtB91D4D285D.bend",
      "law": "GtB91D4D285D_spec_encode",
      "big": false
     }
@@ -15265,14 +15265,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_GtB91D4D285D.bend",
      "law": "GtB91D4D285D_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_GtB91D4D285D.bend",
      "law": "GtB91D4D285D_spec_input",
      "big": false
     }
@@ -15296,21 +15296,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt6E9B243B7C.bend",
      "law": "Gt6E9B243B7C_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt6E9B243B7C.bend",
      "law": "Gt6E9B243B7C_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_0.bend",
+     "file": "spec_gunique_Gt6E9B243B7C.bend",
      "law": "Gt6E9B243B7C_spec_unique",
      "big": false
     }
@@ -15324,21 +15324,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt6E9B243B7C.bend",
      "law": "Gt6E9B243B7C_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt6E9B243B7C.bend",
      "law": "Gt6E9B243B7C_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_0.bend",
+     "file": "spec_gcodec_Gt6E9B243B7C.bend",
      "law": "Gt6E9B243B7C_spec_encode",
      "big": false
     }
@@ -15349,14 +15349,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_0.bend",
+     "file": "spec_grepr_Gt6E9B243B7C.bend",
      "law": "Gt6E9B243B7C_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_0.bend",
+     "file": "spec_ginput_Gt6E9B243B7C.bend",
      "law": "Gt6E9B243B7C_spec_input",
      "big": false
     }
@@ -15380,21 +15380,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt2E7060B297.bend",
      "law": "Gt2E7060B297_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt2E7060B297.bend",
      "law": "Gt2E7060B297_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_Gt2E7060B297.bend",
      "law": "Gt2E7060B297_spec_unique",
      "big": false
     }
@@ -15408,21 +15408,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt2E7060B297.bend",
      "law": "Gt2E7060B297_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt2E7060B297.bend",
      "law": "Gt2E7060B297_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt2E7060B297.bend",
      "law": "Gt2E7060B297_spec_encode",
      "big": false
     }
@@ -15433,14 +15433,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_Gt2E7060B297.bend",
      "law": "Gt2E7060B297_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_Gt2E7060B297.bend",
      "law": "Gt2E7060B297_spec_input",
      "big": false
     }
@@ -15464,21 +15464,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt74B2AF1CB3.bend",
      "law": "Gt74B2AF1CB3_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt74B2AF1CB3.bend",
      "law": "Gt74B2AF1CB3_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_Gt74B2AF1CB3.bend",
      "law": "Gt74B2AF1CB3_spec_unique",
      "big": false
     }
@@ -15492,21 +15492,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt74B2AF1CB3.bend",
      "law": "Gt74B2AF1CB3_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt74B2AF1CB3.bend",
      "law": "Gt74B2AF1CB3_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt74B2AF1CB3.bend",
      "law": "Gt74B2AF1CB3_spec_encode",
      "big": false
     }
@@ -15517,14 +15517,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_Gt74B2AF1CB3.bend",
      "law": "Gt74B2AF1CB3_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_Gt74B2AF1CB3.bend",
      "law": "Gt74B2AF1CB3_spec_input",
      "big": false
     }
@@ -15704,21 +15704,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt0B1B711C4D.bend",
      "law": "Gt0B1B711C4D_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt0B1B711C4D.bend",
      "law": "Gt0B1B711C4D_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_Gt0B1B711C4D.bend",
      "law": "Gt0B1B711C4D_spec_unique",
      "big": false
     }
@@ -15732,21 +15732,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt0B1B711C4D.bend",
      "law": "Gt0B1B711C4D_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt0B1B711C4D.bend",
      "law": "Gt0B1B711C4D_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt0B1B711C4D.bend",
      "law": "Gt0B1B711C4D_spec_encode",
      "big": false
     }
@@ -15757,14 +15757,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_Gt0B1B711C4D.bend",
      "law": "Gt0B1B711C4D_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_Gt0B1B711C4D.bend",
      "law": "Gt0B1B711C4D_spec_input",
      "big": false
     }
@@ -15788,21 +15788,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtFAE59DA275.bend",
      "law": "GtFAE59DA275_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtFAE59DA275.bend",
      "law": "GtFAE59DA275_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_GtFAE59DA275.bend",
      "law": "GtFAE59DA275_spec_unique",
      "big": false
     }
@@ -15816,21 +15816,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtFAE59DA275.bend",
      "law": "GtFAE59DA275_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtFAE59DA275.bend",
      "law": "GtFAE59DA275_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtFAE59DA275.bend",
      "law": "GtFAE59DA275_spec_encode",
      "big": false
     }
@@ -15841,14 +15841,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_GtFAE59DA275.bend",
      "law": "GtFAE59DA275_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_GtFAE59DA275.bend",
      "law": "GtFAE59DA275_spec_input",
      "big": false
     }
@@ -15944,21 +15944,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt3CC580499F.bend",
      "law": "Gt3CC580499F_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt3CC580499F.bend",
      "law": "Gt3CC580499F_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_Gt3CC580499F.bend",
      "law": "Gt3CC580499F_spec_unique",
      "big": false
     }
@@ -15972,21 +15972,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt3CC580499F.bend",
      "law": "Gt3CC580499F_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt3CC580499F.bend",
      "law": "Gt3CC580499F_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt3CC580499F.bend",
      "law": "Gt3CC580499F_spec_encode",
      "big": false
     }
@@ -15997,14 +15997,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_Gt3CC580499F.bend",
      "law": "Gt3CC580499F_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_Gt3CC580499F.bend",
      "law": "Gt3CC580499F_spec_input",
      "big": false
     }
@@ -16028,21 +16028,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt669C528764.bend",
      "law": "Gt669C528764_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt669C528764.bend",
      "law": "Gt669C528764_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_Gt669C528764.bend",
      "law": "Gt669C528764_spec_unique",
      "big": false
     }
@@ -16056,21 +16056,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt669C528764.bend",
      "law": "Gt669C528764_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt669C528764.bend",
      "law": "Gt669C528764_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt669C528764.bend",
      "law": "Gt669C528764_spec_encode",
      "big": false
     }
@@ -16081,14 +16081,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_Gt669C528764.bend",
      "law": "Gt669C528764_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_Gt669C528764.bend",
      "law": "Gt669C528764_spec_input",
      "big": false
     }
@@ -16112,21 +16112,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtF45E42B273.bend",
      "law": "GtF45E42B273_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtF45E42B273.bend",
      "law": "GtF45E42B273_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_GtF45E42B273.bend",
      "law": "GtF45E42B273_spec_unique",
      "big": false
     }
@@ -16140,21 +16140,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtF45E42B273.bend",
      "law": "GtF45E42B273_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtF45E42B273.bend",
      "law": "GtF45E42B273_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtF45E42B273.bend",
      "law": "GtF45E42B273_spec_encode",
      "big": false
     }
@@ -16165,14 +16165,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_GtF45E42B273.bend",
      "law": "GtF45E42B273_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_GtF45E42B273.bend",
      "law": "GtF45E42B273_spec_input",
      "big": false
     }
@@ -16196,21 +16196,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtE528AAE3C6.bend",
      "law": "GtE528AAE3C6_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtE528AAE3C6.bend",
      "law": "GtE528AAE3C6_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_GtE528AAE3C6.bend",
      "law": "GtE528AAE3C6_spec_unique",
      "big": false
     }
@@ -16224,21 +16224,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtE528AAE3C6.bend",
      "law": "GtE528AAE3C6_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtE528AAE3C6.bend",
      "law": "GtE528AAE3C6_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtE528AAE3C6.bend",
      "law": "GtE528AAE3C6_spec_encode",
      "big": false
     }
@@ -16249,14 +16249,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_GtE528AAE3C6.bend",
      "law": "GtE528AAE3C6_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_GtE528AAE3C6.bend",
      "law": "GtE528AAE3C6_spec_input",
      "big": false
     }
@@ -16280,21 +16280,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtD1AEF07F7D.bend",
      "law": "GtD1AEF07F7D_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtD1AEF07F7D.bend",
      "law": "GtD1AEF07F7D_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_GtD1AEF07F7D.bend",
      "law": "GtD1AEF07F7D_spec_unique",
      "big": false
     }
@@ -16308,21 +16308,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtD1AEF07F7D.bend",
      "law": "GtD1AEF07F7D_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtD1AEF07F7D.bend",
      "law": "GtD1AEF07F7D_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtD1AEF07F7D.bend",
      "law": "GtD1AEF07F7D_spec_encode",
      "big": false
     }
@@ -16333,14 +16333,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_GtD1AEF07F7D.bend",
      "law": "GtD1AEF07F7D_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_GtD1AEF07F7D.bend",
      "law": "GtD1AEF07F7D_spec_input",
      "big": false
     }
@@ -16364,21 +16364,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt240C147AA2.bend",
      "law": "Gt240C147AA2_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt240C147AA2.bend",
      "law": "Gt240C147AA2_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_Gt240C147AA2.bend",
      "law": "Gt240C147AA2_spec_unique",
      "big": false
     }
@@ -16392,21 +16392,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt240C147AA2.bend",
      "law": "Gt240C147AA2_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt240C147AA2.bend",
      "law": "Gt240C147AA2_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt240C147AA2.bend",
      "law": "Gt240C147AA2_spec_encode",
      "big": false
     }
@@ -16417,14 +16417,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_Gt240C147AA2.bend",
      "law": "Gt240C147AA2_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_Gt240C147AA2.bend",
      "law": "Gt240C147AA2_spec_input",
      "big": false
     }
@@ -16604,21 +16604,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt1719057EB7.bend",
      "law": "Gt1719057EB7_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt1719057EB7.bend",
      "law": "Gt1719057EB7_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_Gt1719057EB7.bend",
      "law": "Gt1719057EB7_spec_unique",
      "big": false
     }
@@ -16632,21 +16632,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt1719057EB7.bend",
      "law": "Gt1719057EB7_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt1719057EB7.bend",
      "law": "Gt1719057EB7_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_Gt1719057EB7.bend",
      "law": "Gt1719057EB7_spec_encode",
      "big": false
     }
@@ -16657,14 +16657,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_Gt1719057EB7.bend",
      "law": "Gt1719057EB7_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_Gt1719057EB7.bend",
      "law": "Gt1719057EB7_spec_input",
      "big": false
     }
@@ -16688,21 +16688,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtCCF6FFA0A0.bend",
      "law": "GtCCF6FFA0A0_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtCCF6FFA0A0.bend",
      "law": "GtCCF6FFA0A0_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_1.bend",
+     "file": "spec_gunique_GtCCF6FFA0A0.bend",
      "law": "GtCCF6FFA0A0_spec_unique",
      "big": false
     }
@@ -16716,21 +16716,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtCCF6FFA0A0.bend",
      "law": "GtCCF6FFA0A0_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtCCF6FFA0A0.bend",
      "law": "GtCCF6FFA0A0_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_1.bend",
+     "file": "spec_gcodec_GtCCF6FFA0A0.bend",
      "law": "GtCCF6FFA0A0_spec_encode",
      "big": false
     }
@@ -16741,14 +16741,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_1.bend",
+     "file": "spec_grepr_GtCCF6FFA0A0.bend",
      "law": "GtCCF6FFA0A0_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_1.bend",
+     "file": "spec_ginput_GtCCF6FFA0A0.bend",
      "law": "GtCCF6FFA0A0_spec_input",
      "big": false
     }
@@ -16844,21 +16844,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt0B4EF17D71.bend",
      "law": "Gt0B4EF17D71_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt0B4EF17D71.bend",
      "law": "Gt0B4EF17D71_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_Gt0B4EF17D71.bend",
      "law": "Gt0B4EF17D71_spec_unique",
      "big": false
     }
@@ -16872,21 +16872,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt0B4EF17D71.bend",
      "law": "Gt0B4EF17D71_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt0B4EF17D71.bend",
      "law": "Gt0B4EF17D71_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt0B4EF17D71.bend",
      "law": "Gt0B4EF17D71_spec_encode",
      "big": false
     }
@@ -16897,14 +16897,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_Gt0B4EF17D71.bend",
      "law": "Gt0B4EF17D71_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_Gt0B4EF17D71.bend",
      "law": "Gt0B4EF17D71_spec_input",
      "big": false
     }
@@ -16928,21 +16928,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtADC8DCD962.bend",
      "law": "GtADC8DCD962_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtADC8DCD962.bend",
      "law": "GtADC8DCD962_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_GtADC8DCD962.bend",
      "law": "GtADC8DCD962_spec_unique",
      "big": false
     }
@@ -16956,21 +16956,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtADC8DCD962.bend",
      "law": "GtADC8DCD962_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtADC8DCD962.bend",
      "law": "GtADC8DCD962_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtADC8DCD962.bend",
      "law": "GtADC8DCD962_spec_encode",
      "big": false
     }
@@ -16981,14 +16981,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_GtADC8DCD962.bend",
      "law": "GtADC8DCD962_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_GtADC8DCD962.bend",
      "law": "GtADC8DCD962_spec_input",
      "big": false
     }
@@ -17012,21 +17012,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtC923FCB2DA.bend",
      "law": "GtC923FCB2DA_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtC923FCB2DA.bend",
      "law": "GtC923FCB2DA_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_GtC923FCB2DA.bend",
      "law": "GtC923FCB2DA_spec_unique",
      "big": false
     }
@@ -17040,21 +17040,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtC923FCB2DA.bend",
      "law": "GtC923FCB2DA_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtC923FCB2DA.bend",
      "law": "GtC923FCB2DA_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtC923FCB2DA.bend",
      "law": "GtC923FCB2DA_spec_encode",
      "big": false
     }
@@ -17065,14 +17065,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_GtC923FCB2DA.bend",
      "law": "GtC923FCB2DA_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_GtC923FCB2DA.bend",
      "law": "GtC923FCB2DA_spec_input",
      "big": false
     }
@@ -17096,21 +17096,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt7D1CD7363A.bend",
      "law": "Gt7D1CD7363A_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt7D1CD7363A.bend",
      "law": "Gt7D1CD7363A_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_Gt7D1CD7363A.bend",
      "law": "Gt7D1CD7363A_spec_unique",
      "big": false
     }
@@ -17124,21 +17124,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt7D1CD7363A.bend",
      "law": "Gt7D1CD7363A_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt7D1CD7363A.bend",
      "law": "Gt7D1CD7363A_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt7D1CD7363A.bend",
      "law": "Gt7D1CD7363A_spec_encode",
      "big": false
     }
@@ -17149,14 +17149,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_Gt7D1CD7363A.bend",
      "law": "Gt7D1CD7363A_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_Gt7D1CD7363A.bend",
      "law": "Gt7D1CD7363A_spec_input",
      "big": false
     }
@@ -17180,21 +17180,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt8E507C4540.bend",
      "law": "Gt8E507C4540_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt8E507C4540.bend",
      "law": "Gt8E507C4540_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_Gt8E507C4540.bend",
      "law": "Gt8E507C4540_spec_unique",
      "big": false
     }
@@ -17208,21 +17208,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt8E507C4540.bend",
      "law": "Gt8E507C4540_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt8E507C4540.bend",
      "law": "Gt8E507C4540_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt8E507C4540.bend",
      "law": "Gt8E507C4540_spec_encode",
      "big": false
     }
@@ -17233,14 +17233,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_Gt8E507C4540.bend",
      "law": "Gt8E507C4540_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_Gt8E507C4540.bend",
      "law": "Gt8E507C4540_spec_input",
      "big": false
     }
@@ -17264,21 +17264,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt46F5D7703F.bend",
      "law": "Gt46F5D7703F_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt46F5D7703F.bend",
      "law": "Gt46F5D7703F_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_Gt46F5D7703F.bend",
      "law": "Gt46F5D7703F_spec_unique",
      "big": false
     }
@@ -17292,21 +17292,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt46F5D7703F.bend",
      "law": "Gt46F5D7703F_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt46F5D7703F.bend",
      "law": "Gt46F5D7703F_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt46F5D7703F.bend",
      "law": "Gt46F5D7703F_spec_encode",
      "big": false
     }
@@ -17317,14 +17317,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_Gt46F5D7703F.bend",
      "law": "Gt46F5D7703F_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_Gt46F5D7703F.bend",
      "law": "Gt46F5D7703F_spec_input",
      "big": false
     }
@@ -17504,21 +17504,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt8FB0CF9679.bend",
      "law": "Gt8FB0CF9679_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt8FB0CF9679.bend",
      "law": "Gt8FB0CF9679_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_Gt8FB0CF9679.bend",
      "law": "Gt8FB0CF9679_spec_unique",
      "big": false
     }
@@ -17532,21 +17532,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt8FB0CF9679.bend",
      "law": "Gt8FB0CF9679_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt8FB0CF9679.bend",
      "law": "Gt8FB0CF9679_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt8FB0CF9679.bend",
      "law": "Gt8FB0CF9679_spec_encode",
      "big": false
     }
@@ -17557,14 +17557,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_Gt8FB0CF9679.bend",
      "law": "Gt8FB0CF9679_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_Gt8FB0CF9679.bend",
      "law": "Gt8FB0CF9679_spec_input",
      "big": false
     }
@@ -17588,21 +17588,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtE470919895.bend",
      "law": "GtE470919895_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtE470919895.bend",
      "law": "GtE470919895_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_GtE470919895.bend",
      "law": "GtE470919895_spec_unique",
      "big": false
     }
@@ -17616,21 +17616,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtE470919895.bend",
      "law": "GtE470919895_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtE470919895.bend",
      "law": "GtE470919895_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtE470919895.bend",
      "law": "GtE470919895_spec_encode",
      "big": false
     }
@@ -17641,14 +17641,14 @@
    "reject_long": [],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_GtE470919895.bend",
      "law": "GtE470919895_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_GtE470919895.bend",
      "law": "GtE470919895_spec_input",
      "big": false
     }
@@ -20001,21 +20001,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtBBF12DAB28.bend",
      "law": "GtBBF12DAB28_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtBBF12DAB28.bend",
      "law": "GtBBF12DAB28_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_GtBBF12DAB28.bend",
      "law": "GtBBF12DAB28_spec_unique",
      "big": false
     }
@@ -20029,21 +20029,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtBBF12DAB28.bend",
      "law": "GtBBF12DAB28_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtBBF12DAB28.bend",
      "law": "GtBBF12DAB28_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_GtBBF12DAB28.bend",
      "law": "GtBBF12DAB28_spec_encode",
      "big": false
     }
@@ -20078,14 +20078,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_GtBBF12DAB28.bend",
      "law": "GtBBF12DAB28_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_GtBBF12DAB28.bend",
      "law": "GtBBF12DAB28_spec_input",
      "big": false
     }
@@ -20417,21 +20417,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt0A390CB480.bend",
      "law": "Gt0A390CB480_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt0A390CB480.bend",
      "law": "Gt0A390CB480_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_Gt0A390CB480.bend",
      "law": "Gt0A390CB480_spec_unique",
      "big": false
     }
@@ -20445,21 +20445,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt0A390CB480.bend",
      "law": "Gt0A390CB480_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt0A390CB480.bend",
      "law": "Gt0A390CB480_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt0A390CB480.bend",
      "law": "Gt0A390CB480_spec_encode",
      "big": false
     }
@@ -20494,14 +20494,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_Gt0A390CB480.bend",
      "law": "Gt0A390CB480_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_Gt0A390CB480.bend",
      "law": "Gt0A390CB480_spec_input",
      "big": false
     }
@@ -21391,21 +21391,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt604E28A301.bend",
      "law": "Gt604E28A301_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt604E28A301.bend",
      "law": "Gt604E28A301_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_Gt604E28A301.bend",
      "law": "Gt604E28A301_spec_unique",
      "big": false
     }
@@ -21419,21 +21419,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt604E28A301.bend",
      "law": "Gt604E28A301_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt604E28A301.bend",
      "law": "Gt604E28A301_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt604E28A301.bend",
      "law": "Gt604E28A301_spec_encode",
      "big": false
     }
@@ -21468,14 +21468,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_Gt604E28A301.bend",
      "law": "Gt604E28A301_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_Gt604E28A301.bend",
      "law": "Gt604E28A301_spec_input",
      "big": false
     }
@@ -21653,21 +21653,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt59DCDB2873.bend",
      "law": "Gt59DCDB2873_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt59DCDB2873.bend",
      "law": "Gt59DCDB2873_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_2.bend",
+     "file": "spec_gunique_Gt59DCDB2873.bend",
      "law": "Gt59DCDB2873_spec_unique",
      "big": false
     }
@@ -21681,21 +21681,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt59DCDB2873.bend",
      "law": "Gt59DCDB2873_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt59DCDB2873.bend",
      "law": "Gt59DCDB2873_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_2.bend",
+     "file": "spec_gcodec_Gt59DCDB2873.bend",
      "law": "Gt59DCDB2873_spec_encode",
      "big": false
     }
@@ -21730,14 +21730,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_grepr_2.bend",
+     "file": "spec_grepr_Gt59DCDB2873.bend",
      "law": "Gt59DCDB2873_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_2.bend",
+     "file": "spec_ginput_Gt59DCDB2873.bend",
      "law": "Gt59DCDB2873_spec_input",
      "big": false
     }
@@ -21766,21 +21766,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_3.bend",
+     "file": "spec_gcodec_Gt7B8507E2C2.bend",
      "law": "Gt7B8507E2C2_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_3.bend",
+     "file": "spec_gcodec_Gt7B8507E2C2.bend",
      "law": "Gt7B8507E2C2_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_3.bend",
+     "file": "spec_gunique_Gt7B8507E2C2.bend",
      "law": "Gt7B8507E2C2_spec_unique",
      "big": false
     }
@@ -21794,21 +21794,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_3.bend",
+     "file": "spec_gcodec_Gt7B8507E2C2.bend",
      "law": "Gt7B8507E2C2_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_3.bend",
+     "file": "spec_gcodec_Gt7B8507E2C2.bend",
      "law": "Gt7B8507E2C2_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_3.bend",
+     "file": "spec_gcodec_Gt7B8507E2C2.bend",
      "law": "Gt7B8507E2C2_spec_encode",
      "big": false
     }
@@ -21843,14 +21843,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_grepr_3.bend",
+     "file": "spec_grepr_Gt7B8507E2C2.bend",
      "law": "Gt7B8507E2C2_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_3.bend",
+     "file": "spec_ginput_Gt7B8507E2C2.bend",
      "law": "Gt7B8507E2C2_spec_input",
      "big": false
     }
@@ -21874,21 +21874,21 @@
    ],
    "decode_accept": [
     {
-     "file": "spec_gcodec_3.bend",
+     "file": "spec_gcodec_Gt62B0093BE7.bend",
      "law": "Gt62B0093BE7_spec_decode",
      "big": false
     }
    ],
    "decode_spec": [
     {
-     "file": "spec_gcodec_3.bend",
+     "file": "spec_gcodec_Gt62B0093BE7.bend",
      "law": "Gt62B0093BE7_spec_encode",
      "big": false
     }
    ],
    "decode_unique": [
     {
-     "file": "spec_gunique_3.bend",
+     "file": "spec_gunique_Gt62B0093BE7.bend",
      "law": "Gt62B0093BE7_spec_unique",
      "big": false
     }
@@ -21902,21 +21902,21 @@
    ],
    "decode_none": [
     {
-     "file": "spec_gcodec_3.bend",
+     "file": "spec_gcodec_Gt62B0093BE7.bend",
      "law": "Gt62B0093BE7_spec_reject",
      "big": false
     }
    ],
    "encode_eval": [
     {
-     "file": "spec_gcodec_3.bend",
+     "file": "spec_gcodec_Gt62B0093BE7.bend",
      "law": "Gt62B0093BE7_spec_bytes",
      "big": false
     }
    ],
    "encode_spec": [
     {
-     "file": "spec_gcodec_3.bend",
+     "file": "spec_gcodec_Gt62B0093BE7.bend",
      "law": "Gt62B0093BE7_spec_encode",
      "big": false
     }
@@ -21951,14 +21951,14 @@
    ],
    "decode_tree": [
     {
-     "file": "spec_grepr_3.bend",
+     "file": "spec_grepr_Gt62B0093BE7.bend",
      "law": "Gt62B0093BE7_spec_decode_tree",
      "big": false
     }
    ],
    "decode_input": [
     {
-     "file": "spec_ginput_3.bend",
+     "file": "spec_ginput_Gt62B0093BE7.bend",
      "law": "Gt62B0093BE7_spec_input",
      "big": false
     }
