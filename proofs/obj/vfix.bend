@@ -347,6 +347,23 @@ def in_lt(+k: Nat, +W: Nat, +i: Nat, +P: Nat, +hk: {Nat.is_lt(k, W) == True{} : 
     -> {Nat.is_lt(Nat.add(k, i), P) == True{} : Bool}:
   F.nat__lt_le_trans(Nat.add(k, i), Nat.add(W, i), P, VB.lt_kk(k, W, i, hk), hb)
 
+# The same for any byte offset 4 (k + i) below 2^32.
+def off_add_lt(+off: U32, +c: U32, +i: Nat, +k: Nat, +e: {U32.to_nat(off) == A.quad(i) : Nat}, +ec: {U32.to_nat(c) == A.quad(k) : Nat},
+    +hq: {Nat.is_lt(A.quad(Nat.add(k, i)), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(off, c)) == A.quad(Nat.add(k, i)) : Nat}:
+  +h0 = F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_common__pow2(32n)) == True{} : Bool}, A.quad(Nat.add(k, i)), Nat.add(A.quad(k), A.quad(i)), Equal.sym(Nat, Nat.add(A.quad(k), A.quad(i)), A.quad(Nat.add(k, i)), quad_add(k, i)), hq)
+  +h1 = F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, A.quad(i)), F.spec_common__pow2(32n)) == True{} : Bool}, A.quad(k), U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), A.quad(k), ec), h0)
+  %Equal.sym(Nat, U32.to_nat(U32.add(off, c)), Nat.add(U32.to_nat(c), A.quad(i)), VB.add_lt32(off, c, A.quad(i), e, h1)) : {_ == A.quad(Nat.add(k, i)) : Nat}
+  %Equal.sym(Nat, U32.to_nat(c), A.quad(k), ec) : {Nat.add(_, A.quad(i)) == A.quad(Nat.add(k, i)) : Nat}
+  quad_add(k, i)
+
+# ... and for a word k + i < 2^d of a tree of depth d < 31: 4 (k + i) < 2^(2 + d) <= 2^32.
+def off_add32(+off: U32, +c: U32, +i: Nat, +k: Nat, +d: Nat, +e: {U32.to_nat(off) == A.quad(i) : Nat}, +ec: {U32.to_nat(c) == A.quad(k) : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hb: {Nat.is_lt(Nat.add(k, i), VB.pw(d)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(off, c)) == A.quad(Nat.add(k, i)) : Nat}:
+  off_add_lt(off, c, i, k, e, ec, F.nat__lt_le_trans(A.quad(Nat.add(k, i)), VB.pw(2n+d), F.spec_common__pow2(32n),
+    F.nat__double_lt(Nat.double(Nat.add(k, i)), Nat.double(VB.pw(d)), F.nat__double_lt(Nat.add(k, i), VB.pw(d), hb)), VB.pw2d32(d, hd)))
+
 # Wk + (k + i) <= P when Wk + k <= W and W + i <= P.
 def in_le(+Wk: Nat, +k: Nat, +W: Nat, +i: Nat, +P: Nat, +hk: {Nat.is_le(Nat.add(Wk, k), W) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(W, i), P) == True{} : Bool})
     -> {Nat.is_le(Nat.add(Wk, Nat.add(k, i)), P) == True{} : Bool}:

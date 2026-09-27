@@ -342,3 +342,42 @@ def nwle(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hn: {Nat.
   %Equal.sym(Nat, VC.NW(n), VD.s_rng(2n, 3n+U32.to_nat(n)), VC.eNW(n, VL.KK(d), VL.kk_lt(d, hd), VL.hyn(d, n, hn))) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
   %VL.rng2_q(VB.pw(d)) : {Nat.is_le(VD.s_rng(2n, 3n+U32.to_nat(n)), _) == True{} : Bool}
   VC.rng_mono(2n, 3n+U32.to_nat(n), 3n+A.quad(VB.pw(d)), hn)
+
+# ---- any tree depth d < 31: the same, below 2^32 ----------------------------------------------
+
+# The last byte's position 4 i + m, for a window that ends below 2^32.
+def eXNw(+off: U32, +i: Nat, +n: U32, +m: Nat, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
+    +hw32: {Nat.is_lt(Nat.add(A.quad(i), U32.to_nat(n)), F.spec_common__pow2(32n)) == True{} : Bool},
+    +e1: {U32.to_nat(n) == 1n+m : Nat})
+    -> {U32.to_nat(XN(off, n)) == Nat.add(A.quad(i), m) : Nat}:
+  +h0 = F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_common__pow2(32n)) == True{} : Bool}, Nat.add(A.quad(i), U32.to_nat(n)), Nat.add(U32.to_nat(n), A.quad(i)), F.nat__add_comm(A.quad(i), U32.to_nat(n)), hw32)
+  +ea = VB.add_lt32(off, n, A.quad(i), eo, h0)
+  +ea2 = Equal.trans(Nat, U32.to_nat(U32.add(off, n)), Nat.add(U32.to_nat(n), A.quad(i)), 1n+Nat.add(m, A.quad(i)), ea,
+    Equal.cong(Nat, Nat, z => Nat.add(z, A.quad(i)), U32.to_nat(n), 1n+m, e1))
+  +h1 = F.logic__subst(Nat, z => {Nat.is_le(1n, z) == True{} : Bool}, 1n+Nat.add(m, A.quad(i)), U32.to_nat(U32.add(off, n)), Equal.sym(Nat, U32.to_nat(U32.add(off, n)), 1n+Nat.add(m, A.quad(i)), ea2), F.nat__zero_le(Nat.add(m, A.quad(i))))
+  %Equal.sym(Nat, U32.to_nat(XN(off, n)), Nat.sub(U32.to_nat(U32.add(off, n)), 1n), F.u32__sub_nat(U32.add(off, n), 1, h1)) : {_ == Nat.add(A.quad(i), m) : Nat}
+  %Equal.sym(Nat, U32.to_nat(U32.add(off, n)), 1n+Nat.add(m, A.quad(i)), ea2) : {Nat.sub(_, 1n) == Nat.add(A.quad(i), m) : Nat}
+  %Equal.sym(Nat, Nat.sub(Nat.add(1n, Nat.add(m, A.quad(i))), 1n), Nat.add(m, A.quad(i)), F.nat__add_sub_cancel(1n, Nat.add(m, A.quad(i)))) : {_ == Nat.add(A.quad(i), m) : Nat}
+  F.nat__add_comm(m, A.quad(i))
+
+# ... of the whole buffer (off = 0): n is a U32, below 2^32.
+def eXN0(+n: U32, +m: Nat, +e1: {U32.to_nat(n) == 1n+m : Nat}) -> {U32.to_nat(XN(0, n)) == Nat.add(A.quad(0n), m) : Nat}:
+  eXNw(0, 0n, n, m, {==}, VB.u32_lt(n), e1)
+
+# ceil(n / 4) words for n <= 4 2^d bytes, the list storage bounded by 31 + n <= 2^k (k < 31) ...
+def nwleB(+d: Nat, +n: U32, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(d)) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), F.nat__add_zero(VC.NW(n))) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
+  %Equal.sym(Nat, VC.NW(n), VD.s_rng(2n, 3n+U32.to_nat(n)), VC.eNW(n, k, hk, hy)) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
+  %VL.rng2_q(VB.pw(d)) : {Nat.is_le(VD.s_rng(2n, 3n+U32.to_nat(n)), _) == True{} : Bool}
+  VC.rng_mono(2n, 3n+U32.to_nat(n), 3n+A.quad(VB.pw(d)), hn)
+
+# ... or by 31 + n <= UMAX (every n <= VB.NMAX).
+def nwleU(+d: Nat, +n: U32, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB.UMAX())) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(d)) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(VC.NW(n), 0n), VC.NW(n), F.nat__add_zero(VC.NW(n))) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
+  %Equal.sym(Nat, VC.NW(n), VD.s_rng(2n, 3n+U32.to_nat(n)), VC.eNWu(n, hy)) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
+  %VL.rng2_q(VB.pw(d)) : {Nat.is_le(VD.s_rng(2n, 3n+U32.to_nat(n)), _) == True{} : Bool}
+  VC.rng_mono(2n, 3n+U32.to_nat(n), 3n+A.quad(VB.pw(d)), hn)

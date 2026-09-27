@@ -2147,7 +2147,7 @@ def wh(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool})
   +epo = FD.u32alg__eq_of(DC.SPO(t), 36, DC.chk_b(a, b, c, hchk))
   FD.logic__subst(U32, z => {DC.whole(U32.sub(n, z)) == True{} : Bool}, DC.SPO(t), 36, epo, DC.chk_c(a, b, c, hchk))
 
-def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, @BD@) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_DataColumnsByRootIdentifier(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}:
   Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{S.BytesValue{F.limbs([VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)])}, S.Items{z, S.EmptyItems{}}}}, UL.uview(O.Words{FD.array__thaw(U32, DC.MM(t, n)), DC.LL(n)}),
     S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))}, U.uvw(DC.MM(t, n), DC.LL(n), DC.CQ(n), cnt(n, wh(t, n, hchk))))
@@ -2317,7 +2317,7 @@ def text_vdec(R, X, info):
             f'# (ii) through the view and (iii), for inputs of {vdec_size(K)}: the premise hS, n <= 4 * 2^{K},',
             f'# K a parameter (the codec laws take buffers of depth below {info["bound"]}; 2^30 bytes is the most any of them',
             f'# covers). The buffer is the loader\'s (e2e_load) at the capacity depth (e2e_cap).']
-    return '\n'.join(imps) + '\n\n' + '\n'.join(head) + '\n\n' + vw['text'] + body
+    return '\n'.join(imps) + '\n\n' + '\n'.join(head) + '\n\n' + vw['text'].replace('@BD@', f'{info["bound"]}n') + body
 
 
 
