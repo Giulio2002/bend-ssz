@@ -2777,6 +2777,18 @@
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
    }
   ],
+  "VarTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "VarTestStruct",
+    "generated_name": "Gc465214E502",
+    "laws": [
+     "VarTestStruct_e2e_decode_view",
+     "VarTestStruct_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "bitlist_1_e2e_dec_generated.bend": [
    {
     "name": "bitlist_1",
@@ -3145,6 +3157,16 @@
      "FuluTransaction_e2e_root"
     ],
     "premise": "rep: RT.rep_Transaction(o, Spec.Transaction()) (the root law's representation invariant)"
+   }
+  ],
+  "VarTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "VarTestStruct",
+    "generated_name": "Gc465214E502",
+    "laws": [
+     "VarTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) (the root law's representation invariant)"
    }
   ],
   "proglist_bool_e2e_root_generated.bend": [
@@ -3963,7 +3985,9 @@
   },
   "VarTestStruct": {
    "generated_name": "Gc465214E502",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "VarTestStruct_e2e_dec_generated.bend",
+   "root": "VarTestStruct_e2e_root_generated.bend"
   },
   "ComplexTestStruct": {
    "generated_name": "Gc56D855869F",
@@ -4547,7 +4571,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 2055,
    "covered": true,
-   "bridged": null
+   "bridged": "VarTestStruct_e2e_dec_generated.bend"
   },
   "bitlist_15": {
    "generated_name": "GtDB1482527D",
