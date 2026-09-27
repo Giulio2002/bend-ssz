@@ -2293,6 +2293,7 @@ def vdec_info(R):
     if not mb or not mdc or mdc.group(1) not in imp:
         return None
     acc = re.search(r'__decode_accept__decode_accept\(.*\) -> \{(\w+)\.(\w+)\(\w+\.BF\(t, n\), n\) == \(\w+\.BF\(t, n\), Some\{\w+\.OBJ\(((?:d, )?)t, n\)\}\) : \w+\.Buf & Maybe<&1, ([\w.]+)>\}', s)
+    mbf = re.search(r'__decode_accept__decode_accept\(.*\) -> \{\w+\.\w+\((\w+)\.BF\(t, n\), n\)', s)
     spec = re.search(r'__decode_spec__decode_spec\(.*\) -> \w+\.decodes\((\w+)\.\w+\(\), \w+\.VW\(t, n\), \w+\.VAL\(((?:d, )?)t, n\)\)', s)
     if not acc or not spec:
         return None
@@ -2306,6 +2307,7 @@ def vdec_info(R):
             'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0],
             'dfn': f'T.{acc.group(2)}', 'objd': bool(acc.group(3)), 'vald': bool(spec.group(2)), 'otype': otype, 'sch': 'GS' if imp.get(spec.group(1)) == 'generic_specs.bend' else 'Spec',
             'rejhd': '+hd:' in mods['decode_reject'][1],
+            'bf': imp.get(mbf.group(1)) if mbf else None,
             'chk1': bool(re.search(r'\+hchk: \{\w+\.CHK\(n\)', sig)),
             'noneshort': bool(re.search(r'__decode_none__decode_none\(\+t:', s))}
 
@@ -2342,6 +2344,10 @@ def text_vdec(R, X, info):
     for k, a in (('acc', 'DA'), ('spec', 'DS'), ('none', 'DN'), ('rej', 'DR')):
         alias.setdefault(info[k], a)
     body = VDEC_REST
+    if info.get('bf') and info['bf'] != info['dc']:
+        # the buffer BF(t, n) is defined in another law module than CHK (a nested name: the child's)
+        alias[info['bf']] = alias.get(info['bf'], 'DB')
+        body = body.replace('DC.BF(', alias[info['bf']] + '.BF(')
     for op, k in (('decode_accept', 'acc'), ('decode_spec', 'spec'), ('decode_none', 'none'), ('decode_reject', 'rej')):
         body = body.replace(('DR.' if k in ('none', 'rej') else 'DC.') + op + '(', alias[info[k]] + '.' + op + '(')
     ot = vw.get('otype', info['otype'])
@@ -2661,6 +2667,7 @@ VENC_SHAPES = {'DataColumnsByRootIdentifier': venc_dc}
 
 import e2e_var_b as EVB  # noqa: E402  (the second variable-size worker's entries)
 import e2e_var_c as EVC  # noqa: E402  (the third's: u-lists and unions)
+import e2e_fix_d as EFD  # noqa: E402  (the fourth's: fixed-size leftovers)
 for _m in (EVB, EVC):
     for _k, _v in _m.VDEC_VIEWS.items():
         VDEC_VIEWS.setdefault(_k, _v)
@@ -3084,6 +3091,30 @@ def outputs():
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_root'], 'premise': 'rep: bitlist_obj.rep_bits(o, GS.X())'} for R0, X0 in rows]
         for R0, X0 in rows:
             uncovered[R0]['root'] = fn
+    fd = EFD.build(sys.modules[__name__], amap, cache, vidx)
+    for _f, _txt in list(fd['support'].items()) + list(fd['files'].items()):
+        out[OUT / _f] = _txt
+    inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
+    man['fixed_size'] = {}
+    for X0, cv in sorted(fd['cover'].items()):
+        R0 = inv.get(X0)
+        if R0 is None:
+            continue
+        laws = {'i': [f'{R0}_e2e_encode'], 'iv': [f'{R0}_e2e_root'],
+                'ii_iii': [f'{R0}_e2e_decode_view' if cv.get('ii') == 'view' else f'{R0}_e2e_decode_accept', f'{R0}_e2e_decode_reject']}
+        for k in ('i', 'ii_iii', 'iv'):
+            if k in cv:
+                e = {'name': R0, 'generated_name': X0, 'laws': laws[k]}
+                if k == 'ii_iii':
+                    e['ii'] = cv.get('ii', 'exact')
+                if cv.get('premise'):
+                    e['premise'] = cv['premise']
+                man['files'].setdefault(cv[k], []).append(e)
+        if all(k in cv for k in ('i', 'ii_iii', 'iv')):
+            man['fixed_size'][R0] = {'generated_name': X0, 'i': cv['i'], 'ii_iii': cv['ii_iii'], 'iv': cv['iv']}
+            del uncovered[R0]
+        else:
+            uncovered[R0].update({k: cv[k] for k in ('i', 'ii_iii', 'iv') if k in cv})
     man['variable_size'] = {}
     for R0 in sorted(uncovered):
         u = uncovered[R0]
