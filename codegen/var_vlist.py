@@ -24,6 +24,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import var_laws as VL  # noqa: E402
+import zeros_dispatch as ZD  # noqa: E402
 import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,15 +69,7 @@ def bl_fname(p):
 
 
 def zeros_at(K):
-    L = [f'def zeros_at(+du: U32, +k: Nat, +e: {{U32.to_nat(du) == k : Nat}}, +hk: {{Nat.is_le(k, {K}n) == True{{}} : Bool}})',
-         '    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:',
-         '  match k:']
-    for j in range(K + 1):
-        L.append(f'    case {j}n:')
-        L.append(f'      %Equal.sym(U32, du, {j}, FD.u32__injective(du, {j}, e)) : {{B.zeros(_) == Array.new(U32, {j}n, 0) : Array<U32>}}')
-        L.append('      {==}')
-    L.append(f'    case {K + 1}n+p: Empty.absurd({{B.zeros(du) == Array.new(U32, {K + 1}n+p, 0) : Array<U32>}}, FD.logic__false_true(hk))')
-    return '\n'.join(L)
+    return ZD.zeros_at_text(K).rstrip()
 
 
 def bl_text(p, N, sch):
