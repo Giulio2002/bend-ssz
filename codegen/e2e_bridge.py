@@ -2660,12 +2660,15 @@ def venc_dc(R, X):
 VENC_SHAPES = {'DataColumnsByRootIdentifier': venc_dc}
 
 import e2e_var_b as EVB  # noqa: E402  (the second variable-size worker's entries)
-for _k, _v in EVB.VDEC_VIEWS.items():
-    VDEC_VIEWS.setdefault(_k, _v)
-for _k, _v in EVB.VROOT_SHAPES.items():
-    VROOT_SHAPES.setdefault(_k, _v)
-for _k, _v in EVB.VENC_SHAPES.items():
-    VENC_SHAPES.setdefault(_k, _v)
+import e2e_var_c as EVC  # noqa: E402  (the third's: u-lists and unions)
+for _m in (EVB, EVC):
+    for _k, _v in _m.VDEC_VIEWS.items():
+        VDEC_VIEWS.setdefault(_k, _v)
+    for _k, _v in _m.VROOT_SHAPES.items():
+        VROOT_SHAPES.setdefault(_k, _v)
+    for _k, _v in _m.VENC_SHAPES.items():
+        VENC_SHAPES.setdefault(_k, _v)
+VENC_PREMISE = dict(EVB.VENC_PREMISE, **EVC.VENC_PREMISE)
 
 
 
@@ -2890,7 +2893,7 @@ def outputs():
     out = {OUT / 'e2e_support.bend': SUPPORT, OUT / 'e2e_bytes.bend': BYTES_HEAD + lwb_text() + '\n' + BYTES_TAIL,
            OUT / 'e2e_bits.bend': BITS, OUT / 'e2e_tree.bend': TREE, OUT / 'e2e_load.bend': LOAD,
            OUT / 'e2e_cap.bend': CAP, OUT / 'e2e_ulist.bend': ULIST, OUT / 'e2e_emit.bend': emit_text()}
-    for _f, _txt in EVB.SUPPORT_OUT.items():
+    for _f, _txt in list(EVB.SUPPORT_OUT.items()) + list(EVC.SUPPORT_OUT.items()):
         out[OUT / _f] = _txt
     wrows = []
     for R0, u in list(uncovered.items()):
@@ -3061,7 +3064,7 @@ def outputs():
         fn = f'{R0}_e2e_generated.bend'
         out[OUT / fn] = VENC_SHAPES[X0](R0, X0)
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_encode'],
-                             'premise': EVB.VENC_PREMISE.get(X0, f'rep: RT.rep_{X0}(o, Spec.{X0}()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)')}]
+                             'premise': VENC_PREMISE.get(X0, f'rep: RT.rep_{X0}(o, Spec.{X0}()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)')}]
         u['encode'] = fn
     out[OUT / 'e2e_bitl.bend'] = BITL
     inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
