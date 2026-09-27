@@ -2753,6 +2753,90 @@
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
    }
   ],
+  "proglist_bool_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_bool",
+    "generated_name": "Gt83D8B3D008",
+    "laws": [
+     "proglist_bool_e2e_decode_view",
+     "proglist_bool_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint128_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint128",
+    "generated_name": "Gt1C2FA69562",
+    "laws": [
+     "proglist_uint128_e2e_decode_view",
+     "proglist_uint128_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint16_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint16",
+    "generated_name": "GtF23A2FB97E",
+    "laws": [
+     "proglist_uint16_e2e_decode_view",
+     "proglist_uint16_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint256_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint256",
+    "generated_name": "GtA8457965E2",
+    "laws": [
+     "proglist_uint256_e2e_decode_view",
+     "proglist_uint256_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint32_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint32",
+    "generated_name": "Gt3A9420DD8E",
+    "laws": [
+     "proglist_uint32_e2e_decode_view",
+     "proglist_uint32_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint64_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint64",
+    "generated_name": "GtE83F21B20A",
+    "laws": [
+     "proglist_uint64_e2e_decode_view",
+     "proglist_uint64_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint8_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint8",
+    "generated_name": "GtDE4B86A990",
+    "laws": [
+     "proglist_uint8_e2e_decode_view",
+     "proglist_uint8_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "FuluDataColumnsByRootIdentifier_e2e_root_generated.bend": [
    {
     "name": "FuluDataColumnsByRootIdentifier",
@@ -3327,7 +3411,8 @@
   },
   "proglist_bool": {
    "generated_name": "Gt83D8B3D008",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "proglist_bool_e2e_dec_generated.bend"
   },
   "vec_bool_16": {
    "generated_name": "Gt1D9B3E1871",
@@ -3371,11 +3456,13 @@
   },
   "proglist_uint128": {
    "generated_name": "Gt1C2FA69562",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "proglist_uint128_e2e_dec_generated.bend"
   },
   "proglist_uint8": {
    "generated_name": "GtDE4B86A990",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "proglist_uint8_e2e_dec_generated.bend"
   },
   "vec_uint8_16": {
    "generated_name": "Gt28ED72E3EF",
@@ -3419,7 +3506,8 @@
   },
   "proglist_uint16": {
    "generated_name": "GtF23A2FB97E",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "proglist_uint16_e2e_dec_generated.bend"
   },
   "vec_uint16_16": {
    "generated_name": "GtAEB382AD1F",
@@ -3463,15 +3551,18 @@
   },
   "proglist_uint256": {
    "generated_name": "GtA8457965E2",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "proglist_uint256_e2e_dec_generated.bend"
   },
   "proglist_uint32": {
    "generated_name": "Gt3A9420DD8E",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "proglist_uint32_e2e_dec_generated.bend"
   },
   "proglist_uint64": {
    "generated_name": "GtE83F21B20A",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "proglist_uint64_e2e_dec_generated.bend"
   },
   "ProgressiveTestStruct": {
    "generated_name": "Gc221EC01D83",
@@ -4204,7 +4295,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "proglist_bool_e2e_dec_generated.bend"
   },
   "proglist_uint128": {
    "generated_name": "Gt1C2FA69562",
@@ -4213,7 +4304,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "proglist_uint128_e2e_dec_generated.bend"
   },
   "proglist_uint16": {
    "generated_name": "GtF23A2FB97E",
@@ -4222,7 +4313,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "proglist_uint16_e2e_dec_generated.bend"
   },
   "proglist_uint256": {
    "generated_name": "GtA8457965E2",
@@ -4231,7 +4322,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "proglist_uint256_e2e_dec_generated.bend"
   },
   "proglist_uint32": {
    "generated_name": "Gt3A9420DD8E",
@@ -4240,7 +4331,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "proglist_uint32_e2e_dec_generated.bend"
   },
   "proglist_uint64": {
    "generated_name": "GtE83F21B20A",
@@ -4249,7 +4340,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "proglist_uint64_e2e_dec_generated.bend"
   },
   "proglist_uint8": {
    "generated_name": "GtDE4B86A990",
@@ -4258,7 +4349,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": "unbounded",
    "covered": false,
-   "bridged": null
+   "bridged": "proglist_uint8_e2e_dec_generated.bend"
   }
  },
  "input_bound_short": [
