@@ -1946,9 +1946,13 @@ def lvp_{lf.p}(+o: {lf.ctor}) -> {{Codec.parts(LV_{lf.p}(o), {fx(nd.sch)}) == So
 def LV_{lf.p}(o: {lf.ctor}) -> S.Value:
   match o:
     case {pat}: {fx(sub(nd.val))}
+# its value by its body (LV_{lf.p} against the walk's value under Codec.parts would evaluate the parts)
+def lvq_{lf.p}({", ".join(f"+{x}: U32" for x in ws)}) -> {{{fx(sub(nd.val))} == LV_{lf.p}({lf.ctor}{{{", ".join(ws)}}}) : S.Value}}: {{==}}
 def lvp_{lf.p}(+o: {lf.ctor}) -> {{Codec.parts(LV_{lf.p}(o), {fx(nd.sch)}) == Some{{[S.Fixed{{VCN.PC({B}n, FX.limbs(K.RW_{lf.p}(o)))}}]}} : Maybe<&2, +List<S.Part>>}}:
   match o:
-    case {pat}: CS.pcfix(LV_{lf.p}({lf.ctor}{{{", ".join(ws)}}}), {fx(nd.sch)}, FX.limbs([{", ".join(ws)}]), {B}n, {{==}}, {fx(sub(nd.proof))})
+    case {pat}:
+      %lvq_{lf.p}({", ".join(ws)}) : {{Codec.parts(_, {fx(nd.sch)}) == Some{{[S.Fixed{{VCN.PC({B}n, FX.limbs(K.RW_{lf.p}({lf.ctor}{{{", ".join(ws)}}})))}}]}} : Maybe<&2, +List<S.Part>>}}
+      CS.pcfix({fx(sub(nd.val))}, {fx(nd.sch)}, FX.limbs([{", ".join(ws)}]), {B}n, {{==}}, {fx(sub(nd.proof))})
 ''')
                 lvs[lf.p] = (fx(nd.sch), B)
                 assert fx(nd.sch) == sch or True

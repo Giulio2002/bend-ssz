@@ -45,18 +45,26 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 def LV_u64(o: O.U64) -> S.Value:
   match o:
     case O.U64{+w0, +w1}: S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}
+# its value by its body (LV_u64 against the walk's value under Codec.parts would evaluate the parts)
+def lvq_u64(+w0: U32, +w1: U32) -> {S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}} == LV_u64(O.U64{w0, w1}) : S.Value}: {==}
 def lvp_u64(+o: O.U64) -> {Codec.parts(LV_u64(o), S.Unsigned{P.U64{}}) == Some{[S.Fixed{VCN.PC(8n, FX.limbs(K.RW_u64(o)))}]} : Maybe<&2, +List<S.Part>>}:
   match o:
-    case O.U64{+w0, +w1}: CS.pcfix(LV_u64(O.U64{w0, w1}), S.Unsigned{P.U64{}}, FX.limbs([w0, w1]), 8n, {==}, FX.uint64_part(w0, w1))
+    case O.U64{+w0, +w1}:
+      %lvq_u64(w0, w1) : {Codec.parts(_, S.Unsigned{P.U64{}}) == Some{[S.Fixed{VCN.PC(8n, FX.limbs(K.RW_u64(O.U64{w0, w1})))}]} : Maybe<&2, +List<S.Part>>}
+      CS.pcfix(S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U64{}}, FX.limbs([w0, w1]), 8n, {==}, FX.uint64_part(w0, w1))
 
 
 # ---- b32: its value, read back from its words, and its parts ----
 def LV_b32(o: T.Bytes32) -> S.Value:
   match o:
     case T.Bytes32{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7])}
+# its value by its body (LV_b32 against the walk's value under Codec.parts would evaluate the parts)
+def lvq_b32(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32) -> {S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7])} == LV_b32(T.Bytes32{w0, w1, w2, w3, w4, w5, w6, w7}) : S.Value}: {==}
 def lvp_b32(+o: T.Bytes32) -> {Codec.parts(LV_b32(o), S.ByteVector{32n}) == Some{[S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(o)))}]} : Maybe<&2, +List<S.Part>>}:
   match o:
-    case T.Bytes32{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: CS.pcfix(LV_b32(T.Bytes32{w0, w1, w2, w3, w4, w5, w6, w7}), S.ByteVector{32n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), 32n, {==}, FX.bytes_part(w0, [w1, w2, w3, w4, w5, w6, w7], {==}))
+    case T.Bytes32{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
+      %lvq_b32(w0, w1, w2, w3, w4, w5, w6, w7) : {Codec.parts(_, S.ByteVector{32n}) == Some{[S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(T.Bytes32{w0, w1, w2, w3, w4, w5, w6, w7})))}]} : Maybe<&2, +List<S.Part>>}
+      CS.pcfix(S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7])}, S.ByteVector{32n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), 32n, {==}, FX.bytes_part(w0, [w1, w2, w3, w4, w5, w6, w7], {==}))
 
 
 # ---- BeaconBlock: its value, parts, layout, and bytes ----
