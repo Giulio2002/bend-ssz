@@ -61,3 +61,14 @@ def u16dom(+x: U32, +e: {U32.is_lt(x, 65536) == True{} : Bool}) -> {SP.uint_doma
   %Equal.sym(U32, x, U32{WSp.join(16n, 16n, WSp.take(16n, 32n, PD.bits(x)), Word.zero(16n))}, half_shape(x, e)) :
     {SP.uint_domain(P.U16{}, P.UInt{_, 0, 0, 0, 0, 0, 0, 0}) == True{} : Bool}
   u16w(WSp.take(16n, 32n, PD.bits(x)))
+
+# uint64: any two words (the six zero high limbs through lz, never evaluated).
+def zt6() -> {SP.zero_suffix(PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), SP.limb_digits(0))))))) == True{} : Bool}:
+  %Equal.sym(+List<U32>, SP.limb_digits(0), [0, 0, 0, 0], PBM.lz()) :
+    {SP.zero_suffix(PBM.ap(_, PBM.ap(_, PBM.ap(_, PBM.ap(_, PBM.ap(_, _)))))) == True{} : Bool}
+  {==}
+
+def u64dom(+a: U32, +b: U32) -> {SP.uint_domain(P.U64{}, P.UInt{a, b, 0, 0, 0, 0, 0, 0}) == True{} : Bool}:
+  %Equal.sym(Bool, SP.zero_suffix(PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), PBM.ap(SP.limb_digits(0), SP.limb_digits(0))))))), True{}, zt6()) :
+    {_ == True{} : Bool}
+  {==}
