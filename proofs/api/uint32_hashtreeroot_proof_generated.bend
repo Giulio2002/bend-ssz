@@ -13,6 +13,7 @@ import ../../proofs/integer_decoding.bend as P0_ID
 import ../../proofs/power_division.bend as P0_PD
 import ../../proofs/word_split.bend as P0_WSp
 import ../obj/root_leaf.bend as P0_RL
+import ../../proofs/compact/found.bend as P0_FD
 import ../obj/leaf_small.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/digest.bend as P1_D
