@@ -17,7 +17,7 @@ official class or structural names) the runtime is four generated modules:
 | `types/X_decode_ssz_generated.bend` | `X_ok*`, `X_read*` / `X_rd*`, `X_decode`, `X_build` (+ `_some`, `_built`) |
 | `types/X_hashtreeroot_generated.bend` | `X_root*`, `X_rt*`, `X_fin`, `X_hash_tree_root` |
 
-The proof facade already has this shape: `proofs/api/X.{encode_ssz,decode_ssz,hashtreeroot}.proof.generated.bend`.
+The proof facade already has this shape: `proofs/api/X_{encode_ssz,decode_ssz,hashtreeroot}_proof_generated.bend`.
 
 ## What generate.py changes
 

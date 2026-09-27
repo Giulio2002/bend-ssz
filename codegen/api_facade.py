@@ -7,10 +7,10 @@ these files; codegen/api_gate.py stays the gate until the restructure flips).
 For every name X of the API (the 109 Fulu names and the generic forms, under codegen/names.py's
 readable names) and each operation, one module
 
-  proofs/api/<X>.encode_ssz.proof.generated.bend     encode_eval, encode_spec, encoded_size, roundtrip, serialize_valid
-  proofs/api/<X>.decode_ssz.proof.generated.bend     ok_eval, decode_accept, decode_spec, decode_unique, decode_reject,
+  proofs/api/<X>_encode_ssz_proof_generated.bend     encode_eval, encode_spec, encoded_size, roundtrip, serialize_valid
+  proofs/api/<X>_decode_ssz_proof_generated.bend     ok_eval, decode_accept, decode_spec, decode_unique, decode_reject,
                                                      decode_none, reject_short, reject_long, decode_tree, decode_input
-  proofs/api/<X>.hashtreeroot.proof.generated.bend   root
+  proofs/api/<X>_hashtreeroot_proof_generated.bend   root
 
 stating each of that name's laws of the operation in the object API's terms (the proving law's own
 statement: T.<name>_encode / _decode / _ok / _hash_tree_root / _serialize, Spec.<name>() under
@@ -44,7 +44,7 @@ OPS = {
 
 
 def fname(X, op):
-    return f'{X}.{op}.proof.generated.bend'
+    return f'{X}_{op}_proof_generated.bend'  # flat: Bend import paths take no extra dots (as types/)
 
 
 def module(X, R, op, rows, parsed):
@@ -141,7 +141,7 @@ def outputs(no_big=False):
 def main():
     no_big = '--no-big' in sys.argv
     out = outputs(no_big)
-    mine = list(OUT.glob('*.proof.generated.bend')) if OUT.exists() else []
+    mine = list(OUT.glob('*_proof_generated.bend')) if OUT.exists() else []
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not no_big]
