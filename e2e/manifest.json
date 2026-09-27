@@ -170,6 +170,16 @@
     ]
    }
   ],
+  "FuluSyncAggregate_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSyncAggregate",
+    "generated_name": "SyncAggregate",
+    "laws": [
+     "FuluSyncAggregate_e2e_decode_accept",
+     "FuluSyncAggregate_e2e_decode_reject"
+    ]
+   }
+  ],
   "FuluSyncAggregatorSelectionData_e2e_dec_generated.bend": [
    {
     "name": "FuluSyncAggregatorSelectionData",
@@ -249,6 +259,16 @@
     "laws": [
      "FuluSignedVoluntaryExit_e2e_decode_accept",
      "FuluSignedVoluntaryExit_e2e_decode_reject"
+    ]
+   }
+  ],
+  "FuluSyncCommitteeContribution_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSyncCommitteeContribution",
+    "generated_name": "SyncCommitteeContribution",
+    "laws": [
+     "FuluSyncCommitteeContribution_e2e_decode_accept",
+     "FuluSyncCommitteeContribution_e2e_decode_reject"
     ]
    }
   ],
@@ -778,13 +798,23 @@
     ]
    },
    {
+    "name": "FuluSyncAggregate",
+    "generated_name": "SyncAggregate",
+    "laws": [
+     "FuluSyncAggregate_e2e_encode",
+     "FuluSyncAggregate_e2e_root"
+    ]
+   },
+   {
     "name": "FuluSyncAggregatorSelectionData",
     "generated_name": "SyncAggregatorSelectionData",
     "laws": [
      "FuluSyncAggregatorSelectionData_e2e_encode",
      "FuluSyncAggregatorSelectionData_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluVersion_e2e_generated.bend": [
    {
     "name": "FuluVersion",
     "generated_name": "Version",
@@ -792,9 +822,7 @@
      "FuluVersion_e2e_encode",
      "FuluVersion_e2e_root"
     ]
-   }
-  ],
-  "FuluVersionedHash_e2e_generated.bend": [
+   },
    {
     "name": "FuluVersionedHash",
     "generated_name": "VersionedHash",
@@ -856,7 +884,15 @@
     ]
    }
   ],
-  "FuluSyncCommitteeMessage_e2e_generated.bend": [
+  "FuluSyncCommitteeContribution_e2e_generated.bend": [
+   {
+    "name": "FuluSyncCommitteeContribution",
+    "generated_name": "SyncCommitteeContribution",
+    "laws": [
+     "FuluSyncCommitteeContribution_e2e_encode",
+     "FuluSyncCommitteeContribution_e2e_root"
+    ]
+   },
    {
     "name": "FuluSyncCommitteeMessage",
     "generated_name": "SyncCommitteeMessage",
@@ -872,7 +908,9 @@
      "FuluValidatorIndex_e2e_encode",
      "FuluValidatorIndex_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluVoluntaryExit_e2e_generated.bend": [
    {
     "name": "FuluVoluntaryExit",
     "generated_name": "VoluntaryExit",
@@ -1227,14 +1265,6 @@
   "FuluFinalityBranch": {
    "generated_name": "FinalityBranch",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluSyncAggregate": {
-   "generated_name": "SyncAggregate",
-   "reason": "root view (wbits of the words) differs from encode_spec value (bitsof): needs a view lemma"
-  },
-  "FuluSyncCommitteeContribution": {
-   "generated_name": "SyncCommitteeContribution",
-   "reason": "root view (wbits of the words) differs from encode_spec value (bitsof): needs a view lemma"
   },
   "FuluContributionAndProof": {
    "generated_name": "ContributionAndProof",
