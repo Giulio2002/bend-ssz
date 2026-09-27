@@ -2283,13 +2283,13 @@ def vdec_info(R):
     imp = dict((a, p) for p, a in re.findall(r'^import \.\./obj/(\S+) as (\w+)$', s, re.M))
     mods = {}
     for op in ('decode_accept', 'decode_spec', 'decode_none', 'decode_reject'):
-        m = re.search(r'__' + op + '__' + op + r'\(\+d: Nat, \+t: \w+\.array__Tree<U32>, \+n: U32, (.*)\n  (\w+)\.' + op + r'\(', s)
+        m = re.search(r'__' + op + '__' + op + r'\((?:\+d: Nat, )?\+t: \w+\.array__Tree<U32>, \+n: U32, (.*)\n  (\w+)\.' + op + r'\(', s)
         if not m:
             return None
         mods[op] = (imp[m.group(2)], m.group(1))
     sig = mods['decode_accept'][1]
     mb = re.search(r'\+hd: \{Nat\.is_lt\(d, (\d+)n\)', sig)
-    mdc = re.search(r'\+hchk: \{(\w+)\.CHK\(t, n\)', sig)
+    mdc = re.search(r'\+hchk: \{(\w+)\.CHK\((?:t, )?n\)', sig)
     if not mb or not mdc or mdc.group(1) not in imp:
         return None
     acc = re.search(r'__decode_accept__decode_accept\(.*\) -> \{(\w+)\.(\w+)\(\w+\.BF\(t, n\), n\) == \(\w+\.BF\(t, n\), Some\{\w+\.OBJ\(((?:d, )?)t, n\)\}\) : \w+\.Buf & Maybe<&1, ([\w.]+)>\}', s)
@@ -2305,7 +2305,9 @@ def vdec_info(R):
     return {'bound': int(mb.group(1)), 'dc': imp[mdc.group(1)], 'acc': mods['decode_accept'][0], 'spec': mods['decode_spec'][0],
             'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0],
             'dfn': f'T.{acc.group(2)}', 'objd': bool(acc.group(3)), 'vald': bool(spec.group(2)), 'otype': otype, 'sch': spec.group(1),
-            'rejhd': '+hd:' in mods['decode_reject'][1]}
+            'rejhd': '+hd:' in mods['decode_reject'][1],
+            'chk1': bool(re.search(r'\+hchk: \{\w+\.CHK\(n\)', sig)),
+            'noneshort': bool(re.search(r'__decode_none__decode_none\(\+t:', s))}
 
 
 # The input-size bound of the variable-size bridges is a parameter: K = one below the codec
@@ -2347,6 +2349,10 @@ def text_vdec(R, X, info):
             .replace('E.none_someT(T.@X@,', f'E.none_someT({ot},').replace('Spec.@X@()', f'{info["sch"]}.@X@()'))
     if info['objd']:
         body = body.replace('DC.OBJ(TT(bs, n), n)', 'DC.OBJ(B.capacity(n), TT(bs, n), n)')
+    if info['chk1']:
+        body = body.replace('DC.CHK(TT(bs, n), n)', 'DC.CHK(n)')
+    if info['noneshort']:
+        body = re.sub(r'\.decode_none\(B\.capacity\(n\), TT\(bs, n\), n, pfe\(bs, n\), .*, hchk\)\)$', '.decode_none(TT(bs, n), n, hchk))', body, flags=re.M)
     if info['rejhd']:
         body = body.replace('.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), C.cap_q(',
                             '.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(')
