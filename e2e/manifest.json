@@ -3111,6 +3111,16 @@
     "premise": "rep: RT.rep_GuA2212AE21F(o, Spec.GuA2212AE21F()) (the root law's representation invariant)"
    }
   ],
+  "ComplexTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "ComplexTestStruct",
+    "generated_name": "Gc56D855869F",
+    "laws": [
+     "ComplexTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) (the root law's representation invariant)"
+   }
+  ],
   "FuluAttesterSlashing_e2e_root_generated.bend": [
    {
     "name": "FuluAttesterSlashing",
@@ -4027,7 +4037,8 @@
   },
   "ComplexTestStruct": {
    "generated_name": "Gc56D855869F",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "ComplexTestStruct_e2e_root_generated.bend"
   },
   "SmallTestStruct": {
    "generated_name": "Gc4ED9619F50",

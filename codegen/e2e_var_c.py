@@ -1622,6 +1622,206 @@ def st1(-o: {D}, +x0: U32, +x2: U32, +eo: {{o == {D}{{x0, RT.pj_{X}_1(o), x2}} :
 
 
 MWP['Gc465214E502'] = mwp_vartest
+
+
+# ---- (iv) for a container whose rep projects several fields (ComplexTestStruct): each projected field is
+# copied to a runtime value from its rep's witness (cpw: byte storage, cpv: a nested VarTestStruct, cpa: a
+# vector's array), the object is rewritten to the literal built from them, and the root law applies there.
+CPX = {
+    'Gc56D855869F': {
+        'mods': ['ComplexTestStruct_d:ComplexTestStruct_def_generated', 'VarTestStruct_d:VarTestStruct_def_generated',
+                 'vec_FixedTestStruct_4_d:vec_FixedTestStruct_4_def_generated', 'vec_VarTestStruct_2_d:vec_VarTestStruct_2_def_generated',
+                 'FixedTestStruct_d:FixedTestStruct_def_generated'],
+        'hmod': 'ComplexTestStruct_h:ComplexTestStruct_hashtreeroot_generated',
+        # (kind, field type) in field order; rep: x0, x2, eo, then per field its part in order
+        'fields': [('u', 'U32'), ('l', 'O.Words'), ('u', 'U32'), ('l', 'O.Words'), ('c', 'VarTestStruct_d.Gc465214E502'),
+                   ('a', 'vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq'), ('a', 'vec_VarTestStruct_2_d.v2_Gc465214E502_Seq')],
+    },
+}
+CPA = {  # a vector's rep: its storage t (element type), the object is Seq{ARR(t), N}
+    'vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq': ('rep_v4_GcDC3E457711', 'FixedTestStruct_d.GcDC3E457711', 'FD.array__thaw(FixedTestStruct_d.GcDC3E457711, {t})'),
+    'vec_VarTestStruct_2_d.v2_Gc465214E502_Seq': ('rep_v2_Gc465214E502', 'RT.MB<RT.M_Gc465214E502>', 'RT.am_v2_Gc465214E502({t})'),
+}
+CPV = 'VarTestStruct_d.Gc465214E502'
+
+
+def _cp_shape(kd, T, k):
+    """A projected field's runtime copy: its Data witnesses (name, type) and the literal they build."""
+    W = lambda t, n: f'O.Words{{FD.array__thaw(U32, {t}), {n}}}'  # noqa: E731
+    if kd == 'u':
+        return [(f'x{k}', 'U32')], f'x{k}'
+    if kd == 'l':
+        return [(f't{k}', 'FD.array__Tree<U32>'), (f'N{k}', 'U32')], W(f't{k}', f'N{k}')
+    if kd == 'c':
+        return ([(f'a{k}', 'U32'), (f'b{k}', 'U32'), (f't{k}', 'FD.array__Tree<U32>'), (f'N{k}', 'U32')],
+                f'{CPV}{{a{k}, {W(f"t{k}", f"N{k}")}, b{k}}}')
+    rp, el, arr = CPA[T]
+    return [(f't{k}', f'FD.array__Tree<{el}>'), (f'N{k}', 'U32')], f'{T}{{{arr.format(t=f"t{k}")}, N{k}}}'
+
+
+def _ex(vs, eq):
+    """DK.Ex over the witnesses vs, ending in the equation eq."""
+    out = eq
+    for v, T in reversed(vs):
+        out = f'DK.Ex({T}, {v} => {out})'
+    return out
+
+
+def _tup(vs, pf):
+    out = pf
+    for v, _ in reversed(vs):
+        out = f'({v}, {out})'
+    return out
+
+
+def vroot_complex(R, X):
+    c = CPX[X]
+    hm, hp = c['hmod'].split(':')
+    D = f'{R}_d.{X}'
+    fs = c['fields']
+    n = len(fs)
+    PJ = lambda k: f'RT.pj_{X}_{k}(o)'  # noqa: E731
+    SK = lambda k: 'SH.Chain_head(' + 'SH.Chain_tail(' * k + f'SH.Container_fields(Spec.{X}())' + ')' * k + ')'  # noqa: E731
+    shp = [_cp_shape(kd, T, k) for k, (kd, T) in enumerate(fs)]
+    OL = f'{D}{{{", ".join(lit for _, lit in shp)}}}'
+    allv = [v for vs, _ in shp for v in vs]
+    runt = ', '.join(f'+{v}: {T}' for v, T in allv)
+    wargs = ', '.join(v for v, _ in allv)
+    BY = lambda o: f'D.bytes(Pair.snd({D}, D.Digest, Pair.snd(B.Buf, {D} & D.Digest, {hm}.{X}_hash_tree_root(h, {o}))))'  # noqa: E731
+    G = lambda o: f'{{Some{{{BY(o)}}} == API.hash_tree_root(Spec.{X}(), RT.v_{X}({o})) : Maybe<&2, +List<U32>>}}'  # noqa: E731
+    wsig = [('t', 'FD.array__Tree<U32>'), ('N', 'U32')]
+    WL = 'O.Words{FD.array__thaw(U32, t), N}'
+    L = []
+    L.append(f"""# byte storage (list_obj.wfl): its tree and length
+def cpw(-w: O.Words, +wf: LO.wfl(w)) -> {_ex(wsig, f'{{w == {WL} : O.Words}}')}:
+  match wf:
+    case Inl{{s}}:
+      (+t, s1) = s
+      (+dw, s2) = s1
+      (+N, s3) = s2
+      (+ew, s4) = s3
+      (t, (N, ew))
+    case Inr{{s}}:
+      (+t, s1) = s
+      (+dw, s2) = s1
+      (+N, s3) = s2
+      (+q, s4) = s3
+      (+r, s5) = s4
+      (+ew, s6) = s5
+      (t, (N, ew))
+""")
+    if any(kd == 'c' for kd, _ in fs):
+        V = CPV
+        P1 = 'RT.pj_Gc465214E502_1(v)'
+        vsig = [('x0', 'U32'), ('x2', 'U32'), ('t', 'FD.array__Tree<U32>'), ('N', 'U32')]
+        VL = f'{V}{{x0, {WL}, x2}}'
+        L.append(f"""# a VarTestStruct (rep_Gc465214E502): its words and its list's tree and length
+def cpv2(-v: {V}, +x0: U32, +x2: U32, +ev: {{v == {V}{{x0, {P1}, x2}} : {V}}}, +c: {_ex(wsig, f'{{{P1} == {WL} : O.Words}}')}) -> {_ex(vsig, f'{{v == {VL} : {V}}}')}:
+  (+t, +c1) = c
+  (+N, +ew) = c1
+  (x0, (x2, (t, (N, Equal.trans({V}, v, {V}{{x0, {P1}, x2}}, {VL}, ev, Equal.cong(O.Words, {V}, z => {V}{{x0, z, x2}}, {P1}, {WL}, ew))))))
+
+def cpv(-v: {V}, +s: S.Schema, +rep: RT.rep_Gc465214E502(v, s)) -> {_ex(vsig, f'{{v == {VL} : {V}}}')}:
+  (+x0, +r0) = rep
+  (+x2, +r1) = r0
+  (+ev, +q1) = r1
+  (+h0, +q2) = q1
+  (+c1, +h2) = q2
+  (+wf, +z1) = c1
+  cpv2(v, x0, x2, ev, cpw({P1}, wf))
+""")
+    for k, (kd, T) in enumerate(fs):
+        if kd == 'a':
+            rp, el, arr = CPA[T]
+            asig = [('t', f'FD.array__Tree<{el}>'), ('N', 'U32')]
+            AL = f'{T}{{{arr.format(t="t")}, N}}'
+            L.append(f"""# field {k}, a vector: its tree and length
+def cpa{k}(-v: {T}, +s: S.Schema, +rep: RT.{rp}(v, s)) -> {_ex(asig, f'{{v == {AL} : {T}}}')}:
+  (+ex, +hl) = rep
+  (+t, +e1) = ex
+  (+dw, +e2) = e1
+  (+N, +e3) = e2
+  (+eq, +e4) = e3
+  (t, (N, eq))
+""")
+    L.append(f"""# the literal object
+def rt1(h: B.Buf, {runt}, +rep: RT.rep_{X}({OL}, Spec.{X}())) -> {G(OL)}:
+  E.root_legal(Spec.{X}(), RT.v_{X}({OL}), VS.public_sound(Spec.{X}(), {{==}}), {BY(OL)},
+    GV.{X}_root_valid({OL}, Spec.{X}(), {{==}}, rep), RT.{X}_root_correct(h, {OL}, Spec.{X}(), {{==}}, rep))
+
+# the object as the literal
+def rt2(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}()), {runt}, +eo: {{o == {OL} : {D}}}) -> {G('o')}:
+  %Equal.sym({D}, o, {OL}, eo) : {G('_')}
+  rt1(h, {wargs}, FD.logic__subst({D}, z => RT.rep_{X}(z, Spec.{X}()), o, {OL}, eo, rep))
+""")
+    cur = [f'x{k}' if kd == 'u' else PJ(k) for k, (kd, _) in enumerate(fs)]
+    E0 = f'{D}{{{", ".join(cur)}}}'
+    cps = [(k, T) for k, (kd, T) in enumerate(fs) if kd != 'u']
+    us = [k for k, (kd, _) in enumerate(fs) if kd == 'u']
+    eqn = 'eo'
+    for k, T in cps:
+        nxt = list(cur)
+        nxt[k] = shp[k][1]
+        mot = list(cur)
+        mot[k] = 'z'
+        step = f'Equal.cong({T}, {D}, z => {D}{{{", ".join(mot)}}}, {PJ(k)}, {shp[k][1]}, e{k})'
+        eqn = f'Equal.trans({D}, o, {D}{{{", ".join(cur)}}}, {D}{{{", ".join(nxt)}}},\n    {eqn},\n    {step})'
+        cur = nxt
+    cparams = ', '.join(f'+c{k}: {_ex(shp[k][0], f"{{{PJ(k)} == {shp[k][1]} : {T}}}")}' for k, T in cps)
+    unp = []
+    for k, _ in cps:
+        vs = shp[k][0]
+        src = f'c{k}'
+        for i, (v, _) in enumerate(vs):
+            nx = f'e{k}' if i == len(vs) - 1 else f'c{k}_{i}'
+            unp.append(f'  (+{v}, +{nx}) = {src}')
+            src = nx
+    uparams = ', '.join(f'+x{k}: U32' for k in us)
+    L.append(f"""# the copies, and the object's equation to the literal
+def g1(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}()), {uparams}, +eo: {{o == {E0} : {D}}}, {cparams}) -> {G('o')}:
+{chr(10).join(unp)}
+  rt2(h, o, rep, {wargs}, {eqn})
+""")
+    lines = [f'  (+x{us[0]}, +r0) = rep', f'  (+x{us[1]}, +r1) = r0', '  (+eo, +q0) = r1']
+    pn = {i: (f'q{i}' if i == n - 1 else f'p{i}') for i in range(n)}
+    for i in range(n):
+        if i < n - 1:
+            lines.append(f'  (+p{i}, +q{i + 1}) = q{i}')
+        if fs[i][0] == 'l':
+            lines.append(f'  (+wf{i}, +z{i}) = {pn[i]}')
+    args = []
+    for k, T in cps:
+        kd = fs[k][0]
+        if kd == 'l':
+            args.append(f'cpw({PJ(k)}, wf{k})')
+        elif kd == 'c':
+            args.append(f'cpv({PJ(k)}, {SK(k)}, {pn[k]})')
+        else:
+            args.append(f'cpa{k}({PJ(k)}, {SK(k)}, {pn[k]})')
+    lines.append(f'  g1(h, o, rep, {", ".join("x" + str(k) for k in us)}, eo,\n    ' + ',\n    '.join(args) + ')')
+    body = '\n'.join(lines)
+    imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
+            'import ../src/digest.bend as D', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
+            'import ../proofs/obj/generic_specs.bend as Spec', 'import ../proofs/type_validator_soundness.bend as VS',
+            'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/list_obj.bend as LO',
+            'import ../proofs/obj/schema_shapes.bend as SH',
+            'import ../proofs/obj/root_gtypes.bend as RT', 'import ../proofs/obj/gvalid_gtypes.bend as GV', 'import ./e2e_support.bend as E']
+    imps += [f'import ../types/{pth}.bend as {al}' for al, pth in (m.split(':') for m in c['mods'])] + [f'import ../types/{hp}.bend as {hm}']
+    return '\n'.join(imps) + f"""
+
+# GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
+# {R} (variable size): the object API's root is END_TO_END's hash_tree_root, for every object the root law
+# represents (rep_{X}: its storage fields' words in perfect trees of depth below 32, its nested objects' reps).
+# The object is rebuilt from rep's witnesses (trees and lengths, which the root law's runtime arguments need).
+
+""" + '\n'.join(L) + f"""
+# (iv)
+def {R}_e2e_root(h: B.Buf, -o: {D}, +rep: RT.rep_{X}(o, Spec.{X}())) -> {G('o')}:
+{body}
+"""
+
+
+VROOT_SHAPES['Gc56D855869F'] = vroot_complex
 VENC_SHAPES['Gc465214E502'] = venc_mw
 VENC_PREMISE['Gc465214E502'] = ('rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), 28n) (the list field\'s storage '
                                 'at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)')
