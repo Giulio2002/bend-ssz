@@ -428,7 +428,10 @@ def spec_items(x, V, Yb, hv, wt=None, named=None):
         hdr += nd['words'] if nd is not None else [str(x.FS)]
     if named:
         import var_bytes as VBY
-        return items(0), chain(0), f'{named[0]}P0({named[4]})', cat(0), PRE, POST, hdr, VBY.chain_defs(*named, vals, schs, parts)
+        proofs = [('fixed', f'F.limbs([{", ".join(nodes[i]["words"])}])', nodes[i]['proof']) if nodes[i] is not None else ('var', Yb, hv)
+                  for i in range(m)]
+        return (items(0), chain(0), f'{named[0]}P0({named[4]})', f'{named[0]}T0({named[6]})', PRE, POST, hdr,
+                VBY.chain_defs(*named[:5], vals, schs, parts, named[5], named[6], proofs))
     return items(0), chain(0), '[' + ', '.join(parts) + ']', cat(0), PRE, POST, hdr
 
 

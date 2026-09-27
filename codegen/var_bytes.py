@@ -517,12 +517,15 @@ def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U
     return '\n'.join(L) + '\n'
 
 
-def chain_defs(pfx, decl, args, pdecl, pargs, vals, schs, parts):
+def chain_defs(pfx, decl, args, pdecl, pargs, vals, schs, parts, cdecl=None, cargs=None, proofs=None):
     """Named suffixes of a container's parts chain (callee first): <pfx>V<i>(args) the items
-    from field i on, <pfx>S<i>() their schemas, <pfx>P<i>(pargs) their parts. The chain's
-    F.cat_fixed / VS.cat_var levels then carry these small calls instead of the whole
-    remaining terms, which past the checker's identity budget (4096 visits) were compared
-    by evaluating Codec.parts at every level."""
+    from field i on, <pfx>S<i>() their schemas, <pfx>P<i>(pargs) their parts. With `proofs`
+    (per field ('fixed' | 'var', bytes, proof)), also <pfx>T<i>(cargs): the parts of the fields
+    from i on, one def per field. Each unfolds its suffixes by one-step {==} rewrites and closes
+    with VS.chain_fixed / VS.chain_var, so no level re-evaluates the parts of the fields after
+    it: in one nested F.cat_fixed chain the levels' types met only after whnf, which runs
+    Codec.parts to the end (and past the identity budget the whole remaining terms were
+    compared by evaluation)."""
     m = len(vals)
     L = []
     for i in range(m, -1, -1):
@@ -533,6 +536,22 @@ def chain_defs(pfx, decl, args, pdecl, pargs, vals, schs, parts):
             L += [f'def {pfx}V{i}({decl}) -> S.Value: S.Items{{{vals[i]}, {pfx}V{i + 1}({args})}}',
                   f'def {pfx}S{i}() -> S.Schema: S.Chain{{{schs[i]}, {pfx}S{i + 1}()}}',
                   f'def {pfx}P{i}({pdecl}) -> +List<S.Part>: Con{{{parts[i]}, {pfx}P{i + 1}({pargs})}}']
+    if proofs is None:
+        return L
+    MP = 'Maybe<&2, +List<S.Part>>'
+    ty = lambda i: f'{{Codec.parts({pfx}V{i}({args}), {pfx}S{i}()) == Some{{{pfx}P{i}({pargs})}} : {MP}}}'
+    L.append(f'def {pfx}T{m}({cdecl}) -> {ty(m)}: {{==}}')
+    for i in range(m - 1, -1, -1):
+        kind, xs, prf = proofs[i]
+        IT = f'S.Items{{{vals[i]}, {pfx}V{i + 1}({args})}}'
+        CH = f'S.Chain{{{schs[i]}, {pfx}S{i + 1}()}}'
+        PP = f'Con{{{parts[i]}, {pfx}P{i + 1}({pargs})}}'
+        lem = 'VS.chain_fixed' if kind == 'fixed' else 'VS.chain_var'
+        L += [f'def {pfx}T{i}({cdecl}) -> {ty(i)}:',
+              f'  %Equal.sym(S.Value, {pfx}V{i}({args}), {IT}, {{==}}) : {{Codec.parts(_, {pfx}S{i}()) == Some{{{pfx}P{i}({pargs})}} : {MP}}}',
+              f'  %Equal.sym(S.Schema, {pfx}S{i}(), {CH}, {{==}}) : {{Codec.parts({IT}, _) == Some{{{pfx}P{i}({pargs})}} : {MP}}}',
+              f'  %Equal.sym(+List<S.Part>, {pfx}P{i}({pargs}), {PP}, {{==}}) : {{Codec.parts({IT}, {CH}) == Some{{_}} : {MP}}}',
+              f'  {lem}({vals[i]}, {pfx}V{i + 1}({args}), {schs[i]}, {pfx}S{i + 1}(), {xs}, {pfx}P{i + 1}({pargs}), {prf}, {pfx}T{i + 1}({cargs}))']
     return L
 
 
@@ -579,7 +598,11 @@ def spec_items(x, Y, wt=None, named=None):
     for f, nd in zip(x.fields, nodes):
         hdr += nd['words'] if nd is not None else [str(x.FS)]
     if named:
-        return items(0), chain(0), f'{named[0]}P0({named[4]})', cat(0), PRE, POST, hdr, chain_defs(*named, vals, schs, parts)
+        proofs = [('fixed', f'F.limbs([{", ".join(nodes[i]["words"])}])', nodes[i]['proof']) if nodes[i] is not None else
+                  ('var', Y, f'VZ.bl_parts({x.LIM}n, {Y}, hdom, hlen, VS.fits_mono(4n, List.length(&2, U32, {Y}), {x.LIM}n, hlen, {{==}}))')
+                  for i in range(m)]
+        return (items(0), chain(0), f'{named[0]}P0({named[4]})', f'{named[0]}T0({named[6]})', PRE, POST, hdr,
+                chain_defs(*named[:5], vals, schs, parts, named[5], named[6], proofs))
     return items(0), chain(0), '[' + ', '.join(parts) + ']', cat(0), PRE, POST, hdr
 
 

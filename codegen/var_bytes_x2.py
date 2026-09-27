@@ -643,7 +643,13 @@ def spec_items(x):
                 f'hv{i}, {cat(i + 1)})')
     POSTb = '[' + ', '.join(f'F.limbs([{", ".join(nd["words"])}])' for nd in nodes[2:]) + ']'
     import var_bytes as VBY
-    return items(0), chain(0), f'XCP0({NV[4]})', cat(0), POSTb, nodes[2:], VBY.chain_defs(*NV, vals, schs, parts)
+    proofs = [('fixed', f'F.limbs([{", ".join(nodes[i]["words"])}])', nodes[i]['proof']) if nodes[i] is not None else ('var', f'Y{i}', f'hv{i}')
+              for i in range(m)]
+    CD = ('+t: FD.array__Tree<U32>, +x: Nat, +V0: S.Value, +V1: S.Value, +Y0: +List<U32>, +Y1: +List<U32>, '
+          f'+hv0: {{Codec.parts(V0, Spec.{x.Y}()) == Some{{[S.Variable{{Y0}}]}} : Maybe<&2, +List<S.Part>>}}, '
+          f'+hv1: {{Codec.parts(V1, Spec.{x.Y}()) == Some{{[S.Variable{{Y1}}]}} : Maybe<&2, +List<S.Part>>}}')
+    return (items(0), chain(0), f'XCP0({NV[4]})', 'XCT0(t, x, V0, V1, Y0, Y1, hv0, hv1)', POSTb, nodes[2:],
+            VBY.chain_defs(*NV, vals, schs, parts, CD, 't, x, V0, V1, Y0, Y1, hv0, hv1', proofs))
 
 
 def spec_part(x, mp):
