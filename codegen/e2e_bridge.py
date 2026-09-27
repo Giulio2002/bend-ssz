@@ -2283,17 +2283,17 @@ def vdec_info(R):
     imp = dict((a, p) for p, a in re.findall(r'^import \.\./obj/(\S+) as (\w+)$', s, re.M))
     mods = {}
     for op in ('decode_accept', 'decode_spec', 'decode_none', 'decode_reject'):
-        m = re.search(r'__' + op + '__' + op + r'\(\+d: Nat, \+t: \w+\.array__Tree<U32>, \+n: U32, (.*)\n  (\w+)\.' + op + r'\(', s)
+        m = re.search(r'__' + op + '__' + op + r'\((?:\+d: Nat, )?\+t: \w+\.array__Tree<U32>, \+n: U32, (.*)\n  (\w+)\.' + op + r'\(', s)
         if not m:
             return None
         mods[op] = (imp[m.group(2)], m.group(1))
     sig = mods['decode_accept'][1]
     mb = re.search(r'\+hd: \{Nat\.is_lt\(d, (\d+)n\)', sig)
-    mdc = re.search(r'\+hchk: \{(\w+)\.CHK\(t, n\)', sig)
+    mdc = re.search(r'\+hchk: \{(\w+)\.CHK\((?:t, )?n\)', sig)
     if not mb or not mdc or mdc.group(1) not in imp:
         return None
     acc = re.search(r'__decode_accept__decode_accept\(.*\) -> \{(\w+)\.(\w+)\(\w+\.BF\(t, n\), n\) == \(\w+\.BF\(t, n\), Some\{\w+\.OBJ\(((?:d, )?)t, n\)\}\) : \w+\.Buf & Maybe<&1, ([\w.]+)>\}', s)
-    spec = re.search(r'__decode_spec__decode_spec\(.*\) -> \w+\.decodes\((?:\w+_)?(GS|Spec)\.\w+\(\), \w+\.VW\(t, n\), \w+\.VAL\(((?:d, )?)t, n\)\)', s)
+    spec = re.search(r'__decode_spec__decode_spec\(.*\) -> \w+\.decodes\((\w+)\.\w+\(\), \w+\.VW\(t, n\), \w+\.VAL\(((?:d, )?)t, n\)\)', s)
     if not acc or not spec:
         return None
     ot = acc.group(4)
@@ -2304,8 +2304,10 @@ def vdec_info(R):
         return None
     return {'bound': int(mb.group(1)), 'dc': imp[mdc.group(1)], 'acc': mods['decode_accept'][0], 'spec': mods['decode_spec'][0],
             'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0],
-            'dfn': f'T.{acc.group(2)}', 'objd': bool(acc.group(3)), 'vald': bool(spec.group(2)), 'otype': otype, 'sch': spec.group(1),
-            'rejhd': '+hd:' in mods['decode_reject'][1]}
+            'dfn': f'T.{acc.group(2)}', 'objd': bool(acc.group(3)), 'vald': bool(spec.group(2)), 'otype': otype, 'sch': 'GS' if imp.get(spec.group(1)) == 'generic_specs.bend' else 'Spec',
+            'rejhd': '+hd:' in mods['decode_reject'][1],
+            'chk1': bool(re.search(r'\+hchk: \{\w+\.CHK\(n\)', sig)),
+            'noneshort': bool(re.search(r'__decode_none__decode_none\(\+t:', s))}
 
 
 # The input-size bound of the variable-size bridges is a parameter: K = one below the codec
@@ -2347,6 +2349,10 @@ def text_vdec(R, X, info):
             .replace('E.none_someT(T.@X@,', f'E.none_someT({ot},').replace('Spec.@X@()', f'{info["sch"]}.@X@()'))
     if info['objd']:
         body = body.replace('DC.OBJ(TT(bs, n), n)', 'DC.OBJ(B.capacity(n), TT(bs, n), n)')
+    if info['chk1']:
+        body = body.replace('DC.CHK(TT(bs, n), n)', 'DC.CHK(n)')
+    if info['noneshort']:
+        body = re.sub(r'\.decode_none\(B\.capacity\(n\), TT\(bs, n\), n, pfe\(bs, n\), .*, hchk\)\)$', '.decode_none(TT(bs, n), n, hchk))', body, flags=re.M)
     if info['rejhd']:
         body = body.replace('.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), C.cap_q(',
                             '.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(')
@@ -2654,12 +2660,16 @@ def venc_dc(R, X):
 VENC_SHAPES = {'DataColumnsByRootIdentifier': venc_dc}
 
 import e2e_var_b as EVB  # noqa: E402  (the second variable-size worker's entries)
-for _k, _v in EVB.VDEC_VIEWS.items():
-    VDEC_VIEWS.setdefault(_k, _v)
-for _k, _v in EVB.VROOT_SHAPES.items():
-    VROOT_SHAPES.setdefault(_k, _v)
-for _k, _v in EVB.VENC_SHAPES.items():
-    VENC_SHAPES.setdefault(_k, _v)
+import e2e_var_c as EVC  # noqa: E402  (the third's: u-lists and unions)
+import e2e_fix_d as EFD  # noqa: E402  (the fourth's: fixed-size leftovers)
+for _m in (EVB, EVC):
+    for _k, _v in _m.VDEC_VIEWS.items():
+        VDEC_VIEWS.setdefault(_k, _v)
+    for _k, _v in _m.VROOT_SHAPES.items():
+        VROOT_SHAPES.setdefault(_k, _v)
+    for _k, _v in _m.VENC_SHAPES.items():
+        VENC_SHAPES.setdefault(_k, _v)
+VENC_PREMISE = dict(EVB.VENC_PREMISE, **EVC.VENC_PREMISE)
 
 
 
@@ -2884,7 +2894,7 @@ def outputs():
     out = {OUT / 'e2e_support.bend': SUPPORT, OUT / 'e2e_bytes.bend': BYTES_HEAD + lwb_text() + '\n' + BYTES_TAIL,
            OUT / 'e2e_bits.bend': BITS, OUT / 'e2e_tree.bend': TREE, OUT / 'e2e_load.bend': LOAD,
            OUT / 'e2e_cap.bend': CAP, OUT / 'e2e_ulist.bend': ULIST, OUT / 'e2e_emit.bend': emit_text()}
-    for _f, _txt in EVB.SUPPORT_OUT.items():
+    for _f, _txt in list(EVB.SUPPORT_OUT.items()) + list(EVC.SUPPORT_OUT.items()):
         out[OUT / _f] = _txt
     wrows = []
     for R0, u in list(uncovered.items()):
@@ -3055,7 +3065,7 @@ def outputs():
         fn = f'{R0}_e2e_generated.bend'
         out[OUT / fn] = VENC_SHAPES[X0](R0, X0)
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_encode'],
-                             'premise': EVB.VENC_PREMISE.get(X0, f'rep: RT.rep_{X0}(o, Spec.{X0}()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)')}]
+                             'premise': VENC_PREMISE.get(X0, f'rep: RT.rep_{X0}(o, Spec.{X0}()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)')}]
         u['encode'] = fn
     out[OUT / 'e2e_bitl.bend'] = BITL
     inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
@@ -3075,6 +3085,30 @@ def outputs():
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_root'], 'premise': 'rep: bitlist_obj.rep_bits(o, GS.X())'} for R0, X0 in rows]
         for R0, X0 in rows:
             uncovered[R0]['root'] = fn
+    fd = EFD.build(sys.modules[__name__], amap, cache, vidx)
+    for _f, _txt in list(fd['support'].items()) + list(fd['files'].items()):
+        out[OUT / _f] = _txt
+    inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
+    man['fixed_size'] = {}
+    for X0, cv in sorted(fd['cover'].items()):
+        R0 = inv.get(X0)
+        if R0 is None:
+            continue
+        laws = {'i': [f'{R0}_e2e_encode'], 'iv': [f'{R0}_e2e_root'],
+                'ii_iii': [f'{R0}_e2e_decode_view' if cv.get('ii') == 'view' else f'{R0}_e2e_decode_accept', f'{R0}_e2e_decode_reject']}
+        for k in ('i', 'ii_iii', 'iv'):
+            if k in cv:
+                e = {'name': R0, 'generated_name': X0, 'laws': laws[k]}
+                if k == 'ii_iii':
+                    e['ii'] = cv.get('ii', 'exact')
+                if cv.get('premise'):
+                    e['premise'] = cv['premise']
+                man['files'].setdefault(cv[k], []).append(e)
+        if all(k in cv for k in ('i', 'ii_iii', 'iv')):
+            man['fixed_size'][R0] = {'generated_name': X0, 'i': cv['i'], 'ii_iii': cv['ii_iii'], 'iv': cv['iv']}
+            del uncovered[R0]
+        else:
+            uncovered[R0].update({k: cv[k] for k in ('i', 'ii_iii', 'iv') if k in cv})
     man['variable_size'] = {}
     for R0 in sorted(uncovered):
         u = uncovered[R0]
