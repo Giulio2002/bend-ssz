@@ -707,17 +707,6 @@ class Gen:
             return f'PG.ok_pl{self.pk(fs)[0]}({sx})'
         return f'ok_{fs.p}({sx}, dv)'  # T, boxT, tl
 
-    def eqs_items(self, fs, k):
-        """The eqs structure of a field whose schema is the variable x."""
-        if k in ('data', 'datar', 'bvr', 'boxD'):
-            return [('eq', lambda x: x, self.E(fs))]
-        if k in ('boxT', 'T'):
-            inner = fs.inner if k == 'boxT' else fs
-            return [('sub', inner.p, lambda x: x)]
-        if k in ('tl', 'ptl'):
-            return [('sub', fs.p, lambda x: x)]
-        return []
-
     def eqs_type(self, fs, k, sx):
         if k in ('data', 'datar', 'bvr', 'boxD'):
             return f'{{{sx} == {self.E(fs)} : S.Schema}}'
@@ -3012,13 +3001,8 @@ class Gen:
         status = {}
         laws = []
         big = {}
-        only = None
-        if '--only' in sys.argv:
-            only = set(sys.argv[sys.argv.index('--only') + 1].split(','))
         deferred = []
         for n, t in self.names.items():
-            if only is not None and n not in only:
-                continue
             if n in SPLIT_NAMES:
                 deferred.append(n)
                 continue
@@ -3114,10 +3098,6 @@ def main():
             if not path.exists() or path.read_text() != t:
                 print(f'{path} is stale; run codegen/root_laws_b.py')
                 return 1
-        return 0
-    if '--only' in sys.argv:
-        # a bisection probe of the named laws (not a gate file)
-        Path(sys.argv[sys.argv.index('--out') + 1]).write_text(text)
         return 0
     if not OUT.exists() or OUT.read_text() != text:
         OUT.write_text(text)

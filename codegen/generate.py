@@ -2067,10 +2067,6 @@ def emit_seq_cache(s, w):
     w('')
 
 
-def fix_seq_order(text):
-    return text
-
-
 # ---------------------------------------------------------------------------
 # Containers.
 
