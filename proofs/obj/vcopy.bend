@@ -429,3 +429,28 @@ def rng2_x8(c):
     case 1n+ +p:
       %Equal.sym(Nat, VD.s_rng(2n, 3n+VS.x8(p)), Nat.double(p), rng2_x8(p)) : {2n+_ == 2n+Nat.double(p) : Nat}
       {==}
+
+# A bound by a power of two below 2^31 is a bound by UMAX (the copy lemmas' one hypothesis, hy).
+def pw_umax(+k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}) -> {Nat.is_le(VB.pw(k), U32.to_nat(VB.UMAX())) == True{} : Bool}:
+  +h30 = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(F.u32__pow2u(30n), VB.UMAX()), Nat.is_le(U32.to_nat(F.u32__pow2u(30n)), U32.to_nat(VB.UMAX())),
+    VB.le_u32n(F.u32__pow2u(30n), VB.UMAX()), {==})
+  F.nat__le_trans(VB.pw(k), VB.pw(30n), U32.to_nat(VB.UMAX()), F.nat__pow2_mono(k, 30n, F.nat__lt_succ_le(k, 30n, hk)),
+    F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.UMAX())) == True{} : Bool}, U32.to_nat(F.u32__pow2u(30n)), VB.pw(30n), F.u32__pow2u_value(30n, {==}), h30))
+
+def hyU(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(YL(L), VB.pw(k)) == True{} : Bool})
+    -> {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool}:
+  F.nat__le_trans(YL(L), VB.pw(k), U32.to_nat(VB.UMAX()), hy, pw_umax(k, hk))
+
+# A window ending by NMAX has 31 + L <= UMAX.
+def hyW(+x: Nat, +L: U32, +hN: {Nat.is_le(Nat.add(x, U32.to_nat(L)), U32.to_nat(VB.NMAX())) == True{} : Bool})
+    -> {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(YL(L), z) == True{} : Bool}, Nat.add(31n, U32.to_nat(VB.NMAX())), U32.to_nat(VB.UMAX()), VB.e_umax(),
+    Order.add_left(31n, U32.to_nat(L), U32.to_nat(VB.NMAX()),
+      F.nat__le_trans(U32.to_nat(L), Nat.add(x, U32.to_nat(L)), U32.to_nat(VB.NMAX()), Order.left_below_sum(x, U32.to_nat(L)), hN)))
+
+# The storage of L bytes, 31 + L <= UMAX, has room for their words.
+def hrgU(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(NW(L), 0n), VB.pw(B.words_depth(WZ(L)))) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(NW(L), 0n), NW(L), F.nat__add_zero(NW(L))) : {Nat.is_le(_, VB.pw(B.words_depth(WZ(L)))) == True{} : Bool}
+  %Equal.sym(Nat, VB.pw(B.words_depth(WZ(L))), O.pow2n(B.words_depth(WZ(L))), VD.s_pow2_eq(B.words_depth(WZ(L)))) : {Nat.is_le(NW(L), _) == True{} : Bool}
+  F.nat__le_trans(NW(L), U32.to_nat(WZ(L)), O.pow2n(B.words_depth(WZ(L))), nw_le_wzu(L, hy), VD.wd_cover(WZ(L), 30n, {==}, wz30(L, hy)))

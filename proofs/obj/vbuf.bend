@@ -727,3 +727,19 @@ def le_n_lt32(+x: Nat, +n: U32, +h: {Nat.is_le(x, U32.to_nat(n)) == True{} : Boo
 def lt_u32n(+a: U32, +b: U32) -> {U32.is_lt(a, b) == Nat.is_lt(U32.to_nat(a), U32.to_nat(b)) : Bool}:
   %Equal.sym(Cmp, U32.cmp(a, b), Nat.cmp(U32.to_nat(a), U32.to_nat(b)), F.u32__u32_cmp(a, b)) : {Cmp.is_lt(_) == Nat.is_lt(U32.to_nat(a), U32.to_nat(b)) : Bool}
   {==}
+
+# A window within a tree of depth d < 30 ends below 2^32: 4 2^d <= 2^31 (no closed power is compared).
+def hw32of(+d: Nat, +S: Nat, +hd: {Nat.is_lt(d, 30n) == True{} : Bool}, +h: {Nat.is_le(S, A.quad(pw(d))) == True{} : Bool})
+    -> {Nat.is_lt(S, F.spec_common__pow2(32n)) == True{} : Bool}:
+  F.nat__le_lt_trans(S, pw(2n+d), F.spec_common__pow2(32n), h,
+    F.nat__lt_le_trans(pw(2n+d), F.spec_common__pow2(3n+d), F.spec_common__pow2(32n), F.nat__pow2_lt_succ(2n+d),
+      F.nat__pow2_mono(3n+d, 32n, F.nat__lt_succ_le(d, 29n, hd))))
+
+# A window within a tree of depth d < 28 ends by NMAX: 4 2^d <= 2^29 (no closed power is compared).
+def hwNof(+d: Nat, +S: Nat, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +h: {Nat.is_le(S, A.quad(pw(d))) == True{} : Bool})
+    -> {Nat.is_le(S, U32.to_nat(NMAX())) == True{} : Bool}:
+  +h29 = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(F.u32__pow2u(29n), NMAX()), Nat.is_le(U32.to_nat(F.u32__pow2u(29n)), U32.to_nat(NMAX())),
+    le_u32n(F.u32__pow2u(29n), NMAX()), {==})
+  F.nat__le_trans(S, pw(2n+d), U32.to_nat(NMAX()), h,
+    F.nat__le_trans(pw(2n+d), pw(29n), U32.to_nat(NMAX()), F.nat__pow2_mono(2n+d, 29n, F.nat__lt_succ_le(d, 27n, hd)),
+      F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(NMAX())) == True{} : Bool}, U32.to_nat(F.u32__pow2u(29n)), pw(29n), F.u32__pow2u_value(29n, {==}), h29)))

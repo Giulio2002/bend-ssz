@@ -450,7 +450,9 @@ def posx(c):
     return 'x' if c == 0 else f'{c}n+x'
 
 
-def rdx_lemma(ft):
+def rdx_lemma(ft, deep=False):
+    """deep: rdxd_<p>, for any tree depth d < 31 (UR.offx31: the offsets below 2^32)."""
+    rn = 'rdxd_' if deep else 'rdx_'
     """T.<p>_read at an offset off at byte position x: its words are the words at x, x + 4, ..."""
     W = ft.W
     words = [f'UR.RWN(t, {posx(4 * k)})' for k in range(W)]
@@ -458,12 +460,13 @@ def rdx_lemma(ft):
     RHS = f'(UA.BF(t, n), {OBJ})'
     TY = f'B.Buf & {ft.rep()}'
     P = 'A.quad(VB.pw(d))'
-    L = [f'def rdx_{ft.p}(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {{U32.to_nat(off) == x : Nat}},',
-         '    +hd: {Nat.is_lt(d, 30n) == True{} : Bool}, +pf: {F.array__perfect(U32, d, t) == True{} : Bool},',
+    L = [f'def {rn}{ft.p}(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {{U32.to_nat(off) == x : Nat}},',
+         f'    +hd: {{Nat.is_lt(d, {31 if deep else 30}n) == True{{}} : Bool}}, +pf: {{F.array__perfect(U32, d, t) == True{{}} : Bool}},',
          f'    +hb: {{Nat.is_le(Nat.add(x, {ft.size}n), {P}) == True{{}} : Bool}})',
          f'    -> {{T.{ft.p}_read(UA.BF(t, n), off, {ft.size}) == {RHS} : {TY}}}:']
     w = L.append
-    hd31 = 'F.nat__lt_trans(d, 30n, 31n, hd, {==})'
+    hd31 = 'hd' if deep else 'F.nat__lt_trans(d, 30n, 31n, hd, {==})'
+    ox = 'UR.offx31' if deep else 'UR.offx'
 
     def rd(k):
         c = 4 * k
@@ -472,7 +475,7 @@ def rdx_lemma(ft):
             o, eq = 'off', 'e'
         else:
             o = f'U32.add(off, {c})'
-            eq = f'UR.offx(d, off, {c}, x, e, hd, F.nat__lt_le_trans({posx(c)}, Nat.add({posx(c)}, 4n), {P}, ltp({posx(c)}, 3n), {room}))'
+            eq = f'{ox}(d, off, {c}, x, e, hd, F.nat__lt_le_trans({posx(c)}, Nat.add({posx(c)}, 4n), {P}, ltp({posx(c)}, 3n), {room}))'
         return (f'Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), {o}), (UA.BF(t, n), UR.RWN(t, {posx(c)})), '
                 f'UR.rwx(d, t, n, {o}, {posx(c)}, {eq}, {hd31}, pf, {room}))')
     if ft.kind == 'u64':
@@ -495,10 +498,10 @@ def rdx_lemma(ft):
             args = ', '.join(['off', f'{ft.size}'] + prev)
             oj = f'U32.add(off, {c})'
             hbj = f'UR.roomf(x, {ft.size}n, {c}n, {kt.size}n, {P}, hb, {{==}})'
-            ej = f'UR.offx(d, off, {c}, x, e, hd, F.nat__lt_le_trans({posx(c)}, Nat.add({posx(c)}, {kt.size}n), {P}, ltp({posx(c)}, {kt.size - 1}n), {hbj}))'
+            ej = f'{ox}(d, off, {c}, x, e, hd, F.nat__lt_le_trans({posx(c)}, Nat.add({posx(c)}, {kt.size}n), {P}, ltp({posx(c)}, {kt.size - 1}n), {hbj}))'
             OBJj = kt.obj(wk)
             w(f'  %Equal.sym(B.Buf & {kt.rep()}, T.{kt.p}_read(UA.BF(t, n), {oj}, {kt.size}), (UA.BF(t, n), {OBJj}),')
-            w(f'      rdx_{kt.p}(d, t, n, {oj}, {posx(c)}, {ej}, hd, pf, {hbj})) :')
+            w(f'      {rn}{kt.p}(d, t, n, {oj}, {posx(c)}, {ej}, hd, pf, {hbj})) :')
             w(f'    {{T.{ft.p}_rd{j}({args}, _) == {RHS} : {TY}}}')
         w('  {==}')
     return L
@@ -517,11 +520,15 @@ def emit_fix():
          '  VB.lt_kk(0n, 1n+k, y, {==})', '']
     for ft in fix_types():
         L += rdx_lemma(ft) + ['']
+    # the same at any tree depth d < 31 (the deep decode laws)
+    for ft in fix_types():
+        L += rdx_lemma(ft, True) + ['']
     return '\n'.join(L) + '\n'
 
 
 def main():
-    outs = [(OUT, emit()), (OUT_SC, emit_sc()), (OUT_FIX, emit_fix())]
+    import deep  # the copy chain at any length 31 + L <= UMAX (the U twins)
+    outs = [(OUT, emit()), (OUT_SC, deep.uify_file(emit_sc(), ROOT / 'proofs/obj')), (OUT_FIX, emit_fix())]
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     outs = RR.rewire_out(outs)
     if '--check' in sys.argv:
