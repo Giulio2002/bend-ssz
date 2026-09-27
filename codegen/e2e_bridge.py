@@ -1994,6 +1994,84 @@ def text_vdec(R, X, info):
     return '\n'.join(imps) + '\n\n' + '\n'.join(head) + '\n\n' + vw['text'] + body
 
 
+
+def ssz_types():
+    """{generated or Fulu name: Ty} over the whole API (codegen/fulu.yaml, the generic suite and the
+    classes nested in it)."""
+    sys.path.insert(0, str(ROOT / 'tools'))
+    import schema as SC
+    import generic as GN
+    tys = dict(SC.load(ROOT / 'codegen/fulu.yaml'))
+    for n, t, _ in GN.inventory_all():
+        if t is not None:
+            tys[n] = t
+
+    def walk(t):
+        if t is None:
+            return
+        if t.kind in ('container', 'pcontainer', 'cunion') and t.name:
+            tys.setdefault(t.name, t)
+        for _, f in t.fields:
+            walk(f)
+        walk(t.elem)
+    for t in list(tys.values()):
+        walk(t)
+    return tys
+
+
+def max_ssz_size(t):
+    """The largest SSZ encoding of a type in bytes (None: unbounded, a progressive list inside)."""
+    k = t.kind
+    if t.fixed():
+        return t.fixed_size()
+    if k == 'bytelist':
+        return t.size
+    if k == 'bitlist':
+        return t.size // 8 + 1
+    if k in ('plist', 'pbits'):
+        return None
+    if k in ('list', 'vector'):
+        e = t.elem
+        m = e.fixed_size() if e.fixed() else (None if max_ssz_size(e) is None else 4 + max_ssz_size(e))
+        return None if m is None else t.size * m
+    if k in ('container', 'pcontainer'):
+        ms = [0 if f.fixed() else max_ssz_size(f) for _, f in t.fields]
+        return None if None in ms else sum(f.header() for _, f in t.fields) + sum(ms)
+    if k == 'cunion':
+        ms = [0 if f is None else max_ssz_size(f) for _, f in t.fields]
+        return None if None in ms else 1 + max(ms)
+    raise SystemExit(f'max_ssz_size: {k}')
+
+
+def input_bounds(readable, bridged):
+    """Per variable-size name with the codec decode laws' interface: the bridge's input bound
+    (2^(K+2) bytes), the type's largest SSZ encoding and whether the bound covers it. The object
+    API's byte length is a U32, so an encoding of 2^32 bytes or more is out of the API's range
+    whatever the bound."""
+    inv = {}
+    for g, r in readable.items():
+        inv.setdefault(r, g)
+    tys = ssz_types()
+    rows, short = {}, []
+    for f in sorted((ROOT / 'proofs/api').glob('*_decode_ssz_proof_generated.bend')):
+        R = f.name[:-len('_decode_ssz_proof_generated.bend')]
+        mb = re.search(r'__decode_accept__decode_accept\(\+d: Nat, \+t: [^\n]*?\+hd: \{Nat\.is_lt\(d, (\d+)n\)', f.read_text())
+        if not mb or inv.get(R) not in tys:
+            continue
+        info = {'bound': int(mb.group(1))}
+        K = vdec_k(info)
+        bound = 2 ** (K + 2)
+        m = max_ssz_size(tys[inv[R]])
+        cov = m is not None and m <= bound
+        rows[R] = {'generated_name': inv[R], 'depth_bound': info['bound'], 'input_bound': f'2^{K + 2}', 'input_bound_bytes': bound,
+                   'max_ssz_size': 'unbounded' if m is None else m, 'covered': cov, 'bridged': bridged.get(R)}
+        if not cov:
+            why = ('unbounded (progressive list)' if m is None else
+                   f'{m} bytes, beyond the U32 byte length the API takes' if m >= 2 ** 32 else f'{m} bytes')
+            short.append({'name': R, 'input_bound': f'2^{K + 2}', 'max_ssz_size': why,
+                          'closed_at_depth_29': m is not None and m <= 2 ** 30})
+    return rows, short
+
 def outputs():
     import names as NM
     amap = json.loads((ROOT / 'proofs/gate/api_map.json').read_text())
@@ -2189,6 +2267,9 @@ def outputs():
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_decode_view', f'{R0}_e2e_decode_reject'], 'ii': 'view',
                              'premise': f'{vdec_size(vdec_k(info))} (hS: n <= 4 * 2^K with K = {vdec_k(info)}, a parameter; the codec laws take buffers of depth below {info["bound"]})'}]
         u['decode'] = fn
+    ib, ibs = input_bounds(readable, {R0: u['decode'] for R0, u in uncovered.items() if 'decode' in u})
+    man['input_bounds'] = ib
+    man['input_bound_short'] = ibs
     man['word_storage'] = {r['R']: {'generated_name': r['X'], 'awaiting': ([] if 'vf' in r else ['(iv)']) + ([] if 'dd' in r else ['(ii)/(iii)'])} for r in wrows + wrows_extra}
     for f, rows_ in man['files'].items():
         for e in rows_:
