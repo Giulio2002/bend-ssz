@@ -53,7 +53,7 @@ def go_candidates():
 
 
 def main():
-    contract = json.loads((ROOT / 'automation/performance_contract.json').read_text())
+    contract = json.loads((ROOT / 'benchmarks/performance_contract.json').read_text())
     names = sorted({op.rsplit('.', 1)[0] for op in contract['required_operations']})
     schemas = Schemas()
     candidates = go_candidates()
