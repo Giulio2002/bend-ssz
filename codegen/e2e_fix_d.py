@@ -18,3 +18,326 @@ Texts may import ../types/fulu_obj.bend as T (or generic_obj.bend): e2e_bridge r
 
 def build(EB, amap, cache, vidx):
     return {'support': {}, 'files': {}, 'cover': {}}
+
+
+import re  # noqa: E402
+import names as NM  # noqa: E402
+
+
+def fam_a_leaf(EB, X, m, cache, vidx):
+    """EB.family_a, with the object also a bare word (U32) or Bool"""
+    law, pvars = EB.law, EB.pvars
+    ee, es, rt = m.get('encode_eval', []), m.get('encode_spec', []), m.get('root', [])
+    if not (ee and es and rt):
+        return None, 'no laws'
+    b_ee, b_es, b_rt = law(cache, ee[0]), law(cache, es[0]), law(cache, rt[0])
+    P = pvars(b_ee[2])
+    if P is None or any(t not in ('U32', 'Bool') for _, t in P) or pvars(b_es[2]) != P:
+        return None, 'encode laws not over the same free words / bits'
+    mt = re.match(r'\{B\.emit\(T\.(\w+)_encode\((.*)\), 0, (\w+)\) == \(T\.\1_encode\(\2\), (.*)\) : B\.Buf & \+List<U32>\}$', b_ee[3])
+    if not mt:
+        return None, 'encode_eval not an emit of the encoder'
+    ename, obj, K, byts = mt.groups()
+    ms = re.match(r'Decoding\.decodes\(Spec\.(\w+)\(\), (.*)\)$', b_es[3])
+    if not ms:
+        return None, 'encode_spec not a decodes of Spec.X()'
+    sname = ms.group(1)
+    rest = EB.call_args(ms.group(0), 'Decoding.decodes')
+    if len(rest) != 3 or rest[1] != byts:
+        return None, 'encode_spec bytes differ from encode_eval bytes'
+    rparams = [p.strip() for p in b_rt[2]]
+    if len(rparams) != 2 or not rparams[0].startswith('-h: B.Buf') or not re.match(r'\+o: ((T|O)\.\w+|U32|Bool)$', rparams[1]):
+        return None, 'root law not over every object'
+    otype = rparams[1][len('+o: '):]
+    mr = re.match(r'RR\.roots\((\w+)\(o\), Spec\.' + sname + r'\(\), \[D\.bytes\(Pair\.snd\(B\.Buf, D\.Digest, T\.' + ename + r'_hash_tree_root\(h, o\)\)\)\]\)$', b_rt[3])
+    if not mr:
+        return None, 'root law not RR.roots of the view at Spec.X()'
+    view = mr.group(1)
+    vx = vidx.get((rt[0]['file'], view)) or vidx.get((rt[0]['file'], view, sname))
+    names = [v for v, _ in P]
+    pat = re.sub(r'(?<![\w.])(' + '|'.join(map(re.escape, names)) + r')(?![\w{(])', r'+\1', obj)
+    return {'X': X, 'ename': ename, 'sname': sname, 'obj': obj, 'pat': pat, 'K': K, 'byts': byts, 'P': P, 'value': rest[2],
+            'otype': otype, 'view': view, 'ee': ee[0], 'es': es[0], 'rt': rt[0], 'vx': vx}, None
+
+
+def fam_a_alt(EB, X, R, m, cache, vidx):
+    """a name family A misses only because its first root law carries a hypothesis while another root law
+    is over every object: family A at that root law."""
+    for rt in m.get('root', []):
+        r, why = fam_a_leaf(EB, X, dict(m, root=[rt]), cache, vidx)
+        if r is not None and r['vx']:
+            r['R'] = R
+            r['ee_alias'] = EB.file_aliases(r['ee']['file'])
+            r['generic'] = EB.RR.runtime_of((EB.OBJ / r['ee']['file']).read_text()) == 'generic'
+            d, why = EB.decode_a(r, m, cache)
+            if d is None:
+                return None
+            r['d'] = d
+            return r
+    return None
+
+
+# ---- terms of a proving module, requalified into a bridge file ----
+
+import os  # noqa: E402
+
+BUILTIN = {'U32', 'Nat', 'Bool', 'Word', 'List', 'Pair', 'Maybe', 'Equal', 'Empty', 'Unit', 'Cmp', 'Array', 'Order', 'Sigma', 'Exists'}
+_MOD = {}
+
+
+def module_info(EB, f):
+    """a proving module (proofs/obj/<f>): {alias: repo path} and its top-level def names"""
+    if f not in _MOD:
+        src = (EB.OBJ / f).read_text()
+        al = {}
+        for m in re.finditer(r'^import (\S+) as (\w+)$', src, re.M):
+            al[m.group(2)] = os.path.normpath(os.path.join('proofs/obj', m.group(1)))
+        defs = set(re.findall(r'^(?:def|law) (\w+)', src, re.M))
+        _MOD[f] = (al, defs)
+    return _MOD[f]
+
+
+def runtime_path(path):
+    return path.startswith('types/') and (path.endswith('_generated.bend') or path.endswith('_obj.bend'))
+
+
+SCHEMAS = ('spec/fulu_schemas.bend', 'proofs/obj/generic_specs.bend')
+STD = {'src/digest.bend': 'D', 'src/buffer.bend': 'B', 'src/obj.bend': 'O', 'types/schema.bend': 'S', 'types/primitive.bend': 'P'}
+
+
+class Imp:
+    """the imports of a bridge file: proving modules under M<i>, their helper modules under M<i>_<alias>"""
+    def __init__(self):
+        self.mods = {}     # repo path -> alias
+        self.order = []
+
+    def alias(self, path, want=None):
+        if path not in self.mods:
+            a = want or f'M{len(self.mods)}'
+            self.mods[path] = a
+            self.order.append(path)
+        return self.mods[path]
+
+    def lines(self, skip=()):
+        return [f'import ../{p} as {self.mods[p]}' for p in self.order if self.mods[p] not in skip]
+
+    def qual(self, EB, term, f):
+        """term of proofs/obj/<f> (runtime symbols read as T.<sym>) in this file's aliases"""
+        al, defs = module_info(EB, f)
+        me = self.alias('proofs/obj/' + f)
+
+        def q(m):
+            a, name = m.group(1), m.group(2)
+            if a is None:
+                return m.group(0)
+            if a == 'T' or a in BUILTIN:
+                return m.group(0)
+            if a not in al:
+                return m.group(0)
+            path = al[a]
+            if runtime_path(path):
+                return 'T.' + name
+            if path in SCHEMAS:
+                return 'Spec.' + name
+            if path in STD:
+                return STD[path] + '.' + name
+            return self.alias(path, f'{me}_{a}') + '.' + name
+        term = re.sub(r'(?<![\w.])([A-Za-z_]\w*)\.([A-Za-z_]\w*)', q, term)
+        return re.sub(r'(?<![\w.])([A-Za-z_]\w*)(?=\()', lambda m: f'{me}.{m.group(1)}' if m.group(1) in defs else m.group(1), term)
+
+
+def canon(EB, term, f):
+    """a module-independent spelling of a term of proofs/obj/<f> (for comparing two modules' terms)"""
+    al, defs = module_info(EB, f)
+
+    def q(m):
+        a, name = m.group(1), m.group(2)
+        if a == 'T' or a in BUILTIN or a not in al:
+            return m.group(0)
+        path = al[a]
+        return ('T.' if runtime_path(path) else 'Spec.' if path in SCHEMAS else path + '::') + name
+    term = re.sub(r'(?<![\w.])([A-Za-z_]\w*)\.([A-Za-z_]\w*)', q, EB.RR.unwire(term))
+    return re.sub(r'(?<![\w.:])([A-Za-z_]\w*)(?=\()', lambda m: f'proofs/obj/{f}::{m.group(1)}' if m.group(1) in defs else m.group(1), term)
+
+
+def pmode(p):
+    m = re.match(r'\s*([+-]?)(\w+)\s*:\s*(.+)$', p)
+    return m.group(1), m.group(2), m.group(3).strip()
+
+
+# ---- (iv): the root law and the view's validity lemma ----
+
+_VALID = None
+
+
+def valid_lemmas(EB):
+    global _VALID
+    if _VALID is None:
+        _VALID = []
+        for f in sorted(list(EB.OBJ.glob('gvalid_*.bend')) + list(EB.OBJ.glob('valid_*.bend'))):
+            for b in EB.blocks_of(f.name, {}):
+                if b[0] == 'def' and re.match(r'\{VD\.root_valid\(', b[3] or ''):
+                    _VALID.append((f.name, b))
+    return _VALID
+
+
+def root_info(EB, X, m, cache):
+    """(root law, validity lemma) pairs whose binders agree: [(rt, b_rt, vf, b_v)]"""
+    out = []
+    for rt in m.get('root', []):
+        b = EB.law(cache, rt)
+        ps = [pmode(p) for p in b[2]]
+        if not ps or ps[0][1] != 'h':
+            continue
+        mr = re.match(r'RR\.roots\((.*), \[(D\.bytes\(.*\))\]\)$', b[3])
+        if not mr:
+            continue
+        va, sch = EB.call_args('F(' + mr.group(1) + ')', 'F')
+        for vf, bv in valid_lemmas(EB):
+            if bv[1] not in (f'{X}_root_valid', f'rv_{X}'):
+                continue
+            pv = [pmode(p) for p in bv[2]]
+            if [n for _, n, _ in pv] != [n for _, n, _ in ps[1:]]:
+                continue
+            if [canon(EB, t, vf) for _, _, t in pv] != [canon(EB, t, rt['file']) for _, _, t in ps[1:]]:
+                continue
+            mv = re.match(r'\{VD\.root_valid\((.*)\) == True\{\} : Bool\}$', bv[3])
+            vva, vsch = EB.call_args('F(' + mv.group(1) + ')', 'F')
+            if canon(EB, vva, vf) != canon(EB, va, rt['file']):
+                continue
+            out.append({'rt': rt, 'ps': ps, 'view': va, 'sch': sch, 'root': mr.group(2), 'vf': vf, 'vl': bv[1]})
+    # a named view first (the one containers use)
+    out.sort(key=lambda r: 0 if re.match(r'[\w.]+\(o\)$', r['view']) else 1)
+    return out
+
+
+def subst_s(t, sn):
+    return re.sub(r'(?<![\w.])s(?![\w{(])', f'Spec.{sn}()', t)
+
+
+def root_text(EB, imp, R, X, sn, ri):
+    """<R>_e2e_root over the root law's binders (s at Spec.X()); a storage-backed object (-o: O.Words
+    under a representation whose first part is WO.wf1) is rebuilt as O.Words{thaw(t), N} from it"""
+    f = ri['rt']['file']
+    Mr = imp.alias('proofs/obj/' + f)
+    Mv = imp.alias('proofs/obj/' + ri['vf'])
+    binders, args = [], []
+    for md, n, t in ri['ps'][1:]:
+        if n == 's':
+            args.append(f'Spec.{sn}()')
+            continue
+        if n == 'es':
+            args.append('{==}')
+            continue
+        binders.append((md, n, subst_s(imp.qual(EB, t, f), sn)))
+        args.append(n)
+    VIEW = subst_s(imp.qual(EB, ri['view'], f), sn)
+    ROOT = subst_s(imp.qual(EB, ri['root'], f), sn)
+    M = 'Maybe<&2, +List<U32>>'
+    names = ", ".join(n for _, n, _ in ri["ps"][1:] if n not in ("s", "es"))
+    G = lambda o: f'{{Some{{{sub_o(ROOT, o)}}} == API.hash_tree_root(Spec.{sn}(), {sub_o(VIEW, o)}) : {M}}}'  # noqa: E731
+    bs = lambda o: ', '.join(f'{md}{n}: {sub_o(t, o)}' for md, n, t in binders)  # noqa: E731
+    call = lambda o: (f'  E.root_legal(Spec.{sn}(), {sub_o(VIEW, o)}, VS.public_sound(Spec.{sn}(), {{==}}), {sub_o(ROOT, o)},\n'  # noqa: E731
+                      f'    {Mv}.{ri["vl"]}({sub_o(", ".join(args), o)}), {Mr}.{ri["rt"]["law"]}(h, {sub_o(", ".join(args), o)}))')
+    words = [b for b in binders if b[1] == 'o'] == [('-', 'o', 'O.Words')]
+    if not words:
+        return '\n'.join([f'# (iv) over the root law\'s binders ({names}).',
+                          f'def {R}_e2e_root(h: B.Buf, {bs("o")}) -> {G("o")}:', call('o'), ''])
+    ON = 'O.Words{FD.array__thaw(U32, t), N}'
+    rest = [b for b in binders if b[1] != 'o']
+    assert [n for _, n, _ in rest] == ['rep'], rest
+    REP = lambda o: sub_o(rest[0][2], o)  # noqa: E731
+    L = [f'def {R}_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: {REP(ON)}) -> {G(ON)}:', call(ON), '',
+         f'def {R}_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: {REP("o")}) -> {G("o")}:']
+    for a, b, src in (('t', 'w1', 'w'), ('dw', 'w2', 'w1'), ('N', 'w3', 'w2'), ('q', 'w4', 'w3'), ('r', 'w5', 'w4'), ('eo', 'w6', 'w5')):
+        L.append(f'  (+{a}, {b}) = {src}')
+    L += [f'  %Equal.sym(O.Words, o, {ON}, eo) : {G("_")}',
+          f'  {R}_r2(h, t, N, FD.logic__subst(O.Words, z => {REP("z")}, o, {ON}, eo, rep))', '',
+          f'# (iv) over the root law\'s binders ({names}); the object is rebuilt from rep\'s storage witnesses.',
+          f'def {R}_e2e_root(h: B.Buf, {bs("o")}) -> {G("o")}:',
+          '  (+w, +rest) = rep', f'  {R}_r1(h, o, w, rep)', '']
+    return '\n'.join(L)
+
+
+def sub_o(t, o):
+    return re.sub(r'(?<![\w.])o(?![\w{(])', lambda m: o, t)
+
+
+RHEAD = ['import Base', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/words_obj.bend as WO', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
+         'import ../src/buffer.bend as B', 'import ../src/digest.bend as D', 'import ../src/obj.bend as O',
+         'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
+         'import ../proofs/type_validator_soundness.bend as VS', 'import ./e2e_support.bend as E']
+
+
+def head(generic):
+    return ['import ../types/generic_obj.bend as T', 'import ../proofs/obj/generic_specs.bend as Spec'] if generic else \
+        ['import ../types/fulu_obj.bend as T', 'import ../spec/fulu_schemas.bend as Spec']
+
+
+def root_file(EB, rows, title):
+    imp = Imp()
+    body = []
+    for R, X, sn, ri, _g in rows:
+        body.append(f'# {R} ({X})')
+        body.append(root_text(EB, imp, R, X, sn, ri))
+    gen = rows[0][4]
+    L = RHEAD + head(gen) + imp.lines() + ['', '# GENERATED by codegen/e2e_bridge.py. Do not edit.', f'# {title}', ''] + body
+    return '\n'.join(L) + '\n'
+
+
+# the generated names of this worker's share (the fixed-size names e2e_bridge's families leave uncovered)
+MINE_X = ['Blob', 'BlobSidecar', 'Bytes1', 'Cell', 'ContributionAndProof', 'Deposit', 'Gc4ED9619F50', 'Gc74A8F5F17F', 'GcDC3E457711',
+          'Gt0366A291C1', 'Gt04170D6AA7', 'Gt05340E1F7E', 'Gt0B0C03B454', 'Gt19F04F79B8', 'Gt1BD4B4358D', 'Gt1D9B3E1871', 'Gt27CDB122DD',
+          'Gt28605B5D5C', 'Gt28ED72E3EF', 'Gt2CD118DF5F', 'Gt2FF8722A75', 'Gt3429157FEB', 'Gt34AE45611E', 'Gt3771256492', 'Gt39CAD03032',
+          'Gt526892A4DC', 'Gt57090094FA', 'Gt5BE68AF2C7', 'Gt6463DC73A8', 'Gt6F0D97A69E', 'Gt75C1995C88', 'Gt7B8507E2C2', 'Gt7FBB1934E8',
+          'Gt89824BEACE', 'Gt9333E6513D', 'Gt9368483BAB', 'Gt9579E0A2FD', 'Gt967E8D815F', 'Gt9DF37A5216', 'GtA8100D747D', 'GtAA8D1478A7',
+          'GtAD3CF815B7', 'GtAD72FD256A', 'GtAE3EF932C2', 'GtAEB382AD1F', 'GtB1E9093D65', 'GtB85E1BC748', 'GtC0FC7B166A', 'GtC19E8053EB',
+          'GtC57121EA56', 'GtE6006F6F55', 'GtEB2FD43D9B', 'GtECF9BB18D8', 'GtED805B7C93', 'GtEDF530C7B9', 'GtEDFB713194', 'GtF3865AEE9A',
+          'GtFCF8066C33', 'GtFF7C03E8A0', 'HistoricalBatch', 'MatrixEntry', 'ParticipationFlags', 'ProposerSlashing',
+          'SignedContributionAndProof', 'SyncCommittee']
+RBATCH = 8
+RBATCH_HEAVY = {"root_gtypes.bend": 3}
+
+
+def build(EB, amap, cache, vidx):
+    readable = NM.mapping()
+    files, cover = {}, {}
+    todo = set(MINE_X)
+    for X in amap['fulu'] + amap['generic']:
+        r = fam_a_alt(EB, X, readable[X], amap['map'][X], cache, vidx) if X in ('Gt7B8507E2C2',) else None
+        if r:
+            fi, fd = f'{r["R"]}_e2e_generated.bend', f'{r["R"]}_e2e_dec_generated.bend'
+            files[fi] = EB.text_a([r], 0)
+            files[fd] = EB.text_dec([r], 0)
+            cover[X] = {'i': fi, 'ii_iii': fd, 'iv': fi, 'ii': 'exact'}
+            todo.discard(X)
+    # (iv) for the rest
+    rrows = []
+    for X in amap['fulu'] + amap['generic']:
+        if X not in todo:
+            continue
+        ri = [r for r in root_info(EB, X, amap['map'][X], cache)
+              if not any(n == 'o' and md == '-' and t != 'O.Words' for md, n, t in r['ps'])]   # (a Type-kind container: rebuild pending)
+        if not ri:
+            continue
+        m0 = amap['map'][X]
+        sn = X
+        gen = EB.RR.runtime_of((EB.OBJ / ri[0]['rt']['file']).read_text()) == 'generic'
+        rrows.append((readable[X], X, sn, ri[0], gen))
+    rrows.sort(key=lambda r: (r[3]['rt']['file'], r[3]['vf'], r[0]))
+    bt, cur = [], []
+    for r in rrows:
+        if cur and ((r[3]['rt']['file'], r[3]['vf']) != (cur[0][3]['rt']['file'], cur[0][3]['vf']) or len(cur) >= RBATCH_HEAVY.get(cur[0][3]['rt']['file'], RBATCH)):
+            bt.append(cur)
+            cur = []
+        cur.append(r)
+    if cur:
+        bt.append(cur)
+    for rows in bt:
+        fn = f'{rows[0][0]}_e2e_root_generated.bend'
+        files[fn] = root_file(EB, rows, f'{rows[0][0]} and the next names: the object API\'s root is END_TO_END\'s hash_tree_root at the root law\'s view, over its binders.')
+        for R, X, sn, ri, gen in rows:
+            prem = [f'{md}{n}: {t}' for md, n, t in ri['ps'][1:] if n not in ('o', 's', 'es')]
+            cover.setdefault(X, {})['iv'] = fn
+            cover[X].setdefault('premise', '; '.join(prem))
+    return {'support': {}, 'files': files, 'cover': cover}
