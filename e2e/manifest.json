@@ -3649,9 +3649,9 @@
   },
   "FuluAggregateAndProof": {
    "generated_name": "AggregateAndProof",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "2^30",
+   "input_bound_bytes": 1073741824,
    "max_ssz_size": 16729,
    "covered": true,
    "bridged": null
@@ -3811,9 +3811,9 @@
   },
   "FuluSignedAggregateAndProof": {
    "generated_name": "SignedAggregateAndProof",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "2^30",
+   "input_bound_bytes": 1073741824,
    "max_ssz_size": 16829,
    "covered": true,
    "bridged": null

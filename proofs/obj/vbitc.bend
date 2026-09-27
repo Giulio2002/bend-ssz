@@ -163,3 +163,15 @@ def out_tail(pre, Y, post):
   %Equal.sym(+List<U32>, VRJ.OUT(pre, Y, post), VRJ.OUTX(pre, Y, post), VRJ.out_eq(pre, Y, post)) : {VS.bdr(VRJ.FZ(pre, post), _) == Y : +List<U32>}
   %lenHead(pre, post) : {VS.bdr(_, List.append(&2, U32, A, Y)) == Y : +List<U32>}
   VS.bdr_app(A, Y)
+
+# The same with the list storage bounded by 31 + L <= 2^k (k < 31), any tree depth.
+def nwHB(+d: Nat, +L: U32, +h: Nat, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(A.quad(h), U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(VC.NW(L), h), VB.pw(d)) == True{} : Bool}:
+  %Equal.sym(Nat, VC.NW(L), VD.s_rng(2n, 3n+U32.to_nat(L)), VC.eNW(L, k, hk, hy)) : {Nat.is_le(Nat.add(_, h), VB.pw(d)) == True{} : Bool}
+  %F.nat__add_comm(h, VD.s_rng(2n, 3n+U32.to_nat(L))) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
+  %rng2_add(h, 3n+U32.to_nat(L)) : {Nat.is_le(_, VB.pw(d)) == True{} : Bool}
+  %VLS.rng2_q(VB.pw(d)) : {Nat.is_le(VD.s_rng(2n, Nat.add(A.quad(h), 3n+U32.to_nat(L))), _) == True{} : Bool}
+  VC.rng_mono(2n, Nat.add(A.quad(h), 3n+U32.to_nat(L)), 3n+A.quad(VB.pw(d)),
+    F.logic__subst(Nat, z => {Nat.is_le(z, 3n+A.quad(VB.pw(d))) == True{} : Bool}, 3n+Nat.add(A.quad(h), U32.to_nat(L)), Nat.add(A.quad(h), 3n+U32.to_nat(L)),
+      Equal.sym(Nat, Nat.add(A.quad(h), 3n+U32.to_nat(L)), 3n+Nat.add(A.quad(h), U32.to_nat(L)), F.lru_nat_algebra__add_swap(A.quad(h), 3n, U32.to_nat(L))), hw))
