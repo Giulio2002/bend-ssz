@@ -10,7 +10,9 @@ NAMED, PROG_REST, pat, absurd, union_forest_absurd, pick = gs.NAMED, gs.PROG_RES
 
 HEADER = gs.HEADER.replace("Every successful actual recursive root result satisfies the independent\n# relational root semantics spec/root_relation.bend, for every value and every\n# cache size, under actual schema validation.",
   "Completeness: whenever the independent relational root semantics holds, the\n# actual recursive root function (every cache size) returns exactly those roots.").replace(
-  "import ./root_steps.bend as G\n", "import ./root_steps.bend as G\nimport ../src/primitives.bend as IP\nimport ./root_complete_steps.bend as C\nimport ./root_sound.bend as RS\nimport ./byte_root.bend as PBV\nimport ./byte_list.bend as PBL\nimport ./bit_root.bend as PB\nimport ./bit_list_root.bend as PBLR\nimport ./integer_encoding.bend as IntegerRoot\nimport ./root_domain_steps.bend as Steps\n")
+  "import ./root_steps.bend as G\n", "import ./root_steps.bend as G\nimport ../src/primitives.bend as IP\nimport ./root_complete_steps.bend as C\nimport ./root_sound.bend as RS\nimport ./byte_root.bend as PBV\nimport ./byte_list.bend as PBL\nimport ./bit_root.bend as PB\nimport ./bit_list_root.bend as PBLR\nimport ./integer_encoding.bend as IntegerRoot\nimport ./root_domain_steps.bend as Steps\n").replace(
+  # root_domain_steps is imported once, next to the other root imports above
+  "import ./word_facts.bend as W\nimport ./root_domain_steps.bend as Steps\n", "import ./word_facts.bend as W\n")
 
 
 def main():
