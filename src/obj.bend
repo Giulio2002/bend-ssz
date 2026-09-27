@@ -1131,7 +1131,7 @@ def bsel(c: Bool, x: Bool, y: Bool) -> Bool:
 def bitlist_pick(+len: U32, +lim: U32, big: Bool, pair: B.Buf & U32) -> B.Buf & Bool:
   (buf, +v) = pair
   (buf, bsel(U32.is_eq(v, 0), False{},
-    bsel(big, True{}, Nat.is_le(Nat.add(Nat.mul(8n, U32.to_nat((len - 1 : U32))), U32.to_nat(high_bit(v))), U32.to_nat(lim)))))
+    bsel(big, U32.is_lt((len - 1 : U32), 536870912), Nat.is_le(Nat.add(Nat.mul(8n, U32.to_nat((len - 1 : U32))), U32.to_nat(high_bit(v))), U32.to_nat(lim)))))
 
 def bitlist_nz(nonempty: Bool, buf: B.Buf, +off: U32, +len: U32, +lim: U32, big: Bool) -> B.Buf & Bool:
   match nonempty:
@@ -1139,7 +1139,8 @@ def bitlist_nz(nonempty: Bool, buf: B.Buf, +off: U32, +len: U32, +lim: U32, big:
     case True{}: bitlist_pick(len, lim, big, B.byte_at(buf, (off + len - 1 : U32)))
 
 # A bit list's window: non-empty, a non-zero last byte (the delimiter), and at
-# most `lim` bits (`big`: the limit exceeds any input).
+# most `lim` bits (`big`: no declared limit; the decoded bit count 8 (len - 1) +
+# the high bit is still a U32, so len - 1 < 2^29).
 def ok_bitlist(buf: B.Buf, +off: U32, +len: U32, +lim: U32, big: Bool) -> B.Buf & Bool:
   bitlist_nz(U32.is_lt(0, len), buf, off, len, lim, big)
 

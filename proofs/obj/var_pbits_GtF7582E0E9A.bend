@@ -37,7 +37,7 @@ def M1(+n: U32) -> Nat: U32.to_nat(U32.sub(n, 1))
 def chk1(a: Bool, +t: FD.array__Tree<U32>, +n: U32) -> Bool:
   match a:
     case False{}: False{}
-    case True{}: O.bsel(U32.is_eq(V(t, n), 0), False{}, O.bsel(True{}, True{}, Nat.is_le(BD(t, n), U32.to_nat(0))))
+    case True{}: O.bsel(U32.is_eq(V(t, n), 0), False{}, O.bsel(True{}, U32.is_lt(U32.sub(n, 1), 536870912), Nat.is_le(BD(t, n), U32.to_nat(0))))
 
 # The Bool of the validator's checks: non-empty, a non-zero last byte (no bound).
 def CHK(+t: FD.array__Tree<U32>, +n: U32) -> Bool: chk1(U32.is_lt(0, n), t, n)
@@ -83,7 +83,7 @@ def bselF(+c: Bool, +y: Bool, +h: {O.bsel(c, False{}, y) == True{} : Bool}) -> {
     case False{}: {==}
 
 def cB(+t: FD.array__Tree<U32>, +n: U32, +h: {chk1(True{}, t, n) == True{} : Bool}) -> {U32.is_eq(V(t, n), 0) == False{} : Bool}:
-  bselF(U32.is_eq(V(t, n), 0), O.bsel(True{}, True{}, Nat.is_le(BD(t, n), U32.to_nat(0))), h)
+  bselF(U32.is_eq(V(t, n), 0), O.bsel(True{}, U32.is_lt(U32.sub(n, 1), 536870912), Nat.is_le(BD(t, n), U32.to_nat(0))), h)
 
 def c1(+t: FD.array__Tree<U32>, +n: U32, +h: {CHK(t, n) == True{} : Bool}) -> {chk1(True{}, t, n) == True{} : Bool}:
   FD.logic__subst(Bool, z => {chk1(z, t, n) == True{} : Bool}, U32.is_lt(0, n), True{}, cA(U32.is_lt(0, n), t, n, h), h)
