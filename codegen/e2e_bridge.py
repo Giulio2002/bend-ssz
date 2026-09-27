@@ -1958,8 +1958,11 @@ def vdec_info(R):
 # The input-size bound of the variable-size bridges is a parameter: K = one below the codec
 # laws' depth bound, read from the laws (so it rises when they are extended to deeper buffers),
 # capped at CAP_KMAX, the largest K e2e_cap's lemmas cover (n + 3 must not overflow: K + 3 < 32).
-# The input bound is n <= 2^30 bytes (1 GiB) at most: every decode law takes buffers of depth below 29 at most,
-# and deeper buffers are out of scope (near 2^32 the runtime's n + 3 wraps).
+# The input bound is n <= 2^30 bytes (1 GiB) at most today: every decode law takes buffers of depth
+# below 29 at most. Planned: codec-var extends the decode laws to the object API's own U32 limit; then
+# every variable-size bridge rises to that single runtime limit (e2e_cap's facts extended to the
+# runtime's max depth, CAP_KMAX raised, and the near-2^32 case where n + 3 wraps handled), and the
+# manifest's premise reads "any input the object API accepts (n <= <runtime limit>)".
 CAP_KMAX = 28
 
 
