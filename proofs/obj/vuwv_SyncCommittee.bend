@@ -34,12 +34,25 @@ def DK3(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:
   (+a, +b) = p
   b
 
+# The closed facts on 24576 = 4 * 6144 and the pubkeys' storage check, each decided once.
+def sc_eK() -> {U32.to_nat(24576) == A.quad(6144n) : Nat}: FD.nat__eq_from_is_eq(U32.to_nat(24576), A.quad(6144n), {==})
+def sc_eT() -> {Nat.add(U32.to_nat(24576), 48n) == 24624n : Nat}: FD.nat__eq_from_is_eq(Nat.add(U32.to_nat(24576), 48n), 24624n, {==})
+def sc_nw() -> {6144n == VC.NW(24576) : Nat}: FD.nat__eq_from_is_eq(6144n, VC.NW(24576), {==})
+def sc_hsrc(+dB: Nat, +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool}) -> {Nat.is_le(VC.NW(24576), VB.pw(dB)) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, 6144n, VC.NW(24576), sc_nw(), hrB)
+def sc_hroom(+dB: Nat, +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool}) -> {Nat.is_le(Nat.add(VC.NW(24576), 0n), VB.pw(dB)) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, VC.NW(24576), Nat.add(VC.NW(24576), 0n),
+    Equal.sym(Nat, Nat.add(VC.NW(24576), 0n), VC.NW(24576), FD.nat__add_zero(VC.NW(24576))), sc_hsrc(dB, hrB))
+def sc_hv(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
+    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool})
+    -> {T.v512_b48_valid(O.Words{FD.array__thaw(U32, TB), 24576}) == (O.Words{FD.array__thaw(U32, TB), 24576}, True{}) : O.Words & Bool}:
+  VBE.words_ok_b(dB, TB, 24576, 24576, 24576, 15n, pfB, hdB, {==}, {==}, {==}, {==}, sc_hroom(dB, hrB), {==}, 48, {==})
+
 # Its storage check holds on a valid pubkeys tree (the runtime's T.SyncCommittee_valid).
 def SyncCommittee_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, +a7: U32, +a8: U32, +a9: U32, +a10: U32, +a11: U32, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
     +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool})
     -> {T.SyncCommittee_valid(T.SyncCommittee{O.Words{FD.array__thaw(U32, TB), 24576}, T.Bytes48{a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11}}) == (T.SyncCommittee{O.Words{FD.array__thaw(U32, TB), 24576}, T.Bytes48{a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11}}, True{}) : T.SyncCommittee & Bool}:
-  +hroom = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, 6144n, Nat.add(VC.NW(24576), 0n), FD.nat__eq_from_is_eq(6144n, Nat.add(VC.NW(24576), 0n), {==}), hrB)
-  %Equal.sym(O.Words & Bool, T.v512_b48_valid(O.Words{FD.array__thaw(U32, TB), 24576}), (O.Words{FD.array__thaw(U32, TB), 24576}, True{}), VBE.words_ok_b(dB, TB, 24576, 24576, 24576, 15n, pfB, hdB, {==}, {==}, {==}, {==}, hroom, {==}, 48, {==})) :
+  %Equal.sym(O.Words & Bool, T.v512_b48_valid(O.Words{FD.array__thaw(U32, TB), 24576}), (O.Words{FD.array__thaw(U32, TB), 24576}, True{}), sc_hv(dB, TB, pfB, hdB, hrB)) :
     {T.SyncCommittee_va0(T.Bytes48{a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11}, True{}, _) == (T.SyncCommittee{O.Words{FD.array__thaw(U32, TB), 24576}, T.Bytes48{a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11}}, True{}) : T.SyncCommittee & Bool}
   {==}
 
@@ -50,31 +63,79 @@ def SyncCommitteex_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, 
     -> {FD.array__perfect(U32, dd, PX_SyncCommittee(r, dd, D, q, TB, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11)) == True{} : Bool}:
   V_b48.b48x_perfect(r, dd, UWD.PWM(r, dd, D, q, TB, 24576), Nat.add(6144n, q), a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, UWD.pwm_perfect(r, dd, D, q, TB, 24576, pf))
 
-# The byte counts at r < 4: 24624 = (24576 + pad) + (48 - pad) (m for 24576 keeps the match's
-# motive small; each case is decided by Nat.is_eq).
-def sc_e24(+r: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +m: Nat, +em: {U32.to_nat(24576) == m : Nat}) -> {24624n == Nat.add(Nat.add(m, UWD.PADB(r, m)), Nat.sub(48n, UWD.PADB(r, m))) : Nat}:
+# PADB(r, 4 K) = PADB(r, 0): the padding to the word boundary does not see whole words. Over a
+# symbolic K, so no 24576-sized Nat is reduced; the byte-count facts then split only on r < 4.
+def sc_add4(+r: Nat, +m: Nat) -> {Nat.add(r, 4n+m) == 4n+Nat.add(r, m) : Nat}:
   match r:
-    case 0n:
-      %em : {24624n == Nat.add(Nat.add(_, UWD.PADB(0n, _)), Nat.sub(48n, UWD.PADB(0n, _))) : Nat}
-      FD.nat__eq_from_is_eq(24624n, Nat.add(Nat.add(U32.to_nat(24576), UWD.PADB(0n, U32.to_nat(24576))), Nat.sub(48n, UWD.PADB(0n, U32.to_nat(24576)))), {==})
-    case 1n:
-      %em : {24624n == Nat.add(Nat.add(_, UWD.PADB(1n, _)), Nat.sub(48n, UWD.PADB(1n, _))) : Nat}
-      FD.nat__eq_from_is_eq(24624n, Nat.add(Nat.add(U32.to_nat(24576), UWD.PADB(1n, U32.to_nat(24576))), Nat.sub(48n, UWD.PADB(1n, U32.to_nat(24576)))), {==})
-    case 2n:
-      %em : {24624n == Nat.add(Nat.add(_, UWD.PADB(2n, _)), Nat.sub(48n, UWD.PADB(2n, _))) : Nat}
-      FD.nat__eq_from_is_eq(24624n, Nat.add(Nat.add(U32.to_nat(24576), UWD.PADB(2n, U32.to_nat(24576))), Nat.sub(48n, UWD.PADB(2n, U32.to_nat(24576)))), {==})
-    case 3n:
-      %em : {24624n == Nat.add(Nat.add(_, UWD.PADB(3n, _)), Nat.sub(48n, UWD.PADB(3n, _))) : Nat}
-      FD.nat__eq_from_is_eq(24624n, Nat.add(Nat.add(U32.to_nat(24576), UWD.PADB(3n, U32.to_nat(24576))), Nat.sub(48n, UWD.PADB(3n, U32.to_nat(24576)))), {==})
-    case 4n+ +t: Empty.absurd({24624n == Nat.add(Nat.add(m, UWD.PADB(4n+t, m)), Nat.sub(48n, UWD.PADB(4n+t, m))) : Nat}, FD.nat__lt_zero_absurd(t, hr))
+    case 0n: {==}
+    case 1n+ +p: Equal.cong(Nat, Nat, z => 1n+z, Nat.add(p, 4n+m), 4n+Nat.add(p, m), sc_add4(p, m))
+
+def sc_leup(+r: Nat, +Q: Nat, +h: {Nat.is_le(r, Q) == True{} : Bool}) -> {Nat.is_le(r, 1n+Q) == True{} : Bool}:
+  FD.nat__le_trans(r, Q, 1n+Q, h, FD.nat__le_succ(Q))
+
+def sc_sub4(+Q: Nat, +r: Nat, +h: {Nat.is_le(r, Q) == True{} : Bool}) -> {Nat.sub(4n+Q, r) == 4n+Nat.sub(Q, r) : Nat}:
+  +h1 = sc_leup(r, Q, h)
+  +h2 = sc_leup(r, 1n+Q, h1)
+  +h3 = sc_leup(r, 2n+Q, h2)
+  Equal.trans(Nat, Nat.sub(4n+Q, r), 1n+Nat.sub(3n+Q, r), 4n+Nat.sub(Q, r), FD.nat__sub_succ_left(3n+Q, r, h3),
+    Equal.cong(Nat, Nat, z => 1n+z, Nat.sub(3n+Q, r), 3n+Nat.sub(Q, r),
+      Equal.trans(Nat, Nat.sub(3n+Q, r), 1n+Nat.sub(2n+Q, r), 3n+Nat.sub(Q, r), FD.nat__sub_succ_left(2n+Q, r, h2),
+        Equal.cong(Nat, Nat, z => 1n+z, Nat.sub(2n+Q, r), 2n+Nat.sub(Q, r),
+          Equal.trans(Nat, Nat.sub(2n+Q, r), 1n+Nat.sub(1n+Q, r), 2n+Nat.sub(Q, r), FD.nat__sub_succ_left(1n+Q, r, h1),
+            Equal.cong(Nat, Nat, z => 1n+z, Nat.sub(1n+Q, r), 1n+Nat.sub(Q, r), FD.nat__sub_succ_left(Q, r, h)))))))
+
+def sc_nwnge(+y: Nat) -> {Nat.is_le(y, A.quad(UWD.NWN(y))) == True{} : Bool}:
+  match y:
+    case 0n: {==}
+    case 1n: {==}
+    case 2n: {==}
+    case 3n: {==}
+    case 4n+ +z: sc_nwnge(z)
+
+def sc_pq(+r: Nat, +K: Nat) -> {UWD.PADB(r, A.quad(K)) == UWD.PADB(r, 0n) : Nat}:
+  match K:
+    case 0n: {==}
+    case 1n+ +k:
+      +m = A.quad(k)
+      +y = Nat.add(r, m)
+      +Q = A.quad(UWD.NWN(y))
+      +h = FD.nat__le_trans(r, y, Q, FD.nat__le_add_right(r, m), sc_nwnge(y))
+      %Equal.sym(Nat, Nat.add(r, 4n+m), 4n+y, sc_add4(r, m)) : {Nat.sub(Nat.sub(A.quad(UWD.NWN(_)), r), 4n+m) == UWD.PADB(r, 0n) : Nat}
+      %Equal.sym(Nat, Nat.sub(4n+Q, r), 4n+Nat.sub(Q, r), sc_sub4(Q, r, h)) : {Nat.sub(_, 4n+m) == UWD.PADB(r, 0n) : Nat}
+      sc_pq(r, k)
+
+def sc_edl0(+r: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}) -> {Nat.add(UWD.PADB(r, 0n), Nat.sub(48n, UWD.PADB(r, 0n))) == 48n : Nat}:
+  match r:
+    case 0n: {==}
+    case 1n: {==}
+    case 2n: {==}
+    case 3n: {==}
+    case 4n+ +t: Empty.absurd({Nat.add(UWD.PADB(4n+t, 0n), Nat.sub(48n, UWD.PADB(4n+t, 0n))) == 48n : Nat}, FD.nat__lt_zero_absurd(t, hr))
+
+def sc_edlK(+r: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +K: Nat) -> {Nat.add(UWD.PADB(r, A.quad(K)), Nat.sub(48n, UWD.PADB(r, A.quad(K)))) == 48n : Nat}:
+  %Equal.sym(Nat, UWD.PADB(r, A.quad(K)), UWD.PADB(r, 0n), sc_pq(r, K)) : {Nat.add(_, Nat.sub(48n, _)) == 48n : Nat}
+  sc_edl0(r, hr)
+
+# (m + pad) + (48 - pad) = T when m = 4 K and m + 48 = T.
+def sc_e24K(+r: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +m: Nat, +K: Nat, +eK: {m == A.quad(K) : Nat}, +T: Nat, +eT: {Nat.add(m, 48n) == T : Nat})
+    -> {T == Nat.add(Nat.add(m, UWD.PADB(r, m)), Nat.sub(48n, UWD.PADB(r, m))) : Nat}:
+  +P = UWD.PADB(r, m)
+  +D = Nat.sub(48n, P)
+  +h2 = FD.logic__subst(Nat, z => {Nat.add(UWD.PADB(r, z), Nat.sub(48n, UWD.PADB(r, z))) == 48n : Nat}, A.quad(K), m, Equal.sym(Nat, m, A.quad(K), eK), sc_edlK(r, hr, K))
+  Equal.sym(Nat, Nat.add(Nat.add(m, P), D), T,
+    Equal.trans(Nat, Nat.add(Nat.add(m, P), D), Nat.add(m, 48n), T,
+      Equal.trans(Nat, Nat.add(Nat.add(m, P), D), Nat.add(m, Nat.add(P, D)), Nat.add(m, 48n), FD.nat__add_assoc(m, P, D),
+        Equal.cong(Nat, Nat, z => Nat.add(m, z), Nat.add(P, D), 48n, h2)), eT))
+
+# The byte counts at r < 4: 24624 = (24576 + pad) + (48 - pad), through sc_e24K / sc_edlK at K = 6144.
+def sc_e24(+r: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +m: Nat, +em: {U32.to_nat(24576) == m : Nat}) -> {24624n == Nat.add(Nat.add(m, UWD.PADB(r, m)), Nat.sub(48n, UWD.PADB(r, m))) : Nat}:
+  +eK = Equal.trans(Nat, m, U32.to_nat(24576), A.quad(6144n), Equal.sym(Nat, U32.to_nat(24576), m, em), sc_eK())
+  +eT = FD.logic__subst(Nat, z => {Nat.add(z, 48n) == 24624n : Nat}, U32.to_nat(24576), m, em, sc_eT())
+  sc_e24K(r, hr, m, 6144n, eK, 24624n, eT)
 
 def sc_edl(+r: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}) -> {Nat.add(UWD.PADB(r, U32.to_nat(24576)), Nat.sub(48n, UWD.PADB(r, U32.to_nat(24576)))) == 48n : Nat}:
-  match r:
-    case 0n: FD.nat__eq_from_is_eq(Nat.add(UWD.PADB(0n, U32.to_nat(24576)), Nat.sub(48n, UWD.PADB(0n, U32.to_nat(24576)))), 48n, {==})
-    case 1n: FD.nat__eq_from_is_eq(Nat.add(UWD.PADB(1n, U32.to_nat(24576)), Nat.sub(48n, UWD.PADB(1n, U32.to_nat(24576)))), 48n, {==})
-    case 2n: FD.nat__eq_from_is_eq(Nat.add(UWD.PADB(2n, U32.to_nat(24576)), Nat.sub(48n, UWD.PADB(2n, U32.to_nat(24576)))), 48n, {==})
-    case 3n: FD.nat__eq_from_is_eq(Nat.add(UWD.PADB(3n, U32.to_nat(24576)), Nat.sub(48n, UWD.PADB(3n, U32.to_nat(24576)))), 48n, {==})
-    case 4n+ +t: Empty.absurd({Nat.add(UWD.PADB(4n+t, U32.to_nat(24576)), Nat.sub(48n, UWD.PADB(4n+t, U32.to_nat(24576)))) == 48n : Nat}, FD.nat__lt_zero_absurd(t, hr))
+  FD.logic__subst(Nat, z => {Nat.add(UWD.PADB(r, z), Nat.sub(48n, UWD.PADB(r, z))) == 48n : Nat}, A.quad(6144n), U32.to_nat(24576),
+    Equal.sym(Nat, U32.to_nat(24576), A.quad(6144n), sc_eK()), sc_edlK(r, hr, 6144n))
 
 # The runtime, over any byte count n and models PW (after the pubkeys) and PXt (after the aggregate).
 def sc_rt(+D: FD.array__Tree<U32>, +X: U32, +TB: FD.array__Tree<U32>, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, +a7: U32, +a8: U32, +a9: U32, +a10: U32, +a11: U32, +n: U32, +PW: FD.array__Tree<U32>, +PXt: FD.array__Tree<U32>,
@@ -186,13 +247,12 @@ def sc_at(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat
     +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool},
     +hz: {VS.bt(24624n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(24624n) : +List<U32>})
     -> DK.P2({T.SyncCommittee_putk(FD.array__thaw(U32, D), X, T.SyncCommittee{O.Words{FD.array__thaw(U32, TB), 24576}, T.Bytes48{a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11}}) == (FD.array__thaw(U32, PX_SyncCommittee(r, dd, D, q, TB, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11)), (T.SyncCommittee{O.Words{FD.array__thaw(U32, TB), 24576}, T.Bytes48{a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11}}, 0)) : Array<U32> & (T.SyncCommittee & U32)}, {UA.BYT(PX_SyncCommittee(r, dd, D, q, TB, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), List.append(&2, U32, VS.bt(U32.to_nat(24576), FX.limbs(UW.SLW(TB))), FX.limbs([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11]))) : +List<U32>}):
-  +eK = FD.nat__eq_from_is_eq(U32.to_nat(24576), A.quad(6144n), {==})
+  +eK = sc_eK()
   +hlw = VRX.froom(q, r, dd, 0n, U32.to_nat(24576), 24624n, {==}, hl)
-  +hsrc = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, 6144n, VC.NW(24576), FD.nat__eq_from_is_eq(6144n, VC.NW(24576), {==}), hrB)
-  +hroom = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, 6144n, Nat.add(VC.NW(24576), 0n), FD.nat__eq_from_is_eq(6144n, Nat.add(VC.NW(24576), 0n), {==}), hrB)
+  +hsrc = sc_hsrc(dB, hrB)
   +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(dB))) == True{} : Bool}, A.quad(6144n), U32.to_nat(24576), Equal.sym(Nat, U32.to_nat(24576), A.quad(6144n), eK), UW.quad_le(6144n, VB.pw(dB), hrB))
   +hz1 = FD.logic__subst(Nat, z => {VS.bt(z, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(z) : +List<U32>}, 24624n, Nat.add(Nat.add(U32.to_nat(24576), UWD.PADB(r, U32.to_nat(24576))), Nat.sub(48n, UWD.PADB(r, U32.to_nat(24576)))), sc_e24(r, hr, U32.to_nat(24576), {==}), hz)
-  +hv = VBE.words_ok_b(dB, TB, 24576, 24576, 24576, 15n, pfB, hdB, {==}, {==}, {==}, {==}, hroom, {==}, 48, {==})
+  +hv = sc_hv(dB, TB, pfB, hdB, hrB)
   +e48 = VRX.fpos(X, q, r, 6144n, 24576, 24624n, dd, e, eK, hd, {==}, hl)
   +hl48 = VRX.froom(q, r, dd, 6144n, 48n, 24624n, {==}, hl)
   sc_core(dd, D, X, q, r, dB, TB, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, 24576, A.quad(6144n), e, hr, hd, hl, pf, pfB, hdB, hv, {==}, {==}, hsrc, hlw, hq, eK, hz1, sc_edl(r, hr), e48, hl48, VRX.fpx(q, r, 6144n))
@@ -211,14 +271,14 @@ def SyncCommittee_len(+dB: Nat, +TB: FD.array__Tree<U32>, +a0: U32, +a1: U32, +a
     +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool})
     -> {List.length(&2, U32, List.append(&2, U32, VS.bt(U32.to_nat(24576), FX.limbs(UW.SLW(TB))), FX.limbs([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11]))) == 24624n : Nat}:
   +SL = UW.SLW(TB)
-  +eK = FD.nat__eq_from_is_eq(U32.to_nat(24576), A.quad(6144n), {==})
+  +eK = sc_eK()
   +eLS = Equal.trans(Nat, List.length(&2, U32, FX.limbs(SL)), A.quad(VB.len(SL)), A.quad(VB.pw(dB)), UW.len_limbs_v(SL),
     Equal.cong(Nat, Nat, z => A.quad(z), VB.len(SL), VB.pw(dB), FD.array__slots_length(U32, dB, TB, pfB)))
   +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(dB))) == True{} : Bool}, A.quad(6144n), U32.to_nat(24576), Equal.sym(Nat, U32.to_nat(24576), A.quad(6144n), eK), UW.quad_le(6144n, VB.pw(dB), hrB))
   +hLS = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(24576), z) == True{} : Bool}, A.quad(VB.pw(dB)), List.length(&2, U32, FX.limbs(SL)),
     Equal.sym(Nat, List.length(&2, U32, FX.limbs(SL)), A.quad(VB.pw(dB)), eLS), hq)
   +eLD = VS.bt_len(U32.to_nat(24576), FX.limbs(SL), hLS)
-  sc_len3(U32.to_nat(24576), VS.bt(U32.to_nat(24576), FX.limbs(UW.SLW(TB))), FX.limbs([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11]), 24624n, eLD, {==}, FD.nat__eq_from_is_eq(Nat.add(U32.to_nat(24576), 48n), 24624n, {==}))
+  sc_len3(U32.to_nat(24576), VS.bt(U32.to_nat(24576), FX.limbs(UW.SLW(TB))), FX.limbs([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11]), 24624n, eLD, {==}, sc_eT())
 
 # T.SyncCommittee_putk at any byte position X = 4 q + r.
 def SyncCommittee_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, +a7: U32, +a8: U32, +a9: U32, +a10: U32, +a11: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
