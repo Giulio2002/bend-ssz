@@ -22,9 +22,6 @@ import ../../spec/decoding_relation.bend as P1_Decoding
 import ../../spec/fulu_schemas.bend as P1_Spec
 import ../obj/spec_fixed.bend as P1_F
 import ../obj/spec_bits.bend as P1_FB
-import ../../proofs/compact/found.bend as P1_FD
-import ../obj/arr_copy.bend as P1_AC
-import ../obj/arr_emit.bend as P1_AE
 import ../obj/spec_codec_AttestationData.bend as P1_PRV
 import ../../types/schema.bend as P2_S
 import ../../types/primitive.bend as P2_P

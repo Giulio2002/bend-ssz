@@ -1322,8 +1322,10 @@ def pow2_trees(w, n, p, size, R):
 
 # The view law of a name of at least VIEW_MIN words is arr_emit.emit_take at the tree of its
 # buffer's words (the literal buffer rewritten to that tree's thaw first): no emit loop is
-# run over closed U32 indices (Deposit 1.4 s, MatrixEntry 2.3 s by evaluation).
-VIEW_MIN = 32
+# run over closed U32 indices (Deposit 1.4 s, MatrixEntry 2.3 s by evaluation). Below it the
+# evaluated laws are cheaper than importing arr_emit / arr_enc (measured: at 32..66 words the
+# symbolic forms cost each module +0.2..0.8 s; at 90, SignedContributionAndProof, -0.6 s).
+VIEW_MIN = 88
 
 
 def top_args(term):
