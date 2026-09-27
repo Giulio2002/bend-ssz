@@ -707,6 +707,11 @@ def cnt_chu1(k, ws, hl):
     case 0n: cnt_chu1_z(ws, hl)
     case 1n+ +q: cnt_chu1_s(q, ws, hl, r => hr => cnt_chu1(q, r, hr))
 
+def cc_chu1(+w0: U32, +r: List<&2, U32>) -> {chu1(Con{w0, r}) == S.Items{S.UnsignedValue{P.UInt{w0, 0, 0, 0, 0, 0, 0, 0}}, chu1(r)} : S.Value}: {==}
+
+def prep(+v: S.Value, +rest: S.Value, +s: S.Schema)
+    -> {Codec.parts(S.Items{v, rest}, S.Repeat{s}) == Codec.concatenate(Codec.parts(v, s), Codec.parts(rest, S.Repeat{s})) : Maybe<&2, +List<S.Part>>}: {==}
+
 def prt_chu1_z(+ws: List<&2, U32>, +hl: {F.spec_common__length(U32, ws) == 0n : Nat}) -> {Codec.parts(chu1(ws), S.Repeat{S.Unsigned{P.U32Width{}}}) == Some{SF.fparts(cw1(ws))} : Maybe<&2, +List<S.Part>>}:
   match ws:
     case Nil{}: {==}
@@ -717,6 +722,10 @@ def prt_chu1_s(+q: Nat, +ws: List<&2, U32>, +hl: {F.spec_common__length(U32, ws)
   match ws:
     case Nil{}: Empty.absurd({Codec.parts(chu1(Nil{}), S.Repeat{S.Unsigned{P.U32Width{}}}) == Some{SF.fparts(cw1(Nil{}))} : Maybe<&2, +List<S.Part>>}, F.nat__zero_succ(0n+m1(q), peel(0n, 0n, 1n+m1(q), hl)))
     case Con{+w0, +r}:
+      %Equal.sym(S.Value, chu1(Con{w0, r}), S.Items{S.UnsignedValue{P.UInt{w0, 0, 0, 0, 0, 0, 0, 0}}, chu1(r)}, cc_chu1(w0, r)) :
+        {Codec.parts(_, S.Repeat{S.Unsigned{P.U32Width{}}}) == Some{SF.fparts(cw1(Con{w0, r}))} : Maybe<&2, +List<S.Part>>}
+      %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{S.UnsignedValue{P.UInt{w0, 0, 0, 0, 0, 0, 0, 0}}, chu1(r)}, S.Repeat{S.Unsigned{P.U32Width{}}}), Codec.concatenate(Codec.parts(S.UnsignedValue{P.UInt{w0, 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U32Width{}}), Codec.parts(chu1(r), S.Repeat{S.Unsigned{P.U32Width{}}})), prep(S.UnsignedValue{P.UInt{w0, 0, 0, 0, 0, 0, 0, 0}}, chu1(r), S.Unsigned{P.U32Width{}})) :
+        {_ == Some{SF.fparts(cw1(Con{w0, r}))} : Maybe<&2, +List<S.Part>>}
       SF.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{w0, 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U32Width{}}), SF.limbs([w0]), Codec.parts(chu1(r), S.Repeat{S.Unsigned{P.U32Width{}}}), SF.fparts(cw1(r)), SF.uint32_part(w0), ih(r, peel(1n, F.spec_common__length(U32, r), m1(q), hl)))
 
 law prt_chu1:
@@ -861,6 +870,8 @@ def cnt_chu2(k, ws, hl):
     case 0n: cnt_chu2_z(ws, hl)
     case 1n+ +q: cnt_chu2_s(q, ws, hl, r => hr => cnt_chu2(q, r, hr))
 
+def cc_chu2(+w0: U32, +w1: U32, +r: List<&2, U32>) -> {chu2(Con{w0, Con{w1, r}}) == S.Items{S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, chu2(r)} : S.Value}: {==}
+
 def prt_chu2_z(+ws: List<&2, U32>, +hl: {F.spec_common__length(U32, ws) == 0n : Nat}) -> {Codec.parts(chu2(ws), S.Repeat{S.Unsigned{P.U64{}}}) == Some{SF.fparts(cw2(ws))} : Maybe<&2, +List<S.Part>>}:
   match ws:
     case Nil{}: {==}
@@ -874,6 +885,10 @@ def prt_chu2_s(+q: Nat, +ws: List<&2, U32>, +hl: {F.spec_common__length(U32, ws)
       match r0:
         case Nil{}: Empty.absurd({Codec.parts(chu2(Con{w0, Nil{}}), S.Repeat{S.Unsigned{P.U64{}}}) == Some{SF.fparts(cw2(Con{w0, Nil{}}))} : Maybe<&2, +List<S.Part>>}, F.nat__zero_succ(0n+m2(q), peel(1n, 0n, 1n+m2(q), hl)))
         case Con{+w1, +r}:
+          %Equal.sym(S.Value, chu2(Con{w0, Con{w1, r}}), S.Items{S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, chu2(r)}, cc_chu2(w0, w1, r)) :
+            {Codec.parts(_, S.Repeat{S.Unsigned{P.U64{}}}) == Some{SF.fparts(cw2(Con{w0, Con{w1, r}}))} : Maybe<&2, +List<S.Part>>}
+          %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, chu2(r)}, S.Repeat{S.Unsigned{P.U64{}}}), Codec.concatenate(Codec.parts(S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U64{}}), Codec.parts(chu2(r), S.Repeat{S.Unsigned{P.U64{}}})), prep(S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, chu2(r), S.Unsigned{P.U64{}})) :
+            {_ == Some{SF.fparts(cw2(Con{w0, Con{w1, r}}))} : Maybe<&2, +List<S.Part>>}
           SF.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{w0, w1, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U64{}}), SF.limbs([w0, w1]), Codec.parts(chu2(r), S.Repeat{S.Unsigned{P.U64{}}}), SF.fparts(cw2(r)), SF.uint64_part(w0, w1), ih(r, peel(2n, F.spec_common__length(U32, r), m2(q), hl)))
 
 law prt_chu2:
@@ -1048,6 +1063,8 @@ def cnt_chu4(k, ws, hl):
     case 0n: cnt_chu4_z(ws, hl)
     case 1n+ +q: cnt_chu4_s(q, ws, hl, r => hr => cnt_chu4(q, r, hr))
 
+def cc_chu4(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +r: List<&2, U32>) -> {chu4(Con{w0, Con{w1, Con{w2, Con{w3, r}}}}) == S.Items{S.UnsignedValue{P.UInt{w0, w1, w2, w3, 0, 0, 0, 0}}, chu4(r)} : S.Value}: {==}
+
 def prt_chu4_z(+ws: List<&2, U32>, +hl: {F.spec_common__length(U32, ws) == 0n : Nat}) -> {Codec.parts(chu4(ws), S.Repeat{S.Unsigned{P.U128{}}}) == Some{SF.fparts(cw4(ws))} : Maybe<&2, +List<S.Part>>}:
   match ws:
     case Nil{}: {==}
@@ -1067,6 +1084,10 @@ def prt_chu4_s(+q: Nat, +ws: List<&2, U32>, +hl: {F.spec_common__length(U32, ws)
               match r2:
                 case Nil{}: Empty.absurd({Codec.parts(chu4(Con{w0, Con{w1, Con{w2, Nil{}}}}), S.Repeat{S.Unsigned{P.U128{}}}) == Some{SF.fparts(cw4(Con{w0, Con{w1, Con{w2, Nil{}}}}))} : Maybe<&2, +List<S.Part>>}, F.nat__zero_succ(0n+m4(q), peel(3n, 0n, 1n+m4(q), hl)))
                 case Con{+w3, +r}:
+                  %Equal.sym(S.Value, chu4(Con{w0, Con{w1, Con{w2, Con{w3, r}}}}), S.Items{S.UnsignedValue{P.UInt{w0, w1, w2, w3, 0, 0, 0, 0}}, chu4(r)}, cc_chu4(w0, w1, w2, w3, r)) :
+                    {Codec.parts(_, S.Repeat{S.Unsigned{P.U128{}}}) == Some{SF.fparts(cw4(Con{w0, Con{w1, Con{w2, Con{w3, r}}}}))} : Maybe<&2, +List<S.Part>>}
+                  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{S.UnsignedValue{P.UInt{w0, w1, w2, w3, 0, 0, 0, 0}}, chu4(r)}, S.Repeat{S.Unsigned{P.U128{}}}), Codec.concatenate(Codec.parts(S.UnsignedValue{P.UInt{w0, w1, w2, w3, 0, 0, 0, 0}}, S.Unsigned{P.U128{}}), Codec.parts(chu4(r), S.Repeat{S.Unsigned{P.U128{}}})), prep(S.UnsignedValue{P.UInt{w0, w1, w2, w3, 0, 0, 0, 0}}, chu4(r), S.Unsigned{P.U128{}})) :
+                    {_ == Some{SF.fparts(cw4(Con{w0, Con{w1, Con{w2, Con{w3, r}}}}))} : Maybe<&2, +List<S.Part>>}
                   SF.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{w0, w1, w2, w3, 0, 0, 0, 0}}, S.Unsigned{P.U128{}}), SF.limbs([w0, w1, w2, w3]), Codec.parts(chu4(r), S.Repeat{S.Unsigned{P.U128{}}}), SF.fparts(cw4(r)), SF.uint128_part(w0, w1, w2, w3), ih(r, peel(4n, F.spec_common__length(U32, r), m4(q), hl)))
 
 law prt_chu4:
@@ -1184,6 +1205,8 @@ def cnt_chu8(k, ws, hl):
     case 0n: cnt_chu8_z(ws, hl)
     case 1n+ +q: cnt_chu8_s(q, ws, hl, r => hr => cnt_chu8(q, r, hr))
 
+def cc_chu8(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +r: List<&2, U32>) -> {chu8(Con{w0, Con{w1, Con{w2, Con{w3, Con{w4, Con{w5, Con{w6, Con{w7, r}}}}}}}}) == S.Items{S.UnsignedValue{P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}}, chu8(r)} : S.Value}: {==}
+
 def prt_chu8_z(+ws: List<&2, U32>, +hl: {F.spec_common__length(U32, ws) == 0n : Nat}) -> {Codec.parts(chu8(ws), S.Repeat{S.Unsigned{P.U256{}}}) == Some{SF.fparts(cw8(ws))} : Maybe<&2, +List<S.Part>>}:
   match ws:
     case Nil{}: {==}
@@ -1215,6 +1238,10 @@ def prt_chu8_s(+q: Nat, +ws: List<&2, U32>, +hl: {F.spec_common__length(U32, ws)
                               match r6:
                                 case Nil{}: Empty.absurd({Codec.parts(chu8(Con{w0, Con{w1, Con{w2, Con{w3, Con{w4, Con{w5, Con{w6, Nil{}}}}}}}}), S.Repeat{S.Unsigned{P.U256{}}}) == Some{SF.fparts(cw8(Con{w0, Con{w1, Con{w2, Con{w3, Con{w4, Con{w5, Con{w6, Nil{}}}}}}}}))} : Maybe<&2, +List<S.Part>>}, F.nat__zero_succ(0n+m8(q), peel(7n, 0n, 1n+m8(q), hl)))
                                 case Con{+w7, +r}:
+                                  %Equal.sym(S.Value, chu8(Con{w0, Con{w1, Con{w2, Con{w3, Con{w4, Con{w5, Con{w6, Con{w7, r}}}}}}}}), S.Items{S.UnsignedValue{P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}}, chu8(r)}, cc_chu8(w0, w1, w2, w3, w4, w5, w6, w7, r)) :
+                                    {Codec.parts(_, S.Repeat{S.Unsigned{P.U256{}}}) == Some{SF.fparts(cw8(Con{w0, Con{w1, Con{w2, Con{w3, Con{w4, Con{w5, Con{w6, Con{w7, r}}}}}}}}))} : Maybe<&2, +List<S.Part>>}
+                                  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{S.UnsignedValue{P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}}, chu8(r)}, S.Repeat{S.Unsigned{P.U256{}}}), Codec.concatenate(Codec.parts(S.UnsignedValue{P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}}, S.Unsigned{P.U256{}}), Codec.parts(chu8(r), S.Repeat{S.Unsigned{P.U256{}}})), prep(S.UnsignedValue{P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}}, chu8(r), S.Unsigned{P.U256{}})) :
+                                    {_ == Some{SF.fparts(cw8(Con{w0, Con{w1, Con{w2, Con{w3, Con{w4, Con{w5, Con{w6, Con{w7, r}}}}}}}}))} : Maybe<&2, +List<S.Part>>}
                                   SF.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}}, S.Unsigned{P.U256{}}), SF.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), Codec.parts(chu8(r), S.Repeat{S.Unsigned{P.U256{}}}), SF.fparts(cw8(r)), SF.uint256_part(w0, w1, w2, w3, w4, w5, w6, w7), ih(r, peel(8n, F.spec_common__length(U32, r), m8(q), hl)))
 
 law prt_chu8:

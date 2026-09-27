@@ -273,7 +273,7 @@ def peel(j, a, b, h):
                 nxt = 'r' if i == e - 1 else f'r{i}'
                 w(f'{ind}case Con{{+w{i}, +{nxt}}}:')
                 ind += '  '
-            w(f'{ind}' + step(f'ih(r, peel({e}n, {LEN("r")}, m{e}(q), hl))'))
+            w('\n'.join(ind + ln for ln in step(f'ih(r, peel({e}n, {LEN("r")}, m{e}(q), hl))').split('\n')))
             w('')
             w(f'law {nm}:')
             w('  for +k: Nat')
@@ -302,9 +302,30 @@ def peel(j, a, b, h):
         induct(f'cnt_{ch}', lambda x, k: f'{{Codec.count({ch}({x})) == {k} : Nat}}', '{==}',
                lambda ih: f'F.nat__succ_cong(Codec.count({ch}(r)), q, {ih})')
         PR = lambda x, k: f'{{Codec.parts({ch}({x}), S.Repeat{{{esch}}}) == Some{{SF.fparts(cw{e}({x}))}} : Maybe<&2, +List<S.Part>>}}'
-        induct(f'prt_{ch}', PR, '{==}',
-               lambda ih: (f'SF.cat_fixed(Codec.parts({item}, {esch}), SF.limbs({lit}), '
-                           f'Codec.parts({ch}(r), S.Repeat{{{esch}}}), SF.fparts(cw{e}(r)), {eproof}, {ih})'))
+        cat = lambda ih: (f'SF.cat_fixed(Codec.parts({item}, {esch}), SF.limbs({lit}), '
+                          f'Codec.parts({ch}(r), S.Repeat{{{esch}}}), SF.fparts(cw{e}(r)), {eproof}, {ih})')
+        if kind == 'u':
+            # The element's literal zero limbs: the goal reaches cat_fixed's form through two
+            # syntactic rewrites (cc_: one step of chu, prep: one step of Codec.parts), so no
+            # conversion compares Codec.parts of the element by whnf (which runs its zero limbs).
+            WS = ''.join(f'Con{{{x}, ' for x in ws) + 'r' + '}' * e
+            MB = 'Maybe<&2, +List<S.Part>>'
+            w(f'def cc_{ch}({", ".join("+" + x + ": U32" for x in ws)}, +r: {LT}) -> {{{ch}({WS}) == S.Items{{{item}, {ch}(r)}} : S.Value}}: {{==}}')
+            w('')
+            if 'prep' not in done:
+                done.add('prep')
+                w('def prep(+v: S.Value, +rest: S.Value, +s: S.Schema)')
+                w(f'    -> {{Codec.parts(S.Items{{v, rest}}, S.Repeat{{s}}) == Codec.concatenate(Codec.parts(v, s), Codec.parts(rest, S.Repeat{{s}})) : {MB}}}: {{==}}')
+                w('')
+            GR = f'Some{{SF.fparts(cw{e}({WS}))}}'
+            IT = f'S.Items{{{item}, {ch}(r)}}'
+            step = lambda ih: (f'%Equal.sym(S.Value, {ch}({WS}), {IT}, cc_{ch}({", ".join(ws)}, r)) :\n'
+                               f'  {{Codec.parts(_, S.Repeat{{{esch}}}) == {GR} : {MB}}}\n'
+                               f'%Equal.sym({MB}, Codec.parts({IT}, S.Repeat{{{esch}}}), Codec.concatenate(Codec.parts({item}, {esch}), Codec.parts({ch}(r), S.Repeat{{{esch}}})), prep({item}, {ch}(r), {esch})) :\n'
+                               f'  {{_ == {GR} : {MB}}}\n' + cat(ih))
+        else:
+            step = cat
+        induct(f'prt_{ch}', PR, '{==}', step)
         # the vector of k elements
         CH = f'{ch}(ws)'
         RHS = '== Some{[S.Fixed{SF.limbs(ws)}]} : Maybe<&2, +List<S.Part>>}'
