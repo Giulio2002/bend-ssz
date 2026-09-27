@@ -18,9 +18,7 @@
      "bitvector_512_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "uint128_e2e_dec_generated.bend": [
+   },
    {
     "name": "uint128",
     "generated_name": "Gt604E28A301",
@@ -29,7 +27,9 @@
      "uint128_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "uint256_Gt59DCDB2873_e2e_dec_generated.bend": [
    {
     "name": "uint256_Gt59DCDB2873",
     "generated_name": "Gt59DCDB2873",
@@ -69,9 +69,7 @@
      "FuluBytes32_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluBytes4_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluBytes4",
     "generated_name": "Bytes4",
@@ -80,7 +78,9 @@
      "FuluBytes4_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "FuluBytes48_e2e_dec_generated.bend": [
    {
     "name": "FuluBytes48",
     "generated_name": "Bytes48",
@@ -89,9 +89,7 @@
      "FuluBytes48_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluBytes8_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluBytes8",
     "generated_name": "Bytes8",
@@ -111,9 +109,7 @@
      "FuluBytes96_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluEpoch_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluEpoch",
     "generated_name": "Epoch",
@@ -151,9 +147,7 @@
      "uint256_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "uint64_e2e_dec_generated.bend": [
+   },
    {
     "name": "uint64",
     "generated_name": "uint64",
@@ -173,9 +167,7 @@
      "FuluBLSSignature_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluDomainType_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluDomainType",
     "generated_name": "DomainType",
@@ -204,9 +196,7 @@
      "FuluG1Point_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluG2Point_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluG2Point",
     "generated_name": "G2Point",
@@ -226,9 +216,7 @@
      "FuluHash32_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluPowBlock_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluPowBlock",
     "generated_name": "PowBlock",
@@ -268,9 +256,7 @@
      "FuluVersion_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluVersionedHash_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluVersionedHash",
     "generated_name": "VersionedHash",
@@ -299,9 +285,7 @@
      "FuluHistoricalSummary_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluPendingConsolidation_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluPendingConsolidation",
     "generated_name": "PendingConsolidation",
@@ -310,7 +294,9 @@
      "FuluPendingConsolidation_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "FuluPendingPartialWithdrawal_e2e_dec_generated.bend": [
    {
     "name": "FuluPendingPartialWithdrawal",
     "generated_name": "PendingPartialWithdrawal",
@@ -319,9 +305,7 @@
      "FuluPendingPartialWithdrawal_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluRoot_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluRoot",
     "generated_name": "Root",
@@ -425,9 +409,7 @@
      "FuluDomain_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluEth1Block_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluEth1Block",
     "generated_name": "Eth1Block",
@@ -447,9 +429,7 @@
      "FuluEth1Data_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluForkData_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluForkData",
     "generated_name": "ForkData",
@@ -564,9 +544,7 @@
      "FuluExecutionAddress_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluNodeID_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluNodeID",
     "generated_name": "NodeID",
@@ -608,9 +586,7 @@
      "FuluBLSToExecutionChange_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluBlobIdentifier_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluBlobIdentifier",
     "generated_name": "BlobIdentifier",
@@ -659,9 +635,7 @@
      "FuluKZGProof_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluPayloadId_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluPayloadId",
     "generated_name": "PayloadId",
@@ -701,9 +675,7 @@
      "FuluWithdrawalIndex_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluWithdrawalRequest_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluWithdrawalRequest",
     "generated_name": "WithdrawalRequest",
@@ -732,9 +704,7 @@
      "FuluColumnIndex_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluCommitmentIndex_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluCommitmentIndex",
     "generated_name": "CommitmentIndex",
@@ -743,7 +713,9 @@
      "FuluCommitmentIndex_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "FuluCustodyIndex_e2e_dec_generated.bend": [
    {
     "name": "FuluCustodyIndex",
     "generated_name": "CustodyIndex",
@@ -752,9 +724,7 @@
      "FuluCustodyIndex_e2e_decode_reject"
     ],
     "ii": "exact"
-   }
-  ],
-  "FuluRowIndex_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluRowIndex",
     "generated_name": "RowIndex",
@@ -1755,9 +1725,7 @@
      "vec_uint128_4_e2e_decode_reject"
     ],
     "ii": "view"
-   }
-  ],
-  "vec_uint128_5_e2e_dec_generated.bend": [
+   },
    {
     "name": "vec_uint128_5",
     "generated_name": "GtBB42F83A45",
@@ -1885,9 +1853,7 @@
      "vec_uint32_16_e2e_decode_reject"
     ],
     "ii": "view"
-   }
-  ],
-  "vec_uint32_2_e2e_dec_generated.bend": [
+   },
    {
     "name": "vec_uint32_2",
     "generated_name": "GtF45E42B273",
@@ -1896,7 +1862,9 @@
      "vec_uint32_2_e2e_decode_reject"
     ],
     "ii": "view"
-   },
+   }
+  ],
+  "vec_uint32_3_e2e_dec_generated.bend": [
    {
     "name": "vec_uint32_3",
     "generated_name": "GtD1AEF07F7D",
@@ -1905,9 +1873,7 @@
      "vec_uint32_3_e2e_decode_reject"
     ],
     "ii": "view"
-   }
-  ],
-  "vec_uint32_31_e2e_dec_generated.bend": [
+   },
    {
     "name": "vec_uint32_31",
     "generated_name": "GtE528AAE3C6",
@@ -1936,9 +1902,7 @@
      "vec_uint32_5_e2e_decode_reject"
     ],
     "ii": "view"
-   }
-  ],
-  "vec_uint32_8_e2e_dec_generated.bend": [
+   },
    {
     "name": "vec_uint32_8",
     "generated_name": "GtCCF6FFA0A0",
@@ -1958,9 +1922,7 @@
      "vec_uint64_1_e2e_decode_reject"
     ],
     "ii": "view"
-   }
-  ],
-  "vec_uint64_16_e2e_dec_generated.bend": [
+   },
    {
     "name": "vec_uint64_16",
     "generated_name": "Gt0B4EF17D71",
@@ -2020,9 +1982,7 @@
      "vec_uint64_5_e2e_decode_reject"
     ],
     "ii": "view"
-   }
-  ],
-  "vec_uint64_8_e2e_dec_generated.bend": [
+   },
    {
     "name": "vec_uint64_8",
     "generated_name": "GtE470919895",

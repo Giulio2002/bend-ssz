@@ -64,8 +64,8 @@ BATCH = 3  # names per file: the imports dominate (END_TO_END, the root module w
 # shape is needed)
 WRBATCH = 8  # word-storage root files (root_gtypes' import is the floor)
 WBATCH = 3  # word-storage files (import floor as family A)
-DBATCH = 2  # decode files: the same imports plus the decode laws' modules
-DWORDS = 24  # and at most this many words in a file (a name's decode proof grows with its words)
+DBATCH = 3  # decode files: the same imports plus the decode laws' modules
+DWORDS = 36  # and at most this many words in a file (a name's decode proof grows with its words)
 
 VIEW_TODO = set()  # (the bit vectors are bridged by e2e_bits.bw)
 

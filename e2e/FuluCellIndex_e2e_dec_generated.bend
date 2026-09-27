@@ -159,3 +159,72 @@ def FuluColumnIndex_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.lengt
     -> ({Pair.snd(B.Buf, Maybe<&1, O.U64>, T.ColumnIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.U64>} -> {API.deserialize(Spec.ColumnIndex(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.ColumnIndex(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.ColumnIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.U64>}):
   (dn => FuluColumnIndex_d_ra(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, dn), an => FuluColumnIndex_d_rb(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, an))
 
+# FuluCommitmentIndex: decoding a byte list against END_TO_END's deserialize.
+def FuluCommitmentIndex_d_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.U64>}:
+  Equal.cong(B.Buf & Maybe<&1, O.U64>, Maybe<&1, O.U64>, q => Pair.snd(B.Buf, Maybe<&1, O.U64>, q), T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n), (B.fill_at(B.alloc(n), 0, bs), None{}), M1.CommitmentIndex_spec_reject(B.fill_at(B.alloc(n), 0, bs), n, E.ueq_false(n, List.length(&2, U32, bs), 8, hn, ec)))
+
+def FuluCommitmentIndex_d_anone(+bs: +List<U32>, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}) -> {API.deserialize(Spec.CommitmentIndex(), bs) == None{} : Maybe<&2, S.Value>}:
+  E.outside_none(Spec.CommitmentIndex(), bs, M2.CommitmentIndex_decode_reject(bs, ec))
+
+def FuluCommitmentIndex_d_pk(+bs: +List<U32>, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == True{} : Bool}) -> {F.limbs(E.wl(2n, bs)) == bs : +List<U32>}:
+  E.pk(2n, bs, hd, FD.nat__eq_from_is_eq(List.length(&2, U32, bs), 8n, ec))
+
+def FuluCommitmentIndex_d_some(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == True{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{O.U64{E.wn(0n, bs), E.wn(1n, bs)}} : Maybe<&1, O.U64>}:
+  %Equal.sym(U32, n, 8, E.u32_len(n, List.length(&2, U32, bs), 8, hn, ec)) :
+    {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(_), 0, bs), _)) == Some{O.U64{E.wn(0n, bs), E.wn(1n, bs)}} : Maybe<&1, O.U64>}
+  %FuluCommitmentIndex_d_pk(bs, hd, ec) :
+    {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(8), 0, _), 8)) == Some{O.U64{E.wn(0n, bs), E.wn(1n, bs)}} : Maybe<&1, O.U64>}
+  Equal.cong(B.Buf & Maybe<&1, O.U64>, Maybe<&1, O.U64>, q => Pair.snd(B.Buf, Maybe<&1, O.U64>, q), T.CommitmentIndex_decode(B.fill_at(B.alloc(8), 0, F.limbs([E.wn(0n, bs), E.wn(1n, bs)])), 8), (B.fill_at(B.alloc(8), 0, F.limbs([E.wn(0n, bs), E.wn(1n, bs)])), Some{O.U64{E.wn(0n, bs), E.wn(1n, bs)}}),
+    M0.CommitmentIndex_spec_input(E.wn(0n, bs), E.wn(1n, bs)))
+
+def FuluCommitmentIndex_d_asome(+bs: +List<U32>, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == True{} : Bool}) -> {API.deserialize(Spec.CommitmentIndex(), bs) == Some{M3.v_u64(O.U64{E.wn(0n, bs), E.wn(1n, bs)})} : Maybe<&2, S.Value>}:
+  E2E.spec_accepted(Spec.CommitmentIndex(), bs, M3.v_u64(O.U64{E.wn(0n, bs), E.wn(1n, bs)}), (VS.public_sound(Spec.CommitmentIndex(), {==}),
+    %FuluCommitmentIndex_d_pk(bs, hd, ec) : {Encoding.encoding_for_legal_type(Spec.CommitmentIndex(), M3.v_u64(O.U64{E.wn(0n, bs), E.wn(1n, bs)})) == Some{_} : Maybe<&2, +List<U32>>}
+    M1.CommitmentIndex_spec_encode(E.wn(0n, bs), E.wn(1n, bs))))
+
+def FuluCommitmentIndex_d_ia(+bs: +List<U32>, +n: U32, +o: O.U64, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == c : Bool}, +da: {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.U64>}) -> {API.deserialize(Spec.CommitmentIndex(), bs) == Some{M3.v_u64(o)} : Maybe<&2, S.Value>}:
+  match c:
+    case False{}: Empty.absurd({API.deserialize(Spec.CommitmentIndex(), bs) == Some{M3.v_u64(o)} : Maybe<&2, S.Value>}, E.none_some1(O.U64, o, Equal.trans(Maybe<&1, O.U64>, None{}, Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{o}, Equal.sym(Maybe<&1, O.U64>, Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, FuluCommitmentIndex_d_none(bs, n, hn, ec)), da)))
+    case True{}:
+      %E.some_inj1(O.U64, O.U64{E.wn(0n, bs), E.wn(1n, bs)}, o, Equal.trans(Maybe<&1, O.U64>, Some{O.U64{E.wn(0n, bs), E.wn(1n, bs)}}, Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{o}, Equal.sym(Maybe<&1, O.U64>, Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{O.U64{E.wn(0n, bs), E.wn(1n, bs)}}, FuluCommitmentIndex_d_some(bs, n, hn, hd, ec)), da)) :
+        {API.deserialize(Spec.CommitmentIndex(), bs) == Some{M3.v_u64(_)} : Maybe<&2, S.Value>}
+      FuluCommitmentIndex_d_asome(bs, hd, ec)
+
+def FuluCommitmentIndex_d_ibt(+bs: +List<U32>, +n: U32, +o: O.U64, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == True{} : Bool}, +aa: {API.deserialize(Spec.CommitmentIndex(), bs) == Some{M3.v_u64(o)} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.U64>}:
+  match o:
+    case O.U64{+y0, +y1}:
+      +eb = FD.logic__some_inj(+List<U32>, F.limbs([y0, y1]), bs, Equal.trans(Maybe<&2, +List<U32>>, Some{F.limbs([y0, y1])}, Encoding.encoding_for_legal_type(Spec.CommitmentIndex(), M3.v_u64(O.U64{y0, y1})), Some{bs},
+        Equal.sym(Maybe<&2, +List<U32>>, Encoding.encoding_for_legal_type(Spec.CommitmentIndex(), M3.v_u64(O.U64{y0, y1})), Some{F.limbs([y0, y1])}, M1.CommitmentIndex_spec_encode(y0, y1)),
+        E.acc_dec(Spec.CommitmentIndex(), bs, M3.v_u64(O.U64{y0, y1}), E2E.accepted_spec(Spec.CommitmentIndex(), bs, M3.v_u64(O.U64{y0, y1}), aa))))
+      %Equal.sym(U32, n, 8, E.u32_len(n, List.length(&2, U32, bs), 8, hn, ec)) :
+        {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(_), 0, bs), _)) == Some{O.U64{y0, y1}} : Maybe<&1, O.U64>}
+      %eb :
+        {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(8), 0, _), 8)) == Some{O.U64{y0, y1}} : Maybe<&1, O.U64>}
+      Equal.cong(B.Buf & Maybe<&1, O.U64>, Maybe<&1, O.U64>, q => Pair.snd(B.Buf, Maybe<&1, O.U64>, q), T.CommitmentIndex_decode(B.fill_at(B.alloc(8), 0, F.limbs([y0, y1])), 8), (B.fill_at(B.alloc(8), 0, F.limbs([y0, y1])), Some{O.U64{y0, y1}}),
+        M0.CommitmentIndex_spec_input(y0, y1))
+
+def FuluCommitmentIndex_d_ib(+bs: +List<U32>, +n: U32, +o: O.U64, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == c : Bool}, +aa: {API.deserialize(Spec.CommitmentIndex(), bs) == Some{M3.v_u64(o)} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.U64>}:
+  match c:
+    case False{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.U64>}, FD.logic__none_some(S.Value, M3.v_u64(o), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.CommitmentIndex(), bs), Some{M3.v_u64(o)}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.CommitmentIndex(), bs), None{}, FuluCommitmentIndex_d_anone(bs, ec)), aa)))
+    case True{}: FuluCommitmentIndex_d_ibt(bs, n, o, hn, ec, aa)
+
+def FuluCommitmentIndex_d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.U64>}) -> {API.deserialize(Spec.CommitmentIndex(), bs) == None{} : Maybe<&2, S.Value>}:
+  match c:
+    case False{}: FuluCommitmentIndex_d_anone(bs, ec)
+    case True{}: Empty.absurd({API.deserialize(Spec.CommitmentIndex(), bs) == None{} : Maybe<&2, S.Value>}, E.none_someT(O.U64, O.U64{E.wn(0n, bs), E.wn(1n, bs)}, Equal.trans(Maybe<&1, O.U64>, None{}, Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{O.U64{E.wn(0n, bs), E.wn(1n, bs)}}, Equal.sym(Maybe<&1, O.U64>, Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, dn), FuluCommitmentIndex_d_some(bs, n, hn, hd, ec))))
+
+def FuluCommitmentIndex_d_rb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == c : Bool}, +an: {API.deserialize(Spec.CommitmentIndex(), bs) == None{} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.U64>}:
+  match c:
+    case False{}: FuluCommitmentIndex_d_none(bs, n, hn, ec)
+    case True{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.U64>}, FD.logic__none_some(S.Value, M3.v_u64(O.U64{E.wn(0n, bs), E.wn(1n, bs)}), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.CommitmentIndex(), bs), Some{M3.v_u64(O.U64{E.wn(0n, bs), E.wn(1n, bs)})}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.CommitmentIndex(), bs), None{}, an), FuluCommitmentIndex_d_asome(bs, hd, ec))))
+
+# (ii) the object decoder returns o exactly when END_TO_END's deserialize returns VAL(o).
+def FuluCommitmentIndex_e2e_decode_accept(+bs: +List<U32>, +n: U32, +o: O.U64, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
+    -> ({Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.U64>} -> {API.deserialize(Spec.CommitmentIndex(), bs) == Some{M3.v_u64(o)} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.CommitmentIndex(), bs) == Some{M3.v_u64(o)} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, O.U64>}):
+  (da => FuluCommitmentIndex_d_ia(bs, n, o, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, da), aa => FuluCommitmentIndex_d_ib(bs, n, o, hn, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, aa))
+
+# (iii) the object decoder fails exactly when END_TO_END's deserialize does.
+def FuluCommitmentIndex_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
+    -> ({Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.U64>} -> {API.deserialize(Spec.CommitmentIndex(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.CommitmentIndex(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, O.U64>, T.CommitmentIndex_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, O.U64>}):
+  (dn => FuluCommitmentIndex_d_ra(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, dn), an => FuluCommitmentIndex_d_rb(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, an))
+

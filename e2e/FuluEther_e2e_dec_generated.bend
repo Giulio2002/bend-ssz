@@ -159,3 +159,72 @@ def FuluExecutionAddress_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.
     -> ({Pair.snd(B.Buf, Maybe<&1, T.Bytes20>, T.ExecutionAddress_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.Bytes20>} -> {API.deserialize(Spec.ExecutionAddress(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.ExecutionAddress(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, T.Bytes20>, T.ExecutionAddress_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.Bytes20>}):
   (dn => FuluExecutionAddress_d_ra(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 20n), {==}, dn), an => FuluExecutionAddress_d_rb(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 20n), {==}, an))
 
+# FuluNodeID: decoding a byte list against END_TO_END's deserialize.
+def FuluNodeID_d_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.Uint256>}:
+  Equal.cong(B.Buf & Maybe<&1, T.Uint256>, Maybe<&1, T.Uint256>, q => Pair.snd(B.Buf, Maybe<&1, T.Uint256>, q), T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n), (B.fill_at(B.alloc(n), 0, bs), None{}), M1.NodeID_spec_reject(B.fill_at(B.alloc(n), 0, bs), n, E.ueq_false(n, List.length(&2, U32, bs), 32, hn, ec)))
+
+def FuluNodeID_d_anone(+bs: +List<U32>, +ec: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}) -> {API.deserialize(Spec.NodeID(), bs) == None{} : Maybe<&2, S.Value>}:
+  E.outside_none(Spec.NodeID(), bs, M2.NodeID_decode_reject(bs, ec))
+
+def FuluNodeID_d_pk(+bs: +List<U32>, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 32n) == True{} : Bool}) -> {F.limbs(E.wl(8n, bs)) == bs : +List<U32>}:
+  E.pk(8n, bs, hd, FD.nat__eq_from_is_eq(List.length(&2, U32, bs), 32n, ec))
+
+def FuluNodeID_d_some(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 32n) == True{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)}} : Maybe<&1, T.Uint256>}:
+  %Equal.sym(U32, n, 32, E.u32_len(n, List.length(&2, U32, bs), 32, hn, ec)) :
+    {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(_), 0, bs), _)) == Some{T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)}} : Maybe<&1, T.Uint256>}
+  %FuluNodeID_d_pk(bs, hd, ec) :
+    {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(32), 0, _), 32)) == Some{T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)}} : Maybe<&1, T.Uint256>}
+  Equal.cong(B.Buf & Maybe<&1, T.Uint256>, Maybe<&1, T.Uint256>, q => Pair.snd(B.Buf, Maybe<&1, T.Uint256>, q), T.NodeID_decode(B.fill_at(B.alloc(32), 0, F.limbs([E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)])), 32), (B.fill_at(B.alloc(32), 0, F.limbs([E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)])), Some{T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)}}),
+    M0.NodeID_spec_input(E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)))
+
+def FuluNodeID_d_asome(+bs: +List<U32>, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 32n) == True{} : Bool}) -> {API.deserialize(Spec.NodeID(), bs) == Some{M3.v_u256(T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)})} : Maybe<&2, S.Value>}:
+  E2E.spec_accepted(Spec.NodeID(), bs, M3.v_u256(T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)}), (VS.public_sound(Spec.NodeID(), {==}),
+    %FuluNodeID_d_pk(bs, hd, ec) : {Encoding.encoding_for_legal_type(Spec.NodeID(), M3.v_u256(T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)})) == Some{_} : Maybe<&2, +List<U32>>}
+    M1.NodeID_spec_encode(E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs))))
+
+def FuluNodeID_d_ia(+bs: +List<U32>, +n: U32, +o: T.Uint256, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 32n) == c : Bool}, +da: {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, T.Uint256>}) -> {API.deserialize(Spec.NodeID(), bs) == Some{M3.v_u256(o)} : Maybe<&2, S.Value>}:
+  match c:
+    case False{}: Empty.absurd({API.deserialize(Spec.NodeID(), bs) == Some{M3.v_u256(o)} : Maybe<&2, S.Value>}, E.none_some1(T.Uint256, o, Equal.trans(Maybe<&1, T.Uint256>, None{}, Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{o}, Equal.sym(Maybe<&1, T.Uint256>, Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, FuluNodeID_d_none(bs, n, hn, ec)), da)))
+    case True{}:
+      %E.some_inj1(T.Uint256, T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)}, o, Equal.trans(Maybe<&1, T.Uint256>, Some{T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)}}, Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{o}, Equal.sym(Maybe<&1, T.Uint256>, Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)}}, FuluNodeID_d_some(bs, n, hn, hd, ec)), da)) :
+        {API.deserialize(Spec.NodeID(), bs) == Some{M3.v_u256(_)} : Maybe<&2, S.Value>}
+      FuluNodeID_d_asome(bs, hd, ec)
+
+def FuluNodeID_d_ibt(+bs: +List<U32>, +n: U32, +o: T.Uint256, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 32n) == True{} : Bool}, +aa: {API.deserialize(Spec.NodeID(), bs) == Some{M3.v_u256(o)} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, T.Uint256>}:
+  match o:
+    case T.Uint256{+y0, +y1, +y2, +y3, +y4, +y5, +y6, +y7}:
+      +eb = FD.logic__some_inj(+List<U32>, F.limbs([y0, y1, y2, y3, y4, y5, y6, y7]), bs, Equal.trans(Maybe<&2, +List<U32>>, Some{F.limbs([y0, y1, y2, y3, y4, y5, y6, y7])}, Encoding.encoding_for_legal_type(Spec.NodeID(), M3.v_u256(T.Uint256{y0, y1, y2, y3, y4, y5, y6, y7})), Some{bs},
+        Equal.sym(Maybe<&2, +List<U32>>, Encoding.encoding_for_legal_type(Spec.NodeID(), M3.v_u256(T.Uint256{y0, y1, y2, y3, y4, y5, y6, y7})), Some{F.limbs([y0, y1, y2, y3, y4, y5, y6, y7])}, M1.NodeID_spec_encode(y0, y1, y2, y3, y4, y5, y6, y7)),
+        E.acc_dec(Spec.NodeID(), bs, M3.v_u256(T.Uint256{y0, y1, y2, y3, y4, y5, y6, y7}), E2E.accepted_spec(Spec.NodeID(), bs, M3.v_u256(T.Uint256{y0, y1, y2, y3, y4, y5, y6, y7}), aa))))
+      %Equal.sym(U32, n, 32, E.u32_len(n, List.length(&2, U32, bs), 32, hn, ec)) :
+        {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(_), 0, bs), _)) == Some{T.Uint256{y0, y1, y2, y3, y4, y5, y6, y7}} : Maybe<&1, T.Uint256>}
+      %eb :
+        {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(32), 0, _), 32)) == Some{T.Uint256{y0, y1, y2, y3, y4, y5, y6, y7}} : Maybe<&1, T.Uint256>}
+      Equal.cong(B.Buf & Maybe<&1, T.Uint256>, Maybe<&1, T.Uint256>, q => Pair.snd(B.Buf, Maybe<&1, T.Uint256>, q), T.NodeID_decode(B.fill_at(B.alloc(32), 0, F.limbs([y0, y1, y2, y3, y4, y5, y6, y7])), 32), (B.fill_at(B.alloc(32), 0, F.limbs([y0, y1, y2, y3, y4, y5, y6, y7])), Some{T.Uint256{y0, y1, y2, y3, y4, y5, y6, y7}}),
+        M0.NodeID_spec_input(y0, y1, y2, y3, y4, y5, y6, y7))
+
+def FuluNodeID_d_ib(+bs: +List<U32>, +n: U32, +o: T.Uint256, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 32n) == c : Bool}, +aa: {API.deserialize(Spec.NodeID(), bs) == Some{M3.v_u256(o)} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, T.Uint256>}:
+  match c:
+    case False{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, T.Uint256>}, FD.logic__none_some(S.Value, M3.v_u256(o), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.NodeID(), bs), Some{M3.v_u256(o)}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.NodeID(), bs), None{}, FuluNodeID_d_anone(bs, ec)), aa)))
+    case True{}: FuluNodeID_d_ibt(bs, n, o, hn, ec, aa)
+
+def FuluNodeID_d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 32n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.Uint256>}) -> {API.deserialize(Spec.NodeID(), bs) == None{} : Maybe<&2, S.Value>}:
+  match c:
+    case False{}: FuluNodeID_d_anone(bs, ec)
+    case True{}: Empty.absurd({API.deserialize(Spec.NodeID(), bs) == None{} : Maybe<&2, S.Value>}, E.none_someT(T.Uint256, T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)}, Equal.trans(Maybe<&1, T.Uint256>, None{}, Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)}}, Equal.sym(Maybe<&1, T.Uint256>, Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, dn), FuluNodeID_d_some(bs, n, hn, hd, ec))))
+
+def FuluNodeID_d_rb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 32n) == c : Bool}, +an: {API.deserialize(Spec.NodeID(), bs) == None{} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.Uint256>}:
+  match c:
+    case False{}: FuluNodeID_d_none(bs, n, hn, ec)
+    case True{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.Uint256>}, FD.logic__none_some(S.Value, M3.v_u256(T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)}), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.NodeID(), bs), Some{M3.v_u256(T.Uint256{E.wn(0n, bs), E.wn(1n, bs), E.wn(2n, bs), E.wn(3n, bs), E.wn(4n, bs), E.wn(5n, bs), E.wn(6n, bs), E.wn(7n, bs)})}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.NodeID(), bs), None{}, an), FuluNodeID_d_asome(bs, hd, ec))))
+
+# (ii) the object decoder returns o exactly when END_TO_END's deserialize returns VAL(o).
+def FuluNodeID_e2e_decode_accept(+bs: +List<U32>, +n: U32, +o: T.Uint256, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
+    -> ({Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, T.Uint256>} -> {API.deserialize(Spec.NodeID(), bs) == Some{M3.v_u256(o)} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.NodeID(), bs) == Some{M3.v_u256(o)} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, T.Uint256>}):
+  (da => FuluNodeID_d_ia(bs, n, o, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 32n), {==}, da), aa => FuluNodeID_d_ib(bs, n, o, hn, Nat.is_eq(List.length(&2, U32, bs), 32n), {==}, aa))
+
+# (iii) the object decoder fails exactly when END_TO_END's deserialize does.
+def FuluNodeID_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
+    -> ({Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.Uint256>} -> {API.deserialize(Spec.NodeID(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.NodeID(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, T.Uint256>, T.NodeID_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.Uint256>}):
+  (dn => FuluNodeID_d_ra(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 32n), {==}, dn), an => FuluNodeID_d_rb(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 32n), {==}, an))
+
