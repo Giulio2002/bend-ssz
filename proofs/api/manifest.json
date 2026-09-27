@@ -2928,6 +2928,15 @@
    ],
    "big": false
   },
+  "FuluLightClientUpdate.encode_ssz.proof.generated.bend": {
+   "name": "FuluLightClientUpdate",
+   "generated_name": "LightClientUpdate",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_LightClientUpdate_enc.bend"
+   ],
+   "big": true
+  },
   "FuluLightClientUpdate.decode_ssz.proof.generated.bend": {
    "name": "FuluLightClientUpdate",
    "generated_name": "LightClientUpdate",
@@ -7407,12 +7416,6 @@
  },
  "uncovered": {
   "FuluBeaconState": {
-   "encode_ssz": [
-    "encode_eval",
-    "encode_spec"
-   ]
-  },
-  "FuluLightClientUpdate": {
    "encode_ssz": [
     "encode_eval",
     "encode_spec"
