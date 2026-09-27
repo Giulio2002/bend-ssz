@@ -21,6 +21,7 @@ import ../obj/spec_bits.bend as P1_FB
 import ../../proofs/compact/found.bend as P1_FD
 import ../obj/arr_copy.bend as P1_AC
 import ../obj/arr_emit.bend as P1_AE
+import ../obj/arr_enc.bend as P1_AN
 import ../obj/spec_gcodec_Gt6E9B243B7C.bend as P1_PRV
 import ../../types/schema.bend as P2_S
 import ../../types/primitive.bend as P2_P

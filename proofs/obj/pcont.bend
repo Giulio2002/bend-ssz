@@ -13,6 +13,7 @@ import ./mtree_defs.bend as MD
 import ./sha_node.bend as SN
 import ./prog_root.bend as PR
 import ./mtree_spec.bend as MS
+import ./digest_facts.bend as DF
 import ./root_support.bend as RS
 import ../../proofs/nat_order.bend as Order
 import ../compact/found.bend as F
@@ -105,6 +106,8 @@ def ml(+hl: Nat, +ehl: {hl == 64n : Nat}, +r: D.Digest, +m: U32, +LB: +List<U32>
     {Some{VF.sha256_bytes(List.append(&2, U32, D.bytes(r), LB))} == Some{VF.sha256_bytes(List.append(&2, U32, D.bytes(r), _))} : Maybe<&2, +List<U32>>}
   {==}
 
+def zc0() -> {D.zconst(0n) == D.zero() : D.Digest}: {==}
+
 def msel_1(+hl: Nat, +ehl: {hl == 64n : Nat}, +r: D.Digest) -> RR.single(Mx.mix_in_selector(D.bytes(r), 1), [D.bytes(O.mix_len(hl, r, 1))]):
   %Equal.sym(Bool, SP.byte_scope(32n, D.bytes(r)), True{}, SN.digest_scope(r)) :
     {Mx.selector_checked(Bool.and(_, U32.is_lt(1, 256)), D.bytes(r), 1) == Some{D.bytes(D.node(hl, r, O.len_chunk(1)))} : Maybe<&2, +List<U32>>}
@@ -137,7 +140,9 @@ def msel_4(+hl: Nat, +ehl: {hl == 64n : Nat}, +r: D.Digest) -> RR.single(Mx.mix_
 # closed fact: the hash length is 64 and every digest is known).
 def zs0(+hl: Nat, +ehl: {hl == 64n : Nat}) -> {D.node(hl, D.zero(), D.zero()) == D.zconst(1n) : D.Digest}:
   %Equal.sym(Nat, hl, 64n, ehl) : {D.node(_, D.zero(), D.zero()) == D.zconst(1n) : D.Digest}
-  {==}
+  %zc0() : {D.node(64n, _, D.zero()) == D.zconst(1n) : D.Digest}
+  %zc0() : {D.node(64n, D.zconst(0n), _) == D.zconst(1n) : D.Digest}
+  DF.zero_node(0n, {==})
 
 # ---- active [True{}] ----
 def pc_1_teq(+hl: Nat, +ehl: {hl == 64n : Nat}, +x0: D.Digest)

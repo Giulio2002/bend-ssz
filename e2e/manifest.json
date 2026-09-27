@@ -2693,6 +2693,30 @@
     "premise": "the root law's binders (t, dw, hd, pf, cap)"
    }
   ],
+  "CompatibleUnionA_e2e_dec_generated.bend": [
+   {
+    "name": "CompatibleUnionA",
+    "generated_name": "GuA2212AE21F",
+    "laws": [
+     "CompatibleUnionA_e2e_decode_view",
+     "CompatibleUnionA_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "ComplexTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "ComplexTestStruct",
+    "generated_name": "Gc56D855869F",
+    "laws": [
+     "ComplexTestStruct_e2e_decode_view",
+     "ComplexTestStruct_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "FuluAttesterSlashing_e2e_dec_generated.bend": [
    {
     "name": "FuluAttesterSlashing",
@@ -2772,6 +2796,18 @@
     "laws": [
      "FuluTransaction_e2e_decode_view",
      "FuluTransaction_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "VarTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "VarTestStruct",
+    "generated_name": "Gc465214E502",
+    "laws": [
+     "VarTestStruct_e2e_decode_view",
+     "VarTestStruct_e2e_decode_reject"
     ],
     "ii": "view",
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
@@ -3077,6 +3113,26 @@
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
    }
   ],
+  "CompatibleUnionA_e2e_root_generated.bend": [
+   {
+    "name": "CompatibleUnionA",
+    "generated_name": "GuA2212AE21F",
+    "laws": [
+     "CompatibleUnionA_e2e_root"
+    ],
+    "premise": "rep: RT.rep_GuA2212AE21F(o, Spec.GuA2212AE21F()) (the root law's representation invariant)"
+   }
+  ],
+  "ComplexTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "ComplexTestStruct",
+    "generated_name": "Gc56D855869F",
+    "laws": [
+     "ComplexTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) (the root law's representation invariant)"
+   }
+  ],
   "FuluAttesterSlashing_e2e_root_generated.bend": [
    {
     "name": "FuluAttesterSlashing",
@@ -3145,6 +3201,16 @@
      "FuluTransaction_e2e_root"
     ],
     "premise": "rep: RT.rep_Transaction(o, Spec.Transaction()) (the root law's representation invariant)"
+   }
+  ],
+  "VarTestStruct_e2e_root_generated.bend": [
+   {
+    "name": "VarTestStruct",
+    "generated_name": "Gc465214E502",
+    "laws": [
+     "VarTestStruct_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) (the root law's representation invariant)"
    }
   ],
   "proglist_bool_e2e_root_generated.bend": [
@@ -3217,6 +3283,16 @@
     "premise": "rep: RT.rep_GtDE4B86A990(o, Spec.GtDE4B86A990()) (the root law's representation invariant)"
    }
   ],
+  "CompatibleUnionA_e2e_generated.bend": [
+   {
+    "name": "CompatibleUnionA",
+    "generated_name": "GuA2212AE21F",
+    "laws": [
+     "CompatibleUnionA_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_GuA2212AE21F(o) (the root law's representation invariant; no storage premise)"
+   }
+  ],
   "FuluAttesterSlashing_e2e_generated.bend": [
    {
     "name": "FuluAttesterSlashing",
@@ -3285,6 +3361,16 @@
      "FuluTransaction_e2e_encode"
     ],
     "premise": "rep: LO.rep_bl(o, Spec.Transaction()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "VarTestStruct_e2e_generated.bend": [
+   {
+    "name": "VarTestStruct",
+    "generated_name": "Gc465214E502",
+    "laws": [
+     "VarTestStruct_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_Gc465214E502(o, Spec.Gc465214E502()) and hs: BL.sdk(RT.pj_Gc465214E502_1(o), 28n) (the list field's storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "proglist_bool_e2e_generated.bend": [
@@ -5677,13 +5763,11 @@
    "generated_name": "Gc60805EC295",
    "reason": "encode laws not over the same free words / bits"
   },
-  "VarTestStruct": {
-   "generated_name": "Gc465214E502",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "ComplexTestStruct": {
    "generated_name": "Gc56D855869F",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "ComplexTestStruct_e2e_dec_generated.bend",
+   "root": "ComplexTestStruct_e2e_root_generated.bend"
   },
   "CompatibleUnionBC": {
    "generated_name": "GuAD91DEB870",
@@ -5691,10 +5775,6 @@
   },
   "CompatibleUnionABCA": {
    "generated_name": "Gu6DDF182530",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "CompatibleUnionA": {
-   "generated_name": "GuA2212AE21F",
    "reason": "encode laws not over the same free words / bits"
   },
   "progbitlist": {
@@ -6066,6 +6146,12 @@
   }
  },
  "variable_size": {
+  "CompatibleUnionA": {
+   "generated_name": "GuA2212AE21F",
+   "i": "CompatibleUnionA_e2e_generated.bend",
+   "ii_iii": "CompatibleUnionA_e2e_dec_generated.bend",
+   "iv": "CompatibleUnionA_e2e_root_generated.bend"
+  },
   "FuluAttesterSlashing": {
    "generated_name": "AttesterSlashing",
    "i": "FuluAttesterSlashing_e2e_generated.bend",
@@ -6107,6 +6193,12 @@
    "i": "FuluTransaction_e2e_generated.bend",
    "ii_iii": "FuluTransaction_e2e_dec_generated.bend",
    "iv": "FuluTransaction_e2e_root_generated.bend"
+  },
+  "VarTestStruct": {
+   "generated_name": "Gc465214E502",
+   "i": "VarTestStruct_e2e_generated.bend",
+   "ii_iii": "VarTestStruct_e2e_dec_generated.bend",
+   "iv": "VarTestStruct_e2e_root_generated.bend"
   },
   "bitlist_1": {
    "generated_name": "Gt94B70684B5",
@@ -6303,7 +6395,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 6756,
    "covered": true,
-   "bridged": null
+   "bridged": "ComplexTestStruct_e2e_dec_generated.bend"
   },
   "FuluAggregateAndProof": {
    "generated_name": "AggregateAndProof",
