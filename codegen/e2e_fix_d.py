@@ -292,7 +292,7 @@ def root_file(EB, rows, title):
 # the W_i, and its spec decode law gives the value, whose bytes are bs (e2e_load.vw: the first K
 # bytes of the loaded words are bs). No case split on the bytes.
 
-DHEAD = ['import Base', 'import ./e2e_fixd.bend as X', 'import ../proofs/primitive_invariants.bend as V', 'import ../proofs/word_facts.bend as WF', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
+DHEAD = ['import Base', 'import ./e2e_fixd.bend as X', 'import ./e2e_fixd16.bend as X16', 'import ../proofs/primitive_invariants.bend as V', 'import ../proofs/word_facts.bend as WF', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
          'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
          'import ../spec/codec.bend as Encoding', 'import ../spec/primitives.bend as SP', 'import ../proofs/type_validator_soundness.bend as VS',
          'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/spec_fixed.bend as F', 'import ./e2e_bytes.bend as EY', 'import ./e2e_load.bend as L', 'import ./e2e_cap.bend as C']
@@ -339,7 +339,7 @@ def dec_parse(EB, X, m, cache):
         if all(t == 'U32' and n in leaves for _, n, t in sp):
             spec = (e, [n for _, n, _ in sp], a[1], a[2])
             break
-        if [n for _, n, _ in sp] in (['xs', 'hl', 'hd'], ['ws', 'hl']):
+        if [n for _, n, _ in sp] in (['xs', 'hl', 'hd'], ['ws', 'hl'], ['ws', 'hl', 'x256']):
             spec = (e, [n for _, n, _ in sp], a[1], a[2])
             break
     if spec is None:
@@ -397,9 +397,9 @@ def dec_text(EB, imp, R, X, sn, dp, VIEW, un=None):
             VS = subv(VS, {'xs': BYL})
             BY = BYL
         else:
-            ds_list = [WS, '{==}']
-            VS = subv(VS, {'ws': WS})
-            BY = subv(BY, {'ws': WS})
+            ds_list = [WS, '{==}'] + ([W(nw)] if 'x256' in dp['dsargs'] else [])
+            VS = subv(VS, {'ws': WS, 'x256': W(nw)})
+            BY = subv(BY, {'ws': WS, 'x256': W(nw)})
     M1, MV, MB = f'Maybe<&1, {OT}>', 'Maybe<&2, S.Value>', 'Maybe<&2, +List<U32>>'
     LEN = 'List.length(&2, U32, bs)'
     IN = 'B.fill_at(B.alloc(n), 0, bs)'
@@ -440,7 +440,8 @@ def dec_text(EB, imp, R, X, sn, dp, VIEW, un=None):
          f'  E2E.spec_accepted(Spec.{sn}(), bs, {VS}, (VS.public_sound(Spec.{sn}(), {{==}}),',
          f'    %{p}_by(bs, hd, ec) : {{Encoding.encoding_for_legal_type(Spec.{sn}(), {VS}) == Some{{_}} : {MB}}}',
          f'    {AS}.{dp["ds"]["law"]}({ds_args})))', '',
-    ] + bridge_text(p, V(OW), VS, OW) + [
+    ] + (bridge_text(p, V(OW), VS, OW) if 'vview2' not in VIEW else
+         br16(imp, f'{p}_br', V(OW), '[' + ', '.join(W(i) for i in range(K // 4)) + ']', (K % 4) // 2, W(K // 4), VS, '65535' if K % 4 else None)) + [
          f'def {p}_v(+bs: +List<U32>, +n: U32, {HN}, {HD}, +c: Bool, {EC("c")}) -> {{{R}_mv({RES}) == {API_} : {MV}}}:',
          '  match c:', '    case False{}:',
          f'      %Equal.sym({M1}, {RES}, None{{}}, {p}_none(bs, n, hn, ec)) : {{{R}_mv(_) == {API_} : {MV}}}',
@@ -667,7 +668,7 @@ def m16(+v: U32, +e: {U32.is_lt(v, 65536) == True{} : Bool}) -> {U32.and(v, 6553
 # storage at that depth, as e2e_bridge's word-storage family W) and rebuilds the object from rep's
 # witnesses; the view evaluates on the literal tree to the encode law's value.
 
-VHEAD = EHEAD + ['import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/words_obj.bend as WO',
+VHEAD = EHEAD + ['import ./e2e_fixd16.bend as X16', 'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/words_obj.bend as WO',
                  'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/primitive_invariants.bend as V',
                  'import ../proofs/word_facts.bend as WF', 'import ./e2e_tree.bend as E3']
 
@@ -730,15 +731,29 @@ def enc_vec(EB, imp, R, X, sn, m, cache, ri):
     Gw = lambda o: f'{{Some{{E.obytes(Pair.snd(O.Words, B.Buf, T.{en}_encode({o})))}} == API.serialize(Spec.{sn}(), {VIEW(o)}) : {MB}}}'  # noqa: E731
     HC = lambda o: f'{{E3.at_depth({o}, {d}n) == True{{}} : Bool}}'  # noqa: E731
     AE, AS = imp.alias('proofs/obj/' + ee['file']), imp.alias('proofs/obj/' + es['file'])
-    L = [f'# {R} ({X})',
-         f'def {R}_w3(+t: FD.array__Tree<U32>, +pf: {{FD.array__perfect(U32, {d}n, t) == True{{}} : Bool}}) -> {Gw(OT)}:',
+    VV = VIEW(OBJ)
+    L = [f'# {R} ({X})']
+    pre = []
+    if kind == 'v2':
+        smap = {}
+        for (md, n, t), a in zip(sps, esa):
+            smap[n] = a
+        SV = subv(imp.qual(EB, EB.call_args(b_es[3], 'Decoding.decodes')[2], es['file']), smap)
+        nd = int(N) // 4
+        WSd = '[' + ', '.join(LT[x] for x in leaves[:nd]) + ']'
+        L += br16(imp, f'{R}_br', VIEW(OBJ), WSd, (int(N) % 4) // 2, LT[leaves[nd]] if int(N) % 4 else '', SV,
+                  param='+t: FD.array__Tree<U32>')
+        pre = [f'  %Equal.sym(S.Value, {VIEW(OBJ)}, {SV}, {R}_br(t)) :',
+               f'    {{Some{{E.obytes(Pair.snd(O.Words, B.Buf, T.{en}_encode({OBJ})))}} == API.serialize(Spec.{sn}(), _) : {MB}}}']
+        VV = SV
+    L += [f'def {R}_w3(+t: FD.array__Tree<U32>, +pf: {{FD.array__perfect(U32, {d}n, t) == True{{}} : Bool}}) -> {Gw(OT)}:',
          f'  %Equal.sym(FD.array__Tree<U32>, t, E3.tf({d}n, t), E3.eta({d}n, t, pf)) :',
-         f'    {Gw("O.Words{FD.array__thaw(U32, _), " + N + "}")}',
-         f'  Equal.trans({MB}, Some{{E.obytes(Pair.snd(O.Words, B.Buf, T.{en}_encode({OBJ})))}}, Some{{{BYq}}}, API.serialize(Spec.{sn}(), {VIEW(OBJ)}),',
+         f'    {Gw("O.Words{FD.array__thaw(U32, _), " + N + "}")}'] + pre + [
+         f'  Equal.trans({MB}, Some{{E.obytes(Pair.snd(O.Words, B.Buf, T.{en}_encode({OBJ})))}}, Some{{{BYq}}}, API.serialize(Spec.{sn}(), {VV}),',
          f'    Equal.cong(O.Words & +List<U32>, {MB}, p => Some{{Pair.snd(O.Words, +List<U32>, p)}}, F.emitted(O.Words, T.{en}_encode({OBJ}), {NW}), ({OBJ}, {BYq}), {AE}.{ee["law"]}({eargs})),',
-         f'    Equal.sym({MB}, API.serialize(Spec.{sn}(), {VIEW(OBJ)}), Some{{{BYq}}},',
-         f'      Equal.trans({MB}, API.serialize(Spec.{sn}(), {VIEW(OBJ)}), Encoding.encoding_for_legal_type(Spec.{sn}(), {VIEW(OBJ)}), Some{{{BYq}}},',
-         f'        E.serialize_legal(Spec.{sn}(), {VIEW(OBJ)}, VS.public_sound(Spec.{sn}(), {{==}})), {AS}.{es["law"]}({", ".join(esa)}))))', '']
+         f'    Equal.sym({MB}, API.serialize(Spec.{sn}(), {VV}), Some{{{BYq}}},',
+         f'      Equal.trans({MB}, API.serialize(Spec.{sn}(), {VV}), Encoding.encoding_for_legal_type(Spec.{sn}(), {VV}), Some{{{BYq}}},',
+         f'        E.serialize_legal(Spec.{sn}(), {VV}, VS.public_sound(Spec.{sn}(), {{==}})), {AS}.{es["law"]}({", ".join(esa)}))))', '']
     # the length fact of rep at the literal object: N is the vector's byte count
     if kind in ('v1', 'vb'):
         facts = '+cf: {Nat.is_eq(U32.to_nat(WO.len(' + ON + ')), SH.Vector_length(Spec.' + sn + '())) == True{} : Bool}'
@@ -794,8 +809,97 @@ def enc_vec_file(EB, rows, cache, amap):
     return '\n'.join(L) + '\n'
 
 
+VEC_U16 = ['GtE6006F6F55', 'Gt04170D6AA7', 'Gt19F04F79B8', 'Gt6463DC73A8', 'Gt89824BEACE', 'Gt39CAD03032', 'GtAEB382AD1F', 'Gt9333E6513D',
+           'Gt2FF8722A75', 'Gt5BE68AF2C7']
 VEC_U8 = ['GtB85E1BC748', 'Gt3429157FEB', 'GtC19E8053EB', 'Gt75C1995C88', 'GtF3865AEE9A', 'GtA8100D747D', 'Gt28ED72E3EF', 'GtC0FC7B166A',
           'Gt28605B5D5C', 'Gt2CD118DF5F']
+
+
+# ---- uint16 vectors: the view reads two bytes per element (packed_bytes.it2 of v16of), the spec value
+# two halves per word (sub_pack.vu16 of lo16 / hi16); e2e_fixd16 relates them for any word list ----
+
+def _w(bits):
+    return 'U32{' + ''.join(f'WCon{{{x}, ' for x in bits) + 'WNil{}' + '}' * len(bits) + '}'
+
+
+def support16():
+    a = [f'a{i}' for i in range(32)]
+    pat = 'U32{' + ''.join(f'WCon{{+{x}, ' for x in a) + 'WNil{}' + '}' * 32 + '}'
+    F = 'False{}'
+    lo_x = [f'Bool.and({a[i]}, True{{}})' for i in range(16)] + [F] * 16
+    lo_y = [f'Bool.and({a[i]}, True{{}})' for i in range(16)] + [f'Bool.and({a[i]}, False{{}})' for i in range(16, 32)]
+    lo_e = ['{==}'] * 16 + [f'Equal.sym(Bool, Bool.and({a[i]}, False{{}}), False{{}}, BT.and_false({a[i]}))' for i in range(16, 32)]
+    hi_x = [f'Bool.and({a[16 + i]}, True{{}})' for i in range(8)] + a[24:32] + [F] * 16
+    hi_y = a[16:32] + [F] * 16
+    hi_e = [f'BT.and_true({a[16 + i]})' for i in range(8)] + ['{==}'] * 24
+    U = lambda z: f'S.UnsignedValue{{P.UInt{{{z}, 0, 0, 0, 0, 0, 0, 0}}}}'  # noqa: E731
+    return f"""import Base
+import ../src/buffer.bend as B
+import ../types/schema.bend as S
+import ../types/primitive.bend as P
+import ../proofs/compact/bits.bend as BT
+import ../proofs/obj/spec_fixed.bend as F
+import ../proofs/obj/packed_bytes.bend as PB
+import ../proofs/obj/sub_pack.bend as SP2
+
+# GENERATED by codegen/e2e_bridge.py. Do not edit.
+# uint16 vectors (codegen/e2e_fix_d.py): the root view's elements (two bytes each, PB.it2 of PB.v16of)
+# are the spec value's (two halves of each word, SP2.vu16 of lo16 / hi16), for any list of words.
+
+def lo(+w: U32) -> {{PB.v16of(U32.and(w, 255), U32.and(U32.shrn(w, 8n), 255)) == SP2.lo16(w) : U32}}:
+  match w:
+    case {pat}:
+      BT.word32_eq({", ".join(lo_x)}, {", ".join(lo_y)}, {", ".join(lo_e)})
+
+def hi(+w: U32) -> {{PB.v16of(U32.and(U32.shrn(w, 16n), 255), U32.shrn(w, 24n)) == SP2.hi16(w) : U32}}:
+  match w:
+    case {pat}:
+      BT.word32_eq({", ".join(hi_x)}, {", ".join(hi_y)}, {", ".join(hi_e)})
+
+def cons2(+a: U32, +b: U32, +a2: U32, +b2: U32, +r: S.Value, +r2: S.Value, +ea: {{a == a2 : U32}}, +eb: {{b == b2 : U32}}, +er: {{r == r2 : S.Value}})
+    -> {{S.Items{{{U("a")}, S.Items{{{U("b")}, r}}}} == S.Items{{{U("a2")}, S.Items{{{U("b2")}, r2}}}} : S.Value}}:
+  %Equal.sym(U32, a, a2, ea) : {{S.Items{{{U("_")}, S.Items{{{U("b")}, r}}}} == S.Items{{{U("a2")}, S.Items{{{U("b2")}, r2}}}} : S.Value}}
+  %Equal.sym(U32, b, b2, eb) : {{S.Items{{{U("a2")}, S.Items{{{U("_")}, r}}}} == S.Items{{{U("a2")}, S.Items{{{U("b2")}, r2}}}} : S.Value}}
+  %Equal.sym(S.Value, r, r2, er) : {{S.Items{{{U("a2")}, S.Items{{{U("b2")}, _}}}} == S.Items{{{U("a2")}, S.Items{{{U("b2")}, r2}}}} : S.Value}}
+  {{==}}
+
+# the elements of the bytes of words ws (then R) are ws's halves (then R's elements)
+def l2(+ws: +List<U32>, +c: Nat, +R: +List<U32>) -> {{PB.it2(Nat.add(Nat.double(List.length(&2, U32, ws)), c), List.append(&2, U32, F.limbs(ws), R)) == SP2.vu16(ws, PB.it2(c, R)) : S.Value}}:
+  match ws:
+    case Nil{{}}: {{==}}
+    case Con{{+w, +t}}:
+      cons2(PB.v16of(U32.and(w, 255), U32.and(U32.shrn(w, 8n), 255)), PB.v16of(U32.and(U32.shrn(w, 16n), 255), U32.shrn(w, 24n)), SP2.lo16(w), SP2.hi16(w),
+        PB.it2(Nat.add(Nat.double(List.length(&2, U32, t)), c), List.append(&2, U32, F.limbs(t), R)), SP2.vu16(t, PB.it2(c, R)), lo(w), hi(w), l2(t, c, R))
+
+# a last half word
+def t1(+x: U32) -> {{PB.it2(1n, [B.byte_sel(0, x), B.byte_sel(1, x)]) == S.Items{{{U("SP2.lo16(x)")}, S.EmptyItems{{}}}} : S.Value}}:
+  Equal.cong(U32, S.Value, z => S.Items{{{U("z")}, S.EmptyItems{{}}}}, PB.v16of(U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255)), SP2.lo16(x), lo(x))
+"""
+
+
+def br16(imp, name, VO, WS, c, xl, SV, masked=None, param='+bs: +List<U32>'):
+    """{name}: the view VO (PB.vview2 of a literal tree) is the spec value SV (SP2.vu16(WS, tail))"""
+    PBa = imp.alias('proofs/obj/packed_bytes.bend')
+    SPa = imp.alias('proofs/obj/sub_pack.bend')
+    R = '[]' if not c else (f'[B.byte_sel(0, {xl}), B.byte_sel(1, {xl})]' if not masked else
+                            f'[B.byte_sel(0, U32.and({xl}, {masked})), B.byte_sel(1, U32.and({xl}, {masked}))]')
+    it = f'{PBa}.it2({"1n" if c else "0n"}, {R})'
+    L = [f'def {name}({param}) -> {{{VO} == {SV} : S.Value}}:',
+         f'  Equal.trans(S.Value, {VO}, S.Sequence{{{SPa}.vu16({WS}, {it})}}, {SV},',
+         f'    Equal.cong(S.Value, S.Value, v => S.Sequence{{v}}, {PBa}.it2(Nat.add(Nat.double(List.length(&2, U32, {WS})), {"1n" if c else "0n"}), List.append(&2, U32, F.limbs({WS}), {R})), {SPa}.vu16({WS}, {it}), X16.l2({WS}, {"1n" if c else "0n"}, {R})),']
+    if not c:
+        L.append('    {==})')
+    else:
+        tl = f'S.Items{{S.UnsignedValue{{P.UInt{{{SPa}.lo16({xl}), 0, 0, 0, 0, 0, 0, 0}}}}, S.EmptyItems{{}}}}'
+        t1 = f'X16.t1({xl})'
+        if masked:
+            plain = f'[B.byte_sel(0, {xl}), B.byte_sel(1, {xl})]'
+            t1 = (f'Equal.trans(S.Value, {it}, {PBa}.it2(1n, {plain}), {tl}, Equal.cong(+List<U32>, S.Value, z => {PBa}.it2(1n, z), {R}, {plain}, '
+                  f'Equal.trans(+List<U32>, {R}, [B.byte_sel(0, {xl}), B.byte_sel(1, U32.and({xl}, {masked}))], {plain}, '
+                  f'Equal.cong(U32, +List<U32>, z => [z, B.byte_sel(1, U32.and({xl}, {masked}))], B.byte_sel(0, U32.and({xl}, {masked})), B.byte_sel(0, {xl}), X.bsm{masked}_0({xl})), '
+                  f'Equal.cong(U32, +List<U32>, z => [B.byte_sel(0, {xl}), z], B.byte_sel(1, U32.and({xl}, {masked})), B.byte_sel(1, {xl}), X.bsm{masked}_1({xl})))), {t1})')
+        L.append(f'    Equal.cong(S.Value, S.Value, z => S.Sequence{{{SPa}.vu16({WS}, z)}}, {it}, {tl}, {t1}))')
+    return L + ['']
 
 
 # the generated names of this worker's share (the fixed-size names e2e_bridge's families leave uncovered)
@@ -853,7 +957,7 @@ def build(EB, amap, cache, vidx):
             prem = [f'{md}{n}: {t}' for md, n, t in ri['ps'][1:] if n not in ('o', 's', 'es')]
             cover.setdefault(X, {})['iv'] = fn
             cover[X].setdefault('premise', '; '.join(prem))
-    for X in DEC_TRY + VEC_U8:
+    for X in DEC_TRY + VEC_U8 + VEC_U16:
         if X not in todo:
             continue
         m0 = amap['map'][X]
@@ -876,7 +980,7 @@ def build(EB, amap, cache, vidx):
         fn = f'{readable[X]}_e2e_generated.bend'
         files[fn] = enc_file(EB, [(readable[X], X, X, ri[0], gen)], cache, amap)
         cover.setdefault(X, {})['i'] = fn
-    for X in VEC_U8:
+    for X in VEC_U8 + VEC_U16:
         if X not in todo:
             continue
         ri = root_info(EB, X, amap['map'][X], cache)
@@ -889,4 +993,4 @@ def build(EB, amap, cache, vidx):
             files[fn] = t
             cover.setdefault(X, {})['i'] = fn
             cover[X]['premise'] = 'rep (the root law\'s representation invariant); (i) also hc: the storage at the decoder\'s depth'
-    return {'support': {'e2e_fixd.bend': SUPPORT + bsm_text() + '\n'}, 'files': files, 'cover': cover}
+    return {'support': {'e2e_fixd.bend': SUPPORT + bsm_text() + '\n', 'e2e_fixd16.bend': support16()}, 'files': files, 'cover': cover}

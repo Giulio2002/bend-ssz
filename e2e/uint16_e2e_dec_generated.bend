@@ -1,5 +1,6 @@
 import Base
 import ./e2e_fixd.bend as X
+import ./e2e_fixd16.bend as X16
 import ../proofs/primitive_invariants.bend as V
 import ../proofs/word_facts.bend as WF
 import ../END_TO_END.bend as E2E

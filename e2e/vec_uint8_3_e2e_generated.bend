@@ -14,6 +14,7 @@ import ../proofs/power_division.bend as PD
 import ../proofs/integer_decoding.bend as ID
 import ./e2e_support.bend as E
 import ./e2e_fixd.bend as X
+import ./e2e_fixd16.bend as X16
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/words_obj.bend as WO
