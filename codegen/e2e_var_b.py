@@ -93,7 +93,7 @@ def vdec_bytelist(X, bound):
 
 def vbl(o: O.Words) -> S.Value: S.BytesValue{{WO.wview(o)}}
 
-def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, {bound}n) == True{{}} : Bool}},
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, {'@BD@' if bound is None else str(bound) + 'n'}) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{vbl(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
   Equal.cong(+List<U32>, S.Value, z => S.BytesValue{{z}}, WO.wview(O.Words{{FD.array__thaw(U32, BL.CW(d, t, 0, n)), n}}), BL.WX0(t, n), BL.bview(d, t, 0, n, 0n, {{==}}, hd, hn, pf))
 
@@ -323,7 +323,7 @@ def vdec_win(X, bound, vwmod):
             'imports': ['import ../proofs/obj/root_types.bend as RT', f'import ./{vwmod}.bend as VWX'],
             'text': f'''# ---- the view of a decoded object is the codec law's value (the window's view, at offset 0) ----
 
-def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, {bound}n) == True{{}} : Bool}},
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, {'@BD@' if bound is None else str(bound) + 'n'}) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}}:
   VWX.vw(t, 0n, n)
 
@@ -1493,7 +1493,7 @@ def vdec_plw(X, bound):
                         'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vlist.bend as VL', 'import ./e2e_plw.bend as PW'],
             'text': f'''# ---- the view of a decoded object is the codec law's value ----
 
-def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, {bound}n) == True{{}} : Bool}},
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, {'@BD@' if bound is None else str(bound) + 'n'}) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(n) == True{{}} : Bool}}) -> {{{view}(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}}:
   +ec = Equal.trans(Nat, U32.to_nat(U32.shrn(n, {sh}n)), VD.s_rng({sh}n, U32.to_nat(n)), DC.CQ(n), VD.shrk({sh}n, n),
     Equal.trans(Nat, VD.s_rng({sh}n, U32.to_nat(n)), VD.s_rng({sh}n, EL.{bk}(DC.CQ(n))), DC.CQ(n),
@@ -1774,7 +1774,7 @@ def vdec_winx(X, bound, vmod):
     return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_types.bend as RT', f'import ./{vmod}.bend as VWX'],
             'text': f'''# ---- the view of a decoded object is the codec law's value (the window's view at offset 0) ----
 
-def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, {bound}n) == True{{}} : Bool}},
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, {'@BD@' if bound is None else str(bound) + 'n'}) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
   VWX.vwx(d, t, 0n, 0, n, hchk)
 
@@ -2993,7 +2993,7 @@ for _w in ('var_winx_l16_WithdrawalRequest', 'var_winx_l8192_DepositRequest', 'v
 for _w in ('var_winx_l16_WithdrawalRequest', 'var_winx_l8192_DepositRequest', 'var_winx_l2_ConsolidationRequest'):
     CHILD_VIEW[_w] = (f'e2e_vl_{_w[9:]}', 'vl')
 SUPPORT_OUT['e2e_vwx_ExecutionRequests.bend'] = vwx_module('ExecutionRequests', 'var_winx_ExecutionRequests')
-VDEC_VIEWS['ExecutionRequests'] = vdec_winx('ExecutionRequests', 28, 'e2e_vwx_ExecutionRequests')
+VDEC_VIEWS['ExecutionRequests'] = vdec_winx('ExecutionRequests', None, 'e2e_vwx_ExecutionRequests')
 VROOT_SHAPES['ExecutionRequests'] = vroot_container
 SUPPORT_OUT['e2e_rb.bend'] = rb_text(RB_NAMES)
 for _X, (_m, _ls) in RL_LISTS.items():
