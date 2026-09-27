@@ -17,6 +17,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import var_win as W  # noqa: E402
+import var_bytes as VBY  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = 'big_var_winx_l1099511627776_Validator.bend'
@@ -364,35 +365,56 @@ LIMN = 'Nat.mul(U32.to_nat(1073741824), 1024n)'
 def spec_text():
     TR = 'FD.array__Tree<U32>'
     MP = 'Maybe<&2, +List<S.Part>>'
-    vals, parts, cats = [], [], []
+    vals, parts, cats, lsch = [], [], [], []
     for p_, c, sz in FIELDS:
         ws = words(c, sz)
         if p_ in ('b48', 'b32'):
             vals.append(f'S.BytesValue{{F.limbs([{", ".join(ws)}])}}')
             parts.append(f'S.Fixed{{F.limbs([{", ".join(ws)}])}}')
-            cats.append(f'F.bytes_part({ws[0]}, [{", ".join(ws[1:])}], {{==}})')
+            cats.append(f'F.bytes_part_n({ws[0]}, [{", ".join(ws[1:])}], {sz}n, {{==}}, {{==}})')
+            lsch.append(f'S.ByteVector{{{sz}n}}')
         elif p_ == 'u64':
             vals.append(f'S.UnsignedValue{{P.UInt{{{ws[0]}, {ws[1]}, 0, 0, 0, 0, 0, 0}}}}')
             parts.append(f'S.Fixed{{F.limbs([{ws[0]}, {ws[1]}])}}')
             cats.append(f'F.uint64_part({ws[0]}, {ws[1]})')
+            lsch.append('S.Unsigned{P.U64{}}')
         else:
             vals.append(f'S.BooleanValue{{U32.is_eq(LB(t, {ypos(c)}), 1)}}')
             parts.append(f'S.Fixed{{[LB(t, {ypos(c)})]}}')
+            lsch.append('S.Boolean{}')
             cats.append(f'Equal.cong(+List<U32>, {MP}, z => Some{{[S.Fixed{{z}}]}}, SP.boolean_encoding(U32.is_eq(LB(t, {ypos(c)}), 1)), [LB(t, {ypos(c)})], b01(LB(t, {ypos(c)}), hc))')
     n = len(FIELDS)
 
+    # named field suffixes (var_bytes.chain_defs): the chain's levels carry small calls
+    NV = ('RC', f'+t: {TR}, +y: Nat', 't, y', f'+t: {TR}, +y: Nat', 't, y')
+    CDEF = '\n'.join(VBY.chain_defs(*NV, vals, SCHS, parts))
+
     def itm(i):
-        return 'S.EmptyItems{}' if i == n else f'S.Items{{{vals[i]}, {itm(i + 1)}}}'
+        return f'RCV{i}(t, y)'
 
     def chain(i):
-        return 'S.End{}' if i == n else f'S.Chain{{{SCHS[i]}, {chain(i + 1)}}}'
+        return f'RCS{i}()'
+
+    # one def per field (callee first): ctl<i> proves the parts of the fields from i on. Each
+    # unfolds its named suffixes by one-step {==} rewrites and closes with VS.chain_fixed at the
+    # field's literal schema, so no level re-evaluates the parts of the fields after it (the
+    # nested F.cat_fixed chain did: its levels' types met only after whnf, which runs
+    # Codec.parts to the end), and a uint's field part meets its lemma's schema syntactically.
+    CTL = [f'def ctl{n}(+t: {TR}, +y: Nat, +hc: {{VCK(t, y) == {TRUE}}}) -> {{Codec.parts(RCV{n}(t, y), RCS{n}()) == Some{{RCP{n}(t, y)}} : {MP}}}: {{==}}']
+    for i in range(n - 1, -1, -1):
+        xs = parts[i][len('S.Fixed{'):-1]
+        IT = f'S.Items{{{vals[i]}, RCV{i + 1}(t, y)}}'
+        CH = f'S.Chain{{{lsch[i]}, RCS{i + 1}()}}'
+        PP = f'Con{{{parts[i]}, RCP{i + 1}(t, y)}}'
+        CTL += [f'def ctl{i}(+t: {TR}, +y: Nat, +hc: {{VCK(t, y) == {TRUE}}}) -> {{Codec.parts(RCV{i}(t, y), RCS{i}()) == Some{{RCP{i}(t, y)}} : {MP}}}:',
+                f'  %Equal.sym(S.Value, RCV{i}(t, y), {IT}, {{==}}) : {{Codec.parts(_, RCS{i}()) == Some{{RCP{i}(t, y)}} : {MP}}}',
+                f'  %Equal.sym(S.Schema, RCS{i}(), {CH}, {{==}}) : {{Codec.parts({IT}, _) == Some{{RCP{i}(t, y)}} : {MP}}}',
+                f'  %Equal.sym(+List<S.Part>, RCP{i}(t, y), {PP}, {{==}}) : {{Codec.parts({IT}, {CH}) == Some{{_}} : {MP}}}',
+                f'  VS.chain_fixed({vals[i]}, RCV{i + 1}(t, y), {lsch[i]}, RCS{i + 1}(), {xs}, RCP{i + 1}(t, y), {cats[i]}, ctl{i + 1}(t, y, hc))']
+    CTLS = '\n'.join(CTL)
 
     def cat(i):
-        if i == n:
-            return '{==}'
-        xs = parts[i][len('S.Fixed{'):-1]
-        rest = '[' + ', '.join(parts[i + 1:]) + ']'
-        return f'F.cat_fixed(Codec.parts({vals[i]}, {SCHS[i]}), {xs}, Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, {cats[i]},\n    {cat(i + 1)})'
+        return 'ctl0(t, y, hc)'
     RPS = '[' + ', '.join(parts) + ']'
     FPR = '[]'
     for pt in reversed(parts):
@@ -453,6 +475,8 @@ def wx1(+d: Nat, +t: FD.array__Tree<U32>, +k: Nat, +pf: {{FD.array__perfect(U32,
   Equal.trans(+List<U32>, UW.WX(t, k, 1n), [VBL.nthb(UW.WX(t, k, 1n), 0n)], [VBL.nthb(UA.BYT(t), Nat.add(k, 0n))], e1,
     Equal.cong(U32, +List<U32>, z => [z], VBL.nthb(UW.WX(t, k, 1n), 0n), VBL.nthb(UA.BYT(t), Nat.add(k, 0n)), e2))
 
+# The record's value, through its named field suffixes.
+{CDEF}
 def RVAL(+t: {TR}, +y: Nat) -> S.Value: S.Sequence{{{itm(0)}}}
 
 # The record's bytes are the window's {RS} bytes at y.
@@ -472,10 +496,12 @@ def winR({RY2})
     {{List.append(&2, U32, {FPR}, []) == List.append(&2, U32, F.limbs(UR.RWS(22n, t, y)), List.append(&2, U32, [LB(t, a)], _)) : +List<U32>}}
   {{==}}
 
+{CTLS}
+
 # A valid record's spec parts: one fixed part, the window's {RS} bytes at y.
 def rprt({RY2}, +hc: {{VCK(t, y) == {TRUE}}})
     -> {{Codec.parts(RVAL(t, y), Spec.Schema58()) == {TGTF} : {MP}}}:
-  %Equal.sym({MP}, Codec.parts({itm(0)}, {chain(0)}), Some{{{RPS}}},
+  %Equal.sym({MP}, Codec.parts({itm(0)}, {chain(0)}), Some{{RCP0(t, y)}},
       {cat(0)}) :
     {{Codec.aggregate(_, Some{{{RS}n}}) == {TGTF} : {MP}}}
   %Equal.sym(Maybe<&2, +List<U32>>, Layout.encoding({RPS}), Some{{List.append(&2, U32, {FPR}, [])}},
