@@ -4,7 +4,6 @@ interface of proofs/obj/vua_win.bend): BeaconBlockBody, whose four fixed and
 nine variable fields are read by their own window modules.
 
     python3 codegen/var_winb.py [--check] [--no-big]
-    python3 codegen/var_winb.py --test NAME OUT    (a test module, not tracked)
 
 The container at a window at byte offset x (x = to_nat off), length len:
 
@@ -68,8 +67,6 @@ CHILD_MOD = {
     'l134217728_PendingPartialWithdrawal': 'big_var_winx_l134217728_PendingPartialWithdrawal.bend',
     'l262144_PendingConsolidation': 'big_var_winx_l262144_PendingConsolidation.bend',
 }
-# containers written only with --pending (not yet checked)
-PENDING = set()
 # the fixed-field modules (at any byte position) of the containers generated with window slices
 FIXMOD = {p: f'vfx_{p}.bend' for p in ['u64', 'b32', 'Fork', 'BeaconBlockHeader', 'v8192_b32', 'Eth1Data', 'v65536_b32', 'v8192_u64', 'bv4',
                                          'Checkpoint', 'SyncCommittee', 'v64_u64', 'u8', 'u16', 'bv1', 'bv2', 'bv8', 'bv256', 'bv257', 'bv1280', 'bv1281', 'v4_GcDC3E457711']}
@@ -1604,26 +1601,10 @@ def layout(name, sym=False, fixmod=None, generic=False):
 
 def main():
     VL.SL.EXACT = True   # the exact spec-parts proofs (codegen/spec_laws.py), before any walk
-    if '--test-sym' in sys.argv:
-        # a container whose fixed fields are read by the modules given as prefix=module pairs
-        a = sys.argv.index('--test-sym')
-        name, out = sys.argv[a + 1], sys.argv[a + 2]
-        fm = dict(kv.split('=') for kv in sys.argv[a + 3].split(','))
-        Path(out).write_text(module_text(layout(name, True, fm)))
-        print('wrote ' + out)
-        return
-    if '--test' in sys.argv:
-        a = sys.argv.index('--test')
-        name, out = sys.argv[a + 1], sys.argv[a + 2]
-        Path(out).write_text(module_text(layout(name)))
-        print('wrote ' + out)
-        return
     no_big = '--no-big' in sys.argv
     out = {}
     for name, fn, sym in MODULES:
         if no_big and fn.startswith('big_'):
-            continue
-        if name in PENDING and '--pending' not in sys.argv:
             continue
         L = layout(name, sym, FIXMOD)
         # a container is generated once all its children's (and fixed fields') modules exist

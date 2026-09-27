@@ -110,11 +110,6 @@ def generic_names():
     return rows
 
 
-def fulu_names():
-    import schema
-    return list(schema.load(ROOT / 'codegen/fulu.yaml').keys())
-
-
 BASIC = {'boolean'} | {f'uint{8 * k}' for k in (1, 2, 4, 8, 16, 32)}
 
 

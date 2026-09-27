@@ -47,8 +47,7 @@ import ../../types/primitive.bend as P2_P
 import ../../spec/primitives.bend as P2_SP
 import ../../spec/decoding_relation.bend as P2_Decoding
 import ../../spec/fulu_schemas.bend as P2_Spec
-import ../decode_complete.bend as P2_E
-import ../../proofs/fulu_legality.bend as P2_Legal
+import ../decode_unique.bend as P2_E
 import ../obj/spec_fixed.bend as P2_F
 import ../obj/spec_rec_Validator.bend as P2_C
 import ../obj/spec_rec_unique_Validator.bend as P2_PRV

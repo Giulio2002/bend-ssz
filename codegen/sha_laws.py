@@ -10,8 +10,8 @@ vendored FIPS 180-4 `sha256_bytes` of the 64 bytes `bytes(l) ++ bytes(r)`.
 
 The checker normalizes eagerly and without sharing, so a type that contains
 the 48-round message schedule of a concretely shaped block, or 16 unfolded
-rounds from a concrete state, does not check in practice (measured, see
-WORK_LOG.md). Nothing here normalizes SHA-256. Instead:
+rounds from a concrete state, does not check in practice (measured).
+Nothing here normalizes SHA-256. Instead:
 
 * `node_blocks` states the two compressions of a 64-byte message for an
   ARBITRARY round count `extra` and start state `s0`. With both variable the

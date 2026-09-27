@@ -202,7 +202,7 @@ def shl_by(+x: U32, +k: U32) -> U32:
 # a hash is the caller's own packed array - no second structure, no sharing,
 # and every access is eight O(1) word reads or writes.
 #
-# (Measured alternatives, see WORK_LOG: a duplicable binary tree of digests
+# (Measured alternatives: a duplicable binary tree of digests
 # cost ~150 ns per access and made the stack most of a small root's time;
 # four- and sixteen-way trees were slower or did not fit the compile budget.)
 

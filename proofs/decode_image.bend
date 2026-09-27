@@ -18,7 +18,7 @@ import ./complete_walk.bend as CWalk
 import ./complete_regions.bend as CReg
 import ./complete_decode.bend as CDec
 import ./encoding_domain.bend as ED
-import ./decode_top.bend as DT
+import ./decode_region.bend as DT
 
 # Completeness of the public list entry point: every byte string in the
 # canonical image of a legal type is accepted, and decodes to exactly the

@@ -23,8 +23,7 @@ import ../../types/schema.bend as P2_S
 import ../../types/primitive.bend as P2_P
 import ../../spec/decoding_relation.bend as P2_Decoding
 import ../obj/generic_specs.bend as P2_Spec
-import ../decode_complete.bend as P2_E
-import ../type_validator_soundness.bend as P2_VS
+import ../decode_unique.bend as P2_E
 import ../obj/spec_fixed.bend as P2_F
 import ../obj/spec_bits.bend as P2_FB
 import ../obj/spec_gcodec_GtC923FCB2DA.bend as P2_C0

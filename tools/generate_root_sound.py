@@ -67,8 +67,8 @@ import ./root_steps.bend as G
 import ./root_relation_leaves.bend as Leaves
 import ./decode_facts.bend as F
 import ./decode_shape.bend as Shape
-import ./decode_goal.bend as DG
-import ./decode_inverse.bend as Lookups
+import ./schema_lookups.bend as DG
+import ./schema_lookups.bend as Lookups
 import ./schema.bend as Sch
 import ./schema_forest.bend as Forest
 import ./codec_composition.bend as Composition

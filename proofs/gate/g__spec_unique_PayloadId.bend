@@ -3,8 +3,7 @@ import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/decoding_relation.bend as Decoding
 import ../../spec/fulu_schemas.bend as Spec
-import ../decode_complete.bend as E
-import ../../proofs/fulu_legality.bend as Legal
+import ../decode_unique.bend as E
 import ../obj/spec_fixed.bend as F
 import ../obj/spec_bits.bend as FB
 import ../obj/spec_codec_PayloadId.bend as C0

@@ -3,8 +3,7 @@ import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/generic_specs.bend as Spec
-import ../decode_complete.bend as E
-import ../type_validator_soundness.bend as VS
+import ../decode_unique.bend as E
 import ../obj/spec_fixed.bend as F
 import ../obj/spec_bits.bend as FB
 import ../obj/spec_gcodec_GtF45E42B273.bend as C0

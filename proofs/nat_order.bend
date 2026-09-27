@@ -1,7 +1,19 @@
 import Base
-import ./tree.bend as Tree
 import ./word_facts.bend as W
 import ./packing.bend as Pack
+
+# tree.bend's double_add, here so that this module does not import tree.bend (and
+# through it the SHA-256 conformance proofs: decode_image imports this module).
+law double_add:
+  for +n: Nat
+  {Nat.double(n) == Nat.add(n, n) : Nat}
+def double_add(n):
+  match n:
+    case 0n: {==}
+    case 1n+p:
+      %Equal.sym(Nat, Nat.add(p, 1n+p), 1n+Nat.add(p, p), Pack.add_succ(p, p)) : {Nat.double(1n+p) == 1n+_ : Nat}
+      %double_add(p) : {2n+Nat.double(p) == 2n+_ : Nat}
+      {==}
 
 law zero_le:
   for n: Nat
@@ -111,7 +123,7 @@ def double_grows(n, e):
   match n:
     case 0n: Empty.absurd({False{} == True{} : Bool}, W.false_true(e))
     case 1n+p:
-      %Equal.sym(Nat, Nat.double(p), Nat.add(p, p), Tree.double_add(p)) : {Nat.is_le(p, _) == True{} : Bool}
+      %Equal.sym(Nat, Nat.double(p), Nat.add(p, p), double_add(p)) : {Nat.is_le(p, _) == True{} : Bool}
       below_sum(p, p)
 
 law advance_budget:
