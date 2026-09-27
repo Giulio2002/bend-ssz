@@ -87,70 +87,206 @@ def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32,
     -> {FuluIndexedAttestation_r.IndexedAttestation_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
   ok_len(d, t, n, U32.is_le(228, n), hd, hpo, pf)
 
+def za_zero_le(+n: Nat) -> {Nat.is_le(0n, n) == True{} : Bool}:
+  match n:
+    case 0n: {==}
+    case 1n+p: {==}
+law za_le_ne:
+  for +a: Nat
+  for +b: Nat
+  for +h: {Nat.is_le(a, b) == True{} : Bool}
+  for +ne: {Nat.is_eq(b, a) == False{} : Bool}
+  {Nat.is_lt(a, b) == True{} : Bool}
+def za_le_ne(a, b, h, ne):
+  match a b:
+    case 0n 0n: Empty.absurd({Nat.is_lt(0n, 0n) == True{} : Bool}, FD.logic__true_false(ne))
+    case 0n 1n+q: {==}
+    case 1n+p 0n: Empty.absurd({Nat.is_lt(1n+p, 0n) == True{} : Bool}, FD.logic__false_true(h))
+    case 1n+ +p 1n+ +q: za_le_ne(p, q, h, ne)
+def za_z0(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 0n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 0n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 0, FD.u32__injective(du, 0, Equal.trans(Nat, U32.to_nat(du), k, 0n, e, ek))) : {B.zeros(_) == Array.new(U32, 0n, 0) : Array<U32>}
+  {==}
+def za_z1(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 1n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 1n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 1, FD.u32__injective(du, 1, Equal.trans(Nat, U32.to_nat(du), k, 1n, e, ek))) : {B.zeros(_) == Array.new(U32, 1n, 0) : Array<U32>}
+  {==}
+def za_z2(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 2n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 2n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 2, FD.u32__injective(du, 2, Equal.trans(Nat, U32.to_nat(du), k, 2n, e, ek))) : {B.zeros(_) == Array.new(U32, 2n, 0) : Array<U32>}
+  {==}
+def za_z3(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 3n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 3n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 3, FD.u32__injective(du, 3, Equal.trans(Nat, U32.to_nat(du), k, 3n, e, ek))) : {B.zeros(_) == Array.new(U32, 3n, 0) : Array<U32>}
+  {==}
+def za_z4(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 4n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 4n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 4, FD.u32__injective(du, 4, Equal.trans(Nat, U32.to_nat(du), k, 4n, e, ek))) : {B.zeros(_) == Array.new(U32, 4n, 0) : Array<U32>}
+  {==}
+def za_z5(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 5n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 5n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 5, FD.u32__injective(du, 5, Equal.trans(Nat, U32.to_nat(du), k, 5n, e, ek))) : {B.zeros(_) == Array.new(U32, 5n, 0) : Array<U32>}
+  {==}
+def za_z6(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 6n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 6n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 6, FD.u32__injective(du, 6, Equal.trans(Nat, U32.to_nat(du), k, 6n, e, ek))) : {B.zeros(_) == Array.new(U32, 6n, 0) : Array<U32>}
+  {==}
+def za_z7(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 7n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 7n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 7, FD.u32__injective(du, 7, Equal.trans(Nat, U32.to_nat(du), k, 7n, e, ek))) : {B.zeros(_) == Array.new(U32, 7n, 0) : Array<U32>}
+  {==}
+def za_z8(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 8n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 8n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 8, FD.u32__injective(du, 8, Equal.trans(Nat, U32.to_nat(du), k, 8n, e, ek))) : {B.zeros(_) == Array.new(U32, 8n, 0) : Array<U32>}
+  {==}
+def za_z9(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 9n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 9n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 9, FD.u32__injective(du, 9, Equal.trans(Nat, U32.to_nat(du), k, 9n, e, ek))) : {B.zeros(_) == Array.new(U32, 9n, 0) : Array<U32>}
+  {==}
+def za_z10(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 10n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 10n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 10, FD.u32__injective(du, 10, Equal.trans(Nat, U32.to_nat(du), k, 10n, e, ek))) : {B.zeros(_) == Array.new(U32, 10n, 0) : Array<U32>}
+  {==}
+def za_z11(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 11n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 11n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 11, FD.u32__injective(du, 11, Equal.trans(Nat, U32.to_nat(du), k, 11n, e, ek))) : {B.zeros(_) == Array.new(U32, 11n, 0) : Array<U32>}
+  {==}
+def za_z12(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 12n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 12n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 12, FD.u32__injective(du, 12, Equal.trans(Nat, U32.to_nat(du), k, 12n, e, ek))) : {B.zeros(_) == Array.new(U32, 12n, 0) : Array<U32>}
+  {==}
+def za_z13(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 13n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 13n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 13, FD.u32__injective(du, 13, Equal.trans(Nat, U32.to_nat(du), k, 13n, e, ek))) : {B.zeros(_) == Array.new(U32, 13n, 0) : Array<U32>}
+  {==}
+def za_z14(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 14n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 14n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 14, FD.u32__injective(du, 14, Equal.trans(Nat, U32.to_nat(du), k, 14n, e, ek))) : {B.zeros(_) == Array.new(U32, 14n, 0) : Array<U32>}
+  {==}
+def za_z15(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 15n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 15n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 15, FD.u32__injective(du, 15, Equal.trans(Nat, U32.to_nat(du), k, 15n, e, ek))) : {B.zeros(_) == Array.new(U32, 15n, 0) : Array<U32>}
+  {==}
+def za_z16(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 16n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 16n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 16, FD.u32__injective(du, 16, Equal.trans(Nat, U32.to_nat(du), k, 16n, e, ek))) : {B.zeros(_) == Array.new(U32, 16n, 0) : Array<U32>}
+  {==}
+def za_z17(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 17n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 17n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 17, FD.u32__injective(du, 17, Equal.trans(Nat, U32.to_nat(du), k, 17n, e, ek))) : {B.zeros(_) == Array.new(U32, 17n, 0) : Array<U32>}
+  {==}
+def za_z18(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 18n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 18n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 18, FD.u32__injective(du, 18, Equal.trans(Nat, U32.to_nat(du), k, 18n, e, ek))) : {B.zeros(_) == Array.new(U32, 18n, 0) : Array<U32>}
+  {==}
+def za_z19(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +ek: {k == 19n : Nat}) -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  %Equal.sym(Nat, k, 19n, ek) : {B.zeros(du) == Array.new(U32, _, 0) : Array<U32>}
+  %Equal.sym(U32, du, 19, FD.u32__injective(du, 19, Equal.trans(Nat, U32.to_nat(du), k, 19n, e, ek))) : {B.zeros(_) == Array.new(U32, 19n, 0) : Array<U32>}
+  {==}
+def za_d19(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(19n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 19n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z19(du, k, e, FD.nat__eq_from_is_eq(k, 19n, ec))
+    case False{}: Empty.absurd({B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}, FD.logic__false_true(FD.nat__le_trans(20n, k, 19n, FD.nat__lt_succ_le_succ(19n, k, za_le_ne(19n, k, hJ, ec)), hk)))
+def za_d18(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(18n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 18n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z18(du, k, e, FD.nat__eq_from_is_eq(k, 18n, ec))
+    case False{}: za_d19(du, k, e, hk, FD.nat__lt_succ_le_succ(18n, k, za_le_ne(18n, k, hJ, ec)), Nat.is_eq(k, 19n), {==})
+def za_d17(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(17n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 17n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z17(du, k, e, FD.nat__eq_from_is_eq(k, 17n, ec))
+    case False{}: za_d18(du, k, e, hk, FD.nat__lt_succ_le_succ(17n, k, za_le_ne(17n, k, hJ, ec)), Nat.is_eq(k, 18n), {==})
+def za_d16(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(16n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 16n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z16(du, k, e, FD.nat__eq_from_is_eq(k, 16n, ec))
+    case False{}: za_d17(du, k, e, hk, FD.nat__lt_succ_le_succ(16n, k, za_le_ne(16n, k, hJ, ec)), Nat.is_eq(k, 17n), {==})
+def za_d15(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(15n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 15n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z15(du, k, e, FD.nat__eq_from_is_eq(k, 15n, ec))
+    case False{}: za_d16(du, k, e, hk, FD.nat__lt_succ_le_succ(15n, k, za_le_ne(15n, k, hJ, ec)), Nat.is_eq(k, 16n), {==})
+def za_d14(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(14n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 14n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z14(du, k, e, FD.nat__eq_from_is_eq(k, 14n, ec))
+    case False{}: za_d15(du, k, e, hk, FD.nat__lt_succ_le_succ(14n, k, za_le_ne(14n, k, hJ, ec)), Nat.is_eq(k, 15n), {==})
+def za_d13(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(13n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 13n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z13(du, k, e, FD.nat__eq_from_is_eq(k, 13n, ec))
+    case False{}: za_d14(du, k, e, hk, FD.nat__lt_succ_le_succ(13n, k, za_le_ne(13n, k, hJ, ec)), Nat.is_eq(k, 14n), {==})
+def za_d12(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(12n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 12n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z12(du, k, e, FD.nat__eq_from_is_eq(k, 12n, ec))
+    case False{}: za_d13(du, k, e, hk, FD.nat__lt_succ_le_succ(12n, k, za_le_ne(12n, k, hJ, ec)), Nat.is_eq(k, 13n), {==})
+def za_d11(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(11n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 11n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z11(du, k, e, FD.nat__eq_from_is_eq(k, 11n, ec))
+    case False{}: za_d12(du, k, e, hk, FD.nat__lt_succ_le_succ(11n, k, za_le_ne(11n, k, hJ, ec)), Nat.is_eq(k, 12n), {==})
+def za_d10(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(10n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 10n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z10(du, k, e, FD.nat__eq_from_is_eq(k, 10n, ec))
+    case False{}: za_d11(du, k, e, hk, FD.nat__lt_succ_le_succ(10n, k, za_le_ne(10n, k, hJ, ec)), Nat.is_eq(k, 11n), {==})
+def za_d9(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(9n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 9n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z9(du, k, e, FD.nat__eq_from_is_eq(k, 9n, ec))
+    case False{}: za_d10(du, k, e, hk, FD.nat__lt_succ_le_succ(9n, k, za_le_ne(9n, k, hJ, ec)), Nat.is_eq(k, 10n), {==})
+def za_d8(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(8n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 8n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z8(du, k, e, FD.nat__eq_from_is_eq(k, 8n, ec))
+    case False{}: za_d9(du, k, e, hk, FD.nat__lt_succ_le_succ(8n, k, za_le_ne(8n, k, hJ, ec)), Nat.is_eq(k, 9n), {==})
+def za_d7(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(7n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 7n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z7(du, k, e, FD.nat__eq_from_is_eq(k, 7n, ec))
+    case False{}: za_d8(du, k, e, hk, FD.nat__lt_succ_le_succ(7n, k, za_le_ne(7n, k, hJ, ec)), Nat.is_eq(k, 8n), {==})
+def za_d6(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(6n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 6n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z6(du, k, e, FD.nat__eq_from_is_eq(k, 6n, ec))
+    case False{}: za_d7(du, k, e, hk, FD.nat__lt_succ_le_succ(6n, k, za_le_ne(6n, k, hJ, ec)), Nat.is_eq(k, 7n), {==})
+def za_d5(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(5n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 5n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z5(du, k, e, FD.nat__eq_from_is_eq(k, 5n, ec))
+    case False{}: za_d6(du, k, e, hk, FD.nat__lt_succ_le_succ(5n, k, za_le_ne(5n, k, hJ, ec)), Nat.is_eq(k, 6n), {==})
+def za_d4(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(4n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 4n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z4(du, k, e, FD.nat__eq_from_is_eq(k, 4n, ec))
+    case False{}: za_d5(du, k, e, hk, FD.nat__lt_succ_le_succ(4n, k, za_le_ne(4n, k, hJ, ec)), Nat.is_eq(k, 5n), {==})
+def za_d3(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(3n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 3n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z3(du, k, e, FD.nat__eq_from_is_eq(k, 3n, ec))
+    case False{}: za_d4(du, k, e, hk, FD.nat__lt_succ_le_succ(3n, k, za_le_ne(3n, k, hJ, ec)), Nat.is_eq(k, 4n), {==})
+def za_d2(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(2n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 2n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z2(du, k, e, FD.nat__eq_from_is_eq(k, 2n, ec))
+    case False{}: za_d3(du, k, e, hk, FD.nat__lt_succ_le_succ(2n, k, za_le_ne(2n, k, hJ, ec)), Nat.is_eq(k, 3n), {==})
+def za_d1(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(1n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 1n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z1(du, k, e, FD.nat__eq_from_is_eq(k, 1n, ec))
+    case False{}: za_d2(du, k, e, hk, FD.nat__lt_succ_le_succ(1n, k, za_le_ne(1n, k, hJ, ec)), Nat.is_eq(k, 2n), {==})
+def za_d0(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool}, +hJ: {Nat.is_le(0n, k) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(k, 0n) == c : Bool})
+    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
+  match c:
+    case True{}: za_z0(du, k, e, FD.nat__eq_from_is_eq(k, 0n, ec))
+    case False{}: za_d1(du, k, e, hk, FD.nat__lt_succ_le_succ(0n, k, za_le_ne(0n, k, hJ, ec)), Nat.is_eq(k, 1n), {==})
 def zeros_at(+du: U32, +k: Nat, +e: {U32.to_nat(du) == k : Nat}, +hk: {Nat.is_le(k, 19n) == True{} : Bool})
     -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:
-  match k:
-    case 0n:
-      %Equal.sym(U32, du, 0, FD.u32__injective(du, 0, e)) : {B.zeros(_) == Array.new(U32, 0n, 0) : Array<U32>}
-      {==}
-    case 1n:
-      %Equal.sym(U32, du, 1, FD.u32__injective(du, 1, e)) : {B.zeros(_) == Array.new(U32, 1n, 0) : Array<U32>}
-      {==}
-    case 2n:
-      %Equal.sym(U32, du, 2, FD.u32__injective(du, 2, e)) : {B.zeros(_) == Array.new(U32, 2n, 0) : Array<U32>}
-      {==}
-    case 3n:
-      %Equal.sym(U32, du, 3, FD.u32__injective(du, 3, e)) : {B.zeros(_) == Array.new(U32, 3n, 0) : Array<U32>}
-      {==}
-    case 4n:
-      %Equal.sym(U32, du, 4, FD.u32__injective(du, 4, e)) : {B.zeros(_) == Array.new(U32, 4n, 0) : Array<U32>}
-      {==}
-    case 5n:
-      %Equal.sym(U32, du, 5, FD.u32__injective(du, 5, e)) : {B.zeros(_) == Array.new(U32, 5n, 0) : Array<U32>}
-      {==}
-    case 6n:
-      %Equal.sym(U32, du, 6, FD.u32__injective(du, 6, e)) : {B.zeros(_) == Array.new(U32, 6n, 0) : Array<U32>}
-      {==}
-    case 7n:
-      %Equal.sym(U32, du, 7, FD.u32__injective(du, 7, e)) : {B.zeros(_) == Array.new(U32, 7n, 0) : Array<U32>}
-      {==}
-    case 8n:
-      %Equal.sym(U32, du, 8, FD.u32__injective(du, 8, e)) : {B.zeros(_) == Array.new(U32, 8n, 0) : Array<U32>}
-      {==}
-    case 9n:
-      %Equal.sym(U32, du, 9, FD.u32__injective(du, 9, e)) : {B.zeros(_) == Array.new(U32, 9n, 0) : Array<U32>}
-      {==}
-    case 10n:
-      %Equal.sym(U32, du, 10, FD.u32__injective(du, 10, e)) : {B.zeros(_) == Array.new(U32, 10n, 0) : Array<U32>}
-      {==}
-    case 11n:
-      %Equal.sym(U32, du, 11, FD.u32__injective(du, 11, e)) : {B.zeros(_) == Array.new(U32, 11n, 0) : Array<U32>}
-      {==}
-    case 12n:
-      %Equal.sym(U32, du, 12, FD.u32__injective(du, 12, e)) : {B.zeros(_) == Array.new(U32, 12n, 0) : Array<U32>}
-      {==}
-    case 13n:
-      %Equal.sym(U32, du, 13, FD.u32__injective(du, 13, e)) : {B.zeros(_) == Array.new(U32, 13n, 0) : Array<U32>}
-      {==}
-    case 14n:
-      %Equal.sym(U32, du, 14, FD.u32__injective(du, 14, e)) : {B.zeros(_) == Array.new(U32, 14n, 0) : Array<U32>}
-      {==}
-    case 15n:
-      %Equal.sym(U32, du, 15, FD.u32__injective(du, 15, e)) : {B.zeros(_) == Array.new(U32, 15n, 0) : Array<U32>}
-      {==}
-    case 16n:
-      %Equal.sym(U32, du, 16, FD.u32__injective(du, 16, e)) : {B.zeros(_) == Array.new(U32, 16n, 0) : Array<U32>}
-      {==}
-    case 17n:
-      %Equal.sym(U32, du, 17, FD.u32__injective(du, 17, e)) : {B.zeros(_) == Array.new(U32, 17n, 0) : Array<U32>}
-      {==}
-    case 18n:
-      %Equal.sym(U32, du, 18, FD.u32__injective(du, 18, e)) : {B.zeros(_) == Array.new(U32, 18n, 0) : Array<U32>}
-      {==}
-    case 19n:
-      %Equal.sym(U32, du, 19, FD.u32__injective(du, 19, e)) : {B.zeros(_) == Array.new(U32, 19n, 0) : Array<U32>}
-      {==}
-    case 20n+p: Empty.absurd({B.zeros(du) == Array.new(U32, 20n+p, 0) : Array<U32>}, FD.logic__false_true(hk))
+  za_d0(du, k, e, hk, za_zero_le(k), Nat.is_eq(k, 0n), {==})
+
 
 def v8() -> Word(31n): FD.spec_numeric__from_nat(31n, 8n)
 def LL(+n: U32) -> U32: U32.sub(n, 228)
