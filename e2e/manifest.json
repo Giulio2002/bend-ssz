@@ -1392,7 +1392,7 @@
     "laws": [
      "vec_uint128_1_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v16(o, Spec.Gt3FD98F54A5()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
+    "premise": "rep: PK.rep_v16(o, Spec.Gt3FD98F54A5()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint128_16",
@@ -1400,7 +1400,7 @@
     "laws": [
      "vec_uint128_16_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v16(o, Spec.Gt3EC8B89B94()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 7, which every decoded object has"
+    "premise": "rep: PK.rep_v16(o, Spec.Gt3EC8B89B94()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint128_2",
@@ -1408,7 +1408,7 @@
     "laws": [
      "vec_uint128_2_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v16(o, Spec.Gt7D65FF3A10()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7D65FF3A10()) (the root law's representation invariant: the validity premise for generic forms)"
    }
   ],
   "vec_uint128_3_e2e_generated.bend": [
@@ -1418,7 +1418,7 @@
     "laws": [
      "vec_uint128_3_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v16(o, Spec.Gt7600AB7870()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 5, which every decoded object has"
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7600AB7870()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint128_31",
@@ -1426,7 +1426,7 @@
     "laws": [
      "vec_uint128_31_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v16(o, Spec.Gt6B1336E534()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 8, which every decoded object has"
+    "premise": "rep: PK.rep_v16(o, Spec.Gt6B1336E534()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint128_4",
@@ -1434,7 +1434,7 @@
     "laws": [
      "vec_uint128_4_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v16(o, Spec.GtB0CCEA154C()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 5, which every decoded object has"
+    "premise": "rep: PK.rep_v16(o, Spec.GtB0CCEA154C()) (the root law's representation invariant: the validity premise for generic forms)"
    }
   ],
   "vec_uint128_5_e2e_generated.bend": [
@@ -1444,7 +1444,7 @@
     "laws": [
      "vec_uint128_5_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v16(o, Spec.GtBB42F83A45()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 5, which every decoded object has"
+    "premise": "rep: PK.rep_v16(o, Spec.GtBB42F83A45()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint128_8",
@@ -1452,25 +1452,25 @@
     "laws": [
      "vec_uint128_8_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v16(o, Spec.Gt3E2A057F33()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 6, which every decoded object has"
-   },
+    "premise": "rep: PK.rep_v16(o, Spec.Gt3E2A057F33()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint256_1_e2e_generated.bend": [
    {
     "name": "vec_uint256_1",
     "generated_name": "GtBBFD66E011",
     "laws": [
      "vec_uint256_1_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v32(o, Spec.GtBBFD66E011()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
-   }
-  ],
-  "vec_uint256_16_e2e_generated.bend": [
+    "premise": "rep: PK.rep_v32(o, Spec.GtBBFD66E011()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
    {
     "name": "vec_uint256_16",
     "generated_name": "Gt3E6E18CD57",
     "laws": [
      "vec_uint256_16_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v32(o, Spec.Gt3E6E18CD57()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 8, which every decoded object has"
+    "premise": "rep: PK.rep_v32(o, Spec.Gt3E6E18CD57()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint256_2",
@@ -1478,15 +1478,7 @@
     "laws": [
      "vec_uint256_2_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v32(o, Spec.GtB91D4D285D()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 5, which every decoded object has"
-   },
-   {
-    "name": "vec_uint256_31",
-    "generated_name": "Gt6E9B243B7C",
-    "laws": [
-     "vec_uint256_31_e2e_encode"
-    ],
-    "premise": "rep: PK.rep_v32(o, Spec.Gt6E9B243B7C()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 8, which every decoded object has"
+    "premise": "rep: PK.rep_v32(o, Spec.GtB91D4D285D()) (the root law's representation invariant: the validity premise for generic forms)"
    }
   ],
   "vec_uint256_3_e2e_generated.bend": [
@@ -1496,7 +1488,15 @@
     "laws": [
      "vec_uint256_3_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v32(o, Spec.Gt2E7060B297()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 5, which every decoded object has"
+    "premise": "rep: PK.rep_v32(o, Spec.Gt2E7060B297()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint256_31",
+    "generated_name": "Gt6E9B243B7C",
+    "laws": [
+     "vec_uint256_31_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt6E9B243B7C()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint256_4",
@@ -1504,33 +1504,35 @@
     "laws": [
      "vec_uint256_4_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v32(o, Spec.Gt74B2AF1CB3()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 6, which every decoded object has"
-   },
+    "premise": "rep: PK.rep_v32(o, Spec.Gt74B2AF1CB3()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint256_5_e2e_generated.bend": [
    {
     "name": "vec_uint256_5",
     "generated_name": "Gt0B1B711C4D",
     "laws": [
      "vec_uint256_5_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v32(o, Spec.Gt0B1B711C4D()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 6, which every decoded object has"
-   }
-  ],
-  "vec_uint256_8_e2e_generated.bend": [
+    "premise": "rep: PK.rep_v32(o, Spec.Gt0B1B711C4D()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
    {
     "name": "vec_uint256_8",
     "generated_name": "GtFAE59DA275",
     "laws": [
      "vec_uint256_8_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v32(o, Spec.GtFAE59DA275()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 7, which every decoded object has"
-   },
+    "premise": "rep: PK.rep_v32(o, Spec.GtFAE59DA275()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint32_1_e2e_generated.bend": [
    {
     "name": "vec_uint32_1",
     "generated_name": "Gt669C528764",
     "laws": [
      "vec_uint32_1_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v4(o, Spec.Gt669C528764()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
+    "premise": "rep: PK.rep_v4(o, Spec.Gt669C528764()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint32_16",
@@ -1538,25 +1540,25 @@
     "laws": [
      "vec_uint32_16_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v4(o, Spec.Gt3CC580499F()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 5, which every decoded object has"
-   }
-  ],
-  "vec_uint32_2_e2e_generated.bend": [
+    "premise": "rep: PK.rep_v4(o, Spec.Gt3CC580499F()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
    {
     "name": "vec_uint32_2",
     "generated_name": "GtF45E42B273",
     "laws": [
      "vec_uint32_2_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v4(o, Spec.GtF45E42B273()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
-   },
+    "premise": "rep: PK.rep_v4(o, Spec.GtF45E42B273()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint32_3_e2e_generated.bend": [
    {
     "name": "vec_uint32_3",
     "generated_name": "GtD1AEF07F7D",
     "laws": [
      "vec_uint32_3_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v4(o, Spec.GtD1AEF07F7D()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
+    "premise": "rep: PK.rep_v4(o, Spec.GtD1AEF07F7D()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint32_31",
@@ -1564,25 +1566,25 @@
     "laws": [
      "vec_uint32_31_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v4(o, Spec.GtE528AAE3C6()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 6, which every decoded object has"
-   }
-  ],
-  "vec_uint32_4_e2e_generated.bend": [
+    "premise": "rep: PK.rep_v4(o, Spec.GtE528AAE3C6()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
    {
     "name": "vec_uint32_4",
     "generated_name": "Gt240C147AA2",
     "laws": [
      "vec_uint32_4_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v4(o, Spec.Gt240C147AA2()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
-   },
+    "premise": "rep: PK.rep_v4(o, Spec.Gt240C147AA2()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint32_5_e2e_generated.bend": [
    {
     "name": "vec_uint32_5",
     "generated_name": "Gt1719057EB7",
     "laws": [
      "vec_uint32_5_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v4(o, Spec.Gt1719057EB7()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
+    "premise": "rep: PK.rep_v4(o, Spec.Gt1719057EB7()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint32_8",
@@ -1590,7 +1592,7 @@
     "laws": [
      "vec_uint32_8_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v4(o, Spec.GtCCF6FFA0A0()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
+    "premise": "rep: PK.rep_v4(o, Spec.GtCCF6FFA0A0()) (the root law's representation invariant: the validity premise for generic forms)"
    }
   ],
   "vec_uint64_1_e2e_generated.bend": [
@@ -1600,7 +1602,7 @@
     "laws": [
      "vec_uint64_1_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v8(o, Spec.GtADC8DCD962()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
+    "premise": "rep: PK.rep_v8(o, Spec.GtADC8DCD962()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint64_16",
@@ -1608,7 +1610,7 @@
     "laws": [
      "vec_uint64_16_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v8(o, Spec.Gt0B4EF17D71()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 6, which every decoded object has"
+    "premise": "rep: PK.rep_v8(o, Spec.Gt0B4EF17D71()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint64_2",
@@ -1616,7 +1618,7 @@
     "laws": [
      "vec_uint64_2_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v8(o, Spec.GtC923FCB2DA()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
+    "premise": "rep: PK.rep_v8(o, Spec.GtC923FCB2DA()) (the root law's representation invariant: the validity premise for generic forms)"
    }
   ],
   "vec_uint64_3_e2e_generated.bend": [
@@ -1626,7 +1628,7 @@
     "laws": [
      "vec_uint64_3_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v8(o, Spec.Gt8E507C4540()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
+    "premise": "rep: PK.rep_v8(o, Spec.Gt8E507C4540()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint64_31",
@@ -1634,7 +1636,7 @@
     "laws": [
      "vec_uint64_31_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v8(o, Spec.Gt7D1CD7363A()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 7, which every decoded object has"
+    "premise": "rep: PK.rep_v8(o, Spec.Gt7D1CD7363A()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint64_4",
@@ -1642,7 +1644,7 @@
     "laws": [
      "vec_uint64_4_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v8(o, Spec.Gt46F5D7703F()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 4, which every decoded object has"
+    "premise": "rep: PK.rep_v8(o, Spec.Gt46F5D7703F()) (the root law's representation invariant: the validity premise for generic forms)"
    }
   ],
   "vec_uint64_5_e2e_generated.bend": [
@@ -1652,7 +1654,7 @@
     "laws": [
      "vec_uint64_5_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v8(o, Spec.Gt8FB0CF9679()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 5, which every decoded object has"
+    "premise": "rep: PK.rep_v8(o, Spec.Gt8FB0CF9679()) (the root law's representation invariant: the validity premise for generic forms)"
    },
    {
     "name": "vec_uint64_8",
@@ -1660,7 +1662,115 @@
     "laws": [
      "vec_uint64_8_e2e_encode"
     ],
-    "premise": "rep: PK.rep_v8(o, Spec.GtE470919895()) (the root law's representation invariant: the validity premise for generic forms); hc: storage at the canonical depth 5, which every decoded object has"
+    "premise": "rep: PK.rep_v8(o, Spec.GtE470919895()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint128_512_e2e_generated.bend": [
+   {
+    "name": "vec_uint128_512",
+    "generated_name": "Gt7274F61A0F",
+    "laws": [
+     "vec_uint128_512_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7274F61A0F()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint128_513",
+    "generated_name": "Gt9EA902108D",
+    "laws": [
+     "vec_uint128_513_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt9EA902108D()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint256_512",
+    "generated_name": "Gt274A0B8DC2",
+    "laws": [
+     "vec_uint256_512_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt274A0B8DC2()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint256_513_e2e_generated.bend": [
+   {
+    "name": "vec_uint256_513",
+    "generated_name": "Gt0A3B6B4128",
+    "laws": [
+     "vec_uint256_513_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt0A3B6B4128()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint32_512",
+    "generated_name": "Gt13AFE546ED",
+    "laws": [
+     "vec_uint32_512_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt13AFE546ED()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint32_513",
+    "generated_name": "Gt53D2408A5F",
+    "laws": [
+     "vec_uint32_513_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt53D2408A5F()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint64_512_e2e_generated.bend": [
+   {
+    "name": "vec_uint64_512",
+    "generated_name": "Gt843A1262ED",
+    "laws": [
+     "vec_uint64_512_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt843A1262ED()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint64_513",
+    "generated_name": "Gt10D6F42D74",
+    "laws": [
+     "vec_uint64_513_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt10D6F42D74()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "FuluFinalityBranch_e2e_generated.bend": [
+   {
+    "name": "FuluFinalityBranch",
+    "generated_name": "FinalityBranch",
+    "laws": [
+     "FuluFinalityBranch_e2e_encode"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   }
+  ],
+  "FuluCurrentSyncCommitteeBranch_e2e_generated.bend": [
+   {
+    "name": "FuluCurrentSyncCommitteeBranch",
+    "generated_name": "CurrentSyncCommitteeBranch",
+    "laws": [
+     "FuluCurrentSyncCommitteeBranch_e2e_encode"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   },
+   {
+    "name": "FuluNextSyncCommitteeBranch",
+    "generated_name": "NextSyncCommitteeBranch",
+    "laws": [
+     "FuluNextSyncCommitteeBranch_e2e_encode"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   }
+  ],
+  "FuluExecutionBranch_e2e_generated.bend": [
+   {
+    "name": "FuluExecutionBranch",
+    "generated_name": "ExecutionBranch",
+    "laws": [
+     "FuluExecutionBranch_e2e_encode"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
    }
   ],
   "vec_uint128_1_e2e_dec_generated.bend": [
@@ -2256,6 +2366,106 @@
     ],
     "premise": "rep: PK.rep_v8(o, Spec.GtE470919895())"
    }
+  ],
+  "vec_uint128_512_e2e_root_generated.bend": [
+   {
+    "name": "vec_uint128_512",
+    "generated_name": "Gt7274F61A0F",
+    "laws": [
+     "vec_uint128_512_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7274F61A0F())"
+   },
+   {
+    "name": "vec_uint128_513",
+    "generated_name": "Gt9EA902108D",
+    "laws": [
+     "vec_uint128_513_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt9EA902108D())"
+   },
+   {
+    "name": "vec_uint256_512",
+    "generated_name": "Gt274A0B8DC2",
+    "laws": [
+     "vec_uint256_512_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt274A0B8DC2())"
+   },
+   {
+    "name": "vec_uint256_513",
+    "generated_name": "Gt0A3B6B4128",
+    "laws": [
+     "vec_uint256_513_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt0A3B6B4128())"
+   },
+   {
+    "name": "vec_uint32_512",
+    "generated_name": "Gt13AFE546ED",
+    "laws": [
+     "vec_uint32_512_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt13AFE546ED())"
+   },
+   {
+    "name": "vec_uint32_513",
+    "generated_name": "Gt53D2408A5F",
+    "laws": [
+     "vec_uint32_513_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt53D2408A5F())"
+   },
+   {
+    "name": "vec_uint64_512",
+    "generated_name": "Gt843A1262ED",
+    "laws": [
+     "vec_uint64_512_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt843A1262ED())"
+   },
+   {
+    "name": "vec_uint64_513",
+    "generated_name": "Gt10D6F42D74",
+    "laws": [
+     "vec_uint64_513_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt10D6F42D74())"
+   }
+  ],
+  "FuluFinalityBranch_e2e_root_generated.bend": [
+   {
+    "name": "FuluFinalityBranch",
+    "generated_name": "FinalityBranch",
+    "laws": [
+     "FuluFinalityBranch_e2e_root"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   },
+   {
+    "name": "FuluCurrentSyncCommitteeBranch",
+    "generated_name": "CurrentSyncCommitteeBranch",
+    "laws": [
+     "FuluCurrentSyncCommitteeBranch_e2e_root"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   },
+   {
+    "name": "FuluNextSyncCommitteeBranch",
+    "generated_name": "NextSyncCommitteeBranch",
+    "laws": [
+     "FuluNextSyncCommitteeBranch_e2e_root"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   },
+   {
+    "name": "FuluExecutionBranch",
+    "generated_name": "ExecutionBranch",
+    "laws": [
+     "FuluExecutionBranch_e2e_root"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   }
   ]
  },
  "uncovered": {
@@ -2274,10 +2484,6 @@
   "FuluBytes1": {
    "generated_name": "Bytes1",
    "reason": "root law not over every object (hypotheses or a representation)"
-  },
-  "FuluFinalityBranch": {
-   "generated_name": "FinalityBranch",
-   "reason": "encode laws not over the same free words / bits"
   },
   "FuluContributionAndProof": {
    "generated_name": "ContributionAndProof",
@@ -2331,14 +2537,6 @@
    "generated_name": "ParticipationFlags",
    "reason": "root law not over every object (hypotheses or a representation)"
   },
-  "FuluCurrentSyncCommitteeBranch": {
-   "generated_name": "CurrentSyncCommitteeBranch",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluNextSyncCommitteeBranch": {
-   "generated_name": "NextSyncCommitteeBranch",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "FuluTransaction": {
    "generated_name": "Transaction",
    "reason": "encode laws not over the same free words / bits"
@@ -2357,10 +2555,6 @@
   },
   "FuluBeaconState": {
    "generated_name": "BeaconState",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluExecutionBranch": {
-   "generated_name": "ExecutionBranch",
    "reason": "encode laws not over the same free words / bits"
   },
   "FuluLightClientHeader": {
@@ -2483,14 +2677,6 @@
    "generated_name": "Gt1C2FA69562",
    "reason": "encode laws not over the same free words / bits"
   },
-  "vec_uint128_512": {
-   "generated_name": "Gt7274F61A0F",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint128_513": {
-   "generated_name": "Gt9EA902108D",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "proglist_uint8": {
    "generated_name": "GtDE4B86A990",
    "reason": "encode laws not over the same free words / bits"
@@ -2583,36 +2769,12 @@
    "generated_name": "GtA8457965E2",
    "reason": "encode laws not over the same free words / bits"
   },
-  "vec_uint256_512": {
-   "generated_name": "Gt274A0B8DC2",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint256_513": {
-   "generated_name": "Gt0A3B6B4128",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "proglist_uint32": {
    "generated_name": "Gt3A9420DD8E",
    "reason": "encode laws not over the same free words / bits"
   },
-  "vec_uint32_512": {
-   "generated_name": "Gt13AFE546ED",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint32_513": {
-   "generated_name": "Gt53D2408A5F",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "proglist_uint64": {
    "generated_name": "GtE83F21B20A",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_512": {
-   "generated_name": "Gt843A1262ED",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_513": {
-   "generated_name": "Gt10D6F42D74",
    "reason": "encode laws not over the same free words / bits"
   },
   "ProgressiveTestStruct": {
@@ -2814,163 +2976,203 @@
  "word_storage": {
   "vec_uint128_1": {
    "generated_name": "Gt3FD98F54A5",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint128_16": {
    "generated_name": "Gt3EC8B89B94",
-   "depth": 7,
    "awaiting": []
   },
   "vec_uint128_2": {
    "generated_name": "Gt7D65FF3A10",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint128_3": {
    "generated_name": "Gt7600AB7870",
-   "depth": 5,
    "awaiting": []
   },
   "vec_uint128_31": {
    "generated_name": "Gt6B1336E534",
-   "depth": 8,
    "awaiting": []
   },
   "vec_uint128_4": {
    "generated_name": "GtB0CCEA154C",
-   "depth": 5,
    "awaiting": []
   },
   "vec_uint128_5": {
    "generated_name": "GtBB42F83A45",
-   "depth": 5,
    "awaiting": []
   },
   "vec_uint128_8": {
    "generated_name": "Gt3E2A057F33",
-   "depth": 6,
    "awaiting": []
   },
   "vec_uint256_1": {
    "generated_name": "GtBBFD66E011",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint256_16": {
    "generated_name": "Gt3E6E18CD57",
-   "depth": 8,
    "awaiting": []
   },
   "vec_uint256_2": {
    "generated_name": "GtB91D4D285D",
-   "depth": 5,
    "awaiting": []
   },
   "vec_uint256_31": {
    "generated_name": "Gt6E9B243B7C",
-   "depth": 8,
    "awaiting": []
   },
   "vec_uint256_3": {
    "generated_name": "Gt2E7060B297",
-   "depth": 5,
    "awaiting": []
   },
   "vec_uint256_4": {
    "generated_name": "Gt74B2AF1CB3",
-   "depth": 6,
    "awaiting": []
   },
   "vec_uint256_5": {
    "generated_name": "Gt0B1B711C4D",
-   "depth": 6,
    "awaiting": []
   },
   "vec_uint256_8": {
    "generated_name": "GtFAE59DA275",
-   "depth": 7,
    "awaiting": []
   },
   "vec_uint32_1": {
    "generated_name": "Gt669C528764",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint32_16": {
    "generated_name": "Gt3CC580499F",
-   "depth": 5,
    "awaiting": []
   },
   "vec_uint32_2": {
    "generated_name": "GtF45E42B273",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint32_3": {
    "generated_name": "GtD1AEF07F7D",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint32_31": {
    "generated_name": "GtE528AAE3C6",
-   "depth": 6,
    "awaiting": []
   },
   "vec_uint32_4": {
    "generated_name": "Gt240C147AA2",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint32_5": {
    "generated_name": "Gt1719057EB7",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint32_8": {
    "generated_name": "GtCCF6FFA0A0",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint64_1": {
    "generated_name": "GtADC8DCD962",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint64_16": {
    "generated_name": "Gt0B4EF17D71",
-   "depth": 6,
    "awaiting": []
   },
   "vec_uint64_2": {
    "generated_name": "GtC923FCB2DA",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint64_3": {
    "generated_name": "Gt8E507C4540",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint64_31": {
    "generated_name": "Gt7D1CD7363A",
-   "depth": 7,
    "awaiting": []
   },
   "vec_uint64_4": {
    "generated_name": "Gt46F5D7703F",
-   "depth": 4,
    "awaiting": []
   },
   "vec_uint64_5": {
    "generated_name": "Gt8FB0CF9679",
-   "depth": 5,
    "awaiting": []
   },
   "vec_uint64_8": {
    "generated_name": "GtE470919895",
-   "depth": 5,
    "awaiting": []
+  },
+  "vec_uint128_512": {
+   "generated_name": "Gt7274F61A0F",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint128_513": {
+   "generated_name": "Gt9EA902108D",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint256_512": {
+   "generated_name": "Gt274A0B8DC2",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint256_513": {
+   "generated_name": "Gt0A3B6B4128",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint32_512": {
+   "generated_name": "Gt13AFE546ED",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint32_513": {
+   "generated_name": "Gt53D2408A5F",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint64_512": {
+   "generated_name": "Gt843A1262ED",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint64_513": {
+   "generated_name": "Gt10D6F42D74",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "FuluFinalityBranch": {
+   "generated_name": "FinalityBranch",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "FuluCurrentSyncCommitteeBranch": {
+   "generated_name": "CurrentSyncCommitteeBranch",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "FuluNextSyncCommitteeBranch": {
+   "generated_name": "NextSyncCommitteeBranch",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "FuluExecutionBranch": {
+   "generated_name": "ExecutionBranch",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
   }
  }
 }

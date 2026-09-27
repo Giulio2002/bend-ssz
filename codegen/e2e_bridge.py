@@ -693,7 +693,7 @@ def file_aliases(f):
         base = path.split('/')[-1]
         known = {'fulu_obj.bend': 'T', 'generic_obj.bend': 'T', 'obj.bend': 'O', 'buffer.bend': 'B',
                  'schema.bend': 'S' if 'types/' in path else None, 'primitive.bend': 'P', 'fulu_schemas.bend': 'Spec',
-                 'digest.bend': 'D', 'spec_fixed.bend': 'F', 'spec_bits.bend': 'FB', 'primitives.bend': 'SP' if 'spec/' in path else None}
+                 'digest.bend': 'D', 'spec_fixed.bend': 'F', 'spec_bits.bend': 'FB', 'found.bend': 'FD', 'vspec.bend': 'VSP', 'words_root.bend': 'WR', 'primitives.bend': 'SP' if 'spec/' in path else None}
         t = known.get(base)
         if t:
             out[a] = t
@@ -1130,6 +1130,150 @@ def text_wroot(rows):
             L[n0:] = [gfix(x) for x in L[n0:]]
     return '\n'.join(L) + '\n'
 
+
+# ---- word storage, any depth (the root worker's <X>_encode_any / <X>_decodes_any) ----
+
+ANYHEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
+           'import ../src/buffer.bend as B', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
+           'import ../spec/codec.bend as Encoding', 'import ../proofs/type_validator_soundness.bend as VS',
+           'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/spec_fixed.bend as F',
+           'import ../proofs/obj/packed_obj.bend as PK', 'import ../proofs/obj/words_obj.bend as WO',
+           'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/words_root.bend as WR', 'import ./e2e_support.bend as E']
+
+
+def any_info(X):
+    """the any-depth laws and the encoder's shape: (file, law binders, NW, value, put, out depth, N)"""
+    for f in sorted(OBJ.glob('spec_[gw]any_*.bend')):
+        src = f.read_text()
+        m = re.search(r'^def ' + X + r'_encode_any\((.*)\)\n    -> \{SF\.emitted\(O\.Words, T\.' + X + r'_encode\((.*?)\), (\d+)\) == ', src, re.M)
+        if not m:
+            continue
+        md = re.search(r'^def ' + X + r'_decodes_any\((.*)\)\n    -> Decoding\.decodes\((\w+|Spec\.\w+\(\)), (.*)\):$', src, re.M)
+        if not md:
+            return None
+        rt = (ROOT / 'types' / ('generic_obj.bend' if 'types/generic_obj.bend as T' in src else 'fulu_obj.bend')).read_text()
+        me = re.search(r'^def ' + X + r'_encode\(o: O\.Words\) -> O\.Words & B\.Buf: ' + X + r'_enc_out\((\w+)\(O\.out_at\((\d+)n\), 0, o\)\)$', rt, re.M)
+        mo = re.search(r'^def ' + X + r'_enc_out\(pair: Array<U32> & O\.Words\) -> O\.Words & B\.Buf:\n  \(out, o\) = pair\n  \(o, O\.out_done\((\d+), out\)\)$', rt, re.M)
+        if not (me and mo):
+            return None
+        return {'file': f.name, 'binders': m.group(1), 'obj': m.group(2), 'NW': m.group(3), 'dec': md.group(3),
+                'put': me.group(1), 'outd': me.group(2), 'N': mo.group(1)}
+    return None
+
+
+def any_core(R, X, sn, OBJ, VIEW, enc_call, dec_call, a):
+    """(i) at an explicit object term OBJ over copyable variables: the encoder's buffer by the
+    pair eta of its writer, then the any-depth laws"""
+    M = 'Maybe<&2, +List<U32>>'
+    P = f'T.{a["put"]}(O.out_at({a["outd"]}n), 0, {OBJ})'
+    FP = f'Pair.fst(Array<U32>, O.Words, {P})'
+    SP_ = f'Pair.snd(Array<U32>, O.Words, {P})'
+    EM = f'B.emit(B.Buf{{{FP}, {a["N"]}}}, 0, {a["NW"]})'
+    L = []
+    L.append(f'  +e = E4.peta(Array<U32>, O.Words, {P})')
+    L.append(f'  +em = FD.logic__subst(Array<U32> & O.Words, q => {{F.emitted(O.Words, T.{X}_enc_out(q), {a["NW"]}) == ({OBJ}, WV) : O.Words & +List<U32>}}, {P}, ({FP}, {SP_}), e,')
+    L.append(f'    {enc_call})')
+    L.append(f'  +eb = Equal.trans(+List<U32>, Pair.snd(B.Buf, +List<U32>, {EM}), F.listed({EM}), WV, Equal.sym(+List<U32>, F.listed({EM}), Pair.snd(B.Buf, +List<U32>, {EM}), E4.lst({EM})),')
+    L.append(f'    FD.logic__pair_snd(O.Words, +List<U32>, {SP_}, F.listed({EM}), {OBJ}, WV, em))')
+    L.append(f'  %Equal.sym(Array<U32> & O.Words, {P}, ({FP}, {SP_}), e) : {{Some{{E.obytes(Pair.snd(O.Words, B.Buf, T.{X}_enc_out(_)))}} == API.serialize(Spec.{sn}(), {VIEW}) : {M}}}')
+    L.append(f'  Equal.trans({M}, Some{{Pair.snd(B.Buf, +List<U32>, {EM})}}, Some{{WV}}, API.serialize(Spec.{sn}(), {VIEW}),')
+    L.append(f'    Equal.cong(+List<U32>, {M}, z => Some{{z}}, Pair.snd(B.Buf, +List<U32>, {EM}), WV, eb),')
+    L.append(f'    Equal.sym({M}, API.serialize(Spec.{sn}(), {VIEW}), Some{{WV}},')
+    L.append(f'      Equal.trans({M}, API.serialize(Spec.{sn}(), {VIEW}), Encoding.encoding_for_legal_type(Spec.{sn}(), {VIEW}), Some{{WV}},')
+    L.append(f'        E.serialize_legal(Spec.{sn}(), {VIEW}, VS.public_sound(Spec.{sn}(), {{==}})), {dec_call})))')
+    return '\n'.join(L)
+
+
+def text_any(rows):
+    files = []
+    for r in rows:
+        if r['a']['file'] not in files:
+            files.append(r['a']['file'])
+    al = {f: f'M{i}' for i, f in enumerate(files)}
+    L = list(ANYHEAD) + (GEN_IMPORTS if any(r['generic'] for r in rows) else ['import ../types/fulu_obj.bend as T', 'import ../spec/fulu_schemas.bend as Spec'])
+    L += ['import ./e2e_any.bend as E4'] + [f'import ../proofs/obj/{f} as {a}' for f, a in al.items()]
+    L += ['', '# GENERATED by codegen/e2e_bridge.py. Do not edit.',
+          f'# {rows[0]["R"]} and the next names (word storage, any depth): the object API\'s encoder bytes are',
+          '# END_TO_END\'s serialize, over the root law\'s own binders (no depth premise).', '']
+    for r in rows:
+        n0 = len(L)
+        R, X, sn, a = r['R'], r['X'], r['sname'], r['a']
+        MA = al[a['file']]
+        L.append(f'# {R} ({X})')
+        if r['kind'] == 'rep':
+            K = r['K']
+            ON = 'O.Words{FD.array__thaw(U32, t), N}'
+            VIEW = f'PK.vview{K}({ON})'
+            G = lambda o: f'{{Some{{E.obytes(Pair.snd(O.Words, B.Buf, T.{X}_encode({o})))}} == API.serialize(Spec.{sn}(), PK.vview{K}({o})) : Maybe<&2, +List<U32>>}}'  # noqa: E731
+            L.append(f'def {R}_a1(+t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v{K}({ON}, Spec.{sn}())) -> {G(ON)}:')
+            core = any_core(R, X, sn, ON, VIEW, f'{MA}.{X}_encode_any({ON}, Spec.{sn}(), {{==}}, rep)', f'{MA}.{X}_decodes_any({ON}, Spec.{sn}(), {{==}}, rep)', a)
+            L.append(core.replace('WV', f'WO.wview({ON})'))
+            L.append('')
+            L.append(f'# (i) under rep (the root law\'s representation invariant), at any storage depth.')
+            L.append(f'def {R}_e2e_encode(-o: O.Words, +rep: PK.rep_v{K}(o, Spec.{sn}())) -> {G("o")}:')
+            L.append('  (+w, +rest) = rep')
+            for x, y, src in (('t', 'w1', 'w'), ('dw', 'w2', 'w1'), ('N', 'w3', 'w2'), ('q', 'w4', 'w3'), ('r', 'w5', 'w4'), ('eo', 'w6', 'w5')):
+                L.append(f'  (+{x}, {y}) = {src}')
+            L.append(f'  %Equal.sym(O.Words, o, {ON}, eo) : {G("_")}')
+            L.append(f'  {R}_a1(t, N, FD.logic__subst(O.Words, z => PK.rep_v{K}(z, Spec.{sn}()), o, {ON}, eo, rep))')
+        else:
+            OBJ = requal(a['obj'], a['alias'])
+            VIEW = requal(a['dec_value'], a['alias'])
+            args = ', '.join(re.findall(r'\+(\w+):', a['binders']))
+            WV = requal(a['wv'], a['alias'])
+            L.append(f'# (i) over the root law\'s binders (t, dw, hd, pf, cap), o = {OBJ}.')
+            L.append(f'def {R}_e2e_encode({requal(a["binders"], a["alias"])}) -> {{Some{{E.obytes(Pair.snd(O.Words, B.Buf, T.{X}_encode({OBJ})))}} == API.serialize(Spec.{sn}(), {VIEW}) : Maybe<&2, +List<U32>>}}:')
+            core = any_core(R, X, sn, OBJ, VIEW, f'{MA}.{X}_encode_any({args})', f'{MA}.{X}_decodes_any({args})', a)
+            L.append(core.replace('WV', WV))
+        L.append('')
+        if r['generic']:
+            L[n0:] = [gfix(x) for x in L[n0:]]
+    return '\n'.join(L) + '\n'
+
+
+ANYSUP = """import Base
+import ../src/buffer.bend as B
+import ../proofs/obj/spec_fixed.bend as F
+
+# GENERATED by codegen/e2e_bridge.py. Do not edit.
+# Pair eta, and the proof-side byte list of a buffer (spec_fixed.listed) as its second component.
+
+def peta(-A: Type, -C: Type, p: A & C) -> {p == (Pair.fst(A, C, p), Pair.snd(A, C, p)) : A & C}:
+  (a, c) = p
+  {==}
+
+def lst(p: B.Buf & +List<U32>) -> {F.listed(p) == Pair.snd(B.Buf, +List<U32>, p) : +List<U32>}:
+  (b, xs) = p
+  {==}
+"""
+
+
+def text_broot(rows):
+    files = []
+    for r in rows:
+        for f in (r['rt']['file'], 'gvalid_words.bend'):
+            if f not in files:
+                files.append(f)
+    al = {f: f'M{i}' for i, f in enumerate(files)}
+    L = list(RHEAD) + ['import ../types/schema.bend as S', 'import ../proofs/obj/words_root.bend as WR', 'import ../types/fulu_obj.bend as T', 'import ../spec/fulu_schemas.bend as Spec']
+    L += [f'import ../proofs/obj/{f} as {a}' for f, a in al.items()]
+    L += ['', '# GENERATED by codegen/e2e_bridge.py. Do not edit.',
+          f'# {rows[0]["R"]} and the next names (word-storage branches): the object API\'s root is END_TO_END\'s',
+          '# hash_tree_root, over the root law\'s binders.', '']
+    for r in rows:
+        X, R, a = r['X'], r['R'], r['a']
+        OBJ = requal(a['obj'], a['alias'])
+        VIEW = requal(a['dec_value'], a['alias'])
+        B_ = requal(a['binders'], a['alias'])
+        args = ', '.join(re.findall(r'\+(\w+):', a['binders']))
+        RT = f'D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, T.{X}_hash_tree_root(h, {OBJ}))))'
+        L.append(f'# {R} ({X})')
+        L.append(f'def {R}_e2e_root(h: B.Buf, {B_}) -> {{Some{{{RT}}} == API.hash_tree_root(Spec.{X}(), {VIEW}) : Maybe<&2, +List<U32>>}}:')
+        L.append(f'  E.root_legal(Spec.{X}(), {VIEW}, VS.public_sound(Spec.{X}(), {{==}}), {RT},')
+        L.append(f'    {al["gvalid_words.bend"]}.{X}_root_valid({args}), {al[r["rt"]["file"]]}.{r["rt"]["law"]}(h, {args}))')
+        L.append('')
+    return '\n'.join(L) + '\n'
+
 def outputs():
     import names as NM
     amap = json.loads((ROOT / 'proofs/gate/api_map.json').read_text())
@@ -1207,20 +1351,55 @@ def outputs():
         fn = f'{rows[0]["R"]}_e2e_generated.bend'
         out[OUT / fn] = text_a(rows, i)
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_encode'] + ([f'{r["R"]}_e2e_root'] if r['vx'] else [])} for r in rows]
+    # (i) for word storage from the any-depth laws: the generic vectors (rep) and the arrays and
+    # branches the older laws did not cover
     wrows.sort(key=lambda r: (r['ee']['file'], r['R']))
-    wb, cur = [], []
+    arows = []
     for r in wrows:
-        if cur and (r['ee']['file'] != cur[0]['ee']['file'] or len(cur) >= WBATCH):
-            wb.append(cur)
+        a = any_info(r['X'])
+        if a:
+            a['alias'] = file_aliases(a['file'])
+            arows.append(dict(r, a=a, kind='rep'))
+    for R0, u in list(uncovered.items()):
+        X0 = u['generated_name']
+        a = any_info(X0)
+        m0 = amap['map'][X0]
+        if not a or not m0.get('root'):
+            continue
+        a['alias'] = file_aliases(a['file'])
+        b_rt = law(cache, m0['root'][0])
+        rp = [q.strip() for q in b_rt[2]]
+        gen = 'types/generic_obj.bend as T' in (OBJ / a['file']).read_text()
+        ms_ = re.search(r'\{s == Spec\.(\w+)\(\) : S\.Schema\}', ' '.join(rp))
+        mk = re.match(r'\+rep: PK\.rep_v(\d+)\(o, s\)$', rp[-1]) if len(rp) == 5 else None
+        if mk and ms_ and rp[1] == '-o: O.Words' and re.match(r'RR\.roots\(PK\.vview' + mk.group(1) + r'\(o\), s, ', b_rt[3]):
+            row = {'X': X0, 'R': R0, 'sname': ms_.group(1), 'K': mk.group(1), 'ename': X0, 'rt': m0['root'][0], 'generic': gen, 'a': a, 'kind': 'rep'}
+        elif rp[:1] == ['-h: B.Buf'] and [q.split(':')[0] for q in rp[1:]] == ['+t', '+dw', '+hd', '+pf', '+cap']:
+            mv = re.match(r'(Spec\.\w+\(\)|\w+), (.*)$', a['dec'])
+            wv = re.search(r'== \(O\.Words\{.*?\}, (.*)\) : O\.Words & \+List<U32>\}', (OBJ / a['file']).read_text().split('def ' + X0 + '_encode_any(')[1].split('\n')[1])
+            dv = call_args('D(' + a['dec'] + ')', 'D')
+            row = {'X': X0, 'R': R0, 'sname': X0, 'rt': m0['root'][0], 'generic': gen, 'a': dict(a, dec_value=dv[1], wv=wv.group(1)), 'kind': 'words'}
+        else:
+            continue
+        arows.append(row)
+        del uncovered[R0]
+    arows.sort(key=lambda r: (r['a']['file'], r['R']))
+    ab, cur = [], []
+    for r in arows:
+        if cur and (r['a']['file'] != cur[0]['a']['file'] or len(cur) >= WBATCH):
+            ab.append(cur)
             cur = []
         cur.append(r)
     if cur:
-        wb.append(cur)
-    for rows in wb:
+        ab.append(cur)
+    out[OUT / 'e2e_any.bend'] = ANYSUP
+    for rows in ab:
         fn = f'{rows[0]["R"]}_e2e_generated.bend'
-        out[OUT / fn] = text_w(rows)
+        out[OUT / fn] = text_any(rows)
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_encode'],
-                             'premise': f'rep: PK.rep_v{r["K"]}(o, Spec.{r["sname"]}()) (the root law\'s representation invariant: the validity premise for generic forms); hc: storage at the canonical depth {r["d"]}, which every decoded object has'} for r in rows]
+                             'premise': (f'rep: PK.rep_v{r["K"]}(o, Spec.{r["sname"]}()) (the root law\'s representation invariant: the validity premise for generic forms)'
+                                         if r['kind'] == 'rep' else 'the root law\'s binders (t, dw, hd, pf, cap)')} for r in rows]
+    wrows_extra = [r for r in arows if 'ee' not in r]
     wd = []
     for r in wrows:
         d = decode_w(r, amap['map'][r['X']], cache)
@@ -1240,7 +1419,7 @@ def outputs():
         out[OUT / fn] = text_wdec(rows)
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_decode_view', f'{r["R"]}_e2e_decode_reject'], 'ii': 'view'} for r in rows]
     wr = []
-    for r in wrows:
+    for r in wrows + [x for x in wrows_extra if x['kind'] == 'rep']:
         vf = wvalid(r)
         if vf:
             r['vf'] = vf
@@ -1258,7 +1437,15 @@ def outputs():
         out[OUT / fn] = text_wroot(rows)
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_root'],
                              'premise': f'rep: PK.rep_v{r["K"]}(o, Spec.{r["sname"]}())'} for r in rows]
-    man['word_storage'] = {r['R']: {'generated_name': r['X'], 'depth': r['d'], 'awaiting': ([] if 'vf' in r else ['(iv)']) + ([] if 'dd' in r else ['(ii)/(iii)'])} for r in wrows}
+    brows = [x for x in wrows_extra if x['kind'] == 'words' and (OBJ / 'gvalid_words.bend').exists() and
+             re.search(r'^def ' + x['X'] + r'_root_valid\(', (OBJ / 'gvalid_words.bend').read_text(), re.M)]
+    if brows:
+        fn = f'{brows[0]["R"]}_e2e_root_generated.bend'
+        out[OUT / fn] = text_broot(brows)
+        man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_root'], 'premise': 'the root law\'s binders (t, dw, hd, pf, cap)'} for r in brows]
+    for r in brows:
+        r['vf'] = 'gvalid_words.bend'
+    man['word_storage'] = {r['R']: {'generated_name': r['X'], 'awaiting': ([] if 'vf' in r else ['(iv)']) + ([] if 'dd' in r else ['(ii)/(iii)'])} for r in wrows + wrows_extra}
     for f, rows_ in man['files'].items():
         for e in rows_:
             if any(l.endswith('_e2e_decode_accept') for l in e['laws']):
