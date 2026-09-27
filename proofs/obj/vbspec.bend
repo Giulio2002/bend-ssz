@@ -116,13 +116,46 @@ def enc_fpvb(pre, Y, post, hY, fit):
 # ---- the bytes of the masked copy --------------------------------------------------------------
 
 # L <= 4 NW(L): the copied words cover the L bytes.
-def quad_nw_ge(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool})
+def quad_nw_geU(+L: U32, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
     -> {Nat.is_le(U32.to_nat(L), A.quad(VC.NW(L))) == True{} : Bool}:
-  %Equal.sym(Nat, VC.NW(L), VD.s_rng(2n, Nat.add(3n, U32.to_nat(L))), VC.eNW(L, k, hk, hy)) : {Nat.is_le(U32.to_nat(L), A.quad(_)) == True{} : Bool}
+  %Equal.sym(Nat, VC.NW(L), VD.s_rng(2n, Nat.add(3n, U32.to_nat(L))), VC.eNWu(L, hy)) : {Nat.is_le(U32.to_nat(L), A.quad(_)) == True{} : Bool}
   F.nat__le_trans(Nat.add(3n, U32.to_nat(L)), 1n+Nat.double(VD.s_h2(Nat.add(3n, U32.to_nat(L)))), 3n+A.quad(VD.s_rng(2n, Nat.add(3n, U32.to_nat(L)))), VC.h2_up(Nat.add(3n, U32.to_nat(L))),
     Order.double_monotone(VD.s_h2(Nat.add(3n, U32.to_nat(L))), 1n+Nat.double(VD.s_h2(VD.s_h2(Nat.add(3n, U32.to_nat(L))))), VC.h2_up(VD.s_h2(Nat.add(3n, U32.to_nat(L))))))
 
+def quad_nw_ge(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(L), A.quad(VC.NW(L))) == True{} : Bool}:
+  quad_nw_geU(L, VC.hyU(L, k, hk, hy))
+
 # The first L bytes of the masked copy of the L bytes at word j are those bytes.
+law ybytesU:
+  for +L: U32
+  for +dz: Nat
+  for +j: Nat
+  for +t: F.array__Tree<U32>
+  for +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool}
+  for +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}
+  for +hs: {Nat.is_le(Nat.add(VC.NW(L), j), VB.len(F.array__slots(U32, t))) == True{} : Bool}
+  {VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, VY.MK(L, dz, VB.mone(VC.NW(L), j, 0n, dz, VC.ZT(dz), t))))) == VS.bt(U32.to_nat(L), FX.limbs(VB.wdr(j, F.array__slots(U32, t)))) : +List<U32>}
+def ybytesU(L, dz, j, t, hy, hr, hs):
+  +Mo = VB.mone(VC.NW(L), j, 0n, dz, VC.ZT(dz), t)
+  +pz = F.array__trep_perfect(U32, dz, 0)
+  +hr1 = F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dz)) == True{} : Bool}, Nat.add(VC.NW(L), 0n), VC.NW(L), F.nat__add_zero(VC.NW(L)), hr)
+  +LM = VB.lm(VC.NW(L), j, 0n, F.array__slots(U32, VC.ZT(dz)), F.array__slots(U32, t))
+  +hq = quad_nw_geU(L, hy)
+  +hz = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(VC.NW(L), 0n), z) == True{} : Bool}, VB.pw(dz), VB.len(F.array__slots(U32, VC.ZT(dz))),
+    Equal.sym(Nat, VB.len(F.array__slots(U32, VC.ZT(dz))), VB.pw(dz), F.array__slots_length(U32, dz, VC.ZT(dz), pz)), hr)
+  %Equal.sym(+List<U32>, VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, VY.MK(L, dz, Mo)))), VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, Mo))),
+      VY.mk_bytesU(L, dz, Mo, hy, hr1, VB.mone_perfect(VC.NW(L), j, 0n, dz, VC.ZT(dz), t, pz))) :
+    {_ == VS.bt(U32.to_nat(L), FX.limbs(VB.wdr(j, F.array__slots(U32, t)))) : +List<U32>}
+  %Equal.sym(List<&2, U32>, F.array__slots(U32, Mo), LM, VB.slots_mone(VC.NW(L), j, 0n, dz, VC.ZT(dz), t, pz, hr)) :
+    {VS.bt(U32.to_nat(L), FX.limbs(_)) == VS.bt(U32.to_nat(L), FX.limbs(VB.wdr(j, F.array__slots(U32, t)))) : +List<U32>}
+  %VY.bt_take(VC.NW(L), U32.to_nat(L), LM, hq) :
+    {_ == VS.bt(U32.to_nat(L), FX.limbs(VB.wdr(j, F.array__slots(U32, t)))) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VS.wtake(VC.NW(L), VB.wdr(0n, LM)), VS.wtake(VC.NW(L), VB.wdr(j, F.array__slots(U32, t))),
+      VB.lm_win(VC.NW(L), j, 0n, F.array__slots(U32, VC.ZT(dz)), F.array__slots(U32, t), hz, hs)) :
+    {VS.bt(U32.to_nat(L), FX.limbs(_)) == VS.bt(U32.to_nat(L), FX.limbs(VB.wdr(j, F.array__slots(U32, t)))) : +List<U32>}
+  VY.bt_take(VC.NW(L), U32.to_nat(L), VB.wdr(j, F.array__slots(U32, t)), hq)
+
 law ybytes:
   for +L: U32
   for +dz: Nat
@@ -135,24 +168,7 @@ law ybytes:
   for +hs: {Nat.is_le(Nat.add(VC.NW(L), j), VB.len(F.array__slots(U32, t))) == True{} : Bool}
   {VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, VY.MK(L, dz, VB.mone(VC.NW(L), j, 0n, dz, VC.ZT(dz), t))))) == VS.bt(U32.to_nat(L), FX.limbs(VB.wdr(j, F.array__slots(U32, t)))) : +List<U32>}
 def ybytes(L, dz, j, t, k, hk, hy, hr, hs):
-  +Mo = VB.mone(VC.NW(L), j, 0n, dz, VC.ZT(dz), t)
-  +pz = F.array__trep_perfect(U32, dz, 0)
-  +hr1 = F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dz)) == True{} : Bool}, Nat.add(VC.NW(L), 0n), VC.NW(L), F.nat__add_zero(VC.NW(L)), hr)
-  +LM = VB.lm(VC.NW(L), j, 0n, F.array__slots(U32, VC.ZT(dz)), F.array__slots(U32, t))
-  +hq = quad_nw_ge(L, k, hk, hy)
-  +hz = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(VC.NW(L), 0n), z) == True{} : Bool}, VB.pw(dz), VB.len(F.array__slots(U32, VC.ZT(dz))),
-    Equal.sym(Nat, VB.len(F.array__slots(U32, VC.ZT(dz))), VB.pw(dz), F.array__slots_length(U32, dz, VC.ZT(dz), pz)), hr)
-  %Equal.sym(+List<U32>, VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, VY.MK(L, dz, Mo)))), VS.bt(U32.to_nat(L), FX.limbs(F.array__slots(U32, Mo))),
-      VY.mk_bytes(L, dz, Mo, k, hk, hy, hr1, VB.mone_perfect(VC.NW(L), j, 0n, dz, VC.ZT(dz), t, pz))) :
-    {_ == VS.bt(U32.to_nat(L), FX.limbs(VB.wdr(j, F.array__slots(U32, t)))) : +List<U32>}
-  %Equal.sym(List<&2, U32>, F.array__slots(U32, Mo), LM, VB.slots_mone(VC.NW(L), j, 0n, dz, VC.ZT(dz), t, pz, hr)) :
-    {VS.bt(U32.to_nat(L), FX.limbs(_)) == VS.bt(U32.to_nat(L), FX.limbs(VB.wdr(j, F.array__slots(U32, t)))) : +List<U32>}
-  %VY.bt_take(VC.NW(L), U32.to_nat(L), LM, hq) :
-    {_ == VS.bt(U32.to_nat(L), FX.limbs(VB.wdr(j, F.array__slots(U32, t)))) : +List<U32>}
-  %Equal.sym(List<&2, U32>, VS.wtake(VC.NW(L), VB.wdr(0n, LM)), VS.wtake(VC.NW(L), VB.wdr(j, F.array__slots(U32, t))),
-      VB.lm_win(VC.NW(L), j, 0n, F.array__slots(U32, VC.ZT(dz)), F.array__slots(U32, t), hz, hs)) :
-    {VS.bt(U32.to_nat(L), FX.limbs(_)) == VS.bt(U32.to_nat(L), FX.limbs(VB.wdr(j, F.array__slots(U32, t)))) : +List<U32>}
-  VY.bt_take(VC.NW(L), U32.to_nat(L), VB.wdr(j, F.array__slots(U32, t)), hq)
+  ybytesU(L, dz, j, t, VC.hyU(L, k, hk, hy), hr, hs)
 
 law bt_len_le:
   for +m: Nat

@@ -527,7 +527,8 @@ def emit_fix():
 
 
 def main():
-    outs = [(OUT, emit()), (OUT_SC, emit_sc()), (OUT_FIX, emit_fix())]
+    import deep  # the copy chain at any length 31 + L <= UMAX (the U twins)
+    outs = [(OUT, emit()), (OUT_SC, deep.uify_file(emit_sc(), ROOT / 'proofs/obj')), (OUT_FIX, emit_fix())]
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     outs = RR.rewire_out(outs)
     if '--check' in sys.argv:

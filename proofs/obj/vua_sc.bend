@@ -265,8 +265,8 @@ def scopy1_ok(nw, a, b, i, j, dd, ds, D, S, ea, eb, hdd, hds, hi, hj, pfD, pfS):
     {(F.array__thaw(U32, UC.smone(1n, r, Nat.add(A, i), Nat.add(A, j), dd, ds, M, S)), F.array__thaw(U32, S)) == (F.array__thaw(U32, _), F.array__thaw(U32, S)) : Array<U32> & Array<U32>}
   {==}
 
-def ci_any1(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U32, +dz: Nat, +k: Nat,
-    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}, +h3: {U32.and(off, 3) == 1 : U32}, +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}, +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
+def ci_any1U(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U32, +dz: Nat,
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}, +h3: {U32.and(off, 3) == 1 : U32}, +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}, +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +z: Bool, +ez: {U32.is_eq(L, 0) == z : Bool})
     -> {O.ci_fin(n, L, O.ci_go(z, U32.and(off, 3), U32.shrn(off, 2n), VC.nwu(L), F.array__thaw(U32, VC.ZT(dz)), F.array__thaw(U32, t))) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}:
   match z:
@@ -284,15 +284,46 @@ def ci_any1(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U3
           scopy1_ok(VC.nwu(L), U32.shrn(off, 2n), 0, i, 0n, dz, d, VC.ZT(dz), t, ei, {==}, hdz, hd, hs, hr, F.array__trep_perfect(U32, dz, 0), pf)) :
         {O.ci_fin(n, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, Mo)), L}) : B.Buf & O.Words}
       %Equal.sym(Array<U32>, O.mask_last(L, F.array__thaw(U32, Mo)), F.array__thaw(U32, VBY.MK(L, dz, Mo)),
-          VBY.mask_ok(L, dz, Mo, k, hk, hy, VB.lt32(dz, hdz),
+          VBY.mask_okU(L, dz, Mo, hy, VB.lt32(dz, hdz),
             F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dz)) == True{} : Bool}, Nat.add(VC.NW(L), 0n), VC.NW(L), F.nat__add_zero(VC.NW(L)), hr),
             UC.smone_perfect(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t, F.array__trep_perfect(U32, dz, 0)))) :
         {(B.Buf{F.array__thaw(U32, t), n}, O.Words{_, L}) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, Mo)), L}) : B.Buf & O.Words}
       {==}
 
+def ci_any1(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U32, +dz: Nat, +k: Nat,
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}, +h3: {U32.and(off, 3) == 1 : U32}, +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}, +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
+    +z: Bool, +ez: {U32.is_eq(L, 0) == z : Bool})
+    -> {O.ci_fin(n, L, O.ci_go(z, U32.and(off, 3), U32.shrn(off, 2n), VC.nwu(L), F.array__thaw(U32, VC.ZT(dz)), F.array__thaw(U32, t))) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}:
+  ci_any1U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, VC.hyU(L, k, hk, hy), z, ez)
+
 # U2: copy_in of any length L at a byte offset off with off & 3 = 1: the
 # words are the joins at byte 1 of the source words from off >> 2, and the
 # last one keeps only its L & 3 low bytes (MK); see UC.ci_bytes for its bytes.
+law copy_in_ua1U:
+  for +d: Nat
+  for +t: F.array__Tree<U32>
+  for +n: U32
+  for +off: U32
+  for +i: Nat
+  for +L: U32
+  for +dz: Nat
+  for +pf: {F.array__perfect(U32, d, t) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
+  for +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}
+  for +ez: {B.zeros(B.words_depth_u(VC.WZ(L))) == Array.new(U32, dz, 0) : Array<U32>}
+  for +h3: {U32.and(off, 3) == 1 : U32}
+  for +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}
+  for +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}
+  for +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}
+  for +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool}
+  {O.copy_in(B.Buf{F.array__thaw(U32, t), n}, off, L) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+def copy_in_ua1U(d, t, n, off, i, L, dz, pf, hd, hdz, ez, h3, ei, hs, hr, hy):
+  %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.WZ(L))), Array.new(U32, dz, 0), ez) :
+    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
+    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+  ci_any1U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, hy, U32.is_eq(L, 0), {==})
+
 law copy_in_ua1:
   for +d: Nat
   for +t: F.array__Tree<U32>
@@ -314,13 +345,31 @@ law copy_in_ua1:
   for +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool}
   {O.copy_in(B.Buf{F.array__thaw(U32, t), n}, off, L) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
 def copy_in_ua1(d, t, n, off, i, L, dz, k, pf, hd, hdz, ez, h3, ei, hs, hr, hk, hy):
-  %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.WZ(L))), Array.new(U32, dz, 0), ez) :
-    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
-  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
-    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
-  ci_any1(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy, U32.is_eq(L, 0), {==})
+  copy_in_ua1U(d, t, n, off, i, L, dz, pf, hd, hdz, ez, h3, ei, hs, hr, VC.hyU(L, k, hk, hy))
 
 # The same copy into a given zero array (byte 1).
+law copy_into_ua1U:
+  for +d: Nat
+  for +t: F.array__Tree<U32>
+  for +n: U32
+  for +off: U32
+  for +i: Nat
+  for +L: U32
+  for +dz: Nat
+  for +pf: {F.array__perfect(U32, d, t) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
+  for +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}
+  for +h3: {U32.and(off, 3) == 1 : U32}
+  for +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}
+  for +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}
+  for +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}
+  for +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool}
+  {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, Array.new(U32, dz, 0)) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+def copy_into_ua1U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, hy):
+  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
+    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+  ci_any1U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, hy, U32.is_eq(L, 0), {==})
+
 law copy_into_ua1:
   for +d: Nat
   for +t: F.array__Tree<U32>
@@ -341,9 +390,7 @@ law copy_into_ua1:
   for +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool}
   {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, Array.new(U32, dz, 0)) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
 def copy_into_ua1(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy):
-  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
-    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(1n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
-  ci_any1(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy, U32.is_eq(L, 0), {==})
+  copy_into_ua1U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, VC.hyU(L, k, hk, hy))
 
 # ---- byte 2 --------------------------------------------------------------------------------
 
@@ -596,8 +643,8 @@ def scopy2_ok(nw, a, b, i, j, dd, ds, D, S, ea, eb, hdd, hds, hi, hj, pfD, pfS):
     {(F.array__thaw(U32, UC.smone(2n, r, Nat.add(A, i), Nat.add(A, j), dd, ds, M, S)), F.array__thaw(U32, S)) == (F.array__thaw(U32, _), F.array__thaw(U32, S)) : Array<U32> & Array<U32>}
   {==}
 
-def ci_any2(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U32, +dz: Nat, +k: Nat,
-    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}, +h3: {U32.and(off, 3) == 2 : U32}, +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}, +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
+def ci_any2U(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U32, +dz: Nat,
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}, +h3: {U32.and(off, 3) == 2 : U32}, +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}, +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +z: Bool, +ez: {U32.is_eq(L, 0) == z : Bool})
     -> {O.ci_fin(n, L, O.ci_go(z, U32.and(off, 3), U32.shrn(off, 2n), VC.nwu(L), F.array__thaw(U32, VC.ZT(dz)), F.array__thaw(U32, t))) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}:
   match z:
@@ -615,15 +662,46 @@ def ci_any2(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U3
           scopy2_ok(VC.nwu(L), U32.shrn(off, 2n), 0, i, 0n, dz, d, VC.ZT(dz), t, ei, {==}, hdz, hd, hs, hr, F.array__trep_perfect(U32, dz, 0), pf)) :
         {O.ci_fin(n, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, Mo)), L}) : B.Buf & O.Words}
       %Equal.sym(Array<U32>, O.mask_last(L, F.array__thaw(U32, Mo)), F.array__thaw(U32, VBY.MK(L, dz, Mo)),
-          VBY.mask_ok(L, dz, Mo, k, hk, hy, VB.lt32(dz, hdz),
+          VBY.mask_okU(L, dz, Mo, hy, VB.lt32(dz, hdz),
             F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dz)) == True{} : Bool}, Nat.add(VC.NW(L), 0n), VC.NW(L), F.nat__add_zero(VC.NW(L)), hr),
             UC.smone_perfect(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t, F.array__trep_perfect(U32, dz, 0)))) :
         {(B.Buf{F.array__thaw(U32, t), n}, O.Words{_, L}) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, Mo)), L}) : B.Buf & O.Words}
       {==}
 
+def ci_any2(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U32, +dz: Nat, +k: Nat,
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}, +h3: {U32.and(off, 3) == 2 : U32}, +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}, +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
+    +z: Bool, +ez: {U32.is_eq(L, 0) == z : Bool})
+    -> {O.ci_fin(n, L, O.ci_go(z, U32.and(off, 3), U32.shrn(off, 2n), VC.nwu(L), F.array__thaw(U32, VC.ZT(dz)), F.array__thaw(U32, t))) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}:
+  ci_any2U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, VC.hyU(L, k, hk, hy), z, ez)
+
 # U2: copy_in of any length L at a byte offset off with off & 3 = 2: the
 # words are the joins at byte 2 of the source words from off >> 2, and the
 # last one keeps only its L & 3 low bytes (MK); see UC.ci_bytes for its bytes.
+law copy_in_ua2U:
+  for +d: Nat
+  for +t: F.array__Tree<U32>
+  for +n: U32
+  for +off: U32
+  for +i: Nat
+  for +L: U32
+  for +dz: Nat
+  for +pf: {F.array__perfect(U32, d, t) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
+  for +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}
+  for +ez: {B.zeros(B.words_depth_u(VC.WZ(L))) == Array.new(U32, dz, 0) : Array<U32>}
+  for +h3: {U32.and(off, 3) == 2 : U32}
+  for +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}
+  for +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}
+  for +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}
+  for +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool}
+  {O.copy_in(B.Buf{F.array__thaw(U32, t), n}, off, L) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+def copy_in_ua2U(d, t, n, off, i, L, dz, pf, hd, hdz, ez, h3, ei, hs, hr, hy):
+  %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.WZ(L))), Array.new(U32, dz, 0), ez) :
+    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
+    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+  ci_any2U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, hy, U32.is_eq(L, 0), {==})
+
 law copy_in_ua2:
   for +d: Nat
   for +t: F.array__Tree<U32>
@@ -645,13 +723,31 @@ law copy_in_ua2:
   for +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool}
   {O.copy_in(B.Buf{F.array__thaw(U32, t), n}, off, L) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
 def copy_in_ua2(d, t, n, off, i, L, dz, k, pf, hd, hdz, ez, h3, ei, hs, hr, hk, hy):
-  %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.WZ(L))), Array.new(U32, dz, 0), ez) :
-    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
-  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
-    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
-  ci_any2(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy, U32.is_eq(L, 0), {==})
+  copy_in_ua2U(d, t, n, off, i, L, dz, pf, hd, hdz, ez, h3, ei, hs, hr, VC.hyU(L, k, hk, hy))
 
 # The same copy into a given zero array (byte 2).
+law copy_into_ua2U:
+  for +d: Nat
+  for +t: F.array__Tree<U32>
+  for +n: U32
+  for +off: U32
+  for +i: Nat
+  for +L: U32
+  for +dz: Nat
+  for +pf: {F.array__perfect(U32, d, t) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
+  for +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}
+  for +h3: {U32.and(off, 3) == 2 : U32}
+  for +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}
+  for +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}
+  for +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}
+  for +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool}
+  {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, Array.new(U32, dz, 0)) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+def copy_into_ua2U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, hy):
+  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
+    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+  ci_any2U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, hy, U32.is_eq(L, 0), {==})
+
 law copy_into_ua2:
   for +d: Nat
   for +t: F.array__Tree<U32>
@@ -672,9 +768,7 @@ law copy_into_ua2:
   for +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool}
   {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, Array.new(U32, dz, 0)) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
 def copy_into_ua2(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy):
-  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
-    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(2n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
-  ci_any2(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy, U32.is_eq(L, 0), {==})
+  copy_into_ua2U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, VC.hyU(L, k, hk, hy))
 
 # ---- byte 3 --------------------------------------------------------------------------------
 
@@ -927,8 +1021,8 @@ def scopy3_ok(nw, a, b, i, j, dd, ds, D, S, ea, eb, hdd, hds, hi, hj, pfD, pfS):
     {(F.array__thaw(U32, UC.smone(3n, r, Nat.add(A, i), Nat.add(A, j), dd, ds, M, S)), F.array__thaw(U32, S)) == (F.array__thaw(U32, _), F.array__thaw(U32, S)) : Array<U32> & Array<U32>}
   {==}
 
-def ci_any3(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U32, +dz: Nat, +k: Nat,
-    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}, +h3: {U32.and(off, 3) == 3 : U32}, +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}, +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
+def ci_any3U(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U32, +dz: Nat,
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}, +h3: {U32.and(off, 3) == 3 : U32}, +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}, +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +z: Bool, +ez: {U32.is_eq(L, 0) == z : Bool})
     -> {O.ci_fin(n, L, O.ci_go(z, U32.and(off, 3), U32.shrn(off, 2n), VC.nwu(L), F.array__thaw(U32, VC.ZT(dz)), F.array__thaw(U32, t))) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}:
   match z:
@@ -946,15 +1040,46 @@ def ci_any3(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U3
           scopy3_ok(VC.nwu(L), U32.shrn(off, 2n), 0, i, 0n, dz, d, VC.ZT(dz), t, ei, {==}, hdz, hd, hs, hr, F.array__trep_perfect(U32, dz, 0), pf)) :
         {O.ci_fin(n, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, Mo)), L}) : B.Buf & O.Words}
       %Equal.sym(Array<U32>, O.mask_last(L, F.array__thaw(U32, Mo)), F.array__thaw(U32, VBY.MK(L, dz, Mo)),
-          VBY.mask_ok(L, dz, Mo, k, hk, hy, VB.lt32(dz, hdz),
+          VBY.mask_okU(L, dz, Mo, hy, VB.lt32(dz, hdz),
             F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dz)) == True{} : Bool}, Nat.add(VC.NW(L), 0n), VC.NW(L), F.nat__add_zero(VC.NW(L)), hr),
             UC.smone_perfect(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t, F.array__trep_perfect(U32, dz, 0)))) :
         {(B.Buf{F.array__thaw(U32, t), n}, O.Words{_, L}) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, Mo)), L}) : B.Buf & O.Words}
       {==}
 
+def ci_any3(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +off: U32, +i: Nat, +L: U32, +dz: Nat, +k: Nat,
+    +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}, +h3: {U32.and(off, 3) == 3 : U32}, +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}, +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
+    +z: Bool, +ez: {U32.is_eq(L, 0) == z : Bool})
+    -> {O.ci_fin(n, L, O.ci_go(z, U32.and(off, 3), U32.shrn(off, 2n), VC.nwu(L), F.array__thaw(U32, VC.ZT(dz)), F.array__thaw(U32, t))) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}:
+  ci_any3U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, VC.hyU(L, k, hk, hy), z, ez)
+
 # U2: copy_in of any length L at a byte offset off with off & 3 = 3: the
 # words are the joins at byte 3 of the source words from off >> 2, and the
 # last one keeps only its L & 3 low bytes (MK); see UC.ci_bytes for its bytes.
+law copy_in_ua3U:
+  for +d: Nat
+  for +t: F.array__Tree<U32>
+  for +n: U32
+  for +off: U32
+  for +i: Nat
+  for +L: U32
+  for +dz: Nat
+  for +pf: {F.array__perfect(U32, d, t) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
+  for +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}
+  for +ez: {B.zeros(B.words_depth_u(VC.WZ(L))) == Array.new(U32, dz, 0) : Array<U32>}
+  for +h3: {U32.and(off, 3) == 3 : U32}
+  for +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}
+  for +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}
+  for +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}
+  for +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool}
+  {O.copy_in(B.Buf{F.array__thaw(U32, t), n}, off, L) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+def copy_in_ua3U(d, t, n, off, i, L, dz, pf, hd, hdz, ez, h3, ei, hs, hr, hy):
+  %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.WZ(L))), Array.new(U32, dz, 0), ez) :
+    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
+    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+  ci_any3U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, hy, U32.is_eq(L, 0), {==})
+
 law copy_in_ua3:
   for +d: Nat
   for +t: F.array__Tree<U32>
@@ -976,13 +1101,31 @@ law copy_in_ua3:
   for +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool}
   {O.copy_in(B.Buf{F.array__thaw(U32, t), n}, off, L) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
 def copy_in_ua3(d, t, n, off, i, L, dz, k, pf, hd, hdz, ez, h3, ei, hs, hr, hk, hy):
-  %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.WZ(L))), Array.new(U32, dz, 0), ez) :
-    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
-  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
-    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
-  ci_any3(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy, U32.is_eq(L, 0), {==})
+  copy_in_ua3U(d, t, n, off, i, L, dz, pf, hd, hdz, ez, h3, ei, hs, hr, VC.hyU(L, k, hk, hy))
 
 # The same copy into a given zero array (byte 3).
+law copy_into_ua3U:
+  for +d: Nat
+  for +t: F.array__Tree<U32>
+  for +n: U32
+  for +off: U32
+  for +i: Nat
+  for +L: U32
+  for +dz: Nat
+  for +pf: {F.array__perfect(U32, d, t) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
+  for +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}
+  for +h3: {U32.and(off, 3) == 3 : U32}
+  for +ei: {U32.to_nat(U32.shrn(off, 2n)) == i : Nat}
+  for +hs: {Nat.is_le(Nat.add(VC.NW(L), i), VB.pw(d)) == True{} : Bool}
+  for +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}
+  for +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool}
+  {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, Array.new(U32, dz, 0)) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+def copy_into_ua3U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, hy):
+  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
+    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
+  ci_any3U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, hy, U32.is_eq(L, 0), {==})
+
 law copy_into_ua3:
   for +d: Nat
   for +t: F.array__Tree<U32>
@@ -1003,7 +1146,5 @@ law copy_into_ua3:
   for +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool}
   {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, Array.new(U32, dz, 0)) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
 def copy_into_ua3(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy):
-  %Equal.sym(Array<U32>, Array.new(U32, dz, 0), F.array__thaw(U32, VC.ZT(dz)), F.array__new(U32, dz, 0)) :
-    {O.copy_into(B.Buf{F.array__thaw(U32, t), n}, off, L, _) == (B.Buf{F.array__thaw(U32, t), n}, O.Words{F.array__thaw(U32, VBY.MK(L, dz, UC.smone(3n, VC.NW(L), i, 0n, dz, d, VC.ZT(dz), t))), L}) : B.Buf & O.Words}
-  ci_any3(d, t, n, off, i, L, dz, k, pf, hd, hdz, h3, ei, hs, hr, hk, hy, U32.is_eq(L, 0), {==})
+  copy_into_ua3U(d, t, n, off, i, L, dz, pf, hd, hdz, h3, ei, hs, hr, VC.hyU(L, k, hk, hy))
 

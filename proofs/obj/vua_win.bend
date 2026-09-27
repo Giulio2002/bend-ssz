@@ -130,17 +130,22 @@ def eXNw(+off: U32, +x: Nat, +n: U32, +m: Nat, +eo: {U32.to_nat(off) == x : Nat}
   F.nat__add_comm(m, x)
 
 # The window's words lie in the buffer, the list storage bounded by 31 + L <= 2^k (k < 31).
-def hsxB(+d: Nat, +off: U32, +x: Nat, +L: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
+def hsxBU(+d: Nat, +off: U32, +x: Nat, +L: U32, +eo: {U32.to_nat(off) == x : Nat}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool})
     -> {Nat.is_le(Nat.add(VC.NW(L), VR.QX(off)), VB.pw(d)) == True{} : Bool}:
   +q = VR.QX(off)
   +ex = Equal.trans(Nat, x, U32.to_nat(off), Nat.add(A.quad(q), VR.RX(off)), Equal.sym(Nat, U32.to_nat(off), x, eo), VC.split4(off))
   +hq = F.logic__subst(Nat, z => {Nat.is_le(A.quad(q), z) == True{} : Bool}, Nat.add(A.quad(q), VR.RX(off)), x, Equal.sym(Nat, x, Nat.add(A.quad(q), VR.RX(off)), ex), F.nat__le_add_right(A.quad(q), VR.RX(off)))
-  VBY.nw_room(q, L, VB.pw(d), k, hk, hy,
+  VBY.nw_roomU(q, L, VB.pw(d), hy,
     F.nat__le_trans(Nat.add(A.quad(q), U32.to_nat(L)), Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d)), Order.add_right(A.quad(q), x, U32.to_nat(L), hq), hw))
 
 # ---- splitting a window -----------------------------------------------------------------------
+
+def hsxB(+d: Nat, +off: U32, +x: Nat, +L: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(VC.NW(L), VR.QX(off)), VB.pw(d)) == True{} : Bool}:
+  hsxBU(d, off, x, L, eo, VC.hyU(L, k, hk, hy), hw)
 
 # The window after its first h bytes.
 def tailWX(+t: F.array__Tree<U32>, +x: Nat, +h: Nat, +L: Nat) -> {VS.bdr(h, WX(t, x, Nat.add(h, L))) == WX(t, Nat.add(h, x), L) : +List<U32>}:

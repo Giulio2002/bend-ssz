@@ -50,7 +50,7 @@ import ../../proofs/decode_facts.bend as DF
 
 def BF(t: FD.array__Tree<U32>, +n: U32) -> B.Buf: VR.BF(t, n)
 
-def hlen(+d: Nat, +x: Nat, +len: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool})
+def hlen(+d: Nat, +x: Nat, +len: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool})
     -> {Nat.is_le(U32.to_nat(len), A.quad(VB.pw(d))) == True{} : Bool}:
   FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw)
 
@@ -106,12 +106,12 @@ def u32le(+a: U32, +b: U32, +h: {Nat.is_le(U32.to_nat(a), U32.to_nat(b)) == True
 
 # A byte position c <= len of the window, as an offset: off + c at c + x.
 def eoj(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +o: U32, +h: {Nat.is_le(U32.to_nat(o), U32.to_nat(len)) == True{} : Bool})
     -> {U32.to_nat(U32.add(off, o)) == Nat.add(U32.to_nat(o), x) : Nat}:
-  +hl = FD.nat__le_trans(Nat.add(U32.to_nat(o), x), Nat.add(U32.to_nat(len), x), A.quad(VB.pw(d)), Order.add_right(U32.to_nat(o), U32.to_nat(len), x, h),
-    FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw))
-  VB.add_at(off, o, x, 3n+d, eo, FD.nat__lt_trans(3n+d, 31n, 32n, hd, {==}), VB.le_pw_lt(Nat.add(U32.to_nat(o), x), 2n+d, hl))
+  +hl = FD.nat__le_lt_trans(Nat.add(U32.to_nat(o), x), Nat.add(U32.to_nat(len), x), FD.spec_common__pow2(32n), Order.add_right(U32.to_nat(o), U32.to_nat(len), x, h),
+    FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw32))
+  VB.add_lt32(off, o, x, eo, hl)
 
 # (o + x) + (e - o) = x + e.
 def alg(+o: Nat, +x: Nat, +e: Nat, +h: {Nat.is_le(o, e) == True{} : Bool}) -> {Nat.add(Nat.add(o, x), Nat.sub(e, o)) == Nat.add(x, e) : Nat}:
@@ -122,7 +122,7 @@ def alg(+o: Nat, +x: Nat, +e: Nat, +h: {Nat.is_le(o, e) == True{} : Bool}) -> {N
 
 # The window [o, e) of the window: (o + x) + (e - o) <= 4 2^d.
 def hwj(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +o: U32, +e: U32, +h1: {Nat.is_le(U32.to_nat(o), U32.to_nat(e)) == True{} : Bool}, +h2: {Nat.is_le(U32.to_nat(e), U32.to_nat(len)) == True{} : Bool})
     -> {Nat.is_le(Nat.add(Nat.add(U32.to_nat(o), x), U32.to_nat(U32.sub(e, o))), A.quad(VB.pw(d))) == True{} : Bool}:
   %Equal.sym(Nat, U32.to_nat(U32.sub(e, o)), Nat.sub(U32.to_nat(e), U32.to_nat(o)), FD.u32__sub_nat(e, o, h1)) : {Nat.is_le(Nat.add(Nat.add(U32.to_nat(o), x), _), A.quad(VB.pw(d))) == True{} : Bool}
@@ -130,19 +130,28 @@ def hwj(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
     {Nat.is_le(_, A.quad(VB.pw(d))) == True{} : Bool}
   FD.nat__le_trans(Nat.add(x, U32.to_nat(e)), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.add_left(x, U32.to_nat(e), U32.to_nat(len), h2), hw)
 
+def hwj32(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +o: U32, +e: U32, +h1: {Nat.is_le(U32.to_nat(o), U32.to_nat(e)) == True{} : Bool}, +h2: {Nat.is_le(U32.to_nat(e), U32.to_nat(len)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(Nat.add(U32.to_nat(o), x), U32.to_nat(U32.sub(e, o))), FD.spec_common__pow2(32n)) == True{} : Bool}:
+  %Equal.sym(Nat, U32.to_nat(U32.sub(e, o)), Nat.sub(U32.to_nat(e), U32.to_nat(o)), FD.u32__sub_nat(e, o, h1)) : {Nat.is_lt(Nat.add(Nat.add(U32.to_nat(o), x), _), FD.spec_common__pow2(32n)) == True{} : Bool}
+  %Equal.sym(Nat, Nat.add(Nat.add(U32.to_nat(o), x), Nat.sub(U32.to_nat(e), U32.to_nat(o))), Nat.add(x, U32.to_nat(e)), alg(U32.to_nat(o), x, U32.to_nat(e), h1)) :
+    {Nat.is_lt(_, FD.spec_common__pow2(32n)) == True{} : Bool}
+  FD.nat__le_lt_trans(Nat.add(x, U32.to_nat(e)), Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n), Order.add_left(x, U32.to_nat(e), U32.to_nat(len), h2), hw32)
+
 def room4(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +c: Nat, +h: {Nat.is_le(Nat.add(c, 4n), U32.to_nat(len)) == True{} : Bool}) -> {Nat.is_le(Nat.add(Nat.add(c, x), 4n), A.quad(VB.pw(d))) == True{} : Bool}:
   UR.roomw(x, U32.to_nat(len), c, A.quad(VB.pw(d)), hw, h)
 
 def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +c: U32, +k: Nat, +ec: {U32.to_nat(c) == k : Nat}, +h: {Nat.is_le(Nat.add(k, 4n), U32.to_nat(len)) == True{} : Bool})
     -> {B.read32(BF(t, n), U32.add(off, c)) == (BF(t, n), UR.RWN(t, Nat.add(k, x))) : B.Buf & U32}:
   +hk = FD.nat__le_trans(k, Nat.add(k, 4n), U32.to_nat(len), Order.below_sum(k, 4n), h)
-  +eoc = eoj(d, t, n, x, off, len, eo, hd, hw, pf, c, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, k, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), k, ec), hk))
+  +eoc = eoj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, c, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, k, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), k, ec), hk))
   UR.rwx(d, t, n, U32.add(off, c), Nat.add(k, x), FD.logic__subst(Nat, z => {U32.to_nat(U32.add(off, c)) == Nat.add(z, x) : Nat}, U32.to_nat(c), k, ec, eoc),
-    FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, room4(d, t, n, x, off, len, eo, hd, hw, pf, k, h))
+    hd, pf, room4(d, t, n, x, off, len, eo, hd, hw, hw32, pf, k, h))
 
 # ---- the validator ----------------------------------------------------------------------------
 
@@ -152,7 +161,7 @@ def c3_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32, +o1: U32) -> {F
     case False{}: {==}
 
 def okc2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h01: {Nat.is_le(U32.to_nat(O0(t, x)), U32.to_nat(O1(t, x))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t, x)), U32.to_nat(len)) == True{} : Bool},
     +dd: Bool, +ed: {D0(t, x, off) == dd : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_c2(dd, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), ck(dd, D1(t, x, off, len))) : B.Buf & Bool}:
@@ -160,12 +169,12 @@ def okc2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
     case False{}: {==}
     case True{}:
       %Equal.sym(B.Buf & Bool, FuluIndexedAttestation_r.IndexedAttestation_ok(BF(t, n), W1(t, x, off), L1(t, x, len)), (BF(t, n), D1(t, x, off, len)),
-          CH.ok_evalw(d, t, n, J1(t, x), W1(t, x, off), L1(t, x, len), eoj(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), h1n), hd, hwj(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), pf)) :
+          CH.ok_evalwD(d, t, n, J1(t, x), W1(t, x, off), L1(t, x, len), eoj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), h1n), hd, hwj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), hwj32(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), pf)) :
         {FuluAttesterSlashing_r.AttesterSlashing_v3(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), D1(t, x, off, len)) : B.Buf & Bool}
       c3_id(D1(t, x, off, len), BF(t, n), off, len, O0(t, x), O1(t, x))
 
 def okc1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +c: Bool, +ec: {RR(t, x, len) == c : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_c1(c, BF(t, n), off, len, O0(t, x), O1(t, x)) == (BF(t, n), ck(c, ck(D0(t, x, off), D1(t, x, off, len)))) : B.Buf & Bool}:
   match c:
@@ -174,39 +183,39 @@ def okc1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
       +h01 = le_nat(O0(t, x), O1(t, x), FD.logic__and_left(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), ec))
       +h1n = le_nat(O1(t, x), len, FD.logic__and_right(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), ec))
       %Equal.sym(B.Buf & Bool, FuluIndexedAttestation_r.IndexedAttestation_ok(BF(t, n), W0(t, x, off), L0(t, x)), (BF(t, n), D0(t, x, off)),
-          CH.ok_evalw(d, t, n, J0(t, x), W0(t, x, off), L0(t, x), eoj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), FD.nat__le_trans(U32.to_nat(O0(t, x)), U32.to_nat(O1(t, x)), U32.to_nat(len), h01, h1n)), hd,
-            hwj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), O1(t, x), h01, h1n), pf)) :
+          CH.ok_evalwD(d, t, n, J0(t, x), W0(t, x, off), L0(t, x), eoj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O0(t, x), FD.nat__le_trans(U32.to_nat(O0(t, x)), U32.to_nat(O1(t, x)), U32.to_nat(len), h01, h1n)), hd,
+            hwj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O0(t, x), O1(t, x), h01, h1n), hwj32(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O0(t, x), O1(t, x), h01, h1n), pf)) :
         {FuluAttesterSlashing_r.AttesterSlashing_v2(off, len, O0(t, x), O1(t, x), _) == (BF(t, n), ck(True{}, ck(D0(t, x, off), D1(t, x, off, len)))) : B.Buf & Bool}
-      okc2(d, t, n, x, off, len, eo, hd, hw, pf, h01, h1n, D0(t, x, off), {==})
+      okc2(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h01, h1n, D0(t, x, off), {==})
 
 def okc0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h8: {Nat.is_le(8n, U32.to_nat(len)) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(O0(t, x), 8) == b : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_c0(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), ck(b, ck(RR(t, x, len), ck(D0(t, x, off), D1(t, x, off, len))))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
-      %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 4)), (BF(t, n), O1(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, pf, 4, 4n, {==}, h8)) :
+      %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 4)), (BF(t, n), O1(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, hw32, pf, 4, 4n, {==}, h8)) :
         {FuluAttesterSlashing_r.AttesterSlashing_v1(off, len, O0(t, x), _) == (BF(t, n), ck(True{}, ck(RR(t, x, len), ck(D0(t, x, off), D1(t, x, off, len))))) : B.Buf & Bool}
-      okc1(d, t, n, x, off, len, eo, hd, hw, pf, RR(t, x, len), {==})
+      okc1(d, t, n, x, off, len, eo, hd, hw, hw32, pf, RR(t, x, len), {==})
 
 def okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool, +ea: {U32.is_le(8, len) == a : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_ok_len(a, BF(t, n), off, len) == (BF(t, n), ck(a, ck(U32.is_eq(O0(t, x), 8), ck(RR(t, x, len), ck(D0(t, x, off), D1(t, x, off, len)))))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       +h8 = le_nat(8, len, ea)
-      %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, pf, 0, 0n, {==}, FD.nat__le_trans(4n, 8n, U32.to_nat(len), {==}, h8))) :
+      %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, hw32, pf, 0, 0n, {==}, FD.nat__le_trans(4n, 8n, U32.to_nat(len), {==}, h8))) :
         {FuluAttesterSlashing_r.AttesterSlashing_v0(off, len, _) == (BF(t, n), ck(True{}, ck(U32.is_eq(O0(t, x), 8), ck(RR(t, x, len), ck(D0(t, x, off), D1(t, x, off, len)))))) : B.Buf & Bool}
-      okc0(d, t, n, x, off, len, eo, hd, hw, pf, h8, U32.is_eq(O0(t, x), 8), {==})
+      okc0(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h8, U32.is_eq(O0(t, x), 8), {==})
 
 # The validator on the window returns the buffer and CHKw.
-def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+def ok_evalwD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {FuluAttesterSlashing_r.AttesterSlashing_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
-  okl(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_le(8, len), {==})
+  okl(d, t, n, x, off, len, eo, hd, hw, hw32, pf, U32.is_le(8, len), {==})
 
 # ---- the reader ---------------------------------------------------------------------------------
 
@@ -214,27 +223,27 @@ def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Ful
   FuluAttesterSlashing_d.AttesterSlashing{O.BSome{CH.OBJw(d, t, J0(t, x), W0(t, x, off), L0(t, x)), O.BNone{}}, O.BSome{CH.OBJw(d, t, J1(t, x), W1(t, x, off), L1(t, x, len)), O.BNone{}}}
 
 def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h8: {Nat.is_le(8n, U32.to_nat(len)) == True{} : Bool},
     +h01: {Nat.is_le(U32.to_nat(O0(t, x)), U32.to_nat(O1(t, x))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t, x)), U32.to_nat(len)) == True{} : Bool},
     +hk0: {D0(t, x, off) == True{} : Bool}, +hk1: {D1(t, x, off, len) == True{} : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttesterSlashing_d.AttesterSlashing}:
-  %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, pf, 0, 0n, {==}, FD.nat__le_trans(4n, 8n, U32.to_nat(len), {==}, h8))) :
+  %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, hw32, pf, 0, 0n, {==}, FD.nat__le_trans(4n, 8n, U32.to_nat(len), {==}, h8))) :
     {FuluAttesterSlashing_r.AttesterSlashing_rd0(off, len, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttesterSlashing_d.AttesterSlashing}
-  %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 4)), (BF(t, n), O1(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, pf, 4, 4n, {==}, h8)) :
+  %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 4)), (BF(t, n), O1(t, x)), rdo(d, t, n, x, off, len, eo, hd, hw, hw32, pf, 4, 4n, {==}, h8)) :
     {FuluAttesterSlashing_r.AttesterSlashing_rd1(off, len, O0(t, x), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttesterSlashing_d.AttesterSlashing}
   %Equal.sym(B.Buf & FuluIndexedAttestation_d.IndexedAttestation, FuluIndexedAttestation_r.IndexedAttestation_read(BF(t, n), W0(t, x, off), L0(t, x)), (BF(t, n), CH.OBJw(d, t, J0(t, x), W0(t, x, off), L0(t, x))),
-      CH.readw(d, t, n, J0(t, x), W0(t, x, off), L0(t, x), eoj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), FD.nat__le_trans(U32.to_nat(O0(t, x)), U32.to_nat(O1(t, x)), U32.to_nat(len), h01, h1n)), hd,
-        hwj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), O1(t, x), h01, h1n), pf, hk0)) :
+      CH.readwD(d, t, n, J0(t, x), W0(t, x, off), L0(t, x), eoj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O0(t, x), FD.nat__le_trans(U32.to_nat(O0(t, x)), U32.to_nat(O1(t, x)), U32.to_nat(len), h01, h1n)), hd,
+        hwj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O0(t, x), O1(t, x), h01, h1n), hwj32(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O0(t, x), O1(t, x), h01, h1n), pf, hk0)) :
     {FuluAttesterSlashing_r.AttesterSlashing_rd2(off, len, O0(t, x), O1(t, x), FuluIndexedAttestation_r.IndexedAttestation_bx_rd(_)) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttesterSlashing_d.AttesterSlashing}
   %Equal.sym(B.Buf & FuluIndexedAttestation_d.IndexedAttestation, FuluIndexedAttestation_r.IndexedAttestation_read(BF(t, n), W1(t, x, off), L1(t, x, len)), (BF(t, n), CH.OBJw(d, t, J1(t, x), W1(t, x, off), L1(t, x, len))),
-      CH.readw(d, t, n, J1(t, x), W1(t, x, off), L1(t, x, len), eoj(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), h1n), hd, hwj(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), pf, hk1)) :
+      CH.readwD(d, t, n, J1(t, x), W1(t, x, off), L1(t, x, len), eoj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), h1n), hd, hwj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), hwj32(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), pf, hk1)) :
     {FuluAttesterSlashing_r.AttesterSlashing_rd3(off, len, O0(t, x), O1(t, x), O.BSome{CH.OBJw(d, t, J0(t, x), W0(t, x, off), L0(t, x)), O.BNone{}}, FuluIndexedAttestation_r.IndexedAttestation_bx_rd(_)) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttesterSlashing_d.AttesterSlashing}
   {==}
 
 # The reader on the window, when the checks hold.
-def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+def readwD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {FuluAttesterSlashing_r.AttesterSlashing_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttesterSlashing_d.AttesterSlashing}:
   +r1 = ck(U32.is_eq(O0(t, x), 8), ck(RR(t, x, len), ck(D0(t, x, off), D1(t, x, off, len))))
   +r2 = ck(RR(t, x, len), ck(D0(t, x, off), D1(t, x, off, len)))
@@ -243,7 +252,7 @@ def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
   +h2 = ck_b(U32.is_eq(O0(t, x), 8), r2, h1)
   +h3 = ck_b(RR(t, x, len), r3, h2)
   +hr = ck_a(RR(t, x, len), r3, h2)
-  rd_go(d, t, n, x, off, len, eo, hd, hw, pf, le_nat(8, len, ck_a(U32.is_le(8, len), r1, hchk)),
+  rd_go(d, t, n, x, off, len, eo, hd, hw, hw32, pf, le_nat(8, len, ck_a(U32.is_le(8, len), r1, hchk)),
     le_nat(O0(t, x), O1(t, x), FD.logic__and_left(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hr)),
     le_nat(O1(t, x), len, FD.logic__and_right(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hr)),
     ck_a(D0(t, x, off), D1(t, x, off, len), h3), ck_b(D0(t, x, off), D1(t, x, off, len), h3))
@@ -285,14 +294,20 @@ def eJ1(+t: FD.array__Tree<U32>, +x: Nat, +h81: {Nat.is_le(8n, U32.to_nat(O1(t, 
   {==}
 
 def hw8(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h81: {Nat.is_le(8n, U32.to_nat(O1(t, x))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t, x)), U32.to_nat(len)) == True{} : Bool})
     -> {Nat.is_le(Nat.add(8n+x, U32.to_nat(A0(t, x))), A.quad(VB.pw(d))) == True{} : Bool}:
-  hwj(d, t, n, x, off, len, eo, hd, hw, pf, 8, O1(t, x), h81, h1n)
+  hwj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, 8, O1(t, x), h81, h1n)
+
+def hw8_32(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h81: {Nat.is_le(8n, U32.to_nat(O1(t, x))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t, x)), U32.to_nat(len)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(8n+x, U32.to_nat(A0(t, x))), FD.spec_common__pow2(32n)) == True{} : Bool}:
+  hwj32(d, t, n, x, off, len, eo, hd, hw, hw32, pf, 8, O1(t, x), h81, h1n)
 
 # The spec encoding of the two windows is the window.
 def enc8(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h81: {Nat.is_le(8n, U32.to_nat(O1(t, x))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t, x)), U32.to_nat(len)) == True{} : Bool},
     +e0: {O0(t, x) == 8 : U32})
     -> {LS(t, x, len) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>}:
@@ -314,7 +329,7 @@ def enc8(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
     {LS(t, x, len) == List.append(&2, U32, List.append(&2, U32, I.limb(8), List.append(&2, U32, _, [])), List.append(&2, U32, Y0(t, x), Y1(t, x, len))) : +List<U32>}
   %Equal.sym(Nat, U32.to_nat(O1(t, x)), Nat.add(8n, a0), eO1(t, x, h81)) :
     {LS(t, x, len) == List.append(&2, U32, List.append(&2, U32, I.limb(8), List.append(&2, U32, N.digits(4n, _), [])), List.append(&2, U32, Y0(t, x), Y1(t, x, len))) : +List<U32>}
-  %Equal.sym(Nat, List.length(&2, U32, Y0(t, x)), a0, UW.lenWX(d, t, 8n+x, a0, pf, hw8(d, t, n, x, off, len, eo, hd, hw, pf, h81, h1n))) :
+  %Equal.sym(Nat, List.length(&2, U32, Y0(t, x)), a0, UW.lenWX(d, t, 8n+x, a0, pf, hw8(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h81, h1n))) :
     {List.append(&2, U32, List.append(&2, U32, N.digits(4n, 8n), List.append(&2, U32, N.digits(4n, Nat.add(8n, _)), [])), List.append(&2, U32, Y0(t, x), List.append(&2, U32, Y1(t, x, len), []))) ==
       List.append(&2, U32, List.append(&2, U32, I.limb(8), List.append(&2, U32, N.digits(4n, Nat.add(8n, a0)), [])), List.append(&2, U32, Y0(t, x), Y1(t, x, len))) : +List<U32>}
   %Equal.sym(+List<U32>, List.append(&2, U32, Y1(t, x, len), []), Y1(t, x, len), VS.app_nil(Y1(t, x, len))) :
@@ -324,16 +339,16 @@ def enc8(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
 
 # The payloads' length.
 def lpay(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h81: {Nat.is_le(8n, U32.to_nat(O1(t, x))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t, x)), U32.to_nat(len)) == True{} : Bool})
     -> {U32.to_nat(len) == Nat.add(8n, List.length(&2, U32, Layout.payloads(PL(t, x, len)))) : Nat}:
   +a0 = U32.to_nat(A0(t, x))
   +a1 = U32.to_nat(L1(t, x, len))
-  +hw1 = hwj(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len)))
+  +hw1 = hwj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len)))
   %Equal.sym(Nat, List.length(&2, U32, List.append(&2, U32, Y0(t, x), List.append(&2, U32, Y1(t, x, len), []))), Nat.add(List.length(&2, U32, Y0(t, x)), List.length(&2, U32, List.append(&2, U32, Y1(t, x, len), []))),
       VS.len_app(Y0(t, x), List.append(&2, U32, Y1(t, x, len), []))) : {U32.to_nat(len) == Nat.add(8n, _) : Nat}
   %Equal.sym(+List<U32>, List.append(&2, U32, Y1(t, x, len), []), Y1(t, x, len), VS.app_nil(Y1(t, x, len))) : {U32.to_nat(len) == Nat.add(8n, Nat.add(List.length(&2, U32, Y0(t, x)), List.length(&2, U32, _))) : Nat}
-  %Equal.sym(Nat, List.length(&2, U32, Y0(t, x)), a0, UW.lenWX(d, t, 8n+x, a0, pf, hw8(d, t, n, x, off, len, eo, hd, hw, pf, h81, h1n))) : {U32.to_nat(len) == Nat.add(8n, Nat.add(_, List.length(&2, U32, Y1(t, x, len)))) : Nat}
+  %Equal.sym(Nat, List.length(&2, U32, Y0(t, x)), a0, UW.lenWX(d, t, 8n+x, a0, pf, hw8(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h81, h1n))) : {U32.to_nat(len) == Nat.add(8n, Nat.add(_, List.length(&2, U32, Y1(t, x, len)))) : Nat}
   %Equal.sym(Nat, List.length(&2, U32, Y1(t, x, len)), a1, UW.lenWX(d, t, J1(t, x), a1, pf, hw1)) : {U32.to_nat(len) == Nat.add(8n, Nat.add(a0, _)) : Nat}
   elen(t, x, len, h81, h1n)
 
@@ -368,15 +383,15 @@ def lct2(+it: S.Value) -> {Codec.aggregate(Codec.parts(it, S.Chain{Spec.IndexedA
   {==}
 
 def specg8(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h81: {Nat.is_le(8n, U32.to_nat(O1(t, x))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t, x)), U32.to_nat(len)) == True{} : Bool},
     +e0: {O0(t, x) == 8 : U32}, +hk0: {CH.CHKw(t, 8n+x, U32.add(off, 8), A0(t, x)) == True{} : Bool}, +hk1: {D1(t, x, off, len) == True{} : Bool})
     -> {Codec.parts(S.Sequence{S.Items{CH.VALw(t, 8n+x, A0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}:
-  +c0 = CH.specw(d, t, n, 8n+x, U32.add(off, 8), A0(t, x), eoj(d, t, n, x, off, len, eo, hd, hw, pf, 8, FD.nat__le_trans(8n, U32.to_nat(O1(t, x)), U32.to_nat(len), h81, h1n)), hd, hw8(d, t, n, x, off, len, eo, hd, hw, pf, h81, h1n), pf, hk0)
-  +c1 = CH.specw(d, t, n, J1(t, x), W1(t, x, off), L1(t, x, len), eoj(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), h1n), hd, hwj(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), pf, hk1)
-  +hf = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(len), Nat.add(8n, List.length(&2, U32, Layout.payloads(PL(t, x, len)))), lpay(d, t, n, x, off, len, eo, hd, hw, pf, h81, h1n),
-    VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==})))
-  %enc8(d, t, n, x, off, len, eo, hd, hw, pf, h81, h1n, e0) : {Codec.parts(S.Sequence{S.Items{CH.VALw(t, 8n+x, A0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{_}]} : Maybe<&2, +List<S.Part>>}
+  +c0 = CH.specwD(d, t, n, 8n+x, U32.add(off, 8), A0(t, x), eoj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, 8, FD.nat__le_trans(8n, U32.to_nat(O1(t, x)), U32.to_nat(len), h81, h1n)), hd, hw8(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h81, h1n), hw8_32(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h81, h1n), pf, hk0)
+  +c1 = CH.specwD(d, t, n, J1(t, x), W1(t, x, off), L1(t, x, len), eoj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), h1n), hd, hwj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), hwj32(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), pf, hk1)
+  +hf = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, U32.to_nat(len), Nat.add(8n, List.length(&2, U32, Layout.payloads(PL(t, x, len)))), lpay(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h81, h1n),
+    VFT.fits4lt(U32.to_nat(len), FD.nat__le_lt_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n), Order.left_below_sum(x, U32.to_nat(len)), hw32)))
+  %enc8(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h81, h1n, e0) : {Codec.parts(S.Sequence{S.Items{CH.VALw(t, 8n+x, A0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{_}]} : Maybe<&2, +List<S.Part>>}
   %lct2(S.Items{CH.VALw(t, 8n+x, A0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}) : {_ == Some{[S.Variable{LS(t, x, len)}]} : Maybe<&2, +List<S.Part>>}
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{CH.VALw(t, 8n+x, A0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}, S.Chain{Spec.IndexedAttestation(), S.Chain{Spec.IndexedAttestation(), S.End{}}}), Some{PL(t, x, len)},
       gcv_(CH.VALw(t, 8n+x, A0(t, x)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}, Spec.IndexedAttestation(), S.Chain{Spec.IndexedAttestation(), S.End{}}, Y0(t, x), [S.Variable{Y1(t, x, len)}], c0,
@@ -391,7 +406,7 @@ def specg8(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: 
   {==}
 
 def specg(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h8: {Nat.is_le(8n, U32.to_nat(len)) == True{} : Bool}, +e0: {O0(t, x) == 8 : U32},
     +h01: {Nat.is_le(U32.to_nat(O0(t, x)), U32.to_nat(O1(t, x))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t, x)), U32.to_nat(len)) == True{} : Bool},
     +hk0: {D0(t, x, off) == True{} : Bool}, +hk1: {D1(t, x, off, len) == True{} : Bool})
@@ -405,11 +420,11 @@ def specg(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
     {Codec.parts(S.Sequence{S.Items{CH.VALw(t, Nat.add(U32.to_nat(_), x), U32.sub(O1(t, x), _)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
   %e8x(x) : {Codec.parts(S.Sequence{S.Items{CH.VALw(t, _, U32.sub(O1(t, x), 8)), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
   %a0e(t, x) : {Codec.parts(S.Sequence{S.Items{CH.VALw(t, 8n+x, _), S.Items{CH.VALw(t, J1(t, x), L1(t, x, len)), S.EmptyItems{}}}}, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
-  specg8(d, t, n, x, off, len, eo, hd, hw, pf, h81, h1n, e0, hk08, hk1)
+  specg8(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h81, h1n, e0, hk08, hk1)
 
 # The spec parts of the value: one variable part, the window's bytes.
-def specw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+def specwD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {Codec.parts(VALw(t, x, len), Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}:
   +r1 = ck(U32.is_eq(O0(t, x), 8), ck(RR(t, x, len), ck(D0(t, x, off), D1(t, x, off, len))))
   +r2 = ck(RR(t, x, len), ck(D0(t, x, off), D1(t, x, off, len)))
@@ -418,7 +433,7 @@ def specw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
   +h2 = ck_b(U32.is_eq(O0(t, x), 8), r2, h1)
   +h3 = ck_b(RR(t, x, len), r3, h2)
   +hr = ck_a(RR(t, x, len), r3, h2)
-  specg(d, t, n, x, off, len, eo, hd, hw, pf, le_nat(8, len, ck_a(U32.is_le(8, len), r1, hchk)), FD.u32alg__eq_of(O0(t, x), 8, ck_a(U32.is_eq(O0(t, x), 8), r2, h1)),
+  specg(d, t, n, x, off, len, eo, hd, hw, hw32, pf, le_nat(8, len, ck_a(U32.is_le(8, len), r1, hchk)), FD.u32alg__eq_of(O0(t, x), 8, ck_a(U32.is_eq(O0(t, x), 8), r2, h1)),
     le_nat(O0(t, x), O1(t, x), FD.logic__and_left(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hr)),
     le_nat(O1(t, x), len, FD.logic__and_right(U32.is_le(O0(t, x), O1(t, x)), U32.is_le(O1(t, x), len), hr)),
     ck_a(D0(t, x, off), D1(t, x, off, len), h3), ck_b(D0(t, x, off), D1(t, x, off, len), h3))
@@ -450,7 +465,7 @@ def chk_all(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +h8: {Nat.is
   hk1
 
 def cn_en(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +y0: +List<U32>, +y1: +List<U32>, +eq: {OUT2(y0, y1) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>})
     -> {U32.to_nat(len) == Nat.add(8n, Nat.add(List.length(&2, U32, y0), List.length(&2, U32, y1))) : Nat}:
   Equal.trans(Nat, U32.to_nat(len), List.length(&2, U32, UW.WX(t, x, U32.to_nat(len))), Nat.add(8n, Nat.add(List.length(&2, U32, y0), List.length(&2, U32, y1))),
@@ -468,7 +483,7 @@ def cn_p8(+y0: +List<U32>, +y1: +List<U32>) -> {VS.bdr(8n, OUT2(y0, y1)) == List
   {==}
 
 def cn_b0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +y0: +List<U32>, +y1: +List<U32>, +eq: {OUT2(y0, y1) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>},
     +h8: {Nat.is_le(8n, U32.to_nat(len)) == True{} : Bool}) -> {F.limbs([O0(t, x)]) == [8, 0, 0, 0] : +List<U32>}:
   +hP = FD.nat__le_trans(Nat.add(x, 8n), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.add_left(x, 8n, U32.to_nat(len), h8), hw)
@@ -481,7 +496,7 @@ def cn_b0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
         cn_w4(y0, y1))))
 
 def cn_b1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +y0: +List<U32>, +y1: +List<U32>, +eq: {OUT2(y0, y1) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>},
     +h8: {Nat.is_le(8n, U32.to_nat(len)) == True{} : Bool}) -> {I.limb(O1(t, x)) == N.digits(4n, Nat.add(8n, List.length(&2, U32, y0))) : +List<U32>}:
   +D = N.digits(4n, Nat.add(8n, List.length(&2, U32, y0)))
@@ -495,7 +510,7 @@ def cn_b1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
           cn_d1(y0, y1)))))
 
 def cn_ey0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +y0: +List<U32>, +y1: +List<U32>, +eq: {OUT2(y0, y1) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>},
     +le8y0: {Nat.is_le(Nat.add(8n, List.length(&2, U32, y0)), U32.to_nat(len)) == True{} : Bool})
     -> {y0 == UW.WX(t, 8n+x, List.length(&2, U32, y0)) : +List<U32>}:
@@ -510,7 +525,7 @@ def cn_ey0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: 
       Equal.cong(+List<U32>, +List<U32>, z => VS.bt(ly0, VS.bdr(8n, z)), OUT2(y0, y1), UW.WX(t, x, U32.to_nat(len)), eq), UW.subWX(t, x, 8n, ly0, U32.to_nat(len), le8y0)))
 
 def cn_ey1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +y0: +List<U32>, +y1: +List<U32>, +eq: {OUT2(y0, y1) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>},
     +en2: {U32.to_nat(len) == Nat.add(Nat.add(8n, List.length(&2, U32, y0)), List.length(&2, U32, y1)) : Nat})
     -> {y1 == UW.WX(t, Nat.add(Nat.add(8n, List.length(&2, U32, y0)), x), List.length(&2, U32, y1)) : +List<U32>}:
@@ -529,16 +544,17 @@ def cn_ey1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: 
       UW.tailWX(t, x, Nat.add(8n, ly0), ly1)))
 
 def cn_e1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +y0: +List<U32>, +y1: +List<U32>, +eq: {OUT2(y0, y1) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>}, +le8y0: {Nat.is_le(Nat.add(8n, List.length(&2, U32, y0)), U32.to_nat(len)) == True{} : Bool})
     -> {U32.to_nat(O1(t, x)) == Nat.add(8n, List.length(&2, U32, y0)) : Nat}:
   +h8 = FD.nat__le_trans(8n, Nat.add(8n, List.length(&2, U32, y0)), U32.to_nat(len), Order.below_sum(8n, List.length(&2, U32, y0)), le8y0)
   VG.digits_word(O1(t, x), Nat.add(8n, List.length(&2, U32, y0)),
-    VFT.fits4(2n+d, Nat.add(8n, List.length(&2, U32, y0)), FD.nat__le_trans(Nat.add(8n, List.length(&2, U32, y0)), U32.to_nat(len), A.quad(VB.pw(d)), le8y0, hlen(d, x, len, hw)), FD.nat__lt_trans(d, 28n, 30n, hd, {==})),
-    cn_b1(d, t, n, x, off, len, eo, hd, hw, pf, y0, y1, eq, h8))
+    VFT.fits4lt(Nat.add(8n, List.length(&2, U32, y0)), FD.nat__le_lt_trans(Nat.add(8n, List.length(&2, U32, y0)), U32.to_nat(len), FD.spec_common__pow2(32n), le8y0,
+      FD.nat__le_lt_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n), Order.left_below_sum(x, U32.to_nat(len)), hw32))),
+    cn_b1(d, t, n, x, off, len, eo, hd, hw, hw32, pf, y0, y1, eq, h8))
 
 def cn_hk0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h0: S.Value, +y0: +List<U32>, +eh0: {Codec.parts(h0, Spec.Schema46()) == Some{[S.Variable{y0}]} : Maybe<&2, +List<S.Part>>}, +y1: +List<U32>, +eq: {OUT2(y0, y1) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>},
     +le8y0: {Nat.is_le(Nat.add(8n, List.length(&2, U32, y0)), U32.to_nat(len)) == True{} : Bool}, +e0: {O0(t, x) == 8 : U32},
     +e1: {U32.to_nat(O1(t, x)) == Nat.add(8n, List.length(&2, U32, y0)) : Nat},
@@ -551,17 +567,17 @@ def cn_hk0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: 
       Equal.trans(Nat, Nat.sub(U32.to_nat(O1(t, x)), 8n), Nat.sub(Nat.add(8n, ly0), 8n), ly0, Equal.cong(Nat, Nat, z => Nat.sub(z, 8n), U32.to_nat(O1(t, x)), Nat.add(8n, ly0), e1),
         FD.nat__add_sub_cancel(8n, ly0))))
   +eJ0 = Equal.cong(U32, Nat, z => Nat.add(U32.to_nat(z), x), O0(t, x), 8, e0)
-  +ew0 = Equal.trans(+List<U32>, y0, UW.WX(t, 8n+x, ly0), UW.WX(t, J0(t, x), U32.to_nat(L0(t, x))), cn_ey0(d, t, n, x, off, len, eo, hd, hw, pf, y0, y1, eq, le8y0),
+  +ew0 = Equal.trans(+List<U32>, y0, UW.WX(t, 8n+x, ly0), UW.WX(t, J0(t, x), U32.to_nat(L0(t, x))), cn_ey0(d, t, n, x, off, len, eo, hd, hw, hw32, pf, y0, y1, eq, le8y0),
     Equal.sym(+List<U32>, UW.WX(t, J0(t, x), U32.to_nat(L0(t, x))), UW.WX(t, 8n+x, ly0),
       Equal.trans(+List<U32>, UW.WX(t, J0(t, x), U32.to_nat(L0(t, x))), UW.WX(t, 8n+x, U32.to_nat(L0(t, x))), UW.WX(t, 8n+x, ly0),
         Equal.cong(Nat, +List<U32>, z => UW.WX(t, z, U32.to_nat(L0(t, x))), J0(t, x), 8n+x, eJ0),
         Equal.cong(Nat, +List<U32>, z => UW.WX(t, 8n+x, z), U32.to_nat(L0(t, x)), ly0, eL0))))
-  CH.invw(d, t, n, J0(t, x), W0(t, x, off), L0(t, x), eoj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), FD.nat__le_trans(U32.to_nat(O0(t, x)), U32.to_nat(O1(t, x)), U32.to_nat(len), h01, h1n)), hd,
-    hwj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), O1(t, x), h01, h1n), pf, h0,
+  CH.invwD(d, t, n, J0(t, x), W0(t, x, off), L0(t, x), eoj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O0(t, x), FD.nat__le_trans(U32.to_nat(O0(t, x)), U32.to_nat(O1(t, x)), U32.to_nat(len), h01, h1n)), hd,
+    hwj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O0(t, x), O1(t, x), h01, h1n), hwj32(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O0(t, x), O1(t, x), h01, h1n), pf, h0,
     FD.logic__subst(+List<U32>, z => {Codec.parts(h0, Spec.Schema46()) == Some{[S.Variable{z}]} : Maybe<&2, +List<S.Part>>}, y0, UW.WX(t, J0(t, x), U32.to_nat(L0(t, x))), ew0, eh0))
 
 def cn_hk1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +y0: +List<U32>, +h1: S.Value, +y1: +List<U32>, +eh1: {Codec.parts(h1, Spec.Schema46()) == Some{[S.Variable{y1}]} : Maybe<&2, +List<S.Part>>}, +eq: {OUT2(y0, y1) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>},
     +en: {U32.to_nat(len) == Nat.add(8n, Nat.add(List.length(&2, U32, y0), List.length(&2, U32, y1))) : Nat},
     +e1: {U32.to_nat(O1(t, x)) == Nat.add(8n, List.length(&2, U32, y0)) : Nat},
@@ -575,42 +591,42 @@ def cn_hk1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: 
         Equal.cong(Nat, Nat, z => Nat.sub(U32.to_nat(len), z), U32.to_nat(O1(t, x)), Nat.add(8n, ly0), e1),
         Equal.cong(Nat, Nat, z => Nat.sub(z, Nat.add(8n, ly0)), U32.to_nat(len), Nat.add(Nat.add(8n, ly0), ly1), en2)),
       FD.nat__add_sub_cancel(Nat.add(8n, ly0), ly1)))
-  +ew1 = Equal.trans(+List<U32>, y1, UW.WX(t, Nat.add(Nat.add(8n, ly0), x), ly1), UW.WX(t, J1(t, x), U32.to_nat(L1(t, x, len))), cn_ey1(d, t, n, x, off, len, eo, hd, hw, pf, y0, y1, eq, en2),
+  +ew1 = Equal.trans(+List<U32>, y1, UW.WX(t, Nat.add(Nat.add(8n, ly0), x), ly1), UW.WX(t, J1(t, x), U32.to_nat(L1(t, x, len))), cn_ey1(d, t, n, x, off, len, eo, hd, hw, hw32, pf, y0, y1, eq, en2),
     Equal.sym(+List<U32>, UW.WX(t, J1(t, x), U32.to_nat(L1(t, x, len))), UW.WX(t, Nat.add(Nat.add(8n, ly0), x), ly1),
       Equal.trans(+List<U32>, UW.WX(t, J1(t, x), U32.to_nat(L1(t, x, len))), UW.WX(t, Nat.add(Nat.add(8n, ly0), x), U32.to_nat(L1(t, x, len))), UW.WX(t, Nat.add(Nat.add(8n, ly0), x), ly1),
         Equal.cong(Nat, +List<U32>, z => UW.WX(t, Nat.add(z, x), U32.to_nat(L1(t, x, len))), U32.to_nat(O1(t, x)), Nat.add(8n, ly0), e1),
         Equal.cong(Nat, +List<U32>, z => UW.WX(t, Nat.add(Nat.add(8n, ly0), x), z), U32.to_nat(L1(t, x, len)), ly1, eL1))))
-  CH.invw(d, t, n, J1(t, x), W1(t, x, off), L1(t, x, len), eoj(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), h1n), hd, hwj(d, t, n, x, off, len, eo, hd, hw, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), pf, h1,
+  CH.invwD(d, t, n, J1(t, x), W1(t, x, off), L1(t, x, len), eoj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), h1n), hd, hwj(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), hwj32(d, t, n, x, off, len, eo, hd, hw, hw32, pf, O1(t, x), len, h1n, FD.nat__le_refl(U32.to_nat(len))), pf, h1,
     FD.logic__subst(+List<U32>, z => {Codec.parts(h1, Spec.Schema46()) == Some{[S.Variable{z}]} : Maybe<&2, +List<S.Part>>}, y1, UW.WX(t, J1(t, x), U32.to_nat(L1(t, x, len))), ew1, eh1))
 
 # The two windows' shapes make every check pass.
 def contra(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h0: S.Value, +y0: +List<U32>, +eh0: {Codec.parts(h0, Spec.Schema46()) == Some{[S.Variable{y0}]} : Maybe<&2, +List<S.Part>>},
     +h1: S.Value, +y1: +List<U32>, +eh1: {Codec.parts(h1, Spec.Schema46()) == Some{[S.Variable{y1}]} : Maybe<&2, +List<S.Part>>}, +eq: {OUT2(y0, y1) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>})
     -> {CHKw(t, x, off, len) == True{} : Bool}:
   +ly0 = List.length(&2, U32, y0)
   +ly1 = List.length(&2, U32, y1)
-  +en = cn_en(d, t, n, x, off, len, eo, hd, hw, pf, y0, y1, eq)
+  +en = cn_en(d, t, n, x, off, len, eo, hd, hw, hw32, pf, y0, y1, eq)
   +le8y0 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(8n, ly0), z) == True{} : Bool}, Nat.add(8n, Nat.add(ly0, ly1)), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), Nat.add(8n, Nat.add(ly0, ly1)), en),
     Order.add_left(8n, ly0, Nat.add(ly0, ly1), FD.nat__le_add_right(ly0, ly1)))
   +h8 = FD.nat__le_trans(8n, Nat.add(8n, ly0), U32.to_nat(len), Order.below_sum(8n, ly0), le8y0)
-  +e0 = VN.wordc(O0(t, x), 8, cn_b0(d, t, n, x, off, len, eo, hd, hw, pf, y0, y1, eq, h8))
-  +e1 = cn_e1(d, t, n, x, off, len, eo, hd, hw, pf, y0, y1, eq, le8y0)
+  +e0 = VN.wordc(O0(t, x), 8, cn_b0(d, t, n, x, off, len, eo, hd, hw, hw32, pf, y0, y1, eq, h8))
+  +e1 = cn_e1(d, t, n, x, off, len, eo, hd, hw, hw32, pf, y0, y1, eq, le8y0)
   +h81 = FD.logic__subst(Nat, z => {Nat.is_le(8n, z) == True{} : Bool}, Nat.add(8n, ly0), U32.to_nat(O1(t, x)), Equal.sym(Nat, U32.to_nat(O1(t, x)), Nat.add(8n, ly0), e1), Order.below_sum(8n, ly0))
   +h1n = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, Nat.add(8n, ly0), U32.to_nat(O1(t, x)), Equal.sym(Nat, U32.to_nat(O1(t, x)), Nat.add(8n, ly0), e1), le8y0)
   +h01 = FD.logic__subst(U32, z => {Nat.is_le(U32.to_nat(z), U32.to_nat(O1(t, x))) == True{} : Bool}, 8, O0(t, x), Equal.sym(U32, O0(t, x), 8, e0), h81)
-  chk_all(t, x, off, len, h8, e0, h01, h1n, cn_hk0(d, t, n, x, off, len, eo, hd, hw, pf, h0, y0, eh0, y1, eq, le8y0, e0, e1, h81, h1n, h01), cn_hk1(d, t, n, x, off, len, eo, hd, hw, pf, y0, h1, y1, eh1, eq, en, e1, h1n))
+  chk_all(t, x, off, len, h8, e0, h01, h1n, cn_hk0(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h0, y0, eh0, y1, eq, le8y0, e0, e1, h81, h1n, h01), cn_hk1(d, t, n, x, off, len, eo, hd, hw, hw32, pf, y0, h1, y1, eh1, eq, en, e1, h1n))
 
 def fin(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h0: S.Value, +y0: +List<U32>, +eh0: {Codec.parts(h0, Spec.Schema46()) == Some{[S.Variable{y0}]} : Maybe<&2, +List<S.Part>>}, +h1: S.Value, +y1: +List<U32>, +eh1: {Codec.parts(h1, Spec.Schema46()) == Some{[S.Variable{y1}]} : Maybe<&2, +List<S.Part>>}, +b5: Bool, +e: {Codec.one(SP.optional(b5, OUT2(y0, y1)), None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
   match b5:
     case False{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
-    case True{}: contra(d, t, n, x, off, len, eo, hd, hw, pf, h0, y0, eh0, h1, y1, eh1, var_inj(OUT2(y0, y1), UW.WX(t, x, U32.to_nat(len)), e))
+    case True{}: contra(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h0, y0, eh0, h1, y1, eh1, var_inj(OUT2(y0, y1), UW.WX(t, x, U32.to_nat(len)), e))
 
 def st2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h0: S.Value, +y0: +List<U32>, +eh0: {Codec.parts(h0, Spec.Schema46()) == Some{[S.Variable{y0}]} : Maybe<&2, +List<S.Part>>}, +h1: S.Value, +y1: +List<U32>, +eh1: {Codec.parts(h1, Spec.Schema46()) == Some{[S.Variable{y1}]} : Maybe<&2, +List<S.Part>>}, +items: S.Value, +e: {Codec.aggregate(Codec.concatenate(Some{[S.Variable{y0}]}, Codec.concatenate(Some{[S.Variable{y1}]}, Codec.parts(items, S.End{}))), None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
   match items:
     case S.BooleanValue{+b0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
@@ -619,36 +635,36 @@ def st2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
     case S.BitsValue{+bs0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.Sequence{+it0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.Items{+hd0, +tl0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
-    case S.EmptyItems{}: fin(d, t, n, x, off, len, eo, hd, hw, pf, h0, y0, eh0, h1, y1, eh1, Bool.and(Layout.bytes_valid([S.Variable{y0}, S.Variable{y1}]), N.fits(4n, Nat.add(Layout.fixed_size([S.Variable{y0}, S.Variable{y1}]), List.length(&2, U32, Layout.payloads([S.Variable{y0}, S.Variable{y1}]))))), e)
+    case S.EmptyItems{}: fin(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h0, y0, eh0, h1, y1, eh1, Bool.and(Layout.bytes_valid([S.Variable{y0}, S.Variable{y1}]), N.fits(4n, Nat.add(Layout.fixed_size([S.Variable{y0}, S.Variable{y1}]), List.length(&2, U32, Layout.payloads([S.Variable{y0}, S.Variable{y1}]))))), e)
     case S.Selected{+sel0, +sv0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.NullValue{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
 
 def vp1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h0: S.Value, +y0: +List<U32>, +eh0: {Codec.parts(h0, Spec.Schema46()) == Some{[S.Variable{y0}]} : Maybe<&2, +List<S.Part>>}, +h: S.Value, +ps: +List<S.Part>, hf: DF.single(None{}, ps), +em: {Codec.parts(h, Spec.Schema46()) == Some{ps} : Maybe<&2, +List<S.Part>>}, +r: S.Value,
     +e: {Codec.aggregate(Codec.concatenate(Some{[S.Variable{y0}]}, Codec.concatenate(Some{ps}, Codec.parts(r, S.End{}))), None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
   match ps:
     case Nil{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, hf)
     case Con{S.Fixed{+xs}, Nil{}}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(Nat, List.length(&2, U32, xs), hf))
-    case Con{S.Variable{+ys}, Nil{}}: st2(d, t, n, x, off, len, eo, hd, hw, pf, h0, y0, eh0, h, ys, em, r, e)
+    case Con{S.Variable{+ys}, Nil{}}: st2(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h0, y0, eh0, h, ys, em, r, e)
     case Con{S.Fixed{+xs}, Con{+a2, +b2}}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, hf)
     case Con{S.Variable{+xs}, Con{+a2, +b2}}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, hf)
 
 def vm1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h0: S.Value, +y0: +List<U32>, +eh0: {Codec.parts(h0, Spec.Schema46()) == Some{[S.Variable{y0}]} : Maybe<&2, +List<S.Part>>}, +h: S.Value, +mm: Maybe<&2, +List<S.Part>>, hf: DF.single_result(None{}, mm), +em: {Codec.parts(h, Spec.Schema46()) == mm : Maybe<&2, +List<S.Part>>}, +r: S.Value,
     +e: {Codec.aggregate(Codec.concatenate(Some{[S.Variable{y0}]}, Codec.concatenate(mm, Codec.parts(r, S.End{}))), None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
   match mm:
     case None{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
-    case Some{+ps}: vp1(d, t, n, x, off, len, eo, hd, hw, pf, h0, y0, eh0, h, ps, hf, em, r, e)
+    case Some{+ps}: vp1(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h0, y0, eh0, h, ps, hf, em, r, e)
 
 def fd1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h0: S.Value, +y0: +List<U32>, +eh0: {Codec.parts(h0, Spec.Schema46()) == Some{[S.Variable{y0}]} : Maybe<&2, +List<S.Part>>}, +h: S.Value, +r: S.Value, +e: {Codec.aggregate(Codec.concatenate(Some{[S.Variable{y0}]}, Codec.concatenate(Codec.parts(h, Spec.Schema46()), Codec.parts(r, S.End{}))), None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
-  vm1(d, t, n, x, off, len, eo, hd, hw, pf, h0, y0, eh0, h, Codec.parts(h, Spec.Schema46()), DS.facts(h, Spec.Schema46(), {==}), {==}, r, e)
+  vm1(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h0, y0, eh0, h, Codec.parts(h, Spec.Schema46()), DS.facts(h, Spec.Schema46(), {==}), {==}, r, e)
 
 def st1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h0: S.Value, +y0: +List<U32>, +eh0: {Codec.parts(h0, Spec.Schema46()) == Some{[S.Variable{y0}]} : Maybe<&2, +List<S.Part>>}, +items: S.Value, +e: {Codec.aggregate(Codec.concatenate(Some{[S.Variable{y0}]}, Codec.parts(items, S.Chain{Spec.Schema46(), S.End{}})), None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
   match items:
     case S.BooleanValue{+b0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
@@ -656,37 +672,37 @@ def st1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
     case S.BytesValue{+xs0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.BitsValue{+bs0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.Sequence{+it0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
-    case S.Items{+h, +r}: fd1(d, t, n, x, off, len, eo, hd, hw, pf, h0, y0, eh0, h, r, e)
+    case S.Items{+h, +r}: fd1(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h0, y0, eh0, h, r, e)
     case S.EmptyItems{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.Selected{+sel0, +sv0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.NullValue{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
 
 def vp0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: S.Value, +ps: +List<S.Part>, hf: DF.single(None{}, ps), +em: {Codec.parts(h, Spec.Schema46()) == Some{ps} : Maybe<&2, +List<S.Part>>}, +r: S.Value,
     +e: {Codec.aggregate(Codec.concatenate(Some{ps}, Codec.parts(r, S.Chain{Spec.Schema46(), S.End{}})), None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
   match ps:
     case Nil{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, hf)
     case Con{S.Fixed{+xs}, Nil{}}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(Nat, List.length(&2, U32, xs), hf))
-    case Con{S.Variable{+ys}, Nil{}}: st1(d, t, n, x, off, len, eo, hd, hw, pf, h, ys, em, r, e)
+    case Con{S.Variable{+ys}, Nil{}}: st1(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h, ys, em, r, e)
     case Con{S.Fixed{+xs}, Con{+a2, +b2}}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, hf)
     case Con{S.Variable{+xs}, Con{+a2, +b2}}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, hf)
 
 def vm0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: S.Value, +mm: Maybe<&2, +List<S.Part>>, hf: DF.single_result(None{}, mm), +em: {Codec.parts(h, Spec.Schema46()) == mm : Maybe<&2, +List<S.Part>>}, +r: S.Value,
     +e: {Codec.aggregate(Codec.concatenate(mm, Codec.parts(r, S.Chain{Spec.Schema46(), S.End{}})), None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
   match mm:
     case None{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
-    case Some{+ps}: vp0(d, t, n, x, off, len, eo, hd, hw, pf, h, ps, hf, em, r, e)
+    case Some{+ps}: vp0(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h, ps, hf, em, r, e)
 
 def fd0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: S.Value, +r: S.Value, +e: {Codec.aggregate(Codec.concatenate(Codec.parts(h, Spec.Schema46()), Codec.parts(r, S.Chain{Spec.Schema46(), S.End{}})), None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
-  vm0(d, t, n, x, off, len, eo, hd, hw, pf, h, Codec.parts(h, Spec.Schema46()), DS.facts(h, Spec.Schema46(), {==}), {==}, r, e)
+  vm0(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h, Codec.parts(h, Spec.Schema46()), DS.facts(h, Spec.Schema46(), {==}), {==}, r, e)
 
 def st0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +items: S.Value, +e: {Codec.aggregate(Codec.parts(items, S.Chain{Spec.Schema46(), S.Chain{Spec.Schema46(), S.End{}}}), None{}) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
   match items:
     case S.BooleanValue{+b0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
@@ -694,22 +710,36 @@ def st0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
     case S.BytesValue{+xs0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.BitsValue{+bs0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.Sequence{+it0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
-    case S.Items{+h, +r}: fd0(d, t, n, x, off, len, eo, hd, hw, pf, h, r, e)
+    case S.Items{+h, +r}: fd0(d, t, n, x, off, len, eo, hd, hw, hw32, pf, h, r, e)
     case S.EmptyItems{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.Selected{+sel0, +sv0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.NullValue{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
 
 # Every value whose spec parts are the window's bytes passes the checks.
-def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+def invwD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hw32: {Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +v: S.Value, +e: {Codec.parts(v, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
   match v:
     case S.BooleanValue{+b0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.UnsignedValue{+u0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.BytesValue{+xs0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.BitsValue{+bs0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
-    case S.Sequence{+items}: st0(d, t, n, x, off, len, eo, hd, hw, pf, items, e)
+    case S.Sequence{+items}: st0(d, t, n, x, off, len, eo, hd, hw, hw32, pf, items, e)
     case S.Items{+hd0, +tl0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.EmptyItems{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.Selected{+sel0, +sv0}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
     case S.NullValue{}: Empty.absurd({CHKw(t, x, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{UW.WX(t, x, U32.to_nat(len))}], e))
+
+# ---- the window interface as it was (d < 28, no hw32), for the callers not yet deep ----
+
+def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {FuluAttesterSlashing_r.AttesterSlashing_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+  ok_evalwD(d, t, n, x, off, len, eo, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), hw, VB.hw32of(d, Nat.add(x, U32.to_nat(len)), FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hw), pf)
+
+def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {FuluAttesterSlashing_r.AttesterSlashing_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttesterSlashing_d.AttesterSlashing}:
+  readwD(d, t, n, x, off, len, eo, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), hw, VB.hw32of(d, Nat.add(x, U32.to_nat(len)), FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hw), pf, hchk)
+
+def specw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {Codec.parts(VALw(t, x, len), Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}:
+  specwD(d, t, n, x, off, len, eo, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), hw, VB.hw32of(d, Nat.add(x, U32.to_nat(len)), FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hw), pf, hchk)
+
+def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +v: S.Value, +e: {Codec.parts(v, Spec.AttesterSlashing()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}) -> {CHKw(t, x, off, len) == True{} : Bool}:
+  invwD(d, t, n, x, off, len, eo, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), hw, VB.hw32of(d, Nat.add(x, U32.to_nat(len)), FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hw), pf, v, e)
