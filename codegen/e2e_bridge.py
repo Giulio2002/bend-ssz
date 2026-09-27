@@ -1662,6 +1662,11 @@ def nwk(+n: U32, +k: Nat, +hk: {Nat.is_lt(k, 29n) == True{} : Bool}, +h: {Nat.is
   %VD.s_pow2_eq(k) : {Nat.is_le(nwn(U32.to_nat(n)), _) == True{} : Bool}
   nle(U32.to_nat(n), FD.spec_common__pow2(k), h)
 
+# d = B.capacity(n) <= k
+def cap_le(+n: U32, +k: Nat, +hk: {Nat.is_lt(k, 29n) == True{} : Bool}, +h: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(k))) == True{} : Bool})
+    -> {Nat.is_le(B.capacity(n), k) == True{} : Bool}:
+  VD.wd_min(nwu(n), k, nwk(n, k, hk, h))
+
 # d = B.capacity(n) < 29
 def cap_lt(+n: U32, +k: Nat, +hk: {Nat.is_lt(k, 29n) == True{} : Bool}, +h: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(k))) == True{} : Bool})
     -> {Nat.is_lt(B.capacity(n), 29n) == True{} : Bool}:
@@ -1772,6 +1777,201 @@ def text_broot(rows):
         L.append(f'    {al["gvalid_words.bend"]}.{X}_root_valid({args}), {al[r["rt"]["file"]]}.{r["rt"]["law"]}(h, {args}))')
         L.append('')
     return '\n'.join(L) + '\n'
+
+# ---- variable-size names: (ii) on views and (iii), through the loader ----
+# The codec laws of a variable-size name X (proofs/obj/var_codec_X.bend and its _rej module) are
+# stated over a buffer BF(t, n) = B.Buf{thaw(t), n} of a perfect word tree t of depth d with
+# d below a bound and n <= 4 * 2^d: decode_accept / decode_spec when CHK(t, n) holds,
+# decode_none / decode_reject when it does not. The loader (e2e_load) puts a byte list bs of
+# length n in such a buffer at d = B.capacity(n), with VW(t, n) = bs; the capacity facts (e2e_cap)
+# give the bounds for n <= 4 * 2^K, K one below the laws' depth bound (the premise hS). A name
+# is bridged once its view lemma is written: vv, the root view of OBJ(t, n) is the codec law's
+# value VAL(t, n) when CHK(t, n) holds (VDEC_VIEWS).
+VDEC_HEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
+             'import ../src/obj.bend as O', 'import ../types/fulu_obj.bend as T', 'import ../types/schema.bend as S',
+             'import ../types/primitive.bend as P', 'import ../spec/fulu_schemas.bend as Spec', 'import ../spec/primitives.bend as SP',
+             'import ../spec/decoding_relation.bend as Decoding', 'import ../proofs/type_validator_soundness.bend as TVS',
+             'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F',
+             'import ../proofs/obj/arr_copy.bend as AC', 'import ./e2e_bytes.bend as E', 'import ./e2e_load.bend as L', 'import ./e2e_cap.bend as C']
+VDEC_VIEWS = {
+    'DataColumnsByRootIdentifier': {
+        'view': 'RT.v_DataColumnsByRootIdentifier',
+        'imports': ['import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbuf.bend as VB',
+                    'import ../proofs/obj/ulist_obj.bend as UL', 'import ../proofs/obj/root_types.bend as RT'],
+        'text': r'''# ---- the view of a decoded object is the codec law's value ----
+
+def ue2(+c: Nat, +a: U32, +t: List<&2, U32>, rec: @+r: List<&2, U32> -> {UL.uitems(c, r) == VSP.uitems(c, r) : S.Value})
+    -> {UL.uitems(1n+c, Con{a, t}) == VSP.uitems(1n+c, Con{a, t}) : S.Value}:
+  match t:
+    case Nil{}: {==}
+    case Con{+b, +rest}: Equal.cong(S.Value, S.Value, z => S.Items{S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, z}, UL.uitems(c, rest), VSP.uitems(c, rest), rec(rest))
+
+law ue:
+  for +k: Nat
+  for +W: List<&2, U32>
+  {UL.uitems(k, W) == VSP.uitems(k, W) : S.Value}
+def ue(k, W):
+  match k W:
+    case 0n _: {==}
+    case 1n+ +c Nil{}: {==}
+    case 1n+ +c Con{+a, +t}: ue2(c, a, t, r => ue(c, r))
+
+law r8:
+  for +c: Nat
+  {VD.s_rng(3n, VSP.x8(c)) == c : Nat}
+def r8(c):
+  match c:
+    case 0n: {==}
+    case 1n+ +p:
+      %Equal.sym(Nat, VD.s_rng(3n, VSP.x8(p)), p, r8(p)) : {1n+_ == 1n+p : Nat}
+      {==}
+
+def cnt(+n: U32, +hc: {DC.whole(DC.LL(n)) == True{} : Bool}) -> {U32.to_nat(U32.shrn(DC.LL(n), 3n)) == DC.CQ(n) : Nat}:
+  Equal.trans(Nat, U32.to_nat(U32.shrn(DC.LL(n), 3n)), VD.s_rng(3n, U32.to_nat(DC.LL(n))), DC.CQ(n), VD.shrk(3n, DC.LL(n)),
+    Equal.trans(Nat, VD.s_rng(3n, U32.to_nat(DC.LL(n))), VD.s_rng(3n, VSP.x8(DC.CQ(n))), DC.CQ(n),
+      Equal.cong(Nat, Nat, z => VD.s_rng(3n, z), U32.to_nat(DC.LL(n)), VSP.x8(DC.CQ(n)), DC.eLc(n, hc)), r8(DC.CQ(n))))
+
+def uv(+t: FD.array__Tree<U32>, +n: U32, +hc: {DC.whole(DC.LL(n)) == True{} : Bool})
+    -> {UL.uview(O.Words{FD.array__thaw(U32, DC.MM(t, n)), DC.LL(n)}) == S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))} : S.Value}:
+  %Equal.sym(Nat, U32.to_nat(U32.shrn(DC.LL(n), 3n)), DC.CQ(n), cnt(n, hc)) :
+    {S.Sequence{UL.uitems(_, FD.array__slots(U32, FD.array__freeze(U32, FD.array__thaw(U32, DC.MM(t, n)))))} == S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))} : S.Value}
+  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, DC.MM(t, n))), DC.MM(t, n), FD.array__freeze_thaw(U32, DC.MM(t, n))) :
+    {S.Sequence{UL.uitems(DC.CQ(n), FD.array__slots(U32, _))} == S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))} : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, UL.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n))), VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n))),
+    ue(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n))))
+
+def wh(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {DC.whole(DC.LL(n)) == True{} : Bool}:
+  +a = U32.is_le(36, n)
+  +b = U32.is_eq(DC.SPO(t), 36)
+  +c = DC.whole(U32.sub(n, DC.SPO(t)))
+  +epo = FD.u32alg__eq_of(DC.SPO(t), 36, DC.chk_b(a, b, c, hchk))
+  FD.logic__subst(U32, z => {DC.whole(U32.sub(n, z)) == True{} : Bool}, DC.SPO(t), 36, epo, DC.chk_c(a, b, c, hchk))
+
+def vv(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_DataColumnsByRootIdentifier(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}:
+  Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{S.BytesValue{F.limbs([VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)])}, S.Items{z, S.EmptyItems{}}}}, UL.uview(O.Words{FD.array__thaw(U32, DC.MM(t, n)), DC.LL(n)}),
+    S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))}, uv(t, n, wh(t, n, hchk)))
+
+'''},
+}
+VDEC_REST = r'''# ---- the loaded buffer ----
+
+# the words the loader fills, at the buffer's depth
+def TT(+bs: +List<U32>, +n: U32) -> FD.array__Tree<U32>: AC.segt(B.capacity(n), 0n, L.wlp(bs))
+
+def ld(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}) -> {B.fill_at(B.alloc(n), 0, bs) == DC.BF(TT(bs, n), n) : B.Buf}:
+  L.bf(bs, n, B.capacity(n), hd, {==}, C.cap_32(n, @K@, {==}, hS), C.cap_w(bs, n, @K@, hn, {==}, hS))
+
+def vwe(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}) -> {DC.VW(TT(bs, n), n) == bs : +List<U32>}:
+  L.vw(bs, n, B.capacity(n), hd, hn, C.cap_w(bs, n, @K@, hn, {==}, hS))
+
+def pfe(+bs: +List<U32>, +n: U32) -> {FD.array__perfect(U32, B.capacity(n), TT(bs, n)) == True{} : Bool}: L.seg_pf(B.capacity(n), L.wlp(bs))
+
+# ---- the two sides on an accepted and a rejected buffer ----
+
+def d_acc(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}, +hchk: {DC.CHK(TT(bs, n), n) == True{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{DC.OBJ(TT(bs, n), n)} : Maybe<&1, T.@X@>}:
+  %Equal.sym(B.Buf, B.fill_at(B.alloc(n), 0, bs), DC.BF(TT(bs, n), n), ld(bs, n, hn, hd, hS)) : {Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(_, n)) == Some{DC.OBJ(TT(bs, n), n)} : Maybe<&1, T.@X@>}
+  Equal.cong(B.Buf & Maybe<&1, T.@X@>, Maybe<&1, T.@X@>, q => Pair.snd(B.Buf, Maybe<&1, T.@X@>, q), T.@X@_decode(DC.BF(TT(bs, n), n), n), (DC.BF(TT(bs, n), n), Some{DC.OBJ(TT(bs, n), n)}),
+    DC.decode_accept(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(n, @K@, {==}, hS), hchk))
+
+def d_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}, +hchk: {DC.CHK(TT(bs, n), n) == False{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.@X@>}:
+  %Equal.sym(B.Buf, B.fill_at(B.alloc(n), 0, bs), DC.BF(TT(bs, n), n), ld(bs, n, hn, hd, hS)) : {Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(_, n)) == None{} : Maybe<&1, T.@X@>}
+  Equal.cong(B.Buf & Maybe<&1, T.@X@>, Maybe<&1, T.@X@>, q => Pair.snd(B.Buf, Maybe<&1, T.@X@>, q), T.@X@_decode(DC.BF(TT(bs, n), n), n), (DC.BF(TT(bs, n), n), None{}),
+    DR.decode_none(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(n, @K@, {==}, hS), hchk))
+
+def s_dec(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}, +hchk: {DC.CHK(TT(bs, n), n) == True{} : Bool}) -> Decoding.decodes(Spec.@X@(), bs, DC.VAL(TT(bs, n), n)):
+  %vwe(bs, n, hn, hd, hS) : Decoding.decodes(Spec.@X@(), _, DC.VAL(TT(bs, n), n))
+  DC.decode_spec(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(n, @K@, {==}, hS), hchk)
+
+def s_out(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}, +hchk: {DC.CHK(TT(bs, n), n) == False{} : Bool}) -> Decoding.outside_image(Spec.@X@(), bs):
+  %vwe(bs, n, hn, hd, hS) : Decoding.outside_image(Spec.@X@(), _)
+  DR.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), C.cap_q(n, @K@, {==}, hS), hchk)
+
+def a_acc(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}, +hchk: {DC.CHK(TT(bs, n), n) == True{} : Bool}) -> {API.deserialize(Spec.@X@(), bs) == Some{DC.VAL(TT(bs, n), n)} : Maybe<&2, S.Value>}:
+  E2E.spec_accepted(Spec.@X@(), bs, DC.VAL(TT(bs, n), n), (TVS.public_sound(Spec.@X@(), {==}), s_dec(bs, n, hn, hd, hS, hchk)))
+
+def a_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}, +hchk: {DC.CHK(TT(bs, n), n) == False{} : Bool}) -> {API.deserialize(Spec.@X@(), bs) == None{} : Maybe<&2, S.Value>}:
+  E.outside_none(Spec.@X@(), bs, s_out(bs, n, hn, hd, hS, hchk))
+
+# ---- (ii) on views, (iii) ----
+
+def mv(m: Maybe<&1, T.@X@>) -> Maybe<&2, S.Value>:
+  match m:
+    case None{}: None{}
+    case Some{o}: Some{@VIEW@(o)}
+
+def d_v(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(TT(bs, n), n) == c : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(Spec.@X@(), bs) : Maybe<&2, S.Value>}:
+  match c:
+    case False{}:
+      %Equal.sym(Maybe<&1, T.@X@>, Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, d_none(bs, n, hn, hd, hS, ec)) : {mv(_) == API.deserialize(Spec.@X@(), bs) : Maybe<&2, S.Value>}
+      %Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.@X@(), bs), None{}, a_none(bs, n, hn, hd, hS, ec)) : {mv(None{}) == _ : Maybe<&2, S.Value>}
+      {==}
+    case True{}:
+      %Equal.sym(Maybe<&1, T.@X@>, Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{DC.OBJ(TT(bs, n), n)}, d_acc(bs, n, hn, hd, hS, ec)) : {mv(_) == API.deserialize(Spec.@X@(), bs) : Maybe<&2, S.Value>}
+      %Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.@X@(), bs), Some{DC.VAL(TT(bs, n), n)}, a_acc(bs, n, hn, hd, hS, ec)) : {mv(Some{DC.OBJ(TT(bs, n), n)}) == _ : Maybe<&2, S.Value>}
+      Equal.cong(S.Value, Maybe<&2, S.Value>, z => Some{z}, @VIEW@(DC.OBJ(TT(bs, n), n)), DC.VAL(TT(bs, n), n), vv(TT(bs, n), n, ec))
+
+def d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(TT(bs, n), n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.@X@>}) -> {API.deserialize(Spec.@X@(), bs) == None{} : Maybe<&2, S.Value>}:
+  match c:
+    case False{}: a_none(bs, n, hn, hd, hS, ec)
+    case True{}: Empty.absurd({API.deserialize(Spec.@X@(), bs) == None{} : Maybe<&2, S.Value>}, E.none_someT(T.@X@, DC.OBJ(TT(bs, n), n), Equal.trans(Maybe<&1, T.@X@>, None{}, Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{DC.OBJ(TT(bs, n), n)}, Equal.sym(Maybe<&1, T.@X@>, Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, dn), d_acc(bs, n, hn, hd, hS, ec))))
+
+def d_rb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(TT(bs, n), n) == c : Bool}, +an: {API.deserialize(Spec.@X@(), bs) == None{} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.@X@>}:
+  match c:
+    case False{}: d_none(bs, n, hn, hd, hS, ec)
+    case True{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.@X@>}, FD.logic__none_some(S.Value, DC.VAL(TT(bs, n), n), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.@X@(), bs), Some{DC.VAL(TT(bs, n), n)}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.@X@(), bs), None{}, an), a_acc(bs, n, hn, hd, hS, ec))))
+
+# (ii), on views: the view of the object the decoder returns is END_TO_END's deserialize.
+def @R@_e2e_decode_view(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}) -> {mv(Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n))) == API.deserialize(Spec.@X@(), bs) : Maybe<&2, S.Value>}:
+  d_v(bs, n, hn, hd, hS, DC.CHK(TT(bs, n), n), {==})
+
+# (iii) the object decoder fails exactly when END_TO_END's deserialize does.
+def @R@_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool})
+    -> ({Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.@X@>} -> {API.deserialize(Spec.@X@(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.@X@(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.@X@>}):
+  (dn => d_ra(bs, n, hn, hd, hS, DC.CHK(TT(bs, n), n), {==}, dn), an => d_rb(bs, n, hn, hd, hS, DC.CHK(TT(bs, n), n), {==}, an))
+'''
+
+
+def vdec_info(R):
+    """The codec law modules of a variable-size name, from its decode facade, and the laws' depth bound."""
+    f = ROOT / 'proofs/api' / f'{R}_decode_ssz_proof_generated.bend'
+    if not f.exists():
+        return None
+    s = f.read_text()
+    imp = dict((a, p) for p, a in re.findall(r'^import \.\./obj/(\S+) as (\w+)$', s, re.M))
+    mods = {}
+    for op in ('decode_accept', 'decode_spec', 'decode_none', 'decode_reject'):
+        m = re.search(r'__' + op + '__' + op + r'\(\+d: Nat, \+t: \w+\.array__Tree<U32>, \+n: U32, (.*)\n  (\w+)\.' + op + r'\(', s)
+        if not m:
+            return None
+        mods[op] = (imp[m.group(2)], m.group(1))
+    sig = mods['decode_accept'][1]
+    mb = re.search(r'\+hd: \{Nat\.is_lt\(d, (\d+)n\)', sig)
+    mdc = re.search(r'\+hchk: \{(\w+)\.CHK\(t, n\)', sig)
+    if not mb or not mdc or mdc.group(1) not in imp:
+        return None
+    return {'bound': int(mb.group(1)), 'dc': imp[mdc.group(1)], 'acc': mods['decode_accept'][0], 'spec': mods['decode_spec'][0],
+            'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0]}
+
+
+def text_vdec(R, X, info):
+    vw = VDEC_VIEWS[X]
+    K = info['bound'] - 1
+    assert 1 <= K <= 28
+    alias = {info['dc']: 'DC'}
+    for k, a in (('acc', 'DA'), ('spec', 'DS'), ('none', 'DN'), ('rej', 'DR')):
+        alias.setdefault(info[k], a)
+    body = VDEC_REST
+    for op, k in (('decode_accept', 'acc'), ('decode_spec', 'spec'), ('decode_none', 'none'), ('decode_reject', 'rej')):
+        body = body.replace(('DR.' if k in ('none', 'rej') else 'DC.') + op + '(', alias[info[k]] + '.' + op + '(')
+    body = (body.replace('@X@', X).replace('@R@', R).replace('@VIEW@', vw['view'])
+            .replace('@K@', f'{K}n').replace('@BD@', f'{info["bound"]}n'))
+    imps = VDEC_HEAD + vw['imports'] + [f'import ../proofs/obj/{p} as {a}' for p, a in alias.items()]
+    head = ['# GENERATED by codegen/e2e_bridge.py. Do not edit.',
+            f'# {R} (variable size): the object API\'s decoder on a byte list against END_TO_END\'s deserialize,',
+            f'# (ii) through the view and (iii), for byte lists of at most 4 * 2^{K} bytes (hS: the codec laws\' depth',
+            f'# bound {info["bound"]}); the buffer is the loader\'s (e2e_load) at the capacity depth (e2e_cap).']
+    return '\n'.join(imps) + '\n\n' + '\n'.join(head) + '\n\n' + vw['text'] + body
+
 
 def outputs():
     import names as NM
@@ -1958,6 +2158,16 @@ def outputs():
         man['files'][fn] = [{'name': r['R'], 'generated_name': r['X'], 'laws': [f'{r["R"]}_e2e_root'], 'premise': 'the root law\'s binders (t, dw, hd, pf, cap)'} for r in brows]
     for r in brows:
         r['vf'] = 'gvalid_words.bend'
+    for R0, u in sorted(uncovered.items()):
+        X0 = u['generated_name']
+        info = vdec_info(R0) if X0 in VDEC_VIEWS else None
+        if not info:
+            continue
+        fn = f'{R0}_e2e_dec_generated.bend'
+        out[OUT / fn] = text_vdec(R0, X0, info)
+        man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_decode_view', f'{R0}_e2e_decode_reject'], 'ii': 'view',
+                             'premise': f'n <= 4 * 2^{info["bound"] - 1} (hS: the codec laws\' depth bound {info["bound"]})'}]
+        u['decode'] = fn
     man['word_storage'] = {r['R']: {'generated_name': r['X'], 'awaiting': ([] if 'vf' in r else ['(iv)']) + ([] if 'dd' in r else ['(ii)/(iii)'])} for r in wrows + wrows_extra}
     for f, rows_ in man['files'].items():
         for e in rows_:

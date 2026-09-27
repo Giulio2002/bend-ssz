@@ -92,6 +92,11 @@ def nwk(+n: U32, +k: Nat, +hk: {Nat.is_lt(k, 29n) == True{} : Bool}, +h: {Nat.is
   %VD.s_pow2_eq(k) : {Nat.is_le(nwn(U32.to_nat(n)), _) == True{} : Bool}
   nle(U32.to_nat(n), FD.spec_common__pow2(k), h)
 
+# d = B.capacity(n) <= k
+def cap_le(+n: U32, +k: Nat, +hk: {Nat.is_lt(k, 29n) == True{} : Bool}, +h: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(k))) == True{} : Bool})
+    -> {Nat.is_le(B.capacity(n), k) == True{} : Bool}:
+  VD.wd_min(nwu(n), k, nwk(n, k, hk, h))
+
 # d = B.capacity(n) < 29
 def cap_lt(+n: U32, +k: Nat, +hk: {Nat.is_lt(k, 29n) == True{} : Bool}, +h: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(k))) == True{} : Bool})
     -> {Nat.is_lt(B.capacity(n), 29n) == True{} : Bool}:

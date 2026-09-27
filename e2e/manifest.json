@@ -2510,6 +2510,18 @@
     ],
     "premise": "the root law's binders (t, dw, hd, pf, cap)"
    }
+  ],
+  "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend": [
+   {
+    "name": "FuluDataColumnsByRootIdentifier",
+    "generated_name": "DataColumnsByRootIdentifier",
+    "laws": [
+     "FuluDataColumnsByRootIdentifier_e2e_decode_view",
+     "FuluDataColumnsByRootIdentifier_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 4 * 2^28 (hS: the codec laws' depth bound 29)"
+   }
   ]
  },
  "uncovered": {
@@ -2647,7 +2659,8 @@
   },
   "FuluDataColumnsByRootIdentifier": {
    "generated_name": "DataColumnsByRootIdentifier",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend"
   },
   "FuluMatrixEntry": {
    "generated_name": "MatrixEntry",
