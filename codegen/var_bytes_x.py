@@ -28,6 +28,7 @@ reads the offset word back with UW.byteWX.
 proofs/obj/vbx_fix.bend holds the rdx_* readers vua_fix.bend lacks;
 proofs/obj/vbx.bend (hand-written) holds copy_into_at.
 """
+import re
 import sys
 from pathlib import Path
 
@@ -45,6 +46,23 @@ NAMES = ['ExecutionPayloadHeader']
 # names nesting a covered name (codegen/var_bytes_nest.py), in dependency order
 NEST = ['LightClientHeader']
 
+
+def spec_names(n):
+    """The field-name list of spec/fulu_schemas.bend's container Spec.n(), as Bend text."""
+    src = (VBY.ROOT / 'spec/fulu_schemas.bend').read_text()
+    m = re.search(rf'^def {n}\(\) -> T\.Schema: (\w+)\(\)$', src, re.M)
+    name = m.group(1) if m else n
+    m2 = re.search(rf'^def {name}\(\) -> T\.Schema: T\.Container\{{(\[[^\]]*\])', src, re.M)
+    assert m2, n
+    return m2.group(1)
+
+
+def seq_step(n, v, items, chain, rhs, MP):
+    """The rewrite of Codec.parts(v, Spec.n()) to Codec.aggregate(Codec.parts(items, chain), SC.fixed_size(chain))
+    by VSQ.seq_parts (proofs/obj/vseq.bend): no conversion evaluates the whole container (checker_findings item 2)."""
+    return (f'  %Equal.sym({MP}, Codec.parts({v}, Spec.{n}()), Codec.aggregate(Codec.parts({items}, {chain}), SC.fixed_size({chain})),\n'
+            f'      VSQ.seq_parts({v}, Spec.{n}(), {items}, {spec_names(n)}, {chain}, {{==}}, {{==}})) :\n'
+            f'    {{_ == {rhs} : {MP}}}\n')
 
 def posx(c):
     """c + x as a chain of successors (a literal above 256 would parse as Nat.add)."""
@@ -133,7 +151,7 @@ HEAD = ['import Base', 'import ../../src/buffer.bend as B', 'import ../../src/ob
         'import ../compact/found.bend as FD', 'import ../compact/arith.bend as A', 'import ../../proofs/nat_order.bend as Order',
         'import ../../spec/primitives.bend as SP', 'import ../../spec/layout.bend as Layout', 'import ../../spec/codec.bend as Codec',
         'import ../../spec/nat_bytes.bend as N', 'import ../../spec/fulu_schemas.bend as Spec', 'import ./spec_fixed.bend as F',
-        'import ./vspec.bend as VS', 'import ./vbuf.bend as VB', 'import ./vu32.bend as VU', 'import ./vcopy.bend as VC',
+        'import ../../spec/schema.bend as SC', 'import ./vseq.bend as VSQ', 'import ./vspec.bend as VS', 'import ./vbuf.bend as VB', 'import ./vu32.bend as VU', 'import ./vcopy.bend as VC',
         'import ./vdepth.bend as VD', 'import ./vbytes.bend as VY', 'import ./vbspec.bend as VZ', 'import ./vbrt.bend as VRT',
         'import ./vua.bend as UA', 'import ./vua_rd.bend as UR', 'import ./vua_win.bend as UW', 'import ./vua_ct.bend as UCT',
         'import ./vua_fix.bend as VTX', 'import ./vbx_fix.bend as XF', 'import ./vbx.bend as VBX']
@@ -328,9 +346,9 @@ def encpw(+t: FD.array__Tree<U32>, +x: Nat, +Y: +List<U32>, +hdom: {{SP.bytes_do
     -> {{Codec.parts(XVw(t, x, Y), Spec.{n}()) == Some{{[S.Variable{{{ENC}}}]}} : {MP}}}:
   +fit = VS.fits_mono(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, Y)), Nat.add({FS}n, {LIM}n),
     Order.add_left({FS}n, List.length(&2, U32, Y), {LIM}n, hlen), {{==}})
-  %Equal.sym({MP}, Codec.parts({ITEMS}, {CHAIN}), Some{{{PL}}},
+{seq_step(n, 'XVw(t, x, Y)', ITEMS, CHAIN, f'Some{{[S.Variable{{{ENC}}}]}}', MP)}  %Equal.sym({MP}, Codec.parts({ITEMS}, {CHAIN}), Some{{{PL}}},
       {CAT}) :
-    {{Codec.aggregate(_, None{{}}) == Some{{[S.Variable{{{ENC}}}]}} : {MP}}}
+    {{Codec.aggregate(_, SC.fixed_size({CHAIN})) == Some{{[S.Variable{{{ENC}}}]}} : {MP}}}
   %Equal.sym({M}, Layout.encoding(VS.fpv({PRE}, Y, {POST})), Some{{{ENCR}}}, VZ.enc_fpvb({PRE}, Y, {POST}, hdom, fit)) :
     {{Codec.one(_, None{{}}) == Some{{[S.Variable{{{ENC}}}]}} : {MP}}}
   {{==}}
@@ -653,9 +671,9 @@ def encpw(+t: FD.array__Tree<U32>, +x: Nat, +V: S.Value, +Yb: +List<U32>,
     +hv: {{Codec.parts(V, Spec.{Y}()) == Some{{[S.Variable{{Yb}}]}} : {MP}}}, +hdom: {{SP.bytes_domain(Yb) == True{{}} : Bool}},
     +fit: {{N.fits(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, Yb))) == True{{}} : Bool}})
     -> {{Codec.parts(XVw(t, x, V), Spec.{n}()) == Some{{[S.Variable{{{ENC}}}]}} : {MP}}}:
-  %Equal.sym({MP}, Codec.parts({ITEMS}, {CHAIN}), Some{{{PL}}},
+{seq_step(n, 'XVw(t, x, V)', ITEMS, CHAIN, f'Some{{[S.Variable{{{ENC}}}]}}', MP)}  %Equal.sym({MP}, Codec.parts({ITEMS}, {CHAIN}), Some{{{PL}}},
       {CAT}) :
-    {{Codec.aggregate(_, None{{}}) == Some{{[S.Variable{{{ENC}}}]}} : {MP}}}
+    {{Codec.aggregate(_, SC.fixed_size({CHAIN})) == Some{{[S.Variable{{{ENC}}}]}} : {MP}}}
   %Equal.sym({M}, Layout.encoding(VS.fpv({PRE}, Yb, {POST})), Some{{{ENCR}}}, VZ.enc_fpvb({PRE}, Yb, {POST}, hdom, fit)) :
     {{Codec.one(_, None{{}}) == Some{{[S.Variable{{{ENC}}}]}} : {MP}}}
   {{==}}
