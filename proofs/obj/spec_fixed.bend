@@ -87,22 +87,101 @@ def bytes_part_n(h, t, n, en, fit):
     {Codec.parts(S.BytesValue{limbs(h <> t)}, S.ByteVector{_}) == Some{[S.Fixed{limbs(h <> t)}]} : Maybe<&2, +List<S.Part>>}
   bytes_part(h, t, fit)
 
+# ---- unsigned integers: the zero high limbs --------------------------------
+# The generic forms uintN_g take the high limbs as variables with the fact that their bytes are zero
+# (zeroK, via limb0), so the conversions stay stuck on variables instead of evaluating
+# I.limb(0)'s U32 ops on literal words; ap spells List.append without the &2 argument (Bend's
+# syntactic shortcut stops at a quantity), so zeroK matches its use syntactically.
+def ap(xs: +List<U32>, ys: +List<U32>) -> +List<U32>: List.append(&2, U32, xs, ys)
+
+law limb0:
+  {I.limb(0) == [0, 0, 0, 0] : +List<U32>}
+def limb0(): {==}
+
+law zero7:
+  {I.all_zero(ap(I.limb(0), ap(I.limb(0), ap(I.limb(0), ap(I.limb(0), ap(I.limb(0), ap(I.limb(0), I.limb(0)))))))) == True{} : Bool}
+def zero7():
+  %Equal.sym(+List<U32>, I.limb(0), [0, 0, 0, 0], limb0()) : {I.all_zero(ap(_, ap(_, ap(_, ap(_, ap(_, ap(_, _))))))) == True{} : Bool}
+  {==}
+
+law uint32_g:
+  for +x0: U32
+  for +z1: U32
+  for +z2: U32
+  for +z3: U32
+  for +z4: U32
+  for +z5: U32
+  for +z6: U32
+  for +z7: U32
+  for +hz: {I.all_zero(ap(I.limb(z1), ap(I.limb(z2), ap(I.limb(z3), ap(I.limb(z4), ap(I.limb(z5), ap(I.limb(z6), I.limb(z7)))))))) == True{} : Bool}
+  {Codec.parts(S.UnsignedValue{P.UInt{x0, z1, z2, z3, z4, z5, z6, z7}}, S.Unsigned{P.U32Width{}}) == Some{[S.Fixed{limbs([x0])}]} : Maybe<&2, +List<S.Part>>}
+def uint32_g(x0, z1, z2, z3, z4, z5, z6, z7, hz):
+  %IE.uint_serialize_correct(P.U32Width{}, P.UInt{x0, z1, z2, z3, z4, z5, z6, z7}) :
+    {Codec.one(_, Some{SP.byte_width(P.U32Width{})}) == Some{[S.Fixed{limbs([x0])}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Bool, I.all_zero(ap(I.limb(z1), ap(I.limb(z2), ap(I.limb(z3), ap(I.limb(z4), ap(I.limb(z5), ap(I.limb(z6), I.limb(z7)))))))), True{}, hz) :
+    {Codec.one(I.prepend(U32.and(x0, 255), I.prepend(U32.and(U32.shrn(x0, 8n), 255), I.prepend(U32.and(U32.shrn(x0, 16n), 255), I.prepend(U32.shrn(x0, 24n), I.accept_bytes(_, []))))), Some{SP.byte_width(P.U32Width{})}) == Some{[S.Fixed{limbs([x0])}]} : Maybe<&2, +List<S.Part>>}
+  {==}
+
+law zero6:
+  {I.all_zero(ap(I.limb(0), ap(I.limb(0), ap(I.limb(0), ap(I.limb(0), ap(I.limb(0), I.limb(0))))))) == True{} : Bool}
+def zero6():
+  %Equal.sym(+List<U32>, I.limb(0), [0, 0, 0, 0], limb0()) : {I.all_zero(ap(_, ap(_, ap(_, ap(_, ap(_, _)))))) == True{} : Bool}
+  {==}
+
+law uint64_g:
+  for +x0: U32
+  for +x1: U32
+  for +z2: U32
+  for +z3: U32
+  for +z4: U32
+  for +z5: U32
+  for +z6: U32
+  for +z7: U32
+  for +hz: {I.all_zero(ap(I.limb(z2), ap(I.limb(z3), ap(I.limb(z4), ap(I.limb(z5), ap(I.limb(z6), I.limb(z7))))))) == True{} : Bool}
+  {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, z2, z3, z4, z5, z6, z7}}, S.Unsigned{P.U64{}}) == Some{[S.Fixed{limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}
+def uint64_g(x0, x1, z2, z3, z4, z5, z6, z7, hz):
+  %IE.uint_serialize_correct(P.U64{}, P.UInt{x0, x1, z2, z3, z4, z5, z6, z7}) :
+    {Codec.one(_, Some{SP.byte_width(P.U64{})}) == Some{[S.Fixed{limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Bool, I.all_zero(ap(I.limb(z2), ap(I.limb(z3), ap(I.limb(z4), ap(I.limb(z5), ap(I.limb(z6), I.limb(z7))))))), True{}, hz) :
+    {Codec.one(I.prepend(U32.and(x0, 255), I.prepend(U32.and(U32.shrn(x0, 8n), 255), I.prepend(U32.and(U32.shrn(x0, 16n), 255), I.prepend(U32.shrn(x0, 24n), I.prepend(U32.and(x1, 255), I.prepend(U32.and(U32.shrn(x1, 8n), 255), I.prepend(U32.and(U32.shrn(x1, 16n), 255), I.prepend(U32.shrn(x1, 24n), I.accept_bytes(_, []))))))))), Some{SP.byte_width(P.U64{})}) == Some{[S.Fixed{limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}
+  {==}
+
+law zero4:
+  {I.all_zero(ap(I.limb(0), ap(I.limb(0), ap(I.limb(0), I.limb(0))))) == True{} : Bool}
+def zero4():
+  %Equal.sym(+List<U32>, I.limb(0), [0, 0, 0, 0], limb0()) : {I.all_zero(ap(_, ap(_, ap(_, _)))) == True{} : Bool}
+  {==}
+
+law uint128_g:
+  for +x0: U32
+  for +x1: U32
+  for +x2: U32
+  for +x3: U32
+  for +z4: U32
+  for +z5: U32
+  for +z6: U32
+  for +z7: U32
+  for +hz: {I.all_zero(ap(I.limb(z4), ap(I.limb(z5), ap(I.limb(z6), I.limb(z7))))) == True{} : Bool}
+  {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, x2, x3, z4, z5, z6, z7}}, S.Unsigned{P.U128{}}) == Some{[S.Fixed{limbs([x0, x1, x2, x3])}]} : Maybe<&2, +List<S.Part>>}
+def uint128_g(x0, x1, x2, x3, z4, z5, z6, z7, hz):
+  %IE.uint_serialize_correct(P.U128{}, P.UInt{x0, x1, x2, x3, z4, z5, z6, z7}) :
+    {Codec.one(_, Some{SP.byte_width(P.U128{})}) == Some{[S.Fixed{limbs([x0, x1, x2, x3])}]} : Maybe<&2, +List<S.Part>>}
+  %Equal.sym(Bool, I.all_zero(ap(I.limb(z4), ap(I.limb(z5), ap(I.limb(z6), I.limb(z7))))), True{}, hz) :
+    {Codec.one(I.prepend(U32.and(x0, 255), I.prepend(U32.and(U32.shrn(x0, 8n), 255), I.prepend(U32.and(U32.shrn(x0, 16n), 255), I.prepend(U32.shrn(x0, 24n), I.prepend(U32.and(x1, 255), I.prepend(U32.and(U32.shrn(x1, 8n), 255), I.prepend(U32.and(U32.shrn(x1, 16n), 255), I.prepend(U32.shrn(x1, 24n), I.prepend(U32.and(x2, 255), I.prepend(U32.and(U32.shrn(x2, 8n), 255), I.prepend(U32.and(U32.shrn(x2, 16n), 255), I.prepend(U32.shrn(x2, 24n), I.prepend(U32.and(x3, 255), I.prepend(U32.and(U32.shrn(x3, 8n), 255), I.prepend(U32.and(U32.shrn(x3, 16n), 255), I.prepend(U32.shrn(x3, 24n), I.accept_bytes(_, []))))))))))))))))), Some{SP.byte_width(P.U128{})}) == Some{[S.Fixed{limbs([x0, x1, x2, x3])}]} : Maybe<&2, +List<S.Part>>}
+  {==}
+
 law uint32_part:
   for +x0: U32
   {Codec.parts(S.UnsignedValue{P.UInt{x0, 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U32Width{}}) == Some{[S.Fixed{limbs([x0])}]} : Maybe<&2, +List<S.Part>>}
 def uint32_part(x0):
-  %IE.uint_serialize_correct(P.U32Width{}, P.UInt{x0, 0, 0, 0, 0, 0, 0, 0}) :
-    {Codec.one(_, Some{SP.byte_width(P.U32Width{})}) == Some{[S.Fixed{limbs([x0])}]} : Maybe<&2, +List<S.Part>>}
-  {==}
+  uint32_g(x0, 0, 0, 0, 0, 0, 0, 0, zero7())
 
 law uint64_part:
   for +x0: U32
   for +x1: U32
   {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U64{}}) == Some{[S.Fixed{limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}
 def uint64_part(x0, x1):
-  %IE.uint_serialize_correct(P.U64{}, P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}) :
-    {Codec.one(_, Some{SP.byte_width(P.U64{})}) == Some{[S.Fixed{limbs([x0, x1])}]} : Maybe<&2, +List<S.Part>>}
-  {==}
+  uint64_g(x0, x1, 0, 0, 0, 0, 0, 0, zero6())
 
 law uint128_part:
   for +x0: U32
@@ -111,9 +190,7 @@ law uint128_part:
   for +x3: U32
   {Codec.parts(S.UnsignedValue{P.UInt{x0, x1, x2, x3, 0, 0, 0, 0}}, S.Unsigned{P.U128{}}) == Some{[S.Fixed{limbs([x0, x1, x2, x3])}]} : Maybe<&2, +List<S.Part>>}
 def uint128_part(x0, x1, x2, x3):
-  %IE.uint_serialize_correct(P.U128{}, P.UInt{x0, x1, x2, x3, 0, 0, 0, 0}) :
-    {Codec.one(_, Some{SP.byte_width(P.U128{})}) == Some{[S.Fixed{limbs([x0, x1, x2, x3])}]} : Maybe<&2, +List<S.Part>>}
-  {==}
+  uint128_g(x0, x1, x2, x3, 0, 0, 0, 0, zero4())
 
 law uint256_part:
   for +x0: U32
