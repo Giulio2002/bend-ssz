@@ -89,6 +89,7 @@ import laws as LW  # noqa: E402
 import schema  # noqa: E402
 import arr_laws as AL  # noqa: E402
 import spec_arr as SA  # noqa: E402
+import spec_any as SANY  # noqa: E402
 import root_laws_generic as RG  # noqa: E402
 import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
@@ -1287,6 +1288,7 @@ def main():
     arr_names = arr_names + ['Validator']
     out.update(arr_out)
     out.update(AL.outputs())
+    out.update(SANY.outputs(ROOT, out)[0])
     orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('spec_*_*.bend') if q not in out)
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

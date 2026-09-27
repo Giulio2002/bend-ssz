@@ -209,6 +209,11 @@ def none_some1(-A: Data, x: A, e: {None{} == Some{x} : Maybe<&1, A>}) -> Empty:
   %Equal.sym(Maybe<&1, A>, None{}, Some{x}, e) : FD.logic__truth(Maybe.is_some(&1, A, _))
   Unit{}
 
+# the same for a storage-backed object (a Type)
+def none_someT(-A: Type, x: A, e: {None{} == Some{x} : Maybe<&1, A>}) -> Empty:
+  %Equal.sym(Maybe<&1, A>, None{}, Some{x}, e) : FD.logic__truth(Maybe.is_some(&1, A, _))
+  Unit{}
+
 def some_value1(-A: Data, m: Maybe<&1, A>, d: A) -> A:
   match m:
     case None{}: d

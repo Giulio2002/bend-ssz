@@ -376,6 +376,9 @@ class VB:
             self.xlist(fs)
             big = g.depth(fs, k) >= RBmod().BIGD
             return f'vr_{fs.p}({x}, {sx}, {r}' + (', dv, edv' if big else '') + f', {okp}, {eqp})'
+        if k == 'bvr':
+            self.bvr(fs)
+            return f'VO.vtrans({RN_view(g, fs, k, x, RT)}, {sx}, {g.E(fs)}, {eqp}, vbvr_{fs.p}({x}))'
         if k == 'px':
             self.xlist(fs, 'plist')
             return f'vr_{fs.p}({x}, {sx}, {r}, {okp}, {eqp})'
@@ -537,6 +540,28 @@ class VB:
                 '    {VD.root_valid(S.BitsValue{BLP.btk(n, BLP.bitsof(F.array__slots(U32, _)))}, S.BitVector{n}) == True{} : Bool}',
                 '  vbvb_go(t, N, n, fc2, kpos)', ''],
     }
+
+    def bvr(self, fs):
+        """A one-word partial bit vector record field (root_laws_b bvr_laws): its view is the
+        first n bits of the word, and the word holds 32 >= n bits."""
+        if fs.p in self.done:
+            return
+        self.done.add(fs.p)
+        RT, p, n = self.RT, fs.p, fs.t.size
+        R = RA.qual(fs.rep)
+        BITS = f'BLP.btk({n}n, BLP.bitsof([w0]))'
+        self.out.extend([
+            f'def vbvr_h_{p}(+w0: U32) -> {{Nat.is_le({n}n, List.length(&2, Bool, BLP.bitsof([w0]))) == True{{}} : Bool}}:',
+            f'  %Equal.sym(Nat, List.length(&2, Bool, BLP.bitsof([w0])), {RT}.bl32([w0]), {RT}.len_bitsof([w0])) :',
+            f'    {{Nat.is_le({n}n, _) == True{{}} : Bool}}',
+            '  {==}',
+            f'def vbvr_{p}(+o: {R}) -> {{VD.root_valid({RT}.v_{p}(o), S.BitVector{{{n}n}}) == True{{}} : Bool}}:',
+            '  match o:',
+            f'    case {RA.pattern(R, ["w0"])}:',
+            f'      %Equal.sym(Nat, List.length(&2, Bool, {BITS}), {n}n, {RT}.btk_len({n}n, BLP.bitsof([w0]), vbvr_h_{p}(w0))) :',
+            f'        {{Bool.and(Nat.is_lt(0n, {n}n), Nat.is_eq(_, {n}n)) == True{{}} : Bool}}',
+            '      {==}',
+            ''])
 
     def extra(self, k):
         if ('X:' + k) in self.done:
@@ -734,7 +759,7 @@ class VB:
         wide = n > G.GROUP
         groups = [list(range(j, min(n, j + G.GROUP))) for j in range(0, n, G.GROUP)] if wide else None
         xs = [f'x{i}' for i in range(n)]
-        isdata = [k in ('data', 'datar') for k in kinds]
+        isdata = [k in ('data', 'datar', 'bvr') for k in kinds]
         args = [xs[i] if isdata[i] else f'{RT}.pj_{p}_{i}(o)' for i in range(n)]
 
         def obj(a):
@@ -888,12 +913,26 @@ def emit_types(only=None):
     src = (OBJ / 'root_types.bend').read_text()
     status = {}
     big = {}
+    state = {}
     for n, t in gen.names.items():
         if only and n not in only:
             continue
         s = gen.g.shape(t)
         bigf = OBJ / f'big_root_{n}.bend'
         if n in RBmod().BIG_NAMES or (bigf.exists() and f'law {n}_root_correct:' in bigf.read_text()):
+            if gen.state_text is not None and f'def rep_{s.p}(' in gen.state_text:
+                vs = VB(gen, 'XX', 'VN', False)
+                try:
+                    vs.shape(s)
+                except RA.Skip as e:
+                    status[n] = str(e)
+                    continue
+                stn = RBmod().defnames(gen.state_text)
+                import re as _re
+                body = _re.sub(r'\bXX\.(\w+)', lambda m_: ('ST.' if m_.group(1) in stn else 'RT.') + m_.group(1), '\n'.join(vs.out))
+                state[n] = (s, body)
+                status[n] = 'valid (big)'
+                continue
             if s.kind == 'container' and not s.data:
                 saved = (list(vb.out), set(vb.done))
                 try:
@@ -923,6 +962,16 @@ def emit_types(only=None):
         laws.append(f'  vr_{s.p}(o, s, rep, OS.DV0(), {{==}}, RT.{n}_ok(s, es, OS.DV0(), {{==}}), RT.{n}_eqs(s, es))')
         laws.append('')
         status[n] = 'valid'
+    import re as _re
+    for m in _re.finditer(r'^def (\w+)_ok\(\+s: S\.Schema, \+es: \{s == Spec\.\w+\(\) : S\.Schema\}\) -> \{WO\.ok_bv\(s, (\d+n)\) == True\{\} : Bool\}:', src, _re.M):
+        n, d = m.groups()
+        if only and n not in only:
+            continue
+        laws.append(f'def {n}_root_valid(-o: O.Words, +s: S.Schema, +es: {{s == Spec.{n}() : S.Schema}}, +rep: WO.rep_bv(o, s))')
+        laws.append('    -> {VD.root_valid(S.BytesValue{WO.wview(o)}, s) == True{} : Bool}:')
+        laws.append(f'  VO.vbv(o, s, {d}, rep, RT.{n}_ok(s, es))')
+        laws.append('')
+        status[n] = 'valid'
     bigtext = {}
     for n, s in big.items():
         R = RA.qual(s.rep)
@@ -939,6 +988,19 @@ def emit_types(only=None):
                     f'    -> {{VD.root_valid(RT.v_{s.p}(o), s) == True{{}} : Bool}}:',
                     f'  GVT.vr_{s.p}(o, s, rep, OS.DV0(), {{==}}, BR.{n}_ok(s, es, OS.DV0(), {{==}}), BR.{n}_eqs(s, es))']
         bigtext[OBJ / f'big_gvalid_{n}.bend'] = '\n'.join(head + body) + '\n'
+    for n, (s, body) in state.items():
+        R = RA.qual(s.rep)
+        head = [x for x in types_head() if x.startswith('import ') and not x.endswith(' as VN')] + [
+                'import ./valid_names.bend as VN',
+                'import ./gvalid_packed.bend as VP', 'import ./bitlist_pack.bend as BLP', 'import ./blist_obj.bend as BLI', 'import ./packed_bytes.bend as PB',
+                'import ./root_state.bend as ST', f'import ./big_root_{n}.bend as BR', '',
+                '# GENERATED by codegen/valid_laws.py. Do not edit.',
+                f'# BIG: {n}\'s root view (root_state.bend) is structurally valid under its root law\'s',
+                '# hypotheses; the closed schema facts come from big_root_<Name>.bend.', '']
+        law = [f'def {n}_root_valid(-o: {R}, +s: S.Schema, +es: {{s == Spec.{n}() : S.Schema}}, +rep: ST.rep_{s.p}(o, s))',
+               f'    -> {{VD.root_valid(ST.v_{s.p}(o), s) == True{{}} : Bool}}:',
+               f'  vr_{s.p}(o, s, rep, OS.DV0(), {{==}}, BR.{n}_ok(s, es, OS.DV0(), {{==}}), BR.{n}_eqs(s, es))']
+        bigtext[OBJ / f'big_gvalid_{n}.bend'] = '\n'.join(head + [body] + law) + '\n'
     return '\n'.join(types_head() + vb.out + laws) + '\n', status, bigtext
 
 

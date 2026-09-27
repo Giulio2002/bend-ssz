@@ -1989,3 +1989,11 @@ def DataColumnSidecar_root_valid(-o: FuluDataColumnSidecar_d.DataColumnSidecar, 
     -> {VD.root_valid(RT.v_DataColumnSidecar(o), s) == True{} : Bool}:
   vr_DataColumnSidecar(o, s, rep, OS.DV0(), {==}, RT.DataColumnSidecar_ok(s, es, OS.DV0(), {==}), RT.DataColumnSidecar_eqs(s, es))
 
+def Blob_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.Blob() : S.Schema}, +rep: WO.rep_bv(o, s))
+    -> {VD.root_valid(S.BytesValue{WO.wview(o)}, s) == True{} : Bool}:
+  VO.vbv(o, s, 12n, rep, RT.Blob_ok(s, es))
+
+def Cell_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.Cell() : S.Schema}, +rep: WO.rep_bv(o, s))
+    -> {VD.root_valid(S.BytesValue{WO.wview(o)}, s) == True{} : Bool}:
+  VO.vbv(o, s, 6n, rep, RT.Cell_ok(s, es))
+

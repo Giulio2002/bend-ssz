@@ -1,5 +1,56 @@
 {
  "files": {
+  "bitvector_32_e2e_dec_generated.bend": [
+   {
+    "name": "bitvector_32",
+    "generated_name": "GtBBF12DAB28",
+    "laws": [
+     "bitvector_32_e2e_decode_accept",
+     "bitvector_32_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   },
+   {
+    "name": "bitvector_512",
+    "generated_name": "Gt0A390CB480",
+    "laws": [
+     "bitvector_512_e2e_decode_accept",
+     "bitvector_512_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   },
+   {
+    "name": "uint128",
+    "generated_name": "Gt604E28A301",
+    "laws": [
+     "uint128_e2e_decode_accept",
+     "uint128_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "uint256_Gt59DCDB2873_e2e_dec_generated.bend": [
+   {
+    "name": "uint256_Gt59DCDB2873",
+    "generated_name": "Gt59DCDB2873",
+    "laws": [
+     "uint256_Gt59DCDB2873_e2e_decode_accept",
+     "uint256_Gt59DCDB2873_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "uint64_Gt62B0093BE7_e2e_dec_generated.bend": [
+   {
+    "name": "uint64_Gt62B0093BE7",
+    "generated_name": "Gt62B0093BE7",
+    "laws": [
+     "uint64_Gt62B0093BE7_e2e_decode_accept",
+     "uint64_Gt62B0093BE7_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
   "FuluBytes20_e2e_dec_generated.bend": [
    {
     "name": "FuluBytes20",
@@ -7,7 +58,8 @@
     "laws": [
      "FuluBytes20_e2e_decode_accept",
      "FuluBytes20_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluBytes32",
@@ -15,35 +67,37 @@
     "laws": [
      "FuluBytes32_e2e_decode_accept",
      "FuluBytes32_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluBytes4_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluBytes4",
     "generated_name": "Bytes4",
     "laws": [
      "FuluBytes4_e2e_decode_accept",
      "FuluBytes4_e2e_decode_reject"
-    ]
-   },
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluBytes48_e2e_dec_generated.bend": [
    {
     "name": "FuluBytes48",
     "generated_name": "Bytes48",
     "laws": [
      "FuluBytes48_e2e_decode_accept",
      "FuluBytes48_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluBytes8_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluBytes8",
     "generated_name": "Bytes8",
     "laws": [
      "FuluBytes8_e2e_decode_accept",
      "FuluBytes8_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBytes96_e2e_dec_generated.bend": [
@@ -53,17 +107,17 @@
     "laws": [
      "FuluBytes96_e2e_decode_accept",
      "FuluBytes96_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluEpoch_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluEpoch",
     "generated_name": "Epoch",
     "laws": [
      "FuluEpoch_e2e_decode_accept",
      "FuluEpoch_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluGwei",
@@ -71,7 +125,8 @@
     "laws": [
      "FuluGwei_e2e_decode_accept",
      "FuluGwei_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSlot_e2e_dec_generated.bend": [
@@ -81,7 +136,8 @@
     "laws": [
      "FuluSlot_e2e_decode_accept",
      "FuluSlot_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "uint256",
@@ -89,17 +145,17 @@
     "laws": [
      "uint256_e2e_decode_accept",
      "uint256_e2e_decode_reject"
-    ]
-   }
-  ],
-  "uint64_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "uint64",
     "generated_name": "uint64",
     "laws": [
      "uint64_e2e_decode_accept",
      "uint64_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBLSSignature_e2e_dec_generated.bend": [
@@ -109,17 +165,17 @@
     "laws": [
      "FuluBLSSignature_e2e_decode_accept",
      "FuluBLSSignature_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluDomainType_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluDomainType",
     "generated_name": "DomainType",
     "laws": [
      "FuluDomainType_e2e_decode_accept",
      "FuluDomainType_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluFork",
@@ -127,7 +183,8 @@
     "laws": [
      "FuluFork_e2e_decode_accept",
      "FuluFork_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluG1Point_e2e_dec_generated.bend": [
@@ -137,17 +194,17 @@
     "laws": [
      "FuluG1Point_e2e_decode_accept",
      "FuluG1Point_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluG2Point_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluG2Point",
     "generated_name": "G2Point",
     "laws": [
      "FuluG2Point_e2e_decode_accept",
      "FuluG2Point_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluHash32_e2e_dec_generated.bend": [
@@ -157,17 +214,17 @@
     "laws": [
      "FuluHash32_e2e_decode_accept",
      "FuluHash32_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluPowBlock_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluPowBlock",
     "generated_name": "PowBlock",
     "laws": [
      "FuluPowBlock_e2e_decode_accept",
      "FuluPowBlock_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSyncAggregate_e2e_dec_generated.bend": [
@@ -177,7 +234,8 @@
     "laws": [
      "FuluSyncAggregate_e2e_decode_accept",
      "FuluSyncAggregate_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSyncAggregatorSelectionData_e2e_dec_generated.bend": [
@@ -187,7 +245,8 @@
     "laws": [
      "FuluSyncAggregatorSelectionData_e2e_decode_accept",
      "FuluSyncAggregatorSelectionData_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluVersion",
@@ -195,35 +254,37 @@
     "laws": [
      "FuluVersion_e2e_decode_accept",
      "FuluVersion_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluVersionedHash_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluVersionedHash",
     "generated_name": "VersionedHash",
     "laws": [
      "FuluVersionedHash_e2e_decode_accept",
      "FuluVersionedHash_e2e_decode_reject"
-    ]
-   },
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluCommitteeIndex_e2e_dec_generated.bend": [
    {
     "name": "FuluCommitteeIndex",
     "generated_name": "CommitteeIndex",
     "laws": [
      "FuluCommitteeIndex_e2e_decode_accept",
      "FuluCommitteeIndex_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluHistoricalSummary_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluHistoricalSummary",
     "generated_name": "HistoricalSummary",
     "laws": [
      "FuluHistoricalSummary_e2e_decode_accept",
      "FuluHistoricalSummary_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluPendingConsolidation",
@@ -231,7 +292,8 @@
     "laws": [
      "FuluPendingConsolidation_e2e_decode_accept",
      "FuluPendingConsolidation_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluPendingPartialWithdrawal_e2e_dec_generated.bend": [
@@ -241,7 +303,8 @@
     "laws": [
      "FuluPendingPartialWithdrawal_e2e_decode_accept",
      "FuluPendingPartialWithdrawal_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluRoot",
@@ -249,7 +312,8 @@
     "laws": [
      "FuluRoot_e2e_decode_accept",
      "FuluRoot_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSignedVoluntaryExit_e2e_dec_generated.bend": [
@@ -259,7 +323,8 @@
     "laws": [
      "FuluSignedVoluntaryExit_e2e_decode_accept",
      "FuluSignedVoluntaryExit_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSyncCommitteeContribution_e2e_dec_generated.bend": [
@@ -269,7 +334,8 @@
     "laws": [
      "FuluSyncCommitteeContribution_e2e_decode_accept",
      "FuluSyncCommitteeContribution_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSyncCommitteeMessage_e2e_dec_generated.bend": [
@@ -279,7 +345,8 @@
     "laws": [
      "FuluSyncCommitteeMessage_e2e_decode_accept",
      "FuluSyncCommitteeMessage_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluValidatorIndex_e2e_dec_generated.bend": [
@@ -289,7 +356,8 @@
     "laws": [
      "FuluValidatorIndex_e2e_decode_accept",
      "FuluValidatorIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluVoluntaryExit",
@@ -297,7 +365,8 @@
     "laws": [
      "FuluVoluntaryExit_e2e_decode_accept",
      "FuluVoluntaryExit_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluAttestationData_e2e_dec_generated.bend": [
@@ -307,7 +376,8 @@
     "laws": [
      "FuluAttestationData_e2e_decode_accept",
      "FuluAttestationData_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBeaconBlockHeader_e2e_dec_generated.bend": [
@@ -317,7 +387,8 @@
     "laws": [
      "FuluBeaconBlockHeader_e2e_decode_accept",
      "FuluBeaconBlockHeader_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluCheckpoint_e2e_dec_generated.bend": [
@@ -327,7 +398,8 @@
     "laws": [
      "FuluCheckpoint_e2e_decode_accept",
      "FuluCheckpoint_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluDomain",
@@ -335,17 +407,17 @@
     "laws": [
      "FuluDomain_e2e_decode_accept",
      "FuluDomain_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluEth1Block_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluEth1Block",
     "generated_name": "Eth1Block",
     "laws": [
      "FuluEth1Block_e2e_decode_accept",
      "FuluEth1Block_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluEth1Data_e2e_dec_generated.bend": [
@@ -355,17 +427,17 @@
     "laws": [
      "FuluEth1Data_e2e_decode_accept",
      "FuluEth1Data_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluForkData_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluForkData",
     "generated_name": "ForkData",
     "laws": [
      "FuluForkData_e2e_decode_accept",
      "FuluForkData_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluForkDigest",
@@ -373,7 +445,8 @@
     "laws": [
      "FuluForkDigest_e2e_decode_accept",
      "FuluForkDigest_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSignedBeaconBlockHeader_e2e_dec_generated.bend": [
@@ -383,7 +456,8 @@
     "laws": [
      "FuluSignedBeaconBlockHeader_e2e_decode_accept",
      "FuluSignedBeaconBlockHeader_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSigningData_e2e_dec_generated.bend": [
@@ -393,7 +467,8 @@
     "laws": [
      "FuluSigningData_e2e_decode_accept",
      "FuluSigningData_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSingleAttestation_e2e_dec_generated.bend": [
@@ -403,7 +478,8 @@
     "laws": [
      "FuluSingleAttestation_e2e_decode_accept",
      "FuluSingleAttestation_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluBLSPubkey_e2e_dec_generated.bend": [
@@ -413,7 +489,8 @@
     "laws": [
      "FuluBLSPubkey_e2e_decode_accept",
      "FuluBLSPubkey_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluDepositData_e2e_dec_generated.bend": [
@@ -423,7 +500,8 @@
     "laws": [
      "FuluDepositData_e2e_decode_accept",
      "FuluDepositData_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluDepositMessage_e2e_dec_generated.bend": [
@@ -433,7 +511,8 @@
     "laws": [
      "FuluDepositMessage_e2e_decode_accept",
      "FuluDepositMessage_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluDepositRequest_e2e_dec_generated.bend": [
@@ -443,7 +522,8 @@
     "laws": [
      "FuluDepositRequest_e2e_decode_accept",
      "FuluDepositRequest_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluEther_e2e_dec_generated.bend": [
@@ -453,7 +533,8 @@
     "laws": [
      "FuluEther_e2e_decode_accept",
      "FuluEther_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluExecutionAddress",
@@ -461,17 +542,17 @@
     "laws": [
      "FuluExecutionAddress_e2e_decode_accept",
      "FuluExecutionAddress_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluNodeID_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluNodeID",
     "generated_name": "NodeID",
     "laws": [
      "FuluNodeID_e2e_decode_accept",
      "FuluNodeID_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluPendingDeposit_e2e_dec_generated.bend": [
@@ -481,7 +562,8 @@
     "laws": [
      "FuluPendingDeposit_e2e_decode_accept",
      "FuluPendingDeposit_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSubnetID_e2e_dec_generated.bend": [
@@ -491,25 +573,28 @@
     "laws": [
      "FuluSubnetID_e2e_decode_accept",
      "FuluSubnetID_e2e_decode_reject"
-    ]
-   },
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluBLSToExecutionChange_e2e_dec_generated.bend": [
    {
     "name": "FuluBLSToExecutionChange",
     "generated_name": "BLSToExecutionChange",
     "laws": [
      "FuluBLSToExecutionChange_e2e_decode_accept",
      "FuluBLSToExecutionChange_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluBlobIdentifier_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluBlobIdentifier",
     "generated_name": "BlobIdentifier",
     "laws": [
      "FuluBlobIdentifier_e2e_decode_accept",
      "FuluBlobIdentifier_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluBlobIndex",
@@ -517,7 +602,8 @@
     "laws": [
      "FuluBlobIndex_e2e_decode_accept",
      "FuluBlobIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluConsolidationRequest_e2e_dec_generated.bend": [
@@ -527,7 +613,8 @@
     "laws": [
      "FuluConsolidationRequest_e2e_decode_accept",
      "FuluConsolidationRequest_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluKZGCommitment_e2e_dec_generated.bend": [
@@ -537,7 +624,8 @@
     "laws": [
      "FuluKZGCommitment_e2e_decode_accept",
      "FuluKZGCommitment_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluKZGProof",
@@ -545,17 +633,17 @@
     "laws": [
      "FuluKZGProof_e2e_decode_accept",
      "FuluKZGProof_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluPayloadId_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluPayloadId",
     "generated_name": "PayloadId",
     "laws": [
      "FuluPayloadId_e2e_decode_accept",
      "FuluPayloadId_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluSignedBLSToExecutionChange_e2e_dec_generated.bend": [
@@ -565,7 +653,8 @@
     "laws": [
      "FuluSignedBLSToExecutionChange_e2e_decode_accept",
      "FuluSignedBLSToExecutionChange_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluWithdrawal_e2e_dec_generated.bend": [
@@ -575,7 +664,8 @@
     "laws": [
      "FuluWithdrawal_e2e_decode_accept",
      "FuluWithdrawal_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluWithdrawalIndex",
@@ -583,35 +673,37 @@
     "laws": [
      "FuluWithdrawalIndex_e2e_decode_accept",
      "FuluWithdrawalIndex_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluWithdrawalRequest_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluWithdrawalRequest",
     "generated_name": "WithdrawalRequest",
     "laws": [
      "FuluWithdrawalRequest_e2e_decode_accept",
      "FuluWithdrawalRequest_e2e_decode_reject"
-    ]
-   },
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluCellIndex_e2e_dec_generated.bend": [
    {
     "name": "FuluCellIndex",
     "generated_name": "CellIndex",
     "laws": [
      "FuluCellIndex_e2e_decode_accept",
      "FuluCellIndex_e2e_decode_reject"
-    ]
-   }
-  ],
-  "FuluColumnIndex_e2e_dec_generated.bend": [
+    ],
+    "ii": "exact"
+   },
    {
     "name": "FuluColumnIndex",
     "generated_name": "ColumnIndex",
     "laws": [
      "FuluColumnIndex_e2e_decode_accept",
      "FuluColumnIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluCommitmentIndex",
@@ -619,7 +711,8 @@
     "laws": [
      "FuluCommitmentIndex_e2e_decode_accept",
      "FuluCommitmentIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    }
   ],
   "FuluCustodyIndex_e2e_dec_generated.bend": [
@@ -629,7 +722,8 @@
     "laws": [
      "FuluCustodyIndex_e2e_decode_accept",
      "FuluCustodyIndex_e2e_decode_reject"
-    ]
+    ],
+    "ii": "exact"
    },
    {
     "name": "FuluRowIndex",
@@ -637,6 +731,53 @@
     "laws": [
      "FuluRowIndex_e2e_decode_accept",
      "FuluRowIndex_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "bitvector_32_e2e_generated.bend": [
+   {
+    "name": "bitvector_32",
+    "generated_name": "GtBBF12DAB28",
+    "laws": [
+     "bitvector_32_e2e_encode",
+     "bitvector_32_e2e_root"
+    ]
+   },
+   {
+    "name": "bitvector_512",
+    "generated_name": "Gt0A390CB480",
+    "laws": [
+     "bitvector_512_e2e_encode",
+     "bitvector_512_e2e_root"
+    ]
+   },
+   {
+    "name": "uint128",
+    "generated_name": "Gt604E28A301",
+    "laws": [
+     "uint128_e2e_encode",
+     "uint128_e2e_root"
+    ]
+   }
+  ],
+  "uint256_Gt59DCDB2873_e2e_generated.bend": [
+   {
+    "name": "uint256_Gt59DCDB2873",
+    "generated_name": "Gt59DCDB2873",
+    "laws": [
+     "uint256_Gt59DCDB2873_e2e_encode",
+     "uint256_Gt59DCDB2873_e2e_root"
+    ]
+   }
+  ],
+  "uint64_Gt62B0093BE7_e2e_generated.bend": [
+   {
+    "name": "uint64_Gt62B0093BE7",
+    "generated_name": "Gt62B0093BE7",
+    "laws": [
+     "uint64_Gt62B0093BE7_e2e_encode",
+     "uint64_Gt62B0093BE7_e2e_root"
     ]
    }
   ],
@@ -1243,6 +1384,1132 @@
      "FuluValidator_e2e_root"
     ]
    }
+  ],
+  "vec_uint128_1_e2e_generated.bend": [
+   {
+    "name": "vec_uint128_1",
+    "generated_name": "Gt3FD98F54A5",
+    "laws": [
+     "vec_uint128_1_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt3FD98F54A5()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint128_16",
+    "generated_name": "Gt3EC8B89B94",
+    "laws": [
+     "vec_uint128_16_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt3EC8B89B94()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint128_2",
+    "generated_name": "Gt7D65FF3A10",
+    "laws": [
+     "vec_uint128_2_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7D65FF3A10()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint128_3_e2e_generated.bend": [
+   {
+    "name": "vec_uint128_3",
+    "generated_name": "Gt7600AB7870",
+    "laws": [
+     "vec_uint128_3_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7600AB7870()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint128_31",
+    "generated_name": "Gt6B1336E534",
+    "laws": [
+     "vec_uint128_31_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt6B1336E534()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint128_4",
+    "generated_name": "GtB0CCEA154C",
+    "laws": [
+     "vec_uint128_4_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.GtB0CCEA154C()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint128_5_e2e_generated.bend": [
+   {
+    "name": "vec_uint128_5",
+    "generated_name": "GtBB42F83A45",
+    "laws": [
+     "vec_uint128_5_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.GtBB42F83A45()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint128_8",
+    "generated_name": "Gt3E2A057F33",
+    "laws": [
+     "vec_uint128_8_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt3E2A057F33()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint256_1_e2e_generated.bend": [
+   {
+    "name": "vec_uint256_1",
+    "generated_name": "GtBBFD66E011",
+    "laws": [
+     "vec_uint256_1_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.GtBBFD66E011()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint256_16",
+    "generated_name": "Gt3E6E18CD57",
+    "laws": [
+     "vec_uint256_16_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt3E6E18CD57()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint256_2",
+    "generated_name": "GtB91D4D285D",
+    "laws": [
+     "vec_uint256_2_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.GtB91D4D285D()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint256_3_e2e_generated.bend": [
+   {
+    "name": "vec_uint256_3",
+    "generated_name": "Gt2E7060B297",
+    "laws": [
+     "vec_uint256_3_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt2E7060B297()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint256_31",
+    "generated_name": "Gt6E9B243B7C",
+    "laws": [
+     "vec_uint256_31_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt6E9B243B7C()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint256_4",
+    "generated_name": "Gt74B2AF1CB3",
+    "laws": [
+     "vec_uint256_4_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt74B2AF1CB3()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint256_5_e2e_generated.bend": [
+   {
+    "name": "vec_uint256_5",
+    "generated_name": "Gt0B1B711C4D",
+    "laws": [
+     "vec_uint256_5_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt0B1B711C4D()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint256_8",
+    "generated_name": "GtFAE59DA275",
+    "laws": [
+     "vec_uint256_8_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.GtFAE59DA275()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint32_1_e2e_generated.bend": [
+   {
+    "name": "vec_uint32_1",
+    "generated_name": "Gt669C528764",
+    "laws": [
+     "vec_uint32_1_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt669C528764()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint32_16",
+    "generated_name": "Gt3CC580499F",
+    "laws": [
+     "vec_uint32_16_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt3CC580499F()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint32_2",
+    "generated_name": "GtF45E42B273",
+    "laws": [
+     "vec_uint32_2_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.GtF45E42B273()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint32_3_e2e_generated.bend": [
+   {
+    "name": "vec_uint32_3",
+    "generated_name": "GtD1AEF07F7D",
+    "laws": [
+     "vec_uint32_3_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.GtD1AEF07F7D()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint32_31",
+    "generated_name": "GtE528AAE3C6",
+    "laws": [
+     "vec_uint32_31_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.GtE528AAE3C6()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint32_4",
+    "generated_name": "Gt240C147AA2",
+    "laws": [
+     "vec_uint32_4_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt240C147AA2()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint32_5_e2e_generated.bend": [
+   {
+    "name": "vec_uint32_5",
+    "generated_name": "Gt1719057EB7",
+    "laws": [
+     "vec_uint32_5_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt1719057EB7()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint32_8",
+    "generated_name": "GtCCF6FFA0A0",
+    "laws": [
+     "vec_uint32_8_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.GtCCF6FFA0A0()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint64_1_e2e_generated.bend": [
+   {
+    "name": "vec_uint64_1",
+    "generated_name": "GtADC8DCD962",
+    "laws": [
+     "vec_uint64_1_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.GtADC8DCD962()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint64_16",
+    "generated_name": "Gt0B4EF17D71",
+    "laws": [
+     "vec_uint64_16_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt0B4EF17D71()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint64_2",
+    "generated_name": "GtC923FCB2DA",
+    "laws": [
+     "vec_uint64_2_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.GtC923FCB2DA()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint64_3_e2e_generated.bend": [
+   {
+    "name": "vec_uint64_3",
+    "generated_name": "Gt8E507C4540",
+    "laws": [
+     "vec_uint64_3_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt8E507C4540()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint64_31",
+    "generated_name": "Gt7D1CD7363A",
+    "laws": [
+     "vec_uint64_31_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt7D1CD7363A()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint64_4",
+    "generated_name": "Gt46F5D7703F",
+    "laws": [
+     "vec_uint64_4_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt46F5D7703F()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint64_5_e2e_generated.bend": [
+   {
+    "name": "vec_uint64_5",
+    "generated_name": "Gt8FB0CF9679",
+    "laws": [
+     "vec_uint64_5_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt8FB0CF9679()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint64_8",
+    "generated_name": "GtE470919895",
+    "laws": [
+     "vec_uint64_8_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.GtE470919895()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint128_512_e2e_generated.bend": [
+   {
+    "name": "vec_uint128_512",
+    "generated_name": "Gt7274F61A0F",
+    "laws": [
+     "vec_uint128_512_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7274F61A0F()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint128_513",
+    "generated_name": "Gt9EA902108D",
+    "laws": [
+     "vec_uint128_513_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt9EA902108D()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint256_512",
+    "generated_name": "Gt274A0B8DC2",
+    "laws": [
+     "vec_uint256_512_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt274A0B8DC2()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint256_513_e2e_generated.bend": [
+   {
+    "name": "vec_uint256_513",
+    "generated_name": "Gt0A3B6B4128",
+    "laws": [
+     "vec_uint256_513_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt0A3B6B4128()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint32_512",
+    "generated_name": "Gt13AFE546ED",
+    "laws": [
+     "vec_uint32_512_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt13AFE546ED()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint32_513",
+    "generated_name": "Gt53D2408A5F",
+    "laws": [
+     "vec_uint32_513_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt53D2408A5F()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "vec_uint64_512_e2e_generated.bend": [
+   {
+    "name": "vec_uint64_512",
+    "generated_name": "Gt843A1262ED",
+    "laws": [
+     "vec_uint64_512_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt843A1262ED()) (the root law's representation invariant: the validity premise for generic forms)"
+   },
+   {
+    "name": "vec_uint64_513",
+    "generated_name": "Gt10D6F42D74",
+    "laws": [
+     "vec_uint64_513_e2e_encode"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt10D6F42D74()) (the root law's representation invariant: the validity premise for generic forms)"
+   }
+  ],
+  "FuluFinalityBranch_e2e_generated.bend": [
+   {
+    "name": "FuluFinalityBranch",
+    "generated_name": "FinalityBranch",
+    "laws": [
+     "FuluFinalityBranch_e2e_encode"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   }
+  ],
+  "FuluCurrentSyncCommitteeBranch_e2e_generated.bend": [
+   {
+    "name": "FuluCurrentSyncCommitteeBranch",
+    "generated_name": "CurrentSyncCommitteeBranch",
+    "laws": [
+     "FuluCurrentSyncCommitteeBranch_e2e_encode"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   },
+   {
+    "name": "FuluNextSyncCommitteeBranch",
+    "generated_name": "NextSyncCommitteeBranch",
+    "laws": [
+     "FuluNextSyncCommitteeBranch_e2e_encode"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   }
+  ],
+  "FuluExecutionBranch_e2e_generated.bend": [
+   {
+    "name": "FuluExecutionBranch",
+    "generated_name": "ExecutionBranch",
+    "laws": [
+     "FuluExecutionBranch_e2e_encode"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   }
+  ],
+  "vec_uint128_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_1",
+    "generated_name": "Gt3FD98F54A5",
+    "laws": [
+     "vec_uint128_1_e2e_decode_view",
+     "vec_uint128_1_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_16_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_16",
+    "generated_name": "Gt3EC8B89B94",
+    "laws": [
+     "vec_uint128_16_e2e_decode_view",
+     "vec_uint128_16_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_2_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_2",
+    "generated_name": "Gt7D65FF3A10",
+    "laws": [
+     "vec_uint128_2_e2e_decode_view",
+     "vec_uint128_2_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint128_3",
+    "generated_name": "Gt7600AB7870",
+    "laws": [
+     "vec_uint128_3_e2e_decode_view",
+     "vec_uint128_3_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_31_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_31",
+    "generated_name": "Gt6B1336E534",
+    "laws": [
+     "vec_uint128_31_e2e_decode_view",
+     "vec_uint128_31_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_4_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_4",
+    "generated_name": "GtB0CCEA154C",
+    "laws": [
+     "vec_uint128_4_e2e_decode_view",
+     "vec_uint128_4_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint128_5",
+    "generated_name": "GtBB42F83A45",
+    "laws": [
+     "vec_uint128_5_e2e_decode_view",
+     "vec_uint128_5_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_8_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_8",
+    "generated_name": "Gt3E2A057F33",
+    "laws": [
+     "vec_uint128_8_e2e_decode_view",
+     "vec_uint128_8_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_1",
+    "generated_name": "GtBBFD66E011",
+    "laws": [
+     "vec_uint256_1_e2e_decode_view",
+     "vec_uint256_1_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_16_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_16",
+    "generated_name": "Gt3E6E18CD57",
+    "laws": [
+     "vec_uint256_16_e2e_decode_view",
+     "vec_uint256_16_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_2_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_2",
+    "generated_name": "GtB91D4D285D",
+    "laws": [
+     "vec_uint256_2_e2e_decode_view",
+     "vec_uint256_2_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_31_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_31",
+    "generated_name": "Gt6E9B243B7C",
+    "laws": [
+     "vec_uint256_31_e2e_decode_view",
+     "vec_uint256_31_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_3_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_3",
+    "generated_name": "Gt2E7060B297",
+    "laws": [
+     "vec_uint256_3_e2e_decode_view",
+     "vec_uint256_3_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_4_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_4",
+    "generated_name": "Gt74B2AF1CB3",
+    "laws": [
+     "vec_uint256_4_e2e_decode_view",
+     "vec_uint256_4_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_5_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_5",
+    "generated_name": "Gt0B1B711C4D",
+    "laws": [
+     "vec_uint256_5_e2e_decode_view",
+     "vec_uint256_5_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_8_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_8",
+    "generated_name": "GtFAE59DA275",
+    "laws": [
+     "vec_uint256_8_e2e_decode_view",
+     "vec_uint256_8_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_1",
+    "generated_name": "Gt669C528764",
+    "laws": [
+     "vec_uint32_1_e2e_decode_view",
+     "vec_uint32_1_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint32_16",
+    "generated_name": "Gt3CC580499F",
+    "laws": [
+     "vec_uint32_16_e2e_decode_view",
+     "vec_uint32_16_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint32_2",
+    "generated_name": "GtF45E42B273",
+    "laws": [
+     "vec_uint32_2_e2e_decode_view",
+     "vec_uint32_2_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_3_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_3",
+    "generated_name": "GtD1AEF07F7D",
+    "laws": [
+     "vec_uint32_3_e2e_decode_view",
+     "vec_uint32_3_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint32_31",
+    "generated_name": "GtE528AAE3C6",
+    "laws": [
+     "vec_uint32_31_e2e_decode_view",
+     "vec_uint32_31_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_4_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_4",
+    "generated_name": "Gt240C147AA2",
+    "laws": [
+     "vec_uint32_4_e2e_decode_view",
+     "vec_uint32_4_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint32_5",
+    "generated_name": "Gt1719057EB7",
+    "laws": [
+     "vec_uint32_5_e2e_decode_view",
+     "vec_uint32_5_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint32_8",
+    "generated_name": "GtCCF6FFA0A0",
+    "laws": [
+     "vec_uint32_8_e2e_decode_view",
+     "vec_uint32_8_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_1",
+    "generated_name": "GtADC8DCD962",
+    "laws": [
+     "vec_uint64_1_e2e_decode_view",
+     "vec_uint64_1_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint64_16",
+    "generated_name": "Gt0B4EF17D71",
+    "laws": [
+     "vec_uint64_16_e2e_decode_view",
+     "vec_uint64_16_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_2_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_2",
+    "generated_name": "GtC923FCB2DA",
+    "laws": [
+     "vec_uint64_2_e2e_decode_view",
+     "vec_uint64_2_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint64_3",
+    "generated_name": "Gt8E507C4540",
+    "laws": [
+     "vec_uint64_3_e2e_decode_view",
+     "vec_uint64_3_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_31_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_31",
+    "generated_name": "Gt7D1CD7363A",
+    "laws": [
+     "vec_uint64_31_e2e_decode_view",
+     "vec_uint64_31_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_4_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_4",
+    "generated_name": "Gt46F5D7703F",
+    "laws": [
+     "vec_uint64_4_e2e_decode_view",
+     "vec_uint64_4_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint64_5",
+    "generated_name": "Gt8FB0CF9679",
+    "laws": [
+     "vec_uint64_5_e2e_decode_view",
+     "vec_uint64_5_e2e_decode_reject"
+    ],
+    "ii": "view"
+   },
+   {
+    "name": "vec_uint64_8",
+    "generated_name": "GtE470919895",
+    "laws": [
+     "vec_uint64_8_e2e_decode_view",
+     "vec_uint64_8_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "FuluFinalityBranch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluFinalityBranch",
+    "generated_name": "FinalityBranch",
+    "laws": [
+     "FuluFinalityBranch_e2e_decode_view",
+     "FuluFinalityBranch_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "FuluCurrentSyncCommitteeBranch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluCurrentSyncCommitteeBranch",
+    "generated_name": "CurrentSyncCommitteeBranch",
+    "laws": [
+     "FuluCurrentSyncCommitteeBranch_e2e_decode_view",
+     "FuluCurrentSyncCommitteeBranch_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "FuluNextSyncCommitteeBranch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluNextSyncCommitteeBranch",
+    "generated_name": "NextSyncCommitteeBranch",
+    "laws": [
+     "FuluNextSyncCommitteeBranch_e2e_decode_view",
+     "FuluNextSyncCommitteeBranch_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "FuluExecutionBranch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluExecutionBranch",
+    "generated_name": "ExecutionBranch",
+    "laws": [
+     "FuluExecutionBranch_e2e_decode_view",
+     "FuluExecutionBranch_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_1_e2e_root_generated.bend": [
+   {
+    "name": "vec_uint128_1",
+    "generated_name": "Gt3FD98F54A5",
+    "laws": [
+     "vec_uint128_1_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt3FD98F54A5())"
+   },
+   {
+    "name": "vec_uint128_16",
+    "generated_name": "Gt3EC8B89B94",
+    "laws": [
+     "vec_uint128_16_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt3EC8B89B94())"
+   },
+   {
+    "name": "vec_uint128_2",
+    "generated_name": "Gt7D65FF3A10",
+    "laws": [
+     "vec_uint128_2_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7D65FF3A10())"
+   },
+   {
+    "name": "vec_uint128_3",
+    "generated_name": "Gt7600AB7870",
+    "laws": [
+     "vec_uint128_3_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7600AB7870())"
+   },
+   {
+    "name": "vec_uint128_31",
+    "generated_name": "Gt6B1336E534",
+    "laws": [
+     "vec_uint128_31_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt6B1336E534())"
+   },
+   {
+    "name": "vec_uint128_4",
+    "generated_name": "GtB0CCEA154C",
+    "laws": [
+     "vec_uint128_4_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.GtB0CCEA154C())"
+   },
+   {
+    "name": "vec_uint128_5",
+    "generated_name": "GtBB42F83A45",
+    "laws": [
+     "vec_uint128_5_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.GtBB42F83A45())"
+   },
+   {
+    "name": "vec_uint128_8",
+    "generated_name": "Gt3E2A057F33",
+    "laws": [
+     "vec_uint128_8_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt3E2A057F33())"
+   }
+  ],
+  "vec_uint256_1_e2e_root_generated.bend": [
+   {
+    "name": "vec_uint256_1",
+    "generated_name": "GtBBFD66E011",
+    "laws": [
+     "vec_uint256_1_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.GtBBFD66E011())"
+   },
+   {
+    "name": "vec_uint256_16",
+    "generated_name": "Gt3E6E18CD57",
+    "laws": [
+     "vec_uint256_16_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt3E6E18CD57())"
+   },
+   {
+    "name": "vec_uint256_2",
+    "generated_name": "GtB91D4D285D",
+    "laws": [
+     "vec_uint256_2_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.GtB91D4D285D())"
+   },
+   {
+    "name": "vec_uint256_31",
+    "generated_name": "Gt6E9B243B7C",
+    "laws": [
+     "vec_uint256_31_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt6E9B243B7C())"
+   },
+   {
+    "name": "vec_uint256_3",
+    "generated_name": "Gt2E7060B297",
+    "laws": [
+     "vec_uint256_3_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt2E7060B297())"
+   },
+   {
+    "name": "vec_uint256_4",
+    "generated_name": "Gt74B2AF1CB3",
+    "laws": [
+     "vec_uint256_4_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt74B2AF1CB3())"
+   },
+   {
+    "name": "vec_uint256_5",
+    "generated_name": "Gt0B1B711C4D",
+    "laws": [
+     "vec_uint256_5_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt0B1B711C4D())"
+   },
+   {
+    "name": "vec_uint256_8",
+    "generated_name": "GtFAE59DA275",
+    "laws": [
+     "vec_uint256_8_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.GtFAE59DA275())"
+   }
+  ],
+  "vec_uint32_1_e2e_root_generated.bend": [
+   {
+    "name": "vec_uint32_1",
+    "generated_name": "Gt669C528764",
+    "laws": [
+     "vec_uint32_1_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt669C528764())"
+   },
+   {
+    "name": "vec_uint32_16",
+    "generated_name": "Gt3CC580499F",
+    "laws": [
+     "vec_uint32_16_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt3CC580499F())"
+   },
+   {
+    "name": "vec_uint32_2",
+    "generated_name": "GtF45E42B273",
+    "laws": [
+     "vec_uint32_2_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.GtF45E42B273())"
+   },
+   {
+    "name": "vec_uint32_3",
+    "generated_name": "GtD1AEF07F7D",
+    "laws": [
+     "vec_uint32_3_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.GtD1AEF07F7D())"
+   },
+   {
+    "name": "vec_uint32_31",
+    "generated_name": "GtE528AAE3C6",
+    "laws": [
+     "vec_uint32_31_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.GtE528AAE3C6())"
+   },
+   {
+    "name": "vec_uint32_4",
+    "generated_name": "Gt240C147AA2",
+    "laws": [
+     "vec_uint32_4_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt240C147AA2())"
+   },
+   {
+    "name": "vec_uint32_5",
+    "generated_name": "Gt1719057EB7",
+    "laws": [
+     "vec_uint32_5_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt1719057EB7())"
+   },
+   {
+    "name": "vec_uint32_8",
+    "generated_name": "GtCCF6FFA0A0",
+    "laws": [
+     "vec_uint32_8_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.GtCCF6FFA0A0())"
+   }
+  ],
+  "vec_uint64_1_e2e_root_generated.bend": [
+   {
+    "name": "vec_uint64_1",
+    "generated_name": "GtADC8DCD962",
+    "laws": [
+     "vec_uint64_1_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.GtADC8DCD962())"
+   },
+   {
+    "name": "vec_uint64_16",
+    "generated_name": "Gt0B4EF17D71",
+    "laws": [
+     "vec_uint64_16_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt0B4EF17D71())"
+   },
+   {
+    "name": "vec_uint64_2",
+    "generated_name": "GtC923FCB2DA",
+    "laws": [
+     "vec_uint64_2_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.GtC923FCB2DA())"
+   },
+   {
+    "name": "vec_uint64_3",
+    "generated_name": "Gt8E507C4540",
+    "laws": [
+     "vec_uint64_3_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt8E507C4540())"
+   },
+   {
+    "name": "vec_uint64_31",
+    "generated_name": "Gt7D1CD7363A",
+    "laws": [
+     "vec_uint64_31_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt7D1CD7363A())"
+   },
+   {
+    "name": "vec_uint64_4",
+    "generated_name": "Gt46F5D7703F",
+    "laws": [
+     "vec_uint64_4_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt46F5D7703F())"
+   },
+   {
+    "name": "vec_uint64_5",
+    "generated_name": "Gt8FB0CF9679",
+    "laws": [
+     "vec_uint64_5_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt8FB0CF9679())"
+   },
+   {
+    "name": "vec_uint64_8",
+    "generated_name": "GtE470919895",
+    "laws": [
+     "vec_uint64_8_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.GtE470919895())"
+   }
+  ],
+  "vec_uint128_512_e2e_root_generated.bend": [
+   {
+    "name": "vec_uint128_512",
+    "generated_name": "Gt7274F61A0F",
+    "laws": [
+     "vec_uint128_512_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7274F61A0F())"
+   },
+   {
+    "name": "vec_uint128_513",
+    "generated_name": "Gt9EA902108D",
+    "laws": [
+     "vec_uint128_513_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt9EA902108D())"
+   },
+   {
+    "name": "vec_uint256_512",
+    "generated_name": "Gt274A0B8DC2",
+    "laws": [
+     "vec_uint256_512_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt274A0B8DC2())"
+   },
+   {
+    "name": "vec_uint256_513",
+    "generated_name": "Gt0A3B6B4128",
+    "laws": [
+     "vec_uint256_513_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt0A3B6B4128())"
+   },
+   {
+    "name": "vec_uint32_512",
+    "generated_name": "Gt13AFE546ED",
+    "laws": [
+     "vec_uint32_512_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt13AFE546ED())"
+   },
+   {
+    "name": "vec_uint32_513",
+    "generated_name": "Gt53D2408A5F",
+    "laws": [
+     "vec_uint32_513_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt53D2408A5F())"
+   },
+   {
+    "name": "vec_uint64_512",
+    "generated_name": "Gt843A1262ED",
+    "laws": [
+     "vec_uint64_512_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt843A1262ED())"
+   },
+   {
+    "name": "vec_uint64_513",
+    "generated_name": "Gt10D6F42D74",
+    "laws": [
+     "vec_uint64_513_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt10D6F42D74())"
+   }
+  ],
+  "FuluFinalityBranch_e2e_root_generated.bend": [
+   {
+    "name": "FuluFinalityBranch",
+    "generated_name": "FinalityBranch",
+    "laws": [
+     "FuluFinalityBranch_e2e_root"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   },
+   {
+    "name": "FuluCurrentSyncCommitteeBranch",
+    "generated_name": "CurrentSyncCommitteeBranch",
+    "laws": [
+     "FuluCurrentSyncCommitteeBranch_e2e_root"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   },
+   {
+    "name": "FuluNextSyncCommitteeBranch",
+    "generated_name": "NextSyncCommitteeBranch",
+    "laws": [
+     "FuluNextSyncCommitteeBranch_e2e_root"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   },
+   {
+    "name": "FuluExecutionBranch",
+    "generated_name": "ExecutionBranch",
+    "laws": [
+     "FuluExecutionBranch_e2e_root"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   }
   ]
  },
  "uncovered": {
@@ -1261,10 +2528,6 @@
   "FuluBytes1": {
    "generated_name": "Bytes1",
    "reason": "root law not over every object (hypotheses or a representation)"
-  },
-  "FuluFinalityBranch": {
-   "generated_name": "FinalityBranch",
-   "reason": "encode laws not over the same free words / bits"
   },
   "FuluContributionAndProof": {
    "generated_name": "ContributionAndProof",
@@ -1318,14 +2581,6 @@
    "generated_name": "ParticipationFlags",
    "reason": "root law not over every object (hypotheses or a representation)"
   },
-  "FuluCurrentSyncCommitteeBranch": {
-   "generated_name": "CurrentSyncCommitteeBranch",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluNextSyncCommitteeBranch": {
-   "generated_name": "NextSyncCommitteeBranch",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "FuluTransaction": {
    "generated_name": "Transaction",
    "reason": "encode laws not over the same free words / bits"
@@ -1344,10 +2599,6 @@
   },
   "FuluBeaconState": {
    "generated_name": "BeaconState",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluExecutionBranch": {
-   "generated_name": "ExecutionBranch",
    "reason": "encode laws not over the same free words / bits"
   },
   "FuluLightClientHeader": {
@@ -1470,46 +2721,6 @@
    "generated_name": "Gt1C2FA69562",
    "reason": "encode laws not over the same free words / bits"
   },
-  "vec_uint128_16": {
-   "generated_name": "Gt3EC8B89B94",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint128_1": {
-   "generated_name": "Gt3FD98F54A5",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint128_2": {
-   "generated_name": "Gt7D65FF3A10",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint128_31": {
-   "generated_name": "Gt6B1336E534",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint128_3": {
-   "generated_name": "Gt7600AB7870",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint128_4": {
-   "generated_name": "GtB0CCEA154C",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint128_512": {
-   "generated_name": "Gt7274F61A0F",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint128_513": {
-   "generated_name": "Gt9EA902108D",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint128_5": {
-   "generated_name": "GtBB42F83A45",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint128_8": {
-   "generated_name": "Gt3E2A057F33",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "proglist_uint8": {
    "generated_name": "GtDE4B86A990",
    "reason": "encode laws not over the same free words / bits"
@@ -1602,132 +2813,12 @@
    "generated_name": "GtA8457965E2",
    "reason": "encode laws not over the same free words / bits"
   },
-  "vec_uint256_16": {
-   "generated_name": "Gt3E6E18CD57",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint256_1": {
-   "generated_name": "GtBBFD66E011",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint256_2": {
-   "generated_name": "GtB91D4D285D",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint256_31": {
-   "generated_name": "Gt6E9B243B7C",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint256_3": {
-   "generated_name": "Gt2E7060B297",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint256_4": {
-   "generated_name": "Gt74B2AF1CB3",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint256_512": {
-   "generated_name": "Gt274A0B8DC2",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint256_513": {
-   "generated_name": "Gt0A3B6B4128",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint256_5": {
-   "generated_name": "Gt0B1B711C4D",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint256_8": {
-   "generated_name": "GtFAE59DA275",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "proglist_uint32": {
    "generated_name": "Gt3A9420DD8E",
    "reason": "encode laws not over the same free words / bits"
   },
-  "vec_uint32_16": {
-   "generated_name": "Gt3CC580499F",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint32_1": {
-   "generated_name": "Gt669C528764",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint32_2": {
-   "generated_name": "GtF45E42B273",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint32_31": {
-   "generated_name": "GtE528AAE3C6",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint32_3": {
-   "generated_name": "GtD1AEF07F7D",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint32_4": {
-   "generated_name": "Gt240C147AA2",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint32_512": {
-   "generated_name": "Gt13AFE546ED",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint32_513": {
-   "generated_name": "Gt53D2408A5F",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint32_5": {
-   "generated_name": "Gt1719057EB7",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint32_8": {
-   "generated_name": "GtCCF6FFA0A0",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "proglist_uint64": {
    "generated_name": "GtE83F21B20A",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_16": {
-   "generated_name": "Gt0B4EF17D71",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_1": {
-   "generated_name": "GtADC8DCD962",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_2": {
-   "generated_name": "GtC923FCB2DA",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_31": {
-   "generated_name": "Gt7D1CD7363A",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_3": {
-   "generated_name": "Gt8E507C4540",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_4": {
-   "generated_name": "Gt46F5D7703F",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_512": {
-   "generated_name": "Gt843A1262ED",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_513": {
-   "generated_name": "Gt10D6F42D74",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_5": {
-   "generated_name": "Gt8FB0CF9679",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "vec_uint64_8": {
-   "generated_name": "GtE470919895",
    "reason": "encode laws not over the same free words / bits"
   },
   "ProgressiveTestStruct": {
@@ -1858,10 +2949,6 @@
    "generated_name": "GtEDFB713194",
    "reason": "encode laws not over the same free words / bits"
   },
-  "bitvector_32": {
-   "generated_name": "GtBBF12DAB28",
-   "reason": "no structural-validity lemma for the view"
-  },
   "bitvector_33": {
    "generated_name": "Gt6F0D97A69E",
    "reason": "encode laws not over the same free words / bits"
@@ -1877,10 +2964,6 @@
   "bitvector_511": {
    "generated_name": "Gt05340E1F7E",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "bitvector_512": {
-   "generated_name": "Gt0A390CB480",
-   "reason": "no structural-validity lemma for the view"
   },
   "bitvector_513": {
    "generated_name": "Gt0B0C03B454",
@@ -1922,27 +3005,210 @@
    "generated_name": "GtF7582E0E9A",
    "reason": "encode laws not over the same free words / bits"
   },
-  "uint128": {
-   "generated_name": "Gt604E28A301",
-   "reason": "no structural-validity lemma for the view"
-  },
   "uint16": {
    "generated_name": "GtECF9BB18D8",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "uint256": {
-   "generated_name": "Gt59DCDB2873",
-   "reason": "no structural-validity lemma for the view"
-  },
-  "uint64": {
-   "generated_name": "Gt62B0093BE7",
-   "reason": "no structural-validity lemma for the view"
   }
  },
  "decode_uncovered": {
   "FuluValidator": {
    "generated_name": "Validator",
    "reason": "no decode_input / decode_none / decode_reject law"
+  }
+ },
+ "root_awaiting": {},
+ "word_storage": {
+  "vec_uint128_1": {
+   "generated_name": "Gt3FD98F54A5",
+   "awaiting": []
+  },
+  "vec_uint128_16": {
+   "generated_name": "Gt3EC8B89B94",
+   "awaiting": []
+  },
+  "vec_uint128_2": {
+   "generated_name": "Gt7D65FF3A10",
+   "awaiting": []
+  },
+  "vec_uint128_3": {
+   "generated_name": "Gt7600AB7870",
+   "awaiting": []
+  },
+  "vec_uint128_31": {
+   "generated_name": "Gt6B1336E534",
+   "awaiting": []
+  },
+  "vec_uint128_4": {
+   "generated_name": "GtB0CCEA154C",
+   "awaiting": []
+  },
+  "vec_uint128_5": {
+   "generated_name": "GtBB42F83A45",
+   "awaiting": []
+  },
+  "vec_uint128_8": {
+   "generated_name": "Gt3E2A057F33",
+   "awaiting": []
+  },
+  "vec_uint256_1": {
+   "generated_name": "GtBBFD66E011",
+   "awaiting": []
+  },
+  "vec_uint256_16": {
+   "generated_name": "Gt3E6E18CD57",
+   "awaiting": []
+  },
+  "vec_uint256_2": {
+   "generated_name": "GtB91D4D285D",
+   "awaiting": []
+  },
+  "vec_uint256_31": {
+   "generated_name": "Gt6E9B243B7C",
+   "awaiting": []
+  },
+  "vec_uint256_3": {
+   "generated_name": "Gt2E7060B297",
+   "awaiting": []
+  },
+  "vec_uint256_4": {
+   "generated_name": "Gt74B2AF1CB3",
+   "awaiting": []
+  },
+  "vec_uint256_5": {
+   "generated_name": "Gt0B1B711C4D",
+   "awaiting": []
+  },
+  "vec_uint256_8": {
+   "generated_name": "GtFAE59DA275",
+   "awaiting": []
+  },
+  "vec_uint32_1": {
+   "generated_name": "Gt669C528764",
+   "awaiting": []
+  },
+  "vec_uint32_16": {
+   "generated_name": "Gt3CC580499F",
+   "awaiting": []
+  },
+  "vec_uint32_2": {
+   "generated_name": "GtF45E42B273",
+   "awaiting": []
+  },
+  "vec_uint32_3": {
+   "generated_name": "GtD1AEF07F7D",
+   "awaiting": []
+  },
+  "vec_uint32_31": {
+   "generated_name": "GtE528AAE3C6",
+   "awaiting": []
+  },
+  "vec_uint32_4": {
+   "generated_name": "Gt240C147AA2",
+   "awaiting": []
+  },
+  "vec_uint32_5": {
+   "generated_name": "Gt1719057EB7",
+   "awaiting": []
+  },
+  "vec_uint32_8": {
+   "generated_name": "GtCCF6FFA0A0",
+   "awaiting": []
+  },
+  "vec_uint64_1": {
+   "generated_name": "GtADC8DCD962",
+   "awaiting": []
+  },
+  "vec_uint64_16": {
+   "generated_name": "Gt0B4EF17D71",
+   "awaiting": []
+  },
+  "vec_uint64_2": {
+   "generated_name": "GtC923FCB2DA",
+   "awaiting": []
+  },
+  "vec_uint64_3": {
+   "generated_name": "Gt8E507C4540",
+   "awaiting": []
+  },
+  "vec_uint64_31": {
+   "generated_name": "Gt7D1CD7363A",
+   "awaiting": []
+  },
+  "vec_uint64_4": {
+   "generated_name": "Gt46F5D7703F",
+   "awaiting": []
+  },
+  "vec_uint64_5": {
+   "generated_name": "Gt8FB0CF9679",
+   "awaiting": []
+  },
+  "vec_uint64_8": {
+   "generated_name": "GtE470919895",
+   "awaiting": []
+  },
+  "vec_uint128_512": {
+   "generated_name": "Gt7274F61A0F",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint128_513": {
+   "generated_name": "Gt9EA902108D",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint256_512": {
+   "generated_name": "Gt274A0B8DC2",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint256_513": {
+   "generated_name": "Gt0A3B6B4128",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint32_512": {
+   "generated_name": "Gt13AFE546ED",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint32_513": {
+   "generated_name": "Gt53D2408A5F",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint64_512": {
+   "generated_name": "Gt843A1262ED",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "vec_uint64_513": {
+   "generated_name": "Gt10D6F42D74",
+   "awaiting": [
+    "(ii)/(iii)"
+   ]
+  },
+  "FuluFinalityBranch": {
+   "generated_name": "FinalityBranch",
+   "awaiting": []
+  },
+  "FuluCurrentSyncCommitteeBranch": {
+   "generated_name": "CurrentSyncCommitteeBranch",
+   "awaiting": []
+  },
+  "FuluNextSyncCommitteeBranch": {
+   "generated_name": "NextSyncCommitteeBranch",
+   "awaiting": []
+  },
+  "FuluExecutionBranch": {
+   "generated_name": "ExecutionBranch",
+   "awaiting": []
   }
  }
 }
