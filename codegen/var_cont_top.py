@@ -484,14 +484,39 @@ def valid_fact(f, fs, K):
     return (ch.vt, f'{ch.alias}.valid_{ch.p}({ch.oargs[0]}, {ch.oargs[1]}, {h(ch.hargs[0])})')
 
 
+def acc_arg(term, call, k_):
+    '''The offset of the k_-th top-level argument (True{}) of the first `call(` in term.'''
+    i_ = term.index(call) + len(call)
+    if k_ == 0:
+        a0 = i_
+    else:
+        depth, argi, j_ = 0, 0, i_
+        while True:
+            ch_ = term[j_]
+            if ch_ in '({[':
+                depth += 1
+            elif ch_ in ')}]':
+                depth -= 1
+            elif ch_ == ',' and depth == 0:
+                argi += 1
+                if argi == k_:
+                    a0 = j_ + 2
+                    break
+            j_ += 1
+    assert term[a0:a0 + 6] == 'True{}', term[a0:a0 + 20]
+    return a0
+
+
 def valid_text(C, K, P, OAS, OBJF, groups, gobj, fnames, lin):
     """A wide container's validity pass (T.<C>_valid: its groups' _va chains) rewritten through its
     non-Data fields' validity facts; None when a field has none yet (a FixW field without its valid term)."""
     F, p = K.F, K.p
     steps, prfs = [], []
+    gstart = {}   # step index -> (V, gk): the first step of a later group whose pass starts from V
     tacc = 'True{}'
     gok = None
     pre = ''
+    pres = {}   # j > 0 -> (V, gk): a later group whose pass starts from its Data fields' check V
     for j, (gk, idx) in enumerate(lin):
         # a group whose Data fields have a check starts its pass with it (acc = V): V true (its hpz_g<k>, var_cont_enc)
         body_ = CE.fn_body(f'{p}_g{gk}_valid')
@@ -501,11 +526,13 @@ def valid_text(C, K, P, OAS, OBJF, groups, gobj, fnames, lin):
         pn_ = CE.fn_params(mm_.group(2))
         acc0 = args_[pn_.index('acc')].strip()
         if acc0 != 'True{}':
-            assert j == 0, (C, gk, acc0)
             sub_ = dict(zip(pv_, [OBJF[fnames[i]] for i in idx]))
             V_ = re.sub(r'(?<![\w.])([A-Za-z_]\w*)\b(?![({])', lambda z_: sub_.get(z_.group(1), z_.group(1)), acc0)
             V_ = re.sub(r'(?<![\w.])([a-z_]\w*)\(', r'T.\1(', V_)
-            pre = (V_, gk)
+            if j == 0:
+                pre = (V_, gk)
+            else:
+                pres[j] = (V_, gk)
     for j, (gk, idx) in enumerate(lin):
         gp = f'{p}_g{gk}'
         tparams = CE.fn_params(f'{p}_va{j}')
@@ -515,6 +542,8 @@ def valid_text(C, K, P, OAS, OBJF, groups, gobj, fnames, lin):
         gmap['acc'] = tacc
         nd = [i for i in idx if not F[i][1].data]
         acc = 'True{}'
+        if j in pres:
+            gstart[len(steps)] = pres[j]
         for s, i in enumerate(nd):
             f = fnames[i]
             fs = F[i][1]
@@ -544,6 +573,15 @@ def valid_text(C, K, P, OAS, OBJF, groups, gobj, fnames, lin):
             return e
         after = outer.replace(', z)', f', {rhs})')
         nxt = steps[k + 1][0].replace(', z)', f', {steps[k + 1][1]})')
+        if k + 1 in gstart:
+            # the next group's pass starts from its Data fields' check V (after converts to nxt with acc = V):
+            # V is True by CI.ok_hpz_g<k>, then the chain goes on from True
+            V_, gk_ = gstart[k + 1]
+            a0 = acc_arg(nxt, f'T.{p}_g{gk_}_va0(', CE.fn_params(f'{p}_g{gk_}_va0').index('acc'))
+            nV = nxt[:a0] + V_ + nxt[a0 + 6:]
+            br = f'Equal.cong(Bool, {RT}, zv => {nxt[:a0]}zv{nxt[a0 + 6:]}, {V_}, True{{}}, CI.ok_hpz_g{gk_}({OAS}, h))'
+            return (f'Equal.trans({RT}, {first}, {after}, {end}, {e}, '
+                    f'Equal.trans({RT}, {nV}, {nxt}, {end}, {br}, {chain(k + 1, nxt)}))')
         return f'Equal.trans({RT}, {first}, {after}, {end}, {e}, {chain(k + 1, nxt)})'
     first = steps[0][0].replace(', z)', f', {steps[0][1]})')
     rw = ''
@@ -716,7 +754,7 @@ def validx(m, hok):
 # a zero tree CI.putx / putx_bytes, the spec CI.encx_spec.
 
 GTOPS = ['Gp4B0CA2906A', 'Gp66304057C3', 'Gp8A7851175B', 'Gc465214E502', 'Gc221EC01D83', 'Gc85FA758A04', 'Gc56D855869F', 'BeaconBlock', 'SignedBeaconBlock',
-         'GuA2212AE21F', 'GuAD91DEB870', 'Gu6DDF182530', 'LightClientFinalityUpdate', 'Gc60805EC295']
+         'GuA2212AE21F', 'GuAD91DEB870', 'Gu6DDF182530', 'LightClientFinalityUpdate', 'Gc60805EC295', 'LightClientUpdate']
 
 
 def gtop_text(C):

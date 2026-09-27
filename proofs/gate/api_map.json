@@ -9520,8 +9520,20 @@
      "big": false
     }
    ],
-   "encode_eval": [],
-   "encode_spec": [],
+   "encode_eval": [
+    {
+     "file": "big_var_codec_LightClientUpdate_enc.bend",
+     "law": "encode_eval",
+     "big": true
+    }
+   ],
+   "encode_spec": [
+    {
+     "file": "big_var_codec_LightClientUpdate_enc.bend",
+     "law": "encode_spec",
+     "big": true
+    }
+   ],
    "roundtrip": [],
    "encoded_size": [],
    "reject_short": [],

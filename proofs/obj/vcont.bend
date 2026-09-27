@@ -560,3 +560,97 @@ def nw_nat(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 29n) == True{} : Bool}, +h: {Nat
     Equal.trans(Nat, VD.s_rng(2n, U32.to_nat(U32.add(L, 3))), VD.s_rng(2n, Nat.add(U32.to_nat(L), 3n)), WD.NWN(U32.to_nat(L)),
       Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(U32.add(L, 3)), Nat.add(U32.to_nat(L), 3n), e2),
       Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), Nat.add(U32.to_nat(L), 3n), 3n+U32.to_nat(L), F.nat__add_comm(U32.to_nat(L), 3n))))
+
+# ---- the F0-last forms: a container with fixed pieces of codegen/var_cont_enc.py's BIGPIECE bytes or more
+# writes its fixed size F0 (a literal) last in every sum, Nat.add(SUM(..), F0), so a comparison of two such
+# sums stops at the variable pieces' lengths and never unfolds F0 (Nat.add recurses on its first argument).
+
+# (a + F) + R = (a + R) + F.
+def swap_r(+a: Nat, +F0: Nat, +R: Nat) -> {Nat.add(Nat.add(a, F0), R) == Nat.add(Nat.add(a, R), F0) : Nat}:
+  Equal.trans(Nat, Nat.add(Nat.add(a, F0), R), Nat.add(a, Nat.add(F0, R)), Nat.add(Nat.add(a, R), F0), F.nat__add_assoc(a, F0, R),
+    Equal.trans(Nat, Nat.add(a, Nat.add(F0, R)), Nat.add(a, Nat.add(R, F0)), Nat.add(Nat.add(a, R), F0),
+      Equal.cong(Nat, Nat, z => Nat.add(a, z), Nat.add(F0, R), Nat.add(R, F0), F.nat__add_comm(F0, R)),
+      Equal.sym(Nat, Nat.add(Nat.add(a, R), F0), Nat.add(a, Nat.add(R, F0)), F.nat__add_assoc(a, R, F0))))
+
+# The next cursor, F0 last: (SUM(ks) + F) + k = SUM(ks ++ [k]) + F.
+def sum_snoc_r(+F0: Nat, +ks: List<&2, Nat>, +k: Nat) -> {Nat.add(Nat.add(SUM(ks), F0), k) == Nat.add(SUM(APPN(ks, [k])), F0) : Nat}:
+  +e1 = Equal.trans(Nat, SUM(APPN(ks, [k])), Nat.add(SUM(ks), Nat.add(k, 0n)), Nat.add(SUM(ks), k), sum_app(ks, [k]),
+    Equal.cong(Nat, Nat, z => Nat.add(SUM(ks), z), Nat.add(k, 0n), k, F.nat__add_zero(k)))
+  Equal.trans(Nat, Nat.add(Nat.add(SUM(ks), F0), k), Nat.add(Nat.add(SUM(ks), k), F0), Nat.add(SUM(APPN(ks, [k])), F0), swap_r(SUM(ks), F0, k),
+    Equal.cong(Nat, Nat, z => Nat.add(z, F0), Nat.add(SUM(ks), k), SUM(APPN(ks, [k])), Equal.sym(Nat, SUM(APPN(ks, [k])), Nat.add(SUM(ks), k), e1)))
+
+# pc_room, F0 last; the region's size L as its use site names it, equal to SUM(ks) + F0.
+def pc_room_r0(+F0: Nat, +pre: List<&2, Nat>, +m: Nat, +rest: List<&2, Nat>)
+    -> {Nat.is_le(Nat.add(Nat.add(SUM(pre), F0), m), Nat.add(SUM(APPN(APPN(pre, [m]), rest)), F0)) == True{} : Bool}:
+  +e1 = sum_snoc_r(F0, pre, m)
+  F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(SUM(APPN(APPN(pre, [m]), rest)), F0)) == True{} : Bool}, Nat.add(SUM(APPN(pre, [m])), F0), Nat.add(Nat.add(SUM(pre), F0), m),
+    Equal.sym(Nat, Nat.add(Nat.add(SUM(pre), F0), m), Nat.add(SUM(APPN(pre, [m])), F0), e1),
+    Order.add_right(SUM(APPN(pre, [m])), SUM(APPN(APPN(pre, [m]), rest)), F0,
+      F.logic__subst(Nat, z => {Nat.is_le(SUM(APPN(pre, [m])), z) == True{} : Bool}, Nat.add(SUM(APPN(pre, [m])), SUM(rest)), SUM(APPN(APPN(pre, [m]), rest)),
+        Equal.sym(Nat, SUM(APPN(APPN(pre, [m]), rest)), Nat.add(SUM(APPN(pre, [m])), SUM(rest)), sum_app(APPN(pre, [m]), rest)),
+        Order.below_sum(SUM(APPN(pre, [m])), SUM(rest)))))
+
+def pc_room_r(+F0: Nat, +pre: List<&2, Nat>, +m: Nat, +rest: List<&2, Nat>, +L: Nat, +ks: List<&2, Nat>,
+    +eks: {APPN(APPN(pre, [m]), rest) == ks : List<&2, Nat>}, +eL: {Nat.add(SUM(ks), F0) == L : Nat})
+    -> {Nat.is_le(Nat.add(Nat.add(SUM(pre), F0), m), L) == True{} : Bool}:
+  +e1 = Equal.trans(Nat, Nat.add(SUM(APPN(APPN(pre, [m]), rest)), F0), Nat.add(SUM(ks), F0), L,
+    Equal.cong(List<&2, Nat>, Nat, z => Nat.add(SUM(z), F0), APPN(APPN(pre, [m]), rest), ks, eks), eL)
+  F.logic__subst(Nat, z => {Nat.is_le(Nat.add(Nat.add(SUM(pre), F0), m), z) == True{} : Bool}, Nat.add(SUM(APPN(APPN(pre, [m]), rest)), F0), L, e1, pc_room_r0(F0, pre, m, rest))
+
+# pc_after, F0 last.
+def pc_after_r0(+F0: Nat, +pre: List<&2, Nat>, +m: Nat, +rest: List<&2, Nat>, +P: Nat)
+    -> {Nat.add(Nat.add(Nat.add(SUM(pre), F0), m), SUM(APPN(rest, [P]))) == Nat.add(Nat.add(SUM(APPN(APPN(pre, [m]), rest)), F0), P) : Nat}:
+  +e1 = sum_snoc_r(F0, pre, m)
+  +e2 = Equal.trans(Nat, SUM(APPN(rest, [P])), Nat.add(SUM(rest), Nat.add(P, 0n)), Nat.add(SUM(rest), P), sum_app(rest, [P]),
+    Equal.cong(Nat, Nat, z => Nat.add(SUM(rest), z), Nat.add(P, 0n), P, F.nat__add_zero(P)))
+  +e3 = sum_app(APPN(pre, [m]), rest)
+  +e4 = Equal.trans(Nat, Nat.add(Nat.add(SUM(APPN(pre, [m])), F0), Nat.add(SUM(rest), P)), Nat.add(Nat.add(Nat.add(SUM(APPN(pre, [m])), F0), SUM(rest)), P),
+    Nat.add(Nat.add(Nat.add(SUM(APPN(pre, [m])), SUM(rest)), F0), P),
+    Equal.sym(Nat, Nat.add(Nat.add(Nat.add(SUM(APPN(pre, [m])), F0), SUM(rest)), P), Nat.add(Nat.add(SUM(APPN(pre, [m])), F0), Nat.add(SUM(rest), P)),
+      F.nat__add_assoc(Nat.add(SUM(APPN(pre, [m])), F0), SUM(rest), P)),
+    Equal.cong(Nat, Nat, z => Nat.add(z, P), Nat.add(Nat.add(SUM(APPN(pre, [m])), F0), SUM(rest)), Nat.add(Nat.add(SUM(APPN(pre, [m])), SUM(rest)), F0),
+      swap_r(SUM(APPN(pre, [m])), F0, SUM(rest))))
+  Equal.trans(Nat, Nat.add(Nat.add(Nat.add(SUM(pre), F0), m), SUM(APPN(rest, [P]))), Nat.add(Nat.add(SUM(APPN(pre, [m])), F0), SUM(APPN(rest, [P]))),
+    Nat.add(Nat.add(SUM(APPN(APPN(pre, [m]), rest)), F0), P),
+    Equal.cong(Nat, Nat, z => Nat.add(z, SUM(APPN(rest, [P]))), Nat.add(Nat.add(SUM(pre), F0), m), Nat.add(SUM(APPN(pre, [m])), F0), e1),
+    Equal.trans(Nat, Nat.add(Nat.add(SUM(APPN(pre, [m])), F0), SUM(APPN(rest, [P]))), Nat.add(Nat.add(SUM(APPN(pre, [m])), F0), Nat.add(SUM(rest), P)),
+      Nat.add(Nat.add(SUM(APPN(APPN(pre, [m]), rest)), F0), P),
+      Equal.cong(Nat, Nat, z => Nat.add(Nat.add(SUM(APPN(pre, [m])), F0), z), SUM(APPN(rest, [P])), Nat.add(SUM(rest), P), e2),
+      Equal.trans(Nat, Nat.add(Nat.add(SUM(APPN(pre, [m])), F0), Nat.add(SUM(rest), P)), Nat.add(Nat.add(Nat.add(SUM(APPN(pre, [m])), SUM(rest)), F0), P),
+        Nat.add(Nat.add(SUM(APPN(APPN(pre, [m]), rest)), F0), P), e4,
+        Equal.cong(Nat, Nat, z => Nat.add(Nat.add(z, F0), P), Nat.add(SUM(APPN(pre, [m])), SUM(rest)), SUM(APPN(APPN(pre, [m]), rest)),
+          Equal.sym(Nat, SUM(APPN(APPN(pre, [m]), rest)), Nat.add(SUM(APPN(pre, [m])), SUM(rest)), e3)))))
+
+def pc_after_r(+F0: Nat, +pre: List<&2, Nat>, +m: Nat, +rest: List<&2, Nat>, +P: Nat, +L: Nat, +ks: List<&2, Nat>,
+    +eks: {APPN(APPN(pre, [m]), rest) == ks : List<&2, Nat>}, +eL: {Nat.add(SUM(ks), F0) == L : Nat})
+    -> {Nat.add(Nat.add(Nat.add(SUM(pre), F0), m), SUM(APPN(rest, [P]))) == Nat.add(L, P) : Nat}:
+  +e1 = Equal.trans(Nat, Nat.add(SUM(APPN(APPN(pre, [m]), rest)), F0), Nat.add(SUM(ks), F0), L,
+    Equal.cong(List<&2, Nat>, Nat, z => Nat.add(SUM(z), F0), APPN(APPN(pre, [m]), rest), ks, eks), eL)
+  F.logic__subst(Nat, z => {Nat.add(Nat.add(Nat.add(SUM(pre), F0), m), SUM(APPN(rest, [P]))) == Nat.add(z, P) : Nat}, Nat.add(SUM(APPN(APPN(pre, [m]), rest)), F0), L, e1,
+    pc_after_r0(F0, pre, m, rest, P))
+
+# cnext, F0 last.
+def cnext_r(+cur: U32, +sz: U32, +F0: Nat, +ks: List<&2, Nat>, +k: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +ec: {U32.to_nat(cur) == Nat.add(SUM(ks), F0) : Nat}, +es: {U32.to_nat(sz) == k : Nat},
+    +hb: {Nat.is_le(Nat.add(Nat.add(SUM(ks), F0), k), A.quad(VB.pw(dd))) == True{} : Bool})
+    -> {U32.to_nat(O.padd(cur, sz)) == Nat.add(SUM(APPN(ks, [k])), F0) : Nat}:
+  +e1 = Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), k),
+    Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(sz)), U32.to_nat(cur), Nat.add(SUM(ks), F0), ec),
+    Equal.cong(Nat, Nat, z => Nat.add(Nat.add(SUM(ks), F0), z), U32.to_nat(sz), k, es))
+  +hb2 = F.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(dd))) == True{} : Bool}, Nat.add(Nat.add(SUM(ks), F0), k), Nat.add(U32.to_nat(cur), U32.to_nat(sz)),
+    Equal.sym(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), k), e1), hb)
+  Equal.trans(Nat, U32.to_nat(O.padd(cur, sz)), Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(SUM(APPN(ks, [k])), F0), padd_dd(cur, sz, dd, hd, hb2),
+    Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), k), Nat.add(SUM(APPN(ks, [k])), F0), e1, sum_snoc_r(F0, ks, k)))
+
+# sum_region, F0 last: the fixed pieces' sizes fs sum to F0.
+def sum_region_r(+fs: List<&2, Nat>, +ks: List<&2, Nat>, +P: Nat, +F0: Nat, +eF: {SUM(fs) == F0 : Nat})
+    -> {SUM(APPN(fs, APPN(ks, [P]))) == Nat.add(Nat.add(SUM(ks), F0), P) : Nat}:
+  Equal.trans(Nat, SUM(APPN(fs, APPN(ks, [P]))), Nat.add(Nat.add(SUM(fs), SUM(ks)), P), Nat.add(Nat.add(SUM(ks), F0), P), sum_region(fs, ks, P),
+    Equal.trans(Nat, Nat.add(Nat.add(SUM(fs), SUM(ks)), P), Nat.add(Nat.add(SUM(ks), SUM(fs)), P), Nat.add(Nat.add(SUM(ks), F0), P),
+      Equal.cong(Nat, Nat, z => Nat.add(z, P), Nat.add(SUM(fs), SUM(ks)), Nat.add(SUM(ks), SUM(fs)), F.nat__add_comm(SUM(fs), SUM(ks))),
+      Equal.cong(Nat, Nat, z => Nat.add(Nat.add(SUM(ks), z), P), SUM(fs), F0, eF)))
+
+# eposv, F0 last.
+def eposv_r(+fw: +List<+List<U32>>, +ps: +List<+List<U32>>, +ks: List<&2, Nat>)
+    -> {LN(CAT(LAP(fw, PCL(ks, ps)))) == Nat.add(SUM(ks), LN(CAT(fw))) : Nat}:
+  Equal.trans(Nat, LN(CAT(LAP(fw, PCL(ks, ps)))), Nat.add(LN(CAT(fw)), SUM(ks)), Nat.add(SUM(ks), LN(CAT(fw))), eposv(fw, ps, ks), F.nat__add_comm(LN(CAT(fw)), SUM(ks)))
