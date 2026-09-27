@@ -754,7 +754,7 @@ def validx(m, hok):
 # a zero tree CI.putx / putx_bytes, the spec CI.encx_spec.
 
 GTOPS = ['Gp4B0CA2906A', 'Gp66304057C3', 'Gp8A7851175B', 'Gc465214E502', 'Gc221EC01D83', 'Gc85FA758A04', 'Gc56D855869F', 'BeaconBlock', 'SignedBeaconBlock',
-         'GuA2212AE21F', 'GuAD91DEB870', 'Gu6DDF182530', 'LightClientFinalityUpdate', 'Gc60805EC295']
+         'GuA2212AE21F', 'GuAD91DEB870', 'Gu6DDF182530', 'LightClientFinalityUpdate', 'Gc60805EC295', 'LightClientUpdate']
 
 
 def gtop_text(C):
