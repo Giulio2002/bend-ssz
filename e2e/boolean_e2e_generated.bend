@@ -1,4 +1,7 @@
 import Base
+import ./e2e_fixdb.bend as XB
+import ../proofs/obj/spec_fixed.bend as F
+import ../proofs/compact/bits.bend as BT
 import ../END_TO_END.bend as E2E
 import ../src/model.bend as API
 import ../src/buffer.bend as B

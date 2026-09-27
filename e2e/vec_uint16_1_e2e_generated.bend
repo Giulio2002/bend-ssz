@@ -1,4 +1,7 @@
 import Base
+import ./e2e_fixdb.bend as XB
+import ../proofs/obj/spec_fixed.bend as F
+import ../proofs/compact/bits.bend as BT
 import ../END_TO_END.bend as E2E
 import ../src/model.bend as API
 import ../src/buffer.bend as B
@@ -16,7 +19,6 @@ import ./e2e_support.bend as E
 import ./e2e_fixd.bend as X
 import ./e2e_fixd16.bend as X16
 import ../proofs/compact/found.bend as FD
-import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/primitive_invariants.bend as V
