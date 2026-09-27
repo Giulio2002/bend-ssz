@@ -22,6 +22,8 @@ import ../obj/vcopy.bend as P0_VC
 import ../obj/vdepth.bend as P0_VD
 import ../obj/vfix.bend as P0_VF
 import ../obj/var_fix_types.bend as P0_VT
+import ../../spec/schema.bend as P0_SC
+import ../obj/vseq.bend as P0_VSQ
 import ../obj/var_codec_DataColumnsByRootIdentifier.bend as P0_PRV
 import ../../types/schema.bend as P1_S
 import ../../spec/decoding_relation.bend as P1_Decoding
