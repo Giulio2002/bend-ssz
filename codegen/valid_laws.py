@@ -962,6 +962,16 @@ def emit_types(only=None):
         laws.append(f'  vr_{s.p}(o, s, rep, OS.DV0(), {{==}}, RT.{n}_ok(s, es, OS.DV0(), {{==}}), RT.{n}_eqs(s, es))')
         laws.append('')
         status[n] = 'valid'
+    import re as _re
+    for m in _re.finditer(r'^def (\w+)_ok\(\+s: S\.Schema, \+es: \{s == Spec\.\w+\(\) : S\.Schema\}\) -> \{WO\.ok_bv\(s, (\d+n)\) == True\{\} : Bool\}:', src, _re.M):
+        n, d = m.groups()
+        if only and n not in only:
+            continue
+        laws.append(f'def {n}_root_valid(-o: O.Words, +s: S.Schema, +es: {{s == Spec.{n}() : S.Schema}}, +rep: WO.rep_bv(o, s))')
+        laws.append('    -> {VD.root_valid(S.BytesValue{WO.wview(o)}, s) == True{} : Bool}:')
+        laws.append(f'  VO.vbv(o, s, {d}, rep, RT.{n}_ok(s, es))')
+        laws.append('')
+        status[n] = 'valid'
     bigtext = {}
     for n, s in big.items():
         R = RA.qual(s.rep)
