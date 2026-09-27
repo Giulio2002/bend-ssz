@@ -4,13 +4,6 @@ import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
-import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
-import ../types/FuluPendingConsolidation_def_generated.bend as FuluPendingConsolidation_d
-import ../types/FuluPendingConsolidation_encode_ssz_generated.bend as FuluPendingConsolidation_e
-import ../types/FuluPendingConsolidation_hashtreeroot_generated.bend as FuluPendingConsolidation_h
-import ../types/FuluHistoricalSummary_def_generated.bend as FuluHistoricalSummary_d
-import ../types/FuluHistoricalSummary_encode_ssz_generated.bend as FuluHistoricalSummary_e
-import ../types/FuluHistoricalSummary_hashtreeroot_generated.bend as FuluHistoricalSummary_h
 import ../types/FuluCommitteeIndex_encode_ssz_generated.bend as FuluCommitteeIndex_e
 import ../types/FuluCommitteeIndex_hashtreeroot_generated.bend as FuluCommitteeIndex_h
 import ../types/schema.bend as S
@@ -21,7 +14,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_2.bend as M0
+import ../proofs/obj/spec_codec_CommitteeIndex.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -41,32 +34,4 @@ def FuluCommitteeIndex_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluCommitteeInde
 def FuluCommitteeIndex_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluCommitteeIndex_h.CommitteeIndex_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.CommitteeIndex(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.CommitteeIndex(), M1.v_u64(o), VS.public_sound(Spec.CommitteeIndex(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluCommitteeIndex_h.CommitteeIndex_hash_tree_root(h, o))),
     M2.rv_u64(o), M1.CommitteeIndex_root_correct(h, o))
-
-# FuluHistoricalSummary (HistoricalSummary)
-def FuluHistoricalSummary_e2e_encode(+o: FuluHistoricalSummary_d.HistoricalSummary) -> {Some{E.obytes(FuluHistoricalSummary_e.HistoricalSummary_encode(o))} == API.serialize(Spec.HistoricalSummary(), M1.v_HistoricalSummary(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluHistoricalSummary_d.HistoricalSummary{FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}, FuluBytes32_d.Bytes32{+x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15}}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluHistoricalSummary_e.HistoricalSummary_encode(FuluHistoricalSummary_d.HistoricalSummary{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, FuluBytes32_d.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15])}, API.serialize(Spec.HistoricalSummary(), M1.v_HistoricalSummary(FuluHistoricalSummary_d.HistoricalSummary{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, FuluBytes32_d.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluHistoricalSummary_e.HistoricalSummary_encode(FuluHistoricalSummary_d.HistoricalSummary{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, FuluBytes32_d.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}}), 0, 16), (FuluHistoricalSummary_e.HistoricalSummary_encode(FuluHistoricalSummary_d.HistoricalSummary{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, FuluBytes32_d.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15])), M0.HistoricalSummary_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.HistoricalSummary(), M1.v_HistoricalSummary(FuluHistoricalSummary_d.HistoricalSummary{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, FuluBytes32_d.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.HistoricalSummary(), M1.v_HistoricalSummary(FuluHistoricalSummary_d.HistoricalSummary{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, FuluBytes32_d.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}})), Encoding.encoding_for_legal_type(Spec.HistoricalSummary(), M1.v_HistoricalSummary(FuluHistoricalSummary_d.HistoricalSummary{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, FuluBytes32_d.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15])},
-            E.serialize_legal(Spec.HistoricalSummary(), M1.v_HistoricalSummary(FuluHistoricalSummary_d.HistoricalSummary{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, FuluBytes32_d.Bytes32{x8, x9, x10, x11, x12, x13, x14, x15}}), VS.public_sound(Spec.HistoricalSummary(), {==})), M0.HistoricalSummary_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15))))
-
-def FuluHistoricalSummary_e2e_root(h: B.Buf, +o: FuluHistoricalSummary_d.HistoricalSummary) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluHistoricalSummary_h.HistoricalSummary_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.HistoricalSummary(), M1.v_HistoricalSummary(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.HistoricalSummary(), M1.v_HistoricalSummary(o), VS.public_sound(Spec.HistoricalSummary(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluHistoricalSummary_h.HistoricalSummary_hash_tree_root(h, o))),
-    M2.rv_HistoricalSummary(o), M1.HistoricalSummary_root_correct(h, o))
-
-# FuluPendingConsolidation (PendingConsolidation)
-def FuluPendingConsolidation_e2e_encode(+o: FuluPendingConsolidation_d.PendingConsolidation) -> {Some{E.obytes(FuluPendingConsolidation_e.PendingConsolidation_encode(o))} == API.serialize(Spec.PendingConsolidation(), M1.v_PendingConsolidation(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluPendingConsolidation_d.PendingConsolidation{O.U64{+x0, +x1}, O.U64{+x2, +x3}}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluPendingConsolidation_e.PendingConsolidation_encode(FuluPendingConsolidation_d.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}))}, Some{F.limbs([x0, x1, x2, x3])}, API.serialize(Spec.PendingConsolidation(), M1.v_PendingConsolidation(FuluPendingConsolidation_d.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluPendingConsolidation_e.PendingConsolidation_encode(FuluPendingConsolidation_d.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}), 0, 4), (FuluPendingConsolidation_e.PendingConsolidation_encode(FuluPendingConsolidation_d.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}), F.limbs([x0, x1, x2, x3])), M0.PendingConsolidation_spec_bytes(x0, x1, x2, x3)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.PendingConsolidation(), M1.v_PendingConsolidation(FuluPendingConsolidation_d.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}})), Some{F.limbs([x0, x1, x2, x3])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.PendingConsolidation(), M1.v_PendingConsolidation(FuluPendingConsolidation_d.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}})), Encoding.encoding_for_legal_type(Spec.PendingConsolidation(), M1.v_PendingConsolidation(FuluPendingConsolidation_d.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}})), Some{F.limbs([x0, x1, x2, x3])},
-            E.serialize_legal(Spec.PendingConsolidation(), M1.v_PendingConsolidation(FuluPendingConsolidation_d.PendingConsolidation{O.U64{x0, x1}, O.U64{x2, x3}}), VS.public_sound(Spec.PendingConsolidation(), {==})), M0.PendingConsolidation_spec_encode(x0, x1, x2, x3))))
-
-def FuluPendingConsolidation_e2e_root(h: B.Buf, +o: FuluPendingConsolidation_d.PendingConsolidation) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluPendingConsolidation_h.PendingConsolidation_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.PendingConsolidation(), M1.v_PendingConsolidation(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.PendingConsolidation(), M1.v_PendingConsolidation(o), VS.public_sound(Spec.PendingConsolidation(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluPendingConsolidation_h.PendingConsolidation_hash_tree_root(h, o))),
-    M2.rv_PendingConsolidation(o), M1.PendingConsolidation_root_correct(h, o))
 

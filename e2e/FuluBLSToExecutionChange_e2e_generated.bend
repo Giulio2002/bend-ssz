@@ -5,16 +5,10 @@ import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
-import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluBLSToExecutionChange_def_generated.bend as FuluBLSToExecutionChange_d
 import ../types/FuluBLSToExecutionChange_encode_ssz_generated.bend as FuluBLSToExecutionChange_e
 import ../types/FuluBLSToExecutionChange_hashtreeroot_generated.bend as FuluBLSToExecutionChange_h
-import ../types/FuluBlobIdentifier_def_generated.bend as FuluBlobIdentifier_d
-import ../types/FuluBlobIdentifier_encode_ssz_generated.bend as FuluBlobIdentifier_e
-import ../types/FuluBlobIdentifier_hashtreeroot_generated.bend as FuluBlobIdentifier_h
-import ../types/FuluBlobIndex_encode_ssz_generated.bend as FuluBlobIndex_e
-import ../types/FuluBlobIndex_hashtreeroot_generated.bend as FuluBlobIndex_h
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
@@ -23,7 +17,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_5.bend as M0
+import ../proofs/obj/spec_codec_BLSToExecutionChange.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -43,32 +37,4 @@ def FuluBLSToExecutionChange_e2e_encode(+o: FuluBLSToExecutionChange_d.BLSToExec
 def FuluBLSToExecutionChange_e2e_root(h: B.Buf, +o: FuluBLSToExecutionChange_d.BLSToExecutionChange) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluBLSToExecutionChange_h.BLSToExecutionChange_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.BLSToExecutionChange(), M1.v_BLSToExecutionChange(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.BLSToExecutionChange(), M1.v_BLSToExecutionChange(o), VS.public_sound(Spec.BLSToExecutionChange(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluBLSToExecutionChange_h.BLSToExecutionChange_hash_tree_root(h, o))),
     M2.rv_BLSToExecutionChange(o), M1.BLSToExecutionChange_root_correct(h, o))
-
-# FuluBlobIdentifier (BlobIdentifier)
-def FuluBlobIdentifier_e2e_encode(+o: FuluBlobIdentifier_d.BlobIdentifier) -> {Some{E.obytes(FuluBlobIdentifier_e.BlobIdentifier_encode(o))} == API.serialize(Spec.BlobIdentifier(), M1.v_BlobIdentifier(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluBlobIdentifier_d.BlobIdentifier{FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}, O.U64{+x8, +x9}}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluBlobIdentifier_e.BlobIdentifier_encode(FuluBlobIdentifier_d.BlobIdentifier{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9])}, API.serialize(Spec.BlobIdentifier(), M1.v_BlobIdentifier(FuluBlobIdentifier_d.BlobIdentifier{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluBlobIdentifier_e.BlobIdentifier_encode(FuluBlobIdentifier_d.BlobIdentifier{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}), 0, 10), (FuluBlobIdentifier_e.BlobIdentifier_encode(FuluBlobIdentifier_d.BlobIdentifier{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9])), M0.BlobIdentifier_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.BlobIdentifier(), M1.v_BlobIdentifier(FuluBlobIdentifier_d.BlobIdentifier{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.BlobIdentifier(), M1.v_BlobIdentifier(FuluBlobIdentifier_d.BlobIdentifier{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}})), Encoding.encoding_for_legal_type(Spec.BlobIdentifier(), M1.v_BlobIdentifier(FuluBlobIdentifier_d.BlobIdentifier{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9])},
-            E.serialize_legal(Spec.BlobIdentifier(), M1.v_BlobIdentifier(FuluBlobIdentifier_d.BlobIdentifier{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}}), VS.public_sound(Spec.BlobIdentifier(), {==})), M0.BlobIdentifier_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9))))
-
-def FuluBlobIdentifier_e2e_root(h: B.Buf, +o: FuluBlobIdentifier_d.BlobIdentifier) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluBlobIdentifier_h.BlobIdentifier_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.BlobIdentifier(), M1.v_BlobIdentifier(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.BlobIdentifier(), M1.v_BlobIdentifier(o), VS.public_sound(Spec.BlobIdentifier(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluBlobIdentifier_h.BlobIdentifier_hash_tree_root(h, o))),
-    M2.rv_BlobIdentifier(o), M1.BlobIdentifier_root_correct(h, o))
-
-# FuluBlobIndex (BlobIndex)
-def FuluBlobIndex_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluBlobIndex_e.BlobIndex_encode(o))} == API.serialize(Spec.BlobIndex(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case O.U64{+x0, +x1}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluBlobIndex_e.BlobIndex_encode(O.U64{x0, x1}))}, Some{F.limbs([x0, x1])}, API.serialize(Spec.BlobIndex(), M1.v_u64(O.U64{x0, x1})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluBlobIndex_e.BlobIndex_encode(O.U64{x0, x1}), 0, 2), (FuluBlobIndex_e.BlobIndex_encode(O.U64{x0, x1}), F.limbs([x0, x1])), M0.BlobIndex_spec_bytes(x0, x1)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.BlobIndex(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.BlobIndex(), M1.v_u64(O.U64{x0, x1})), Encoding.encoding_for_legal_type(Spec.BlobIndex(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-            E.serialize_legal(Spec.BlobIndex(), M1.v_u64(O.U64{x0, x1}), VS.public_sound(Spec.BlobIndex(), {==})), M0.BlobIndex_spec_encode(x0, x1))))
-
-def FuluBlobIndex_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluBlobIndex_h.BlobIndex_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.BlobIndex(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.BlobIndex(), M1.v_u64(o), VS.public_sound(Spec.BlobIndex(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluBlobIndex_h.BlobIndex_hash_tree_root(h, o))),
-    M2.rv_u64(o), M1.BlobIndex_root_correct(h, o))
 

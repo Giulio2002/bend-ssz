@@ -1,30 +1,12 @@
 {
  "files": {
-  "bitvector_32_e2e_dec_generated.bend": [
-   {
-    "name": "bitvector_32",
-    "generated_name": "GtBBF12DAB28",
-    "laws": [
-     "bitvector_32_e2e_decode_accept",
-     "bitvector_32_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
+  "bitvector_512_e2e_dec_generated.bend": [
    {
     "name": "bitvector_512",
     "generated_name": "Gt0A390CB480",
     "laws": [
      "bitvector_512_e2e_decode_accept",
      "bitvector_512_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "uint128",
-    "generated_name": "Gt604E28A301",
-    "laws": [
-     "uint128_e2e_decode_accept",
-     "uint128_e2e_decode_reject"
     ],
     "ii": "exact"
    }
@@ -40,6 +22,17 @@
     "ii": "exact"
    }
   ],
+  "uint128_e2e_dec_generated.bend": [
+   {
+    "name": "uint128",
+    "generated_name": "Gt604E28A301",
+    "laws": [
+     "uint128_e2e_decode_accept",
+     "uint128_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
   "uint64_Gt62B0093BE7_e2e_dec_generated.bend": [
    {
     "name": "uint64_Gt62B0093BE7",
@@ -47,6 +40,94 @@
     "laws": [
      "uint64_Gt62B0093BE7_e2e_decode_accept",
      "uint64_Gt62B0093BE7_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "bitvector_32_e2e_dec_generated.bend": [
+   {
+    "name": "bitvector_32",
+    "generated_name": "GtBBF12DAB28",
+    "laws": [
+     "bitvector_32_e2e_decode_accept",
+     "bitvector_32_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluAttestationData_e2e_dec_generated.bend": [
+   {
+    "name": "FuluAttestationData",
+    "generated_name": "AttestationData",
+    "laws": [
+     "FuluAttestationData_e2e_decode_accept",
+     "FuluAttestationData_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluBLSPubkey_e2e_dec_generated.bend": [
+   {
+    "name": "FuluBLSPubkey",
+    "generated_name": "BLSPubkey",
+    "laws": [
+     "FuluBLSPubkey_e2e_decode_accept",
+     "FuluBLSPubkey_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluBLSSignature_e2e_dec_generated.bend": [
+   {
+    "name": "FuluBLSSignature",
+    "generated_name": "BLSSignature",
+    "laws": [
+     "FuluBLSSignature_e2e_decode_accept",
+     "FuluBLSSignature_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluBLSToExecutionChange_e2e_dec_generated.bend": [
+   {
+    "name": "FuluBLSToExecutionChange",
+    "generated_name": "BLSToExecutionChange",
+    "laws": [
+     "FuluBLSToExecutionChange_e2e_decode_accept",
+     "FuluBLSToExecutionChange_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluBeaconBlockHeader_e2e_dec_generated.bend": [
+   {
+    "name": "FuluBeaconBlockHeader",
+    "generated_name": "BeaconBlockHeader",
+    "laws": [
+     "FuluBeaconBlockHeader_e2e_decode_accept",
+     "FuluBeaconBlockHeader_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluBlobIdentifier_e2e_dec_generated.bend": [
+   {
+    "name": "FuluBlobIdentifier",
+    "generated_name": "BlobIdentifier",
+    "laws": [
+     "FuluBlobIdentifier_e2e_decode_accept",
+     "FuluBlobIdentifier_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluBlobIndex_e2e_dec_generated.bend": [
+   {
+    "name": "FuluBlobIndex",
+    "generated_name": "BlobIndex",
+    "laws": [
+     "FuluBlobIndex_e2e_decode_accept",
+     "FuluBlobIndex_e2e_decode_reject"
     ],
     "ii": "exact"
    }
@@ -60,7 +141,9 @@
      "FuluBytes20_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "FuluBytes32_e2e_dec_generated.bend": [
    {
     "name": "FuluBytes32",
     "generated_name": "Bytes32",
@@ -69,7 +152,9 @@
      "FuluBytes32_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "FuluBytes4_e2e_dec_generated.bend": [
    {
     "name": "FuluBytes4",
     "generated_name": "Bytes4",
@@ -89,7 +174,9 @@
      "FuluBytes48_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "FuluBytes8_e2e_dec_generated.bend": [
    {
     "name": "FuluBytes8",
     "generated_name": "Bytes8",
@@ -109,284 +196,15 @@
      "FuluBytes96_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
-   {
-    "name": "FuluEpoch",
-    "generated_name": "Epoch",
-    "laws": [
-     "FuluEpoch_e2e_decode_accept",
-     "FuluEpoch_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluGwei",
-    "generated_name": "Gwei",
-    "laws": [
-     "FuluGwei_e2e_decode_accept",
-     "FuluGwei_e2e_decode_reject"
-    ],
-    "ii": "exact"
    }
   ],
-  "FuluSlot_e2e_dec_generated.bend": [
+  "FuluCellIndex_e2e_dec_generated.bend": [
    {
-    "name": "FuluSlot",
-    "generated_name": "Slot",
+    "name": "FuluCellIndex",
+    "generated_name": "CellIndex",
     "laws": [
-     "FuluSlot_e2e_decode_accept",
-     "FuluSlot_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "uint256",
-    "generated_name": "uint256",
-    "laws": [
-     "uint256_e2e_decode_accept",
-     "uint256_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "uint64",
-    "generated_name": "uint64",
-    "laws": [
-     "uint64_e2e_decode_accept",
-     "uint64_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluBLSSignature_e2e_dec_generated.bend": [
-   {
-    "name": "FuluBLSSignature",
-    "generated_name": "BLSSignature",
-    "laws": [
-     "FuluBLSSignature_e2e_decode_accept",
-     "FuluBLSSignature_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluDomainType",
-    "generated_name": "DomainType",
-    "laws": [
-     "FuluDomainType_e2e_decode_accept",
-     "FuluDomainType_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluFork",
-    "generated_name": "Fork",
-    "laws": [
-     "FuluFork_e2e_decode_accept",
-     "FuluFork_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluG1Point_e2e_dec_generated.bend": [
-   {
-    "name": "FuluG1Point",
-    "generated_name": "G1Point",
-    "laws": [
-     "FuluG1Point_e2e_decode_accept",
-     "FuluG1Point_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluG2Point",
-    "generated_name": "G2Point",
-    "laws": [
-     "FuluG2Point_e2e_decode_accept",
-     "FuluG2Point_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluHash32_e2e_dec_generated.bend": [
-   {
-    "name": "FuluHash32",
-    "generated_name": "Hash32",
-    "laws": [
-     "FuluHash32_e2e_decode_accept",
-     "FuluHash32_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluPowBlock",
-    "generated_name": "PowBlock",
-    "laws": [
-     "FuluPowBlock_e2e_decode_accept",
-     "FuluPowBlock_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluSyncAggregate_e2e_dec_generated.bend": [
-   {
-    "name": "FuluSyncAggregate",
-    "generated_name": "SyncAggregate",
-    "laws": [
-     "FuluSyncAggregate_e2e_decode_accept",
-     "FuluSyncAggregate_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluSyncAggregatorSelectionData_e2e_dec_generated.bend": [
-   {
-    "name": "FuluSyncAggregatorSelectionData",
-    "generated_name": "SyncAggregatorSelectionData",
-    "laws": [
-     "FuluSyncAggregatorSelectionData_e2e_decode_accept",
-     "FuluSyncAggregatorSelectionData_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluVersion",
-    "generated_name": "Version",
-    "laws": [
-     "FuluVersion_e2e_decode_accept",
-     "FuluVersion_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluVersionedHash",
-    "generated_name": "VersionedHash",
-    "laws": [
-     "FuluVersionedHash_e2e_decode_accept",
-     "FuluVersionedHash_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluCommitteeIndex_e2e_dec_generated.bend": [
-   {
-    "name": "FuluCommitteeIndex",
-    "generated_name": "CommitteeIndex",
-    "laws": [
-     "FuluCommitteeIndex_e2e_decode_accept",
-     "FuluCommitteeIndex_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluHistoricalSummary",
-    "generated_name": "HistoricalSummary",
-    "laws": [
-     "FuluHistoricalSummary_e2e_decode_accept",
-     "FuluHistoricalSummary_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluPendingConsolidation",
-    "generated_name": "PendingConsolidation",
-    "laws": [
-     "FuluPendingConsolidation_e2e_decode_accept",
-     "FuluPendingConsolidation_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluPendingPartialWithdrawal_e2e_dec_generated.bend": [
-   {
-    "name": "FuluPendingPartialWithdrawal",
-    "generated_name": "PendingPartialWithdrawal",
-    "laws": [
-     "FuluPendingPartialWithdrawal_e2e_decode_accept",
-     "FuluPendingPartialWithdrawal_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluRoot",
-    "generated_name": "Root",
-    "laws": [
-     "FuluRoot_e2e_decode_accept",
-     "FuluRoot_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluSignedVoluntaryExit_e2e_dec_generated.bend": [
-   {
-    "name": "FuluSignedVoluntaryExit",
-    "generated_name": "SignedVoluntaryExit",
-    "laws": [
-     "FuluSignedVoluntaryExit_e2e_decode_accept",
-     "FuluSignedVoluntaryExit_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluSyncCommitteeContribution_e2e_dec_generated.bend": [
-   {
-    "name": "FuluSyncCommitteeContribution",
-    "generated_name": "SyncCommitteeContribution",
-    "laws": [
-     "FuluSyncCommitteeContribution_e2e_decode_accept",
-     "FuluSyncCommitteeContribution_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluSyncCommitteeMessage_e2e_dec_generated.bend": [
-   {
-    "name": "FuluSyncCommitteeMessage",
-    "generated_name": "SyncCommitteeMessage",
-    "laws": [
-     "FuluSyncCommitteeMessage_e2e_decode_accept",
-     "FuluSyncCommitteeMessage_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluValidatorIndex_e2e_dec_generated.bend": [
-   {
-    "name": "FuluValidatorIndex",
-    "generated_name": "ValidatorIndex",
-    "laws": [
-     "FuluValidatorIndex_e2e_decode_accept",
-     "FuluValidatorIndex_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluVoluntaryExit",
-    "generated_name": "VoluntaryExit",
-    "laws": [
-     "FuluVoluntaryExit_e2e_decode_accept",
-     "FuluVoluntaryExit_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluAttestationData_e2e_dec_generated.bend": [
-   {
-    "name": "FuluAttestationData",
-    "generated_name": "AttestationData",
-    "laws": [
-     "FuluAttestationData_e2e_decode_accept",
-     "FuluAttestationData_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluBeaconBlockHeader_e2e_dec_generated.bend": [
-   {
-    "name": "FuluBeaconBlockHeader",
-    "generated_name": "BeaconBlockHeader",
-    "laws": [
-     "FuluBeaconBlockHeader_e2e_decode_accept",
-     "FuluBeaconBlockHeader_e2e_decode_reject"
+     "FuluCellIndex_e2e_decode_accept",
+     "FuluCellIndex_e2e_decode_reject"
     ],
     "ii": "exact"
    }
@@ -400,95 +218,59 @@
      "FuluCheckpoint_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "FuluColumnIndex_e2e_dec_generated.bend": [
    {
-    "name": "FuluDomain",
-    "generated_name": "Domain",
+    "name": "FuluColumnIndex",
+    "generated_name": "ColumnIndex",
     "laws": [
-     "FuluDomain_e2e_decode_accept",
-     "FuluDomain_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluEth1Block",
-    "generated_name": "Eth1Block",
-    "laws": [
-     "FuluEth1Block_e2e_decode_accept",
-     "FuluEth1Block_e2e_decode_reject"
+     "FuluColumnIndex_e2e_decode_accept",
+     "FuluColumnIndex_e2e_decode_reject"
     ],
     "ii": "exact"
    }
   ],
-  "FuluEth1Data_e2e_dec_generated.bend": [
+  "FuluCommitmentIndex_e2e_dec_generated.bend": [
    {
-    "name": "FuluEth1Data",
-    "generated_name": "Eth1Data",
+    "name": "FuluCommitmentIndex",
+    "generated_name": "CommitmentIndex",
     "laws": [
-     "FuluEth1Data_e2e_decode_accept",
-     "FuluEth1Data_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluForkData",
-    "generated_name": "ForkData",
-    "laws": [
-     "FuluForkData_e2e_decode_accept",
-     "FuluForkData_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluForkDigest",
-    "generated_name": "ForkDigest",
-    "laws": [
-     "FuluForkDigest_e2e_decode_accept",
-     "FuluForkDigest_e2e_decode_reject"
+     "FuluCommitmentIndex_e2e_decode_accept",
+     "FuluCommitmentIndex_e2e_decode_reject"
     ],
     "ii": "exact"
    }
   ],
-  "FuluSignedBeaconBlockHeader_e2e_dec_generated.bend": [
+  "FuluCommitteeIndex_e2e_dec_generated.bend": [
    {
-    "name": "FuluSignedBeaconBlockHeader",
-    "generated_name": "SignedBeaconBlockHeader",
+    "name": "FuluCommitteeIndex",
+    "generated_name": "CommitteeIndex",
     "laws": [
-     "FuluSignedBeaconBlockHeader_e2e_decode_accept",
-     "FuluSignedBeaconBlockHeader_e2e_decode_reject"
+     "FuluCommitteeIndex_e2e_decode_accept",
+     "FuluCommitteeIndex_e2e_decode_reject"
     ],
     "ii": "exact"
    }
   ],
-  "FuluSigningData_e2e_dec_generated.bend": [
+  "FuluConsolidationRequest_e2e_dec_generated.bend": [
    {
-    "name": "FuluSigningData",
-    "generated_name": "SigningData",
+    "name": "FuluConsolidationRequest",
+    "generated_name": "ConsolidationRequest",
     "laws": [
-     "FuluSigningData_e2e_decode_accept",
-     "FuluSigningData_e2e_decode_reject"
+     "FuluConsolidationRequest_e2e_decode_accept",
+     "FuluConsolidationRequest_e2e_decode_reject"
     ],
     "ii": "exact"
    }
   ],
-  "FuluSingleAttestation_e2e_dec_generated.bend": [
+  "FuluCustodyIndex_e2e_dec_generated.bend": [
    {
-    "name": "FuluSingleAttestation",
-    "generated_name": "SingleAttestation",
+    "name": "FuluCustodyIndex",
+    "generated_name": "CustodyIndex",
     "laws": [
-     "FuluSingleAttestation_e2e_decode_accept",
-     "FuluSingleAttestation_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   }
-  ],
-  "FuluBLSPubkey_e2e_dec_generated.bend": [
-   {
-    "name": "FuluBLSPubkey",
-    "generated_name": "BLSPubkey",
-    "laws": [
-     "FuluBLSPubkey_e2e_decode_accept",
-     "FuluBLSPubkey_e2e_decode_reject"
+     "FuluCustodyIndex_e2e_decode_accept",
+     "FuluCustodyIndex_e2e_decode_reject"
     ],
     "ii": "exact"
    }
@@ -526,6 +308,61 @@
     "ii": "exact"
    }
   ],
+  "FuluDomain_e2e_dec_generated.bend": [
+   {
+    "name": "FuluDomain",
+    "generated_name": "Domain",
+    "laws": [
+     "FuluDomain_e2e_decode_accept",
+     "FuluDomain_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluDomainType_e2e_dec_generated.bend": [
+   {
+    "name": "FuluDomainType",
+    "generated_name": "DomainType",
+    "laws": [
+     "FuluDomainType_e2e_decode_accept",
+     "FuluDomainType_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluEpoch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluEpoch",
+    "generated_name": "Epoch",
+    "laws": [
+     "FuluEpoch_e2e_decode_accept",
+     "FuluEpoch_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluEth1Block_e2e_dec_generated.bend": [
+   {
+    "name": "FuluEth1Block",
+    "generated_name": "Eth1Block",
+    "laws": [
+     "FuluEth1Block_e2e_decode_accept",
+     "FuluEth1Block_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluEth1Data_e2e_dec_generated.bend": [
+   {
+    "name": "FuluEth1Data",
+    "generated_name": "Eth1Data",
+    "laws": [
+     "FuluEth1Data_e2e_decode_accept",
+     "FuluEth1Data_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
   "FuluEther_e2e_dec_generated.bend": [
    {
     "name": "FuluEther",
@@ -535,7 +372,9 @@
      "FuluEther_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "FuluExecutionAddress_e2e_dec_generated.bend": [
    {
     "name": "FuluExecutionAddress",
     "generated_name": "ExecutionAddress",
@@ -544,13 +383,147 @@
      "FuluExecutionAddress_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "FuluFork_e2e_dec_generated.bend": [
+   {
+    "name": "FuluFork",
+    "generated_name": "Fork",
+    "laws": [
+     "FuluFork_e2e_decode_accept",
+     "FuluFork_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluForkData_e2e_dec_generated.bend": [
+   {
+    "name": "FuluForkData",
+    "generated_name": "ForkData",
+    "laws": [
+     "FuluForkData_e2e_decode_accept",
+     "FuluForkData_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluForkDigest_e2e_dec_generated.bend": [
+   {
+    "name": "FuluForkDigest",
+    "generated_name": "ForkDigest",
+    "laws": [
+     "FuluForkDigest_e2e_decode_accept",
+     "FuluForkDigest_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluG1Point_e2e_dec_generated.bend": [
+   {
+    "name": "FuluG1Point",
+    "generated_name": "G1Point",
+    "laws": [
+     "FuluG1Point_e2e_decode_accept",
+     "FuluG1Point_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluG2Point_e2e_dec_generated.bend": [
+   {
+    "name": "FuluG2Point",
+    "generated_name": "G2Point",
+    "laws": [
+     "FuluG2Point_e2e_decode_accept",
+     "FuluG2Point_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluGwei_e2e_dec_generated.bend": [
+   {
+    "name": "FuluGwei",
+    "generated_name": "Gwei",
+    "laws": [
+     "FuluGwei_e2e_decode_accept",
+     "FuluGwei_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluHash32_e2e_dec_generated.bend": [
+   {
+    "name": "FuluHash32",
+    "generated_name": "Hash32",
+    "laws": [
+     "FuluHash32_e2e_decode_accept",
+     "FuluHash32_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluHistoricalSummary_e2e_dec_generated.bend": [
+   {
+    "name": "FuluHistoricalSummary",
+    "generated_name": "HistoricalSummary",
+    "laws": [
+     "FuluHistoricalSummary_e2e_decode_accept",
+     "FuluHistoricalSummary_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluKZGCommitment_e2e_dec_generated.bend": [
+   {
+    "name": "FuluKZGCommitment",
+    "generated_name": "KZGCommitment",
+    "laws": [
+     "FuluKZGCommitment_e2e_decode_accept",
+     "FuluKZGCommitment_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluKZGProof_e2e_dec_generated.bend": [
+   {
+    "name": "FuluKZGProof",
+    "generated_name": "KZGProof",
+    "laws": [
+     "FuluKZGProof_e2e_decode_accept",
+     "FuluKZGProof_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluNodeID_e2e_dec_generated.bend": [
    {
     "name": "FuluNodeID",
     "generated_name": "NodeID",
     "laws": [
      "FuluNodeID_e2e_decode_accept",
      "FuluNodeID_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluPayloadId_e2e_dec_generated.bend": [
+   {
+    "name": "FuluPayloadId",
+    "generated_name": "PayloadId",
+    "laws": [
+     "FuluPayloadId_e2e_decode_accept",
+     "FuluPayloadId_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluPendingConsolidation_e2e_dec_generated.bend": [
+   {
+    "name": "FuluPendingConsolidation",
+    "generated_name": "PendingConsolidation",
+    "laws": [
+     "FuluPendingConsolidation_e2e_decode_accept",
+     "FuluPendingConsolidation_e2e_decode_reject"
     ],
     "ii": "exact"
    }
@@ -566,82 +539,46 @@
     "ii": "exact"
    }
   ],
-  "FuluSubnetID_e2e_dec_generated.bend": [
+  "FuluPendingPartialWithdrawal_e2e_dec_generated.bend": [
    {
-    "name": "FuluSubnetID",
-    "generated_name": "SubnetID",
+    "name": "FuluPendingPartialWithdrawal",
+    "generated_name": "PendingPartialWithdrawal",
     "laws": [
-     "FuluSubnetID_e2e_decode_accept",
-     "FuluSubnetID_e2e_decode_reject"
+     "FuluPendingPartialWithdrawal_e2e_decode_accept",
+     "FuluPendingPartialWithdrawal_e2e_decode_reject"
     ],
     "ii": "exact"
    }
   ],
-  "FuluBLSToExecutionChange_e2e_dec_generated.bend": [
+  "FuluPowBlock_e2e_dec_generated.bend": [
    {
-    "name": "FuluBLSToExecutionChange",
-    "generated_name": "BLSToExecutionChange",
+    "name": "FuluPowBlock",
+    "generated_name": "PowBlock",
     "laws": [
-     "FuluBLSToExecutionChange_e2e_decode_accept",
-     "FuluBLSToExecutionChange_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluBlobIdentifier",
-    "generated_name": "BlobIdentifier",
-    "laws": [
-     "FuluBlobIdentifier_e2e_decode_accept",
-     "FuluBlobIdentifier_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluBlobIndex",
-    "generated_name": "BlobIndex",
-    "laws": [
-     "FuluBlobIndex_e2e_decode_accept",
-     "FuluBlobIndex_e2e_decode_reject"
+     "FuluPowBlock_e2e_decode_accept",
+     "FuluPowBlock_e2e_decode_reject"
     ],
     "ii": "exact"
    }
   ],
-  "FuluConsolidationRequest_e2e_dec_generated.bend": [
+  "FuluRoot_e2e_dec_generated.bend": [
    {
-    "name": "FuluConsolidationRequest",
-    "generated_name": "ConsolidationRequest",
+    "name": "FuluRoot",
+    "generated_name": "Root",
     "laws": [
-     "FuluConsolidationRequest_e2e_decode_accept",
-     "FuluConsolidationRequest_e2e_decode_reject"
+     "FuluRoot_e2e_decode_accept",
+     "FuluRoot_e2e_decode_reject"
     ],
     "ii": "exact"
    }
   ],
-  "FuluKZGCommitment_e2e_dec_generated.bend": [
+  "FuluRowIndex_e2e_dec_generated.bend": [
    {
-    "name": "FuluKZGCommitment",
-    "generated_name": "KZGCommitment",
+    "name": "FuluRowIndex",
+    "generated_name": "RowIndex",
     "laws": [
-     "FuluKZGCommitment_e2e_decode_accept",
-     "FuluKZGCommitment_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluKZGProof",
-    "generated_name": "KZGProof",
-    "laws": [
-     "FuluKZGProof_e2e_decode_accept",
-     "FuluKZGProof_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluPayloadId",
-    "generated_name": "PayloadId",
-    "laws": [
-     "FuluPayloadId_e2e_decode_accept",
-     "FuluPayloadId_e2e_decode_reject"
+     "FuluRowIndex_e2e_decode_accept",
+     "FuluRowIndex_e2e_decode_reject"
     ],
     "ii": "exact"
    }
@@ -657,6 +594,160 @@
     "ii": "exact"
    }
   ],
+  "FuluSignedBeaconBlockHeader_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSignedBeaconBlockHeader",
+    "generated_name": "SignedBeaconBlockHeader",
+    "laws": [
+     "FuluSignedBeaconBlockHeader_e2e_decode_accept",
+     "FuluSignedBeaconBlockHeader_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluSignedVoluntaryExit_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSignedVoluntaryExit",
+    "generated_name": "SignedVoluntaryExit",
+    "laws": [
+     "FuluSignedVoluntaryExit_e2e_decode_accept",
+     "FuluSignedVoluntaryExit_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluSigningData_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSigningData",
+    "generated_name": "SigningData",
+    "laws": [
+     "FuluSigningData_e2e_decode_accept",
+     "FuluSigningData_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluSingleAttestation_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSingleAttestation",
+    "generated_name": "SingleAttestation",
+    "laws": [
+     "FuluSingleAttestation_e2e_decode_accept",
+     "FuluSingleAttestation_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluSlot_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSlot",
+    "generated_name": "Slot",
+    "laws": [
+     "FuluSlot_e2e_decode_accept",
+     "FuluSlot_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluSubnetID_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSubnetID",
+    "generated_name": "SubnetID",
+    "laws": [
+     "FuluSubnetID_e2e_decode_accept",
+     "FuluSubnetID_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluSyncAggregate_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSyncAggregate",
+    "generated_name": "SyncAggregate",
+    "laws": [
+     "FuluSyncAggregate_e2e_decode_accept",
+     "FuluSyncAggregate_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluSyncAggregatorSelectionData_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSyncAggregatorSelectionData",
+    "generated_name": "SyncAggregatorSelectionData",
+    "laws": [
+     "FuluSyncAggregatorSelectionData_e2e_decode_accept",
+     "FuluSyncAggregatorSelectionData_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluSyncCommitteeContribution_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSyncCommitteeContribution",
+    "generated_name": "SyncCommitteeContribution",
+    "laws": [
+     "FuluSyncCommitteeContribution_e2e_decode_accept",
+     "FuluSyncCommitteeContribution_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluSyncCommitteeMessage_e2e_dec_generated.bend": [
+   {
+    "name": "FuluSyncCommitteeMessage",
+    "generated_name": "SyncCommitteeMessage",
+    "laws": [
+     "FuluSyncCommitteeMessage_e2e_decode_accept",
+     "FuluSyncCommitteeMessage_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluValidatorIndex_e2e_dec_generated.bend": [
+   {
+    "name": "FuluValidatorIndex",
+    "generated_name": "ValidatorIndex",
+    "laws": [
+     "FuluValidatorIndex_e2e_decode_accept",
+     "FuluValidatorIndex_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluVersion_e2e_dec_generated.bend": [
+   {
+    "name": "FuluVersion",
+    "generated_name": "Version",
+    "laws": [
+     "FuluVersion_e2e_decode_accept",
+     "FuluVersion_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluVersionedHash_e2e_dec_generated.bend": [
+   {
+    "name": "FuluVersionedHash",
+    "generated_name": "VersionedHash",
+    "laws": [
+     "FuluVersionedHash_e2e_decode_accept",
+     "FuluVersionedHash_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
+  "FuluVoluntaryExit_e2e_dec_generated.bend": [
+   {
+    "name": "FuluVoluntaryExit",
+    "generated_name": "VoluntaryExit",
+    "laws": [
+     "FuluVoluntaryExit_e2e_decode_accept",
+     "FuluVoluntaryExit_e2e_decode_reject"
+    ],
+    "ii": "exact"
+   }
+  ],
   "FuluWithdrawal_e2e_dec_generated.bend": [
    {
     "name": "FuluWithdrawal",
@@ -666,7 +757,9 @@
      "FuluWithdrawal_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "FuluWithdrawalIndex_e2e_dec_generated.bend": [
    {
     "name": "FuluWithdrawalIndex",
     "generated_name": "WithdrawalIndex",
@@ -675,7 +768,9 @@
      "FuluWithdrawalIndex_e2e_decode_reject"
     ],
     "ii": "exact"
-   },
+   }
+  ],
+  "FuluWithdrawalRequest_e2e_dec_generated.bend": [
    {
     "name": "FuluWithdrawalRequest",
     "generated_name": "WithdrawalRequest",
@@ -686,78 +781,35 @@
     "ii": "exact"
    }
   ],
-  "FuluCellIndex_e2e_dec_generated.bend": [
+  "uint256_e2e_dec_generated.bend": [
    {
-    "name": "FuluCellIndex",
-    "generated_name": "CellIndex",
+    "name": "uint256",
+    "generated_name": "uint256",
     "laws": [
-     "FuluCellIndex_e2e_decode_accept",
-     "FuluCellIndex_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluColumnIndex",
-    "generated_name": "ColumnIndex",
-    "laws": [
-     "FuluColumnIndex_e2e_decode_accept",
-     "FuluColumnIndex_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluCommitmentIndex",
-    "generated_name": "CommitmentIndex",
-    "laws": [
-     "FuluCommitmentIndex_e2e_decode_accept",
-     "FuluCommitmentIndex_e2e_decode_reject"
+     "uint256_e2e_decode_accept",
+     "uint256_e2e_decode_reject"
     ],
     "ii": "exact"
    }
   ],
-  "FuluCustodyIndex_e2e_dec_generated.bend": [
+  "uint64_e2e_dec_generated.bend": [
    {
-    "name": "FuluCustodyIndex",
-    "generated_name": "CustodyIndex",
+    "name": "uint64",
+    "generated_name": "uint64",
     "laws": [
-     "FuluCustodyIndex_e2e_decode_accept",
-     "FuluCustodyIndex_e2e_decode_reject"
-    ],
-    "ii": "exact"
-   },
-   {
-    "name": "FuluRowIndex",
-    "generated_name": "RowIndex",
-    "laws": [
-     "FuluRowIndex_e2e_decode_accept",
-     "FuluRowIndex_e2e_decode_reject"
+     "uint64_e2e_decode_accept",
+     "uint64_e2e_decode_reject"
     ],
     "ii": "exact"
    }
   ],
-  "bitvector_32_e2e_generated.bend": [
-   {
-    "name": "bitvector_32",
-    "generated_name": "GtBBF12DAB28",
-    "laws": [
-     "bitvector_32_e2e_encode",
-     "bitvector_32_e2e_root"
-    ]
-   },
+  "bitvector_512_e2e_generated.bend": [
    {
     "name": "bitvector_512",
     "generated_name": "Gt0A390CB480",
     "laws": [
      "bitvector_512_e2e_encode",
      "bitvector_512_e2e_root"
-    ]
-   },
-   {
-    "name": "uint128",
-    "generated_name": "Gt604E28A301",
-    "laws": [
-     "uint128_e2e_encode",
-     "uint128_e2e_root"
     ]
    }
   ],
@@ -771,6 +823,16 @@
     ]
    }
   ],
+  "uint128_e2e_generated.bend": [
+   {
+    "name": "uint128",
+    "generated_name": "Gt604E28A301",
+    "laws": [
+     "uint128_e2e_encode",
+     "uint128_e2e_root"
+    ]
+   }
+  ],
   "uint64_Gt62B0093BE7_e2e_generated.bend": [
    {
     "name": "uint64_Gt62B0093BE7",
@@ -778,6 +840,86 @@
     "laws": [
      "uint64_Gt62B0093BE7_e2e_encode",
      "uint64_Gt62B0093BE7_e2e_root"
+    ]
+   }
+  ],
+  "bitvector_32_e2e_generated.bend": [
+   {
+    "name": "bitvector_32",
+    "generated_name": "GtBBF12DAB28",
+    "laws": [
+     "bitvector_32_e2e_encode",
+     "bitvector_32_e2e_root"
+    ]
+   }
+  ],
+  "FuluAttestationData_e2e_generated.bend": [
+   {
+    "name": "FuluAttestationData",
+    "generated_name": "AttestationData",
+    "laws": [
+     "FuluAttestationData_e2e_encode",
+     "FuluAttestationData_e2e_root"
+    ]
+   }
+  ],
+  "FuluBLSPubkey_e2e_generated.bend": [
+   {
+    "name": "FuluBLSPubkey",
+    "generated_name": "BLSPubkey",
+    "laws": [
+     "FuluBLSPubkey_e2e_encode",
+     "FuluBLSPubkey_e2e_root"
+    ]
+   }
+  ],
+  "FuluBLSSignature_e2e_generated.bend": [
+   {
+    "name": "FuluBLSSignature",
+    "generated_name": "BLSSignature",
+    "laws": [
+     "FuluBLSSignature_e2e_encode",
+     "FuluBLSSignature_e2e_root"
+    ]
+   }
+  ],
+  "FuluBLSToExecutionChange_e2e_generated.bend": [
+   {
+    "name": "FuluBLSToExecutionChange",
+    "generated_name": "BLSToExecutionChange",
+    "laws": [
+     "FuluBLSToExecutionChange_e2e_encode",
+     "FuluBLSToExecutionChange_e2e_root"
+    ]
+   }
+  ],
+  "FuluBeaconBlockHeader_e2e_generated.bend": [
+   {
+    "name": "FuluBeaconBlockHeader",
+    "generated_name": "BeaconBlockHeader",
+    "laws": [
+     "FuluBeaconBlockHeader_e2e_encode",
+     "FuluBeaconBlockHeader_e2e_root"
+    ]
+   }
+  ],
+  "FuluBlobIdentifier_e2e_generated.bend": [
+   {
+    "name": "FuluBlobIdentifier",
+    "generated_name": "BlobIdentifier",
+    "laws": [
+     "FuluBlobIdentifier_e2e_encode",
+     "FuluBlobIdentifier_e2e_root"
+    ]
+   }
+  ],
+  "FuluBlobIndex_e2e_generated.bend": [
+   {
+    "name": "FuluBlobIndex",
+    "generated_name": "BlobIndex",
+    "laws": [
+     "FuluBlobIndex_e2e_encode",
+     "FuluBlobIndex_e2e_root"
     ]
    }
   ],
@@ -789,7 +931,9 @@
      "FuluBytes20_e2e_encode",
      "FuluBytes20_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluBytes32_e2e_generated.bend": [
    {
     "name": "FuluBytes32",
     "generated_name": "Bytes32",
@@ -797,7 +941,9 @@
      "FuluBytes32_e2e_encode",
      "FuluBytes32_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluBytes4_e2e_generated.bend": [
    {
     "name": "FuluBytes4",
     "generated_name": "Bytes4",
@@ -815,7 +961,9 @@
      "FuluBytes48_e2e_encode",
      "FuluBytes48_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluBytes8_e2e_generated.bend": [
    {
     "name": "FuluBytes8",
     "generated_name": "Bytes8",
@@ -823,7 +971,9 @@
      "FuluBytes8_e2e_encode",
      "FuluBytes8_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluBytes96_e2e_generated.bend": [
    {
     "name": "FuluBytes96",
     "generated_name": "Bytes96",
@@ -833,143 +983,43 @@
     ]
    }
   ],
-  "FuluEpoch_e2e_generated.bend": [
+  "FuluCellIndex_e2e_generated.bend": [
    {
-    "name": "FuluEpoch",
-    "generated_name": "Epoch",
+    "name": "FuluCellIndex",
+    "generated_name": "CellIndex",
     "laws": [
-     "FuluEpoch_e2e_encode",
-     "FuluEpoch_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluGwei",
-    "generated_name": "Gwei",
-    "laws": [
-     "FuluGwei_e2e_encode",
-     "FuluGwei_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluSlot",
-    "generated_name": "Slot",
-    "laws": [
-     "FuluSlot_e2e_encode",
-     "FuluSlot_e2e_root"
+     "FuluCellIndex_e2e_encode",
+     "FuluCellIndex_e2e_root"
     ]
    }
   ],
-  "uint256_e2e_generated.bend": [
+  "FuluCheckpoint_e2e_generated.bend": [
    {
-    "name": "uint256",
-    "generated_name": "uint256",
+    "name": "FuluCheckpoint",
+    "generated_name": "Checkpoint",
     "laws": [
-     "uint256_e2e_encode",
-     "uint256_e2e_root"
-    ]
-   },
-   {
-    "name": "uint64",
-    "generated_name": "uint64",
-    "laws": [
-     "uint64_e2e_encode",
-     "uint64_e2e_root"
+     "FuluCheckpoint_e2e_encode",
+     "FuluCheckpoint_e2e_root"
     ]
    }
   ],
-  "FuluBLSSignature_e2e_generated.bend": [
+  "FuluColumnIndex_e2e_generated.bend": [
    {
-    "name": "FuluBLSSignature",
-    "generated_name": "BLSSignature",
+    "name": "FuluColumnIndex",
+    "generated_name": "ColumnIndex",
     "laws": [
-     "FuluBLSSignature_e2e_encode",
-     "FuluBLSSignature_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluDomainType",
-    "generated_name": "DomainType",
-    "laws": [
-     "FuluDomainType_e2e_encode",
-     "FuluDomainType_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluFork",
-    "generated_name": "Fork",
-    "laws": [
-     "FuluFork_e2e_encode",
-     "FuluFork_e2e_root"
+     "FuluColumnIndex_e2e_encode",
+     "FuluColumnIndex_e2e_root"
     ]
    }
   ],
-  "FuluG1Point_e2e_generated.bend": [
+  "FuluCommitmentIndex_e2e_generated.bend": [
    {
-    "name": "FuluG1Point",
-    "generated_name": "G1Point",
+    "name": "FuluCommitmentIndex",
+    "generated_name": "CommitmentIndex",
     "laws": [
-     "FuluG1Point_e2e_encode",
-     "FuluG1Point_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluG2Point",
-    "generated_name": "G2Point",
-    "laws": [
-     "FuluG2Point_e2e_encode",
-     "FuluG2Point_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluHash32",
-    "generated_name": "Hash32",
-    "laws": [
-     "FuluHash32_e2e_encode",
-     "FuluHash32_e2e_root"
-    ]
-   }
-  ],
-  "FuluPowBlock_e2e_generated.bend": [
-   {
-    "name": "FuluPowBlock",
-    "generated_name": "PowBlock",
-    "laws": [
-     "FuluPowBlock_e2e_encode",
-     "FuluPowBlock_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluSyncAggregate",
-    "generated_name": "SyncAggregate",
-    "laws": [
-     "FuluSyncAggregate_e2e_encode",
-     "FuluSyncAggregate_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluSyncAggregatorSelectionData",
-    "generated_name": "SyncAggregatorSelectionData",
-    "laws": [
-     "FuluSyncAggregatorSelectionData_e2e_encode",
-     "FuluSyncAggregatorSelectionData_e2e_root"
-    ]
-   }
-  ],
-  "FuluVersion_e2e_generated.bend": [
-   {
-    "name": "FuluVersion",
-    "generated_name": "Version",
-    "laws": [
-     "FuluVersion_e2e_encode",
-     "FuluVersion_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluVersionedHash",
-    "generated_name": "VersionedHash",
-    "laws": [
-     "FuluVersionedHash_e2e_encode",
-     "FuluVersionedHash_e2e_root"
+     "FuluCommitmentIndex_e2e_encode",
+     "FuluCommitmentIndex_e2e_root"
     ]
    }
   ],
@@ -981,191 +1031,29 @@
      "FuluCommitteeIndex_e2e_encode",
      "FuluCommitteeIndex_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluConsolidationRequest_e2e_generated.bend": [
    {
-    "name": "FuluHistoricalSummary",
-    "generated_name": "HistoricalSummary",
+    "name": "FuluConsolidationRequest",
+    "generated_name": "ConsolidationRequest",
     "laws": [
-     "FuluHistoricalSummary_e2e_encode",
-     "FuluHistoricalSummary_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluPendingConsolidation",
-    "generated_name": "PendingConsolidation",
-    "laws": [
-     "FuluPendingConsolidation_e2e_encode",
-     "FuluPendingConsolidation_e2e_root"
+     "FuluConsolidationRequest_e2e_encode",
+     "FuluConsolidationRequest_e2e_root"
     ]
    }
   ],
-  "FuluPendingPartialWithdrawal_e2e_generated.bend": [
+  "FuluCustodyIndex_e2e_generated.bend": [
    {
-    "name": "FuluPendingPartialWithdrawal",
-    "generated_name": "PendingPartialWithdrawal",
+    "name": "FuluCustodyIndex",
+    "generated_name": "CustodyIndex",
     "laws": [
-     "FuluPendingPartialWithdrawal_e2e_encode",
-     "FuluPendingPartialWithdrawal_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluRoot",
-    "generated_name": "Root",
-    "laws": [
-     "FuluRoot_e2e_encode",
-     "FuluRoot_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluSignedVoluntaryExit",
-    "generated_name": "SignedVoluntaryExit",
-    "laws": [
-     "FuluSignedVoluntaryExit_e2e_encode",
-     "FuluSignedVoluntaryExit_e2e_root"
+     "FuluCustodyIndex_e2e_encode",
+     "FuluCustodyIndex_e2e_root"
     ]
    }
   ],
-  "FuluSyncCommitteeContribution_e2e_generated.bend": [
-   {
-    "name": "FuluSyncCommitteeContribution",
-    "generated_name": "SyncCommitteeContribution",
-    "laws": [
-     "FuluSyncCommitteeContribution_e2e_encode",
-     "FuluSyncCommitteeContribution_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluSyncCommitteeMessage",
-    "generated_name": "SyncCommitteeMessage",
-    "laws": [
-     "FuluSyncCommitteeMessage_e2e_encode",
-     "FuluSyncCommitteeMessage_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluValidatorIndex",
-    "generated_name": "ValidatorIndex",
-    "laws": [
-     "FuluValidatorIndex_e2e_encode",
-     "FuluValidatorIndex_e2e_root"
-    ]
-   }
-  ],
-  "FuluVoluntaryExit_e2e_generated.bend": [
-   {
-    "name": "FuluVoluntaryExit",
-    "generated_name": "VoluntaryExit",
-    "laws": [
-     "FuluVoluntaryExit_e2e_encode",
-     "FuluVoluntaryExit_e2e_root"
-    ]
-   }
-  ],
-  "FuluAttestationData_e2e_generated.bend": [
-   {
-    "name": "FuluAttestationData",
-    "generated_name": "AttestationData",
-    "laws": [
-     "FuluAttestationData_e2e_encode",
-     "FuluAttestationData_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluBeaconBlockHeader",
-    "generated_name": "BeaconBlockHeader",
-    "laws": [
-     "FuluBeaconBlockHeader_e2e_encode",
-     "FuluBeaconBlockHeader_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluCheckpoint",
-    "generated_name": "Checkpoint",
-    "laws": [
-     "FuluCheckpoint_e2e_encode",
-     "FuluCheckpoint_e2e_root"
-    ]
-   }
-  ],
-  "FuluDomain_e2e_generated.bend": [
-   {
-    "name": "FuluDomain",
-    "generated_name": "Domain",
-    "laws": [
-     "FuluDomain_e2e_encode",
-     "FuluDomain_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluEth1Block",
-    "generated_name": "Eth1Block",
-    "laws": [
-     "FuluEth1Block_e2e_encode",
-     "FuluEth1Block_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluEth1Data",
-    "generated_name": "Eth1Data",
-    "laws": [
-     "FuluEth1Data_e2e_encode",
-     "FuluEth1Data_e2e_root"
-    ]
-   }
-  ],
-  "FuluForkData_e2e_generated.bend": [
-   {
-    "name": "FuluForkData",
-    "generated_name": "ForkData",
-    "laws": [
-     "FuluForkData_e2e_encode",
-     "FuluForkData_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluForkDigest",
-    "generated_name": "ForkDigest",
-    "laws": [
-     "FuluForkDigest_e2e_encode",
-     "FuluForkDigest_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluSignedBeaconBlockHeader",
-    "generated_name": "SignedBeaconBlockHeader",
-    "laws": [
-     "FuluSignedBeaconBlockHeader_e2e_encode",
-     "FuluSignedBeaconBlockHeader_e2e_root"
-    ]
-   }
-  ],
-  "FuluSigningData_e2e_generated.bend": [
-   {
-    "name": "FuluSigningData",
-    "generated_name": "SigningData",
-    "laws": [
-     "FuluSigningData_e2e_encode",
-     "FuluSigningData_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluSingleAttestation",
-    "generated_name": "SingleAttestation",
-    "laws": [
-     "FuluSingleAttestation_e2e_encode",
-     "FuluSingleAttestation_e2e_root"
-    ]
-   }
-  ],
-  "FuluBLSPubkey_e2e_generated.bend": [
-   {
-    "name": "FuluBLSPubkey",
-    "generated_name": "BLSPubkey",
-    "laws": [
-     "FuluBLSPubkey_e2e_encode",
-     "FuluBLSPubkey_e2e_root"
-    ]
-   },
+  "FuluDepositData_e2e_generated.bend": [
    {
     "name": "FuluDepositData",
     "generated_name": "DepositData",
@@ -1173,7 +1061,9 @@
      "FuluDepositData_e2e_encode",
      "FuluDepositData_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluDepositMessage_e2e_generated.bend": [
    {
     "name": "FuluDepositMessage",
     "generated_name": "DepositMessage",
@@ -1191,7 +1081,59 @@
      "FuluDepositRequest_e2e_encode",
      "FuluDepositRequest_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluDomain_e2e_generated.bend": [
+   {
+    "name": "FuluDomain",
+    "generated_name": "Domain",
+    "laws": [
+     "FuluDomain_e2e_encode",
+     "FuluDomain_e2e_root"
+    ]
+   }
+  ],
+  "FuluDomainType_e2e_generated.bend": [
+   {
+    "name": "FuluDomainType",
+    "generated_name": "DomainType",
+    "laws": [
+     "FuluDomainType_e2e_encode",
+     "FuluDomainType_e2e_root"
+    ]
+   }
+  ],
+  "FuluEpoch_e2e_generated.bend": [
+   {
+    "name": "FuluEpoch",
+    "generated_name": "Epoch",
+    "laws": [
+     "FuluEpoch_e2e_encode",
+     "FuluEpoch_e2e_root"
+    ]
+   }
+  ],
+  "FuluEth1Block_e2e_generated.bend": [
+   {
+    "name": "FuluEth1Block",
+    "generated_name": "Eth1Block",
+    "laws": [
+     "FuluEth1Block_e2e_encode",
+     "FuluEth1Block_e2e_root"
+    ]
+   }
+  ],
+  "FuluEth1Data_e2e_generated.bend": [
+   {
+    "name": "FuluEth1Data",
+    "generated_name": "Eth1Data",
+    "laws": [
+     "FuluEth1Data_e2e_encode",
+     "FuluEth1Data_e2e_root"
+    ]
+   }
+  ],
+  "FuluEther_e2e_generated.bend": [
    {
     "name": "FuluEther",
     "generated_name": "Ether",
@@ -1199,13 +1141,115 @@
      "FuluEther_e2e_encode",
      "FuluEther_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluExecutionAddress_e2e_generated.bend": [
    {
     "name": "FuluExecutionAddress",
     "generated_name": "ExecutionAddress",
     "laws": [
      "FuluExecutionAddress_e2e_encode",
      "FuluExecutionAddress_e2e_root"
+    ]
+   }
+  ],
+  "FuluFork_e2e_generated.bend": [
+   {
+    "name": "FuluFork",
+    "generated_name": "Fork",
+    "laws": [
+     "FuluFork_e2e_encode",
+     "FuluFork_e2e_root"
+    ]
+   }
+  ],
+  "FuluForkData_e2e_generated.bend": [
+   {
+    "name": "FuluForkData",
+    "generated_name": "ForkData",
+    "laws": [
+     "FuluForkData_e2e_encode",
+     "FuluForkData_e2e_root"
+    ]
+   }
+  ],
+  "FuluForkDigest_e2e_generated.bend": [
+   {
+    "name": "FuluForkDigest",
+    "generated_name": "ForkDigest",
+    "laws": [
+     "FuluForkDigest_e2e_encode",
+     "FuluForkDigest_e2e_root"
+    ]
+   }
+  ],
+  "FuluG1Point_e2e_generated.bend": [
+   {
+    "name": "FuluG1Point",
+    "generated_name": "G1Point",
+    "laws": [
+     "FuluG1Point_e2e_encode",
+     "FuluG1Point_e2e_root"
+    ]
+   }
+  ],
+  "FuluG2Point_e2e_generated.bend": [
+   {
+    "name": "FuluG2Point",
+    "generated_name": "G2Point",
+    "laws": [
+     "FuluG2Point_e2e_encode",
+     "FuluG2Point_e2e_root"
+    ]
+   }
+  ],
+  "FuluGwei_e2e_generated.bend": [
+   {
+    "name": "FuluGwei",
+    "generated_name": "Gwei",
+    "laws": [
+     "FuluGwei_e2e_encode",
+     "FuluGwei_e2e_root"
+    ]
+   }
+  ],
+  "FuluHash32_e2e_generated.bend": [
+   {
+    "name": "FuluHash32",
+    "generated_name": "Hash32",
+    "laws": [
+     "FuluHash32_e2e_encode",
+     "FuluHash32_e2e_root"
+    ]
+   }
+  ],
+  "FuluHistoricalSummary_e2e_generated.bend": [
+   {
+    "name": "FuluHistoricalSummary",
+    "generated_name": "HistoricalSummary",
+    "laws": [
+     "FuluHistoricalSummary_e2e_encode",
+     "FuluHistoricalSummary_e2e_root"
+    ]
+   }
+  ],
+  "FuluKZGCommitment_e2e_generated.bend": [
+   {
+    "name": "FuluKZGCommitment",
+    "generated_name": "KZGCommitment",
+    "laws": [
+     "FuluKZGCommitment_e2e_encode",
+     "FuluKZGCommitment_e2e_root"
+    ]
+   }
+  ],
+  "FuluKZGProof_e2e_generated.bend": [
+   {
+    "name": "FuluKZGProof",
+    "generated_name": "KZGProof",
+    "laws": [
+     "FuluKZGProof_e2e_encode",
+     "FuluKZGProof_e2e_root"
     ]
    }
   ],
@@ -1217,74 +1261,6 @@
      "FuluNodeID_e2e_encode",
      "FuluNodeID_e2e_root"
     ]
-   },
-   {
-    "name": "FuluPendingDeposit",
-    "generated_name": "PendingDeposit",
-    "laws": [
-     "FuluPendingDeposit_e2e_encode",
-     "FuluPendingDeposit_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluSubnetID",
-    "generated_name": "SubnetID",
-    "laws": [
-     "FuluSubnetID_e2e_encode",
-     "FuluSubnetID_e2e_root"
-    ]
-   }
-  ],
-  "FuluBLSToExecutionChange_e2e_generated.bend": [
-   {
-    "name": "FuluBLSToExecutionChange",
-    "generated_name": "BLSToExecutionChange",
-    "laws": [
-     "FuluBLSToExecutionChange_e2e_encode",
-     "FuluBLSToExecutionChange_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluBlobIdentifier",
-    "generated_name": "BlobIdentifier",
-    "laws": [
-     "FuluBlobIdentifier_e2e_encode",
-     "FuluBlobIdentifier_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluBlobIndex",
-    "generated_name": "BlobIndex",
-    "laws": [
-     "FuluBlobIndex_e2e_encode",
-     "FuluBlobIndex_e2e_root"
-    ]
-   }
-  ],
-  "FuluConsolidationRequest_e2e_generated.bend": [
-   {
-    "name": "FuluConsolidationRequest",
-    "generated_name": "ConsolidationRequest",
-    "laws": [
-     "FuluConsolidationRequest_e2e_encode",
-     "FuluConsolidationRequest_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluKZGCommitment",
-    "generated_name": "KZGCommitment",
-    "laws": [
-     "FuluKZGCommitment_e2e_encode",
-     "FuluKZGCommitment_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluKZGProof",
-    "generated_name": "KZGProof",
-    "laws": [
-     "FuluKZGProof_e2e_encode",
-     "FuluKZGProof_e2e_root"
-    ]
    }
   ],
   "FuluPayloadId_e2e_generated.bend": [
@@ -1295,7 +1271,69 @@
      "FuluPayloadId_e2e_encode",
      "FuluPayloadId_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluPendingConsolidation_e2e_generated.bend": [
+   {
+    "name": "FuluPendingConsolidation",
+    "generated_name": "PendingConsolidation",
+    "laws": [
+     "FuluPendingConsolidation_e2e_encode",
+     "FuluPendingConsolidation_e2e_root"
+    ]
+   }
+  ],
+  "FuluPendingDeposit_e2e_generated.bend": [
+   {
+    "name": "FuluPendingDeposit",
+    "generated_name": "PendingDeposit",
+    "laws": [
+     "FuluPendingDeposit_e2e_encode",
+     "FuluPendingDeposit_e2e_root"
+    ]
+   }
+  ],
+  "FuluPendingPartialWithdrawal_e2e_generated.bend": [
+   {
+    "name": "FuluPendingPartialWithdrawal",
+    "generated_name": "PendingPartialWithdrawal",
+    "laws": [
+     "FuluPendingPartialWithdrawal_e2e_encode",
+     "FuluPendingPartialWithdrawal_e2e_root"
+    ]
+   }
+  ],
+  "FuluPowBlock_e2e_generated.bend": [
+   {
+    "name": "FuluPowBlock",
+    "generated_name": "PowBlock",
+    "laws": [
+     "FuluPowBlock_e2e_encode",
+     "FuluPowBlock_e2e_root"
+    ]
+   }
+  ],
+  "FuluRoot_e2e_generated.bend": [
+   {
+    "name": "FuluRoot",
+    "generated_name": "Root",
+    "laws": [
+     "FuluRoot_e2e_encode",
+     "FuluRoot_e2e_root"
+    ]
+   }
+  ],
+  "FuluRowIndex_e2e_generated.bend": [
+   {
+    "name": "FuluRowIndex",
+    "generated_name": "RowIndex",
+    "laws": [
+     "FuluRowIndex_e2e_encode",
+     "FuluRowIndex_e2e_root"
+    ]
+   }
+  ],
+  "FuluSignedBLSToExecutionChange_e2e_generated.bend": [
    {
     "name": "FuluSignedBLSToExecutionChange",
     "generated_name": "SignedBLSToExecutionChange",
@@ -1303,7 +1341,149 @@
      "FuluSignedBLSToExecutionChange_e2e_encode",
      "FuluSignedBLSToExecutionChange_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluSignedBeaconBlockHeader_e2e_generated.bend": [
+   {
+    "name": "FuluSignedBeaconBlockHeader",
+    "generated_name": "SignedBeaconBlockHeader",
+    "laws": [
+     "FuluSignedBeaconBlockHeader_e2e_encode",
+     "FuluSignedBeaconBlockHeader_e2e_root"
+    ]
+   }
+  ],
+  "FuluSignedVoluntaryExit_e2e_generated.bend": [
+   {
+    "name": "FuluSignedVoluntaryExit",
+    "generated_name": "SignedVoluntaryExit",
+    "laws": [
+     "FuluSignedVoluntaryExit_e2e_encode",
+     "FuluSignedVoluntaryExit_e2e_root"
+    ]
+   }
+  ],
+  "FuluSigningData_e2e_generated.bend": [
+   {
+    "name": "FuluSigningData",
+    "generated_name": "SigningData",
+    "laws": [
+     "FuluSigningData_e2e_encode",
+     "FuluSigningData_e2e_root"
+    ]
+   }
+  ],
+  "FuluSingleAttestation_e2e_generated.bend": [
+   {
+    "name": "FuluSingleAttestation",
+    "generated_name": "SingleAttestation",
+    "laws": [
+     "FuluSingleAttestation_e2e_encode",
+     "FuluSingleAttestation_e2e_root"
+    ]
+   }
+  ],
+  "FuluSlot_e2e_generated.bend": [
+   {
+    "name": "FuluSlot",
+    "generated_name": "Slot",
+    "laws": [
+     "FuluSlot_e2e_encode",
+     "FuluSlot_e2e_root"
+    ]
+   }
+  ],
+  "FuluSubnetID_e2e_generated.bend": [
+   {
+    "name": "FuluSubnetID",
+    "generated_name": "SubnetID",
+    "laws": [
+     "FuluSubnetID_e2e_encode",
+     "FuluSubnetID_e2e_root"
+    ]
+   }
+  ],
+  "FuluSyncAggregate_e2e_generated.bend": [
+   {
+    "name": "FuluSyncAggregate",
+    "generated_name": "SyncAggregate",
+    "laws": [
+     "FuluSyncAggregate_e2e_encode",
+     "FuluSyncAggregate_e2e_root"
+    ]
+   }
+  ],
+  "FuluSyncAggregatorSelectionData_e2e_generated.bend": [
+   {
+    "name": "FuluSyncAggregatorSelectionData",
+    "generated_name": "SyncAggregatorSelectionData",
+    "laws": [
+     "FuluSyncAggregatorSelectionData_e2e_encode",
+     "FuluSyncAggregatorSelectionData_e2e_root"
+    ]
+   }
+  ],
+  "FuluSyncCommitteeContribution_e2e_generated.bend": [
+   {
+    "name": "FuluSyncCommitteeContribution",
+    "generated_name": "SyncCommitteeContribution",
+    "laws": [
+     "FuluSyncCommitteeContribution_e2e_encode",
+     "FuluSyncCommitteeContribution_e2e_root"
+    ]
+   }
+  ],
+  "FuluSyncCommitteeMessage_e2e_generated.bend": [
+   {
+    "name": "FuluSyncCommitteeMessage",
+    "generated_name": "SyncCommitteeMessage",
+    "laws": [
+     "FuluSyncCommitteeMessage_e2e_encode",
+     "FuluSyncCommitteeMessage_e2e_root"
+    ]
+   }
+  ],
+  "FuluValidatorIndex_e2e_generated.bend": [
+   {
+    "name": "FuluValidatorIndex",
+    "generated_name": "ValidatorIndex",
+    "laws": [
+     "FuluValidatorIndex_e2e_encode",
+     "FuluValidatorIndex_e2e_root"
+    ]
+   }
+  ],
+  "FuluVersion_e2e_generated.bend": [
+   {
+    "name": "FuluVersion",
+    "generated_name": "Version",
+    "laws": [
+     "FuluVersion_e2e_encode",
+     "FuluVersion_e2e_root"
+    ]
+   }
+  ],
+  "FuluVersionedHash_e2e_generated.bend": [
+   {
+    "name": "FuluVersionedHash",
+    "generated_name": "VersionedHash",
+    "laws": [
+     "FuluVersionedHash_e2e_encode",
+     "FuluVersionedHash_e2e_root"
+    ]
+   }
+  ],
+  "FuluVoluntaryExit_e2e_generated.bend": [
+   {
+    "name": "FuluVoluntaryExit",
+    "generated_name": "VoluntaryExit",
+    "laws": [
+     "FuluVoluntaryExit_e2e_encode",
+     "FuluVoluntaryExit_e2e_root"
+    ]
+   }
+  ],
+  "FuluWithdrawal_e2e_generated.bend": [
    {
     "name": "FuluWithdrawal",
     "generated_name": "Withdrawal",
@@ -1321,7 +1501,9 @@
      "FuluWithdrawalIndex_e2e_encode",
      "FuluWithdrawalIndex_e2e_root"
     ]
-   },
+   }
+  ],
+  "FuluWithdrawalRequest_e2e_generated.bend": [
    {
     "name": "FuluWithdrawalRequest",
     "generated_name": "WithdrawalRequest",
@@ -1331,47 +1513,23 @@
     ]
    }
   ],
-  "FuluCellIndex_e2e_generated.bend": [
+  "uint256_e2e_generated.bend": [
    {
-    "name": "FuluCellIndex",
-    "generated_name": "CellIndex",
+    "name": "uint256",
+    "generated_name": "uint256",
     "laws": [
-     "FuluCellIndex_e2e_encode",
-     "FuluCellIndex_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluColumnIndex",
-    "generated_name": "ColumnIndex",
-    "laws": [
-     "FuluColumnIndex_e2e_encode",
-     "FuluColumnIndex_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluCommitmentIndex",
-    "generated_name": "CommitmentIndex",
-    "laws": [
-     "FuluCommitmentIndex_e2e_encode",
-     "FuluCommitmentIndex_e2e_root"
+     "uint256_e2e_encode",
+     "uint256_e2e_root"
     ]
    }
   ],
-  "FuluCustodyIndex_e2e_generated.bend": [
+  "uint64_e2e_generated.bend": [
    {
-    "name": "FuluCustodyIndex",
-    "generated_name": "CustodyIndex",
+    "name": "uint64",
+    "generated_name": "uint64",
     "laws": [
-     "FuluCustodyIndex_e2e_encode",
-     "FuluCustodyIndex_e2e_root"
-    ]
-   },
-   {
-    "name": "FuluRowIndex",
-    "generated_name": "RowIndex",
-    "laws": [
-     "FuluRowIndex_e2e_encode",
-     "FuluRowIndex_e2e_root"
+     "uint64_e2e_encode",
+     "uint64_e2e_root"
     ]
    }
   ],
@@ -1735,30 +1893,12 @@
     "premise": "rep: PK.rep_v8(o, Spec.Gt10D6F42D74()) (the root law's representation invariant: the validity premise for generic forms)"
    }
   ],
-  "FuluFinalityBranch_e2e_generated.bend": [
-   {
-    "name": "FuluFinalityBranch",
-    "generated_name": "FinalityBranch",
-    "laws": [
-     "FuluFinalityBranch_e2e_encode"
-    ],
-    "premise": "the root law's binders (t, dw, hd, pf, cap)"
-   }
-  ],
   "FuluCurrentSyncCommitteeBranch_e2e_generated.bend": [
    {
     "name": "FuluCurrentSyncCommitteeBranch",
     "generated_name": "CurrentSyncCommitteeBranch",
     "laws": [
      "FuluCurrentSyncCommitteeBranch_e2e_encode"
-    ],
-    "premise": "the root law's binders (t, dw, hd, pf, cap)"
-   },
-   {
-    "name": "FuluNextSyncCommitteeBranch",
-    "generated_name": "NextSyncCommitteeBranch",
-    "laws": [
-     "FuluNextSyncCommitteeBranch_e2e_encode"
     ],
     "premise": "the root law's binders (t, dw, hd, pf, cap)"
    }
@@ -1773,130 +1913,66 @@
     "premise": "the root law's binders (t, dw, hd, pf, cap)"
    }
   ],
-  "vec_uint128_1_e2e_dec_generated.bend": [
+  "FuluFinalityBranch_e2e_generated.bend": [
    {
-    "name": "vec_uint128_1",
-    "generated_name": "Gt3FD98F54A5",
+    "name": "FuluFinalityBranch",
+    "generated_name": "FinalityBranch",
     "laws": [
-     "vec_uint128_1_e2e_decode_view",
-     "vec_uint128_1_e2e_decode_reject"
+     "FuluFinalityBranch_e2e_encode"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   }
+  ],
+  "FuluNextSyncCommitteeBranch_e2e_generated.bend": [
+   {
+    "name": "FuluNextSyncCommitteeBranch",
+    "generated_name": "NextSyncCommitteeBranch",
+    "laws": [
+     "FuluNextSyncCommitteeBranch_e2e_encode"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   }
+  ],
+  "vec_uint256_5_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_5",
+    "generated_name": "Gt0B1B711C4D",
+    "laws": [
+     "vec_uint256_5_e2e_decode_view",
+     "vec_uint256_5_e2e_decode_reject"
     ],
     "ii": "view"
    }
   ],
-  "vec_uint128_16_e2e_dec_generated.bend": [
+  "vec_uint64_16_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint128_16",
-    "generated_name": "Gt3EC8B89B94",
+    "name": "vec_uint64_16",
+    "generated_name": "Gt0B4EF17D71",
     "laws": [
-     "vec_uint128_16_e2e_decode_view",
-     "vec_uint128_16_e2e_decode_reject"
+     "vec_uint64_16_e2e_decode_view",
+     "vec_uint64_16_e2e_decode_reject"
     ],
     "ii": "view"
    }
   ],
-  "vec_uint128_2_e2e_dec_generated.bend": [
+  "vec_uint32_5_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint128_2",
-    "generated_name": "Gt7D65FF3A10",
+    "name": "vec_uint32_5",
+    "generated_name": "Gt1719057EB7",
     "laws": [
-     "vec_uint128_2_e2e_decode_view",
-     "vec_uint128_2_e2e_decode_reject"
-    ],
-    "ii": "view"
-   },
-   {
-    "name": "vec_uint128_3",
-    "generated_name": "Gt7600AB7870",
-    "laws": [
-     "vec_uint128_3_e2e_decode_view",
-     "vec_uint128_3_e2e_decode_reject"
+     "vec_uint32_5_e2e_decode_view",
+     "vec_uint32_5_e2e_decode_reject"
     ],
     "ii": "view"
    }
   ],
-  "vec_uint128_31_e2e_dec_generated.bend": [
+  "vec_uint32_4_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint128_31",
-    "generated_name": "Gt6B1336E534",
+    "name": "vec_uint32_4",
+    "generated_name": "Gt240C147AA2",
     "laws": [
-     "vec_uint128_31_e2e_decode_view",
-     "vec_uint128_31_e2e_decode_reject"
-    ],
-    "ii": "view"
-   }
-  ],
-  "vec_uint128_4_e2e_dec_generated.bend": [
-   {
-    "name": "vec_uint128_4",
-    "generated_name": "GtB0CCEA154C",
-    "laws": [
-     "vec_uint128_4_e2e_decode_view",
-     "vec_uint128_4_e2e_decode_reject"
-    ],
-    "ii": "view"
-   },
-   {
-    "name": "vec_uint128_5",
-    "generated_name": "GtBB42F83A45",
-    "laws": [
-     "vec_uint128_5_e2e_decode_view",
-     "vec_uint128_5_e2e_decode_reject"
-    ],
-    "ii": "view"
-   }
-  ],
-  "vec_uint128_8_e2e_dec_generated.bend": [
-   {
-    "name": "vec_uint128_8",
-    "generated_name": "Gt3E2A057F33",
-    "laws": [
-     "vec_uint128_8_e2e_decode_view",
-     "vec_uint128_8_e2e_decode_reject"
-    ],
-    "ii": "view"
-   }
-  ],
-  "vec_uint256_1_e2e_dec_generated.bend": [
-   {
-    "name": "vec_uint256_1",
-    "generated_name": "GtBBFD66E011",
-    "laws": [
-     "vec_uint256_1_e2e_decode_view",
-     "vec_uint256_1_e2e_decode_reject"
-    ],
-    "ii": "view"
-   }
-  ],
-  "vec_uint256_16_e2e_dec_generated.bend": [
-   {
-    "name": "vec_uint256_16",
-    "generated_name": "Gt3E6E18CD57",
-    "laws": [
-     "vec_uint256_16_e2e_decode_view",
-     "vec_uint256_16_e2e_decode_reject"
-    ],
-    "ii": "view"
-   }
-  ],
-  "vec_uint256_2_e2e_dec_generated.bend": [
-   {
-    "name": "vec_uint256_2",
-    "generated_name": "GtB91D4D285D",
-    "laws": [
-     "vec_uint256_2_e2e_decode_view",
-     "vec_uint256_2_e2e_decode_reject"
-    ],
-    "ii": "view"
-   }
-  ],
-  "vec_uint256_31_e2e_dec_generated.bend": [
-   {
-    "name": "vec_uint256_31",
-    "generated_name": "Gt6E9B243B7C",
-    "laws": [
-     "vec_uint256_31_e2e_decode_view",
-     "vec_uint256_31_e2e_decode_reject"
+     "vec_uint32_4_e2e_decode_view",
+     "vec_uint32_4_e2e_decode_reject"
     ],
     "ii": "view"
    }
@@ -1912,35 +1988,68 @@
     "ii": "view"
    }
   ],
-  "vec_uint256_4_e2e_dec_generated.bend": [
+  "vec_uint32_16_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint256_4",
-    "generated_name": "Gt74B2AF1CB3",
+    "name": "vec_uint32_16",
+    "generated_name": "Gt3CC580499F",
     "laws": [
-     "vec_uint256_4_e2e_decode_view",
-     "vec_uint256_4_e2e_decode_reject"
+     "vec_uint32_16_e2e_decode_view",
+     "vec_uint32_16_e2e_decode_reject"
     ],
     "ii": "view"
    }
   ],
-  "vec_uint256_5_e2e_dec_generated.bend": [
+  "vec_uint128_8_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint256_5",
-    "generated_name": "Gt0B1B711C4D",
+    "name": "vec_uint128_8",
+    "generated_name": "Gt3E2A057F33",
     "laws": [
-     "vec_uint256_5_e2e_decode_view",
-     "vec_uint256_5_e2e_decode_reject"
+     "vec_uint128_8_e2e_decode_view",
+     "vec_uint128_8_e2e_decode_reject"
     ],
     "ii": "view"
    }
   ],
-  "vec_uint256_8_e2e_dec_generated.bend": [
+  "vec_uint256_16_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint256_8",
-    "generated_name": "GtFAE59DA275",
+    "name": "vec_uint256_16",
+    "generated_name": "Gt3E6E18CD57",
     "laws": [
-     "vec_uint256_8_e2e_decode_view",
-     "vec_uint256_8_e2e_decode_reject"
+     "vec_uint256_16_e2e_decode_view",
+     "vec_uint256_16_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_16_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_16",
+    "generated_name": "Gt3EC8B89B94",
+    "laws": [
+     "vec_uint128_16_e2e_decode_view",
+     "vec_uint128_16_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_1",
+    "generated_name": "Gt3FD98F54A5",
+    "laws": [
+     "vec_uint128_1_e2e_decode_view",
+     "vec_uint128_1_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_4_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_4",
+    "generated_name": "Gt46F5D7703F",
+    "laws": [
+     "vec_uint64_4_e2e_decode_view",
+     "vec_uint64_4_e2e_decode_reject"
     ],
     "ii": "view"
    }
@@ -1954,111 +2063,48 @@
      "vec_uint32_1_e2e_decode_reject"
     ],
     "ii": "view"
-   },
+   }
+  ],
+  "vec_uint128_31_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint32_16",
-    "generated_name": "Gt3CC580499F",
+    "name": "vec_uint128_31",
+    "generated_name": "Gt6B1336E534",
     "laws": [
-     "vec_uint32_16_e2e_decode_view",
-     "vec_uint32_16_e2e_decode_reject"
-    ],
-    "ii": "view"
-   },
-   {
-    "name": "vec_uint32_2",
-    "generated_name": "GtF45E42B273",
-    "laws": [
-     "vec_uint32_2_e2e_decode_view",
-     "vec_uint32_2_e2e_decode_reject"
+     "vec_uint128_31_e2e_decode_view",
+     "vec_uint128_31_e2e_decode_reject"
     ],
     "ii": "view"
    }
   ],
-  "vec_uint32_3_e2e_dec_generated.bend": [
+  "vec_uint256_31_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint32_3",
-    "generated_name": "GtD1AEF07F7D",
+    "name": "vec_uint256_31",
+    "generated_name": "Gt6E9B243B7C",
     "laws": [
-     "vec_uint32_3_e2e_decode_view",
-     "vec_uint32_3_e2e_decode_reject"
-    ],
-    "ii": "view"
-   },
-   {
-    "name": "vec_uint32_31",
-    "generated_name": "GtE528AAE3C6",
-    "laws": [
-     "vec_uint32_31_e2e_decode_view",
-     "vec_uint32_31_e2e_decode_reject"
+     "vec_uint256_31_e2e_decode_view",
+     "vec_uint256_31_e2e_decode_reject"
     ],
     "ii": "view"
    }
   ],
-  "vec_uint32_4_e2e_dec_generated.bend": [
+  "vec_uint256_4_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint32_4",
-    "generated_name": "Gt240C147AA2",
+    "name": "vec_uint256_4",
+    "generated_name": "Gt74B2AF1CB3",
     "laws": [
-     "vec_uint32_4_e2e_decode_view",
-     "vec_uint32_4_e2e_decode_reject"
-    ],
-    "ii": "view"
-   },
-   {
-    "name": "vec_uint32_5",
-    "generated_name": "Gt1719057EB7",
-    "laws": [
-     "vec_uint32_5_e2e_decode_view",
-     "vec_uint32_5_e2e_decode_reject"
-    ],
-    "ii": "view"
-   },
-   {
-    "name": "vec_uint32_8",
-    "generated_name": "GtCCF6FFA0A0",
-    "laws": [
-     "vec_uint32_8_e2e_decode_view",
-     "vec_uint32_8_e2e_decode_reject"
+     "vec_uint256_4_e2e_decode_view",
+     "vec_uint256_4_e2e_decode_reject"
     ],
     "ii": "view"
    }
   ],
-  "vec_uint64_1_e2e_dec_generated.bend": [
+  "vec_uint128_3_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint64_1",
-    "generated_name": "GtADC8DCD962",
+    "name": "vec_uint128_3",
+    "generated_name": "Gt7600AB7870",
     "laws": [
-     "vec_uint64_1_e2e_decode_view",
-     "vec_uint64_1_e2e_decode_reject"
-    ],
-    "ii": "view"
-   },
-   {
-    "name": "vec_uint64_16",
-    "generated_name": "Gt0B4EF17D71",
-    "laws": [
-     "vec_uint64_16_e2e_decode_view",
-     "vec_uint64_16_e2e_decode_reject"
-    ],
-    "ii": "view"
-   }
-  ],
-  "vec_uint64_2_e2e_dec_generated.bend": [
-   {
-    "name": "vec_uint64_2",
-    "generated_name": "GtC923FCB2DA",
-    "laws": [
-     "vec_uint64_2_e2e_decode_view",
-     "vec_uint64_2_e2e_decode_reject"
-    ],
-    "ii": "view"
-   },
-   {
-    "name": "vec_uint64_3",
-    "generated_name": "Gt8E507C4540",
-    "laws": [
-     "vec_uint64_3_e2e_decode_view",
-     "vec_uint64_3_e2e_decode_reject"
+     "vec_uint128_3_e2e_decode_view",
+     "vec_uint128_3_e2e_decode_reject"
     ],
     "ii": "view"
    }
@@ -2074,16 +2120,29 @@
     "ii": "view"
    }
   ],
-  "vec_uint64_4_e2e_dec_generated.bend": [
+  "vec_uint128_2_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint64_4",
-    "generated_name": "Gt46F5D7703F",
+    "name": "vec_uint128_2",
+    "generated_name": "Gt7D65FF3A10",
     "laws": [
-     "vec_uint64_4_e2e_decode_view",
-     "vec_uint64_4_e2e_decode_reject"
+     "vec_uint128_2_e2e_decode_view",
+     "vec_uint128_2_e2e_decode_reject"
     ],
     "ii": "view"
-   },
+   }
+  ],
+  "vec_uint64_3_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_3",
+    "generated_name": "Gt8E507C4540",
+    "laws": [
+     "vec_uint64_3_e2e_decode_view",
+     "vec_uint64_3_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_5_e2e_dec_generated.bend": [
    {
     "name": "vec_uint64_5",
     "generated_name": "Gt8FB0CF9679",
@@ -2092,7 +2151,97 @@
      "vec_uint64_5_e2e_decode_reject"
     ],
     "ii": "view"
-   },
+   }
+  ],
+  "vec_uint64_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_1",
+    "generated_name": "GtADC8DCD962",
+    "laws": [
+     "vec_uint64_1_e2e_decode_view",
+     "vec_uint64_1_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_4_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_4",
+    "generated_name": "GtB0CCEA154C",
+    "laws": [
+     "vec_uint128_4_e2e_decode_view",
+     "vec_uint128_4_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_2_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_2",
+    "generated_name": "GtB91D4D285D",
+    "laws": [
+     "vec_uint256_2_e2e_decode_view",
+     "vec_uint256_2_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint128_5_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint128_5",
+    "generated_name": "GtBB42F83A45",
+    "laws": [
+     "vec_uint128_5_e2e_decode_view",
+     "vec_uint128_5_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_1_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_1",
+    "generated_name": "GtBBFD66E011",
+    "laws": [
+     "vec_uint256_1_e2e_decode_view",
+     "vec_uint256_1_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_2_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint64_2",
+    "generated_name": "GtC923FCB2DA",
+    "laws": [
+     "vec_uint64_2_e2e_decode_view",
+     "vec_uint64_2_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_8_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_8",
+    "generated_name": "GtCCF6FFA0A0",
+    "laws": [
+     "vec_uint32_8_e2e_decode_view",
+     "vec_uint32_8_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_3_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_3",
+    "generated_name": "GtD1AEF07F7D",
+    "laws": [
+     "vec_uint32_3_e2e_decode_view",
+     "vec_uint32_3_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint64_8_e2e_dec_generated.bend": [
    {
     "name": "vec_uint64_8",
     "generated_name": "GtE470919895",
@@ -2103,13 +2252,35 @@
     "ii": "view"
    }
   ],
-  "FuluFinalityBranch_e2e_dec_generated.bend": [
+  "vec_uint32_31_e2e_dec_generated.bend": [
    {
-    "name": "FuluFinalityBranch",
-    "generated_name": "FinalityBranch",
+    "name": "vec_uint32_31",
+    "generated_name": "GtE528AAE3C6",
     "laws": [
-     "FuluFinalityBranch_e2e_decode_view",
-     "FuluFinalityBranch_e2e_decode_reject"
+     "vec_uint32_31_e2e_decode_view",
+     "vec_uint32_31_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint32_2_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint32_2",
+    "generated_name": "GtF45E42B273",
+    "laws": [
+     "vec_uint32_2_e2e_decode_view",
+     "vec_uint32_2_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_8_e2e_dec_generated.bend": [
+   {
+    "name": "vec_uint256_8",
+    "generated_name": "GtFAE59DA275",
+    "laws": [
+     "vec_uint256_8_e2e_decode_view",
+     "vec_uint256_8_e2e_decode_reject"
     ],
     "ii": "view"
    }
@@ -2125,17 +2296,6 @@
     "ii": "view"
    }
   ],
-  "FuluNextSyncCommitteeBranch_e2e_dec_generated.bend": [
-   {
-    "name": "FuluNextSyncCommitteeBranch",
-    "generated_name": "NextSyncCommitteeBranch",
-    "laws": [
-     "FuluNextSyncCommitteeBranch_e2e_decode_view",
-     "FuluNextSyncCommitteeBranch_e2e_decode_reject"
-    ],
-    "ii": "view"
-   }
-  ],
   "FuluExecutionBranch_e2e_dec_generated.bend": [
    {
     "name": "FuluExecutionBranch",
@@ -2147,15 +2307,95 @@
     "ii": "view"
    }
   ],
-  "vec_uint128_1_e2e_root_generated.bend": [
+  "FuluFinalityBranch_e2e_dec_generated.bend": [
    {
-    "name": "vec_uint128_1",
-    "generated_name": "Gt3FD98F54A5",
+    "name": "FuluFinalityBranch",
+    "generated_name": "FinalityBranch",
     "laws": [
-     "vec_uint128_1_e2e_root"
+     "FuluFinalityBranch_e2e_decode_view",
+     "FuluFinalityBranch_e2e_decode_reject"
     ],
-    "premise": "rep: PK.rep_v16(o, Spec.Gt3FD98F54A5())"
+    "ii": "view"
+   }
+  ],
+  "FuluNextSyncCommitteeBranch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluNextSyncCommitteeBranch",
+    "generated_name": "NextSyncCommitteeBranch",
+    "laws": [
+     "FuluNextSyncCommitteeBranch_e2e_decode_view",
+     "FuluNextSyncCommitteeBranch_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "vec_uint256_5_e2e_root_generated.bend": [
+   {
+    "name": "vec_uint256_5",
+    "generated_name": "Gt0B1B711C4D",
+    "laws": [
+     "vec_uint256_5_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt0B1B711C4D())"
    },
+   {
+    "name": "vec_uint64_16",
+    "generated_name": "Gt0B4EF17D71",
+    "laws": [
+     "vec_uint64_16_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt0B4EF17D71())"
+   },
+   {
+    "name": "vec_uint32_5",
+    "generated_name": "Gt1719057EB7",
+    "laws": [
+     "vec_uint32_5_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt1719057EB7())"
+   },
+   {
+    "name": "vec_uint32_4",
+    "generated_name": "Gt240C147AA2",
+    "laws": [
+     "vec_uint32_4_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt240C147AA2())"
+   },
+   {
+    "name": "vec_uint256_3",
+    "generated_name": "Gt2E7060B297",
+    "laws": [
+     "vec_uint256_3_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt2E7060B297())"
+   },
+   {
+    "name": "vec_uint32_16",
+    "generated_name": "Gt3CC580499F",
+    "laws": [
+     "vec_uint32_16_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt3CC580499F())"
+   },
+   {
+    "name": "vec_uint128_8",
+    "generated_name": "Gt3E2A057F33",
+    "laws": [
+     "vec_uint128_8_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt3E2A057F33())"
+   },
+   {
+    "name": "vec_uint256_16",
+    "generated_name": "Gt3E6E18CD57",
+    "laws": [
+     "vec_uint256_16_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt3E6E18CD57())"
+   }
+  ],
+  "vec_uint128_16_e2e_root_generated.bend": [
    {
     "name": "vec_uint128_16",
     "generated_name": "Gt3EC8B89B94",
@@ -2165,20 +2405,28 @@
     "premise": "rep: PK.rep_v16(o, Spec.Gt3EC8B89B94())"
    },
    {
-    "name": "vec_uint128_2",
-    "generated_name": "Gt7D65FF3A10",
+    "name": "vec_uint128_1",
+    "generated_name": "Gt3FD98F54A5",
     "laws": [
-     "vec_uint128_2_e2e_root"
+     "vec_uint128_1_e2e_root"
     ],
-    "premise": "rep: PK.rep_v16(o, Spec.Gt7D65FF3A10())"
+    "premise": "rep: PK.rep_v16(o, Spec.Gt3FD98F54A5())"
    },
    {
-    "name": "vec_uint128_3",
-    "generated_name": "Gt7600AB7870",
+    "name": "vec_uint64_4",
+    "generated_name": "Gt46F5D7703F",
     "laws": [
-     "vec_uint128_3_e2e_root"
+     "vec_uint64_4_e2e_root"
     ],
-    "premise": "rep: PK.rep_v16(o, Spec.Gt7600AB7870())"
+    "premise": "rep: PK.rep_v8(o, Spec.Gt46F5D7703F())"
+   },
+   {
+    "name": "vec_uint32_1",
+    "generated_name": "Gt669C528764",
+    "laws": [
+     "vec_uint32_1_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v4(o, Spec.Gt669C528764())"
    },
    {
     "name": "vec_uint128_31",
@@ -2189,6 +2437,72 @@
     "premise": "rep: PK.rep_v16(o, Spec.Gt6B1336E534())"
    },
    {
+    "name": "vec_uint256_31",
+    "generated_name": "Gt6E9B243B7C",
+    "laws": [
+     "vec_uint256_31_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt6E9B243B7C())"
+   },
+   {
+    "name": "vec_uint256_4",
+    "generated_name": "Gt74B2AF1CB3",
+    "laws": [
+     "vec_uint256_4_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.Gt74B2AF1CB3())"
+   },
+   {
+    "name": "vec_uint128_3",
+    "generated_name": "Gt7600AB7870",
+    "laws": [
+     "vec_uint128_3_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7600AB7870())"
+   }
+  ],
+  "vec_uint64_31_e2e_root_generated.bend": [
+   {
+    "name": "vec_uint64_31",
+    "generated_name": "Gt7D1CD7363A",
+    "laws": [
+     "vec_uint64_31_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt7D1CD7363A())"
+   },
+   {
+    "name": "vec_uint128_2",
+    "generated_name": "Gt7D65FF3A10",
+    "laws": [
+     "vec_uint128_2_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v16(o, Spec.Gt7D65FF3A10())"
+   },
+   {
+    "name": "vec_uint64_3",
+    "generated_name": "Gt8E507C4540",
+    "laws": [
+     "vec_uint64_3_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt8E507C4540())"
+   },
+   {
+    "name": "vec_uint64_5",
+    "generated_name": "Gt8FB0CF9679",
+    "laws": [
+     "vec_uint64_5_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.Gt8FB0CF9679())"
+   },
+   {
+    "name": "vec_uint64_1",
+    "generated_name": "GtADC8DCD962",
+    "laws": [
+     "vec_uint64_1_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.GtADC8DCD962())"
+   },
+   {
     "name": "vec_uint128_4",
     "generated_name": "GtB0CCEA154C",
     "laws": [
@@ -2197,20 +2511,20 @@
     "premise": "rep: PK.rep_v16(o, Spec.GtB0CCEA154C())"
    },
    {
+    "name": "vec_uint256_2",
+    "generated_name": "GtB91D4D285D",
+    "laws": [
+     "vec_uint256_2_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v32(o, Spec.GtB91D4D285D())"
+   },
+   {
     "name": "vec_uint128_5",
     "generated_name": "GtBB42F83A45",
     "laws": [
      "vec_uint128_5_e2e_root"
     ],
     "premise": "rep: PK.rep_v16(o, Spec.GtBB42F83A45())"
-   },
-   {
-    "name": "vec_uint128_8",
-    "generated_name": "Gt3E2A057F33",
-    "laws": [
-     "vec_uint128_8_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v16(o, Spec.Gt3E2A057F33())"
    }
   ],
   "vec_uint256_1_e2e_root_generated.bend": [
@@ -2223,86 +2537,20 @@
     "premise": "rep: PK.rep_v32(o, Spec.GtBBFD66E011())"
    },
    {
-    "name": "vec_uint256_16",
-    "generated_name": "Gt3E6E18CD57",
+    "name": "vec_uint64_2",
+    "generated_name": "GtC923FCB2DA",
     "laws": [
-     "vec_uint256_16_e2e_root"
+     "vec_uint64_2_e2e_root"
     ],
-    "premise": "rep: PK.rep_v32(o, Spec.Gt3E6E18CD57())"
+    "premise": "rep: PK.rep_v8(o, Spec.GtC923FCB2DA())"
    },
    {
-    "name": "vec_uint256_2",
-    "generated_name": "GtB91D4D285D",
+    "name": "vec_uint32_8",
+    "generated_name": "GtCCF6FFA0A0",
     "laws": [
-     "vec_uint256_2_e2e_root"
+     "vec_uint32_8_e2e_root"
     ],
-    "premise": "rep: PK.rep_v32(o, Spec.GtB91D4D285D())"
-   },
-   {
-    "name": "vec_uint256_31",
-    "generated_name": "Gt6E9B243B7C",
-    "laws": [
-     "vec_uint256_31_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v32(o, Spec.Gt6E9B243B7C())"
-   },
-   {
-    "name": "vec_uint256_3",
-    "generated_name": "Gt2E7060B297",
-    "laws": [
-     "vec_uint256_3_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v32(o, Spec.Gt2E7060B297())"
-   },
-   {
-    "name": "vec_uint256_4",
-    "generated_name": "Gt74B2AF1CB3",
-    "laws": [
-     "vec_uint256_4_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v32(o, Spec.Gt74B2AF1CB3())"
-   },
-   {
-    "name": "vec_uint256_5",
-    "generated_name": "Gt0B1B711C4D",
-    "laws": [
-     "vec_uint256_5_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v32(o, Spec.Gt0B1B711C4D())"
-   },
-   {
-    "name": "vec_uint256_8",
-    "generated_name": "GtFAE59DA275",
-    "laws": [
-     "vec_uint256_8_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v32(o, Spec.GtFAE59DA275())"
-   }
-  ],
-  "vec_uint32_1_e2e_root_generated.bend": [
-   {
-    "name": "vec_uint32_1",
-    "generated_name": "Gt669C528764",
-    "laws": [
-     "vec_uint32_1_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v4(o, Spec.Gt669C528764())"
-   },
-   {
-    "name": "vec_uint32_16",
-    "generated_name": "Gt3CC580499F",
-    "laws": [
-     "vec_uint32_16_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v4(o, Spec.Gt3CC580499F())"
-   },
-   {
-    "name": "vec_uint32_2",
-    "generated_name": "GtF45E42B273",
-    "laws": [
-     "vec_uint32_2_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v4(o, Spec.GtF45E42B273())"
+    "premise": "rep: PK.rep_v4(o, Spec.GtCCF6FFA0A0())"
    },
    {
     "name": "vec_uint32_3",
@@ -2313,6 +2561,14 @@
     "premise": "rep: PK.rep_v4(o, Spec.GtD1AEF07F7D())"
    },
    {
+    "name": "vec_uint64_8",
+    "generated_name": "GtE470919895",
+    "laws": [
+     "vec_uint64_8_e2e_root"
+    ],
+    "premise": "rep: PK.rep_v8(o, Spec.GtE470919895())"
+   },
+   {
     "name": "vec_uint32_31",
     "generated_name": "GtE528AAE3C6",
     "laws": [
@@ -2321,94 +2577,20 @@
     "premise": "rep: PK.rep_v4(o, Spec.GtE528AAE3C6())"
    },
    {
-    "name": "vec_uint32_4",
-    "generated_name": "Gt240C147AA2",
+    "name": "vec_uint32_2",
+    "generated_name": "GtF45E42B273",
     "laws": [
-     "vec_uint32_4_e2e_root"
+     "vec_uint32_2_e2e_root"
     ],
-    "premise": "rep: PK.rep_v4(o, Spec.Gt240C147AA2())"
+    "premise": "rep: PK.rep_v4(o, Spec.GtF45E42B273())"
    },
    {
-    "name": "vec_uint32_5",
-    "generated_name": "Gt1719057EB7",
+    "name": "vec_uint256_8",
+    "generated_name": "GtFAE59DA275",
     "laws": [
-     "vec_uint32_5_e2e_root"
+     "vec_uint256_8_e2e_root"
     ],
-    "premise": "rep: PK.rep_v4(o, Spec.Gt1719057EB7())"
-   },
-   {
-    "name": "vec_uint32_8",
-    "generated_name": "GtCCF6FFA0A0",
-    "laws": [
-     "vec_uint32_8_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v4(o, Spec.GtCCF6FFA0A0())"
-   }
-  ],
-  "vec_uint64_1_e2e_root_generated.bend": [
-   {
-    "name": "vec_uint64_1",
-    "generated_name": "GtADC8DCD962",
-    "laws": [
-     "vec_uint64_1_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v8(o, Spec.GtADC8DCD962())"
-   },
-   {
-    "name": "vec_uint64_16",
-    "generated_name": "Gt0B4EF17D71",
-    "laws": [
-     "vec_uint64_16_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v8(o, Spec.Gt0B4EF17D71())"
-   },
-   {
-    "name": "vec_uint64_2",
-    "generated_name": "GtC923FCB2DA",
-    "laws": [
-     "vec_uint64_2_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v8(o, Spec.GtC923FCB2DA())"
-   },
-   {
-    "name": "vec_uint64_3",
-    "generated_name": "Gt8E507C4540",
-    "laws": [
-     "vec_uint64_3_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v8(o, Spec.Gt8E507C4540())"
-   },
-   {
-    "name": "vec_uint64_31",
-    "generated_name": "Gt7D1CD7363A",
-    "laws": [
-     "vec_uint64_31_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v8(o, Spec.Gt7D1CD7363A())"
-   },
-   {
-    "name": "vec_uint64_4",
-    "generated_name": "Gt46F5D7703F",
-    "laws": [
-     "vec_uint64_4_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v8(o, Spec.Gt46F5D7703F())"
-   },
-   {
-    "name": "vec_uint64_5",
-    "generated_name": "Gt8FB0CF9679",
-    "laws": [
-     "vec_uint64_5_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v8(o, Spec.Gt8FB0CF9679())"
-   },
-   {
-    "name": "vec_uint64_8",
-    "generated_name": "GtE470919895",
-    "laws": [
-     "vec_uint64_8_e2e_root"
-    ],
-    "premise": "rep: PK.rep_v8(o, Spec.GtE470919895())"
+    "premise": "rep: PK.rep_v32(o, Spec.GtFAE59DA275())"
    }
   ],
   "vec_uint128_512_e2e_root_generated.bend": [
@@ -2477,15 +2659,7 @@
     "premise": "rep: PK.rep_v8(o, Spec.Gt10D6F42D74())"
    }
   ],
-  "FuluFinalityBranch_e2e_root_generated.bend": [
-   {
-    "name": "FuluFinalityBranch",
-    "generated_name": "FinalityBranch",
-    "laws": [
-     "FuluFinalityBranch_e2e_root"
-    ],
-    "premise": "the root law's binders (t, dw, hd, pf, cap)"
-   },
+  "FuluCurrentSyncCommitteeBranch_e2e_root_generated.bend": [
    {
     "name": "FuluCurrentSyncCommitteeBranch",
     "generated_name": "CurrentSyncCommitteeBranch",
@@ -2495,18 +2669,26 @@
     "premise": "the root law's binders (t, dw, hd, pf, cap)"
    },
    {
-    "name": "FuluNextSyncCommitteeBranch",
-    "generated_name": "NextSyncCommitteeBranch",
-    "laws": [
-     "FuluNextSyncCommitteeBranch_e2e_root"
-    ],
-    "premise": "the root law's binders (t, dw, hd, pf, cap)"
-   },
-   {
     "name": "FuluExecutionBranch",
     "generated_name": "ExecutionBranch",
     "laws": [
      "FuluExecutionBranch_e2e_root"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   },
+   {
+    "name": "FuluFinalityBranch",
+    "generated_name": "FinalityBranch",
+    "laws": [
+     "FuluFinalityBranch_e2e_root"
+    ],
+    "premise": "the root law's binders (t, dw, hd, pf, cap)"
+   },
+   {
+    "name": "FuluNextSyncCommitteeBranch",
+    "generated_name": "NextSyncCommitteeBranch",
+    "laws": [
+     "FuluNextSyncCommitteeBranch_e2e_root"
     ],
     "premise": "the root law's binders (t, dw, hd, pf, cap)"
    }
@@ -3706,132 +3888,132 @@
   }
  ],
  "word_storage": {
-  "vec_uint128_1": {
-   "generated_name": "Gt3FD98F54A5",
-   "awaiting": []
-  },
-  "vec_uint128_16": {
-   "generated_name": "Gt3EC8B89B94",
-   "awaiting": []
-  },
-  "vec_uint128_2": {
-   "generated_name": "Gt7D65FF3A10",
-   "awaiting": []
-  },
-  "vec_uint128_3": {
-   "generated_name": "Gt7600AB7870",
-   "awaiting": []
-  },
-  "vec_uint128_31": {
-   "generated_name": "Gt6B1336E534",
-   "awaiting": []
-  },
-  "vec_uint128_4": {
-   "generated_name": "GtB0CCEA154C",
-   "awaiting": []
-  },
-  "vec_uint128_5": {
-   "generated_name": "GtBB42F83A45",
-   "awaiting": []
-  },
-  "vec_uint128_8": {
-   "generated_name": "Gt3E2A057F33",
-   "awaiting": []
-  },
-  "vec_uint256_1": {
-   "generated_name": "GtBBFD66E011",
-   "awaiting": []
-  },
-  "vec_uint256_16": {
-   "generated_name": "Gt3E6E18CD57",
-   "awaiting": []
-  },
-  "vec_uint256_2": {
-   "generated_name": "GtB91D4D285D",
-   "awaiting": []
-  },
-  "vec_uint256_31": {
-   "generated_name": "Gt6E9B243B7C",
-   "awaiting": []
-  },
-  "vec_uint256_3": {
-   "generated_name": "Gt2E7060B297",
-   "awaiting": []
-  },
-  "vec_uint256_4": {
-   "generated_name": "Gt74B2AF1CB3",
-   "awaiting": []
-  },
   "vec_uint256_5": {
    "generated_name": "Gt0B1B711C4D",
-   "awaiting": []
-  },
-  "vec_uint256_8": {
-   "generated_name": "GtFAE59DA275",
-   "awaiting": []
-  },
-  "vec_uint32_1": {
-   "generated_name": "Gt669C528764",
-   "awaiting": []
-  },
-  "vec_uint32_16": {
-   "generated_name": "Gt3CC580499F",
-   "awaiting": []
-  },
-  "vec_uint32_2": {
-   "generated_name": "GtF45E42B273",
-   "awaiting": []
-  },
-  "vec_uint32_3": {
-   "generated_name": "GtD1AEF07F7D",
-   "awaiting": []
-  },
-  "vec_uint32_31": {
-   "generated_name": "GtE528AAE3C6",
-   "awaiting": []
-  },
-  "vec_uint32_4": {
-   "generated_name": "Gt240C147AA2",
-   "awaiting": []
-  },
-  "vec_uint32_5": {
-   "generated_name": "Gt1719057EB7",
-   "awaiting": []
-  },
-  "vec_uint32_8": {
-   "generated_name": "GtCCF6FFA0A0",
-   "awaiting": []
-  },
-  "vec_uint64_1": {
-   "generated_name": "GtADC8DCD962",
    "awaiting": []
   },
   "vec_uint64_16": {
    "generated_name": "Gt0B4EF17D71",
    "awaiting": []
   },
-  "vec_uint64_2": {
-   "generated_name": "GtC923FCB2DA",
+  "vec_uint32_5": {
+   "generated_name": "Gt1719057EB7",
    "awaiting": []
   },
-  "vec_uint64_3": {
-   "generated_name": "Gt8E507C4540",
+  "vec_uint32_4": {
+   "generated_name": "Gt240C147AA2",
    "awaiting": []
   },
-  "vec_uint64_31": {
-   "generated_name": "Gt7D1CD7363A",
+  "vec_uint256_3": {
+   "generated_name": "Gt2E7060B297",
+   "awaiting": []
+  },
+  "vec_uint32_16": {
+   "generated_name": "Gt3CC580499F",
+   "awaiting": []
+  },
+  "vec_uint128_8": {
+   "generated_name": "Gt3E2A057F33",
+   "awaiting": []
+  },
+  "vec_uint256_16": {
+   "generated_name": "Gt3E6E18CD57",
+   "awaiting": []
+  },
+  "vec_uint128_16": {
+   "generated_name": "Gt3EC8B89B94",
+   "awaiting": []
+  },
+  "vec_uint128_1": {
+   "generated_name": "Gt3FD98F54A5",
    "awaiting": []
   },
   "vec_uint64_4": {
    "generated_name": "Gt46F5D7703F",
    "awaiting": []
   },
+  "vec_uint32_1": {
+   "generated_name": "Gt669C528764",
+   "awaiting": []
+  },
+  "vec_uint128_31": {
+   "generated_name": "Gt6B1336E534",
+   "awaiting": []
+  },
+  "vec_uint256_31": {
+   "generated_name": "Gt6E9B243B7C",
+   "awaiting": []
+  },
+  "vec_uint256_4": {
+   "generated_name": "Gt74B2AF1CB3",
+   "awaiting": []
+  },
+  "vec_uint128_3": {
+   "generated_name": "Gt7600AB7870",
+   "awaiting": []
+  },
+  "vec_uint64_31": {
+   "generated_name": "Gt7D1CD7363A",
+   "awaiting": []
+  },
+  "vec_uint128_2": {
+   "generated_name": "Gt7D65FF3A10",
+   "awaiting": []
+  },
+  "vec_uint64_3": {
+   "generated_name": "Gt8E507C4540",
+   "awaiting": []
+  },
   "vec_uint64_5": {
    "generated_name": "Gt8FB0CF9679",
    "awaiting": []
   },
+  "vec_uint64_1": {
+   "generated_name": "GtADC8DCD962",
+   "awaiting": []
+  },
+  "vec_uint128_4": {
+   "generated_name": "GtB0CCEA154C",
+   "awaiting": []
+  },
+  "vec_uint256_2": {
+   "generated_name": "GtB91D4D285D",
+   "awaiting": []
+  },
+  "vec_uint128_5": {
+   "generated_name": "GtBB42F83A45",
+   "awaiting": []
+  },
+  "vec_uint256_1": {
+   "generated_name": "GtBBFD66E011",
+   "awaiting": []
+  },
+  "vec_uint64_2": {
+   "generated_name": "GtC923FCB2DA",
+   "awaiting": []
+  },
+  "vec_uint32_8": {
+   "generated_name": "GtCCF6FFA0A0",
+   "awaiting": []
+  },
+  "vec_uint32_3": {
+   "generated_name": "GtD1AEF07F7D",
+   "awaiting": []
+  },
   "vec_uint64_8": {
    "generated_name": "GtE470919895",
+   "awaiting": []
+  },
+  "vec_uint32_31": {
+   "generated_name": "GtE528AAE3C6",
+   "awaiting": []
+  },
+  "vec_uint32_2": {
+   "generated_name": "GtF45E42B273",
+   "awaiting": []
+  },
+  "vec_uint256_8": {
+   "generated_name": "GtFAE59DA275",
    "awaiting": []
   },
   "vec_uint128_512": {
@@ -3882,20 +4064,20 @@
     "(ii)/(iii)"
    ]
   },
-  "FuluFinalityBranch": {
-   "generated_name": "FinalityBranch",
-   "awaiting": []
-  },
   "FuluCurrentSyncCommitteeBranch": {
    "generated_name": "CurrentSyncCommitteeBranch",
    "awaiting": []
   },
-  "FuluNextSyncCommitteeBranch": {
-   "generated_name": "NextSyncCommitteeBranch",
-   "awaiting": []
-  },
   "FuluExecutionBranch": {
    "generated_name": "ExecutionBranch",
+   "awaiting": []
+  },
+  "FuluFinalityBranch": {
+   "generated_name": "FinalityBranch",
+   "awaiting": []
+  },
+  "FuluNextSyncCommitteeBranch": {
+   "generated_name": "NextSyncCommitteeBranch",
    "awaiting": []
   }
  }

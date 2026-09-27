@@ -4,9 +4,7 @@ import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/obj.bend as O
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
-import ../types/FuluBytes8_def_generated.bend as FuluBytes8_d
 import ../types/FuluBytes48_decode_ssz_generated.bend as FuluBytes48_r
-import ../types/FuluBytes8_decode_ssz_generated.bend as FuluBytes8_r
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
@@ -16,8 +14,8 @@ import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_bytes.bend as E
-import ../proofs/obj/spec_input_0.bend as M0
-import ../proofs/obj/spec_codec_0.bend as M1
+import ../proofs/obj/spec_input_Bytes48.bend as M0
+import ../proofs/obj/spec_codec_Bytes48.bend as M1
 import ../proofs/obj/fixrej_f0.bend as M2
 import ../proofs/obj/root_names.bend as M3
 
@@ -92,73 +90,4 @@ def FuluBytes48_e2e_decode_accept(+bs: +List<U32>, +n: U32, +o: FuluBytes48_d.By
 def FuluBytes48_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
     -> ({Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBytes48_r.Bytes48_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>} -> {API.deserialize(Spec.Bytes48(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.Bytes48(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes48_d.Bytes48>, FuluBytes48_r.Bytes48_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluBytes48_d.Bytes48>}):
   (dn => FuluBytes48_d_ra(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 48n), {==}, dn), an => FuluBytes48_d_rb(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 48n), {==}, an))
-
-# FuluBytes8: decoding a byte list against END_TO_END's deserialize.
-def FuluBytes8_d_none(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>}:
-  Equal.cong(B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>, Maybe<&1, FuluBytes8_d.Bytes8>, q => Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, q), FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n), (B.fill_at(B.alloc(n), 0, bs), None{}), M1.Bytes8_spec_reject(B.fill_at(B.alloc(n), 0, bs), n, E.ueq_false(n, List.length(&2, U32, bs), 8, hn, ec)))
-
-def FuluBytes8_d_anone(+bs: +List<U32>, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}) -> {API.deserialize(Spec.Bytes8(), bs) == None{} : Maybe<&2, S.Value>}:
-  E.outside_none(Spec.Bytes8(), bs, M2.Bytes8_decode_reject(bs, ec))
-
-def FuluBytes8_d_pk(+bs: +List<U32>, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == True{} : Bool}) -> {F.limbs(E.wl(2n, bs)) == bs : +List<U32>}:
-  E.pk(2n, bs, hd, FD.nat__eq_from_is_eq(List.length(&2, U32, bs), 8n, ec))
-
-def FuluBytes8_d_some(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == True{} : Bool}) -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)}} : Maybe<&1, FuluBytes8_d.Bytes8>}:
-  %Equal.sym(U32, n, 8, E.u32_len(n, List.length(&2, U32, bs), 8, hn, ec)) :
-    {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(_), 0, bs), _)) == Some{FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)}} : Maybe<&1, FuluBytes8_d.Bytes8>}
-  %FuluBytes8_d_pk(bs, hd, ec) :
-    {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(8), 0, _), 8)) == Some{FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)}} : Maybe<&1, FuluBytes8_d.Bytes8>}
-  Equal.cong(B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>, Maybe<&1, FuluBytes8_d.Bytes8>, q => Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, q), FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(8), 0, F.limbs([E.wn(0n, bs), E.wn(1n, bs)])), 8), (B.fill_at(B.alloc(8), 0, F.limbs([E.wn(0n, bs), E.wn(1n, bs)])), Some{FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)}}),
-    M0.Bytes8_spec_input(E.wn(0n, bs), E.wn(1n, bs)))
-
-def FuluBytes8_d_asome(+bs: +List<U32>, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == True{} : Bool}) -> {API.deserialize(Spec.Bytes8(), bs) == Some{M3.v_b8(FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)})} : Maybe<&2, S.Value>}:
-  E2E.spec_accepted(Spec.Bytes8(), bs, M3.v_b8(FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)}), (VS.public_sound(Spec.Bytes8(), {==}),
-    %FuluBytes8_d_pk(bs, hd, ec) : {Encoding.encoding_for_legal_type(Spec.Bytes8(), M3.v_b8(FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)})) == Some{_} : Maybe<&2, +List<U32>>}
-    M1.Bytes8_spec_encode(E.wn(0n, bs), E.wn(1n, bs))))
-
-def FuluBytes8_d_ia(+bs: +List<U32>, +n: U32, +o: FuluBytes8_d.Bytes8, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == c : Bool}, +da: {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluBytes8_d.Bytes8>}) -> {API.deserialize(Spec.Bytes8(), bs) == Some{M3.v_b8(o)} : Maybe<&2, S.Value>}:
-  match c:
-    case False{}: Empty.absurd({API.deserialize(Spec.Bytes8(), bs) == Some{M3.v_b8(o)} : Maybe<&2, S.Value>}, E.none_some1(FuluBytes8_d.Bytes8, o, Equal.trans(Maybe<&1, FuluBytes8_d.Bytes8>, None{}, Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{o}, Equal.sym(Maybe<&1, FuluBytes8_d.Bytes8>, Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, FuluBytes8_d_none(bs, n, hn, ec)), da)))
-    case True{}:
-      %E.some_inj1(FuluBytes8_d.Bytes8, FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)}, o, Equal.trans(Maybe<&1, FuluBytes8_d.Bytes8>, Some{FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)}}, Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{o}, Equal.sym(Maybe<&1, FuluBytes8_d.Bytes8>, Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)}}, FuluBytes8_d_some(bs, n, hn, hd, ec)), da)) :
-        {API.deserialize(Spec.Bytes8(), bs) == Some{M3.v_b8(_)} : Maybe<&2, S.Value>}
-      FuluBytes8_d_asome(bs, hd, ec)
-
-def FuluBytes8_d_ibt(+bs: +List<U32>, +n: U32, +o: FuluBytes8_d.Bytes8, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == True{} : Bool}, +aa: {API.deserialize(Spec.Bytes8(), bs) == Some{M3.v_b8(o)} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluBytes8_d.Bytes8>}:
-  match o:
-    case FuluBytes8_d.Bytes8{+y0, +y1}:
-      +eb = FD.logic__some_inj(+List<U32>, F.limbs([y0, y1]), bs, Equal.trans(Maybe<&2, +List<U32>>, Some{F.limbs([y0, y1])}, Encoding.encoding_for_legal_type(Spec.Bytes8(), M3.v_b8(FuluBytes8_d.Bytes8{y0, y1})), Some{bs},
-        Equal.sym(Maybe<&2, +List<U32>>, Encoding.encoding_for_legal_type(Spec.Bytes8(), M3.v_b8(FuluBytes8_d.Bytes8{y0, y1})), Some{F.limbs([y0, y1])}, M1.Bytes8_spec_encode(y0, y1)),
-        E.acc_dec(Spec.Bytes8(), bs, M3.v_b8(FuluBytes8_d.Bytes8{y0, y1}), E2E.accepted_spec(Spec.Bytes8(), bs, M3.v_b8(FuluBytes8_d.Bytes8{y0, y1}), aa))))
-      %Equal.sym(U32, n, 8, E.u32_len(n, List.length(&2, U32, bs), 8, hn, ec)) :
-        {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(_), 0, bs), _)) == Some{FuluBytes8_d.Bytes8{y0, y1}} : Maybe<&1, FuluBytes8_d.Bytes8>}
-      %eb :
-        {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(8), 0, _), 8)) == Some{FuluBytes8_d.Bytes8{y0, y1}} : Maybe<&1, FuluBytes8_d.Bytes8>}
-      Equal.cong(B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>, Maybe<&1, FuluBytes8_d.Bytes8>, q => Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, q), FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(8), 0, F.limbs([y0, y1])), 8), (B.fill_at(B.alloc(8), 0, F.limbs([y0, y1])), Some{FuluBytes8_d.Bytes8{y0, y1}}),
-        M0.Bytes8_spec_input(y0, y1))
-
-def FuluBytes8_d_ib(+bs: +List<U32>, +n: U32, +o: FuluBytes8_d.Bytes8, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == c : Bool}, +aa: {API.deserialize(Spec.Bytes8(), bs) == Some{M3.v_b8(o)} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluBytes8_d.Bytes8>}:
-  match c:
-    case False{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluBytes8_d.Bytes8>}, FD.logic__none_some(S.Value, M3.v_b8(o), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.Bytes8(), bs), Some{M3.v_b8(o)}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.Bytes8(), bs), None{}, FuluBytes8_d_anone(bs, ec)), aa)))
-    case True{}: FuluBytes8_d_ibt(bs, n, o, hn, ec, aa)
-
-def FuluBytes8_d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>}) -> {API.deserialize(Spec.Bytes8(), bs) == None{} : Maybe<&2, S.Value>}:
-  match c:
-    case False{}: FuluBytes8_d_anone(bs, ec)
-    case True{}: Empty.absurd({API.deserialize(Spec.Bytes8(), bs) == None{} : Maybe<&2, S.Value>}, E.none_someT(FuluBytes8_d.Bytes8, FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)}, Equal.trans(Maybe<&1, FuluBytes8_d.Bytes8>, None{}, Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)}}, Equal.sym(Maybe<&1, FuluBytes8_d.Bytes8>, Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)), None{}, dn), FuluBytes8_d_some(bs, n, hn, hd, ec))))
-
-def FuluBytes8_d_rb(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(List.length(&2, U32, bs), 8n) == c : Bool}, +an: {API.deserialize(Spec.Bytes8(), bs) == None{} : Maybe<&2, S.Value>}) -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>}:
-  match c:
-    case False{}: FuluBytes8_d_none(bs, n, hn, ec)
-    case True{}: Empty.absurd({Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>}, FD.logic__none_some(S.Value, M3.v_b8(FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)}), Equal.trans(Maybe<&2, S.Value>, None{}, API.deserialize(Spec.Bytes8(), bs), Some{M3.v_b8(FuluBytes8_d.Bytes8{E.wn(0n, bs), E.wn(1n, bs)})}, Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.Bytes8(), bs), None{}, an), FuluBytes8_d_asome(bs, hd, ec))))
-
-# (ii) the object decoder returns o exactly when END_TO_END's deserialize returns VAL(o).
-def FuluBytes8_e2e_decode_accept(+bs: +List<U32>, +n: U32, +o: FuluBytes8_d.Bytes8, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
-    -> ({Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluBytes8_d.Bytes8>} -> {API.deserialize(Spec.Bytes8(), bs) == Some{M3.v_b8(o)} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.Bytes8(), bs) == Some{M3.v_b8(o)} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == Some{o} : Maybe<&1, FuluBytes8_d.Bytes8>}):
-  (da => FuluBytes8_d_ia(bs, n, o, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, da), aa => FuluBytes8_d_ib(bs, n, o, hn, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, aa))
-
-# (iii) the object decoder fails exactly when END_TO_END's deserialize does.
-def FuluBytes8_e2e_decode_reject(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool})
-    -> ({Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>} -> {API.deserialize(Spec.Bytes8(), bs) == None{} : Maybe<&2, S.Value>}) & ({API.deserialize(Spec.Bytes8(), bs) == None{} : Maybe<&2, S.Value>} -> {Pair.snd(B.Buf, Maybe<&1, FuluBytes8_d.Bytes8>, FuluBytes8_r.Bytes8_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluBytes8_d.Bytes8>}):
-  (dn => FuluBytes8_d_ra(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, dn), an => FuluBytes8_d_rb(bs, n, hn, hd, Nat.is_eq(List.length(&2, U32, bs), 8n), {==}, an))
 
