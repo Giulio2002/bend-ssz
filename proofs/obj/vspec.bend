@@ -180,6 +180,13 @@ def upairs(k: Nat, W: List<&2, U32>) -> +List<+List<U32>>:
             case Nil{}: []
             case Con{+b, rest}: [a, b] <> upairs(c, rest)
 
+# One step of uitems and of Codec.parts on Items/Repeat, over symbolic words / values: u64_parts
+# rewrites its goal with them so no conversion runs Codec.parts of an element (its literal zero limbs).
+def u64_cc(+c: Nat, +a: U32, +b: U32, +rest: List<&2, U32>) -> {uitems(1n+c, Con{a, Con{b, rest}}) == S.Items{S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, uitems(c, rest)} : S.Value}: {==}
+
+def u64_prep(+v: S.Value, +rest: S.Value, +s: S.Schema)
+    -> {Codec.parts(S.Items{v, rest}, S.Repeat{s}) == Codec.concatenate(Codec.parts(v, s), Codec.parts(rest, S.Repeat{s})) : Maybe<&2, +List<S.Part>>}: {==}
+
 law u64_parts:
   for +k: Nat
   for +W: List<&2, U32>
@@ -194,6 +201,10 @@ def u64_parts(k, W):
           match t:
             case Nil{}: {==}
             case Con{+b, +rest}:
+              %Equal.sym(S.Value, uitems(1n+c, Con{a, Con{b, rest}}), S.Items{S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, uitems(c, rest)}, u64_cc(c, a, b, rest)) :
+                {Codec.parts(_, S.Repeat{S.Unsigned{P.U64{}}}) == Some{FX.fparts(upairs(1n+c, Con{a, Con{b, rest}}))} : Maybe<&2, +List<S.Part>>}
+              %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, uitems(c, rest)}, S.Repeat{S.Unsigned{P.U64{}}}), Codec.concatenate(Codec.parts(S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U64{}}), Codec.parts(uitems(c, rest), S.Repeat{S.Unsigned{P.U64{}}})), u64_prep(S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, uitems(c, rest), S.Unsigned{P.U64{}})) :
+                {_ == Some{FX.fparts(upairs(1n+c, Con{a, Con{b, rest}}))} : Maybe<&2, +List<S.Part>>}
               FX.cat_fixed(Codec.parts(S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U64{}}), FX.limbs([a, b]),
                 Codec.parts(uitems(c, rest), S.Repeat{S.Unsigned{P.U64{}}}), FX.fparts(upairs(c, rest)),
                 FX.uint64_part(a, b), u64_parts(c, rest))
