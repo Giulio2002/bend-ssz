@@ -37,6 +37,9 @@ def DK3(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:
 # The closed facts on 24576 = 4 * 6144 and the pubkeys' storage check, each decided once.
 def sc_eK() -> {U32.to_nat(24576) == A.quad(6144n) : Nat}: FD.nat__eq_from_is_eq(U32.to_nat(24576), A.quad(6144n), {==})
 def sc_eT() -> {Nat.add(U32.to_nat(24576), 48n) == 24624n : Nat}: FD.nat__eq_from_is_eq(Nat.add(U32.to_nat(24576), 48n), 24624n, {==})
+def sc_hy() -> {Nat.is_le(VC.YL(24576), VB.pw(15n)) == True{} : Bool}: {==}
+def sc_hlo() -> {Nat.is_le(U32.to_nat(24576), U32.to_nat(24576)) == True{} : Bool}: FD.nat__eq_le(U32.to_nat(24576), U32.to_nat(24576), {==})
+def sc_hu() -> {O.unit_ok(48, 24576) == True{} : Bool}: {==}
 def sc_nw() -> {6144n == VC.NW(24576) : Nat}: FD.nat__eq_from_is_eq(6144n, VC.NW(24576), {==})
 def sc_hsrc(+dB: Nat, +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool}) -> {Nat.is_le(VC.NW(24576), VB.pw(dB)) == True{} : Bool}:
   FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, 6144n, VC.NW(24576), sc_nw(), hrB)
@@ -46,7 +49,7 @@ def sc_hroom(+dB: Nat, +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool}) -> 
 def sc_hv(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
     +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(6144n, VB.pw(dB)) == True{} : Bool})
     -> {T.v512_b48_valid(O.Words{FD.array__thaw(U32, TB), 24576}) == (O.Words{FD.array__thaw(U32, TB), 24576}, True{}) : O.Words & Bool}:
-  VBE.words_ok_b(dB, TB, 24576, 24576, 24576, 15n, pfB, hdB, {==}, {==}, {==}, {==}, sc_hroom(dB, hrB), {==}, 48, {==})
+  VBE.words_ok_b(dB, TB, 24576, 24576, 24576, 15n, pfB, hdB, {==}, sc_hy(), sc_hlo(), sc_hlo(), sc_hroom(dB, hrB), {==}, 48, sc_hu())
 
 # Its storage check holds on a valid pubkeys tree (the runtime's T.SyncCommittee_valid).
 def SyncCommittee_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, +a7: U32, +a8: U32, +a9: U32, +a10: U32, +a11: U32, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
@@ -255,7 +258,7 @@ def sc_at(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat
   +hv = sc_hv(dB, TB, pfB, hdB, hrB)
   +e48 = VRX.fpos(X, q, r, 6144n, 24576, 24624n, dd, e, eK, hd, {==}, hl)
   +hl48 = VRX.froom(q, r, dd, 6144n, 48n, 24624n, {==}, hl)
-  sc_core(dd, D, X, q, r, dB, TB, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, 24576, A.quad(6144n), e, hr, hd, hl, pf, pfB, hdB, hv, {==}, {==}, hsrc, hlw, hq, eK, hz1, sc_edl(r, hr), e48, hl48, VRX.fpx(q, r, 6144n))
+  sc_core(dd, D, X, q, r, dB, TB, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, 24576, A.quad(6144n), e, hr, hd, hl, pf, pfB, hdB, hv, sc_hy(), {==}, hsrc, hlw, hq, eK, hz1, sc_edl(r, hr), e48, hl48, VRX.fpx(q, r, 6144n))
 
 # |a ++ b| = T when |a| = m, |b| = 48 and m + 48 = T (over symbolic m: no closed 24576 in a conversion).
 def sc_len3(+m: Nat, +a: +List<U32>, +b: +List<U32>, +T: Nat, +ea: {List.length(&2, U32, a) == m : Nat}, +eb: {List.length(&2, U32, b) == 48n : Nat},
