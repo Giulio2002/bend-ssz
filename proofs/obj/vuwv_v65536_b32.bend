@@ -102,50 +102,56 @@ def core(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat,
       (rt(D, X, TB, n, UWD.PWM(3n, dd, D, q, TB, n), hv, w), b)
     case 4n+ +t: Empty.absurd(DK.P2({T.v65536_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), n}) == (FD.array__thaw(U32, UWD.PWM(4n+t, dd, D, q, TB, n)), (O.Words{FD.array__thaw(U32, TB), n}, 0)) : Array<U32> & (O.Words & U32)}, {UA.BYT(UWD.PWM(4n+t, dd, D, q, TB, n)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), 4n+t), FX.limbs(VS.wtake(K, UW.SLW(TB)))) : +List<U32>}), FD.nat__lt_zero_absurd(t, hr))
 
-# The size's closed facts, each evaluated once (they are unary Nat computations).
-def v65536_b32_eW() -> {VC.NW(2097152) == 524288n : Nat}:
-  FD.nat__eq_from_is_eq(VC.NW(2097152), 524288n, {==})
+# The size's facts over its power of two (S = 2^21, W = 2^19): the words compare as U32 words
+# (u32__pow2u), the counts as symbolic powers (never a closed Nat literal of the size).
+def v65536_b32_ew() -> {FD.u32__pow2u(21n) == 2097152 : U32}: {==}
+def v65536_b32_eS() -> {U32.to_nat(2097152) == VB.pw(21n) : Nat}:
+  FD.logic__subst(U32, z => {U32.to_nat(z) == VB.pw(21n) : Nat}, FD.u32__pow2u(21n), 2097152, v65536_b32_ew(), FD.u32__pow2u_value(21n, {==}))
+def v65536_b32_eww() -> {FD.u32__pow2u(19n) == VC.nwu(2097152) : U32}: {==}
+def v65536_b32_eW() -> {U32.to_nat(VC.nwu(2097152)) == VB.pw(19n) : Nat}:
+  FD.logic__subst(U32, z => {U32.to_nat(z) == VB.pw(19n) : Nat}, FD.u32__pow2u(19n), VC.nwu(2097152), v65536_b32_eww(), FD.u32__pow2u_value(19n, {==}))
+def v65536_b32_eQ() -> {VB.pw(21n) == A.quad(VB.pw(19n)) : Nat}: {==}
+def v65536_b32_eK() -> {U32.to_nat(2097152) == A.quad(VC.NW(2097152)) : Nat}:
+  Equal.trans(Nat, U32.to_nat(2097152), VB.pw(21n), A.quad(VC.NW(2097152)), v65536_b32_eS(),
+    Equal.trans(Nat, VB.pw(21n), A.quad(VB.pw(19n)), A.quad(VC.NW(2097152)), v65536_b32_eQ(),
+      Equal.cong(Nat, Nat, z => A.quad(z), VB.pw(19n), VC.NW(2097152), Equal.sym(Nat, VC.NW(2097152), VB.pw(19n), v65536_b32_eW()))))
+def v65536_b32_yl() -> {Nat.add(31n, U32.to_nat(2097152)) == VC.YL(2097152) : Nat}: {==}
 def v65536_b32_hy() -> {Nat.is_le(VC.YL(2097152), VB.pw(22n)) == True{} : Bool}:
-  {==}
+  %v65536_b32_yl() : {Nat.is_le(_, VB.pw(22n)) == True{} : Bool}
+  FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(31n, z), VB.pw(22n)) == True{} : Bool}, VB.pw(21n), U32.to_nat(2097152), Equal.sym(Nat, U32.to_nat(2097152), VB.pw(21n), v65536_b32_eS()),
+    VRX.yl_pow(21n, 22n, {==}, {==}))
 
-# Its storage check holds on a valid storage tree (the runtime's T.v65536_b32_valid), its closed facts by Nat.is_eq.
+# Its storage check holds on a valid storage tree (the runtime's T.v65536_b32_valid).
 def v65536_b32_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
-    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(524288n, VB.pw(dB)) == True{} : Bool})
+    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(VC.NW(2097152), VB.pw(dB)) == True{} : Bool})
     -> {T.v65536_b32_valid(O.Words{FD.array__thaw(U32, TB), 2097152}) == (O.Words{FD.array__thaw(U32, TB), 2097152}, True{}) : O.Words & Bool}:
-  +hsrc = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, 524288n, VC.NW(2097152), Equal.sym(Nat, VC.NW(2097152), 524288n, v65536_b32_eW()), hrB)
-  +hroom = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, VC.NW(2097152), Nat.add(VC.NW(2097152), 0n), Equal.sym(Nat, Nat.add(VC.NW(2097152), 0n), VC.NW(2097152), FD.nat__add_zero(VC.NW(2097152))), hsrc)
+  +hroom = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, VC.NW(2097152), Nat.add(VC.NW(2097152), 0n), Equal.sym(Nat, Nat.add(VC.NW(2097152), 0n), VC.NW(2097152), FD.nat__add_zero(VC.NW(2097152))), hrB)
   VBE.words_ok_b(dB, TB, 2097152, 2097152, 2097152, 22n, pfB, hdB, {==}, v65536_b32_hy(), FD.nat__eq_le(U32.to_nat(2097152), U32.to_nat(2097152), {==}),
     FD.nat__eq_le(U32.to_nat(2097152), U32.to_nat(2097152), {==}), hroom, {==}, 32, {==})
 
-# The instance at n = 2097152 (K = 524288): its facts on the byte count decided by Nat.is_eq / is_le.
+# The instance at n = 2097152 (K = VC.NW(2097152)).
 def at(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
-    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 2097152n))), VB.pw(dd)) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(2097152)))), VB.pw(dd)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
-    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(524288n, VB.pw(dB)) == True{} : Bool},
-    +hz: {VS.bt(2097152n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(2097152n) : +List<U32>})
-    -> DK.P2({T.v65536_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 2097152}) == (FD.array__thaw(U32, PX_v65536_b32(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 2097152}, 0)) : Array<U32> & (O.Words & U32)}, {UA.BYT(PX_v65536_b32(r, dd, D, q, TB)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(VS.wtake(524288n, UW.SLW(TB)))) : +List<U32>}):
-  +eS = FD.nat__eq_from_is_eq(2097152n, U32.to_nat(2097152), {==})
-  +eK = Equal.trans(Nat, U32.to_nat(2097152), 2097152n, A.quad(524288n), Equal.sym(Nat, 2097152n, U32.to_nat(2097152), eS), FD.nat__eq_from_is_eq(2097152n, A.quad(524288n), {==}))
-  +hsrc = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dB)) == True{} : Bool}, 524288n, VC.NW(2097152), Equal.sym(Nat, VC.NW(2097152), 524288n, v65536_b32_eW()), hrB)
-  +hv = v65536_b32_valid_ok(dB, TB, pfB, hdB, hrB)
-  +hl2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{} : Bool}, 2097152n, U32.to_nat(2097152), eS, hl)
-  +hz2 = FD.logic__subst(Nat, z => {VS.bt(z, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(z) : +List<U32>}, 2097152n, U32.to_nat(2097152), eS, hz)
-  core(dd, D, X, q, r, dB, TB, 2097152, 524288n, e, hr, hd, pf, pfB, hdB, hv, v65536_b32_hy(), hsrc, eK, v65536_b32_eW(), hl2, hz2)
+    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(VC.NW(2097152), VB.pw(dB)) == True{} : Bool},
+    +hz: {VS.bt(U32.to_nat(2097152), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(U32.to_nat(2097152)) : +List<U32>})
+    -> DK.P2({T.v65536_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 2097152}) == (FD.array__thaw(U32, PX_v65536_b32(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 2097152}, 0)) : Array<U32> & (O.Words & U32)}, {UA.BYT(PX_v65536_b32(r, dd, D, q, TB)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(VS.wtake(VC.NW(2097152), UW.SLW(TB)))) : +List<U32>}):
+  core(dd, D, X, q, r, dB, TB, 2097152, VC.NW(2097152), e, hr, hd, pf, pfB, hdB, v65536_b32_valid_ok(dB, TB, pfB, hdB, hrB), v65536_b32_hy(), hrB, v65536_b32_eK(), {==}, hl, hz)
 
 # T.v65536_b32_putk at any byte position X = 4 q + r.
 def v65536_b32_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
-    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 2097152n))), VB.pw(dd)) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(2097152)))), VB.pw(dd)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
-    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(524288n, VB.pw(dB)) == True{} : Bool},
-    +hz: {VS.bt(2097152n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(2097152n) : +List<U32>})
+    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(VC.NW(2097152), VB.pw(dB)) == True{} : Bool},
+    +hz: {VS.bt(U32.to_nat(2097152), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(U32.to_nat(2097152)) : +List<U32>})
     -> {T.v65536_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 2097152}) == (FD.array__thaw(U32, PX_v65536_b32(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 2097152}, 0)) : Array<U32> & (O.Words & U32)}:
-  DK2({T.v65536_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 2097152}) == (FD.array__thaw(U32, PX_v65536_b32(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 2097152}, 0)) : Array<U32> & (O.Words & U32)}, {UA.BYT(PX_v65536_b32(r, dd, D, q, TB)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(VS.wtake(524288n, UW.SLW(TB)))) : +List<U32>}, at(dd, D, X, q, r, dB, TB, e, hr, hd, hl, pf, pfB, hdB, hrB, hz))
+  DK2({T.v65536_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 2097152}) == (FD.array__thaw(U32, PX_v65536_b32(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 2097152}, 0)) : Array<U32> & (O.Words & U32)}, {UA.BYT(PX_v65536_b32(r, dd, D, q, TB)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(VS.wtake(VC.NW(2097152), UW.SLW(TB)))) : +List<U32>}, at(dd, D, X, q, r, dB, TB, e, hr, hd, hl, pf, pfB, hdB, hrB, hz))
 
-# Its bytes: the 2097152 bytes of TB's first 524288 words at X, when the bytes there were zero.
+# Its bytes: the 2097152 bytes of TB's first 524288 words (VC.NW(2097152)) at X, when the bytes there were zero.
 def v65536_b32_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
-    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 2097152n))), VB.pw(dd)) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(2097152)))), VB.pw(dd)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
-    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(524288n, VB.pw(dB)) == True{} : Bool},
-    +hz: {VS.bt(2097152n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(2097152n) : +List<U32>})
-    -> {UA.BYT(PX_v65536_b32(r, dd, D, q, TB)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(VS.wtake(524288n, UW.SLW(TB)))) : +List<U32>}:
-  DK3({T.v65536_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 2097152}) == (FD.array__thaw(U32, PX_v65536_b32(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 2097152}, 0)) : Array<U32> & (O.Words & U32)}, {UA.BYT(PX_v65536_b32(r, dd, D, q, TB)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(VS.wtake(524288n, UW.SLW(TB)))) : +List<U32>}, at(dd, D, X, q, r, dB, TB, e, hr, hd, hl, pf, pfB, hdB, hrB, hz))
+    +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(VC.NW(2097152), VB.pw(dB)) == True{} : Bool},
+    +hz: {VS.bt(U32.to_nat(2097152), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(U32.to_nat(2097152)) : +List<U32>})
+    -> {UA.BYT(PX_v65536_b32(r, dd, D, q, TB)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(VS.wtake(VC.NW(2097152), UW.SLW(TB)))) : +List<U32>}:
+  DK3({T.v65536_b32_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 2097152}) == (FD.array__thaw(U32, PX_v65536_b32(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 2097152}, 0)) : Array<U32> & (O.Words & U32)}, {UA.BYT(PX_v65536_b32(r, dd, D, q, TB)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(VS.wtake(VC.NW(2097152), UW.SLW(TB)))) : +List<U32>}, at(dd, D, X, q, r, dB, TB, e, hr, hd, hl, pf, pfB, hdB, hrB, hz))

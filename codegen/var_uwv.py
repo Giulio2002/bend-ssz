@@ -911,9 +911,21 @@ PWORDS = [('v8192_b32', 262144, 65536, 32), ('v65536_b32', 2097152, 524288, 32),
 def pwords_text(p, S, W, unit):
     """A fixed vector of S = 4 W bytes held as packed words: its storage check, then O.put_words at
     any X = 4 q + r (at r = 0 vuwd.pwn2 / mone_bytes, else vuwd.putw_loose), data-only. One core over a
-    symbolic byte count n = 4 K (no closed S- or W-sized Nat is ever reduced); the instance at n = S."""
+    symbolic byte count n = 4 K (no closed S- or W-sized Nat is ever reduced); the instance at n = S.
+
+    The exported statements name the sizes by terms that are never evaluated, never by closed Nat
+    literals (S = 2^E: a literal 2097152n is unary, and relating it to the runtime's U32 costs seconds
+    in every importer). A caller passes exactly:
+      hl:  {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, U32.to_nat(S)))), VB.pw(dd)) == True{}}
+      hz:  {VS.bt(U32.to_nat(S), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(U32.to_nat(S))}
+      hrB: {Nat.is_le(VC.NW(S), VB.pw(dB)) == True{}}          (also <p>_valid_ok's)
+    and <p>_any_bytes' bytes are FX.limbs(VS.wtake(VC.NW(S), UW.SLW(TB))) (S the U32 literal)."""
     import math
     kw = math.ceil(math.log2(31 + S))
+    E = S.bit_length() - 1
+    assert S == 1 << E and W == 1 << (E - 2) and kw == E + 1 and E >= 5, (p, S, W, kw)
+    NS = f'U32.to_nat({S})'      # the byte count, never a closed Nat literal (a literal is unary: 2^21 costs seconds)
+    NWS = f'VC.NW({S})'          # the word count
     TD = TH.format('D')
     WOn = 'O.Words{FD.array__thaw(U32, TB), n}'
     PWn = 'UWD.PWM(r, dd, D, q, TB, n)'
@@ -925,12 +937,12 @@ def pwords_text(p, S, W, unit):
     WO = f'O.Words{{FD.array__thaw(U32, TB), {S}}}'
     PX = lambda r: f'PX_{p}({r}, dd, D, q, TB)'  # noqa: E731
     RT = f'{{T.{p}_putk({TD}, X, {WO}) == ({TH.format(PX("r"))}, ({WO}, 0)) : {TY}}}'
-    BY = f'{{UA.BYT({PX("r")}) == UW.SPL(UA.BYT(D), {X0}, FX.limbs(VS.wtake({W}n, UW.SLW(TB)))) : {LB}}}'
+    BY = f'{{UA.BYT({PX("r")}) == UW.SPL(UA.BYT(D), {X0}, FX.limbs(VS.wtake({NWS}, UW.SLW(TB)))) : {LB}}}'
     P = ('+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, ' + E_ + ',\n'
-         f'    +hd: {{Nat.is_lt(dd, 29n) == True{{}} : Bool}}, +hl: {{Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, {S}n))), VB.pw(dd)) == True{{}} : Bool}},\n'
+         f'    +hd: {{Nat.is_lt(dd, 29n) == True{{}} : Bool}}, +hl: {{Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, {NS}))), VB.pw(dd)) == True{{}} : Bool}},\n'
          '    +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},\n'
-         f'    +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}}, +hrB: {{Nat.is_le({W}n, VB.pw(dB)) == True{{}} : Bool}},\n'
-         f'    +hz: {{VS.bt({S}n, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({S}n) : {LB}}}')
+         f'    +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}}, +hrB: {{Nat.is_le({NWS}, VB.pw(dB)) == True{{}} : Bool}},\n'
+         f'    +hz: {{VS.bt({NS}, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({NS}) : {LB}}}')
     ARGS = 'dd, D, X, q, r, dB, TB, e, hr, hd, hl, pf, pfB, hdB, hrB, hz'
     HZn = lambda m: f'{{VS.bt({m}, VS.bdr({X0}, UA.BYT(D))) == UW.ZB({m}) : {LB}}}'  # noqa: E731
     HZ0 = f'{{VS.bt(A.quad(VC.NW(n)), VS.bdr(Nat.add(A.quad(q), 0n), UA.BYT(D))) == UW.ZB(A.quad(VC.NW(n))) : {LB}}}'
@@ -998,38 +1010,44 @@ def core(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat,
 @CASES
     case 4n+ +t: Empty.absurd(DK.P2({RTn.replace("(r,", "(4n+t,")}, {BYn.replace("(r,", "(4n+t,").replace(X0, "Nat.add(A.quad(q), 4n+t)")}), FD.nat__lt_zero_absurd(t, hr))
 
-# The size's closed facts, each evaluated once (they are unary Nat computations).
-def {p}_eW() -> {{VC.NW({S}) == {W}n : Nat}}:
-  FD.nat__eq_from_is_eq(VC.NW({S}), {W}n, {{==}})
+# The size's facts over its power of two (S = 2^{E}, W = 2^{E - 2}): the words compare as U32 words
+# (u32__pow2u), the counts as symbolic powers (never a closed Nat literal of the size).
+def {p}_ew() -> {{FD.u32__pow2u({E}n) == {S} : U32}}: {{==}}
+def {p}_eS() -> {{{NS} == VB.pw({E}n) : Nat}}:
+  FD.logic__subst(U32, z => {{U32.to_nat(z) == VB.pw({E}n) : Nat}}, FD.u32__pow2u({E}n), {S}, {p}_ew(), FD.u32__pow2u_value({E}n, {{==}}))
+def {p}_eww() -> {{FD.u32__pow2u({E - 2}n) == VC.nwu({S}) : U32}}: {{==}}
+def {p}_eW() -> {{U32.to_nat(VC.nwu({S})) == VB.pw({E - 2}n) : Nat}}:
+  FD.logic__subst(U32, z => {{U32.to_nat(z) == VB.pw({E - 2}n) : Nat}}, FD.u32__pow2u({E - 2}n), VC.nwu({S}), {p}_eww(), FD.u32__pow2u_value({E - 2}n, {{==}}))
+def {p}_eQ() -> {{VB.pw({E}n) == A.quad(VB.pw({E - 2}n)) : Nat}}: {{==}}
+def {p}_eK() -> {{{NS} == A.quad({NWS}) : Nat}}:
+  Equal.trans(Nat, {NS}, VB.pw({E}n), A.quad({NWS}), {p}_eS(),
+    Equal.trans(Nat, VB.pw({E}n), A.quad(VB.pw({E - 2}n)), A.quad({NWS}), {p}_eQ(),
+      Equal.cong(Nat, Nat, z => A.quad(z), VB.pw({E - 2}n), {NWS}, Equal.sym(Nat, {NWS}, VB.pw({E - 2}n), {p}_eW()))))
+def {p}_yl() -> {{Nat.add(31n, {NS}) == VC.YL({S}) : Nat}}: {{==}}
 def {p}_hy() -> {{Nat.is_le(VC.YL({S}), VB.pw({kw}n)) == True{{}} : Bool}}:
-  {{==}}
+  %{p}_yl() : {{Nat.is_le(_, VB.pw({kw}n)) == True{{}} : Bool}}
+  FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(31n, z), VB.pw({kw}n)) == True{{}} : Bool}}, VB.pw({E}n), {NS}, Equal.sym(Nat, {NS}, VB.pw({E}n), {p}_eS()),
+    VRX.yl_pow({E}n, {kw}n, {{==}}, {{==}}))
 
-# Its storage check holds on a valid storage tree (the runtime's T.{p}_valid), its closed facts by Nat.is_eq.
+# Its storage check holds on a valid storage tree (the runtime's T.{p}_valid).
 def {p}_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {{FD.array__perfect(U32, dB, TB) == True{{}} : Bool}},
-    +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}}, +hrB: {{Nat.is_le({W}n, VB.pw(dB)) == True{{}} : Bool}})
+    +hdB: {{Nat.is_lt(dB, 31n) == True{{}} : Bool}}, +hrB: {{Nat.is_le({NWS}, VB.pw(dB)) == True{{}} : Bool}})
     -> {{T.{p}_valid(O.Words{{FD.array__thaw(U32, TB), {S}}}) == (O.Words{{FD.array__thaw(U32, TB), {S}}}, True{{}}) : O.Words & Bool}}:
-  +hsrc = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, {W}n, VC.NW({S}), Equal.sym(Nat, VC.NW({S}), {W}n, {p}_eW()), hrB)
-  +hroom = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, VC.NW({S}), Nat.add(VC.NW({S}), 0n), Equal.sym(Nat, Nat.add(VC.NW({S}), 0n), VC.NW({S}), FD.nat__add_zero(VC.NW({S}))), hsrc)
+  +hroom = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, {NWS}, Nat.add({NWS}, 0n), Equal.sym(Nat, Nat.add({NWS}, 0n), {NWS}, FD.nat__add_zero({NWS})), hrB)
   VBE.words_ok_b(dB, TB, {S}, {S}, {S}, {kw}n, pfB, hdB, {{==}}, {p}_hy(), FD.nat__eq_le(U32.to_nat({S}), U32.to_nat({S}), {{==}}),
     FD.nat__eq_le(U32.to_nat({S}), U32.to_nat({S}), {{==}}), hroom, {{==}}, {unit}, {{==}})
 
-# The instance at n = {S} (K = {W}): its facts on the byte count decided by Nat.is_eq / is_le.
+# The instance at n = {S} (K = VC.NW({S})).
 def at({P})
     -> DK.P2({RT}, {BY}):
-  +eS = FD.nat__eq_from_is_eq({S}n, U32.to_nat({S}), {{==}})
-  +eK = Equal.trans(Nat, U32.to_nat({S}), {S}n, A.quad({W}n), Equal.sym(Nat, {S}n, U32.to_nat({S}), eS), FD.nat__eq_from_is_eq({S}n, A.quad({W}n), {{==}}))
-  +hsrc = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(dB)) == True{{}} : Bool}}, {W}n, VC.NW({S}), Equal.sym(Nat, VC.NW({S}), {W}n, {p}_eW()), hrB)
-  +hv = {p}_valid_ok(dB, TB, pfB, hdB, hrB)
-  +hl2 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{{}} : Bool}}, {S}n, U32.to_nat({S}), eS, hl)
-  +hz2 = FD.logic__subst(Nat, z => {HZn("z")}, {S}n, U32.to_nat({S}), eS, hz)
-  core(dd, D, X, q, r, dB, TB, {S}, {W}n, e, hr, hd, pf, pfB, hdB, hv, {p}_hy(), hsrc, eK, {p}_eW(), hl2, hz2)
+  core(dd, D, X, q, r, dB, TB, {S}, {NWS}, e, hr, hd, pf, pfB, hdB, {p}_valid_ok(dB, TB, pfB, hdB, hrB), {p}_hy(), hrB, {p}_eK(), {{==}}, hl, hz)
 
 # T.{p}_putk at any byte position X = 4 q + r.
 def {p}_any({P})
     -> {RT}:
   DK2({RT}, {BY}, at({ARGS}))
 
-# Its bytes: the {S} bytes of TB's first {W} words at X, when the bytes there were zero.
+# Its bytes: the {S} bytes of TB's first {W} words (VC.NW({S})) at X, when the bytes there were zero.
 def {p}_any_bytes({P})
     -> {BY}:
   DK3({RT}, {BY}, at({ARGS}))

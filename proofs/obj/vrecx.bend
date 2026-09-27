@@ -260,3 +260,26 @@ def rroom(+j: Nat, +k: Nat, +q: Nat, +r: Nat, +W: Nat, +LT: Nat, +dd: Nat,
 def spl_nil(+B: +List<U32>, +X: Nat) -> {UW.SPL(B, X, []) == B : +List<U32>}:
   %Equal.sym(Nat, Nat.add(X, 0n), X, F.nat__add_zero(X)) : {AP(VS.bt(X, B), VS.bdr(_, B)) == B : +List<U32>}
   UW.bt_bdr_split(X, B)
+
+# x + x = 2 x (the fixed vectors' size bounds over a symbolic power of two).
+law add_self_double:
+  for +x: Nat
+  {Nat.add(x, x) == Nat.double(x) : Nat}
+def add_self_double(x):
+  match x:
+    case 0n: {==}
+    case 1n+ +p:
+      Equal.trans(Nat, Nat.add(1n+p, 1n+p), 1n+1n+Nat.add(p, p), Nat.double(1n+p),
+        Equal.cong(Nat, Nat, z => 1n+z, Nat.add(p, 1n+p), 1n+Nat.add(p, p), F.nat__add_succ(p, p)),
+        Equal.trans(Nat, 1n+1n+Nat.add(p, p), 1n+1n+Nat.double(p), Nat.double(1n+p),
+          Equal.cong(Nat, Nat, z => 1n+1n+z, Nat.add(p, p), Nat.double(p), add_self_double(p)),
+          Equal.sym(Nat, Nat.double(1n+p), Nat.add(2n, Nat.double(p)), F.nat__double_succ(p))))
+
+# 31 + 2^e <= 2^e1 for e1 = 1 + e, when 5 <= e: a fixed vector's YL bound, the power symbolic
+# (e1 a parameter: 1n+21n is not the literal 22n, and comparing them would evaluate the powers).
+def yl_pow(+e: Nat, +e1: Nat, +ee: {1n+e == e1 : Nat}, +h5: {Nat.is_le(5n, e) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(31n, VB.pw(e)), VB.pw(e1)) == True{} : Bool}:
+  +x = VB.pw(e)
+  +h31 = F.nat__le_trans(31n, VB.pw(5n), x, {==}, F.nat__pow2_mono(5n, e, h5))
+  +h = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(31n, x), z) == True{} : Bool}, Nat.add(x, x), Nat.double(x), add_self_double(x), Order.add_right(31n, x, x, h31))
+  F.logic__subst(Nat, z => {Nat.is_le(Nat.add(31n, x), VB.pw(z)) == True{} : Bool}, 1n+e, e1, ee, h)
