@@ -2753,6 +2753,18 @@
     "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
+  "FuluLightClientBootstrap_e2e_dec_generated.bend": [
+   {
+    "name": "FuluLightClientBootstrap",
+    "generated_name": "LightClientBootstrap",
+    "laws": [
+     "FuluLightClientBootstrap_e2e_decode_view",
+     "FuluLightClientBootstrap_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 29)"
+   }
+  ],
   "FuluLightClientHeader_e2e_dec_generated.bend": [
    {
     "name": "FuluLightClientHeader",
@@ -3299,6 +3311,16 @@
     "premise": "rep: RT.rep_IndexedAttestation(o, Spec.IndexedAttestation()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
+  "FuluLightClientBootstrap_e2e_generated.bend": [
+   {
+    "name": "FuluLightClientBootstrap",
+    "generated_name": "LightClientBootstrap",
+    "laws": [
+     "FuluLightClientBootstrap_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_LightClientBootstrap(o, Spec.LightClientBootstrap()) and the hs premises: each storage field's invariant at depth below 31 (the sync committee's pubkeys: e2e_e48w.sdsc; BL.sdpv / BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32)"
+   }
+  ],
   "FuluLightClientHeader_e2e_generated.bend": [
    {
     "name": "FuluLightClientHeader",
@@ -3811,11 +3833,6 @@
    "generated_name": "LightClientUpdate",
    "reason": "encode laws not over the same free words / bits"
   },
-  "FuluLightClientBootstrap": {
-   "generated_name": "LightClientBootstrap",
-   "reason": "encode laws not over the same free words / bits",
-   "root": "FuluLightClientBootstrap_e2e_root_generated.bend"
-  },
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",
    "reason": "encode laws not over the same free words / bits"
@@ -4135,6 +4152,12 @@
    "i": "FuluIndexedAttestation_e2e_generated.bend",
    "ii_iii": "FuluIndexedAttestation_e2e_dec_generated.bend",
    "iv": "FuluIndexedAttestation_e2e_root_generated.bend"
+  },
+  "FuluLightClientBootstrap": {
+   "generated_name": "LightClientBootstrap",
+   "i": "FuluLightClientBootstrap_e2e_generated.bend",
+   "ii_iii": "FuluLightClientBootstrap_e2e_dec_generated.bend",
+   "iv": "FuluLightClientBootstrap_e2e_root_generated.bend"
   },
   "FuluLightClientHeader": {
    "generated_name": "LightClientHeader",
