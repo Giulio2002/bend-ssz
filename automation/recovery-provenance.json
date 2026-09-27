@@ -1,7 +1,0 @@
-{
-  "prior_run": "/Users/monkeair/auto-implementer/.autoimplementer/ssz-runs/20260919T011022Z-9c674327",
-  "candidate": "/Users/monkeair/auto-implementer/.autoimplementer/ssz-runs/20260919T011022Z-9c674327/iterations/0011/workspace",
-  "prior_worker_session_id": "7f865e20-4723-40f0-aa2e-44d1e2009629",
-  "validation_reset": true,
-  "reason": "User authorized toolchain migration and unsafe-annotation repair"
-}
