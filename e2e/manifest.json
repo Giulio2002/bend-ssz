@@ -1,5 +1,51 @@
 {
  "files": {
+  "bitvector_32_e2e_dec_generated.bend": [
+   {
+    "name": "bitvector_32",
+    "generated_name": "GtBBF12DAB28",
+    "laws": [
+     "bitvector_32_e2e_decode_accept",
+     "bitvector_32_e2e_decode_reject"
+    ]
+   },
+   {
+    "name": "bitvector_512",
+    "generated_name": "Gt0A390CB480",
+    "laws": [
+     "bitvector_512_e2e_decode_accept",
+     "bitvector_512_e2e_decode_reject"
+    ]
+   }
+  ],
+  "uint128_e2e_dec_generated.bend": [
+   {
+    "name": "uint128",
+    "generated_name": "Gt604E28A301",
+    "laws": [
+     "uint128_e2e_decode_accept",
+     "uint128_e2e_decode_reject"
+    ]
+   },
+   {
+    "name": "uint256_Gt59DCDB2873",
+    "generated_name": "Gt59DCDB2873",
+    "laws": [
+     "uint256_Gt59DCDB2873_e2e_decode_accept",
+     "uint256_Gt59DCDB2873_e2e_decode_reject"
+    ]
+   }
+  ],
+  "uint64_Gt62B0093BE7_e2e_dec_generated.bend": [
+   {
+    "name": "uint64_Gt62B0093BE7",
+    "generated_name": "Gt62B0093BE7",
+    "laws": [
+     "uint64_Gt62B0093BE7_e2e_decode_accept",
+     "uint64_Gt62B0093BE7_e2e_decode_reject"
+    ]
+   }
+  ],
   "FuluBytes20_e2e_dec_generated.bend": [
    {
     "name": "FuluBytes20",
@@ -206,7 +252,9 @@
      "FuluVersionedHash_e2e_decode_accept",
      "FuluVersionedHash_e2e_decode_reject"
     ]
-   },
+   }
+  ],
+  "FuluCommitteeIndex_e2e_dec_generated.bend": [
    {
     "name": "FuluCommitteeIndex",
     "generated_name": "CommitteeIndex",
@@ -214,9 +262,7 @@
      "FuluCommitteeIndex_e2e_decode_accept",
      "FuluCommitteeIndex_e2e_decode_reject"
     ]
-   }
-  ],
-  "FuluHistoricalSummary_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluHistoricalSummary",
     "generated_name": "HistoricalSummary",
@@ -224,7 +270,9 @@
      "FuluHistoricalSummary_e2e_decode_accept",
      "FuluHistoricalSummary_e2e_decode_reject"
     ]
-   },
+   }
+  ],
+  "FuluPendingConsolidation_e2e_dec_generated.bend": [
    {
     "name": "FuluPendingConsolidation",
     "generated_name": "PendingConsolidation",
@@ -232,9 +280,7 @@
      "FuluPendingConsolidation_e2e_decode_accept",
      "FuluPendingConsolidation_e2e_decode_reject"
     ]
-   }
-  ],
-  "FuluPendingPartialWithdrawal_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluPendingPartialWithdrawal",
     "generated_name": "PendingPartialWithdrawal",
@@ -242,7 +288,9 @@
      "FuluPendingPartialWithdrawal_e2e_decode_accept",
      "FuluPendingPartialWithdrawal_e2e_decode_reject"
     ]
-   },
+   }
+  ],
+  "FuluRoot_e2e_dec_generated.bend": [
    {
     "name": "FuluRoot",
     "generated_name": "Root",
@@ -492,7 +540,9 @@
      "FuluSubnetID_e2e_decode_accept",
      "FuluSubnetID_e2e_decode_reject"
     ]
-   },
+   }
+  ],
+  "FuluBLSToExecutionChange_e2e_dec_generated.bend": [
    {
     "name": "FuluBLSToExecutionChange",
     "generated_name": "BLSToExecutionChange",
@@ -594,7 +644,9 @@
      "FuluWithdrawalRequest_e2e_decode_accept",
      "FuluWithdrawalRequest_e2e_decode_reject"
     ]
-   },
+   }
+  ],
+  "FuluCellIndex_e2e_dec_generated.bend": [
    {
     "name": "FuluCellIndex",
     "generated_name": "CellIndex",
@@ -602,9 +654,7 @@
      "FuluCellIndex_e2e_decode_accept",
      "FuluCellIndex_e2e_decode_reject"
     ]
-   }
-  ],
-  "FuluColumnIndex_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluColumnIndex",
     "generated_name": "ColumnIndex",
@@ -612,7 +662,9 @@
      "FuluColumnIndex_e2e_decode_accept",
      "FuluColumnIndex_e2e_decode_reject"
     ]
-   },
+   }
+  ],
+  "FuluCommitmentIndex_e2e_dec_generated.bend": [
    {
     "name": "FuluCommitmentIndex",
     "generated_name": "CommitmentIndex",
@@ -620,9 +672,7 @@
      "FuluCommitmentIndex_e2e_decode_accept",
      "FuluCommitmentIndex_e2e_decode_reject"
     ]
-   }
-  ],
-  "FuluCustodyIndex_e2e_dec_generated.bend": [
+   },
    {
     "name": "FuluCustodyIndex",
     "generated_name": "CustodyIndex",
@@ -630,13 +680,56 @@
      "FuluCustodyIndex_e2e_decode_accept",
      "FuluCustodyIndex_e2e_decode_reject"
     ]
-   },
+   }
+  ],
+  "FuluRowIndex_e2e_dec_generated.bend": [
    {
     "name": "FuluRowIndex",
     "generated_name": "RowIndex",
     "laws": [
      "FuluRowIndex_e2e_decode_accept",
      "FuluRowIndex_e2e_decode_reject"
+    ]
+   }
+  ],
+  "bitvector_32_e2e_generated.bend": [
+   {
+    "name": "bitvector_32",
+    "generated_name": "GtBBF12DAB28",
+    "laws": [
+     "bitvector_32_e2e_encode"
+    ]
+   },
+   {
+    "name": "bitvector_512",
+    "generated_name": "Gt0A390CB480",
+    "laws": [
+     "bitvector_512_e2e_encode"
+    ]
+   },
+   {
+    "name": "uint128",
+    "generated_name": "Gt604E28A301",
+    "laws": [
+     "uint128_e2e_encode"
+    ]
+   }
+  ],
+  "uint256_Gt59DCDB2873_e2e_generated.bend": [
+   {
+    "name": "uint256_Gt59DCDB2873",
+    "generated_name": "Gt59DCDB2873",
+    "laws": [
+     "uint256_Gt59DCDB2873_e2e_encode"
+    ]
+   }
+  ],
+  "uint64_Gt62B0093BE7_e2e_generated.bend": [
+   {
+    "name": "uint64_Gt62B0093BE7",
+    "generated_name": "Gt62B0093BE7",
+    "laws": [
+     "uint64_Gt62B0093BE7_e2e_encode"
     ]
    }
   ],
@@ -1858,10 +1951,6 @@
    "generated_name": "GtEDFB713194",
    "reason": "encode laws not over the same free words / bits"
   },
-  "bitvector_32": {
-   "generated_name": "GtBBF12DAB28",
-   "reason": "no structural-validity lemma for the view"
-  },
   "bitvector_33": {
    "generated_name": "Gt6F0D97A69E",
    "reason": "encode laws not over the same free words / bits"
@@ -1877,10 +1966,6 @@
   "bitvector_511": {
    "generated_name": "Gt05340E1F7E",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "bitvector_512": {
-   "generated_name": "Gt0A390CB480",
-   "reason": "no structural-validity lemma for the view"
   },
   "bitvector_513": {
    "generated_name": "Gt0B0C03B454",
@@ -1922,27 +2007,42 @@
    "generated_name": "GtF7582E0E9A",
    "reason": "encode laws not over the same free words / bits"
   },
-  "uint128": {
-   "generated_name": "Gt604E28A301",
-   "reason": "no structural-validity lemma for the view"
-  },
   "uint16": {
    "generated_name": "GtECF9BB18D8",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "uint256": {
-   "generated_name": "Gt59DCDB2873",
-   "reason": "no structural-validity lemma for the view"
-  },
-  "uint64": {
-   "generated_name": "Gt62B0093BE7",
-   "reason": "no structural-validity lemma for the view"
   }
  },
  "decode_uncovered": {
   "FuluValidator": {
    "generated_name": "Validator",
    "reason": "no decode_input / decode_none / decode_reject law"
+  }
+ },
+ "root_awaiting": {
+  "bitvector_32": {
+   "generated_name": "GtBBF12DAB28",
+   "awaiting": "root_valid(view)",
+   "view": "root_gnames.bend:v_bv32"
+  },
+  "bitvector_512": {
+   "generated_name": "Gt0A390CB480",
+   "awaiting": "root_valid(view)",
+   "view": "root_gnames.bend:v_bv512"
+  },
+  "uint128": {
+   "generated_name": "Gt604E28A301",
+   "awaiting": "root_valid(view)",
+   "view": "root_gnames.bend:v_u128"
+  },
+  "uint256_Gt59DCDB2873": {
+   "generated_name": "Gt59DCDB2873",
+   "awaiting": "root_valid(view)",
+   "view": "root_gnames.bend:v_u256"
+  },
+  "uint64_Gt62B0093BE7": {
+   "generated_name": "Gt62B0093BE7",
+   "awaiting": "root_valid(view)",
+   "view": "root_gnames.bend:v_u64"
   }
  }
 }
