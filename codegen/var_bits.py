@@ -24,6 +24,7 @@ the high bit of a byte w (U32 value PD.embed8(w)), the bits below it symbolic:
 The byte-list development on top of it is proofs/obj/vbitl.bend.
 """
 import sys
+import zeros_dispatch as ZD  # noqa: E402
 from itertools import product
 from pathlib import Path
 
@@ -393,14 +394,7 @@ def decode_spec(d, t, n, pf, hd, hn, hchk):
 
 
 def zeros_at_text(KK):
-    L = [f'def zeros_at(+du: U32, +k: Nat, +e: {{U32.to_nat(du) == k : Nat}}, +hk: {{Nat.is_le(k, {KK}n) == True{{}} : Bool}})',
-         '    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:', '  match k:']
-    for j in range(KK + 1):
-        L.append(f'    case {j}n:')
-        L.append(f'      %Equal.sym(U32, du, {j}, FD.u32__injective(du, {j}, e)) : {{B.zeros(_) == Array.new(U32, {j}n, 0) : Array<U32>}}')
-        L.append('      {==}')
-    L.append(f'    case {KK + 1}n+p: Empty.absurd({{B.zeros(du) == Array.new(U32, {KK + 1}n+p, 0) : Array<U32>}}, FD.logic__false_true(hk))')
-    return '\n'.join(L) + '\n'
+    return ZD.zeros_at_text(KK)
 
 
 def gbits_names():

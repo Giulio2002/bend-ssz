@@ -766,6 +766,19 @@ law items_var:
 def items_var(h, t, s, xs, ps, ea, eb):
   cat_var(Codec.parts(h, s), xs, Codec.parts(t, S.Repeat{s}), ps, ea, eb)
 
+law chain_fixed:
+  for +h: S.Value
+  for +t: S.Value
+  for +s: S.Schema
+  for +rest: S.Schema
+  for +xs: +List<U32>
+  for +ps: +List<S.Part>
+  for +ea: {Codec.parts(h, s) == Some{[S.Fixed{xs}]} : Maybe<&2, +List<S.Part>>}
+  for +eb: {Codec.parts(t, rest) == Some{ps} : Maybe<&2, +List<S.Part>>}
+  {Codec.parts(S.Items{h, t}, S.Chain{s, rest}) == Some{S.Fixed{xs} <> ps} : Maybe<&2, +List<S.Part>>}
+def chain_fixed(h, t, s, rest, xs, ps, ea, eb):
+  FX.cat_fixed(Codec.parts(h, s), xs, Codec.parts(t, rest), ps, ea, eb)
+
 law chain_var:
   for +h: S.Value
   for +t: S.Value

@@ -32,6 +32,7 @@ import generate as G  # noqa: E402
 import schema  # noqa: E402
 import spec_laws as SL  # noqa: E402
 import var_laws as VL  # noqa: E402
+import zeros_dispatch as ZD  # noqa: E402
 
 ROOT = VL.ROOT
 NAMES = VL.BITC
@@ -265,14 +266,7 @@ def hdzK(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hL: {Nat.
 
 
 def zeros_at_text(KK):
-    L = [f'def zeros_at(+du: U32, +k: Nat, +e: {{U32.to_nat(du) == k : Nat}}, +hk: {{Nat.is_le(k, {KK}n) == True{{}} : Bool}})',
-         '    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:', '  match k:']
-    for j in range(KK + 1):
-        L.append(f'    case {j}n:')
-        L.append(f'      %Equal.sym(U32, du, {j}, FD.u32__injective(du, {j}, e)) : {{B.zeros(_) == Array.new(U32, {j}n, 0) : Array<U32>}}')
-        L.append('      {==}')
-    L.append(f'    case {KK + 1}n+p: Empty.absurd({{B.zeros(du) == Array.new(U32, {KK + 1}n+p, 0) : Array<U32>}}, FD.logic__false_true(hk))')
-    return '\n'.join(L) + '\n'
+    return ZD.zeros_at_text(KK)
 
 
 def subst(txt, x):

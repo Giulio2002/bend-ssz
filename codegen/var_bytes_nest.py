@@ -384,7 +384,7 @@ def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U
     return '\n'.join(L) + '\n'
 
 
-def spec_items(x, V, Yb, hv, wt=None):
+def spec_items(x, V, Yb, hv, wt=None, named=None):
     """ITEMS, CHAIN, PL, CAT, PRE, POST, HDR with the child's value V, bytes Yb and parts proof hv."""
     vals, schs, parts, nodes = [], [], [], []
     for f in x.fields:
@@ -402,15 +402,19 @@ def spec_items(x, V, Yb, hv, wt=None):
     m = len(vals)
 
     def items(i):
+        if named:
+            return f'{named[0]}V{i}({named[2]})'
         return 'S.EmptyItems{}' if i == m else f'S.Items{{{vals[i]}, {items(i + 1)}}}'
 
     def chain(i):
+        if named:
+            return f'{named[0]}S{i}()'
         return 'S.End{}' if i == m else f'S.Chain{{{schs[i]}, {chain(i + 1)}}}'
 
     def cat(i):
         if i == m:
             return '{==}'
-        rest = '[' + ', '.join(parts[i + 1:]) + ']'
+        rest = f'{named[0]}P{i + 1}({named[4]})' if named else '[' + ', '.join(parts[i + 1:]) + ']'
         if nodes[i] is not None:
             return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs([{", ".join(nodes[i]["words"])}]), '
                     f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
@@ -422,6 +426,12 @@ def spec_items(x, V, Yb, hv, wt=None):
     hdr = []
     for f, nd in zip(x.fields, nodes):
         hdr += nd['words'] if nd is not None else [str(x.FS)]
+    if named:
+        import var_bytes as VBY
+        proofs = [('fixed', f'F.limbs([{", ".join(nodes[i]["words"])}])', nodes[i]['proof']) if nodes[i] is not None else ('var', Yb, hv)
+                  for i in range(m)]
+        return (items(0), chain(0), f'{named[0]}P0({named[4]})', f'{named[0]}T0({named[6]})', PRE, POST, hdr,
+                VBY.chain_defs(*named[:5], vals, schs, parts, named[5], named[6], proofs))
     return items(0), chain(0), '[' + ', '.join(parts) + ']', cat(0), PRE, POST, hdr
 
 

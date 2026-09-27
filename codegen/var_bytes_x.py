@@ -303,7 +303,9 @@ def spec_part(x):
     n, FS, H, po, LIM = x.n, x.FS, x.H, x.po, x.LIM
     HA = f'+ha: {{U32.is_le({FS}, len) == True{{}} : Bool}}'
     HX = '+hx: {BLW(LL(len)) == True{} : Bool}'
-    ITEMS, CHAIN, PL, CAT, PRE, POST, hdr = VBY.spec_items(x, 'Y')
+    ITEMS, CHAIN, PL, CAT, PRE, POST, hdr, CDEFS = VBY.spec_items(x, 'Y', named=('XC', '+t: FD.array__Tree<U32>, +x: Nat, +Y: +List<U32>', 't, x, Y', '+t: FD.array__Tree<U32>, +x: Nat, +Y: +List<U32>', 't, x, Y',
+        '+t: FD.array__Tree<U32>, +x: Nat, +Y: +List<U32>, +hdom: {SP.bytes_domain(Y) == True{} : Bool}, +hlen: {Nat.is_le(List.length(&2, U32, Y), ' + f'{x.LIM}' + 'n) == True{} : Bool}', 't, x, Y, hdom, hlen'))
+    CDEF = '\n'.join(CDEFS)
     HDR = '[' + ', '.join(hdr) + ']'
     hdrh = '[' + ', '.join(h if j != po else '_' for j, h in enumerate(hdr)) + ']'
     MP = 'Maybe<&2, +List<S.Part>>'
@@ -316,7 +318,8 @@ def spec_part(x):
     return [f'''
 # ---- the spec side ------------------------------------------------------------------------------
 
-# The value of the window's fixed words and byte list Y.
+# The value of the window's fixed words and byte list Y, through its named field suffixes.
+{CDEF}
 def XVw(+t: FD.array__Tree<U32>, +x: Nat, +Y: +List<U32>) -> S.Value: S.Sequence{{{ITEMS}}}
 
 # Its spec parts: one variable part, the header's bytes (the offset is {FS}) and Y.
@@ -627,7 +630,9 @@ def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
   rdw_go(d, t, n, x, off, len, eo, hd, hw, pf, chk_a(a, b, c, hchk), epo, chk_c(a, b, c, hchk))
 ''')
     # ---- the spec side ----
-    ITEMS, CHAIN, PL, CAT, PRE, POST, hdr = VBN.spec_items(x, 'V', 'Yb', 'hv')
+    ITEMS, CHAIN, PL, CAT, PRE, POST, hdr, CDEFS = VBN.spec_items(x, 'V', 'Yb', 'hv', named=('XC', '+t: FD.array__Tree<U32>, +x: Nat, +V: S.Value', 't, x, V', '+t: FD.array__Tree<U32>, +x: Nat, +Yb: +List<U32>', 't, x, Yb',
+        '+t: FD.array__Tree<U32>, +x: Nat, +V: S.Value, +Yb: +List<U32>, +hv: {Codec.parts(V, Spec.' + x.Y + '()) == Some{[S.Variable{Yb}]} : Maybe<&2, +List<S.Part>>}', 't, x, V, Yb, hv'))
+    CDEF = '\n'.join(CDEFS)
     HDR = '[' + ', '.join(hdr) + ']'
     hdrh = '[' + ', '.join(h if j != po else '_' for j, h in enumerate(hdr)) + ']'
     ENC = f'List.append(&2, U32, F.limbs({HDR}), Yb)'
@@ -639,7 +644,8 @@ def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
     w(f'''
 # ---- the spec side ------------------------------------------------------------------------------
 
-# The value of the window's fixed words and the child's value V.
+# The value of the window's fixed words and the child's value V, through its named field suffixes.
+{CDEF}
 def XVw(+t: FD.array__Tree<U32>, +x: Nat, +V: S.Value) -> S.Value: S.Sequence{{{ITEMS}}}
 
 # Its spec parts: one variable part, the header's bytes (the offset is {FS}) and the child's bytes Yb.

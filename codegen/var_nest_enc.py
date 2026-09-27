@@ -19,6 +19,7 @@ import re
 
 import var_laws as VL
 import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
+import zeros_dispatch as ZD  # noqa: E402
 
 
 def _ctx(g, x, pre='w'):
@@ -488,14 +489,7 @@ def eP2(+N1: U32, +c1: Nat, +ec1: {{U32.to_nat(N1) == VS.x8(c1) : Nat}}, +hc1: {
   {{==}}
 ''')
     # zeros
-    w(f'def zeros_at(+du: U32, +k: Nat, +e: {{U32.to_nat(du) == k : Nat}}, +hk: {{Nat.is_le(k, {KA}n) == True{{}} : Bool}})')
-    w('    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:')
-    w('  match k:')
-    for j in range(KA + 1):
-        w(f'    case {j}n:')
-        w(f'      %Equal.sym(U32, du, {j}, FD.u32__injective(du, {j}, e)) : {{B.zeros(_) == Array.new(U32, {j}n, 0) : Array<U32>}}')
-        w('      {==}')
-    w(f'    case {KA + 1}n+p: Empty.absurd({{B.zeros(du) == Array.new(U32, {KA + 1}n+p, 0) : Array<U32>}}, FD.logic__false_true(hk))')
+    w(ZD.zeros_at_text(KA, 'FD'))
     RE = f'({OBJ}, B.Buf{{FD.array__thaw(U32, {W2}), {C2}}})'
     TE = f'{Tp} & B.Buf'
     w(f'''

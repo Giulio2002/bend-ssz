@@ -26,6 +26,7 @@ import re
 import sys
 from pathlib import Path
 import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
+import zeros_dispatch as ZD  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -369,14 +370,7 @@ def name_module(X, N, p, src):
     w(f'  {core}')
     w('')
     if sized:
-        w(f'def zeros_at(+du: U32, +k: Nat, +e: {{U32.to_nat(du) == k : Nat}}, +hk: {{Nat.is_le(k, {KO}n) == True{{}} : Bool}})')
-        w('    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:')
-        w('  match k:')
-        for j in range(KO + 1):
-            w(f'    case {j}n:')
-            w(f'      %Equal.sym(U32, du, {j}, F.u32__injective(du, {j}, e)) : {{B.zeros(_) == Array.new(U32, {j}n, 0) : Array<U32>}}')
-            w('      {==}')
-        w(f'    case {KO + 1}n+p: Empty.absurd({{B.zeros(du) == Array.new(U32, {KO + 1}n+p, 0) : Array<U32>}}, F.logic__false_true(hk))')
+        w(ZD.zeros_at_text(KO, 'F'))
         w('')
     RE = f'({OBJ}, B.Buf{{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}})'
     ZT = f'F.array__thaw(U32, VC.ZT({DO}))'
@@ -684,14 +678,7 @@ def cra({ALLP}) -> CT.CRA(DO(K), OUT1(K), T, U32.add(0, {FS}), {H}n, K):
         w(f'    {{({puts(j + 1, "_")}, ({OBJ}, SFS(K))) == {RP} : {TP}}}')
     w('  {==}')
     w('')
-    w(f'def zeros_at(+du: U32, +k: Nat, +e: {{U32.to_nat(du) == k : Nat}}, +hk: {{Nat.is_le(k, {KO}n) == True{{}} : Bool}})')
-    w('    -> {B.zeros(du) == Array.new(U32, k, 0) : Array<U32>}:')
-    w('  match k:')
-    for jj in range(KO + 1):
-        w(f'    case {jj}n:')
-        w(f'      %Equal.sym(U32, du, {jj}, FD.u32__injective(du, {jj}, e)) : {{B.zeros(_) == Array.new(U32, {jj}n, 0) : Array<U32>}}')
-        w('      {==}')
-    w(f'    case {KO + 1}n+p: Empty.absurd({{B.zeros(du) == Array.new(U32, {KO + 1}n+p, 0) : Array<U32>}}, FD.logic__false_true(hk))')
+    w(ZD.zeros_at_text(KO, 'FD'))
     RE = f'({OBJ}, B.Buf{{FD.array__thaw(U32, {OUT}), SFS(K)}})'
     TE = f'{Tn} & B.Buf'
     ps = ['+' + p_.strip() for p_ in re.split(r',\s*\+', ' '.join(ALLP.split()).lstrip('+'))]
