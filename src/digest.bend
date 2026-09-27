@@ -23,8 +23,8 @@ type Digest is Data:
 # `Array.get`s. Building it from nested `ANode` constructors, or reading the
 # result by matching its `ANode` shape, gives the same words but costs a block
 # copy per node on the native runtime; the indexed form is 32 % faster per hash
-# (benchmarks/probes/hash_variants.bend: 52 ms against 76 ms for 200,000 chained
-# nodes, same final digest).
+# (native probe: 52 ms against 76 ms for 200,000 chained nodes, same final
+# digest).
 def set16(a: Array<U32>, +a0: U32, +a1: U32, +a2: U32, +a3: U32, +a4: U32, +a5: U32, +a6: U32, +a7: U32,
           +b0: U32, +b1: U32, +b2: U32, +b3: U32, +b4: U32, +b5: U32, +b6: U32, +b7: U32) -> Array<U32>:
   Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32, Array.set(U32,

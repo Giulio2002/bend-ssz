@@ -22,6 +22,8 @@ import ../../spec/codec.bend as Codec
 import ../../spec/nat_bytes.bend as N
 import ../../spec/fulu_schemas.bend as Spec
 import ./spec_fixed.bend as F
+import ../../spec/schema.bend as SC
+import ./vseq.bend as VSQ
 import ./vspec.bend as VS
 import ./vbuf.bend as VB
 import ./vu32.bend as VU

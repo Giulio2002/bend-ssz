@@ -4,8 +4,7 @@ import ../../types/primitive.bend as P
 import ../../spec/primitives.bend as SP
 import ../../spec/decoding_relation.bend as Decoding
 import ../../spec/fulu_schemas.bend as Spec
-import ../decode_complete.bend as E
-import ../../proofs/fulu_legality.bend as Legal
+import ../decode_unique.bend as E
 import ../obj/spec_fixed.bend as F
 import ../obj/spec_rec_Validator.bend as C
 import ../obj/spec_rec_unique_Validator.bend as PRV

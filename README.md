@@ -20,8 +20,7 @@ Read [the detailed review](REVIEW.md) before interpreting "formally verified."
   runtime tests and the conformance, mutation, negative-API, cache,
   invalid-object and fresh-seed fuzz checks all pass
   (build/final_runtime).
-- The proof picture is in docs/LAW_API_MAP.md and the WORK_LOG iteration-23
-  table. Checked: root laws for 104 names (root_names 75, leaf_small 4,
+- The proof picture, checked: root laws for 104 names (root_names 75, leaf_small 4,
   root_types 25) plus 123 of 136 generic forms, the cached root under
   arbitrary valid write/append histories, and producer laws for the
   representation invariants. Still open: BeaconState's root law, and the 5
@@ -90,7 +89,7 @@ path carries checked mutation, collection, cache and cost laws
 soundness proof of the compact window scanner (`proofs/compact/sound.bend`),
 but **no universal codec-correctness law for the generated validator and
 reader yet**; that is the largest open obligation and is described in
-[docs/COMPACT_PROOF_PLAN.md](docs/COMPACT_PROOF_PLAN.md) and WORK_LOG.md. What
+[docs/COMPACT_PROOF_PLAN.md](docs/COMPACT_PROOF_PLAN.md). What
 the generated path does have is native evidence, listed next.
 
 ## Native evidence for the generated object API
@@ -116,7 +115,7 @@ through `tools/spectests.py` on the list model.
 The preserved Bend 2.0.16 worker acceptance passed **5,440 official SSZ cases**
 (295 mainnet Fulu static + 5,145 generic), **51 runtime tests / 20,009 assertions**,
 and both proof roots with zero unsafe annotations. The publication review verifies
-source attribution and records fresh checks in [CHECKS.json](CHECKS.json).
+source attribution.
 
 An independent static AST comparison matches all 109 schemas to the vendored
 Python reference; all 59 container field lists also match. This is finite
@@ -134,7 +133,6 @@ review's broader scope qualifications are retained in [REVIEW.md](REVIEW.md).
 - `vendor/`: pinned consensus reference and Bend SHA dependency.
 - `fixtures/`, `cases.json`, `fixtures.manifest.json`: every selected official input.
 - `tests/`, `tools/`, `automation/`: runtime transport, generators and frozen gates.
-- `evidence/review-20260919/`: review checks, source manifests and logs.
 
 ## Reproduce
 

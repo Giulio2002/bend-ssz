@@ -14,6 +14,7 @@ import ./merkle.bend as Nodes
 import ./packing.bend as Packing
 import ./bytes.bend as B
 import ./primitives.bend as Basic
+import ./tree_scope.bend as TS
 
 law drop_empty:
   for n: Nat
@@ -191,9 +192,7 @@ def tree_scope(depth, chunks, e):
         case Con{h, t}: fips_scope(List.append(&2, U32, S.tree(p, h <> t), S.tree(p, S.drop(S.capacity(p), h <> t))))
 
 def result_scope(result: Maybe<&2, +List<U32>>) -> Type:
-  match result:
-    case None{}: Unit
-    case Some{root}: {P.byte_scope(32n, root) == True{} : Bool}
+  TS.result_scope(result)
 
 law checked_scope:
   for +ok: Bool

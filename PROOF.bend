@@ -59,9 +59,7 @@ import ./proofs/codec_leaves.bend as GenericLeafCodecLaws
 import ./proofs/decode_canonical.bend as DecoderCanonicalLaws
 import ./proofs/root_scope.bend as RootScopeLaws
 import ./proofs/layout_counts.bend as LayoutCountLaws
-import ./proofs/decode_count_bound.bend as DecoderCountBoundLaws
 import ./proofs/schema_measure.bend as SchemaMeasureLaws
-import ./proofs/decode_layout_bound.bend as DecoderLayoutBoundLaws
 import ./proofs/schema_forest.bend as SchemaForestLaws
 import ./proofs/codec_accumulator.bend as CodecAccumulatorLaws
 import ./proofs/codec_composition.bend as RecursiveCodecLaws
@@ -92,14 +90,11 @@ import ./proofs/type_validator_soundness.bend as TypeValidatorSoundnessLaws
 import ./proofs/compatibility_public_budget.bend as PublicCompatibilityBudgetLaws
 import ./proofs/identity_legality.bend as PublicIdentityLaws
 import ./proofs/identity_decision.bend as IdentityNormalizationLaws
-import ./proofs/decode_budget.bend as DecoderPublicBudgetLaws
 import ./proofs/compatibility_equivalence.bend as CompatibilityCompletenessLaws
 import ./proofs/type_validator_complete.bend as TypeValidatorCompletenessLaws
 import ./proofs/layout_image.bend as LayoutEncodingImageLaws
 import ./proofs/decode_facts.bend as DecoderLayoutFacts
 import ./proofs/decode_shape.bend as DecoderLayoutShapeLaws
-import ./proofs/decode_goal.bend as DecoderInverseSteps
-import ./proofs/decode_inverse.bend as DecoderRecursiveInverseLaws
 import ./proofs/decode_complete.bend as DecoderCompletenessLaws
 import ./proofs/schema_width.bend as ElementWidthLaws
 import ./proofs/complete_leaves.bend as PackedLeafCompletenessLaws

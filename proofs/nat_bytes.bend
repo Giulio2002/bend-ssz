@@ -1,7 +1,7 @@
 import Base
 import ./bit_vector_inverse.bend as Inverse
 import ./bit_chunk_count.bend as Count
-import ./tree.bend as Tree
+import ./tree_scope.bend as Tree
 import ./nat_order.bend as Order
 import ./packing.bend as Pack
 import ./word_facts.bend as W

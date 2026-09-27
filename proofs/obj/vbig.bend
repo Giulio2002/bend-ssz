@@ -9,6 +9,7 @@ import ./vcopy.bend as VC
 import ./vdepth.bend as VD
 import ./vfits.bend as VFT
 import ./arr_vec.bend as AV
+import ./vspec.bend as VS
 
 # Hand-written. Facts about a large byte size L that is a power of two, 2^p, stated over
 # U32.to_nat(L) and VB.pw(..). No statement holds a closed Nat literal of the size, and none
@@ -188,3 +189,130 @@ def fz8(+k: Nat, +e: Nat, +r: Nat, +L: U32, +ek: {k == VB.pw(e) : Nat}, +er: {r 
   %Equal.sym(Nat, r, 3n+e, er) : {Nat.mul(k, 8n) == VB.pw(_) : Nat}
   %Equal.sym(Nat, k, VB.pw(e), ek) : {Nat.mul(_, 8n) == VB.pw(3n+e) : Nat}
   mul8(VB.pw(e))
+
+# ---- closed sizes around a large list limit ------------------------------------------
+# A closed Nat built from a list's byte limit 8 * M (M = 2^p) and small constants is carried
+# as {x == Nat.add(c, VB.pw(s))} with small literals c and s, and bounded by ble/blt; the
+# closed power itself is never evaluated (codegen/lim_pow.py builds the terms).
+
+law two_pw:
+  for +P: Nat
+  {Nat.add(P, P) == Nat.double(P) : Nat}
+def two_pw(P):
+  Equal.sym(Nat, Nat.double(P), Nat.add(P, P),
+    Equal.trans(Nat, Nat.double(P), Nat.add(P, Nat.add(P, 0n)), Nat.add(P, P), F.u32__double_pow(P), Equal.cong(Nat, Nat, z => Nat.add(P, z), Nat.add(P, 0n), P, F.nat__add_zero(P))))
+
+# 8 M = 0 + 2^q, q = 3 + p
+def x8pw(+M: U32, +p: Nat, +q: Nat, +eM: {M == F.u32__pow2u(p) : U32}, +hp: {Nat.is_lt(p, 32n) == True{} : Bool}, +eq: {q == 3n+p : Nat})
+    -> {VS.x8(U32.to_nat(M)) == Nat.add(0n, VB.pw(q)) : Nat}:
+  %Equal.sym(Nat, U32.to_nat(M), VB.pw(p), u32pow(M, p, eM, hp)) : {VS.x8(_) == Nat.add(0n, VB.pw(q)) : Nat}
+  %Equal.sym(Nat, VS.x8(VB.pw(p)), VB.d3(VB.pw(p)), VB.x8_d3(VB.pw(p))) : {_ == Nat.add(0n, VB.pw(q)) : Nat}
+  %Equal.sym(Nat, q, 3n+p, eq) : {VB.d3(VB.pw(p)) == Nat.add(0n, VB.pw(_)) : Nat}
+  {==}
+
+# 2 M = 0 + 2^s, s = 1 + p
+def dblpw(+M: U32, +p: Nat, +s: Nat, +eM: {M == F.u32__pow2u(p) : U32}, +hp: {Nat.is_lt(p, 32n) == True{} : Bool}, +es: {s == 1n+p : Nat})
+    -> {Nat.double(U32.to_nat(M)) == Nat.add(0n, VB.pw(s)) : Nat}:
+  %Equal.sym(Nat, U32.to_nat(M), VB.pw(p), u32pow(M, p, eM, hp)) : {Nat.double(_) == Nat.add(0n, VB.pw(s)) : Nat}
+  %Equal.sym(Nat, s, 1n+p, es) : {Nat.double(VB.pw(p)) == Nat.add(0n, VB.pw(_)) : Nat}
+  {==}
+
+# a + (c + 2^s) = d + 2^s, d = a + c
+def eadd(+a: Nat, +x: Nat, +c: Nat, +s: Nat, +d: Nat, +ex: {x == Nat.add(c, VB.pw(s)) : Nat}, +ed: {d == Nat.add(a, c) : Nat})
+    -> {Nat.add(a, x) == Nat.add(d, VB.pw(s)) : Nat}:
+  %Equal.sym(Nat, x, Nat.add(c, VB.pw(s)), ex) : {Nat.add(a, _) == Nat.add(d, VB.pw(s)) : Nat}
+  %Equal.sym(Nat, d, Nat.add(a, c), ed) : {Nat.add(a, Nat.add(c, VB.pw(s))) == Nat.add(_, VB.pw(s)) : Nat}
+  Equal.sym(Nat, Nat.add(Nat.add(a, c), VB.pw(s)), Nat.add(a, Nat.add(c, VB.pw(s))), F.nat__add_assoc(a, c, VB.pw(s)))
+
+# (c + 2^s) + a = d + 2^s, d = c + a
+def eaddr(+x: Nat, +a: Nat, +c: Nat, +s: Nat, +d: Nat, +ex: {x == Nat.add(c, VB.pw(s)) : Nat}, +ed: {d == Nat.add(c, a) : Nat})
+    -> {Nat.add(x, a) == Nat.add(d, VB.pw(s)) : Nat}:
+  +P = VB.pw(s)
+  %Equal.sym(Nat, x, Nat.add(c, P), ex) : {Nat.add(_, a) == Nat.add(d, VB.pw(s)) : Nat}
+  %Equal.sym(Nat, d, Nat.add(c, a), ed) : {Nat.add(Nat.add(c, P), a) == Nat.add(_, VB.pw(s)) : Nat}
+  %Equal.sym(Nat, Nat.add(Nat.add(c, P), a), Nat.add(c, Nat.add(P, a)), F.nat__add_assoc(c, P, a)) : {_ == Nat.add(Nat.add(c, a), P) : Nat}
+  %Equal.sym(Nat, Nat.add(P, a), Nat.add(a, P), F.nat__add_comm(P, a)) : {Nat.add(c, _) == Nat.add(Nat.add(c, a), P) : Nat}
+  Equal.sym(Nat, Nat.add(Nat.add(c, a), P), Nat.add(c, Nat.add(a, P)), F.nat__add_assoc(c, a, P))
+
+# floor((2P + c) / 2) = P + floor(c / 2)
+law h2dbl:
+  for +P: Nat
+  for +c: Nat
+  {VD.s_h2(Nat.add(Nat.double(P), c)) == Nat.add(P, VD.s_h2(c)) : Nat}
+def h2dbl(P, c):
+  match P:
+    case 0n: {==}
+    case 1n+ +Q:
+      %Equal.sym(Nat, VD.s_h2(Nat.add(Nat.double(Q), c)), Nat.add(Q, VD.s_h2(c)), h2dbl(Q, c)) : {1n+_ == 1n+Nat.add(Q, VD.s_h2(c)) : Nat}
+      {==}
+
+# floor((c + 2^s) / 4) = d + 2^t, s = 2 + t, d = floor(c / 4)
+def erng(+x: Nat, +c: Nat, +s: Nat, +t: Nat, +d: Nat, +ex: {x == Nat.add(c, VB.pw(s)) : Nat}, +es: {s == 2n+t : Nat}, +ed: {d == VD.s_rng(2n, c) : Nat})
+    -> {VD.s_rng(2n, x) == Nat.add(d, VB.pw(t)) : Nat}:
+  +P = VB.pw(t)
+  %Equal.sym(Nat, x, Nat.add(c, VB.pw(s)), ex) : {VD.s_rng(2n, _) == Nat.add(d, VB.pw(t)) : Nat}
+  %Equal.sym(Nat, s, 2n+t, es) : {VD.s_rng(2n, Nat.add(c, VB.pw(_))) == Nat.add(d, VB.pw(t)) : Nat}
+  %Equal.sym(Nat, d, VD.s_rng(2n, c), ed) : {VD.s_rng(2n, Nat.add(c, VB.pw(2n+t))) == Nat.add(_, VB.pw(t)) : Nat}
+  %Equal.sym(Nat, Nat.add(c, VB.pw(2n+t)), Nat.add(VB.pw(2n+t), c), F.nat__add_comm(c, VB.pw(2n+t))) : {VD.s_rng(2n, _) == Nat.add(VD.s_rng(2n, c), P) : Nat}
+  +S = VD.s_h2(VD.s_h2(c))
+  Equal.trans(Nat, VD.s_h2(VD.s_h2(Nat.add(Nat.double(Nat.double(P)), c))), Nat.add(P, S), Nat.add(S, P),
+    Equal.trans(Nat, VD.s_h2(VD.s_h2(Nat.add(Nat.double(Nat.double(P)), c))), VD.s_h2(Nat.add(Nat.double(P), VD.s_h2(c))), Nat.add(P, S),
+      Equal.cong(Nat, Nat, z => VD.s_h2(z), VD.s_h2(Nat.add(Nat.double(Nat.double(P)), c)), Nat.add(Nat.double(P), VD.s_h2(c)), h2dbl(Nat.double(P), c)),
+      h2dbl(P, VD.s_h2(c))),
+    F.nat__add_comm(P, S))
+
+# (c1 + 2^s) = d + 2^t, d = c1 + c2, t = 1 + s
+def esum(+x: Nat, +y: Nat, +c1: Nat, +c2: Nat, +d: Nat, +s: Nat, +t: Nat,
+    +ex: {x == Nat.add(c1, VB.pw(s)) : Nat}, +ey: {y == Nat.add(c2, VB.pw(s)) : Nat}, +ed: {d == Nat.add(c1, c2) : Nat}, +et: {t == 1n+s : Nat})
+    -> {Nat.add(x, y) == Nat.add(d, VB.pw(t)) : Nat}:
+  +P = VB.pw(s)
+  %Equal.sym(Nat, x, Nat.add(c1, P), ex) : {Nat.add(_, y) == Nat.add(d, VB.pw(t)) : Nat}
+  %Equal.sym(Nat, y, Nat.add(c2, P), ey) : {Nat.add(Nat.add(c1, P), _) == Nat.add(d, VB.pw(t)) : Nat}
+  %Equal.sym(Nat, d, Nat.add(c1, c2), ed) : {Nat.add(Nat.add(c1, P), Nat.add(c2, P)) == Nat.add(_, VB.pw(t)) : Nat}
+  %Equal.sym(Nat, t, 1n+s, et) : {Nat.add(Nat.add(c1, P), Nat.add(c2, P)) == Nat.add(Nat.add(c1, c2), VB.pw(_)) : Nat}
+  +R = Nat.add(Nat.add(c1, c2), VB.pw(1n+s))
+  %Equal.sym(Nat, Nat.add(Nat.add(c1, P), Nat.add(c2, P)), Nat.add(c1, Nat.add(P, Nat.add(c2, P))), F.nat__add_assoc(c1, P, Nat.add(c2, P))) : {_ == R : Nat}
+  %Equal.sym(Nat, Nat.add(P, Nat.add(c2, P)), Nat.add(Nat.add(P, c2), P), Equal.sym(Nat, Nat.add(Nat.add(P, c2), P), Nat.add(P, Nat.add(c2, P)), F.nat__add_assoc(P, c2, P))) : {Nat.add(c1, _) == R : Nat}
+  %Equal.sym(Nat, Nat.add(P, c2), Nat.add(c2, P), F.nat__add_comm(P, c2)) : {Nat.add(c1, Nat.add(_, P)) == R : Nat}
+  %Equal.sym(Nat, Nat.add(Nat.add(c2, P), P), Nat.add(c2, Nat.add(P, P)), F.nat__add_assoc(c2, P, P)) : {Nat.add(c1, _) == R : Nat}
+  %Equal.sym(Nat, Nat.add(c1, Nat.add(c2, Nat.add(P, P))), Nat.add(Nat.add(c1, c2), Nat.add(P, P)), Equal.sym(Nat, Nat.add(Nat.add(c1, c2), Nat.add(P, P)), Nat.add(c1, Nat.add(c2, Nat.add(P, P))), F.nat__add_assoc(c1, c2, Nat.add(P, P)))) : {_ == R : Nat}
+  %Equal.sym(Nat, Nat.add(P, P), Nat.double(P), two_pw(P)) : {Nat.add(Nat.add(c1, c2), _) == R : Nat}
+  {==}
+
+# c + 2^s <= 2^r for c <= 2^k, k <= s, s + 1 <= r
+def ble(+x: Nat, +c: Nat, +k: Nat, +s: Nat, +r: Nat, +ex: {x == Nat.add(c, VB.pw(s)) : Nat}, +hc: {Nat.is_le(c, VB.pw(k)) == True{} : Bool},
+    +hk: {Nat.is_le(k, s) == True{} : Bool}, +hr: {Nat.is_le(1n+s, r) == True{} : Bool})
+    -> {Nat.is_le(x, VB.pw(r)) == True{} : Bool}:
+  +P = VB.pw(s)
+  +h1 = Order.add_right(c, P, P, F.nat__le_trans(c, VB.pw(k), P, hc, pw_mono(k, s, hk)))
+  +h2 = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(c, P), z) == True{} : Bool}, Nat.add(P, P), Nat.double(P), two_pw(P), h1)
+  %Equal.sym(Nat, x, Nat.add(c, P), ex) : {Nat.is_le(_, VB.pw(r)) == True{} : Bool}
+  F.nat__le_trans(Nat.add(c, P), VB.pw(1n+s), VB.pw(r), h2, pw_mono(1n+s, r, hr))
+
+def bleq(+x: Nat, +s: Nat, +ex: {x == Nat.add(0n, VB.pw(s)) : Nat}) -> {Nat.is_le(x, VB.pw(s)) == True{} : Bool}:
+  %Equal.sym(Nat, x, Nat.add(0n, VB.pw(s)), ex) : {Nat.is_le(_, VB.pw(s)) == True{} : Bool}
+  F.nat__le_refl(VB.pw(s))
+
+# c + 2^s < 2^r for c + 1 <= 2^k, k <= s, s + 1 <= r
+def blt(+x: Nat, +c: Nat, +k: Nat, +s: Nat, +r: Nat, +ex: {x == Nat.add(c, VB.pw(s)) : Nat}, +hc: {Nat.is_le(1n+c, VB.pw(k)) == True{} : Bool},
+    +hk: {Nat.is_le(k, s) == True{} : Bool}, +hr: {Nat.is_le(1n+s, r) == True{} : Bool})
+    -> {Nat.is_lt(x, VB.pw(r)) == True{} : Bool}:
+  F.nat__succ_le_lt(x, VB.pw(r), ble(1n+x, 1n+c, k, s, r, Equal.cong(Nat, Nat, z => 1n+z, x, Nat.add(c, VB.pw(s)), ex), hc, hk, hr))
+
+# The bound 2^r as a U32 2^r, as O.pow2n(r), as F.spec_common__pow2(r); the spec's fits test.
+def bleu(+x: Nat, +r: Nat, +B: U32, +hx: {Nat.is_le(x, VB.pw(r)) == True{} : Bool}, +eB: {B == F.u32__pow2u(r) : U32}, +hr: {Nat.is_lt(r, 32n) == True{} : Bool})
+    -> {Nat.is_le(x, U32.to_nat(B)) == True{} : Bool}:
+  %Equal.sym(Nat, U32.to_nat(B), VB.pw(r), u32pow(B, r, eB, hr)) : {Nat.is_le(x, _) == True{} : Bool}
+  hx
+def blep(+x: Nat, +r: Nat, +hx: {Nat.is_le(x, VB.pw(r)) == True{} : Bool}) -> {Nat.is_le(x, O.pow2n(r)) == True{} : Bool}:
+  %Equal.sym(Nat, O.pow2n(r), VB.pw(r), Equal.sym(Nat, VB.pw(r), O.pow2n(r), VD.s_pow2_eq(r))) : {Nat.is_le(x, _) == True{} : Bool}
+  hx
+def bles(+x: Nat, +r: Nat, +hx: {Nat.is_le(x, VB.pw(r)) == True{} : Bool}) -> {Nat.is_le(x, F.spec_common__pow2(r)) == True{} : Bool}: hx
+def bfit(+x: Nat, +r: Nat, +hx: {Nat.is_le(x, VB.pw(r)) == True{} : Bool}, +hr: {Nat.is_lt(r, 32n) == True{} : Bool})
+    -> {N.fits(4n, x) == True{} : Bool}:
+  VFT.fits4(r, x, hx, hr)
+
+# 4 * 2^k = 2^r, r = 2 + k (e2e_cap states its bounds as A.quad(2^k)).
+def quadpw(+k: Nat, +r: Nat, +er: {r == 2n+k : Nat}) -> {A.quad(F.spec_common__pow2(k)) == F.spec_common__pow2(r) : Nat}:
+  %Equal.sym(Nat, r, 2n+k, er) : {A.quad(F.spec_common__pow2(k)) == F.spec_common__pow2(_) : Nat}
+  {==}

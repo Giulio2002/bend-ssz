@@ -32,9 +32,8 @@ import ../obj/spec_arr_SyncCommittee.bend as P1_PRV
 import ../../types/schema.bend as P2_S
 import ../../spec/decoding_relation.bend as P2_Decoding
 import ../../spec/fulu_schemas.bend as P2_Spec
-import ../../spec/type_legality.bend as P2_TL
-import ../decode_complete.bend as P2_E
-import ../../proofs/fulu_legality.bend as P2_Legal
+import ../../src/schema.bend as P2_I
+import ../decode_unique.bend as P2_E
 import ../../proofs/compact/found.bend as P2_F
 import ../../types/primitive.bend as P2_P
 import ../obj/spec_fixed.bend as P2_SF
