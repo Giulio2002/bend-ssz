@@ -356,6 +356,9 @@ class VB:
             return f'VO2.vev({x}, {sx}, {d - 1}n, {r}, {okp})'
         if k in ('el', 'cl'):
             return f'VO2.v{k}({x}, {sx}, {g.dd(fs, k)}, {r}, {okp})'
+        if k == 'tl':
+            self.tlist(fs)
+            return f'vr_{fs.p}({x}, {sx}, {r}, dv, edv, {okp}, {eqp})'
         if k == 'xl':
             self.xlist(fs)
             big = g.depth(fs, k) >= RBmod().BIGD
@@ -443,6 +446,122 @@ class VB:
         w(f'  %Equal.sym(Bool, VD.root_valid({XI}, S.Repeat{{{EX}}}), True{{}}, vxval_{p}({nN}, {W}, 0n' + (', er)' if erp else ')') + ') :')
         w(f'    {{Bool.and(Nat.is_le(VD.items_length({XI}), {Lm}), _) == True{{}} : Bool}}')
         w(f'  %Equal.sym(Nat, VD.items_length({XI}), {nN}, vxlen_{p}({nN}, {W}, 0n)) :')
+        w(f'    {{Bool.and(Nat.is_le(_, {Lm}), True{{}}) == True{{}} : Bool}}')
+        w(f'  %Equal.sym(Bool, Nat.is_le({nN}, {Lm}), True{{}}, hvN) : {{Bool.and(_, True{{}}) == True{{}} : Bool}}')
+        w('  {==}')
+        w('')
+        self.out.extend(L)
+
+    def box_words(self, fs):
+        if fs.p in self.done:
+            return
+        self.done.add(fs.p)
+        RT = self.RT
+        p = fs.p
+        BR = 'O.Boxed<O.Words>'
+        L = [f'def vr_{p}(-o: {BR}, +s: S.Schema, +rep: {RT}.rep_{p}(o, s), +dv: OS.DV, +edv: {{dv == OS.DV0() : OS.DV}}, +ok: {{{RT}.ok_{p}(s, dv) == True{{}} : Bool}}, +eq: {RT}.eqs_{p}(s))',
+             f'    -> {{VD.root_valid({RT}.v_{p}(o), s) == True{{}} : Bool}}:',
+             '  (+eo, +ri) = rep',
+             f'  %Equal.sym({BR}, o, O.BSome{{{RT}.pjb_{p}(o), O.BNone{{}}}}, eo) : {{VD.root_valid({RT}.v_{p}(_), s) == True{{}} : Bool}}',
+             f'  VO.vbl({RT}.pjb_{p}(o), s, {self.okdepth(fs)}, ri, ok)', '']
+        self.out.extend(L)
+
+    def okdepth(self, fs):
+        """The depth term of a box of byte list's ok (literal, or the DV entry)."""
+        g = self.gen
+        inner = fs.inner
+        d = G.log2ceil(max(1, (inner.t.size + 31) // 32))
+        return f'OS.dv_{d}(dv)' if d >= RBmod().BIGD else f'{d}n'
+
+    def tlist(self, fs):
+        """A list of boxed Type-kind elements (root_laws_b tlist_laws, through mirrors)."""
+        if fs.p in self.done:
+            return
+        if fs.t.kind != 'list':
+            raise RA.Skip(f'{fs.p}: vector of Type-kind containers validity not yet')
+        g, RT = self.gen, self.RT
+        p = fs.p
+        BE = fs.elem
+        E = BE.inner
+        if E.kind == 'container':
+            self.box(BE, 'boxT')
+            MI = f'{RT}.M_{E.p}'
+        elif E.kind == 'bytelist':
+            self.box_words(BE)
+            MI = f'{RT}.WMr'
+        else:
+            raise RA.Skip(f'{p}: list of {BE.p} (element kind {E.kind})')
+        self.done.add(p)
+        MX = f'{RT}.MB<{MI}>'
+        Seq = f'T.{p}_Seq'
+        th = f'{RT}.th_{BE.p}'
+        xa = lambda W, i: f'{RT}.xat_{p}({W}, {i})'
+        L = []
+        w = L.append
+        w(f'# ---- {p}: list of {BE.p} ----')
+        w(f'law vtlen_{p}:')
+        w('  for +k: Nat')
+        w(f'  for +W: List<&2, {MX}>')
+        w('  for +i: Nat')
+        w(f'  {{VD.items_length({RT}.xi_{p}(k, W, i)) == k : Nat}}')
+        w(f'def vtlen_{p}(k, W, i):')
+        w('  match k:')
+        w('    case 0n: {==}')
+        w('    case 1n+ +q:')
+        w(f'      %Equal.sym(Nat, VD.items_length({RT}.xi_{p}(q, W, 1n+i)), q, vtlen_{p}(q, W, 1n+i)) : {{1n+_ == 1n+q : Nat}}')
+        w('      {==}')
+        w(f'law vtval_{p}:')
+        w('  for +k: Nat')
+        w(f'  for +W: List<&2, {MX}>')
+        w('  for +i: Nat')
+        w('  for +sE: S.Schema')
+        w(f'  for +er: {RT}.ereps_{p}(k, W, i, sE)')
+        w('  for +dv: OS.DV')
+        w('  for +edv: {dv == OS.DV0() : OS.DV}')
+        w(f'  for +ok: {{{RT}.ok_{BE.p}(sE, dv) == True{{}} : Bool}}')
+        w(f'  for +eq: {RT}.eqs_{BE.p}(sE)')
+        w(f'  {{VD.root_valid({RT}.xi_{p}(k, W, i), S.Repeat{{sE}}) == True{{}} : Bool}}')
+        w(f'def vtval_{p}(k, W, i, sE, er, dv, edv, ok, eq):')
+        w('  match k:')
+        w('    case 0n: {==}')
+        w('    case 1n+ +q:')
+        w('      (+r0, +rs) = er')
+        x0 = f'{th}({xa("W", "i")})'
+        w(f'      %Equal.sym(Bool, VD.root_valid({RT}.v_{BE.p}({x0}), sE), True{{}}, vr_{BE.p}({x0}, sE, r0, dv, edv, ok, eq)) :')
+        w(f'        {{Bool.and(_, VD.root_valid({RT}.xi_{p}(q, W, 1n+i), S.Repeat{{sE}})) == True{{}} : Bool}}')
+        w(f'      vtval_{p}(q, W, 1n+i, sE, rs, dv, edv, ok, eq)')
+        sE = 'SH.ListOf_element(s)'
+        Lm = 'SH.ListOf_limit(s)'
+        D_ = g.depth(fs, 'tl')
+        DD = f'OS.dv_{D_}(dv)' if D_ >= RBmod().BIGD else f'{D_}n'
+        Ts = f'{RT}.am_{p}(t)'
+        W = f'F.array__slots({MX}, t)'
+        nN = 'U32.to_nat(N)'
+        XI = f'{RT}.xi_{p}({nN}, {W}, 0n)'
+        w(f'def vr_{p}(-o: {Seq}, +s: S.Schema, +rep: {RT}.rep_{p}(o, s), +dv: OS.DV, +edv: {{dv == OS.DV0() : OS.DV}}, +ok: {{{RT}.ok_{p}(s, dv) == True{{}} : Bool}}, +eq: {RT}.eqs_{p}(s))')
+        w(f'    -> {{VD.root_valid({RT}.xv_{p}(o), s) == True{{}} : Bool}}:')
+        w('  (+wf, +hv) = rep')
+        w('  (+t, w1) = wf')
+        w('  (+dw, w2) = w1')
+        w('  (+N, w3) = w2')
+        w('  (+eo, w4) = w3')
+        w('  (+pf, w5) = w4')
+        w('  (+hd, w6) = w5')
+        w('  (+hn, +er) = w6')
+        rest = f'Bool.and(Lim.minimal({Lm}, {DD}), {RT}.ok_{BE.p}({sE}, dv))'
+        w(f'  +k0 = DK.and_l(SH.is_ListOf(s), {rest}, ok)')
+        w(f'  +k1 = DK.and_r(SH.is_ListOf(s), {rest}, ok)')
+        w(f'  +kel = DK.and_r(Lim.minimal({Lm}, {DD}), {RT}.ok_{BE.p}({sE}, dv), k1)')
+        w(f'  +hvN = {RT}.xhv_{p}(o, t, N, {Lm}, eo, hv)')
+        w(f'  %Equal.sym(S.Schema, s, S.ListOf{{{sE}, {Lm}}}, SH.ListOf_shape(s, k0)) :')
+        w(f'    {{VD.root_valid({RT}.xv_{p}(o), _) == True{{}} : Bool}}')
+        w(f'  %Equal.sym({Seq}, o, {Seq}{{{Ts}, N}}, eo) :')
+        w(f'    {{VD.root_valid({RT}.xv_{p}(_), S.ListOf{{{sE}, {Lm}}}) == True{{}} : Bool}}')
+        w(f'  %Equal.sym(F.array__Tree<{MX}>, {RT}.tfz_{p}({Ts}), t, {RT}.tfzam_{p}(t)) :')
+        w(f'    {{VD.root_valid(S.Sequence{{{RT}.xi_{p}({nN}, F.array__slots({MX}, _), 0n)}}, S.ListOf{{{sE}, {Lm}}}) == True{{}} : Bool}}')
+        w(f'  %Equal.sym(Bool, VD.root_valid({XI}, S.Repeat{{{sE}}}), True{{}}, vtval_{p}({nN}, {W}, 0n, {sE}, er, dv, edv, kel, eq)) :')
+        w(f'    {{Bool.and(Nat.is_le(VD.items_length({XI}), {Lm}), _) == True{{}} : Bool}}')
+        w(f'  %Equal.sym(Nat, VD.items_length({XI}), {nN}, vtlen_{p}({nN}, {W}, 0n)) :')
         w(f'    {{Bool.and(Nat.is_le(_, {Lm}), True{{}}) == True{{}} : Bool}}')
         w(f'  %Equal.sym(Bool, Nat.is_le({nN}, {Lm}), True{{}}, hvN) : {{Bool.and(_, True{{}}) == True{{}} : Bool}}')
         w('  {==}')
@@ -640,10 +759,27 @@ def emit_types(only=None):
     laws = []
     src = (OBJ / 'root_types.bend').read_text()
     status = {}
+    big = {}
     for n, t in gen.names.items():
         if only and n not in only:
             continue
         s = gen.g.shape(t)
+        bigf = OBJ / f'big_root_{n}.bend'
+        if n in RBmod().BIG_NAMES or (bigf.exists() and f'law {n}_root_correct:' in bigf.read_text()):
+            if s.kind == 'container' and not s.data:
+                saved = (list(vb.out), set(vb.done))
+                try:
+                    vb.shape(s)
+                except RA.Skip as e:
+                    vb.out, vb.done = saved
+                    status[n] = str(e)
+                    continue
+                big[n] = s
+                status[n] = 'valid (big)'
+            elif s.kind == 'bytelist':
+                big[n] = s
+                status[n] = 'valid (big)'
+            continue
         if s.kind != 'container' or s.data or f'law {n}_root_correct:' not in src:
             continue
         saved = (list(vb.out), set(vb.done))
@@ -659,11 +795,29 @@ def emit_types(only=None):
         laws.append(f'  vr_{s.p}(o, s, rep, OS.DV0(), {{==}}, RT.{n}_ok(s, es, OS.DV0(), {{==}}), RT.{n}_eqs(s, es))')
         laws.append('')
         status[n] = 'valid'
-    return '\n'.join(types_head() + vb.out + laws) + '\n', status
+    bigtext = {}
+    for n, s in big.items():
+        R = RA.qual(s.rep)
+        head = [x for x in types_head() if x.startswith('import ')] + [f'import ./big_root_{n}.bend as BR', 'import ./gvalid_types.bend as GVT', '',
+                '# GENERATED by codegen/valid_laws.py. Do not edit.',
+                f'# BIG: {n}\'s root view is structurally valid under its root law\'s hypotheses; the',
+                '# closed schema facts come from its big root law file (big_root_<Name>.bend).', '']
+        if s.kind == 'bytelist':
+            body = [f'def {n}_root_valid(-o: O.Words, +s: S.Schema, +es: {{s == Spec.{n}() : S.Schema}}, +rep: LO.rep_bl(o, s))',
+                    '    -> {VD.root_valid(S.BytesValue{WO.wview(o)}, s) == True{} : Bool}:',
+                    f'  VO.vbl(o, s, OS.dv_25(OS.DV0()), rep, BR.{n}_ok(s, es, OS.DV0(), {{==}}))']
+        else:
+            body = [f'def {n}_root_valid(-o: {R}, +s: S.Schema, +es: {{s == Spec.{n}() : S.Schema}}, +rep: RT.rep_{s.p}(o, s))',
+                    f'    -> {{VD.root_valid(RT.v_{s.p}(o), s) == True{{}} : Bool}}:',
+                    f'  GVT.vr_{s.p}(o, s, rep, OS.DV0(), {{==}}, BR.{n}_ok(s, es, OS.DV0(), {{==}}), BR.{n}_eqs(s, es))']
+        bigtext[OBJ / f'big_gvalid_{n}.bend'] = '\n'.join(head + body) + '\n'
+    return '\n'.join(types_head() + vb.out + laws) + '\n', status, bigtext
 
 
 def main():
-    outs = [(OBJ / 'gvalid_gnames.bend', emit_gnames()), (OBJ / 'gvalid_leaves.bend', emit_leaves()), (OBJ / 'gvalid_words.bend', emit_words()), (OBJ / 'gvalid_types.bend', emit_types()[0])] + sorted(emit_gbits().items())
+    global TYPES
+    TYPES = emit_types()
+    outs = [(OBJ / 'gvalid_gnames.bend', emit_gnames()), (OBJ / 'gvalid_leaves.bend', emit_leaves()), (OBJ / 'gvalid_words.bend', emit_words()), (OBJ / 'gvalid_types.bend', TYPES[0])] + ([] if '--no-big' in sys.argv else sorted(TYPES[2].items())) + sorted(emit_gbits().items())
     if '--check' in sys.argv:
         for path, text in outs:
             if not path.exists() or path.read_text() != text:
