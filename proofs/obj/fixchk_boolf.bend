@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/boolean_decode_ssz_generated.bend as boolean_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -24,7 +24,7 @@ import ./vrejb.bend as VRB
 def boolean_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}:
+    -> {boolean_r.bool_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}:
   +hx = FD.nat__lt_le_trans(x, Nat.add(x, 1n), A.quad(VB.pw(d)), VTX.ltp(x, 0n), hb)
   %Equal.sym(B.Buf & Bool, O.ok_bool(UA.BF(t, n), off), (UA.BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, e, hd, pf, hx)) :
     {_ == (UA.BF(t, n), VRB.ALLB(UW.WX(t, x, 1n))) : B.Buf & Bool}
@@ -37,7 +37,7 @@ def boolean_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e
 def boolean_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
+    -> {boolean_r.bool_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
   match b:
     case True{}: boolean_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -46,7 +46,7 @@ def boolean_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +
 def boolean_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
+    -> {boolean_r.bool_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRB.ALLB(UW.WX(t, x, 1n)))) : B.Buf & Bool}:
   boolean_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 def boolean_rj(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.length(&2, U32, bs), 1n), VRB.ALLB(bs)) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(Spec.boolean(), v) == Some{bs} : Maybe<&2, +List<U32>>}) -> Empty:

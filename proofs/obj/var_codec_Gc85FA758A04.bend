@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/BitsStruct_def_generated.bend as BitsStruct_d
+import ../../types/BitsStruct_decode_ssz_generated.bend as BitsStruct_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -41,13 +42,13 @@ import ./var_winx_Gc85FA758A04.bend as W
 def BF(t: FD.array__Tree<U32>, +n: U32) -> B.Buf: VR.BF(t, n)
 def VW(+t: FD.array__Tree<U32>, +n: U32) -> +List<U32>: VS.bt(U32.to_nat(n), F.limbs(FD.array__slots(U32, t)))
 def CHK(+t: FD.array__Tree<U32>, +n: U32) -> Bool: W.CHKw(t, 0n, 0, n)
-def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> T.Gc85FA758A04: W.OBJw(d, t, 0n, 0, n)
+def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> BitsStruct_d.Gc85FA758A04: W.OBJw(d, t, 0n, 0, n)
 def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: W.VALw(t, 0n, n)
 
 # The validator returns the buffer and CHK(t, n).
 def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.Gc85FA758A04_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
+    -> {BitsStruct_r.Gc85FA758A04_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
   W.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
 
 # Every buffer the validator accepts decodes to OBJ(d, t, n).
@@ -59,14 +60,14 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
-  {T.Gc85FA758A04_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.Gc85FA758A04>}
+  {BitsStruct_r.Gc85FA758A04_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
 def decode_accept(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.Gc85FA758A04_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.Gc85FA758A04_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.Gc85FA758A04>}
+  %Equal.sym(B.Buf & Bool, BitsStruct_r.Gc85FA758A04_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {BitsStruct_r.Gc85FA758A04_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
-    {T.Gc85FA758A04_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.Gc85FA758A04>}
-  %Equal.sym(B.Buf & T.Gc85FA758A04, T.Gc85FA758A04_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
-    {T.Gc85FA758A04_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.Gc85FA758A04>}
+    {BitsStruct_r.Gc85FA758A04_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
+  %Equal.sym(B.Buf & BitsStruct_d.Gc85FA758A04, BitsStruct_r.Gc85FA758A04_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+    {BitsStruct_r.Gc85FA758A04_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
   {==}
 
 # When the validator refuses, the decoder returns None and the buffer.
@@ -78,12 +79,12 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
-  {T.Gc85FA758A04_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.Gc85FA758A04>}
+  {BitsStruct_r.Gc85FA758A04_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.Gc85FA758A04_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.Gc85FA758A04_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.Gc85FA758A04>}
+  %Equal.sym(B.Buf & Bool, BitsStruct_r.Gc85FA758A04_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {BitsStruct_r.Gc85FA758A04_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
   %Equal.sym(Bool, CHK(t, n), False{}, hchk) :
-    {T.Gc85FA758A04_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.Gc85FA758A04>}
+    {BitsStruct_r.Gc85FA758A04_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, BitsStruct_d.Gc85FA758A04>}
   {==}
 
 # The bytes of every buffer the validator accepts are the spec encoding of VAL(t, n).

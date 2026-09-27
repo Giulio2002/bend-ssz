@@ -1,6 +1,7 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_257_def_generated.bend as bitvector_257_d
+import ../../types/bitvector_257_encode_ssz_generated.bend as bitvector_257_e
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/bit_packing.bend as Bp
@@ -17,9 +18,9 @@ import ./vbv257.bend as V
 # parts: one fixed part, the object's 33 bytes (vbv257.BYW), when the runtime's check passes (last word < 2).
 # Hand-written, from vfx_bv257's pack_app / ob1.
 
-def V257(o: T.Bitvector257) -> S.Value:
+def V257(o: bitvector_257_d.Bitvector257) -> S.Value:
   match o:
-    case T.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: S.BitsValue{List.append(&2, Bool, FB.bitsof([w0, w1, w2, w3, w4, w5, w6, w7]), [G.LB(w8)])}
+    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: S.BitsValue{List.append(&2, Bool, FB.bitsof([w0, w1, w2, w3, w4, w5, w6, w7]), [G.LB(w8)])}
 
 def c1(+b: Bool) -> {G.CHKv(U32{WCon{b, Word.zero(31n)}}) == True{} : Bool}:
   match b:
@@ -46,6 +47,6 @@ def prtw(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +
     {Codec.one(SBF.encoding(Bool.and(Nat.is_lt(0n, 257n), Nat.is_eq(_, 257n)), List.append(&2, Bool, FB.bitsof([w0, w1, w2, w3, w4, w5, w6, w7]), [G.LB(w8)])), Some{Nat.div(Nat.add(257n, 7n), 8n)}) == Some{[S.Fixed{Bp.pack(List.append(&2, Bool, FB.bitsof([w0, w1, w2, w3, w4, w5, w6, w7]), [G.LB(w8)]))}]} : Maybe<&2, +List<S.Part>>}
   {==}
 
-def prt257(+o: T.Bitvector257, +h: {T.bv257_valid(o) == True{} : Bool}) -> {Codec.parts(V257(o), S.BitVector{257n}) == Some{[S.Fixed{V.BYW(o)}]} : Maybe<&2, +List<S.Part>>}:
+def prt257(+o: bitvector_257_d.Bitvector257, +h: {bitvector_257_e.bv257_valid(o) == True{} : Bool}) -> {Codec.parts(V257(o), S.BitVector{257n}) == Some{[S.Fixed{V.BYW(o)}]} : Maybe<&2, +List<S.Part>>}:
   match o:
-    case T.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: prtw(w0, w1, w2, w3, w4, w5, w6, w7, w8, h)
+    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: prtw(w0, w1, w2, w3, w4, w5, w6, w7, w8, h)

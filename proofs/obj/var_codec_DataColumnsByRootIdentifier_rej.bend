@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluDataColumnsByRootIdentifier_def_generated.bend as FuluDataColumnsByRootIdentifier_d
+import ../../types/FuluDataColumnsByRootIdentifier_decode_ssz_generated.bend as FuluDataColumnsByRootIdentifier_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as F
@@ -304,18 +305,18 @@ def decode_reject(d, t, n, pf, hn, hchk):
 def none_go(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
     +a: Bool, +ea: {U32.is_le(36, n) == a : Bool})
-    -> {T.DataColumnsByRootIdentifier_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.DataColumnsByRootIdentifier>}:
+    -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
   match a:
     case False{}:
       %Equal.sym(Bool, U32.is_le(36, n), False{}, ea) :
-        {T.DataColumnsByRootIdentifier_built(n, T.DataColumnsByRootIdentifier_ok_len(_, DC.BF(t, n), 0, n)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.DataColumnsByRootIdentifier>}
+        {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_built(n, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_ok_len(_, DC.BF(t, n), 0, n)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}
       {==}
     case True{}:
       +hF = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(36, n), Nat.is_le(36n, U32.to_nat(n)), VU.le_u32(36, n), ea)
-      %Equal.sym(B.Buf & Bool, T.DataColumnsByRootIdentifier_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, VB.lt32(d, F.nat__lt_trans(d, 29n, 31n, hd, {==})), hpoD(d, n, hn, hF), pf)) :
-        {T.DataColumnsByRootIdentifier_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.DataColumnsByRootIdentifier>}
+      %Equal.sym(B.Buf & Bool, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, VB.lt32(d, F.nat__lt_trans(d, 29n, 31n, hd, {==})), hpoD(d, n, hn, hF), pf)) :
+        {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}
       %Equal.sym(Bool, DC.CHK(t, n), False{}, hchk) :
-        {T.DataColumnsByRootIdentifier_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.DataColumnsByRootIdentifier>}
+        {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}
       {==}
 
 # When the validator refuses, the decoder returns None and the buffer.
@@ -327,7 +328,7 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {DC.CHK(t, n) == False{} : Bool}
-  {T.DataColumnsByRootIdentifier_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.DataColumnsByRootIdentifier>}
+  {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
   none_go(d, t, n, pf, hd, hn, hchk, U32.is_le(36, n), {==})
 

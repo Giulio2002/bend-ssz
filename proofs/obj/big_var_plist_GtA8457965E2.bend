@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/proglist_uint256_decode_ssz_generated.bend as proglist_uint256_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -46,7 +46,7 @@ def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: S.Sequence{EL.it8(CQ(n), F
 law ok_eval:
   for +t: FD.array__Tree<U32>
   for +n: U32
-  {T.pl_u256_ok(BF(t, n), 0, n) == (BF(t, n), CHK(n)) : B.Buf & Bool}
+  {proglist_uint256_r.pl_u256_ok(BF(t, n), 0, n) == (BF(t, n), CHK(n)) : B.Buf & Bool}
 def ok_eval(t, n): {==}
 
 def eLc(+n: U32, +hc: {CHK(n) == True{} : Bool}) -> {U32.to_nat(n) == EL.b8(CQ(n)) : Nat}:
@@ -58,14 +58,14 @@ def eq(+n: U32, +hc: {CHK(n) == True{} : Bool}) -> {U32.to_nat(n) == A.quad(M(n)
 
 def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hc: {CHK(n) == True{} : Bool})
-    -> {T.GtA8457965E2_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Words>}:
+    -> {proglist_uint256_r.GtA8457965E2_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Words>}:
   +hz = VL.hdz29(d, n, hd, hn)
   +ez = FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.WZ(n))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.WZ(n))), VL.DZ(n), VD.wdu(VC.WZ(n)), Z.zs(B.words_depth_u(VC.WZ(n))))
-  %Equal.sym(Bool, CHK(n), True{}, hc) : {T.GtA8457965E2_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, CHK(n), True{}, hc) : {proglist_uint256_r.GtA8457965E2_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Words>}
   %Equal.sym(B.Buf & O.Words, O.copy_in(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)),
       VC.copy_in_ok(d, t, n, 0, 0n, n, VL.DZ(n), pf, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), FD.nat__le_lt_trans(VL.DZ(n), 29n, 31n, hz, {==}), ez, {==}, {==},
         VL.and3_q(n, M(n), eq(n, hc)), VL.hsg(d, n, M(n), hd, hn, eq(n, hc)), VL.hrg(d, n, hd, hn))) :
-    {T.GtA8457965E2_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Words>}
+    {proglist_uint256_r.GtA8457965E2_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
 # Every buffer the validator accepts decodes to OBJ(t, n), a copy of its words.
@@ -77,7 +77,7 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(n) == True{} : Bool}
-  {T.GtA8457965E2_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Words>}
+  {proglist_uint256_r.GtA8457965E2_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Words>}
 def decode_accept(d, t, n, pf, hd, hn, hchk): acc_go(d, t, n, pf, hd, hn, hchk)
 
 def hl_mm(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},

@@ -1065,6 +1065,8 @@ def main():
             g.shape(t)
         for nm, kids in CONTAINERS.items():
             out[fname(nm)] = win_text(CName(g, nm, names[nm], kids))
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, text in out.items() if not p.exists() or p.read_text() != text]
         if stale:

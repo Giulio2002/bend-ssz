@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_257_def_generated.bend as bitvector_257_d
+import ../../types/bitvector_257_decode_ssz_generated.bend as bitvector_257_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -88,7 +89,7 @@ def LB(v: U32) -> Bool:
   match v:
     case U32{WCon{a0, r}}: a0
 
-def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> T.Bitvector257: T.Bitvector257{UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), UR.RWN(t, Nat.add(28n, x)), O.keep(1, UR.RWN(t, Nat.add(32n, x)))}
+def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> bitvector_257_d.Bitvector257: bitvector_257_d.Bitvector257{UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), UR.RWN(t, Nat.add(28n, x)), O.keep(1, UR.RWN(t, Nat.add(32n, x)))}
 
 def ec(+d: Nat, +off: U32, +x: Nat, +c: U32, +C: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +eC: {Nat.is_eq(U32.to_nat(c), C) == True{} : Bool}, +hC: {Nat.is_lt(C, 33n) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 33n), A.quad(VB.pw(d))) == True{} : Bool})
@@ -102,40 +103,40 @@ def rm(+x: Nat, +C: Nat, +s: Nat, +hc: {Nat.is_le(Nat.add(C, s), 33n) == True{} 
 def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 33n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv257_read(UA.BF(t, n), off, 33) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}:
+    -> {bitvector_257_r.bv257_read(UA.BF(t, n), off, 33) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}:
   +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})
   +e32 = ec(d, off, x, 32, 32n, e, hd, {==}, {==}, hb)
   +hb1 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 1n), A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(32n, x), U32.to_nat(U32.add(off, 32)), Equal.sym(Nat, U32.to_nat(U32.add(off, 32)), Nat.add(32n, x), e32),
     rm(x, 32n, 1n, {==}, A.quad(VB.pw(d)), hb))
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), off), (UA.BF(t, n), UR.RWN(t, x)), UR.rwx(d, t, n, off, x, e, hd31, pf, FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 4n), A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 0n), x, FD.nat__add_zero(x), VXG.roomc(x, 33n, 0n, 4n, A.quad(VB.pw(d)), hb, {==})))) :
-    {T.bv257_r0(off, _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
+    {bitvector_257_r.bv257_r0(off, _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 4)), (UA.BF(t, n), UR.RWN(t, Nat.add(4n, x))), UR.rwx(d, t, n, U32.add(off, 4), Nat.add(4n, x), ec(d, off, x, 4, 4n, e, hd, {==}, {==}, hb), hd31, pf, rm(x, 4n, 4n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.bv257_r1(off, UR.RWN(t, x), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
+    {bitvector_257_r.bv257_r1(off, UR.RWN(t, x), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 8)), (UA.BF(t, n), UR.RWN(t, Nat.add(8n, x))), UR.rwx(d, t, n, U32.add(off, 8), Nat.add(8n, x), ec(d, off, x, 8, 8n, e, hd, {==}, {==}, hb), hd31, pf, rm(x, 8n, 4n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.bv257_r2(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
+    {bitvector_257_r.bv257_r2(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 12)), (UA.BF(t, n), UR.RWN(t, Nat.add(12n, x))), UR.rwx(d, t, n, U32.add(off, 12), Nat.add(12n, x), ec(d, off, x, 12, 12n, e, hd, {==}, {==}, hb), hd31, pf, rm(x, 12n, 4n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.bv257_r3(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
+    {bitvector_257_r.bv257_r3(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 16)), (UA.BF(t, n), UR.RWN(t, Nat.add(16n, x))), UR.rwx(d, t, n, U32.add(off, 16), Nat.add(16n, x), ec(d, off, x, 16, 16n, e, hd, {==}, {==}, hb), hd31, pf, rm(x, 16n, 4n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.bv257_r4(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
+    {bitvector_257_r.bv257_r4(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 20)), (UA.BF(t, n), UR.RWN(t, Nat.add(20n, x))), UR.rwx(d, t, n, U32.add(off, 20), Nat.add(20n, x), ec(d, off, x, 20, 20n, e, hd, {==}, {==}, hb), hd31, pf, rm(x, 20n, 4n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.bv257_r5(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
+    {bitvector_257_r.bv257_r5(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 24)), (UA.BF(t, n), UR.RWN(t, Nat.add(24n, x))), UR.rwx(d, t, n, U32.add(off, 24), Nat.add(24n, x), ec(d, off, x, 24, 24n, e, hd, {==}, {==}, hb), hd31, pf, rm(x, 24n, 4n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.bv257_r6(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
+    {bitvector_257_r.bv257_r6(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 28)), (UA.BF(t, n), UR.RWN(t, Nat.add(28n, x))), UR.rwx(d, t, n, U32.add(off, 28), Nat.add(28n, x), ec(d, off, x, 28, 28n, e, hd, {==}, {==}, hb), hd31, pf, rm(x, 28n, 4n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.bv257_r7(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
+    {bitvector_257_r.bv257_r7(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), U32.add(off, 32)), (UA.BF(t, n), VE.RV(t, n, U32.add(off, 32))), VE.rd_same(t, n, U32.add(off, 32))) :
-    {T.bv257_r8(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), UR.RWN(t, Nat.add(28n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
+    {bitvector_257_r.bv257_r8(off, UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), UR.RWN(t, Nat.add(28n, x)), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
   %Equal.sym(U32, O.keep(1, VE.RV(t, n, U32.add(off, 32))), O.keep(1, UA.RW(t, U32.add(off, 32))), VE.kv1(d, t, n, U32.add(off, 32), hd31, pf, hb1)) :
-    {(UA.BF(t, n), T.Bitvector257{UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), UR.RWN(t, Nat.add(28n, x)), _}) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
-  %Equal.sym(U32, UA.RW(t, U32.add(off, 32)), UR.RWN(t, U32.to_nat(U32.add(off, 32))), UR.rw_n(t, U32.add(off, 32))) : {(UA.BF(t, n), T.Bitvector257{UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), UR.RWN(t, Nat.add(28n, x)), O.keep(1, _)}) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
-  %Equal.sym(Nat, U32.to_nat(U32.add(off, 32)), Nat.add(32n, x), e32) : {(UA.BF(t, n), T.Bitvector257{UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), UR.RWN(t, Nat.add(28n, x)), O.keep(1, UR.RWN(t, _))}) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector257}
+    {(UA.BF(t, n), bitvector_257_d.Bitvector257{UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), UR.RWN(t, Nat.add(28n, x)), _}) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
+  %Equal.sym(U32, UA.RW(t, U32.add(off, 32)), UR.RWN(t, U32.to_nat(U32.add(off, 32))), UR.rw_n(t, U32.add(off, 32))) : {(UA.BF(t, n), bitvector_257_d.Bitvector257{UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), UR.RWN(t, Nat.add(28n, x)), O.keep(1, _)}) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
+  %Equal.sym(Nat, U32.to_nat(U32.add(off, 32)), Nat.add(32n, x), e32) : {(UA.BF(t, n), bitvector_257_d.Bitvector257{UR.RWN(t, x), UR.RWN(t, Nat.add(4n, x)), UR.RWN(t, Nat.add(8n, x)), UR.RWN(t, Nat.add(12n, x)), UR.RWN(t, Nat.add(16n, x)), UR.RWN(t, Nat.add(20n, x)), UR.RWN(t, Nat.add(24n, x)), UR.RWN(t, Nat.add(28n, x)), O.keep(1, UR.RWN(t, _))}) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_257_d.Bitvector257}
   {==}
 
 # the validator on the last byte returns CHK
 def ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 33n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv257_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), CHK(t, x)) : B.Buf & Bool}:
+    -> {bitvector_257_r.bv257_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), CHK(t, x)) : B.Buf & Bool}:
   +e32 = ec(d, off, x, 32, 32n, e, hd, {==}, {==}, hb)
   +hi = VR.hiX(d, U32.add(off, 32), Nat.add(32n, x), e32, VXG.ltx(Nat.add(32n, x), 1n, A.quad(VB.pw(d)), {==}, rm(x, 32n, 1n, {==}, A.quad(VB.pw(d)), hb)))
   %Equal.sym(B.Buf & U32, B.byte_at(UA.BF(t, n), U32.add(off, 32)), (UA.BF(t, n), VR.VX(t, U32.add(off, 32))), VR.byte_at_ok(d, t, n, U32.add(off, 32), FD.nat__lt_trans(d, 28n, 32n, hd, {==}), hi, pf)) :

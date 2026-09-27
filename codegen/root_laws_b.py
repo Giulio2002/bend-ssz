@@ -3105,6 +3105,10 @@ def main():
     if '--no-big' in sys.argv:
         bigtext = {}
     extra = [(STATE_OUT, gen.state_text)] if gen.state_text is not None else []
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    text = RR.rewire(text)
+    extra = RR.rewire_out(extra)
+    bigtext = RR.rewire_out(bigtext)
     if '--check' in sys.argv:
         for path, t in [(OUT, text)] + extra + sorted(bigtext.items()):
             if not path.exists() or path.read_text() != t:

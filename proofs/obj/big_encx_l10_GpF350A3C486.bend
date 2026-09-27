@@ -1,6 +1,10 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_encode_ssz_generated.bend as uint8_e
+import ../../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
+import ../../types/ProgressiveSingleFieldContainerTestStruct_encode_ssz_generated.bend as ProgressiveSingleFieldContainerTestStruct_e
+import ../../types/list_ProgressiveSingleFieldContainerTestStruct_10_def_generated.bend as list_ProgressiveSingleFieldContainerTestStruct_10_d
+import ../../types/list_ProgressiveSingleFieldContainerTestStruct_10_encode_ssz_generated.bend as list_ProgressiveSingleFieldContainerTestStruct_10_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -46,37 +50,37 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 
 # ---- the record GpF350A3C486 (1 bytes) at a byte position P ----
 
-def RB_GpF350A3C486(o: T.GpF350A3C486) -> +List<U32>:
+def RB_GpF350A3C486(o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486) -> +List<U32>:
   match o:
-    case T.GpF350A3C486{+f_A}: [U32.and(f_A, 255)]
-def lenr_GpF350A3C486(+o: T.GpF350A3C486) -> {List.length(&2, U32, RB_GpF350A3C486(o)) == 1n : Nat}:
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+f_A}: [U32.and(f_A, 255)]
+def lenr_GpF350A3C486(+o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486) -> {List.length(&2, U32, RB_GpF350A3C486(o)) == 1n : Nat}:
   match o:
-    case T.GpF350A3C486{+f_A}: {==}
-def PR_GpF350A3C486(o: T.GpF350A3C486, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat) -> FD.array__Tree<U32>:
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+f_A}: {==}
+def PR_GpF350A3C486(o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat) -> FD.array__Tree<U32>:
   match o:
-    case T.GpF350A3C486{+f_A}: VRB.W8P(dd, D, Nat.add(0n, P), f_A)
-def pfr_GpF350A3C486(+o: T.GpF350A3C486, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+f_A}: VRB.W8P(dd, D, Nat.add(0n, P), f_A)
+def pfr_GpF350A3C486(+o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PR_GpF350A3C486(o, dd, D, P)) == True{} : Bool}:
   match o:
-    case T.GpF350A3C486{+f_A}: VRB.w8p_perfect(dd, D, Nat.add(0n, P), f_A, pf)
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+f_A}: VRB.w8p_perfect(dd, D, Nat.add(0n, P), f_A, pf)
 
-def RTR_GpF350A3C486(+o: T.GpF350A3C486, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat) -> Data:
-  {T.GpF350A3C486_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PR_GpF350A3C486(o, dd, D, P)) : Array<U32>}
-def BYR_GpF350A3C486(+o: T.GpF350A3C486, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat) -> Data:
+def RTR_GpF350A3C486(+o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat) -> Data:
+  {ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PR_GpF350A3C486(o, dd, D, P)) : Array<U32>}
+def BYR_GpF350A3C486(+o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +dd: Nat, +D: FD.array__Tree<U32>, +P: Nat) -> Data:
   {UA.BYT(PR_GpF350A3C486(o, dd, D, P)) == UW.SPL(UA.BYT(D), P, RB_GpF350A3C486(o)) : +List<U32>}
 
 def rtc_GpF350A3C486(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +f_A: U32,
-    +rt0: {T.u8_put(FD.array__thaw(U32, D), U32.add(X, 0), f_A) == FD.array__thaw(U32, VRB.W8P(dd, D, Nat.add(0n, P), f_A)) : Array<U32>})
-    -> {T.u8_put(FD.array__thaw(U32, D), U32.add(X, 0), f_A) == FD.array__thaw(U32, VRB.W8P(dd, D, Nat.add(0n, P), f_A)) : Array<U32>}:
+    +rt0: {uint8_e.u8_put(FD.array__thaw(U32, D), U32.add(X, 0), f_A) == FD.array__thaw(U32, VRB.W8P(dd, D, Nat.add(0n, P), f_A)) : Array<U32>})
+    -> {uint8_e.u8_put(FD.array__thaw(U32, D), U32.add(X, 0), f_A) == FD.array__thaw(U32, VRB.W8P(dd, D, Nat.add(0n, P), f_A)) : Array<U32>}:
   rt0
 
 # T.GpF350A3C486_put at X (byte P) writes the record's bytes into the 1 zero bytes there.
-def putr_GpF350A3C486(+o: T.GpF350A3C486, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def putr_GpF350A3C486(+o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 1n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(1n, VS.bdr(P, UA.BYT(D))) == UW.ZB(1n) : +List<U32>})
     -> DK.P2(RTR_GpF350A3C486(o, dd, D, X, P), BYR_GpF350A3C486(o, dd, D, P)):
   match o:
-    case T.GpF350A3C486{+f_A}:
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+f_A}:
       +B = UA.BYT(D)
       +hX = VRB.hxb(P, 1n, dd, D, pf, hb)
       +ep0 = VRB.fposb(dd, X, 0, P, 1n, e, hd, hb, {==})
@@ -88,49 +92,49 @@ def putr_GpF350A3C486(+o: T.GpF350A3C486, +dd: Nat, +D: FD.array__Tree<U32>, +X:
       +rtf = rtc_GpF350A3C486(dd, D, X, P, f_A, rt0)
       (rtf, E1)
 
-def RV_GpF350A3C486(o: T.GpF350A3C486) -> S.Value:
+def RV_GpF350A3C486(o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486) -> S.Value:
   match o:
-    case T.GpF350A3C486{+f_A}: S.Sequence{S.Items{VRB.UV8(f_A), S.EmptyItems{}}}
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+f_A}: S.Sequence{S.Items{VRB.UV8(f_A), S.EmptyItems{}}}
 
 # Its parts: its bytes, one fixed part.
-def RPRF_GpF350A3C486(+o: T.GpF350A3C486) -> {Codec.parts(RV_GpF350A3C486(o), S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}) == Some{[S.Fixed{RB_GpF350A3C486(o)}]} : Maybe<&2, +List<S.Part>>}:
+def RPRF_GpF350A3C486(+o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486) -> {Codec.parts(RV_GpF350A3C486(o), S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}) == Some{[S.Fixed{RB_GpF350A3C486(o)}]} : Maybe<&2, +List<S.Part>>}:
   match o:
-    case T.GpF350A3C486{+f_A}:
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+f_A}:
       %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(S.Items{VRB.UV8(f_A), S.EmptyItems{}}, S.Chain{S.Unsigned{P.U8{}}, S.End{}}), Some{[S.Fixed{[U32.and(f_A, 255)]}]},
         F.cat_fixed(Codec.parts(VRB.UV8(f_A), S.Unsigned{P.U8{}}), [U32.and(f_A, 255)], Codec.parts(S.EmptyItems{}, S.End{}), [],
         VRB.prt8(f_A), {==})) :
         {Codec.aggregate(_, Some{1n}) == Some{[S.Fixed{[U32.and(f_A, 255)]}]} : Maybe<&2, +List<S.Part>>}
       SP2.agg([S.Fixed{[U32.and(f_A, 255)]}], 1n, 1n, {==}, SP2.bd_app([U32.and(f_A, 255)], [], VRB.dom8(f_A), {==}), {==}, {==})
 
-def domr_GpF350A3C486(+o: T.GpF350A3C486) -> {SP.bytes_domain(RB_GpF350A3C486(o)) == True{} : Bool}:
+def domr_GpF350A3C486(+o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486) -> {SP.bytes_domain(RB_GpF350A3C486(o)) == True{} : Bool}:
   match o:
-    case T.GpF350A3C486{+f_A}: SP2.bd_app([U32.and(f_A, 255)], [], VRB.dom8(f_A), {==})
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+f_A}: SP2.bd_app([U32.and(f_A, 255)], [], VRB.dom8(f_A), {==})
 
 # ---- l10_GpF350A3C486: the list's bytes, value and parts ----
 
-def EL(+A: FD.array__Tree<T.GpF350A3C486>, +j: Nat) -> T.GpF350A3C486: VRL.mget(T.GpF350A3C486, FD.spec_common__nth(T.GpF350A3C486, FD.array__slots(T.GpF350A3C486, A), j), T.GpF350A3C486_default())
+def EL(+A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +j: Nat) -> ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486: VRL.mget(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, FD.spec_common__nth(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), j), ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486_default())
 
 # the records j, j + 1, ..., j + c - 1: their bytes, values, parts, and the runtime's validity of each
-def RBS(c: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +j: Nat) -> +List<U32>:
+def RBS(c: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +j: Nat) -> +List<U32>:
   match c:
     case 0n: []
     case 1n+p: VRX.AP(RB_GpF350A3C486(EL(A, j)), RBS(p, A, 1n+j))
-def ITS(c: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +j: Nat) -> S.Value:
+def ITS(c: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +j: Nat) -> S.Value:
   match c:
     case 0n: S.EmptyItems{}
     case 1n+p: S.Items{RV_GpF350A3C486(EL(A, j)), ITS(p, A, 1n+j)}
-def BPS(c: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +j: Nat) -> +List<S.Part>:
+def BPS(c: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +j: Nat) -> +List<S.Part>:
   match c:
     case 0n: []
     case 1n+p: Con{S.Fixed{RB_GpF350A3C486(EL(A, j))}, BPS(p, A, 1n+j)}
-def VOK(c: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +j: Nat) -> Bool:
+def VOK(c: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +j: Nat) -> Bool:
   match c:
     case 0n: True{}
-    case 1n+p: Bool.and(T.GpF350A3C486_valid(EL(A, j)), VOK(p, A, 1n+j))
+    case 1n+p: Bool.and(ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_valid(EL(A, j)), VOK(p, A, 1n+j))
 
 law len_rbs:
   for +c: Nat
-  for +A: FD.array__Tree<T.GpF350A3C486>
+  for +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>
   for +j: Nat
   {List.length(&2, U32, RBS(c, A, j)) == Nat.mul(c, 1n) : Nat}
 def len_rbs(c, A, j):
@@ -145,7 +149,7 @@ def len_rbs(c, A, j):
 
 law dom_rbs:
   for +c: Nat
-  for +A: FD.array__Tree<T.GpF350A3C486>
+  for +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>
   for +j: Nat
   {SP.bytes_domain(RBS(c, A, j)) == True{} : Bool}
 def dom_rbs(c, A, j):
@@ -155,7 +159,7 @@ def dom_rbs(c, A, j):
 
 law cnt_its:
   for +c: Nat
-  for +A: FD.array__Tree<T.GpF350A3C486>
+  for +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>
   for +j: Nat
   {Codec.count(ITS(c, A, j)) == c : Nat}
 def cnt_its(c, A, j):
@@ -165,7 +169,7 @@ def cnt_its(c, A, j):
 
 law bps_all:
   for +c: Nat
-  for +A: FD.array__Tree<T.GpF350A3C486>
+  for +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>
   for +j: Nat
   {SP2.allfx(BPS(c, A, j)) == True{} : Bool}
 def bps_all(c, A, j):
@@ -175,7 +179,7 @@ def bps_all(c, A, j):
 
 law bps_cat:
   for +c: Nat
-  for +A: FD.array__Tree<T.GpF350A3C486>
+  for +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>
   for +j: Nat
   {SP2.fcat(BPS(c, A, j)) == RBS(c, A, j) : +List<U32>}
 def bps_cat(c, A, j):
@@ -185,7 +189,7 @@ def bps_cat(c, A, j):
 
 law prt_its:
   for +c: Nat
-  for +A: FD.array__Tree<T.GpF350A3C486>
+  for +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>
   for +j: Nat
   {Codec.parts(ITS(c, A, j), S.Repeat{S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}}) == Some{BPS(c, A, j)} : Maybe<&2, +List<S.Part>>}
 def prt_its(c, A, j):
@@ -197,44 +201,44 @@ def prt_its(c, A, j):
 
 # ---- l10_GpF350A3C486: the runtime's validity check ----
 
-def AG(+A: FD.array__Tree<T.GpF350A3C486>, +i: U32) -> Array<T.GpF350A3C486> & T.GpF350A3C486: Array.get(T.GpF350A3C486, FD.array__thaw(T.GpF350A3C486, A), i)
+def AG(+A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +i: U32) -> Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486: Array.get(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), i)
 
 # get i+1 of the records' array, i = j and 1 + j < 2^da
-def geti(+i: U32, +j: Nat, +da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +ei: {U32.to_nat(i) == j : Nat}, +pfA: {FD.array__perfect(T.GpF350A3C486, da, A) == True{} : Bool},
+def geti(+i: U32, +j: Nat, +da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +ei: {U32.to_nat(i) == j : Nat}, +pfA: {FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A) == True{} : Bool},
     +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +h1: {Nat.is_lt(1n+j, VB.pw(da)) == True{} : Bool})
-    -> {AG(A, U32.add(i, 1)) == (FD.array__thaw(T.GpF350A3C486, A), EL(A, 1n+j)) : Array<T.GpF350A3C486> & T.GpF350A3C486}:
+    -> {AG(A, U32.add(i, 1)) == (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, 1n+j)) : Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486}:
   +ei1 = VB.add_le_at(i, 1, j, da, ei, hda, FD.nat__lt_le(1n+j, VB.pw(da), h1))
   +hi1 = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(da)) == True{} : Bool}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1), h1)
-  +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(T.GpF350A3C486, FD.array__slots(T.GpF350A3C486, A), z) == Some{EL(A, 1n+j)} : Maybe<&2, T.GpF350A3C486>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
-    VRL.nth_get(T.GpF350A3C486, FD.array__slots(T.GpF350A3C486, A), 1n+j, T.GpF350A3C486_default(), FD.array__len_lt(T.GpF350A3C486, da, A, 1n+j, pfA, h1)))
-  FD.array__get(T.GpF350A3C486, da, A, U32.add(i, 1), EL(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
+  +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), z) == Some{EL(A, 1n+j)} : Maybe<&2, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
+    VRL.nth_get(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), 1n+j, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486_default(), FD.array__len_lt(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A, 1n+j, pfA, h1)))
+  FD.array__get(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A, U32.add(i, 1), EL(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
 
-def get0(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +pfA: {FD.array__perfect(T.GpF350A3C486, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool},
+def get0(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +pfA: {FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool},
     +h0: {Nat.is_lt(0n, VB.pw(da)) == True{} : Bool})
-    -> {AG(A, 0) == (FD.array__thaw(T.GpF350A3C486, A), EL(A, 0n)) : Array<T.GpF350A3C486> & T.GpF350A3C486}:
-  FD.array__get(T.GpF350A3C486, da, A, 0, EL(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(T.GpF350A3C486, FD.array__slots(T.GpF350A3C486, A), 0n, T.GpF350A3C486_default(), FD.array__len_lt(T.GpF350A3C486, da, A, 0n, pfA, h0)), pfA)
+    -> {AG(A, 0) == (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, 0n)) : Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486}:
+  FD.array__get(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A, 0, EL(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, FD.array__slots(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), 0n, ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486_default(), FD.array__len_lt(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A, 0n, pfA, h0)), pfA)
 
 # The validity loop from record j (index i) on, k + 1 records, all valid.
-def vax(k: Nat, +i: U32, +j: Nat, +da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +ei: {U32.to_nat(i) == j : Nat}, +h: {VOK(1n+k, A, j) == True{} : Bool},
-    +pfA: {FD.array__perfect(T.GpF350A3C486, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
-    -> {T.l10_GpF350A3C486_va(k, i, True{}, (FD.array__thaw(T.GpF350A3C486, A), EL(A, j))) == (FD.array__thaw(T.GpF350A3C486, A), True{}) : Array<T.GpF350A3C486> & Bool}:
+def vax(k: Nat, +i: U32, +j: Nat, +da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +ei: {U32.to_nat(i) == j : Nat}, +h: {VOK(1n+k, A, j) == True{} : Bool},
+    +pfA: {FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    -> {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va(k, i, True{}, (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, j))) == (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), True{}) : Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & Bool}:
   match k:
     case 0n:
-      %Equal.sym(Bool, T.GpF350A3C486_valid(EL(A, j)), True{}, and_l(T.GpF350A3C486_valid(EL(A, j)), VOK(0n, A, 1n+j), h)) : {(FD.array__thaw(T.GpF350A3C486, A), _) == (FD.array__thaw(T.GpF350A3C486, A), True{}) : Array<T.GpF350A3C486> & Bool}
+      %Equal.sym(Bool, ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_valid(EL(A, j)), True{}, and_l(ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_valid(EL(A, j)), VOK(0n, A, 1n+j), h)) : {(FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), _) == (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), True{}) : Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & Bool}
       {==}
     case 1n+ +p:
-      +hv = and_l(T.GpF350A3C486_valid(EL(A, j)), VOK(1n+p, A, 1n+j), h)
-      +hr = and_r(T.GpF350A3C486_valid(EL(A, j)), VOK(1n+p, A, 1n+j), h)
+      +hv = and_l(ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_valid(EL(A, j)), VOK(1n+p, A, 1n+j), h)
+      +hr = and_r(ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_valid(EL(A, j)), VOK(1n+p, A, 1n+j), h)
       +h1 = FD.nat__le_lt_trans(1n+j, 1n+Nat.add(p, j), VB.pw(da), Order.left_below_sum(p, j), hk)
       +ei1 = VB.add_le_at(i, 1, j, da, ei, hda, FD.nat__lt_le(1n+j, VB.pw(da), h1))
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hk)
-      %Equal.sym(Bool, T.GpF350A3C486_valid(EL(A, j)), True{}, hv) : {T.l10_GpF350A3C486_va(p, U32.add(i, 1), _, AG(A, U32.add(i, 1))) == (FD.array__thaw(T.GpF350A3C486, A), True{}) : Array<T.GpF350A3C486> & Bool}
-      %Equal.sym(Array<T.GpF350A3C486> & T.GpF350A3C486, AG(A, U32.add(i, 1)), (FD.array__thaw(T.GpF350A3C486, A), EL(A, 1n+j)), geti(i, j, da, A, ei, pfA, hda, h1)) : {T.l10_GpF350A3C486_va(p, U32.add(i, 1), True{}, _) == (FD.array__thaw(T.GpF350A3C486, A), True{}) : Array<T.GpF350A3C486> & Bool}
+      %Equal.sym(Bool, ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_valid(EL(A, j)), True{}, hv) : {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va(p, U32.add(i, 1), _, AG(A, U32.add(i, 1))) == (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), True{}) : Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & Bool}
+      %Equal.sym(Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, AG(A, U32.add(i, 1)), (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, 1n+j)), geti(i, j, da, A, ei, pfA, hda, h1)) : {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va(p, U32.add(i, 1), True{}, _) == (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), True{}) : Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & Bool}
       vax(p, U32.add(i, 1), 1n+j, da, A, ei1, hr, pfA, hda, hk2)
 
 # ---- l10_GpF350A3C486: the write loop (record j at byte P0 + 1 j) ----
 
-def WX(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +P0: Nat, +A: FD.array__Tree<T.GpF350A3C486>) -> FD.array__Tree<U32>:
+def WX(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +P0: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>) -> FD.array__Tree<U32>:
   match k:
     case 0n: PR_GpF350A3C486(EL(A, j), dd, D, VRL.pos(j, 1n, P0))
     case 1n+p: WX(p, 1n+j, dd, PR_GpF350A3C486(EL(A, j), dd, D, VRL.pos(j, 1n, P0)), P0, A)
@@ -245,7 +249,7 @@ law pfWX:
   for +dd: Nat
   for +D: FD.array__Tree<U32>
   for +P0: Nat
-  for +A: FD.array__Tree<T.GpF350A3C486>
+  for +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>
   for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
   {FD.array__perfect(U32, dd, WX(k, j, dd, D, P0, A)) == True{} : Bool}
 def pfWX(k, j, dd, D, P0, A, pf):
@@ -253,18 +257,18 @@ def pfWX(k, j, dd, D, P0, A, pf):
     case 0n: pfr_GpF350A3C486(EL(A, j), dd, D, VRL.pos(j, 1n, P0), pf)
     case 1n+ +p: pfWX(p, 1n+j, dd, PR_GpF350A3C486(EL(A, j), dd, D, VRL.pos(j, 1n, P0)), P0, A, pfr_GpF350A3C486(EL(A, j), dd, D, VRL.pos(j, 1n, P0), pf))
 
-def RTK(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<T.GpF350A3C486>) -> Data:
-  {T.l10_GpF350A3C486_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(T.GpF350A3C486, A), EL(A, j))) == (FD.array__thaw(U32, WX(k, j, dd, D, P0, A)), FD.array__thaw(T.GpF350A3C486, A)) : Array<U32> & Array<T.GpF350A3C486>}
-def BYK(k: Nat, +j: Nat, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<T.GpF350A3C486>) -> Data:
+def RTK(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>) -> Data:
+  {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, j))) == (FD.array__thaw(U32, WX(k, j, dd, D, P0, A)), FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A)) : Array<U32> & Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>}
+def BYK(k: Nat, +j: Nat, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>) -> Data:
   {UA.BYT(WX(k, j, dd, D, P0, A)) == UW.SPL(UA.BYT(D), VRL.pos(j, 1n, P0), RBS(1n+k, A, j)) : +List<U32>}
 
 # The loop from record j (index i) on, k + 1 records, into LT bytes at X (byte P0) whose last k + 1 records' bytes are zero.
-def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +LT: Nat,
+def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +LT: Nat,
     +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == P0 : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 1n), LT) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P0, LT), A.quad(VB.pw(dd))) == True{} : Bool},
     +hz: {VS.bt(Nat.mul(1n+k, 1n), VS.bdr(VRL.pos(j, 1n, P0), UA.BYT(D))) == UW.ZB(Nat.mul(1n+k, 1n)) : +List<U32>},
-    +pfA: {FD.array__perfect(T.GpF350A3C486, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    +pfA: {FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> DK.P2(RTK(k, i, j, X, P0, dd, D, A), BYK(k, j, P0, dd, D, A)):
   match k:
     case 0n:
@@ -278,7 +282,7 @@ def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tre
       +by = PB(RTR_GpF350A3C486(o, dd, D, Xj, Pj), BYR_GpF350A3C486(o, dd, D, Pj), g)
       +D1 = PR_GpF350A3C486(o, dd, D, Pj)
       +Y = RB_GpF350A3C486(o)
-      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<T.GpF350A3C486>, z => (z, FD.array__thaw(T.GpF350A3C486, A)), T.GpF350A3C486_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, z => (z, FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A)), ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
       +by0 = FD.logic__subst(+List<U32>, z => {UA.BYT(D1) == UW.SPL(UA.BYT(D), Pj, z) : +List<U32>}, Y, List.append(&2, U32, Y, []),
         Equal.sym(+List<U32>, List.append(&2, U32, Y, []), Y, VS.app_nil(Y)), by)
       (rt0, by0)
@@ -308,12 +312,12 @@ def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tre
       +ih = ptx(p, U32.add(i, 1), 1n+j, X, P0, dd, D1, da, A, LT, ei1, e, hd, pf1, hj2, hb, z1, pfA, hda, hk2)
       +rt2 = PA(RTK(p, U32.add(i, 1), 1n+j, X, P0, dd, D1, A), BYK(p, 1n+j, P0, dd, D1, A), ih)
       +by2 = PB(RTK(p, U32.add(i, 1), 1n+j, X, P0, dd, D1, A), BYK(p, 1n+j, P0, dd, D1, A), ih)
-      +ea = Equal.cong(Array<U32>, Array<U32> & Array<T.GpF350A3C486>, z => T.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, z, AG(A, U32.add(i, 1))), T.GpF350A3C486_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
-      +eb = Equal.cong(Array<T.GpF350A3C486> & T.GpF350A3C486, Array<U32> & Array<T.GpF350A3C486>, z => T.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG(A, U32.add(i, 1)), (FD.array__thaw(T.GpF350A3C486, A), EL(A, 1n+j)), eg)
-      +rt3 = Equal.trans(Array<U32> & Array<T.GpF350A3C486>, T.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, T.GpF350A3C486_put(FD.array__thaw(U32, D), Xj, o), AG(A, U32.add(i, 1))), T.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG(A, U32.add(i, 1))),
-        (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, P0, A)), FD.array__thaw(T.GpF350A3C486, A)), ea,
-        Equal.trans(Array<U32> & Array<T.GpF350A3C486>, T.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG(A, U32.add(i, 1))), T.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(T.GpF350A3C486, A), EL(A, 1n+j))),
-          (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, P0, A)), FD.array__thaw(T.GpF350A3C486, A)), eb, rt2))
+      +ea = Equal.cong(Array<U32>, Array<U32> & Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, z => list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, z, AG(A, U32.add(i, 1))), ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +eb = Equal.cong(Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, Array<U32> & Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, z => list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG(A, U32.add(i, 1)), (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, 1n+j)), eg)
+      +rt3 = Equal.trans(Array<U32> & Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, ProgressiveSingleFieldContainerTestStruct_e.GpF350A3C486_put(FD.array__thaw(U32, D), Xj, o), AG(A, U32.add(i, 1))), list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG(A, U32.add(i, 1))),
+        (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, P0, A)), FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A)), ea,
+        Equal.trans(Array<U32> & Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG(A, U32.add(i, 1))), list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, 1n+j))),
+          (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, P0, A)), FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A)), eb, rt2))
       +rest = RBS(1n+p, A, 1n+j)
       +eXn = Equal.trans(Nat, VRL.pos(1n+j, 1n, P0), Nat.add(Pj, 1n), Nat.add(Pj, VRX.LN(Y)), ey,
         Equal.cong(Nat, Nat, z => Nat.add(Pj, z), 1n, VRX.LN(Y), Equal.sym(Nat, VRX.LN(Y), 1n, lenr_GpF350A3C486(o))))
@@ -325,37 +329,37 @@ def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tre
 
 # The object's Data mirror: the tree A of depth da holding the N records.
 type MW is Data:
-  MW{da: Nat, A: FD.array__Tree<T.GpF350A3C486>, N: U32}
+  MW{da: Nat, A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, N: U32}
 
-def TH(m: MW) -> T.l10_GpF350A3C486_Seq:
+def TH(m: MW) -> list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq:
   match m:
-    case MW{+da, +A, +N}: T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}
+    case MW{+da, +A, +N}: list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}
 
 # A valid object: a perfect tree of depth < 28 with room for the N records, whose 1 N bytes fit
 # 4 2^da, at most 10 records, and whose records pass the runtime's check.
-def OKT(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32) -> Bool:
-  Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))))))
-def ok_r1(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}:
-  and_r(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))))), h)
-def ok_r2(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))) == True{} : Bool}:
-  and_r(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))), ok_r1(da, A, N, h))
-def ok_r3(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))) == True{} : Bool}:
+def OKT(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32) -> Bool:
+  Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))))))
+def ok_r1(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}:
+  and_r(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))))), h)
+def ok_r2(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))) == True{} : Bool}:
+  and_r(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))), ok_r1(da, A, N, h))
+def ok_r3(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))) == True{} : Bool}:
   and_r(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))), ok_r2(da, A, N, h))
-def ok_r4(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)) == True{} : Bool}:
+def ok_r4(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)) == True{} : Bool}:
   and_r(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)), ok_r3(da, A, N, h))
-def ok_r5(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}:
+def ok_r5(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}:
   and_r(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n), ok_r4(da, A, N, h))
-def ok_0(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Nat.is_lt(da, 28n) == True{} : Bool}:
-  and_l(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))))), h)
-def ok_1(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {FD.array__perfect(T.GpF350A3C486, da, A) == True{} : Bool}:
-  and_l(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))), ok_r1(da, A, N, h))
-def ok_2(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(da)) == True{} : Bool}:
+def ok_0(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Nat.is_lt(da, 28n) == True{} : Bool}:
+  and_l(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))))), h)
+def ok_1(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A) == True{} : Bool}:
+  and_l(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))), ok_r1(da, A, N, h))
+def ok_2(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(da)) == True{} : Bool}:
   and_l(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n))), ok_r2(da, A, N, h))
-def ok_3(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))) == True{} : Bool}:
+def ok_3(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))) == True{} : Bool}:
   and_l(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)), ok_r3(da, A, N, h))
-def ok_4(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {U32.is_le(N, 10) == True{} : Bool}:
+def ok_4(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {U32.is_le(N, 10) == True{} : Bool}:
   and_l(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n), ok_r4(da, A, N, h))
-def ok_5(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(T.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}: ok_r5(da, A, N, h)
+def ok_5(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 1n), A.quad(VB.pw(da))), Bool.and(U32.is_le(N, 10), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}: ok_r5(da, A, N, h)
 def OK(m: MW) -> Bool:
   match m:
     case MW{+da, +A, +N}: OKT(da, A, N)
@@ -369,7 +373,7 @@ def VAL(m: MW) -> S.Value:
 def SZ(m: MW) -> U32:
   match m:
     case MW{+da, +A, +N}: U32.mul(N, 1)
-def PUTLb(b: Bool, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat) -> FD.array__Tree<U32>:
+def PUTLb(b: Bool, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat) -> FD.array__Tree<U32>:
   match b:
     case True{}: D
     case False{}: WX(U32.to_nat(U32.sub(N, 1)), 0n, dd, D, P0, A)
@@ -378,23 +382,23 @@ def PUTX(m: MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array
     case MW{+da, +A, +N}: PUTLb(U32.is_eq(N, 0), A, N, dd, D, Nat.add(A.quad(q), r))
 def PADB(+r: Nat, m: MW) -> Nat: WD.PADB(r, List.length(&2, U32, ENC(m)))
 
-def pfLb(+b: Bool, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def pfLb(+b: Bool, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PUTLb(b, A, N, dd, D, P0)) == True{} : Bool}:
   match b:
     case True{}: pf
     case False{}: pfWX(U32.to_nat(U32.sub(N, 1)), 0n, dd, D, P0, A, pf)
 
 # N <= 2^da as the runtime compares it.
-def le_cap(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(da)) == True{} : Bool}:
+def le_cap(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(da)) == True{} : Bool}:
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(da)), Nat.is_le(U32.to_nat(N), U32.to_nat(FD.u32__pow2u(da))), VU.le_u32(N, FD.u32__pow2u(da))) : {_ == True{} : Bool}
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(da)), VB.pw(da), FD.u32__pow2u_value(da, FD.nat__lt_trans(da, 28n, 32n, ok_0(da, A, N, h), {==}))) : {Nat.is_le(U32.to_nat(N), _) == True{} : Bool}
   ok_2(da, A, N, h)
-def hda31(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {Nat.is_lt(da, 31n) == True{} : Bool}:
+def hda31(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {Nat.is_lt(da, 31n) == True{} : Bool}:
   FD.nat__lt_trans(da, 28n, 31n, ok_0(da, A, N, h), {==})
 
 # The runtime's validity check.
-def vnz(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKT(da, A, N) == True{} : Bool})
-    -> {T.l10_GpF350A3C486_va_fin(N, True{}, T.l10_GpF350A3C486_va_nz(b, N, FD.array__thaw(T.GpF350A3C486, A))) == (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, True{}) : T.l10_GpF350A3C486_Seq & Bool}:
+def vnz(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKT(da, A, N) == True{} : Bool})
+    -> {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va_fin(N, True{}, list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va_nz(b, N, FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A))) == (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, True{}) : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & Bool}:
   match b:
     case True{}: {==}
     case False{}:
@@ -408,28 +412,28 @@ def vnz(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +b: Bool, +eb: {U
       +hk = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)),
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
-      %Equal.sym(Array<T.GpF350A3C486> & T.GpF350A3C486, AG(A, 0), (FD.array__thaw(T.GpF350A3C486, A), EL(A, 0n)), get0(da, A, pfA, hda31(da, A, N, h), h0)) :
-        {T.l10_GpF350A3C486_va_fin(N, True{}, T.l10_GpF350A3C486_va(k, 0, True{}, _)) == (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, True{}) : T.l10_GpF350A3C486_Seq & Bool}
-      %Equal.sym(Array<T.GpF350A3C486> & Bool, T.l10_GpF350A3C486_va(k, 0, True{}, (FD.array__thaw(T.GpF350A3C486, A), EL(A, 0n))), (FD.array__thaw(T.GpF350A3C486, A), True{}), vax(k, 0, 0n, da, A, {==}, hv, pfA, hda31(da, A, N, h), hk)) :
-        {T.l10_GpF350A3C486_va_fin(N, True{}, _) == (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, True{}) : T.l10_GpF350A3C486_Seq & Bool}
+      %Equal.sym(Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, AG(A, 0), (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, 0n)), get0(da, A, pfA, hda31(da, A, N, h), h0)) :
+        {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va_fin(N, True{}, list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va(k, 0, True{}, _)) == (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, True{}) : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & Bool}
+      %Equal.sym(Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & Bool, list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va(k, 0, True{}, (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, 0n))), (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), True{}), vax(k, 0, 0n, da, A, {==}, hv, pfA, hda31(da, A, N, h), hk)) :
+        {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va_fin(N, True{}, _) == (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, True{}) : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & Bool}
       {==}
 
-def valid(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {T.l10_GpF350A3C486_valid(T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}) == (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, True{}) : T.l10_GpF350A3C486_Seq & Bool}:
-  %Equal.sym(Array<T.GpF350A3C486> & U32, Array.size(T.GpF350A3C486, FD.array__thaw(T.GpF350A3C486, A)), (FD.array__thaw(T.GpF350A3C486, A), FD.u32__pow2u(da)), FD.array__size_thaw(T.GpF350A3C486, da, A, ok_1(da, A, N, h))) :
-    {T.l10_GpF350A3C486_va_cap(Bool.or(False{}, U32.is_le(N, 10)), N, _) == (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, True{}) : T.l10_GpF350A3C486_Seq & Bool}
+def valid(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_valid(list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}) == (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, True{}) : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & Bool}:
+  %Equal.sym(Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & U32, Array.size(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A)), (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), FD.u32__pow2u(da)), FD.array__size_thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A, ok_1(da, A, N, h))) :
+    {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va_cap(Bool.or(False{}, U32.is_le(N, 10)), N, _) == (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, True{}) : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, 10), True{}, ok_4(da, A, N, h)) :
-    {T.l10_GpF350A3C486_va_go(Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(da))), N, FD.array__thaw(T.GpF350A3C486, A)) == (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, True{}) : T.l10_GpF350A3C486_Seq & Bool}
+    {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va_go(Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(da))), N, FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A)) == (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, True{}) : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(da)), True{}, le_cap(da, A, N, h)) :
-    {T.l10_GpF350A3C486_va_go(Bool.and(Bool.or(False{}, True{}), _), N, FD.array__thaw(T.GpF350A3C486, A)) == (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, True{}) : T.l10_GpF350A3C486_Seq & Bool}
+    {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_va_go(Bool.and(Bool.or(False{}, True{}), _), N, FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A)) == (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, True{}) : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & Bool}
   vnz(da, A, N, U32.is_eq(N, 0), {==}, h)
 
-def RTN(+b: Bool, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat) -> Data:
-  {T.l10_GpF350A3C486_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(T.GpF350A3C486, A)) == (FD.array__thaw(U32, PUTLb(b, A, N, dd, D, P0)), T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}) : Array<U32> & T.l10_GpF350A3C486_Seq}
-def BYN(+b: Bool, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat) -> Data:
+def RTN(+b: Bool, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat) -> Data:
+  {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A)) == (FD.array__thaw(U32, PUTLb(b, A, N, dd, D, P0)), list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}) : Array<U32> & list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq}
+def BYN(+b: Bool, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +P0: Nat) -> Data:
   {UA.BYT(PUTLb(b, A, N, dd, D, P0)) == UW.SPL(UA.BYT(D), P0, RBS(U32.to_nat(N), A, 0n)) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
+def ptnz(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
     +e: {U32.to_nat(X) == P0 : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P0, Nat.mul(U32.to_nat(N), 1n)), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(Nat.mul(U32.to_nat(N), 1n), VS.bdr(P0, UA.BYT(D))) == UW.ZB(Nat.mul(U32.to_nat(N), 1n)) : +List<U32>})
@@ -458,36 +462,36 @@ def ptnz(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +b: Bool, +eb: {
       +g = ptx(k, 0, 0n, X, P0, dd, D, da, A, LL, {==}, e, hd, pf, hj, hb, hz2, pfA, hda, hk)
       +rt = PA(RTK(k, 0, 0n, X, P0, dd, D, A), BYK(k, 0n, P0, dd, D, A), g)
       +by = PB(RTK(k, 0, 0n, X, P0, dd, D, A), BYK(k, 0n, P0, dd, D, A), g)
-      +ea = Equal.cong(Array<T.GpF350A3C486> & T.GpF350A3C486, Array<U32> & T.l10_GpF350A3C486_Seq, z => T.l10_GpF350A3C486_pt_fin(N, T.l10_GpF350A3C486_pt(k, 0, X, FD.array__thaw(U32, D), z)), AG(A, 0), (FD.array__thaw(T.GpF350A3C486, A), EL(A, 0n)), eg0)
-      +eb2 = Equal.cong(Array<U32> & Array<T.GpF350A3C486>, Array<U32> & T.l10_GpF350A3C486_Seq, z => T.l10_GpF350A3C486_pt_fin(N, z), T.l10_GpF350A3C486_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.GpF350A3C486, A), EL(A, 0n))), (FD.array__thaw(U32, WX(k, 0n, dd, D, P0, A)), FD.array__thaw(T.GpF350A3C486, A)), rt)
-      (Equal.trans(Array<U32> & T.l10_GpF350A3C486_Seq, T.l10_GpF350A3C486_pt_fin(N, T.l10_GpF350A3C486_pt(k, 0, X, FD.array__thaw(U32, D), AG(A, 0))), T.l10_GpF350A3C486_pt_fin(N, T.l10_GpF350A3C486_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.GpF350A3C486, A), EL(A, 0n)))),
-         T.l10_GpF350A3C486_pt_fin(N, (FD.array__thaw(U32, WX(k, 0n, dd, D, P0, A)), FD.array__thaw(T.GpF350A3C486, A))), ea, eb2),
+      +ea = Equal.cong(Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, Array<U32> & list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq, z => list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt_fin(N, list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt(k, 0, X, FD.array__thaw(U32, D), z)), AG(A, 0), (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, 0n)), eg0)
+      +eb2 = Equal.cong(Array<U32> & Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, Array<U32> & list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq, z => list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt_fin(N, z), list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, 0n))), (FD.array__thaw(U32, WX(k, 0n, dd, D, P0, A)), FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A)), rt)
+      (Equal.trans(Array<U32> & list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq, list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt_fin(N, list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt(k, 0, X, FD.array__thaw(U32, D), AG(A, 0))), list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt_fin(N, list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), EL(A, 0n)))),
+         list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt_fin(N, (FD.array__thaw(U32, WX(k, 0n, dd, D, P0, A)), FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A))), ea, eb2),
        FD.logic__subst(Nat, z => {UA.BYT(WX(k, 0n, dd, D, P0, A)) == UW.SPL(UA.BYT(D), P0, RBS(z, A, 0n)) : +List<U32>}, 1n+k, c, e1, by))
 
 # The hypotheses of the interface, on the mirror's pieces.
-def hbx(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +dd: Nat, +q: Nat, +r: Nat,
+def hbx(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +dd: Nat, +q: Nat, +r: Nat,
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(MW{da, A, N}))))), VB.pw(dd)) == True{} : Bool})
     -> {Nat.is_le(Nat.add(Nat.add(A.quad(q), r), Nat.mul(U32.to_nat(N), 1n)), A.quad(VB.pw(dd))) == True{} : Bool}:
   FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(Nat.add(A.quad(q), r), z), A.quad(VB.pw(dd))) == True{} : Bool}, List.length(&2, U32, ENC(MW{da, A, N})), Nat.mul(U32.to_nat(N), 1n),
     len_rbs(U32.to_nat(N), A, 0n), VRX.xend(q, r, List.length(&2, U32, ENC(MW{da, A, N})), dd, hl))
-def hzx(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +r: Nat, +P0: Nat, +D: FD.array__Tree<U32>,
+def hzx(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +r: Nat, +P0: Nat, +D: FD.array__Tree<U32>,
     +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(MW{da, A, N})), PADB(r, MW{da, A, N})), VS.bdr(P0, UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(MW{da, A, N})), PADB(r, MW{da, A, N}))) : +List<U32>})
     -> {VS.bt(Nat.mul(U32.to_nat(N), 1n), VS.bdr(P0, UA.BYT(D))) == UW.ZB(Nat.mul(U32.to_nat(N), 1n)) : +List<U32>}:
   FD.logic__subst(Nat, z => {VS.bt(z, VS.bdr(P0, UA.BYT(D))) == UW.ZB(z) : +List<U32>}, List.length(&2, U32, ENC(MW{da, A, N})), Nat.mul(U32.to_nat(N), 1n),
     len_rbs(U32.to_nat(N), A, 0n), WD.zpre(List.length(&2, U32, ENC(MW{da, A, N})), PADB(r, MW{da, A, N}), VS.bdr(P0, UA.BYT(D)), hz))
 
-def RTX(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat) -> Data:
-  {T.l10_GpF350A3C486_putk(FD.array__thaw(U32, D), X, T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, U32.mul(N, 1))) : Array<U32> & (T.l10_GpF350A3C486_Seq & U32)}
+def RTX(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat) -> Data:
+  {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_putk(FD.array__thaw(U32, D), X, list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, U32.mul(N, 1))) : Array<U32> & (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & U32)}
 
-def putk_rt(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
+def putk_rt(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
     +rtb: RTN(U32.is_eq(N, 0), A, N, dd, D, X, P0)) -> RTX(da, A, N, dd, D, X, P0):
-  %Equal.sym(T.l10_GpF350A3C486_Seq & Bool, T.l10_GpF350A3C486_valid(T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}), (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, True{}), valid(da, A, N, h)) :
-    {T.l10_GpF350A3C486_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, U32.mul(N, 1))) : Array<U32> & (T.l10_GpF350A3C486_Seq & U32)}
-  %Equal.sym(Array<U32> & T.l10_GpF350A3C486_Seq, T.l10_GpF350A3C486_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(T.GpF350A3C486, A)), (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}), rtb) :
-    {T.l10_GpF350A3C486_ptn_fin(N, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, U32.mul(N, 1))) : Array<U32> & (T.l10_GpF350A3C486_Seq & U32)}
+  %Equal.sym(list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & Bool, list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_valid(list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}), (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, True{}), valid(da, A, N, h)) :
+    {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, U32.mul(N, 1))) : Array<U32> & (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & U32)}
+  %Equal.sym(Array<U32> & list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq, list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A)), (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}), rtb) :
+    {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_ptn_fin(N, _) == (FD.array__thaw(U32, PUTLb(U32.is_eq(N, 0), A, N, dd, D, P0)), (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, U32.mul(N, 1))) : Array<U32> & (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & U32)}
   {==}
 
-def go(+da: Nat, +A: FD.array__Tree<T.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def go(+da: Nat, +A: FD.array__Tree<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(MW{da, A, N}))))), VB.pw(dd)) == True{} : Bool},
     +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(MW{da, A, N})), PADB(r, MW{da, A, N})), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(MW{da, A, N})), PADB(r, MW{da, A, N}))) : +List<U32>},
@@ -511,7 +515,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.l10_GpF350A3C486_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (T.l10_GpF350A3C486_Seq & U32)}
+  {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW{+da, +A, +N}:
@@ -573,20 +577,20 @@ def szx(m, hok):
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.l10_GpF350A3C486_size(TH(m)) == (TH(m), SZ(m)) : T.l10_GpF350A3C486_Seq & U32}
+  {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_size(TH(m)) == (TH(m), SZ(m)) : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & U32}
 def sizex(m, hok):
   match m:
     case MW{+da, +A, +N}:
-      %Equal.sym(Array<T.GpF350A3C486> & U32, Array.size(T.GpF350A3C486, FD.array__thaw(T.GpF350A3C486, A)), (FD.array__thaw(T.GpF350A3C486, A), FD.u32__pow2u(da)), FD.array__size_thaw(T.GpF350A3C486, da, A, ok_1(da, A, N, hok))) :
-        {T.l10_GpF350A3C486_szf(N, _) == (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, U32.mul(N, 1)) : T.l10_GpF350A3C486_Seq & U32}
+      %Equal.sym(Array<ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486> & U32, Array.size(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A)), (FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), FD.u32__pow2u(da)), FD.array__size_thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, da, A, ok_1(da, A, N, hok))) :
+        {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_szf(N, _) == (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, U32.mul(N, 1)) : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & U32}
       %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(da)), True{}, le_cap(da, A, N, hok)) :
-        {(T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, O.pick(_, U32.mul(N, 1), 2147483648)) == (T.l10_GpF350A3C486_Seq{FD.array__thaw(T.GpF350A3C486, A), N}, U32.mul(N, 1)) : T.l10_GpF350A3C486_Seq & U32}
+        {(list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, O.pick(_, U32.mul(N, 1), 2147483648)) == (list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq{FD.array__thaw(ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, A), N}, U32.mul(N, 1)) : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & U32}
       {==}
 
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.l10_GpF350A3C486_valid(TH(m)) == (TH(m), True{}) : T.l10_GpF350A3C486_Seq & Bool}
+  {list_ProgressiveSingleFieldContainerTestStruct_10_e.l10_GpF350A3C486_valid(TH(m)) == (TH(m), True{}) : list_ProgressiveSingleFieldContainerTestStruct_10_d.l10_GpF350A3C486_Seq & Bool}
 def validx(m, hok):
   match m:
     case MW{+da, +A, +N}: valid(da, A, N, hok)

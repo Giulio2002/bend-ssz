@@ -1,6 +1,5 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD

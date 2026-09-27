@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_decode_ssz_generated.bend as uint8_r
+import ../../types/uint8_encode_ssz_generated.bend as uint8_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -28,7 +29,7 @@ def Gt967E8D815F_spec_encode(+x0: U32)
   SF.encoding_of_parts(Spec.Gt967E8D815F(), S.UnsignedValue{P.UInt{B.byte_sel(0, x0), 0, 0, 0, 0, 0, 0, 0}}, [B.byte_sel(0, x0)], Gt967E8D815F_spec_parts(x0))
 
 def Gt967E8D815F_spec_decode(+x0: U32)
-    -> {T.Gt967E8D815F_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{B.byte_sel(0, x0)}) : B.Buf & Maybe<&1, U32>}:
+    -> {uint8_r.Gt967E8D815F_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{B.byte_sel(0, x0)}) : B.Buf & Maybe<&1, U32>}:
   {==}
 
 def Gt967E8D815F_spec_view(+x0: U32)
@@ -36,13 +37,13 @@ def Gt967E8D815F_spec_view(+x0: U32)
   {==}
 
 def Gt967E8D815F_spec_bytes(+y: U32)
-    -> {B.emit(T.Gt967E8D815F_encode(y), 0, 1) == (T.Gt967E8D815F_encode(y), [B.byte_sel(0, y)]) : B.Buf & +List<U32>}:
-  %SP2.sel_and(y) : {B.emit(T.Gt967E8D815F_encode(y), 0, 1) == (T.Gt967E8D815F_encode(y), [_]) : B.Buf & +List<U32>}
-  %SP2.or0(U32.and(y, 255)) : {B.emit(T.Gt967E8D815F_encode(y), 0, 1) == (T.Gt967E8D815F_encode(y), [B.byte_sel(0, _)]) : B.Buf & +List<U32>}
+    -> {B.emit(uint8_e.Gt967E8D815F_encode(y), 0, 1) == (uint8_e.Gt967E8D815F_encode(y), [B.byte_sel(0, y)]) : B.Buf & +List<U32>}:
+  %SP2.sel_and(y) : {B.emit(uint8_e.Gt967E8D815F_encode(y), 0, 1) == (uint8_e.Gt967E8D815F_encode(y), [_]) : B.Buf & +List<U32>}
+  %SP2.or0(U32.and(y, 255)) : {B.emit(uint8_e.Gt967E8D815F_encode(y), 0, 1) == (uint8_e.Gt967E8D815F_encode(y), [B.byte_sel(0, _)]) : B.Buf & +List<U32>}
   {==}
 
 def Gt967E8D815F_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})
-    -> {T.Gt967E8D815F_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, U32>}:
-  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {T.Gt967E8D815F_built(m, T.u8_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, U32>}
+    -> {uint8_r.Gt967E8D815F_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, U32>}:
+  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {uint8_r.Gt967E8D815F_built(m, uint8_r.u8_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, U32>}
   {==}
 

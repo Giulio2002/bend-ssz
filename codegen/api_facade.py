@@ -142,6 +142,8 @@ def main():
     no_big = '--no-big' in sys.argv
     out = outputs(no_big)
     mine = list(OUT.glob('*_proof_generated.bend')) if OUT.exists() else []
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not no_big]

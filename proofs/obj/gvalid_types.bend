@@ -3,7 +3,54 @@ import ../compact/found.bend as F
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
+import ../../types/FuluSignedVoluntaryExit_def_generated.bend as FuluSignedVoluntaryExit_d
+import ../../types/FuluSyncCommitteeContribution_def_generated.bend as FuluSyncCommitteeContribution_d
+import ../../types/FuluContributionAndProof_def_generated.bend as FuluContributionAndProof_d
+import ../../types/FuluSignedContributionAndProof_def_generated.bend as FuluSignedContributionAndProof_d
+import ../../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
+import ../../types/FuluProposerSlashing_def_generated.bend as FuluProposerSlashing_d
+import ../../types/FuluHistoricalBatch_def_generated.bend as FuluHistoricalBatch_d
+import ../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
+import ../../types/FuluAggregateAndProof_def_generated.bend as FuluAggregateAndProof_d
+import ../../types/FuluSignedAggregateAndProof_def_generated.bend as FuluSignedAggregateAndProof_d
+import ../../types/FuluPendingAttestation_def_generated.bend as FuluPendingAttestation_d
+import ../../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d
+import ../../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d
+import ../../types/FuluDepositRequest_def_generated.bend as FuluDepositRequest_d
+import ../../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
+import ../../types/FuluDepositData_def_generated.bend as FuluDepositData_d
+import ../../types/FuluDeposit_def_generated.bend as FuluDeposit_d
+import ../../types/FuluConsolidationRequest_def_generated.bend as FuluConsolidationRequest_d
+import ../../types/FuluWithdrawalRequest_def_generated.bend as FuluWithdrawalRequest_d
+import ../../types/Fulu_list_DepositRequest_8192_def_generated.bend as Fulu_list_DepositRequest_8192_d
+import ../../types/Fulu_list_WithdrawalRequest_16_def_generated.bend as Fulu_list_WithdrawalRequest_16_d
+import ../../types/Fulu_list_ConsolidationRequest_2_def_generated.bend as Fulu_list_ConsolidationRequest_2_d
+import ../../types/FuluExecutionRequests_def_generated.bend as FuluExecutionRequests_d
+import ../../types/FuluSignedBLSToExecutionChange_def_generated.bend as FuluSignedBLSToExecutionChange_d
+import ../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
+import ../../types/FuluWithdrawal_def_generated.bend as FuluWithdrawal_d
+import ../../types/Fulu_list_bytelist_1073741824_1048576_def_generated.bend as Fulu_list_bytelist_1073741824_1048576_d
+import ../../types/Fulu_list_Withdrawal_16_def_generated.bend as Fulu_list_Withdrawal_16_d
+import ../../types/FuluExecutionPayload_def_generated.bend as FuluExecutionPayload_d
+import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
+import ../../types/FuluLightClientOptimisticUpdate_def_generated.bend as FuluLightClientOptimisticUpdate_d
+import ../../types/FuluLightClientFinalityUpdate_def_generated.bend as FuluLightClientFinalityUpdate_d
+import ../../types/FuluLightClientUpdate_def_generated.bend as FuluLightClientUpdate_d
+import ../../types/FuluLightClientBootstrap_def_generated.bend as FuluLightClientBootstrap_d
+import ../../types/Fulu_list_ProposerSlashing_16_def_generated.bend as Fulu_list_ProposerSlashing_16_d
+import ../../types/Fulu_list_AttesterSlashing_1_def_generated.bend as Fulu_list_AttesterSlashing_1_d
+import ../../types/Fulu_list_Attestation_8_def_generated.bend as Fulu_list_Attestation_8_d
+import ../../types/Fulu_list_Deposit_16_def_generated.bend as Fulu_list_Deposit_16_d
+import ../../types/Fulu_list_SignedVoluntaryExit_16_def_generated.bend as Fulu_list_SignedVoluntaryExit_16_d
+import ../../types/Fulu_list_SignedBLSToExecutionChange_16_def_generated.bend as Fulu_list_SignedBLSToExecutionChange_16_d
+import ../../types/FuluBeaconBlockBody_def_generated.bend as FuluBeaconBlockBody_d
+import ../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
+import ../../types/FuluSignedBeaconBlock_def_generated.bend as FuluSignedBeaconBlock_d
+import ../../types/FuluBlobSidecar_def_generated.bend as FuluBlobSidecar_d
+import ../../types/FuluDataColumnsByRootIdentifier_def_generated.bend as FuluDataColumnsByRootIdentifier_d
+import ../../types/FuluMatrixEntry_def_generated.bend as FuluMatrixEntry_d
+import ../../types/FuluDataColumnSidecar_def_generated.bend as FuluDataColumnSidecar_d
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ./cform.bend as CF
@@ -43,13 +90,13 @@ import ./root_types.bend as RT
 # The Type-kind root views of root_types.bend are structurally valid under the
 # root laws' own hypotheses (rep_<p>(o, s), s == Spec.<Name>()).
 
-def vr_SyncCommitteeContribution_bx(-o: O.Boxed<T.SyncCommitteeContribution>, +s: S.Schema, +rep: RT.rep_SyncCommitteeContribution_bx(o, s), +eq: {s == S.Container{["slot", "beacon_block_root", "subcommittee_index", "aggregation_bits", "signature"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.BitVector{128n}, S.Chain{S.ByteVector{96n}, S.End{}}}}}}} : S.Schema}) -> {VD.root_valid(RT.v_SyncCommitteeContribution_bx(o), s) == True{} : Bool}:
+def vr_SyncCommitteeContribution_bx(-o: O.Boxed<FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, +s: S.Schema, +rep: RT.rep_SyncCommitteeContribution_bx(o, s), +eq: {s == S.Container{["slot", "beacon_block_root", "subcommittee_index", "aggregation_bits", "signature"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.BitVector{128n}, S.Chain{S.ByteVector{96n}, S.End{}}}}}}} : S.Schema}) -> {VD.root_valid(RT.v_SyncCommitteeContribution_bx(o), s) == True{} : Bool}:
   (+v, +eo) = rep
-  %Equal.sym(O.Boxed<T.SyncCommitteeContribution>, o, O.BSome{v, O.BNone{}}, eo) : {VD.root_valid(RT.v_SyncCommitteeContribution_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluSyncCommitteeContribution_d.SyncCommitteeContribution>, o, O.BSome{v, O.BNone{}}, eo) : {VD.root_valid(RT.v_SyncCommitteeContribution_bx(_), s) == True{} : Bool}
   VO.vtrans(RN.v_SyncCommitteeContribution(v), s, S.Container{["slot", "beacon_block_root", "subcommittee_index", "aggregation_bits", "signature"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.BitVector{128n}, S.Chain{S.ByteVector{96n}, S.End{}}}}}}}, eq, VN.rv_SyncCommitteeContribution(v))
 
 # ---- ContributionAndProof ----
-def vr_ContributionAndProof(-o: T.ContributionAndProof, +s: S.Schema, +rep: RT.rep_ContributionAndProof(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ContributionAndProof(s, dv) == True{} : Bool}, +ev: RT.eqs_ContributionAndProof(s))
+def vr_ContributionAndProof(-o: FuluContributionAndProof_d.ContributionAndProof, +s: S.Schema, +rep: RT.rep_ContributionAndProof(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ContributionAndProof(s, dv) == True{} : Bool}, +ev: RT.eqs_ContributionAndProof(s))
     -> {VD.root_valid(RT.v_ContributionAndProof(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+x2, +q1) = q0
@@ -64,11 +111,11 @@ def vr_ContributionAndProof(-o: T.ContributionAndProof, +s: S.Schema, +rep: RT.r
   +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), r2)
   +k3 = DK.and_l(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), r3)
   +r4 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), r3)
-  %Equal.sym(T.ContributionAndProof, o, T.ContributionAndProof{x0, RT.pj_ContributionAndProof_1(o), x2}, eo) : {VD.root_valid(RT.v_ContributionAndProof(_), s) == True{} : Bool}
+  %Equal.sym(FuluContributionAndProof_d.ContributionAndProof, o, FuluContributionAndProof_d.ContributionAndProof{x0, RT.pj_ContributionAndProof_1(o), x2}, eo) : {VD.root_valid(RT.v_ContributionAndProof(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_ContributionAndProof(T.ContributionAndProof{x0, RT.pj_ContributionAndProof_1(o), x2}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_ContributionAndProof(FuluContributionAndProof_d.ContributionAndProof{x0, RT.pj_ContributionAndProof_1(o), x2}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}}, RT.fsh_ContributionAndProof(s, dv, ok)) :
-    {VD.root_valid(RT.v_ContributionAndProof(T.ContributionAndProof{x0, RT.pj_ContributionAndProof_1(o), x2}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_ContributionAndProof(FuluContributionAndProof_d.ContributionAndProof{x0, RT.pj_ContributionAndProof_1(o), x2}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_u64(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_u64(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U64{}}, qe0, VN.rv_u64(x0))) :
     {Bool.and(_, VD.root_valid(S.Items{RT.v_SyncCommitteeContribution_bx(RT.pj_ContributionAndProof_1(o)), S.Items{RN.v_b96(x2), S.EmptyItems{}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_SyncCommitteeContribution_bx(RT.pj_ContributionAndProof_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, vr_SyncCommitteeContribution_bx(RT.pj_ContributionAndProof_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), q2, qe1)) :
@@ -78,7 +125,7 @@ def vr_ContributionAndProof(-o: T.ContributionAndProof, +s: S.Schema, +rep: RT.r
   {==}
 
 # ---- SignedContributionAndProof ----
-def vr_SignedContributionAndProof(-o: T.SignedContributionAndProof, +s: S.Schema, +rep: RT.rep_SignedContributionAndProof(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_SignedContributionAndProof(s, dv) == True{} : Bool}, +ev: RT.eqs_SignedContributionAndProof(s))
+def vr_SignedContributionAndProof(-o: FuluSignedContributionAndProof_d.SignedContributionAndProof, +s: S.Schema, +rep: RT.rep_SignedContributionAndProof(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_SignedContributionAndProof(s, dv) == True{} : Bool}, +ev: RT.eqs_SignedContributionAndProof(s))
     -> {VD.root_valid(RT.v_SignedContributionAndProof(o), s) == True{} : Bool}:
   (+x1, +q0) = rep
   (+eo, +q1) = q0
@@ -91,24 +138,24 @@ def vr_SignedContributionAndProof(-o: T.SignedContributionAndProof, +s: S.Schema
   +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_ContributionAndProof(SH.Chain_head(SH.Container_fields(s)), dv)), r2)
   +k3 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_ContributionAndProof(SH.Chain_head(SH.Container_fields(s)), dv), r3)
   +r4 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_ContributionAndProof(SH.Chain_head(SH.Container_fields(s)), dv), r3)
-  %Equal.sym(T.SignedContributionAndProof, o, T.SignedContributionAndProof{RT.pj_SignedContributionAndProof_0(o), x1}, eo) : {VD.root_valid(RT.v_SignedContributionAndProof(_), s) == True{} : Bool}
+  %Equal.sym(FuluSignedContributionAndProof_d.SignedContributionAndProof, o, FuluSignedContributionAndProof_d.SignedContributionAndProof{RT.pj_SignedContributionAndProof_0(o), x1}, eo) : {VD.root_valid(RT.v_SignedContributionAndProof(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_SignedContributionAndProof(T.SignedContributionAndProof{RT.pj_SignedContributionAndProof_0(o), x1}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_SignedContributionAndProof(FuluSignedContributionAndProof_d.SignedContributionAndProof{RT.pj_SignedContributionAndProof_0(o), x1}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}}}, RT.fsh_SignedContributionAndProof(s, dv, ok)) :
-    {VD.root_valid(RT.v_SignedContributionAndProof(T.SignedContributionAndProof{RT.pj_SignedContributionAndProof_0(o), x1}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_SignedContributionAndProof(FuluSignedContributionAndProof_d.SignedContributionAndProof{RT.pj_SignedContributionAndProof_0(o), x1}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_ContributionAndProof(RT.pj_SignedContributionAndProof_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, vr_ContributionAndProof(RT.pj_SignedContributionAndProof_0(o), SH.Chain_head(SH.Container_fields(s)), q1, dv, edv, r4, qe0)) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_b96(x1), S.EmptyItems{}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_b96(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_b96(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.ByteVector{96n}, qv0, VN.rv_b96(x1))) :
     {Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{}))) == True{} : Bool}
   {==}
 
-def vr_SignedBeaconBlockHeader_bx(-o: O.Boxed<T.SignedBeaconBlockHeader>, +s: S.Schema, +rep: RT.rep_SignedBeaconBlockHeader_bx(o, s), +eq: {s == S.Container{["message", "signature"], S.Chain{S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema}) -> {VD.root_valid(RT.v_SignedBeaconBlockHeader_bx(o), s) == True{} : Bool}:
+def vr_SignedBeaconBlockHeader_bx(-o: O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, +s: S.Schema, +rep: RT.rep_SignedBeaconBlockHeader_bx(o, s), +eq: {s == S.Container{["message", "signature"], S.Chain{S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema}) -> {VD.root_valid(RT.v_SignedBeaconBlockHeader_bx(o), s) == True{} : Bool}:
   (+v, +eo) = rep
-  %Equal.sym(O.Boxed<T.SignedBeaconBlockHeader>, o, O.BSome{v, O.BNone{}}, eo) : {VD.root_valid(RT.v_SignedBeaconBlockHeader_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader>, o, O.BSome{v, O.BNone{}}, eo) : {VD.root_valid(RT.v_SignedBeaconBlockHeader_bx(_), s) == True{} : Bool}
   VO.vtrans(RN.v_SignedBeaconBlockHeader(v), s, S.Container{["message", "signature"], S.Chain{S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, eq, VN.rv_SignedBeaconBlockHeader(v))
 
 # ---- ProposerSlashing ----
-def vr_ProposerSlashing(-o: T.ProposerSlashing, +s: S.Schema, +rep: RT.rep_ProposerSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ProposerSlashing(s, dv) == True{} : Bool}, +ev: RT.eqs_ProposerSlashing(s))
+def vr_ProposerSlashing(-o: FuluProposerSlashing_d.ProposerSlashing, +s: S.Schema, +rep: RT.rep_ProposerSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ProposerSlashing(s, dv) == True{} : Bool}, +ev: RT.eqs_ProposerSlashing(s))
     -> {VD.root_valid(RT.v_ProposerSlashing(o), s) == True{} : Bool}:
   (+eo, +q0) = rep
   (+rp0, +q1) = q0
@@ -119,11 +166,11 @@ def vr_ProposerSlashing(-o: T.ProposerSlashing, +s: S.Schema, +rep: RT.rep_Propo
   +r2 = DK.and_r(SH.is_Chain(SH.Container_fields(s)), Bool.and(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), r1)
   +k2 = DK.and_l(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), r2)
   +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), r2)
-  %Equal.sym(T.ProposerSlashing, o, T.ProposerSlashing{RT.pj_ProposerSlashing_0(o), RT.pj_ProposerSlashing_1(o)}, eo) : {VD.root_valid(RT.v_ProposerSlashing(_), s) == True{} : Bool}
+  %Equal.sym(FuluProposerSlashing_d.ProposerSlashing, o, FuluProposerSlashing_d.ProposerSlashing{RT.pj_ProposerSlashing_0(o), RT.pj_ProposerSlashing_1(o)}, eo) : {VD.root_valid(RT.v_ProposerSlashing(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_ProposerSlashing(T.ProposerSlashing{RT.pj_ProposerSlashing_0(o), RT.pj_ProposerSlashing_1(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_ProposerSlashing(FuluProposerSlashing_d.ProposerSlashing{RT.pj_ProposerSlashing_0(o), RT.pj_ProposerSlashing_1(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}}}, RT.fsh_ProposerSlashing(s, dv, ok)) :
-    {VD.root_valid(RT.v_ProposerSlashing(T.ProposerSlashing{RT.pj_ProposerSlashing_0(o), RT.pj_ProposerSlashing_1(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_ProposerSlashing(FuluProposerSlashing_d.ProposerSlashing{RT.pj_ProposerSlashing_0(o), RT.pj_ProposerSlashing_1(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_SignedBeaconBlockHeader_bx(RT.pj_ProposerSlashing_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, vr_SignedBeaconBlockHeader_bx(RT.pj_ProposerSlashing_0(o), SH.Chain_head(SH.Container_fields(s)), rp0, qe0)) :
     {Bool.and(_, VD.root_valid(S.Items{RT.v_SignedBeaconBlockHeader_bx(RT.pj_ProposerSlashing_1(o)), S.EmptyItems{}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_SignedBeaconBlockHeader_bx(RT.pj_ProposerSlashing_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, vr_SignedBeaconBlockHeader_bx(RT.pj_ProposerSlashing_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), q1, qv0)) :
@@ -131,7 +178,7 @@ def vr_ProposerSlashing(-o: T.ProposerSlashing, +s: S.Schema, +rep: RT.rep_Propo
   {==}
 
 # ---- HistoricalBatch ----
-def vr_HistoricalBatch(-o: T.HistoricalBatch, +s: S.Schema, +rep: RT.rep_HistoricalBatch(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_HistoricalBatch(s, dv) == True{} : Bool}, +ev: RT.eqs_HistoricalBatch(s))
+def vr_HistoricalBatch(-o: FuluHistoricalBatch_d.HistoricalBatch, +s: S.Schema, +rep: RT.rep_HistoricalBatch(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_HistoricalBatch(s, dv) == True{} : Bool}, +ev: RT.eqs_HistoricalBatch(s))
     -> {VD.root_valid(RT.v_HistoricalBatch(o), s) == True{} : Bool}:
   (+eo, +q0) = rep
   (+rp0, +q1) = q0
@@ -145,11 +192,11 @@ def vr_HistoricalBatch(-o: T.HistoricalBatch, +s: S.Schema, +rep: RT.rep_Histori
   +r4 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(PV.ok_pv(SH.Chain_head(SH.Container_fields(s)), 13n), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 13n)), r3)
   +k4 = DK.and_l(PV.ok_pv(SH.Chain_head(SH.Container_fields(s)), 13n), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 13n), r4)
   +r5 = DK.and_r(PV.ok_pv(SH.Chain_head(SH.Container_fields(s)), 13n), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 13n), r4)
-  %Equal.sym(T.HistoricalBatch, o, T.HistoricalBatch{RT.pj_HistoricalBatch_0(o), RT.pj_HistoricalBatch_1(o)}, eo) : {VD.root_valid(RT.v_HistoricalBatch(_), s) == True{} : Bool}
+  %Equal.sym(FuluHistoricalBatch_d.HistoricalBatch, o, FuluHistoricalBatch_d.HistoricalBatch{RT.pj_HistoricalBatch_0(o), RT.pj_HistoricalBatch_1(o)}, eo) : {VD.root_valid(RT.v_HistoricalBatch(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_HistoricalBatch(T.HistoricalBatch{RT.pj_HistoricalBatch_0(o), RT.pj_HistoricalBatch_1(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_HistoricalBatch(FuluHistoricalBatch_d.HistoricalBatch{RT.pj_HistoricalBatch_0(o), RT.pj_HistoricalBatch_1(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}}}, RT.fsh_HistoricalBatch(s, dv, ok)) :
-    {VD.root_valid(RT.v_HistoricalBatch(T.HistoricalBatch{RT.pj_HistoricalBatch_0(o), RT.pj_HistoricalBatch_1(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_HistoricalBatch(FuluHistoricalBatch_d.HistoricalBatch{RT.pj_HistoricalBatch_0(o), RT.pj_HistoricalBatch_1(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(PV.pview(RT.pj_HistoricalBatch_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vpv(RT.pj_HistoricalBatch_0(o), SH.Chain_head(SH.Container_fields(s)), 13n, rp0, k4)) :
     {Bool.and(_, VD.root_valid(S.Items{PV.pview(RT.pj_HistoricalBatch_1(o)), S.EmptyItems{}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(PV.pview(RT.pj_HistoricalBatch_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vpv(RT.pj_HistoricalBatch_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 13n, q1, r5)) :
@@ -157,7 +204,7 @@ def vr_HistoricalBatch(-o: T.HistoricalBatch, +s: S.Schema, +rep: RT.rep_Histori
   {==}
 
 # ---- Attestation ----
-def vr_Attestation(-o: T.Attestation, +s: S.Schema, +rep: RT.rep_Attestation(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Attestation(s, dv) == True{} : Bool}, +ev: RT.eqs_Attestation(s))
+def vr_Attestation(-o: FuluAttestation_d.Attestation, +s: S.Schema, +rep: RT.rep_Attestation(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Attestation(s, dv) == True{} : Bool}, +ev: RT.eqs_Attestation(s))
     -> {VD.root_valid(RT.v_Attestation(o), s) == True{} : Bool}:
   (+x1, +q0) = rep
   (+x2, +q1) = q0
@@ -177,11 +224,11 @@ def vr_Attestation(-o: T.Attestation, +s: S.Schema, +rep: RT.rep_Attestation(o, 
   +r5 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), BO.ok_bits(SH.Chain_head(SH.Container_fields(s)), 9n)), r4)
   +k5 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), BO.ok_bits(SH.Chain_head(SH.Container_fields(s)), 9n), r5)
   +r6 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), BO.ok_bits(SH.Chain_head(SH.Container_fields(s)), 9n), r5)
-  %Equal.sym(T.Attestation, o, T.Attestation{RT.pj_Attestation_0(o), x1, x2, x3}, eo) : {VD.root_valid(RT.v_Attestation(_), s) == True{} : Bool}
+  %Equal.sym(FuluAttestation_d.Attestation, o, FuluAttestation_d.Attestation{RT.pj_Attestation_0(o), x1, x2, x3}, eo) : {VD.root_valid(RT.v_Attestation(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_Attestation(T.Attestation{RT.pj_Attestation_0(o), x1, x2, x3}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_Attestation(FuluAttestation_d.Attestation{RT.pj_Attestation_0(o), x1, x2, x3}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.End{}}}}}, RT.fsh_Attestation(s, dv, ok)) :
-    {VD.root_valid(RT.v_Attestation(T.Attestation{RT.pj_Attestation_0(o), x1, x2, x3}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_Attestation(FuluAttestation_d.Attestation{RT.pj_Attestation_0(o), x1, x2, x3}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(S.BitsValue{BO.bview(RT.pj_Attestation_0(o))}, SH.Chain_head(SH.Container_fields(s))), True{}, VO.vbits(RT.pj_Attestation_0(o), SH.Chain_head(SH.Container_fields(s)), 9n, q3, r6)) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_AttestationData(x1), S.Items{RN.v_b96(x2), S.Items{RN.v_bv64(x3), S.EmptyItems{}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.End{}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_AttestationData(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_AttestationData(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Container{["slot", "index", "beacon_block_root", "source", "target"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.Container{["epoch", "root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}, S.Chain{S.Container{["epoch", "root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}, S.End{}}}}}}}, qe1, VN.rv_AttestationData(x1))) :
@@ -192,14 +239,14 @@ def vr_Attestation(-o: T.Attestation, +s: S.Schema, +rep: RT.rep_Attestation(o, 
     {Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{}))))) == True{} : Bool}
   {==}
 
-def vr_Attestation_bx(-o: O.Boxed<T.Attestation>, +s: S.Schema, +rep: RT.rep_Attestation_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Attestation(s, dv) == True{} : Bool}, +eq: RT.eqs_Attestation(s))
+def vr_Attestation_bx(-o: O.Boxed<FuluAttestation_d.Attestation>, +s: S.Schema, +rep: RT.rep_Attestation_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Attestation(s, dv) == True{} : Bool}, +eq: RT.eqs_Attestation(s))
     -> {VD.root_valid(RT.v_Attestation_bx(o), s) == True{} : Bool}:
   (+eo, +ri) = rep
-  %Equal.sym(O.Boxed<T.Attestation>, o, O.BSome{RT.pjb_Attestation_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_Attestation_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluAttestation_d.Attestation>, o, O.BSome{RT.pjb_Attestation_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_Attestation_bx(_), s) == True{} : Bool}
   vr_Attestation(RT.pjb_Attestation_bx(o), s, ri, dv, edv, ok, eq)
 
 # ---- AggregateAndProof ----
-def vr_AggregateAndProof(-o: T.AggregateAndProof, +s: S.Schema, +rep: RT.rep_AggregateAndProof(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_AggregateAndProof(s, dv) == True{} : Bool}, +ev: RT.eqs_AggregateAndProof(s))
+def vr_AggregateAndProof(-o: FuluAggregateAndProof_d.AggregateAndProof, +s: S.Schema, +rep: RT.rep_AggregateAndProof(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_AggregateAndProof(s, dv) == True{} : Bool}, +ev: RT.eqs_AggregateAndProof(s))
     -> {VD.root_valid(RT.v_AggregateAndProof(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+x2, +q1) = q0
@@ -216,11 +263,11 @@ def vr_AggregateAndProof(-o: T.AggregateAndProof, +s: S.Schema, +rep: RT.rep_Agg
   +r4 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), RT.ok_Attestation_bx(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv)), r3)
   +k4 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), RT.ok_Attestation_bx(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), r4)
   +r5 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), RT.ok_Attestation_bx(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), r4)
-  %Equal.sym(T.AggregateAndProof, o, T.AggregateAndProof{x0, RT.pj_AggregateAndProof_1(o), x2}, eo) : {VD.root_valid(RT.v_AggregateAndProof(_), s) == True{} : Bool}
+  %Equal.sym(FuluAggregateAndProof_d.AggregateAndProof, o, FuluAggregateAndProof_d.AggregateAndProof{x0, RT.pj_AggregateAndProof_1(o), x2}, eo) : {VD.root_valid(RT.v_AggregateAndProof(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_AggregateAndProof(T.AggregateAndProof{x0, RT.pj_AggregateAndProof_1(o), x2}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof{x0, RT.pj_AggregateAndProof_1(o), x2}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}}, RT.fsh_AggregateAndProof(s, dv, ok)) :
-    {VD.root_valid(RT.v_AggregateAndProof(T.AggregateAndProof{x0, RT.pj_AggregateAndProof_1(o), x2}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_AggregateAndProof(FuluAggregateAndProof_d.AggregateAndProof{x0, RT.pj_AggregateAndProof_1(o), x2}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_u64(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_u64(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U64{}}, qe0, VN.rv_u64(x0))) :
     {Bool.and(_, VD.root_valid(S.Items{RT.v_Attestation_bx(RT.pj_AggregateAndProof_1(o)), S.Items{RN.v_b96(x2), S.EmptyItems{}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_Attestation_bx(RT.pj_AggregateAndProof_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, vr_Attestation_bx(RT.pj_AggregateAndProof_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), q2, dv, edv, r5, qe1)) :
@@ -230,7 +277,7 @@ def vr_AggregateAndProof(-o: T.AggregateAndProof, +s: S.Schema, +rep: RT.rep_Agg
   {==}
 
 # ---- SignedAggregateAndProof ----
-def vr_SignedAggregateAndProof(-o: T.SignedAggregateAndProof, +s: S.Schema, +rep: RT.rep_SignedAggregateAndProof(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_SignedAggregateAndProof(s, dv) == True{} : Bool}, +ev: RT.eqs_SignedAggregateAndProof(s))
+def vr_SignedAggregateAndProof(-o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof, +s: S.Schema, +rep: RT.rep_SignedAggregateAndProof(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_SignedAggregateAndProof(s, dv) == True{} : Bool}, +ev: RT.eqs_SignedAggregateAndProof(s))
     -> {VD.root_valid(RT.v_SignedAggregateAndProof(o), s) == True{} : Bool}:
   (+x1, +q0) = rep
   (+eo, +q1) = q0
@@ -243,11 +290,11 @@ def vr_SignedAggregateAndProof(-o: T.SignedAggregateAndProof, +s: S.Schema, +rep
   +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_AggregateAndProof(SH.Chain_head(SH.Container_fields(s)), dv)), r2)
   +k3 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_AggregateAndProof(SH.Chain_head(SH.Container_fields(s)), dv), r3)
   +r4 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_AggregateAndProof(SH.Chain_head(SH.Container_fields(s)), dv), r3)
-  %Equal.sym(T.SignedAggregateAndProof, o, T.SignedAggregateAndProof{RT.pj_SignedAggregateAndProof_0(o), x1}, eo) : {VD.root_valid(RT.v_SignedAggregateAndProof(_), s) == True{} : Bool}
+  %Equal.sym(FuluSignedAggregateAndProof_d.SignedAggregateAndProof, o, FuluSignedAggregateAndProof_d.SignedAggregateAndProof{RT.pj_SignedAggregateAndProof_0(o), x1}, eo) : {VD.root_valid(RT.v_SignedAggregateAndProof(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_SignedAggregateAndProof(T.SignedAggregateAndProof{RT.pj_SignedAggregateAndProof_0(o), x1}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_SignedAggregateAndProof(FuluSignedAggregateAndProof_d.SignedAggregateAndProof{RT.pj_SignedAggregateAndProof_0(o), x1}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}}}, RT.fsh_SignedAggregateAndProof(s, dv, ok)) :
-    {VD.root_valid(RT.v_SignedAggregateAndProof(T.SignedAggregateAndProof{RT.pj_SignedAggregateAndProof_0(o), x1}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_SignedAggregateAndProof(FuluSignedAggregateAndProof_d.SignedAggregateAndProof{RT.pj_SignedAggregateAndProof_0(o), x1}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_AggregateAndProof(RT.pj_SignedAggregateAndProof_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, vr_AggregateAndProof(RT.pj_SignedAggregateAndProof_0(o), SH.Chain_head(SH.Container_fields(s)), q1, dv, edv, r4, qe0)) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_b96(x1), S.EmptyItems{}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_b96(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_b96(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.ByteVector{96n}, qv0, VN.rv_b96(x1))) :
@@ -255,7 +302,7 @@ def vr_SignedAggregateAndProof(-o: T.SignedAggregateAndProof, +s: S.Schema, +rep
   {==}
 
 # ---- PendingAttestation ----
-def vr_PendingAttestation(-o: T.PendingAttestation, +s: S.Schema, +rep: RT.rep_PendingAttestation(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_PendingAttestation(s, dv) == True{} : Bool}, +ev: RT.eqs_PendingAttestation(s))
+def vr_PendingAttestation(-o: FuluPendingAttestation_d.PendingAttestation, +s: S.Schema, +rep: RT.rep_PendingAttestation(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_PendingAttestation(s, dv) == True{} : Bool}, +ev: RT.eqs_PendingAttestation(s))
     -> {VD.root_valid(RT.v_PendingAttestation(o), s) == True{} : Bool}:
   (+x1, +q0) = rep
   (+x2, +q1) = q0
@@ -275,11 +322,11 @@ def vr_PendingAttestation(-o: T.PendingAttestation, +s: S.Schema, +rep: RT.rep_P
   +r5 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), BO.ok_bits(SH.Chain_head(SH.Container_fields(s)), 3n)), r4)
   +k5 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), BO.ok_bits(SH.Chain_head(SH.Container_fields(s)), 3n), r5)
   +r6 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), BO.ok_bits(SH.Chain_head(SH.Container_fields(s)), 3n), r5)
-  %Equal.sym(T.PendingAttestation, o, T.PendingAttestation{RT.pj_PendingAttestation_0(o), x1, x2, x3}, eo) : {VD.root_valid(RT.v_PendingAttestation(_), s) == True{} : Bool}
+  %Equal.sym(FuluPendingAttestation_d.PendingAttestation, o, FuluPendingAttestation_d.PendingAttestation{RT.pj_PendingAttestation_0(o), x1, x2, x3}, eo) : {VD.root_valid(RT.v_PendingAttestation(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_PendingAttestation(T.PendingAttestation{RT.pj_PendingAttestation_0(o), x1, x2, x3}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation{RT.pj_PendingAttestation_0(o), x1, x2, x3}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.End{}}}}}, RT.fsh_PendingAttestation(s, dv, ok)) :
-    {VD.root_valid(RT.v_PendingAttestation(T.PendingAttestation{RT.pj_PendingAttestation_0(o), x1, x2, x3}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_PendingAttestation(FuluPendingAttestation_d.PendingAttestation{RT.pj_PendingAttestation_0(o), x1, x2, x3}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(S.BitsValue{BO.bview(RT.pj_PendingAttestation_0(o))}, SH.Chain_head(SH.Container_fields(s))), True{}, VO.vbits(RT.pj_PendingAttestation_0(o), SH.Chain_head(SH.Container_fields(s)), 3n, q3, r6)) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_AttestationData(x1), S.Items{RN.v_u64(x2), S.Items{RN.v_u64(x3), S.EmptyItems{}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.End{}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_AttestationData(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_AttestationData(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Container{["slot", "index", "beacon_block_root", "source", "target"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.Container{["epoch", "root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}, S.Chain{S.Container{["epoch", "root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}, S.End{}}}}}}}, qe1, VN.rv_AttestationData(x1))) :
@@ -291,7 +338,7 @@ def vr_PendingAttestation(-o: T.PendingAttestation, +s: S.Schema, +rep: RT.rep_P
   {==}
 
 # ---- IndexedAttestation ----
-def vr_IndexedAttestation(-o: T.IndexedAttestation, +s: S.Schema, +rep: RT.rep_IndexedAttestation(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_IndexedAttestation(s, dv) == True{} : Bool}, +ev: RT.eqs_IndexedAttestation(s))
+def vr_IndexedAttestation(-o: FuluIndexedAttestation_d.IndexedAttestation, +s: S.Schema, +rep: RT.rep_IndexedAttestation(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_IndexedAttestation(s, dv) == True{} : Bool}, +ev: RT.eqs_IndexedAttestation(s))
     -> {VD.root_valid(RT.v_IndexedAttestation(o), s) == True{} : Bool}:
   (+x1, +q0) = rep
   (+x2, +q1) = q0
@@ -307,11 +354,11 @@ def vr_IndexedAttestation(-o: T.IndexedAttestation, +s: S.Schema, +rep: RT.rep_I
   +r4 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), UL.ok_ul(SH.Chain_head(SH.Container_fields(s)), OS.dv_15(dv))), r3)
   +k4 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), UL.ok_ul(SH.Chain_head(SH.Container_fields(s)), OS.dv_15(dv)), r4)
   +r5 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), UL.ok_ul(SH.Chain_head(SH.Container_fields(s)), OS.dv_15(dv)), r4)
-  %Equal.sym(T.IndexedAttestation, o, T.IndexedAttestation{RT.pj_IndexedAttestation_0(o), x1, x2}, eo) : {VD.root_valid(RT.v_IndexedAttestation(_), s) == True{} : Bool}
+  %Equal.sym(FuluIndexedAttestation_d.IndexedAttestation, o, FuluIndexedAttestation_d.IndexedAttestation{RT.pj_IndexedAttestation_0(o), x1, x2}, eo) : {VD.root_valid(RT.v_IndexedAttestation(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_IndexedAttestation(T.IndexedAttestation{RT.pj_IndexedAttestation_0(o), x1, x2}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_IndexedAttestation(FuluIndexedAttestation_d.IndexedAttestation{RT.pj_IndexedAttestation_0(o), x1, x2}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}}, RT.fsh_IndexedAttestation(s, dv, ok)) :
-    {VD.root_valid(RT.v_IndexedAttestation(T.IndexedAttestation{RT.pj_IndexedAttestation_0(o), x1, x2}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_IndexedAttestation(FuluIndexedAttestation_d.IndexedAttestation{RT.pj_IndexedAttestation_0(o), x1, x2}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(UL.uview(RT.pj_IndexedAttestation_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vul(RT.pj_IndexedAttestation_0(o), SH.Chain_head(SH.Container_fields(s)), OS.dv_15(dv), q2, r5)) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_AttestationData(x1), S.Items{RN.v_b96(x2), S.EmptyItems{}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_AttestationData(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_AttestationData(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Container{["slot", "index", "beacon_block_root", "source", "target"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.Container{["epoch", "root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}, S.Chain{S.Container{["epoch", "root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}, S.End{}}}}}}}, qe1, VN.rv_AttestationData(x1))) :
@@ -320,14 +367,14 @@ def vr_IndexedAttestation(-o: T.IndexedAttestation, +s: S.Schema, +rep: RT.rep_I
     {Bool.and(True{}, Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{})))) == True{} : Bool}
   {==}
 
-def vr_IndexedAttestation_bx(-o: O.Boxed<T.IndexedAttestation>, +s: S.Schema, +rep: RT.rep_IndexedAttestation_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_IndexedAttestation(s, dv) == True{} : Bool}, +eq: RT.eqs_IndexedAttestation(s))
+def vr_IndexedAttestation_bx(-o: O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, +s: S.Schema, +rep: RT.rep_IndexedAttestation_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_IndexedAttestation(s, dv) == True{} : Bool}, +eq: RT.eqs_IndexedAttestation(s))
     -> {VD.root_valid(RT.v_IndexedAttestation_bx(o), s) == True{} : Bool}:
   (+eo, +ri) = rep
-  %Equal.sym(O.Boxed<T.IndexedAttestation>, o, O.BSome{RT.pjb_IndexedAttestation_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_IndexedAttestation_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluIndexedAttestation_d.IndexedAttestation>, o, O.BSome{RT.pjb_IndexedAttestation_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_IndexedAttestation_bx(_), s) == True{} : Bool}
   vr_IndexedAttestation(RT.pjb_IndexedAttestation_bx(o), s, ri, dv, edv, ok, eq)
 
 # ---- AttesterSlashing ----
-def vr_AttesterSlashing(-o: T.AttesterSlashing, +s: S.Schema, +rep: RT.rep_AttesterSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_AttesterSlashing(s, dv) == True{} : Bool}, +ev: RT.eqs_AttesterSlashing(s))
+def vr_AttesterSlashing(-o: FuluAttesterSlashing_d.AttesterSlashing, +s: S.Schema, +rep: RT.rep_AttesterSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_AttesterSlashing(s, dv) == True{} : Bool}, +ev: RT.eqs_AttesterSlashing(s))
     -> {VD.root_valid(RT.v_AttesterSlashing(o), s) == True{} : Bool}:
   (+eo, +q0) = rep
   (+rp0, +q1) = q0
@@ -342,11 +389,11 @@ def vr_AttesterSlashing(-o: T.AttesterSlashing, +s: S.Schema, +rep: RT.rep_Attes
   +r4 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(RT.ok_IndexedAttestation_bx(SH.Chain_head(SH.Container_fields(s)), dv), RT.ok_IndexedAttestation_bx(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv)), r3)
   +k4 = DK.and_l(RT.ok_IndexedAttestation_bx(SH.Chain_head(SH.Container_fields(s)), dv), RT.ok_IndexedAttestation_bx(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), r4)
   +r5 = DK.and_r(RT.ok_IndexedAttestation_bx(SH.Chain_head(SH.Container_fields(s)), dv), RT.ok_IndexedAttestation_bx(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), r4)
-  %Equal.sym(T.AttesterSlashing, o, T.AttesterSlashing{RT.pj_AttesterSlashing_0(o), RT.pj_AttesterSlashing_1(o)}, eo) : {VD.root_valid(RT.v_AttesterSlashing(_), s) == True{} : Bool}
+  %Equal.sym(FuluAttesterSlashing_d.AttesterSlashing, o, FuluAttesterSlashing_d.AttesterSlashing{RT.pj_AttesterSlashing_0(o), RT.pj_AttesterSlashing_1(o)}, eo) : {VD.root_valid(RT.v_AttesterSlashing(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_AttesterSlashing(T.AttesterSlashing{RT.pj_AttesterSlashing_0(o), RT.pj_AttesterSlashing_1(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_AttesterSlashing(FuluAttesterSlashing_d.AttesterSlashing{RT.pj_AttesterSlashing_0(o), RT.pj_AttesterSlashing_1(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}}}, RT.fsh_AttesterSlashing(s, dv, ok)) :
-    {VD.root_valid(RT.v_AttesterSlashing(T.AttesterSlashing{RT.pj_AttesterSlashing_0(o), RT.pj_AttesterSlashing_1(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_AttesterSlashing(FuluAttesterSlashing_d.AttesterSlashing{RT.pj_AttesterSlashing_0(o), RT.pj_AttesterSlashing_1(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_IndexedAttestation_bx(RT.pj_AttesterSlashing_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, vr_IndexedAttestation_bx(RT.pj_AttesterSlashing_0(o), SH.Chain_head(SH.Container_fields(s)), rp0, dv, edv, k4, qe0)) :
     {Bool.and(_, VD.root_valid(S.Items{RT.v_IndexedAttestation_bx(RT.pj_AttesterSlashing_1(o)), S.EmptyItems{}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_IndexedAttestation_bx(RT.pj_AttesterSlashing_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, vr_IndexedAttestation_bx(RT.pj_AttesterSlashing_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), q1, dv, edv, r5, qv0)) :
@@ -354,7 +401,7 @@ def vr_AttesterSlashing(-o: T.AttesterSlashing, +s: S.Schema, +rep: RT.rep_Attes
   {==}
 
 # ---- SyncCommittee ----
-def vr_SyncCommittee(-o: T.SyncCommittee, +s: S.Schema, +rep: RT.rep_SyncCommittee(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_SyncCommittee(s, dv) == True{} : Bool}, +ev: RT.eqs_SyncCommittee(s))
+def vr_SyncCommittee(-o: FuluSyncCommittee_d.SyncCommittee, +s: S.Schema, +rep: RT.rep_SyncCommittee(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_SyncCommittee(s, dv) == True{} : Bool}, +ev: RT.eqs_SyncCommittee(s))
     -> {VD.root_valid(RT.v_SyncCommittee(o), s) == True{} : Bool}:
   (+x1, +q0) = rep
   (+eo, +q1) = q0
@@ -366,24 +413,24 @@ def vr_SyncCommittee(-o: T.SyncCommittee, +s: S.Schema, +rep: RT.rep_SyncCommitt
   +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), E48.ok_ev(SH.Chain_head(SH.Container_fields(s)), 9n)), r2)
   +k3 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), E48.ok_ev(SH.Chain_head(SH.Container_fields(s)), 9n), r3)
   +r4 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), E48.ok_ev(SH.Chain_head(SH.Container_fields(s)), 9n), r3)
-  %Equal.sym(T.SyncCommittee, o, T.SyncCommittee{RT.pj_SyncCommittee_0(o), x1}, eo) : {VD.root_valid(RT.v_SyncCommittee(_), s) == True{} : Bool}
+  %Equal.sym(FuluSyncCommittee_d.SyncCommittee, o, FuluSyncCommittee_d.SyncCommittee{RT.pj_SyncCommittee_0(o), x1}, eo) : {VD.root_valid(RT.v_SyncCommittee(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_SyncCommittee(T.SyncCommittee{RT.pj_SyncCommittee_0(o), x1}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_SyncCommittee(FuluSyncCommittee_d.SyncCommittee{RT.pj_SyncCommittee_0(o), x1}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}}}, RT.fsh_SyncCommittee(s, dv, ok)) :
-    {VD.root_valid(RT.v_SyncCommittee(T.SyncCommittee{RT.pj_SyncCommittee_0(o), x1}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_SyncCommittee(FuluSyncCommittee_d.SyncCommittee{RT.pj_SyncCommittee_0(o), x1}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(E48.eview(RT.pj_SyncCommittee_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, VO2.vev(RT.pj_SyncCommittee_0(o), SH.Chain_head(SH.Container_fields(s)), 8n, q1, r4)) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_b48(x1), S.EmptyItems{}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_b48(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_b48(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.ByteVector{48n}, ev, VN.rv_b48(x1))) :
     {Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{}))) == True{} : Bool}
   {==}
 
-def vr_DepositData_bx(-o: O.Boxed<T.DepositData>, +s: S.Schema, +rep: RT.rep_DepositData_bx(o, s), +eq: {s == S.Container{["pubkey", "withdrawal_credentials", "amount", "signature"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}} : S.Schema}) -> {VD.root_valid(RT.v_DepositData_bx(o), s) == True{} : Bool}:
+def vr_DepositData_bx(-o: O.Boxed<FuluDepositData_d.DepositData>, +s: S.Schema, +rep: RT.rep_DepositData_bx(o, s), +eq: {s == S.Container{["pubkey", "withdrawal_credentials", "amount", "signature"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}} : S.Schema}) -> {VD.root_valid(RT.v_DepositData_bx(o), s) == True{} : Bool}:
   (+v, +eo) = rep
-  %Equal.sym(O.Boxed<T.DepositData>, o, O.BSome{v, O.BNone{}}, eo) : {VD.root_valid(RT.v_DepositData_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluDepositData_d.DepositData>, o, O.BSome{v, O.BNone{}}, eo) : {VD.root_valid(RT.v_DepositData_bx(_), s) == True{} : Bool}
   VO.vtrans(RN.v_DepositData(v), s, S.Container{["pubkey", "withdrawal_credentials", "amount", "signature"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}}, eq, VN.rv_DepositData(v))
 
 # ---- Deposit ----
-def vr_Deposit(-o: T.Deposit, +s: S.Schema, +rep: RT.rep_Deposit(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Deposit(s, dv) == True{} : Bool}, +ev: RT.eqs_Deposit(s))
+def vr_Deposit(-o: FuluDeposit_d.Deposit, +s: S.Schema, +rep: RT.rep_Deposit(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Deposit(s, dv) == True{} : Bool}, +ev: RT.eqs_Deposit(s))
     -> {VD.root_valid(RT.v_Deposit(o), s) == True{} : Bool}:
   (+eo, +q0) = rep
   (+rp0, +q1) = q0
@@ -395,11 +442,11 @@ def vr_Deposit(-o: T.Deposit, +s: S.Schema, +rep: RT.rep_Deposit(o, s), +dv: OS.
   +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), PV.ok_pv(SH.Chain_head(SH.Container_fields(s)), 6n)), r2)
   +k3 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), PV.ok_pv(SH.Chain_head(SH.Container_fields(s)), 6n), r3)
   +r4 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), PV.ok_pv(SH.Chain_head(SH.Container_fields(s)), 6n), r3)
-  %Equal.sym(T.Deposit, o, T.Deposit{RT.pj_Deposit_0(o), RT.pj_Deposit_1(o)}, eo) : {VD.root_valid(RT.v_Deposit(_), s) == True{} : Bool}
+  %Equal.sym(FuluDeposit_d.Deposit, o, FuluDeposit_d.Deposit{RT.pj_Deposit_0(o), RT.pj_Deposit_1(o)}, eo) : {VD.root_valid(RT.v_Deposit(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_Deposit(T.Deposit{RT.pj_Deposit_0(o), RT.pj_Deposit_1(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_Deposit(FuluDeposit_d.Deposit{RT.pj_Deposit_0(o), RT.pj_Deposit_1(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}}}, RT.fsh_Deposit(s, dv, ok)) :
-    {VD.root_valid(RT.v_Deposit(T.Deposit{RT.pj_Deposit_0(o), RT.pj_Deposit_1(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_Deposit(FuluDeposit_d.Deposit{RT.pj_Deposit_0(o), RT.pj_Deposit_1(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(PV.pview(RT.pj_Deposit_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vpv(RT.pj_Deposit_0(o), SH.Chain_head(SH.Container_fields(s)), 6n, rp0, r4)) :
     {Bool.and(_, VD.root_valid(S.Items{RT.v_DepositData_bx(RT.pj_Deposit_1(o)), S.EmptyItems{}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_DepositData_bx(RT.pj_Deposit_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, vr_DepositData_bx(RT.pj_Deposit_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), q1, ev)) :
@@ -409,7 +456,7 @@ def vr_Deposit(-o: T.Deposit, +s: S.Schema, +rep: RT.rep_Deposit(o, s), +dv: OS.
 # ---- l8192_DepositRequest: list of DepositRequest ----
 law vxlen_l8192_DepositRequest:
   for +k: Nat
-  for +W: List<&2, T.DepositRequest>
+  for +W: List<&2, FuluDepositRequest_d.DepositRequest>
   for +i: Nat
   {VD.items_length(RT.xi_l8192_DepositRequest(k, W, i)) == k : Nat}
 def vxlen_l8192_DepositRequest(k, W, i):
@@ -420,7 +467,7 @@ def vxlen_l8192_DepositRequest(k, W, i):
       {==}
 law vxval_l8192_DepositRequest:
   for +k: Nat
-  for +W: List<&2, T.DepositRequest>
+  for +W: List<&2, FuluDepositRequest_d.DepositRequest>
   for +i: Nat
   {VD.root_valid(RT.xi_l8192_DepositRequest(k, W, i), S.Repeat{S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}}) == True{} : Bool}
 def vxval_l8192_DepositRequest(k, W, i):
@@ -430,7 +477,7 @@ def vxval_l8192_DepositRequest(k, W, i):
       %Equal.sym(Bool, VD.root_valid(RN.v_DepositRequest(RT.xat_l8192_DepositRequest(W, i)), S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}), True{}, VN.rv_DepositRequest(RT.xat_l8192_DepositRequest(W, i))) :
         {Bool.and(_, VD.root_valid(RT.xi_l8192_DepositRequest(q, W, 1n+i), S.Repeat{S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}})) == True{} : Bool}
       vxval_l8192_DepositRequest(q, W, 1n+i)
-def vr_l8192_DepositRequest(-o: T.l8192_DepositRequest_Seq, +s: S.Schema, +rep: RT.rep_l8192_DepositRequest(o, s), +ok: {RT.ok_l8192_DepositRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}} : S.Schema})
+def vr_l8192_DepositRequest(-o: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq, +s: S.Schema, +rep: RT.rep_l8192_DepositRequest(o, s), +ok: {RT.ok_l8192_DepositRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}} : S.Schema})
     -> {VD.root_valid(RT.xv_l8192_DepositRequest(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -445,13 +492,13 @@ def vr_l8192_DepositRequest(-o: T.l8192_DepositRequest_Seq, +s: S.Schema, +rep: 
     {VD.root_valid(RT.xv_l8192_DepositRequest(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}, eq) :
     {VD.root_valid(RT.xv_l8192_DepositRequest(o), S.ListOf{_, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(T.l8192_DepositRequest_Seq, o, T.l8192_DepositRequest_Seq{F.array__thaw(T.DepositRequest, t), N}, eo) :
+  %Equal.sym(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq, o, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, t), N}, eo) :
     {VD.root_valid(RT.xv_l8192_DepositRequest(_), S.ListOf{S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<T.DepositRequest>, F.array__freeze(T.DepositRequest, F.array__thaw(T.DepositRequest, t)), t, F.array__freeze_thaw(T.DepositRequest, t)) :
-    {VD.root_valid(S.Sequence{RT.xi_l8192_DepositRequest(U32.to_nat(N), F.array__slots(T.DepositRequest, _), 0n)}, S.ListOf{S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(Bool, VD.root_valid(RT.xi_l8192_DepositRequest(U32.to_nat(N), F.array__slots(T.DepositRequest, t), 0n), S.Repeat{S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}}), True{}, vxval_l8192_DepositRequest(U32.to_nat(N), F.array__slots(T.DepositRequest, t), 0n)) :
-    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l8192_DepositRequest(U32.to_nat(N), F.array__slots(T.DepositRequest, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
-  %Equal.sym(Nat, VD.items_length(RT.xi_l8192_DepositRequest(U32.to_nat(N), F.array__slots(T.DepositRequest, t), 0n)), U32.to_nat(N), vxlen_l8192_DepositRequest(U32.to_nat(N), F.array__slots(T.DepositRequest, t), 0n)) :
+  %Equal.sym(F.array__Tree<FuluDepositRequest_d.DepositRequest>, F.array__freeze(FuluDepositRequest_d.DepositRequest, F.array__thaw(FuluDepositRequest_d.DepositRequest, t)), t, F.array__freeze_thaw(FuluDepositRequest_d.DepositRequest, t)) :
+    {VD.root_valid(S.Sequence{RT.xi_l8192_DepositRequest(U32.to_nat(N), F.array__slots(FuluDepositRequest_d.DepositRequest, _), 0n)}, S.ListOf{S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
+  %Equal.sym(Bool, VD.root_valid(RT.xi_l8192_DepositRequest(U32.to_nat(N), F.array__slots(FuluDepositRequest_d.DepositRequest, t), 0n), S.Repeat{S.Container{["pubkey", "withdrawal_credentials", "amount", "signature", "index"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}}), True{}, vxval_l8192_DepositRequest(U32.to_nat(N), F.array__slots(FuluDepositRequest_d.DepositRequest, t), 0n)) :
+    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l8192_DepositRequest(U32.to_nat(N), F.array__slots(FuluDepositRequest_d.DepositRequest, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
+  %Equal.sym(Nat, VD.items_length(RT.xi_l8192_DepositRequest(U32.to_nat(N), F.array__slots(FuluDepositRequest_d.DepositRequest, t), 0n)), U32.to_nat(N), vxlen_l8192_DepositRequest(U32.to_nat(N), F.array__slots(FuluDepositRequest_d.DepositRequest, t), 0n)) :
     {Bool.and(Nat.is_le(_, SH.ListOf_limit(s)), True{}) == True{} : Bool}
   %Equal.sym(Bool, Nat.is_le(U32.to_nat(N), SH.ListOf_limit(s)), True{}, hvN) : {Bool.and(_, True{}) == True{} : Bool}
   {==}
@@ -459,7 +506,7 @@ def vr_l8192_DepositRequest(-o: T.l8192_DepositRequest_Seq, +s: S.Schema, +rep: 
 # ---- l16_WithdrawalRequest: list of WithdrawalRequest ----
 law vxlen_l16_WithdrawalRequest:
   for +k: Nat
-  for +W: List<&2, T.WithdrawalRequest>
+  for +W: List<&2, FuluWithdrawalRequest_d.WithdrawalRequest>
   for +i: Nat
   {VD.items_length(RT.xi_l16_WithdrawalRequest(k, W, i)) == k : Nat}
 def vxlen_l16_WithdrawalRequest(k, W, i):
@@ -470,7 +517,7 @@ def vxlen_l16_WithdrawalRequest(k, W, i):
       {==}
 law vxval_l16_WithdrawalRequest:
   for +k: Nat
-  for +W: List<&2, T.WithdrawalRequest>
+  for +W: List<&2, FuluWithdrawalRequest_d.WithdrawalRequest>
   for +i: Nat
   {VD.root_valid(RT.xi_l16_WithdrawalRequest(k, W, i), S.Repeat{S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}) == True{} : Bool}
 def vxval_l16_WithdrawalRequest(k, W, i):
@@ -480,7 +527,7 @@ def vxval_l16_WithdrawalRequest(k, W, i):
       %Equal.sym(Bool, VD.root_valid(RN.v_WithdrawalRequest(RT.xat_l16_WithdrawalRequest(W, i)), S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}), True{}, VN.rv_WithdrawalRequest(RT.xat_l16_WithdrawalRequest(W, i))) :
         {Bool.and(_, VD.root_valid(RT.xi_l16_WithdrawalRequest(q, W, 1n+i), S.Repeat{S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}})) == True{} : Bool}
       vxval_l16_WithdrawalRequest(q, W, 1n+i)
-def vr_l16_WithdrawalRequest(-o: T.l16_WithdrawalRequest_Seq, +s: S.Schema, +rep: RT.rep_l16_WithdrawalRequest(o, s), +ok: {RT.ok_l16_WithdrawalRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}} : S.Schema})
+def vr_l16_WithdrawalRequest(-o: Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq, +s: S.Schema, +rep: RT.rep_l16_WithdrawalRequest(o, s), +ok: {RT.ok_l16_WithdrawalRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}} : S.Schema})
     -> {VD.root_valid(RT.xv_l16_WithdrawalRequest(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -495,13 +542,13 @@ def vr_l16_WithdrawalRequest(-o: T.l16_WithdrawalRequest_Seq, +s: S.Schema, +rep
     {VD.root_valid(RT.xv_l16_WithdrawalRequest(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}, eq) :
     {VD.root_valid(RT.xv_l16_WithdrawalRequest(o), S.ListOf{_, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(T.l16_WithdrawalRequest_Seq, o, T.l16_WithdrawalRequest_Seq{F.array__thaw(T.WithdrawalRequest, t), N}, eo) :
+  %Equal.sym(Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq, o, Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), N}, eo) :
     {VD.root_valid(RT.xv_l16_WithdrawalRequest(_), S.ListOf{S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<T.WithdrawalRequest>, F.array__freeze(T.WithdrawalRequest, F.array__thaw(T.WithdrawalRequest, t)), t, F.array__freeze_thaw(T.WithdrawalRequest, t)) :
-    {VD.root_valid(S.Sequence{RT.xi_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(T.WithdrawalRequest, _), 0n)}, S.ListOf{S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(Bool, VD.root_valid(RT.xi_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(T.WithdrawalRequest, t), 0n), S.Repeat{S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}), True{}, vxval_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(T.WithdrawalRequest, t), 0n)) :
-    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(T.WithdrawalRequest, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
-  %Equal.sym(Nat, VD.items_length(RT.xi_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(T.WithdrawalRequest, t), 0n)), U32.to_nat(N), vxlen_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(T.WithdrawalRequest, t), 0n)) :
+  %Equal.sym(F.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>, F.array__freeze(FuluWithdrawalRequest_d.WithdrawalRequest, F.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t)), t, F.array__freeze_thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t)) :
+    {VD.root_valid(S.Sequence{RT.xi_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, _), 0n)}, S.ListOf{S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
+  %Equal.sym(Bool, VD.root_valid(RT.xi_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, t), 0n), S.Repeat{S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}), True{}, vxval_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, t), 0n)) :
+    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
+  %Equal.sym(Nat, VD.items_length(RT.xi_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, t), 0n)), U32.to_nat(N), vxlen_l16_WithdrawalRequest(U32.to_nat(N), F.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, t), 0n)) :
     {Bool.and(Nat.is_le(_, SH.ListOf_limit(s)), True{}) == True{} : Bool}
   %Equal.sym(Bool, Nat.is_le(U32.to_nat(N), SH.ListOf_limit(s)), True{}, hvN) : {Bool.and(_, True{}) == True{} : Bool}
   {==}
@@ -509,7 +556,7 @@ def vr_l16_WithdrawalRequest(-o: T.l16_WithdrawalRequest_Seq, +s: S.Schema, +rep
 # ---- l2_ConsolidationRequest: list of ConsolidationRequest ----
 law vxlen_l2_ConsolidationRequest:
   for +k: Nat
-  for +W: List<&2, T.ConsolidationRequest>
+  for +W: List<&2, FuluConsolidationRequest_d.ConsolidationRequest>
   for +i: Nat
   {VD.items_length(RT.xi_l2_ConsolidationRequest(k, W, i)) == k : Nat}
 def vxlen_l2_ConsolidationRequest(k, W, i):
@@ -520,7 +567,7 @@ def vxlen_l2_ConsolidationRequest(k, W, i):
       {==}
 law vxval_l2_ConsolidationRequest:
   for +k: Nat
-  for +W: List<&2, T.ConsolidationRequest>
+  for +W: List<&2, FuluConsolidationRequest_d.ConsolidationRequest>
   for +i: Nat
   {VD.root_valid(RT.xi_l2_ConsolidationRequest(k, W, i), S.Repeat{S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}}) == True{} : Bool}
 def vxval_l2_ConsolidationRequest(k, W, i):
@@ -530,7 +577,7 @@ def vxval_l2_ConsolidationRequest(k, W, i):
       %Equal.sym(Bool, VD.root_valid(RN.v_ConsolidationRequest(RT.xat_l2_ConsolidationRequest(W, i)), S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}), True{}, VN.rv_ConsolidationRequest(RT.xat_l2_ConsolidationRequest(W, i))) :
         {Bool.and(_, VD.root_valid(RT.xi_l2_ConsolidationRequest(q, W, 1n+i), S.Repeat{S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}})) == True{} : Bool}
       vxval_l2_ConsolidationRequest(q, W, 1n+i)
-def vr_l2_ConsolidationRequest(-o: T.l2_ConsolidationRequest_Seq, +s: S.Schema, +rep: RT.rep_l2_ConsolidationRequest(o, s), +ok: {RT.ok_l2_ConsolidationRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}} : S.Schema})
+def vr_l2_ConsolidationRequest(-o: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, +s: S.Schema, +rep: RT.rep_l2_ConsolidationRequest(o, s), +ok: {RT.ok_l2_ConsolidationRequest(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}} : S.Schema})
     -> {VD.root_valid(RT.xv_l2_ConsolidationRequest(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -545,19 +592,19 @@ def vr_l2_ConsolidationRequest(-o: T.l2_ConsolidationRequest_Seq, +s: S.Schema, 
     {VD.root_valid(RT.xv_l2_ConsolidationRequest(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}, eq) :
     {VD.root_valid(RT.xv_l2_ConsolidationRequest(o), S.ListOf{_, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(T.l2_ConsolidationRequest_Seq, o, T.l2_ConsolidationRequest_Seq{F.array__thaw(T.ConsolidationRequest, t), N}, eo) :
+  %Equal.sym(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, o, Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), N}, eo) :
     {VD.root_valid(RT.xv_l2_ConsolidationRequest(_), S.ListOf{S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<T.ConsolidationRequest>, F.array__freeze(T.ConsolidationRequest, F.array__thaw(T.ConsolidationRequest, t)), t, F.array__freeze_thaw(T.ConsolidationRequest, t)) :
-    {VD.root_valid(S.Sequence{RT.xi_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(T.ConsolidationRequest, _), 0n)}, S.ListOf{S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(Bool, VD.root_valid(RT.xi_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(T.ConsolidationRequest, t), 0n), S.Repeat{S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}}), True{}, vxval_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(T.ConsolidationRequest, t), 0n)) :
-    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(T.ConsolidationRequest, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
-  %Equal.sym(Nat, VD.items_length(RT.xi_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(T.ConsolidationRequest, t), 0n)), U32.to_nat(N), vxlen_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(T.ConsolidationRequest, t), 0n)) :
+  %Equal.sym(F.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, F.array__freeze(FuluConsolidationRequest_d.ConsolidationRequest, F.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t)), t, F.array__freeze_thaw(FuluConsolidationRequest_d.ConsolidationRequest, t)) :
+    {VD.root_valid(S.Sequence{RT.xi_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, _), 0n)}, S.ListOf{S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
+  %Equal.sym(Bool, VD.root_valid(RT.xi_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), 0n), S.Repeat{S.Container{["source_address", "source_pubkey", "target_pubkey"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{48n}, S.End{}}}}}}), True{}, vxval_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), 0n)) :
+    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
+  %Equal.sym(Nat, VD.items_length(RT.xi_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), 0n)), U32.to_nat(N), vxlen_l2_ConsolidationRequest(U32.to_nat(N), F.array__slots(FuluConsolidationRequest_d.ConsolidationRequest, t), 0n)) :
     {Bool.and(Nat.is_le(_, SH.ListOf_limit(s)), True{}) == True{} : Bool}
   %Equal.sym(Bool, Nat.is_le(U32.to_nat(N), SH.ListOf_limit(s)), True{}, hvN) : {Bool.and(_, True{}) == True{} : Bool}
   {==}
 
 # ---- ExecutionRequests ----
-def vr_ExecutionRequests(-o: T.ExecutionRequests, +s: S.Schema, +rep: RT.rep_ExecutionRequests(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ExecutionRequests(s, dv) == True{} : Bool}, +ev: RT.eqs_ExecutionRequests(s))
+def vr_ExecutionRequests(-o: FuluExecutionRequests_d.ExecutionRequests, +s: S.Schema, +rep: RT.rep_ExecutionRequests(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ExecutionRequests(s, dv) == True{} : Bool}, +ev: RT.eqs_ExecutionRequests(s))
     -> {VD.root_valid(RT.v_ExecutionRequests(o), s) == True{} : Bool}:
   (+eo, +q0) = rep
   (+rp0, +q1) = q0
@@ -578,11 +625,11 @@ def vr_ExecutionRequests(-o: T.ExecutionRequests, +s: S.Schema, +rep: RT.rep_Exe
   +r6 = DK.and_r(RT.ok_l8192_DepositRequest(SH.Chain_head(SH.Container_fields(s))), Bool.and(RT.ok_l16_WithdrawalRequest(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_l2_ConsolidationRequest(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), r5)
   +k6 = DK.and_l(RT.ok_l16_WithdrawalRequest(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_l2_ConsolidationRequest(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), r6)
   +r7 = DK.and_r(RT.ok_l16_WithdrawalRequest(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_l2_ConsolidationRequest(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), r6)
-  %Equal.sym(T.ExecutionRequests, o, T.ExecutionRequests{RT.pj_ExecutionRequests_0(o), RT.pj_ExecutionRequests_1(o), RT.pj_ExecutionRequests_2(o)}, eo) : {VD.root_valid(RT.v_ExecutionRequests(_), s) == True{} : Bool}
+  %Equal.sym(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{RT.pj_ExecutionRequests_0(o), RT.pj_ExecutionRequests_1(o), RT.pj_ExecutionRequests_2(o)}, eo) : {VD.root_valid(RT.v_ExecutionRequests(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_ExecutionRequests(T.ExecutionRequests{RT.pj_ExecutionRequests_0(o), RT.pj_ExecutionRequests_1(o), RT.pj_ExecutionRequests_2(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests{RT.pj_ExecutionRequests_0(o), RT.pj_ExecutionRequests_1(o), RT.pj_ExecutionRequests_2(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}}, RT.fsh_ExecutionRequests(s, dv, ok)) :
-    {VD.root_valid(RT.v_ExecutionRequests(T.ExecutionRequests{RT.pj_ExecutionRequests_0(o), RT.pj_ExecutionRequests_1(o), RT.pj_ExecutionRequests_2(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_ExecutionRequests(FuluExecutionRequests_d.ExecutionRequests{RT.pj_ExecutionRequests_0(o), RT.pj_ExecutionRequests_1(o), RT.pj_ExecutionRequests_2(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.xv_l8192_DepositRequest(RT.pj_ExecutionRequests_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, vr_l8192_DepositRequest(RT.pj_ExecutionRequests_0(o), SH.Chain_head(SH.Container_fields(s)), rp0, k5, qe0)) :
     {Bool.and(_, VD.root_valid(S.Items{RT.xv_l16_WithdrawalRequest(RT.pj_ExecutionRequests_1(o)), S.Items{RT.xv_l2_ConsolidationRequest(RT.pj_ExecutionRequests_2(o)), S.EmptyItems{}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.xv_l16_WithdrawalRequest(RT.pj_ExecutionRequests_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, vr_l16_WithdrawalRequest(RT.pj_ExecutionRequests_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), rp1, k6, qe1)) :
@@ -592,7 +639,7 @@ def vr_ExecutionRequests(-o: T.ExecutionRequests, +s: S.Schema, +rep: RT.rep_Exe
   {==}
 
 # ---- ExecutionPayloadHeader ----
-def vr_ExecutionPayloadHeader(-o: T.ExecutionPayloadHeader, +s: S.Schema, +rep: RT.rep_ExecutionPayloadHeader(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ExecutionPayloadHeader(s, dv) == True{} : Bool}, +ev: RT.eqs_ExecutionPayloadHeader(s))
+def vr_ExecutionPayloadHeader(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +s: S.Schema, +rep: RT.rep_ExecutionPayloadHeader(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ExecutionPayloadHeader(s, dv) == True{} : Bool}, +ev: RT.eqs_ExecutionPayloadHeader(s))
     -> {VD.root_valid(RT.v_ExecutionPayloadHeader(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+x1, +q1) = q0
@@ -665,11 +712,11 @@ def vr_ExecutionPayloadHeader(-o: T.ExecutionPayloadHeader, +s: S.Schema, +rep: 
   +r19 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))))), Bool.and(WO.ok_bv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), 3n), LO.ok_bl(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))), 0n)), r18)
   +k19 = DK.and_l(WO.ok_bv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), 3n), LO.ok_bl(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))), 0n), r19)
   +r20 = DK.and_r(WO.ok_bv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), 3n), LO.ok_bl(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))), 0n), r19)
-  %Equal.sym(T.ExecutionPayloadHeader, o, T.ExecutionPayloadHeader{T.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, T.ExecutionPayloadHeader_g1{x8, x9, RT.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, T.ExecutionPayloadHeader_g2{x16}}, eo) : {VD.root_valid(RT.v_ExecutionPayloadHeader(_), s) == True{} : Bool}
+  %Equal.sym(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, o, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}, eo) : {VD.root_valid(RT.v_ExecutionPayloadHeader(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_ExecutionPayloadHeader(T.ExecutionPayloadHeader{T.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, T.ExecutionPayloadHeader_g1{x8, x9, RT.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, T.ExecutionPayloadHeader_g2{x16}}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))), S.End{}}}}}}}}}}}}}}}}}}, RT.fsh_ExecutionPayloadHeader(s, dv, ok)) :
-    {VD.root_valid(RT.v_ExecutionPayloadHeader(T.ExecutionPayloadHeader{T.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, T.ExecutionPayloadHeader_g1{x8, x9, RT.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, T.ExecutionPayloadHeader_g2{x16}}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_ExecutionPayloadHeader(FuluExecutionPayloadHeader_d.ExecutionPayloadHeader{FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g0{x0, x1, x2, x3, RT.pj_ExecutionPayloadHeader_4(o), x5, x6, x7}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g1{x8, x9, RT.pj_ExecutionPayloadHeader_10(o), x11, x12, x13, x14, x15}, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader_g2{x16}}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_b32(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_b32(x0), SH.Chain_head(SH.Container_fields(s)), S.ByteVector{32n}, qe0, VN.rv_b32(x0))) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_b20(x1), S.Items{RN.v_b32(x2), S.Items{RN.v_b32(x3), S.Items{S.BytesValue{WO.wview(RT.pj_ExecutionPayloadHeader_4(o))}, S.Items{RN.v_b32(x5), S.Items{RN.v_u64(x6), S.Items{RN.v_u64(x7), S.Items{RN.v_u64(x8), S.Items{RN.v_u64(x9), S.Items{S.BytesValue{WO.wview(RT.pj_ExecutionPayloadHeader_10(o))}, S.Items{RN.v_u256(x11), S.Items{RN.v_b32(x12), S.Items{RN.v_b32(x13), S.Items{RN.v_b32(x14), S.Items{RN.v_u64(x15), S.Items{RN.v_u64(x16), S.EmptyItems{}}}}}}}}}}}}}}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))), S.End{}}}}}}}}}}}}}}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_b20(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_b20(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.ByteVector{20n}, qe1, VN.rv_b20(x1))) :
@@ -743,7 +790,7 @@ def vtval_l1048576_bl1073741824(k, W, i, sE, er, dv, edv, ok, eq):
       %Equal.sym(Bool, VD.root_valid(RT.v_bl1073741824_bx(RT.th_bl1073741824_bx(RT.xat_l1048576_bl1073741824(W, i))), sE), True{}, vr_bl1073741824_bx(RT.th_bl1073741824_bx(RT.xat_l1048576_bl1073741824(W, i)), sE, r0, dv, edv, ok, eq)) :
         {Bool.and(_, VD.root_valid(RT.xi_l1048576_bl1073741824(q, W, 1n+i), S.Repeat{sE})) == True{} : Bool}
       vtval_l1048576_bl1073741824(q, W, 1n+i, sE, rs, dv, edv, ok, eq)
-def vr_l1048576_bl1073741824(-o: T.l1048576_bl1073741824_Seq, +s: S.Schema, +rep: RT.rep_l1048576_bl1073741824(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_l1048576_bl1073741824(s, dv) == True{} : Bool}, +eq: RT.eqs_l1048576_bl1073741824(s))
+def vr_l1048576_bl1073741824(-o: Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, +s: S.Schema, +rep: RT.rep_l1048576_bl1073741824(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_l1048576_bl1073741824(s, dv) == True{} : Bool}, +eq: RT.eqs_l1048576_bl1073741824(s))
     -> {VD.root_valid(RT.xv_l1048576_bl1073741824(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -759,7 +806,7 @@ def vr_l1048576_bl1073741824(-o: T.l1048576_bl1073741824_Seq, +s: S.Schema, +rep
   +hvN = RT.xhv_l1048576_bl1073741824(o, t, N, SH.ListOf_limit(s), eo, hv)
   %Equal.sym(S.Schema, s, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}, SH.ListOf_shape(s, k0)) :
     {VD.root_valid(RT.xv_l1048576_bl1073741824(o), _) == True{} : Bool}
-  %Equal.sym(T.l1048576_bl1073741824_Seq, o, T.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}, eo) :
+  %Equal.sym(Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq, o, Fulu_list_bytelist_1073741824_1048576_d.l1048576_bl1073741824_Seq{RT.am_l1048576_bl1073741824(t), N}, eo) :
     {VD.root_valid(RT.xv_l1048576_bl1073741824(_), S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(F.array__Tree<RT.MB<RT.WMr>>, RT.tfz_l1048576_bl1073741824(RT.am_l1048576_bl1073741824(t)), t, RT.tfzam_l1048576_bl1073741824(t)) :
     {VD.root_valid(S.Sequence{RT.xi_l1048576_bl1073741824(U32.to_nat(N), F.array__slots(RT.MB<RT.WMr>, _), 0n)}, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
@@ -773,7 +820,7 @@ def vr_l1048576_bl1073741824(-o: T.l1048576_bl1073741824_Seq, +s: S.Schema, +rep
 # ---- l16_Withdrawal: list of Withdrawal ----
 law vxlen_l16_Withdrawal:
   for +k: Nat
-  for +W: List<&2, T.Withdrawal>
+  for +W: List<&2, FuluWithdrawal_d.Withdrawal>
   for +i: Nat
   {VD.items_length(RT.xi_l16_Withdrawal(k, W, i)) == k : Nat}
 def vxlen_l16_Withdrawal(k, W, i):
@@ -784,7 +831,7 @@ def vxlen_l16_Withdrawal(k, W, i):
       {==}
 law vxval_l16_Withdrawal:
   for +k: Nat
-  for +W: List<&2, T.Withdrawal>
+  for +W: List<&2, FuluWithdrawal_d.Withdrawal>
   for +i: Nat
   {VD.root_valid(RT.xi_l16_Withdrawal(k, W, i), S.Repeat{S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}) == True{} : Bool}
 def vxval_l16_Withdrawal(k, W, i):
@@ -794,7 +841,7 @@ def vxval_l16_Withdrawal(k, W, i):
       %Equal.sym(Bool, VD.root_valid(RN.v_Withdrawal(RT.xat_l16_Withdrawal(W, i)), S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}), True{}, VN.rv_Withdrawal(RT.xat_l16_Withdrawal(W, i))) :
         {Bool.and(_, VD.root_valid(RT.xi_l16_Withdrawal(q, W, 1n+i), S.Repeat{S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}})) == True{} : Bool}
       vxval_l16_Withdrawal(q, W, 1n+i)
-def vr_l16_Withdrawal(-o: T.l16_Withdrawal_Seq, +s: S.Schema, +rep: RT.rep_l16_Withdrawal(o, s), +ok: {RT.ok_l16_Withdrawal(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}} : S.Schema})
+def vr_l16_Withdrawal(-o: Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, +s: S.Schema, +rep: RT.rep_l16_Withdrawal(o, s), +ok: {RT.ok_l16_Withdrawal(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}} : S.Schema})
     -> {VD.root_valid(RT.xv_l16_Withdrawal(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -809,19 +856,19 @@ def vr_l16_Withdrawal(-o: T.l16_Withdrawal_Seq, +s: S.Schema, +rep: RT.rep_l16_W
     {VD.root_valid(RT.xv_l16_Withdrawal(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}, eq) :
     {VD.root_valid(RT.xv_l16_Withdrawal(o), S.ListOf{_, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(T.l16_Withdrawal_Seq, o, T.l16_Withdrawal_Seq{F.array__thaw(T.Withdrawal, t), N}, eo) :
+  %Equal.sym(Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq, o, Fulu_list_Withdrawal_16_d.l16_Withdrawal_Seq{F.array__thaw(FuluWithdrawal_d.Withdrawal, t), N}, eo) :
     {VD.root_valid(RT.xv_l16_Withdrawal(_), S.ListOf{S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<T.Withdrawal>, F.array__freeze(T.Withdrawal, F.array__thaw(T.Withdrawal, t)), t, F.array__freeze_thaw(T.Withdrawal, t)) :
-    {VD.root_valid(S.Sequence{RT.xi_l16_Withdrawal(U32.to_nat(N), F.array__slots(T.Withdrawal, _), 0n)}, S.ListOf{S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(Bool, VD.root_valid(RT.xi_l16_Withdrawal(U32.to_nat(N), F.array__slots(T.Withdrawal, t), 0n), S.Repeat{S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}), True{}, vxval_l16_Withdrawal(U32.to_nat(N), F.array__slots(T.Withdrawal, t), 0n)) :
-    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l16_Withdrawal(U32.to_nat(N), F.array__slots(T.Withdrawal, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
-  %Equal.sym(Nat, VD.items_length(RT.xi_l16_Withdrawal(U32.to_nat(N), F.array__slots(T.Withdrawal, t), 0n)), U32.to_nat(N), vxlen_l16_Withdrawal(U32.to_nat(N), F.array__slots(T.Withdrawal, t), 0n)) :
+  %Equal.sym(F.array__Tree<FuluWithdrawal_d.Withdrawal>, F.array__freeze(FuluWithdrawal_d.Withdrawal, F.array__thaw(FuluWithdrawal_d.Withdrawal, t)), t, F.array__freeze_thaw(FuluWithdrawal_d.Withdrawal, t)) :
+    {VD.root_valid(S.Sequence{RT.xi_l16_Withdrawal(U32.to_nat(N), F.array__slots(FuluWithdrawal_d.Withdrawal, _), 0n)}, S.ListOf{S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
+  %Equal.sym(Bool, VD.root_valid(RT.xi_l16_Withdrawal(U32.to_nat(N), F.array__slots(FuluWithdrawal_d.Withdrawal, t), 0n), S.Repeat{S.Container{["index", "validator_index", "address", "amount"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{20n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}}}), True{}, vxval_l16_Withdrawal(U32.to_nat(N), F.array__slots(FuluWithdrawal_d.Withdrawal, t), 0n)) :
+    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l16_Withdrawal(U32.to_nat(N), F.array__slots(FuluWithdrawal_d.Withdrawal, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
+  %Equal.sym(Nat, VD.items_length(RT.xi_l16_Withdrawal(U32.to_nat(N), F.array__slots(FuluWithdrawal_d.Withdrawal, t), 0n)), U32.to_nat(N), vxlen_l16_Withdrawal(U32.to_nat(N), F.array__slots(FuluWithdrawal_d.Withdrawal, t), 0n)) :
     {Bool.and(Nat.is_le(_, SH.ListOf_limit(s)), True{}) == True{} : Bool}
   %Equal.sym(Bool, Nat.is_le(U32.to_nat(N), SH.ListOf_limit(s)), True{}, hvN) : {Bool.and(_, True{}) == True{} : Bool}
   {==}
 
 # ---- ExecutionPayload ----
-def vr_ExecutionPayload(-o: T.ExecutionPayload, +s: S.Schema, +rep: RT.rep_ExecutionPayload(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ExecutionPayload(s, dv) == True{} : Bool}, +ev: RT.eqs_ExecutionPayload(s))
+def vr_ExecutionPayload(-o: FuluExecutionPayload_d.ExecutionPayload, +s: S.Schema, +rep: RT.rep_ExecutionPayload(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ExecutionPayload(s, dv) == True{} : Bool}, +ev: RT.eqs_ExecutionPayload(s))
     -> {VD.root_valid(RT.v_ExecutionPayload(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+x1, +q1) = q0
@@ -898,11 +945,11 @@ def vr_ExecutionPayload(-o: T.ExecutionPayload, +s: S.Schema, +rep: RT.rep_Execu
   +r21 = DK.and_r(LO.ok_bl(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))), 0n), Bool.and(RT.ok_l1048576_bl1073741824(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))), dv), RT.ok_l16_Withdrawal(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))), r20)
   +k21 = DK.and_l(RT.ok_l1048576_bl1073741824(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))), dv), RT.ok_l16_Withdrawal(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))), r21)
   +r22 = DK.and_r(RT.ok_l1048576_bl1073741824(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))), dv), RT.ok_l16_Withdrawal(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))), r21)
-  %Equal.sym(T.ExecutionPayload, o, T.ExecutionPayload{T.ExecutionPayload_g0{x0, x1, x2, x3, RT.pj_ExecutionPayload_4(o), x5, x6, x7}, T.ExecutionPayload_g1{x8, x9, RT.pj_ExecutionPayload_10(o), x11, x12, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), x15}, T.ExecutionPayload_g2{x16}}, eo) : {VD.root_valid(RT.v_ExecutionPayload(_), s) == True{} : Bool}
+  %Equal.sym(FuluExecutionPayload_d.ExecutionPayload, o, FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{x0, x1, x2, x3, RT.pj_ExecutionPayload_4(o), x5, x6, x7}, FuluExecutionPayload_d.ExecutionPayload_g1{x8, x9, RT.pj_ExecutionPayload_10(o), x11, x12, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), x15}, FuluExecutionPayload_d.ExecutionPayload_g2{x16}}, eo) : {VD.root_valid(RT.v_ExecutionPayload(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_ExecutionPayload(T.ExecutionPayload{T.ExecutionPayload_g0{x0, x1, x2, x3, RT.pj_ExecutionPayload_4(o), x5, x6, x7}, T.ExecutionPayload_g1{x8, x9, RT.pj_ExecutionPayload_10(o), x11, x12, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), x15}, T.ExecutionPayload_g2{x16}}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_ExecutionPayload(FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{x0, x1, x2, x3, RT.pj_ExecutionPayload_4(o), x5, x6, x7}, FuluExecutionPayload_d.ExecutionPayload_g1{x8, x9, RT.pj_ExecutionPayload_10(o), x11, x12, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), x15}, FuluExecutionPayload_d.ExecutionPayload_g2{x16}}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))), S.End{}}}}}}}}}}}}}}}}}}, RT.fsh_ExecutionPayload(s, dv, ok)) :
-    {VD.root_valid(RT.v_ExecutionPayload(T.ExecutionPayload{T.ExecutionPayload_g0{x0, x1, x2, x3, RT.pj_ExecutionPayload_4(o), x5, x6, x7}, T.ExecutionPayload_g1{x8, x9, RT.pj_ExecutionPayload_10(o), x11, x12, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), x15}, T.ExecutionPayload_g2{x16}}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_ExecutionPayload(FuluExecutionPayload_d.ExecutionPayload{FuluExecutionPayload_d.ExecutionPayload_g0{x0, x1, x2, x3, RT.pj_ExecutionPayload_4(o), x5, x6, x7}, FuluExecutionPayload_d.ExecutionPayload_g1{x8, x9, RT.pj_ExecutionPayload_10(o), x11, x12, RT.pj_ExecutionPayload_13(o), RT.pj_ExecutionPayload_14(o), x15}, FuluExecutionPayload_d.ExecutionPayload_g2{x16}}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_b32(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_b32(x0), SH.Chain_head(SH.Container_fields(s)), S.ByteVector{32n}, qe0, VN.rv_b32(x0))) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_b20(x1), S.Items{RN.v_b32(x2), S.Items{RN.v_b32(x3), S.Items{S.BytesValue{WO.wview(RT.pj_ExecutionPayload_4(o))}, S.Items{RN.v_b32(x5), S.Items{RN.v_u64(x6), S.Items{RN.v_u64(x7), S.Items{RN.v_u64(x8), S.Items{RN.v_u64(x9), S.Items{S.BytesValue{WO.wview(RT.pj_ExecutionPayload_10(o))}, S.Items{RN.v_u256(x11), S.Items{RN.v_b32(x12), S.Items{RT.xv_l1048576_bl1073741824(RT.pj_ExecutionPayload_13(o)), S.Items{RT.xv_l16_Withdrawal(RT.pj_ExecutionPayload_14(o)), S.Items{RN.v_u64(x15), S.Items{RN.v_u64(x16), S.EmptyItems{}}}}}}}}}}}}}}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))))))), S.End{}}}}}}}}}}}}}}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_b20(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_b20(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.ByteVector{20n}, qe1, VN.rv_b20(x1))) :
@@ -939,14 +986,14 @@ def vr_ExecutionPayload(-o: T.ExecutionPayload, +s: S.Schema, +rep: RT.rep_Execu
     {Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{})))))))))))))))))) == True{} : Bool}
   {==}
 
-def vr_ExecutionPayloadHeader_bx(-o: O.Boxed<T.ExecutionPayloadHeader>, +s: S.Schema, +rep: RT.rep_ExecutionPayloadHeader_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ExecutionPayloadHeader(s, dv) == True{} : Bool}, +eq: RT.eqs_ExecutionPayloadHeader(s))
+def vr_ExecutionPayloadHeader_bx(-o: O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, +s: S.Schema, +rep: RT.rep_ExecutionPayloadHeader_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ExecutionPayloadHeader(s, dv) == True{} : Bool}, +eq: RT.eqs_ExecutionPayloadHeader(s))
     -> {VD.root_valid(RT.v_ExecutionPayloadHeader_bx(o), s) == True{} : Bool}:
   (+eo, +ri) = rep
-  %Equal.sym(O.Boxed<T.ExecutionPayloadHeader>, o, O.BSome{RT.pjb_ExecutionPayloadHeader_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_ExecutionPayloadHeader_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>, o, O.BSome{RT.pjb_ExecutionPayloadHeader_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_ExecutionPayloadHeader_bx(_), s) == True{} : Bool}
   vr_ExecutionPayloadHeader(RT.pjb_ExecutionPayloadHeader_bx(o), s, ri, dv, edv, ok, eq)
 
 # ---- LightClientHeader ----
-def vr_LightClientHeader(-o: T.LightClientHeader, +s: S.Schema, +rep: RT.rep_LightClientHeader(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_LightClientHeader(s, dv) == True{} : Bool}, +ev: RT.eqs_LightClientHeader(s))
+def vr_LightClientHeader(-o: FuluLightClientHeader_d.LightClientHeader, +s: S.Schema, +rep: RT.rep_LightClientHeader(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_LightClientHeader(s, dv) == True{} : Bool}, +ev: RT.eqs_LightClientHeader(s))
     -> {VD.root_valid(RT.v_LightClientHeader(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+eo, +q1) = q0
@@ -964,11 +1011,11 @@ def vr_LightClientHeader(-o: T.LightClientHeader, +s: S.Schema, +rep: RT.rep_Lig
   +r5 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), Bool.and(RT.ok_ExecutionPayloadHeader_bx(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), 2n)), r4)
   +k5 = DK.and_l(RT.ok_ExecutionPayloadHeader_bx(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), 2n), r5)
   +r6 = DK.and_r(RT.ok_ExecutionPayloadHeader_bx(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), 2n), r5)
-  %Equal.sym(T.LightClientHeader, o, T.LightClientHeader{x0, RT.pj_LightClientHeader_1(o), RT.pj_LightClientHeader_2(o)}, eo) : {VD.root_valid(RT.v_LightClientHeader(_), s) == True{} : Bool}
+  %Equal.sym(FuluLightClientHeader_d.LightClientHeader, o, FuluLightClientHeader_d.LightClientHeader{x0, RT.pj_LightClientHeader_1(o), RT.pj_LightClientHeader_2(o)}, eo) : {VD.root_valid(RT.v_LightClientHeader(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_LightClientHeader(T.LightClientHeader{x0, RT.pj_LightClientHeader_1(o), RT.pj_LightClientHeader_2(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_LightClientHeader(FuluLightClientHeader_d.LightClientHeader{x0, RT.pj_LightClientHeader_1(o), RT.pj_LightClientHeader_2(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}}, RT.fsh_LightClientHeader(s, dv, ok)) :
-    {VD.root_valid(RT.v_LightClientHeader(T.LightClientHeader{x0, RT.pj_LightClientHeader_1(o), RT.pj_LightClientHeader_2(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_LightClientHeader(FuluLightClientHeader_d.LightClientHeader{x0, RT.pj_LightClientHeader_1(o), RT.pj_LightClientHeader_2(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_BeaconBlockHeader(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_BeaconBlockHeader(x0), SH.Chain_head(SH.Container_fields(s)), S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, qe0, VN.rv_BeaconBlockHeader(x0))) :
     {Bool.and(_, VD.root_valid(S.Items{RT.v_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(o)), S.Items{PV.pview(RT.pj_LightClientHeader_2(o)), S.EmptyItems{}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, vr_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), rp1, dv, edv, k5, qv0)) :
@@ -977,13 +1024,13 @@ def vr_LightClientHeader(-o: T.LightClientHeader, +s: S.Schema, +rep: RT.rep_Lig
     {Bool.and(True{}, Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{})))) == True{} : Bool}
   {==}
 
-def vr_SyncAggregate_bx(-o: O.Boxed<T.SyncAggregate>, +s: S.Schema, +rep: RT.rep_SyncAggregate_bx(o, s), +eq: {s == S.Container{["sync_committee_bits", "sync_committee_signature"], S.Chain{S.BitVector{512n}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema}) -> {VD.root_valid(RT.v_SyncAggregate_bx(o), s) == True{} : Bool}:
+def vr_SyncAggregate_bx(-o: O.Boxed<FuluSyncAggregate_d.SyncAggregate>, +s: S.Schema, +rep: RT.rep_SyncAggregate_bx(o, s), +eq: {s == S.Container{["sync_committee_bits", "sync_committee_signature"], S.Chain{S.BitVector{512n}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema}) -> {VD.root_valid(RT.v_SyncAggregate_bx(o), s) == True{} : Bool}:
   (+v, +eo) = rep
-  %Equal.sym(O.Boxed<T.SyncAggregate>, o, O.BSome{v, O.BNone{}}, eo) : {VD.root_valid(RT.v_SyncAggregate_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluSyncAggregate_d.SyncAggregate>, o, O.BSome{v, O.BNone{}}, eo) : {VD.root_valid(RT.v_SyncAggregate_bx(_), s) == True{} : Bool}
   VO.vtrans(RN.v_SyncAggregate(v), s, S.Container{["sync_committee_bits", "sync_committee_signature"], S.Chain{S.BitVector{512n}, S.Chain{S.ByteVector{96n}, S.End{}}}}, eq, VN.rv_SyncAggregate(v))
 
 # ---- LightClientOptimisticUpdate ----
-def vr_LightClientOptimisticUpdate(-o: T.LightClientOptimisticUpdate, +s: S.Schema, +rep: RT.rep_LightClientOptimisticUpdate(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_LightClientOptimisticUpdate(s, dv) == True{} : Bool}, +ev: RT.eqs_LightClientOptimisticUpdate(s))
+def vr_LightClientOptimisticUpdate(-o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, +s: S.Schema, +rep: RT.rep_LightClientOptimisticUpdate(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_LightClientOptimisticUpdate(s, dv) == True{} : Bool}, +ev: RT.eqs_LightClientOptimisticUpdate(s))
     -> {VD.root_valid(RT.v_LightClientOptimisticUpdate(o), s) == True{} : Bool}:
   (+x2, +q0) = rep
   (+eo, +q1) = q0
@@ -1000,11 +1047,11 @@ def vr_LightClientOptimisticUpdate(-o: T.LightClientOptimisticUpdate, +s: S.Sche
   +r4 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), RT.ok_LightClientHeader(SH.Chain_head(SH.Container_fields(s)), dv)), r3)
   +k4 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), RT.ok_LightClientHeader(SH.Chain_head(SH.Container_fields(s)), dv), r4)
   +r5 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), RT.ok_LightClientHeader(SH.Chain_head(SH.Container_fields(s)), dv), r4)
-  %Equal.sym(T.LightClientOptimisticUpdate, o, T.LightClientOptimisticUpdate{RT.pj_LightClientOptimisticUpdate_0(o), RT.pj_LightClientOptimisticUpdate_1(o), x2}, eo) : {VD.root_valid(RT.v_LightClientOptimisticUpdate(_), s) == True{} : Bool}
+  %Equal.sym(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, o, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT.pj_LightClientOptimisticUpdate_0(o), RT.pj_LightClientOptimisticUpdate_1(o), x2}, eo) : {VD.root_valid(RT.v_LightClientOptimisticUpdate(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_LightClientOptimisticUpdate(T.LightClientOptimisticUpdate{RT.pj_LightClientOptimisticUpdate_0(o), RT.pj_LightClientOptimisticUpdate_1(o), x2}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_LightClientOptimisticUpdate(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT.pj_LightClientOptimisticUpdate_0(o), RT.pj_LightClientOptimisticUpdate_1(o), x2}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}}, RT.fsh_LightClientOptimisticUpdate(s, dv, ok)) :
-    {VD.root_valid(RT.v_LightClientOptimisticUpdate(T.LightClientOptimisticUpdate{RT.pj_LightClientOptimisticUpdate_0(o), RT.pj_LightClientOptimisticUpdate_1(o), x2}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_LightClientOptimisticUpdate(FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{RT.pj_LightClientOptimisticUpdate_0(o), RT.pj_LightClientOptimisticUpdate_1(o), x2}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_LightClientHeader(RT.pj_LightClientOptimisticUpdate_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, vr_LightClientHeader(RT.pj_LightClientOptimisticUpdate_0(o), SH.Chain_head(SH.Container_fields(s)), rp0, dv, edv, r5, qe0)) :
     {Bool.and(_, VD.root_valid(S.Items{RT.v_SyncAggregate_bx(RT.pj_LightClientOptimisticUpdate_1(o)), S.Items{RN.v_u64(x2), S.EmptyItems{}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_SyncAggregate_bx(RT.pj_LightClientOptimisticUpdate_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, vr_SyncAggregate_bx(RT.pj_LightClientOptimisticUpdate_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), q2, qe1)) :
@@ -1014,7 +1061,7 @@ def vr_LightClientOptimisticUpdate(-o: T.LightClientOptimisticUpdate, +s: S.Sche
   {==}
 
 # ---- LightClientFinalityUpdate ----
-def vr_LightClientFinalityUpdate(-o: T.LightClientFinalityUpdate, +s: S.Schema, +rep: RT.rep_LightClientFinalityUpdate(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_LightClientFinalityUpdate(s, dv) == True{} : Bool}, +ev: RT.eqs_LightClientFinalityUpdate(s))
+def vr_LightClientFinalityUpdate(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, +s: S.Schema, +rep: RT.rep_LightClientFinalityUpdate(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_LightClientFinalityUpdate(s, dv) == True{} : Bool}, +ev: RT.eqs_LightClientFinalityUpdate(s))
     -> {VD.root_valid(RT.v_LightClientFinalityUpdate(o), s) == True{} : Bool}:
   (+x4, +q0) = rep
   (+eo, +q1) = q0
@@ -1042,11 +1089,11 @@ def vr_LightClientFinalityUpdate(-o: T.LightClientFinalityUpdate, +s: S.Schema, 
   +r8 = DK.and_r(RT.ok_LightClientHeader(SH.Chain_head(SH.Container_fields(s)), dv), Bool.and(RT.ok_LightClientHeader(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), 3n)), r7)
   +k8 = DK.and_l(RT.ok_LightClientHeader(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), 3n), r8)
   +r9 = DK.and_r(RT.ok_LightClientHeader(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), 3n), r8)
-  %Equal.sym(T.LightClientFinalityUpdate, o, T.LightClientFinalityUpdate{RT.pj_LightClientFinalityUpdate_0(o), RT.pj_LightClientFinalityUpdate_1(o), RT.pj_LightClientFinalityUpdate_2(o), RT.pj_LightClientFinalityUpdate_3(o), x4}, eo) : {VD.root_valid(RT.v_LightClientFinalityUpdate(_), s) == True{} : Bool}
+  %Equal.sym(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, o, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT.pj_LightClientFinalityUpdate_0(o), RT.pj_LightClientFinalityUpdate_1(o), RT.pj_LightClientFinalityUpdate_2(o), RT.pj_LightClientFinalityUpdate_3(o), x4}, eo) : {VD.root_valid(RT.v_LightClientFinalityUpdate(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_LightClientFinalityUpdate(T.LightClientFinalityUpdate{RT.pj_LightClientFinalityUpdate_0(o), RT.pj_LightClientFinalityUpdate_1(o), RT.pj_LightClientFinalityUpdate_2(o), RT.pj_LightClientFinalityUpdate_3(o), x4}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_LightClientFinalityUpdate(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT.pj_LightClientFinalityUpdate_0(o), RT.pj_LightClientFinalityUpdate_1(o), RT.pj_LightClientFinalityUpdate_2(o), RT.pj_LightClientFinalityUpdate_3(o), x4}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.End{}}}}}}, RT.fsh_LightClientFinalityUpdate(s, dv, ok)) :
-    {VD.root_valid(RT.v_LightClientFinalityUpdate(T.LightClientFinalityUpdate{RT.pj_LightClientFinalityUpdate_0(o), RT.pj_LightClientFinalityUpdate_1(o), RT.pj_LightClientFinalityUpdate_2(o), RT.pj_LightClientFinalityUpdate_3(o), x4}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_LightClientFinalityUpdate(FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate{RT.pj_LightClientFinalityUpdate_0(o), RT.pj_LightClientFinalityUpdate_1(o), RT.pj_LightClientFinalityUpdate_2(o), RT.pj_LightClientFinalityUpdate_3(o), x4}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_LightClientHeader(RT.pj_LightClientFinalityUpdate_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, vr_LightClientHeader(RT.pj_LightClientFinalityUpdate_0(o), SH.Chain_head(SH.Container_fields(s)), rp0, dv, edv, k7, qe0)) :
     {Bool.and(_, VD.root_valid(S.Items{RT.v_LightClientHeader(RT.pj_LightClientFinalityUpdate_1(o)), S.Items{PV.pview(RT.pj_LightClientFinalityUpdate_2(o)), S.Items{RT.v_SyncAggregate_bx(RT.pj_LightClientFinalityUpdate_3(o)), S.Items{RN.v_u64(x4), S.EmptyItems{}}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.End{}}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_LightClientHeader(RT.pj_LightClientFinalityUpdate_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, vr_LightClientHeader(RT.pj_LightClientFinalityUpdate_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), rp1, dv, edv, k8, qe1)) :
@@ -1060,7 +1107,7 @@ def vr_LightClientFinalityUpdate(-o: T.LightClientFinalityUpdate, +s: S.Schema, 
   {==}
 
 # ---- LightClientUpdate ----
-def vr_LightClientUpdate(-o: T.LightClientUpdate, +s: S.Schema, +rep: RT.rep_LightClientUpdate(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_LightClientUpdate(s, dv) == True{} : Bool}, +ev: RT.eqs_LightClientUpdate(s))
+def vr_LightClientUpdate(-o: FuluLightClientUpdate_d.LightClientUpdate, +s: S.Schema, +rep: RT.rep_LightClientUpdate(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_LightClientUpdate(s, dv) == True{} : Bool}, +ev: RT.eqs_LightClientUpdate(s))
     -> {VD.root_valid(RT.v_LightClientUpdate(o), s) == True{} : Bool}:
   (+x6, +q0) = rep
   (+eo, +q1) = q0
@@ -1099,11 +1146,11 @@ def vr_LightClientUpdate(-o: T.LightClientUpdate, +s: S.Schema, +rep: RT.rep_Lig
   +r12 = DK.and_r(PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), 3n), Bool.and(RT.ok_LightClientHeader(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), 3n)), r11)
   +k12 = DK.and_l(RT.ok_LightClientHeader(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), 3n), r12)
   +r13 = DK.and_r(RT.ok_LightClientHeader(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), 3n), r12)
-  %Equal.sym(T.LightClientUpdate, o, T.LightClientUpdate{RT.pj_LightClientUpdate_0(o), RT.pj_LightClientUpdate_1(o), RT.pj_LightClientUpdate_2(o), RT.pj_LightClientUpdate_3(o), RT.pj_LightClientUpdate_4(o), RT.pj_LightClientUpdate_5(o), x6}, eo) : {VD.root_valid(RT.v_LightClientUpdate(_), s) == True{} : Bool}
+  %Equal.sym(FuluLightClientUpdate_d.LightClientUpdate, o, FuluLightClientUpdate_d.LightClientUpdate{RT.pj_LightClientUpdate_0(o), RT.pj_LightClientUpdate_1(o), RT.pj_LightClientUpdate_2(o), RT.pj_LightClientUpdate_3(o), RT.pj_LightClientUpdate_4(o), RT.pj_LightClientUpdate_5(o), x6}, eo) : {VD.root_valid(RT.v_LightClientUpdate(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_LightClientUpdate(T.LightClientUpdate{RT.pj_LightClientUpdate_0(o), RT.pj_LightClientUpdate_1(o), RT.pj_LightClientUpdate_2(o), RT.pj_LightClientUpdate_3(o), RT.pj_LightClientUpdate_4(o), RT.pj_LightClientUpdate_5(o), x6}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_LightClientUpdate(FuluLightClientUpdate_d.LightClientUpdate{RT.pj_LightClientUpdate_0(o), RT.pj_LightClientUpdate_1(o), RT.pj_LightClientUpdate_2(o), RT.pj_LightClientUpdate_3(o), RT.pj_LightClientUpdate_4(o), RT.pj_LightClientUpdate_5(o), x6}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.End{}}}}}}}}, RT.fsh_LightClientUpdate(s, dv, ok)) :
-    {VD.root_valid(RT.v_LightClientUpdate(T.LightClientUpdate{RT.pj_LightClientUpdate_0(o), RT.pj_LightClientUpdate_1(o), RT.pj_LightClientUpdate_2(o), RT.pj_LightClientUpdate_3(o), RT.pj_LightClientUpdate_4(o), RT.pj_LightClientUpdate_5(o), x6}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_LightClientUpdate(FuluLightClientUpdate_d.LightClientUpdate{RT.pj_LightClientUpdate_0(o), RT.pj_LightClientUpdate_1(o), RT.pj_LightClientUpdate_2(o), RT.pj_LightClientUpdate_3(o), RT.pj_LightClientUpdate_4(o), RT.pj_LightClientUpdate_5(o), x6}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_LightClientHeader(RT.pj_LightClientUpdate_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, vr_LightClientHeader(RT.pj_LightClientUpdate_0(o), SH.Chain_head(SH.Container_fields(s)), rp0, dv, edv, k9, qe0)) :
     {Bool.and(_, VD.root_valid(S.Items{RT.v_SyncCommittee(RT.pj_LightClientUpdate_1(o)), S.Items{PV.pview(RT.pj_LightClientUpdate_2(o)), S.Items{RT.v_LightClientHeader(RT.pj_LightClientUpdate_3(o)), S.Items{PV.pview(RT.pj_LightClientUpdate_4(o)), S.Items{RT.v_SyncAggregate_bx(RT.pj_LightClientUpdate_5(o)), S.Items{RN.v_u64(x6), S.EmptyItems{}}}}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.End{}}}}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_SyncCommittee(RT.pj_LightClientUpdate_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, vr_SyncCommittee(RT.pj_LightClientUpdate_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), rp1, dv, edv, k10, qe1)) :
@@ -1121,7 +1168,7 @@ def vr_LightClientUpdate(-o: T.LightClientUpdate, +s: S.Schema, +rep: RT.rep_Lig
   {==}
 
 # ---- LightClientBootstrap ----
-def vr_LightClientBootstrap(-o: T.LightClientBootstrap, +s: S.Schema, +rep: RT.rep_LightClientBootstrap(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_LightClientBootstrap(s, dv) == True{} : Bool}, +ev: RT.eqs_LightClientBootstrap(s))
+def vr_LightClientBootstrap(-o: FuluLightClientBootstrap_d.LightClientBootstrap, +s: S.Schema, +rep: RT.rep_LightClientBootstrap(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_LightClientBootstrap(s, dv) == True{} : Bool}, +ev: RT.eqs_LightClientBootstrap(s))
     -> {VD.root_valid(RT.v_LightClientBootstrap(o), s) == True{} : Bool}:
   (+eo, +q0) = rep
   (+rp0, +q1) = q0
@@ -1141,11 +1188,11 @@ def vr_LightClientBootstrap(-o: T.LightClientBootstrap, +s: S.Schema, +rep: RT.r
   +r6 = DK.and_r(RT.ok_LightClientHeader(SH.Chain_head(SH.Container_fields(s)), dv), Bool.and(RT.ok_SyncCommittee(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), 3n)), r5)
   +k6 = DK.and_l(RT.ok_SyncCommittee(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), 3n), r6)
   +r7 = DK.and_r(RT.ok_SyncCommittee(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), dv), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), 3n), r6)
-  %Equal.sym(T.LightClientBootstrap, o, T.LightClientBootstrap{RT.pj_LightClientBootstrap_0(o), RT.pj_LightClientBootstrap_1(o), RT.pj_LightClientBootstrap_2(o)}, eo) : {VD.root_valid(RT.v_LightClientBootstrap(_), s) == True{} : Bool}
+  %Equal.sym(FuluLightClientBootstrap_d.LightClientBootstrap, o, FuluLightClientBootstrap_d.LightClientBootstrap{RT.pj_LightClientBootstrap_0(o), RT.pj_LightClientBootstrap_1(o), RT.pj_LightClientBootstrap_2(o)}, eo) : {VD.root_valid(RT.v_LightClientBootstrap(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_LightClientBootstrap(T.LightClientBootstrap{RT.pj_LightClientBootstrap_0(o), RT.pj_LightClientBootstrap_1(o), RT.pj_LightClientBootstrap_2(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_LightClientBootstrap(FuluLightClientBootstrap_d.LightClientBootstrap{RT.pj_LightClientBootstrap_0(o), RT.pj_LightClientBootstrap_1(o), RT.pj_LightClientBootstrap_2(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}}, RT.fsh_LightClientBootstrap(s, dv, ok)) :
-    {VD.root_valid(RT.v_LightClientBootstrap(T.LightClientBootstrap{RT.pj_LightClientBootstrap_0(o), RT.pj_LightClientBootstrap_1(o), RT.pj_LightClientBootstrap_2(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_LightClientBootstrap(FuluLightClientBootstrap_d.LightClientBootstrap{RT.pj_LightClientBootstrap_0(o), RT.pj_LightClientBootstrap_1(o), RT.pj_LightClientBootstrap_2(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_LightClientHeader(RT.pj_LightClientBootstrap_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, vr_LightClientHeader(RT.pj_LightClientBootstrap_0(o), SH.Chain_head(SH.Container_fields(s)), rp0, dv, edv, k5, qe0)) :
     {Bool.and(_, VD.root_valid(S.Items{RT.v_SyncCommittee(RT.pj_LightClientBootstrap_1(o)), S.Items{PV.pview(RT.pj_LightClientBootstrap_2(o)), S.EmptyItems{}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_SyncCommittee(RT.pj_LightClientBootstrap_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, vr_SyncCommittee(RT.pj_LightClientBootstrap_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), rp1, dv, edv, k6, qv0)) :
@@ -1154,10 +1201,10 @@ def vr_LightClientBootstrap(-o: T.LightClientBootstrap, +s: S.Schema, +rep: RT.r
     {Bool.and(True{}, Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{})))) == True{} : Bool}
   {==}
 
-def vr_ProposerSlashing_bx(-o: O.Boxed<T.ProposerSlashing>, +s: S.Schema, +rep: RT.rep_ProposerSlashing_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ProposerSlashing(s, dv) == True{} : Bool}, +eq: RT.eqs_ProposerSlashing(s))
+def vr_ProposerSlashing_bx(-o: O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, +s: S.Schema, +rep: RT.rep_ProposerSlashing_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ProposerSlashing(s, dv) == True{} : Bool}, +eq: RT.eqs_ProposerSlashing(s))
     -> {VD.root_valid(RT.v_ProposerSlashing_bx(o), s) == True{} : Bool}:
   (+eo, +ri) = rep
-  %Equal.sym(O.Boxed<T.ProposerSlashing>, o, O.BSome{RT.pjb_ProposerSlashing_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_ProposerSlashing_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, o, O.BSome{RT.pjb_ProposerSlashing_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_ProposerSlashing_bx(_), s) == True{} : Bool}
   vr_ProposerSlashing(RT.pjb_ProposerSlashing_bx(o), s, ri, dv, edv, ok, eq)
 
 # ---- l16_ProposerSlashing: list of ProposerSlashing_bx ----
@@ -1191,7 +1238,7 @@ def vtval_l16_ProposerSlashing(k, W, i, sE, er, dv, edv, ok, eq):
       %Equal.sym(Bool, VD.root_valid(RT.v_ProposerSlashing_bx(RT.th_ProposerSlashing_bx(RT.xat_l16_ProposerSlashing(W, i))), sE), True{}, vr_ProposerSlashing_bx(RT.th_ProposerSlashing_bx(RT.xat_l16_ProposerSlashing(W, i)), sE, r0, dv, edv, ok, eq)) :
         {Bool.and(_, VD.root_valid(RT.xi_l16_ProposerSlashing(q, W, 1n+i), S.Repeat{sE})) == True{} : Bool}
       vtval_l16_ProposerSlashing(q, W, 1n+i, sE, rs, dv, edv, ok, eq)
-def vr_l16_ProposerSlashing(-o: T.l16_ProposerSlashing_Seq, +s: S.Schema, +rep: RT.rep_l16_ProposerSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_l16_ProposerSlashing(s, dv) == True{} : Bool}, +eq: RT.eqs_l16_ProposerSlashing(s))
+def vr_l16_ProposerSlashing(-o: Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq, +s: S.Schema, +rep: RT.rep_l16_ProposerSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_l16_ProposerSlashing(s, dv) == True{} : Bool}, +eq: RT.eqs_l16_ProposerSlashing(s))
     -> {VD.root_valid(RT.xv_l16_ProposerSlashing(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -1207,7 +1254,7 @@ def vr_l16_ProposerSlashing(-o: T.l16_ProposerSlashing_Seq, +s: S.Schema, +rep: 
   +hvN = RT.xhv_l16_ProposerSlashing(o, t, N, SH.ListOf_limit(s), eo, hv)
   %Equal.sym(S.Schema, s, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}, SH.ListOf_shape(s, k0)) :
     {VD.root_valid(RT.xv_l16_ProposerSlashing(o), _) == True{} : Bool}
-  %Equal.sym(T.l16_ProposerSlashing_Seq, o, T.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(t), N}, eo) :
+  %Equal.sym(Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq, o, Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{RT.am_l16_ProposerSlashing(t), N}, eo) :
     {VD.root_valid(RT.xv_l16_ProposerSlashing(_), S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(F.array__Tree<RT.MB<RT.M_ProposerSlashing>>, RT.tfz_l16_ProposerSlashing(RT.am_l16_ProposerSlashing(t)), t, RT.tfzam_l16_ProposerSlashing(t)) :
     {VD.root_valid(S.Sequence{RT.xi_l16_ProposerSlashing(U32.to_nat(N), F.array__slots(RT.MB<RT.M_ProposerSlashing>, _), 0n)}, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
@@ -1218,10 +1265,10 @@ def vr_l16_ProposerSlashing(-o: T.l16_ProposerSlashing_Seq, +s: S.Schema, +rep: 
   %Equal.sym(Bool, Nat.is_le(U32.to_nat(N), SH.ListOf_limit(s)), True{}, hvN) : {Bool.and(_, True{}) == True{} : Bool}
   {==}
 
-def vr_AttesterSlashing_bx(-o: O.Boxed<T.AttesterSlashing>, +s: S.Schema, +rep: RT.rep_AttesterSlashing_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_AttesterSlashing(s, dv) == True{} : Bool}, +eq: RT.eqs_AttesterSlashing(s))
+def vr_AttesterSlashing_bx(-o: O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, +s: S.Schema, +rep: RT.rep_AttesterSlashing_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_AttesterSlashing(s, dv) == True{} : Bool}, +eq: RT.eqs_AttesterSlashing(s))
     -> {VD.root_valid(RT.v_AttesterSlashing_bx(o), s) == True{} : Bool}:
   (+eo, +ri) = rep
-  %Equal.sym(O.Boxed<T.AttesterSlashing>, o, O.BSome{RT.pjb_AttesterSlashing_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_AttesterSlashing_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, o, O.BSome{RT.pjb_AttesterSlashing_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_AttesterSlashing_bx(_), s) == True{} : Bool}
   vr_AttesterSlashing(RT.pjb_AttesterSlashing_bx(o), s, ri, dv, edv, ok, eq)
 
 # ---- l1_AttesterSlashing: list of AttesterSlashing_bx ----
@@ -1255,7 +1302,7 @@ def vtval_l1_AttesterSlashing(k, W, i, sE, er, dv, edv, ok, eq):
       %Equal.sym(Bool, VD.root_valid(RT.v_AttesterSlashing_bx(RT.th_AttesterSlashing_bx(RT.xat_l1_AttesterSlashing(W, i))), sE), True{}, vr_AttesterSlashing_bx(RT.th_AttesterSlashing_bx(RT.xat_l1_AttesterSlashing(W, i)), sE, r0, dv, edv, ok, eq)) :
         {Bool.and(_, VD.root_valid(RT.xi_l1_AttesterSlashing(q, W, 1n+i), S.Repeat{sE})) == True{} : Bool}
       vtval_l1_AttesterSlashing(q, W, 1n+i, sE, rs, dv, edv, ok, eq)
-def vr_l1_AttesterSlashing(-o: T.l1_AttesterSlashing_Seq, +s: S.Schema, +rep: RT.rep_l1_AttesterSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_l1_AttesterSlashing(s, dv) == True{} : Bool}, +eq: RT.eqs_l1_AttesterSlashing(s))
+def vr_l1_AttesterSlashing(-o: Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq, +s: S.Schema, +rep: RT.rep_l1_AttesterSlashing(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_l1_AttesterSlashing(s, dv) == True{} : Bool}, +eq: RT.eqs_l1_AttesterSlashing(s))
     -> {VD.root_valid(RT.xv_l1_AttesterSlashing(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -1271,7 +1318,7 @@ def vr_l1_AttesterSlashing(-o: T.l1_AttesterSlashing_Seq, +s: S.Schema, +rep: RT
   +hvN = RT.xhv_l1_AttesterSlashing(o, t, N, SH.ListOf_limit(s), eo, hv)
   %Equal.sym(S.Schema, s, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}, SH.ListOf_shape(s, k0)) :
     {VD.root_valid(RT.xv_l1_AttesterSlashing(o), _) == True{} : Bool}
-  %Equal.sym(T.l1_AttesterSlashing_Seq, o, T.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(t), N}, eo) :
+  %Equal.sym(Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq, o, Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{RT.am_l1_AttesterSlashing(t), N}, eo) :
     {VD.root_valid(RT.xv_l1_AttesterSlashing(_), S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(F.array__Tree<RT.MB<RT.M_AttesterSlashing>>, RT.tfz_l1_AttesterSlashing(RT.am_l1_AttesterSlashing(t)), t, RT.tfzam_l1_AttesterSlashing(t)) :
     {VD.root_valid(S.Sequence{RT.xi_l1_AttesterSlashing(U32.to_nat(N), F.array__slots(RT.MB<RT.M_AttesterSlashing>, _), 0n)}, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
@@ -1313,7 +1360,7 @@ def vtval_l8_Attestation(k, W, i, sE, er, dv, edv, ok, eq):
       %Equal.sym(Bool, VD.root_valid(RT.v_Attestation_bx(RT.th_Attestation_bx(RT.xat_l8_Attestation(W, i))), sE), True{}, vr_Attestation_bx(RT.th_Attestation_bx(RT.xat_l8_Attestation(W, i)), sE, r0, dv, edv, ok, eq)) :
         {Bool.and(_, VD.root_valid(RT.xi_l8_Attestation(q, W, 1n+i), S.Repeat{sE})) == True{} : Bool}
       vtval_l8_Attestation(q, W, 1n+i, sE, rs, dv, edv, ok, eq)
-def vr_l8_Attestation(-o: T.l8_Attestation_Seq, +s: S.Schema, +rep: RT.rep_l8_Attestation(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_l8_Attestation(s, dv) == True{} : Bool}, +eq: RT.eqs_l8_Attestation(s))
+def vr_l8_Attestation(-o: Fulu_list_Attestation_8_d.l8_Attestation_Seq, +s: S.Schema, +rep: RT.rep_l8_Attestation(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_l8_Attestation(s, dv) == True{} : Bool}, +eq: RT.eqs_l8_Attestation(s))
     -> {VD.root_valid(RT.xv_l8_Attestation(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -1329,7 +1376,7 @@ def vr_l8_Attestation(-o: T.l8_Attestation_Seq, +s: S.Schema, +rep: RT.rep_l8_At
   +hvN = RT.xhv_l8_Attestation(o, t, N, SH.ListOf_limit(s), eo, hv)
   %Equal.sym(S.Schema, s, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}, SH.ListOf_shape(s, k0)) :
     {VD.root_valid(RT.xv_l8_Attestation(o), _) == True{} : Bool}
-  %Equal.sym(T.l8_Attestation_Seq, o, T.l8_Attestation_Seq{RT.am_l8_Attestation(t), N}, eo) :
+  %Equal.sym(Fulu_list_Attestation_8_d.l8_Attestation_Seq, o, Fulu_list_Attestation_8_d.l8_Attestation_Seq{RT.am_l8_Attestation(t), N}, eo) :
     {VD.root_valid(RT.xv_l8_Attestation(_), S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(F.array__Tree<RT.MB<RT.M_Attestation>>, RT.tfz_l8_Attestation(RT.am_l8_Attestation(t)), t, RT.tfzam_l8_Attestation(t)) :
     {VD.root_valid(S.Sequence{RT.xi_l8_Attestation(U32.to_nat(N), F.array__slots(RT.MB<RT.M_Attestation>, _), 0n)}, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
@@ -1340,10 +1387,10 @@ def vr_l8_Attestation(-o: T.l8_Attestation_Seq, +s: S.Schema, +rep: RT.rep_l8_At
   %Equal.sym(Bool, Nat.is_le(U32.to_nat(N), SH.ListOf_limit(s)), True{}, hvN) : {Bool.and(_, True{}) == True{} : Bool}
   {==}
 
-def vr_Deposit_bx(-o: O.Boxed<T.Deposit>, +s: S.Schema, +rep: RT.rep_Deposit_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Deposit(s, dv) == True{} : Bool}, +eq: RT.eqs_Deposit(s))
+def vr_Deposit_bx(-o: O.Boxed<FuluDeposit_d.Deposit>, +s: S.Schema, +rep: RT.rep_Deposit_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Deposit(s, dv) == True{} : Bool}, +eq: RT.eqs_Deposit(s))
     -> {VD.root_valid(RT.v_Deposit_bx(o), s) == True{} : Bool}:
   (+eo, +ri) = rep
-  %Equal.sym(O.Boxed<T.Deposit>, o, O.BSome{RT.pjb_Deposit_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_Deposit_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluDeposit_d.Deposit>, o, O.BSome{RT.pjb_Deposit_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_Deposit_bx(_), s) == True{} : Bool}
   vr_Deposit(RT.pjb_Deposit_bx(o), s, ri, dv, edv, ok, eq)
 
 # ---- l16_Deposit: list of Deposit_bx ----
@@ -1377,7 +1424,7 @@ def vtval_l16_Deposit(k, W, i, sE, er, dv, edv, ok, eq):
       %Equal.sym(Bool, VD.root_valid(RT.v_Deposit_bx(RT.th_Deposit_bx(RT.xat_l16_Deposit(W, i))), sE), True{}, vr_Deposit_bx(RT.th_Deposit_bx(RT.xat_l16_Deposit(W, i)), sE, r0, dv, edv, ok, eq)) :
         {Bool.and(_, VD.root_valid(RT.xi_l16_Deposit(q, W, 1n+i), S.Repeat{sE})) == True{} : Bool}
       vtval_l16_Deposit(q, W, 1n+i, sE, rs, dv, edv, ok, eq)
-def vr_l16_Deposit(-o: T.l16_Deposit_Seq, +s: S.Schema, +rep: RT.rep_l16_Deposit(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_l16_Deposit(s, dv) == True{} : Bool}, +eq: RT.eqs_l16_Deposit(s))
+def vr_l16_Deposit(-o: Fulu_list_Deposit_16_d.l16_Deposit_Seq, +s: S.Schema, +rep: RT.rep_l16_Deposit(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_l16_Deposit(s, dv) == True{} : Bool}, +eq: RT.eqs_l16_Deposit(s))
     -> {VD.root_valid(RT.xv_l16_Deposit(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -1393,7 +1440,7 @@ def vr_l16_Deposit(-o: T.l16_Deposit_Seq, +s: S.Schema, +rep: RT.rep_l16_Deposit
   +hvN = RT.xhv_l16_Deposit(o, t, N, SH.ListOf_limit(s), eo, hv)
   %Equal.sym(S.Schema, s, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}, SH.ListOf_shape(s, k0)) :
     {VD.root_valid(RT.xv_l16_Deposit(o), _) == True{} : Bool}
-  %Equal.sym(T.l16_Deposit_Seq, o, T.l16_Deposit_Seq{RT.am_l16_Deposit(t), N}, eo) :
+  %Equal.sym(Fulu_list_Deposit_16_d.l16_Deposit_Seq, o, Fulu_list_Deposit_16_d.l16_Deposit_Seq{RT.am_l16_Deposit(t), N}, eo) :
     {VD.root_valid(RT.xv_l16_Deposit(_), S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
   %Equal.sym(F.array__Tree<RT.MB<RT.M_Deposit>>, RT.tfz_l16_Deposit(RT.am_l16_Deposit(t)), t, RT.tfzam_l16_Deposit(t)) :
     {VD.root_valid(S.Sequence{RT.xi_l16_Deposit(U32.to_nat(N), F.array__slots(RT.MB<RT.M_Deposit>, _), 0n)}, S.ListOf{SH.ListOf_element(s), SH.ListOf_limit(s)}) == True{} : Bool}
@@ -1407,7 +1454,7 @@ def vr_l16_Deposit(-o: T.l16_Deposit_Seq, +s: S.Schema, +rep: RT.rep_l16_Deposit
 # ---- l16_SignedVoluntaryExit: list of SignedVoluntaryExit ----
 law vxlen_l16_SignedVoluntaryExit:
   for +k: Nat
-  for +W: List<&2, T.SignedVoluntaryExit>
+  for +W: List<&2, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>
   for +i: Nat
   {VD.items_length(RT.xi_l16_SignedVoluntaryExit(k, W, i)) == k : Nat}
 def vxlen_l16_SignedVoluntaryExit(k, W, i):
@@ -1418,7 +1465,7 @@ def vxlen_l16_SignedVoluntaryExit(k, W, i):
       {==}
 law vxval_l16_SignedVoluntaryExit:
   for +k: Nat
-  for +W: List<&2, T.SignedVoluntaryExit>
+  for +W: List<&2, FuluSignedVoluntaryExit_d.SignedVoluntaryExit>
   for +i: Nat
   {VD.root_valid(RT.xi_l16_SignedVoluntaryExit(k, W, i), S.Repeat{S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}) == True{} : Bool}
 def vxval_l16_SignedVoluntaryExit(k, W, i):
@@ -1428,7 +1475,7 @@ def vxval_l16_SignedVoluntaryExit(k, W, i):
       %Equal.sym(Bool, VD.root_valid(RN.v_SignedVoluntaryExit(RT.xat_l16_SignedVoluntaryExit(W, i)), S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}), True{}, VN.rv_SignedVoluntaryExit(RT.xat_l16_SignedVoluntaryExit(W, i))) :
         {Bool.and(_, VD.root_valid(RT.xi_l16_SignedVoluntaryExit(q, W, 1n+i), S.Repeat{S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}})) == True{} : Bool}
       vxval_l16_SignedVoluntaryExit(q, W, 1n+i)
-def vr_l16_SignedVoluntaryExit(-o: T.l16_SignedVoluntaryExit_Seq, +s: S.Schema, +rep: RT.rep_l16_SignedVoluntaryExit(o, s), +ok: {RT.ok_l16_SignedVoluntaryExit(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema})
+def vr_l16_SignedVoluntaryExit(-o: Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq, +s: S.Schema, +rep: RT.rep_l16_SignedVoluntaryExit(o, s), +ok: {RT.ok_l16_SignedVoluntaryExit(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema})
     -> {VD.root_valid(RT.xv_l16_SignedVoluntaryExit(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -1443,27 +1490,27 @@ def vr_l16_SignedVoluntaryExit(-o: T.l16_SignedVoluntaryExit_Seq, +s: S.Schema, 
     {VD.root_valid(RT.xv_l16_SignedVoluntaryExit(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, eq) :
     {VD.root_valid(RT.xv_l16_SignedVoluntaryExit(o), S.ListOf{_, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(T.l16_SignedVoluntaryExit_Seq, o, T.l16_SignedVoluntaryExit_Seq{F.array__thaw(T.SignedVoluntaryExit, t), N}, eo) :
+  %Equal.sym(Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq, o, Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq{F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), N}, eo) :
     {VD.root_valid(RT.xv_l16_SignedVoluntaryExit(_), S.ListOf{S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<T.SignedVoluntaryExit>, F.array__freeze(T.SignedVoluntaryExit, F.array__thaw(T.SignedVoluntaryExit, t)), t, F.array__freeze_thaw(T.SignedVoluntaryExit, t)) :
-    {VD.root_valid(S.Sequence{RT.xi_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(T.SignedVoluntaryExit, _), 0n)}, S.ListOf{S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(Bool, VD.root_valid(RT.xi_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(T.SignedVoluntaryExit, t), 0n), S.Repeat{S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}), True{}, vxval_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(T.SignedVoluntaryExit, t), 0n)) :
-    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(T.SignedVoluntaryExit, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
-  %Equal.sym(Nat, VD.items_length(RT.xi_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(T.SignedVoluntaryExit, t), 0n)), U32.to_nat(N), vxlen_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(T.SignedVoluntaryExit, t), 0n)) :
+  %Equal.sym(F.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, F.array__freeze(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, F.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t)), t, F.array__freeze_thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t)) :
+    {VD.root_valid(S.Sequence{RT.xi_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, _), 0n)}, S.ListOf{S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
+  %Equal.sym(Bool, VD.root_valid(RT.xi_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), 0n), S.Repeat{S.Container{["message", "signature"], S.Chain{S.Container{["epoch", "validator_index"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}), True{}, vxval_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), 0n)) :
+    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
+  %Equal.sym(Nat, VD.items_length(RT.xi_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), 0n)), U32.to_nat(N), vxlen_l16_SignedVoluntaryExit(U32.to_nat(N), F.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, t), 0n)) :
     {Bool.and(Nat.is_le(_, SH.ListOf_limit(s)), True{}) == True{} : Bool}
   %Equal.sym(Bool, Nat.is_le(U32.to_nat(N), SH.ListOf_limit(s)), True{}, hvN) : {Bool.and(_, True{}) == True{} : Bool}
   {==}
 
-def vr_ExecutionPayload_bx(-o: O.Boxed<T.ExecutionPayload>, +s: S.Schema, +rep: RT.rep_ExecutionPayload_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ExecutionPayload(s, dv) == True{} : Bool}, +eq: RT.eqs_ExecutionPayload(s))
+def vr_ExecutionPayload_bx(-o: O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, +s: S.Schema, +rep: RT.rep_ExecutionPayload_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_ExecutionPayload(s, dv) == True{} : Bool}, +eq: RT.eqs_ExecutionPayload(s))
     -> {VD.root_valid(RT.v_ExecutionPayload_bx(o), s) == True{} : Bool}:
   (+eo, +ri) = rep
-  %Equal.sym(O.Boxed<T.ExecutionPayload>, o, O.BSome{RT.pjb_ExecutionPayload_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_ExecutionPayload_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluExecutionPayload_d.ExecutionPayload>, o, O.BSome{RT.pjb_ExecutionPayload_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_ExecutionPayload_bx(_), s) == True{} : Bool}
   vr_ExecutionPayload(RT.pjb_ExecutionPayload_bx(o), s, ri, dv, edv, ok, eq)
 
 # ---- l16_SignedBLSToExecutionChange: list of SignedBLSToExecutionChange ----
 law vxlen_l16_SignedBLSToExecutionChange:
   for +k: Nat
-  for +W: List<&2, T.SignedBLSToExecutionChange>
+  for +W: List<&2, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>
   for +i: Nat
   {VD.items_length(RT.xi_l16_SignedBLSToExecutionChange(k, W, i)) == k : Nat}
 def vxlen_l16_SignedBLSToExecutionChange(k, W, i):
@@ -1474,7 +1521,7 @@ def vxlen_l16_SignedBLSToExecutionChange(k, W, i):
       {==}
 law vxval_l16_SignedBLSToExecutionChange:
   for +k: Nat
-  for +W: List<&2, T.SignedBLSToExecutionChange>
+  for +W: List<&2, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>
   for +i: Nat
   {VD.root_valid(RT.xi_l16_SignedBLSToExecutionChange(k, W, i), S.Repeat{S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}) == True{} : Bool}
 def vxval_l16_SignedBLSToExecutionChange(k, W, i):
@@ -1484,7 +1531,7 @@ def vxval_l16_SignedBLSToExecutionChange(k, W, i):
       %Equal.sym(Bool, VD.root_valid(RN.v_SignedBLSToExecutionChange(RT.xat_l16_SignedBLSToExecutionChange(W, i)), S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}), True{}, VN.rv_SignedBLSToExecutionChange(RT.xat_l16_SignedBLSToExecutionChange(W, i))) :
         {Bool.and(_, VD.root_valid(RT.xi_l16_SignedBLSToExecutionChange(q, W, 1n+i), S.Repeat{S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}})) == True{} : Bool}
       vxval_l16_SignedBLSToExecutionChange(q, W, 1n+i)
-def vr_l16_SignedBLSToExecutionChange(-o: T.l16_SignedBLSToExecutionChange_Seq, +s: S.Schema, +rep: RT.rep_l16_SignedBLSToExecutionChange(o, s), +ok: {RT.ok_l16_SignedBLSToExecutionChange(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema})
+def vr_l16_SignedBLSToExecutionChange(-o: Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, +s: S.Schema, +rep: RT.rep_l16_SignedBLSToExecutionChange(o, s), +ok: {RT.ok_l16_SignedBLSToExecutionChange(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema})
     -> {VD.root_valid(RT.xv_l16_SignedBLSToExecutionChange(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -1499,19 +1546,19 @@ def vr_l16_SignedBLSToExecutionChange(-o: T.l16_SignedBLSToExecutionChange_Seq, 
     {VD.root_valid(RT.xv_l16_SignedBLSToExecutionChange(o), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.ListOf_element(s), S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, eq) :
     {VD.root_valid(RT.xv_l16_SignedBLSToExecutionChange(o), S.ListOf{_, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(T.l16_SignedBLSToExecutionChange_Seq, o, T.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(T.SignedBLSToExecutionChange, t), N}, eo) :
+  %Equal.sym(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, o, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, eo) :
     {VD.root_valid(RT.xv_l16_SignedBLSToExecutionChange(_), S.ListOf{S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<T.SignedBLSToExecutionChange>, F.array__freeze(T.SignedBLSToExecutionChange, F.array__thaw(T.SignedBLSToExecutionChange, t)), t, F.array__freeze_thaw(T.SignedBLSToExecutionChange, t)) :
-    {VD.root_valid(S.Sequence{RT.xi_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(T.SignedBLSToExecutionChange, _), 0n)}, S.ListOf{S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
-  %Equal.sym(Bool, VD.root_valid(RT.xi_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(T.SignedBLSToExecutionChange, t), 0n), S.Repeat{S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}), True{}, vxval_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(T.SignedBLSToExecutionChange, t), 0n)) :
-    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(T.SignedBLSToExecutionChange, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
-  %Equal.sym(Nat, VD.items_length(RT.xi_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(T.SignedBLSToExecutionChange, t), 0n)), U32.to_nat(N), vxlen_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(T.SignedBLSToExecutionChange, t), 0n)) :
+  %Equal.sym(F.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, F.array__freeze(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t)), t, F.array__freeze_thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t)) :
+    {VD.root_valid(S.Sequence{RT.xi_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, _), 0n)}, S.ListOf{S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, SH.ListOf_limit(s)}) == True{} : Bool}
+  %Equal.sym(Bool, VD.root_valid(RT.xi_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), 0n), S.Repeat{S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}), True{}, vxval_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), 0n)) :
+    {Bool.and(Nat.is_le(VD.items_length(RT.xi_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), 0n)), SH.ListOf_limit(s)), _) == True{} : Bool}
+  %Equal.sym(Nat, VD.items_length(RT.xi_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), 0n)), U32.to_nat(N), vxlen_l16_SignedBLSToExecutionChange(U32.to_nat(N), F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), 0n)) :
     {Bool.and(Nat.is_le(_, SH.ListOf_limit(s)), True{}) == True{} : Bool}
   %Equal.sym(Bool, Nat.is_le(U32.to_nat(N), SH.ListOf_limit(s)), True{}, hvN) : {Bool.and(_, True{}) == True{} : Bool}
   {==}
 
 # ---- BeaconBlockBody ----
-def vr_BeaconBlockBody(-o: T.BeaconBlockBody, +s: S.Schema, +rep: RT.rep_BeaconBlockBody(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_BeaconBlockBody(s, dv) == True{} : Bool}, +ev: RT.eqs_BeaconBlockBody(s))
+def vr_BeaconBlockBody(-o: FuluBeaconBlockBody_d.BeaconBlockBody, +s: S.Schema, +rep: RT.rep_BeaconBlockBody(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_BeaconBlockBody(s, dv) == True{} : Bool}, +ev: RT.eqs_BeaconBlockBody(s))
     -> {VD.root_valid(RT.v_BeaconBlockBody(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+x1, +q1) = q0
@@ -1583,11 +1630,11 @@ def vr_BeaconBlockBody(-o: T.BeaconBlockBody, +s: S.Schema, +rep: RT.rep_BeaconB
   +r22 = DK.and_r(RT.ok_l16_SignedBLSToExecutionChange(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))), Bool.and(E48.ok_el(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))), 12n), RT.ok_ExecutionRequests(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))), dv)), r21)
   +k22 = DK.and_l(E48.ok_el(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))), 12n), RT.ok_ExecutionRequests(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))), dv), r22)
   +r23 = DK.and_r(E48.ok_el(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))), 12n), RT.ok_ExecutionRequests(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))), dv), r22)
-  %Equal.sym(T.BeaconBlockBody, o, T.BeaconBlockBody{T.BeaconBlockBody_g0{x0, x1, x2, RT.pj_BeaconBlockBody_3(o), RT.pj_BeaconBlockBody_4(o), RT.pj_BeaconBlockBody_5(o), RT.pj_BeaconBlockBody_6(o), RT.pj_BeaconBlockBody_7(o)}, T.BeaconBlockBody_g1{RT.pj_BeaconBlockBody_8(o), RT.pj_BeaconBlockBody_9(o), RT.pj_BeaconBlockBody_10(o), RT.pj_BeaconBlockBody_11(o), RT.pj_BeaconBlockBody_12(o)}}, eo) : {VD.root_valid(RT.v_BeaconBlockBody(_), s) == True{} : Bool}
+  %Equal.sym(FuluBeaconBlockBody_d.BeaconBlockBody, o, FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0{x0, x1, x2, RT.pj_BeaconBlockBody_3(o), RT.pj_BeaconBlockBody_4(o), RT.pj_BeaconBlockBody_5(o), RT.pj_BeaconBlockBody_6(o), RT.pj_BeaconBlockBody_7(o)}, FuluBeaconBlockBody_d.BeaconBlockBody_g1{RT.pj_BeaconBlockBody_8(o), RT.pj_BeaconBlockBody_9(o), RT.pj_BeaconBlockBody_10(o), RT.pj_BeaconBlockBody_11(o), RT.pj_BeaconBlockBody_12(o)}}, eo) : {VD.root_valid(RT.v_BeaconBlockBody(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_BeaconBlockBody(T.BeaconBlockBody{T.BeaconBlockBody_g0{x0, x1, x2, RT.pj_BeaconBlockBody_3(o), RT.pj_BeaconBlockBody_4(o), RT.pj_BeaconBlockBody_5(o), RT.pj_BeaconBlockBody_6(o), RT.pj_BeaconBlockBody_7(o)}, T.BeaconBlockBody_g1{RT.pj_BeaconBlockBody_8(o), RT.pj_BeaconBlockBody_9(o), RT.pj_BeaconBlockBody_10(o), RT.pj_BeaconBlockBody_11(o), RT.pj_BeaconBlockBody_12(o)}}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_BeaconBlockBody(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0{x0, x1, x2, RT.pj_BeaconBlockBody_3(o), RT.pj_BeaconBlockBody_4(o), RT.pj_BeaconBlockBody_5(o), RT.pj_BeaconBlockBody_6(o), RT.pj_BeaconBlockBody_7(o)}, FuluBeaconBlockBody_d.BeaconBlockBody_g1{RT.pj_BeaconBlockBody_8(o), RT.pj_BeaconBlockBody_9(o), RT.pj_BeaconBlockBody_10(o), RT.pj_BeaconBlockBody_11(o), RT.pj_BeaconBlockBody_12(o)}}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))), S.End{}}}}}}}}}}}}}}, RT.fsh_BeaconBlockBody(s, dv, ok)) :
-    {VD.root_valid(RT.v_BeaconBlockBody(T.BeaconBlockBody{T.BeaconBlockBody_g0{x0, x1, x2, RT.pj_BeaconBlockBody_3(o), RT.pj_BeaconBlockBody_4(o), RT.pj_BeaconBlockBody_5(o), RT.pj_BeaconBlockBody_6(o), RT.pj_BeaconBlockBody_7(o)}, T.BeaconBlockBody_g1{RT.pj_BeaconBlockBody_8(o), RT.pj_BeaconBlockBody_9(o), RT.pj_BeaconBlockBody_10(o), RT.pj_BeaconBlockBody_11(o), RT.pj_BeaconBlockBody_12(o)}}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_BeaconBlockBody(FuluBeaconBlockBody_d.BeaconBlockBody{FuluBeaconBlockBody_d.BeaconBlockBody_g0{x0, x1, x2, RT.pj_BeaconBlockBody_3(o), RT.pj_BeaconBlockBody_4(o), RT.pj_BeaconBlockBody_5(o), RT.pj_BeaconBlockBody_6(o), RT.pj_BeaconBlockBody_7(o)}, FuluBeaconBlockBody_d.BeaconBlockBody_g1{RT.pj_BeaconBlockBody_8(o), RT.pj_BeaconBlockBody_9(o), RT.pj_BeaconBlockBody_10(o), RT.pj_BeaconBlockBody_11(o), RT.pj_BeaconBlockBody_12(o)}}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_b96(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_b96(x0), SH.Chain_head(SH.Container_fields(s)), S.ByteVector{96n}, qe0, VN.rv_b96(x0))) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_Eth1Data(x1), S.Items{RN.v_b32(x2), S.Items{RT.xv_l16_ProposerSlashing(RT.pj_BeaconBlockBody_3(o)), S.Items{RT.xv_l1_AttesterSlashing(RT.pj_BeaconBlockBody_4(o)), S.Items{RT.xv_l8_Attestation(RT.pj_BeaconBlockBody_5(o)), S.Items{RT.xv_l16_Deposit(RT.pj_BeaconBlockBody_6(o)), S.Items{RT.xv_l16_SignedVoluntaryExit(RT.pj_BeaconBlockBody_7(o)), S.Items{RT.v_SyncAggregate_bx(RT.pj_BeaconBlockBody_8(o)), S.Items{RT.v_ExecutionPayload_bx(RT.pj_BeaconBlockBody_9(o)), S.Items{RT.xv_l16_SignedBLSToExecutionChange(RT.pj_BeaconBlockBody_10(o)), S.Items{E48.eview(RT.pj_BeaconBlockBody_11(o)), S.Items{RT.v_ExecutionRequests(RT.pj_BeaconBlockBody_12(o)), S.EmptyItems{}}}}}}}}}}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))))))))), S.End{}}}}}}}}}}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_Eth1Data(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_Eth1Data(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}, qe1, VN.rv_Eth1Data(x1))) :
@@ -1616,14 +1663,14 @@ def vr_BeaconBlockBody(-o: T.BeaconBlockBody, +s: S.Schema, +rep: RT.rep_BeaconB
     {Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{})))))))))))))) == True{} : Bool}
   {==}
 
-def vr_BeaconBlockBody_bx(-o: O.Boxed<T.BeaconBlockBody>, +s: S.Schema, +rep: RT.rep_BeaconBlockBody_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_BeaconBlockBody(s, dv) == True{} : Bool}, +eq: RT.eqs_BeaconBlockBody(s))
+def vr_BeaconBlockBody_bx(-o: O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, +s: S.Schema, +rep: RT.rep_BeaconBlockBody_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_BeaconBlockBody(s, dv) == True{} : Bool}, +eq: RT.eqs_BeaconBlockBody(s))
     -> {VD.root_valid(RT.v_BeaconBlockBody_bx(o), s) == True{} : Bool}:
   (+eo, +ri) = rep
-  %Equal.sym(O.Boxed<T.BeaconBlockBody>, o, O.BSome{RT.pjb_BeaconBlockBody_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_BeaconBlockBody_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<FuluBeaconBlockBody_d.BeaconBlockBody>, o, O.BSome{RT.pjb_BeaconBlockBody_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_BeaconBlockBody_bx(_), s) == True{} : Bool}
   vr_BeaconBlockBody(RT.pjb_BeaconBlockBody_bx(o), s, ri, dv, edv, ok, eq)
 
 # ---- BeaconBlock ----
-def vr_BeaconBlock(-o: T.BeaconBlock, +s: S.Schema, +rep: RT.rep_BeaconBlock(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_BeaconBlock(s, dv) == True{} : Bool}, +ev: RT.eqs_BeaconBlock(s))
+def vr_BeaconBlock(-o: FuluBeaconBlock_d.BeaconBlock, +s: S.Schema, +rep: RT.rep_BeaconBlock(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_BeaconBlock(s, dv) == True{} : Bool}, +ev: RT.eqs_BeaconBlock(s))
     -> {VD.root_valid(RT.v_BeaconBlock(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+x1, +q1) = q0
@@ -1648,11 +1695,11 @@ def vr_BeaconBlock(-o: T.BeaconBlock, +s: S.Schema, +rep: RT.rep_BeaconBlock(o, 
   +r6 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), RT.ok_BeaconBlockBody_bx(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), dv)), r5)
   +k6 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), RT.ok_BeaconBlockBody_bx(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), dv), r6)
   +r7 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), RT.ok_BeaconBlockBody_bx(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), dv), r6)
-  %Equal.sym(T.BeaconBlock, o, T.BeaconBlock{x0, x1, x2, x3, RT.pj_BeaconBlock_4(o)}, eo) : {VD.root_valid(RT.v_BeaconBlock(_), s) == True{} : Bool}
+  %Equal.sym(FuluBeaconBlock_d.BeaconBlock, o, FuluBeaconBlock_d.BeaconBlock{x0, x1, x2, x3, RT.pj_BeaconBlock_4(o)}, eo) : {VD.root_valid(RT.v_BeaconBlock(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_BeaconBlock(T.BeaconBlock{x0, x1, x2, x3, RT.pj_BeaconBlock_4(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_BeaconBlock(FuluBeaconBlock_d.BeaconBlock{x0, x1, x2, x3, RT.pj_BeaconBlock_4(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.End{}}}}}}, RT.fsh_BeaconBlock(s, dv, ok)) :
-    {VD.root_valid(RT.v_BeaconBlock(T.BeaconBlock{x0, x1, x2, x3, RT.pj_BeaconBlock_4(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_BeaconBlock(FuluBeaconBlock_d.BeaconBlock{x0, x1, x2, x3, RT.pj_BeaconBlock_4(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_u64(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_u64(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U64{}}, qe0, VN.rv_u64(x0))) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_u64(x1), S.Items{RN.v_b32(x2), S.Items{RN.v_b32(x3), S.Items{RT.v_BeaconBlockBody_bx(RT.pj_BeaconBlock_4(o)), S.EmptyItems{}}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.End{}}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_u64(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_u64(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Unsigned{P.U64{}}, qe1, VN.rv_u64(x1))) :
@@ -1666,7 +1713,7 @@ def vr_BeaconBlock(-o: T.BeaconBlock, +s: S.Schema, +rep: RT.rep_BeaconBlock(o, 
   {==}
 
 # ---- SignedBeaconBlock ----
-def vr_SignedBeaconBlock(-o: T.SignedBeaconBlock, +s: S.Schema, +rep: RT.rep_SignedBeaconBlock(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_SignedBeaconBlock(s, dv) == True{} : Bool}, +ev: RT.eqs_SignedBeaconBlock(s))
+def vr_SignedBeaconBlock(-o: FuluSignedBeaconBlock_d.SignedBeaconBlock, +s: S.Schema, +rep: RT.rep_SignedBeaconBlock(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_SignedBeaconBlock(s, dv) == True{} : Bool}, +ev: RT.eqs_SignedBeaconBlock(s))
     -> {VD.root_valid(RT.v_SignedBeaconBlock(o), s) == True{} : Bool}:
   (+x1, +q0) = rep
   (+eo, +q1) = q0
@@ -1679,11 +1726,11 @@ def vr_SignedBeaconBlock(-o: T.SignedBeaconBlock, +s: S.Schema, +rep: RT.rep_Sig
   +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_BeaconBlock(SH.Chain_head(SH.Container_fields(s)), dv)), r2)
   +k3 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_BeaconBlock(SH.Chain_head(SH.Container_fields(s)), dv), r3)
   +r4 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), RT.ok_BeaconBlock(SH.Chain_head(SH.Container_fields(s)), dv), r3)
-  %Equal.sym(T.SignedBeaconBlock, o, T.SignedBeaconBlock{RT.pj_SignedBeaconBlock_0(o), x1}, eo) : {VD.root_valid(RT.v_SignedBeaconBlock(_), s) == True{} : Bool}
+  %Equal.sym(FuluSignedBeaconBlock_d.SignedBeaconBlock, o, FuluSignedBeaconBlock_d.SignedBeaconBlock{RT.pj_SignedBeaconBlock_0(o), x1}, eo) : {VD.root_valid(RT.v_SignedBeaconBlock(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_SignedBeaconBlock(T.SignedBeaconBlock{RT.pj_SignedBeaconBlock_0(o), x1}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_SignedBeaconBlock(FuluSignedBeaconBlock_d.SignedBeaconBlock{RT.pj_SignedBeaconBlock_0(o), x1}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}}}, RT.fsh_SignedBeaconBlock(s, dv, ok)) :
-    {VD.root_valid(RT.v_SignedBeaconBlock(T.SignedBeaconBlock{RT.pj_SignedBeaconBlock_0(o), x1}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_SignedBeaconBlock(FuluSignedBeaconBlock_d.SignedBeaconBlock{RT.pj_SignedBeaconBlock_0(o), x1}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RT.v_BeaconBlock(RT.pj_SignedBeaconBlock_0(o)), SH.Chain_head(SH.Container_fields(s))), True{}, vr_BeaconBlock(RT.pj_SignedBeaconBlock_0(o), SH.Chain_head(SH.Container_fields(s)), q1, dv, edv, r4, qe0)) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_b96(x1), S.EmptyItems{}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_b96(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_b96(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.ByteVector{96n}, qv0, VN.rv_b96(x1))) :
@@ -1691,7 +1738,7 @@ def vr_SignedBeaconBlock(-o: T.SignedBeaconBlock, +s: S.Schema, +rep: RT.rep_Sig
   {==}
 
 # ---- BlobSidecar ----
-def vr_BlobSidecar(-o: T.BlobSidecar, +s: S.Schema, +rep: RT.rep_BlobSidecar(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_BlobSidecar(s, dv) == True{} : Bool}, +ev: RT.eqs_BlobSidecar(s))
+def vr_BlobSidecar(-o: FuluBlobSidecar_d.BlobSidecar, +s: S.Schema, +rep: RT.rep_BlobSidecar(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_BlobSidecar(s, dv) == True{} : Bool}, +ev: RT.eqs_BlobSidecar(s))
     -> {VD.root_valid(RT.v_BlobSidecar(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+x2, +q1) = q0
@@ -1720,11 +1767,11 @@ def vr_BlobSidecar(-o: T.BlobSidecar, +s: S.Schema, +rep: RT.rep_BlobSidecar(o, 
   +r8 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), Bool.and(WO.ok_bv(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 12n), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), 5n)), r7)
   +k8 = DK.and_l(WO.ok_bv(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 12n), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), 5n), r8)
   +r9 = DK.and_r(WO.ok_bv(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 12n), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), 5n), r8)
-  %Equal.sym(T.BlobSidecar, o, T.BlobSidecar{x0, RT.pj_BlobSidecar_1(o), x2, x3, RT.pj_BlobSidecar_4(o), RT.pj_BlobSidecar_5(o)}, eo) : {VD.root_valid(RT.v_BlobSidecar(_), s) == True{} : Bool}
+  %Equal.sym(FuluBlobSidecar_d.BlobSidecar, o, FuluBlobSidecar_d.BlobSidecar{x0, RT.pj_BlobSidecar_1(o), x2, x3, RT.pj_BlobSidecar_4(o), RT.pj_BlobSidecar_5(o)}, eo) : {VD.root_valid(RT.v_BlobSidecar(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_BlobSidecar(T.BlobSidecar{x0, RT.pj_BlobSidecar_1(o), x2, x3, RT.pj_BlobSidecar_4(o), RT.pj_BlobSidecar_5(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar{x0, RT.pj_BlobSidecar_1(o), x2, x3, RT.pj_BlobSidecar_4(o), RT.pj_BlobSidecar_5(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.End{}}}}}}}, RT.fsh_BlobSidecar(s, dv, ok)) :
-    {VD.root_valid(RT.v_BlobSidecar(T.BlobSidecar{x0, RT.pj_BlobSidecar_1(o), x2, x3, RT.pj_BlobSidecar_4(o), RT.pj_BlobSidecar_5(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_BlobSidecar(FuluBlobSidecar_d.BlobSidecar{x0, RT.pj_BlobSidecar_1(o), x2, x3, RT.pj_BlobSidecar_4(o), RT.pj_BlobSidecar_5(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_u64(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_u64(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U64{}}, qe0, VN.rv_u64(x0))) :
     {Bool.and(_, VD.root_valid(S.Items{S.BytesValue{WO.wview(RT.pj_BlobSidecar_1(o))}, S.Items{RN.v_b48(x2), S.Items{RN.v_b48(x3), S.Items{RT.v_SignedBeaconBlockHeader_bx(RT.pj_BlobSidecar_4(o)), S.Items{PV.pview(RT.pj_BlobSidecar_5(o)), S.EmptyItems{}}}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.End{}}}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(S.BytesValue{WO.wview(RT.pj_BlobSidecar_1(o))}, SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vbv(RT.pj_BlobSidecar_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 12n, rp1, k8)) :
@@ -1740,7 +1787,7 @@ def vr_BlobSidecar(-o: T.BlobSidecar, +s: S.Schema, +rep: RT.rep_BlobSidecar(o, 
   {==}
 
 # ---- DataColumnsByRootIdentifier ----
-def vr_DataColumnsByRootIdentifier(-o: T.DataColumnsByRootIdentifier, +s: S.Schema, +rep: RT.rep_DataColumnsByRootIdentifier(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_DataColumnsByRootIdentifier(s, dv) == True{} : Bool}, +ev: RT.eqs_DataColumnsByRootIdentifier(s))
+def vr_DataColumnsByRootIdentifier(-o: FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, +s: S.Schema, +rep: RT.rep_DataColumnsByRootIdentifier(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_DataColumnsByRootIdentifier(s, dv) == True{} : Bool}, +ev: RT.eqs_DataColumnsByRootIdentifier(s))
     -> {VD.root_valid(RT.v_DataColumnsByRootIdentifier(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+eo, +q1) = q0
@@ -1752,11 +1799,11 @@ def vr_DataColumnsByRootIdentifier(-o: T.DataColumnsByRootIdentifier, +s: S.Sche
   +r3 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Container_fields(s))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), UL.ok_ul(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 5n)), r2)
   +k3 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), UL.ok_ul(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 5n), r3)
   +r4 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), UL.ok_ul(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 5n), r3)
-  %Equal.sym(T.DataColumnsByRootIdentifier, o, T.DataColumnsByRootIdentifier{x0, RT.pj_DataColumnsByRootIdentifier_1(o)}, eo) : {VD.root_valid(RT.v_DataColumnsByRootIdentifier(_), s) == True{} : Bool}
+  %Equal.sym(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, o, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{x0, RT.pj_DataColumnsByRootIdentifier_1(o)}, eo) : {VD.root_valid(RT.v_DataColumnsByRootIdentifier(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier{x0, RT.pj_DataColumnsByRootIdentifier_1(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_DataColumnsByRootIdentifier(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{x0, RT.pj_DataColumnsByRootIdentifier_1(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}}}, RT.fsh_DataColumnsByRootIdentifier(s, dv, ok)) :
-    {VD.root_valid(RT.v_DataColumnsByRootIdentifier(T.DataColumnsByRootIdentifier{x0, RT.pj_DataColumnsByRootIdentifier_1(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_DataColumnsByRootIdentifier(FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{x0, RT.pj_DataColumnsByRootIdentifier_1(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_b32(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_b32(x0), SH.Chain_head(SH.Container_fields(s)), S.ByteVector{32n}, ev, VN.rv_b32(x0))) :
     {Bool.and(_, VD.root_valid(S.Items{UL.uview(RT.pj_DataColumnsByRootIdentifier_1(o)), S.EmptyItems{}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.End{}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(UL.uview(RT.pj_DataColumnsByRootIdentifier_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vul(RT.pj_DataColumnsByRootIdentifier_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 5n, q1, r4)) :
@@ -1764,7 +1811,7 @@ def vr_DataColumnsByRootIdentifier(-o: T.DataColumnsByRootIdentifier, +s: S.Sche
   {==}
 
 # ---- MatrixEntry ----
-def vr_MatrixEntry(-o: T.MatrixEntry, +s: S.Schema, +rep: RT.rep_MatrixEntry(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_MatrixEntry(s, dv) == True{} : Bool}, +ev: RT.eqs_MatrixEntry(s))
+def vr_MatrixEntry(-o: FuluMatrixEntry_d.MatrixEntry, +s: S.Schema, +rep: RT.rep_MatrixEntry(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_MatrixEntry(s, dv) == True{} : Bool}, +ev: RT.eqs_MatrixEntry(s))
     -> {VD.root_valid(RT.v_MatrixEntry(o), s) == True{} : Bool}:
   (+x1, +q0) = rep
   (+x2, +q1) = q0
@@ -1784,11 +1831,11 @@ def vr_MatrixEntry(-o: T.MatrixEntry, +s: S.Schema, +rep: RT.rep_MatrixEntry(o, 
   +r5 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), WO.ok_bv(SH.Chain_head(SH.Container_fields(s)), 6n)), r4)
   +k5 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), WO.ok_bv(SH.Chain_head(SH.Container_fields(s)), 6n), r5)
   +r6 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), WO.ok_bv(SH.Chain_head(SH.Container_fields(s)), 6n), r5)
-  %Equal.sym(T.MatrixEntry, o, T.MatrixEntry{RT.pj_MatrixEntry_0(o), x1, x2, x3}, eo) : {VD.root_valid(RT.v_MatrixEntry(_), s) == True{} : Bool}
+  %Equal.sym(FuluMatrixEntry_d.MatrixEntry, o, FuluMatrixEntry_d.MatrixEntry{RT.pj_MatrixEntry_0(o), x1, x2, x3}, eo) : {VD.root_valid(RT.v_MatrixEntry(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_MatrixEntry(T.MatrixEntry{RT.pj_MatrixEntry_0(o), x1, x2, x3}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry{RT.pj_MatrixEntry_0(o), x1, x2, x3}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.End{}}}}}, RT.fsh_MatrixEntry(s, dv, ok)) :
-    {VD.root_valid(RT.v_MatrixEntry(T.MatrixEntry{RT.pj_MatrixEntry_0(o), x1, x2, x3}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_MatrixEntry(FuluMatrixEntry_d.MatrixEntry{RT.pj_MatrixEntry_0(o), x1, x2, x3}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(S.BytesValue{WO.wview(RT.pj_MatrixEntry_0(o))}, SH.Chain_head(SH.Container_fields(s))), True{}, VO.vbv(RT.pj_MatrixEntry_0(o), SH.Chain_head(SH.Container_fields(s)), 6n, q3, r6)) :
     {Bool.and(_, VD.root_valid(S.Items{RN.v_b48(x1), S.Items{RN.v_u64(x2), S.Items{RN.v_u64(x3), S.EmptyItems{}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.End{}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_b48(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO.vtrans(RN.v_b48(x1), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.ByteVector{48n}, qe1, VN.rv_b48(x1))) :
@@ -1800,7 +1847,7 @@ def vr_MatrixEntry(-o: T.MatrixEntry, +s: S.Schema, +rep: RT.rep_MatrixEntry(o, 
   {==}
 
 # ---- DataColumnSidecar ----
-def vr_DataColumnSidecar(-o: T.DataColumnSidecar, +s: S.Schema, +rep: RT.rep_DataColumnSidecar(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_DataColumnSidecar(s, dv) == True{} : Bool}, +ev: RT.eqs_DataColumnSidecar(s))
+def vr_DataColumnSidecar(-o: FuluDataColumnSidecar_d.DataColumnSidecar, +s: S.Schema, +rep: RT.rep_DataColumnSidecar(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_DataColumnSidecar(s, dv) == True{} : Bool}, +ev: RT.eqs_DataColumnSidecar(s))
     -> {VD.root_valid(RT.v_DataColumnSidecar(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+eo, +q1) = q0
@@ -1831,11 +1878,11 @@ def vr_DataColumnSidecar(-o: T.DataColumnSidecar, +s: S.Schema, +rep: RT.rep_Dat
   +r10 = DK.and_r(E48.ok_el(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), 12n), Bool.and(E48.ok_el(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), 12n), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), 2n)), r9)
   +k10 = DK.and_l(E48.ok_el(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), 12n), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), 2n), r10)
   +r11 = DK.and_r(E48.ok_el(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), 12n), PV.ok_pv(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), 2n), r10)
-  %Equal.sym(T.DataColumnSidecar, o, T.DataColumnSidecar{x0, RT.pj_DataColumnSidecar_1(o), RT.pj_DataColumnSidecar_2(o), RT.pj_DataColumnSidecar_3(o), RT.pj_DataColumnSidecar_4(o), RT.pj_DataColumnSidecar_5(o)}, eo) : {VD.root_valid(RT.v_DataColumnSidecar(_), s) == True{} : Bool}
+  %Equal.sym(FuluDataColumnSidecar_d.DataColumnSidecar, o, FuluDataColumnSidecar_d.DataColumnSidecar{x0, RT.pj_DataColumnSidecar_1(o), RT.pj_DataColumnSidecar_2(o), RT.pj_DataColumnSidecar_3(o), RT.pj_DataColumnSidecar_4(o), RT.pj_DataColumnSidecar_5(o)}, eo) : {VD.root_valid(RT.v_DataColumnSidecar(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_DataColumnSidecar(T.DataColumnSidecar{x0, RT.pj_DataColumnSidecar_1(o), RT.pj_DataColumnSidecar_2(o), RT.pj_DataColumnSidecar_3(o), RT.pj_DataColumnSidecar_4(o), RT.pj_DataColumnSidecar_5(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar{x0, RT.pj_DataColumnSidecar_1(o), RT.pj_DataColumnSidecar_2(o), RT.pj_DataColumnSidecar_3(o), RT.pj_DataColumnSidecar_4(o), RT.pj_DataColumnSidecar_5(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.End{}}}}}}}, RT.fsh_DataColumnSidecar(s, dv, ok)) :
-    {VD.root_valid(RT.v_DataColumnSidecar(T.DataColumnSidecar{x0, RT.pj_DataColumnSidecar_1(o), RT.pj_DataColumnSidecar_2(o), RT.pj_DataColumnSidecar_3(o), RT.pj_DataColumnSidecar_4(o), RT.pj_DataColumnSidecar_5(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_DataColumnSidecar(FuluDataColumnSidecar_d.DataColumnSidecar{x0, RT.pj_DataColumnSidecar_1(o), RT.pj_DataColumnSidecar_2(o), RT.pj_DataColumnSidecar_3(o), RT.pj_DataColumnSidecar_4(o), RT.pj_DataColumnSidecar_5(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_u64(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_u64(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U64{}}, qe0, VN.rv_u64(x0))) :
     {Bool.and(_, VD.root_valid(S.Items{CE.eview(RT.pj_DataColumnSidecar_1(o)), S.Items{E48.eview(RT.pj_DataColumnSidecar_2(o)), S.Items{E48.eview(RT.pj_DataColumnSidecar_3(o)), S.Items{RT.v_SignedBeaconBlockHeader_bx(RT.pj_DataColumnSidecar_4(o)), S.Items{PV.pview(RT.pj_DataColumnSidecar_5(o)), S.EmptyItems{}}}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.End{}}}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(CE.eview(RT.pj_DataColumnSidecar_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VO2.vcl(RT.pj_DataColumnSidecar_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 12n, rp1, k8)) :
@@ -1850,95 +1897,95 @@ def vr_DataColumnSidecar(-o: T.DataColumnSidecar, +s: S.Schema, +rep: RT.rep_Dat
     {Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{}))))))) == True{} : Bool}
   {==}
 
-def ContributionAndProof_root_valid(-o: T.ContributionAndProof, +s: S.Schema, +es: {s == Spec.ContributionAndProof() : S.Schema}, +rep: RT.rep_ContributionAndProof(o, s))
+def ContributionAndProof_root_valid(-o: FuluContributionAndProof_d.ContributionAndProof, +s: S.Schema, +es: {s == Spec.ContributionAndProof() : S.Schema}, +rep: RT.rep_ContributionAndProof(o, s))
     -> {VD.root_valid(RT.v_ContributionAndProof(o), s) == True{} : Bool}:
   vr_ContributionAndProof(o, s, rep, OS.DV0(), {==}, RT.ContributionAndProof_ok(s, es, OS.DV0(), {==}), RT.ContributionAndProof_eqs(s, es))
 
-def SignedContributionAndProof_root_valid(-o: T.SignedContributionAndProof, +s: S.Schema, +es: {s == Spec.SignedContributionAndProof() : S.Schema}, +rep: RT.rep_SignedContributionAndProof(o, s))
+def SignedContributionAndProof_root_valid(-o: FuluSignedContributionAndProof_d.SignedContributionAndProof, +s: S.Schema, +es: {s == Spec.SignedContributionAndProof() : S.Schema}, +rep: RT.rep_SignedContributionAndProof(o, s))
     -> {VD.root_valid(RT.v_SignedContributionAndProof(o), s) == True{} : Bool}:
   vr_SignedContributionAndProof(o, s, rep, OS.DV0(), {==}, RT.SignedContributionAndProof_ok(s, es, OS.DV0(), {==}), RT.SignedContributionAndProof_eqs(s, es))
 
-def ProposerSlashing_root_valid(-o: T.ProposerSlashing, +s: S.Schema, +es: {s == Spec.ProposerSlashing() : S.Schema}, +rep: RT.rep_ProposerSlashing(o, s))
+def ProposerSlashing_root_valid(-o: FuluProposerSlashing_d.ProposerSlashing, +s: S.Schema, +es: {s == Spec.ProposerSlashing() : S.Schema}, +rep: RT.rep_ProposerSlashing(o, s))
     -> {VD.root_valid(RT.v_ProposerSlashing(o), s) == True{} : Bool}:
   vr_ProposerSlashing(o, s, rep, OS.DV0(), {==}, RT.ProposerSlashing_ok(s, es, OS.DV0(), {==}), RT.ProposerSlashing_eqs(s, es))
 
-def HistoricalBatch_root_valid(-o: T.HistoricalBatch, +s: S.Schema, +es: {s == Spec.HistoricalBatch() : S.Schema}, +rep: RT.rep_HistoricalBatch(o, s))
+def HistoricalBatch_root_valid(-o: FuluHistoricalBatch_d.HistoricalBatch, +s: S.Schema, +es: {s == Spec.HistoricalBatch() : S.Schema}, +rep: RT.rep_HistoricalBatch(o, s))
     -> {VD.root_valid(RT.v_HistoricalBatch(o), s) == True{} : Bool}:
   vr_HistoricalBatch(o, s, rep, OS.DV0(), {==}, RT.HistoricalBatch_ok(s, es, OS.DV0(), {==}), RT.HistoricalBatch_eqs(s, es))
 
-def Attestation_root_valid(-o: T.Attestation, +s: S.Schema, +es: {s == Spec.Attestation() : S.Schema}, +rep: RT.rep_Attestation(o, s))
+def Attestation_root_valid(-o: FuluAttestation_d.Attestation, +s: S.Schema, +es: {s == Spec.Attestation() : S.Schema}, +rep: RT.rep_Attestation(o, s))
     -> {VD.root_valid(RT.v_Attestation(o), s) == True{} : Bool}:
   vr_Attestation(o, s, rep, OS.DV0(), {==}, RT.Attestation_ok(s, es, OS.DV0(), {==}), RT.Attestation_eqs(s, es))
 
-def AggregateAndProof_root_valid(-o: T.AggregateAndProof, +s: S.Schema, +es: {s == Spec.AggregateAndProof() : S.Schema}, +rep: RT.rep_AggregateAndProof(o, s))
+def AggregateAndProof_root_valid(-o: FuluAggregateAndProof_d.AggregateAndProof, +s: S.Schema, +es: {s == Spec.AggregateAndProof() : S.Schema}, +rep: RT.rep_AggregateAndProof(o, s))
     -> {VD.root_valid(RT.v_AggregateAndProof(o), s) == True{} : Bool}:
   vr_AggregateAndProof(o, s, rep, OS.DV0(), {==}, RT.AggregateAndProof_ok(s, es, OS.DV0(), {==}), RT.AggregateAndProof_eqs(s, es))
 
-def SignedAggregateAndProof_root_valid(-o: T.SignedAggregateAndProof, +s: S.Schema, +es: {s == Spec.SignedAggregateAndProof() : S.Schema}, +rep: RT.rep_SignedAggregateAndProof(o, s))
+def SignedAggregateAndProof_root_valid(-o: FuluSignedAggregateAndProof_d.SignedAggregateAndProof, +s: S.Schema, +es: {s == Spec.SignedAggregateAndProof() : S.Schema}, +rep: RT.rep_SignedAggregateAndProof(o, s))
     -> {VD.root_valid(RT.v_SignedAggregateAndProof(o), s) == True{} : Bool}:
   vr_SignedAggregateAndProof(o, s, rep, OS.DV0(), {==}, RT.SignedAggregateAndProof_ok(s, es, OS.DV0(), {==}), RT.SignedAggregateAndProof_eqs(s, es))
 
-def PendingAttestation_root_valid(-o: T.PendingAttestation, +s: S.Schema, +es: {s == Spec.PendingAttestation() : S.Schema}, +rep: RT.rep_PendingAttestation(o, s))
+def PendingAttestation_root_valid(-o: FuluPendingAttestation_d.PendingAttestation, +s: S.Schema, +es: {s == Spec.PendingAttestation() : S.Schema}, +rep: RT.rep_PendingAttestation(o, s))
     -> {VD.root_valid(RT.v_PendingAttestation(o), s) == True{} : Bool}:
   vr_PendingAttestation(o, s, rep, OS.DV0(), {==}, RT.PendingAttestation_ok(s, es, OS.DV0(), {==}), RT.PendingAttestation_eqs(s, es))
 
-def IndexedAttestation_root_valid(-o: T.IndexedAttestation, +s: S.Schema, +es: {s == Spec.IndexedAttestation() : S.Schema}, +rep: RT.rep_IndexedAttestation(o, s))
+def IndexedAttestation_root_valid(-o: FuluIndexedAttestation_d.IndexedAttestation, +s: S.Schema, +es: {s == Spec.IndexedAttestation() : S.Schema}, +rep: RT.rep_IndexedAttestation(o, s))
     -> {VD.root_valid(RT.v_IndexedAttestation(o), s) == True{} : Bool}:
   vr_IndexedAttestation(o, s, rep, OS.DV0(), {==}, RT.IndexedAttestation_ok(s, es, OS.DV0(), {==}), RT.IndexedAttestation_eqs(s, es))
 
-def AttesterSlashing_root_valid(-o: T.AttesterSlashing, +s: S.Schema, +es: {s == Spec.AttesterSlashing() : S.Schema}, +rep: RT.rep_AttesterSlashing(o, s))
+def AttesterSlashing_root_valid(-o: FuluAttesterSlashing_d.AttesterSlashing, +s: S.Schema, +es: {s == Spec.AttesterSlashing() : S.Schema}, +rep: RT.rep_AttesterSlashing(o, s))
     -> {VD.root_valid(RT.v_AttesterSlashing(o), s) == True{} : Bool}:
   vr_AttesterSlashing(o, s, rep, OS.DV0(), {==}, RT.AttesterSlashing_ok(s, es, OS.DV0(), {==}), RT.AttesterSlashing_eqs(s, es))
 
-def SyncCommittee_root_valid(-o: T.SyncCommittee, +s: S.Schema, +es: {s == Spec.SyncCommittee() : S.Schema}, +rep: RT.rep_SyncCommittee(o, s))
+def SyncCommittee_root_valid(-o: FuluSyncCommittee_d.SyncCommittee, +s: S.Schema, +es: {s == Spec.SyncCommittee() : S.Schema}, +rep: RT.rep_SyncCommittee(o, s))
     -> {VD.root_valid(RT.v_SyncCommittee(o), s) == True{} : Bool}:
   vr_SyncCommittee(o, s, rep, OS.DV0(), {==}, RT.SyncCommittee_ok(s, es, OS.DV0(), {==}), RT.SyncCommittee_eqs(s, es))
 
-def Deposit_root_valid(-o: T.Deposit, +s: S.Schema, +es: {s == Spec.Deposit() : S.Schema}, +rep: RT.rep_Deposit(o, s))
+def Deposit_root_valid(-o: FuluDeposit_d.Deposit, +s: S.Schema, +es: {s == Spec.Deposit() : S.Schema}, +rep: RT.rep_Deposit(o, s))
     -> {VD.root_valid(RT.v_Deposit(o), s) == True{} : Bool}:
   vr_Deposit(o, s, rep, OS.DV0(), {==}, RT.Deposit_ok(s, es, OS.DV0(), {==}), RT.Deposit_eqs(s, es))
 
-def ExecutionRequests_root_valid(-o: T.ExecutionRequests, +s: S.Schema, +es: {s == Spec.ExecutionRequests() : S.Schema}, +rep: RT.rep_ExecutionRequests(o, s))
+def ExecutionRequests_root_valid(-o: FuluExecutionRequests_d.ExecutionRequests, +s: S.Schema, +es: {s == Spec.ExecutionRequests() : S.Schema}, +rep: RT.rep_ExecutionRequests(o, s))
     -> {VD.root_valid(RT.v_ExecutionRequests(o), s) == True{} : Bool}:
   vr_ExecutionRequests(o, s, rep, OS.DV0(), {==}, RT.ExecutionRequests_ok(s, es, OS.DV0(), {==}), RT.ExecutionRequests_eqs(s, es))
 
-def ExecutionPayloadHeader_root_valid(-o: T.ExecutionPayloadHeader, +s: S.Schema, +es: {s == Spec.ExecutionPayloadHeader() : S.Schema}, +rep: RT.rep_ExecutionPayloadHeader(o, s))
+def ExecutionPayloadHeader_root_valid(-o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader, +s: S.Schema, +es: {s == Spec.ExecutionPayloadHeader() : S.Schema}, +rep: RT.rep_ExecutionPayloadHeader(o, s))
     -> {VD.root_valid(RT.v_ExecutionPayloadHeader(o), s) == True{} : Bool}:
   vr_ExecutionPayloadHeader(o, s, rep, OS.DV0(), {==}, RT.ExecutionPayloadHeader_ok(s, es, OS.DV0(), {==}), RT.ExecutionPayloadHeader_eqs(s, es))
 
-def LightClientHeader_root_valid(-o: T.LightClientHeader, +s: S.Schema, +es: {s == Spec.LightClientHeader() : S.Schema}, +rep: RT.rep_LightClientHeader(o, s))
+def LightClientHeader_root_valid(-o: FuluLightClientHeader_d.LightClientHeader, +s: S.Schema, +es: {s == Spec.LightClientHeader() : S.Schema}, +rep: RT.rep_LightClientHeader(o, s))
     -> {VD.root_valid(RT.v_LightClientHeader(o), s) == True{} : Bool}:
   vr_LightClientHeader(o, s, rep, OS.DV0(), {==}, RT.LightClientHeader_ok(s, es, OS.DV0(), {==}), RT.LightClientHeader_eqs(s, es))
 
-def LightClientOptimisticUpdate_root_valid(-o: T.LightClientOptimisticUpdate, +s: S.Schema, +es: {s == Spec.LightClientOptimisticUpdate() : S.Schema}, +rep: RT.rep_LightClientOptimisticUpdate(o, s))
+def LightClientOptimisticUpdate_root_valid(-o: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate, +s: S.Schema, +es: {s == Spec.LightClientOptimisticUpdate() : S.Schema}, +rep: RT.rep_LightClientOptimisticUpdate(o, s))
     -> {VD.root_valid(RT.v_LightClientOptimisticUpdate(o), s) == True{} : Bool}:
   vr_LightClientOptimisticUpdate(o, s, rep, OS.DV0(), {==}, RT.LightClientOptimisticUpdate_ok(s, es, OS.DV0(), {==}), RT.LightClientOptimisticUpdate_eqs(s, es))
 
-def LightClientFinalityUpdate_root_valid(-o: T.LightClientFinalityUpdate, +s: S.Schema, +es: {s == Spec.LightClientFinalityUpdate() : S.Schema}, +rep: RT.rep_LightClientFinalityUpdate(o, s))
+def LightClientFinalityUpdate_root_valid(-o: FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, +s: S.Schema, +es: {s == Spec.LightClientFinalityUpdate() : S.Schema}, +rep: RT.rep_LightClientFinalityUpdate(o, s))
     -> {VD.root_valid(RT.v_LightClientFinalityUpdate(o), s) == True{} : Bool}:
   vr_LightClientFinalityUpdate(o, s, rep, OS.DV0(), {==}, RT.LightClientFinalityUpdate_ok(s, es, OS.DV0(), {==}), RT.LightClientFinalityUpdate_eqs(s, es))
 
-def LightClientUpdate_root_valid(-o: T.LightClientUpdate, +s: S.Schema, +es: {s == Spec.LightClientUpdate() : S.Schema}, +rep: RT.rep_LightClientUpdate(o, s))
+def LightClientUpdate_root_valid(-o: FuluLightClientUpdate_d.LightClientUpdate, +s: S.Schema, +es: {s == Spec.LightClientUpdate() : S.Schema}, +rep: RT.rep_LightClientUpdate(o, s))
     -> {VD.root_valid(RT.v_LightClientUpdate(o), s) == True{} : Bool}:
   vr_LightClientUpdate(o, s, rep, OS.DV0(), {==}, RT.LightClientUpdate_ok(s, es, OS.DV0(), {==}), RT.LightClientUpdate_eqs(s, es))
 
-def LightClientBootstrap_root_valid(-o: T.LightClientBootstrap, +s: S.Schema, +es: {s == Spec.LightClientBootstrap() : S.Schema}, +rep: RT.rep_LightClientBootstrap(o, s))
+def LightClientBootstrap_root_valid(-o: FuluLightClientBootstrap_d.LightClientBootstrap, +s: S.Schema, +es: {s == Spec.LightClientBootstrap() : S.Schema}, +rep: RT.rep_LightClientBootstrap(o, s))
     -> {VD.root_valid(RT.v_LightClientBootstrap(o), s) == True{} : Bool}:
   vr_LightClientBootstrap(o, s, rep, OS.DV0(), {==}, RT.LightClientBootstrap_ok(s, es, OS.DV0(), {==}), RT.LightClientBootstrap_eqs(s, es))
 
-def BlobSidecar_root_valid(-o: T.BlobSidecar, +s: S.Schema, +es: {s == Spec.BlobSidecar() : S.Schema}, +rep: RT.rep_BlobSidecar(o, s))
+def BlobSidecar_root_valid(-o: FuluBlobSidecar_d.BlobSidecar, +s: S.Schema, +es: {s == Spec.BlobSidecar() : S.Schema}, +rep: RT.rep_BlobSidecar(o, s))
     -> {VD.root_valid(RT.v_BlobSidecar(o), s) == True{} : Bool}:
   vr_BlobSidecar(o, s, rep, OS.DV0(), {==}, RT.BlobSidecar_ok(s, es, OS.DV0(), {==}), RT.BlobSidecar_eqs(s, es))
 
-def DataColumnsByRootIdentifier_root_valid(-o: T.DataColumnsByRootIdentifier, +s: S.Schema, +es: {s == Spec.DataColumnsByRootIdentifier() : S.Schema}, +rep: RT.rep_DataColumnsByRootIdentifier(o, s))
+def DataColumnsByRootIdentifier_root_valid(-o: FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier, +s: S.Schema, +es: {s == Spec.DataColumnsByRootIdentifier() : S.Schema}, +rep: RT.rep_DataColumnsByRootIdentifier(o, s))
     -> {VD.root_valid(RT.v_DataColumnsByRootIdentifier(o), s) == True{} : Bool}:
   vr_DataColumnsByRootIdentifier(o, s, rep, OS.DV0(), {==}, RT.DataColumnsByRootIdentifier_ok(s, es, OS.DV0(), {==}), RT.DataColumnsByRootIdentifier_eqs(s, es))
 
-def MatrixEntry_root_valid(-o: T.MatrixEntry, +s: S.Schema, +es: {s == Spec.MatrixEntry() : S.Schema}, +rep: RT.rep_MatrixEntry(o, s))
+def MatrixEntry_root_valid(-o: FuluMatrixEntry_d.MatrixEntry, +s: S.Schema, +es: {s == Spec.MatrixEntry() : S.Schema}, +rep: RT.rep_MatrixEntry(o, s))
     -> {VD.root_valid(RT.v_MatrixEntry(o), s) == True{} : Bool}:
   vr_MatrixEntry(o, s, rep, OS.DV0(), {==}, RT.MatrixEntry_ok(s, es, OS.DV0(), {==}), RT.MatrixEntry_eqs(s, es))
 
-def DataColumnSidecar_root_valid(-o: T.DataColumnSidecar, +s: S.Schema, +es: {s == Spec.DataColumnSidecar() : S.Schema}, +rep: RT.rep_DataColumnSidecar(o, s))
+def DataColumnSidecar_root_valid(-o: FuluDataColumnSidecar_d.DataColumnSidecar, +s: S.Schema, +es: {s == Spec.DataColumnSidecar() : S.Schema}, +rep: RT.rep_DataColumnSidecar(o, s))
     -> {VD.root_valid(RT.v_DataColumnSidecar(o), s) == True{} : Bool}:
   vr_DataColumnSidecar(o, s, rep, OS.DV0(), {==}, RT.DataColumnSidecar_ok(s, es, OS.DV0(), {==}), RT.DataColumnSidecar_eqs(s, es))
 

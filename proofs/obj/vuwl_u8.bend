@@ -1,6 +1,6 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_encode_ssz_generated.bend as uint8_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -44,7 +44,7 @@ def hq1(+q: Nat, +r: Nat, +dd: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +h
 # T.u8_put (O.w8) at any byte position.
 def w8_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +x: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 1n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
-    -> {T.u8_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W8X(r, dd, D, q, x)) : Array<U32>}:
+    -> {uint8_e.u8_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W8X(r, dd, D, q, x)) : Array<U32>}:
   %Equal.sym(U32, O.shl_bytes(U32.and(x, 255), U32.and(X, 3)), VWB.SHB(U32.and(x, 255), U32.to_nat(U32.and(X, 3))), VWB.shb_u(U32.and(x, 255), X)) :
     {O.or_word(FD.array__thaw(U32, D), U32.shrn(X, 2n), _) == FD.array__thaw(U32, W8X(r, dd, D, q, x)) : Array<U32>}
   %Equal.sym(Nat, U32.to_nat(U32.and(X, 3)), r, Pair.snd({U32.to_nat(U32.shrn(X, 2n)) == q : Nat}, {U32.to_nat(U32.and(X, 3)) == r : Nat}, UW.ua_pair(X, q, r, e, hr))) :

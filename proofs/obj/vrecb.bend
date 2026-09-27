@@ -1,6 +1,9 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_encode_ssz_generated.bend as uint8_e
+import ../../types/uint32_encode_ssz_generated.bend as uint32_e
+import ../../types/uint64_encode_ssz_generated.bend as uint64_e
+import ../../types/uint16_encode_ssz_generated.bend as uint16_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -75,12 +78,12 @@ def w16p_perfect(+dd: Nat, +D: FD.array__Tree<U32>, +P: Nat, +x: U32, +pf: {FD.a
 
 def w8p_rt(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 1n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
-    -> {T.u8_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W8P(dd, D, P, x)) : Array<U32>}:
+    -> {uint8_e.u8_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W8P(dd, D, P, x)) : Array<U32>}:
   W8.w8_any(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
     VWB.m4lt(P), hd, roomp(P, 1n, dd, hb), pf)
 def w16p_rt(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 2n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
-    -> {T.u16_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W16P(dd, D, P, x)) : Array<U32>}:
+    -> {uint16_e.u16_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W16P(dd, D, P, x)) : Array<U32>}:
   W16.w16_any(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
     VWB.m4lt(P), hd, roomp(P, 2n, dd, hb), pf)
 
@@ -110,11 +113,11 @@ def w64p_perfect(+dd: Nat, +D: FD.array__Tree<U32>, +P: Nat, +lo: U32, +hi: U32,
   UWD.w64x_perfect(RP(P), dd, D, QP(P), lo, hi, pf)
 def w32p_rt(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 4n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
-    -> {T.u32_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W32P(dd, D, P, x)) : Array<U32>}:
+    -> {uint32_e.u32_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W32P(dd, D, P, x)) : Array<U32>}:
   UWD.w32_any(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))), VWB.m4lt(P), hd, roomp(P, 4n, dd, hb), pf)
 def w64p_rt(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +lo: U32, +hi: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 8n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
-    -> {T.u64_put(FD.array__thaw(U32, D), X, O.U64{lo, hi}) == FD.array__thaw(U32, W64P(dd, D, P, lo, hi)) : Array<U32>}:
+    -> {uint64_e.u64_put(FD.array__thaw(U32, D), X, O.U64{lo, hi}) == FD.array__thaw(U32, W64P(dd, D, P, lo, hi)) : Array<U32>}:
   UWD.w64_any(dd, D, X, QP(P), RP(P), lo, hi, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))), VWB.m4lt(P), hd, roomp(P, 8n, dd, hb), pf)
 def w32p_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 4n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},

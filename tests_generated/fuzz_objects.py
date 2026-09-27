@@ -372,9 +372,11 @@ def main():
         'command': f'{sys.executable} tests_generated/fuzz_objects.py --seed {args.seed} '
                    f'--valid {args.valid} --invalid {args.invalid}',
         'toolchain': json.loads((ROOT / 'benchmarks/toolchain.json').read_text()),
-        'source_sha256': {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
-                          for p in ['types/fulu_obj.bend', 'src/obj.bend', 'codegen/fulu.yaml',
-                                    'codegen/generate.py', 'codegen/oracle.py']},
+        'source_sha256': {**{p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
+                             for p in ['src/obj.bend', 'codegen/fulu.yaml', 'codegen/generate.py', 'codegen/oracle.py']},
+                          # the runtime, split per name and operation: its files in name order, concatenated
+                          'types/*_generated.bend': hashlib.sha256(b''.join(
+                              q.read_bytes() for q in sorted((ROOT / 'types').glob('*_generated.bend')))).hexdigest()},
         'findings': findings[:50], 'findings_total': len(findings),
         'note': 'oracle = codegen/oracle.py, written from the SSZ specification and validated '
                 'against the 295 official static cases; comparison is full bytes and full '

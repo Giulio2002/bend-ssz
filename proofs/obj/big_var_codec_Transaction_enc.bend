@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluTransaction_encode_ssz_generated.bend as FuluTransaction_e
 import ../../types/schema.bend as S
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
@@ -68,24 +68,24 @@ law encode_eval:
   for +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}
   for +hN: {U32.is_le(N, 1073741824) == True{} : Bool}
-  {T.Transaction_encode(OW(T, N)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
+  {FuluTransaction_e.Transaction_encode(OW(T, N)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
 def encode_eval(dw, T, N, pfT, hdw, hn, hN):
   +hdw31 = FD.nat__lt_trans(dw, 28n, 31n, hdw, {==})
   +hroom = VBR.nwle(dw, N, hdw, hn)
   +D = VL.DO(N)
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, pfT)) :
-    {T.Transaction_enc_sized(O.wsz_pick(N, _)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
+    {FuluTransaction_e.Transaction_enc_sized(O.wsz_pick(N, _)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N), FD.u32__pow2u(dw)), True{}, VE.le_room(N, dw, hdw31, hroom)) :
-    {T.Transaction_enc_sized((OW(T, N), O.pick(_, N, 2147483648))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
+    {FuluTransaction_e.Transaction_enc_sized((OW(T, N), O.pick(_, N, 2147483648))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(N))), Array.new(U32, D, 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(N))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(N))), D, VD.wdu(VC.nwu(N)), VZG.zg(B.words_depth_u(VC.nwu(N))))) :
-    {T.Transaction_enc_put(N, T.bl1073741824_putn(_, 0, OW(T, N))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
+    {FuluTransaction_e.Transaction_enc_put(N, FuluTransaction_e.bl1073741824_putn(_, 0, OW(T, N))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Array<U32>, Array.new(U32, D, 0), FD.array__thaw(U32, VC.ZT(D)), FD.array__new(U32, D, 0)) :
-    {T.Transaction_enc_put(N, T.bl1073741824_putn(_, 0, OW(T, N))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
+    {FuluTransaction_e.Transaction_enc_put(N, FuluTransaction_e.bl1073741824_putn(_, 0, OW(T, N))) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, VC.ZT(D)), 0, OW(T, N)), (FD.array__thaw(U32, OUT(N, T)), OW(T, N)),
       VBE.put_words_any(D, dw, VC.ZT(D), T, 0, 0n, N, VL.KK(dw), FD.array__trep_perfect(U32, D, 0), pfT, hDO(dw, N, hdw, hn), hdw31, {==}, {==},
         VL.kk_lt(dw, hdw), VL.hyn(dw, N, hn), hroom, hdst(dw, N, hdw, hn), VBE.slot_zt(D, Nat.add(VY.QL(N), 0n)))) :
-    {T.Transaction_enc_put(N, O.pwn(_)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
+    {FuluTransaction_e.Transaction_enc_put(N, O.pwn(_)) == (OW(T, N), B.Buf{FD.array__thaw(U32, OUT(N, T)), N}) : O.Words & B.Buf}
   {==}
 
 # The output's first N bytes are the storage's first N bytes.

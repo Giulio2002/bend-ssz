@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluLightClientBootstrap_def_generated.bend as FuluLightClientBootstrap_d
+import ../../types/FuluLightClientBootstrap_decode_ssz_generated.bend as FuluLightClientBootstrap_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -31,7 +32,7 @@ import ./big_var_bytes_LightClientBootstrap_win.bend as W
 
 def BF(t: FD.array__Tree<U32>, +n: U32) -> B.Buf: VF.BF(t, n)
 def CHK(+t: FD.array__Tree<U32>, +n: U32) -> Bool: W.CHKw(t, 0n, n)
-def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> T.LightClientBootstrap: W.OBJw(t, 0n, n)
+def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> FuluLightClientBootstrap_d.LightClientBootstrap: W.OBJw(t, 0n, n)
 def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: W.VALw(t, 0n, n)
 def VW(+t: FD.array__Tree<U32>, +n: U32) -> +List<U32>: VS.bt(U32.to_nat(n), F.limbs(FD.array__slots(U32, t)))
 
@@ -43,7 +44,7 @@ law ok_eval:
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
   for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
-  {T.LightClientBootstrap_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
+  {FuluLightClientBootstrap_r.LightClientBootstrap_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
 def ok_eval(d, t, n, pf, hd, hn):
   W.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
 
@@ -56,14 +57,14 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
-  {T.LightClientBootstrap_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.LightClientBootstrap>}
+  {FuluLightClientBootstrap_r.LightClientBootstrap_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}
 def decode_accept(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.LightClientBootstrap_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.LightClientBootstrap_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.LightClientBootstrap>}
+  %Equal.sym(B.Buf & Bool, FuluLightClientBootstrap_r.LightClientBootstrap_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {FuluLightClientBootstrap_r.LightClientBootstrap_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
-    {T.LightClientBootstrap_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.LightClientBootstrap>}
-  %Equal.sym(B.Buf & T.LightClientBootstrap, T.LightClientBootstrap_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
-    {T.LightClientBootstrap_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, T.LightClientBootstrap>}
+    {FuluLightClientBootstrap_r.LightClientBootstrap_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}
+  %Equal.sym(B.Buf & FuluLightClientBootstrap_d.LightClientBootstrap, FuluLightClientBootstrap_r.LightClientBootstrap_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+    {FuluLightClientBootstrap_r.LightClientBootstrap_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluLightClientBootstrap_d.LightClientBootstrap>}
   {==}
 
 # The bytes of every buffer the validator accepts are the spec encoding of the

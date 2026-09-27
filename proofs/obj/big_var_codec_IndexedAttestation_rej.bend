@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluIndexedAttestation_def_generated.bend as FuluIndexedAttestation_d
+import ../../types/FuluIndexedAttestation_decode_ssz_generated.bend as FuluIndexedAttestation_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as F
@@ -333,18 +334,18 @@ def decode_reject(d, t, n, pf, hn, hchk):
 def none_go(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
     +a: Bool, +ea: {U32.is_le(228, n) == a : Bool})
-    -> {T.IndexedAttestation_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.IndexedAttestation>}:
+    -> {FuluIndexedAttestation_r.IndexedAttestation_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}:
   match a:
     case False{}:
       %Equal.sym(Bool, U32.is_le(228, n), False{}, ea) :
-        {T.IndexedAttestation_built(n, T.IndexedAttestation_ok_len(_, DC.BF(t, n), 0, n)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.IndexedAttestation>}
+        {FuluIndexedAttestation_r.IndexedAttestation_built(n, FuluIndexedAttestation_r.IndexedAttestation_ok_len(_, DC.BF(t, n), 0, n)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}
       {==}
     case True{}:
       +hF = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(228, n), Nat.is_le(228n, U32.to_nat(n)), VU.le_u32(228, n), ea)
-      %Equal.sym(B.Buf & Bool, T.IndexedAttestation_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, VB.lt32(d, F.nat__lt_trans(d, 29n, 31n, hd, {==})), hpoD(d, n, hn, hF), pf)) :
-        {T.IndexedAttestation_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.IndexedAttestation>}
+      %Equal.sym(B.Buf & Bool, FuluIndexedAttestation_r.IndexedAttestation_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, VB.lt32(d, F.nat__lt_trans(d, 29n, 31n, hd, {==})), hpoD(d, n, hn, hF), pf)) :
+        {FuluIndexedAttestation_r.IndexedAttestation_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}
       %Equal.sym(Bool, DC.CHK(t, n), False{}, hchk) :
-        {T.IndexedAttestation_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.IndexedAttestation>}
+        {FuluIndexedAttestation_r.IndexedAttestation_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}
       {==}
 
 # When the validator refuses, the decoder returns None and the buffer.
@@ -356,7 +357,7 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {DC.CHK(t, n) == False{} : Bool}
-  {T.IndexedAttestation_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.IndexedAttestation>}
+  {FuluIndexedAttestation_r.IndexedAttestation_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
   none_go(d, t, n, pf, hd, hn, hchk, U32.is_le(228, n), {==})
 

@@ -1,6 +1,19 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/fulu_obj.bend as T
+import ../../types/uint8_decode_ssz_generated.bend as uint8_r
+import ../../types/uint64_decode_ssz_generated.bend as uint64_r
+import ../../types/uint256_decode_ssz_generated.bend as uint256_r
+import ../../types/FuluBytes32_decode_ssz_generated.bend as FuluBytes32_r
+import ../../types/FuluBytes48_decode_ssz_generated.bend as FuluBytes48_r
+import ../../types/FuluBytes20_decode_ssz_generated.bend as FuluBytes20_r
+import ../../types/FuluSigningData_decode_ssz_generated.bend as FuluSigningData_r
+import ../../types/FuluDepositRequest_decode_ssz_generated.bend as FuluDepositRequest_r
+import ../../types/FuluPendingDeposit_decode_ssz_generated.bend as FuluPendingDeposit_r
+import ../../types/FuluDepositData_decode_ssz_generated.bend as FuluDepositData_r
+import ../../types/FuluDeposit_decode_ssz_generated.bend as FuluDeposit_r
+import ../../types/FuluDepositMessage_decode_ssz_generated.bend as FuluDepositMessage_r
+import ../../types/FuluCurrentSyncCommitteeBranch_decode_ssz_generated.bend as FuluCurrentSyncCommitteeBranch_r
+import ../../types/FuluConsolidationRequest_decode_ssz_generated.bend as FuluConsolidationRequest_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -14,11 +27,11 @@ import ./vrejf.bend as VRF
 # (see codegen/fix_reject.py).
 
 # ---- Domain (32 bytes; validator T.b32_ok) ----
-def Domain_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.b32_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def Domain_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluBytes32_r.b32_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Domain_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.b32_ok(buf, off, len) == (buf, U32.is_eq(len, 32)) : B.Buf & Bool}:
+def Domain_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluBytes32_r.b32_ok(buf, off, len) == (buf, U32.is_eq(len, 32)) : B.Buf & Bool}:
   Domain_okb(buf, off, U32.is_eq(len, 32))
 def Domain_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.Domain(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.Domain()), 32n, bs, Codec.parts(v, Spec.Domain()), DS.facts(v, Spec.Domain(), {==}), {==}, e, hn)
@@ -26,11 +39,11 @@ def Domain_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, b
   v => e => Domain_rj(bs, hn, v, e)
 
 # ---- SigningData (64 bytes; validator T.SigningData_ok) ----
-def SigningData_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.SigningData_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def SigningData_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluSigningData_r.SigningData_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def SigningData_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.SigningData_ok(buf, off, len) == (buf, U32.is_eq(len, 64)) : B.Buf & Bool}:
+def SigningData_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluSigningData_r.SigningData_ok(buf, off, len) == (buf, U32.is_eq(len, 64)) : B.Buf & Bool}:
   SigningData_okb(buf, off, U32.is_eq(len, 64))
 def SigningData_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 64n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.SigningData(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.SigningData()), 64n, bs, Codec.parts(v, Spec.SigningData()), DS.facts(v, Spec.SigningData(), {==}), {==}, e, hn)
@@ -38,11 +51,11 @@ def SigningData_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U
   v => e => SigningData_rj(bs, hn, v, e)
 
 # ---- BLSPubkey (48 bytes; validator T.b48_ok) ----
-def BLSPubkey_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.b48_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def BLSPubkey_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluBytes48_r.b48_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def BLSPubkey_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.b48_ok(buf, off, len) == (buf, U32.is_eq(len, 48)) : B.Buf & Bool}:
+def BLSPubkey_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluBytes48_r.b48_ok(buf, off, len) == (buf, U32.is_eq(len, 48)) : B.Buf & Bool}:
   BLSPubkey_okb(buf, off, U32.is_eq(len, 48))
 def BLSPubkey_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 48n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.BLSPubkey(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.BLSPubkey()), 48n, bs, Codec.parts(v, Spec.BLSPubkey()), DS.facts(v, Spec.BLSPubkey(), {==}), {==}, e, hn)
@@ -50,11 +63,11 @@ def BLSPubkey_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32
   v => e => BLSPubkey_rj(bs, hn, v, e)
 
 # ---- DepositRequest (192 bytes; validator T.DepositRequest_ok) ----
-def DepositRequest_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.DepositRequest_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def DepositRequest_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluDepositRequest_r.DepositRequest_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def DepositRequest_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.DepositRequest_ok(buf, off, len) == (buf, U32.is_eq(len, 192)) : B.Buf & Bool}:
+def DepositRequest_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluDepositRequest_r.DepositRequest_ok(buf, off, len) == (buf, U32.is_eq(len, 192)) : B.Buf & Bool}:
   DepositRequest_okb(buf, off, U32.is_eq(len, 192))
 def DepositRequest_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 192n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.DepositRequest(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.DepositRequest()), 192n, bs, Codec.parts(v, Spec.DepositRequest()), DS.facts(v, Spec.DepositRequest(), {==}), {==}, e, hn)
@@ -62,11 +75,11 @@ def DepositRequest_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2
   v => e => DepositRequest_rj(bs, hn, v, e)
 
 # ---- PendingDeposit (192 bytes; validator T.PendingDeposit_ok) ----
-def PendingDeposit_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.PendingDeposit_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def PendingDeposit_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluPendingDeposit_r.PendingDeposit_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def PendingDeposit_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.PendingDeposit_ok(buf, off, len) == (buf, U32.is_eq(len, 192)) : B.Buf & Bool}:
+def PendingDeposit_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluPendingDeposit_r.PendingDeposit_ok(buf, off, len) == (buf, U32.is_eq(len, 192)) : B.Buf & Bool}:
   PendingDeposit_okb(buf, off, U32.is_eq(len, 192))
 def PendingDeposit_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 192n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.PendingDeposit(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.PendingDeposit()), 192n, bs, Codec.parts(v, Spec.PendingDeposit()), DS.facts(v, Spec.PendingDeposit(), {==}), {==}, e, hn)
@@ -74,11 +87,11 @@ def PendingDeposit_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2
   v => e => PendingDeposit_rj(bs, hn, v, e)
 
 # ---- DepositData (184 bytes; validator T.DepositData_ok) ----
-def DepositData_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.DepositData_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def DepositData_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluDepositData_r.DepositData_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def DepositData_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.DepositData_ok(buf, off, len) == (buf, U32.is_eq(len, 184)) : B.Buf & Bool}:
+def DepositData_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluDepositData_r.DepositData_ok(buf, off, len) == (buf, U32.is_eq(len, 184)) : B.Buf & Bool}:
   DepositData_okb(buf, off, U32.is_eq(len, 184))
 def DepositData_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 184n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.DepositData(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.DepositData()), 184n, bs, Codec.parts(v, Spec.DepositData()), DS.facts(v, Spec.DepositData(), {==}), {==}, e, hn)
@@ -86,11 +99,11 @@ def DepositData_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U
   v => e => DepositData_rj(bs, hn, v, e)
 
 # ---- Deposit (1240 bytes; validator T.Deposit_ok) ----
-def Deposit_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.Deposit_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def Deposit_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluDeposit_r.Deposit_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Deposit_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.Deposit_ok(buf, off, len) == (buf, U32.is_eq(len, 1240)) : B.Buf & Bool}:
+def Deposit_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluDeposit_r.Deposit_ok(buf, off, len) == (buf, U32.is_eq(len, 1240)) : B.Buf & Bool}:
   Deposit_okb(buf, off, U32.is_eq(len, 1240))
 def Deposit_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1240n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.Deposit(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.Deposit()), 1240n, bs, Codec.parts(v, Spec.Deposit()), DS.facts(v, Spec.Deposit(), {==}), {==}, e, hn)
@@ -98,11 +111,11 @@ def Deposit_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, 
   v => e => Deposit_rj(bs, hn, v, e)
 
 # ---- DepositMessage (88 bytes; validator T.DepositMessage_ok) ----
-def DepositMessage_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.DepositMessage_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def DepositMessage_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluDepositMessage_r.DepositMessage_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def DepositMessage_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.DepositMessage_ok(buf, off, len) == (buf, U32.is_eq(len, 88)) : B.Buf & Bool}:
+def DepositMessage_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluDepositMessage_r.DepositMessage_ok(buf, off, len) == (buf, U32.is_eq(len, 88)) : B.Buf & Bool}:
   DepositMessage_okb(buf, off, U32.is_eq(len, 88))
 def DepositMessage_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 88n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.DepositMessage(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.DepositMessage()), 88n, bs, Codec.parts(v, Spec.DepositMessage()), DS.facts(v, Spec.DepositMessage(), {==}), {==}, e, hn)
@@ -110,11 +123,11 @@ def DepositMessage_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2
   v => e => DepositMessage_rj(bs, hn, v, e)
 
 # ---- NodeID (32 bytes; validator T.u256_ok) ----
-def NodeID_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.u256_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def NodeID_okb(buf: B.Buf, +off: U32, +b: Bool) -> {uint256_r.u256_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def NodeID_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.u256_ok(buf, off, len) == (buf, U32.is_eq(len, 32)) : B.Buf & Bool}:
+def NodeID_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {uint256_r.u256_ok(buf, off, len) == (buf, U32.is_eq(len, 32)) : B.Buf & Bool}:
   NodeID_okb(buf, off, U32.is_eq(len, 32))
 def NodeID_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 32n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.NodeID(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.NodeID()), 32n, bs, Codec.parts(v, Spec.NodeID()), DS.facts(v, Spec.NodeID(), {==}), {==}, e, hn)
@@ -122,11 +135,11 @@ def NodeID_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, b
   v => e => NodeID_rj(bs, hn, v, e)
 
 # ---- SubnetID (8 bytes; validator T.u64_ok) ----
-def SubnetID_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.u64_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def SubnetID_okb(buf: B.Buf, +off: U32, +b: Bool) -> {uint64_r.u64_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def SubnetID_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.u64_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
+def SubnetID_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {uint64_r.u64_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
   SubnetID_okb(buf, off, U32.is_eq(len, 8))
 def SubnetID_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.SubnetID(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.SubnetID()), 8n, bs, Codec.parts(v, Spec.SubnetID()), DS.facts(v, Spec.SubnetID(), {==}), {==}, e, hn)
@@ -134,11 +147,11 @@ def SubnetID_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32,
   v => e => SubnetID_rj(bs, hn, v, e)
 
 # ---- Ether (8 bytes; validator T.u64_ok) ----
-def Ether_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.u64_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def Ether_okb(buf: B.Buf, +off: U32, +b: Bool) -> {uint64_r.u64_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Ether_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.u64_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
+def Ether_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {uint64_r.u64_ok(buf, off, len) == (buf, U32.is_eq(len, 8)) : B.Buf & Bool}:
   Ether_okb(buf, off, U32.is_eq(len, 8))
 def Ether_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 8n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.Ether(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.Ether()), 8n, bs, Codec.parts(v, Spec.Ether()), DS.facts(v, Spec.Ether(), {==}), {==}, e, hn)
@@ -146,11 +159,11 @@ def Ether_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs
   v => e => Ether_rj(bs, hn, v, e)
 
 # ---- ParticipationFlags (1 bytes; validator T.u8_ok) ----
-def ParticipationFlags_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.u8_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def ParticipationFlags_okb(buf: B.Buf, +off: U32, +b: Bool) -> {uint8_r.u8_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def ParticipationFlags_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.u8_ok(buf, off, len) == (buf, U32.is_eq(len, 1)) : B.Buf & Bool}:
+def ParticipationFlags_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {uint8_r.u8_ok(buf, off, len) == (buf, U32.is_eq(len, 1)) : B.Buf & Bool}:
   ParticipationFlags_okb(buf, off, U32.is_eq(len, 1))
 def ParticipationFlags_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 1n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.ParticipationFlags(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.ParticipationFlags()), 1n, bs, Codec.parts(v, Spec.ParticipationFlags()), DS.facts(v, Spec.ParticipationFlags(), {==}), {==}, e, hn)
@@ -158,11 +171,11 @@ def ParticipationFlags_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.lengt
   v => e => ParticipationFlags_rj(bs, hn, v, e)
 
 # ---- CurrentSyncCommitteeBranch (192 bytes; validator T.v6_b32_ok) ----
-def CurrentSyncCommitteeBranch_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.v6_b32_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def CurrentSyncCommitteeBranch_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluCurrentSyncCommitteeBranch_r.v6_b32_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def CurrentSyncCommitteeBranch_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.v6_b32_ok(buf, off, len) == (buf, U32.is_eq(len, 192)) : B.Buf & Bool}:
+def CurrentSyncCommitteeBranch_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluCurrentSyncCommitteeBranch_r.v6_b32_ok(buf, off, len) == (buf, U32.is_eq(len, 192)) : B.Buf & Bool}:
   CurrentSyncCommitteeBranch_okb(buf, off, U32.is_eq(len, 192))
 def CurrentSyncCommitteeBranch_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 192n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.CurrentSyncCommitteeBranch(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.CurrentSyncCommitteeBranch()), 192n, bs, Codec.parts(v, Spec.CurrentSyncCommitteeBranch()), DS.facts(v, Spec.CurrentSyncCommitteeBranch(), {==}), {==}, e, hn)
@@ -170,11 +183,11 @@ def CurrentSyncCommitteeBranch_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(Li
   v => e => CurrentSyncCommitteeBranch_rj(bs, hn, v, e)
 
 # ---- NextSyncCommitteeBranch (192 bytes; validator T.v6_b32_ok) ----
-def NextSyncCommitteeBranch_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.v6_b32_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def NextSyncCommitteeBranch_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluCurrentSyncCommitteeBranch_r.v6_b32_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def NextSyncCommitteeBranch_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.v6_b32_ok(buf, off, len) == (buf, U32.is_eq(len, 192)) : B.Buf & Bool}:
+def NextSyncCommitteeBranch_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluCurrentSyncCommitteeBranch_r.v6_b32_ok(buf, off, len) == (buf, U32.is_eq(len, 192)) : B.Buf & Bool}:
   NextSyncCommitteeBranch_okb(buf, off, U32.is_eq(len, 192))
 def NextSyncCommitteeBranch_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 192n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.NextSyncCommitteeBranch(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.NextSyncCommitteeBranch()), 192n, bs, Codec.parts(v, Spec.NextSyncCommitteeBranch()), DS.facts(v, Spec.NextSyncCommitteeBranch(), {==}), {==}, e, hn)
@@ -182,11 +195,11 @@ def NextSyncCommitteeBranch_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.
   v => e => NextSyncCommitteeBranch_rj(bs, hn, v, e)
 
 # ---- ExecutionAddress (20 bytes; validator T.b20_ok) ----
-def ExecutionAddress_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.b20_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def ExecutionAddress_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluBytes20_r.b20_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def ExecutionAddress_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.b20_ok(buf, off, len) == (buf, U32.is_eq(len, 20)) : B.Buf & Bool}:
+def ExecutionAddress_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluBytes20_r.b20_ok(buf, off, len) == (buf, U32.is_eq(len, 20)) : B.Buf & Bool}:
   ExecutionAddress_okb(buf, off, U32.is_eq(len, 20))
 def ExecutionAddress_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 20n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.ExecutionAddress(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.ExecutionAddress()), 20n, bs, Codec.parts(v, Spec.ExecutionAddress()), DS.facts(v, Spec.ExecutionAddress(), {==}), {==}, e, hn)
@@ -194,11 +207,11 @@ def ExecutionAddress_decode_reject(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(
   v => e => ExecutionAddress_rj(bs, hn, v, e)
 
 # ---- ConsolidationRequest (116 bytes; validator T.ConsolidationRequest_ok) ----
-def ConsolidationRequest_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.ConsolidationRequest_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def ConsolidationRequest_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluConsolidationRequest_r.ConsolidationRequest_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def ConsolidationRequest_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.ConsolidationRequest_ok(buf, off, len) == (buf, U32.is_eq(len, 116)) : B.Buf & Bool}:
+def ConsolidationRequest_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluConsolidationRequest_r.ConsolidationRequest_ok(buf, off, len) == (buf, U32.is_eq(len, 116)) : B.Buf & Bool}:
   ConsolidationRequest_okb(buf, off, U32.is_eq(len, 116))
 def ConsolidationRequest_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), 116n) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.ConsolidationRequest(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.ConsolidationRequest()), 116n, bs, Codec.parts(v, Spec.ConsolidationRequest()), DS.facts(v, Spec.ConsolidationRequest(), {==}), {==}, e, hn)

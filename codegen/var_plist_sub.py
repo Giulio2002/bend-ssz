@@ -1075,9 +1075,23 @@ def pbits_text():
     body = body.replace('inv_t(d, t, x, off, len, eo, hd, hw, pf, bits, eb, var_inj', 'inv_t(d, t, x, off, len, eo, hd, hw, pf, bits, var_inj')
     body = body.replace('inv_b(d, t, x, off, len, eo, hd, hw, pf, bits, Nat.is_le(List.length(&2, Bool, bits), 0n), {==}, e)',
                         'inv_b(d, t, x, off, len, eo, hd, hw, pf, bits, Nat.is_le(List.length(&2, Bool, bits), List.length(&2, Bool, bits)), {==}, e)')
+    # the validator's representation bound (O.bitlist_pick with big: the bit count is a U32; proofs/obj/vpb29.bend)
+    body = body.replace('O.bsel(True{}, True{}, ', 'O.bsel(True{}, U32.is_lt(U32.sub(len, 1), 536870912), ')
+    old = '''def chk_true(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +m: Nat, +e1: {U32.to_nat(len) == 1n+m : Nat},
+'''
+    assert body.count(old) == 1
+    body = body.replace(old, old + '''    +d: Nat, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+''')
+    old = '''Nat.is_le(BD(t, off, len), U32.to_nat(0)))) == True{} : Bool}
+  {==}'''
+    assert body.count(old) == 1
+    body = body.replace(old, old[:-len('{==}')] + '''VP.lt29(d, len, m, hd,
+    FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), A.le_skip(x, U32.to_nat(len)), hw), e1)''')
+    assert body.count('chk_true(t, x, off, len, m, e1, nz)') == 1
+    body = body.replace('chk_true(t, x, off, len, m, e1, nz)', 'chk_true(t, x, off, len, m, e1, d, hd, hw, nz)')
     for bad in ['hdzK', 'zeros_at', 'hB(', 'cC(', 'bd1', ', bd)']:
         assert bad not in body, (bad, [l for l in body.split('\n') if bad in l][:3])
-    L = generic(VW.HEADX) + ['import ./big_vvlz.bend as VZG', '', HDR,
+    L = generic(VW.HEADX) + ['import ./big_vvlz.bend as VZG', 'import ./vpb29.bend as VP', '', HDR,
                              '# ProgressiveBits (GtF7582E0E9A, runtime pbits) at a window of any byte offset x: the',
                              '# interface of proofs/obj/vua_win.bend (var_win BitList window with the bound removed).', '']
     return '\n'.join(L) + body
@@ -1181,6 +1195,8 @@ def main():
     for X, _ in KINDS.values():
         mine += sorted((ROOT / 'proofs/obj').glob(f'big_var_plist_{X}*.bend'))
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not no_big]
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale or orphans:

@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/proglist_uint8_encode_ssz_generated.bend as proglist_uint8_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -80,24 +80,24 @@ law encode_eval:
   for +pfT: {FD.array__perfect(U32, dw, T) == True{} : Bool}
   for +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}
   for +hN: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}
-  {T.GtDE4B86A990_encode(OBJ(T, N)) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
+  {proglist_uint8_e.GtDE4B86A990_encode(OBJ(T, N)) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
 def encode_eval(dw, T, N, pfT, hdw, hN):
   +hdw31 = FD.nat__lt_trans(dw, 28n, 31n, hdw, {==})
   +DO = VLS.DO(N)
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, pfT)) :
-    {T.GtDE4B86A990_enc_sized(O.wsz_pick(N, _)) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
+    {proglist_uint8_e.GtDE4B86A990_enc_sized(O.wsz_pick(N, _)) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N), FD.u32__pow2u(dw)), True{}, VE.le_room(N, dw, hdw31, hsrc(dw, N, hdw, hN))) :
-    {T.GtDE4B86A990_enc_sized((OBJ(T, N), O.pick(_, N, 2147483648))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
+    {proglist_uint8_e.GtDE4B86A990_enc_sized((OBJ(T, N), O.pick(_, N, 2147483648))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(N))), Array.new(U32, DO, 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(N))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(N))), DO, VD.wdu(VC.nwu(N)), VZG.zg(B.words_depth_u(VC.nwu(N))))) :
-    {T.GtDE4B86A990_enc_put(N, T.pl_u8_putn(_, 0, OBJ(T, N))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
+    {proglist_uint8_e.GtDE4B86A990_enc_put(N, proglist_uint8_e.pl_u8_putn(_, 0, OBJ(T, N))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
   %Equal.sym(Array<U32>, Array.new(U32, DO, 0), FD.array__thaw(U32, VC.ZT(DO)), FD.array__new(U32, DO, 0)) :
-    {T.GtDE4B86A990_enc_put(N, T.pl_u8_putn(_, 0, OBJ(T, N))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
+    {proglist_uint8_e.GtDE4B86A990_enc_put(N, proglist_uint8_e.pl_u8_putn(_, 0, OBJ(T, N))) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
   %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, VC.ZT(DO)), 0, OBJ(T, N)), (FD.array__thaw(U32, VLS.OUTP(N, T)), OBJ(T, N)),
       VBE.put_words_any(DO, dw, VC.ZT(DO), T, 0, 0n, N, VLS.KK(dw), FD.array__trep_perfect(U32, DO, 0), pfT,
         FD.nat__le_lt_trans(DO, dw, 31n, hDO(dw, N, hdw, hN), hdw31), hdw31, {==}, {==}, VLS.kk_lt(dw, hdw), VLS.hyn(dw, N, hN),
         hsrc(dw, N, hdw, hN), hdsto(dw, N, hdw, hN), VBE.slot_zt(DO, Nat.add(VYS.QL(N), 0n)))) :
-    {T.GtDE4B86A990_enc_put(N, O.pwn(_)) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
+    {proglist_uint8_e.GtDE4B86A990_enc_put(N, O.pwn(_)) == (OBJ(T, N), OUT(T, N)) : O.Words & B.Buf}
   {==}
 
 # The output's bytes are the object's first N bytes.

@@ -70,6 +70,7 @@ DWORDS = 36  # and at most this many words in a file (a name's decode proof grow
 VIEW_TODO = set()  # (the bit vectors are bridged by e2e_bits.bw)
 
 import api_gate as AG  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the modules import the per-name files they use
 
 HEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API',
         'import ../src/buffer.bend as B', 'import ../src/digest.bend as D', 'import ../src/obj.bend as O',
@@ -797,7 +798,8 @@ def seg_pf(+d: Nat, +sl: List<&2, U32>) -> {FD.array__perfect(U32, d, AC.segt(d,
 
 def blocks_of(f, cache):
     if f not in cache:
-        cache[f] = AG.blocks((OBJ / f).read_text())
+        # the runtime's symbols read as T.<sym> (a proving module imports the split files: RR.unwire)
+        cache[f] = AG.blocks(RR.unwire((OBJ / f).read_text()))
     return cache[f]
 
 
@@ -1026,6 +1028,8 @@ def file_aliases(f):
         t = known.get(base)
         if t:
             out[a] = t
+        elif base.endswith('_generated.bend') and '/types/' in '/' + path:
+            out['T'] = 'T'   # a runtime split file: its symbols read as T.<sym> (blocks_of)
     return out
 
 
@@ -1189,7 +1193,7 @@ def family_w(X, m, cache):
     if not re.match(r'RR\.roots\(PK\.vview' + K + r'\(o\), s, ', b_rt[3]):
         return None
     return {'X': X, 'ename': ename, 'sname': sname, 'N': N, 'NW': NW, 'd': d, 'leaves': leaves, 'xs': xs, 'K': K, 'value': ms.group(4),
-            'ee': ee[0], 'es': es[0], 'rt': rt[0], 'generic': 'types/generic_obj.bend as T' in (OBJ / ee[0]['file']).read_text()}
+            'ee': ee[0], 'es': es[0], 'rt': rt[0], 'generic': RR.runtime_of((OBJ / ee[0]['file']).read_text()) == 'generic'}
 
 
 def leafterm(i, d):
@@ -1481,14 +1485,14 @@ ANYHEAD = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/mod
 def any_info(X):
     """the any-depth laws and the encoder's shape: (file, law binders, NW, value, put, out depth, N)"""
     for f in sorted(OBJ.glob('spec_[gw]any_*.bend')):
-        src = f.read_text()
+        src = RR.unwire(f.read_text())   # the runtime's symbols as T.<sym> (the module imports the split files)
         m = re.search(r'^def ' + X + r'_encode_any\((.*)\)\n    -> \{SF\.emitted\(O\.Words, T\.' + X + r'_encode\((.*?)\), (\d+)\) == ', src, re.M)
         if not m:
             continue
         md = re.search(r'^def ' + X + r'_decodes_any\((.*)\)\n    -> Decoding\.decodes\((\w+|Spec\.\w+\(\)), (.*)\):$', src, re.M)
         if not md:
             return None
-        rt = (ROOT / 'types' / ('generic_obj.bend' if 'types/generic_obj.bend as T' in src else 'fulu_obj.bend')).read_text()
+        rt = RR.mono_text(RR.runtime_of(f.read_text()))
         me = re.search(r'^def ' + X + r'_encode\(o: O\.Words\) -> O\.Words & B\.Buf: ' + X + r'_enc_out\((\w+)\(O\.out_at\((\d+)n\), 0, o\)\)$', rt, re.M)
         mo = re.search(r'^def ' + X + r'_enc_out\(pair: Array<U32> & O\.Words\) -> O\.Words & B\.Buf:\n  \(out, o\) = pair\n  \(o, O\.out_done\((\d+), out\)\)$', rt, re.M)
         if not (me and mo):
@@ -2091,7 +2095,7 @@ def outputs():
             continue
         r['R'] = R
         r['ee_alias'] = file_aliases(r['ee']['file'])
-        r['generic'] = 'types/generic_obj.bend as T' in (OBJ / r['ee']['file']).read_text()
+        r['generic'] = RR.runtime_of((OBJ / r['ee']['file']).read_text()) == 'generic'
         fam.append(r)
     # a readable name shared by a Fulu name and a generic form (the basic types): the generic
     # form's laws carry its generated name
@@ -2171,7 +2175,7 @@ def outputs():
         a['alias'] = file_aliases(a['file'])
         b_rt = law(cache, m0['root'][0])
         rp = [q.strip() for q in b_rt[2]]
-        gen = 'types/generic_obj.bend as T' in (OBJ / a['file']).read_text()
+        gen = RR.runtime_of((OBJ / a['file']).read_text()) == 'generic'
         ms_ = re.search(r'\{s == Spec\.(\w+)\(\) : S\.Schema\}', ' '.join(rp))
         mk = re.match(r'\+rep: PK\.rep_v(\d+)\(o, s\)$', rp[-1]) if len(rp) == 5 else None
         if mk and ms_ and rp[1] == '-o: O.Words' and re.match(r'RR\.roots\(PK\.vview' + mk.group(1) + r'\(o\), s, ', b_rt[3]):
@@ -2285,6 +2289,7 @@ def outputs():
 def main():
     out = outputs()
     mine = list(OUT.glob('*_generated.bend')) if OUT.exists() else []
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out]

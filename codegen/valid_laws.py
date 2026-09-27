@@ -1677,6 +1677,8 @@ def main():
     global TYPES
     TYPES = emit_types()
     outs = [(OBJ / 'gvalid_gnames.bend', emit_gnames()), (OBJ / 'gvalid_leaves.bend', emit_leaves()), (OBJ / 'gvalid_words.bend', emit_words()), (OBJ / 'gvalid_types.bend', TYPES[0]), (OBJ / 'gvalid_packed.bend', emit_packed_lib()), (OBJ / 'gvalid_gpacked.bend', emit_gnames_packed()[0])] + ([] if '--no-big' in sys.argv else sorted(TYPES[2].items())) + sorted(emit_gbits().items()) + sorted(emit_gtypes()[0].items())
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    outs = RR.rewire_out(outs)
     if '--check' in sys.argv:
         for path, text in outs:
             if not path.exists() or path.read_text() != text:

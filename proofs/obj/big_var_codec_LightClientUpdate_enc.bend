@@ -1,7 +1,8 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluLightClientUpdate_def_generated.bend as FuluLightClientUpdate_d
+import ../../types/FuluLightClientUpdate_encode_ssz_generated.bend as FuluLightClientUpdate_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -67,7 +68,7 @@ def roomf(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> DK.P2(HD(m), DK.P2(HL
     Equal.sym(+List<U32>, UA.BYT(VC.ZT(13n)), UW.ZB(A.quad(VB.pw(13n))), UWB.zt_bytes(13n)), VE2.bt_zb_le(M, A.quad(VB.pw(13n)), hm))
   mk3(m, {==}, hl, hz)
 
-def RT0(+m: CI.MW) -> Data: {T.LightClientUpdate_putk(FD.array__thaw(U32, VC.ZT(13n)), 0, CI.TH(m)) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (T.LightClientUpdate & U32)}
+def RT0(+m: CI.MW) -> Data: {FuluLightClientUpdate_e.LightClientUpdate_putk(FD.array__thaw(U32, VC.ZT(13n)), 0, CI.TH(m)) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (FuluLightClientUpdate_d.LightClientUpdate & U32)}
 
 def rt0(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +g: DK.P2(HD(m), DK.P2(HL(m), HZ(m)))) -> RT0(m):
   +hd = CI.PA(HD(m), DK.P2(HL(m), HZ(m)), g)
@@ -90,14 +91,14 @@ def a31(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {U32.and(CI.SZ(m), 2147
   VBE.and31(CI.SZ(m), 15n, {==}, FD.nat__le_lt_trans(U32.to_nat(CI.SZ(m)), 26936n, FD.spec_common__pow2(15n), hs, {==}))
 
 def eval_go(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool})
-    -> {T.LightClientUpdate_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.LightClientUpdate & B.Buf}:
+    -> {FuluLightClientUpdate_e.LightClientUpdate_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : FuluLightClientUpdate_d.LightClientUpdate & B.Buf}:
   +rt = rt0(m, hok, roomf(m, hok))
   %Equal.sym(Array<U32>, Array.new(U32, 13n, 0), FD.array__thaw(U32, VC.ZT(13n)), FD.array__new(U32, 13n, 0)) :
-    {T.LightClientUpdate_enc_put(T.LightClientUpdate_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.LightClientUpdate & B.Buf}
-  %Equal.sym(Array<U32> & (T.LightClientUpdate & U32), T.LightClientUpdate_putk(FD.array__thaw(U32, VC.ZT(13n)), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
-    {T.LightClientUpdate_enc_put(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.LightClientUpdate & B.Buf}
+    {FuluLightClientUpdate_e.LightClientUpdate_enc_put(FuluLightClientUpdate_e.LightClientUpdate_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : FuluLightClientUpdate_d.LightClientUpdate & B.Buf}
+  %Equal.sym(Array<U32> & (FuluLightClientUpdate_d.LightClientUpdate & U32), FuluLightClientUpdate_e.LightClientUpdate_putk(FD.array__thaw(U32, VC.ZT(13n)), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
+    {FuluLightClientUpdate_e.LightClientUpdate_enc_put(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : FuluLightClientUpdate_d.LightClientUpdate & B.Buf}
   %Equal.sym(U32, U32.and(CI.SZ(m), 2147483647), CI.SZ(m), a31(m, hok)) :
-    {(CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), _}) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.LightClientUpdate & B.Buf}
+    {(CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), _}) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : FuluLightClientUpdate_d.LightClientUpdate & B.Buf}
   {==}
 
 # The output's first bytes, as many as the size, are the container's bytes.
@@ -114,7 +115,7 @@ def obytes(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {VS.bt(U32.to_nat(CI
 law encode_eval:
   for +m: CI.MW
   for +hok: {CI.OK(m) == True{} : Bool}
-  {T.LightClientUpdate_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), SZSM(m)}) : T.LightClientUpdate & B.Buf}
+  {FuluLightClientUpdate_e.LightClientUpdate_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), SZSM(m)}) : FuluLightClientUpdate_d.LightClientUpdate & B.Buf}
 def encode_eval(m, hok): eval_go(m, hok)
 
 # The buffer's bytes are the spec encoding of the object's value.

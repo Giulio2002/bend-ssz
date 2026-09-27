@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluDataColumnSidecar_def_generated.bend as FuluDataColumnSidecar_d
+import ../../types/FuluDataColumnSidecar_decode_ssz_generated.bend as FuluDataColumnSidecar_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -417,20 +418,20 @@ def decode_reject(d, t, n, pf, hd, hn, hchk):
 
 def none_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 23n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool}, +a: Bool, +ea: {U32.is_le(356, n) == a : Bool})
-    -> {T.DataColumnSidecar_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.DataColumnSidecar>}:
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}:
   match a:
     case False{}:
       %Equal.sym(Bool, U32.is_le(356, n), False{}, ea) :
-        {T.DataColumnSidecar_built(n, T.DataColumnSidecar_ok_len(_, DC.BF(t, n), 0, n)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.DataColumnSidecar>}
+        {FuluDataColumnSidecar_r.DataColumnSidecar_built(n, FuluDataColumnSidecar_r.DataColumnSidecar_ok_len(_, DC.BF(t, n), 0, n)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}
       {==}
     case True{}:
       +hF2 = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(356, n), Nat.is_le(356n, U32.to_nat(n)), VU.le_u32(356, n), ea)
       +h89 = VC.quad_inv(89n, VB.pw(d), FD.nat__le_trans(356n, U32.to_nat(n), A.quad(VB.pw(d)), hF2, hn))
-      %Equal.sym(B.Buf & Bool, T.DataColumnSidecar_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)),
+      %Equal.sym(B.Buf & Bool, FuluDataColumnSidecar_r.DataColumnSidecar_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)),
           DC.ok_eval(d, t, n, VB.lt32(d, FD.nat__lt_trans(d, 23n, 31n, hd, {==})), FD.nat__lt_le_trans(4n, 89n, VB.pw(d), {==}, h89), pf)) :
-        {T.DataColumnSidecar_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.DataColumnSidecar>}
+        {FuluDataColumnSidecar_r.DataColumnSidecar_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}
       %Equal.sym(Bool, DC.CHK(t, n), False{}, hchk) :
-        {T.DataColumnSidecar_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.DataColumnSidecar>}
+        {FuluDataColumnSidecar_r.DataColumnSidecar_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}
       {==}
 
 # When the validator refuses, the decoder returns None and the buffer.
@@ -442,6 +443,6 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 23n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {DC.CHK(t, n) == False{} : Bool}
-  {T.DataColumnSidecar_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.DataColumnSidecar>}
+  {FuluDataColumnSidecar_r.DataColumnSidecar_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnSidecar_d.DataColumnSidecar>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
   none_go(d, t, n, pf, hd, hn, hchk, U32.is_le(356, n), {==})

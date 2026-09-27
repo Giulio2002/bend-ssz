@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBlob_decode_ssz_generated.bend as FuluBlob_r
+import ../../types/FuluBlob_encode_ssz_generated.bend as FuluBlob_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/layout.bend as Layout
@@ -23,10 +24,10 @@ import ./arr_vec.bend as AV
 # decoding any buffer of 131072 bytes (every perfect tree t of depth 15) accepts; the
 # object holds the words of t, then zero storage
 def Blob_spec_decode(+t: F.array__Tree<U32>, +pt: {F.array__perfect(U32, 15n, t) == True{} : Bool})
-    -> {T.Blob_decode(B.Buf{F.array__thaw(U32, t), 131072}, 131072) == (B.Buf{F.array__thaw(U32, t), 131072}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, 131072}}) : B.Buf & Maybe<&1, O.Words>}:
+    -> {FuluBlob_r.Blob_decode(B.Buf{F.array__thaw(U32, t), 131072}, 131072) == (B.Buf{F.array__thaw(U32, t), 131072}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, 131072}}) : B.Buf & Maybe<&1, O.Words>}:
   %Equal.sym(Array<U32> & Array<U32>, O.acopy(32768, 0, 0, Array.new(U32, 16n, 0), F.array__thaw(U32, t)), (ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, F.array__thaw(U32, t)),
       AC.zl1(15n, 32768, 0, 0, t, {==}, {==}, AC.oct_pow(32768, 15n, 12n, {==}, {==}, {==}, {==}, {==}, {==}), {==}, {==}, pt)) :
-    {T.Blob_some(O.ci_fin(131072, 131072, _)) == (B.Buf{F.array__thaw(U32, t), 131072}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, 131072}}) : B.Buf & Maybe<&1, O.Words>}
+    {FuluBlob_r.Blob_some(O.ci_fin(131072, 131072, _)) == (B.Buf{F.array__thaw(U32, t), 131072}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, 131072}}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
 # the bytes of that buffer (B.emit) are the limbs of the words of t
@@ -38,17 +39,17 @@ def Blob_spec_view(+t: F.array__Tree<U32>, +pt: {F.array__perfect(U32, 15n, t) =
 
 # the buffer the loader builds from the bytes of any 32768 words is that tree
 def Blob_spec_input(+t: F.array__Tree<U32>, +pt: {F.array__perfect(U32, 15n, t) == True{} : Bool})
-    -> {T.Blob_decode(B.fill_at(B.alloc(131072), 0, SF.limbs(F.array__slots(U32, t))), 131072) == (B.Buf{F.array__thaw(U32, t), 131072}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, 131072}}) : B.Buf & Maybe<&1, O.Words>}:
+    -> {FuluBlob_r.Blob_decode(B.fill_at(B.alloc(131072), 0, SF.limbs(F.array__slots(U32, t))), 131072) == (B.Buf{F.array__thaw(U32, t), 131072}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, 131072}}) : B.Buf & Maybe<&1, O.Words>}:
   %Equal.sym(B.Buf, B.fill_at(B.alloc(131072), 0, SF.limbs(F.array__slots(U32, t))), B.Buf{F.array__thaw(U32, t), 131072}, AE.load_all(15n, t, 131072, {==}, {==}, pt)) :
-    {T.Blob_decode(_, 131072) == (B.Buf{F.array__thaw(U32, t), 131072}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, 131072}}) : B.Buf & Maybe<&1, O.Words>}
+    {FuluBlob_r.Blob_decode(_, 131072) == (B.Buf{F.array__thaw(U32, t), 131072}, Some{O.Words{ANode{F.array__thaw(U32, t), Array.new(U32, 15n, 0)}, 131072}}) : B.Buf & Maybe<&1, O.Words>}
   Blob_spec_decode(t, pt)
 
 # the encoder emits the limbs of the object's words (storage [l | r], r free)
 def Blob_spec_bytes(+l: F.array__Tree<U32>, +r: F.array__Tree<U32>, +pl: {F.array__perfect(U32, 15n, l) == True{} : Bool}, +pr: {F.array__perfect(U32, 15n, r) == True{} : Bool}, +k: U32, +ek: {k == 32768 : U32})
-    -> {SF.emitted(O.Words, T.Blob_encode(O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}), k) == (O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}, SF.limbs(F.array__slots(U32, l))) : O.Words & +List<U32>}:
+    -> {SF.emitted(O.Words, FuluBlob_e.Blob_encode(O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}), k) == (O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}, SF.limbs(F.array__slots(U32, l))) : O.Words & +List<U32>}:
   %Equal.sym(Array<U32> & Array<U32>, O.acopy(32768, 0, 0, Array.new(U32, 15n, 0), F.array__thaw(U32, F.TNode{l, r})), (F.array__thaw(U32, l), F.array__thaw(U32, F.TNode{l, r})),
       AC.ov(15n, 32768, 0, 0, l, r, {==}, {==}, AC.oct_pow(32768, 15n, 12n, {==}, {==}, {==}, {==}, {==}, {==}), {==}, {==}, pl, pr)) :
-    {SF.emitted(O.Words, T.Blob_enc_out(O.put_fin(131072, _)), k) == (O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}, SF.limbs(F.array__slots(U32, l))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, FuluBlob_e.Blob_enc_out(O.put_fin(131072, _)), k) == (O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}, SF.limbs(F.array__slots(U32, l))) : O.Words & +List<U32>}
   %Equal.sym(B.Buf & +List<U32>, B.emit(B.Buf{F.array__thaw(U32, l), 131072}, 0, k), (B.Buf{F.array__thaw(U32, l), 131072}, SF.limbs(F.array__slots(U32, l))), Blob_spec_view(l, pl, k, ek)) :
     {(O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}, SF.listed(_)) == (O.Words{ANode{F.array__thaw(U32, l), F.array__thaw(U32, r)}, 131072}, SF.limbs(F.array__slots(U32, l))) : O.Words & +List<U32>}
   {==}
@@ -67,7 +68,7 @@ def Blob_spec_encode(+t: F.array__Tree<U32>, +pt: {F.array__perfect(U32, 15n, t)
 
 # every size other than 131072 is refused
 def Blob_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 131072) == False{} : Bool})
-    -> {T.Blob_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_eq(m, 131072), False{}, e) : {T.Blob_built(m, T.b131072_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+    -> {FuluBlob_r.Blob_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, U32.is_eq(m, 131072), False{}, e) : {FuluBlob_r.Blob_built(m, FuluBlob_r.b131072_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 

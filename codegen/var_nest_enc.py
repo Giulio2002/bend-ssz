@@ -18,6 +18,7 @@ proofs/obj/venc2.bend and proofs/obj/vnenc.bend.
 import re
 
 import var_laws as VL
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 
 def _ctx(g, x, pre='w'):
@@ -37,7 +38,7 @@ def encw_text(g, x):
     n, FS, H, po, LIM, lp = x.n, x.FS, x.H, x.po, x.LIM, x.lp
     cvar = x.var['c']
     Tn = f'T.{n}'
-    src = (VL.ROOT / 'types/fulu_obj.bend').read_text()
+    src = RR.mono_text('fulu')
     m = re.search(rf'def {lp}_valid\(o: O\.Words\) -> O\.Words & Bool: O\.words_ok\(o, 0, (\d+), False\{{\}}, 8\)', src)
     LIMB = int(m.group(1))
     ITEMS, CHAIN, PL, CAT, PRE, POST, hdr, LIMN, YS = VL.spec_parts(g, x, lambda k: f'w{k}')

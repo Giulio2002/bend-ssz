@@ -1,7 +1,17 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluBytes96_decode_ssz_generated.bend as FuluBytes96_r
+import ../../types/FuluCheckpoint_def_generated.bend as FuluCheckpoint_d
+import ../../types/FuluAttestationData_def_generated.bend as FuluAttestationData_d
+import ../../types/FuluAttestationData_decode_ssz_generated.bend as FuluAttestationData_r
+import ../../types/Fulu_bitlist_131072_decode_ssz_generated.bend as Fulu_bitlist_131072_r
+import ../../types/Fulu_bitvector_64_decode_ssz_generated.bend as Fulu_bitvector_64_r
+import ../../types/FuluAttestation_def_generated.bend as FuluAttestation_d
+import ../../types/FuluAttestation_decode_ssz_generated.bend as FuluAttestation_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -117,7 +127,7 @@ def eoF(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
 
 # ---- the validator ----------------------------------------------------------------------------
 
-def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {T.Attestation_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
+def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {FuluAttestation_r.Attestation_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
   match ok:
     case True{}: {==}
     case False{}: {==}
@@ -125,16 +135,16 @@ def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {T.Attestati
 def okc0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(236, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(SPOw(t, x), 236) == b : Bool})
-    -> {T.Attestation_c0(b, BF(t, n), off, len, SPOw(t, x)) == (BF(t, n), chk3(True{}, b, CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}:
+    -> {FuluAttestation_r.Attestation_c0(b, BF(t, n), off, len, SPOw(t, x)) == (BF(t, n), chk3(True{}, b, CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +epo = FD.u32alg__eq_of(SPOw(t, x), 236, eb)
       %Equal.sym(U32, SPOw(t, x), 236, epo) :
-        {T.Attestation_v1(off, len, _, T.bits131072_ok(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))) : B.Buf & Bool}
-      %Equal.sym(B.Buf & Bool, T.bits131072_ok(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))),
+        {FuluAttestation_r.Attestation_v1(off, len, _, Fulu_bitlist_131072_r.bits131072_ok(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))) : B.Buf & Bool}
+      %Equal.sym(B.Buf & Bool, Fulu_bitlist_131072_r.bits131072_ok(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))),
           CH.ok_evalw(d, t, n, JW(x), OWc(off), LLw(len), eoF(d, t, n, x, off, len, eo, hd, hw, pf, ha), hd, hwc(d, t, n, x, off, len, eo, hd, hw, pf, ha), pf)) :
-        {T.Attestation_v1(off, len, 236, _) == (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))) : B.Buf & Bool}
+        {FuluAttestation_r.Attestation_v1(off, len, 236, _) == (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))) : B.Buf & Bool}
       c1_id(CH.CHKw(t, JW(x), OWc(off), LLw(len)), BF(t, n), off, len, 236)
 
 def rdpo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
@@ -146,18 +156,18 @@ def rdpo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
 def okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool, +ea: {U32.is_le(236, len) == a : Bool})
-    -> {T.Attestation_ok_len(a, BF(t, n), off, len) == (BF(t, n), chk3(a, U32.is_eq(SPOw(t, x), 236), CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}:
+    -> {FuluAttestation_r.Attestation_ok_len(a, BF(t, n), off, len) == (BF(t, n), chk3(a, U32.is_eq(SPOw(t, x), 236), CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), SPOw(t, x)), rdpo(d, t, n, x, off, len, eo, hd, hw, pf, ea)) :
-        {T.Attestation_v0(off, len, _) == (BF(t, n), chk3(True{}, U32.is_eq(SPOw(t, x), 236), CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}
+        {FuluAttestation_r.Attestation_v0(off, len, _) == (BF(t, n), chk3(True{}, U32.is_eq(SPOw(t, x), 236), CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}
       okc0(d, t, n, x, off, len, eo, hd, hw, pf, ea, U32.is_eq(SPOw(t, x), 236), {==})
 
 # The validator on the window returns the buffer and CHKw.
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.Attestation_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {FuluAttestation_r.Attestation_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   okl(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_le(236, len), {==})
 
 def ch_a(+a: Bool, +b: Bool, +c: Bool, +h: {chk3(a, b, c) == True{} : Bool}) -> {a == True{} : Bool}:
@@ -177,37 +187,37 @@ def ch_c(+a: Bool, +b: Bool, +c: Bool, +h: {chk3(a, b, c) == True{} : Bool}) -> 
     case True{} False{}: Empty.absurd({c == True{} : Bool}, FD.logic__false_true(h))
     case True{} True{}: h
 
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.Attestation: T.Attestation{CH.OBJw(d, t, JW(x), OWc(off), LLw(len)), T.AttestationData{O.U64{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x)}, O.U64{UR.RWN(t, 12n+x), UR.RWN(t, 16n+x)}, T.Bytes32{UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x)}, T.Checkpoint{O.U64{UR.RWN(t, 52n+x), UR.RWN(t, 56n+x)}, T.Bytes32{UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x)}}, T.Checkpoint{O.U64{UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}, T.Bytes32{UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x), UR.RWN(t, 112n+x), UR.RWN(t, 116n+x), UR.RWN(t, 120n+x), UR.RWN(t, 124n+x), UR.RWN(t, 128n+x)}}}, T.Bytes96{UR.RWN(t, 132n+x), UR.RWN(t, 136n+x), UR.RWN(t, 140n+x), UR.RWN(t, 144n+x), UR.RWN(t, 148n+x), UR.RWN(t, 152n+x), UR.RWN(t, 156n+x), UR.RWN(t, 160n+x), UR.RWN(t, 164n+x), UR.RWN(t, 168n+x), UR.RWN(t, 172n+x), UR.RWN(t, 176n+x), UR.RWN(t, 180n+x), UR.RWN(t, 184n+x), UR.RWN(t, 188n+x), UR.RWN(t, 192n+x), UR.RWN(t, 196n+x), UR.RWN(t, 200n+x), UR.RWN(t, 204n+x), UR.RWN(t, 208n+x), UR.RWN(t, 212n+x), UR.RWN(t, 216n+x), UR.RWN(t, 220n+x), UR.RWN(t, 224n+x)}, T.Bitvector64{UR.RWN(t, 228n+x), UR.RWN(t, 232n+x)}}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> FuluAttestation_d.Attestation: FuluAttestation_d.Attestation{CH.OBJw(d, t, JW(x), OWc(off), LLw(len)), FuluAttestationData_d.AttestationData{O.U64{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x)}, O.U64{UR.RWN(t, 12n+x), UR.RWN(t, 16n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x)}, FuluCheckpoint_d.Checkpoint{O.U64{UR.RWN(t, 52n+x), UR.RWN(t, 56n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x)}}, FuluCheckpoint_d.Checkpoint{O.U64{UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x), UR.RWN(t, 112n+x), UR.RWN(t, 116n+x), UR.RWN(t, 120n+x), UR.RWN(t, 124n+x), UR.RWN(t, 128n+x)}}}, FuluBytes96_d.Bytes96{UR.RWN(t, 132n+x), UR.RWN(t, 136n+x), UR.RWN(t, 140n+x), UR.RWN(t, 144n+x), UR.RWN(t, 148n+x), UR.RWN(t, 152n+x), UR.RWN(t, 156n+x), UR.RWN(t, 160n+x), UR.RWN(t, 164n+x), UR.RWN(t, 168n+x), UR.RWN(t, 172n+x), UR.RWN(t, 176n+x), UR.RWN(t, 180n+x), UR.RWN(t, 184n+x), UR.RWN(t, 188n+x), UR.RWN(t, 192n+x), UR.RWN(t, 196n+x), UR.RWN(t, 200n+x), UR.RWN(t, 204n+x), UR.RWN(t, 208n+x), UR.RWN(t, 212n+x), UR.RWN(t, 216n+x), UR.RWN(t, 220n+x), UR.RWN(t, 224n+x)}, Fulu_bitvector_64_d.Bitvector64{UR.RWN(t, 228n+x), UR.RWN(t, 232n+x)}}
 
 def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(236, len) == True{} : Bool}, +epo: {SPOw(t, x) == 236 : U32}, +hc: {CH.CHKw(t, JW(x), OWc(off), LLw(len)) == True{} : Bool})
-    -> {T.Attestation_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.Attestation}:
+    -> {FuluAttestation_r.Attestation_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttestation_d.Attestation}:
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), SPOw(t, x)), rdpo(d, t, n, x, off, len, eo, hd, hw, pf, ha)) :
-    {T.Attestation_rd0(off, len, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.Attestation}
+    {FuluAttestation_r.Attestation_rd0(off, len, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttestation_d.Attestation}
   %Equal.sym(U32, SPOw(t, x), 236, epo) :
-    {T.Attestation_rd1(off, len, _, T.bits131072_read(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.Attestation}
-  %Equal.sym(B.Buf & O.Bits, T.bits131072_read(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.OBJw(d, t, JW(x), OWc(off), LLw(len))),
+    {FuluAttestation_r.Attestation_rd1(off, len, _, Fulu_bitlist_131072_r.bits131072_read(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttestation_d.Attestation}
+  %Equal.sym(B.Buf & O.Bits, Fulu_bitlist_131072_r.bits131072_read(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.OBJw(d, t, JW(x), OWc(off), LLw(len))),
       CH.readw(d, t, n, JW(x), OWc(off), LLw(len), eoF(d, t, n, x, off, len, eo, hd, hw, pf, ha), hd, hwc(d, t, n, x, off, len, eo, hd, hw, pf, ha), pf, hc)) :
-    {T.Attestation_rd1(off, len, 236, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.Attestation}
-  %Equal.sym(B.Buf & T.AttestationData, T.AttestationData_read(BF(t, n), U32.add(off, 4), 128), (BF(t, n), T.AttestationData{O.U64{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x)}, O.U64{UR.RWN(t, 12n+x), UR.RWN(t, 16n+x)}, T.Bytes32{UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x)}, T.Checkpoint{O.U64{UR.RWN(t, 52n+x), UR.RWN(t, 56n+x)}, T.Bytes32{UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x)}}, T.Checkpoint{O.U64{UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}, T.Bytes32{UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x), UR.RWN(t, 112n+x), UR.RWN(t, 116n+x), UR.RWN(t, 120n+x), UR.RWN(t, 124n+x), UR.RWN(t, 128n+x)}}}),
+    {FuluAttestation_r.Attestation_rd1(off, len, 236, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttestation_d.Attestation}
+  %Equal.sym(B.Buf & FuluAttestationData_d.AttestationData, FuluAttestationData_r.AttestationData_read(BF(t, n), U32.add(off, 4), 128), (BF(t, n), FuluAttestationData_d.AttestationData{O.U64{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x)}, O.U64{UR.RWN(t, 12n+x), UR.RWN(t, 16n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x)}, FuluCheckpoint_d.Checkpoint{O.U64{UR.RWN(t, 52n+x), UR.RWN(t, 56n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x)}}, FuluCheckpoint_d.Checkpoint{O.U64{UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x), UR.RWN(t, 112n+x), UR.RWN(t, 116n+x), UR.RWN(t, 120n+x), UR.RWN(t, 124n+x), UR.RWN(t, 128n+x)}}}),
       VTX.rdx_AttestationData(d, t, n, U32.add(off, 4), 4n+x, eoc(d, t, n, x, off, len, eo, hd, hw, pf, 4, 4n, {==}, {==}, ha), FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf,
         roomF(d, t, n, x, off, len, eo, hd, hw, pf, ha, 4n, 128n, {==}))) :
-    {T.Attestation_rd2(off, len, 236, CH.OBJw(d, t, JW(x), OWc(off), LLw(len)), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.Attestation}
-  %Equal.sym(B.Buf & T.Bytes96, T.b96_read(BF(t, n), U32.add(off, 132), 96), (BF(t, n), T.Bytes96{UR.RWN(t, 132n+x), UR.RWN(t, 136n+x), UR.RWN(t, 140n+x), UR.RWN(t, 144n+x), UR.RWN(t, 148n+x), UR.RWN(t, 152n+x), UR.RWN(t, 156n+x), UR.RWN(t, 160n+x), UR.RWN(t, 164n+x), UR.RWN(t, 168n+x), UR.RWN(t, 172n+x), UR.RWN(t, 176n+x), UR.RWN(t, 180n+x), UR.RWN(t, 184n+x), UR.RWN(t, 188n+x), UR.RWN(t, 192n+x), UR.RWN(t, 196n+x), UR.RWN(t, 200n+x), UR.RWN(t, 204n+x), UR.RWN(t, 208n+x), UR.RWN(t, 212n+x), UR.RWN(t, 216n+x), UR.RWN(t, 220n+x), UR.RWN(t, 224n+x)}),
+    {FuluAttestation_r.Attestation_rd2(off, len, 236, CH.OBJw(d, t, JW(x), OWc(off), LLw(len)), _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttestation_d.Attestation}
+  %Equal.sym(B.Buf & FuluBytes96_d.Bytes96, FuluBytes96_r.b96_read(BF(t, n), U32.add(off, 132), 96), (BF(t, n), FuluBytes96_d.Bytes96{UR.RWN(t, 132n+x), UR.RWN(t, 136n+x), UR.RWN(t, 140n+x), UR.RWN(t, 144n+x), UR.RWN(t, 148n+x), UR.RWN(t, 152n+x), UR.RWN(t, 156n+x), UR.RWN(t, 160n+x), UR.RWN(t, 164n+x), UR.RWN(t, 168n+x), UR.RWN(t, 172n+x), UR.RWN(t, 176n+x), UR.RWN(t, 180n+x), UR.RWN(t, 184n+x), UR.RWN(t, 188n+x), UR.RWN(t, 192n+x), UR.RWN(t, 196n+x), UR.RWN(t, 200n+x), UR.RWN(t, 204n+x), UR.RWN(t, 208n+x), UR.RWN(t, 212n+x), UR.RWN(t, 216n+x), UR.RWN(t, 220n+x), UR.RWN(t, 224n+x)}),
       VTX.rdx_b96(d, t, n, U32.add(off, 132), 132n+x, eoc(d, t, n, x, off, len, eo, hd, hw, pf, 132, 132n, {==}, {==}, ha), FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf,
         roomF(d, t, n, x, off, len, eo, hd, hw, pf, ha, 132n, 96n, {==}))) :
-    {T.Attestation_rd3(off, len, 236, CH.OBJw(d, t, JW(x), OWc(off), LLw(len)), T.AttestationData{O.U64{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x)}, O.U64{UR.RWN(t, 12n+x), UR.RWN(t, 16n+x)}, T.Bytes32{UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x)}, T.Checkpoint{O.U64{UR.RWN(t, 52n+x), UR.RWN(t, 56n+x)}, T.Bytes32{UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x)}}, T.Checkpoint{O.U64{UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}, T.Bytes32{UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x), UR.RWN(t, 112n+x), UR.RWN(t, 116n+x), UR.RWN(t, 120n+x), UR.RWN(t, 124n+x), UR.RWN(t, 128n+x)}}}, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.Attestation}
-  %Equal.sym(B.Buf & T.Bitvector64, T.bv64_read(BF(t, n), U32.add(off, 228), 8), (BF(t, n), T.Bitvector64{UR.RWN(t, 228n+x), UR.RWN(t, 232n+x)}),
+    {FuluAttestation_r.Attestation_rd3(off, len, 236, CH.OBJw(d, t, JW(x), OWc(off), LLw(len)), FuluAttestationData_d.AttestationData{O.U64{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x)}, O.U64{UR.RWN(t, 12n+x), UR.RWN(t, 16n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x)}, FuluCheckpoint_d.Checkpoint{O.U64{UR.RWN(t, 52n+x), UR.RWN(t, 56n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x)}}, FuluCheckpoint_d.Checkpoint{O.U64{UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x), UR.RWN(t, 112n+x), UR.RWN(t, 116n+x), UR.RWN(t, 120n+x), UR.RWN(t, 124n+x), UR.RWN(t, 128n+x)}}}, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttestation_d.Attestation}
+  %Equal.sym(B.Buf & Fulu_bitvector_64_d.Bitvector64, Fulu_bitvector_64_r.bv64_read(BF(t, n), U32.add(off, 228), 8), (BF(t, n), Fulu_bitvector_64_d.Bitvector64{UR.RWN(t, 228n+x), UR.RWN(t, 232n+x)}),
       VTX.rdx_bv64(d, t, n, U32.add(off, 228), 228n+x, eoc(d, t, n, x, off, len, eo, hd, hw, pf, 228, 228n, {==}, {==}, ha), FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf,
         roomF(d, t, n, x, off, len, eo, hd, hw, pf, ha, 228n, 8n, {==}))) :
-    {T.Attestation_rd4(off, len, 236, CH.OBJw(d, t, JW(x), OWc(off), LLw(len)), T.AttestationData{O.U64{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x)}, O.U64{UR.RWN(t, 12n+x), UR.RWN(t, 16n+x)}, T.Bytes32{UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x)}, T.Checkpoint{O.U64{UR.RWN(t, 52n+x), UR.RWN(t, 56n+x)}, T.Bytes32{UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x)}}, T.Checkpoint{O.U64{UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}, T.Bytes32{UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x), UR.RWN(t, 112n+x), UR.RWN(t, 116n+x), UR.RWN(t, 120n+x), UR.RWN(t, 124n+x), UR.RWN(t, 128n+x)}}}, T.Bytes96{UR.RWN(t, 132n+x), UR.RWN(t, 136n+x), UR.RWN(t, 140n+x), UR.RWN(t, 144n+x), UR.RWN(t, 148n+x), UR.RWN(t, 152n+x), UR.RWN(t, 156n+x), UR.RWN(t, 160n+x), UR.RWN(t, 164n+x), UR.RWN(t, 168n+x), UR.RWN(t, 172n+x), UR.RWN(t, 176n+x), UR.RWN(t, 180n+x), UR.RWN(t, 184n+x), UR.RWN(t, 188n+x), UR.RWN(t, 192n+x), UR.RWN(t, 196n+x), UR.RWN(t, 200n+x), UR.RWN(t, 204n+x), UR.RWN(t, 208n+x), UR.RWN(t, 212n+x), UR.RWN(t, 216n+x), UR.RWN(t, 220n+x), UR.RWN(t, 224n+x)}, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.Attestation}
+    {FuluAttestation_r.Attestation_rd4(off, len, 236, CH.OBJw(d, t, JW(x), OWc(off), LLw(len)), FuluAttestationData_d.AttestationData{O.U64{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x)}, O.U64{UR.RWN(t, 12n+x), UR.RWN(t, 16n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x)}, FuluCheckpoint_d.Checkpoint{O.U64{UR.RWN(t, 52n+x), UR.RWN(t, 56n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x)}}, FuluCheckpoint_d.Checkpoint{O.U64{UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x), UR.RWN(t, 112n+x), UR.RWN(t, 116n+x), UR.RWN(t, 120n+x), UR.RWN(t, 124n+x), UR.RWN(t, 128n+x)}}}, FuluBytes96_d.Bytes96{UR.RWN(t, 132n+x), UR.RWN(t, 136n+x), UR.RWN(t, 140n+x), UR.RWN(t, 144n+x), UR.RWN(t, 148n+x), UR.RWN(t, 152n+x), UR.RWN(t, 156n+x), UR.RWN(t, 160n+x), UR.RWN(t, 164n+x), UR.RWN(t, 168n+x), UR.RWN(t, 172n+x), UR.RWN(t, 176n+x), UR.RWN(t, 180n+x), UR.RWN(t, 184n+x), UR.RWN(t, 188n+x), UR.RWN(t, 192n+x), UR.RWN(t, 196n+x), UR.RWN(t, 200n+x), UR.RWN(t, 204n+x), UR.RWN(t, 208n+x), UR.RWN(t, 212n+x), UR.RWN(t, 216n+x), UR.RWN(t, 220n+x), UR.RWN(t, 224n+x)}, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttestation_d.Attestation}
   {==}
 
 # The reader on the window, when the checks hold.
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {T.Attestation_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.Attestation}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {FuluAttestation_r.Attestation_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluAttestation_d.Attestation}:
   +a = U32.is_le(236, len)
   +b = U32.is_eq(SPOw(t, x), 236)
   +c = CH.CHKw(t, JW(x), OWc(off), LLw(len))

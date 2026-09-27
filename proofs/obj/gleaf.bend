@@ -3,7 +3,9 @@ import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_hashtreeroot_generated.bend as uint8_h
+import ../../types/uint32_hashtreeroot_generated.bend as uint32_h
+import ../../types/uint16_hashtreeroot_generated.bend as uint16_h
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/root_relation.bend as RR
@@ -48,10 +50,10 @@ law Gt967E8D815F_root_correct:
   for -h: B.Buf
   for +o: U32
   for +e: {U32.is_lt(o, 256) == True{} : Bool}
-  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.Gt967E8D815F(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt967E8D815F_hash_tree_root(h, o)))])
+  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.Gt967E8D815F(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint8_h.Gt967E8D815F_hash_tree_root(h, o)))])
 def Gt967E8D815F_root_correct(h, o, e):
   %Equal.sym(U32, o, PD.embed8(WSp.take(8n, 32n, PD.bits(o))), ID.byte_shape(o, e)) :
-    RR.roots(S.UnsignedValue{P.UInt{_, 0, 0, 0, 0, 0, 0, 0}}, Spec.Gt967E8D815F(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt967E8D815F_hash_tree_root(h, _)))])
+    RR.roots(S.UnsignedValue{P.UInt{_, 0, 0, 0, 0, 0, 0, 0}}, Spec.Gt967E8D815F(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint8_h.Gt967E8D815F_hash_tree_root(h, _)))])
   LS.u8_w(WSp.take(8n, 32n, PD.bits(o)))
 
 # GtECF9BB18D8 (uint16): every value below 65536 (its representation invariant).
@@ -59,16 +61,16 @@ law GtECF9BB18D8_root_correct:
   for -h: B.Buf
   for +o: U32
   for +e: {U32.is_lt(o, 65536) == True{} : Bool}
-  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.GtECF9BB18D8(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtECF9BB18D8_hash_tree_root(h, o)))])
+  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.GtECF9BB18D8(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint16_h.GtECF9BB18D8_hash_tree_root(h, o)))])
 def GtECF9BB18D8_root_correct(h, o, e):
   %Equal.sym(U32, o, U32{WSp.join(16n, 16n, WSp.take(16n, 32n, PD.bits(o)), Word.zero(16n))}, half_shape(o, e)) :
-    RR.roots(S.UnsignedValue{P.UInt{_, 0, 0, 0, 0, 0, 0, 0}}, Spec.GtECF9BB18D8(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtECF9BB18D8_hash_tree_root(h, _)))])
+    RR.roots(S.UnsignedValue{P.UInt{_, 0, 0, 0, 0, 0, 0, 0}}, Spec.GtECF9BB18D8(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint16_h.GtECF9BB18D8_hash_tree_root(h, _)))])
   u16_w(WSp.take(16n, 32n, PD.bits(o)))
 
 # Gt7B8507E2C2 (uint32): every value.
 law Gt7B8507E2C2_root_correct:
   for -h: B.Buf
   for +o: U32
-  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.Gt7B8507E2C2(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt7B8507E2C2_hash_tree_root(h, o)))])
+  RR.roots(S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}, Spec.Gt7B8507E2C2(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint32_h.Gt7B8507E2C2_hash_tree_root(h, o)))])
 def Gt7B8507E2C2_root_correct(h, o): LS.u32_root(o)
 

@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/proglist_bool_decode_ssz_generated.bend as proglist_bool_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -89,7 +89,7 @@ def s1(+c: Nat, +h: {Nat.is_le(1n, c) == True{} : Bool}) -> {c == 1n+Nat.sub(c, 
 def ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +i: U32, +j: Nat, +acc: Bool,
     +e: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.pl_bool_ck(k, i, off, acc, (BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
+    -> {proglist_bool_r.pl_bool_ck(k, i, off, acc, (BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(j, 1n, x)), 1))) == (BF(t, n), Bool.and(acc, VRB.ALLB(UW.WX(t, VRL.pos(j, 1n, x), 1n+k)))) : B.Buf & Bool}:
   match k:
     case 0n:
     +hy = FD.nat__lt_le_trans(VRL.pos(j, 1n, x), 1n+VRL.pos(j, 1n, x), A.quad(VB.pw(d)), FD.nat__lt_succ(VRL.pos(j, 1n, x)), FD.nat__le_trans(1n+VRL.pos(j, 1n, x), VRL.pos(Nat.add(1n+k, j), 1n, x), A.quad(VB.pw(d)), VRB.pmk(k, j, x), hb))
@@ -107,11 +107,11 @@ def ck(+k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +
       +hx1 = FD.nat__lt_le_trans(VRL.pos(1n+j, 1n, x), Nat.add(VRL.pos(1n+j, 1n, x), 1n), A.quad(VB.pw(d)), VTX.ltp(VRL.pos(1n+j, 1n, x), 0n), hx)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 1n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       %Equal.sym(+List<U32>, UW.WX(t, VRL.pos(j, 1n, x), 2n+q), Con{VRB.BX(t, VRL.pos(j, 1n, x)), UW.WX(t, 1n+VRL.pos(j, 1n, x), 1n+q)}, VRB.wxc(d, t, VRL.pos(j, 1n, x), 1n+q, pf, hy)) :
-        {T.pl_bool_ck(1n+q, i, off, acc, (BF(t, n), c)) == (BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
-      %VRB.and_assoc(acc, c, R) : {T.pl_bool_ck(1n+q, i, off, acc, (BF(t, n), c)) == (BF(t, n), _) : B.Buf & Bool}
+        {proglist_bool_r.pl_bool_ck(1n+q, i, off, acc, (BF(t, n), c)) == (BF(t, n), Bool.and(acc, VRB.ALLB(_))) : B.Buf & Bool}
+      %VRB.and_assoc(acc, c, R) : {proglist_bool_r.pl_bool_ck(1n+q, i, off, acc, (BF(t, n), c)) == (BF(t, n), _) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, O.ok_bool(BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 1))), (BF(t, n), U32.is_le(VRB.BX(t, VRL.pos(1n+j, 1n, x)), 1)),
           VRB.okb(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 1)), VRL.pos(1n+j, 1n, x), ex, hd, pf, hx1)) :
-        {T.pl_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
+        {proglist_bool_r.pl_bool_ck(q, U32.add(i, 1), off, Bool.and(acc, c), _) == (BF(t, n), Bool.and(Bool.and(acc, c), R)) : B.Buf & Bool}
       ck(q, d, t, n, off, x, U32.add(i, 1), 1n+j, Bool.and(acc, c), e, VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)
 
 # The loop's bound: byte 1 + k of the window is inside the buffer.
@@ -126,7 +126,7 @@ def hbk(+d: Nat, +x: Nat, +len: U32, +k: Nat, +ek: {U32.to_nat(len) == 1n+k : Na
 def nzb(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(U32.div(len, 1), 0) == b : Bool})
-    -> {T.pl_bool_ok_nz(b, BF(t, n), off, U32.div(len, 1)) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    -> {proglist_bool_r.pl_bool_ok_nz(b, BF(t, n), off, U32.div(len, 1)) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   match b:
     case True{}:
       +e0 = Equal.trans(Nat, U32.to_nat(len), U32.to_nat(U32.div(len, 1)), 0n, em(len),
@@ -143,18 +143,18 @@ def nzb(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
       +hwk = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == True{} : Bool}, U32.to_nat(len), 1n+k, ek, hw)
       +hx = FD.nat__lt_le_trans(x, Nat.add(x, 1n+k), A.quad(VB.pw(d)), VTX.ltp(x, k), hwk)
       %Equal.sym(B.Buf & Bool, O.ok_bool(BF(t, n), off), (BF(t, n), U32.is_le(VRB.BX(t, x), 1)), VRB.okb(d, t, n, off, x, eo, hd, pf, hx)) :
-        {T.pl_bool_ck(k, 0, off, True{}, _) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}
+        {proglist_bool_r.pl_bool_ck(k, 0, off, True{}, _) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}
       %Equal.sym(Nat, U32.to_nat(len), 1n+k, ek) :
-        {T.pl_bool_ck(k, 0, off, True{}, (BF(t, n), U32.is_le(VRB.BX(t, x), 1))) == (BF(t, n), VRB.ALLB(UW.WX(t, x, _))) : B.Buf & Bool}
+        {proglist_bool_r.pl_bool_ck(k, 0, off, True{}, (BF(t, n), U32.is_le(VRB.BX(t, x), 1))) == (BF(t, n), VRB.ALLB(UW.WX(t, x, _))) : B.Buf & Bool}
       ck(k, d, t, n, off, x, 0, 0n, True{}, eo, {==}, hd, pf, hbk(d, x, len, k, ek, hw))
 
 # The validator on the window returns the buffer and CHKw.
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
-    -> {T.pl_bool_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    -> {proglist_bool_r.pl_bool_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   %Equal.sym(Bool, Bool.and(U32.is_eq(len, (U32.div(len, 1) * 1 : U32)), True{}), True{}, chk1(len)) :
-    {T.pl_bool_ok_len(_, BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}
+    {proglist_bool_r.pl_bool_ok_len(_, BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}
   nzb(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_eq(U32.div(len, 1), 0), {==})
 
 # The reader on the window, when the checks hold: a copy of the window's words.
@@ -163,7 +163,7 @@ def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> O.W
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool})
-    -> {T.pl_bool_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & O.Words}:
+    -> {proglist_bool_r.pl_bool_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & O.Words}:
   +hL = hlen(d, x, len, hw)
   +hz = VLS.hdz29(d, len, hd, hL)
   +ez = FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.WZ(len))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.WZ(len))), VLS.DZ(len),

@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/vec_uint8_1_decode_ssz_generated.bend as vec_uint8_1_r
+import ../../types/vec_uint8_1_encode_ssz_generated.bend as vec_uint8_1_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -28,7 +29,7 @@ def GtB85E1BC748_spec_encode(+x0: U32)
   SF.encoding_of_parts(Spec.GtB85E1BC748(), S.Sequence{SP2.vu8([B.byte_sel(0, x0)])}, [B.byte_sel(0, x0)], GtB85E1BC748_spec_parts(x0))
 
 def GtB85E1BC748_spec_decode(+x0: U32)
-    -> {T.GtB85E1BC748_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{O.Words{ANode{ANode{ANode{ANode{ALeaf{U32.and(x0, 255)}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 1}}) : B.Buf & Maybe<&1, O.Words>}:
+    -> {vec_uint8_1_r.GtB85E1BC748_decode(B.Buf{ALeaf{x0}, 1}, 1) == (B.Buf{ALeaf{x0}, 1}, Some{O.Words{ANode{ANode{ANode{ANode{ALeaf{U32.and(x0, 255)}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}, ANode{ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}, ANode{ANode{ALeaf{0}, ALeaf{0}}, ANode{ALeaf{0}, ALeaf{0}}}}}, 1}}) : B.Buf & Maybe<&1, O.Words>}:
   {==}
 
 def GtB85E1BC748_spec_view(+x0: U32)
@@ -36,12 +37,12 @@ def GtB85E1BC748_spec_view(+x0: U32)
   {==}
 
 def GtB85E1BC748_spec_bytes(+y0: U32, +q0: U32, +q1: U32, +q2: U32, +q3: U32, +q4: U32, +q5: U32, +q6: U32, +q7: U32, +q8: U32, +q9: U32, +q10: U32, +q11: U32, +q12: U32, +q13: U32, +q14: U32)
-    -> {SF.emitted(O.Words, T.GtB85E1BC748_encode(O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{q0}}, ANode{ALeaf{q1}, ALeaf{q2}}}, ANode{ANode{ALeaf{q3}, ALeaf{q4}}, ANode{ALeaf{q5}, ALeaf{q6}}}}, ANode{ANode{ANode{ALeaf{q7}, ALeaf{q8}}, ANode{ALeaf{q9}, ALeaf{q10}}}, ANode{ANode{ALeaf{q11}, ALeaf{q12}}, ANode{ALeaf{q13}, ALeaf{q14}}}}}, 1}), 1) == (O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{q0}}, ANode{ALeaf{q1}, ALeaf{q2}}}, ANode{ANode{ALeaf{q3}, ALeaf{q4}}, ANode{ALeaf{q5}, ALeaf{q6}}}}, ANode{ANode{ANode{ALeaf{q7}, ALeaf{q8}}, ANode{ALeaf{q9}, ALeaf{q10}}}, ANode{ANode{ALeaf{q11}, ALeaf{q12}}, ANode{ALeaf{q13}, ALeaf{q14}}}}}, 1}, [B.byte_sel(0, y0)]) : O.Words & +List<U32>}:
-  %SP2.or0(y0) : {SF.emitted(O.Words, T.GtB85E1BC748_encode(O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{q0}}, ANode{ALeaf{q1}, ALeaf{q2}}}, ANode{ANode{ALeaf{q3}, ALeaf{q4}}, ANode{ALeaf{q5}, ALeaf{q6}}}}, ANode{ANode{ANode{ALeaf{q7}, ALeaf{q8}}, ANode{ALeaf{q9}, ALeaf{q10}}}, ANode{ANode{ALeaf{q11}, ALeaf{q12}}, ANode{ALeaf{q13}, ALeaf{q14}}}}}, 1}), 1) == (O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{q0}}, ANode{ALeaf{q1}, ALeaf{q2}}}, ANode{ANode{ALeaf{q3}, ALeaf{q4}}, ANode{ALeaf{q5}, ALeaf{q6}}}}, ANode{ANode{ANode{ALeaf{q7}, ALeaf{q8}}, ANode{ALeaf{q9}, ALeaf{q10}}}, ANode{ANode{ALeaf{q11}, ALeaf{q12}}, ANode{ALeaf{q13}, ALeaf{q14}}}}}, 1}, [B.byte_sel(0, _)]) : O.Words & +List<U32>}
+    -> {SF.emitted(O.Words, vec_uint8_1_e.GtB85E1BC748_encode(O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{q0}}, ANode{ALeaf{q1}, ALeaf{q2}}}, ANode{ANode{ALeaf{q3}, ALeaf{q4}}, ANode{ALeaf{q5}, ALeaf{q6}}}}, ANode{ANode{ANode{ALeaf{q7}, ALeaf{q8}}, ANode{ALeaf{q9}, ALeaf{q10}}}, ANode{ANode{ALeaf{q11}, ALeaf{q12}}, ANode{ALeaf{q13}, ALeaf{q14}}}}}, 1}), 1) == (O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{q0}}, ANode{ALeaf{q1}, ALeaf{q2}}}, ANode{ANode{ALeaf{q3}, ALeaf{q4}}, ANode{ALeaf{q5}, ALeaf{q6}}}}, ANode{ANode{ANode{ALeaf{q7}, ALeaf{q8}}, ANode{ALeaf{q9}, ALeaf{q10}}}, ANode{ANode{ALeaf{q11}, ALeaf{q12}}, ANode{ALeaf{q13}, ALeaf{q14}}}}}, 1}, [B.byte_sel(0, y0)]) : O.Words & +List<U32>}:
+  %SP2.or0(y0) : {SF.emitted(O.Words, vec_uint8_1_e.GtB85E1BC748_encode(O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{q0}}, ANode{ALeaf{q1}, ALeaf{q2}}}, ANode{ANode{ALeaf{q3}, ALeaf{q4}}, ANode{ALeaf{q5}, ALeaf{q6}}}}, ANode{ANode{ANode{ALeaf{q7}, ALeaf{q8}}, ANode{ALeaf{q9}, ALeaf{q10}}}, ANode{ANode{ALeaf{q11}, ALeaf{q12}}, ANode{ALeaf{q13}, ALeaf{q14}}}}}, 1}), 1) == (O.Words{ANode{ANode{ANode{ANode{ALeaf{y0}, ALeaf{q0}}, ANode{ALeaf{q1}, ALeaf{q2}}}, ANode{ANode{ALeaf{q3}, ALeaf{q4}}, ANode{ALeaf{q5}, ALeaf{q6}}}}, ANode{ANode{ANode{ALeaf{q7}, ALeaf{q8}}, ANode{ALeaf{q9}, ALeaf{q10}}}, ANode{ANode{ALeaf{q11}, ALeaf{q12}}, ANode{ALeaf{q13}, ALeaf{q14}}}}}, 1}, [B.byte_sel(0, _)]) : O.Words & +List<U32>}
   {==}
 
 def GtB85E1BC748_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})
-    -> {T.GtB85E1BC748_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
-  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {T.GtB85E1BC748_built(m, T.v1_u8_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
+    -> {vec_uint8_1_r.GtB85E1BC748_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}:
+  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {vec_uint8_1_r.GtB85E1BC748_built(m, vec_uint8_1_r.v1_u8_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 

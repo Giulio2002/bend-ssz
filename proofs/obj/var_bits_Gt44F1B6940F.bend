@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitlist_513_decode_ssz_generated.bend as bitlist_513_r
 import ../../types/schema.bend as S
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
@@ -52,7 +52,7 @@ def hiN(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hn: {Nat.i
 
 def okA(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +a: Bool, +ea: {U32.is_lt(0, n) == a : Bool})
-    -> {T.bits513_ok(BF(t, n), 0, n) == (BF(t, n), chk1(a, t, n)) : B.Buf & Bool}:
+    -> {bitlist_513_r.bits513_ok(BF(t, n), 0, n) == (BF(t, n), chk1(a, t, n)) : B.Buf & Bool}:
   match a:
     case False{}:
       %Equal.sym(Bool, U32.is_lt(0, n), False{}, ea) : {O.bitlist_nz(_, BF(t, n), 0, n, 513, False{}) == (BF(t, n), False{}) : B.Buf & Bool}
@@ -68,7 +68,7 @@ def okA(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, 
 # The validator returns the buffer and CHK(t, n).
 def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bits513_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
+    -> {bitlist_513_r.bits513_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
   okA(d, t, n, pf, hd, hn, U32.is_lt(0, n), {==})
 
 def cA(+a: Bool, +t: FD.array__Tree<U32>, +n: U32, +h: {chk1(a, t, n) == True{} : Bool}) -> {a == True{} : Bool}:
@@ -140,7 +140,7 @@ def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> O.Bits:
 def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +e1: {U32.to_nat(n) == 1n+M1(n) : Nat},
     +hb: {Nat.is_le(U32.to_nat(n), 65n) == True{} : Bool})
-    -> {T.bits513_read(BF(t, n), 0, n) == (BF(t, n), OBJ(t, n)) : B.Buf & O.Bits}:
+    -> {bitlist_513_r.bits513_read(BF(t, n), 0, n) == (BF(t, n), OBJ(t, n)) : B.Buf & O.Bits}:
   +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})
   +hz = hdzK(d, n, hd, hn, hb)
   +ez = zeros_at(B.words_depth_u(VC.WZ(n)), VL.DZ(n), VD.wdu(VC.WZ(n)), hz)
@@ -153,14 +153,14 @@ def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
 
 def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == True{} : Bool}, +h1: {chk1(True{}, t, n) == True{} : Bool})
-    -> {T.Gt44F1B6940F_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}:
+    -> {bitlist_513_r.Gt44F1B6940F_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}:
   +e1 = VR.e1n(n, VR.pos1(n, cA(U32.is_lt(0, n), t, n, hchk)))
-  %Equal.sym(B.Buf & Bool, T.bits513_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.Gt44F1B6940F_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
+  %Equal.sym(B.Buf & Bool, bitlist_513_r.bits513_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {bitlist_513_r.Gt44F1B6940F_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
-    {T.Gt44F1B6940F_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
-  %Equal.sym(B.Buf & O.Bits, T.bits513_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), rd_go(d, t, n, pf, hd, hn, e1, hB(t, n, e1, cC(t, n, h1, cB(t, n, h1))))) :
-    {T.Gt44F1B6940F_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
+    {bitlist_513_r.Gt44F1B6940F_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
+  %Equal.sym(B.Buf & O.Bits, bitlist_513_r.bits513_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), rd_go(d, t, n, pf, hd, hn, e1, hB(t, n, e1, cC(t, n, h1, cB(t, n, h1))))) :
+    {bitlist_513_r.Gt44F1B6940F_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
   {==}
 
 # Every buffer the validator accepts decodes to OBJ(t, n).
@@ -172,7 +172,7 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
-  {T.Gt44F1B6940F_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
+  {bitlist_513_r.Gt44F1B6940F_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
 def decode_accept(d, t, n, pf, hd, hn, hchk):
   acc_go(d, t, n, pf, hd, hn, hchk, c1(t, n, hchk))
 
@@ -185,12 +185,12 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
-  {T.Gt44F1B6940F_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
+  {bitlist_513_r.Gt44F1B6940F_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.bits513_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.Gt44F1B6940F_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
+  %Equal.sym(B.Buf & Bool, bitlist_513_r.bits513_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {bitlist_513_r.Gt44F1B6940F_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
   %Equal.sym(Bool, CHK(t, n), False{}, hchk) :
-    {T.Gt44F1B6940F_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
+    {bitlist_513_r.Gt44F1B6940F_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
   {==}
 
 # ---- the spec side ----------------------------------------------------------------------------

@@ -1,7 +1,15 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/uint64_decode_ssz_generated.bend as uint64_r
+import ../../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
+import ../../types/FuluSyncAggregate_decode_ssz_generated.bend as FuluSyncAggregate_r
+import ../../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
+import ../../types/FuluLightClientHeader_decode_ssz_generated.bend as FuluLightClientHeader_r
+import ../../types/FuluLightClientOptimisticUpdate_def_generated.bend as FuluLightClientOptimisticUpdate_d
+import ../../types/FuluLightClientOptimisticUpdate_decode_ssz_generated.bend as FuluLightClientOptimisticUpdate_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -65,7 +73,7 @@ def SPOw(t: FD.array__Tree<U32>, +i: Nat) -> U32: VB.slot(t, Nat.add(0n, i))
 def CHKw(+t: FD.array__Tree<U32>, +i: Nat, +len: U32) -> Bool:
   chk3(U32.is_le(172, len), U32.is_eq(SPOw(t, i), 172), YW.CHKw(t, Nat.add(43n, i), LL(len)))
 
-def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {T.LightClientOptimisticUpdate_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
+def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
   match ok:
     case True{}: {==}
     case False{}: {==}
@@ -114,18 +122,18 @@ def ecY(+d: Nat, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(
 
 def okw_c1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(172, len) == True{} : Bool}, +epo: {SPOw(t, i) == 172 : U32})
-    -> {T.LightClientOptimisticUpdate_c0(True{}, VF.BF(t, n), off, len, SPOw(t, i)) == (VF.BF(t, n), YW.CHKw(t, Nat.add(43n, i), LL(len))) : B.Buf & Bool}:
+    -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_c0(True{}, VF.BF(t, n), off, len, SPOw(t, i)) == (VF.BF(t, n), YW.CHKw(t, Nat.add(43n, i), LL(len))) : B.Buf & Bool}:
   %Equal.sym(U32, SPOw(t, i), 172, epo) :
-    {T.LightClientOptimisticUpdate_v1(off, len, _, T.LightClientHeader_ok(VF.BF(t, n), U32.add(off, _), U32.sub(len, _))) == (VF.BF(t, n), YW.CHKw(t, Nat.add(43n, i), LL(len))) : B.Buf & Bool}
-  %Equal.sym(B.Buf & Bool, T.LightClientHeader_ok(VF.BF(t, n), U32.add(off, 172), LL(len)), (VF.BF(t, n), YW.CHKw(t, Nat.add(43n, i), LL(len))),
+    {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_v1(off, len, _, FuluLightClientHeader_r.LightClientHeader_ok(VF.BF(t, n), U32.add(off, _), U32.sub(len, _))) == (VF.BF(t, n), YW.CHKw(t, Nat.add(43n, i), LL(len))) : B.Buf & Bool}
+  %Equal.sym(B.Buf & Bool, FuluLightClientHeader_r.LightClientHeader_ok(VF.BF(t, n), U32.add(off, 172), LL(len)), (VF.BF(t, n), YW.CHKw(t, Nat.add(43n, i), LL(len))),
       YW.ok_evalw(d, t, n, Nat.add(43n, i), U32.add(off, 172), LL(len), ecY(d, i, off, len, eo, hd, hw, ha), hd, hwY(d, i, len, hw, ha), pf)) :
-    {T.LightClientOptimisticUpdate_v1(off, len, 172, _) == (VF.BF(t, n), YW.CHKw(t, Nat.add(43n, i), LL(len))) : B.Buf & Bool}
+    {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_v1(off, len, 172, _) == (VF.BF(t, n), YW.CHKw(t, Nat.add(43n, i), LL(len))) : B.Buf & Bool}
   c1_id(YW.CHKw(t, Nat.add(43n, i), LL(len)), VF.BF(t, n), off, len, 172)
 
 def okw_c0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(172, len) == True{} : Bool},
     +b: Bool, +eb: {U32.is_eq(SPOw(t, i), 172) == b : Bool})
-    -> {T.LightClientOptimisticUpdate_c0(b, VF.BF(t, n), off, len, SPOw(t, i)) == (VF.BF(t, n), chk3(True{}, b, YW.CHKw(t, Nat.add(43n, i), LL(len)))) : B.Buf & Bool}:
+    -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_c0(b, VF.BF(t, n), off, len, SPOw(t, i)) == (VF.BF(t, n), chk3(True{}, b, YW.CHKw(t, Nat.add(43n, i), LL(len)))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}: okw_c1(d, t, n, i, off, len, eo, hd, hw, pf, ha, FD.u32alg__eq_of(SPOw(t, i), 172, eb))
@@ -133,20 +141,20 @@ def okw_c0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: 
 def okw_len(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +a: Bool, +ea: {U32.is_le(172, len) == a : Bool})
-    -> {T.LightClientOptimisticUpdate_ok_len(a, VF.BF(t, n), off, len) == (VF.BF(t, n), chk3(a, U32.is_eq(SPOw(t, i), 172), YW.CHKw(t, Nat.add(43n, i), LL(len)))) : B.Buf & Bool}:
+    -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_ok_len(a, VF.BF(t, n), off, len) == (VF.BF(t, n), chk3(a, U32.is_eq(SPOw(t, i), 172), YW.CHKw(t, Nat.add(43n, i), LL(len)))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       %Equal.sym(B.Buf & U32, B.read32(VF.BF(t, n), U32.add(off, 0)), (VF.BF(t, n), SPOw(t, i)),
           VF.rd32a(d, t, n, U32.add(off, 0), Nat.add(0n, i), eoc(d, i, off, len, 0n, 0, {==}, {==}, eo, hd, hw, ea),
             VB.lt32(d, FD.nat__lt_trans(d, 29n, 31n, hd, {==})), hiw(d, i, len, 0n, {==}, hw, ea), pf)) :
-        {T.LightClientOptimisticUpdate_v0(off, len, _) == (VF.BF(t, n), chk3(True{}, U32.is_eq(SPOw(t, i), 172), YW.CHKw(t, Nat.add(43n, i), LL(len)))) : B.Buf & Bool}
+        {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_v0(off, len, _) == (VF.BF(t, n), chk3(True{}, U32.is_eq(SPOw(t, i), 172), YW.CHKw(t, Nat.add(43n, i), LL(len)))) : B.Buf & Bool}
       okw_c0(d, t, n, i, off, len, eo, hd, hw, pf, ea, U32.is_eq(SPOw(t, i), 172), {==})
 
 # The validator on the window returns the buffer and CHKw(t, i, len).
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
-    -> {T.LightClientOptimisticUpdate_ok(VF.BF(t, n), off, len) == (VF.BF(t, n), CHKw(t, i, len)) : B.Buf & Bool}:
+    -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_ok(VF.BF(t, n), off, len) == (VF.BF(t, n), CHKw(t, i, len)) : B.Buf & Bool}:
   okw_len(d, t, n, i, off, len, eo, hd, hw, pf, U32.is_le(172, len), {==})
 
 def hHi(+d: Nat, +i: Nat, +len: U32, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +ha: {U32.is_le(172, len) == True{} : Bool})
@@ -164,33 +172,33 @@ def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32
   %Equal.sym(U32, SPOw(t, i), 172, epo) : {(VF.BF(t, n), _) == (VF.BF(t, n), 172) : B.Buf & U32}
   {==}
 
-def OBJw(+t: FD.array__Tree<U32>, +i: Nat, +len: U32) -> T.LightClientOptimisticUpdate: T.LightClientOptimisticUpdate{YW.OBJw(t, Nat.add(43n, i), LL(len)), O.BSome{T.SyncAggregate{T.Bitvector512{VB.slot(t, Nat.add(1n, i)), VB.slot(t, Nat.add(2n, i)), VB.slot(t, Nat.add(3n, i)), VB.slot(t, Nat.add(4n, i)), VB.slot(t, Nat.add(5n, i)), VB.slot(t, Nat.add(6n, i)), VB.slot(t, Nat.add(7n, i)), VB.slot(t, Nat.add(8n, i)), VB.slot(t, Nat.add(9n, i)), VB.slot(t, Nat.add(10n, i)), VB.slot(t, Nat.add(11n, i)), VB.slot(t, Nat.add(12n, i)), VB.slot(t, Nat.add(13n, i)), VB.slot(t, Nat.add(14n, i)), VB.slot(t, Nat.add(15n, i)), VB.slot(t, Nat.add(16n, i))}, T.Bytes96{VB.slot(t, Nat.add(17n, i)), VB.slot(t, Nat.add(18n, i)), VB.slot(t, Nat.add(19n, i)), VB.slot(t, Nat.add(20n, i)), VB.slot(t, Nat.add(21n, i)), VB.slot(t, Nat.add(22n, i)), VB.slot(t, Nat.add(23n, i)), VB.slot(t, Nat.add(24n, i)), VB.slot(t, Nat.add(25n, i)), VB.slot(t, Nat.add(26n, i)), VB.slot(t, Nat.add(27n, i)), VB.slot(t, Nat.add(28n, i)), VB.slot(t, Nat.add(29n, i)), VB.slot(t, Nat.add(30n, i)), VB.slot(t, Nat.add(31n, i)), VB.slot(t, Nat.add(32n, i)), VB.slot(t, Nat.add(33n, i)), VB.slot(t, Nat.add(34n, i)), VB.slot(t, Nat.add(35n, i)), VB.slot(t, Nat.add(36n, i)), VB.slot(t, Nat.add(37n, i)), VB.slot(t, Nat.add(38n, i)), VB.slot(t, Nat.add(39n, i)), VB.slot(t, Nat.add(40n, i))}}, O.BNone{}}, O.U64{VB.slot(t, Nat.add(41n, i)), VB.slot(t, Nat.add(42n, i))}}
+def OBJw(+t: FD.array__Tree<U32>, +i: Nat, +len: U32) -> FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate: FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate{YW.OBJw(t, Nat.add(43n, i), LL(len)), O.BSome{FuluSyncAggregate_d.SyncAggregate{Fulu_bitvector_512_d.Bitvector512{VB.slot(t, Nat.add(1n, i)), VB.slot(t, Nat.add(2n, i)), VB.slot(t, Nat.add(3n, i)), VB.slot(t, Nat.add(4n, i)), VB.slot(t, Nat.add(5n, i)), VB.slot(t, Nat.add(6n, i)), VB.slot(t, Nat.add(7n, i)), VB.slot(t, Nat.add(8n, i)), VB.slot(t, Nat.add(9n, i)), VB.slot(t, Nat.add(10n, i)), VB.slot(t, Nat.add(11n, i)), VB.slot(t, Nat.add(12n, i)), VB.slot(t, Nat.add(13n, i)), VB.slot(t, Nat.add(14n, i)), VB.slot(t, Nat.add(15n, i)), VB.slot(t, Nat.add(16n, i))}, FuluBytes96_d.Bytes96{VB.slot(t, Nat.add(17n, i)), VB.slot(t, Nat.add(18n, i)), VB.slot(t, Nat.add(19n, i)), VB.slot(t, Nat.add(20n, i)), VB.slot(t, Nat.add(21n, i)), VB.slot(t, Nat.add(22n, i)), VB.slot(t, Nat.add(23n, i)), VB.slot(t, Nat.add(24n, i)), VB.slot(t, Nat.add(25n, i)), VB.slot(t, Nat.add(26n, i)), VB.slot(t, Nat.add(27n, i)), VB.slot(t, Nat.add(28n, i)), VB.slot(t, Nat.add(29n, i)), VB.slot(t, Nat.add(30n, i)), VB.slot(t, Nat.add(31n, i)), VB.slot(t, Nat.add(32n, i)), VB.slot(t, Nat.add(33n, i)), VB.slot(t, Nat.add(34n, i)), VB.slot(t, Nat.add(35n, i)), VB.slot(t, Nat.add(36n, i)), VB.slot(t, Nat.add(37n, i)), VB.slot(t, Nat.add(38n, i)), VB.slot(t, Nat.add(39n, i)), VB.slot(t, Nat.add(40n, i))}}, O.BNone{}}, O.U64{VB.slot(t, Nat.add(41n, i)), VB.slot(t, Nat.add(42n, i))}}
 
 # The reader on the window, when the checks hold.
 def rdw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +ha: {U32.is_le(172, len) == True{} : Bool}, +epo: {SPOw(t, i) == 172 : U32}, +hY: {YW.CHKw(t, Nat.add(43n, i), LL(len)) == True{} : Bool})
-    -> {T.LightClientOptimisticUpdate_read(VF.BF(t, n), off, len) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & T.LightClientOptimisticUpdate}:
+    -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_read(VF.BF(t, n), off, len) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate}:
   +hd31 = FD.nat__lt_trans(d, 29n, 31n, hd, {==})
   +hH = hHi(d, i, len, hw, ha)
   %Equal.sym(B.Buf & U32, B.read32(VF.BF(t, n), U32.add(off, 0)), (VF.BF(t, n), 172), rdo(d, t, n, i, off, len, eo, hd, hw, pf, ha, epo)) :
-    {T.LightClientOptimisticUpdate_rd0(off, len, _) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & T.LightClientOptimisticUpdate}
-  %Equal.sym(B.Buf & T.LightClientHeader, T.LightClientHeader_read(VF.BF(t, n), U32.add(off, 172), U32.sub(len, 172)), (VF.BF(t, n), YW.OBJw(t, Nat.add(43n, i), LL(len))),
+    {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_rd0(off, len, _) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate}
+  %Equal.sym(B.Buf & FuluLightClientHeader_d.LightClientHeader, FuluLightClientHeader_r.LightClientHeader_read(VF.BF(t, n), U32.add(off, 172), U32.sub(len, 172)), (VF.BF(t, n), YW.OBJw(t, Nat.add(43n, i), LL(len))),
       YW.readw(d, t, n, Nat.add(43n, i), U32.add(off, 172), LL(len), ecY(d, i, off, len, eo, hd, hw, ha), hd, hwY(d, i, len, hw, ha), pf, hY)) :
-    {T.LightClientOptimisticUpdate_rd1(off, len, 172, _) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & T.LightClientOptimisticUpdate}
-  %Equal.sym(B.Buf & T.SyncAggregate, T.SyncAggregate_read(VF.BF(t, n), U32.add(off, 4), 160), (VF.BF(t, n), T.SyncAggregate{T.Bitvector512{VB.slot(t, Nat.add(1n, i)), VB.slot(t, Nat.add(2n, i)), VB.slot(t, Nat.add(3n, i)), VB.slot(t, Nat.add(4n, i)), VB.slot(t, Nat.add(5n, i)), VB.slot(t, Nat.add(6n, i)), VB.slot(t, Nat.add(7n, i)), VB.slot(t, Nat.add(8n, i)), VB.slot(t, Nat.add(9n, i)), VB.slot(t, Nat.add(10n, i)), VB.slot(t, Nat.add(11n, i)), VB.slot(t, Nat.add(12n, i)), VB.slot(t, Nat.add(13n, i)), VB.slot(t, Nat.add(14n, i)), VB.slot(t, Nat.add(15n, i)), VB.slot(t, Nat.add(16n, i))}, T.Bytes96{VB.slot(t, Nat.add(17n, i)), VB.slot(t, Nat.add(18n, i)), VB.slot(t, Nat.add(19n, i)), VB.slot(t, Nat.add(20n, i)), VB.slot(t, Nat.add(21n, i)), VB.slot(t, Nat.add(22n, i)), VB.slot(t, Nat.add(23n, i)), VB.slot(t, Nat.add(24n, i)), VB.slot(t, Nat.add(25n, i)), VB.slot(t, Nat.add(26n, i)), VB.slot(t, Nat.add(27n, i)), VB.slot(t, Nat.add(28n, i)), VB.slot(t, Nat.add(29n, i)), VB.slot(t, Nat.add(30n, i)), VB.slot(t, Nat.add(31n, i)), VB.slot(t, Nat.add(32n, i)), VB.slot(t, Nat.add(33n, i)), VB.slot(t, Nat.add(34n, i)), VB.slot(t, Nat.add(35n, i)), VB.slot(t, Nat.add(36n, i)), VB.slot(t, Nat.add(37n, i)), VB.slot(t, Nat.add(38n, i)), VB.slot(t, Nat.add(39n, i)), VB.slot(t, Nat.add(40n, i))}}),
+    {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_rd1(off, len, 172, _) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate}
+  %Equal.sym(B.Buf & FuluSyncAggregate_d.SyncAggregate, FuluSyncAggregate_r.SyncAggregate_read(VF.BF(t, n), U32.add(off, 4), 160), (VF.BF(t, n), FuluSyncAggregate_d.SyncAggregate{Fulu_bitvector_512_d.Bitvector512{VB.slot(t, Nat.add(1n, i)), VB.slot(t, Nat.add(2n, i)), VB.slot(t, Nat.add(3n, i)), VB.slot(t, Nat.add(4n, i)), VB.slot(t, Nat.add(5n, i)), VB.slot(t, Nat.add(6n, i)), VB.slot(t, Nat.add(7n, i)), VB.slot(t, Nat.add(8n, i)), VB.slot(t, Nat.add(9n, i)), VB.slot(t, Nat.add(10n, i)), VB.slot(t, Nat.add(11n, i)), VB.slot(t, Nat.add(12n, i)), VB.slot(t, Nat.add(13n, i)), VB.slot(t, Nat.add(14n, i)), VB.slot(t, Nat.add(15n, i)), VB.slot(t, Nat.add(16n, i))}, FuluBytes96_d.Bytes96{VB.slot(t, Nat.add(17n, i)), VB.slot(t, Nat.add(18n, i)), VB.slot(t, Nat.add(19n, i)), VB.slot(t, Nat.add(20n, i)), VB.slot(t, Nat.add(21n, i)), VB.slot(t, Nat.add(22n, i)), VB.slot(t, Nat.add(23n, i)), VB.slot(t, Nat.add(24n, i)), VB.slot(t, Nat.add(25n, i)), VB.slot(t, Nat.add(26n, i)), VB.slot(t, Nat.add(27n, i)), VB.slot(t, Nat.add(28n, i)), VB.slot(t, Nat.add(29n, i)), VB.slot(t, Nat.add(30n, i)), VB.slot(t, Nat.add(31n, i)), VB.slot(t, Nat.add(32n, i)), VB.slot(t, Nat.add(33n, i)), VB.slot(t, Nat.add(34n, i)), VB.slot(t, Nat.add(35n, i)), VB.slot(t, Nat.add(36n, i)), VB.slot(t, Nat.add(37n, i)), VB.slot(t, Nat.add(38n, i)), VB.slot(t, Nat.add(39n, i)), VB.slot(t, Nat.add(40n, i))}}),
       VT.rd_SyncAggregate(d, t, n, U32.add(off, 4), Nat.add(1n, i), eoc(d, i, off, len, 1n, 4, {==}, {==}, eo, hd, hw, ha), hd, pf, FD.nat__le_trans(Nat.add(40n, Nat.add(1n, i)), Nat.add(43n, i), VB.pw(d), Order.left_below_sum(2n, Nat.add(40n, Nat.add(1n, i))), hH))) :
-    {T.LightClientOptimisticUpdate_rd2(off, len, 172, YW.OBJw(t, Nat.add(43n, i), LL(len)), T.SyncAggregate_bx_rd(_)) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & T.LightClientOptimisticUpdate}
-  %Equal.sym(B.Buf & O.U64, T.u64_read(VF.BF(t, n), U32.add(off, 164), 8), (VF.BF(t, n), O.U64{VB.slot(t, Nat.add(41n, i)), VB.slot(t, Nat.add(42n, i))}),
+    {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_rd2(off, len, 172, YW.OBJw(t, Nat.add(43n, i), LL(len)), FuluSyncAggregate_r.SyncAggregate_bx_rd(_)) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate}
+  %Equal.sym(B.Buf & O.U64, uint64_r.u64_read(VF.BF(t, n), U32.add(off, 164), 8), (VF.BF(t, n), O.U64{VB.slot(t, Nat.add(41n, i)), VB.slot(t, Nat.add(42n, i))}),
       VT.rd_u64(d, t, n, U32.add(off, 164), Nat.add(41n, i), eoc(d, i, off, len, 41n, 164, {==}, {==}, eo, hd, hw, ha), hd, pf, FD.nat__le_trans(Nat.add(2n, Nat.add(41n, i)), Nat.add(43n, i), VB.pw(d), Order.left_below_sum(0n, Nat.add(2n, Nat.add(41n, i))), hH))) :
-    {T.LightClientOptimisticUpdate_rd3(off, len, 172, YW.OBJw(t, Nat.add(43n, i), LL(len)), O.BSome{T.SyncAggregate{T.Bitvector512{VB.slot(t, Nat.add(1n, i)), VB.slot(t, Nat.add(2n, i)), VB.slot(t, Nat.add(3n, i)), VB.slot(t, Nat.add(4n, i)), VB.slot(t, Nat.add(5n, i)), VB.slot(t, Nat.add(6n, i)), VB.slot(t, Nat.add(7n, i)), VB.slot(t, Nat.add(8n, i)), VB.slot(t, Nat.add(9n, i)), VB.slot(t, Nat.add(10n, i)), VB.slot(t, Nat.add(11n, i)), VB.slot(t, Nat.add(12n, i)), VB.slot(t, Nat.add(13n, i)), VB.slot(t, Nat.add(14n, i)), VB.slot(t, Nat.add(15n, i)), VB.slot(t, Nat.add(16n, i))}, T.Bytes96{VB.slot(t, Nat.add(17n, i)), VB.slot(t, Nat.add(18n, i)), VB.slot(t, Nat.add(19n, i)), VB.slot(t, Nat.add(20n, i)), VB.slot(t, Nat.add(21n, i)), VB.slot(t, Nat.add(22n, i)), VB.slot(t, Nat.add(23n, i)), VB.slot(t, Nat.add(24n, i)), VB.slot(t, Nat.add(25n, i)), VB.slot(t, Nat.add(26n, i)), VB.slot(t, Nat.add(27n, i)), VB.slot(t, Nat.add(28n, i)), VB.slot(t, Nat.add(29n, i)), VB.slot(t, Nat.add(30n, i)), VB.slot(t, Nat.add(31n, i)), VB.slot(t, Nat.add(32n, i)), VB.slot(t, Nat.add(33n, i)), VB.slot(t, Nat.add(34n, i)), VB.slot(t, Nat.add(35n, i)), VB.slot(t, Nat.add(36n, i)), VB.slot(t, Nat.add(37n, i)), VB.slot(t, Nat.add(38n, i)), VB.slot(t, Nat.add(39n, i)), VB.slot(t, Nat.add(40n, i))}}, O.BNone{}}, _) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & T.LightClientOptimisticUpdate}
+    {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_rd3(off, len, 172, YW.OBJw(t, Nat.add(43n, i), LL(len)), O.BSome{FuluSyncAggregate_d.SyncAggregate{Fulu_bitvector_512_d.Bitvector512{VB.slot(t, Nat.add(1n, i)), VB.slot(t, Nat.add(2n, i)), VB.slot(t, Nat.add(3n, i)), VB.slot(t, Nat.add(4n, i)), VB.slot(t, Nat.add(5n, i)), VB.slot(t, Nat.add(6n, i)), VB.slot(t, Nat.add(7n, i)), VB.slot(t, Nat.add(8n, i)), VB.slot(t, Nat.add(9n, i)), VB.slot(t, Nat.add(10n, i)), VB.slot(t, Nat.add(11n, i)), VB.slot(t, Nat.add(12n, i)), VB.slot(t, Nat.add(13n, i)), VB.slot(t, Nat.add(14n, i)), VB.slot(t, Nat.add(15n, i)), VB.slot(t, Nat.add(16n, i))}, FuluBytes96_d.Bytes96{VB.slot(t, Nat.add(17n, i)), VB.slot(t, Nat.add(18n, i)), VB.slot(t, Nat.add(19n, i)), VB.slot(t, Nat.add(20n, i)), VB.slot(t, Nat.add(21n, i)), VB.slot(t, Nat.add(22n, i)), VB.slot(t, Nat.add(23n, i)), VB.slot(t, Nat.add(24n, i)), VB.slot(t, Nat.add(25n, i)), VB.slot(t, Nat.add(26n, i)), VB.slot(t, Nat.add(27n, i)), VB.slot(t, Nat.add(28n, i)), VB.slot(t, Nat.add(29n, i)), VB.slot(t, Nat.add(30n, i)), VB.slot(t, Nat.add(31n, i)), VB.slot(t, Nat.add(32n, i)), VB.slot(t, Nat.add(33n, i)), VB.slot(t, Nat.add(34n, i)), VB.slot(t, Nat.add(35n, i)), VB.slot(t, Nat.add(36n, i)), VB.slot(t, Nat.add(37n, i)), VB.slot(t, Nat.add(38n, i)), VB.slot(t, Nat.add(39n, i)), VB.slot(t, Nat.add(40n, i))}}, O.BNone{}}, _) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate}
   {==}
 
 # When the window's checks hold, the reader returns OBJw(t, i, len).
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hchk: {CHKw(t, i, len) == True{} : Bool})
-    -> {T.LightClientOptimisticUpdate_read(VF.BF(t, n), off, len) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & T.LightClientOptimisticUpdate}:
+    -> {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_read(VF.BF(t, n), off, len) == (VF.BF(t, n), OBJw(t, i, len)) : B.Buf & FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate}:
   +a = U32.is_le(172, len)
   +b = U32.is_eq(SPOw(t, i), 172)
   +c = YW.CHKw(t, Nat.add(43n, i), LL(len))

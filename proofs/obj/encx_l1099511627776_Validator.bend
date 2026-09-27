@@ -1,7 +1,12 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
+import ../../types/FuluValidator_def_generated.bend as FuluValidator_d
+import ../../types/FuluValidator_encode_ssz_generated.bend as FuluValidator_e
+import ../../types/Fulu_list_Validator_1099511627776_def_generated.bend as Fulu_list_Validator_1099511627776_d
+import ../../types/Fulu_list_Validator_1099511627776_encode_ssz_generated.bend as Fulu_list_Validator_1099511627776_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -56,13 +61,13 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 
 # ---- Validator: the object's bytes, value and parts; its writer at any X ----
 
-def RWB(o: T.Validator) -> +List<U32>:
+def RWB(o: FuluValidator_d.Validator) -> +List<U32>:
   match o:
-    case T.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
+    case FuluValidator_d.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
       match o0:
-        case T.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
+        case FuluBytes48_d.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
           match o1:
-            case T.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
+            case FuluBytes32_d.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
               match o2:
                 case O.U64{+effective_balance_lo, +effective_balance_hi}:
                   match o4:
@@ -74,13 +79,13 @@ def RWB(o: T.Validator) -> +List<U32>:
                               match o7:
                                 case O.U64{+withdrawable_epoch_lo, +withdrawable_epoch_hi}:
                                   EV.BY_Validator(pubkey_0, pubkey_1, pubkey_2, pubkey_3, pubkey_4, pubkey_5, pubkey_6, pubkey_7, pubkey_8, pubkey_9, pubkey_10, pubkey_11, withdrawal_credentials_0, withdrawal_credentials_1, withdrawal_credentials_2, withdrawal_credentials_3, withdrawal_credentials_4, withdrawal_credentials_5, withdrawal_credentials_6, withdrawal_credentials_7, effective_balance_lo, effective_balance_hi, slashed, activation_eligibility_epoch_lo, activation_eligibility_epoch_hi, activation_epoch_lo, activation_epoch_hi, exit_epoch_lo, exit_epoch_hi, withdrawable_epoch_lo, withdrawable_epoch_hi)
-def RVV(o: T.Validator) -> S.Value:
+def RVV(o: FuluValidator_d.Validator) -> S.Value:
   match o:
-    case T.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
+    case FuluValidator_d.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
       match o0:
-        case T.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
+        case FuluBytes48_d.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
           match o1:
-            case T.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
+            case FuluBytes32_d.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
               match o2:
                 case O.U64{+effective_balance_lo, +effective_balance_hi}:
                   match o4:
@@ -98,13 +103,13 @@ def rbeq(+pubkey_0: U32, +pubkey_1: U32, +pubkey_2: U32, +pubkey_3: U32, +pubkey
     case True{}: {==}
     case False{}: {==}
 
-def rparts(+o: T.Validator) -> {Codec.parts(RVV(o), Spec.Schema58()) == Some{[S.Fixed{RWB(o)}]} : Maybe<&2, +List<S.Part>>}:
+def rparts(+o: FuluValidator_d.Validator) -> {Codec.parts(RVV(o), Spec.Schema58()) == Some{[S.Fixed{RWB(o)}]} : Maybe<&2, +List<S.Part>>}:
   match o:
-    case T.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
+    case FuluValidator_d.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
       match o0:
-        case T.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
+        case FuluBytes48_d.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
           match o1:
-            case T.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
+            case FuluBytes32_d.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
               match o2:
                 case O.U64{+effective_balance_lo, +effective_balance_hi}:
                   match o4:
@@ -122,13 +127,13 @@ def domBB(+b: Bool) -> {SP.bytes_domain([EV.BB(b)]) == True{} : Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def rdom(+o: T.Validator) -> {SP.bytes_domain(RWB(o)) == True{} : Bool}:
+def rdom(+o: FuluValidator_d.Validator) -> {SP.bytes_domain(RWB(o)) == True{} : Bool}:
   match o:
-    case T.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
+    case FuluValidator_d.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
       match o0:
-        case T.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
+        case FuluBytes48_d.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
           match o1:
-            case T.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
+            case FuluBytes32_d.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
               match o2:
                 case O.U64{+effective_balance_lo, +effective_balance_hi}:
                   match o4:
@@ -141,13 +146,13 @@ def rdom(+o: T.Validator) -> {SP.bytes_domain(RWB(o)) == True{} : Bool}:
                                 case O.U64{+withdrawable_epoch_lo, +withdrawable_epoch_hi}:
                                   PI.append_domain(F.limbs([pubkey_0, pubkey_1, pubkey_2, pubkey_3, pubkey_4, pubkey_5, pubkey_6, pubkey_7, pubkey_8, pubkey_9, pubkey_10, pubkey_11]), List.append(&2, U32, F.limbs([withdrawal_credentials_0, withdrawal_credentials_1, withdrawal_credentials_2, withdrawal_credentials_3, withdrawal_credentials_4, withdrawal_credentials_5, withdrawal_credentials_6, withdrawal_credentials_7]), List.append(&2, U32, F.limbs([effective_balance_lo, effective_balance_hi]), List.append(&2, U32, [EV.BB(slashed)], List.append(&2, U32, F.limbs([activation_eligibility_epoch_lo, activation_eligibility_epoch_hi]), List.append(&2, U32, F.limbs([activation_epoch_lo, activation_epoch_hi]), List.append(&2, U32, F.limbs([exit_epoch_lo, exit_epoch_hi]), F.limbs([withdrawable_epoch_lo, withdrawable_epoch_hi]))))))), F.domain_limbs([pubkey_0, pubkey_1, pubkey_2, pubkey_3, pubkey_4, pubkey_5, pubkey_6, pubkey_7, pubkey_8, pubkey_9, pubkey_10, pubkey_11]), PI.append_domain(F.limbs([withdrawal_credentials_0, withdrawal_credentials_1, withdrawal_credentials_2, withdrawal_credentials_3, withdrawal_credentials_4, withdrawal_credentials_5, withdrawal_credentials_6, withdrawal_credentials_7]), List.append(&2, U32, F.limbs([effective_balance_lo, effective_balance_hi]), List.append(&2, U32, [EV.BB(slashed)], List.append(&2, U32, F.limbs([activation_eligibility_epoch_lo, activation_eligibility_epoch_hi]), List.append(&2, U32, F.limbs([activation_epoch_lo, activation_epoch_hi]), List.append(&2, U32, F.limbs([exit_epoch_lo, exit_epoch_hi]), F.limbs([withdrawable_epoch_lo, withdrawable_epoch_hi])))))), F.domain_limbs([withdrawal_credentials_0, withdrawal_credentials_1, withdrawal_credentials_2, withdrawal_credentials_3, withdrawal_credentials_4, withdrawal_credentials_5, withdrawal_credentials_6, withdrawal_credentials_7]), PI.append_domain(F.limbs([effective_balance_lo, effective_balance_hi]), List.append(&2, U32, [EV.BB(slashed)], List.append(&2, U32, F.limbs([activation_eligibility_epoch_lo, activation_eligibility_epoch_hi]), List.append(&2, U32, F.limbs([activation_epoch_lo, activation_epoch_hi]), List.append(&2, U32, F.limbs([exit_epoch_lo, exit_epoch_hi]), F.limbs([withdrawable_epoch_lo, withdrawable_epoch_hi]))))), F.domain_limbs([effective_balance_lo, effective_balance_hi]), PI.append_domain([EV.BB(slashed)], List.append(&2, U32, F.limbs([activation_eligibility_epoch_lo, activation_eligibility_epoch_hi]), List.append(&2, U32, F.limbs([activation_epoch_lo, activation_epoch_hi]), List.append(&2, U32, F.limbs([exit_epoch_lo, exit_epoch_hi]), F.limbs([withdrawable_epoch_lo, withdrawable_epoch_hi])))), domBB(slashed), PI.append_domain(F.limbs([activation_eligibility_epoch_lo, activation_eligibility_epoch_hi]), List.append(&2, U32, F.limbs([activation_epoch_lo, activation_epoch_hi]), List.append(&2, U32, F.limbs([exit_epoch_lo, exit_epoch_hi]), F.limbs([withdrawable_epoch_lo, withdrawable_epoch_hi]))), F.domain_limbs([activation_eligibility_epoch_lo, activation_eligibility_epoch_hi]), PI.append_domain(F.limbs([activation_epoch_lo, activation_epoch_hi]), List.append(&2, U32, F.limbs([exit_epoch_lo, exit_epoch_hi]), F.limbs([withdrawable_epoch_lo, withdrawable_epoch_hi])), F.domain_limbs([activation_epoch_lo, activation_epoch_hi]), PI.append_domain(F.limbs([exit_epoch_lo, exit_epoch_hi]), F.limbs([withdrawable_epoch_lo, withdrawable_epoch_hi]), F.domain_limbs([exit_epoch_lo, exit_epoch_hi]), F.domain_limbs([withdrawable_epoch_lo, withdrawable_epoch_hi]))))))))
 
-def lenb(+o: T.Validator) -> {List.length(&2, U32, RWB(o)) == 121n : Nat}:
+def lenb(+o: FuluValidator_d.Validator) -> {List.length(&2, U32, RWB(o)) == 121n : Nat}:
   match o:
-    case T.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
+    case FuluValidator_d.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
       match o0:
-        case T.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
+        case FuluBytes48_d.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
           match o1:
-            case T.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
+            case FuluBytes32_d.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
               match o2:
                 case O.U64{+effective_balance_lo, +effective_balance_hi}:
                   match o4:
@@ -160,13 +165,13 @@ def lenb(+o: T.Validator) -> {List.length(&2, U32, RWB(o)) == 121n : Nat}:
                                 case O.U64{+withdrawable_epoch_lo, +withdrawable_epoch_hi}:
                                   EV.lenb_Validator(pubkey_0, pubkey_1, pubkey_2, pubkey_3, pubkey_4, pubkey_5, pubkey_6, pubkey_7, pubkey_8, pubkey_9, pubkey_10, pubkey_11, withdrawal_credentials_0, withdrawal_credentials_1, withdrawal_credentials_2, withdrawal_credentials_3, withdrawal_credentials_4, withdrawal_credentials_5, withdrawal_credentials_6, withdrawal_credentials_7, effective_balance_lo, effective_balance_hi, slashed, activation_eligibility_epoch_lo, activation_eligibility_epoch_hi, activation_epoch_lo, activation_epoch_hi, exit_epoch_lo, exit_epoch_hi, withdrawable_epoch_lo, withdrawable_epoch_hi)
 
-def PXo(o: T.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> FD.array__Tree<U32>:
+def PXo(o: FuluValidator_d.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> FD.array__Tree<U32>:
   match o:
-    case T.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
+    case FuluValidator_d.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
       match o0:
-        case T.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
+        case FuluBytes48_d.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
           match o1:
-            case T.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
+            case FuluBytes32_d.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
               match o2:
                 case O.U64{+effective_balance_lo, +effective_balance_hi}:
                   match o4:
@@ -178,13 +183,13 @@ def PXo(o: T.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> FD.array_
                               match o7:
                                 case O.U64{+withdrawable_epoch_lo, +withdrawable_epoch_hi}:
                                   EV.PX_Validator(pubkey_0, pubkey_1, pubkey_2, pubkey_3, pubkey_4, pubkey_5, pubkey_6, pubkey_7, pubkey_8, pubkey_9, pubkey_10, pubkey_11, withdrawal_credentials_0, withdrawal_credentials_1, withdrawal_credentials_2, withdrawal_credentials_3, withdrawal_credentials_4, withdrawal_credentials_5, withdrawal_credentials_6, withdrawal_credentials_7, effective_balance_lo, effective_balance_hi, slashed, activation_eligibility_epoch_lo, activation_eligibility_epoch_hi, activation_epoch_lo, activation_epoch_hi, exit_epoch_lo, exit_epoch_hi, withdrawable_epoch_lo, withdrawable_epoch_hi, dd, D, X)
-def pfo(+o: T.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}) -> {FD.array__perfect(U32, dd, PXo(o, dd, D, X)) == True{} : Bool}:
+def pfo(+o: FuluValidator_d.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}) -> {FD.array__perfect(U32, dd, PXo(o, dd, D, X)) == True{} : Bool}:
   match o:
-    case T.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
+    case FuluValidator_d.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
       match o0:
-        case T.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
+        case FuluBytes48_d.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
           match o1:
-            case T.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
+            case FuluBytes32_d.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
               match o2:
                 case O.U64{+effective_balance_lo, +effective_balance_hi}:
                   match o4:
@@ -196,21 +201,21 @@ def pfo(+o: T.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +pf: {FD.ar
                               match o7:
                                 case O.U64{+withdrawable_epoch_lo, +withdrawable_epoch_hi}:
                                   EV.pf_Validator(pubkey_0, pubkey_1, pubkey_2, pubkey_3, pubkey_4, pubkey_5, pubkey_6, pubkey_7, pubkey_8, pubkey_9, pubkey_10, pubkey_11, withdrawal_credentials_0, withdrawal_credentials_1, withdrawal_credentials_2, withdrawal_credentials_3, withdrawal_credentials_4, withdrawal_credentials_5, withdrawal_credentials_6, withdrawal_credentials_7, effective_balance_lo, effective_balance_hi, slashed, activation_eligibility_epoch_lo, activation_eligibility_epoch_hi, activation_epoch_lo, activation_epoch_hi, exit_epoch_lo, exit_epoch_hi, withdrawable_epoch_lo, withdrawable_epoch_hi, dd, D, X, pf)
-def RTo(+o: T.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> Data:
-  {T.Validator_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo(o, dd, D, X)) : Array<U32>}
-def BYo(+o: T.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+def RTo(+o: FuluValidator_d.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> Data:
+  {FuluValidator_e.Validator_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo(o, dd, D, X)) : Array<U32>}
+def BYo(+o: FuluValidator_d.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo(o, dd, D, X)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), RWB(o)) : +List<U32>}
-def putxo(+o: T.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putxo(+o: FuluValidator_d.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 121n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(121n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(121n) : +List<U32>})
     -> DK.P2(RTo(o, dd, D, X), BYo(o, dd, D, X, q, r)):
   match o:
-    case T.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
+    case FuluValidator_d.Validator{+o0, +o1, +o2, +slashed, +o4, +o5, +o6, +o7}:
       match o0:
-        case T.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
+        case FuluBytes48_d.Bytes48{+pubkey_0, +pubkey_1, +pubkey_2, +pubkey_3, +pubkey_4, +pubkey_5, +pubkey_6, +pubkey_7, +pubkey_8, +pubkey_9, +pubkey_10, +pubkey_11}:
           match o1:
-            case T.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
+            case FuluBytes32_d.Bytes32{+withdrawal_credentials_0, +withdrawal_credentials_1, +withdrawal_credentials_2, +withdrawal_credentials_3, +withdrawal_credentials_4, +withdrawal_credentials_5, +withdrawal_credentials_6, +withdrawal_credentials_7}:
               match o2:
                 case O.U64{+effective_balance_lo, +effective_balance_hi}:
                   match o4:
@@ -266,27 +271,27 @@ def ynext(+j: Nat, +q: Nat, +r: Nat) -> {YB(1n+j, q, r) == Nat.add(YB(j, q, r), 
 
 # ---- l1099511627776_Validator: the object's records, their bytes and values ----
 
-def EL_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +j: Nat) -> T.Validator: VRL.mget(T.Validator, FD.spec_common__nth(T.Validator, FD.array__slots(T.Validator, A), j), T.Validator_default())
-def AG_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +i: U32) -> Array<T.Validator> & T.Validator: Array.get(T.Validator, FD.array__thaw(T.Validator, A), i)
+def EL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +j: Nat) -> FuluValidator_d.Validator: VRL.mget(FuluValidator_d.Validator, FD.spec_common__nth(FuluValidator_d.Validator, FD.array__slots(FuluValidator_d.Validator, A), j), FuluValidator_d.Validator_default())
+def AG_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +i: U32) -> Array<FuluValidator_d.Validator> & FuluValidator_d.Validator: Array.get(FuluValidator_d.Validator, FD.array__thaw(FuluValidator_d.Validator, A), i)
 
-def ITV_l1099511627776_Validator(c: Nat, +A: FD.array__Tree<T.Validator>, +j: Nat) -> S.Value:
+def ITV_l1099511627776_Validator(c: Nat, +A: FD.array__Tree<FuluValidator_d.Validator>, +j: Nat) -> S.Value:
   match c:
     case 0n: S.EmptyItems{}
     case 1n+q: S.Items{RVV(EL_l1099511627776_Validator(A, j)), ITV_l1099511627776_Validator(q, A, 1n+j)}
 
-def FPV_l1099511627776_Validator(c: Nat, +A: FD.array__Tree<T.Validator>, +j: Nat) -> +List<S.Part>:
+def FPV_l1099511627776_Validator(c: Nat, +A: FD.array__Tree<FuluValidator_d.Validator>, +j: Nat) -> +List<S.Part>:
   match c:
     case 0n: []
     case 1n+q: S.Fixed{RWB(EL_l1099511627776_Validator(A, j))} <> FPV_l1099511627776_Validator(q, A, 1n+j)
 
-def CHV_l1099511627776_Validator(c: Nat, +A: FD.array__Tree<T.Validator>, +j: Nat) -> +List<U32>:
+def CHV_l1099511627776_Validator(c: Nat, +A: FD.array__Tree<FuluValidator_d.Validator>, +j: Nat) -> +List<U32>:
   match c:
     case 0n: []
     case 1n+q: List.append(&2, U32, RWB(EL_l1099511627776_Validator(A, j)), CHV_l1099511627776_Validator(q, A, 1n+j))
 
 law cntV_l1099511627776_Validator:
   for +c: Nat
-  for +A: FD.array__Tree<T.Validator>
+  for +A: FD.array__Tree<FuluValidator_d.Validator>
   for +j: Nat
   {Codec.count(ITV_l1099511627776_Validator(c, A, j)) == c : Nat}
 def cntV_l1099511627776_Validator(c, A, j):
@@ -296,7 +301,7 @@ def cntV_l1099511627776_Validator(c, A, j):
 
 law prtV_l1099511627776_Validator:
   for +c: Nat
-  for +A: FD.array__Tree<T.Validator>
+  for +A: FD.array__Tree<FuluValidator_d.Validator>
   for +j: Nat
   {Codec.parts(ITV_l1099511627776_Validator(c, A, j), S.Repeat{Spec.Schema58()}) == Some{FPV_l1099511627776_Validator(c, A, j)} : Maybe<&2, +List<S.Part>>}
 def prtV_l1099511627776_Validator(c, A, j):
@@ -308,7 +313,7 @@ def prtV_l1099511627776_Validator(c, A, j):
 
 law fsV_l1099511627776_Validator:
   for +c: Nat
-  for +A: FD.array__Tree<T.Validator>
+  for +A: FD.array__Tree<FuluValidator_d.Validator>
   for +j: Nat
   {Layout.fixed_size(FPV_l1099511627776_Validator(c, A, j)) == Nat.mul(c, 121n) : Nat}
 def fsV_l1099511627776_Validator(c, A, j):
@@ -321,7 +326,7 @@ def fsV_l1099511627776_Validator(c, A, j):
 
 law fpV_l1099511627776_Validator:
   for +c: Nat
-  for +A: FD.array__Tree<T.Validator>
+  for +A: FD.array__Tree<FuluValidator_d.Validator>
   for +j: Nat
   for +o: Nat
   {Layout.fixed_parts(FPV_l1099511627776_Validator(c, A, j), o) == CHV_l1099511627776_Validator(c, A, j) : +List<U32>}
@@ -332,7 +337,7 @@ def fpV_l1099511627776_Validator(c, A, j, o):
 
 law payV_l1099511627776_Validator:
   for +c: Nat
-  for +A: FD.array__Tree<T.Validator>
+  for +A: FD.array__Tree<FuluValidator_d.Validator>
   for +j: Nat
   {Layout.payloads(FPV_l1099511627776_Validator(c, A, j)) == [] : +List<U32>}
 def payV_l1099511627776_Validator(c, A, j):
@@ -342,7 +347,7 @@ def payV_l1099511627776_Validator(c, A, j):
 
 law validV_l1099511627776_Validator:
   for +c: Nat
-  for +A: FD.array__Tree<T.Validator>
+  for +A: FD.array__Tree<FuluValidator_d.Validator>
   for +j: Nat
   {Layout.bytes_valid(FPV_l1099511627776_Validator(c, A, j)) == True{} : Bool}
 def validV_l1099511627776_Validator(c, A, j):
@@ -352,7 +357,7 @@ def validV_l1099511627776_Validator(c, A, j):
 
 law lenV_l1099511627776_Validator:
   for +c: Nat
-  for +A: FD.array__Tree<T.Validator>
+  for +A: FD.array__Tree<FuluValidator_d.Validator>
   for +j: Nat
   {List.length(&2, U32, (CHV_l1099511627776_Validator(c, A, j))) == Nat.mul(c, 121n) : Nat}
 def lenV_l1099511627776_Validator(c, A, j):
@@ -370,7 +375,7 @@ def lenV_l1099511627776_Validator(c, A, j):
 # ---- l1099511627776_Validator: the write loop at X = 4 q + r (record j at byte X + 121 j) ----
 
 # the records j, j + 1, ..., j + k of A (index i = j) written from X + 121 j on
-def WX_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +X: U32, +A: FD.array__Tree<T.Validator>) -> FD.array__Tree<U32>:
+def WX_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +X: U32, +A: FD.array__Tree<FuluValidator_d.Validator>) -> FD.array__Tree<U32>:
   match k:
     case 0n: PXo(EL_l1099511627776_Validator(A, j), dd, D, U32.add(X, U32.mul(i, 121)))
     case 1n+p: WX_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, dd, PXo(EL_l1099511627776_Validator(A, j), dd, D, U32.add(X, U32.mul(i, 121))), X, A)
@@ -382,7 +387,7 @@ law pfWX_l1099511627776_Validator:
   for +dd: Nat
   for +D: FD.array__Tree<U32>
   for +X: U32
-  for +A: FD.array__Tree<T.Validator>
+  for +A: FD.array__Tree<FuluValidator_d.Validator>
   for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
   {FD.array__perfect(U32, dd, WX_l1099511627776_Validator(k, i, j, dd, D, X, A)) == True{} : Bool}
 def pfWX_l1099511627776_Validator(k, i, j, dd, D, X, A, pf):
@@ -390,13 +395,13 @@ def pfWX_l1099511627776_Validator(k, i, j, dd, D, X, A, pf):
     case 0n: pfo(EL_l1099511627776_Validator(A, j), dd, D, U32.add(X, U32.mul(i, 121)), pf)
     case 1n+ +p: pfWX_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, dd, PXo(EL_l1099511627776_Validator(A, j), dd, D, U32.add(X, U32.mul(i, 121))), X, A, pfo(EL_l1099511627776_Validator(A, j), dd, D, U32.add(X, U32.mul(i, 121)), pf))
 
-def RTK_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<T.Validator>) -> Data:
-  {T.l1099511627776_Validator_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(T.Validator, A), EL_l1099511627776_Validator(A, j))) == (FD.array__thaw(U32, WX_l1099511627776_Validator(k, i, j, dd, D, X, A)), FD.array__thaw(T.Validator, A)) : Array<U32> & Array<T.Validator>}
-def BYK_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +A: FD.array__Tree<T.Validator>) -> Data:
+def RTK_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<FuluValidator_d.Validator>) -> Data:
+  {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluValidator_d.Validator, A), EL_l1099511627776_Validator(A, j))) == (FD.array__thaw(U32, WX_l1099511627776_Validator(k, i, j, dd, D, X, A)), FD.array__thaw(FuluValidator_d.Validator, A)) : Array<U32> & Array<FuluValidator_d.Validator>}
+def BYK_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +A: FD.array__Tree<FuluValidator_d.Validator>) -> Data:
   {UA.BYT(WX_l1099511627776_Validator(k, i, j, dd, D, X, A)) == UW.SPL(UA.BYT(D), YB(j, q, r), (CHV_l1099511627776_Validator(1n+k, A, j))) : +List<U32>}
 
 # record j's write: its runtime fact, its bytes at YB(j), its perfect tree, its start in the bytes
-def one(+o: T.Validator, +i: U32, +j: Nat, +k: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +LT: Nat,
+def one(+o: FuluValidator_d.Validator, +i: U32, +j: Nat, +k: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +LT: Nat,
     +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 121n), LT) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
@@ -418,12 +423,12 @@ def one(+o: T.Validator, +i: U32, +j: Nat, +k: Nat, +X: U32, +q: Nat, +r: Nat, +
   (rt, (by2, hX))
 
 # The loop from record j (index i) on, k + 1 records, into LT bytes at X whose last k + 1 records' bytes are zero.
-def ptx_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<T.Validator>, +LT: Nat,
+def ptx_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluValidator_d.Validator>, +LT: Nat,
     +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 121n), LT) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
     +hz: {VS.bt(Nat.mul(1n+k, 121n), VS.bdr(YB(j, q, r), UA.BYT(D))) == UW.ZB(Nat.mul(1n+k, 121n)) : +List<U32>},
-    +pfA: {FD.array__perfect(T.Validator, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    +pfA: {FD.array__perfect(FuluValidator_d.Validator, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> DK.P2(RTK_l1099511627776_Validator(k, i, j, X, dd, D, A), BYK_l1099511627776_Validator(k, i, j, q, r, dd, D, X, A)):
   match k:
     case 0n:
@@ -435,7 +440,7 @@ def ptx_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r:
       +by = PA({UA.BYT(PXo(o, dd, D, Xj)) == UW.SPL(UA.BYT(D), YB(j, q, r), RWB(o)) : +List<U32>}, {Nat.is_le(YB(j, q, r), List.length(&2, U32, UA.BYT(D))) == True{} : Bool}, gb)
       +D1 = PXo(o, dd, D, Xj)
       +Y = RWB(o)
-      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<T.Validator>, z => (z, FD.array__thaw(T.Validator, A)), T.Validator_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<FuluValidator_d.Validator>, z => (z, FD.array__thaw(FuluValidator_d.Validator, A)), FuluValidator_e.Validator_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
       +by0 = FD.logic__subst(+List<U32>, z => {UA.BYT(D1) == UW.SPL(UA.BYT(D), YB(j, q, r), z) : +List<U32>}, Y, List.append(&2, U32, Y, []),
         Equal.sym(+List<U32>, List.append(&2, U32, Y, []), Y, VS.app_nil(Y)), by)
       (rt0, by0)
@@ -459,20 +464,20 @@ def ptx_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r:
       +h1 = FD.nat__le_lt_trans(1n+j, 1n+Nat.add(p, j), VB.pw(da), Order.left_below_sum(p, j), hk)
       +ei1 = VB.add_le_at(i, 1, j, da, ei, hda, FD.nat__lt_le(1n+j, VB.pw(da), h1))
       +hi1 = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(da)) == True{} : Bool}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1), h1)
-      +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(T.Validator, FD.array__slots(T.Validator, A), z) == Some{EL_l1099511627776_Validator(A, 1n+j)} : Maybe<&2, T.Validator>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
-        VRL.nth_get(T.Validator, FD.array__slots(T.Validator, A), 1n+j, T.Validator_default(), FD.array__len_lt(T.Validator, da, A, 1n+j, pfA, h1)))
-      +eg = FD.array__get(T.Validator, da, A, U32.add(i, 1), EL_l1099511627776_Validator(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
+      +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(FuluValidator_d.Validator, FD.array__slots(FuluValidator_d.Validator, A), z) == Some{EL_l1099511627776_Validator(A, 1n+j)} : Maybe<&2, FuluValidator_d.Validator>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
+        VRL.nth_get(FuluValidator_d.Validator, FD.array__slots(FuluValidator_d.Validator, A), 1n+j, FuluValidator_d.Validator_default(), FD.array__len_lt(FuluValidator_d.Validator, da, A, 1n+j, pfA, h1)))
+      +eg = FD.array__get(FuluValidator_d.Validator, da, A, U32.add(i, 1), EL_l1099511627776_Validator(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
       +hj2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.mul(1n+z, 121n), LT) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hj)
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hk)
       +ih = ptx_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hd, pf1, hj2, hl, z1, pfA, hda, hk2)
       +rt2 = PA(RTK_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, X, dd, D1, A), BYK_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, q, r, dd, D1, X, A), ih)
       +by2 = PB(RTK_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, X, dd, D1, A), BYK_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, q, r, dd, D1, X, A), ih)
-      +ea = Equal.cong(Array<U32>, Array<U32> & Array<T.Validator>, z => T.l1099511627776_Validator_pt(p, U32.add(i, 1), X, z, AG_l1099511627776_Validator(A, U32.add(i, 1))), T.Validator_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
-      +eb = Equal.cong(Array<T.Validator> & T.Validator, Array<U32> & Array<T.Validator>, z => T.l1099511627776_Validator_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG_l1099511627776_Validator(A, U32.add(i, 1)), (FD.array__thaw(T.Validator, A), EL_l1099511627776_Validator(A, 1n+j)), eg)
-      +rt3 = Equal.trans(Array<U32> & Array<T.Validator>, T.l1099511627776_Validator_pt(p, U32.add(i, 1), X, T.Validator_put(FD.array__thaw(U32, D), Xj, o), AG_l1099511627776_Validator(A, U32.add(i, 1))), T.l1099511627776_Validator_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l1099511627776_Validator(A, U32.add(i, 1))),
-        (FD.array__thaw(U32, WX_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, dd, D1, X, A)), FD.array__thaw(T.Validator, A)), ea,
-        Equal.trans(Array<U32> & Array<T.Validator>, T.l1099511627776_Validator_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l1099511627776_Validator(A, U32.add(i, 1))), T.l1099511627776_Validator_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(T.Validator, A), EL_l1099511627776_Validator(A, 1n+j))),
-          (FD.array__thaw(U32, WX_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, dd, D1, X, A)), FD.array__thaw(T.Validator, A)), eb, rt2))
+      +ea = Equal.cong(Array<U32>, Array<U32> & Array<FuluValidator_d.Validator>, z => Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(p, U32.add(i, 1), X, z, AG_l1099511627776_Validator(A, U32.add(i, 1))), FuluValidator_e.Validator_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +eb = Equal.cong(Array<FuluValidator_d.Validator> & FuluValidator_d.Validator, Array<U32> & Array<FuluValidator_d.Validator>, z => Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG_l1099511627776_Validator(A, U32.add(i, 1)), (FD.array__thaw(FuluValidator_d.Validator, A), EL_l1099511627776_Validator(A, 1n+j)), eg)
+      +rt3 = Equal.trans(Array<U32> & Array<FuluValidator_d.Validator>, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(p, U32.add(i, 1), X, FuluValidator_e.Validator_put(FD.array__thaw(U32, D), Xj, o), AG_l1099511627776_Validator(A, U32.add(i, 1))), Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l1099511627776_Validator(A, U32.add(i, 1))),
+        (FD.array__thaw(U32, WX_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, dd, D1, X, A)), FD.array__thaw(FuluValidator_d.Validator, A)), ea,
+        Equal.trans(Array<U32> & Array<FuluValidator_d.Validator>, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l1099511627776_Validator(A, U32.add(i, 1))), Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(FuluValidator_d.Validator, A), EL_l1099511627776_Validator(A, 1n+j))),
+          (FD.array__thaw(U32, WX_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, dd, D1, X, A)), FD.array__thaw(FuluValidator_d.Validator, A)), eb, rt2))
       +rest = (CHV_l1099511627776_Validator(1n+p, A, 1n+j))
       +eXn = Equal.trans(Nat, YB(1n+j, q, r), Nat.add(Yj, 121n), Nat.add(Yj, VRX.LN(Y)), ey,
         Equal.cong(Nat, Nat, z => Nat.add(Yj, z), 121n, VRX.LN(Y), Equal.sym(Nat, VRX.LN(Y), 121n, lenb(o))))
@@ -482,52 +487,52 @@ def ptx_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r:
 
 # ---- l1099511627776_Validator: the list's encoder window ----
 
-def TDM_l1099511627776_Validator(t: FD.array__Tree<T.Validator>) -> Nat:
+def TDM_l1099511627776_Validator(t: FD.array__Tree<FuluValidator_d.Validator>) -> Nat:
   match t:
     case FD.TLeaf{x}: 0n
     case FD.TNode{l, r}: 1n+TDM_l1099511627776_Validator(l)
 
 # The list object Seq{thaw(A), N} and its facts: a perfect tree of depth < 31 holding the N records (no bound past U32).
-def THL_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32) -> T.l1099511627776_Validator_Seq: T.l1099511627776_Validator_Seq{FD.array__thaw(T.Validator, A), N}
-def OKL_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32) -> Bool:
-  Bool.and(Nat.is_lt(TDM_l1099511627776_Validator(A), 31n), Bool.and(FD.array__perfect(T.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A)))))
-def okl_d_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {Nat.is_lt(TDM_l1099511627776_Validator(A), 31n) == True{} : Bool}:
-  and_l(Nat.is_lt(TDM_l1099511627776_Validator(A), 31n), Bool.and(FD.array__perfect(T.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A)))), h)
-def okl_1_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool})
-    -> {Bool.and(FD.array__perfect(T.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A)))) == True{} : Bool}:
-  and_r(Nat.is_lt(TDM_l1099511627776_Validator(A), 31n), Bool.and(FD.array__perfect(T.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A)))), h)
-def okl_pf_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {FD.array__perfect(T.Validator, TDM_l1099511627776_Validator(A), A) == True{} : Bool}:
-  and_l(FD.array__perfect(T.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A))), okl_1_l1099511627776_Validator(A, N, h))
-def okl_n_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A))) == True{} : Bool}:
-  and_r(FD.array__perfect(T.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A))), okl_1_l1099511627776_Validator(A, N, h))
+def THL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32) -> Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq: Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq{FD.array__thaw(FuluValidator_d.Validator, A), N}
+def OKL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32) -> Bool:
+  Bool.and(Nat.is_lt(TDM_l1099511627776_Validator(A), 31n), Bool.and(FD.array__perfect(FuluValidator_d.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A)))))
+def okl_d_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {Nat.is_lt(TDM_l1099511627776_Validator(A), 31n) == True{} : Bool}:
+  and_l(Nat.is_lt(TDM_l1099511627776_Validator(A), 31n), Bool.and(FD.array__perfect(FuluValidator_d.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A)))), h)
+def okl_1_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool})
+    -> {Bool.and(FD.array__perfect(FuluValidator_d.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A)))) == True{} : Bool}:
+  and_r(Nat.is_lt(TDM_l1099511627776_Validator(A), 31n), Bool.and(FD.array__perfect(FuluValidator_d.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A)))), h)
+def okl_pf_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {FD.array__perfect(FuluValidator_d.Validator, TDM_l1099511627776_Validator(A), A) == True{} : Bool}:
+  and_l(FD.array__perfect(FuluValidator_d.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A))), okl_1_l1099511627776_Validator(A, N, h))
+def okl_n_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A))) == True{} : Bool}:
+  and_r(FD.array__perfect(FuluValidator_d.Validator, TDM_l1099511627776_Validator(A), A), Nat.is_le(U32.to_nat(N), VB.pw(TDM_l1099511627776_Validator(A))), okl_1_l1099511627776_Validator(A, N, h))
 
 # N <= 2^d as the runtime compares it.
-def le_cap_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(TDM_l1099511627776_Validator(A))) == True{} : Bool}:
+def le_cap_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(TDM_l1099511627776_Validator(A))) == True{} : Bool}:
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(TDM_l1099511627776_Validator(A))), Nat.is_le(U32.to_nat(N), U32.to_nat(FD.u32__pow2u(TDM_l1099511627776_Validator(A)))), VU.le_u32(N, FD.u32__pow2u(TDM_l1099511627776_Validator(A)))) : {_ == True{} : Bool}
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(TDM_l1099511627776_Validator(A))), VB.pw(TDM_l1099511627776_Validator(A)), FD.u32__pow2u_value(TDM_l1099511627776_Validator(A), FD.nat__lt_trans(TDM_l1099511627776_Validator(A), 31n, 32n, okl_d_l1099511627776_Validator(A, N, h), {==}))) : {Nat.is_le(U32.to_nat(N), _) == True{} : Bool}
   okl_n_l1099511627776_Validator(A, N, h)
 
 # The list's bytes, their count, and the writer's model.
-def LL_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32) -> Nat: Nat.mul(U32.to_nat(N), 121n)
-def ENCL_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32) -> +List<U32>: (CHV_l1099511627776_Validator(U32.to_nat(N), A, 0n))
-def PUTLb_l1099511627776_Validator(b: Bool, +A: FD.array__Tree<T.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> FD.array__Tree<U32>:
+def LL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32) -> Nat: Nat.mul(U32.to_nat(N), 121n)
+def ENCL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32) -> +List<U32>: (CHV_l1099511627776_Validator(U32.to_nat(N), A, 0n))
+def PUTLb_l1099511627776_Validator(b: Bool, +A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> FD.array__Tree<U32>:
   match b:
     case True{}: D
     case False{}: WX_l1099511627776_Validator(U32.to_nat(U32.sub(N, 1)), 0, 0n, dd, D, X, A)
-def PUTL_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> FD.array__Tree<U32>: PUTLb_l1099511627776_Validator(U32.is_eq(N, 0), A, N, dd, D, X)
-def pfLb_l1099511627776_Validator(+b: Bool, +A: FD.array__Tree<T.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def PUTL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> FD.array__Tree<U32>: PUTLb_l1099511627776_Validator(U32.is_eq(N, 0), A, N, dd, D, X)
+def pfLb_l1099511627776_Validator(+b: Bool, +A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PUTLb_l1099511627776_Validator(b, A, N, dd, D, X)) == True{} : Bool}:
   match b:
     case True{}: pf
     case False{}: pfWX_l1099511627776_Validator(U32.to_nat(U32.sub(N, 1)), 0, 0n, dd, D, X, A, pf)
 
-def RTN_l1099511627776_Validator(+b: Bool, +A: FD.array__Tree<T.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> Data:
-  {T.l1099511627776_Validator_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(T.Validator, A)) == (FD.array__thaw(U32, PUTLb_l1099511627776_Validator(b, A, N, dd, D, X)), THL_l1099511627776_Validator(A, N)) : Array<U32> & T.l1099511627776_Validator_Seq}
-def BYN_l1099511627776_Validator(+b: Bool, +A: FD.array__Tree<T.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+def RTN_l1099511627776_Validator(+b: Bool, +A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> Data:
+  {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(FuluValidator_d.Validator, A)) == (FD.array__thaw(U32, PUTLb_l1099511627776_Validator(b, A, N, dd, D, X)), THL_l1099511627776_Validator(A, N)) : Array<U32> & Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq}
+def BYN_l1099511627776_Validator(+b: Bool, +A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTLb_l1099511627776_Validator(b, A, N, dd, D, X)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), (CHV_l1099511627776_Validator(U32.to_nat(N), A, 0n))) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def ptnz_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l1099511627776_Validator(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l1099511627776_Validator(A, N)) : +List<U32>})
@@ -553,45 +558,45 @@ def ptnz_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +b: 
       +hk = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)),
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
-      +eg0 = FD.array__get(T.Validator, da, A, 0, EL_l1099511627776_Validator(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(T.Validator, FD.array__slots(T.Validator, A), 0n, T.Validator_default(), FD.array__len_lt(T.Validator, da, A, 0n, pfA, h0)), pfA)
+      +eg0 = FD.array__get(FuluValidator_d.Validator, da, A, 0, EL_l1099511627776_Validator(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(FuluValidator_d.Validator, FD.array__slots(FuluValidator_d.Validator, A), 0n, FuluValidator_d.Validator_default(), FD.array__len_lt(FuluValidator_d.Validator, da, A, 0n, pfA, h0)), pfA)
       +g = ptx_l1099511627776_Validator(k, 0, 0n, X, q, r, dd, D, da, A, LL_l1099511627776_Validator(A, N), {==}, e, hd, pf, hj, hl, hz2, pfA, hda, hk)
       +rt = PA(RTK_l1099511627776_Validator(k, 0, 0n, X, dd, D, A), BYK_l1099511627776_Validator(k, 0, 0n, q, r, dd, D, X, A), g)
       +by = PB(RTK_l1099511627776_Validator(k, 0, 0n, X, dd, D, A), BYK_l1099511627776_Validator(k, 0, 0n, q, r, dd, D, X, A), g)
       +by1 = FD.logic__subst(Nat, z => {UA.BYT(WX_l1099511627776_Validator(k, 0, 0n, dd, D, X, A)) == UW.SPL(UA.BYT(D), z, (CHV_l1099511627776_Validator(1n+k, A, 0n))) : +List<U32>}, YB(0n, q, r), Nat.add(A.quad(q), r), FD.nat__add_zero(Nat.add(A.quad(q), r)), by)
-      +ea = Equal.cong(Array<T.Validator> & T.Validator, Array<U32> & T.l1099511627776_Validator_Seq, z => T.l1099511627776_Validator_pt_fin(N, T.l1099511627776_Validator_pt(k, 0, X, FD.array__thaw(U32, D), z)), Array.get(T.Validator, FD.array__thaw(T.Validator, A), 0), (FD.array__thaw(T.Validator, A), EL_l1099511627776_Validator(A, 0n)), eg0)
-      +eb2 = Equal.cong(Array<U32> & Array<T.Validator>, Array<U32> & T.l1099511627776_Validator_Seq, z => T.l1099511627776_Validator_pt_fin(N, z), T.l1099511627776_Validator_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.Validator, A), EL_l1099511627776_Validator(A, 0n))), (FD.array__thaw(U32, WX_l1099511627776_Validator(k, 0, 0n, dd, D, X, A)), FD.array__thaw(T.Validator, A)), rt)
-      (Equal.trans(Array<U32> & T.l1099511627776_Validator_Seq, T.l1099511627776_Validator_pt_fin(N, T.l1099511627776_Validator_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(T.Validator, FD.array__thaw(T.Validator, A), 0))), T.l1099511627776_Validator_pt_fin(N, T.l1099511627776_Validator_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.Validator, A), EL_l1099511627776_Validator(A, 0n)))),
-         T.l1099511627776_Validator_pt_fin(N, (FD.array__thaw(U32, WX_l1099511627776_Validator(k, 0, 0n, dd, D, X, A)), FD.array__thaw(T.Validator, A))), ea, eb2),
+      +ea = Equal.cong(Array<FuluValidator_d.Validator> & FuluValidator_d.Validator, Array<U32> & Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, z => Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt_fin(N, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(k, 0, X, FD.array__thaw(U32, D), z)), Array.get(FuluValidator_d.Validator, FD.array__thaw(FuluValidator_d.Validator, A), 0), (FD.array__thaw(FuluValidator_d.Validator, A), EL_l1099511627776_Validator(A, 0n)), eg0)
+      +eb2 = Equal.cong(Array<U32> & Array<FuluValidator_d.Validator>, Array<U32> & Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, z => Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt_fin(N, z), Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluValidator_d.Validator, A), EL_l1099511627776_Validator(A, 0n))), (FD.array__thaw(U32, WX_l1099511627776_Validator(k, 0, 0n, dd, D, X, A)), FD.array__thaw(FuluValidator_d.Validator, A)), rt)
+      (Equal.trans(Array<U32> & Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt_fin(N, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(FuluValidator_d.Validator, FD.array__thaw(FuluValidator_d.Validator, A), 0))), Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt_fin(N, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluValidator_d.Validator, A), EL_l1099511627776_Validator(A, 0n)))),
+         Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt_fin(N, (FD.array__thaw(U32, WX_l1099511627776_Validator(k, 0, 0n, dd, D, X, A)), FD.array__thaw(FuluValidator_d.Validator, A))), ea, eb2),
        FD.logic__subst(Nat, z => {UA.BYT(WX_l1099511627776_Validator(k, 0, 0n, dd, D, X, A)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), (CHV_l1099511627776_Validator(z, A, 0n))) : +List<U32>}, 1n+k, c, e1, by1))
 
 # The runtime's validity check of the list (no bound on N past the storage's size).
-def valid_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {T.l1099511627776_Validator_valid(THL_l1099511627776_Validator(A, N)) == (THL_l1099511627776_Validator(A, N), True{}) : T.l1099511627776_Validator_Seq & Bool}:
+def valid_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_valid(THL_l1099511627776_Validator(A, N)) == (THL_l1099511627776_Validator(A, N), True{}) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool}:
   +d = TDM_l1099511627776_Validator(A)
-  %Equal.sym(Array<T.Validator> & U32, Array.size(T.Validator, FD.array__thaw(T.Validator, A)), (FD.array__thaw(T.Validator, A), FD.u32__pow2u(d)), FD.array__size_thaw(T.Validator, d, A, okl_pf_l1099511627776_Validator(A, N, h))) :
-    {T.l1099511627776_Validator_va_cap(Bool.or(True{}, U32.is_le(N, 0)), N, _) == (THL_l1099511627776_Validator(A, N), True{}) : T.l1099511627776_Validator_Seq & Bool}
+  %Equal.sym(Array<FuluValidator_d.Validator> & U32, Array.size(FuluValidator_d.Validator, FD.array__thaw(FuluValidator_d.Validator, A)), (FD.array__thaw(FuluValidator_d.Validator, A), FD.u32__pow2u(d)), FD.array__size_thaw(FuluValidator_d.Validator, d, A, okl_pf_l1099511627776_Validator(A, N, h))) :
+    {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_va_cap(Bool.or(True{}, U32.is_le(N, 0)), N, _) == (THL_l1099511627776_Validator(A, N), True{}) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_l1099511627776_Validator(A, N, h)) :
-    {(THL_l1099511627776_Validator(A, N), Bool.and(Bool.or(True{}, U32.is_le(N, 0)), _)) == (THL_l1099511627776_Validator(A, N), True{}) : T.l1099511627776_Validator_Seq & Bool}
+    {(THL_l1099511627776_Validator(A, N), Bool.and(Bool.or(True{}, U32.is_le(N, 0)), _)) == (THL_l1099511627776_Validator(A, N), True{}) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool}
   {==}
 
-def RTL_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l1099511627776_Validator_putk(FD.array__thaw(U32, D), X, THL_l1099511627776_Validator(A, N)) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), U32.mul(N, 121))) : Array<U32> & (T.l1099511627776_Validator_Seq & U32)}
-def BYL_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+def RTL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_putk(FD.array__thaw(U32, D), X, THL_l1099511627776_Validator(A, N)) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), U32.mul(N, 121))) : Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32)}
+def BYL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL_l1099511627776_Validator(A, N, dd, D, X)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l1099511627776_Validator(A, N)) : +List<U32>}
-def PFL_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> Data:
+def PFL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32) -> Data:
   {FD.array__perfect(U32, dd, PUTL_l1099511627776_Validator(A, N, dd, D, X)) == True{} : Bool}
 
 # The runtime's write, with its validity check.
-def putk_rt_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putk_rt_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN_l1099511627776_Validator(U32.is_eq(N, 0), A, N, dd, D, X)) -> RTL_l1099511627776_Validator(A, N, dd, D, X, q, r):
-  %Equal.sym(T.l1099511627776_Validator_Seq & Bool, T.l1099511627776_Validator_valid(THL_l1099511627776_Validator(A, N)), (THL_l1099511627776_Validator(A, N), True{}), valid_l1099511627776_Validator(A, N, h)) :
-    {T.l1099511627776_Validator_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), U32.mul(N, 121))) : Array<U32> & (T.l1099511627776_Validator_Seq & U32)}
-  %Equal.sym(Array<U32> & T.l1099511627776_Validator_Seq, T.l1099511627776_Validator_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(T.Validator, A)), (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), THL_l1099511627776_Validator(A, N)), rtb) :
-    {T.l1099511627776_Validator_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), U32.mul(N, 121))) : Array<U32> & (T.l1099511627776_Validator_Seq & U32)}
+  %Equal.sym(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_valid(THL_l1099511627776_Validator(A, N)), (THL_l1099511627776_Validator(A, N), True{}), valid_l1099511627776_Validator(A, N, h)) :
+    {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), U32.mul(N, 121))) : Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32)}
+  %Equal.sym(Array<U32> & Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(FuluValidator_d.Validator, A)), (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), THL_l1099511627776_Validator(A, N)), rtb) :
+    {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l1099511627776_Validator(A, N, dd, D, X)), (THL_l1099511627776_Validator(A, N), U32.mul(N, 121))) : Array<U32> & (Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32)}
   {==}
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
 # into D's (its records write their data bytes only), and whose tree is perfect.
-def putx_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putx_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l1099511627776_Validator(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l1099511627776_Validator(A, N)) : +List<U32>})
@@ -605,16 +610,16 @@ def putx_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +h: 
 # ---- sizes ----
 
 # The runtime's size pass.
-def sizex_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {T.l1099511627776_Validator_size(THL_l1099511627776_Validator(A, N)) == (THL_l1099511627776_Validator(A, N), U32.mul(N, 121)) : T.l1099511627776_Validator_Seq & U32}:
+def sizex_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_size(THL_l1099511627776_Validator(A, N)) == (THL_l1099511627776_Validator(A, N), U32.mul(N, 121)) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32}:
   +d = TDM_l1099511627776_Validator(A)
-  %Equal.sym(Array<T.Validator> & U32, Array.size(T.Validator, FD.array__thaw(T.Validator, A)), (FD.array__thaw(T.Validator, A), FD.u32__pow2u(d)), FD.array__size_thaw(T.Validator, d, A, okl_pf_l1099511627776_Validator(A, N, h))) :
-    {T.l1099511627776_Validator_szf(N, _) == (THL_l1099511627776_Validator(A, N), U32.mul(N, 121)) : T.l1099511627776_Validator_Seq & U32}
+  %Equal.sym(Array<FuluValidator_d.Validator> & U32, Array.size(FuluValidator_d.Validator, FD.array__thaw(FuluValidator_d.Validator, A)), (FD.array__thaw(FuluValidator_d.Validator, A), FD.u32__pow2u(d)), FD.array__size_thaw(FuluValidator_d.Validator, d, A, okl_pf_l1099511627776_Validator(A, N, h))) :
+    {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_szf(N, _) == (THL_l1099511627776_Validator(A, N), U32.mul(N, 121)) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_l1099511627776_Validator(A, N, h)) :
-    {(THL_l1099511627776_Validator(A, N), O.pick(_, U32.mul(N, 121), 2147483648)) == (THL_l1099511627776_Validator(A, N), U32.mul(N, 121)) : T.l1099511627776_Validator_Seq & U32}
+    {(THL_l1099511627776_Validator(A, N), O.pick(_, U32.mul(N, 121), 2147483648)) == (THL_l1099511627776_Validator(A, N), U32.mul(N, 121)) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32}
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
-def szx_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def szx_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 121)) == LL_l1099511627776_Validator(A, N) : Nat}:
   bmul(dd, N, U32.to_nat(N), 121, 121n, {==}, {==}, hd,
     FD.nat__le_trans(LL_l1099511627776_Validator(A, N), Nat.add(Nat.add(A.quad(q), r), LL_l1099511627776_Validator(A, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL_l1099511627776_Validator(A, N)), VRX.xend(q, r, LL_l1099511627776_Validator(A, N), dd, hl)))
@@ -622,12 +627,12 @@ def szx_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +q: N
 # ---- l1099511627776_Validator: the spec side ----
 
 # The value of the list: the records' values.
-def VALL_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32) -> S.Value: S.Sequence{ITV_l1099511627776_Validator(U32.to_nat(N), A, 0n)}
+def VALL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32) -> S.Value: S.Sequence{ITV_l1099511627776_Validator(U32.to_nat(N), A, 0n)}
 
-def len_encl_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32) -> {List.length(&2, U32, ENCL_l1099511627776_Validator(A, N)) == LL_l1099511627776_Validator(A, N) : Nat}: lenV_l1099511627776_Validator(U32.to_nat(N), A, 0n)
+def len_encl_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32) -> {List.length(&2, U32, ENCL_l1099511627776_Validator(A, N)) == LL_l1099511627776_Validator(A, N) : Nat}: lenV_l1099511627776_Validator(U32.to_nat(N), A, 0n)
 
 # encx_spec: the list's value has its bytes as one variable part, when they fit a tree of depth dx < 30.
-def encx_spec_l1099511627776_Validator(+A: FD.array__Tree<T.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dx: Nat, +hdx: {Nat.is_lt(dx, 30n) == True{} : Bool},
+def encx_spec_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dx: Nat, +hdx: {Nat.is_lt(dx, 30n) == True{} : Bool},
     +hL: {Nat.is_le(LL_l1099511627776_Validator(A, N), A.quad(VB.pw(dx))) == True{} : Bool})
     -> {Codec.parts(VALL_l1099511627776_Validator(A, N), Spec.Schema78()) == Some{[S.Variable{ENCL_l1099511627776_Validator(A, N)}]} : Maybe<&2, +List<S.Part>>}:
   +c = U32.to_nat(N)

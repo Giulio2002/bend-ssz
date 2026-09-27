@@ -2,7 +2,10 @@ import Base
 import ../compact/found.bend as F
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d
+import ../../types/FuluAttesterSlashing_encode_ssz_generated.bend as FuluAttesterSlashing_e
+import ../../types/Fulu_list_AttesterSlashing_1_def_generated.bend as Fulu_list_AttesterSlashing_1_d
+import ../../types/Fulu_list_AttesterSlashing_1_encode_ssz_generated.bend as Fulu_list_AttesterSlashing_1_e
 import ../../types/schema.bend as S
 import ../compact/arith.bend as A
 import ../compact/reads.bend as RD
@@ -51,43 +54,43 @@ type MB<-X: Data> is Data:
   MSome{v: X}
 
 # A container or byte list schema is composite: no basic size.
-def th_AttesterSlashing_bx(m: MB<EM.MW>) -> O.Boxed<T.AttesterSlashing>:
+def th_AttesterSlashing_bx(m: MB<EM.MW>) -> O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>:
   match m:
     case MSome{+v}: O.BSome{EM.TH(v), O.BNone{}}
     case MNone{}: O.BNone{}
-def am_l1_AttesterSlashing(t: F.array__Tree<MB<EM.MW>>) -> Array<O.Boxed<T.AttesterSlashing>>:
+def am_l1_AttesterSlashing(t: F.array__Tree<MB<EM.MW>>) -> Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>:
   match t:
     case F.TLeaf{x}: ALeaf{th_AttesterSlashing_bx(x)}
     case F.TNode{l, r}: ANode{am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r)}
-def amsize_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +pf: {F.array__perfect(MB<EM.MW>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(t)) == (am_l1_AttesterSlashing(t), F.u32__pow2u(d)) : Array<O.Boxed<T.AttesterSlashing>> & U32}:
+def amsize_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +pf: {F.array__perfect(MB<EM.MW>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t)) == (am_l1_AttesterSlashing(t), F.u32__pow2u(d)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32}:
   match d t:
     case 0n F.TLeaf{x}:
       {==}
     case 0n F.TNode{l, r}:
-      Empty.absurd({Array.size(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(F.TNode{l, r})) == (am_l1_AttesterSlashing(F.TNode{l, r}), 1) : Array<O.Boxed<T.AttesterSlashing>> & U32}, F.logic__false_true(pf))
+      Empty.absurd({Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(F.TNode{l, r})) == (am_l1_AttesterSlashing(F.TNode{l, r}), 1) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32}, F.logic__false_true(pf))
     case 1n+p F.TLeaf{x}:
-      Empty.absurd({Array.size(O.Boxed<T.AttesterSlashing>, ALeaf{th_AttesterSlashing_bx(x)}) == (ALeaf{th_AttesterSlashing_bx(x)}, F.u32__pow2u(1n+p)) : Array<O.Boxed<T.AttesterSlashing>> & U32}, F.logic__false_true(pf))
+      Empty.absurd({Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, ALeaf{th_AttesterSlashing_bx(x)}) == (ALeaf{th_AttesterSlashing_bx(x)}, F.u32__pow2u(1n+p)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32}, F.logic__false_true(pf))
     case 1n+ +p F.TNode{+l, +r}:
-      %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & U32, Array.size(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(l)), (am_l1_AttesterSlashing(l), F.u32__pow2u(p)), amsize_l1_AttesterSlashing(p, l, F.array__pf_left(MB<EM.MW>, p, l, r, pf))) : {Array.size.node(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(r), _) == (ANode{am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r)}, U32.shl(F.u32__pow2u(p))) : Array<O.Boxed<T.AttesterSlashing>> & U32}
+      %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32, Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l)), (am_l1_AttesterSlashing(l), F.u32__pow2u(p)), amsize_l1_AttesterSlashing(p, l, F.array__pf_left(MB<EM.MW>, p, l, r, pf))) : {Array.size.node(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), _) == (ANode{am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r)}, U32.shl(F.u32__pow2u(p))) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32}
       {==}
-def amswap_go_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U32, +v: MB<EM.MW>, +x: MB<EM.MW>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<EM.MW>>}, +b: Bool, +eb: {U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))) == b : Bool}, +pf: {F.array__perfect(MB<EM.MW>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(t), F.u32__pow2u(d), i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}:
+def amswap_go_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U32, +v: MB<EM.MW>, +x: MB<EM.MW>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<EM.MW>>}, +b: Bool, +eb: {U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))) == b : Bool}, +pf: {F.array__perfect(MB<EM.MW>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t), F.u32__pow2u(d), i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}:
   match d t b:
     case 0n F.TLeaf{+y} _:
-      %F.array__leaf_value(MB<EM.MW>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_AttesterSlashing_bx(v)}, th_AttesterSlashing_bx(y)) == (ALeaf{th_AttesterSlashing_bx(v)}, th_AttesterSlashing_bx(_)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
+      %F.array__leaf_value(MB<EM.MW>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_AttesterSlashing_bx(v)}, th_AttesterSlashing_bx(y)) == (ALeaf{th_AttesterSlashing_bx(v)}, th_AttesterSlashing_bx(_)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
       {==}
     case 0n F.TNode{l, r} _:
-      Empty.absurd({Array.swap.go(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(F.TNode{l, r}), 1, i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 0n, F.TNode{l, r}, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}, F.logic__false_true(pf))
+      Empty.absurd({Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(F.TNode{l, r}), 1, i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 0n, F.TNode{l, r}, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}, F.logic__false_true(pf))
     case 1n+p F.TLeaf{y} _:
-      Empty.absurd({Array.swap.go(O.Boxed<T.AttesterSlashing>, ALeaf{th_AttesterSlashing_bx(y)}, F.u32__pow2u(1n+p), i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}, F.logic__false_true(pf))
+      Empty.absurd({Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, ALeaf{th_AttesterSlashing_bx(y)}, F.u32__pow2u(1n+p), i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 1n+p, F.TLeaf{y}, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}, F.logic__false_true(pf))
     case 1n+ +p F.TNode{+l, +r} True{}:
       +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
       +pl = F.array__pf_left(MB<EM.MW>, p, l, r, pf)
       +hil = F.array__lt_bridge(i, p, hp, True{}, eb)
       +ti = U32.to_nat(i)
-      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), _, i, th_AttesterSlashing_bx(v), U32.is_lt(i, _)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
-      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v), _) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
-      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(r), Array.swap.go(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(l), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v))) == (am_l1_AttesterSlashing(F.array__tupd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v, _)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
-      %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>, Array.swap.go(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(l), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v)), (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, p, l, ti, v)), th_AttesterSlashing_bx(x)), amswap_go_l1_AttesterSlashing(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<EM.MW>>, F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), ti), F.spec_common__nth(MB<EM.MW>, F.spec_common__append(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), F.array__slots(MB<EM.MW>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<EM.MW>>, F.spec_common__nth(MB<EM.MW>, F.spec_common__append(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), F.array__slots(MB<EM.MW>, r)), ti), F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), ti), F.list__nth_append_left(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), F.array__slots(MB<EM.MW>, r), ti, F.array__len_lt(MB<EM.MW>, p, l, ti, pl, hil))), hx), U32.is_lt(i, F.u32__pow2u(F.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(r), _) == (am_l1_AttesterSlashing(F.TNode{F.array__tupd(MB<EM.MW>, p, l, ti, v, F.array__ndec(p, ti)), r}), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), _, i, th_AttesterSlashing_bx(v), U32.is_lt(i, _)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v), _) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v))) == (am_l1_AttesterSlashing(F.array__tupd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v, _)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v)), (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, p, l, ti, v)), th_AttesterSlashing_bx(x)), amswap_go_l1_AttesterSlashing(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<EM.MW>>, F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), ti), F.spec_common__nth(MB<EM.MW>, F.spec_common__append(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), F.array__slots(MB<EM.MW>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<EM.MW>>, F.spec_common__nth(MB<EM.MW>, F.spec_common__append(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), F.array__slots(MB<EM.MW>, r)), ti), F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), ti), F.list__nth_append_left(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), F.array__slots(MB<EM.MW>, r), ti, F.array__len_lt(MB<EM.MW>, p, l, ti, pl, hil))), hx), U32.is_lt(i, F.u32__pow2u(F.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), _) == (am_l1_AttesterSlashing(F.TNode{F.array__tupd(MB<EM.MW>, p, l, ti, v, F.array__ndec(p, ti)), r}), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
       {==}
     case 1n+ +p F.TNode{+l, +r} False{}:
       +hp = F.nat__lt_trans(p, 1n+p, 32n, F.nat__lt_succ(p), hd)
@@ -101,21 +104,21 @@ def amswap_go_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U32
       +hir = F.logic__subst(Nat, n => {Nat.is_lt(n, F.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), F.array__upper_lt(ti, p, hi, le))
       +hxr = F.logic__subst(Nat, n => {F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, r), n) == Some{x} : Maybe<&2, MB<EM.MW>>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, MB<EM.MW>>, F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, r), k), F.spec_common__nth(MB<EM.MW>, F.spec_common__append(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), F.array__slots(MB<EM.MW>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<EM.MW>>, F.spec_common__nth(MB<EM.MW>, F.spec_common__append(MB<EM.MW>, F.array__slots(MB<EM.MW>, l), F.array__slots(MB<EM.MW>, r)), ti), F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, r), k), F.array__right_nth(MB<EM.MW>, p, l, r, ti, pl, le)), hx))
       +ih = amswap_go_l1_AttesterSlashing(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, F.u32__pow2u(F.nat__pred(p))), {==}, F.array__pf_right(MB<EM.MW>, p, l, r, pf))
-      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(r), F.u32__pow2u(p), j, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, p, r, n, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}, U32.to_nat(j), k, ej, ih)
-      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), _, i, th_AttesterSlashing_bx(v), U32.is_lt(i, _)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
-      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v), _) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
-      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(l), Array.swap.go(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(r), F.u32__pow2u(p), j, th_AttesterSlashing_bx(v))) == (am_l1_AttesterSlashing(F.array__tupd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v, _)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
-      %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>, Array.swap.go(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(r), F.u32__pow2u(p), j, th_AttesterSlashing_bx(v)), (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, p, r, k, v)), th_AttesterSlashing_bx(x)), ih2) : {Array.swap.hi(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(l), _) == (am_l1_AttesterSlashing(F.TNode{l, F.array__tupd(MB<EM.MW>, p, r, k, v, F.array__ndec(p, k))}), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
+      +ih2 = F.logic__subst(Nat, n => {Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), F.u32__pow2u(p), j, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, p, r, n, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(F.u32__pow2u(1n+p)), F.u32__pow2u(p), F.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), _, i, th_AttesterSlashing_bx(v), U32.is_lt(i, _)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Bool, U32.is_lt(i, F.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), am_l1_AttesterSlashing(r), F.u32__pow2u(p), i, th_AttesterSlashing_bx(v), _) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Bool, Nat.is_lt(ti, F.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), F.u32__pow2u(p), j, th_AttesterSlashing_bx(v))) == (am_l1_AttesterSlashing(F.array__tupd(MB<EM.MW>, 1n+p, F.TNode{l, r}, ti, v, _)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+      %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(r), F.u32__pow2u(p), j, th_AttesterSlashing_bx(v)), (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, p, r, k, v)), th_AttesterSlashing_bx(x)), ih2) : {Array.swap.hi(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(l), _) == (am_l1_AttesterSlashing(F.TNode{l, F.array__tupd(MB<EM.MW>, p, r, k, v, F.array__ndec(p, k))}), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
       {==}
 
 # Public Base entry points. Premises: the tree is perfect of depth d < 32 and
 # the index is below 2^d; x is the value currently stored at that index.
-def amswap_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U32, +v: MB<EM.MW>, +x: MB<EM.MW>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<EM.MW>>}, +pf: {F.array__perfect(MB<EM.MW>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(t), i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}:
-  %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & U32, Array.size(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(t)), (am_l1_AttesterSlashing(t), F.u32__pow2u(d)), amsize_l1_AttesterSlashing(d, t, pf)) : {Array.swap.at(O.Boxed<T.AttesterSlashing>, i, th_AttesterSlashing_bx(v), _) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
-  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(t), F.u32__pow2u(d), _, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
+def amswap_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U32, +v: MB<EM.MW>, +x: MB<EM.MW>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<EM.MW>>}, +pf: {F.array__perfect(MB<EM.MW>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t), i, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}:
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32, Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t)), (am_l1_AttesterSlashing(t), F.u32__pow2u(d)), amsize_l1_AttesterSlashing(d, t, pf)) : {Array.swap.at(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, i, th_AttesterSlashing_bx(v), _) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+  %Equal.sym(U32, U32.and(i, U32.sub(F.u32__pow2u(d), 1)), i, F.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t), F.u32__pow2u(d), _, th_AttesterSlashing_bx(v)) == (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
   amswap_go_l1_AttesterSlashing(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, F.u32__pow2u(F.nat__pred(d))), {==}, pf)
-def amset_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U32, +v: MB<EM.MW>, +x: MB<EM.MW>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<EM.MW>>}, +pf: {F.array__perfect(MB<EM.MW>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(t), i, th_AttesterSlashing_bx(v)) == am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<T.AttesterSlashing>>}:
-  %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>, Array.swap(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(t), i, th_AttesterSlashing_bx(v)), (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)), amswap_l1_AttesterSlashing(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<T.AttesterSlashing>, _) == am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<T.AttesterSlashing>>}
+def amset_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U32, +v: MB<EM.MW>, +x: MB<EM.MW>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool}, +hx: {F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<EM.MW>>}, +pf: {F.array__perfect(MB<EM.MW>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t), i, th_AttesterSlashing_bx(v)) == am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>}:
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t), i, th_AttesterSlashing_bx(v)), (am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)), th_AttesterSlashing_bx(x)), amswap_l1_AttesterSlashing(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, _) == am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>}
   {==}
 
 # Swap an element out (replaced by th_AttesterSlashing_bx(z)), then set th_AttesterSlashing_bx(x) back: the array is
@@ -125,16 +128,16 @@ def amswap_back_l1_AttesterSlashing(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U
     +hi: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool},
     +hx: {F.spec_common__nth(MB<EM.MW>, F.array__slots(MB<EM.MW>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<EM.MW>>},
     +pf: {F.array__perfect(MB<EM.MW>, d, t) == True{} : Bool})
-    -> {Array.set(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), z)), i, th_AttesterSlashing_bx(x)) == am_l1_AttesterSlashing(t) : Array<O.Boxed<T.AttesterSlashing>>}:
+    -> {Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), z)), i, th_AttesterSlashing_bx(x)) == am_l1_AttesterSlashing(t) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>}:
   +t2 = F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), z)
   +hz = F.logic__subst(List<&2, MB<EM.MW>>, ys => {F.spec_common__nth(MB<EM.MW>, ys, U32.to_nat(i)) == Some{z} : Maybe<&2, MB<EM.MW>>}, F.spec_common__update(MB<EM.MW>, F.array__slots(MB<EM.MW>, t), U32.to_nat(i), z), F.array__slots(MB<EM.MW>, t2),
     Equal.sym(List<&2, MB<EM.MW>>, F.array__slots(MB<EM.MW>, t2), F.spec_common__update(MB<EM.MW>, F.array__slots(MB<EM.MW>, t), U32.to_nat(i), z), F.array__upd_slots(MB<EM.MW>, d, t, U32.to_nat(i), z, hi, pf)),
     F.list__nth_update_same(MB<EM.MW>, F.array__slots(MB<EM.MW>, t), U32.to_nat(i), z, F.list__nth_lt_length(MB<EM.MW>, F.array__slots(MB<EM.MW>, t), U32.to_nat(i), x, hx)))
-  %Equal.sym(Array<O.Boxed<T.AttesterSlashing>>, Array.set(O.Boxed<T.AttesterSlashing>, am_l1_AttesterSlashing(t2), i, th_AttesterSlashing_bx(x)), am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t2, U32.to_nat(i), x)),
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, am_l1_AttesterSlashing(t2), i, th_AttesterSlashing_bx(x)), am_l1_AttesterSlashing(F.array__upd(MB<EM.MW>, d, t2, U32.to_nat(i), x)),
       amset_l1_AttesterSlashing(d, t2, i, x, z, hd, hi, hz, F.array__upd_perfect(MB<EM.MW>, d, t, U32.to_nat(i), z, pf))) :
-    {_ == am_l1_AttesterSlashing(t) : Array<O.Boxed<T.AttesterSlashing>>}
+    {_ == am_l1_AttesterSlashing(t) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>}
   %Equal.sym(F.array__Tree<MB<EM.MW>>, F.array__upd(MB<EM.MW>, d, t2, U32.to_nat(i), x), t, AM.upd_restore(MB<EM.MW>, d, t, U32.to_nat(i), z, x, hi, hx, pf)) :
-    {am_l1_AttesterSlashing(_) == am_l1_AttesterSlashing(t) : Array<O.Boxed<T.AttesterSlashing>>}
+    {am_l1_AttesterSlashing(_) == am_l1_AttesterSlashing(t) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>}
   {==}
 def xat_l1_AttesterSlashing(W: List<&2, MB<EM.MW>>, +i: Nat) -> MB<EM.MW>:
   match W:
@@ -207,7 +210,7 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 
 # ---- the mirror array ---------------------------------------------------------------------------
 
-def AR(t: F.array__Tree<MB<EM.MW>>) -> Array<O.Boxed<T.AttesterSlashing>>: am_l1_AttesterSlashing(t)
+def AR(t: F.array__Tree<MB<EM.MW>>) -> Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>: am_l1_AttesterSlashing(t)
 def SL(t: F.array__Tree<MB<EM.MW>>) -> List<&2, MB<EM.MW>>: F.array__slots(MB<EM.MW>, t)
 
 # The counter after s: s + 1 < 2^(1 + d) when s < n <= 2^d.
@@ -225,16 +228,16 @@ def hx_at(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +s: Nat, +pf: {F.array__perfect
 # Swapping element s out for MNone, then back: the array is unchanged, the spare is MNone.
 def swap_out(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U32, +s: Nat, +ei: {U32.to_nat(i) == s : Nat}, +pf: {F.array__perfect(MB<EM.MW>, d, t) == True{} : Bool},
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hs: {Nat.is_lt(s, VB.pw(d)) == True{} : Bool})
-    -> {Array.swap(O.Boxed<T.AttesterSlashing>, AR(t), i, O.BNone{}) == (AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), th_AttesterSlashing_bx(xat_l1_AttesterSlashing(SL(t), s))) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}:
+    -> {Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(t), i, O.BNone{}) == (AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), th_AttesterSlashing_bx(xat_l1_AttesterSlashing(SL(t), s))) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}:
   %ei :
-    {Array.swap(O.Boxed<T.AttesterSlashing>, AR(t), i, O.BNone{}) == (AR(F.array__upd(MB<EM.MW>, d, t, _, MNone{})), th_AttesterSlashing_bx(xat_l1_AttesterSlashing(SL(t), _))) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
+    {Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(t), i, O.BNone{}) == (AR(F.array__upd(MB<EM.MW>, d, t, _, MNone{})), th_AttesterSlashing_bx(xat_l1_AttesterSlashing(SL(t), _))) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
   amswap_l1_AttesterSlashing(d, t, i, MNone{}, xat_l1_AttesterSlashing(SL(t), U32.to_nat(i)), F.nat__lt_trans(d, 31n, 32n, hd, {==}),
     F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hs),
     hx_at(d, t, U32.to_nat(i), pf, F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hs)), pf)
 
 def swap_in(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U32, +s: Nat, +ei: {U32.to_nat(i) == s : Nat}, +pf: {F.array__perfect(MB<EM.MW>, d, t) == True{} : Bool},
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hs: {Nat.is_lt(s, VB.pw(d)) == True{} : Bool})
-    -> {Array.swap(O.Boxed<T.AttesterSlashing>, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), i, th_AttesterSlashing_bx(xat_l1_AttesterSlashing(SL(t), s))) == (AR(t), O.BNone{}) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}:
+    -> {Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), i, th_AttesterSlashing_bx(xat_l1_AttesterSlashing(SL(t), s))) == (AR(t), O.BNone{}) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}:
   +x = xat_l1_AttesterSlashing(SL(t), s)
   +t2 = F.array__upd(MB<EM.MW>, d, t, s, MNone{})
   +hx = hx_at(d, t, s, pf, hs)
@@ -243,12 +246,12 @@ def swap_in(+d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U32, +s: Nat, +ei: {U32.t
     F.list__nth_update_same(MB<EM.MW>, SL(t), s, MNone{}, F.list__nth_lt_length(MB<EM.MW>, SL(t), s, x, hx)))
   +his = F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hs)
   +hzi = F.logic__subst(Nat, z => {F.spec_common__nth(MB<EM.MW>, SL(t2), z) == Some{MNone{}} : Maybe<&2, MB<EM.MW>>}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hz)
-  %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>, Array.swap(O.Boxed<T.AttesterSlashing>, AR(t2), i, th_AttesterSlashing_bx(x)), (AR(F.array__upd(MB<EM.MW>, d, t2, U32.to_nat(i), x)), th_AttesterSlashing_bx(MNone{})),
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(t2), i, th_AttesterSlashing_bx(x)), (AR(F.array__upd(MB<EM.MW>, d, t2, U32.to_nat(i), x)), th_AttesterSlashing_bx(MNone{})),
       amswap_l1_AttesterSlashing(d, t2, i, x, MNone{}, F.nat__lt_trans(d, 31n, 32n, hd, {==}), his, hzi, F.array__upd_perfect(MB<EM.MW>, d, t, s, MNone{}, pf))) :
-    {_ == (AR(t), O.BNone{}) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
-  %Equal.sym(Nat, U32.to_nat(i), s, ei) : {(AR(F.array__upd(MB<EM.MW>, d, t2, _, x)), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
+    {_ == (AR(t), O.BNone{}) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
+  %Equal.sym(Nat, U32.to_nat(i), s, ei) : {(AR(F.array__upd(MB<EM.MW>, d, t2, _, x)), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
   %Equal.sym(F.array__Tree<MB<EM.MW>>, F.array__upd(MB<EM.MW>, d, t2, s, x), t, AM.upd_restore(MB<EM.MW>, d, t, s, MNone{}, x, hs, hx, pf)) :
-    {(AR(_), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>}
+    {(AR(_), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>}
   {==}
 
 # ---- the runtime's size pass ----------------------------------------------------------------------
@@ -259,12 +262,12 @@ def SZA(k: Nat, +W: List<&2, MB<EM.MW>>, +s: Nat, +acc: U32) -> U32:
     case 1n+q: SZA(q, W, 1n+s, O.padd(acc, NE(xat_l1_AttesterSlashing(W, s))))
 
 # One element's boxed size, when its facts hold.
-def bxsize(+m: MB<EM.MW>, +h: {EOK(m) == True{} : Bool}) -> {T.AttesterSlashing_bx_size(th_AttesterSlashing_bx(m)) == (th_AttesterSlashing_bx(m), NE(m)) : O.Boxed<T.AttesterSlashing> & U32}:
+def bxsize(+m: MB<EM.MW>, +h: {EOK(m) == True{} : Bool}) -> {FuluAttesterSlashing_e.AttesterSlashing_bx_size(th_AttesterSlashing_bx(m)) == (th_AttesterSlashing_bx(m), NE(m)) : O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32}:
   match m:
-    case MNone{}: Empty.absurd({T.AttesterSlashing_bx_size(th_AttesterSlashing_bx(MNone{})) == (th_AttesterSlashing_bx(MNone{}), NE(MNone{})) : O.Boxed<T.AttesterSlashing> & U32}, F.logic__false_true(h))
+    case MNone{}: Empty.absurd({FuluAttesterSlashing_e.AttesterSlashing_bx_size(th_AttesterSlashing_bx(MNone{})) == (th_AttesterSlashing_bx(MNone{}), NE(MNone{})) : O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32}, F.logic__false_true(h))
     case MSome{+w}:
-      %Equal.sym(T.AttesterSlashing & U32, T.AttesterSlashing_size(EM.TH(w)), (EM.TH(w), EM.SZ(w)), EM.sizex(w, h)) :
-        {T.AttesterSlashing_bx_size_back(_) == (O.BSome{EM.TH(w), O.BNone{}}, EM.SZ(w)) : O.Boxed<T.AttesterSlashing> & U32}
+      %Equal.sym(FuluAttesterSlashing_d.AttesterSlashing & U32, FuluAttesterSlashing_e.AttesterSlashing_size(EM.TH(w)), (EM.TH(w), EM.SZ(w)), EM.sizex(w, h)) :
+        {FuluAttesterSlashing_d.AttesterSlashing_bx_size_back(_) == (O.BSome{EM.TH(w), O.BNone{}}, EM.SZ(w)) : O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32}
       {==}
 
 law sz_go:
@@ -281,7 +284,7 @@ law sz_go:
   for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(n, VB.pw(d)) == True{} : Bool}
   for +hok: {EOKS(k, SL(t), s) == True{} : Bool}
-  {T.l1_AttesterSlashing_sz(k, i, (AR(t), (acc, O.BNone{}))) == (AR(t), (SZA(k, SL(t), s, acc), O.BNone{})) : Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>)}
+  {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz(k, i, (AR(t), (acc, O.BNone{}))) == (AR(t), (SZA(k, SL(t), s, acc), O.BNone{})) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>)}
 def sz_go(k, d, t, i, s, n, acc, ei, ek, pf, hd, hn, hok):
   match k:
     case 0n: {==}
@@ -292,24 +295,24 @@ def sz_go(k, d, t, i, s, n, acc, ei, ek, pf, hd, hn, hok):
           F.nat__le_lt_succ(s, Nat.add(s, q), Order.below_sum(s, q))))
       +hsd = F.nat__lt_le_trans(s, n, VB.pw(d), hs, hn)
       +hx = and_l(EOK(x), EOKS(q, SL(t), 1n+s), hok)
-      %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>, Array.swap(O.Boxed<T.AttesterSlashing>, AR(t), i, O.BNone{}), (AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), th_AttesterSlashing_bx(x)), swap_out(d, t, i, s, ei, pf, hd, hsd)) :
-        {T.l1_AttesterSlashing_sz(q, U32.add(i, 1), T.l1_AttesterSlashing_sz_one(i, acc, _)) == (AR(t), (SZA(1n+q, SL(t), s, acc), O.BNone{})) : Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>)}
-      %Equal.sym(O.Boxed<T.AttesterSlashing> & U32, T.AttesterSlashing_bx_size(th_AttesterSlashing_bx(x)), (th_AttesterSlashing_bx(x), NE(x)), bxsize(x, hx)) :
-        {T.l1_AttesterSlashing_sz(q, U32.add(i, 1), T.l1_AttesterSlashing_sz_back(i, acc, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), _)) == (AR(t), (SZA(1n+q, SL(t), s, acc), O.BNone{})) : Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>)}
-      %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>, Array.swap(O.Boxed<T.AttesterSlashing>, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), i, th_AttesterSlashing_bx(x)), (AR(t), O.BNone{}), swap_in(d, t, i, s, ei, pf, hd, hsd)) :
-        {T.l1_AttesterSlashing_sz(q, U32.add(i, 1), T.l1_AttesterSlashing_sz_ret(O.padd(acc, NE(x)), _)) == (AR(t), (SZA(1n+q, SL(t), s, acc), O.BNone{})) : Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>)}
+      %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(t), i, O.BNone{}), (AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), th_AttesterSlashing_bx(x)), swap_out(d, t, i, s, ei, pf, hd, hsd)) :
+        {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz(q, U32.add(i, 1), Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz_one(i, acc, _)) == (AR(t), (SZA(1n+q, SL(t), s, acc), O.BNone{})) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>)}
+      %Equal.sym(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32, FuluAttesterSlashing_e.AttesterSlashing_bx_size(th_AttesterSlashing_bx(x)), (th_AttesterSlashing_bx(x), NE(x)), bxsize(x, hx)) :
+        {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz(q, U32.add(i, 1), Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz_back(i, acc, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), _)) == (AR(t), (SZA(1n+q, SL(t), s, acc), O.BNone{})) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>)}
+      %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), i, th_AttesterSlashing_bx(x)), (AR(t), O.BNone{}), swap_in(d, t, i, s, ei, pf, hd, hsd)) :
+        {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz(q, U32.add(i, 1), Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz_ret(O.padd(acc, NE(x)), _)) == (AR(t), (SZA(1n+q, SL(t), s, acc), O.BNone{})) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>)}
       sz_go(q, d, t, U32.add(i, 1), 1n+s, n, O.padd(acc, NE(x)), inc(i, s, n, d, ei, hs, hn, hd),
         Equal.trans(Nat, Nat.add(1n+s, q), 1n+Nat.add(s, q), n, {==}, Equal.trans(Nat, 1n+Nat.add(s, q), Nat.add(s, 1n+q), n, Equal.sym(Nat, Nat.add(s, 1n+q), 1n+Nat.add(s, q), F.nat__add_succ(s, q)), ek)),
         pf, hd, hn, and_r(EOK(x), EOKS(q, SL(t), 1n+s), hok))
 
 # ---- the runtime's validity pass ------------------------------------------------------------------
 
-def bxvalid(+m: MB<EM.MW>, +h: {EOK(m) == True{} : Bool}) -> {T.AttesterSlashing_bx_valid(th_AttesterSlashing_bx(m)) == (th_AttesterSlashing_bx(m), True{}) : O.Boxed<T.AttesterSlashing> & Bool}:
+def bxvalid(+m: MB<EM.MW>, +h: {EOK(m) == True{} : Bool}) -> {FuluAttesterSlashing_e.AttesterSlashing_bx_valid(th_AttesterSlashing_bx(m)) == (th_AttesterSlashing_bx(m), True{}) : O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & Bool}:
   match m:
-    case MNone{}: Empty.absurd({T.AttesterSlashing_bx_valid(th_AttesterSlashing_bx(MNone{})) == (th_AttesterSlashing_bx(MNone{}), True{}) : O.Boxed<T.AttesterSlashing> & Bool}, F.logic__false_true(h))
+    case MNone{}: Empty.absurd({FuluAttesterSlashing_e.AttesterSlashing_bx_valid(th_AttesterSlashing_bx(MNone{})) == (th_AttesterSlashing_bx(MNone{}), True{}) : O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & Bool}, F.logic__false_true(h))
     case MSome{+w}:
-      %Equal.sym(T.AttesterSlashing & Bool, T.AttesterSlashing_valid(EM.TH(w)), (EM.TH(w), True{}), EM.validx(w, h)) :
-        {T.AttesterSlashing_bx_va_back(_) == (O.BSome{EM.TH(w), O.BNone{}}, True{}) : O.Boxed<T.AttesterSlashing> & Bool}
+      %Equal.sym(FuluAttesterSlashing_d.AttesterSlashing & Bool, FuluAttesterSlashing_e.AttesterSlashing_valid(EM.TH(w)), (EM.TH(w), True{}), EM.validx(w, h)) :
+        {FuluAttesterSlashing_e.AttesterSlashing_bx_va_back(_) == (O.BSome{EM.TH(w), O.BNone{}}, True{}) : O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & Bool}
       {==}
 
 law va_go:
@@ -325,7 +328,7 @@ law va_go:
   for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(n, VB.pw(d)) == True{} : Bool}
   for +hok: {EOKS(k, SL(t), s) == True{} : Bool}
-  {T.l1_AttesterSlashing_va(k, i, (AR(t), True{})) == (AR(t), True{}) : Array<O.Boxed<T.AttesterSlashing>> & Bool}
+  {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va(k, i, (AR(t), True{})) == (AR(t), True{}) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & Bool}
 def va_go(k, d, t, i, s, n, ei, ek, pf, hd, hn, hok):
   match k:
     case 0n: {==}
@@ -337,15 +340,15 @@ def va_go(k, d, t, i, s, n, ei, ek, pf, hd, hn, hok):
       +hsd = F.nat__lt_le_trans(s, n, VB.pw(d), hs, hn)
       +hx = and_l(EOK(x), EOKS(q, SL(t), 1n+s), hok)
       +his = F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hsd)
-      %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>, Array.swap(O.Boxed<T.AttesterSlashing>, AR(t), i, O.BNone{}), (AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), th_AttesterSlashing_bx(x)), swap_out(d, t, i, s, ei, pf, hd, hsd)) :
-        {T.l1_AttesterSlashing_va(q, U32.add(i, 1), T.l1_AttesterSlashing_va_one(i, True{}, _)) == (AR(t), True{}) : Array<O.Boxed<T.AttesterSlashing>> & Bool}
-      %Equal.sym(O.Boxed<T.AttesterSlashing> & Bool, T.AttesterSlashing_bx_valid(th_AttesterSlashing_bx(x)), (th_AttesterSlashing_bx(x), True{}), bxvalid(x, hx)) :
-        {T.l1_AttesterSlashing_va(q, U32.add(i, 1), T.l1_AttesterSlashing_va_back(i, True{}, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), _)) == (AR(t), True{}) : Array<O.Boxed<T.AttesterSlashing>> & Bool}
+      %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(t), i, O.BNone{}), (AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), th_AttesterSlashing_bx(x)), swap_out(d, t, i, s, ei, pf, hd, hsd)) :
+        {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va(q, U32.add(i, 1), Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va_one(i, True{}, _)) == (AR(t), True{}) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & Bool}
+      %Equal.sym(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & Bool, FuluAttesterSlashing_e.AttesterSlashing_bx_valid(th_AttesterSlashing_bx(x)), (th_AttesterSlashing_bx(x), True{}), bxvalid(x, hx)) :
+        {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va(q, U32.add(i, 1), Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va_back(i, True{}, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), _)) == (AR(t), True{}) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & Bool}
       %ei :
-        {T.l1_AttesterSlashing_va(q, U32.add(i, 1), (Array.set(O.Boxed<T.AttesterSlashing>, AR(F.array__upd(MB<EM.MW>, d, t, _, MNone{})), i, th_AttesterSlashing_bx(xat_l1_AttesterSlashing(SL(t), _))), True{})) == (AR(t), True{}) : Array<O.Boxed<T.AttesterSlashing>> & Bool}
-      %Equal.sym(Array<O.Boxed<T.AttesterSlashing>>, Array.set(O.Boxed<T.AttesterSlashing>, AR(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), MNone{})), i, th_AttesterSlashing_bx(xat_l1_AttesterSlashing(SL(t), U32.to_nat(i)))), AR(t),
+        {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va(q, U32.add(i, 1), (Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(F.array__upd(MB<EM.MW>, d, t, _, MNone{})), i, th_AttesterSlashing_bx(xat_l1_AttesterSlashing(SL(t), _))), True{})) == (AR(t), True{}) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & Bool}
+      %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>>, Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(F.array__upd(MB<EM.MW>, d, t, U32.to_nat(i), MNone{})), i, th_AttesterSlashing_bx(xat_l1_AttesterSlashing(SL(t), U32.to_nat(i)))), AR(t),
           amswap_back_l1_AttesterSlashing(d, t, i, MNone{}, xat_l1_AttesterSlashing(SL(t), U32.to_nat(i)), F.nat__lt_trans(d, 31n, 32n, hd, {==}), his, hx_at(d, t, U32.to_nat(i), pf, his), pf)) :
-        {T.l1_AttesterSlashing_va(q, U32.add(i, 1), (_, True{})) == (AR(t), True{}) : Array<O.Boxed<T.AttesterSlashing>> & Bool}
+        {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va(q, U32.add(i, 1), (_, True{})) == (AR(t), True{}) : Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & Bool}
       va_go(q, d, t, U32.add(i, 1), 1n+s, n, inc(i, s, n, d, ei, hs, hn, hd),
         Equal.trans(Nat, Nat.add(1n+s, q), 1n+Nat.add(s, q), n, {==}, Equal.trans(Nat, 1n+Nat.add(s, q), Nat.add(s, 1n+q), n, Equal.sym(Nat, Nat.add(s, 1n+q), 1n+Nat.add(s, q), F.nat__add_succ(s, q)), ek)),
         pf, hd, hn, and_r(EOK(x), EOKS(q, SL(t), 1n+s), hok))
@@ -365,16 +368,16 @@ def bxput(+m: MB<EM.MW>, +h: {EOK(m) == True{} : Bool}, +dd: Nat, +D: F.array__T
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, U32.to_nat(NE(m))))), VB.pw(dd)) == True{} : Bool}, +pf: {F.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(FPE(r, m), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(FPE(r, m)) : +List<U32>})
-    -> {T.AttesterSlashing_bx_putk(F.array__thaw(U32, D), X, th_AttesterSlashing_bx(m)) == (F.array__thaw(U32, PWE(m, dd, D, q, r)), (th_AttesterSlashing_bx(m), NE(m))) : Array<U32> & (O.Boxed<T.AttesterSlashing> & U32)}:
+    -> {FuluAttesterSlashing_e.AttesterSlashing_bx_putk(F.array__thaw(U32, D), X, th_AttesterSlashing_bx(m)) == (F.array__thaw(U32, PWE(m, dd, D, q, r)), (th_AttesterSlashing_bx(m), NE(m))) : Array<U32> & (O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32)}:
   match m:
-    case MNone{}: Empty.absurd({T.AttesterSlashing_bx_putk(F.array__thaw(U32, D), X, th_AttesterSlashing_bx(MNone{})) == (F.array__thaw(U32, PWE(MNone{}, dd, D, q, r)), (th_AttesterSlashing_bx(MNone{}), NE(MNone{}))) : Array<U32> & (O.Boxed<T.AttesterSlashing> & U32)}, F.logic__false_true(h))
+    case MNone{}: Empty.absurd({FuluAttesterSlashing_e.AttesterSlashing_bx_putk(F.array__thaw(U32, D), X, th_AttesterSlashing_bx(MNone{})) == (F.array__thaw(U32, PWE(MNone{}, dd, D, q, r)), (th_AttesterSlashing_bx(MNone{}), NE(MNone{}))) : Array<U32> & (O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32)}, F.logic__false_true(h))
     case MSome{+w}:
       +es = EM.szx(w, h)
       +hl2 = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{} : Bool}, U32.to_nat(EM.SZ(w)), VE2.LEN(EM.ENC(w)), es, hl)
       +hz2 = F.logic__subst(Nat, z => {VS.bt(Nat.add(z, WD.PADB(r, z)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(z, WD.PADB(r, z))) : +List<U32>}, U32.to_nat(EM.SZ(w)), VE2.LEN(EM.ENC(w)), es, hz)
-      %Equal.sym(Array<U32> & (T.AttesterSlashing & U32), T.AttesterSlashing_putk(F.array__thaw(U32, D), X, EM.TH(w)), (F.array__thaw(U32, EM.PUTX(w, dd, D, q, r)), (EM.TH(w), EM.SZ(w))),
+      %Equal.sym(Array<U32> & (FuluAttesterSlashing_d.AttesterSlashing & U32), FuluAttesterSlashing_e.AttesterSlashing_putk(F.array__thaw(U32, D), X, EM.TH(w)), (F.array__thaw(U32, EM.PUTX(w, dd, D, q, r)), (EM.TH(w), EM.SZ(w))),
           EM.putx(w, dd, D, X, q, r, e, hr, hd, pf, hl2, hz2, h)) :
-        {T.AttesterSlashing_bx_pk_back(_) == (F.array__thaw(U32, EM.PUTX(w, dd, D, q, r)), (O.BSome{EM.TH(w), O.BNone{}}, EM.SZ(w))) : Array<U32> & (O.Boxed<T.AttesterSlashing> & U32)}
+        {FuluAttesterSlashing_e.AttesterSlashing_bx_pk_back(_) == (F.array__thaw(U32, EM.PUTX(w, dd, D, q, r)), (O.BSome{EM.TH(w), O.BNone{}}, EM.SZ(w))) : Array<U32> & (O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32)}
       {==}
 
 def bxput_bytes(+m: MB<EM.MW>, +h: {EOK(m) == True{} : Bool}, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
@@ -699,11 +702,11 @@ def el_zero(+dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +cur: U
   +z0 = UW.inv_zero(B0, X0, LR, E, a, FPE(RX(Xe), x), UA.BYT(D), hX, hI, hfp, hE, VE2.win_el(P, y, R, A.quad(n), Z, FPE(RX(Xe), x), hpz))
   F.logic__subst(Nat, z => {VS.bt(FPE(RX(Xe), x), VS.bdr(z, UA.BYT(D))) == UW.ZB(FPE(RX(Xe), x)) : +List<U32>}, Nat.add(X0, a), Nat.add(A.quad(QX(Xe)), RX(Xe)), epos, z0)
 
-def ST(+D: F.array__Tree<U32>, +t: F.array__Tree<MB<EM.MW>>, +cur: U32) -> Array<U32> & (Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>)):
+def ST(+D: F.array__Tree<U32>, +t: F.array__Tree<MB<EM.MW>>, +cur: U32) -> Array<U32> & (Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>)):
   (F.array__thaw(U32, D), (AR(t), (cur, O.BNone{})))
 
 def RSX(+k: Nat, +t: F.array__Tree<MB<EM.MW>>, +s: Nat, +cur: U32, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat)
-    -> Array<U32> & (Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>)):
+    -> Array<U32> & (Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>)):
   (F.array__thaw(U32, WLM(k, SL(t), s, cur, dd, D, X, q, r)), (AR(t), (SZA(k, SL(t), s, cur), O.BNone{})))
 
 # One runtime step: offset s, then element s, then the element swapped back.
@@ -715,28 +718,28 @@ def step_rt(+j: Nat, +d: Nat, +t: F.array__Tree<MB<EM.MW>>, +i: U32, +s: Nat, +c
     +hlo: {Nat.is_le(Nat.add(Nat.add(s, q), WD.NWN(Nat.add(r, 4n))), VB.pw(dd)) == True{} : Bool},
     +hle: {Nat.is_le(Nat.add(QX(U32.add(X, cur)), WD.NWN(Nat.add(RX(U32.add(X, cur)), U32.to_nat(NE(xat_l1_AttesterSlashing(SL(t), s)))))), VB.pw(dd)) == True{} : Bool},
     +hz: {VS.bt(FPE(RX(U32.add(X, cur)), xat_l1_AttesterSlashing(SL(t), s)), VS.bdr(Nat.add(A.quad(QX(U32.add(X, cur))), RX(U32.add(X, cur))), UA.BYT(WD.W32X(r, dd, D, Nat.add(s, q), cur)))) == UW.ZB(FPE(RX(U32.add(X, cur)), xat_l1_AttesterSlashing(SL(t), s))) : +List<U32>},
-    +ih: {T.l1_AttesterSlashing_pv(j, U32.add(i, 1), X, ST(PWE(xat_l1_AttesterSlashing(SL(t), s), dd, WD.W32X(r, dd, D, Nat.add(s, q), cur), QX(U32.add(X, cur)), RX(U32.add(X, cur))), t, O.padd(cur, NE(xat_l1_AttesterSlashing(SL(t), s)))))
+    +ih: {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv(j, U32.add(i, 1), X, ST(PWE(xat_l1_AttesterSlashing(SL(t), s), dd, WD.W32X(r, dd, D, Nat.add(s, q), cur), QX(U32.add(X, cur)), RX(U32.add(X, cur))), t, O.padd(cur, NE(xat_l1_AttesterSlashing(SL(t), s)))))
             == (F.array__thaw(U32, WLM(j, SL(t), 1n+s, O.padd(cur, NE(xat_l1_AttesterSlashing(SL(t), s))), dd, PWE(xat_l1_AttesterSlashing(SL(t), s), dd, WD.W32X(r, dd, D, Nat.add(s, q), cur), QX(U32.add(X, cur)), RX(U32.add(X, cur))), X, q, r)),
-                (AR(t), (SZA(j, SL(t), 1n+s, O.padd(cur, NE(xat_l1_AttesterSlashing(SL(t), s)))), O.BNone{}))) : Array<U32> & (Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>))})
-    -> {T.l1_AttesterSlashing_pv(1n+j, i, X, ST(D, t, cur)) == (F.array__thaw(U32, WLM(1n+j, SL(t), s, cur, dd, D, X, q, r)), (AR(t), (SZA(1n+j, SL(t), s, cur), O.BNone{}))) : Array<U32> & (Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>))}:
+                (AR(t), (SZA(j, SL(t), 1n+s, O.padd(cur, NE(xat_l1_AttesterSlashing(SL(t), s)))), O.BNone{}))) : Array<U32> & (Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>))})
+    -> {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv(1n+j, i, X, ST(D, t, cur)) == (F.array__thaw(U32, WLM(1n+j, SL(t), s, cur, dd, D, X, q, r)), (AR(t), (SZA(1n+j, SL(t), s, cur), O.BNone{}))) : Array<U32> & (Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>))}:
   +x = xat_l1_AttesterSlashing(SL(t), s)
   +D1 = WD.W32X(r, dd, D, Nat.add(s, q), cur)
   +Xe = U32.add(X, cur)
-  %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>, Array.swap(O.Boxed<T.AttesterSlashing>, AR(t), i, O.BNone{}), (AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), th_AttesterSlashing_bx(x)), swap_out(d, t, i, s, ei, pf, hdl, hsd)) :
-    {T.l1_AttesterSlashing_pv(j, U32.add(i, 1), X, T.l1_AttesterSlashing_pv_one(i, X, cur, F.array__thaw(U32, D), _)) == RSX(1n+j, t, s, cur, dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>))}
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(t), i, O.BNone{}), (AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), th_AttesterSlashing_bx(x)), swap_out(d, t, i, s, ei, pf, hdl, hsd)) :
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv(j, U32.add(i, 1), X, Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv_one(i, X, cur, F.array__thaw(U32, D), _)) == RSX(1n+j, t, s, cur, dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>))}
   %Equal.sym(Array<U32>, O.w32(F.array__thaw(U32, D), AO(X, i), cur), F.array__thaw(U32, D1), WD.w32_any(dd, D, AO(X, i), Nat.add(s, q), r, cur, ep, hr, hd, hlo, pfD)) :
-    {T.l1_AttesterSlashing_pv(j, U32.add(i, 1), X, T.l1_AttesterSlashing_pv_placed(i, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), T.AttesterSlashing_bx_pvb(cur, T.AttesterSlashing_bx_putk(_, Xe, th_AttesterSlashing_bx(x))))) == RSX(1n+j, t, s, cur, dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>))}
-  %Equal.sym(Array<U32> & (O.Boxed<T.AttesterSlashing> & U32), T.AttesterSlashing_bx_putk(F.array__thaw(U32, D1), Xe, th_AttesterSlashing_bx(x)), (F.array__thaw(U32, PWE(x, dd, D1, QX(Xe), RX(Xe))), (th_AttesterSlashing_bx(x), NE(x))),
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv(j, U32.add(i, 1), X, Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv_placed(i, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), FuluAttesterSlashing_e.AttesterSlashing_bx_pvb(cur, FuluAttesterSlashing_e.AttesterSlashing_bx_putk(_, Xe, th_AttesterSlashing_bx(x))))) == RSX(1n+j, t, s, cur, dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>))}
+  %Equal.sym(Array<U32> & (O.Boxed<FuluAttesterSlashing_d.AttesterSlashing> & U32), FuluAttesterSlashing_e.AttesterSlashing_bx_putk(F.array__thaw(U32, D1), Xe, th_AttesterSlashing_bx(x)), (F.array__thaw(U32, PWE(x, dd, D1, QX(Xe), RX(Xe))), (th_AttesterSlashing_bx(x), NE(x))),
       bxput(x, hx, dd, D1, Xe, QX(Xe), RX(Xe), VC.split4(Xe), rx_lt(Xe), hd, hle, WD.w32x_perfect(r, dd, D, Nat.add(s, q), cur, pfD), hz)) :
-    {T.l1_AttesterSlashing_pv(j, U32.add(i, 1), X, T.l1_AttesterSlashing_pv_placed(i, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), T.AttesterSlashing_bx_pvb(cur, _))) == RSX(1n+j, t, s, cur, dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>))}
-  %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & O.Boxed<T.AttesterSlashing>, Array.swap(O.Boxed<T.AttesterSlashing>, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), i, th_AttesterSlashing_bx(x)), (AR(t), O.BNone{}), swap_in(d, t, i, s, ei, pf, hdl, hsd)) :
-    {T.l1_AttesterSlashing_pv(j, U32.add(i, 1), X, T.l1_AttesterSlashing_pv_ret(F.array__thaw(U32, PWE(x, dd, D1, QX(Xe), RX(Xe))), O.padd(cur, NE(x)), _)) == RSX(1n+j, t, s, cur, dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>))}
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv(j, U32.add(i, 1), X, Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv_placed(i, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), FuluAttesterSlashing_e.AttesterSlashing_bx_pvb(cur, _))) == RSX(1n+j, t, s, cur, dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>))}
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Array.swap(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(F.array__upd(MB<EM.MW>, d, t, s, MNone{})), i, th_AttesterSlashing_bx(x)), (AR(t), O.BNone{}), swap_in(d, t, i, s, ei, pf, hdl, hsd)) :
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv(j, U32.add(i, 1), X, Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv_ret(F.array__thaw(U32, PWE(x, dd, D1, QX(Xe), RX(Xe))), O.padd(cur, NE(x)), _)) == RSX(1n+j, t, s, cur, dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>))}
   ih
 
 def LLN(+n: Nat, +W: List<&2, MB<EM.MW>>) -> Nat: Nat.add(A.quad(n), BL(n, W, 0n))
 
 def RTQ(+k: Nat, +i: U32, +t: F.array__Tree<MB<EM.MW>>, +s: Nat, +cur: U32, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l1_AttesterSlashing_pv(k, i, X, ST(D, t, cur)) == RSX(k, t, s, cur, dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>))}
+  {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv(k, i, X, ST(D, t, cur)) == RSX(k, t, s, cur, dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>))}
 def BYQ(+k: Nat, +t: F.array__Tree<MB<EM.MW>>, +s: Nat, +n: Nat, +cur: U32, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +pad: Nat, +B0: +List<U32>, +LR: Nat) -> Data:
   {UA.BYT(WLM(k, SL(t), s, cur, dd, D, X, q, r)) == UW.SPL(B0, Nat.add(A.quad(q), r), VS.bt(LR, EIS(n, 0n, SL(t), n, pad))) : +List<U32>}
 def PFQ(+k: Nat, +t: F.array__Tree<MB<EM.MW>>, +s: Nat, +cur: U32, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
@@ -1007,7 +1010,7 @@ def TDM(t: F.array__Tree<MB<EM.MW>>) -> Nat:
 
 # The list object Seq{am(t), N} and its facts: a perfect mirror tree of depth < 31 holding the N
 # elements, N within the limit, every element's facts.
-def THL(+t: F.array__Tree<MB<EM.MW>>, +N: U32) -> T.l1_AttesterSlashing_Seq: T.l1_AttesterSlashing_Seq{AR(t), N}
+def THL(+t: F.array__Tree<MB<EM.MW>>, +N: U32) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq: Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{AR(t), N}
 def OKL(+t: F.array__Tree<MB<EM.MW>>, +N: U32) -> Bool:
   Bool.and(Nat.is_lt(TDM(t), 31n), Bool.and(F.array__perfect(MB<EM.MW>, TDM(t), t), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))),
     Bool.and(U32.is_le(N, 1), EOKS(U32.to_nat(N), SL(t), 0n)))))
@@ -1037,17 +1040,17 @@ def le_cap(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Boo
   okl_n(t, N, h)
 
 # The runtime's validity check of the list.
-def valid_l(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {T.l1_AttesterSlashing_valid(THL(t, N)) == (THL(t, N), True{}) : T.l1_AttesterSlashing_Seq & Bool}:
+def valid_l(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_valid(THL(t, N)) == (THL(t, N), True{}) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & Bool}:
   +d = TDM(t)
-  %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & U32, Array.size(O.Boxed<T.AttesterSlashing>, AR(t)), (AR(t), F.u32__pow2u(d)), amsize_l1_AttesterSlashing(d, t, okl_pf(t, N, h))) :
-    {T.l1_AttesterSlashing_va_cap(Bool.or(False{}, U32.is_le(N, 1)), N, _) == (THL(t, N), True{}) : T.l1_AttesterSlashing_Seq & Bool}
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32, Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(t)), (AR(t), F.u32__pow2u(d)), amsize_l1_AttesterSlashing(d, t, okl_pf(t, N, h))) :
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va_cap(Bool.or(False{}, U32.is_le(N, 1)), N, _) == (THL(t, N), True{}) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, 1), True{}, okl_lim(t, N, h)) :
-    {T.l1_AttesterSlashing_va_go(Bool.and(Bool.or(False{}, _), U32.is_le(N, F.u32__pow2u(d))), N, AR(t)) == (THL(t, N), True{}) : T.l1_AttesterSlashing_Seq & Bool}
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va_go(Bool.and(Bool.or(False{}, _), U32.is_le(N, F.u32__pow2u(d))), N, AR(t)) == (THL(t, N), True{}) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, F.u32__pow2u(d)), True{}, le_cap(t, N, h)) :
-    {T.l1_AttesterSlashing_va_go(Bool.and(True{}, _), N, AR(t)) == (THL(t, N), True{}) : T.l1_AttesterSlashing_Seq & Bool}
-  %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & Bool, T.l1_AttesterSlashing_va(U32.to_nat(N), 0, (AR(t), True{})), (AR(t), True{}),
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va_go(Bool.and(True{}, _), N, AR(t)) == (THL(t, N), True{}) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & Bool}
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & Bool, Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va(U32.to_nat(N), 0, (AR(t), True{})), (AR(t), True{}),
       va_go(U32.to_nat(N), d, t, 0, 0n, U32.to_nat(N), {==}, {==}, okl_pf(t, N, h), okl_d(t, N, h), okl_n(t, N, h), okl_e(t, N, h))) :
-    {T.l1_AttesterSlashing_va_fin(N, True{}, _) == (THL(t, N), True{}) : T.l1_AttesterSlashing_Seq & Bool}
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_va_fin(N, True{}, _) == (THL(t, N), True{}) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & Bool}
   {==}
 
 # The list's bytes: the offsets of its N elements, then their bytes.
@@ -1141,7 +1144,7 @@ def eisn(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +pad: Nat)
   bt_all(VE2.APP(ENCL(t, N), UW.ZB(pad)))
 
 def RTLb(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l1_AttesterSlashing_pvn_nz(b, F.array__thaw(U32, D), X, AR(t), N) == (F.array__thaw(U32, PUTLb(b, t, N, dd, D, X, q, r)), (THL(t, N), SZWb(b, t, N))) : Array<U32> & (T.l1_AttesterSlashing_Seq & U32)}
+  {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pvn_nz(b, F.array__thaw(U32, D), X, AR(t), N) == (F.array__thaw(U32, PUTLb(b, t, N, dd, D, X, q, r)), (THL(t, N), SZWb(b, t, N))) : Array<U32> & (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32)}
 def BYLb(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTLb(b, t, N, dd, D, X, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VE2.APP(ENCL(t, N), UW.ZB(WD.PADB(r, LL(t, N))))) : +List<U32>}
 def PFLb(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
@@ -1154,10 +1157,10 @@ def len_byt(+dd: Nat, +D: F.array__Tree<U32>, +pf: {F.array__perfect(U32, dd, D)
 
 # The runtime's non-empty write, from the loop.
 def putx_rt_f(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +rt: {T.l1_AttesterSlashing_pv(U32.to_nat(N), 0, X, ST(D, t, U32.mul(4, N))) == RSX(U32.to_nat(N), t, 0n, U32.mul(4, N), dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>))})
-    -> {T.l1_AttesterSlashing_pvn_nz(False{}, F.array__thaw(U32, D), X, AR(t), N) == (F.array__thaw(U32, PUTLb(False{}, t, N, dd, D, X, q, r)), (THL(t, N), SZWb(False{}, t, N))) : Array<U32> & (T.l1_AttesterSlashing_Seq & U32)}:
-  %Equal.sym(Array<U32> & (Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>)), T.l1_AttesterSlashing_pv(U32.to_nat(N), 0, X, ST(D, t, U32.mul(4, N))), RSX(U32.to_nat(N), t, 0n, U32.mul(4, N), dd, D, X, q, r), rt) :
-    {T.l1_AttesterSlashing_pvn_fin(N, _) == (F.array__thaw(U32, PUTLb(False{}, t, N, dd, D, X, q, r)), (THL(t, N), SZWb(False{}, t, N))) : Array<U32> & (T.l1_AttesterSlashing_Seq & U32)}
+    +rt: {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv(U32.to_nat(N), 0, X, ST(D, t, U32.mul(4, N))) == RSX(U32.to_nat(N), t, 0n, U32.mul(4, N), dd, D, X, q, r) : Array<U32> & (Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>))})
+    -> {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pvn_nz(False{}, F.array__thaw(U32, D), X, AR(t), N) == (F.array__thaw(U32, PUTLb(False{}, t, N, dd, D, X, q, r)), (THL(t, N), SZWb(False{}, t, N))) : Array<U32> & (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32)}:
+  %Equal.sym(Array<U32> & (Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>)), Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pv(U32.to_nat(N), 0, X, ST(D, t, U32.mul(4, N))), RSX(U32.to_nat(N), t, 0n, U32.mul(4, N), dd, D, X, q, r), rt) :
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pvn_fin(N, _) == (F.array__thaw(U32, PUTLb(False{}, t, N, dd, D, X, q, r)), (THL(t, N), SZWb(False{}, t, N))) : Array<U32> & (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32)}
   {==}
 
 # The writer of the list at X = 4 q + r, by the count being zero or not.
@@ -1208,15 +1211,15 @@ def putx_lb(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32, +eb: {U32.is_eq(N, 
 # The runtime's write, with its validity check.
 def putk_rt(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTLb(U32.is_eq(N, 0), t, N, dd, D, X, q, r))
-    -> {T.l1_AttesterSlashing_putk(F.array__thaw(U32, D), X, THL(t, N)) == (F.array__thaw(U32, PUTL(t, N, dd, D, X, q, r)), (THL(t, N), SZW(t, N))) : Array<U32> & (T.l1_AttesterSlashing_Seq & U32)}:
-  %Equal.sym(T.l1_AttesterSlashing_Seq & Bool, T.l1_AttesterSlashing_valid(THL(t, N)), (THL(t, N), True{}), valid_l(t, N, h)) :
-    {T.l1_AttesterSlashing_pk(F.array__thaw(U32, D), X, _) == (F.array__thaw(U32, PUTL(t, N, dd, D, X, q, r)), (THL(t, N), SZW(t, N))) : Array<U32> & (T.l1_AttesterSlashing_Seq & U32)}
+    -> {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_putk(F.array__thaw(U32, D), X, THL(t, N)) == (F.array__thaw(U32, PUTL(t, N, dd, D, X, q, r)), (THL(t, N), SZW(t, N))) : Array<U32> & (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32)}:
+  %Equal.sym(Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & Bool, Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_valid(THL(t, N)), (THL(t, N), True{}), valid_l(t, N, h)) :
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_pk(F.array__thaw(U32, D), X, _) == (F.array__thaw(U32, PUTL(t, N, dd, D, X, q, r)), (THL(t, N), SZW(t, N))) : Array<U32> & (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32)}
   rtb
 
 # ---- the list's encoder window: the interface ------------------------------------------------------
 
 def RTL(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l1_AttesterSlashing_putk(F.array__thaw(U32, D), X, THL(t, N)) == (F.array__thaw(U32, PUTL(t, N, dd, D, X, q, r)), (THL(t, N), SZW(t, N))) : Array<U32> & (T.l1_AttesterSlashing_Seq & U32)}
+  {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_putk(F.array__thaw(U32, D), X, THL(t, N)) == (F.array__thaw(U32, PUTL(t, N, dd, D, X, q, r)), (THL(t, N), SZW(t, N))) : Array<U32> & (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32)}
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
 # (and the zeros to the end of the last word) into D's, and whose tree is perfect.
@@ -1283,20 +1286,20 @@ def SZSb(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32) -> U32:
 def SZS(+t: F.array__Tree<MB<EM.MW>>, +N: U32) -> U32: SZSb(U32.is_eq(N, 0), t, N)
 
 def sizexb(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool})
-    -> {T.l1_AttesterSlashing_sz_nz(b, AR(t), N) == (THL(t, N), SZSb(b, t, N)) : T.l1_AttesterSlashing_Seq & U32}:
+    -> {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz_nz(b, AR(t), N) == (THL(t, N), SZSb(b, t, N)) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32}:
   match b:
     case True{}: {==}
     case False{}:
-      %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & (U32 & O.Boxed<T.AttesterSlashing>), T.l1_AttesterSlashing_sz(U32.to_nat(N), 0, (AR(t), (0, O.BNone{}))), (AR(t), (SZA(U32.to_nat(N), SL(t), 0n, 0), O.BNone{})),
+      %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & (U32 & O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>), Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz(U32.to_nat(N), 0, (AR(t), (0, O.BNone{}))), (AR(t), (SZA(U32.to_nat(N), SL(t), 0n, 0), O.BNone{})),
           sz_go(U32.to_nat(N), TDM(t), t, 0, 0n, U32.to_nat(N), 0, {==}, {==}, okl_pf(t, N, h), okl_d(t, N, h), okl_n(t, N, h), okl_e(t, N, h))) :
-        {T.l1_AttesterSlashing_sz_fin(N, _) == (THL(t, N), SZSb(False{}, t, N)) : T.l1_AttesterSlashing_Seq & U32}
+        {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz_fin(N, _) == (THL(t, N), SZSb(False{}, t, N)) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32}
       {==}
 
-def sizel(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {T.l1_AttesterSlashing_size(THL(t, N)) == (THL(t, N), SZS(t, N)) : T.l1_AttesterSlashing_Seq & U32}:
-  %Equal.sym(Array<O.Boxed<T.AttesterSlashing>> & U32, Array.size(O.Boxed<T.AttesterSlashing>, AR(t)), (AR(t), F.u32__pow2u(TDM(t))), amsize_l1_AttesterSlashing(TDM(t), t, okl_pf(t, N, h))) :
-    {T.l1_AttesterSlashing_sz_cap(N, _) == (THL(t, N), SZS(t, N)) : T.l1_AttesterSlashing_Seq & U32}
+def sizel(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKL(t, N) == True{} : Bool}) -> {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_size(THL(t, N)) == (THL(t, N), SZS(t, N)) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32}:
+  %Equal.sym(Array<O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>> & U32, Array.size(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, AR(t)), (AR(t), F.u32__pow2u(TDM(t))), amsize_l1_AttesterSlashing(TDM(t), t, okl_pf(t, N, h))) :
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz_cap(N, _) == (THL(t, N), SZS(t, N)) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, F.u32__pow2u(TDM(t))), True{}, le_cap(t, N, h)) :
-    {T.l1_AttesterSlashing_sz_ok(_, AR(t), N) == (THL(t, N), SZS(t, N)) : T.l1_AttesterSlashing_Seq & U32}
+    {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_sz_ok(_, AR(t), N) == (THL(t, N), SZS(t, N)) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32}
   sizexb(U32.is_eq(N, 0), t, N, h)
 
 def szsb_val(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL(t, N) == True{} : Bool}, +kx: Nat, +ek: {kx == 30n : Nat},
@@ -1450,7 +1453,7 @@ def pflb(+b: Bool, +t: F.array__Tree<MB<EM.MW>>, +N: U32, +dd: Nat, +D: F.array_
 type MW is Data:
   MW{t: F.array__Tree<MB<EM.MW>>, N: U32}
 
-def TH(m: MW) -> T.l1_AttesterSlashing_Seq:
+def TH(m: MW) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq:
   match m:
     case MW{+t, +N}: THL(t, N)
 # A valid object: the list's facts, and its bytes within 2^30.
@@ -1515,7 +1518,7 @@ def hzx(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +q: Nat, +r: Nat, +D: F.array__Tr
   F.logic__subst(Nat, z => {VS.bt(Nat.add(z, WD.PADB(r, z)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(z, WD.PADB(r, z))) : +List<U32>}, VE2.LEN(ENCL(t, N)), LL(t, N), len_encl(t, N), hz)
 
 def RTX(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +dd: Nat, +D: F.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l1_AttesterSlashing_putk(F.array__thaw(U32, D), X, THL(t, N)) == (F.array__thaw(U32, PUTL(t, N, dd, D, XQ(q, r), q, r)), (THL(t, N), SZS(t, N))) : Array<U32> & (T.l1_AttesterSlashing_Seq & U32)}
+  {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_putk(F.array__thaw(U32, D), X, THL(t, N)) == (F.array__thaw(U32, PUTL(t, N, dd, D, XQ(q, r), q, r)), (THL(t, N), SZS(t, N))) : Array<U32> & (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32)}
 def BYX(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +dd: Nat, +D: F.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL(t, N, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VE2.APP(ENCL(t, N), UW.ZB(WD.PADB(r, VE2.LEN(ENCL(t, N)))))) : +List<U32>}
 
@@ -1532,9 +1535,9 @@ def go(+t: F.array__Tree<MB<EM.MW>>, +N: U32, +h: {OKT(t, N) == True{} : Bool}, 
   +rt = PA(RTL(t, N, dd, D, XQ(q, r), q, r), DK.P2(BYLb(b, t, N, dd, D, XQ(q, r), q, r), PFLb(b, t, N, dd, D, XQ(q, r), q, r)), g)
   +g2 = PB(RTL(t, N, dd, D, XQ(q, r), q, r), DK.P2(BYLb(b, t, N, dd, D, XQ(q, r), q, r), PFLb(b, t, N, dd, D, XQ(q, r), q, r)), g)
   +by = PA(BYLb(b, t, N, dd, D, XQ(q, r), q, r), PFLb(b, t, N, dd, D, XQ(q, r), q, r), g2)
-  +rt2 = F.logic__subst(U32, z => {T.l1_AttesterSlashing_putk(F.array__thaw(U32, D), z, THL(t, N)) == (F.array__thaw(U32, PUTL(t, N, dd, D, XQ(q, r), q, r)), (THL(t, N), SZW(t, N))) : Array<U32> & (T.l1_AttesterSlashing_Seq & U32)},
+  +rt2 = F.logic__subst(U32, z => {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_putk(F.array__thaw(U32, D), z, THL(t, N)) == (F.array__thaw(U32, PUTL(t, N, dd, D, XQ(q, r), q, r)), (THL(t, N), SZW(t, N))) : Array<U32> & (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32)},
     XQ(q, r), X, Equal.sym(U32, X, XQ(q, r), ex), rt)
-  +rt3 = F.logic__subst(U32, z => {T.l1_AttesterSlashing_putk(F.array__thaw(U32, D), X, THL(t, N)) == (F.array__thaw(U32, PUTL(t, N, dd, D, XQ(q, r), q, r)), (THL(t, N), z)) : Array<U32> & (T.l1_AttesterSlashing_Seq & U32)},
+  +rt3 = F.logic__subst(U32, z => {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_putk(F.array__thaw(U32, D), X, THL(t, N)) == (F.array__thaw(U32, PUTL(t, N, dd, D, XQ(q, r), q, r)), (THL(t, N), z)) : Array<U32> & (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32)},
     SZW(t, N), SZS(t, N), eqsz(t, N, h), rt2)
   +by2 = F.logic__subst(Nat, z => {UA.BYT(PUTL(t, N, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VE2.APP(ENCL(t, N), UW.ZB(WD.PADB(r, z)))) : +List<U32>},
     LL(t, N), VE2.LEN(ENCL(t, N)), Equal.sym(Nat, VE2.LEN(ENCL(t, N)), LL(t, N), len_encl(t, N)), by)
@@ -1556,7 +1559,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.l1_AttesterSlashing_putk(F.array__thaw(U32, D), X, TH(m)) == (F.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (T.l1_AttesterSlashing_Seq & U32)}
+  {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_putk(F.array__thaw(U32, D), X, TH(m)) == (F.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW{+t, +N}: PA(RTX(t, N, dd, D, X, q, r), BYX(t, N, dd, D, q, r), go(t, N, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hz))
@@ -1603,7 +1606,7 @@ def szx(m, hok):
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.l1_AttesterSlashing_size(TH(m)) == (TH(m), SZ(m)) : T.l1_AttesterSlashing_Seq & U32}
+  {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_size(TH(m)) == (TH(m), SZ(m)) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & U32}
 def sizex(m, hok):
   match m:
     case MW{+t, +N}: sizel(t, N, ok_l(t, N, hok))
@@ -1611,7 +1614,7 @@ def sizex(m, hok):
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.l1_AttesterSlashing_valid(TH(m)) == (TH(m), True{}) : T.l1_AttesterSlashing_Seq & Bool}
+  {Fulu_list_AttesterSlashing_1_e.l1_AttesterSlashing_valid(TH(m)) == (TH(m), True{}) : Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq & Bool}
 def validx(m, hok):
   match m:
     case MW{+t, +N}: valid_l(t, N, ok_l(t, N, hok))

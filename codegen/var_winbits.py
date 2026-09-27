@@ -33,6 +33,8 @@ def outputs(no_big=False):
 
 def main():
     out = outputs('--no-big' in sys.argv)
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

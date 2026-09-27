@@ -1,6 +1,7 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes4_def_generated.bend as FuluBytes4_d
+import ../../types/FuluBytes4_encode_ssz_generated.bend as FuluBytes4_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -27,9 +28,9 @@ import ./vuwf3_b4.bend as UF3
 def put_b4(+dd: Nat, +D: FD.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
     +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(1n, P), VB.pw(dd)) == True{} : Bool}, +x0: U32)
-    -> {T.b4_put(FD.array__thaw(U32, D), pos, T.Bytes4{x0}) == FD.array__thaw(U32, VF.updv([x0], dd, D, P)) : Array<U32>}:
+    -> {FuluBytes4_e.b4_put(FD.array__thaw(U32, D), pos, FuluBytes4_d.Bytes4{x0}) == FD.array__thaw(U32, VF.updv([x0], dd, D, P)) : Array<U32>}:
   %Equal.sym(U32, U32.and(pos, 3), 0, VF.al_3(pos, P, e)) :
-    {T.b4_pwd(U32.is_eq(_, 0), _, FD.array__thaw(U32, D), U32.shrn(pos, 2n), x0) == FD.array__thaw(U32, VF.updv([x0], dd, D, P)) : Array<U32>}
+    {FuluBytes4_e.b4_pwd(U32.is_eq(_, 0), _, FD.array__thaw(U32, D), U32.shrn(pos, 2n), x0) == FD.array__thaw(U32, VF.updv([x0], dd, D, P)) : Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, FD.array__thaw(U32, D), U32.add(U32.shrn(pos, 2n), 0), x0), FD.array__thaw(U32, FD.array__upd(U32, dd, D, P, x0)), VB.set_at(dd, D, U32.shrn(pos, 2n), 0, P, x0, VF.al_q(pos, P, e), VB.lt32(dd, FD.nat__lt_trans(dd, 29n, 31n, hdd, {==})), VF.in_lt(0n, 1n, P, VB.pw(dd), {==}, hb), pf)) :
     {_ == FD.array__thaw(U32, VF.updv([x0], dd, D, P)) : Array<U32>}
   {==}
@@ -56,14 +57,14 @@ def b4x_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +w0: U32, +
 # T.b4_put at any byte position X = 4 q + r.
 def b4_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +w0: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 4n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hz: {VS.bt(4n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(4n) : +List<U32>})
-    -> {T.b4_put(FD.array__thaw(U32, D), X, T.Bytes4{w0}) == FD.array__thaw(U32, PX_b4(r, dd, D, q, w0)) : Array<U32>}:
+    -> {FuluBytes4_e.b4_put(FD.array__thaw(U32, D), X, FuluBytes4_d.Bytes4{w0}) == FD.array__thaw(U32, PX_b4(r, dd, D, q, w0)) : Array<U32>}:
   match r:
     case 0n: put_b4(dd, D, X, q, FD.logic__subst(Nat, z => {U32.to_nat(X) == z : Nat}, Nat.add(A.quad(q), 0n), A.quad(q), FD.nat__add_zero(A.quad(q)), e), hd, pf,
       FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(q, 1n), Nat.add(1n, q), FD.nat__add_comm(q, 1n), hl), w0)
     case 1n: UF1.putu_b4(dd, D, X, q, w0, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 1n, VB.pw(dd), hl), pf, hz)
     case 2n: UF2.putu_b4(dd, D, X, q, w0, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 1n, VB.pw(dd), hl), pf, hz)
     case 3n: UF3.putu_b4(dd, D, X, q, w0, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 1n, VB.pw(dd), hl), pf, hz)
-    case 4n+ +t: Empty.absurd({T.b4_put(FD.array__thaw(U32, D), X, T.Bytes4{w0}) == FD.array__thaw(U32, PX_b4(4n+t, dd, D, q, w0)) : Array<U32>}, FD.nat__lt_zero_absurd(t, hr))
+    case 4n+ +t: Empty.absurd({FuluBytes4_e.b4_put(FD.array__thaw(U32, D), X, FuluBytes4_d.Bytes4{w0}) == FD.array__thaw(U32, PX_b4(4n+t, dd, D, q, w0)) : Array<U32>}, FD.nat__lt_zero_absurd(t, hr))
 
 # Its bytes: the words' limbs at X, when the 4 bytes there were zero.
 def b4_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +w0: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},

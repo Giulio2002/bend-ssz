@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
+import ../../types/FuluExecutionPayloadHeader_decode_ssz_generated.bend as FuluExecutionPayloadHeader_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as F
@@ -733,12 +734,12 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {DC.CHK(t, n) == False{} : Bool}
-  {T.ExecutionPayloadHeader_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.ExecutionPayloadHeader>}
+  {FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.ExecutionPayloadHeader_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, pf, hd, hn)) :
-    {T.ExecutionPayloadHeader_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.ExecutionPayloadHeader>}
+  %Equal.sym(B.Buf & Bool, FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, pf, hd, hn)) :
+    {FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>}
   %Equal.sym(Bool, DC.CHK(t, n), False{}, hchk) :
-    {T.ExecutionPayloadHeader_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.ExecutionPayloadHeader>}
+    {FuluExecutionPayloadHeader_r.ExecutionPayloadHeader_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluExecutionPayloadHeader_d.ExecutionPayloadHeader>}
   {==}
 
 # ---- the window's bytes (for nesting) ------------------------------------------------------

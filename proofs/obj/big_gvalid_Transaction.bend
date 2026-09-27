@@ -3,7 +3,6 @@ import ../compact/found.bend as F
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ./cform.bend as CF

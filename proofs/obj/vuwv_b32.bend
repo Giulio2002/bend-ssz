@@ -1,6 +1,7 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBytes32_encode_ssz_generated.bend as FuluBytes32_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -46,14 +47,14 @@ def b32x_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +w0: U32, 
 # T.b32_put at any byte position X = 4 q + r.
 def b32_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 32n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hz: {VS.bt(32n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(32n) : +List<U32>})
-    -> {T.b32_put(FD.array__thaw(U32, D), X, T.Bytes32{w0, w1, w2, w3, w4, w5, w6, w7}) == FD.array__thaw(U32, PX_b32(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7)) : Array<U32>}:
+    -> {FuluBytes32_e.b32_put(FD.array__thaw(U32, D), X, FuluBytes32_d.Bytes32{w0, w1, w2, w3, w4, w5, w6, w7}) == FD.array__thaw(U32, PX_b32(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7)) : Array<U32>}:
   match r:
     case 0n: VBF.put_b32(dd, D, X, q, FD.logic__subst(Nat, z => {U32.to_nat(X) == z : Nat}, Nat.add(A.quad(q), 0n), A.quad(q), FD.nat__add_zero(A.quad(q)), e), hd, pf,
       FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(q, 8n), Nat.add(8n, q), FD.nat__add_comm(q, 8n), hl), w0, w1, w2, w3, w4, w5, w6, w7)
     case 1n: UF1.putu_b32(dd, D, X, q, w0, w1, w2, w3, w4, w5, w6, w7, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 8n, VB.pw(dd), hl), pf, hz)
     case 2n: UF2.putu_b32(dd, D, X, q, w0, w1, w2, w3, w4, w5, w6, w7, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 8n, VB.pw(dd), hl), pf, hz)
     case 3n: UF3.putu_b32(dd, D, X, q, w0, w1, w2, w3, w4, w5, w6, w7, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 8n, VB.pw(dd), hl), pf, hz)
-    case 4n+ +t: Empty.absurd({T.b32_put(FD.array__thaw(U32, D), X, T.Bytes32{w0, w1, w2, w3, w4, w5, w6, w7}) == FD.array__thaw(U32, PX_b32(4n+t, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7)) : Array<U32>}, FD.nat__lt_zero_absurd(t, hr))
+    case 4n+ +t: Empty.absurd({FuluBytes32_e.b32_put(FD.array__thaw(U32, D), X, FuluBytes32_d.Bytes32{w0, w1, w2, w3, w4, w5, w6, w7}) == FD.array__thaw(U32, PX_b32(4n+t, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7)) : Array<U32>}, FD.nat__lt_zero_absurd(t, hr))
 
 # Its bytes: the words' limbs at X, when the 32 bytes there were zero.
 def b32_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},

@@ -1,7 +1,10 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluAttesterSlashing_def_generated.bend as FuluAttesterSlashing_d
+import ../../types/FuluAttesterSlashing_decode_ssz_generated.bend as FuluAttesterSlashing_r
+import ../../types/Fulu_list_AttesterSlashing_1_def_generated.bend as Fulu_list_AttesterSlashing_1_d
+import ../../types/Fulu_list_AttesterSlashing_1_decode_ssz_generated.bend as Fulu_list_AttesterSlashing_1_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -163,14 +166,14 @@ def rdo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
 def ewl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +acc: Bool, +a: U32, +b: U32, +ok: Bool, +e: {Bool.and(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len))) == ok : Bool})
-    -> {T.l1_AttesterSlashing_ew(ok, BF(t, n), off, a, b) == (BF(t, n), EW(ok, CH.CHKw(t, Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a)))) : B.Buf & Bool}:
+    -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_ew(ok, BF(t, n), off, a, b) == (BF(t, n), EW(ok, CH.CHKw(t, Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a)))) : B.Buf & Bool}:
   match ok:
     case False{}: {==}
     case True{}:
       +r = and_r(acc, Bool.and(U32.is_le(a, b), U32.is_le(b, len)), e)
       +hab = le_nat(a, b, and_l(U32.is_le(a, b), U32.is_le(b, len), r))
       +hbl = le_nat(b, len, and_r(U32.is_le(a, b), U32.is_le(b, len), r))
-      %Equal.sym(B.Buf & Bool, T.AttesterSlashing_ok(BF(t, n), U32.add(off, a), U32.sub(b, a)), (BF(t, n), CH.CHKw(t, Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a))),
+      %Equal.sym(B.Buf & Bool, FuluAttesterSlashing_r.AttesterSlashing_ok(BF(t, n), U32.add(off, a), U32.sub(b, a)), (BF(t, n), CH.CHKw(t, Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a))),
           CH.ok_evalw(d, t, n, Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a), eoj(d, t, n, x, off, len, eo, hd, hw, pf, a, FD.nat__le_trans(U32.to_nat(a), U32.to_nat(b), U32.to_nat(len), hab, hbl)), hd,
             hwj(d, t, n, x, off, len, eo, hd, hw, pf, a, b, hab, hbl), pf)) :
         {_ == (BF(t, n), CH.CHKw(t, Nat.add(U32.to_nat(a), x), U32.add(off, a), U32.sub(b, a))) : B.Buf & Bool}
@@ -191,24 +194,24 @@ def hc_small(+v: U32, +len: U32, +h: {Nat.is_lt(U32.to_nat(len), 4n) == True{} :
 def walk1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hf: {Nat.is_le(Nat.add(4n, 0n), U32.to_nat(len)) == True{} : Bool})
-    -> {T.l1_AttesterSlashing_ev(0n, 0, 1, off, len, T.l1_AttesterSlashing_ee(True{}, off, len, O0(t, x), T.l1_AttesterSlashing_next(U32.is_eq(1, 1), BF(t, n), off, len, 0))) == (BF(t, n), AC1_1(t, x, off, len)) : B.Buf & Bool}:
-  %Equal.sym(B.Buf & Bool, T.l1_AttesterSlashing_ew(Bool.and(True{}, Bool.and(U32.is_le(O0(t, x), len), U32.is_le(len, len))), BF(t, n), off, O0(t, x), len), (BF(t, n), EW(Bool.and(True{}, Bool.and(U32.is_le(O0(t, x), len), U32.is_le(len, len))), D1_0(t, x, off, len))), ewl(d, t, n, x, off, len, eo, hd, hw, pf, True{}, O0(t, x), len, Bool.and(True{}, Bool.and(U32.is_le(O0(t, x), len), U32.is_le(len, len))), {==})) :
-    {T.l1_AttesterSlashing_ev(0n, 0, 1, off, len, T.l1_AttesterSlashing_eb(len, O.and_pair(True{}, _))) == (BF(t, n), AC1_1(t, x, off, len)) : B.Buf & Bool}
+    -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_ev(0n, 0, 1, off, len, Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_ee(True{}, off, len, O0(t, x), Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_next(U32.is_eq(1, 1), BF(t, n), off, len, 0))) == (BF(t, n), AC1_1(t, x, off, len)) : B.Buf & Bool}:
+  %Equal.sym(B.Buf & Bool, Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_ew(Bool.and(True{}, Bool.and(U32.is_le(O0(t, x), len), U32.is_le(len, len))), BF(t, n), off, O0(t, x), len), (BF(t, n), EW(Bool.and(True{}, Bool.and(U32.is_le(O0(t, x), len), U32.is_le(len, len))), D1_0(t, x, off, len))), ewl(d, t, n, x, off, len, eo, hd, hw, pf, True{}, O0(t, x), len, Bool.and(True{}, Bool.and(U32.is_le(O0(t, x), len), U32.is_le(len, len))), {==})) :
+    {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_ev(0n, 0, 1, off, len, Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_eb(len, O.and_pair(True{}, _))) == (BF(t, n), AC1_1(t, x, off, len)) : B.Buf & Bool}
   {==}
 
 def walkq(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +q: Nat, +eq: {NQ(t, x) == q : Nat}, +h4: {Nat.is_le(4n, U32.to_nat(O0(t, x))) == True{} : Bool},
     +hq: {Nat.is_le(q, 1n) == True{} : Bool}, +e3: {U32.and(O0(t, x), 3) == 0 : U32}, +hfl: {Nat.is_le(U32.to_nat(O0(t, x)), U32.to_nat(len)) == True{} : Bool})
-    -> {T.l1_AttesterSlashing_first(True{}, BF(t, n), off, len, O0(t, x)) == (BF(t, n), LOOP(q, t, x, off, len)) : B.Buf & Bool}:
+    -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_first(True{}, BF(t, n), off, len, O0(t, x)) == (BF(t, n), LOOP(q, t, x, off, len)) : B.Buf & Bool}:
   match q:
-    case 0n: Empty.absurd({T.l1_AttesterSlashing_first(True{}, BF(t, n), off, len, O0(t, x)) == (BF(t, n), LOOP(0n, t, x, off, len)) : B.Buf & Bool}, FD.logic__false_true(FD.logic__subst(Nat, z => {Nat.is_le(4n, z) == True{} : Bool}, U32.to_nat(O0(t, x)), 0n, Equal.trans(Nat, U32.to_nat(O0(t, x)), Nat.add(A.quad(NQ(t, x)), 0n), 0n, e4q(t, x, e3), Equal.cong(Nat, Nat, z => Nat.add(A.quad(z), 0n), NQ(t, x), 0n, eq)), h4)))
+    case 0n: Empty.absurd({Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_first(True{}, BF(t, n), off, len, O0(t, x)) == (BF(t, n), LOOP(0n, t, x, off, len)) : B.Buf & Bool}, FD.logic__false_true(FD.logic__subst(Nat, z => {Nat.is_le(4n, z) == True{} : Bool}, U32.to_nat(O0(t, x)), 0n, Equal.trans(Nat, U32.to_nat(O0(t, x)), Nat.add(A.quad(NQ(t, x)), 0n), 0n, e4q(t, x, e3), Equal.cong(Nat, Nat, z => Nat.add(A.quad(z), 0n), NQ(t, x), 0n, eq)), h4)))
     case 1n:
       +em = FD.u32__injective(U32.shrn(O0(t, x), 2n), 1, eq)
       %Equal.sym(U32, U32.shrn(O0(t, x), 2n), 1, em) :
-        {T.l1_AttesterSlashing_ev(U32.to_nat(U32.sub(_, 1)), 0, _, off, len, T.l1_AttesterSlashing_ee(True{}, off, len, O0(t, x), T.l1_AttesterSlashing_next(U32.is_eq(1, _), BF(t, n), off, len, 0))) == (BF(t, n), AC1_1(t, x, off, len)) : B.Buf & Bool}
+        {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_ev(U32.to_nat(U32.sub(_, 1)), 0, _, off, len, Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_ee(True{}, off, len, O0(t, x), Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_next(U32.is_eq(1, _), BF(t, n), off, len, 0))) == (BF(t, n), AC1_1(t, x, off, len)) : B.Buf & Bool}
       walk1(d, t, n, x, off, len, eo, hd, hw, pf, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, U32.to_nat(O0(t, x)), Nat.add(4n, 0n), Equal.trans(Nat, U32.to_nat(O0(t, x)), Nat.add(A.quad(NQ(t, x)), 0n), Nat.add(4n, 0n), e4q(t, x, e3), Equal.cong(Nat, Nat, z => Nat.add(A.quad(z), 0n), NQ(t, x), 1n, eq)), hfl))
-    case 2n+r: Empty.absurd({T.l1_AttesterSlashing_first(True{}, BF(t, n), off, len, O0(t, x)) == (BF(t, n), LOOP(2n+r, t, x, off, len)) : B.Buf & Bool}, FD.logic__false_true(hq))
+    case 2n+r: Empty.absurd({Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_first(True{}, BF(t, n), off, len, O0(t, x)) == (BF(t, n), LOOP(2n+r, t, x, off, len)) : B.Buf & Bool}, FD.logic__false_true(hq))
 
 def nz1g(+len: U32, +ez: {U32.is_eq(len, 0) == False{} : Bool}, +k: Nat, +ek: {U32.to_nat(len) == k : Nat}) -> {Nat.is_le(1n, k) == True{} : Bool}:
   match k:
@@ -220,7 +223,7 @@ def nz1(+len: U32, +ez: {U32.is_eq(len, 0) == False{} : Bool}) -> {Nat.is_le(1n,
 def okh(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: Bool, +eh: {HC(t, x, len) == hb : Bool})
-    -> {T.l1_AttesterSlashing_first(hb, BF(t, n), off, len, O0(t, x)) == (BF(t, n), HK(hb, t, x, off, len)) : B.Buf & Bool}:
+    -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_first(hb, BF(t, n), off, len, O0(t, x)) == (BF(t, n), HK(hb, t, x, off, len)) : B.Buf & Bool}:
   match hb:
     case False{}: {==}
     case True{}:
@@ -234,7 +237,7 @@ def okh(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
 def ok4(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h1: {Nat.is_le(1n, U32.to_nat(len)) == True{} : Bool}, +s: Bool, +es: {U32.is_lt(len, 4) == s : Bool})
-    -> {T.l1_AttesterSlashing_ok_nz(False{}, BF(t, n), off, len) == (BF(t, n), L4(s, t, x, off, len)) : B.Buf & Bool}:
+    -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_ok_nz(False{}, BF(t, n), off, len) == (BF(t, n), L4(s, t, x, off, len)) : B.Buf & Bool}:
   match s:
     case True{}:
       +hl4 = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_lt(len, 4), Nat.is_lt(U32.to_nat(len), 4n), VR.lt_u32(len, 4), es)
@@ -243,23 +246,23 @@ def ok4(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
           FD.nat__lt_le_trans(x, 1n+x, Nat.add(U32.to_nat(len), x), FD.nat__lt_succ(x), Order.add_right(1n, U32.to_nat(len), x, h1))), hw))
       +V = UR.RWW(d, t, off)
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), off), (BF(t, n), V), UR.rd_lt(d, t, n, off, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hx)) :
-        {T.l1_AttesterSlashing_head(len, off, _) == (BF(t, n), False{}) : B.Buf & Bool}
+        {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_head(len, off, _) == (BF(t, n), False{}) : B.Buf & Bool}
       %Equal.sym(Bool, Bool.and(Bool.and(U32.is_eq(U32.and(V, 3), 0), U32.is_le(V, len)), Bool.and(U32.is_le(4, V), U32.is_le(U32.shrn(V, 2n), 1))), False{},
           hc_small(V, len, hl4, U32.is_eq(U32.and(V, 3), 0), {==}, U32.is_le(V, len), {==}, U32.is_le(4, V), {==})) :
-        {T.l1_AttesterSlashing_first(_, BF(t, n), off, len, V) == (BF(t, n), False{}) : B.Buf & Bool}
+        {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_first(_, BF(t, n), off, len, V) == (BF(t, n), False{}) : B.Buf & Bool}
       {==}
     case False{}:
       +h4 = FD.logic__subst(Bool, z => {z == False{} : Bool}, U32.is_lt(len, 4), Nat.is_lt(U32.to_nat(len), 4n), VR.lt_u32(len, 4), es)
       +hl = FD.nat__not_lt_le(U32.to_nat(len), 4n, h4)
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), off), (BF(t, n), O0(t, x)), UR.rwx(d, t, n, off, x, eo, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf,
           FD.nat__le_trans(Nat.add(x, 4n), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.add_left(x, 4n, U32.to_nat(len), hl), hw))) :
-        {T.l1_AttesterSlashing_head(len, off, _) == (BF(t, n), HK(HC(t, x, len), t, x, off, len)) : B.Buf & Bool}
+        {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_head(len, off, _) == (BF(t, n), HK(HC(t, x, len), t, x, off, len)) : B.Buf & Bool}
       okh(d, t, n, x, off, len, eo, hd, hw, pf, HC(t, x, len), {==})
 
 def okz(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +z: Bool, +ez: {U32.is_eq(len, 0) == z : Bool})
-    -> {T.l1_AttesterSlashing_ok_nz(z, BF(t, n), off, len) == (BF(t, n), LZ(z, t, x, off, len)) : B.Buf & Bool}:
+    -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_ok_nz(z, BF(t, n), off, len) == (BF(t, n), LZ(z, t, x, off, len)) : B.Buf & Bool}:
   match z:
     case True{}: {==}
     case False{}:
@@ -268,31 +271,31 @@ def okz(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
 # The validator on the window returns the buffer and CHKw.
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.l1_AttesterSlashing_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   okz(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), {==})
-def OBJ1(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.l1_AttesterSlashing_Seq: T.l1_AttesterSlashing_Seq{Array.set(O.Boxed<T.AttesterSlashing>, T.l1_AttesterSlashing_fill(T.l1_AttesterSlashing_cap(1)), 0, O.BSome{CH.OBJw(d, t, Nat.add(U32.to_nat(O0(t, x)), x), U32.add(off, O0(t, x)), U32.sub(len, O0(t, x))), O.BNone{}}), 1}
+def OBJ1(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq: Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{Array.set(O.Boxed<FuluAttesterSlashing_d.AttesterSlashing>, Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_fill(Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_cap(1)), 0, O.BSome{CH.OBJw(d, t, Nat.add(U32.to_nat(O0(t, x)), x), U32.add(off, O0(t, x)), U32.sub(len, O0(t, x))), O.BNone{}}), 1}
 
-def RQ(q: Nat, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.l1_AttesterSlashing_Seq:
+def RQ(q: Nat, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq:
   match q:
     case 1n: OBJ1(d, t, x, off, len)
-    case _: T.l1_AttesterSlashing_Seq{T.l1_AttesterSlashing_fill(0n), 0}
+    case _: Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_fill(0n), 0}
 
-def R4(s: Bool, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.l1_AttesterSlashing_Seq:
+def R4(s: Bool, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq:
   match s:
-    case True{}: T.l1_AttesterSlashing_Seq{T.l1_AttesterSlashing_fill(0n), 0}
+    case True{}: Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_fill(0n), 0}
     case False{}: RQ(NQ(t, x), d, t, x, off, len)
 
-def RZ(z: Bool, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.l1_AttesterSlashing_Seq:
+def RZ(z: Bool, +d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq:
   match z:
-    case True{}: T.l1_AttesterSlashing_Seq{T.l1_AttesterSlashing_fill(0n), 0}
+    case True{}: Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq{Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_fill(0n), 0}
     case False{}: R4(U32.is_lt(len, 4), d, t, x, off, len)
 
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.l1_AttesterSlashing_Seq: RZ(U32.is_eq(len, 0), d, t, x, off, len)
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq: RZ(U32.is_eq(len, 0), d, t, x, off, len)
 
 def rdm1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hf: {Nat.is_le(Nat.add(4n, 0n), U32.to_nat(len)) == True{} : Bool}, +ha1: {AC1_1(t, x, off, len) == True{} : Bool})
-    -> {T.l1_AttesterSlashing_rv_fin(1, T.l1_AttesterSlashing_rv(0n, 0, off, len, 1, T.l1_AttesterSlashing_fill(T.l1_AttesterSlashing_cap(1)), T.l1_AttesterSlashing_elem(off, T.l1_AttesterSlashing_win_start(off, len, 0, 1, B.read32(BF(t, n), off))))) == (BF(t, n), OBJ1(d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}:
+    -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv_fin(1, Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv(0n, 0, off, len, 1, Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_fill(Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_cap(1)), Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_elem(off, Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_win_start(off, len, 0, 1, B.read32(BF(t, n), off))))) == (BF(t, n), OBJ1(d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}:
   +ew0 = and_r(AC1_0(t, x, off, len), EW(Bool.and(AC1_0(t, x, off, len), Bool.and(U32.is_le(O0(t, x), len), U32.is_le(len, len))), D1_0(t, x, off, len)), ha1)
   +ha0 = and_l(AC1_0(t, x, off, len), EW(Bool.and(AC1_0(t, x, off, len), Bool.and(U32.is_le(O0(t, x), len), U32.is_le(len, len))), D1_0(t, x, off, len)), ha1)
   +ok0 = ew_l(Bool.and(AC1_0(t, x, off, len), Bool.and(U32.is_le(O0(t, x), len), U32.is_le(len, len))), D1_0(t, x, off, len), ew0)
@@ -302,26 +305,26 @@ def rdm1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
   +hbl0 = le_nat(len, len, and_r(U32.is_le(O0(t, x), len), U32.is_le(len, len), rg0))
   +hf2 = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, Nat.add(4n, 0n), 4n, FD.nat__add_zero(4n), hf)
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), off), (BF(t, n), O0(t, x)), UR.rwx(d, t, n, off, x, eo, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, UR.roomw(x, U32.to_nat(len), 0n, A.quad(VB.pw(d)), hw, FD.nat__le_trans(4n, 4n, U32.to_nat(len), {==}, hf2)))) :
-    {T.l1_AttesterSlashing_rv_fin(1, T.l1_AttesterSlashing_rv(0n, 0, off, len, 1, T.l1_AttesterSlashing_fill(T.l1_AttesterSlashing_cap(1)), T.l1_AttesterSlashing_elem(off, T.l1_AttesterSlashing_win_start(off, len, 0, 1, _)))) == (BF(t, n), OBJ1(d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}
-  %Equal.sym(B.Buf & T.AttesterSlashing, T.AttesterSlashing_read(BF(t, n), U32.add(off, O0(t, x)), U32.sub(len, O0(t, x))), (BF(t, n), CH.OBJw(d, t, Nat.add(U32.to_nat(O0(t, x)), x), U32.add(off, O0(t, x)), U32.sub(len, O0(t, x)))),
+    {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv_fin(1, Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv(0n, 0, off, len, 1, Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_fill(Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_cap(1)), Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_elem(off, Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_win_start(off, len, 0, 1, _)))) == (BF(t, n), OBJ1(d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}
+  %Equal.sym(B.Buf & FuluAttesterSlashing_d.AttesterSlashing, FuluAttesterSlashing_r.AttesterSlashing_read(BF(t, n), U32.add(off, O0(t, x)), U32.sub(len, O0(t, x))), (BF(t, n), CH.OBJw(d, t, Nat.add(U32.to_nat(O0(t, x)), x), U32.add(off, O0(t, x)), U32.sub(len, O0(t, x)))),
       CH.readw(d, t, n, Nat.add(U32.to_nat(O0(t, x)), x), U32.add(off, O0(t, x)), U32.sub(len, O0(t, x)), eoj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), FD.nat__le_trans(U32.to_nat(O0(t, x)), U32.to_nat(len), U32.to_nat(len), hab0, hbl0)), hd,
         hwj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), len, hab0, hbl0), pf, hk0)) :
-    {T.l1_AttesterSlashing_rv_fin(1, T.l1_AttesterSlashing_rv(0n, 0, off, len, 1, T.l1_AttesterSlashing_fill(T.l1_AttesterSlashing_cap(1)), T.AttesterSlashing_bx_rd(_))) == (BF(t, n), OBJ1(d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}
+    {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv_fin(1, Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv(0n, 0, off, len, 1, Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_fill(Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_cap(1)), FuluAttesterSlashing_r.AttesterSlashing_bx_rd(_))) == (BF(t, n), OBJ1(d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}
   {==}
 
 def rdq(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +q: Nat, +eq: {NQ(t, x) == q : Nat}, +e3: {U32.and(O0(t, x), 3) == 0 : U32}, +hl: {LOOP(q, t, x, off, len) == True{} : Bool},
     +hfl: {Nat.is_le(U32.to_nat(O0(t, x)), U32.to_nat(len)) == True{} : Bool})
-    -> {T.l1_AttesterSlashing_rv_count(off, len, (BF(t, n), O0(t, x))) == (BF(t, n), RQ(q, d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}:
+    -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv_count(off, len, (BF(t, n), O0(t, x))) == (BF(t, n), RQ(q, d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}:
   match q:
-    case 0n: Empty.absurd({T.l1_AttesterSlashing_rv_count(off, len, (BF(t, n), O0(t, x))) == (BF(t, n), RQ(0n, d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}, FD.logic__false_true(hl))
+    case 0n: Empty.absurd({Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv_count(off, len, (BF(t, n), O0(t, x))) == (BF(t, n), RQ(0n, d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}, FD.logic__false_true(hl))
     case 1n:
       +em = FD.u32__injective(U32.shrn(O0(t, x), 2n), 1, eq)
       %Equal.sym(U32, U32.shrn(O0(t, x), 2n), 1, em) :
-        {T.l1_AttesterSlashing_rv_fin(_, T.l1_AttesterSlashing_rv(U32.to_nat(U32.sub(_, 1)), 0, off, len, _, T.l1_AttesterSlashing_fill(T.l1_AttesterSlashing_cap(_)), T.l1_AttesterSlashing_elem(off, T.l1_AttesterSlashing_win_start(off, len, 0, _, B.read32(BF(t, n), off))))) == (BF(t, n), OBJ1(d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}
+        {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv_fin(_, Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv(U32.to_nat(U32.sub(_, 1)), 0, off, len, _, Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_fill(Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_cap(_)), Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_elem(off, Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_win_start(off, len, 0, _, B.read32(BF(t, n), off))))) == (BF(t, n), OBJ1(d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}
       rdm1(d, t, n, x, off, len, eo, hd, hw, pf, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, U32.to_nat(O0(t, x)), Nat.add(4n, 0n), Equal.trans(Nat, U32.to_nat(O0(t, x)), Nat.add(A.quad(NQ(t, x)), 0n), Nat.add(4n, 0n), e4q(t, x, e3), Equal.cong(Nat, Nat, z => Nat.add(A.quad(z), 0n), NQ(t, x), 1n, eq)), hfl), hl)
-    case 2n+r: Empty.absurd({T.l1_AttesterSlashing_rv_count(off, len, (BF(t, n), O0(t, x))) == (BF(t, n), RQ(2n+r, d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}, FD.logic__false_true(hl))
+    case 2n+r: Empty.absurd({Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv_count(off, len, (BF(t, n), O0(t, x))) == (BF(t, n), RQ(2n+r, d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}, FD.logic__false_true(hl))
 
 def hk_l(+h: Bool, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +e: {HK(h, t, x, off, len) == True{} : Bool}) -> {h == True{} : Bool}:
   match h:
@@ -331,9 +334,9 @@ def hk_l(+h: Bool, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +e: {
 def rd4(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: Bool, +es: {U32.is_lt(len, 4) == s : Bool}, +hc: {L4(s, t, x, off, len) == True{} : Bool})
-    -> {T.l1_AttesterSlashing_read_nz(False{}, BF(t, n), off, len) == (BF(t, n), R4(s, d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}:
+    -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_read_nz(False{}, BF(t, n), off, len) == (BF(t, n), R4(s, d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}:
   match s:
-    case True{}: Empty.absurd({T.l1_AttesterSlashing_read_nz(False{}, BF(t, n), off, len) == (BF(t, n), R4(True{}, d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}, FD.logic__false_true(hc))
+    case True{}: Empty.absurd({Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_read_nz(False{}, BF(t, n), off, len) == (BF(t, n), R4(True{}, d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}, FD.logic__false_true(hc))
     case False{}:
       +h4 = FD.logic__subst(Bool, z => {z == False{} : Bool}, U32.is_lt(len, 4), Nat.is_lt(U32.to_nat(len), 4n), VR.lt_u32(len, 4), es)
       +hl = FD.nat__not_lt_le(U32.to_nat(len), 4n, h4)
@@ -342,14 +345,14 @@ def rd4(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
       +hlp = FD.logic__subst(Bool, z => {HK(z, t, x, off, len) == True{} : Bool}, HC(t, x, len), True{}, hh, hc)
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), off), (BF(t, n), O0(t, x)), UR.rwx(d, t, n, off, x, eo, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf,
           FD.nat__le_trans(Nat.add(x, 4n), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.add_left(x, 4n, U32.to_nat(len), hl), hw))) :
-        {T.l1_AttesterSlashing_rv_count(off, len, _) == (BF(t, n), RQ(NQ(t, x), d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}
+        {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_rv_count(off, len, _) == (BF(t, n), RQ(NQ(t, x), d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}
       rdq(d, t, n, x, off, len, eo, hd, hw, pf, NQ(t, x), {==}, FD.u32alg__eq_of(U32.and(O0(t, x), 3), 0, and_l(U32.is_eq(U32.and(O0(t, x), 3), 0), U32.is_le(O0(t, x), len), c1)), hlp,
         le_nat(O0(t, x), len, and_r(U32.is_eq(U32.and(O0(t, x), 3), 0), U32.is_le(O0(t, x), len), c1)))
 
 def rdz(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +z: Bool, +ez: {U32.is_eq(len, 0) == z : Bool}, +hc: {LZ(z, t, x, off, len) == True{} : Bool})
-    -> {T.l1_AttesterSlashing_read_nz(z, BF(t, n), off, len) == (BF(t, n), RZ(z, d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}:
+    -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_read_nz(z, BF(t, n), off, len) == (BF(t, n), RZ(z, d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}:
   match z:
     case True{}: {==}
     case False{}: rd4(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_lt(len, 4), {==}, hc)
@@ -357,7 +360,7 @@ def rdz(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
 # The reader on the window, when the checks hold.
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {T.l1_AttesterSlashing_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.l1_AttesterSlashing_Seq}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {Fulu_list_AttesterSlashing_1_r.l1_AttesterSlashing_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq}:
   rdz(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_eq(len, 0), {==}, hchk)
 def ecast(+v: S.Value, +ys: +List<U32>, +e: {Codec.parts(v, Spec.AttesterSlashing()) == Some{[S.Variable{ys}]} : Maybe<&2, +List<S.Part>>})
     -> {Codec.parts(v, Spec.Schema47()) == Some{[S.Variable{ys}]} : Maybe<&2, +List<S.Part>>}:

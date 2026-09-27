@@ -3,7 +3,7 @@ import ../compact/found.bend as F
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluExecutionPayload_def_generated.bend as FuluExecutionPayload_d
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ./cform.bend as CF
@@ -45,6 +45,6 @@ import ./gvalid_types.bend as GVT
 # BIG: ExecutionPayload's root view is structurally valid under its root law's hypotheses; the
 # closed schema facts come from its big root law file (big_root_<Name>.bend).
 
-def ExecutionPayload_root_valid(-o: T.ExecutionPayload, +s: S.Schema, +es: {s == Spec.ExecutionPayload() : S.Schema}, +rep: RT.rep_ExecutionPayload(o, s))
+def ExecutionPayload_root_valid(-o: FuluExecutionPayload_d.ExecutionPayload, +s: S.Schema, +es: {s == Spec.ExecutionPayload() : S.Schema}, +rep: RT.rep_ExecutionPayload(o, s))
     -> {VD.root_valid(RT.v_ExecutionPayload(o), s) == True{} : Bool}:
   GVT.vr_ExecutionPayload(o, s, rep, OS.DV0(), {==}, BR.ExecutionPayload_ok(s, es, OS.DV0(), {==}), BR.ExecutionPayload_eqs(s, es))

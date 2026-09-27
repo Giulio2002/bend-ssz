@@ -32,6 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'codegen'))
 
 import var_laws as VL  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 OUT = ROOT / 'proofs/obj/encx_recs.bend'
 RECS = ['Withdrawal', 'SyncAggregate', 'BeaconBlockHeader', 'Fork', 'Checkpoint', 'Eth1Data', 'HistoricalSummary', 'PendingDeposit',
@@ -1484,7 +1485,7 @@ def sub_fields(R):
     """The record's fields [(name, byte offset, 'u8' | 'u16')] from the runtime type and var_rlist_sub.RECS."""
     import re
     import var_rlist_sub as VRS
-    src = (ROOT / 'types/generic_obj.bend').read_text()
+    src = RR.mono_text('generic')
     m = re.search(rf'^type {R} is Data:\n  {R}\{{([^}}]*)\}}', src, re.M)
     names = [f.split(':')[0].strip() for f in m.group(1).split(',')]
     RS, sch, fl = VRS.RECS[R] if R in VRS.RECS else SUBRECS[R]
@@ -3024,6 +3025,7 @@ def main():
     for n in URECS:
         out[urec_file(n)] = urec_text(n)
     out[lfile(VLIST)] = vlist_module()
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

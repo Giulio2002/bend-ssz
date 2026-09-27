@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitlist_31_encode_ssz_generated.bend as bitlist_31_e
 import ../../types/schema.bend as S
 import ../compact/found.bend as F
 import ../../spec/decoding_relation.bend as Decoding
@@ -46,12 +46,12 @@ law encode_eval:
   for +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool}
   for +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}
   for +rep: BO.rep_bits(O.Bits{F.array__thaw(U32, T), K}, GS.Gt4B1BA0C81D())
-  {T.Gt4B1BA0C81D_encode(O.Bits{F.array__thaw(U32, T), K}) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
+  {bitlist_31_e.Gt4B1BA0C81D_encode(O.Bits{F.array__thaw(U32, T), K}) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
 def encode_eval(dw, T, K, pfT, hdw, rep):
   %Equal.sym(Array<U32>, Array.new(U32, 0n, 0), F.array__thaw(U32, VC.ZT(0n)), F.array__new(U32, 0n, 0)) :
-    {T.Gt4B1BA0C81D_enc_put(T.bits31_putn(_, 0, O.Bits{F.array__thaw(U32, T), K})) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
+    {bitlist_31_e.Gt4B1BA0C81D_enc_put(bitlist_31_e.bits31_putn(_, 0, O.Bits{F.array__thaw(U32, T), K})) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
   %Equal.sym(Array<U32> & (O.Bits & U32), O.put_bits_n(F.array__thaw(U32, VC.ZT(0n)), 0, O.Bits{F.array__thaw(U32, T), K}), (F.array__thaw(U32, OUT(T, K)), (O.Bits{F.array__thaw(U32, T), K}, CO.NK(K))), CO.cr1(0n, T, K, cr(dw, T, K, pfT, hdw, rep))) :
-    {T.Gt4B1BA0C81D_enc_put(_) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
+    {bitlist_31_e.Gt4B1BA0C81D_enc_put(_) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
   %Equal.sym(U32, U32.and(CO.NK(K), 2147483647), CO.NK(K), VBE.and31(CO.NK(K), 6n, {==}, F.nat__le_lt_trans(U32.to_nat(CO.NK(K)), 32n, F.spec_common__pow2(6n), CO.nk_le(K, 6n, 31n, {==}, VR.rep_N(T, K, 31n, rep), {==}), {==}))) :
     {(O.Bits{F.array__thaw(U32, T), K}, O.out_done(_, F.array__thaw(U32, OUT(T, K)))) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
   {==}

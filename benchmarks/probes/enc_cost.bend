@@ -1,7 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
+import ../../types/FuluBlobIndex_encode_ssz_generated.bend as FuluBlobIndex_e
+import ../../types/FuluKZGCommitment_encode_ssz_generated.bend as FuluKZGCommitment_e
 
 # Where the time of a small encode goes. Each loop runs the same number of
 # iterations and consumes its result, so the differences are the parts:
@@ -43,14 +45,14 @@ def loop3(+k: Nat, +acc: U32) -> U32:
 def loop4(+k: Nat, +acc: U32) -> U32:
   match k:
     case 0n: acc
-    case 1n+p: loop4(p, (acc .^. consume(T.BlobIndex_encode(O.U64{305419896, 2596069104})) : U32))
+    case 1n+p: loop4(p, (acc .^. consume(FuluBlobIndex_e.BlobIndex_encode(O.U64{305419896, 2596069104})) : U32))
 
 def loop5(+k: Nat, +acc: U32) -> U32:
   match k:
     case 0n: acc
     case 1n+p:
-      loop5(p, (acc .^. consume(T.KZGCommitment_encode(
-        T.Bytes48{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})) : U32))
+      loop5(p, (acc .^. consume(FuluKZGCommitment_e.KZGCommitment_encode(
+        FuluBytes48_d.Bytes48{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12})) : U32))
 
 def pick(+which: U32, +k: Nat) -> U32:
   match which:

@@ -1,7 +1,11 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluEth1Data_def_generated.bend as FuluEth1Data_d
+import ../../types/FuluEth1Data_encode_ssz_generated.bend as FuluEth1Data_e
+import ../../types/Fulu_list_Eth1Data_2048_def_generated.bend as Fulu_list_Eth1Data_2048_d
+import ../../types/Fulu_list_Eth1Data_2048_encode_ssz_generated.bend as Fulu_list_Eth1Data_2048_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -50,134 +54,134 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 
 # ---- Eth1Data: its 18 words, value, parts and writer ----
 
-def RWD_Eth1Data(r: T.Eth1Data) -> List<&2, U32>:
+def RWD_Eth1Data(r: FuluEth1Data_d.Eth1Data) -> List<&2, U32>:
   match r:
-    case T.Eth1Data{+r_0, +r_1, +r_2}:
+    case FuluEth1Data_d.Eth1Data{+r_0, +r_1, +r_2}:
       match r_0:
-        case T.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
+        case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
           match r_1:
             case O.U64{+x8, +x9}:
               match r_2:
-                case T.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
+                case FuluBytes32_d.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
                   [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17]
 
-def RVW_Eth1Data(r: T.Eth1Data) -> S.Value:
+def RVW_Eth1Data(r: FuluEth1Data_d.Eth1Data) -> S.Value:
   match r:
-    case T.Eth1Data{+r_0, +r_1, +r_2}:
+    case FuluEth1Data_d.Eth1Data{+r_0, +r_1, +r_2}:
       match r_0:
-        case T.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
+        case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
           match r_1:
             case O.U64{+x8, +x9}:
               match r_2:
-                case T.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
+                case FuluBytes32_d.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
                   S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, S.Items{S.UnsignedValue{P.UInt{x8, x9, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x10, x11, x12, x13, x14, x15, x16, x17])}, S.EmptyItems{}}}}}
 
 # its parts over the words: the value and the object as terms (rparts rewrites RVW_Eth1Data to the value first)
-def rvq_Eth1Data(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32) -> {S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, S.Items{S.UnsignedValue{P.UInt{x8, x9, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x10, x11, x12, x13, x14, x15, x16, x17])}, S.EmptyItems{}}}}} == RVW_Eth1Data(T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}) : S.Value}: {==}
-def rpc_Eth1Data(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32) -> {Codec.parts(S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, S.Items{S.UnsignedValue{P.UInt{x8, x9, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x10, x11, x12, x13, x14, x15, x16, x17])}, S.EmptyItems{}}}}}, S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_Eth1Data(T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}))}]} : Maybe<&2, +List<S.Part>>}:
+def rvq_Eth1Data(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32) -> {S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, S.Items{S.UnsignedValue{P.UInt{x8, x9, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x10, x11, x12, x13, x14, x15, x16, x17])}, S.EmptyItems{}}}}} == RVW_Eth1Data(FuluEth1Data_d.Eth1Data{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, FuluBytes32_d.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}) : S.Value}: {==}
+def rpc_Eth1Data(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32) -> {Codec.parts(S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, S.Items{S.UnsignedValue{P.UInt{x8, x9, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x10, x11, x12, x13, x14, x15, x16, x17])}, S.EmptyItems{}}}}}, S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_Eth1Data(FuluEth1Data_d.Eth1Data{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, FuluBytes32_d.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}))}]} : Maybe<&2, +List<S.Part>>}:
   F.container_fixed(["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}, S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, S.Items{S.UnsignedValue{P.UInt{x8, x9, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x10, x11, x12, x13, x14, x15, x16, x17])}, S.EmptyItems{}}}}, [[x0, x1, x2, x3, x4, x5, x6, x7], [x8, x9], [x10, x11, x12, x13, x14, x15, x16, x17]], 72n, [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17], F.items_fixed(S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, S.Items{S.UnsignedValue{P.UInt{x8, x9, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x10, x11, x12, x13, x14, x15, x16, x17])}, S.EmptyItems{}}}, S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7]), [S.Fixed{F.limbs([x8, x9])}, S.Fixed{F.limbs([x10, x11, x12, x13, x14, x15, x16, x17])}], F.bytes_part_n(x0, [x1, x2, x3, x4, x5, x6, x7], 32n, {==}, {==}), F.items_fixed(S.UnsignedValue{P.UInt{x8, x9, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x10, x11, x12, x13, x14, x15, x16, x17])}, S.EmptyItems{}}, S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}, F.limbs([x8, x9]), [S.Fixed{F.limbs([x10, x11, x12, x13, x14, x15, x16, x17])}], F.uint64_part(x8, x9), F.items_fixed(S.BytesValue{F.limbs([x10, x11, x12, x13, x14, x15, x16, x17])}, S.EmptyItems{}, S.ByteVector{32n}, S.End{}, F.limbs([x10, x11, x12, x13, x14, x15, x16, x17]), [], F.bytes_part_n(x10, [x11, x12, x13, x14, x15, x16, x17], 32n, {==}, {==}), {==}))), {==}, VS.agg_total([[x0, x1, x2, x3, x4, x5, x6, x7], [x8, x9], [x10, x11, x12, x13, x14, x15, x16, x17]], 72n, {==}), {==})
-def rparts_Eth1Data(+r: T.Eth1Data) -> {Codec.parts(RVW_Eth1Data(r), S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_Eth1Data(r))}]} : Maybe<&2, +List<S.Part>>}:
+def rparts_Eth1Data(+r: FuluEth1Data_d.Eth1Data) -> {Codec.parts(RVW_Eth1Data(r), S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_Eth1Data(r))}]} : Maybe<&2, +List<S.Part>>}:
   match r:
-    case T.Eth1Data{+r_0, +r_1, +r_2}:
+    case FuluEth1Data_d.Eth1Data{+r_0, +r_1, +r_2}:
       match r_0:
-        case T.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
+        case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
           match r_1:
             case O.U64{+x8, +x9}:
               match r_2:
-                case T.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
-                  %rvq_Eth1Data(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17) : {Codec.parts(_, S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_Eth1Data(T.Eth1Data{T.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, T.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}))}]} : Maybe<&2, +List<S.Part>>}
+                case FuluBytes32_d.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
+                  %rvq_Eth1Data(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17) : {Codec.parts(_, S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}) == Some{[S.Fixed{F.limbs(RWD_Eth1Data(FuluEth1Data_d.Eth1Data{FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}, O.U64{x8, x9}, FuluBytes32_d.Bytes32{x10, x11, x12, x13, x14, x15, x16, x17}}))}]} : Maybe<&2, +List<S.Part>>}
                   rpc_Eth1Data(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17)
 
-def rlen_Eth1Data(+r: T.Eth1Data) -> {VF.slen(RWD_Eth1Data(r)) == 18n : Nat}:
+def rlen_Eth1Data(+r: FuluEth1Data_d.Eth1Data) -> {VF.slen(RWD_Eth1Data(r)) == 18n : Nat}:
   match r:
-    case T.Eth1Data{+r_0, +r_1, +r_2}:
+    case FuluEth1Data_d.Eth1Data{+r_0, +r_1, +r_2}:
       match r_0:
-        case T.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
+        case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
           match r_1:
             case O.U64{+x8, +x9}:
               match r_2:
-                case T.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
+                case FuluBytes32_d.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
                   {==}
 
 
 # ---- Eth1Data: its writer at any byte position, on the object ----
 
-def PXo_Eth1Data(o: T.Eth1Data, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+def PXo_Eth1Data(o: FuluEth1Data_d.Eth1Data, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match o:
-    case T.Eth1Data{+o_0, +o_1, +o_2}:
+    case FuluEth1Data_d.Eth1Data{+o_0, +o_1, +o_2}:
       match o_0:
-        case T.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
+        case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
           match o_1:
             case O.U64{+x8, +x9}:
               match o_2:
-                case T.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
+                case FuluBytes32_d.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
                   ERC.PX_Eth1Data(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, dd, D, q, r)
 
-def pfo_Eth1Data(+o: T.Eth1Data, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def pfo_Eth1Data(+o: FuluEth1Data_d.Eth1Data, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PXo_Eth1Data(o, dd, D, q, r)) == True{} : Bool}:
   match o:
-    case T.Eth1Data{+o_0, +o_1, +o_2}:
+    case FuluEth1Data_d.Eth1Data{+o_0, +o_1, +o_2}:
       match o_0:
-        case T.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
+        case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
           match o_1:
             case O.U64{+x8, +x9}:
               match o_2:
-                case T.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
+                case FuluBytes32_d.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
                   ERC.pf_Eth1Data(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, dd, D, q, r, pf)
 
-def RTo_Eth1Data(+o: T.Eth1Data, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Eth1Data_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_Eth1Data(o, dd, D, q, r)) : Array<U32>}
-def BYo_Eth1Data(+o: T.Eth1Data, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTo_Eth1Data(+o: FuluEth1Data_d.Eth1Data, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluEth1Data_e.Eth1Data_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_Eth1Data(o, dd, D, q, r)) : Array<U32>}
+def BYo_Eth1Data(+o: FuluEth1Data_d.Eth1Data, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_Eth1Data(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.limbs(RWD_Eth1Data(o))) : +List<U32>}
 
-def putxo_Eth1Data(+o: T.Eth1Data, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putxo_Eth1Data(+o: FuluEth1Data_d.Eth1Data, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 72n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(72n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(72n) : +List<U32>})
     -> DK.P2(RTo_Eth1Data(o, dd, D, X, q, r), BYo_Eth1Data(o, dd, D, q, r)):
   match o:
-    case T.Eth1Data{+o_0, +o_1, +o_2}:
+    case FuluEth1Data_d.Eth1Data{+o_0, +o_1, +o_2}:
       match o_0:
-        case T.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
+        case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
           match o_1:
             case O.U64{+x8, +x9}:
               match o_2:
-                case T.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
+                case FuluBytes32_d.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
                   ERC.putx_Eth1Data(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
 
-def lenb_Eth1Data(+o: T.Eth1Data) -> {VRX.LN(F.limbs(RWD_Eth1Data(o))) == 72n : Nat}:
+def lenb_Eth1Data(+o: FuluEth1Data_d.Eth1Data) -> {VRX.LN(F.limbs(RWD_Eth1Data(o))) == 72n : Nat}:
   match o:
-    case T.Eth1Data{+o_0, +o_1, +o_2}:
+    case FuluEth1Data_d.Eth1Data{+o_0, +o_1, +o_2}:
       match o_0:
-        case T.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
+        case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
           match o_1:
             case O.U64{+x8, +x9}:
               match o_2:
-                case T.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
+                case FuluBytes32_d.Bytes32{+x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17}:
                   {==}
 
-def EL_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +j: Nat) -> T.Eth1Data: VRL.mget(T.Eth1Data, FD.spec_common__nth(T.Eth1Data, FD.array__slots(T.Eth1Data, A), j), T.Eth1Data_default())
+def EL_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +j: Nat) -> FuluEth1Data_d.Eth1Data: VRL.mget(FuluEth1Data_d.Eth1Data, FD.spec_common__nth(FuluEth1Data_d.Eth1Data, FD.array__slots(FuluEth1Data_d.Eth1Data, A), j), FuluEth1Data_d.Eth1Data_default())
 
 # ---- l2048_Eth1Data: the object's value, and the windows of its writes ----
 
-def ITW_l2048_Eth1Data(c: Nat, +A: FD.array__Tree<T.Eth1Data>, +j: Nat) -> S.Value:
+def ITW_l2048_Eth1Data(c: Nat, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +j: Nat) -> S.Value:
   match c:
     case 0n: S.EmptyItems{}
     case 1n+q: S.Items{RVW_Eth1Data(EL_l2048_Eth1Data(A, j)), ITW_l2048_Eth1Data(q, A, 1n+j)}
 
-def CHW_l2048_Eth1Data(c: Nat, +A: FD.array__Tree<T.Eth1Data>, +j: Nat) -> +List<+List<U32>>:
+def CHW_l2048_Eth1Data(c: Nat, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +j: Nat) -> +List<+List<U32>>:
   match c:
     case 0n: []
     case 1n+q: Con{RWD_Eth1Data(EL_l2048_Eth1Data(A, j)), CHW_l2048_Eth1Data(q, A, 1n+j)}
 
-def RWA_l2048_Eth1Data(c: Nat, +A: FD.array__Tree<T.Eth1Data>, +j: Nat) -> List<&2, U32>:
+def RWA_l2048_Eth1Data(c: Nat, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +j: Nat) -> List<&2, U32>:
   match c:
     case 0n: []
     case 1n+q: VF.app(RWD_Eth1Data(EL_l2048_Eth1Data(A, j)), RWA_l2048_Eth1Data(q, A, 1n+j))
 
 law cntW_l2048_Eth1Data:
   for +c: Nat
-  for +A: FD.array__Tree<T.Eth1Data>
+  for +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>
   for +j: Nat
   {Codec.count(ITW_l2048_Eth1Data(c, A, j)) == c : Nat}
 def cntW_l2048_Eth1Data(c, A, j):
@@ -187,7 +191,7 @@ def cntW_l2048_Eth1Data(c, A, j):
 
 law prtW_l2048_Eth1Data:
   for +c: Nat
-  for +A: FD.array__Tree<T.Eth1Data>
+  for +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>
   for +j: Nat
   {Codec.parts(ITW_l2048_Eth1Data(c, A, j), S.Repeat{S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}) == Some{F.fparts(CHW_l2048_Eth1Data(c, A, j))} : Maybe<&2, +List<S.Part>>}
 def prtW_l2048_Eth1Data(c, A, j):
@@ -199,7 +203,7 @@ def prtW_l2048_Eth1Data(c, A, j):
 
 law flatW_l2048_Eth1Data:
   for +c: Nat
-  for +A: FD.array__Tree<T.Eth1Data>
+  for +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>
   for +j: Nat
   {F.flat(CHW_l2048_Eth1Data(c, A, j)) == F.limbs(RWA_l2048_Eth1Data(c, A, j)) : +List<U32>}
 def flatW_l2048_Eth1Data(c, A, j):
@@ -213,7 +217,7 @@ def flatW_l2048_Eth1Data(c, A, j):
 
 law lenW_l2048_Eth1Data:
   for +c: Nat
-  for +A: FD.array__Tree<T.Eth1Data>
+  for +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>
   for +j: Nat
   {VF.slen(RWA_l2048_Eth1Data(c, A, j)) == Nat.mul(c, 18n) : Nat}
 def lenW_l2048_Eth1Data(c, A, j):
@@ -227,7 +231,7 @@ def lenW_l2048_Eth1Data(c, A, j):
       {==}
 
 # The value of c records, a list of at most 2048: one variable part, the limbs of their words.
-def lpart_l2048_Eth1Data(+c: Nat, +A: FD.array__Tree<T.Eth1Data>, +hl: {Nat.is_le(c, U32.to_nat(2048)) == True{} : Bool},
+def lpart_l2048_Eth1Data(+c: Nat, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +hl: {Nat.is_le(c, U32.to_nat(2048)) == True{} : Bool},
     +fit: {N.fits(4n, List.length(&2, U32, F.limbs(RWA_l2048_Eth1Data(c, A, 0n)))) == True{} : Bool})
     -> {Codec.parts(S.Sequence{ITW_l2048_Eth1Data(c, A, 0n)}, S.ListOf{S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}, U32.to_nat(2048)}) == Some{[S.Variable{F.limbs(RWA_l2048_Eth1Data(c, A, 0n))}]} : Maybe<&2, +List<S.Part>>}:
   +fit2 = FD.logic__subst(+List<U32>, z => {N.fits(4n, List.length(&2, U32, z)) == True{} : Bool}, F.limbs(RWA_l2048_Eth1Data(c, A, 0n)), F.flat(CHW_l2048_Eth1Data(c, A, 0n)),
@@ -249,10 +253,10 @@ def lpart_l2048_Eth1Data(+c: Nat, +A: FD.array__Tree<T.Eth1Data>, +hl: {Nat.is_l
 # ---- l2048_Eth1Data: the write loop at X = 4 q + r (record j at byte X + 72 j) ----
 
 
-def AG_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +i: U32) -> Array<T.Eth1Data> & T.Eth1Data: Array.get(T.Eth1Data, FD.array__thaw(T.Eth1Data, A), i)
+def AG_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +i: U32) -> Array<FuluEth1Data_d.Eth1Data> & FuluEth1Data_d.Eth1Data: Array.get(FuluEth1Data_d.Eth1Data, FD.array__thaw(FuluEth1Data_d.Eth1Data, A), i)
 
 # the records j, j + 1, ..., j + k of A written from byte X + 72 j on
-def WX_l2048_Eth1Data(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +A: FD.array__Tree<T.Eth1Data>) -> FD.array__Tree<U32>:
+def WX_l2048_Eth1Data(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>) -> FD.array__Tree<U32>:
   match k:
     case 0n: PXo_Eth1Data(EL_l2048_Eth1Data(A, j), dd, D, Nat.add(Nat.mul(j, 18n), q), r)
     case 1n+p: WX_l2048_Eth1Data(p, 1n+j, dd, PXo_Eth1Data(EL_l2048_Eth1Data(A, j), dd, D, Nat.add(Nat.mul(j, 18n), q), r), q, r, A)
@@ -264,7 +268,7 @@ law pfWX_l2048_Eth1Data:
   for +D: FD.array__Tree<U32>
   for +q: Nat
   for +r: Nat
-  for +A: FD.array__Tree<T.Eth1Data>
+  for +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>
   for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
   {FD.array__perfect(U32, dd, WX_l2048_Eth1Data(k, j, dd, D, q, r, A)) == True{} : Bool}
 def pfWX_l2048_Eth1Data(k, j, dd, D, q, r, A, pf):
@@ -272,18 +276,18 @@ def pfWX_l2048_Eth1Data(k, j, dd, D, q, r, A, pf):
     case 0n: pfo_Eth1Data(EL_l2048_Eth1Data(A, j), dd, D, Nat.add(Nat.mul(j, 18n), q), r, pf)
     case 1n+ +p: pfWX_l2048_Eth1Data(p, 1n+j, dd, PXo_Eth1Data(EL_l2048_Eth1Data(A, j), dd, D, Nat.add(Nat.mul(j, 18n), q), r), q, r, A, pfo_Eth1Data(EL_l2048_Eth1Data(A, j), dd, D, Nat.add(Nat.mul(j, 18n), q), r, pf))
 
-def RTK_l2048_Eth1Data(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<T.Eth1Data>) -> Data:
-  {T.l2048_Eth1Data_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(T.Eth1Data, A), EL_l2048_Eth1Data(A, j))) == (FD.array__thaw(U32, WX_l2048_Eth1Data(k, j, dd, D, q, r, A)), FD.array__thaw(T.Eth1Data, A)) : Array<U32> & Array<T.Eth1Data>}
-def BYK_l2048_Eth1Data(k: Nat, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<T.Eth1Data>) -> Data:
+def RTK_l2048_Eth1Data(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>) -> Data:
+  {Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt(k, i, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluEth1Data_d.Eth1Data, A), EL_l2048_Eth1Data(A, j))) == (FD.array__thaw(U32, WX_l2048_Eth1Data(k, j, dd, D, q, r, A)), FD.array__thaw(FuluEth1Data_d.Eth1Data, A)) : Array<U32> & Array<FuluEth1Data_d.Eth1Data>}
+def BYK_l2048_Eth1Data(k: Nat, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>) -> Data:
   {UA.BYT(WX_l2048_Eth1Data(k, j, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), VRX.YP(j, 18n, q, r), F.flat(CHW_l2048_Eth1Data(1n+k, A, j))) : +List<U32>}
 
 # The loop from record j (index i) on, k + 1 records, into LT bytes at X whose last k + 1 records' bytes are zero.
-def ptx_l2048_Eth1Data(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<T.Eth1Data>, +LT: Nat,
+def ptx_l2048_Eth1Data(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +LT: Nat,
     +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), 18n)), LT) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
     +hz: {VS.bt(A.quad(Nat.mul(1n+k, 18n)), VS.bdr(VRX.YP(j, 18n, q, r), UA.BYT(D))) == UW.ZB(A.quad(Nat.mul(1n+k, 18n))) : +List<U32>},
-    +pfA: {FD.array__perfect(T.Eth1Data, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    +pfA: {FD.array__perfect(FuluEth1Data_d.Eth1Data, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> DK.P2(RTK_l2048_Eth1Data(k, i, j, X, q, r, dd, D, A), BYK_l2048_Eth1Data(k, j, q, r, dd, D, A)):
   match k:
     case 0n:
@@ -297,7 +301,7 @@ def ptx_l2048_Eth1Data(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd:
       +by = PB(RTo_Eth1Data(o, dd, D, Xj, qj, r), BYo_Eth1Data(o, dd, D, qj, r), g)
       +D1 = PXo_Eth1Data(o, dd, D, qj, r)
       +Y = F.limbs(RWD_Eth1Data(o))
-      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<T.Eth1Data>, z => (z, FD.array__thaw(T.Eth1Data, A)), T.Eth1Data_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +rt0 = Equal.cong(Array<U32>, Array<U32> & Array<FuluEth1Data_d.Eth1Data>, z => (z, FD.array__thaw(FuluEth1Data_d.Eth1Data, A)), FuluEth1Data_e.Eth1Data_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
       +by0 = FD.logic__subst(+List<U32>, z => {UA.BYT(D1) == UW.SPL(UA.BYT(D), VRX.YP(j, 18n, q, r), z) : +List<U32>}, Y, List.append(&2, U32, Y, []),
         Equal.sym(+List<U32>, List.append(&2, U32, Y, []), Y, VS.app_nil(Y)), by)
       (rt0, by0)
@@ -323,20 +327,20 @@ def ptx_l2048_Eth1Data(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd:
       +h1 = FD.nat__le_lt_trans(1n+j, 1n+Nat.add(p, j), VB.pw(da), Order.left_below_sum(p, j), hk)
       +ei1 = VB.add_le_at(i, 1, j, da, ei, hda, FD.nat__lt_le(1n+j, VB.pw(da), h1))
       +hi1 = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(da)) == True{} : Bool}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1), h1)
-      +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(T.Eth1Data, FD.array__slots(T.Eth1Data, A), z) == Some{EL_l2048_Eth1Data(A, 1n+j)} : Maybe<&2, T.Eth1Data>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
-        VRL.nth_get(T.Eth1Data, FD.array__slots(T.Eth1Data, A), 1n+j, T.Eth1Data_default(), FD.array__len_lt(T.Eth1Data, da, A, 1n+j, pfA, h1)))
-      +eg = FD.array__get(T.Eth1Data, da, A, U32.add(i, 1), EL_l2048_Eth1Data(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
+      +hx = FD.logic__subst(Nat, z => {FD.spec_common__nth(FuluEth1Data_d.Eth1Data, FD.array__slots(FuluEth1Data_d.Eth1Data, A), z) == Some{EL_l2048_Eth1Data(A, 1n+j)} : Maybe<&2, FuluEth1Data_d.Eth1Data>}, 1n+j, U32.to_nat(U32.add(i, 1)), Equal.sym(Nat, U32.to_nat(U32.add(i, 1)), 1n+j, ei1),
+        VRL.nth_get(FuluEth1Data_d.Eth1Data, FD.array__slots(FuluEth1Data_d.Eth1Data, A), 1n+j, FuluEth1Data_d.Eth1Data_default(), FD.array__len_lt(FuluEth1Data_d.Eth1Data, da, A, 1n+j, pfA, h1)))
+      +eg = FD.array__get(FuluEth1Data_d.Eth1Data, da, A, U32.add(i, 1), EL_l2048_Eth1Data(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
       +hj2 = FD.logic__subst(Nat, z => {Nat.is_le(A.quad(Nat.mul(1n+z, 18n)), LT) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hj)
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hk)
       +ih = ptx_l2048_Eth1Data(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hr, hd, pf1, hj2, hl, z1, pfA, hda, hk2)
       +rt2 = PA(RTK_l2048_Eth1Data(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l2048_Eth1Data(p, 1n+j, q, r, dd, D1, A), ih)
       +by2 = PB(RTK_l2048_Eth1Data(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l2048_Eth1Data(p, 1n+j, q, r, dd, D1, A), ih)
-      +ea = Equal.cong(Array<U32>, Array<U32> & Array<T.Eth1Data>, z => T.l2048_Eth1Data_pt(p, U32.add(i, 1), X, z, AG_l2048_Eth1Data(A, U32.add(i, 1))), T.Eth1Data_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
-      +eb = Equal.cong(Array<T.Eth1Data> & T.Eth1Data, Array<U32> & Array<T.Eth1Data>, z => T.l2048_Eth1Data_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG_l2048_Eth1Data(A, U32.add(i, 1)), (FD.array__thaw(T.Eth1Data, A), EL_l2048_Eth1Data(A, 1n+j)), eg)
-      +rt3 = Equal.trans(Array<U32> & Array<T.Eth1Data>, T.l2048_Eth1Data_pt(p, U32.add(i, 1), X, T.Eth1Data_put(FD.array__thaw(U32, D), Xj, o), AG_l2048_Eth1Data(A, U32.add(i, 1))), T.l2048_Eth1Data_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l2048_Eth1Data(A, U32.add(i, 1))),
-        (FD.array__thaw(U32, WX_l2048_Eth1Data(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(T.Eth1Data, A)), ea,
-        Equal.trans(Array<U32> & Array<T.Eth1Data>, T.l2048_Eth1Data_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l2048_Eth1Data(A, U32.add(i, 1))), T.l2048_Eth1Data_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(T.Eth1Data, A), EL_l2048_Eth1Data(A, 1n+j))),
-          (FD.array__thaw(U32, WX_l2048_Eth1Data(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(T.Eth1Data, A)), eb, rt2))
+      +ea = Equal.cong(Array<U32>, Array<U32> & Array<FuluEth1Data_d.Eth1Data>, z => Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt(p, U32.add(i, 1), X, z, AG_l2048_Eth1Data(A, U32.add(i, 1))), FuluEth1Data_e.Eth1Data_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
+      +eb = Equal.cong(Array<FuluEth1Data_d.Eth1Data> & FuluEth1Data_d.Eth1Data, Array<U32> & Array<FuluEth1Data_d.Eth1Data>, z => Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), z), AG_l2048_Eth1Data(A, U32.add(i, 1)), (FD.array__thaw(FuluEth1Data_d.Eth1Data, A), EL_l2048_Eth1Data(A, 1n+j)), eg)
+      +rt3 = Equal.trans(Array<U32> & Array<FuluEth1Data_d.Eth1Data>, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt(p, U32.add(i, 1), X, FuluEth1Data_e.Eth1Data_put(FD.array__thaw(U32, D), Xj, o), AG_l2048_Eth1Data(A, U32.add(i, 1))), Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l2048_Eth1Data(A, U32.add(i, 1))),
+        (FD.array__thaw(U32, WX_l2048_Eth1Data(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(FuluEth1Data_d.Eth1Data, A)), ea,
+        Equal.trans(Array<U32> & Array<FuluEth1Data_d.Eth1Data>, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), AG_l2048_Eth1Data(A, U32.add(i, 1))), Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt(p, U32.add(i, 1), X, FD.array__thaw(U32, D1), (FD.array__thaw(FuluEth1Data_d.Eth1Data, A), EL_l2048_Eth1Data(A, 1n+j))),
+          (FD.array__thaw(U32, WX_l2048_Eth1Data(p, 1n+j, dd, D1, q, r, A)), FD.array__thaw(FuluEth1Data_d.Eth1Data, A)), eb, rt2))
       +rest = F.flat(CHW_l2048_Eth1Data(1n+p, A, 1n+j))
       +eXn = Equal.trans(Nat, VRX.YP(1n+j, 18n, q, r), Nat.add(Yj, A.quad(18n)), Nat.add(Yj, VRX.LN(Y)), ey,
         Equal.cong(Nat, Nat, z => Nat.add(Yj, z), A.quad(18n), VRX.LN(Y), Equal.sym(Nat, VRX.LN(Y), A.quad(18n), lenb_Eth1Data(o))))
@@ -346,57 +350,57 @@ def ptx_l2048_Eth1Data(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd:
 
 # ---- l2048_Eth1Data: the list's encoder window ----
 
-def TDM_l2048_Eth1Data(t: FD.array__Tree<T.Eth1Data>) -> Nat:
+def TDM_l2048_Eth1Data(t: FD.array__Tree<FuluEth1Data_d.Eth1Data>) -> Nat:
   match t:
     case FD.TLeaf{x}: 0n
     case FD.TNode{l, r}: 1n+TDM_l2048_Eth1Data(l)
 
 # The list object Seq{thaw(A), N} and its facts: a perfect tree of depth < 31 holding the N records,
 # N within the limit 2048.
-def THL_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32) -> T.l2048_Eth1Data_Seq: T.l2048_Eth1Data_Seq{FD.array__thaw(T.Eth1Data, A), N}
-def OKL_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32) -> Bool:
-  Bool.and(Nat.is_lt(TDM_l2048_Eth1Data(A), 31n), Bool.and(FD.array__perfect(T.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048))))
-def okl_d_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {Nat.is_lt(TDM_l2048_Eth1Data(A), 31n) == True{} : Bool}:
-  and_l(Nat.is_lt(TDM_l2048_Eth1Data(A), 31n), Bool.and(FD.array__perfect(T.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048))), h)
-def okl_1_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool})
-    -> {Bool.and(FD.array__perfect(T.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048))) == True{} : Bool}:
-  and_r(Nat.is_lt(TDM_l2048_Eth1Data(A), 31n), Bool.and(FD.array__perfect(T.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048))), h)
-def okl_pf_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {FD.array__perfect(T.Eth1Data, TDM_l2048_Eth1Data(A), A) == True{} : Bool}:
-  and_l(FD.array__perfect(T.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048)), okl_1_l2048_Eth1Data(A, N, h))
-def okl_2_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048)) == True{} : Bool}:
-  and_r(FD.array__perfect(T.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048)), okl_1_l2048_Eth1Data(A, N, h))
-def okl_n_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))) == True{} : Bool}:
+def THL_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32) -> Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq: Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq{FD.array__thaw(FuluEth1Data_d.Eth1Data, A), N}
+def OKL_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32) -> Bool:
+  Bool.and(Nat.is_lt(TDM_l2048_Eth1Data(A), 31n), Bool.and(FD.array__perfect(FuluEth1Data_d.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048))))
+def okl_d_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {Nat.is_lt(TDM_l2048_Eth1Data(A), 31n) == True{} : Bool}:
+  and_l(Nat.is_lt(TDM_l2048_Eth1Data(A), 31n), Bool.and(FD.array__perfect(FuluEth1Data_d.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048))), h)
+def okl_1_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool})
+    -> {Bool.and(FD.array__perfect(FuluEth1Data_d.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048))) == True{} : Bool}:
+  and_r(Nat.is_lt(TDM_l2048_Eth1Data(A), 31n), Bool.and(FD.array__perfect(FuluEth1Data_d.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048))), h)
+def okl_pf_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {FD.array__perfect(FuluEth1Data_d.Eth1Data, TDM_l2048_Eth1Data(A), A) == True{} : Bool}:
+  and_l(FD.array__perfect(FuluEth1Data_d.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048)), okl_1_l2048_Eth1Data(A, N, h))
+def okl_2_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048)) == True{} : Bool}:
+  and_r(FD.array__perfect(FuluEth1Data_d.Eth1Data, TDM_l2048_Eth1Data(A), A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048)), okl_1_l2048_Eth1Data(A, N, h))
+def okl_n_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))) == True{} : Bool}:
   and_l(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048), okl_2_l2048_Eth1Data(A, N, h))
-def okl_lim_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {U32.is_le(N, 2048) == True{} : Bool}:
+def okl_lim_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {U32.is_le(N, 2048) == True{} : Bool}:
   and_r(Nat.is_le(U32.to_nat(N), VB.pw(TDM_l2048_Eth1Data(A))), U32.is_le(N, 2048), okl_2_l2048_Eth1Data(A, N, h))
 
 # N <= 2^d as the runtime compares it.
-def le_cap_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(TDM_l2048_Eth1Data(A))) == True{} : Bool}:
+def le_cap_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {U32.is_le(N, FD.u32__pow2u(TDM_l2048_Eth1Data(A))) == True{} : Bool}:
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(TDM_l2048_Eth1Data(A))), Nat.is_le(U32.to_nat(N), U32.to_nat(FD.u32__pow2u(TDM_l2048_Eth1Data(A)))), VU.le_u32(N, FD.u32__pow2u(TDM_l2048_Eth1Data(A)))) : {_ == True{} : Bool}
   %Equal.sym(Nat, U32.to_nat(FD.u32__pow2u(TDM_l2048_Eth1Data(A))), VB.pw(TDM_l2048_Eth1Data(A)), FD.u32__pow2u_value(TDM_l2048_Eth1Data(A), FD.nat__lt_trans(TDM_l2048_Eth1Data(A), 31n, 32n, okl_d_l2048_Eth1Data(A, N, h), {==}))) : {Nat.is_le(U32.to_nat(N), _) == True{} : Bool}
   okl_n_l2048_Eth1Data(A, N, h)
 
 # The list's bytes, their count, and the writer's model.
-def LL_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32) -> Nat: A.quad(Nat.mul(U32.to_nat(N), 18n))
-def ENCL_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32) -> +List<U32>: F.limbs(RWA_l2048_Eth1Data(U32.to_nat(N), A, 0n))
-def PUTLb_l2048_Eth1Data(b: Bool, +A: FD.array__Tree<T.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+def LL_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32) -> Nat: A.quad(Nat.mul(U32.to_nat(N), 18n))
+def ENCL_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32) -> +List<U32>: F.limbs(RWA_l2048_Eth1Data(U32.to_nat(N), A, 0n))
+def PUTLb_l2048_Eth1Data(b: Bool, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match b:
     case True{}: D
     case False{}: WX_l2048_Eth1Data(U32.to_nat(U32.sub(N, 1)), 0n, dd, D, q, r, A)
-def PUTL_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PUTLb_l2048_Eth1Data(U32.is_eq(N, 0), A, N, dd, D, q, r)
-def pfLb_l2048_Eth1Data(+b: Bool, +A: FD.array__Tree<T.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def PUTL_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PUTLb_l2048_Eth1Data(U32.is_eq(N, 0), A, N, dd, D, q, r)
+def pfLb_l2048_Eth1Data(+b: Bool, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PUTLb_l2048_Eth1Data(b, A, N, dd, D, q, r)) == True{} : Bool}:
   match b:
     case True{}: pf
     case False{}: pfWX_l2048_Eth1Data(U32.to_nat(U32.sub(N, 1)), 0n, dd, D, q, r, A, pf)
 
-def RTN_l2048_Eth1Data(+b: Bool, +A: FD.array__Tree<T.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l2048_Eth1Data_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(T.Eth1Data, A)) == (FD.array__thaw(U32, PUTLb_l2048_Eth1Data(b, A, N, dd, D, q, r)), THL_l2048_Eth1Data(A, N)) : Array<U32> & T.l2048_Eth1Data_Seq}
-def BYN_l2048_Eth1Data(+b: Bool, +A: FD.array__Tree<T.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTN_l2048_Eth1Data(+b: Bool, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt_nz(b, X, N, FD.array__thaw(U32, D), FD.array__thaw(FuluEth1Data_d.Eth1Data, A)) == (FD.array__thaw(U32, PUTLb_l2048_Eth1Data(b, A, N, dd, D, q, r)), THL_l2048_Eth1Data(A, N)) : Array<U32> & Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq}
+def BYN_l2048_Eth1Data(+b: Bool, +A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTLb_l2048_Eth1Data(b, A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l2048_Eth1Data(U32.to_nat(N), A, 0n))) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def ptnz_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l2048_Eth1Data(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l2048_Eth1Data(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l2048_Eth1Data(A, N)) : +List<U32>})
@@ -421,46 +425,46 @@ def ptnz_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +b: Bool, +eb: 
       +hk = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)),
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
-      +eg0 = FD.array__get(T.Eth1Data, da, A, 0, EL_l2048_Eth1Data(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(T.Eth1Data, FD.array__slots(T.Eth1Data, A), 0n, T.Eth1Data_default(), FD.array__len_lt(T.Eth1Data, da, A, 0n, pfA, h0)), pfA)
+      +eg0 = FD.array__get(FuluEth1Data_d.Eth1Data, da, A, 0, EL_l2048_Eth1Data(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(FuluEth1Data_d.Eth1Data, FD.array__slots(FuluEth1Data_d.Eth1Data, A), 0n, FuluEth1Data_d.Eth1Data_default(), FD.array__len_lt(FuluEth1Data_d.Eth1Data, da, A, 0n, pfA, h0)), pfA)
       +g = ptx_l2048_Eth1Data(k, 0, 0n, X, q, r, dd, D, da, A, LL_l2048_Eth1Data(A, N), {==}, e, hr, hd, pf, hj, hl, hz2, pfA, hda, hk)
       +rt = PA(RTK_l2048_Eth1Data(k, 0, 0n, X, q, r, dd, D, A), BYK_l2048_Eth1Data(k, 0n, q, r, dd, D, A), g)
       +by = PB(RTK_l2048_Eth1Data(k, 0, 0n, X, q, r, dd, D, A), BYK_l2048_Eth1Data(k, 0n, q, r, dd, D, A), g)
-      +ea = Equal.cong(Array<T.Eth1Data> & T.Eth1Data, Array<U32> & T.l2048_Eth1Data_Seq, z => T.l2048_Eth1Data_pt_fin(N, T.l2048_Eth1Data_pt(k, 0, X, FD.array__thaw(U32, D), z)), Array.get(T.Eth1Data, FD.array__thaw(T.Eth1Data, A), 0), (FD.array__thaw(T.Eth1Data, A), EL_l2048_Eth1Data(A, 0n)), eg0)
-      +eb2 = Equal.cong(Array<U32> & Array<T.Eth1Data>, Array<U32> & T.l2048_Eth1Data_Seq, z => T.l2048_Eth1Data_pt_fin(N, z), T.l2048_Eth1Data_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.Eth1Data, A), EL_l2048_Eth1Data(A, 0n))), (FD.array__thaw(U32, WX_l2048_Eth1Data(k, 0n, dd, D, q, r, A)), FD.array__thaw(T.Eth1Data, A)), rt)
-      (Equal.trans(Array<U32> & T.l2048_Eth1Data_Seq, T.l2048_Eth1Data_pt_fin(N, T.l2048_Eth1Data_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(T.Eth1Data, FD.array__thaw(T.Eth1Data, A), 0))), T.l2048_Eth1Data_pt_fin(N, T.l2048_Eth1Data_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(T.Eth1Data, A), EL_l2048_Eth1Data(A, 0n)))),
-         T.l2048_Eth1Data_pt_fin(N, (FD.array__thaw(U32, WX_l2048_Eth1Data(k, 0n, dd, D, q, r, A)), FD.array__thaw(T.Eth1Data, A))), ea, eb2),
+      +ea = Equal.cong(Array<FuluEth1Data_d.Eth1Data> & FuluEth1Data_d.Eth1Data, Array<U32> & Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq, z => Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt_fin(N, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt(k, 0, X, FD.array__thaw(U32, D), z)), Array.get(FuluEth1Data_d.Eth1Data, FD.array__thaw(FuluEth1Data_d.Eth1Data, A), 0), (FD.array__thaw(FuluEth1Data_d.Eth1Data, A), EL_l2048_Eth1Data(A, 0n)), eg0)
+      +eb2 = Equal.cong(Array<U32> & Array<FuluEth1Data_d.Eth1Data>, Array<U32> & Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq, z => Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt_fin(N, z), Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluEth1Data_d.Eth1Data, A), EL_l2048_Eth1Data(A, 0n))), (FD.array__thaw(U32, WX_l2048_Eth1Data(k, 0n, dd, D, q, r, A)), FD.array__thaw(FuluEth1Data_d.Eth1Data, A)), rt)
+      (Equal.trans(Array<U32> & Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt_fin(N, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(FuluEth1Data_d.Eth1Data, FD.array__thaw(FuluEth1Data_d.Eth1Data, A), 0))), Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt_fin(N, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluEth1Data_d.Eth1Data, A), EL_l2048_Eth1Data(A, 0n)))),
+         Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt_fin(N, (FD.array__thaw(U32, WX_l2048_Eth1Data(k, 0n, dd, D, q, r, A)), FD.array__thaw(FuluEth1Data_d.Eth1Data, A))), ea, eb2),
        FD.logic__subst(Nat, z => {UA.BYT(WX_l2048_Eth1Data(k, 0n, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l2048_Eth1Data(z, A, 0n))) : +List<U32>}, 1n+k, c, e1, by))
 
 # The runtime's validity check of the list.
-def valid_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {T.l2048_Eth1Data_valid(THL_l2048_Eth1Data(A, N)) == (THL_l2048_Eth1Data(A, N), True{}) : T.l2048_Eth1Data_Seq & Bool}:
+def valid_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_valid(THL_l2048_Eth1Data(A, N)) == (THL_l2048_Eth1Data(A, N), True{}) : Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & Bool}:
   +d = TDM_l2048_Eth1Data(A)
-  %Equal.sym(Array<T.Eth1Data> & U32, Array.size(T.Eth1Data, FD.array__thaw(T.Eth1Data, A)), (FD.array__thaw(T.Eth1Data, A), FD.u32__pow2u(d)), FD.array__size_thaw(T.Eth1Data, d, A, okl_pf_l2048_Eth1Data(A, N, h))) :
-    {T.l2048_Eth1Data_va_cap(Bool.or(False{}, U32.is_le(N, 2048)), N, _) == (THL_l2048_Eth1Data(A, N), True{}) : T.l2048_Eth1Data_Seq & Bool}
+  %Equal.sym(Array<FuluEth1Data_d.Eth1Data> & U32, Array.size(FuluEth1Data_d.Eth1Data, FD.array__thaw(FuluEth1Data_d.Eth1Data, A)), (FD.array__thaw(FuluEth1Data_d.Eth1Data, A), FD.u32__pow2u(d)), FD.array__size_thaw(FuluEth1Data_d.Eth1Data, d, A, okl_pf_l2048_Eth1Data(A, N, h))) :
+    {Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_va_cap(Bool.or(False{}, U32.is_le(N, 2048)), N, _) == (THL_l2048_Eth1Data(A, N), True{}) : Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, 2048), True{}, okl_lim_l2048_Eth1Data(A, N, h)) :
-    {(THL_l2048_Eth1Data(A, N), Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d)))) == (THL_l2048_Eth1Data(A, N), True{}) : T.l2048_Eth1Data_Seq & Bool}
+    {(THL_l2048_Eth1Data(A, N), Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d)))) == (THL_l2048_Eth1Data(A, N), True{}) : Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_l2048_Eth1Data(A, N, h)) :
-    {(THL_l2048_Eth1Data(A, N), Bool.and(Bool.or(False{}, True{}), _)) == (THL_l2048_Eth1Data(A, N), True{}) : T.l2048_Eth1Data_Seq & Bool}
+    {(THL_l2048_Eth1Data(A, N), Bool.and(Bool.or(False{}, True{}), _)) == (THL_l2048_Eth1Data(A, N), True{}) : Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & Bool}
   {==}
 
-def RTL_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l2048_Eth1Data_putk(FD.array__thaw(U32, D), X, THL_l2048_Eth1Data(A, N)) == (FD.array__thaw(U32, PUTL_l2048_Eth1Data(A, N, dd, D, q, r)), (THL_l2048_Eth1Data(A, N), U32.mul(N, 72))) : Array<U32> & (T.l2048_Eth1Data_Seq & U32)}
-def BYL_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTL_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_putk(FD.array__thaw(U32, D), X, THL_l2048_Eth1Data(A, N)) == (FD.array__thaw(U32, PUTL_l2048_Eth1Data(A, N, dd, D, q, r)), (THL_l2048_Eth1Data(A, N), U32.mul(N, 72))) : Array<U32> & (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32)}
+def BYL_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL_l2048_Eth1Data(A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l2048_Eth1Data(A, N)) : +List<U32>}
-def PFL_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def PFL_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {FD.array__perfect(U32, dd, PUTL_l2048_Eth1Data(A, N, dd, D, q, r)) == True{} : Bool}
 
 # The runtime's write, with its validity check.
-def putk_rt_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putk_rt_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN_l2048_Eth1Data(U32.is_eq(N, 0), A, N, dd, D, X, q, r)) -> RTL_l2048_Eth1Data(A, N, dd, D, X, q, r):
-  %Equal.sym(T.l2048_Eth1Data_Seq & Bool, T.l2048_Eth1Data_valid(THL_l2048_Eth1Data(A, N)), (THL_l2048_Eth1Data(A, N), True{}), valid_l2048_Eth1Data(A, N, h)) :
-    {T.l2048_Eth1Data_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l2048_Eth1Data(A, N, dd, D, q, r)), (THL_l2048_Eth1Data(A, N), U32.mul(N, 72))) : Array<U32> & (T.l2048_Eth1Data_Seq & U32)}
-  %Equal.sym(Array<U32> & T.l2048_Eth1Data_Seq, T.l2048_Eth1Data_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(T.Eth1Data, A)), (FD.array__thaw(U32, PUTL_l2048_Eth1Data(A, N, dd, D, q, r)), THL_l2048_Eth1Data(A, N)), rtb) :
-    {T.l2048_Eth1Data_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l2048_Eth1Data(A, N, dd, D, q, r)), (THL_l2048_Eth1Data(A, N), U32.mul(N, 72))) : Array<U32> & (T.l2048_Eth1Data_Seq & U32)}
+  %Equal.sym(Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & Bool, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_valid(THL_l2048_Eth1Data(A, N)), (THL_l2048_Eth1Data(A, N), True{}), valid_l2048_Eth1Data(A, N, h)) :
+    {Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l2048_Eth1Data(A, N, dd, D, q, r)), (THL_l2048_Eth1Data(A, N), U32.mul(N, 72))) : Array<U32> & (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32)}
+  %Equal.sym(Array<U32> & Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq, Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), FD.array__thaw(FuluEth1Data_d.Eth1Data, A)), (FD.array__thaw(U32, PUTL_l2048_Eth1Data(A, N, dd, D, q, r)), THL_l2048_Eth1Data(A, N)), rtb) :
+    {Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l2048_Eth1Data(A, N, dd, D, q, r)), (THL_l2048_Eth1Data(A, N), U32.mul(N, 72))) : Array<U32> & (Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32)}
   {==}
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
 # into D's (its records write their data bytes only), and whose tree is perfect.
-def putx_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putx_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l2048_Eth1Data(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l2048_Eth1Data(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l2048_Eth1Data(A, N)) : +List<U32>})
@@ -476,16 +480,16 @@ def putx_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_
 # ---- sizes ----
 
 # The runtime's size pass.
-def sizex_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {T.l2048_Eth1Data_size(THL_l2048_Eth1Data(A, N)) == (THL_l2048_Eth1Data(A, N), U32.mul(N, 72)) : T.l2048_Eth1Data_Seq & U32}:
+def sizex_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}) -> {Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_size(THL_l2048_Eth1Data(A, N)) == (THL_l2048_Eth1Data(A, N), U32.mul(N, 72)) : Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32}:
   +d = TDM_l2048_Eth1Data(A)
-  %Equal.sym(Array<T.Eth1Data> & U32, Array.size(T.Eth1Data, FD.array__thaw(T.Eth1Data, A)), (FD.array__thaw(T.Eth1Data, A), FD.u32__pow2u(d)), FD.array__size_thaw(T.Eth1Data, d, A, okl_pf_l2048_Eth1Data(A, N, h))) :
-    {T.l2048_Eth1Data_szf(N, _) == (THL_l2048_Eth1Data(A, N), U32.mul(N, 72)) : T.l2048_Eth1Data_Seq & U32}
+  %Equal.sym(Array<FuluEth1Data_d.Eth1Data> & U32, Array.size(FuluEth1Data_d.Eth1Data, FD.array__thaw(FuluEth1Data_d.Eth1Data, A)), (FD.array__thaw(FuluEth1Data_d.Eth1Data, A), FD.u32__pow2u(d)), FD.array__size_thaw(FuluEth1Data_d.Eth1Data, d, A, okl_pf_l2048_Eth1Data(A, N, h))) :
+    {Fulu_list_Eth1Data_2048_e.l2048_Eth1Data_szf(N, _) == (THL_l2048_Eth1Data(A, N), U32.mul(N, 72)) : Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap_l2048_Eth1Data(A, N, h)) :
-    {(THL_l2048_Eth1Data(A, N), O.pick(_, U32.mul(N, 72), 2147483648)) == (THL_l2048_Eth1Data(A, N), U32.mul(N, 72)) : T.l2048_Eth1Data_Seq & U32}
+    {(THL_l2048_Eth1Data(A, N), O.pick(_, U32.mul(N, 72), 2147483648)) == (THL_l2048_Eth1Data(A, N), U32.mul(N, 72)) : Fulu_list_Eth1Data_2048_d.l2048_Eth1Data_Seq & U32}
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
-def szx_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def szx_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l2048_Eth1Data(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 72)) == LL_l2048_Eth1Data(A, N) : Nat}:
   VRX.mulq(dd, N, U32.to_nat(N), 72, 18n, {==}, {==}, hd,
     FD.nat__le_trans(LL_l2048_Eth1Data(A, N), Nat.add(Nat.add(A.quad(q), r), LL_l2048_Eth1Data(A, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL_l2048_Eth1Data(A, N)), VRX.xend(q, r, LL_l2048_Eth1Data(A, N), dd, hl)))
@@ -494,9 +498,9 @@ def szx_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +q: Nat, +r: Nat
 # ---- l2048_Eth1Data: the spec side ----
 
 # The value of the list: the records' values.
-def VALL_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32) -> S.Value: S.Sequence{ITW_l2048_Eth1Data(U32.to_nat(N), A, 0n)}
+def VALL_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32) -> S.Value: S.Sequence{ITW_l2048_Eth1Data(U32.to_nat(N), A, 0n)}
 
-def len_encl_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32) -> {List.length(&2, U32, ENCL_l2048_Eth1Data(A, N)) == LL_l2048_Eth1Data(A, N) : Nat}:
+def len_encl_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32) -> {List.length(&2, U32, ENCL_l2048_Eth1Data(A, N)) == LL_l2048_Eth1Data(A, N) : Nat}:
   %Equal.sym(Nat, List.length(&2, U32, F.limbs(RWA_l2048_Eth1Data(U32.to_nat(N), A, 0n))), F.wlen(RWA_l2048_Eth1Data(U32.to_nat(N), A, 0n)), VS.len_limbs(RWA_l2048_Eth1Data(U32.to_nat(N), A, 0n))) : {_ == LL_l2048_Eth1Data(A, N) : Nat}
   %Equal.sym(Nat, F.wlen(RWA_l2048_Eth1Data(U32.to_nat(N), A, 0n)), A.quad(List.length(&2, U32, RWA_l2048_Eth1Data(U32.to_nat(N), A, 0n))), VS.wlen_quad(RWA_l2048_Eth1Data(U32.to_nat(N), A, 0n))) : {_ == LL_l2048_Eth1Data(A, N) : Nat}
   %Equal.sym(Nat, List.length(&2, U32, RWA_l2048_Eth1Data(U32.to_nat(N), A, 0n)), FD.spec_common__length(U32, RWA_l2048_Eth1Data(U32.to_nat(N), A, 0n)), VMR.len_eq(RWA_l2048_Eth1Data(U32.to_nat(N), A, 0n))) : {A.quad(_) == LL_l2048_Eth1Data(A, N) : Nat}
@@ -504,7 +508,7 @@ def len_encl_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32) -> {List.le
   {==}
 
 # encx_spec: the list's value has its bytes as one variable part, when they fit a tree of depth dx < 30.
-def encx_spec_l2048_Eth1Data(+A: FD.array__Tree<T.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}, +dx: Nat, +hdx: {Nat.is_lt(dx, 30n) == True{} : Bool},
+def encx_spec_l2048_Eth1Data(+A: FD.array__Tree<FuluEth1Data_d.Eth1Data>, +N: U32, +h: {OKL_l2048_Eth1Data(A, N) == True{} : Bool}, +dx: Nat, +hdx: {Nat.is_lt(dx, 30n) == True{} : Bool},
     +hL: {Nat.is_le(LL_l2048_Eth1Data(A, N), A.quad(VB.pw(dx))) == True{} : Bool})
     -> {Codec.parts(VALL_l2048_Eth1Data(A, N), S.ListOf{S.Container{["deposit_root", "deposit_count", "block_hash"], S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.End{}}}}}, U32.to_nat(2048)}) == Some{[S.Variable{ENCL_l2048_Eth1Data(A, N)}]} : Maybe<&2, +List<S.Part>>}:
   +hlim = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, 2048), Nat.is_le(U32.to_nat(N), U32.to_nat(2048)), VU.le_u32(N, 2048), okl_lim_l2048_Eth1Data(A, N, h))

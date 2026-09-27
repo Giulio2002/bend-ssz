@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_vec_uint64_8192_decode_ssz_generated.bend as Fulu_vec_uint64_8192_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -33,7 +33,7 @@ def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> O.Words: O.Words{FD.array_
 def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 65536n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v8192_u64_read(UA.BF(t, n), off, 65536) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
+    -> {Fulu_vec_uint64_8192_r.v8192_u64_read(UA.BF(t, n), off, 65536) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
   VXG.rdg(d, t, n, off, x, e, hd, pf, 65536, 65536n, 15n, 17n, {==}, {==}, {==}, {==}, {==}, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.Sequence{AV.chu2(UR.RWS(VXG.CNT(x, 16384n), t, x))}

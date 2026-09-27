@@ -1,7 +1,14 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/vec_uint32_16_encode_ssz_generated.bend as vec_uint32_16_e
+import ../../types/vec_uint32_1_encode_ssz_generated.bend as vec_uint32_1_e
+import ../../types/vec_uint32_2_encode_ssz_generated.bend as vec_uint32_2_e
+import ../../types/vec_uint32_31_encode_ssz_generated.bend as vec_uint32_31_e
+import ../../types/vec_uint32_3_encode_ssz_generated.bend as vec_uint32_3_e
+import ../../types/vec_uint32_4_encode_ssz_generated.bend as vec_uint32_4_e
+import ../../types/vec_uint32_5_encode_ssz_generated.bend as vec_uint32_5_e
+import ../../types/vec_uint32_8_encode_ssz_generated.bend as vec_uint32_8_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/decoding_relation.bend as Decoding
@@ -26,154 +33,154 @@ import ./wany.bend as WA
 # ---- Gt3CC580499F: a vector of 16 uint32 (64 bytes, 16 words; writer unrolled v16_u32, output depth 4) ----
 def Gt3CC580499F_pc15(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa15(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 15)) == (F.array__thaw(U32, AC.cpt(4n, 1n, 15n, 15n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa15(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 15)) == (F.array__thaw(U32, AC.cpt(4n, 1n, 15n, 15n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 15n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 15), (F.array__thaw(U32, t), v), AC.getv(ds, t, 15, 15n, {==}, hs, F.nat__lt_le_trans(15n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa15(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 1n, 15n, 15n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa15(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 1n, 15n, 15n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 15 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 15n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 15 : U32), 15n, v, {==}, {==}, {==}, pD)) :
     {(_, F.array__thaw(U32, t)) == (F.array__thaw(U32, AC.cpt(4n, 1n, 15n, 15n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   {==}
 def Gt3CC580499F_pc14(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa14(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 14)) == (F.array__thaw(U32, AC.cpt(4n, 2n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa14(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 14)) == (F.array__thaw(U32, AC.cpt(4n, 2n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 14n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 14), (F.array__thaw(U32, t), v), AC.getv(ds, t, 14, 14n, {==}, hs, F.nat__lt_le_trans(14n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa14(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 2n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa14(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 2n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 14 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 14n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 14 : U32), 14n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa15(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 15)) == (F.array__thaw(U32, AC.cpt(4n, 2n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa15(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 15)) == (F.array__thaw(U32, AC.cpt(4n, 2n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc15(F.array__upd(U32, 4n, D, 14n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 14n, v, pD))
 def Gt3CC580499F_pc13(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa13(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 13)) == (F.array__thaw(U32, AC.cpt(4n, 3n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa13(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 13)) == (F.array__thaw(U32, AC.cpt(4n, 3n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 13n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 13), (F.array__thaw(U32, t), v), AC.getv(ds, t, 13, 13n, {==}, hs, F.nat__lt_le_trans(13n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa13(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 3n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa13(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 3n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 13 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 13n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 13 : U32), 13n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa14(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 14)) == (F.array__thaw(U32, AC.cpt(4n, 3n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa14(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 14)) == (F.array__thaw(U32, AC.cpt(4n, 3n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc14(F.array__upd(U32, 4n, D, 13n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 13n, v, pD))
 def Gt3CC580499F_pc12(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa12(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 12)) == (F.array__thaw(U32, AC.cpt(4n, 4n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa12(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 12)) == (F.array__thaw(U32, AC.cpt(4n, 4n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 12n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 12), (F.array__thaw(U32, t), v), AC.getv(ds, t, 12, 12n, {==}, hs, F.nat__lt_le_trans(12n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa12(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 4n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa12(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 4n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 12 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 12n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 12 : U32), 12n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa13(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 13)) == (F.array__thaw(U32, AC.cpt(4n, 4n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa13(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 13)) == (F.array__thaw(U32, AC.cpt(4n, 4n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc13(F.array__upd(U32, 4n, D, 12n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 12n, v, pD))
 def Gt3CC580499F_pc11(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa11(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 11)) == (F.array__thaw(U32, AC.cpt(4n, 5n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa11(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 11)) == (F.array__thaw(U32, AC.cpt(4n, 5n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 11n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 11), (F.array__thaw(U32, t), v), AC.getv(ds, t, 11, 11n, {==}, hs, F.nat__lt_le_trans(11n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa11(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 5n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa11(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 5n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 11 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 11n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 11 : U32), 11n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa12(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 12)) == (F.array__thaw(U32, AC.cpt(4n, 5n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa12(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 12)) == (F.array__thaw(U32, AC.cpt(4n, 5n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc12(F.array__upd(U32, 4n, D, 11n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 11n, v, pD))
 def Gt3CC580499F_pc10(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa10(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 10)) == (F.array__thaw(U32, AC.cpt(4n, 6n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa10(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 10)) == (F.array__thaw(U32, AC.cpt(4n, 6n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 10n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 10), (F.array__thaw(U32, t), v), AC.getv(ds, t, 10, 10n, {==}, hs, F.nat__lt_le_trans(10n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa10(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 6n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa10(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 6n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 10 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 10n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 10 : U32), 10n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa11(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 11)) == (F.array__thaw(U32, AC.cpt(4n, 6n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa11(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 11)) == (F.array__thaw(U32, AC.cpt(4n, 6n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc11(F.array__upd(U32, 4n, D, 10n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 10n, v, pD))
 def Gt3CC580499F_pc9(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa9(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 9)) == (F.array__thaw(U32, AC.cpt(4n, 7n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa9(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 9)) == (F.array__thaw(U32, AC.cpt(4n, 7n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 9n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 9), (F.array__thaw(U32, t), v), AC.getv(ds, t, 9, 9n, {==}, hs, F.nat__lt_le_trans(9n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa9(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 7n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa9(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 7n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 9 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 9n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 9 : U32), 9n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa10(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 10)) == (F.array__thaw(U32, AC.cpt(4n, 7n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa10(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 10)) == (F.array__thaw(U32, AC.cpt(4n, 7n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc10(F.array__upd(U32, 4n, D, 9n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 9n, v, pD))
 def Gt3CC580499F_pc8(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa8(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 8)) == (F.array__thaw(U32, AC.cpt(4n, 8n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa8(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 8)) == (F.array__thaw(U32, AC.cpt(4n, 8n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 8n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 8), (F.array__thaw(U32, t), v), AC.getv(ds, t, 8, 8n, {==}, hs, F.nat__lt_le_trans(8n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa8(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 8n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa8(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 8n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 8 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 8n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 8 : U32), 8n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa9(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 9)) == (F.array__thaw(U32, AC.cpt(4n, 8n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa9(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 9)) == (F.array__thaw(U32, AC.cpt(4n, 8n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc9(F.array__upd(U32, 4n, D, 8n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 8n, v, pD))
 def Gt3CC580499F_pc7(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(4n, 9n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(4n, 9n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 7n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 7), (F.array__thaw(U32, t), v), AC.getv(ds, t, 7, 7n, {==}, hs, F.nat__lt_le_trans(7n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 9n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 9n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 7 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 7n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 7 : U32), 7n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa8(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 8)) == (F.array__thaw(U32, AC.cpt(4n, 9n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa8(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 8)) == (F.array__thaw(U32, AC.cpt(4n, 9n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc8(F.array__upd(U32, 4n, D, 7n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 7n, v, pD))
 def Gt3CC580499F_pc6(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(4n, 10n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(4n, 10n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 6n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 6), (F.array__thaw(U32, t), v), AC.getv(ds, t, 6, 6n, {==}, hs, F.nat__lt_le_trans(6n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 10n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 10n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 6 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 6n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 6 : U32), 6n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa7(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(4n, 10n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa7(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(4n, 10n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc7(F.array__upd(U32, 4n, D, 6n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 6n, v, pD))
 def Gt3CC580499F_pc5(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(4n, 11n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(4n, 11n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 5n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 5), (F.array__thaw(U32, t), v), AC.getv(ds, t, 5, 5n, {==}, hs, F.nat__lt_le_trans(5n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 11n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 11n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 5 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 5n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 5 : U32), 5n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa6(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(4n, 11n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa6(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(4n, 11n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc6(F.array__upd(U32, 4n, D, 5n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 5n, v, pD))
 def Gt3CC580499F_pc4(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(4n, 12n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(4n, 12n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 4n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 4), (F.array__thaw(U32, t), v), AC.getv(ds, t, 4, 4n, {==}, hs, F.nat__lt_le_trans(4n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 12n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 12n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 4 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 4n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 4 : U32), 4n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa5(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(4n, 12n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa5(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(4n, 12n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc5(F.array__upd(U32, 4n, D, 4n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 4n, v, pD))
 def Gt3CC580499F_pc3(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(4n, 13n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(4n, 13n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 3n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 3), (F.array__thaw(U32, t), v), AC.getv(ds, t, 3, 3n, {==}, hs, F.nat__lt_le_trans(3n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 13n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 13n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 3 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 3n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 3 : U32), 3n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa4(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(4n, 13n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa4(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(4n, 13n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc4(F.array__upd(U32, 4n, D, 3n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 3n, v, pD))
 def Gt3CC580499F_pc2(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(4n, 14n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(4n, 14n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 2n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 2), (F.array__thaw(U32, t), v), AC.getv(ds, t, 2, 2n, {==}, hs, F.nat__lt_le_trans(2n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 14n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 14n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 2 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 2n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 2 : U32), 2n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa3(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(4n, 14n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa3(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(4n, 14n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc3(F.array__upd(U32, 4n, D, 2n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 2n, v, pD))
 def Gt3CC580499F_pc1(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(4n, 15n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(4n, 15n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 1n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 1), (F.array__thaw(U32, t), v), AC.getv(ds, t, 1, 1n, {==}, hs, F.nat__lt_le_trans(1n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 15n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 15n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 1 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 1n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 1 : U32), 1n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(4n, 15n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(4n, 15n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc2(F.array__upd(U32, 4n, D, 1n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 1n, v, pD))
 def Gt3CC580499F_pc0(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(16n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool})
-    -> {T.v16_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_16_e.v16_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 0n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 0), (F.array__thaw(U32, t), v), AC.getv(ds, t, 0, 0n, {==}, hs, F.nat__lt_le_trans(0n, 16n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v16_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 0 : U32), v), F.array__thaw(U32, F.array__upd(U32, 4n, D, 0n, v)), AC.setv(4n, D, (U32.shrn(0, 2n) + 0 : U32), 0n, v, {==}, {==}, {==}, pD)) :
-    {T.v16_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_16_e.v16_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt3CC580499F_pc1(F.array__upd(U32, 4n, D, 0n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 4n, D, 0n, v, pD))
 def Gt3CC580499F_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 4n, D) == True{} : Bool}, +t: F.array__Tree<U32>, +dw: Nat, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}, +hn: {Nat.is_le(16n, F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {SF.emitted(O.Words, T.Gt3CC580499F_enc_out(T.v16_u32_pal(64, T.v16_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 16) == (O.Words{F.array__thaw(U32, t), 64}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n))) : O.Words & +List<U32>}:
-  %Equal.sym(Array<U32> & Array<U32>, T.v16_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
+    -> {SF.emitted(O.Words, vec_uint32_16_e.Gt3CC580499F_enc_out(vec_uint32_16_e.v16_u32_pal(64, vec_uint32_16_e.v16_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 16) == (O.Words{F.array__thaw(U32, t), 64}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n))) : O.Words & +List<U32>}:
+  %Equal.sym(Array<U32> & Array<U32>, vec_uint32_16_e.v16_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
       Gt3CC580499F_pc0(D, t, dw, hd, pf, hn, pD)) :
-    {SF.emitted(O.Words, T.Gt3CC580499F_enc_out(T.v16_u32_pal(64, _)), 16) == (O.Words{F.array__thaw(U32, t), 64}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_16_e.Gt3CC580499F_enc_out(vec_uint32_16_e.v16_u32_pal(64, _)), 16) == (O.Words{F.array__thaw(U32, t), 64}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n))) : O.Words & +List<U32>}
   %Equal.sym(B.Buf, O.out_done(64, F.array__thaw(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t)))), B.Buf{F.array__thaw(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t))), 64}, WA.out_buf(64, F.array__thaw(U32, AC.cpt(4n, 16n, 0n, 0n, D, F.array__slots(U32, t))))) :
     {(O.Words{F.array__thaw(U32, t), 64}, SF.listed(B.emit(_, 0, 16))) == (O.Words{F.array__thaw(U32, t), 64}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n))) : O.Words & +List<U32>}
   +hK = WA.le_true(16n, F.spec_common__pow2(4n), {==})
@@ -187,7 +194,7 @@ def Gt3CC580499F_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 4n, D)
     {(O.Words{F.array__thaw(U32, t), 64}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 64}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n))) : O.Words & +List<U32>}
   {==}
 def Gt3CC580499F_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3CC580499F() : S.Schema}, +rep: PK.rep_v4(o, s))
-    -> {SF.emitted(O.Words, T.Gt3CC580499F_encode(o), 16) == (o, WO.wview(o)) : O.Words & +List<U32>}:
+    -> {SF.emitted(O.Words, vec_uint32_16_e.Gt3CC580499F_encode(o), 16) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -207,13 +214,13 @@ def Gt3CC580499F_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3CC5804
     Equal.trans(Nat, PK.e4(U32.to_nat(U32.shrn(N, 2n))), PK.e4(16n), A.quad(16n), Equal.cong(Nat, Nat, x => PK.e4(x), U32.to_nat(U32.shrn(N, 2n)), 16n, eC), F.nat__eq_from_is_eq(PK.e4(16n), A.quad(16n), {==})))
   +eNN = F.u32__injective(N, 64, Equal.trans(Nat, U32.to_nat(N), A.quad(16n), U32.to_nat(64), eNB, F.nat__eq_from_is_eq(A.quad(16n), U32.to_nat(64), {==})))
   +hn = F.nat__le_trans(16n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(16n, q, r, Equal.trans(Nat, A.quad(16n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(16n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, T.Gt3CC580499F_encode(_), 16) == (_, WO.wview(_)) : O.Words & +List<U32>}
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint32_16_e.Gt3CC580499F_encode(_), 16) == (_, WO.wview(_)) : O.Words & +List<U32>}
   %Equal.sym(U32, N, 64, eNN) :
-    {SF.emitted(O.Words, T.Gt3CC580499F_encode(O.Words{F.array__thaw(U32, t), _}), 16) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_16_e.Gt3CC580499F_encode(O.Words{F.array__thaw(U32, t), _}), 16) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
   %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 64}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n)), WA.wview_take(t, 64, 16n, F.nat__eq_from_is_eq(U32.to_nat(64), A.quad(16n), {==}))) :
-    {SF.emitted(O.Words, T.Gt3CC580499F_encode(O.Words{F.array__thaw(U32, t), 64}), 16) == (O.Words{F.array__thaw(U32, t), 64}, _) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_16_e.Gt3CC580499F_encode(O.Words{F.array__thaw(U32, t), 64}), 16) == (O.Words{F.array__thaw(U32, t), 64}, _) : O.Words & +List<U32>}
   %Equal.sym(Array<U32>, Array.new(U32, 4n, 0), F.array__thaw(U32, F.array__trep(U32, 4n, 0)), F.array__new(U32, 4n, 0)) :
-    {SF.emitted(O.Words, T.Gt3CC580499F_enc_out(T.v16_u32_pal(64, T.v16_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 16) == (O.Words{F.array__thaw(U32, t), 64}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_16_e.Gt3CC580499F_enc_out(vec_uint32_16_e.v16_u32_pal(64, vec_uint32_16_e.v16_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 16) == (O.Words{F.array__thaw(U32, t), 64}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 16n))) : O.Words & +List<U32>}
   Gt3CC580499F_emit(F.array__trep(U32, 4n, 0), F.array__trep_perfect(U32, 4n, 0), t, dw, hd, pf, hn)
 def Gt3CC580499F_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3CC580499F() : S.Schema}, +rep: PK.rep_v4(o, s))
     -> Decoding.decodes(s, WO.wview(o), PK.vview4(o)):
@@ -253,19 +260,19 @@ def Gt3CC580499F_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3CC580
 # ---- Gt669C528764: a vector of 1 uint32 (4 bytes, 1 words; writer unrolled v1_u32, output depth 0) ----
 def Gt669C528764_pc0(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(1n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 0n, D) == True{} : Bool})
-    -> {T.v1_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(0n, 1n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_1_e.v1_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(0n, 1n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 0n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 0), (F.array__thaw(U32, t), v), AC.getv(ds, t, 0, 0n, {==}, hs, F.nat__lt_le_trans(0n, 1n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v1_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(0n, 1n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_1_e.v1_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(0n, 1n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 0 : U32), v), F.array__thaw(U32, F.array__upd(U32, 0n, D, 0n, v)), AC.setv(0n, D, (U32.shrn(0, 2n) + 0 : U32), 0n, v, {==}, {==}, {==}, pD)) :
     {(_, F.array__thaw(U32, t)) == (F.array__thaw(U32, AC.cpt(0n, 1n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   {==}
 def Gt669C528764_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 0n, D) == True{} : Bool}, +t: F.array__Tree<U32>, +dw: Nat, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}, +hn: {Nat.is_le(1n, F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {SF.emitted(O.Words, T.Gt669C528764_enc_out(T.v1_u32_pal(4, T.v1_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 1) == (O.Words{F.array__thaw(U32, t), 4}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1n))) : O.Words & +List<U32>}:
-  %Equal.sym(Array<U32> & Array<U32>, T.v1_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(0n, 1n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
+    -> {SF.emitted(O.Words, vec_uint32_1_e.Gt669C528764_enc_out(vec_uint32_1_e.v1_u32_pal(4, vec_uint32_1_e.v1_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 1) == (O.Words{F.array__thaw(U32, t), 4}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1n))) : O.Words & +List<U32>}:
+  %Equal.sym(Array<U32> & Array<U32>, vec_uint32_1_e.v1_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(0n, 1n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
       Gt669C528764_pc0(D, t, dw, hd, pf, hn, pD)) :
-    {SF.emitted(O.Words, T.Gt669C528764_enc_out(T.v1_u32_pal(4, _)), 1) == (O.Words{F.array__thaw(U32, t), 4}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_1_e.Gt669C528764_enc_out(vec_uint32_1_e.v1_u32_pal(4, _)), 1) == (O.Words{F.array__thaw(U32, t), 4}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1n))) : O.Words & +List<U32>}
   %Equal.sym(B.Buf, O.out_done(4, F.array__thaw(U32, AC.cpt(0n, 1n, 0n, 0n, D, F.array__slots(U32, t)))), B.Buf{F.array__thaw(U32, AC.cpt(0n, 1n, 0n, 0n, D, F.array__slots(U32, t))), 4}, WA.out_buf(4, F.array__thaw(U32, AC.cpt(0n, 1n, 0n, 0n, D, F.array__slots(U32, t))))) :
     {(O.Words{F.array__thaw(U32, t), 4}, SF.listed(B.emit(_, 0, 1))) == (O.Words{F.array__thaw(U32, t), 4}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1n))) : O.Words & +List<U32>}
   +hK = WA.le_true(1n, F.spec_common__pow2(0n), {==})
@@ -279,7 +286,7 @@ def Gt669C528764_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 0n, D)
     {(O.Words{F.array__thaw(U32, t), 4}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 4}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1n))) : O.Words & +List<U32>}
   {==}
 def Gt669C528764_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt669C528764() : S.Schema}, +rep: PK.rep_v4(o, s))
-    -> {SF.emitted(O.Words, T.Gt669C528764_encode(o), 1) == (o, WO.wview(o)) : O.Words & +List<U32>}:
+    -> {SF.emitted(O.Words, vec_uint32_1_e.Gt669C528764_encode(o), 1) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -299,13 +306,13 @@ def Gt669C528764_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt669C528
     Equal.trans(Nat, PK.e4(U32.to_nat(U32.shrn(N, 2n))), PK.e4(1n), A.quad(1n), Equal.cong(Nat, Nat, x => PK.e4(x), U32.to_nat(U32.shrn(N, 2n)), 1n, eC), F.nat__eq_from_is_eq(PK.e4(1n), A.quad(1n), {==})))
   +eNN = F.u32__injective(N, 4, Equal.trans(Nat, U32.to_nat(N), A.quad(1n), U32.to_nat(4), eNB, F.nat__eq_from_is_eq(A.quad(1n), U32.to_nat(4), {==})))
   +hn = F.nat__le_trans(1n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(1n, q, r, Equal.trans(Nat, A.quad(1n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(1n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, T.Gt669C528764_encode(_), 1) == (_, WO.wview(_)) : O.Words & +List<U32>}
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint32_1_e.Gt669C528764_encode(_), 1) == (_, WO.wview(_)) : O.Words & +List<U32>}
   %Equal.sym(U32, N, 4, eNN) :
-    {SF.emitted(O.Words, T.Gt669C528764_encode(O.Words{F.array__thaw(U32, t), _}), 1) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_1_e.Gt669C528764_encode(O.Words{F.array__thaw(U32, t), _}), 1) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
   %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 4}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1n)), WA.wview_take(t, 4, 1n, F.nat__eq_from_is_eq(U32.to_nat(4), A.quad(1n), {==}))) :
-    {SF.emitted(O.Words, T.Gt669C528764_encode(O.Words{F.array__thaw(U32, t), 4}), 1) == (O.Words{F.array__thaw(U32, t), 4}, _) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_1_e.Gt669C528764_encode(O.Words{F.array__thaw(U32, t), 4}), 1) == (O.Words{F.array__thaw(U32, t), 4}, _) : O.Words & +List<U32>}
   %Equal.sym(Array<U32>, Array.new(U32, 0n, 0), F.array__thaw(U32, F.array__trep(U32, 0n, 0)), F.array__new(U32, 0n, 0)) :
-    {SF.emitted(O.Words, T.Gt669C528764_enc_out(T.v1_u32_pal(4, T.v1_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 1) == (O.Words{F.array__thaw(U32, t), 4}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_1_e.Gt669C528764_enc_out(vec_uint32_1_e.v1_u32_pal(4, vec_uint32_1_e.v1_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 1) == (O.Words{F.array__thaw(U32, t), 4}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 1n))) : O.Words & +List<U32>}
   Gt669C528764_emit(F.array__trep(U32, 0n, 0), F.array__trep_perfect(U32, 0n, 0), t, dw, hd, pf, hn)
 def Gt669C528764_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt669C528764() : S.Schema}, +rep: PK.rep_v4(o, s))
     -> Decoding.decodes(s, WO.wview(o), PK.vview4(o)):
@@ -345,28 +352,28 @@ def Gt669C528764_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt669C52
 # ---- GtF45E42B273: a vector of 2 uint32 (8 bytes, 2 words; writer unrolled v2_u32, output depth 1) ----
 def GtF45E42B273_pc1(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(2n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 1n, D) == True{} : Bool})
-    -> {T.v2_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(1n, 1n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_2_e.v2_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(1n, 1n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 1n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 1), (F.array__thaw(U32, t), v), AC.getv(ds, t, 1, 1n, {==}, hs, F.nat__lt_le_trans(1n, 2n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v2_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(1n, 1n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_2_e.v2_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(1n, 1n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 1 : U32), v), F.array__thaw(U32, F.array__upd(U32, 1n, D, 1n, v)), AC.setv(1n, D, (U32.shrn(0, 2n) + 1 : U32), 1n, v, {==}, {==}, {==}, pD)) :
     {(_, F.array__thaw(U32, t)) == (F.array__thaw(U32, AC.cpt(1n, 1n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   {==}
 def GtF45E42B273_pc0(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(2n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 1n, D) == True{} : Bool})
-    -> {T.v2_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(1n, 2n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_2_e.v2_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(1n, 2n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 0n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 0), (F.array__thaw(U32, t), v), AC.getv(ds, t, 0, 0n, {==}, hs, F.nat__lt_le_trans(0n, 2n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v2_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(1n, 2n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_2_e.v2_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(1n, 2n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 0 : U32), v), F.array__thaw(U32, F.array__upd(U32, 1n, D, 0n, v)), AC.setv(1n, D, (U32.shrn(0, 2n) + 0 : U32), 0n, v, {==}, {==}, {==}, pD)) :
-    {T.v2_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(1n, 2n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_2_e.v2_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(1n, 2n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtF45E42B273_pc1(F.array__upd(U32, 1n, D, 0n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 1n, D, 0n, v, pD))
 def GtF45E42B273_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 1n, D) == True{} : Bool}, +t: F.array__Tree<U32>, +dw: Nat, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}, +hn: {Nat.is_le(2n, F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {SF.emitted(O.Words, T.GtF45E42B273_enc_out(T.v2_u32_pal(8, T.v2_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 2) == (O.Words{F.array__thaw(U32, t), 8}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2n))) : O.Words & +List<U32>}:
-  %Equal.sym(Array<U32> & Array<U32>, T.v2_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(1n, 2n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
+    -> {SF.emitted(O.Words, vec_uint32_2_e.GtF45E42B273_enc_out(vec_uint32_2_e.v2_u32_pal(8, vec_uint32_2_e.v2_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 2) == (O.Words{F.array__thaw(U32, t), 8}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2n))) : O.Words & +List<U32>}:
+  %Equal.sym(Array<U32> & Array<U32>, vec_uint32_2_e.v2_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(1n, 2n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
       GtF45E42B273_pc0(D, t, dw, hd, pf, hn, pD)) :
-    {SF.emitted(O.Words, T.GtF45E42B273_enc_out(T.v2_u32_pal(8, _)), 2) == (O.Words{F.array__thaw(U32, t), 8}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_2_e.GtF45E42B273_enc_out(vec_uint32_2_e.v2_u32_pal(8, _)), 2) == (O.Words{F.array__thaw(U32, t), 8}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2n))) : O.Words & +List<U32>}
   %Equal.sym(B.Buf, O.out_done(8, F.array__thaw(U32, AC.cpt(1n, 2n, 0n, 0n, D, F.array__slots(U32, t)))), B.Buf{F.array__thaw(U32, AC.cpt(1n, 2n, 0n, 0n, D, F.array__slots(U32, t))), 8}, WA.out_buf(8, F.array__thaw(U32, AC.cpt(1n, 2n, 0n, 0n, D, F.array__slots(U32, t))))) :
     {(O.Words{F.array__thaw(U32, t), 8}, SF.listed(B.emit(_, 0, 2))) == (O.Words{F.array__thaw(U32, t), 8}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2n))) : O.Words & +List<U32>}
   +hK = WA.le_true(2n, F.spec_common__pow2(1n), {==})
@@ -380,7 +387,7 @@ def GtF45E42B273_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 1n, D)
     {(O.Words{F.array__thaw(U32, t), 8}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 8}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2n))) : O.Words & +List<U32>}
   {==}
 def GtF45E42B273_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtF45E42B273() : S.Schema}, +rep: PK.rep_v4(o, s))
-    -> {SF.emitted(O.Words, T.GtF45E42B273_encode(o), 2) == (o, WO.wview(o)) : O.Words & +List<U32>}:
+    -> {SF.emitted(O.Words, vec_uint32_2_e.GtF45E42B273_encode(o), 2) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -400,13 +407,13 @@ def GtF45E42B273_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtF45E42B
     Equal.trans(Nat, PK.e4(U32.to_nat(U32.shrn(N, 2n))), PK.e4(2n), A.quad(2n), Equal.cong(Nat, Nat, x => PK.e4(x), U32.to_nat(U32.shrn(N, 2n)), 2n, eC), F.nat__eq_from_is_eq(PK.e4(2n), A.quad(2n), {==})))
   +eNN = F.u32__injective(N, 8, Equal.trans(Nat, U32.to_nat(N), A.quad(2n), U32.to_nat(8), eNB, F.nat__eq_from_is_eq(A.quad(2n), U32.to_nat(8), {==})))
   +hn = F.nat__le_trans(2n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(2n, q, r, Equal.trans(Nat, A.quad(2n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(2n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, T.GtF45E42B273_encode(_), 2) == (_, WO.wview(_)) : O.Words & +List<U32>}
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint32_2_e.GtF45E42B273_encode(_), 2) == (_, WO.wview(_)) : O.Words & +List<U32>}
   %Equal.sym(U32, N, 8, eNN) :
-    {SF.emitted(O.Words, T.GtF45E42B273_encode(O.Words{F.array__thaw(U32, t), _}), 2) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_2_e.GtF45E42B273_encode(O.Words{F.array__thaw(U32, t), _}), 2) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
   %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 8}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2n)), WA.wview_take(t, 8, 2n, F.nat__eq_from_is_eq(U32.to_nat(8), A.quad(2n), {==}))) :
-    {SF.emitted(O.Words, T.GtF45E42B273_encode(O.Words{F.array__thaw(U32, t), 8}), 2) == (O.Words{F.array__thaw(U32, t), 8}, _) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_2_e.GtF45E42B273_encode(O.Words{F.array__thaw(U32, t), 8}), 2) == (O.Words{F.array__thaw(U32, t), 8}, _) : O.Words & +List<U32>}
   %Equal.sym(Array<U32>, Array.new(U32, 1n, 0), F.array__thaw(U32, F.array__trep(U32, 1n, 0)), F.array__new(U32, 1n, 0)) :
-    {SF.emitted(O.Words, T.GtF45E42B273_enc_out(T.v2_u32_pal(8, T.v2_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 2) == (O.Words{F.array__thaw(U32, t), 8}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_2_e.GtF45E42B273_enc_out(vec_uint32_2_e.v2_u32_pal(8, vec_uint32_2_e.v2_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 2) == (O.Words{F.array__thaw(U32, t), 8}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 2n))) : O.Words & +List<U32>}
   GtF45E42B273_emit(F.array__trep(U32, 1n, 0), F.array__trep_perfect(U32, 1n, 0), t, dw, hd, pf, hn)
 def GtF45E42B273_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtF45E42B273() : S.Schema}, +rep: PK.rep_v4(o, s))
     -> Decoding.decodes(s, WO.wview(o), PK.vview4(o)):
@@ -446,289 +453,289 @@ def GtF45E42B273_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtF45E42
 # ---- GtE528AAE3C6: a vector of 31 uint32 (124 bytes, 31 words; writer unrolled v31_u32, output depth 5) ----
 def GtE528AAE3C6_pc30(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa30(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 30)) == (F.array__thaw(U32, AC.cpt(5n, 1n, 30n, 30n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa30(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 30)) == (F.array__thaw(U32, AC.cpt(5n, 1n, 30n, 30n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 30n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 30), (F.array__thaw(U32, t), v), AC.getv(ds, t, 30, 30n, {==}, hs, F.nat__lt_le_trans(30n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa30(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 1n, 30n, 30n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa30(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 1n, 30n, 30n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 30 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 30n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 30 : U32), 30n, v, {==}, {==}, {==}, pD)) :
     {(_, F.array__thaw(U32, t)) == (F.array__thaw(U32, AC.cpt(5n, 1n, 30n, 30n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   {==}
 def GtE528AAE3C6_pc29(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa29(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 29)) == (F.array__thaw(U32, AC.cpt(5n, 2n, 29n, 29n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa29(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 29)) == (F.array__thaw(U32, AC.cpt(5n, 2n, 29n, 29n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 29n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 29), (F.array__thaw(U32, t), v), AC.getv(ds, t, 29, 29n, {==}, hs, F.nat__lt_le_trans(29n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa29(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 2n, 29n, 29n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa29(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 2n, 29n, 29n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 29 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 29n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 29 : U32), 29n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa30(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 30)) == (F.array__thaw(U32, AC.cpt(5n, 2n, 29n, 29n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa30(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 30)) == (F.array__thaw(U32, AC.cpt(5n, 2n, 29n, 29n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc30(F.array__upd(U32, 5n, D, 29n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 29n, v, pD))
 def GtE528AAE3C6_pc28(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa28(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 28)) == (F.array__thaw(U32, AC.cpt(5n, 3n, 28n, 28n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa28(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 28)) == (F.array__thaw(U32, AC.cpt(5n, 3n, 28n, 28n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 28n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 28), (F.array__thaw(U32, t), v), AC.getv(ds, t, 28, 28n, {==}, hs, F.nat__lt_le_trans(28n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa28(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 3n, 28n, 28n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa28(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 3n, 28n, 28n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 28 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 28n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 28 : U32), 28n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa29(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 29)) == (F.array__thaw(U32, AC.cpt(5n, 3n, 28n, 28n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa29(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 29)) == (F.array__thaw(U32, AC.cpt(5n, 3n, 28n, 28n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc29(F.array__upd(U32, 5n, D, 28n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 28n, v, pD))
 def GtE528AAE3C6_pc27(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa27(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 27)) == (F.array__thaw(U32, AC.cpt(5n, 4n, 27n, 27n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa27(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 27)) == (F.array__thaw(U32, AC.cpt(5n, 4n, 27n, 27n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 27n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 27), (F.array__thaw(U32, t), v), AC.getv(ds, t, 27, 27n, {==}, hs, F.nat__lt_le_trans(27n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa27(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 4n, 27n, 27n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa27(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 4n, 27n, 27n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 27 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 27n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 27 : U32), 27n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa28(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 28)) == (F.array__thaw(U32, AC.cpt(5n, 4n, 27n, 27n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa28(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 28)) == (F.array__thaw(U32, AC.cpt(5n, 4n, 27n, 27n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc28(F.array__upd(U32, 5n, D, 27n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 27n, v, pD))
 def GtE528AAE3C6_pc26(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa26(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 26)) == (F.array__thaw(U32, AC.cpt(5n, 5n, 26n, 26n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa26(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 26)) == (F.array__thaw(U32, AC.cpt(5n, 5n, 26n, 26n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 26n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 26), (F.array__thaw(U32, t), v), AC.getv(ds, t, 26, 26n, {==}, hs, F.nat__lt_le_trans(26n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa26(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 5n, 26n, 26n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa26(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 5n, 26n, 26n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 26 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 26n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 26 : U32), 26n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa27(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 27)) == (F.array__thaw(U32, AC.cpt(5n, 5n, 26n, 26n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa27(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 27)) == (F.array__thaw(U32, AC.cpt(5n, 5n, 26n, 26n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc27(F.array__upd(U32, 5n, D, 26n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 26n, v, pD))
 def GtE528AAE3C6_pc25(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa25(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 25)) == (F.array__thaw(U32, AC.cpt(5n, 6n, 25n, 25n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa25(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 25)) == (F.array__thaw(U32, AC.cpt(5n, 6n, 25n, 25n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 25n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 25), (F.array__thaw(U32, t), v), AC.getv(ds, t, 25, 25n, {==}, hs, F.nat__lt_le_trans(25n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa25(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 6n, 25n, 25n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa25(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 6n, 25n, 25n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 25 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 25n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 25 : U32), 25n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa26(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 26)) == (F.array__thaw(U32, AC.cpt(5n, 6n, 25n, 25n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa26(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 26)) == (F.array__thaw(U32, AC.cpt(5n, 6n, 25n, 25n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc26(F.array__upd(U32, 5n, D, 25n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 25n, v, pD))
 def GtE528AAE3C6_pc24(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa24(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 24)) == (F.array__thaw(U32, AC.cpt(5n, 7n, 24n, 24n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa24(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 24)) == (F.array__thaw(U32, AC.cpt(5n, 7n, 24n, 24n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 24n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 24), (F.array__thaw(U32, t), v), AC.getv(ds, t, 24, 24n, {==}, hs, F.nat__lt_le_trans(24n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa24(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 7n, 24n, 24n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa24(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 7n, 24n, 24n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 24 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 24n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 24 : U32), 24n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa25(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 25)) == (F.array__thaw(U32, AC.cpt(5n, 7n, 24n, 24n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa25(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 25)) == (F.array__thaw(U32, AC.cpt(5n, 7n, 24n, 24n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc25(F.array__upd(U32, 5n, D, 24n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 24n, v, pD))
 def GtE528AAE3C6_pc23(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa23(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 23)) == (F.array__thaw(U32, AC.cpt(5n, 8n, 23n, 23n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa23(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 23)) == (F.array__thaw(U32, AC.cpt(5n, 8n, 23n, 23n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 23n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 23), (F.array__thaw(U32, t), v), AC.getv(ds, t, 23, 23n, {==}, hs, F.nat__lt_le_trans(23n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa23(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 8n, 23n, 23n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa23(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 8n, 23n, 23n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 23 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 23n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 23 : U32), 23n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa24(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 24)) == (F.array__thaw(U32, AC.cpt(5n, 8n, 23n, 23n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa24(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 24)) == (F.array__thaw(U32, AC.cpt(5n, 8n, 23n, 23n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc24(F.array__upd(U32, 5n, D, 23n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 23n, v, pD))
 def GtE528AAE3C6_pc22(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa22(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 22)) == (F.array__thaw(U32, AC.cpt(5n, 9n, 22n, 22n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa22(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 22)) == (F.array__thaw(U32, AC.cpt(5n, 9n, 22n, 22n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 22n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 22), (F.array__thaw(U32, t), v), AC.getv(ds, t, 22, 22n, {==}, hs, F.nat__lt_le_trans(22n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa22(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 9n, 22n, 22n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa22(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 9n, 22n, 22n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 22 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 22n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 22 : U32), 22n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa23(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 23)) == (F.array__thaw(U32, AC.cpt(5n, 9n, 22n, 22n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa23(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 23)) == (F.array__thaw(U32, AC.cpt(5n, 9n, 22n, 22n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc23(F.array__upd(U32, 5n, D, 22n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 22n, v, pD))
 def GtE528AAE3C6_pc21(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa21(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 21)) == (F.array__thaw(U32, AC.cpt(5n, 10n, 21n, 21n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa21(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 21)) == (F.array__thaw(U32, AC.cpt(5n, 10n, 21n, 21n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 21n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 21), (F.array__thaw(U32, t), v), AC.getv(ds, t, 21, 21n, {==}, hs, F.nat__lt_le_trans(21n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa21(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 10n, 21n, 21n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa21(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 10n, 21n, 21n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 21 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 21n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 21 : U32), 21n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa22(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 22)) == (F.array__thaw(U32, AC.cpt(5n, 10n, 21n, 21n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa22(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 22)) == (F.array__thaw(U32, AC.cpt(5n, 10n, 21n, 21n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc22(F.array__upd(U32, 5n, D, 21n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 21n, v, pD))
 def GtE528AAE3C6_pc20(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa20(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 20)) == (F.array__thaw(U32, AC.cpt(5n, 11n, 20n, 20n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa20(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 20)) == (F.array__thaw(U32, AC.cpt(5n, 11n, 20n, 20n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 20n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 20), (F.array__thaw(U32, t), v), AC.getv(ds, t, 20, 20n, {==}, hs, F.nat__lt_le_trans(20n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa20(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 11n, 20n, 20n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa20(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 11n, 20n, 20n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 20 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 20n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 20 : U32), 20n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa21(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 21)) == (F.array__thaw(U32, AC.cpt(5n, 11n, 20n, 20n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa21(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 21)) == (F.array__thaw(U32, AC.cpt(5n, 11n, 20n, 20n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc21(F.array__upd(U32, 5n, D, 20n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 20n, v, pD))
 def GtE528AAE3C6_pc19(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa19(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 19)) == (F.array__thaw(U32, AC.cpt(5n, 12n, 19n, 19n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa19(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 19)) == (F.array__thaw(U32, AC.cpt(5n, 12n, 19n, 19n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 19n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 19), (F.array__thaw(U32, t), v), AC.getv(ds, t, 19, 19n, {==}, hs, F.nat__lt_le_trans(19n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa19(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 12n, 19n, 19n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa19(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 12n, 19n, 19n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 19 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 19n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 19 : U32), 19n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa20(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 20)) == (F.array__thaw(U32, AC.cpt(5n, 12n, 19n, 19n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa20(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 20)) == (F.array__thaw(U32, AC.cpt(5n, 12n, 19n, 19n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc20(F.array__upd(U32, 5n, D, 19n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 19n, v, pD))
 def GtE528AAE3C6_pc18(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa18(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 18)) == (F.array__thaw(U32, AC.cpt(5n, 13n, 18n, 18n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa18(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 18)) == (F.array__thaw(U32, AC.cpt(5n, 13n, 18n, 18n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 18n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 18), (F.array__thaw(U32, t), v), AC.getv(ds, t, 18, 18n, {==}, hs, F.nat__lt_le_trans(18n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa18(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 13n, 18n, 18n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa18(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 13n, 18n, 18n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 18 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 18n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 18 : U32), 18n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa19(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 19)) == (F.array__thaw(U32, AC.cpt(5n, 13n, 18n, 18n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa19(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 19)) == (F.array__thaw(U32, AC.cpt(5n, 13n, 18n, 18n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc19(F.array__upd(U32, 5n, D, 18n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 18n, v, pD))
 def GtE528AAE3C6_pc17(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa17(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 17)) == (F.array__thaw(U32, AC.cpt(5n, 14n, 17n, 17n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa17(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 17)) == (F.array__thaw(U32, AC.cpt(5n, 14n, 17n, 17n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 17n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 17), (F.array__thaw(U32, t), v), AC.getv(ds, t, 17, 17n, {==}, hs, F.nat__lt_le_trans(17n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa17(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 14n, 17n, 17n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa17(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 14n, 17n, 17n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 17 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 17n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 17 : U32), 17n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa18(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 18)) == (F.array__thaw(U32, AC.cpt(5n, 14n, 17n, 17n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa18(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 18)) == (F.array__thaw(U32, AC.cpt(5n, 14n, 17n, 17n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc18(F.array__upd(U32, 5n, D, 17n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 17n, v, pD))
 def GtE528AAE3C6_pc16(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa16(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 16)) == (F.array__thaw(U32, AC.cpt(5n, 15n, 16n, 16n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa16(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 16)) == (F.array__thaw(U32, AC.cpt(5n, 15n, 16n, 16n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 16n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 16), (F.array__thaw(U32, t), v), AC.getv(ds, t, 16, 16n, {==}, hs, F.nat__lt_le_trans(16n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa16(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 15n, 16n, 16n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa16(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 15n, 16n, 16n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 16 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 16n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 16 : U32), 16n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa17(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 17)) == (F.array__thaw(U32, AC.cpt(5n, 15n, 16n, 16n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa17(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 17)) == (F.array__thaw(U32, AC.cpt(5n, 15n, 16n, 16n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc17(F.array__upd(U32, 5n, D, 16n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 16n, v, pD))
 def GtE528AAE3C6_pc15(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa15(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 15)) == (F.array__thaw(U32, AC.cpt(5n, 16n, 15n, 15n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa15(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 15)) == (F.array__thaw(U32, AC.cpt(5n, 16n, 15n, 15n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 15n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 15), (F.array__thaw(U32, t), v), AC.getv(ds, t, 15, 15n, {==}, hs, F.nat__lt_le_trans(15n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa15(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 16n, 15n, 15n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa15(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 16n, 15n, 15n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 15 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 15n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 15 : U32), 15n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa16(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 16)) == (F.array__thaw(U32, AC.cpt(5n, 16n, 15n, 15n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa16(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 16)) == (F.array__thaw(U32, AC.cpt(5n, 16n, 15n, 15n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc16(F.array__upd(U32, 5n, D, 15n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 15n, v, pD))
 def GtE528AAE3C6_pc14(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa14(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 14)) == (F.array__thaw(U32, AC.cpt(5n, 17n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa14(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 14)) == (F.array__thaw(U32, AC.cpt(5n, 17n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 14n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 14), (F.array__thaw(U32, t), v), AC.getv(ds, t, 14, 14n, {==}, hs, F.nat__lt_le_trans(14n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa14(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 17n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa14(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 17n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 14 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 14n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 14 : U32), 14n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa15(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 15)) == (F.array__thaw(U32, AC.cpt(5n, 17n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa15(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 15)) == (F.array__thaw(U32, AC.cpt(5n, 17n, 14n, 14n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc15(F.array__upd(U32, 5n, D, 14n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 14n, v, pD))
 def GtE528AAE3C6_pc13(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa13(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 13)) == (F.array__thaw(U32, AC.cpt(5n, 18n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa13(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 13)) == (F.array__thaw(U32, AC.cpt(5n, 18n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 13n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 13), (F.array__thaw(U32, t), v), AC.getv(ds, t, 13, 13n, {==}, hs, F.nat__lt_le_trans(13n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa13(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 18n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa13(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 18n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 13 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 13n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 13 : U32), 13n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa14(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 14)) == (F.array__thaw(U32, AC.cpt(5n, 18n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa14(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 14)) == (F.array__thaw(U32, AC.cpt(5n, 18n, 13n, 13n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc14(F.array__upd(U32, 5n, D, 13n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 13n, v, pD))
 def GtE528AAE3C6_pc12(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa12(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 12)) == (F.array__thaw(U32, AC.cpt(5n, 19n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa12(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 12)) == (F.array__thaw(U32, AC.cpt(5n, 19n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 12n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 12), (F.array__thaw(U32, t), v), AC.getv(ds, t, 12, 12n, {==}, hs, F.nat__lt_le_trans(12n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa12(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 19n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa12(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 19n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 12 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 12n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 12 : U32), 12n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa13(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 13)) == (F.array__thaw(U32, AC.cpt(5n, 19n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa13(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 13)) == (F.array__thaw(U32, AC.cpt(5n, 19n, 12n, 12n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc13(F.array__upd(U32, 5n, D, 12n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 12n, v, pD))
 def GtE528AAE3C6_pc11(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa11(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 11)) == (F.array__thaw(U32, AC.cpt(5n, 20n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa11(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 11)) == (F.array__thaw(U32, AC.cpt(5n, 20n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 11n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 11), (F.array__thaw(U32, t), v), AC.getv(ds, t, 11, 11n, {==}, hs, F.nat__lt_le_trans(11n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa11(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 20n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa11(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 20n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 11 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 11n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 11 : U32), 11n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa12(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 12)) == (F.array__thaw(U32, AC.cpt(5n, 20n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa12(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 12)) == (F.array__thaw(U32, AC.cpt(5n, 20n, 11n, 11n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc12(F.array__upd(U32, 5n, D, 11n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 11n, v, pD))
 def GtE528AAE3C6_pc10(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa10(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 10)) == (F.array__thaw(U32, AC.cpt(5n, 21n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa10(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 10)) == (F.array__thaw(U32, AC.cpt(5n, 21n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 10n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 10), (F.array__thaw(U32, t), v), AC.getv(ds, t, 10, 10n, {==}, hs, F.nat__lt_le_trans(10n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa10(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 21n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa10(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 21n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 10 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 10n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 10 : U32), 10n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa11(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 11)) == (F.array__thaw(U32, AC.cpt(5n, 21n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa11(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 11)) == (F.array__thaw(U32, AC.cpt(5n, 21n, 10n, 10n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc11(F.array__upd(U32, 5n, D, 10n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 10n, v, pD))
 def GtE528AAE3C6_pc9(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa9(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 9)) == (F.array__thaw(U32, AC.cpt(5n, 22n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa9(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 9)) == (F.array__thaw(U32, AC.cpt(5n, 22n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 9n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 9), (F.array__thaw(U32, t), v), AC.getv(ds, t, 9, 9n, {==}, hs, F.nat__lt_le_trans(9n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa9(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 22n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa9(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 22n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 9 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 9n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 9 : U32), 9n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa10(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 10)) == (F.array__thaw(U32, AC.cpt(5n, 22n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa10(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 10)) == (F.array__thaw(U32, AC.cpt(5n, 22n, 9n, 9n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc10(F.array__upd(U32, 5n, D, 9n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 9n, v, pD))
 def GtE528AAE3C6_pc8(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa8(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 8)) == (F.array__thaw(U32, AC.cpt(5n, 23n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa8(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 8)) == (F.array__thaw(U32, AC.cpt(5n, 23n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 8n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 8), (F.array__thaw(U32, t), v), AC.getv(ds, t, 8, 8n, {==}, hs, F.nat__lt_le_trans(8n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa8(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 23n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa8(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 23n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 8 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 8n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 8 : U32), 8n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa9(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 9)) == (F.array__thaw(U32, AC.cpt(5n, 23n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa9(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 9)) == (F.array__thaw(U32, AC.cpt(5n, 23n, 8n, 8n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc9(F.array__upd(U32, 5n, D, 8n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 8n, v, pD))
 def GtE528AAE3C6_pc7(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(5n, 24n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(5n, 24n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 7n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 7), (F.array__thaw(U32, t), v), AC.getv(ds, t, 7, 7n, {==}, hs, F.nat__lt_le_trans(7n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 24n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 24n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 7 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 7n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 7 : U32), 7n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa8(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 8)) == (F.array__thaw(U32, AC.cpt(5n, 24n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa8(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 8)) == (F.array__thaw(U32, AC.cpt(5n, 24n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc8(F.array__upd(U32, 5n, D, 7n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 7n, v, pD))
 def GtE528AAE3C6_pc6(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(5n, 25n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(5n, 25n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 6n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 6), (F.array__thaw(U32, t), v), AC.getv(ds, t, 6, 6n, {==}, hs, F.nat__lt_le_trans(6n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 25n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 25n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 6 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 6n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 6 : U32), 6n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa7(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(5n, 25n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa7(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(5n, 25n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc7(F.array__upd(U32, 5n, D, 6n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 6n, v, pD))
 def GtE528AAE3C6_pc5(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(5n, 26n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(5n, 26n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 5n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 5), (F.array__thaw(U32, t), v), AC.getv(ds, t, 5, 5n, {==}, hs, F.nat__lt_le_trans(5n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 26n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 26n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 5 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 5n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 5 : U32), 5n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa6(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(5n, 26n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa6(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(5n, 26n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc6(F.array__upd(U32, 5n, D, 5n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 5n, v, pD))
 def GtE528AAE3C6_pc4(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(5n, 27n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(5n, 27n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 4n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 4), (F.array__thaw(U32, t), v), AC.getv(ds, t, 4, 4n, {==}, hs, F.nat__lt_le_trans(4n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 27n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 27n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 4 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 4n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 4 : U32), 4n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa5(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(5n, 27n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa5(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(5n, 27n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc5(F.array__upd(U32, 5n, D, 4n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 4n, v, pD))
 def GtE528AAE3C6_pc3(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(5n, 28n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(5n, 28n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 3n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 3), (F.array__thaw(U32, t), v), AC.getv(ds, t, 3, 3n, {==}, hs, F.nat__lt_le_trans(3n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 28n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 28n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 3 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 3n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 3 : U32), 3n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa4(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(5n, 28n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa4(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(5n, 28n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc4(F.array__upd(U32, 5n, D, 3n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 3n, v, pD))
 def GtE528AAE3C6_pc2(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(5n, 29n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(5n, 29n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 2n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 2), (F.array__thaw(U32, t), v), AC.getv(ds, t, 2, 2n, {==}, hs, F.nat__lt_le_trans(2n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 29n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 29n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 2 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 2n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 2 : U32), 2n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa3(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(5n, 29n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa3(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(5n, 29n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc3(F.array__upd(U32, 5n, D, 2n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 2n, v, pD))
 def GtE528AAE3C6_pc1(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(5n, 30n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(5n, 30n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 1n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 1), (F.array__thaw(U32, t), v), AC.getv(ds, t, 1, 1n, {==}, hs, F.nat__lt_le_trans(1n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 30n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 30n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 1 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 1n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 1 : U32), 1n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(5n, 30n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(5n, 30n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc2(F.array__upd(U32, 5n, D, 1n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 1n, v, pD))
 def GtE528AAE3C6_pc0(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(31n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool})
-    -> {T.v31_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(5n, 31n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_31_e.v31_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(5n, 31n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 0n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 0), (F.array__thaw(U32, t), v), AC.getv(ds, t, 0, 0n, {==}, hs, F.nat__lt_le_trans(0n, 31n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v31_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 31n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(5n, 31n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 0 : U32), v), F.array__thaw(U32, F.array__upd(U32, 5n, D, 0n, v)), AC.setv(5n, D, (U32.shrn(0, 2n) + 0 : U32), 0n, v, {==}, {==}, {==}, pD)) :
-    {T.v31_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(5n, 31n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_31_e.v31_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(5n, 31n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtE528AAE3C6_pc1(F.array__upd(U32, 5n, D, 0n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 5n, D, 0n, v, pD))
 def GtE528AAE3C6_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 5n, D) == True{} : Bool}, +t: F.array__Tree<U32>, +dw: Nat, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}, +hn: {Nat.is_le(31n, F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {SF.emitted(O.Words, T.GtE528AAE3C6_enc_out(T.v31_u32_pal(124, T.v31_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 31) == (O.Words{F.array__thaw(U32, t), 124}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 31n))) : O.Words & +List<U32>}:
-  %Equal.sym(Array<U32> & Array<U32>, T.v31_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(5n, 31n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
+    -> {SF.emitted(O.Words, vec_uint32_31_e.GtE528AAE3C6_enc_out(vec_uint32_31_e.v31_u32_pal(124, vec_uint32_31_e.v31_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 31) == (O.Words{F.array__thaw(U32, t), 124}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 31n))) : O.Words & +List<U32>}:
+  %Equal.sym(Array<U32> & Array<U32>, vec_uint32_31_e.v31_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(5n, 31n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
       GtE528AAE3C6_pc0(D, t, dw, hd, pf, hn, pD)) :
-    {SF.emitted(O.Words, T.GtE528AAE3C6_enc_out(T.v31_u32_pal(124, _)), 31) == (O.Words{F.array__thaw(U32, t), 124}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 31n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_31_e.GtE528AAE3C6_enc_out(vec_uint32_31_e.v31_u32_pal(124, _)), 31) == (O.Words{F.array__thaw(U32, t), 124}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 31n))) : O.Words & +List<U32>}
   %Equal.sym(B.Buf, O.out_done(124, F.array__thaw(U32, AC.cpt(5n, 31n, 0n, 0n, D, F.array__slots(U32, t)))), B.Buf{F.array__thaw(U32, AC.cpt(5n, 31n, 0n, 0n, D, F.array__slots(U32, t))), 124}, WA.out_buf(124, F.array__thaw(U32, AC.cpt(5n, 31n, 0n, 0n, D, F.array__slots(U32, t))))) :
     {(O.Words{F.array__thaw(U32, t), 124}, SF.listed(B.emit(_, 0, 31))) == (O.Words{F.array__thaw(U32, t), 124}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 31n))) : O.Words & +List<U32>}
   +hK = WA.le_true(31n, F.spec_common__pow2(5n), {==})
@@ -742,7 +749,7 @@ def GtE528AAE3C6_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 5n, D)
     {(O.Words{F.array__thaw(U32, t), 124}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 124}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 31n))) : O.Words & +List<U32>}
   {==}
 def GtE528AAE3C6_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtE528AAE3C6() : S.Schema}, +rep: PK.rep_v4(o, s))
-    -> {SF.emitted(O.Words, T.GtE528AAE3C6_encode(o), 31) == (o, WO.wview(o)) : O.Words & +List<U32>}:
+    -> {SF.emitted(O.Words, vec_uint32_31_e.GtE528AAE3C6_encode(o), 31) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -762,13 +769,13 @@ def GtE528AAE3C6_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtE528AAE
     Equal.trans(Nat, PK.e4(U32.to_nat(U32.shrn(N, 2n))), PK.e4(31n), A.quad(31n), Equal.cong(Nat, Nat, x => PK.e4(x), U32.to_nat(U32.shrn(N, 2n)), 31n, eC), F.nat__eq_from_is_eq(PK.e4(31n), A.quad(31n), {==})))
   +eNN = F.u32__injective(N, 124, Equal.trans(Nat, U32.to_nat(N), A.quad(31n), U32.to_nat(124), eNB, F.nat__eq_from_is_eq(A.quad(31n), U32.to_nat(124), {==})))
   +hn = F.nat__le_trans(31n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(31n, q, r, Equal.trans(Nat, A.quad(31n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(31n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, T.GtE528AAE3C6_encode(_), 31) == (_, WO.wview(_)) : O.Words & +List<U32>}
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint32_31_e.GtE528AAE3C6_encode(_), 31) == (_, WO.wview(_)) : O.Words & +List<U32>}
   %Equal.sym(U32, N, 124, eNN) :
-    {SF.emitted(O.Words, T.GtE528AAE3C6_encode(O.Words{F.array__thaw(U32, t), _}), 31) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_31_e.GtE528AAE3C6_encode(O.Words{F.array__thaw(U32, t), _}), 31) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
   %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 124}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 31n)), WA.wview_take(t, 124, 31n, F.nat__eq_from_is_eq(U32.to_nat(124), A.quad(31n), {==}))) :
-    {SF.emitted(O.Words, T.GtE528AAE3C6_encode(O.Words{F.array__thaw(U32, t), 124}), 31) == (O.Words{F.array__thaw(U32, t), 124}, _) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_31_e.GtE528AAE3C6_encode(O.Words{F.array__thaw(U32, t), 124}), 31) == (O.Words{F.array__thaw(U32, t), 124}, _) : O.Words & +List<U32>}
   %Equal.sym(Array<U32>, Array.new(U32, 5n, 0), F.array__thaw(U32, F.array__trep(U32, 5n, 0)), F.array__new(U32, 5n, 0)) :
-    {SF.emitted(O.Words, T.GtE528AAE3C6_enc_out(T.v31_u32_pal(124, T.v31_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 31) == (O.Words{F.array__thaw(U32, t), 124}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 31n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_31_e.GtE528AAE3C6_enc_out(vec_uint32_31_e.v31_u32_pal(124, vec_uint32_31_e.v31_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 31) == (O.Words{F.array__thaw(U32, t), 124}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 31n))) : O.Words & +List<U32>}
   GtE528AAE3C6_emit(F.array__trep(U32, 5n, 0), F.array__trep_perfect(U32, 5n, 0), t, dw, hd, pf, hn)
 def GtE528AAE3C6_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtE528AAE3C6() : S.Schema}, +rep: PK.rep_v4(o, s))
     -> Decoding.decodes(s, WO.wview(o), PK.vview4(o)):
@@ -808,37 +815,37 @@ def GtE528AAE3C6_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtE528AA
 # ---- GtD1AEF07F7D: a vector of 3 uint32 (12 bytes, 3 words; writer unrolled v3_u32, output depth 2) ----
 def GtD1AEF07F7D_pc2(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(3n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 2n, D) == True{} : Bool})
-    -> {T.v3_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(2n, 1n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_3_e.v3_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(2n, 1n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 2n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 2), (F.array__thaw(U32, t), v), AC.getv(ds, t, 2, 2n, {==}, hs, F.nat__lt_le_trans(2n, 3n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v3_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 1n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_3_e.v3_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 1n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 2 : U32), v), F.array__thaw(U32, F.array__upd(U32, 2n, D, 2n, v)), AC.setv(2n, D, (U32.shrn(0, 2n) + 2 : U32), 2n, v, {==}, {==}, {==}, pD)) :
     {(_, F.array__thaw(U32, t)) == (F.array__thaw(U32, AC.cpt(2n, 1n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   {==}
 def GtD1AEF07F7D_pc1(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(3n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 2n, D) == True{} : Bool})
-    -> {T.v3_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(2n, 2n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_3_e.v3_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(2n, 2n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 1n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 1), (F.array__thaw(U32, t), v), AC.getv(ds, t, 1, 1n, {==}, hs, F.nat__lt_le_trans(1n, 3n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v3_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 2n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_3_e.v3_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 2n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 1 : U32), v), F.array__thaw(U32, F.array__upd(U32, 2n, D, 1n, v)), AC.setv(2n, D, (U32.shrn(0, 2n) + 1 : U32), 1n, v, {==}, {==}, {==}, pD)) :
-    {T.v3_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(2n, 2n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_3_e.v3_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(2n, 2n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtD1AEF07F7D_pc2(F.array__upd(U32, 2n, D, 1n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 2n, D, 1n, v, pD))
 def GtD1AEF07F7D_pc0(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(3n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 2n, D) == True{} : Bool})
-    -> {T.v3_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(2n, 3n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_3_e.v3_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(2n, 3n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 0n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 0), (F.array__thaw(U32, t), v), AC.getv(ds, t, 0, 0n, {==}, hs, F.nat__lt_le_trans(0n, 3n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v3_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 3n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_3_e.v3_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 3n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 0 : U32), v), F.array__thaw(U32, F.array__upd(U32, 2n, D, 0n, v)), AC.setv(2n, D, (U32.shrn(0, 2n) + 0 : U32), 0n, v, {==}, {==}, {==}, pD)) :
-    {T.v3_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(2n, 3n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_3_e.v3_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(2n, 3n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtD1AEF07F7D_pc1(F.array__upd(U32, 2n, D, 0n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 2n, D, 0n, v, pD))
 def GtD1AEF07F7D_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 2n, D) == True{} : Bool}, +t: F.array__Tree<U32>, +dw: Nat, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}, +hn: {Nat.is_le(3n, F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {SF.emitted(O.Words, T.GtD1AEF07F7D_enc_out(T.v3_u32_pal(12, T.v3_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 3) == (O.Words{F.array__thaw(U32, t), 12}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 3n))) : O.Words & +List<U32>}:
-  %Equal.sym(Array<U32> & Array<U32>, T.v3_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(2n, 3n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
+    -> {SF.emitted(O.Words, vec_uint32_3_e.GtD1AEF07F7D_enc_out(vec_uint32_3_e.v3_u32_pal(12, vec_uint32_3_e.v3_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 3) == (O.Words{F.array__thaw(U32, t), 12}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 3n))) : O.Words & +List<U32>}:
+  %Equal.sym(Array<U32> & Array<U32>, vec_uint32_3_e.v3_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(2n, 3n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
       GtD1AEF07F7D_pc0(D, t, dw, hd, pf, hn, pD)) :
-    {SF.emitted(O.Words, T.GtD1AEF07F7D_enc_out(T.v3_u32_pal(12, _)), 3) == (O.Words{F.array__thaw(U32, t), 12}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 3n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_3_e.GtD1AEF07F7D_enc_out(vec_uint32_3_e.v3_u32_pal(12, _)), 3) == (O.Words{F.array__thaw(U32, t), 12}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 3n))) : O.Words & +List<U32>}
   %Equal.sym(B.Buf, O.out_done(12, F.array__thaw(U32, AC.cpt(2n, 3n, 0n, 0n, D, F.array__slots(U32, t)))), B.Buf{F.array__thaw(U32, AC.cpt(2n, 3n, 0n, 0n, D, F.array__slots(U32, t))), 12}, WA.out_buf(12, F.array__thaw(U32, AC.cpt(2n, 3n, 0n, 0n, D, F.array__slots(U32, t))))) :
     {(O.Words{F.array__thaw(U32, t), 12}, SF.listed(B.emit(_, 0, 3))) == (O.Words{F.array__thaw(U32, t), 12}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 3n))) : O.Words & +List<U32>}
   +hK = WA.le_true(3n, F.spec_common__pow2(2n), {==})
@@ -852,7 +859,7 @@ def GtD1AEF07F7D_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 2n, D)
     {(O.Words{F.array__thaw(U32, t), 12}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 12}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 3n))) : O.Words & +List<U32>}
   {==}
 def GtD1AEF07F7D_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtD1AEF07F7D() : S.Schema}, +rep: PK.rep_v4(o, s))
-    -> {SF.emitted(O.Words, T.GtD1AEF07F7D_encode(o), 3) == (o, WO.wview(o)) : O.Words & +List<U32>}:
+    -> {SF.emitted(O.Words, vec_uint32_3_e.GtD1AEF07F7D_encode(o), 3) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -872,13 +879,13 @@ def GtD1AEF07F7D_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtD1AEF07
     Equal.trans(Nat, PK.e4(U32.to_nat(U32.shrn(N, 2n))), PK.e4(3n), A.quad(3n), Equal.cong(Nat, Nat, x => PK.e4(x), U32.to_nat(U32.shrn(N, 2n)), 3n, eC), F.nat__eq_from_is_eq(PK.e4(3n), A.quad(3n), {==})))
   +eNN = F.u32__injective(N, 12, Equal.trans(Nat, U32.to_nat(N), A.quad(3n), U32.to_nat(12), eNB, F.nat__eq_from_is_eq(A.quad(3n), U32.to_nat(12), {==})))
   +hn = F.nat__le_trans(3n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(3n, q, r, Equal.trans(Nat, A.quad(3n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(3n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, T.GtD1AEF07F7D_encode(_), 3) == (_, WO.wview(_)) : O.Words & +List<U32>}
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint32_3_e.GtD1AEF07F7D_encode(_), 3) == (_, WO.wview(_)) : O.Words & +List<U32>}
   %Equal.sym(U32, N, 12, eNN) :
-    {SF.emitted(O.Words, T.GtD1AEF07F7D_encode(O.Words{F.array__thaw(U32, t), _}), 3) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_3_e.GtD1AEF07F7D_encode(O.Words{F.array__thaw(U32, t), _}), 3) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
   %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 12}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 3n)), WA.wview_take(t, 12, 3n, F.nat__eq_from_is_eq(U32.to_nat(12), A.quad(3n), {==}))) :
-    {SF.emitted(O.Words, T.GtD1AEF07F7D_encode(O.Words{F.array__thaw(U32, t), 12}), 3) == (O.Words{F.array__thaw(U32, t), 12}, _) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_3_e.GtD1AEF07F7D_encode(O.Words{F.array__thaw(U32, t), 12}), 3) == (O.Words{F.array__thaw(U32, t), 12}, _) : O.Words & +List<U32>}
   %Equal.sym(Array<U32>, Array.new(U32, 2n, 0), F.array__thaw(U32, F.array__trep(U32, 2n, 0)), F.array__new(U32, 2n, 0)) :
-    {SF.emitted(O.Words, T.GtD1AEF07F7D_enc_out(T.v3_u32_pal(12, T.v3_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 3) == (O.Words{F.array__thaw(U32, t), 12}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 3n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_3_e.GtD1AEF07F7D_enc_out(vec_uint32_3_e.v3_u32_pal(12, vec_uint32_3_e.v3_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 3) == (O.Words{F.array__thaw(U32, t), 12}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 3n))) : O.Words & +List<U32>}
   GtD1AEF07F7D_emit(F.array__trep(U32, 2n, 0), F.array__trep_perfect(U32, 2n, 0), t, dw, hd, pf, hn)
 def GtD1AEF07F7D_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtD1AEF07F7D() : S.Schema}, +rep: PK.rep_v4(o, s))
     -> Decoding.decodes(s, WO.wview(o), PK.vview4(o)):
@@ -918,46 +925,46 @@ def GtD1AEF07F7D_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtD1AEF0
 # ---- Gt240C147AA2: a vector of 4 uint32 (16 bytes, 4 words; writer unrolled v4_u32, output depth 2) ----
 def Gt240C147AA2_pc3(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(4n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 2n, D) == True{} : Bool})
-    -> {T.v4_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(2n, 1n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_4_e.v4_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(2n, 1n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 3n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 3), (F.array__thaw(U32, t), v), AC.getv(ds, t, 3, 3n, {==}, hs, F.nat__lt_le_trans(3n, 4n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v4_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 1n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_4_e.v4_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 1n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 3 : U32), v), F.array__thaw(U32, F.array__upd(U32, 2n, D, 3n, v)), AC.setv(2n, D, (U32.shrn(0, 2n) + 3 : U32), 3n, v, {==}, {==}, {==}, pD)) :
     {(_, F.array__thaw(U32, t)) == (F.array__thaw(U32, AC.cpt(2n, 1n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   {==}
 def Gt240C147AA2_pc2(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(4n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 2n, D) == True{} : Bool})
-    -> {T.v4_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(2n, 2n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_4_e.v4_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(2n, 2n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 2n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 2), (F.array__thaw(U32, t), v), AC.getv(ds, t, 2, 2n, {==}, hs, F.nat__lt_le_trans(2n, 4n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v4_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 2n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_4_e.v4_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 2n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 2 : U32), v), F.array__thaw(U32, F.array__upd(U32, 2n, D, 2n, v)), AC.setv(2n, D, (U32.shrn(0, 2n) + 2 : U32), 2n, v, {==}, {==}, {==}, pD)) :
-    {T.v4_u32_pa3(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(2n, 2n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_4_e.v4_u32_pa3(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(2n, 2n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt240C147AA2_pc3(F.array__upd(U32, 2n, D, 2n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 2n, D, 2n, v, pD))
 def Gt240C147AA2_pc1(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(4n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 2n, D) == True{} : Bool})
-    -> {T.v4_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(2n, 3n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_4_e.v4_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(2n, 3n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 1n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 1), (F.array__thaw(U32, t), v), AC.getv(ds, t, 1, 1n, {==}, hs, F.nat__lt_le_trans(1n, 4n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v4_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 3n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_4_e.v4_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 3n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 1 : U32), v), F.array__thaw(U32, F.array__upd(U32, 2n, D, 1n, v)), AC.setv(2n, D, (U32.shrn(0, 2n) + 1 : U32), 1n, v, {==}, {==}, {==}, pD)) :
-    {T.v4_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(2n, 3n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_4_e.v4_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(2n, 3n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt240C147AA2_pc2(F.array__upd(U32, 2n, D, 1n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 2n, D, 1n, v, pD))
 def Gt240C147AA2_pc0(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(4n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 2n, D) == True{} : Bool})
-    -> {T.v4_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_4_e.v4_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 0n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 0), (F.array__thaw(U32, t), v), AC.getv(ds, t, 0, 0n, {==}, hs, F.nat__lt_le_trans(0n, 4n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v4_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_4_e.v4_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 0 : U32), v), F.array__thaw(U32, F.array__upd(U32, 2n, D, 0n, v)), AC.setv(2n, D, (U32.shrn(0, 2n) + 0 : U32), 0n, v, {==}, {==}, {==}, pD)) :
-    {T.v4_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_4_e.v4_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt240C147AA2_pc1(F.array__upd(U32, 2n, D, 0n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 2n, D, 0n, v, pD))
 def Gt240C147AA2_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 2n, D) == True{} : Bool}, +t: F.array__Tree<U32>, +dw: Nat, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}, +hn: {Nat.is_le(4n, F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {SF.emitted(O.Words, T.Gt240C147AA2_enc_out(T.v4_u32_pal(16, T.v4_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 4) == (O.Words{F.array__thaw(U32, t), 16}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n))) : O.Words & +List<U32>}:
-  %Equal.sym(Array<U32> & Array<U32>, T.v4_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
+    -> {SF.emitted(O.Words, vec_uint32_4_e.Gt240C147AA2_enc_out(vec_uint32_4_e.v4_u32_pal(16, vec_uint32_4_e.v4_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 4) == (O.Words{F.array__thaw(U32, t), 16}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n))) : O.Words & +List<U32>}:
+  %Equal.sym(Array<U32> & Array<U32>, vec_uint32_4_e.v4_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
       Gt240C147AA2_pc0(D, t, dw, hd, pf, hn, pD)) :
-    {SF.emitted(O.Words, T.Gt240C147AA2_enc_out(T.v4_u32_pal(16, _)), 4) == (O.Words{F.array__thaw(U32, t), 16}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_4_e.Gt240C147AA2_enc_out(vec_uint32_4_e.v4_u32_pal(16, _)), 4) == (O.Words{F.array__thaw(U32, t), 16}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n))) : O.Words & +List<U32>}
   %Equal.sym(B.Buf, O.out_done(16, F.array__thaw(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t)))), B.Buf{F.array__thaw(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t))), 16}, WA.out_buf(16, F.array__thaw(U32, AC.cpt(2n, 4n, 0n, 0n, D, F.array__slots(U32, t))))) :
     {(O.Words{F.array__thaw(U32, t), 16}, SF.listed(B.emit(_, 0, 4))) == (O.Words{F.array__thaw(U32, t), 16}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n))) : O.Words & +List<U32>}
   +hK = WA.le_true(4n, F.spec_common__pow2(2n), {==})
@@ -971,7 +978,7 @@ def Gt240C147AA2_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 2n, D)
     {(O.Words{F.array__thaw(U32, t), 16}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 16}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n))) : O.Words & +List<U32>}
   {==}
 def Gt240C147AA2_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt240C147AA2() : S.Schema}, +rep: PK.rep_v4(o, s))
-    -> {SF.emitted(O.Words, T.Gt240C147AA2_encode(o), 4) == (o, WO.wview(o)) : O.Words & +List<U32>}:
+    -> {SF.emitted(O.Words, vec_uint32_4_e.Gt240C147AA2_encode(o), 4) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -991,13 +998,13 @@ def Gt240C147AA2_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt240C147
     Equal.trans(Nat, PK.e4(U32.to_nat(U32.shrn(N, 2n))), PK.e4(4n), A.quad(4n), Equal.cong(Nat, Nat, x => PK.e4(x), U32.to_nat(U32.shrn(N, 2n)), 4n, eC), F.nat__eq_from_is_eq(PK.e4(4n), A.quad(4n), {==})))
   +eNN = F.u32__injective(N, 16, Equal.trans(Nat, U32.to_nat(N), A.quad(4n), U32.to_nat(16), eNB, F.nat__eq_from_is_eq(A.quad(4n), U32.to_nat(16), {==})))
   +hn = F.nat__le_trans(4n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(4n, q, r, Equal.trans(Nat, A.quad(4n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(4n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, T.Gt240C147AA2_encode(_), 4) == (_, WO.wview(_)) : O.Words & +List<U32>}
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint32_4_e.Gt240C147AA2_encode(_), 4) == (_, WO.wview(_)) : O.Words & +List<U32>}
   %Equal.sym(U32, N, 16, eNN) :
-    {SF.emitted(O.Words, T.Gt240C147AA2_encode(O.Words{F.array__thaw(U32, t), _}), 4) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_4_e.Gt240C147AA2_encode(O.Words{F.array__thaw(U32, t), _}), 4) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
   %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 16}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n)), WA.wview_take(t, 16, 4n, F.nat__eq_from_is_eq(U32.to_nat(16), A.quad(4n), {==}))) :
-    {SF.emitted(O.Words, T.Gt240C147AA2_encode(O.Words{F.array__thaw(U32, t), 16}), 4) == (O.Words{F.array__thaw(U32, t), 16}, _) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_4_e.Gt240C147AA2_encode(O.Words{F.array__thaw(U32, t), 16}), 4) == (O.Words{F.array__thaw(U32, t), 16}, _) : O.Words & +List<U32>}
   %Equal.sym(Array<U32>, Array.new(U32, 2n, 0), F.array__thaw(U32, F.array__trep(U32, 2n, 0)), F.array__new(U32, 2n, 0)) :
-    {SF.emitted(O.Words, T.Gt240C147AA2_enc_out(T.v4_u32_pal(16, T.v4_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 4) == (O.Words{F.array__thaw(U32, t), 16}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_4_e.Gt240C147AA2_enc_out(vec_uint32_4_e.v4_u32_pal(16, vec_uint32_4_e.v4_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 4) == (O.Words{F.array__thaw(U32, t), 16}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 4n))) : O.Words & +List<U32>}
   Gt240C147AA2_emit(F.array__trep(U32, 2n, 0), F.array__trep_perfect(U32, 2n, 0), t, dw, hd, pf, hn)
 def Gt240C147AA2_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt240C147AA2() : S.Schema}, +rep: PK.rep_v4(o, s))
     -> Decoding.decodes(s, WO.wview(o), PK.vview4(o)):
@@ -1037,55 +1044,55 @@ def Gt240C147AA2_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt240C14
 # ---- Gt1719057EB7: a vector of 5 uint32 (20 bytes, 5 words; writer unrolled v5_u32, output depth 3) ----
 def Gt1719057EB7_pc4(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(5n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v5_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(3n, 1n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_5_e.v5_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(3n, 1n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 4n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 4), (F.array__thaw(U32, t), v), AC.getv(ds, t, 4, 4n, {==}, hs, F.nat__lt_le_trans(4n, 5n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v5_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 1n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_5_e.v5_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 1n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 4 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 4n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 4 : U32), 4n, v, {==}, {==}, {==}, pD)) :
     {(_, F.array__thaw(U32, t)) == (F.array__thaw(U32, AC.cpt(3n, 1n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   {==}
 def Gt1719057EB7_pc3(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(5n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v5_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(3n, 2n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_5_e.v5_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(3n, 2n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 3n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 3), (F.array__thaw(U32, t), v), AC.getv(ds, t, 3, 3n, {==}, hs, F.nat__lt_le_trans(3n, 5n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v5_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 2n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_5_e.v5_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 2n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 3 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 3n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 3 : U32), 3n, v, {==}, {==}, {==}, pD)) :
-    {T.v5_u32_pa4(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(3n, 2n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_5_e.v5_u32_pa4(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(3n, 2n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt1719057EB7_pc4(F.array__upd(U32, 3n, D, 3n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 3n, D, 3n, v, pD))
 def Gt1719057EB7_pc2(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(5n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v5_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(3n, 3n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_5_e.v5_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(3n, 3n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 2n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 2), (F.array__thaw(U32, t), v), AC.getv(ds, t, 2, 2n, {==}, hs, F.nat__lt_le_trans(2n, 5n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v5_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 3n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_5_e.v5_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 3n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 2 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 2n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 2 : U32), 2n, v, {==}, {==}, {==}, pD)) :
-    {T.v5_u32_pa3(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(3n, 3n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_5_e.v5_u32_pa3(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(3n, 3n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt1719057EB7_pc3(F.array__upd(U32, 3n, D, 2n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 3n, D, 2n, v, pD))
 def Gt1719057EB7_pc1(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(5n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v5_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(3n, 4n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_5_e.v5_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(3n, 4n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 1n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 1), (F.array__thaw(U32, t), v), AC.getv(ds, t, 1, 1n, {==}, hs, F.nat__lt_le_trans(1n, 5n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v5_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 4n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_5_e.v5_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 4n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 1 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 1n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 1 : U32), 1n, v, {==}, {==}, {==}, pD)) :
-    {T.v5_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(3n, 4n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_5_e.v5_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(3n, 4n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt1719057EB7_pc2(F.array__upd(U32, 3n, D, 1n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 3n, D, 1n, v, pD))
 def Gt1719057EB7_pc0(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(5n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v5_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(3n, 5n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_5_e.v5_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(3n, 5n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 0n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 0), (F.array__thaw(U32, t), v), AC.getv(ds, t, 0, 0n, {==}, hs, F.nat__lt_le_trans(0n, 5n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v5_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 5n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_5_e.v5_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 5n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 0 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 0n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 0 : U32), 0n, v, {==}, {==}, {==}, pD)) :
-    {T.v5_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(3n, 5n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_5_e.v5_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(3n, 5n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   Gt1719057EB7_pc1(F.array__upd(U32, 3n, D, 0n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 3n, D, 0n, v, pD))
 def Gt1719057EB7_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool}, +t: F.array__Tree<U32>, +dw: Nat, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}, +hn: {Nat.is_le(5n, F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {SF.emitted(O.Words, T.Gt1719057EB7_enc_out(T.v5_u32_pal(20, T.v5_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 5) == (O.Words{F.array__thaw(U32, t), 20}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 5n))) : O.Words & +List<U32>}:
-  %Equal.sym(Array<U32> & Array<U32>, T.v5_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(3n, 5n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
+    -> {SF.emitted(O.Words, vec_uint32_5_e.Gt1719057EB7_enc_out(vec_uint32_5_e.v5_u32_pal(20, vec_uint32_5_e.v5_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 5) == (O.Words{F.array__thaw(U32, t), 20}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 5n))) : O.Words & +List<U32>}:
+  %Equal.sym(Array<U32> & Array<U32>, vec_uint32_5_e.v5_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(3n, 5n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
       Gt1719057EB7_pc0(D, t, dw, hd, pf, hn, pD)) :
-    {SF.emitted(O.Words, T.Gt1719057EB7_enc_out(T.v5_u32_pal(20, _)), 5) == (O.Words{F.array__thaw(U32, t), 20}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 5n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_5_e.Gt1719057EB7_enc_out(vec_uint32_5_e.v5_u32_pal(20, _)), 5) == (O.Words{F.array__thaw(U32, t), 20}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 5n))) : O.Words & +List<U32>}
   %Equal.sym(B.Buf, O.out_done(20, F.array__thaw(U32, AC.cpt(3n, 5n, 0n, 0n, D, F.array__slots(U32, t)))), B.Buf{F.array__thaw(U32, AC.cpt(3n, 5n, 0n, 0n, D, F.array__slots(U32, t))), 20}, WA.out_buf(20, F.array__thaw(U32, AC.cpt(3n, 5n, 0n, 0n, D, F.array__slots(U32, t))))) :
     {(O.Words{F.array__thaw(U32, t), 20}, SF.listed(B.emit(_, 0, 5))) == (O.Words{F.array__thaw(U32, t), 20}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 5n))) : O.Words & +List<U32>}
   +hK = WA.le_true(5n, F.spec_common__pow2(3n), {==})
@@ -1099,7 +1106,7 @@ def Gt1719057EB7_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 3n, D)
     {(O.Words{F.array__thaw(U32, t), 20}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 20}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 5n))) : O.Words & +List<U32>}
   {==}
 def Gt1719057EB7_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt1719057EB7() : S.Schema}, +rep: PK.rep_v4(o, s))
-    -> {SF.emitted(O.Words, T.Gt1719057EB7_encode(o), 5) == (o, WO.wview(o)) : O.Words & +List<U32>}:
+    -> {SF.emitted(O.Words, vec_uint32_5_e.Gt1719057EB7_encode(o), 5) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -1119,13 +1126,13 @@ def Gt1719057EB7_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt1719057
     Equal.trans(Nat, PK.e4(U32.to_nat(U32.shrn(N, 2n))), PK.e4(5n), A.quad(5n), Equal.cong(Nat, Nat, x => PK.e4(x), U32.to_nat(U32.shrn(N, 2n)), 5n, eC), F.nat__eq_from_is_eq(PK.e4(5n), A.quad(5n), {==})))
   +eNN = F.u32__injective(N, 20, Equal.trans(Nat, U32.to_nat(N), A.quad(5n), U32.to_nat(20), eNB, F.nat__eq_from_is_eq(A.quad(5n), U32.to_nat(20), {==})))
   +hn = F.nat__le_trans(5n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(5n, q, r, Equal.trans(Nat, A.quad(5n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(5n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, T.Gt1719057EB7_encode(_), 5) == (_, WO.wview(_)) : O.Words & +List<U32>}
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint32_5_e.Gt1719057EB7_encode(_), 5) == (_, WO.wview(_)) : O.Words & +List<U32>}
   %Equal.sym(U32, N, 20, eNN) :
-    {SF.emitted(O.Words, T.Gt1719057EB7_encode(O.Words{F.array__thaw(U32, t), _}), 5) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_5_e.Gt1719057EB7_encode(O.Words{F.array__thaw(U32, t), _}), 5) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
   %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 20}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 5n)), WA.wview_take(t, 20, 5n, F.nat__eq_from_is_eq(U32.to_nat(20), A.quad(5n), {==}))) :
-    {SF.emitted(O.Words, T.Gt1719057EB7_encode(O.Words{F.array__thaw(U32, t), 20}), 5) == (O.Words{F.array__thaw(U32, t), 20}, _) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_5_e.Gt1719057EB7_encode(O.Words{F.array__thaw(U32, t), 20}), 5) == (O.Words{F.array__thaw(U32, t), 20}, _) : O.Words & +List<U32>}
   %Equal.sym(Array<U32>, Array.new(U32, 3n, 0), F.array__thaw(U32, F.array__trep(U32, 3n, 0)), F.array__new(U32, 3n, 0)) :
-    {SF.emitted(O.Words, T.Gt1719057EB7_enc_out(T.v5_u32_pal(20, T.v5_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 5) == (O.Words{F.array__thaw(U32, t), 20}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 5n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_5_e.Gt1719057EB7_enc_out(vec_uint32_5_e.v5_u32_pal(20, vec_uint32_5_e.v5_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 5) == (O.Words{F.array__thaw(U32, t), 20}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 5n))) : O.Words & +List<U32>}
   Gt1719057EB7_emit(F.array__trep(U32, 3n, 0), F.array__trep_perfect(U32, 3n, 0), t, dw, hd, pf, hn)
 def Gt1719057EB7_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt1719057EB7() : S.Schema}, +rep: PK.rep_v4(o, s))
     -> Decoding.decodes(s, WO.wview(o), PK.vview4(o)):
@@ -1165,82 +1172,82 @@ def Gt1719057EB7_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt171905
 # ---- GtCCF6FFA0A0: a vector of 8 uint32 (32 bytes, 8 words; writer unrolled v8_u32, output depth 3) ----
 def GtCCF6FFA0A0_pc7(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(8n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v8_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(3n, 1n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_8_e.v8_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(3n, 1n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 7n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 7), (F.array__thaw(U32, t), v), AC.getv(ds, t, 7, 7n, {==}, hs, F.nat__lt_le_trans(7n, 8n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v8_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 1n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa7(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 1n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 7 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 7n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 7 : U32), 7n, v, {==}, {==}, {==}, pD)) :
     {(_, F.array__thaw(U32, t)) == (F.array__thaw(U32, AC.cpt(3n, 1n, 7n, 7n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   {==}
 def GtCCF6FFA0A0_pc6(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(8n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v8_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(3n, 2n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_8_e.v8_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(3n, 2n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 6n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 6), (F.array__thaw(U32, t), v), AC.getv(ds, t, 6, 6n, {==}, hs, F.nat__lt_le_trans(6n, 8n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v8_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 2n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa6(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 2n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 6 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 6n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 6 : U32), 6n, v, {==}, {==}, {==}, pD)) :
-    {T.v8_u32_pa7(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(3n, 2n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa7(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 7)) == (F.array__thaw(U32, AC.cpt(3n, 2n, 6n, 6n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtCCF6FFA0A0_pc7(F.array__upd(U32, 3n, D, 6n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 3n, D, 6n, v, pD))
 def GtCCF6FFA0A0_pc5(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(8n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v8_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(3n, 3n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_8_e.v8_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(3n, 3n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 5n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 5), (F.array__thaw(U32, t), v), AC.getv(ds, t, 5, 5n, {==}, hs, F.nat__lt_le_trans(5n, 8n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v8_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 3n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa5(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 3n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 5 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 5n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 5 : U32), 5n, v, {==}, {==}, {==}, pD)) :
-    {T.v8_u32_pa6(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(3n, 3n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa6(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 6)) == (F.array__thaw(U32, AC.cpt(3n, 3n, 5n, 5n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtCCF6FFA0A0_pc6(F.array__upd(U32, 3n, D, 5n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 3n, D, 5n, v, pD))
 def GtCCF6FFA0A0_pc4(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(8n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v8_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(3n, 4n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_8_e.v8_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(3n, 4n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 4n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 4), (F.array__thaw(U32, t), v), AC.getv(ds, t, 4, 4n, {==}, hs, F.nat__lt_le_trans(4n, 8n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v8_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 4n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa4(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 4n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 4 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 4n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 4 : U32), 4n, v, {==}, {==}, {==}, pD)) :
-    {T.v8_u32_pa5(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(3n, 4n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa5(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 5)) == (F.array__thaw(U32, AC.cpt(3n, 4n, 4n, 4n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtCCF6FFA0A0_pc5(F.array__upd(U32, 3n, D, 4n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 3n, D, 4n, v, pD))
 def GtCCF6FFA0A0_pc3(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(8n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v8_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(3n, 5n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_8_e.v8_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(3n, 5n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 3n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 3), (F.array__thaw(U32, t), v), AC.getv(ds, t, 3, 3n, {==}, hs, F.nat__lt_le_trans(3n, 8n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v8_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 5n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa3(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 5n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 3 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 3n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 3 : U32), 3n, v, {==}, {==}, {==}, pD)) :
-    {T.v8_u32_pa4(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(3n, 5n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa4(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 4)) == (F.array__thaw(U32, AC.cpt(3n, 5n, 3n, 3n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtCCF6FFA0A0_pc4(F.array__upd(U32, 3n, D, 3n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 3n, D, 3n, v, pD))
 def GtCCF6FFA0A0_pc2(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(8n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v8_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(3n, 6n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_8_e.v8_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(3n, 6n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 2n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 2), (F.array__thaw(U32, t), v), AC.getv(ds, t, 2, 2n, {==}, hs, F.nat__lt_le_trans(2n, 8n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v8_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 6n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa2(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 6n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 2 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 2n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 2 : U32), 2n, v, {==}, {==}, {==}, pD)) :
-    {T.v8_u32_pa3(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(3n, 6n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa3(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 3)) == (F.array__thaw(U32, AC.cpt(3n, 6n, 2n, 2n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtCCF6FFA0A0_pc3(F.array__upd(U32, 3n, D, 2n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 3n, D, 2n, v, pD))
 def GtCCF6FFA0A0_pc1(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(8n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v8_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(3n, 7n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_8_e.v8_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(3n, 7n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 1n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 1), (F.array__thaw(U32, t), v), AC.getv(ds, t, 1, 1n, {==}, hs, F.nat__lt_le_trans(1n, 8n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v8_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 7n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa1(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 7n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 1 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 1n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 1 : U32), 1n, v, {==}, {==}, {==}, pD)) :
-    {T.v8_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(3n, 7n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa2(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 2)) == (F.array__thaw(U32, AC.cpt(3n, 7n, 1n, 1n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtCCF6FFA0A0_pc2(F.array__upd(U32, 3n, D, 1n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 3n, D, 1n, v, pD))
 def GtCCF6FFA0A0_pc0(+D: F.array__Tree<U32>, +t: F.array__Tree<U32>, +ds: Nat, +hs: {Nat.is_lt(ds, 32n) == True{} : Bool}, +ps: {F.array__perfect(U32, ds, t) == True{} : Bool},
     +hn: {Nat.is_le(8n, F.spec_common__pow2(ds)) == True{} : Bool}, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool})
-    -> {T.v8_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
+    -> {vec_uint32_8_e.v8_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)) == (F.array__thaw(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}:
   +v = F.flat__nthc(F.array__slots(U32, t), 0n)
   %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, t), 0), (F.array__thaw(U32, t), v), AC.getv(ds, t, 0, 0n, {==}, hs, F.nat__lt_le_trans(0n, 8n, F.spec_common__pow2(ds), {==}, hn), ps)) :
-    {T.v8_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), _) == (F.array__thaw(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   %Equal.sym(Array<U32>, Array.set(U32, F.array__thaw(U32, D), (U32.shrn(0, 2n) + 0 : U32), v), F.array__thaw(U32, F.array__upd(U32, 3n, D, 0n, v)), AC.setv(3n, D, (U32.shrn(0, 2n) + 0 : U32), 0n, v, {==}, {==}, {==}, pD)) :
-    {T.v8_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
+    {vec_uint32_8_e.v8_u32_pa1(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 1)) == (F.array__thaw(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)) : Array<U32> & Array<U32>}
   GtCCF6FFA0A0_pc1(F.array__upd(U32, 3n, D, 0n, v), t, ds, hs, ps, hn, F.array__upd_perfect(U32, 3n, D, 0n, v, pD))
 def GtCCF6FFA0A0_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 3n, D) == True{} : Bool}, +t: F.array__Tree<U32>, +dw: Nat, +hd: {Nat.is_lt(dw, 32n) == True{} : Bool},
     +pf: {F.array__perfect(U32, dw, t) == True{} : Bool}, +hn: {Nat.is_le(8n, F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {SF.emitted(O.Words, T.GtCCF6FFA0A0_enc_out(T.v8_u32_pal(32, T.v8_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 8) == (O.Words{F.array__thaw(U32, t), 32}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n))) : O.Words & +List<U32>}:
-  %Equal.sym(Array<U32> & Array<U32>, T.v8_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
+    -> {SF.emitted(O.Words, vec_uint32_8_e.GtCCF6FFA0A0_enc_out(vec_uint32_8_e.v8_u32_pal(32, vec_uint32_8_e.v8_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)))), 8) == (O.Words{F.array__thaw(U32, t), 32}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n))) : O.Words & +List<U32>}:
+  %Equal.sym(Array<U32> & Array<U32>, vec_uint32_8_e.v8_u32_pa0(U32.shrn(0, 2n), F.array__thaw(U32, D), Array.get(U32, F.array__thaw(U32, t), 0)), (F.array__thaw(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t))), F.array__thaw(U32, t)),
       GtCCF6FFA0A0_pc0(D, t, dw, hd, pf, hn, pD)) :
-    {SF.emitted(O.Words, T.GtCCF6FFA0A0_enc_out(T.v8_u32_pal(32, _)), 8) == (O.Words{F.array__thaw(U32, t), 32}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_8_e.GtCCF6FFA0A0_enc_out(vec_uint32_8_e.v8_u32_pal(32, _)), 8) == (O.Words{F.array__thaw(U32, t), 32}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n))) : O.Words & +List<U32>}
   %Equal.sym(B.Buf, O.out_done(32, F.array__thaw(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t)))), B.Buf{F.array__thaw(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t))), 32}, WA.out_buf(32, F.array__thaw(U32, AC.cpt(3n, 8n, 0n, 0n, D, F.array__slots(U32, t))))) :
     {(O.Words{F.array__thaw(U32, t), 32}, SF.listed(B.emit(_, 0, 8))) == (O.Words{F.array__thaw(U32, t), 32}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n))) : O.Words & +List<U32>}
   +hK = WA.le_true(8n, F.spec_common__pow2(3n), {==})
@@ -1254,7 +1261,7 @@ def GtCCF6FFA0A0_emit(+D: F.array__Tree<U32>, +pD: {F.array__perfect(U32, 3n, D)
     {(O.Words{F.array__thaw(U32, t), 32}, SF.limbs(_)) == (O.Words{F.array__thaw(U32, t), 32}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n))) : O.Words & +List<U32>}
   {==}
 def GtCCF6FFA0A0_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtCCF6FFA0A0() : S.Schema}, +rep: PK.rep_v4(o, s))
-    -> {SF.emitted(O.Words, T.GtCCF6FFA0A0_encode(o), 8) == (o, WO.wview(o)) : O.Words & +List<U32>}:
+    -> {SF.emitted(O.Words, vec_uint32_8_e.GtCCF6FFA0A0_encode(o), 8) == (o, WO.wview(o)) : O.Words & +List<U32>}:
   (+wf, +r1) = rep
   (+t, w1) = wf
   (+dw, w2) = w1
@@ -1274,13 +1281,13 @@ def GtCCF6FFA0A0_encode_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtCCF6FFA
     Equal.trans(Nat, PK.e4(U32.to_nat(U32.shrn(N, 2n))), PK.e4(8n), A.quad(8n), Equal.cong(Nat, Nat, x => PK.e4(x), U32.to_nat(U32.shrn(N, 2n)), 8n, eC), F.nat__eq_from_is_eq(PK.e4(8n), A.quad(8n), {==})))
   +eNN = F.u32__injective(N, 32, Equal.trans(Nat, U32.to_nat(N), A.quad(8n), U32.to_nat(32), eNB, F.nat__eq_from_is_eq(A.quad(8n), U32.to_nat(32), {==})))
   +hn = F.nat__le_trans(8n, O.e8(1n+q), F.spec_common__pow2(dw), WA.nw_le(8n, q, r, Equal.trans(Nat, A.quad(8n), U32.to_nat(N), Nat.add(WS.e32(q), r), Equal.sym(Nat, U32.to_nat(N), A.quad(8n), eNB), en), h32), cap)
-  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, T.GtCCF6FFA0A0_encode(_), 8) == (_, WO.wview(_)) : O.Words & +List<U32>}
+  %Equal.sym(O.Words, o, O.Words{F.array__thaw(U32, t), N}, eo) : {SF.emitted(O.Words, vec_uint32_8_e.GtCCF6FFA0A0_encode(_), 8) == (_, WO.wview(_)) : O.Words & +List<U32>}
   %Equal.sym(U32, N, 32, eNN) :
-    {SF.emitted(O.Words, T.GtCCF6FFA0A0_encode(O.Words{F.array__thaw(U32, t), _}), 8) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_8_e.GtCCF6FFA0A0_encode(O.Words{F.array__thaw(U32, t), _}), 8) == (O.Words{F.array__thaw(U32, t), _}, WO.wview(O.Words{F.array__thaw(U32, t), _})) : O.Words & +List<U32>}
   %Equal.sym(+List<U32>, WO.wview(O.Words{F.array__thaw(U32, t), 32}), SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n)), WA.wview_take(t, 32, 8n, F.nat__eq_from_is_eq(U32.to_nat(32), A.quad(8n), {==}))) :
-    {SF.emitted(O.Words, T.GtCCF6FFA0A0_encode(O.Words{F.array__thaw(U32, t), 32}), 8) == (O.Words{F.array__thaw(U32, t), 32}, _) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_8_e.GtCCF6FFA0A0_encode(O.Words{F.array__thaw(U32, t), 32}), 8) == (O.Words{F.array__thaw(U32, t), 32}, _) : O.Words & +List<U32>}
   %Equal.sym(Array<U32>, Array.new(U32, 3n, 0), F.array__thaw(U32, F.array__trep(U32, 3n, 0)), F.array__new(U32, 3n, 0)) :
-    {SF.emitted(O.Words, T.GtCCF6FFA0A0_enc_out(T.v8_u32_pal(32, T.v8_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 8) == (O.Words{F.array__thaw(U32, t), 32}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n))) : O.Words & +List<U32>}
+    {SF.emitted(O.Words, vec_uint32_8_e.GtCCF6FFA0A0_enc_out(vec_uint32_8_e.v8_u32_pal(32, vec_uint32_8_e.v8_u32_pa0(U32.shrn(0, 2n), _, Array.get(U32, F.array__thaw(U32, t), 0)))), 8) == (O.Words{F.array__thaw(U32, t), 32}, SF.limbs(F.spec_common__take(U32, F.array__slots(U32, t), 8n))) : O.Words & +List<U32>}
   GtCCF6FFA0A0_emit(F.array__trep(U32, 3n, 0), F.array__trep_perfect(U32, 3n, 0), t, dw, hd, pf, hn)
 def GtCCF6FFA0A0_decodes_any(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtCCF6FFA0A0() : S.Schema}, +rep: PK.rep_v4(o, s))
     -> Decoding.decodes(s, WO.wview(o), PK.vview4(o)):

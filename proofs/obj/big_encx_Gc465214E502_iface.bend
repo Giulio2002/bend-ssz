@@ -1,7 +1,11 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_encode_ssz_generated.bend as uint8_e
+import ../../types/uint16_encode_ssz_generated.bend as uint16_e
+import ../../types/list_uint16_1024_encode_ssz_generated.bend as list_uint16_1024_e
+import ../../types/VarTestStruct_def_generated.bend as VarTestStruct_d
+import ../../types/VarTestStruct_encode_ssz_generated.bend as VarTestStruct_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -43,11 +47,11 @@ def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == Tr
 
 # ---- Gc465214E502: its value, parts, layout, and bytes ----
 
-def OKT(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32) -> Bool: Bool.and(EX_l1024_u16.OK(m_f_B), Bool.and(Bool.and(T.u16_valid(f_A), T.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n)))))
-def okr1(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {Bool.and(Bool.and(T.u16_valid(f_A), T.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n)))) == True{} : Bool}: and_r(EX_l1024_u16.OK(m_f_B), Bool.and(Bool.and(T.u16_valid(f_A), T.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n)))), h)
-def okr2(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n))) == True{} : Bool}: and_r(Bool.and(T.u16_valid(f_A), T.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n))), okr1(f_A, m_f_B, f_C, h))
-def ok_hok_f_B(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {EX_l1024_u16.OK(m_f_B) == True{} : Bool}: and_l(EX_l1024_u16.OK(m_f_B), Bool.and(Bool.and(T.u16_valid(f_A), T.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n)))), h)
-def ok_hpz(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {Bool.and(T.u16_valid(f_A), T.u8_valid(f_C)) == True{} : Bool}: and_l(Bool.and(T.u16_valid(f_A), T.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n))), okr1(f_A, m_f_B, f_C, h))
+def OKT(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32) -> Bool: Bool.and(EX_l1024_u16.OK(m_f_B), Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n)))))
+def okr1(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n)))) == True{} : Bool}: and_r(EX_l1024_u16.OK(m_f_B), Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n)))), h)
+def okr2(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n))) == True{} : Bool}: and_r(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n))), okr1(f_A, m_f_B, f_C, h))
+def ok_hok_f_B(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {EX_l1024_u16.OK(m_f_B) == True{} : Bool}: and_l(EX_l1024_u16.OK(m_f_B), Bool.and(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n)))), h)
+def ok_hpz(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)) == True{} : Bool}: and_l(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n))), okr1(f_A, m_f_B, f_C, h))
 def ok_bnd(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {Nat.is_le(Nat.add(7n, LY.LN(EX_l1024_u16.ENC(m_f_B))), A.quad(VB.pw(28n))) == True{} : Bool}: okr2(f_A, m_f_B, f_C, h)
 
 def VALC(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32) -> S.Value: S.Sequence{S.Items{VRB.UV16(f_A), S.Items{EX_l1024_u16.VAL(m_f_B), S.Items{VRB.UV8(f_C), S.EmptyItems{}}}}}
@@ -78,7 +82,7 @@ def okoC(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C
   ({==}, Unit{})
 
 # the returned size is the bytes' end
-def eSZ(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +u: Unit) -> {K.SZC(f_A, m_f_B, f_C) == (O.padd(7, EX_l1024_u16.SZ(m_f_B)) .|. O.pz(Bool.and(T.u16_valid(f_A), T.u8_valid(f_C))) : U32) : U32}: {==}
+def eSZ(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +u: Unit) -> {K.SZC(f_A, m_f_B, f_C) == (O.padd(7, EX_l1024_u16.SZ(m_f_B)) .|. O.pz(Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C))) : U32) : U32}: {==}
 def szC(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}, +k: Nat, +ek: {k == 28n : Nat}) -> {U32.to_nat(K.SZC(f_A, m_f_B, f_C)) == ENDC(f_A, m_f_B, f_C) : Nat}:
   FD.logic__subst(U32, z => {U32.to_nat(z) == ENDC(f_A, m_f_B, f_C) : Nat}, O.padd(7, EX_l1024_u16.SZ(m_f_B)), K.SZC(f_A, m_f_B, f_C), Equal.sym(U32, K.SZC(f_A, m_f_B, f_C), O.padd(7, EX_l1024_u16.SZ(m_f_B)), K.szpz(f_A, m_f_B, f_C, ok_hpz(f_A, m_f_B, f_C, h))),
     CS.pstep(7, EX_l1024_u16.SZ(m_f_B), 7n, LY.LN(EX_l1024_u16.ENC(m_f_B)), k, CS.hk29(k, ek), {==}, EX_l1024_u16.szx(m_f_B, ok_hok_f_B(f_A, m_f_B, f_C, h)), okbk(f_A, m_f_B, f_C, h, k, ek)))
@@ -139,7 +143,7 @@ def lenE(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C
 type MW is Data:
   MW{f_A: U32, m_f_B: EX_l1024_u16.MW, f_C: U32}
 
-def TH(m: MW) -> T.Gc465214E502:
+def TH(m: MW) -> VarTestStruct_d.Gc465214E502:
   match m:
     case MW{+f_A, +m_f_B, +f_C}: K.OBJC(f_A, m_f_B, f_C)
 def OK(m: MW) -> Bool:
@@ -161,7 +165,7 @@ def PUTX(m: MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array
 def PADB(+r: Nat, m: MW) -> Nat: WD.PADB(r, List.length(&2, U32, ENC(m)))
 
 def RTX(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Gc465214E502_putk(FD.array__thaw(U32, D), X, K.OBJC(f_A, m_f_B, f_C)) == (FD.array__thaw(U32, K.PUTC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(f_A, m_f_B, f_C), K.SZC(f_A, m_f_B, f_C))) : Array<U32> & (T.Gc465214E502 & U32)}
+  {VarTestStruct_e.Gc465214E502_putk(FD.array__thaw(U32, D), X, K.OBJC(f_A, m_f_B, f_C)) == (FD.array__thaw(U32, K.PUTC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(f_A, m_f_B, f_C), K.SZC(f_A, m_f_B, f_C))) : Array<U32> & (VarTestStruct_d.Gc465214E502 & U32)}
 def BYX(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(K.PUTC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(f_A, m_f_B, f_C), UW.ZB(WD.PADB(r, List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C)))))) : +List<U32>}
 
@@ -180,7 +184,7 @@ def go(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) 
   +rt = K.putk_bridge(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r, PA(K.RTC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), K.SZXC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r))), g))
   +g2 = PB(K.RTC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), K.SZXC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r))), g)
   +by = PA(K.BYC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r), K.SZXC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r)), g2)
-  +rt2 = FD.logic__subst(U32, z => {T.Gc465214E502_putk(FD.array__thaw(U32, D), z, K.OBJC(f_A, m_f_B, f_C)) == (FD.array__thaw(U32, K.PUTC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(f_A, m_f_B, f_C), K.SZC(f_A, m_f_B, f_C))) : Array<U32> & (T.Gc465214E502 & U32)},
+  +rt2 = FD.logic__subst(U32, z => {VarTestStruct_e.Gc465214E502_putk(FD.array__thaw(U32, D), z, K.OBJC(f_A, m_f_B, f_C)) == (FD.array__thaw(U32, K.PUTC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(f_A, m_f_B, f_C), K.SZC(f_A, m_f_B, f_C))) : Array<U32> & (VarTestStruct_d.Gc465214E502 & U32)},
     XQ(q, r), X, Equal.sym(U32, X, XQ(q, r), ex), rt)
   +by2 = FD.logic__subst(Nat, z => {UA.BYT(K.PUTC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(f_A, m_f_B, f_C), UW.ZB(WD.PADB(r, z)))) : +List<U32>},
     LLv, List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(f_A, m_f_B, f_C)), LLv, el), by)
@@ -202,7 +206,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gc465214E502_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (T.Gc465214E502 & U32)}
+  {VarTestStruct_e.Gc465214E502_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (VarTestStruct_d.Gc465214E502 & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW{+f_A, +m_f_B, +f_C}: PA(RTX(f_A, m_f_B, f_C, dd, D, X, q, r), BYX(f_A, m_f_B, f_C, dd, D, q, r), go(f_A, m_f_B, f_C, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hz))
@@ -273,32 +277,32 @@ def pfx(m, dd, D, q, r, pf):
   match m:
     case MW{+f_A, +m_f_B, +f_C}: K.pfC(f_A, m_f_B, f_C, dd, D, XQ(q, r), q, r, pf)
 
-def sizeC(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {T.Gc465214E502_size(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), K.SZC(f_A, m_f_B, f_C)) : T.Gc465214E502 & U32}:
+def sizeC(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {VarTestStruct_e.Gc465214E502_size(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), K.SZC(f_A, m_f_B, f_C)) : VarTestStruct_d.Gc465214E502 & U32}:
   %Equal.sym(U32, K.SZC(f_A, m_f_B, f_C), O.padd(7, EX_l1024_u16.SZ(m_f_B)), K.szpz(f_A, m_f_B, f_C, ok_hpz(f_A, m_f_B, f_C, h))) :
-    {T.Gc465214E502_size(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), _) : T.Gc465214E502 & U32}
-  %Equal.sym(O.Words & U32, T.l1024_u16_size(EX_l1024_u16.TH(m_f_B)), (EX_l1024_u16.TH(m_f_B), EX_l1024_u16.SZ(m_f_B)), EX_l1024_u16.sizex(m_f_B, ok_hok_f_B(f_A, m_f_B, f_C, h))) :
-    {T.Gc465214E502_sz0(f_A, f_C, 7, _) == (K.OBJC(f_A, m_f_B, f_C), O.padd(7, EX_l1024_u16.SZ(m_f_B))) : T.Gc465214E502 & U32}
+    {VarTestStruct_e.Gc465214E502_size(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), _) : VarTestStruct_d.Gc465214E502 & U32}
+  %Equal.sym(O.Words & U32, list_uint16_1024_e.l1024_u16_size(EX_l1024_u16.TH(m_f_B)), (EX_l1024_u16.TH(m_f_B), EX_l1024_u16.SZ(m_f_B)), EX_l1024_u16.sizex(m_f_B, ok_hok_f_B(f_A, m_f_B, f_C, h))) :
+    {VarTestStruct_e.Gc465214E502_sz0(f_A, f_C, 7, _) == (K.OBJC(f_A, m_f_B, f_C), O.padd(7, EX_l1024_u16.SZ(m_f_B))) : VarTestStruct_d.Gc465214E502 & U32}
   {==}
 
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gc465214E502_size(TH(m)) == (TH(m), SZ(m)) : T.Gc465214E502 & U32}
+  {VarTestStruct_e.Gc465214E502_size(TH(m)) == (TH(m), SZ(m)) : VarTestStruct_d.Gc465214E502 & U32}
 def sizex(m, hok):
   match m:
     case MW{+f_A, +m_f_B, +f_C}: sizeC(f_A, m_f_B, f_C, hok)
 
-def rvalidC(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {T.Gc465214E502_valid(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), True{}) : T.Gc465214E502 & Bool}:
-  %Equal.sym(Bool, Bool.and(T.u16_valid(f_A), T.u8_valid(f_C)), True{}, ok_hpz(f_A, m_f_B, f_C, h)) :
-    {T.Gc465214E502_va0(f_A, f_C, _, T.l1024_u16_valid(EX_l1024_u16.TH(m_f_B))) == (K.OBJC(f_A, m_f_B, f_C), True{}) : T.Gc465214E502 & Bool}
-  %Equal.sym(O.Words & Bool, T.l1024_u16_valid(EX_l1024_u16.TH(m_f_B)), (EX_l1024_u16.TH(m_f_B), True{}), EX_l1024_u16.validx(m_f_B, ok_hok_f_B(f_A, m_f_B, f_C, h))) :
-    {T.Gc465214E502_va0(f_A, f_C, True{}, _) == (K.OBJC(f_A, m_f_B, f_C), True{}) : T.Gc465214E502 & Bool}
+def rvalidC(+f_A: U32, +m_f_B: EX_l1024_u16.MW, +f_C: U32, +h: {OKT(f_A, m_f_B, f_C) == True{} : Bool}) -> {VarTestStruct_e.Gc465214E502_valid(K.OBJC(f_A, m_f_B, f_C)) == (K.OBJC(f_A, m_f_B, f_C), True{}) : VarTestStruct_d.Gc465214E502 & Bool}:
+  %Equal.sym(Bool, Bool.and(uint16_e.u16_valid(f_A), uint8_e.u8_valid(f_C)), True{}, ok_hpz(f_A, m_f_B, f_C, h)) :
+    {VarTestStruct_e.Gc465214E502_va0(f_A, f_C, _, list_uint16_1024_e.l1024_u16_valid(EX_l1024_u16.TH(m_f_B))) == (K.OBJC(f_A, m_f_B, f_C), True{}) : VarTestStruct_d.Gc465214E502 & Bool}
+  %Equal.sym(O.Words & Bool, list_uint16_1024_e.l1024_u16_valid(EX_l1024_u16.TH(m_f_B)), (EX_l1024_u16.TH(m_f_B), True{}), EX_l1024_u16.validx(m_f_B, ok_hok_f_B(f_A, m_f_B, f_C, h))) :
+    {VarTestStruct_e.Gc465214E502_va0(f_A, f_C, True{}, _) == (K.OBJC(f_A, m_f_B, f_C), True{}) : VarTestStruct_d.Gc465214E502 & Bool}
   {==}
 
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gc465214E502_valid(TH(m)) == (TH(m), True{}) : T.Gc465214E502 & Bool}
+  {VarTestStruct_e.Gc465214E502_valid(TH(m)) == (TH(m), True{}) : VarTestStruct_d.Gc465214E502 & Bool}
 def validx(m, hok):
   match m:
     case MW{+f_A, +m_f_B, +f_C}: rvalidC(f_A, m_f_B, f_C, hok)

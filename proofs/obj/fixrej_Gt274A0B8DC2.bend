@@ -1,6 +1,6 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/generic_obj.bend as T
+import ../../types/vec_uint256_512_decode_ssz_generated.bend as vec_uint256_512_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -14,11 +14,11 @@ import ./vrejf.bend as VRF
 # (see codegen/fix_reject.py).
 
 # ---- Gt274A0B8DC2 (16384 bytes; validator T.v512_u256_ok) ----
-def Gt274A0B8DC2_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.v512_u256_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def Gt274A0B8DC2_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint256_512_r.v512_u256_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt274A0B8DC2_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.v512_u256_ok(buf, off, len) == (buf, U32.is_eq(len, 16384)) : B.Buf & Bool}:
+def Gt274A0B8DC2_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint256_512_r.v512_u256_ok(buf, off, len) == (buf, U32.is_eq(len, 16384)) : B.Buf & Bool}:
   Gt274A0B8DC2_okb(buf, off, U32.is_eq(len, 16384))
 def Gt274A0B8DC2_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(GS.Gt274A0B8DC2())) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt274A0B8DC2(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(GS.Gt274A0B8DC2()), VRF.SZ(GS.Gt274A0B8DC2()), bs, Codec.parts(v, GS.Gt274A0B8DC2()), DS.facts(v, GS.Gt274A0B8DC2(), {==}), {==}, e, hn)

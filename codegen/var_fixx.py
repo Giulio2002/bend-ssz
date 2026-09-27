@@ -20,6 +20,7 @@ stack are big_ files.
 """
 import sys
 from pathlib import Path
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'codegen'))
@@ -238,7 +239,7 @@ def sc_text():
 def rt_depth(p):
     """The zero storage depth the runtime reader of p allocates."""
     import re
-    src = (ROOT / 'types/fulu_obj.bend').read_text()
+    src = RR.mono_text('fulu')
     m = re.search(rf'^def {p}_read\(.*Array\.new\(U32, (\d+)n, 0\)\)$', src, re.M)
     return int(m.group(1))
 
@@ -424,6 +425,7 @@ def outputs(no_big=False):
 
 def main():
     out = outputs('--no-big' in sys.argv)
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

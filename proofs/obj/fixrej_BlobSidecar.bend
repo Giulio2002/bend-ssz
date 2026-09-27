@@ -1,6 +1,6 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBlobSidecar_decode_ssz_generated.bend as FuluBlobSidecar_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -14,11 +14,11 @@ import ./vrejf.bend as VRF
 # (see codegen/fix_reject.py).
 
 # ---- BlobSidecar (131928 bytes; validator T.BlobSidecar_ok) ----
-def BlobSidecar_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.BlobSidecar_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def BlobSidecar_okb(buf: B.Buf, +off: U32, +b: Bool) -> {FuluBlobSidecar_r.BlobSidecar_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def BlobSidecar_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.BlobSidecar_ok(buf, off, len) == (buf, U32.is_eq(len, 131928)) : B.Buf & Bool}:
+def BlobSidecar_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {FuluBlobSidecar_r.BlobSidecar_ok(buf, off, len) == (buf, U32.is_eq(len, 131928)) : B.Buf & Bool}:
   BlobSidecar_okb(buf, off, U32.is_eq(len, 131928))
 def BlobSidecar_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(Spec.BlobSidecar())) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(Spec.BlobSidecar(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(Spec.BlobSidecar()), VRF.SZ(Spec.BlobSidecar()), bs, Codec.parts(v, Spec.BlobSidecar()), DS.facts(v, Spec.BlobSidecar(), {==}), {==}, e, hn)

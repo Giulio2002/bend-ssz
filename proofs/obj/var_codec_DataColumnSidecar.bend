@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluDataColumnSidecar_decode_ssz_generated.bend as FuluDataColumnSidecar_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -65,25 +65,25 @@ def CHK(+t: FD.array__Tree<U32>, +n: U32) -> Bool:
   Bool.and(CA(n), Bool.and(CB(t), Bool.and(CC(t, n), Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n)))))))
 
 def okG(+t: FD.array__Tree<U32>, +n: U32, +g: Bool)
-    -> {T.DataColumnSidecar_c5(g, BF(t, n), 0, n, O0(t), O1(t), O2(t)) == (BF(t, n), g) : B.Buf & Bool}:
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_c5(g, BF(t, n), 0, n, O0(t), O1(t), O2(t)) == (BF(t, n), g) : B.Buf & Bool}:
   match g:
     case True{}: {==}
     case False{}: {==}
 
 def okF(+t: FD.array__Tree<U32>, +n: U32, +f: Bool)
-    -> {T.DataColumnSidecar_c4(f, BF(t, n), 0, n, O0(t), O1(t), O2(t)) == (BF(t, n), Bool.and(f, CG(t, n))) : B.Buf & Bool}:
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_c4(f, BF(t, n), 0, n, O0(t), O1(t), O2(t)) == (BF(t, n), Bool.and(f, CG(t, n))) : B.Buf & Bool}:
   match f:
     case True{}: okG(t, n, CG(t, n))
     case False{}: {==}
 
 def okE(+t: FD.array__Tree<U32>, +n: U32, +e: Bool)
-    -> {T.DataColumnSidecar_c3(e, BF(t, n), 0, n, O0(t), O1(t), O2(t)) == (BF(t, n), Bool.and(e, Bool.and(CF(t), CG(t, n)))) : B.Buf & Bool}:
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_c3(e, BF(t, n), 0, n, O0(t), O1(t), O2(t)) == (BF(t, n), Bool.and(e, Bool.and(CF(t), CG(t, n)))) : B.Buf & Bool}:
   match e:
     case True{}: okF(t, n, CF(t))
     case False{}: {==}
 
 def okD(+t: FD.array__Tree<U32>, +n: U32, +c: Bool)
-    -> {T.DataColumnSidecar_c2(c, BF(t, n), 0, n, O0(t), O1(t), O2(t)) == (BF(t, n), Bool.and(c, Bool.and(CE(t), Bool.and(CF(t), CG(t, n))))) : B.Buf & Bool}:
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_c2(c, BF(t, n), 0, n, O0(t), O1(t), O2(t)) == (BF(t, n), Bool.and(c, Bool.and(CE(t), Bool.and(CF(t), CG(t, n))))) : B.Buf & Bool}:
   match c:
     case True{}: okE(t, n, CE(t))
     case False{}: {==}
@@ -91,33 +91,33 @@ def okD(+t: FD.array__Tree<U32>, +n: U32, +c: Bool)
 def okC(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +c: Bool,
     +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hpo: {Nat.is_lt(4n, VB.pw(d)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
-    -> {T.DataColumnSidecar_c1(c, BF(t, n), 0, n, O0(t), O1(t)) == (BF(t, n), Bool.and(c, Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n)))))) : B.Buf & Bool}:
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_c1(c, BF(t, n), 0, n, O0(t), O1(t)) == (BF(t, n), Bool.and(c, Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n)))))) : B.Buf & Bool}:
   match c:
     case True{}:
       %Equal.sym(B.Buf & U32, B.word(BF(t, n), 4), (BF(t, n), O2(t)), rd32(d, t, n, 4, 4n, {==}, hd, hpo, pf)) :
-        {T.DataColumnSidecar_v2(0, n, O0(t), O1(t), _) == (BF(t, n), Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n))))) : B.Buf & Bool}
+        {FuluDataColumnSidecar_r.DataColumnSidecar_v2(0, n, O0(t), O1(t), _) == (BF(t, n), Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n))))) : B.Buf & Bool}
       okD(t, n, CD(t, n))
     case False{}: {==}
 
 def okB(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +b: Bool,
     +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hpo: {Nat.is_lt(4n, VB.pw(d)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
-    -> {T.DataColumnSidecar_c0(b, BF(t, n), 0, n, O0(t)) == (BF(t, n), Bool.and(b, Bool.and(CC(t, n), Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n))))))) : B.Buf & Bool}:
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_c0(b, BF(t, n), 0, n, O0(t)) == (BF(t, n), Bool.and(b, Bool.and(CC(t, n), Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n))))))) : B.Buf & Bool}:
   match b:
     case True{}:
       %Equal.sym(B.Buf & U32, B.word(BF(t, n), 3), (BF(t, n), O1(t)), rd32(d, t, n, 3, 3n, {==}, hd, FD.nat__lt_trans(3n, 4n, VB.pw(d), {==}, hpo), pf)) :
-        {T.DataColumnSidecar_v1(0, n, O0(t), _) == (BF(t, n), Bool.and(CC(t, n), Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n)))))) : B.Buf & Bool}
+        {FuluDataColumnSidecar_r.DataColumnSidecar_v1(0, n, O0(t), _) == (BF(t, n), Bool.and(CC(t, n), Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n)))))) : B.Buf & Bool}
       okC(d, t, n, CC(t, n), hd, hpo, pf)
     case False{}: {==}
 
 def okA(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +a: Bool,
     +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hpo: {Nat.is_lt(4n, VB.pw(d)) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
-    -> {T.DataColumnSidecar_ok_len(a, BF(t, n), 0, n) == (BF(t, n), Bool.and(a, Bool.and(CB(t), Bool.and(CC(t, n), Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n)))))))) : B.Buf & Bool}:
+    -> {FuluDataColumnSidecar_r.DataColumnSidecar_ok_len(a, BF(t, n), 0, n) == (BF(t, n), Bool.and(a, Bool.and(CB(t), Bool.and(CC(t, n), Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n)))))))) : B.Buf & Bool}:
   match a:
     case True{}:
       %Equal.sym(B.Buf & U32, B.word(BF(t, n), 2), (BF(t, n), O0(t)), rd32(d, t, n, 2, 2n, {==}, hd, FD.nat__lt_trans(2n, 4n, VB.pw(d), {==}, hpo), pf)) :
-        {T.DataColumnSidecar_v0(0, n, _) == (BF(t, n), Bool.and(CB(t), Bool.and(CC(t, n), Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n))))))) : B.Buf & Bool}
+        {FuluDataColumnSidecar_r.DataColumnSidecar_v0(0, n, _) == (BF(t, n), Bool.and(CB(t), Bool.and(CC(t, n), Bool.and(CD(t, n), Bool.and(CE(t), Bool.and(CF(t), CG(t, n))))))) : B.Buf & Bool}
       okB(d, t, n, CB(t), hd, hpo, pf)
     case False{}: {==}
 
@@ -129,7 +129,7 @@ law ok_eval:
   for +hd: {Nat.is_lt(d, 32n) == True{} : Bool}
   for +hpo: {Nat.is_lt(4n, VB.pw(d)) == True{} : Bool}
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  {T.DataColumnSidecar_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
+  {FuluDataColumnSidecar_r.DataColumnSidecar_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
 def ok_eval(d, t, n, hd, hpo, pf): okA(d, t, n, CA(n), hd, hpo, pf)
 
 

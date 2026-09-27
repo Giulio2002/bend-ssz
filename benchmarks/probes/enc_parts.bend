@@ -1,7 +1,12 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBeaconBlockBody_def_generated.bend as FuluBeaconBlockBody_d
+import ../../types/FuluBeaconBlockBody_decode_ssz_generated.bend as FuluBeaconBlockBody_r
+import ../../types/FuluBeaconBlockBody_encode_ssz_generated.bend as FuluBeaconBlockBody_e
+import ../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
+import ../../types/FuluBeaconBlock_decode_ssz_generated.bend as FuluBeaconBlock_r
+import ../../types/FuluBeaconBlock_encode_ssz_generated.bend as FuluBeaconBlock_e
 import ../compact/objio.bend as IOx
 
 # The three parts of one encode, timed separately on a real decoded object.
@@ -48,30 +53,30 @@ def out_last(pair: B.Buf & U32) -> U32:
 
 # ---- BeaconBlockBody ----
 
-def sloop(+k: Nat, +acc: U32, pair: T.BeaconBlockBody & U32) -> T.BeaconBlockBody & U32:
+def sloop(+k: Nat, +acc: U32, pair: FuluBeaconBlockBody_d.BeaconBlockBody & U32) -> FuluBeaconBlockBody_d.BeaconBlockBody & U32:
   match k:
     case 0n:
       (o, +n) = pair
       (o, (acc .^. n : U32))
     case 1n+p:
       (o, +n) = pair
-      sloop(p, (acc .^. n : U32), T.BeaconBlockBody_size(o))
+      sloop(p, (acc .^. n : U32), FuluBeaconBlockBody_e.BeaconBlockBody_size(o))
 
-def eloop(+k: Nat, +acc: U32, pair: T.BeaconBlockBody & B.Buf) -> T.BeaconBlockBody & U32:
+def eloop(+k: Nat, +acc: U32, pair: FuluBeaconBlockBody_d.BeaconBlockBody & B.Buf) -> FuluBeaconBlockBody_d.BeaconBlockBody & U32:
   match k:
     case 0n:
       (o, out) = pair
       (o, (acc .^. out_last(B.size(out)) : U32))
     case 1n+p:
       (o, out) = pair
-      eloop(p, (acc .^. out_last(B.size(out)) : U32), T.BeaconBlockBody_encode(o))
+      eloop(p, (acc .^. out_last(B.size(out)) : U32), FuluBeaconBlockBody_e.BeaconBlockBody_encode(o))
 
 def aloop(+k: Nat, +n: U32, +acc: U32) -> U32:
   match k:
     case 0n: (acc .^. word_of(Array.get(U32, O.out_new(n), 0)) : U32)
     case 1n+p: aloop(p, n, (acc .^. word_of(Array.get(U32, O.out_new(n), 0)) : U32))
 
-def ploop(+k: Nat, +acc: U32, pair: Array<U32> & (T.BeaconBlockBody & U32)) -> Array<U32> & (T.BeaconBlockBody & U32):
+def ploop(+k: Nat, +acc: U32, pair: Array<U32> & (FuluBeaconBlockBody_d.BeaconBlockBody & U32)) -> Array<U32> & (FuluBeaconBlockBody_d.BeaconBlockBody & U32):
   match k:
     case 0n:
       (out, r) = pair
@@ -80,29 +85,29 @@ def ploop(+k: Nat, +acc: U32, pair: Array<U32> & (T.BeaconBlockBody & U32)) -> A
     case 1n+p:
       (out, r) = pair
       (o, n) = r
-      ploop(p, (acc .^. n : U32), T.BeaconBlockBody_putn(out, 0, o))
+      ploop(p, (acc .^. n : U32), FuluBeaconBlockBody_e.BeaconBlockBody_putn(out, 0, o))
 
 # ---- BeaconBlock ----
 
-def bsloop(+k: Nat, +acc: U32, pair: T.BeaconBlock & U32) -> T.BeaconBlock & U32:
+def bsloop(+k: Nat, +acc: U32, pair: FuluBeaconBlock_d.BeaconBlock & U32) -> FuluBeaconBlock_d.BeaconBlock & U32:
   match k:
     case 0n:
       (o, +n) = pair
       (o, (acc .^. n : U32))
     case 1n+p:
       (o, +n) = pair
-      bsloop(p, (acc .^. n : U32), T.BeaconBlock_size(o))
+      bsloop(p, (acc .^. n : U32), FuluBeaconBlock_e.BeaconBlock_size(o))
 
-def beloop(+k: Nat, +acc: U32, pair: T.BeaconBlock & B.Buf) -> T.BeaconBlock & U32:
+def beloop(+k: Nat, +acc: U32, pair: FuluBeaconBlock_d.BeaconBlock & B.Buf) -> FuluBeaconBlock_d.BeaconBlock & U32:
   match k:
     case 0n:
       (o, out) = pair
       (o, (acc .^. out_last(B.size(out)) : U32))
     case 1n+p:
       (o, out) = pair
-      beloop(p, (acc .^. out_last(B.size(out)) : U32), T.BeaconBlock_encode(o))
+      beloop(p, (acc .^. out_last(B.size(out)) : U32), FuluBeaconBlock_e.BeaconBlock_encode(o))
 
-def bploop(+k: Nat, +acc: U32, pair: Array<U32> & (T.BeaconBlock & U32)) -> Array<U32> & (T.BeaconBlock & U32):
+def bploop(+k: Nat, +acc: U32, pair: Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32)) -> Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32):
   match k:
     case 0n:
       (out, r) = pair
@@ -111,7 +116,7 @@ def bploop(+k: Nat, +acc: U32, pair: Array<U32> & (T.BeaconBlock & U32)) -> Arra
     case 1n+p:
       (out, r) = pair
       (o, n) = r
-      bploop(p, (acc .^. n : U32), T.BeaconBlock_putn(out, 0, o))
+      bploop(p, (acc .^. n : U32), FuluBeaconBlock_e.BeaconBlock_putn(out, 0, o))
 
 # ---- reporting ----
 
@@ -122,50 +127,50 @@ def report(+t0: Nat, +acc: U32) -> IO(Unit):
 
 def keep_x(+x: U32) -> U32: x
 
-def keep_body(pair: T.BeaconBlockBody & U32) -> U32:
+def keep_body(pair: FuluBeaconBlockBody_d.BeaconBlockBody & U32) -> U32:
   (o, +x) = pair
   x
 
-def keep_block(pair: T.BeaconBlock & U32) -> U32:
+def keep_block(pair: FuluBeaconBlock_d.BeaconBlock & U32) -> U32:
   (o, +x) = pair
   x
 
-def keep_put(pair: Array<U32> & (T.BeaconBlockBody & U32)) -> U32:
+def keep_put(pair: Array<U32> & (FuluBeaconBlockBody_d.BeaconBlockBody & U32)) -> U32:
   (out, r) = pair
   (o, x) = r
-  (keep_x(x) .^. keep_body(T.BeaconBlockBody_force(o)) : U32)
+  (keep_x(x) .^. keep_body(FuluBeaconBlockBody_d.BeaconBlockBody_force(o)) : U32)
 
-def keep_bput(pair: Array<U32> & (T.BeaconBlock & U32)) -> U32:
+def keep_bput(pair: Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32)) -> U32:
   (out, r) = pair
   (o, x) = r
-  (keep_x(x) .^. keep_block(T.BeaconBlock_force(o)) : U32)
+  (keep_x(x) .^. keep_block(FuluBeaconBlock_d.BeaconBlock_force(o)) : U32)
 
-def run_bsize(+ops: U32, o: T.BeaconBlockBody) -> IO(Unit):
+def run_bsize(+ops: U32, o: FuluBeaconBlockBody_d.BeaconBlockBody) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    report(t0, keep_body(sloop(U32.to_nat((ops - 1 : U32)), 0, T.BeaconBlockBody_size(o))))
+    report(t0, keep_body(sloop(U32.to_nat((ops - 1 : U32)), 0, FuluBeaconBlockBody_e.BeaconBlockBody_size(o))))
 
-def run_benc(+ops: U32, o: T.BeaconBlockBody) -> IO(Unit):
+def run_benc(+ops: U32, o: FuluBeaconBlockBody_d.BeaconBlockBody) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    report(t0, keep_body(eloop(U32.to_nat((ops - 1 : U32)), 0, T.BeaconBlockBody_encode(o))))
+    report(t0, keep_body(eloop(U32.to_nat((ops - 1 : U32)), 0, FuluBeaconBlockBody_e.BeaconBlockBody_encode(o))))
 
-def run_balloc_at(+ops: U32, pair: T.BeaconBlockBody & U32) -> IO(Unit):
+def run_balloc_at(+ops: U32, pair: FuluBeaconBlockBody_d.BeaconBlockBody & U32) -> IO(Unit):
   (o, +n) = pair
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    report(t0, (aloop(U32.to_nat((ops - 1 : U32)), n, 0) .^. keep_body(T.BeaconBlockBody_force(o)) : U32))
+    report(t0, (aloop(U32.to_nat((ops - 1 : U32)), n, 0) .^. keep_body(FuluBeaconBlockBody_d.BeaconBlockBody_force(o)) : U32))
 
-def run_bput_at(+ops: U32, +n: U32, o: T.BeaconBlockBody) -> IO(Unit):
+def run_bput_at(+ops: U32, +n: U32, o: FuluBeaconBlockBody_d.BeaconBlockBody) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    report(t0, keep_put(ploop(U32.to_nat((ops - 1 : U32)), 0, T.BeaconBlockBody_putn(O.out_new(n), 0, o))))
+    report(t0, keep_put(ploop(U32.to_nat((ops - 1 : U32)), 0, FuluBeaconBlockBody_e.BeaconBlockBody_putn(O.out_new(n), 0, o))))
 
-def run_bput(+ops: U32, pair: T.BeaconBlockBody & U32) -> IO(Unit):
+def run_bput(+ops: U32, pair: FuluBeaconBlockBody_d.BeaconBlockBody & U32) -> IO(Unit):
   (o, +n) = pair
   run_bput_at(ops, n, o)
 
-def ploop84(+k: Nat, +acc: U32, pair: Array<U32> & (T.BeaconBlockBody & U32)) -> Array<U32> & (T.BeaconBlockBody & U32):
+def ploop84(+k: Nat, +acc: U32, pair: Array<U32> & (FuluBeaconBlockBody_d.BeaconBlockBody & U32)) -> Array<U32> & (FuluBeaconBlockBody_d.BeaconBlockBody & U32):
   match k:
     case 0n:
       (out, r) = pair
@@ -174,79 +179,79 @@ def ploop84(+k: Nat, +acc: U32, pair: Array<U32> & (T.BeaconBlockBody & U32)) ->
     case 1n+p:
       (out, r) = pair
       (o, n) = r
-      ploop84(p, (acc .^. n : U32), T.BeaconBlockBody_putn(out, 84, o))
+      ploop84(p, (acc .^. n : U32), FuluBeaconBlockBody_e.BeaconBlockBody_putn(out, 84, o))
 
-def run_bput84_at(+ops: U32, +n: U32, o: T.BeaconBlockBody) -> IO(Unit):
+def run_bput84_at(+ops: U32, +n: U32, o: FuluBeaconBlockBody_d.BeaconBlockBody) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    report(t0, keep_put(ploop84(U32.to_nat((ops - 1 : U32)), 0, T.BeaconBlockBody_putn(O.out_new((n + 84 : U32)), 84, o))))
+    report(t0, keep_put(ploop84(U32.to_nat((ops - 1 : U32)), 0, FuluBeaconBlockBody_e.BeaconBlockBody_putn(O.out_new((n + 84 : U32)), 84, o))))
 
-def run_bput84(+ops: U32, pair: T.BeaconBlockBody & U32) -> IO(Unit):
+def run_bput84(+ops: U32, pair: FuluBeaconBlockBody_d.BeaconBlockBody & U32) -> IO(Unit):
   (o, +n) = pair
   run_bput84_at(ops, n, o)
 
-def run_ksize(+ops: U32, o: T.BeaconBlock) -> IO(Unit):
+def run_ksize(+ops: U32, o: FuluBeaconBlock_d.BeaconBlock) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    report(t0, keep_block(bsloop(U32.to_nat((ops - 1 : U32)), 0, T.BeaconBlock_size(o))))
+    report(t0, keep_block(bsloop(U32.to_nat((ops - 1 : U32)), 0, FuluBeaconBlock_e.BeaconBlock_size(o))))
 
-def run_kenc(+ops: U32, o: T.BeaconBlock) -> IO(Unit):
+def run_kenc(+ops: U32, o: FuluBeaconBlock_d.BeaconBlock) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    report(t0, keep_block(beloop(U32.to_nat((ops - 1 : U32)), 0, T.BeaconBlock_encode(o))))
+    report(t0, keep_block(beloop(U32.to_nat((ops - 1 : U32)), 0, FuluBeaconBlock_e.BeaconBlock_encode(o))))
 
-def run_kalloc_at(+ops: U32, pair: T.BeaconBlock & U32) -> IO(Unit):
+def run_kalloc_at(+ops: U32, pair: FuluBeaconBlock_d.BeaconBlock & U32) -> IO(Unit):
   (o, +n) = pair
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    report(t0, (aloop(U32.to_nat((ops - 1 : U32)), n, 0) .^. keep_block(T.BeaconBlock_force(o)) : U32))
+    report(t0, (aloop(U32.to_nat((ops - 1 : U32)), n, 0) .^. keep_block(FuluBeaconBlock_d.BeaconBlock_force(o)) : U32))
 
-def run_kput_at(+ops: U32, +n: U32, o: T.BeaconBlock) -> IO(Unit):
+def run_kput_at(+ops: U32, +n: U32, o: FuluBeaconBlock_d.BeaconBlock) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    report(t0, keep_bput(bploop(U32.to_nat((ops - 1 : U32)), 0, T.BeaconBlock_putn(O.out_new(n), 0, o))))
+    report(t0, keep_bput(bploop(U32.to_nat((ops - 1 : U32)), 0, FuluBeaconBlock_e.BeaconBlock_putn(O.out_new(n), 0, o))))
 
-def run_kput(+ops: U32, pair: T.BeaconBlock & U32) -> IO(Unit):
+def run_kput(+ops: U32, pair: FuluBeaconBlock_d.BeaconBlock & U32) -> IO(Unit):
   (o, +n) = pair
   run_kput_at(ops, n, o)
 
-def body_run(+mode: U32, +ops: U32, o: T.BeaconBlockBody) -> IO(Unit):
+def body_run(+mode: U32, +ops: U32, o: FuluBeaconBlockBody_d.BeaconBlockBody) -> IO(Unit):
   match mode:
     case 0: run_bsize(ops, o)
     case 1: run_benc(ops, o)
-    case 2: run_balloc_at(ops, T.BeaconBlockBody_size(o))
-    case 3: run_bput(ops, T.BeaconBlockBody_size(o))
-    case _: run_bput84(ops, T.BeaconBlockBody_size(o))
+    case 2: run_balloc_at(ops, FuluBeaconBlockBody_e.BeaconBlockBody_size(o))
+    case 3: run_bput(ops, FuluBeaconBlockBody_e.BeaconBlockBody_size(o))
+    case _: run_bput84(ops, FuluBeaconBlockBody_e.BeaconBlockBody_size(o))
 
-def block_run(+mode: U32, +ops: U32, o: T.BeaconBlock) -> IO(Unit):
+def block_run(+mode: U32, +ops: U32, o: FuluBeaconBlock_d.BeaconBlock) -> IO(Unit):
   match mode:
     case 4: run_ksize(ops, o)
     case 5: run_kenc(ops, o)
-    case 6: run_kalloc_at(ops, T.BeaconBlock_size(o))
-    case _: run_kput(ops, T.BeaconBlock_size(o))
+    case 6: run_kalloc_at(ops, FuluBeaconBlock_e.BeaconBlock_size(o))
+    case _: run_kput(ops, FuluBeaconBlock_e.BeaconBlock_size(o))
 
-def with_body(+mode: U32, +ops: U32, m: Maybe<&1, T.BeaconBlockBody>) -> IO(Unit):
+def with_body(+mode: U32, +ops: U32, m: Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>) -> IO(Unit):
   match m:
     case None{}: IO.die(Unit, 1, "decode rejected")
     case Some{o}: body_run(mode, ops, o)
 
-def with_block(+mode: U32, +ops: U32, m: Maybe<&1, T.BeaconBlock>) -> IO(Unit):
+def with_block(+mode: U32, +ops: U32, m: Maybe<&1, FuluBeaconBlock_d.BeaconBlock>) -> IO(Unit):
   match m:
     case None{}: IO.die(Unit, 1, "decode rejected")
     case Some{o}: block_run(mode, ops, o)
 
-def body_decoded(+mode: U32, +ops: U32, pair: B.Buf & Maybe<&1, T.BeaconBlockBody>) -> IO(Unit):
+def body_decoded(+mode: U32, +ops: U32, pair: B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>) -> IO(Unit):
   (buf, m) = pair
   with_body(mode, ops, m)
 
-def block_decoded(+mode: U32, +ops: U32, pair: B.Buf & Maybe<&1, T.BeaconBlock>) -> IO(Unit):
+def block_decoded(+mode: U32, +ops: U32, pair: B.Buf & Maybe<&1, FuluBeaconBlock_d.BeaconBlock>) -> IO(Unit):
   (buf, m) = pair
   with_block(mode, ops, m)
 
 def start_at(+mode: U32, +ops: U32, +size: U32, buf: B.Buf, body: Bool) -> IO(Unit):
   match body:
-    case True{}: body_decoded(mode, ops, T.BeaconBlockBody_decode(buf, size))
-    case False{}: block_decoded(mode, ops, T.BeaconBlock_decode(buf, size))
+    case True{}: body_decoded(mode, ops, FuluBeaconBlockBody_r.BeaconBlockBody_decode(buf, size))
+    case False{}: block_decoded(mode, ops, FuluBeaconBlock_r.BeaconBlock_decode(buf, size))
 
 def start(+mode: U32, +ops: U32, pair: B.Buf & U32) -> IO(Unit):
   (buf, +size) = pair

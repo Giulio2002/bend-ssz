@@ -34,6 +34,7 @@ sys.path.insert(0, str(ROOT / 'codegen'))
 
 import generate as G  # noqa: E402
 import schema  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 CONTS = ['ExecutionPayload', 'ExecutionPayloadHeader', 'ExecutionRequests', 'Attestation', 'IndexedAttestation', 'AttesterSlashing',
          'LightClientHeader', 'BeaconBlockBody', 'LightClientFinalityUpdate', 'LightClientUpdate', 'BeaconBlock', 'SignedBeaconBlock', 'BeaconState']
@@ -892,7 +893,7 @@ def STD_CHILDREN():
 def src():
     global SRC
     if SRC is None:
-        SRC = (ROOT / SRC_FILE).read_text()
+        SRC = RR.mono_text('generic' if 'generic' in SRC_FILE else 'fulu')
     return SRC
 
 
@@ -4173,7 +4174,7 @@ def ufile(U):
 
 
 def union_arms(U):
-    src = (ROOT / 'types/generic_obj.bend').read_text()
+    src = RR.mono_text('generic')
     m = re.search(rf'^type {U} is Type:\n((?:  .*\n)+)', src, re.M)
     arms = []
     for ln in m.group(1).rstrip('\n').split('\n'):
@@ -4532,6 +4533,7 @@ def main():
             out = nxt
         else:
             raise SystemExit('var_cont_enc: no fixed point in 8 rounds')
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale:

@@ -22,6 +22,7 @@ chunks of CHUNK names).
 import re
 import sys
 from pathlib import Path
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'codegen'))
@@ -78,8 +79,8 @@ def runtime_fixed():
     """[(X, p, N)] for every name whose decoder's validator is a length check at a
     trivial ok_at."""
     out = {}
-    for f, tag in (('types/fulu_obj.bend', 'f'), ('types/generic_obj.bend', 'g')):
-        src = (ROOT / f).read_text()
+    for f, tag in (('fulu', 'f'), ('generic', 'g')):
+        src = RR.mono_text(f)
         for m in re.finditer(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
             X, P = m.group(1), m.group(2)
             ok = re.search(rf'^def {P}_ok\(buf: B\.Buf, \+off: U32, \+len: U32\) -> B\.Buf & Bool: {P}_ok_len\(U32\.is_eq\(len, (\d+)\), buf, off\)$', src, re.M)
@@ -141,6 +142,7 @@ def outputs():
 
 def main():
     out = outputs()
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         orphans = [str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('fixrej_*.bend') if q not in out]

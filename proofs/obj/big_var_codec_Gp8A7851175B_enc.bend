@@ -1,7 +1,8 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/ProgressiveComplexTestStruct_def_generated.bend as ProgressiveComplexTestStruct_d
+import ../../types/ProgressiveComplexTestStruct_encode_ssz_generated.bend as ProgressiveComplexTestStruct_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -77,7 +78,7 @@ def room(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +k: Nat, +ek: {k == 28n :
     Equal.sym(+List<U32>, UA.BYT(VC.ZT(VL.DO(CI.SZ(m)))), UW.ZB(A.quad(VB.pw(VL.DO(CI.SZ(m))))), UWB.zt_bytes(VL.DO(CI.SZ(m)))), VE2.bt_zb_le(M, A.quad(VB.pw(VL.DO(CI.SZ(m)))), hm))
   mk3(m, hd, hl, hz)
 
-def RT0(+m: CI.MW) -> Data: {T.Gp8A7851175B_putk(FD.array__thaw(U32, VC.ZT(VL.DO(CI.SZ(m)))), 0, CI.TH(m)) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (T.Gp8A7851175B & U32)}
+def RT0(+m: CI.MW) -> Data: {ProgressiveComplexTestStruct_e.Gp8A7851175B_putk(FD.array__thaw(U32, VC.ZT(VL.DO(CI.SZ(m)))), 0, CI.TH(m)) == (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))) : Array<U32> & (ProgressiveComplexTestStruct_d.Gp8A7851175B & U32)}
 
 def rt0(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +g: DK.P2(HD(m), DK.P2(HL(m), HZ(m)))) -> RT0(m):
   +hd = CI.PA(HD(m), DK.P2(HL(m), HZ(m)), g)
@@ -94,17 +95,17 @@ def by0(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}, +g: DK.P2(HD(m), DK.P2(HL(
   CI.putx_bytes(m, VL.DO(CI.SZ(m)), VC.ZT(VL.DO(CI.SZ(m))), 0, 0n, 0n, {==}, {==}, hd, FD.array__trep_perfect(U32, VL.DO(CI.SZ(m)), 0), hl, hz, hok)
 
 def eval_go(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool})
-    -> {T.Gp8A7851175B_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gp8A7851175B & B.Buf}:
+    -> {ProgressiveComplexTestStruct_e.Gp8A7851175B_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveComplexTestStruct_d.Gp8A7851175B & B.Buf}:
   +rt = rt0(m, hok, room(m, hok, 28n, {==}))
-  %Equal.sym(T.Gp8A7851175B & U32, T.Gp8A7851175B_size(CI.TH(m)), (CI.TH(m), CI.SZ(m)), CI.sizex(m, hok)) :
-    {T.Gp8A7851175B_enc_sized(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gp8A7851175B & B.Buf}
+  %Equal.sym(ProgressiveComplexTestStruct_d.Gp8A7851175B & U32, ProgressiveComplexTestStruct_e.Gp8A7851175B_size(CI.TH(m)), (CI.TH(m), CI.SZ(m)), CI.sizex(m, hok)) :
+    {ProgressiveComplexTestStruct_e.Gp8A7851175B_enc_sized(_) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveComplexTestStruct_d.Gp8A7851175B & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(CI.SZ(m)))), Array.new(U32, VL.DO(CI.SZ(m)), 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(CI.SZ(m)))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(CI.SZ(m)))), VL.DO(CI.SZ(m)), VD.wdu(VC.nwu(CI.SZ(m))), VZG.zg(B.words_depth_u(VC.nwu(CI.SZ(m)))))) :
-    {T.Gp8A7851175B_enc_put(CI.SZ(m), T.Gp8A7851175B_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gp8A7851175B & B.Buf}
+    {ProgressiveComplexTestStruct_e.Gp8A7851175B_enc_put(CI.SZ(m), ProgressiveComplexTestStruct_e.Gp8A7851175B_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveComplexTestStruct_d.Gp8A7851175B & B.Buf}
   %Equal.sym(Array<U32>, Array.new(U32, VL.DO(CI.SZ(m)), 0), FD.array__thaw(U32, VC.ZT(VL.DO(CI.SZ(m)))), FD.array__new(U32, VL.DO(CI.SZ(m)), 0)) :
-    {T.Gp8A7851175B_enc_put(CI.SZ(m), T.Gp8A7851175B_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gp8A7851175B & B.Buf}
-  %Equal.sym(Array<U32> & (T.Gp8A7851175B & U32), T.Gp8A7851175B_putk(FD.array__thaw(U32, VC.ZT(VL.DO(CI.SZ(m)))), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
-    {T.Gp8A7851175B_enc_put(CI.SZ(m), _) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : T.Gp8A7851175B & B.Buf}
+    {ProgressiveComplexTestStruct_e.Gp8A7851175B_enc_put(CI.SZ(m), ProgressiveComplexTestStruct_e.Gp8A7851175B_putn(_, 0, CI.TH(m))) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveComplexTestStruct_d.Gp8A7851175B & B.Buf}
+  %Equal.sym(Array<U32> & (ProgressiveComplexTestStruct_d.Gp8A7851175B & U32), ProgressiveComplexTestStruct_e.Gp8A7851175B_putk(FD.array__thaw(U32, VC.ZT(VL.DO(CI.SZ(m)))), 0, CI.TH(m)), (FD.array__thaw(U32, OUTE(m)), (CI.TH(m), CI.SZ(m))), rt) :
+    {ProgressiveComplexTestStruct_e.Gp8A7851175B_enc_put(CI.SZ(m), _) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), CI.SZ(m)}) : ProgressiveComplexTestStruct_d.Gp8A7851175B & B.Buf}
   {==}
 
 # The output's first bytes, as many as the size, are the container's bytes.
@@ -121,7 +122,7 @@ def obytes(+m: CI.MW, +hok: {CI.OK(m) == True{} : Bool}) -> {VS.bt(U32.to_nat(CI
 law encode_eval:
   for +m: CI.MW
   for +hok: {CI.OK(m) == True{} : Bool}
-  {T.Gp8A7851175B_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), SZSM(m)}) : T.Gp8A7851175B & B.Buf}
+  {ProgressiveComplexTestStruct_e.Gp8A7851175B_encode(CI.TH(m)) == (CI.TH(m), B.Buf{FD.array__thaw(U32, OUTE(m)), SZSM(m)}) : ProgressiveComplexTestStruct_d.Gp8A7851175B & B.Buf}
 def encode_eval(m, hok): eval_go(m, hok)
 
 # The buffer's bytes are the spec encoding of the object's value.

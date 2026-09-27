@@ -1,7 +1,9 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/progbitlist_encode_ssz_generated.bend as progbitlist_e
+import ../../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as ProgressiveSingleListContainerTestStruct_d
+import ../../types/ProgressiveSingleListContainerTestStruct_encode_ssz_generated.bend as ProgressiveSingleListContainerTestStruct_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -131,7 +133,7 @@ def lenE(+m_f_C: EX_pbits.MB, +h: {OKT(m_f_C) == True{} : Bool}) -> {List.length
 type MW is Data:
   MW{m_f_C: EX_pbits.MB}
 
-def TH(m: MW) -> T.Gp4B0CA2906A:
+def TH(m: MW) -> ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A:
   match m:
     case MW{+m_f_C}: K.OBJC(m_f_C)
 def OK(m: MW) -> Bool:
@@ -153,7 +155,7 @@ def PUTX(m: MW, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array
 def PADB(+r: Nat, m: MW) -> Nat: WD.PADB(r, List.length(&2, U32, ENC(m)))
 
 def RTX(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), X, K.OBJC(m_f_C)) == (FD.array__thaw(U32, K.PUTC(m_f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(m_f_C), K.SZC(m_f_C))) : Array<U32> & (T.Gp4B0CA2906A & U32)}
+  {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), X, K.OBJC(m_f_C)) == (FD.array__thaw(U32, K.PUTC(m_f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(m_f_C), K.SZC(m_f_C))) : Array<U32> & (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32)}
 def BYX(+m_f_C: EX_pbits.MB, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(K.PUTC(m_f_C, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(m_f_C), UW.ZB(WD.PADB(r, List.length(&2, U32, K.ENCC(m_f_C)))))) : +List<U32>}
 
@@ -172,7 +174,7 @@ def go(+m_f_C: EX_pbits.MB, +h: {OKT(m_f_C) == True{} : Bool}, +dd: Nat, +D: FD.
   +rt = K.putk_bridge(m_f_C, dd, D, XQ(q, r), q, r, PA(K.RTC(m_f_C, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_f_C, dd, D, XQ(q, r), q, r), K.SZXC(m_f_C, dd, D, XQ(q, r), q, r))), g))
   +g2 = PB(K.RTC(m_f_C, dd, D, XQ(q, r), q, r), DK.P2(K.BYC(m_f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_f_C, dd, D, XQ(q, r), q, r), K.SZXC(m_f_C, dd, D, XQ(q, r), q, r))), g)
   +by = PA(K.BYC(m_f_C, dd, D, XQ(q, r), q, r), DK.P2(K.PFC(m_f_C, dd, D, XQ(q, r), q, r), K.SZXC(m_f_C, dd, D, XQ(q, r), q, r)), g2)
-  +rt2 = FD.logic__subst(U32, z => {T.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), z, K.OBJC(m_f_C)) == (FD.array__thaw(U32, K.PUTC(m_f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(m_f_C), K.SZC(m_f_C))) : Array<U32> & (T.Gp4B0CA2906A & U32)},
+  +rt2 = FD.logic__subst(U32, z => {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), z, K.OBJC(m_f_C)) == (FD.array__thaw(U32, K.PUTC(m_f_C, dd, D, XQ(q, r), q, r)), (K.OBJC(m_f_C), K.SZC(m_f_C))) : Array<U32> & (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32)},
     XQ(q, r), X, Equal.sym(U32, X, XQ(q, r), ex), rt)
   +by2 = FD.logic__subst(Nat, z => {UA.BYT(K.PUTC(m_f_C, dd, D, XQ(q, r), q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(K.ENCC(m_f_C), UW.ZB(WD.PADB(r, z)))) : +List<U32>},
     LLv, List.length(&2, U32, K.ENCC(m_f_C)), Equal.sym(Nat, List.length(&2, U32, K.ENCC(m_f_C)), LLv, el), by)
@@ -194,7 +196,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (T.Gp4B0CA2906A & U32)}
+  {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW{+m_f_C}: PA(RTX(m_f_C, dd, D, X, q, r), BYX(m_f_C, dd, D, q, r), go(m_f_C, hok, dd, D, X, q, r, e, hr, hd, pf, hl, hz))
@@ -265,28 +267,28 @@ def pfx(m, dd, D, q, r, pf):
   match m:
     case MW{+m_f_C}: K.pfC(m_f_C, dd, D, XQ(q, r), q, r, pf)
 
-def sizeC(+m_f_C: EX_pbits.MB, +h: {OKT(m_f_C) == True{} : Bool}) -> {T.Gp4B0CA2906A_size(K.OBJC(m_f_C)) == (K.OBJC(m_f_C), K.SZC(m_f_C)) : T.Gp4B0CA2906A & U32}:
-  %Equal.sym(O.Bits & U32, T.pbits_size(EX_pbits.TH(m_f_C)), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C)), EX_pbits.sizex(m_f_C, ok_hok_f_C(m_f_C, h))) :
-    {T.Gp4B0CA2906A_sz0(4, _) == (K.OBJC(m_f_C), K.SZC(m_f_C)) : T.Gp4B0CA2906A & U32}
+def sizeC(+m_f_C: EX_pbits.MB, +h: {OKT(m_f_C) == True{} : Bool}) -> {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_size(K.OBJC(m_f_C)) == (K.OBJC(m_f_C), K.SZC(m_f_C)) : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32}:
+  %Equal.sym(O.Bits & U32, progbitlist_e.pbits_size(EX_pbits.TH(m_f_C)), (EX_pbits.TH(m_f_C), EX_pbits.SZ(m_f_C)), EX_pbits.sizex(m_f_C, ok_hok_f_C(m_f_C, h))) :
+    {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_sz0(4, _) == (K.OBJC(m_f_C), K.SZC(m_f_C)) : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32}
   {==}
 
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gp4B0CA2906A_size(TH(m)) == (TH(m), SZ(m)) : T.Gp4B0CA2906A & U32}
+  {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_size(TH(m)) == (TH(m), SZ(m)) : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & U32}
 def sizex(m, hok):
   match m:
     case MW{+m_f_C}: sizeC(m_f_C, hok)
 
-def rvalidC(+m_f_C: EX_pbits.MB, +h: {OKT(m_f_C) == True{} : Bool}) -> {T.Gp4B0CA2906A_valid(K.OBJC(m_f_C)) == (K.OBJC(m_f_C), True{}) : T.Gp4B0CA2906A & Bool}:
-  %Equal.sym(O.Bits & Bool, T.pbits_valid(EX_pbits.TH(m_f_C)), (EX_pbits.TH(m_f_C), True{}), EX_pbits.validx(m_f_C, ok_hok_f_C(m_f_C, h))) :
-    {T.Gp4B0CA2906A_va0(True{}, _) == (K.OBJC(m_f_C), True{}) : T.Gp4B0CA2906A & Bool}
+def rvalidC(+m_f_C: EX_pbits.MB, +h: {OKT(m_f_C) == True{} : Bool}) -> {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_valid(K.OBJC(m_f_C)) == (K.OBJC(m_f_C), True{}) : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & Bool}:
+  %Equal.sym(O.Bits & Bool, progbitlist_e.pbits_valid(EX_pbits.TH(m_f_C)), (EX_pbits.TH(m_f_C), True{}), EX_pbits.validx(m_f_C, ok_hok_f_C(m_f_C, h))) :
+    {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_va0(True{}, _) == (K.OBJC(m_f_C), True{}) : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & Bool}
   {==}
 
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.Gp4B0CA2906A_valid(TH(m)) == (TH(m), True{}) : T.Gp4B0CA2906A & Bool}
+  {ProgressiveSingleListContainerTestStruct_e.Gp4B0CA2906A_valid(TH(m)) == (TH(m), True{}) : ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A & Bool}
 def validx(m, hok):
   match m:
     case MW{+m_f_C}: rvalidC(m_f_C, hok)

@@ -91,6 +91,7 @@ import arr_laws as AL  # noqa: E402
 import spec_arr as SA  # noqa: E402
 import spec_any as SANY  # noqa: E402
 import root_laws_generic as RG  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
 PER_FILE = 12
@@ -1237,7 +1238,7 @@ def main():
     g = G.Gen()
     for n, t in names.items():
         g.shape(t)
-    src = (ROOT / 'types/fulu_obj.bend').read_text()
+    src = RR.mono_text('fulu')
     chosen, skipped = [], {}
     for n, t in names.items():
         if not (t.fixed() and LW.word_aligned(t)):
@@ -1261,7 +1262,7 @@ def main():
     gg = G.Gen()
     for n, t in gnames.items():
         gg.shape(t)
-    gsrc = (ROOT / 'types/generic_obj.bend').read_text()
+    gsrc = RR.mono_text('generic')
     gchosen = []
     for n, t in gnames.items():
         if not (t.fixed() and LW.word_aligned(t)):
@@ -1289,6 +1290,7 @@ def main():
     out.update(AL.outputs())
     out.update(SANY.outputs(ROOT, out)[0])
     orphans = sorted(str(q.relative_to(ROOT)) for q in (ROOT / 'proofs/obj').glob('spec_*_*.bend') if q not in out)
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, text in out.items() if not p.exists() or p.read_text() != text]
         if stale or orphans:

@@ -1,7 +1,12 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes20_def_generated.bend as FuluBytes20_d
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
+import ../../types/FuluWithdrawalRequest_def_generated.bend as FuluWithdrawalRequest_d
+import ../../types/FuluWithdrawalRequest_decode_ssz_generated.bend as FuluWithdrawalRequest_r
+import ../../types/Fulu_list_WithdrawalRequest_16_def_generated.bend as Fulu_list_WithdrawalRequest_16_d
+import ../../types/Fulu_list_WithdrawalRequest_16_decode_ssz_generated.bend as Fulu_list_WithdrawalRequest_16_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -46,7 +51,7 @@ def hp0(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w
   %hq0(w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18) : {Codec.parts(_, S.Container{["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}}) == Some{[S.Fixed{F.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18])}]} : Maybe<&2, +List<S.Part>>}
   F.container_fixed(["source_address", "validator_pubkey", "amount"], S.Chain{S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}}, S.Items{S.BytesValue{F.limbs([w0, w1, w2, w3, w4])}, S.Items{S.BytesValue{F.limbs([w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16])}, S.Items{S.UnsignedValue{P.UInt{w17, w18, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}, [[w0, w1, w2, w3, w4], [w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16], [w17, w18]], 76n, [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18], F.items_fixed(S.BytesValue{F.limbs([w0, w1, w2, w3, w4])}, S.Items{S.BytesValue{F.limbs([w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16])}, S.Items{S.UnsignedValue{P.UInt{w17, w18, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}, S.ByteVector{20n}, S.Chain{S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}}, F.limbs([w0, w1, w2, w3, w4]), [S.Fixed{F.limbs([w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16])}, S.Fixed{F.limbs([w17, w18])}], F.bytes_part_n(w0, [w1, w2, w3, w4], 20n, {==}, {==}), F.items_fixed(S.BytesValue{F.limbs([w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16])}, S.Items{S.UnsignedValue{P.UInt{w17, w18, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}, S.ByteVector{48n}, S.Chain{S.Unsigned{P.U64{}}, S.End{}}, F.limbs([w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16]), [S.Fixed{F.limbs([w17, w18])}], F.bytes_part_n(w5, [w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16], 48n, {==}, {==}), F.items_fixed(S.UnsignedValue{P.UInt{w17, w18, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}, S.Unsigned{P.U64{}}, S.End{}, F.limbs([w17, w18]), [], F.uint64_part(w17, w18), {==}))), {==}, {==}, {==})
 
-def RX(+t: FD.array__Tree<U32>, +y: Nat) -> T.WithdrawalRequest: T.WithdrawalRequest{T.Bytes20{UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), UR.RWN(t, 16n+y)}, T.Bytes48{UR.RWN(t, 20n+y), UR.RWN(t, 24n+y), UR.RWN(t, 28n+y), UR.RWN(t, 32n+y), UR.RWN(t, 36n+y), UR.RWN(t, 40n+y), UR.RWN(t, 44n+y), UR.RWN(t, 48n+y), UR.RWN(t, 52n+y), UR.RWN(t, 56n+y), UR.RWN(t, 60n+y), UR.RWN(t, 64n+y)}, O.U64{UR.RWN(t, 68n+y), UR.RWN(t, 72n+y)}}
+def RX(+t: FD.array__Tree<U32>, +y: Nat) -> FuluWithdrawalRequest_d.WithdrawalRequest: FuluWithdrawalRequest_d.WithdrawalRequest{FuluBytes20_d.Bytes20{UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), UR.RWN(t, 16n+y)}, FuluBytes48_d.Bytes48{UR.RWN(t, 20n+y), UR.RWN(t, 24n+y), UR.RWN(t, 28n+y), UR.RWN(t, 32n+y), UR.RWN(t, 36n+y), UR.RWN(t, 40n+y), UR.RWN(t, 44n+y), UR.RWN(t, 48n+y), UR.RWN(t, 52n+y), UR.RWN(t, 56n+y), UR.RWN(t, 60n+y), UR.RWN(t, 64n+y)}, O.U64{UR.RWN(t, 68n+y), UR.RWN(t, 72n+y)}}
 
 # its spec value, and that value's parts: the limbs of those words
 def RVAL(+t: FD.array__Tree<U32>, +y: Nat) -> S.Value: hv0(UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), UR.RWN(t, 16n+y), UR.RWN(t, 20n+y), UR.RWN(t, 24n+y), UR.RWN(t, 28n+y), UR.RWN(t, 32n+y), UR.RWN(t, 36n+y), UR.RWN(t, 40n+y), UR.RWN(t, 44n+y), UR.RWN(t, 48n+y), UR.RWN(t, 52n+y), UR.RWN(t, 56n+y), UR.RWN(t, 60n+y), UR.RWN(t, 64n+y), UR.RWN(t, 68n+y), UR.RWN(t, 72n+y))
@@ -58,10 +63,10 @@ def RPRF(+t: FD.array__Tree<U32>, +y: Nat) -> {Codec.parts(RVAL(t, y), S.Contain
   hp0(UR.RWN(t, y), UR.RWN(t, 4n+y), UR.RWN(t, 8n+y), UR.RWN(t, 12n+y), UR.RWN(t, 16n+y), UR.RWN(t, 20n+y), UR.RWN(t, 24n+y), UR.RWN(t, 28n+y), UR.RWN(t, 32n+y), UR.RWN(t, 36n+y), UR.RWN(t, 40n+y), UR.RWN(t, 44n+y), UR.RWN(t, 48n+y), UR.RWN(t, 52n+y), UR.RWN(t, 56n+y), UR.RWN(t, 60n+y), UR.RWN(t, 64n+y), UR.RWN(t, 68n+y), UR.RWN(t, 72n+y))
 
 # the records j, j + 1, ..., j + k written into a record tree D
-def RT(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<T.WithdrawalRequest>, +t: FD.array__Tree<U32>, +x: Nat) -> FD.array__Tree<T.WithdrawalRequest>:
+def RT(k: Nat, +j: Nat, +dd: Nat, D: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>, +t: FD.array__Tree<U32>, +x: Nat) -> FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>:
   match k:
-    case 0n: FD.array__upd(T.WithdrawalRequest, dd, D, j, RX(t, VRL.pos(j, 76n, x)))
-    case 1n+q: RT(q, 1n+j, dd, FD.array__upd(T.WithdrawalRequest, dd, D, j, RX(t, VRL.pos(j, 76n, x))), t, x)
+    case 0n: FD.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, dd, D, j, RX(t, VRL.pos(j, 76n, x)))
+    case 1n+q: RT(q, 1n+j, dd, FD.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, dd, D, j, RX(t, VRL.pos(j, 76n, x))), t, x)
 
 # ---- the validator ------------------------------------------------------------------------------
 
@@ -70,7 +75,7 @@ def CHKw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Bool:
 
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.l16_WithdrawalRequest_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   {==}
 
 def vR() -> Word(31n): FD.spec_numeric__from_nat(31n, 76n)
@@ -87,39 +92,39 @@ def hcw(+len: U32, +h: {Bool.and(U32.is_eq(len, (U32.div(len, 76) * 76 : U32)), 
 
 # ---- the reader ---------------------------------------------------------------------------------
 
-def LOBJ(e: Bool, +t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> T.l16_WithdrawalRequest_Seq:
+def LOBJ(e: Bool, +t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq:
   match e:
-    case True{}: T.l16_WithdrawalRequest_Seq{T.l16_WithdrawalRequest_fill(0n), 0}
-    case False{}: T.l16_WithdrawalRequest_Seq{FD.array__thaw(T.WithdrawalRequest, RT(U32.to_nat(U32.sub(NN(len), 1)), 0n, B.words_depth(NN(len)), FD.array__trep(T.WithdrawalRequest, B.words_depth(NN(len)), T.WithdrawalRequest_default()), t, x)), NN(len)}
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.l16_WithdrawalRequest_Seq: LOBJ(U32.is_eq(len, 0), t, x, len)
+    case True{}: Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_fill(0n), 0}
+    case False{}: Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, RT(U32.to_nat(U32.sub(NN(len), 1)), 0n, B.words_depth(NN(len)), FD.array__trep(FuluWithdrawalRequest_d.WithdrawalRequest, B.words_depth(NN(len)), FuluWithdrawalRequest_d.WithdrawalRequest_default()), t, x)), NN(len)}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq: LOBJ(U32.is_eq(len, 0), t, x, len)
 
 # The read loop from record j (index i) on.
-def lp(k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +i: U32, +j: Nat, +dd: Nat, +D: FD.array__Tree<T.WithdrawalRequest>,
+def lp(k: Nat, +d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +i: U32, +j: Nat, +dd: Nat, +D: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>,
     +eo: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(VRL.pos(Nat.add(1n+k, j), 76n, x), A.quad(VB.pw(d))) == True{} : Bool},
     +hdd: {Nat.is_lt(dd, 32n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(dd)) == True{} : Bool},
-    +pfD: {FD.array__perfect(T.WithdrawalRequest, dd, D) == True{} : Bool})
-    -> {T.l16_WithdrawalRequest_rd(k, i, off, FD.array__thaw(T.WithdrawalRequest, D), (BF(t, n), RX(t, VRL.pos(j, 76n, x)))) == (BF(t, n), FD.array__thaw(T.WithdrawalRequest, RT(k, j, dd, D, t, x))) : B.Buf & Array<T.WithdrawalRequest>}:
+    +pfD: {FD.array__perfect(FuluWithdrawalRequest_d.WithdrawalRequest, dd, D) == True{} : Bool})
+    -> {Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_rd(k, i, off, FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, D), (BF(t, n), RX(t, VRL.pos(j, 76n, x)))) == (BF(t, n), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, RT(k, j, dd, D, t, x))) : B.Buf & Array<FuluWithdrawalRequest_d.WithdrawalRequest>}:
   match k:
     case 0n:
-      %Equal.sym(Array<T.WithdrawalRequest>, Array.set(T.WithdrawalRequest, FD.array__thaw(T.WithdrawalRequest, D), i, RX(t, VRL.pos(j, 76n, x))), FD.array__thaw(T.WithdrawalRequest, FD.array__upd(T.WithdrawalRequest, dd, D, j, RX(t, VRL.pos(j, 76n, x)))),
-          VRL.set_g(T.WithdrawalRequest, dd, D, i, j, RX(t, VRL.pos(j, 76n, x)), T.WithdrawalRequest_default(), ej, hdd, hk, pfD)) :
-        {(BF(t, n), _) == (BF(t, n), FD.array__thaw(T.WithdrawalRequest, RT(0n, j, dd, D, t, x))) : B.Buf & Array<T.WithdrawalRequest>}
+      %Equal.sym(Array<FuluWithdrawalRequest_d.WithdrawalRequest>, Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, D), i, RX(t, VRL.pos(j, 76n, x))), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, dd, D, j, RX(t, VRL.pos(j, 76n, x)))),
+          VRL.set_g(FuluWithdrawalRequest_d.WithdrawalRequest, dd, D, i, j, RX(t, VRL.pos(j, 76n, x)), FuluWithdrawalRequest_d.WithdrawalRequest_default(), ej, hdd, hk, pfD)) :
+        {(BF(t, n), _) == (BF(t, n), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, RT(0n, j, dd, D, t, x))) : B.Buf & Array<FuluWithdrawalRequest_d.WithdrawalRequest>}
       {==}
     case 1n+ +q:
       +v = RX(t, VRL.pos(j, 76n, x))
-      +D1 = FD.array__upd(T.WithdrawalRequest, dd, D, j, v)
+      +D1 = FD.array__upd(FuluWithdrawalRequest_d.WithdrawalRequest, dd, D, j, v)
       +hkj = FD.nat__le_lt_trans(j, Nat.add(q, j), VB.pw(dd), Order.left_below_sum(q, j), FD.nat__lt_trans(Nat.add(q, j), 1n+Nat.add(q, j), VB.pw(dd), FD.nat__lt_succ(Nat.add(q, j)), hk))
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dd)) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hk)
       +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(VRL.pos(1n+z, 76n, x), A.quad(VB.pw(d))) == True{} : Bool}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb)
       +hx = VRL.nextfit(j, q, 76n, x, A.quad(VB.pw(d)), hb)
       +ex = VRL.posU(d, off, x, i, j, 76, 75n, {==}, eo, ej, hd, hx)
-      %Equal.sym(Array<T.WithdrawalRequest>, Array.set(T.WithdrawalRequest, FD.array__thaw(T.WithdrawalRequest, D), i, v), FD.array__thaw(T.WithdrawalRequest, D1), VRL.set_g(T.WithdrawalRequest, dd, D, i, j, v, T.WithdrawalRequest_default(), ej, hdd, hkj, pfD)) :
-        {T.l16_WithdrawalRequest_rd(q, U32.add(i, 1), off, _, T.WithdrawalRequest_read(BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 76)), 76)) == (BF(t, n), FD.array__thaw(T.WithdrawalRequest, RT(1n+q, j, dd, D, t, x))) : B.Buf & Array<T.WithdrawalRequest>}
-      %Equal.sym(B.Buf & T.WithdrawalRequest, T.WithdrawalRequest_read(BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 76)), 76), (BF(t, n), RX(t, VRL.pos(1n+j, 76n, x))),
+      %Equal.sym(Array<FuluWithdrawalRequest_d.WithdrawalRequest>, Array.set(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, D), i, v), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, D1), VRL.set_g(FuluWithdrawalRequest_d.WithdrawalRequest, dd, D, i, j, v, FuluWithdrawalRequest_d.WithdrawalRequest_default(), ej, hdd, hkj, pfD)) :
+        {Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_rd(q, U32.add(i, 1), off, _, FuluWithdrawalRequest_r.WithdrawalRequest_read(BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 76)), 76)) == (BF(t, n), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, RT(1n+q, j, dd, D, t, x))) : B.Buf & Array<FuluWithdrawalRequest_d.WithdrawalRequest>}
+      %Equal.sym(B.Buf & FuluWithdrawalRequest_d.WithdrawalRequest, FuluWithdrawalRequest_r.WithdrawalRequest_read(BF(t, n), U32.add(off, U32.mul(U32.add(i, 1), 76)), 76), (BF(t, n), RX(t, VRL.pos(1n+j, 76n, x))),
           VTX.rdx_WithdrawalRequest(d, t, n, U32.add(off, U32.mul(U32.add(i, 1), 76)), VRL.pos(1n+j, 76n, x), ex, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hx)) :
-        {T.l16_WithdrawalRequest_rd(q, U32.add(i, 1), off, FD.array__thaw(T.WithdrawalRequest, D1), _) == (BF(t, n), FD.array__thaw(T.WithdrawalRequest, RT(1n+q, j, dd, D, t, x))) : B.Buf & Array<T.WithdrawalRequest>}
-      lp(q, d, t, n, x, off, U32.add(i, 1), 1n+j, dd, D1, eo, VRL.succU(d, i, j, 75n, x, ej, hd, hx), hd, pf, hb2, hdd, hk2, FD.array__upd_perfect(T.WithdrawalRequest, dd, D, j, v, pfD))
+        {Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_rd(q, U32.add(i, 1), off, FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, D1), _) == (BF(t, n), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, RT(1n+q, j, dd, D, t, x))) : B.Buf & Array<FuluWithdrawalRequest_d.WithdrawalRequest>}
+      lp(q, d, t, n, x, off, U32.add(i, 1), 1n+j, dd, D1, eo, VRL.succU(d, i, j, 75n, x, ej, hd, hx), hd, pf, hb2, hdd, hk2, FD.array__upd_perfect(FuluWithdrawalRequest_d.WithdrawalRequest, dd, D, j, v, pfD))
 
 # A non-empty window holds c >= 1 records.
 def cpos(+len: U32, +c: Nat, +ec: {U32.to_nat(len) == Nat.mul(c, 76n) : Nat}, +eb: {U32.is_eq(len, 0) == False{} : Bool})
@@ -132,7 +137,7 @@ def cpos(+len: U32, +c: Nat, +ec: {U32.to_nat(len) == Nat.mul(c, 76n) : Nat}, +e
 def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(len, 0) == b : Bool})
-    -> {T.l16_WithdrawalRequest_rd_start(b, off, NN(len), BF(t, n)) == (BF(t, n), LOBJ(b, t, x, len)) : B.Buf & T.l16_WithdrawalRequest_Seq}:
+    -> {Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_rd_start(b, off, NN(len), BF(t, n)) == (BF(t, n), LOBJ(b, t, x, len)) : B.Buf & Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq}:
   match b:
     case True{}: {==}
     case False{}:
@@ -156,20 +161,20 @@ def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U
         Order.add_left(x, 76n, U32.to_nat(len), FD.logic__subst(Nat, z => {Nat.is_le(76n, z) == True{} : Bool}, Nat.mul(c, 76n), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), Nat.mul(c, 76n), ec),
           FD.logic__subst(Nat, z => {Nat.is_le(76n, Nat.mul(z, 76n)) == True{} : Bool}, 1n+k, c, e1, Order.below_sum(76n, Nat.mul(k, 76n))))), hw)
       +cap = B.words_depth(NN(len))
-      %Equal.sym(B.Buf & T.WithdrawalRequest, T.WithdrawalRequest_read(BF(t, n), off, 76), (BF(t, n), RX(t, x)), VTX.rdx_WithdrawalRequest(d, t, n, off, x, eo, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb0)) :
-        {T.l16_WithdrawalRequest_rd_fin(NN(len), T.l16_WithdrawalRequest_rd(k, 0, off, T.l16_WithdrawalRequest_fill(T.l16_WithdrawalRequest_cap(NN(len))), _)) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & T.l16_WithdrawalRequest_Seq}
-      %Equal.sym(Array<T.WithdrawalRequest>, Array.new(T.WithdrawalRequest, cap, T.WithdrawalRequest_default()), FD.array__thaw(T.WithdrawalRequest, FD.array__trep(T.WithdrawalRequest, cap, T.WithdrawalRequest_default())), FD.array__new(T.WithdrawalRequest, cap, T.WithdrawalRequest_default())) :
-        {T.l16_WithdrawalRequest_rd_fin(NN(len), T.l16_WithdrawalRequest_rd(k, 0, off, _, (BF(t, n), RX(t, x)))) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & T.l16_WithdrawalRequest_Seq}
-      %Equal.sym(B.Buf & Array<T.WithdrawalRequest>, T.l16_WithdrawalRequest_rd(k, 0, off, FD.array__thaw(T.WithdrawalRequest, FD.array__trep(T.WithdrawalRequest, cap, T.WithdrawalRequest_default())), (BF(t, n), RX(t, x))),
-          (BF(t, n), FD.array__thaw(T.WithdrawalRequest, RT(k, 0n, cap, FD.array__trep(T.WithdrawalRequest, cap, T.WithdrawalRequest_default()), t, x))),
-          lp(k, d, t, n, x, off, 0, 0n, cap, FD.array__trep(T.WithdrawalRequest, cap, T.WithdrawalRequest_default()), eo, {==}, hd, pf, hb, hdd, hk, FD.array__trep_perfect(T.WithdrawalRequest, cap, T.WithdrawalRequest_default()))) :
-        {T.l16_WithdrawalRequest_rd_fin(NN(len), _) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & T.l16_WithdrawalRequest_Seq}
+      %Equal.sym(B.Buf & FuluWithdrawalRequest_d.WithdrawalRequest, FuluWithdrawalRequest_r.WithdrawalRequest_read(BF(t, n), off, 76), (BF(t, n), RX(t, x)), VTX.rdx_WithdrawalRequest(d, t, n, off, x, eo, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb0)) :
+        {Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_rd_fin(NN(len), Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_rd(k, 0, off, Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_fill(Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_cap(NN(len))), _)) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq}
+      %Equal.sym(Array<FuluWithdrawalRequest_d.WithdrawalRequest>, Array.new(FuluWithdrawalRequest_d.WithdrawalRequest, cap, FuluWithdrawalRequest_d.WithdrawalRequest_default()), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__trep(FuluWithdrawalRequest_d.WithdrawalRequest, cap, FuluWithdrawalRequest_d.WithdrawalRequest_default())), FD.array__new(FuluWithdrawalRequest_d.WithdrawalRequest, cap, FuluWithdrawalRequest_d.WithdrawalRequest_default())) :
+        {Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_rd_fin(NN(len), Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_rd(k, 0, off, _, (BF(t, n), RX(t, x)))) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq}
+      %Equal.sym(B.Buf & Array<FuluWithdrawalRequest_d.WithdrawalRequest>, Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_rd(k, 0, off, FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__trep(FuluWithdrawalRequest_d.WithdrawalRequest, cap, FuluWithdrawalRequest_d.WithdrawalRequest_default())), (BF(t, n), RX(t, x))),
+          (BF(t, n), FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, RT(k, 0n, cap, FD.array__trep(FuluWithdrawalRequest_d.WithdrawalRequest, cap, FuluWithdrawalRequest_d.WithdrawalRequest_default()), t, x))),
+          lp(k, d, t, n, x, off, 0, 0n, cap, FD.array__trep(FuluWithdrawalRequest_d.WithdrawalRequest, cap, FuluWithdrawalRequest_d.WithdrawalRequest_default()), eo, {==}, hd, pf, hb, hdd, hk, FD.array__trep_perfect(FuluWithdrawalRequest_d.WithdrawalRequest, cap, FuluWithdrawalRequest_d.WithdrawalRequest_default()))) :
+        {Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_rd_fin(NN(len), _) == (BF(t, n), LOBJ(False{}, t, x, len)) : B.Buf & Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq}
       {==}
 
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool})
-    -> {T.l16_WithdrawalRequest_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.l16_WithdrawalRequest_Seq}:
+    -> {Fulu_list_WithdrawalRequest_16_r.l16_WithdrawalRequest_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq}:
   rd_go(d, t, n, x, off, len, eo, hd, hw, pf, hchk, U32.is_eq(len, 0), {==})
 
 # ---- the spec side ------------------------------------------------------------------------------

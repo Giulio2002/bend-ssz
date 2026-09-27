@@ -1,7 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/SmallTestStruct_def_generated.bend as SmallTestStruct_d
+import ../../types/SmallTestStruct_decode_ssz_generated.bend as SmallTestStruct_r
+import ../../types/SmallTestStruct_encode_ssz_generated.bend as SmallTestStruct_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -238,7 +240,7 @@ def Gc4ED9619F50_spec_encode(+x0: U32)
   SF.encoding_of_parts(Spec.Gc4ED9619F50(), S.Sequence{S.Items{S.UnsignedValue{P.UInt{U32.and(x0, 65535), 0, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{U32.and(B.join_sel(2, x0, x0), 65535), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}, SF.limbs([x0]), Gc4ED9619F50_spec_parts(x0))
 
 def Gc4ED9619F50_spec_decode(+x0: U32)
-    -> {T.Gc4ED9619F50_decode(B.Buf{ALeaf{x0}, 4}, 4) == (B.Buf{ALeaf{x0}, 4}, Some{T.Gc4ED9619F50{U32.and(x0, 65535), U32.and(B.join_sel(2, x0, x0), 65535)}}) : B.Buf & Maybe<&1, T.Gc4ED9619F50>}:
+    -> {SmallTestStruct_r.Gc4ED9619F50_decode(B.Buf{ALeaf{x0}, 4}, 4) == (B.Buf{ALeaf{x0}, 4}, Some{SmallTestStruct_d.Gc4ED9619F50{U32.and(x0, 65535), U32.and(B.join_sel(2, x0, x0), 65535)}}) : B.Buf & Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>}:
   {==}
 
 def Gc4ED9619F50_spec_view(+x0: U32)
@@ -246,15 +248,15 @@ def Gc4ED9619F50_spec_view(+x0: U32)
   {==}
 
 def Gc4ED9619F50_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 4) == False{} : Bool})
-    -> {T.Gc4ED9619F50_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, T.Gc4ED9619F50>}:
-  %Equal.sym(Bool, U32.is_eq(m, 4), False{}, e) : {T.Gc4ED9619F50_built(m, T.Gc4ED9619F50_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, T.Gc4ED9619F50>}
+    -> {SmallTestStruct_r.Gc4ED9619F50_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>}:
+  %Equal.sym(Bool, U32.is_eq(m, 4), False{}, e) : {SmallTestStruct_r.Gc4ED9619F50_built(m, SmallTestStruct_r.Gc4ED9619F50_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, SmallTestStruct_d.Gc4ED9619F50>}
   {==}
 
 def Gc4ED9619F50_spec_bytes(+y0: U32, +y1: U32)
-    -> {B.emit(T.Gc4ED9619F50_encode(T.Gc4ED9619F50{y0, y1}), 0, 1) == (T.Gc4ED9619F50_encode(T.Gc4ED9619F50{y0, y1}), [B.byte_sel(0, y0), B.byte_sel(1, y0), B.byte_sel(0, y1), B.byte_sel(1, y1)]) : B.Buf & +List<U32>}:
-  %Gc4ED9619F50_e9(y0, y1) : {B.emit(T.Gc4ED9619F50_encode(T.Gc4ED9619F50{y0, y1}), 0, 1) == (T.Gc4ED9619F50_encode(T.Gc4ED9619F50{y0, y1}), [_, B.byte_sel(1, y0), B.byte_sel(0, y1), B.byte_sel(1, y1)]) : B.Buf & +List<U32>}
-  %Gc4ED9619F50_e10(y0, y1) : {B.emit(T.Gc4ED9619F50_encode(T.Gc4ED9619F50{y0, y1}), 0, 1) == (T.Gc4ED9619F50_encode(T.Gc4ED9619F50{y0, y1}), [B.byte_sel(0, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), _, B.byte_sel(0, y1), B.byte_sel(1, y1)]) : B.Buf & +List<U32>}
-  %Gc4ED9619F50_e11(y1, y0) : {B.emit(T.Gc4ED9619F50_encode(T.Gc4ED9619F50{y0, y1}), 0, 1) == (T.Gc4ED9619F50_encode(T.Gc4ED9619F50{y0, y1}), [B.byte_sel(0, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), B.byte_sel(1, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), _, B.byte_sel(1, y1)]) : B.Buf & +List<U32>}
-  %Gc4ED9619F50_e12(y1, y0) : {B.emit(T.Gc4ED9619F50_encode(T.Gc4ED9619F50{y0, y1}), 0, 1) == (T.Gc4ED9619F50_encode(T.Gc4ED9619F50{y0, y1}), [B.byte_sel(0, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), B.byte_sel(1, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), B.byte_sel(2, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), _]) : B.Buf & +List<U32>}
+    -> {B.emit(SmallTestStruct_e.Gc4ED9619F50_encode(SmallTestStruct_d.Gc4ED9619F50{y0, y1}), 0, 1) == (SmallTestStruct_e.Gc4ED9619F50_encode(SmallTestStruct_d.Gc4ED9619F50{y0, y1}), [B.byte_sel(0, y0), B.byte_sel(1, y0), B.byte_sel(0, y1), B.byte_sel(1, y1)]) : B.Buf & +List<U32>}:
+  %Gc4ED9619F50_e9(y0, y1) : {B.emit(SmallTestStruct_e.Gc4ED9619F50_encode(SmallTestStruct_d.Gc4ED9619F50{y0, y1}), 0, 1) == (SmallTestStruct_e.Gc4ED9619F50_encode(SmallTestStruct_d.Gc4ED9619F50{y0, y1}), [_, B.byte_sel(1, y0), B.byte_sel(0, y1), B.byte_sel(1, y1)]) : B.Buf & +List<U32>}
+  %Gc4ED9619F50_e10(y0, y1) : {B.emit(SmallTestStruct_e.Gc4ED9619F50_encode(SmallTestStruct_d.Gc4ED9619F50{y0, y1}), 0, 1) == (SmallTestStruct_e.Gc4ED9619F50_encode(SmallTestStruct_d.Gc4ED9619F50{y0, y1}), [B.byte_sel(0, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), _, B.byte_sel(0, y1), B.byte_sel(1, y1)]) : B.Buf & +List<U32>}
+  %Gc4ED9619F50_e11(y1, y0) : {B.emit(SmallTestStruct_e.Gc4ED9619F50_encode(SmallTestStruct_d.Gc4ED9619F50{y0, y1}), 0, 1) == (SmallTestStruct_e.Gc4ED9619F50_encode(SmallTestStruct_d.Gc4ED9619F50{y0, y1}), [B.byte_sel(0, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), B.byte_sel(1, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), _, B.byte_sel(1, y1)]) : B.Buf & +List<U32>}
+  %Gc4ED9619F50_e12(y1, y0) : {B.emit(SmallTestStruct_e.Gc4ED9619F50_encode(SmallTestStruct_d.Gc4ED9619F50{y0, y1}), 0, 1) == (SmallTestStruct_e.Gc4ED9619F50_encode(SmallTestStruct_d.Gc4ED9619F50{y0, y1}), [B.byte_sel(0, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), B.byte_sel(1, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), B.byte_sel(2, U32.or(U32.or(U32.or(U32.or(0, U32.and(y0, 255)), U32.mul(U32.and(U32.shrn(y0, 8n), 255), 256)), U32.mul(U32.and(y1, 255), 65536)), U32.mul(U32.and(U32.shrn(y1, 8n), 255), 16777216))), _]) : B.Buf & +List<U32>}
   {==}
 

@@ -2,7 +2,8 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluValidator_def_generated.bend as FuluValidator_d
+import ../../types/Fulu_list_Validator_1099511627776_def_generated.bend as Fulu_list_Validator_1099511627776_d
 import ../compact/found.bend as F
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
@@ -158,7 +159,7 @@ def set_rw(+d: Nat, +t: F.array__Tree<D.Digest>, +j: U32, +k: Nat, +v: D.Digest,
 
 # The runtime's node step at j = hp(d, 1 + L, i), level L complete: the model write.
 def cnode(+d: Nat, +L: Nat, +i: Nat, +j: U32, +n: Nat, +XL: List<&2, D.Digest>, +t: F.array__Tree<D.Digest>,
-    -arr: Array<T.Validator>, -h: B.Buf,
+    -arr: Array<FuluValidator_d.Validator>, -h: B.Buf,
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hL: {Nat.is_le(1n+L, d) == True{} : Bool},
     +hi: {Nat.is_lt(i, O.pow2n(Nat.sub(d, 1n+L))) == True{} : Bool},
@@ -166,9 +167,9 @@ def cnode(+d: Nat, +L: Nat, +i: Nat, +j: U32, +n: Nat, +XL: List<&2, D.Digest>, 
     +en: {MD.dlen(XL) == n : Nat},
     +pf: {F.array__perfect(D.Digest, 1n+d, t) == True{} : Bool},
     +lv: CT.lvl_ok(F.array__slots(D.Digest, t), d, L, n, XL))
-    -> {T.l1099511627776_Validator_node_step(64n, j, T.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, t)})
-        == T.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), CT.mv(64n, 1n+L, i, n, XL)))}
-        : T.l1099511627776_Validator_TS}:
+    -> {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_node_step(64n, j, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, t)})
+        == Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), CT.mv(64n, 1n+L, i, n, XL)))}
+        : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS}:
   +hL0 = le_of_succ(L, d, hL)
   +e2 = c2j(j, d, L, i, hd, hL, hi, ej)
   +e3 = c2j1(j, d, L, i, hd, hL, hi, ej)
@@ -183,15 +184,15 @@ def cnode(+d: Nat, +L: Nat, +i: Nat, +j: U32, +n: Nat, +XL: List<&2, D.Digest>, 
   # the two reads (as in cache.bend's validators_node_hashes)
   %Equal.sym(Array<D.Digest> & D.Digest, Array.get(D.Digest, F.array__thaw(D.Digest, t), (2 * j : U32)),
       (F.array__thaw(D.Digest, t), dl), F.array__get(D.Digest, 1n+d, t, (2 * j : U32), dl, hd, hle, hx, pf)) :
-    {T.l1099511627776_Validator_node_go(64n, j, h, arr, _) == T.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : T.l1099511627776_Validator_TS}
+    {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_node_go(64n, j, h, arr, _) == Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS}
   %Equal.sym(Array<D.Digest> & D.Digest, Array.get(D.Digest, F.array__thaw(D.Digest, t), (2 * j + 1 : U32)),
       (F.array__thaw(D.Digest, t), dr), F.array__get(D.Digest, 1n+d, t, (2 * j + 1 : U32), dr, hd, hr, hy, pf)) :
-    {T.l1099511627776_Validator_node_fin(64n, j, h, arr, dl, _) == T.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : T.l1099511627776_Validator_TS}
+    {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_node_fin(64n, j, h, arr, dl, _) == Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS}
   %Equal.sym(D.Digest, D.node(64n, dl, dr), v, CT.node_rule(L, i, n, XL, en, lt63(L, d, hL, hd))) :
-    {T.l1099511627776_Validator_TS{h, arr, Array.set(D.Digest, F.array__thaw(D.Digest, t), j, _)} == T.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : T.l1099511627776_Validator_TS}
+    {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, Array.set(D.Digest, F.array__thaw(D.Digest, t), j, _)} == Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS}
   %Equal.sym(Array<D.Digest>, Array.set(D.Digest, F.array__thaw(D.Digest, t), j, v), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v)),
       set_rw(1n+d, t, j, CT.hp(d, 1n+L, i), v, ej, hd, hj, pf)) :
-    {T.l1099511627776_Validator_TS{h, arr, _} == T.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : T.l1099511627776_Validator_TS}
+    {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, _} == Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS}
   {==}
 
 # ---- one level ------------------------------------------------------------------------
@@ -221,7 +222,7 @@ law clevel:
   for +n: Nat
   for +XL: List<&2, D.Digest>
   for +t: F.array__Tree<D.Digest>
-  for -arr: Array<T.Validator>
+  for -arr: Array<FuluValidator_d.Validator>
   for -h: B.Buf
   for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hL: {Nat.is_le(1n+L, d) == True{} : Bool}
@@ -230,8 +231,8 @@ law clevel:
   for +en: {MD.dlen(XL) == n : Nat}
   for +pf: {F.array__perfect(D.Digest, 1n+d, t) == True{} : Bool}
   for +lv: CT.lvl_ok(F.array__slots(D.Digest, t), d, L, n, XL)
-  {T.l1099511627776_Validator_level(64n, q, j, T.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, t)})
-   == T.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, CT.mlevel_t(q, i, d, n, XL, 1n+L, t))} : T.l1099511627776_Validator_TS}
+  {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_level(64n, q, j, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, t)})
+   == Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, CT.mlevel_t(q, i, d, n, XL, 1n+L, t))} : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS}
 def clevel(q, d, L, i, j, n, XL, t, arr, h, hd, hL, hq, ej, en, pf, lv):
   match q:
     case 0n: {==}
@@ -239,11 +240,11 @@ def clevel(q, d, L, i, j, n, XL, t, arr, h, hd, hL, hq, ej, en, pf, lv):
       +hi = CT.step_lt(i, r, O.pow2n(Nat.sub(d, 1n+L)), hq)
       +v = CT.mv(64n, 1n+L, i, n, XL)
       +t1 = F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v)
-      %Equal.sym(T.l1099511627776_Validator_TS, T.l1099511627776_Validator_node_step(64n, j, T.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, t)}),
-          T.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, t1)},
+      %Equal.sym(Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_node_step(64n, j, Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, t)}),
+          Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, t1)},
           cnode(d, L, i, j, n, XL, t, arr, h, hd, hL, hi, ej, en, pf, lv)) :
-        {T.l1099511627776_Validator_level(64n, r, (j + 1 : U32), _)
-         == T.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, CT.mlevel_t(r, 1n+i, d, n, XL, 1n+L, t1))} : T.l1099511627776_Validator_TS}
+        {Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_level(64n, r, (j + 1 : U32), _)
+         == Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS{h, arr, F.array__thaw(D.Digest, CT.mlevel_t(r, 1n+i, d, n, XL, 1n+L, t1))} : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_TS}
       clevel(r, d, L, 1n+i, (j + 1 : U32), n, XL, t1, arr, h, hd, hL,
         CT.step_le(i, r, O.pow2n(Nat.sub(d, 1n+L)), hq),
         cnext(j, d, L, i, hd, hL, hi, ej), en,

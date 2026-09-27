@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluLightClientOptimisticUpdate_def_generated.bend as FuluLightClientOptimisticUpdate_d
+import ../../types/FuluLightClientOptimisticUpdate_decode_ssz_generated.bend as FuluLightClientOptimisticUpdate_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as F
@@ -398,11 +399,11 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {DC.CHK(t, n) == False{} : Bool}
-  {T.LightClientOptimisticUpdate_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.LightClientOptimisticUpdate>}
+  {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.LightClientOptimisticUpdate_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, pf, hd, hn)) :
-    {T.LightClientOptimisticUpdate_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.LightClientOptimisticUpdate>}
+  %Equal.sym(B.Buf & Bool, FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, pf, hd, hn)) :
+    {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}
   %Equal.sym(Bool, DC.CHK(t, n), False{}, hchk) :
-    {T.LightClientOptimisticUpdate_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, T.LightClientOptimisticUpdate>}
+    {FuluLightClientOptimisticUpdate_r.LightClientOptimisticUpdate_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluLightClientOptimisticUpdate_d.LightClientOptimisticUpdate>}
   {==}
 

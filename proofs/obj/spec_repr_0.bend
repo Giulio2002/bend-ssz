@@ -1,7 +1,25 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes20_def_generated.bend as FuluBytes20_d
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBytes4_def_generated.bend as FuluBytes4_d
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
+import ../../types/FuluBytes8_def_generated.bend as FuluBytes8_d
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/uint256_def_generated.bend as uint256_d
+import ../../types/uint32_decode_ssz_generated.bend as uint32_r
+import ../../types/uint64_decode_ssz_generated.bend as uint64_r
+import ../../types/uint256_decode_ssz_generated.bend as uint256_r
+import ../../types/FuluBytes4_decode_ssz_generated.bend as FuluBytes4_r
+import ../../types/FuluBytes32_decode_ssz_generated.bend as FuluBytes32_r
+import ../../types/FuluBytes48_decode_ssz_generated.bend as FuluBytes48_r
+import ../../types/FuluBytes96_decode_ssz_generated.bend as FuluBytes96_r
+import ../../types/FuluBytes8_decode_ssz_generated.bend as FuluBytes8_r
+import ../../types/FuluBytes20_decode_ssz_generated.bend as FuluBytes20_r
+import ../../types/FuluSlot_decode_ssz_generated.bend as FuluSlot_r
+import ../../types/FuluEpoch_decode_ssz_generated.bend as FuluEpoch_r
+import ../../types/FuluGwei_decode_ssz_generated.bend as FuluGwei_r
 import ../../proofs/compact/found.bend as FD
 import ./repr.bend as R
 import ./spec_fixed.bend as F
@@ -12,11 +30,11 @@ import ./spec_codec_0.bend as C
 # tree of the depth the loader allocates, not only the literal tree.
 
 def uint32_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
-    -> {T.uint32_decode(B.Buf{FD.array__thaw(U32, t), 4}, 4) == (B.Buf{FD.array__thaw(U32, t), 4}, Some{R.w(t, 0n)}) : B.Buf & Maybe<&1, U32>}:
+    -> {uint32_r.uint32_decode(B.Buf{FD.array__thaw(U32, t), 4}, 4) == (B.Buf{FD.array__thaw(U32, t), 4}, Some{R.w(t, 0n)}) : B.Buf & Maybe<&1, U32>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ALeaf{R.w(t, 0n)},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t)))), ALeaf{R.w(t, 0n)},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf))), {==})) :
-    {T.uint32_decode(B.Buf{_, 4}, 4) == (B.Buf{_, 4}, Some{R.w(t, 0n)}) : B.Buf & Maybe<&1, U32>}
+    {uint32_r.uint32_decode(B.Buf{_, 4}, 4) == (B.Buf{_, 4}, Some{R.w(t, 0n)}) : B.Buf & Maybe<&1, U32>}
   C.uint32_spec_decode(R.w(t, 0n))
 def uint32_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 4}, 0, 1) == (B.Buf{FD.array__thaw(U32, t), 4}, F.limbs([R.w(t, 0n)])) : B.Buf & +List<U32>}:
@@ -27,11 +45,11 @@ def uint32_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 
   C.uint32_spec_view(R.w(t, 0n))
 
 def uint64_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
-    -> {T.uint64_decode(B.Buf{FD.array__thaw(U32, t), 8}, 8) == (B.Buf{FD.array__thaw(U32, t), 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}:
+    -> {uint64_r.uint64_decode(B.Buf{FD.array__thaw(U32, t), 8}, 8) == (B.Buf{FD.array__thaw(U32, t), 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t)))), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), t, R.tree_words(1n, t, pf))), {==})) :
-    {T.uint64_decode(B.Buf{_, 8}, 8) == (B.Buf{_, 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}
+    {uint64_r.uint64_decode(B.Buf{_, 8}, 8) == (B.Buf{_, 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}
   C.uint64_spec_decode(R.w(t, 0n), R.w(t, 1n))
 def uint64_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 8}, 0, 2) == (B.Buf{FD.array__thaw(U32, t), 8}, F.limbs([R.w(t, 0n), R.w(t, 1n)])) : B.Buf & +List<U32>}:
@@ -42,11 +60,11 @@ def uint64_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 
   C.uint64_spec_view(R.w(t, 0n), R.w(t, 1n))
 
 def uint256_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 3n, t) == True{} : Bool})
-    -> {T.uint256_decode(B.Buf{FD.array__thaw(U32, t), 32}, 32) == (B.Buf{FD.array__thaw(U32, t), 32}, Some{T.Uint256{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)}}) : B.Buf & Maybe<&1, T.Uint256>}:
+    -> {uint256_r.uint256_decode(B.Buf{FD.array__thaw(U32, t), 32}, 32) == (B.Buf{FD.array__thaw(U32, t), 32}, Some{uint256_d.Uint256{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)}}) : B.Buf & Maybe<&1, uint256_d.Uint256>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ANode{ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}}, ANode{ALeaf{R.w(t, 2n)}, ALeaf{R.w(t, 3n)}}}, ANode{ANode{ALeaf{R.w(t, 4n)}, ALeaf{R.w(t, 5n)}}, ANode{ALeaf{R.w(t, 6n)}, ALeaf{R.w(t, 7n)}}}},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(3n, R.lits(FD.spec_common__pow2(3n), FD.array__slots(U32, t)))), ANode{ANode{ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}}, ANode{ALeaf{R.w(t, 2n)}, ALeaf{R.w(t, 3n)}}}, ANode{ANode{ALeaf{R.w(t, 4n)}, ALeaf{R.w(t, 5n)}}, ANode{ALeaf{R.w(t, 6n)}, ALeaf{R.w(t, 7n)}}}},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(3n, R.lits(FD.spec_common__pow2(3n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(3n, R.lits(FD.spec_common__pow2(3n), FD.array__slots(U32, t))), t, R.tree_words(3n, t, pf))), {==})) :
-    {T.uint256_decode(B.Buf{_, 32}, 32) == (B.Buf{_, 32}, Some{T.Uint256{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)}}) : B.Buf & Maybe<&1, T.Uint256>}
+    {uint256_r.uint256_decode(B.Buf{_, 32}, 32) == (B.Buf{_, 32}, Some{uint256_d.Uint256{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)}}) : B.Buf & Maybe<&1, uint256_d.Uint256>}
   C.uint256_spec_decode(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n))
 def uint256_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 3n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 32}, 0, 8) == (B.Buf{FD.array__thaw(U32, t), 32}, F.limbs([R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)])) : B.Buf & +List<U32>}:
@@ -57,11 +75,11 @@ def uint256_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32,
   C.uint256_spec_view(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n))
 
 def Bytes4_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
-    -> {T.Bytes4_decode(B.Buf{FD.array__thaw(U32, t), 4}, 4) == (B.Buf{FD.array__thaw(U32, t), 4}, Some{T.Bytes4{R.w(t, 0n)}}) : B.Buf & Maybe<&1, T.Bytes4>}:
+    -> {FuluBytes4_r.Bytes4_decode(B.Buf{FD.array__thaw(U32, t), 4}, 4) == (B.Buf{FD.array__thaw(U32, t), 4}, Some{FuluBytes4_d.Bytes4{R.w(t, 0n)}}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ALeaf{R.w(t, 0n)},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t)))), ALeaf{R.w(t, 0n)},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(0n, R.lits(FD.spec_common__pow2(0n), FD.array__slots(U32, t))), t, R.tree_words(0n, t, pf))), {==})) :
-    {T.Bytes4_decode(B.Buf{_, 4}, 4) == (B.Buf{_, 4}, Some{T.Bytes4{R.w(t, 0n)}}) : B.Buf & Maybe<&1, T.Bytes4>}
+    {FuluBytes4_r.Bytes4_decode(B.Buf{_, 4}, 4) == (B.Buf{_, 4}, Some{FuluBytes4_d.Bytes4{R.w(t, 0n)}}) : B.Buf & Maybe<&1, FuluBytes4_d.Bytes4>}
   C.Bytes4_spec_decode(R.w(t, 0n))
 def Bytes4_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 0n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 4}, 0, 1) == (B.Buf{FD.array__thaw(U32, t), 4}, F.limbs([R.w(t, 0n)])) : B.Buf & +List<U32>}:
@@ -72,11 +90,11 @@ def Bytes4_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 
   C.Bytes4_spec_view(R.w(t, 0n))
 
 def Bytes32_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 3n, t) == True{} : Bool})
-    -> {T.Bytes32_decode(B.Buf{FD.array__thaw(U32, t), 32}, 32) == (B.Buf{FD.array__thaw(U32, t), 32}, Some{T.Bytes32{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)}}) : B.Buf & Maybe<&1, T.Bytes32>}:
+    -> {FuluBytes32_r.Bytes32_decode(B.Buf{FD.array__thaw(U32, t), 32}, 32) == (B.Buf{FD.array__thaw(U32, t), 32}, Some{FuluBytes32_d.Bytes32{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)}}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ANode{ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}}, ANode{ALeaf{R.w(t, 2n)}, ALeaf{R.w(t, 3n)}}}, ANode{ANode{ALeaf{R.w(t, 4n)}, ALeaf{R.w(t, 5n)}}, ANode{ALeaf{R.w(t, 6n)}, ALeaf{R.w(t, 7n)}}}},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(3n, R.lits(FD.spec_common__pow2(3n), FD.array__slots(U32, t)))), ANode{ANode{ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}}, ANode{ALeaf{R.w(t, 2n)}, ALeaf{R.w(t, 3n)}}}, ANode{ANode{ALeaf{R.w(t, 4n)}, ALeaf{R.w(t, 5n)}}, ANode{ALeaf{R.w(t, 6n)}, ALeaf{R.w(t, 7n)}}}},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(3n, R.lits(FD.spec_common__pow2(3n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(3n, R.lits(FD.spec_common__pow2(3n), FD.array__slots(U32, t))), t, R.tree_words(3n, t, pf))), {==})) :
-    {T.Bytes32_decode(B.Buf{_, 32}, 32) == (B.Buf{_, 32}, Some{T.Bytes32{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)}}) : B.Buf & Maybe<&1, T.Bytes32>}
+    {FuluBytes32_r.Bytes32_decode(B.Buf{_, 32}, 32) == (B.Buf{_, 32}, Some{FuluBytes32_d.Bytes32{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)}}) : B.Buf & Maybe<&1, FuluBytes32_d.Bytes32>}
   C.Bytes32_spec_decode(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n))
 def Bytes32_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 3n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 32}, 0, 8) == (B.Buf{FD.array__thaw(U32, t), 32}, F.limbs([R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n)])) : B.Buf & +List<U32>}:
@@ -87,11 +105,11 @@ def Bytes32_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32,
   C.Bytes32_spec_view(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n))
 
 def Bytes48_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 4n, t) == True{} : Bool})
-    -> {T.Bytes48_decode(B.Buf{FD.array__thaw(U32, t), 48}, 48) == (B.Buf{FD.array__thaw(U32, t), 48}, Some{T.Bytes48{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n)}}) : B.Buf & Maybe<&1, T.Bytes48>}:
+    -> {FuluBytes48_r.Bytes48_decode(B.Buf{FD.array__thaw(U32, t), 48}, 48) == (B.Buf{FD.array__thaw(U32, t), 48}, Some{FuluBytes48_d.Bytes48{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n)}}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ANode{ANode{ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}}, ANode{ALeaf{R.w(t, 2n)}, ALeaf{R.w(t, 3n)}}}, ANode{ANode{ALeaf{R.w(t, 4n)}, ALeaf{R.w(t, 5n)}}, ANode{ALeaf{R.w(t, 6n)}, ALeaf{R.w(t, 7n)}}}}, ANode{ANode{ANode{ALeaf{R.w(t, 8n)}, ALeaf{R.w(t, 9n)}}, ANode{ALeaf{R.w(t, 10n)}, ALeaf{R.w(t, 11n)}}}, ANode{ANode{ALeaf{R.w(t, 12n)}, ALeaf{R.w(t, 13n)}}, ANode{ALeaf{R.w(t, 14n)}, ALeaf{R.w(t, 15n)}}}}},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(4n, R.lits(FD.spec_common__pow2(4n), FD.array__slots(U32, t)))), ANode{ANode{ANode{ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}}, ANode{ALeaf{R.w(t, 2n)}, ALeaf{R.w(t, 3n)}}}, ANode{ANode{ALeaf{R.w(t, 4n)}, ALeaf{R.w(t, 5n)}}, ANode{ALeaf{R.w(t, 6n)}, ALeaf{R.w(t, 7n)}}}}, ANode{ANode{ANode{ALeaf{R.w(t, 8n)}, ALeaf{R.w(t, 9n)}}, ANode{ALeaf{R.w(t, 10n)}, ALeaf{R.w(t, 11n)}}}, ANode{ANode{ALeaf{R.w(t, 12n)}, ALeaf{R.w(t, 13n)}}, ANode{ALeaf{R.w(t, 14n)}, ALeaf{R.w(t, 15n)}}}}},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(4n, R.lits(FD.spec_common__pow2(4n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(4n, R.lits(FD.spec_common__pow2(4n), FD.array__slots(U32, t))), t, R.tree_words(4n, t, pf))), {==})) :
-    {T.Bytes48_decode(B.Buf{_, 48}, 48) == (B.Buf{_, 48}, Some{T.Bytes48{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n)}}) : B.Buf & Maybe<&1, T.Bytes48>}
+    {FuluBytes48_r.Bytes48_decode(B.Buf{_, 48}, 48) == (B.Buf{_, 48}, Some{FuluBytes48_d.Bytes48{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n)}}) : B.Buf & Maybe<&1, FuluBytes48_d.Bytes48>}
   C.Bytes48_spec_decode(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n), R.w(t, 12n), R.w(t, 13n), R.w(t, 14n), R.w(t, 15n))
 def Bytes48_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 4n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 48}, 0, 12) == (B.Buf{FD.array__thaw(U32, t), 48}, F.limbs([R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n)])) : B.Buf & +List<U32>}:
@@ -102,11 +120,11 @@ def Bytes48_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32,
   C.Bytes48_spec_view(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n), R.w(t, 12n), R.w(t, 13n), R.w(t, 14n), R.w(t, 15n))
 
 def Bytes96_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 5n, t) == True{} : Bool})
-    -> {T.Bytes96_decode(B.Buf{FD.array__thaw(U32, t), 96}, 96) == (B.Buf{FD.array__thaw(U32, t), 96}, Some{T.Bytes96{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n), R.w(t, 12n), R.w(t, 13n), R.w(t, 14n), R.w(t, 15n), R.w(t, 16n), R.w(t, 17n), R.w(t, 18n), R.w(t, 19n), R.w(t, 20n), R.w(t, 21n), R.w(t, 22n), R.w(t, 23n)}}) : B.Buf & Maybe<&1, T.Bytes96>}:
+    -> {FuluBytes96_r.Bytes96_decode(B.Buf{FD.array__thaw(U32, t), 96}, 96) == (B.Buf{FD.array__thaw(U32, t), 96}, Some{FuluBytes96_d.Bytes96{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n), R.w(t, 12n), R.w(t, 13n), R.w(t, 14n), R.w(t, 15n), R.w(t, 16n), R.w(t, 17n), R.w(t, 18n), R.w(t, 19n), R.w(t, 20n), R.w(t, 21n), R.w(t, 22n), R.w(t, 23n)}}) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ANode{ANode{ANode{ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}}, ANode{ALeaf{R.w(t, 2n)}, ALeaf{R.w(t, 3n)}}}, ANode{ANode{ALeaf{R.w(t, 4n)}, ALeaf{R.w(t, 5n)}}, ANode{ALeaf{R.w(t, 6n)}, ALeaf{R.w(t, 7n)}}}}, ANode{ANode{ANode{ALeaf{R.w(t, 8n)}, ALeaf{R.w(t, 9n)}}, ANode{ALeaf{R.w(t, 10n)}, ALeaf{R.w(t, 11n)}}}, ANode{ANode{ALeaf{R.w(t, 12n)}, ALeaf{R.w(t, 13n)}}, ANode{ALeaf{R.w(t, 14n)}, ALeaf{R.w(t, 15n)}}}}}, ANode{ANode{ANode{ANode{ALeaf{R.w(t, 16n)}, ALeaf{R.w(t, 17n)}}, ANode{ALeaf{R.w(t, 18n)}, ALeaf{R.w(t, 19n)}}}, ANode{ANode{ALeaf{R.w(t, 20n)}, ALeaf{R.w(t, 21n)}}, ANode{ALeaf{R.w(t, 22n)}, ALeaf{R.w(t, 23n)}}}}, ANode{ANode{ANode{ALeaf{R.w(t, 24n)}, ALeaf{R.w(t, 25n)}}, ANode{ALeaf{R.w(t, 26n)}, ALeaf{R.w(t, 27n)}}}, ANode{ANode{ALeaf{R.w(t, 28n)}, ALeaf{R.w(t, 29n)}}, ANode{ALeaf{R.w(t, 30n)}, ALeaf{R.w(t, 31n)}}}}}},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(5n, R.lits(FD.spec_common__pow2(5n), FD.array__slots(U32, t)))), ANode{ANode{ANode{ANode{ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}}, ANode{ALeaf{R.w(t, 2n)}, ALeaf{R.w(t, 3n)}}}, ANode{ANode{ALeaf{R.w(t, 4n)}, ALeaf{R.w(t, 5n)}}, ANode{ALeaf{R.w(t, 6n)}, ALeaf{R.w(t, 7n)}}}}, ANode{ANode{ANode{ALeaf{R.w(t, 8n)}, ALeaf{R.w(t, 9n)}}, ANode{ALeaf{R.w(t, 10n)}, ALeaf{R.w(t, 11n)}}}, ANode{ANode{ALeaf{R.w(t, 12n)}, ALeaf{R.w(t, 13n)}}, ANode{ALeaf{R.w(t, 14n)}, ALeaf{R.w(t, 15n)}}}}}, ANode{ANode{ANode{ANode{ALeaf{R.w(t, 16n)}, ALeaf{R.w(t, 17n)}}, ANode{ALeaf{R.w(t, 18n)}, ALeaf{R.w(t, 19n)}}}, ANode{ANode{ALeaf{R.w(t, 20n)}, ALeaf{R.w(t, 21n)}}, ANode{ALeaf{R.w(t, 22n)}, ALeaf{R.w(t, 23n)}}}}, ANode{ANode{ANode{ALeaf{R.w(t, 24n)}, ALeaf{R.w(t, 25n)}}, ANode{ALeaf{R.w(t, 26n)}, ALeaf{R.w(t, 27n)}}}, ANode{ANode{ALeaf{R.w(t, 28n)}, ALeaf{R.w(t, 29n)}}, ANode{ALeaf{R.w(t, 30n)}, ALeaf{R.w(t, 31n)}}}}}},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(5n, R.lits(FD.spec_common__pow2(5n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(5n, R.lits(FD.spec_common__pow2(5n), FD.array__slots(U32, t))), t, R.tree_words(5n, t, pf))), {==})) :
-    {T.Bytes96_decode(B.Buf{_, 96}, 96) == (B.Buf{_, 96}, Some{T.Bytes96{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n), R.w(t, 12n), R.w(t, 13n), R.w(t, 14n), R.w(t, 15n), R.w(t, 16n), R.w(t, 17n), R.w(t, 18n), R.w(t, 19n), R.w(t, 20n), R.w(t, 21n), R.w(t, 22n), R.w(t, 23n)}}) : B.Buf & Maybe<&1, T.Bytes96>}
+    {FuluBytes96_r.Bytes96_decode(B.Buf{_, 96}, 96) == (B.Buf{_, 96}, Some{FuluBytes96_d.Bytes96{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n), R.w(t, 12n), R.w(t, 13n), R.w(t, 14n), R.w(t, 15n), R.w(t, 16n), R.w(t, 17n), R.w(t, 18n), R.w(t, 19n), R.w(t, 20n), R.w(t, 21n), R.w(t, 22n), R.w(t, 23n)}}) : B.Buf & Maybe<&1, FuluBytes96_d.Bytes96>}
   C.Bytes96_spec_decode(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n), R.w(t, 12n), R.w(t, 13n), R.w(t, 14n), R.w(t, 15n), R.w(t, 16n), R.w(t, 17n), R.w(t, 18n), R.w(t, 19n), R.w(t, 20n), R.w(t, 21n), R.w(t, 22n), R.w(t, 23n), R.w(t, 24n), R.w(t, 25n), R.w(t, 26n), R.w(t, 27n), R.w(t, 28n), R.w(t, 29n), R.w(t, 30n), R.w(t, 31n))
 def Bytes96_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 5n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 96}, 0, 24) == (B.Buf{FD.array__thaw(U32, t), 96}, F.limbs([R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n), R.w(t, 12n), R.w(t, 13n), R.w(t, 14n), R.w(t, 15n), R.w(t, 16n), R.w(t, 17n), R.w(t, 18n), R.w(t, 19n), R.w(t, 20n), R.w(t, 21n), R.w(t, 22n), R.w(t, 23n)])) : B.Buf & +List<U32>}:
@@ -117,11 +135,11 @@ def Bytes96_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32,
   C.Bytes96_spec_view(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n), R.w(t, 8n), R.w(t, 9n), R.w(t, 10n), R.w(t, 11n), R.w(t, 12n), R.w(t, 13n), R.w(t, 14n), R.w(t, 15n), R.w(t, 16n), R.w(t, 17n), R.w(t, 18n), R.w(t, 19n), R.w(t, 20n), R.w(t, 21n), R.w(t, 22n), R.w(t, 23n), R.w(t, 24n), R.w(t, 25n), R.w(t, 26n), R.w(t, 27n), R.w(t, 28n), R.w(t, 29n), R.w(t, 30n), R.w(t, 31n))
 
 def Bytes8_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
-    -> {T.Bytes8_decode(B.Buf{FD.array__thaw(U32, t), 8}, 8) == (B.Buf{FD.array__thaw(U32, t), 8}, Some{T.Bytes8{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, T.Bytes8>}:
+    -> {FuluBytes8_r.Bytes8_decode(B.Buf{FD.array__thaw(U32, t), 8}, 8) == (B.Buf{FD.array__thaw(U32, t), 8}, Some{FuluBytes8_d.Bytes8{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t)))), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), t, R.tree_words(1n, t, pf))), {==})) :
-    {T.Bytes8_decode(B.Buf{_, 8}, 8) == (B.Buf{_, 8}, Some{T.Bytes8{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, T.Bytes8>}
+    {FuluBytes8_r.Bytes8_decode(B.Buf{_, 8}, 8) == (B.Buf{_, 8}, Some{FuluBytes8_d.Bytes8{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, FuluBytes8_d.Bytes8>}
   C.Bytes8_spec_decode(R.w(t, 0n), R.w(t, 1n))
 def Bytes8_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 8}, 0, 2) == (B.Buf{FD.array__thaw(U32, t), 8}, F.limbs([R.w(t, 0n), R.w(t, 1n)])) : B.Buf & +List<U32>}:
@@ -132,11 +150,11 @@ def Bytes8_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 
   C.Bytes8_spec_view(R.w(t, 0n), R.w(t, 1n))
 
 def Bytes20_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 3n, t) == True{} : Bool})
-    -> {T.Bytes20_decode(B.Buf{FD.array__thaw(U32, t), 20}, 20) == (B.Buf{FD.array__thaw(U32, t), 20}, Some{T.Bytes20{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n)}}) : B.Buf & Maybe<&1, T.Bytes20>}:
+    -> {FuluBytes20_r.Bytes20_decode(B.Buf{FD.array__thaw(U32, t), 20}, 20) == (B.Buf{FD.array__thaw(U32, t), 20}, Some{FuluBytes20_d.Bytes20{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n)}}) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ANode{ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}}, ANode{ALeaf{R.w(t, 2n)}, ALeaf{R.w(t, 3n)}}}, ANode{ANode{ALeaf{R.w(t, 4n)}, ALeaf{R.w(t, 5n)}}, ANode{ALeaf{R.w(t, 6n)}, ALeaf{R.w(t, 7n)}}}},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(3n, R.lits(FD.spec_common__pow2(3n), FD.array__slots(U32, t)))), ANode{ANode{ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}}, ANode{ALeaf{R.w(t, 2n)}, ALeaf{R.w(t, 3n)}}}, ANode{ANode{ALeaf{R.w(t, 4n)}, ALeaf{R.w(t, 5n)}}, ANode{ALeaf{R.w(t, 6n)}, ALeaf{R.w(t, 7n)}}}},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(3n, R.lits(FD.spec_common__pow2(3n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(3n, R.lits(FD.spec_common__pow2(3n), FD.array__slots(U32, t))), t, R.tree_words(3n, t, pf))), {==})) :
-    {T.Bytes20_decode(B.Buf{_, 20}, 20) == (B.Buf{_, 20}, Some{T.Bytes20{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n)}}) : B.Buf & Maybe<&1, T.Bytes20>}
+    {FuluBytes20_r.Bytes20_decode(B.Buf{_, 20}, 20) == (B.Buf{_, 20}, Some{FuluBytes20_d.Bytes20{R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n)}}) : B.Buf & Maybe<&1, FuluBytes20_d.Bytes20>}
   C.Bytes20_spec_decode(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n))
 def Bytes20_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 3n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 20}, 0, 5) == (B.Buf{FD.array__thaw(U32, t), 20}, F.limbs([R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n)])) : B.Buf & +List<U32>}:
@@ -147,11 +165,11 @@ def Bytes20_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32,
   C.Bytes20_spec_view(R.w(t, 0n), R.w(t, 1n), R.w(t, 2n), R.w(t, 3n), R.w(t, 4n), R.w(t, 5n), R.w(t, 6n), R.w(t, 7n))
 
 def Slot_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
-    -> {T.Slot_decode(B.Buf{FD.array__thaw(U32, t), 8}, 8) == (B.Buf{FD.array__thaw(U32, t), 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}:
+    -> {FuluSlot_r.Slot_decode(B.Buf{FD.array__thaw(U32, t), 8}, 8) == (B.Buf{FD.array__thaw(U32, t), 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t)))), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), t, R.tree_words(1n, t, pf))), {==})) :
-    {T.Slot_decode(B.Buf{_, 8}, 8) == (B.Buf{_, 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}
+    {FuluSlot_r.Slot_decode(B.Buf{_, 8}, 8) == (B.Buf{_, 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}
   C.Slot_spec_decode(R.w(t, 0n), R.w(t, 1n))
 def Slot_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 8}, 0, 2) == (B.Buf{FD.array__thaw(U32, t), 8}, F.limbs([R.w(t, 0n), R.w(t, 1n)])) : B.Buf & +List<U32>}:
@@ -162,11 +180,11 @@ def Slot_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n
   C.Slot_spec_view(R.w(t, 0n), R.w(t, 1n))
 
 def Epoch_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
-    -> {T.Epoch_decode(B.Buf{FD.array__thaw(U32, t), 8}, 8) == (B.Buf{FD.array__thaw(U32, t), 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}:
+    -> {FuluEpoch_r.Epoch_decode(B.Buf{FD.array__thaw(U32, t), 8}, 8) == (B.Buf{FD.array__thaw(U32, t), 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t)))), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), t, R.tree_words(1n, t, pf))), {==})) :
-    {T.Epoch_decode(B.Buf{_, 8}, 8) == (B.Buf{_, 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}
+    {FuluEpoch_r.Epoch_decode(B.Buf{_, 8}, 8) == (B.Buf{_, 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}
   C.Epoch_spec_decode(R.w(t, 0n), R.w(t, 1n))
 def Epoch_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 8}, 0, 2) == (B.Buf{FD.array__thaw(U32, t), 8}, F.limbs([R.w(t, 0n), R.w(t, 1n)])) : B.Buf & +List<U32>}:
@@ -177,11 +195,11 @@ def Epoch_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1
   C.Epoch_spec_view(R.w(t, 0n), R.w(t, 1n))
 
 def Gwei_spec_decode_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
-    -> {T.Gwei_decode(B.Buf{FD.array__thaw(U32, t), 8}, 8) == (B.Buf{FD.array__thaw(U32, t), 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}:
+    -> {FuluGwei_r.Gwei_decode(B.Buf{FD.array__thaw(U32, t), 8}, 8) == (B.Buf{FD.array__thaw(U32, t), 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}:
   %Equal.sym(Array<U32>, FD.array__thaw(U32, t), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
       Equal.trans(Array<U32>, FD.array__thaw(U32, t), FD.array__thaw(U32, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t)))), ANode{ALeaf{R.w(t, 0n)}, ALeaf{R.w(t, 1n)}},
         Equal.cong(FD.array__Tree<U32>, Array<U32>, v => FD.array__thaw(U32, v), t, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), Equal.sym(FD.array__Tree<U32>, R.build(1n, R.lits(FD.spec_common__pow2(1n), FD.array__slots(U32, t))), t, R.tree_words(1n, t, pf))), {==})) :
-    {T.Gwei_decode(B.Buf{_, 8}, 8) == (B.Buf{_, 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}
+    {FuluGwei_r.Gwei_decode(B.Buf{_, 8}, 8) == (B.Buf{_, 8}, Some{O.U64{R.w(t, 0n), R.w(t, 1n)}}) : B.Buf & Maybe<&1, O.U64>}
   C.Gwei_spec_decode(R.w(t, 0n), R.w(t, 1n))
 def Gwei_spec_view_tree(+t: FD.array__Tree<U32>, +pf: {FD.array__perfect(U32, 1n, t) == True{} : Bool})
     -> {B.emit(B.Buf{FD.array__thaw(U32, t), 8}, 0, 2) == (B.Buf{FD.array__thaw(U32, t), 8}, F.limbs([R.w(t, 0n), R.w(t, 1n)])) : B.Buf & +List<U32>}:

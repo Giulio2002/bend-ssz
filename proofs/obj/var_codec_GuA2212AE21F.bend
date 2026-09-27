@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/CompatibleUnionA_def_generated.bend as CompatibleUnionA_d
+import ../../types/CompatibleUnionA_decode_ssz_generated.bend as CompatibleUnionA_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -42,13 +43,13 @@ import ./var_winx_GuA2212AE21F.bend as W
 def BF(t: FD.array__Tree<U32>, +n: U32) -> B.Buf: VR.BF(t, n)
 def VW(+t: FD.array__Tree<U32>, +n: U32) -> +List<U32>: VS.bt(U32.to_nat(n), F.limbs(FD.array__slots(U32, t)))
 def CHK(+t: FD.array__Tree<U32>, +n: U32) -> Bool: W.CHKw(t, 0n, 0, n)
-def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> T.GuA2212AE21F: W.OBJw(d, t, 0n, 0, n)
+def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> CompatibleUnionA_d.GuA2212AE21F: W.OBJw(d, t, 0n, 0, n)
 def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: W.VALw(t, 0n, n)
 
 # The validator returns the buffer and CHK(t, n).
 def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.GuA2212AE21F_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
+    -> {CompatibleUnionA_r.GuA2212AE21F_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
   W.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
 
 # Every buffer the validator accepts decodes to OBJ(d, t, n).
@@ -60,14 +61,14 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
-  {T.GuA2212AE21F_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.GuA2212AE21F>}
+  {CompatibleUnionA_r.GuA2212AE21F_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, CompatibleUnionA_d.GuA2212AE21F>}
 def decode_accept(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.GuA2212AE21F_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.GuA2212AE21F_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.GuA2212AE21F>}
+  %Equal.sym(B.Buf & Bool, CompatibleUnionA_r.GuA2212AE21F_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {CompatibleUnionA_r.GuA2212AE21F_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, CompatibleUnionA_d.GuA2212AE21F>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
-    {T.GuA2212AE21F_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.GuA2212AE21F>}
-  %Equal.sym(B.Buf & T.GuA2212AE21F, T.GuA2212AE21F_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
-    {T.GuA2212AE21F_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.GuA2212AE21F>}
+    {CompatibleUnionA_r.GuA2212AE21F_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, CompatibleUnionA_d.GuA2212AE21F>}
+  %Equal.sym(B.Buf & CompatibleUnionA_d.GuA2212AE21F, CompatibleUnionA_r.GuA2212AE21F_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+    {CompatibleUnionA_r.GuA2212AE21F_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, CompatibleUnionA_d.GuA2212AE21F>}
   {==}
 
 # When the validator refuses, the decoder returns None and the buffer.
@@ -79,12 +80,12 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
-  {T.GuA2212AE21F_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.GuA2212AE21F>}
+  {CompatibleUnionA_r.GuA2212AE21F_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, CompatibleUnionA_d.GuA2212AE21F>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.GuA2212AE21F_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.GuA2212AE21F_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.GuA2212AE21F>}
+  %Equal.sym(B.Buf & Bool, CompatibleUnionA_r.GuA2212AE21F_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {CompatibleUnionA_r.GuA2212AE21F_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, CompatibleUnionA_d.GuA2212AE21F>}
   %Equal.sym(Bool, CHK(t, n), False{}, hchk) :
-    {T.GuA2212AE21F_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.GuA2212AE21F>}
+    {CompatibleUnionA_r.GuA2212AE21F_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, CompatibleUnionA_d.GuA2212AE21F>}
   {==}
 
 # The bytes of every buffer the validator accepts are the spec encoding of VAL(t, n).

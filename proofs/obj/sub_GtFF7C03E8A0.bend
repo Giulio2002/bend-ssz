@@ -1,7 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitvector_17_def_generated.bend as bitvector_17_d
+import ../../types/bitvector_17_decode_ssz_generated.bend as bitvector_17_r
+import ../../types/bitvector_17_encode_ssz_generated.bend as bitvector_17_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -55,14 +57,14 @@ def GtFF7C03E8A0_spec_encode(+x0: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(2, x0)
   SF.encoding_of_parts(Spec.GtFF7C03E8A0(), S.BitsValue{GtFF7C03E8A0_tb(x0)}, [B.byte_sel(0, x0), B.byte_sel(1, x0), B.byte_sel(2, x0)], GtFF7C03E8A0_spec_parts(x0, hp))
 
 def GtFF7C03E8A0_spec_decode(+x0: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(2, x0), U32.not(O.low_mask(1))), 0) == True{} : Bool})
-    -> {T.GtFF7C03E8A0_decode(B.Buf{ALeaf{x0}, 3}, 3) == (B.Buf{ALeaf{x0}, 3}, Some{T.Bitvector17{U32.and(x0, 16777215)}}) : B.Buf & Maybe<&1, T.Bitvector17>}:
-  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(2, x0), U32.not(O.low_mask(1))), 0), True{}, hp) : {T.GtFF7C03E8A0_built(3, (B.Buf{ALeaf{x0}, 3}, _)) == (B.Buf{ALeaf{x0}, 3}, Some{T.Bitvector17{U32.and(x0, 16777215)}}) : B.Buf & Maybe<&1, T.Bitvector17>}
+    -> {bitvector_17_r.GtFF7C03E8A0_decode(B.Buf{ALeaf{x0}, 3}, 3) == (B.Buf{ALeaf{x0}, 3}, Some{bitvector_17_d.Bitvector17{U32.and(x0, 16777215)}}) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}:
+  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(2, x0), U32.not(O.low_mask(1))), 0), True{}, hp) : {bitvector_17_r.GtFF7C03E8A0_built(3, (B.Buf{ALeaf{x0}, 3}, _)) == (B.Buf{ALeaf{x0}, 3}, Some{bitvector_17_d.Bitvector17{U32.and(x0, 16777215)}}) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}
   {==}
 
 # a buffer with a padding bit set is refused
 def GtFF7C03E8A0_spec_reject_pad(+x0: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(2, x0), U32.not(O.low_mask(1))), 0) == False{} : Bool})
-    -> {T.GtFF7C03E8A0_decode(B.Buf{ALeaf{x0}, 3}, 3) == (B.Buf{ALeaf{x0}, 3}, None{}) : B.Buf & Maybe<&1, T.Bitvector17>}:
-  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(2, x0), U32.not(O.low_mask(1))), 0), False{}, hp) : {T.GtFF7C03E8A0_built(3, (B.Buf{ALeaf{x0}, 3}, _)) == (B.Buf{ALeaf{x0}, 3}, None{}) : B.Buf & Maybe<&1, T.Bitvector17>}
+    -> {bitvector_17_r.GtFF7C03E8A0_decode(B.Buf{ALeaf{x0}, 3}, 3) == (B.Buf{ALeaf{x0}, 3}, None{}) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}:
+  %Equal.sym(Bool, U32.is_eq(U32.and(B.byte_sel(2, x0), U32.not(O.low_mask(1))), 0), False{}, hp) : {bitvector_17_r.GtFF7C03E8A0_built(3, (B.Buf{ALeaf{x0}, 3}, _)) == (B.Buf{ALeaf{x0}, 3}, None{}) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}
   {==}
 
 def GtFF7C03E8A0_spec_view(+x0: U32)
@@ -70,14 +72,14 @@ def GtFF7C03E8A0_spec_view(+x0: U32)
   {==}
 
 def GtFF7C03E8A0_spec_bytes(+y0: U32)
-    -> {B.emit(T.GtFF7C03E8A0_encode(T.Bitvector17{y0}), 0, 1) == (T.GtFF7C03E8A0_encode(T.Bitvector17{y0}), [B.byte_sel(0, y0), B.byte_sel(1, y0), B.byte_sel(2, y0)]) : B.Buf & +List<U32>}:
-  %SP2.or0(y0) : {B.emit(T.GtFF7C03E8A0_encode(T.Bitvector17{y0}), 0, 1) == (T.GtFF7C03E8A0_encode(T.Bitvector17{y0}), [B.byte_sel(0, _), B.byte_sel(1, y0), B.byte_sel(2, y0)]) : B.Buf & +List<U32>}
-  %SP2.or0(y0) : {B.emit(T.GtFF7C03E8A0_encode(T.Bitvector17{y0}), 0, 1) == (T.GtFF7C03E8A0_encode(T.Bitvector17{y0}), [B.byte_sel(0, U32.or(0, y0)), B.byte_sel(1, _), B.byte_sel(2, y0)]) : B.Buf & +List<U32>}
-  %SP2.or0(y0) : {B.emit(T.GtFF7C03E8A0_encode(T.Bitvector17{y0}), 0, 1) == (T.GtFF7C03E8A0_encode(T.Bitvector17{y0}), [B.byte_sel(0, U32.or(0, y0)), B.byte_sel(1, U32.or(0, y0)), B.byte_sel(2, _)]) : B.Buf & +List<U32>}
+    -> {B.emit(bitvector_17_e.GtFF7C03E8A0_encode(bitvector_17_d.Bitvector17{y0}), 0, 1) == (bitvector_17_e.GtFF7C03E8A0_encode(bitvector_17_d.Bitvector17{y0}), [B.byte_sel(0, y0), B.byte_sel(1, y0), B.byte_sel(2, y0)]) : B.Buf & +List<U32>}:
+  %SP2.or0(y0) : {B.emit(bitvector_17_e.GtFF7C03E8A0_encode(bitvector_17_d.Bitvector17{y0}), 0, 1) == (bitvector_17_e.GtFF7C03E8A0_encode(bitvector_17_d.Bitvector17{y0}), [B.byte_sel(0, _), B.byte_sel(1, y0), B.byte_sel(2, y0)]) : B.Buf & +List<U32>}
+  %SP2.or0(y0) : {B.emit(bitvector_17_e.GtFF7C03E8A0_encode(bitvector_17_d.Bitvector17{y0}), 0, 1) == (bitvector_17_e.GtFF7C03E8A0_encode(bitvector_17_d.Bitvector17{y0}), [B.byte_sel(0, U32.or(0, y0)), B.byte_sel(1, _), B.byte_sel(2, y0)]) : B.Buf & +List<U32>}
+  %SP2.or0(y0) : {B.emit(bitvector_17_e.GtFF7C03E8A0_encode(bitvector_17_d.Bitvector17{y0}), 0, 1) == (bitvector_17_e.GtFF7C03E8A0_encode(bitvector_17_d.Bitvector17{y0}), [B.byte_sel(0, U32.or(0, y0)), B.byte_sel(1, U32.or(0, y0)), B.byte_sel(2, _)]) : B.Buf & +List<U32>}
   {==}
 
 def GtFF7C03E8A0_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 3) == False{} : Bool})
-    -> {T.GtFF7C03E8A0_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, T.Bitvector17>}:
-  %Equal.sym(Bool, U32.is_eq(m, 3), False{}, e) : {T.GtFF7C03E8A0_built(m, T.bv17_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, T.Bitvector17>}
+    -> {bitvector_17_r.GtFF7C03E8A0_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}:
+  %Equal.sym(Bool, U32.is_eq(m, 3), False{}, e) : {bitvector_17_r.GtFF7C03E8A0_built(m, bitvector_17_r.bv17_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, bitvector_17_d.Bitvector17>}
   {==}
 

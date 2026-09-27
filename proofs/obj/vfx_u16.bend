@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint16_decode_ssz_generated.bend as uint16_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -85,7 +85,7 @@ def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> U32: O.keep(2, UR.RWN(t, x
 def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.u16_read(UA.BF(t, n), off, 2) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}:
+    -> {uint16_r.u16_read(UA.BF(t, n), off, 2) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}:
   +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 2n), A.quad(VB.pw(d))) == True{} : Bool}, x, U32.to_nat(off), Equal.sym(Nat, U32.to_nat(off), x, e), hb)
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), off), (UA.BF(t, n), VE.RV(t, n, off)), VE.rd_same(t, n, off)) :
     {O.keep2(_) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}

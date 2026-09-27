@@ -40,6 +40,7 @@ import generate as G  # noqa: E402
 import schema  # noqa: E402
 import spec_laws as SL  # noqa: E402
 import var_laws as VL  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
 NAMES = ['ExecutionPayloadHeader']
@@ -49,7 +50,7 @@ SRC = None
 def src():
     global SRC
     if SRC is None:
-        SRC = (ROOT / 'types/fulu_obj.bend').read_text()
+        SRC = RR.mono_text('fulu')
     return SRC
 
 
@@ -1038,6 +1039,7 @@ def main():
     mine = sorted((ROOT / 'proofs/obj').glob('*var_bytes_*.bend'))
     nb = '--no-big' in sys.argv
     orphans = [str(q.relative_to(ROOT)) for q in mine if q not in out and not (nb and q.name.startswith('big_'))]
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, text in out.items() if not p.exists() or p.read_text() != text]
         if stale or orphans:

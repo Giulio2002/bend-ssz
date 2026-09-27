@@ -1,6 +1,6 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint16_encode_ssz_generated.bend as uint16_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -40,7 +40,7 @@ def w16x_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +x: U32, +
 # T.u16_put (O.w16) at any byte position.
 def w16_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +x: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 2n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
-    -> {T.u16_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W16X(r, dd, D, q, x)) : Array<U32>}:
+    -> {uint16_e.u16_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W16X(r, dd, D, q, x)) : Array<U32>}:
   match r:
     case 0n:
       %Equal.sym(Array<U32>, O.w8(FD.array__thaw(U32, D), X, x), FD.array__thaw(U32, W8.W8X(0n, dd, D, q, x)), W8.w8_any(dd, D, X, q, 0n, x, e, {==}, hd, hl, pf)) :
@@ -58,7 +58,7 @@ def w16_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +x: U3
       %Equal.sym(Array<U32>, O.w8(FD.array__thaw(U32, D), X, x), FD.array__thaw(U32, W8.W8X(3n, dd, D, q, x)), W8.w8_any(dd, D, X, q, 3n, x, e, {==}, hd, FD.nat__le_trans(Nat.add(q, 1n), Nat.add(q, 2n), VB.pw(dd), Order.add_left(q, 1n, 2n, {==}), hl), pf)) :
         {O.w8(_, U32.add(X, 1), U32.shrn(x, 8n)) == FD.array__thaw(U32, W16X(3n, dd, D, q, x)) : Array<U32>}
       W8.w8_any(dd, W8.W8X(3n, dd, D, q, x), U32.add(X, 1), 1n+q, 0n, U32.shrn(x, 8n), Equal.trans(Nat, U32.to_nat(U32.add(X, 1)), 1n+Nat.add(A.quad(q), 3n), Nat.add(A.quad(1n+q), 0n), UR.offx(dd, X, 1, Nat.add(A.quad(q), 3n), e, FD.nat__lt_trans(dd, 29n, 30n, hd, {==}), FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(dd))) == True{} : Bool}, Nat.add(A.quad(1n+q), 0n), 1n+Nat.add(A.quad(q), 3n), Equal.trans(Nat, Nat.add(A.quad(1n+q), 0n), A.quad(1n+q), 1n+Nat.add(A.quad(q), 3n), FD.nat__add_zero(A.quad(1n+q)), Equal.trans(Nat, Nat.add(4n, A.quad(q)), Nat.add(A.quad(q), 4n), 1n+Nat.add(A.quad(q), 3n), FD.nat__add_comm(4n, A.quad(q)), FD.nat__add_succ(A.quad(q), 3n))), W8.bnd(1n+q, 0n, VB.pw(dd), UWD.le_q(q, 1n, VB.pw(dd), hl), {==}))), Equal.sym(Nat, Nat.add(A.quad(1n+q), 0n), 1n+Nat.add(A.quad(q), 3n), Equal.trans(Nat, Nat.add(A.quad(1n+q), 0n), A.quad(1n+q), 1n+Nat.add(A.quad(q), 3n), FD.nat__add_zero(A.quad(1n+q)), Equal.trans(Nat, Nat.add(4n, A.quad(q)), Nat.add(A.quad(q), 4n), 1n+Nat.add(A.quad(q), 3n), FD.nat__add_comm(4n, A.quad(q)), FD.nat__add_succ(A.quad(q), 3n))))), {==}, hd, FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(q, 2n), 1n+Nat.add(q, 1n), FD.nat__add_succ(q, 1n), hl), W8.w8x_perfect(3n, dd, D, q, x, pf))
-    case 4n+ +t: Empty.absurd({T.u16_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W16X(4n+t, dd, D, q, x)) : Array<U32>}, FD.nat__lt_zero_absurd(t, hr))
+    case 4n+ +t: Empty.absurd({uint16_e.u16_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W16X(4n+t, dd, D, q, x)) : Array<U32>}, FD.nat__lt_zero_absurd(t, hr))
 
 # Its bytes: x's two low bytes at X, when the two bytes there were zero.
 def w16_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +x: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},

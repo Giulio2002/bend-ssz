@@ -2,7 +2,7 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../../types/schema.bend as S
 import ../../spec/root_relation.bend as RR
 import ../../spec/codec.bend as Codec
@@ -27,8 +27,8 @@ import ./root_names.bend as RN
 # proofs/obj/elems_obj.bend's.
 
 # The element at word b as a record: its words as the element's chunk reads see them.
-def rec48(+W: List<&2, U32>, +b: Nat) -> T.Bytes48:
-  T.Bytes48{EL.rdv(W, b, Nat.add(O.e8(0n), 0n), 12n), EL.rdv(W, b, Nat.add(O.e8(0n), 1n), 12n), EL.rdv(W, b, Nat.add(O.e8(0n), 2n), 12n), EL.rdv(W, b, Nat.add(O.e8(0n), 3n), 12n),
+def rec48(+W: List<&2, U32>, +b: Nat) -> FuluBytes48_d.Bytes48:
+  FuluBytes48_d.Bytes48{EL.rdv(W, b, Nat.add(O.e8(0n), 0n), 12n), EL.rdv(W, b, Nat.add(O.e8(0n), 1n), 12n), EL.rdv(W, b, Nat.add(O.e8(0n), 2n), 12n), EL.rdv(W, b, Nat.add(O.e8(0n), 3n), 12n),
             EL.rdv(W, b, Nat.add(O.e8(0n), 4n), 12n), EL.rdv(W, b, Nat.add(O.e8(0n), 5n), 12n), EL.rdv(W, b, Nat.add(O.e8(0n), 6n), 12n), EL.rdv(W, b, Nat.add(O.e8(0n), 7n), 12n),
             EL.rdv(W, b, Nat.add(O.e8(1n), 0n), 12n), EL.rdv(W, b, Nat.add(O.e8(1n), 1n), 12n), EL.rdv(W, b, Nat.add(O.e8(1n), 2n), 12n), EL.rdv(W, b, Nat.add(O.e8(1n), 3n), 12n)}
 

@@ -39,7 +39,7 @@ the 109 mainnet Fulu names, the frozen official generic descriptions for the
 supported generic SSZ forms). See [docs/CODEGEN.md](docs/CODEGEN.md) for the
 inputs, the outputs and the reproducible regeneration command.
 
-For every name `X` the generated API in `types/fulu_obj.bend` is
+For every name `X` the generated API (`types/<Name>_{def,encode_ssz,decode_ssz,hashtreeroot}_generated.bend`) is
 
 | Operation | Signature |
 |---|---|
@@ -59,8 +59,8 @@ retained copy of the input cannot change the object. Updates consume and
 return the object under Bend's affine rules; vectors offer element
 replacement and no length-changing operation at all.
 
-The same generated code serves the generic SSZ forms in
-`types/generic_obj.bend`: progressive lists, progressive bit lists,
+The same generated code serves the generic SSZ forms (their own
+`types/<Name>_*_generated.bend` files): progressive lists, progressive bit lists,
 progressive containers and compatible unions, plus containers, vectors and
 lists over every basic type.
 

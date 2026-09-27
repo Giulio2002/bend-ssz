@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/progbitlist_decode_ssz_generated.bend as progbitlist_r
 import ../../types/schema.bend as S
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
@@ -37,7 +37,7 @@ def M1(+n: U32) -> Nat: U32.to_nat(U32.sub(n, 1))
 def chk1(a: Bool, +t: FD.array__Tree<U32>, +n: U32) -> Bool:
   match a:
     case False{}: False{}
-    case True{}: O.bsel(U32.is_eq(V(t, n), 0), False{}, O.bsel(True{}, True{}, Nat.is_le(BD(t, n), U32.to_nat(0))))
+    case True{}: O.bsel(U32.is_eq(V(t, n), 0), False{}, O.bsel(True{}, U32.is_lt(U32.sub(n, 1), 536870912), Nat.is_le(BD(t, n), U32.to_nat(0))))
 
 # The Bool of the validator's checks: non-empty, a non-zero last byte (no bound).
 def CHK(+t: FD.array__Tree<U32>, +n: U32) -> Bool: chk1(U32.is_lt(0, n), t, n)
@@ -53,7 +53,7 @@ def hiN(+d: Nat, +n: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hn: {Nat.i
 
 def okA(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +a: Bool, +ea: {U32.is_lt(0, n) == a : Bool})
-    -> {T.pbits_ok(BF(t, n), 0, n) == (BF(t, n), chk1(a, t, n)) : B.Buf & Bool}:
+    -> {progbitlist_r.pbits_ok(BF(t, n), 0, n) == (BF(t, n), chk1(a, t, n)) : B.Buf & Bool}:
   match a:
     case False{}:
       %Equal.sym(Bool, U32.is_lt(0, n), False{}, ea) : {O.bitlist_nz(_, BF(t, n), 0, n, 0, True{}) == (BF(t, n), False{}) : B.Buf & Bool}
@@ -69,7 +69,7 @@ def okA(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, 
 # The validator returns the buffer and CHK(t, n).
 def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.pbits_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
+    -> {progbitlist_r.pbits_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
   okA(d, t, n, pf, hd, hn, U32.is_lt(0, n), {==})
 
 def cA(+a: Bool, +t: FD.array__Tree<U32>, +n: U32, +h: {chk1(a, t, n) == True{} : Bool}) -> {a == True{} : Bool}:
@@ -83,7 +83,7 @@ def bselF(+c: Bool, +y: Bool, +h: {O.bsel(c, False{}, y) == True{} : Bool}) -> {
     case False{}: {==}
 
 def cB(+t: FD.array__Tree<U32>, +n: U32, +h: {chk1(True{}, t, n) == True{} : Bool}) -> {U32.is_eq(V(t, n), 0) == False{} : Bool}:
-  bselF(U32.is_eq(V(t, n), 0), O.bsel(True{}, True{}, Nat.is_le(BD(t, n), U32.to_nat(0))), h)
+  bselF(U32.is_eq(V(t, n), 0), O.bsel(True{}, U32.is_lt(U32.sub(n, 1), 536870912), Nat.is_le(BD(t, n), U32.to_nat(0))), h)
 
 def c1(+t: FD.array__Tree<U32>, +n: U32, +h: {CHK(t, n) == True{} : Bool}) -> {chk1(True{}, t, n) == True{} : Bool}:
   FD.logic__subst(Bool, z => {chk1(z, t, n) == True{} : Bool}, U32.is_lt(0, n), True{}, cA(U32.is_lt(0, n), t, n, h), h)
@@ -94,7 +94,7 @@ def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> O.Bits:
 
 def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +e1: {U32.to_nat(n) == 1n+M1(n) : Nat})
-    -> {T.pbits_read(BF(t, n), 0, n) == (BF(t, n), OBJ(t, n)) : B.Buf & O.Bits}:
+    -> {progbitlist_r.pbits_read(BF(t, n), 0, n) == (BF(t, n), OBJ(t, n)) : B.Buf & O.Bits}:
   +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})
   +hz = VL.hdz29(d, n, hd, hn)
   +ez = FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.WZ(n))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.WZ(n))), VL.DZ(n),
@@ -108,14 +108,14 @@ def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
 
 def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == True{} : Bool}, +h1: {chk1(True{}, t, n) == True{} : Bool})
-    -> {T.GtF7582E0E9A_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}:
+    -> {progbitlist_r.GtF7582E0E9A_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}:
   +e1 = VR.e1n(n, VR.pos1(n, cA(U32.is_lt(0, n), t, n, hchk)))
-  %Equal.sym(B.Buf & Bool, T.pbits_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.GtF7582E0E9A_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
+  %Equal.sym(B.Buf & Bool, progbitlist_r.pbits_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {progbitlist_r.GtF7582E0E9A_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
-    {T.GtF7582E0E9A_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
-  %Equal.sym(B.Buf & O.Bits, T.pbits_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), rd_go(d, t, n, pf, hd, hn, e1)) :
-    {T.GtF7582E0E9A_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
+    {progbitlist_r.GtF7582E0E9A_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
+  %Equal.sym(B.Buf & O.Bits, progbitlist_r.pbits_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), rd_go(d, t, n, pf, hd, hn, e1)) :
+    {progbitlist_r.GtF7582E0E9A_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
   {==}
 
 # Every buffer the validator accepts decodes to OBJ(t, n).
@@ -127,7 +127,7 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
-  {T.GtF7582E0E9A_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
+  {progbitlist_r.GtF7582E0E9A_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, O.Bits>}
 def decode_accept(d, t, n, pf, hd, hn, hchk):
   acc_go(d, t, n, pf, hd, hn, hchk, c1(t, n, hchk))
 
@@ -140,12 +140,12 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
-  {T.GtF7582E0E9A_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
+  {progbitlist_r.GtF7582E0E9A_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.pbits_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.GtF7582E0E9A_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
+  %Equal.sym(B.Buf & Bool, progbitlist_r.pbits_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {progbitlist_r.GtF7582E0E9A_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
   %Equal.sym(Bool, CHK(t, n), False{}, hchk) :
-    {T.GtF7582E0E9A_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
+    {progbitlist_r.GtF7582E0E9A_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Bits>}
   {==}
 
 # ---- the spec side ----------------------------------------------------------------------------

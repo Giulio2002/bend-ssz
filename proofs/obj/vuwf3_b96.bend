@@ -1,6 +1,7 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluBytes96_encode_ssz_generated.bend as FuluBytes96_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -18,7 +19,7 @@ def putu_b96(+dd: Nat, +U: FD.array__Tree<U32>, +pos: U32, +i: Nat, +w0: U32, +w
     +e: {U32.to_nat(pos) == Nat.add(A.quad(i), 3n) : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +hl: {Nat.is_lt(Nat.add(24n, i), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, U) == True{} : Bool},
     +hz: {VS.bt(96n, VS.bdr(Nat.add(A.quad(i), 3n), UA.BYT(U))) == UW.ZB(96n) : +List<U32>})
-    -> {T.b96_put(FD.array__thaw(U32, U), pos, T.Bytes96{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23}) == FD.array__thaw(U32, UW.SWc(3, [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], dd, U, i, 0)) : Array<U32>}:
+    -> {FuluBytes96_e.b96_put(FD.array__thaw(U32, U), pos, FuluBytes96_d.Bytes96{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23}) == FD.array__thaw(U32, UW.SWc(3, [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], dd, U, i, 0)) : Array<U32>}:
   +e3 = UW.ua_3(pos, i, 3n, 3, {==}, e, {==})
   +eq = UW.ua_q(pos, i, 3n, e, {==})
   +hd32 = FD.nat__lt_trans(dd, 31n, 32n, hd, {==})
@@ -50,8 +51,8 @@ def putu_b96(+dd: Nat, +U: FD.array__Tree<U32>, +pos: U32, +i: Nat, +w0: U32, +w
   +eqN = FD.logic__subst(Nat, z => {U32.to_nat(U32.add(U32.shrn(pos, 2n), 24)) == z : Nat}, Nat.add(24n, i), Nat.add(List.length(&2, U32, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]), 1n+i), {==}, VB.add_at(U32.shrn(pos, 2n), 24, i, dd, eq, hd32, hl))
   +hlN = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dd)) == True{} : Bool}, Nat.add(24n, i), Nat.add(List.length(&2, U32, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]), 1n+i), {==}, hl)
   +eos = UW.orskip_rt(dd, UW.SWo(3, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], dd, D1, 1n+i, O.shr_over(w0, 3)), U32.add(U32.shrn(pos, 2n), 24), Nat.add(List.length(&2, U32, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]), 1n+i), UW.CRY(3, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], O.shr_over(w0, 3)), eqN, hd32, hlN, pfS)
-  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {T.b96_pwd(U32.is_eq(_, 0), U32.and(pos, 3), FD.array__thaw(U32, U), U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23) == FD.array__thaw(U32, UW.SWc(3, [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], dd, U, i, 0)) : Array<U32>}
-  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {T.b96_pwd(U32.is_eq(3, 0), _, FD.array__thaw(U32, U), U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23) == FD.array__thaw(U32, UW.SWc(3, [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], dd, U, i, 0)) : Array<U32>}
+  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {FuluBytes96_e.b96_pwd(U32.is_eq(_, 0), U32.and(pos, 3), FD.array__thaw(U32, U), U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23) == FD.array__thaw(U32, UW.SWc(3, [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], dd, U, i, 0)) : Array<U32>}
+  %Equal.sym(U32, U32.and(pos, 3), 3, e3) : {FuluBytes96_e.b96_pwd(U32.is_eq(3, 0), _, FD.array__thaw(U32, U), U32.shrn(pos, 2n), w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23) == FD.array__thaw(U32, UW.SWc(3, [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], dd, U, i, 0)) : Array<U32>}
   %Equal.sym(Array<U32>, O.or_word(FD.array__thaw(U32, U), U32.add(U32.shrn(pos, 2n), 0), U32.mul(w0, 16777216)), FD.array__thaw(U32, D1), UW.orw_rt(dd, U, U32.add(U32.shrn(pos, 2n), 0), i, U32.mul(w0, 16777216), eq0, hd32, hi0, pf)) :
     {O.or_skip(UW.RS2(3, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], _, U32.shrn(pos, 2n), w0), U32.add(U32.shrn(pos, 2n), 24), U32.shrn(w23, 8n)) == FD.array__thaw(U32, UW.SWc(3, [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], dd, U, i, 0)) : Array<U32>}
   %Equal.sym(Array<U32>, UW.RS2(3, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23], FD.array__thaw(U32, D1), U32.shrn(pos, 2n), w0), FD.array__thaw(U32, UW.SWo(3, [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23], dd, D1, 1n+i, O.shr_over(w0, 3))), rs) :

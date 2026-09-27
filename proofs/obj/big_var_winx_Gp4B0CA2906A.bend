@@ -1,7 +1,9 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/progbitlist_decode_ssz_generated.bend as progbitlist_r
+import ../../types/ProgressiveSingleListContainerTestStruct_def_generated.bend as ProgressiveSingleListContainerTestStruct_d
+import ../../types/ProgressiveSingleListContainerTestStruct_decode_ssz_generated.bend as ProgressiveSingleListContainerTestStruct_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -268,59 +270,59 @@ def eE0(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +h: {CHKw(t, x, 
   Equal.sym(Nat, Nat.add(U32.to_nat(O0(t, x)), U32.to_nat(U32.sub(len, O0(t, x)))), U32.to_nat(len), VM.sub_eq(len, O0(t, x), VMR.u32le(O0(t, x), len, r10(t, x, off, len, h))))
 def okc1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(4), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT2(t, x, off, len) == b : Bool}) -> {T.Gp4B0CA2906A_c1(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), b) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(4), U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT2(t, x, off, len) == b : Bool}) -> {ProgressiveSingleListContainerTestStruct_r.Gp4B0CA2906A_c1(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
 
 def okc0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(4), U32.to_nat(len)) == True{} : Bool}, +b: Bool, +eb: {IT1(t, x, off, len) == b : Bool}) -> {T.Gp4B0CA2906A_c0(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), Bool.and(b, K2(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(U32.to_nat(4), U32.to_nat(len)) == True{} : Bool}, +b: Bool, +eb: {IT1(t, x, off, len) == b : Bool}) -> {ProgressiveSingleListContainerTestStruct_r.Gp4B0CA2906A_c0(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), Bool.and(b, K2(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +hI1 = eb
-      %Equal.sym(B.Buf & Bool, T.pbits_ok(BF(t, n), FJ0(off, t, x), LJ0(t, x, len)), (BF(t, n), CH0.CHKw(t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))),
+      %Equal.sym(B.Buf & Bool, progbitlist_r.pbits_ok(BF(t, n), FJ0(off, t, x), LJ0(t, x, len)), (BF(t, n), CH0.CHKw(t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))),
           CH0.ok_evalw(d, t, n, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len), eoW(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), len, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, U32.to_nat(4), U32.to_nat(O0(t, x)), Equal.sym(Nat, U32.to_nat(O0(t, x)), U32.to_nat(4), Equal.cong(U32, Nat, z => U32.to_nat(z), O0(t, x), 4, FD.u32alg__eq_of(O0(t, x), 4, hI1))), hF), Order.reflexive(U32.to_nat(len))), hd,
             hwj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), len, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, U32.to_nat(4), U32.to_nat(O0(t, x)), Equal.sym(Nat, U32.to_nat(O0(t, x)), U32.to_nat(4), Equal.cong(U32, Nat, z => U32.to_nat(z), O0(t, x), 4, FD.u32alg__eq_of(O0(t, x), 4, hI1))), hF), Order.reflexive(U32.to_nat(len))), pf)) :
-        {T.Gp4B0CA2906A_v1(off, len, O0(t, x), _) == (BF(t, n), K2(t, x, off, len)) : B.Buf & Bool}
+        {ProgressiveSingleListContainerTestStruct_r.Gp4B0CA2906A_v1(off, len, O0(t, x), _) == (BF(t, n), K2(t, x, off, len)) : B.Buf & Bool}
       okc1(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, IT2(t, x, off, len), {==})
 
 def okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool, +ea: {IT0(t, x, off, len) == a : Bool})
-    -> {T.Gp4B0CA2906A_ok_len(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K1(t, x, off, len))) : B.Buf & Bool}:
+    -> {ProgressiveSingleListContainerTestStruct_r.Gp4B0CA2906A_ok_len(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K1(t, x, off, len))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       +hF = le_nat(4, len, ea)
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 0, U32.to_nat(0), {==}, VA.lea(0, 4, 4, 4n, {==}, {==}, {==}))) :
-        {T.Gp4B0CA2906A_v0(off, len, _) == (BF(t, n), K1(t, x, off, len)) : B.Buf & Bool}
+        {ProgressiveSingleListContainerTestStruct_r.Gp4B0CA2906A_v0(off, len, _) == (BF(t, n), K1(t, x, off, len)) : B.Buf & Bool}
       okc0(d, t, n, x, off, len, eo, hd, hw, pf, hF, IT1(t, x, off, len), {==})
 
 # The validator on the window returns the buffer and CHKw.
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.Gp4B0CA2906A_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {ProgressiveSingleListContainerTestStruct_r.Gp4B0CA2906A_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   okl(d, t, n, x, off, len, eo, hd, hw, pf, IT0(t, x, off, len), {==})
 def rd_all(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool})
-    -> {T.Gp4B0CA2906A_read(BF(t, n), off, len) == (BF(t, n), T.Gp4B0CA2906A{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))}) : B.Buf & T.Gp4B0CA2906A}:
+    -> {ProgressiveSingleListContainerTestStruct_r.Gp4B0CA2906A_read(BF(t, n), off, len) == (BF(t, n), ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))}) : B.Buf & ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A}:
   +hF = hFc(t, x, off, len, hchk)
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdFX(d, t, n, x, off, len, eo, hd, hw, pf, hF, 0, U32.to_nat(0), {==}, VA.lea(0, 4, 4, 4n, {==}, {==}, {==}))) :
-    {T.Gp4B0CA2906A_rd0(off, len, _) == (BF(t, n), T.Gp4B0CA2906A{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))}) : B.Buf & T.Gp4B0CA2906A}
-  %Equal.sym(B.Buf & O.Bits, T.pbits_read(BF(t, n), FJ0(off, t, x), LJ0(t, x, len)), (BF(t, n), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))),
+    {ProgressiveSingleListContainerTestStruct_r.Gp4B0CA2906A_rd0(off, len, _) == (BF(t, n), ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))}) : B.Buf & ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A}
+  %Equal.sym(B.Buf & O.Bits, progbitlist_r.pbits_read(BF(t, n), FJ0(off, t, x), LJ0(t, x, len)), (BF(t, n), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))),
       CH0.readw(d, t, n, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len), eoJ0(d, t, n, x, off, len, eo, hd, hw, pf, hchk), hd, hwJ0(d, t, n, x, off, len, eo, hd, hw, pf, hchk), pf, itD0(t, x, off, len, hchk))) :
-    {T.Gp4B0CA2906A_rd1(off, len, O0(t, x), _) == (BF(t, n), T.Gp4B0CA2906A{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))}) : B.Buf & T.Gp4B0CA2906A}
+    {ProgressiveSingleListContainerTestStruct_r.Gp4B0CA2906A_rd1(off, len, O0(t, x), _) == (BF(t, n), ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))}) : B.Buf & ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A}
   {==}
 
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.Gp4B0CA2906A: T.Gp4B0CA2906A{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A: ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))}
 
 # The reader on the window, when the checks hold.
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {T.Gp4B0CA2906A_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.Gp4B0CA2906A}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {ProgressiveSingleListContainerTestStruct_r.Gp4B0CA2906A_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & ProgressiveSingleListContainerTestStruct_d.Gp4B0CA2906A}:
   rd_all(d, t, n, x, off, len, eo, hd, hw, pf, hchk)
 def PSW(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> +List<S.Part>: [S.Variable{UW.WX(t, XJ0(t, x), U32.to_nat(LJ0(t, x, len)))}]
 def RST0(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> +List<S.Part>: []

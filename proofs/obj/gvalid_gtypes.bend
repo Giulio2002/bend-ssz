@@ -3,7 +3,11 @@ import ../compact/found.bend as F
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/VarTestStruct_def_generated.bend as VarTestStruct_d
+import ../../types/FixedTestStruct_def_generated.bend as FixedTestStruct_d
+import ../../types/vec_FixedTestStruct_4_def_generated.bend as vec_FixedTestStruct_4_d
+import ../../types/vec_VarTestStruct_2_def_generated.bend as vec_VarTestStruct_2_d
+import ../../types/ComplexTestStruct_def_generated.bend as ComplexTestStruct_d
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ./cform.bend as CF
@@ -48,7 +52,7 @@ import ./root_gtypes.bend as RT
 # root laws' own hypotheses (rep_<p>(o, s), s == Spec.<Name>()).
 
 # ---- Gc465214E502 ----
-def vr_Gc465214E502(-o: T.Gc465214E502, +s: S.Schema, +rep: RT.rep_Gc465214E502(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Gc465214E502(s, dv) == True{} : Bool}, +ev: RT.eqs_Gc465214E502(s))
+def vr_Gc465214E502(-o: VarTestStruct_d.Gc465214E502, +s: S.Schema, +rep: RT.rep_Gc465214E502(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Gc465214E502(s, dv) == True{} : Bool}, +ev: RT.eqs_Gc465214E502(s))
     -> {VD.root_valid(RT.v_Gc465214E502(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+x2, +q1) = q0
@@ -66,11 +70,11 @@ def vr_Gc465214E502(-o: T.Gc465214E502, +s: S.Schema, +rep: RT.rep_Gc465214E502(
   +r4 = DK.and_r(SH.is_Chain(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), Bool.and(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n)), r3)
   +k4 = DK.and_l(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n), r4)
   +r5 = DK.and_r(SH.is_End(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), BLI.ok_l2(SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n), r4)
-  %Equal.sym(T.Gc465214E502, o, T.Gc465214E502{x0, RT.pj_Gc465214E502_1(o), x2}, eo) : {VD.root_valid(RT.v_Gc465214E502(_), s) == True{} : Bool}
+  %Equal.sym(VarTestStruct_d.Gc465214E502, o, VarTestStruct_d.Gc465214E502{x0, RT.pj_Gc465214E502_1(o), x2}, eo) : {VD.root_valid(RT.v_Gc465214E502(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_Gc465214E502(T.Gc465214E502{x0, RT.pj_Gc465214E502_1(o), x2}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_Gc465214E502(VarTestStruct_d.Gc465214E502{x0, RT.pj_Gc465214E502_1(o), x2}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}}}, RT.fsh_Gc465214E502(s, dv, ok)) :
-    {VD.root_valid(RT.v_Gc465214E502(T.Gc465214E502{x0, RT.pj_Gc465214E502_1(o), x2}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_Gc465214E502(VarTestStruct_d.Gc465214E502{x0, RT.pj_Gc465214E502_1(o), x2}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_u16(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_u16(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U16{}}, qe0, GV.rv_u16(x0, rp0))) :
     {Bool.and(_, VD.root_valid(S.Items{PB.vview2(RT.pj_Gc465214E502_1(o)), S.Items{RN.v_u8(x2), S.EmptyItems{}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.End{}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(PB.vview2(RT.pj_Gc465214E502_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VP.vl2(RT.pj_Gc465214E502_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 6n, rp1, r5)) :
@@ -82,7 +86,7 @@ def vr_Gc465214E502(-o: T.Gc465214E502, +s: S.Schema, +rep: RT.rep_Gc465214E502(
 # ---- v4_GcDC3E457711: list of GcDC3E457711 ----
 law vxlen_v4_GcDC3E457711:
   for +k: Nat
-  for +W: List<&2, T.GcDC3E457711>
+  for +W: List<&2, FixedTestStruct_d.GcDC3E457711>
   for +i: Nat
   {VD.items_length(RT.xi_v4_GcDC3E457711(k, W, i)) == k : Nat}
 def vxlen_v4_GcDC3E457711(k, W, i):
@@ -93,7 +97,7 @@ def vxlen_v4_GcDC3E457711(k, W, i):
       {==}
 law vxval_v4_GcDC3E457711:
   for +k: Nat
-  for +W: List<&2, T.GcDC3E457711>
+  for +W: List<&2, FixedTestStruct_d.GcDC3E457711>
   for +i: Nat
   for +er: RT.ereps_v4_GcDC3E457711(k, W, i)
   {VD.root_valid(RT.xi_v4_GcDC3E457711(k, W, i), S.Repeat{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}}) == True{} : Bool}
@@ -105,7 +109,7 @@ def vxval_v4_GcDC3E457711(k, W, i, er):
       %Equal.sym(Bool, VD.root_valid(RN.v_GcDC3E457711(RT.xat_v4_GcDC3E457711(W, i)), S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}), True{}, GV.rv_GcDC3E457711(RT.xat_v4_GcDC3E457711(W, i), r0)) :
         {Bool.and(_, VD.root_valid(RT.xi_v4_GcDC3E457711(q, W, 1n+i), S.Repeat{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}})) == True{} : Bool}
       vxval_v4_GcDC3E457711(q, W, 1n+i, rs)
-def vr_v4_GcDC3E457711(-o: T.v4_GcDC3E457711_Seq, +s: S.Schema, +rep: RT.rep_v4_GcDC3E457711(o, s), +ok: {RT.ok_v4_GcDC3E457711(s) == True{} : Bool}, +eq: {SH.Vector_element(s) == S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}} : S.Schema})
+def vr_v4_GcDC3E457711(-o: vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq, +s: S.Schema, +rep: RT.rep_v4_GcDC3E457711(o, s), +ok: {RT.ok_v4_GcDC3E457711(s) == True{} : Bool}, +eq: {SH.Vector_element(s) == S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}} : S.Schema})
     -> {VD.root_valid(RT.xv_v4_GcDC3E457711(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -124,16 +128,16 @@ def vr_v4_GcDC3E457711(-o: T.v4_GcDC3E457711_Seq, +s: S.Schema, +rep: RT.rep_v4_
   %Equal.sym(S.Schema, SH.Vector_element(s), S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, eq) :
     {VD.root_valid(RT.xv_v4_GcDC3E457711(o), S.Vector{_, SH.Vector_length(s)}) == True{} : Bool}
   %eN : {VD.root_valid(RT.xv_v4_GcDC3E457711(o), S.Vector{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, _}) == True{} : Bool}
-  %Equal.sym(T.v4_GcDC3E457711_Seq, o, T.v4_GcDC3E457711_Seq{F.array__thaw(T.GcDC3E457711, t), N}, eo) :
+  %Equal.sym(vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq, o, vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq{F.array__thaw(FixedTestStruct_d.GcDC3E457711, t), N}, eo) :
     {VD.root_valid(RT.xv_v4_GcDC3E457711(_), S.Vector{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, U32.to_nat(N)}) == True{} : Bool}
-  %Equal.sym(F.array__Tree<T.GcDC3E457711>, F.array__freeze(T.GcDC3E457711, F.array__thaw(T.GcDC3E457711, t)), t, F.array__freeze_thaw(T.GcDC3E457711, t)) :
-    {VD.root_valid(S.Sequence{RT.xi_v4_GcDC3E457711(U32.to_nat(N), F.array__slots(T.GcDC3E457711, _), 0n)}, S.Vector{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, U32.to_nat(N)}) == True{} : Bool}
-  VO.vfin(U32.to_nat(N), RT.xi_v4_GcDC3E457711(U32.to_nat(N), F.array__slots(T.GcDC3E457711, t), 0n), S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, kp, vxlen_v4_GcDC3E457711(U32.to_nat(N), F.array__slots(T.GcDC3E457711, t), 0n), vxval_v4_GcDC3E457711(U32.to_nat(N), F.array__slots(T.GcDC3E457711, t), 0n, er))
+  %Equal.sym(F.array__Tree<FixedTestStruct_d.GcDC3E457711>, F.array__freeze(FixedTestStruct_d.GcDC3E457711, F.array__thaw(FixedTestStruct_d.GcDC3E457711, t)), t, F.array__freeze_thaw(FixedTestStruct_d.GcDC3E457711, t)) :
+    {VD.root_valid(S.Sequence{RT.xi_v4_GcDC3E457711(U32.to_nat(N), F.array__slots(FixedTestStruct_d.GcDC3E457711, _), 0n)}, S.Vector{S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, U32.to_nat(N)}) == True{} : Bool}
+  VO.vfin(U32.to_nat(N), RT.xi_v4_GcDC3E457711(U32.to_nat(N), F.array__slots(FixedTestStruct_d.GcDC3E457711, t), 0n), S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, kp, vxlen_v4_GcDC3E457711(U32.to_nat(N), F.array__slots(FixedTestStruct_d.GcDC3E457711, t), 0n), vxval_v4_GcDC3E457711(U32.to_nat(N), F.array__slots(FixedTestStruct_d.GcDC3E457711, t), 0n, er))
 
-def vr_Gc465214E502_bx(-o: O.Boxed<T.Gc465214E502>, +s: S.Schema, +rep: RT.rep_Gc465214E502_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Gc465214E502(s, dv) == True{} : Bool}, +eq: RT.eqs_Gc465214E502(s))
+def vr_Gc465214E502_bx(-o: O.Boxed<VarTestStruct_d.Gc465214E502>, +s: S.Schema, +rep: RT.rep_Gc465214E502_bx(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Gc465214E502(s, dv) == True{} : Bool}, +eq: RT.eqs_Gc465214E502(s))
     -> {VD.root_valid(RT.v_Gc465214E502_bx(o), s) == True{} : Bool}:
   (+eo, +ri) = rep
-  %Equal.sym(O.Boxed<T.Gc465214E502>, o, O.BSome{RT.pjb_Gc465214E502_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_Gc465214E502_bx(_), s) == True{} : Bool}
+  %Equal.sym(O.Boxed<VarTestStruct_d.Gc465214E502>, o, O.BSome{RT.pjb_Gc465214E502_bx(o), O.BNone{}}, eo) : {VD.root_valid(RT.v_Gc465214E502_bx(_), s) == True{} : Bool}
   vr_Gc465214E502(RT.pjb_Gc465214E502_bx(o), s, ri, dv, edv, ok, eq)
 
 # ---- v2_Gc465214E502: list of Gc465214E502_bx ----
@@ -167,7 +171,7 @@ def vtval_v2_Gc465214E502(k, W, i, sE, er, dv, edv, ok, eq):
       %Equal.sym(Bool, VD.root_valid(RT.v_Gc465214E502_bx(RT.th_Gc465214E502_bx(RT.xat_v2_Gc465214E502(W, i))), sE), True{}, vr_Gc465214E502_bx(RT.th_Gc465214E502_bx(RT.xat_v2_Gc465214E502(W, i)), sE, r0, dv, edv, ok, eq)) :
         {Bool.and(_, VD.root_valid(RT.xi_v2_Gc465214E502(q, W, 1n+i), S.Repeat{sE})) == True{} : Bool}
       vtval_v2_Gc465214E502(q, W, 1n+i, sE, rs, dv, edv, ok, eq)
-def vr_v2_Gc465214E502(-o: T.v2_Gc465214E502_Seq, +s: S.Schema, +rep: RT.rep_v2_Gc465214E502(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_v2_Gc465214E502(s, dv) == True{} : Bool}, +eq: RT.eqs_v2_Gc465214E502(s))
+def vr_v2_Gc465214E502(-o: vec_VarTestStruct_2_d.v2_Gc465214E502_Seq, +s: S.Schema, +rep: RT.rep_v2_Gc465214E502(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_v2_Gc465214E502(s, dv) == True{} : Bool}, +eq: RT.eqs_v2_Gc465214E502(s))
     -> {VD.root_valid(RT.xv_v2_Gc465214E502(o), s) == True{} : Bool}:
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -186,14 +190,14 @@ def vr_v2_Gc465214E502(-o: T.v2_Gc465214E502_Seq, +s: S.Schema, +rep: RT.rep_v2_
   %Equal.sym(S.Schema, s, S.Vector{SH.Vector_element(s), SH.Vector_length(s)}, SH.Vector_shape(s, k0)) :
     {VD.root_valid(RT.xv_v2_Gc465214E502(o), _) == True{} : Bool}
   %eN : {VD.root_valid(RT.xv_v2_Gc465214E502(o), S.Vector{SH.Vector_element(s), _}) == True{} : Bool}
-  %Equal.sym(T.v2_Gc465214E502_Seq, o, T.v2_Gc465214E502_Seq{RT.am_v2_Gc465214E502(t), N}, eo) :
+  %Equal.sym(vec_VarTestStruct_2_d.v2_Gc465214E502_Seq, o, vec_VarTestStruct_2_d.v2_Gc465214E502_Seq{RT.am_v2_Gc465214E502(t), N}, eo) :
     {VD.root_valid(RT.xv_v2_Gc465214E502(_), S.Vector{SH.Vector_element(s), U32.to_nat(N)}) == True{} : Bool}
   %Equal.sym(F.array__Tree<RT.MB<RT.M_Gc465214E502>>, RT.tfz_v2_Gc465214E502(RT.am_v2_Gc465214E502(t)), t, RT.tfzam_v2_Gc465214E502(t)) :
     {VD.root_valid(S.Sequence{RT.xi_v2_Gc465214E502(U32.to_nat(N), F.array__slots(RT.MB<RT.M_Gc465214E502>, _), 0n)}, S.Vector{SH.Vector_element(s), U32.to_nat(N)}) == True{} : Bool}
   VO.vfin(U32.to_nat(N), RT.xi_v2_Gc465214E502(U32.to_nat(N), F.array__slots(RT.MB<RT.M_Gc465214E502>, t), 0n), SH.Vector_element(s), kp, vtlen_v2_Gc465214E502(U32.to_nat(N), F.array__slots(RT.MB<RT.M_Gc465214E502>, t), 0n), vtval_v2_Gc465214E502(U32.to_nat(N), F.array__slots(RT.MB<RT.M_Gc465214E502>, t), 0n, SH.Vector_element(s), er, dv, edv, kel, eq))
 
 # ---- Gc56D855869F ----
-def vr_Gc56D855869F(-o: T.Gc56D855869F, +s: S.Schema, +rep: RT.rep_Gc56D855869F(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Gc56D855869F(s, dv) == True{} : Bool}, +ev: RT.eqs_Gc56D855869F(s))
+def vr_Gc56D855869F(-o: ComplexTestStruct_d.Gc56D855869F, +s: S.Schema, +rep: RT.rep_Gc56D855869F(o, s), +dv: OS.DV, +edv: {dv == OS.DV0() : OS.DV}, +ok: {RT.ok_Gc56D855869F(s, dv) == True{} : Bool}, +ev: RT.eqs_Gc56D855869F(s))
     -> {VD.root_valid(RT.v_Gc56D855869F(o), s) == True{} : Bool}:
   (+x0, +q0) = rep
   (+x2, +q1) = q0
@@ -234,11 +238,11 @@ def vr_Gc56D855869F(-o: T.Gc56D855869F, +s: S.Schema, +rep: RT.rep_Gc56D855869F(
   +r12 = DK.and_r(RT.ok_Gc465214E502(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), dv), Bool.and(RT.ok_v4_GcDC3E457711(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), RT.ok_v2_Gc465214E502(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), dv)), r11)
   +k12 = DK.and_l(RT.ok_v4_GcDC3E457711(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), RT.ok_v2_Gc465214E502(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), dv), r12)
   +r13 = DK.and_r(RT.ok_v4_GcDC3E457711(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), RT.ok_v2_Gc465214E502(SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), dv), r12)
-  %Equal.sym(T.Gc56D855869F, o, T.Gc56D855869F{x0, RT.pj_Gc56D855869F_1(o), x2, RT.pj_Gc56D855869F_3(o), RT.pj_Gc56D855869F_4(o), RT.pj_Gc56D855869F_5(o), RT.pj_Gc56D855869F_6(o)}, eo) : {VD.root_valid(RT.v_Gc56D855869F(_), s) == True{} : Bool}
+  %Equal.sym(ComplexTestStruct_d.Gc56D855869F, o, ComplexTestStruct_d.Gc56D855869F{x0, RT.pj_Gc56D855869F_1(o), x2, RT.pj_Gc56D855869F_3(o), RT.pj_Gc56D855869F_4(o), RT.pj_Gc56D855869F_5(o), RT.pj_Gc56D855869F_6(o)}, eo) : {VD.root_valid(RT.v_Gc56D855869F(_), s) == True{} : Bool}
   %Equal.sym(S.Schema, s, S.Container{SH.Container_names(s), SH.Container_fields(s)}, SH.Container_shape(s, k0)) :
-    {VD.root_valid(RT.v_Gc56D855869F(T.Gc56D855869F{x0, RT.pj_Gc56D855869F_1(o), x2, RT.pj_Gc56D855869F_3(o), RT.pj_Gc56D855869F_4(o), RT.pj_Gc56D855869F_5(o), RT.pj_Gc56D855869F_6(o)}), _) == True{} : Bool}
+    {VD.root_valid(RT.v_Gc56D855869F(ComplexTestStruct_d.Gc56D855869F{x0, RT.pj_Gc56D855869F_1(o), x2, RT.pj_Gc56D855869F_3(o), RT.pj_Gc56D855869F_4(o), RT.pj_Gc56D855869F_5(o), RT.pj_Gc56D855869F_6(o)}), _) == True{} : Bool}
   %Equal.sym(S.Schema, SH.Container_fields(s), S.Chain{SH.Chain_head(SH.Container_fields(s)), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.End{}}}}}}}}, RT.fsh_Gc56D855869F(s, dv, ok)) :
-    {VD.root_valid(RT.v_Gc56D855869F(T.Gc56D855869F{x0, RT.pj_Gc56D855869F_1(o), x2, RT.pj_Gc56D855869F_3(o), RT.pj_Gc56D855869F_4(o), RT.pj_Gc56D855869F_5(o), RT.pj_Gc56D855869F_6(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
+    {VD.root_valid(RT.v_Gc56D855869F(ComplexTestStruct_d.Gc56D855869F{x0, RT.pj_Gc56D855869F_1(o), x2, RT.pj_Gc56D855869F_3(o), RT.pj_Gc56D855869F_4(o), RT.pj_Gc56D855869F_5(o), RT.pj_Gc56D855869F_6(o)}), S.Container{SH.Container_names(s), _}) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(RN.v_u16(x0), SH.Chain_head(SH.Container_fields(s))), True{}, VO.vtrans(RN.v_u16(x0), SH.Chain_head(SH.Container_fields(s)), S.Unsigned{P.U16{}}, qe0, GV.rv_u16(x0, rp0))) :
     {Bool.and(_, VD.root_valid(S.Items{PB.vview2(RT.pj_Gc56D855869F_1(o)), S.Items{RN.v_u8(x2), S.Items{S.BytesValue{WO.wview(RT.pj_Gc56D855869F_3(o))}, S.Items{RT.v_Gc465214E502(RT.pj_Gc56D855869F_4(o)), S.Items{RT.xv_v4_GcDC3E457711(RT.pj_Gc56D855869F_5(o)), S.Items{RT.xv_v2_Gc465214E502(RT.pj_Gc56D855869F_6(o)), S.EmptyItems{}}}}}}}, S.Chain{SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s))))))), S.Chain{SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))))))), S.End{}}}}}}})) == True{} : Bool}
   %Equal.sym(Bool, VD.root_valid(PB.vview2(RT.pj_Gc56D855869F_1(o)), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s)))), True{}, VP.vl2(RT.pj_Gc56D855869F_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), 3n, rp1, k9)) :
@@ -255,11 +259,11 @@ def vr_Gc56D855869F(-o: T.Gc56D855869F, +s: S.Schema, +rep: RT.rep_Gc56D855869F(
     {Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(True{}, Bool.and(_, VD.root_valid(S.EmptyItems{}, S.End{})))))))) == True{} : Bool}
   {==}
 
-def Gc465214E502_root_valid(-o: T.Gc465214E502, +s: S.Schema, +es: {s == Spec.Gc465214E502() : S.Schema}, +rep: RT.rep_Gc465214E502(o, s))
+def Gc465214E502_root_valid(-o: VarTestStruct_d.Gc465214E502, +s: S.Schema, +es: {s == Spec.Gc465214E502() : S.Schema}, +rep: RT.rep_Gc465214E502(o, s))
     -> {VD.root_valid(RT.v_Gc465214E502(o), s) == True{} : Bool}:
   vr_Gc465214E502(o, s, rep, OS.DV0(), {==}, RT.Gc465214E502_ok(s, es, OS.DV0(), {==}), RT.Gc465214E502_eqs(s, es))
 
-def Gc56D855869F_root_valid(-o: T.Gc56D855869F, +s: S.Schema, +es: {s == Spec.Gc56D855869F() : S.Schema}, +rep: RT.rep_Gc56D855869F(o, s))
+def Gc56D855869F_root_valid(-o: ComplexTestStruct_d.Gc56D855869F, +s: S.Schema, +es: {s == Spec.Gc56D855869F() : S.Schema}, +rep: RT.rep_Gc56D855869F(o, s))
     -> {VD.root_valid(RT.v_Gc56D855869F(o), s) == True{} : Bool}:
   vr_Gc56D855869F(o, s, rep, OS.DV0(), {==}, RT.Gc56D855869F_ok(s, es, OS.DV0(), {==}), RT.Gc56D855869F_eqs(s, es))
 

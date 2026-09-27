@@ -2,7 +2,9 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluDepositRequest_def_generated.bend as FuluDepositRequest_d
+import ../../types/FuluDepositRequest_hashtreeroot_generated.bend as FuluDepositRequest_h
+import ../../types/Fulu_list_DepositRequest_8192_def_generated.bend as Fulu_list_DepositRequest_8192_d
 import ../compact/found.bend as F
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
@@ -171,7 +173,7 @@ def set_rw(+d: Nat, +t: F.array__Tree<D.Digest>, +j: U32, +k: Nat, +v: D.Digest,
 
 # The runtime's node step at j = hp(d, 1 + L, i), level L complete: the model write.
 def cnode(+d: Nat, +L: Nat, +i: Nat, +j: U32, +n: Nat, +XL: List<&2, D.Digest>, +t: F.array__Tree<D.Digest>,
-    -arr: Array<T.DepositRequest>, -h: B.Buf,
+    -arr: Array<FuluDepositRequest_d.DepositRequest>, -h: B.Buf,
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hL: {Nat.is_le(1n+L, d) == True{} : Bool},
     +hi: {Nat.is_lt(i, O.pow2n(Nat.sub(d, 1n+L))) == True{} : Bool},
@@ -179,9 +181,9 @@ def cnode(+d: Nat, +L: Nat, +i: Nat, +j: U32, +n: Nat, +XL: List<&2, D.Digest>, 
     +en: {MD.dlen(XL) == n : Nat},
     +pf: {F.array__perfect(D.Digest, 1n+d, t) == True{} : Bool},
     +lv: CT.lvl_ok(F.array__slots(D.Digest, t), d, L, n, XL))
-    -> {T.l8192_DepositRequest_node_step(64n, j, T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)})
-        == T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), CT.mv(64n, 1n+L, i, n, XL)))}
-        : T.l8192_DepositRequest_TS}:
+    -> {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_node_step(64n, j, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)})
+        == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), CT.mv(64n, 1n+L, i, n, XL)))}
+        : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}:
   +hL0 = le_of_succ(L, d, hL)
   +e2 = c2j(j, d, L, i, hd, hL, hi, ej)
   +e3 = c2j1(j, d, L, i, hd, hL, hi, ej)
@@ -196,15 +198,15 @@ def cnode(+d: Nat, +L: Nat, +i: Nat, +j: U32, +n: Nat, +XL: List<&2, D.Digest>, 
   # the two reads (as in cache.bend's validators_node_hashes)
   %Equal.sym(Array<D.Digest> & D.Digest, Array.get(D.Digest, F.array__thaw(D.Digest, t), (2 * j : U32)),
       (F.array__thaw(D.Digest, t), dl), F.array__get(D.Digest, 1n+d, t, (2 * j : U32), dl, hd, hle, hx, pf)) :
-    {T.l8192_DepositRequest_node_go(64n, j, h, arr, _) == T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : T.l8192_DepositRequest_TS}
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_node_go(64n, j, h, arr, _) == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
   %Equal.sym(Array<D.Digest> & D.Digest, Array.get(D.Digest, F.array__thaw(D.Digest, t), (2 * j + 1 : U32)),
       (F.array__thaw(D.Digest, t), dr), F.array__get(D.Digest, 1n+d, t, (2 * j + 1 : U32), dr, hd, hr, hy, pf)) :
-    {T.l8192_DepositRequest_node_fin(64n, j, h, arr, dl, _) == T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : T.l8192_DepositRequest_TS}
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_node_fin(64n, j, h, arr, dl, _) == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
   %Equal.sym(D.Digest, D.node(64n, dl, dr), v, CT.node_rule(L, i, n, XL, en, lt63(L, d, hL, hd))) :
-    {T.l8192_DepositRequest_TS{h, arr, Array.set(D.Digest, F.array__thaw(D.Digest, t), j, _)} == T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : T.l8192_DepositRequest_TS}
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, Array.set(D.Digest, F.array__thaw(D.Digest, t), j, _)} == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
   %Equal.sym(Array<D.Digest>, Array.set(D.Digest, F.array__thaw(D.Digest, t), j, v), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v)),
       set_rw(1n+d, t, j, CT.hp(d, 1n+L, i), v, ej, hd, hj, pf)) :
-    {T.l8192_DepositRequest_TS{h, arr, _} == T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : T.l8192_DepositRequest_TS}
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, _} == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v))} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
   {==}
 
 # ---- one level ------------------------------------------------------------------------
@@ -234,7 +236,7 @@ law clevel:
   for +n: Nat
   for +XL: List<&2, D.Digest>
   for +t: F.array__Tree<D.Digest>
-  for -arr: Array<T.DepositRequest>
+  for -arr: Array<FuluDepositRequest_d.DepositRequest>
   for -h: B.Buf
   for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hL: {Nat.is_le(1n+L, d) == True{} : Bool}
@@ -243,8 +245,8 @@ law clevel:
   for +en: {MD.dlen(XL) == n : Nat}
   for +pf: {F.array__perfect(D.Digest, 1n+d, t) == True{} : Bool}
   for +lv: CT.lvl_ok(F.array__slots(D.Digest, t), d, L, n, XL)
-  {T.l8192_DepositRequest_level(64n, q, j, T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)})
-   == T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, CT.mlevel_t(q, i, d, n, XL, 1n+L, t))} : T.l8192_DepositRequest_TS}
+  {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_level(64n, q, j, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)})
+   == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, CT.mlevel_t(q, i, d, n, XL, 1n+L, t))} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
 def clevel(q, d, L, i, j, n, XL, t, arr, h, hd, hL, hq, ej, en, pf, lv):
   match q:
     case 0n: {==}
@@ -252,11 +254,11 @@ def clevel(q, d, L, i, j, n, XL, t, arr, h, hd, hL, hq, ej, en, pf, lv):
       +hi = CT.step_lt(i, r, O.pow2n(Nat.sub(d, 1n+L)), hq)
       +v = CT.mv(64n, 1n+L, i, n, XL)
       +t1 = F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 1n+L, i), v)
-      %Equal.sym(T.l8192_DepositRequest_TS, T.l8192_DepositRequest_node_step(64n, j, T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)}),
-          T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t1)},
+      %Equal.sym(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_node_step(64n, j, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)}),
+          Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t1)},
           cnode(d, L, i, j, n, XL, t, arr, h, hd, hL, hi, ej, en, pf, lv)) :
-        {T.l8192_DepositRequest_level(64n, r, (j + 1 : U32), _)
-         == T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, CT.mlevel_t(r, 1n+i, d, n, XL, 1n+L, t1))} : T.l8192_DepositRequest_TS}
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_level(64n, r, (j + 1 : U32), _)
+         == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, CT.mlevel_t(r, 1n+i, d, n, XL, 1n+L, t1))} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
       clevel(r, d, L, 1n+i, (j + 1 : U32), n, XL, t1, arr, h, hd, hL,
         CT.step_le(i, r, O.pow2n(Nat.sub(d, 1n+L)), hq),
         cnext(j, d, L, i, hd, hL, hi, ej), en,
@@ -276,35 +278,35 @@ def clevel(q, d, L, i, j, n, XL, t, arr, h, hd, hL, hq, ej, en, pf, lv):
 
 # ---- the element-root list ------------------------------------------------------------------
 
-def xat(W: List<&2, T.DepositRequest>, +i: Nat) -> T.DepositRequest:
+def xat(W: List<&2, FuluDepositRequest_d.DepositRequest>, +i: Nat) -> FuluDepositRequest_d.DepositRequest:
   match W:
-    case Nil{}: T.DepositRequest_default()
+    case Nil{}: FuluDepositRequest_d.DepositRequest_default()
     case Con{+x, t}:
       match i:
         case 0n: x
         case 1n+j: xat(t, j)
 
 law xnth:
-  for +W: List<&2, T.DepositRequest>
+  for +W: List<&2, FuluDepositRequest_d.DepositRequest>
   for +i: Nat
-  for +hi: {Nat.is_lt(i, F.spec_common__length(T.DepositRequest, W)) == True{} : Bool}
-  {F.spec_common__nth(T.DepositRequest, W, i) == Some{xat(W, i)} : Maybe<&2, T.DepositRequest>}
+  for +hi: {Nat.is_lt(i, F.spec_common__length(FuluDepositRequest_d.DepositRequest, W)) == True{} : Bool}
+  {F.spec_common__nth(FuluDepositRequest_d.DepositRequest, W, i) == Some{xat(W, i)} : Maybe<&2, FuluDepositRequest_d.DepositRequest>}
 def xnth(W, i, hi):
   match W:
-    case Nil{}: Empty.absurd({F.spec_common__nth(T.DepositRequest, Nil{}, i) == Some{xat(Nil{}, i)} : Maybe<&2, T.DepositRequest>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
+    case Nil{}: Empty.absurd({F.spec_common__nth(FuluDepositRequest_d.DepositRequest, Nil{}, i) == Some{xat(Nil{}, i)} : Maybe<&2, FuluDepositRequest_d.DepositRequest>}, MD.false_true(Equal.trans(Bool, False{}, Nat.is_lt(i, 0n), True{}, Equal.sym(Bool, Nat.is_lt(i, 0n), False{}, F.nat__not_lt_zero(i)), hi)))
     case Con{+x, +t}:
       match i:
         case 0n: {==}
         case 1n+ +j: xnth(t, j, hi)
 
-def xl(k: Nat, +W: List<&2, T.DepositRequest>, +i: Nat, +hl: Nat) -> List<&2, D.Digest>:
+def xl(k: Nat, +W: List<&2, FuluDepositRequest_d.DepositRequest>, +i: Nat, +hl: Nat) -> List<&2, D.Digest>:
   match k:
     case 0n: []
     case 1n+q: RN.d_DepositRequest(hl, xat(W, i)) <> xl(q, W, 1n+i, hl)
 
 law xlen:
   for +k: Nat
-  for +W: List<&2, T.DepositRequest>
+  for +W: List<&2, FuluDepositRequest_d.DepositRequest>
   for +i: Nat
   for +hl: Nat
   {MD.dlen(xl(k, W, i, hl)) == k : Nat}
@@ -318,7 +320,7 @@ def xlen(k, W, i, hl):
 law xat_at:
   for +s: Nat
   for +k: Nat
-  for +W: List<&2, T.DepositRequest>
+  for +W: List<&2, FuluDepositRequest_d.DepositRequest>
   for +i: Nat
   for +hl: Nat
   for +e: {Nat.is_lt(s, k) == True{} : Bool}
@@ -386,18 +388,18 @@ def csucc(+i: U32, +d: Nat, +x: Nat,
   %Equal.sym(Nat, U32.to_nat(i), x, ex) : {Nat.add(_, 1n) == 1n+x : Nat}
   CX.NA_add1(x)
 
-def lt_items(+x: Nat, +N: Nat, +dw: Nat, +ta: F.array__Tree<T.DepositRequest>,
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+def lt_items(+x: Nat, +N: Nat, +dw: Nat, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>,
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +hin: {Nat.is_lt(x, N) == True{} : Bool},
     +hn: {Nat.is_le(N, F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {Nat.is_lt(x, F.spec_common__length(T.DepositRequest, F.array__slots(T.DepositRequest, ta))) == True{} : Bool}:
-  %Equal.sym(Nat, F.spec_common__length(T.DepositRequest, F.array__slots(T.DepositRequest, ta)), F.spec_common__pow2(dw), F.array__slots_length(T.DepositRequest, dw, ta, pfa)) : {Nat.is_lt(x, _) == True{} : Bool}
+    -> {Nat.is_lt(x, F.spec_common__length(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, ta))) == True{} : Bool}:
+  %Equal.sym(Nat, F.spec_common__length(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, ta)), F.spec_common__pow2(dw), F.array__slots_length(FuluDepositRequest_d.DepositRequest, dw, ta, pfa)) : {Nat.is_lt(x, _) == True{} : Bool}
   F.nat__lt_le_trans(x, N, F.spec_common__pow2(dw), hin, hn)
 
-def ix_at(+i: U32, +x: Nat, +ex: {U32.to_nat(i) == x : Nat}, +W: List<&2, T.DepositRequest>,
-    +h: {F.spec_common__nth(T.DepositRequest, W, x) == Some{xat(W, x)} : Maybe<&2, T.DepositRequest>})
-    -> {F.spec_common__nth(T.DepositRequest, W, U32.to_nat(i)) == Some{xat(W, x)} : Maybe<&2, T.DepositRequest>}:
-  %Equal.sym(Nat, U32.to_nat(i), x, ex) : {F.spec_common__nth(T.DepositRequest, W, _) == Some{xat(W, x)} : Maybe<&2, T.DepositRequest>}
+def ix_at(+i: U32, +x: Nat, +ex: {U32.to_nat(i) == x : Nat}, +W: List<&2, FuluDepositRequest_d.DepositRequest>,
+    +h: {F.spec_common__nth(FuluDepositRequest_d.DepositRequest, W, x) == Some{xat(W, x)} : Maybe<&2, FuluDepositRequest_d.DepositRequest>})
+    -> {F.spec_common__nth(FuluDepositRequest_d.DepositRequest, W, U32.to_nat(i)) == Some{xat(W, x)} : Maybe<&2, FuluDepositRequest_d.DepositRequest>}:
+  %Equal.sym(Nat, U32.to_nat(i), x, ex) : {F.spec_common__nth(FuluDepositRequest_d.DepositRequest, W, _) == Some{xat(W, x)} : Maybe<&2, FuluDepositRequest_d.DepositRequest>}
   h
 
 def ix_lt(+i: U32, +x: Nat, +B: Nat, +ex: {U32.to_nat(i) == x : Nat}, +h: {Nat.is_lt(x, B) == True{} : Bool})
@@ -406,84 +408,84 @@ def ix_lt(+i: U32, +x: Nat, +B: Nat, +ex: {U32.to_nat(i) == x : Nat}, +h: {Nat.i
   h
 
 # One leaf, inside (b = True) or past (b = False) the length.
-def cleaf_b(+d: Nat, +dw: Nat, +ta: F.array__Tree<T.DepositRequest>, +t: F.array__Tree<D.Digest>, +i: U32, +x: Nat, +N: Nat, +k: U32, +seg: U32, -h: B.Buf,
+def cleaf_b(+d: Nat, +dw: Nat, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +t: F.array__Tree<D.Digest>, +i: U32, +x: Nat, +N: Nat, +k: U32, +seg: U32, -h: B.Buf,
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool},
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +hn: {Nat.is_le(N, F.spec_common__pow2(dw)) == True{} : Bool},
     +pf: {F.array__perfect(D.Digest, 1n+d, t) == True{} : Bool},
     +ex: {U32.to_nat(i) == x : Nat},
     +hx: {Nat.is_lt(x, O.pow2n(d)) == True{} : Bool},
     +ek: {U32.to_nat(k) == CT.hp(d, 0n, x) : Nat},
     +b: Bool, +eb: {Nat.is_lt(x, N) == b : Bool})
-    -> {T.l8192_DepositRequest_leaf_step(64n, b, k, i, seg, T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)})
-        == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta),
-             F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), MD.rtree(0n, b, 64n, xl(N, F.array__slots(T.DepositRequest, ta), 0n, 64n), x)))}
-        : T.l8192_DepositRequest_TS}:
+    -> {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_leaf_step(64n, b, k, i, seg, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)})
+        == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta),
+             F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), MD.rtree(0n, b, 64n, xl(N, F.array__slots(FuluDepositRequest_d.DepositRequest, ta), 0n, 64n), x)))}
+        : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}:
   match b:
     case False{}:
       +hk = lt_at(U32.to_nat(k), CT.hp(d, 0n, x), 1n+d, ek, hp0_lt(d, x, hx))
       %Equal.sym(Array<D.Digest>, Array.set(D.Digest, F.array__thaw(D.Digest, t), k, D.zero()), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), D.zero())),
           set_rw(1n+d, t, k, CT.hp(d, 0n, x), D.zero(), ek, hd, hk, pf)) :
-        {T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), _}
-         == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), D.zconst(0n)))}
-         : T.l8192_DepositRequest_TS}
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), _}
+         == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), D.zconst(0n)))}
+         : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
       {==}
     case True{}:
       +hk = lt_at(U32.to_nat(k), CT.hp(d, 0n, x), 1n+d, ek, hp0_lt(d, x, hx))
-      +W = F.array__slots(T.DepositRequest, ta)
+      +W = F.array__slots(FuluDepositRequest_d.DepositRequest, ta)
       +v = xat(W, x)
       +dv = RN.d_DepositRequest(64n, v)
       +hia = ix_lt(i, x, F.spec_common__pow2(dw), ex, F.nat__lt_le_trans(x, N, F.spec_common__pow2(dw), eb, hn))
       +hxa = ix_at(i, x, ex, W, xnth(W, x, lt_items(x, N, dw, ta, pfa, eb, hn)))
-      %Equal.sym(Array<T.DepositRequest> & T.DepositRequest, Array.get(T.DepositRequest, F.array__thaw(T.DepositRequest, ta), i), (F.array__thaw(T.DepositRequest, ta), v),
-          F.array__get(T.DepositRequest, dw, ta, i, v, hdw, hia, hxa, pfa)) :
-        {T.l8192_DepositRequest_leaf_go(64n, k, seg, F.array__thaw(D.Digest, t), h, _)
-         == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), MD.dhead(MD.ddrop(x, xl(N, W, 0n, 64n)))))}
-         : T.l8192_DepositRequest_TS}
-      %Equal.sym(B.Buf & D.Digest, T.DepositRequest_root(64n, h, v, (seg + 64 : U32)), (h, dv), RN.st_DepositRequest(64n, h, v, (seg + 64 : U32))) :
-        {T.l8192_DepositRequest_leaf_fin(k, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t), _)
-         == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), MD.dhead(MD.ddrop(x, xl(N, W, 0n, 64n)))))}
-         : T.l8192_DepositRequest_TS}
+      %Equal.sym(Array<FuluDepositRequest_d.DepositRequest> & FuluDepositRequest_d.DepositRequest, Array.get(FuluDepositRequest_d.DepositRequest, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), i), (F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), v),
+          F.array__get(FuluDepositRequest_d.DepositRequest, dw, ta, i, v, hdw, hia, hxa, pfa)) :
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_leaf_go(64n, k, seg, F.array__thaw(D.Digest, t), h, _)
+         == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), MD.dhead(MD.ddrop(x, xl(N, W, 0n, 64n)))))}
+         : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
+      %Equal.sym(B.Buf & D.Digest, FuluDepositRequest_h.DepositRequest_root(64n, h, v, (seg + 64 : U32)), (h, dv), RN.st_DepositRequest(64n, h, v, (seg + 64 : U32))) :
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_leaf_fin(k, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t), _)
+         == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), MD.dhead(MD.ddrop(x, xl(N, W, 0n, 64n)))))}
+         : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
       %Equal.sym(Array<D.Digest>, Array.set(D.Digest, F.array__thaw(D.Digest, t), k, dv), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), dv)),
           set_rw(1n+d, t, k, CT.hp(d, 0n, x), dv, ek, hd, hk, pf)) :
-        {T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), _}
-         == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), MD.dhead(MD.ddrop(x, xl(N, W, 0n, 64n)))))}
-         : T.l8192_DepositRequest_TS}
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), _}
+         == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), MD.dhead(MD.ddrop(x, xl(N, W, 0n, 64n)))))}
+         : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
       %Equal.sym(D.Digest, MD.dhead(MD.ddrop(x, xl(N, W, 0n, 64n))), RN.d_DepositRequest(64n, xat(W, Nat.add(x, 0n))), xat_at(x, N, W, 0n, 64n, eb)) :
-        {T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), dv))}
-         == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), _))}
-         : T.l8192_DepositRequest_TS}
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), dv))}
+         == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), _))}
+         : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
       %Equal.sym(Nat, Nat.add(x, 0n), x, F.nat__add_zero(x)) :
-        {T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), dv))}
-         == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), RN.d_DepositRequest(64n, xat(W, _))))}
-         : T.l8192_DepositRequest_TS}
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), dv))}
+         == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), RN.d_DepositRequest(64n, xat(W, _))))}
+         : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
       {==}
 
 # One leaf step of the runtime: the model's write of leaf x (mv at level 0).
-def cleaf(+d: Nat, +dw: Nat, +ta: F.array__Tree<T.DepositRequest>, +t: F.array__Tree<D.Digest>, +i: U32, +x: Nat, +n: U32, +k: U32, +seg: U32, -h: B.Buf,
+def cleaf(+d: Nat, +dw: Nat, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +t: F.array__Tree<D.Digest>, +i: U32, +x: Nat, +n: U32, +k: U32, +seg: U32, -h: B.Buf,
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool},
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool},
     +pf: {F.array__perfect(D.Digest, 1n+d, t) == True{} : Bool},
     +ex: {U32.to_nat(i) == x : Nat},
     +hx: {Nat.is_lt(x, O.pow2n(d)) == True{} : Bool},
     +ek: {U32.to_nat(k) == CT.hp(d, 0n, x) : Nat})
-    -> {T.l8192_DepositRequest_leaf_step(64n, U32.is_lt(i, n), k, i, seg, T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)})
-        == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta),
-             F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), CT.mv(64n, 0n, x, U32.to_nat(n), xl(U32.to_nat(n), F.array__slots(T.DepositRequest, ta), 0n, 64n))))}
-        : T.l8192_DepositRequest_TS}:
+    -> {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_leaf_step(64n, U32.is_lt(i, n), k, i, seg, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)})
+        == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta),
+             F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), CT.mv(64n, 0n, x, U32.to_nat(n), xl(U32.to_nat(n), F.array__slots(FuluDepositRequest_d.DepositRequest, ta), 0n, 64n))))}
+        : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}:
   %Equal.sym(Bool, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), CX.lt_nat(i, n)) :
-    {T.l8192_DepositRequest_leaf_step(64n, _, k, i, seg, T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)})
-     == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta),
-          F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), CT.mv(64n, 0n, x, U32.to_nat(n), xl(U32.to_nat(n), F.array__slots(T.DepositRequest, ta), 0n, 64n))))}
-     : T.l8192_DepositRequest_TS}
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_leaf_step(64n, _, k, i, seg, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)})
+     == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta),
+          F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), CT.mv(64n, 0n, x, U32.to_nat(n), xl(U32.to_nat(n), F.array__slots(FuluDepositRequest_d.DepositRequest, ta), 0n, 64n))))}
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
   %Equal.sym(Nat, U32.to_nat(i), x, ex) :
-    {T.l8192_DepositRequest_leaf_step(64n, Nat.is_lt(_, U32.to_nat(n)), k, i, seg, T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)})
-     == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta),
-          F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), CT.mv(64n, 0n, x, U32.to_nat(n), xl(U32.to_nat(n), F.array__slots(T.DepositRequest, ta), 0n, 64n))))}
-     : T.l8192_DepositRequest_TS}
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_leaf_step(64n, Nat.is_lt(_, U32.to_nat(n)), k, i, seg, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)})
+     == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta),
+          F.array__thaw(D.Digest, F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), CT.mv(64n, 0n, x, U32.to_nat(n), xl(U32.to_nat(n), F.array__slots(FuluDepositRequest_d.DepositRequest, ta), 0n, 64n))))}
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
   cleaf_b(d, dw, ta, t, i, x, U32.to_nat(n), k, seg, h, hd, hdw, pfa, hn, pf, ex, hx, ek, Nat.is_lt(x, U32.to_nat(n)), {==})
 
 # The runtime's leaf loop over q leaves from index i = x is mlevel_t at level 0.
@@ -491,7 +493,7 @@ law cleaves:
   for +q: Nat
   for +d: Nat
   for +dw: Nat
-  for +ta: F.array__Tree<T.DepositRequest>
+  for +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +t: F.array__Tree<D.Digest>
   for +i: U32
   for +x: Nat
@@ -500,31 +502,31 @@ law cleaves:
   for -h: B.Buf
   for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool}
-  for +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool}
+  for +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool}
   for +pf: {F.array__perfect(D.Digest, 1n+d, t) == True{} : Bool}
   for +ex: {U32.to_nat(i) == x : Nat}
   for +hq: {Nat.is_le(Nat.add(x, q), O.pow2n(d)) == True{} : Bool}
-  {T.l8192_DepositRequest_leaves(64n, q, i, n, seg, O.pow2u(d), T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)})
-   == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta),
-        F.array__thaw(D.Digest, CT.mlevel_t(q, x, d, U32.to_nat(n), xl(U32.to_nat(n), F.array__slots(T.DepositRequest, ta), 0n, 64n), 0n, t))}
-   : T.l8192_DepositRequest_TS}
+  {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_leaves(64n, q, i, n, seg, O.pow2u(d), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)})
+   == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta),
+        F.array__thaw(D.Digest, CT.mlevel_t(q, x, d, U32.to_nat(n), xl(U32.to_nat(n), F.array__slots(FuluDepositRequest_d.DepositRequest, ta), 0n, 64n), 0n, t))}
+   : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
 def cleaves(q, d, dw, ta, t, i, x, n, seg, h, hd, hdw, pfa, hn, pf, ex, hq):
   match q:
     case 0n: {==}
     case 1n+ +r:
-      +XL = xl(U32.to_nat(n), F.array__slots(T.DepositRequest, ta), 0n, 64n)
+      +XL = xl(U32.to_nat(n), F.array__slots(FuluDepositRequest_d.DepositRequest, ta), 0n, 64n)
       +hx = CT.step_lt(x, r, O.pow2n(d), hq)
       +k = (O.pow2u(d) + i : U32)
       +v = CT.mv(64n, 0n, x, U32.to_nat(n), XL)
       +t1 = F.array__upd(D.Digest, 1n+d, t, CT.hp(d, 0n, x), v)
-      %Equal.sym(T.l8192_DepositRequest_TS,
-          T.l8192_DepositRequest_leaf_step(64n, U32.is_lt(i, n), k, i, seg, T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)}),
-          T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t1)},
+      %Equal.sym(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS,
+          Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_leaf_step(64n, U32.is_lt(i, n), k, i, seg, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)}),
+          Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t1)},
           cleaf(d, dw, ta, t, i, x, n, k, seg, h, hd, hdw, pfa, hn, pf, ex, hx, cpos(i, d, x, hd, ex, hx))) :
-        {T.l8192_DepositRequest_leaves(64n, r, (i + 1 : U32), n, seg, O.pow2u(d), _)
-         == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, CT.mlevel_t(r, 1n+x, d, U32.to_nat(n), XL, 0n, t1))}
-         : T.l8192_DepositRequest_TS}
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_leaves(64n, r, (i + 1 : U32), n, seg, O.pow2u(d), _)
+         == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, CT.mlevel_t(r, 1n+x, d, U32.to_nat(n), XL, 0n, t1))}
+         : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
       cleaves(r, d, dw, ta, t1, (i + 1 : U32), 1n+x, n, seg, h, hd, hdw, pfa, hn,
         F.array__upd_perfect(D.Digest, 1n+d, t, CT.hp(d, 0n, x), v, pf),
         csucc(i, d, x, hd, ex, hx), CT.step_le(x, r, O.pow2n(d), hq))
@@ -690,7 +692,7 @@ law clevels:
   for +klo: U32
   for +khi: U32
   for +t: F.array__Tree<D.Digest>
-  for -arr: Array<T.DepositRequest>
+  for -arr: Array<FuluDepositRequest_d.DepositRequest>
   for -h: B.Buf
   for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hk: {Nat.is_le(Nat.add(l, k), d) == True{} : Bool}
@@ -703,8 +705,8 @@ law clevels:
   for +len: {F.spec_common__length(D.Digest, F.array__slots(D.Digest, t)) == O.pow2n(1n+d) : Nat}
   for +ci: CT.cinv(F.array__slots(D.Digest, t), d, n, XL, lo, hi)
   for +up: CT.all_upto(F.array__slots(D.Digest, t), d, n, XL, l)
-  {T.l8192_DepositRequest_levels(64n, k, klo, khi, T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)})
-   == T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, mlevels_t(k, l, d, n, XL, lo, hi, t))} : T.l8192_DepositRequest_TS}
+  {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_levels(64n, k, klo, khi, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)})
+   == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, mlevels_t(k, l, d, n, XL, lo, hi, t))} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
 def clevels(k, l, d, n, XL, lo, hi, klo, khi, t, arr, h, hd, hk, hlh, hhi, ekl, ekh, en, pf, len, ci, up):
   match k:
     case 0n: {==}
@@ -724,14 +726,14 @@ def clevels(k, l, d, n, XL, lo, hi, klo, khi, t, arr, h, hd, hk, hlh, hhi, ekl, 
       +es = CT.mlevel_t_slots(q, a, d, n, XL, 1n+l, t, pf, hl, hq)
       +NS1 = CT.mlevel(q, a, d, n, XL, 1n+l, NS)
       %Equal.sym(Nat, U32.to_nat((Bk - A + 1 : U32)), q, ecount) :
-        {T.l8192_DepositRequest_levels(64n, r, A, Bk, T.l8192_DepositRequest_level(64n, _, A, T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)}))
-         == T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, mlevels_t(r, 1n+l, d, n, XL, lo, hi, t1))} : T.l8192_DepositRequest_TS}
-      %Equal.sym(T.l8192_DepositRequest_TS,
-          T.l8192_DepositRequest_level(64n, q, A, T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)}),
-          T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t1)},
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_levels(64n, r, A, Bk, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_level(64n, _, A, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)}))
+         == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, mlevels_t(r, 1n+l, d, n, XL, lo, hi, t1))} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
+      %Equal.sym(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS,
+          Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_level(64n, q, A, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)}),
+          Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t1)},
           clevel(q, d, l, a, A, n, XL, t, arr, h, hd, hl, hq, ea, en, pf, CT.au_get(1n+l, NS, d, n, XL, up, l, F.nat__le_lt_succ(l, l, F.nat__le_refl(l))))) :
-        {T.l8192_DepositRequest_levels(64n, r, A, Bk, _)
-         == T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, mlevels_t(r, 1n+l, d, n, XL, lo, hi, t1))} : T.l8192_DepositRequest_TS}
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_levels(64n, r, A, Bk, _)
+         == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, mlevels_t(r, 1n+l, d, n, XL, lo, hi, t1))} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
       clevels(r, 1n+l, d, n, XL, lo, hi, A, Bk, t1, arr, h, hd, CT.step_le(l, r, d, hk), hlh, hhi, ea, eb, en,
         CT.mlevel_t_perfect(q, a, d, n, XL, 1n+l, t, pf),
         len_tr(F.array__slots(D.Digest, t1), NS1, es, d, CT.lvl_step_len(NS, d, n, XL, lo, hi, l, len)),
@@ -753,8 +755,8 @@ def clevels(k, l, d, n, XL, lo, hi, klo, khi, t, arr, h, hd, hk, hlh, hhi, ekl, 
 # The cache it returns has the dirty range [n, 0] (empty for n > 0) and every
 # node holding its value, so the invariant holds again for the next root.
 
-def XLof(+n: U32, +ta: F.array__Tree<T.DepositRequest>) -> List<&2, D.Digest>:
-  xl(U32.to_nat(n), F.array__slots(T.DepositRequest, ta), 0n, 64n)
+def XLof(+n: U32, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>) -> List<&2, D.Digest>:
+  xl(U32.to_nat(n), F.array__slots(FuluDepositRequest_d.DepositRequest, ta), 0n, 64n)
 
 # ---- the sweep ----------------------------------------------------------------------------
 
@@ -806,20 +808,20 @@ def msweep_t_len(+d: Nat, +n: Nat, +XL: List<&2, D.Digest>, +lo: Nat, +hi: Nat, 
     F.array__slots_length(D.Digest, 1n+d, msweep_t(d, n, XL, lo, hi, t), msweep_t_perfect(d, n, XL, lo, hi, t, pf)), CT.pow2_eq(1n+d))
 
 # The runtime sweep of a nonempty dirty range [lo, hi] is msweep_t.
-def csweep(+d: Nat, +dw: Nat, +ta: F.array__Tree<T.DepositRequest>, +t: F.array__Tree<D.Digest>, +lo: U32, +hi: U32, +n: U32, +seg: U32, -h: B.Buf,
+def csweep(+d: Nat, +dw: Nat, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +t: F.array__Tree<D.Digest>, +lo: U32, +hi: U32, +n: U32, +seg: U32, -h: B.Buf,
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool},
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool},
     +pf: {F.array__perfect(D.Digest, 1n+d, t) == True{} : Bool},
     +hlh: {Nat.is_le(U32.to_nat(lo), U32.to_nat(hi)) == True{} : Bool},
     +hhi: {Nat.is_lt(U32.to_nat(hi), O.pow2n(d)) == True{} : Bool},
     +len: {F.spec_common__length(D.Digest, F.array__slots(D.Digest, t)) == O.pow2n(1n+d) : Nat},
     +ci: CT.cinv(F.array__slots(D.Digest, t), d, U32.to_nat(n), XLof(n, ta), U32.to_nat(lo), U32.to_nat(hi)))
-    -> {T.l8192_DepositRequest_sweep(64n, d, lo, hi, n, seg, T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)})
-        == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta),
+    -> {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_sweep(64n, d, lo, hi, n, seg, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)})
+        == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta),
              F.array__thaw(D.Digest, msweep_t(d, U32.to_nat(n), XLof(n, ta), U32.to_nat(lo), U32.to_nat(hi), t))}
-        : T.l8192_DepositRequest_TS}:
+        : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}:
   +N = U32.to_nat(n)
   +Lo = U32.to_nat(lo)
   +Hi = U32.to_nat(hi)
@@ -835,19 +837,19 @@ def csweep(+d: Nat, +dw: Nat, +ta: F.array__Tree<T.DepositRequest>, +t: F.array_
   +K1 = (O.pow2u(d) + lo : U32)
   +K2 = (O.pow2u(d) + hi : U32)
   %Equal.sym(Nat, U32.to_nat((hi - lo + 1 : U32)), q, CX.span_val(lo, hi, d, hd32(d, hd), hlh, hhi)) :
-    {T.l8192_DepositRequest_levels(64n, d, K1, K2,
-       T.l8192_DepositRequest_leaves(64n, _, lo, n, seg, O.pow2u(d), T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)}))
-     == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, mlevels_t(d, 0n, d, N, XL, Lo, Hi, t0))} : T.l8192_DepositRequest_TS}
-  %Equal.sym(T.l8192_DepositRequest_TS,
-      T.l8192_DepositRequest_leaves(64n, q, lo, n, seg, O.pow2u(d), T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)}),
-      T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t0)},
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_levels(64n, d, K1, K2,
+       Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_leaves(64n, _, lo, n, seg, O.pow2u(d), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)}))
+     == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, mlevels_t(d, 0n, d, N, XL, Lo, Hi, t0))} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
+  %Equal.sym(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS,
+      Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_leaves(64n, q, lo, n, seg, O.pow2u(d), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)}),
+      Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t0)},
       cleaves(q, d, dw, ta, t, lo, Lo, n, seg, h, hd, hdw, pfa, hn, pf, {==}, CT.end_le(Lo, Hi, O.pow2n(d), hlh, hhi))) :
-    {T.l8192_DepositRequest_levels(64n, d, K1, K2, _)
-     == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, mlevels_t(d, 0n, d, N, XL, Lo, Hi, t0))} : T.l8192_DepositRequest_TS}
-  clevels(d, 0n, d, N, XL, Lo, Hi, K1, K2, t0, F.array__thaw(T.DepositRequest, ta), h, hd, F.nat__le_refl(d), hlh, hhi,
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_levels(64n, d, K1, K2, _)
+     == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, mlevels_t(d, 0n, d, N, XL, Lo, Hi, t0))} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}
+  clevels(d, 0n, d, N, XL, Lo, Hi, K1, K2, t0, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), h, hd, F.nat__le_refl(d), hlh, hhi,
     cpos(lo, d, Lo, hd, {==}, F.nat__le_lt_trans(Lo, Hi, O.pow2n(d), hlh, hhi)),
     cpos(hi, d, Hi, hd, {==}, hhi),
-    xlen(N, F.array__slots(T.DepositRequest, ta), 0n, 64n),
+    xlen(N, F.array__slots(FuluDepositRequest_d.DepositRequest, ta), 0n, 64n),
     CT.mlevel_t_perfect(q, Lo, d, N, XL, 0n, t, pf),
     len_tr(F.array__slots(D.Digest, t0), NS0, es, d, CT.lv_len(q, Lo, d, N, XL, 0n, NS, len)),
     ci_tr(F.array__slots(D.Digest, t0), NS0, es, d, N, XL, Lo, Hi, ci0),
@@ -912,7 +914,7 @@ law pad_ok:
   for +el: {U32.to_nat(lvl) == p : Nat}
   for +hb: {Nat.is_lt(Nat.add(p, k), 63n) == True{} : Bool}
   for +hn: {Nat.is_le(MD.dlen(XL), O.pow2n(p)) == True{} : Bool}
-  {T.l8192_DepositRequest_pad_go(64n, k, lvl, MD.rtree(p, b, 64n, XL, 0n), (h, D.zconst(p))) == (h, MD.rtree(Nat.add(p, k), b, 64n, XL, 0n)) : B.Buf & D.Digest}
+  {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_pad_go(64n, k, lvl, MD.rtree(p, b, 64n, XL, 0n), (h, D.zconst(p))) == (h, MD.rtree(Nat.add(p, k), b, 64n, XL, 0n)) : B.Buf & D.Digest}
 def pad_ok(k, p, lvl, b, XL, h, el, hb, hn):
   match k:
     case 0n:
@@ -921,13 +923,13 @@ def pad_ok(k, p, lvl, b, XL, h, el, hb, hn):
     case 1n+ +q:
       +hp = plt(p, 1n+q, hb)
       %Equal.sym(Nat, U32.to_nat((lvl + 1 : U32)), 1n+p, lvl_next(lvl, p, el, hp)) :
-        {T.l8192_DepositRequest_pad_go(64n, q, (lvl + 1 : U32), D.node(64n, MD.rtree(p, b, 64n, XL, 0n), D.zconst(p)), (h, D.zconst(_)))
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_pad_go(64n, q, (lvl + 1 : U32), D.node(64n, MD.rtree(p, b, 64n, XL, 0n), D.zconst(p)), (h, D.zconst(_)))
          == (h, MD.rtree(Nat.add(p, 1n+q), b, 64n, XL, 0n)) : B.Buf & D.Digest}
       %Equal.sym(D.Digest, D.node(64n, MD.rtree(p, b, 64n, XL, 0n), D.zconst(p)), MD.rtree(1n+p, b, 64n, XL, 0n), pad_node(p, b, XL, hn, hp)) :
-        {T.l8192_DepositRequest_pad_go(64n, q, (lvl + 1 : U32), _, (h, D.zconst(1n+p)))
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_pad_go(64n, q, (lvl + 1 : U32), _, (h, D.zconst(1n+p)))
          == (h, MD.rtree(Nat.add(p, 1n+q), b, 64n, XL, 0n)) : B.Buf & D.Digest}
       %Equal.sym(Nat, Nat.add(p, 1n+q), 1n+Nat.add(p, q), MR.add_succ(p, q)) :
-        {T.l8192_DepositRequest_pad_go(64n, q, (lvl + 1 : U32), MD.rtree(1n+p, b, 64n, XL, 0n), (h, D.zconst(1n+p)))
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_pad_go(64n, q, (lvl + 1 : U32), MD.rtree(1n+p, b, 64n, XL, 0n), (h, D.zconst(1n+p)))
          == (h, MD.rtree(_, b, 64n, XL, 0n)) : B.Buf & D.Digest}
       pad_ok(q, 1n+p, (lvl + 1 : U32), b, XL, h, lvl_next(lvl, p, el, hp), hb_step(p, q, hb), hn_up(XL, p, hn))
 
@@ -952,35 +954,35 @@ def d63(+d: Nat, +hdD: {Nat.is_le(d, 13n) == True{} : Bool}) -> {Nat.is_lt(Nat.a
   {==}
 
 # With every node holding its value: the root read, padded and length-mixed.
-def croot_full(+d: Nat, +n: U32, +t: F.array__Tree<D.Digest>, -arr: Array<T.DepositRequest>, -h: B.Buf, +XL: List<&2, D.Digest>,
+def croot_full(+d: Nat, +n: U32, +t: F.array__Tree<D.Digest>, -arr: Array<FuluDepositRequest_d.DepositRequest>, -h: B.Buf, +XL: List<&2, D.Digest>,
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +pf: {F.array__perfect(D.Digest, 1n+d, t) == True{} : Bool},
     +en: {MD.dlen(XL) == U32.to_nat(n) : Nat},
     +hn: {Nat.is_le(U32.to_nat(n), O.pow2n(d)) == True{} : Bool},
     +hdD: {Nat.is_le(d, 13n) == True{} : Bool},
     +up: CT.all_upto(F.array__slots(D.Digest, t), d, U32.to_nat(n), XL, d))
-    -> {T.l8192_DepositRequest_croot_top(64n, n, d, T.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)})
-        == (h, (T.l8192_DepositRequest_Cached{arr, n, d, F.array__thaw(D.Digest, t), n, 0},
+    -> {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_croot_top(64n, n, d, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, arr, F.array__thaw(D.Digest, t)})
+        == (h, (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{arr, n, d, F.array__thaw(D.Digest, t), n, 0},
                 O.mix_len(64n, MD.rtree(13n, Nat.is_lt(0n, U32.to_nat(n)), 64n, XL, 0n), n)))
-        : B.Buf & (T.l8192_DepositRequest_Cached & D.Digest)}:
+        : B.Buf & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & D.Digest)}:
   +b = Nat.is_lt(0n, U32.to_nat(n))
   +r = MD.rtree(d, b, 64n, XL, 0n)
   +hnx = len_n(XL, U32.to_nat(n), O.pow2n(d), en, hn)
   %Equal.sym(Array<D.Digest> & D.Digest, Array.get(D.Digest, F.array__thaw(D.Digest, t), 1), (F.array__thaw(D.Digest, t), r),
       F.array__get(D.Digest, 1n+d, t, 1, r, hd, CX.rw_pow_lt(1n, 1n+d, one_lt(d)), CT.root_full(F.array__slots(D.Digest, t), d, U32.to_nat(n), XL, up), pf)) :
-    {T.l8192_DepositRequest_croot_read(64n, n, d, h, arr, _)
-     == (h, (T.l8192_DepositRequest_Cached{arr, n, d, F.array__thaw(D.Digest, t), n, 0}, O.mix_len(64n, MD.rtree(13n, b, 64n, XL, 0n), n)))
-     : B.Buf & (T.l8192_DepositRequest_Cached & D.Digest)}
-  %Equal.sym(B.Buf & D.Digest, T.l8192_DepositRequest_pad_go(64n, Nat.sub(13n, d), O.nat_u32(d), r, (h, D.zconst(d))),
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_croot_read(64n, n, d, h, arr, _)
+     == (h, (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{arr, n, d, F.array__thaw(D.Digest, t), n, 0}, O.mix_len(64n, MD.rtree(13n, b, 64n, XL, 0n), n)))
+     : B.Buf & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & D.Digest)}
+  %Equal.sym(B.Buf & D.Digest, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_pad_go(64n, Nat.sub(13n, d), O.nat_u32(d), r, (h, D.zconst(d))),
       (h, MD.rtree(Nat.add(d, Nat.sub(13n, d)), b, 64n, XL, 0n)),
       pad_ok(Nat.sub(13n, d), d, O.nat_u32(d), b, XL, h, nat_u32_val(d, hd), d63(d, hdD), hnx)) :
-    {T.l8192_DepositRequest_croot_fin(64n, n, d, arr, F.array__thaw(D.Digest, t), _)
-     == (h, (T.l8192_DepositRequest_Cached{arr, n, d, F.array__thaw(D.Digest, t), n, 0}, O.mix_len(64n, MD.rtree(13n, b, 64n, XL, 0n), n)))
-     : B.Buf & (T.l8192_DepositRequest_Cached & D.Digest)}
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_croot_fin(64n, n, d, arr, F.array__thaw(D.Digest, t), _)
+     == (h, (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{arr, n, d, F.array__thaw(D.Digest, t), n, 0}, O.mix_len(64n, MD.rtree(13n, b, 64n, XL, 0n), n)))
+     : B.Buf & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & D.Digest)}
   %Equal.sym(Nat, Nat.add(d, Nat.sub(13n, d)), 13n, F.nat__sub_add(13n, d, hdD)) :
-    {(h, (T.l8192_DepositRequest_Cached{arr, n, d, F.array__thaw(D.Digest, t), n, 0}, O.mix_len(64n, MD.rtree(_, b, 64n, XL, 0n), n)))
-     == (h, (T.l8192_DepositRequest_Cached{arr, n, d, F.array__thaw(D.Digest, t), n, 0}, O.mix_len(64n, MD.rtree(13n, b, 64n, XL, 0n), n)))
-     : B.Buf & (T.l8192_DepositRequest_Cached & D.Digest)}
+    {(h, (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{arr, n, d, F.array__thaw(D.Digest, t), n, 0}, O.mix_len(64n, MD.rtree(_, b, 64n, XL, 0n), n)))
+     == (h, (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{arr, n, d, F.array__thaw(D.Digest, t), n, 0}, O.mix_len(64n, MD.rtree(13n, b, 64n, XL, 0n), n)))
+     : B.Buf & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & D.Digest)}
   {==}
 
 # ---- the cached root -------------------------------------------------------------------------
@@ -1009,20 +1011,20 @@ def perfect_after(+b: Bool, +d: Nat, +n: Nat, +XL: List<&2, D.Digest>, +lo: Nat,
     case True{}: msweep_t_perfect(d, n, XL, lo, hi, t, pf)
     case False{}: pf
 
-def sweep_after(+b: Bool, +d: Nat, +dw: Nat, +ta: F.array__Tree<T.DepositRequest>, +t: F.array__Tree<D.Digest>, +lo: U32, +hi: U32, +n: U32, +seg: U32, -h: B.Buf,
+def sweep_after(+b: Bool, +d: Nat, +dw: Nat, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +t: F.array__Tree<D.Digest>, +lo: U32, +hi: U32, +n: U32, +seg: U32, -h: B.Buf,
     +eb: {Nat.is_le(U32.to_nat(lo), U32.to_nat(hi)) == b : Bool},
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool},
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool},
     +pf: {F.array__perfect(D.Digest, 1n+d, t) == True{} : Bool},
     +hhi: {Nat.is_lt(U32.to_nat(hi), O.pow2n(d)) == True{} : Bool},
     +len: {F.spec_common__length(D.Digest, F.array__slots(D.Digest, t)) == O.pow2n(1n+d) : Nat},
     +ci: CT.cinv(F.array__slots(D.Digest, t), d, U32.to_nat(n), XLof(n, ta), U32.to_nat(lo), U32.to_nat(hi)))
-    -> {T.l8192_DepositRequest_sweep_pick(64n, b, d, lo, hi, n, seg, T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)})
-        == T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta),
+    -> {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_sweep_pick(64n, b, d, lo, hi, n, seg, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)})
+        == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta),
              F.array__thaw(D.Digest, after(b, d, U32.to_nat(n), XLof(n, ta), U32.to_nat(lo), U32.to_nat(hi), t))}
-        : T.l8192_DepositRequest_TS}:
+        : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS}:
   match b:
     case True{}: csweep(d, dw, ta, t, lo, hi, n, seg, h, hd, hdw, pfa, hn, pf, eb, hhi, len, ci)
     case False{}: {==}
@@ -1033,7 +1035,7 @@ def sweep_after(+b: Bool, +d: Nat, +dw: Nat, +ta: F.array__Tree<T.DepositRequest
 law cached_root_correct:
   for +d: Nat
   for +dw: Nat
-  for +ta: F.array__Tree<T.DepositRequest>
+  for +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +t: F.array__Tree<D.Digest>
   for +lo: U32
   for +hi: U32
@@ -1043,37 +1045,37 @@ law cached_root_correct:
   for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hdD: {Nat.is_le(d, 13n) == True{} : Bool}
   for +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool}
-  for +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool}
+  for +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool}
   for +hnd: {Nat.is_le(U32.to_nat(n), O.pow2n(d)) == True{} : Bool}
   for +pf: {F.array__perfect(D.Digest, 1n+d, t) == True{} : Bool}
   for +hhi: {Nat.is_lt(U32.to_nat(hi), O.pow2n(d)) == True{} : Bool}
   for +len: {F.spec_common__length(D.Digest, F.array__slots(D.Digest, t)) == O.pow2n(1n+d) : Nat}
   for +ci: CT.cinv(F.array__slots(D.Digest, t), d, U32.to_nat(n), XLof(n, ta), U32.to_nat(lo), U32.to_nat(hi))
-  {T.l8192_DepositRequest_cached_root(64n, h, T.l8192_DepositRequest_Cached{F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi}, seg)
-   == (h, (T.l8192_DepositRequest_Cached{F.array__thaw(T.DepositRequest, ta), n, d,
+  {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_cached_root(64n, h, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi}, seg)
+   == (h, (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d,
              F.array__thaw(D.Digest, after(Nat.is_le(U32.to_nat(lo), U32.to_nat(hi)), d, U32.to_nat(n), XLof(n, ta), U32.to_nat(lo), U32.to_nat(hi), t)), n, 0},
            O.mix_len(64n, MD.rtree(13n, Nat.is_lt(0n, U32.to_nat(n)), 64n, XLof(n, ta), 0n), n)))
-   : B.Buf & (T.l8192_DepositRequest_Cached & D.Digest)}
+   : B.Buf & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & D.Digest)}
 def cached_root_correct(d, dw, ta, t, lo, hi, n, seg, h, hd, hdD, hdw, pfa, hn, hnd, pf, hhi, len, ci):
   +N = U32.to_nat(n)
   +XL = XLof(n, ta)
   +b = Nat.is_le(U32.to_nat(lo), U32.to_nat(hi))
   +t1 = after(b, d, N, XL, U32.to_nat(lo), U32.to_nat(hi), t)
   %Equal.sym(Bool, U32.is_le(lo, hi), b, CX.le_nat(lo, hi)) :
-    {T.l8192_DepositRequest_croot_top(64n, n, d,
-       T.l8192_DepositRequest_sweep_pick(64n, _, d, lo, hi, n, seg, T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)}))
-     == (h, (T.l8192_DepositRequest_Cached{F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t1), n, 0},
-           O.mix_len(64n, MD.rtree(13n, Nat.is_lt(0n, N), 64n, XL, 0n), n))) : B.Buf & (T.l8192_DepositRequest_Cached & D.Digest)}
-  %Equal.sym(T.l8192_DepositRequest_TS,
-      T.l8192_DepositRequest_sweep_pick(64n, b, d, lo, hi, n, seg, T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t)}),
-      T.l8192_DepositRequest_TS{h, F.array__thaw(T.DepositRequest, ta), F.array__thaw(D.Digest, t1)},
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_croot_top(64n, n, d,
+       Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_sweep_pick(64n, _, d, lo, hi, n, seg, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)}))
+     == (h, (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t1), n, 0},
+           O.mix_len(64n, MD.rtree(13n, Nat.is_lt(0n, N), 64n, XL, 0n), n))) : B.Buf & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & D.Digest)}
+  %Equal.sym(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS,
+      Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_sweep_pick(64n, b, d, lo, hi, n, seg, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t)}),
+      Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_TS{h, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.array__thaw(D.Digest, t1)},
       sweep_after(b, d, dw, ta, t, lo, hi, n, seg, h, {==}, hd, hdw, pfa, hn, pf, hhi, len, ci)) :
-    {T.l8192_DepositRequest_croot_top(64n, n, d, _) == (h, (T.l8192_DepositRequest_Cached{F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t1), n, 0},
-           O.mix_len(64n, MD.rtree(13n, Nat.is_lt(0n, N), 64n, XL, 0n), n))) : B.Buf & (T.l8192_DepositRequest_Cached & D.Digest)}
-  croot_full(d, n, t1, F.array__thaw(T.DepositRequest, ta), h, XL,
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_croot_top(64n, n, d, _) == (h, (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t1), n, 0},
+           O.mix_len(64n, MD.rtree(13n, Nat.is_lt(0n, N), 64n, XL, 0n), n))) : B.Buf & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & D.Digest)}
+  croot_full(d, n, t1, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), h, XL,
     hd, perfect_after(b, d, N, XL, U32.to_nat(lo), U32.to_nat(hi), t, pf),
-    xlen(N, F.array__slots(T.DepositRequest, ta), 0n, 64n), hnd, hdD,
+    xlen(N, F.array__slots(FuluDepositRequest_d.DepositRequest, ta), 0n, 64n), hnd, hdD,
     full_after(b, d, N, XL, U32.to_nat(lo), U32.to_nat(hi), t, {==}, pf, hhi, len, ci))
 
 # ==== from the instance cset.bend ========================================
@@ -1088,48 +1090,48 @@ def cached_root_correct(d, dw, ta, t, lo, hi, n, seg, h, hd, hdD, hdw, pfa, hn, 
 # ---- the element roots after a write -------------------------------------------------------
 
 law xat_upd:
-  for +W: List<&2, T.DepositRequest>
+  for +W: List<&2, FuluDepositRequest_d.DepositRequest>
   for +I: Nat
-  for +v: T.DepositRequest
+  for +v: FuluDepositRequest_d.DepositRequest
   for +m: Nat
   for +ne: {Nat.is_eq(I, m) == False{} : Bool}
-  {xat(F.spec_common__update(T.DepositRequest, W, I, v), m) == xat(W, m) : T.DepositRequest}
+  {xat(F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, I, v), m) == xat(W, m) : FuluDepositRequest_d.DepositRequest}
 def xat_upd(W, I, v, m, ne):
   match W I m:
     case Nil{} _ _: {==}
-    case Con{+x, +t} 0n 0n: Empty.absurd({xat(F.spec_common__update(T.DepositRequest, Con{x, t}, 0n, v), 0n) == xat(Con{x, t}, 0n) : T.DepositRequest}, MD.true_false(ne))
+    case Con{+x, +t} 0n 0n: Empty.absurd({xat(F.spec_common__update(FuluDepositRequest_d.DepositRequest, Con{x, t}, 0n, v), 0n) == xat(Con{x, t}, 0n) : FuluDepositRequest_d.DepositRequest}, MD.true_false(ne))
     case Con{+x, +t} 0n 1n+ +q: {==}
     case Con{+x, +t} 1n+ +p 0n: {==}
     case Con{+x, +t} 1n+ +p 1n+ +q: xat_upd(t, p, v, q, ne)
 
 law xat_upd_same:
-  for +W: List<&2, T.DepositRequest>
+  for +W: List<&2, FuluDepositRequest_d.DepositRequest>
   for +I: Nat
-  for +v: T.DepositRequest
-  for +hI: {Nat.is_lt(I, F.spec_common__length(T.DepositRequest, W)) == True{} : Bool}
-  {xat(F.spec_common__update(T.DepositRequest, W, I, v), I) == v : T.DepositRequest}
+  for +v: FuluDepositRequest_d.DepositRequest
+  for +hI: {Nat.is_lt(I, F.spec_common__length(FuluDepositRequest_d.DepositRequest, W)) == True{} : Bool}
+  {xat(F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, I, v), I) == v : FuluDepositRequest_d.DepositRequest}
 def xat_upd_same(W, I, v, hI):
   match W I:
-    case Nil{} _: Empty.absurd({xat(F.spec_common__update(T.DepositRequest, Nil{}, I, v), I) == v : T.DepositRequest}, CT.lt_zero_absurd(I, hI))
+    case Nil{} _: Empty.absurd({xat(F.spec_common__update(FuluDepositRequest_d.DepositRequest, Nil{}, I, v), I) == v : FuluDepositRequest_d.DepositRequest}, CT.lt_zero_absurd(I, hI))
     case Con{+x, +t} 0n: {==}
     case Con{+x, +t} 1n+ +p: xat_upd_same(t, p, v, hI)
 
 # Past the updated index the element roots are unchanged.
 law xl_upd_after:
   for +k: Nat
-  for +W: List<&2, T.DepositRequest>
+  for +W: List<&2, FuluDepositRequest_d.DepositRequest>
   for +I: Nat
-  for +v: T.DepositRequest
+  for +v: FuluDepositRequest_d.DepositRequest
   for +i0: Nat
   for +hl: Nat
   for +h: {Nat.is_lt(I, i0) == True{} : Bool}
-  {xl(k, F.spec_common__update(T.DepositRequest, W, I, v), i0, hl) == xl(k, W, i0, hl) : List<&2, D.Digest>}
+  {xl(k, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, I, v), i0, hl) == xl(k, W, i0, hl) : List<&2, D.Digest>}
 def xl_upd_after(k, W, I, v, i0, hl, h):
   match k:
     case 0n: {==}
     case 1n+ +q:
-      +W2 = F.spec_common__update(T.DepositRequest, W, I, v)
-      %Equal.sym(T.DepositRequest, xat(W2, i0), xat(W, i0), xat_upd(W, I, v, i0, F.nat__is_eq_lt(I, i0, h))) :
+      +W2 = F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, I, v)
+      %Equal.sym(FuluDepositRequest_d.DepositRequest, xat(W2, i0), xat(W, i0), xat_upd(W, I, v, i0, F.nat__is_eq_lt(I, i0, h))) :
         {RN.d_DepositRequest(hl, _) <> xl(q, W2, 1n+i0, hl) == RN.d_DepositRequest(hl, xat(W, i0)) <> xl(q, W, 1n+i0, hl) : List<&2, D.Digest>}
       %Equal.sym(List<&2, D.Digest>, xl(q, W2, 1n+i0, hl), xl(q, W, 1n+i0, hl),
           xl_upd_after(q, W, I, v, 1n+i0, hl, F.nat__lt_le_trans(I, i0, 1n+i0, h, F.nat__le_succ(i0)))) :
@@ -1153,22 +1155,22 @@ def hw_shift(+p: Nat, +i0: Nat, +B: Nat, +hW: {Nat.is_lt(Nat.add(1n+p, i0), B) =
 # Writing element P + i0 of the items writes leaf P of the element roots from i0.
 law xl_set:
   for +k: Nat
-  for +W: List<&2, T.DepositRequest>
+  for +W: List<&2, FuluDepositRequest_d.DepositRequest>
   for +P: Nat
   for +i0: Nat
-  for +v: T.DepositRequest
+  for +v: FuluDepositRequest_d.DepositRequest
   for +hl: Nat
   for +hP: {Nat.is_lt(P, k) == True{} : Bool}
-  for +hW: {Nat.is_lt(Nat.add(P, i0), F.spec_common__length(T.DepositRequest, W)) == True{} : Bool}
-  {xl(k, F.spec_common__update(T.DepositRequest, W, Nat.add(P, i0), v), i0, hl) == LC.dput(xl(k, W, i0, hl), P, RN.d_DepositRequest(hl, v)) : List<&2, D.Digest>}
+  for +hW: {Nat.is_lt(Nat.add(P, i0), F.spec_common__length(FuluDepositRequest_d.DepositRequest, W)) == True{} : Bool}
+  {xl(k, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, Nat.add(P, i0), v), i0, hl) == LC.dput(xl(k, W, i0, hl), P, RN.d_DepositRequest(hl, v)) : List<&2, D.Digest>}
 def xl_set(k, W, P, i0, v, hl, hP, hW):
   match k P:
     case 0n _:
-      Empty.absurd({xl(0n, F.spec_common__update(T.DepositRequest, W, Nat.add(P, i0), v), i0, hl) == LC.dput(xl(0n, W, i0, hl), P, RN.d_DepositRequest(hl, v)) : List<&2, D.Digest>},
+      Empty.absurd({xl(0n, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, Nat.add(P, i0), v), i0, hl) == LC.dput(xl(0n, W, i0, hl), P, RN.d_DepositRequest(hl, v)) : List<&2, D.Digest>},
         CT.lt_zero_absurd(P, hP))
     case 1n+ +q 0n:
-      +W2 = F.spec_common__update(T.DepositRequest, W, i0, v)
-      %Equal.sym(T.DepositRequest, xat(W2, i0), v, xat_upd_same(W, i0, v, hW)) :
+      +W2 = F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, i0, v)
+      %Equal.sym(FuluDepositRequest_d.DepositRequest, xat(W2, i0), v, xat_upd_same(W, i0, v, hW)) :
         {RN.d_DepositRequest(hl, _) <> xl(q, W2, 1n+i0, hl) == RN.d_DepositRequest(hl, v) <> xl(q, W, 1n+i0, hl) : List<&2, D.Digest>}
       %Equal.sym(List<&2, D.Digest>, xl(q, W2, 1n+i0, hl), xl(q, W, 1n+i0, hl),
           xl_upd_after(q, W, i0, v, 1n+i0, hl, F.nat__le_lt_succ(i0, i0, F.nat__le_refl(i0)))) :
@@ -1176,15 +1178,15 @@ def xl_set(k, W, P, i0, v, hl, hP, hW):
       {==}
     case 1n+ +q 1n+ +p:
       +J = Nat.add(1n+p, i0)
-      +W2 = F.spec_common__update(T.DepositRequest, W, J, v)
+      +W2 = F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, J, v)
       +ne = CT.neq_of_lt(J, i0, F.nat__le_lt_succ(i0, Nat.add(p, i0), le_add_l(p, i0)))
-      %Equal.sym(T.DepositRequest, xat(W2, i0), xat(W, i0), xat_upd(W, J, v, i0, ne)) :
+      %Equal.sym(FuluDepositRequest_d.DepositRequest, xat(W2, i0), xat(W, i0), xat_upd(W, J, v, i0, ne)) :
         {RN.d_DepositRequest(hl, _) <> xl(q, W2, 1n+i0, hl) == RN.d_DepositRequest(hl, xat(W, i0)) <> LC.dput(xl(q, W, 1n+i0, hl), p, RN.d_DepositRequest(hl, v)) : List<&2, D.Digest>}
       %MR.add_succ(p, i0) :
-        {RN.d_DepositRequest(hl, xat(W, i0)) <> xl(q, F.spec_common__update(T.DepositRequest, W, _, v), 1n+i0, hl)
+        {RN.d_DepositRequest(hl, xat(W, i0)) <> xl(q, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, _, v), 1n+i0, hl)
          == RN.d_DepositRequest(hl, xat(W, i0)) <> LC.dput(xl(q, W, 1n+i0, hl), p, RN.d_DepositRequest(hl, v)) : List<&2, D.Digest>}
-      %Equal.sym(List<&2, D.Digest>, xl(q, F.spec_common__update(T.DepositRequest, W, Nat.add(p, 1n+i0), v), 1n+i0, hl), LC.dput(xl(q, W, 1n+i0, hl), p, RN.d_DepositRequest(hl, v)),
-          xl_set(q, W, p, 1n+i0, v, hl, hP, hw_shift(p, i0, F.spec_common__length(T.DepositRequest, W), hW))) :
+      %Equal.sym(List<&2, D.Digest>, xl(q, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, Nat.add(p, 1n+i0), v), 1n+i0, hl), LC.dput(xl(q, W, 1n+i0, hl), p, RN.d_DepositRequest(hl, v)),
+          xl_set(q, W, p, 1n+i0, v, hl, hP, hw_shift(p, i0, F.spec_common__length(FuluDepositRequest_d.DepositRequest, W), hW))) :
         {RN.d_DepositRequest(hl, xat(W, i0)) <> _ == RN.d_DepositRequest(hl, xat(W, i0)) <> LC.dput(xl(q, W, 1n+i0, hl), p, RN.d_DepositRequest(hl, v)) : List<&2, D.Digest>}
       {==}
 
@@ -1193,13 +1195,13 @@ def hw0(+I: Nat, +B: Nat, +hW: {Nat.is_lt(I, B) == True{} : Bool}) -> {Nat.is_lt
   hW
 
 # The element roots after writing v at I < N.
-def xl_set0(+N: Nat, +W: List<&2, T.DepositRequest>, +I: Nat, +v: T.DepositRequest,
+def xl_set0(+N: Nat, +W: List<&2, FuluDepositRequest_d.DepositRequest>, +I: Nat, +v: FuluDepositRequest_d.DepositRequest,
     +hIN: {Nat.is_lt(I, N) == True{} : Bool},
-    +hW: {Nat.is_lt(I, F.spec_common__length(T.DepositRequest, W)) == True{} : Bool})
-    -> {xl(N, F.spec_common__update(T.DepositRequest, W, I, v), 0n, 64n) == LC.dput(xl(N, W, 0n, 64n), I, RN.d_DepositRequest(64n, v)) : List<&2, D.Digest>}:
+    +hW: {Nat.is_lt(I, F.spec_common__length(FuluDepositRequest_d.DepositRequest, W)) == True{} : Bool})
+    -> {xl(N, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, I, v), 0n, 64n) == LC.dput(xl(N, W, 0n, 64n), I, RN.d_DepositRequest(64n, v)) : List<&2, D.Digest>}:
   %F.nat__add_zero(I) :
-    {xl(N, F.spec_common__update(T.DepositRequest, W, _, v), 0n, 64n) == LC.dput(xl(N, W, 0n, 64n), I, RN.d_DepositRequest(64n, v)) : List<&2, D.Digest>}
-  xl_set(N, W, I, 0n, v, 64n, hIN, hw0(I, F.spec_common__length(T.DepositRequest, W), hW))
+    {xl(N, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, _, v), 0n, 64n) == LC.dput(xl(N, W, 0n, 64n), I, RN.d_DepositRequest(64n, v)) : List<&2, D.Digest>}
+  xl_set(N, W, I, 0n, v, 64n, hIN, hw0(I, F.spec_common__length(FuluDepositRequest_d.DepositRequest, W), hW))
 
 # The new low end min(lo, i): at most lo and at most i.
 def lo1(+lo: U32, +i: U32, +c: Bool, +ec: {Nat.is_le(U32.to_nat(lo), U32.to_nat(i)) == c : Bool})
@@ -1242,24 +1244,24 @@ def put_len_n(+XL: List<&2, D.Digest>, +XL2: List<&2, D.Digest>, +N: Nat, +es: {
   en
 
 # The invariant for the written items and the widened range [min(lo, i), max(hi, i)].
-def cset_cinv(+d: Nat, +t: F.array__Tree<D.Digest>, +N: Nat, +W: List<&2, T.DepositRequest>, +i: U32, +v: T.DepositRequest,
+def cset_cinv(+d: Nat, +t: F.array__Tree<D.Digest>, +N: Nat, +W: List<&2, FuluDepositRequest_d.DepositRequest>, +i: U32, +v: FuluDepositRequest_d.DepositRequest,
     +lo: U32, +hi: U32, +c1: Bool, +e1: {Nat.is_le(U32.to_nat(lo), U32.to_nat(i)) == c1 : Bool},
     +c2: Bool, +e2: {Nat.is_le(U32.to_nat(i), U32.to_nat(hi)) == c2 : Bool},
     +hb: {Nat.is_lt(U32.to_nat(hi), O.pow2n(d)) == True{} : Bool}, +ib: {Nat.is_lt(U32.to_nat(i), O.pow2n(d)) == True{} : Bool},
     +hIN: {Nat.is_lt(U32.to_nat(i), N) == True{} : Bool},
-    +hW: {Nat.is_lt(U32.to_nat(i), F.spec_common__length(T.DepositRequest, W)) == True{} : Bool},
+    +hW: {Nat.is_lt(U32.to_nat(i), F.spec_common__length(FuluDepositRequest_d.DepositRequest, W)) == True{} : Bool},
     +ci: CT.cinv(F.array__slots(D.Digest, t), d, N, xl(N, W, 0n, 64n), U32.to_nat(lo), U32.to_nat(hi)))
-    -> CT.cinv(F.array__slots(D.Digest, t), d, N, xl(N, F.spec_common__update(T.DepositRequest, W, U32.to_nat(i), v), 0n, 64n),
+    -> CT.cinv(F.array__slots(D.Digest, t), d, N, xl(N, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, U32.to_nat(i), v), 0n, 64n),
          U32.to_nat(O.pick(c1, lo, i)), U32.to_nat(O.pick(c2, hi, i))):
   +I = U32.to_nat(i)
   +XL = xl(N, W, 0n, 64n)
   +x = RN.d_DepositRequest(64n, v)
-  +XL2 = xl(N, F.spec_common__update(T.DepositRequest, W, I, v), 0n, 64n)
+  +XL2 = xl(N, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, I, v), 0n, 64n)
   +es = xl_set0(N, W, I, v, hIN, hW)
   %Equal.sym(List<&2, D.Digest>, XL2, LC.dput(XL, I, x), es) : CT.cinv(F.array__slots(D.Digest, t), d, N, _, U32.to_nat(O.pick(c1, lo, i)), U32.to_nat(O.pick(c2, hi, i)))
   LC.cinv_move(F.array__slots(D.Digest, t), d, N, N, XL, I, x,
     U32.to_nat(lo), U32.to_nat(hi), U32.to_nat(O.pick(c1, lo, i)), U32.to_nat(O.pick(c2, hi, i)),
-    xlen(N, W, 0n, 64n), put_len_n(LC.dput(XL, I, x), XL2, N, es, xlen(N, F.spec_common__update(T.DepositRequest, W, I, v), 0n, 64n)),
+    xlen(N, W, 0n, 64n), put_len_n(LC.dput(XL, I, x), XL2, N, es, xlen(N, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, I, v), 0n, 64n)),
     lo1(lo, i, c1, e1), hi1(i, hi, c2, e2), lo2(lo, i, c1, e1), hi2(i, hi, c2, e2), ci)
 
 def cset_hi(+d: Nat, +i: U32, +hi: U32, +c2: Bool,
@@ -1281,59 +1283,59 @@ def cset_hi(+d: Nat, +i: U32, +hi: U32, +c2: Bool,
 
 law xl_app:
   for +k: Nat
-  for +W: List<&2, T.DepositRequest>
+  for +W: List<&2, FuluDepositRequest_d.DepositRequest>
   for +i0: Nat
-  for +v: T.DepositRequest
+  for +v: FuluDepositRequest_d.DepositRequest
   for +hl: Nat
-  for +hW: {Nat.is_lt(Nat.add(k, i0), F.spec_common__length(T.DepositRequest, W)) == True{} : Bool}
-  {xl(1n+k, F.spec_common__update(T.DepositRequest, W, Nat.add(k, i0), v), i0, hl) == LC.dput(xl(k, W, i0, hl), k, RN.d_DepositRequest(hl, v)) : List<&2, D.Digest>}
+  for +hW: {Nat.is_lt(Nat.add(k, i0), F.spec_common__length(FuluDepositRequest_d.DepositRequest, W)) == True{} : Bool}
+  {xl(1n+k, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, Nat.add(k, i0), v), i0, hl) == LC.dput(xl(k, W, i0, hl), k, RN.d_DepositRequest(hl, v)) : List<&2, D.Digest>}
 def xl_app(k, W, i0, v, hl, hW):
   match k:
     case 0n:
-      %Equal.sym(T.DepositRequest, xat(F.spec_common__update(T.DepositRequest, W, i0, v), i0), v, xat_upd_same(W, i0, v, hW)) :
-        {RN.d_DepositRequest(hl, _) <> xl(0n, F.spec_common__update(T.DepositRequest, W, i0, v), 1n+i0, hl) == [RN.d_DepositRequest(hl, v)] : List<&2, D.Digest>}
+      %Equal.sym(FuluDepositRequest_d.DepositRequest, xat(F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, i0, v), i0), v, xat_upd_same(W, i0, v, hW)) :
+        {RN.d_DepositRequest(hl, _) <> xl(0n, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, i0, v), 1n+i0, hl) == [RN.d_DepositRequest(hl, v)] : List<&2, D.Digest>}
       {==}
     case 1n+ +q:
       +J = Nat.add(1n+q, i0)
-      +W2 = F.spec_common__update(T.DepositRequest, W, J, v)
+      +W2 = F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, J, v)
       +x = RN.d_DepositRequest(hl, v)
       +ne = CT.neq_of_lt(J, i0, F.nat__le_lt_succ(i0, Nat.add(q, i0), le_add_l(q, i0)))
-      %Equal.sym(T.DepositRequest, xat(W2, i0), xat(W, i0), xat_upd(W, J, v, i0, ne)) :
+      %Equal.sym(FuluDepositRequest_d.DepositRequest, xat(W2, i0), xat(W, i0), xat_upd(W, J, v, i0, ne)) :
         {RN.d_DepositRequest(hl, _) <> xl(1n+q, W2, 1n+i0, hl) == RN.d_DepositRequest(hl, xat(W, i0)) <> LC.dput(xl(q, W, 1n+i0, hl), q, x) : List<&2, D.Digest>}
       %MR.add_succ(q, i0) :
-        {RN.d_DepositRequest(hl, xat(W, i0)) <> xl(1n+q, F.spec_common__update(T.DepositRequest, W, _, v), 1n+i0, hl)
+        {RN.d_DepositRequest(hl, xat(W, i0)) <> xl(1n+q, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, _, v), 1n+i0, hl)
          == RN.d_DepositRequest(hl, xat(W, i0)) <> LC.dput(xl(q, W, 1n+i0, hl), q, x) : List<&2, D.Digest>}
-      %Equal.sym(List<&2, D.Digest>, xl(1n+q, F.spec_common__update(T.DepositRequest, W, Nat.add(q, 1n+i0), v), 1n+i0, hl), LC.dput(xl(q, W, 1n+i0, hl), q, x),
-          xl_app(q, W, 1n+i0, v, hl, hw_shift(q, i0, F.spec_common__length(T.DepositRequest, W), hW))) :
+      %Equal.sym(List<&2, D.Digest>, xl(1n+q, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, Nat.add(q, 1n+i0), v), 1n+i0, hl), LC.dput(xl(q, W, 1n+i0, hl), q, x),
+          xl_app(q, W, 1n+i0, v, hl, hw_shift(q, i0, F.spec_common__length(FuluDepositRequest_d.DepositRequest, W), hW))) :
         {RN.d_DepositRequest(hl, xat(W, i0)) <> _ == RN.d_DepositRequest(hl, xat(W, i0)) <> LC.dput(xl(q, W, 1n+i0, hl), q, x) : List<&2, D.Digest>}
       {==}
 
 # The element roots after appending v to N elements.
-def xl_app0(+N: Nat, +W: List<&2, T.DepositRequest>, +v: T.DepositRequest,
-    +hW: {Nat.is_lt(N, F.spec_common__length(T.DepositRequest, W)) == True{} : Bool})
-    -> {xl(1n+N, F.spec_common__update(T.DepositRequest, W, N, v), 0n, 64n) == LC.dput(xl(N, W, 0n, 64n), N, RN.d_DepositRequest(64n, v)) : List<&2, D.Digest>}:
+def xl_app0(+N: Nat, +W: List<&2, FuluDepositRequest_d.DepositRequest>, +v: FuluDepositRequest_d.DepositRequest,
+    +hW: {Nat.is_lt(N, F.spec_common__length(FuluDepositRequest_d.DepositRequest, W)) == True{} : Bool})
+    -> {xl(1n+N, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, N, v), 0n, 64n) == LC.dput(xl(N, W, 0n, 64n), N, RN.d_DepositRequest(64n, v)) : List<&2, D.Digest>}:
   %F.nat__add_zero(N) :
-    {xl(1n+N, F.spec_common__update(T.DepositRequest, W, _, v), 0n, 64n) == LC.dput(xl(N, W, 0n, 64n), N, RN.d_DepositRequest(64n, v)) : List<&2, D.Digest>}
-  xl_app(N, W, 0n, v, 64n, hw0(N, F.spec_common__length(T.DepositRequest, W), hW))
+    {xl(1n+N, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, _, v), 0n, 64n) == LC.dput(xl(N, W, 0n, 64n), N, RN.d_DepositRequest(64n, v)) : List<&2, D.Digest>}
+  xl_app(N, W, 0n, v, 64n, hw0(N, F.spec_common__length(FuluDepositRequest_d.DepositRequest, W), hW))
 
 # The invariant for the appended items, n + 1 elements and the range [min(lo, n), max(hi, n)].
-def capp_cinv(+d: Nat, +t: F.array__Tree<D.Digest>, +W: List<&2, T.DepositRequest>, +n: U32, +v: T.DepositRequest,
+def capp_cinv(+d: Nat, +t: F.array__Tree<D.Digest>, +W: List<&2, FuluDepositRequest_d.DepositRequest>, +n: U32, +v: FuluDepositRequest_d.DepositRequest,
     +lo: U32, +hi: U32, +c1: Bool, +e1: {Nat.is_le(U32.to_nat(lo), U32.to_nat(n)) == c1 : Bool},
     +c2: Bool, +e2: {Nat.is_le(U32.to_nat(n), U32.to_nat(hi)) == c2 : Bool},
     +hb: {Nat.is_lt(U32.to_nat(hi), O.pow2n(d)) == True{} : Bool}, +nb: {Nat.is_lt(U32.to_nat(n), O.pow2n(d)) == True{} : Bool},
-    +hW: {Nat.is_lt(U32.to_nat(n), F.spec_common__length(T.DepositRequest, W)) == True{} : Bool},
+    +hW: {Nat.is_lt(U32.to_nat(n), F.spec_common__length(FuluDepositRequest_d.DepositRequest, W)) == True{} : Bool},
     +ci: CT.cinv(F.array__slots(D.Digest, t), d, U32.to_nat(n), xl(U32.to_nat(n), W, 0n, 64n), U32.to_nat(lo), U32.to_nat(hi)))
-    -> CT.cinv(F.array__slots(D.Digest, t), d, 1n+U32.to_nat(n), xl(1n+U32.to_nat(n), F.spec_common__update(T.DepositRequest, W, U32.to_nat(n), v), 0n, 64n),
+    -> CT.cinv(F.array__slots(D.Digest, t), d, 1n+U32.to_nat(n), xl(1n+U32.to_nat(n), F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, U32.to_nat(n), v), 0n, 64n),
          U32.to_nat(O.pick(c1, lo, n)), U32.to_nat(O.pick(c2, hi, n))):
   +N = U32.to_nat(n)
   +XL = xl(N, W, 0n, 64n)
   +x = RN.d_DepositRequest(64n, v)
-  +XL2 = xl(1n+N, F.spec_common__update(T.DepositRequest, W, N, v), 0n, 64n)
+  +XL2 = xl(1n+N, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, N, v), 0n, 64n)
   +es = xl_app0(N, W, v, hW)
   %Equal.sym(List<&2, D.Digest>, XL2, LC.dput(XL, N, x), es) : CT.cinv(F.array__slots(D.Digest, t), d, 1n+N, _, U32.to_nat(O.pick(c1, lo, n)), U32.to_nat(O.pick(c2, hi, n)))
   LC.cinv_move(F.array__slots(D.Digest, t), d, N, 1n+N, XL, N, x,
     U32.to_nat(lo), U32.to_nat(hi), U32.to_nat(O.pick(c1, lo, n)), U32.to_nat(O.pick(c2, hi, n)),
-    xlen(N, W, 0n, 64n), put_len_n(LC.dput(XL, N, x), XL2, 1n+N, es, xlen(1n+N, F.spec_common__update(T.DepositRequest, W, N, v), 0n, 64n)),
+    xlen(N, W, 0n, 64n), put_len_n(LC.dput(XL, N, x), XL2, 1n+N, es, xlen(1n+N, F.spec_common__update(FuluDepositRequest_d.DepositRequest, W, N, v), 0n, 64n)),
     lo1(lo, n, c1, e1), hi1(n, hi, c2, e2), lo2(lo, n, c1, e1), hi2(n, hi, c2, e2), ci)
 
 # ---- a fresh cache ----------------------------------------------------------------------------
@@ -1461,11 +1463,11 @@ def fresh_cinv(+NS: List<&2, D.Digest>, +d: Nat, +n: Nat, +XL: List<&2, D.Digest
 # root is the reference root of the current elements. Not covered here: the
 # append that grows the capacity (the `room` copy loop).
 
-def xroots(+n: U32, +ta: F.array__Tree<T.DepositRequest>) -> List<&2, D.Digest>: XLof(n, ta)
+def xroots(+n: U32, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>) -> List<&2, D.Digest>: XLof(n, ta)
 
-def inv(+ta: F.array__Tree<T.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32) -> Data:
+def inv(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32) -> Data:
   DK.P2({Nat.is_lt(dw, 32n) == True{} : Bool},
-  DK.P2({F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+  DK.P2({F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
   DK.P2({Nat.is_le(O.pow2n(d), F.spec_common__pow2(dw)) == True{} : Bool},
   DK.P2({Nat.is_lt(d, 31n) == True{} : Bool},
   DK.P2({Nat.is_le(d, 13n) == True{} : Bool},
@@ -1475,20 +1477,20 @@ def inv(+ta: F.array__Tree<T.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Dige
   DK.P2({F.spec_common__length(D.Digest, F.array__slots(D.Digest, t)) == O.pow2n(1n+d) : Nat},
         CT.cinv(F.array__slots(D.Digest, t), d, U32.to_nat(n), xroots(n, ta), U32.to_nat(lo), U32.to_nat(hi)))))))))))
 
-def cached(+ta: F.array__Tree<T.DepositRequest>, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32) -> T.l8192_DepositRequest_Cached:
-  T.l8192_DepositRequest_Cached{F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi}
+def cached(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32) -> Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached:
+  Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi}
 
 # ---- the root ------------------------------------------------------------------------------
 
-def dig(+n: U32, +ta: F.array__Tree<T.DepositRequest>) -> D.Digest:
+def dig(+n: U32, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>) -> D.Digest:
   O.mix_len(64n, MD.rtree(13n, Nat.is_lt(0n, U32.to_nat(n)), 64n, xroots(n, ta), 0n), n)
 
-def tafter(+ta: F.array__Tree<T.DepositRequest>, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32) -> F.array__Tree<D.Digest>:
+def tafter(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32) -> F.array__Tree<D.Digest>:
   after(Nat.is_le(U32.to_nat(lo), U32.to_nat(hi)), d, U32.to_nat(n), xroots(n, ta), U32.to_nat(lo), U32.to_nat(hi), t)
 
 law root_eq:
   for -h: B.Buf
-  for +ta: F.array__Tree<T.DepositRequest>
+  for +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +dw: Nat
   for +t: F.array__Tree<D.Digest>
   for +n: U32
@@ -1497,8 +1499,8 @@ law root_eq:
   for +hi: U32
   for +seg: U32
   for +iv: inv(ta, dw, t, n, d, lo, hi)
-  {T.l8192_DepositRequest_cached_root(64n, h, cached(ta, t, n, d, lo, hi), seg) == (h, (cached(ta, tafter(ta, t, n, d, lo, hi), n, d, n, 0), dig(n, ta)))
-   : B.Buf & (T.l8192_DepositRequest_Cached & D.Digest)}
+  {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_cached_root(64n, h, cached(ta, t, n, d, lo, hi), seg) == (h, (cached(ta, tafter(ta, t, n, d, lo, hi), n, d, n, 0), dig(n, ta)))
+   : B.Buf & (Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & D.Digest)}
 def root_eq(h, ta, dw, t, n, d, lo, hi, seg, iv):
   (+hdw, w1) = iv
   (+pfa, w2) = w1
@@ -1522,7 +1524,7 @@ def len_after(+b: Bool, +d: Nat, +N: Nat, +XLs: List<&2, D.Digest>, +Lo: Nat, +H
 
 # The cache a root returns is valid, with the range [n, 0].
 law root_inv:
-  for +ta: F.array__Tree<T.DepositRequest>
+  for +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +dw: Nat
   for +t: F.array__Tree<D.Digest>
   for +n: U32
@@ -1553,46 +1555,46 @@ def root_inv(ta, dw, t, n, d, lo, hi, iv):
 
 # ---- a write --------------------------------------------------------------------------------
 
-def item_lt(+ta: F.array__Tree<T.DepositRequest>, +dw: Nat, +d: Nat, +I: Nat,
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+def item_lt(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +dw: Nat, +d: Nat, +I: Nat,
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +hcap: {Nat.is_le(O.pow2n(d), F.spec_common__pow2(dw)) == True{} : Bool},
     +hI: {Nat.is_lt(I, O.pow2n(d)) == True{} : Bool})
     -> {Nat.is_lt(I, F.spec_common__pow2(dw)) == True{} : Bool}:
   F.nat__lt_le_trans(I, O.pow2n(d), F.spec_common__pow2(dw), hI, hcap)
 
-def item_len(+ta: F.array__Tree<T.DepositRequest>, +dw: Nat, +I: Nat,
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+def item_len(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +dw: Nat, +I: Nat,
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +h: {Nat.is_lt(I, F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {Nat.is_lt(I, F.spec_common__length(T.DepositRequest, F.array__slots(T.DepositRequest, ta))) == True{} : Bool}:
-  %Equal.sym(Nat, F.spec_common__length(T.DepositRequest, F.array__slots(T.DepositRequest, ta)), F.spec_common__pow2(dw), F.array__slots_length(T.DepositRequest, dw, ta, pfa)) : {Nat.is_lt(I, _) == True{} : Bool}
+    -> {Nat.is_lt(I, F.spec_common__length(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, ta))) == True{} : Bool}:
+  %Equal.sym(Nat, F.spec_common__length(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, ta)), F.spec_common__pow2(dw), F.array__slots_length(FuluDepositRequest_d.DepositRequest, dw, ta, pfa)) : {Nat.is_lt(I, _) == True{} : Bool}
   h
 
 # Writing the items at i.
-def set_items(+ta: F.array__Tree<T.DepositRequest>, +dw: Nat, +i: U32, +v: T.DepositRequest,
+def set_items(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +dw: Nat, +i: U32, +v: FuluDepositRequest_d.DepositRequest,
     +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool},
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +h: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {Array.set(T.DepositRequest, F.array__thaw(T.DepositRequest, ta), i, v) == F.array__thaw(T.DepositRequest, F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(i), v)) : Array<T.DepositRequest>}:
-  +W = F.array__slots(T.DepositRequest, ta)
-  F.array__set(T.DepositRequest, dw, ta, i, v, xat(W, U32.to_nat(i)), hdw, h, xnth(W, U32.to_nat(i), item_len(ta, dw, U32.to_nat(i), pfa, h)), pfa)
+    -> {Array.set(FuluDepositRequest_d.DepositRequest, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), i, v) == F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(i), v)) : Array<FuluDepositRequest_d.DepositRequest>}:
+  +W = F.array__slots(FuluDepositRequest_d.DepositRequest, ta)
+  F.array__set(FuluDepositRequest_d.DepositRequest, dw, ta, i, v, xat(W, U32.to_nat(i)), hdw, h, xnth(W, U32.to_nat(i), item_len(ta, dw, U32.to_nat(i), pfa, h)), pfa)
 
-def set_state(+ta: F.array__Tree<T.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32, +i: U32, +v: T.DepositRequest,
+def set_state(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32, +i: U32, +v: FuluDepositRequest_d.DepositRequest,
     +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool},
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +h: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {T.l8192_DepositRequest_cset_in(True{}, F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, i, v)
-        == (cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)), True{})
-        : T.l8192_DepositRequest_Cached & Bool}:
-  %Equal.sym(Array<T.DepositRequest>, Array.set(T.DepositRequest, F.array__thaw(T.DepositRequest, ta), i, v), F.array__thaw(T.DepositRequest, F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(i), v)),
+    -> {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_cset_in(True{}, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, i, v)
+        == (cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)), True{})
+        : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}:
+  %Equal.sym(Array<FuluDepositRequest_d.DepositRequest>, Array.set(FuluDepositRequest_d.DepositRequest, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), i, v), F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(i), v)),
       set_items(ta, dw, i, v, hdw, pfa, h)) :
-    {(T.l8192_DepositRequest_Cached{_, n, d, F.array__thaw(D.Digest, t), O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})
-     == (cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
+    {(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{_, n, d, F.array__thaw(D.Digest, t), O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)}, True{})
+     == (cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
   {==}
 
 # A write at i < n: the items tree updated at i, the range widened.
 law cset_eq:
-  for +ta: F.array__Tree<T.DepositRequest>
+  for +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +dw: Nat
   for +t: F.array__Tree<D.Digest>
   for +n: U32
@@ -1600,12 +1602,12 @@ law cset_eq:
   for +lo: U32
   for +hi: U32
   for +i: U32
-  for +v: T.DepositRequest
+  for +v: FuluDepositRequest_d.DepositRequest
   for +hin: {Nat.is_lt(U32.to_nat(i), U32.to_nat(n)) == True{} : Bool}
   for +iv: inv(ta, dw, t, n, d, lo, hi)
-  {T.l8192_DepositRequest_cset(cached(ta, t, n, d, lo, hi), i, v)
-   == (cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)), True{})
-   : T.l8192_DepositRequest_Cached & Bool}
+  {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_cset(cached(ta, t, n, d, lo, hi), i, v)
+   == (cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)), True{})
+   : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
 def cset_eq(ta, dw, t, n, d, lo, hi, i, v, hin, iv):
   (+hdw, w1) = iv
   (+pfa, w2) = w1
@@ -1614,34 +1616,34 @@ def cset_eq(ta, dw, t, n, d, lo, hi, i, v, hin, iv):
   (+hdD, w5) = w4
   (+hnd, w6) = w5
   %Equal.sym(Bool, U32.is_lt(i, n), Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), CX.lt_nat(i, n)) :
-    {T.l8192_DepositRequest_cset_in(_, F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, i, v)
-     == (cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_cset_in(_, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, i, v)
+     == (cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
   %Equal.sym(Bool, Nat.is_lt(U32.to_nat(i), U32.to_nat(n)), True{}, hin) :
-    {T.l8192_DepositRequest_cset_in(_, F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, i, v)
-     == (cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_cset_in(_, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, i, v)
+     == (cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
   set_state(ta, dw, t, n, d, lo, hi, i, v, hdw, pfa,
     item_lt(ta, dw, d, U32.to_nat(i), pfa, hcap, F.nat__lt_le_trans(U32.to_nat(i), U32.to_nat(n), O.pow2n(d), hin, hnd)))
 
-def up_slots(+ta: F.array__Tree<T.DepositRequest>, +dw: Nat, +I: Nat, +v: T.DepositRequest,
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+def up_slots(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +dw: Nat, +I: Nat, +v: FuluDepositRequest_d.DepositRequest,
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +h: {Nat.is_lt(I, F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {F.array__slots(T.DepositRequest, F.array__upd(T.DepositRequest, dw, ta, I, v)) == F.spec_common__update(T.DepositRequest, F.array__slots(T.DepositRequest, ta), I, v) : List<&2, T.DepositRequest>}:
-  F.array__upd_slots(T.DepositRequest, dw, ta, I, v, h, pfa)
+    -> {F.array__slots(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, I, v)) == F.spec_common__update(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, ta), I, v) : List<&2, FuluDepositRequest_d.DepositRequest>}:
+  F.array__upd_slots(FuluDepositRequest_d.DepositRequest, dw, ta, I, v, h, pfa)
 
-def ci_items(+t: F.array__Tree<D.Digest>, +d: Nat, +N: Nat, +n2: U32, +Lo: Nat, +Hi: Nat, +W2: List<&2, T.DepositRequest>, +ta2: F.array__Tree<T.DepositRequest>,
-    +e: {F.array__slots(T.DepositRequest, ta2) == W2 : List<&2, T.DepositRequest>},
+def ci_items(+t: F.array__Tree<D.Digest>, +d: Nat, +N: Nat, +n2: U32, +Lo: Nat, +Hi: Nat, +W2: List<&2, FuluDepositRequest_d.DepositRequest>, +ta2: F.array__Tree<FuluDepositRequest_d.DepositRequest>,
+    +e: {F.array__slots(FuluDepositRequest_d.DepositRequest, ta2) == W2 : List<&2, FuluDepositRequest_d.DepositRequest>},
     +en: {U32.to_nat(n2) == N : Nat},
     +c: CT.cinv(F.array__slots(D.Digest, t), d, N, xl(N, W2, 0n, 64n), Lo, Hi))
     -> CT.cinv(F.array__slots(D.Digest, t), d, U32.to_nat(n2), xroots(n2, ta2), Lo, Hi):
-  %Equal.sym(List<&2, T.DepositRequest>, F.array__slots(T.DepositRequest, ta2), W2, e) : CT.cinv(F.array__slots(D.Digest, t), d, U32.to_nat(n2), xl(U32.to_nat(n2), _, 0n, 64n), Lo, Hi)
+  %Equal.sym(List<&2, FuluDepositRequest_d.DepositRequest>, F.array__slots(FuluDepositRequest_d.DepositRequest, ta2), W2, e) : CT.cinv(F.array__slots(D.Digest, t), d, U32.to_nat(n2), xl(U32.to_nat(n2), _, 0n, 64n), Lo, Hi)
   %Equal.sym(Nat, U32.to_nat(n2), N, en) : CT.cinv(F.array__slots(D.Digest, t), d, _, xl(_, W2, 0n, 64n), Lo, Hi)
   c
 
 # The written cache is valid.
 law cset_inv:
-  for +ta: F.array__Tree<T.DepositRequest>
+  for +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +dw: Nat
   for +t: F.array__Tree<D.Digest>
   for +n: U32
@@ -1649,10 +1651,10 @@ law cset_inv:
   for +lo: U32
   for +hi: U32
   for +i: U32
-  for +v: T.DepositRequest
+  for +v: FuluDepositRequest_d.DepositRequest
   for +hin: {Nat.is_lt(U32.to_nat(i), U32.to_nat(n)) == True{} : Bool}
   for +iv: inv(ta, dw, t, n, d, lo, hi)
-  inv(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(i), v), dw, t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i))
+  inv(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(i), v), dw, t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i))
 def cset_inv(ta, dw, t, n, d, lo, hi, i, v, hin, iv):
   (+hdw, w1) = iv
   (+pfa, w2) = w1
@@ -1669,13 +1671,13 @@ def cset_inv(ta, dw, t, n, d, lo, hi, i, v, hin, iv):
   +hI = item_lt(ta, dw, d, I, pfa, hcap, ib)
   +c1 = U32.is_le(lo, i)
   +c2 = U32.is_le(i, hi)
-  (hdw, (F.array__upd_perfect(T.DepositRequest, dw, ta, I, v, pfa), (hcap, (hd, (hdD, (hnd, (pf,
+  (hdw, (F.array__upd_perfect(FuluDepositRequest_d.DepositRequest, dw, ta, I, v, pfa), (hcap, (hd, (hdD, (hnd, (pf,
     (cset_hi(d, i, hi, c2, hhi, ib),
     (len,
      ci_items(t, d, N, n, U32.to_nat(O.pick(c1, lo, i)), U32.to_nat(O.pick(c2, hi, i)),
-       F.spec_common__update(T.DepositRequest, F.array__slots(T.DepositRequest, ta), I, v), F.array__upd(T.DepositRequest, dw, ta, I, v),
+       F.spec_common__update(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, ta), I, v), F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, I, v),
        up_slots(ta, dw, I, v, pfa, hI), {==},
-       cset_cinv(d, t, N, F.array__slots(T.DepositRequest, ta), i, v, lo, hi,
+       cset_cinv(d, t, N, F.array__slots(FuluDepositRequest_d.DepositRequest, ta), i, v, lo, hi,
          c1, Equal.sym(Bool, U32.is_le(lo, i), Nat.is_le(U32.to_nat(lo), I), CX.le_nat(lo, i)),
          c2, Equal.sym(Bool, U32.is_le(i, hi), Nat.is_le(I, U32.to_nat(hi)), CX.le_nat(i, hi)),
          hhi, ib, hin, item_len(ta, dw, I, pfa, hI), ci)))))))))))
@@ -1691,18 +1693,18 @@ def fit_true(+n: U32, +d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hfit:
   %Equal.sym(Nat, U32.to_nat(O.pow2u(d)), O.pow2n(d), CX.pow2u_val(d, WS2hd32(d, hd))) : {Nat.is_lt(U32.to_nat(n), _) == True{} : Bool}
   hfit
 
-def app_state(+ta: F.array__Tree<T.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32, +v: T.DepositRequest,
+def app_state(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32, +v: FuluDepositRequest_d.DepositRequest,
     +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool},
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +h: {Nat.is_lt(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool})
-    -> {T.l8192_DepositRequest_capp_fit(True{}, F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v)
-        == cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n))
-        : T.l8192_DepositRequest_Cached}:
-  %Equal.sym(Array<T.DepositRequest>, Array.set(T.DepositRequest, F.array__thaw(T.DepositRequest, ta), n, v), F.array__thaw(T.DepositRequest, F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(n), v)),
+    -> {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp_fit(True{}, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v)
+        == cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n))
+        : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached}:
+  %Equal.sym(Array<FuluDepositRequest_d.DepositRequest>, Array.set(FuluDepositRequest_d.DepositRequest, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, v), F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(n), v)),
       set_items(ta, dw, n, v, hdw, pfa, h)) :
-    {T.l8192_DepositRequest_Cached{_, (n + 1 : U32), d, F.array__thaw(D.Digest, t), O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
-     == cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n))
-     : T.l8192_DepositRequest_Cached}
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{_, (n + 1 : U32), d, F.array__thaw(D.Digest, t), O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)}
+     == cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n))
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached}
   {==}
 
 # The runtime's append guard: `capp` appends only when it holds. This list's
@@ -1712,40 +1714,40 @@ def guard(+n: U32) -> Bool: U32.is_le((n + 1 : U32), 8192)
 
 # An append into a cache with room (n < 2^d): the items tree updated at n, n + 1 elements.
 law capp_eq:
-  for +ta: F.array__Tree<T.DepositRequest>
+  for +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +dw: Nat
   for +t: F.array__Tree<D.Digest>
   for +n: U32
   for +d: Nat
   for +lo: U32
   for +hi: U32
-  for +v: T.DepositRequest
+  for +v: FuluDepositRequest_d.DepositRequest
   for +hfit: {Nat.is_lt(U32.to_nat(n), O.pow2n(d)) == True{} : Bool}
   for +hgd: {guard(n) == True{} : Bool}
   for +iv: inv(ta, dw, t, n, d, lo, hi)
-  {T.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v)
-   == (cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
-   : T.l8192_DepositRequest_Cached & Bool}
+  {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v)
+   == (cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
+   : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
 def capp_eq(ta, dw, t, n, d, lo, hi, v, hfit, hgd, iv):
   (+hdw, w1) = iv
   (+pfa, w2) = w1
   (+hcap, w3) = w2
   (+hd, w4) = w3
   %Equal.sym(Bool, guard(n), True{}, hgd) :
-    {T.l8192_DepositRequest_capp_in(_, F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v)
-     == (cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp_in(_, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v)
+     == (cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
   %Equal.sym(Bool, U32.is_lt(n, O.pow2u(d)), True{}, fit_true(n, d, hd, hfit)) :
-    {(T.l8192_DepositRequest_capp_fit(_, F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v), True{})
-     == (cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
-  %Equal.sym(T.l8192_DepositRequest_Cached,
-      T.l8192_DepositRequest_capp_fit(True{}, F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v),
-      cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)),
+    {(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp_fit(_, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v), True{})
+     == (cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
+  %Equal.sym(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached,
+      Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp_fit(True{}, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v),
+      cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)),
       app_state(ta, dw, t, n, d, lo, hi, v, hdw, pfa, item_lt(ta, dw, d, U32.to_nat(n), pfa, hcap, hfit))) :
     {(_, True{})
-     == (cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
+     == (cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
   {==}
 
 def app_bnext(+n: U32, +d: Nat, +hfit: {Nat.is_lt(U32.to_nat(n), O.pow2n(d)) == True{} : Bool})
@@ -1766,17 +1768,17 @@ def hnd_next(+n: U32, +d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hfit:
 
 # The appended cache is valid.
 law capp_inv:
-  for +ta: F.array__Tree<T.DepositRequest>
+  for +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +dw: Nat
   for +t: F.array__Tree<D.Digest>
   for +n: U32
   for +d: Nat
   for +lo: U32
   for +hi: U32
-  for +v: T.DepositRequest
+  for +v: FuluDepositRequest_d.DepositRequest
   for +hfit: {Nat.is_lt(U32.to_nat(n), O.pow2n(d)) == True{} : Bool}
   for +iv: inv(ta, dw, t, n, d, lo, hi)
-  inv(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(n), v), dw, t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n))
+  inv(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(n), v), dw, t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n))
 def capp_inv(ta, dw, t, n, d, lo, hi, v, hfit, iv):
   (+hdw, w1) = iv
   (+pfa, w2) = w1
@@ -1791,13 +1793,13 @@ def capp_inv(ta, dw, t, n, d, lo, hi, v, hfit, iv):
   +hI = item_lt(ta, dw, d, N, pfa, hcap, hfit)
   +c1 = U32.is_le(lo, n)
   +c2 = U32.is_le(n, hi)
-  (hdw, (F.array__upd_perfect(T.DepositRequest, dw, ta, N, v, pfa), (hcap, (hd, (hdD, (hnd_next(n, d, hd, hfit), (pf,
+  (hdw, (F.array__upd_perfect(FuluDepositRequest_d.DepositRequest, dw, ta, N, v, pfa), (hcap, (hd, (hdD, (hnd_next(n, d, hd, hfit), (pf,
     (cset_hi(d, n, hi, c2, hhi, hfit),
     (len,
      ci_items(t, d, 1n+N, (n + 1 : U32), U32.to_nat(O.pick(c1, lo, n)), U32.to_nat(O.pick(c2, hi, n)),
-       F.spec_common__update(T.DepositRequest, F.array__slots(T.DepositRequest, ta), N, v), F.array__upd(T.DepositRequest, dw, ta, N, v),
+       F.spec_common__update(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, ta), N, v), F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, N, v),
        up_slots(ta, dw, N, v, pfa, hI), n_next(n, d, hd, hfit),
-       capp_cinv(d, t, F.array__slots(T.DepositRequest, ta), n, v, lo, hi,
+       capp_cinv(d, t, F.array__slots(FuluDepositRequest_d.DepositRequest, ta), n, v, lo, hi,
          c1, Equal.sym(Bool, U32.is_le(lo, n), Nat.is_le(U32.to_nat(lo), N), CX.le_nat(lo, n)),
          c2, Equal.sym(Bool, U32.is_le(n, hi), Nat.is_le(N, U32.to_nat(hi)), CX.le_nat(n, hi)),
          hhi, hfit, item_len(ta, dw, N, pfa, hI), ci)))))))))))
@@ -1819,7 +1821,7 @@ def fresh_len(+d: Nat) -> {F.spec_common__length(D.Digest, F.array__slots(D.Dige
     F.array__slots_length(D.Digest, 1n+d, dnew(d), F.array__trep_perfect(D.Digest, 1n+d, D.zero())), CT.pow2_eq(1n+d))
 
 # The node array a fresh cache allocates.
-def fresh_nodes(+d: Nat) -> {T.l8192_DepositRequest_dfill(1n+d) == F.array__thaw(D.Digest, dnew(d)) : Array<D.Digest>}:
+def fresh_nodes(+d: Nat) -> {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_dfill(1n+d) == F.array__thaw(D.Digest, dnew(d)) : Array<D.Digest>}:
   F.array__new(D.Digest, 1n+d, D.zero())
 
 def pw_le_dw(+n: U32, +dw: Nat, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool})
@@ -1828,33 +1830,33 @@ def pw_le_dw(+n: U32, +dw: Nat, +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__po
   hn
 
 # cache(Seq{thaw ta, n}): the fresh cache at depth words_depth(n), every leaf dirty.
-def cache_eq(+ta: F.array__Tree<T.DepositRequest>, +n: U32)
-    -> {T.l8192_DepositRequest_cache(T.l8192_DepositRequest_Seq{F.array__thaw(T.DepositRequest, ta), n})
+def cache_eq(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +n: U32)
+    -> {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_cache(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n})
         == cached(ta, dnew(B.words_depth(n)), n, B.words_depth(n), 0, (O.pow2u(B.words_depth(n)) - 1 : U32))
-        : T.l8192_DepositRequest_Cached}:
-  %Equal.sym(Array<D.Digest>, T.l8192_DepositRequest_dfill(1n+B.words_depth(n)), F.array__thaw(D.Digest, dnew(B.words_depth(n))), fresh_nodes(B.words_depth(n))) :
-    {T.l8192_DepositRequest_Cached{F.array__thaw(T.DepositRequest, ta), n, B.words_depth(n), _, 0, (O.pow2u(B.words_depth(n)) - 1 : U32)}
+        : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached}:
+  %Equal.sym(Array<D.Digest>, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_dfill(1n+B.words_depth(n)), F.array__thaw(D.Digest, dnew(B.words_depth(n))), fresh_nodes(B.words_depth(n))) :
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, B.words_depth(n), _, 0, (O.pow2u(B.words_depth(n)) - 1 : U32)}
      == cached(ta, dnew(B.words_depth(n)), n, B.words_depth(n), 0, (O.pow2u(B.words_depth(n)) - 1 : U32))
-     : T.l8192_DepositRequest_Cached}
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached}
   {==}
 
 def hi_lt(+d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat((O.pow2u(d) - 1 : U32)), O.pow2n(d)) == True{} : Bool}:
   %Equal.sym(Nat, U32.to_nat((O.pow2u(d) - 1 : U32)), Nat.sub(O.pow2n(d), 1n), hi_fresh(d, hd)) : {Nat.is_lt(_, O.pow2n(d)) == True{} : Bool}
   WS2.sub1_lt(O.pow2n(d), CT.pow2_pos(d))
 
-def fresh_ci(+d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +n: U32, +ta: F.array__Tree<T.DepositRequest>)
+def fresh_ci(+d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +n: U32, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>)
     -> CT.cinv(F.array__slots(D.Digest, dnew(d)), d, U32.to_nat(n), xroots(n, ta), U32.to_nat(0), U32.to_nat((O.pow2u(d) - 1 : U32))):
   %Equal.sym(Nat, U32.to_nat((O.pow2u(d) - 1 : U32)), Nat.sub(O.pow2n(d), 1n), hi_fresh(d, hd)) : CT.cinv(F.array__slots(D.Digest, dnew(d)), d, U32.to_nat(n), xroots(n, ta), 0n, _)
   fresh_cinv(F.array__slots(D.Digest, dnew(d)), d, U32.to_nat(n), xroots(n, ta))
 
 # The fresh cache of a list with n <= 2^dw, dw <= 30 and dw <= 40, is valid.
 law cache_inv:
-  for +ta: F.array__Tree<T.DepositRequest>
+  for +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +dw: Nat
   for +n: U32
   for +hdw: {Nat.is_le(dw, 30n) == True{} : Bool}
   for +hdwD: {Nat.is_le(dw, 13n) == True{} : Bool}
-  for +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool}
+  for +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool}
   inv(ta, dw, dnew(B.words_depth(n)), n, B.words_depth(n), 0, (O.pow2u(B.words_depth(n)) - 1 : U32))
 def cache_inv(ta, dw, n, hdw, hdwD, pfa, hn):
@@ -1886,39 +1888,39 @@ def cache_inv(ta, dw, n, hdw, hdwD, pfa, hn):
 
 # ---- the copy loop -------------------------------------------------------------------------
 
-def dft() -> T.DepositRequest: T.DepositRequest_default()
+def dft() -> FuluDepositRequest_d.DepositRequest: FuluDepositRequest_d.DepositRequest_default()
 
-def copy_t(k: Nat, +I: Nat, +df: Nat, +dO: Nat, +tf: F.array__Tree<T.DepositRequest>, +to: F.array__Tree<T.DepositRequest>) -> F.array__Tree<T.DepositRequest>:
+def copy_t(k: Nat, +I: Nat, +df: Nat, +dO: Nat, +tf: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +to: F.array__Tree<FuluDepositRequest_d.DepositRequest>) -> F.array__Tree<FuluDepositRequest_d.DepositRequest>:
   match k:
     case 0n: tf
     case 1n+q:
-      copy_t(q, 1n+I, df, dO, F.array__upd(T.DepositRequest, df, tf, I, xat(F.array__slots(T.DepositRequest, to), I)),
-        F.array__upd(T.DepositRequest, dO, to, I, dft()))
+      copy_t(q, 1n+I, df, dO, F.array__upd(FuluDepositRequest_d.DepositRequest, df, tf, I, xat(F.array__slots(FuluDepositRequest_d.DepositRequest, to), I)),
+        F.array__upd(FuluDepositRequest_d.DepositRequest, dO, to, I, dft()))
 
-def copy_perfect(k: Nat, +I: Nat, +df: Nat, +dO: Nat, +tf: F.array__Tree<T.DepositRequest>, +to: F.array__Tree<T.DepositRequest>,
-    +pff: {F.array__perfect(T.DepositRequest, df, tf) == True{} : Bool}, +pfo: {F.array__perfect(T.DepositRequest, dO, to) == True{} : Bool})
-    -> {F.array__perfect(T.DepositRequest, df, copy_t(k, I, df, dO, tf, to)) == True{} : Bool}:
+def copy_perfect(k: Nat, +I: Nat, +df: Nat, +dO: Nat, +tf: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +to: F.array__Tree<FuluDepositRequest_d.DepositRequest>,
+    +pff: {F.array__perfect(FuluDepositRequest_d.DepositRequest, df, tf) == True{} : Bool}, +pfo: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dO, to) == True{} : Bool})
+    -> {F.array__perfect(FuluDepositRequest_d.DepositRequest, df, copy_t(k, I, df, dO, tf, to)) == True{} : Bool}:
   match k:
     case 0n: pff
     case 1n+q:
-      copy_perfect(q, 1n+I, df, dO, F.array__upd(T.DepositRequest, df, tf, I, xat(F.array__slots(T.DepositRequest, to), I)),
-        F.array__upd(T.DepositRequest, dO, to, I, dft()),
-        F.array__upd_perfect(T.DepositRequest, df, tf, I, xat(F.array__slots(T.DepositRequest, to), I), pff),
-        F.array__upd_perfect(T.DepositRequest, dO, to, I, dft(), pfo))
+      copy_perfect(q, 1n+I, df, dO, F.array__upd(FuluDepositRequest_d.DepositRequest, df, tf, I, xat(F.array__slots(FuluDepositRequest_d.DepositRequest, to), I)),
+        F.array__upd(FuluDepositRequest_d.DepositRequest, dO, to, I, dft()),
+        F.array__upd_perfect(FuluDepositRequest_d.DepositRequest, df, tf, I, xat(F.array__slots(FuluDepositRequest_d.DepositRequest, to), I), pff),
+        F.array__upd_perfect(FuluDepositRequest_d.DepositRequest, dO, to, I, dft(), pfo))
 
-def lt_len(+t: F.array__Tree<T.DepositRequest>, +d: Nat, +I: Nat,
-    +pf: {F.array__perfect(T.DepositRequest, d, t) == True{} : Bool},
+def lt_len(+t: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +d: Nat, +I: Nat,
+    +pf: {F.array__perfect(FuluDepositRequest_d.DepositRequest, d, t) == True{} : Bool},
     +h: {Nat.is_lt(I, F.spec_common__pow2(d)) == True{} : Bool})
-    -> {Nat.is_lt(I, F.spec_common__length(T.DepositRequest, F.array__slots(T.DepositRequest, t))) == True{} : Bool}:
-  %Equal.sym(Nat, F.spec_common__length(T.DepositRequest, F.array__slots(T.DepositRequest, t)), F.spec_common__pow2(d), F.array__slots_length(T.DepositRequest, d, t, pf)) :
+    -> {Nat.is_lt(I, F.spec_common__length(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, t))) == True{} : Bool}:
+  %Equal.sym(Nat, F.spec_common__length(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, t)), F.spec_common__pow2(d), F.array__slots_length(FuluDepositRequest_d.DepositRequest, d, t, pf)) :
     {Nat.is_lt(I, _) == True{} : Bool}
   h
 
-def item_nth(+t: F.array__Tree<T.DepositRequest>, +d: Nat, +i: U32,
-    +pf: {F.array__perfect(T.DepositRequest, d, t) == True{} : Bool},
+def item_nth(+t: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +d: Nat, +i: U32,
+    +pf: {F.array__perfect(FuluDepositRequest_d.DepositRequest, d, t) == True{} : Bool},
     +h: {Nat.is_lt(U32.to_nat(i), F.spec_common__pow2(d)) == True{} : Bool})
-    -> {F.spec_common__nth(T.DepositRequest, F.array__slots(T.DepositRequest, t), U32.to_nat(i)) == Some{xat(F.array__slots(T.DepositRequest, t), U32.to_nat(i))} : Maybe<&2, T.DepositRequest>}:
-  xnth(F.array__slots(T.DepositRequest, t), U32.to_nat(i), lt_len(t, d, U32.to_nat(i), pf, h))
+    -> {F.spec_common__nth(FuluDepositRequest_d.DepositRequest, F.array__slots(FuluDepositRequest_d.DepositRequest, t), U32.to_nat(i)) == Some{xat(F.array__slots(FuluDepositRequest_d.DepositRequest, t), U32.to_nat(i))} : Maybe<&2, FuluDepositRequest_d.DepositRequest>}:
+  xnth(F.array__slots(FuluDepositRequest_d.DepositRequest, t), U32.to_nat(i), lt_len(t, d, U32.to_nat(i), pf, h))
 
 def step_lt(+I: Nat, +q: Nat, +B: Nat, +h: {Nat.is_le(Nat.add(I, 1n+q), B) == True{} : Bool}) -> {Nat.is_lt(I, B) == True{} : Bool}:
   CT.step_lt(I, q, B, h)
@@ -1947,40 +1949,40 @@ law copy_eq:
   for +i: U32
   for +df: Nat
   for +dO: Nat
-  for +tf: F.array__Tree<T.DepositRequest>
-  for +to: F.array__Tree<T.DepositRequest>
+  for +tf: F.array__Tree<FuluDepositRequest_d.DepositRequest>
+  for +to: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +hdf: {Nat.is_lt(df, 32n) == True{} : Bool}
   for +hdO: {Nat.is_lt(dO, 32n) == True{} : Bool}
-  for +pff: {F.array__perfect(T.DepositRequest, df, tf) == True{} : Bool}
-  for +pfo: {F.array__perfect(T.DepositRequest, dO, to) == True{} : Bool}
+  for +pff: {F.array__perfect(FuluDepositRequest_d.DepositRequest, df, tf) == True{} : Bool}
+  for +pfo: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dO, to) == True{} : Bool}
   for +hkf: {Nat.is_le(Nat.add(U32.to_nat(i), k), F.spec_common__pow2(df)) == True{} : Bool}
   for +hko: {Nat.is_le(Nat.add(U32.to_nat(i), k), F.spec_common__pow2(dO)) == True{} : Bool}
-  {T.l8192_DepositRequest_copy(k, i, (F.array__thaw(T.DepositRequest, tf), F.array__thaw(T.DepositRequest, to)))
-   == F.array__thaw(T.DepositRequest, copy_t(k, U32.to_nat(i), df, dO, tf, to)) : Array<T.DepositRequest>}
+  {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_copy(k, i, (F.array__thaw(FuluDepositRequest_d.DepositRequest, tf), F.array__thaw(FuluDepositRequest_d.DepositRequest, to)))
+   == F.array__thaw(FuluDepositRequest_d.DepositRequest, copy_t(k, U32.to_nat(i), df, dO, tf, to)) : Array<FuluDepositRequest_d.DepositRequest>}
 def copy_eq(k, i, df, dO, tf, to, hdf, hdO, pff, pfo, hkf, hko):
   match k:
     case 0n: {==}
     case 1n+ +q:
       +I = U32.to_nat(i)
-      +x = xat(F.array__slots(T.DepositRequest, to), I)
-      +y = xat(F.array__slots(T.DepositRequest, tf), I)
+      +x = xat(F.array__slots(FuluDepositRequest_d.DepositRequest, to), I)
+      +y = xat(F.array__slots(FuluDepositRequest_d.DepositRequest, tf), I)
       +hio = step_lt(I, q, F.spec_common__pow2(dO), hko)
       +hif = step_lt(I, q, F.spec_common__pow2(df), hkf)
-      +to2 = F.array__upd(T.DepositRequest, dO, to, I, dft())
-      +tf2 = F.array__upd(T.DepositRequest, df, tf, I, x)
+      +to2 = F.array__upd(FuluDepositRequest_d.DepositRequest, dO, to, I, dft())
+      +tf2 = F.array__upd(FuluDepositRequest_d.DepositRequest, df, tf, I, x)
       +ei = i_next(i, q, df, hdf, hkf)
-      %Equal.sym(Array<T.DepositRequest> & T.DepositRequest, Array.swap(T.DepositRequest, F.array__thaw(T.DepositRequest, to), i, dft()), (F.array__thaw(T.DepositRequest, to2), x),
-          F.array__swap(T.DepositRequest, dO, to, i, dft(), x, hdO, hio, item_nth(to, dO, i, pfo, hio), pfo)) :
-        {T.l8192_DepositRequest_copy(q, (i + 1 : U32), T.l8192_DepositRequest_moved(i, F.array__thaw(T.DepositRequest, tf), _))
-         == F.array__thaw(T.DepositRequest, copy_t(q, 1n+I, df, dO, tf2, to2)) : Array<T.DepositRequest>}
-      %Equal.sym(Array<T.DepositRequest>, Array.set(T.DepositRequest, F.array__thaw(T.DepositRequest, tf), i, x), F.array__thaw(T.DepositRequest, tf2),
-          F.array__set(T.DepositRequest, df, tf, i, x, y, hdf, hif, item_nth(tf, df, i, pff, hif), pff)) :
-        {T.l8192_DepositRequest_copy(q, (i + 1 : U32), (_, F.array__thaw(T.DepositRequest, to2)))
-         == F.array__thaw(T.DepositRequest, copy_t(q, 1n+I, df, dO, tf2, to2)) : Array<T.DepositRequest>}
-      %ei : {T.l8192_DepositRequest_copy(q, (i + 1 : U32), (F.array__thaw(T.DepositRequest, tf2), F.array__thaw(T.DepositRequest, to2)))
-         == F.array__thaw(T.DepositRequest, copy_t(q, _, df, dO, tf2, to2)) : Array<T.DepositRequest>}
+      %Equal.sym(Array<FuluDepositRequest_d.DepositRequest> & FuluDepositRequest_d.DepositRequest, Array.swap(FuluDepositRequest_d.DepositRequest, F.array__thaw(FuluDepositRequest_d.DepositRequest, to), i, dft()), (F.array__thaw(FuluDepositRequest_d.DepositRequest, to2), x),
+          F.array__swap(FuluDepositRequest_d.DepositRequest, dO, to, i, dft(), x, hdO, hio, item_nth(to, dO, i, pfo, hio), pfo)) :
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_copy(q, (i + 1 : U32), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_moved(i, F.array__thaw(FuluDepositRequest_d.DepositRequest, tf), _))
+         == F.array__thaw(FuluDepositRequest_d.DepositRequest, copy_t(q, 1n+I, df, dO, tf2, to2)) : Array<FuluDepositRequest_d.DepositRequest>}
+      %Equal.sym(Array<FuluDepositRequest_d.DepositRequest>, Array.set(FuluDepositRequest_d.DepositRequest, F.array__thaw(FuluDepositRequest_d.DepositRequest, tf), i, x), F.array__thaw(FuluDepositRequest_d.DepositRequest, tf2),
+          F.array__set(FuluDepositRequest_d.DepositRequest, df, tf, i, x, y, hdf, hif, item_nth(tf, df, i, pff, hif), pff)) :
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_copy(q, (i + 1 : U32), (_, F.array__thaw(FuluDepositRequest_d.DepositRequest, to2)))
+         == F.array__thaw(FuluDepositRequest_d.DepositRequest, copy_t(q, 1n+I, df, dO, tf2, to2)) : Array<FuluDepositRequest_d.DepositRequest>}
+      %ei : {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_copy(q, (i + 1 : U32), (F.array__thaw(FuluDepositRequest_d.DepositRequest, tf2), F.array__thaw(FuluDepositRequest_d.DepositRequest, to2)))
+         == F.array__thaw(FuluDepositRequest_d.DepositRequest, copy_t(q, _, df, dO, tf2, to2)) : Array<FuluDepositRequest_d.DepositRequest>}
       copy_eq(q, (i + 1 : U32), df, dO, tf2, to2, hdf, hdO,
-        F.array__upd_perfect(T.DepositRequest, df, tf, I, x, pff), F.array__upd_perfect(T.DepositRequest, dO, to, I, dft(), pfo),
+        F.array__upd_perfect(FuluDepositRequest_d.DepositRequest, df, tf, I, x, pff), F.array__upd_perfect(FuluDepositRequest_d.DepositRequest, dO, to, I, dft(), pfo),
         bump(i, q, F.spec_common__pow2(df), ei, hkf), bump(i, q, F.spec_common__pow2(dO), ei, hko))
 
 # ---- room -------------------------------------------------------------------------------------
@@ -1991,10 +1993,10 @@ def rdepth(c: Bool, +dw: Nat, +n: U32) -> Nat:
     case True{}: dw
     case False{}: B.words_depth((n + 1 : U32))
 
-def rtree(c: Bool, +dw: Nat, +n: U32, +ta: F.array__Tree<T.DepositRequest>) -> F.array__Tree<T.DepositRequest>:
+def rtree(c: Bool, +dw: Nat, +n: U32, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>) -> F.array__Tree<FuluDepositRequest_d.DepositRequest>:
   match c:
     case True{}: ta
-    case False{}: copy_t(U32.to_nat(n), 0n, B.words_depth((n + 1 : U32)), dw, F.array__trep(T.DepositRequest, B.words_depth((n + 1 : U32)), dft()), ta)
+    case False{}: copy_t(U32.to_nat(n), 0n, B.words_depth((n + 1 : U32)), dw, F.array__trep(FuluDepositRequest_d.DepositRequest, B.words_depth((n + 1 : U32)), dft()), ta)
 
 def fits(+dw: Nat, +n: U32) -> Bool: Nat.is_lt(U32.to_nat(n), F.spec_common__pow2(dw))
 
@@ -2020,25 +2022,25 @@ def n_in(+n: U32, +D2: Nat, +en1: {U32.to_nat((n + 1 : U32)) == 1n+U32.to_nat(n)
   F.nat__le_trans(U32.to_nat(n), U32.to_nat((n + 1 : U32)), F.spec_common__pow2(D2), le_next(n, en1), h)
 
 # Hypotheses of the copy branch: the fresh array of depth words_depth(n + 1) <= k <= 30 holds n items.
-def room_pick_eq(+c: Bool, +dw: Nat, +n: U32, +k: Nat, +ta: F.array__Tree<T.DepositRequest>,
+def room_pick_eq(+c: Bool, +dw: Nat, +n: U32, +k: Nat, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>,
     +hdw: {Nat.is_lt(dw, 32n) == True{} : Bool},
-    +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool},
+    +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool},
     +hnw: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(dw)) == True{} : Bool},
     +hk: {Nat.is_le(k, 30n) == True{} : Bool},
     +hn1: {Nat.is_le(U32.to_nat((n + 1 : U32)), O.pow2n(k)) == True{} : Bool},
     +en1: {U32.to_nat((n + 1 : U32)) == 1n+U32.to_nat(n) : Nat},
     +ec: {fits(dw, n) == c : Bool})
-    -> {T.l8192_DepositRequest_room_pick(c, F.array__thaw(T.DepositRequest, ta), n) == F.array__thaw(T.DepositRequest, rtree(c, dw, n, ta)) : Array<T.DepositRequest>}:
+    -> {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_room_pick(c, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n) == F.array__thaw(FuluDepositRequest_d.DepositRequest, rtree(c, dw, n, ta)) : Array<FuluDepositRequest_d.DepositRequest>}:
   match c:
     case True{}: {==}
     case False{}:
       +D2 = B.words_depth((n + 1 : U32))
       +hD2 = F.nat__le_lt_trans(D2, 30n, 32n, F.nat__le_trans(D2, k, 30n, WS2.wd_min((n + 1 : U32), k, hn1), hk), {==})
       +hcov = WS2_cover(n, k, hk, hn1)
-      %Equal.sym(Array<T.DepositRequest>, T.l8192_DepositRequest_fill(D2), F.array__thaw(T.DepositRequest, F.array__trep(T.DepositRequest, D2, dft())), F.array__new(T.DepositRequest, D2, dft())) :
-        {T.l8192_DepositRequest_copy(U32.to_nat(n), 0, (_, F.array__thaw(T.DepositRequest, ta))) == F.array__thaw(T.DepositRequest, rtree(False{}, dw, n, ta)) : Array<T.DepositRequest>}
-      copy_eq(U32.to_nat(n), 0, D2, dw, F.array__trep(T.DepositRequest, D2, dft()), ta, hD2, hdw,
-        F.array__trep_perfect(T.DepositRequest, D2, dft()), pfa, n_in(n, D2, en1, hcov), hnw)
+      %Equal.sym(Array<FuluDepositRequest_d.DepositRequest>, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_fill(D2), F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__trep(FuluDepositRequest_d.DepositRequest, D2, dft())), F.array__new(FuluDepositRequest_d.DepositRequest, D2, dft())) :
+        {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_copy(U32.to_nat(n), 0, (_, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta))) == F.array__thaw(FuluDepositRequest_d.DepositRequest, rtree(False{}, dw, n, ta)) : Array<FuluDepositRequest_d.DepositRequest>}
+      copy_eq(U32.to_nat(n), 0, D2, dw, F.array__trep(FuluDepositRequest_d.DepositRequest, D2, dft()), ta, hD2, hdw,
+        F.array__trep_perfect(FuluDepositRequest_d.DepositRequest, D2, dft()), pfa, n_in(n, D2, en1, hcov), hnw)
 
 # n + 1 without wrapping, for n < 2^k with k < 32.
 def n_next2(+n: U32, +k: Nat, +hk: {Nat.is_lt(k, 32n) == True{} : Bool}, +h: {Nat.is_lt(U32.to_nat(n), O.pow2n(k)) == True{} : Bool})
@@ -2074,13 +2076,13 @@ def rt_depth(c: Bool, +dw: Nat, +n: U32, +k: Nat, +hk: {Nat.is_le(k, 30n) == Tru
     case True{}: hdw
     case False{}: F.nat__le_lt_trans(B.words_depth((n + 1 : U32)), 30n, 32n, F.nat__le_trans(B.words_depth((n + 1 : U32)), k, 30n, WS2.wd_min((n + 1 : U32), k, hn1), hk), {==})
 
-def rt_perfect(c: Bool, +dw: Nat, +n: U32, +ta: F.array__Tree<T.DepositRequest>, +pfa: {F.array__perfect(T.DepositRequest, dw, ta) == True{} : Bool})
-    -> {F.array__perfect(T.DepositRequest, rdepth(c, dw, n), rtree(c, dw, n, ta)) == True{} : Bool}:
+def rt_perfect(c: Bool, +dw: Nat, +n: U32, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +pfa: {F.array__perfect(FuluDepositRequest_d.DepositRequest, dw, ta) == True{} : Bool})
+    -> {F.array__perfect(FuluDepositRequest_d.DepositRequest, rdepth(c, dw, n), rtree(c, dw, n, ta)) == True{} : Bool}:
   match c:
     case True{}: pfa
     case False{}:
-      copy_perfect(U32.to_nat(n), 0n, B.words_depth((n + 1 : U32)), dw, F.array__trep(T.DepositRequest, B.words_depth((n + 1 : U32)), dft()), ta,
-        F.array__trep_perfect(T.DepositRequest, B.words_depth((n + 1 : U32)), dft()), pfa)
+      copy_perfect(U32.to_nat(n), 0n, B.words_depth((n + 1 : U32)), dw, F.array__trep(FuluDepositRequest_d.DepositRequest, B.words_depth((n + 1 : U32)), dft()), ta,
+        F.array__trep_perfect(FuluDepositRequest_d.DepositRequest, B.words_depth((n + 1 : U32)), dft()), pfa)
 
 def lt_to(+N: Nat, +m: Nat, +e: {m == 1n+N : Nat}) -> {Nat.is_lt(N, m) == True{} : Bool}:
   %Equal.sym(Nat, m, 1n+N, e) : {Nat.is_lt(N, _) == True{} : Bool}
@@ -2132,29 +2134,29 @@ def hnd_grow(+n: U32, +d: Nat, +en1: {U32.to_nat((n + 1 : U32)) == 1n+U32.to_nat
   %Equal.sym(Nat, U32.to_nat(n), O.pow2n(d), en) : {Nat.is_le(1n+_, O.pow2n(1n+d)) == True{} : Bool}
   F.nat__double_succ_le(O.pow2n(d), CT.pow2_pos(d))
 
-def gitems(+dw: Nat, +n: U32, +ta: F.array__Tree<T.DepositRequest>, +v: T.DepositRequest) -> F.array__Tree<T.DepositRequest>:
-  F.array__upd(T.DepositRequest, rdepth(fits(dw, n), dw, n), rtree(fits(dw, n), dw, n, ta), U32.to_nat(n), v)
+def gitems(+dw: Nat, +n: U32, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +v: FuluDepositRequest_d.DepositRequest) -> F.array__Tree<FuluDepositRequest_d.DepositRequest>:
+  F.array__upd(FuluDepositRequest_d.DepositRequest, rdepth(fits(dw, n), dw, n), rtree(fits(dw, n), dw, n, ta), U32.to_nat(n), v)
 
 # The append that does not fit: items moved and v stored at n, n + 1 elements,
 # a fresh node tree of depth 1 + d with every leaf dirty.
 law grow_eq:
-  for +ta: F.array__Tree<T.DepositRequest>
+  for +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +dw: Nat
   for +t: F.array__Tree<D.Digest>
   for +n: U32
   for +d: Nat
   for +lo: U32
   for +hi: U32
-  for +v: T.DepositRequest
+  for +v: FuluDepositRequest_d.DepositRequest
   for +k: Nat
   for +hk: {Nat.is_le(k, 30n) == True{} : Bool}
   for +hn1: {Nat.is_le(U32.to_nat((n + 1 : U32)), O.pow2n(k)) == True{} : Bool}
   for +hgd: {guard(n) == True{} : Bool}
   for +hg: {Nat.is_lt(U32.to_nat(n), O.pow2n(d)) == False{} : Bool}
   for +iv: inv(ta, dw, t, n, d, lo, hi)
-  {T.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v)
+  {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v)
    == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
-   : T.l8192_DepositRequest_Cached & Bool}
+   : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
 def grow_eq(ta, dw, t, n, d, lo, hi, v, k, hk, hn1, hgd, hg, iv):
   (+hdw, w1) = iv
   (+pfa, w2) = w1
@@ -2171,42 +2173,42 @@ def grow_eq(ta, dw, t, n, d, lo, hi, v, k, hk, hn1, hgd, hg, iv):
   +hr = rt_room(c, dw, n, k, hk, hn1, en1, {==})
   +pr = rt_perfect(c, dw, n, ta, pfa)
   %Equal.sym(Bool, guard(n), True{}, hgd) :
-    {T.l8192_DepositRequest_capp_in(_, F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v)
+    {Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp_in(_, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v)
      == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
   %Equal.sym(Bool, U32.is_lt(n, O.pow2u(d)), False{}, nofit(n, d, hd, hg)) :
-    {(T.l8192_DepositRequest_capp_fit(_, F.array__thaw(T.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v), True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
-  %Equal.sym(Array<D.Digest>, T.l8192_DepositRequest_dfill(2n+d), F.array__thaw(D.Digest, dnew(1n+d)), fresh_nodes(1n+d)) :
-    {(T.l8192_DepositRequest_Cached{Array.set(T.DepositRequest, T.l8192_DepositRequest_room(F.array__thaw(T.DepositRequest, ta), n), n, v), (n + 1 : U32), 1n+d, _, 0, (O.pow2u(1n+d) - 1 : U32)}, True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
-  %Equal.sym(Array<T.DepositRequest> & U32, Array.size(T.DepositRequest, F.array__thaw(T.DepositRequest, ta)), (F.array__thaw(T.DepositRequest, ta), F.u32__pow2u(dw)),
-      F.array__size_thaw(T.DepositRequest, dw, ta, pfa)) :
-    {(T.l8192_DepositRequest_Cached{Array.set(T.DepositRequest, T.l8192_DepositRequest_room_sized(n, _), n, v), (n + 1 : U32), 1n+d, F.array__thaw(D.Digest, dnew(1n+d)), 0, (O.pow2u(1n+d) - 1 : U32)}, True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
+    {(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp_fit(_, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n, d, F.array__thaw(D.Digest, t), lo, hi, v), True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
+  %Equal.sym(Array<D.Digest>, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_dfill(2n+d), F.array__thaw(D.Digest, dnew(1n+d)), fresh_nodes(1n+d)) :
+    {(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{Array.set(FuluDepositRequest_d.DepositRequest, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_room(F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n), n, v), (n + 1 : U32), 1n+d, _, 0, (O.pow2u(1n+d) - 1 : U32)}, True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
+  %Equal.sym(Array<FuluDepositRequest_d.DepositRequest> & U32, Array.size(FuluDepositRequest_d.DepositRequest, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta)), (F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), F.u32__pow2u(dw)),
+      F.array__size_thaw(FuluDepositRequest_d.DepositRequest, dw, ta, pfa)) :
+    {(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{Array.set(FuluDepositRequest_d.DepositRequest, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_room_sized(n, _), n, v), (n + 1 : U32), 1n+d, F.array__thaw(D.Digest, dnew(1n+d)), 0, (O.pow2u(1n+d) - 1 : U32)}, True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
   %Equal.sym(Bool, U32.is_lt(n, F.u32__pow2u(dw)), c, size_cmp(dw, n, hdw)) :
-    {(T.l8192_DepositRequest_Cached{Array.set(T.DepositRequest, T.l8192_DepositRequest_room_pick(_, F.array__thaw(T.DepositRequest, ta), n), n, v), (n + 1 : U32), 1n+d, F.array__thaw(D.Digest, dnew(1n+d)), 0, (O.pow2u(1n+d) - 1 : U32)}, True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
-  %Equal.sym(Array<T.DepositRequest>, T.l8192_DepositRequest_room_pick(c, F.array__thaw(T.DepositRequest, ta), n), F.array__thaw(T.DepositRequest, R),
+    {(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{Array.set(FuluDepositRequest_d.DepositRequest, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_room_pick(_, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n), n, v), (n + 1 : U32), 1n+d, F.array__thaw(D.Digest, dnew(1n+d)), 0, (O.pow2u(1n+d) - 1 : U32)}, True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
+  %Equal.sym(Array<FuluDepositRequest_d.DepositRequest>, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_room_pick(c, F.array__thaw(FuluDepositRequest_d.DepositRequest, ta), n), F.array__thaw(FuluDepositRequest_d.DepositRequest, R),
       room_pick_eq(c, dw, n, k, ta, hdw, pfa, F.nat__le_trans(N, O.pow2n(d), F.spec_common__pow2(dw), hnd, hcap), hk, hn1, en1, {==})) :
-    {(T.l8192_DepositRequest_Cached{Array.set(T.DepositRequest, _, n, v), (n + 1 : U32), 1n+d, F.array__thaw(D.Digest, dnew(1n+d)), 0, (O.pow2u(1n+d) - 1 : U32)}, True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
-  %Equal.sym(Array<T.DepositRequest>, Array.set(T.DepositRequest, F.array__thaw(T.DepositRequest, R), n, v), F.array__thaw(T.DepositRequest, F.array__upd(T.DepositRequest, D2, R, N, v)),
-      F.array__set(T.DepositRequest, D2, R, n, v, xat(F.array__slots(T.DepositRequest, R), N), rt_depth(c, dw, n, k, hk, hn1, hdw), hr, item_nth(R, D2, n, pr, hr), pr)) :
-    {(T.l8192_DepositRequest_Cached{_, (n + 1 : U32), 1n+d, F.array__thaw(D.Digest, dnew(1n+d)), 0, (O.pow2u(1n+d) - 1 : U32)}, True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
-     : T.l8192_DepositRequest_Cached & Bool}
+    {(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{Array.set(FuluDepositRequest_d.DepositRequest, _, n, v), (n + 1 : U32), 1n+d, F.array__thaw(D.Digest, dnew(1n+d)), 0, (O.pow2u(1n+d) - 1 : U32)}, True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
+  %Equal.sym(Array<FuluDepositRequest_d.DepositRequest>, Array.set(FuluDepositRequest_d.DepositRequest, F.array__thaw(FuluDepositRequest_d.DepositRequest, R), n, v), F.array__thaw(FuluDepositRequest_d.DepositRequest, F.array__upd(FuluDepositRequest_d.DepositRequest, D2, R, N, v)),
+      F.array__set(FuluDepositRequest_d.DepositRequest, D2, R, n, v, xat(F.array__slots(FuluDepositRequest_d.DepositRequest, R), N), rt_depth(c, dw, n, k, hk, hn1, hdw), hr, item_nth(R, D2, n, pr, hr), pr)) :
+    {(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{_, (n + 1 : U32), 1n+d, F.array__thaw(D.Digest, dnew(1n+d)), 0, (O.pow2u(1n+d) - 1 : U32)}, True{}) == (cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32)), True{})
+     : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool}
   {==}
 
 # The grown cache is valid, for n + 1 <= 2^k with k <= 30 and k <= the limit depth 13.
 law grow_inv:
-  for +ta: F.array__Tree<T.DepositRequest>
+  for +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>
   for +dw: Nat
   for +t: F.array__Tree<D.Digest>
   for +n: U32
   for +d: Nat
   for +lo: U32
   for +hi: U32
-  for +v: T.DepositRequest
+  for +v: FuluDepositRequest_d.DepositRequest
   for +k: Nat
   for +hk: {Nat.is_le(k, 30n) == True{} : Bool}
   for +hn1: {Nat.is_le(U32.to_nat((n + 1 : U32)), O.pow2n(k)) == True{} : Bool}
@@ -2228,7 +2230,7 @@ def grow_inv(ta, dw, t, n, d, lo, hi, v, k, hk, hn1, hkD, hg, iv):
   +dk = d_grow(n, d, k, hk, hn1, en1, en)
   +hd2 = F.nat__le_lt_trans(1n+d, 30n, 31n, F.nat__le_trans(1n+d, k, 30n, dk, hk), {==})
   (rt_depth(c, dw, n, k, hk, hn1, hdw),
-  (F.array__upd_perfect(T.DepositRequest, rdepth(c, dw, n), rtree(c, dw, n, ta), N, v, rt_perfect(c, dw, n, ta, pfa)),
+  (F.array__upd_perfect(FuluDepositRequest_d.DepositRequest, rdepth(c, dw, n), rtree(c, dw, n, ta), N, v, rt_perfect(c, dw, n, ta, pfa)),
   (rt_cap(c, dw, n, d, k, hk, hn1, en1, en, {==}),
   (hd2,
   (F.nat__le_trans(1n+d, k, 13n, dk, hkD),
@@ -2253,19 +2255,19 @@ def grow_inv(ta, dw, t, n, d, lo, hi, v, k, hk, hn1, hkD, hg, iv):
 # cache_inv the history can start from cache(o) of a list o.
 
 type Op is Data:
-  HWrite{i: U32, v: T.DepositRequest}
-  HAppend{v: T.DepositRequest}
+  HWrite{i: U32, v: FuluDepositRequest_d.DepositRequest}
+  HAppend{v: FuluDepositRequest_d.DepositRequest}
 
-def keep(pr: T.l8192_DepositRequest_Cached & Bool) -> T.l8192_DepositRequest_Cached:
+def keep(pr: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool) -> Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached:
   (c, +b) = pr
   c
 
-def step(op: Op, c: T.l8192_DepositRequest_Cached) -> T.l8192_DepositRequest_Cached:
+def step(op: Op, c: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached) -> Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached:
   match op:
-    case HWrite{+i, +v}: keep(T.l8192_DepositRequest_cset(c, i, v))
-    case HAppend{+v}: keep(T.l8192_DepositRequest_capp(c, v))
+    case HWrite{+i, +v}: keep(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_cset(c, i, v))
+    case HAppend{+v}: keep(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp(c, v))
 
-def run(ops: List<&2, Op>, c: T.l8192_DepositRequest_Cached) -> T.l8192_DepositRequest_Cached:
+def run(ops: List<&2, Op>, c: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached) -> Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached:
   match ops:
     case Nil{}: c
     case Con{+op, rest}: run(rest, step(op, c))
@@ -2286,61 +2288,61 @@ def ok(ops: List<&2, Op>, +n: U32, +k: Nat) -> Data:
     case Con{+op, rest}: DK.P2(okop(op, n, k), ok(rest, op_len(op, n), k))
 
 # A valid cache, as data: its components and their facts.
-def valid(-c: T.l8192_DepositRequest_Cached) -> Data:
-  DK.Ex(F.array__Tree<T.DepositRequest>, ta => DK.Ex(Nat, dw => DK.Ex(F.array__Tree<D.Digest>, t =>
+def valid(-c: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached) -> Data:
+  DK.Ex(F.array__Tree<FuluDepositRequest_d.DepositRequest>, ta => DK.Ex(Nat, dw => DK.Ex(F.array__Tree<D.Digest>, t =>
   DK.Ex(U32, n => DK.Ex(Nat, d => DK.Ex(U32, lo => DK.Ex(U32, hi =>
-  DK.P2({c == cached(ta, t, n, d, lo, hi) : T.l8192_DepositRequest_Cached}, inv(ta, dw, t, n, d, lo, hi)))))))))
+  DK.P2({c == cached(ta, t, n, d, lo, hi) : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached}, inv(ta, dw, t, n, d, lo, hi)))))))))
 
-def len_of(c: T.l8192_DepositRequest_Cached) -> U32:
+def len_of(c: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached) -> U32:
   match c:
-    case T.l8192_DepositRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: n
+    case Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached{arr, +n, +d, nodes, +lo, +hi}: n
 
 # ---- one step ----------------------------------------------------------------------------
 
-def keep_eq(-c2: T.l8192_DepositRequest_Cached, -pr: T.l8192_DepositRequest_Cached & Bool, +e: {pr == (c2, True{}) : T.l8192_DepositRequest_Cached & Bool})
-    -> {c2 == keep(pr) : T.l8192_DepositRequest_Cached}:
-  %Equal.sym(T.l8192_DepositRequest_Cached & Bool, pr, (c2, True{}), e) : {c2 == keep(_) : T.l8192_DepositRequest_Cached}
+def keep_eq(-c2: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached, -pr: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool, +e: {pr == (c2, True{}) : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool})
+    -> {c2 == keep(pr) : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached}:
+  %Equal.sym(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached & Bool, pr, (c2, True{}), e) : {c2 == keep(_) : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached}
   {==}
 
-def fit_case(+ta: F.array__Tree<T.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32, +v: T.DepositRequest,
+def fit_case(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32, +v: FuluDepositRequest_d.DepositRequest,
     +k: Nat, +hk: {Nat.is_le(k, 30n) == True{} : Bool}, +hkD: {Nat.is_le(k, 13n) == True{} : Bool},
     +hgd: {guard(n) == True{} : Bool},
     +hn1: {Nat.is_le(U32.to_nat((n + 1 : U32)), O.pow2n(k)) == True{} : Bool},
     +iv: inv(ta, dw, t, n, d, lo, hi),
     +b: Bool, +eb: {Nat.is_lt(U32.to_nat(n), O.pow2n(d)) == b : Bool})
-    -> DK.P2(valid(keep(T.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v))),
-             {len_of(keep(T.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v))) == (n + 1 : U32) : U32}):
+    -> DK.P2(valid(keep(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v))),
+             {len_of(keep(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v))) == (n + 1 : U32) : U32}):
   match b:
     case True{}:
-      -c2 = cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n))
-      %keep_eq(c2, T.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v), capp_eq(ta, dw, t, n, d, lo, hi, v, eb, hgd, iv)) :
+      -c2 = cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(n), v), t, (n + 1 : U32), d, O.pick(U32.is_le(lo, n), lo, n), O.pick(U32.is_le(n, hi), hi, n))
+      %keep_eq(c2, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v), capp_eq(ta, dw, t, n, d, lo, hi, v, eb, hgd, iv)) :
         DK.P2(valid(_), {len_of(_) == (n + 1 : U32) : U32})
-      ((F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(n), v), (dw, (t, ((n + 1 : U32), (d, (O.pick(U32.is_le(lo, n), lo, n), (O.pick(U32.is_le(n, hi), hi, n),
+      ((F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(n), v), (dw, (t, ((n + 1 : U32), (d, (O.pick(U32.is_le(lo, n), lo, n), (O.pick(U32.is_le(n, hi), hi, n),
         ({==}, capp_inv(ta, dw, t, n, d, lo, hi, v, eb, iv))))))))), {==})
     case False{}:
       -c2 = cached(gitems(dw, n, ta, v), dnew(1n+d), (n + 1 : U32), 1n+d, 0, (O.pow2u(1n+d) - 1 : U32))
-      %keep_eq(c2, T.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v), grow_eq(ta, dw, t, n, d, lo, hi, v, k, hk, hn1, hgd, eb, iv)) :
+      %keep_eq(c2, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_capp(cached(ta, t, n, d, lo, hi), v), grow_eq(ta, dw, t, n, d, lo, hi, v, k, hk, hn1, hgd, eb, iv)) :
         DK.P2(valid(_), {len_of(_) == (n + 1 : U32) : U32})
       ((gitems(dw, n, ta, v), (rdepth(fits(dw, n), dw, n), (dnew(1n+d), ((n + 1 : U32), (1n+d, (0, ((O.pow2u(1n+d) - 1 : U32),
         ({==}, grow_inv(ta, dw, t, n, d, lo, hi, v, k, hk, hn1, hkD, eb, iv))))))))), {==})
 
 # One ok step keeps a valid cache valid, and moves the length as op_len says.
-def step_inv(op: Op, +ta: F.array__Tree<T.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32,
+def step_inv(op: Op, +ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32,
     +k: Nat, +hk: {Nat.is_le(k, 30n) == True{} : Bool}, +hkD: {Nat.is_le(k, 13n) == True{} : Bool},
     +hop: okop(op, n, k), +iv: inv(ta, dw, t, n, d, lo, hi))
     -> DK.P2(valid(step(op, cached(ta, t, n, d, lo, hi))), {len_of(step(op, cached(ta, t, n, d, lo, hi))) == op_len(op, n) : U32}):
   match op:
     case HWrite{+i, +v}:
-      -c2 = cached(F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i))
-      %keep_eq(c2, T.l8192_DepositRequest_cset(cached(ta, t, n, d, lo, hi), i, v), cset_eq(ta, dw, t, n, d, lo, hi, i, v, hop, iv)) :
+      -c2 = cached(F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(i), v), t, n, d, O.pick(U32.is_le(lo, i), lo, i), O.pick(U32.is_le(i, hi), hi, i))
+      %keep_eq(c2, Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_cset(cached(ta, t, n, d, lo, hi), i, v), cset_eq(ta, dw, t, n, d, lo, hi, i, v, hop, iv)) :
         DK.P2(valid(_), {len_of(_) == n : U32})
-      ((F.array__upd(T.DepositRequest, dw, ta, U32.to_nat(i), v), (dw, (t, (n, (d, (O.pick(U32.is_le(lo, i), lo, i), (O.pick(U32.is_le(i, hi), hi, i),
+      ((F.array__upd(FuluDepositRequest_d.DepositRequest, dw, ta, U32.to_nat(i), v), (dw, (t, (n, (d, (O.pick(U32.is_le(lo, i), lo, i), (O.pick(U32.is_le(i, hi), hi, i),
         ({==}, cset_inv(ta, dw, t, n, d, lo, hi, i, v, hop, iv))))))))), {==})
     case HAppend{+v}:
       (+hgd, +hn1) = hop
       fit_case(ta, dw, t, n, d, lo, hi, v, k, hk, hkD, hgd, hn1, iv, Nat.is_lt(U32.to_nat(n), O.pow2n(d)), {==})
 
-def rebase(+ta: F.array__Tree<T.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n2: U32, +n: U32, +d: Nat, +lo: U32, +hi: U32,
+def rebase(+ta: F.array__Tree<FuluDepositRequest_d.DepositRequest>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n2: U32, +n: U32, +d: Nat, +lo: U32, +hi: U32,
     +e: {n2 == n : U32}, +iv: inv(ta, dw, t, n2, d, lo, hi)) -> inv(ta, dw, t, n, d, lo, hi):
   %e : inv(ta, dw, t, _, d, lo, hi)
   iv
@@ -2356,7 +2358,7 @@ def pb(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:
 
 # ---- histories ------------------------------------------------------------------------------
 
-def run_valid(ops: List<&2, Op>, -c: T.l8192_DepositRequest_Cached, +n: U32, +k: Nat,
+def run_valid(ops: List<&2, Op>, -c: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached, +n: U32, +k: Nat,
     +hk: {Nat.is_le(k, 30n) == True{} : Bool}, +hkD: {Nat.is_le(k, 13n) == True{} : Bool},
     +pk: DK.P2(ok(ops, n, k), DK.P2(valid(c), {len_of(c) == n : U32}))) -> valid(run(ops, c)):
   match ops:
@@ -2377,8 +2379,8 @@ def run_valid(ops: List<&2, Op>, -c: T.l8192_DepositRequest_Cached, +n: U32, +k:
       (+ec, +iv) = w7
       +hop = pa(okop(op, n, k), ok(rest, op_len(op, n), k), hok)
       +hrest = pb(okop(op, n, k), ok(rest, op_len(op, n), k), hok)
-      %Equal.sym(T.l8192_DepositRequest_Cached, c, cached(ta, t, n2, d, lo, hi), ec) : valid(run(rest, step(op, _)))
-      +en2 = Equal.trans(U32, n2, len_of(c), n, Equal.sym(U32, len_of(c), n2, Equal.cong(T.l8192_DepositRequest_Cached, U32, x => len_of(x), c, cached(ta, t, n2, d, lo, hi), ec)), en)
+      %Equal.sym(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached, c, cached(ta, t, n2, d, lo, hi), ec) : valid(run(rest, step(op, _)))
+      +en2 = Equal.trans(U32, n2, len_of(c), n, Equal.sym(U32, len_of(c), n2, Equal.cong(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached, U32, x => len_of(x), c, cached(ta, t, n2, d, lo, hi), ec)), en)
       %Equal.sym(U32, n2, n, en2) : valid(run(rest, step(op, cached(ta, t, _, d, lo, hi))))
       run_valid(rest, step(op, cached(ta, t, n, d, lo, hi)), op_len(op, n), k, hk, hkD,
         (hrest, step_inv(op, ta, dw, t, n, d, lo, hi, k, hk, hkD, hop, rebase(ta, dw, t, n2, n, d, lo, hi, en2, iv))))
@@ -2386,7 +2388,7 @@ def run_valid(ops: List<&2, Op>, -c: T.l8192_DepositRequest_Cached, +n: U32, +k:
 # From a valid cache of length n, an ok history of writes and appends ends in a valid cache.
 law hist_inv:
   for ops: List<&2, Op>
-  for -c: T.l8192_DepositRequest_Cached
+  for -c: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Cached
   for +n: U32
   for +k: Nat
   for +hk: {Nat.is_le(k, 30n) == True{} : Bool}

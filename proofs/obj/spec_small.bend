@@ -1,7 +1,15 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes1_def_generated.bend as FuluBytes1_d
+import ../../types/boolean_decode_ssz_generated.bend as boolean_r
+import ../../types/boolean_encode_ssz_generated.bend as boolean_e
+import ../../types/uint8_decode_ssz_generated.bend as uint8_r
+import ../../types/uint8_encode_ssz_generated.bend as uint8_e
+import ../../types/FuluBytes1_decode_ssz_generated.bend as FuluBytes1_r
+import ../../types/FuluBytes1_encode_ssz_generated.bend as FuluBytes1_e
+import ../../types/FuluParticipationFlags_decode_ssz_generated.bend as FuluParticipationFlags_r
+import ../../types/FuluParticipationFlags_encode_ssz_generated.bend as FuluParticipationFlags_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/codec.bend as Codec
@@ -44,7 +52,7 @@ def u8_parts(+b0: Bool, +b1: Bool, +b2: Bool, +b3: Bool, +b4: Bool, +b5: Bool, +
 
 # ---- uint8 (1 byte) ----
 def uint8_spec_bytes(+b0: Bool, +b1: Bool, +b2: Bool, +b3: Bool, +b4: Bool, +b5: Bool, +b6: Bool, +b7: Bool)
-    -> {B.emit(T.uint8_encode(U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), 0, 1) == (T.uint8_encode(U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), [U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}]) : B.Buf & +List<U32>}:
+    -> {B.emit(uint8_e.uint8_encode(U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), 0, 1) == (uint8_e.uint8_encode(U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), [U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}]) : B.Buf & +List<U32>}:
   match b0 b1 b2 b3 b4 b5 b6 b7:
     case False{} False{} False{} False{} False{} False{} False{} False{}: {==}
     case True{} False{} False{} False{} False{} False{} False{} False{}: {==}
@@ -306,7 +314,7 @@ def uint8_spec_encode(+b0: Bool, +b1: Bool, +b2: Bool, +b3: Bool, +b4: Bool, +b5
     -> Decoding.decodes(Spec.uint8(), [U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}], S.UnsignedValue{P.UInt{U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, 0, 0, 0, 0, 0, 0, 0}}):
   SF.encoding_of_parts(Spec.uint8(), S.UnsignedValue{P.UInt{U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, 0, 0, 0, 0, 0, 0, 0}}, [U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}], u8_parts(b0, b1, b2, b3, b4, b5, b6, b7))
 def uint8_spec_decode(+w: U32)
-    -> {T.uint8_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, Some{B.byte_sel(0, w)}) : B.Buf & Maybe<&1, U32>}:
+    -> {uint8_r.uint8_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, Some{B.byte_sel(0, w)}) : B.Buf & Maybe<&1, U32>}:
   {==}
 def uint8_spec_view(+w: U32)
     -> {B.emit(B.Buf{ALeaf{w}, 1}, 0, 1) == (B.Buf{ALeaf{w}, 1}, [B.byte_sel(0, w)]) : B.Buf & +List<U32>}:
@@ -321,7 +329,7 @@ def uint8_spec_value(+w: U32)
 
 # ---- ParticipationFlags (1 byte) ----
 def ParticipationFlags_spec_bytes(+b0: Bool, +b1: Bool, +b2: Bool, +b3: Bool, +b4: Bool, +b5: Bool, +b6: Bool, +b7: Bool)
-    -> {B.emit(T.ParticipationFlags_encode(U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), 0, 1) == (T.ParticipationFlags_encode(U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), [U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}]) : B.Buf & +List<U32>}:
+    -> {B.emit(FuluParticipationFlags_e.ParticipationFlags_encode(U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), 0, 1) == (FuluParticipationFlags_e.ParticipationFlags_encode(U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), [U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}]) : B.Buf & +List<U32>}:
   match b0 b1 b2 b3 b4 b5 b6 b7:
     case False{} False{} False{} False{} False{} False{} False{} False{}: {==}
     case True{} False{} False{} False{} False{} False{} False{} False{}: {==}
@@ -583,7 +591,7 @@ def ParticipationFlags_spec_encode(+b0: Bool, +b1: Bool, +b2: Bool, +b3: Bool, +
     -> Decoding.decodes(Spec.ParticipationFlags(), [U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}], S.UnsignedValue{P.UInt{U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, 0, 0, 0, 0, 0, 0, 0}}):
   SF.encoding_of_parts(Spec.ParticipationFlags(), S.UnsignedValue{P.UInt{U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}, 0, 0, 0, 0, 0, 0, 0}}, [U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}], u8_parts(b0, b1, b2, b3, b4, b5, b6, b7))
 def ParticipationFlags_spec_decode(+w: U32)
-    -> {T.ParticipationFlags_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, Some{B.byte_sel(0, w)}) : B.Buf & Maybe<&1, U32>}:
+    -> {FuluParticipationFlags_r.ParticipationFlags_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, Some{B.byte_sel(0, w)}) : B.Buf & Maybe<&1, U32>}:
   {==}
 def ParticipationFlags_spec_view(+w: U32)
     -> {B.emit(B.Buf{ALeaf{w}, 1}, 0, 1) == (B.Buf{ALeaf{w}, 1}, [B.byte_sel(0, w)]) : B.Buf & +List<U32>}:
@@ -598,7 +606,7 @@ def ParticipationFlags_spec_value(+w: U32)
 
 # ---- Bytes1 (1 byte) ----
 def Bytes1_spec_bytes(+b0: Bool, +b1: Bool, +b2: Bool, +b3: Bool, +b4: Bool, +b5: Bool, +b6: Bool, +b7: Bool)
-    -> {B.emit(T.Bytes1_encode(T.Bytes1{U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), 0, 1) == (T.Bytes1_encode(T.Bytes1{U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), [U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}]) : B.Buf & +List<U32>}:
+    -> {B.emit(FuluBytes1_e.Bytes1_encode(FuluBytes1_d.Bytes1{U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), 0, 1) == (FuluBytes1_e.Bytes1_encode(FuluBytes1_d.Bytes1{U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}), [U32{WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WCon{False{}, WNil{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}]) : B.Buf & +List<U32>}:
   match b0 b1 b2 b3 b4 b5 b6 b7:
     case False{} False{} False{} False{} False{} False{} False{} False{}: {==}
     case True{} False{} False{} False{} False{} False{} False{} False{}: {==}
@@ -1116,7 +1124,7 @@ def Bytes1_spec_encode(+b0: Bool, +b1: Bool, +b2: Bool, +b3: Bool, +b4: Bool, +b
     case False{} True{} True{} True{} True{} True{} True{} True{}: {==}
     case True{} True{} True{} True{} True{} True{} True{} True{}: {==}
 def Bytes1_spec_decode(+w: U32)
-    -> {T.Bytes1_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, Some{T.Bytes1{B.byte_sel(0, w)}}) : B.Buf & Maybe<&1, T.Bytes1>}:
+    -> {FuluBytes1_r.Bytes1_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, Some{FuluBytes1_d.Bytes1{B.byte_sel(0, w)}}) : B.Buf & Maybe<&1, FuluBytes1_d.Bytes1>}:
   {==}
 def Bytes1_spec_view(+w: U32)
     -> {B.emit(B.Buf{ALeaf{w}, 1}, 0, 1) == (B.Buf{ALeaf{w}, 1}, [B.byte_sel(0, w)]) : B.Buf & +List<U32>}:
@@ -1131,13 +1139,13 @@ def Bytes1_spec_value(+w: U32)
 
 # ---- boolean (1 byte) ----
 def boolean_true_spec_bytes()
-    -> {B.emit(T.boolean_encode(True{}), 0, 1) == (T.boolean_encode(True{}), [1]) : B.Buf & +List<U32>}:
+    -> {B.emit(boolean_e.boolean_encode(True{}), 0, 1) == (boolean_e.boolean_encode(True{}), [1]) : B.Buf & +List<U32>}:
   {==}
 def boolean_true_spec_encode()
     -> Decoding.decodes(Spec.boolean(), [1], S.BooleanValue{True{}}):
   {==}
 def boolean_false_spec_bytes()
-    -> {B.emit(T.boolean_encode(False{}), 0, 1) == (T.boolean_encode(False{}), [0]) : B.Buf & +List<U32>}:
+    -> {B.emit(boolean_e.boolean_encode(False{}), 0, 1) == (boolean_e.boolean_encode(False{}), [0]) : B.Buf & +List<U32>}:
   {==}
 def boolean_false_spec_encode()
     -> Decoding.decodes(Spec.boolean(), [0], S.BooleanValue{False{}}):
@@ -1147,18 +1155,18 @@ def boolean_spec_view(+w: U32)
     -> {B.emit(B.Buf{ALeaf{w}, 1}, 0, 1) == (B.Buf{ALeaf{w}, 1}, [B.byte_sel(0, w)]) : B.Buf & +List<U32>}:
   {==}
 def boolean_spec_decode_0(+w: U32, +h: {B.byte_sel(0, w) == 0 : U32})
-    -> {T.boolean_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, Some{False{}}) : B.Buf & Maybe<&1, Bool>}:
-  %Equal.sym(U32, B.byte_sel(0, w), 0, h) : {T.boolean_built(1, (B.Buf{ALeaf{w}, 1}, U32.is_le(_, 1))) == (B.Buf{ALeaf{w}, 1}, Some{False{}}) : B.Buf & Maybe<&1, Bool>}
+    -> {boolean_r.boolean_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, Some{False{}}) : B.Buf & Maybe<&1, Bool>}:
+  %Equal.sym(U32, B.byte_sel(0, w), 0, h) : {boolean_r.boolean_built(1, (B.Buf{ALeaf{w}, 1}, U32.is_le(_, 1))) == (B.Buf{ALeaf{w}, 1}, Some{False{}}) : B.Buf & Maybe<&1, Bool>}
   %Equal.sym(U32, B.byte_sel(0, w), 0, h) : {(B.Buf{ALeaf{w}, 1}, Some{U32.is_eq(_, 1)}) == (B.Buf{ALeaf{w}, 1}, Some{False{}}) : B.Buf & Maybe<&1, Bool>}
   {==}
 def boolean_spec_decode_1(+w: U32, +h: {B.byte_sel(0, w) == 1 : U32})
-    -> {T.boolean_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, Some{True{}}) : B.Buf & Maybe<&1, Bool>}:
-  %Equal.sym(U32, B.byte_sel(0, w), 1, h) : {T.boolean_built(1, (B.Buf{ALeaf{w}, 1}, U32.is_le(_, 1))) == (B.Buf{ALeaf{w}, 1}, Some{True{}}) : B.Buf & Maybe<&1, Bool>}
+    -> {boolean_r.boolean_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, Some{True{}}) : B.Buf & Maybe<&1, Bool>}:
+  %Equal.sym(U32, B.byte_sel(0, w), 1, h) : {boolean_r.boolean_built(1, (B.Buf{ALeaf{w}, 1}, U32.is_le(_, 1))) == (B.Buf{ALeaf{w}, 1}, Some{True{}}) : B.Buf & Maybe<&1, Bool>}
   %Equal.sym(U32, B.byte_sel(0, w), 1, h) : {(B.Buf{ALeaf{w}, 1}, Some{U32.is_eq(_, 1)}) == (B.Buf{ALeaf{w}, 1}, Some{True{}}) : B.Buf & Maybe<&1, Bool>}
   {==}
 def boolean_spec_decode_reject(+w: U32, +h: {U32.is_le(B.byte_sel(0, w), 1) == False{} : Bool})
-    -> {T.boolean_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, None{}) : B.Buf & Maybe<&1, Bool>}:
-  %Equal.sym(Bool, U32.is_le(B.byte_sel(0, w), 1), False{}, h) : {T.boolean_built(1, (B.Buf{ALeaf{w}, 1}, _)) == (B.Buf{ALeaf{w}, 1}, None{}) : B.Buf & Maybe<&1, Bool>}
+    -> {boolean_r.boolean_decode(B.Buf{ALeaf{w}, 1}, 1) == (B.Buf{ALeaf{w}, 1}, None{}) : B.Buf & Maybe<&1, Bool>}:
+  %Equal.sym(Bool, U32.is_le(B.byte_sel(0, w), 1), False{}, h) : {boolean_r.boolean_built(1, (B.Buf{ALeaf{w}, 1}, _)) == (B.Buf{ALeaf{w}, 1}, None{}) : B.Buf & Maybe<&1, Bool>}
   {==}
 
 # Rejection is exactly the complement of the spec image: a byte above 1 is
@@ -1200,18 +1208,18 @@ def boolean_spec_reject_outside(+w: U32, +h: {U32.is_le(B.byte_sel(0, w), 1) == 
 
 # ---- every other size is refused ----
 def uint8_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})
-    -> {T.uint8_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, U32>}:
-  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {T.uint8_built(m, T.u8_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, U32>}
+    -> {uint8_r.uint8_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, U32>}:
+  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {uint8_r.uint8_built(m, uint8_r.u8_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, U32>}
   {==}
 def ParticipationFlags_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})
-    -> {T.ParticipationFlags_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, U32>}:
-  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {T.ParticipationFlags_built(m, T.u8_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, U32>}
+    -> {FuluParticipationFlags_r.ParticipationFlags_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, U32>}:
+  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {FuluParticipationFlags_r.ParticipationFlags_built(m, uint8_r.u8_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, U32>}
   {==}
 def Bytes1_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})
-    -> {T.Bytes1_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, T.Bytes1>}:
-  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {T.Bytes1_built(m, T.b1_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, T.Bytes1>}
+    -> {FuluBytes1_r.Bytes1_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes1_d.Bytes1>}:
+  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {FuluBytes1_r.Bytes1_built(m, FuluBytes1_r.b1_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, FuluBytes1_d.Bytes1>}
   {==}
 def boolean_spec_reject(buf: B.Buf, +m: U32, e: {U32.is_eq(m, 1) == False{} : Bool})
-    -> {T.boolean_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, Bool>}:
-  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {T.boolean_built(m, T.bool_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, Bool>}
+    -> {boolean_r.boolean_decode(buf, m) == (buf, None{}) : B.Buf & Maybe<&1, Bool>}:
+  %Equal.sym(Bool, U32.is_eq(m, 1), False{}, e) : {boolean_r.boolean_built(m, boolean_r.bool_ok_len(_, buf, 0)) == (buf, None{}) : B.Buf & Maybe<&1, Bool>}
   {==}

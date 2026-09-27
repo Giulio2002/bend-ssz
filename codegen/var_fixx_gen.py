@@ -9,7 +9,7 @@ buffer is proved by proofs/obj/vedge.bend (the bytes it keeps are in the buffer)
 
 def GEN_SRC():
     from pathlib import Path
-    return (Path(__file__).resolve().parents[1] / 'types/generic_obj.bend').read_text()
+    return __import__('runtime_refs').mono_text('generic')
 
 
 def bvc_mod(N, HEAD, sig, TR, TRUE):

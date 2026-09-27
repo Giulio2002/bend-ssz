@@ -1,6 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluLightClientFinalityUpdate_def_generated.bend as FuluLightClientFinalityUpdate_d
+import ../../types/FuluLightClientFinalityUpdate_decode_ssz_generated.bend as FuluLightClientFinalityUpdate_r
 import ../../types/schema.bend as S
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
@@ -22,7 +23,7 @@ import ./var_bytesx_LightClientFinalityUpdate_inv.bend as XI
 
 def BF(t: FD.array__Tree<U32>, +n: U32) -> B.Buf: UA.BF(t, n)
 def CHK(+t: FD.array__Tree<U32>, +n: U32) -> Bool: W.CHKw(t, 0n, 0, n)
-def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> T.LightClientFinalityUpdate: W.OBJw(d, t, 0n, 0, n)
+def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32) -> FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate: W.OBJw(d, t, 0n, 0, n)
 def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: W.VALw(t, 0n, n)
 def VW(+t: FD.array__Tree<U32>, +n: U32) -> +List<U32>: VS.bt(U32.to_nat(n), F.limbs(FD.array__slots(U32, t)))
 
@@ -34,7 +35,7 @@ law ok_eval:
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
-  {T.LightClientFinalityUpdate_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
+  {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}
 def ok_eval(d, t, n, pf, hd, hn):
   W.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
 
@@ -47,14 +48,14 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
-  {T.LightClientFinalityUpdate_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.LightClientFinalityUpdate>}
+  {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>}
 def decode_accept(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.LightClientFinalityUpdate_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.LightClientFinalityUpdate_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.LightClientFinalityUpdate>}
+  %Equal.sym(B.Buf & Bool, FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
-    {T.LightClientFinalityUpdate_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.LightClientFinalityUpdate>}
-  %Equal.sym(B.Buf & T.LightClientFinalityUpdate, T.LightClientFinalityUpdate_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
-    {T.LightClientFinalityUpdate_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, T.LightClientFinalityUpdate>}
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>}
+  %Equal.sym(B.Buf & FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate, FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>}
   {==}
 
 # The bytes of every buffer the validator accepts are the spec encoding of the
@@ -111,10 +112,10 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
-  {T.LightClientFinalityUpdate_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.LightClientFinalityUpdate>}
+  {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.LightClientFinalityUpdate_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.LightClientFinalityUpdate_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.LightClientFinalityUpdate>}
+  %Equal.sym(B.Buf & Bool, FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>}
   %Equal.sym(Bool, CHK(t, n), False{}, hchk) :
-    {T.LightClientFinalityUpdate_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, T.LightClientFinalityUpdate>}
+    {FuluLightClientFinalityUpdate_r.LightClientFinalityUpdate_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, FuluLightClientFinalityUpdate_d.LightClientFinalityUpdate>}
   {==}

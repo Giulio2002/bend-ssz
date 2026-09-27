@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/proglist_uint32_encode_ssz_generated.bend as proglist_uint32_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -51,25 +51,25 @@ law encode_eval:
   for +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}
   for +ec: {U32.to_nat(N) == EL.b1(c) : Nat}
   for +hroom: {Nat.is_le(EL.w1(c), VB.pw(dw)) == True{} : Bool}
-  {T.Gt3A9420DD8E_encode(O.Words{FD.array__thaw(U32, T), N}) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
+  {proglist_uint32_e.Gt3A9420DD8E_encode(O.Words{FD.array__thaw(U32, T), N}) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
 def encode_eval(dw, T, N, c, pfT, hdw, ec, hroom):
   +e4 = em(N, c, ec)
   +hdw31 = FD.nat__lt_trans(dw, 28n, 31n, hdw, {==})
   +hDO = VL.hDO(dw, N, EL.w1(c), hdw, e4, hroom)
   %Equal.sym(Array<U32> & U32, Array.size(U32, FD.array__thaw(U32, T)), (FD.array__thaw(U32, T), FD.u32__pow2u(dw)), FD.array__size_thaw(U32, dw, T, pfT)) :
-    {T.Gt3A9420DD8E_enc_sized(O.wsz_pick(N, _)) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
+    {proglist_uint32_e.Gt3A9420DD8E_enc_sized(O.wsz_pick(N, _)) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Bool, U32.is_le(VC.nwu(N), FD.u32__pow2u(dw)), True{}, VE.le_room(N, dw, hdw31, VL.roomw(dw, N, EL.w1(c), hdw, e4, hroom))) :
-    {T.Gt3A9420DD8E_enc_sized((O.Words{FD.array__thaw(U32, T), N}, O.pick(_, N, 2147483648))) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
+    {proglist_uint32_e.Gt3A9420DD8E_enc_sized((O.Words{FD.array__thaw(U32, T), N}, O.pick(_, N, 2147483648))) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(N))), Array.new(U32, VL.DO(N), 0),
       FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.nwu(N))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.nwu(N))), VL.DO(N), VD.wdu(VC.nwu(N)), Z.zs(B.words_depth_u(VC.nwu(N))))) :
-    {T.Gt3A9420DD8E_enc_put(N, T.pl_u32_putn(_, 0, O.Words{FD.array__thaw(U32, T), N})) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
+    {proglist_uint32_e.Gt3A9420DD8E_enc_put(N, proglist_uint32_e.pl_u32_putn(_, 0, O.Words{FD.array__thaw(U32, T), N})) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Array<U32>, Array.new(U32, VL.DO(N), 0), FD.array__thaw(U32, VC.ZT(VL.DO(N))), FD.array__new(U32, VL.DO(N), 0)) :
-    {T.Gt3A9420DD8E_enc_put(N, T.pl_u32_putn(_, 0, O.Words{FD.array__thaw(U32, T), N})) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
+    {proglist_uint32_e.Gt3A9420DD8E_enc_put(N, proglist_uint32_e.pl_u32_putn(_, 0, O.Words{FD.array__thaw(U32, T), N})) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
   %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, VC.ZT(VL.DO(N))), 0, O.Words{FD.array__thaw(U32, T), N}), (FD.array__thaw(U32, VL.OUTP(N, T)), O.Words{FD.array__thaw(U32, T), N}),
       VE.put_words_ok(VL.DO(N), dw, VC.ZT(VL.DO(N)), T, 0, 0n, N, FD.array__trep_perfect(U32, VL.DO(N), 0), pfT,
         FD.nat__le_lt_trans(VL.DO(N), dw, 31n, hDO, hdw31), hdw31, {==}, {==}, VL.and3_q(N, EL.w1(c), e4),
         VL.roomw(dw, N, EL.w1(c), hdw, e4, hroom), VL.hdsto(dw, N, EL.w1(c), hdw, e4, hroom))) :
-    {T.Gt3A9420DD8E_enc_put(N, O.pwn(_)) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
+    {proglist_uint32_e.Gt3A9420DD8E_enc_put(N, O.pwn(_)) == (O.Words{FD.array__thaw(U32, T), N}, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}) : O.Words & B.Buf}
   {==}
 
 # The bytes of the encoder's buffer are the spec encoding of the object's value.

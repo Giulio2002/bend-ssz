@@ -26,6 +26,7 @@ import re
 
 import generate as G
 import root_laws_generic as RG
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text
 
 ELEM = {4: ('P.U32Width{}', 1, 2), 8: ('P.U64{}', 2, 3), 16: ('P.U128{}', 4, 4), 32: ('P.U256{}', 8, 5)}
 BRANCHES = {'FinalityBranch': 7, 'CurrentSyncCommitteeBranch': 6, 'NextSyncCommitteeBranch': 6, 'ExecutionBranch': 4}
@@ -320,7 +321,7 @@ def outputs(ROOT, gen=None):
     files = lambda pat: sorted(set((ROOT / 'proofs/obj').glob(pat)) | {q for q in gen if q.match(pat)})
     text = lambda q: gen[q] if q in gen else q.read_text()
     gnames = RG.generic_names()
-    gsrc = (ROOT / 'types/generic_obj.bend').read_text()
+    gsrc = RR.mono_text('generic')
     covered = []
     for f in files('spec_gcodec_*.bend'):
         covered += re.findall(r'^# ---- (\w+) \(\d+ bytes\) ----$', text(f), re.M)
@@ -340,7 +341,7 @@ def outputs(ROOT, gen=None):
         for n, K, Ln in picked[i:i + PER_FILE]:
             gname(L.append, n, K, Ln, gsrc)
         out[ROOT / f'proofs/obj/spec_gany_{i // PER_FILE}.bend'] = '\n'.join(L) + '\n'
-    fsrc = (ROOT / 'types/fulu_obj.bend').read_text()
+    fsrc = RR.mono_text('fulu')
     groups = {}
     for n, k in BRANCHES.items():
         mod = [f.stem for f in files('spec_codec_*.bend') if f'def {n}_spec_encode(' in text(f)]

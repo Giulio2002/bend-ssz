@@ -3,7 +3,38 @@ import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/generic_obj.bend as T
+import ../../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
+import ../../types/uint256_def_generated.bend as uint256_d
+import ../../types/boolean_hashtreeroot_generated.bend as boolean_h
+import ../../types/uint8_hashtreeroot_generated.bend as uint8_h
+import ../../types/uint32_hashtreeroot_generated.bend as uint32_h
+import ../../types/uint64_hashtreeroot_generated.bend as uint64_h
+import ../../types/uint256_hashtreeroot_generated.bend as uint256_h
+import ../../types/Fulu_bitvector_512_hashtreeroot_generated.bend as Fulu_bitvector_512_h
+import ../../types/bitvector_1_def_generated.bend as bitvector_1_d
+import ../../types/bitvector_2_def_generated.bend as bitvector_2_d
+import ../../types/bitvector_256_def_generated.bend as bitvector_256_d
+import ../../types/bitvector_257_def_generated.bend as bitvector_257_d
+import ../../types/bitvector_32_def_generated.bend as bitvector_32_d
+import ../../types/bitvector_8_def_generated.bend as bitvector_8_d
+import ../../types/uint128_def_generated.bend as uint128_d
+import ../../types/uint16_hashtreeroot_generated.bend as uint16_h
+import ../../types/SmallTestStruct_def_generated.bend as SmallTestStruct_d
+import ../../types/SmallTestStruct_hashtreeroot_generated.bend as SmallTestStruct_h
+import ../../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
+import ../../types/ProgressiveSingleFieldContainerTestStruct_hashtreeroot_generated.bend as ProgressiveSingleFieldContainerTestStruct_h
+import ../../types/bitvector_2_hashtreeroot_generated.bend as bitvector_2_h
+import ../../types/bitvector_1_hashtreeroot_generated.bend as bitvector_1_h
+import ../../types/bitvector_8_hashtreeroot_generated.bend as bitvector_8_h
+import ../../types/bitvector_256_hashtreeroot_generated.bend as bitvector_256_h
+import ../../types/bitvector_257_hashtreeroot_generated.bend as bitvector_257_h
+import ../../types/FixedTestStruct_def_generated.bend as FixedTestStruct_d
+import ../../types/FixedTestStruct_hashtreeroot_generated.bend as FixedTestStruct_h
+import ../../types/SingleFieldTestStruct_def_generated.bend as SingleFieldTestStruct_d
+import ../../types/SingleFieldTestStruct_hashtreeroot_generated.bend as SingleFieldTestStruct_h
+import ../../types/bitvector_32_hashtreeroot_generated.bend as bitvector_32_h
+import ../../types/uint128_hashtreeroot_generated.bend as uint128_h
+import ../../types/bitvector_512_hashtreeroot_generated.bend as bitvector_512_h
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../../spec/root_relation.bend as RR
@@ -71,7 +102,7 @@ def pbtk_len(n, xs, h):
 # ---- u8 (u8) ----
 def v_u8(o: U32) -> S.Value: S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}
 def d_u8(+hl: Nat, o: U32) -> D.Digest: O.u32_chunk(o)
-def st_u8(+hl: Nat, -h: B.Buf, +o: U32, +seg: U32) -> {T.u8_root(hl, h, o, seg) == (h, d_u8(hl, o)) : B.Buf & D.Digest}: {==}
+def st_u8(+hl: Nat, -h: B.Buf, +o: U32, +seg: U32) -> {uint8_h.u8_root(hl, h, o, seg) == (h, d_u8(hl, o)) : B.Buf & D.Digest}: {==}
 def rp_u8(+o: U32) -> Data: {U32.is_lt(o, 256) == True{} : Bool}
 def rs_u8(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: U32, +rp: rp_u8(o)) -> RR.roots(v_u8(o), S.Unsigned{P.U8{}}, [D.bytes(d_u8(hl, o))]):
   %Equal.sym(U32, o, PD.embed8(WSp.take(8n, 32n, PD.bits(o))), ID.byte_shape(o, rp)) :
@@ -81,7 +112,7 @@ def rs_u8(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: U32, +rp: rp_u8(o)) -> RR.roots
 # ---- u16 (u16) ----
 def v_u16(o: U32) -> S.Value: S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}
 def d_u16(+hl: Nat, o: U32) -> D.Digest: O.u32_chunk(o)
-def st_u16(+hl: Nat, -h: B.Buf, +o: U32, +seg: U32) -> {T.u16_root(hl, h, o, seg) == (h, d_u16(hl, o)) : B.Buf & D.Digest}: {==}
+def st_u16(+hl: Nat, -h: B.Buf, +o: U32, +seg: U32) -> {uint16_h.u16_root(hl, h, o, seg) == (h, d_u16(hl, o)) : B.Buf & D.Digest}: {==}
 def rp_u16(+o: U32) -> Data: {U32.is_lt(o, 65536) == True{} : Bool}
 def rs_u16(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: U32, +rp: rp_u16(o)) -> RR.roots(v_u16(o), S.Unsigned{P.U16{}}, [D.bytes(d_u16(hl, o))]):
   %Equal.sym(U32, o, U32{WSp.join(16n, 16n, WSp.take(16n, 32n, PD.bits(o)), Word.zero(16n))}, GL.half_shape(o, rp)) :
@@ -89,62 +120,62 @@ def rs_u16(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: U32, +rp: rp_u16(o)) -> RR.roo
   GL.u16_w(WSp.take(16n, 32n, PD.bits(o)))
 
 # ---- Gc4ED9619F50 (container) ----
-def v_Gc4ED9619F50(o: T.Gc4ED9619F50) -> S.Value:
+def v_Gc4ED9619F50(o: SmallTestStruct_d.Gc4ED9619F50) -> S.Value:
   match o:
-    case T.Gc4ED9619F50{+x0, +x1}: S.Sequence{S.Items{v_u16(x0), S.Items{v_u16(x1), S.EmptyItems{}}}}
-def d_Gc4ED9619F50(+hl: Nat, +o: T.Gc4ED9619F50) -> D.Digest:
+    case SmallTestStruct_d.Gc4ED9619F50{+x0, +x1}: S.Sequence{S.Items{v_u16(x0), S.Items{v_u16(x1), S.EmptyItems{}}}}
+def d_Gc4ED9619F50(+hl: Nat, +o: SmallTestStruct_d.Gc4ED9619F50) -> D.Digest:
   match o:
-    case T.Gc4ED9619F50{+x0, +x1}: MD.rtree(1n, True{}, hl, [d_u16(hl, x0), d_u16(hl, x1)], 0n)
-def st_Gc4ED9619F50(+hl: Nat, -h: B.Buf, +o: T.Gc4ED9619F50, +seg: U32) -> {T.Gc4ED9619F50_root(hl, h, o, seg) == (h, d_Gc4ED9619F50(hl, o)) : B.Buf & D.Digest}:
+    case SmallTestStruct_d.Gc4ED9619F50{+x0, +x1}: MD.rtree(1n, True{}, hl, [d_u16(hl, x0), d_u16(hl, x1)], 0n)
+def st_Gc4ED9619F50(+hl: Nat, -h: B.Buf, +o: SmallTestStruct_d.Gc4ED9619F50, +seg: U32) -> {SmallTestStruct_h.Gc4ED9619F50_root(hl, h, o, seg) == (h, d_Gc4ED9619F50(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.Gc4ED9619F50{+x0, +x1}:
+    case SmallTestStruct_d.Gc4ED9619F50{+x0, +x1}:
       {==}
-def rp_Gc4ED9619F50(o: T.Gc4ED9619F50) -> Data:
+def rp_Gc4ED9619F50(o: SmallTestStruct_d.Gc4ED9619F50) -> Data:
   match o:
-    case T.Gc4ED9619F50{+x0, +x1}: DK.P2(rp_u16(x0), rp_u16(x1))
-def rs_Gc4ED9619F50(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Gc4ED9619F50, +rp: rp_Gc4ED9619F50(o)) -> RR.roots(v_Gc4ED9619F50(o), S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}, [D.bytes(d_Gc4ED9619F50(hl, o))]):
+    case SmallTestStruct_d.Gc4ED9619F50{+x0, +x1}: DK.P2(rp_u16(x0), rp_u16(x1))
+def rs_Gc4ED9619F50(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: SmallTestStruct_d.Gc4ED9619F50, +rp: rp_Gc4ED9619F50(o)) -> RR.roots(v_Gc4ED9619F50(o), S.Container{["f_A", "f_B"], S.Chain{S.Unsigned{P.U16{}}, S.Chain{S.Unsigned{P.U16{}}, S.End{}}}}, [D.bytes(d_Gc4ED9619F50(hl, o))]):
   match o:
-    case T.Gc4ED9619F50{+x0, +x1}:
+    case SmallTestStruct_d.Gc4ED9619F50{+x0, +x1}:
       (+r0, +k0) = rp
       (MD.bytes_list([d_u16(hl, x0), d_u16(hl, x1)]), (([D.bytes(d_u16(hl, x0))], (MD.bytes_list([d_u16(hl, x1)]), (rs_u16(hl, ehl, x0, r0), (([D.bytes(d_u16(hl, x1))], (MD.bytes_list([]), (rs_u16(hl, ehl, x1, k0), ({==}, {==})))), {==})))),
         RS.aggregate_digests(2n, 1n, hl, [d_u16(hl, x0), d_u16(hl, x1)], {==}, {==}, {==}, ehl)))
 
 # ---- GpF350A3C486 (container) ----
-def v_GpF350A3C486(o: T.GpF350A3C486) -> S.Value:
+def v_GpF350A3C486(o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486) -> S.Value:
   match o:
-    case T.GpF350A3C486{+x0}: S.Sequence{S.Items{v_u8(x0), S.EmptyItems{}}}
-def d_GpF350A3C486(+hl: Nat, +o: T.GpF350A3C486) -> D.Digest:
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x0}: S.Sequence{S.Items{v_u8(x0), S.EmptyItems{}}}
+def d_GpF350A3C486(+hl: Nat, +o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486) -> D.Digest:
   match o:
-    case T.GpF350A3C486{+x0}: O.mix_len(hl, D.node(hl, D.zero(), d_u8(hl, x0)), 1)
-def st_GpF350A3C486(+hl: Nat, -h: B.Buf, +o: T.GpF350A3C486, +seg: U32) -> {T.GpF350A3C486_root(hl, h, o, seg) == (h, d_GpF350A3C486(hl, o)) : B.Buf & D.Digest}:
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x0}: O.mix_len(hl, D.node(hl, D.zero(), d_u8(hl, x0)), 1)
+def st_GpF350A3C486(+hl: Nat, -h: B.Buf, +o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +seg: U32) -> {ProgressiveSingleFieldContainerTestStruct_h.GpF350A3C486_root(hl, h, o, seg) == (h, d_GpF350A3C486(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.GpF350A3C486{+x0}:
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x0}:
       {==}
-def rp_GpF350A3C486(o: T.GpF350A3C486) -> Data:
+def rp_GpF350A3C486(o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486) -> Data:
   match o:
-    case T.GpF350A3C486{+x0}: rp_u8(x0)
-def rs_GpF350A3C486(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.GpF350A3C486, +rp: rp_GpF350A3C486(o)) -> RR.roots(v_GpF350A3C486(o), S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, [D.bytes(d_GpF350A3C486(hl, o))]):
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x0}: rp_u8(x0)
+def rs_GpF350A3C486(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486, +rp: rp_GpF350A3C486(o)) -> RR.roots(v_GpF350A3C486(o), S.ProgressiveContainer{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}, [True{}]}, [D.bytes(d_GpF350A3C486(hl, o))]):
   match o:
-    case T.GpF350A3C486{+x0}:
+    case ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486{+x0}:
       (MD.bytes_list([d_u8(hl, x0)]), (([D.bytes(d_u8(hl, x0))], (MD.bytes_list([]), (rs_u8(hl, ehl, x0, rp), ({==}, {==})))),
         PCN.pc_1_ar(hl, ehl, d_u8(hl, x0))))
 
 # ---- bv2 (rec) ----
-def c0_bv2(o: T.Bitvector2) -> D.Digest:
+def c0_bv2(o: bitvector_2_d.Bitvector2) -> D.Digest:
   match o:
-    case T.Bitvector2{+w0}: D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
-def d_bv2(+hl: Nat, +o: T.Bitvector2) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_bv2(o)], 0n)
-def st_bv2(+hl: Nat, -h: B.Buf, +o: T.Bitvector2, +seg: U32) -> {T.bv2_root(hl, h, o, seg) == (h, d_bv2(hl, o)) : B.Buf & D.Digest}:
+    case bitvector_2_d.Bitvector2{+w0}: D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
+def d_bv2(+hl: Nat, +o: bitvector_2_d.Bitvector2) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_bv2(o)], 0n)
+def st_bv2(+hl: Nat, -h: B.Buf, +o: bitvector_2_d.Bitvector2, +seg: U32) -> {bitvector_2_h.bv2_root(hl, h, o, seg) == (h, d_bv2(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.Bitvector2{+w0}: {==}
-def bits_bv2(o: T.Bitvector2) -> +List<Bool>:
+    case bitvector_2_d.Bitvector2{+w0}: {==}
+def bits_bv2(o: bitvector_2_d.Bitvector2) -> +List<Bool>:
   match o:
-    case T.Bitvector2{+w0}: BLP.btk(2n, BLP.bitsof([w0]))
-def v_bv2(o: T.Bitvector2) -> S.Value: S.BitsValue{bits_bv2(o)}
-def last_bv2(o: T.Bitvector2) -> U32:
+    case bitvector_2_d.Bitvector2{+w0}: BLP.btk(2n, BLP.bitsof([w0]))
+def v_bv2(o: bitvector_2_d.Bitvector2) -> S.Value: S.BitsValue{bits_bv2(o)}
+def last_bv2(o: bitvector_2_d.Bitvector2) -> U32:
   match o:
-    case T.Bitvector2{+w0}: w0
-def rp_bv2(o: T.Bitvector2) -> Data: {last_bv2(o) == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(last_bv2(o))), Word.zero(30n))} : U32}
+    case bitvector_2_d.Bitvector2{+w0}: w0
+def rp_bv2(o: bitvector_2_d.Bitvector2) -> Data: {last_bv2(o) == U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(last_bv2(o))), Word.zero(30n))} : U32}
 def lh_bv2(+a0: Bool, +a1: Bool) -> {Nat.is_le(2n, List.length(&2, Bool, BLP.bitsof([U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}]))) == True{} : Bool}:
   %Equal.sym(Nat, List.length(&2, Bool, BLP.bitsof([U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}])), pbl32([U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}]), plen_bitsof([U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}])) :
     {Nat.is_le(2n, _) == True{} : Bool}
@@ -172,29 +203,29 @@ def rsh_bv2(+hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(2n))
     -> RR.roots(S.BitsValue{BLP.btk(2n, BLP.bitsof([U32{WSp.join(2n, 30n, t, Word.zero(30n))}]))}, S.BitVector{2n}, [D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(2n, 30n, t, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))]):
   match t:
     case WCon{+a0, WCon{+a1, WNil{}}}: fin_bv2(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(2n, 30n, WCon{a0, WCon{a1, WNil{}}}, Word.zero(30n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, g_bv2(hl, ehl, a0, a1))
-def rs_bv2(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector2, +rp: rp_bv2(o)) -> RR.roots(v_bv2(o), S.BitVector{2n}, [D.bytes(d_bv2(hl, o))]):
+def rs_bv2(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_2_d.Bitvector2, +rp: rp_bv2(o)) -> RR.roots(v_bv2(o), S.BitVector{2n}, [D.bytes(d_bv2(hl, o))]):
   match o:
-    case T.Bitvector2{+w0}:
+    case bitvector_2_d.Bitvector2{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(2n, 30n, WSp.take(2n, 32n, PD.bits(w0)), Word.zero(30n))}, rp) :
         RR.roots(S.BitsValue{BLP.btk(2n, BLP.bitsof([_]))}, S.BitVector{2n}, [D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(_), 0, 0, 0, 0, 0, 0, 0}], 0n))])
       rsh_bv2(hl, ehl, WSp.take(2n, 32n, PD.bits(w0)))
 
 # ---- bv1 (rec) ----
-def c0_bv1(o: T.Bitvector1) -> D.Digest:
+def c0_bv1(o: bitvector_1_d.Bitvector1) -> D.Digest:
   match o:
-    case T.Bitvector1{+w0}: D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
-def d_bv1(+hl: Nat, +o: T.Bitvector1) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_bv1(o)], 0n)
-def st_bv1(+hl: Nat, -h: B.Buf, +o: T.Bitvector1, +seg: U32) -> {T.bv1_root(hl, h, o, seg) == (h, d_bv1(hl, o)) : B.Buf & D.Digest}:
+    case bitvector_1_d.Bitvector1{+w0}: D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
+def d_bv1(+hl: Nat, +o: bitvector_1_d.Bitvector1) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_bv1(o)], 0n)
+def st_bv1(+hl: Nat, -h: B.Buf, +o: bitvector_1_d.Bitvector1, +seg: U32) -> {bitvector_1_h.bv1_root(hl, h, o, seg) == (h, d_bv1(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.Bitvector1{+w0}: {==}
-def bits_bv1(o: T.Bitvector1) -> +List<Bool>:
+    case bitvector_1_d.Bitvector1{+w0}: {==}
+def bits_bv1(o: bitvector_1_d.Bitvector1) -> +List<Bool>:
   match o:
-    case T.Bitvector1{+w0}: BLP.btk(1n, BLP.bitsof([w0]))
-def v_bv1(o: T.Bitvector1) -> S.Value: S.BitsValue{bits_bv1(o)}
-def last_bv1(o: T.Bitvector1) -> U32:
+    case bitvector_1_d.Bitvector1{+w0}: BLP.btk(1n, BLP.bitsof([w0]))
+def v_bv1(o: bitvector_1_d.Bitvector1) -> S.Value: S.BitsValue{bits_bv1(o)}
+def last_bv1(o: bitvector_1_d.Bitvector1) -> U32:
   match o:
-    case T.Bitvector1{+w0}: w0
-def rp_bv1(o: T.Bitvector1) -> Data: {last_bv1(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(last_bv1(o))), Word.zero(31n))} : U32}
+    case bitvector_1_d.Bitvector1{+w0}: w0
+def rp_bv1(o: bitvector_1_d.Bitvector1) -> Data: {last_bv1(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(last_bv1(o))), Word.zero(31n))} : U32}
 def lh_bv1(+a0: Bool) -> {Nat.is_le(1n, List.length(&2, Bool, BLP.bitsof([U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}]))) == True{} : Bool}:
   %Equal.sym(Nat, List.length(&2, Bool, BLP.bitsof([U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}])), pbl32([U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}]), plen_bitsof([U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}])) :
     {Nat.is_le(1n, _) == True{} : Bool}
@@ -222,29 +253,29 @@ def rsh_bv1(+hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(1n))
     -> RR.roots(S.BitsValue{BLP.btk(1n, BLP.bitsof([U32{WSp.join(1n, 31n, t, Word.zero(31n))}]))}, S.BitVector{1n}, [D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(1n, 31n, t, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))]):
   match t:
     case WCon{+a0, WNil{}}: fin_bv1(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, g_bv1(hl, ehl, a0))
-def rs_bv1(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector1, +rp: rp_bv1(o)) -> RR.roots(v_bv1(o), S.BitVector{1n}, [D.bytes(d_bv1(hl, o))]):
+def rs_bv1(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_1_d.Bitvector1, +rp: rp_bv1(o)) -> RR.roots(v_bv1(o), S.BitVector{1n}, [D.bytes(d_bv1(hl, o))]):
   match o:
-    case T.Bitvector1{+w0}:
+    case bitvector_1_d.Bitvector1{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(w0)), Word.zero(31n))}, rp) :
         RR.roots(S.BitsValue{BLP.btk(1n, BLP.bitsof([_]))}, S.BitVector{1n}, [D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(_), 0, 0, 0, 0, 0, 0, 0}], 0n))])
       rsh_bv1(hl, ehl, WSp.take(1n, 32n, PD.bits(w0)))
 
 # ---- bv8 (rec) ----
-def c0_bv8(o: T.Bitvector8) -> D.Digest:
+def c0_bv8(o: bitvector_8_d.Bitvector8) -> D.Digest:
   match o:
-    case T.Bitvector8{+w0}: D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
-def d_bv8(+hl: Nat, +o: T.Bitvector8) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_bv8(o)], 0n)
-def st_bv8(+hl: Nat, -h: B.Buf, +o: T.Bitvector8, +seg: U32) -> {T.bv8_root(hl, h, o, seg) == (h, d_bv8(hl, o)) : B.Buf & D.Digest}:
+    case bitvector_8_d.Bitvector8{+w0}: D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
+def d_bv8(+hl: Nat, +o: bitvector_8_d.Bitvector8) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_bv8(o)], 0n)
+def st_bv8(+hl: Nat, -h: B.Buf, +o: bitvector_8_d.Bitvector8, +seg: U32) -> {bitvector_8_h.bv8_root(hl, h, o, seg) == (h, d_bv8(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.Bitvector8{+w0}: {==}
-def bits_bv8(o: T.Bitvector8) -> +List<Bool>:
+    case bitvector_8_d.Bitvector8{+w0}: {==}
+def bits_bv8(o: bitvector_8_d.Bitvector8) -> +List<Bool>:
   match o:
-    case T.Bitvector8{+w0}: BLP.btk(8n, BLP.bitsof([w0]))
-def v_bv8(o: T.Bitvector8) -> S.Value: S.BitsValue{bits_bv8(o)}
-def last_bv8(o: T.Bitvector8) -> U32:
+    case bitvector_8_d.Bitvector8{+w0}: BLP.btk(8n, BLP.bitsof([w0]))
+def v_bv8(o: bitvector_8_d.Bitvector8) -> S.Value: S.BitsValue{bits_bv8(o)}
+def last_bv8(o: bitvector_8_d.Bitvector8) -> U32:
   match o:
-    case T.Bitvector8{+w0}: w0
-def rp_bv8(o: T.Bitvector8) -> Data: {last_bv8(o) == U32{WSp.join(8n, 24n, WSp.take(8n, 32n, PD.bits(last_bv8(o))), Word.zero(24n))} : U32}
+    case bitvector_8_d.Bitvector8{+w0}: w0
+def rp_bv8(o: bitvector_8_d.Bitvector8) -> Data: {last_bv8(o) == U32{WSp.join(8n, 24n, WSp.take(8n, 32n, PD.bits(last_bv8(o))), Word.zero(24n))} : U32}
 def lh_bv8(+a0: Bool, +a1: Bool, +a2: Bool, +a3: Bool, +a4: Bool, +a5: Bool, +a6: Bool, +a7: Bool) -> {Nat.is_le(8n, List.length(&2, Bool, BLP.bitsof([U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}]))) == True{} : Bool}:
   %Equal.sym(Nat, List.length(&2, Bool, BLP.bitsof([U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}])), pbl32([U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}]), plen_bitsof([U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}])) :
     {Nat.is_le(8n, _) == True{} : Bool}
@@ -272,40 +303,40 @@ def rsh_bv8(+hl: Nat, +ehl: {hl == 64n : Nat}, +t: Word(8n))
     -> RR.roots(S.BitsValue{BLP.btk(8n, BLP.bitsof([U32{WSp.join(8n, 24n, t, Word.zero(24n))}]))}, S.BitVector{8n}, [D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(8n, 24n, t, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))]):
   match t:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, WNil{}}}}}}}}}: fin_bv8(MD.rtree(0n, True{}, hl, [D.D{B.swap32(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, Word.zero(24n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), a0, a1, a2, a3, a4, a5, a6, a7, g_bv8(hl, ehl, a0, a1, a2, a3, a4, a5, a6, a7))
-def rs_bv8(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector8, +rp: rp_bv8(o)) -> RR.roots(v_bv8(o), S.BitVector{8n}, [D.bytes(d_bv8(hl, o))]):
+def rs_bv8(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_8_d.Bitvector8, +rp: rp_bv8(o)) -> RR.roots(v_bv8(o), S.BitVector{8n}, [D.bytes(d_bv8(hl, o))]):
   match o:
-    case T.Bitvector8{+w0}:
+    case bitvector_8_d.Bitvector8{+w0}:
       %Equal.sym(U32, w0, U32{WSp.join(8n, 24n, WSp.take(8n, 32n, PD.bits(w0)), Word.zero(24n))}, rp) :
         RR.roots(S.BitsValue{BLP.btk(8n, BLP.bitsof([_]))}, S.BitVector{8n}, [D.bytes(MD.rtree(0n, True{}, hl, [D.D{B.swap32(_), 0, 0, 0, 0, 0, 0, 0}], 0n))])
       rsh_bv8(hl, ehl, WSp.take(8n, 32n, PD.bits(w0)))
 
 # ---- bv256 (rec) ----
-def c0_bv256(o: T.Bitvector256) -> D.Digest:
+def c0_bv256(o: bitvector_256_d.Bitvector256) -> D.Digest:
   match o:
-    case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}
-def d_bv256(+hl: Nat, +o: T.Bitvector256) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_bv256(o)], 0n)
-def st_bv256(+hl: Nat, -h: B.Buf, +o: T.Bitvector256, +seg: U32) -> {T.bv256_root(hl, h, o, seg) == (h, d_bv256(hl, o)) : B.Buf & D.Digest}:
+    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}
+def d_bv256(+hl: Nat, +o: bitvector_256_d.Bitvector256) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_bv256(o)], 0n)
+def st_bv256(+hl: Nat, -h: B.Buf, +o: bitvector_256_d.Bitvector256, +seg: U32) -> {bitvector_256_h.bv256_root(hl, h, o, seg) == (h, d_bv256(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: {==}
-def vb_bv256(o: T.Bitvector256) -> +List<U32>:
+    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: {==}
+def vb_bv256(o: bitvector_256_d.Bitvector256) -> +List<U32>:
   match o:
-    case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: F.limbs([w0, w1, w2, w3, w4, w5, w6, w7])
-def chunks_bv256(+o: T.Bitvector256) -> {Br.chunks(vb_bv256(o)) == MD.bytes_list([c0_bv256(o)]) : +List<+List<U32>>}:
+    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: F.limbs([w0, w1, w2, w3, w4, w5, w6, w7])
+def chunks_bv256(+o: bitvector_256_d.Bitvector256) -> {Br.chunks(vb_bv256(o)) == MD.bytes_list([c0_bv256(o)]) : +List<+List<U32>>}:
   match o:
-    case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
+    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
       %Equal.sym(+List<U32>, D.bytes(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}), List.append(&2, U32, F.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), SP.zero_bytes(0n)), RL.bytes_8(w0, w1, w2, w3, w4, w5, w6, w7)) :
         {Br.chunks(F.limbs([w0, w1, w2, w3, w4, w5, w6, w7])) == [_] : +List<+List<U32>>}
       {==}
-def domain_bv256(+o: T.Bitvector256) -> {VD.bytevector_domain(32n, vb_bv256(o)) == True{} : Bool}:
+def domain_bv256(+o: bitvector_256_d.Bitvector256) -> {VD.bytevector_domain(32n, vb_bv256(o)) == True{} : Bool}:
   match o:
-    case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: F.scope_limbs([w0, w1, w2, w3, w4, w5, w6, w7])
-def bits_bv256(o: T.Bitvector256) -> +List<Bool>:
+    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: F.scope_limbs([w0, w1, w2, w3, w4, w5, w6, w7])
+def bits_bv256(o: bitvector_256_d.Bitvector256) -> +List<Bool>:
   match o:
-    case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: List.append(&2, Bool, BL.wbits(w0), List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), []))))))))
-def v_bv256(o: T.Bitvector256) -> S.Value: S.BitsValue{bits_bv256(o)}
-def packv_bv256(+o: T.Bitvector256) -> {Bp.pack(bits_bv256(o)) == vb_bv256(o) : +List<U32>}:
+    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: List.append(&2, Bool, BL.wbits(w0), List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), []))))))))
+def v_bv256(o: bitvector_256_d.Bitvector256) -> S.Value: S.BitsValue{bits_bv256(o)}
+def packv_bv256(+o: bitvector_256_d.Bitvector256) -> {Bp.pack(bits_bv256(o)) == vb_bv256(o) : +List<U32>}:
   match o:
-    case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
+    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
       %Equal.sym(+List<U32>, Bp.pack(List.append(&2, Bool, BL.wbits(w0), List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), []))))))))), List.append(&2, U32, I.limb(w0), Bp.pack(List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), []))))))))), BL.pack_word(w0, List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), []))))))))) :
         {_ == F.limbs([w0, w1, w2, w3, w4, w5, w6, w7]) : +List<U32>}
       %Equal.sym(+List<U32>, Bp.pack(List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), [])))))))), List.append(&2, U32, I.limb(w1), Bp.pack(List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), [])))))))), BL.pack_word(w1, List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), [])))))))) :
@@ -323,9 +354,9 @@ def packv_bv256(+o: T.Bitvector256) -> {Bp.pack(bits_bv256(o)) == vb_bv256(o) : 
       %Equal.sym(+List<U32>, Bp.pack(List.append(&2, Bool, BL.wbits(w7), [])), List.append(&2, U32, I.limb(w7), Bp.pack([])), BL.pack_word(w7, [])) :
         {List.append(&2, U32, I.limb(w0), List.append(&2, U32, I.limb(w1), List.append(&2, U32, I.limb(w2), List.append(&2, U32, I.limb(w3), List.append(&2, U32, I.limb(w4), List.append(&2, U32, I.limb(w5), List.append(&2, U32, I.limb(w6), _))))))) == F.limbs([w0, w1, w2, w3, w4, w5, w6, w7]) : +List<U32>}
       {==}
-def blen_bv256(+o: T.Bitvector256) -> {List.length(&2, Bool, bits_bv256(o)) == 256n : Nat}:
+def blen_bv256(+o: bitvector_256_d.Bitvector256) -> {List.length(&2, Bool, bits_bv256(o)) == 256n : Nat}:
   match o:
-    case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
+    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
       %Equal.sym(Nat, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w0), List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), []))))))))), Nat.add(32n, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), []))))))))), BL.len_app_w(w0, List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), []))))))))) :
         {_ == 256n : Nat}
       %Equal.sym(Nat, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), [])))))))), Nat.add(32n, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), [])))))))), BL.len_app_w(w1, List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), [])))))))) :
@@ -343,40 +374,40 @@ def blen_bv256(+o: T.Bitvector256) -> {List.length(&2, Bool, bits_bv256(o)) == 2
       %Equal.sym(Nat, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w7), [])), Nat.add(32n, List.length(&2, Bool, [])), BL.len_app_w(w7, [])) :
         {Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, _))))))) == 256n : Nat}
       {==}
-def rs_gate_bv256(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector256) -> {Bits.bitvector_at_depth(256n, 0n, bits_bv256(o)) == Some{D.bytes(d_bv256(hl, o))} : Maybe<&2, +List<U32>>}:
+def rs_gate_bv256(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_256_d.Bitvector256) -> {Bits.bitvector_at_depth(256n, 0n, bits_bv256(o)) == Some{D.bytes(d_bv256(hl, o))} : Maybe<&2, +List<U32>>}:
   match o:
-    case T.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
-      %Equal.sym(Nat, List.length(&2, Bool, bits_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})), 256n, blen_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})) :
-        {Bits.vector_gate(Bool.and(Nat.is_lt(0n, 256n), Nat.is_eq(_, 256n)), 256n, 0n, bits_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})) == Some{D.bytes(d_bv256(hl, T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}))} : Maybe<&2, +List<U32>>}
-      %Equal.sym(+List<U32>, Bp.pack(bits_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})), vb_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}), packv_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})) :
-        {Lim.at_depth(Bits.chunk_limit(256n), 0n, Pack.scan(_, 31n, [], [])) == Some{D.bytes(d_bv256(hl, T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}))} : Maybe<&2, +List<U32>>}
-      %Equal.sym(+List<+List<U32>>, Br.chunks(vb_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})), MD.bytes_list([c0_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})]), chunks_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})) :
-        {Lim.at_depth(Bits.chunk_limit(256n), 0n, _) == Some{D.bytes(d_bv256(hl, T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}))} : Maybe<&2, +List<U32>>}
-      %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(256n), 0n, MD.bytes_list([c0_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([c0_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})])), hl, [c0_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})], 0n))}, RS.at_depth_tree(Bits.chunk_limit(256n), 0n, hl, [c0_bv256(T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})], {==}, {==}, ehl)) :
-        {_ == Some{D.bytes(d_bv256(hl, T.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}))} : Maybe<&2, +List<U32>>}
+    case bitvector_256_d.Bitvector256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
+      %Equal.sym(Nat, List.length(&2, Bool, bits_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})), 256n, blen_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})) :
+        {Bits.vector_gate(Bool.and(Nat.is_lt(0n, 256n), Nat.is_eq(_, 256n)), 256n, 0n, bits_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})) == Some{D.bytes(d_bv256(hl, bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}))} : Maybe<&2, +List<U32>>}
+      %Equal.sym(+List<U32>, Bp.pack(bits_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})), vb_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}), packv_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})) :
+        {Lim.at_depth(Bits.chunk_limit(256n), 0n, Pack.scan(_, 31n, [], [])) == Some{D.bytes(d_bv256(hl, bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}))} : Maybe<&2, +List<U32>>}
+      %Equal.sym(+List<+List<U32>>, Br.chunks(vb_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})), MD.bytes_list([c0_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})]), chunks_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})) :
+        {Lim.at_depth(Bits.chunk_limit(256n), 0n, _) == Some{D.bytes(d_bv256(hl, bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}))} : Maybe<&2, +List<U32>>}
+      %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(256n), 0n, MD.bytes_list([c0_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([c0_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})])), hl, [c0_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})], 0n))}, RS.at_depth_tree(Bits.chunk_limit(256n), 0n, hl, [c0_bv256(bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7})], {==}, {==}, ehl)) :
+        {_ == Some{D.bytes(d_bv256(hl, bitvector_256_d.Bitvector256{w0, w1, w2, w3, w4, w5, w6, w7}))} : Maybe<&2, +List<U32>>}
       {==}
-def rs_bv256(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector256) -> RR.roots(v_bv256(o), S.BitVector{256n}, [D.bytes(d_bv256(hl, o))]):
+def rs_bv256(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_256_d.Bitvector256) -> RR.roots(v_bv256(o), S.BitVector{256n}, [D.bytes(d_bv256(hl, o))]):
   (0n, ({==}, rs_gate_bv256(hl, ehl, o)))
 
 # ---- bv257 (rec) ----
-def c0_bv257(o: T.Bitvector257) -> D.Digest:
+def c0_bv257(o: bitvector_257_d.Bitvector257) -> D.Digest:
   match o:
-    case T.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}
-def c1_bv257(o: T.Bitvector257) -> D.Digest:
+    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}
+def c1_bv257(o: bitvector_257_d.Bitvector257) -> D.Digest:
   match o:
-    case T.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: D.D{B.swap32(w8), 0, 0, 0, 0, 0, 0, 0}
-def d_bv257(+hl: Nat, +o: T.Bitvector257) -> D.Digest: MD.rtree(1n, True{}, hl, [c0_bv257(o), c1_bv257(o)], 0n)
-def st_bv257(+hl: Nat, -h: B.Buf, +o: T.Bitvector257, +seg: U32) -> {T.bv257_root(hl, h, o, seg) == (h, d_bv257(hl, o)) : B.Buf & D.Digest}:
+    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: D.D{B.swap32(w8), 0, 0, 0, 0, 0, 0, 0}
+def d_bv257(+hl: Nat, +o: bitvector_257_d.Bitvector257) -> D.Digest: MD.rtree(1n, True{}, hl, [c0_bv257(o), c1_bv257(o)], 0n)
+def st_bv257(+hl: Nat, -h: B.Buf, +o: bitvector_257_d.Bitvector257, +seg: U32) -> {bitvector_257_h.bv257_root(hl, h, o, seg) == (h, d_bv257(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: {==}
-def bits_bv257(o: T.Bitvector257) -> +List<Bool>:
+    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: {==}
+def bits_bv257(o: bitvector_257_d.Bitvector257) -> +List<Bool>:
   match o:
-    case T.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: BLP.btk(257n, BLP.bitsof([w0, w1, w2, w3, w4, w5, w6, w7, w8]))
-def v_bv257(o: T.Bitvector257) -> S.Value: S.BitsValue{bits_bv257(o)}
-def last_bv257(o: T.Bitvector257) -> U32:
+    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: BLP.btk(257n, BLP.bitsof([w0, w1, w2, w3, w4, w5, w6, w7, w8]))
+def v_bv257(o: bitvector_257_d.Bitvector257) -> S.Value: S.BitsValue{bits_bv257(o)}
+def last_bv257(o: bitvector_257_d.Bitvector257) -> U32:
   match o:
-    case T.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: w8
-def rp_bv257(o: T.Bitvector257) -> Data: {last_bv257(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(last_bv257(o))), Word.zero(31n))} : U32}
+    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}: w8
+def rp_bv257(o: bitvector_257_d.Bitvector257) -> Data: {last_bv257(o) == U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(last_bv257(o))), Word.zero(31n))} : U32}
 def lh_bv257(+w0: U32, +w1: U32, +w2: U32, +w3: U32, +w4: U32, +w5: U32, +w6: U32, +w7: U32, +a0: Bool) -> {Nat.is_le(257n, List.length(&2, Bool, BLP.bitsof([w0, w1, w2, w3, w4, w5, w6, w7, U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}]))) == True{} : Bool}:
   %Equal.sym(Nat, List.length(&2, Bool, BLP.bitsof([w0, w1, w2, w3, w4, w5, w6, w7, U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}])), pbl32([w0, w1, w2, w3, w4, w5, w6, w7, U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}]), plen_bitsof([w0, w1, w2, w3, w4, w5, w6, w7, U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}])) :
     {Nat.is_le(257n, _) == True{} : Bool}
@@ -406,9 +437,9 @@ def rsh_bv257(+hl: Nat, +ehl: {hl == 64n : Nat}, +w0: U32, +w1: U32, +w2: U32, +
     -> RR.roots(S.BitsValue{BLP.btk(257n, BLP.bitsof([w0, w1, w2, w3, w4, w5, w6, w7, U32{WSp.join(1n, 31n, t, Word.zero(31n))}]))}, S.BitVector{257n}, [D.bytes(MD.rtree(1n, True{}, hl, [D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(U32{WSp.join(1n, 31n, t, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], 0n))]):
   match t:
     case WCon{+a0, WNil{}}: fin_bv257(MD.rtree(1n, True{}, hl, [D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(U32{WSp.join(1n, 31n, WCon{a0, WNil{}}, Word.zero(31n))}), 0, 0, 0, 0, 0, 0, 0}], 0n), w0, w1, w2, w3, w4, w5, w6, w7, a0, g_bv257(hl, ehl, w0, w1, w2, w3, w4, w5, w6, w7, a0))
-def rs_bv257(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector257, +rp: rp_bv257(o)) -> RR.roots(v_bv257(o), S.BitVector{257n}, [D.bytes(d_bv257(hl, o))]):
+def rs_bv257(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_257_d.Bitvector257, +rp: rp_bv257(o)) -> RR.roots(v_bv257(o), S.BitVector{257n}, [D.bytes(d_bv257(hl, o))]):
   match o:
-    case T.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}:
+    case bitvector_257_d.Bitvector257{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8}:
       %Equal.sym(U32, w8, U32{WSp.join(1n, 31n, WSp.take(1n, 32n, PD.bits(w8)), Word.zero(31n))}, rp) :
         RR.roots(S.BitsValue{BLP.btk(257n, BLP.bitsof([w0, w1, w2, w3, w4, w5, w6, w7, _]))}, S.BitVector{257n}, [D.bytes(MD.rtree(1n, True{}, hl, [D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}, D.D{B.swap32(_), 0, 0, 0, 0, 0, 0, 0}], 0n))])
       rsh_bv257(hl, ehl, w0, w1, w2, w3, w4, w5, w6, w7, WSp.take(1n, 32n, PD.bits(w8)))
@@ -416,138 +447,138 @@ def rs_bv257(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector257, +rp: rp_bv25
 # ---- u64 (u64) ----
 def v_u64(o: O.U64) -> S.Value: RL.view_u64(o)
 def d_u64(+hl: Nat, o: O.U64) -> D.Digest: O.u64_chunk(o)
-def st_u64(+hl: Nat, -h: B.Buf, +o: O.U64, +seg: U32) -> {T.u64_root(hl, h, o, seg) == (h, d_u64(hl, o)) : B.Buf & D.Digest}: {==}
+def st_u64(+hl: Nat, -h: B.Buf, +o: O.U64, +seg: U32) -> {uint64_h.u64_root(hl, h, o, seg) == (h, d_u64(hl, o)) : B.Buf & D.Digest}: {==}
 def rs_u64(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: O.U64) -> RR.roots(v_u64(o), S.Unsigned{P.U64{}}, [D.bytes(d_u64(hl, o))]): RL.u64_root(o)
 
 # ---- u32 (u32) ----
 def v_u32(o: U32) -> S.Value: S.UnsignedValue{P.UInt{o, 0, 0, 0, 0, 0, 0, 0}}
 def d_u32(+hl: Nat, o: U32) -> D.Digest: O.u32_chunk(o)
-def st_u32(+hl: Nat, -h: B.Buf, +o: U32, +seg: U32) -> {T.u32_root(hl, h, o, seg) == (h, d_u32(hl, o)) : B.Buf & D.Digest}: {==}
+def st_u32(+hl: Nat, -h: B.Buf, +o: U32, +seg: U32) -> {uint32_h.u32_root(hl, h, o, seg) == (h, d_u32(hl, o)) : B.Buf & D.Digest}: {==}
 def rs_u32(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: U32) -> RR.roots(v_u32(o), S.Unsigned{P.U32Width{}}, [D.bytes(d_u32(hl, o))]): LS.u32_root(o)
 
 # ---- GcDC3E457711 (container) ----
-def v_GcDC3E457711(o: T.GcDC3E457711) -> S.Value:
+def v_GcDC3E457711(o: FixedTestStruct_d.GcDC3E457711) -> S.Value:
   match o:
-    case T.GcDC3E457711{+x0, +x1, +x2}: S.Sequence{S.Items{v_u8(x0), S.Items{v_u64(x1), S.Items{v_u32(x2), S.EmptyItems{}}}}}
-def d_GcDC3E457711(+hl: Nat, +o: T.GcDC3E457711) -> D.Digest:
+    case FixedTestStruct_d.GcDC3E457711{+x0, +x1, +x2}: S.Sequence{S.Items{v_u8(x0), S.Items{v_u64(x1), S.Items{v_u32(x2), S.EmptyItems{}}}}}
+def d_GcDC3E457711(+hl: Nat, +o: FixedTestStruct_d.GcDC3E457711) -> D.Digest:
   match o:
-    case T.GcDC3E457711{+x0, +x1, +x2}: MD.rtree(2n, True{}, hl, [d_u8(hl, x0), d_u64(hl, x1), d_u32(hl, x2)], 0n)
-def st_GcDC3E457711(+hl: Nat, -h: B.Buf, +o: T.GcDC3E457711, +seg: U32) -> {T.GcDC3E457711_root(hl, h, o, seg) == (h, d_GcDC3E457711(hl, o)) : B.Buf & D.Digest}:
+    case FixedTestStruct_d.GcDC3E457711{+x0, +x1, +x2}: MD.rtree(2n, True{}, hl, [d_u8(hl, x0), d_u64(hl, x1), d_u32(hl, x2)], 0n)
+def st_GcDC3E457711(+hl: Nat, -h: B.Buf, +o: FixedTestStruct_d.GcDC3E457711, +seg: U32) -> {FixedTestStruct_h.GcDC3E457711_root(hl, h, o, seg) == (h, d_GcDC3E457711(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.GcDC3E457711{+x0, +x1, +x2}:
+    case FixedTestStruct_d.GcDC3E457711{+x0, +x1, +x2}:
       {==}
-def rp_GcDC3E457711(o: T.GcDC3E457711) -> Data:
+def rp_GcDC3E457711(o: FixedTestStruct_d.GcDC3E457711) -> Data:
   match o:
-    case T.GcDC3E457711{+x0, +x1, +x2}: rp_u8(x0)
-def rs_GcDC3E457711(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.GcDC3E457711, +rp: rp_GcDC3E457711(o)) -> RR.roots(v_GcDC3E457711(o), S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, [D.bytes(d_GcDC3E457711(hl, o))]):
+    case FixedTestStruct_d.GcDC3E457711{+x0, +x1, +x2}: rp_u8(x0)
+def rs_GcDC3E457711(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: FixedTestStruct_d.GcDC3E457711, +rp: rp_GcDC3E457711(o)) -> RR.roots(v_GcDC3E457711(o), S.Container{["f_A", "f_B", "f_C"], S.Chain{S.Unsigned{P.U8{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U32Width{}}, S.End{}}}}}, [D.bytes(d_GcDC3E457711(hl, o))]):
   match o:
-    case T.GcDC3E457711{+x0, +x1, +x2}:
+    case FixedTestStruct_d.GcDC3E457711{+x0, +x1, +x2}:
       (MD.bytes_list([d_u8(hl, x0), d_u64(hl, x1), d_u32(hl, x2)]), (([D.bytes(d_u8(hl, x0))], (MD.bytes_list([d_u64(hl, x1), d_u32(hl, x2)]), (rs_u8(hl, ehl, x0, rp), (([D.bytes(d_u64(hl, x1))], (MD.bytes_list([d_u32(hl, x2)]), (rs_u64(hl, ehl, x1), (([D.bytes(d_u32(hl, x2))], (MD.bytes_list([]), (rs_u32(hl, ehl, x2), ({==}, {==})))), {==})))), {==})))),
         RS.aggregate_digests(3n, 2n, hl, [d_u8(hl, x0), d_u64(hl, x1), d_u32(hl, x2)], {==}, {==}, {==}, ehl)))
 
 # ---- Gc74A8F5F17F (container) ----
-def v_Gc74A8F5F17F(o: T.Gc74A8F5F17F) -> S.Value:
+def v_Gc74A8F5F17F(o: SingleFieldTestStruct_d.Gc74A8F5F17F) -> S.Value:
   match o:
-    case T.Gc74A8F5F17F{+x0}: S.Sequence{S.Items{v_u8(x0), S.EmptyItems{}}}
-def d_Gc74A8F5F17F(+hl: Nat, +o: T.Gc74A8F5F17F) -> D.Digest:
+    case SingleFieldTestStruct_d.Gc74A8F5F17F{+x0}: S.Sequence{S.Items{v_u8(x0), S.EmptyItems{}}}
+def d_Gc74A8F5F17F(+hl: Nat, +o: SingleFieldTestStruct_d.Gc74A8F5F17F) -> D.Digest:
   match o:
-    case T.Gc74A8F5F17F{+x0}: MD.rtree(0n, True{}, hl, [d_u8(hl, x0)], 0n)
-def st_Gc74A8F5F17F(+hl: Nat, -h: B.Buf, +o: T.Gc74A8F5F17F, +seg: U32) -> {T.Gc74A8F5F17F_root(hl, h, o, seg) == (h, d_Gc74A8F5F17F(hl, o)) : B.Buf & D.Digest}:
+    case SingleFieldTestStruct_d.Gc74A8F5F17F{+x0}: MD.rtree(0n, True{}, hl, [d_u8(hl, x0)], 0n)
+def st_Gc74A8F5F17F(+hl: Nat, -h: B.Buf, +o: SingleFieldTestStruct_d.Gc74A8F5F17F, +seg: U32) -> {SingleFieldTestStruct_h.Gc74A8F5F17F_root(hl, h, o, seg) == (h, d_Gc74A8F5F17F(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.Gc74A8F5F17F{+x0}:
+    case SingleFieldTestStruct_d.Gc74A8F5F17F{+x0}:
       {==}
-def rp_Gc74A8F5F17F(o: T.Gc74A8F5F17F) -> Data:
+def rp_Gc74A8F5F17F(o: SingleFieldTestStruct_d.Gc74A8F5F17F) -> Data:
   match o:
-    case T.Gc74A8F5F17F{+x0}: rp_u8(x0)
-def rs_Gc74A8F5F17F(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Gc74A8F5F17F, +rp: rp_Gc74A8F5F17F(o)) -> RR.roots(v_Gc74A8F5F17F(o), S.Container{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}}, [D.bytes(d_Gc74A8F5F17F(hl, o))]):
+    case SingleFieldTestStruct_d.Gc74A8F5F17F{+x0}: rp_u8(x0)
+def rs_Gc74A8F5F17F(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: SingleFieldTestStruct_d.Gc74A8F5F17F, +rp: rp_Gc74A8F5F17F(o)) -> RR.roots(v_Gc74A8F5F17F(o), S.Container{["f_A"], S.Chain{S.Unsigned{P.U8{}}, S.End{}}}, [D.bytes(d_Gc74A8F5F17F(hl, o))]):
   match o:
-    case T.Gc74A8F5F17F{+x0}:
+    case SingleFieldTestStruct_d.Gc74A8F5F17F{+x0}:
       (MD.bytes_list([d_u8(hl, x0)]), (([D.bytes(d_u8(hl, x0))], (MD.bytes_list([]), (rs_u8(hl, ehl, x0, rp), ({==}, {==})))),
         RS.aggregate_digests(1n, 0n, hl, [d_u8(hl, x0)], {==}, {==}, {==}, ehl)))
 
 # ---- bv32 (rec) ----
-def c0_bv32(o: T.Bitvector32) -> D.Digest:
+def c0_bv32(o: bitvector_32_d.Bitvector32) -> D.Digest:
   match o:
-    case T.Bitvector32{+w0}: D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
-def d_bv32(+hl: Nat, +o: T.Bitvector32) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_bv32(o)], 0n)
-def st_bv32(+hl: Nat, -h: B.Buf, +o: T.Bitvector32, +seg: U32) -> {T.bv32_root(hl, h, o, seg) == (h, d_bv32(hl, o)) : B.Buf & D.Digest}:
+    case bitvector_32_d.Bitvector32{+w0}: D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}
+def d_bv32(+hl: Nat, +o: bitvector_32_d.Bitvector32) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_bv32(o)], 0n)
+def st_bv32(+hl: Nat, -h: B.Buf, +o: bitvector_32_d.Bitvector32, +seg: U32) -> {bitvector_32_h.bv32_root(hl, h, o, seg) == (h, d_bv32(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.Bitvector32{+w0}: {==}
-def vb_bv32(o: T.Bitvector32) -> +List<U32>:
+    case bitvector_32_d.Bitvector32{+w0}: {==}
+def vb_bv32(o: bitvector_32_d.Bitvector32) -> +List<U32>:
   match o:
-    case T.Bitvector32{+w0}: F.limbs([w0])
-def chunks_bv32(+o: T.Bitvector32) -> {Br.chunks(vb_bv32(o)) == MD.bytes_list([c0_bv32(o)]) : +List<+List<U32>>}:
+    case bitvector_32_d.Bitvector32{+w0}: F.limbs([w0])
+def chunks_bv32(+o: bitvector_32_d.Bitvector32) -> {Br.chunks(vb_bv32(o)) == MD.bytes_list([c0_bv32(o)]) : +List<+List<U32>>}:
   match o:
-    case T.Bitvector32{+w0}:
+    case bitvector_32_d.Bitvector32{+w0}:
       %Equal.sym(+List<U32>, D.bytes(D.D{B.swap32(w0), 0, 0, 0, 0, 0, 0, 0}), List.append(&2, U32, F.limbs([w0]), SP.zero_bytes(28n)), RL.bytes_1(w0)) :
         {Br.chunks(F.limbs([w0])) == [_] : +List<+List<U32>>}
       {==}
-def domain_bv32(+o: T.Bitvector32) -> {VD.bytevector_domain(4n, vb_bv32(o)) == True{} : Bool}:
+def domain_bv32(+o: bitvector_32_d.Bitvector32) -> {VD.bytevector_domain(4n, vb_bv32(o)) == True{} : Bool}:
   match o:
-    case T.Bitvector32{+w0}: F.scope_limbs([w0])
-def bits_bv32(o: T.Bitvector32) -> +List<Bool>:
+    case bitvector_32_d.Bitvector32{+w0}: F.scope_limbs([w0])
+def bits_bv32(o: bitvector_32_d.Bitvector32) -> +List<Bool>:
   match o:
-    case T.Bitvector32{+w0}: List.append(&2, Bool, BL.wbits(w0), [])
-def v_bv32(o: T.Bitvector32) -> S.Value: S.BitsValue{bits_bv32(o)}
-def packv_bv32(+o: T.Bitvector32) -> {Bp.pack(bits_bv32(o)) == vb_bv32(o) : +List<U32>}:
+    case bitvector_32_d.Bitvector32{+w0}: List.append(&2, Bool, BL.wbits(w0), [])
+def v_bv32(o: bitvector_32_d.Bitvector32) -> S.Value: S.BitsValue{bits_bv32(o)}
+def packv_bv32(+o: bitvector_32_d.Bitvector32) -> {Bp.pack(bits_bv32(o)) == vb_bv32(o) : +List<U32>}:
   match o:
-    case T.Bitvector32{+w0}:
+    case bitvector_32_d.Bitvector32{+w0}:
       %Equal.sym(+List<U32>, Bp.pack(List.append(&2, Bool, BL.wbits(w0), [])), List.append(&2, U32, I.limb(w0), Bp.pack([])), BL.pack_word(w0, [])) :
         {_ == F.limbs([w0]) : +List<U32>}
       {==}
-def blen_bv32(+o: T.Bitvector32) -> {List.length(&2, Bool, bits_bv32(o)) == 32n : Nat}:
+def blen_bv32(+o: bitvector_32_d.Bitvector32) -> {List.length(&2, Bool, bits_bv32(o)) == 32n : Nat}:
   match o:
-    case T.Bitvector32{+w0}:
+    case bitvector_32_d.Bitvector32{+w0}:
       %Equal.sym(Nat, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w0), [])), Nat.add(32n, List.length(&2, Bool, [])), BL.len_app_w(w0, [])) :
         {_ == 32n : Nat}
       {==}
-def rs_gate_bv32(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector32) -> {Bits.bitvector_at_depth(32n, 0n, bits_bv32(o)) == Some{D.bytes(d_bv32(hl, o))} : Maybe<&2, +List<U32>>}:
+def rs_gate_bv32(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_32_d.Bitvector32) -> {Bits.bitvector_at_depth(32n, 0n, bits_bv32(o)) == Some{D.bytes(d_bv32(hl, o))} : Maybe<&2, +List<U32>>}:
   match o:
-    case T.Bitvector32{+w0}:
-      %Equal.sym(Nat, List.length(&2, Bool, bits_bv32(T.Bitvector32{w0})), 32n, blen_bv32(T.Bitvector32{w0})) :
-        {Bits.vector_gate(Bool.and(Nat.is_lt(0n, 32n), Nat.is_eq(_, 32n)), 32n, 0n, bits_bv32(T.Bitvector32{w0})) == Some{D.bytes(d_bv32(hl, T.Bitvector32{w0}))} : Maybe<&2, +List<U32>>}
-      %Equal.sym(+List<U32>, Bp.pack(bits_bv32(T.Bitvector32{w0})), vb_bv32(T.Bitvector32{w0}), packv_bv32(T.Bitvector32{w0})) :
-        {Lim.at_depth(Bits.chunk_limit(32n), 0n, Pack.scan(_, 31n, [], [])) == Some{D.bytes(d_bv32(hl, T.Bitvector32{w0}))} : Maybe<&2, +List<U32>>}
-      %Equal.sym(+List<+List<U32>>, Br.chunks(vb_bv32(T.Bitvector32{w0})), MD.bytes_list([c0_bv32(T.Bitvector32{w0})]), chunks_bv32(T.Bitvector32{w0})) :
-        {Lim.at_depth(Bits.chunk_limit(32n), 0n, _) == Some{D.bytes(d_bv32(hl, T.Bitvector32{w0}))} : Maybe<&2, +List<U32>>}
-      %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(32n), 0n, MD.bytes_list([c0_bv32(T.Bitvector32{w0})])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([c0_bv32(T.Bitvector32{w0})])), hl, [c0_bv32(T.Bitvector32{w0})], 0n))}, RS.at_depth_tree(Bits.chunk_limit(32n), 0n, hl, [c0_bv32(T.Bitvector32{w0})], {==}, {==}, ehl)) :
-        {_ == Some{D.bytes(d_bv32(hl, T.Bitvector32{w0}))} : Maybe<&2, +List<U32>>}
+    case bitvector_32_d.Bitvector32{+w0}:
+      %Equal.sym(Nat, List.length(&2, Bool, bits_bv32(bitvector_32_d.Bitvector32{w0})), 32n, blen_bv32(bitvector_32_d.Bitvector32{w0})) :
+        {Bits.vector_gate(Bool.and(Nat.is_lt(0n, 32n), Nat.is_eq(_, 32n)), 32n, 0n, bits_bv32(bitvector_32_d.Bitvector32{w0})) == Some{D.bytes(d_bv32(hl, bitvector_32_d.Bitvector32{w0}))} : Maybe<&2, +List<U32>>}
+      %Equal.sym(+List<U32>, Bp.pack(bits_bv32(bitvector_32_d.Bitvector32{w0})), vb_bv32(bitvector_32_d.Bitvector32{w0}), packv_bv32(bitvector_32_d.Bitvector32{w0})) :
+        {Lim.at_depth(Bits.chunk_limit(32n), 0n, Pack.scan(_, 31n, [], [])) == Some{D.bytes(d_bv32(hl, bitvector_32_d.Bitvector32{w0}))} : Maybe<&2, +List<U32>>}
+      %Equal.sym(+List<+List<U32>>, Br.chunks(vb_bv32(bitvector_32_d.Bitvector32{w0})), MD.bytes_list([c0_bv32(bitvector_32_d.Bitvector32{w0})]), chunks_bv32(bitvector_32_d.Bitvector32{w0})) :
+        {Lim.at_depth(Bits.chunk_limit(32n), 0n, _) == Some{D.bytes(d_bv32(hl, bitvector_32_d.Bitvector32{w0}))} : Maybe<&2, +List<U32>>}
+      %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(32n), 0n, MD.bytes_list([c0_bv32(bitvector_32_d.Bitvector32{w0})])), Some{D.bytes(MD.rtree(0n, Nat.is_lt(0n, MD.dlen([c0_bv32(bitvector_32_d.Bitvector32{w0})])), hl, [c0_bv32(bitvector_32_d.Bitvector32{w0})], 0n))}, RS.at_depth_tree(Bits.chunk_limit(32n), 0n, hl, [c0_bv32(bitvector_32_d.Bitvector32{w0})], {==}, {==}, ehl)) :
+        {_ == Some{D.bytes(d_bv32(hl, bitvector_32_d.Bitvector32{w0}))} : Maybe<&2, +List<U32>>}
       {==}
-def rs_bv32(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector32) -> RR.roots(v_bv32(o), S.BitVector{32n}, [D.bytes(d_bv32(hl, o))]):
+def rs_bv32(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: bitvector_32_d.Bitvector32) -> RR.roots(v_bv32(o), S.BitVector{32n}, [D.bytes(d_bv32(hl, o))]):
   (0n, ({==}, rs_gate_bv32(hl, ehl, o)))
 
 # ---- bv512 (rec) ----
-def c0_bv512(o: T.Bitvector512) -> D.Digest:
+def c0_bv512(o: Fulu_bitvector_512_d.Bitvector512) -> D.Digest:
   match o:
-    case T.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}
-def c1_bv512(o: T.Bitvector512) -> D.Digest:
+    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}
+def c1_bv512(o: Fulu_bitvector_512_d.Bitvector512) -> D.Digest:
   match o:
-    case T.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}
-def d_bv512(+hl: Nat, +o: T.Bitvector512) -> D.Digest: MD.rtree(1n, True{}, hl, [c0_bv512(o), c1_bv512(o)], 0n)
-def st_bv512(+hl: Nat, -h: B.Buf, +o: T.Bitvector512, +seg: U32) -> {T.bv512_root(hl, h, o, seg) == (h, d_bv512(hl, o)) : B.Buf & D.Digest}:
+    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}
+def d_bv512(+hl: Nat, +o: Fulu_bitvector_512_d.Bitvector512) -> D.Digest: MD.rtree(1n, True{}, hl, [c0_bv512(o), c1_bv512(o)], 0n)
+def st_bv512(+hl: Nat, -h: B.Buf, +o: Fulu_bitvector_512_d.Bitvector512, +seg: U32) -> {Fulu_bitvector_512_h.bv512_root(hl, h, o, seg) == (h, d_bv512(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: {==}
-def vb_bv512(o: T.Bitvector512) -> +List<U32>:
+    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: {==}
+def vb_bv512(o: Fulu_bitvector_512_d.Bitvector512) -> +List<U32>:
   match o:
-    case T.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: F.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15])
-def chunks_bv512(+o: T.Bitvector512) -> {Br.chunks(vb_bv512(o)) == MD.bytes_list([c0_bv512(o), c1_bv512(o)]) : +List<+List<U32>>}:
+    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: F.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15])
+def chunks_bv512(+o: Fulu_bitvector_512_d.Bitvector512) -> {Br.chunks(vb_bv512(o)) == MD.bytes_list([c0_bv512(o), c1_bv512(o)]) : +List<+List<U32>>}:
   match o:
-    case T.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}:
+    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}:
       %Equal.sym(+List<U32>, D.bytes(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}), List.append(&2, U32, F.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), SP.zero_bytes(0n)), RL.bytes_8(w0, w1, w2, w3, w4, w5, w6, w7)) :
-        {Br.chunks(F.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15])) == [_, D.bytes(c1_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}))] : +List<+List<U32>>}
+        {Br.chunks(F.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15])) == [_, D.bytes(c1_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}))] : +List<+List<U32>>}
       %Equal.sym(+List<U32>, D.bytes(D.D{B.swap32(w8), B.swap32(w9), B.swap32(w10), B.swap32(w11), B.swap32(w12), B.swap32(w13), B.swap32(w14), B.swap32(w15)}), List.append(&2, U32, F.limbs([w8, w9, w10, w11, w12, w13, w14, w15]), SP.zero_bytes(0n)), RL.bytes_8(w8, w9, w10, w11, w12, w13, w14, w15)) :
         {Br.chunks(F.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15])) == [List.append(&2, U32, F.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), SP.zero_bytes(0n)), _] : +List<+List<U32>>}
       {==}
-def domain_bv512(+o: T.Bitvector512) -> {VD.bytevector_domain(64n, vb_bv512(o)) == True{} : Bool}:
+def domain_bv512(+o: Fulu_bitvector_512_d.Bitvector512) -> {VD.bytevector_domain(64n, vb_bv512(o)) == True{} : Bool}:
   match o:
-    case T.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: F.scope_limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15])
-def bits_bv512(o: T.Bitvector512) -> +List<Bool>:
+    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: F.scope_limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15])
+def bits_bv512(o: Fulu_bitvector_512_d.Bitvector512) -> +List<Bool>:
   match o:
-    case T.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: List.append(&2, Bool, BL.wbits(w0), List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), []))))))))))))))))
-def v_bv512(o: T.Bitvector512) -> S.Value: S.BitsValue{bits_bv512(o)}
-def packv_bv512(+o: T.Bitvector512) -> {Bp.pack(bits_bv512(o)) == vb_bv512(o) : +List<U32>}:
+    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}: List.append(&2, Bool, BL.wbits(w0), List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), []))))))))))))))))
+def v_bv512(o: Fulu_bitvector_512_d.Bitvector512) -> S.Value: S.BitsValue{bits_bv512(o)}
+def packv_bv512(+o: Fulu_bitvector_512_d.Bitvector512) -> {Bp.pack(bits_bv512(o)) == vb_bv512(o) : +List<U32>}:
   match o:
-    case T.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}:
+    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}:
       %Equal.sym(+List<U32>, Bp.pack(List.append(&2, Bool, BL.wbits(w0), List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), []))))))))))))))))), List.append(&2, U32, I.limb(w0), Bp.pack(List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), []))))))))))))))))), BL.pack_word(w0, List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), []))))))))))))))))) :
         {_ == F.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15]) : +List<U32>}
       %Equal.sym(+List<U32>, Bp.pack(List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), [])))))))))))))))), List.append(&2, U32, I.limb(w1), Bp.pack(List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), [])))))))))))))))), BL.pack_word(w1, List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), [])))))))))))))))) :
@@ -581,9 +612,9 @@ def packv_bv512(+o: T.Bitvector512) -> {Bp.pack(bits_bv512(o)) == vb_bv512(o) : 
       %Equal.sym(+List<U32>, Bp.pack(List.append(&2, Bool, BL.wbits(w15), [])), List.append(&2, U32, I.limb(w15), Bp.pack([])), BL.pack_word(w15, [])) :
         {List.append(&2, U32, I.limb(w0), List.append(&2, U32, I.limb(w1), List.append(&2, U32, I.limb(w2), List.append(&2, U32, I.limb(w3), List.append(&2, U32, I.limb(w4), List.append(&2, U32, I.limb(w5), List.append(&2, U32, I.limb(w6), List.append(&2, U32, I.limb(w7), List.append(&2, U32, I.limb(w8), List.append(&2, U32, I.limb(w9), List.append(&2, U32, I.limb(w10), List.append(&2, U32, I.limb(w11), List.append(&2, U32, I.limb(w12), List.append(&2, U32, I.limb(w13), List.append(&2, U32, I.limb(w14), _))))))))))))))) == F.limbs([w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15]) : +List<U32>}
       {==}
-def blen_bv512(+o: T.Bitvector512) -> {List.length(&2, Bool, bits_bv512(o)) == 512n : Nat}:
+def blen_bv512(+o: Fulu_bitvector_512_d.Bitvector512) -> {List.length(&2, Bool, bits_bv512(o)) == 512n : Nat}:
   match o:
-    case T.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}:
+    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}:
       %Equal.sym(Nat, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w0), List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), []))))))))))))))))), Nat.add(32n, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), []))))))))))))))))), BL.len_app_w(w0, List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), []))))))))))))))))) :
         {_ == 512n : Nat}
       %Equal.sym(Nat, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w1), List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), [])))))))))))))))), Nat.add(32n, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), [])))))))))))))))), BL.len_app_w(w1, List.append(&2, Bool, BL.wbits(w2), List.append(&2, Bool, BL.wbits(w3), List.append(&2, Bool, BL.wbits(w4), List.append(&2, Bool, BL.wbits(w5), List.append(&2, Bool, BL.wbits(w6), List.append(&2, Bool, BL.wbits(w7), List.append(&2, Bool, BL.wbits(w8), List.append(&2, Bool, BL.wbits(w9), List.append(&2, Bool, BL.wbits(w10), List.append(&2, Bool, BL.wbits(w11), List.append(&2, Bool, BL.wbits(w12), List.append(&2, Bool, BL.wbits(w13), List.append(&2, Bool, BL.wbits(w14), List.append(&2, Bool, BL.wbits(w15), [])))))))))))))))) :
@@ -617,41 +648,41 @@ def blen_bv512(+o: T.Bitvector512) -> {List.length(&2, Bool, bits_bv512(o)) == 5
       %Equal.sym(Nat, List.length(&2, Bool, List.append(&2, Bool, BL.wbits(w15), [])), Nat.add(32n, List.length(&2, Bool, [])), BL.len_app_w(w15, [])) :
         {Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, Nat.add(32n, _))))))))))))))) == 512n : Nat}
       {==}
-def rs_gate_bv512(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector512) -> {Bits.bitvector_at_depth(512n, 1n, bits_bv512(o)) == Some{D.bytes(d_bv512(hl, o))} : Maybe<&2, +List<U32>>}:
+def rs_gate_bv512(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: Fulu_bitvector_512_d.Bitvector512) -> {Bits.bitvector_at_depth(512n, 1n, bits_bv512(o)) == Some{D.bytes(d_bv512(hl, o))} : Maybe<&2, +List<U32>>}:
   match o:
-    case T.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}:
-      %Equal.sym(Nat, List.length(&2, Bool, bits_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})), 512n, blen_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})) :
-        {Bits.vector_gate(Bool.and(Nat.is_lt(0n, 512n), Nat.is_eq(_, 512n)), 512n, 1n, bits_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})) == Some{D.bytes(d_bv512(hl, T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}))} : Maybe<&2, +List<U32>>}
-      %Equal.sym(+List<U32>, Bp.pack(bits_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})), vb_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), packv_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})) :
-        {Lim.at_depth(Bits.chunk_limit(512n), 1n, Pack.scan(_, 31n, [], [])) == Some{D.bytes(d_bv512(hl, T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}))} : Maybe<&2, +List<U32>>}
-      %Equal.sym(+List<+List<U32>>, Br.chunks(vb_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})), MD.bytes_list([c0_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), c1_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})]), chunks_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})) :
-        {Lim.at_depth(Bits.chunk_limit(512n), 1n, _) == Some{D.bytes(d_bv512(hl, T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}))} : Maybe<&2, +List<U32>>}
-      %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(512n), 1n, MD.bytes_list([c0_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), c1_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})])), Some{D.bytes(MD.rtree(1n, Nat.is_lt(0n, MD.dlen([c0_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), c1_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})])), hl, [c0_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), c1_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})], 0n))}, RS.at_depth_tree(Bits.chunk_limit(512n), 1n, hl, [c0_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), c1_bv512(T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})], {==}, {==}, ehl)) :
-        {_ == Some{D.bytes(d_bv512(hl, T.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}))} : Maybe<&2, +List<U32>>}
+    case Fulu_bitvector_512_d.Bitvector512{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15}:
+      %Equal.sym(Nat, List.length(&2, Bool, bits_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})), 512n, blen_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})) :
+        {Bits.vector_gate(Bool.and(Nat.is_lt(0n, 512n), Nat.is_eq(_, 512n)), 512n, 1n, bits_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})) == Some{D.bytes(d_bv512(hl, Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}))} : Maybe<&2, +List<U32>>}
+      %Equal.sym(+List<U32>, Bp.pack(bits_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})), vb_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), packv_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})) :
+        {Lim.at_depth(Bits.chunk_limit(512n), 1n, Pack.scan(_, 31n, [], [])) == Some{D.bytes(d_bv512(hl, Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}))} : Maybe<&2, +List<U32>>}
+      %Equal.sym(+List<+List<U32>>, Br.chunks(vb_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})), MD.bytes_list([c0_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), c1_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})]), chunks_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})) :
+        {Lim.at_depth(Bits.chunk_limit(512n), 1n, _) == Some{D.bytes(d_bv512(hl, Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}))} : Maybe<&2, +List<U32>>}
+      %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bits.chunk_limit(512n), 1n, MD.bytes_list([c0_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), c1_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})])), Some{D.bytes(MD.rtree(1n, Nat.is_lt(0n, MD.dlen([c0_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), c1_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})])), hl, [c0_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), c1_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})], 0n))}, RS.at_depth_tree(Bits.chunk_limit(512n), 1n, hl, [c0_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}), c1_bv512(Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15})], {==}, {==}, ehl)) :
+        {_ == Some{D.bytes(d_bv512(hl, Fulu_bitvector_512_d.Bitvector512{w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15}))} : Maybe<&2, +List<U32>>}
       {==}
-def rs_bv512(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Bitvector512) -> RR.roots(v_bv512(o), S.BitVector{512n}, [D.bytes(d_bv512(hl, o))]):
+def rs_bv512(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: Fulu_bitvector_512_d.Bitvector512) -> RR.roots(v_bv512(o), S.BitVector{512n}, [D.bytes(d_bv512(hl, o))]):
   (1n, ({==}, rs_gate_bv512(hl, ehl, o)))
 
 # ---- bool (bool) ----
 def v_bool(o: Bool) -> S.Value: S.BooleanValue{o}
 def d_bool(+hl: Nat, o: Bool) -> D.Digest: O.bool_chunk(o)
-def st_bool(+hl: Nat, -h: B.Buf, +o: Bool, +seg: U32) -> {T.bool_root(hl, h, o, seg) == (h, d_bool(hl, o)) : B.Buf & D.Digest}: {==}
+def st_bool(+hl: Nat, -h: B.Buf, +o: Bool, +seg: U32) -> {boolean_h.bool_root(hl, h, o, seg) == (h, d_bool(hl, o)) : B.Buf & D.Digest}: {==}
 def rs_bool(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: Bool) -> RR.roots(v_bool(o), S.Boolean{}, [D.bytes(d_bool(hl, o))]): RL.bool_root(o)
 
 # ---- u128 (uwide) ----
-def c0_u128(o: T.Uint128) -> D.Digest:
+def c0_u128(o: uint128_d.Uint128) -> D.Digest:
   match o:
-    case T.Uint128{+w0, +w1, +w2, +w3}: D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0}
-def d_u128(+hl: Nat, +o: T.Uint128) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_u128(o)], 0n)
-def st_u128(+hl: Nat, -h: B.Buf, +o: T.Uint128, +seg: U32) -> {T.u128_root(hl, h, o, seg) == (h, d_u128(hl, o)) : B.Buf & D.Digest}:
+    case uint128_d.Uint128{+w0, +w1, +w2, +w3}: D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0}
+def d_u128(+hl: Nat, +o: uint128_d.Uint128) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_u128(o)], 0n)
+def st_u128(+hl: Nat, -h: B.Buf, +o: uint128_d.Uint128, +seg: U32) -> {uint128_h.u128_root(hl, h, o, seg) == (h, d_u128(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.Uint128{+w0, +w1, +w2, +w3}: {==}
-def v_u128(o: T.Uint128) -> S.Value:
+    case uint128_d.Uint128{+w0, +w1, +w2, +w3}: {==}
+def v_u128(o: uint128_d.Uint128) -> S.Value:
   match o:
-    case T.Uint128{+w0, +w1, +w2, +w3}: S.UnsignedValue{P.UInt{w0, w1, w2, w3, 0, 0, 0, 0}}
-def rs_u128(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Uint128) -> RR.roots(v_u128(o), S.Unsigned{P.U128{}}, [D.bytes(d_u128(hl, o))]):
+    case uint128_d.Uint128{+w0, +w1, +w2, +w3}: S.UnsignedValue{P.UInt{w0, w1, w2, w3, 0, 0, 0, 0}}
+def rs_u128(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: uint128_d.Uint128) -> RR.roots(v_u128(o), S.Unsigned{P.U128{}}, [D.bytes(d_u128(hl, o))]):
   match o:
-    case T.Uint128{+w0, +w1, +w2, +w3}:
+    case uint128_d.Uint128{+w0, +w1, +w2, +w3}:
       %IE.uint_hash_tree_root_correct(P.U128{}, P.UInt{w0, w1, w2, w3, 0, 0, 0, 0}) :
         {_ == Some{D.bytes(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0})} : Maybe<&2, +List<U32>>}
       %Equal.sym(+List<U32>, D.bytes(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), 0, 0, 0, 0}), List.append(&2, U32, F.limbs([w0, w1, w2, w3]), SP.zero_bytes(16n)), RL.bytes_4(w0, w1, w2, w3)) :
@@ -659,19 +690,19 @@ def rs_u128(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Uint128) -> RR.roots(v_u128
       {==}
 
 # ---- u256 (uwide) ----
-def c0_u256(o: T.Uint256) -> D.Digest:
+def c0_u256(o: uint256_d.Uint256) -> D.Digest:
   match o:
-    case T.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}
-def d_u256(+hl: Nat, +o: T.Uint256) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_u256(o)], 0n)
-def st_u256(+hl: Nat, -h: B.Buf, +o: T.Uint256, +seg: U32) -> {T.u256_root(hl, h, o, seg) == (h, d_u256(hl, o)) : B.Buf & D.Digest}:
+    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}
+def d_u256(+hl: Nat, +o: uint256_d.Uint256) -> D.Digest: MD.rtree(0n, True{}, hl, [c0_u256(o)], 0n)
+def st_u256(+hl: Nat, -h: B.Buf, +o: uint256_d.Uint256, +seg: U32) -> {uint256_h.u256_root(hl, h, o, seg) == (h, d_u256(hl, o)) : B.Buf & D.Digest}:
   match o:
-    case T.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: {==}
-def v_u256(o: T.Uint256) -> S.Value:
+    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: {==}
+def v_u256(o: uint256_d.Uint256) -> S.Value:
   match o:
-    case T.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: S.UnsignedValue{P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}}
-def rs_u256(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Uint256) -> RR.roots(v_u256(o), S.Unsigned{P.U256{}}, [D.bytes(d_u256(hl, o))]):
+    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}: S.UnsignedValue{P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}}
+def rs_u256(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: uint256_d.Uint256) -> RR.roots(v_u256(o), S.Unsigned{P.U256{}}, [D.bytes(d_u256(hl, o))]):
   match o:
-    case T.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
+    case uint256_d.Uint256{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
       %IE.uint_hash_tree_root_correct(P.U256{}, P.UInt{w0, w1, w2, w3, w4, w5, w6, w7}) :
         {_ == Some{D.bytes(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)})} : Maybe<&2, +List<U32>>}
       %Equal.sym(+List<U32>, D.bytes(D.D{B.swap32(w0), B.swap32(w1), B.swap32(w2), B.swap32(w3), B.swap32(w4), B.swap32(w5), B.swap32(w6), B.swap32(w7)}), List.append(&2, U32, F.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), SP.zero_bytes(0n)), RL.bytes_8(w0, w1, w2, w3, w4, w5, w6, w7)) :
@@ -681,64 +712,64 @@ def rs_u256(+hl: Nat, +ehl: {hl == 64n : Nat}, +o: T.Uint256) -> RR.roots(v_u256
 # GpF350A3C486: the root of every GpF350A3C486 object (with its representation facts) is its specification root.
 law GpF350A3C486_root_correct:
   for -h: B.Buf
-  for +o: T.GpF350A3C486
+  for +o: ProgressiveSingleFieldContainerTestStruct_d.GpF350A3C486
   for +rp: rp_GpF350A3C486(o)
-  RR.roots(v_GpF350A3C486(o), Spec.GpF350A3C486(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GpF350A3C486_hash_tree_root(h, o)))])
+  RR.roots(v_GpF350A3C486(o), Spec.GpF350A3C486(), [D.bytes(Pair.snd(B.Buf, D.Digest, ProgressiveSingleFieldContainerTestStruct_h.GpF350A3C486_hash_tree_root(h, o)))])
 def GpF350A3C486_root_correct(h, o, rp):
-  %Equal.sym(B.Buf & D.Digest, T.GpF350A3C486_root(64n, h, o, 0), (h, d_GpF350A3C486(64n, o)), st_GpF350A3C486(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, ProgressiveSingleFieldContainerTestStruct_h.GpF350A3C486_root(64n, h, o, 0), (h, d_GpF350A3C486(64n, o)), st_GpF350A3C486(64n, h, o, 0)) :
     RR.roots(v_GpF350A3C486(o), Spec.GpF350A3C486(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_GpF350A3C486(64n, {==}, o, rp)
 
 # GcDC3E457711: the root of every GcDC3E457711 object (with its representation facts) is its specification root.
 law GcDC3E457711_root_correct:
   for -h: B.Buf
-  for +o: T.GcDC3E457711
+  for +o: FixedTestStruct_d.GcDC3E457711
   for +rp: rp_GcDC3E457711(o)
-  RR.roots(v_GcDC3E457711(o), Spec.GcDC3E457711(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GcDC3E457711_hash_tree_root(h, o)))])
+  RR.roots(v_GcDC3E457711(o), Spec.GcDC3E457711(), [D.bytes(Pair.snd(B.Buf, D.Digest, FixedTestStruct_h.GcDC3E457711_hash_tree_root(h, o)))])
 def GcDC3E457711_root_correct(h, o, rp):
-  %Equal.sym(B.Buf & D.Digest, T.GcDC3E457711_root(64n, h, o, 0), (h, d_GcDC3E457711(64n, o)), st_GcDC3E457711(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, FixedTestStruct_h.GcDC3E457711_root(64n, h, o, 0), (h, d_GcDC3E457711(64n, o)), st_GcDC3E457711(64n, h, o, 0)) :
     RR.roots(v_GcDC3E457711(o), Spec.GcDC3E457711(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_GcDC3E457711(64n, {==}, o, rp)
 
 # Gc74A8F5F17F: the root of every Gc74A8F5F17F object (with its representation facts) is its specification root.
 law Gc74A8F5F17F_root_correct:
   for -h: B.Buf
-  for +o: T.Gc74A8F5F17F
+  for +o: SingleFieldTestStruct_d.Gc74A8F5F17F
   for +rp: rp_Gc74A8F5F17F(o)
-  RR.roots(v_Gc74A8F5F17F(o), Spec.Gc74A8F5F17F(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gc74A8F5F17F_hash_tree_root(h, o)))])
+  RR.roots(v_Gc74A8F5F17F(o), Spec.Gc74A8F5F17F(), [D.bytes(Pair.snd(B.Buf, D.Digest, SingleFieldTestStruct_h.Gc74A8F5F17F_hash_tree_root(h, o)))])
 def Gc74A8F5F17F_root_correct(h, o, rp):
-  %Equal.sym(B.Buf & D.Digest, T.Gc74A8F5F17F_root(64n, h, o, 0), (h, d_Gc74A8F5F17F(64n, o)), st_Gc74A8F5F17F(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, SingleFieldTestStruct_h.Gc74A8F5F17F_root(64n, h, o, 0), (h, d_Gc74A8F5F17F(64n, o)), st_Gc74A8F5F17F(64n, h, o, 0)) :
     RR.roots(v_Gc74A8F5F17F(o), Spec.Gc74A8F5F17F(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_Gc74A8F5F17F(64n, {==}, o, rp)
 
 # Gc4ED9619F50: the root of every Gc4ED9619F50 object (with its representation facts) is its specification root.
 law Gc4ED9619F50_root_correct:
   for -h: B.Buf
-  for +o: T.Gc4ED9619F50
+  for +o: SmallTestStruct_d.Gc4ED9619F50
   for +rp: rp_Gc4ED9619F50(o)
-  RR.roots(v_Gc4ED9619F50(o), Spec.Gc4ED9619F50(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gc4ED9619F50_hash_tree_root(h, o)))])
+  RR.roots(v_Gc4ED9619F50(o), Spec.Gc4ED9619F50(), [D.bytes(Pair.snd(B.Buf, D.Digest, SmallTestStruct_h.Gc4ED9619F50_hash_tree_root(h, o)))])
 def Gc4ED9619F50_root_correct(h, o, rp):
-  %Equal.sym(B.Buf & D.Digest, T.Gc4ED9619F50_root(64n, h, o, 0), (h, d_Gc4ED9619F50(64n, o)), st_Gc4ED9619F50(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, SmallTestStruct_h.Gc4ED9619F50_root(64n, h, o, 0), (h, d_Gc4ED9619F50(64n, o)), st_Gc4ED9619F50(64n, h, o, 0)) :
     RR.roots(v_Gc4ED9619F50(o), Spec.Gc4ED9619F50(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_Gc4ED9619F50(64n, {==}, o, rp)
 
 # GtBBF12DAB28: the root of every GtBBF12DAB28 object is its specification root.
 law GtBBF12DAB28_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector32
-  RR.roots(v_bv32(o), Spec.GtBBF12DAB28(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtBBF12DAB28_hash_tree_root(h, o)))])
+  for +o: bitvector_32_d.Bitvector32
+  RR.roots(v_bv32(o), Spec.GtBBF12DAB28(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_32_h.GtBBF12DAB28_hash_tree_root(h, o)))])
 def GtBBF12DAB28_root_correct(h, o):
-  %Equal.sym(B.Buf & D.Digest, T.bv32_root(64n, h, o, 0), (h, d_bv32(64n, o)), st_bv32(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, bitvector_32_h.bv32_root(64n, h, o, 0), (h, d_bv32(64n, o)), st_bv32(64n, h, o, 0)) :
     RR.roots(v_bv32(o), Spec.GtBBF12DAB28(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_bv32(64n, {==}, o)
 
 # Gt0A390CB480: the root of every Gt0A390CB480 object is its specification root.
 law Gt0A390CB480_root_correct:
   for -h: B.Buf
-  for +o: T.Bitvector512
-  RR.roots(v_bv512(o), Spec.Gt0A390CB480(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt0A390CB480_hash_tree_root(h, o)))])
+  for +o: Fulu_bitvector_512_d.Bitvector512
+  RR.roots(v_bv512(o), Spec.Gt0A390CB480(), [D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_512_h.Gt0A390CB480_hash_tree_root(h, o)))])
 def Gt0A390CB480_root_correct(h, o):
-  %Equal.sym(B.Buf & D.Digest, T.bv512_root(64n, h, o, 0), (h, d_bv512(64n, o)), st_bv512(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, Fulu_bitvector_512_h.bv512_root(64n, h, o, 0), (h, d_bv512(64n, o)), st_bv512(64n, h, o, 0)) :
     RR.roots(v_bv512(o), Spec.Gt0A390CB480(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_bv512(64n, {==}, o)
 
@@ -746,19 +777,19 @@ def Gt0A390CB480_root_correct(h, o):
 law GtAD72FD256A_root_correct:
   for -h: B.Buf
   for +o: Bool
-  RR.roots(v_bool(o), Spec.GtAD72FD256A(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtAD72FD256A_hash_tree_root(h, o)))])
+  RR.roots(v_bool(o), Spec.GtAD72FD256A(), [D.bytes(Pair.snd(B.Buf, D.Digest, boolean_h.GtAD72FD256A_hash_tree_root(h, o)))])
 def GtAD72FD256A_root_correct(h, o):
-  %Equal.sym(B.Buf & D.Digest, T.bool_root(64n, h, o, 0), (h, d_bool(64n, o)), st_bool(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, boolean_h.bool_root(64n, h, o, 0), (h, d_bool(64n, o)), st_bool(64n, h, o, 0)) :
     RR.roots(v_bool(o), Spec.GtAD72FD256A(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_bool(64n, {==}, o)
 
 # Gt604E28A301: the root of every Gt604E28A301 object is its specification root.
 law Gt604E28A301_root_correct:
   for -h: B.Buf
-  for +o: T.Uint128
-  RR.roots(v_u128(o), Spec.Gt604E28A301(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt604E28A301_hash_tree_root(h, o)))])
+  for +o: uint128_d.Uint128
+  RR.roots(v_u128(o), Spec.Gt604E28A301(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint128_h.Gt604E28A301_hash_tree_root(h, o)))])
 def Gt604E28A301_root_correct(h, o):
-  %Equal.sym(B.Buf & D.Digest, T.u128_root(64n, h, o, 0), (h, d_u128(64n, o)), st_u128(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, uint128_h.u128_root(64n, h, o, 0), (h, d_u128(64n, o)), st_u128(64n, h, o, 0)) :
     RR.roots(v_u128(o), Spec.Gt604E28A301(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_u128(64n, {==}, o)
 
@@ -767,9 +798,9 @@ law Gt967E8D815F_root_correct:
   for -h: B.Buf
   for +o: U32
   for +rp: rp_u8(o)
-  RR.roots(v_u8(o), Spec.Gt967E8D815F(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt967E8D815F_hash_tree_root(h, o)))])
+  RR.roots(v_u8(o), Spec.Gt967E8D815F(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint8_h.Gt967E8D815F_hash_tree_root(h, o)))])
 def Gt967E8D815F_root_correct(h, o, rp):
-  %Equal.sym(B.Buf & D.Digest, T.u8_root(64n, h, o, 0), (h, d_u8(64n, o)), st_u8(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, uint8_h.u8_root(64n, h, o, 0), (h, d_u8(64n, o)), st_u8(64n, h, o, 0)) :
     RR.roots(v_u8(o), Spec.Gt967E8D815F(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_u8(64n, {==}, o, rp)
 
@@ -778,19 +809,19 @@ law GtECF9BB18D8_root_correct:
   for -h: B.Buf
   for +o: U32
   for +rp: rp_u16(o)
-  RR.roots(v_u16(o), Spec.GtECF9BB18D8(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.GtECF9BB18D8_hash_tree_root(h, o)))])
+  RR.roots(v_u16(o), Spec.GtECF9BB18D8(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint16_h.GtECF9BB18D8_hash_tree_root(h, o)))])
 def GtECF9BB18D8_root_correct(h, o, rp):
-  %Equal.sym(B.Buf & D.Digest, T.u16_root(64n, h, o, 0), (h, d_u16(64n, o)), st_u16(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, uint16_h.u16_root(64n, h, o, 0), (h, d_u16(64n, o)), st_u16(64n, h, o, 0)) :
     RR.roots(v_u16(o), Spec.GtECF9BB18D8(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_u16(64n, {==}, o, rp)
 
 # Gt59DCDB2873: the root of every Gt59DCDB2873 object is its specification root.
 law Gt59DCDB2873_root_correct:
   for -h: B.Buf
-  for +o: T.Uint256
-  RR.roots(v_u256(o), Spec.Gt59DCDB2873(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt59DCDB2873_hash_tree_root(h, o)))])
+  for +o: uint256_d.Uint256
+  RR.roots(v_u256(o), Spec.Gt59DCDB2873(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint256_h.Gt59DCDB2873_hash_tree_root(h, o)))])
 def Gt59DCDB2873_root_correct(h, o):
-  %Equal.sym(B.Buf & D.Digest, T.u256_root(64n, h, o, 0), (h, d_u256(64n, o)), st_u256(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, uint256_h.u256_root(64n, h, o, 0), (h, d_u256(64n, o)), st_u256(64n, h, o, 0)) :
     RR.roots(v_u256(o), Spec.Gt59DCDB2873(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_u256(64n, {==}, o)
 
@@ -798,9 +829,9 @@ def Gt59DCDB2873_root_correct(h, o):
 law Gt7B8507E2C2_root_correct:
   for -h: B.Buf
   for +o: U32
-  RR.roots(v_u32(o), Spec.Gt7B8507E2C2(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt7B8507E2C2_hash_tree_root(h, o)))])
+  RR.roots(v_u32(o), Spec.Gt7B8507E2C2(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint32_h.Gt7B8507E2C2_hash_tree_root(h, o)))])
 def Gt7B8507E2C2_root_correct(h, o):
-  %Equal.sym(B.Buf & D.Digest, T.u32_root(64n, h, o, 0), (h, d_u32(64n, o)), st_u32(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, uint32_h.u32_root(64n, h, o, 0), (h, d_u32(64n, o)), st_u32(64n, h, o, 0)) :
     RR.roots(v_u32(o), Spec.Gt7B8507E2C2(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_u32(64n, {==}, o)
 
@@ -808,9 +839,9 @@ def Gt7B8507E2C2_root_correct(h, o):
 law Gt62B0093BE7_root_correct:
   for -h: B.Buf
   for +o: O.U64
-  RR.roots(v_u64(o), Spec.Gt62B0093BE7(), [D.bytes(Pair.snd(B.Buf, D.Digest, T.Gt62B0093BE7_hash_tree_root(h, o)))])
+  RR.roots(v_u64(o), Spec.Gt62B0093BE7(), [D.bytes(Pair.snd(B.Buf, D.Digest, uint64_h.Gt62B0093BE7_hash_tree_root(h, o)))])
 def Gt62B0093BE7_root_correct(h, o):
-  %Equal.sym(B.Buf & D.Digest, T.u64_root(64n, h, o, 0), (h, d_u64(64n, o)), st_u64(64n, h, o, 0)) :
+  %Equal.sym(B.Buf & D.Digest, uint64_h.u64_root(64n, h, o, 0), (h, d_u64(64n, o)), st_u64(64n, h, o, 0)) :
     RR.roots(v_u64(o), Spec.Gt62B0093BE7(), [D.bytes(Pair.snd(B.Buf, D.Digest, _))])
   rs_u64(64n, {==}, o)
 

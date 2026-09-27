@@ -1,6 +1,6 @@
 import Base
 import ../../src/buffer.bend as B
-import ../../types/generic_obj.bend as T
+import ../../types/vec_uint128_512_decode_ssz_generated.bend as vec_uint128_512_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -14,11 +14,11 @@ import ./vrejf.bend as VRF
 # (see codegen/fix_reject.py).
 
 # ---- Gt7274F61A0F (8192 bytes; validator T.v512_u128_ok) ----
-def Gt7274F61A0F_okb(buf: B.Buf, +off: U32, +b: Bool) -> {T.v512_u128_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
+def Gt7274F61A0F_okb(buf: B.Buf, +off: U32, +b: Bool) -> {vec_uint128_512_r.v512_u128_ok_len(b, buf, off) == (buf, b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
-def Gt7274F61A0F_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {T.v512_u128_ok(buf, off, len) == (buf, U32.is_eq(len, 8192)) : B.Buf & Bool}:
+def Gt7274F61A0F_ok_eval(buf: B.Buf, +off: U32, +len: U32) -> {vec_uint128_512_r.v512_u128_ok(buf, off, len) == (buf, U32.is_eq(len, 8192)) : B.Buf & Bool}:
   Gt7274F61A0F_okb(buf, off, U32.is_eq(len, 8192))
 def Gt7274F61A0F_rj(+bs: +List<U32>, +hn: {Nat.is_eq(List.length(&2, U32, bs), VRF.SZ(GS.Gt7274F61A0F())) == False{} : Bool}, +v: S.Value, e: Decoding.decodes(GS.Gt7274F61A0F(), bs, v)) -> Empty:
   VRF.lo(SS.fixed_size(GS.Gt7274F61A0F()), VRF.SZ(GS.Gt7274F61A0F()), bs, Codec.parts(v, GS.Gt7274F61A0F()), DS.facts(v, GS.Gt7274F61A0F(), {==}), {==}, e, hn)

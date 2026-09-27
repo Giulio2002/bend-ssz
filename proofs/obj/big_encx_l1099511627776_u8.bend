@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_list_uint8_1099511627776_encode_ssz_generated.bend as Fulu_list_uint8_1099511627776_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -125,7 +125,7 @@ def wok(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +unit: U32, +pfT: {FD.array_
   VBE.wob_go(dw, T, N, VLS.KK(dw), pfT, hdw31, VLS.kk_lt(dw, hdw), VLS.hyn(dw, N, hN), hsrc(dw, N, hdw, hN), htz, U32.is_eq(VYS.RM(N), 0), {==})
 
 def valid(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +h: {OKT(dw, T, N) == True{} : Bool})
-    -> {T.l1099511627776_u8_valid(O.Words{FD.array__thaw(U32, T), N}) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}:
+    -> {Fulu_list_uint8_1099511627776_e.l1099511627776_u8_valid(O.Words{FD.array__thaw(U32, T), N}) == (O.Words{FD.array__thaw(U32, T), N}, True{}) : O.Words & Bool}:
   wok(dw, T, N, 1, ok_pf(dw, T, N, h), ok_hd(dw, T, N, h), ok_hN(dw, T, N, h), ok_tz(dw, T, N, h), {==})
 
 def putx_go(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
@@ -170,7 +170,7 @@ law putx:
   for +hl: {Nat.is_le(Nat.add(q, VWD.NWN(Nat.add(r, List.length(&2, U32, ENC(m))))), VB.pw(dd)) == True{} : Bool}
   for +hz: {VS.bt(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UWW.ZB(Nat.add(List.length(&2, U32, ENC(m)), PADB(r, m))) : +List<U32>}
   for +hok: {OK(m) == True{} : Bool}
-  {T.l1099511627776_u8_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (O.Words & U32)}
+  {Fulu_list_uint8_1099511627776_e.l1099511627776_u8_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), SZ(m))) : Array<U32> & (O.Words & U32)}
 def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
   match m:
     case MW{+dw, +T, +N}:
@@ -178,8 +178,8 @@ def putx(m, dd, D, X, q, r, e, hr, hd, pf, hl, hz, hok):
       +eE = eL(dw, T, N, hok)
       +hl2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, VWD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{} : Bool}, E, U32.to_nat(N), eE, hl)
       +hz2 = FD.logic__subst(Nat, z => {VS.bt(Nat.add(z, VWD.PADB(r, z)), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UWW.ZB(Nat.add(z, VWD.PADB(r, z))) : +List<U32>}, E, U32.to_nat(N), eE, hz)
-      %Equal.sym(O.Words & Bool, T.l1099511627776_u8_valid(O.Words{FD.array__thaw(U32, T), N}), (O.Words{FD.array__thaw(U32, T), N}, True{}), valid(dw, T, N, hok)) :
-        {T.l1099511627776_u8_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, VWD.PWM(r, dd, D, q, T, N)), (O.Words{FD.array__thaw(U32, T), N}, N)) : Array<U32> & (O.Words & U32)}
+      %Equal.sym(O.Words & Bool, Fulu_list_uint8_1099511627776_e.l1099511627776_u8_valid(O.Words{FD.array__thaw(U32, T), N}), (O.Words{FD.array__thaw(U32, T), N}, True{}), valid(dw, T, N, hok)) :
+        {Fulu_list_uint8_1099511627776_e.l1099511627776_u8_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, VWD.PWM(r, dd, D, q, T, N)), (O.Words{FD.array__thaw(U32, T), N}, N)) : Array<U32> & (O.Words & U32)}
       %Equal.sym(Array<U32> & O.Words, O.put_words(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, T), N}), (FD.array__thaw(U32, VWD.PWM(r, dd, D, q, T, N)), O.Words{FD.array__thaw(U32, T), N}),
           putx_go(dw, T, N, dd, D, X, q, r, e, hr, hd, pf, hl2, hz2, hok)) :
         {O.pwn(_) == (FD.array__thaw(U32, VWD.PWM(r, dd, D, q, T, N)), (O.Words{FD.array__thaw(U32, T), N}, N)) : Array<U32> & (O.Words & U32)}
@@ -233,7 +233,7 @@ def szx(m, hok):
 law sizex:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.l1099511627776_u8_size(TH(m)) == (TH(m), SZ(m)) : O.Words & U32}
+  {Fulu_list_uint8_1099511627776_e.l1099511627776_u8_size(TH(m)) == (TH(m), SZ(m)) : O.Words & U32}
 def sizex(m, hok):
   match m:
     case MW{+dw, +T, +N}:
@@ -255,7 +255,7 @@ def encx_spec(m, hok):
 law validx:
   for +m: MW
   for +hok: {OK(m) == True{} : Bool}
-  {T.l1099511627776_u8_valid(TH(m)) == (TH(m), True{}) : O.Words & Bool}
+  {Fulu_list_uint8_1099511627776_e.l1099511627776_u8_valid(TH(m)) == (TH(m), True{}) : O.Words & Bool}
 def validx(m, hok):
   match m:
     case MW{+dw, +T, +N}: valid(dw, T, N, hok)

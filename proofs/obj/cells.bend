@@ -18,7 +18,6 @@ import ./words_spec.bend as WS
 import ./words_root.bend as WR
 import ./spec_fixed.bend as FX
 import ./elems_obj.bend as EL
-import ../../types/fulu_obj.bend as T
 import ../../spec/codec.bend as Codec
 import ../../spec/bit_root.bend as Mix
 import ../../spec/nat_bytes.bend as Len

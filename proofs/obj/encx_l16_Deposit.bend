@@ -1,7 +1,16 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBytes48_def_generated.bend as FuluBytes48_d
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluDepositData_def_generated.bend as FuluDepositData_d
+import ../../types/FuluDepositData_encode_ssz_generated.bend as FuluDepositData_e
+import ../../types/Fulu_vec_bytevec_32_33_encode_ssz_generated.bend as Fulu_vec_bytevec_32_33_e
+import ../../types/FuluDeposit_def_generated.bend as FuluDeposit_d
+import ../../types/FuluDeposit_encode_ssz_generated.bend as FuluDeposit_e
+import ../../types/Fulu_list_Deposit_16_def_generated.bend as Fulu_list_Deposit_16_d
+import ../../types/Fulu_list_Deposit_16_encode_ssz_generated.bend as Fulu_list_Deposit_16_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -67,47 +76,47 @@ type MB<-X: Data> is Data:
 
 # A container or byte list schema is composite: no basic size.
 type M_Deposit is Data:
-  M_Deposit{a0: WMr, a1: T.DepositData}
-def th_Deposit(m: M_Deposit) -> T.Deposit:
+  M_Deposit{a0: WMr, a1: FuluDepositData_d.DepositData}
+def th_Deposit(m: M_Deposit) -> FuluDeposit_d.Deposit:
   match m:
-    case M_Deposit{+a0, +a1}: T.Deposit{th_w(a0), O.BSome{a1, O.BNone{}}}
-def th_Deposit_bx(m: MB<M_Deposit>) -> O.Boxed<T.Deposit>:
+    case M_Deposit{+a0, +a1}: FuluDeposit_d.Deposit{th_w(a0), O.BSome{a1, O.BNone{}}}
+def th_Deposit_bx(m: MB<M_Deposit>) -> O.Boxed<FuluDeposit_d.Deposit>:
   match m:
     case MSome{+v}: O.BSome{th_Deposit(v), O.BNone{}}
     case MNone{}: O.BNone{}
-def am_l16_Deposit(t: FD.array__Tree<MB<M_Deposit>>) -> Array<O.Boxed<T.Deposit>>:
+def am_l16_Deposit(t: FD.array__Tree<MB<M_Deposit>>) -> Array<O.Boxed<FuluDeposit_d.Deposit>>:
   match t:
     case FD.TLeaf{x}: ALeaf{th_Deposit_bx(x)}
     case FD.TNode{l, r}: ANode{am_l16_Deposit(l), am_l16_Deposit(r)}
-def amsize_l16_Deposit(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +pf: {FD.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<T.Deposit>, am_l16_Deposit(t)) == (am_l16_Deposit(t), FD.u32__pow2u(d)) : Array<O.Boxed<T.Deposit>> & U32}:
+def amsize_l16_Deposit(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +pf: {FD.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t)) == (am_l16_Deposit(t), FD.u32__pow2u(d)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & U32}:
   match d t:
     case 0n FD.TLeaf{x}:
       {==}
     case 0n FD.TNode{l, r}:
-      Empty.absurd({Array.size(O.Boxed<T.Deposit>, am_l16_Deposit(FD.TNode{l, r})) == (am_l16_Deposit(FD.TNode{l, r}), 1) : Array<O.Boxed<T.Deposit>> & U32}, FD.logic__false_true(pf))
+      Empty.absurd({Array.size(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(FD.TNode{l, r})) == (am_l16_Deposit(FD.TNode{l, r}), 1) : Array<O.Boxed<FuluDeposit_d.Deposit>> & U32}, FD.logic__false_true(pf))
     case 1n+p FD.TLeaf{x}:
-      Empty.absurd({Array.size(O.Boxed<T.Deposit>, ALeaf{th_Deposit_bx(x)}) == (ALeaf{th_Deposit_bx(x)}, FD.u32__pow2u(1n+p)) : Array<O.Boxed<T.Deposit>> & U32}, FD.logic__false_true(pf))
+      Empty.absurd({Array.size(O.Boxed<FuluDeposit_d.Deposit>, ALeaf{th_Deposit_bx(x)}) == (ALeaf{th_Deposit_bx(x)}, FD.u32__pow2u(1n+p)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & U32}, FD.logic__false_true(pf))
     case 1n+ +p FD.TNode{+l, +r}:
-      %Equal.sym(Array<O.Boxed<T.Deposit>> & U32, Array.size(O.Boxed<T.Deposit>, am_l16_Deposit(l)), (am_l16_Deposit(l), FD.u32__pow2u(p)), amsize_l16_Deposit(p, l, FD.array__pf_left(MB<M_Deposit>, p, l, r, pf))) : {Array.size.node(O.Boxed<T.Deposit>, am_l16_Deposit(r), _) == (ANode{am_l16_Deposit(l), am_l16_Deposit(r)}, U32.shl(FD.u32__pow2u(p))) : Array<O.Boxed<T.Deposit>> & U32}
+      %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & U32, Array.size(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l)), (am_l16_Deposit(l), FD.u32__pow2u(p)), amsize_l16_Deposit(p, l, FD.array__pf_left(MB<M_Deposit>, p, l, r, pf))) : {Array.size.node(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), _) == (ANode{am_l16_Deposit(l), am_l16_Deposit(r)}, U32.shl(FD.u32__pow2u(p))) : Array<O.Boxed<FuluDeposit_d.Deposit>> & U32}
       {==}
-def amswap_go_l16_Deposit(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +i: U32, +v: MB<M_Deposit>, +x: MB<M_Deposit>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Deposit>>}, +b: Bool, +eb: {U32.is_lt(i, FD.u32__pow2u(FD.nat__pred(d))) == b : Bool}, +pf: {FD.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<T.Deposit>, am_l16_Deposit(t), FD.u32__pow2u(d), i, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}:
+def amswap_go_l16_Deposit(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +i: U32, +v: MB<M_Deposit>, +x: MB<M_Deposit>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Deposit>>}, +b: Bool, +eb: {U32.is_lt(i, FD.u32__pow2u(FD.nat__pred(d))) == b : Bool}, +pf: {FD.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t), FD.u32__pow2u(d), i, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}:
   match d t b:
     case 0n FD.TLeaf{+y} _:
-      %FD.array__leaf_value(MB<M_Deposit>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_Deposit_bx(v)}, th_Deposit_bx(y)) == (ALeaf{th_Deposit_bx(v)}, th_Deposit_bx(_)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
+      %FD.array__leaf_value(MB<M_Deposit>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_Deposit_bx(v)}, th_Deposit_bx(y)) == (ALeaf{th_Deposit_bx(v)}, th_Deposit_bx(_)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
       {==}
     case 0n FD.TNode{l, r} _:
-      Empty.absurd({Array.swap.go(O.Boxed<T.Deposit>, am_l16_Deposit(FD.TNode{l, r}), 1, i, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 0n, FD.TNode{l, r}, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}, FD.logic__false_true(pf))
+      Empty.absurd({Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(FD.TNode{l, r}), 1, i, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 0n, FD.TNode{l, r}, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}, FD.logic__false_true(pf))
     case 1n+p FD.TLeaf{y} _:
-      Empty.absurd({Array.swap.go(O.Boxed<T.Deposit>, ALeaf{th_Deposit_bx(y)}, FD.u32__pow2u(1n+p), i, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 1n+p, FD.TLeaf{y}, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}, FD.logic__false_true(pf))
+      Empty.absurd({Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, ALeaf{th_Deposit_bx(y)}, FD.u32__pow2u(1n+p), i, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 1n+p, FD.TLeaf{y}, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}, FD.logic__false_true(pf))
     case 1n+ +p FD.TNode{+l, +r} True{}:
       +hp = FD.nat__lt_trans(p, 1n+p, 32n, FD.nat__lt_succ(p), hd)
       +pl = FD.array__pf_left(MB<M_Deposit>, p, l, r, pf)
       +hil = FD.array__lt_bridge(i, p, hp, True{}, eb)
       +ti = U32.to_nat(i)
-      %Equal.sym(U32, U32.shr(FD.u32__pow2u(1n+p)), FD.u32__pow2u(p), FD.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<T.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), _, i, th_Deposit_bx(v), U32.is_lt(i, _)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
-      %Equal.sym(Bool, U32.is_lt(i, FD.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<T.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), FD.u32__pow2u(p), i, th_Deposit_bx(v), _) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
-      %Equal.sym(Bool, Nat.is_lt(ti, FD.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<T.Deposit>, am_l16_Deposit(r), Array.swap.go(O.Boxed<T.Deposit>, am_l16_Deposit(l), FD.u32__pow2u(p), i, th_Deposit_bx(v))) == (am_l16_Deposit(FD.array__tupd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v, _)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
-      %Equal.sym(Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>, Array.swap.go(O.Boxed<T.Deposit>, am_l16_Deposit(l), FD.u32__pow2u(p), i, th_Deposit_bx(v)), (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, p, l, ti, v)), th_Deposit_bx(x)), amswap_go_l16_Deposit(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<M_Deposit>>, FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), ti), FD.spec_common__nth(MB<M_Deposit>, FD.spec_common__append(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), FD.array__slots(MB<M_Deposit>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_Deposit>>, FD.spec_common__nth(MB<M_Deposit>, FD.spec_common__append(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), FD.array__slots(MB<M_Deposit>, r)), ti), FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), ti), FD.list__nth_append_left(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), FD.array__slots(MB<M_Deposit>, r), ti, FD.array__len_lt(MB<M_Deposit>, p, l, ti, pl, hil))), hx), U32.is_lt(i, FD.u32__pow2u(FD.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<T.Deposit>, am_l16_Deposit(r), _) == (am_l16_Deposit(FD.TNode{FD.array__tupd(MB<M_Deposit>, p, l, ti, v, FD.array__ndec(p, ti)), r}), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
+      %Equal.sym(U32, U32.shr(FD.u32__pow2u(1n+p)), FD.u32__pow2u(p), FD.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), _, i, th_Deposit_bx(v), U32.is_lt(i, _)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Bool, U32.is_lt(i, FD.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), FD.u32__pow2u(p), i, th_Deposit_bx(v), _) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Bool, Nat.is_lt(ti, FD.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), FD.u32__pow2u(p), i, th_Deposit_bx(v))) == (am_l16_Deposit(FD.array__tupd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v, _)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>, Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), FD.u32__pow2u(p), i, th_Deposit_bx(v)), (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, p, l, ti, v)), th_Deposit_bx(x)), amswap_go_l16_Deposit(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<M_Deposit>>, FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), ti), FD.spec_common__nth(MB<M_Deposit>, FD.spec_common__append(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), FD.array__slots(MB<M_Deposit>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_Deposit>>, FD.spec_common__nth(MB<M_Deposit>, FD.spec_common__append(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), FD.array__slots(MB<M_Deposit>, r)), ti), FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), ti), FD.list__nth_append_left(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), FD.array__slots(MB<M_Deposit>, r), ti, FD.array__len_lt(MB<M_Deposit>, p, l, ti, pl, hil))), hx), U32.is_lt(i, FD.u32__pow2u(FD.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), _) == (am_l16_Deposit(FD.TNode{FD.array__tupd(MB<M_Deposit>, p, l, ti, v, FD.array__ndec(p, ti)), r}), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
       {==}
     case 1n+ +p FD.TNode{+l, +r} False{}:
       +hp = FD.nat__lt_trans(p, 1n+p, 32n, FD.nat__lt_succ(p), hd)
@@ -121,21 +130,21 @@ def amswap_go_l16_Deposit(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +i: U32, +
       +hir = FD.logic__subst(Nat, n => {Nat.is_lt(n, FD.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), FD.array__upper_lt(ti, p, hi, le))
       +hxr = FD.logic__subst(Nat, n => {FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, r), n) == Some{x} : Maybe<&2, MB<M_Deposit>>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, MB<M_Deposit>>, FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, r), k), FD.spec_common__nth(MB<M_Deposit>, FD.spec_common__append(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), FD.array__slots(MB<M_Deposit>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_Deposit>>, FD.spec_common__nth(MB<M_Deposit>, FD.spec_common__append(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, l), FD.array__slots(MB<M_Deposit>, r)), ti), FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, r), k), FD.array__right_nth(MB<M_Deposit>, p, l, r, ti, pl, le)), hx))
       +ih = amswap_go_l16_Deposit(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, FD.u32__pow2u(FD.nat__pred(p))), {==}, FD.array__pf_right(MB<M_Deposit>, p, l, r, pf))
-      +ih2 = FD.logic__subst(Nat, n => {Array.swap.go(O.Boxed<T.Deposit>, am_l16_Deposit(r), FD.u32__pow2u(p), j, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, p, r, n, v)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}, U32.to_nat(j), k, ej, ih)
-      %Equal.sym(U32, U32.shr(FD.u32__pow2u(1n+p)), FD.u32__pow2u(p), FD.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<T.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), _, i, th_Deposit_bx(v), U32.is_lt(i, _)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
-      %Equal.sym(Bool, U32.is_lt(i, FD.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<T.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), FD.u32__pow2u(p), i, th_Deposit_bx(v), _) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
-      %Equal.sym(Bool, Nat.is_lt(ti, FD.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<T.Deposit>, am_l16_Deposit(l), Array.swap.go(O.Boxed<T.Deposit>, am_l16_Deposit(r), FD.u32__pow2u(p), j, th_Deposit_bx(v))) == (am_l16_Deposit(FD.array__tupd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v, _)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
-      %Equal.sym(Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>, Array.swap.go(O.Boxed<T.Deposit>, am_l16_Deposit(r), FD.u32__pow2u(p), j, th_Deposit_bx(v)), (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, p, r, k, v)), th_Deposit_bx(x)), ih2) : {Array.swap.hi(O.Boxed<T.Deposit>, am_l16_Deposit(l), _) == (am_l16_Deposit(FD.TNode{l, FD.array__tupd(MB<M_Deposit>, p, r, k, v, FD.array__ndec(p, k))}), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
+      +ih2 = FD.logic__subst(Nat, n => {Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), FD.u32__pow2u(p), j, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, p, r, n, v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(FD.u32__pow2u(1n+p)), FD.u32__pow2u(p), FD.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), _, i, th_Deposit_bx(v), U32.is_lt(i, _)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Bool, U32.is_lt(i, FD.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), am_l16_Deposit(r), FD.u32__pow2u(p), i, th_Deposit_bx(v), _) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Bool, Nat.is_lt(ti, FD.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), FD.u32__pow2u(p), j, th_Deposit_bx(v))) == (am_l16_Deposit(FD.array__tupd(MB<M_Deposit>, 1n+p, FD.TNode{l, r}, ti, v, _)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+      %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>, Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(r), FD.u32__pow2u(p), j, th_Deposit_bx(v)), (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, p, r, k, v)), th_Deposit_bx(x)), ih2) : {Array.swap.hi(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(l), _) == (am_l16_Deposit(FD.TNode{l, FD.array__tupd(MB<M_Deposit>, p, r, k, v, FD.array__ndec(p, k))}), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
       {==}
 
 # Public Base entry points. Premises: the tree is perfect of depth d < 32 and
 # the index is below 2^d; x is the value currently stored at that index.
-def amswap_l16_Deposit(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +i: U32, +v: MB<M_Deposit>, +x: MB<M_Deposit>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Deposit>>}, +pf: {FD.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<T.Deposit>, am_l16_Deposit(t), i, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}:
-  %Equal.sym(Array<O.Boxed<T.Deposit>> & U32, Array.size(O.Boxed<T.Deposit>, am_l16_Deposit(t)), (am_l16_Deposit(t), FD.u32__pow2u(d)), amsize_l16_Deposit(d, t, pf)) : {Array.swap.at(O.Boxed<T.Deposit>, i, th_Deposit_bx(v), _) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
-  %Equal.sym(U32, U32.and(i, U32.sub(FD.u32__pow2u(d), 1)), i, FD.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<T.Deposit>, am_l16_Deposit(t), FD.u32__pow2u(d), _, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
+def amswap_l16_Deposit(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +i: U32, +v: MB<M_Deposit>, +x: MB<M_Deposit>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Deposit>>}, +pf: {FD.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t), i, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}:
+  %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & U32, Array.size(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t)), (am_l16_Deposit(t), FD.u32__pow2u(d)), amsize_l16_Deposit(d, t, pf)) : {Array.swap.at(O.Boxed<FuluDeposit_d.Deposit>, i, th_Deposit_bx(v), _) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+  %Equal.sym(U32, U32.and(i, U32.sub(FD.u32__pow2u(d), 1)), i, FD.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t), FD.u32__pow2u(d), _, th_Deposit_bx(v)) == (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
   amswap_go_l16_Deposit(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, FD.u32__pow2u(FD.nat__pred(d))), {==}, pf)
-def amset_l16_Deposit(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +i: U32, +v: MB<M_Deposit>, +x: MB<M_Deposit>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Deposit>>}, +pf: {FD.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<T.Deposit>, am_l16_Deposit(t), i, th_Deposit_bx(v)) == am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<T.Deposit>>}:
-  %Equal.sym(Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>, Array.swap(O.Boxed<T.Deposit>, am_l16_Deposit(t), i, th_Deposit_bx(v)), (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)), amswap_l16_Deposit(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<T.Deposit>, _) == am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<T.Deposit>>}
+def amset_l16_Deposit(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +i: U32, +v: MB<M_Deposit>, +x: MB<M_Deposit>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Deposit>>}, +pf: {FD.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t), i, th_Deposit_bx(v)) == am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluDeposit_d.Deposit>>}:
+  %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>, Array.swap(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t), i, th_Deposit_bx(v)), (am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)), th_Deposit_bx(x)), amswap_l16_Deposit(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<FuluDeposit_d.Deposit>, _) == am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluDeposit_d.Deposit>>}
   {==}
 
 # Swap an element out (replaced by th_Deposit_bx(z)), then set th_Deposit_bx(x) back: the array is
@@ -145,16 +154,16 @@ def amswap_back_l16_Deposit(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +i: U32,
     +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool},
     +hx: {FD.spec_common__nth(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_Deposit>>},
     +pf: {FD.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool})
-    -> {Array.set(O.Boxed<T.Deposit>, am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), z)), i, th_Deposit_bx(x)) == am_l16_Deposit(t) : Array<O.Boxed<T.Deposit>>}:
+    -> {Array.set(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), z)), i, th_Deposit_bx(x)) == am_l16_Deposit(t) : Array<O.Boxed<FuluDeposit_d.Deposit>>}:
   +t2 = FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), z)
   +hz = FD.logic__subst(List<&2, MB<M_Deposit>>, ys => {FD.spec_common__nth(MB<M_Deposit>, ys, U32.to_nat(i)) == Some{z} : Maybe<&2, MB<M_Deposit>>}, FD.spec_common__update(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, t), U32.to_nat(i), z), FD.array__slots(MB<M_Deposit>, t2),
     Equal.sym(List<&2, MB<M_Deposit>>, FD.array__slots(MB<M_Deposit>, t2), FD.spec_common__update(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, t), U32.to_nat(i), z), FD.array__upd_slots(MB<M_Deposit>, d, t, U32.to_nat(i), z, hi, pf)),
     FD.list__nth_update_same(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, t), U32.to_nat(i), z, FD.list__nth_lt_length(MB<M_Deposit>, FD.array__slots(MB<M_Deposit>, t), U32.to_nat(i), x, hx)))
-  %Equal.sym(Array<O.Boxed<T.Deposit>>, Array.set(O.Boxed<T.Deposit>, am_l16_Deposit(t2), i, th_Deposit_bx(x)), am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t2, U32.to_nat(i), x)),
+  %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>>, Array.set(O.Boxed<FuluDeposit_d.Deposit>, am_l16_Deposit(t2), i, th_Deposit_bx(x)), am_l16_Deposit(FD.array__upd(MB<M_Deposit>, d, t2, U32.to_nat(i), x)),
       amset_l16_Deposit(d, t2, i, x, z, hd, hi, hz, FD.array__upd_perfect(MB<M_Deposit>, d, t, U32.to_nat(i), z, pf))) :
-    {_ == am_l16_Deposit(t) : Array<O.Boxed<T.Deposit>>}
+    {_ == am_l16_Deposit(t) : Array<O.Boxed<FuluDeposit_d.Deposit>>}
   %Equal.sym(FD.array__Tree<MB<M_Deposit>>, FD.array__upd(MB<M_Deposit>, d, t2, U32.to_nat(i), x), t, AM.upd_restore(MB<M_Deposit>, d, t, U32.to_nat(i), z, x, hi, hx, pf)) :
-    {am_l16_Deposit(_) == am_l16_Deposit(t) : Array<O.Boxed<T.Deposit>>}
+    {am_l16_Deposit(_) == am_l16_Deposit(t) : Array<O.Boxed<FuluDeposit_d.Deposit>>}
   {==}
 def xat_l16_Deposit(W: List<&2, MB<M_Deposit>>, +i: Nat) -> MB<M_Deposit>:
   match W:
@@ -178,126 +187,126 @@ def nth_l16_Deposit(W, i, hi):
 
 # ---- DepositData: its 46 words, value, parts and writer ----
 
-def RWD_DepositData(r: T.DepositData) -> List<&2, U32>:
+def RWD_DepositData(r: FuluDepositData_d.DepositData) -> List<&2, U32>:
   match r:
-    case T.DepositData{+r_0, +r_1, +r_2, +r_3}:
+    case FuluDepositData_d.DepositData{+r_0, +r_1, +r_2, +r_3}:
       match r_0:
-        case T.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+        case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
           match r_1:
-            case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+            case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
               match r_2:
                 case O.U64{+x20, +x21}:
                   match r_3:
-                    case T.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
+                    case FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
                       [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45]
 
-def RVW_DepositData(r: T.DepositData) -> S.Value:
+def RVW_DepositData(r: FuluDepositData_d.DepositData) -> S.Value:
   match r:
-    case T.DepositData{+r_0, +r_1, +r_2, +r_3}:
+    case FuluDepositData_d.DepositData{+r_0, +r_1, +r_2, +r_3}:
       match r_0:
-        case T.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+        case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
           match r_1:
-            case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+            case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
               match r_2:
                 case O.U64{+x20, +x21}:
                   match r_3:
-                    case T.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
+                    case FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
                       S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.UnsignedValue{P.UInt{x20, x21, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}, S.EmptyItems{}}}}}}
 
 # its parts over the words: the value and the object as terms (rparts rewrites RVW_DepositData to the value first)
-def rvq_DepositData(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32) -> {S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.UnsignedValue{P.UInt{x20, x21, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}, S.EmptyItems{}}}}}} == RVW_DepositData(T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}) : S.Value}: {==}
-def rpc_DepositData(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32) -> {Codec.parts(S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.UnsignedValue{P.UInt{x20, x21, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}, S.EmptyItems{}}}}}}, S.Container{["pubkey", "withdrawal_credentials", "amount", "signature"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}}) == Some{[S.Fixed{F.limbs(RWD_DepositData(T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}))}]} : Maybe<&2, +List<S.Part>>}:
+def rvq_DepositData(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32) -> {S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.UnsignedValue{P.UInt{x20, x21, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}, S.EmptyItems{}}}}}} == RVW_DepositData(FuluDepositData_d.DepositData{FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, FuluBytes96_d.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}) : S.Value}: {==}
+def rpc_DepositData(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32) -> {Codec.parts(S.Sequence{S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.UnsignedValue{P.UInt{x20, x21, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}, S.EmptyItems{}}}}}}, S.Container{["pubkey", "withdrawal_credentials", "amount", "signature"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}}) == Some{[S.Fixed{F.limbs(RWD_DepositData(FuluDepositData_d.DepositData{FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, FuluBytes96_d.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}))}]} : Maybe<&2, +List<S.Part>>}:
   F.container_fixed(["pubkey", "withdrawal_credentials", "amount", "signature"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}, S.Items{S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.UnsignedValue{P.UInt{x20, x21, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}, S.EmptyItems{}}}}}, [[x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11], [x12, x13, x14, x15, x16, x17, x18, x19], [x20, x21], [x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45]], 184n, [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45], F.items_fixed(S.BytesValue{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.UnsignedValue{P.UInt{x20, x21, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}, S.EmptyItems{}}}}, S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}}, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11]), [S.Fixed{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Fixed{F.limbs([x20, x21])}, S.Fixed{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}], F.bytes_part_n(x0, [x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11], 48n, {==}, {==}), F.items_fixed(S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.UnsignedValue{P.UInt{x20, x21, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}, S.EmptyItems{}}}, S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}, F.limbs([x12, x13, x14, x15, x16, x17, x18, x19]), [S.Fixed{F.limbs([x20, x21])}, S.Fixed{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}], F.bytes_part_n(x12, [x13, x14, x15, x16, x17, x18, x19], 32n, {==}, {==}), F.items_fixed(S.UnsignedValue{P.UInt{x20, x21, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}, S.EmptyItems{}}, S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}, F.limbs([x20, x21]), [S.Fixed{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}], F.uint64_part(x20, x21), F.items_fixed(S.BytesValue{F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45])}, S.EmptyItems{}, S.ByteVector{96n}, S.End{}, F.limbs([x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45]), [], F.bytes_part_n(x22, [x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45], 96n, {==}, {==}), {==})))), {==}, VS.agg_total([[x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11], [x12, x13, x14, x15, x16, x17, x18, x19], [x20, x21], [x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45]], 184n, {==}), {==})
-def rparts_DepositData(+r: T.DepositData) -> {Codec.parts(RVW_DepositData(r), S.Container{["pubkey", "withdrawal_credentials", "amount", "signature"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}}) == Some{[S.Fixed{F.limbs(RWD_DepositData(r))}]} : Maybe<&2, +List<S.Part>>}:
+def rparts_DepositData(+r: FuluDepositData_d.DepositData) -> {Codec.parts(RVW_DepositData(r), S.Container{["pubkey", "withdrawal_credentials", "amount", "signature"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}}) == Some{[S.Fixed{F.limbs(RWD_DepositData(r))}]} : Maybe<&2, +List<S.Part>>}:
   match r:
-    case T.DepositData{+r_0, +r_1, +r_2, +r_3}:
+    case FuluDepositData_d.DepositData{+r_0, +r_1, +r_2, +r_3}:
       match r_0:
-        case T.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+        case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
           match r_1:
-            case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+            case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
               match r_2:
                 case O.U64{+x20, +x21}:
                   match r_3:
-                    case T.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
-                      %rvq_DepositData(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45) : {Codec.parts(_, S.Container{["pubkey", "withdrawal_credentials", "amount", "signature"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}}) == Some{[S.Fixed{F.limbs(RWD_DepositData(T.DepositData{T.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, T.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}))}]} : Maybe<&2, +List<S.Part>>}
+                    case FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
+                      %rvq_DepositData(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45) : {Codec.parts(_, S.Container{["pubkey", "withdrawal_credentials", "amount", "signature"], S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{32n}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{96n}, S.End{}}}}}}) == Some{[S.Fixed{F.limbs(RWD_DepositData(FuluDepositData_d.DepositData{FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, FuluBytes96_d.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}}))}]} : Maybe<&2, +List<S.Part>>}
                       rpc_DepositData(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45)
 
-def rlen_DepositData(+r: T.DepositData) -> {VF.slen(RWD_DepositData(r)) == 46n : Nat}:
+def rlen_DepositData(+r: FuluDepositData_d.DepositData) -> {VF.slen(RWD_DepositData(r)) == 46n : Nat}:
   match r:
-    case T.DepositData{+r_0, +r_1, +r_2, +r_3}:
+    case FuluDepositData_d.DepositData{+r_0, +r_1, +r_2, +r_3}:
       match r_0:
-        case T.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+        case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
           match r_1:
-            case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+            case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
               match r_2:
                 case O.U64{+x20, +x21}:
                   match r_3:
-                    case T.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
+                    case FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
                       {==}
 
 
 # ---- DepositData: its writer at any byte position, on the object ----
 
-def PXo_DepositData(o: T.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+def PXo_DepositData(o: FuluDepositData_d.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match o:
-    case T.DepositData{+o_0, +o_1, +o_2, +o_3}:
+    case FuluDepositData_d.DepositData{+o_0, +o_1, +o_2, +o_3}:
       match o_0:
-        case T.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+        case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
           match o_1:
-            case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+            case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
               match o_2:
                 case O.U64{+x20, +x21}:
                   match o_3:
-                    case T.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
+                    case FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
                       ERC.PX_DepositData(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, dd, D, q, r)
 
-def pfo_DepositData(+o: T.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def pfo_DepositData(+o: FuluDepositData_d.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PXo_DepositData(o, dd, D, q, r)) == True{} : Bool}:
   match o:
-    case T.DepositData{+o_0, +o_1, +o_2, +o_3}:
+    case FuluDepositData_d.DepositData{+o_0, +o_1, +o_2, +o_3}:
       match o_0:
-        case T.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+        case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
           match o_1:
-            case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+            case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
               match o_2:
                 case O.U64{+x20, +x21}:
                   match o_3:
-                    case T.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
+                    case FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
                       ERC.pf_DepositData(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, dd, D, q, r, pf)
 
-def RTo_DepositData(+o: T.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.DepositData_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_DepositData(o, dd, D, q, r)) : Array<U32>}
-def BYo_DepositData(+o: T.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTo_DepositData(+o: FuluDepositData_d.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluDepositData_e.DepositData_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_DepositData(o, dd, D, q, r)) : Array<U32>}
+def BYo_DepositData(+o: FuluDepositData_d.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_DepositData(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.limbs(RWD_DepositData(o))) : +List<U32>}
 
-def putxo_DepositData(+o: T.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putxo_DepositData(+o: FuluDepositData_d.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 184n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(184n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(184n) : +List<U32>})
     -> DK.P2(RTo_DepositData(o, dd, D, X, q, r), BYo_DepositData(o, dd, D, q, r)):
   match o:
-    case T.DepositData{+o_0, +o_1, +o_2, +o_3}:
+    case FuluDepositData_d.DepositData{+o_0, +o_1, +o_2, +o_3}:
       match o_0:
-        case T.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+        case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
           match o_1:
-            case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+            case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
               match o_2:
                 case O.U64{+x20, +x21}:
                   match o_3:
-                    case T.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
+                    case FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
                       ERC.putx_DepositData(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
 
-def lenb_DepositData(+o: T.DepositData) -> {VRX.LN(F.limbs(RWD_DepositData(o))) == 184n : Nat}:
+def lenb_DepositData(+o: FuluDepositData_d.DepositData) -> {VRX.LN(F.limbs(RWD_DepositData(o))) == 184n : Nat}:
   match o:
-    case T.DepositData{+o_0, +o_1, +o_2, +o_3}:
+    case FuluDepositData_d.DepositData{+o_0, +o_1, +o_2, +o_3}:
       match o_0:
-        case T.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+        case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
           match o_1:
-            case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+            case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
               match o_2:
                 case O.U64{+x20, +x21}:
                   match o_3:
-                    case T.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
+                    case FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
                       {==}
 
 
@@ -363,41 +372,41 @@ def pfE(+v: M_Deposit, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf:
         case WMr{+t, +n}: pfo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r, WD.pwm_perfect(r, dd, D, q, t, 1056, pf))
 
 # The proof's validity check, for its 1056 bytes.
-def wvalid(+t: FD.array__Tree<U32>, +n: U32, +h: {OKW(t, n) == True{} : Bool}) -> {T.v33_b32_valid(O.Words{FD.array__thaw(U32, t), 1056}) == (O.Words{FD.array__thaw(U32, t), 1056}, True{}) : O.Words & Bool}:
+def wvalid(+t: FD.array__Tree<U32>, +n: U32, +h: {OKW(t, n) == True{} : Bool}) -> {Fulu_vec_bytevec_32_33_e.v33_b32_valid(O.Words{FD.array__thaw(U32, t), 1056}) == (O.Words{FD.array__thaw(U32, t), 1056}, True{}) : O.Words & Bool}:
   +d = TDW(t)
   +hd = okw_d(t, n, h)
   VBE.words_ok_b(d, t, 1056, 1056, 1056, VL.KK(d), okw_pf(t, n, h), FD.nat__lt_trans(d, 28n, 31n, hd, {==}), VL.kk_lt(d, hd), VL.hyn(d, 1056, okw_hn(t, n, h)),
     {==}, {==}, okw_room(t, n, h), {==}, 32, {==})
 
-def validE(+v: M_Deposit, +h: {OKE(v) == True{} : Bool}) -> {T.Deposit_valid(th_Deposit(v)) == (th_Deposit(v), True{}) : T.Deposit & Bool}:
+def validE(+v: M_Deposit, +h: {OKE(v) == True{} : Bool}) -> {FuluDeposit_e.Deposit_valid(th_Deposit(v)) == (th_Deposit(v), True{}) : FuluDeposit_d.Deposit & Bool}:
   match v:
     case M_Deposit{+a0, +a1}:
       match a0:
         case WMr{+t, +n}:
-          %Equal.sym(U32, n, 1056, okw_n(t, n, h)) : {T.Deposit_valid(T.Deposit{O.Words{FD.array__thaw(U32, t), _}, O.BSome{a1, O.BNone{}}}) == (T.Deposit{O.Words{FD.array__thaw(U32, t), _}, O.BSome{a1, O.BNone{}}}, True{}) : T.Deposit & Bool}
-          %Equal.sym(O.Words & Bool, T.v33_b32_valid(O.Words{FD.array__thaw(U32, t), 1056}), (O.Words{FD.array__thaw(U32, t), 1056}, True{}), wvalid(t, n, h)) :
-            {T.Deposit_va0(O.BSome{a1, O.BNone{}}, True{}, _) == (T.Deposit{O.Words{FD.array__thaw(U32, t), 1056}, O.BSome{a1, O.BNone{}}}, True{}) : T.Deposit & Bool}
+          %Equal.sym(U32, n, 1056, okw_n(t, n, h)) : {FuluDeposit_e.Deposit_valid(FuluDeposit_d.Deposit{O.Words{FD.array__thaw(U32, t), _}, O.BSome{a1, O.BNone{}}}) == (FuluDeposit_d.Deposit{O.Words{FD.array__thaw(U32, t), _}, O.BSome{a1, O.BNone{}}}, True{}) : FuluDeposit_d.Deposit & Bool}
+          %Equal.sym(O.Words & Bool, Fulu_vec_bytevec_32_33_e.v33_b32_valid(O.Words{FD.array__thaw(U32, t), 1056}), (O.Words{FD.array__thaw(U32, t), 1056}, True{}), wvalid(t, n, h)) :
+            {FuluDeposit_e.Deposit_va0(O.BSome{a1, O.BNone{}}, True{}, _) == (FuluDeposit_d.Deposit{O.Words{FD.array__thaw(U32, t), 1056}, O.BSome{a1, O.BNone{}}}, True{}) : FuluDeposit_d.Deposit & Bool}
           {==}
 
 def RTE(+v: M_Deposit, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Deposit_put(FD.array__thaw(U32, D), X, th_Deposit(v)) == (FD.array__thaw(U32, PXE(v, dd, D, q, r)), th_Deposit(v)) : Array<U32> & T.Deposit}
+  {FuluDeposit_e.Deposit_put(FD.array__thaw(U32, D), X, th_Deposit(v)) == (FD.array__thaw(U32, PXE(v, dd, D, q, r)), th_Deposit(v)) : Array<U32> & FuluDeposit_d.Deposit}
 def BYE(+v: M_Deposit, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXE(v, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), YE(v)) : +List<U32>}
 def mkE(+v: M_Deposit, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTE(v, dd, D, X, q, r), +b: BYE(v, dd, D, q, r)) -> DK.P2(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r)):
   (a, b)
 
 # With the proof's length n, then 1056 (its storage t).
-def RTEn(+t: FD.array__Tree<U32>, +n: U32, +a1: T.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Deposit_put(FD.array__thaw(U32, D), X, T.Deposit{O.Words{FD.array__thaw(U32, t), n}, O.BSome{a1, O.BNone{}}}) == (FD.array__thaw(U32, PXo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r)), T.Deposit{O.Words{FD.array__thaw(U32, t), n}, O.BSome{a1, O.BNone{}}}) : Array<U32> & T.Deposit}
-def RTE1(+t: FD.array__Tree<U32>, +a1: T.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Deposit_put(FD.array__thaw(U32, D), X, T.Deposit{O.Words{FD.array__thaw(U32, t), 1056}, O.BSome{a1, O.BNone{}}}) == (FD.array__thaw(U32, PXo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r)), T.Deposit{O.Words{FD.array__thaw(U32, t), 1056}, O.BSome{a1, O.BNone{}}}) : Array<U32> & T.Deposit}
-def BYE1(+t: FD.array__Tree<U32>, +a1: T.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTEn(+t: FD.array__Tree<U32>, +n: U32, +a1: FuluDepositData_d.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluDeposit_e.Deposit_put(FD.array__thaw(U32, D), X, FuluDeposit_d.Deposit{O.Words{FD.array__thaw(U32, t), n}, O.BSome{a1, O.BNone{}}}) == (FD.array__thaw(U32, PXo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r)), FuluDeposit_d.Deposit{O.Words{FD.array__thaw(U32, t), n}, O.BSome{a1, O.BNone{}}}) : Array<U32> & FuluDeposit_d.Deposit}
+def RTE1(+t: FD.array__Tree<U32>, +a1: FuluDepositData_d.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluDeposit_e.Deposit_put(FD.array__thaw(U32, D), X, FuluDeposit_d.Deposit{O.Words{FD.array__thaw(U32, t), 1056}, O.BSome{a1, O.BNone{}}}) == (FD.array__thaw(U32, PXo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r)), FuluDeposit_d.Deposit{O.Words{FD.array__thaw(U32, t), 1056}, O.BSome{a1, O.BNone{}}}) : Array<U32> & FuluDeposit_d.Deposit}
+def BYE1(+t: FD.array__Tree<U32>, +a1: FuluDepositData_d.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.CAT([VCN.PC(1056n, VS.bt(1056n, F.limbs(UW.SLW(t)))), VCN.PC(184n, F.limbs(RWD_DepositData(a1)))])) : +List<U32>}
-def mkE1(+t: FD.array__Tree<U32>, +a1: T.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTE1(t, a1, dd, D, X, q, r), +b: BYE1(t, a1, dd, D, q, r))
+def mkE1(+t: FD.array__Tree<U32>, +a1: FuluDepositData_d.DepositData, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTE1(t, a1, dd, D, X, q, r), +b: BYE1(t, a1, dd, D, q, r))
     -> DK.P2(RTE1(t, a1, dd, D, X, q, r), BYE1(t, a1, dd, D, q, r)):
   (a, b)
 
-def putx1(+t: FD.array__Tree<U32>, +n: U32, +a1: T.DepositData, +h: {OKW(t, n) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putx1(+t: FD.array__Tree<U32>, +n: U32, +a1: FuluDepositData_d.DepositData, +h: {OKW(t, n) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1240n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(1240n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(1240n) : +List<U32>})
@@ -438,16 +447,16 @@ def putx1(+t: FD.array__Tree<U32>, +n: U32, +a1: T.DepositData, +h: {OKW(t, n) =
   +hop1 = FD.logic__subst(Nat, zz => {UA.BYT(PXo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r)) == UW.SPL(UA.BYT(WD.PWM(r, dd, D, q, t, 1056)), zz, F.limbs(RWD_DepositData(a1))) : +List<U32>}, Nat.add(A.quad(Nat.add(264n, q)), r),
     Nat.add(Nat.add(A.quad(q), r), VCN.LN(VCN.CAT([VCN.PC(1056n, VS.bt(1056n, F.limbs(UW.SLW(t))))]))), Equal.sym(Nat, Nat.add(Nat.add(A.quad(q), r), VCN.LN(VCN.CAT([VCN.PC(1056n, VS.bt(1056n, F.limbs(UW.SLW(t))))]))), Nat.add(A.quad(Nat.add(264n, q)), r), VRX.fpx(q, r, 264n)), by1)
   +I2 = VCN.reg_putc0(B0, Nat.add(A.quad(q), r), [VCN.PC(1056n, VS.bt(1056n, F.limbs(UW.SLW(t))))], 184n, [], F.limbs(RWD_DepositData(a1)), UA.BYT(WD.PWM(r, dd, D, q, t, 1056)), UA.BYT(PXo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r)), hX, I1, lenb_DepositData(a1), hop1)
-  +s1 = Equal.cong(O.Words & Bool, Array<U32> & (O.Words & U32), z => T.v33_b32_pk(FD.array__thaw(U32, D), U32.add(X, 0), z), T.v33_b32_valid(O.Words{FD.array__thaw(U32, t), 1056}), (O.Words{FD.array__thaw(U32, t), 1056}, True{}), wvalid(t, n, h))
-  +s2 = Equal.cong(Array<U32> & O.Words, Array<U32> & (O.Words & U32), z => T.v33_b32_pk_ok(z), O.put_words(FD.array__thaw(U32, D), U32.add(X, 0), O.Words{FD.array__thaw(U32, t), 1056}), (FD.array__thaw(U32, WD.PWM(r, dd, D, q, t, 1056)), O.Words{FD.array__thaw(U32, t), 1056}), w0)
-  +pw = Equal.trans(Array<U32> & (O.Words & U32), T.v33_b32_pk(FD.array__thaw(U32, D), U32.add(X, 0), T.v33_b32_valid(O.Words{FD.array__thaw(U32, t), 1056})), T.v33_b32_pk(FD.array__thaw(U32, D), U32.add(X, 0), (O.Words{FD.array__thaw(U32, t), 1056}, True{})),
+  +s1 = Equal.cong(O.Words & Bool, Array<U32> & (O.Words & U32), z => Fulu_vec_bytevec_32_33_e.v33_b32_pk(FD.array__thaw(U32, D), U32.add(X, 0), z), Fulu_vec_bytevec_32_33_e.v33_b32_valid(O.Words{FD.array__thaw(U32, t), 1056}), (O.Words{FD.array__thaw(U32, t), 1056}, True{}), wvalid(t, n, h))
+  +s2 = Equal.cong(Array<U32> & O.Words, Array<U32> & (O.Words & U32), z => Fulu_vec_bytevec_32_33_e.v33_b32_pk_ok(z), O.put_words(FD.array__thaw(U32, D), U32.add(X, 0), O.Words{FD.array__thaw(U32, t), 1056}), (FD.array__thaw(U32, WD.PWM(r, dd, D, q, t, 1056)), O.Words{FD.array__thaw(U32, t), 1056}), w0)
+  +pw = Equal.trans(Array<U32> & (O.Words & U32), Fulu_vec_bytevec_32_33_e.v33_b32_pk(FD.array__thaw(U32, D), U32.add(X, 0), Fulu_vec_bytevec_32_33_e.v33_b32_valid(O.Words{FD.array__thaw(U32, t), 1056})), Fulu_vec_bytevec_32_33_e.v33_b32_pk(FD.array__thaw(U32, D), U32.add(X, 0), (O.Words{FD.array__thaw(U32, t), 1056}, True{})),
     (FD.array__thaw(U32, WD.PWM(r, dd, D, q, t, 1056)), (O.Words{FD.array__thaw(U32, t), 1056}, 0)), s1, s2)
-  +c1 = Equal.cong(Array<U32> & (O.Words & U32), Array<U32> & T.Deposit, z => T.Deposit_put_drop(T.Deposit_pw0(X, 0, O.BSome{a1, O.BNone{}}, z)),
-    T.v33_b32_putk(FD.array__thaw(U32, D), U32.add(X, 0), O.Words{FD.array__thaw(U32, t), 1056}), (FD.array__thaw(U32, WD.PWM(r, dd, D, q, t, 1056)), (O.Words{FD.array__thaw(U32, t), 1056}, 0)), pw)
-  +c2 = Equal.cong(Array<U32>, Array<U32> & T.Deposit, z => T.Deposit_put_drop(T.Deposit_pw1(X, (0 .|. 0 : U32), O.Words{FD.array__thaw(U32, t), 1056}, (z, (O.BSome{a1, O.BNone{}}, O.pz(T.DepositData_valid(a1)))))),
-    T.DepositData_put(FD.array__thaw(U32, WD.PWM(r, dd, D, q, t, 1056)), U32.add(X, 1056), a1), FD.array__thaw(U32, PXo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r)), rt1)
-  +rtf = Equal.trans(Array<U32> & T.Deposit, T.Deposit_put_drop(T.Deposit_pw0(X, 0, O.BSome{a1, O.BNone{}}, T.v33_b32_putk(FD.array__thaw(U32, D), U32.add(X, 0), O.Words{FD.array__thaw(U32, t), 1056}))),
-    T.Deposit_put_drop(T.Deposit_pw0(X, 0, O.BSome{a1, O.BNone{}}, (FD.array__thaw(U32, WD.PWM(r, dd, D, q, t, 1056)), (O.Words{FD.array__thaw(U32, t), 1056}, 0)))), (FD.array__thaw(U32, PXo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r)), T.Deposit{O.Words{FD.array__thaw(U32, t), 1056}, O.BSome{a1, O.BNone{}}}), c1, c2)
+  +c1 = Equal.cong(Array<U32> & (O.Words & U32), Array<U32> & FuluDeposit_d.Deposit, z => FuluDeposit_e.Deposit_put_drop(FuluDeposit_e.Deposit_pw0(X, 0, O.BSome{a1, O.BNone{}}, z)),
+    Fulu_vec_bytevec_32_33_e.v33_b32_putk(FD.array__thaw(U32, D), U32.add(X, 0), O.Words{FD.array__thaw(U32, t), 1056}), (FD.array__thaw(U32, WD.PWM(r, dd, D, q, t, 1056)), (O.Words{FD.array__thaw(U32, t), 1056}, 0)), pw)
+  +c2 = Equal.cong(Array<U32>, Array<U32> & FuluDeposit_d.Deposit, z => FuluDeposit_e.Deposit_put_drop(FuluDeposit_e.Deposit_pw1(X, (0 .|. 0 : U32), O.Words{FD.array__thaw(U32, t), 1056}, (z, (O.BSome{a1, O.BNone{}}, O.pz(FuluDepositData_e.DepositData_valid(a1)))))),
+    FuluDepositData_e.DepositData_put(FD.array__thaw(U32, WD.PWM(r, dd, D, q, t, 1056)), U32.add(X, 1056), a1), FD.array__thaw(U32, PXo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r)), rt1)
+  +rtf = Equal.trans(Array<U32> & FuluDeposit_d.Deposit, FuluDeposit_e.Deposit_put_drop(FuluDeposit_e.Deposit_pw0(X, 0, O.BSome{a1, O.BNone{}}, Fulu_vec_bytevec_32_33_e.v33_b32_putk(FD.array__thaw(U32, D), U32.add(X, 0), O.Words{FD.array__thaw(U32, t), 1056}))),
+    FuluDeposit_e.Deposit_put_drop(FuluDeposit_e.Deposit_pw0(X, 0, O.BSome{a1, O.BNone{}}, (FD.array__thaw(U32, WD.PWM(r, dd, D, q, t, 1056)), (O.Words{FD.array__thaw(U32, t), 1056}, 0)))), (FD.array__thaw(U32, PXo_DepositData(a1, dd, WD.PWM(r, dd, D, q, t, 1056), Nat.add(264n, q), r)), FuluDeposit_d.Deposit{O.Words{FD.array__thaw(U32, t), 1056}, O.BSome{a1, O.BNone{}}}), c1, c2)
   mkE1(t, a1, dd, D, X, q, r, rtf, I2)
 
 def putxE(+v: M_Deposit, +h: {OKE(v) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
@@ -526,7 +535,7 @@ def lenEz(+m: MB<M_Deposit>) -> {VRX.LN(YEm(m)) == 1240n : Nat}:
     case MSome{+v}: lenE0(v)
 def lenEm(+m: MB<M_Deposit>, +h: {EOK(m) == True{} : Bool}) -> {VRX.LN(YEm(m)) == 1240n : Nat}: lenEz(m)
 def RTEm(+m: MB<M_Deposit>, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.Deposit_bx_put(FD.array__thaw(U32, D), X, th_Deposit_bx(m)) == (FD.array__thaw(U32, PXEm(m, dd, D, q, r)), th_Deposit_bx(m)) : Array<U32> & O.Boxed<T.Deposit>}
+  {FuluDeposit_e.Deposit_bx_put(FD.array__thaw(U32, D), X, th_Deposit_bx(m)) == (FD.array__thaw(U32, PXEm(m, dd, D, q, r)), th_Deposit_bx(m)) : Array<U32> & O.Boxed<FuluDeposit_d.Deposit>}
 def BYEm(+m: MB<M_Deposit>, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXEm(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), YEm(m)) : +List<U32>}
 def mkEm(+m: MB<M_Deposit>, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTEm(m, dd, D, X, q, r), +b: BYEm(m, dd, D, q, r)) -> DK.P2(RTEm(m, dd, D, X, q, r), BYEm(m, dd, D, q, r)):
@@ -542,7 +551,7 @@ def putxEm(+m: MB<M_Deposit>, +h: {EOK(m) == True{} : Bool}, +dd: Nat, +D: FD.ar
       +g = putxE(v, h, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
       +rt = PA(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r), g)
       +by = PB(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r), g)
-      mkEm(MSome{v}, dd, D, X, q, r, Equal.cong(Array<U32> & T.Deposit, Array<U32> & O.Boxed<T.Deposit>, z => T.Deposit_bx_put_back(z), T.Deposit_put(FD.array__thaw(U32, D), X, th_Deposit(v)),
+      mkEm(MSome{v}, dd, D, X, q, r, Equal.cong(Array<U32> & FuluDeposit_d.Deposit, Array<U32> & O.Boxed<FuluDeposit_d.Deposit>, z => FuluDeposit_e.Deposit_bx_put_back(z), FuluDeposit_e.Deposit_put(FD.array__thaw(U32, D), X, th_Deposit(v)),
         (FD.array__thaw(U32, PXE(v, dd, D, q, r)), th_Deposit(v)), rt), by)
 def EVm(+m: MB<M_Deposit>) -> S.Value:
   match m:
@@ -564,7 +573,7 @@ def TDM(t: FD.array__Tree<MB<M_Deposit>>) -> Nat:
     case FD.TLeaf{x}: 0n
     case FD.TNode{l, r}: 1n+TDM(l)
 
-def AR(t: FD.array__Tree<MB<M_Deposit>>) -> Array<O.Boxed<T.Deposit>>: am_l16_Deposit(t)
+def AR(t: FD.array__Tree<MB<M_Deposit>>) -> Array<O.Boxed<FuluDeposit_d.Deposit>>: am_l16_Deposit(t)
 def SL(t: FD.array__Tree<MB<M_Deposit>>) -> List<&2, MB<M_Deposit>>: FD.array__slots(MB<M_Deposit>, t)
 
 # Elements i .. i + k - 1 of W: present, with their facts.
@@ -594,16 +603,16 @@ def hx_at(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +s: Nat, +pf: {FD.array__p
 # Swapping element s out for MNone, then back: the array is unchanged, the spare is MNone.
 def swap_out(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +i: U32, +s: Nat, +ei: {U32.to_nat(i) == s : Nat}, +pf: {FD.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool},
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hs: {Nat.is_lt(s, VB.pw(d)) == True{} : Bool})
-    -> {Array.swap(O.Boxed<T.Deposit>, AR(t), i, O.BNone{}) == (AR(FD.array__upd(MB<M_Deposit>, d, t, s, MNone{})), th_Deposit_bx(xat_l16_Deposit(SL(t), s))) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}:
+    -> {Array.swap(O.Boxed<FuluDeposit_d.Deposit>, AR(t), i, O.BNone{}) == (AR(FD.array__upd(MB<M_Deposit>, d, t, s, MNone{})), th_Deposit_bx(xat_l16_Deposit(SL(t), s))) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}:
   %ei :
-    {Array.swap(O.Boxed<T.Deposit>, AR(t), i, O.BNone{}) == (AR(FD.array__upd(MB<M_Deposit>, d, t, _, MNone{})), th_Deposit_bx(xat_l16_Deposit(SL(t), _))) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
+    {Array.swap(O.Boxed<FuluDeposit_d.Deposit>, AR(t), i, O.BNone{}) == (AR(FD.array__upd(MB<M_Deposit>, d, t, _, MNone{})), th_Deposit_bx(xat_l16_Deposit(SL(t), _))) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
   amswap_l16_Deposit(d, t, i, MNone{}, xat_l16_Deposit(SL(t), U32.to_nat(i)), FD.nat__lt_trans(d, 31n, 32n, hd, {==}),
     FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hs),
     hx_at(d, t, U32.to_nat(i), pf, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hs)), pf)
 
 def swap_in(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +i: U32, +s: Nat, +ei: {U32.to_nat(i) == s : Nat}, +pf: {FD.array__perfect(MB<M_Deposit>, d, t) == True{} : Bool},
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hs: {Nat.is_lt(s, VB.pw(d)) == True{} : Bool})
-    -> {Array.swap(O.Boxed<T.Deposit>, AR(FD.array__upd(MB<M_Deposit>, d, t, s, MNone{})), i, th_Deposit_bx(xat_l16_Deposit(SL(t), s))) == (AR(t), O.BNone{}) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}:
+    -> {Array.swap(O.Boxed<FuluDeposit_d.Deposit>, AR(FD.array__upd(MB<M_Deposit>, d, t, s, MNone{})), i, th_Deposit_bx(xat_l16_Deposit(SL(t), s))) == (AR(t), O.BNone{}) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}:
   +x = xat_l16_Deposit(SL(t), s)
   +t2 = FD.array__upd(MB<M_Deposit>, d, t, s, MNone{})
   +hx = hx_at(d, t, s, pf, hs)
@@ -612,22 +621,22 @@ def swap_in(+d: Nat, +t: FD.array__Tree<MB<M_Deposit>>, +i: U32, +s: Nat, +ei: {
     FD.list__nth_update_same(MB<M_Deposit>, SL(t), s, MNone{}, FD.list__nth_lt_length(MB<M_Deposit>, SL(t), s, x, hx)))
   +his = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hs)
   +hzi = FD.logic__subst(Nat, z => {FD.spec_common__nth(MB<M_Deposit>, SL(t2), z) == Some{MNone{}} : Maybe<&2, MB<M_Deposit>>}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hz)
-  %Equal.sym(Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>, Array.swap(O.Boxed<T.Deposit>, AR(t2), i, th_Deposit_bx(x)), (AR(FD.array__upd(MB<M_Deposit>, d, t2, U32.to_nat(i), x)), th_Deposit_bx(MNone{})),
+  %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>, Array.swap(O.Boxed<FuluDeposit_d.Deposit>, AR(t2), i, th_Deposit_bx(x)), (AR(FD.array__upd(MB<M_Deposit>, d, t2, U32.to_nat(i), x)), th_Deposit_bx(MNone{})),
       amswap_l16_Deposit(d, t2, i, x, MNone{}, FD.nat__lt_trans(d, 31n, 32n, hd, {==}), his, hzi, FD.array__upd_perfect(MB<M_Deposit>, d, t, s, MNone{}, pf))) :
-    {_ == (AR(t), O.BNone{}) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
-  %Equal.sym(Nat, U32.to_nat(i), s, ei) : {(AR(FD.array__upd(MB<M_Deposit>, d, t2, _, x)), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
+    {_ == (AR(t), O.BNone{}) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
+  %Equal.sym(Nat, U32.to_nat(i), s, ei) : {(AR(FD.array__upd(MB<M_Deposit>, d, t2, _, x)), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
   %Equal.sym(FD.array__Tree<MB<M_Deposit>>, FD.array__upd(MB<M_Deposit>, d, t2, s, x), t, AM.upd_restore(MB<M_Deposit>, d, t, s, MNone{}, x, hs, hx, pf)) :
-    {(AR(_), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>}
+    {(AR(_), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>}
   {==}
 
 # ---- the runtime's validity pass --------------------------------------------------------------------
 
-def bxvalid(+m: MB<M_Deposit>, +h: {EOK(m) == True{} : Bool}) -> {T.Deposit_bx_valid(th_Deposit_bx(m)) == (th_Deposit_bx(m), True{}) : O.Boxed<T.Deposit> & Bool}:
+def bxvalid(+m: MB<M_Deposit>, +h: {EOK(m) == True{} : Bool}) -> {FuluDeposit_e.Deposit_bx_valid(th_Deposit_bx(m)) == (th_Deposit_bx(m), True{}) : O.Boxed<FuluDeposit_d.Deposit> & Bool}:
   match m:
-    case MNone{}: Empty.absurd({T.Deposit_bx_valid(th_Deposit_bx(MNone{})) == (th_Deposit_bx(MNone{}), True{}) : O.Boxed<T.Deposit> & Bool}, FD.logic__false_true(h))
+    case MNone{}: Empty.absurd({FuluDeposit_e.Deposit_bx_valid(th_Deposit_bx(MNone{})) == (th_Deposit_bx(MNone{}), True{}) : O.Boxed<FuluDeposit_d.Deposit> & Bool}, FD.logic__false_true(h))
     case MSome{+v}:
-      %Equal.sym(T.Deposit & Bool, T.Deposit_valid(th_Deposit(v)), (th_Deposit(v), True{}), validE(v, h)) :
-        {T.Deposit_bx_va_back(_) == (O.BSome{th_Deposit(v), O.BNone{}}, True{}) : O.Boxed<T.Deposit> & Bool}
+      %Equal.sym(FuluDeposit_d.Deposit & Bool, FuluDeposit_e.Deposit_valid(th_Deposit(v)), (th_Deposit(v), True{}), validE(v, h)) :
+        {FuluDeposit_e.Deposit_bx_va_back(_) == (O.BSome{th_Deposit(v), O.BNone{}}, True{}) : O.Boxed<FuluDeposit_d.Deposit> & Bool}
       {==}
 
 law va_go:
@@ -643,7 +652,7 @@ law va_go:
   for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(n, VB.pw(d)) == True{} : Bool}
   for +hok: {EOKS(k, SL(t), s) == True{} : Bool}
-  {T.l16_Deposit_va(k, i, (AR(t), True{})) == (AR(t), True{}) : Array<O.Boxed<T.Deposit>> & Bool}
+  {Fulu_list_Deposit_16_e.l16_Deposit_va(k, i, (AR(t), True{})) == (AR(t), True{}) : Array<O.Boxed<FuluDeposit_d.Deposit>> & Bool}
 def va_go(k, d, t, i, s, n, ei, ek, pf, hd, hn, hok):
   match k:
     case 0n: {==}
@@ -655,22 +664,22 @@ def va_go(k, d, t, i, s, n, ei, ek, pf, hd, hn, hok):
       +hsd = FD.nat__lt_le_trans(s, n, VB.pw(d), hs, hn)
       +hx = and_l(EOK(x), EOKS(q, SL(t), 1n+s), hok)
       +his = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hsd)
-      %Equal.sym(Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>, Array.swap(O.Boxed<T.Deposit>, AR(t), i, O.BNone{}), (AR(FD.array__upd(MB<M_Deposit>, d, t, s, MNone{})), th_Deposit_bx(x)), swap_out(d, t, i, s, ei, pf, hd, hsd)) :
-        {T.l16_Deposit_va(q, U32.add(i, 1), T.l16_Deposit_va_one(i, True{}, _)) == (AR(t), True{}) : Array<O.Boxed<T.Deposit>> & Bool}
-      %Equal.sym(O.Boxed<T.Deposit> & Bool, T.Deposit_bx_valid(th_Deposit_bx(x)), (th_Deposit_bx(x), True{}), bxvalid(x, hx)) :
-        {T.l16_Deposit_va(q, U32.add(i, 1), T.l16_Deposit_va_back(i, True{}, AR(FD.array__upd(MB<M_Deposit>, d, t, s, MNone{})), _)) == (AR(t), True{}) : Array<O.Boxed<T.Deposit>> & Bool}
+      %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>, Array.swap(O.Boxed<FuluDeposit_d.Deposit>, AR(t), i, O.BNone{}), (AR(FD.array__upd(MB<M_Deposit>, d, t, s, MNone{})), th_Deposit_bx(x)), swap_out(d, t, i, s, ei, pf, hd, hsd)) :
+        {Fulu_list_Deposit_16_e.l16_Deposit_va(q, U32.add(i, 1), Fulu_list_Deposit_16_e.l16_Deposit_va_one(i, True{}, _)) == (AR(t), True{}) : Array<O.Boxed<FuluDeposit_d.Deposit>> & Bool}
+      %Equal.sym(O.Boxed<FuluDeposit_d.Deposit> & Bool, FuluDeposit_e.Deposit_bx_valid(th_Deposit_bx(x)), (th_Deposit_bx(x), True{}), bxvalid(x, hx)) :
+        {Fulu_list_Deposit_16_e.l16_Deposit_va(q, U32.add(i, 1), Fulu_list_Deposit_16_e.l16_Deposit_va_back(i, True{}, AR(FD.array__upd(MB<M_Deposit>, d, t, s, MNone{})), _)) == (AR(t), True{}) : Array<O.Boxed<FuluDeposit_d.Deposit>> & Bool}
       %ei :
-        {T.l16_Deposit_va(q, U32.add(i, 1), (Array.set(O.Boxed<T.Deposit>, AR(FD.array__upd(MB<M_Deposit>, d, t, _, MNone{})), i, th_Deposit_bx(xat_l16_Deposit(SL(t), _))), True{})) == (AR(t), True{}) : Array<O.Boxed<T.Deposit>> & Bool}
-      %Equal.sym(Array<O.Boxed<T.Deposit>>, Array.set(O.Boxed<T.Deposit>, AR(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), MNone{})), i, th_Deposit_bx(xat_l16_Deposit(SL(t), U32.to_nat(i)))), AR(t),
+        {Fulu_list_Deposit_16_e.l16_Deposit_va(q, U32.add(i, 1), (Array.set(O.Boxed<FuluDeposit_d.Deposit>, AR(FD.array__upd(MB<M_Deposit>, d, t, _, MNone{})), i, th_Deposit_bx(xat_l16_Deposit(SL(t), _))), True{})) == (AR(t), True{}) : Array<O.Boxed<FuluDeposit_d.Deposit>> & Bool}
+      %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>>, Array.set(O.Boxed<FuluDeposit_d.Deposit>, AR(FD.array__upd(MB<M_Deposit>, d, t, U32.to_nat(i), MNone{})), i, th_Deposit_bx(xat_l16_Deposit(SL(t), U32.to_nat(i)))), AR(t),
           amswap_back_l16_Deposit(d, t, i, MNone{}, xat_l16_Deposit(SL(t), U32.to_nat(i)), FD.nat__lt_trans(d, 31n, 32n, hd, {==}), his, hx_at(d, t, U32.to_nat(i), pf, his), pf)) :
-        {T.l16_Deposit_va(q, U32.add(i, 1), (_, True{})) == (AR(t), True{}) : Array<O.Boxed<T.Deposit>> & Bool}
+        {Fulu_list_Deposit_16_e.l16_Deposit_va(q, U32.add(i, 1), (_, True{})) == (AR(t), True{}) : Array<O.Boxed<FuluDeposit_d.Deposit>> & Bool}
       va_go(q, d, t, U32.add(i, 1), 1n+s, n, inc(i, s, n, d, ei, hs, hn, hd),
         Equal.trans(Nat, Nat.add(1n+s, q), 1n+Nat.add(s, q), n, {==}, Equal.trans(Nat, 1n+Nat.add(s, q), Nat.add(s, 1n+q), n, Equal.sym(Nat, Nat.add(s, 1n+q), 1n+Nat.add(s, q), FD.nat__add_succ(s, q)), ek)),
         pf, hd, hn, and_r(EOK(x), EOKS(q, SL(t), 1n+s), hok))
 
 # ---- the list object and its facts -----------------------------------------------------------------
 
-def THL_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32) -> T.l16_Deposit_Seq: T.l16_Deposit_Seq{AR(t), N}
+def THL_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32) -> Fulu_list_Deposit_16_d.l16_Deposit_Seq: Fulu_list_Deposit_16_d.l16_Deposit_Seq{AR(t), N}
 def OKL_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32) -> Bool:
   Bool.and(Nat.is_lt(TDM(t), 31n), Bool.and(FD.array__perfect(MB<M_Deposit>, TDM(t), t), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))),
     Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n)))))
@@ -700,17 +709,17 @@ def le_cap(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +h: {OKL_l16_Deposit(t, N
   okl_n(t, N, h)
 
 # The runtime's validity check of the list.
-def valid_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +h: {OKL_l16_Deposit(t, N) == True{} : Bool}) -> {T.l16_Deposit_valid(THL_l16_Deposit(t, N)) == (THL_l16_Deposit(t, N), True{}) : T.l16_Deposit_Seq & Bool}:
+def valid_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +h: {OKL_l16_Deposit(t, N) == True{} : Bool}) -> {Fulu_list_Deposit_16_e.l16_Deposit_valid(THL_l16_Deposit(t, N)) == (THL_l16_Deposit(t, N), True{}) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & Bool}:
   +d = TDM(t)
-  %Equal.sym(Array<O.Boxed<T.Deposit>> & U32, Array.size(O.Boxed<T.Deposit>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_l16_Deposit(d, t, okl_pf(t, N, h))) :
-    {T.l16_Deposit_va_cap(Bool.or(False{}, U32.is_le(N, 16)), N, _) == (THL_l16_Deposit(t, N), True{}) : T.l16_Deposit_Seq & Bool}
+  %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & U32, Array.size(O.Boxed<FuluDeposit_d.Deposit>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_l16_Deposit(d, t, okl_pf(t, N, h))) :
+    {Fulu_list_Deposit_16_e.l16_Deposit_va_cap(Bool.or(False{}, U32.is_le(N, 16)), N, _) == (THL_l16_Deposit(t, N), True{}) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, 16), True{}, okl_lim(t, N, h)) :
-    {T.l16_Deposit_va_go(Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d))), N, AR(t)) == (THL_l16_Deposit(t, N), True{}) : T.l16_Deposit_Seq & Bool}
+    {Fulu_list_Deposit_16_e.l16_Deposit_va_go(Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d))), N, AR(t)) == (THL_l16_Deposit(t, N), True{}) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap(t, N, h)) :
-    {T.l16_Deposit_va_go(Bool.and(True{}, _), N, AR(t)) == (THL_l16_Deposit(t, N), True{}) : T.l16_Deposit_Seq & Bool}
-  %Equal.sym(Array<O.Boxed<T.Deposit>> & Bool, T.l16_Deposit_va(U32.to_nat(N), 0, (AR(t), True{})), (AR(t), True{}),
+    {Fulu_list_Deposit_16_e.l16_Deposit_va_go(Bool.and(True{}, _), N, AR(t)) == (THL_l16_Deposit(t, N), True{}) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & Bool}
+  %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & Bool, Fulu_list_Deposit_16_e.l16_Deposit_va(U32.to_nat(N), 0, (AR(t), True{})), (AR(t), True{}),
       va_go(U32.to_nat(N), d, t, 0, 0n, U32.to_nat(N), {==}, {==}, okl_pf(t, N, h), okl_d(t, N, h), okl_n(t, N, h), okl_e(t, N, h))) :
-    {T.l16_Deposit_va_fin(N, True{}, _) == (THL_l16_Deposit(t, N), True{}) : T.l16_Deposit_Seq & Bool}
+    {Fulu_list_Deposit_16_e.l16_Deposit_va_fin(N, True{}, _) == (THL_l16_Deposit(t, N), True{}) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & Bool}
   {==}
 
 # ---- the write loop ------------------------------------------------------------------------------
@@ -737,7 +746,7 @@ def pfWX(k, j, dd, D, q, r, t, pf):
     case 1n+ +p: pfWX(p, 1n+j, dd, PXEm(xat_l16_Deposit(SL(t), j), dd, D, Nat.add(Nat.mul(j, 310n), q), r), q, r, t, pfEm(xat_l16_Deposit(SL(t), j), dd, D, Nat.add(Nat.mul(j, 310n), q), r, pf))
 
 def RTK(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +t: FD.array__Tree<MB<M_Deposit>>) -> Data:
-  {T.l16_Deposit_pt(k, i, X, (FD.array__thaw(U32, D), (AR(t), O.BNone{}))) == (FD.array__thaw(U32, WX(k, j, dd, D, q, r, t)), (AR(t), O.BNone{})) : Array<U32> & (Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>)}
+  {Fulu_list_Deposit_16_e.l16_Deposit_pt(k, i, X, (FD.array__thaw(U32, D), (AR(t), O.BNone{}))) == (FD.array__thaw(U32, WX(k, j, dd, D, q, r, t)), (AR(t), O.BNone{})) : Array<U32> & (Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>)}
 def BYK(k: Nat, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +t: FD.array__Tree<MB<M_Deposit>>) -> Data:
   {UA.BYT(WX(k, j, dd, D, q, r, t)) == UW.SPL(UA.BYT(D), VRX.YP(j, 310n, q, r), CATE(k, SL(t), j)) : +List<U32>}
 
@@ -788,26 +797,26 @@ def ptx(k: Nat, +i: U32, +j: Nat, +n: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, 
       +rt2 = PA(RTK(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, t), BYK(p, 1n+j, q, r, dd, D1, t), ih)
       +by2 = PB(RTK(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, t), BYK(p, 1n+j, q, r, dd, D1, t), ih)
       +t2 = FD.array__upd(MB<M_Deposit>, d, t, j, MNone{})
-      +e1 = Equal.cong(Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>, Array<U32> & (Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>),
-        z => T.l16_Deposit_pt(p, U32.add(i, 1), X, T.l16_Deposit_pt_one(i, X, FD.array__thaw(U32, D), z)),
-        Array.swap(O.Boxed<T.Deposit>, AR(t), i, O.BNone{}), (AR(t2), th_Deposit_bx(x)), swap_out(d, t, i, j, ei, pfA, hda, hsd))
-      +e2 = Equal.cong(Array<U32> & O.Boxed<T.Deposit>, Array<U32> & (Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>),
-        z => T.l16_Deposit_pt(p, U32.add(i, 1), X, T.l16_Deposit_pt_back(i, AR(t2), z)),
-        T.Deposit_bx_put(FD.array__thaw(U32, D), Xj, th_Deposit_bx(x)), (FD.array__thaw(U32, D1), th_Deposit_bx(x)), rt)
-      +e3 = Equal.cong(Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>, Array<U32> & (Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>),
-        z => T.l16_Deposit_pt(p, U32.add(i, 1), X, T.l16_Deposit_pt_ret(FD.array__thaw(U32, D1), z)),
-        Array.swap(O.Boxed<T.Deposit>, AR(t2), i, th_Deposit_bx(x)), (AR(t), O.BNone{}), swap_in(d, t, i, j, ei, pfA, hda, hsd))
-      +rtf = Equal.trans(Array<U32> & (Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>),
-        T.l16_Deposit_pt(p, U32.add(i, 1), X, T.l16_Deposit_pt_one(i, X, FD.array__thaw(U32, D), Array.swap(O.Boxed<T.Deposit>, AR(t), i, O.BNone{}))),
-        T.l16_Deposit_pt(p, U32.add(i, 1), X, T.l16_Deposit_pt_one(i, X, FD.array__thaw(U32, D), (AR(t2), th_Deposit_bx(x)))),
+      +e1 = Equal.cong(Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>, Array<U32> & (Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>),
+        z => Fulu_list_Deposit_16_e.l16_Deposit_pt(p, U32.add(i, 1), X, Fulu_list_Deposit_16_e.l16_Deposit_pt_one(i, X, FD.array__thaw(U32, D), z)),
+        Array.swap(O.Boxed<FuluDeposit_d.Deposit>, AR(t), i, O.BNone{}), (AR(t2), th_Deposit_bx(x)), swap_out(d, t, i, j, ei, pfA, hda, hsd))
+      +e2 = Equal.cong(Array<U32> & O.Boxed<FuluDeposit_d.Deposit>, Array<U32> & (Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>),
+        z => Fulu_list_Deposit_16_e.l16_Deposit_pt(p, U32.add(i, 1), X, Fulu_list_Deposit_16_e.l16_Deposit_pt_back(i, AR(t2), z)),
+        FuluDeposit_e.Deposit_bx_put(FD.array__thaw(U32, D), Xj, th_Deposit_bx(x)), (FD.array__thaw(U32, D1), th_Deposit_bx(x)), rt)
+      +e3 = Equal.cong(Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>, Array<U32> & (Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>),
+        z => Fulu_list_Deposit_16_e.l16_Deposit_pt(p, U32.add(i, 1), X, Fulu_list_Deposit_16_e.l16_Deposit_pt_ret(FD.array__thaw(U32, D1), z)),
+        Array.swap(O.Boxed<FuluDeposit_d.Deposit>, AR(t2), i, th_Deposit_bx(x)), (AR(t), O.BNone{}), swap_in(d, t, i, j, ei, pfA, hda, hsd))
+      +rtf = Equal.trans(Array<U32> & (Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>),
+        Fulu_list_Deposit_16_e.l16_Deposit_pt(p, U32.add(i, 1), X, Fulu_list_Deposit_16_e.l16_Deposit_pt_one(i, X, FD.array__thaw(U32, D), Array.swap(O.Boxed<FuluDeposit_d.Deposit>, AR(t), i, O.BNone{}))),
+        Fulu_list_Deposit_16_e.l16_Deposit_pt(p, U32.add(i, 1), X, Fulu_list_Deposit_16_e.l16_Deposit_pt_one(i, X, FD.array__thaw(U32, D), (AR(t2), th_Deposit_bx(x)))),
         (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, q, r, t)), (AR(t), O.BNone{})), e1,
-        Equal.trans(Array<U32> & (Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>),
-          T.l16_Deposit_pt(p, U32.add(i, 1), X, T.l16_Deposit_pt_back(i, AR(t2), T.Deposit_bx_put(FD.array__thaw(U32, D), Xj, th_Deposit_bx(x)))),
-          T.l16_Deposit_pt(p, U32.add(i, 1), X, T.l16_Deposit_pt_back(i, AR(t2), (FD.array__thaw(U32, D1), th_Deposit_bx(x)))),
+        Equal.trans(Array<U32> & (Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>),
+          Fulu_list_Deposit_16_e.l16_Deposit_pt(p, U32.add(i, 1), X, Fulu_list_Deposit_16_e.l16_Deposit_pt_back(i, AR(t2), FuluDeposit_e.Deposit_bx_put(FD.array__thaw(U32, D), Xj, th_Deposit_bx(x)))),
+          Fulu_list_Deposit_16_e.l16_Deposit_pt(p, U32.add(i, 1), X, Fulu_list_Deposit_16_e.l16_Deposit_pt_back(i, AR(t2), (FD.array__thaw(U32, D1), th_Deposit_bx(x)))),
           (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, q, r, t)), (AR(t), O.BNone{})), e2,
-          Equal.trans(Array<U32> & (Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>),
-            T.l16_Deposit_pt(p, U32.add(i, 1), X, T.l16_Deposit_pt_ret(FD.array__thaw(U32, D1), Array.swap(O.Boxed<T.Deposit>, AR(t2), i, th_Deposit_bx(x)))),
-            T.l16_Deposit_pt(p, U32.add(i, 1), X, T.l16_Deposit_pt_ret(FD.array__thaw(U32, D1), (AR(t), O.BNone{}))),
+          Equal.trans(Array<U32> & (Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>),
+            Fulu_list_Deposit_16_e.l16_Deposit_pt(p, U32.add(i, 1), X, Fulu_list_Deposit_16_e.l16_Deposit_pt_ret(FD.array__thaw(U32, D1), Array.swap(O.Boxed<FuluDeposit_d.Deposit>, AR(t2), i, th_Deposit_bx(x)))),
+            Fulu_list_Deposit_16_e.l16_Deposit_pt(p, U32.add(i, 1), X, Fulu_list_Deposit_16_e.l16_Deposit_pt_ret(FD.array__thaw(U32, D1), (AR(t), O.BNone{}))),
             (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, q, r, t)), (AR(t), O.BNone{})), e3, rt2)))
       +rest = CATE(p, SL(t), 1n+j)
       +eXn = Equal.trans(Nat, VRX.YP(1n+j, 310n, q, r), Nat.add(Yj, A.quad(310n)), Nat.add(Yj, VRX.LN(Y)), ey,
@@ -832,7 +841,7 @@ def pfLb_l16_Deposit(+b: Bool, +t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +dd: 
     case False{}: pfWX(U32.to_nat(N), 0n, dd, D, q, r, t, pf)
 
 def RTN(+b: Bool, +t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l16_Deposit_pt_nz(b, X, N, FD.array__thaw(U32, D), AR(t)) == (FD.array__thaw(U32, PUTLb_l16_Deposit(b, t, N, dd, D, q, r)), THL_l16_Deposit(t, N)) : Array<U32> & T.l16_Deposit_Seq}
+  {Fulu_list_Deposit_16_e.l16_Deposit_pt_nz(b, X, N, FD.array__thaw(U32, D), AR(t)) == (FD.array__thaw(U32, PUTLb_l16_Deposit(b, t, N, dd, D, q, r)), THL_l16_Deposit(t, N)) : Array<U32> & Fulu_list_Deposit_16_d.l16_Deposit_Seq}
 def BYN(+b: Bool, +t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTLb_l16_Deposit(b, t, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l16_Deposit(t, N)) : +List<U32>}
 
@@ -855,11 +864,11 @@ def ptnz(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +b: Bool, +eb: {U32.is_eq(N
         okl_pf(t, N, h), okl_d(t, N, h), okl_n(t, N, h), okl_e(t, N, h))
       +rt = PA(RTK(c, 0, 0n, X, q, r, dd, D, t), BYK(c, 0n, q, r, dd, D, t), g)
       +by = PB(RTK(c, 0, 0n, X, q, r, dd, D, t), BYK(c, 0n, q, r, dd, D, t), g)
-      (Equal.cong(Array<U32> & (Array<O.Boxed<T.Deposit>> & O.Boxed<T.Deposit>), Array<U32> & T.l16_Deposit_Seq, z => T.l16_Deposit_pt_fin(N, z),
-         T.l16_Deposit_pt(c, 0, X, (FD.array__thaw(U32, D), (AR(t), O.BNone{}))), (FD.array__thaw(U32, WX(c, 0n, dd, D, q, r, t)), (AR(t), O.BNone{})), rt), by)
+      (Equal.cong(Array<U32> & (Array<O.Boxed<FuluDeposit_d.Deposit>> & O.Boxed<FuluDeposit_d.Deposit>), Array<U32> & Fulu_list_Deposit_16_d.l16_Deposit_Seq, z => Fulu_list_Deposit_16_e.l16_Deposit_pt_fin(N, z),
+         Fulu_list_Deposit_16_e.l16_Deposit_pt(c, 0, X, (FD.array__thaw(U32, D), (AR(t), O.BNone{}))), (FD.array__thaw(U32, WX(c, 0n, dd, D, q, r, t)), (AR(t), O.BNone{})), rt), by)
 
 def RTL_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l16_Deposit_putk(FD.array__thaw(U32, D), X, THL_l16_Deposit(t, N)) == (FD.array__thaw(U32, PUTL_l16_Deposit(t, N, dd, D, q, r)), (THL_l16_Deposit(t, N), U32.mul(N, 1240))) : Array<U32> & (T.l16_Deposit_Seq & U32)}
+  {Fulu_list_Deposit_16_e.l16_Deposit_putk(FD.array__thaw(U32, D), X, THL_l16_Deposit(t, N)) == (FD.array__thaw(U32, PUTL_l16_Deposit(t, N, dd, D, q, r)), (THL_l16_Deposit(t, N), U32.mul(N, 1240))) : Array<U32> & (Fulu_list_Deposit_16_d.l16_Deposit_Seq & U32)}
 def BYL_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL_l16_Deposit(t, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l16_Deposit(t, N)) : +List<U32>}
 def PFL_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
@@ -868,10 +877,10 @@ def PFL_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +dd: Nat, +D: FD
 # The runtime's write, with its validity check.
 def putk_rt(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +h: {OKL_l16_Deposit(t, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN(U32.is_eq(N, 0), t, N, dd, D, X, q, r)) -> RTL_l16_Deposit(t, N, dd, D, X, q, r):
-  %Equal.sym(T.l16_Deposit_Seq & Bool, T.l16_Deposit_valid(THL_l16_Deposit(t, N)), (THL_l16_Deposit(t, N), True{}), valid_l16_Deposit(t, N, h)) :
-    {T.l16_Deposit_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l16_Deposit(t, N, dd, D, q, r)), (THL_l16_Deposit(t, N), U32.mul(N, 1240))) : Array<U32> & (T.l16_Deposit_Seq & U32)}
-  %Equal.sym(Array<U32> & T.l16_Deposit_Seq, T.l16_Deposit_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), AR(t)), (FD.array__thaw(U32, PUTL_l16_Deposit(t, N, dd, D, q, r)), THL_l16_Deposit(t, N)), rtb) :
-    {T.l16_Deposit_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l16_Deposit(t, N, dd, D, q, r)), (THL_l16_Deposit(t, N), U32.mul(N, 1240))) : Array<U32> & (T.l16_Deposit_Seq & U32)}
+  %Equal.sym(Fulu_list_Deposit_16_d.l16_Deposit_Seq & Bool, Fulu_list_Deposit_16_e.l16_Deposit_valid(THL_l16_Deposit(t, N)), (THL_l16_Deposit(t, N), True{}), valid_l16_Deposit(t, N, h)) :
+    {Fulu_list_Deposit_16_e.l16_Deposit_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l16_Deposit(t, N, dd, D, q, r)), (THL_l16_Deposit(t, N), U32.mul(N, 1240))) : Array<U32> & (Fulu_list_Deposit_16_d.l16_Deposit_Seq & U32)}
+  %Equal.sym(Array<U32> & Fulu_list_Deposit_16_d.l16_Deposit_Seq, Fulu_list_Deposit_16_e.l16_Deposit_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), AR(t)), (FD.array__thaw(U32, PUTL_l16_Deposit(t, N, dd, D, q, r)), THL_l16_Deposit(t, N)), rtb) :
+    {Fulu_list_Deposit_16_e.l16_Deposit_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l16_Deposit(t, N, dd, D, q, r)), (THL_l16_Deposit(t, N), U32.mul(N, 1240))) : Array<U32> & (Fulu_list_Deposit_16_d.l16_Deposit_Seq & U32)}
   {==}
 
 def mk3(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
@@ -895,12 +904,12 @@ def putx_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +h: {OKL_l16_De
 # ---- sizes ----
 
 # The runtime's size pass.
-def sizex_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +h: {OKL_l16_Deposit(t, N) == True{} : Bool}) -> {T.l16_Deposit_size(THL_l16_Deposit(t, N)) == (THL_l16_Deposit(t, N), U32.mul(N, 1240)) : T.l16_Deposit_Seq & U32}:
+def sizex_l16_Deposit(+t: FD.array__Tree<MB<M_Deposit>>, +N: U32, +h: {OKL_l16_Deposit(t, N) == True{} : Bool}) -> {Fulu_list_Deposit_16_e.l16_Deposit_size(THL_l16_Deposit(t, N)) == (THL_l16_Deposit(t, N), U32.mul(N, 1240)) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & U32}:
   +d = TDM(t)
-  %Equal.sym(Array<O.Boxed<T.Deposit>> & U32, Array.size(O.Boxed<T.Deposit>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_l16_Deposit(d, t, okl_pf(t, N, h))) :
-    {T.l16_Deposit_szf(N, _) == (THL_l16_Deposit(t, N), U32.mul(N, 1240)) : T.l16_Deposit_Seq & U32}
+  %Equal.sym(Array<O.Boxed<FuluDeposit_d.Deposit>> & U32, Array.size(O.Boxed<FuluDeposit_d.Deposit>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_l16_Deposit(d, t, okl_pf(t, N, h))) :
+    {Fulu_list_Deposit_16_e.l16_Deposit_szf(N, _) == (THL_l16_Deposit(t, N), U32.mul(N, 1240)) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap(t, N, h)) :
-    {(THL_l16_Deposit(t, N), O.pick(_, U32.mul(N, 1240), 2147483648)) == (THL_l16_Deposit(t, N), U32.mul(N, 1240)) : T.l16_Deposit_Seq & U32}
+    {(THL_l16_Deposit(t, N), O.pick(_, U32.mul(N, 1240), 2147483648)) == (THL_l16_Deposit(t, N), U32.mul(N, 1240)) : Fulu_list_Deposit_16_d.l16_Deposit_Seq & U32}
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.

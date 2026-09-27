@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/bitlist_513_encode_ssz_generated.bend as bitlist_513_e
 import ../../types/schema.bend as S
 import ../compact/found.bend as F
 import ../../spec/decoding_relation.bend as Decoding
@@ -70,19 +70,19 @@ law encode_eval:
   for +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}
   for +rep: BO.rep_bits(O.Bits{F.array__thaw(U32, T), K}, GS.Gt44F1B6940F())
   for +hcap: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}
-  {T.Gt44F1B6940F_encode(O.Bits{F.array__thaw(U32, T), K}) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
+  {bitlist_513_e.Gt44F1B6940F_encode(O.Bits{F.array__thaw(U32, T), K}) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
 def encode_eval(dw, T, K, pfT, hdw, rep, hcap):
   %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, T)), (F.array__thaw(U32, T), F.u32__pow2u(dw)), F.array__size_thaw(U32, dw, T, pfT)) :
-    {T.Gt44F1B6940F_enc_sized(O.bsz_pick(K, _)) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
+    {bitlist_513_e.Gt44F1B6940F_enc_sized(O.bsz_pick(K, _)) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
   %Equal.sym(Bool, U32.is_le(U32.add(U32.shrn(K, 5n), 1), F.u32__pow2u(dw)), True{}, CO.capT(K, dw, hdw, hcap)) :
-    {T.Gt44F1B6940F_enc_sized((O.Bits{F.array__thaw(U32, T), K}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 2147483648))) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
+    {bitlist_513_e.Gt44F1B6940F_enc_sized((O.Bits{F.array__thaw(U32, T), K}, O.pick(_, U32.add(U32.shrn(K, 3n), 1), 2147483648))) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
   %Equal.sym(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(CO.NK(K)))), F.array__thaw(U32, VC.ZT(CO.DOK(K))),
       Equal.trans(Array<U32>, B.zeros(B.words_depth_u(VC.nwu(CO.NK(K)))), Array.new(U32, CO.DOK(K), 0), F.array__thaw(U32, VC.ZT(CO.DOK(K))),
         zeros_at(B.words_depth_u(VC.nwu(CO.NK(K))), CO.DOK(K), VD.wdu(VC.nwu(CO.NK(K))), CO.hDOK(K, 10n, 5n, 513n, {==}, VR.rep_N(T, K, 513n, rep), {==}, {==})),
         F.array__new(U32, CO.DOK(K), 0))) :
-    {T.Gt44F1B6940F_enc_put(CO.NK(K), T.bits513_putn(_, 0, O.Bits{F.array__thaw(U32, T), K})) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
+    {bitlist_513_e.Gt44F1B6940F_enc_put(CO.NK(K), bitlist_513_e.bits513_putn(_, 0, O.Bits{F.array__thaw(U32, T), K})) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
   %Equal.sym(Array<U32> & (O.Bits & U32), O.put_bits_n(F.array__thaw(U32, VC.ZT(CO.DOK(K))), 0, O.Bits{F.array__thaw(U32, T), K}), (F.array__thaw(U32, OUT(T, K)), (O.Bits{F.array__thaw(U32, T), K}, CO.NK(K))), CO.cr1(CO.DOK(K), T, K, cr(dw, T, K, pfT, hdw, rep, hcap))) :
-    {T.Gt44F1B6940F_enc_put(CO.NK(K), _) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
+    {bitlist_513_e.Gt44F1B6940F_enc_put(CO.NK(K), _) == (O.Bits{F.array__thaw(U32, T), K}, B.Buf{F.array__thaw(U32, OUT(T, K)), CO.NK(K)}) : O.Bits & B.Buf}
   {==}
 
 # Those bytes are the spec/codec.bend encoding of the object's value.

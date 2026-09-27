@@ -1,7 +1,12 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluBytes96_decode_ssz_generated.bend as FuluBytes96_r
+import ../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
+import ../../types/FuluBeaconBlock_decode_ssz_generated.bend as FuluBeaconBlock_r
+import ../../types/FuluSignedBeaconBlock_def_generated.bend as FuluSignedBeaconBlock_d
+import ../../types/FuluSignedBeaconBlock_decode_ssz_generated.bend as FuluSignedBeaconBlock_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -191,63 +196,63 @@ def eE0(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +h: {CHKw(t, x, 
   Equal.sym(Nat, Nat.add(U32.to_nat(O0(t, x)), U32.to_nat(U32.sub(len, O0(t, x)))), U32.to_nat(len), VM.sub_eq(len, O0(t, x), VMR.u32le(O0(t, x), len, r10(t, x, off, len, h))))
 def okc1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(100n, U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT2(t, x, off, len) == b : Bool}) -> {T.SignedBeaconBlock_c1(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), b) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(100n, U32.to_nat(len)) == True{} : Bool}, +hI1: {IT1(t, x, off, len) == True{} : Bool}, +b: Bool, +eb: {IT2(t, x, off, len) == b : Bool}) -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_c1(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), b) : B.Buf & Bool}:
   match b:
     case True{}: {==}
     case False{}: {==}
 
 def okc0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(100n, U32.to_nat(len)) == True{} : Bool}, +b: Bool, +eb: {IT1(t, x, off, len) == b : Bool}) -> {T.SignedBeaconBlock_c0(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), Bool.and(b, K2(t, x, off, len))) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hF: {Nat.is_le(100n, U32.to_nat(len)) == True{} : Bool}, +b: Bool, +eb: {IT1(t, x, off, len) == b : Bool}) -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_c0(b, BF(t, n), off, len, O0(t, x)) == (BF(t, n), Bool.and(b, K2(t, x, off, len))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +hI1 = eb
-      %Equal.sym(B.Buf & Bool, T.BeaconBlock_ok(BF(t, n), FJ0(off, t, x), LJ0(t, x, len)), (BF(t, n), CH0.CHKw(t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))),
+      %Equal.sym(B.Buf & Bool, FuluBeaconBlock_r.BeaconBlock_ok(BF(t, n), FJ0(off, t, x), LJ0(t, x, len)), (BF(t, n), CH0.CHKw(t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))),
           CH0.ok_evalw(d, t, n, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len), eoW(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), len, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, 100n, U32.to_nat(O0(t, x)), Equal.sym(Nat, U32.to_nat(O0(t, x)), 100n, Equal.cong(U32, Nat, z => U32.to_nat(z), O0(t, x), 100, FD.u32alg__eq_of(O0(t, x), 100, hI1))), hF), Order.reflexive(U32.to_nat(len))), hd,
             hwj(d, t, n, x, off, len, eo, hd, hw, pf, O0(t, x), len, FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(len)) == True{} : Bool}, 100n, U32.to_nat(O0(t, x)), Equal.sym(Nat, U32.to_nat(O0(t, x)), 100n, Equal.cong(U32, Nat, z => U32.to_nat(z), O0(t, x), 100, FD.u32alg__eq_of(O0(t, x), 100, hI1))), hF), Order.reflexive(U32.to_nat(len))), pf)) :
-        {T.SignedBeaconBlock_v1(off, len, O0(t, x), _) == (BF(t, n), K2(t, x, off, len)) : B.Buf & Bool}
+        {FuluSignedBeaconBlock_r.SignedBeaconBlock_v1(off, len, O0(t, x), _) == (BF(t, n), K2(t, x, off, len)) : B.Buf & Bool}
       okc1(d, t, n, x, off, len, eo, hd, hw, pf, hF, hI1, IT2(t, x, off, len), {==})
 
 def okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool, +ea: {IT0(t, x, off, len) == a : Bool})
-    -> {T.SignedBeaconBlock_ok_len(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K1(t, x, off, len))) : B.Buf & Bool}:
+    -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_ok_len(a, BF(t, n), off, len) == (BF(t, n), Bool.and(a, K1(t, x, off, len))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       +hF = le_nat(100, len, ea)
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdF(d, t, n, x, off, len, eo, hd, hw, pf, hF, 0, 0n, {==}, {==})) :
-        {T.SignedBeaconBlock_v0(off, len, _) == (BF(t, n), K1(t, x, off, len)) : B.Buf & Bool}
+        {FuluSignedBeaconBlock_r.SignedBeaconBlock_v0(off, len, _) == (BF(t, n), K1(t, x, off, len)) : B.Buf & Bool}
       okc0(d, t, n, x, off, len, eo, hd, hw, pf, hF, IT1(t, x, off, len), {==})
 
 # The validator on the window returns the buffer and CHKw.
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.SignedBeaconBlock_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   okl(d, t, n, x, off, len, eo, hd, hw, pf, IT0(t, x, off, len), {==})
 def rd_all(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool})
-    -> {T.SignedBeaconBlock_read(BF(t, n), off, len) == (BF(t, n), T.SignedBeaconBlock{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), T.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}}) : B.Buf & T.SignedBeaconBlock}:
+    -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_read(BF(t, n), off, len) == (BF(t, n), FuluSignedBeaconBlock_d.SignedBeaconBlock{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), FuluBytes96_d.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}}) : B.Buf & FuluSignedBeaconBlock_d.SignedBeaconBlock}:
   +hF = hFc(t, x, off, len, hchk)
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 0)), (BF(t, n), O0(t, x)), rdF(d, t, n, x, off, len, eo, hd, hw, pf, hF, 0, 0n, {==}, {==})) :
-    {T.SignedBeaconBlock_rd0(off, len, _) == (BF(t, n), T.SignedBeaconBlock{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), T.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}}) : B.Buf & T.SignedBeaconBlock}
-  %Equal.sym(B.Buf & T.BeaconBlock, T.BeaconBlock_read(BF(t, n), FJ0(off, t, x), LJ0(t, x, len)), (BF(t, n), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))),
+    {FuluSignedBeaconBlock_r.SignedBeaconBlock_rd0(off, len, _) == (BF(t, n), FuluSignedBeaconBlock_d.SignedBeaconBlock{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), FuluBytes96_d.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}}) : B.Buf & FuluSignedBeaconBlock_d.SignedBeaconBlock}
+  %Equal.sym(B.Buf & FuluBeaconBlock_d.BeaconBlock, FuluBeaconBlock_r.BeaconBlock_read(BF(t, n), FJ0(off, t, x), LJ0(t, x, len)), (BF(t, n), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len))),
       CH0.readw(d, t, n, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len), eoJ0(d, t, n, x, off, len, eo, hd, hw, pf, hchk), hd, hwJ0(d, t, n, x, off, len, eo, hd, hw, pf, hchk), pf, itD0(t, x, off, len, hchk))) :
-    {T.SignedBeaconBlock_rd1(off, len, O0(t, x), _) == (BF(t, n), T.SignedBeaconBlock{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), T.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}}) : B.Buf & T.SignedBeaconBlock}
-  %Equal.sym(B.Buf & T.Bytes96, T.b96_read(BF(t, n), U32.add(off, 4), 96), (BF(t, n), T.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}),
+    {FuluSignedBeaconBlock_r.SignedBeaconBlock_rd1(off, len, O0(t, x), _) == (BF(t, n), FuluSignedBeaconBlock_d.SignedBeaconBlock{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), FuluBytes96_d.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}}) : B.Buf & FuluSignedBeaconBlock_d.SignedBeaconBlock}
+  %Equal.sym(B.Buf & FuluBytes96_d.Bytes96, FuluBytes96_r.b96_read(BF(t, n), U32.add(off, 4), 96), (BF(t, n), FuluBytes96_d.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}),
       VTX.rdx_b96(d, t, n, U32.add(off, 4), 4n+x, eoc(d, t, n, x, off, len, eo, hd, hw, pf, hF, 4, 4n, {==}, {==}), FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf,
         roomF(d, t, n, x, off, len, eo, hd, hw, pf, hF, 4n, 96n, {==}))) :
-    {T.SignedBeaconBlock_rd2(off, len, O0(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), _) == (BF(t, n), T.SignedBeaconBlock{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), T.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}}) : B.Buf & T.SignedBeaconBlock}
+    {FuluSignedBeaconBlock_r.SignedBeaconBlock_rd2(off, len, O0(t, x), CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), _) == (BF(t, n), FuluSignedBeaconBlock_d.SignedBeaconBlock{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), FuluBytes96_d.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}}) : B.Buf & FuluSignedBeaconBlock_d.SignedBeaconBlock}
   {==}
 
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.SignedBeaconBlock: T.SignedBeaconBlock{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), T.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> FuluSignedBeaconBlock_d.SignedBeaconBlock: FuluSignedBeaconBlock_d.SignedBeaconBlock{CH0.OBJw(d, t, XJ0(t, x), FJ0(off, t, x), LJ0(t, x, len)), FuluBytes96_d.Bytes96{UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)}}
 
 # The reader on the window, when the checks hold.
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {T.SignedBeaconBlock_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.SignedBeaconBlock}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {FuluSignedBeaconBlock_r.SignedBeaconBlock_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluSignedBeaconBlock_d.SignedBeaconBlock}:
   rd_all(d, t, n, x, off, len, eo, hd, hw, pf, hchk)
 def VALw(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: S.Sequence{S.Items{CH0.VALw(t, XJ0(t, x), LJ0(t, x, len)), S.Items{S.BytesValue{F.limbs([UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x)])}, S.EmptyItems{}}}}
 

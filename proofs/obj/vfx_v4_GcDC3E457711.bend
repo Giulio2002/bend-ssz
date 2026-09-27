@@ -1,7 +1,13 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/uint8_decode_ssz_generated.bend as uint8_r
+import ../../types/uint32_decode_ssz_generated.bend as uint32_r
+import ../../types/uint64_decode_ssz_generated.bend as uint64_r
+import ../../types/FixedTestStruct_def_generated.bend as FixedTestStruct_d
+import ../../types/FixedTestStruct_decode_ssz_generated.bend as FixedTestStruct_r
+import ../../types/vec_FixedTestStruct_4_def_generated.bend as vec_FixedTestStruct_4_d
+import ../../types/vec_FixedTestStruct_4_decode_ssz_generated.bend as vec_FixedTestStruct_4_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -54,22 +60,22 @@ def rm(+x: Nat, +C: Nat, +s: Nat, +W: Nat, +hc: {Nat.is_le(Nat.add(C, s), W) == 
   FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, s), P) == True{} : Bool}, Nat.add(x, C), Nat.add(C, x), FD.nat__add_comm(x, C), VXG.roomc(x, W, C, s, P, hb, hc))
 
 # ---- one record at xe ----
-def EO(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> T.GcDC3E457711: T.GcDC3E457711{L2.OBJ(d, t, Nat.add(0n, x)), L1.OBJ(d, t, Nat.add(1n, x)), L0.OBJ(d, t, Nat.add(9n, x))}
+def EO(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> FixedTestStruct_d.GcDC3E457711: FixedTestStruct_d.GcDC3E457711{L2.OBJ(d, t, Nat.add(0n, x)), L1.OBJ(d, t, Nat.add(1n, x)), L0.OBJ(d, t, Nat.add(9n, x))}
 def EV(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.Sequence{S.Items{L2.VAL(t, Nat.add(0n, x)), S.Items{L1.VAL(t, Nat.add(1n, x)), S.Items{L0.VAL(t, Nat.add(9n, x)), S.EmptyItems{}}}}}
 
 def er(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 13n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.GcDC3E457711_read(UA.BF(t, n), off, 13) == (UA.BF(t, n), EO(d, t, x)) : B.Buf & T.GcDC3E457711}:
-  %Equal.sym(B.Buf & U32, T.u8_read(UA.BF(t, n), U32.add(off, 0), 1), (UA.BF(t, n), L2.OBJ(d, t, Nat.add(0n, x))),
+    -> {FixedTestStruct_r.GcDC3E457711_read(UA.BF(t, n), off, 13) == (UA.BF(t, n), EO(d, t, x)) : B.Buf & FixedTestStruct_d.GcDC3E457711}:
+  %Equal.sym(B.Buf & U32, uint8_r.u8_read(UA.BF(t, n), U32.add(off, 0), 1), (UA.BF(t, n), L2.OBJ(d, t, Nat.add(0n, x))),
       L2.rdx(d, t, n, U32.add(off, 0), Nat.add(0n, x), ec(d, off, x, 0, 0n, 13n, e, hd, {==}, {==}, hb), hd, pf, rm(x, 0n, 1n, 13n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.GcDC3E457711_rd0(off, 13, _) == (UA.BF(t, n), EO(d, t, x)) : B.Buf & T.GcDC3E457711}
-  %Equal.sym(B.Buf & O.U64, T.u64_read(UA.BF(t, n), U32.add(off, 1), 8), (UA.BF(t, n), L1.OBJ(d, t, Nat.add(1n, x))),
+    {FixedTestStruct_r.GcDC3E457711_rd0(off, 13, _) == (UA.BF(t, n), EO(d, t, x)) : B.Buf & FixedTestStruct_d.GcDC3E457711}
+  %Equal.sym(B.Buf & O.U64, uint64_r.u64_read(UA.BF(t, n), U32.add(off, 1), 8), (UA.BF(t, n), L1.OBJ(d, t, Nat.add(1n, x))),
       L1.rdx(d, t, n, U32.add(off, 1), Nat.add(1n, x), ec(d, off, x, 1, 1n, 13n, e, hd, {==}, {==}, hb), hd, pf, rm(x, 1n, 8n, 13n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.GcDC3E457711_rd1(off, 13, L2.OBJ(d, t, Nat.add(0n, x)), _) == (UA.BF(t, n), EO(d, t, x)) : B.Buf & T.GcDC3E457711}
-  %Equal.sym(B.Buf & U32, T.u32_read(UA.BF(t, n), U32.add(off, 9), 4), (UA.BF(t, n), L0.OBJ(d, t, Nat.add(9n, x))),
+    {FixedTestStruct_r.GcDC3E457711_rd1(off, 13, L2.OBJ(d, t, Nat.add(0n, x)), _) == (UA.BF(t, n), EO(d, t, x)) : B.Buf & FixedTestStruct_d.GcDC3E457711}
+  %Equal.sym(B.Buf & U32, uint32_r.u32_read(UA.BF(t, n), U32.add(off, 9), 4), (UA.BF(t, n), L0.OBJ(d, t, Nat.add(9n, x))),
       L0.rdx(d, t, n, U32.add(off, 9), Nat.add(9n, x), ec(d, off, x, 9, 9n, 13n, e, hd, {==}, {==}, hb), hd, pf, rm(x, 9n, 4n, 13n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.GcDC3E457711_rd2(off, 13, L2.OBJ(d, t, Nat.add(0n, x)), L1.OBJ(d, t, Nat.add(1n, x)), _) == (UA.BF(t, n), EO(d, t, x)) : B.Buf & T.GcDC3E457711}
+    {FixedTestStruct_r.GcDC3E457711_rd2(off, 13, L2.OBJ(d, t, Nat.add(0n, x)), L1.OBJ(d, t, Nat.add(1n, x)), _) == (UA.BF(t, n), EO(d, t, x)) : B.Buf & FixedTestStruct_d.GcDC3E457711}
   {==}
 
 def ewx(+t: FD.array__Tree<U32>, +x: Nat) -> {UW.WX(t, x, 13n) == List.append(&2, U32, UW.WX(t, Nat.add(0n, x), 1n), List.append(&2, U32, UW.WX(t, Nat.add(1n, x), 8n), List.append(&2, U32, UW.WX(t, Nat.add(9n, x), 4n), []))) : +List<U32>}:
@@ -96,20 +102,20 @@ def ep(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, d
     FD.logic__subst(+List<U32>, z => {List.length(&2, U32, z) == 13n : Nat}, UW.WX(t, x, 13n), List.append(&2, U32, UW.WX(t, Nat.add(0n, x), 1n), List.append(&2, U32, UW.WX(t, Nat.add(1n, x), 8n), List.append(&2, U32, UW.WX(t, Nat.add(9n, x), 4n), []))), ew, UW.lenWX(d, t, x, 13n, pf, hb)),
     {==})
 
-def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> T.v4_GcDC3E457711_Seq: T.v4_GcDC3E457711_Seq{Array.set(T.GcDC3E457711, Array.set(T.GcDC3E457711, Array.set(T.GcDC3E457711, Array.set(T.GcDC3E457711, T.v4_GcDC3E457711_fill(T.v4_GcDC3E457711_cap(4)), 0, EO(d, t, Nat.add(0n, x))), 1, EO(d, t, Nat.add(13n, x))), 2, EO(d, t, Nat.add(26n, x))), 3, EO(d, t, Nat.add(39n, x))), 4}
+def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq: vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq{Array.set(FixedTestStruct_d.GcDC3E457711, Array.set(FixedTestStruct_d.GcDC3E457711, Array.set(FixedTestStruct_d.GcDC3E457711, Array.set(FixedTestStruct_d.GcDC3E457711, vec_FixedTestStruct_4_d.v4_GcDC3E457711_fill(vec_FixedTestStruct_4_d.v4_GcDC3E457711_cap(4)), 0, EO(d, t, Nat.add(0n, x))), 1, EO(d, t, Nat.add(13n, x))), 2, EO(d, t, Nat.add(26n, x))), 3, EO(d, t, Nat.add(39n, x))), 4}
 
 def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 52n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.v4_GcDC3E457711_read(UA.BF(t, n), off, 52) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.v4_GcDC3E457711_Seq}:
-  %Equal.sym(B.Buf & T.GcDC3E457711, T.GcDC3E457711_read(UA.BF(t, n), off, 13), (UA.BF(t, n), EO(d, t, x)), er(d, t, n, off, x, e, hd, pf, FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 13n), A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(0n, x), x, {==}, rm(x, 0n, 13n, 52n, {==}, A.quad(VB.pw(d)), hb)))) :
-    {T.v4_GcDC3E457711_rd_fin(4, T.v4_GcDC3E457711_rd(3n, 0, off, T.v4_GcDC3E457711_fill(T.v4_GcDC3E457711_cap(4)), _)) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.v4_GcDC3E457711_Seq}
-  %Equal.sym(B.Buf & T.GcDC3E457711, T.GcDC3E457711_read(UA.BF(t, n), U32.add(off, 13), 13), (UA.BF(t, n), EO(d, t, Nat.add(13n, x))), er(d, t, n, U32.add(off, 13), Nat.add(13n, x), ec(d, off, x, 13, 13n, 52n, e, hd, {==}, {==}, hb), hd, pf, rm(x, 13n, 13n, 52n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.v4_GcDC3E457711_rd_fin(4, T.v4_GcDC3E457711_rd(2n, 1, off, Array.set(T.GcDC3E457711, T.v4_GcDC3E457711_fill(T.v4_GcDC3E457711_cap(4)), 0, EO(d, t, x)), _)) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.v4_GcDC3E457711_Seq}
-  %Equal.sym(B.Buf & T.GcDC3E457711, T.GcDC3E457711_read(UA.BF(t, n), U32.add(off, 26), 13), (UA.BF(t, n), EO(d, t, Nat.add(26n, x))), er(d, t, n, U32.add(off, 26), Nat.add(26n, x), ec(d, off, x, 26, 26n, 52n, e, hd, {==}, {==}, hb), hd, pf, rm(x, 26n, 13n, 52n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.v4_GcDC3E457711_rd_fin(4, T.v4_GcDC3E457711_rd(1n, 2, off, Array.set(T.GcDC3E457711, Array.set(T.GcDC3E457711, T.v4_GcDC3E457711_fill(T.v4_GcDC3E457711_cap(4)), 0, EO(d, t, x)), 1, EO(d, t, Nat.add(13n, x))), _)) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.v4_GcDC3E457711_Seq}
-  %Equal.sym(B.Buf & T.GcDC3E457711, T.GcDC3E457711_read(UA.BF(t, n), U32.add(off, 39), 13), (UA.BF(t, n), EO(d, t, Nat.add(39n, x))), er(d, t, n, U32.add(off, 39), Nat.add(39n, x), ec(d, off, x, 39, 39n, 52n, e, hd, {==}, {==}, hb), hd, pf, rm(x, 39n, 13n, 52n, {==}, A.quad(VB.pw(d)), hb))) :
-    {T.v4_GcDC3E457711_rd_fin(4, T.v4_GcDC3E457711_rd(0n, 3, off, Array.set(T.GcDC3E457711, Array.set(T.GcDC3E457711, Array.set(T.GcDC3E457711, T.v4_GcDC3E457711_fill(T.v4_GcDC3E457711_cap(4)), 0, EO(d, t, x)), 1, EO(d, t, Nat.add(13n, x))), 2, EO(d, t, Nat.add(26n, x))), _)) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.v4_GcDC3E457711_Seq}
+    -> {vec_FixedTestStruct_4_r.v4_GcDC3E457711_read(UA.BF(t, n), off, 52) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq}:
+  %Equal.sym(B.Buf & FixedTestStruct_d.GcDC3E457711, FixedTestStruct_r.GcDC3E457711_read(UA.BF(t, n), off, 13), (UA.BF(t, n), EO(d, t, x)), er(d, t, n, off, x, e, hd, pf, FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 13n), A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(0n, x), x, {==}, rm(x, 0n, 13n, 52n, {==}, A.quad(VB.pw(d)), hb)))) :
+    {vec_FixedTestStruct_4_r.v4_GcDC3E457711_rd_fin(4, vec_FixedTestStruct_4_r.v4_GcDC3E457711_rd(3n, 0, off, vec_FixedTestStruct_4_d.v4_GcDC3E457711_fill(vec_FixedTestStruct_4_d.v4_GcDC3E457711_cap(4)), _)) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq}
+  %Equal.sym(B.Buf & FixedTestStruct_d.GcDC3E457711, FixedTestStruct_r.GcDC3E457711_read(UA.BF(t, n), U32.add(off, 13), 13), (UA.BF(t, n), EO(d, t, Nat.add(13n, x))), er(d, t, n, U32.add(off, 13), Nat.add(13n, x), ec(d, off, x, 13, 13n, 52n, e, hd, {==}, {==}, hb), hd, pf, rm(x, 13n, 13n, 52n, {==}, A.quad(VB.pw(d)), hb))) :
+    {vec_FixedTestStruct_4_r.v4_GcDC3E457711_rd_fin(4, vec_FixedTestStruct_4_r.v4_GcDC3E457711_rd(2n, 1, off, Array.set(FixedTestStruct_d.GcDC3E457711, vec_FixedTestStruct_4_d.v4_GcDC3E457711_fill(vec_FixedTestStruct_4_d.v4_GcDC3E457711_cap(4)), 0, EO(d, t, x)), _)) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq}
+  %Equal.sym(B.Buf & FixedTestStruct_d.GcDC3E457711, FixedTestStruct_r.GcDC3E457711_read(UA.BF(t, n), U32.add(off, 26), 13), (UA.BF(t, n), EO(d, t, Nat.add(26n, x))), er(d, t, n, U32.add(off, 26), Nat.add(26n, x), ec(d, off, x, 26, 26n, 52n, e, hd, {==}, {==}, hb), hd, pf, rm(x, 26n, 13n, 52n, {==}, A.quad(VB.pw(d)), hb))) :
+    {vec_FixedTestStruct_4_r.v4_GcDC3E457711_rd_fin(4, vec_FixedTestStruct_4_r.v4_GcDC3E457711_rd(1n, 2, off, Array.set(FixedTestStruct_d.GcDC3E457711, Array.set(FixedTestStruct_d.GcDC3E457711, vec_FixedTestStruct_4_d.v4_GcDC3E457711_fill(vec_FixedTestStruct_4_d.v4_GcDC3E457711_cap(4)), 0, EO(d, t, x)), 1, EO(d, t, Nat.add(13n, x))), _)) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq}
+  %Equal.sym(B.Buf & FixedTestStruct_d.GcDC3E457711, FixedTestStruct_r.GcDC3E457711_read(UA.BF(t, n), U32.add(off, 39), 13), (UA.BF(t, n), EO(d, t, Nat.add(39n, x))), er(d, t, n, U32.add(off, 39), Nat.add(39n, x), ec(d, off, x, 39, 39n, 52n, e, hd, {==}, {==}, hb), hd, pf, rm(x, 39n, 13n, 52n, {==}, A.quad(VB.pw(d)), hb))) :
+    {vec_FixedTestStruct_4_r.v4_GcDC3E457711_rd_fin(4, vec_FixedTestStruct_4_r.v4_GcDC3E457711_rd(0n, 3, off, Array.set(FixedTestStruct_d.GcDC3E457711, Array.set(FixedTestStruct_d.GcDC3E457711, Array.set(FixedTestStruct_d.GcDC3E457711, vec_FixedTestStruct_4_d.v4_GcDC3E457711_fill(vec_FixedTestStruct_4_d.v4_GcDC3E457711_cap(4)), 0, EO(d, t, x)), 1, EO(d, t, Nat.add(13n, x))), 2, EO(d, t, Nat.add(26n, x))), _)) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq}
   {==}
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.Sequence{S.Items{EV(t, Nat.add(0n, x)), S.Items{EV(t, Nat.add(13n, x)), S.Items{EV(t, Nat.add(26n, x)), S.Items{EV(t, Nat.add(39n, x)), S.EmptyItems{}}}}}}

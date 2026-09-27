@@ -25,7 +25,7 @@ For every (type, workload, operation):
 * samples alternate between the two implementations, at least five each, in a
   fresh process per sample.
 
-The Bend side is the typed owning object API (types/fulu_obj.bend, generated
+The Bend side is the typed owning object API (types/<Name>_*_generated.bend, generated
 from codegen/fulu.yaml), measured through benchmarks/objprog/g*.bend - one
 program per group of names, because the pinned compiler cannot fit all 109
 types into one program's compile budget:
@@ -530,7 +530,7 @@ def main():
         'benchmarks': rows,
         'skipped': skipped,
         'rejection_checks': rejections,
-        'bend_api': 'typed owning object API: types/fulu_obj.bend through benchmarks/objprog/g*.bend '
+        'bend_api': 'typed owning object API: types/<Name>_*_generated.bend through benchmarks/objprog/g*.bend '
                     '(decode builds the object, encode writes fresh bytes from it, root hashes it)',
         'bend_compiles': COMPILES,
         'bend_compile_env': {'BUN_JSC_forceRAMSize': COMPILE_ENV['BUN_JSC_forceRAMSize']},

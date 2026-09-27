@@ -1,7 +1,12 @@
 import Base
 import ../../src/obj.bend as O
 import ../../src/primitives.bend as I
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluBytes96_encode_ssz_generated.bend as FuluBytes96_e
+import ../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
+import ../../types/FuluBeaconBlock_encode_ssz_generated.bend as FuluBeaconBlock_e
+import ../../types/FuluSignedBeaconBlock_def_generated.bend as FuluSignedBeaconBlock_d
+import ../../types/FuluSignedBeaconBlock_encode_ssz_generated.bend as FuluSignedBeaconBlock_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -30,89 +35,89 @@ def PB(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:
   b
 
 # ---- b96: its writer on the object ----
-def RW_b96(o: T.Bytes96) -> List<&2, U32>:
+def RW_b96(o: FuluBytes96_d.Bytes96) -> List<&2, U32>:
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]
-def PXo_b96(o: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: [w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23]
+def PXo_b96(o: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: V_b96.PX_b96(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23)
-def pfo_b96(+o: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: V_b96.PX_b96(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23)
+def pfo_b96(+o: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PXo_b96(o, dd, D, q, r)) == True{} : Bool}:
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: V_b96.b96x_perfect(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, pf)
-def RTo_b96(+o: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.b96_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_b96(o, dd, D, q, r)) : Array<U32>}
-def BYo_b96(+o: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: V_b96.b96x_perfect(r, dd, D, q, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, pf)
+def RTo_b96(+o: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluBytes96_e.b96_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_b96(o, dd, D, q, r)) : Array<U32>}
+def BYo_b96(+o: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_b96(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), FX.limbs(RW_b96(o))) : +List<U32>}
-def putxo_b96(+o: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putxo_b96(+o: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 96n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(96n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(96n) : +List<U32>})
     -> DK.P2(RTo_b96(o, dd, D, X, q, r), BYo_b96(o, dd, D, q, r)):
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: (V_b96.b96_any(dd, D, X, q, r, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, e, hr, hd, hl, pf, hz), V_b96.b96_any_bytes(dd, D, X, q, r, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, e, hr, hd, hl, pf, hz))
-def lenb_b96(+o: T.Bytes96) -> {VCN.LN(FX.limbs(RW_b96(o))) == 96n : Nat}:
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: (V_b96.b96_any(dd, D, X, q, r, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, e, hr, hd, hl, pf, hz), V_b96.b96_any_bytes(dd, D, X, q, r, w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18, w19, w20, w21, w22, w23, e, hr, hd, hl, pf, hz))
+def lenb_b96(+o: FuluBytes96_d.Bytes96) -> {VCN.LN(FX.limbs(RW_b96(o))) == 96n : Nat}:
   match o:
-    case T.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: {==}
+    case FuluBytes96_d.Bytes96{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7, +w8, +w9, +w10, +w11, +w12, +w13, +w14, +w15, +w16, +w17, +w18, +w19, +w20, +w21, +w22, +w23}: {==}
 
 
 # ---- SignedBeaconBlock: the object, its bytes and byte count ----
-def OBJC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96) -> T.SignedBeaconBlock: T.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}
-def LLC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Nat: Nat.add(100n, VCN.SUM([List.length(&2, U32, EC_BeaconBlock.ENC(m_message))]))
-def SZC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96) -> U32: O.padd(100, EC_BeaconBlock.SZ(m_message))
+def OBJC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96) -> FuluSignedBeaconBlock_d.SignedBeaconBlock: FuluSignedBeaconBlock_d.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}
+def LLC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Nat: Nat.add(100n, VCN.SUM([List.length(&2, U32, EC_BeaconBlock.ENC(m_message))]))
+def SZC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96) -> U32: O.padd(100, EC_BeaconBlock.SZ(m_message))
 
-def M0(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: D
-def M1(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: WD.W32X(r, dd, M0(m_message, signature, dd, D, X, q, r), Nat.add(0n, q), 100)
-def M2(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: EC_BeaconBlock.PUTX(m_message, dd, M1(m_message, signature, dd, D, X, q, r), VCN.QX(U32.add(X, 100)), VCN.RX(U32.add(X, 100)))
-def M3(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PXo_b96(signature, dd, M2(m_message, signature, dd, D, X, q, r), Nat.add(1n, q), r)
-def PUTC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: M3(m_message, signature, dd, D, X, q, r)
+def M0(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: D
+def M1(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: WD.W32X(r, dd, M0(m_message, signature, dd, D, X, q, r), Nat.add(0n, q), 100)
+def M2(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: EC_BeaconBlock.PUTX(m_message, dd, M1(m_message, signature, dd, D, X, q, r), VCN.QX(U32.add(X, 100)), VCN.RX(U32.add(X, 100)))
+def M3(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: PXo_b96(signature, dd, M2(m_message, signature, dd, D, X, q, r), Nat.add(1n, q), r)
+def PUTC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> FD.array__Tree<U32>: M3(m_message, signature, dd, D, X, q, r)
 
 # message: its offset word, then its bytes (T.BeaconBlock_putv).
 def putv_message(+m_message: EC_BeaconBlock.MW, +D: FD.array__Tree<U32>, +D1: FD.array__Tree<U32>, +D2: FD.array__Tree<U32>, +X: U32, +hoff: U32, +cur: U32,
     +e1: {O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur) == FD.array__thaw(U32, D1) : Array<U32>},
-    +e2: {T.BeaconBlock_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EC_BeaconBlock.TH(m_message)) == (FD.array__thaw(U32, D2), (EC_BeaconBlock.TH(m_message), EC_BeaconBlock.SZ(m_message))) : Array<U32> & (T.BeaconBlock & U32)})
-    -> {T.BeaconBlock_putv(FD.array__thaw(U32, D), X, hoff, cur, EC_BeaconBlock.TH(m_message)) == (FD.array__thaw(U32, D2), (EC_BeaconBlock.TH(m_message), O.padd(cur, EC_BeaconBlock.SZ(m_message)))) : Array<U32> & (T.BeaconBlock & U32)}:
-  Equal.trans(Array<U32> & (T.BeaconBlock & U32), T.BeaconBlock_pvb(cur, T.BeaconBlock_putk(O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), U32.add(X, cur), EC_BeaconBlock.TH(m_message))),
-    T.BeaconBlock_pvb(cur, T.BeaconBlock_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EC_BeaconBlock.TH(m_message))), (FD.array__thaw(U32, D2), (EC_BeaconBlock.TH(m_message), O.padd(cur, EC_BeaconBlock.SZ(m_message)))),
-    Equal.cong(Array<U32>, Array<U32> & (T.BeaconBlock & U32), z => T.BeaconBlock_pvb(cur, T.BeaconBlock_putk(z, U32.add(X, cur), EC_BeaconBlock.TH(m_message))), O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), FD.array__thaw(U32, D1), e1),
-    Equal.cong(Array<U32> & (T.BeaconBlock & U32), Array<U32> & (T.BeaconBlock & U32), z => T.BeaconBlock_pvb(cur, z), T.BeaconBlock_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EC_BeaconBlock.TH(m_message)), (FD.array__thaw(U32, D2), (EC_BeaconBlock.TH(m_message), EC_BeaconBlock.SZ(m_message))), e2))
+    +e2: {FuluBeaconBlock_e.BeaconBlock_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EC_BeaconBlock.TH(m_message)) == (FD.array__thaw(U32, D2), (EC_BeaconBlock.TH(m_message), EC_BeaconBlock.SZ(m_message))) : Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32)})
+    -> {FuluBeaconBlock_e.BeaconBlock_putv(FD.array__thaw(U32, D), X, hoff, cur, EC_BeaconBlock.TH(m_message)) == (FD.array__thaw(U32, D2), (EC_BeaconBlock.TH(m_message), O.padd(cur, EC_BeaconBlock.SZ(m_message)))) : Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32)}:
+  Equal.trans(Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32), FuluBeaconBlock_e.BeaconBlock_pvb(cur, FuluBeaconBlock_e.BeaconBlock_putk(O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), U32.add(X, cur), EC_BeaconBlock.TH(m_message))),
+    FuluBeaconBlock_e.BeaconBlock_pvb(cur, FuluBeaconBlock_e.BeaconBlock_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EC_BeaconBlock.TH(m_message))), (FD.array__thaw(U32, D2), (EC_BeaconBlock.TH(m_message), O.padd(cur, EC_BeaconBlock.SZ(m_message)))),
+    Equal.cong(Array<U32>, Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32), z => FuluBeaconBlock_e.BeaconBlock_pvb(cur, FuluBeaconBlock_e.BeaconBlock_putk(z, U32.add(X, cur), EC_BeaconBlock.TH(m_message))), O.w32(FD.array__thaw(U32, D), U32.add(X, hoff), cur), FD.array__thaw(U32, D1), e1),
+    Equal.cong(Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32), Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32), z => FuluBeaconBlock_e.BeaconBlock_pvb(cur, z), FuluBeaconBlock_e.BeaconBlock_putk(FD.array__thaw(U32, D1), U32.add(X, cur), EC_BeaconBlock.TH(m_message)), (FD.array__thaw(U32, D2), (EC_BeaconBlock.TH(m_message), EC_BeaconBlock.SZ(m_message))), e2))
 
 
 # the runtime's SignedBeaconBlock writes, from its writes' facts
-def rt_C(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def rt_C(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +f0: {O.w32(FD.array__thaw(U32, M0(m_message, signature, dd, D, X, q, r)), U32.add(X, 0), 100) == FD.array__thaw(U32, M1(m_message, signature, dd, D, X, q, r)) : Array<U32>},
-    +f1: {T.BeaconBlock_putk(FD.array__thaw(U32, M1(m_message, signature, dd, D, X, q, r)), U32.add(X, 100), EC_BeaconBlock.TH(m_message)) == (FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), (EC_BeaconBlock.TH(m_message), EC_BeaconBlock.SZ(m_message))) : Array<U32> & (T.BeaconBlock & U32)},
-    +f2: {T.b96_put(FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), U32.add(X, 4), signature) == FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)) : Array<U32>})
-    -> {T.SignedBeaconBlock_putn(FD.array__thaw(U32, M0(m_message, signature, dd, D, X, q, r)), X, T.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}) == (FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)), (T.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}, O.padd(100, EC_BeaconBlock.SZ(m_message)))) : Array<U32> & (T.SignedBeaconBlock & U32)}:
-  Equal.trans(Array<U32> & (T.SignedBeaconBlock & U32), T.SignedBeaconBlock_putn(FD.array__thaw(U32, M0(m_message, signature, dd, D, X, q, r)), X, T.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}), T.SignedBeaconBlock_pw0(X, signature, (FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), (EC_BeaconBlock.TH(m_message), O.padd(100, EC_BeaconBlock.SZ(m_message))))), (FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)), (T.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}, O.padd(100, EC_BeaconBlock.SZ(m_message)))), Equal.cong(Array<U32> & (T.BeaconBlock & U32), Array<U32> & (T.SignedBeaconBlock & U32), z => T.SignedBeaconBlock_pw0(X, signature, z), T.BeaconBlock_putv(FD.array__thaw(U32, M0(m_message, signature, dd, D, X, q, r)), X, 0, 100, EC_BeaconBlock.TH(m_message)), (FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), (EC_BeaconBlock.TH(m_message), O.padd(100, EC_BeaconBlock.SZ(m_message)))), putv_message(m_message, M0(m_message, signature, dd, D, X, q, r), M1(m_message, signature, dd, D, X, q, r), M2(m_message, signature, dd, D, X, q, r), X, 0, 100, f0, f1)), Equal.cong(Array<U32>, Array<U32> & (T.SignedBeaconBlock & U32), z => (z, (T.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}, O.padd(100, EC_BeaconBlock.SZ(m_message)))), T.b96_put(FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), U32.add(X, 4), signature), FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)), f2))
+    +f1: {FuluBeaconBlock_e.BeaconBlock_putk(FD.array__thaw(U32, M1(m_message, signature, dd, D, X, q, r)), U32.add(X, 100), EC_BeaconBlock.TH(m_message)) == (FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), (EC_BeaconBlock.TH(m_message), EC_BeaconBlock.SZ(m_message))) : Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32)},
+    +f2: {FuluBytes96_e.b96_put(FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), U32.add(X, 4), signature) == FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)) : Array<U32>})
+    -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_putn(FD.array__thaw(U32, M0(m_message, signature, dd, D, X, q, r)), X, FuluSignedBeaconBlock_d.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}) == (FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)), (FuluSignedBeaconBlock_d.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}, O.padd(100, EC_BeaconBlock.SZ(m_message)))) : Array<U32> & (FuluSignedBeaconBlock_d.SignedBeaconBlock & U32)}:
+  Equal.trans(Array<U32> & (FuluSignedBeaconBlock_d.SignedBeaconBlock & U32), FuluSignedBeaconBlock_e.SignedBeaconBlock_putn(FD.array__thaw(U32, M0(m_message, signature, dd, D, X, q, r)), X, FuluSignedBeaconBlock_d.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}), FuluSignedBeaconBlock_e.SignedBeaconBlock_pw0(X, signature, (FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), (EC_BeaconBlock.TH(m_message), O.padd(100, EC_BeaconBlock.SZ(m_message))))), (FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)), (FuluSignedBeaconBlock_d.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}, O.padd(100, EC_BeaconBlock.SZ(m_message)))), Equal.cong(Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32), Array<U32> & (FuluSignedBeaconBlock_d.SignedBeaconBlock & U32), z => FuluSignedBeaconBlock_e.SignedBeaconBlock_pw0(X, signature, z), FuluBeaconBlock_e.BeaconBlock_putv(FD.array__thaw(U32, M0(m_message, signature, dd, D, X, q, r)), X, 0, 100, EC_BeaconBlock.TH(m_message)), (FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), (EC_BeaconBlock.TH(m_message), O.padd(100, EC_BeaconBlock.SZ(m_message)))), putv_message(m_message, M0(m_message, signature, dd, D, X, q, r), M1(m_message, signature, dd, D, X, q, r), M2(m_message, signature, dd, D, X, q, r), X, 0, 100, f0, f1)), Equal.cong(Array<U32>, Array<U32> & (FuluSignedBeaconBlock_d.SignedBeaconBlock & U32), z => (z, (FuluSignedBeaconBlock_d.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}, O.padd(100, EC_BeaconBlock.SZ(m_message)))), FuluBytes96_e.b96_put(FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), U32.add(X, 4), signature), FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)), f2))
 
 
 # the runtime's put of SignedBeaconBlock at X
-def rt_all(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def rt_all(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +f0: {O.w32(FD.array__thaw(U32, M0(m_message, signature, dd, D, X, q, r)), U32.add(X, 0), 100) == FD.array__thaw(U32, M1(m_message, signature, dd, D, X, q, r)) : Array<U32>},
-    +f1: {T.BeaconBlock_putk(FD.array__thaw(U32, M1(m_message, signature, dd, D, X, q, r)), U32.add(X, 100), EC_BeaconBlock.TH(m_message)) == (FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), (EC_BeaconBlock.TH(m_message), EC_BeaconBlock.SZ(m_message))) : Array<U32> & (T.BeaconBlock & U32)},
-    +f2: {T.b96_put(FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), U32.add(X, 4), signature) == FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)) : Array<U32>})
-    -> {T.SignedBeaconBlock_putn(FD.array__thaw(U32, M0(m_message, signature, dd, D, X, q, r)), X, T.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}) == (FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)), (T.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}, O.padd(100, EC_BeaconBlock.SZ(m_message)))) : Array<U32> & (T.SignedBeaconBlock & U32)}:
+    +f1: {FuluBeaconBlock_e.BeaconBlock_putk(FD.array__thaw(U32, M1(m_message, signature, dd, D, X, q, r)), U32.add(X, 100), EC_BeaconBlock.TH(m_message)) == (FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), (EC_BeaconBlock.TH(m_message), EC_BeaconBlock.SZ(m_message))) : Array<U32> & (FuluBeaconBlock_d.BeaconBlock & U32)},
+    +f2: {FuluBytes96_e.b96_put(FD.array__thaw(U32, M2(m_message, signature, dd, D, X, q, r)), U32.add(X, 4), signature) == FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)) : Array<U32>})
+    -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_putn(FD.array__thaw(U32, M0(m_message, signature, dd, D, X, q, r)), X, FuluSignedBeaconBlock_d.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}) == (FD.array__thaw(U32, M3(m_message, signature, dd, D, X, q, r)), (FuluSignedBeaconBlock_d.SignedBeaconBlock{EC_BeaconBlock.TH(m_message), signature}, O.padd(100, EC_BeaconBlock.SZ(m_message)))) : Array<U32> & (FuluSignedBeaconBlock_d.SignedBeaconBlock & U32)}:
   rt_C(m_message, signature, dd, D, X, q, r, f0, f1, f2)
 
 
-def ENCC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96) -> +List<U32>: VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(RW_b96(signature))), VCN.PC(List.length(&2, U32, EC_BeaconBlock.ENC(m_message)), EC_BeaconBlock.ENC(m_message))])
-def RTC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.SignedBeaconBlock_putn(FD.array__thaw(U32, D), X, OBJC(m_message, signature)) == (FD.array__thaw(U32, PUTC(m_message, signature, dd, D, X, q, r)), (OBJC(m_message, signature), SZC(m_message, signature))) : Array<U32> & (T.SignedBeaconBlock & U32)}
-def BYC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+def ENCC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96) -> +List<U32>: VCN.CAT([I.limb(100), VCN.PC(96n, FX.limbs(RW_b96(signature))), VCN.PC(List.length(&2, U32, EC_BeaconBlock.ENC(m_message)), EC_BeaconBlock.ENC(m_message))])
+def RTC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluSignedBeaconBlock_e.SignedBeaconBlock_putn(FD.array__thaw(U32, D), X, OBJC(m_message, signature)) == (FD.array__thaw(U32, PUTC(m_message, signature, dd, D, X, q, r)), (OBJC(m_message, signature), SZC(m_message, signature))) : Array<U32> & (FuluSignedBeaconBlock_d.SignedBeaconBlock & U32)}
+def BYC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTC(m_message, signature, dd, D, X, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), VCN.AP(ENCC(m_message, signature), UW.ZB(WD.PADB(r, LLC(m_message, signature, dd, D, X, q, r))))) : +List<U32>}
-def PFC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data: {FD.array__perfect(U32, dd, PUTC(m_message, signature, dd, D, X, q, r)) == True{} : Bool}
-def SZXC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data: {U32.to_nat(SZC(m_message, signature)) == LLC(m_message, signature, dd, D, X, q, r) : Nat}
+def PFC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data: {FD.array__perfect(U32, dd, PUTC(m_message, signature, dd, D, X, q, r)) == True{} : Bool}
+def SZXC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data: {U32.to_nat(SZC(m_message, signature)) == LLC(m_message, signature, dd, D, X, q, r) : Nat}
 
 # The four facts as one (built from variables, so no fact's proof term enters another's type).
-def mk4(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTC(m_message, signature, dd, D, X, q, r), +b: BYC(m_message, signature, dd, D, X, q, r), +c: PFC(m_message, signature, dd, D, X, q, r), +d: SZXC(m_message, signature, dd, D, X, q, r))
+def mk4(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTC(m_message, signature, dd, D, X, q, r), +b: BYC(m_message, signature, dd, D, X, q, r), +c: PFC(m_message, signature, dd, D, X, q, r), +d: SZXC(m_message, signature, dd, D, X, q, r))
     -> DK.P2(RTC(m_message, signature, dd, D, X, q, r), DK.P2(BYC(m_message, signature, dd, D, X, q, r), DK.P2(PFC(m_message, signature, dd, D, X, q, r), SZXC(m_message, signature, dd, D, X, q, r)))):
   (a, (b, (c, d)))
 
 # putx: the runtime's writer of SignedBeaconBlock at X = 4 q + r is the model PUTC, whose bytes splice the
 # container's bytes (and the zeros to the end of the last word) into D's, whose tree is perfect,
 # and whose returned size is the byte count.
-def putx(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +hok_message: {EC_BeaconBlock.OK(m_message) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putx(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +hok_message: {EC_BeaconBlock.OK(m_message) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LLC(m_message, signature, dd, D, X, q, r)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(Nat.add(LLC(m_message, signature, dd, D, X, q, r), WD.PADB(r, LLC(m_message, signature, dd, D, X, q, r))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(LLC(m_message, signature, dd, D, X, q, r), WD.PADB(r, LLC(m_message, signature, dd, D, X, q, r)))) : +List<U32>})
@@ -163,10 +168,10 @@ def putx(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +hok_message: {EC
 
 # The container's checked writer T.SignedBeaconBlock_putk is its putn (one definitional step): the writer's fact
 # as a parent's putv states it.
-def putk_bridge(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +h: RTC(m_message, signature, dd, D, X, q, r))
-    -> {T.SignedBeaconBlock_putk(FD.array__thaw(U32, D), X, OBJC(m_message, signature)) == (FD.array__thaw(U32, PUTC(m_message, signature, dd, D, X, q, r)), (OBJC(m_message, signature), SZC(m_message, signature))) : Array<U32> & (T.SignedBeaconBlock & U32)}:
+def putk_bridge(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +h: RTC(m_message, signature, dd, D, X, q, r))
+    -> {FuluSignedBeaconBlock_e.SignedBeaconBlock_putk(FD.array__thaw(U32, D), X, OBJC(m_message, signature)) == (FD.array__thaw(U32, PUTC(m_message, signature, dd, D, X, q, r)), (OBJC(m_message, signature), SZC(m_message, signature))) : Array<U32> & (FuluSignedBeaconBlock_d.SignedBeaconBlock & U32)}:
   h
 
 # pfC: the writer's tree is perfect (no hypothesis).
-def pfC(+m_message: EC_BeaconBlock.MW, +signature: T.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}) -> PFC(m_message, signature, dd, D, X, q, r):
+def pfC(+m_message: EC_BeaconBlock.MW, +signature: FuluBytes96_d.Bytes96, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}) -> PFC(m_message, signature, dd, D, X, q, r):
   pfo_b96(signature, dd, M2(m_message, signature, dd, D, X, q, r), Nat.add(1n, q), r, EC_BeaconBlock.pfx(m_message, dd, M1(m_message, signature, dd, D, X, q, r), VCN.QX(U32.add(X, 100)), VCN.RX(U32.add(X, 100)), WD.w32x_perfect(r, dd, M0(m_message, signature, dd, D, X, q, r), Nat.add(0n, q), 100, pf)))

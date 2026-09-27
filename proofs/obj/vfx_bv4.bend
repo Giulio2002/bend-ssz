@@ -1,7 +1,8 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_bitvector_4_def_generated.bend as Fulu_bitvector_4_d
+import ../../types/Fulu_bitvector_4_decode_ssz_generated.bend as Fulu_bitvector_4_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -36,15 +37,15 @@ def BX(+t: FD.array__Tree<U32>, +x: Nat) -> U32: VBL.nthb(UA.BYT(t), x)
 def CHKv(+v: U32) -> Bool: U32.is_eq(U32.and(v, U32.not(O.low_mask(4))), 0)
 def CHK(+t: FD.array__Tree<U32>, +x: Nat) -> Bool: CHKv(BX(t, x))
 
-def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> T.Bitvector4: T.Bitvector4{O.keep(1, UR.RWN(t, x))}
+def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> Fulu_bitvector_4_d.Bitvector4: Fulu_bitvector_4_d.Bitvector4{O.keep(1, UR.RWN(t, x))}
 
 # (reads the four bytes at x: x + 4 <= 4 2^d)
 def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 4n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv4_read(UA.BF(t, n), off, 1) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector4}:
+    -> {Fulu_bitvector_4_r.bv4_read(UA.BF(t, n), off, 1) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & Fulu_bitvector_4_d.Bitvector4}:
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), off), (UA.BF(t, n), UR.RWN(t, x)), UR.rwx(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, UR.roomw(x, 4n, 0n, A.quad(VB.pw(d)), hb, {==}))) :
-    {T.bv4_r0(off, _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & T.Bitvector4}
+    {Fulu_bitvector_4_r.bv4_r0(off, _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & Fulu_bitvector_4_d.Bitvector4}
   {==}
 
 # the runtime's byte at off is the byte at off's position
@@ -59,7 +60,7 @@ def vx_bx(+t: FD.array__Tree<U32>, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x
 def ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 4n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv4_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), CHK(t, x)) : B.Buf & Bool}:
+    -> {Fulu_bitvector_4_r.bv4_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), CHK(t, x)) : B.Buf & Bool}:
   +e0 = Equal.trans(Nat, U32.to_nat(U32.add(off, 0)), Nat.add(x, 0n), x, VXG.offc(d, off, 0, 0n, x, 4n, e, hd, {==}, {==}, hb), FD.nat__add_zero(x))
   +hi = VR.hiX(d, U32.add(off, 0), x, e0, VXG.ltx(x, 4n, A.quad(VB.pw(d)), {==}, hb))
   %Equal.sym(B.Buf & U32, B.byte_at(UA.BF(t, n), U32.add(off, 0)), (UA.BF(t, n), VR.VX(t, U32.add(off, 0))), VR.byte_at_ok(d, t, n, U32.add(off, 0), FD.nat__lt_trans(d, 28n, 32n, hd, {==}), hi, pf)) :

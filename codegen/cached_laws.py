@@ -26,6 +26,7 @@ Deposit, bit lists) are not generated; `--status` lists them.
 import re
 import sys
 from pathlib import Path
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
 OBJ = ROOT / 'proofs/obj'
@@ -35,7 +36,7 @@ T_LIST, T_ELEM, T_DEPTH = 'l1099511627776_Validator', 'Validator', 40
 
 
 def cached_lists():
-    types = (ROOT / 'types/fulu_obj.bend').read_text()
+    types = RR.mono_text('fulu')
     out = []
     for m in re.finditer(r"def (l\d+)_(\w+?)_croot_pad\(.*?\n  .*?Nat\.sub\((\d+)n, d\)", types):
         out.append((f'{m.group(1)}_{m.group(2)}', m.group(2), int(m.group(3))))
@@ -50,9 +51,13 @@ def data_kind(elem):
 def build(name, elem, depth):
     imports, bodies = [], []
     for part in PARTS:
-        lines = (OBJ / f'{part}.bend').read_text().split('\n')
+        # the instance modules import the runtime split; the template works on T.<sym> (RR.unwire), and the
+        # output's T import is rewired again (main)
+        lines = RR.unwire((OBJ / f'{part}.bend').read_text()).split('\n')
         i = 0
         while i < len(lines) and lines[i].startswith('import'):
+            if RR.SPLIT_IMP.match(lines[i]):
+                lines[i] = 'import ../../types/fulu_obj.bend as T'
             if lines[i].split()[1] not in SELF and lines[i] not in imports:
                 imports.append(lines[i])
             i += 1
@@ -492,13 +497,13 @@ def read_empty_rep(buf, off, len, s, heq):
 
 
 def app_guard(name):
-    types = (ROOT / 'types/fulu_obj.bend').read_text()
+    types = RR.mono_text('fulu')
     m = re.search(rf'^def {name}_append\(.*\n.*\n.*_app_in\(U32\.is_le\(\(n \+ 1 : U32\), (\d+)\), arr, n, v\)', types, re.M)
     return m.group(1) if m else None
 
 
 def elem_size(name, elem):
-    types = (ROOT / 'types/fulu_obj.bend').read_text()
+    types = RR.mono_text('fulu')
     m = re.search(rf'^def {name}_read\(.*U32\.div\(len, (\d+)\)', types, re.M)
     rd = re.search(rf'^def {name}_rd\((?:.*\n){{1,8}}?.*{elem}_read\(buf, \(off \+ \(i \+ 1 : U32\) \* (\d+) : U32\), (\d+)\)', types, re.M)
     if not m or not rd or not (m.group(1) == rd.group(1) == rd.group(2)):
@@ -532,7 +537,7 @@ def build_spec(name, elem, depth, eq):
 
 
 def app_guard_cached(name):
-    types = (ROOT / 'types/fulu_obj.bend').read_text()
+    types = RR.mono_text('fulu')
     m = re.search(rf'^def {name}_capp\(.*\n.*\n.*_capp_in\(U32\.is_le\(\(n \+ 1 : U32\), (\d+)\), arr', types, re.M)
     if not m:
         raise SystemExit(f'{name}: capp guard not in the expected form')
@@ -568,6 +573,7 @@ def main():
             if guard is None:
                 raise SystemExit(f'{name}: append guard not found')
             outs[-1] = (outs[-1][0], merge(outs[-1][1], build_seq(name, elem, guard)))
+        outs = RR.rewire_out(outs)
         for path, text in outs:
             if '--check' in sys.argv:
                 if not path.exists() or path.read_text() != text:

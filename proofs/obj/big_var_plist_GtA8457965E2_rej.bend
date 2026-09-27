@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/proglist_uint256_decode_ssz_generated.bend as proglist_uint256_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -123,8 +123,8 @@ law decode_none:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +hchk: {DC.CHK(n) == False{} : Bool}
-  {T.GtA8457965E2_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
+  {proglist_uint256_r.GtA8457965E2_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
 def decode_none(t, n, hchk):
-  %Equal.sym(Bool, DC.CHK(n), False{}, hchk) : {T.GtA8457965E2_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(Bool, DC.CHK(n), False{}, hchk) : {proglist_uint256_r.GtA8457965E2_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 

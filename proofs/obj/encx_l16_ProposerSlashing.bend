@@ -1,7 +1,15 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
+import ../../types/FuluSignedBeaconBlockHeader_def_generated.bend as FuluSignedBeaconBlockHeader_d
+import ../../types/FuluSignedBeaconBlockHeader_encode_ssz_generated.bend as FuluSignedBeaconBlockHeader_e
+import ../../types/FuluProposerSlashing_def_generated.bend as FuluProposerSlashing_d
+import ../../types/FuluProposerSlashing_encode_ssz_generated.bend as FuluProposerSlashing_e
+import ../../types/Fulu_list_ProposerSlashing_16_def_generated.bend as Fulu_list_ProposerSlashing_16_d
+import ../../types/Fulu_list_ProposerSlashing_16_encode_ssz_generated.bend as Fulu_list_ProposerSlashing_16_e
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -62,47 +70,47 @@ type MB<-X: Data> is Data:
 
 # A container or byte list schema is composite: no basic size.
 type M_ProposerSlashing is Data:
-  M_ProposerSlashing{a0: T.SignedBeaconBlockHeader, a1: T.SignedBeaconBlockHeader}
-def th_ProposerSlashing(m: M_ProposerSlashing) -> T.ProposerSlashing:
+  M_ProposerSlashing{a0: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, a1: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader}
+def th_ProposerSlashing(m: M_ProposerSlashing) -> FuluProposerSlashing_d.ProposerSlashing:
   match m:
-    case M_ProposerSlashing{+a0, +a1}: T.ProposerSlashing{O.BSome{a0, O.BNone{}}, O.BSome{a1, O.BNone{}}}
-def th_ProposerSlashing_bx(m: MB<M_ProposerSlashing>) -> O.Boxed<T.ProposerSlashing>:
+    case M_ProposerSlashing{+a0, +a1}: FuluProposerSlashing_d.ProposerSlashing{O.BSome{a0, O.BNone{}}, O.BSome{a1, O.BNone{}}}
+def th_ProposerSlashing_bx(m: MB<M_ProposerSlashing>) -> O.Boxed<FuluProposerSlashing_d.ProposerSlashing>:
   match m:
     case MSome{+v}: O.BSome{th_ProposerSlashing(v), O.BNone{}}
     case MNone{}: O.BNone{}
-def am_l16_ProposerSlashing(t: FD.array__Tree<MB<M_ProposerSlashing>>) -> Array<O.Boxed<T.ProposerSlashing>>:
+def am_l16_ProposerSlashing(t: FD.array__Tree<MB<M_ProposerSlashing>>) -> Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>:
   match t:
     case FD.TLeaf{x}: ALeaf{th_ProposerSlashing_bx(x)}
     case FD.TNode{l, r}: ANode{am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r)}
-def amsize_l16_ProposerSlashing(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +pf: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(t)) == (am_l16_ProposerSlashing(t), FD.u32__pow2u(d)) : Array<O.Boxed<T.ProposerSlashing>> & U32}:
+def amsize_l16_ProposerSlashing(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +pf: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t)) == (am_l16_ProposerSlashing(t), FD.u32__pow2u(d)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32}:
   match d t:
     case 0n FD.TLeaf{x}:
       {==}
     case 0n FD.TNode{l, r}:
-      Empty.absurd({Array.size(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(FD.TNode{l, r})) == (am_l16_ProposerSlashing(FD.TNode{l, r}), 1) : Array<O.Boxed<T.ProposerSlashing>> & U32}, FD.logic__false_true(pf))
+      Empty.absurd({Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(FD.TNode{l, r})) == (am_l16_ProposerSlashing(FD.TNode{l, r}), 1) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32}, FD.logic__false_true(pf))
     case 1n+p FD.TLeaf{x}:
-      Empty.absurd({Array.size(O.Boxed<T.ProposerSlashing>, ALeaf{th_ProposerSlashing_bx(x)}) == (ALeaf{th_ProposerSlashing_bx(x)}, FD.u32__pow2u(1n+p)) : Array<O.Boxed<T.ProposerSlashing>> & U32}, FD.logic__false_true(pf))
+      Empty.absurd({Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, ALeaf{th_ProposerSlashing_bx(x)}) == (ALeaf{th_ProposerSlashing_bx(x)}, FD.u32__pow2u(1n+p)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32}, FD.logic__false_true(pf))
     case 1n+ +p FD.TNode{+l, +r}:
-      %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & U32, Array.size(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(l)), (am_l16_ProposerSlashing(l), FD.u32__pow2u(p)), amsize_l16_ProposerSlashing(p, l, FD.array__pf_left(MB<M_ProposerSlashing>, p, l, r, pf))) : {Array.size.node(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(r), _) == (ANode{am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r)}, U32.shl(FD.u32__pow2u(p))) : Array<O.Boxed<T.ProposerSlashing>> & U32}
+      %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32, Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l)), (am_l16_ProposerSlashing(l), FD.u32__pow2u(p)), amsize_l16_ProposerSlashing(p, l, FD.array__pf_left(MB<M_ProposerSlashing>, p, l, r, pf))) : {Array.size.node(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), _) == (ANode{am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r)}, U32.shl(FD.u32__pow2u(p))) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32}
       {==}
-def amswap_go_l16_ProposerSlashing(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +v: MB<M_ProposerSlashing>, +x: MB<M_ProposerSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>}, +b: Bool, +eb: {U32.is_lt(i, FD.u32__pow2u(FD.nat__pred(d))) == b : Bool}, +pf: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(t), FD.u32__pow2u(d), i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}:
+def amswap_go_l16_ProposerSlashing(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +v: MB<M_ProposerSlashing>, +x: MB<M_ProposerSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>}, +b: Bool, +eb: {U32.is_lt(i, FD.u32__pow2u(FD.nat__pred(d))) == b : Bool}, +pf: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t), FD.u32__pow2u(d), i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}:
   match d t b:
     case 0n FD.TLeaf{+y} _:
-      %FD.array__leaf_value(MB<M_ProposerSlashing>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_ProposerSlashing_bx(v)}, th_ProposerSlashing_bx(y)) == (ALeaf{th_ProposerSlashing_bx(v)}, th_ProposerSlashing_bx(_)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
+      %FD.array__leaf_value(MB<M_ProposerSlashing>, y, U32.to_nat(i), x, hi, hx) : {(ALeaf{th_ProposerSlashing_bx(v)}, th_ProposerSlashing_bx(y)) == (ALeaf{th_ProposerSlashing_bx(v)}, th_ProposerSlashing_bx(_)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
       {==}
     case 0n FD.TNode{l, r} _:
-      Empty.absurd({Array.swap.go(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(FD.TNode{l, r}), 1, i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 0n, FD.TNode{l, r}, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}, FD.logic__false_true(pf))
+      Empty.absurd({Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(FD.TNode{l, r}), 1, i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 0n, FD.TNode{l, r}, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}, FD.logic__false_true(pf))
     case 1n+p FD.TLeaf{y} _:
-      Empty.absurd({Array.swap.go(O.Boxed<T.ProposerSlashing>, ALeaf{th_ProposerSlashing_bx(y)}, FD.u32__pow2u(1n+p), i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 1n+p, FD.TLeaf{y}, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}, FD.logic__false_true(pf))
+      Empty.absurd({Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, ALeaf{th_ProposerSlashing_bx(y)}, FD.u32__pow2u(1n+p), i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 1n+p, FD.TLeaf{y}, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}, FD.logic__false_true(pf))
     case 1n+ +p FD.TNode{+l, +r} True{}:
       +hp = FD.nat__lt_trans(p, 1n+p, 32n, FD.nat__lt_succ(p), hd)
       +pl = FD.array__pf_left(MB<M_ProposerSlashing>, p, l, r, pf)
       +hil = FD.array__lt_bridge(i, p, hp, True{}, eb)
       +ti = U32.to_nat(i)
-      %Equal.sym(U32, U32.shr(FD.u32__pow2u(1n+p)), FD.u32__pow2u(p), FD.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), _, i, th_ProposerSlashing_bx(v), U32.is_lt(i, _)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
-      %Equal.sym(Bool, U32.is_lt(i, FD.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), FD.u32__pow2u(p), i, th_ProposerSlashing_bx(v), _) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
-      %Equal.sym(Bool, Nat.is_lt(ti, FD.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(r), Array.swap.go(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(l), FD.u32__pow2u(p), i, th_ProposerSlashing_bx(v))) == (am_l16_ProposerSlashing(FD.array__tupd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v, _)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
-      %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>, Array.swap.go(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(l), FD.u32__pow2u(p), i, th_ProposerSlashing_bx(v)), (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, p, l, ti, v)), th_ProposerSlashing_bx(x)), amswap_go_l16_ProposerSlashing(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<M_ProposerSlashing>>, FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), ti), FD.spec_common__nth(MB<M_ProposerSlashing>, FD.spec_common__append(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), FD.array__slots(MB<M_ProposerSlashing>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_ProposerSlashing>>, FD.spec_common__nth(MB<M_ProposerSlashing>, FD.spec_common__append(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), FD.array__slots(MB<M_ProposerSlashing>, r)), ti), FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), ti), FD.list__nth_append_left(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), FD.array__slots(MB<M_ProposerSlashing>, r), ti, FD.array__len_lt(MB<M_ProposerSlashing>, p, l, ti, pl, hil))), hx), U32.is_lt(i, FD.u32__pow2u(FD.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(r), _) == (am_l16_ProposerSlashing(FD.TNode{FD.array__tupd(MB<M_ProposerSlashing>, p, l, ti, v, FD.array__ndec(p, ti)), r}), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
+      %Equal.sym(U32, U32.shr(FD.u32__pow2u(1n+p)), FD.u32__pow2u(p), FD.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), _, i, th_ProposerSlashing_bx(v), U32.is_lt(i, _)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Bool, U32.is_lt(i, FD.u32__pow2u(p)), True{}, eb) : {Array.swap.if(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), FD.u32__pow2u(p), i, th_ProposerSlashing_bx(v), _) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Bool, Nat.is_lt(ti, FD.spec_common__pow2(p)), True{}, hil) : {Array.swap.lo(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), FD.u32__pow2u(p), i, th_ProposerSlashing_bx(v))) == (am_l16_ProposerSlashing(FD.array__tupd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v, _)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), FD.u32__pow2u(p), i, th_ProposerSlashing_bx(v)), (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, p, l, ti, v)), th_ProposerSlashing_bx(x)), amswap_go_l16_ProposerSlashing(p, l, i, v, x, hp, hil, Equal.trans(Maybe<&2, MB<M_ProposerSlashing>>, FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), ti), FD.spec_common__nth(MB<M_ProposerSlashing>, FD.spec_common__append(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), FD.array__slots(MB<M_ProposerSlashing>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_ProposerSlashing>>, FD.spec_common__nth(MB<M_ProposerSlashing>, FD.spec_common__append(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), FD.array__slots(MB<M_ProposerSlashing>, r)), ti), FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), ti), FD.list__nth_append_left(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), FD.array__slots(MB<M_ProposerSlashing>, r), ti, FD.array__len_lt(MB<M_ProposerSlashing>, p, l, ti, pl, hil))), hx), U32.is_lt(i, FD.u32__pow2u(FD.nat__pred(p))), {==}, pl)) : {Array.swap.lo(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), _) == (am_l16_ProposerSlashing(FD.TNode{FD.array__tupd(MB<M_ProposerSlashing>, p, l, ti, v, FD.array__ndec(p, ti)), r}), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
       {==}
     case 1n+ +p FD.TNode{+l, +r} False{}:
       +hp = FD.nat__lt_trans(p, 1n+p, 32n, FD.nat__lt_succ(p), hd)
@@ -116,21 +124,21 @@ def amswap_go_l16_ProposerSlashing(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlas
       +hir = FD.logic__subst(Nat, n => {Nat.is_lt(n, FD.spec_common__pow2(p)) == True{} : Bool}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), FD.array__upper_lt(ti, p, hi, le))
       +hxr = FD.logic__subst(Nat, n => {FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, r), n) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>}, k, U32.to_nat(j), Equal.sym(Nat, U32.to_nat(j), k, ej), Equal.trans(Maybe<&2, MB<M_ProposerSlashing>>, FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, r), k), FD.spec_common__nth(MB<M_ProposerSlashing>, FD.spec_common__append(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), FD.array__slots(MB<M_ProposerSlashing>, r)), ti), Some{x}, Equal.sym(Maybe<&2, MB<M_ProposerSlashing>>, FD.spec_common__nth(MB<M_ProposerSlashing>, FD.spec_common__append(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, l), FD.array__slots(MB<M_ProposerSlashing>, r)), ti), FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, r), k), FD.array__right_nth(MB<M_ProposerSlashing>, p, l, r, ti, pl, le)), hx))
       +ih = amswap_go_l16_ProposerSlashing(p, r, j, v, x, hp, hir, hxr, U32.is_lt(j, FD.u32__pow2u(FD.nat__pred(p))), {==}, FD.array__pf_right(MB<M_ProposerSlashing>, p, l, r, pf))
-      +ih2 = FD.logic__subst(Nat, n => {Array.swap.go(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(r), FD.u32__pow2u(p), j, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, p, r, n, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}, U32.to_nat(j), k, ej, ih)
-      %Equal.sym(U32, U32.shr(FD.u32__pow2u(1n+p)), FD.u32__pow2u(p), FD.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), _, i, th_ProposerSlashing_bx(v), U32.is_lt(i, _)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
-      %Equal.sym(Bool, U32.is_lt(i, FD.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), FD.u32__pow2u(p), i, th_ProposerSlashing_bx(v), _) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
-      %Equal.sym(Bool, Nat.is_lt(ti, FD.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(l), Array.swap.go(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(r), FD.u32__pow2u(p), j, th_ProposerSlashing_bx(v))) == (am_l16_ProposerSlashing(FD.array__tupd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v, _)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
-      %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>, Array.swap.go(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(r), FD.u32__pow2u(p), j, th_ProposerSlashing_bx(v)), (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, p, r, k, v)), th_ProposerSlashing_bx(x)), ih2) : {Array.swap.hi(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(l), _) == (am_l16_ProposerSlashing(FD.TNode{l, FD.array__tupd(MB<M_ProposerSlashing>, p, r, k, v, FD.array__ndec(p, k))}), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
+      +ih2 = FD.logic__subst(Nat, n => {Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), FD.u32__pow2u(p), j, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, p, r, n, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}, U32.to_nat(j), k, ej, ih)
+      %Equal.sym(U32, U32.shr(FD.u32__pow2u(1n+p)), FD.u32__pow2u(p), FD.u32__shr_pow2u(p, hd)) : {Array.swap.if(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), _, i, th_ProposerSlashing_bx(v), U32.is_lt(i, _)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Bool, U32.is_lt(i, FD.u32__pow2u(p)), False{}, eb) : {Array.swap.if(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), am_l16_ProposerSlashing(r), FD.u32__pow2u(p), i, th_ProposerSlashing_bx(v), _) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Bool, Nat.is_lt(ti, FD.spec_common__pow2(p)), False{}, nb) : {Array.swap.hi(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), FD.u32__pow2u(p), j, th_ProposerSlashing_bx(v))) == (am_l16_ProposerSlashing(FD.array__tupd(MB<M_ProposerSlashing>, 1n+p, FD.TNode{l, r}, ti, v, _)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+      %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(r), FD.u32__pow2u(p), j, th_ProposerSlashing_bx(v)), (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, p, r, k, v)), th_ProposerSlashing_bx(x)), ih2) : {Array.swap.hi(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(l), _) == (am_l16_ProposerSlashing(FD.TNode{l, FD.array__tupd(MB<M_ProposerSlashing>, p, r, k, v, FD.array__ndec(p, k))}), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
       {==}
 
 # Public Base entry points. Premises: the tree is perfect of depth d < 32 and
 # the index is below 2^d; x is the value currently stored at that index.
-def amswap_l16_ProposerSlashing(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +v: MB<M_ProposerSlashing>, +x: MB<M_ProposerSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>}, +pf: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(t), i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}:
-  %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & U32, Array.size(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(t)), (am_l16_ProposerSlashing(t), FD.u32__pow2u(d)), amsize_l16_ProposerSlashing(d, t, pf)) : {Array.swap.at(O.Boxed<T.ProposerSlashing>, i, th_ProposerSlashing_bx(v), _) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
-  %Equal.sym(U32, U32.and(i, U32.sub(FD.u32__pow2u(d), 1)), i, FD.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(t), FD.u32__pow2u(d), _, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
+def amswap_l16_ProposerSlashing(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +v: MB<M_ProposerSlashing>, +x: MB<M_ProposerSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>}, +pf: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t), i, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}:
+  %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32, Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t)), (am_l16_ProposerSlashing(t), FD.u32__pow2u(d)), amsize_l16_ProposerSlashing(d, t, pf)) : {Array.swap.at(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, i, th_ProposerSlashing_bx(v), _) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+  %Equal.sym(U32, U32.and(i, U32.sub(FD.u32__pow2u(d), 1)), i, FD.u32__mask_pow2u(i, d, hd, hi)) : {Array.swap.go(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t), FD.u32__pow2u(d), _, th_ProposerSlashing_bx(v)) == (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
   amswap_go_l16_ProposerSlashing(d, t, i, v, x, hd, hi, hx, U32.is_lt(i, FD.u32__pow2u(FD.nat__pred(d))), {==}, pf)
-def amset_l16_ProposerSlashing(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +v: MB<M_ProposerSlashing>, +x: MB<M_ProposerSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>}, +pf: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(t), i, th_ProposerSlashing_bx(v)) == am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<T.ProposerSlashing>>}:
-  %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>, Array.swap(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(t), i, th_ProposerSlashing_bx(v)), (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)), amswap_l16_ProposerSlashing(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<T.ProposerSlashing>, _) == am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<T.ProposerSlashing>>}
+def amset_l16_ProposerSlashing(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +v: MB<M_ProposerSlashing>, +x: MB<M_ProposerSlashing>, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool}, +hx: {FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>}, +pf: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool}) -> {Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t), i, th_ProposerSlashing_bx(v)) == am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>}:
+  %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t), i, th_ProposerSlashing_bx(v)), (am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)), th_ProposerSlashing_bx(x)), amswap_l16_ProposerSlashing(d, t, i, v, x, hd, hi, hx, pf)) : {Array.set.fin(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, _) == am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), v)) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>}
   {==}
 
 # Swap an element out (replaced by th_ProposerSlashing_bx(z)), then set th_ProposerSlashing_bx(x) back: the array is
@@ -140,16 +148,16 @@ def amswap_back_l16_ProposerSlashing(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSl
     +hi: {Nat.is_lt(U32.to_nat(i), FD.spec_common__pow2(d)) == True{} : Bool},
     +hx: {FD.spec_common__nth(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i)) == Some{x} : Maybe<&2, MB<M_ProposerSlashing>>},
     +pf: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool})
-    -> {Array.set(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), z)), i, th_ProposerSlashing_bx(x)) == am_l16_ProposerSlashing(t) : Array<O.Boxed<T.ProposerSlashing>>}:
+    -> {Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), z)), i, th_ProposerSlashing_bx(x)) == am_l16_ProposerSlashing(t) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>}:
   +t2 = FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), z)
   +hz = FD.logic__subst(List<&2, MB<M_ProposerSlashing>>, ys => {FD.spec_common__nth(MB<M_ProposerSlashing>, ys, U32.to_nat(i)) == Some{z} : Maybe<&2, MB<M_ProposerSlashing>>}, FD.spec_common__update(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i), z), FD.array__slots(MB<M_ProposerSlashing>, t2),
     Equal.sym(List<&2, MB<M_ProposerSlashing>>, FD.array__slots(MB<M_ProposerSlashing>, t2), FD.spec_common__update(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i), z), FD.array__upd_slots(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), z, hi, pf)),
     FD.list__nth_update_same(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i), z, FD.list__nth_lt_length(MB<M_ProposerSlashing>, FD.array__slots(MB<M_ProposerSlashing>, t), U32.to_nat(i), x, hx)))
-  %Equal.sym(Array<O.Boxed<T.ProposerSlashing>>, Array.set(O.Boxed<T.ProposerSlashing>, am_l16_ProposerSlashing(t2), i, th_ProposerSlashing_bx(x)), am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t2, U32.to_nat(i), x)),
+  %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, am_l16_ProposerSlashing(t2), i, th_ProposerSlashing_bx(x)), am_l16_ProposerSlashing(FD.array__upd(MB<M_ProposerSlashing>, d, t2, U32.to_nat(i), x)),
       amset_l16_ProposerSlashing(d, t2, i, x, z, hd, hi, hz, FD.array__upd_perfect(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), z, pf))) :
-    {_ == am_l16_ProposerSlashing(t) : Array<O.Boxed<T.ProposerSlashing>>}
+    {_ == am_l16_ProposerSlashing(t) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>}
   %Equal.sym(FD.array__Tree<MB<M_ProposerSlashing>>, FD.array__upd(MB<M_ProposerSlashing>, d, t2, U32.to_nat(i), x), t, AM.upd_restore(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), z, x, hi, hx, pf)) :
-    {am_l16_ProposerSlashing(_) == am_l16_ProposerSlashing(t) : Array<O.Boxed<T.ProposerSlashing>>}
+    {am_l16_ProposerSlashing(_) == am_l16_ProposerSlashing(t) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>}
   {==}
 def xat_l16_ProposerSlashing(W: List<&2, MB<M_ProposerSlashing>>, +i: Nat) -> MB<M_ProposerSlashing>:
   match W:
@@ -173,174 +181,174 @@ def nth_l16_ProposerSlashing(W, i, hi):
 
 # ---- SignedBeaconBlockHeader: its 52 words, value, parts and writer ----
 
-def RWD_SignedBeaconBlockHeader(r: T.SignedBeaconBlockHeader) -> List<&2, U32>:
+def RWD_SignedBeaconBlockHeader(r: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader) -> List<&2, U32>:
   match r:
-    case T.SignedBeaconBlockHeader{+r_0, +r_1}:
+    case FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{+r_0, +r_1}:
       match r_0:
-        case T.BeaconBlockHeader{+r_0_0, +r_0_1, +r_0_2, +r_0_3, +r_0_4}:
+        case FuluBeaconBlockHeader_d.BeaconBlockHeader{+r_0_0, +r_0_1, +r_0_2, +r_0_3, +r_0_4}:
           match r_0_0:
             case O.U64{+x0, +x1}:
               match r_0_1:
                 case O.U64{+x2, +x3}:
                   match r_0_2:
-                    case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                    case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                       match r_0_3:
-                        case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+                        case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
                           match r_0_4:
-                            case T.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
+                            case FuluBytes32_d.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
                               match r_1:
-                                case T.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
+                                case FuluBytes96_d.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
                                   [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51]
 
-def RVW_SignedBeaconBlockHeader(r: T.SignedBeaconBlockHeader) -> S.Value:
+def RVW_SignedBeaconBlockHeader(r: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader) -> S.Value:
   match r:
-    case T.SignedBeaconBlockHeader{+r_0, +r_1}:
+    case FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{+r_0, +r_1}:
       match r_0:
-        case T.BeaconBlockHeader{+r_0_0, +r_0_1, +r_0_2, +r_0_3, +r_0_4}:
+        case FuluBeaconBlockHeader_d.BeaconBlockHeader{+r_0_0, +r_0_1, +r_0_2, +r_0_3, +r_0_4}:
           match r_0_0:
             case O.U64{+x0, +x1}:
               match r_0_1:
                 case O.U64{+x2, +x3}:
                   match r_0_2:
-                    case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                    case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                       match r_0_3:
-                        case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+                        case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
                           match r_0_4:
-                            case T.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
+                            case FuluBytes32_d.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
                               match r_1:
-                                case T.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
+                                case FuluBytes96_d.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
                                   S.Sequence{S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}}}}}}, S.Items{S.BytesValue{F.limbs([x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])}, S.EmptyItems{}}}}
 
 # its parts over the words: the value and the object as terms (rparts rewrites RVW_SignedBeaconBlockHeader to the value first)
-def rvq_SignedBeaconBlockHeader(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32, +x46: U32, +x47: U32, +x48: U32, +x49: U32, +x50: U32, +x51: U32) -> {S.Sequence{S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}}}}}}, S.Items{S.BytesValue{F.limbs([x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])}, S.EmptyItems{}}}} == RVW_SignedBeaconBlockHeader(T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}) : S.Value}: {==}
-def rpc_SignedBeaconBlockHeader(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32, +x46: U32, +x47: U32, +x48: U32, +x49: U32, +x50: U32, +x51: U32) -> {Codec.parts(S.Sequence{S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}}}}}}, S.Items{S.BytesValue{F.limbs([x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])}, S.EmptyItems{}}}}, S.Container{["message", "signature"], S.Chain{S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_SignedBeaconBlockHeader(T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}))}]} : Maybe<&2, +List<S.Part>>}:
+def rvq_SignedBeaconBlockHeader(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32, +x46: U32, +x47: U32, +x48: U32, +x49: U32, +x50: U32, +x51: U32) -> {S.Sequence{S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}}}}}}, S.Items{S.BytesValue{F.limbs([x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])}, S.EmptyItems{}}}} == RVW_SignedBeaconBlockHeader(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, FuluBytes32_d.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, FuluBytes32_d.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, FuluBytes96_d.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}) : S.Value}: {==}
+def rpc_SignedBeaconBlockHeader(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +x16: U32, +x17: U32, +x18: U32, +x19: U32, +x20: U32, +x21: U32, +x22: U32, +x23: U32, +x24: U32, +x25: U32, +x26: U32, +x27: U32, +x28: U32, +x29: U32, +x30: U32, +x31: U32, +x32: U32, +x33: U32, +x34: U32, +x35: U32, +x36: U32, +x37: U32, +x38: U32, +x39: U32, +x40: U32, +x41: U32, +x42: U32, +x43: U32, +x44: U32, +x45: U32, +x46: U32, +x47: U32, +x48: U32, +x49: U32, +x50: U32, +x51: U32) -> {Codec.parts(S.Sequence{S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}}}}}}, S.Items{S.BytesValue{F.limbs([x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])}, S.EmptyItems{}}}}, S.Container{["message", "signature"], S.Chain{S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_SignedBeaconBlockHeader(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, FuluBytes32_d.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, FuluBytes32_d.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, FuluBytes96_d.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}))}]} : Maybe<&2, +List<S.Part>>}:
   F.container_fixed(["message", "signature"], S.Chain{S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}, S.Items{S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}}}}}}, S.Items{S.BytesValue{F.limbs([x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])}, S.EmptyItems{}}}, [[x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27], [x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51]], 208n, [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51], F.items_fixed(S.Sequence{S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}}}}}}, S.Items{S.BytesValue{F.limbs([x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])}, S.EmptyItems{}}, S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}, F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27]), [S.Fixed{F.limbs([x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])}], F.container_fixed(["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}, S.Items{S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}}}}}, [[x0, x1], [x2, x3], [x4, x5, x6, x7, x8, x9, x10, x11], [x12, x13, x14, x15, x16, x17, x18, x19], [x20, x21, x22, x23, x24, x25, x26, x27]], 112n, [x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27], F.items_fixed(S.UnsignedValue{P.UInt{x0, x1, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}}}}, S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}, F.limbs([x0, x1]), [S.Fixed{F.limbs([x2, x3])}, S.Fixed{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Fixed{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Fixed{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}], F.uint64_part(x0, x1), F.items_fixed(S.UnsignedValue{P.UInt{x2, x3, 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}}}, S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}, F.limbs([x2, x3]), [S.Fixed{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Fixed{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Fixed{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}], F.uint64_part(x2, x3), F.items_fixed(S.BytesValue{F.limbs([x4, x5, x6, x7, x8, x9, x10, x11])}, S.Items{S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}}, S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}, F.limbs([x4, x5, x6, x7, x8, x9, x10, x11]), [S.Fixed{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Fixed{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}], F.bytes_part_n(x4, [x5, x6, x7, x8, x9, x10, x11], 32n, {==}, {==}), F.items_fixed(S.BytesValue{F.limbs([x12, x13, x14, x15, x16, x17, x18, x19])}, S.Items{S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}}, S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}, F.limbs([x12, x13, x14, x15, x16, x17, x18, x19]), [S.Fixed{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}], F.bytes_part_n(x12, [x13, x14, x15, x16, x17, x18, x19], 32n, {==}, {==}), F.items_fixed(S.BytesValue{F.limbs([x20, x21, x22, x23, x24, x25, x26, x27])}, S.EmptyItems{}, S.ByteVector{32n}, S.End{}, F.limbs([x20, x21, x22, x23, x24, x25, x26, x27]), [], F.bytes_part_n(x20, [x21, x22, x23, x24, x25, x26, x27], 32n, {==}, {==}), {==}))))), {==}, VS.agg_total([[x0, x1], [x2, x3], [x4, x5, x6, x7, x8, x9, x10, x11], [x12, x13, x14, x15, x16, x17, x18, x19], [x20, x21, x22, x23, x24, x25, x26, x27]], 112n, {==}), {==}), F.items_fixed(S.BytesValue{F.limbs([x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51])}, S.EmptyItems{}, S.ByteVector{96n}, S.End{}, F.limbs([x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51]), [], F.bytes_part_n(x28, [x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51], 96n, {==}, {==}), {==})), {==}, VS.agg_total([[x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27], [x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51]], 208n, {==}), {==})
-def rparts_SignedBeaconBlockHeader(+r: T.SignedBeaconBlockHeader) -> {Codec.parts(RVW_SignedBeaconBlockHeader(r), S.Container{["message", "signature"], S.Chain{S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_SignedBeaconBlockHeader(r))}]} : Maybe<&2, +List<S.Part>>}:
+def rparts_SignedBeaconBlockHeader(+r: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader) -> {Codec.parts(RVW_SignedBeaconBlockHeader(r), S.Container{["message", "signature"], S.Chain{S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_SignedBeaconBlockHeader(r))}]} : Maybe<&2, +List<S.Part>>}:
   match r:
-    case T.SignedBeaconBlockHeader{+r_0, +r_1}:
+    case FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{+r_0, +r_1}:
       match r_0:
-        case T.BeaconBlockHeader{+r_0_0, +r_0_1, +r_0_2, +r_0_3, +r_0_4}:
+        case FuluBeaconBlockHeader_d.BeaconBlockHeader{+r_0_0, +r_0_1, +r_0_2, +r_0_3, +r_0_4}:
           match r_0_0:
             case O.U64{+x0, +x1}:
               match r_0_1:
                 case O.U64{+x2, +x3}:
                   match r_0_2:
-                    case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                    case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                       match r_0_3:
-                        case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+                        case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
                           match r_0_4:
-                            case T.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
+                            case FuluBytes32_d.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
                               match r_1:
-                                case T.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
-                                  %rvq_SignedBeaconBlockHeader(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51) : {Codec.parts(_, S.Container{["message", "signature"], S.Chain{S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_SignedBeaconBlockHeader(T.SignedBeaconBlockHeader{T.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, T.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, T.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, T.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, T.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}))}]} : Maybe<&2, +List<S.Part>>}
+                                case FuluBytes96_d.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
+                                  %rvq_SignedBeaconBlockHeader(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51) : {Codec.parts(_, S.Container{["message", "signature"], S.Chain{S.Container{["slot", "proposer_index", "parent_root", "state_root", "body_root"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.Chain{S.ByteVector{32n}, S.End{}}}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}}) == Some{[S.Fixed{F.limbs(RWD_SignedBeaconBlockHeader(FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{x0, x1}, O.U64{x2, x3}, FuluBytes32_d.Bytes32{x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, FuluBytes32_d.Bytes32{x20, x21, x22, x23, x24, x25, x26, x27}}, FuluBytes96_d.Bytes96{x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51}}))}]} : Maybe<&2, +List<S.Part>>}
                                   rpc_SignedBeaconBlockHeader(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51)
 
-def rlen_SignedBeaconBlockHeader(+r: T.SignedBeaconBlockHeader) -> {VF.slen(RWD_SignedBeaconBlockHeader(r)) == 52n : Nat}:
+def rlen_SignedBeaconBlockHeader(+r: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader) -> {VF.slen(RWD_SignedBeaconBlockHeader(r)) == 52n : Nat}:
   match r:
-    case T.SignedBeaconBlockHeader{+r_0, +r_1}:
+    case FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{+r_0, +r_1}:
       match r_0:
-        case T.BeaconBlockHeader{+r_0_0, +r_0_1, +r_0_2, +r_0_3, +r_0_4}:
+        case FuluBeaconBlockHeader_d.BeaconBlockHeader{+r_0_0, +r_0_1, +r_0_2, +r_0_3, +r_0_4}:
           match r_0_0:
             case O.U64{+x0, +x1}:
               match r_0_1:
                 case O.U64{+x2, +x3}:
                   match r_0_2:
-                    case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                    case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                       match r_0_3:
-                        case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+                        case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
                           match r_0_4:
-                            case T.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
+                            case FuluBytes32_d.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
                               match r_1:
-                                case T.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
+                                case FuluBytes96_d.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
                                   {==}
 
 
 # ---- SignedBeaconBlockHeader: its writer at any byte position, on the object ----
 
-def PXo_SignedBeaconBlockHeader(o: T.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
+def PXo_SignedBeaconBlockHeader(o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> FD.array__Tree<U32>:
   match o:
-    case T.SignedBeaconBlockHeader{+o_0, +o_1}:
+    case FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{+o_0, +o_1}:
       match o_0:
-        case T.BeaconBlockHeader{+o_0_0, +o_0_1, +o_0_2, +o_0_3, +o_0_4}:
+        case FuluBeaconBlockHeader_d.BeaconBlockHeader{+o_0_0, +o_0_1, +o_0_2, +o_0_3, +o_0_4}:
           match o_0_0:
             case O.U64{+x0, +x1}:
               match o_0_1:
                 case O.U64{+x2, +x3}:
                   match o_0_2:
-                    case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                    case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                       match o_0_3:
-                        case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+                        case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
                           match o_0_4:
-                            case T.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
+                            case FuluBytes32_d.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
                               match o_1:
-                                case T.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
+                                case FuluBytes96_d.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
                                   ERC.PX_SignedBeaconBlockHeader(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51, dd, D, q, r)
 
-def pfo_SignedBeaconBlockHeader(+o: T.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+def pfo_SignedBeaconBlockHeader(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, PXo_SignedBeaconBlockHeader(o, dd, D, q, r)) == True{} : Bool}:
   match o:
-    case T.SignedBeaconBlockHeader{+o_0, +o_1}:
+    case FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{+o_0, +o_1}:
       match o_0:
-        case T.BeaconBlockHeader{+o_0_0, +o_0_1, +o_0_2, +o_0_3, +o_0_4}:
+        case FuluBeaconBlockHeader_d.BeaconBlockHeader{+o_0_0, +o_0_1, +o_0_2, +o_0_3, +o_0_4}:
           match o_0_0:
             case O.U64{+x0, +x1}:
               match o_0_1:
                 case O.U64{+x2, +x3}:
                   match o_0_2:
-                    case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                    case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                       match o_0_3:
-                        case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+                        case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
                           match o_0_4:
-                            case T.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
+                            case FuluBytes32_d.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
                               match o_1:
-                                case T.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
+                                case FuluBytes96_d.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
                                   ERC.pf_SignedBeaconBlockHeader(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51, dd, D, q, r, pf)
 
-def RTo_SignedBeaconBlockHeader(+o: T.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.SignedBeaconBlockHeader_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(o, dd, D, q, r)) : Array<U32>}
-def BYo_SignedBeaconBlockHeader(+o: T.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
+def RTo_SignedBeaconBlockHeader(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
+  {FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(o, dd, D, q, r)) : Array<U32>}
+def BYo_SignedBeaconBlockHeader(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_SignedBeaconBlockHeader(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.limbs(RWD_SignedBeaconBlockHeader(o))) : +List<U32>}
 
-def putxo_SignedBeaconBlockHeader(+o: T.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+def putxo_SignedBeaconBlockHeader(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 208n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(208n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(208n) : +List<U32>})
     -> DK.P2(RTo_SignedBeaconBlockHeader(o, dd, D, X, q, r), BYo_SignedBeaconBlockHeader(o, dd, D, q, r)):
   match o:
-    case T.SignedBeaconBlockHeader{+o_0, +o_1}:
+    case FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{+o_0, +o_1}:
       match o_0:
-        case T.BeaconBlockHeader{+o_0_0, +o_0_1, +o_0_2, +o_0_3, +o_0_4}:
+        case FuluBeaconBlockHeader_d.BeaconBlockHeader{+o_0_0, +o_0_1, +o_0_2, +o_0_3, +o_0_4}:
           match o_0_0:
             case O.U64{+x0, +x1}:
               match o_0_1:
                 case O.U64{+x2, +x3}:
                   match o_0_2:
-                    case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                    case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                       match o_0_3:
-                        case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+                        case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
                           match o_0_4:
-                            case T.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
+                            case FuluBytes32_d.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
                               match o_1:
-                                case T.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
+                                case FuluBytes96_d.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
                                   ERC.putx_SignedBeaconBlockHeader(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49, x50, x51, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
 
-def lenb_SignedBeaconBlockHeader(+o: T.SignedBeaconBlockHeader) -> {VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(o))) == 208n : Nat}:
+def lenb_SignedBeaconBlockHeader(+o: FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader) -> {VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(o))) == 208n : Nat}:
   match o:
-    case T.SignedBeaconBlockHeader{+o_0, +o_1}:
+    case FuluSignedBeaconBlockHeader_d.SignedBeaconBlockHeader{+o_0, +o_1}:
       match o_0:
-        case T.BeaconBlockHeader{+o_0_0, +o_0_1, +o_0_2, +o_0_3, +o_0_4}:
+        case FuluBeaconBlockHeader_d.BeaconBlockHeader{+o_0_0, +o_0_1, +o_0_2, +o_0_3, +o_0_4}:
           match o_0_0:
             case O.U64{+x0, +x1}:
               match o_0_1:
                 case O.U64{+x2, +x3}:
                   match o_0_2:
-                    case T.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
+                    case FuluBytes32_d.Bytes32{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
                       match o_0_3:
-                        case T.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
+                        case FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}:
                           match o_0_4:
-                            case T.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
+                            case FuluBytes32_d.Bytes32{+x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
                               match o_1:
-                                case T.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
+                                case FuluBytes96_d.Bytes96{+x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45, +x46, +x47, +x48, +x49, +x50, +x51}:
                                   {==}
 
 
@@ -365,11 +373,11 @@ def pfE(+v: M_ProposerSlashing, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: 
     -> {FD.array__perfect(U32, dd, PXE(v, dd, D, q, r)) == True{} : Bool}:
   match v:
     case M_ProposerSlashing{+a0, +a1}: pfo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r, pfo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r, pf))
-def validE(+v: M_ProposerSlashing, +h: {OKE(v) == True{} : Bool}) -> {T.ProposerSlashing_valid(th_ProposerSlashing(v)) == (th_ProposerSlashing(v), True{}) : T.ProposerSlashing & Bool}:
+def validE(+v: M_ProposerSlashing, +h: {OKE(v) == True{} : Bool}) -> {FuluProposerSlashing_e.ProposerSlashing_valid(th_ProposerSlashing(v)) == (th_ProposerSlashing(v), True{}) : FuluProposerSlashing_d.ProposerSlashing & Bool}:
   match v:
     case M_ProposerSlashing{+a0, +a1}: {==}
 def RTE(+v: M_ProposerSlashing, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.ProposerSlashing_put(FD.array__thaw(U32, D), X, th_ProposerSlashing(v)) == (FD.array__thaw(U32, PXE(v, dd, D, q, r)), th_ProposerSlashing(v)) : Array<U32> & T.ProposerSlashing}
+  {FuluProposerSlashing_e.ProposerSlashing_put(FD.array__thaw(U32, D), X, th_ProposerSlashing(v)) == (FD.array__thaw(U32, PXE(v, dd, D, q, r)), th_ProposerSlashing(v)) : Array<U32> & FuluProposerSlashing_d.ProposerSlashing}
 def BYE(+v: M_ProposerSlashing, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXE(v, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), YE(v)) : +List<U32>}
 def mkE(+v: M_ProposerSlashing, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTE(v, dd, D, X, q, r), +b: BYE(v, dd, D, q, r)) -> DK.P2(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r)):
@@ -403,7 +411,7 @@ def putxE(+v: M_ProposerSlashing, +h: {OKE(v) == True{} : Bool}, +dd: Nat, +D: F
       +S1 = by1
       +eXn0 = Equal.trans(Nat, Nat.add(A.quad(Nat.add(52n, q)), r), Nat.add(Nat.add(A.quad(Nat.add(0n, q)), r), 208n), Nat.add(Nat.add(A.quad(Nat.add(0n, q)), r), VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a0)))), eX0, Equal.cong(Nat, Nat, z => Nat.add(Nat.add(A.quad(Nat.add(0n, q)), r), z), 208n, VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a0))), Equal.sym(Nat, VRX.LN(F.limbs(RWD_SignedBeaconBlockHeader(a0))), 208n, lenb_SignedBeaconBlockHeader(a0))))
       +S0 = Equal.trans(+List<U32>, UA.BYT(PXo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r)), UW.SPL(UA.BYT(PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), Nat.add(A.quad(Nat.add(52n, q)), r), F.limbs(RWD_SignedBeaconBlockHeader(a1))), UW.SPL(UA.BYT(D), Nat.add(A.quad(Nat.add(0n, q)), r), VRX.AP(F.limbs(RWD_SignedBeaconBlockHeader(a0)), F.limbs(RWD_SignedBeaconBlockHeader(a1)))), S1, VRX.spl_catx(UA.BYT(D), Nat.add(A.quad(Nat.add(0n, q)), r), F.limbs(RWD_SignedBeaconBlockHeader(a0)), F.limbs(RWD_SignedBeaconBlockHeader(a1)), Nat.add(A.quad(Nat.add(52n, q)), r), UA.BYT(PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), hX0, eXn0, by0))
-      mkE(M_ProposerSlashing{a0, a1}, dd, D, X, q, r, Equal.trans(Array<U32> & T.ProposerSlashing, T.ProposerSlashing_put(FD.array__thaw(U32, D), X, th_ProposerSlashing(M_ProposerSlashing{a0, a1})), T.ProposerSlashing_put_drop(T.ProposerSlashing_pw0(X, 0, O.BSome{a1, O.BNone{}}, (FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), (O.BSome{a0, O.BNone{}}, O.pz(T.SignedBeaconBlockHeader_valid(a0)))))), (FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r)), th_ProposerSlashing(M_ProposerSlashing{a0, a1})), Equal.cong(Array<U32>, Array<U32> & T.ProposerSlashing, z => T.ProposerSlashing_put_drop(T.ProposerSlashing_pw0(X, 0, O.BSome{a1, O.BNone{}}, (z, (O.BSome{a0, O.BNone{}}, O.pz(T.SignedBeaconBlockHeader_valid(a0)))))), T.SignedBeaconBlockHeader_put(FD.array__thaw(U32, D), U32.add(X, 0), a0), FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), rt0), Equal.cong(Array<U32>, Array<U32> & T.ProposerSlashing, z => T.ProposerSlashing_put_drop(T.ProposerSlashing_pw1(X, (0 .|. O.pz(T.SignedBeaconBlockHeader_valid(a0)) : U32), O.BSome{a0, O.BNone{}}, (z, (O.BSome{a1, O.BNone{}}, O.pz(T.SignedBeaconBlockHeader_valid(a1)))))), T.SignedBeaconBlockHeader_put(FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), U32.add(X, 208), a1), FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r)), rt1)), S0)
+      mkE(M_ProposerSlashing{a0, a1}, dd, D, X, q, r, Equal.trans(Array<U32> & FuluProposerSlashing_d.ProposerSlashing, FuluProposerSlashing_e.ProposerSlashing_put(FD.array__thaw(U32, D), X, th_ProposerSlashing(M_ProposerSlashing{a0, a1})), FuluProposerSlashing_e.ProposerSlashing_put_drop(FuluProposerSlashing_e.ProposerSlashing_pw0(X, 0, O.BSome{a1, O.BNone{}}, (FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), (O.BSome{a0, O.BNone{}}, O.pz(FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_valid(a0)))))), (FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r)), th_ProposerSlashing(M_ProposerSlashing{a0, a1})), Equal.cong(Array<U32>, Array<U32> & FuluProposerSlashing_d.ProposerSlashing, z => FuluProposerSlashing_e.ProposerSlashing_put_drop(FuluProposerSlashing_e.ProposerSlashing_pw0(X, 0, O.BSome{a1, O.BNone{}}, (z, (O.BSome{a0, O.BNone{}}, O.pz(FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_valid(a0)))))), FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_put(FD.array__thaw(U32, D), U32.add(X, 0), a0), FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), rt0), Equal.cong(Array<U32>, Array<U32> & FuluProposerSlashing_d.ProposerSlashing, z => FuluProposerSlashing_e.ProposerSlashing_put_drop(FuluProposerSlashing_e.ProposerSlashing_pw1(X, (0 .|. O.pz(FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_valid(a0)) : U32), O.BSome{a0, O.BNone{}}, (z, (O.BSome{a1, O.BNone{}}, O.pz(FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_valid(a1)))))), FuluSignedBeaconBlockHeader_e.SignedBeaconBlockHeader_put(FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r)), U32.add(X, 208), a1), FD.array__thaw(U32, PXo_SignedBeaconBlockHeader(a1, dd, PXo_SignedBeaconBlockHeader(a0, dd, D, Nat.add(0n, q), r), Nat.add(52n, q), r)), rt1)), S0)
 
 
 # The encoding of fixed parts of words, as aggregate_fixed takes it.
@@ -449,7 +457,7 @@ def lenEz(+m: MB<M_ProposerSlashing>) -> {VRX.LN(YEm(m)) == 416n : Nat}:
     case MSome{+v}: lenE0(v)
 def lenEm(+m: MB<M_ProposerSlashing>, +h: {EOK(m) == True{} : Bool}) -> {VRX.LN(YEm(m)) == 416n : Nat}: lenEz(m)
 def RTEm(+m: MB<M_ProposerSlashing>, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.ProposerSlashing_bx_put(FD.array__thaw(U32, D), X, th_ProposerSlashing_bx(m)) == (FD.array__thaw(U32, PXEm(m, dd, D, q, r)), th_ProposerSlashing_bx(m)) : Array<U32> & O.Boxed<T.ProposerSlashing>}
+  {FuluProposerSlashing_e.ProposerSlashing_bx_put(FD.array__thaw(U32, D), X, th_ProposerSlashing_bx(m)) == (FD.array__thaw(U32, PXEm(m, dd, D, q, r)), th_ProposerSlashing_bx(m)) : Array<U32> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
 def BYEm(+m: MB<M_ProposerSlashing>, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXEm(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), YEm(m)) : +List<U32>}
 def mkEm(+m: MB<M_ProposerSlashing>, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +a: RTEm(m, dd, D, X, q, r), +b: BYEm(m, dd, D, q, r)) -> DK.P2(RTEm(m, dd, D, X, q, r), BYEm(m, dd, D, q, r)):
@@ -465,7 +473,7 @@ def putxEm(+m: MB<M_ProposerSlashing>, +h: {EOK(m) == True{} : Bool}, +dd: Nat, 
       +g = putxE(v, h, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
       +rt = PA(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r), g)
       +by = PB(RTE(v, dd, D, X, q, r), BYE(v, dd, D, q, r), g)
-      mkEm(MSome{v}, dd, D, X, q, r, Equal.cong(Array<U32> & T.ProposerSlashing, Array<U32> & O.Boxed<T.ProposerSlashing>, z => T.ProposerSlashing_bx_put_back(z), T.ProposerSlashing_put(FD.array__thaw(U32, D), X, th_ProposerSlashing(v)),
+      mkEm(MSome{v}, dd, D, X, q, r, Equal.cong(Array<U32> & FuluProposerSlashing_d.ProposerSlashing, Array<U32> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, z => FuluProposerSlashing_e.ProposerSlashing_bx_put_back(z), FuluProposerSlashing_e.ProposerSlashing_put(FD.array__thaw(U32, D), X, th_ProposerSlashing(v)),
         (FD.array__thaw(U32, PXE(v, dd, D, q, r)), th_ProposerSlashing(v)), rt), by)
 def EVm(+m: MB<M_ProposerSlashing>) -> S.Value:
   match m:
@@ -487,7 +495,7 @@ def TDM(t: FD.array__Tree<MB<M_ProposerSlashing>>) -> Nat:
     case FD.TLeaf{x}: 0n
     case FD.TNode{l, r}: 1n+TDM(l)
 
-def AR(t: FD.array__Tree<MB<M_ProposerSlashing>>) -> Array<O.Boxed<T.ProposerSlashing>>: am_l16_ProposerSlashing(t)
+def AR(t: FD.array__Tree<MB<M_ProposerSlashing>>) -> Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>: am_l16_ProposerSlashing(t)
 def SL(t: FD.array__Tree<MB<M_ProposerSlashing>>) -> List<&2, MB<M_ProposerSlashing>>: FD.array__slots(MB<M_ProposerSlashing>, t)
 
 # Elements i .. i + k - 1 of W: present, with their facts.
@@ -517,16 +525,16 @@ def hx_at(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +s: Nat, +pf: {FD
 # Swapping element s out for MNone, then back: the array is unchanged, the spare is MNone.
 def swap_out(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +s: Nat, +ei: {U32.to_nat(i) == s : Nat}, +pf: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool},
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hs: {Nat.is_lt(s, VB.pw(d)) == True{} : Bool})
-    -> {Array.swap(O.Boxed<T.ProposerSlashing>, AR(t), i, O.BNone{}) == (AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, s, MNone{})), th_ProposerSlashing_bx(xat_l16_ProposerSlashing(SL(t), s))) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}:
+    -> {Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(t), i, O.BNone{}) == (AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, s, MNone{})), th_ProposerSlashing_bx(xat_l16_ProposerSlashing(SL(t), s))) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}:
   %ei :
-    {Array.swap(O.Boxed<T.ProposerSlashing>, AR(t), i, O.BNone{}) == (AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, _, MNone{})), th_ProposerSlashing_bx(xat_l16_ProposerSlashing(SL(t), _))) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
+    {Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(t), i, O.BNone{}) == (AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, _, MNone{})), th_ProposerSlashing_bx(xat_l16_ProposerSlashing(SL(t), _))) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
   amswap_l16_ProposerSlashing(d, t, i, MNone{}, xat_l16_ProposerSlashing(SL(t), U32.to_nat(i)), FD.nat__lt_trans(d, 31n, 32n, hd, {==}),
     FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hs),
     hx_at(d, t, U32.to_nat(i), pf, FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hs)), pf)
 
 def swap_in(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +s: Nat, +ei: {U32.to_nat(i) == s : Nat}, +pf: {FD.array__perfect(MB<M_ProposerSlashing>, d, t) == True{} : Bool},
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hs: {Nat.is_lt(s, VB.pw(d)) == True{} : Bool})
-    -> {Array.swap(O.Boxed<T.ProposerSlashing>, AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, s, MNone{})), i, th_ProposerSlashing_bx(xat_l16_ProposerSlashing(SL(t), s))) == (AR(t), O.BNone{}) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}:
+    -> {Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, s, MNone{})), i, th_ProposerSlashing_bx(xat_l16_ProposerSlashing(SL(t), s))) == (AR(t), O.BNone{}) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}:
   +x = xat_l16_ProposerSlashing(SL(t), s)
   +t2 = FD.array__upd(MB<M_ProposerSlashing>, d, t, s, MNone{})
   +hx = hx_at(d, t, s, pf, hs)
@@ -535,22 +543,22 @@ def swap_in(+d: Nat, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +i: U32, +s: Na
     FD.list__nth_update_same(MB<M_ProposerSlashing>, SL(t), s, MNone{}, FD.list__nth_lt_length(MB<M_ProposerSlashing>, SL(t), s, x, hx)))
   +his = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hs)
   +hzi = FD.logic__subst(Nat, z => {FD.spec_common__nth(MB<M_ProposerSlashing>, SL(t2), z) == Some{MNone{}} : Maybe<&2, MB<M_ProposerSlashing>>}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hz)
-  %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>, Array.swap(O.Boxed<T.ProposerSlashing>, AR(t2), i, th_ProposerSlashing_bx(x)), (AR(FD.array__upd(MB<M_ProposerSlashing>, d, t2, U32.to_nat(i), x)), th_ProposerSlashing_bx(MNone{})),
+  %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(t2), i, th_ProposerSlashing_bx(x)), (AR(FD.array__upd(MB<M_ProposerSlashing>, d, t2, U32.to_nat(i), x)), th_ProposerSlashing_bx(MNone{})),
       amswap_l16_ProposerSlashing(d, t2, i, x, MNone{}, FD.nat__lt_trans(d, 31n, 32n, hd, {==}), his, hzi, FD.array__upd_perfect(MB<M_ProposerSlashing>, d, t, s, MNone{}, pf))) :
-    {_ == (AR(t), O.BNone{}) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
-  %Equal.sym(Nat, U32.to_nat(i), s, ei) : {(AR(FD.array__upd(MB<M_ProposerSlashing>, d, t2, _, x)), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
+    {_ == (AR(t), O.BNone{}) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
+  %Equal.sym(Nat, U32.to_nat(i), s, ei) : {(AR(FD.array__upd(MB<M_ProposerSlashing>, d, t2, _, x)), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
   %Equal.sym(FD.array__Tree<MB<M_ProposerSlashing>>, FD.array__upd(MB<M_ProposerSlashing>, d, t2, s, x), t, AM.upd_restore(MB<M_ProposerSlashing>, d, t, s, MNone{}, x, hs, hx, pf)) :
-    {(AR(_), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>}
+    {(AR(_), O.BNone{}) == (AR(t), O.BNone{}) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>}
   {==}
 
 # ---- the runtime's validity pass --------------------------------------------------------------------
 
-def bxvalid(+m: MB<M_ProposerSlashing>, +h: {EOK(m) == True{} : Bool}) -> {T.ProposerSlashing_bx_valid(th_ProposerSlashing_bx(m)) == (th_ProposerSlashing_bx(m), True{}) : O.Boxed<T.ProposerSlashing> & Bool}:
+def bxvalid(+m: MB<M_ProposerSlashing>, +h: {EOK(m) == True{} : Bool}) -> {FuluProposerSlashing_e.ProposerSlashing_bx_valid(th_ProposerSlashing_bx(m)) == (th_ProposerSlashing_bx(m), True{}) : O.Boxed<FuluProposerSlashing_d.ProposerSlashing> & Bool}:
   match m:
-    case MNone{}: Empty.absurd({T.ProposerSlashing_bx_valid(th_ProposerSlashing_bx(MNone{})) == (th_ProposerSlashing_bx(MNone{}), True{}) : O.Boxed<T.ProposerSlashing> & Bool}, FD.logic__false_true(h))
+    case MNone{}: Empty.absurd({FuluProposerSlashing_e.ProposerSlashing_bx_valid(th_ProposerSlashing_bx(MNone{})) == (th_ProposerSlashing_bx(MNone{}), True{}) : O.Boxed<FuluProposerSlashing_d.ProposerSlashing> & Bool}, FD.logic__false_true(h))
     case MSome{+v}:
-      %Equal.sym(T.ProposerSlashing & Bool, T.ProposerSlashing_valid(th_ProposerSlashing(v)), (th_ProposerSlashing(v), True{}), validE(v, h)) :
-        {T.ProposerSlashing_bx_va_back(_) == (O.BSome{th_ProposerSlashing(v), O.BNone{}}, True{}) : O.Boxed<T.ProposerSlashing> & Bool}
+      %Equal.sym(FuluProposerSlashing_d.ProposerSlashing & Bool, FuluProposerSlashing_e.ProposerSlashing_valid(th_ProposerSlashing(v)), (th_ProposerSlashing(v), True{}), validE(v, h)) :
+        {FuluProposerSlashing_e.ProposerSlashing_bx_va_back(_) == (O.BSome{th_ProposerSlashing(v), O.BNone{}}, True{}) : O.Boxed<FuluProposerSlashing_d.ProposerSlashing> & Bool}
       {==}
 
 law va_go:
@@ -566,7 +574,7 @@ law va_go:
   for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(n, VB.pw(d)) == True{} : Bool}
   for +hok: {EOKS(k, SL(t), s) == True{} : Bool}
-  {T.l16_ProposerSlashing_va(k, i, (AR(t), True{})) == (AR(t), True{}) : Array<O.Boxed<T.ProposerSlashing>> & Bool}
+  {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va(k, i, (AR(t), True{})) == (AR(t), True{}) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & Bool}
 def va_go(k, d, t, i, s, n, ei, ek, pf, hd, hn, hok):
   match k:
     case 0n: {==}
@@ -578,22 +586,22 @@ def va_go(k, d, t, i, s, n, ei, ek, pf, hd, hn, hok):
       +hsd = FD.nat__lt_le_trans(s, n, VB.pw(d), hs, hn)
       +hx = and_l(EOK(x), EOKS(q, SL(t), 1n+s), hok)
       +his = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(d)) == True{} : Bool}, s, U32.to_nat(i), Equal.sym(Nat, U32.to_nat(i), s, ei), hsd)
-      %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>, Array.swap(O.Boxed<T.ProposerSlashing>, AR(t), i, O.BNone{}), (AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, s, MNone{})), th_ProposerSlashing_bx(x)), swap_out(d, t, i, s, ei, pf, hd, hsd)) :
-        {T.l16_ProposerSlashing_va(q, U32.add(i, 1), T.l16_ProposerSlashing_va_one(i, True{}, _)) == (AR(t), True{}) : Array<O.Boxed<T.ProposerSlashing>> & Bool}
-      %Equal.sym(O.Boxed<T.ProposerSlashing> & Bool, T.ProposerSlashing_bx_valid(th_ProposerSlashing_bx(x)), (th_ProposerSlashing_bx(x), True{}), bxvalid(x, hx)) :
-        {T.l16_ProposerSlashing_va(q, U32.add(i, 1), T.l16_ProposerSlashing_va_back(i, True{}, AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, s, MNone{})), _)) == (AR(t), True{}) : Array<O.Boxed<T.ProposerSlashing>> & Bool}
+      %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(t), i, O.BNone{}), (AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, s, MNone{})), th_ProposerSlashing_bx(x)), swap_out(d, t, i, s, ei, pf, hd, hsd)) :
+        {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va(q, U32.add(i, 1), Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va_one(i, True{}, _)) == (AR(t), True{}) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & Bool}
+      %Equal.sym(O.Boxed<FuluProposerSlashing_d.ProposerSlashing> & Bool, FuluProposerSlashing_e.ProposerSlashing_bx_valid(th_ProposerSlashing_bx(x)), (th_ProposerSlashing_bx(x), True{}), bxvalid(x, hx)) :
+        {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va(q, U32.add(i, 1), Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va_back(i, True{}, AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, s, MNone{})), _)) == (AR(t), True{}) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & Bool}
       %ei :
-        {T.l16_ProposerSlashing_va(q, U32.add(i, 1), (Array.set(O.Boxed<T.ProposerSlashing>, AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, _, MNone{})), i, th_ProposerSlashing_bx(xat_l16_ProposerSlashing(SL(t), _))), True{})) == (AR(t), True{}) : Array<O.Boxed<T.ProposerSlashing>> & Bool}
-      %Equal.sym(Array<O.Boxed<T.ProposerSlashing>>, Array.set(O.Boxed<T.ProposerSlashing>, AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), MNone{})), i, th_ProposerSlashing_bx(xat_l16_ProposerSlashing(SL(t), U32.to_nat(i)))), AR(t),
+        {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va(q, U32.add(i, 1), (Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, _, MNone{})), i, th_ProposerSlashing_bx(xat_l16_ProposerSlashing(SL(t), _))), True{})) == (AR(t), True{}) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & Bool}
+      %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>>, Array.set(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(FD.array__upd(MB<M_ProposerSlashing>, d, t, U32.to_nat(i), MNone{})), i, th_ProposerSlashing_bx(xat_l16_ProposerSlashing(SL(t), U32.to_nat(i)))), AR(t),
           amswap_back_l16_ProposerSlashing(d, t, i, MNone{}, xat_l16_ProposerSlashing(SL(t), U32.to_nat(i)), FD.nat__lt_trans(d, 31n, 32n, hd, {==}), his, hx_at(d, t, U32.to_nat(i), pf, his), pf)) :
-        {T.l16_ProposerSlashing_va(q, U32.add(i, 1), (_, True{})) == (AR(t), True{}) : Array<O.Boxed<T.ProposerSlashing>> & Bool}
+        {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va(q, U32.add(i, 1), (_, True{})) == (AR(t), True{}) : Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & Bool}
       va_go(q, d, t, U32.add(i, 1), 1n+s, n, inc(i, s, n, d, ei, hs, hn, hd),
         Equal.trans(Nat, Nat.add(1n+s, q), 1n+Nat.add(s, q), n, {==}, Equal.trans(Nat, 1n+Nat.add(s, q), Nat.add(s, 1n+q), n, Equal.sym(Nat, Nat.add(s, 1n+q), 1n+Nat.add(s, q), FD.nat__add_succ(s, q)), ek)),
         pf, hd, hn, and_r(EOK(x), EOKS(q, SL(t), 1n+s), hok))
 
 # ---- the list object and its facts -----------------------------------------------------------------
 
-def THL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> T.l16_ProposerSlashing_Seq: T.l16_ProposerSlashing_Seq{AR(t), N}
+def THL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq: Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq{AR(t), N}
 def OKL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32) -> Bool:
   Bool.and(Nat.is_lt(TDM(t), 31n), Bool.and(FD.array__perfect(MB<M_ProposerSlashing>, TDM(t), t), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(TDM(t))),
     Bool.and(U32.is_le(N, 16), EOKS(U32.to_nat(N), SL(t), 0n)))))
@@ -623,17 +631,17 @@ def le_cap(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_Pro
   okl_n(t, N, h)
 
 # The runtime's validity check of the list.
-def valid_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {T.l16_ProposerSlashing_valid(THL_l16_ProposerSlashing(t, N)) == (THL_l16_ProposerSlashing(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}:
+def valid_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_valid(THL_l16_ProposerSlashing(t, N)) == (THL_l16_ProposerSlashing(t, N), True{}) : Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & Bool}:
   +d = TDM(t)
-  %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & U32, Array.size(O.Boxed<T.ProposerSlashing>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_l16_ProposerSlashing(d, t, okl_pf(t, N, h))) :
-    {T.l16_ProposerSlashing_va_cap(Bool.or(False{}, U32.is_le(N, 16)), N, _) == (THL_l16_ProposerSlashing(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
+  %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32, Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_l16_ProposerSlashing(d, t, okl_pf(t, N, h))) :
+    {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va_cap(Bool.or(False{}, U32.is_le(N, 16)), N, _) == (THL_l16_ProposerSlashing(t, N), True{}) : Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, 16), True{}, okl_lim(t, N, h)) :
-    {T.l16_ProposerSlashing_va_go(Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d))), N, AR(t)) == (THL_l16_ProposerSlashing(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
+    {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va_go(Bool.and(Bool.or(False{}, _), U32.is_le(N, FD.u32__pow2u(d))), N, AR(t)) == (THL_l16_ProposerSlashing(t, N), True{}) : Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap(t, N, h)) :
-    {T.l16_ProposerSlashing_va_go(Bool.and(True{}, _), N, AR(t)) == (THL_l16_ProposerSlashing(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
-  %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & Bool, T.l16_ProposerSlashing_va(U32.to_nat(N), 0, (AR(t), True{})), (AR(t), True{}),
+    {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va_go(Bool.and(True{}, _), N, AR(t)) == (THL_l16_ProposerSlashing(t, N), True{}) : Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & Bool}
+  %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & Bool, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va(U32.to_nat(N), 0, (AR(t), True{})), (AR(t), True{}),
       va_go(U32.to_nat(N), d, t, 0, 0n, U32.to_nat(N), {==}, {==}, okl_pf(t, N, h), okl_d(t, N, h), okl_n(t, N, h), okl_e(t, N, h))) :
-    {T.l16_ProposerSlashing_va_fin(N, True{}, _) == (THL_l16_ProposerSlashing(t, N), True{}) : T.l16_ProposerSlashing_Seq & Bool}
+    {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_va_fin(N, True{}, _) == (THL_l16_ProposerSlashing(t, N), True{}) : Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & Bool}
   {==}
 
 # ---- the write loop ------------------------------------------------------------------------------
@@ -660,7 +668,7 @@ def pfWX(k, j, dd, D, q, r, t, pf):
     case 1n+ +p: pfWX(p, 1n+j, dd, PXEm(xat_l16_ProposerSlashing(SL(t), j), dd, D, Nat.add(Nat.mul(j, 104n), q), r), q, r, t, pfEm(xat_l16_ProposerSlashing(SL(t), j), dd, D, Nat.add(Nat.mul(j, 104n), q), r, pf))
 
 def RTK(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +t: FD.array__Tree<MB<M_ProposerSlashing>>) -> Data:
-  {T.l16_ProposerSlashing_pt(k, i, X, (FD.array__thaw(U32, D), (AR(t), O.BNone{}))) == (FD.array__thaw(U32, WX(k, j, dd, D, q, r, t)), (AR(t), O.BNone{})) : Array<U32> & (Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>)}
+  {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(k, i, X, (FD.array__thaw(U32, D), (AR(t), O.BNone{}))) == (FD.array__thaw(U32, WX(k, j, dd, D, q, r, t)), (AR(t), O.BNone{})) : Array<U32> & (Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>)}
 def BYK(k: Nat, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +t: FD.array__Tree<MB<M_ProposerSlashing>>) -> Data:
   {UA.BYT(WX(k, j, dd, D, q, r, t)) == UW.SPL(UA.BYT(D), VRX.YP(j, 104n, q, r), CATE(k, SL(t), j)) : +List<U32>}
 
@@ -711,26 +719,26 @@ def ptx(k: Nat, +i: U32, +j: Nat, +n: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, 
       +rt2 = PA(RTK(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, t), BYK(p, 1n+j, q, r, dd, D1, t), ih)
       +by2 = PB(RTK(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, t), BYK(p, 1n+j, q, r, dd, D1, t), ih)
       +t2 = FD.array__upd(MB<M_ProposerSlashing>, d, t, j, MNone{})
-      +e1 = Equal.cong(Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>, Array<U32> & (Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>),
-        z => T.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, T.l16_ProposerSlashing_pt_one(i, X, FD.array__thaw(U32, D), z)),
-        Array.swap(O.Boxed<T.ProposerSlashing>, AR(t), i, O.BNone{}), (AR(t2), th_ProposerSlashing_bx(x)), swap_out(d, t, i, j, ei, pfA, hda, hsd))
-      +e2 = Equal.cong(Array<U32> & O.Boxed<T.ProposerSlashing>, Array<U32> & (Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>),
-        z => T.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, T.l16_ProposerSlashing_pt_back(i, AR(t2), z)),
-        T.ProposerSlashing_bx_put(FD.array__thaw(U32, D), Xj, th_ProposerSlashing_bx(x)), (FD.array__thaw(U32, D1), th_ProposerSlashing_bx(x)), rt)
-      +e3 = Equal.cong(Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>, Array<U32> & (Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>),
-        z => T.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, T.l16_ProposerSlashing_pt_ret(FD.array__thaw(U32, D1), z)),
-        Array.swap(O.Boxed<T.ProposerSlashing>, AR(t2), i, th_ProposerSlashing_bx(x)), (AR(t), O.BNone{}), swap_in(d, t, i, j, ei, pfA, hda, hsd))
-      +rtf = Equal.trans(Array<U32> & (Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>),
-        T.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, T.l16_ProposerSlashing_pt_one(i, X, FD.array__thaw(U32, D), Array.swap(O.Boxed<T.ProposerSlashing>, AR(t), i, O.BNone{}))),
-        T.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, T.l16_ProposerSlashing_pt_one(i, X, FD.array__thaw(U32, D), (AR(t2), th_ProposerSlashing_bx(x)))),
+      +e1 = Equal.cong(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array<U32> & (Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>),
+        z => Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_one(i, X, FD.array__thaw(U32, D), z)),
+        Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(t), i, O.BNone{}), (AR(t2), th_ProposerSlashing_bx(x)), swap_out(d, t, i, j, ei, pfA, hda, hsd))
+      +e2 = Equal.cong(Array<U32> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array<U32> & (Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>),
+        z => Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_back(i, AR(t2), z)),
+        FuluProposerSlashing_e.ProposerSlashing_bx_put(FD.array__thaw(U32, D), Xj, th_ProposerSlashing_bx(x)), (FD.array__thaw(U32, D1), th_ProposerSlashing_bx(x)), rt)
+      +e3 = Equal.cong(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, Array<U32> & (Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>),
+        z => Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_ret(FD.array__thaw(U32, D1), z)),
+        Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(t2), i, th_ProposerSlashing_bx(x)), (AR(t), O.BNone{}), swap_in(d, t, i, j, ei, pfA, hda, hsd))
+      +rtf = Equal.trans(Array<U32> & (Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>),
+        Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_one(i, X, FD.array__thaw(U32, D), Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(t), i, O.BNone{}))),
+        Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_one(i, X, FD.array__thaw(U32, D), (AR(t2), th_ProposerSlashing_bx(x)))),
         (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, q, r, t)), (AR(t), O.BNone{})), e1,
-        Equal.trans(Array<U32> & (Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>),
-          T.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, T.l16_ProposerSlashing_pt_back(i, AR(t2), T.ProposerSlashing_bx_put(FD.array__thaw(U32, D), Xj, th_ProposerSlashing_bx(x)))),
-          T.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, T.l16_ProposerSlashing_pt_back(i, AR(t2), (FD.array__thaw(U32, D1), th_ProposerSlashing_bx(x)))),
+        Equal.trans(Array<U32> & (Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>),
+          Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_back(i, AR(t2), FuluProposerSlashing_e.ProposerSlashing_bx_put(FD.array__thaw(U32, D), Xj, th_ProposerSlashing_bx(x)))),
+          Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_back(i, AR(t2), (FD.array__thaw(U32, D1), th_ProposerSlashing_bx(x)))),
           (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, q, r, t)), (AR(t), O.BNone{})), e2,
-          Equal.trans(Array<U32> & (Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>),
-            T.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, T.l16_ProposerSlashing_pt_ret(FD.array__thaw(U32, D1), Array.swap(O.Boxed<T.ProposerSlashing>, AR(t2), i, th_ProposerSlashing_bx(x)))),
-            T.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, T.l16_ProposerSlashing_pt_ret(FD.array__thaw(U32, D1), (AR(t), O.BNone{}))),
+          Equal.trans(Array<U32> & (Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>),
+            Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_ret(FD.array__thaw(U32, D1), Array.swap(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(t2), i, th_ProposerSlashing_bx(x)))),
+            Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(p, U32.add(i, 1), X, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_ret(FD.array__thaw(U32, D1), (AR(t), O.BNone{}))),
             (FD.array__thaw(U32, WX(p, 1n+j, dd, D1, q, r, t)), (AR(t), O.BNone{})), e3, rt2)))
       +rest = CATE(p, SL(t), 1n+j)
       +eXn = Equal.trans(Nat, VRX.YP(1n+j, 104n, q, r), Nat.add(Yj, A.quad(104n)), Nat.add(Yj, VRX.LN(Y)), ey,
@@ -755,7 +763,7 @@ def pfLb_l16_ProposerSlashing(+b: Bool, +t: FD.array__Tree<MB<M_ProposerSlashing
     case False{}: pfWX(U32.to_nat(N), 0n, dd, D, q, r, t, pf)
 
 def RTN(+b: Bool, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l16_ProposerSlashing_pt_nz(b, X, N, FD.array__thaw(U32, D), AR(t)) == (FD.array__thaw(U32, PUTLb_l16_ProposerSlashing(b, t, N, dd, D, q, r)), THL_l16_ProposerSlashing(t, N)) : Array<U32> & T.l16_ProposerSlashing_Seq}
+  {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_nz(b, X, N, FD.array__thaw(U32, D), AR(t)) == (FD.array__thaw(U32, PUTLb_l16_ProposerSlashing(b, t, N, dd, D, q, r)), THL_l16_ProposerSlashing(t, N)) : Array<U32> & Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq}
 def BYN(+b: Bool, +t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTLb_l16_ProposerSlashing(b, t, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l16_ProposerSlashing(t, N)) : +List<U32>}
 
@@ -778,11 +786,11 @@ def ptnz(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +b: Bool, +eb: {U3
         okl_pf(t, N, h), okl_d(t, N, h), okl_n(t, N, h), okl_e(t, N, h))
       +rt = PA(RTK(c, 0, 0n, X, q, r, dd, D, t), BYK(c, 0n, q, r, dd, D, t), g)
       +by = PB(RTK(c, 0, 0n, X, q, r, dd, D, t), BYK(c, 0n, q, r, dd, D, t), g)
-      (Equal.cong(Array<U32> & (Array<O.Boxed<T.ProposerSlashing>> & O.Boxed<T.ProposerSlashing>), Array<U32> & T.l16_ProposerSlashing_Seq, z => T.l16_ProposerSlashing_pt_fin(N, z),
-         T.l16_ProposerSlashing_pt(c, 0, X, (FD.array__thaw(U32, D), (AR(t), O.BNone{}))), (FD.array__thaw(U32, WX(c, 0n, dd, D, q, r, t)), (AR(t), O.BNone{})), rt), by)
+      (Equal.cong(Array<U32> & (Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & O.Boxed<FuluProposerSlashing_d.ProposerSlashing>), Array<U32> & Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq, z => Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_fin(N, z),
+         Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt(c, 0, X, (FD.array__thaw(U32, D), (AR(t), O.BNone{}))), (FD.array__thaw(U32, WX(c, 0n, dd, D, q, r, t)), (AR(t), O.BNone{})), rt), by)
 
 def RTL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
-  {T.l16_ProposerSlashing_putk(FD.array__thaw(U32, D), X, THL_l16_ProposerSlashing(t, N)) == (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416))) : Array<U32> & (T.l16_ProposerSlashing_Seq & U32)}
+  {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_putk(FD.array__thaw(U32, D), X, THL_l16_ProposerSlashing(t, N)) == (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416))) : Array<U32> & (Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32)}
 def BYL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l16_ProposerSlashing(t, N)) : +List<U32>}
 def PFL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
@@ -791,10 +799,10 @@ def PFL_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32
 # The runtime's write, with its validity check.
 def putk_rt(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
     +rtb: RTN(U32.is_eq(N, 0), t, N, dd, D, X, q, r)) -> RTL_l16_ProposerSlashing(t, N, dd, D, X, q, r):
-  %Equal.sym(T.l16_ProposerSlashing_Seq & Bool, T.l16_ProposerSlashing_valid(THL_l16_ProposerSlashing(t, N)), (THL_l16_ProposerSlashing(t, N), True{}), valid_l16_ProposerSlashing(t, N, h)) :
-    {T.l16_ProposerSlashing_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416))) : Array<U32> & (T.l16_ProposerSlashing_Seq & U32)}
-  %Equal.sym(Array<U32> & T.l16_ProposerSlashing_Seq, T.l16_ProposerSlashing_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), AR(t)), (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), THL_l16_ProposerSlashing(t, N)), rtb) :
-    {T.l16_ProposerSlashing_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416))) : Array<U32> & (T.l16_ProposerSlashing_Seq & U32)}
+  %Equal.sym(Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & Bool, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_valid(THL_l16_ProposerSlashing(t, N)), (THL_l16_ProposerSlashing(t, N), True{}), valid_l16_ProposerSlashing(t, N, h)) :
+    {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pk(FD.array__thaw(U32, D), X, _) == (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416))) : Array<U32> & (Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32)}
+  %Equal.sym(Array<U32> & Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq, Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_pt_nz(U32.is_eq(N, 0), X, N, FD.array__thaw(U32, D), AR(t)), (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), THL_l16_ProposerSlashing(t, N)), rtb) :
+    {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_ptn_fin(N, _) == (FD.array__thaw(U32, PUTL_l16_ProposerSlashing(t, N, dd, D, q, r)), (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416))) : Array<U32> & (Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32)}
   {==}
 
 def mk3(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
@@ -818,12 +826,12 @@ def putx_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U3
 # ---- sizes ----
 
 # The runtime's size pass.
-def sizex_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {T.l16_ProposerSlashing_size(THL_l16_ProposerSlashing(t, N)) == (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416)) : T.l16_ProposerSlashing_Seq & U32}:
+def sizex_l16_ProposerSlashing(+t: FD.array__Tree<MB<M_ProposerSlashing>>, +N: U32, +h: {OKL_l16_ProposerSlashing(t, N) == True{} : Bool}) -> {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_size(THL_l16_ProposerSlashing(t, N)) == (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416)) : Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32}:
   +d = TDM(t)
-  %Equal.sym(Array<O.Boxed<T.ProposerSlashing>> & U32, Array.size(O.Boxed<T.ProposerSlashing>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_l16_ProposerSlashing(d, t, okl_pf(t, N, h))) :
-    {T.l16_ProposerSlashing_szf(N, _) == (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416)) : T.l16_ProposerSlashing_Seq & U32}
+  %Equal.sym(Array<O.Boxed<FuluProposerSlashing_d.ProposerSlashing>> & U32, Array.size(O.Boxed<FuluProposerSlashing_d.ProposerSlashing>, AR(t)), (AR(t), FD.u32__pow2u(d)), amsize_l16_ProposerSlashing(d, t, okl_pf(t, N, h))) :
+    {Fulu_list_ProposerSlashing_16_e.l16_ProposerSlashing_szf(N, _) == (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416)) : Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(d)), True{}, le_cap(t, N, h)) :
-    {(THL_l16_ProposerSlashing(t, N), O.pick(_, U32.mul(N, 416), 2147483648)) == (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416)) : T.l16_ProposerSlashing_Seq & U32}
+    {(THL_l16_ProposerSlashing(t, N), O.pick(_, U32.mul(N, 416), 2147483648)) == (THL_l16_ProposerSlashing(t, N), U32.mul(N, 416)) : Fulu_list_ProposerSlashing_16_d.l16_ProposerSlashing_Seq & U32}
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.

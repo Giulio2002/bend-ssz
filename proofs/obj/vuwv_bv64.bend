@@ -1,6 +1,7 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_bitvector_64_def_generated.bend as Fulu_bitvector_64_d
+import ../../types/Fulu_bitvector_64_encode_ssz_generated.bend as Fulu_bitvector_64_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -46,14 +47,14 @@ def bv64x_perfect(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +w0: U32,
 # T.bv64_put at any byte position X = 4 q + r.
 def bv64_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +w0: U32, +w1: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, UWD.NWN(Nat.add(r, 8n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hz: {VS.bt(8n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(8n) : +List<U32>})
-    -> {T.bv64_put(FD.array__thaw(U32, D), X, T.Bitvector64{w0, w1}) == FD.array__thaw(U32, PX_bv64(r, dd, D, q, w0, w1)) : Array<U32>}:
+    -> {Fulu_bitvector_64_e.bv64_put(FD.array__thaw(U32, D), X, Fulu_bitvector_64_d.Bitvector64{w0, w1}) == FD.array__thaw(U32, PX_bv64(r, dd, D, q, w0, w1)) : Array<U32>}:
   match r:
     case 0n: VT.put_bv64(dd, D, X, q, FD.logic__subst(Nat, z => {U32.to_nat(X) == z : Nat}, Nat.add(A.quad(q), 0n), A.quad(q), FD.nat__add_zero(A.quad(q)), e), hd, pf,
       FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(q, 2n), Nat.add(2n, q), FD.nat__add_comm(q, 2n), hl), w0, w1)
     case 1n: UF1.putu_bv64(dd, D, X, q, w0, w1, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 2n, VB.pw(dd), hl), pf, hz)
     case 2n: UF2.putu_bv64(dd, D, X, q, w0, w1, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 2n, VB.pw(dd), hl), pf, hz)
     case 3n: UF3.putu_bv64(dd, D, X, q, w0, w1, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 2n, VB.pw(dd), hl), pf, hz)
-    case 4n+ +t: Empty.absurd({T.bv64_put(FD.array__thaw(U32, D), X, T.Bitvector64{w0, w1}) == FD.array__thaw(U32, PX_bv64(4n+t, dd, D, q, w0, w1)) : Array<U32>}, FD.nat__lt_zero_absurd(t, hr))
+    case 4n+ +t: Empty.absurd({Fulu_bitvector_64_e.bv64_put(FD.array__thaw(U32, D), X, Fulu_bitvector_64_d.Bitvector64{w0, w1}) == FD.array__thaw(U32, PX_bv64(4n+t, dd, D, q, w0, w1)) : Array<U32>}, FD.nat__lt_zero_absurd(t, hr))
 
 # Its bytes: the words' limbs at X, when the 8 bytes there were zero.
 def bv64_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +w0: U32, +w1: U32, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},

@@ -41,6 +41,7 @@ import os
 import re
 import sys
 from pathlib import Path
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'codegen'))
@@ -108,8 +109,8 @@ def SHAPE(kind, X, concl, hyps):
 def validators():
     """{name: the runtime prefix of its decoder's validator} (X_decode = X_built(size, P_ok(buf, 0, size)))"""
     out = {}
-    for f in ('types/fulu_obj.bend', 'types/generic_obj.bend'):
-        src = (ROOT / f).read_text()
+    for f in ('fulu', 'generic'):
+        src = RR.mono_text(f)
         for m in re.finditer(r'^def (\w+)_decode\(buf: B\.Buf, \+size: U32\)[^\n]*\n  \w+\(size, (\w+)_ok\(buf, 0, size\)\)', src, re.M):
             out[m.group(1)] = m.group(2)
     return out
@@ -226,7 +227,9 @@ def scan():
         bl = blocks(f.read_text())
         parsed[f.name] = bl
         for k, n, params, st in bl:
-            hyps = ' '.join(params)
+            # the runtime's symbols read as T.<sym> (a module imports the split files: RR.unwire)
+            hyps = RR.unwire(' '.join(params))
+            st = RR.unwire(st)
             xs = {m.group(1) for m in api.finditer(st)} | {m.group(1) or m.group(2) for m in spc.finditer(st + ' ' + hyps)}
             if n.endswith('_ok_eval'):
                 xs.add(n[:-len('_ok_eval')])
@@ -311,6 +314,7 @@ def outputs(no_big=False):
 def main():
     no_big = '--no-big' in sys.argv
     out = outputs(no_big)
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         mine = [q for q in OUT.glob('*g_*.bend')] if OUT.exists() else []

@@ -20,6 +20,7 @@ splits.
 """
 import sys
 from pathlib import Path
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -1372,7 +1373,7 @@ def cont_bytes(w, n, fields, rec, pr):
 def main():
     import spec_laws as SL
     out = {ROOT / 'proofs/obj/sub_pack.bend': pack_module()}
-    src = (ROOT / 'types/generic_obj.bend').read_text()
+    src = RR.mono_text('generic')
     names = []
     for n, fam, arg in forms():
         L = list(GHEAD) + (['import ./word_mul.bend as WM'] if fam == 'scalar' else []) + [
@@ -1407,6 +1408,7 @@ def main():
         out[ROOT / f'proofs/obj/sub_unique_{n}.bend'] = '\n'.join(U) + '\n'
         names.append(n)
     orphans = [q for q in (ROOT / 'proofs/obj').glob('sub_*.bend') if q not in out]
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale or orphans:

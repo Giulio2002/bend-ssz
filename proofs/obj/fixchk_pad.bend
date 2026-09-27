@@ -1,7 +1,20 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/Fulu_bitvector_4_decode_ssz_generated.bend as Fulu_bitvector_4_r
+import ../../types/bitvector_2_decode_ssz_generated.bend as bitvector_2_r
+import ../../types/bitvector_1_decode_ssz_generated.bend as bitvector_1_r
+import ../../types/bitvector_15_decode_ssz_generated.bend as bitvector_15_r
+import ../../types/bitvector_17_decode_ssz_generated.bend as bitvector_17_r
+import ../../types/bitvector_31_decode_ssz_generated.bend as bitvector_31_r
+import ../../types/bitvector_33_decode_ssz_generated.bend as bitvector_33_r
+import ../../types/bitvector_3_decode_ssz_generated.bend as bitvector_3_r
+import ../../types/bitvector_511_decode_ssz_generated.bend as bitvector_511_r
+import ../../types/bitvector_513_decode_ssz_generated.bend as bitvector_513_r
+import ../../types/bitvector_5_decode_ssz_generated.bend as bitvector_5_r
+import ../../types/bitvector_6_decode_ssz_generated.bend as bitvector_6_r
+import ../../types/bitvector_7_decode_ssz_generated.bend as bitvector_7_r
+import ../../types/bitvector_9_decode_ssz_generated.bend as bitvector_9_r
 import ../../types/schema.bend as S
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
@@ -29,7 +42,7 @@ import ./vrejp.bend as VRP
 def GtEDF530C7B9_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv15_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 2n), 1n, 7)) : B.Buf & Bool}:
+    -> {bitvector_15_r.bv15_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 2n), 1n, 7)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 1n), Nat.add(x, 2n), A.quad(VB.pw(d)), FD.nat__lt_add_left(1n, 2n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 1n), Nat.add(1n, x), FD.nat__add_comm(x, 1n), hk)
   +ey = UR.offx(d, off, 1, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -49,7 +62,7 @@ def GtEDF530C7B9_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def GtEDF530C7B9_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv15_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 2n), 1n, 7))) : B.Buf & Bool}:
+    -> {bitvector_15_r.bv15_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 2n), 1n, 7))) : B.Buf & Bool}:
   match b:
     case True{}: GtEDF530C7B9_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -58,7 +71,7 @@ def GtEDF530C7B9_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def GtEDF530C7B9_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv15_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 2), VRP.PADK(UW.WX(t, x, 2n), 1n, 7))) : B.Buf & Bool}:
+    -> {bitvector_15_r.bv15_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 2), VRP.PADK(UW.WX(t, x, 2n), 1n, 7))) : B.Buf & Bool}:
   GtEDF530C7B9_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 2))
 
 # every encoding at BitVector[15]: its padding bits clear
@@ -95,7 +108,7 @@ def GtEDF530C7B9_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def GtFF7C03E8A0_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 3n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv17_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 3n), 2n, 1)) : B.Buf & Bool}:
+    -> {bitvector_17_r.bv17_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 3n), 2n, 1)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 2n), Nat.add(x, 3n), A.quad(VB.pw(d)), FD.nat__lt_add_left(2n, 3n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 2n), Nat.add(2n, x), FD.nat__add_comm(x, 2n), hk)
   +ey = UR.offx(d, off, 2, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -115,7 +128,7 @@ def GtFF7C03E8A0_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def GtFF7C03E8A0_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 3n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv17_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 3n), 2n, 1))) : B.Buf & Bool}:
+    -> {bitvector_17_r.bv17_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 3n), 2n, 1))) : B.Buf & Bool}:
   match b:
     case True{}: GtFF7C03E8A0_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -124,7 +137,7 @@ def GtFF7C03E8A0_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def GtFF7C03E8A0_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 3n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv17_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 3), VRP.PADK(UW.WX(t, x, 3n), 2n, 1))) : B.Buf & Bool}:
+    -> {bitvector_17_r.bv17_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 3), VRP.PADK(UW.WX(t, x, 3n), 2n, 1))) : B.Buf & Bool}:
   GtFF7C03E8A0_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 3))
 
 # every encoding at BitVector[17]: its padding bits clear
@@ -161,7 +174,7 @@ def GtFF7C03E8A0_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def GtFCF8066C33_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv1_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 1)) : B.Buf & Bool}:
+    -> {bitvector_1_r.bv1_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 1)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 0n), Nat.add(x, 1n), A.quad(VB.pw(d)), FD.nat__lt_add_left(0n, 1n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 0n), Nat.add(0n, x), FD.nat__add_comm(x, 0n), hk)
   +ey = UR.offx(d, off, 0, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -181,7 +194,7 @@ def GtFCF8066C33_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def GtFCF8066C33_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv1_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 1))) : B.Buf & Bool}:
+    -> {bitvector_1_r.bv1_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 1))) : B.Buf & Bool}:
   match b:
     case True{}: GtFCF8066C33_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -190,7 +203,7 @@ def GtFCF8066C33_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def GtFCF8066C33_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv1_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 1))) : B.Buf & Bool}:
+    -> {bitvector_1_r.bv1_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 1))) : B.Buf & Bool}:
   GtFCF8066C33_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 # every encoding at BitVector[1]: its padding bits clear
@@ -227,7 +240,7 @@ def GtFCF8066C33_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt9368483BAB_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv2_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 2)) : B.Buf & Bool}:
+    -> {bitvector_2_r.bv2_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 2)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 0n), Nat.add(x, 1n), A.quad(VB.pw(d)), FD.nat__lt_add_left(0n, 1n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 0n), Nat.add(0n, x), FD.nat__add_comm(x, 0n), hk)
   +ey = UR.offx(d, off, 0, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -247,7 +260,7 @@ def Gt9368483BAB_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def Gt9368483BAB_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv2_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 2))) : B.Buf & Bool}:
+    -> {bitvector_2_r.bv2_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 2))) : B.Buf & Bool}:
   match b:
     case True{}: Gt9368483BAB_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -256,7 +269,7 @@ def Gt9368483BAB_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt9368483BAB_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv2_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 2))) : B.Buf & Bool}:
+    -> {bitvector_2_r.bv2_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 2))) : B.Buf & Bool}:
   Gt9368483BAB_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 # every encoding at BitVector[2]: its padding bits clear
@@ -293,7 +306,7 @@ def Gt9368483BAB_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def GtEDFB713194_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 4n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv31_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 4n), 3n, 7)) : B.Buf & Bool}:
+    -> {bitvector_31_r.bv31_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 4n), 3n, 7)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 3n), Nat.add(x, 4n), A.quad(VB.pw(d)), FD.nat__lt_add_left(3n, 4n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 3n), Nat.add(3n, x), FD.nat__add_comm(x, 3n), hk)
   +ey = UR.offx(d, off, 3, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -313,7 +326,7 @@ def GtEDFB713194_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def GtEDFB713194_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 4n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv31_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 4n), 3n, 7))) : B.Buf & Bool}:
+    -> {bitvector_31_r.bv31_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 4n), 3n, 7))) : B.Buf & Bool}:
   match b:
     case True{}: GtEDFB713194_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -322,7 +335,7 @@ def GtEDFB713194_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def GtEDFB713194_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 4n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv31_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 4), VRP.PADK(UW.WX(t, x, 4n), 3n, 7))) : B.Buf & Bool}:
+    -> {bitvector_31_r.bv31_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 4), VRP.PADK(UW.WX(t, x, 4n), 3n, 7))) : B.Buf & Bool}:
   GtEDFB713194_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 4))
 
 # every encoding at BitVector[31]: its padding bits clear
@@ -359,7 +372,7 @@ def GtEDFB713194_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt6F0D97A69E_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 5n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv33_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 5n), 4n, 1)) : B.Buf & Bool}:
+    -> {bitvector_33_r.bv33_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 5n), 4n, 1)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 4n), Nat.add(x, 5n), A.quad(VB.pw(d)), FD.nat__lt_add_left(4n, 5n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 4n), Nat.add(4n, x), FD.nat__add_comm(x, 4n), hk)
   +ey = UR.offx(d, off, 4, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -379,7 +392,7 @@ def Gt6F0D97A69E_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def Gt6F0D97A69E_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 5n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv33_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 5n), 4n, 1))) : B.Buf & Bool}:
+    -> {bitvector_33_r.bv33_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 5n), 4n, 1))) : B.Buf & Bool}:
   match b:
     case True{}: Gt6F0D97A69E_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -388,7 +401,7 @@ def Gt6F0D97A69E_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt6F0D97A69E_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 5n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv33_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 5), VRP.PADK(UW.WX(t, x, 5n), 4n, 1))) : B.Buf & Bool}:
+    -> {bitvector_33_r.bv33_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 5), VRP.PADK(UW.WX(t, x, 5n), 4n, 1))) : B.Buf & Bool}:
   Gt6F0D97A69E_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 5))
 
 # every encoding at BitVector[33]: its padding bits clear
@@ -425,7 +438,7 @@ def Gt6F0D97A69E_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt9579E0A2FD_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv3_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 3)) : B.Buf & Bool}:
+    -> {bitvector_3_r.bv3_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 3)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 0n), Nat.add(x, 1n), A.quad(VB.pw(d)), FD.nat__lt_add_left(0n, 1n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 0n), Nat.add(0n, x), FD.nat__add_comm(x, 0n), hk)
   +ey = UR.offx(d, off, 0, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -445,7 +458,7 @@ def Gt9579E0A2FD_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def Gt9579E0A2FD_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv3_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 3))) : B.Buf & Bool}:
+    -> {bitvector_3_r.bv3_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 3))) : B.Buf & Bool}:
   match b:
     case True{}: Gt9579E0A2FD_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -454,7 +467,7 @@ def Gt9579E0A2FD_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt9579E0A2FD_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv3_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 3))) : B.Buf & Bool}:
+    -> {bitvector_3_r.bv3_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 3))) : B.Buf & Bool}:
   Gt9579E0A2FD_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 # every encoding at BitVector[3]: its padding bits clear
@@ -491,7 +504,7 @@ def Gt9579E0A2FD_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def GtB1E9093D65_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv4_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 4)) : B.Buf & Bool}:
+    -> {Fulu_bitvector_4_r.bv4_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 4)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 0n), Nat.add(x, 1n), A.quad(VB.pw(d)), FD.nat__lt_add_left(0n, 1n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 0n), Nat.add(0n, x), FD.nat__add_comm(x, 0n), hk)
   +ey = UR.offx(d, off, 0, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -511,7 +524,7 @@ def GtB1E9093D65_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def GtB1E9093D65_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv4_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
+    -> {Fulu_bitvector_4_r.bv4_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
   match b:
     case True{}: GtB1E9093D65_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -520,7 +533,7 @@ def GtB1E9093D65_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def GtB1E9093D65_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv4_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
+    -> {Fulu_bitvector_4_r.bv4_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 4))) : B.Buf & Bool}:
   GtB1E9093D65_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 # every encoding at BitVector[4]: its padding bits clear
@@ -557,7 +570,7 @@ def GtB1E9093D65_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt05340E1F7E_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 64n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv511_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 64n), 63n, 7)) : B.Buf & Bool}:
+    -> {bitvector_511_r.bv511_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 64n), 63n, 7)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 63n), Nat.add(x, 64n), A.quad(VB.pw(d)), FD.nat__lt_add_left(63n, 64n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 63n), Nat.add(63n, x), FD.nat__add_comm(x, 63n), hk)
   +ey = UR.offx(d, off, 63, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -577,7 +590,7 @@ def Gt05340E1F7E_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def Gt05340E1F7E_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 64n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv511_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 64n), 63n, 7))) : B.Buf & Bool}:
+    -> {bitvector_511_r.bv511_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 64n), 63n, 7))) : B.Buf & Bool}:
   match b:
     case True{}: Gt05340E1F7E_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -586,7 +599,7 @@ def Gt05340E1F7E_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt05340E1F7E_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 64n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv511_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 64), VRP.PADK(UW.WX(t, x, 64n), 63n, 7))) : B.Buf & Bool}:
+    -> {bitvector_511_r.bv511_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 64), VRP.PADK(UW.WX(t, x, 64n), 63n, 7))) : B.Buf & Bool}:
   Gt05340E1F7E_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 64))
 
 # every encoding at BitVector[511]: its padding bits clear
@@ -623,7 +636,7 @@ def Gt05340E1F7E_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt0B0C03B454_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 65n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv513_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 65n), 64n, 1)) : B.Buf & Bool}:
+    -> {bitvector_513_r.bv513_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 65n), 64n, 1)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 64n), Nat.add(x, 65n), A.quad(VB.pw(d)), FD.nat__lt_add_left(64n, 65n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 64n), Nat.add(64n, x), FD.nat__add_comm(x, 64n), hk)
   +ey = UR.offx(d, off, 64, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -643,7 +656,7 @@ def Gt0B0C03B454_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def Gt0B0C03B454_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 65n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv513_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 65n), 64n, 1))) : B.Buf & Bool}:
+    -> {bitvector_513_r.bv513_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 65n), 64n, 1))) : B.Buf & Bool}:
   match b:
     case True{}: Gt0B0C03B454_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -652,7 +665,7 @@ def Gt0B0C03B454_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt0B0C03B454_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 65n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv513_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 65), VRP.PADK(UW.WX(t, x, 65n), 64n, 1))) : B.Buf & Bool}:
+    -> {bitvector_513_r.bv513_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 65), VRP.PADK(UW.WX(t, x, 65n), 64n, 1))) : B.Buf & Bool}:
   Gt0B0C03B454_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 65))
 
 # every encoding at BitVector[513]: its padding bits clear
@@ -689,7 +702,7 @@ def Gt0B0C03B454_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt27CDB122DD_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv5_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 5)) : B.Buf & Bool}:
+    -> {bitvector_5_r.bv5_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 5)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 0n), Nat.add(x, 1n), A.quad(VB.pw(d)), FD.nat__lt_add_left(0n, 1n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 0n), Nat.add(0n, x), FD.nat__add_comm(x, 0n), hk)
   +ey = UR.offx(d, off, 0, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -709,7 +722,7 @@ def Gt27CDB122DD_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def Gt27CDB122DD_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv5_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 5))) : B.Buf & Bool}:
+    -> {bitvector_5_r.bv5_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 5))) : B.Buf & Bool}:
   match b:
     case True{}: Gt27CDB122DD_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -718,7 +731,7 @@ def Gt27CDB122DD_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt27CDB122DD_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv5_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 5))) : B.Buf & Bool}:
+    -> {bitvector_5_r.bv5_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 5))) : B.Buf & Bool}:
   Gt27CDB122DD_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 # every encoding at BitVector[5]: its padding bits clear
@@ -755,7 +768,7 @@ def Gt27CDB122DD_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def GtAD3CF815B7_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv6_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 6)) : B.Buf & Bool}:
+    -> {bitvector_6_r.bv6_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 6)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 0n), Nat.add(x, 1n), A.quad(VB.pw(d)), FD.nat__lt_add_left(0n, 1n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 0n), Nat.add(0n, x), FD.nat__add_comm(x, 0n), hk)
   +ey = UR.offx(d, off, 0, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -775,7 +788,7 @@ def GtAD3CF815B7_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def GtAD3CF815B7_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv6_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 6))) : B.Buf & Bool}:
+    -> {bitvector_6_r.bv6_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 6))) : B.Buf & Bool}:
   match b:
     case True{}: GtAD3CF815B7_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -784,7 +797,7 @@ def GtAD3CF815B7_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def GtAD3CF815B7_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv6_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 6))) : B.Buf & Bool}:
+    -> {bitvector_6_r.bv6_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 6))) : B.Buf & Bool}:
   GtAD3CF815B7_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 # every encoding at BitVector[6]: its padding bits clear
@@ -821,7 +834,7 @@ def GtAD3CF815B7_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def GtAA8D1478A7_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv7_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 7)) : B.Buf & Bool}:
+    -> {bitvector_7_r.bv7_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 1n), 0n, 7)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 0n), Nat.add(x, 1n), A.quad(VB.pw(d)), FD.nat__lt_add_left(0n, 1n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 0n), Nat.add(0n, x), FD.nat__add_comm(x, 0n), hk)
   +ey = UR.offx(d, off, 0, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -841,7 +854,7 @@ def GtAA8D1478A7_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def GtAA8D1478A7_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv7_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 7))) : B.Buf & Bool}:
+    -> {bitvector_7_r.bv7_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 1n), 0n, 7))) : B.Buf & Bool}:
   match b:
     case True{}: GtAA8D1478A7_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -850,7 +863,7 @@ def GtAA8D1478A7_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def GtAA8D1478A7_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv7_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 7))) : B.Buf & Bool}:
+    -> {bitvector_7_r.bv7_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 1), VRP.PADK(UW.WX(t, x, 1n), 0n, 7))) : B.Buf & Bool}:
   GtAA8D1478A7_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 1))
 
 # every encoding at BitVector[7]: its padding bits clear
@@ -887,7 +900,7 @@ def GtAA8D1478A7_decode_reject(+bs: +List<U32>, +h: {Bool.and(Nat.is_eq(List.len
 def Gt1BD4B4358D_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.bv9_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 2n), 1n, 1)) : B.Buf & Bool}:
+    -> {bitvector_9_r.bv9_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), VRP.PADK(UW.WX(t, x, 2n), 1n, 1)) : B.Buf & Bool}:
   +hk = FD.nat__lt_le_trans(Nat.add(x, 1n), Nat.add(x, 2n), A.quad(VB.pw(d)), FD.nat__lt_add_left(1n, 2n, x, {==}), hb)
   +hy = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, 1n), Nat.add(1n, x), FD.nat__add_comm(x, 1n), hk)
   +ey = UR.offx(d, off, 1, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), hy)
@@ -907,7 +920,7 @@ def Gt1BD4B4358D_at(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Na
 def Gt1BD4B4358D_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool}, +b: Bool)
-    -> {T.bv9_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 2n), 1n, 1))) : B.Buf & Bool}:
+    -> {bitvector_9_r.bv9_ok_len(b, UA.BF(t, n), off) == (UA.BF(t, n), Bool.and(b, VRP.PADK(UW.WX(t, x, 2n), 1n, 1))) : B.Buf & Bool}:
   match b:
     case True{}: Gt1BD4B4358D_at(d, t, n, off, x, e, hd, pf, hb)
     case False{}: {==}
@@ -916,7 +929,7 @@ def Gt1BD4B4358D_okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: N
 def Gt1BD4B4358D_ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool}, +len: U32)
-    -> {T.bv9_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 2), VRP.PADK(UW.WX(t, x, 2n), 1n, 1))) : B.Buf & Bool}:
+    -> {bitvector_9_r.bv9_ok(UA.BF(t, n), off, len) == (UA.BF(t, n), Bool.and(U32.is_eq(len, 2), VRP.PADK(UW.WX(t, x, 2n), 1n, 1))) : B.Buf & Bool}:
   Gt1BD4B4358D_okl(d, t, n, off, x, e, hd, pf, hb, U32.is_eq(len, 2))
 
 # every encoding at BitVector[9]: its padding bits clear

@@ -1,7 +1,11 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes32_def_generated.bend as FuluBytes32_d
+import ../../types/FuluBytes32_decode_ssz_generated.bend as FuluBytes32_r
+import ../../types/Fulu_list_uint64_128_decode_ssz_generated.bend as Fulu_list_uint64_128_r
+import ../../types/FuluDataColumnsByRootIdentifier_def_generated.bend as FuluDataColumnsByRootIdentifier_d
+import ../../types/FuluDataColumnsByRootIdentifier_decode_ssz_generated.bend as FuluDataColumnsByRootIdentifier_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -117,7 +121,7 @@ def eoF(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32
 
 # ---- the validator ----------------------------------------------------------------------------
 
-def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {T.DataColumnsByRootIdentifier_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
+def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
   match ok:
     case True{}: {==}
     case False{}: {==}
@@ -125,16 +129,16 @@ def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {T.DataColum
 def okc0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(36, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(SPOw(t, x), 36) == b : Bool})
-    -> {T.DataColumnsByRootIdentifier_c0(b, BF(t, n), off, len, SPOw(t, x)) == (BF(t, n), chk3(True{}, b, CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}:
+    -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_c0(b, BF(t, n), off, len, SPOw(t, x)) == (BF(t, n), chk3(True{}, b, CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +epo = FD.u32alg__eq_of(SPOw(t, x), 36, eb)
       %Equal.sym(U32, SPOw(t, x), 36, epo) :
-        {T.DataColumnsByRootIdentifier_v1(off, len, _, T.l128_u64_ok(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))) : B.Buf & Bool}
-      %Equal.sym(B.Buf & Bool, T.l128_u64_ok(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))),
+        {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_v1(off, len, _, Fulu_list_uint64_128_r.l128_u64_ok(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))) : B.Buf & Bool}
+      %Equal.sym(B.Buf & Bool, Fulu_list_uint64_128_r.l128_u64_ok(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))),
           CH.ok_evalw(d, t, n, JW(x), OWc(off), LLw(len), eoF(d, t, n, x, off, len, eo, hd, hw, pf, ha), hd, hwc(d, t, n, x, off, len, eo, hd, hw, pf, ha), pf)) :
-        {T.DataColumnsByRootIdentifier_v1(off, len, 36, _) == (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))) : B.Buf & Bool}
+        {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_v1(off, len, 36, _) == (BF(t, n), CH.CHKw(t, JW(x), OWc(off), LLw(len))) : B.Buf & Bool}
       c1_id(CH.CHKw(t, JW(x), OWc(off), LLw(len)), BF(t, n), off, len, 36)
 
 def rdpo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
@@ -146,18 +150,18 @@ def rdpo(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
 def okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool, +ea: {U32.is_le(36, len) == a : Bool})
-    -> {T.DataColumnsByRootIdentifier_ok_len(a, BF(t, n), off, len) == (BF(t, n), chk3(a, U32.is_eq(SPOw(t, x), 36), CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}:
+    -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_ok_len(a, BF(t, n), off, len) == (BF(t, n), chk3(a, U32.is_eq(SPOw(t, x), 36), CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 32)), (BF(t, n), SPOw(t, x)), rdpo(d, t, n, x, off, len, eo, hd, hw, pf, ea)) :
-        {T.DataColumnsByRootIdentifier_v0(off, len, _) == (BF(t, n), chk3(True{}, U32.is_eq(SPOw(t, x), 36), CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}
+        {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_v0(off, len, _) == (BF(t, n), chk3(True{}, U32.is_eq(SPOw(t, x), 36), CH.CHKw(t, JW(x), OWc(off), LLw(len)))) : B.Buf & Bool}
       okc0(d, t, n, x, off, len, eo, hd, hw, pf, ea, U32.is_eq(SPOw(t, x), 36), {==})
 
 # The validator on the window returns the buffer and CHKw.
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.DataColumnsByRootIdentifier_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, x, off, len)) : B.Buf & Bool}:
   okl(d, t, n, x, off, len, eo, hd, hw, pf, U32.is_le(36, len), {==})
 
 def ch_a(+a: Bool, +b: Bool, +c: Bool, +h: {chk3(a, b, c) == True{} : Bool}) -> {a == True{} : Bool}:
@@ -177,29 +181,29 @@ def ch_c(+a: Bool, +b: Bool, +c: Bool, +h: {chk3(a, b, c) == True{} : Bool}) -> 
     case True{} False{}: Empty.absurd({c == True{} : Bool}, FD.logic__false_true(h))
     case True{} True{}: h
 
-def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> T.DataColumnsByRootIdentifier: T.DataColumnsByRootIdentifier{T.Bytes32{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}, CH.OBJw(d, t, JW(x), OWc(off), LLw(len))}
+def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier: FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier{FuluBytes32_d.Bytes32{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}, CH.OBJw(d, t, JW(x), OWc(off), LLw(len))}
 
 def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(36, len) == True{} : Bool}, +epo: {SPOw(t, x) == 36 : U32}, +hc: {CH.CHKw(t, JW(x), OWc(off), LLw(len)) == True{} : Bool})
-    -> {T.DataColumnsByRootIdentifier_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.DataColumnsByRootIdentifier}:
+    -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier}:
   %Equal.sym(B.Buf & U32, B.read32(BF(t, n), U32.add(off, 32)), (BF(t, n), SPOw(t, x)), rdpo(d, t, n, x, off, len, eo, hd, hw, pf, ha)) :
-    {T.DataColumnsByRootIdentifier_rd0(off, len, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.DataColumnsByRootIdentifier}
+    {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_rd0(off, len, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier}
   %Equal.sym(U32, SPOw(t, x), 36, epo) :
-    {T.DataColumnsByRootIdentifier_rd1(off, len, _, T.b32_read(BF(t, n), U32.add(off, 0), 32)) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.DataColumnsByRootIdentifier}
-  %Equal.sym(B.Buf & T.Bytes32, T.b32_read(BF(t, n), U32.add(off, 0), 32), (BF(t, n), T.Bytes32{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}),
+    {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_rd1(off, len, _, FuluBytes32_r.b32_read(BF(t, n), U32.add(off, 0), 32)) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier}
+  %Equal.sym(B.Buf & FuluBytes32_d.Bytes32, FuluBytes32_r.b32_read(BF(t, n), U32.add(off, 0), 32), (BF(t, n), FuluBytes32_d.Bytes32{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}),
       VTX.rdx_b32(d, t, n, U32.add(off, 0), x, eoc(d, t, n, x, off, len, eo, hd, hw, pf, 0, 0n, {==}, {==}, ha), FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf,
         roomF(d, t, n, x, off, len, eo, hd, hw, pf, ha, 0n, 32n, {==}))) :
-    {T.DataColumnsByRootIdentifier_rd1(off, len, 36, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.DataColumnsByRootIdentifier}
-  %Equal.sym(B.Buf & O.Words, T.l128_u64_read(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.OBJw(d, t, JW(x), OWc(off), LLw(len))),
+    {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_rd1(off, len, 36, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier}
+  %Equal.sym(B.Buf & O.Words, Fulu_list_uint64_128_r.l128_u64_read(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.OBJw(d, t, JW(x), OWc(off), LLw(len))),
       CH.readw(d, t, n, JW(x), OWc(off), LLw(len), eoF(d, t, n, x, off, len, eo, hd, hw, pf, ha), hd, hwc(d, t, n, x, off, len, eo, hd, hw, pf, ha), pf, hc)) :
-    {T.DataColumnsByRootIdentifier_rd2(off, len, 36, T.Bytes32{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.DataColumnsByRootIdentifier}
+    {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_rd2(off, len, 36, FuluBytes32_d.Bytes32{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}, _) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier}
   {==}
 
 # The reader on the window, when the checks hold.
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {T.DataColumnsByRootIdentifier_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & T.DataColumnsByRootIdentifier}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, x, off, len) == True{} : Bool}) -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_read(BF(t, n), off, len) == (BF(t, n), OBJw(d, t, x, off, len)) : B.Buf & FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier}:
   +a = U32.is_le(36, len)
   +b = U32.is_eq(SPOw(t, x), 36)
   +c = CH.CHKw(t, JW(x), OWc(off), LLw(len))

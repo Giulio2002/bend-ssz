@@ -1,7 +1,12 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBytes96_def_generated.bend as FuluBytes96_d
+import ../../types/FuluBytes96_decode_ssz_generated.bend as FuluBytes96_r
+import ../../types/FuluAggregateAndProof_def_generated.bend as FuluAggregateAndProof_d
+import ../../types/FuluAggregateAndProof_decode_ssz_generated.bend as FuluAggregateAndProof_r
+import ../../types/FuluSignedAggregateAndProof_def_generated.bend as FuluSignedAggregateAndProof_d
+import ../../types/FuluSignedAggregateAndProof_decode_ssz_generated.bend as FuluSignedAggregateAndProof_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -121,7 +126,7 @@ def eoF(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32
 
 # ---- the validator ----------------------------------------------------------------------------
 
-def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {T.SignedAggregateAndProof_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
+def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_c1(ok, buf, off, len, o0) == (buf, ok) : B.Buf & Bool}:
   match ok:
     case True{}: {==}
     case False{}: {==}
@@ -129,35 +134,35 @@ def c1_id(+ok: Bool, buf: B.Buf, +off: U32, +len: U32, +o0: U32) -> {T.SignedAgg
 def okc0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(100, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(SPOw(t, i), 100) == b : Bool})
-    -> {T.SignedAggregateAndProof_c0(b, BF(t, n), off, len, SPOw(t, i)) == (BF(t, n), chk3(True{}, b, CH.CHKw(t, JW(i), OWc(off), LLw(len)))) : B.Buf & Bool}:
+    -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_c0(b, BF(t, n), off, len, SPOw(t, i)) == (BF(t, n), chk3(True{}, b, CH.CHKw(t, JW(i), OWc(off), LLw(len)))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
       +epo = FD.u32alg__eq_of(SPOw(t, i), 100, eb)
       %Equal.sym(U32, SPOw(t, i), 100, epo) :
-        {T.SignedAggregateAndProof_v1(off, len, _, T.AggregateAndProof_ok(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), CH.CHKw(t, JW(i), OWc(off), LLw(len))) : B.Buf & Bool}
-      %Equal.sym(B.Buf & Bool, T.AggregateAndProof_ok(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.CHKw(t, JW(i), OWc(off), LLw(len))),
+        {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_v1(off, len, _, FuluAggregateAndProof_r.AggregateAndProof_ok(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), CH.CHKw(t, JW(i), OWc(off), LLw(len))) : B.Buf & Bool}
+      %Equal.sym(B.Buf & Bool, FuluAggregateAndProof_r.AggregateAndProof_ok(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.CHKw(t, JW(i), OWc(off), LLw(len))),
           CH.ok_evalw(d, t, n, JW(i), OWc(off), LLw(len), eoF(d, t, n, i, off, len, eo, hd, hw, pf, ha), hd, hwc(d, t, n, i, off, len, eo, hd, hw, pf, ha), pf)) :
-        {T.SignedAggregateAndProof_v1(off, len, 100, _) == (BF(t, n), CH.CHKw(t, JW(i), OWc(off), LLw(len))) : B.Buf & Bool}
+        {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_v1(off, len, 100, _) == (BF(t, n), CH.CHKw(t, JW(i), OWc(off), LLw(len))) : B.Buf & Bool}
       c1_id(CH.CHKw(t, JW(i), OWc(off), LLw(len)), BF(t, n), off, len, 100)
 
 def okl(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool, +ea: {U32.is_le(100, len) == a : Bool})
-    -> {T.SignedAggregateAndProof_ok_len(a, BF(t, n), off, len) == (BF(t, n), chk3(a, U32.is_eq(SPOw(t, i), 100), CH.CHKw(t, JW(i), OWc(off), LLw(len)))) : B.Buf & Bool}:
+    -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_ok_len(a, BF(t, n), off, len) == (BF(t, n), chk3(a, U32.is_eq(SPOw(t, i), 100), CH.CHKw(t, JW(i), OWc(off), LLw(len)))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       %Equal.sym(B.Buf & U32, B.read32(VF.BF(t, n), U32.add(off, 0)), (VF.BF(t, n), SPOw(t, i)),
           VF.rd32a(d, t, n, U32.add(off, 0), Nat.add(0n, i), eoc(d, t, n, i, off, len, eo, hd, hw, pf, 0n, 0, {==}, {==}, ea),
             VB.lt32(d, FD.nat__lt_trans(d, 28n, 31n, hd, {==})), hiw(d, t, n, i, off, len, eo, hd, hw, pf, 0n, {==}, ea), pf)) :
-        {T.SignedAggregateAndProof_v0(off, len, _) == (BF(t, n), chk3(True{}, U32.is_eq(SPOw(t, i), 100), CH.CHKw(t, JW(i), OWc(off), LLw(len)))) : B.Buf & Bool}
+        {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_v0(off, len, _) == (BF(t, n), chk3(True{}, U32.is_eq(SPOw(t, i), 100), CH.CHKw(t, JW(i), OWc(off), LLw(len)))) : B.Buf & Bool}
       okc0(d, t, n, i, off, len, eo, hd, hw, pf, ea, U32.is_eq(SPOw(t, i), 100), {==})
 
 # The validator on the window returns the buffer and CHKw.
 def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {T.SignedAggregateAndProof_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, i, off, len)) : B.Buf & Bool}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, i, off, len)) : B.Buf & Bool}:
   okl(d, t, n, i, off, len, eo, hd, hw, pf, U32.is_le(100, len), {==})
 
 def ch_a(+a: Bool, +b: Bool, +c: Bool, +h: {chk3(a, b, c) == True{} : Bool}) -> {a == True{} : Bool}:
@@ -177,31 +182,31 @@ def ch_c(+a: Bool, +b: Bool, +c: Bool, +h: {chk3(a, b, c) == True{} : Bool}) -> 
     case True{} False{}: Empty.absurd({c == True{} : Bool}, FD.logic__false_true(h))
     case True{} True{}: h
 
-def OBJw(+t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32) -> T.SignedAggregateAndProof: T.SignedAggregateAndProof{CH.OBJw(t, JW(i), OWc(off), LLw(len)), T.Bytes96{VB.slot(t, Nat.add(1n, i)), VB.slot(t, Nat.add(2n, i)), VB.slot(t, Nat.add(3n, i)), VB.slot(t, Nat.add(4n, i)), VB.slot(t, Nat.add(5n, i)), VB.slot(t, Nat.add(6n, i)), VB.slot(t, Nat.add(7n, i)), VB.slot(t, Nat.add(8n, i)), VB.slot(t, Nat.add(9n, i)), VB.slot(t, Nat.add(10n, i)), VB.slot(t, Nat.add(11n, i)), VB.slot(t, Nat.add(12n, i)), VB.slot(t, Nat.add(13n, i)), VB.slot(t, Nat.add(14n, i)), VB.slot(t, Nat.add(15n, i)), VB.slot(t, Nat.add(16n, i)), VB.slot(t, Nat.add(17n, i)), VB.slot(t, Nat.add(18n, i)), VB.slot(t, Nat.add(19n, i)), VB.slot(t, Nat.add(20n, i)), VB.slot(t, Nat.add(21n, i)), VB.slot(t, Nat.add(22n, i)), VB.slot(t, Nat.add(23n, i)), VB.slot(t, Nat.add(24n, i))}}
+def OBJw(+t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32) -> FuluSignedAggregateAndProof_d.SignedAggregateAndProof: FuluSignedAggregateAndProof_d.SignedAggregateAndProof{CH.OBJw(t, JW(i), OWc(off), LLw(len)), FuluBytes96_d.Bytes96{VB.slot(t, Nat.add(1n, i)), VB.slot(t, Nat.add(2n, i)), VB.slot(t, Nat.add(3n, i)), VB.slot(t, Nat.add(4n, i)), VB.slot(t, Nat.add(5n, i)), VB.slot(t, Nat.add(6n, i)), VB.slot(t, Nat.add(7n, i)), VB.slot(t, Nat.add(8n, i)), VB.slot(t, Nat.add(9n, i)), VB.slot(t, Nat.add(10n, i)), VB.slot(t, Nat.add(11n, i)), VB.slot(t, Nat.add(12n, i)), VB.slot(t, Nat.add(13n, i)), VB.slot(t, Nat.add(14n, i)), VB.slot(t, Nat.add(15n, i)), VB.slot(t, Nat.add(16n, i)), VB.slot(t, Nat.add(17n, i)), VB.slot(t, Nat.add(18n, i)), VB.slot(t, Nat.add(19n, i)), VB.slot(t, Nat.add(20n, i)), VB.slot(t, Nat.add(21n, i)), VB.slot(t, Nat.add(22n, i)), VB.slot(t, Nat.add(23n, i)), VB.slot(t, Nat.add(24n, i))}}
 
 def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
     +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(100, len) == True{} : Bool}, +epo: {SPOw(t, i) == 100 : U32}, +hc: {CH.CHKw(t, JW(i), OWc(off), LLw(len)) == True{} : Bool})
-    -> {T.SignedAggregateAndProof_read(BF(t, n), off, len) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & T.SignedAggregateAndProof}:
+    -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_read(BF(t, n), off, len) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & FuluSignedAggregateAndProof_d.SignedAggregateAndProof}:
   +hH = hHi(d, t, n, i, off, len, eo, hd, hw, pf, ha)
   %Equal.sym(B.Buf & U32, B.read32(VF.BF(t, n), U32.add(off, 0)), (VF.BF(t, n), SPOw(t, i)),
       VF.rd32a(d, t, n, U32.add(off, 0), Nat.add(0n, i), eoc(d, t, n, i, off, len, eo, hd, hw, pf, 0n, 0, {==}, {==}, ha),
         VB.lt32(d, FD.nat__lt_trans(d, 28n, 31n, hd, {==})), hiw(d, t, n, i, off, len, eo, hd, hw, pf, 0n, {==}, ha), pf)) :
-    {T.SignedAggregateAndProof_rd0(off, len, _) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & T.SignedAggregateAndProof}
+    {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_rd0(off, len, _) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & FuluSignedAggregateAndProof_d.SignedAggregateAndProof}
   %Equal.sym(U32, SPOw(t, i), 100, epo) :
-    {T.SignedAggregateAndProof_rd1(off, len, _, T.AggregateAndProof_read(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & T.SignedAggregateAndProof}
-  %Equal.sym(B.Buf & T.AggregateAndProof, T.AggregateAndProof_read(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.OBJw(t, JW(i), OWc(off), LLw(len))),
+    {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_rd1(off, len, _, FuluAggregateAndProof_r.AggregateAndProof_read(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & FuluSignedAggregateAndProof_d.SignedAggregateAndProof}
+  %Equal.sym(B.Buf & FuluAggregateAndProof_d.AggregateAndProof, FuluAggregateAndProof_r.AggregateAndProof_read(BF(t, n), OWc(off), LLw(len)), (BF(t, n), CH.OBJw(t, JW(i), OWc(off), LLw(len))),
       CH.readw(d, t, n, JW(i), OWc(off), LLw(len), eoF(d, t, n, i, off, len, eo, hd, hw, pf, ha), hd, hwc(d, t, n, i, off, len, eo, hd, hw, pf, ha), pf, hc)) :
-    {T.SignedAggregateAndProof_rd1(off, len, 100, _) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & T.SignedAggregateAndProof}
-  %Equal.sym(B.Buf & T.Bytes96, T.b96_read(BF(t, n), U32.add(off, 4), 96), (BF(t, n), T.Bytes96{VB.slot(t, Nat.add(1n, i)), VB.slot(t, Nat.add(2n, i)), VB.slot(t, Nat.add(3n, i)), VB.slot(t, Nat.add(4n, i)), VB.slot(t, Nat.add(5n, i)), VB.slot(t, Nat.add(6n, i)), VB.slot(t, Nat.add(7n, i)), VB.slot(t, Nat.add(8n, i)), VB.slot(t, Nat.add(9n, i)), VB.slot(t, Nat.add(10n, i)), VB.slot(t, Nat.add(11n, i)), VB.slot(t, Nat.add(12n, i)), VB.slot(t, Nat.add(13n, i)), VB.slot(t, Nat.add(14n, i)), VB.slot(t, Nat.add(15n, i)), VB.slot(t, Nat.add(16n, i)), VB.slot(t, Nat.add(17n, i)), VB.slot(t, Nat.add(18n, i)), VB.slot(t, Nat.add(19n, i)), VB.slot(t, Nat.add(20n, i)), VB.slot(t, Nat.add(21n, i)), VB.slot(t, Nat.add(22n, i)), VB.slot(t, Nat.add(23n, i)), VB.slot(t, Nat.add(24n, i))}),
+    {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_rd1(off, len, 100, _) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & FuluSignedAggregateAndProof_d.SignedAggregateAndProof}
+  %Equal.sym(B.Buf & FuluBytes96_d.Bytes96, FuluBytes96_r.b96_read(BF(t, n), U32.add(off, 4), 96), (BF(t, n), FuluBytes96_d.Bytes96{VB.slot(t, Nat.add(1n, i)), VB.slot(t, Nat.add(2n, i)), VB.slot(t, Nat.add(3n, i)), VB.slot(t, Nat.add(4n, i)), VB.slot(t, Nat.add(5n, i)), VB.slot(t, Nat.add(6n, i)), VB.slot(t, Nat.add(7n, i)), VB.slot(t, Nat.add(8n, i)), VB.slot(t, Nat.add(9n, i)), VB.slot(t, Nat.add(10n, i)), VB.slot(t, Nat.add(11n, i)), VB.slot(t, Nat.add(12n, i)), VB.slot(t, Nat.add(13n, i)), VB.slot(t, Nat.add(14n, i)), VB.slot(t, Nat.add(15n, i)), VB.slot(t, Nat.add(16n, i)), VB.slot(t, Nat.add(17n, i)), VB.slot(t, Nat.add(18n, i)), VB.slot(t, Nat.add(19n, i)), VB.slot(t, Nat.add(20n, i)), VB.slot(t, Nat.add(21n, i)), VB.slot(t, Nat.add(22n, i)), VB.slot(t, Nat.add(23n, i)), VB.slot(t, Nat.add(24n, i))}),
       VT.rd_b96(d, t, n, U32.add(off, 4), Nat.add(1n, i), eoc(d, t, n, i, off, len, eo, hd, hw, pf, 1n, 4, {==}, {==}, ha), FD.nat__lt_trans(d, 28n, 29n, hd, {==}), pf, FD.nat__le_trans(Nat.add(24n, Nat.add(1n, i)), Nat.add(25n, i), VB.pw(d), Order.left_below_sum(0n, Nat.add(24n, Nat.add(1n, i))), hH))) :
-    {T.SignedAggregateAndProof_rd2(off, len, 100, CH.OBJw(t, JW(i), OWc(off), LLw(len)), _) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & T.SignedAggregateAndProof}
+    {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_rd2(off, len, 100, CH.OBJw(t, JW(i), OWc(off), LLw(len)), _) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & FuluSignedAggregateAndProof_d.SignedAggregateAndProof}
   {==}
 
 # The reader on the window, when the checks hold.
 def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
     +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
-    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, i, off, len) == True{} : Bool}) -> {T.SignedAggregateAndProof_read(BF(t, n), off, len) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & T.SignedAggregateAndProof}:
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, i, off, len) == True{} : Bool}) -> {FuluSignedAggregateAndProof_r.SignedAggregateAndProof_read(BF(t, n), off, len) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & FuluSignedAggregateAndProof_d.SignedAggregateAndProof}:
   +a = U32.is_le(100, len)
   +b = U32.is_eq(SPOw(t, i), 100)
   +c = CH.CHKw(t, JW(i), OWc(off), LLw(len))

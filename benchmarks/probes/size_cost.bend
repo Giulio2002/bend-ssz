@@ -2,7 +2,9 @@ import Base
 import ../../src/buffer.bend as B
 import ../../src/digest.bend as D
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/FuluBeaconBlockBody_def_generated.bend as FuluBeaconBlockBody_d
+import ../../types/FuluBeaconBlockBody_decode_ssz_generated.bend as FuluBeaconBlockBody_r
+import ../../types/FuluBeaconBlockBody_encode_ssz_generated.bend as FuluBeaconBlockBody_e
 import ../compact/objio.bend as IOx
 
 # How much of an encode is the size traversal that precedes the write?
@@ -21,62 +23,62 @@ def out_last(pair: B.Buf & U32) -> U32:
   (b, +n) = pair
   IOx.word_out(b, n)
 
-def sloop(+k: Nat, +acc: U32, pair: T.BeaconBlockBody & U32) -> T.BeaconBlockBody & U32:
+def sloop(+k: Nat, +acc: U32, pair: FuluBeaconBlockBody_d.BeaconBlockBody & U32) -> FuluBeaconBlockBody_d.BeaconBlockBody & U32:
   match k:
     case 0n:
       (o, +n) = pair
       (o, (acc .^. n : U32))
     case 1n+p:
       (o, +n) = pair
-      sloop(p, (acc .^. n : U32), T.BeaconBlockBody_size(o))
+      sloop(p, (acc .^. n : U32), FuluBeaconBlockBody_e.BeaconBlockBody_size(o))
 
-def eloop(+k: Nat, +acc: U32, pair: T.BeaconBlockBody & B.Buf) -> T.BeaconBlockBody & U32:
+def eloop(+k: Nat, +acc: U32, pair: FuluBeaconBlockBody_d.BeaconBlockBody & B.Buf) -> FuluBeaconBlockBody_d.BeaconBlockBody & U32:
   match k:
     case 0n:
       (o, out) = pair
       (o, (acc .^. out_last(B.size(out)) : U32))
     case 1n+p:
       (o, out) = pair
-      eloop(p, (acc .^. out_last(B.size(out)) : U32), T.BeaconBlockBody_encode(o))
+      eloop(p, (acc .^. out_last(B.size(out)) : U32), FuluBeaconBlockBody_e.BeaconBlockBody_encode(o))
 
-def keep(pair: T.BeaconBlockBody & U32) -> U32:
+def keep(pair: FuluBeaconBlockBody_d.BeaconBlockBody & U32) -> U32:
   (o, +x) = pair
   x
 
-def report(+t0: Nat, pair: T.BeaconBlockBody & U32) -> IO(Unit):
+def report(+t0: Nat, pair: FuluBeaconBlockBody_d.BeaconBlockBody & U32) -> IO(Unit):
   (o, +acc) = pair
   do IO<Unit>:
     t1 : Nat <- IO.now()
     IO.print("MS=" ++ Nat.show(Nat.sub(t1, t0)) ++ " ACC=" ++ U32.show(acc)
-      ++ " KEEP=" ++ U32.show(keep(T.BeaconBlockBody_force(o))))
+      ++ " KEEP=" ++ U32.show(keep(FuluBeaconBlockBody_d.BeaconBlockBody_force(o))))
 
-def run_size(+ops: U32, o: T.BeaconBlockBody) -> IO(Unit):
+def run_size(+ops: U32, o: FuluBeaconBlockBody_d.BeaconBlockBody) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    report(t0, sloop(U32.to_nat(ops), 0, T.BeaconBlockBody_size(o)))
+    report(t0, sloop(U32.to_nat(ops), 0, FuluBeaconBlockBody_e.BeaconBlockBody_size(o)))
 
-def run_enc(+ops: U32, o: T.BeaconBlockBody) -> IO(Unit):
+def run_enc(+ops: U32, o: FuluBeaconBlockBody_d.BeaconBlockBody) -> IO(Unit):
   do IO<Unit>:
     t0 : Nat <- IO.now()
-    report(t0, eloop(U32.to_nat(ops), 0, T.BeaconBlockBody_encode(o)))
+    report(t0, eloop(U32.to_nat(ops), 0, FuluBeaconBlockBody_e.BeaconBlockBody_encode(o)))
 
-def pick_run(+mode: U32, +ops: U32, o: T.BeaconBlockBody) -> IO(Unit):
+def pick_run(+mode: U32, +ops: U32, o: FuluBeaconBlockBody_d.BeaconBlockBody) -> IO(Unit):
   match mode:
     case 0: run_size(ops, o)
     case _: run_enc(ops, o)
 
-def with_obj(+mode: U32, +ops: U32, m: Maybe<&1, T.BeaconBlockBody>) -> IO(Unit):
+def with_obj(+mode: U32, +ops: U32, m: Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>) -> IO(Unit):
   match m:
     case None{}: IO.die(Unit, 1, "decode rejected")
     case Some{o}: pick_run(mode, ops, o)
 
-def decoded(+mode: U32, +ops: U32, pair: B.Buf & Maybe<&1, T.BeaconBlockBody>) -> IO(Unit):
+def decoded(+mode: U32, +ops: U32, pair: B.Buf & Maybe<&1, FuluBeaconBlockBody_d.BeaconBlockBody>) -> IO(Unit):
   (buf, m) = pair
   with_obj(mode, ops, m)
 
 def start(+mode: U32, +ops: U32, pair: B.Buf & U32) -> IO(Unit):
   (buf, +size) = pair
-  decoded(mode, ops, T.BeaconBlockBody_decode(buf, size))
+  decoded(mode, ops, FuluBeaconBlockBody_r.BeaconBlockBody_decode(buf, size))
 
 def main() -> IO(Unit):
   do IO<Unit>:

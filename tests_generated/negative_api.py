@@ -27,6 +27,8 @@ import sys
 import json
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'codegen'))
+import runtime_refs as RR  # noqa: E402
 os.chdir(ROOT)
 BEND = '/Users/monkeair/.bend/bin/bend'
 OUT = ROOT / 'build/negative'
@@ -98,7 +100,8 @@ def main():
     results, allok = [], True
     for name, must_compile, body in CASES:
         src = OUT / f'{name}.bend'
-        src.write_text(HEAD + body.lstrip())
+        # the runtime split: the program imports the per-name files it names (a missing symbol: its owner's file)
+        src.write_text(RR.rewire(HEAD + body.lstrip(), missing='owner'))
         r = subprocess.run([BEND, str(src.relative_to(ROOT))], cwd=ROOT, capture_output=True, text=True,
                            env={**os.environ, 'BEND_NO_TELEMETRY': '1', 'BUN_JSC_forceRAMSize': '3000000000'})
         compiled = r.returncode == 0

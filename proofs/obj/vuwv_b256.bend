@@ -1,6 +1,6 @@
 import Base
 import ../../src/obj.bend as O
-import ../../types/fulu_obj.bend as T
+import ../../types/Fulu_bytevec_256_encode_ssz_generated.bend as Fulu_bytevec_256_e
 import ../compact/found.bend as FD
 import ../compact/arith.bend as A
 import ../../proofs/nat_order.bend as Order
@@ -59,7 +59,7 @@ def wl_b256(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, dB
 # Its storage check holds on a valid storage tree (the runtime's T.b256_valid).
 def b256_valid_ok(+dB: Nat, +TB: FD.array__Tree<U32>, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
     +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(64n, VB.pw(dB)) == True{} : Bool})
-    -> {T.b256_valid(O.Words{FD.array__thaw(U32, TB), 256}) == (O.Words{FD.array__thaw(U32, TB), 256}, True{}) : O.Words & Bool}:
+    -> {Fulu_bytevec_256_e.b256_valid(O.Words{FD.array__thaw(U32, TB), 256}) == (O.Words{FD.array__thaw(U32, TB), 256}, True{}) : O.Words & Bool}:
   VBE.words_ok_b(dB, TB, 256, 256, 256, 9n, pfB, hdB, {==}, {==}, {==}, {==}, hrB, {==}, 1, {==})
 
 def PX_b256(+r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +TB: FD.array__Tree<U32>) -> FD.array__Tree<U32>:
@@ -85,16 +85,16 @@ def b256_any(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: 
     +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +pfB: {FD.array__perfect(U32, dB, TB) == True{} : Bool},
     +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool}, +hrB: {Nat.is_le(64n, VB.pw(dB)) == True{} : Bool},
     +hz: {VS.bt(256n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(256n) : +List<U32>})
-    -> {T.b256_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 256}) == (FD.array__thaw(U32, PX_b256(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}:
+    -> {Fulu_bytevec_256_e.b256_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 256}) == (FD.array__thaw(U32, PX_b256(r, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}:
   match r:
     case 0n:
-      %wl_b256(dB, TB, pfB, hrB) : {T.b256_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 256}) == (FD.array__thaw(U32, VF.updv(_, dd, D, q)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}
+      %wl_b256(dB, TB, pfB, hrB) : {Fulu_bytevec_256_e.b256_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 256}) == (FD.array__thaw(U32, VF.updv(_, dd, D, q)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}
       VW.wput_b256(dd, D, X, q, FD.logic__subst(Nat, z => {U32.to_nat(X) == z : Nat}, Nat.add(A.quad(q), 0n), A.quad(q), FD.nat__add_zero(A.quad(q)), e), hd, pf,
         FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(q, 64n), Nat.add(64n, q), FD.nat__add_comm(q, 64n), hl), dB, TB, pfB, hdB, hrB)
     case 1n: UK1.wputu_b256(dd, D, X, q, dB, TB, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 64n, VB.pw(dd), hl), pf, pfB, hdB, hrB, hz)
     case 2n: UK2.wputu_b256(dd, D, X, q, dB, TB, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 64n, VB.pw(dd), hl), pf, pfB, hdB, hrB, hz)
     case 3n: UK3.wputu_b256(dd, D, X, q, dB, TB, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), UWD.le_q(q, 64n, VB.pw(dd), hl), pf, pfB, hdB, hrB, hz)
-    case 4n+ +t: Empty.absurd({T.b256_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 256}) == (FD.array__thaw(U32, PX_b256(4n+t, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}, FD.nat__lt_zero_absurd(t, hr))
+    case 4n+ +t: Empty.absurd({Fulu_bytevec_256_e.b256_putk(FD.array__thaw(U32, D), X, O.Words{FD.array__thaw(U32, TB), 256}) == (FD.array__thaw(U32, PX_b256(4n+t, dd, D, q, TB)), (O.Words{FD.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}, FD.nat__lt_zero_absurd(t, hr))
 
 # Its bytes: the 256 bytes of TB's first 64 words at X, when the bytes there were zero.
 def b256_any_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +dB: Nat, +TB: FD.array__Tree<U32>, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},

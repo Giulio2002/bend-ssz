@@ -952,6 +952,8 @@ def main():
         cP = Child(IP, 'big_var_codec_AggregateAndProof_enc.bend', 'C', 344, 'C.eSX', 'C.size_eval', False)
         t2, _ = parent_text('SignedAggregateAndProof', 's', cP, SAAP_DOC)
         out[OBJ / 'big_var_codec_SignedAggregateAndProof_enc.bend'] = t2
+    import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

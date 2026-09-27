@@ -1,7 +1,7 @@
 import Base
 import ../../src/buffer.bend as B
 import ../../src/obj.bend as O
-import ../../types/generic_obj.bend as T
+import ../../types/proglist_uint8_decode_ssz_generated.bend as proglist_uint8_r
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
 import ../compact/found.bend as FD
@@ -47,7 +47,7 @@ def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: W.VALw(t, 0n, n)
 # The validator returns the buffer and CHK(t, n).
 def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
-    -> {T.pl_u8_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
+    -> {proglist_uint8_r.pl_u8_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
   W.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
 
 # Every buffer the validator accepts decodes to OBJ(d, t, n).
@@ -59,14 +59,14 @@ law decode_accept:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
-  {T.GtDE4B86A990_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
+  {proglist_uint8_r.GtDE4B86A990_decode(BF(t, n), n) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
 def decode_accept(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.pl_u8_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.GtDE4B86A990_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(B.Buf & Bool, proglist_uint8_r.pl_u8_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {proglist_uint8_r.GtDE4B86A990_built(n, _) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
-    {T.GtDE4B86A990_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
-  %Equal.sym(B.Buf & O.Words, T.pl_u8_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
-    {T.GtDE4B86A990_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
+    {proglist_uint8_r.GtDE4B86A990_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(B.Buf & O.Words, proglist_uint8_r.pl_u8_read(BF(t, n), 0, n), (BF(t, n), OBJ(d, t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+    {proglist_uint8_r.GtDE4B86A990_some(_) == (BF(t, n), Some{OBJ(d, t, n)}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
 # When the validator refuses, the decoder returns None and the buffer.
@@ -78,12 +78,12 @@ law decode_none:
   for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
-  {T.GtDE4B86A990_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
+  {proglist_uint8_r.GtDE4B86A990_decode(BF(t, n), n) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
 def decode_none(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(B.Buf & Bool, T.pl_u8_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
-    {T.GtDE4B86A990_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
+  %Equal.sym(B.Buf & Bool, proglist_uint8_r.pl_u8_ok(BF(t, n), 0, n), (BF(t, n), CHK(t, n)), ok_eval(d, t, n, pf, hd, hn)) :
+    {proglist_uint8_r.GtDE4B86A990_built(n, _) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
   %Equal.sym(Bool, CHK(t, n), False{}, hchk) :
-    {T.GtDE4B86A990_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
+    {proglist_uint8_r.GtDE4B86A990_built(n, (BF(t, n), _)) == (BF(t, n), None{}) : B.Buf & Maybe<&1, O.Words>}
   {==}
 
 # The bytes of every buffer the validator accepts are the spec encoding of VAL(t, n).

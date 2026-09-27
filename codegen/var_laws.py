@@ -47,6 +47,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import generate as G  # noqa: E402
 import schema  # noqa: E402
 import spec_laws as SL  # noqa: E402
+import runtime_refs as RR  # noqa: E402  the runtime split: the monoliths' text, the split files' imports
 
 ROOT = Path(__file__).resolve().parents[1]
 FAMILY = ['DataColumnsByRootIdentifier', 'IndexedAttestation']
@@ -365,7 +366,7 @@ def main():
     g = G.Gen()
     for n, t in names.items():
         g.shape(t)
-    src = (ROOT / 'types/fulu_obj.bend').read_text()
+    src = RR.mono_text('fulu')
     no_big = '--no-big' in sys.argv
     fts = []
     xs = []
@@ -408,6 +409,7 @@ def main():
             and not q.name.startswith(multi) and not foreign(q)]
     orphans = sorted(str(q.relative_to(ROOT)) for q in mine if q not in out
                      and not (no_big and q.name.startswith('big_')))
+    out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, text in out.items() if not p.exists() or p.read_text() != text]
         if stale or orphans:
