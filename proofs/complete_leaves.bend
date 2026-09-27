@@ -20,7 +20,6 @@ import ../spec/byte_list.bend as SByteList
 import ../src/bytes.bend as IBytes
 import ../src/byte_list.bend as IByteList
 import ./bytes.bend as ByteVectorLaws
-import ./byte_list.bend as ByteListLaws
 import ../spec/nat_bytes.bend as SLength
 import ../spec/bitfields.bend as SBits
 import ../src/bitfields.bend as IBits

@@ -2,9 +2,8 @@ import Base
 import ../../types/schema.bend as S
 import ../../spec/decoding_relation.bend as Decoding
 import ../../spec/fulu_schemas.bend as Spec
-import ../../spec/type_legality.bend as TL
-import ../decode_complete.bend as E
-import ../../proofs/fulu_legality.bend as Legal
+import ../../src/schema.bend as I
+import ../decode_unique.bend as E
 import ../../proofs/compact/found.bend as F
 import ../../types/primitive.bend as P
 import ../obj/spec_fixed.bend as SF

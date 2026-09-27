@@ -2,9 +2,8 @@ import Base
 import ../../types/schema.bend as S
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/generic_specs.bend as Spec
-import ../../spec/type_legality.bend as TL
-import ../decode_complete.bend as E
-import ../type_validator_soundness.bend as VS
+import ../../src/schema.bend as I
+import ../decode_unique.bend as E
 import ../../proofs/compact/found.bend as F
 import ../../types/primitive.bend as P
 import ../obj/spec_fixed.bend as SF
