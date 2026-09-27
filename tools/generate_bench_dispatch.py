@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = json.loads((ROOT / 'automation/performance_contract.json').read_text())
+CONTRACT = json.loads((ROOT / 'benchmarks/performance_contract.json').read_text())
 NAMES = sorted({op.rsplit('.', 1)[0] for op in CONTRACT['required_operations']})
 DEFS = set(re.findall(r'^def (\w+)\(\)', (ROOT / 'spec/fulu_schemas.bend').read_text(), re.M))
 

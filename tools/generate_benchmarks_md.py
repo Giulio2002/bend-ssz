@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = json.loads((ROOT / 'automation/performance_contract.json').read_text())
+CONTRACT = json.loads((ROOT / 'benchmarks/performance_contract.json').read_text())
 
 
 def limit_for(operation):
@@ -30,9 +30,6 @@ def main():
     add('python3 benchmarks/run.py --report build/performance/report.json')
     add('python3 tools/generate_benchmarks_md.py build/performance/report.json')
     add('```')
-    add('')
-    add('The frozen operator gate that reads the same report is')
-    add('`python3 automation/performance_gate.py`.')
     add('')
     add('## Method')
     add('')
