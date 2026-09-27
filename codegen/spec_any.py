@@ -318,12 +318,15 @@ def outputs(ROOT, gen=None):
     """The spec_gany_<k> and spec_wany_<k> files; gen (path -> text) is the spec_laws run's
     output, read in place of the files on disk (so --check sees one consistent run)."""
     gen = gen or {}
-    files = lambda pat: sorted(set((ROOT / 'proofs/obj').glob(pat)) | {q for q in gen if q.match(pat)})
+    # the run's own files when it has any of the pattern (the files on disk may be a former layout);
+    # in_order: in the run's order (the per-name codec files: the names' order)
+    files = lambda pat, in_order=False: ([q for q in gen if q.match(pat)] if in_order else sorted(q for q in gen if q.match(pat))) \
+        or sorted((ROOT / 'proofs/obj').glob(pat))
     text = lambda q: gen[q] if q in gen else q.read_text()
     gnames = RG.generic_names()
     gsrc = RR.mono_text('generic')
     covered = []
-    for f in files('spec_gcodec_*.bend'):
+    for f in files('spec_gcodec_*.bend', True):
         covered += re.findall(r'^# ---- (\w+) \(\d+ bytes\) ----$', text(f), re.M)
     covered += [p.stem[len('spec_garr_'):] for p in files('spec_garr_Gt*.bend')]
     picked = []

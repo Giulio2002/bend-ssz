@@ -4,12 +4,9 @@ import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
-import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes4_def_generated.bend as FuluBytes4_d
 import ../types/FuluVersion_encode_ssz_generated.bend as FuluVersion_e
 import ../types/FuluVersion_hashtreeroot_generated.bend as FuluVersion_h
-import ../types/FuluVersionedHash_encode_ssz_generated.bend as FuluVersionedHash_e
-import ../types/FuluVersionedHash_hashtreeroot_generated.bend as FuluVersionedHash_h
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
@@ -18,7 +15,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_1.bend as M0
+import ../proofs/obj/spec_codec_Version.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -38,18 +35,4 @@ def FuluVersion_e2e_encode(+o: FuluBytes4_d.Bytes4) -> {Some{E.obytes(FuluVersio
 def FuluVersion_e2e_root(h: B.Buf, +o: FuluBytes4_d.Bytes4) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluVersion_h.Version_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.Version(), M1.v_b4(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.Version(), M1.v_b4(o), VS.public_sound(Spec.Version(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluVersion_h.Version_hash_tree_root(h, o))),
     M2.rv_b4(o), M1.Version_root_correct(h, o))
-
-# FuluVersionedHash (VersionedHash)
-def FuluVersionedHash_e2e_encode(+o: FuluBytes32_d.Bytes32) -> {Some{E.obytes(FuluVersionedHash_e.VersionedHash_encode(o))} == API.serialize(Spec.VersionedHash(), M1.v_b32(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluVersionedHash_e.VersionedHash_encode(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])}, API.serialize(Spec.VersionedHash(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluVersionedHash_e.VersionedHash_encode(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), 0, 8), (FuluVersionedHash_e.VersionedHash_encode(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])), M0.VersionedHash_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.VersionedHash(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.VersionedHash(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Encoding.encoding_for_legal_type(Spec.VersionedHash(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7])},
-            E.serialize_legal(Spec.VersionedHash(), M1.v_b32(FuluBytes32_d.Bytes32{x0, x1, x2, x3, x4, x5, x6, x7}), VS.public_sound(Spec.VersionedHash(), {==})), M0.VersionedHash_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7))))
-
-def FuluVersionedHash_e2e_root(h: B.Buf, +o: FuluBytes32_d.Bytes32) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluVersionedHash_h.VersionedHash_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.VersionedHash(), M1.v_b32(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.VersionedHash(), M1.v_b32(o), VS.public_sound(Spec.VersionedHash(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluVersionedHash_h.VersionedHash_hash_tree_root(h, o))),
-    M2.rv_b32(o), M1.VersionedHash_root_correct(h, o))
 

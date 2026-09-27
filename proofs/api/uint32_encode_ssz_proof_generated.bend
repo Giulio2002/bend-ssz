@@ -10,7 +10,7 @@ import ../../spec/decoding_relation.bend as P0_Decoding
 import ../../spec/fulu_schemas.bend as P0_Spec
 import ../obj/spec_fixed.bend as P0_F
 import ../obj/spec_bits.bend as P0_FB
-import ../obj/spec_codec_0.bend as P0_PRV
+import ../obj/spec_codec_uint32.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../obj/codec_0.bend as P1_PRV
@@ -26,7 +26,7 @@ import ../../spec/decoding_relation.bend as P3_Decoding
 import ../obj/generic_specs.bend as P3_Spec
 import ../obj/spec_fixed.bend as P3_F
 import ../obj/spec_bits.bend as P3_FB
-import ../obj/spec_gcodec_3.bend as P3_PRV
+import ../obj/spec_gcodec_Gt7B8507E2C2.bend as P3_PRV
 import ../../src/buffer.bend as P4_B
 import ../../src/obj.bend as P4_O
 import ../obj/gcodec_0.bend as P4_PRV

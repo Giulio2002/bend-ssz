@@ -47,7 +47,8 @@ def wh(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool})
   +epo = FD.u32alg__eq_of(DC.SPO(t), 36, DC.chk_b(a, b, c, hchk))
   FD.logic__subst(U32, z => {DC.whole(U32.sub(n, z)) == True{} : Bool}, DC.SPO(t), 36, epo, DC.chk_c(a, b, c, hchk))
 
-def vv(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_DataColumnsByRootIdentifier(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}:
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_DataColumnsByRootIdentifier(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}:
   Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{S.BytesValue{F.limbs([VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)])}, S.Items{z, S.EmptyItems{}}}}, UL.uview(O.Words{FD.array__thaw(U32, DC.MM(t, n)), DC.LL(n)}),
     S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))}, U.uvw(DC.MM(t, n), DC.LL(n), DC.CQ(n), cnt(n, wh(t, n, hchk))))
 
@@ -106,7 +107,7 @@ def d_v(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n
     case True{}:
       %Equal.sym(Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, Pair.snd(B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{DC.OBJ(TT(bs, n), n)}, d_acc(bs, n, hn, hd, hS, ec)) : {mv(_) == API.deserialize(Spec.DataColumnsByRootIdentifier(), bs) : Maybe<&2, S.Value>}
       %Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.DataColumnsByRootIdentifier(), bs), Some{DC.VAL(TT(bs, n), n)}, a_acc(bs, n, hn, hd, hS, ec)) : {mv(Some{DC.OBJ(TT(bs, n), n)}) == _ : Maybe<&2, S.Value>}
-      Equal.cong(S.Value, Maybe<&2, S.Value>, z => Some{z}, RT.v_DataColumnsByRootIdentifier(DC.OBJ(TT(bs, n), n)), DC.VAL(TT(bs, n), n), vv(TT(bs, n), n, ec))
+      Equal.cong(S.Value, Maybe<&2, S.Value>, z => Some{z}, RT.v_DataColumnsByRootIdentifier(DC.OBJ(TT(bs, n), n)), DC.VAL(TT(bs, n), n), vv(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), 28n, 29n, C.cap_le(n, 28n, {==}, hS), {==}), C.cap_q(n, 28n, {==}, hS), ec))
 
 def d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(28n))) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(TT(bs, n), n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}) -> {API.deserialize(Spec.DataColumnsByRootIdentifier(), bs) == None{} : Maybe<&2, S.Value>}:
   match c:
