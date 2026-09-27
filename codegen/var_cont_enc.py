@@ -1858,6 +1858,7 @@ def iface_text(C, generic=False):
     for n, t in names.items():
         g.shape(t)
     L, K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJ, OBJF, OP, OA, HP, HA, SZC = module_text(g, names, C)
+    RECF[C] = (OP, OA)
     LP = putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, HP, HA, SZC)
     txt = '\n'.join(LP)
     ENCCB = re.search(r'^def ENCC\(.*?\) -> \+List<U32>: VCN\.CAT\((\[.*\])\)$', txt, re.M).group(1)
@@ -2597,7 +2598,10 @@ def iface_full(C, generic=False):
                         'def PB(-A: Data, -B: Data, +p: DK.P2(A, B)) -> B:', '  (+a, +b) = p', '  b',
                         'def and_l(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {a == True{} : Bool}: FD.logic__and_left(a, b, h)',
                         'def and_r(+a: Bool, +b: Bool, +h: {Bool.and(a, b) == True{} : Bool}) -> {b == True{} : Bool}: FD.logic__and_right(a, b, h)']
-    return bigify(C, generic, '\n'.join(head) + '\n' + body)
+    text = bigify(C, generic, '\n'.join(head) + '\n' + body)
+    if RECORD and big_sizes(C, generic):
+        text = rm_iface(text, *RECF[C])
+    return text
 
 
 HEAD = ['import Base', 'import ../../src/obj.bend as O', 'import ../../src/primitives.bend as I', 'import ../../types/fulu_obj.bend as T',
@@ -2626,6 +2630,66 @@ def gfile_c(C):
     return ROOT / f'proofs/obj/big_encx_{C}.bend'
 
 
+RECF = {}           # container -> (OP, OA), for recordize
+
+
+def rm_iface(text, OP, OA):
+    """The interface over the writer's record K.KW (recordize): the mirror MW wraps the record (MW{wR: K.KW}), so a
+    match on MW keeps ENC(m), VAL(m) .. stuck for a variable m (the laws' types hold List.length(&2, ..) /
+    Maybe<&2, ..>, which the checker compares by evaluation), while inside a case the record is a variable: the
+    writer's terms over it stay small (F_<f>(wR)) and compare syntactically; its lemmas take the record too."""
+    OAS = ', '.join(OA)
+    PAT = ', '.join('+' + x for x in OA)
+    fre = re.compile(r'(?<![\w.+"])(' + '|'.join(sorted(OA, key=len, reverse=True)) + r')(?![\w"])')
+    idx = [mm.start() for mm in re.finditer(r'^(def|law|type) ', text, re.M)] + [len(text)]
+    parts = [text[:idx[0]]]
+    for j in range(len(idx) - 1):
+        b = text[idx[j]:idx[j + 1]]
+        if b.startswith('type MW is Data:'):
+            b = f'type MW is Data:\n  MW{{{RV}: K.KW}}\n\n'
+        elif f'MW{{{PAT}}}' in b:
+            b = b.replace(f'MW{{{PAT}}}', f'MW{{+{RV}}}').replace(f'K.KW{{{OAS}}}', RV).replace(OAS, RV)
+            b = fre.sub(lambda mm: f'K.F_{mm.group(1)}({RV})', b)
+        parts.append(b)
+    return recordize(''.join(parts), OP, OA, qual='K.')
+
+
+RECORD = True       # a big container's fields threaded as one record KW (recordize)
+RV = 'wR'           # the record's variable
+
+
+def rec_decl(OP, qual=''):
+    """The record KW of the container's fields and its projections F_<f> (qual: the writer's alias from outside)."""
+    fs = [(p.split(':')[0].strip().lstrip('+'), p.split(':', 1)[1].strip()) for p in OP]
+    pat = ', '.join(f'+{f}' for f, _ in fs)
+    out = ['# ---- the container\'s fields as one record (its lemmas take it whole: a field is F_<f>(w)) ----',
+           'type KW is Data:', '  KW{' + ', '.join(f'{f}: {t}' for f, t in fs) + '}', '']
+    for f, t in fs:
+        out.append(f'def F_{f}({RV}: KW) -> {t}:\n  match {RV}:\n    case KW{{{pat}}}: {f}')
+    return '\n'.join(out) + '\n'
+
+
+def recordize(text, OP, OA, qual=''):
+    """In each def over the fields (their parameter list OPS): OPS -> +wR: KW, their argument lists (OAS) -> wR,
+    every other field -> F_<f>(wR). Everything is then generic in one record variable (no field list is repeated
+    in a statement); a def binding some fields itself keeps them."""
+    OPS, OAS = ', '.join(OP), ', '.join(OA)
+    fre = re.compile(r'(?<![\w.+"])(' + '|'.join(sorted(OA, key=len, reverse=True)) + r')(?![\w"])')
+    idx = [m.start() for m in re.finditer(r'^(def|law|type) ', text, re.M)] + [len(text)]
+    parts = [text[:idx[0]]]
+    for j in range(len(idx) - 1):
+        b = text[idx[j]:idx[j + 1]]
+        if OPS in b:
+            b = b.replace(OPS, f'+{RV}: {qual}KW').replace(OAS, RV)
+            b = fre.sub(lambda mm: f'{qual}F_{mm.group(1)}({RV})', b)
+        parts.append(b)
+    text = ''.join(parts)
+    if not qual:
+        i = text.index('\ndef ')
+        text = text[:i] + '\n' + rec_decl(OP) + text[i:]
+    return text
+
+
 def full_text(C, generic=False):
     global SRC, SRC_FILE
     if generic:
@@ -2641,6 +2705,7 @@ def full_text(C, generic=False):
     for n, t in names.items():
         g.shape(t)
     L, K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJ, OBJF, OP, OA, HP, HA, SZC = module_text(g, names, C)
+    RECF[C] = (OP, OA)
     L += putx_text(K, events, pieces, fidx, vidx, var, ks_all, PT, FS, OBJF, OP, OA, HP, HA, SZC)
     mods = []
     for lf in K.leaves.values():
@@ -2674,7 +2739,10 @@ def putk_bridge({OPS_}, +dd: Nat, +D: {TR}, +X: U32, +q: Nat, +r: Nat, +h: RTC({
     -> {{T.{K.p}_putk(FD.array__thaw(U32, D), X, OBJC({OAS_})) == (FD.array__thaw(U32, PUTC({MA_})), (OBJC({OAS_}), SZC({OAS_}))) : Array<U32> & (T.{C} & U32)}}:
   h''')
     L.append(pfc_text(K, events, OP, OA, C))
-    return bigify(C, generic, '\n'.join(head) + '\n' + '\n'.join(L) + '\n')
+    text = bigify(C, generic, '\n'.join(head) + '\n' + '\n'.join(L) + '\n')
+    if RECORD and big_sizes(C, generic):
+        text = recordize(text, OP, OA)
+    return text
 
 
 def has_big(C, generic=False):
