@@ -649,3 +649,77 @@ def wdr_upd(j, L, k, v, h):
     case 1n+ +p Nil{} _: {==}
     case 1n+ +p Con{+x, +t} 0n: {==}
     case 1n+ +p Con{+x, +t} 1n+ +q: wdr_upd(p, t, q, v, h)
+
+# ---- the object API's input limit -----------------------------------------------------------
+# NMAX = 2^32 - 32: the largest input length n whose size arithmetic does not wrap a U32 (the
+# decoders' list storage ((n + 31) >> 5) 8 + 8 words, O.depth_for / O.zeros_for; B.capacity's
+# (n + 3) >> 2 and every offset sum of a validated window stay below it). UMAX = 2^32 - 1 = NMAX + 31.
+# The decode laws take n <= NMAX as the U32 comparison U32.is_le(n, NMAX()), and trees of depth d < 31
+# (B.capacity(NMAX) = 30). Both constants are only ever compared, never unfolded in unary.
+def NMAX() -> U32: 4294967264
+def UMAX() -> U32: 4294967295
+
+def e_umax() -> {Nat.add(31n, U32.to_nat(NMAX())) == U32.to_nat(UMAX()) : Nat}: {==}
+
+def le_u32n(+a: U32, +b: U32) -> {U32.is_le(a, b) == Nat.is_le(U32.to_nat(a), U32.to_nat(b)) : Bool}:
+  %Equal.sym(Cmp, U32.cmp(a, b), Nat.cmp(U32.to_nat(a), U32.to_nat(b)), F.u32__u32_cmp(a, b)) : {Cmp.is_le(_) == Nat.is_le(U32.to_nat(a), U32.to_nat(b)) : Bool}
+  {==}
+
+# 31 + n <= UMAX for every n <= NMAX.
+def le_nmax(+n: U32, +hN: {U32.is_le(n, NMAX()) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(31n, U32.to_nat(n)), U32.to_nat(UMAX())) == True{} : Bool}:
+  +h = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(NMAX())), le_u32n(n, NMAX()), hN)
+  F.logic__subst(Nat, z => {Nat.is_le(Nat.add(31n, U32.to_nat(n)), z) == True{} : Bool}, Nat.add(31n, U32.to_nat(NMAX())), U32.to_nat(UMAX()), e_umax(),
+    Order.add_left(31n, U32.to_nat(n), U32.to_nat(NMAX()), h))
+
+# A sum within UMAX does not wrap.
+def add_nw(+a: U32, +c: U32, +i: Nat, +ea: {U32.to_nat(a) == i : Nat},
+    +h: {Nat.is_le(Nat.add(U32.to_nat(c), i), U32.to_nat(UMAX())) == True{} : Bool})
+    -> {U32.to_nat(U32.add(a, c)) == Nat.add(U32.to_nat(c), i) : Nat}:
+  %Equal.sym(Nat, U32.to_nat(U32.add(a, c)), Nat.add(U32.to_nat(a), U32.to_nat(c)),
+      A.add_le(a, c, UMAX(), F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(UMAX())) == True{} : Bool}, Nat.add(U32.to_nat(c), i), Nat.add(U32.to_nat(a), U32.to_nat(c)),
+        Equal.trans(Nat, Nat.add(U32.to_nat(c), i), Nat.add(i, U32.to_nat(c)), Nat.add(U32.to_nat(a), U32.to_nat(c)), F.nat__add_comm(U32.to_nat(c), i),
+          Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(c)), i, U32.to_nat(a), Equal.sym(Nat, U32.to_nat(a), i, ea))), h))) :
+    {_ == Nat.add(U32.to_nat(c), i) : Nat}
+  %Equal.sym(Nat, U32.to_nat(a), i, ea) : {Nat.add(_, U32.to_nat(c)) == Nat.add(U32.to_nat(c), i) : Nat}
+  F.nat__add_comm(i, U32.to_nat(c))
+
+# Every U32 is below 2^32 (spelled F.spec_common__pow2(32n): a closed power is only compared syntactically).
+def u32_lt(+x: U32) -> {Nat.is_lt(U32.to_nat(x), F.spec_common__pow2(32n)) == True{} : Bool}:
+  match x:
+    case U32{+w}:
+      F.logic__subst(Nat, z => {Nat.is_lt(U32.to_nat(U32{w}), z) == True{} : Bool}, F.spec_numeric__scale_binary(32n, 1n), F.spec_common__pow2(32n),
+        Equal.sym(Nat, F.spec_common__pow2(32n), F.spec_numeric__scale_binary(32n, 1n), F.u32__pow2_scale(32n)),
+        F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_numeric__scale_binary(32n, 1n)) == True{} : Bool}, F.spec_numeric__unsigned(32n, w), U32.to_nat(U32{w}),
+          Equal.sym(Nat, U32.to_nat(U32{w}), F.spec_numeric__unsigned(32n, w), F.u32__to_nat_word(w)), F.u32__WB_unsigned(32n, w)))
+
+def umax_lt(+x: Nat, +h: {Nat.is_le(x, U32.to_nat(UMAX())) == True{} : Bool}) -> {Nat.is_lt(x, F.spec_common__pow2(32n)) == True{} : Bool}:
+  F.nat__le_lt_trans(x, U32.to_nat(UMAX()), F.spec_common__pow2(32n), h, u32_lt(UMAX()))
+
+# A sum below 2^32 does not wrap.
+def add_lt32(+a: U32, +c: U32, +i: Nat, +ea: {U32.to_nat(a) == i : Nat},
+    +h: {Nat.is_lt(Nat.add(U32.to_nat(c), i), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(a, c)) == Nat.add(U32.to_nat(c), i) : Nat}:
+  +S = Nat.add(U32.to_nat(c), i)
+  +eS = F.u32__to_nat_from_nat(S, 32n, {==}, h)
+  +hS = F.logic__subst(Nat, z => {Nat.is_le(S, z) == True{} : Bool}, S, U32.to_nat(U32.from_nat(S)), Equal.sym(Nat, U32.to_nat(U32.from_nat(S)), S, eS), F.nat__le_refl(S))
+  %Equal.sym(Nat, U32.to_nat(U32.add(a, c)), Nat.add(U32.to_nat(a), U32.to_nat(c)),
+      A.add_le(a, c, U32.from_nat(S), F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(U32.from_nat(S))) == True{} : Bool}, S, Nat.add(U32.to_nat(a), U32.to_nat(c)),
+        Equal.trans(Nat, S, Nat.add(i, U32.to_nat(c)), Nat.add(U32.to_nat(a), U32.to_nat(c)), F.nat__add_comm(U32.to_nat(c), i),
+          Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(c)), i, U32.to_nat(a), Equal.sym(Nat, U32.to_nat(a), i, ea))), hS))) :
+    {_ == S : Nat}
+  %Equal.sym(Nat, U32.to_nat(a), i, ea) : {Nat.add(_, U32.to_nat(c)) == S : Nat}
+  F.nat__add_comm(i, U32.to_nat(c))
+
+# 31 + n < 2^32 for every n <= NMAX.
+def nmax_lt(+n: U32, +hN: {U32.is_le(n, NMAX()) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(31n, U32.to_nat(n)), F.spec_common__pow2(32n)) == True{} : Bool}:
+  umax_lt(Nat.add(31n, U32.to_nat(n)), le_nmax(n, hN))
+
+# 2^(2 + d) <= 2^32 for d < 31.
+def pw2d32(+d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}) -> {Nat.is_le(pw(2n+d), F.spec_common__pow2(32n)) == True{} : Bool}:
+  F.nat__pow2_mono(2n+d, 32n, F.nat__lt_succ_le(d, 30n, hd))
+
+# Anything within a U32 length is below 2^32.
+def le_n_lt32(+x: Nat, +n: U32, +h: {Nat.is_le(x, U32.to_nat(n)) == True{} : Bool}) -> {Nat.is_lt(x, F.spec_common__pow2(32n)) == True{} : Bool}:
+  F.nat__le_lt_trans(x, U32.to_nat(n), F.spec_common__pow2(32n), h, u32_lt(n))
