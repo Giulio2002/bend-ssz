@@ -3,6 +3,8 @@ import ../compact/found.bend as F
 import ./vcont.bend as VCN
 import ./vadd.bend as AD
 import ./vuw.bend as UW
+import ../../types/schema.bend as S
+import ../../spec/layout.bend as Layout
 
 # A container's fixed-part positions as U32 sums (BeaconState's fixed part runs to 2.7M bytes).
 #
@@ -45,3 +47,24 @@ def lnzb(+k: Nat, +u: U32, +e: {k == U32.to_nat(u) : Nat}) -> {VCN.LN(UW.ZB(k)) 
   Equal.trans(Nat, VCN.LN(UW.ZB(k)), k, U32.to_nat(u), UW.len_zb(k), e)
 def lnpc(+k: Nat, +xs: +List<U32>, +u: U32, +e: {k == U32.to_nat(u) : Nat}) -> {VCN.LN(VCN.PC(k, xs)) == U32.to_nat(u) : Nat}:
   Equal.trans(Nat, VCN.LN(VCN.PC(k, xs)), k, U32.to_nat(u), VCN.len_pc(k, xs), e)
+
+# a + b = to_nat(c), for c = sa + cb (no carry), a = to_nat(sa), b = to_nat(cb) (a sum written out as Nat.adds).
+def addc(+a: Nat, +b: Nat, +sa: U32, +cb: U32, +c: U32, +ea: {a == U32.to_nat(sa) : Nat}, +eb: {b == U32.to_nat(cb) : Nat},
+    +ec: {U32.add(sa, cb) == c : U32}, +hc: {AD.CY(sa, cb) == False{} : Bool}) -> {Nat.add(a, b) == U32.to_nat(c) : Nat}:
+  +e2 = Equal.cong(Nat, Nat, z => Nat.add(a, z), b, U32.to_nat(cb), eb)
+  +e3 = AD.stpL(sa, cb, c, a, Equal.sym(Nat, a, U32.to_nat(sa), ea), ec, hc)
+  Equal.trans(Nat, Nat.add(a, b), Nat.add(a, U32.to_nat(cb)), U32.to_nat(c), e2, e3)
+
+def zeroc() -> {0n == U32.to_nat(0) : Nat}: {==}
+
+# A layout's fixed size, part by part, at U32 sums: fixed_size(Con{h, t}) = to_nat(c), c = sh + ct (no carry).
+def fsnil() -> {Layout.fixed_size([]) == U32.to_nat(0) : Nat}: {==}
+def fsc(+h: S.Part, +t: +List<S.Part>, +sh: U32, +ct: U32, +c: U32,
+    +eh: {Layout.slot(h) == U32.to_nat(sh) : Nat}, +et: {Layout.fixed_size(t) == U32.to_nat(ct) : Nat},
+    +ec: {U32.add(sh, ct) == c : U32}, +hc: {AD.CY(sh, ct) == False{} : Bool})
+    -> {Layout.fixed_size(Con{h, t}) == U32.to_nat(c) : Nat}:
+  addc(Layout.slot(h), Layout.fixed_size(t), sh, ct, c, eh, et, ec, hc)
+# a fixed part's slot at its size
+def slotf(+xs: +List<U32>, +k: Nat, +u: U32, +e: {List.length(&2, U32, xs) == k : Nat}, +eu: {k == U32.to_nat(u) : Nat})
+    -> {Layout.slot(S.Fixed{xs}) == U32.to_nat(u) : Nat}:
+  Equal.trans(Nat, List.length(&2, U32, xs), k, U32.to_nat(u), e, eu)
