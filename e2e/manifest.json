@@ -3073,6 +3073,28 @@
     "premise": "+rep: WO.rep_bv(o, s)"
    }
   ],
+  "FuluBytes1_e2e_generated.bend": [
+   {
+    "name": "FuluBytes1",
+    "generated_name": "Bytes1",
+    "laws": [
+     "FuluBytes1_e2e_encode"
+    ],
+    "premise": "+e: {U32.is_lt(b1_byte(o), 256) == True{} : Bool}"
+   }
+  ],
+  "FuluBytes1_e2e_dec_generated.bend": [
+   {
+    "name": "FuluBytes1",
+    "generated_name": "Bytes1",
+    "laws": [
+     "FuluBytes1_e2e_decode_accept",
+     "FuluBytes1_e2e_decode_reject"
+    ],
+    "ii": "exact",
+    "premise": "+e: {U32.is_lt(b1_byte(o), 256) == True{} : Bool}"
+   }
+  ],
   "FuluBytes1_e2e_root_generated.bend": [
    {
     "name": "FuluBytes1",
@@ -3089,6 +3111,18 @@
      "FuluParticipationFlags_e2e_root"
     ],
     "premise": "+e: {U32.is_lt(o, 256) == True{} : Bool}"
+   }
+  ],
+  "SmallTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "SmallTestStruct",
+    "generated_name": "Gc4ED9619F50",
+    "laws": [
+     "SmallTestStruct_e2e_decode_accept",
+     "SmallTestStruct_e2e_decode_reject"
+    ],
+    "ii": "exact",
+    "premise": "+rp: rp_Gc4ED9619F50(o)"
    }
   ],
   "FixedTestStruct_e2e_root_generated.bend": [
@@ -3138,6 +3172,40 @@
      "uint16_e2e_root"
     ],
     "premise": "+rp: rp_u16(o)"
+   }
+  ],
+  "SingleFieldTestStruct_e2e_generated.bend": [
+   {
+    "name": "SingleFieldTestStruct",
+    "generated_name": "Gc74A8F5F17F",
+    "laws": [
+     "SingleFieldTestStruct_e2e_encode"
+    ],
+    "premise": "+rp: rp_Gc74A8F5F17F(o)"
+   }
+  ],
+  "SingleFieldTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "SingleFieldTestStruct",
+    "generated_name": "Gc74A8F5F17F",
+    "laws": [
+     "SingleFieldTestStruct_e2e_decode_accept",
+     "SingleFieldTestStruct_e2e_decode_reject"
+    ],
+    "ii": "exact",
+    "premise": "+rp: rp_Gc74A8F5F17F(o)"
+   }
+  ],
+  "FixedTestStruct_e2e_dec_generated.bend": [
+   {
+    "name": "FixedTestStruct",
+    "generated_name": "GcDC3E457711",
+    "laws": [
+     "FixedTestStruct_e2e_decode_accept",
+     "FixedTestStruct_e2e_decode_reject"
+    ],
+    "ii": "exact",
+    "premise": "+rp: rp_GcDC3E457711(o)"
    }
   ],
   "bitvector_4_e2e_root_generated.bend": [
@@ -3562,23 +3630,89 @@
     ],
     "ii": "exact"
    }
+  ],
+  "uint8_e2e_generated.bend": [
+   {
+    "name": "uint8",
+    "generated_name": "Gt967E8D815F",
+    "laws": [
+     "uint8_e2e_encode"
+    ],
+    "premise": "+rp: rp_u8(o)"
+   }
+  ],
+  "uint8_e2e_dec_generated.bend": [
+   {
+    "name": "uint8",
+    "generated_name": "Gt967E8D815F",
+    "laws": [
+     "uint8_e2e_decode_accept",
+     "uint8_e2e_decode_reject"
+    ],
+    "ii": "exact",
+    "premise": "+rp: rp_u8(o)"
+   }
+  ],
+  "boolean_e2e_generated.bend": [
+   {
+    "name": "boolean",
+    "generated_name": "GtAD72FD256A",
+    "laws": [
+     "boolean_e2e_encode"
+    ]
+   }
+  ],
+  "uint16_e2e_generated.bend": [
+   {
+    "name": "uint16",
+    "generated_name": "GtECF9BB18D8",
+    "laws": [
+     "uint16_e2e_encode"
+    ],
+    "premise": "+rp: rp_u16(o)"
+   }
+  ],
+  "uint16_e2e_dec_generated.bend": [
+   {
+    "name": "uint16",
+    "generated_name": "GtECF9BB18D8",
+    "laws": [
+     "uint16_e2e_decode_accept",
+     "uint16_e2e_decode_reject"
+    ],
+    "ii": "exact",
+    "premise": "+rp: rp_u16(o)"
+   }
+  ],
+  "FuluParticipationFlags_e2e_generated.bend": [
+   {
+    "name": "FuluParticipationFlags",
+    "generated_name": "ParticipationFlags",
+    "laws": [
+     "FuluParticipationFlags_e2e_encode"
+    ],
+    "premise": "+e: {U32.is_lt(o, 256) == True{} : Bool}"
+   }
+  ],
+  "FuluParticipationFlags_e2e_dec_generated.bend": [
+   {
+    "name": "FuluParticipationFlags",
+    "generated_name": "ParticipationFlags",
+    "laws": [
+     "FuluParticipationFlags_e2e_decode_accept",
+     "FuluParticipationFlags_e2e_decode_reject"
+    ],
+    "ii": "exact",
+    "premise": "+e: {U32.is_lt(o, 256) == True{} : Bool}"
+   }
   ]
  },
  "uncovered": {
   "boolean": {
    "generated_name": "GtAD72FD256A",
    "reason": "encode laws not over the same free words / bits",
+   "i": "boolean_e2e_generated.bend",
    "iv": "FixedTestStruct_e2e_root_generated.bend"
-  },
-  "uint8": {
-   "generated_name": "Gt967E8D815F",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "FixedTestStruct_e2e_root_generated.bend"
-  },
-  "FuluBytes1": {
-   "generated_name": "Bytes1",
-   "reason": "root law not over every object (hypotheses or a representation)",
-   "iv": "FuluBytes1_e2e_root_generated.bend"
   },
   "FuluContributionAndProof": {
    "generated_name": "ContributionAndProof",
@@ -3627,11 +3761,6 @@
   "FuluDeposit": {
    "generated_name": "Deposit",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluParticipationFlags": {
-   "generated_name": "ParticipationFlags",
-   "reason": "root law not over every object (hypotheses or a representation)",
-   "iv": "FuluBytes1_e2e_root_generated.bend"
   },
   "FuluTransaction": {
    "generated_name": "Transaction",
@@ -3916,11 +4045,7 @@
   "FixedTestStruct": {
    "generated_name": "GcDC3E457711",
    "reason": "encode laws not over the same free words / bits",
-   "iv": "FixedTestStruct_e2e_root_generated.bend"
-  },
-  "SingleFieldTestStruct": {
-   "generated_name": "Gc74A8F5F17F",
-   "reason": "encode laws not over the same free words / bits",
+   "ii_iii": "FixedTestStruct_e2e_dec_generated.bend",
    "iv": "FixedTestStruct_e2e_root_generated.bend"
   },
   "VarTestStruct": {
@@ -3934,6 +4059,7 @@
   "SmallTestStruct": {
    "generated_name": "Gc4ED9619F50",
    "reason": "encode laws not over the same free words / bits",
+   "ii_iii": "SmallTestStruct_e2e_dec_generated.bend",
    "iv": "FixedTestStruct_e2e_root_generated.bend"
   },
   "bitlist_15": {
@@ -4139,11 +4265,6 @@
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "uint16": {
-   "generated_name": "GtECF9BB18D8",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "FixedTestStruct_e2e_root_generated.bend"
   }
  },
  "decode_uncovered": {
@@ -4154,11 +4275,41 @@
  },
  "root_awaiting": {},
  "fixed_size": {
+  "FuluBytes1": {
+   "generated_name": "Bytes1",
+   "i": "FuluBytes1_e2e_generated.bend",
+   "ii_iii": "FuluBytes1_e2e_dec_generated.bend",
+   "iv": "FuluBytes1_e2e_root_generated.bend"
+  },
+  "SingleFieldTestStruct": {
+   "generated_name": "Gc74A8F5F17F",
+   "i": "SingleFieldTestStruct_e2e_generated.bend",
+   "ii_iii": "SingleFieldTestStruct_e2e_dec_generated.bend",
+   "iv": "FixedTestStruct_e2e_root_generated.bend"
+  },
   "uint32": {
    "generated_name": "Gt7B8507E2C2",
    "i": "uint32_e2e_generated.bend",
    "ii_iii": "uint32_e2e_dec_generated.bend",
    "iv": "uint32_e2e_generated.bend"
+  },
+  "uint8": {
+   "generated_name": "Gt967E8D815F",
+   "i": "uint8_e2e_generated.bend",
+   "ii_iii": "uint8_e2e_dec_generated.bend",
+   "iv": "FixedTestStruct_e2e_root_generated.bend"
+  },
+  "uint16": {
+   "generated_name": "GtECF9BB18D8",
+   "i": "uint16_e2e_generated.bend",
+   "ii_iii": "uint16_e2e_dec_generated.bend",
+   "iv": "FixedTestStruct_e2e_root_generated.bend"
+  },
+  "FuluParticipationFlags": {
+   "generated_name": "ParticipationFlags",
+   "i": "FuluParticipationFlags_e2e_generated.bend",
+   "ii_iii": "FuluParticipationFlags_e2e_dec_generated.bend",
+   "iv": "FuluBytes1_e2e_root_generated.bend"
   }
  },
  "variable_size": {
