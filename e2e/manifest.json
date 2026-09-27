@@ -2724,6 +2724,336 @@
     ],
     "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
+  ],
+  "bitlist_33_e2e_generated.bend": [
+   {
+    "name": "bitlist_33",
+    "generated_name": "Gt039DD44FD8",
+    "laws": [
+     "bitlist_33_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdbc(o) (its words at depth below 31, with room for (K >> 5) + 1 words: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_511_e2e_generated.bend": [
+   {
+    "name": "bitlist_511",
+    "generated_name": "Gt21E1483EE1",
+    "laws": [
+     "bitlist_511_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdbc(o) (its words at depth below 31, with room for (K >> 5) + 1 words: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_32_e2e_generated.bend": [
+   {
+    "name": "bitlist_32",
+    "generated_name": "Gt2F34855D3D",
+    "laws": [
+     "bitlist_32_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdbc(o) (its words at depth below 31, with room for (K >> 5) + 1 words: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_512_e2e_generated.bend": [
+   {
+    "name": "bitlist_512",
+    "generated_name": "Gt38F5890C13",
+    "laws": [
+     "bitlist_512_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdbc(o) (its words at depth below 31, with room for (K >> 5) + 1 words: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_513_e2e_generated.bend": [
+   {
+    "name": "bitlist_513",
+    "generated_name": "Gt44F1B6940F",
+    "laws": [
+     "bitlist_513_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdbc(o) (its words at depth below 31, with room for (K >> 5) + 1 words: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_4_e2e_generated.bend": [
+   {
+    "name": "bitlist_4",
+    "generated_name": "Gt484D1ADAFE",
+    "laws": [
+     "bitlist_4_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_31_e2e_generated.bend": [
+   {
+    "name": "bitlist_31",
+    "generated_name": "Gt4B1BA0C81D",
+    "laws": [
+     "bitlist_31_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_16_e2e_generated.bend": [
+   {
+    "name": "bitlist_16",
+    "generated_name": "Gt7C1C13B292",
+    "laws": [
+     "bitlist_16_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_1_e2e_generated.bend": [
+   {
+    "name": "bitlist_1",
+    "generated_name": "Gt94B70684B5",
+    "laws": [
+     "bitlist_1_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_6_e2e_generated.bend": [
+   {
+    "name": "bitlist_6",
+    "generated_name": "Gt98B8C9F262",
+    "laws": [
+     "bitlist_6_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_9_e2e_generated.bend": [
+   {
+    "name": "bitlist_9",
+    "generated_name": "Gt9D356BAF82",
+    "laws": [
+     "bitlist_9_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_17_e2e_generated.bend": [
+   {
+    "name": "bitlist_17",
+    "generated_name": "GtAA99FAAC9D",
+    "laws": [
+     "bitlist_17_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_7_e2e_generated.bend": [
+   {
+    "name": "bitlist_7",
+    "generated_name": "GtC063F5D9E0",
+    "laws": [
+     "bitlist_7_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_3_e2e_generated.bend": [
+   {
+    "name": "bitlist_3",
+    "generated_name": "GtC847E618FA",
+    "laws": [
+     "bitlist_3_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_2_e2e_generated.bend": [
+   {
+    "name": "bitlist_2",
+    "generated_name": "GtCF587DD386",
+    "laws": [
+     "bitlist_2_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_8_e2e_generated.bend": [
+   {
+    "name": "bitlist_8",
+    "generated_name": "GtD291A17219",
+    "laws": [
+     "bitlist_8_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_15_e2e_generated.bend": [
+   {
+    "name": "bitlist_15",
+    "generated_name": "GtDB1482527D",
+    "laws": [
+     "bitlist_15_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_5_e2e_generated.bend": [
+   {
+    "name": "bitlist_5",
+    "generated_name": "GtF91FD5FC73",
+    "laws": [
+     "bitlist_5_e2e_encode"
+    ],
+    "premise": "rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.sdb(o) (its words at depth below 31: the encode laws take these, the root law dw < 32)"
+   }
+  ],
+  "bitlist_33_e2e_root_generated.bend": [
+   {
+    "name": "bitlist_33",
+    "generated_name": "Gt039DD44FD8",
+    "laws": [
+     "bitlist_33_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_511",
+    "generated_name": "Gt21E1483EE1",
+    "laws": [
+     "bitlist_511_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_32",
+    "generated_name": "Gt2F34855D3D",
+    "laws": [
+     "bitlist_32_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_512",
+    "generated_name": "Gt38F5890C13",
+    "laws": [
+     "bitlist_512_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_513",
+    "generated_name": "Gt44F1B6940F",
+    "laws": [
+     "bitlist_513_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_4",
+    "generated_name": "Gt484D1ADAFE",
+    "laws": [
+     "bitlist_4_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_31",
+    "generated_name": "Gt4B1BA0C81D",
+    "laws": [
+     "bitlist_31_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_16",
+    "generated_name": "Gt7C1C13B292",
+    "laws": [
+     "bitlist_16_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   }
+  ],
+  "bitlist_1_e2e_root_generated.bend": [
+   {
+    "name": "bitlist_1",
+    "generated_name": "Gt94B70684B5",
+    "laws": [
+     "bitlist_1_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_6",
+    "generated_name": "Gt98B8C9F262",
+    "laws": [
+     "bitlist_6_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_9",
+    "generated_name": "Gt9D356BAF82",
+    "laws": [
+     "bitlist_9_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_17",
+    "generated_name": "GtAA99FAAC9D",
+    "laws": [
+     "bitlist_17_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_7",
+    "generated_name": "GtC063F5D9E0",
+    "laws": [
+     "bitlist_7_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_3",
+    "generated_name": "GtC847E618FA",
+    "laws": [
+     "bitlist_3_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_2",
+    "generated_name": "GtCF587DD386",
+    "laws": [
+     "bitlist_2_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_8",
+    "generated_name": "GtD291A17219",
+    "laws": [
+     "bitlist_8_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   }
+  ],
+  "bitlist_15_e2e_root_generated.bend": [
+   {
+    "name": "bitlist_15",
+    "generated_name": "GtDB1482527D",
+    "laws": [
+     "bitlist_15_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   },
+   {
+    "name": "bitlist_5",
+    "generated_name": "GtF91FD5FC73",
+    "laws": [
+     "bitlist_5_e2e_root"
+    ],
+    "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
+   }
   ]
  },
  "uncovered": {
@@ -3065,75 +3395,111 @@
   },
   "bitlist_15": {
    "generated_name": "GtDB1482527D",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_15_e2e_generated.bend",
+   "root": "bitlist_15_e2e_root_generated.bend"
   },
   "bitlist_16": {
    "generated_name": "Gt7C1C13B292",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_16_e2e_generated.bend",
+   "root": "bitlist_33_e2e_root_generated.bend"
   },
   "bitlist_17": {
    "generated_name": "GtAA99FAAC9D",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_17_e2e_generated.bend",
+   "root": "bitlist_1_e2e_root_generated.bend"
   },
   "bitlist_1": {
    "generated_name": "Gt94B70684B5",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_1_e2e_generated.bend",
+   "root": "bitlist_1_e2e_root_generated.bend"
   },
   "bitlist_2": {
    "generated_name": "GtCF587DD386",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_2_e2e_generated.bend",
+   "root": "bitlist_1_e2e_root_generated.bend"
   },
   "bitlist_31": {
    "generated_name": "Gt4B1BA0C81D",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_31_e2e_generated.bend",
+   "root": "bitlist_33_e2e_root_generated.bend"
   },
   "bitlist_32": {
    "generated_name": "Gt2F34855D3D",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_32_e2e_generated.bend",
+   "root": "bitlist_33_e2e_root_generated.bend"
   },
   "bitlist_33": {
    "generated_name": "Gt039DD44FD8",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_33_e2e_generated.bend",
+   "root": "bitlist_33_e2e_root_generated.bend"
   },
   "bitlist_3": {
    "generated_name": "GtC847E618FA",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_3_e2e_generated.bend",
+   "root": "bitlist_1_e2e_root_generated.bend"
   },
   "bitlist_4": {
    "generated_name": "Gt484D1ADAFE",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_4_e2e_generated.bend",
+   "root": "bitlist_33_e2e_root_generated.bend"
   },
   "bitlist_511": {
    "generated_name": "Gt21E1483EE1",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_511_e2e_generated.bend",
+   "root": "bitlist_33_e2e_root_generated.bend"
   },
   "bitlist_512": {
    "generated_name": "Gt38F5890C13",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_512_e2e_generated.bend",
+   "root": "bitlist_33_e2e_root_generated.bend"
   },
   "bitlist_513": {
    "generated_name": "Gt44F1B6940F",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_513_e2e_generated.bend",
+   "root": "bitlist_33_e2e_root_generated.bend"
   },
   "bitlist_5": {
    "generated_name": "GtF91FD5FC73",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_5_e2e_generated.bend",
+   "root": "bitlist_15_e2e_root_generated.bend"
   },
   "bitlist_6": {
    "generated_name": "Gt98B8C9F262",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_6_e2e_generated.bend",
+   "root": "bitlist_1_e2e_root_generated.bend"
   },
   "bitlist_7": {
    "generated_name": "GtC063F5D9E0",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_7_e2e_generated.bend",
+   "root": "bitlist_1_e2e_root_generated.bend"
   },
   "bitlist_8": {
    "generated_name": "GtD291A17219",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_8_e2e_generated.bend",
+   "root": "bitlist_1_e2e_root_generated.bend"
   },
   "bitlist_9": {
    "generated_name": "Gt9D356BAF82",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "encode": "bitlist_9_e2e_generated.bend",
+   "root": "bitlist_1_e2e_root_generated.bend"
   },
   "bitvector_15": {
    "generated_name": "GtEDF530C7B9",
