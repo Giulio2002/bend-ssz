@@ -138,3 +138,49 @@ law fits4:
   for +ha: {Nat.is_lt(a, 32n) == True{} : Bool}
   {N.fits(4n, x) == True{} : Bool}
 def fits4(a, x, hx, ha): fits_go(4n, a, x, hx, ha)
+
+# ---- strict: x < 2^(8 w) fits w bytes (x < 2^32: every U32 value, any buffer length) ----------
+
+def div_lt_go(+x: Nat, +y: Nat, +h: {Nat.is_lt(x, Nat.mul(y, 256n)) == True{} : Bool}, +b: Bool,
+    +eb: {Nat.is_lt(Nat.div(x, 256n), y) == b : Bool}) -> {Nat.is_lt(Nat.div(x, 256n), y) == True{} : Bool}:
+  match b:
+    case True{}: eb
+    case False{}:
+      +q = Nat.div(x, 256n)
+      +le1 = F.nat__not_lt_le(q, y, eb)
+      +mm = mul_mono(y, q, 256n, le1)
+      +le2 = F.logic__subst(Nat, z => {Nat.is_le(Nat.mul(q, 256n), z) == True{} : Bool}, Nat.add(Nat.mod(x, 256n), Nat.mul(q, 256n)), x, recompose(x),
+        Order.left_below_sum(Nat.mod(x, 256n), Nat.mul(q, 256n)))
+      +bad = F.nat__lt_le_trans(x, Nat.mul(y, 256n), x, h, F.nat__le_trans(Nat.mul(y, 256n), Nat.mul(q, 256n), x, mm, le2))
+      Empty.absurd({Nat.is_lt(Nat.div(x, 256n), y) == True{} : Bool},
+        F.logic__true_false(Equal.trans(Bool, True{}, Nat.is_lt(x, x), False{}, Equal.sym(Bool, Nat.is_lt(x, x), True{}, bad), F.nat__lt_irrefl(x))))
+
+# x < 256 y gives x / 256 < y.
+def div_lt(+x: Nat, +y: Nat, +h: {Nat.is_lt(x, Nat.mul(y, 256n)) == True{} : Bool}) -> {Nat.is_lt(Nat.div(x, 256n), y) == True{} : Bool}:
+  div_lt_go(x, y, h, Nat.is_lt(Nat.div(x, 256n), y), {==})
+
+def lt1z(+x: Nat, +h: {Nat.is_lt(x, 1n) == True{} : Bool}) -> {x == 0n : Nat}:
+  match x:
+    case 0n: {==}
+    case 1n+ +p: Empty.absurd({1n+p == 0n : Nat}, F.nat__lt_zero_absurd(p, h))
+
+def D3(+w: Nat) -> Nat: Nat.double(Nat.double(Nat.double(w)))
+
+law fits_lt:
+  for +w: Nat
+  for +x: Nat
+  for +h: {Nat.is_lt(x, F.spec_common__pow2(D3(w))) == True{} : Bool}
+  {N.fits(w, x) == True{} : Bool}
+def fits_lt(w, x, h):
+  match w:
+    case 0n:
+      %Equal.sym(Nat, x, 0n, lt1z(x, h)) : {N.fits(0n, _) == True{} : Bool}
+      {==}
+    case 1n+ +v:
+      +y = F.spec_common__pow2(D3(v))
+      +h1 = F.logic__subst(Nat, z => {Nat.is_lt(x, z) == True{} : Bool}, D8(y), Nat.mul(y, 256n), Equal.sym(Nat, Nat.mul(y, 256n), D8(y), m256(y)), h)
+      fits_lt(v, Nat.div(x, 256n), div_lt(x, y, h1))
+
+# The four-byte size bound for every x < 2^32 (every U32 value).
+def fits4lt(+x: Nat, +h: {Nat.is_lt(x, F.spec_common__pow2(32n)) == True{} : Bool}) -> {N.fits(4n, x) == True{} : Bool}:
+  fits_lt(4n, x, h)

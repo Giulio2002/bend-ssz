@@ -2702,7 +2702,7 @@
      "FuluDataColumnsByRootIdentifier_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 29)"
+    "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 31)"
    }
   ],
   "FuluDataColumnsByRootIdentifier_e2e_root_generated.bend": [
@@ -3301,7 +3301,7 @@
   },
   "FuluAttesterSlashing": {
    "generated_name": "AttesterSlashing",
-   "depth_bound": 29,
+   "depth_bound": 31,
    "input_bound": "2^30",
    "input_bound_bytes": 1073741824,
    "max_ssz_size": 2097616,
@@ -3346,7 +3346,7 @@
   },
   "FuluDataColumnsByRootIdentifier": {
    "generated_name": "DataColumnsByRootIdentifier",
-   "depth_bound": 29,
+   "depth_bound": 31,
    "input_bound": "2^30",
    "input_bound_bytes": 1073741824,
    "max_ssz_size": 1060,
@@ -3382,7 +3382,7 @@
   },
   "FuluIndexedAttestation": {
    "generated_name": "IndexedAttestation",
-   "depth_bound": 29,
+   "depth_bound": 31,
    "input_bound": "2^30",
    "input_bound_bytes": 1073741824,
    "max_ssz_size": 1048804,

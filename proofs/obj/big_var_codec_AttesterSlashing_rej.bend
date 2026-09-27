@@ -51,9 +51,9 @@ def chk_truew(+t: FD.array__Tree<U32>, +i: Nat, +len: U32, +k: Nat, +en: {U32.to
     {DC.chk3(True{}, U32.is_eq(_, 228), DC.whole(U32.sub(len, _))) == True{} : Bool}
   VU.whole_i(DC.LL(len), 8, 131072, DC.v8(), {==}, {==}, {==}, k, R.ec_sub(len, k, en), hk)
 
-def fitsn(+d: Nat, +n: U32, +x: Nat, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
+def fitsn(+d: Nat, +n: U32, +x: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
     +hx: {Nat.is_le(x, U32.to_nat(n)) == True{} : Bool}) -> {N.fits(4n, x) == True{} : Bool}:
-  VFT.fits4(2n+d, x, FD.nat__le_trans(x, U32.to_nat(n), A.quad(VB.pw(d)), hx, hn), FD.nat__lt_trans(d, 29n, 30n, hd, {==}))
+  VFT.fits4lt(x, VB.le_n_lt32(x, n, hx))
 
 def hb0(+t: FD.array__Tree<U32>, +n: U32, +y1: +List<U32>, +y2: +List<U32>, +eo: {OUT2(y1, y2) == M.VW(t, n) : +List<U32>})
     -> {VS.bt(4n, VS.bdr(0n, M.VW(t, n))) == [8, 0, 0, 0] : +List<U32>}:
@@ -127,7 +127,7 @@ def le_w2(+ly1: Nat, +ly2: Nat, +h: {Nat.is_le(Nat.add(0n, 4n), ly2) == True{} :
   Order.add_left(ly1, Nat.add(0n, 4n), ly2, h)
 
 # The two windows' shapes make every check pass.
-def contra(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def contra(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {M.CHK(t, n) == False{} : Bool},
     +y1: +List<U32>, +y2: +List<U32>, f1: R.FACTS(y1), f2: R.FACTS(y2), +eo: {OUT2(y1, y2) == M.VW(t, n) : +List<U32>}) -> Empty:
   (+hb1, ex1) = f1
@@ -185,14 +185,14 @@ def contra(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U3
   FD.logic__true_false(Equal.trans(Bool, True{}, M.CHK(t, n), False{}, Equal.sym(Bool, M.CHK(t, n), True{}, chk_all(t, n, e0, h8, h1n, hk1c, hk2c)), hchk))
 
 
-def fin(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def fin(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {M.CHK(t, n) == False{} : Bool}, +y1: +List<U32>, f1: R.FACTS(y1), +y2: +List<U32>, f2: R.FACTS(y2), +b5: Bool,
     +e: {Codec.bytes(Codec.one(SP.optional(b5, OUT2(y1, y2)), None{})) == Some{M.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match b5:
     case False{}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
     case True{}: contra(d, t, n, pf, hd, hn, hchk, y1, y2, f1, f2, FD.logic__some_inj(+List<U32>, OUT2(y1, y2), M.VW(t, n), e))
 
-def st2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def st2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {M.CHK(t, n) == False{} : Bool}, +y1: +List<U32>, f1: R.FACTS(y1), +y2: +List<U32>, f2: R.FACTS(y2), +items: S.Value, +e: {Codec.bytes(Codec.aggregate(Codec.concatenate(Some{[S.Variable{y1}]}, Codec.concatenate(Some{[S.Variable{y2}]}, Codec.parts(items, S.End{}))), None{})) == Some{M.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match items:
     case S.BooleanValue{+b0}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
@@ -205,7 +205,7 @@ def st2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, 
     case S.Selected{+sel0, +sv0}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
     case S.NullValue{}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
 
-def fp1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def fp1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {M.CHK(t, n) == False{} : Bool}, +y1: +List<U32>, f1: R.FACTS(y1), +h: S.Value, +ps: +List<S.Part>, hf: DF.single(None{}, ps), +em: {Codec.parts(h, Spec.Schema46()) == Some{ps} : Maybe<&2, +List<S.Part>>},
     +r: S.Value, +e: {Codec.bytes(Codec.aggregate(Codec.concatenate(Some{[S.Variable{y1}]}, Codec.concatenate(Some{ps}, Codec.parts(r, S.End{}))), None{})) == Some{M.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match ps:
@@ -216,14 +216,14 @@ def fp1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, 
     case Con{S.Fixed{+xs}, Con{+a, +b}}: hf
     case Con{S.Variable{+xs}, Con{+a, +b}}: hf
 
-def fm1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def fm1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {M.CHK(t, n) == False{} : Bool}, +y1: +List<U32>, f1: R.FACTS(y1), +h: S.Value, +mm: Maybe<&2, +List<S.Part>>, hf: DF.single_result(None{}, mm), +em: {Codec.parts(h, Spec.Schema46()) == mm : Maybe<&2, +List<S.Part>>},
     +r: S.Value, +e: {Codec.bytes(Codec.aggregate(Codec.concatenate(Some{[S.Variable{y1}]}, Codec.concatenate(mm, Codec.parts(r, S.End{}))), None{})) == Some{M.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match mm:
     case None{}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
     case Some{+ps}: fp1(d, t, n, pf, hd, hn, hchk, y1, f1, h, ps, hf, em, r, e)
 
-def st1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def st1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {M.CHK(t, n) == False{} : Bool}, +y1: +List<U32>, f1: R.FACTS(y1), +items: S.Value, +e: {Codec.bytes(Codec.aggregate(Codec.concatenate(Some{[S.Variable{y1}]}, Codec.parts(items, S.Chain{Spec.Schema46(), S.End{}})), None{})) == Some{M.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match items:
     case S.BooleanValue{+b0}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
@@ -236,7 +236,7 @@ def st1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, 
     case S.Selected{+sel0, +sv0}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
     case S.NullValue{}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
 
-def fp0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def fp0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {M.CHK(t, n) == False{} : Bool}, +h: S.Value, +ps: +List<S.Part>, hf: DF.single(None{}, ps), +em: {Codec.parts(h, Spec.Schema46()) == Some{ps} : Maybe<&2, +List<S.Part>>},
     +r: S.Value, +e: {Codec.bytes(Codec.aggregate(Codec.concatenate(Some{ps}, Codec.parts(r, S.Chain{Spec.Schema46(), S.End{}})), None{})) == Some{M.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match ps:
@@ -247,14 +247,14 @@ def fp0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, 
     case Con{S.Fixed{+xs}, Con{+a, +b}}: hf
     case Con{S.Variable{+xs}, Con{+a, +b}}: hf
 
-def fm0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def fm0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {M.CHK(t, n) == False{} : Bool}, +h: S.Value, +mm: Maybe<&2, +List<S.Part>>, hf: DF.single_result(None{}, mm), +em: {Codec.parts(h, Spec.Schema46()) == mm : Maybe<&2, +List<S.Part>>},
     +r: S.Value, +e: {Codec.bytes(Codec.aggregate(Codec.concatenate(mm, Codec.parts(r, S.Chain{Spec.Schema46(), S.End{}})), None{})) == Some{M.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match mm:
     case None{}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
     case Some{+ps}: fp0(d, t, n, pf, hd, hn, hchk, h, ps, hf, em, r, e)
 
-def st0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def st0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {M.CHK(t, n) == False{} : Bool}, +items: S.Value, +e: {Codec.bytes(Codec.aggregate(Codec.parts(items, S.Chain{Spec.Schema46(), S.Chain{Spec.Schema46(), S.End{}}}), None{})) == Some{M.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match items:
     case S.BooleanValue{+b0}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
@@ -267,7 +267,7 @@ def st0(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, 
     case S.Selected{+sel0, +sv0}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
     case S.NullValue{}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
 
-def inv_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def inv_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {M.CHK(t, n) == False{} : Bool}, +v: S.Value, +e: {Codec.encoding_for_legal_type(Spec.AttesterSlashing(), v) == Some{M.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match v:
     case S.BooleanValue{+b0}: FD.logic__none_some(+List<U32>, M.VW(t, n), e)
@@ -286,7 +286,7 @@ law decode_reject:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {M.CHK(t, n) == False{} : Bool}
   Decoding.outside_image(Spec.AttesterSlashing(), M.VW(t, n))
