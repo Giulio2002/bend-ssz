@@ -1257,13 +1257,7 @@ class RBFlat:
             q = self.fresh('q')
             self.lines.append(f'  (+{eo}, {q}) = {cur}')
             cur = q
-            for j in range(nf - 1):
-                if j == nf - 2:
-                    self.lines.append(f'  (+{rs[j]}, +{rs[j + 1]}) = {cur}')
-                else:
-                    q = self.fresh('q')
-                    self.lines.append(f'  (+{rs[j]}, {q}) = {cur}')
-                    cur = q
+        rest = cur   # split lazily: each field taken apart before the next one is split off (depth first)
         cons = w.cons
         for (x, _), nm in zip(w.binders, bn):
             cons = _re.sub(r'(?<![\w.])' + x + r'(?![\w])', nm, cons)
@@ -1273,6 +1267,13 @@ class RBFlat:
         self.args.append(eo)
         steps = []
         for j, (pj, fn, sch, fty) in enumerate(w.fields):
+            if nf >= 2 and j < nf - 1:
+                if j == nf - 2:
+                    self.lines.append(f'  (+{rs[j]}, +{rs[j + 1]}) = {rest}')
+                else:
+                    q = self.fresh('q')
+                    self.lines.append(f'  (+{rs[j]}, {q}) = {rest}')
+                    rest = q
             k, info = field_kind(fn)
             pjt = f'RT.{pj}'.replace('(o)', f'({PO})')
             scht = _re.sub(r'(?<![\w.])s(?![\w])', SC, sch)
@@ -2969,6 +2970,7 @@ VDEC_VIEWS['LightClientOptimisticUpdate'] = vdec_win('LightClientOptimisticUpdat
 RB_NAMES.append('LightClientOptimisticUpdate')
 RB_NAMES.append('ExecutionRequests')
 RB_NAMES.append('DataColumnSidecar')
+RB_NAMES.append('LightClientBootstrap')
 VROOT_SHAPES['LightClientOptimisticUpdate'] = vroot_container
 SUPPORT_OUT['e2e_ve_LightClientOptimisticUpdate.bend'] = ve_module('LightClientOptimisticUpdate', 'var_bytes_LightClientOptimisticUpdate_enc')
 VENC_SHAPES['LightClientOptimisticUpdate'] = venc_bytes
@@ -3006,3 +3008,4 @@ VROOT_SHAPES['DataColumnSidecar'] = vroot_container
 SUPPORT_OUT['e2e_ve_DataColumnSidecar.bend'] = ve_dcs_text()
 VENC_SHAPES['DataColumnSidecar'] = venc_dcs
 VENC_PREMISE['DataColumnSidecar'] = 'rep: RT.rep_DataColumnSidecar(o, Spec.DataColumnSidecar()), hs0..hs2: each block list holds whole blocks, its words at depth below 31 covering them (e2e_ve_DataColumnSidecar.sdm), hsP: the proofs vector\'s words at depth below 31 (BL.sdpv); the encode laws take depth below 31, the root law below 32'
+VROOT_SHAPES['LightClientBootstrap'] = vroot_container

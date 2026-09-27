@@ -3139,6 +3139,16 @@
     "premise": "rep: RT.rep_IndexedAttestation(o, Spec.IndexedAttestation()) (the root law's representation invariant)"
    }
   ],
+  "FuluLightClientBootstrap_e2e_root_generated.bend": [
+   {
+    "name": "FuluLightClientBootstrap",
+    "generated_name": "LightClientBootstrap",
+    "laws": [
+     "FuluLightClientBootstrap_e2e_root"
+    ],
+    "premise": "rep: RT.rep_LightClientBootstrap(o, Spec.LightClientBootstrap()) (the root law's representation invariant)"
+   }
+  ],
   "FuluLightClientHeader_e2e_root_generated.bend": [
    {
     "name": "FuluLightClientHeader",
@@ -3803,7 +3813,8 @@
   },
   "FuluLightClientBootstrap": {
    "generated_name": "LightClientBootstrap",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "FuluLightClientBootstrap_e2e_root_generated.bend"
   },
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",
