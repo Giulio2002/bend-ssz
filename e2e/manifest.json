@@ -2717,6 +2717,18 @@
     "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 29)"
    }
   ],
+  "FuluExecutionRequests_e2e_dec_generated.bend": [
+   {
+    "name": "FuluExecutionRequests",
+    "generated_name": "ExecutionRequests",
+    "laws": [
+     "FuluExecutionRequests_e2e_decode_view",
+     "FuluExecutionRequests_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "FuluLightClientHeader_e2e_dec_generated.bend": [
    {
     "name": "FuluLightClientHeader",
@@ -2857,6 +2869,16 @@
     "premise": "rep: RT.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()) (the root law's representation invariant)"
    }
   ],
+  "FuluExecutionRequests_e2e_root_generated.bend": [
+   {
+    "name": "FuluExecutionRequests",
+    "generated_name": "ExecutionRequests",
+    "laws": [
+     "FuluExecutionRequests_e2e_root"
+    ],
+    "premise": "rep: RT.rep_ExecutionRequests(o, Spec.ExecutionRequests()) (the root law's representation invariant)"
+   }
+  ],
   "FuluLightClientHeader_e2e_root_generated.bend": [
    {
     "name": "FuluLightClientHeader",
@@ -2975,6 +2997,16 @@
      "FuluExecutionPayloadHeader_e2e_encode"
     ],
     "premise": "rep: RT.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()) and the hs premises: each storage field's invariant at depth below 31 (BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "FuluExecutionRequests_e2e_generated.bend": [
+   {
+    "name": "FuluExecutionRequests",
+    "generated_name": "ExecutionRequests",
+    "laws": [
+     "FuluExecutionRequests_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_ExecutionRequests(o, Spec.ExecutionRequests()) and the hs premises: each list's array invariant at depth below 31 (RLV.sda_L; the encode laws take depth below 31, the root law below 32; dropped when the encode laws take depth below 32)"
    }
   ],
   "FuluLightClientHeader_e2e_generated.bend": [
@@ -3477,10 +3509,6 @@
    "generated_name": "ParticipationFlags",
    "reason": "root law not over every object (hypotheses or a representation)"
   },
-  "FuluExecutionRequests": {
-   "generated_name": "ExecutionRequests",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "FuluExecutionPayload": {
    "generated_name": "ExecutionPayload",
    "reason": "encode laws not over the same free words / bits"
@@ -3913,6 +3941,12 @@
    "i": "FuluExecutionPayloadHeader_e2e_generated.bend",
    "ii_iii": "FuluExecutionPayloadHeader_e2e_dec_generated.bend",
    "iv": "FuluExecutionPayloadHeader_e2e_root_generated.bend"
+  },
+  "FuluExecutionRequests": {
+   "generated_name": "ExecutionRequests",
+   "i": "FuluExecutionRequests_e2e_generated.bend",
+   "ii_iii": "FuluExecutionRequests_e2e_dec_generated.bend",
+   "iv": "FuluExecutionRequests_e2e_root_generated.bend"
   },
   "FuluLightClientHeader": {
    "generated_name": "LightClientHeader",

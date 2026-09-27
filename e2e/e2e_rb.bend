@@ -15,6 +15,13 @@ import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/uint256_def_generated.bend as uint256_d
 import ../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
 import ../types/FuluBeaconBlockHeader_def_generated.bend as FuluBeaconBlockHeader_d
+import ../types/FuluDepositRequest_def_generated.bend as FuluDepositRequest_d
+import ../types/FuluConsolidationRequest_def_generated.bend as FuluConsolidationRequest_d
+import ../types/FuluWithdrawalRequest_def_generated.bend as FuluWithdrawalRequest_d
+import ../types/Fulu_list_DepositRequest_8192_def_generated.bend as Fulu_list_DepositRequest_8192_d
+import ../types/Fulu_list_WithdrawalRequest_16_def_generated.bend as Fulu_list_WithdrawalRequest_16_d
+import ../types/Fulu_list_ConsolidationRequest_2_def_generated.bend as Fulu_list_ConsolidationRequest_2_d
+import ../types/FuluExecutionRequests_def_generated.bend as FuluExecutionRequests_d
 import ../types/FuluExecutionPayloadHeader_def_generated.bend as FuluExecutionPayloadHeader_d
 import ../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d
 import ../types/FuluLightClientOptimisticUpdate_def_generated.bend as FuluLightClientOptimisticUpdate_d
@@ -89,6 +96,45 @@ def ww_CE_rep_el(-w: O.Words, +s: S.Schema, +r: CE.rep_el(w, s)) -> WW(w):
   (+N, g2) = g1
   (+eo, g9) = g2
   mkw(w, t, N, eo)
+
+# a list of FuluDepositRequest_d.DepositRequest: its element tree and length
+def WA_l8192_DepositRequest(w: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq) -> Data: DK.Ex(FD.array__Tree<FuluDepositRequest_d.DepositRequest>, t => DK.Ex(U32, N => {w == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t), N} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq}))
+
+def mka_l8192_DepositRequest(-w: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq, +t: FD.array__Tree<FuluDepositRequest_d.DepositRequest>, +N: U32, +e: {w == Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t), N} : Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq}) -> WA_l8192_DepositRequest(w): (t, (N, e))
+
+def wa_l8192_DepositRequest(-w: Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq, +s: S.Schema, +r: RT.rep_l8192_DepositRequest(w, s)) -> WA_l8192_DepositRequest(w):
+  (+f, +n) = r
+  (+t, f0) = f
+  (+dw, f1) = f0
+  (+N, f2) = f1
+  (+eo, f3) = f2
+  mka_l8192_DepositRequest(w, t, N, eo)
+
+# a list of FuluWithdrawalRequest_d.WithdrawalRequest: its element tree and length
+def WA_l16_WithdrawalRequest(w: Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq) -> Data: DK.Ex(FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>, t => DK.Ex(U32, N => {w == Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), N} : Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq}))
+
+def mka_l16_WithdrawalRequest(-w: Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq, +t: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>, +N: U32, +e: {w == Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t), N} : Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq}) -> WA_l16_WithdrawalRequest(w): (t, (N, e))
+
+def wa_l16_WithdrawalRequest(-w: Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq, +s: S.Schema, +r: RT.rep_l16_WithdrawalRequest(w, s)) -> WA_l16_WithdrawalRequest(w):
+  (+f, +n) = r
+  (+t, f0) = f
+  (+dw, f1) = f0
+  (+N, f2) = f1
+  (+eo, f3) = f2
+  mka_l16_WithdrawalRequest(w, t, N, eo)
+
+# a list of FuluConsolidationRequest_d.ConsolidationRequest: its element tree and length
+def WA_l2_ConsolidationRequest(w: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq) -> Data: DK.Ex(FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, t => DK.Ex(U32, N => {w == Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), N} : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq}))
+
+def mka_l2_ConsolidationRequest(-w: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, +t: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N: U32, +e: {w == Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t), N} : Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq}) -> WA_l2_ConsolidationRequest(w): (t, (N, e))
+
+def wa_l2_ConsolidationRequest(-w: Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, +s: S.Schema, +r: RT.rep_l2_ConsolidationRequest(w, s)) -> WA_l2_ConsolidationRequest(w):
+  (+f, +n) = r
+  (+t, f0) = f
+  (+dw, f1) = f0
+  (+N, f2) = f1
+  (+eo, f3) = f2
+  mka_l2_ConsolidationRequest(w, t, N, eo)
 
 # ExecutionPayloadHeader: its witnesses (every nesting level) and the object over them
 def WIT_ExecutionPayloadHeader(o: FuluExecutionPayloadHeader_d.ExecutionPayloadHeader) -> Data:
@@ -221,4 +267,29 @@ def nw_LightClientOptimisticUpdate(-o: FuluLightClientOptimisticUpdate_d.LightCl
   (+r46, +r47) = q48
   (+v66, +ev67) = r5
   nw2_LightClientOptimisticUpdate(o, a1, a7, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, v66, eo3, eo9, eb13, eo45, ww_WO_rep_bv(RT.pj_ExecutionPayloadHeader_4(RT.pjb_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(RT.pj_LightClientOptimisticUpdate_0(o)))), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Container_fields(s))))))))))), r46), ww_LO_rep_bl(RT.pj_ExecutionPayloadHeader_10(RT.pjb_ExecutionPayloadHeader_bx(RT.pj_LightClientHeader_1(RT.pj_LightClientOptimisticUpdate_0(o)))), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Container_fields(s))))))))))))))))), r47), ww_PV_rep_pv(RT.pj_LightClientHeader_2(RT.pj_LightClientOptimisticUpdate_0(o)), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(SH.Chain_head(SH.Container_fields(s)))))), r11), ev67)
+
+# ExecutionRequests: its witnesses (every nesting level) and the object over them
+def WIT_ExecutionRequests(o: FuluExecutionRequests_d.ExecutionRequests) -> Data:
+  DK.Ex(FD.array__Tree<FuluDepositRequest_d.DepositRequest>, t7 => DK.Ex(U32, N8 => DK.Ex(FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>, t11 => DK.Ex(U32, N12 => DK.Ex(FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, t15 => DK.Ex(U32, N16 => {o == FuluExecutionRequests_d.ExecutionRequests{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t7), N8}, Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t11), N12}, Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t15), N16}} : FuluExecutionRequests_d.ExecutionRequests}))))))
+
+def mk_ExecutionRequests(-o: FuluExecutionRequests_d.ExecutionRequests, +t7: FD.array__Tree<FuluDepositRequest_d.DepositRequest>, +N8: U32, +t11: FD.array__Tree<FuluWithdrawalRequest_d.WithdrawalRequest>, +N12: U32, +t15: FD.array__Tree<FuluConsolidationRequest_d.ConsolidationRequest>, +N16: U32, +e: {o == FuluExecutionRequests_d.ExecutionRequests{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t7), N8}, Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t11), N12}, Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t15), N16}} : FuluExecutionRequests_d.ExecutionRequests}) -> WIT_ExecutionRequests(o):
+  (t7, (N8, (t11, (N12, (t15, (N16, e))))))
+
+def nw2_ExecutionRequests(-o: FuluExecutionRequests_d.ExecutionRequests, +eo1: {o == FuluExecutionRequests_d.ExecutionRequests{RT.pj_ExecutionRequests_0(o), RT.pj_ExecutionRequests_1(o), RT.pj_ExecutionRequests_2(o)} : FuluExecutionRequests_d.ExecutionRequests}, +w9: WA_l8192_DepositRequest(RT.pj_ExecutionRequests_0(o)), +w13: WA_l16_WithdrawalRequest(RT.pj_ExecutionRequests_1(o)), +w17: WA_l2_ConsolidationRequest(RT.pj_ExecutionRequests_2(o))) -> WIT_ExecutionRequests(o):
+  (+t7, w9a) = w9
+  (+N8, +e10) = w9a
+  (+t11, w13a) = w13
+  (+N12, +e14) = w13a
+  (+t15, w17a) = w17
+  (+N16, +e18) = w17a
+  +c19 = Equal.trans(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{RT.pj_ExecutionRequests_0(o), RT.pj_ExecutionRequests_1(o), RT.pj_ExecutionRequests_2(o)}, FuluExecutionRequests_d.ExecutionRequests{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t7), N8}, RT.pj_ExecutionRequests_1(o), RT.pj_ExecutionRequests_2(o)}, eo1, Equal.cong(Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq, FuluExecutionRequests_d.ExecutionRequests, z => FuluExecutionRequests_d.ExecutionRequests{z, RT.pj_ExecutionRequests_1(o), RT.pj_ExecutionRequests_2(o)}, RT.pj_ExecutionRequests_0(o), Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t7), N8}, e10))
+  +c20 = Equal.trans(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t7), N8}, RT.pj_ExecutionRequests_1(o), RT.pj_ExecutionRequests_2(o)}, FuluExecutionRequests_d.ExecutionRequests{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t7), N8}, Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t11), N12}, RT.pj_ExecutionRequests_2(o)}, c19, Equal.cong(Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq, FuluExecutionRequests_d.ExecutionRequests, z => FuluExecutionRequests_d.ExecutionRequests{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t7), N8}, z, RT.pj_ExecutionRequests_2(o)}, RT.pj_ExecutionRequests_1(o), Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t11), N12}, e14))
+  +c21 = Equal.trans(FuluExecutionRequests_d.ExecutionRequests, o, FuluExecutionRequests_d.ExecutionRequests{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t7), N8}, Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t11), N12}, RT.pj_ExecutionRequests_2(o)}, FuluExecutionRequests_d.ExecutionRequests{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t7), N8}, Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t11), N12}, Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t15), N16}}, c20, Equal.cong(Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq, FuluExecutionRequests_d.ExecutionRequests, z => FuluExecutionRequests_d.ExecutionRequests{Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq{FD.array__thaw(FuluDepositRequest_d.DepositRequest, t7), N8}, Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq{FD.array__thaw(FuluWithdrawalRequest_d.WithdrawalRequest, t11), N12}, z}, RT.pj_ExecutionRequests_2(o), Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq{FD.array__thaw(FuluConsolidationRequest_d.ConsolidationRequest, t15), N16}, e18))
+  mk_ExecutionRequests(o, t7, N8, t11, N12, t15, N16, c21)
+
+def nw_ExecutionRequests(-o: FuluExecutionRequests_d.ExecutionRequests, +s: S.Schema, +rep: RT.rep_ExecutionRequests(o, s)) -> WIT_ExecutionRequests(o):
+  (+eo1, q5) = rep
+  (+r2, q6) = q5
+  (+r3, +r4) = q6
+  nw2_ExecutionRequests(o, eo1, wa_l8192_DepositRequest(RT.pj_ExecutionRequests_0(o), SH.Chain_head(SH.Container_fields(s)), r2), wa_l16_WithdrawalRequest(RT.pj_ExecutionRequests_1(o), SH.Chain_head(SH.Chain_tail(SH.Container_fields(s))), r3), wa_l2_ConsolidationRequest(RT.pj_ExecutionRequests_2(o), SH.Chain_head(SH.Chain_tail(SH.Chain_tail(SH.Container_fields(s)))), r4))
 

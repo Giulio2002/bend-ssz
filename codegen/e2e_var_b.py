@@ -375,9 +375,9 @@ def rt_def(name):
     if 'text' not in _rt_cache:
         _rt_cache['text'] = _RT.read_text()
     t = _rt_cache['text']
-    m = _re.search(r'^def ' + name + r'\((.*?)\) -> (.*?):\n  (.*)$', t, _re.M)
+    m = _re.search(r'^def ' + name + r'\((.*?)\) -> (.*?):\n((?:  .*\n?)+)', t, _re.M)
     if m:
-        return m.group(1), m.group(2), m.group(3)
+        return m.group(1), m.group(2), ' '.join(m.group(3).split())
     m = _re.search(r'^def ' + name + r'\((.*?)\) -> (.*?): (.*)$', t, _re.M)
     return (m.group(1), m.group(2), m.group(3)) if m else None
 
@@ -421,6 +421,10 @@ def field_kind(fn):
         Z = fn[4:-3]
         return ('rbox', Z)
     if fn.startswith('rep_') and rt_def(fn):
+        body = rt_def(fn)[2]
+        m = _re.match(r'DK\.P2\(DK\.Ex\(F\.array__Tree<(.*?)>, t => .*?\{o == ([\w.]+)\{F\.array__thaw\((.*?), t\), N\}', body, _re.S)
+        if m:
+            return ('alist', (m.group(1), m.group(2)))
         return ('rec', fn[4:])
     raise SystemExit(f'e2e_var_b: unknown field invariant {fn}')
 
@@ -438,6 +442,8 @@ class Wit:
             i0 = len(self.tys)
             if k == 'words':
                 self.tys += ['FD.array__Tree<U32>', 'U32']
+            elif k == 'alist':
+                self.tys += [f'FD.array__Tree<{info[0]}>', 'U32']
             elif k == 'dbox':
                 self.tys += [info]
             else:
@@ -450,6 +456,8 @@ class Wit:
         ns = [names[i] for i in idx]
         if k == 'words':
             return f'O.Words{{FD.array__thaw(U32, {ns[0]}), {ns[1]}}}'
+        if k == 'alist':
+            return f'{info[1]}{{FD.array__thaw({info[0]}, {ns[0]}), {ns[1]}}}'
         if k == 'dbox':
             return f'O.BSome{{{ns[0]}, O.BNone{{}}}}'
         if k == 'rbox':
@@ -1222,6 +1230,7 @@ class RBFlat:
         self.n = 0
         self.lines, self.eqlines, self.wit, self.params, self.args = [], [], [], [], []
         self.terms = {}
+        self.alists = {}
 
     def fresh(self, b):
         self.n += 1
@@ -1274,6 +1283,15 @@ class RBFlat:
                 self.args.append(f'ww_{fn.replace(".", "_")}({pjt}, {scht}, {rs[j]})')
                 self.destr = getattr(self, 'destr', []) + [f'  ({"+" + t}, {ww}a) = {ww}', f'  (+{N}, +{e}) = {ww}a']
                 steps.append((pjt, f'O.Words{{FD.array__thaw(U32, {t}), {N}}}', e, 'O.Words'))
+            elif k == 'alist':
+                ET, CT = info
+                t_, N_, ww, e = self.fresh('t'), self.fresh('N'), self.fresh('w'), self.fresh('e')
+                self.wit += [(t_, f'FD.array__Tree<{ET}>'), (N_, 'U32')]
+                self.params.append(f'+{ww}: WA_{fn[4:]}({pjt})')
+                self.args.append(f'wa_{fn[4:]}({pjt}, {scht}, {rs[j]})')
+                self.destr += [f'  (+{t_}, {ww}a) = {ww}', f'  (+{N_}, +{e}) = {ww}a']
+                self.alists[fn[4:]] = (ET, CT, fty)
+                steps.append((pjt, f'{CT}{{FD.array__thaw({ET}, {t_}), {N_}}}', e, _wtype(fty)))
             elif k == 'dbox':
                 v, ev = self.fresh('v'), self.fresh('ev')
                 self.lines.append(f'  (+{v}, +{ev}) = {rs[j]}')
@@ -1309,10 +1327,12 @@ class RBFlat:
         return eq
 
 
-def rb_flat_defs(X):
+def rb_flat_defs(X, al=None):
     f = RBFlat(X)
     f.destr = []
     eq = f.level(X, 'o', 'rep', 's')
+    if al is not None:
+        al.update(f.alists)
     OT = wit(X).otype
     names = [a for a, _ in f.wit]
     B_ = f.terms['o']
@@ -1344,9 +1364,20 @@ def rb_flat_defs(X):
 
 def rb_text(names):
     L = []
+    al = {}
     for Y in names:
-        L += rb_flat_defs(Y)
-    body = '\n'.join(L)
+        L += rb_flat_defs(Y, al)
+    A = []
+    for nm, (ET, CT, fty) in al.items():
+        T_ = _wtype(fty)
+        A.append(f'# a list of {ET}: its element tree and length')
+        A.append(f'def WA_{nm}(w: {T_}) -> Data: DK.Ex(FD.array__Tree<{ET}>, t => DK.Ex(U32, N => {{w == {CT}{{FD.array__thaw({ET}, t), N}} : {T_}}}))\n')
+        A.append(f'def mka_{nm}(-w: {T_}, +t: FD.array__Tree<{ET}>, +N: U32, +e: {{w == {CT}{{FD.array__thaw({ET}, t), N}} : {T_}}}) -> WA_{nm}(w): (t, (N, e))\n')
+        A.append(f'def wa_{nm}(-w: {T_}, +s: S.Schema, +r: RT.rep_{nm}(w, s)) -> WA_{nm}(w):')
+        A.append('  (+f, +n) = r')
+        A.append('  (+t, f0) = f\n  (+dw, f1) = f0\n  (+N, f2) = f1\n  (+eo, f3) = f2')
+        A.append('  mka_' + nm + '(w, t, N, eo)\n')
+    body = '\n'.join(A + L)
     body = _re.sub(r'(?<![\w.])(pj_\w+|pjb_\w+)\(', r'RT.\1(', body).replace('RT.RT.', 'RT.')
     rtt = _RT.read_text()
     dimps = [l.replace('import ../../', 'import ../') for l in rtt.splitlines()
@@ -1626,6 +1657,328 @@ def venc_plist_b(R, X):
 """ + body
 
 
+# ---- lists of fixed-size containers read by a window (var_winx_lN_X: LOBJ over the record tree RT) ----
+# vl: the list object's root view is the window's value: RT(q, j, ..) writes record i (j <= i <= j + q) as
+# RX(t, pos(i, R, x)) and leaves the others (lemA / lemB, from the array's update laws); the root view's
+# element walk then reads RVAL at each record (xiR).
+
+
+def vl_module(win):
+    text = (_OBJ / f'{win}.bend').read_text()
+    E = _re.search(r'^def RT\(k: Nat, \+j: Nat, \+dd: Nat, D: FD\.array__Tree<(.*?)>, ', text, _re.M).group(1)
+    R = int(_re.search(r'VRL\.pos\(j, (\d+)n, x\)', text).group(1))
+    L = _re.search(r'_d\.(l\d+_\w+)_Seq:', text).group(1)
+    LIM = int(_re.search(r'U32\.is_le\(U32\.div\(len, \d+\), (\d+)\)', text).group(1))
+    KB = max(1, (LIM - 1).bit_length()) if LIM > 1 else 1
+    DEF = _re.search(r'FD\.array__trep\(' + _re.escape(E) + r', B\.words_depth\(NN\(len\)\), (.*?)\), t, x\)\), NN\(len\)\}', text).group(1)
+    xi = _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', _RT.read_text(), _re.M).group(0)
+    VIEWE = _re.search(r'S\.Items\{(\w+\.\w+)\(xat_', xi).group(1)
+    body = _VL_TEXT
+    for k, v in (('@E@', E), ('@R@', str(R)), ('@L@', L), ('@LIM@', str(LIM)), ('@KB@', str(KB)), ('@DEF@', DEF), ('@VIEWE@', VIEWE)):
+        body = body.replace(k, v)
+    imps = ['import Base', 'import ../src/buffer.bend as B', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
+            'import ../proofs/compact/found.bend as FD', 'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/vdepth.bend as VD',
+            'import ../proofs/obj/vrl.bend as VRL', 'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names.bend as RN',
+            f'import ../proofs/obj/{win}.bend as W']
+    imps += [_rel(l) for l in text.splitlines() if _re.match(r'import \.\./\.\./types/\S+ as (\w+_d)$', l) and (l.split()[-1] + '.') in body]
+    return '\n'.join(dict.fromkeys(imps)) + f"""
+
+# GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
+# The {L} window ({win}): the list object it reads (the record tree RT over the window's records)
+# views as the window's value (vl), for any window whose check holds.
+
+""" + body
+
+
+# ---- container windows over child windows (var_winx_X: OBJw = X{Cj.OBJw(d, t, Xj, Fj, Lj)}, VALw its value) ----
+# vwx: the object's root view is the window's value when the window's check holds; each child object is a
+# hole whose view is its window's value (the child's view lemma, at the child's check from the parent's).
+CHILD_VIEW = {}   # child window module -> (e2e view module, lemma name)
+
+
+def _def_any(text, name):
+    m = _re.search(r'^def ' + name + r'\((.*?)\) -> (.*?):\n?\s*(.*?)(?=\n\S|\n\n)', text, _re.M | _re.S)
+    return m.group(1), m.group(2).strip(), ' '.join(m.group(3).split())
+
+
+def vwx_module(X, win):
+    text = (_OBJ / f'{win}.bend').read_text()
+    _, oty, obody = _def_any(text, 'OBJw')
+    _, _, vbody = _def_any(text, 'VALw')
+    kids = _re.findall(r'(\w+)\.OBJw\(d, t, ((?:[^()]|\([^()]*\))*)\)', obody)
+    alias_mod = dict((a, m) for m, a in _re.findall(r'^import \./(\S+)\.bend as (\w+)$', text, _re.M))
+    views = _view_fields(X)
+    chk_of = {}
+    for m in _re.finditer(r'^def (\w+)\(\+t: FD\.array__Tree<U32>, \+x: Nat, \+off: U32, \+len: U32\) -> Bool: (\w+)\.CHKw\(', text, _re.M):
+        chk_of[m.group(2)] = m.group(1)
+    hname = {}
+    for m in _re.finditer(r'^def (\w+)\(\+t: FD\.array__Tree<U32>, \+x: Nat, \+off: U32, \+len: U32, \+h: \{CHKw\(t, x, off, len\) == True\{\} : Bool\}\) -> \{(\w+)\(t, x, off, len\) == True\{\} : Bool\}', text, _re.M):
+        hname[m.group(2)] = m.group(1)
+    holes, imps = [], []
+    for k, (al, args) in enumerate(kids):
+        a = split_args(args)          # Xj, Fj, Lj
+        mod = alias_mod[al]
+        vmod, lem = CHILD_VIEW[mod]
+        imps.append(f'import ./{vmod}.bend as V{k}')
+        imps.append(f'import ../proofs/obj/{mod}.bend as {al}')
+        obj = f'{al}.OBJw(d, t, {args})'
+        val = f'{al}.VALw(t, {a[0]}, {a[2]})'
+        assert val in vbody, (X, val)
+        vw = [v for v in views if _re.search(r'\(x' + str(k) + r'\)$', v)] or [views[k]]
+        view = _re.match(r'(\w+)\(', vw[0]).group(1)
+        view = view if '.' in view else f'RT.{view}'
+        ty = _re.search(r'^def OBJw\(.*?\) -> (.*?):', (_OBJ / f'{mod}.bend').read_text(), _re.M).group(1)
+        ty = ty if not _re.match(r'\w+_d\.', ty) or True else ty
+        chk = hname[chk_of[al]]
+        q = lambda s_: _qual_w(s_, text)
+        holes.append(dict(obj=obj, ty=ty, view=view, val=val, pf=f'V{k}.{lem}(d, t, {q(a[0])}, {q(a[1])}, {q(a[2])}, EW.{chk}(t, x, off, len, hchk))', args=a, al=al))
+    zs = [f'z{k}' for k in range(len(holes))]
+    ys = [f'Y{k}' for k in range(len(holes))]
+    bh, vh = obody, vbody
+    for h, z, y in zip(holes, zs, ys):
+        bh = bh.replace(h['obj'], z, 1)
+        vh = vh.replace(h['val'], y, 1)
+    q = lambda s_: _qual_w(s_, text)
+    L = [f'def OBJH(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {", ".join(f"{z}: {h[chr(116)+chr(121)]}" for z, h in zip(zs, holes))}) -> {oty}: {q(bh)}', '',
+         f'def VALH(+t: FD.array__Tree<U32>, +x: Nat, +len: U32, {", ".join(f"+{y}: S.Value" for y in ys)}) -> S.Value: {q(vh)}', '']
+    hy = ', '.join(f'{z}: {h["ty"]}, +{y}: S.Value, +e{k}: {{{h["view"]}({z}) == {y} : S.Value}}' for k, (z, y, h) in enumerate(zip(zs, ys, holes)))
+    LHS = f'RT.v_{X}(OBJH(d, t, x, off, len, {", ".join(zs)}))'
+    L.append(f'def vz(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, {hy}) -> {{{LHS} == VALH(t, x, len, {", ".join(ys)}) : S.Value}}:')
+    for k in range(len(holes)):
+        cur = [f'{holes[j]["view"]}({zs[j]})' if j < k else ('_' if j == k else ys[j]) for j in range(len(holes))]
+        L.append(f'  %e{k} : {{{LHS} == VALH(t, x, len, {", ".join(cur)}) : S.Value}}')
+    L.append('  {==}\n')
+    L.append(f'def vwx(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {{EW.CHKw(t, x, off, len) == True{{}} : Bool}})')
+    L.append(f'    -> {{RT.v_{X}(EW.OBJw(d, t, x, off, len)) == EW.VALw(t, x, len) : S.Value}}:')
+    L.append(f'  vz(d, t, x, off, len, {", ".join(f"{q(h[chr(111)+chr(98)+chr(106)])}, {q(h[chr(118)+chr(97)+chr(108)])}, {h[chr(112)+chr(102)]}" for h in holes)})')
+    body = '\n'.join(L)
+    base = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
+            'import ../proofs/obj/root_types.bend as RT', f'import ../proofs/obj/{win}.bend as EW'] + imps
+    base += [_rel(l) for l in text.splitlines() if _re.match(r'import \.\./\.\./types/\S+ as (\w+_d)$', l) and (l.split()[-1] + '.') in body]
+    return '\n'.join(dict.fromkeys(base)) + f"""
+
+# GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
+# {X}'s window ({win}): the root view of the object it reads is its value when its check holds
+# (vwx); each child object is a hole viewed by its own window's lemma.
+
+""" + body + '\n'
+
+
+def _qual_w(s_, text):
+    own = set(_re.findall(r'^def (\w+)\(', text, _re.M))
+    return _re.sub(r'(?<![\w.])(' + '|'.join(sorted(own, key=len, reverse=True)) + r')\(', r'EW.\1(', s_)
+
+
+def vdec_winx(X, bound, vmod):
+    """(ii)/(iii) when DC.OBJ(d, t, n) = EW.OBJw(d, t, 0n, 0, n) and DC.CHK(t, n) = EW.CHKw(t, 0n, 0, n)."""
+    return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_types.bend as RT', f'import ./{vmod}.bend as VWX'],
+            'text': f'''# ---- the view of a decoded object is the codec law's value (the window's view at offset 0) ----
+
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, {bound}n) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
+  VWX.vwx(d, t, 0n, 0, n, hchk)
+
+'''}
+
+
+
+# ---- lists of fixed-size containers in the record-list encode laws (var_rlenc_X: ITW_L over EL_L / RVW_E) ----
+# e2e_rl_<X>.bend, per list L: xm (xat_L is mget of nth), rv (the codec's element value RVW_E is the root
+# view v_E), itw (the root view's element walk is ITW_L), xvl (the list's root view is Sequence{ITW_L});
+# and the (i) premise sda_L (the list's array invariant at depth below k).
+def _rvw_pattern(text, E):
+    """RVW_E's nested match as one constructor pattern over its word binders."""
+    body = _re.search(r'^def RVW_' + E + r'\(r: .*?\n((?:  .*\n)+)', text, _re.M).group(1)
+    cases = _re.findall(r'case ([\w.]+)\{([^{}]*)\}:', body)
+    pat = None
+    subs = {}
+    top_ctor, top_args = cases[0]
+    for ctor, args in cases[1:]:
+        subs[len(subs)] = (ctor, args)
+    fields = [a.strip() for a in top_args.split(',')]
+    it = iter(cases[1:])
+    out = []
+    for f in fields:
+        ctor, args = next(it)
+        out.append(f'{ctor}{{{args}}}')
+    return f'{top_ctor}{{{", ".join(out)}}}'
+
+
+def rl_module(X, rlmod, lists):
+    """lists: [(L, E, ET, CT, list type)]: E the element name (RVW_E), ET its type, CT the list constructor."""
+    text = (_OBJ / f'{rlmod}.bend').read_text()
+    L_ = []
+    for L, E, ET, CT, LT in lists:
+        body_ = _re.search(r'^def RVW_' + E + r'\(r: .*?\n((?:  .*\n)+)', text, _re.M).group(1)
+        cases_ = _re.findall(r'case ([\w.]+)\{([^{}]*)\}:', body_)
+        top = cases_[0][0]
+        nfl = len(cases_[0][1].split(','))
+        fts = [c for c, _ in cases_[1:1 + nfl]]
+        fps = ', '.join(f'+f{i}: {c}' for i, c in enumerate(fts))
+        fas = ', '.join(f'f{i}' for i in range(nfl))
+        fas_sp = ' '.join(f'f{i}' for i in range(nfl))
+        fbs = ', '.join(f'+f{i}' for i in range(nfl))
+        fpats = ' '.join(f'{c}{{{a}}}' for c, a in cases_[1:1 + nfl])
+        view = _re.search(r'S\.Items\{(\w+\.\w+)\(xat_' + L, _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', _RT.read_text(), _re.M).group(0)).group(1)
+        dflt = _re.search(r'VRL\.mget\(' + _re.escape(ET) + r', FD\.spec_common__nth\(.*?\), j\), (.*?)\)$', _re.search(r'^def EL_' + L + r'\(.*$', text, _re.M).group(0)).group(1)
+        L_.append(f'''# ---- {L} ----
+
+def xm_{L}(+W: List<&2, {ET}>, +i: Nat) -> {{RT.xat_{L}(W, i) == VRL.mget({ET}, FD.spec_common__nth({ET}, W, i), {dflt}) : {ET}}}:
+  match W i:
+    case Nil{{}} _: {{==}}
+    case Con{{+x, +t}} 0n: {{==}}
+    case Con{{+x, +t}} 1n+ +p: xm_{L}(t, p)
+
+def rvf_{L}({fps}) -> {{RL.RVW_{E}({top}{{{fas}}}) == {view}({top}{{{fas}}}) : S.Value}}:
+  match {fas_sp}:
+    case {fpats}: {{==}}
+
+def rv_{L}(+r: {ET}) -> {{RL.RVW_{E}(r) == {view}(r) : S.Value}}:
+  match r:
+    case {top}{{{fbs}}}: rvf_{L}({fas})
+
+def itw_{L}(c: Nat, +A: FD.array__Tree<{ET}>, +j: Nat) -> {{RT.xi_{L}(c, FD.array__slots({ET}, A), j) == RL.ITW_{L}(c, A, j) : S.Value}}:
+  match c:
+    case 0n: {{==}}
+    case 1n+ +q:
+      %Equal.sym({ET}, RT.xat_{L}(FD.array__slots({ET}, A), j), RL.EL_{L}(A, j), xm_{L}(FD.array__slots({ET}, A), j)) :
+        {{S.Items{{{view}(_), RT.xi_{L}(q, FD.array__slots({ET}, A), 1n+j)}} == RL.ITW_{L}(1n+q, A, j) : S.Value}}
+      %Equal.sym(S.Value, {view}(RL.EL_{L}(A, j)), RL.RVW_{E}(RL.EL_{L}(A, j)), Equal.sym(S.Value, RL.RVW_{E}(RL.EL_{L}(A, j)), {view}(RL.EL_{L}(A, j)), rv_{L}(RL.EL_{L}(A, j)))) :
+        {{S.Items{{_, RT.xi_{L}(q, FD.array__slots({ET}, A), 1n+j)}} == RL.ITW_{L}(1n+q, A, j) : S.Value}}
+      Equal.cong(S.Value, S.Value, z => S.Items{{RL.RVW_{E}(RL.EL_{L}(A, j)), z}}, RT.xi_{L}(q, FD.array__slots({ET}, A), 1n+j), RL.ITW_{L}(q, A, 1n+j), itw_{L}(q, A, 1n+j))
+
+def xvl_{L}(+A: FD.array__Tree<{ET}>, +n: U32) -> {{RT.xv_{L}({CT}{{FD.array__thaw({ET}, A), n}}) == S.Sequence{{RL.ITW_{L}(U32.to_nat(n), A, 0n)}} : S.Value}}:
+  %Equal.sym(FD.array__Tree<{ET}>, FD.array__freeze({ET}, FD.array__thaw({ET}, A)), A, FD.array__freeze_thaw({ET}, A)) :
+    {{S.Sequence{{RT.xi_{L}(U32.to_nat(n), FD.array__slots({ET}, _), 0n)}} == S.Sequence{{RL.ITW_{L}(U32.to_nat(n), A, 0n)}} : S.Value}}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, RT.xi_{L}(U32.to_nat(n), FD.array__slots({ET}, A), 0n), RL.ITW_{L}(U32.to_nat(n), A, 0n), itw_{L}(U32.to_nat(n), A, 0n))
+
+# the (i) premise: the list's array invariant at depth below k
+def sda_{L}(w: {LT}, +k: Nat) -> Data:
+  DK.Ex(FD.array__Tree<{ET}>, t => DK.Ex(Nat, dw => DK.Ex(U32, N =>
+    DK.P2({{w == {CT}{{FD.array__thaw({ET}, t), N}} : {LT}}},
+    DK.P2({{FD.array__perfect({ET}, dw, t) == True{{}} : Bool}},
+    DK.P2({{Nat.is_lt(dw, k) == True{{}} : Bool}},
+          {{Nat.is_le(U32.to_nat(N), FD.spec_common__pow2(dw)) == True{{}} : Bool}}))))))
+''')
+    body = '\n'.join(L_)
+    imps = ['import Base', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P', 'import ../proofs/compact/found.bend as FD',
+            'import ../proofs/obj/spec_fixed.bend as F', 'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/vrl.bend as VRL',
+            'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names.bend as RN', f'import ../proofs/obj/{rlmod}.bend as RL', 'import ../src/obj.bend as O']
+    rtt = _RT.read_text()
+    imps += [l.replace('import ../../', 'import ../') for l in rtt.splitlines() + text.splitlines()
+             if _re.match(r'import \.\./\.\./types/\S+ as (\w+_d)$', l) and (l.split()[-1] + '.') in body]
+    return '\n'.join(dict.fromkeys(imps)) + f"""
+
+# GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
+# {X}'s record lists in the encode laws ({rlmod}): each list's root view is its codec value Sequence{{ITW_L}}.
+
+""" + body
+
+
+# (i) of a container of record lists (big_var_codec_X_enc over var_rlenc_X): premises rep and, per list,
+# its array invariant at depth below 31 (RL.sda_L); the laws' counts, arrays, depths and room come from
+# them, the limits from rep; the view is Sequence{ITW_L} per list (e2e_rl.xvl).
+def venc_rlist(R, X):
+    m = json.loads((_OBJ.parents[1] / 'proofs/gate/api_map.json').read_text())['map'][X]
+    enc = m['encode_eval'][0]['file'][:-5]
+    text = (_OBJ / f'{enc}.bend').read_text()
+    sig = _re.search(r'^def encode_eval\((.*?)\)\n    -> \{', text, _re.M | _re.S).group(1)
+    P = _params(' '.join(sig.split()))
+    pn = [n for n, _ in P]
+    rlmod, lists = RL_LISTS[X]
+    K = len(lists)
+    OT = wit(X).otype
+    obj = f'{OT.replace("_d.", "_d.")}{{' + ', '.join(f'{CT}{{FD.array__thaw({ET}, A{k}), n{k}}}' for k, (L, E, ET, CT, LT) in enumerate(lists)) + '}'
+    xe_args = ', '.join(pn)
+    ENC = lambda o: f'{R}_e.{X}_encode({o})'
+    G = lambda o: f'{{Some{{E.obytes(Pair.snd({OT}, B.Buf, {ENC(o)}))}} == API.serialize(Spec.{X}(), RT.v_{X}({o})) : Maybe<&2, +List<U32>>}}'
+    ns = ', '.join(f'n{k}' for k in range(K))
+    hls = ', '.join(f'hl{k}' for k in range(K))
+    D6 = f'EN.D6({ns}, {", ".join(f"A{k}" for k in range(K))})'
+    S3 = f'EN.S3({ns})'
+    DO = f'EN.DO({ns})'
+    BYT = f'VSP.bt(U32.to_nat({S3}), SF.limbs(FD.array__slots(U32, {D6})))'
+    view_rw = []
+    cur = [f'RT.xv_{L}({CT}{{FD.array__thaw({ET}, A{k}), n{k}}})' for k, (L, E, ET, CT, LT) in enumerate(lists)]
+    vals = [f'S.Sequence{{RL.ITW_{L}(U32.to_nat(n{k}), A{k}, 0n)}}' for k, (L, E, ET, CT, LT) in enumerate(lists)]
+    def seqv(xs):
+        t = 'S.EmptyItems{}'
+        for x in reversed(xs):
+            t = f'S.Items{{{x}, {t}}}'
+        return f'S.Sequence{{{t}}}'
+    for k, (L, E, ET, CT, LT) in enumerate(lists):
+        mot = [vals[j] if j < k else ('_' if j == k else cur[j]) for j in range(K)]
+        view_rw.append(f'  %Equal.sym(S.Value, {cur[k]}, {vals[k]}, RLV.xvl_{L}(A{k}, n{k})) : {{{seqv(mot)} == EN.XE({xe_args}) : S.Value}}')
+    core = f'''# the view of the encode laws' object is their value
+def ve({", ".join(f"+{n}: {t}" for n, t in P)}) -> {{RT.v_{X}({obj}) == EN.XE({xe_args}) : S.Value}}:
+''' + '\n'.join(view_rw) + '''
+  {==}
+
+# (i) over the laws' arrays and counts, under their hypotheses
+''' + f'''def core({", ".join(f"+{n}: {t}" for n, t in P)}) -> {G(obj)}:
+  +hn = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(FD.spec_common__pow2({DO}))) == True{{}} : Bool}}, A.quad(EN.QN({ns})), U32.to_nat({S3}),
+    Equal.sym(Nat, U32.to_nat({S3}), A.quad(EN.QN({ns})), EN.eS3({ns}, {hls})), C.q4(EN.QN({ns}), FD.spec_common__pow2({DO}), EN.roomS({ns}, {hls})))
+  %Equal.sym({OT} & B.Buf, {ENC(obj)}, ({obj}, B.Buf{{FD.array__thaw(U32, {D6}), {S3}}}), EN.encode_eval({xe_args})) :
+    {{Some{{E.obytes(Pair.snd({OT}, B.Buf, _))}} == API.serialize(Spec.{X}(), RT.v_{X}({obj})) : Maybe<&2, +List<U32>>}}
+  %Equal.sym(+List<U32>, E.obytes(B.Buf{{FD.array__thaw(U32, {D6}), {S3}}}), {BYT},
+      EM.ob({DO}, {D6}, {S3}, EN.pfD6({xe_args}), EN.hDO29({ns}, {hls}), hn)) :
+    {{Some{{_}} == API.serialize(Spec.{X}(), RT.v_{X}({obj})) : Maybe<&2, +List<U32>>}}
+  %Equal.sym(S.Value, RT.v_{X}({obj}), EN.XE({xe_args}), ve({xe_args})) : {{Some{{{BYT}}} == API.serialize(Spec.{X}(), _) : Maybe<&2, +List<U32>>}}
+  Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.{X}(), EN.XE({xe_args})), Some{{{BYT}}},
+    Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.{X}(), EN.XE({xe_args})), Encoding.encoding_for_legal_type(Spec.{X}(), EN.XE({xe_args})), Some{{{BYT}}},
+      E.serialize_legal(Spec.{X}(), EN.XE({xe_args}), VS.public_sound(Spec.{X}(), {{==}})), EN.encode_spec({xe_args})))
+'''
+    # extraction: rep = P2(eo, P2(r0, P2(r1, r2))) (no fixed fields), each r_k = P2(wf_k, nb_k)
+    w = wit(X)
+    assert not w.binders, X
+    L_ = [f'# (i): for every object the root law represents, its lists\' arrays at depth below 31 (the hs premises)',
+          f'def {R}_e2e_encode(-o: {OT}, +rep: RT.rep_{X}(o, Spec.{X}()), ' + ', '.join(f'+hs{k}: RLV.sda_{L}(RT.pj_{X}_{k}(o), 31n)' for k, (L, *_r) in enumerate(lists)) + f') -> {G("o")}:']
+    L_.append('  (+eo, q0) = rep')
+    cur = 'q0'
+    for k in range(K - 1):   # depth-first: each field taken apart before the next
+        if k == K - 2:
+            L_.append(f'  (+r{k}, +r{k + 1}) = {cur}')
+            L_.append(f'  (+wf{k}, +nb{k}) = r{k}')
+            L_.append(f'  (+wf{k + 1}, +nb{k + 1}) = r{k + 1}')
+        else:
+            L_.append(f'  (+r{k}, q{k + 1}) = {cur}')
+            L_.append(f'  (+wf{k}, +nb{k}) = r{k}')
+            cur = f'q{k + 1}'
+    for k in range(K):
+        L_ += [f'  (+A{k}, s{k}a) = hs{k}', f'  (+da{k}, s{k}b) = s{k}a', f'  (+n{k}, s{k}c) = s{k}b', f'  (+eo{k}, s{k}d) = s{k}c', f'  (+pfa{k}, s{k}e) = s{k}d', f'  (+hda{k}, +hca{k}) = s{k}e']
+    sch = lambda k: 'SH.Chain_head(' + 'SH.Chain_tail(' * k + 'SH.Container_fields(Spec.' + X + '())' + ')' * k + ')'
+    for k, (L, E, ET, CT, LT) in enumerate(lists):
+        L_.append(f'  +hl{k} = FD.logic__subst({LT}, z => {{Nat.is_le(U32.to_nat(RT.xlen_o_{L}(z)), SH.ListOf_limit({sch(k)})) == True{{}} : Bool}}, RT.pj_{X}_{k}(o), {CT}{{FD.array__thaw({ET}, A{k}), n{k}}}, eo{k}, nb{k})')
+    # the object equation: o == X{pj_0(o), ..} -> X{Seq..}
+    c0 = f'{OT}{{' + ', '.join(f'RT.pj_{X}_{k}(o)' for k in range(K)) + '}'
+    eq = 'eo'
+    for k, (L, E, ET, CT, LT) in enumerate(lists):
+        seqk = f'{CT}{{FD.array__thaw({ET}, A{k}), n{k}}}'
+        c1 = c0.replace(f'RT.pj_{X}_{k}(o)', seqk, 1)
+        hole = c0.replace(f'RT.pj_{X}_{k}(o)', 'z', 1)
+        L_.append(f'  +c{k} = Equal.trans({OT}, o, {c0}, {c1}, {eq}, Equal.cong({LT}, {OT}, z => {hole}, RT.pj_{X}_{k}(o), {seqk}, eo{k}))')
+        c0, eq = c1, f'c{k}'
+    L_.append(f'  %Equal.sym({OT}, o, {obj}, {eq}) : {G("_")}')
+    L_.append(f'  core({xe_args})')
+    body = core + '\n' + '\n'.join(L_) + '\n'
+    imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
+            'import ../src/obj.bend as O', f'import ../types/{R}_encode_ssz_generated.bend as {R}_e', 'import ../types/schema.bend as S',
+            'import ../spec/fulu_schemas.bend as Spec', 'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
+            'import ../proofs/compact/arith.bend as A', 'import ../spec/codec.bend as Encoding', 'import ../proofs/obj/spec_fixed.bend as SF',
+            'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/schema_shapes.bend as SH',
+            'import ../proofs/obj/root_types.bend as RT', f'import ../proofs/obj/{enc}.bend as EN', f'import ../proofs/obj/{rlmod}.bend as RL',
+            'import ./e2e_support.bend as E', 'import ./e2e_cap.bend as C', 'import ./e2e_emit.bend as EM', f'import ./e2e_rl_{X}.bend as RLV']
+    imps += [_rel(l) for l in text.splitlines() if _re.match(r'import \.\./\.\./types/\S+ as (\w+_d)$', l) and (l.split()[-1] + '.') in body]
+    return '\n'.join(dict.fromkeys(imps)) + f"""
+
+# GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
+# {R} (variable size): the object API's encoder's bytes are END_TO_END's serialize of the object's view, for
+# every object the root law represents (rep) whose lists' arrays are at depth below 31 (the hs premises:
+# the encode laws take depth below 31, the root law's invariant below 32).
+
+""" + body
+
+
 # ---- registrations (after every helper is defined) ----
 RB_NAMES = ['ExecutionPayloadHeader', 'LightClientHeader']
 PLIST = r"""import Base
@@ -1840,6 +2193,162 @@ def @R@_e2e_encode(-o: O.Words, +rep: @REP@(o, Spec.@X@()), +hs: BL.sdk(o, 28n))
         hcap)
       e2(o, T, dw, N, eo, pf, hdw, ec, hroom)
 """
+_VL_TEXT = """def isne(+a: Nat, +b: Nat, +h: {Nat.is_lt(a, b) == True{} : Bool}) -> {Nat.is_eq(b, a) == False{} : Bool}:
+  match a b:
+    case 0n 0n: Empty.absurd({Nat.is_eq(0n, 0n) == False{} : Bool}, FD.logic__false_true(h))
+    case 0n 1n+ +q: {==}
+    case 1n+ +p 0n: Empty.absurd({Nat.is_eq(0n, 1n+p) == False{} : Bool}, FD.logic__false_true(h))
+    case 1n+ +p 1n+ +q: isne(p, q, h)
+
+# a write at j leaves element i != j
+def lemU(+j: Nat, +i: Nat, +dd: Nat, +D: FD.array__Tree<@E@>, +v: @E@, +pf: {FD.array__perfect(@E@, dd, D) == True{} : Bool},
+    +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool}, +ne: {Nat.is_eq(j, i) == False{} : Bool})
+    -> {FD.spec_common__nth(@E@, FD.array__slots(@E@, FD.array__upd(@E@, dd, D, j, v)), i) == FD.spec_common__nth(@E@, FD.array__slots(@E@, D), i) : Maybe<&2, @E@>}:
+  %Equal.sym(List<&2, @E@>, FD.array__slots(@E@, FD.array__upd(@E@, dd, D, j, v)), FD.spec_common__update(@E@, FD.array__slots(@E@, D), j, v), FD.array__upd_slots(@E@, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(@E@, _, i) == FD.spec_common__nth(@E@, FD.array__slots(@E@, D), i) : Maybe<&2, @E@>}
+  FD.list__nth_update_other(@E@, FD.array__slots(@E@, D), j, i, v, ne)
+
+# a write at j is element j
+def lemS0(+j: Nat, +dd: Nat, +D: FD.array__Tree<@E@>, +v: @E@, +pf: {FD.array__perfect(@E@, dd, D) == True{} : Bool},
+    +hj: {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool})
+    -> {FD.spec_common__nth(@E@, FD.array__slots(@E@, FD.array__upd(@E@, dd, D, j, v)), j) == Some{v} : Maybe<&2, @E@>}:
+  +hl = FD.logic__subst(Nat, z => {Nat.is_lt(j, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(@E@, FD.array__slots(@E@, D)),
+    Equal.sym(Nat, FD.spec_common__length(@E@, FD.array__slots(@E@, D)), FD.spec_common__pow2(dd), FD.array__slots_length(@E@, dd, D, pf)), hj)
+  %Equal.sym(List<&2, @E@>, FD.array__slots(@E@, FD.array__upd(@E@, dd, D, j, v)), FD.spec_common__update(@E@, FD.array__slots(@E@, D), j, v), FD.array__upd_slots(@E@, dd, D, j, v, hj, pf)) :
+    {FD.spec_common__nth(@E@, _, j) == Some{v} : Maybe<&2, @E@>}
+  FD.list__nth_update_same(@E@, FD.array__slots(@E@, D), j, v, hl)
+
+def pfRT(q: Nat, +j: Nat, +dd: Nat, +D: FD.array__Tree<@E@>, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(@E@, dd, D) == True{} : Bool})
+    -> {FD.array__perfect(@E@, dd, W.RT(q, j, dd, D, t, x)) == True{} : Bool}:
+  match q:
+    case 0n: FD.array__upd_perfect(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x)), pf)
+    case 1n+ +p: pfRT(p, 1n+j, dd, FD.array__upd(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x))), t, x, FD.array__upd_perfect(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x)), pf))
+
+def hbj(+p: Nat, +j: Nat, +dd: Nat, +hb: {Nat.is_lt(Nat.add(1n+p, j), FD.spec_common__pow2(dd)) == True{} : Bool}) -> {Nat.is_lt(j, FD.spec_common__pow2(dd)) == True{} : Bool}:
+  FD.nat__le_lt_trans(j, Nat.add(1n+p, j), FD.spec_common__pow2(dd), Order.left_below_sum(1n+p, j), hb)
+
+def hbs(+p: Nat, +j: Nat, +dd: Nat, +hb: {Nat.is_lt(Nat.add(1n+p, j), FD.spec_common__pow2(dd)) == True{} : Bool}) -> {Nat.is_lt(Nat.add(p, 1n+j), FD.spec_common__pow2(dd)) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)) : {Nat.is_lt(_, FD.spec_common__pow2(dd)) == True{} : Bool}
+  hb
+
+# the later writes leave element i < j
+def lemB(q: Nat, +j: Nat, +i: Nat, +dd: Nat, +D: FD.array__Tree<@E@>, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(@E@, dd, D) == True{} : Bool},
+    +hij: {Nat.is_lt(i, j) == True{} : Bool}, +hb: {Nat.is_lt(Nat.add(q, j), FD.spec_common__pow2(dd)) == True{} : Bool})
+    -> {FD.spec_common__nth(@E@, FD.array__slots(@E@, W.RT(q, j, dd, D, t, x)), i) == FD.spec_common__nth(@E@, FD.array__slots(@E@, D), i) : Maybe<&2, @E@>}:
+  match q:
+    case 0n: lemU(j, i, dd, D, W.RX(t, VRL.pos(j, @R@n, x)), pf, hb, isne(i, j, hij))
+    case 1n+ +p:
+      Equal.trans(Maybe<&2, @E@>, FD.spec_common__nth(@E@, FD.array__slots(@E@, W.RT(p, 1n+j, dd, FD.array__upd(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x))), t, x)), i),
+        FD.spec_common__nth(@E@, FD.array__slots(@E@, FD.array__upd(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x)))), i), FD.spec_common__nth(@E@, FD.array__slots(@E@, D), i),
+        lemB(p, 1n+j, i, dd, FD.array__upd(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x))), t, x, FD.array__upd_perfect(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x)), pf),
+          FD.nat__lt_trans(i, j, 1n+j, hij, FD.nat__lt_succ(j)), hbs(p, j, dd, hb)),
+        lemU(j, i, dd, D, W.RX(t, VRL.pos(j, @R@n, x)), pf, hbj(p, j, dd, hb), isne(i, j, hij)))
+
+def stepA(+p: Nat, +j: Nat, +i: Nat, +dd: Nat, +D: FD.array__Tree<@E@>, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(@E@, dd, D) == True{} : Bool},
+    +hb: {Nat.is_lt(Nat.add(1n+p, j), FD.spec_common__pow2(dd)) == True{} : Bool}, +hji: {Nat.is_le(j, i) == True{} : Bool}, +c: Bool, +ec: {Nat.is_eq(j, i) == c : Bool},
+    ih: @+h: {Nat.is_le(1n+j, i) == True{} : Bool} -> {FD.spec_common__nth(@E@, FD.array__slots(@E@, W.RT(p, 1n+j, dd, FD.array__upd(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x))), t, x)), i) == Some{W.RX(t, VRL.pos(i, @R@n, x))} : Maybe<&2, @E@>}) -> {FD.spec_common__nth(@E@, FD.array__slots(@E@, W.RT(1n+p, j, dd, D, t, x)), i) == Some{W.RX(t, VRL.pos(i, @R@n, x))} : Maybe<&2, @E@>}:
+  match c:
+    case True{}:
+      %FD.nat__eq_from_is_eq(j, i, ec) : {FD.spec_common__nth(@E@, FD.array__slots(@E@, W.RT(1n+p, j, dd, D, t, x)), _) == Some{W.RX(t, VRL.pos(_, @R@n, x))} : Maybe<&2, @E@>}
+      Equal.trans(Maybe<&2, @E@>, FD.spec_common__nth(@E@, FD.array__slots(@E@, W.RT(p, 1n+j, dd, FD.array__upd(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x))), t, x)), j),
+        FD.spec_common__nth(@E@, FD.array__slots(@E@, FD.array__upd(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x)))), j), Some{W.RX(t, VRL.pos(j, @R@n, x))},
+        lemB(p, 1n+j, j, dd, FD.array__upd(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x))), t, x, FD.array__upd_perfect(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x)), pf), FD.nat__lt_succ(j), hbs(p, j, dd, hb)),
+        lemS0(j, dd, D, W.RX(t, VRL.pos(j, @R@n, x)), pf, hbj(p, j, dd, hb)))
+    case False{}: ih(FD.nat__lt_succ_le_succ(j, i, FD.nat__lt_or_eq(j, i, hji, ec)))
+
+# element i (j <= i <= q + j) of the record tree
+def lemA(q: Nat, +j: Nat, +i: Nat, +dd: Nat, +D: FD.array__Tree<@E@>, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(@E@, dd, D) == True{} : Bool},
+    +hji: {Nat.is_le(j, i) == True{} : Bool}, +hiq: {Nat.is_le(i, Nat.add(q, j)) == True{} : Bool}, +hb: {Nat.is_lt(Nat.add(q, j), FD.spec_common__pow2(dd)) == True{} : Bool})
+    -> {FD.spec_common__nth(@E@, FD.array__slots(@E@, W.RT(q, j, dd, D, t, x)), i) == Some{W.RX(t, VRL.pos(i, @R@n, x))} : Maybe<&2, @E@>}:
+  match q:
+    case 0n:
+      %FD.nat__le_antisym(j, i, hji, hiq) : {FD.spec_common__nth(@E@, FD.array__slots(@E@, W.RT(0n, j, dd, D, t, x)), _) == Some{W.RX(t, VRL.pos(_, @R@n, x))} : Maybe<&2, @E@>}
+      lemS0(j, dd, D, W.RX(t, VRL.pos(j, @R@n, x)), pf, hb)
+    case 1n+ +p:
+      stepA(p, j, i, dd, D, t, x, pf, hb, hji, Nat.is_eq(j, i), {==}, h =>
+        lemA(p, 1n+j, i, dd, FD.array__upd(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x))), t, x, FD.array__upd_perfect(@E@, dd, D, j, W.RX(t, VRL.pos(j, @R@n, x)), pf), h,
+          FD.logic__subst(Nat, z => {Nat.is_le(i, z) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hiq),
+          hbs(p, j, dd, hb)))
+
+def sv(m: Maybe<&2, @E@>, +d: @E@) -> @E@:
+  match m:
+    case None{}: d
+    case Some{+y}: y
+
+def some_inj(+a: @E@, +b: @E@, +e: {Some{a} == Some{b} : Maybe<&2, @E@>}) -> {a == b : @E@}:
+  Equal.cong(Maybe<&2, @E@>, @E@, m => sv(m, a), Some{a}, Some{b}, e)
+
+# the root view's element walk over the record tree is the window's items
+def xiR(m: Nat, +i: Nat, +Q: Nat, +dd: Nat, +D: FD.array__Tree<@E@>, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(@E@, dd, D) == True{} : Bool},
+    +hb: {Nat.is_lt(Nat.add(Q, 0n), FD.spec_common__pow2(dd)) == True{} : Bool}, +hm: {Nat.is_le(Nat.add(m, i), 1n+Q) == True{} : Bool})
+    -> {RT.xi_@L@(m, FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x)), i) == W.RITEMS(m, t, VRL.pos(i, @R@n, x)) : S.Value}:
+  match m:
+    case 0n: {==}
+    case 1n+ +k:
+      +hq = FD.nat__le_trans(i, Nat.add(k, i), Q, Order.left_below_sum(k, i), hm)
+      +hq0 = FD.logic__subst(Nat, z => {Nat.is_le(i, z) == True{} : Bool}, Q, Nat.add(Q, 0n), Equal.sym(Nat, Nat.add(Q, 0n), Q, FD.nat__add_zero(Q)), hq)
+      +en = lemA(Q, 0n, i, dd, D, t, x, pf, Order.zero_le(i), hq0, hb)
+      +hi = FD.logic__subst(Nat, z => {Nat.is_lt(i, z) == True{} : Bool}, FD.spec_common__pow2(dd), FD.spec_common__length(@E@, FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x))),
+        Equal.sym(Nat, FD.spec_common__length(@E@, FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x))), FD.spec_common__pow2(dd), FD.array__slots_length(@E@, dd, W.RT(Q, 0n, dd, D, t, x), pfRT(Q, 0n, dd, D, t, x, pf))),
+        FD.nat__le_lt_trans(i, Nat.add(Q, 0n), FD.spec_common__pow2(dd), hq0, hb))
+      +ex = some_inj(RT.xat_@L@(FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, @R@n, x)),
+        Equal.trans(Maybe<&2, @E@>, Some{RT.xat_@L@(FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x)), i)}, FD.spec_common__nth(@E@, FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x)), i), Some{W.RX(t, VRL.pos(i, @R@n, x))},
+          Equal.sym(Maybe<&2, @E@>, FD.spec_common__nth(@E@, FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x)), i), Some{RT.xat_@L@(FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x)), i)}, RT.nth_@L@(FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x)), i, hi)), en))
+      +hm2 = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+Q) == True{} : Bool}, 1n+Nat.add(k, i), Nat.add(k, 1n+i), Equal.sym(Nat, Nat.add(k, 1n+i), 1n+Nat.add(k, i), FD.nat__add_succ(k, i)), hm)
+      %Equal.sym(@E@, RT.xat_@L@(FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, @R@n, x)), ex) :
+        {S.Items{@VIEWE@(_), RT.xi_@L@(k, FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, @R@n, x)) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{@VIEWE@(W.RX(t, VRL.pos(i, @R@n, x))), z}, RT.xi_@L@(k, FD.array__slots(@E@, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
+        W.RITEMS(k, t, VRL.pos(1n+i, @R@n, x)), xiR(k, 1n+i, Q, dd, D, t, x, pf, hb, hm2))
+
+def subz(+k: Nat) -> {Nat.sub(1n+k, U32.to_nat(1)) == k : Nat}:
+  match k:
+    case 0n: {==}
+    case 1n+ +p: {==}
+
+# the list's element count is positive when its length is not 0
+def vlf(+t: FD.array__Tree<U32>, +x: Nat, +len: U32, +hchk: {W.CHKw(t, x, 0, len) == True{} : Bool}, +c: Nat, +ecc: {W.CC(len) == c : Nat}, +eb: {U32.is_eq(len, 0) == False{} : Bool})
+    -> {RT.xv_@L@(W.LOBJ(False{}, t, x, len)) == W.VALw(t, x, len) : S.Value}:
+  match c:
+    case 0n:
+      +e0 = FD.u32__injective(len, 0, Equal.trans(Nat, U32.to_nat(len), Nat.mul(W.CC(len), @R@n), 0n, W.ecw(len, hchk), Equal.cong(Nat, Nat, z => Nat.mul(z, @R@n), W.CC(len), 0n, ecc)))
+      Empty.absurd({RT.xv_@L@(W.LOBJ(False{}, t, x, len)) == W.VALw(t, x, len) : S.Value}, FD.logic__false_true(Equal.sym(Bool, True{}, False{}, FD.logic__subst(U32, z => {U32.is_eq(z, 0) == False{} : Bool}, len, 0, e0, eb))))
+    case 1n+ +k:
+      +hN = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(1), z) == True{} : Bool}, 1n+k, U32.to_nat(W.NN(len)), Equal.sym(Nat, W.CC(len), 1n+k, ecc), FD.nat__zero_le(k))
+      +eQ = FD.u32__sub_nat(W.NN(len), 1, hN)
+      +hc = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(@LIM@)) == True{} : Bool}, W.CC(len), 1n+k, ecc, W.hcw(len, hchk))
+      +hNk = FD.logic__subst(Nat, z => {Nat.is_le(z, O.pow2n(@KB@n)) == True{} : Bool}, 1n+k, U32.to_nat(W.NN(len)), Equal.sym(Nat, W.CC(len), 1n+k, ecc), FD.nat__le_trans(1n+k, U32.to_nat(@LIM@), O.pow2n(@KB@n), hc, {==}))
+      +hcov = VD.wd_cover(W.NN(len), @KB@n, {==}, hNk)
+      +hcv = FD.logic__subst(Nat, z => {Nat.is_le(z, O.pow2n(B.words_depth(W.NN(len)))) == True{} : Bool}, U32.to_nat(W.NN(len)), 1n+k, ecc, hcov)
+      +hb0 = FD.logic__subst(Nat, z => {Nat.is_le(1n+k, z) == True{} : Bool}, O.pow2n(B.words_depth(W.NN(len))), FD.spec_common__pow2(B.words_depth(W.NN(len))), Equal.sym(Nat, FD.spec_common__pow2(B.words_depth(W.NN(len))), O.pow2n(B.words_depth(W.NN(len))), VD.s_pow2_eq(B.words_depth(W.NN(len)))), hcv)
+      +hb = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(B.words_depth(W.NN(len)))) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)), FD.nat__succ_le_lt(k, FD.spec_common__pow2(B.words_depth(W.NN(len))), hb0))
+      +hm = FD.logic__subst(Nat, z => {Nat.is_le(1n+z, 1n+k) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)), FD.nat__le_refl(1n+k))
+      %Equal.sym(FD.array__Tree<@E@>, FD.array__freeze(@E@, FD.array__thaw(@E@, W.RT(U32.to_nat(U32.sub(W.NN(len), 1)), 0n, B.words_depth(W.NN(len)), FD.array__trep(@E@, B.words_depth(W.NN(len)), @DEF@), t, x))),
+          W.RT(U32.to_nat(U32.sub(W.NN(len), 1)), 0n, B.words_depth(W.NN(len)), FD.array__trep(@E@, B.words_depth(W.NN(len)), @DEF@), t, x),
+          FD.array__freeze_thaw(@E@, W.RT(U32.to_nat(U32.sub(W.NN(len), 1)), 0n, B.words_depth(W.NN(len)), FD.array__trep(@E@, B.words_depth(W.NN(len)), @DEF@), t, x))) :
+        {S.Sequence{RT.xi_@L@(U32.to_nat(W.NN(len)), FD.array__slots(@E@, _), 0n)} == W.VALw(t, x, len) : S.Value}
+      %Equal.sym(Nat, U32.to_nat(U32.sub(W.NN(len), 1)), Nat.sub(U32.to_nat(W.NN(len)), U32.to_nat(1)), eQ) : {S.Sequence{RT.xi_@L@(U32.to_nat(W.NN(len)), FD.array__slots(@E@, W.RT(_, 0n, B.words_depth(W.NN(len)), FD.array__trep(@E@, B.words_depth(W.NN(len)), @DEF@), t, x)), 0n)} == W.VALw(t, x, len) : S.Value}
+      %Equal.sym(Nat, W.CC(len), 1n+k, ecc) : {S.Sequence{RT.xi_@L@(_, FD.array__slots(@E@, W.RT(Nat.sub(_, U32.to_nat(1)), 0n, B.words_depth(W.NN(len)), FD.array__trep(@E@, B.words_depth(W.NN(len)), @DEF@), t, x)), 0n)} == S.Sequence{W.RITEMS(_, t, x)} : S.Value}
+      %Equal.sym(Nat, Nat.sub(1n+k, U32.to_nat(1)), k, subz(k)) : {S.Sequence{RT.xi_@L@(1n+k, FD.array__slots(@E@, W.RT(_, 0n, B.words_depth(W.NN(len)), FD.array__trep(@E@, B.words_depth(W.NN(len)), @DEF@), t, x)), 0n)} == S.Sequence{W.RITEMS(1n+k, t, x)} : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Sequence{z}, RT.xi_@L@(1n+k, FD.array__slots(@E@, W.RT(k, 0n, B.words_depth(W.NN(len)), FD.array__trep(@E@, B.words_depth(W.NN(len)), @DEF@), t, x)), 0n), W.RITEMS(1n+k, t, x),
+        xiR(1n+k, 0n, k, B.words_depth(W.NN(len)), FD.array__trep(@E@, B.words_depth(W.NN(len)), @DEF@), t, x, FD.array__trep_perfect(@E@, B.words_depth(W.NN(len)), @DEF@), hb, hm))
+
+def vlc(+t: FD.array__Tree<U32>, +x: Nat, +len: U32, +hchk: {W.CHKw(t, x, 0, len) == True{} : Bool}, +b: Bool, +eb: {U32.is_eq(len, 0) == b : Bool})
+    -> {RT.xv_@L@(W.LOBJ(b, t, x, len)) == W.VALw(t, x, len) : S.Value}:
+  match b:
+    case True{}:
+      %Equal.sym(U32, len, 0, FD.u32alg__eq_of(len, 0, eb)) : {RT.xv_@L@(W.LOBJ(True{}, t, x, _)) == W.VALw(t, x, _) : S.Value}
+      {==}
+    case False{}: vlf(t, x, len, hchk, W.CC(len), {==}, eb)
+
+# the list object a window reads views as the window's value
+def vl(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {W.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT.xv_@L@(W.OBJw(d, t, x, off, len)) == W.VALw(t, x, len) : S.Value}:
+  vlc(t, x, len, hchk, U32.is_eq(len, 0), {==})
+"""
+RL_LISTS = {'ExecutionRequests': ('var_rlenc_ExecutionRequests', [
+    ('l8192_DepositRequest', 'DepositRequest', 'FuluDepositRequest_d.DepositRequest', 'Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq', 'Fulu_list_DepositRequest_8192_d.l8192_DepositRequest_Seq'),
+    ('l16_WithdrawalRequest', 'WithdrawalRequest', 'FuluWithdrawalRequest_d.WithdrawalRequest', 'Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq', 'Fulu_list_WithdrawalRequest_16_d.l16_WithdrawalRequest_Seq'),
+    ('l2_ConsolidationRequest', 'ConsolidationRequest', 'FuluConsolidationRequest_d.ConsolidationRequest', 'Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq', 'Fulu_list_ConsolidationRequest_2_d.l2_ConsolidationRequest_Seq')])}
 VROOT_SHAPES['Transaction'] = vroot_bytelist
 SUPPORT_OUT['e2e_blist.bend'] = r"""import Base
 import ../src/obj.bend as O
@@ -2002,7 +2511,6 @@ SUPPORT_OUT['e2e_vw_ExecutionPayloadHeader.bend'] = vw_module('ExecutionPayloadH
     {'obj': 'O.Words{FD.array__thaw(U32, MKw(t, i, len)), LL(len)}', 'ty': 'O.Words', 'arg': 'O.Words{FD.array__thaw(U32, W.MKw(t, i, len)), W.LL(len)}',
      'view': 'WO.wview', 'vty': '+List<U32>', 'val': 'W.YB(t, i, len)', 'pf': 'BL.wvb(W.MKw(t, i, len), W.LL(len))'}], lambda ys: ys)
 VDEC_VIEWS['ExecutionPayloadHeader'] = vdec_win('ExecutionPayloadHeader', 29, 'e2e_vw_ExecutionPayloadHeader')
-SUPPORT_OUT['e2e_rb.bend'] = rb_text(RB_NAMES)
 VROOT_SHAPES['ExecutionPayloadHeader'] = vroot_container
 SUPPORT_OUT['e2e_tz.bend'] = tz_text()
 SUPPORT_OUT['e2e_ve_ExecutionPayloadHeader.bend'] = ve_module('ExecutionPayloadHeader', 'var_bytes_ExecutionPayloadHeader_enc')
@@ -2024,7 +2532,7 @@ SUPPORT_OUT['e2e_vw_LightClientOptimisticUpdate.bend'] = vw_module('LightClientO
     lambda ys: ys, ['import ../proofs/obj/var_bytes_LightClientHeader_win.bend as YW', 'import ./e2e_vw_LightClientHeader.bend as YWV'])
 VDEC_VIEWS['LightClientOptimisticUpdate'] = vdec_win('LightClientOptimisticUpdate', 29, 'e2e_vw_LightClientOptimisticUpdate')
 RB_NAMES.append('LightClientOptimisticUpdate')
-SUPPORT_OUT['e2e_rb.bend'] = rb_text(RB_NAMES)
+RB_NAMES.append('ExecutionRequests')
 VROOT_SHAPES['LightClientOptimisticUpdate'] = vroot_container
 SUPPORT_OUT['e2e_ve_LightClientOptimisticUpdate.bend'] = ve_module('LightClientOptimisticUpdate', 'var_bytes_LightClientOptimisticUpdate_enc')
 VENC_SHAPES['LightClientOptimisticUpdate'] = venc_bytes
@@ -2044,3 +2552,15 @@ for _X in PLA:
 for _X in PLB:
     VENC_SHAPES[_X] = venc_plist_b
     VENC_PREMISE[_X] = f'rep: {PL_ROOT[_X][0]}(o, Spec.{_X}()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)'
+for _w in ('var_winx_l16_WithdrawalRequest', 'var_winx_l8192_DepositRequest', 'var_winx_l2_ConsolidationRequest'):
+    SUPPORT_OUT[f'e2e_vl_{_w[9:]}.bend'] = vl_module(_w)
+for _w in ('var_winx_l16_WithdrawalRequest', 'var_winx_l8192_DepositRequest', 'var_winx_l2_ConsolidationRequest'):
+    CHILD_VIEW[_w] = (f'e2e_vl_{_w[9:]}', 'vl')
+SUPPORT_OUT['e2e_vwx_ExecutionRequests.bend'] = vwx_module('ExecutionRequests', 'var_winx_ExecutionRequests')
+VDEC_VIEWS['ExecutionRequests'] = vdec_winx('ExecutionRequests', 28, 'e2e_vwx_ExecutionRequests')
+VROOT_SHAPES['ExecutionRequests'] = vroot_container
+SUPPORT_OUT['e2e_rb.bend'] = rb_text(RB_NAMES)
+for _X, (_m, _ls) in RL_LISTS.items():
+    SUPPORT_OUT[f'e2e_rl_{_X}.bend'] = rl_module(_X, _m, _ls)
+VENC_SHAPES['ExecutionRequests'] = venc_rlist
+VENC_PREMISE['ExecutionRequests'] = 'rep: RT.rep_ExecutionRequests(o, Spec.ExecutionRequests()) and the hs premises: each list\'s array invariant at depth below 31 (RLV.sda_L; the encode laws take depth below 31, the root law below 32; dropped when the encode laws take depth below 32)'
