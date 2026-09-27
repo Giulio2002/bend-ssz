@@ -14,7 +14,7 @@ import ../../spec/decoding_relation.bend as P0_Decoding
 import ../../spec/fulu_schemas.bend as P0_Spec
 import ../obj/spec_fixed.bend as P0_F
 import ../obj/spec_bits.bend as P0_FB
-import ../obj/spec_codec_3.bend as P0_PRV
+import ../obj/spec_codec_SignedBeaconBlockHeader.bend as P0_PRV
 import ../../src/buffer.bend as P1_B
 import ../../src/obj.bend as P1_O
 import ../obj/codec_3.bend as P1_PRV

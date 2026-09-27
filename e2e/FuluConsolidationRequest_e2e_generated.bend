@@ -9,10 +9,6 @@ import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluConsolidationRequest_def_generated.bend as FuluConsolidationRequest_d
 import ../types/FuluConsolidationRequest_encode_ssz_generated.bend as FuluConsolidationRequest_e
 import ../types/FuluConsolidationRequest_hashtreeroot_generated.bend as FuluConsolidationRequest_h
-import ../types/FuluKZGCommitment_encode_ssz_generated.bend as FuluKZGCommitment_e
-import ../types/FuluKZGCommitment_hashtreeroot_generated.bend as FuluKZGCommitment_h
-import ../types/FuluKZGProof_encode_ssz_generated.bend as FuluKZGProof_e
-import ../types/FuluKZGProof_hashtreeroot_generated.bend as FuluKZGProof_h
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
@@ -21,7 +17,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_5.bend as M0
+import ../proofs/obj/spec_codec_ConsolidationRequest.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -41,32 +37,4 @@ def FuluConsolidationRequest_e2e_encode(+o: FuluConsolidationRequest_d.Consolida
 def FuluConsolidationRequest_e2e_root(h: B.Buf, +o: FuluConsolidationRequest_d.ConsolidationRequest) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluConsolidationRequest_h.ConsolidationRequest_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.ConsolidationRequest(), M1.v_ConsolidationRequest(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.ConsolidationRequest(), M1.v_ConsolidationRequest(o), VS.public_sound(Spec.ConsolidationRequest(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluConsolidationRequest_h.ConsolidationRequest_hash_tree_root(h, o))),
     M2.rv_ConsolidationRequest(o), M1.ConsolidationRequest_root_correct(h, o))
-
-# FuluKZGCommitment (KZGCommitment)
-def FuluKZGCommitment_e2e_encode(+o: FuluBytes48_d.Bytes48) -> {Some{E.obytes(FuluKZGCommitment_e.KZGCommitment_encode(o))} == API.serialize(Spec.KZGCommitment(), M1.v_b48(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluKZGCommitment_e.KZGCommitment_encode(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, API.serialize(Spec.KZGCommitment(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluKZGCommitment_e.KZGCommitment_encode(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), 0, 12), (FuluKZGCommitment_e.KZGCommitment_encode(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])), M0.KZGCommitment_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.KZGCommitment(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.KZGCommitment(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Encoding.encoding_for_legal_type(Spec.KZGCommitment(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])},
-            E.serialize_legal(Spec.KZGCommitment(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), VS.public_sound(Spec.KZGCommitment(), {==})), M0.KZGCommitment_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11))))
-
-def FuluKZGCommitment_e2e_root(h: B.Buf, +o: FuluBytes48_d.Bytes48) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluKZGCommitment_h.KZGCommitment_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.KZGCommitment(), M1.v_b48(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.KZGCommitment(), M1.v_b48(o), VS.public_sound(Spec.KZGCommitment(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluKZGCommitment_h.KZGCommitment_hash_tree_root(h, o))),
-    M2.rv_b48(o), M1.KZGCommitment_root_correct(h, o))
-
-# FuluKZGProof (KZGProof)
-def FuluKZGProof_e2e_encode(+o: FuluBytes48_d.Bytes48) -> {Some{E.obytes(FuluKZGProof_e.KZGProof_encode(o))} == API.serialize(Spec.KZGProof(), M1.v_b48(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluKZGProof_e.KZGProof_encode(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])}, API.serialize(Spec.KZGProof(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluKZGProof_e.KZGProof_encode(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), 0, 12), (FuluKZGProof_e.KZGProof_encode(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])), M0.KZGProof_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.KZGProof(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.KZGProof(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Encoding.encoding_for_legal_type(Spec.KZGProof(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11])},
-            E.serialize_legal(Spec.KZGProof(), M1.v_b48(FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}), VS.public_sound(Spec.KZGProof(), {==})), M0.KZGProof_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11))))
-
-def FuluKZGProof_e2e_root(h: B.Buf, +o: FuluBytes48_d.Bytes48) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluKZGProof_h.KZGProof_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.KZGProof(), M1.v_b48(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.KZGProof(), M1.v_b48(o), VS.public_sound(Spec.KZGProof(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluKZGProof_h.KZGProof_hash_tree_root(h, o))),
-    M2.rv_b48(o), M1.KZGProof_root_correct(h, o))
 

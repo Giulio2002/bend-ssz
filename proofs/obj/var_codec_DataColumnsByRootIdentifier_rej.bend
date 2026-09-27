@@ -302,7 +302,7 @@ law decode_reject:
 def decode_reject(d, t, n, pf, hn, hchk):
   v => e => rej_f(d, t, n, pf, hn, hchk, inv_v(v, DC.VW(t, n), e))
 
-def none_go(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def none_go(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
     +a: Bool, +ea: {U32.is_le(36, n) == a : Bool})
     -> {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}:
@@ -313,7 +313,7 @@ def none_go(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +pf: {F.array__perfect(U32
       {==}
     case True{}:
       +hF = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(36, n), Nat.is_le(36n, U32.to_nat(n)), VU.le_u32(36, n), ea)
-      %Equal.sym(B.Buf & Bool, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, VB.lt32(d, F.nat__lt_trans(d, 29n, 31n, hd, {==})), hpoD(d, n, hn, hF), pf)) :
+      %Equal.sym(B.Buf & Bool, FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, VB.lt32(d, hd), hpoD(d, n, hn, hF), pf)) :
         {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}
       %Equal.sym(Bool, DC.CHK(t, n), False{}, hchk) :
         {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}
@@ -325,7 +325,7 @@ law decode_none:
   for +t: F.array__Tree<U32>
   for +n: U32
   for +pf: {F.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {DC.CHK(t, n) == False{} : Bool}
   {FuluDataColumnsByRootIdentifier_r.DataColumnsByRootIdentifier_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluDataColumnsByRootIdentifier_d.DataColumnsByRootIdentifier>}

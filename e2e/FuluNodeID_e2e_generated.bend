@@ -4,17 +4,9 @@ import ../src/model.bend as API
 import ../src/buffer.bend as B
 import ../src/digest.bend as D
 import ../src/obj.bend as O
-import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
-import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
-import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d
 import ../types/uint256_def_generated.bend as uint256_d
-import ../types/FuluPendingDeposit_def_generated.bend as FuluPendingDeposit_d
-import ../types/FuluPendingDeposit_encode_ssz_generated.bend as FuluPendingDeposit_e
-import ../types/FuluPendingDeposit_hashtreeroot_generated.bend as FuluPendingDeposit_h
 import ../types/FuluNodeID_encode_ssz_generated.bend as FuluNodeID_e
 import ../types/FuluNodeID_hashtreeroot_generated.bend as FuluNodeID_h
-import ../types/FuluSubnetID_encode_ssz_generated.bend as FuluSubnetID_e
-import ../types/FuluSubnetID_hashtreeroot_generated.bend as FuluSubnetID_h
 import ../types/schema.bend as S
 import ../types/primitive.bend as P
 import ../spec/fulu_schemas.bend as Spec
@@ -23,7 +15,7 @@ import ../spec/codec.bend as Encoding
 import ../spec/primitives.bend as SP
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
-import ../proofs/obj/spec_codec_4.bend as M0
+import ../proofs/obj/spec_codec_NodeID.bend as M0
 import ../proofs/obj/root_names.bend as M1
 import ../proofs/obj/valid_names.bend as M2
 
@@ -43,32 +35,4 @@ def FuluNodeID_e2e_encode(+o: uint256_d.Uint256) -> {Some{E.obytes(FuluNodeID_e.
 def FuluNodeID_e2e_root(h: B.Buf, +o: uint256_d.Uint256) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluNodeID_h.NodeID_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.NodeID(), M1.v_u256(o)) : Maybe<&2, +List<U32>>}:
   E.root_legal(Spec.NodeID(), M1.v_u256(o), VS.public_sound(Spec.NodeID(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluNodeID_h.NodeID_hash_tree_root(h, o))),
     M2.rv_u256(o), M1.NodeID_root_correct(h, o))
-
-# FuluPendingDeposit (PendingDeposit)
-def FuluPendingDeposit_e2e_encode(+o: FuluPendingDeposit_d.PendingDeposit) -> {Some{E.obytes(FuluPendingDeposit_e.PendingDeposit_encode(o))} == API.serialize(Spec.PendingDeposit(), M1.v_PendingDeposit(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case FuluPendingDeposit_d.PendingDeposit{FuluBytes48_d.Bytes48{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11}, FuluBytes32_d.Bytes32{+x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19}, O.U64{+x20, +x21}, FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}, O.U64{+x46, +x47}}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluPendingDeposit_e.PendingDeposit_encode(FuluPendingDeposit_d.PendingDeposit{FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, FuluBytes96_d.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}, O.U64{x46, x47}}))}, Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47])}, API.serialize(Spec.PendingDeposit(), M1.v_PendingDeposit(FuluPendingDeposit_d.PendingDeposit{FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, FuluBytes96_d.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}, O.U64{x46, x47}})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluPendingDeposit_e.PendingDeposit_encode(FuluPendingDeposit_d.PendingDeposit{FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, FuluBytes96_d.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}, O.U64{x46, x47}}), 0, 48), (FuluPendingDeposit_e.PendingDeposit_encode(FuluPendingDeposit_d.PendingDeposit{FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, FuluBytes96_d.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}, O.U64{x46, x47}}), F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47])), M0.PendingDeposit_spec_bytes(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.PendingDeposit(), M1.v_PendingDeposit(FuluPendingDeposit_d.PendingDeposit{FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, FuluBytes96_d.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}, O.U64{x46, x47}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.PendingDeposit(), M1.v_PendingDeposit(FuluPendingDeposit_d.PendingDeposit{FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, FuluBytes96_d.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}, O.U64{x46, x47}})), Encoding.encoding_for_legal_type(Spec.PendingDeposit(), M1.v_PendingDeposit(FuluPendingDeposit_d.PendingDeposit{FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, FuluBytes96_d.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}, O.U64{x46, x47}})), Some{F.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47])},
-            E.serialize_legal(Spec.PendingDeposit(), M1.v_PendingDeposit(FuluPendingDeposit_d.PendingDeposit{FuluBytes48_d.Bytes48{x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11}, FuluBytes32_d.Bytes32{x12, x13, x14, x15, x16, x17, x18, x19}, O.U64{x20, x21}, FuluBytes96_d.Bytes96{x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45}, O.U64{x46, x47}}), VS.public_sound(Spec.PendingDeposit(), {==})), M0.PendingDeposit_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47))))
-
-def FuluPendingDeposit_e2e_root(h: B.Buf, +o: FuluPendingDeposit_d.PendingDeposit) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluPendingDeposit_h.PendingDeposit_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.PendingDeposit(), M1.v_PendingDeposit(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.PendingDeposit(), M1.v_PendingDeposit(o), VS.public_sound(Spec.PendingDeposit(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluPendingDeposit_h.PendingDeposit_hash_tree_root(h, o))),
-    M2.rv_PendingDeposit(o), M1.PendingDeposit_root_correct(h, o))
-
-# FuluSubnetID (SubnetID)
-def FuluSubnetID_e2e_encode(+o: O.U64) -> {Some{E.obytes(FuluSubnetID_e.SubnetID_encode(o))} == API.serialize(Spec.SubnetID(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  match o:
-    case O.U64{+x0, +x1}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(FuluSubnetID_e.SubnetID_encode(O.U64{x0, x1}))}, Some{F.limbs([x0, x1])}, API.serialize(Spec.SubnetID(), M1.v_u64(O.U64{x0, x1})),
-        Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(FuluSubnetID_e.SubnetID_encode(O.U64{x0, x1}), 0, 2), (FuluSubnetID_e.SubnetID_encode(O.U64{x0, x1}), F.limbs([x0, x1])), M0.SubnetID_spec_bytes(x0, x1)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.SubnetID(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.SubnetID(), M1.v_u64(O.U64{x0, x1})), Encoding.encoding_for_legal_type(Spec.SubnetID(), M1.v_u64(O.U64{x0, x1})), Some{F.limbs([x0, x1])},
-            E.serialize_legal(Spec.SubnetID(), M1.v_u64(O.U64{x0, x1}), VS.public_sound(Spec.SubnetID(), {==})), M0.SubnetID_spec_encode(x0, x1))))
-
-def FuluSubnetID_e2e_root(h: B.Buf, +o: O.U64) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, FuluSubnetID_h.SubnetID_hash_tree_root(h, o)))} == API.hash_tree_root(Spec.SubnetID(), M1.v_u64(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.SubnetID(), M1.v_u64(o), VS.public_sound(Spec.SubnetID(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, FuluSubnetID_h.SubnetID_hash_tree_root(h, o))),
-    M2.rv_u64(o), M1.SubnetID_root_correct(h, o))
 

@@ -30,9 +30,9 @@ import ../obj/big_var_codec_IndexedAttestation.bend as PRV
 def IndexedAttestation__ok_eval__ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 32n) == True{} : Bool}, +hpo: {Nat.is_lt(0n, VB.pw(d)) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}) -> {FuluIndexedAttestation_r.IndexedAttestation_ok(PRV.BF(t, n), 0, n) == (PRV.BF(t, n), PRV.CHK(t, n)) : B.Buf & Bool}:
   PRV.ok_eval(d, t, n, hd, hpo, pf)
 
-def IndexedAttestation__decode_accept__decode_accept(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {PRV.CHK(t, n) == True{} : Bool}) -> {FuluIndexedAttestation_r.IndexedAttestation_decode(PRV.BF(t, n), n) == (PRV.BF(t, n), Some{PRV.OBJ(t, n)}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}:
+def IndexedAttestation__decode_accept__decode_accept(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {PRV.CHK(t, n) == True{} : Bool}) -> {FuluIndexedAttestation_r.IndexedAttestation_decode(PRV.BF(t, n), n) == (PRV.BF(t, n), Some{PRV.OBJ(t, n)}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}:
   PRV.decode_accept(d, t, n, pf, hd, hn, hchk)
 
-def IndexedAttestation__decode_spec__decode_spec(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {PRV.CHK(t, n) == True{} : Bool}) -> Decoding.decodes(Spec.IndexedAttestation(), PRV.VW(t, n), PRV.VAL(t, n)):
+def IndexedAttestation__decode_spec__decode_spec(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {PRV.CHK(t, n) == True{} : Bool}) -> Decoding.decodes(Spec.IndexedAttestation(), PRV.VW(t, n), PRV.VAL(t, n)):
   PRV.decode_spec(d, t, n, pf, hd, hn, hchk)
 

@@ -286,6 +286,103 @@ def wz_le(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat
   %Equal.sym(Nat, U32.to_nat(WZ(L)), Nat.add(VB.d3(VD.s_rng(5n, YL(L))), 8n), eWZ(L, k, hk, hy)) : {Nat.is_le(_, Nat.add(VD.s_rng(2n, YL(L)), 8n)) == True{} : Bool}
   Order.add_right(VB.d3(VD.s_rng(5n, YL(L))), VD.s_rng(2n, YL(L)), 8n, rng3_down(VD.s_rng(2n, YL(L))))
 
+# ---- the same for any L with 31 + L <= UMAX (every n <= VB.NMAX) --------------------------------
+# The storage is ((L + 31) >> 5) 8 + 8 <= 2^30 words (depth <= 30); the bounds come from UMAX,
+# never from a power of two on the tree depth.
+
+def ey31u(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {U32.to_nat(U32.add(L, 31)) == YL(L) : Nat}:
+  VB.add_nw(L, 31, U32.to_nat(L), {==}, hy)
+
+def eq_qu(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {U32.to_nat(U32.shrn(U32.add(L, 31), 5n)) == VD.s_rng(5n, YL(L)) : Nat}:
+  %Equal.cong(Nat, Nat, z => VD.s_rng(5n, z), U32.to_nat(U32.add(L, 31)), YL(L), ey31u(L, hy)) :
+    {U32.to_nat(U32.shrn(U32.add(L, 31), 5n)) == _ : Nat}
+  VD.shrk(5n, U32.add(L, 31))
+
+def eMu(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {U32.to_nat(U32.mul(U32.shrn(U32.add(L, 31), 5n), 8)) == VB.d3(VD.s_rng(5n, YL(L))) : Nat}:
+  +q = U32.to_nat(U32.shrn(U32.add(L, 31), 5n))
+  +e1 = eq_qu(L, hy)
+  +hb = F.logic__subst(Nat, z => {Nat.is_le(Nat.mul(q, 8n), z) == True{} : Bool}, YL(L), U32.to_nat(U32.add(L, 31)), Equal.sym(Nat, U32.to_nat(U32.add(L, 31)), YL(L), ey31u(L, hy)),
+    F.logic__subst(Nat, z => {Nat.is_le(z, YL(L)) == True{} : Bool}, VB.d3(VD.s_rng(5n, YL(L))), Nat.mul(q, 8n),
+      Equal.sym(Nat, Nat.mul(q, 8n), VB.d3(VD.s_rng(5n, YL(L))), Equal.trans(Nat, Nat.mul(q, 8n), Nat.mul(VD.s_rng(5n, YL(L)), 8n), VB.d3(VD.s_rng(5n, YL(L))),
+        Equal.cong(Nat, Nat, z => Nat.mul(z, 8n), q, VD.s_rng(5n, YL(L)), e1), d3_mul(VD.s_rng(5n, YL(L))))),
+      q8_le(YL(L))))
+  %Equal.sym(Nat, U32.to_nat(U32.mul(U32.shrn(U32.add(L, 31), 5n), 8)), Nat.mul(q, 8n), VU.mul_le(U32.shrn(U32.add(L, 31), 5n), 8, U32.add(L, 31), hb)) :
+    {_ == VB.d3(VD.s_rng(5n, YL(L))) : Nat}
+  %Equal.sym(Nat, q, VD.s_rng(5n, YL(L)), e1) : {Nat.mul(_, 8n) == VB.d3(VD.s_rng(5n, YL(L))) : Nat}
+  d3_mul(VD.s_rng(5n, YL(L)))
+
+# (31 + L) >> 5 < 2^27.
+def q27(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {Nat.is_lt(VD.s_rng(5n, YL(L)), O.pow2n(27n)) == True{} : Bool}:
+  +h32 = VB.umax_lt(YL(L), hy)
+  VD.rlt(5n, 27n, YL(L), F.logic__subst(Nat, z => {Nat.is_lt(YL(L), z) == True{} : Bool}, F.spec_common__pow2(32n), O.pow2n(Nat.add(5n, 27n)), VD.s_pow2_eq(32n), h32))
+
+def p3(+k: Nat) -> {O.pow2n(3n+k) == VB.d3(O.pow2n(k)) : Nat}: {==}
+def d3s(+q: Nat) -> {VB.d3(1n+q) == 8n+VB.d3(q) : Nat}: {==}
+
+# ((31 + L) >> 5) 8 + 8 <= 2^30.
+def x8_30(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(VB.d3(VD.s_rng(5n, YL(L))), 8n), O.pow2n(30n)) == True{} : Bool}:
+  +q = VD.s_rng(5n, YL(L))
+  +h1 = F.nat__lt_succ_le_succ(q, O.pow2n(27n), q27(L, hy))
+  +h8 = F.nat__double_le(Nat.double(Nat.double(1n+q)), Nat.double(Nat.double(O.pow2n(27n))),
+    F.nat__double_le(Nat.double(1n+q), Nat.double(O.pow2n(27n)), F.nat__double_le(1n+q, O.pow2n(27n), h1)))
+  +h30 = F.logic__subst(Nat, z => {Nat.is_le(VB.d3(1n+q), z) == True{} : Bool}, VB.d3(O.pow2n(27n)), O.pow2n(3n+27n),
+    Equal.sym(Nat, O.pow2n(3n+27n), VB.d3(O.pow2n(27n)), p3(27n)), h8)
+  +hq = F.logic__subst(Nat, z => {Nat.is_le(z, O.pow2n(3n+27n)) == True{} : Bool}, VB.d3(1n+q), 8n+VB.d3(q), d3s(q), h30)
+  F.logic__subst(Nat, z => {Nat.is_le(z, O.pow2n(3n+27n)) == True{} : Bool}, 8n+VB.d3(q), Nat.add(VB.d3(q), 8n),
+    Equal.sym(Nat, Nat.add(VB.d3(q), 8n), 8n+VB.d3(q), F.nat__add_comm(VB.d3(q), 8n)), hq)
+
+def eWZu(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {U32.to_nat(WZ(L)) == Nat.add(VB.d3(VD.s_rng(5n, YL(L))), 8n) : Nat}:
+  +M = U32.mul(U32.shrn(U32.add(L, 31), 5n), 8)
+  +em = eMu(L, hy)
+  +X = VB.d3(VD.s_rng(5n, YL(L)))
+  +h1 = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(X, 8n), z) == True{} : Bool}, O.pow2n(30n), U32.to_nat(F.u32__pow2u(30n)),
+    Equal.trans(Nat, O.pow2n(30n), F.spec_common__pow2(30n), U32.to_nat(F.u32__pow2u(30n)), Equal.sym(Nat, F.spec_common__pow2(30n), O.pow2n(30n), VD.s_pow2_eq(30n)),
+      Equal.sym(Nat, U32.to_nat(F.u32__pow2u(30n)), F.spec_common__pow2(30n), F.u32__pow2u_value(30n, {==}))),
+    x8_30(L, hy))
+  +h2 = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 8n), U32.to_nat(F.u32__pow2u(30n))) == True{} : Bool}, X, U32.to_nat(M), Equal.sym(Nat, U32.to_nat(M), X, em), h1)
+  %Equal.sym(Nat, U32.to_nat(U32.add(M, 8)), Nat.add(U32.to_nat(M), 8n), A.add_le(M, 8, F.u32__pow2u(30n), h2)) : {_ == Nat.add(X, 8n) : Nat}
+  %Equal.sym(Nat, U32.to_nat(M), X, em) : {Nat.add(_, 8n) == Nat.add(X, 8n) : Nat}
+  {==}
+
+def eNWu(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {NW(L) == VD.s_rng(2n, 3n+U32.to_nat(L)) : Nat}:
+  +h3 = F.nat__le_trans(3n+U32.to_nat(L), YL(L), U32.to_nat(VB.UMAX()), Order.left_below_sum(28n, U32.to_nat(L)), hy)
+  %Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat(U32.add(L, 3)), 3n+U32.to_nat(L), VB.add_nw(L, 3, U32.to_nat(L), {==}, h3)) :
+    {NW(L) == _ : Nat}
+  VD.shrk(2n, U32.add(L, 3))
+
+def nw_le_wzu(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {Nat.is_le(NW(L), U32.to_nat(WZ(L))) == True{} : Bool}:
+  +Y = YL(L)
+  +D = VB.d3(VD.s_rng(5n, Y))
+  %Equal.sym(Nat, NW(L), VD.s_rng(2n, 3n+U32.to_nat(L)), eNWu(L, hy)) : {Nat.is_le(_, U32.to_nat(WZ(L))) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(WZ(L)), Nat.add(D, 8n), eWZu(L, hy)) : {Nat.is_le(VD.s_rng(2n, 3n+U32.to_nat(L)), _) == True{} : Bool}
+  %F.nat__add_comm(8n, D) : {Nat.is_le(VD.s_rng(2n, 3n+U32.to_nat(L)), _) == True{} : Bool}
+  F.nat__le_trans(VD.s_rng(2n, 3n+U32.to_nat(L)), VD.s_rng(2n, Y), 8n+D,
+    rng_mono(2n, 3n+U32.to_nat(L), Y, Order.left_below_sum(28n, U32.to_nat(L))),
+    F.nat__le_trans(VD.s_rng(2n, Y), 7n+D, 8n+D, rng3_up(VD.s_rng(2n, Y)), F.nat__le_succ(7n+D)))
+
+def wz_leu(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(WZ(L)), Nat.add(VD.s_rng(2n, YL(L)), 8n)) == True{} : Bool}:
+  %Equal.sym(Nat, U32.to_nat(WZ(L)), Nat.add(VB.d3(VD.s_rng(5n, YL(L))), 8n), eWZu(L, hy)) : {Nat.is_le(_, Nat.add(VD.s_rng(2n, YL(L)), 8n)) == True{} : Bool}
+  Order.add_right(VB.d3(VD.s_rng(5n, YL(L))), VD.s_rng(2n, YL(L)), 8n, rng3_down(VD.s_rng(2n, YL(L))))
+
+# The storage is at most 2^30 words, so its depth is at most 30.
+def wz30(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(WZ(L)), O.pow2n(30n)) == True{} : Bool}:
+  %Equal.sym(Nat, U32.to_nat(WZ(L)), Nat.add(VB.d3(VD.s_rng(5n, YL(L))), 8n), eWZu(L, hy)) : {Nat.is_le(_, O.pow2n(30n)) == True{} : Bool}
+  x8_30(L, hy)
+
+def dz30(+L: U32, +hy: {Nat.is_le(YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {Nat.is_le(B.words_depth(WZ(L)), 30n) == True{} : Bool}:
+  VD.wd_min(WZ(L), 30n, wz30(L, hy))
+
 # ---- lengths of whole u64 lists -------------------------------------------------------------
 
 law quad_mul:

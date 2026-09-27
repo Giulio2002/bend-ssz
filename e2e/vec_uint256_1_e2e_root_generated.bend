@@ -9,14 +9,14 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/obj/packed_obj.bend as PK
 import ../proofs/obj/words_obj.bend as WO
 import ./e2e_support.bend as E
-import ../types/vec_uint256_16_hashtreeroot_generated.bend as vec_uint256_16_h
 import ../types/vec_uint256_1_hashtreeroot_generated.bend as vec_uint256_1_h
-import ../types/vec_uint256_2_hashtreeroot_generated.bend as vec_uint256_2_h
-import ../types/vec_uint256_31_hashtreeroot_generated.bend as vec_uint256_31_h
-import ../types/vec_uint256_3_hashtreeroot_generated.bend as vec_uint256_3_h
-import ../types/vec_uint256_4_hashtreeroot_generated.bend as vec_uint256_4_h
-import ../types/vec_uint256_5_hashtreeroot_generated.bend as vec_uint256_5_h
 import ../types/vec_uint256_8_hashtreeroot_generated.bend as vec_uint256_8_h
+import ../types/vec_uint32_2_hashtreeroot_generated.bend as vec_uint32_2_h
+import ../types/vec_uint32_31_hashtreeroot_generated.bend as vec_uint32_31_h
+import ../types/vec_uint32_3_hashtreeroot_generated.bend as vec_uint32_3_h
+import ../types/vec_uint32_8_hashtreeroot_generated.bend as vec_uint32_8_h
+import ../types/vec_uint64_2_hashtreeroot_generated.bend as vec_uint64_2_h
+import ../types/vec_uint64_8_hashtreeroot_generated.bend as vec_uint64_8_h
 import ../proofs/obj/generic_specs.bend as GS
 import ../proofs/obj/root_gtypes.bend as M0
 import ../proofs/obj/gvalid_gpacked.bend as M1
@@ -45,125 +45,125 @@ def vec_uint256_1_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v32(o, GS.GtBBFD6
   (+w, +rest) = rep
   vec_uint256_1_r1(h, o, w, rep)
 
-# vec_uint256_16 (Gt3E6E18CD57)
-def vec_uint256_16_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v32(O.Words{FD.array__thaw(U32, t), N}, GS.Gt3E6E18CD57())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_16_h.Gt3E6E18CD57_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.Gt3E6E18CD57(), PK.vview32(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(GS.Gt3E6E18CD57(), PK.vview32(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.Gt3E6E18CD57(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_16_h.Gt3E6E18CD57_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
-    M1.Gt3E6E18CD57_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.Gt3E6E18CD57(), {==}, rep), M0.Gt3E6E18CD57_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.Gt3E6E18CD57(), {==}, rep))
+# vec_uint64_2 (GtC923FCB2DA)
+def vec_uint64_2_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v8(O.Words{FD.array__thaw(U32, t), N}, GS.GtC923FCB2DA())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_2_h.GtC923FCB2DA_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.GtC923FCB2DA(), PK.vview8(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.GtC923FCB2DA(), PK.vview8(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.GtC923FCB2DA(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_2_h.GtC923FCB2DA_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
+    M1.GtC923FCB2DA_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.GtC923FCB2DA(), {==}, rep), M0.GtC923FCB2DA_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.GtC923FCB2DA(), {==}, rep))
 
-def vec_uint256_16_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v32(o, GS.Gt3E6E18CD57())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_16_h.Gt3E6E18CD57_hash_tree_root(h, o))))} == API.hash_tree_root(GS.Gt3E6E18CD57(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_2_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v8(o, GS.GtC923FCB2DA())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_2_h.GtC923FCB2DA_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtC923FCB2DA(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
   (+t, w1) = w
   (+dw, w2) = w1
   (+N, w3) = w2
   (+q, w4) = w3
   (+r, w5) = w4
   (+eo, w6) = w5
-  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_16_h.Gt3E6E18CD57_hash_tree_root(h, _))))} == API.hash_tree_root(GS.Gt3E6E18CD57(), PK.vview32(_)) : Maybe<&2, +List<U32>>}
-  vec_uint256_16_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v32(z, GS.Gt3E6E18CD57()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
+  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_2_h.GtC923FCB2DA_hash_tree_root(h, _))))} == API.hash_tree_root(GS.GtC923FCB2DA(), PK.vview8(_)) : Maybe<&2, +List<U32>>}
+  vec_uint64_2_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v8(z, GS.GtC923FCB2DA()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
 
 # (iv) under rep (the root law's invariant; no depth premise).
-def vec_uint256_16_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v32(o, GS.Gt3E6E18CD57())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_16_h.Gt3E6E18CD57_hash_tree_root(h, o))))} == API.hash_tree_root(GS.Gt3E6E18CD57(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_2_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v8(o, GS.GtC923FCB2DA())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_2_h.GtC923FCB2DA_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtC923FCB2DA(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
   (+w, +rest) = rep
-  vec_uint256_16_r1(h, o, w, rep)
+  vec_uint64_2_r1(h, o, w, rep)
 
-# vec_uint256_2 (GtB91D4D285D)
-def vec_uint256_2_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v32(O.Words{FD.array__thaw(U32, t), N}, GS.GtB91D4D285D())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_2_h.GtB91D4D285D_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.GtB91D4D285D(), PK.vview32(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(GS.GtB91D4D285D(), PK.vview32(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.GtB91D4D285D(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_2_h.GtB91D4D285D_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
-    M1.GtB91D4D285D_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.GtB91D4D285D(), {==}, rep), M0.GtB91D4D285D_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.GtB91D4D285D(), {==}, rep))
+# vec_uint32_8 (GtCCF6FFA0A0)
+def vec_uint32_8_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v4(O.Words{FD.array__thaw(U32, t), N}, GS.GtCCF6FFA0A0())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_8_h.GtCCF6FFA0A0_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.GtCCF6FFA0A0(), PK.vview4(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.GtCCF6FFA0A0(), PK.vview4(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.GtCCF6FFA0A0(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_8_h.GtCCF6FFA0A0_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
+    M1.GtCCF6FFA0A0_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.GtCCF6FFA0A0(), {==}, rep), M0.GtCCF6FFA0A0_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.GtCCF6FFA0A0(), {==}, rep))
 
-def vec_uint256_2_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v32(o, GS.GtB91D4D285D())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_2_h.GtB91D4D285D_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtB91D4D285D(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_8_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v4(o, GS.GtCCF6FFA0A0())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_8_h.GtCCF6FFA0A0_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtCCF6FFA0A0(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
   (+t, w1) = w
   (+dw, w2) = w1
   (+N, w3) = w2
   (+q, w4) = w3
   (+r, w5) = w4
   (+eo, w6) = w5
-  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_2_h.GtB91D4D285D_hash_tree_root(h, _))))} == API.hash_tree_root(GS.GtB91D4D285D(), PK.vview32(_)) : Maybe<&2, +List<U32>>}
-  vec_uint256_2_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v32(z, GS.GtB91D4D285D()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
+  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_8_h.GtCCF6FFA0A0_hash_tree_root(h, _))))} == API.hash_tree_root(GS.GtCCF6FFA0A0(), PK.vview4(_)) : Maybe<&2, +List<U32>>}
+  vec_uint32_8_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v4(z, GS.GtCCF6FFA0A0()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
 
 # (iv) under rep (the root law's invariant; no depth premise).
-def vec_uint256_2_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v32(o, GS.GtB91D4D285D())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_2_h.GtB91D4D285D_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtB91D4D285D(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_8_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v4(o, GS.GtCCF6FFA0A0())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_8_h.GtCCF6FFA0A0_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtCCF6FFA0A0(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
   (+w, +rest) = rep
-  vec_uint256_2_r1(h, o, w, rep)
+  vec_uint32_8_r1(h, o, w, rep)
 
-# vec_uint256_31 (Gt6E9B243B7C)
-def vec_uint256_31_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v32(O.Words{FD.array__thaw(U32, t), N}, GS.Gt6E9B243B7C())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_31_h.Gt6E9B243B7C_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.Gt6E9B243B7C(), PK.vview32(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(GS.Gt6E9B243B7C(), PK.vview32(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.Gt6E9B243B7C(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_31_h.Gt6E9B243B7C_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
-    M1.Gt6E9B243B7C_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.Gt6E9B243B7C(), {==}, rep), M0.Gt6E9B243B7C_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.Gt6E9B243B7C(), {==}, rep))
+# vec_uint32_3 (GtD1AEF07F7D)
+def vec_uint32_3_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v4(O.Words{FD.array__thaw(U32, t), N}, GS.GtD1AEF07F7D())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_3_h.GtD1AEF07F7D_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.GtD1AEF07F7D(), PK.vview4(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.GtD1AEF07F7D(), PK.vview4(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.GtD1AEF07F7D(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_3_h.GtD1AEF07F7D_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
+    M1.GtD1AEF07F7D_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.GtD1AEF07F7D(), {==}, rep), M0.GtD1AEF07F7D_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.GtD1AEF07F7D(), {==}, rep))
 
-def vec_uint256_31_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v32(o, GS.Gt6E9B243B7C())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_31_h.Gt6E9B243B7C_hash_tree_root(h, o))))} == API.hash_tree_root(GS.Gt6E9B243B7C(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_3_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v4(o, GS.GtD1AEF07F7D())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_3_h.GtD1AEF07F7D_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtD1AEF07F7D(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
   (+t, w1) = w
   (+dw, w2) = w1
   (+N, w3) = w2
   (+q, w4) = w3
   (+r, w5) = w4
   (+eo, w6) = w5
-  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_31_h.Gt6E9B243B7C_hash_tree_root(h, _))))} == API.hash_tree_root(GS.Gt6E9B243B7C(), PK.vview32(_)) : Maybe<&2, +List<U32>>}
-  vec_uint256_31_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v32(z, GS.Gt6E9B243B7C()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
+  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_3_h.GtD1AEF07F7D_hash_tree_root(h, _))))} == API.hash_tree_root(GS.GtD1AEF07F7D(), PK.vview4(_)) : Maybe<&2, +List<U32>>}
+  vec_uint32_3_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v4(z, GS.GtD1AEF07F7D()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
 
 # (iv) under rep (the root law's invariant; no depth premise).
-def vec_uint256_31_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v32(o, GS.Gt6E9B243B7C())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_31_h.Gt6E9B243B7C_hash_tree_root(h, o))))} == API.hash_tree_root(GS.Gt6E9B243B7C(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_3_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v4(o, GS.GtD1AEF07F7D())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_3_h.GtD1AEF07F7D_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtD1AEF07F7D(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
   (+w, +rest) = rep
-  vec_uint256_31_r1(h, o, w, rep)
+  vec_uint32_3_r1(h, o, w, rep)
 
-# vec_uint256_3 (Gt2E7060B297)
-def vec_uint256_3_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v32(O.Words{FD.array__thaw(U32, t), N}, GS.Gt2E7060B297())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_3_h.Gt2E7060B297_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.Gt2E7060B297(), PK.vview32(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(GS.Gt2E7060B297(), PK.vview32(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.Gt2E7060B297(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_3_h.Gt2E7060B297_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
-    M1.Gt2E7060B297_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.Gt2E7060B297(), {==}, rep), M0.Gt2E7060B297_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.Gt2E7060B297(), {==}, rep))
+# vec_uint64_8 (GtE470919895)
+def vec_uint64_8_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v8(O.Words{FD.array__thaw(U32, t), N}, GS.GtE470919895())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_8_h.GtE470919895_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.GtE470919895(), PK.vview8(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.GtE470919895(), PK.vview8(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.GtE470919895(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_8_h.GtE470919895_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
+    M1.GtE470919895_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.GtE470919895(), {==}, rep), M0.GtE470919895_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.GtE470919895(), {==}, rep))
 
-def vec_uint256_3_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v32(o, GS.Gt2E7060B297())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_3_h.Gt2E7060B297_hash_tree_root(h, o))))} == API.hash_tree_root(GS.Gt2E7060B297(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_8_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v8(o, GS.GtE470919895())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_8_h.GtE470919895_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtE470919895(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
   (+t, w1) = w
   (+dw, w2) = w1
   (+N, w3) = w2
   (+q, w4) = w3
   (+r, w5) = w4
   (+eo, w6) = w5
-  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_3_h.Gt2E7060B297_hash_tree_root(h, _))))} == API.hash_tree_root(GS.Gt2E7060B297(), PK.vview32(_)) : Maybe<&2, +List<U32>>}
-  vec_uint256_3_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v32(z, GS.Gt2E7060B297()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
+  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_8_h.GtE470919895_hash_tree_root(h, _))))} == API.hash_tree_root(GS.GtE470919895(), PK.vview8(_)) : Maybe<&2, +List<U32>>}
+  vec_uint64_8_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v8(z, GS.GtE470919895()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
 
 # (iv) under rep (the root law's invariant; no depth premise).
-def vec_uint256_3_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v32(o, GS.Gt2E7060B297())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_3_h.Gt2E7060B297_hash_tree_root(h, o))))} == API.hash_tree_root(GS.Gt2E7060B297(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint64_8_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v8(o, GS.GtE470919895())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint64_8_h.GtE470919895_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtE470919895(), PK.vview8(o)) : Maybe<&2, +List<U32>>}:
   (+w, +rest) = rep
-  vec_uint256_3_r1(h, o, w, rep)
+  vec_uint64_8_r1(h, o, w, rep)
 
-# vec_uint256_4 (Gt74B2AF1CB3)
-def vec_uint256_4_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v32(O.Words{FD.array__thaw(U32, t), N}, GS.Gt74B2AF1CB3())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_4_h.Gt74B2AF1CB3_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.Gt74B2AF1CB3(), PK.vview32(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(GS.Gt74B2AF1CB3(), PK.vview32(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.Gt74B2AF1CB3(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_4_h.Gt74B2AF1CB3_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
-    M1.Gt74B2AF1CB3_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.Gt74B2AF1CB3(), {==}, rep), M0.Gt74B2AF1CB3_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.Gt74B2AF1CB3(), {==}, rep))
+# vec_uint32_31 (GtE528AAE3C6)
+def vec_uint32_31_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v4(O.Words{FD.array__thaw(U32, t), N}, GS.GtE528AAE3C6())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_31_h.GtE528AAE3C6_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.GtE528AAE3C6(), PK.vview4(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.GtE528AAE3C6(), PK.vview4(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.GtE528AAE3C6(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_31_h.GtE528AAE3C6_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
+    M1.GtE528AAE3C6_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.GtE528AAE3C6(), {==}, rep), M0.GtE528AAE3C6_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.GtE528AAE3C6(), {==}, rep))
 
-def vec_uint256_4_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v32(o, GS.Gt74B2AF1CB3())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_4_h.Gt74B2AF1CB3_hash_tree_root(h, o))))} == API.hash_tree_root(GS.Gt74B2AF1CB3(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_31_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v4(o, GS.GtE528AAE3C6())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_31_h.GtE528AAE3C6_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtE528AAE3C6(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
   (+t, w1) = w
   (+dw, w2) = w1
   (+N, w3) = w2
   (+q, w4) = w3
   (+r, w5) = w4
   (+eo, w6) = w5
-  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_4_h.Gt74B2AF1CB3_hash_tree_root(h, _))))} == API.hash_tree_root(GS.Gt74B2AF1CB3(), PK.vview32(_)) : Maybe<&2, +List<U32>>}
-  vec_uint256_4_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v32(z, GS.Gt74B2AF1CB3()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
+  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_31_h.GtE528AAE3C6_hash_tree_root(h, _))))} == API.hash_tree_root(GS.GtE528AAE3C6(), PK.vview4(_)) : Maybe<&2, +List<U32>>}
+  vec_uint32_31_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v4(z, GS.GtE528AAE3C6()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
 
 # (iv) under rep (the root law's invariant; no depth premise).
-def vec_uint256_4_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v32(o, GS.Gt74B2AF1CB3())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_4_h.Gt74B2AF1CB3_hash_tree_root(h, o))))} == API.hash_tree_root(GS.Gt74B2AF1CB3(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_31_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v4(o, GS.GtE528AAE3C6())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_31_h.GtE528AAE3C6_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtE528AAE3C6(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
   (+w, +rest) = rep
-  vec_uint256_4_r1(h, o, w, rep)
+  vec_uint32_31_r1(h, o, w, rep)
 
-# vec_uint256_5 (Gt0B1B711C4D)
-def vec_uint256_5_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v32(O.Words{FD.array__thaw(U32, t), N}, GS.Gt0B1B711C4D())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_5_h.Gt0B1B711C4D_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.Gt0B1B711C4D(), PK.vview32(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(GS.Gt0B1B711C4D(), PK.vview32(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.Gt0B1B711C4D(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_5_h.Gt0B1B711C4D_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
-    M1.Gt0B1B711C4D_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.Gt0B1B711C4D(), {==}, rep), M0.Gt0B1B711C4D_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.Gt0B1B711C4D(), {==}, rep))
+# vec_uint32_2 (GtF45E42B273)
+def vec_uint32_2_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v4(O.Words{FD.array__thaw(U32, t), N}, GS.GtF45E42B273())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_2_h.GtF45E42B273_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.GtF45E42B273(), PK.vview4(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.GtF45E42B273(), PK.vview4(O.Words{FD.array__thaw(U32, t), N}), VS.public_sound(GS.GtF45E42B273(), {==}), D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_2_h.GtF45E42B273_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N})))),
+    M1.GtF45E42B273_root_valid(O.Words{FD.array__thaw(U32, t), N}, GS.GtF45E42B273(), {==}, rep), M0.GtF45E42B273_root_correct(h, O.Words{FD.array__thaw(U32, t), N}, GS.GtF45E42B273(), {==}, rep))
 
-def vec_uint256_5_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v32(o, GS.Gt0B1B711C4D())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_5_h.Gt0B1B711C4D_hash_tree_root(h, o))))} == API.hash_tree_root(GS.Gt0B1B711C4D(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_2_r1(h: B.Buf, -o: O.Words, +w: WO.wf1(o), +rep: PK.rep_v4(o, GS.GtF45E42B273())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_2_h.GtF45E42B273_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtF45E42B273(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
   (+t, w1) = w
   (+dw, w2) = w1
   (+N, w3) = w2
   (+q, w4) = w3
   (+r, w5) = w4
   (+eo, w6) = w5
-  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_5_h.Gt0B1B711C4D_hash_tree_root(h, _))))} == API.hash_tree_root(GS.Gt0B1B711C4D(), PK.vview32(_)) : Maybe<&2, +List<U32>>}
-  vec_uint256_5_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v32(z, GS.Gt0B1B711C4D()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
+  %Equal.sym(O.Words, o, O.Words{FD.array__thaw(U32, t), N}, eo) : {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_2_h.GtF45E42B273_hash_tree_root(h, _))))} == API.hash_tree_root(GS.GtF45E42B273(), PK.vview4(_)) : Maybe<&2, +List<U32>>}
+  vec_uint32_2_r2(h, t, N, FD.logic__subst(O.Words, z => PK.rep_v4(z, GS.GtF45E42B273()), o, O.Words{FD.array__thaw(U32, t), N}, eo, rep))
 
 # (iv) under rep (the root law's invariant; no depth premise).
-def vec_uint256_5_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v32(o, GS.Gt0B1B711C4D())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_5_h.Gt0B1B711C4D_hash_tree_root(h, o))))} == API.hash_tree_root(GS.Gt0B1B711C4D(), PK.vview32(o)) : Maybe<&2, +List<U32>>}:
+def vec_uint32_2_e2e_root(h: B.Buf, -o: O.Words, +rep: PK.rep_v4(o, GS.GtF45E42B273())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint32_2_h.GtF45E42B273_hash_tree_root(h, o))))} == API.hash_tree_root(GS.GtF45E42B273(), PK.vview4(o)) : Maybe<&2, +List<U32>>}:
   (+w, +rest) = rep
-  vec_uint256_5_r1(h, o, w, rep)
+  vec_uint32_2_r1(h, o, w, rep)
 
 # vec_uint256_8 (GtFAE59DA275)
 def vec_uint256_8_r2(h: B.Buf, +t: FD.array__Tree<U32>, +N: U32, +rep: PK.rep_v32(O.Words{FD.array__thaw(U32, t), N}, GS.GtFAE59DA275())) -> {Some{D.bytes(Pair.snd(O.Words, D.Digest, Pair.snd(B.Buf, O.Words & D.Digest, vec_uint256_8_h.GtFAE59DA275_hash_tree_root(h, O.Words{FD.array__thaw(U32, t), N}))))} == API.hash_tree_root(GS.GtFAE59DA275(), PK.vview32(O.Words{FD.array__thaw(U32, t), N})) : Maybe<&2, +List<U32>>}:

@@ -16,8 +16,8 @@ import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_bytes.bend as E
-import ../proofs/obj/spec_input_5.bend as M0
-import ../proofs/obj/spec_codec_5.bend as M1
+import ../proofs/obj/spec_input_ConsolidationRequest.bend as M0
+import ../proofs/obj/spec_codec_ConsolidationRequest.bend as M1
 import ../proofs/obj/fixrej_f3.bend as M2
 import ../proofs/obj/root_names.bend as M3
 

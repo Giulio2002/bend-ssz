@@ -77,8 +77,16 @@ def hw1(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hn: {Nat.is_le(U32.to_nat(n)
   %Equal.sym(Nat, Nat.add(8n, Nat.sub(U32.to_nat(O1(t)), 8n)), U32.to_nat(O1(t)), FD.nat__sub_add(U32.to_nat(O1(t)), 8n, h8)) : {Nat.is_le(_, A.quad(VB.pw(d))) == True{} : Bool}
   FD.nat__le_trans(U32.to_nat(O1(t)), U32.to_nat(n), A.quad(VB.pw(d)), h1n, hn)
 
+# The first window ends below 2^32 (at O1 <= n).
+def hw1s(+t: FD.array__Tree<U32>, +n: U32,
+    +h8: {Nat.is_le(8n, U32.to_nat(O1(t))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t)), U32.to_nat(n)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(2n), U32.to_nat(L1(t))), FD.spec_common__pow2(32n)) == True{} : Bool}:
+  %Equal.sym(Nat, U32.to_nat(L1(t)), Nat.sub(U32.to_nat(O1(t)), 8n), FD.u32__sub_nat(O1(t), 8, h8)) : {Nat.is_lt(Nat.add(8n, _), FD.spec_common__pow2(32n)) == True{} : Bool}
+  %Equal.sym(Nat, Nat.add(8n, Nat.sub(U32.to_nat(O1(t)), 8n)), U32.to_nat(O1(t)), FD.nat__sub_add(U32.to_nat(O1(t)), 8n, h8)) : {Nat.is_lt(_, FD.spec_common__pow2(32n)) == True{} : Bool}
+  VB.le_n_lt32(U32.to_nat(O1(t)), n, h1n)
+
 # The second window starts at word J: O1 = 4 J.
-def eJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def eJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
     +h8: {Nat.is_le(8n, U32.to_nat(O1(t))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t)), U32.to_nat(n)) == True{} : Bool},
     +ha: {U32.is_le(228, L1(t)) == True{} : Bool}, +hc: {DC.whole(DC.LL(L1(t))) == True{} : Bool})
@@ -95,15 +103,15 @@ def eJ(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 29n) == Tru
     {Nat.add(8n, Nat.add(228n, _)) == A.quad(Nat.add(2n, Nat.add(57n, Nat.double(DC.CQ(L1(t)))))) : Nat}
   {==}
 
-def e0J(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def e0J(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
     +h8: {Nat.is_le(8n, U32.to_nat(O1(t))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t)), U32.to_nat(n)) == True{} : Bool},
     +ha: {U32.is_le(228, L1(t)) == True{} : Bool}, +hc: {DC.whole(DC.LL(L1(t))) == True{} : Bool})
     -> {U32.to_nat(U32.add(0, O1(t))) == A.quad(J(t)) : Nat}:
-  +hb = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(2n+d)) == True{} : Bool}, U32.to_nat(O1(t)), Nat.add(U32.to_nat(O1(t)), 0n),
+  +hb = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, U32.to_nat(O1(t)), Nat.add(U32.to_nat(O1(t)), 0n),
     Equal.sym(Nat, Nat.add(U32.to_nat(O1(t)), 0n), U32.to_nat(O1(t)), FD.nat__add_zero(U32.to_nat(O1(t)))),
-    FD.nat__le_trans(U32.to_nat(O1(t)), U32.to_nat(n), A.quad(VB.pw(d)), h1n, hn))
-  %Equal.sym(Nat, U32.to_nat(U32.add(0, O1(t))), Nat.add(U32.to_nat(O1(t)), 0n), VB.add_le_at(0, O1(t), 0n, 2n+d, {==}, hd, hb)) : {_ == A.quad(J(t)) : Nat}
+    VB.le_n_lt32(U32.to_nat(O1(t)), n, h1n))
+  %Equal.sym(Nat, U32.to_nat(U32.add(0, O1(t))), Nat.add(U32.to_nat(O1(t)), 0n), VB.add_lt32(0, O1(t), 0n, {==}, hb)) : {_ == A.quad(J(t)) : Nat}
   %Equal.sym(Nat, Nat.add(U32.to_nat(O1(t)), 0n), U32.to_nat(O1(t)), FD.nat__add_zero(U32.to_nat(O1(t)))) : {_ == A.quad(J(t)) : Nat}
   eJ(d, t, n, hd, hn, h8, h1n, ha, hc)
 
@@ -118,7 +126,18 @@ def hw2(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +hn: {Nat.is_le(U32.to_nat(n)
     {Nat.is_le(_, A.quad(VB.pw(d))) == True{} : Bool}
   hn
 
-def st_d(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+# ... and ends at n < 2^32.
+def hw2s(+t: FD.array__Tree<U32>, +n: U32,
+    +h1n: {Nat.is_le(U32.to_nat(O1(t)), U32.to_nat(n)) == True{} : Bool}, +ej: {U32.to_nat(O1(t)) == A.quad(J(t)) : Nat})
+    -> {Nat.is_lt(Nat.add(A.quad(J(t)), U32.to_nat(L2(t, n))), FD.spec_common__pow2(32n)) == True{} : Bool}:
+  %ej : {Nat.is_lt(Nat.add(_, U32.to_nat(L2(t, n))), FD.spec_common__pow2(32n)) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(L2(t, n)), Nat.sub(U32.to_nat(n), U32.to_nat(O1(t))), FD.u32__sub_nat(n, O1(t), h1n)) :
+    {Nat.is_lt(Nat.add(U32.to_nat(O1(t)), _), FD.spec_common__pow2(32n)) == True{} : Bool}
+  %Equal.sym(Nat, Nat.add(U32.to_nat(O1(t)), Nat.sub(U32.to_nat(n), U32.to_nat(O1(t)))), U32.to_nat(n), FD.nat__sub_add(U32.to_nat(n), U32.to_nat(O1(t)), h1n)) :
+    {Nat.is_lt(_, FD.spec_common__pow2(32n)) == True{} : Bool}
+  VB.u32_lt(n)
+
+def st_d(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
     +h8: {Nat.is_le(8n, U32.to_nat(O1(t))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t)), U32.to_nat(n)) == True{} : Bool},
     +dd: Bool, +ed: {W.CHKw(t, 2n, L1(t)) == dd : Bool})
@@ -134,11 +153,11 @@ def st_d(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32,
       +ej = e0J(d, t, n, hd, hn, h8, h1n, DC.chk_a(a, b, c, ed), hc)
       +ej1 = eJ(d, t, n, hd, hn, h8, h1n, DC.chk_a(a, b, c, ed), hc)
       %Equal.sym(B.Buf & Bool, FuluIndexedAttestation_r.IndexedAttestation_ok(DC.BF(t, n), U32.add(0, O1(t)), L2(t, n)), (DC.BF(t, n), W.CHKw(t, J(t), L2(t, n))),
-          W.ok_evalw(d, t, n, J(t), U32.add(0, O1(t)), L2(t, n), ej, hd, hw2(d, t, n, hn, h1n, ej1), pf)) :
+          W.ok_evalw(d, t, n, J(t), U32.add(0, O1(t)), L2(t, n), ej, hd, hw2(d, t, n, hn, h1n, ej1), hw2s(t, n, h1n, ej1), pf)) :
         {FuluAttesterSlashing_r.AttesterSlashing_v3(0, n, 8, O1(t), _) == (DC.BF(t, n), W.CHKw(t, J(t), L2(t, n))) : B.Buf & Bool}
       c3_id(W.CHKw(t, J(t), L2(t, n)), DC.BF(t, n), 0, n, 8, O1(t))
 
-def st_c(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def st_c(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +e0: {O0(t) == 8 : U32},
     +c: Bool, +ec: {Bool.and(U32.is_le(O0(t), O1(t)), U32.is_le(O1(t), n)) == c : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_c1(c, DC.BF(t, n), 0, n, O0(t), O1(t)) == (DC.BF(t, n), chk5(True{}, True{}, c, W.CHKw(t, 2n, L1(t)), W.CHKw(t, J(t), L2(t, n)))) : B.Buf & Bool}:
@@ -151,7 +170,7 @@ def st_c(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32,
       %Equal.sym(U32, O0(t), 8, e0) :
         {FuluAttesterSlashing_r.AttesterSlashing_v2(0, n, _, O1(t), FuluIndexedAttestation_r.IndexedAttestation_ok(DC.BF(t, n), U32.add(0, _), U32.sub(O1(t), _))) == (DC.BF(t, n), chk5(True{}, True{}, True{}, W.CHKw(t, 2n, L1(t)), W.CHKw(t, J(t), L2(t, n)))) : B.Buf & Bool}
       %Equal.sym(B.Buf & Bool, FuluIndexedAttestation_r.IndexedAttestation_ok(DC.BF(t, n), U32.add(0, 8), L1(t)), (DC.BF(t, n), W.CHKw(t, 2n, L1(t))),
-          W.ok_evalw(d, t, n, 2n, U32.add(0, 8), L1(t), {==}, hd, hw1(d, t, n, hn, h8, h1n), pf)) :
+          W.ok_evalw(d, t, n, 2n, U32.add(0, 8), L1(t), {==}, hd, hw1(d, t, n, hn, h8, h1n), hw1s(t, n, h8, h1n), pf)) :
         {FuluAttesterSlashing_r.AttesterSlashing_v2(0, n, 8, O1(t), _) == (DC.BF(t, n), chk5(True{}, True{}, True{}, W.CHKw(t, 2n, L1(t)), W.CHKw(t, J(t), L2(t, n)))) : B.Buf & Bool}
       st_d(d, t, n, pf, hd, hn, h8, h1n, W.CHKw(t, 2n, L1(t)), {==})
 
@@ -159,32 +178,32 @@ def hi2(+d: Nat, +n: U32, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == Tr
     -> {Nat.is_le(2n, VB.pw(d)) == True{} : Bool}:
   VC.quad_inv(2n, VB.pw(d), FD.nat__le_trans(8n, U32.to_nat(n), A.quad(VB.pw(d)), h8, hn))
 
-def st_b(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def st_b(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +h2: {Nat.is_le(2n, VB.pw(d)) == True{} : Bool},
     +b: Bool, +eb: {U32.is_eq(O0(t), 8) == b : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_c0(b, DC.BF(t, n), 0, n, O0(t)) == (DC.BF(t, n), chk5(True{}, b, Bool.and(U32.is_le(O0(t), O1(t)), U32.is_le(O1(t), n)), W.CHKw(t, 2n, L1(t)), W.CHKw(t, J(t), L2(t, n)))) : B.Buf & Bool}:
   match b:
     case False{}: {==}
     case True{}:
-      +hd32 = VB.lt32(d, FD.nat__lt_trans(d, 29n, 31n, hd, {==}))
+      +hd32 = VB.lt32(d, hd)
       %Equal.sym(B.Buf & U32, B.word(DC.BF(t, n), 1), (DC.BF(t, n), O1(t)), DC.rd32(d, t, n, 1, 1n, {==}, hd32, FD.nat__lt_le_trans(1n, 2n, VB.pw(d), {==}, h2), pf)) :
         {FuluAttesterSlashing_r.AttesterSlashing_v1(0, n, O0(t), _) == (DC.BF(t, n), chk5(True{}, True{}, Bool.and(U32.is_le(O0(t), O1(t)), U32.is_le(O1(t), n)), W.CHKw(t, 2n, L1(t)), W.CHKw(t, J(t), L2(t, n)))) : B.Buf & Bool}
       st_c(d, t, n, pf, hd, hn, FD.u32alg__eq_of(O0(t), 8, eb), Bool.and(U32.is_le(O0(t), O1(t)), U32.is_le(O1(t), n)), {==})
 
-def st_a(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def st_a(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +a: Bool, +ea: {U32.is_le(8, n) == a : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_ok_len(a, DC.BF(t, n), 0, n) == (DC.BF(t, n), chk5(a, U32.is_eq(O0(t), 8), Bool.and(U32.is_le(O0(t), O1(t)), U32.is_le(O1(t), n)), W.CHKw(t, 2n, L1(t)), W.CHKw(t, J(t), L2(t, n)))) : B.Buf & Bool}:
   match a:
     case False{}: {==}
     case True{}:
       +h2 = hi2(d, n, hn, le_nat(8, n, ea))
-      +hd32 = VB.lt32(d, FD.nat__lt_trans(d, 29n, 31n, hd, {==}))
+      +hd32 = VB.lt32(d, hd)
       %Equal.sym(B.Buf & U32, B.word(DC.BF(t, n), 0), (DC.BF(t, n), O0(t)), DC.rd32(d, t, n, 0, 0n, {==}, hd32, FD.nat__lt_le_trans(0n, 2n, VB.pw(d), {==}, h2), pf)) :
         {FuluAttesterSlashing_r.AttesterSlashing_v0(0, n, _) == (DC.BF(t, n), chk5(True{}, U32.is_eq(O0(t), 8), Bool.and(U32.is_le(O0(t), O1(t)), U32.is_le(O1(t), n)), W.CHKw(t, 2n, L1(t)), W.CHKw(t, J(t), L2(t, n)))) : B.Buf & Bool}
       st_b(d, t, n, pf, hd, hn, h2, U32.is_eq(O0(t), 8), {==})
 
 # The validator returns the buffer and CHK(t, n).
-def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_ok(DC.BF(t, n), 0, n) == (DC.BF(t, n), CHK(t, n)) : B.Buf & Bool}:
   st_a(d, t, n, pf, hd, hn, U32.is_le(8, n), {==})
@@ -233,12 +252,12 @@ def whc(+t: FD.array__Tree<U32>, +i: Nat, +len: U32, +h: {W.CHKw(t, i, len) == T
 def OBJ(+t: FD.array__Tree<U32>, +n: U32) -> FuluAttesterSlashing_d.AttesterSlashing:
   FuluAttesterSlashing_d.AttesterSlashing{O.BSome{W.OBJw(t, 2n, L1(t)), O.BNone{}}, O.BSome{W.OBJw(t, J(t), L2(t, n)), O.BNone{}}}
 
-def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +e0: {O0(t) == 8 : U32},
     +h8: {Nat.is_le(8n, U32.to_nat(O1(t))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t)), U32.to_nat(n)) == True{} : Bool},
     +hk1: {W.CHKw(t, 2n, L1(t)) == True{} : Bool}, +hk2: {W.CHKw(t, J(t), L2(t, n)) == True{} : Bool})
     -> {FuluAttesterSlashing_r.AttesterSlashing_read(DC.BF(t, n), 0, n) == (DC.BF(t, n), OBJ(t, n)) : B.Buf & FuluAttesterSlashing_d.AttesterSlashing}:
-  +hd32 = VB.lt32(d, FD.nat__lt_trans(d, 29n, 31n, hd, {==}))
+  +hd32 = VB.lt32(d, hd)
   +h2 = hi2(d, n, hn, FD.nat__le_trans(8n, U32.to_nat(O1(t)), U32.to_nat(n), h8, h1n))
   +ej = e0J(d, t, n, hd, hn, h8, h1n, wha(t, 2n, L1(t), hk1), whc(t, 2n, L1(t), hk1))
   +ej1 = eJ(d, t, n, hd, hn, h8, h1n, wha(t, 2n, L1(t), hk1), whc(t, 2n, L1(t), hk1))
@@ -249,14 +268,14 @@ def rd_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
   %Equal.sym(U32, O0(t), 8, e0) :
     {FuluAttesterSlashing_r.AttesterSlashing_rd2(0, n, _, O1(t), FuluIndexedAttestation_r.IndexedAttestation_bx_read(DC.BF(t, n), U32.add(0, _), U32.sub(O1(t), _))) == (DC.BF(t, n), OBJ(t, n)) : B.Buf & FuluAttesterSlashing_d.AttesterSlashing}
   %Equal.sym(B.Buf & FuluIndexedAttestation_d.IndexedAttestation, FuluIndexedAttestation_r.IndexedAttestation_read(DC.BF(t, n), U32.add(0, 8), L1(t)), (DC.BF(t, n), W.OBJw(t, 2n, L1(t))),
-      W.readw(d, t, n, 2n, U32.add(0, 8), L1(t), {==}, hd, hw1(d, t, n, hn, h8, h1n), pf, hk1)) :
+      W.readw(d, t, n, 2n, U32.add(0, 8), L1(t), {==}, hd, hw1(d, t, n, hn, h8, h1n), hw1s(t, n, h8, h1n), pf, hk1)) :
     {FuluAttesterSlashing_r.AttesterSlashing_rd2(0, n, 8, O1(t), FuluIndexedAttestation_r.IndexedAttestation_bx_rd(_)) == (DC.BF(t, n), OBJ(t, n)) : B.Buf & FuluAttesterSlashing_d.AttesterSlashing}
   %Equal.sym(B.Buf & FuluIndexedAttestation_d.IndexedAttestation, FuluIndexedAttestation_r.IndexedAttestation_read(DC.BF(t, n), U32.add(0, O1(t)), L2(t, n)), (DC.BF(t, n), W.OBJw(t, J(t), L2(t, n))),
-      W.readw(d, t, n, J(t), U32.add(0, O1(t)), L2(t, n), ej, hd, hw2(d, t, n, hn, h1n, ej1), pf, hk2)) :
+      W.readw(d, t, n, J(t), U32.add(0, O1(t)), L2(t, n), ej, hd, hw2(d, t, n, hn, h1n, ej1), hw2s(t, n, h1n, ej1), pf, hk2)) :
     {FuluAttesterSlashing_r.AttesterSlashing_rd3(0, n, 8, O1(t), O.BSome{W.OBJw(t, 2n, L1(t)), O.BNone{}}, FuluIndexedAttestation_r.IndexedAttestation_bx_rd(_)) == (DC.BF(t, n), OBJ(t, n)) : B.Buf & FuluAttesterSlashing_d.AttesterSlashing}
   {==}
 
-def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def acc_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {CHK(t, n) == True{} : Bool}, +e0: {O0(t) == 8 : U32},
     +h8: {Nat.is_le(8n, U32.to_nat(O1(t))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t)), U32.to_nat(n)) == True{} : Bool},
     +hk1: {W.CHKw(t, 2n, L1(t)) == True{} : Bool}, +hk2: {W.CHKw(t, J(t), L2(t, n)) == True{} : Bool})
@@ -275,7 +294,7 @@ law decode_accept:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   {FuluAttesterSlashing_r.AttesterSlashing_decode(DC.BF(t, n), n) == (DC.BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}
@@ -337,7 +356,7 @@ def len_eq(X):
       {==}
 
 # A window of length len holds H + NW words.
-def eL(+d: Nat, +len: U32, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +ha: {U32.is_le(228, len) == True{} : Bool},
+def eL(+d: Nat, +len: U32, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +ha: {U32.is_le(228, len) == True{} : Bool},
     +hl: {Nat.is_le(U32.to_nat(len), A.quad(VB.pw(d))) == True{} : Bool}, +hc: {DC.whole(DC.LL(len)) == True{} : Bool})
     -> {U32.to_nat(len) == A.quad(Nat.add(57n, VC.NW(DC.LL(len)))) : Nat}:
   %Equal.sym(Nat, VC.NW(DC.LL(len)), Nat.double(DC.CQ(len)), DC.eNWc(d, len, hd, ha, hl, hc)) : {U32.to_nat(len) == A.quad(Nat.add(57n, _)) : Nat}
@@ -370,7 +389,7 @@ def lenVW(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
     FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(n), z) == True{} : Bool}, A.quad(VB.pw(d)), List.length(&2, U32, F.limbs(S)), Equal.sym(Nat, List.length(&2, U32, F.limbs(S)), A.quad(VB.pw(d)), lS), hn))
 
 # The layout of the two windows is the buffer's bytes.
-def main_eq(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def main_eq(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +e0: {O0(t) == 8 : U32},
     +h8: {Nat.is_le(8n, U32.to_nat(O1(t))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t)), U32.to_nat(n)) == True{} : Bool},
     +hk1: {W.CHKw(t, 2n, L1(t)) == True{} : Bool}, +hk2: {W.CHKw(t, J(t), L2(t, n)) == True{} : Bool})
@@ -424,14 +443,14 @@ def main_eq(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U
       == List.append(&2, U32, F.limbs([8, VB.slot(t, 1n)]), List.append(&2, U32, Y1(t), Y2(t, n))) : +List<U32>}
   {==}
 
-def fitsO(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def fitsO(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +me: {OUTL(t, n) == VW(t, n) : +List<U32>})
     -> {N.fits(4n, Nat.add(Layout.fixed_size(PL(t, n)), List.length(&2, U32, Layout.payloads(PL(t, n))))) == True{} : Bool}:
   %Equal.sym(+List<U32>, OUTL(t, n), VW(t, n), me) : {N.fits(4n, List.length(&2, U32, _)) == True{} : Bool}
   %Equal.sym(Nat, List.length(&2, U32, VW(t, n)), U32.to_nat(n), lenVW(d, t, n, pf, hn)) : {N.fits(4n, _) == True{} : Bool}
-  VFT.fits4(2n+d, U32.to_nat(n), hn, FD.nat__lt_trans(d, 29n, 30n, hd, {==}))
+  VFT.fits4lt(U32.to_nat(n), VB.u32_lt(n))
 
-def spec_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def spec_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +e0: {O0(t) == 8 : U32},
     +h8: {Nat.is_le(8n, U32.to_nat(O1(t))) == True{} : Bool}, +h1n: {Nat.is_le(U32.to_nat(O1(t)), U32.to_nat(n)) == True{} : Bool},
     +hk1: {W.CHKw(t, 2n, L1(t)) == True{} : Bool}, +hk2: {W.CHKw(t, J(t), L2(t, n)) == True{} : Bool})
@@ -459,7 +478,7 @@ law decode_spec:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == True{} : Bool}
   Decoding.decodes(Spec.AttesterSlashing(), VW(t, n), VAL(t, n))
@@ -481,7 +500,7 @@ law decode_none:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {CHK(t, n) == False{} : Bool}
   {FuluAttesterSlashing_r.AttesterSlashing_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluAttesterSlashing_d.AttesterSlashing>}
