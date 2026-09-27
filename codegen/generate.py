@@ -40,7 +40,7 @@ RECORD_MAX = 96           # byte vectors / bit vectors up to this many bytes are
                           # drops them out of the whole-word codec-law class; 48 makes the pinned
                           # toolchain's clang (Apple clang 17.0.0, -O3) abort on the native memory driver
                           # ("live register clobbered by inserted prologue instructions"). 96 keeps every
-                          # block serializer under 4x Go (WORK_LOG.md, iteration 19).
+                          # block serializer under 4x Go.
 FIXED_COPY_MAX_WORDS = 64  # fixed packed runs up to this many words get a straight-line aligned writer
 BOX_MIN = 33              # container fields wider than this many words are boxed (src/obj.bend Boxed)
 FLAT_MAX = 64             # a Data container is laid out inline (flattened) by the C backend;
@@ -1860,7 +1860,7 @@ def emit_seq(s, w):
         # written at the call site: the root laws compare the runtime's call
         # with their own, and two separately written copies of a closed 2^d
         # are compared digit by digit by the proof checker (it overflows past
-        # about 2^14; WORK_LOG iteration 22, round 3).
+        # about 2^14).
         # (The top level splits itself: an environment holding the closed 2^d
         # would be forced by the checker when two stuck roots are compared.)
         w(f'def {p}_mt0(+d: Nat, inside: Bool, +hl: Nat, +seg: U32, +n: Nat, st: {ST}) -> {ST}:')
@@ -2065,10 +2065,6 @@ def emit_seq_cache(s, w):
     w(f'    case {C}{{arr, +n, +d, nodes, +lo, +hi}}:')
     w(f'      {p}_croot_top(hl, n, d, {p}_sweep_pick(hl, U32.is_le(lo, hi), d, lo, hi, n, seg, {TS}{{h, arr, nodes}}))')
     w('')
-
-
-def fix_seq_order(text):
-    return text
 
 
 # ---------------------------------------------------------------------------

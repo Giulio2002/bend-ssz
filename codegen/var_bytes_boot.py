@@ -189,14 +189,6 @@ def spec_items_seg(x, V, Yb, hv, S, word):
     return items(0), chain(0), '[' + ', '.join(parts) + ']', cat(0)
 
 
-def lsum_text(terms, hole, fill='_'):
-    t = '0n'
-    for j in reversed(range(len(terms))):
-        e = fill if j == hole else f'List.length(&2, U32, {terms[j]})'
-        t = f'Nat.add({e}, {t})'
-    return t
-
-
 def spec_part_seg(x):
     n, FS, H, po, Y = x.n, x.FS, x.H, x.po, x.Y
     FSN = x.FSN

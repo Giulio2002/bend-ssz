@@ -1,6 +1,6 @@
 # Mainnet Fulu SSZ schema: generator input for codegen/generate.py.
 # Notation follows the consensus specs. Derived from the pinned pyspec
-# vendor/consensus-specs/fulu_mainnet.py by codegen/bootstrap_pyspec.py and
+# vendor/consensus-specs/fulu_mainnet.py (a one-time bootstrap) and
 # checked against the frozen schemas/fulu_mainnet.json by codegen/check_schema.py.
 # Type expressions: boolean, uintN, BytesN, ByteVector[N], ByteList[N],
 # Bitvector[N], Bitlist[N], Vector[T, N], List[T, N], or a type name; N is

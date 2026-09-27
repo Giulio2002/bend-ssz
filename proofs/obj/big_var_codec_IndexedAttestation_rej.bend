@@ -331,7 +331,7 @@ law decode_reject:
 def decode_reject(d, t, n, pf, hn, hchk):
   v => e => rej_f(d, t, n, pf, hn, hchk, inv_v(v, DC.VW(t, n), e))
 
-def none_go(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+def none_go(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +pf: {F.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
     +a: Bool, +ea: {U32.is_le(228, n) == a : Bool})
     -> {FuluIndexedAttestation_r.IndexedAttestation_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}:
@@ -342,7 +342,7 @@ def none_go(+d: Nat, +t: F.array__Tree<U32>, +n: U32, +pf: {F.array__perfect(U32
       {==}
     case True{}:
       +hF = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(228, n), Nat.is_le(228n, U32.to_nat(n)), VU.le_u32(228, n), ea)
-      %Equal.sym(B.Buf & Bool, FuluIndexedAttestation_r.IndexedAttestation_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, VB.lt32(d, F.nat__lt_trans(d, 29n, 31n, hd, {==})), hpoD(d, n, hn, hF), pf)) :
+      %Equal.sym(B.Buf & Bool, FuluIndexedAttestation_r.IndexedAttestation_ok(DC.BF(t, n), 0, n), (DC.BF(t, n), DC.CHK(t, n)), DC.ok_eval(d, t, n, VB.lt32(d, hd), hpoD(d, n, hn, hF), pf)) :
         {FuluIndexedAttestation_r.IndexedAttestation_built(n, _) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}
       %Equal.sym(Bool, DC.CHK(t, n), False{}, hchk) :
         {FuluIndexedAttestation_r.IndexedAttestation_built(n, (DC.BF(t, n), _)) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}
@@ -354,7 +354,7 @@ law decode_none:
   for +t: F.array__Tree<U32>
   for +n: U32
   for +pf: {F.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {DC.CHK(t, n) == False{} : Bool}
   {FuluIndexedAttestation_r.IndexedAttestation_decode(DC.BF(t, n), n) == (DC.BF(t, n), None{}) : B.Buf & Maybe<&1, FuluIndexedAttestation_d.IndexedAttestation>}

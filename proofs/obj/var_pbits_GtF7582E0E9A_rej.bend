@@ -42,17 +42,17 @@ def m1e(+n: U32, +m: Nat, +e1: {U32.to_nat(n) == 1n+m : Nat}) -> {DC.M1(n) == m 
 
 # The shape makes every check pass.
 def chk_true(+t: FD.array__Tree<U32>, +n: U32, +m: Nat, +e1: {U32.to_nat(n) == 1n+m : Nat},
-    +d: Nat, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool},
+    +hP: {U32.is_le(n, VP.PMAX()) == True{} : Bool},
     +nz: {U32.is_eq(DC.V(t, n), 0) == False{} : Bool})
     -> {DC.CHK(t, n) == True{} : Bool}:
   +ea = FD.logic__subst(Nat, z => {Nat.is_lt(0n, z) == True{} : Bool}, 1n+m, U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), 1n+m, e1), {==})
   %Equal.sym(Bool, U32.is_lt(0, n), True{}, FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_lt(0n, U32.to_nat(n)), U32.is_lt(0, n), Equal.sym(Bool, U32.is_lt(0, n), Nat.is_lt(0n, U32.to_nat(n)), VR.lt_u32(0, n)), ea)) :
     {DC.chk1(_, t, n) == True{} : Bool}
   %Equal.sym(Bool, U32.is_eq(DC.V(t, n), 0), False{}, nz) : {O.bsel(_, False{}, O.bsel(True{}, U32.is_lt(U32.sub(n, 1), 536870912), Nat.is_le(DC.BD(t, n), U32.to_nat(0)))) == True{} : Bool}
-  VP.lt29(d, n, m, hd, hn, e1)
+  VP.lt29P(n, m, e1, hP)
 
-def rej_t(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
+def rej_t(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hP: {U32.is_le(n, VP.PMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
     +bits: +List<Bool>, +pk: {VBL.P(bits) == DC.VW(t, n) : +List<U32>}, +fs: VBL.IF(bits)) -> Empty:
   (+l, +r) = fs
   (+nz0, +ln) = r
@@ -61,28 +61,28 @@ def rej_t(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
     Equal.trans(Nat, List.length(&2, U32, DC.VW(t, n)), List.length(&2, U32, VBL.P(bits)), 1n+m,
       Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), DC.VW(t, n), VBL.P(bits), Equal.sym(+List<U32>, VBL.P(bits), DC.VW(t, n), pk)), l))
   +W1 = VR.WB(t, 0n, 1n+m)
-  +lw = VR.lastWB(d, t, 0n, m, VR.XN(0, n), pf, DC.hw1(d, n, m, hn, e1), VR.eXN(d, 0, 0n, n, m, {==}, FD.nat__lt_trans(d, 28n, 29n, hd, {==}), hn, e1))
+  +lw = VR.lastWB(d, t, 0n, m, VR.XN(0, n), pf, DC.hw1(d, n, m, hn, e1), VR.eXN0(n, m, e1))
   # the byte at m of the encoding is the runtime's last byte
   +eW = Equal.cong(Nat, +List<U32>, z => VR.WB(t, 0n, z), U32.to_nat(n), 1n+m, e1)
   +eV = Equal.trans(U32, VBL.nthb(VBL.P(bits), m), VBL.nthb(W1, m), DC.V(t, n),
     Equal.cong(+List<U32>, U32, z => VBL.nthb(z, m), VBL.P(bits), W1, Equal.trans(+List<U32>, VBL.P(bits), DC.VW(t, n), W1, pk, eW)),
     Equal.trans(U32, VBL.nthb(W1, m), VBL.lastb(W1), DC.V(t, n), Equal.sym(U32, VBL.lastb(W1), VBL.nthb(W1, m), VR.last_len(W1, m, VR.lenWB(d, t, 0n, 1n+m, pf, DC.hw1(d, n, m, hn, e1)))), lw))
   +nz = FD.logic__subst(U32, z => {U32.is_eq(z, 0) == False{} : Bool}, VBL.nthb(VBL.P(bits), m), DC.V(t, n), eV, nz0)
-  FD.logic__true_false(Equal.trans(Bool, True{}, DC.CHK(t, n), False{}, Equal.sym(Bool, DC.CHK(t, n), True{}, chk_true(t, n, m, e1, d, hd, hn, nz)), hchk))
+  FD.logic__true_false(Equal.trans(Bool, True{}, DC.CHK(t, n), False{}, Equal.sym(Bool, DC.CHK(t, n), True{}, chk_true(t, n, m, e1, hP, nz)), hchk))
 
-def rej_b(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
+def rej_b(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hP: {U32.is_le(n, VP.PMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
     +bits: +List<Bool>, +b: Bool, +eb: {Nat.is_le(List.length(&2, Bool, bits), List.length(&2, Bool, bits)) == b : Bool},
     +e: {Codec.bytes(Codec.one(Bits.encoding(b, List.append(&2, Bool, bits, [True{}])), None{})) == Some{DC.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match b:
     case False{}: FD.logic__none_some(+List<U32>, DC.VW(t, n), e)
-    case True{}: rej_t(d, t, n, pf, hd, hn, hchk, bits, FD.logic__some_inj(+List<U32>, VBL.P(bits), DC.VW(t, n), e), VBL.inv(bits))
+    case True{}: rej_t(d, t, n, pf, hd, hn, hP, hchk, bits, FD.logic__some_inj(+List<U32>, VBL.P(bits), DC.VW(t, n), e), VBL.inv(bits))
 
-def inv_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
-    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
+def inv_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hP: {U32.is_le(n, VP.PMAX()) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
     +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.GtF7582E0E9A(), v) == Some{DC.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match v:
-    case S.BitsValue{+bits}: rej_b(d, t, n, pf, hd, hn, hchk, bits, Nat.is_le(List.length(&2, Bool, bits), List.length(&2, Bool, bits)), {==}, e)
+    case S.BitsValue{+bits}: rej_b(d, t, n, pf, hd, hn, hP, hchk, bits, Nat.is_le(List.length(&2, Bool, bits), List.length(&2, Bool, bits)), {==}, e)
     case S.BooleanValue{+b0}: FD.logic__none_some(+List<U32>, DC.VW(t, n), e)
     case S.UnsignedValue{+u0}: FD.logic__none_some(+List<U32>, DC.VW(t, n), e)
     case S.BytesValue{+xs0}: FD.logic__none_some(+List<U32>, DC.VW(t, n), e)
@@ -98,9 +98,10 @@ law decode_reject:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
+  for +hP: {U32.is_le(n, VP.PMAX()) == True{} : Bool}
   for +hchk: {DC.CHK(t, n) == False{} : Bool}
   Decoding.outside_image(GS.GtF7582E0E9A(), DC.VW(t, n))
-def decode_reject(d, t, n, pf, hd, hn, hchk):
-  v => e => inv_v(d, t, n, pf, hd, hn, hchk, v, e)
+def decode_reject(d, t, n, pf, hd, hn, hP, hchk):
+  v => e => inv_v(d, t, n, pf, hd, hn, hP, hchk, v, e)

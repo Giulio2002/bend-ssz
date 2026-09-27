@@ -5,6 +5,7 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
+import ../proofs/obj/vbuf.bend as VB
 import ./e2e_load.bend as L
 
 # The capacity facts for the loader: a buffer of n bytes, n <= 4 * 2^k for some k < 29,
@@ -165,3 +166,44 @@ def cap_w(+bs: +List<U32>, +n: U32, +k: Nat, +hn: {List.length(&2, U32, bs) == U
   %Equal.sym(Nat, FD.spec_common__length(U32, L.wlp(bs)), nwn(List.length(&2, U32, bs)), ln(bs)) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   %Equal.sym(Nat, List.length(&2, U32, bs), U32.to_nat(n), hn) : {Nat.is_le(nwn(_), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   cap_n(n, k, hk, h)
+
+
+# ---- the object API's own input limit: n <= VB.NMAX() (2^32 - 32), depth at most 30 ----
+# The same facts for every input the object API accepts: n + 3 does not wrap (VB.nmax_lt), the
+# words of n bytes are at most 2^30 (n < 2^32), so d = B.capacity(n) <= 30.
+
+def nwM(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {U32.to_nat(nwu(n)) == nwn(U32.to_nat(n)) : Nat}:
+  +h3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(n)), Nat.add(31n, U32.to_nat(n)), FD.spec_common__pow2(32n), Order.add_right(3n, 31n, U32.to_nat(n), {==}), VB.nmax_lt(n, hN))
+  Equal.trans(Nat, U32.to_nat(nwu(n)), VD.s_rng(2n, U32.to_nat((n + 3 : U32))), nwn(U32.to_nat(n)), VD.shrk(2n, (n + 3 : U32)),
+    Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat((n + 3 : U32)), Nat.add(3n, U32.to_nat(n)), VB.add_lt32(n, 3, U32.to_nat(n), {==}, h3)))
+
+def nwkM(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(nwu(n)), O.pow2n(30n)) == True{} : Bool}:
+  +hq = FD.nat__lt_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(30n)), VB.u32_lt(n))
+  %Equal.sym(Nat, U32.to_nat(nwu(n)), nwn(U32.to_nat(n)), nwM(n, hN)) : {Nat.is_le(_, O.pow2n(30n)) == True{} : Bool}
+  %VD.s_pow2_eq(30n) : {Nat.is_le(nwn(U32.to_nat(n)), _) == True{} : Bool}
+  nle(U32.to_nat(n), FD.spec_common__pow2(30n), hq)
+
+# d = B.capacity(n) <= 30
+def capM_le(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(B.capacity(n), 30n) == True{} : Bool}:
+  VD.wd_min(nwu(n), 30n, nwkM(n, hN))
+
+def capM_lt(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_lt(B.capacity(n), 31n) == True{} : Bool}:
+  FD.nat__le_lt_trans(B.capacity(n), 30n, 31n, capM_le(n, hN), {==})
+
+def capM_32(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_lt(B.capacity(n), 32n) == True{} : Bool}:
+  FD.nat__le_lt_trans(B.capacity(n), 30n, 32n, capM_le(n, hN), {==})
+
+def capM_n(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(nwn(U32.to_nat(n)), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}:
+  %nwM(n, hN) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
+  %Equal.sym(Nat, FD.spec_common__pow2(B.capacity(n)), O.pow2n(B.capacity(n)), VD.s_pow2_eq(B.capacity(n))) : {Nat.is_le(U32.to_nat(nwu(n)), _) == True{} : Bool}
+  VD.wd_cover(nwu(n), 30n, {==}, nwkM(n, hN))
+
+def capM_q(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(B.capacity(n)))) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(n), A.quad(nwn(U32.to_nat(n))), A.quad(FD.spec_common__pow2(B.capacity(n))), ng(U32.to_nat(n)),
+    q4(nwn(U32.to_nat(n)), FD.spec_common__pow2(B.capacity(n)), capM_n(n, hN)))
+
+def capM_w(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool})
+    -> {Nat.is_le(FD.spec_common__length(U32, L.wlp(bs)), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}:
+  %Equal.sym(Nat, FD.spec_common__length(U32, L.wlp(bs)), nwn(List.length(&2, U32, bs)), ln(bs)) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
+  %Equal.sym(Nat, List.length(&2, U32, bs), U32.to_nat(n), hn) : {Nat.is_le(nwn(_), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
+  capM_n(n, hN)

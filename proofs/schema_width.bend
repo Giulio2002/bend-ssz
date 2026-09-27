@@ -9,9 +9,8 @@ import ./word_facts.bend as W
 import ./nat_algebra.bend as A
 
 # Positive element widths. Extracted unchanged from the positivity fragment of
-# proofs/decode_goal.bend and proofs/decode_inverse.bend so that the packed
-# decoder's completeness proof can use it without importing those modules,
-# which are still written against the removed list decoder.
+# the removed list decoder's completeness proof, for the packed decoder's
+# completeness proof.
 def positive(width: Maybe<&2, Nat>) -> Type:
   match width:
     case None{}: Unit

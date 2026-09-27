@@ -1,7 +1,0 @@
-{
-  "at": "2026-09-25T16:16:00+02:00",
-  "source": "/srv/ssz-optimization/runs/20260920T131722Z-a5177f5e/iterations/0023/workspace",
-  "status": "work_in_progress",
-  "description": "Iteration 23 source snapshot. Root proof sweep is incomplete: recent grouped checks include passes and two failures; root_big checks and a standalone diagnostic were still running. Runtime, fuzz, performance and memory evidence are reported from the worker log and were not rerun for this publication.",
-  "validation_this_publication": "Copied current sources and selected sweep logs; git diff --check and Python syntax validation only. No full proofs/runtime/performance rerun. Worker left running."
-}

@@ -4,7 +4,6 @@ interface of proofs/obj/vua_win.bend): BeaconBlockBody, whose four fixed and
 nine variable fields are read by their own window modules.
 
     python3 codegen/var_winb.py [--check] [--no-big]
-    python3 codegen/var_winb.py --test NAME OUT    (a test module, not tracked)
 
 The container at a window at byte offset x (x = to_nat off), length len:
 
@@ -68,8 +67,6 @@ CHILD_MOD = {
     'l134217728_PendingPartialWithdrawal': 'big_var_winx_l134217728_PendingPartialWithdrawal.bend',
     'l262144_PendingConsolidation': 'big_var_winx_l262144_PendingConsolidation.bend',
 }
-# containers written only with --pending (not yet checked)
-PENDING = set()
 # the fixed-field modules (at any byte position) of the containers generated with window slices
 FIXMOD = {p: f'vfx_{p}.bend' for p in ['u64', 'b32', 'Fork', 'BeaconBlockHeader', 'v8192_b32', 'Eth1Data', 'v65536_b32', 'v8192_u64', 'bv4',
                                          'Checkpoint', 'SyncCommittee', 'v64_u64', 'u8', 'u16', 'bv1', 'bv2', 'bv8', 'bv256', 'bv257', 'bv1280', 'bv1281', 'v4_GcDC3E457711']}
@@ -222,17 +219,26 @@ class Layout:
     def FSN(self):
         return f'U32.to_nat({self.FS})' if self.sym else f'{self.FS}n'
 
+    def big(self, s):
+        """A fixed size stated as U32.to_nat(s) (sym layouts, powers of two of at least 2^16):
+        its facts are symbolic (proofs/obj/vbig.bend), no unary 2^21."""
+        return self.sym and s >= 65536 and s & (s - 1) == 0
+
+    def SZ(self, s):
+        """The Nat term of a fixed size s."""
+        return f'U32.to_nat({s})' if self.big(s) else f'{s}n'
+
     def PN(self, c):
         """A byte position c of the fixed region, as a Nat term."""
         return f'U32.to_nat({c})' if self.sym else f'{c}n'
 
     def ES(self, s):
         """U32.to_nat(s) == sn."""
-        return '{==}' if s <= 4096 else f'eSz{s}()'
+        return '{==}' if s <= 4096 or self.big(s) else f'eSz{s}()'
 
     def LEA(self, c, s):
         """Nat.is_le(Nat.add(PN(c), sn), FSN)."""
-        return f'VA.lea({c}, {s}, {self.FS}, {s}n, {self.ES(s)}, {{==}}, {{==}})' if self.sym else '{==}'
+        return f'VA.lea({c}, {s}, {self.FS}, {self.SZ(s)}, {self.ES(s)}, {{==}}, {{==}})' if self.sym else '{==}'
 
     def LEC(self, c):
         """Nat.is_le(PN(c), FSN)."""
@@ -246,7 +252,7 @@ class Layout:
         return f'eocX({CWA}, hF, {c}, {self.PN(c)}, {{==}}, {self.LEC(c)})'
 
     def ROOM(self, c, s, hF='hF'):
-        return f'roomFX({CWA}, {hF}, {self.PN(c)}, {s}n, {self.LEA(c, s)})'
+        return f'roomFX({CWA}, {hF}, {self.PN(c)}, {self.SZ(s)}, {self.LEA(c, s)})'
 
     def wpos_targets(self):
         return sorted({f['i'] for f in self.vars} | {f['i'] for f in self.fchk})
@@ -299,13 +305,13 @@ def EUDEFS(L):
     """The sym layout's arithmetic: the large sizes as Nat literals (once each), and the widths'
     sums WFS / WPOS of the fixed region at U32 positions (vadd.bend's lemmas, instantiated)."""
     w = []
-    sizes = sorted({f['size'] for f in L.fields if f['kind'] == 'fix' and f['size'] > 4096})
+    sizes = sorted({f['size'] for f in L.fields if f['kind'] == 'fix' and f['size'] > 4096 and not L.big(f['size'])})
     for s in sizes:
         w.append(f'def eSz{s}() -> {{U32.to_nat({s}) == {s}n : Nat}}: FD.nat__eq_from_is_eq(U32.to_nat({s}), {s}n, {{==}})')
     FS = L.FS
     nf = L.nf
     sz = [f['size'] if f['kind'] == 'fix' else 4 for f in L.fields]
-    wv = [f'Some{{{f["size"]}n}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields]
+    wv = [f'Some{{{L.SZ(f["size"])}}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields]
     w.append('# the widths from part k on')
     w.append(f'def WSS{nf}() -> +List<Maybe<&2, Nat>>: Nil{{}}')
     for q in range(nf - 1, -1, -1):
@@ -316,8 +322,8 @@ def EUDEFS(L):
         c = L.fields[q]['c']
         R, R1 = FS - c, FS - c - sz[q]
         w.append(f'def wf{q}() -> {{LY.WFS(WSS{q}()) == U32.to_nat({R}) : Nat}}:')
-        w.append(f'  Equal.trans(Nat, LY.WFS(WSS{q}()), Nat.add({sz[q]}n, U32.to_nat({R1})), U32.to_nat({R}), VA.wfs_c({wv[q]}, WSS{q + 1}(), {sz[q]}n, U32.to_nat({R1}), {{==}}, wf{q + 1}()),')
-        w.append(f'    VA.stpL({sz[q]}, {R1}, {R}, {sz[q]}n, {L.ES(sz[q])}, {{==}}, {{==}}))')
+        w.append(f'  Equal.trans(Nat, LY.WFS(WSS{q}()), Nat.add({L.SZ(sz[q])}, U32.to_nat({R1})), U32.to_nat({R}), VA.wfs_c({wv[q]}, WSS{q + 1}(), {L.SZ(sz[q])}, U32.to_nat({R1}), {{==}}, wf{q + 1}()),')
+        w.append(f'    VA.stpL({sz[q]}, {R1}, {R}, {L.SZ(sz[q])}, {L.ES(sz[q])}, {{==}}, {{==}}))')
     w.append('# the positions: part i at c_i (the widths before it summed)')
     for i in L.wpos_targets():
         ci = L.fields[i]['c']
@@ -326,9 +332,36 @@ def EUDEFS(L):
             c = L.fields[q]['c']
             D, D1 = ci - c, ci - c - sz[q]
             w.append(f'def wp{i}_{q}() -> {{LY.WPOS(WSS{q}(), {i - q}n) == U32.to_nat({D}) : Nat}}:')
-            w.append(f'  Equal.trans(Nat, LY.WPOS(WSS{q}(), {i - q}n), Nat.add({sz[q]}n, U32.to_nat({D1})), U32.to_nat({D}), VA.wpos_c({wv[q]}, WSS{q + 1}(), {i - q - 1}n, {sz[q]}n, U32.to_nat({D1}), {{==}}, wp{i}_{q + 1}()),')
-            w.append(f'    VA.stpL({sz[q]}, {D1}, {D}, {sz[q]}n, {L.ES(sz[q])}, {{==}}, {{==}}))')
+            w.append(f'  Equal.trans(Nat, LY.WPOS(WSS{q}(), {i - q}n), Nat.add({L.SZ(sz[q])}, U32.to_nat({D1})), U32.to_nat({D}), VA.wpos_c({wv[q]}, WSS{q + 1}(), {i - q - 1}n, {L.SZ(sz[q])}, U32.to_nat({D1}), {{==}}, wp{i}_{q + 1}()),')
+            w.append(f'    VA.stpL({sz[q]}, {D1}, {D}, {L.SZ(sz[q])}, {L.ES(sz[q])}, {{==}}, {{==}}))')
     return '\n'.join(w) + '\n'
+
+
+def fz_text(L, f):
+    """fz<sk>: the spec's fixed size of field f, as L.SZ states it. A big vector (L.big) of
+    2^e elements of 32 (8) bytes is closed symbolically (vbig.fz32 / fz8, imported as VBG); others by {==}."""
+    sp, S = L.spec(f), f['size']
+    head = f'def fz{f["sk"]}() -> {{SS.fixed_size({sp}) == Some{{{L.SZ(S)}}} : Maybe<&2, Nat>}}:'
+    if not L.big(S):
+        return f'{head} eqM(SS.fixed_size({sp}), {S}n, {{==}})'
+    t = f['t']
+    assert t.kind == 'vector', f['name']
+    k = t.size
+    esz = S // k
+    e, r = k.bit_length() - 1, S.bit_length() - 1
+    assert (1 << e) == k and esz in (32, 8), (f['name'], k, esz)
+    KN = f'U32.to_nat({k})'
+    lem = 'VBG.fz32' if esz == 32 else 'VBG.fz8'
+    W = f'{esz}n'
+    MUL = f'Nat.mul({KN}, {W})'
+    L2 = [head,
+          f'  %Equal.sym(Nat, U32.to_nat({S}), {MUL}, Equal.sym(Nat, {MUL}, U32.to_nat({S}), {lem}({KN}, {e}n, {r}n, {S}, VBG.u32pow({k}, {e}n, {{==}}, {{==}}), {{==}}, {{==}}, {{==}}))) :',
+          f'    {{SS.fixed_size({sp}) == Some{{_}} : Maybe<&2, Nat>}}']
+    if esz == 8:
+        # the element's width as the spec's fixed_size states it
+        L2 += [f'  %Equal.sym(Nat, 8n, SP.byte_width(P.U64{{}}), {{==}}) : {{SS.fixed_size({sp}) == Some{{Nat.mul({KN}, _)}} : Maybe<&2, Nat>}}']
+    L2.append('  {==}')
+    return '\n'.join(L2)
 
 
 def RDF(L):
@@ -792,20 +825,20 @@ def sym_header_text(L, PSV, OSL, H):
     fixed = [f for f in L.fields if f['kind'] == 'fix']
     w.append(f'def ewidw({CW}, {H}) -> {{LY.WID({PSV}) == {WS} : +List<Maybe<&2, Nat>>}}:')
     w.append(f'  +hF = hFc({TXOA}, h)')
-    full = '[' + ', '.join(f'Some{{{f["size"]}n}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields) + ']'
+    full = '[' + ', '.join(f'Some{{{L.SZ(f["size"])}}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields) + ']'
     for f in fixed:
         els = []
         for g2 in L.fields:
             if g2['kind'] == 'var':
                 els.append('None{}')
             elif g2['i'] < f['i']:
-                els.append(f'Some{{{g2["size"]}n}}')
+                els.append(f'Some{{{L.SZ(g2["size"])}}}')
             elif g2['i'] == f['i']:
                 els.append('Some{_}')
             else:
-                els.append(f'Some{{List.length(&2, U32, UW.WX(t, {L.pos(g2["c"])}, {g2["size"]}n))}}')
+                els.append(f'Some{{List.length(&2, U32, UW.WX(t, {L.pos(g2["c"])}, {L.SZ(g2["size"])}))}}')
         P, sz = L.pos(f['c']), f['size']
-        w.append(f'  %Equal.sym(Nat, List.length(&2, U32, UW.WX(t, {P}, {sz}n)), {sz}n, UW.lenWX(d, t, {P}, {sz}n, pf, {L.ROOM(f["c"], sz)})) :')
+        w.append(f'  %Equal.sym(Nat, List.length(&2, U32, UW.WX(t, {P}, {L.SZ(sz)})), {L.SZ(sz)}, UW.lenWX(d, t, {P}, {L.SZ(sz)}, pf, {L.ROOM(f["c"], sz)})) :')
         w.append(f'    {{[{", ".join(els)}] == {WS} : +List<Maybe<&2, Nat>>}}')
     w.append(f'  %Equal.sym(+List<Maybe<&2, Nat>>, {full}, {WS}, {{==}}) : {{_ == {WS} : +List<Maybe<&2, Nat>>}}')
     w.append('  {==}')
@@ -818,7 +851,7 @@ def sym_header_text(L, PSV, OSL, H):
     pieces = []
     for f in L.fields:
         P = L.pos(f['c'])
-        pieces.append(f'UW.WX(t, {P}, {f["size"]}n)' if f['kind'] == 'fix' else f'F.limbs([UR.RWN(t, {P})])')
+        pieces.append(f'UW.WX(t, {P}, {L.SZ(f["size"])})' if f['kind'] == 'fix' else f'F.limbs([UR.RWN(t, {P})])')
 
     def pre(i, hole):
         return ''.join(f'List.append(&2, U32, {pc}, ' for pc in pieces[:i]) + hole + ')' * i
@@ -832,10 +865,10 @@ def sym_header_text(L, PSV, OSL, H):
         P = L.pos(c)
         R, R1 = FS - c, FS - c - sz
         cur = f'UW.WX(t, {P}, U32.to_nat({R}))'
-        ea = f'VA.stpL({sz}, {R1}, {R}, {sz}n, {L.ES(sz)}, {{==}}, {{==}})'
-        eb = f'VA.stp({c}, {sz}, {c + sz}, {sz}n, {L.ES(sz)}, {{==}}, {{==}})'
-        w.append(f'  %Equal.sym(+List<U32>, {cur}, List.append(&2, U32, UW.WX(t, {P}, {sz}n), UW.WX(t, {L.pos(c + sz)}, U32.to_nat({R1}))), '
-                 f'splitXe(t, x, U32.to_nat({c}), {sz}n, U32.to_nat({R1}), U32.to_nat({R}), U32.to_nat({c + sz}), {ea}, {eb})) :')
+        ea = f'VA.stpL({sz}, {R1}, {R}, {L.SZ(sz)}, {L.ES(sz)}, {{==}}, {{==}})'
+        eb = f'VA.stp({c}, {sz}, {c + sz}, {L.SZ(sz)}, {L.ES(sz)}, {{==}}, {{==}})'
+        w.append(f'  %Equal.sym(+List<U32>, {cur}, List.append(&2, U32, UW.WX(t, {P}, {L.SZ(sz)}), UW.WX(t, {L.pos(c + sz)}, U32.to_nat({R1}))), '
+                 f'splitXe(t, x, U32.to_nat({c}), {L.SZ(sz)}, U32.to_nat({R1}), U32.to_nat({R}), U32.to_nat({c + sz}), {ea}, {eb})) :')
         w.append(f'    {{LY.HDRW({PSV}, {OSL}) == {pre(i, "_")} : +List<U32>}}')
         if f['kind'] == 'var':
             w.append(f'  %UR.rwn_bytes(d, t, {P}, pf, {L.ROOM(c, 4)}) :')
@@ -895,7 +928,7 @@ def spec_text(L):
     for f in L.fields:
         if f['kind'] == 'fix' and L.sym:
             vals.append(f'{f["fa"]}.VAL(t, {L.pos(f["c"])})')
-            parts.append(f'S.Fixed{{UW.WX(t, {L.pos(f["c"])}, {f["size"]}n)}}')
+            parts.append(f'S.Fixed{{UW.WX(t, {L.pos(f["c"])}, {L.SZ(f["size"])})}}')
         elif f['kind'] == 'fix':
             nd = L.nodes[f['i']]
             vals.append(nd['val'])
@@ -930,7 +963,7 @@ def spec_text(L):
             hb = f['rs']
             if f.get('chk'):
                 ex = f', it{1 + L.k + L.fchk.index(f)}({TXOA}, hchk)'
-            return (f'F.cat_fixed(Codec.parts({vals[i]}, {sch(i)}), UW.WX(t, {P}, {sz}n), Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, '
+            return (f'F.cat_fixed(Codec.parts({vals[i]}, {sch(i)}), UW.WX(t, {P}, {L.SZ(sz)}), Codec.parts({itm(i + 1)}, {chain(i + 1)}), {rest}, '
                     f'{f["fa"]}.prt(d, t, {P}, pf, {L.ROOM(f["c"], hb, hF=f"hFc({TXOA}, hchk)")}, HD{i}(sv), es{i}(sv, esv){ex}),\n      {cat(i + 1)})')
         if f['kind'] == 'fix':
             nd = L.nodes[i]
@@ -1053,7 +1086,7 @@ def spec_text(L):
     doms = []
     for f in L.fields:
         if f['kind'] == 'fix' and L.sym:
-            doms.append((f'SP.bytes_domain(UW.WX(t, {L.pos(f["c"])}, {f["size"]}n))', f'UW.domWX(t, {L.pos(f["c"])}, {f["size"]}n)'))
+            doms.append((f'SP.bytes_domain(UW.WX(t, {L.pos(f["c"])}, {L.SZ(f["size"])}))', f'UW.domWX(t, {L.pos(f["c"])}, {L.SZ(f["size"])})'))
         elif f['kind'] == 'fix':
             ws = ', '.join(L.nodes[f['i']]['words'])
             doms.append((f'SP.bytes_domain(F.limbs([{ws}]))', f'F.domain_limbs([{ws}])'))
@@ -1134,7 +1167,7 @@ def inv_text(L):
             if f['kind'] == 'fix':
                 s = f['size']
                 if L.sym:
-                    out.append(f'+xs{f["i"]}: +List<U32>, +lx{f["i"]}: LXF({s}n, xs{f["i"]})')
+                    out.append(f'+xs{f["i"]}: +List<U32>, +lx{f["i"]}: LXF({L.SZ(s)}, xs{f["i"]})')
                 else:
                     out.append(f'+xs{f["i"]}: +List<U32>, +lx{f["i"]}: {{Some{{{s}n}} == Some{{List.length(&2, U32, xs{f["i"]})}} : Maybe<&2, Nat>}}')
                 if f.get('chk'):
@@ -1179,7 +1212,7 @@ def inv_text(L):
         return f'Empty.absurd({GOAL}, FD.logic__none_some(+List<S.Part>, [S.Variable{{{WBL}}}], e))'
     CP = L.sym
     PS = '[' + ', '.join(part(f) for f in L.fields) + ']'
-    WS = '[' + ', '.join(f'Some{{{f["size"]}n}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields) + ']'
+    WS = '[' + ', '.join(f'Some{{{L.SZ(f["size"])}}}' if f['kind'] == 'fix' else 'None{}' for f in L.fields) + ']'
     PLD = ''.join(f'+xs{f["i"]}: +List<U32>, ' if f['kind'] == 'fix' else f'+y{f["j"]}: +List<U32>, ' for f in L.fields)
     PLA = ''.join(f'xs{f["i"]}, ' if f['kind'] == 'fix' else f'y{f["j"]}, ' for f in L.fields)
     if CP:
@@ -1202,7 +1235,7 @@ def inv_text(L):
         for f in L.fields:
             if f['kind'] == 'fix' and f['sk'] not in seen:
                 seen.add(f['sk'])
-                w.append(f'def fz{f["sk"]}() -> {{SS.fixed_size({L.spec(f)}) == Some{{{f["size"]}n}} : Maybe<&2, Nat>}}: eqM(SS.fixed_size({L.spec(f)}), {f["size"]}n, {{==}})')
+                w.append(fz_text(L, f))
         w.append(f'def LCH{nf}() -> S.Schema: S.End{{}}')
         for i in range(nf - 1, -1, -1):
             w.append(f'def LCH{i}() -> S.Schema: S.Chain{{{L.spec(L.fields[i])}, LCH{i + 1}()}}')
@@ -1222,7 +1255,7 @@ def inv_text(L):
         SA = f'{CWA}, {sargs(nf)}eq'
     fixed = [f for f in L.fields if f['kind'] == 'fix']
     # the widths of the parts
-    LXD = ''.join(f'+lx{f["i"]}: {{Some{{{f["size"]}n}} == Some{{List.length(&2, U32, xs{f["i"]})}} : Maybe<&2, Nat>}}, ' for f in L.fields if f['kind'] == 'fix')
+    LXD = ''.join(f'+lx{f["i"]}: {{Some{{{L.SZ(f["size"])}}} == Some{{List.length(&2, U32, xs{f["i"]})}} : Maybe<&2, Nat>}}, ' for f in L.fields if f['kind'] == 'fix')
     LXA = ''.join(f'lx{f["i"]}, ' for f in L.fields if f['kind'] == 'fix')
     w.append(f'def ewid({PLD + LXD if CP else sdecl(nf)}+u: Unit) -> {{LY.WID({PS}) == {WS} : +List<Maybe<&2, Nat>>}}:')
     for f in fixed:
@@ -1231,7 +1264,7 @@ def inv_text(L):
             if g2['kind'] == 'var':
                 els.append('None{}')
             elif g2['i'] < f['i']:
-                els.append(f'Some{{{g2["size"]}n}}')
+                els.append(f'Some{{{L.SZ(g2["size"])}}}')
             elif g2['i'] == f['i']:
                 els.append('_')
             else:
@@ -1347,17 +1380,17 @@ def inv_text(L):
         else:
             w.append(f'  Equal.trans(Nat, LY.FPOS({PS}, {i}n), LY.WPOS(LY.WID({PS}), {i}n), {c}n, LY.fpos_w({PS}, {i}n),')
             w.append(f'    Equal.cong(+List<Maybe<&2, Nat>>, Nat, z => LY.WPOS(z, {i}n), LY.WID({PS}), {WS}, {EW}))')
-        w.append(f'def fx{i}({SD}{", +lx" + str(i) + ": {Some{" + str(sz) + "n} == Some{List.length(&2, U32, xs" + str(i) + ")} : Maybe<&2, Nat>}" if CP else ""}) -> {{UW.WX(t, {P}, {sz}n) == xs{i} : +List<U32>}}:')
-        w.append(f'  +hl = FD.nat__le_trans(Nat.add({L.PN(c)}, {sz}n), {FSN}, U32.to_nat(len), {L.LEA(c, sz)},')
+        w.append(f'def fx{i}({SD}{", +lx" + str(i) + ": {Some{" + L.SZ(sz) + "} == Some{List.length(&2, U32, xs" + str(i) + ")} : Maybe<&2, Nat>}" if CP else ""}) -> {{UW.WX(t, {P}, {L.SZ(sz)}) == xs{i} : +List<U32>}}:')
+        w.append(f'  +hl = FD.nat__le_trans(Nat.add({L.PN(c)}, {L.SZ(sz)}), {FSN}, U32.to_nat(len), {L.LEA(c, sz)},')
         w.append(f'    FD.logic__subst(Nat, z => {{Nat.is_le({FSN}, z) == {TRUE}}}, {END}, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), {END}, eL({SA})), LY.end_ge({PS}, {FSN})))')
-        w.append(f'  %{"subX" if L.sym else "UW.subWX"}(t, x, {L.PN(c)}, {sz}n, U32.to_nat(len), hl) : {{_ == xs{i} : +List<U32>}}')
-        w.append(f'  %eq : {{VS.bt({sz}n, VS.bdr({L.PN(c)}, _)) == xs{i} : +List<U32>}}')
-        w.append(f'  %eposF{i}({PLA + "ew" if CP else sargs(nf) + "Unit{}"}) : {{VS.bt({sz}n, VS.bdr(_, {BYTES})) == xs{i} : +List<U32>}}')
-        w.append(f'  %Equal.sym(Nat, {sz}n, List.length(&2, U32, xs{i}), LY.mnat({sz}n, List.length(&2, U32, xs{i}), lx{i})) : {{VS.bt(_, VS.bdr(LY.FPOS({PS}, {i}n), {BYTES})) == xs{i} : +List<U32>}}')
+        w.append(f'  %{"subX" if L.sym else "UW.subWX"}(t, x, {L.PN(c)}, {L.SZ(sz)}, U32.to_nat(len), hl) : {{_ == xs{i} : +List<U32>}}')
+        w.append(f'  %eq : {{VS.bt({L.SZ(sz)}, VS.bdr({L.PN(c)}, _)) == xs{i} : +List<U32>}}')
+        w.append(f'  %eposF{i}({PLA + "ew" if CP else sargs(nf) + "Unit{}"}) : {{VS.bt({L.SZ(sz)}, VS.bdr(_, {BYTES})) == xs{i} : +List<U32>}}')
+        w.append(f'  %Equal.sym(Nat, {L.SZ(sz)}, List.length(&2, U32, xs{i}), LY.mnat({L.SZ(sz)}, List.length(&2, U32, xs{i}), lx{i})) : {{VS.bt(_, VS.bdr(LY.FPOS({PS}, {i}n), {BYTES})) == xs{i} : +List<U32>}}')
         w.append(f'  LY.lay_fix({PS}, Layout.fixed_size({PS}), {i}n, xs{i}, {PL}, {{==}})')
-        w.append(f'def fch{i}({SD}{", +lx" + str(i) + ": {Some{" + str(sz) + "n} == Some{List.length(&2, U32, xs" + str(i) + ")} : Maybe<&2, Nat>}, +hx" + str(i) + ": S.Value, +ex" + str(i) + ": {Codec.parts(hx" + str(i) + ", " + L.spec(f) + ") == Some{[S.Fixed{xs" + str(i) + "}]} : " + MP + "}" if CP else ""}) -> {{{f["fa"]}.CHK(t, {P}) == {TRUE}}}:')
-        w.append(f'  {f["fa"]}.inv(t, {P}, hx{i}, FD.logic__subst(+List<U32>, z => {{Codec.parts(hx{i}, {L.spec(f)}) == Some{{[S.Fixed{{z}}]}} : {MP}}}, xs{i}, UW.WX(t, {P}, {sz}n),')
-        w.append(f'    Equal.sym(+List<U32>, UW.WX(t, {P}, {sz}n), xs{i}, fx{i}({SA}{", lx" + str(i) if CP else ""})), ex{i}))')
+        w.append(f'def fch{i}({SD}{", +lx" + str(i) + ": {Some{" + L.SZ(sz) + "} == Some{List.length(&2, U32, xs" + str(i) + ")} : Maybe<&2, Nat>}, +hx" + str(i) + ": S.Value, +ex" + str(i) + ": {Codec.parts(hx" + str(i) + ", " + L.spec(f) + ") == Some{[S.Fixed{xs" + str(i) + "}]} : " + MP + "}" if CP else ""}) -> {{{f["fa"]}.CHK(t, {P}) == {TRUE}}}:')
+        w.append(f'  {f["fa"]}.inv(t, {P}, hx{i}, FD.logic__subst(+List<U32>, z => {{Codec.parts(hx{i}, {L.spec(f)}) == Some{{[S.Fixed{{z}}]}} : {MP}}}, xs{i}, UW.WX(t, {P}, {L.SZ(sz)}),')
+        w.append(f'    Equal.sym(+List<U32>, UW.WX(t, {P}, {L.SZ(sz)}), xs{i}, fx{i}({SA}{", lx" + str(i) if CP else ""})), ex{i}))')
     if L.fchk:
         w.append('')
     its = items(L)
@@ -1410,7 +1443,7 @@ def inv_text(L):
         f = L.fields[i]
         sp = L.spec(f)
         if f['kind'] == 'fix':
-            wd = f'Some{{{f["size"]}n}}'
+            wd = f'Some{{{L.SZ(f["size"])}}}'
             fact = f'DS.facts(h, {sp}, {{==}})'
             if CP:
                 fact = f'FD.logic__subst(Maybe<&2, Nat>, z => DF.single_result(z, Codec.parts(h, {sp})), SS.fixed_size({sp}), {wd}, fz{f["sk"]}(), {fact})'
@@ -1445,7 +1478,7 @@ def inv_text(L):
         w.append(f'    case Nil{{}}: Empty.absurd({GOAL}, hf)')
         if f['kind'] == 'fix':
             w.append(f'    case Con{{S.Fixed{{+xs}}, Nil{{}}}}: st{i + 1}({CWA}, {sargs(i)}xs, hf, {"h, em, " if f.get("chk") else ""}r, e)')
-            w.append(f'    case Con{{S.Variable{{+ys}}, Nil{{}}}}: Empty.absurd({GOAL}, FD.logic__none_some(Nat, {f["size"]}n, Equal.sym(Maybe<&2, Nat>, {wd}, None{{}}, hf)))')
+            w.append(f'    case Con{{S.Variable{{+ys}}, Nil{{}}}}: Empty.absurd({GOAL}, FD.logic__none_some(Nat, {L.SZ(f["size"])}, Equal.sym(Maybe<&2, Nat>, {wd}, None{{}}, hf)))')
         else:
             w.append(f'    case Con{{S.Fixed{{+xs}}, Nil{{}}}}: Empty.absurd({GOAL}, FD.logic__none_some(Nat, List.length(&2, U32, xs), hf))')
             w.append(f'    case Con{{S.Variable{{+ys}}, Nil{{}}}}: st{i + 1}({CWA}, {sargs(i)}ys, h, em, r, e)')
@@ -1484,6 +1517,8 @@ def module_text(L):
         imps[-1] = 'import ./schema_shapes.bend as SH'
         for a, m in sorted(L.fmods().items()):
             imps.append(f'import ./{m} as {a}')
+        if any(f['kind'] == 'fix' and L.big(f['size']) for f in L.fields):
+            imps.append('import ./vbig.bend as VBG')
     head = imps + ['', '# GENERATED by codegen/var_winb.py. Do not edit.',
                    f'# {L.name} at a window at any byte offset: the interface of proofs/obj/vua_win.bend.', '']
     body = (defs_text(L) + common_text(L) + OFFW.replace('@CWA', CWA).replace('@CW', CW)
@@ -1566,26 +1601,10 @@ def layout(name, sym=False, fixmod=None, generic=False):
 
 def main():
     VL.SL.EXACT = True   # the exact spec-parts proofs (codegen/spec_laws.py), before any walk
-    if '--test-sym' in sys.argv:
-        # a container whose fixed fields are read by the modules given as prefix=module pairs
-        a = sys.argv.index('--test-sym')
-        name, out = sys.argv[a + 1], sys.argv[a + 2]
-        fm = dict(kv.split('=') for kv in sys.argv[a + 3].split(','))
-        Path(out).write_text(module_text(layout(name, True, fm)))
-        print('wrote ' + out)
-        return
-    if '--test' in sys.argv:
-        a = sys.argv.index('--test')
-        name, out = sys.argv[a + 1], sys.argv[a + 2]
-        Path(out).write_text(module_text(layout(name)))
-        print('wrote ' + out)
-        return
     no_big = '--no-big' in sys.argv
     out = {}
     for name, fn, sym in MODULES:
         if no_big and fn.startswith('big_'):
-            continue
-        if name in PENDING and '--pending' not in sys.argv:
             continue
         L = layout(name, sym, FIXMOD)
         # a container is generated once all its children's (and fixed fields') modules exist

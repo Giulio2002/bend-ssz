@@ -471,9 +471,6 @@ def spec_m(LP, N, C, m, ESCH, LSCH, LIMN):
     HA = f'+ha{m}: {{AC{m}_{m}(t, x, off, len) == True{{}} : Bool}}'
     # the range facts in literal form (O0 = F)
     lets = facts_lets(m)
-
-    def fix0(txt):
-        return txt
     w(f'def elen{m}({CW}, {FH}, {EH}, {HA})')
     w(f'    -> {{U32.to_nat(len) == Nat.add({F}n, {S_(m, 0)}) : Nat}}:')
     w(lets)

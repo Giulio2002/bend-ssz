@@ -1579,6 +1579,7 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/compact/arith.bend as A
 import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
+import ../proofs/obj/vbuf.bend as VB
 import ./e2e_load.bend as L
 
 # The capacity facts for the loader: a buffer of n bytes, n <= 4 * 2^k for some k < 29,
@@ -1739,6 +1740,47 @@ def cap_w(+bs: +List<U32>, +n: U32, +k: Nat, +hn: {List.length(&2, U32, bs) == U
   %Equal.sym(Nat, FD.spec_common__length(U32, L.wlp(bs)), nwn(List.length(&2, U32, bs)), ln(bs)) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   %Equal.sym(Nat, List.length(&2, U32, bs), U32.to_nat(n), hn) : {Nat.is_le(nwn(_), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   cap_n(n, k, hk, h)
+
+
+# ---- the object API's own input limit: n <= VB.NMAX() (2^32 - 32), depth at most 30 ----
+# The same facts for every input the object API accepts: n + 3 does not wrap (VB.nmax_lt), the
+# words of n bytes are at most 2^30 (n < 2^32), so d = B.capacity(n) <= 30.
+
+def nwM(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {U32.to_nat(nwu(n)) == nwn(U32.to_nat(n)) : Nat}:
+  +h3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(n)), Nat.add(31n, U32.to_nat(n)), FD.spec_common__pow2(32n), Order.add_right(3n, 31n, U32.to_nat(n), {==}), VB.nmax_lt(n, hN))
+  Equal.trans(Nat, U32.to_nat(nwu(n)), VD.s_rng(2n, U32.to_nat((n + 3 : U32))), nwn(U32.to_nat(n)), VD.shrk(2n, (n + 3 : U32)),
+    Equal.cong(Nat, Nat, z => VD.s_rng(2n, z), U32.to_nat((n + 3 : U32)), Nat.add(3n, U32.to_nat(n)), VB.add_lt32(n, 3, U32.to_nat(n), {==}, h3)))
+
+def nwkM(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(nwu(n)), O.pow2n(30n)) == True{} : Bool}:
+  +hq = FD.nat__lt_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(30n)), VB.u32_lt(n))
+  %Equal.sym(Nat, U32.to_nat(nwu(n)), nwn(U32.to_nat(n)), nwM(n, hN)) : {Nat.is_le(_, O.pow2n(30n)) == True{} : Bool}
+  %VD.s_pow2_eq(30n) : {Nat.is_le(nwn(U32.to_nat(n)), _) == True{} : Bool}
+  nle(U32.to_nat(n), FD.spec_common__pow2(30n), hq)
+
+# d = B.capacity(n) <= 30
+def capM_le(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(B.capacity(n), 30n) == True{} : Bool}:
+  VD.wd_min(nwu(n), 30n, nwkM(n, hN))
+
+def capM_lt(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_lt(B.capacity(n), 31n) == True{} : Bool}:
+  FD.nat__le_lt_trans(B.capacity(n), 30n, 31n, capM_le(n, hN), {==})
+
+def capM_32(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_lt(B.capacity(n), 32n) == True{} : Bool}:
+  FD.nat__le_lt_trans(B.capacity(n), 30n, 32n, capM_le(n, hN), {==})
+
+def capM_n(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(nwn(U32.to_nat(n)), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}:
+  %nwM(n, hN) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
+  %Equal.sym(Nat, FD.spec_common__pow2(B.capacity(n)), O.pow2n(B.capacity(n)), VD.s_pow2_eq(B.capacity(n))) : {Nat.is_le(U32.to_nat(nwu(n)), _) == True{} : Bool}
+  VD.wd_cover(nwu(n), 30n, {==}, nwkM(n, hN))
+
+def capM_q(+n: U32, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(B.capacity(n)))) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(n), A.quad(nwn(U32.to_nat(n))), A.quad(FD.spec_common__pow2(B.capacity(n))), ng(U32.to_nat(n)),
+    q4(nwn(U32.to_nat(n)), FD.spec_common__pow2(B.capacity(n)), capM_n(n, hN)))
+
+def capM_w(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hN: {U32.is_le(n, VB.NMAX()) == True{} : Bool})
+    -> {Nat.is_le(FD.spec_common__length(U32, L.wlp(bs)), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}:
+  %Equal.sym(Nat, FD.spec_common__length(U32, L.wlp(bs)), nwn(List.length(&2, U32, bs)), ln(bs)) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
+  %Equal.sym(Nat, List.length(&2, U32, bs), U32.to_nat(n), hn) : {Nat.is_le(nwn(_), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
+  capM_n(n, hN)
 '''
 
 ULIST = r'''import Base
@@ -2147,7 +2189,8 @@ def wh(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool})
   +epo = FD.u32alg__eq_of(DC.SPO(t), 36, DC.chk_b(a, b, c, hchk))
   FD.logic__subst(U32, z => {DC.whole(U32.sub(n, z)) == True{} : Bool}, DC.SPO(t), 36, epo, DC.chk_c(a, b, c, hchk))
 
-def vv(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_DataColumnsByRootIdentifier(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}:
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, @BD@) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_DataColumnsByRootIdentifier(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}:
   Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{S.BytesValue{F.limbs([VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)])}, S.Items{z, S.EmptyItems{}}}}, UL.uview(O.Words{FD.array__thaw(U32, DC.MM(t, n)), DC.LL(n)}),
     S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))}, U.uvw(DC.MM(t, n), DC.LL(n), DC.CQ(n), cnt(n, wh(t, n, hchk))))
 
@@ -2208,7 +2251,7 @@ def d_v(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n
     case True{}:
       %Equal.sym(Maybe<&1, T.@X@>, Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{DC.OBJ(TT(bs, n), n)}, d_acc(bs, n, hn, hd, hS, ec)) : {mv(_) == API.deserialize(Spec.@X@(), bs) : Maybe<&2, S.Value>}
       %Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.@X@(), bs), Some{DC.VAL(TT(bs, n), n)}, a_acc(bs, n, hn, hd, hS, ec)) : {mv(Some{DC.OBJ(TT(bs, n), n)}) == _ : Maybe<&2, S.Value>}
-      Equal.cong(S.Value, Maybe<&2, S.Value>, z => Some{z}, @VIEW@(DC.OBJ(TT(bs, n), n)), DC.VAL(TT(bs, n), n), vv(TT(bs, n), n, ec))
+      Equal.cong(S.Value, Maybe<&2, S.Value>, z => Some{z}, @VIEW@(DC.OBJ(TT(bs, n), n)), DC.VAL(TT(bs, n), n), vv(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(n, @K@, {==}, hS), ec))
 
 def d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(TT(bs, n), n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.@X@>}) -> {API.deserialize(Spec.@X@(), bs) == None{} : Maybe<&2, S.Value>}:
   match c:
@@ -2249,23 +2292,38 @@ def vdec_info(R):
     mdc = re.search(r'\+hchk: \{(\w+)\.CHK\(t, n\)', sig)
     if not mb or not mdc or mdc.group(1) not in imp:
         return None
+    acc = re.search(r'__decode_accept__decode_accept\(.*\) -> \{(\w+)\.(\w+)\(\w+\.BF\(t, n\), n\) == \(\w+\.BF\(t, n\), Some\{\w+\.OBJ\(((?:d, )?)t, n\)\}\) : \w+\.Buf & Maybe<&1, ([\w.]+)>\}', s)
+    spec = re.search(r'__decode_spec__decode_spec\(.*\) -> \w+\.decodes\((?:\w+_)?(GS|Spec)\.\w+\(\), \w+\.VW\(t, n\), \w+\.VAL\(((?:d, )?)t, n\)\)', s)
+    if not acc or not spec:
+        return None
+    ot = acc.group(4)
+    mo = re.match(r'(?:\w+_)?O\.(\w+)$', ot)
+    md = re.match(r'\w+_d\.(\w+)$', ot)
+    otype = f'O.{mo.group(1)}' if mo else (f'T.{md.group(1)}' if md else None)
+    if otype is None:
+        return None
     return {'bound': int(mb.group(1)), 'dc': imp[mdc.group(1)], 'acc': mods['decode_accept'][0], 'spec': mods['decode_spec'][0],
-            'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0]}
+            'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0],
+            'dfn': f'T.{acc.group(2)}', 'objd': bool(acc.group(3)), 'vald': bool(spec.group(2)), 'otype': otype, 'sch': spec.group(1),
+            'rejhd': '+hd:' in mods['decode_reject'][1]}
 
 
 # The input-size bound of the variable-size bridges is a parameter: K = one below the codec
 # laws' depth bound, read from the laws (so it rises when they are extended to deeper buffers),
 # capped at CAP_KMAX, the largest K e2e_cap's lemmas cover (n + 3 must not overflow: K + 3 < 32).
-# The input bound is n <= 2^30 bytes (1 GiB) at most today: every decode law takes buffers of depth
-# below 29 at most. Planned: codec-var extends the decode laws to the object API's own U32 limit; then
-# every variable-size bridge rises to that single runtime limit (e2e_cap's facts extended to the
-# runtime's max depth, CAP_KMAX raised, and the near-2^32 case where n + 3 wraps handled), and the
-# manifest's premise reads "any input the object API accepts (n <= <runtime limit>)".
+# Names whose decode laws cover every tree depth below 31 (codec-deep) take the object API's own limit
+# instead (vdec_nmax): hS is n <= VB.NMAX() (2^32 - 32), with e2e_cap's capM_* facts (depth at most 30).
+# The K bound remains for the names whose laws still stop at a smaller depth.
 CAP_KMAX = 28
 
 
 def vdec_k(info):
     return max(1, min(info['bound'] - 1, CAP_KMAX))
+
+
+def vdec_nmax(info):
+    """The decode laws cover every tree depth below 31: the bridge takes the object API's own limit n <= NMAX."""
+    return info['bound'] >= 31
 
 
 def vdec_size(K):
@@ -2284,15 +2342,40 @@ def text_vdec(R, X, info):
     body = VDEC_REST
     for op, k in (('decode_accept', 'acc'), ('decode_spec', 'spec'), ('decode_none', 'none'), ('decode_reject', 'rej')):
         body = body.replace(('DR.' if k in ('none', 'rej') else 'DC.') + op + '(', alias[info[k]] + '.' + op + '(')
+    ot = vw.get('otype', info['otype'])
+    body = (body.replace('T.@X@_decode(', info['dfn'] + '(').replace('Maybe<&1, T.@X@>', f'Maybe<&1, {ot}>')
+            .replace('E.none_someT(T.@X@,', f'E.none_someT({ot},').replace('Spec.@X@()', f'{info["sch"]}.@X@()'))
+    if info['objd']:
+        body = body.replace('DC.OBJ(TT(bs, n), n)', 'DC.OBJ(B.capacity(n), TT(bs, n), n)')
+    if info['rejhd']:
+        body = body.replace('.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), C.cap_q(',
+                            '.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(')
+    if info['vald']:
+        body = body.replace('DC.VAL(TT(bs, n), n)', 'DC.VAL(B.capacity(n), TT(bs, n), n)')
+    if vdec_nmax(info):
+        body = (body.replace('hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}', 'hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}')
+                .replace('FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==})', 'FD.nat__le_lt_trans(B.capacity(n), 30n, @BD@, C.capM_le(n, hS), {==})')
+                .replace('C.cap_q(n, @K@, {==}, hS)', 'C.capM_q(n, hS)').replace('C.cap_32(n, @K@, {==}, hS)', 'C.capM_32(n, hS)')
+                .replace('C.cap_w(bs, n, @K@, hn, {==}, hS)', 'C.capM_w(bs, n, hn, hS)'))
+        assert '@K@' not in body, 'NMAX mode: a K-bound left in the template'
     body = (body.replace('@X@', X).replace('@R@', R).replace('@VIEW@', vw['view'])
             .replace('@K@', f'{K}n').replace('@BD@', f'{info["bound"]}n'))
     imps = VDEC_HEAD + vw['imports'] + [f'import ../proofs/obj/{p} as {a}' for p, a in alias.items()]
+    if info['sch'] == 'GS':
+        imps = imps + ['import ../proofs/obj/generic_specs.bend as GS']
+    if vdec_nmax(info):
+        imps = imps + [x for x in ['import ../proofs/obj/vbuf.bend as VB'] if x not in imps]
+        head = ['# GENERATED by codegen/e2e_bridge.py. Do not edit.',
+                f'# {R} (variable size): the object API\'s decoder on a byte list against END_TO_END\'s deserialize,',
+                '# (ii) through the view and (iii), for any input the object API accepts: hS, n <= VB.NMAX() (2^32 - 32).',
+                '# The buffer is the loader\'s (e2e_load) at the capacity depth (e2e_cap: at most 30, the laws\' d < 31).']
+        return '\n'.join(imps) + '\n\n' + '\n'.join(head) + '\n\n' + vw['text'].replace('@BD@', f'{info["bound"]}n') + body
     head = ['# GENERATED by codegen/e2e_bridge.py. Do not edit.',
             f'# {R} (variable size): the object API\'s decoder on a byte list against END_TO_END\'s deserialize,',
             f'# (ii) through the view and (iii), for inputs of {vdec_size(K)}: the premise hS, n <= 4 * 2^{K},',
             f'# K a parameter (the codec laws take buffers of depth below {info["bound"]}; 2^30 bytes is the most any of them',
             f'# covers). The buffer is the loader\'s (e2e_load) at the capacity depth (e2e_cap).']
-    return '\n'.join(imps) + '\n\n' + '\n'.join(head) + '\n\n' + vw['text'] + body
+    return '\n'.join(imps) + '\n\n' + '\n'.join(head) + '\n\n' + vw['text'].replace('@BD@', f'{info["bound"]}n') + body
 
 
 
@@ -2361,15 +2444,16 @@ def input_bounds(readable, bridged):
             continue
         info = {'bound': int(mb.group(1))}
         K = vdec_k(info)
-        bound = 2 ** (K + 2)
+        bound = 2 ** 32 - 32 if vdec_nmax(info) else 2 ** (K + 2)
+        ibs = 'NMAX = 2^32 - 32 (the object API\'s limit)' if vdec_nmax(info) else f'2^{K + 2}'
         m = max_ssz_size(tys[inv[R]])
         cov = m is not None and m <= bound
-        rows[R] = {'generated_name': inv[R], 'depth_bound': info['bound'], 'input_bound': f'2^{K + 2}', 'input_bound_bytes': bound,
+        rows[R] = {'generated_name': inv[R], 'depth_bound': info['bound'], 'input_bound': ibs, 'input_bound_bytes': bound,
                    'max_ssz_size': 'unbounded' if m is None else m, 'covered': cov, 'bridged': bridged.get(R)}
         if not cov:
             why = ('unbounded (progressive list)' if m is None else
                    f'{m} bytes, beyond the U32 byte length the API takes' if m >= 2 ** 32 else f'{m} bytes')
-            short.append({'name': R, 'input_bound': f'2^{K + 2}', 'max_ssz_size': why,
+            short.append({'name': R, 'input_bound': ibs, 'max_ssz_size': why,
                           'closed_at_depth_29': m is not None and m <= 2 ** 30})
     return rows, short
 
@@ -2569,6 +2653,194 @@ def venc_dc(R, X):
 
 VENC_SHAPES = {'DataColumnsByRootIdentifier': venc_dc}
 
+import e2e_var_b as EVB  # noqa: E402  (the second variable-size worker's entries)
+for _k, _v in EVB.VDEC_VIEWS.items():
+    VDEC_VIEWS.setdefault(_k, _v)
+for _k, _v in EVB.VROOT_SHAPES.items():
+    VROOT_SHAPES.setdefault(_k, _v)
+for _k, _v in EVB.VENC_SHAPES.items():
+    VENC_SHAPES.setdefault(_k, _v)
+
+
+
+# ---- bit lists (O.Bits): (i) through the encode laws, (iv) from rep_bits ----
+BITL = r'''import Base
+import ../src/obj.bend as O
+import ../proofs/compact/found.bend as FD
+import ../proofs/obj/vdepth.bend as VD
+import ../proofs/obj/vbuf.bend as VB
+import ../proofs/obj/vcopy.bend as VC
+import ../proofs/obj/vbitenc.bend as VBT
+import ../proofs/obj/vbitdl.bend as DL
+import ../proofs/obj/vbitcore.bend as CO
+import ../proofs/obj/dk.bend as DK
+import ./e2e_cap.bend as C
+
+# GENERATED by codegen/e2e_bridge.py. Do not edit.
+# Bit lists (O.Bits): the premise of (i) (sdb: the object's words in a perfect tree of depth below 31,
+# as the encode laws take them), the encoder's output tree is perfect (pf_oz), and its byte count
+# K / 8 + 1 is at most N / 8 + 1 for K <= N (nkb).
+
+def sdb(o: O.Bits) -> Data:
+  DK.Ex(FD.array__Tree<U32>, T => DK.Ex(Nat, dw => DK.Ex(U32, K =>
+    DK.P2({o == O.Bits{FD.array__thaw(U32, T), K} : O.Bits},
+    DK.P2({FD.array__perfect(U32, dw, T) == True{} : Bool},
+          {Nat.is_lt(dw, 31n) == True{} : Bool})))))
+
+# the same with the room the larger bit lists' encode laws take: (K >> 5) + 1 words
+def sdbc(o: O.Bits) -> Data:
+  DK.Ex(FD.array__Tree<U32>, T => DK.Ex(Nat, dw => DK.Ex(U32, K =>
+    DK.P2({o == O.Bits{FD.array__thaw(U32, T), K} : O.Bits},
+    DK.P2({FD.array__perfect(U32, dw, T) == True{} : Bool},
+    DK.P2({Nat.is_lt(dw, 31n) == True{} : Bool},
+          {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}))))))
+
+def pf_oz(+dd: Nat, +T: FD.array__Tree<U32>, +K: U32) -> {FD.array__perfect(U32, dd, DL.OZ(dd, T, K)) == True{} : Bool}:
+  +M = VBT.MT(dd, VC.ZT(dd), T, 0n, K)
+  FD.array__upd_perfect(U32, dd, M, VBT.QK(K), U32.or(VB.slot(M, VBT.QK(K)), VBT.DMK(0, K)),
+    VB.mone_perfect(VC.NW(O.bits_nbytes(K)), 0n, 0n, dd, VC.ZT(dd), T, FD.array__trep_perfect(U32, dd, 0)))
+
+def nkb(+K: U32, +N: Nat, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
+    +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, N), 1n)) == True{} : Bool}:
+  +hK = FD.nat__le_trans(Nat.add(U32.to_nat(K), 8n), Nat.add(N, 8n), O.pow2n(kb), Order.add_right(U32.to_nat(K), N, 8n, hN), hNk)
+  %Equal.sym(Nat, U32.to_nat(CO.NK(K)), Nat.add(VBT.AK(K), 1n), VBT.E4(K, kb, hkb, hK)) : {Nat.is_le(_, Nat.add(VD.s_rng(3n, N), 1n)) == True{} : Bool}
+  %Equal.sym(Nat, U32.to_nat(U32.shrn(K, 3n)), VD.s_rng(3n, U32.to_nat(K)), VD.shrk(3n, K)) : {Nat.is_le(Nat.add(_, 1n), Nat.add(VD.s_rng(3n, N), 1n)) == True{} : Bool}
+  Order.add_right(VD.s_rng(3n, U32.to_nat(K)), VD.s_rng(3n, N), 1n, C.rgm(3n, U32.to_nat(K), N, hN))
+'''.replace('import ./e2e_cap.bend as C', 'import ./e2e_cap.bend as C\nimport ../proofs/nat_order.bend as Order')
+
+
+def benc(R, X, N, big):
+    """(i) for a bit list R (generated name X, limit N); big: the output tree at depth DOK(K), else 0."""
+    kb = max(5, (N + 8).bit_length())          # N + 8 <= 2^kb
+    nb = N // 8 + 1                            # the byte count bound s_rng(3, N) + 1
+    if big:
+        kc = 0
+        while 4 * 2 ** kc < nb:
+            kc += 1
+        dd = 'CO.DOK(K)'
+        HQ = f'FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, {N}n), 1n), A.quad(FD.spec_common__pow2({kc}n)), BL.nkb(K, {N}n, {kb}n, {{==}}, hN, {{==}}), {{==}})'
+        HD = f'FD.nat__le_lt_trans(B.capacity(CO.NK(K)), {kc}n, 29n, C.cap_le(CO.NK(K), {kc}n, {{==}}, hq), {{==}})'
+        HN = f'C.cap_q(CO.NK(K), {kc}n, {{==}}, hq)'
+    else:
+        assert nb <= 4
+        dd = '0n'
+        HQ = f'FD.nat__le_trans(U32.to_nat(CO.NK(K)), Nat.add(VD.s_rng(3n, {N}n), 1n), A.quad(FD.spec_common__pow2(0n)), BL.nkb(K, {N}n, {kb}n, {{==}}, hN, {{==}}), {{==}})'
+        HD = '{==}'
+        HN = 'hq'
+    O1 = 'O.Bits{FD.array__thaw(U32, T), K}'
+    CAPP = ', +hcap: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), FD.spec_common__pow2(dw)) == True{} : Bool}' if big else ''
+    CAPA = ', hcap' if big else ''
+    SD = 'sdbc' if big else 'sdb'
+    UNP = ('  (+pf, s5) = s4\n  (+hdw, +hcap) = s5' if big else '  (+pf, +hdw) = s4')
+    MB = 'Maybe<&2, +List<U32>>'
+    G = lambda o: f'{{Some{{E.obytes(Pair.snd(O.Bits, B.Buf, {R}_e.{X}_encode({o})))}} == API.serialize(GS.{X}(), S.BitsValue{{BOr.bview({o})}}) : {MB}}}'
+    BUF = f'B.Buf{{FD.array__thaw(U32, EN.OUT(T, K)), CO.NK(K)}}'
+    return f'''import Base
+import ../END_TO_END.bend as E2E
+import ../src/model.bend as API
+import ../src/buffer.bend as B
+import ../src/obj.bend as O
+import ../types/schema.bend as S
+import ../spec/codec.bend as Encoding
+import ../proofs/type_validator_soundness.bend as VS
+import ../proofs/compact/found.bend as FD
+import ../proofs/compact/arith.bend as A
+import ../proofs/obj/generic_specs.bend as GS
+import ../proofs/obj/vdepth.bend as VD
+import ../proofs/obj/vbitcore.bend as CO
+import ../proofs/obj/vbitrep.bend as VR
+import ../proofs/obj/bitlist_rep.bend as BOr
+import ../proofs/obj/var_bits_enc_{X}.bend as EN
+import ../types/{R}_encode_ssz_generated.bend as {R}_e
+import ./e2e_support.bend as E
+import ./e2e_cap.bend as C
+import ./e2e_emit.bend as EM
+import ./e2e_bitl.bend as BL
+
+# GENERATED by codegen/e2e_bridge.py. Do not edit.
+# {R} (bit list, limit {N}): the object API's encoder's bytes are END_TO_END's serialize of the object's
+# view (bitlist_rep.bview, the root laws' bitlist_obj.bview verbatim), for every object the root law
+# represents (rep) whose words are in a perfect tree of depth below 31 (hs, BL.sdb).
+
+def ob(+T: FD.array__Tree<U32>, +K: U32, +hN: {{Nat.is_le(U32.to_nat(K), {N}n) == True{{}} : Bool}}) -> {{E.obytes({BUF}) == EN.BY(T, K) : +List<U32>}}:
+  +hq = {HQ}
+  EM.ob({dd}, EN.OUT(T, K), CO.NK(K), BL.pf_oz({dd}, T, K), {HD}, {HN})
+
+def a1(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32, +pf: {{FD.array__perfect(U32, dw, T) == True{{}} : Bool}}, +hdw: {{Nat.is_lt(dw, 31n) == True{{}} : Bool}},
+    +rep: BOr.rep_bits({O1}, GS.{X}()){CAPP}) -> {G(O1)}:
+  %Equal.sym(O.Bits & B.Buf, {R}_e.{X}_encode({O1}), ({O1}, {BUF}), EN.encode_eval(dw, T, K, pf, hdw, rep{CAPA})) :
+    {{Some{{E.obytes(Pair.snd(O.Bits, B.Buf, _))}} == API.serialize(GS.{X}(), S.BitsValue{{BOr.bview({O1})}}) : {MB}}}
+  %Equal.sym(+List<U32>, E.obytes({BUF}), EN.BY(T, K), ob(T, K, VR.rep_N(T, K, {N}n, rep))) :
+    {{Some{{_}} == API.serialize(GS.{X}(), S.BitsValue{{BOr.bview({O1})}}) : {MB}}}
+  Equal.sym({MB}, API.serialize(GS.{X}(), EN.VAL(T, K)), Some{{EN.BY(T, K)}},
+    Equal.trans({MB}, API.serialize(GS.{X}(), EN.VAL(T, K)), Encoding.encoding_for_legal_type(GS.{X}(), EN.VAL(T, K)), Some{{EN.BY(T, K)}},
+      E.serialize_legal(GS.{X}(), EN.VAL(T, K), VS.public_sound(GS.{X}(), {{==}})), EN.encode_spec(dw, T, K, pf, hdw, rep{CAPA})))
+
+# (i)
+def {R}_e2e_encode(-o: O.Bits, +rep: BOr.rep_bits(o, GS.{X}()), +hs: BL.{SD}(o)) -> {G('o')}:
+  (+T, s1) = hs
+  (+dw, s2) = s1
+  (+K, s3) = s2
+  (+eo, s4) = s3
+{UNP}
+  %Equal.sym(O.Bits, o, {O1}, eo) : {G('_')}
+  a1(dw, T, K, pf, hdw, FD.logic__subst(O.Bits, z => BOr.rep_bits(z, GS.{X}()), o, {O1}, eo, rep){CAPA})
+'''
+
+
+
+def broot_batch(rows):
+    """(iv) for bit lists: rows of (R, X)."""
+    imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B',
+            'import ../src/digest.bend as D', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
+            'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
+            'import ../proofs/obj/generic_specs.bend as GS', 'import ../proofs/obj/bitlist_obj.bend as BO',
+            'import ../proofs/obj/root_gtypes.bend as RG', 'import ../proofs/obj/gvalid_gpacked.bend as GV', 'import ./e2e_support.bend as E']
+    imps += [f'import ../types/{R}_hashtreeroot_generated.bend as {R}_h' for R, X in rows]
+    out = ['\n'.join(imps), '',
+           '# GENERATED by codegen/e2e_bridge.py. Do not edit.',
+           f'# {rows[0][0]} and the next bit lists: the object API\'s root is END_TO_END\'s hash_tree_root, for every object',
+           '# the root law represents (rep_bits: an empty list, or its words in a perfect tree of depth below 32).', '']
+    O1 = 'O.Bits{FD.array__thaw(U32, t), K}'
+    for R, X in rows:
+        RX = lambda o: f'D.bytes(Pair.snd(O.Bits, D.Digest, Pair.snd(B.Buf, O.Bits & D.Digest, {R}_h.{X}_hash_tree_root(h, {o}))))'
+        G = lambda o: f'{{Some{{{RX(o)}}} == API.hash_tree_root(GS.{X}(), S.BitsValue{{BO.bview({o})}}) : Maybe<&2, +List<U32>>}}'
+        cs = lambda n: '\n'.join(f'      ({v}, w{i + 1}) = {"w" if i == 0 else "w" + str(i)}' for i, v in enumerate(n))
+        out.append(f"""# {R} ({X})
+def {R}_rt1(h: B.Buf, +t: FD.array__Tree<U32>, +K: U32, +rep: BO.rep_bits({O1}, GS.{X}())) -> {G(O1)}:
+  E.root_legal(GS.{X}(), S.BitsValue{{BO.bview({O1})}}, VS.public_sound(GS.{X}(), {{==}}), {RX(O1)},
+    GV.{X}_root_valid({O1}, GS.{X}(), {{==}}, rep), RG.{X}_root_correct(h, {O1}, GS.{X}(), {{==}}, rep))
+
+def {R}_rt2(h: B.Buf, -o: O.Bits, +rep: BO.rep_bits(o, GS.{X}()), +t: FD.array__Tree<U32>, +K: U32, +eo: {{o == {O1} : O.Bits}}) -> {G('o')}:
+  %Equal.sym(O.Bits, o, {O1}, eo) : {G('_')}
+  {R}_rt1(h, t, K, FD.logic__subst(O.Bits, z => BO.rep_bits(z, GS.{X}()), o, {O1}, eo, rep))
+
+# (iv)
+def {R}_e2e_root(h: B.Buf, -o: O.Bits, +rep: BO.rep_bits(o, GS.{X}())) -> {G('o')}:
+  (+wf, +q0) = rep
+  match wf:
+    case Inl{{w}}:
+{cs(['+t', '+dw', '+K', '+eo'])}
+      {R}_rt2(h, o, rep, t, K, eo)
+    case Inr{{w}}:
+{cs(['+t', '+dw', '+K', '+q', '+r', '+eo'])}
+      {R}_rt2(h, o, rep, t, K, eo)
+""")
+    return '\n'.join(out)
+
+
+def bit_lists(amap_map):
+    """The generic bit lists with the codec laws' interface: [(R, X, limit, big)] from the encode modules."""
+    rows = []
+    for f in sorted(OBJ.glob('var_bits_enc_Gt*.bend')):
+        X = f.stem[len('var_bits_enc_'):]
+        s = f.read_text()
+        ml = re.search(r'rep_N\(T, K, (\d+)n', s)
+        mo = re.search(r'def OUT\(.*DL\.OZ\(([^,]+),', s)
+        if ml and mo:
+            rows.append((X, int(ml.group(1)), mo.group(1) != '0n'))
+    return rows
+
 def outputs():
     import names as NM
     amap = json.loads((ROOT / 'proofs/gate/api_map.json').read_text())
@@ -2612,6 +2884,8 @@ def outputs():
     out = {OUT / 'e2e_support.bend': SUPPORT, OUT / 'e2e_bytes.bend': BYTES_HEAD + lwb_text() + '\n' + BYTES_TAIL,
            OUT / 'e2e_bits.bend': BITS, OUT / 'e2e_tree.bend': TREE, OUT / 'e2e_load.bend': LOAD,
            OUT / 'e2e_cap.bend': CAP, OUT / 'e2e_ulist.bend': ULIST, OUT / 'e2e_emit.bend': emit_text()}
+    for _f, _txt in EVB.SUPPORT_OUT.items():
+        out[OUT / _f] = _txt
     wrows = []
     for R0, u in list(uncovered.items()):
         w = family_w(u['generated_name'], amap['map'][u['generated_name']], cache)
@@ -2762,7 +3036,8 @@ def outputs():
         fn = f'{R0}_e2e_dec_generated.bend'
         out[OUT / fn] = text_vdec(R0, X0, info)
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_decode_view', f'{R0}_e2e_decode_reject'], 'ii': 'view',
-                             'premise': f'{vdec_size(vdec_k(info))} (hS: n <= 4 * 2^K with K = {vdec_k(info)}, a parameter; the codec laws take buffers of depth below {info["bound"]})'}]
+                             'premise': ('any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)' if vdec_nmax(info) else
+                                         f'{vdec_size(vdec_k(info))} (hS: n <= 4 * 2^K with K = {vdec_k(info)}, a parameter; the codec laws take buffers of depth below {info["bound"]})')}]
         u['decode'] = fn
     for R0, u in sorted(uncovered.items()):
         X0 = u['generated_name']
@@ -2780,8 +3055,26 @@ def outputs():
         fn = f'{R0}_e2e_generated.bend'
         out[OUT / fn] = VENC_SHAPES[X0](R0, X0)
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_encode'],
-                             'premise': f'rep: RT.rep_{X0}(o, Spec.{X0}()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)'}]
+                             'premise': EVB.VENC_PREMISE.get(X0, f'rep: RT.rep_{X0}(o, Spec.{X0}()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)')}]
         u['encode'] = fn
+    out[OUT / 'e2e_bitl.bend'] = BITL
+    inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
+    brows = [(inv[X], X, N, big) for X, N, big in bit_lists(amap['map']) if X in inv]
+    for R0, X0, N, big in brows:
+        fn = f'{R0}_e2e_generated.bend'
+        out[OUT / fn] = benc(R0, X0, N, big)
+        man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_encode'],
+                             'premise': ('rep: bitlist_rep.rep_bits(o, GS.X()) and hs: e2e_bitl.' + ('sdbc' if big else 'sdb') +
+                                         '(o) (its words at depth below 31' + (', with room for (K >> 5) + 1 words' if big else '') +
+                                         ': the encode laws take these, the root law dw < 32)')}]
+        uncovered[R0]['encode'] = fn
+    for i in range(0, len(brows), WRBATCH):
+        rows = [(R0, X0) for R0, X0, N, big in brows[i:i + WRBATCH]]
+        fn = f'{rows[0][0]}_e2e_root_generated.bend'
+        out[OUT / fn] = broot_batch(rows)
+        man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_root'], 'premise': 'rep: bitlist_obj.rep_bits(o, GS.X())'} for R0, X0 in rows]
+        for R0, X0 in rows:
+            uncovered[R0]['root'] = fn
     man['variable_size'] = {}
     for R0 in sorted(uncovered):
         u = uncovered[R0]
