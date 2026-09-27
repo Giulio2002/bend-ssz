@@ -2103,6 +2103,50 @@
     "ii": "view"
    }
   ],
+  "FuluFinalityBranch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluFinalityBranch",
+    "generated_name": "FinalityBranch",
+    "laws": [
+     "FuluFinalityBranch_e2e_decode_view",
+     "FuluFinalityBranch_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "FuluCurrentSyncCommitteeBranch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluCurrentSyncCommitteeBranch",
+    "generated_name": "CurrentSyncCommitteeBranch",
+    "laws": [
+     "FuluCurrentSyncCommitteeBranch_e2e_decode_view",
+     "FuluCurrentSyncCommitteeBranch_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "FuluNextSyncCommitteeBranch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluNextSyncCommitteeBranch",
+    "generated_name": "NextSyncCommitteeBranch",
+    "laws": [
+     "FuluNextSyncCommitteeBranch_e2e_decode_view",
+     "FuluNextSyncCommitteeBranch_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
+  "FuluExecutionBranch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluExecutionBranch",
+    "generated_name": "ExecutionBranch",
+    "laws": [
+     "FuluExecutionBranch_e2e_decode_view",
+     "FuluExecutionBranch_e2e_decode_reject"
+    ],
+    "ii": "view"
+   }
+  ],
   "vec_uint128_1_e2e_root_generated.bend": [
    {
     "name": "vec_uint128_1",
@@ -3152,27 +3196,19 @@
   },
   "FuluFinalityBranch": {
    "generated_name": "FinalityBranch",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   },
   "FuluCurrentSyncCommitteeBranch": {
    "generated_name": "CurrentSyncCommitteeBranch",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   },
   "FuluNextSyncCommitteeBranch": {
    "generated_name": "NextSyncCommitteeBranch",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   },
   "FuluExecutionBranch": {
    "generated_name": "ExecutionBranch",
-   "awaiting": [
-    "(ii)/(iii)"
-   ]
+   "awaiting": []
   }
  }
 }
