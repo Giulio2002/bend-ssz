@@ -1,0 +1,7422 @@
+{
+ "modules": {
+  "boolean.encode_ssz.proof.generated.bend": {
+   "name": "boolean",
+   "generated_name": "boolean/GtAD72FD256A",
+   "op": "encode_ssz",
+   "files": [
+    "spec_small.bend",
+    "codec_0.bend",
+    "serialize_0.bend",
+    "sub_GtAD72FD256A.bend",
+    "gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "boolean.decode_ssz.proof.generated.bend": {
+   "name": "boolean",
+   "generated_name": "boolean/GtAD72FD256A",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_boolf.bend",
+    "spec_small.bend",
+    "spec_unique_small.bend",
+    "codec_0.bend",
+    "spec_repr_small.bend",
+    "fixchk_boolg.bend",
+    "sub_GtAD72FD256A.bend",
+    "sub_unique_GtAD72FD256A.bend",
+    "gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "boolean.hashtreeroot.proof.generated.bend": {
+   "name": "boolean",
+   "generated_name": "boolean/GtAD72FD256A",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend",
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "uint8.encode_ssz.proof.generated.bend": {
+   "name": "uint8",
+   "generated_name": "uint8/Gt967E8D815F",
+   "op": "encode_ssz",
+   "files": [
+    "spec_small.bend",
+    "serialize_0.bend",
+    "sub_Gt967E8D815F.bend"
+   ],
+   "big": false
+  },
+  "uint8.decode_ssz.proof.generated.bend": {
+   "name": "uint8",
+   "generated_name": "uint8/Gt967E8D815F",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_small.bend",
+    "spec_unique_small.bend",
+    "spec_repr_small.bend",
+    "fixrej_g4.bend",
+    "sub_Gt967E8D815F.bend",
+    "sub_unique_Gt967E8D815F.bend"
+   ],
+   "big": false
+  },
+  "uint8.hashtreeroot.proof.generated.bend": {
+   "name": "uint8",
+   "generated_name": "uint8/Gt967E8D815F",
+   "op": "hashtreeroot",
+   "files": [
+    "leaf_small.bend",
+    "gleaf.bend",
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "uint32.encode_ssz.proof.generated.bend": {
+   "name": "uint32",
+   "generated_name": "uint32/Gt7B8507E2C2",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_0.bend",
+    "serialize_0.bend",
+    "spec_gcodec_3.bend",
+    "gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "uint32.decode_ssz.proof.generated.bend": {
+   "name": "uint32",
+   "generated_name": "uint32/Gt7B8507E2C2",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_0.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend",
+    "fixrej_g4.bend",
+    "spec_gcodec_3.bend",
+    "spec_gunique_3.bend",
+    "gcodec_0.bend",
+    "spec_grepr_3.bend",
+    "spec_ginput_3.bend"
+   ],
+   "big": false
+  },
+  "uint32.hashtreeroot.proof.generated.bend": {
+   "name": "uint32",
+   "generated_name": "uint32/Gt7B8507E2C2",
+   "op": "hashtreeroot",
+   "files": [
+    "leaf_small.bend",
+    "gleaf.bend",
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "uint64.encode_ssz.proof.generated.bend": {
+   "name": "uint64",
+   "generated_name": "uint64/Gt62B0093BE7",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_0.bend",
+    "serialize_0.bend",
+    "spec_gcodec_3.bend",
+    "gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "uint64.decode_ssz.proof.generated.bend": {
+   "name": "uint64",
+   "generated_name": "uint64/Gt62B0093BE7",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_0.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend",
+    "fixrej_g4.bend",
+    "spec_gcodec_3.bend",
+    "spec_gunique_3.bend",
+    "gcodec_0.bend",
+    "spec_grepr_3.bend",
+    "spec_ginput_3.bend"
+   ],
+   "big": false
+  },
+  "uint64.hashtreeroot.proof.generated.bend": {
+   "name": "uint64",
+   "generated_name": "uint64/Gt62B0093BE7",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend",
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "uint256.encode_ssz.proof.generated.bend": {
+   "name": "uint256",
+   "generated_name": "uint256/Gt59DCDB2873",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_0.bend",
+    "serialize_0.bend",
+    "spec_gcodec_2.bend",
+    "gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "uint256.decode_ssz.proof.generated.bend": {
+   "name": "uint256",
+   "generated_name": "uint256/Gt59DCDB2873",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_0.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend",
+    "fixrej_g4.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "gcodec_0.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "uint256.hashtreeroot.proof.generated.bend": {
+   "name": "uint256",
+   "generated_name": "uint256/Gt59DCDB2873",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend",
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes1.encode_ssz.proof.generated.bend": {
+   "name": "FuluBytes1",
+   "generated_name": "Bytes1",
+   "op": "encode_ssz",
+   "files": [
+    "spec_small.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes1.decode_ssz.proof.generated.bend": {
+   "name": "FuluBytes1",
+   "generated_name": "Bytes1",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_small.bend",
+    "spec_unique_small.bend",
+    "spec_repr_small.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes1.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBytes1",
+   "generated_name": "Bytes1",
+   "op": "hashtreeroot",
+   "files": [
+    "leaf_small.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes4.encode_ssz.proof.generated.bend": {
+   "name": "FuluBytes4",
+   "generated_name": "Bytes4",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_0.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes4.decode_ssz.proof.generated.bend": {
+   "name": "FuluBytes4",
+   "generated_name": "Bytes4",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_0.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes4.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBytes4",
+   "generated_name": "Bytes4",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes32.encode_ssz.proof.generated.bend": {
+   "name": "FuluBytes32",
+   "generated_name": "Bytes32",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_0.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes32.decode_ssz.proof.generated.bend": {
+   "name": "FuluBytes32",
+   "generated_name": "Bytes32",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_0.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes32.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBytes32",
+   "generated_name": "Bytes32",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes48.encode_ssz.proof.generated.bend": {
+   "name": "FuluBytes48",
+   "generated_name": "Bytes48",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_0.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes48.decode_ssz.proof.generated.bend": {
+   "name": "FuluBytes48",
+   "generated_name": "Bytes48",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_0.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes48.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBytes48",
+   "generated_name": "Bytes48",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes96.encode_ssz.proof.generated.bend": {
+   "name": "FuluBytes96",
+   "generated_name": "Bytes96",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_0.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes96.decode_ssz.proof.generated.bend": {
+   "name": "FuluBytes96",
+   "generated_name": "Bytes96",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_0.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes96.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBytes96",
+   "generated_name": "Bytes96",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes8.encode_ssz.proof.generated.bend": {
+   "name": "FuluBytes8",
+   "generated_name": "Bytes8",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_0.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes8.decode_ssz.proof.generated.bend": {
+   "name": "FuluBytes8",
+   "generated_name": "Bytes8",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_0.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes8.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBytes8",
+   "generated_name": "Bytes8",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes20.encode_ssz.proof.generated.bend": {
+   "name": "FuluBytes20",
+   "generated_name": "Bytes20",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_0.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes20.decode_ssz.proof.generated.bend": {
+   "name": "FuluBytes20",
+   "generated_name": "Bytes20",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_0.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBytes20.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBytes20",
+   "generated_name": "Bytes20",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluSlot.encode_ssz.proof.generated.bend": {
+   "name": "FuluSlot",
+   "generated_name": "Slot",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_0.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluSlot.decode_ssz.proof.generated.bend": {
+   "name": "FuluSlot",
+   "generated_name": "Slot",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_0.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend"
+   ],
+   "big": false
+  },
+  "FuluSlot.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSlot",
+   "generated_name": "Slot",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluEpoch.encode_ssz.proof.generated.bend": {
+   "name": "FuluEpoch",
+   "generated_name": "Epoch",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_0.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluEpoch.decode_ssz.proof.generated.bend": {
+   "name": "FuluEpoch",
+   "generated_name": "Epoch",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_0.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend"
+   ],
+   "big": false
+  },
+  "FuluEpoch.hashtreeroot.proof.generated.bend": {
+   "name": "FuluEpoch",
+   "generated_name": "Epoch",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluGwei.encode_ssz.proof.generated.bend": {
+   "name": "FuluGwei",
+   "generated_name": "Gwei",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_0.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluGwei.decode_ssz.proof.generated.bend": {
+   "name": "FuluGwei",
+   "generated_name": "Gwei",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_0.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_0.bend",
+    "spec_input_0.bend"
+   ],
+   "big": false
+  },
+  "FuluGwei.hashtreeroot.proof.generated.bend": {
+   "name": "FuluGwei",
+   "generated_name": "Gwei",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluHash32.encode_ssz.proof.generated.bend": {
+   "name": "FuluHash32",
+   "generated_name": "Hash32",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluHash32.decode_ssz.proof.generated.bend": {
+   "name": "FuluHash32",
+   "generated_name": "Hash32",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluHash32.hashtreeroot.proof.generated.bend": {
+   "name": "FuluHash32",
+   "generated_name": "Hash32",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluVersion.encode_ssz.proof.generated.bend": {
+   "name": "FuluVersion",
+   "generated_name": "Version",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluVersion.decode_ssz.proof.generated.bend": {
+   "name": "FuluVersion",
+   "generated_name": "Version",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f0.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluVersion.hashtreeroot.proof.generated.bend": {
+   "name": "FuluVersion",
+   "generated_name": "Version",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluDomainType.encode_ssz.proof.generated.bend": {
+   "name": "FuluDomainType",
+   "generated_name": "DomainType",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluDomainType.decode_ssz.proof.generated.bend": {
+   "name": "FuluDomainType",
+   "generated_name": "DomainType",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluDomainType.hashtreeroot.proof.generated.bend": {
+   "name": "FuluDomainType",
+   "generated_name": "DomainType",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluBLSSignature.encode_ssz.proof.generated.bend": {
+   "name": "FuluBLSSignature",
+   "generated_name": "BLSSignature",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluBLSSignature.decode_ssz.proof.generated.bend": {
+   "name": "FuluBLSSignature",
+   "generated_name": "BLSSignature",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluBLSSignature.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBLSSignature",
+   "generated_name": "BLSSignature",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluFinalityBranch.encode_ssz.proof.generated.bend": {
+   "name": "FuluFinalityBranch",
+   "generated_name": "FinalityBranch",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend"
+   ],
+   "big": false
+  },
+  "FuluFinalityBranch.decode_ssz.proof.generated.bend": {
+   "name": "FuluFinalityBranch",
+   "generated_name": "FinalityBranch",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluFinalityBranch.hashtreeroot.proof.generated.bend": {
+   "name": "FuluFinalityBranch",
+   "generated_name": "FinalityBranch",
+   "op": "hashtreeroot",
+   "files": [
+    "root_words.bend"
+   ],
+   "big": false
+  },
+  "FuluVersionedHash.encode_ssz.proof.generated.bend": {
+   "name": "FuluVersionedHash",
+   "generated_name": "VersionedHash",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluVersionedHash.decode_ssz.proof.generated.bend": {
+   "name": "FuluVersionedHash",
+   "generated_name": "VersionedHash",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluVersionedHash.hashtreeroot.proof.generated.bend": {
+   "name": "FuluVersionedHash",
+   "generated_name": "VersionedHash",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluG1Point.encode_ssz.proof.generated.bend": {
+   "name": "FuluG1Point",
+   "generated_name": "G1Point",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluG1Point.decode_ssz.proof.generated.bend": {
+   "name": "FuluG1Point",
+   "generated_name": "G1Point",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluG1Point.hashtreeroot.proof.generated.bend": {
+   "name": "FuluG1Point",
+   "generated_name": "G1Point",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluG2Point.encode_ssz.proof.generated.bend": {
+   "name": "FuluG2Point",
+   "generated_name": "G2Point",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluG2Point.decode_ssz.proof.generated.bend": {
+   "name": "FuluG2Point",
+   "generated_name": "G2Point",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluG2Point.hashtreeroot.proof.generated.bend": {
+   "name": "FuluG2Point",
+   "generated_name": "G2Point",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluFork.encode_ssz.proof.generated.bend": {
+   "name": "FuluFork",
+   "generated_name": "Fork",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluFork.decode_ssz.proof.generated.bend": {
+   "name": "FuluFork",
+   "generated_name": "Fork",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluFork.hashtreeroot.proof.generated.bend": {
+   "name": "FuluFork",
+   "generated_name": "Fork",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncAggregate.encode_ssz.proof.generated.bend": {
+   "name": "FuluSyncAggregate",
+   "generated_name": "SyncAggregate",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncAggregate.decode_ssz.proof.generated.bend": {
+   "name": "FuluSyncAggregate",
+   "generated_name": "SyncAggregate",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncAggregate.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSyncAggregate",
+   "generated_name": "SyncAggregate",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncAggregatorSelectionData.encode_ssz.proof.generated.bend": {
+   "name": "FuluSyncAggregatorSelectionData",
+   "generated_name": "SyncAggregatorSelectionData",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncAggregatorSelectionData.decode_ssz.proof.generated.bend": {
+   "name": "FuluSyncAggregatorSelectionData",
+   "generated_name": "SyncAggregatorSelectionData",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncAggregatorSelectionData.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSyncAggregatorSelectionData",
+   "generated_name": "SyncAggregatorSelectionData",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluPowBlock.encode_ssz.proof.generated.bend": {
+   "name": "FuluPowBlock",
+   "generated_name": "PowBlock",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_1.bend",
+    "codec_1.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluPowBlock.decode_ssz.proof.generated.bend": {
+   "name": "FuluPowBlock",
+   "generated_name": "PowBlock",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_1.bend",
+    "spec_unique_0.bend",
+    "codec_1.bend",
+    "spec_repr_1.bend",
+    "spec_input_1.bend"
+   ],
+   "big": false
+  },
+  "FuluPowBlock.hashtreeroot.proof.generated.bend": {
+   "name": "FuluPowBlock",
+   "generated_name": "PowBlock",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluCommitteeIndex.encode_ssz.proof.generated.bend": {
+   "name": "FuluCommitteeIndex",
+   "generated_name": "CommitteeIndex",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend",
+    "codec_2.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluCommitteeIndex.decode_ssz.proof.generated.bend": {
+   "name": "FuluCommitteeIndex",
+   "generated_name": "CommitteeIndex",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluCommitteeIndex.hashtreeroot.proof.generated.bend": {
+   "name": "FuluCommitteeIndex",
+   "generated_name": "CommitteeIndex",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluValidatorIndex.encode_ssz.proof.generated.bend": {
+   "name": "FuluValidatorIndex",
+   "generated_name": "ValidatorIndex",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend",
+    "codec_2.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluValidatorIndex.decode_ssz.proof.generated.bend": {
+   "name": "FuluValidatorIndex",
+   "generated_name": "ValidatorIndex",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluValidatorIndex.hashtreeroot.proof.generated.bend": {
+   "name": "FuluValidatorIndex",
+   "generated_name": "ValidatorIndex",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingConsolidation.encode_ssz.proof.generated.bend": {
+   "name": "FuluPendingConsolidation",
+   "generated_name": "PendingConsolidation",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend",
+    "codec_2.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingConsolidation.decode_ssz.proof.generated.bend": {
+   "name": "FuluPendingConsolidation",
+   "generated_name": "PendingConsolidation",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingConsolidation.hashtreeroot.proof.generated.bend": {
+   "name": "FuluPendingConsolidation",
+   "generated_name": "PendingConsolidation",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingPartialWithdrawal.encode_ssz.proof.generated.bend": {
+   "name": "FuluPendingPartialWithdrawal",
+   "generated_name": "PendingPartialWithdrawal",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend",
+    "codec_2.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingPartialWithdrawal.decode_ssz.proof.generated.bend": {
+   "name": "FuluPendingPartialWithdrawal",
+   "generated_name": "PendingPartialWithdrawal",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingPartialWithdrawal.hashtreeroot.proof.generated.bend": {
+   "name": "FuluPendingPartialWithdrawal",
+   "generated_name": "PendingPartialWithdrawal",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluVoluntaryExit.encode_ssz.proof.generated.bend": {
+   "name": "FuluVoluntaryExit",
+   "generated_name": "VoluntaryExit",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend",
+    "codec_2.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluVoluntaryExit.decode_ssz.proof.generated.bend": {
+   "name": "FuluVoluntaryExit",
+   "generated_name": "VoluntaryExit",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluVoluntaryExit.hashtreeroot.proof.generated.bend": {
+   "name": "FuluVoluntaryExit",
+   "generated_name": "VoluntaryExit",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedVoluntaryExit.encode_ssz.proof.generated.bend": {
+   "name": "FuluSignedVoluntaryExit",
+   "generated_name": "SignedVoluntaryExit",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend",
+    "codec_2.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedVoluntaryExit.decode_ssz.proof.generated.bend": {
+   "name": "FuluSignedVoluntaryExit",
+   "generated_name": "SignedVoluntaryExit",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f1.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedVoluntaryExit.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSignedVoluntaryExit",
+   "generated_name": "SignedVoluntaryExit",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluRoot.encode_ssz.proof.generated.bend": {
+   "name": "FuluRoot",
+   "generated_name": "Root",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend",
+    "codec_2.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluRoot.decode_ssz.proof.generated.bend": {
+   "name": "FuluRoot",
+   "generated_name": "Root",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluRoot.hashtreeroot.proof.generated.bend": {
+   "name": "FuluRoot",
+   "generated_name": "Root",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluHistoricalSummary.encode_ssz.proof.generated.bend": {
+   "name": "FuluHistoricalSummary",
+   "generated_name": "HistoricalSummary",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend",
+    "codec_2.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluHistoricalSummary.decode_ssz.proof.generated.bend": {
+   "name": "FuluHistoricalSummary",
+   "generated_name": "HistoricalSummary",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluHistoricalSummary.hashtreeroot.proof.generated.bend": {
+   "name": "FuluHistoricalSummary",
+   "generated_name": "HistoricalSummary",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncCommitteeContribution.encode_ssz.proof.generated.bend": {
+   "name": "FuluSyncCommitteeContribution",
+   "generated_name": "SyncCommitteeContribution",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend",
+    "codec_2.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncCommitteeContribution.decode_ssz.proof.generated.bend": {
+   "name": "FuluSyncCommitteeContribution",
+   "generated_name": "SyncCommitteeContribution",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncCommitteeContribution.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSyncCommitteeContribution",
+   "generated_name": "SyncCommitteeContribution",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluContributionAndProof.encode_ssz.proof.generated.bend": {
+   "name": "FuluContributionAndProof",
+   "generated_name": "ContributionAndProof",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend"
+   ],
+   "big": false
+  },
+  "FuluContributionAndProof.decode_ssz.proof.generated.bend": {
+   "name": "FuluContributionAndProof",
+   "generated_name": "ContributionAndProof",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluContributionAndProof.hashtreeroot.proof.generated.bend": {
+   "name": "FuluContributionAndProof",
+   "generated_name": "ContributionAndProof",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedContributionAndProof.encode_ssz.proof.generated.bend": {
+   "name": "FuluSignedContributionAndProof",
+   "generated_name": "SignedContributionAndProof",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedContributionAndProof.decode_ssz.proof.generated.bend": {
+   "name": "FuluSignedContributionAndProof",
+   "generated_name": "SignedContributionAndProof",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedContributionAndProof.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSignedContributionAndProof",
+   "generated_name": "SignedContributionAndProof",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncCommitteeMessage.encode_ssz.proof.generated.bend": {
+   "name": "FuluSyncCommitteeMessage",
+   "generated_name": "SyncCommitteeMessage",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_2.bend",
+    "codec_2.bend",
+    "serialize_0.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncCommitteeMessage.decode_ssz.proof.generated.bend": {
+   "name": "FuluSyncCommitteeMessage",
+   "generated_name": "SyncCommitteeMessage",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_2.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_2.bend",
+    "spec_input_2.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncCommitteeMessage.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSyncCommitteeMessage",
+   "generated_name": "SyncCommitteeMessage",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluEth1Block.encode_ssz.proof.generated.bend": {
+   "name": "FuluEth1Block",
+   "generated_name": "Eth1Block",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend",
+    "codec_2.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluEth1Block.decode_ssz.proof.generated.bend": {
+   "name": "FuluEth1Block",
+   "generated_name": "Eth1Block",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_3.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluEth1Block.hashtreeroot.proof.generated.bend": {
+   "name": "FuluEth1Block",
+   "generated_name": "Eth1Block",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluBeaconBlockHeader.encode_ssz.proof.generated.bend": {
+   "name": "FuluBeaconBlockHeader",
+   "generated_name": "BeaconBlockHeader",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend",
+    "codec_2.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluBeaconBlockHeader.decode_ssz.proof.generated.bend": {
+   "name": "FuluBeaconBlockHeader",
+   "generated_name": "BeaconBlockHeader",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_3.bend",
+    "spec_unique_0.bend",
+    "codec_2.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluBeaconBlockHeader.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBeaconBlockHeader",
+   "generated_name": "BeaconBlockHeader",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedBeaconBlockHeader.encode_ssz.proof.generated.bend": {
+   "name": "FuluSignedBeaconBlockHeader",
+   "generated_name": "SignedBeaconBlockHeader",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedBeaconBlockHeader.decode_ssz.proof.generated.bend": {
+   "name": "FuluSignedBeaconBlockHeader",
+   "generated_name": "SignedBeaconBlockHeader",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_3.bend",
+    "spec_unique_0.bend",
+    "codec_3.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedBeaconBlockHeader.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSignedBeaconBlockHeader",
+   "generated_name": "SignedBeaconBlockHeader",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluProposerSlashing.encode_ssz.proof.generated.bend": {
+   "name": "FuluProposerSlashing",
+   "generated_name": "ProposerSlashing",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend"
+   ],
+   "big": false
+  },
+  "FuluProposerSlashing.decode_ssz.proof.generated.bend": {
+   "name": "FuluProposerSlashing",
+   "generated_name": "ProposerSlashing",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_3.bend",
+    "spec_unique_0.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluProposerSlashing.hashtreeroot.proof.generated.bend": {
+   "name": "FuluProposerSlashing",
+   "generated_name": "ProposerSlashing",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluHistoricalBatch.encode_ssz.proof.generated.bend": {
+   "name": "FuluHistoricalBatch",
+   "generated_name": "HistoricalBatch",
+   "op": "encode_ssz",
+   "files": [
+    "spec_arr_HistoricalBatch.bend"
+   ],
+   "big": false
+  },
+  "FuluHistoricalBatch.decode_ssz.proof.generated.bend": {
+   "name": "FuluHistoricalBatch",
+   "generated_name": "HistoricalBatch",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_HistoricalBatch.bend",
+    "spec_arr_HistoricalBatch.bend",
+    "spec_arr_unique_HistoricalBatch.bend"
+   ],
+   "big": false
+  },
+  "FuluHistoricalBatch.hashtreeroot.proof.generated.bend": {
+   "name": "FuluHistoricalBatch",
+   "generated_name": "HistoricalBatch",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluEth1Data.encode_ssz.proof.generated.bend": {
+   "name": "FuluEth1Data",
+   "generated_name": "Eth1Data",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluEth1Data.decode_ssz.proof.generated.bend": {
+   "name": "FuluEth1Data",
+   "generated_name": "Eth1Data",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_3.bend",
+    "spec_unique_1.bend",
+    "codec_3.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluEth1Data.hashtreeroot.proof.generated.bend": {
+   "name": "FuluEth1Data",
+   "generated_name": "Eth1Data",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluCheckpoint.encode_ssz.proof.generated.bend": {
+   "name": "FuluCheckpoint",
+   "generated_name": "Checkpoint",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluCheckpoint.decode_ssz.proof.generated.bend": {
+   "name": "FuluCheckpoint",
+   "generated_name": "Checkpoint",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_3.bend",
+    "spec_unique_1.bend",
+    "codec_3.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluCheckpoint.hashtreeroot.proof.generated.bend": {
+   "name": "FuluCheckpoint",
+   "generated_name": "Checkpoint",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluAttestationData.encode_ssz.proof.generated.bend": {
+   "name": "FuluAttestationData",
+   "generated_name": "AttestationData",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluAttestationData.decode_ssz.proof.generated.bend": {
+   "name": "FuluAttestationData",
+   "generated_name": "AttestationData",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_3.bend",
+    "spec_unique_1.bend",
+    "codec_3.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluAttestationData.hashtreeroot.proof.generated.bend": {
+   "name": "FuluAttestationData",
+   "generated_name": "AttestationData",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluSingleAttestation.encode_ssz.proof.generated.bend": {
+   "name": "FuluSingleAttestation",
+   "generated_name": "SingleAttestation",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluSingleAttestation.decode_ssz.proof.generated.bend": {
+   "name": "FuluSingleAttestation",
+   "generated_name": "SingleAttestation",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_3.bend",
+    "spec_unique_1.bend",
+    "codec_3.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluSingleAttestation.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSingleAttestation",
+   "generated_name": "SingleAttestation",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluAttestation.encode_ssz.proof.generated.bend": {
+   "name": "FuluAttestation",
+   "generated_name": "Attestation",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_bitc_enc_Attestation.bend"
+   ],
+   "big": true
+  },
+  "FuluAttestation.decode_ssz.proof.generated.bend": {
+   "name": "FuluAttestation",
+   "generated_name": "Attestation",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_bitc_Attestation.bend",
+    "big_var_bitc_Attestation_unique.bend",
+    "big_var_bitc_Attestation_rej.bend"
+   ],
+   "big": true
+  },
+  "FuluAttestation.hashtreeroot.proof.generated.bend": {
+   "name": "FuluAttestation",
+   "generated_name": "Attestation",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluAggregateAndProof.encode_ssz.proof.generated.bend": {
+   "name": "FuluAggregateAndProof",
+   "generated_name": "AggregateAndProof",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_AggregateAndProof_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluAggregateAndProof.decode_ssz.proof.generated.bend": {
+   "name": "FuluAggregateAndProof",
+   "generated_name": "AggregateAndProof",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_win_AggregateAndProof_top.bend",
+    "big_var_win_AggregateAndProof_unique.bend"
+   ],
+   "big": true
+  },
+  "FuluAggregateAndProof.hashtreeroot.proof.generated.bend": {
+   "name": "FuluAggregateAndProof",
+   "generated_name": "AggregateAndProof",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedAggregateAndProof.encode_ssz.proof.generated.bend": {
+   "name": "FuluSignedAggregateAndProof",
+   "generated_name": "SignedAggregateAndProof",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_SignedAggregateAndProof_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluSignedAggregateAndProof.decode_ssz.proof.generated.bend": {
+   "name": "FuluSignedAggregateAndProof",
+   "generated_name": "SignedAggregateAndProof",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_win_SignedAggregateAndProof_top.bend",
+    "big_var_win_SignedAggregateAndProof_unique.bend"
+   ],
+   "big": true
+  },
+  "FuluSignedAggregateAndProof.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSignedAggregateAndProof",
+   "generated_name": "SignedAggregateAndProof",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingAttestation.encode_ssz.proof.generated.bend": {
+   "name": "FuluPendingAttestation",
+   "generated_name": "PendingAttestation",
+   "op": "encode_ssz",
+   "files": [
+    "var_bitc_enc_PendingAttestation.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingAttestation.decode_ssz.proof.generated.bend": {
+   "name": "FuluPendingAttestation",
+   "generated_name": "PendingAttestation",
+   "op": "decode_ssz",
+   "files": [
+    "var_bitc_PendingAttestation.bend",
+    "var_bitc_PendingAttestation_unique.bend",
+    "var_bitc_PendingAttestation_rej.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingAttestation.hashtreeroot.proof.generated.bend": {
+   "name": "FuluPendingAttestation",
+   "generated_name": "PendingAttestation",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluIndexedAttestation.encode_ssz.proof.generated.bend": {
+   "name": "FuluIndexedAttestation",
+   "generated_name": "IndexedAttestation",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_IndexedAttestation_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluIndexedAttestation.decode_ssz.proof.generated.bend": {
+   "name": "FuluIndexedAttestation",
+   "generated_name": "IndexedAttestation",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_codec_IndexedAttestation.bend",
+    "big_var_codec_IndexedAttestation_unique.bend",
+    "big_var_codec_IndexedAttestation_rej.bend"
+   ],
+   "big": true
+  },
+  "FuluIndexedAttestation.hashtreeroot.proof.generated.bend": {
+   "name": "FuluIndexedAttestation",
+   "generated_name": "IndexedAttestation",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluAttesterSlashing.encode_ssz.proof.generated.bend": {
+   "name": "FuluAttesterSlashing",
+   "generated_name": "AttesterSlashing",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_AttesterSlashing_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluAttesterSlashing.decode_ssz.proof.generated.bend": {
+   "name": "FuluAttesterSlashing",
+   "generated_name": "AttesterSlashing",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_codec_AttesterSlashing.bend",
+    "big_var_codec_AttesterSlashing_unique.bend",
+    "big_var_codec_AttesterSlashing_rej.bend"
+   ],
+   "big": true
+  },
+  "FuluAttesterSlashing.hashtreeroot.proof.generated.bend": {
+   "name": "FuluAttesterSlashing",
+   "generated_name": "AttesterSlashing",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluForkData.encode_ssz.proof.generated.bend": {
+   "name": "FuluForkData",
+   "generated_name": "ForkData",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluForkData.decode_ssz.proof.generated.bend": {
+   "name": "FuluForkData",
+   "generated_name": "ForkData",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_3.bend",
+    "spec_unique_1.bend",
+    "codec_3.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluForkData.hashtreeroot.proof.generated.bend": {
+   "name": "FuluForkData",
+   "generated_name": "ForkData",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluForkDigest.encode_ssz.proof.generated.bend": {
+   "name": "FuluForkDigest",
+   "generated_name": "ForkDigest",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluForkDigest.decode_ssz.proof.generated.bend": {
+   "name": "FuluForkDigest",
+   "generated_name": "ForkDigest",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f2.bend",
+    "spec_codec_3.bend",
+    "spec_unique_1.bend",
+    "codec_3.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluForkDigest.hashtreeroot.proof.generated.bend": {
+   "name": "FuluForkDigest",
+   "generated_name": "ForkDigest",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluDomain.encode_ssz.proof.generated.bend": {
+   "name": "FuluDomain",
+   "generated_name": "Domain",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluDomain.decode_ssz.proof.generated.bend": {
+   "name": "FuluDomain",
+   "generated_name": "Domain",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_3.bend",
+    "spec_unique_1.bend",
+    "codec_3.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluDomain.hashtreeroot.proof.generated.bend": {
+   "name": "FuluDomain",
+   "generated_name": "Domain",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluSigningData.encode_ssz.proof.generated.bend": {
+   "name": "FuluSigningData",
+   "generated_name": "SigningData",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_3.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluSigningData.decode_ssz.proof.generated.bend": {
+   "name": "FuluSigningData",
+   "generated_name": "SigningData",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_3.bend",
+    "spec_unique_1.bend",
+    "codec_3.bend",
+    "spec_repr_3.bend",
+    "spec_input_3.bend"
+   ],
+   "big": false
+  },
+  "FuluSigningData.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSigningData",
+   "generated_name": "SigningData",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluBLSPubkey.encode_ssz.proof.generated.bend": {
+   "name": "FuluBLSPubkey",
+   "generated_name": "BLSPubkey",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluBLSPubkey.decode_ssz.proof.generated.bend": {
+   "name": "FuluBLSPubkey",
+   "generated_name": "BLSPubkey",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "codec_3.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluBLSPubkey.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBLSPubkey",
+   "generated_name": "BLSPubkey",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluDepositRequest.encode_ssz.proof.generated.bend": {
+   "name": "FuluDepositRequest",
+   "generated_name": "DepositRequest",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluDepositRequest.decode_ssz.proof.generated.bend": {
+   "name": "FuluDepositRequest",
+   "generated_name": "DepositRequest",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "codec_3.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluDepositRequest.hashtreeroot.proof.generated.bend": {
+   "name": "FuluDepositRequest",
+   "generated_name": "DepositRequest",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingDeposit.encode_ssz.proof.generated.bend": {
+   "name": "FuluPendingDeposit",
+   "generated_name": "PendingDeposit",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend",
+    "codec_3.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingDeposit.decode_ssz.proof.generated.bend": {
+   "name": "FuluPendingDeposit",
+   "generated_name": "PendingDeposit",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "codec_3.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluPendingDeposit.hashtreeroot.proof.generated.bend": {
+   "name": "FuluPendingDeposit",
+   "generated_name": "PendingDeposit",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncCommittee.encode_ssz.proof.generated.bend": {
+   "name": "FuluSyncCommittee",
+   "generated_name": "SyncCommittee",
+   "op": "encode_ssz",
+   "files": [
+    "spec_arr_SyncCommittee.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncCommittee.decode_ssz.proof.generated.bend": {
+   "name": "FuluSyncCommittee",
+   "generated_name": "SyncCommittee",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_SyncCommittee.bend",
+    "spec_arr_SyncCommittee.bend",
+    "spec_arr_unique_SyncCommittee.bend"
+   ],
+   "big": false
+  },
+  "FuluSyncCommittee.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSyncCommittee",
+   "generated_name": "SyncCommittee",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluDepositData.encode_ssz.proof.generated.bend": {
+   "name": "FuluDepositData",
+   "generated_name": "DepositData",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluDepositData.decode_ssz.proof.generated.bend": {
+   "name": "FuluDepositData",
+   "generated_name": "DepositData",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluDepositData.hashtreeroot.proof.generated.bend": {
+   "name": "FuluDepositData",
+   "generated_name": "DepositData",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluDeposit.encode_ssz.proof.generated.bend": {
+   "name": "FuluDeposit",
+   "generated_name": "Deposit",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend"
+   ],
+   "big": false
+  },
+  "FuluDeposit.decode_ssz.proof.generated.bend": {
+   "name": "FuluDeposit",
+   "generated_name": "Deposit",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluDeposit.hashtreeroot.proof.generated.bend": {
+   "name": "FuluDeposit",
+   "generated_name": "Deposit",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluDepositMessage.encode_ssz.proof.generated.bend": {
+   "name": "FuluDepositMessage",
+   "generated_name": "DepositMessage",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluDepositMessage.decode_ssz.proof.generated.bend": {
+   "name": "FuluDepositMessage",
+   "generated_name": "DepositMessage",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluDepositMessage.hashtreeroot.proof.generated.bend": {
+   "name": "FuluDepositMessage",
+   "generated_name": "DepositMessage",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluValidator.encode_ssz.proof.generated.bend": {
+   "name": "FuluValidator",
+   "generated_name": "Validator",
+   "op": "encode_ssz",
+   "files": [
+    "spec_rec_Validator.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluValidator.decode_ssz.proof.generated.bend": {
+   "name": "FuluValidator",
+   "generated_name": "Validator",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_Validator.bend",
+    "spec_rec_Validator.bend",
+    "spec_rec_unique_Validator.bend"
+   ],
+   "big": false
+  },
+  "FuluValidator.hashtreeroot.proof.generated.bend": {
+   "name": "FuluValidator",
+   "generated_name": "Validator",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluNodeID.encode_ssz.proof.generated.bend": {
+   "name": "FuluNodeID",
+   "generated_name": "NodeID",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluNodeID.decode_ssz.proof.generated.bend": {
+   "name": "FuluNodeID",
+   "generated_name": "NodeID",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluNodeID.hashtreeroot.proof.generated.bend": {
+   "name": "FuluNodeID",
+   "generated_name": "NodeID",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluSubnetID.encode_ssz.proof.generated.bend": {
+   "name": "FuluSubnetID",
+   "generated_name": "SubnetID",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluSubnetID.decode_ssz.proof.generated.bend": {
+   "name": "FuluSubnetID",
+   "generated_name": "SubnetID",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluSubnetID.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSubnetID",
+   "generated_name": "SubnetID",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluEther.encode_ssz.proof.generated.bend": {
+   "name": "FuluEther",
+   "generated_name": "Ether",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluEther.decode_ssz.proof.generated.bend": {
+   "name": "FuluEther",
+   "generated_name": "Ether",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluEther.hashtreeroot.proof.generated.bend": {
+   "name": "FuluEther",
+   "generated_name": "Ether",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluParticipationFlags.encode_ssz.proof.generated.bend": {
+   "name": "FuluParticipationFlags",
+   "generated_name": "ParticipationFlags",
+   "op": "encode_ssz",
+   "files": [
+    "spec_small.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluParticipationFlags.decode_ssz.proof.generated.bend": {
+   "name": "FuluParticipationFlags",
+   "generated_name": "ParticipationFlags",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_small.bend",
+    "spec_unique_small.bend",
+    "spec_repr_small.bend"
+   ],
+   "big": false
+  },
+  "FuluParticipationFlags.hashtreeroot.proof.generated.bend": {
+   "name": "FuluParticipationFlags",
+   "generated_name": "ParticipationFlags",
+   "op": "hashtreeroot",
+   "files": [
+    "leaf_small.bend"
+   ],
+   "big": false
+  },
+  "FuluCurrentSyncCommitteeBranch.encode_ssz.proof.generated.bend": {
+   "name": "FuluCurrentSyncCommitteeBranch",
+   "generated_name": "CurrentSyncCommitteeBranch",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend"
+   ],
+   "big": false
+  },
+  "FuluCurrentSyncCommitteeBranch.decode_ssz.proof.generated.bend": {
+   "name": "FuluCurrentSyncCommitteeBranch",
+   "generated_name": "CurrentSyncCommitteeBranch",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluCurrentSyncCommitteeBranch.hashtreeroot.proof.generated.bend": {
+   "name": "FuluCurrentSyncCommitteeBranch",
+   "generated_name": "CurrentSyncCommitteeBranch",
+   "op": "hashtreeroot",
+   "files": [
+    "root_words.bend"
+   ],
+   "big": false
+  },
+  "FuluNextSyncCommitteeBranch.encode_ssz.proof.generated.bend": {
+   "name": "FuluNextSyncCommitteeBranch",
+   "generated_name": "NextSyncCommitteeBranch",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend"
+   ],
+   "big": false
+  },
+  "FuluNextSyncCommitteeBranch.decode_ssz.proof.generated.bend": {
+   "name": "FuluNextSyncCommitteeBranch",
+   "generated_name": "NextSyncCommitteeBranch",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluNextSyncCommitteeBranch.hashtreeroot.proof.generated.bend": {
+   "name": "FuluNextSyncCommitteeBranch",
+   "generated_name": "NextSyncCommitteeBranch",
+   "op": "hashtreeroot",
+   "files": [
+    "root_words.bend"
+   ],
+   "big": false
+  },
+  "FuluTransaction.encode_ssz.proof.generated.bend": {
+   "name": "FuluTransaction",
+   "generated_name": "Transaction",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_Transaction_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluTransaction.decode_ssz.proof.generated.bend": {
+   "name": "FuluTransaction",
+   "generated_name": "Transaction",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_codec_Transaction.bend"
+   ],
+   "big": true
+  },
+  "FuluTransaction.hashtreeroot.proof.generated.bend": {
+   "name": "FuluTransaction",
+   "generated_name": "Transaction",
+   "op": "hashtreeroot",
+   "files": [
+    "big_root_Transaction.bend"
+   ],
+   "big": true
+  },
+  "FuluExecutionAddress.encode_ssz.proof.generated.bend": {
+   "name": "FuluExecutionAddress",
+   "generated_name": "ExecutionAddress",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_4.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluExecutionAddress.decode_ssz.proof.generated.bend": {
+   "name": "FuluExecutionAddress",
+   "generated_name": "ExecutionAddress",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_4.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_4.bend",
+    "spec_input_4.bend"
+   ],
+   "big": false
+  },
+  "FuluExecutionAddress.hashtreeroot.proof.generated.bend": {
+   "name": "FuluExecutionAddress",
+   "generated_name": "ExecutionAddress",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluConsolidationRequest.encode_ssz.proof.generated.bend": {
+   "name": "FuluConsolidationRequest",
+   "generated_name": "ConsolidationRequest",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluConsolidationRequest.decode_ssz.proof.generated.bend": {
+   "name": "FuluConsolidationRequest",
+   "generated_name": "ConsolidationRequest",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f3.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluConsolidationRequest.hashtreeroot.proof.generated.bend": {
+   "name": "FuluConsolidationRequest",
+   "generated_name": "ConsolidationRequest",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluWithdrawalRequest.encode_ssz.proof.generated.bend": {
+   "name": "FuluWithdrawalRequest",
+   "generated_name": "WithdrawalRequest",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluWithdrawalRequest.decode_ssz.proof.generated.bend": {
+   "name": "FuluWithdrawalRequest",
+   "generated_name": "WithdrawalRequest",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluWithdrawalRequest.hashtreeroot.proof.generated.bend": {
+   "name": "FuluWithdrawalRequest",
+   "generated_name": "WithdrawalRequest",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluExecutionRequests.encode_ssz.proof.generated.bend": {
+   "name": "FuluExecutionRequests",
+   "generated_name": "ExecutionRequests",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_ExecutionRequests_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluExecutionRequests.decode_ssz.proof.generated.bend": {
+   "name": "FuluExecutionRequests",
+   "generated_name": "ExecutionRequests",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_ExecutionRequests.bend"
+   ],
+   "big": false
+  },
+  "FuluExecutionRequests.hashtreeroot.proof.generated.bend": {
+   "name": "FuluExecutionRequests",
+   "generated_name": "ExecutionRequests",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluBLSToExecutionChange.encode_ssz.proof.generated.bend": {
+   "name": "FuluBLSToExecutionChange",
+   "generated_name": "BLSToExecutionChange",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluBLSToExecutionChange.decode_ssz.proof.generated.bend": {
+   "name": "FuluBLSToExecutionChange",
+   "generated_name": "BLSToExecutionChange",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluBLSToExecutionChange.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBLSToExecutionChange",
+   "generated_name": "BLSToExecutionChange",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedBLSToExecutionChange.encode_ssz.proof.generated.bend": {
+   "name": "FuluSignedBLSToExecutionChange",
+   "generated_name": "SignedBLSToExecutionChange",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedBLSToExecutionChange.decode_ssz.proof.generated.bend": {
+   "name": "FuluSignedBLSToExecutionChange",
+   "generated_name": "SignedBLSToExecutionChange",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluSignedBLSToExecutionChange.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSignedBLSToExecutionChange",
+   "generated_name": "SignedBLSToExecutionChange",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluExecutionPayloadHeader.encode_ssz.proof.generated.bend": {
+   "name": "FuluExecutionPayloadHeader",
+   "generated_name": "ExecutionPayloadHeader",
+   "op": "encode_ssz",
+   "files": [
+    "var_bytes_ExecutionPayloadHeader_enc.bend"
+   ],
+   "big": false
+  },
+  "FuluExecutionPayloadHeader.decode_ssz.proof.generated.bend": {
+   "name": "FuluExecutionPayloadHeader",
+   "generated_name": "ExecutionPayloadHeader",
+   "op": "decode_ssz",
+   "files": [
+    "var_bytes_ExecutionPayloadHeader.bend",
+    "var_bytes_ExecutionPayloadHeader_unique.bend",
+    "var_bytes_ExecutionPayloadHeader_rej.bend"
+   ],
+   "big": false
+  },
+  "FuluExecutionPayloadHeader.hashtreeroot.proof.generated.bend": {
+   "name": "FuluExecutionPayloadHeader",
+   "generated_name": "ExecutionPayloadHeader",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluPayloadId.encode_ssz.proof.generated.bend": {
+   "name": "FuluPayloadId",
+   "generated_name": "PayloadId",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluPayloadId.decode_ssz.proof.generated.bend": {
+   "name": "FuluPayloadId",
+   "generated_name": "PayloadId",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluPayloadId.hashtreeroot.proof.generated.bend": {
+   "name": "FuluPayloadId",
+   "generated_name": "PayloadId",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluWithdrawalIndex.encode_ssz.proof.generated.bend": {
+   "name": "FuluWithdrawalIndex",
+   "generated_name": "WithdrawalIndex",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend",
+    "codec_4.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluWithdrawalIndex.decode_ssz.proof.generated.bend": {
+   "name": "FuluWithdrawalIndex",
+   "generated_name": "WithdrawalIndex",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "codec_4.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluWithdrawalIndex.hashtreeroot.proof.generated.bend": {
+   "name": "FuluWithdrawalIndex",
+   "generated_name": "WithdrawalIndex",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluWithdrawal.encode_ssz.proof.generated.bend": {
+   "name": "FuluWithdrawal",
+   "generated_name": "Withdrawal",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend",
+    "codec_5.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluWithdrawal.decode_ssz.proof.generated.bend": {
+   "name": "FuluWithdrawal",
+   "generated_name": "Withdrawal",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "codec_5.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluWithdrawal.hashtreeroot.proof.generated.bend": {
+   "name": "FuluWithdrawal",
+   "generated_name": "Withdrawal",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluExecutionPayload.encode_ssz.proof.generated.bend": {
+   "name": "FuluExecutionPayload",
+   "generated_name": "ExecutionPayload",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_ExecutionPayload_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluExecutionPayload.decode_ssz.proof.generated.bend": {
+   "name": "FuluExecutionPayload",
+   "generated_name": "ExecutionPayload",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_codec_ExecutionPayload.bend"
+   ],
+   "big": true
+  },
+  "FuluExecutionPayload.hashtreeroot.proof.generated.bend": {
+   "name": "FuluExecutionPayload",
+   "generated_name": "ExecutionPayload",
+   "op": "hashtreeroot",
+   "files": [
+    "big_root_ExecutionPayload.bend"
+   ],
+   "big": true
+  },
+  "FuluBeaconState.decode_ssz.proof.generated.bend": {
+   "name": "FuluBeaconState",
+   "generated_name": "BeaconState",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_codec_BeaconState.bend"
+   ],
+   "big": true
+  },
+  "FuluBeaconState.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBeaconState",
+   "generated_name": "BeaconState",
+   "op": "hashtreeroot",
+   "files": [
+    "big_root_BeaconState.bend"
+   ],
+   "big": true
+  },
+  "FuluExecutionBranch.encode_ssz.proof.generated.bend": {
+   "name": "FuluExecutionBranch",
+   "generated_name": "ExecutionBranch",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend"
+   ],
+   "big": false
+  },
+  "FuluExecutionBranch.decode_ssz.proof.generated.bend": {
+   "name": "FuluExecutionBranch",
+   "generated_name": "ExecutionBranch",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluExecutionBranch.hashtreeroot.proof.generated.bend": {
+   "name": "FuluExecutionBranch",
+   "generated_name": "ExecutionBranch",
+   "op": "hashtreeroot",
+   "files": [
+    "root_words.bend"
+   ],
+   "big": false
+  },
+  "FuluLightClientHeader.encode_ssz.proof.generated.bend": {
+   "name": "FuluLightClientHeader",
+   "generated_name": "LightClientHeader",
+   "op": "encode_ssz",
+   "files": [
+    "var_bytes_LightClientHeader_enc.bend"
+   ],
+   "big": false
+  },
+  "FuluLightClientHeader.decode_ssz.proof.generated.bend": {
+   "name": "FuluLightClientHeader",
+   "generated_name": "LightClientHeader",
+   "op": "decode_ssz",
+   "files": [
+    "var_bytes_LightClientHeader.bend",
+    "var_bytes_LightClientHeader_unique.bend",
+    "var_bytes_LightClientHeader_rej.bend"
+   ],
+   "big": false
+  },
+  "FuluLightClientHeader.hashtreeroot.proof.generated.bend": {
+   "name": "FuluLightClientHeader",
+   "generated_name": "LightClientHeader",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluLightClientOptimisticUpdate.encode_ssz.proof.generated.bend": {
+   "name": "FuluLightClientOptimisticUpdate",
+   "generated_name": "LightClientOptimisticUpdate",
+   "op": "encode_ssz",
+   "files": [
+    "var_bytes_LightClientOptimisticUpdate_enc.bend"
+   ],
+   "big": false
+  },
+  "FuluLightClientOptimisticUpdate.decode_ssz.proof.generated.bend": {
+   "name": "FuluLightClientOptimisticUpdate",
+   "generated_name": "LightClientOptimisticUpdate",
+   "op": "decode_ssz",
+   "files": [
+    "var_bytes_LightClientOptimisticUpdate.bend",
+    "var_bytes_LightClientOptimisticUpdate_unique.bend",
+    "var_bytes_LightClientOptimisticUpdate_rej.bend"
+   ],
+   "big": false
+  },
+  "FuluLightClientOptimisticUpdate.hashtreeroot.proof.generated.bend": {
+   "name": "FuluLightClientOptimisticUpdate",
+   "generated_name": "LightClientOptimisticUpdate",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluLightClientFinalityUpdate.encode_ssz.proof.generated.bend": {
+   "name": "FuluLightClientFinalityUpdate",
+   "generated_name": "LightClientFinalityUpdate",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_LightClientFinalityUpdate_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluLightClientFinalityUpdate.decode_ssz.proof.generated.bend": {
+   "name": "FuluLightClientFinalityUpdate",
+   "generated_name": "LightClientFinalityUpdate",
+   "op": "decode_ssz",
+   "files": [
+    "var_bytesx_LightClientFinalityUpdate_dec.bend"
+   ],
+   "big": false
+  },
+  "FuluLightClientFinalityUpdate.hashtreeroot.proof.generated.bend": {
+   "name": "FuluLightClientFinalityUpdate",
+   "generated_name": "LightClientFinalityUpdate",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluLightClientUpdate.decode_ssz.proof.generated.bend": {
+   "name": "FuluLightClientUpdate",
+   "generated_name": "LightClientUpdate",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_LightClientUpdate.bend"
+   ],
+   "big": false
+  },
+  "FuluLightClientUpdate.hashtreeroot.proof.generated.bend": {
+   "name": "FuluLightClientUpdate",
+   "generated_name": "LightClientUpdate",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluLightClientBootstrap.encode_ssz.proof.generated.bend": {
+   "name": "FuluLightClientBootstrap",
+   "generated_name": "LightClientBootstrap",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_bytes_LightClientBootstrap_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluLightClientBootstrap.decode_ssz.proof.generated.bend": {
+   "name": "FuluLightClientBootstrap",
+   "generated_name": "LightClientBootstrap",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_bytes_LightClientBootstrap.bend",
+    "big_var_bytes_LightClientBootstrap_unique.bend",
+    "big_var_bytes_LightClientBootstrap_rej.bend"
+   ],
+   "big": true
+  },
+  "FuluLightClientBootstrap.hashtreeroot.proof.generated.bend": {
+   "name": "FuluLightClientBootstrap",
+   "generated_name": "LightClientBootstrap",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluBlobIndex.encode_ssz.proof.generated.bend": {
+   "name": "FuluBlobIndex",
+   "generated_name": "BlobIndex",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend",
+    "codec_5.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluBlobIndex.decode_ssz.proof.generated.bend": {
+   "name": "FuluBlobIndex",
+   "generated_name": "BlobIndex",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "codec_5.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluBlobIndex.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBlobIndex",
+   "generated_name": "BlobIndex",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluBlobIdentifier.encode_ssz.proof.generated.bend": {
+   "name": "FuluBlobIdentifier",
+   "generated_name": "BlobIdentifier",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend",
+    "codec_5.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluBlobIdentifier.decode_ssz.proof.generated.bend": {
+   "name": "FuluBlobIdentifier",
+   "generated_name": "BlobIdentifier",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "codec_5.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluBlobIdentifier.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBlobIdentifier",
+   "generated_name": "BlobIdentifier",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluKZGCommitment.encode_ssz.proof.generated.bend": {
+   "name": "FuluKZGCommitment",
+   "generated_name": "KZGCommitment",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend",
+    "codec_5.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluKZGCommitment.decode_ssz.proof.generated.bend": {
+   "name": "FuluKZGCommitment",
+   "generated_name": "KZGCommitment",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "codec_5.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluKZGCommitment.hashtreeroot.proof.generated.bend": {
+   "name": "FuluKZGCommitment",
+   "generated_name": "KZGCommitment",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluBeaconBlockBody.encode_ssz.proof.generated.bend": {
+   "name": "FuluBeaconBlockBody",
+   "generated_name": "BeaconBlockBody",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_BeaconBlockBody_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluBeaconBlockBody.decode_ssz.proof.generated.bend": {
+   "name": "FuluBeaconBlockBody",
+   "generated_name": "BeaconBlockBody",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_codec_BeaconBlockBody.bend"
+   ],
+   "big": true
+  },
+  "FuluBeaconBlockBody.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBeaconBlockBody",
+   "generated_name": "BeaconBlockBody",
+   "op": "hashtreeroot",
+   "files": [
+    "big_root_BeaconBlockBody.bend"
+   ],
+   "big": true
+  },
+  "FuluBeaconBlock.encode_ssz.proof.generated.bend": {
+   "name": "FuluBeaconBlock",
+   "generated_name": "BeaconBlock",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_BeaconBlock_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluBeaconBlock.decode_ssz.proof.generated.bend": {
+   "name": "FuluBeaconBlock",
+   "generated_name": "BeaconBlock",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_codec_BeaconBlock.bend"
+   ],
+   "big": true
+  },
+  "FuluBeaconBlock.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBeaconBlock",
+   "generated_name": "BeaconBlock",
+   "op": "hashtreeroot",
+   "files": [
+    "big_root_BeaconBlock.bend"
+   ],
+   "big": true
+  },
+  "FuluSignedBeaconBlock.encode_ssz.proof.generated.bend": {
+   "name": "FuluSignedBeaconBlock",
+   "generated_name": "SignedBeaconBlock",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_SignedBeaconBlock_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluSignedBeaconBlock.decode_ssz.proof.generated.bend": {
+   "name": "FuluSignedBeaconBlock",
+   "generated_name": "SignedBeaconBlock",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_codec_SignedBeaconBlock.bend"
+   ],
+   "big": true
+  },
+  "FuluSignedBeaconBlock.hashtreeroot.proof.generated.bend": {
+   "name": "FuluSignedBeaconBlock",
+   "generated_name": "SignedBeaconBlock",
+   "op": "hashtreeroot",
+   "files": [
+    "big_root_SignedBeaconBlock.bend"
+   ],
+   "big": true
+  },
+  "FuluKZGProof.encode_ssz.proof.generated.bend": {
+   "name": "FuluKZGProof",
+   "generated_name": "KZGProof",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_5.bend",
+    "codec_5.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluKZGProof.decode_ssz.proof.generated.bend": {
+   "name": "FuluKZGProof",
+   "generated_name": "KZGProof",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_5.bend",
+    "spec_unique_1.bend",
+    "codec_5.bend",
+    "spec_repr_5.bend",
+    "spec_input_5.bend"
+   ],
+   "big": false
+  },
+  "FuluKZGProof.hashtreeroot.proof.generated.bend": {
+   "name": "FuluKZGProof",
+   "generated_name": "KZGProof",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluBlob.encode_ssz.proof.generated.bend": {
+   "name": "FuluBlob",
+   "generated_name": "Blob",
+   "op": "encode_ssz",
+   "files": [
+    "spec_arr_Blob.bend"
+   ],
+   "big": false
+  },
+  "FuluBlob.decode_ssz.proof.generated.bend": {
+   "name": "FuluBlob",
+   "generated_name": "Blob",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_Blob.bend",
+    "spec_arr_Blob.bend",
+    "spec_arr_unique_Blob.bend"
+   ],
+   "big": false
+  },
+  "FuluBlob.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBlob",
+   "generated_name": "Blob",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluBlobSidecar.encode_ssz.proof.generated.bend": {
+   "name": "FuluBlobSidecar",
+   "generated_name": "BlobSidecar",
+   "op": "encode_ssz",
+   "files": [
+    "spec_arr_BlobSidecar.bend"
+   ],
+   "big": false
+  },
+  "FuluBlobSidecar.decode_ssz.proof.generated.bend": {
+   "name": "FuluBlobSidecar",
+   "generated_name": "BlobSidecar",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_BlobSidecar.bend",
+    "spec_arr_BlobSidecar.bend",
+    "spec_arr_unique_BlobSidecar.bend"
+   ],
+   "big": false
+  },
+  "FuluBlobSidecar.hashtreeroot.proof.generated.bend": {
+   "name": "FuluBlobSidecar",
+   "generated_name": "BlobSidecar",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluCell.encode_ssz.proof.generated.bend": {
+   "name": "FuluCell",
+   "generated_name": "Cell",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_6.bend"
+   ],
+   "big": false
+  },
+  "FuluCell.decode_ssz.proof.generated.bend": {
+   "name": "FuluCell",
+   "generated_name": "Cell",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_6.bend",
+    "spec_unique_1.bend",
+    "spec_repr_6.bend",
+    "spec_input_6.bend"
+   ],
+   "big": false
+  },
+  "FuluCell.hashtreeroot.proof.generated.bend": {
+   "name": "FuluCell",
+   "generated_name": "Cell",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend",
+    "root_words.bend"
+   ],
+   "big": false
+  },
+  "FuluCellIndex.encode_ssz.proof.generated.bend": {
+   "name": "FuluCellIndex",
+   "generated_name": "CellIndex",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_6.bend",
+    "codec_5.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluCellIndex.decode_ssz.proof.generated.bend": {
+   "name": "FuluCellIndex",
+   "generated_name": "CellIndex",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_6.bend",
+    "spec_unique_1.bend",
+    "codec_5.bend",
+    "spec_repr_6.bend",
+    "spec_input_6.bend"
+   ],
+   "big": false
+  },
+  "FuluCellIndex.hashtreeroot.proof.generated.bend": {
+   "name": "FuluCellIndex",
+   "generated_name": "CellIndex",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluCommitmentIndex.encode_ssz.proof.generated.bend": {
+   "name": "FuluCommitmentIndex",
+   "generated_name": "CommitmentIndex",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_6.bend",
+    "codec_5.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluCommitmentIndex.decode_ssz.proof.generated.bend": {
+   "name": "FuluCommitmentIndex",
+   "generated_name": "CommitmentIndex",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_6.bend",
+    "spec_unique_1.bend",
+    "codec_5.bend",
+    "spec_repr_6.bend",
+    "spec_input_6.bend"
+   ],
+   "big": false
+  },
+  "FuluCommitmentIndex.hashtreeroot.proof.generated.bend": {
+   "name": "FuluCommitmentIndex",
+   "generated_name": "CommitmentIndex",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluRowIndex.encode_ssz.proof.generated.bend": {
+   "name": "FuluRowIndex",
+   "generated_name": "RowIndex",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_6.bend",
+    "codec_5.bend",
+    "serialize_1.bend"
+   ],
+   "big": false
+  },
+  "FuluRowIndex.decode_ssz.proof.generated.bend": {
+   "name": "FuluRowIndex",
+   "generated_name": "RowIndex",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_6.bend",
+    "spec_unique_1.bend",
+    "codec_5.bend",
+    "spec_repr_6.bend",
+    "spec_input_6.bend"
+   ],
+   "big": false
+  },
+  "FuluRowIndex.hashtreeroot.proof.generated.bend": {
+   "name": "FuluRowIndex",
+   "generated_name": "RowIndex",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluColumnIndex.encode_ssz.proof.generated.bend": {
+   "name": "FuluColumnIndex",
+   "generated_name": "ColumnIndex",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_6.bend",
+    "codec_5.bend",
+    "serialize_2.bend"
+   ],
+   "big": false
+  },
+  "FuluColumnIndex.decode_ssz.proof.generated.bend": {
+   "name": "FuluColumnIndex",
+   "generated_name": "ColumnIndex",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f4.bend",
+    "spec_codec_6.bend",
+    "spec_unique_1.bend",
+    "codec_5.bend",
+    "spec_repr_6.bend",
+    "spec_input_6.bend"
+   ],
+   "big": false
+  },
+  "FuluColumnIndex.hashtreeroot.proof.generated.bend": {
+   "name": "FuluColumnIndex",
+   "generated_name": "ColumnIndex",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "FuluDataColumnsByRootIdentifier.encode_ssz.proof.generated.bend": {
+   "name": "FuluDataColumnsByRootIdentifier",
+   "generated_name": "DataColumnsByRootIdentifier",
+   "op": "encode_ssz",
+   "files": [
+    "var_codec_DataColumnsByRootIdentifier_enc.bend"
+   ],
+   "big": false
+  },
+  "FuluDataColumnsByRootIdentifier.decode_ssz.proof.generated.bend": {
+   "name": "FuluDataColumnsByRootIdentifier",
+   "generated_name": "DataColumnsByRootIdentifier",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_DataColumnsByRootIdentifier.bend",
+    "var_codec_DataColumnsByRootIdentifier_unique.bend",
+    "var_codec_DataColumnsByRootIdentifier_rej.bend"
+   ],
+   "big": false
+  },
+  "FuluDataColumnsByRootIdentifier.hashtreeroot.proof.generated.bend": {
+   "name": "FuluDataColumnsByRootIdentifier",
+   "generated_name": "DataColumnsByRootIdentifier",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluMatrixEntry.encode_ssz.proof.generated.bend": {
+   "name": "FuluMatrixEntry",
+   "generated_name": "MatrixEntry",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_6.bend"
+   ],
+   "big": false
+  },
+  "FuluMatrixEntry.decode_ssz.proof.generated.bend": {
+   "name": "FuluMatrixEntry",
+   "generated_name": "MatrixEntry",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f5.bend",
+    "spec_codec_6.bend",
+    "spec_unique_1.bend",
+    "spec_repr_6.bend",
+    "spec_input_6.bend"
+   ],
+   "big": false
+  },
+  "FuluMatrixEntry.hashtreeroot.proof.generated.bend": {
+   "name": "FuluMatrixEntry",
+   "generated_name": "MatrixEntry",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluDataColumnSidecar.encode_ssz.proof.generated.bend": {
+   "name": "FuluDataColumnSidecar",
+   "generated_name": "DataColumnSidecar",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_DataColumnSidecar_enc.bend"
+   ],
+   "big": true
+  },
+  "FuluDataColumnSidecar.decode_ssz.proof.generated.bend": {
+   "name": "FuluDataColumnSidecar",
+   "generated_name": "DataColumnSidecar",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_DataColumnSidecar.bend",
+    "var_codec_DataColumnSidecar_acc.bend",
+    "var_codec_DataColumnSidecar_unique.bend",
+    "var_codec_DataColumnSidecar_rej.bend"
+   ],
+   "big": false
+  },
+  "FuluDataColumnSidecar.hashtreeroot.proof.generated.bend": {
+   "name": "FuluDataColumnSidecar",
+   "generated_name": "DataColumnSidecar",
+   "op": "hashtreeroot",
+   "files": [
+    "root_types.bend"
+   ],
+   "big": false
+  },
+  "FuluCustodyIndex.encode_ssz.proof.generated.bend": {
+   "name": "FuluCustodyIndex",
+   "generated_name": "CustodyIndex",
+   "op": "encode_ssz",
+   "files": [
+    "spec_codec_6.bend",
+    "codec_5.bend",
+    "serialize_2.bend"
+   ],
+   "big": false
+  },
+  "FuluCustodyIndex.decode_ssz.proof.generated.bend": {
+   "name": "FuluCustodyIndex",
+   "generated_name": "CustodyIndex",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_f5.bend",
+    "spec_codec_6.bend",
+    "spec_unique_1.bend",
+    "codec_5.bend",
+    "spec_repr_6.bend",
+    "spec_input_6.bend"
+   ],
+   "big": false
+  },
+  "FuluCustodyIndex.hashtreeroot.proof.generated.bend": {
+   "name": "FuluCustodyIndex",
+   "generated_name": "CustodyIndex",
+   "op": "hashtreeroot",
+   "files": [
+    "root_names.bend"
+   ],
+   "big": false
+  },
+  "ProgressiveSingleListContainerTestStruct.encode_ssz.proof.generated.bend": {
+   "name": "ProgressiveSingleListContainerTestStruct",
+   "generated_name": "Gp4B0CA2906A",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_Gp4B0CA2906A_enc.bend"
+   ],
+   "big": true
+  },
+  "ProgressiveSingleListContainerTestStruct.decode_ssz.proof.generated.bend": {
+   "name": "ProgressiveSingleListContainerTestStruct",
+   "generated_name": "Gp4B0CA2906A",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_codec_Gp4B0CA2906A.bend",
+    "big_var_codec_Gp4B0CA2906A_unique.bend"
+   ],
+   "big": true
+  },
+  "ProgressiveSingleListContainerTestStruct.hashtreeroot.proof.generated.bend": {
+   "name": "ProgressiveSingleListContainerTestStruct",
+   "generated_name": "Gp4B0CA2906A",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes2.bend"
+   ],
+   "big": false
+  },
+  "ProgressiveComplexTestStruct.encode_ssz.proof.generated.bend": {
+   "name": "ProgressiveComplexTestStruct",
+   "generated_name": "Gp8A7851175B",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_Gp8A7851175B_enc.bend"
+   ],
+   "big": true
+  },
+  "ProgressiveComplexTestStruct.decode_ssz.proof.generated.bend": {
+   "name": "ProgressiveComplexTestStruct",
+   "generated_name": "Gp8A7851175B",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_codec_Gp8A7851175B.bend",
+    "big_var_codec_Gp8A7851175B_unique.bend"
+   ],
+   "big": true
+  },
+  "ProgressiveComplexTestStruct.hashtreeroot.proof.generated.bend": {
+   "name": "ProgressiveComplexTestStruct",
+   "generated_name": "Gp8A7851175B",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes2.bend"
+   ],
+   "big": false
+  },
+  "ProgressiveVarTestStruct.encode_ssz.proof.generated.bend": {
+   "name": "ProgressiveVarTestStruct",
+   "generated_name": "Gp66304057C3",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_Gp66304057C3_enc.bend"
+   ],
+   "big": true
+  },
+  "ProgressiveVarTestStruct.decode_ssz.proof.generated.bend": {
+   "name": "ProgressiveVarTestStruct",
+   "generated_name": "Gp66304057C3",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_codec_Gp66304057C3.bend",
+    "big_var_codec_Gp66304057C3_unique.bend"
+   ],
+   "big": true
+  },
+  "ProgressiveVarTestStruct.hashtreeroot.proof.generated.bend": {
+   "name": "ProgressiveVarTestStruct",
+   "generated_name": "Gp66304057C3",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes2.bend"
+   ],
+   "big": false
+  },
+  "ProgressiveSingleFieldContainerTestStruct.encode_ssz.proof.generated.bend": {
+   "name": "ProgressiveSingleFieldContainerTestStruct",
+   "generated_name": "GpF350A3C486",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GpF350A3C486.bend"
+   ],
+   "big": false
+  },
+  "ProgressiveSingleFieldContainerTestStruct.decode_ssz.proof.generated.bend": {
+   "name": "ProgressiveSingleFieldContainerTestStruct",
+   "generated_name": "GpF350A3C486",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "sub_GpF350A3C486.bend",
+    "sub_unique_GpF350A3C486.bend"
+   ],
+   "big": false
+  },
+  "ProgressiveSingleFieldContainerTestStruct.hashtreeroot.proof.generated.bend": {
+   "name": "ProgressiveSingleFieldContainerTestStruct",
+   "generated_name": "GpF350A3C486",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "proglist_bool.encode_ssz.proof.generated.bend": {
+   "name": "proglist_bool",
+   "generated_name": "Gt83D8B3D008",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_plist_Gt83D8B3D008_enc.bend"
+   ],
+   "big": true
+  },
+  "proglist_bool.decode_ssz.proof.generated.bend": {
+   "name": "proglist_bool",
+   "generated_name": "Gt83D8B3D008",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_plist_Gt83D8B3D008_top.bend",
+    "big_var_plist_Gt83D8B3D008_top_unique.bend"
+   ],
+   "big": true
+  },
+  "proglist_bool.hashtreeroot.proof.generated.bend": {
+   "name": "proglist_bool",
+   "generated_name": "Gt83D8B3D008",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_16.encode_ssz.proof.generated.bend": {
+   "name": "vec_bool_16",
+   "generated_name": "Gt1D9B3E1871",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt1D9B3E1871.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_16.decode_ssz.proof.generated.bend": {
+   "name": "vec_bool_16",
+   "generated_name": "Gt1D9B3E1871",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_boolg.bend",
+    "sub_Gt1D9B3E1871.bend",
+    "sub_unique_Gt1D9B3E1871.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_16.hashtreeroot.proof.generated.bend": {
+   "name": "vec_bool_16",
+   "generated_name": "Gt1D9B3E1871",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_1.encode_ssz.proof.generated.bend": {
+   "name": "vec_bool_1",
+   "generated_name": "GtAE3EF932C2",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtAE3EF932C2.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_1.decode_ssz.proof.generated.bend": {
+   "name": "vec_bool_1",
+   "generated_name": "GtAE3EF932C2",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_boolg.bend",
+    "sub_GtAE3EF932C2.bend",
+    "sub_unique_GtAE3EF932C2.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_1.hashtreeroot.proof.generated.bend": {
+   "name": "vec_bool_1",
+   "generated_name": "GtAE3EF932C2",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_2.encode_ssz.proof.generated.bend": {
+   "name": "vec_bool_2",
+   "generated_name": "Gt3771256492",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt3771256492.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_2.decode_ssz.proof.generated.bend": {
+   "name": "vec_bool_2",
+   "generated_name": "Gt3771256492",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_boolg.bend",
+    "sub_Gt3771256492.bend",
+    "sub_unique_Gt3771256492.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_2.hashtreeroot.proof.generated.bend": {
+   "name": "vec_bool_2",
+   "generated_name": "Gt3771256492",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_31.encode_ssz.proof.generated.bend": {
+   "name": "vec_bool_31",
+   "generated_name": "Gt9DF37A5216",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt9DF37A5216.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_31.decode_ssz.proof.generated.bend": {
+   "name": "vec_bool_31",
+   "generated_name": "Gt9DF37A5216",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_boolg.bend",
+    "sub_Gt9DF37A5216.bend",
+    "sub_unique_Gt9DF37A5216.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_31.hashtreeroot.proof.generated.bend": {
+   "name": "vec_bool_31",
+   "generated_name": "Gt9DF37A5216",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_3.encode_ssz.proof.generated.bend": {
+   "name": "vec_bool_3",
+   "generated_name": "Gt57090094FA",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt57090094FA.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_3.decode_ssz.proof.generated.bend": {
+   "name": "vec_bool_3",
+   "generated_name": "Gt57090094FA",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_boolg.bend",
+    "sub_Gt57090094FA.bend",
+    "sub_unique_Gt57090094FA.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_3.hashtreeroot.proof.generated.bend": {
+   "name": "vec_bool_3",
+   "generated_name": "Gt57090094FA",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_4.encode_ssz.proof.generated.bend": {
+   "name": "vec_bool_4",
+   "generated_name": "GtC57121EA56",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtC57121EA56.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_4.decode_ssz.proof.generated.bend": {
+   "name": "vec_bool_4",
+   "generated_name": "GtC57121EA56",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_boolg.bend",
+    "sub_GtC57121EA56.bend",
+    "sub_unique_GtC57121EA56.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_4.hashtreeroot.proof.generated.bend": {
+   "name": "vec_bool_4",
+   "generated_name": "GtC57121EA56",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_512.encode_ssz.proof.generated.bend": {
+   "name": "vec_bool_512",
+   "generated_name": "Gt34AE45611E",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt34AE45611E.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_512.decode_ssz.proof.generated.bend": {
+   "name": "vec_bool_512",
+   "generated_name": "Gt34AE45611E",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_boolg.bend",
+    "sub_Gt34AE45611E.bend",
+    "sub_unique_Gt34AE45611E.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_512.hashtreeroot.proof.generated.bend": {
+   "name": "vec_bool_512",
+   "generated_name": "Gt34AE45611E",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_513.encode_ssz.proof.generated.bend": {
+   "name": "vec_bool_513",
+   "generated_name": "GtEB2FD43D9B",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtEB2FD43D9B.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_513.decode_ssz.proof.generated.bend": {
+   "name": "vec_bool_513",
+   "generated_name": "GtEB2FD43D9B",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_boolg.bend",
+    "sub_GtEB2FD43D9B.bend",
+    "sub_unique_GtEB2FD43D9B.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_513.hashtreeroot.proof.generated.bend": {
+   "name": "vec_bool_513",
+   "generated_name": "GtEB2FD43D9B",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_5.encode_ssz.proof.generated.bend": {
+   "name": "vec_bool_5",
+   "generated_name": "Gt7FBB1934E8",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt7FBB1934E8.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_5.decode_ssz.proof.generated.bend": {
+   "name": "vec_bool_5",
+   "generated_name": "Gt7FBB1934E8",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_boolg.bend",
+    "sub_Gt7FBB1934E8.bend",
+    "sub_unique_Gt7FBB1934E8.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_5.hashtreeroot.proof.generated.bend": {
+   "name": "vec_bool_5",
+   "generated_name": "Gt7FBB1934E8",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_8.encode_ssz.proof.generated.bend": {
+   "name": "vec_bool_8",
+   "generated_name": "Gt526892A4DC",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt526892A4DC.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_8.decode_ssz.proof.generated.bend": {
+   "name": "vec_bool_8",
+   "generated_name": "Gt526892A4DC",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_boolg.bend",
+    "sub_Gt526892A4DC.bend",
+    "sub_unique_Gt526892A4DC.bend"
+   ],
+   "big": false
+  },
+  "vec_bool_8.hashtreeroot.proof.generated.bend": {
+   "name": "vec_bool_8",
+   "generated_name": "Gt526892A4DC",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "proglist_uint128.encode_ssz.proof.generated.bend": {
+   "name": "proglist_uint128",
+   "generated_name": "Gt1C2FA69562",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_plist_Gt1C2FA69562_enc.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint128.decode_ssz.proof.generated.bend": {
+   "name": "proglist_uint128",
+   "generated_name": "Gt1C2FA69562",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_plist_Gt1C2FA69562.bend",
+    "big_var_plist_Gt1C2FA69562_unique.bend",
+    "big_var_plist_Gt1C2FA69562_rej.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint128.hashtreeroot.proof.generated.bend": {
+   "name": "proglist_uint128",
+   "generated_name": "Gt1C2FA69562",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_16.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_16",
+   "generated_name": "Gt3EC8B89B94",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_16.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_16",
+   "generated_name": "Gt3EC8B89B94",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_16.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint128_16",
+   "generated_name": "Gt3EC8B89B94",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_1.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_1",
+   "generated_name": "Gt3FD98F54A5",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_1.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_1",
+   "generated_name": "Gt3FD98F54A5",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_1.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint128_1",
+   "generated_name": "Gt3FD98F54A5",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_2.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_2",
+   "generated_name": "Gt7D65FF3A10",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_2.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_2",
+   "generated_name": "Gt7D65FF3A10",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_2.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint128_2",
+   "generated_name": "Gt7D65FF3A10",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_31.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_31",
+   "generated_name": "Gt6B1336E534",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_31.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_31",
+   "generated_name": "Gt6B1336E534",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_31.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint128_31",
+   "generated_name": "Gt6B1336E534",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_3.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_3",
+   "generated_name": "Gt7600AB7870",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_3.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_3",
+   "generated_name": "Gt7600AB7870",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_3.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint128_3",
+   "generated_name": "Gt7600AB7870",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_4.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_4",
+   "generated_name": "GtB0CCEA154C",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_4.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_4",
+   "generated_name": "GtB0CCEA154C",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_4.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint128_4",
+   "generated_name": "GtB0CCEA154C",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_512.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_512",
+   "generated_name": "Gt7274F61A0F",
+   "op": "encode_ssz",
+   "files": [
+    "spec_garr_Gt7274F61A0F.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_512.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_512",
+   "generated_name": "Gt7274F61A0F",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_Gt7274F61A0F.bend",
+    "spec_garr_Gt7274F61A0F.bend",
+    "spec_garr_unique_Gt7274F61A0F.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_512.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint128_512",
+   "generated_name": "Gt7274F61A0F",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_513.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_513",
+   "generated_name": "Gt9EA902108D",
+   "op": "encode_ssz",
+   "files": [
+    "spec_garr_Gt9EA902108D.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_513.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_513",
+   "generated_name": "Gt9EA902108D",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_Gt9EA902108D.bend",
+    "spec_garr_Gt9EA902108D.bend",
+    "spec_garr_unique_Gt9EA902108D.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_513.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint128_513",
+   "generated_name": "Gt9EA902108D",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_5.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_5",
+   "generated_name": "GtBB42F83A45",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_5.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_5",
+   "generated_name": "GtBB42F83A45",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_5.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint128_5",
+   "generated_name": "GtBB42F83A45",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_8.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_8",
+   "generated_name": "Gt3E2A057F33",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_8.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint128_8",
+   "generated_name": "Gt3E2A057F33",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint128_8.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint128_8",
+   "generated_name": "Gt3E2A057F33",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "proglist_uint8.encode_ssz.proof.generated.bend": {
+   "name": "proglist_uint8",
+   "generated_name": "GtDE4B86A990",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_plist_GtDE4B86A990_enc.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint8.decode_ssz.proof.generated.bend": {
+   "name": "proglist_uint8",
+   "generated_name": "GtDE4B86A990",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_plist_GtDE4B86A990_top.bend",
+    "big_var_plist_GtDE4B86A990_top_unique.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint8.hashtreeroot.proof.generated.bend": {
+   "name": "proglist_uint8",
+   "generated_name": "GtDE4B86A990",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_16.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_16",
+   "generated_name": "Gt28ED72E3EF",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt28ED72E3EF.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_16.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_16",
+   "generated_name": "Gt28ED72E3EF",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "sub_Gt28ED72E3EF.bend",
+    "sub_unique_Gt28ED72E3EF.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_16.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint8_16",
+   "generated_name": "Gt28ED72E3EF",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_1.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_1",
+   "generated_name": "GtB85E1BC748",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtB85E1BC748.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_1.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_1",
+   "generated_name": "GtB85E1BC748",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "sub_GtB85E1BC748.bend",
+    "sub_unique_GtB85E1BC748.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_1.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint8_1",
+   "generated_name": "GtB85E1BC748",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_2.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_2",
+   "generated_name": "Gt3429157FEB",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt3429157FEB.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_2.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_2",
+   "generated_name": "Gt3429157FEB",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "sub_Gt3429157FEB.bend",
+    "sub_unique_Gt3429157FEB.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_2.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint8_2",
+   "generated_name": "Gt3429157FEB",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_31.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_31",
+   "generated_name": "GtC0FC7B166A",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtC0FC7B166A.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_31.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_31",
+   "generated_name": "GtC0FC7B166A",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "sub_GtC0FC7B166A.bend",
+    "sub_unique_GtC0FC7B166A.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_31.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint8_31",
+   "generated_name": "GtC0FC7B166A",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_3.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_3",
+   "generated_name": "GtC19E8053EB",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtC19E8053EB.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_3.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_3",
+   "generated_name": "GtC19E8053EB",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "sub_GtC19E8053EB.bend",
+    "sub_unique_GtC19E8053EB.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_3.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint8_3",
+   "generated_name": "GtC19E8053EB",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_4.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_4",
+   "generated_name": "Gt75C1995C88",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt75C1995C88.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_4.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_4",
+   "generated_name": "Gt75C1995C88",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "sub_Gt75C1995C88.bend",
+    "sub_unique_Gt75C1995C88.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_4.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint8_4",
+   "generated_name": "Gt75C1995C88",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_512.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_512",
+   "generated_name": "Gt28605B5D5C",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt28605B5D5C.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_512.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_512",
+   "generated_name": "Gt28605B5D5C",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g0.bend",
+    "sub_Gt28605B5D5C.bend",
+    "sub_unique_Gt28605B5D5C.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_512.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint8_512",
+   "generated_name": "Gt28605B5D5C",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_513.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_513",
+   "generated_name": "Gt2CD118DF5F",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt2CD118DF5F.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_513.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_513",
+   "generated_name": "Gt2CD118DF5F",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_Gt2CD118DF5F.bend",
+    "sub_unique_Gt2CD118DF5F.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_513.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint8_513",
+   "generated_name": "Gt2CD118DF5F",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_5.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_5",
+   "generated_name": "GtF3865AEE9A",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtF3865AEE9A.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_5.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_5",
+   "generated_name": "GtF3865AEE9A",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_GtF3865AEE9A.bend",
+    "sub_unique_GtF3865AEE9A.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_5.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint8_5",
+   "generated_name": "GtF3865AEE9A",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_8.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_8",
+   "generated_name": "GtA8100D747D",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtA8100D747D.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_8.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint8_8",
+   "generated_name": "GtA8100D747D",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_GtA8100D747D.bend",
+    "sub_unique_GtA8100D747D.bend"
+   ],
+   "big": false
+  },
+  "vec_uint8_8.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint8_8",
+   "generated_name": "GtA8100D747D",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "proglist_uint16.encode_ssz.proof.generated.bend": {
+   "name": "proglist_uint16",
+   "generated_name": "GtF23A2FB97E",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_plist_GtF23A2FB97E_enc.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint16.decode_ssz.proof.generated.bend": {
+   "name": "proglist_uint16",
+   "generated_name": "GtF23A2FB97E",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_plist_GtF23A2FB97E_top.bend",
+    "big_var_plist_GtF23A2FB97E_top_unique.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint16.hashtreeroot.proof.generated.bend": {
+   "name": "proglist_uint16",
+   "generated_name": "GtF23A2FB97E",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_16.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_16",
+   "generated_name": "GtAEB382AD1F",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtAEB382AD1F.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_16.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_16",
+   "generated_name": "GtAEB382AD1F",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_GtAEB382AD1F.bend",
+    "sub_unique_GtAEB382AD1F.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_16.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint16_16",
+   "generated_name": "GtAEB382AD1F",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_1.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_1",
+   "generated_name": "GtE6006F6F55",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtE6006F6F55.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_1.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_1",
+   "generated_name": "GtE6006F6F55",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_GtE6006F6F55.bend",
+    "sub_unique_GtE6006F6F55.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_1.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint16_1",
+   "generated_name": "GtE6006F6F55",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_2.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_2",
+   "generated_name": "Gt04170D6AA7",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt04170D6AA7.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_2.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_2",
+   "generated_name": "Gt04170D6AA7",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_Gt04170D6AA7.bend",
+    "sub_unique_Gt04170D6AA7.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_2.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint16_2",
+   "generated_name": "Gt04170D6AA7",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_31.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_31",
+   "generated_name": "Gt9333E6513D",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt9333E6513D.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_31.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_31",
+   "generated_name": "Gt9333E6513D",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_Gt9333E6513D.bend",
+    "sub_unique_Gt9333E6513D.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_31.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint16_31",
+   "generated_name": "Gt9333E6513D",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_3.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_3",
+   "generated_name": "Gt19F04F79B8",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt19F04F79B8.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_3.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_3",
+   "generated_name": "Gt19F04F79B8",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_Gt19F04F79B8.bend",
+    "sub_unique_Gt19F04F79B8.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_3.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint16_3",
+   "generated_name": "Gt19F04F79B8",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_4.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_4",
+   "generated_name": "Gt6463DC73A8",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt6463DC73A8.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_4.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_4",
+   "generated_name": "Gt6463DC73A8",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_Gt6463DC73A8.bend",
+    "sub_unique_Gt6463DC73A8.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_4.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint16_4",
+   "generated_name": "Gt6463DC73A8",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_512.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_512",
+   "generated_name": "Gt2FF8722A75",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt2FF8722A75.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_512.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_512",
+   "generated_name": "Gt2FF8722A75",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_Gt2FF8722A75.bend",
+    "sub_unique_Gt2FF8722A75.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_512.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint16_512",
+   "generated_name": "Gt2FF8722A75",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_513.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_513",
+   "generated_name": "Gt5BE68AF2C7",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt5BE68AF2C7.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_513.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_513",
+   "generated_name": "Gt5BE68AF2C7",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_Gt5BE68AF2C7.bend",
+    "sub_unique_Gt5BE68AF2C7.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_513.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint16_513",
+   "generated_name": "Gt5BE68AF2C7",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_5.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_5",
+   "generated_name": "Gt89824BEACE",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt89824BEACE.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_5.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_5",
+   "generated_name": "Gt89824BEACE",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_Gt89824BEACE.bend",
+    "sub_unique_Gt89824BEACE.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_5.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint16_5",
+   "generated_name": "Gt89824BEACE",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_8.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_8",
+   "generated_name": "Gt39CAD03032",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt39CAD03032.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_8.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint16_8",
+   "generated_name": "Gt39CAD03032",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "sub_Gt39CAD03032.bend",
+    "sub_unique_Gt39CAD03032.bend"
+   ],
+   "big": false
+  },
+  "vec_uint16_8.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint16_8",
+   "generated_name": "Gt39CAD03032",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "proglist_uint256.encode_ssz.proof.generated.bend": {
+   "name": "proglist_uint256",
+   "generated_name": "GtA8457965E2",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_plist_GtA8457965E2_enc.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint256.decode_ssz.proof.generated.bend": {
+   "name": "proglist_uint256",
+   "generated_name": "GtA8457965E2",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_plist_GtA8457965E2.bend",
+    "big_var_plist_GtA8457965E2_unique.bend",
+    "big_var_plist_GtA8457965E2_rej.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint256.hashtreeroot.proof.generated.bend": {
+   "name": "proglist_uint256",
+   "generated_name": "GtA8457965E2",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_16.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_16",
+   "generated_name": "Gt3E6E18CD57",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_16.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_16",
+   "generated_name": "Gt3E6E18CD57",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_16.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint256_16",
+   "generated_name": "Gt3E6E18CD57",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_1.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_1",
+   "generated_name": "GtBBFD66E011",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_1.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_1",
+   "generated_name": "GtBBFD66E011",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_1.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint256_1",
+   "generated_name": "GtBBFD66E011",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_2.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_2",
+   "generated_name": "GtB91D4D285D",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_2.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_2",
+   "generated_name": "GtB91D4D285D",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g1.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_2.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint256_2",
+   "generated_name": "GtB91D4D285D",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_31.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_31",
+   "generated_name": "Gt6E9B243B7C",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_31.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_31",
+   "generated_name": "Gt6E9B243B7C",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_0.bend",
+    "spec_gunique_0.bend",
+    "spec_grepr_0.bend",
+    "spec_ginput_0.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_31.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint256_31",
+   "generated_name": "Gt6E9B243B7C",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_3.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_3",
+   "generated_name": "Gt2E7060B297",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_3.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_3",
+   "generated_name": "Gt2E7060B297",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_3.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint256_3",
+   "generated_name": "Gt2E7060B297",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_4.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_4",
+   "generated_name": "Gt74B2AF1CB3",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_4.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_4",
+   "generated_name": "Gt74B2AF1CB3",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_4.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint256_4",
+   "generated_name": "Gt74B2AF1CB3",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_512.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_512",
+   "generated_name": "Gt274A0B8DC2",
+   "op": "encode_ssz",
+   "files": [
+    "spec_garr_Gt274A0B8DC2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_512.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_512",
+   "generated_name": "Gt274A0B8DC2",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_Gt274A0B8DC2.bend",
+    "spec_garr_Gt274A0B8DC2.bend",
+    "spec_garr_unique_Gt274A0B8DC2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_512.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint256_512",
+   "generated_name": "Gt274A0B8DC2",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_513.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_513",
+   "generated_name": "Gt0A3B6B4128",
+   "op": "encode_ssz",
+   "files": [
+    "spec_garr_Gt0A3B6B4128.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_513.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_513",
+   "generated_name": "Gt0A3B6B4128",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_Gt0A3B6B4128.bend",
+    "spec_garr_Gt0A3B6B4128.bend",
+    "spec_garr_unique_Gt0A3B6B4128.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_513.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint256_513",
+   "generated_name": "Gt0A3B6B4128",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_5.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_5",
+   "generated_name": "Gt0B1B711C4D",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_5.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_5",
+   "generated_name": "Gt0B1B711C4D",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_5.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint256_5",
+   "generated_name": "Gt0B1B711C4D",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_8.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_8",
+   "generated_name": "GtFAE59DA275",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_8.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint256_8",
+   "generated_name": "GtFAE59DA275",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint256_8.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint256_8",
+   "generated_name": "GtFAE59DA275",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "proglist_uint32.encode_ssz.proof.generated.bend": {
+   "name": "proglist_uint32",
+   "generated_name": "Gt3A9420DD8E",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_plist_Gt3A9420DD8E_enc.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint32.decode_ssz.proof.generated.bend": {
+   "name": "proglist_uint32",
+   "generated_name": "Gt3A9420DD8E",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_plist_Gt3A9420DD8E.bend",
+    "big_var_plist_Gt3A9420DD8E_unique.bend",
+    "big_var_plist_Gt3A9420DD8E_rej.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint32.hashtreeroot.proof.generated.bend": {
+   "name": "proglist_uint32",
+   "generated_name": "Gt3A9420DD8E",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_16.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_16",
+   "generated_name": "Gt3CC580499F",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_16.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_16",
+   "generated_name": "Gt3CC580499F",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_16.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint32_16",
+   "generated_name": "Gt3CC580499F",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_1.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_1",
+   "generated_name": "Gt669C528764",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_1.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_1",
+   "generated_name": "Gt669C528764",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_1.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint32_1",
+   "generated_name": "Gt669C528764",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_2.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_2",
+   "generated_name": "GtF45E42B273",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_2.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_2",
+   "generated_name": "GtF45E42B273",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_2.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint32_2",
+   "generated_name": "GtF45E42B273",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_31.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_31",
+   "generated_name": "GtE528AAE3C6",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_31.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_31",
+   "generated_name": "GtE528AAE3C6",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_31.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint32_31",
+   "generated_name": "GtE528AAE3C6",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_3.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_3",
+   "generated_name": "GtD1AEF07F7D",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_3.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_3",
+   "generated_name": "GtD1AEF07F7D",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_3.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint32_3",
+   "generated_name": "GtD1AEF07F7D",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_4.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_4",
+   "generated_name": "Gt240C147AA2",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_4.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_4",
+   "generated_name": "Gt240C147AA2",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_4.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint32_4",
+   "generated_name": "Gt240C147AA2",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_512.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_512",
+   "generated_name": "Gt13AFE546ED",
+   "op": "encode_ssz",
+   "files": [
+    "spec_garr_Gt13AFE546ED.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_512.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_512",
+   "generated_name": "Gt13AFE546ED",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_garr_Gt13AFE546ED.bend",
+    "spec_garr_unique_Gt13AFE546ED.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_512.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint32_512",
+   "generated_name": "Gt13AFE546ED",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_513.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_513",
+   "generated_name": "Gt53D2408A5F",
+   "op": "encode_ssz",
+   "files": [
+    "spec_garr_Gt53D2408A5F.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_513.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_513",
+   "generated_name": "Gt53D2408A5F",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_garr_Gt53D2408A5F.bend",
+    "spec_garr_unique_Gt53D2408A5F.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_513.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint32_513",
+   "generated_name": "Gt53D2408A5F",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_5.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_5",
+   "generated_name": "Gt1719057EB7",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_5.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_5",
+   "generated_name": "Gt1719057EB7",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_5.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint32_5",
+   "generated_name": "Gt1719057EB7",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_8.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_8",
+   "generated_name": "GtCCF6FFA0A0",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_8.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint32_8",
+   "generated_name": "GtCCF6FFA0A0",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_1.bend",
+    "spec_gunique_1.bend",
+    "spec_grepr_1.bend",
+    "spec_ginput_1.bend"
+   ],
+   "big": false
+  },
+  "vec_uint32_8.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint32_8",
+   "generated_name": "GtCCF6FFA0A0",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "proglist_uint64.encode_ssz.proof.generated.bend": {
+   "name": "proglist_uint64",
+   "generated_name": "GtE83F21B20A",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_plist_GtE83F21B20A_enc.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint64.decode_ssz.proof.generated.bend": {
+   "name": "proglist_uint64",
+   "generated_name": "GtE83F21B20A",
+   "op": "decode_ssz",
+   "files": [
+    "big_var_plist_GtE83F21B20A.bend",
+    "big_var_plist_GtE83F21B20A_unique.bend",
+    "big_var_plist_GtE83F21B20A_rej.bend"
+   ],
+   "big": true
+  },
+  "proglist_uint64.hashtreeroot.proof.generated.bend": {
+   "name": "proglist_uint64",
+   "generated_name": "GtE83F21B20A",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_16.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_16",
+   "generated_name": "Gt0B4EF17D71",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_16.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_16",
+   "generated_name": "Gt0B4EF17D71",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g2.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_16.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint64_16",
+   "generated_name": "Gt0B4EF17D71",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_1.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_1",
+   "generated_name": "GtADC8DCD962",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_1.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_1",
+   "generated_name": "GtADC8DCD962",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_1.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint64_1",
+   "generated_name": "GtADC8DCD962",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_2.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_2",
+   "generated_name": "GtC923FCB2DA",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_2.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_2",
+   "generated_name": "GtC923FCB2DA",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_2.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint64_2",
+   "generated_name": "GtC923FCB2DA",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_31.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_31",
+   "generated_name": "Gt7D1CD7363A",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_31.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_31",
+   "generated_name": "Gt7D1CD7363A",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_31.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint64_31",
+   "generated_name": "Gt7D1CD7363A",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_3.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_3",
+   "generated_name": "Gt8E507C4540",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_3.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_3",
+   "generated_name": "Gt8E507C4540",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_3.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint64_3",
+   "generated_name": "Gt8E507C4540",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_4.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_4",
+   "generated_name": "Gt46F5D7703F",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_4.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_4",
+   "generated_name": "Gt46F5D7703F",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_4.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint64_4",
+   "generated_name": "Gt46F5D7703F",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_512.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_512",
+   "generated_name": "Gt843A1262ED",
+   "op": "encode_ssz",
+   "files": [
+    "spec_garr_Gt843A1262ED.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_512.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_512",
+   "generated_name": "Gt843A1262ED",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "spec_garr_Gt843A1262ED.bend",
+    "spec_garr_unique_Gt843A1262ED.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_512.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint64_512",
+   "generated_name": "Gt843A1262ED",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_513.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_513",
+   "generated_name": "Gt10D6F42D74",
+   "op": "encode_ssz",
+   "files": [
+    "spec_garr_Gt10D6F42D74.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_513.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_513",
+   "generated_name": "Gt10D6F42D74",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "spec_garr_Gt10D6F42D74.bend",
+    "spec_garr_unique_Gt10D6F42D74.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_513.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint64_513",
+   "generated_name": "Gt10D6F42D74",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_5.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_5",
+   "generated_name": "Gt8FB0CF9679",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_5.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_5",
+   "generated_name": "Gt8FB0CF9679",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_5.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint64_5",
+   "generated_name": "Gt8FB0CF9679",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_8.encode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_8",
+   "generated_name": "GtE470919895",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_8.decode_ssz.proof.generated.bend": {
+   "name": "vec_uint64_8",
+   "generated_name": "GtE470919895",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "vec_uint64_8.hashtreeroot.proof.generated.bend": {
+   "name": "vec_uint64_8",
+   "generated_name": "GtE470919895",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "ProgressiveTestStruct.encode_ssz.proof.generated.bend": {
+   "name": "ProgressiveTestStruct",
+   "generated_name": "Gc221EC01D83",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_Gc221EC01D83_enc.bend"
+   ],
+   "big": true
+  },
+  "ProgressiveTestStruct.decode_ssz.proof.generated.bend": {
+   "name": "ProgressiveTestStruct",
+   "generated_name": "Gc221EC01D83",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_Gc221EC01D83.bend",
+    "var_codec_Gc221EC01D83_unique.bend"
+   ],
+   "big": false
+  },
+  "ProgressiveTestStruct.hashtreeroot.proof.generated.bend": {
+   "name": "ProgressiveTestStruct",
+   "generated_name": "Gc221EC01D83",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes2.bend"
+   ],
+   "big": false
+  },
+  "BitsStruct.encode_ssz.proof.generated.bend": {
+   "name": "BitsStruct",
+   "generated_name": "Gc85FA758A04",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_Gc85FA758A04_enc.bend"
+   ],
+   "big": true
+  },
+  "BitsStruct.decode_ssz.proof.generated.bend": {
+   "name": "BitsStruct",
+   "generated_name": "Gc85FA758A04",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_Gc85FA758A04.bend",
+    "var_codec_Gc85FA758A04_unique.bend"
+   ],
+   "big": false
+  },
+  "BitsStruct.hashtreeroot.proof.generated.bend": {
+   "name": "BitsStruct",
+   "generated_name": "Gc85FA758A04",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes2.bend"
+   ],
+   "big": false
+  },
+  "ProgressiveBitsStruct.encode_ssz.proof.generated.bend": {
+   "name": "ProgressiveBitsStruct",
+   "generated_name": "Gc60805EC295",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_Gc60805EC295_enc.bend"
+   ],
+   "big": true
+  },
+  "ProgressiveBitsStruct.decode_ssz.proof.generated.bend": {
+   "name": "ProgressiveBitsStruct",
+   "generated_name": "Gc60805EC295",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_Gc60805EC295.bend",
+    "var_codec_Gc60805EC295_unique.bend"
+   ],
+   "big": false
+  },
+  "ProgressiveBitsStruct.hashtreeroot.proof.generated.bend": {
+   "name": "ProgressiveBitsStruct",
+   "generated_name": "Gc60805EC295",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes2.bend"
+   ],
+   "big": false
+  },
+  "FixedTestStruct.encode_ssz.proof.generated.bend": {
+   "name": "FixedTestStruct",
+   "generated_name": "GcDC3E457711",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GcDC3E457711.bend"
+   ],
+   "big": false
+  },
+  "FixedTestStruct.decode_ssz.proof.generated.bend": {
+   "name": "FixedTestStruct",
+   "generated_name": "GcDC3E457711",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "sub_GcDC3E457711.bend",
+    "sub_unique_GcDC3E457711.bend"
+   ],
+   "big": false
+  },
+  "FixedTestStruct.hashtreeroot.proof.generated.bend": {
+   "name": "FixedTestStruct",
+   "generated_name": "GcDC3E457711",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "SingleFieldTestStruct.encode_ssz.proof.generated.bend": {
+   "name": "SingleFieldTestStruct",
+   "generated_name": "Gc74A8F5F17F",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gc74A8F5F17F.bend"
+   ],
+   "big": false
+  },
+  "SingleFieldTestStruct.decode_ssz.proof.generated.bend": {
+   "name": "SingleFieldTestStruct",
+   "generated_name": "Gc74A8F5F17F",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "sub_Gc74A8F5F17F.bend",
+    "sub_unique_Gc74A8F5F17F.bend"
+   ],
+   "big": false
+  },
+  "SingleFieldTestStruct.hashtreeroot.proof.generated.bend": {
+   "name": "SingleFieldTestStruct",
+   "generated_name": "Gc74A8F5F17F",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "VarTestStruct.encode_ssz.proof.generated.bend": {
+   "name": "VarTestStruct",
+   "generated_name": "Gc465214E502",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_Gc465214E502_enc.bend"
+   ],
+   "big": true
+  },
+  "VarTestStruct.decode_ssz.proof.generated.bend": {
+   "name": "VarTestStruct",
+   "generated_name": "Gc465214E502",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_Gc465214E502.bend",
+    "var_codec_Gc465214E502_unique.bend"
+   ],
+   "big": false
+  },
+  "VarTestStruct.hashtreeroot.proof.generated.bend": {
+   "name": "VarTestStruct",
+   "generated_name": "Gc465214E502",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "ComplexTestStruct.encode_ssz.proof.generated.bend": {
+   "name": "ComplexTestStruct",
+   "generated_name": "Gc56D855869F",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_Gc56D855869F_enc.bend"
+   ],
+   "big": true
+  },
+  "ComplexTestStruct.decode_ssz.proof.generated.bend": {
+   "name": "ComplexTestStruct",
+   "generated_name": "Gc56D855869F",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_Gc56D855869F.bend",
+    "var_codec_Gc56D855869F_unique.bend"
+   ],
+   "big": false
+  },
+  "ComplexTestStruct.hashtreeroot.proof.generated.bend": {
+   "name": "ComplexTestStruct",
+   "generated_name": "Gc56D855869F",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "SmallTestStruct.encode_ssz.proof.generated.bend": {
+   "name": "SmallTestStruct",
+   "generated_name": "Gc4ED9619F50",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gc4ED9619F50.bend"
+   ],
+   "big": false
+  },
+  "SmallTestStruct.decode_ssz.proof.generated.bend": {
+   "name": "SmallTestStruct",
+   "generated_name": "Gc4ED9619F50",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "sub_Gc4ED9619F50.bend",
+    "sub_unique_Gc4ED9619F50.bend"
+   ],
+   "big": false
+  },
+  "SmallTestStruct.hashtreeroot.proof.generated.bend": {
+   "name": "SmallTestStruct",
+   "generated_name": "Gc4ED9619F50",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "bitlist_15.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_15",
+   "generated_name": "GtDB1482527D",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_GtDB1482527D.bend"
+   ],
+   "big": false
+  },
+  "bitlist_15.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_15",
+   "generated_name": "GtDB1482527D",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_GtDB1482527D.bend",
+    "var_bits_GtDB1482527D_unique.bend",
+    "var_bits_GtDB1482527D_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_15.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_15",
+   "generated_name": "GtDB1482527D",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_16.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_16",
+   "generated_name": "Gt7C1C13B292",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_Gt7C1C13B292.bend"
+   ],
+   "big": false
+  },
+  "bitlist_16.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_16",
+   "generated_name": "Gt7C1C13B292",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_Gt7C1C13B292.bend",
+    "var_bits_Gt7C1C13B292_unique.bend",
+    "var_bits_Gt7C1C13B292_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_16.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_16",
+   "generated_name": "Gt7C1C13B292",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_17.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_17",
+   "generated_name": "GtAA99FAAC9D",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_GtAA99FAAC9D.bend"
+   ],
+   "big": false
+  },
+  "bitlist_17.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_17",
+   "generated_name": "GtAA99FAAC9D",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_GtAA99FAAC9D.bend",
+    "var_bits_GtAA99FAAC9D_unique.bend",
+    "var_bits_GtAA99FAAC9D_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_17.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_17",
+   "generated_name": "GtAA99FAAC9D",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_1.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_1",
+   "generated_name": "Gt94B70684B5",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_Gt94B70684B5.bend"
+   ],
+   "big": false
+  },
+  "bitlist_1.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_1",
+   "generated_name": "Gt94B70684B5",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_Gt94B70684B5.bend",
+    "var_bits_Gt94B70684B5_unique.bend",
+    "var_bits_Gt94B70684B5_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_1.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_1",
+   "generated_name": "Gt94B70684B5",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_2.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_2",
+   "generated_name": "GtCF587DD386",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_GtCF587DD386.bend"
+   ],
+   "big": false
+  },
+  "bitlist_2.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_2",
+   "generated_name": "GtCF587DD386",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_GtCF587DD386.bend",
+    "var_bits_GtCF587DD386_unique.bend",
+    "var_bits_GtCF587DD386_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_2.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_2",
+   "generated_name": "GtCF587DD386",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_31.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_31",
+   "generated_name": "Gt4B1BA0C81D",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_Gt4B1BA0C81D.bend"
+   ],
+   "big": false
+  },
+  "bitlist_31.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_31",
+   "generated_name": "Gt4B1BA0C81D",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_Gt4B1BA0C81D.bend",
+    "var_bits_Gt4B1BA0C81D_unique.bend",
+    "var_bits_Gt4B1BA0C81D_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_31.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_31",
+   "generated_name": "Gt4B1BA0C81D",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_32.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_32",
+   "generated_name": "Gt2F34855D3D",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_Gt2F34855D3D.bend"
+   ],
+   "big": false
+  },
+  "bitlist_32.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_32",
+   "generated_name": "Gt2F34855D3D",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_Gt2F34855D3D.bend",
+    "var_bits_Gt2F34855D3D_unique.bend",
+    "var_bits_Gt2F34855D3D_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_32.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_32",
+   "generated_name": "Gt2F34855D3D",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_33.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_33",
+   "generated_name": "Gt039DD44FD8",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_Gt039DD44FD8.bend"
+   ],
+   "big": false
+  },
+  "bitlist_33.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_33",
+   "generated_name": "Gt039DD44FD8",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_Gt039DD44FD8.bend",
+    "var_bits_Gt039DD44FD8_unique.bend",
+    "var_bits_Gt039DD44FD8_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_33.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_33",
+   "generated_name": "Gt039DD44FD8",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_3.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_3",
+   "generated_name": "GtC847E618FA",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_GtC847E618FA.bend"
+   ],
+   "big": false
+  },
+  "bitlist_3.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_3",
+   "generated_name": "GtC847E618FA",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_GtC847E618FA.bend",
+    "var_bits_GtC847E618FA_unique.bend",
+    "var_bits_GtC847E618FA_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_3.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_3",
+   "generated_name": "GtC847E618FA",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_4.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_4",
+   "generated_name": "Gt484D1ADAFE",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_Gt484D1ADAFE.bend"
+   ],
+   "big": false
+  },
+  "bitlist_4.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_4",
+   "generated_name": "Gt484D1ADAFE",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_Gt484D1ADAFE.bend",
+    "var_bits_Gt484D1ADAFE_unique.bend",
+    "var_bits_Gt484D1ADAFE_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_4.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_4",
+   "generated_name": "Gt484D1ADAFE",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_511.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_511",
+   "generated_name": "Gt21E1483EE1",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_Gt21E1483EE1.bend"
+   ],
+   "big": false
+  },
+  "bitlist_511.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_511",
+   "generated_name": "Gt21E1483EE1",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_Gt21E1483EE1.bend",
+    "var_bits_Gt21E1483EE1_unique.bend",
+    "var_bits_Gt21E1483EE1_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_511.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_511",
+   "generated_name": "Gt21E1483EE1",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_512.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_512",
+   "generated_name": "Gt38F5890C13",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_Gt38F5890C13.bend"
+   ],
+   "big": false
+  },
+  "bitlist_512.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_512",
+   "generated_name": "Gt38F5890C13",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_Gt38F5890C13.bend",
+    "var_bits_Gt38F5890C13_unique.bend",
+    "var_bits_Gt38F5890C13_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_512.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_512",
+   "generated_name": "Gt38F5890C13",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_513.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_513",
+   "generated_name": "Gt44F1B6940F",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_Gt44F1B6940F.bend"
+   ],
+   "big": false
+  },
+  "bitlist_513.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_513",
+   "generated_name": "Gt44F1B6940F",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_Gt44F1B6940F.bend",
+    "var_bits_Gt44F1B6940F_unique.bend",
+    "var_bits_Gt44F1B6940F_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_513.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_513",
+   "generated_name": "Gt44F1B6940F",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_5.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_5",
+   "generated_name": "GtF91FD5FC73",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_GtF91FD5FC73.bend"
+   ],
+   "big": false
+  },
+  "bitlist_5.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_5",
+   "generated_name": "GtF91FD5FC73",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_GtF91FD5FC73.bend",
+    "var_bits_GtF91FD5FC73_unique.bend",
+    "var_bits_GtF91FD5FC73_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_5.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_5",
+   "generated_name": "GtF91FD5FC73",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_6.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_6",
+   "generated_name": "Gt98B8C9F262",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_Gt98B8C9F262.bend"
+   ],
+   "big": false
+  },
+  "bitlist_6.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_6",
+   "generated_name": "Gt98B8C9F262",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_Gt98B8C9F262.bend",
+    "var_bits_Gt98B8C9F262_unique.bend",
+    "var_bits_Gt98B8C9F262_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_6.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_6",
+   "generated_name": "Gt98B8C9F262",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_7.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_7",
+   "generated_name": "GtC063F5D9E0",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_GtC063F5D9E0.bend"
+   ],
+   "big": false
+  },
+  "bitlist_7.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_7",
+   "generated_name": "GtC063F5D9E0",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_GtC063F5D9E0.bend",
+    "var_bits_GtC063F5D9E0_unique.bend",
+    "var_bits_GtC063F5D9E0_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_7.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_7",
+   "generated_name": "GtC063F5D9E0",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_8.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_8",
+   "generated_name": "GtD291A17219",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_GtD291A17219.bend"
+   ],
+   "big": false
+  },
+  "bitlist_8.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_8",
+   "generated_name": "GtD291A17219",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_GtD291A17219.bend",
+    "var_bits_GtD291A17219_unique.bend",
+    "var_bits_GtD291A17219_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_8.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_8",
+   "generated_name": "GtD291A17219",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitlist_9.encode_ssz.proof.generated.bend": {
+   "name": "bitlist_9",
+   "generated_name": "Gt9D356BAF82",
+   "op": "encode_ssz",
+   "files": [
+    "var_bits_enc_Gt9D356BAF82.bend"
+   ],
+   "big": false
+  },
+  "bitlist_9.decode_ssz.proof.generated.bend": {
+   "name": "bitlist_9",
+   "generated_name": "Gt9D356BAF82",
+   "op": "decode_ssz",
+   "files": [
+    "var_bits_Gt9D356BAF82.bend",
+    "var_bits_Gt9D356BAF82_unique.bend",
+    "var_bits_Gt9D356BAF82_rej.bend"
+   ],
+   "big": false
+  },
+  "bitlist_9.hashtreeroot.proof.generated.bend": {
+   "name": "bitlist_9",
+   "generated_name": "Gt9D356BAF82",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes.bend"
+   ],
+   "big": false
+  },
+  "bitvector_15.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_15",
+   "generated_name": "GtEDF530C7B9",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtEDF530C7B9.bend"
+   ],
+   "big": false
+  },
+  "bitvector_15.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_15",
+   "generated_name": "GtEDF530C7B9",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_GtEDF530C7B9.bend",
+    "sub_unique_GtEDF530C7B9.bend"
+   ],
+   "big": false
+  },
+  "bitvector_15.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_15",
+   "generated_name": "GtEDF530C7B9",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_16.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_16",
+   "generated_name": "GtED805B7C93",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtED805B7C93.bend"
+   ],
+   "big": false
+  },
+  "bitvector_16.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_16",
+   "generated_name": "GtED805B7C93",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "sub_GtED805B7C93.bend",
+    "sub_unique_GtED805B7C93.bend"
+   ],
+   "big": false
+  },
+  "bitvector_16.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_16",
+   "generated_name": "GtED805B7C93",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_17.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_17",
+   "generated_name": "GtFF7C03E8A0",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtFF7C03E8A0.bend"
+   ],
+   "big": false
+  },
+  "bitvector_17.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_17",
+   "generated_name": "GtFF7C03E8A0",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_GtFF7C03E8A0.bend",
+    "sub_unique_GtFF7C03E8A0.bend"
+   ],
+   "big": false
+  },
+  "bitvector_17.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_17",
+   "generated_name": "GtFF7C03E8A0",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_1.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_1",
+   "generated_name": "GtFCF8066C33",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtFCF8066C33.bend"
+   ],
+   "big": false
+  },
+  "bitvector_1.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_1",
+   "generated_name": "GtFCF8066C33",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_GtFCF8066C33.bend",
+    "sub_unique_GtFCF8066C33.bend"
+   ],
+   "big": false
+  },
+  "bitvector_1.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_1",
+   "generated_name": "GtFCF8066C33",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_2.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_2",
+   "generated_name": "Gt9368483BAB",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt9368483BAB.bend"
+   ],
+   "big": false
+  },
+  "bitvector_2.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_2",
+   "generated_name": "Gt9368483BAB",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_Gt9368483BAB.bend",
+    "sub_unique_Gt9368483BAB.bend"
+   ],
+   "big": false
+  },
+  "bitvector_2.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_2",
+   "generated_name": "Gt9368483BAB",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_31.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_31",
+   "generated_name": "GtEDFB713194",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtEDFB713194.bend"
+   ],
+   "big": false
+  },
+  "bitvector_31.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_31",
+   "generated_name": "GtEDFB713194",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_GtEDFB713194.bend",
+    "sub_unique_GtEDFB713194.bend"
+   ],
+   "big": false
+  },
+  "bitvector_31.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_31",
+   "generated_name": "GtEDFB713194",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_32.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_32",
+   "generated_name": "GtBBF12DAB28",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_2.bend",
+    "gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "bitvector_32.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_32",
+   "generated_name": "GtBBF12DAB28",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "gcodec_0.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "bitvector_32.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_32",
+   "generated_name": "GtBBF12DAB28",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "bitvector_33.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_33",
+   "generated_name": "Gt6F0D97A69E",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt6F0D97A69E.bend"
+   ],
+   "big": false
+  },
+  "bitvector_33.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_33",
+   "generated_name": "Gt6F0D97A69E",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_Gt6F0D97A69E.bend",
+    "sub_unique_Gt6F0D97A69E.bend"
+   ],
+   "big": false
+  },
+  "bitvector_33.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_33",
+   "generated_name": "Gt6F0D97A69E",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_3.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_3",
+   "generated_name": "Gt9579E0A2FD",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt9579E0A2FD.bend"
+   ],
+   "big": false
+  },
+  "bitvector_3.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_3",
+   "generated_name": "Gt9579E0A2FD",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_Gt9579E0A2FD.bend",
+    "sub_unique_Gt9579E0A2FD.bend"
+   ],
+   "big": false
+  },
+  "bitvector_3.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_3",
+   "generated_name": "Gt9579E0A2FD",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_4.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_4",
+   "generated_name": "GtB1E9093D65",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtB1E9093D65.bend"
+   ],
+   "big": false
+  },
+  "bitvector_4.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_4",
+   "generated_name": "GtB1E9093D65",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_GtB1E9093D65.bend",
+    "sub_unique_GtB1E9093D65.bend"
+   ],
+   "big": false
+  },
+  "bitvector_4.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_4",
+   "generated_name": "GtB1E9093D65",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_511.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_511",
+   "generated_name": "Gt05340E1F7E",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt05340E1F7E.bend"
+   ],
+   "big": false
+  },
+  "bitvector_511.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_511",
+   "generated_name": "Gt05340E1F7E",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_Gt05340E1F7E.bend",
+    "sub_unique_Gt05340E1F7E.bend"
+   ],
+   "big": false
+  },
+  "bitvector_511.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_511",
+   "generated_name": "Gt05340E1F7E",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_Gt05340E1F7E.bend"
+   ],
+   "big": false
+  },
+  "bitvector_512.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_512",
+   "generated_name": "Gt0A390CB480",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_2.bend",
+    "gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "bitvector_512.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_512",
+   "generated_name": "Gt0A390CB480",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "gcodec_0.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "bitvector_512.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_512",
+   "generated_name": "Gt0A390CB480",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "bitvector_513.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_513",
+   "generated_name": "Gt0B0C03B454",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt0B0C03B454.bend"
+   ],
+   "big": false
+  },
+  "bitvector_513.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_513",
+   "generated_name": "Gt0B0C03B454",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_Gt0B0C03B454.bend",
+    "sub_unique_Gt0B0C03B454.bend"
+   ],
+   "big": false
+  },
+  "bitvector_513.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_513",
+   "generated_name": "Gt0B0C03B454",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_Gt0B0C03B454.bend"
+   ],
+   "big": false
+  },
+  "bitvector_5.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_5",
+   "generated_name": "Gt27CDB122DD",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt27CDB122DD.bend"
+   ],
+   "big": false
+  },
+  "bitvector_5.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_5",
+   "generated_name": "Gt27CDB122DD",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_Gt27CDB122DD.bend",
+    "sub_unique_Gt27CDB122DD.bend"
+   ],
+   "big": false
+  },
+  "bitvector_5.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_5",
+   "generated_name": "Gt27CDB122DD",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_6.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_6",
+   "generated_name": "GtAD3CF815B7",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtAD3CF815B7.bend"
+   ],
+   "big": false
+  },
+  "bitvector_6.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_6",
+   "generated_name": "GtAD3CF815B7",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_GtAD3CF815B7.bend",
+    "sub_unique_GtAD3CF815B7.bend"
+   ],
+   "big": false
+  },
+  "bitvector_6.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_6",
+   "generated_name": "GtAD3CF815B7",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_7.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_7",
+   "generated_name": "GtAA8D1478A7",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtAA8D1478A7.bend"
+   ],
+   "big": false
+  },
+  "bitvector_7.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_7",
+   "generated_name": "GtAA8D1478A7",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_GtAA8D1478A7.bend",
+    "sub_unique_GtAA8D1478A7.bend"
+   ],
+   "big": false
+  },
+  "bitvector_7.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_7",
+   "generated_name": "GtAA8D1478A7",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_8.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_8",
+   "generated_name": "Gt0366A291C1",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt0366A291C1.bend"
+   ],
+   "big": false
+  },
+  "bitvector_8.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_8",
+   "generated_name": "Gt0366A291C1",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g3.bend",
+    "sub_Gt0366A291C1.bend",
+    "sub_unique_Gt0366A291C1.bend"
+   ],
+   "big": false
+  },
+  "bitvector_8.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_8",
+   "generated_name": "Gt0366A291C1",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "bitvector_9.encode_ssz.proof.generated.bend": {
+   "name": "bitvector_9",
+   "generated_name": "Gt1BD4B4358D",
+   "op": "encode_ssz",
+   "files": [
+    "sub_Gt1BD4B4358D.bend"
+   ],
+   "big": false
+  },
+  "bitvector_9.decode_ssz.proof.generated.bend": {
+   "name": "bitvector_9",
+   "generated_name": "Gt1BD4B4358D",
+   "op": "decode_ssz",
+   "files": [
+    "fixchk_pad.bend",
+    "sub_Gt1BD4B4358D.bend",
+    "sub_unique_Gt1BD4B4358D.bend"
+   ],
+   "big": false
+  },
+  "bitvector_9.hashtreeroot.proof.generated.bend": {
+   "name": "bitvector_9",
+   "generated_name": "Gt1BD4B4358D",
+   "op": "hashtreeroot",
+   "files": [
+    "gbits_small.bend"
+   ],
+   "big": false
+  },
+  "CompatibleUnionBC.encode_ssz.proof.generated.bend": {
+   "name": "CompatibleUnionBC",
+   "generated_name": "GuAD91DEB870",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_GuAD91DEB870_enc.bend"
+   ],
+   "big": true
+  },
+  "CompatibleUnionBC.decode_ssz.proof.generated.bend": {
+   "name": "CompatibleUnionBC",
+   "generated_name": "GuAD91DEB870",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_GuAD91DEB870.bend",
+    "var_codec_GuAD91DEB870_unique.bend"
+   ],
+   "big": false
+  },
+  "CompatibleUnionBC.hashtreeroot.proof.generated.bend": {
+   "name": "CompatibleUnionBC",
+   "generated_name": "GuAD91DEB870",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes2.bend"
+   ],
+   "big": false
+  },
+  "CompatibleUnionABCA.encode_ssz.proof.generated.bend": {
+   "name": "CompatibleUnionABCA",
+   "generated_name": "Gu6DDF182530",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_Gu6DDF182530_enc.bend"
+   ],
+   "big": true
+  },
+  "CompatibleUnionABCA.decode_ssz.proof.generated.bend": {
+   "name": "CompatibleUnionABCA",
+   "generated_name": "Gu6DDF182530",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_Gu6DDF182530.bend",
+    "var_codec_Gu6DDF182530_unique.bend"
+   ],
+   "big": false
+  },
+  "CompatibleUnionABCA.hashtreeroot.proof.generated.bend": {
+   "name": "CompatibleUnionABCA",
+   "generated_name": "Gu6DDF182530",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes2.bend"
+   ],
+   "big": false
+  },
+  "CompatibleUnionA.encode_ssz.proof.generated.bend": {
+   "name": "CompatibleUnionA",
+   "generated_name": "GuA2212AE21F",
+   "op": "encode_ssz",
+   "files": [
+    "big_var_codec_GuA2212AE21F_enc.bend"
+   ],
+   "big": true
+  },
+  "CompatibleUnionA.decode_ssz.proof.generated.bend": {
+   "name": "CompatibleUnionA",
+   "generated_name": "GuA2212AE21F",
+   "op": "decode_ssz",
+   "files": [
+    "var_codec_GuA2212AE21F.bend",
+    "var_codec_GuA2212AE21F_unique.bend"
+   ],
+   "big": false
+  },
+  "CompatibleUnionA.hashtreeroot.proof.generated.bend": {
+   "name": "CompatibleUnionA",
+   "generated_name": "GuA2212AE21F",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes2.bend"
+   ],
+   "big": false
+  },
+  "progbitlist.encode_ssz.proof.generated.bend": {
+   "name": "progbitlist",
+   "generated_name": "GtF7582E0E9A",
+   "op": "encode_ssz",
+   "files": [
+    "var_pbits_GtF7582E0E9A_enc.bend"
+   ],
+   "big": false
+  },
+  "progbitlist.decode_ssz.proof.generated.bend": {
+   "name": "progbitlist",
+   "generated_name": "GtF7582E0E9A",
+   "op": "decode_ssz",
+   "files": [
+    "var_pbits_GtF7582E0E9A.bend",
+    "var_pbits_GtF7582E0E9A_unique.bend",
+    "var_pbits_GtF7582E0E9A_rej.bend"
+   ],
+   "big": false
+  },
+  "progbitlist.hashtreeroot.proof.generated.bend": {
+   "name": "progbitlist",
+   "generated_name": "GtF7582E0E9A",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gtypes2.bend"
+   ],
+   "big": false
+  },
+  "uint128.encode_ssz.proof.generated.bend": {
+   "name": "uint128",
+   "generated_name": "Gt604E28A301",
+   "op": "encode_ssz",
+   "files": [
+    "spec_gcodec_2.bend",
+    "gcodec_0.bend"
+   ],
+   "big": false
+  },
+  "uint128.decode_ssz.proof.generated.bend": {
+   "name": "uint128",
+   "generated_name": "Gt604E28A301",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g4.bend",
+    "spec_gcodec_2.bend",
+    "spec_gunique_2.bend",
+    "gcodec_0.bend",
+    "spec_grepr_2.bend",
+    "spec_ginput_2.bend"
+   ],
+   "big": false
+  },
+  "uint128.hashtreeroot.proof.generated.bend": {
+   "name": "uint128",
+   "generated_name": "Gt604E28A301",
+   "op": "hashtreeroot",
+   "files": [
+    "root_gnames.bend"
+   ],
+   "big": false
+  },
+  "uint16.encode_ssz.proof.generated.bend": {
+   "name": "uint16",
+   "generated_name": "GtECF9BB18D8",
+   "op": "encode_ssz",
+   "files": [
+    "sub_GtECF9BB18D8.bend"
+   ],
+   "big": false
+  },
+  "uint16.decode_ssz.proof.generated.bend": {
+   "name": "uint16",
+   "generated_name": "GtECF9BB18D8",
+   "op": "decode_ssz",
+   "files": [
+    "fixrej_g4.bend",
+    "sub_GtECF9BB18D8.bend",
+    "sub_unique_GtECF9BB18D8.bend"
+   ],
+   "big": false
+  },
+  "uint16.hashtreeroot.proof.generated.bend": {
+   "name": "uint16",
+   "generated_name": "GtECF9BB18D8",
+   "op": "hashtreeroot",
+   "files": [
+    "gleaf.bend",
+    "root_gnames.bend"
+   ],
+   "big": false
+  }
+ },
+ "uncovered": {
+  "FuluBeaconState": {
+   "encode_ssz": [
+    "encode_eval",
+    "encode_spec"
+   ]
+  },
+  "FuluLightClientUpdate": {
+   "encode_ssz": [
+    "encode_eval",
+    "encode_spec"
+   ]
+  }
+ }
+}
