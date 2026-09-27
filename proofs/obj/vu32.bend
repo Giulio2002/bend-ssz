@@ -118,6 +118,28 @@ def mul_le(+x: U32, +y: U32, +c: U32, +h: {Nat.is_le(Nat.mul(U32.to_nat(x), U32.
         Equal.trans(Nat, uw(32n, Word.mul(32n, a, b)), Nat.mul(ua, ub), Nat.mul(ta, tb),
           mul_le_w(32n, a, b, z, hz), Equal.sym(Nat, Nat.mul(ta, tb), Nat.mul(ua, ub), prod)))
 
+# U32: a product below 2^32 does not wrap (no bounding word needed: any buffer length, n <= NMAX).
+def mul_lt32(+x: U32, +y: U32, +h: {Nat.is_lt(Nat.mul(U32.to_nat(x), U32.to_nat(y)), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.mul(x, y)) == Nat.mul(U32.to_nat(x), U32.to_nat(y)) : Nat}:
+  match x y:
+    case U32{+a} U32{+b}:
+      +ta = U32.to_nat(U32{a})
+      +tb = U32.to_nat(U32{b})
+      +ua = uw(32n, a)
+      +ub = uw(32n, b)
+      +M = Nat.mul(ua, ub)
+      +prod = Equal.trans(Nat, Nat.mul(ta, tb), Nat.mul(ua, tb), Nat.mul(ua, ub),
+        Equal.cong(Nat, Nat, q => Nat.mul(q, tb), ta, ua, F.u32__to_nat_word(a)),
+        Equal.cong(Nat, Nat, q => Nat.mul(ua, q), tb, ub, F.u32__to_nat_word(b)))
+      +hs = F.logic__subst(Nat, q => {Nat.is_lt(q, sc1(32n)) == True{} : Bool}, Nat.mul(ta, tb), M, prod,
+        F.logic__subst(Nat, q => {Nat.is_lt(Nat.mul(ta, tb), q) == True{} : Bool}, F.spec_common__pow2(32n), F.spec_numeric__scale_binary(32n, 1n), F.u32__pow2_scale(32n), h))
+      +h1 = F.logic__subst(Nat, q => {Nat.is_lt(Nat.add(q, M), sc1(32n)) == True{} : Bool}, 0n, uw(32n, Word.zero(32n)), Equal.sym(Nat, uw(32n, Word.zero(32n)), 0n, F.u32alg__uw_zero(32n)), hs)
+      +ew = Equal.trans(Nat, uw(32n, Word.mul.go(32n, 32n, a, b, Word.zero(32n))), Nat.add(uw(32n, Word.zero(32n)), M), M,
+        mul_go_val(32n, 32n, a, b, Word.zero(32n), h1), Equal.cong(Nat, Nat, q => Nat.add(q, M), uw(32n, Word.zero(32n)), 0n, F.u32alg__uw_zero(32n)))
+      Equal.trans(Nat, U32.to_nat(U32{Word.mul(32n, a, b)}), uw(32n, Word.mul(32n, a, b)), Nat.mul(ta, tb),
+        F.u32__to_nat_word(Word.mul(32n, a, b)),
+        Equal.trans(Nat, uw(32n, Word.mul(32n, a, b)), M, Nat.mul(ta, tb), ew, Equal.sym(Nat, Nat.mul(ta, tb), M, prod)))
+
 # ---- division ----------------------------------------------------------------------------
 
 def cmp_ge_t(+c: Cmp, +e: {Cmp.is_ge(c) == True{} : Bool}) -> {Cmp.is_lt(c) == False{} : Bool}:

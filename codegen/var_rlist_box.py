@@ -118,26 +118,29 @@ def sig(name, size, hd):
             f'    +hb: {{Nat.is_le(Nat.add(x, {size}n), {P}) == {TRUE}}})']
 
 
-def rdx_cont(r, refs):
-    """T.<R>_read at off (byte position x) of a container with boxed / packed fields."""
-    hd = 28 if r.needs_d else 30
+def rdx_cont(r, refs, deep=False):
+    """T.<R>_read at off (byte position x) of a container with boxed / packed fields.
+    deep: rdxd_ at any tree depth d < 31 (UR.offx31: the offsets below 2^32)."""
+    hd = 31 if deep else (28 if r.needs_d else 30)
     hd30 = 'FD.nat__lt_trans(d, 28n, 30n, hd, {==})' if hd == 28 else 'hd'
+    sfx = 'd' if deep else ''
+    ox = 'UR.offx31' if deep else 'UR.offx'
     RHS = f'(UA.BF(t, n), {r.obj("x")})'
     TY = f'B.Buf & {r.rep()}'
-    L = sig(f'rdx_{r.t.name}', r.size, hd) + [f'    -> {{T.{r.p}_read(UA.BF(t, n), off, {r.size}) == {RHS} : {TY}}}:']
+    L = sig(f'rdx{sfx}_{r.t.name}', r.size, hd) + [f'    -> {{T.{r.p}_read(UA.BF(t, n), off, {r.size}) == {RHS} : {TY}}}:']
     for j, (c, k) in enumerate(r.kids):
         prev = [kk.obj(posx(cc)) for cc, kk in r.kids[:j]]
         args = ', '.join(['off', f'{r.size}'] + prev)
         oj = f'U32.add(off, {c})'
         hbj = f'UR.roomf(x, {r.size}n, {c}n, {k.size}n, {P}, hb, {{==}})'
-        ej = f'UR.offx(d, off, {c}, x, e, {hd30}, FD.nat__lt_le_trans({posx(c)}, Nat.add({posx(c)}, {k.size}n), {P}, VTX.ltp({posx(c)}, {k.size - 1}n), {hbj}))'
+        ej = f'{ox}(d, off, {c}, x, e, {hd30}, FD.nat__lt_le_trans({posx(c)}, Nat.add({posx(c)}, {k.size}n), {P}, VTX.ltp({posx(c)}, {k.size - 1}n), {hbj}))'
         if k.kind == 'boxed':
             rd = f'T.{k.name}_bx_read(UA.BF(t, n), {oj}, {k.size})'
-            lem = f'rdbx_{k.name}'
-            hdk = 'hd' if (k.needs_d or not r.needs_d) else hd30
+            lem = f'rdbx{sfx}_{k.name}'
+            hdk = 'hd' if (deep or k.needs_d or not r.needs_d) else hd30
         elif k.kind == 'words':
             rd = f'T.{k.p}_read(UA.BF(t, n), {oj}, {k.size})'
-            lem = f'rdw_{k.p}'
+            lem = f'rdw{sfx}_{k.p}'
             hdk = 'hd'
         else:
             rd = f'T.{k.p}_read(UA.BF(t, n), {oj}, {k.size})'
@@ -150,10 +153,11 @@ def rdx_cont(r, refs):
     return L
 
 
-def rdbx(r, name, refs):
-    hd = 28 if r.needs_d else 30
+def rdbx(r, name, refs, deep=False):
+    hd = 31 if deep else (28 if r.needs_d else 30)
+    sfx = 'd' if deep else ''
     OBJ = r.obj('x')
-    L = sig(f'rdbx_{name}', r.size, hd) + [
+    L = sig(f'rdbx{sfx}_{name}', r.size, hd) + [
         f'    -> {{T.{name}_bx_read(UA.BF(t, n), off, {r.size}) == (UA.BF(t, n), T.{name}_bx_wrap({OBJ})) : B.Buf & O.Boxed<T.{name}>}}:',
         f'  %Equal.sym(B.Buf & T.{name}, T.{name}_read(UA.BF(t, n), off, {r.size}), (UA.BF(t, n), {OBJ}), {refs(name)}(d, t, n, off, x, e, hd, pf, hb)) :',
         f'    {{T.{name}_bx_rd(_) == (UA.BF(t, n), T.{name}_bx_wrap({OBJ})) : B.Buf & O.Boxed<T.{name}>}}',
@@ -161,7 +165,13 @@ def rdbx(r, name, refs):
     return L
 
 
-def rdw(r):
+def rdw(r, deep=False):
+    if deep:
+        K = log2c(r.size + 31)
+        return sig(f'rdwd_{r.p}', r.size, 31) + [
+            f'    -> {{T.{r.p}_read(UA.BF(t, n), off, {r.size}) == (UA.BF(t, n), {r.obj("x")}) : B.Buf & O.Words}}:',
+            f'  %ct_n(d, t, off, x, {r.size}, {r.dz}n, e) : {{T.{r.p}_read(UA.BF(t, n), off, {r.size}) == (UA.BF(t, n), O.Words{{FD.array__thaw(U32, _), {r.size}}}) : B.Buf & O.Words}}',
+            f'  VBX.copy_into_at(d, t, n, off, {r.size}, {r.dz}n, {K}n, pf, hd, {{==}}, UW.hsxB(d, off, x, {r.size}, e, {K}n, {{==}}, {{==}}, hb), {{==}}, {{==}}, {{==}})']
     L = sig(f'rdw_{r.p}', r.size, 28) + [
         f'    -> {{T.{r.p}_read(UA.BF(t, n), off, {r.size}) == (UA.BF(t, n), {r.obj("x")}) : B.Buf & O.Words}}:',
         f'  %ct_n(d, t, off, x, {r.size}, {r.dz}n, e) : {{T.{r.p}_read(UA.BF(t, n), off, {r.size}) == (UA.BF(t, n), O.Words{{FD.array__thaw(U32, _), {r.size}}}) : B.Buf & O.Words}}',
@@ -215,42 +225,50 @@ def fixb_module(g, recs):
     def refs(p):
         return f'VTX.rdx_{p}' if p in vtx else (f'XF.rdx_{p}' if p in xf else f'rdx_{p}')
 
-    def emit_ft(ft):
+    def refsd(p):
+        return f'VTX.rdxd_{p}' if p in vtx else (f'XF.rdxd_{p}' if p in xf else f'rdxd_{p}')
+
+    def emit_ft(ft, deep):
         for dep in ft.deps():
-            if dep.p in done:
+            if (dep.p, deep) in done or dep.p in done:
                 continue
-            for ln in VUA.rdx_lemma(dep):
+            rn = 'rdxd_' if deep else 'rdx_'
+            for ln in VUA.rdx_lemma(dep, deep=deep):
                 ln = ln.replace('ltp(', 'VTX.ltp(').replace('F.', 'FD.')
                 for kp in vtx:
-                    ln = ln.replace(f'rdx_{kp}(', f'VTX.rdx_{kp}(')
+                    ln = ln.replace(f'{rn}{kp}(', f'VTX.{rn}{kp}(')
                 for kp in xf:
-                    ln = ln.replace(f'rdx_{kp}(', f'XF.rdx_{kp}(')
+                    ln = ln.replace(f'{rn}{kp}(', f'XF.{rn}{kp}(')
                 L.append(ln)
             L.append('')
-            done.add(dep.p)
+            done.add((dep.p, deep))
 
-    def emit(r):
+    def emit(r, deep):
+        rf = refsd if deep else refs
         if r.kind == 'ft':
-            emit_ft(r.ft)
+            emit_ft(r.ft, deep)
             return
         if r.kind == 'words':
-            if f'w:{r.p}' not in done:
-                L.extend(rdw(r) + [''])
-                done.add(f'w:{r.p}')
+            if (f'w:{r.p}', deep) not in done:
+                L.extend(rdw(r, deep) + [''])
+                done.add((f'w:{r.p}', deep))
             return
         for _, k in r.kids:
             if k.kind == 'boxed':
-                emit(k.r)
-                if f'bx:{k.name}' not in done:
-                    L.extend(rdbx(k.r, k.name, refs) + [''])
-                    done.add(f'bx:{k.name}')
+                emit(k.r, deep)
+                if (f'bx:{k.name}', deep) not in done:
+                    L.extend(rdbx(k.r, k.name, rf, deep) + [''])
+                    done.add((f'bx:{k.name}', deep))
             else:
-                emit(k)
-        L.extend(rdx_cont(r, refs) + [''])
-    for t in recs:
-        r = Rec(g, t)
-        emit(r)
-        L.extend(rdbx(r, t.name, refs) + [''])
+                emit(k, deep)
+        L.extend(rdx_cont(r, rf, deep) + [''])
+    for deep in (False, True):
+        if deep:
+            L.append('# ---- the same at any tree depth d < 31 (the offsets below 2^32) ----------------------------------\n')
+        for t in recs:
+            r = Rec(g, t)
+            emit(r, deep)
+            L.extend(rdbx(r, t.name, refsd if deep else refs, deep) + [''])
     return ('\n'.join(L) + '\n').replace('VXB.', '')
 
 

@@ -4308,9 +4308,9 @@
   },
   "FuluAggregateAndProof": {
    "generated_name": "AggregateAndProof",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 16729,
    "covered": true,
    "bridged": null
@@ -4398,9 +4398,9 @@
   },
   "FuluExecutionRequests": {
    "generated_name": "ExecutionRequests",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1574324,
    "covered": true,
    "bridged": null
@@ -4470,9 +4470,9 @@
   },
   "FuluSignedAggregateAndProof": {
    "generated_name": "SignedAggregateAndProof",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 16829,
    "covered": true,
    "bridged": null

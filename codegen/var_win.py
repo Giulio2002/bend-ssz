@@ -46,6 +46,17 @@ def ceil_log2(x):
     return max(0, (x - 1).bit_length())
 
 
+# ---- the deep laws (any tree depth d < 31): the word-aligned windows carry hw32, the window's end below 2^32
+HWI = '{Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}'
+HW32I = '{Nat.is_lt(Nat.add(A.quad(i), U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}'
+
+
+def deep_i(text):
+    import deep
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)').replace('FD.nat__lt_trans(d, 28n, 31n, hd, {==})', 'hd')
+    return deep.thread(text, HWI, HW32I)
+
+
 HEAD = list(VL.DEC_HEAD) + ['import ./spec_bits.bend as FB', 'import ./vfits.bend as VFT', 'import ./vlist.bend as VLS',
                             'import ./vbitl.bend as VBL', 'import ./vbyte.bend as VY', 'import ./vbrt.bend as VR',
                             'import ./vbitc.bend as VBC', 'import ./vrej.bend as VRJ', 'import ./vnest.bend as VN', 'import ./dk.bend as DK',
@@ -69,6 +80,230 @@ def var_inj(+a: +List<U32>, +b: +List<U32>, +e: {Some{[S.Variable{a}]} == Some{[
 """
 
 BITS = r"""
+def V(+t: FD.array__Tree<U32>, +off: U32, +len: U32) -> U32: VR.VX(t, VR.XN(off, len))
+def M1(+len: U32) -> Nat: U32.to_nat(U32.sub(len, 1))
+def BD(+t: FD.array__Tree<U32>, +off: U32, +len: U32) -> Nat: Nat.add(Nat.mul(8n, M1(len)), U32.to_nat(O.high_bit(V(t, off, len))))
+
+def chk1(a: Bool, +t: FD.array__Tree<U32>, +off: U32, +len: U32) -> Bool:
+  match a:
+    case False{}: False{}
+    case True{}: O.bsel(U32.is_eq(V(t, off, len), 0), False{}, O.bsel(False{}, True{}, Nat.is_le(BD(t, off, len), U32.to_nat(@N))))
+
+# A bit list's window: non-empty, a non-zero last byte, at most @N bits.
+def CHKw(+t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32) -> Bool: chk1(U32.is_lt(0, len), t, off, len)
+
+def eX(+d: Nat, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +e1: {U32.to_nat(len) == 1n+M1(len) : Nat})
+    -> {U32.to_nat(VR.XN(off, len)) == Nat.add(A.quad(i), M1(len)) : Nat}:
+  VR.eXNw(off, i, len, M1(len), eo, hw32, e1)
+
+def hi(+d: Nat, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +e1: {U32.to_nat(len) == 1n+M1(len) : Nat})
+    -> {Nat.is_lt(VR.QX(VR.XN(off, len)), VB.pw(d)) == True{} : Bool}:
+  VR.hiX(d, VR.XN(off, len), Nat.add(A.quad(i), M1(len)), eX(d, i, off, len, eo, hd, hw, e1),
+    FD.nat__lt_le_trans(Nat.add(A.quad(i), M1(len)), Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d)),
+      FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(i), M1(len)), Nat.add(A.quad(i), z)) == True{} : Bool}, 1n+M1(len), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), 1n+M1(len), e1),
+        FD.nat__lt_add_left(M1(len), 1n+M1(len), A.quad(i), FD.nat__lt_succ(M1(len)))), hw))
+
+def okA(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +a: Bool, +ea: {U32.is_lt(0, len) == a : Bool})
+    -> {T.@p_ok(BF(t, n), off, len) == (BF(t, n), chk1(a, t, off, len)) : B.Buf & Bool}:
+  match a:
+    case False{}:
+      %Equal.sym(Bool, U32.is_lt(0, len), False{}, ea) : {O.bitlist_nz(_, BF(t, n), off, len, @N, False{}) == (BF(t, n), False{}) : B.Buf & Bool}
+      {==}
+    case True{}:
+      +e1 = VR.e1n(len, VR.pos1(len, ea))
+      %Equal.sym(Bool, U32.is_lt(0, len), True{}, ea) : {O.bitlist_nz(_, BF(t, n), off, len, @N, False{}) == (BF(t, n), chk1(True{}, t, off, len)) : B.Buf & Bool}
+      %Equal.sym(B.Buf & U32, B.byte_at(BF(t, n), VR.XN(off, len)), (BF(t, n), V(t, off, len)),
+          VR.byte_at_ok(d, t, n, VR.XN(off, len), VB.lt32(d, FD.nat__lt_trans(d, 28n, 31n, hd, {==})), hi(d, i, off, len, eo, hd, hw, e1), pf)) :
+        {O.bitlist_pick(len, @N, False{}, _) == (BF(t, n), chk1(True{}, t, off, len)) : B.Buf & Bool}
+      {==}
+
+# The validator on the window returns the buffer and CHKw.
+def ok_evalw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool})
+    -> {T.@p_ok(BF(t, n), off, len) == (BF(t, n), CHKw(t, i, off, len)) : B.Buf & Bool}:
+  okA(d, t, n, i, off, len, eo, hd, hw, pf, U32.is_lt(0, len), {==})
+
+def cA(+a: Bool, +t: FD.array__Tree<U32>, +off: U32, +len: U32, +h: {chk1(a, t, off, len) == True{} : Bool}) -> {a == True{} : Bool}:
+  match a:
+    case False{}: h
+    case True{}: {==}
+
+def bselF(+c: Bool, +y: Bool, +h: {O.bsel(c, False{}, y) == True{} : Bool}) -> {c == False{} : Bool}:
+  match c:
+    case True{}: Empty.absurd({True{} == False{} : Bool}, FD.logic__false_true(h))
+    case False{}: {==}
+
+def c1(+t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +h: {CHKw(t, i, off, len) == True{} : Bool}) -> {chk1(True{}, t, off, len) == True{} : Bool}:
+  FD.logic__subst(Bool, z => {chk1(z, t, off, len) == True{} : Bool}, U32.is_lt(0, len), True{}, cA(U32.is_lt(0, len), t, off, len, h), h)
+
+def cB(+t: FD.array__Tree<U32>, +off: U32, +len: U32, +h: {chk1(True{}, t, off, len) == True{} : Bool}) -> {U32.is_eq(V(t, off, len), 0) == False{} : Bool}:
+  bselF(U32.is_eq(V(t, off, len), 0), O.bsel(False{}, True{}, Nat.is_le(BD(t, off, len), U32.to_nat(@N))), h)
+
+def cC(+t: FD.array__Tree<U32>, +off: U32, +len: U32, +h: {chk1(True{}, t, off, len) == True{} : Bool}, +nz: {U32.is_eq(V(t, off, len), 0) == False{} : Bool})
+    -> {Nat.is_le(BD(t, off, len), U32.to_nat(@N)) == True{} : Bool}:
+  FD.logic__subst(Bool, z => {O.bsel(z, False{}, O.bsel(False{}, True{}, Nat.is_le(BD(t, off, len), U32.to_nat(@N)))) == True{} : Bool}, U32.is_eq(V(t, off, len), 0), False{}, nz, h)
+
+def cE(+t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +h: {CHKw(t, i, off, len) == True{} : Bool}) -> {U32.to_nat(len) == 1n+M1(len) : Nat}:
+  VR.e1n(len, VR.pos1(len, cA(U32.is_lt(0, len), t, off, len, h)))
+
+def hB(+t: FD.array__Tree<U32>, +off: U32, +len: U32, +e1: {U32.to_nat(len) == 1n+M1(len) : Nat}, +bd: {Nat.is_le(BD(t, off, len), U32.to_nat(@N)) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(len), @BMAXn) == True{} : Bool}:
+  +bd1 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, U32.to_nat(O.high_bit(V(t, off, len)))), U32.to_nat(@N)) == True{} : Bool}, Nat.mul(8n, M1(len)), VS.x8(M1(len)), VR.mul8(M1(len)), bd)
+  +h8 = FD.nat__le_trans(VS.x8(M1(len)), Nat.add(VS.x8(M1(len)), U32.to_nat(O.high_bit(V(t, off, len)))), Nat.add(VS.x8(@Cn), 7n), FD.nat__le_add_right(VS.x8(M1(len)), U32.to_nat(O.high_bit(V(t, off, len)))),
+    FD.nat__le_trans(Nat.add(VS.x8(M1(len)), U32.to_nat(O.high_bit(V(t, off, len)))), U32.to_nat(@N), Nat.add(VS.x8(@Cn), 7n), bd1, {==}))
+  %Equal.sym(Nat, U32.to_nat(len), 1n+M1(len), e1) : {Nat.is_le(_, @BMAXn) == True{} : Bool}
+  VR.x8_inv(M1(len), @Cn, h8)
+
+# 31 + len <= 2^@KB: the checks bound the length (whatever the buffer's depth).
+def hyB(+len: U32, +hb: {Nat.is_le(U32.to_nat(len), @BMAXn) == True{} : Bool}) -> {Nat.is_le(VC.YL(len), VB.pw(@KBn)) == True{} : Bool}:
+  FD.nat__le_trans(VC.YL(len), Nat.add(31n, @BMAXn), VB.pw(@KBn), Order.add_left(31n, U32.to_nat(len), @BMAXn, hb), {==})
+
+def hWZ(+len: U32, +hb: {Nat.is_le(U32.to_nat(len), @BMAXn) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(VC.WZ(len)), O.pow2n(@Kn)) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(VC.WZ(len)), Nat.add(VD.s_rng(2n, VC.YL(len)), 8n), O.pow2n(@Kn),
+    VC.wz_le(len, @KBn, {==}, hyB(len, hb)),
+    FD.nat__le_trans(Nat.add(VD.s_rng(2n, VC.YL(len)), 8n), Nat.add(VD.s_rng(2n, @YMAXn), 8n), O.pow2n(@Kn),
+      Order.add_right(VD.s_rng(2n, VC.YL(len)), VD.s_rng(2n, @YMAXn), 8n, VC.rng_mono(2n, VC.YL(len), @YMAXn, Order.add_left(31n, U32.to_nat(len), @BMAXn, hb))),
+      {==}))
+
+def hdzK(+d: Nat, +len: U32, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hL: {Nat.is_le(U32.to_nat(len), A.quad(VB.pw(d))) == True{} : Bool},
+    +hb: {Nat.is_le(U32.to_nat(len), @BMAXn) == True{} : Bool}) -> {Nat.is_le(VLS.DZ(len), @Kn) == True{} : Bool}:
+  VD.wd_min(VC.WZ(len), @Kn, hWZ(len, hb))
+
+# The list storage has room for the words.
+def hrgB(+len: U32, +hb: {Nat.is_le(U32.to_nat(len), @BMAXn) == True{} : Bool}) -> {Nat.is_le(Nat.add(VC.NW(len), 0n), VB.pw(VLS.DZ(len))) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(VC.NW(len), 0n), VC.NW(len), FD.nat__add_zero(VC.NW(len))) : {Nat.is_le(_, VB.pw(VLS.DZ(len))) == True{} : Bool}
+  %Equal.sym(Nat, VB.pw(VLS.DZ(len)), O.pow2n(VLS.DZ(len)), VD.s_pow2_eq(VLS.DZ(len))) : {Nat.is_le(VC.NW(len), _) == True{} : Bool}
+  FD.nat__le_trans(VC.NW(len), U32.to_nat(VC.WZ(len)), O.pow2n(VLS.DZ(len)), VC.nw_le_wz(len, @KBn, {==}, hyB(len, hb)), VD.wd_cover(VC.WZ(len), @Kn, {==}, hWZ(len, hb)))
+@ZEROS
+def NB(+t: FD.array__Tree<U32>, +off: U32, +len: U32) -> U32: U32.add(U32.mul(8, U32.sub(len, 1)), O.high_bit(V(t, off, len)))
+def OBJw(+t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32) -> O.Bits:
+  O.Bits{O.clear_bit(O.mask_last(len, FD.array__thaw(U32, VB.mone(VC.NW(len), i, 0n, VLS.DZ(len), VC.ZT(VLS.DZ(len)), t))), NB(t, off, len)), NB(t, off, len)}
+
+# The reader on the window, when the checks hold.
+def readw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, i, off, len) == True{} : Bool})
+    -> {T.@p_read(BF(t, n), off, len) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & O.Bits}:
+  +e1 = cE(t, i, off, len, hchk)
+  +h1 = c1(t, i, off, len, hchk)
+  +hL = hlen(d, i, len, hw)
+  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})
+  +hb = hB(t, off, len, e1, cC(t, off, len, h1, cB(t, off, len, h1)))
+  +hz = hdzK(d, len, hd, hL, hb)
+  +ez = zeros_at(B.words_depth_u(VC.WZ(len)), VLS.DZ(len), VD.wdu(VC.WZ(len)), hz)
+  %Equal.sym(B.Buf & U32, B.byte_at(BF(t, n), VR.XN(off, len)), (BF(t, n), V(t, off, len)), VR.byte_at_ok(d, t, n, VR.XN(off, len), VB.lt32(d, hd31), hi(d, i, off, len, eo, hd, hw, e1), pf)) :
+    {O.bits_from(len, off, _) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & O.Bits}
+  %Equal.sym(B.Buf & O.Words, O.copy_in(BF(t, n), off, len), (BF(t, n), O.Words{O.mask_last(len, FD.array__thaw(U32, VB.mone(VC.NW(len), i, 0n, VLS.DZ(len), VC.ZT(VLS.DZ(len)), t))), len}),
+      VR.copy_in_ok2(d, t, n, off, i, len, VLS.DZ(len), pf, hd31, FD.nat__le_lt_trans(VLS.DZ(len), @Kn, 31n, hz, {==}), ez, VF.al_3(off, i, eo), VF.al_q(off, i, eo),
+        VBC.nwHB(d, len, i, @KBn, {==}, hyB(len, hb), hw), hrgB(len, hb))) :
+    {O.bits_clear(NB(t, off, len), _) == (BF(t, n), OBJw(t, i, off, len)) : B.Buf & O.Bits}
+  {==}
+
+def VALw(+t: FD.array__Tree<U32>, +i: Nat, +len: U32) -> S.Value: S.BitsValue{VBL.bl(VR.WB(t, i, U32.to_nat(len)))}
+
+# The spec parts of the value: one variable part, the window's bytes.
+def specw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {CHKw(t, i, off, len) == True{} : Bool})
+    -> {Codec.parts(VALw(t, i, len), @SCH) == Some{[S.Variable{VR.WB(t, i, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}:
+  +e1 = cE(t, i, off, len, hchk)
+  +h1 = c1(t, i, off, len, hchk)
+  +nz = cB(t, off, len, h1)
+  +bd = cC(t, off, len, h1, nz)
+  +m = M1(len)
+  +W1 = VR.WB(t, i, 1n+m)
+  +hw1 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(A.quad(i), z), A.quad(VB.pw(d))) == True{} : Bool}, U32.to_nat(len), 1n+m, e1, hw)
+  +lw = VR.lastWB(d, t, i, m, VR.XN(off, len), pf, hw1, eX(d, i, off, len, eo, hd, hw, e1))
+  +nzl = FD.logic__subst(U32, z => {U32.is_eq(z, 0) == False{} : Bool}, V(t, off, len), VBL.lastb(W1), Equal.sym(U32, VBL.lastb(W1), V(t, off, len), lw), nz)
+  +dom = VR.domWB(t, i, 1n+m)
+  +len1 = Equal.trans(Nat, List.length(&2, Bool, VBL.bl(W1)), VBL.blen(W1), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(V(t, off, len)))), VBL.bl_len(W1, dom, nzl),
+    Equal.trans(Nat, VBL.blen(W1), Nat.add(VS.x8(m), VY.hb(VBL.lastb(W1))), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(V(t, off, len)))),
+      VR.blen_m(W1, m, VR.lenWB(d, t, i, 1n+m, pf, hw1)),
+      Equal.cong(U32, Nat, z => Nat.add(VS.x8(m), VY.hb(z)), VBL.lastb(W1), V(t, off, len), lw)))
+  +bd1 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, U32.to_nat(O.high_bit(V(t, off, len)))), U32.to_nat(@N)) == True{} : Bool}, Nat.mul(8n, m), VS.x8(m), VR.mul8(m), bd)
+  +hl = FD.logic__subst(Nat, z => {Nat.is_le(z, @LIMN) == True{} : Bool}, Nat.add(VS.x8(m), U32.to_nat(O.high_bit(V(t, off, len)))), List.length(&2, Bool, VBL.bl(W1)),
+    Equal.sym(Nat, List.length(&2, Bool, VBL.bl(W1)), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(V(t, off, len)))), len1), bd1)
+  %Equal.sym(Nat, U32.to_nat(len), 1n+m, e1) :
+    {Codec.parts(S.BitsValue{VBL.bl(VR.WB(t, i, _))}, @SCH) == Some{[S.Variable{VR.WB(t, i, _)}]} : Maybe<&2, +List<S.Part>>}
+  VBC.bl_parts(W1, @LIMN, dom, nzl, hl)
+
+# ---- every bit-list value of the window's bytes passes the checks ----------------------------
+
+def m1e(+len: U32, +m: Nat, +e1: {U32.to_nat(len) == 1n+m : Nat}) -> {M1(len) == m : Nat}:
+  +h1 = FD.logic__subst(Nat, z => {Nat.is_le(1n, z) == True{} : Bool}, 1n+m, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), 1n+m, e1), FD.nat__zero_le(m))
+  %Equal.sym(Nat, M1(len), Nat.sub(U32.to_nat(len), 1n), FD.u32__sub_nat(len, 1, h1)) : {_ == m : Nat}
+  %Equal.sym(Nat, U32.to_nat(len), 1n+m, e1) : {Nat.sub(_, 1n) == m : Nat}
+  FD.nat__add_sub_cancel(1n, m)
+
+def chk_true(+t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +m: Nat, +e1: {U32.to_nat(len) == 1n+m : Nat},
+    +nz: {U32.is_eq(V(t, off, len), 0) == False{} : Bool}, +bd: {Nat.is_le(BD(t, off, len), U32.to_nat(@N)) == True{} : Bool})
+    -> {CHKw(t, i, off, len) == True{} : Bool}:
+  +ea = FD.logic__subst(Nat, z => {Nat.is_lt(0n, z) == True{} : Bool}, 1n+m, U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), 1n+m, e1), {==})
+  %Equal.sym(Bool, U32.is_lt(0, len), True{}, FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_lt(0n, U32.to_nat(len)), U32.is_lt(0, len), Equal.sym(Bool, U32.is_lt(0, len), Nat.is_lt(0n, U32.to_nat(len)), VR.lt_u32(0, len)), ea)) :
+    {chk1(_, t, off, len) == True{} : Bool}
+  %Equal.sym(Bool, U32.is_eq(V(t, off, len), 0), False{}, nz) : {O.bsel(_, False{}, O.bsel(False{}, True{}, Nat.is_le(BD(t, off, len), U32.to_nat(@N)))) == True{} : Bool}
+  bd
+
+def inv_t(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +bits: +List<Bool>, +hb: {Nat.is_le(List.length(&2, Bool, bits), @LIMN) == True{} : Bool}, +pk: {VBL.P(bits) == VR.WB(t, i, U32.to_nat(len)) : +List<U32>},
+    +fs: VBL.IF(bits)) -> {CHKw(t, i, off, len) == True{} : Bool}:
+  (+l, +r) = fs
+  (+nz0, +ln) = r
+  +m = VBL.mcnt(bits)
+  +WL = VR.WB(t, i, U32.to_nat(len))
+  +e1 = Equal.trans(Nat, U32.to_nat(len), List.length(&2, U32, WL), 1n+m, Equal.sym(Nat, List.length(&2, U32, WL), U32.to_nat(len), VR.lenWB(d, t, i, U32.to_nat(len), pf, hw)),
+    Equal.trans(Nat, List.length(&2, U32, WL), List.length(&2, U32, VBL.P(bits)), 1n+m,
+      Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), WL, VBL.P(bits), Equal.sym(+List<U32>, VBL.P(bits), WL, pk)), l))
+  +W1 = VR.WB(t, i, 1n+m)
+  +hw1 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(A.quad(i), z), A.quad(VB.pw(d))) == True{} : Bool}, U32.to_nat(len), 1n+m, e1, hw)
+  +m1 = m1e(len, m, e1)
+  +e1m = Equal.trans(Nat, U32.to_nat(len), 1n+m, 1n+M1(len), e1, Equal.cong(Nat, Nat, z => 1n+z, m, M1(len), Equal.sym(Nat, M1(len), m, m1)))
+  +lw = VR.lastWB(d, t, i, m, VR.XN(off, len), pf, hw1,
+    FD.logic__subst(Nat, z => {U32.to_nat(VR.XN(off, len)) == Nat.add(A.quad(i), z) : Nat}, M1(len), m, m1, eX(d, i, off, len, eo, hd, hw, e1m)))
+  +eW = Equal.trans(+List<U32>, VBL.P(bits), WL, W1, pk, Equal.cong(Nat, +List<U32>, z => VR.WB(t, i, z), U32.to_nat(len), 1n+m, e1))
+  +eV = Equal.trans(U32, VBL.nthb(VBL.P(bits), m), VBL.nthb(W1, m), V(t, off, len), Equal.cong(+List<U32>, U32, z => VBL.nthb(z, m), VBL.P(bits), W1, eW),
+    Equal.trans(U32, VBL.nthb(W1, m), VBL.lastb(W1), V(t, off, len), Equal.sym(U32, VBL.lastb(W1), VBL.nthb(W1, m), VR.last_len(W1, m, VR.lenWB(d, t, i, 1n+m, pf, hw1))), lw))
+  +nz = FD.logic__subst(U32, z => {U32.is_eq(z, 0) == False{} : Bool}, VBL.nthb(VBL.P(bits), m), V(t, off, len), eV, nz0)
+  +lnV = Equal.trans(Nat, List.length(&2, Bool, bits), Nat.add(VS.x8(m), VY.hb(VBL.nthb(VBL.P(bits), m))), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(V(t, off, len)))), ln,
+    Equal.cong(U32, Nat, z => Nat.add(VS.x8(m), VY.hb(z)), VBL.nthb(VBL.P(bits), m), V(t, off, len), eV))
+  +eBD = Equal.trans(Nat, BD(t, off, len), Nat.add(VS.x8(M1(len)), U32.to_nat(O.high_bit(V(t, off, len)))), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(V(t, off, len)))),
+    Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(O.high_bit(V(t, off, len)))), Nat.mul(8n, M1(len)), VS.x8(M1(len)), VR.mul8(M1(len))),
+    Equal.cong(Nat, Nat, z => Nat.add(VS.x8(z), U32.to_nat(O.high_bit(V(t, off, len)))), M1(len), m, m1))
+  +bd = FD.logic__subst(Nat, z => {Nat.is_le(z, @LIMN) == True{} : Bool}, List.length(&2, Bool, bits), BD(t, off, len),
+    Equal.trans(Nat, List.length(&2, Bool, bits), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(V(t, off, len)))), BD(t, off, len), lnV, Equal.sym(Nat, BD(t, off, len), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(V(t, off, len)))), eBD)), hb)
+  chk_true(t, i, off, len, m, e1, nz, bd)
+
+def inv_b(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +bits: +List<Bool>, +b: Bool, +eb: {Nat.is_le(List.length(&2, Bool, bits), @LIMN) == b : Bool},
+    +e: {Codec.one(Bits.encoding(b, List.append(&2, Bool, bits, [True{}])), None{}) == Some{[S.Variable{VR.WB(t, i, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>})
+    -> {CHKw(t, i, off, len) == True{} : Bool}:
+  match b:
+    case False{}: Empty.absurd({CHKw(t, i, off, len) == True{} : Bool}, FD.logic__none_some(+List<S.Part>, [S.Variable{VR.WB(t, i, U32.to_nat(len))}], e))
+    case True{}: inv_t(d, t, i, off, len, eo, hd, hw, pf, bits, eb, var_inj(VBL.P(bits), VR.WB(t, i, U32.to_nat(len)), e), VBL.inv(bits))
+
+# Every value whose spec parts are the window's bytes passes the checks.
+def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +i: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == A.quad(i) : Nat},
+    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +v: S.Value,
+    +e: {Codec.parts(v, @SCH) == Some{[S.Variable{VR.WB(t, i, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>})
+    -> {CHKw(t, i, off, len) == True{} : Bool}:
+  match v:
+    case S.BitsValue{+bits}: inv_b(d, t, i, off, len, eo, hd, hw, pf, bits, Nat.is_le(List.length(&2, Bool, bits), @LIMN), {==}, e)
+@ABSURDV
+"""
+
+
+# the word-aligned bit-list window as it was (d < 28): the byte-offset windows are derived from it
+# (bitsx_text) until they carry the deep bounds too
+BITS0 = r"""
 def V(+t: FD.array__Tree<U32>, +off: U32, +len: U32) -> U32: VR.VX(t, VR.XN(off, len))
 def M1(+len: U32) -> Nat: U32.to_nat(U32.sub(len, 1))
 def BD(+t: FD.array__Tree<U32>, +off: U32, +len: U32) -> Nat: Nat.add(Nat.mul(8n, M1(len)), U32.to_nat(O.high_bit(V(t, off, len))))
@@ -318,12 +553,12 @@ def bits_fname(b):
 def bits_text(b):
     body = BITS.replace('@ZEROS', '\n' + zeros_at_text(b.K))
     body = body.replace('@ABSURDV', absurd_cases('BitsValue', '{CHKw(t, i, off, len) == True{} : Bool}'))
-    for k, v in [('@BMAXn', f'{b.BMAX}n'), ('@YMAXn', f'{b.YMAX}n'), ('@Cn', f'{b.C}n'), ('@Kn', f'{b.K}n'), ('@LIMN', b.limn),
+    for k, v in [('@BMAXn', f'{b.BMAX}n'), ('@YMAXn', f'{b.YMAX}n'), ('@Cn', f'{b.C}n'), ('@Kn', f'{b.K}n'), ('@KBn', f'{ceil_log2(b.YMAX)}n'), ('@LIMN', b.limn),
                  ('@SCH', b.sch), ('@N', str(b.N)), ('@p_', f'{b.p}_')]:
         body = body.replace(k, v)
     L = HEAD + ['', '# GENERATED by codegen/var_win.py. Do not edit.',
                 f'# BitList[{b.N}] at a word-aligned window: the window interface of codegen/var_win.py.', '']
-    return '\n'.join(L) + COMMON + body
+    return deep_i('\n'.join(L) + COMMON + body)
 
 
 def spec_defs():
@@ -407,8 +642,9 @@ def winb(+k: Nat, +i: Nat, +len: U32, +P: Nat, +hk: {{Nat.is_le(A.quad(k), U32.t
 
 def eoc({CW}, +k: Nat, +c: U32, +ec: {{U32.to_nat(c) == A.quad(k) : Nat}}, +hkF: {{Nat.is_le(A.quad(k), {FS}n) == True{{}} : Bool}}, {HA})
     -> {{U32.to_nat(U32.add(off, c)) == A.quad(Nat.add(k, i)) : Nat}}:
-  VF.off_add(off, c, i, k, 2n+d, eo, ec, FD.nat__lt_trans(d, 28n, 29n, hd, {{==}}),
-    winb(k, i, len, A.quad(VB.pw(d)), FD.nat__le_trans(A.quad(k), {FS}n, U32.to_nat(len), hkF, leF(len, ha)), hw))
+  VF.off_add_lt(off, c, i, k, eo, ec,
+    FD.nat__le_lt_trans(A.quad(Nat.add(k, i)), Nat.add(A.quad(i), U32.to_nat(len)), FD.spec_common__pow2(32n),
+      winb(k, i, len, Nat.add(A.quad(i), U32.to_nat(len)), FD.nat__le_trans(A.quad(k), {FS}n, U32.to_nat(len), hkF, leF(len, ha)), FD.nat__le_refl(Nat.add(A.quad(i), U32.to_nat(len)))), hw32))
 
 def hHi({CW}, {HA}) -> {{Nat.is_le(Nat.add({H}n, i), VB.pw(d)) == True{{}} : Bool}}:
   VC.quad_inv(Nat.add({H}n, i), VB.pw(d), winb({H}n, i, len, A.quad(VB.pw(d)), leF(len, ha), hw))
@@ -424,6 +660,15 @@ def hwc({CW}, {HA}) -> {{Nat.is_le(Nat.add(A.quad(JW(i)), U32.to_nat(LLw(len))),
     {{Nat.is_le(_, A.quad(VB.pw(d))) == True{{}} : Bool}}
   %Equal.sym(Nat, Nat.add({FS}n, U32.to_nat(LLw(len))), U32.to_nat(len), enF(len, ha)) : {{Nat.is_le(Nat.add(A.quad(i), _), A.quad(VB.pw(d))) == True{{}} : Bool}}
   hw
+
+# ... and ends below 2^32.
+def hwc32({CW}, {HA}) -> {{Nat.is_lt(Nat.add(A.quad(JW(i)), U32.to_nat(LLw(len))), FD.spec_common__pow2(32n)) == True{{}} : Bool}}:
+  %Equal.sym(Nat, A.quad(Nat.add({H}n, i)), Nat.add(A.quad({H}n), A.quad(i)), VF.quad_add({H}n, i)) : {{Nat.is_lt(Nat.add(_, U32.to_nat(LLw(len))), FD.spec_common__pow2(32n)) == True{{}} : Bool}}
+  %FD.nat__add_comm(A.quad(i), A.quad({H}n)) : {{Nat.is_lt(Nat.add(_, U32.to_nat(LLw(len))), FD.spec_common__pow2(32n)) == True{{}} : Bool}}
+  %Equal.sym(Nat, Nat.add(Nat.add(A.quad(i), {FS}n), U32.to_nat(LLw(len))), Nat.add(A.quad(i), Nat.add({FS}n, U32.to_nat(LLw(len)))), FD.nat__add_assoc(A.quad(i), {FS}n, U32.to_nat(LLw(len)))) :
+    {{Nat.is_lt(_, FD.spec_common__pow2(32n)) == True{{}} : Bool}}
+  %Equal.sym(Nat, Nat.add({FS}n, U32.to_nat(LLw(len))), U32.to_nat(len), enF(len, ha)) : {{Nat.is_lt(Nat.add(A.quad(i), _), FD.spec_common__pow2(32n)) == True{{}} : Bool}}
+  hw32
 
 def eoF({CW}, {HA}) -> {{U32.to_nat(OWc(off)) == A.quad(JW(i)) : Nat}}:
   eoc({CWA}, {H}n, {FS}, {{==}}, {{==}}, ha)
@@ -444,7 +689,7 @@ def okc0({CW}, {HA}, +b: Bool, +eb: {{U32.is_eq(SPOw(t, i), {FS}) == b : Bool}})
       %Equal.sym(U32, SPOw(t, i), {FS}, epo) :
         {{{Tn}_v1(off, len, _, T.{x.okf}_ok(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), {CHK_child}) : B.Buf & Bool}}
       %Equal.sym(B.Buf & Bool, T.{x.okf}_ok(BF(t, n), OWc(off), LLw(len)), (BF(t, n), {CHK_child}),
-          CH.ok_evalw(d, t, n, JW(i), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), pf)) :
+          CH.ok_evalw(d, t, n, JW(i), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf)) :
         {{{Tn}_v1(off, len, {FS}, _) == (BF(t, n), {CHK_child}) : B.Buf & Bool}}
       c1_id({CHK_child}, BF(t, n), off, len, {FS})
 
@@ -515,13 +760,13 @@ def ch_c(+a: Bool, +b: Bool, +c: Bool, +h: {{chk3(a, b, c) == True{{}} : Bool}})
             k = f['k']
             hb = f'FD.nat__le_trans(Nat.add({ft.W}n, Nat.add({k}n, i)), Nat.add({H}n, i), VB.pw(d), Order.left_below_sum({H - ft.W - k}n, Nat.add({ft.W}n, Nat.add({k}n, i))), hH)'
             w(f'  %Equal.sym(B.Buf & {ft.rep()}, {read_term(f, FS)}, (BF(t, n), {objs[j]}),')
-            w(f'      VT.rd_{ft.p}(d, t, n, U32.add(off, {f["c"]}), Nat.add({k}n, i), eoc({CWA}, {k}n, {f["c"]}, {{==}}, {{==}}, ha), FD.nat__lt_trans(d, 28n, 29n, hd, {{==}}), pf, {hb})) :')
+            w(f'      VT.rdd_{ft.p}(d, t, n, U32.add(off, {f["c"]}), Nat.add({k}n, i), eoc({CWA}, {k}n, {f["c"]}, {{==}}, {{==}}, ha), hd, pf, {hb})) :')
             w(f'    {{{Tn}_rd{j + 1}({args}, _) == {RHS} : {TY}}}')
         else:
             base = x.rdf[:-3] if x.boxed else x.rdf
             cur = f'T.{base}_read(BF(t, n), OWc(off), LLw(len))'
             w(f'  %Equal.sym(B.Buf & {chrep}, {cur}, (BF(t, n), {CHOBJ}),')
-            w(f'      CH.readw(d, t, n, JW(i), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), pf, hc)) :')
+            w(f'      CH.readw(d, t, n, JW(i), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf, hc)) :')
             hole = f'T.{x.rdf}_rd(_)' if x.boxed else '_'
             w(f'    {{{Tn}_rd{j + 1}({args}, {hole}) == {RHS} : {TY}}}')
     w('  {==}')
@@ -562,7 +807,7 @@ def readw({CW}, +hchk: {{CHKw(t, i, off, len) == True{{}} : Bool}}) -> {{{Tn}_re
             return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs([{", ".join(nodes[i]["words"])}]), '
                     f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
         return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), {Y}, Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
-                f'CH.specw(d, t, n, JW(i), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), pf, hc), {cat(i + 1)})')
+                f'CH.specw(d, t, n, JW(i), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf, hc), {cat(i + 1)})')
     PRE = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[:vi]) + ']'
     POST = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[vi + 1:]) + ']'
     hdr = []
@@ -580,7 +825,7 @@ def readw({CW}, +hchk: {{CHKw(t, i, off, len) == True{{}} : Bool}}) -> {{{Tn}_re
 def fitw({CW}, {HA}) -> {{N.fits(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, {Y}))) == True{{}} : Bool}}:
   %Equal.sym(Nat, List.length(&2, U32, {Y}), U32.to_nat(LLw(len)), VR.lenWB(d, t, JW(i), U32.to_nat(LLw(len)), pf, hwc({CWA}, ha))) : {{N.fits(4n, Nat.add({FS}n, _)) == True{{}} : Bool}}
   %Equal.sym(Nat, Nat.add({FS}n, U32.to_nat(LLw(len))), U32.to_nat(len), enF(len, ha)) : {{N.fits(4n, _) == True{{}} : Bool}}
-  VFT.fits4(2n+d, U32.to_nat(len), hlen(d, i, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {{==}}))
+  VFT.fits4lt(U32.to_nat(len), FD.nat__le_lt_trans(U32.to_nat(len), Nat.add(A.quad(i), U32.to_nat(len)), FD.spec_common__pow2(32n), Order.left_below_sum(A.quad(i), U32.to_nat(len)), hw32))
 
 # The window's bytes: the header words' limbs, then the child's window.
 def limw({CW}, {HA}, +epo: {{SPOw(t, i) == {FS} : U32}})
@@ -613,7 +858,7 @@ def specw({CW}, +hchk: {{CHKw(t, i, off, len) == True{{}} : Bool}}) -> {{Codec.p
   specg({CWA}, ch_a(a, b, c, hchk), FD.u32alg__eq_of(SPOw(t, i), {FS}, ch_b(a, b, c, hchk)), ch_c(a, b, c, hchk))
 ''')
     w(inv_text(x, CW, CWA, CHK_child, CSCH, kids, Y, WBL))
-    return '\n'.join(L) + '\n'
+    return deep_i('\n'.join(L) + '\n')
 
 
 def inv_text(x, CW, CWA, CHK_child, CSCH, kids, Y, WBL):
@@ -753,7 +998,7 @@ def contra({CW}, {', '.join(decl_m)}, +eo2: {{{OUT} == {WBL} : +List<U32>}}) -> 
       Equal.trans(+List<U32>, VS.bdr({FS}n, W2), VR.WB(t, JW(i), lY), VR.WB(t, JW(i), U32.to_nat(LLw(len))), VWN.tailW(t, i, {H}n, lY),
         Equal.cong(Nat, +List<U32>, z => VR.WB(t, JW(i), z), lY, U32.to_nat(LLw(len)), Equal.sym(Nat, U32.to_nat(LLw(len)), lY, eLL)))))
   +eh2 = FD.logic__subst(+List<U32>, z => {{Codec.parts(hv, {CSCH}) == Some{{[S.Variable{{z}}]}} : {MP}}}, ys, VR.WB(t, JW(i), U32.to_nat(LLw(len))), ty, eh)
-  +hc = CH.invw(d, t, n, JW(i), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), pf, hv, eh2)
+  +hc = CH.invw(d, t, n, JW(i), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf, hv, eh2)
   chk_t(t, i, off, len, ha, epo, hc)
 ''')
     PLIST = '[' + ', '.join(parts_m) + ']'
@@ -833,7 +1078,7 @@ def VAL(+t: FD.array__Tree<U32>, +n: U32) -> S.Value: W.VALw(t, 0n, n)
 def ok_eval(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {@Tn_ok(BF(t, n), 0, n) == (BF(t, n), CHK(t, n)) : B.Buf & Bool}:
-  W.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, pf)
+  W.ok_evalw(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf)
 
 # Every buffer the validator accepts decodes to OBJ(t, n).
 law decode_accept:
@@ -850,7 +1095,7 @@ def decode_accept(d, t, n, pf, hd, hn, hchk):
     {@Tn_built(n, _) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, @Tn>}
   %Equal.sym(Bool, CHK(t, n), True{}, hchk) :
     {@Tn_built(n, (BF(t, n), _)) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, @Tn>}
-  %Equal.sym(B.Buf & @Tn, @Tn_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+  %Equal.sym(B.Buf & @Tn, @Tn_read(BF(t, n), 0, n), (BF(t, n), OBJ(t, n)), W.readw(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk)) :
     {@Tn_some(_) == (BF(t, n), Some{OBJ(t, n)}) : B.Buf & Maybe<&1, @Tn>}
   {==}
 
@@ -882,7 +1127,7 @@ law decode_spec:
   for +hchk: {CHK(t, n) == True{} : Bool}
   Decoding.decodes(Spec.@N(), VW(t, n), VAL(t, n))
 def decode_spec(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.@N()), Some{[S.Variable{VW(t, n)}]}, W.specw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.@N()), Some{[S.Variable{VW(t, n)}]}, W.specw(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk)) :
     {Codec.bytes(_) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
   {==}
 
@@ -911,7 +1156,7 @@ def rej_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
   match v:
     case S.Sequence{+items}:
       FD.logic__true_false(Equal.trans(Bool, True{}, CHK(t, n), False{},
-        Equal.sym(Bool, CHK(t, n), True{}, W.invw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, S.Sequence{items}, agg_var(Codec.parts(items, @CHAIN), VW(t, n), e))), hchk))
+        Equal.sym(Bool, CHK(t, n), True{}, W.invw(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, S.Sequence{items}, agg_var(Codec.parts(items, @CHAIN), VW(t, n), e))), hchk))
 @ABSURD
 # When the validator refuses, no value is related to the buffer's bytes.
 law decode_reject:
@@ -928,7 +1173,8 @@ def decode_reject(d, t, n, pf, hd, hn, hchk):
 """
 
 
-def top_text(x, wmod, kids):
+def top_text(x, wmod, kids, deep=False):
+    """deep: the window module carries the deep bounds (d < 31, hw32); other generators' windows are d < 28."""
     chain = 'S.End{}'
     for k in reversed(kids):
         chain = f'S.Chain{{Spec.{k}(), {chain}}}'
@@ -941,12 +1187,13 @@ def top_text(x, wmod, kids):
     body = TOP.replace('@ABSURD', '\n'.join(ab) + '\n').replace('@CHAIN', chain).replace('@Tn', f'T.{x.n}').replace('@N(', f'{x.n}(')
     L = HEAD + [f'import ./{wmod} as W', '', '# GENERATED by codegen/var_win.py. Do not edit.',
                 f'# {x.n}: the codec laws of the whole buffer, from its window laws ({wmod}).', '']
-    return '\n'.join(L) + body
+    if not deep:
+        return '\n'.join(L) + body.replace('Nat.is_lt(d, 31n)', 'Nat.is_lt(d, 28n)').replace(', hd, hn, VB.u32_lt(n), pf', ', hd, hn, pf')
+    return deep_i('\n'.join(L) + body)
 
 
 def unique_text(x, top):
-    return VL.unique_text(None, x.n, top).replace('GENERATED by codegen/var_laws.py', 'GENERATED by codegen/var_win.py').replace(
-        'for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}', 'for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}')
+    return VL.unique_text(None, x.n, top, 31).replace('GENERATED by codegen/var_laws.py', 'GENERATED by codegen/var_win.py')
 
 
 # ---- byte-offset windows (the interface of proofs/obj/vua_win.bend) ---------------------------
@@ -988,8 +1235,63 @@ def to_bytes_window(s):
     return s
 
 
-def bitsx_text(b):
-    body = to_bytes_window(BITS)
+HWX = '{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}'
+HW32X = '{Nat.is_lt(Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{} : Bool}'
+XIFACE = ['ok_evalw', 'readw', 'specw', 'invw']
+
+
+def deep_x(text, names=XIFACE):
+    """The byte-offset window text at any depth d < 31 (hw32: the window's end below 2^32), plus the
+    interface as it was (d < 28, no hw32) under the old names for the callers not yet deep."""
+    import deep
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)').replace('FD.nat__lt_trans(d, 28n, 31n, hd, {==})', 'hd')
+    text = deep.thread(text, HWX, HW32X)
+    return deep.compat(text, names, HWX, HW32X, 'Nat.add(x, U32.to_nat(len))')
+
+
+def bitsx_deep_body(b):
+    body = to_bytes_window(BITS).replace('VR.eXNw(off, i, ', 'UW.eXNw(off, x, ')
+    obj_old = """def OBJw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> O.Bits:
+  O.Bits{O.clear_bit(O.mask_last(len, FD.array__thaw(U32, VB.mone(VC.NW(len), i, 0n, VLS.DZ(len), VC.ZT(VLS.DZ(len)), t))), NB(t, off, len)), NB(t, off, len)}"""
+    obj_new = """def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> O.Bits:
+  O.Bits{O.clear_bit(FD.array__thaw(U32, UCT.CT(d, t, off, len, VLS.DZ(len))), NB(t, off, len)), NB(t, off, len)}"""
+    assert obj_old in body, 'OBJw'
+    body = body.replace(obj_old, obj_new)
+    body = body.replace('OBJw(t, x, off, len)', 'OBJw(d, t, x, off, len)')
+    ci_old = """  %Equal.sym(B.Buf & O.Words, O.copy_in(BF(t, n), off, len), (BF(t, n), O.Words{O.mask_last(len, FD.array__thaw(U32, VB.mone(VC.NW(len), i, 0n, VLS.DZ(len), VC.ZT(VLS.DZ(len)), t))), len}),
+      VR.copy_in_ok2(d, t, n, off, i, len, VLS.DZ(len), pf, hd31, FD.nat__le_lt_trans(VLS.DZ(len), @Kn, 31n, hz, {==}), ez, VF.al_3(off, i, eo), VF.al_q(off, i, eo),
+        VBC.nwHB(d, len, i, @KBn, {==}, hyB(len, hb), hw), hrgB(len, hb))) :"""
+    ci_new = """  %Equal.sym(B.Buf & O.Words, O.copy_in(BF(t, n), off, len), (BF(t, n), O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, len, VLS.DZ(len))), len}),
+      UCT.copy_in_at(d, t, n, off, len, VLS.DZ(len), @KBn, pf, hd31, FD.nat__le_lt_trans(VLS.DZ(len), @Kn, 31n, hz, {==}), ez,
+        UW.hsxB(d, off, x, len, eo, @KBn, {==}, hyB(len, hb), hw), hrgB(len, hb), {==}, hyB(len, hb))) :"""
+    assert ci_old in body, 'copy_in'
+    return body.replace(ci_old, ci_new)
+
+
+def bitsx_text(b, deep=False):
+    if deep:
+        return deep_x(_bitsx_text(b, bitsx_deep_body(b)))
+    return _bitsx_text(b, None)
+
+
+def _bitsx_text(b, dbody):
+    if dbody is not None:
+        body = dbody
+    else:
+        body = _bitsx_old_body()
+    body = body.replace('@ZEROS', '\n' + zeros_at_text(b.K))
+    body = body.replace('@ABSURDV', absurd_cases('BitsValue', '{CHKw(t, x, off, len) == True{} : Bool}', target='[S.Variable{UW.WX(t, x, U32.to_nat(len))}]'))
+    for k, v in [('@BMAXn', f'{b.BMAX}n'), ('@YMAXn', f'{b.YMAX}n'), ('@Cn', f'{b.C}n'), ('@KBn', f'{ceil_log2(b.YMAX)}n'), ('@Kn', f'{b.K}n'), ('@LIMN', b.limn),
+                 ('@SCH', b.sch), ('@N', str(b.N)), ('@p_', f'{b.p}_')]:
+        body = body.replace(k, v)
+    assert 'A.quad(i)' not in body and 'VR.WB(' not in body, 'leftover word index'
+    L = HEADX + ['', '# GENERATED by codegen/var_win.py. Do not edit.',
+                 f'# BitList[{b.N}] at a window at any byte offset: the interface of proofs/obj/vua_win.bend.', '']
+    return '\n'.join(L) + COMMONX + body
+
+
+def _bitsx_old_body():
+    body = to_bytes_window(BITS0)
     obj_old = """def OBJw(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> O.Bits:
   O.Bits{O.clear_bit(O.mask_last(len, FD.array__thaw(U32, VB.mone(VC.NW(len), i, 0n, VLS.DZ(len), VC.ZT(VLS.DZ(len)), t))), NB(t, off, len)), NB(t, off, len)}"""
     obj_new = """def OBJw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32) -> O.Bits:
@@ -1004,16 +1306,7 @@ def bitsx_text(b):
       UCT.copy_in_at(d, t, n, off, len, VLS.DZ(len), VLS.KK(d), pf, hd31, FD.nat__le_lt_trans(VLS.DZ(len), @Kn, 31n, hz, {==}), ez,
         UW.hsx(d, off, x, len, eo, hd, hw), VLS.hrg(d, len, hd, hL), VLS.kk_lt(d, hd), VLS.hyn(d, len, hL))) :"""
     assert ci_old in body, 'copy_in'
-    body = body.replace(ci_old, ci_new)
-    body = body.replace('@ZEROS', '\n' + zeros_at_text(b.K))
-    body = body.replace('@ABSURDV', absurd_cases('BitsValue', '{CHKw(t, x, off, len) == True{} : Bool}', target='[S.Variable{UW.WX(t, x, U32.to_nat(len))}]'))
-    for k, v in [('@BMAXn', f'{b.BMAX}n'), ('@YMAXn', f'{b.YMAX}n'), ('@Cn', f'{b.C}n'), ('@Kn', f'{b.K}n'), ('@LIMN', b.limn),
-                 ('@SCH', b.sch), ('@N', str(b.N)), ('@p_', f'{b.p}_')]:
-        body = body.replace(k, v)
-    assert 'A.quad(i)' not in body and 'VR.WB(' not in body, 'leftover word index'
-    L = HEADX + ['', '# GENERATED by codegen/var_win.py. Do not edit.',
-                 f'# BitList[{b.N}] at a window at any byte offset: the interface of proofs/obj/vua_win.bend.', '']
-    return '\n'.join(L) + COMMONX + body
+    return body.replace(ci_old, ci_new)
 
 
 def bitsx_fname(b):
@@ -1071,11 +1364,11 @@ def enF(+len: U32, {HA}) -> {{Nat.add({FS}n, U32.to_nat(LLw(len))) == U32.to_nat
 def eoc({CW}, +c: U32, +k: Nat, +ec: {{U32.to_nat(c) == k : Nat}}, +hkF: {{Nat.is_le(k, {FS}n) == True{{}} : Bool}}, {HA})
     -> {{U32.to_nat(U32.add(off, c)) == Nat.add(k, x) : Nat}}:
   +hk = FD.nat__le_trans(k, {FS}n, U32.to_nat(len), hkF, leF(len, ha))
-  +h = FD.nat__le_trans(Nat.add(k, x), Nat.add(U32.to_nat(len), x), {PW}, Order.add_right(k, U32.to_nat(len), x, hk),
-    FD.logic__subst(Nat, z => {{Nat.is_le(z, {PW}) == True{{}} : Bool}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw))
+  +h = FD.nat__le_lt_trans(Nat.add(k, x), Nat.add(U32.to_nat(len), x), FD.spec_common__pow2(32n), Order.add_right(k, U32.to_nat(len), x, hk),
+    FD.logic__subst(Nat, z => {{Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{{}} : Bool}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw32))
   %ec : {{U32.to_nat(U32.add(off, c)) == Nat.add(_, x) : Nat}}
-  VB.add_at(off, c, x, 3n+d, eo, FD.nat__lt_trans(3n+d, 31n, 32n, hd, {{==}}),
-    FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add(z, x), VB.pw(3n+d)) == True{{}} : Bool}}, k, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), k, ec), VB.le_pw_lt(Nat.add(k, x), 2n+d, h)))
+  VB.add_lt32(off, c, x, eo,
+    FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add(z, x), FD.spec_common__pow2(32n)) == True{{}} : Bool}}, k, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), k, ec), h))
 
 # Room for s bytes at c + x, for c + s <= {FS}.
 def roomF({CW}, {HA}, +c: Nat, +s: Nat, +hc: {{Nat.is_le(Nat.add(c, s), {FS}n) == True{{}} : Bool}})
@@ -1087,6 +1380,12 @@ def hwc({CW}, {HA}) -> {{Nat.is_le(Nat.add(JW(x), U32.to_nat(LLw(len))), {PW}) =
   FD.logic__subst(Nat, z => {{Nat.is_le(z, {PW}) == True{{}} : Bool}}, Nat.add(x, Nat.add({FS}n, U32.to_nat(LLw(len)))), Nat.add({FS}n, Nat.add(x, U32.to_nat(LLw(len)))),
     FD.lru_nat_algebra__add_swap(x, {FS}n, U32.to_nat(LLw(len))),
     FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), {PW}) == True{{}} : Bool}}, U32.to_nat(len), Nat.add({FS}n, U32.to_nat(LLw(len))), Equal.sym(Nat, Nat.add({FS}n, U32.to_nat(LLw(len))), U32.to_nat(len), enF(len, ha)), hw))
+
+# ... and ends below 2^32.
+def hwc32({CW}, {HA}) -> {{Nat.is_lt(Nat.add(JW(x), U32.to_nat(LLw(len))), FD.spec_common__pow2(32n)) == True{{}} : Bool}}:
+  FD.logic__subst(Nat, z => {{Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{{}} : Bool}}, Nat.add(x, Nat.add({FS}n, U32.to_nat(LLw(len)))), Nat.add({FS}n, Nat.add(x, U32.to_nat(LLw(len)))),
+    FD.lru_nat_algebra__add_swap(x, {FS}n, U32.to_nat(LLw(len))),
+    FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add(x, z), FD.spec_common__pow2(32n)) == True{{}} : Bool}}, U32.to_nat(len), Nat.add({FS}n, U32.to_nat(LLw(len))), Equal.sym(Nat, Nat.add({FS}n, U32.to_nat(LLw(len))), U32.to_nat(len), enF(len, ha)), hw32))
 
 def eoF({CW}, {HA}) -> {{U32.to_nat(OWc(off)) == JW(x) : Nat}}:
   eoc({CWA}, {FS}, {FS}n, {{==}}, {{==}}, ha)
@@ -1107,7 +1406,7 @@ def okc0({CW}, {HA}, +b: Bool, +eb: {{U32.is_eq(SPOw(t, x), {FS}) == b : Bool}})
       %Equal.sym(U32, SPOw(t, x), {FS}, epo) :
         {{{Tn}_v1(off, len, _, T.{x.okf}_ok(BF(t, n), U32.add(off, _), U32.sub(len, _))) == (BF(t, n), {CHK_child}) : B.Buf & Bool}}
       %Equal.sym(B.Buf & Bool, T.{x.okf}_ok(BF(t, n), OWc(off), LLw(len)), (BF(t, n), {CHK_child}),
-          CH.ok_evalw(d, t, n, JW(x), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), pf)) :
+          CH.ok_evalwD(d, t, n, JW(x), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf)) :
         {{{Tn}_v1(off, len, {FS}, _) == (BF(t, n), {CHK_child}) : B.Buf & Bool}}
       c1_id({CHK_child}, BF(t, n), off, len, {FS})
 
@@ -1176,14 +1475,14 @@ def ch_c(+a: Bool, +b: Bool, +c: Bool, +h: {{chk3(a, b, c) == True{{}} : Bool}})
             ft = f['ft']
             c = f['c']
             w(f'  %Equal.sym(B.Buf & {ft.rep()}, {read_term(f, FS)}, (BF(t, n), {objs[j]}),')
-            w(f'      VTX.rdx_{ft.p}(d, t, n, U32.add(off, {c}), {posx(c)}, eoc({CWA}, {c}, {c}n, {{==}}, {{==}}, ha), FD.nat__lt_trans(d, 28n, 30n, hd, {{==}}), pf,')
+            w(f'      VTX.rdxd_{ft.p}(d, t, n, U32.add(off, {c}), {posx(c)}, eoc({CWA}, {c}, {c}n, {{==}}, {{==}}, ha), hd, pf,')
             w(f'        roomF({CWA}, ha, {c}n, {ft.size}n, {{==}}))) :')
             w(f'    {{{Tn}_rd{j + 1}({args}, _) == {RHS} : {TY}}}')
         else:
             base = x.rdf[:-3] if x.boxed else x.rdf
             cur = f'T.{base}_read(BF(t, n), OWc(off), LLw(len))'
             w(f'  %Equal.sym(B.Buf & {chrep}, {cur}, (BF(t, n), {CHOBJ}),')
-            w(f'      CH.readw(d, t, n, JW(x), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), pf, hc)) :')
+            w(f'      CH.readwD(d, t, n, JW(x), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf, hc)) :')
             hole = f'T.{x.rdf}_rd(_)' if x.boxed else '_'
             w(f'    {{{Tn}_rd{j + 1}({args}, {hole}) == {RHS} : {TY}}}')
     w('  {==}')
@@ -1230,7 +1529,7 @@ def readw({CW}, +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{{Tn}_re
             return (f'gcf_({svals[i]}, {sitems(i + 1)}, {schs[i]}, {chain(i + 1)}, F.limbs([{", ".join(nodes[i]["words"])}]), '
                     f'{rest}, fxc{i}(t, x), {cat(i + 1)})')
         return (f'gcv_({svals[i]}, {sitems(i + 1)}, {schs[i]}, {chain(i + 1)}, {Y}, {rest}, '
-                f'CH.specw(d, t, n, JW(x), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), pf, hc), {cat(i + 1)})')
+                f'CH.specwD(d, t, n, JW(x), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf, hc), {cat(i + 1)})')
     PRE = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[:vi]) + ']'
     POST = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[vi + 1:]) + ']'
     hdr = []
@@ -1260,7 +1559,7 @@ def readw({CW}, +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{{Tn}_re
 def fitw({CW}, {HA}) -> {{N.fits(4n, Nat.add(VS.FSZ({PRE}, {POST}), List.length(&2, U32, {Y}))) == True{{}} : Bool}}:
   %Equal.sym(Nat, List.length(&2, U32, {Y}), {LLn}, UW.lenWX(d, t, JW(x), {LLn}, pf, hwc({CWA}, ha))) : {{N.fits(4n, Nat.add({FS}n, _)) == True{{}} : Bool}}
   %Equal.sym(Nat, Nat.add({FS}n, {LLn}), U32.to_nat(len), enF(len, ha)) : {{N.fits(4n, _) == True{{}} : Bool}}
-  VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {{==}}))
+  VFT.fits4lt(U32.to_nat(len), FD.nat__le_lt_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n), Order.left_below_sum(x, U32.to_nat(len)), hw32))
 
 # The window's bytes: the header words' limbs, then the child's window.
 def limw({CW}, {HA}, +epo: {{SPOw(t, x) == {FS} : U32}})
@@ -1323,7 +1622,7 @@ def specw({CW}, +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{Codec.p
   +c = {CHK_child}
   specg({CWA}, ch_a(a, b, c, hchk), FD.u32alg__eq_of(SPOw(t, x), {FS}, ch_b(a, b, c, hchk)), ch_c(a, b, c, hchk))
 """)
-    inv = inv_text(x, CW, CWA, CHK_child, CSCH, kids, Y, WBL)
+    inv = inv_text(x, CW, CWA, CHK_child, CSCH, kids, Y, WBL).replace('CH.invw(', 'CH.invwD(')
     RF = FS - P - 4
     for a, b in [('CHKw(t, i, off, len)', 'CHKw(t, x, off, len)'),
                  ('VR.lenWB(d, t, i, U32.to_nat(len), pf, hw)', 'UW.lenWX(d, t, x, U32.to_nat(len), pf, hw)'),
@@ -1341,7 +1640,7 @@ def specw({CW}, +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{Codec.p
     text = '\n'.join(L) + '\n'
     for bad in ['A.quad(i)', 'VR.WB(', '(t, i,', 'JW(i)']:
         assert bad not in text, bad
-    return text
+    return deep_x(text)
 
 
 # A List[uint64, N] at a window at any byte offset (the runtime prefix @p_, limit @N).
@@ -1464,6 +1763,63 @@ def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
 """
 
 
+LISTX_DEEP_BOUNDS = r"""
+# 31 + len <= 2^@KB: the checks bound the length (whatever the buffer's depth).
+def hyN(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hc: {CHKw(t, x, off, len) == True{} : Bool}) -> {Nat.is_le(VC.YL(len), Nat.add(31n, VS.x8(U32.to_nat(@N)))) == True{} : Bool}:
+  +hx = FD.logic__subst(Nat, z => {Nat.is_le(z, VS.x8(U32.to_nat(@N))) == True{} : Bool}, VS.x8(CQ(len)), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), VS.x8(CQ(len)), eLc(t, x, off, len, hc)),
+    VS.x8_mono(CQ(len), U32.to_nat(@N), hcL(t, x, off, len, hc)))
+  Order.add_left(31n, U32.to_nat(len), VS.x8(U32.to_nat(@N)), hx)
+
+def hyL(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hc: {CHKw(t, x, off, len) == True{} : Bool}) -> {Nat.is_le(VC.YL(len), VB.pw(@KBn)) == True{} : Bool}:
+  FD.nat__le_trans(VC.YL(len), Nat.add(31n, VS.x8(U32.to_nat(@N))), VB.pw(@KBn), hyN(t, x, off, len, hc), {==})
+
+def hWZ(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hc: {CHKw(t, x, off, len) == True{} : Bool})
+    -> {Nat.is_le(U32.to_nat(VC.WZ(len)), O.pow2n(@Kn)) == True{} : Bool}:
+  FD.nat__le_trans(U32.to_nat(VC.WZ(len)), Nat.add(VD.s_rng(2n, VC.YL(len)), 8n), O.pow2n(@Kn),
+    VC.wz_le(len, @KBn, {==}, hyL(t, x, off, len, hc)),
+    FD.nat__le_trans(Nat.add(VD.s_rng(2n, VC.YL(len)), 8n), Nat.add(VD.s_rng(2n, Nat.add(31n, VS.x8(U32.to_nat(@N)))), 8n), O.pow2n(@Kn),
+      Order.add_right(VD.s_rng(2n, VC.YL(len)), VD.s_rng(2n, Nat.add(31n, VS.x8(U32.to_nat(@N)))), 8n, VC.rng_mono(2n, VC.YL(len), Nat.add(31n, VS.x8(U32.to_nat(@N))), hyN(t, x, off, len, hc))),
+      {==}))
+
+# The list storage has room for the words.
+def hrgL(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hc: {CHKw(t, x, off, len) == True{} : Bool})
+    -> {Nat.is_le(Nat.add(VC.NW(len), 0n), VB.pw(VLS.DZ(len))) == True{} : Bool}:
+  %Equal.sym(Nat, Nat.add(VC.NW(len), 0n), VC.NW(len), FD.nat__add_zero(VC.NW(len))) : {Nat.is_le(_, VB.pw(VLS.DZ(len))) == True{} : Bool}
+  %Equal.sym(Nat, VB.pw(VLS.DZ(len)), O.pow2n(VLS.DZ(len)), VD.s_pow2_eq(VLS.DZ(len))) : {Nat.is_le(VC.NW(len), _) == True{} : Bool}
+  FD.nat__le_trans(VC.NW(len), U32.to_nat(VC.WZ(len)), O.pow2n(VLS.DZ(len)), VC.nw_le_wz(len, @KBn, {==}, hyL(t, x, off, len, hc)), VD.wd_cover(VC.WZ(len), @Kn, {==}, hWZ(t, x, off, len, hc)))
+"""
+
+
+def listx_deep_text(N, p, sch, el, limn):
+    """List[uint64, N] at a window at any byte offset, any depth d < 31: the storage's bounds come from the
+    limit N (31 + 8 N <= 2^KB), never from the buffer's depth."""
+    YMAX = 31 + 8 * N
+    KB = ceil_log2(YMAX)
+    K = ceil_log2((YMAX >> 2) + 8)
+    assert KB < 31 and K < 31
+    body = LISTX.replace('@ZEROS', '')
+    body = _cut_def(body, 'hWZ')
+    a = body.index('\ndef OBJw(')
+    body = body[:a] + LISTX_DEEP_BOUNDS + body[a:]
+    for a_, b_ in [('  +hz = VD.wd_min(VC.WZ(len), @Kn, hWZ(d, t, x, off, len, hd, hL, hchk))', '  +hz = VD.wd_min(VC.WZ(len), @Kn, hWZ(t, x, off, len, hchk))'),
+                   ('  +ez = zeros_at(B.words_depth_u(VC.WZ(len)), VLS.DZ(len), VD.wdu(VC.WZ(len)), hz)',
+                    '  +ez = FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.WZ(len))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.WZ(len))), VLS.DZ(len),\n'
+                    '    VD.wdu(VC.WZ(len)), VZG.zg(B.words_depth_u(VC.WZ(len))))'),
+                   ('  UCT.copy_in_at(d, t, n, off, len, VLS.DZ(len), VLS.KK(d), pf, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), FD.nat__le_lt_trans(VLS.DZ(len), @Kn, 31n, hz, {==}), ez,\n'
+                    '    UW.hsx(d, off, x, len, eo, hd, hw), VLS.hrg(d, len, hd, hL), VLS.kk_lt(d, hd), VLS.hyn(d, len, hL))',
+                    '  UCT.copy_in_at(d, t, n, off, len, VLS.DZ(len), @KBn, pf, hd, FD.nat__le_lt_trans(VLS.DZ(len), @Kn, 31n, hz, {==}), ez,\n'
+                    '    UW.hsxB(d, off, x, len, eo, @KBn, {==}, hyL(t, x, off, len, hchk), hw), hrgL(t, x, off, len, hchk), {==}, hyL(t, x, off, len, hchk))'),
+                   ('  +hL = hlen(d, x, len, hw)\n', '')]:
+        assert a_ in body, a_[:60]
+        body = body.replace(a_, b_)
+    body = body.replace('@ABSURDV', absurd_cases('Sequence', '{CHKw(t, x, off, len) == True{} : Bool}', target='[S.Variable{UW.WX(t, x, U32.to_nat(len))}]'))
+    for k, v in [('@KBn', f'{KB}n'), ('@Kn', f'{K}n'), ('@LIMN', limn), ('@SCH', sch), ('@EL', el), ('@N', str(N)), ('@p_', f'{p}_')]:
+        body = body.replace(k, v)
+    L = HEADX + ['import ./vua_rd.bend as UR', 'import ./big_vvlz.bend as VZG', '', '# GENERATED by codegen/var_win.py. Do not edit.',
+                 f'# List[uint64, {N}] at a window at any byte offset: the interface of proofs/obj/vua_win.bend.', '']
+    return deep_x('\n'.join(L) + COMMONX + body)
+
+
 def listx_text(N, p, sch, el, limn):
     # the zero storage's depth from the window's bound (VLS.hdz29) and any depth's zero array (big_vvlz), as
     # for the 2^40 lists: no enumeration of the zero arrays up to the list's depth
@@ -1492,7 +1848,42 @@ def _cut_def(text, name):
     return text[:a] + text[b:]
 
 
-def listx40_text(p, sch, el, limn):
+HWNX = '{Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}'
+
+
+def deep_xN(text, names=XIFACE):
+    """The unbounded byte-offset windows (the 2^40 lists) at any depth d < 31: the window ends by NMAX
+    (hwN), so 31 + len <= UMAX and the copy is VC's U chain; no power of two on the depth bounds the
+    storage. The old interface (d < 28) stays under the old names (hwN from VB.hwNof)."""
+    import deep
+    reps = [
+        ('  +hz = VLS.hdz29(d, len, hd, hL)', '  +hy = VC.hyW(x, len, hwN)\n  +hz = VC.dz30(len, hy)'),
+        ('  UCT.copy_in_at(d, t, n, off, len, VLS.DZ(len), VLS.KK(d), pf, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), FD.nat__le_lt_trans(VLS.DZ(len), 29n, 31n, hz, {==}), ez,\n'
+         '    UW.hsx(d, off, x, len, eo, hd, hw), VLS.hrg(d, len, hd, hL), VLS.kk_lt(d, hd), VLS.hyn(d, len, hL))',
+         '  UCT.copy_in_atU(d, t, n, off, len, VLS.DZ(len), pf, hd, FD.nat__le_lt_trans(VLS.DZ(len), 30n, 31n, hz, {==}), ez,\n'
+         '    UW.hsxBU(d, off, x, len, eo, hy, hw), VC.hrgU(len, hy), hy)'),
+        ('VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==}))',
+         'VFT.fits4lt(U32.to_nat(len), FD.nat__le_lt_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), FD.spec_common__pow2(32n), Order.left_below_sum(x, U32.to_nat(len)),\n'
+         '        VB.le_n_lt32(Nat.add(x, U32.to_nat(len)), VB.NMAX(), hwN)))'),
+        ('  +hL = hlen(d, x, len, hw)\n', ''),
+    ]
+    for a, b in reps:
+        assert a in text, a[:70]
+        text = text.replace(a, b)
+    return deep_N(text, names)
+
+
+def deep_N(text, names=XIFACE):
+    """d < 31 and hwN (the window ends by NMAX) threaded, the old interface as wrappers (hwN from VB.hwNof)."""
+    import deep
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')
+    assert 'VLS.KK(' not in text and 'VLS.hrg(' not in text and 'UW.hsx(' not in text and '28n' not in text.replace('28n+x', ''), 'deep_N leftover'
+    text = deep.thread(text, HWX, HWNX, hw32='hwN')
+    return deep.compat(text, names, HWX, HWNX, 'Nat.add(x, U32.to_nat(len))', hw32='hwN',
+                       hw32_term='VB.hwNof(d, Nat.add(x, U32.to_nat(len)), hd, hw)')
+
+
+def listx40_text(p, sch, el, limn, deep=False):
     """List[uint64, 2^40] at a window at any byte offset: the runtime checks only
     whole elements (a U32 length cannot exceed the limit), so the count's bound
     is the length's (big_vu40: symbolic capacities, never evaluated)."""
@@ -1547,7 +1938,8 @@ def ivf(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hw: {N
     assert '@' not in body.replace('&2', ''), [l for l in body.splitlines() if '@' in l.replace('&2', '')][:3]
     L = HEADX + ['import ./vua_rd.bend as UR', 'import ./big_vu40.bend as V40', 'import ./big_vvlz.bend as VZG', '', '# GENERATED by codegen/var_win.py. Do not edit.',
                  f'# List[uint64, 2^40] at a window at any byte offset: the interface of proofs/obj/vua_win.bend.', '']
-    return '\n'.join(L) + COMMONX + body
+    text = '\n'.join(L) + COMMONX + body
+    return deep_xN(text) if deep else text
 
 
 
@@ -1605,7 +1997,7 @@ def invw(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U3
 """
 
 
-def listu8x40_text(p, sch, limn):
+def listu8x40_text(p, sch, limn, deep=False):
     """List[uint8, 2^40] at a window at any byte offset (BeaconState's participation lists)."""
     body = LISTU8X40
     for k, v in [('@LIMN', limn), ('@SCH', sch), ('@p_', f'{p}_')]:
@@ -1613,7 +2005,8 @@ def listu8x40_text(p, sch, limn):
     L = HEADX + ['import ./vua_rd.bend as UR', 'import ./big_vu40.bend as V40', 'import ./big_vvlz.bend as VZG', 'import ./vu8.bend as U8',
                  'import ./pb_min.bend as PB', '', '# GENERATED by codegen/var_win.py. Do not edit.',
                  f'# List[uint8, 2^40] at a window at any byte offset: the interface of proofs/obj/vua_win.bend.', '']
-    return '\n'.join(L) + COMMONX + body
+    text = '\n'.join(L) + COMMONX + body
+    return deep_xN(text) if deep else text
 
 
 # A container of two variable-size fields of one child type (AttesterSlashing):
@@ -2182,6 +2575,64 @@ def asx_stages(sch):
     return '\n'.join(L)
 
 
+def asx_deep(text):
+    """asx_text at any depth d < 31: offsets below 2^32 from hw32, the children's deep interface."""
+    import deep
+    P32 = 'FD.spec_common__pow2(32n)'
+    reps = [
+        ("""  +hl = FD.nat__le_trans(Nat.add(U32.to_nat(o), x), Nat.add(U32.to_nat(len), x), A.quad(VB.pw(d)), Order.add_right(U32.to_nat(o), U32.to_nat(len), x, h),
+    FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw))
+  VB.add_at(off, o, x, 3n+d, eo, FD.nat__lt_trans(3n+d, 31n, 32n, hd, {==}), VB.le_pw_lt(Nat.add(U32.to_nat(o), x), 2n+d, hl))""",
+         f"""  +hl = FD.nat__le_lt_trans(Nat.add(U32.to_nat(o), x), Nat.add(U32.to_nat(len), x), {P32}, Order.add_right(U32.to_nat(o), U32.to_nat(len), x, h),
+    FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == True{{}} : Bool}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw32))
+  VB.add_lt32(off, o, x, eo, hl)"""),
+        ('VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==}))',
+         f'VFT.fits4lt(U32.to_nat(len), FD.nat__le_lt_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), {P32}, Order.left_below_sum(x, U32.to_nat(len)), hw32))'),
+        ('VFT.fits4(2n+d, Nat.add(8n, List.length(&2, U32, y0)), FD.nat__le_trans(Nat.add(8n, List.length(&2, U32, y0)), U32.to_nat(len), A.quad(VB.pw(d)), le8y0, hlen(d, x, len, hw)), FD.nat__lt_trans(d, 28n, 30n, hd, {==}))',
+         f'VFT.fits4lt(Nat.add(8n, List.length(&2, U32, y0)), FD.nat__le_lt_trans(Nat.add(8n, List.length(&2, U32, y0)), U32.to_nat(len), {P32}, le8y0,\n'
+         f'      FD.nat__le_lt_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), {P32}, Order.left_below_sum(x, U32.to_nat(len)), hw32)))'),
+    ]
+    for a, b in reps:
+        assert a in text, a[:70]
+        text = text.replace(a, b)
+    # hwj / hw8 with the window's end below 2^32
+    a = text.index('\ndef hwj(')
+    b = text.index('\n\n', a + 1)
+    hwj = text[a:b]
+    hwj32 = (hwj.replace('def hwj(', 'def hwj32(').replace('# ', '# ')
+             .replace('Nat.is_le(Nat.add(Nat.add(U32.to_nat(o), x), U32.to_nat(U32.sub(e, o))), A.quad(VB.pw(d)))', f'Nat.is_lt(Nat.add(Nat.add(U32.to_nat(o), x), U32.to_nat(U32.sub(e, o))), {P32})')
+             .replace('{Nat.is_le(Nat.add(Nat.add(U32.to_nat(o), x), _), A.quad(VB.pw(d))) == True{} : Bool}', f'{{Nat.is_lt(Nat.add(Nat.add(U32.to_nat(o), x), _), {P32}) == True{{}} : Bool}}')
+             .replace('{Nat.is_le(_, A.quad(VB.pw(d))) == True{} : Bool}', f'{{Nat.is_lt(_, {P32}) == True{{}} : Bool}}')
+             .replace('FD.nat__le_trans(Nat.add(x, U32.to_nat(e)), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.add_left(x, U32.to_nat(e), U32.to_nat(len), h2), hw)',
+                      f'FD.nat__le_lt_trans(Nat.add(x, U32.to_nat(e)), Nat.add(x, U32.to_nat(len)), {P32}, Order.add_left(x, U32.to_nat(e), U32.to_nat(len), h2), hw32)'))
+    assert 'A.quad(VB.pw(d))' not in hwj32[hwj32.index('    -> '):], hwj32
+    text = text[:b] + '\n' + hwj32 + text[b:]
+    a = text.index('\ndef hw8(')
+    b = text.index('\n\n', a + 1)
+    hw8 = text[a:b]
+    hw832 = (hw8.replace('def hw8(', 'def hw8_32(').replace('Nat.is_le(Nat.add(8n+x, U32.to_nat(A0(t, x))), A.quad(VB.pw(d)))', f'Nat.is_lt(Nat.add(8n+x, U32.to_nat(A0(t, x))), {P32})')
+             .replace('hwj(', 'hwj32('))
+    text = text[:b] + '\n' + hw832 + text[b:]
+    # the children's deep interface
+    pat = re.compile(r'CH\.(ok_evalw|readw|specw|invw)\(')
+    out, i = [], 0
+    while True:
+        m = pat.search(text, i)
+        if not m:
+            out.append(text[i:])
+            break
+        a = m.end()
+        b = deep._close(text, a)
+        args = deep._split_args(text[a:b])
+        h = args[8].strip()
+        assert h.startswith(('hwj(', 'hw8(')), h
+        h32 = h.replace('hwj(', 'hwj32(', 1) if h.startswith('hwj(') else h.replace('hw8(', 'hw8_32(', 1)
+        args.insert(9, ' ' + h32)
+        out.append(text[i:m.start()] + f'CH.{m.group(1)}D(' + ','.join(args) + ')')
+        i = b + 1
+    return deep_x(''.join(out))
+
+
 def asx_text(n, c, chmod, sch):
     CW = ('+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat},\n'
           '    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool},\n'
@@ -2238,7 +2689,7 @@ def main():
         out[wf] = cont_text(g, x, None, chf.name, f'Spec.{vf["sk"]}()', chrep, None)
         if n not in VL.BITC:
             tf = ROOT / f'proofs/obj/{pre}var_win_{n}_top.bend'
-            out[tf] = top_text(x, wf.name, kids)
+            out[tf] = top_text(x, wf.name, kids, True)
             out[ROOT / f'proofs/obj/{pre}var_win_{n}_unique.bend'] = unique_text(x, tf.name)
     # byte-offset windows
     for n in WINX:
@@ -2250,14 +2701,14 @@ def main():
             m = re.fullmatch(r'T\.BitList\{(.*)\}', defs[vf['sk']])
             b = Bits(ft.size, g.shape(ft).p, f'Spec.{vf["sk"]}()', m.group(1))
             big = big_bits(b)
-            chf, chtext, chrep = bitsx_fname(b), (lambda b=b: bitsx_text(b)), 'O.Bits'
+            chf, chtext, chrep = bitsx_fname(b), (lambda b=b: bitsx_text(b, deep=True)), 'O.Bits'
         else:
             assert ft.kind == 'list' and ft.elem.kind == 'uint' and ft.elem.size == 8
             m = re.fullmatch(r'T\.ListOf\{(Schema\d+)\(\), (.*)\}', defs[vf['sk']])
             big = ft.size >= 1 << 16
             p = g.shape(ft).p
             chf = ROOT / f'proofs/obj/{"big_" if big else ""}var_winx_{p}.bend'
-            chtext = (lambda ft=ft, p=p, m=m, vf=vf: listx_text(ft.size, p, f'Spec.{vf["sk"]}()', f'Spec.{m.group(1)}()', m.group(2)))
+            chtext = (lambda ft=ft, p=p, m=m, vf=vf: listx_deep_text(ft.size, p, f'Spec.{vf["sk"]}()', f'Spec.{m.group(1)}()', m.group(2)))
             chrep = 'O.Words'
         if no_big and big:
             continue
@@ -2269,15 +2720,15 @@ def main():
         bi = [f for f, _ in names['BeaconState'].fields].index('balances')
         bst, bsk = names['BeaconState'].fields[bi][1], bkids[bi]
         m = re.fullmatch(r'T\.ListOf\{(Schema\d+)\(\), (.*)\}', defs[bsk])
-        out[ROOT / f'proofs/obj/big_var_winx_{g.shape(bst).p}.bend'] = listx40_text(g.shape(bst).p, f'Spec.{bsk}()', f'Spec.{m.group(1)}()', m.group(2))
+        out[ROOT / f'proofs/obj/big_var_winx_{g.shape(bst).p}.bend'] = listx40_text(g.shape(bst).p, f'Spec.{bsk}()', f'Spec.{m.group(1)}()', m.group(2), deep=True)
         bi = [f for f, _ in names['BeaconState'].fields].index('previous_epoch_participation')
         bst, bsk = names['BeaconState'].fields[bi][1], bkids[bi]
         m = re.fullmatch(r'T\.ListOf\{(Schema\d+)\(\), (.*)\}', defs[bsk])
-        out[ROOT / f'proofs/obj/big_var_winx_{g.shape(bst).p}.bend'] = listu8x40_text(g.shape(bst).p, f'Spec.{bsk}()', m.group(2))
+        out[ROOT / f'proofs/obj/big_var_winx_{g.shape(bst).p}.bend'] = listu8x40_text(g.shape(bst).p, f'Spec.{bsk}()', m.group(2), deep=True)
     # two variable fields of one child (AttesterSlashing)
     if not no_big:
         kids, _ = VL.spec_schemas('AttesterSlashing')
-        out[ROOT / 'proofs/obj/big_var_winx_AttesterSlashing.bend'] = asx_text('AttesterSlashing', 'IndexedAttestation', 'big_var_winx_IndexedAttestation.bend', f'Spec.{kids[0]}()')
+        out[ROOT / 'proofs/obj/big_var_winx_AttesterSlashing.bend'] = asx_deep(asx_text('AttesterSlashing', 'IndexedAttestation', 'big_var_winx_IndexedAttestation.bend', f'Spec.{kids[0]}()'))
     # only files this generator wrote (var_rlist.py writes var_winx_* modules too)
     mine = [q for q in (ROOT / 'proofs/obj').glob('*var_win*.bend') if q.name.startswith(('var_win_', 'big_var_win_', 'var_winx_', 'big_var_winx_'))
             and '# GENERATED by codegen/var_win.py' in q.read_text()[:400]]
