@@ -2262,7 +2262,8 @@ def vdec_info(R):
         return None
     return {'bound': int(mb.group(1)), 'dc': imp[mdc.group(1)], 'acc': mods['decode_accept'][0], 'spec': mods['decode_spec'][0],
             'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0],
-            'dfn': f'T.{acc.group(2)}', 'objd': bool(acc.group(3)), 'vald': bool(spec.group(2)), 'otype': otype, 'sch': spec.group(1)}
+            'dfn': f'T.{acc.group(2)}', 'objd': bool(acc.group(3)), 'vald': bool(spec.group(2)), 'otype': otype, 'sch': spec.group(1),
+            'rejhd': '+hd:' in mods['decode_reject'][1]}
 
 
 # The input-size bound of the variable-size bridges is a parameter: K = one below the codec
@@ -2301,6 +2302,9 @@ def text_vdec(R, X, info):
             .replace('E.none_someT(T.@X@,', f'E.none_someT({ot},').replace('Spec.@X@()', f'{info["sch"]}.@X@()'))
     if info['objd']:
         body = body.replace('DC.OBJ(TT(bs, n), n)', 'DC.OBJ(B.capacity(n), TT(bs, n), n)')
+    if info['rejhd']:
+        body = body.replace('.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), C.cap_q(',
+                            '.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(')
     if info['vald']:
         body = body.replace('DC.VAL(TT(bs, n), n)', 'DC.VAL(B.capacity(n), TT(bs, n), n)')
     body = (body.replace('@X@', X).replace('@R@', R).replace('@VIEW@', vw['view'])
