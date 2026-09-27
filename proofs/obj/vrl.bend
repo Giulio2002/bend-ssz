@@ -111,6 +111,49 @@ def succU(+d: Nat, +i: U32, +j: Nat, +r: Nat, +x: Nat, +ej: {U32.to_nat(i) == j 
   +hmP = F.nat__le_trans(Nat.mul(1n+j, 1n+r), pos(1n+j, 1n+r, x), P, F.nat__le_add_right(Nat.mul(1n+j, 1n+r), x), hp)
   VB.add_le_at(i, 1, j, 2n+d, ej, F.nat__lt_trans(2n+d, 30n, 31n, hd, {==}), F.nat__le_trans(1n+j, Nat.mul(1n+j, 1n+r), P, le_mul(1n+j, r), hmP))
 
+# ---- the same at any depth: the record ends below 2^32 (every window of an n <= NMAX buffer) ----
+
+def posU32(+off: U32, +x: Nat, +i: U32, +j: Nat, +Ru: U32, +r: Nat, +eR: {U32.to_nat(Ru) == 1n+r : Nat},
+    +eo: {U32.to_nat(off) == x : Nat}, +ej: {U32.to_nat(i) == j : Nat},
+    +hb: {Nat.is_lt(Nat.add(pos(1n+j, 1n+r, x), 1n+r), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(off, U32.mul(U32.add(i, 1), Ru))) == pos(1n+j, 1n+r, x) : Nat}:
+  +P = F.spec_common__pow2(32n)
+  +hp = F.nat__le_lt_trans(pos(1n+j, 1n+r, x), Nat.add(pos(1n+j, 1n+r, x), 1n+r), P, F.nat__le_add_right(pos(1n+j, 1n+r, x), 1n+r), hb)
+  +hmP = F.nat__le_lt_trans(Nat.mul(1n+j, 1n+r), pos(1n+j, 1n+r, x), P, F.nat__le_add_right(Nat.mul(1n+j, 1n+r), x), hp)
+  +e1 = VB.add_lt32(i, 1, j, ej, F.nat__le_lt_trans(1n+j, Nat.mul(1n+j, 1n+r), P, le_mul(1n+j, r), hmP))
+  +em = Equal.trans(Nat, Nat.mul(U32.to_nat(U32.add(i, 1)), U32.to_nat(Ru)), Nat.mul(1n+j, U32.to_nat(Ru)), Nat.mul(1n+j, 1n+r),
+    Equal.cong(Nat, Nat, z => Nat.mul(z, U32.to_nat(Ru)), U32.to_nat(U32.add(i, 1)), 1n+j, e1),
+    Equal.cong(Nat, Nat, z => Nat.mul(1n+j, z), U32.to_nat(Ru), 1n+r, eR))
+  +e2 = Equal.trans(Nat, U32.to_nat(U32.mul(U32.add(i, 1), Ru)), Nat.mul(U32.to_nat(U32.add(i, 1)), U32.to_nat(Ru)), Nat.mul(1n+j, 1n+r),
+    VU.mul_lt32(U32.add(i, 1), Ru,
+      F.logic__subst(Nat, z => {Nat.is_lt(z, P) == True{} : Bool}, Nat.mul(1n+j, 1n+r), Nat.mul(U32.to_nat(U32.add(i, 1)), U32.to_nat(Ru)), Equal.sym(Nat, Nat.mul(U32.to_nat(U32.add(i, 1)), U32.to_nat(Ru)), Nat.mul(1n+j, 1n+r), em), hmP)),
+    em)
+  +e3 = VB.add_lt32(off, U32.mul(U32.add(i, 1), Ru), x, eo,
+    F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, x), P) == True{} : Bool}, Nat.mul(1n+j, 1n+r), U32.to_nat(U32.mul(U32.add(i, 1), Ru)), Equal.sym(Nat, U32.to_nat(U32.mul(U32.add(i, 1), Ru)), Nat.mul(1n+j, 1n+r), e2), hp))
+  Equal.trans(Nat, U32.to_nat(U32.add(off, U32.mul(U32.add(i, 1), Ru))), Nat.add(U32.to_nat(U32.mul(U32.add(i, 1), Ru)), x), pos(1n+j, 1n+r, x), e3,
+    Equal.cong(Nat, Nat, z => Nat.add(z, x), U32.to_nat(U32.mul(U32.add(i, 1), Ru)), Nat.mul(1n+j, 1n+r), e2))
+
+def succU32(+i: U32, +j: Nat, +r: Nat, +x: Nat, +ej: {U32.to_nat(i) == j : Nat},
+    +hb: {Nat.is_lt(Nat.add(pos(1n+j, 1n+r, x), 1n+r), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(i, 1)) == 1n+j : Nat}:
+  +P = F.spec_common__pow2(32n)
+  +hp = F.nat__le_lt_trans(pos(1n+j, 1n+r, x), Nat.add(pos(1n+j, 1n+r, x), 1n+r), P, F.nat__le_add_right(pos(1n+j, 1n+r, x), 1n+r), hb)
+  +hmP = F.nat__le_lt_trans(Nat.mul(1n+j, 1n+r), pos(1n+j, 1n+r, x), P, F.nat__le_add_right(Nat.mul(1n+j, 1n+r), x), hp)
+  VB.add_lt32(i, 1, j, ej, F.nat__le_lt_trans(1n+j, Nat.mul(1n+j, 1n+r), P, le_mul(1n+j, r), hmP))
+
+# 4 c <= c (4 + r): a count of records of at least four bytes is at most a quarter of their bytes.
+law quad_le_mul:
+  for +c: Nat
+  for +r: Nat
+  {Nat.is_le(A.quad(c), Nat.mul(c, 4n+r)) == True{} : Bool}
+def quad_le_mul(c, r):
+  match c:
+    case 0n: {==}
+    case 1n+ +p:
+      F.nat__le_trans(4n+A.quad(p), Nat.add(4n, Nat.mul(p, 4n+r)), Nat.add(4n+r, Nat.mul(p, 4n+r)),
+        Order.add_left(4n, A.quad(p), Nat.mul(p, 4n+r), quad_le_mul(p, r)),
+        Order.add_right(4n, 4n+r, Nat.mul(p, 4n+r), F.nat__le_add_right(4n, r)))
+
 # ---- writes of consecutive records ------------------------------------------------------------
 
 law mul_quad:
