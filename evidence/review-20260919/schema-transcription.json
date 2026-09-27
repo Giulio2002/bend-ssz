@@ -1,7 +1,0 @@
-{
-  "compared": 109,
-  "missing": [],
-  "different": [],
-  "source": "vendor/consensus-specs/fulu_mainnet.py",
-  "method": "static AST independently expanded annotations/constants; no execution of eth2spec or existing generator"
-}
