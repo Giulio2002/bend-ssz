@@ -37,14 +37,66 @@ def mul1(L):
       %mul1(p) : {1n+p == 1n+_ : Nat}
       {==}
 
+# The zero high limbs: u8h / u16h take the limbs b..h as variables with the fact that their digits are
+# zero (zt0, via lz) and ap spells List.append without the &2 argument, so the conversions below stay
+# syntactic instead of evaluating the 28 digits of SP.limb_digits(0) (Bend's term_same stops at a quantity).
+law lz:
+  {SP.limb_digits(0) == [0, 0, 0, 0] : +List<U32>}
+def lz(): {==}
+
+def ap(xs: +List<U32>, ys: +List<U32>) -> +List<U32>: List.append(&2, U32, xs, ys)
+
+law zt0:
+  {SP.zero_suffix(ap(SP.limb_digits(0), ap(SP.limb_digits(0), ap(SP.limb_digits(0), ap(SP.limb_digits(0), ap(SP.limb_digits(0), ap(SP.limb_digits(0), SP.limb_digits(0)))))))) == True{} : Bool}
+def zt0():
+  %Equal.sym(+List<U32>, SP.limb_digits(0), [0, 0, 0, 0], lz()) :
+    {SP.zero_suffix(ap(_, ap(_, ap(_, ap(_, ap(_, ap(_, _))))))) == True{} : Bool}
+  {==}
+
+law u8h:
+  for +x: U32
+  for +b: U32
+  for +c: U32
+  for +d: U32
+  for +e: U32
+  for +f: U32
+  for +g: U32
+  for +h: U32
+  for +hz: {SP.zero_suffix(ap(SP.limb_digits(b), ap(SP.limb_digits(c), ap(SP.limb_digits(d), ap(SP.limb_digits(e), ap(SP.limb_digits(f), ap(SP.limb_digits(g), SP.limb_digits(h)))))))) == True{} : Bool}
+  {RR.basic_one(S.UnsignedValue{P.UInt{x, b, c, d, e, f, g, h}}, S.Unsigned{P.U8{}}) == SP.optional(SP.zero_suffix([U32.and(U32.shrn(x, 8n), 255), U32.and(U32.shrn(x, 16n), 255), U32.shrn(x, 24n)]), [U32.and(x, 255)]) : Maybe<&2, +List<U32>>}
+def u8h(x, b, c, d, e, f, g, h, hz):
+  %IE.limb_correct(x) :
+    {SP.optional(SP.fits(1n, ap(_, ap(SP.limb_digits(b), ap(SP.limb_digits(c), ap(SP.limb_digits(d), ap(SP.limb_digits(e), ap(SP.limb_digits(f), ap(SP.limb_digits(g), SP.limb_digits(h))))))))), SP.prefix(1n, ap(_, ap(SP.limb_digits(b), ap(SP.limb_digits(c), ap(SP.limb_digits(d), ap(SP.limb_digits(e), ap(SP.limb_digits(f), ap(SP.limb_digits(g), SP.limb_digits(h)))))))))) == SP.optional(SP.zero_suffix([U32.and(U32.shrn(x, 8n), 255), U32.and(U32.shrn(x, 16n), 255), U32.shrn(x, 24n)]), [U32.and(x, 255)]) : Maybe<&2, +List<U32>>}
+  %Equal.sym(Bool, SP.zero_suffix(ap(SP.limb_digits(b), ap(SP.limb_digits(c), ap(SP.limb_digits(d), ap(SP.limb_digits(e), ap(SP.limb_digits(f), ap(SP.limb_digits(g), SP.limb_digits(h)))))))), True{}, hz) :
+    {SP.optional(Bool.and(U32.is_eq(U32.and(U32.shrn(x, 8n), 255), 0), Bool.and(U32.is_eq(U32.and(U32.shrn(x, 16n), 255), 0), Bool.and(U32.is_eq(U32.shrn(x, 24n), 0), _))), [U32.and(x, 255)]) == SP.optional(SP.zero_suffix([U32.and(U32.shrn(x, 8n), 255), U32.and(U32.shrn(x, 16n), 255), U32.shrn(x, 24n)]), [U32.and(x, 255)]) : Maybe<&2, +List<U32>>}
+  {==}
+
+law u16h:
+  for +x: U32
+  for +b: U32
+  for +c: U32
+  for +d: U32
+  for +e: U32
+  for +f: U32
+  for +g: U32
+  for +h: U32
+  for +hz: {SP.zero_suffix(ap(SP.limb_digits(b), ap(SP.limb_digits(c), ap(SP.limb_digits(d), ap(SP.limb_digits(e), ap(SP.limb_digits(f), ap(SP.limb_digits(g), SP.limb_digits(h)))))))) == True{} : Bool}
+  {RR.basic_one(S.UnsignedValue{P.UInt{x, b, c, d, e, f, g, h}}, S.Unsigned{P.U16{}}) == SP.optional(SP.zero_suffix([U32.and(U32.shrn(x, 16n), 255), U32.shrn(x, 24n)]), [U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255)]) : Maybe<&2, +List<U32>>}
+def u16h(x, b, c, d, e, f, g, h, hz):
+  %IE.limb_correct(x) :
+    {SP.optional(SP.fits(2n, ap(_, ap(SP.limb_digits(b), ap(SP.limb_digits(c), ap(SP.limb_digits(d), ap(SP.limb_digits(e), ap(SP.limb_digits(f), ap(SP.limb_digits(g), SP.limb_digits(h))))))))), SP.prefix(2n, ap(_, ap(SP.limb_digits(b), ap(SP.limb_digits(c), ap(SP.limb_digits(d), ap(SP.limb_digits(e), ap(SP.limb_digits(f), ap(SP.limb_digits(g), SP.limb_digits(h)))))))))) == SP.optional(SP.zero_suffix([U32.and(U32.shrn(x, 16n), 255), U32.shrn(x, 24n)]), [U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255)]) : Maybe<&2, +List<U32>>}
+  %Equal.sym(Bool, SP.zero_suffix(ap(SP.limb_digits(b), ap(SP.limb_digits(c), ap(SP.limb_digits(d), ap(SP.limb_digits(e), ap(SP.limb_digits(f), ap(SP.limb_digits(g), SP.limb_digits(h)))))))), True{}, hz) :
+    {SP.optional(Bool.and(U32.is_eq(U32.and(U32.shrn(x, 16n), 255), 0), Bool.and(U32.is_eq(U32.shrn(x, 24n), 0), _)), [U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255)]) == SP.optional(SP.zero_suffix([U32.and(U32.shrn(x, 16n), 255), U32.shrn(x, 24n)]), [U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255)]) : Maybe<&2, +List<U32>>}
+  {==}
+
 law bone8:
   for +w8: Word(8n)
   {RR.basic_one(S.UnsignedValue{P.UInt{PD.embed8(w8), 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U8{}}) == Some{[PD.embed8(w8)]} : Maybe<&2, +List<U32>>}
 def bone8(w8):
   match w8:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, WNil{}}}}}}}}}:
-      %IE.limb_correct(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}})) :
-        {SP.optional(SP.fits(1n, List.append(&2, U32, _, List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), SP.limb_digits(0))))))))), SP.prefix(1n, List.append(&2, U32, _, List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), SP.limb_digits(0)))))))))) == Some{[PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}})]} : Maybe<&2, +List<U32>>}
+      %Equal.sym(Maybe<&2, +List<U32>>, RR.basic_one(S.UnsignedValue{P.UInt{PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U8{}}), SP.optional(SP.zero_suffix([U32.and(U32.shrn(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), 8n), 255), U32.and(U32.shrn(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), 16n), 255), U32.shrn(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), 24n)]), [U32.and(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), 255)]), u8h(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), 0, 0, 0, 0, 0, 0, 0, zt0())) :
+        {_ == Some{[PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}})]} : Maybe<&2, +List<U32>>}
       %Equal.sym(Bool, Bool.and(a0, True{}), a0, andt(a0)) :
         {Some{[U32{WCon{_, WCon{Bool.and(a1, True{}), WCon{Bool.and(a2, True{}), WCon{Bool.and(a3, True{}), WCon{Bool.and(a4, True{}), WCon{Bool.and(a5, True{}), WCon{Bool.and(a6, True{}), WCon{Bool.and(a7, True{}), Word.zero(24n)}}}}}}}}}]} == Some{[PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}})]} : Maybe<&2, +List<U32>>}
       %Equal.sym(Bool, Bool.and(a1, True{}), a1, andt(a1)) :
@@ -92,8 +144,8 @@ law two8:
 def two8(t0, t1):
   match t0 t1:
     case WCon{+a0, WCon{+a1, WCon{+a2, WCon{+a3, WCon{+a4, WCon{+a5, WCon{+a6, WCon{+a7, WNil{}}}}}}}}} WCon{+b0, WCon{+b1, WCon{+b2, WCon{+b3, WCon{+b4, WCon{+b5, WCon{+b6, WCon{+b7, WNil{}}}}}}}}}:
-      %IE.limb_correct(U32{WSp.join(8n, 24n, WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}, WSp.join(8n, 16n, WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WNil{}}}}}}}}}, Word.zero(16n)))}) :
-        {SP.optional(SP.fits(2n, List.append(&2, U32, _, List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), SP.limb_digits(0))))))))), SP.prefix(2n, List.append(&2, U32, _, List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), List.append(&2, U32, SP.limb_digits(0), SP.limb_digits(0)))))))))) == Some{[PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), PD.embed8(WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WNil{}}}}}}}}})]} : Maybe<&2, +List<U32>>}
+      %Equal.sym(Maybe<&2, +List<U32>>, RR.basic_one(S.UnsignedValue{P.UInt{v16of(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), PD.embed8(WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WNil{}}}}}}}}})), 0, 0, 0, 0, 0, 0, 0}}, S.Unsigned{P.U16{}}), SP.optional(SP.zero_suffix([U32.and(U32.shrn(v16of(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), PD.embed8(WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WNil{}}}}}}}}})), 16n), 255), U32.shrn(v16of(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), PD.embed8(WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WNil{}}}}}}}}})), 24n)]), [U32.and(v16of(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), PD.embed8(WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WNil{}}}}}}}}})), 255), U32.and(U32.shrn(v16of(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), PD.embed8(WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WNil{}}}}}}}}})), 8n), 255)]), u16h(v16of(PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), PD.embed8(WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WNil{}}}}}}}}})), 0, 0, 0, 0, 0, 0, 0, zt0())) :
+        {_ == Some{[PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), PD.embed8(WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WNil{}}}}}}}}})]} : Maybe<&2, +List<U32>>}
       %Equal.sym(Bool, Bool.and(a0, True{}), a0, andt(a0)) :
         {Some{[U32{WCon{_, WCon{Bool.and(a1, True{}), WCon{Bool.and(a2, True{}), WCon{Bool.and(a3, True{}), WCon{Bool.and(a4, True{}), WCon{Bool.and(a5, True{}), WCon{Bool.and(a6, True{}), WCon{Bool.and(a7, True{}), WCon{Bool.and(b0, False{}), WCon{Bool.and(b1, False{}), WCon{Bool.and(b2, False{}), WCon{Bool.and(b3, False{}), WCon{Bool.and(b4, False{}), WCon{Bool.and(b5, False{}), WCon{Bool.and(b6, False{}), WCon{Bool.and(b7, False{}), Word.zero(16n)}}}}}}}}}}}}}}}}}, U32{WCon{Bool.and(b0, True{}), WCon{Bool.and(b1, True{}), WCon{Bool.and(b2, True{}), WCon{Bool.and(b3, True{}), WCon{Bool.and(b4, True{}), WCon{Bool.and(b5, True{}), WCon{Bool.and(b6, True{}), WCon{Bool.and(b7, True{}), Word.zero(24n)}}}}}}}}}]} == Some{[PD.embed8(WCon{a0, WCon{a1, WCon{a2, WCon{a3, WCon{a4, WCon{a5, WCon{a6, WCon{a7, WNil{}}}}}}}}}), PD.embed8(WCon{b0, WCon{b1, WCon{b2, WCon{b3, WCon{b4, WCon{b5, WCon{b6, WCon{b7, WNil{}}}}}}}}})]} : Maybe<&2, +List<U32>>}
       %Equal.sym(Bool, Bool.and(a1, True{}), a1, andt(a1)) :
