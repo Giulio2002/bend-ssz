@@ -51,9 +51,13 @@ def data_kind(elem):
 def build(name, elem, depth):
     imports, bodies = [], []
     for part in PARTS:
-        lines = (OBJ / f'{part}.bend').read_text().split('\n')
+        # the instance modules import the runtime split; the template works on T.<sym> (RR.unwire), and the
+        # output's T import is rewired again (main)
+        lines = RR.unwire((OBJ / f'{part}.bend').read_text()).split('\n')
         i = 0
         while i < len(lines) and lines[i].startswith('import'):
+            if RR.SPLIT_IMP.match(lines[i]):
+                lines[i] = 'import ../../types/fulu_obj.bend as T'
             if lines[i].split()[1] not in SELF and lines[i] not in imports:
                 imports.append(lines[i])
             i += 1
