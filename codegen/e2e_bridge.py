@@ -2293,6 +2293,7 @@ def vdec_info(R):
     if not mb or not mdc or mdc.group(1) not in imp:
         return None
     acc = re.search(r'__decode_accept__decode_accept\(.*\) -> \{(\w+)\.(\w+)\(\w+\.BF\(t, n\), n\) == \(\w+\.BF\(t, n\), Some\{\w+\.OBJ\(((?:d, )?)t, n\)\}\) : \w+\.Buf & Maybe<&1, ([\w.]+)>\}', s)
+    mbf = re.search(r'__decode_accept__decode_accept\(.*\) -> \{\w+\.\w+\((\w+)\.BF\(t, n\), n\)', s)
     spec = re.search(r'__decode_spec__decode_spec\(.*\) -> \w+\.decodes\((\w+)\.\w+\(\), \w+\.VW\(t, n\), \w+\.VAL\(((?:d, )?)t, n\)\)', s)
     if not acc or not spec:
         return None
@@ -2306,6 +2307,7 @@ def vdec_info(R):
             'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0],
             'dfn': f'T.{acc.group(2)}', 'objd': bool(acc.group(3)), 'vald': bool(spec.group(2)), 'otype': otype, 'sch': 'GS' if imp.get(spec.group(1)) == 'generic_specs.bend' else 'Spec',
             'rejhd': '+hd:' in mods['decode_reject'][1],
+            'bf': imp.get(mbf.group(1)) if mbf else None,
             'chk1': bool(re.search(r'\+hchk: \{\w+\.CHK\(n\)', sig)),
             'noneshort': bool(re.search(r'__decode_none__decode_none\(\+t:', s))}
 
@@ -2342,6 +2344,10 @@ def text_vdec(R, X, info):
     for k, a in (('acc', 'DA'), ('spec', 'DS'), ('none', 'DN'), ('rej', 'DR')):
         alias.setdefault(info[k], a)
     body = VDEC_REST
+    if info.get('bf') and info['bf'] != info['dc']:
+        # the buffer BF(t, n) is defined in another law module than CHK (a nested name: the child's)
+        alias[info['bf']] = alias.get(info['bf'], 'DB')
+        body = body.replace('DC.BF(', alias[info['bf']] + '.BF(')
     for op, k in (('decode_accept', 'acc'), ('decode_spec', 'spec'), ('decode_none', 'none'), ('decode_reject', 'rej')):
         body = body.replace(('DR.' if k in ('none', 'rej') else 'DC.') + op + '(', alias[info[k]] + '.' + op + '(')
     ot = vw.get('otype', info['otype'])
