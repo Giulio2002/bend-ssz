@@ -2147,7 +2147,8 @@ def wh(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool})
   +epo = FD.u32alg__eq_of(DC.SPO(t), 36, DC.chk_b(a, b, c, hchk))
   FD.logic__subst(U32, z => {DC.whole(U32.sub(n, z)) == True{} : Bool}, DC.SPO(t), 36, epo, DC.chk_c(a, b, c, hchk))
 
-def vv(+t: FD.array__Tree<U32>, +n: U32, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_DataColumnsByRootIdentifier(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}:
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 29n) == True{} : Bool},
+    +hn: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == True{} : Bool}) -> {RT.v_DataColumnsByRootIdentifier(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}:
   Equal.cong(S.Value, S.Value, z => S.Sequence{S.Items{S.BytesValue{F.limbs([VB.slot(t, 0n), VB.slot(t, 1n), VB.slot(t, 2n), VB.slot(t, 3n), VB.slot(t, 4n), VB.slot(t, 5n), VB.slot(t, 6n), VB.slot(t, 7n)])}, S.Items{z, S.EmptyItems{}}}}, UL.uview(O.Words{FD.array__thaw(U32, DC.MM(t, n)), DC.LL(n)}),
     S.Sequence{VSP.uitems(DC.CQ(n), FD.array__slots(U32, DC.MM(t, n)))}, U.uvw(DC.MM(t, n), DC.LL(n), DC.CQ(n), cnt(n, wh(t, n, hchk))))
 
@@ -2208,7 +2209,7 @@ def d_v(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n
     case True{}:
       %Equal.sym(Maybe<&1, T.@X@>, Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)), Some{DC.OBJ(TT(bs, n), n)}, d_acc(bs, n, hn, hd, hS, ec)) : {mv(_) == API.deserialize(Spec.@X@(), bs) : Maybe<&2, S.Value>}
       %Equal.sym(Maybe<&2, S.Value>, API.deserialize(Spec.@X@(), bs), Some{DC.VAL(TT(bs, n), n)}, a_acc(bs, n, hn, hd, hS, ec)) : {mv(Some{DC.OBJ(TT(bs, n), n)}) == _ : Maybe<&2, S.Value>}
-      Equal.cong(S.Value, Maybe<&2, S.Value>, z => Some{z}, @VIEW@(DC.OBJ(TT(bs, n), n)), DC.VAL(TT(bs, n), n), vv(TT(bs, n), n, ec))
+      Equal.cong(S.Value, Maybe<&2, S.Value>, z => Some{z}, @VIEW@(DC.OBJ(TT(bs, n), n)), DC.VAL(TT(bs, n), n), vv(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(n, @K@, {==}, hS), ec))
 
 def d_ra(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_nat(n) : Nat}, +hd: {SP.bytes_domain(bs) == True{} : Bool}, +hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}, +c: Bool, +ec: {DC.CHK(TT(bs, n), n) == c : Bool}, +dn: {Pair.snd(B.Buf, Maybe<&1, T.@X@>, T.@X@_decode(B.fill_at(B.alloc(n), 0, bs), n)) == None{} : Maybe<&1, T.@X@>}) -> {API.deserialize(Spec.@X@(), bs) == None{} : Maybe<&2, S.Value>}:
   match c:
@@ -2249,8 +2250,19 @@ def vdec_info(R):
     mdc = re.search(r'\+hchk: \{(\w+)\.CHK\(t, n\)', sig)
     if not mb or not mdc or mdc.group(1) not in imp:
         return None
+    acc = re.search(r'__decode_accept__decode_accept\(.*\) -> \{(\w+)\.(\w+)\(\w+\.BF\(t, n\), n\) == \(\w+\.BF\(t, n\), Some\{\w+\.OBJ\(((?:d, )?)t, n\)\}\) : \w+\.Buf & Maybe<&1, ([\w.]+)>\}', s)
+    spec = re.search(r'__decode_spec__decode_spec\(.*\) -> \w+\.decodes\((?:\w+_)?(GS|Spec)\.\w+\(\), \w+\.VW\(t, n\), \w+\.VAL\(((?:d, )?)t, n\)\)', s)
+    if not acc or not spec:
+        return None
+    ot = acc.group(4)
+    mo = re.match(r'(?:\w+_)?O\.(\w+)$', ot)
+    md = re.match(r'\w+_d\.(\w+)$', ot)
+    otype = f'O.{mo.group(1)}' if mo else (f'T.{md.group(1)}' if md else None)
+    if otype is None:
+        return None
     return {'bound': int(mb.group(1)), 'dc': imp[mdc.group(1)], 'acc': mods['decode_accept'][0], 'spec': mods['decode_spec'][0],
-            'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0]}
+            'none': mods['decode_none'][0], 'rej': mods['decode_reject'][0],
+            'dfn': f'T.{acc.group(2)}', 'objd': bool(acc.group(3)), 'vald': bool(spec.group(2)), 'otype': otype, 'sch': spec.group(1)}
 
 
 # The input-size bound of the variable-size bridges is a parameter: K = one below the codec
@@ -2284,9 +2296,18 @@ def text_vdec(R, X, info):
     body = VDEC_REST
     for op, k in (('decode_accept', 'acc'), ('decode_spec', 'spec'), ('decode_none', 'none'), ('decode_reject', 'rej')):
         body = body.replace(('DR.' if k in ('none', 'rej') else 'DC.') + op + '(', alias[info[k]] + '.' + op + '(')
+    ot = vw.get('otype', info['otype'])
+    body = (body.replace('T.@X@_decode(', info['dfn'] + '(').replace('Maybe<&1, T.@X@>', f'Maybe<&1, {ot}>')
+            .replace('E.none_someT(T.@X@,', f'E.none_someT({ot},').replace('Spec.@X@()', f'{info["sch"]}.@X@()'))
+    if info['objd']:
+        body = body.replace('DC.OBJ(TT(bs, n), n)', 'DC.OBJ(B.capacity(n), TT(bs, n), n)')
+    if info['vald']:
+        body = body.replace('DC.VAL(TT(bs, n), n)', 'DC.VAL(B.capacity(n), TT(bs, n), n)')
     body = (body.replace('@X@', X).replace('@R@', R).replace('@VIEW@', vw['view'])
             .replace('@K@', f'{K}n').replace('@BD@', f'{info["bound"]}n'))
     imps = VDEC_HEAD + vw['imports'] + [f'import ../proofs/obj/{p} as {a}' for p, a in alias.items()]
+    if info['sch'] == 'GS':
+        imps = imps + ['import ../proofs/obj/generic_specs.bend as GS']
     head = ['# GENERATED by codegen/e2e_bridge.py. Do not edit.',
             f'# {R} (variable size): the object API\'s decoder on a byte list against END_TO_END\'s deserialize,',
             f'# (ii) through the view and (iii), for inputs of {vdec_size(K)}: the premise hS, n <= 4 * 2^{K},',
@@ -2791,7 +2812,7 @@ def outputs():
         fn = f'{R0}_e2e_generated.bend'
         out[OUT / fn] = VENC_SHAPES[X0](R0, X0)
         man['files'][fn] = [{'name': R0, 'generated_name': X0, 'laws': [f'{R0}_e2e_encode'],
-                             'premise': f'rep: RT.rep_{X0}(o, Spec.{X0}()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)'}]
+                             'premise': EVB.VENC_PREMISE.get(X0, f'rep: RT.rep_{X0}(o, Spec.{X0}()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)')}]
         u['encode'] = fn
     man['variable_size'] = {}
     for R0 in sorted(uncovered):
