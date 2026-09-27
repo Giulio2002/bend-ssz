@@ -495,8 +495,8 @@ def bit_vector_complete(m, bits, n, xs, wf, room, encoded):
 
 # ---------------------------------------------------------------------------
 # Progressive bitlists: the region's byte count always covers the bits it
-# holds. Copied unchanged from the previous completeness development
-# (proofs/decode_goal.bend), where it was proved against the frozen packing
+# holds. Copied unchanged from the previous completeness development of the
+# removed list decoder, where it was proved against the frozen packing
 # specification and never mentioned a decoder.
 law cover:
   for +n: Nat
