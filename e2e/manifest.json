@@ -3227,6 +3227,16 @@
     "premise": "rep: RT.rep_LightClientBootstrap(o, Spec.LightClientBootstrap()) (the root law's representation invariant)"
    }
   ],
+  "FuluLightClientFinalityUpdate_e2e_root_generated.bend": [
+   {
+    "name": "FuluLightClientFinalityUpdate",
+    "generated_name": "LightClientFinalityUpdate",
+    "laws": [
+     "FuluLightClientFinalityUpdate_e2e_root"
+    ],
+    "premise": "rep: RT.rep_LightClientFinalityUpdate(o, Spec.LightClientFinalityUpdate()) (the root law's representation invariant)"
+   }
+  ],
   "FuluLightClientHeader_e2e_root_generated.bend": [
    {
     "name": "FuluLightClientHeader",
@@ -3245,6 +3255,16 @@
      "FuluLightClientOptimisticUpdate_e2e_root"
     ],
     "premise": "rep: RT.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()) (the root law's representation invariant)"
+   }
+  ],
+  "FuluLightClientUpdate_e2e_root_generated.bend": [
+   {
+    "name": "FuluLightClientUpdate",
+    "generated_name": "LightClientUpdate",
+    "laws": [
+     "FuluLightClientUpdate_e2e_root"
+    ],
+    "premise": "rep: RT.rep_LightClientUpdate(o, Spec.LightClientUpdate()) (the root law's representation invariant)"
    }
   ],
   "FuluTransaction_e2e_root_generated.bend": [
@@ -3929,11 +3949,13 @@
   },
   "FuluLightClientFinalityUpdate": {
    "generated_name": "LightClientFinalityUpdate",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "FuluLightClientFinalityUpdate_e2e_root_generated.bend"
   },
   "FuluLightClientUpdate": {
    "generated_name": "LightClientUpdate",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "root": "FuluLightClientUpdate_e2e_root_generated.bend"
   },
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",

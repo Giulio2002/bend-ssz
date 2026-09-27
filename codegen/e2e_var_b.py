@@ -3129,6 +3129,8 @@ RB_NAMES.append('LightClientOptimisticUpdate')
 RB_NAMES.append('ExecutionRequests')
 RB_NAMES.append('DataColumnSidecar')
 RB_NAMES.append('LightClientBootstrap')
+RB_NAMES.append('LightClientFinalityUpdate')
+RB_NAMES.append('LightClientUpdate')
 VROOT_SHAPES['LightClientOptimisticUpdate'] = vroot_container
 SUPPORT_OUT['e2e_ve_LightClientOptimisticUpdate.bend'] = ve_module('LightClientOptimisticUpdate', 'var_bytes_LightClientOptimisticUpdate_enc')
 VENC_SHAPES['LightClientOptimisticUpdate'] = venc_bytes
@@ -3196,3 +3198,5 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d
 SUPPORT_OUT['e2e_ve_LightClientBootstrap.bend'] = ve_module('LightClientBootstrap', 'big_var_bytes_LightClientBootstrap_enc')
 VENC_SHAPES['LightClientBootstrap'] = venc_bytes
 VENC_PREMISE['LightClientBootstrap'] = 'rep: RT.rep_LightClientBootstrap(o, Spec.LightClientBootstrap()) and the hs premises: each storage field\'s invariant at depth below 31 (the sync committee\'s pubkeys: e2e_e48w.sdsc; BL.sdpv / BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32)'
+VROOT_SHAPES['LightClientFinalityUpdate'] = vroot_container
+VROOT_SHAPES['LightClientUpdate'] = vroot_container
