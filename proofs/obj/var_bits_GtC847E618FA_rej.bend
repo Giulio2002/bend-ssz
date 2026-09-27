@@ -49,7 +49,7 @@ def chk_true(+t: FD.array__Tree<U32>, +n: U32, +m: Nat, +e1: {U32.to_nat(n) == 1
   %Equal.sym(Bool, U32.is_eq(DC.V(t, n), 0), False{}, nz) : {O.bsel(_, False{}, O.bsel(False{}, True{}, Nat.is_le(DC.BD(t, n), U32.to_nat(3)))) == True{} : Bool}
   bd
 
-def rej_t(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def rej_t(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
     +bits: +List<Bool>, +hb: {Nat.is_le(List.length(&2, Bool, bits), 3n) == True{} : Bool}, +pk: {VBL.P(bits) == DC.VW(t, n) : +List<U32>}, +fs: VBL.IF(bits)) -> Empty:
   (+l, +r) = fs
@@ -59,7 +59,7 @@ def rej_t(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
     Equal.trans(Nat, List.length(&2, U32, DC.VW(t, n)), List.length(&2, U32, VBL.P(bits)), 1n+m,
       Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), DC.VW(t, n), VBL.P(bits), Equal.sym(+List<U32>, VBL.P(bits), DC.VW(t, n), pk)), l))
   +W1 = VR.WB(t, 0n, 1n+m)
-  +lw = VR.lastWB(d, t, 0n, m, VR.XN(0, n), pf, DC.hw1(d, n, m, hn, e1), VR.eXN(d, 0, 0n, n, m, {==}, FD.nat__lt_trans(d, 28n, 29n, hd, {==}), hn, e1))
+  +lw = VR.lastWB(d, t, 0n, m, VR.XN(0, n), pf, DC.hw1(d, n, m, hn, e1), VR.eXN0(n, m, e1))
   # the byte at m of the encoding is the runtime's last byte
   +eW = Equal.cong(Nat, +List<U32>, z => VR.WB(t, 0n, z), U32.to_nat(n), 1n+m, e1)
   +eV = Equal.trans(U32, VBL.nthb(VBL.P(bits), m), VBL.nthb(W1, m), DC.V(t, n),
@@ -76,7 +76,7 @@ def rej_t(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
     Equal.trans(Nat, List.length(&2, Bool, bits), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(DC.V(t, n)))), DC.BD(t, n), lnV, Equal.sym(Nat, DC.BD(t, n), Nat.add(VS.x8(m), U32.to_nat(O.high_bit(DC.V(t, n)))), eBD)), hb)
   FD.logic__true_false(Equal.trans(Bool, True{}, DC.CHK(t, n), False{}, Equal.sym(Bool, DC.CHK(t, n), True{}, chk_true(t, n, m, e1, nz, bd)), hchk))
 
-def rej_b(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def rej_b(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
     +bits: +List<Bool>, +b: Bool, +eb: {Nat.is_le(List.length(&2, Bool, bits), 3n) == b : Bool},
     +e: {Codec.bytes(Codec.one(Bits.encoding(b, List.append(&2, Bool, bits, [True{}])), None{})) == Some{DC.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
@@ -84,7 +84,7 @@ def rej_b(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32
     case False{}: FD.logic__none_some(+List<U32>, DC.VW(t, n), e)
     case True{}: rej_t(d, t, n, pf, hd, hn, hchk, bits, eb, FD.logic__some_inj(+List<U32>, VBL.P(bits), DC.VW(t, n), e), VBL.inv(bits))
 
-def inv_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def inv_v(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}, +hchk: {DC.CHK(t, n) == False{} : Bool},
     +v: S.Value, +e: {Codec.encoding_for_legal_type(GS.GtC847E618FA(), v) == Some{DC.VW(t, n)} : Maybe<&2, +List<U32>>}) -> Empty:
   match v:
@@ -104,7 +104,7 @@ law decode_reject:
   for +t: FD.array__Tree<U32>
   for +n: U32
   for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}
-  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}
+  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}
   for +hchk: {DC.CHK(t, n) == False{} : Bool}
   Decoding.outside_image(GS.GtC847E618FA(), DC.VW(t, n))

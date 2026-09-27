@@ -723,3 +723,7 @@ def pw2d32(+d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}) -> {Nat.is_le(pw(
 # Anything within a U32 length is below 2^32.
 def le_n_lt32(+x: Nat, +n: U32, +h: {Nat.is_le(x, U32.to_nat(n)) == True{} : Bool}) -> {Nat.is_lt(x, F.spec_common__pow2(32n)) == True{} : Bool}:
   F.nat__le_lt_trans(x, U32.to_nat(n), F.spec_common__pow2(32n), h, u32_lt(n))
+
+def lt_u32n(+a: U32, +b: U32) -> {U32.is_lt(a, b) == Nat.is_lt(U32.to_nat(a), U32.to_nat(b)) : Bool}:
+  %Equal.sym(Cmp, U32.cmp(a, b), Nat.cmp(U32.to_nat(a), U32.to_nat(b)), F.u32__u32_cmp(a, b)) : {Cmp.is_lt(_) == Nat.is_lt(U32.to_nat(a), U32.to_nat(b)) : Bool}
+  {==}
