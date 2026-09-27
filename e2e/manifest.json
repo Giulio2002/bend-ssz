@@ -3261,6 +3261,16 @@
     "premise": "rep: RT.rep_GtDE4B86A990(o, Spec.GtDE4B86A990()) (the root law's representation invariant)"
    }
   ],
+  "CompatibleUnionA_e2e_generated.bend": [
+   {
+    "name": "CompatibleUnionA",
+    "generated_name": "GuA2212AE21F",
+    "laws": [
+     "CompatibleUnionA_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_GuA2212AE21F(o, Spec.GuA2212AE21F()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
   "FuluAttesterSlashing_e2e_generated.bend": [
    {
     "name": "FuluAttesterSlashing",
@@ -4091,12 +4101,6 @@
    "generated_name": "Gu6DDF182530",
    "reason": "encode laws not over the same free words / bits"
   },
-  "CompatibleUnionA": {
-   "generated_name": "GuA2212AE21F",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "CompatibleUnionA_e2e_dec_generated.bend",
-   "root": "CompatibleUnionA_e2e_root_generated.bend"
-  },
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
    "reason": "encode laws not over the same free words / bits"
@@ -4115,6 +4119,12 @@
  "root_awaiting": {},
  "fixed_size": {},
  "variable_size": {
+  "CompatibleUnionA": {
+   "generated_name": "GuA2212AE21F",
+   "i": "CompatibleUnionA_e2e_generated.bend",
+   "ii_iii": "CompatibleUnionA_e2e_dec_generated.bend",
+   "iv": "CompatibleUnionA_e2e_root_generated.bend"
+  },
   "FuluAttesterSlashing": {
    "generated_name": "AttesterSlashing",
    "i": "FuluAttesterSlashing_e2e_generated.bend",
@@ -4334,7 +4344,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 2,
    "covered": true,
-   "bridged": "CompatibleUnionA_e2e_dec_generated.bend"
+   "bridged": null
   },
   "CompatibleUnionBC": {
    "generated_name": "GuAD91DEB870",
