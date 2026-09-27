@@ -2668,6 +2668,7 @@ VENC_SHAPES = {'DataColumnsByRootIdentifier': venc_dc}
 import e2e_var_b as EVB  # noqa: E402  (the second variable-size worker's entries)
 import e2e_var_c as EVC  # noqa: E402  (the third's: u-lists and unions)
 import e2e_fix_d as EFD  # noqa: E402  (the fourth's: fixed-size leftovers)
+import e2e_bview_gen as BVG  # noqa: E402  (the bit-list view module and the bit lists' view lemmas)
 for _m in (EVB, EVC):
     for _k, _v in _m.VDEC_VIEWS.items():
         VDEC_VIEWS.setdefault(_k, _v)
@@ -2858,6 +2859,10 @@ def bit_lists(amap_map):
     return rows
 
 def outputs():
+    # the generic bit lists' decode view lemmas (e2e_bview)
+    for X0, N0, big0 in bit_lists(None):
+        if (OBJ / f'var_bits_{X0}.bend').exists():
+            VDEC_VIEWS.setdefault(X0, BVG.bl_view(X0, *BVG.bl_params(OBJ, X0)))
     import names as NM
     amap = json.loads((ROOT / 'proofs/gate/api_map.json').read_text())
     readable = NM.mapping()
@@ -3074,6 +3079,7 @@ def outputs():
                              'premise': VENC_PREMISE.get(X0, f'rep: RT.rep_{X0}(o, Spec.{X0}()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)')}]
         u['encode'] = fn
     out[OUT / 'e2e_bitl.bend'] = BITL
+    out[OUT / 'e2e_bview.bend'] = BVG.text()
     inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
     brows = [(inv[X], X, N, big) for X, N, big in bit_lists(amap['map']) if X in inv]
     for R0, X0, N, big in brows:

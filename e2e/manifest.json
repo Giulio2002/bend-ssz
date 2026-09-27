@@ -2717,6 +2717,18 @@
     "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
+  "FuluExecutionPayloadHeader_e2e_dec_generated.bend": [
+   {
+    "name": "FuluExecutionPayloadHeader",
+    "generated_name": "ExecutionPayloadHeader",
+    "laws": [
+     "FuluExecutionPayloadHeader_e2e_decode_view",
+     "FuluExecutionPayloadHeader_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 29)"
+   }
+  ],
   "FuluIndexedAttestation_e2e_dec_generated.bend": [
    {
     "name": "FuluIndexedAttestation",
@@ -2727,6 +2739,342 @@
     ],
     "ii": "view",
     "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "FuluLightClientHeader_e2e_dec_generated.bend": [
+   {
+    "name": "FuluLightClientHeader",
+    "generated_name": "LightClientHeader",
+    "laws": [
+     "FuluLightClientHeader_e2e_decode_view",
+     "FuluLightClientHeader_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 29)"
+   }
+  ],
+  "FuluLightClientOptimisticUpdate_e2e_dec_generated.bend": [
+   {
+    "name": "FuluLightClientOptimisticUpdate",
+    "generated_name": "LightClientOptimisticUpdate",
+    "laws": [
+     "FuluLightClientOptimisticUpdate_e2e_decode_view",
+     "FuluLightClientOptimisticUpdate_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 29)"
+   }
+  ],
+  "FuluTransaction_e2e_dec_generated.bend": [
+   {
+    "name": "FuluTransaction",
+    "generated_name": "Transaction",
+    "laws": [
+     "FuluTransaction_e2e_decode_view",
+     "FuluTransaction_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "bitlist_1_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_1",
+    "generated_name": "Gt94B70684B5",
+    "laws": [
+     "bitlist_1_e2e_decode_view",
+     "bitlist_1_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_15_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_15",
+    "generated_name": "GtDB1482527D",
+    "laws": [
+     "bitlist_15_e2e_decode_view",
+     "bitlist_15_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_16_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_16",
+    "generated_name": "Gt7C1C13B292",
+    "laws": [
+     "bitlist_16_e2e_decode_view",
+     "bitlist_16_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_17_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_17",
+    "generated_name": "GtAA99FAAC9D",
+    "laws": [
+     "bitlist_17_e2e_decode_view",
+     "bitlist_17_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_2_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_2",
+    "generated_name": "GtCF587DD386",
+    "laws": [
+     "bitlist_2_e2e_decode_view",
+     "bitlist_2_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_3_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_3",
+    "generated_name": "GtC847E618FA",
+    "laws": [
+     "bitlist_3_e2e_decode_view",
+     "bitlist_3_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_31_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_31",
+    "generated_name": "Gt4B1BA0C81D",
+    "laws": [
+     "bitlist_31_e2e_decode_view",
+     "bitlist_31_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_32_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_32",
+    "generated_name": "Gt2F34855D3D",
+    "laws": [
+     "bitlist_32_e2e_decode_view",
+     "bitlist_32_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_33_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_33",
+    "generated_name": "Gt039DD44FD8",
+    "laws": [
+     "bitlist_33_e2e_decode_view",
+     "bitlist_33_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_4_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_4",
+    "generated_name": "Gt484D1ADAFE",
+    "laws": [
+     "bitlist_4_e2e_decode_view",
+     "bitlist_4_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_5_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_5",
+    "generated_name": "GtF91FD5FC73",
+    "laws": [
+     "bitlist_5_e2e_decode_view",
+     "bitlist_5_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_511_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_511",
+    "generated_name": "Gt21E1483EE1",
+    "laws": [
+     "bitlist_511_e2e_decode_view",
+     "bitlist_511_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_512_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_512",
+    "generated_name": "Gt38F5890C13",
+    "laws": [
+     "bitlist_512_e2e_decode_view",
+     "bitlist_512_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_513_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_513",
+    "generated_name": "Gt44F1B6940F",
+    "laws": [
+     "bitlist_513_e2e_decode_view",
+     "bitlist_513_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_6_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_6",
+    "generated_name": "Gt98B8C9F262",
+    "laws": [
+     "bitlist_6_e2e_decode_view",
+     "bitlist_6_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_7_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_7",
+    "generated_name": "GtC063F5D9E0",
+    "laws": [
+     "bitlist_7_e2e_decode_view",
+     "bitlist_7_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_8_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_8",
+    "generated_name": "GtD291A17219",
+    "laws": [
+     "bitlist_8_e2e_decode_view",
+     "bitlist_8_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "bitlist_9_e2e_dec_generated.bend": [
+   {
+    "name": "bitlist_9",
+    "generated_name": "Gt9D356BAF82",
+    "laws": [
+     "bitlist_9_e2e_decode_view",
+     "bitlist_9_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
+   }
+  ],
+  "proglist_bool_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_bool",
+    "generated_name": "Gt83D8B3D008",
+    "laws": [
+     "proglist_bool_e2e_decode_view",
+     "proglist_bool_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint128_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint128",
+    "generated_name": "Gt1C2FA69562",
+    "laws": [
+     "proglist_uint128_e2e_decode_view",
+     "proglist_uint128_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint16_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint16",
+    "generated_name": "GtF23A2FB97E",
+    "laws": [
+     "proglist_uint16_e2e_decode_view",
+     "proglist_uint16_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint256_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint256",
+    "generated_name": "GtA8457965E2",
+    "laws": [
+     "proglist_uint256_e2e_decode_view",
+     "proglist_uint256_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint32_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint32",
+    "generated_name": "Gt3A9420DD8E",
+    "laws": [
+     "proglist_uint32_e2e_decode_view",
+     "proglist_uint32_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint64_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint64",
+    "generated_name": "GtE83F21B20A",
+    "laws": [
+     "proglist_uint64_e2e_decode_view",
+     "proglist_uint64_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "proglist_uint8_e2e_dec_generated.bend": [
+   {
+    "name": "proglist_uint8",
+    "generated_name": "GtDE4B86A990",
+    "laws": [
+     "proglist_uint8_e2e_decode_view",
+     "proglist_uint8_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
    }
   ],
   "FuluAttesterSlashing_e2e_root_generated.bend": [
@@ -2749,6 +3097,16 @@
     "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) (the root law's representation invariant)"
    }
   ],
+  "FuluExecutionPayloadHeader_e2e_root_generated.bend": [
+   {
+    "name": "FuluExecutionPayloadHeader",
+    "generated_name": "ExecutionPayloadHeader",
+    "laws": [
+     "FuluExecutionPayloadHeader_e2e_root"
+    ],
+    "premise": "rep: RT.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()) (the root law's representation invariant)"
+   }
+  ],
   "FuluIndexedAttestation_e2e_root_generated.bend": [
    {
     "name": "FuluIndexedAttestation",
@@ -2757,6 +3115,106 @@
      "FuluIndexedAttestation_e2e_root"
     ],
     "premise": "rep: RT.rep_IndexedAttestation(o, Spec.IndexedAttestation()) (the root law's representation invariant)"
+   }
+  ],
+  "FuluLightClientHeader_e2e_root_generated.bend": [
+   {
+    "name": "FuluLightClientHeader",
+    "generated_name": "LightClientHeader",
+    "laws": [
+     "FuluLightClientHeader_e2e_root"
+    ],
+    "premise": "rep: RT.rep_LightClientHeader(o, Spec.LightClientHeader()) (the root law's representation invariant)"
+   }
+  ],
+  "FuluLightClientOptimisticUpdate_e2e_root_generated.bend": [
+   {
+    "name": "FuluLightClientOptimisticUpdate",
+    "generated_name": "LightClientOptimisticUpdate",
+    "laws": [
+     "FuluLightClientOptimisticUpdate_e2e_root"
+    ],
+    "premise": "rep: RT.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()) (the root law's representation invariant)"
+   }
+  ],
+  "FuluTransaction_e2e_root_generated.bend": [
+   {
+    "name": "FuluTransaction",
+    "generated_name": "Transaction",
+    "laws": [
+     "FuluTransaction_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Transaction(o, Spec.Transaction()) (the root law's representation invariant)"
+   }
+  ],
+  "proglist_bool_e2e_root_generated.bend": [
+   {
+    "name": "proglist_bool",
+    "generated_name": "Gt83D8B3D008",
+    "laws": [
+     "proglist_bool_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gt83D8B3D008(o, Spec.Gt83D8B3D008()) (the root law's representation invariant)"
+   }
+  ],
+  "proglist_uint128_e2e_root_generated.bend": [
+   {
+    "name": "proglist_uint128",
+    "generated_name": "Gt1C2FA69562",
+    "laws": [
+     "proglist_uint128_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gt1C2FA69562(o, Spec.Gt1C2FA69562()) (the root law's representation invariant)"
+   }
+  ],
+  "proglist_uint16_e2e_root_generated.bend": [
+   {
+    "name": "proglist_uint16",
+    "generated_name": "GtF23A2FB97E",
+    "laws": [
+     "proglist_uint16_e2e_root"
+    ],
+    "premise": "rep: RT.rep_GtF23A2FB97E(o, Spec.GtF23A2FB97E()) (the root law's representation invariant)"
+   }
+  ],
+  "proglist_uint256_e2e_root_generated.bend": [
+   {
+    "name": "proglist_uint256",
+    "generated_name": "GtA8457965E2",
+    "laws": [
+     "proglist_uint256_e2e_root"
+    ],
+    "premise": "rep: RT.rep_GtA8457965E2(o, Spec.GtA8457965E2()) (the root law's representation invariant)"
+   }
+  ],
+  "proglist_uint32_e2e_root_generated.bend": [
+   {
+    "name": "proglist_uint32",
+    "generated_name": "Gt3A9420DD8E",
+    "laws": [
+     "proglist_uint32_e2e_root"
+    ],
+    "premise": "rep: RT.rep_Gt3A9420DD8E(o, Spec.Gt3A9420DD8E()) (the root law's representation invariant)"
+   }
+  ],
+  "proglist_uint64_e2e_root_generated.bend": [
+   {
+    "name": "proglist_uint64",
+    "generated_name": "GtE83F21B20A",
+    "laws": [
+     "proglist_uint64_e2e_root"
+    ],
+    "premise": "rep: RT.rep_GtE83F21B20A(o, Spec.GtE83F21B20A()) (the root law's representation invariant)"
+   }
+  ],
+  "proglist_uint8_e2e_root_generated.bend": [
+   {
+    "name": "proglist_uint8",
+    "generated_name": "GtDE4B86A990",
+    "laws": [
+     "proglist_uint8_e2e_root"
+    ],
+    "premise": "rep: RT.rep_GtDE4B86A990(o, Spec.GtDE4B86A990()) (the root law's representation invariant)"
    }
   ],
   "FuluAttesterSlashing_e2e_generated.bend": [
@@ -2779,6 +3237,16 @@
     "premise": "rep: RT.rep_DataColumnsByRootIdentifier(o, Spec.DataColumnsByRootIdentifier()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
+  "FuluExecutionPayloadHeader_e2e_generated.bend": [
+   {
+    "name": "FuluExecutionPayloadHeader",
+    "generated_name": "ExecutionPayloadHeader",
+    "laws": [
+     "FuluExecutionPayloadHeader_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_ExecutionPayloadHeader(o, Spec.ExecutionPayloadHeader()) and the hs premises: each storage field's invariant at depth below 31 (BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
   "FuluIndexedAttestation_e2e_generated.bend": [
    {
     "name": "FuluIndexedAttestation",
@@ -2787,6 +3255,106 @@
      "FuluIndexedAttestation_e2e_encode"
     ],
     "premise": "rep: RT.rep_IndexedAttestation(o, Spec.IndexedAttestation()) and hs: U.sd(list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "FuluLightClientHeader_e2e_generated.bend": [
+   {
+    "name": "FuluLightClientHeader",
+    "generated_name": "LightClientHeader",
+    "laws": [
+     "FuluLightClientHeader_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_LightClientHeader(o, Spec.LightClientHeader()) and the hs premises: each storage field's invariant at depth below 31 (BL.sdpv / BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "FuluLightClientOptimisticUpdate_e2e_generated.bend": [
+   {
+    "name": "FuluLightClientOptimisticUpdate",
+    "generated_name": "LightClientOptimisticUpdate",
+    "laws": [
+     "FuluLightClientOptimisticUpdate_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()) and the hs premises: each storage field's invariant at depth below 31 (BL.sdpv / BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "FuluTransaction_e2e_generated.bend": [
+   {
+    "name": "FuluTransaction",
+    "generated_name": "Transaction",
+    "laws": [
+     "FuluTransaction_e2e_encode"
+    ],
+    "premise": "rep: LO.rep_bl(o, Spec.Transaction()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "proglist_bool_e2e_generated.bend": [
+   {
+    "name": "proglist_bool",
+    "generated_name": "Gt83D8B3D008",
+    "laws": [
+     "proglist_bool_e2e_encode"
+    ],
+    "premise": "rep: PG.rep_plb(o, Spec.Gt83D8B3D008()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "proglist_uint128_e2e_generated.bend": [
+   {
+    "name": "proglist_uint128",
+    "generated_name": "Gt1C2FA69562",
+    "laws": [
+     "proglist_uint128_e2e_encode"
+    ],
+    "premise": "rep: PG.rep_pl16(o, Spec.Gt1C2FA69562()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "proglist_uint16_e2e_generated.bend": [
+   {
+    "name": "proglist_uint16",
+    "generated_name": "GtF23A2FB97E",
+    "laws": [
+     "proglist_uint16_e2e_encode"
+    ],
+    "premise": "rep: PG.rep_pl2(o, Spec.GtF23A2FB97E()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "proglist_uint256_e2e_generated.bend": [
+   {
+    "name": "proglist_uint256",
+    "generated_name": "GtA8457965E2",
+    "laws": [
+     "proglist_uint256_e2e_encode"
+    ],
+    "premise": "rep: PG.rep_pl32(o, Spec.GtA8457965E2()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "proglist_uint32_e2e_generated.bend": [
+   {
+    "name": "proglist_uint32",
+    "generated_name": "Gt3A9420DD8E",
+    "laws": [
+     "proglist_uint32_e2e_encode"
+    ],
+    "premise": "rep: PG.rep_pl4(o, Spec.Gt3A9420DD8E()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "proglist_uint64_e2e_generated.bend": [
+   {
+    "name": "proglist_uint64",
+    "generated_name": "GtE83F21B20A",
+    "laws": [
+     "proglist_uint64_e2e_encode"
+    ],
+    "premise": "rep: PG.rep_pl8(o, Spec.GtE83F21B20A()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "proglist_uint8_e2e_generated.bend": [
+   {
+    "name": "proglist_uint8",
+    "generated_name": "GtDE4B86A990",
+    "laws": [
+     "proglist_uint8_e2e_encode"
+    ],
+    "premise": "rep: PG.rep_pl1(o, Spec.GtDE4B86A990()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "bitlist_33_e2e_generated.bend": [
@@ -3181,16 +3749,8 @@
    "generated_name": "ParticipationFlags",
    "reason": "root law not over every object (hypotheses or a representation)"
   },
-  "FuluTransaction": {
-   "generated_name": "Transaction",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "FuluExecutionRequests": {
    "generated_name": "ExecutionRequests",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluExecutionPayloadHeader": {
-   "generated_name": "ExecutionPayloadHeader",
    "reason": "encode laws not over the same free words / bits"
   },
   "FuluExecutionPayload": {
@@ -3199,14 +3759,6 @@
   },
   "FuluBeaconState": {
    "generated_name": "BeaconState",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluLightClientHeader": {
-   "generated_name": "LightClientHeader",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluLightClientOptimisticUpdate": {
-   "generated_name": "LightClientOptimisticUpdate",
    "reason": "encode laws not over the same free words / bits"
   },
   "FuluLightClientFinalityUpdate": {
@@ -3269,10 +3821,6 @@
    "generated_name": "GpF350A3C486",
    "reason": "encode laws not over the same free words / bits"
   },
-  "proglist_bool": {
-   "generated_name": "Gt83D8B3D008",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "vec_bool_16": {
    "generated_name": "Gt1D9B3E1871",
    "reason": "encode laws not over the same free words / bits"
@@ -3311,14 +3859,6 @@
   },
   "vec_bool_8": {
    "generated_name": "Gt526892A4DC",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "proglist_uint128": {
-   "generated_name": "Gt1C2FA69562",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "proglist_uint8": {
-   "generated_name": "GtDE4B86A990",
    "reason": "encode laws not over the same free words / bits"
   },
   "vec_uint8_16": {
@@ -3361,10 +3901,6 @@
    "generated_name": "GtA8100D747D",
    "reason": "encode laws not over the same free words / bits"
   },
-  "proglist_uint16": {
-   "generated_name": "GtF23A2FB97E",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "vec_uint16_16": {
    "generated_name": "GtAEB382AD1F",
    "reason": "encode laws not over the same free words / bits"
@@ -3405,18 +3941,6 @@
    "generated_name": "Gt39CAD03032",
    "reason": "encode laws not over the same free words / bits"
   },
-  "proglist_uint256": {
-   "generated_name": "GtA8457965E2",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "proglist_uint32": {
-   "generated_name": "Gt3A9420DD8E",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "proglist_uint64": {
-   "generated_name": "GtE83F21B20A",
-   "reason": "encode laws not over the same free words / bits"
-  },
   "ProgressiveTestStruct": {
    "generated_name": "Gc221EC01D83",
    "reason": "encode laws not over the same free words / bits"
@@ -3448,114 +3972,6 @@
   "SmallTestStruct": {
    "generated_name": "Gc4ED9619F50",
    "reason": "encode laws not over the same free words / bits"
-  },
-  "bitlist_15": {
-   "generated_name": "GtDB1482527D",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_15_e2e_generated.bend",
-   "root": "bitlist_15_e2e_root_generated.bend"
-  },
-  "bitlist_16": {
-   "generated_name": "Gt7C1C13B292",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_16_e2e_generated.bend",
-   "root": "bitlist_33_e2e_root_generated.bend"
-  },
-  "bitlist_17": {
-   "generated_name": "GtAA99FAAC9D",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_17_e2e_generated.bend",
-   "root": "bitlist_1_e2e_root_generated.bend"
-  },
-  "bitlist_1": {
-   "generated_name": "Gt94B70684B5",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_1_e2e_generated.bend",
-   "root": "bitlist_1_e2e_root_generated.bend"
-  },
-  "bitlist_2": {
-   "generated_name": "GtCF587DD386",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_2_e2e_generated.bend",
-   "root": "bitlist_1_e2e_root_generated.bend"
-  },
-  "bitlist_31": {
-   "generated_name": "Gt4B1BA0C81D",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_31_e2e_generated.bend",
-   "root": "bitlist_33_e2e_root_generated.bend"
-  },
-  "bitlist_32": {
-   "generated_name": "Gt2F34855D3D",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_32_e2e_generated.bend",
-   "root": "bitlist_33_e2e_root_generated.bend"
-  },
-  "bitlist_33": {
-   "generated_name": "Gt039DD44FD8",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_33_e2e_generated.bend",
-   "root": "bitlist_33_e2e_root_generated.bend"
-  },
-  "bitlist_3": {
-   "generated_name": "GtC847E618FA",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_3_e2e_generated.bend",
-   "root": "bitlist_1_e2e_root_generated.bend"
-  },
-  "bitlist_4": {
-   "generated_name": "Gt484D1ADAFE",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_4_e2e_generated.bend",
-   "root": "bitlist_33_e2e_root_generated.bend"
-  },
-  "bitlist_511": {
-   "generated_name": "Gt21E1483EE1",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_511_e2e_generated.bend",
-   "root": "bitlist_33_e2e_root_generated.bend"
-  },
-  "bitlist_512": {
-   "generated_name": "Gt38F5890C13",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_512_e2e_generated.bend",
-   "root": "bitlist_33_e2e_root_generated.bend"
-  },
-  "bitlist_513": {
-   "generated_name": "Gt44F1B6940F",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_513_e2e_generated.bend",
-   "root": "bitlist_33_e2e_root_generated.bend"
-  },
-  "bitlist_5": {
-   "generated_name": "GtF91FD5FC73",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_5_e2e_generated.bend",
-   "root": "bitlist_15_e2e_root_generated.bend"
-  },
-  "bitlist_6": {
-   "generated_name": "Gt98B8C9F262",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_6_e2e_generated.bend",
-   "root": "bitlist_1_e2e_root_generated.bend"
-  },
-  "bitlist_7": {
-   "generated_name": "GtC063F5D9E0",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_7_e2e_generated.bend",
-   "root": "bitlist_1_e2e_root_generated.bend"
-  },
-  "bitlist_8": {
-   "generated_name": "GtD291A17219",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_8_e2e_generated.bend",
-   "root": "bitlist_1_e2e_root_generated.bend"
-  },
-  "bitlist_9": {
-   "generated_name": "Gt9D356BAF82",
-   "reason": "encode laws not over the same free words / bits",
-   "encode": "bitlist_9_e2e_generated.bend",
-   "root": "bitlist_1_e2e_root_generated.bend"
   },
   "bitvector_15": {
    "generated_name": "GtEDF530C7B9",
@@ -3663,11 +4079,185 @@
    "ii_iii": "FuluDataColumnsByRootIdentifier_e2e_dec_generated.bend",
    "iv": "FuluDataColumnsByRootIdentifier_e2e_root_generated.bend"
   },
+  "FuluExecutionPayloadHeader": {
+   "generated_name": "ExecutionPayloadHeader",
+   "i": "FuluExecutionPayloadHeader_e2e_generated.bend",
+   "ii_iii": "FuluExecutionPayloadHeader_e2e_dec_generated.bend",
+   "iv": "FuluExecutionPayloadHeader_e2e_root_generated.bend"
+  },
   "FuluIndexedAttestation": {
    "generated_name": "IndexedAttestation",
    "i": "FuluIndexedAttestation_e2e_generated.bend",
    "ii_iii": "FuluIndexedAttestation_e2e_dec_generated.bend",
    "iv": "FuluIndexedAttestation_e2e_root_generated.bend"
+  },
+  "FuluLightClientHeader": {
+   "generated_name": "LightClientHeader",
+   "i": "FuluLightClientHeader_e2e_generated.bend",
+   "ii_iii": "FuluLightClientHeader_e2e_dec_generated.bend",
+   "iv": "FuluLightClientHeader_e2e_root_generated.bend"
+  },
+  "FuluLightClientOptimisticUpdate": {
+   "generated_name": "LightClientOptimisticUpdate",
+   "i": "FuluLightClientOptimisticUpdate_e2e_generated.bend",
+   "ii_iii": "FuluLightClientOptimisticUpdate_e2e_dec_generated.bend",
+   "iv": "FuluLightClientOptimisticUpdate_e2e_root_generated.bend"
+  },
+  "FuluTransaction": {
+   "generated_name": "Transaction",
+   "i": "FuluTransaction_e2e_generated.bend",
+   "ii_iii": "FuluTransaction_e2e_dec_generated.bend",
+   "iv": "FuluTransaction_e2e_root_generated.bend"
+  },
+  "bitlist_1": {
+   "generated_name": "Gt94B70684B5",
+   "i": "bitlist_1_e2e_generated.bend",
+   "ii_iii": "bitlist_1_e2e_dec_generated.bend",
+   "iv": "bitlist_1_e2e_root_generated.bend"
+  },
+  "bitlist_15": {
+   "generated_name": "GtDB1482527D",
+   "i": "bitlist_15_e2e_generated.bend",
+   "ii_iii": "bitlist_15_e2e_dec_generated.bend",
+   "iv": "bitlist_15_e2e_root_generated.bend"
+  },
+  "bitlist_16": {
+   "generated_name": "Gt7C1C13B292",
+   "i": "bitlist_16_e2e_generated.bend",
+   "ii_iii": "bitlist_16_e2e_dec_generated.bend",
+   "iv": "bitlist_33_e2e_root_generated.bend"
+  },
+  "bitlist_17": {
+   "generated_name": "GtAA99FAAC9D",
+   "i": "bitlist_17_e2e_generated.bend",
+   "ii_iii": "bitlist_17_e2e_dec_generated.bend",
+   "iv": "bitlist_1_e2e_root_generated.bend"
+  },
+  "bitlist_2": {
+   "generated_name": "GtCF587DD386",
+   "i": "bitlist_2_e2e_generated.bend",
+   "ii_iii": "bitlist_2_e2e_dec_generated.bend",
+   "iv": "bitlist_1_e2e_root_generated.bend"
+  },
+  "bitlist_3": {
+   "generated_name": "GtC847E618FA",
+   "i": "bitlist_3_e2e_generated.bend",
+   "ii_iii": "bitlist_3_e2e_dec_generated.bend",
+   "iv": "bitlist_1_e2e_root_generated.bend"
+  },
+  "bitlist_31": {
+   "generated_name": "Gt4B1BA0C81D",
+   "i": "bitlist_31_e2e_generated.bend",
+   "ii_iii": "bitlist_31_e2e_dec_generated.bend",
+   "iv": "bitlist_33_e2e_root_generated.bend"
+  },
+  "bitlist_32": {
+   "generated_name": "Gt2F34855D3D",
+   "i": "bitlist_32_e2e_generated.bend",
+   "ii_iii": "bitlist_32_e2e_dec_generated.bend",
+   "iv": "bitlist_33_e2e_root_generated.bend"
+  },
+  "bitlist_33": {
+   "generated_name": "Gt039DD44FD8",
+   "i": "bitlist_33_e2e_generated.bend",
+   "ii_iii": "bitlist_33_e2e_dec_generated.bend",
+   "iv": "bitlist_33_e2e_root_generated.bend"
+  },
+  "bitlist_4": {
+   "generated_name": "Gt484D1ADAFE",
+   "i": "bitlist_4_e2e_generated.bend",
+   "ii_iii": "bitlist_4_e2e_dec_generated.bend",
+   "iv": "bitlist_33_e2e_root_generated.bend"
+  },
+  "bitlist_5": {
+   "generated_name": "GtF91FD5FC73",
+   "i": "bitlist_5_e2e_generated.bend",
+   "ii_iii": "bitlist_5_e2e_dec_generated.bend",
+   "iv": "bitlist_15_e2e_root_generated.bend"
+  },
+  "bitlist_511": {
+   "generated_name": "Gt21E1483EE1",
+   "i": "bitlist_511_e2e_generated.bend",
+   "ii_iii": "bitlist_511_e2e_dec_generated.bend",
+   "iv": "bitlist_33_e2e_root_generated.bend"
+  },
+  "bitlist_512": {
+   "generated_name": "Gt38F5890C13",
+   "i": "bitlist_512_e2e_generated.bend",
+   "ii_iii": "bitlist_512_e2e_dec_generated.bend",
+   "iv": "bitlist_33_e2e_root_generated.bend"
+  },
+  "bitlist_513": {
+   "generated_name": "Gt44F1B6940F",
+   "i": "bitlist_513_e2e_generated.bend",
+   "ii_iii": "bitlist_513_e2e_dec_generated.bend",
+   "iv": "bitlist_33_e2e_root_generated.bend"
+  },
+  "bitlist_6": {
+   "generated_name": "Gt98B8C9F262",
+   "i": "bitlist_6_e2e_generated.bend",
+   "ii_iii": "bitlist_6_e2e_dec_generated.bend",
+   "iv": "bitlist_1_e2e_root_generated.bend"
+  },
+  "bitlist_7": {
+   "generated_name": "GtC063F5D9E0",
+   "i": "bitlist_7_e2e_generated.bend",
+   "ii_iii": "bitlist_7_e2e_dec_generated.bend",
+   "iv": "bitlist_1_e2e_root_generated.bend"
+  },
+  "bitlist_8": {
+   "generated_name": "GtD291A17219",
+   "i": "bitlist_8_e2e_generated.bend",
+   "ii_iii": "bitlist_8_e2e_dec_generated.bend",
+   "iv": "bitlist_1_e2e_root_generated.bend"
+  },
+  "bitlist_9": {
+   "generated_name": "Gt9D356BAF82",
+   "i": "bitlist_9_e2e_generated.bend",
+   "ii_iii": "bitlist_9_e2e_dec_generated.bend",
+   "iv": "bitlist_1_e2e_root_generated.bend"
+  },
+  "proglist_bool": {
+   "generated_name": "Gt83D8B3D008",
+   "i": "proglist_bool_e2e_generated.bend",
+   "ii_iii": "proglist_bool_e2e_dec_generated.bend",
+   "iv": "proglist_bool_e2e_root_generated.bend"
+  },
+  "proglist_uint128": {
+   "generated_name": "Gt1C2FA69562",
+   "i": "proglist_uint128_e2e_generated.bend",
+   "ii_iii": "proglist_uint128_e2e_dec_generated.bend",
+   "iv": "proglist_uint128_e2e_root_generated.bend"
+  },
+  "proglist_uint16": {
+   "generated_name": "GtF23A2FB97E",
+   "i": "proglist_uint16_e2e_generated.bend",
+   "ii_iii": "proglist_uint16_e2e_dec_generated.bend",
+   "iv": "proglist_uint16_e2e_root_generated.bend"
+  },
+  "proglist_uint256": {
+   "generated_name": "GtA8457965E2",
+   "i": "proglist_uint256_e2e_generated.bend",
+   "ii_iii": "proglist_uint256_e2e_dec_generated.bend",
+   "iv": "proglist_uint256_e2e_root_generated.bend"
+  },
+  "proglist_uint32": {
+   "generated_name": "Gt3A9420DD8E",
+   "i": "proglist_uint32_e2e_generated.bend",
+   "ii_iii": "proglist_uint32_e2e_dec_generated.bend",
+   "iv": "proglist_uint32_e2e_root_generated.bend"
+  },
+  "proglist_uint64": {
+   "generated_name": "GtE83F21B20A",
+   "i": "proglist_uint64_e2e_generated.bend",
+   "ii_iii": "proglist_uint64_e2e_dec_generated.bend",
+   "iv": "proglist_uint64_e2e_root_generated.bend"
+  },
+  "proglist_uint8": {
+   "generated_name": "GtDE4B86A990",
+   "i": "proglist_uint8_e2e_generated.bend",
+   "ii_iii": "proglist_uint8_e2e_dec_generated.bend",
+   "iv": "proglist_uint8_e2e_root_generated.bend"
   }
  },
  "input_bounds": {
