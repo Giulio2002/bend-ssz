@@ -2729,6 +2729,18 @@
     "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 29)"
    }
   ],
+  "FuluLightClientOptimisticUpdate_e2e_dec_generated.bend": [
+   {
+    "name": "FuluLightClientOptimisticUpdate",
+    "generated_name": "LightClientOptimisticUpdate",
+    "laws": [
+     "FuluLightClientOptimisticUpdate_e2e_decode_view",
+     "FuluLightClientOptimisticUpdate_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^30 bytes (1 GiB) (hS: n <= 4 * 2^K with K = 28, a parameter; the codec laws take buffers of depth below 29)"
+   }
+  ],
   "FuluTransaction_e2e_dec_generated.bend": [
    {
     "name": "FuluTransaction",
@@ -2771,6 +2783,16 @@
     "premise": "rep: RT.rep_LightClientHeader(o, Spec.LightClientHeader()) (the root law's representation invariant)"
    }
   ],
+  "FuluLightClientOptimisticUpdate_e2e_root_generated.bend": [
+   {
+    "name": "FuluLightClientOptimisticUpdate",
+    "generated_name": "LightClientOptimisticUpdate",
+    "laws": [
+     "FuluLightClientOptimisticUpdate_e2e_root"
+    ],
+    "premise": "rep: RT.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()) (the root law's representation invariant)"
+   }
+  ],
   "FuluTransaction_e2e_root_generated.bend": [
    {
     "name": "FuluTransaction",
@@ -2809,6 +2831,16 @@
      "FuluLightClientHeader_e2e_encode"
     ],
     "premise": "rep: RT.rep_LightClientHeader(o, Spec.LightClientHeader()) and the hs premises: each storage field's invariant at depth below 31 (BL.sdpv / BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
+   }
+  ],
+  "FuluLightClientOptimisticUpdate_e2e_generated.bend": [
+   {
+    "name": "FuluLightClientOptimisticUpdate",
+    "generated_name": "LightClientOptimisticUpdate",
+    "laws": [
+     "FuluLightClientOptimisticUpdate_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_LightClientOptimisticUpdate(o, Spec.LightClientOptimisticUpdate()) and the hs premises: each storage field's invariant at depth below 31 (BL.sdpv / BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "FuluTransaction_e2e_generated.bend": [
@@ -3231,10 +3263,6 @@
   },
   "FuluBeaconState": {
    "generated_name": "BeaconState",
-   "reason": "encode laws not over the same free words / bits"
-  },
-  "FuluLightClientOptimisticUpdate": {
-   "generated_name": "LightClientOptimisticUpdate",
    "reason": "encode laws not over the same free words / bits"
   },
   "FuluLightClientFinalityUpdate": {
@@ -3695,6 +3723,12 @@
    "i": "FuluLightClientHeader_e2e_generated.bend",
    "ii_iii": "FuluLightClientHeader_e2e_dec_generated.bend",
    "iv": "FuluLightClientHeader_e2e_root_generated.bend"
+  },
+  "FuluLightClientOptimisticUpdate": {
+   "generated_name": "LightClientOptimisticUpdate",
+   "i": "FuluLightClientOptimisticUpdate_e2e_generated.bend",
+   "ii_iii": "FuluLightClientOptimisticUpdate_e2e_dec_generated.bend",
+   "iv": "FuluLightClientOptimisticUpdate_e2e_root_generated.bend"
   },
   "FuluTransaction": {
    "generated_name": "Transaction",

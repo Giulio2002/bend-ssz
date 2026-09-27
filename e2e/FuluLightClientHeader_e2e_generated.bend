@@ -30,7 +30,6 @@ import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/var_bytes_LightClientHeader_enc.bend as EN
-import ../proofs/obj/var_bytes_ExecutionPayloadHeader_enc.bend as YE
 import ./e2e_support.bend as E
 import ./e2e_cap.bend as C
 import ./e2e_emit.bend as EM
