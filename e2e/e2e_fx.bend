@@ -14,7 +14,7 @@ import ../proofs/obj/spec_bits.bend as FB
 import ../proofs/obj/elems48.bend as E48
 import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/words_root.bend as WR
-import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/vua_rd.bend as UR
 import ../proofs/obj/vua_ct.bend as UCT

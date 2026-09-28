@@ -5957,9 +5957,12 @@ def mwp_prog3(R, X, D):
 
 
 def prog_premise3(X):
-    return (f'rep: RT.rep_{X}(o, Spec.{X}()) and hs: EQ.PREM_{X}(o): each list field\'s storage at its encode law\'s depth bound '
-            '(byte storage and record trees dw < 28, the variable-element mirror trees dw < 31, read from the laws), each unbounded list field\'s '
-            'encoding within EL.P1 = 2^27 + 1 bytes (so that the fields and the fixed part fit the container law\'s 2^30), and each element\'s storage premise')
+    return (f'rep: RT.rep_{X}(o, Spec.{X}()) and hs: EQ.PREM_{X}(o), the encode records\' own bounds as premises, each a decoded-object gap '
+            '(the root law\'s invariant gives depth below 32 and no size bound; decoded fields reach NMAX; dropped when the encoder window widens '
+            '(codec-var), then regenerated with the budgets read from the widened law): each list field\'s storage at its encode law\'s depth bound '
+            '(byte storage and record trees dw < 28, the variable-element mirror trees dw < 31), each unbounded list field\'s encoding within '
+            'EL.P1 = 2^27 + 1 bytes (a per-field budget so that the fields and the fixed part fit the container law\'s 2^30), and each element\'s '
+            'storage premise (words dw < 28, bit lists EP.SDPB)')
 
 
 for _X in PROGS2:

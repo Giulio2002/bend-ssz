@@ -11,7 +11,6 @@ import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/packed_obj.bend as PK
 import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/vspec.bend as VSP
-import ../proofs/obj/words_root.bend as WR
 import ./e2e_support.bend as E
 import ../types/vec_uint128_512_encode_ssz_generated.bend as vec_uint128_512_e
 import ../types/vec_uint128_513_encode_ssz_generated.bend as vec_uint128_513_e

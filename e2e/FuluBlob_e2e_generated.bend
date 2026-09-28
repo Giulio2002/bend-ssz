@@ -21,7 +21,6 @@ import ../proofs/compact/arith.bend as A
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/spec_arr_Blob.bend as BL
 import ../proofs/obj/fixrej_Blob.bend as RJ
-import ../proofs/obj/root_types.bend as RT
 import ./e2e_support.bend as E
 import ./e2e_bytes.bend as EY
 import ./e2e_load.bend as L

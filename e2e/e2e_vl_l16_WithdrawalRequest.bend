@@ -8,7 +8,6 @@ import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/root_types.bend as RT
-import ../proofs/obj/root_names.bend as RN
 import ../proofs/obj/var_winx_l16_WithdrawalRequest.bend as W
 import ../types/FuluWithdrawalRequest_def_generated.bend as FuluWithdrawalRequest_d
 
@@ -119,8 +118,8 @@ def xiR(m: Nat, +i: Nat, +Q: Nat, +dd: Nat, +D: FD.array__Tree<FuluWithdrawalReq
           Equal.sym(Maybe<&2, FuluWithdrawalRequest_d.WithdrawalRequest>, FD.spec_common__nth(FuluWithdrawalRequest_d.WithdrawalRequest, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, W.RT(Q, 0n, dd, D, t, x)), i), Some{RT.xat_l16_WithdrawalRequest(FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, W.RT(Q, 0n, dd, D, t, x)), i)}, RT.nth_l16_WithdrawalRequest(FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, W.RT(Q, 0n, dd, D, t, x)), i, hi)), en))
       +hm2 = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+Q) == True{} : Bool}, 1n+Nat.add(k, i), Nat.add(k, 1n+i), Equal.sym(Nat, Nat.add(k, 1n+i), 1n+Nat.add(k, i), FD.nat__add_succ(k, i)), hm)
       %Equal.sym(FuluWithdrawalRequest_d.WithdrawalRequest, RT.xat_l16_WithdrawalRequest(FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, 76n, x)), ex) :
-        {S.Items{RN.v_WithdrawalRequest(_), RT.xi_l16_WithdrawalRequest(k, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 76n, x)) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{RN.v_WithdrawalRequest(W.RX(t, VRL.pos(i, 76n, x))), z}, RT.xi_l16_WithdrawalRequest(k, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
+        {S.Items{RN_L.v_WithdrawalRequest(_), RT.xi_l16_WithdrawalRequest(k, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 76n, x)) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{RN_L.v_WithdrawalRequest(W.RX(t, VRL.pos(i, 76n, x))), z}, RT.xi_l16_WithdrawalRequest(k, FD.array__slots(FuluWithdrawalRequest_d.WithdrawalRequest, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
         W.RITEMS(k, t, VRL.pos(1n+i, 76n, x)), xiR(k, 1n+i, Q, dd, D, t, x, pf, hb, hm2))
 
 def subz(+k: Nat) -> {Nat.sub(1n+k, U32.to_nat(1)) == k : Nat}:
