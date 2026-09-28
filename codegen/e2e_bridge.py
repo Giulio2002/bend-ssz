@@ -2935,6 +2935,11 @@ def outputs():
     for X0, lem0 in (('AggregateAndProof', 'aap_w'), ('SignedAggregateAndProof', 'saap_w')):
         if (OBJ / f'big_var_win_{X0}.bend').exists():
             VDEC_VIEWS.setdefault(X0, BVG.top_view(X0, lem0))
+    # (i) for the bit list containers: their encode laws' storage premises and hv as the named premise hs (e2e_bitv)
+    for X0, mod0 in (('PendingAttestation', 'var_bitc_enc_PendingAttestation.bend'), ('Attestation', 'big_var_bitc_enc_Attestation.bend')):
+        if (OBJ / mod0).exists():
+            VENC_SHAPES.setdefault(X0, lambda R, X, m=mod0: BVG.venc_bitc(OBJ, R, X, m))
+            VENC_PREMISE.setdefault(X0, BVG.SDBV_PREMISE.format(X=X0))
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
     for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
         VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
@@ -3158,6 +3163,7 @@ def outputs():
     out[OUT / 'e2e_bitl.bend'] = BITL
     out[OUT / 'e2e_bview.bend'] = BVG.text()
     out[OUT / 'e2e_bvw.bend'] = BVG.BVW
+    out[OUT / 'e2e_bitv.bend'] = BVG.BITV
     if (OBJ / 'big_var_win_Attestation.bend').exists():
         out[OUT / 'e2e_attw.bend'] = BVG.attw_text(OBJ)
     if (OBJ / 'big_var_win_SignedAggregateAndProof.bend').exists():

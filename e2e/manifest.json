@@ -3673,6 +3673,16 @@
     "premise": "rep: RT.rep_Gc56D855869F(o, Spec.Gc56D855869F()) and the storage premises, each at its field's encode law's bound (read from the law; dropped when the encode laws take the root law's dw < 32): hsB: BL.sdk(pj_1(o), 28n) (f_B's words below depth 28), hsD: BL.sdk(pj_3(o), 28n) (f_D's bytes below depth 28), hsE: BL.sdk(pj_Gc465214E502_1(pj_4(o)), 28n) (f_E's list below depth 28), hsF: EV.sv4(pj_5(o), 28n) (f_F's record tree below depth 28), hsG: EV.sv2(pj_6(o), 31n, 28n) (f_G's mirror tree below depth 31, each element's list below depth 28)"
    }
   ],
+  "FuluAttestation_e2e_generated.bend": [
+   {
+    "name": "FuluAttestation",
+    "generated_name": "Attestation",
+    "laws": [
+     "FuluAttestation_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_Attestation(o, Spec.Attestation()) and hs: BTV.sdbv(its bit list) (the list's words at depth below 31 with room for (K >> 5) + 1 words, and hv: the last word's bits above K zero, the encode laws' premise, carried until a lemma derives it)"
+   }
+  ],
   "FuluAttesterSlashing_e2e_generated.bend": [
    {
     "name": "FuluAttesterSlashing",
@@ -3781,6 +3791,16 @@
      "FuluLightClientUpdate_e2e_encode"
     ],
     "premise": "rep: RT.rep_LightClientUpdate(o, Spec.LightClientUpdate()); hA, hF: e2e_mw.SHS_L of the two headers; h1: e2e_e48w.sdsc of the next sync committee's pubkeys; h2, h4: BL.sdpv of the two branches at depth below 31"
+   }
+  ],
+  "FuluPendingAttestation_e2e_generated.bend": [
+   {
+    "name": "FuluPendingAttestation",
+    "generated_name": "PendingAttestation",
+    "laws": [
+     "FuluPendingAttestation_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_PendingAttestation(o, Spec.PendingAttestation()) and hs: BTV.sdbv(its bit list) (the list's words at depth below 31 with room for (K >> 5) + 1 words, and hv: the last word's bits above K zero, the encode laws' premise, carried until a lemma derives it)"
    }
   ],
   "FuluTransaction_e2e_generated.bend": [
@@ -6132,12 +6152,6 @@
    "reason": "encode laws not over the same free words / bits",
    "iv": "FuluBlob_e2e_root_generated.bend"
   },
-  "FuluAttestation": {
-   "generated_name": "Attestation",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluAttestation_e2e_dec_generated.bend",
-   "root": "FuluAttestation_e2e_root_generated.bend"
-  },
   "FuluAggregateAndProof": {
    "generated_name": "AggregateAndProof",
    "reason": "encode laws not over the same free words / bits",
@@ -6149,12 +6163,6 @@
    "reason": "encode laws not over the same free words / bits",
    "decode": "FuluSignedAggregateAndProof_e2e_dec_generated.bend",
    "root": "FuluSignedAggregateAndProof_e2e_root_generated.bend"
-  },
-  "FuluPendingAttestation": {
-   "generated_name": "PendingAttestation",
-   "reason": "encode laws not over the same free words / bits",
-   "decode": "FuluPendingAttestation_e2e_dec_generated.bend",
-   "root": "FuluPendingAttestation_e2e_root_generated.bend"
   },
   "FuluSyncCommittee": {
    "generated_name": "SyncCommittee",
@@ -6616,6 +6624,12 @@
    "ii_iii": "ComplexTestStruct_e2e_dec_generated.bend",
    "iv": "ComplexTestStruct_e2e_root_generated.bend"
   },
+  "FuluAttestation": {
+   "generated_name": "Attestation",
+   "i": "FuluAttestation_e2e_generated.bend",
+   "ii_iii": "FuluAttestation_e2e_dec_generated.bend",
+   "iv": "FuluAttestation_e2e_root_generated.bend"
+  },
   "FuluAttesterSlashing": {
    "generated_name": "AttesterSlashing",
    "i": "FuluAttesterSlashing_e2e_generated.bend",
@@ -6681,6 +6695,12 @@
    "i": "FuluLightClientUpdate_e2e_generated.bend",
    "ii_iii": "FuluLightClientUpdate_e2e_dec_generated.bend",
    "iv": "FuluLightClientUpdate_e2e_root_generated.bend"
+  },
+  "FuluPendingAttestation": {
+   "generated_name": "PendingAttestation",
+   "i": "FuluPendingAttestation_e2e_generated.bend",
+   "ii_iii": "FuluPendingAttestation_e2e_dec_generated.bend",
+   "iv": "FuluPendingAttestation_e2e_root_generated.bend"
   },
   "FuluTransaction": {
    "generated_name": "Transaction",
@@ -6925,7 +6945,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 16621,
    "covered": true,
-   "bridged": "FuluAttestation_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluAttesterSlashing": {
    "generated_name": "AttesterSlashing",
@@ -7069,7 +7089,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 405,
    "covered": true,
-   "bridged": "FuluPendingAttestation_e2e_dec_generated.bend"
+   "bridged": null
   },
   "FuluSignedAggregateAndProof": {
    "generated_name": "SignedAggregateAndProof",
