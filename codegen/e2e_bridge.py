@@ -1782,6 +1782,12 @@ def capM_w(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_na
   %Equal.sym(Nat, FD.spec_common__length(U32, L.wlp(bs)), nwn(List.length(&2, U32, bs)), ln(bs)) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   %Equal.sym(Nat, List.length(&2, U32, bs), U32.to_nat(n), hn) : {Nat.is_le(nwn(_), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   capM_n(n, hN)
+
+# n <= 4 * 2^k for k < 28 is within the object API's limit NMAX (for the codec laws' hN premise in the K mode)
+def capK_N(+n: U32, +k: Nat, +hk: {Nat.is_lt(k, 28n) == True{} : Bool}, +h: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(k))) == True{} : Bool})
+    -> {U32.is_le(n, VB.NMAX()) == True{} : Bool}:
+  FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), U32.is_le(n, VB.NMAX()),
+    Equal.sym(Bool, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX())), VB.hwNof(k, U32.to_nat(n), hk, h))
 '''
 
 ULIST = r'''import Base
@@ -2368,7 +2374,8 @@ def vdec_info(R):
             # laws at the object API's limit: n <= NMAX is a premise of their own (hN, an hwN window)
             'hN': bool(re.search(r'\+hN: \{U32\.is_le\(n, \w+\.NMAX\(\)\) == True', sig)),
             # the rejection law's premise on the progressive bit lists (hPB: every pbits field <= 2^29 bytes)
-            'pbq': bool(re.search(r'\+hPB: \{\w+\.PBQ\(t, n\) == True', mods['decode_reject'][1]))}
+            'pbq': bool(re.search(r'\+hPB: \{\w+\.PBQ\(t, n\) == True', mods['decode_reject'][1])),
+            'lawhN': '+hN: {U32.is_le(n, ' in sig}
 
 
 # The input-size bound of the variable-size bridges is a parameter: K = one below the codec
@@ -2425,6 +2432,10 @@ def text_vdec(R, X, info):
         body = body.replace('DC.CHK(TT(bs, n), n)', 'DC.CHK(n)')
     if info['noneshort']:
         body = re.sub(r'\.decode_none\(B\.capacity\(n\), TT\(bs, n\), n, pfe\(bs, n\), .*, hchk\)\)$', '.decode_none(TT(bs, n), n, hchk))', body, flags=re.M)
+    if vw.get('vvbd'):
+        # the view lemma takes a smaller depth bound than the codec laws (its window lemmas' own), from the K bound
+        body = body.replace('vv(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@,',
+                            f'vv(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, {vw["vvbd"]}n,')
     if vw.get('rej_args'):
         # a reject law with premises of its own before hchk (the name supplies their proofs)
         body = re.sub(r'(\.decode_reject\(B\.capacity\(n\), TT\(bs, n\), n, pfe\(bs, n\), .*), hchk\)$', lambda m: m.group(1) + vw['rej_args'] + ', hchk)', body, flags=re.M)
@@ -2433,6 +2444,11 @@ def text_vdec(R, X, info):
                             '.decode_reject(B.capacity(n), TT(bs, n), n, pfe(bs, n), FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==}), C.cap_q(')
     if info['vald']:
         body = body.replace('DC.VAL(TT(bs, n), n)', 'DC.VAL(B.capacity(n), TT(bs, n), n)')
+    if info.get('lawhN') and not vdec_nmax(info):
+        # the codec laws take the input within the object API's limit (hN, before hchk); in the K mode from the K
+        # bound (the NMAX mode passes hS itself, below)
+        HN = 'C.capK_N(n, @K@, {==}, hS)'
+        body = re.sub(r'(\.decode_(?:accept|none|spec|reject)\(B\.capacity\(n\), .*), hchk\)', lambda m: m.group(1) + ', ' + HN + ', hchk)', body)
     if vdec_nmax(info):
         body = (body.replace('hS: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(@K@))) == True{} : Bool}', 'hS: {U32.is_le(n, VB.NMAX()) == True{} : Bool}')
                 .replace('FD.nat__le_lt_trans(B.capacity(n), @K@, @BD@, C.cap_le(n, @K@, {==}, hS), {==})', 'FD.nat__le_lt_trans(B.capacity(n), 30n, @BD@, C.capM_le(n, hS), {==})')
@@ -2968,6 +2984,10 @@ def outputs():
         EVC.MWP.setdefault('Gc85FA758A04', BVG.mwp_bs)
         VENC_SHAPES.setdefault('Gc85FA758A04', EVC.venc_mw)
         VENC_PREMISE.setdefault('Gc85FA758A04', BVG.BS_PREMISE)
+    # BeaconState (ii)/(iii): its window through e2e_var_b's vbx_module with the field views of e2e_stv (e2e_state_gen)
+    import e2e_state_gen as ESG
+    if (OBJ / 'big_var_winx_BeaconState.bend').exists():
+        VDEC_VIEWS.setdefault('BeaconState', ESG.vdec_state())
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
     for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
         VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
@@ -3196,6 +3216,17 @@ def outputs():
     out[OUT / 'e2e_bvw.bend'] = BVG.BVW
     out[OUT / 'e2e_bitv.bend'] = BVG.BITV
     out[OUT / 'e2e_bvsub.bend'] = BVG.bvsub_text()
+    if (OBJ / 'big_encx_l8_Attestation.bend').exists():
+        import e2e_bbatt_gen as EBB
+        out[OUT / 'e2e_bbatt.bend'] = EBB.text()
+    if (OBJ / 'big_encx_l1_AttesterSlashing.bend').exists():
+        import e2e_bbatt_gen as EBB
+        out[OUT / 'e2e_bbsl.bend'] = EBB.text1()
+        out[OUT / 'e2e_u64l.bend'] = EBB.u64l_text()
+    if (OBJ / 'big_var_winx_BeaconState.bend').exists():
+        import e2e_state_gen as ESG
+        out[OUT / 'e2e_stv.bend'] = ESG.text()
+        out[OUT / 'e2e_vbx_BeaconState.bend'] = ESG.vbx_state()
     if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
         out[OUT / 'e2e_bsw.bend'] = BVG.bsw_text(OBJ)
         out[OUT / 'e2e_bsenc.bend'] = BVG.bsenc_text()

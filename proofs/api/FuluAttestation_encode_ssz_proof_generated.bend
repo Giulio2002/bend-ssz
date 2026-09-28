@@ -33,6 +33,8 @@ import ../../spec/bit_packing.bend as P0_Bp
 import ../obj/bitlist_pack.bend as P0_BK
 import ../obj/bitlist_rep.bend as P0_BO
 import ../obj/vbitenc.bend as P0_VBT
+import ../obj/vseq.bend as P0_VSQ
+import ../../spec/schema.bend as P0_SC
 import ../obj/vbitdl.bend as P0_DL
 import ../obj/vbitcore.bend as P0_CO
 import ../obj/vbitcont.bend as P0_CT

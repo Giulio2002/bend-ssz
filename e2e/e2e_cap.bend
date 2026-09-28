@@ -207,3 +207,9 @@ def capM_w(+bs: +List<U32>, +n: U32, +hn: {List.length(&2, U32, bs) == U32.to_na
   %Equal.sym(Nat, FD.spec_common__length(U32, L.wlp(bs)), nwn(List.length(&2, U32, bs)), ln(bs)) : {Nat.is_le(_, FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   %Equal.sym(Nat, List.length(&2, U32, bs), U32.to_nat(n), hn) : {Nat.is_le(nwn(_), FD.spec_common__pow2(B.capacity(n))) == True{} : Bool}
   capM_n(n, hN)
+
+# n <= 4 * 2^k for k < 28 is within the object API's limit NMAX (for the codec laws' hN premise in the K mode)
+def capK_N(+n: U32, +k: Nat, +hk: {Nat.is_lt(k, 28n) == True{} : Bool}, +h: {Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(k))) == True{} : Bool})
+    -> {U32.is_le(n, VB.NMAX()) == True{} : Bool}:
+  FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), U32.is_le(n, VB.NMAX()),
+    Equal.sym(Bool, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX())), VB.hwNof(k, U32.to_nat(n), hk, h))
