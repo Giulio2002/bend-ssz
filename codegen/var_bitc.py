@@ -435,9 +435,9 @@ def spec_text(g, x):
             return '{==}'
         rest = '[' + ', '.join(parts[i + 1:]) + ']'
         if x.fields[i]['kind'] == 'fix':
-            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs([{", ".join(nodes[i]["words"])}]), '
-                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
-        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), {W1}, Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
+            return (f'VS.chain_fixed({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, F.limbs([{", ".join(nodes[i]["words"])}]), '
+                    f'{rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
+        return (f'VS.chain_var({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, {W1}, {rest}, '
                 f'VBC.bl_parts({W1}, {LIMN}, dom, nzl, hl), {cat(i + 1)})')
     PRE = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[:vi]) + ']'
     POST = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[vi + 1:]) + ']'

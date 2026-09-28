@@ -637,9 +637,9 @@ def spec_items(x):
             return '{==}'
         rest = f'XCP{i + 1}({NV[4]})'
         if nodes[i] is not None:
-            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs([{", ".join(nodes[i]["words"])}]), '
-                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
-        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), Y{i}, Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
+            return (f'VS.chain_fixed({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, F.limbs([{", ".join(nodes[i]["words"])}]), '
+                    f'{rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
+        return (f'VS.chain_var({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, Y{i}, {rest}, '
                 f'hv{i}, {cat(i + 1)})')
     POSTb = '[' + ', '.join(f'F.limbs([{", ".join(nd["words"])}])' for nd in nodes[2:]) + ']'
     import var_bytes as VBY

@@ -48,7 +48,7 @@ HEAD = ['import Base', 'import ../compact/found.bend as F', 'import ../../src/bu
         'import ./schema_shapes.bend as SH', 'import ./dk.bend as DK', 'import ./mtree_defs.bend as MD',
         'import ./root_support.bend as RS', 'import ./words_obj.bend as WO', 'import ./list_obj.bend as LO',
         'import ./pv_obj.bend as PV', 'import ./bitlist_obj.bend as BO', 'import ./cells.bend as CE', 'import ./obj_support.bend as OS', 'import ./root_names.bend as RN',
-        'import ./ulist_obj.bend as UL', 'import ./lim_ul.bend as LUL', 'import ./packed_obj.bend as PK', 'import ./elems48.bend as E48', 'import ./xlist_support.bend as XS',
+        'import ./ulist_obj.bend as UL', 'import ./lim_ul.bend as LUL', 'import ./lim_leaf.bend as LLF', 'import ./packed_obj.bend as PK', 'import ./elems48.bend as E48', 'import ./xlist_support.bend as XS',
         'import ./mtree_run.bend as MR', 'import ./list_root.bend as LR', 'import ../../spec/codec.bend as Codec',
         'import ../../spec/limits.bend as Lim', 'import ../../spec/bit_root.bend as Mix', 'import ../../spec/nat_bytes.bend as Len', 'import ../../spec/byte_list.bend as BL']
 
@@ -72,7 +72,10 @@ SYMBOLIC = {'l16777216_b32': 'LST.hr_ok_at', 'l1099511627776_Validator': 'LST.va
             'l16777216_HistoricalSummary': 'LST.hs_ok_at', 'l134217728_PendingDeposit': 'LST.pd_ok_at',
             'l134217728_PendingPartialWithdrawal': 'LST.ppw_ok_at',
             # IndexedAttestation's attesting_indices (2^17), for root_types' names too (proofs/obj/lim_ul.bend)
-            'l131072_u64': 'LUL.ia_ok_at'}
+            'l131072_u64': 'LUL.ia_ok_at',
+            # Attestation's aggregation_bits and Blob (2^17), for the names holding them (proofs/obj/lim_leaf.bend):
+            # evaluated, each cost about 0.3 s, repeated in every name above them
+            'bits131072': 'LLF.bits_ok_at', 'b131072': 'LLF.bv_ok_at'}
 # Names whose laws are generated after all others, into their own files: their
 # new shapes into proofs/obj/root_state.bend (importing root_types as RT, so
 # root_types does not grow), their name law into a big_root_<Name>.bend.
@@ -2863,7 +2866,7 @@ class Gen:
         w(f'# the runtime root is a specification root of its {what}.')
         w(f'def {name}_ok(+s: S.Schema, +es: {{s == Spec.{name}() : S.Schema}}) -> {{{OK}(s, {d}n) == True{{}} : Bool}}:')
         w(f'  %Equal.sym(S.Schema, s, Spec.{name}(), es) : {{{OK}(_, {d}n) == True{{}} : Bool}}')
-        w('  {==}')
+        w(f'  {SYMBOLIC[s.p]}(Spec.{name}(), {{==}})' if s.p in SYMBOLIC else '  {==}')
         w(f'law {name}_root_correct:')
         w('  for -h: B.Buf')
         w(f'  for -o: {OT}')

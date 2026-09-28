@@ -804,9 +804,9 @@ def readw({CW}, +hchk: {{CHKw(t, i, off, len) == True{{}} : Bool}}) -> {{{Tn}_re
             return '{==}'
         rest = '[' + ', '.join(parts[i + 1:]) + ']'
         if x.fields[i]['kind'] == 'fix':
-            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs([{", ".join(nodes[i]["words"])}]), '
-                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
-        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), {Y}, Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
+            return (f'VS.chain_fixed({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, F.limbs([{", ".join(nodes[i]["words"])}]), '
+                    f'{rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
+        return (f'VS.chain_var({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, {Y}, {rest}, '
                 f'CH.specw(d, t, n, JW(i), OWc(off), LLw(len), eoF({CWA}, ha), hd, hwc({CWA}, ha), hwc32({CWA}, ha), pf, hc), {cat(i + 1)})')
     PRE = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[:vi]) + ']'
     POST = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[vi + 1:]) + ']'
@@ -1127,6 +1127,9 @@ law decode_spec:
   for +hchk: {CHK(t, n) == True{} : Bool}
   Decoding.decodes(Spec.@N(), VW(t, n), VAL(t, n))
 def decode_spec(d, t, n, pf, hd, hn, hchk):
+  # the encoding opened over variables first (F.efl_bytes): the parts rewrite's motive over
+  # Codec.bytes was compared with the spec encoding by running the encoder
+  %F.efl_bytes(Spec.@N(), VAL(t, n)) : {_ == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.@N()), Some{[S.Variable{VW(t, n)}]}, W.specw(d, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, hchk)) :
     {Codec.bytes(_) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
   {==}

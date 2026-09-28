@@ -68,7 +68,7 @@ def lvp_b32(+o: FuluBytes32_d.Bytes32) -> {Codec.parts(LV_b32(o), S.ByteVector{3
   match o:
     case FuluBytes32_d.Bytes32{+w0, +w1, +w2, +w3, +w4, +w5, +w6, +w7}:
       %lvq_b32(w0, w1, w2, w3, w4, w5, w6, w7) : {Codec.parts(_, S.ByteVector{32n}) == Some{[S.Fixed{VCN.PC(32n, FX.limbs(K.RW_b32(FuluBytes32_d.Bytes32{w0, w1, w2, w3, w4, w5, w6, w7})))}]} : Maybe<&2, +List<S.Part>>}
-      CS.pcfix(S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7])}, S.ByteVector{32n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), 32n, {==}, FX.bytes_part(w0, [w1, w2, w3, w4, w5, w6, w7], {==}))
+      CS.pcfix(S.BytesValue{FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7])}, S.ByteVector{32n}, FX.limbs([w0, w1, w2, w3, w4, w5, w6, w7]), 32n, {==}, FX.bytes_part_n(w0, [w1, w2, w3, w4, w5, w6, w7], 32n, {==}, {==}))
 
 
 # ---- BeaconBlock: its value, parts, layout, and bytes ----

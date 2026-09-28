@@ -586,10 +586,13 @@ def spec_items(x, Y, wt=None, named=None):
         if i == m:
             return '{==}'
         rest = f'{named[0]}P{i + 1}({named[4]})' if named else '[' + ', '.join(parts[i + 1:]) + ']'
+        # the exact parts forms (VS.chain_fixed / chain_var): each step states the Codec.parts term its
+        # parent unfolds to, so no conversion runs the spec encoders (cat_fixed / cat_var's concatenate
+        # forms did: ExecutionPayloadHeader encE 5.5 s)
         if nodes[i] is not None:
-            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs([{", ".join(nodes[i]["words"])}]), '
-                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
-        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), {Y}, Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
+            return (f'VS.chain_fixed({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, F.limbs([{", ".join(nodes[i]["words"])}]), '
+                    f'{rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
+        return (f'VS.chain_var({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, {Y}, {rest}, '
                 f'VZ.bl_parts({x.LIM}n, {Y}, hdom, hlen, VS.fits_mono(4n, List.length(&2, U32, {Y}), {x.LIM}n, hlen, {{==}})), {cat(i + 1)})')
     vi = [f['kind'] for f in x.fields].index('var')
     PRE = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[:vi]) + ']'
@@ -752,6 +755,9 @@ law decode_spec:
   for +hchk: {{CHK(t, n) == True{{}} : Bool}}
   Decoding.decodes(Spec.{n}(), VW(t, n), VAL(t, n))
 def decode_spec(d, t, n, pf, hd, hn, hchk):
+  # the encoding opened over variables first (F.efl_bytes): the parts rewrite's motive over
+  # Codec.bytes was compared with the spec encoding by running the encoder
+  %F.efl_bytes(Spec.{n}(), VAL(t, n)) : {{_ == Some{{VW(t, n)}} : Maybe<&2, +List<U32>>}}
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.{n}()), Some{{[S.Variable{{VW(t, n)}}]}}, W.specw(d, t, n, 0n, n, pf, hd, hn, hchk)) :
     {{Codec.bytes(_) == Some{{VW(t, n)}} : Maybe<&2, +List<U32>>}}
   {{==}}
