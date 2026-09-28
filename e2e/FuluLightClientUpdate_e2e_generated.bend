@@ -34,7 +34,7 @@ import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/big_var_codec_LightClientUpdate_enc.bend as EN
 import ../proofs/obj/big_encx_LightClientUpdate_iface.bend as CI

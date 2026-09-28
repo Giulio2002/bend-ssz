@@ -14,7 +14,6 @@ import ../proofs/obj/vvle.bend as VE2
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/list_obj.bend as LO
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/big_encx_l1048576_bl1073741824.bend as ET

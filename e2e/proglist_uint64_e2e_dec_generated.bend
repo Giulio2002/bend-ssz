@@ -17,7 +17,6 @@ import ../proofs/obj/arr_copy.bend as AC
 import ./e2e_bytes.bend as E
 import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
-import ../proofs/obj/packed_obj.bend as PK
 import ../proofs/obj/ulist_obj.bend as UL
 import ../proofs/obj/var_elems.bend as EL
 import ../proofs/obj/vdepth.bend as VD

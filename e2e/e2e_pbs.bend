@@ -32,7 +32,6 @@ import ../proofs/obj/vbitrep.bend as VBR
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/bitlist_obj.bend as BO
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/vbv1281d.bend as V81

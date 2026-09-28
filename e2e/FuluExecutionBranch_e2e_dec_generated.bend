@@ -10,7 +10,6 @@ import ../spec/primitives.bend as SP
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
-import ../proofs/obj/packed_obj.bend as PK
 import ./e2e_bytes.bend as E
 import ../types/FuluExecutionBranch_decode_ssz_generated.bend as FuluExecutionBranch_r
 import ../spec/fulu_schemas.bend as Spec

@@ -27,7 +27,6 @@ import ../types/CompatibleUnionBC_encode_ssz_generated.bend as CompatibleUnionBC
 import ./e2e_support.bend as E
 import ./e2e_emit.bend as EM
 import ../proofs/obj/root_gtypes2.bend as RT
-import ../proofs/obj/root_gnames.bend as RN
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/len_bridge.bend as LB
 import ../proofs/obj/vbitb.bend as VBB
