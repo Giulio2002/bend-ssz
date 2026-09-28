@@ -2777,6 +2777,18 @@
     "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
+  "FuluExecutionPayload_e2e_dec_generated.bend": [
+   {
+    "name": "FuluExecutionPayload",
+    "generated_name": "ExecutionPayload",
+    "laws": [
+     "FuluExecutionPayload_e2e_decode_view",
+     "FuluExecutionPayload_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "FuluExecutionPayloadHeader_e2e_dec_generated.bend": [
    {
     "name": "FuluExecutionPayloadHeader",
@@ -6024,6 +6036,7 @@
   "FuluExecutionPayload": {
    "generated_name": "ExecutionPayload",
    "reason": "encode laws not over the same free words / bits",
+   "decode": "FuluExecutionPayload_e2e_dec_generated.bend",
    "root": "FuluExecutionPayload_e2e_root_generated.bend"
   },
   "FuluBeaconState": {
@@ -6854,7 +6867,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 1125899911038192,
    "covered": false,
-   "bridged": null
+   "bridged": "FuluExecutionPayload_e2e_dec_generated.bend"
   },
   "FuluExecutionRequests": {
    "generated_name": "ExecutionRequests",
