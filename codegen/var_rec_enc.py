@@ -3010,6 +3010,69 @@ def blist_box_text(g, names, parent, field):
     return p, '\n'.join(L) + '\n' + etext + '\n' + body
 
 
+# ---- the dd < 31 twins' strict bounds (deep.dify_out's post pass) ----------------------------------------------
+BMULW = """def bmulW(+i: U32, +j: Nat, +Su: U32, +S: Nat, +eS: {U32.to_nat(Su) == S : Nat}, +ei: {U32.to_nat(i) == j : Nat},
+    +hm: {Nat.is_lt(Nat.mul(j, S), FD.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.mul(i, Su)) == Nat.mul(j, S) : Nat}:
+  +em = Equal.trans(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Su)), Nat.mul(j, U32.to_nat(Su)), Nat.mul(j, S),
+    Equal.cong(Nat, Nat, z => Nat.mul(z, U32.to_nat(Su)), U32.to_nat(i), j, ei), Equal.cong(Nat, Nat, z => Nat.mul(j, z), U32.to_nat(Su), S, eS))
+  Equal.trans(Nat, U32.to_nat(U32.mul(i, Su)), Nat.mul(U32.to_nat(i), U32.to_nat(Su)), Nat.mul(j, S),
+    VU.mul_lt32(i, Su, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, Nat.mul(j, S), Nat.mul(U32.to_nat(i), U32.to_nat(Su)),
+      Equal.sym(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Su)), Nat.mul(j, S), em), hm)),
+    em)
+
+"""
+
+
+def rec_strict(q, t, res):
+    import deep
+    P32 = 'FD.spec_common__pow2(32n)'
+
+    def L_of(blk):
+        ty = deep.param_type(blk, deep.twin_name(blk), 'hl32')
+        return deep.hl32_parts(ty) if ty else None
+    # records of W >= 1 words (a literal W): rposW's hW
+    t = deep.edit_calls(t, 'VRX.rposW', lambda a, blk: a[:14] + ['{==}'] + a[14:])
+    # records of R >= 1 bytes, pieces of m >= 1 bytes (literals): posbW's hR, pposW / proomW's hm
+    t = deep.edit_calls(t, 'VRB.posbW', lambda a, blk: a[:11] + ['{==}'] + a[11:])
+    for n in ('VP.pposW', 'VP.proomW', 'VPC.pposW', 'VPC.proomW'):
+        t = deep.edit_calls(t, n, lambda a, blk: a[:12] + ['{==}'] + a[12:])
+    if 'def sroom(' in t:   # sroom32: sroom's region below 2^32 (VCN.croom32)
+        a0 = t.index('def sroom(')
+        b0 = t.index('\n\n', a0) + 2
+        blk = t[a0:b0]
+        hl_ty = deep.param_type(blk, 'sroom', 'hl')
+        ret = re.search(r'-> (\{.*\}):\n', blk).group(1)
+        s32 = blk.replace('def sroom(', 'def sroom32(', 1).replace('+hl: ' + hl_ty, '+hl32: ' + deep.hl32_decl('FD')(hl_ty), 1)
+        s32 = s32.replace('-> ' + ret, '-> ' + deep.hl32_decl('FD')(ret), 1).replace('VCN.croom(', 'VCN.croom32(').replace(', ep, h2, hl)', ', ep, h2, hl32)')
+        t = t[:b0] + s32 + t[b0:]
+    # hl32 (the region's last byte a U32 position) beside every hl
+    t, bad = deep.hl32_pass(derive={'proomW': 'proom32', 'sroom': 'sroom32'})(q, t, res)
+    # the list's byte count N RS: below 2^32 by hl32
+    # (a subst by {==} to mulqW's own form 4 (j W): no closed 2^32 is ever compared up to evaluation)
+    def mq(a, blk):
+        q_, r_, L_ = L_of(blk)
+        return a[1:7] + [f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == True{{}} : Bool}}, {L_}, A.quad(Nat.mul({a[2]}, {a[4]})), {{==}}, VRX.yl32({q_}, {r_}, {L_}, hl32))']
+    t = deep.edit_calls(t, 'VRX.mulqW', mq)
+    if 'def bmulW(' in t:
+        a0 = t.index('def bmulW(')
+        b0 = t.index('\ndef ', a0) + 1
+        t = t[:a0] + BMULW + t[b0:]
+        t = deep.restore_old(t, 'bmul')
+
+        def bm(a, blk):
+            q_, r_, L_ = L_of(blk)
+            hm = a[8]
+            if hm == 'hm':   # spos: j S <= LT (h1)
+                lt = f'FD.nat__le_lt_trans({a[2]} if False else Nat.mul({a[2]}, {a[4]}), {L_}, {P32}, h1, VRX.yl32({q_}, {r_}, {L_}, hl32))'
+                lt = f'FD.nat__le_lt_trans(Nat.mul({a[2]}, {a[4]}), {L_}, {P32}, h1, VRX.yl32({q_}, {r_}, {L_}, hl32))'
+            else:            # szx: N S is the region's whole length
+                lt = f'FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == True{{}} : Bool}}, {L_}, Nat.mul({a[2]}, {a[4]}), {{==}}, VRX.yl32({q_}, {r_}, {L_}, hl32))'
+            return a[1:7] + [lt]
+        t = deep.edit_calls(t, 'bmulW', bm)
+    return t, bad
+
+
 def main():
     VL.SL.EXACT = True   # spec_laws' exact spec-parts proofs (F.items_fixed / container_fixed): no parts run to compare forms
     VL.SL.TOTAL = True   # their layout by vspec.agg_total, not {==}
@@ -3034,6 +3097,8 @@ def main():
         out[urec_file(n)] = urec_text(n)
     out[lfile(VLIST)] = vlist_module()
     out = RR.rewire_out(out)
+    import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
+    out = deep.dify_out(out, handled={'rposW', 'mulqW', 'posbW', 'pposW', 'proomW', 'fposW', 'vposW'}, post=rec_strict)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

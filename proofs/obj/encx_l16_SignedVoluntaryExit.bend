@@ -147,9 +147,9 @@ def RTo_SignedVoluntaryExit(+o: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, +
 def BYo_SignedVoluntaryExit(+o: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_SignedVoluntaryExit(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.limbs(RWD_SignedVoluntaryExit(o))) : +List<U32>}
 
-def putxo_SignedVoluntaryExit(+o: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 112n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putxo_SignedVoluntaryExitW(+o: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 112n))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 112n)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(112n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(112n) : +List<U32>})
     -> DK.P2(RTo_SignedVoluntaryExit(o, dd, D, X, q, r), BYo_SignedVoluntaryExit(o, dd, D, q, r)):
   match o:
@@ -162,7 +162,14 @@ def putxo_SignedVoluntaryExit(+o: FuluSignedVoluntaryExit_d.SignedVoluntaryExit,
                 case O.U64{+x2, +x3}:
                   match o_1:
                     case FuluBytes96_d.Bytes96{+x4, +x5, +x6, +x7, +x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15, +x16, +x17, +x18, +x19, +x20, +x21, +x22, +x23, +x24, +x25, +x26, +x27}:
-                      ERC.putx_SignedVoluntaryExit(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+                      ERC.putx_SignedVoluntaryExitW(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz)
+
+def putxo_SignedVoluntaryExit(+o: FuluSignedVoluntaryExit_d.SignedVoluntaryExit, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 112n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(112n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(112n) : +List<U32>})
+    -> DK.P2(RTo_SignedVoluntaryExit(o, dd, D, X, q, r), BYo_SignedVoluntaryExit(o, dd, D, q, r)):
+  putxo_SignedVoluntaryExitW(o, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, 112n, dd, hd, hl), pf, hz)
 
 def lenb_SignedVoluntaryExit(+o: FuluSignedVoluntaryExit_d.SignedVoluntaryExit) -> {VRX.LN(F.limbs(RWD_SignedVoluntaryExit(o))) == 112n : Nat}:
   match o:
@@ -299,10 +306,10 @@ def BYK_l16_SignedVoluntaryExit(k: Nat, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +D:
   {UA.BYT(WX_l16_SignedVoluntaryExit(k, j, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), VRX.YP(j, 28n, q, r), F.flat(CHW_l16_SignedVoluntaryExit(1n+k, A, j))) : +List<U32>}
 
 # The loop from record j (index i) on, k + 1 records, into LT bytes at X whose last k + 1 records' bytes are zero.
-def ptx_l16_SignedVoluntaryExit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +LT: Nat,
-    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def ptx_l16_SignedVoluntaryExitW(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), 28n)), LT) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LT)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(A.quad(Nat.mul(1n+k, 28n)), VS.bdr(VRX.YP(j, 28n, q, r), UA.BYT(D))) == UW.ZB(A.quad(Nat.mul(1n+k, 28n))) : +List<U32>},
     +pfA: {FD.array__perfect(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> DK.P2(RTK_l16_SignedVoluntaryExit(k, i, j, X, q, r, dd, D, A), BYK_l16_SignedVoluntaryExit(k, j, q, r, dd, D, A)):
@@ -311,9 +318,9 @@ def ptx_l16_SignedVoluntaryExit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: 
       +o = EL_l16_SignedVoluntaryExit(A, j)
       +qj = Nat.add(Nat.mul(j, 28n), q)
       +Xj = U32.add(X, U32.mul(i, 112))
-      +ej = VRX.rpos(X, i, j, 0n, q, r, 28n, 112, LT, dd, e, {==}, ei, hd, hj, hl)
+      +ej = VRX.rposW(X, i, j, 0n, q, r, 28n, 112, LT, dd, e, {==}, ei, hd, {==}, hj, hl)
       +hlj = VRX.rroom(j, 0n, q, r, 28n, LT, dd, hj, hl)
-      +g = putxo_SignedVoluntaryExit(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, pfD, hz)
+      +g = putxo_SignedVoluntaryExitW(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, VRX.rroom32(j, 0n, q, r, 28n, LT, dd, hj, hl32), pfD, hz)
       +rt = PA(RTo_SignedVoluntaryExit(o, dd, D, Xj, qj, r), BYo_SignedVoluntaryExit(o, dd, D, qj, r), g)
       +by = PB(RTo_SignedVoluntaryExit(o, dd, D, Xj, qj, r), BYo_SignedVoluntaryExit(o, dd, D, qj, r), g)
       +D1 = PXo_SignedVoluntaryExit(o, dd, D, qj, r)
@@ -326,13 +333,13 @@ def ptx_l16_SignedVoluntaryExit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: 
       +o = EL_l16_SignedVoluntaryExit(A, j)
       +qj = Nat.add(Nat.mul(j, 28n), q)
       +Xj = U32.add(X, U32.mul(i, 112))
-      +ej = VRX.rpos(X, i, j, 1n+p, q, r, 28n, 112, LT, dd, e, {==}, ei, hd, hj, hl)
+      +ej = VRX.rposW(X, i, j, 1n+p, q, r, 28n, 112, LT, dd, e, {==}, ei, hd, {==}, hj, hl)
       +hlj = VRX.rroom(j, 1n+p, q, r, 28n, LT, dd, hj, hl)
       +bm = A.quad(Nat.mul(1n+p, 28n))
       +B0 = UA.BYT(D)
       +Yj = VRX.YP(j, 28n, q, r)
       +hz0 = VRX.zhead(112n, bm, VS.bdr(Yj, B0), hz)
-      +g = putxo_SignedVoluntaryExit(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, pfD, hz0)
+      +g = putxo_SignedVoluntaryExitW(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, VRX.rroom32(j, 1n+p, q, r, 28n, LT, dd, hj, hl32), pfD, hz0)
       +rt = PA(RTo_SignedVoluntaryExit(o, dd, D, Xj, qj, r), BYo_SignedVoluntaryExit(o, dd, D, qj, r), g)
       +by = PB(RTo_SignedVoluntaryExit(o, dd, D, Xj, qj, r), BYo_SignedVoluntaryExit(o, dd, D, qj, r), g)
       +D1 = PXo_SignedVoluntaryExit(o, dd, D, qj, r)
@@ -349,7 +356,7 @@ def ptx_l16_SignedVoluntaryExit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: 
       +eg = FD.array__get(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, da, A, U32.add(i, 1), EL_l16_SignedVoluntaryExit(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
       +hj2 = FD.logic__subst(Nat, z => {Nat.is_le(A.quad(Nat.mul(1n+z, 28n)), LT) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hj)
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hk)
-      +ih = ptx_l16_SignedVoluntaryExit(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hr, hd, pf1, hj2, hl, z1, pfA, hda, hk2)
+      +ih = ptx_l16_SignedVoluntaryExitW(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hr, hd, pf1, hj2, hl, hl32, z1, pfA, hda, hk2)
       +rt2 = PA(RTK_l16_SignedVoluntaryExit(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l16_SignedVoluntaryExit(p, 1n+j, q, r, dd, D1, A), ih)
       +by2 = PB(RTK_l16_SignedVoluntaryExit(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l16_SignedVoluntaryExit(p, 1n+j, q, r, dd, D1, A), ih)
       +ea = Equal.cong(Array<U32>, Array<U32> & Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, z => Fulu_list_SignedVoluntaryExit_16_e.l16_SignedVoluntaryExit_pt(p, U32.add(i, 1), X, z, AG_l16_SignedVoluntaryExit(A, U32.add(i, 1))), FuluSignedVoluntaryExit_e.SignedVoluntaryExit_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
@@ -364,6 +371,15 @@ def ptx_l16_SignedVoluntaryExit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: 
       +by3 = Equal.trans(+List<U32>, UA.BYT(WX_l16_SignedVoluntaryExit(p, 1n+j, dd, D1, q, r, A)), UW.SPL(UA.BYT(D1), VRX.YP(1n+j, 28n, q, r), rest), UW.SPL(B0, Yj, VRX.AP(Y, rest)), by2,
         VRX.spl_catx(B0, Yj, Y, rest, VRX.YP(1n+j, 28n, q, r), UA.BYT(D1), hX, eXn, by))
       (rt3, by3)
+
+def ptx_l16_SignedVoluntaryExit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), 28n)), LT) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
+    +hz: {VS.bt(A.quad(Nat.mul(1n+k, 28n)), VS.bdr(VRX.YP(j, 28n, q, r), UA.BYT(D))) == UW.ZB(A.quad(Nat.mul(1n+k, 28n))) : +List<U32>},
+    +pfA: {FD.array__perfect(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    -> DK.P2(RTK_l16_SignedVoluntaryExit(k, i, j, X, q, r, dd, D, A), BYK_l16_SignedVoluntaryExit(k, j, q, r, dd, D, A)):
+  ptx_l16_SignedVoluntaryExitW(k, i, j, X, q, r, dd, D, da, A, LT, ei, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pfD, hj, hl, VRX.hl32w(q, r, LT, dd, hd, hl), hz, pfA, hda, hk)
 
 # ---- l16_SignedVoluntaryExit: the list's encoder window ----
 
@@ -417,9 +433,9 @@ def BYN_l16_SignedVoluntaryExit(+b: Bool, +A: FD.array__Tree<FuluSignedVoluntary
   {UA.BYT(PUTLb_l16_SignedVoluntaryExit(b, A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l16_SignedVoluntaryExit(U32.to_nat(N), A, 0n))) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l16_SignedVoluntaryExit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedVoluntaryExit(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def ptnz_l16_SignedVoluntaryExitW(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l16_SignedVoluntaryExit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedVoluntaryExit(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16_SignedVoluntaryExit(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l16_SignedVoluntaryExit(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16_SignedVoluntaryExit(A, N)) : +List<U32>})
     -> DK.P2(RTN_l16_SignedVoluntaryExit(b, A, N, dd, D, X, q, r), BYN_l16_SignedVoluntaryExit(b, A, N, dd, D, q, r)):
   match b:
@@ -443,7 +459,7 @@ def ptnz_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.Si
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
       +eg0 = FD.array__get(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, da, A, 0, EL_l16_SignedVoluntaryExit(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, FD.array__slots(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, A), 0n, FuluSignedVoluntaryExit_d.SignedVoluntaryExit_default(), FD.array__len_lt(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, da, A, 0n, pfA, h0)), pfA)
-      +g = ptx_l16_SignedVoluntaryExit(k, 0, 0n, X, q, r, dd, D, da, A, LL_l16_SignedVoluntaryExit(A, N), {==}, e, hr, hd, pf, hj, hl, hz2, pfA, hda, hk)
+      +g = ptx_l16_SignedVoluntaryExitW(k, 0, 0n, X, q, r, dd, D, da, A, LL_l16_SignedVoluntaryExit(A, N), {==}, e, hr, hd, pf, hj, hl, hl32, hz2, pfA, hda, hk)
       +rt = PA(RTK_l16_SignedVoluntaryExit(k, 0, 0n, X, q, r, dd, D, A), BYK_l16_SignedVoluntaryExit(k, 0n, q, r, dd, D, A), g)
       +by = PB(RTK_l16_SignedVoluntaryExit(k, 0, 0n, X, q, r, dd, D, A), BYK_l16_SignedVoluntaryExit(k, 0n, q, r, dd, D, A), g)
       +ea = Equal.cong(Array<FuluSignedVoluntaryExit_d.SignedVoluntaryExit> & FuluSignedVoluntaryExit_d.SignedVoluntaryExit, Array<U32> & Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq, z => Fulu_list_SignedVoluntaryExit_16_e.l16_SignedVoluntaryExit_pt_fin(N, Fulu_list_SignedVoluntaryExit_16_e.l16_SignedVoluntaryExit_pt(k, 0, X, FD.array__thaw(U32, D), z)), Array.get(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, FD.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, A), 0), (FD.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, A), EL_l16_SignedVoluntaryExit(A, 0n)), eg0)
@@ -451,6 +467,13 @@ def ptnz_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.Si
       (Equal.trans(Array<U32> & Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq, Fulu_list_SignedVoluntaryExit_16_e.l16_SignedVoluntaryExit_pt_fin(N, Fulu_list_SignedVoluntaryExit_16_e.l16_SignedVoluntaryExit_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, FD.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, A), 0))), Fulu_list_SignedVoluntaryExit_16_e.l16_SignedVoluntaryExit_pt_fin(N, Fulu_list_SignedVoluntaryExit_16_e.l16_SignedVoluntaryExit_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, A), EL_l16_SignedVoluntaryExit(A, 0n)))),
          Fulu_list_SignedVoluntaryExit_16_e.l16_SignedVoluntaryExit_pt_fin(N, (FD.array__thaw(U32, WX_l16_SignedVoluntaryExit(k, 0n, dd, D, q, r, A)), FD.array__thaw(FuluSignedVoluntaryExit_d.SignedVoluntaryExit, A))), ea, eb2),
        FD.logic__subst(Nat, z => {UA.BYT(WX_l16_SignedVoluntaryExit(k, 0n, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l16_SignedVoluntaryExit(z, A, 0n))) : +List<U32>}, 1n+k, c, e1, by))
+
+def ptnz_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l16_SignedVoluntaryExit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedVoluntaryExit(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l16_SignedVoluntaryExit(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16_SignedVoluntaryExit(A, N)) : +List<U32>})
+    -> DK.P2(RTN_l16_SignedVoluntaryExit(b, A, N, dd, D, X, q, r), BYN_l16_SignedVoluntaryExit(b, A, N, dd, D, q, r)):
+  ptnz_l16_SignedVoluntaryExitW(A, N, b, eb, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16_SignedVoluntaryExit(A, N), dd, hd, hl), pf, hz)
 
 # The runtime's validity check of the list.
 def valid_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +h: {OKL_l16_SignedVoluntaryExit(A, N) == True{} : Bool}) -> {Fulu_list_SignedVoluntaryExit_16_e.l16_SignedVoluntaryExit_valid(THL_l16_SignedVoluntaryExit(A, N)) == (THL_l16_SignedVoluntaryExit(A, N), True{}) : Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq & Bool}:
@@ -481,13 +504,13 @@ def putk_rt_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
 # into D's (its records write their data bytes only), and whose tree is perfect.
-def putx_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +h: {OKL_l16_SignedVoluntaryExit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedVoluntaryExit(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putx_l16_SignedVoluntaryExitW(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +h: {OKL_l16_SignedVoluntaryExit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedVoluntaryExit(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16_SignedVoluntaryExit(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l16_SignedVoluntaryExit(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16_SignedVoluntaryExit(A, N)) : +List<U32>})
     -> DK.P2(RTL_l16_SignedVoluntaryExit(A, N, dd, D, X, q, r), DK.P2(BYL_l16_SignedVoluntaryExit(A, N, dd, D, q, r), PFL_l16_SignedVoluntaryExit(A, N, dd, D, q, r))):
   +b = U32.is_eq(N, 0)
-  +g = ptnz_l16_SignedVoluntaryExit(A, N, b, {==}, h, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+  +g = ptnz_l16_SignedVoluntaryExitW(A, N, b, {==}, h, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz)
   +rtb = PA(RTN_l16_SignedVoluntaryExit(b, A, N, dd, D, X, q, r), BYN_l16_SignedVoluntaryExit(b, A, N, dd, D, q, r), g)
   +byb = PB(RTN_l16_SignedVoluntaryExit(b, A, N, dd, D, X, q, r), BYN_l16_SignedVoluntaryExit(b, A, N, dd, D, q, r), g)
   +by = Equal.trans(+List<U32>, UA.BYT(PUTL_l16_SignedVoluntaryExit(A, N, dd, D, q, r)), UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l16_SignedVoluntaryExit(U32.to_nat(N), A, 0n))), UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l16_SignedVoluntaryExit(A, N)), byb,
@@ -495,6 +518,13 @@ def putx_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.Si
   (putk_rt_l16_SignedVoluntaryExit(A, N, h, dd, D, X, q, r, rtb), (by, pfLb_l16_SignedVoluntaryExit(b, A, N, dd, D, q, r, pf)))
 
 # ---- sizes ----
+
+def putx_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +h: {OKL_l16_SignedVoluntaryExit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedVoluntaryExit(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l16_SignedVoluntaryExit(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16_SignedVoluntaryExit(A, N)) : +List<U32>})
+    -> DK.P2(RTL_l16_SignedVoluntaryExit(A, N, dd, D, X, q, r), DK.P2(BYL_l16_SignedVoluntaryExit(A, N, dd, D, q, r), PFL_l16_SignedVoluntaryExit(A, N, dd, D, q, r))):
+  putx_l16_SignedVoluntaryExitW(A, N, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16_SignedVoluntaryExit(A, N), dd, hd, hl), pf, hz)
 
 # The runtime's size pass.
 def sizex_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +h: {OKL_l16_SignedVoluntaryExit(A, N) == True{} : Bool}) -> {Fulu_list_SignedVoluntaryExit_16_e.l16_SignedVoluntaryExit_size(THL_l16_SignedVoluntaryExit(A, N)) == (THL_l16_SignedVoluntaryExit(A, N), U32.mul(N, 112)) : Fulu_list_SignedVoluntaryExit_16_d.l16_SignedVoluntaryExit_Seq & U32}:
@@ -506,13 +536,16 @@ def sizex_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.S
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
-def szx_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedVoluntaryExit(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 112)) == LL_l16_SignedVoluntaryExit(A, N) : Nat}:
-  VRX.mulq(dd, N, U32.to_nat(N), 112, 28n, {==}, {==}, hd,
-    FD.nat__le_trans(LL_l16_SignedVoluntaryExit(A, N), Nat.add(Nat.add(A.quad(q), r), LL_l16_SignedVoluntaryExit(A, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL_l16_SignedVoluntaryExit(A, N)), VRX.xend(q, r, LL_l16_SignedVoluntaryExit(A, N), dd, hl)))
+def szx_l16_SignedVoluntaryExitW(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedVoluntaryExit(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16_SignedVoluntaryExit(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 112)) == LL_l16_SignedVoluntaryExit(A, N) : Nat}:
+  VRX.mulqW(N, U32.to_nat(N), 112, 28n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l16_SignedVoluntaryExit(A, N), A.quad(Nat.mul(U32.to_nat(N), 28n)), {==}, VRX.yl32(q, r, LL_l16_SignedVoluntaryExit(A, N), hl32)))
 
 
 # ---- l16_SignedVoluntaryExit: the spec side ----
+
+def szx_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16_SignedVoluntaryExit(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 112)) == LL_l16_SignedVoluntaryExit(A, N) : Nat}:
+  szx_l16_SignedVoluntaryExitW(A, N, q, r, dd, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16_SignedVoluntaryExit(A, N), dd, hd, hl))
 
 # The value of the list: the records' values.
 def VALL_l16_SignedVoluntaryExit(+A: FD.array__Tree<FuluSignedVoluntaryExit_d.SignedVoluntaryExit>, +N: U32) -> S.Value: S.Sequence{ITW_l16_SignedVoluntaryExit(U32.to_nat(N), A, 0n)}

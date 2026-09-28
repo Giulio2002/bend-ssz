@@ -122,9 +122,9 @@ def RTo_HistoricalSummary(+o: FuluHistoricalSummary_d.HistoricalSummary, +dd: Na
 def BYo_HistoricalSummary(+o: FuluHistoricalSummary_d.HistoricalSummary, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_HistoricalSummary(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.limbs(RWD_HistoricalSummary(o))) : +List<U32>}
 
-def putxo_HistoricalSummary(+o: FuluHistoricalSummary_d.HistoricalSummary, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 64n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putxo_HistoricalSummaryW(+o: FuluHistoricalSummary_d.HistoricalSummary, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 64n))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 64n)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(64n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(64n) : +List<U32>})
     -> DK.P2(RTo_HistoricalSummary(o, dd, D, X, q, r), BYo_HistoricalSummary(o, dd, D, q, r)):
   match o:
@@ -133,7 +133,14 @@ def putxo_HistoricalSummary(+o: FuluHistoricalSummary_d.HistoricalSummary, +dd: 
         case FuluBytes32_d.Bytes32{+x0, +x1, +x2, +x3, +x4, +x5, +x6, +x7}:
           match o_1:
             case FuluBytes32_d.Bytes32{+x8, +x9, +x10, +x11, +x12, +x13, +x14, +x15}:
-              ERC.putx_HistoricalSummary(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+              ERC.putx_HistoricalSummaryW(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz)
+
+def putxo_HistoricalSummary(+o: FuluHistoricalSummary_d.HistoricalSummary, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 64n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(64n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(64n) : +List<U32>})
+    -> DK.P2(RTo_HistoricalSummary(o, dd, D, X, q, r), BYo_HistoricalSummary(o, dd, D, q, r)):
+  putxo_HistoricalSummaryW(o, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, 64n, dd, hd, hl), pf, hz)
 
 def lenb_HistoricalSummary(+o: FuluHistoricalSummary_d.HistoricalSummary) -> {VRX.LN(F.limbs(RWD_HistoricalSummary(o))) == 64n : Nat}:
   match o:
@@ -266,10 +273,10 @@ def BYK_l16777216_HistoricalSummary(k: Nat, +j: Nat, +q: Nat, +r: Nat, +dd: Nat,
   {UA.BYT(WX_l16777216_HistoricalSummary(k, j, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), VRX.YP(j, 16n, q, r), F.flat(CHW_l16777216_HistoricalSummary(1n+k, A, j))) : +List<U32>}
 
 # The loop from record j (index i) on, k + 1 records, into LT bytes at X whose last k + 1 records' bytes are zero.
-def ptx_l16777216_HistoricalSummary(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +LT: Nat,
-    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def ptx_l16777216_HistoricalSummaryW(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), 16n)), LT) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LT)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(A.quad(Nat.mul(1n+k, 16n)), VS.bdr(VRX.YP(j, 16n, q, r), UA.BYT(D))) == UW.ZB(A.quad(Nat.mul(1n+k, 16n))) : +List<U32>},
     +pfA: {FD.array__perfect(FuluHistoricalSummary_d.HistoricalSummary, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> DK.P2(RTK_l16777216_HistoricalSummary(k, i, j, X, q, r, dd, D, A), BYK_l16777216_HistoricalSummary(k, j, q, r, dd, D, A)):
@@ -278,9 +285,9 @@ def ptx_l16777216_HistoricalSummary(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, 
       +o = EL_l16777216_HistoricalSummary(A, j)
       +qj = Nat.add(Nat.mul(j, 16n), q)
       +Xj = U32.add(X, U32.mul(i, 64))
-      +ej = VRX.rpos(X, i, j, 0n, q, r, 16n, 64, LT, dd, e, {==}, ei, hd, hj, hl)
+      +ej = VRX.rposW(X, i, j, 0n, q, r, 16n, 64, LT, dd, e, {==}, ei, hd, {==}, hj, hl)
       +hlj = VRX.rroom(j, 0n, q, r, 16n, LT, dd, hj, hl)
-      +g = putxo_HistoricalSummary(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, pfD, hz)
+      +g = putxo_HistoricalSummaryW(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, VRX.rroom32(j, 0n, q, r, 16n, LT, dd, hj, hl32), pfD, hz)
       +rt = PA(RTo_HistoricalSummary(o, dd, D, Xj, qj, r), BYo_HistoricalSummary(o, dd, D, qj, r), g)
       +by = PB(RTo_HistoricalSummary(o, dd, D, Xj, qj, r), BYo_HistoricalSummary(o, dd, D, qj, r), g)
       +D1 = PXo_HistoricalSummary(o, dd, D, qj, r)
@@ -293,13 +300,13 @@ def ptx_l16777216_HistoricalSummary(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, 
       +o = EL_l16777216_HistoricalSummary(A, j)
       +qj = Nat.add(Nat.mul(j, 16n), q)
       +Xj = U32.add(X, U32.mul(i, 64))
-      +ej = VRX.rpos(X, i, j, 1n+p, q, r, 16n, 64, LT, dd, e, {==}, ei, hd, hj, hl)
+      +ej = VRX.rposW(X, i, j, 1n+p, q, r, 16n, 64, LT, dd, e, {==}, ei, hd, {==}, hj, hl)
       +hlj = VRX.rroom(j, 1n+p, q, r, 16n, LT, dd, hj, hl)
       +bm = A.quad(Nat.mul(1n+p, 16n))
       +B0 = UA.BYT(D)
       +Yj = VRX.YP(j, 16n, q, r)
       +hz0 = VRX.zhead(64n, bm, VS.bdr(Yj, B0), hz)
-      +g = putxo_HistoricalSummary(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, pfD, hz0)
+      +g = putxo_HistoricalSummaryW(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, VRX.rroom32(j, 1n+p, q, r, 16n, LT, dd, hj, hl32), pfD, hz0)
       +rt = PA(RTo_HistoricalSummary(o, dd, D, Xj, qj, r), BYo_HistoricalSummary(o, dd, D, qj, r), g)
       +by = PB(RTo_HistoricalSummary(o, dd, D, Xj, qj, r), BYo_HistoricalSummary(o, dd, D, qj, r), g)
       +D1 = PXo_HistoricalSummary(o, dd, D, qj, r)
@@ -316,7 +323,7 @@ def ptx_l16777216_HistoricalSummary(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, 
       +eg = FD.array__get(FuluHistoricalSummary_d.HistoricalSummary, da, A, U32.add(i, 1), EL_l16777216_HistoricalSummary(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
       +hj2 = FD.logic__subst(Nat, z => {Nat.is_le(A.quad(Nat.mul(1n+z, 16n)), LT) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hj)
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hk)
-      +ih = ptx_l16777216_HistoricalSummary(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hr, hd, pf1, hj2, hl, z1, pfA, hda, hk2)
+      +ih = ptx_l16777216_HistoricalSummaryW(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hr, hd, pf1, hj2, hl, hl32, z1, pfA, hda, hk2)
       +rt2 = PA(RTK_l16777216_HistoricalSummary(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l16777216_HistoricalSummary(p, 1n+j, q, r, dd, D1, A), ih)
       +by2 = PB(RTK_l16777216_HistoricalSummary(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l16777216_HistoricalSummary(p, 1n+j, q, r, dd, D1, A), ih)
       +ea = Equal.cong(Array<U32>, Array<U32> & Array<FuluHistoricalSummary_d.HistoricalSummary>, z => Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_pt(p, U32.add(i, 1), X, z, AG_l16777216_HistoricalSummary(A, U32.add(i, 1))), FuluHistoricalSummary_e.HistoricalSummary_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
@@ -331,6 +338,15 @@ def ptx_l16777216_HistoricalSummary(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, 
       +by3 = Equal.trans(+List<U32>, UA.BYT(WX_l16777216_HistoricalSummary(p, 1n+j, dd, D1, q, r, A)), UW.SPL(UA.BYT(D1), VRX.YP(1n+j, 16n, q, r), rest), UW.SPL(B0, Yj, VRX.AP(Y, rest)), by2,
         VRX.spl_catx(B0, Yj, Y, rest, VRX.YP(1n+j, 16n, q, r), UA.BYT(D1), hX, eXn, by))
       (rt3, by3)
+
+def ptx_l16777216_HistoricalSummary(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), 16n)), LT) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
+    +hz: {VS.bt(A.quad(Nat.mul(1n+k, 16n)), VS.bdr(VRX.YP(j, 16n, q, r), UA.BYT(D))) == UW.ZB(A.quad(Nat.mul(1n+k, 16n))) : +List<U32>},
+    +pfA: {FD.array__perfect(FuluHistoricalSummary_d.HistoricalSummary, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    -> DK.P2(RTK_l16777216_HistoricalSummary(k, i, j, X, q, r, dd, D, A), BYK_l16777216_HistoricalSummary(k, j, q, r, dd, D, A)):
+  ptx_l16777216_HistoricalSummaryW(k, i, j, X, q, r, dd, D, da, A, LT, ei, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pfD, hj, hl, VRX.hl32w(q, r, LT, dd, hd, hl), hz, pfA, hda, hk)
 
 # ---- l16777216_HistoricalSummary: the list's encoder window ----
 
@@ -384,9 +400,9 @@ def BYN_l16777216_HistoricalSummary(+b: Bool, +A: FD.array__Tree<FuluHistoricalS
   {UA.BYT(PUTLb_l16777216_HistoricalSummary(b, A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l16777216_HistoricalSummary(U32.to_nat(N), A, 0n))) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l16777216_HistoricalSummary(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16777216_HistoricalSummary(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def ptnz_l16777216_HistoricalSummaryW(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l16777216_HistoricalSummary(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16777216_HistoricalSummary(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16777216_HistoricalSummary(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l16777216_HistoricalSummary(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16777216_HistoricalSummary(A, N)) : +List<U32>})
     -> DK.P2(RTN_l16777216_HistoricalSummary(b, A, N, dd, D, X, q, r), BYN_l16777216_HistoricalSummary(b, A, N, dd, D, q, r)):
   match b:
@@ -410,7 +426,7 @@ def ptnz_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
       +eg0 = FD.array__get(FuluHistoricalSummary_d.HistoricalSummary, da, A, 0, EL_l16777216_HistoricalSummary(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(FuluHistoricalSummary_d.HistoricalSummary, FD.array__slots(FuluHistoricalSummary_d.HistoricalSummary, A), 0n, FuluHistoricalSummary_d.HistoricalSummary_default(), FD.array__len_lt(FuluHistoricalSummary_d.HistoricalSummary, da, A, 0n, pfA, h0)), pfA)
-      +g = ptx_l16777216_HistoricalSummary(k, 0, 0n, X, q, r, dd, D, da, A, LL_l16777216_HistoricalSummary(A, N), {==}, e, hr, hd, pf, hj, hl, hz2, pfA, hda, hk)
+      +g = ptx_l16777216_HistoricalSummaryW(k, 0, 0n, X, q, r, dd, D, da, A, LL_l16777216_HistoricalSummary(A, N), {==}, e, hr, hd, pf, hj, hl, hl32, hz2, pfA, hda, hk)
       +rt = PA(RTK_l16777216_HistoricalSummary(k, 0, 0n, X, q, r, dd, D, A), BYK_l16777216_HistoricalSummary(k, 0n, q, r, dd, D, A), g)
       +by = PB(RTK_l16777216_HistoricalSummary(k, 0, 0n, X, q, r, dd, D, A), BYK_l16777216_HistoricalSummary(k, 0n, q, r, dd, D, A), g)
       +ea = Equal.cong(Array<FuluHistoricalSummary_d.HistoricalSummary> & FuluHistoricalSummary_d.HistoricalSummary, Array<U32> & Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq, z => Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_pt_fin(N, Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_pt(k, 0, X, FD.array__thaw(U32, D), z)), Array.get(FuluHistoricalSummary_d.HistoricalSummary, FD.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, A), 0), (FD.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, A), EL_l16777216_HistoricalSummary(A, 0n)), eg0)
@@ -418,6 +434,13 @@ def ptnz_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.
       (Equal.trans(Array<U32> & Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq, Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_pt_fin(N, Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(FuluHistoricalSummary_d.HistoricalSummary, FD.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, A), 0))), Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_pt_fin(N, Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, A), EL_l16777216_HistoricalSummary(A, 0n)))),
          Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_pt_fin(N, (FD.array__thaw(U32, WX_l16777216_HistoricalSummary(k, 0n, dd, D, q, r, A)), FD.array__thaw(FuluHistoricalSummary_d.HistoricalSummary, A))), ea, eb2),
        FD.logic__subst(Nat, z => {UA.BYT(WX_l16777216_HistoricalSummary(k, 0n, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l16777216_HistoricalSummary(z, A, 0n))) : +List<U32>}, 1n+k, c, e1, by))
+
+def ptnz_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l16777216_HistoricalSummary(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16777216_HistoricalSummary(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l16777216_HistoricalSummary(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16777216_HistoricalSummary(A, N)) : +List<U32>})
+    -> DK.P2(RTN_l16777216_HistoricalSummary(b, A, N, dd, D, X, q, r), BYN_l16777216_HistoricalSummary(b, A, N, dd, D, q, r)):
+  ptnz_l16777216_HistoricalSummaryW(A, N, b, eb, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16777216_HistoricalSummary(A, N), dd, hd, hl), pf, hz)
 
 # The runtime's validity check of the list.
 def valid_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +h: {OKL_l16777216_HistoricalSummary(A, N) == True{} : Bool}) -> {Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_valid(THL_l16777216_HistoricalSummary(A, N)) == (THL_l16777216_HistoricalSummary(A, N), True{}) : Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq & Bool}:
@@ -448,13 +471,13 @@ def putk_rt_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
 # into D's (its records write their data bytes only), and whose tree is perfect.
-def putx_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +h: {OKL_l16777216_HistoricalSummary(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16777216_HistoricalSummary(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putx_l16777216_HistoricalSummaryW(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +h: {OKL_l16777216_HistoricalSummary(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16777216_HistoricalSummary(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16777216_HistoricalSummary(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l16777216_HistoricalSummary(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16777216_HistoricalSummary(A, N)) : +List<U32>})
     -> DK.P2(RTL_l16777216_HistoricalSummary(A, N, dd, D, X, q, r), DK.P2(BYL_l16777216_HistoricalSummary(A, N, dd, D, q, r), PFL_l16777216_HistoricalSummary(A, N, dd, D, q, r))):
   +b = U32.is_eq(N, 0)
-  +g = ptnz_l16777216_HistoricalSummary(A, N, b, {==}, h, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+  +g = ptnz_l16777216_HistoricalSummaryW(A, N, b, {==}, h, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz)
   +rtb = PA(RTN_l16777216_HistoricalSummary(b, A, N, dd, D, X, q, r), BYN_l16777216_HistoricalSummary(b, A, N, dd, D, q, r), g)
   +byb = PB(RTN_l16777216_HistoricalSummary(b, A, N, dd, D, X, q, r), BYN_l16777216_HistoricalSummary(b, A, N, dd, D, q, r), g)
   +by = Equal.trans(+List<U32>, UA.BYT(PUTL_l16777216_HistoricalSummary(A, N, dd, D, q, r)), UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l16777216_HistoricalSummary(U32.to_nat(N), A, 0n))), UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l16777216_HistoricalSummary(A, N)), byb,
@@ -462,6 +485,13 @@ def putx_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.
   (putk_rt_l16777216_HistoricalSummary(A, N, h, dd, D, X, q, r, rtb), (by, pfLb_l16777216_HistoricalSummary(b, A, N, dd, D, q, r, pf)))
 
 # ---- sizes ----
+
+def putx_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +h: {OKL_l16777216_HistoricalSummary(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16777216_HistoricalSummary(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l16777216_HistoricalSummary(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l16777216_HistoricalSummary(A, N)) : +List<U32>})
+    -> DK.P2(RTL_l16777216_HistoricalSummary(A, N, dd, D, X, q, r), DK.P2(BYL_l16777216_HistoricalSummary(A, N, dd, D, q, r), PFL_l16777216_HistoricalSummary(A, N, dd, D, q, r))):
+  putx_l16777216_HistoricalSummaryW(A, N, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16777216_HistoricalSummary(A, N), dd, hd, hl), pf, hz)
 
 # The runtime's size pass.
 def sizex_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +h: {OKL_l16777216_HistoricalSummary(A, N) == True{} : Bool}) -> {Fulu_list_HistoricalSummary_16777216_e.l16777216_HistoricalSummary_size(THL_l16777216_HistoricalSummary(A, N)) == (THL_l16777216_HistoricalSummary(A, N), U32.mul(N, 64)) : Fulu_list_HistoricalSummary_16777216_d.l16777216_HistoricalSummary_Seq & U32}:
@@ -473,13 +503,16 @@ def sizex_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
-def szx_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16777216_HistoricalSummary(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 64)) == LL_l16777216_HistoricalSummary(A, N) : Nat}:
-  VRX.mulq(dd, N, U32.to_nat(N), 64, 16n, {==}, {==}, hd,
-    FD.nat__le_trans(LL_l16777216_HistoricalSummary(A, N), Nat.add(Nat.add(A.quad(q), r), LL_l16777216_HistoricalSummary(A, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL_l16777216_HistoricalSummary(A, N)), VRX.xend(q, r, LL_l16777216_HistoricalSummary(A, N), dd, hl)))
+def szx_l16777216_HistoricalSummaryW(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16777216_HistoricalSummary(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l16777216_HistoricalSummary(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 64)) == LL_l16777216_HistoricalSummary(A, N) : Nat}:
+  VRX.mulqW(N, U32.to_nat(N), 64, 16n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l16777216_HistoricalSummary(A, N), A.quad(Nat.mul(U32.to_nat(N), 16n)), {==}, VRX.yl32(q, r, LL_l16777216_HistoricalSummary(A, N), hl32)))
 
 
 # ---- l16777216_HistoricalSummary: the spec side ----
+
+def szx_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l16777216_HistoricalSummary(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 64)) == LL_l16777216_HistoricalSummary(A, N) : Nat}:
+  szx_l16777216_HistoricalSummaryW(A, N, q, r, dd, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l16777216_HistoricalSummary(A, N), dd, hd, hl))
 
 # The value of the list: the records' values.
 def VALL_l16777216_HistoricalSummary(+A: FD.array__Tree<FuluHistoricalSummary_d.HistoricalSummary>, +N: U32) -> S.Value: S.Sequence{ITW_l16777216_HistoricalSummary(U32.to_nat(N), A, 0n)}

@@ -14,6 +14,7 @@ are the four-byte joins UR.RWN(t, x + R j + 4 k). The object's record array is t
 RT of those records; the value's items are the records' values over the same words,
 whose parts are the window's bytes (UW.headWX, UR.rws_bytes).
 """
+import re
 import sys
 from pathlib import Path
 
@@ -700,6 +701,10 @@ def main():
         out = {p: t for p, t in out.items() if not p.name.startswith('big_')}
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
+    import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
+    out = deep.dify_out(out, handled={'posWW'})
+    # VRL.posWW takes hW: 1 <= W (the record's word count, a literal) before hb
+    out = {p: re.sub(r'(VRL\.posWW\(dd, pos, Q, i, j, \d+, \d+n, \{==\}, ep, ei, hdd), ', r'\1, {==}, ', t) for p, t in out.items()}
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

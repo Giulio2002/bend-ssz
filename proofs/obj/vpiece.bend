@@ -167,3 +167,17 @@ def bv1281piece(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +c: U32, +a: Nat, +q
     -> DK.P2({bitvector_1281_e.bv1281_putk(FD.array__thaw(U32, D), U32.add(X, c), O.Words{FD.array__thaw(U32, TB), 161}) == (FD.array__thaw(U32, P1281(dd, D, X, c, TB)), (O.Words{FD.array__thaw(U32, TB), 161}, 0)) : Array<U32> & (O.Words & U32)},
              {UA.BYT(P1281(dd, D, X, c, TB)) == UW.SPL(UA.BYT(D), Nat.add(X0(q, r), a), List.append(&2, U32, VS.bt(161n, FX.limbs(UW.SLW(TB))), UW.ZB(WD.PADB(RC(X, c), 161n)))) : +List<U32>}):
   bv1281pieceW(dd, D, X, c, a, q, r, L, dB, TB, e, ec, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hk, hl, pf, pfB, hdB, hrB, htz, hbz, hz)
+
+# proom's region, strictly inside U32 positions (the piece's m >= 1 bytes lie in its region of hl32).
+def proom32(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +m: Nat, +dd: Nat, +e: {U32.to_nat(X) == X0(q, r) : Nat}, +ec: {U32.to_nat(c) == a : Nat},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hk: {Nat.is_le(Nat.add(a, m), L) == True{} : Bool}, +hm: {Nat.is_le(1n, m) == True{} : Bool},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, L)), FD.spec_common__pow2(32n)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(QC(X, c)), Nat.add(RC(X, c), m)), FD.spec_common__pow2(32n)) == True{} : Bool}:
+  VCN.croom32(U32.add(X, c), q, r, a, m, L, dd,
+    VCN.vpos32(X, c, a, q, r, L, e, ec, FD.nat__le_trans(a, Nat.add(a, m), L, FD.nat__le_add_right(a, m), hk), hl32), hk, hl32)
+
+# proom's piece of m bytes (a + m <= L): m < 2^31.
+def proom31(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +m: Nat, +dd: Nat, +e: {U32.to_nat(X) == X0(q, r) : Nat}, +ec: {U32.to_nat(c) == a : Nat},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hk: {Nat.is_le(Nat.add(a, m), L) == True{} : Bool}, +hm: {Nat.is_le(1n, m) == True{} : Bool},
+    +hs31: {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(m, VB.pw(31n)) == True{} : Bool}:
+  FD.nat__le_lt_trans(m, L, VB.pw(31n), FD.nat__le_trans(m, Nat.add(a, m), L, Order.left_below_sum(a, m), hk), hs31)

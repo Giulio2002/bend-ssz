@@ -26,6 +26,7 @@ pieces not yet written (reg_zero). Positions: vrecx.fpos/froom for the fixed par
 croom / padfit / cnext for the variable part (the running cursor).
 """
 import re
+import deep as _deep  # noqa: E402
 import sys
 from pathlib import Path
 
@@ -2919,6 +2920,8 @@ def putx_hyps(text):
     i = text.index('\ndef RTX(')
     return (text[:i] + '\n# the putx laws' + "'" + ' hypotheses and goal between ENC(m) (List.length/append, PADB) and VCN.LN/AP, generic in m\n'
             + f'def hlm(+q: Nat, +r: Nat, +dd: Nat, m: MW, +hl: {Gl.replace(LNK, LLm)}) -> {Gl.replace(LNK, LNm)}: hl\n'
+            + f'def hlm32(+q: Nat, +r: Nat, +dd: Nat, m: MW, +hl32: {_deep.hl32_decl("FD")(Gl.replace(LNK, LLm))}) -> {_deep.hl32_decl("FD")(Gl.replace(LNK, LNm))}: hl32\n'
+            + f'def hlm31(+q: Nat, +r: Nat, +dd: Nat, m: MW, +hs31: {_deep.hs31_decl(Gl.replace(LNK, LLm))}) -> {_deep.hs31_decl(Gl.replace(LNK, LNm))}: hs31\n'
             + f'def hzm(+q: Nat, +r: Nat, +D: FD.array__Tree<U32>, m: MW, +hz: {Gz.replace(PZ, "PADB(r, m)").replace(LNK, LLm)}) -> {Gz.replace(LNK, LNm)}: hz\n'
             + f'def bym(+L: +List<U32>, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, m: MW, +R: {{L == {RBm} : +List<U32>}}) -> {{L == {RGm} : +List<U32>}}: R\n'
             + text[i:])
@@ -4517,6 +4520,58 @@ def maxx(m, hok):
     return '\n'.join(UHEAD + mods) + '\n' + '\n'.join(L)
 
 
+# ---- the dd < 31 twins (deep.dify_out's post pass) ------------------------------------------------------------
+# hl32 (the region's end below 2^32) and hs31 (the region's length below 2^31: the padd cursors' poison bit)
+# beside hl in the twins that need them; the fields' strict starts; the cursors' bounds from hs31.
+def cont_strict(q, t, res):
+    import deep
+    P32 = 'FD.spec_common__pow2(32n)'
+    # a fixed field starts inside the region: 4 k < L (the literal check, strict)
+    t = deep.edit_calls(t, 'VRX.fposW', lambda a, blk: a[:10] + ([a[10].replace('FD.nat__le_trans(', 'FD.nat__lt_le_trans(', 1)] if a[10].startswith('FD.nat__le_trans(') else [a[10]]) + a[11:])
+    # a piece of m >= 1 bytes (a literal m)
+    for n in ('VPC.pposW', 'VPC.proomW'):
+        t = deep.edit_calls(t, n, lambda a, blk: a[:12] + ['{==}'] + a[12:])
+    t, bad1 = deep.hl32_pass(needed_only=True, derive={'croom': 'croom32', 'proomW': 'proom32', 'aroom': 'aroom32', 'hlm': 'hlm32'})(q, t, res)
+    t, bad2 = deep.hs31_pass(seeds={'VCN.cnextW', 'VCN.cnext_rW'}, derive={'aroom': 'aroom31', 'hlm': 'hlm31'})(q, t, res)
+    # the cursors below 2^31 (O.padd): VCN.pc_end31 by hs31
+    def pc(a, blk):
+        la = a[-1]
+        if not la.startswith('VCN.pc_end('):
+            return None
+        b, _ = deep._args(la, len('VCN.pc_end('))
+        if b[-1] != 'hl':
+            return None
+        return a[:-1] + ['VCN.pc_end31(' + ', '.join(b[:-1] + ['hs31']) + ')']
+    for n in ('VCN.cnextW', 'VCN.cnext_rW'):
+        t = deep.edit_calls(t, n, pc)
+    # a transactions-like list's size: below 2^31 by its region (VCN.croom31)
+    def sz(a, blk):
+        if len(a) != 6 or a[3] != '30n':
+            return None
+        if not a[5].startswith('FD.nat__le_trans('):
+            return None
+        lt, _ = deep._args(a[5], len('FD.nat__le_trans('))
+        if not lt[3].startswith('VCN.pc_end('):
+            return None
+        pe, _ = deep._args(lt[3], len('VCN.pc_end('))
+        hlc = pe[-1]
+        lm = None
+        for lm in re.finditer(r'^\s*\+' + re.escape(hlc) + r' = ', blk, re.M):
+            pass
+        if not lm:
+            return None
+        ex, _ = deep._args(blk, lm.end() + len('VCN.croom('))
+        if not blk[lm.end():].startswith('VCN.croom('):
+            return None
+        return a[:3] + ['VCN.croom31(' + ', '.join(ex[:-1] + ['hs31']) + ')']
+    for al in sorted(set(re.findall(r'(?<![\w.])(\w+)\.szx\(', t))):
+        t = deep.edit_calls(t, al + '.szx', sz, rename=al + '.szxS')
+    return t, bad1 + bad2
+
+
+PROBE_POST = cont_strict
+
+
 def main():
     out = {}
     if '--no-big' not in sys.argv:
@@ -4549,6 +4604,7 @@ def main():
         else:
             raise SystemExit('var_cont_enc: no fixed point in 8 rounds')
     out = RR.rewire_out(out)
+    out = _deep.dify_out(out, handled={'fposW'}, post=cont_strict)  # the dd < 31 twins
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale:

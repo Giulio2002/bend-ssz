@@ -424,3 +424,19 @@ def q32lt(+k: Nat, +i: Nat, +d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, 
     -> {Nat.is_lt(A.quad(Nat.add(k, i)), F.spec_common__pow2(32n)) == True{} : Bool}:
   +h1 = F.logic__subst(Nat, z => {Nat.is_lt(A.quad(Nat.add(k, i)), z) == True{} : Bool}, A.quad(VB.pw(d)), VB.pw(2n+d), qpw(d), qlt(Nat.add(k, i), VB.pw(d), h))
   F.nat__lt_le_trans(A.quad(Nat.add(k, i)), VB.pw(2n+d), F.spec_common__pow2(32n), h1, VB.pw2d32(d, hd))
+
+# ---- region ends below 2^32 (the encoder-window twins' hr32) ---------------------------------------------------
+
+# 4 y < 2^32 for y <= x, 4 x < 2^32.
+def q32r(+y: Nat, +x: Nat, +h: {Nat.is_le(y, x) == True{} : Bool}, +h32: {Nat.is_lt(A.quad(x), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {Nat.is_lt(A.quad(y), F.spec_common__pow2(32n)) == True{} : Bool}:
+  F.nat__le_lt_trans(A.quad(y), A.quad(x), F.spec_common__pow2(32n), Order.double_monotone(Nat.double(y), Nat.double(x), Order.double_monotone(y, x, h)), h32)
+
+# At d < 29 (the old names' wrappers): 4 x <= 4 2^d = 2^(2+d) < 2^(3+d) <= 2^32.
+def r32w(+x: Nat, +d: Nat, +hd: {Nat.is_lt(d, 29n) == True{} : Bool}, +h: {Nat.is_le(x, VB.pw(d)) == True{} : Bool})
+    -> {Nat.is_lt(A.quad(x), F.spec_common__pow2(32n)) == True{} : Bool}:
+  +hq = Order.double_monotone(Nat.double(x), Nat.double(VB.pw(d)), Order.double_monotone(x, VB.pw(d), h))
+  +hk = F.nat__lt_succ_le(d, 28n, hd)
+  F.nat__le_lt_trans(A.quad(x), VB.pw(2n+d), F.spec_common__pow2(32n), hq,
+    F.nat__lt_le_trans(VB.pw(2n+d), VB.pw(Nat.add(3n, d)), F.spec_common__pow2(32n), F.nat__pow2_lt_succ(2n+d),
+      F.nat__pow2_mono(Nat.add(3n, d), 32n, F.nat__le_trans(Nat.add(3n, d), 31n, 32n, hk, {==}))))

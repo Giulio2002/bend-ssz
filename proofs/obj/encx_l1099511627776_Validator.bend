@@ -205,9 +205,9 @@ def RTo(+o: FuluValidator_d.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U3
   {FuluValidator_e.Validator_put(FD.array__thaw(U32, D), X, o) == FD.array__thaw(U32, PXo(o, dd, D, X)) : Array<U32>}
 def BYo(+o: FuluValidator_d.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo(o, dd, D, X)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), RWB(o)) : +List<U32>}
-def putxo(+o: FuluValidator_d.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 121n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putxoW(+o: FuluValidator_d.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 121n))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 121n)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(121n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(121n) : +List<U32>})
     -> DK.P2(RTo(o, dd, D, X), BYo(o, dd, D, X, q, r)):
   match o:
@@ -226,9 +226,26 @@ def putxo(+o: FuluValidator_d.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: 
                             case O.U64{+exit_epoch_lo, +exit_epoch_hi}:
                               match o7:
                                 case O.U64{+withdrawable_epoch_lo, +withdrawable_epoch_hi}:
-                                  EV.putx_Validator(pubkey_0, pubkey_1, pubkey_2, pubkey_3, pubkey_4, pubkey_5, pubkey_6, pubkey_7, pubkey_8, pubkey_9, pubkey_10, pubkey_11, withdrawal_credentials_0, withdrawal_credentials_1, withdrawal_credentials_2, withdrawal_credentials_3, withdrawal_credentials_4, withdrawal_credentials_5, withdrawal_credentials_6, withdrawal_credentials_7, effective_balance_lo, effective_balance_hi, slashed, activation_eligibility_epoch_lo, activation_eligibility_epoch_hi, activation_epoch_lo, activation_epoch_hi, exit_epoch_lo, exit_epoch_hi, withdrawable_epoch_lo, withdrawable_epoch_hi, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+                                  EV.putx_ValidatorW(pubkey_0, pubkey_1, pubkey_2, pubkey_3, pubkey_4, pubkey_5, pubkey_6, pubkey_7, pubkey_8, pubkey_9, pubkey_10, pubkey_11, withdrawal_credentials_0, withdrawal_credentials_1, withdrawal_credentials_2, withdrawal_credentials_3, withdrawal_credentials_4, withdrawal_credentials_5, withdrawal_credentials_6, withdrawal_credentials_7, effective_balance_lo, effective_balance_hi, slashed, activation_eligibility_epoch_lo, activation_eligibility_epoch_hi, activation_epoch_lo, activation_epoch_hi, exit_epoch_lo, exit_epoch_hi, withdrawable_epoch_lo, withdrawable_epoch_hi, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz)
+
+def putxo(+o: FuluValidator_d.Validator, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 121n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(121n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(121n) : +List<U32>})
+    -> DK.P2(RTo(o, dd, D, X), BYo(o, dd, D, X, q, r)):
+  putxoW(o, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, 121n, dd, hd, hl), pf, hz)
 
 # ---- positions at byte stride S ----
+
+def bmulW(+i: U32, +j: Nat, +Su: U32, +S: Nat, +eS: {U32.to_nat(Su) == S : Nat}, +ei: {U32.to_nat(i) == j : Nat},
+    +hm: {Nat.is_lt(Nat.mul(j, S), FD.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.mul(i, Su)) == Nat.mul(j, S) : Nat}:
+  +em = Equal.trans(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Su)), Nat.mul(j, U32.to_nat(Su)), Nat.mul(j, S),
+    Equal.cong(Nat, Nat, z => Nat.mul(z, U32.to_nat(Su)), U32.to_nat(i), j, ei), Equal.cong(Nat, Nat, z => Nat.mul(j, z), U32.to_nat(Su), S, eS))
+  Equal.trans(Nat, U32.to_nat(U32.mul(i, Su)), Nat.mul(U32.to_nat(i), U32.to_nat(Su)), Nat.mul(j, S),
+    VU.mul_lt32(i, Su, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, Nat.mul(j, S), Nat.mul(U32.to_nat(i), U32.to_nat(Su)),
+      Equal.sym(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Su)), Nat.mul(j, S), em), hm)),
+    em)
 
 def bmul(+dd: Nat, +i: U32, +j: Nat, +Su: U32, +S: Nat, +eS: {U32.to_nat(Su) == S : Nat}, +ei: {U32.to_nat(i) == j : Nat},
     +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hm: {Nat.is_le(Nat.mul(j, S), VB.pw(2n+dd)) == True{} : Bool})
@@ -245,16 +262,23 @@ def bmul(+dd: Nat, +i: U32, +j: Nat, +Su: U32, +S: Nat, +eS: {U32.to_nat(Su) == 
 def YB(+j: Nat, +q: Nat, +r: Nat) -> Nat: Nat.add(Nat.add(A.quad(q), r), Nat.mul(j, 121n))
 
 # record j of a run of LT bytes at X (records j .. j + k inside it): its position, and its room
-def spos(+X: U32, +i: U32, +j: Nat, +k: Nat, +q: Nat, +r: Nat, +LT: Nat, +dd: Nat,
+def sposW(+X: U32, +i: U32, +j: Nat, +k: Nat, +q: Nat, +r: Nat, +LT: Nat, +dd: Nat,
     +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +ei: {U32.to_nat(i) == j : Nat},
-    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 121n), LT) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool})
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 121n), LT) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LT)), FD.spec_common__pow2(32n)) == True{} : Bool})
     -> {U32.to_nat(U32.add(X, U32.mul(i, 121))) == YB(j, q, r) : Nat}:
   +h1 = FD.nat__le_trans(Nat.mul(j, 121n), Nat.mul(Nat.add(1n+k, j), 121n), LT,
     VRL.mul_mono(j, Nat.add(1n+k, j), 121n, FD.nat__le_trans(j, Nat.add(k, j), 1n+Nat.add(k, j), Order.left_below_sum(k, j), Order.left_below_sum(1n, Nat.add(k, j)))), hj)
   +hm = FD.nat__le_trans(Nat.mul(j, 121n), LT, VB.pw(2n+dd), h1,
     FD.nat__le_trans(LT, Nat.add(Nat.add(A.quad(q), r), LT), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LT), VRX.xend(q, r, LT, dd, hl)))
-  VCN.vpos(X, U32.mul(i, 121), Nat.mul(j, 121n), q, r, LT, dd, e, bmul(dd, i, j, 121, 121n, {==}, ei, hd, hm), hd, h1, hl)
+  VCN.vposW(X, U32.mul(i, 121), Nat.mul(j, 121n), q, r, LT, dd, e, bmulW(i, j, 121, 121n, {==}, ei, FD.nat__le_lt_trans(Nat.mul(j, 121n), LT, FD.spec_common__pow2(32n), h1, VRX.yl32(q, r, LT, hl32))), hd, h1, hl, hl32)
+
+def spos(+X: U32, +i: U32, +j: Nat, +k: Nat, +q: Nat, +r: Nat, +LT: Nat, +dd: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +ei: {U32.to_nat(i) == j : Nat},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 121n), LT) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(X, U32.mul(i, 121))) == YB(j, q, r) : Nat}:
+  sposW(X, i, j, k, q, r, LT, dd, e, ei, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hj, hl, VRX.hl32w(q, r, LT, dd, hd, hl))
 
 def sroom(+Xj: U32, +j: Nat, +k: Nat, +q: Nat, +r: Nat, +LT: Nat, +dd: Nat, +ep: {U32.to_nat(Xj) == YB(j, q, r) : Nat},
     +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 121n), LT) == True{} : Bool},
@@ -263,6 +287,14 @@ def sroom(+Xj: U32, +j: Nat, +k: Nat, +q: Nat, +r: Nat, +LT: Nat, +dd: Nat, +ep:
   +h1 = FD.nat__le_trans(Nat.mul(1n+j, 121n), Nat.mul(Nat.add(1n+k, j), 121n), LT, VRL.mul_mono(1n+j, Nat.add(1n+k, j), 121n, Order.left_below_sum(k, j)), hj)
   +h2 = FD.logic__subst(Nat, z => {Nat.is_le(z, LT) == True{} : Bool}, Nat.add(121n, Nat.mul(j, 121n)), Nat.add(Nat.mul(j, 121n), 121n), FD.nat__add_comm(121n, Nat.mul(j, 121n)), h1)
   VCN.croom(Xj, q, r, Nat.mul(j, 121n), 121n, LT, dd, ep, h2, hl)
+
+def sroom32(+Xj: U32, +j: Nat, +k: Nat, +q: Nat, +r: Nat, +LT: Nat, +dd: Nat, +ep: {U32.to_nat(Xj) == YB(j, q, r) : Nat},
+    +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 121n), LT) == True{} : Bool},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LT)), FD.spec_common__pow2(32n)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(VCN.QX(Xj)), Nat.add(VCN.RX(Xj), 121n)), FD.spec_common__pow2(32n)) == True{} : Bool}:
+  +h1 = FD.nat__le_trans(Nat.mul(1n+j, 121n), Nat.mul(Nat.add(1n+k, j), 121n), LT, VRL.mul_mono(1n+j, Nat.add(1n+k, j), 121n, Order.left_below_sum(k, j)), hj)
+  +h2 = FD.logic__subst(Nat, z => {Nat.is_le(z, LT) == True{} : Bool}, Nat.add(121n, Nat.mul(j, 121n)), Nat.add(Nat.mul(j, 121n), 121n), FD.nat__add_comm(121n, Nat.mul(j, 121n)), h1)
+  VCN.croom32(Xj, q, r, Nat.mul(j, 121n), 121n, LT, dd, ep, h2, hl32)
 
 def ynext(+j: Nat, +q: Nat, +r: Nat) -> {YB(1n+j, q, r) == Nat.add(YB(j, q, r), 121n) : Nat}:
   Equal.trans(Nat, Nat.add(Nat.add(A.quad(q), r), Nat.add(121n, Nat.mul(j, 121n))), Nat.add(Nat.add(A.quad(q), r), Nat.add(Nat.mul(j, 121n), 121n)), Nat.add(Nat.add(Nat.add(A.quad(q), r), Nat.mul(j, 121n)), 121n),
@@ -401,20 +433,20 @@ def BYK_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +q: Nat, +r: Nat, +dd
   {UA.BYT(WX_l1099511627776_Validator(k, i, j, dd, D, X, A)) == UW.SPL(UA.BYT(D), YB(j, q, r), (CHV_l1099511627776_Validator(1n+k, A, j))) : +List<U32>}
 
 # record j's write: its runtime fact, its bytes at YB(j), its perfect tree, its start in the bytes
-def one(+o: FuluValidator_d.Validator, +i: U32, +j: Nat, +k: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +LT: Nat,
-    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def oneW(+o: FuluValidator_d.Validator, +i: U32, +j: Nat, +k: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 121n), LT) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LT)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(121n, VS.bdr(YB(j, q, r), UA.BYT(D))) == UW.ZB(121n) : +List<U32>})
     -> DK.P2(RTo(o, dd, D, U32.add(X, U32.mul(i, 121))), DK.P2({UA.BYT(PXo(o, dd, D, U32.add(X, U32.mul(i, 121)))) == UW.SPL(UA.BYT(D), YB(j, q, r), RWB(o)) : +List<U32>},
          {Nat.is_le(YB(j, q, r), List.length(&2, U32, UA.BYT(D))) == True{} : Bool})):
   +Xj = U32.add(X, U32.mul(i, 121))
-  +ep = spos(X, i, j, k, q, r, LT, dd, e, ei, hd, hj, hl)
+  +ep = sposW(X, i, j, k, q, r, LT, dd, e, ei, hd, hj, hl, hl32)
   +hlj = sroom(Xj, j, k, q, r, LT, dd, ep, hj, hl)
   +pj = Nat.add(A.quad(VCN.QX(Xj)), VCN.RX(Xj))
   +epj = Equal.trans(Nat, YB(j, q, r), U32.to_nat(Xj), pj, Equal.sym(Nat, U32.to_nat(Xj), YB(j, q, r), ep), VC.split4(Xj))
   +hzj = FD.logic__subst(Nat, z => {VS.bt(121n, VS.bdr(z, UA.BYT(D))) == UW.ZB(121n) : +List<U32>}, YB(j, q, r), pj, epj, hz)
-  +g = putxo(o, dd, D, Xj, VCN.QX(Xj), VCN.RX(Xj), VC.split4(Xj), VCN.rx_lt(Xj), hd, hlj, pfD, hzj)
+  +g = putxoW(o, dd, D, Xj, VCN.QX(Xj), VCN.RX(Xj), VC.split4(Xj), VCN.rx_lt(Xj), hd, hlj, sroom32(Xj, j, k, q, r, LT, dd, ep, hj, hl32), pfD, hzj)
   +rt = PA(RTo(o, dd, D, Xj), BYo(o, dd, D, Xj, VCN.QX(Xj), VCN.RX(Xj)), g)
   +by = PB(RTo(o, dd, D, Xj), BYo(o, dd, D, Xj, VCN.QX(Xj), VCN.RX(Xj)), g)
   +by2 = FD.logic__subst(Nat, z => {UA.BYT(PXo(o, dd, D, Xj)) == UW.SPL(UA.BYT(D), z, RWB(o)) : +List<U32>}, pj, YB(j, q, r), Equal.sym(Nat, YB(j, q, r), pj, epj), by)
@@ -422,11 +454,20 @@ def one(+o: FuluValidator_d.Validator, +i: U32, +j: Nat, +k: Nat, +X: U32, +q: N
     VRX.xstart(VCN.QX(Xj), VCN.RX(Xj), 121n, dd, D, pfD, hlj))
   (rt, (by2, hX))
 
-# The loop from record j (index i) on, k + 1 records, into LT bytes at X whose last k + 1 records' bytes are zero.
-def ptx_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluValidator_d.Validator>, +LT: Nat,
+def one(+o: FuluValidator_d.Validator, +i: U32, +j: Nat, +k: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +LT: Nat,
     +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 121n), LT) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
+    +hz: {VS.bt(121n, VS.bdr(YB(j, q, r), UA.BYT(D))) == UW.ZB(121n) : +List<U32>})
+    -> DK.P2(RTo(o, dd, D, U32.add(X, U32.mul(i, 121))), DK.P2({UA.BYT(PXo(o, dd, D, U32.add(X, U32.mul(i, 121)))) == UW.SPL(UA.BYT(D), YB(j, q, r), RWB(o)) : +List<U32>},
+         {Nat.is_le(YB(j, q, r), List.length(&2, U32, UA.BYT(D))) == True{} : Bool})):
+  oneW(o, i, j, k, X, q, r, dd, D, LT, ei, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pfD, hj, hl, VRX.hl32w(q, r, LT, dd, hd, hl), hz)
+
+# The loop from record j (index i) on, k + 1 records, into LT bytes at X whose last k + 1 records' bytes are zero.
+def ptx_l1099511627776_ValidatorW(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluValidator_d.Validator>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 121n), LT) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LT)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(Nat.mul(1n+k, 121n), VS.bdr(YB(j, q, r), UA.BYT(D))) == UW.ZB(Nat.mul(1n+k, 121n)) : +List<U32>},
     +pfA: {FD.array__perfect(FuluValidator_d.Validator, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> DK.P2(RTK_l1099511627776_Validator(k, i, j, X, dd, D, A), BYK_l1099511627776_Validator(k, i, j, q, r, dd, D, X, A)):
@@ -434,7 +475,7 @@ def ptx_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r:
     case 0n:
       +o = EL_l1099511627776_Validator(A, j)
       +Xj = U32.add(X, U32.mul(i, 121))
-      +g = one(o, i, j, 0n, X, q, r, dd, D, LT, ei, e, hd, pfD, hj, hl, hz)
+      +g = oneW(o, i, j, 0n, X, q, r, dd, D, LT, ei, e, hd, pfD, hj, hl, hl32, hz)
       +rt = PA(RTo(o, dd, D, Xj), DK.P2({UA.BYT(PXo(o, dd, D, Xj)) == UW.SPL(UA.BYT(D), YB(j, q, r), RWB(o)) : +List<U32>}, {Nat.is_le(YB(j, q, r), List.length(&2, U32, UA.BYT(D))) == True{} : Bool}), g)
       +gb = PB(RTo(o, dd, D, Xj), DK.P2({UA.BYT(PXo(o, dd, D, Xj)) == UW.SPL(UA.BYT(D), YB(j, q, r), RWB(o)) : +List<U32>}, {Nat.is_le(YB(j, q, r), List.length(&2, U32, UA.BYT(D))) == True{} : Bool}), g)
       +by = PA({UA.BYT(PXo(o, dd, D, Xj)) == UW.SPL(UA.BYT(D), YB(j, q, r), RWB(o)) : +List<U32>}, {Nat.is_le(YB(j, q, r), List.length(&2, U32, UA.BYT(D))) == True{} : Bool}, gb)
@@ -451,7 +492,7 @@ def ptx_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r:
       +B0 = UA.BYT(D)
       +Yj = YB(j, q, r)
       +hz0 = VRX.zhead(121n, bm, VS.bdr(Yj, B0), hz)
-      +g = one(o, i, j, 1n+p, X, q, r, dd, D, LT, ei, e, hd, pfD, hj, hl, hz0)
+      +g = oneW(o, i, j, 1n+p, X, q, r, dd, D, LT, ei, e, hd, pfD, hj, hl, hl32, hz0)
       +rt = PA(RTo(o, dd, D, Xj), DK.P2({UA.BYT(PXo(o, dd, D, Xj)) == UW.SPL(B0, Yj, RWB(o)) : +List<U32>}, {Nat.is_le(Yj, List.length(&2, U32, B0)) == True{} : Bool}), g)
       +gb = PB(RTo(o, dd, D, Xj), DK.P2({UA.BYT(PXo(o, dd, D, Xj)) == UW.SPL(B0, Yj, RWB(o)) : +List<U32>}, {Nat.is_le(Yj, List.length(&2, U32, B0)) == True{} : Bool}), g)
       +by = PA({UA.BYT(PXo(o, dd, D, Xj)) == UW.SPL(B0, Yj, RWB(o)) : +List<U32>}, {Nat.is_le(Yj, List.length(&2, U32, B0)) == True{} : Bool}, gb)
@@ -469,7 +510,7 @@ def ptx_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r:
       +eg = FD.array__get(FuluValidator_d.Validator, da, A, U32.add(i, 1), EL_l1099511627776_Validator(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
       +hj2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.mul(1n+z, 121n), LT) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hj)
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hk)
-      +ih = ptx_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hd, pf1, hj2, hl, z1, pfA, hda, hk2)
+      +ih = ptx_l1099511627776_ValidatorW(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hd, pf1, hj2, hl, hl32, z1, pfA, hda, hk2)
       +rt2 = PA(RTK_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, X, dd, D1, A), BYK_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, q, r, dd, D1, X, A), ih)
       +by2 = PB(RTK_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, X, dd, D1, A), BYK_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, q, r, dd, D1, X, A), ih)
       +ea = Equal.cong(Array<U32>, Array<U32> & Array<FuluValidator_d.Validator>, z => Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(p, U32.add(i, 1), X, z, AG_l1099511627776_Validator(A, U32.add(i, 1))), FuluValidator_e.Validator_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
@@ -484,6 +525,15 @@ def ptx_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r:
       +by3 = Equal.trans(+List<U32>, UA.BYT(WX_l1099511627776_Validator(p, U32.add(i, 1), 1n+j, dd, D1, X, A)), UW.SPL(UA.BYT(D1), YB(1n+j, q, r), rest), UW.SPL(B0, Yj, VRX.AP(Y, rest)), by2,
         VRX.spl_catx(B0, Yj, Y, rest, YB(1n+j, q, r), UA.BYT(D1), hX, eXn, by))
       (rt3, by3)
+
+def ptx_l1099511627776_Validator(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluValidator_d.Validator>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 121n), LT) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
+    +hz: {VS.bt(Nat.mul(1n+k, 121n), VS.bdr(YB(j, q, r), UA.BYT(D))) == UW.ZB(Nat.mul(1n+k, 121n)) : +List<U32>},
+    +pfA: {FD.array__perfect(FuluValidator_d.Validator, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    -> DK.P2(RTK_l1099511627776_Validator(k, i, j, X, dd, D, A), BYK_l1099511627776_Validator(k, i, j, q, r, dd, D, X, A)):
+  ptx_l1099511627776_ValidatorW(k, i, j, X, q, r, dd, D, da, A, LT, ei, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pfD, hj, hl, VRX.hl32w(q, r, LT, dd, hd, hl), hz, pfA, hda, hk)
 
 # ---- l1099511627776_Validator: the list's encoder window ----
 
@@ -532,9 +582,9 @@ def BYN_l1099511627776_Validator(+b: Bool, +A: FD.array__Tree<FuluValidator_d.Va
   {UA.BYT(PUTLb_l1099511627776_Validator(b, A, N, dd, D, X)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), (CHV_l1099511627776_Validator(U32.to_nat(N), A, 0n))) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def ptnz_l1099511627776_ValidatorW(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l1099511627776_Validator(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l1099511627776_Validator(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l1099511627776_Validator(A, N)) : +List<U32>})
     -> DK.P2(RTN_l1099511627776_Validator(b, A, N, dd, D, X), BYN_l1099511627776_Validator(b, A, N, dd, D, X, q, r)):
   match b:
@@ -559,7 +609,7 @@ def ptnz_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>,
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
       +eg0 = FD.array__get(FuluValidator_d.Validator, da, A, 0, EL_l1099511627776_Validator(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(FuluValidator_d.Validator, FD.array__slots(FuluValidator_d.Validator, A), 0n, FuluValidator_d.Validator_default(), FD.array__len_lt(FuluValidator_d.Validator, da, A, 0n, pfA, h0)), pfA)
-      +g = ptx_l1099511627776_Validator(k, 0, 0n, X, q, r, dd, D, da, A, LL_l1099511627776_Validator(A, N), {==}, e, hd, pf, hj, hl, hz2, pfA, hda, hk)
+      +g = ptx_l1099511627776_ValidatorW(k, 0, 0n, X, q, r, dd, D, da, A, LL_l1099511627776_Validator(A, N), {==}, e, hd, pf, hj, hl, hl32, hz2, pfA, hda, hk)
       +rt = PA(RTK_l1099511627776_Validator(k, 0, 0n, X, dd, D, A), BYK_l1099511627776_Validator(k, 0, 0n, q, r, dd, D, X, A), g)
       +by = PB(RTK_l1099511627776_Validator(k, 0, 0n, X, dd, D, A), BYK_l1099511627776_Validator(k, 0, 0n, q, r, dd, D, X, A), g)
       +by1 = FD.logic__subst(Nat, z => {UA.BYT(WX_l1099511627776_Validator(k, 0, 0n, dd, D, X, A)) == UW.SPL(UA.BYT(D), z, (CHV_l1099511627776_Validator(1n+k, A, 0n))) : +List<U32>}, YB(0n, q, r), Nat.add(A.quad(q), r), FD.nat__add_zero(Nat.add(A.quad(q), r)), by)
@@ -568,6 +618,13 @@ def ptnz_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>,
       (Equal.trans(Array<U32> & Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt_fin(N, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(FuluValidator_d.Validator, FD.array__thaw(FuluValidator_d.Validator, A), 0))), Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt_fin(N, Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluValidator_d.Validator, A), EL_l1099511627776_Validator(A, 0n)))),
          Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_pt_fin(N, (FD.array__thaw(U32, WX_l1099511627776_Validator(k, 0, 0n, dd, D, X, A)), FD.array__thaw(FuluValidator_d.Validator, A))), ea, eb2),
        FD.logic__subst(Nat, z => {UA.BYT(WX_l1099511627776_Validator(k, 0, 0n, dd, D, X, A)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), (CHV_l1099511627776_Validator(z, A, 0n))) : +List<U32>}, 1n+k, c, e1, by1))
+
+def ptnz_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l1099511627776_Validator(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l1099511627776_Validator(A, N)) : +List<U32>})
+    -> DK.P2(RTN_l1099511627776_Validator(b, A, N, dd, D, X), BYN_l1099511627776_Validator(b, A, N, dd, D, X, q, r)):
+  ptnz_l1099511627776_ValidatorW(A, N, b, eb, h, dd, D, X, q, r, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l1099511627776_Validator(A, N), dd, hd, hl), pf, hz)
 
 # The runtime's validity check of the list (no bound on N past the storage's size).
 def valid_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_valid(THL_l1099511627776_Validator(A, N)) == (THL_l1099511627776_Validator(A, N), True{}) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & Bool}:
@@ -596,18 +653,25 @@ def putk_rt_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validato
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
 # into D's (its records write their data bytes only), and whose tree is perfect.
-def putx_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putx_l1099511627776_ValidatorW(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l1099511627776_Validator(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l1099511627776_Validator(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l1099511627776_Validator(A, N)) : +List<U32>})
     -> DK.P2(RTL_l1099511627776_Validator(A, N, dd, D, X, q, r), DK.P2(BYL_l1099511627776_Validator(A, N, dd, D, X, q, r), PFL_l1099511627776_Validator(A, N, dd, D, X))):
   +b = U32.is_eq(N, 0)
-  +g = ptnz_l1099511627776_Validator(A, N, b, {==}, h, dd, D, X, q, r, e, hd, hl, pf, hz)
+  +g = ptnz_l1099511627776_ValidatorW(A, N, b, {==}, h, dd, D, X, q, r, e, hd, hl, hl32, pf, hz)
   +rtb = PA(RTN_l1099511627776_Validator(b, A, N, dd, D, X), BYN_l1099511627776_Validator(b, A, N, dd, D, X, q, r), g)
   +byb = PB(RTN_l1099511627776_Validator(b, A, N, dd, D, X), BYN_l1099511627776_Validator(b, A, N, dd, D, X, q, r), g)
   (putk_rt_l1099511627776_Validator(A, N, h, dd, D, X, q, r, rtb), (byb, pfLb_l1099511627776_Validator(b, A, N, dd, D, X, pf)))
 
 # ---- sizes ----
+
+def putx_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l1099511627776_Validator(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l1099511627776_Validator(A, N)) : +List<U32>})
+    -> DK.P2(RTL_l1099511627776_Validator(A, N, dd, D, X, q, r), DK.P2(BYL_l1099511627776_Validator(A, N, dd, D, X, q, r), PFL_l1099511627776_Validator(A, N, dd, D, X))):
+  putx_l1099511627776_ValidatorW(A, N, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l1099511627776_Validator(A, N), dd, hd, hl), pf, hz)
 
 # The runtime's size pass.
 def sizex_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +h: {OKL_l1099511627776_Validator(A, N) == True{} : Bool}) -> {Fulu_list_Validator_1099511627776_e.l1099511627776_Validator_size(THL_l1099511627776_Validator(A, N)) == (THL_l1099511627776_Validator(A, N), U32.mul(N, 121)) : Fulu_list_Validator_1099511627776_d.l1099511627776_Validator_Seq & U32}:
@@ -619,12 +683,15 @@ def sizex_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
-def szx_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 121)) == LL_l1099511627776_Validator(A, N) : Nat}:
-  bmul(dd, N, U32.to_nat(N), 121, 121n, {==}, {==}, hd,
-    FD.nat__le_trans(LL_l1099511627776_Validator(A, N), Nat.add(Nat.add(A.quad(q), r), LL_l1099511627776_Validator(A, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL_l1099511627776_Validator(A, N)), VRX.xend(q, r, LL_l1099511627776_Validator(A, N), dd, hl)))
+def szx_l1099511627776_ValidatorW(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l1099511627776_Validator(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 121)) == LL_l1099511627776_Validator(A, N) : Nat}:
+  bmulW(N, U32.to_nat(N), 121, 121n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l1099511627776_Validator(A, N), Nat.mul(U32.to_nat(N), 121n), {==}, VRX.yl32(q, r, LL_l1099511627776_Validator(A, N), hl32)))
 
 # ---- l1099511627776_Validator: the spec side ----
+
+def szx_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l1099511627776_Validator(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 121)) == LL_l1099511627776_Validator(A, N) : Nat}:
+  szx_l1099511627776_ValidatorW(A, N, q, r, dd, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l1099511627776_Validator(A, N), dd, hd, hl))
 
 # The value of the list: the records' values.
 def VALL_l1099511627776_Validator(+A: FD.array__Tree<FuluValidator_d.Validator>, +N: U32) -> S.Value: S.Sequence{ITV_l1099511627776_Validator(U32.to_nat(N), A, 0n)}

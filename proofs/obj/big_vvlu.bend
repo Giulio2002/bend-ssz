@@ -31,6 +31,18 @@ def mul4(+y: U32, +c: U32, +h: {Nat.is_le(A.quad(U32.to_nat(y)), U32.to_nat(c)) 
   %Equal.sym(Nat, U32.to_nat(U32.shl(y)), Nat.double(U32.to_nat(y)), e1) : {Nat.double(_) == A.quad(U32.to_nat(y)) : Nat}
   {==}
 
+# 4 y, when 4 y is below 2^32.
+def mul4s(+y: U32, +hq: {Nat.is_lt(A.quad(U32.to_nat(y)), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.mul(4, y)) == A.quad(U32.to_nat(y)) : Nat}:
+  +h1 = F.nat__le_lt_trans(Nat.double(U32.to_nat(y)), A.quad(U32.to_nat(y)), F.spec_common__pow2(32n), F.nat__double_self_le(Nat.double(U32.to_nat(y))), hq)
+  +e1 = F.u32__shl_value(y, 32n, {==}, h1)
+  +h2 = F.logic__subst(Nat, z => {Nat.is_lt(Nat.double(z), F.spec_common__pow2(32n)) == True{} : Bool}, Nat.double(U32.to_nat(y)), U32.to_nat(U32.shl(y)), Equal.sym(Nat, U32.to_nat(U32.shl(y)), Nat.double(U32.to_nat(y)), e1), hq)
+  +e2 = F.u32__shl_value(U32.shl(y), 32n, {==}, h2)
+  %Equal.sym(U32, U32.mul(4, y), U32.shl(U32.shl(y)), mulshl(y)) : {U32.to_nat(_) == A.quad(U32.to_nat(y)) : Nat}
+  %Equal.sym(Nat, U32.to_nat(U32.shl(U32.shl(y))), Nat.double(U32.to_nat(U32.shl(y))), e2) : {_ == A.quad(U32.to_nat(y)) : Nat}
+  %Equal.sym(Nat, U32.to_nat(U32.shl(y)), Nat.double(U32.to_nat(y)), e1) : {Nat.double(_) == A.quad(U32.to_nat(y)) : Nat}
+  {==}
+
 # i + k, when it is at most the value of some word c.
 def addk(+i: U32, +k: U32, +c: U32, +h: {Nat.is_le(Nat.add(U32.to_nat(k), U32.to_nat(i)), U32.to_nat(c)) == True{} : Bool})
     -> {U32.to_nat(U32.add(i, k)) == Nat.add(U32.to_nat(k), U32.to_nat(i)) : Nat}:
