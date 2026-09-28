@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_Gt2FF8722A75.bend as C
 
 def Gt2FF8722A75_spec_unique(+ws: +List<U32>, +hl: {List.length(&2, U32, ws) == 256n : Nat}, +v: S.Value, spec: Decoding.decodes(Spec.Gt2FF8722A75(), SF.limbs(ws), v))
     -> {v == S.Sequence{SP2.vu16(ws, S.EmptyItems{})} : S.Value}:
-  E.image_unique(Spec.Gt2FF8722A75(), SF.limbs(ws), v, S.Sequence{SP2.vu16(ws, S.EmptyItems{})}, VS.public_sound(Spec.Gt2FF8722A75(), {==}), spec, C.Gt2FF8722A75_spec_encode(ws, hl))
+  E.valid_unique(Spec.Gt2FF8722A75(), SF.limbs(ws), v, S.Sequence{SP2.vu16(ws, S.EmptyItems{})}, {==}, spec, C.Gt2FF8722A75_spec_encode(ws, hl))

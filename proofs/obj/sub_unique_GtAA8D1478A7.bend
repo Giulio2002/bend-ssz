@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_GtAA8D1478A7.bend as C
 
 def GtAA8D1478A7_spec_unique(+x0: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(0, x0), U32.not(O.low_mask(7))), 0) == True{} : Bool}, +v: S.Value, spec: Decoding.decodes(Spec.GtAA8D1478A7(), [B.byte_sel(0, x0)], v))
     -> {v == S.BitsValue{C.GtAA8D1478A7_tb(x0)} : S.Value}:
-  E.image_unique(Spec.GtAA8D1478A7(), [B.byte_sel(0, x0)], v, S.BitsValue{C.GtAA8D1478A7_tb(x0)}, VS.public_sound(Spec.GtAA8D1478A7(), {==}), spec, C.GtAA8D1478A7_spec_encode(x0, hp))
+  E.valid_unique(Spec.GtAA8D1478A7(), [B.byte_sel(0, x0)], v, S.BitsValue{C.GtAA8D1478A7_tb(x0)}, {==}, spec, C.GtAA8D1478A7_spec_encode(x0, hp))

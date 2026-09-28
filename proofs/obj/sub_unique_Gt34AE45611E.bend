@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_Gt34AE45611E.bend as C
 
 def Gt34AE45611E_spec_unique(+xs: +List<U32>, +hl: {List.length(&2, U32, xs) == 512n : Nat}, +hb: {SP2.ble(xs) == True{} : Bool}, +v: S.Value, spec: Decoding.decodes(Spec.Gt34AE45611E(), xs, v))
     -> {v == S.Sequence{SP2.vbool(xs)} : S.Value}:
-  E.image_unique(Spec.Gt34AE45611E(), xs, v, S.Sequence{SP2.vbool(xs)}, VS.public_sound(Spec.Gt34AE45611E(), {==}), spec, C.Gt34AE45611E_spec_encode(xs, hl, hb))
+  E.valid_unique(Spec.Gt34AE45611E(), xs, v, S.Sequence{SP2.vbool(xs)}, {==}, spec, C.Gt34AE45611E_spec_encode(xs, hl, hb))

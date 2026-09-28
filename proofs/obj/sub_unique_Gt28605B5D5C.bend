@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_Gt28605B5D5C.bend as C
 
 def Gt28605B5D5C_spec_unique(+xs: +List<U32>, +hl: {List.length(&2, U32, xs) == 512n : Nat}, +hd: {SP.bytes_domain(xs) == True{} : Bool}, +v: S.Value, spec: Decoding.decodes(Spec.Gt28605B5D5C(), xs, v))
     -> {v == S.Sequence{SP2.vu8(xs)} : S.Value}:
-  E.image_unique(Spec.Gt28605B5D5C(), xs, v, S.Sequence{SP2.vu8(xs)}, VS.public_sound(Spec.Gt28605B5D5C(), {==}), spec, C.Gt28605B5D5C_spec_encode(xs, hl, hd))
+  E.valid_unique(Spec.Gt28605B5D5C(), xs, v, S.Sequence{SP2.vu8(xs)}, {==}, spec, C.Gt28605B5D5C_spec_encode(xs, hl, hd))

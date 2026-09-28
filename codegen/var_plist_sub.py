@@ -531,7 +531,40 @@ WIN_IMPORTS = ['import ../../spec/root_relation.bend as RR', 'import ./vua_rd.be
                'import ./vua_fix.bend as VTX', 'import ./vua.bend as UA', 'import ./sub_pack.bend as SP2']
 
 
-def win_text(k):
+def deep_bool_ck(body):
+    """The boolean window's check loop at any depth d < 31: the loop carries its bytes' end by NMAX (hbN),
+    so the byte positions are below 2^32 (VRL.posU32/succU32) and VRB.okbD reads at depth < 31."""
+    T = 'True{} : Bool'
+    NM = 'U32.to_nat(VB.NMAX())'
+    P32 = 'FD.spec_common__pow2(32n)'
+    POS = lambda j: f'VRL.pos({j}, 1n, x)'
+    reps = [
+        (f"+hb: {{Nat.is_le({POS('Nat.add(1n+k, j)')}, A.quad(VB.pw(d))) == {T}}})",
+         f"+hb: {{Nat.is_le({POS('Nat.add(1n+k, j)')}, A.quad(VB.pw(d))) == {T}}}, +hbN: {{Nat.is_le({POS('Nat.add(1n+k, j)')}, {NM}) == {T}}})"),
+        ("      +hx = VRL.nextfit(j, q, 1n, x, A.quad(VB.pw(d)), hb)\n",
+         "      +hx = VRL.nextfit(j, q, 1n, x, A.quad(VB.pw(d)), hb)\n"
+         f"      +hx32 = FD.nat__le_lt_trans(Nat.add({POS('1n+j')}, 1n), {POS('Nat.add(2n+q, j)')}, {P32},\n"
+         f"        VRL.nextfit(j, q, 1n, x, {POS('Nat.add(2n+q, j)')}, FD.nat__le_refl({POS('Nat.add(2n+q, j)')})), VB.le_n_lt32({POS('Nat.add(2n+q, j)')}, VB.NMAX(), hbN))\n"
+         f"      +hb2N = FD.logic__subst(Nat, z => {{Nat.is_le(VRL.pos(1n+z, 1n, x), {NM}) == {T}}}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hbN)\n"),
+        ("      +ex = VRL.posU(d, off, x, i, j, 1, 0n, {==}, e, ej, hd, hx)", "      +ex = VRL.posU32(off, x, i, j, 1, 0n, {==}, e, ej, hx32)"),
+        ("VRL.succU(d, i, j, 0n, x, ej, hd, hx), hd, pf, hb2)", "VRL.succU32(i, j, 0n, x, ej, hx32), hd, pf, hb2, hb2N)"),
+        ("ck(k, d, t, n, off, x, 0, 0n, True{}, eo, {==}, hd, pf, hbk(d, x, len, k, ek, hw))", "ck(k, d, t, n, off, x, 0, 0n, True{}, eo, {==}, hd, pf, hbk(d, x, len, k, ek, hw), hbkN(x, len, k, ek, hwN))"),
+    ]
+    for a, b in reps:
+        assert body.count(a) >= 1, (body.count(a), a[:90])
+        body = body.replace(a, b)
+    body = body.replace('VRB.okb(', 'VRB.okbD(')
+    a = body.index('\ndef hbk(')
+    b = body.index('\n\n', a + 1)
+    hbk = body[a + 1:b]
+    hbkN = (hbk.replace('def hbk(+d: Nat, +x: Nat,', 'def hbkN(+x: Nat,').replace('A.quad(VB.pw(d))', NM)
+            .replace('+hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), ' + NM + ')', '+hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), ' + NM + ')')
+            .replace('FD.nat__add_comm(x, 1n+k)), hw)', 'FD.nat__add_comm(x, 1n+k)), hwN)'))
+    assert 'hwN)' in hbkN and '+hwN' in hbkN, hbkN
+    return body[:b] + '\n\n' + hbkN + body[b:]
+
+
+def win_text(k, deep=True):
     X, p = KINDS[k]
     body = {'u8': WIN_U8, 'u16': WIN_U16, 'bool': WIN_BOOL}[k].replace('@READW', READW)
     if k == 'bool':
@@ -542,7 +575,12 @@ def win_text(k):
     L = generic(VW.HEADX) + WIN_IMPORTS + ['', HDR,
                                            f'# ProgressiveList[{ {"u8": "uint8", "u16": "uint16", "bool": "boolean"}[k] }] ({X}) at a window of any byte offset x:',
                                            '# the interface of proofs/obj/vua_win.bend.', '']
-    return '\n'.join(L) + VW.COMMONX + body
+    text = '\n'.join(L) + VW.COMMONX + body
+    if deep:
+        if k == 'bool':
+            text = deep_bool_ck(text)
+        text = VW.deep_xN(text)
+    return text
 
 
 def top_text(k):
@@ -566,7 +604,7 @@ def unique_text(k):
     D = top_fname(X, '_top').name
     return '\n'.join(['import Base', 'import ../../types/schema.bend as S', 'import ../../spec/decoding_relation.bend as Decoding',
                       'import ../compact/found.bend as FD', 'import ../compact/arith.bend as A', 'import ./vbuf.bend as VB',
-                      'import ./generic_specs.bend as GS', f'import ./{D} as DC', 'import ../../proofs/decode_complete.bend as DCO', '',
+                      'import ./generic_specs.bend as GS', f'import ./{D} as DC', 'import ../../proofs/decode_unique.bend as DCO', '',
                       HDR, '# Every spec value of an accepted buffer\'s bytes is the decoded value.',
                       'law decode_unique:', '  for +d: Nat', '  for +t: FD.array__Tree<U32>', '  for +n: U32',
                       '  for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}', '  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}',
@@ -665,16 +703,52 @@ def encode_spec(dw, T, N, pfT, hdw, hN@SARG):
 """
 
 
+HM = '{U32.is_le(N, VB.NMAX()) == True{} : Bool}'
+
+
+def enc_deep(body):
+    """The progressive list's encoder laws at any tree depth dw < 31, for N <= VB.NMAX (hM, the object API's
+    limit): 31 + N <= UMAX, so the copy chain's U twins apply and the window's deep interface (hwN)."""
+    import re as _re
+    HN = '+hN: {Nat.is_le(U32.to_nat(N), A.quad(VB.pw(dw))) == True{} : Bool}'
+    HY = 'VB.le_nmax(N, hM)'
+    HWN = ('FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(N, VB.NMAX()), Nat.is_le(U32.to_nat(N), U32.to_nat(VB.NMAX())), '
+           'VB.le_u32n(N, VB.NMAX()), hM)')
+    reps = [
+        ('FD.nat__lt_trans(dw, 28n, 31n, hdw, {==})', 'hdw'),
+        ('FD.nat__le_trans(dw, 28n, 32n, FD.nat__lt_le(dw, 28n, hdw), {==})', 'FD.nat__le_trans(dw, 31n, 32n, FD.nat__lt_le(dw, 31n, hdw), {==})'),
+        ('UW.hsx(dw, 0, 0n, N, {==}, hdw, hN)', f'UW.hsxBU(dw, 0, 0n, N, {{==}}, {HY}, hN)'),
+        ('VBE.put_words_any(DO, dw, VC.ZT(DO), T, 0, 0n, N, VLS.KK(dw), FD.array__trep_perfect(U32, DO, 0), pfT,',
+         'VBE.put_words_anyU(DO, dw, VC.ZT(DO), T, 0, 0n, N, FD.array__trep_perfect(U32, DO, 0), pfT,'),
+        ('{==}, {==}, VLS.kk_lt(dw, hdw), VLS.hyn(dw, N, hN),', f'{{==}}, {{==}}, {HY},'),
+        ('VBS.quad_nw_ge(N, VLS.KK(dw), VLS.kk_lt(dw, hdw), VLS.hyn(dw, N, hN))', f'VBS.quad_nw_geU(N, {HY})'),
+        ('W.specw(dw, T, N, 0n, 0, N, {==}, hdw, hN, pfT, @CHK)', f'W.specwD(dw, T, N, 0n, 0, N, {{==}}, hdw, hN, {HWN}, pfT, @CHK)'),
+        ('def encode_eval(dw, T, N, pfT, hdw, hN):', 'def encode_eval(dw, T, N, pfT, hdw, hN, hM):'),
+        ('def encode_spec(dw, T, N, pfT, hdw, hN@SARG):', 'def encode_spec(dw, T, N, pfT, hdw, hN, hM@SARG):'),
+    ]
+    for a, b in reps:
+        assert a in body, a[:80]
+        body = body.replace(a, b)
+    body = body.replace('Nat.is_lt(dw, 28n)', 'Nat.is_lt(dw, 31n)')
+    body = body.replace('  for ' + HN + '\n', '  for ' + HN + '\n  for +hM: ' + HM + '\n')
+    sig = HN + ')\n    ->'
+    body = body.replace(sig, HN + ', +hM: ' + HM + ')\n    ->')
+    for f in ('hsrc', 'leWo', 'hDO', 'hdsto', 'out_eq'):
+        body = _re.sub(r'(?<![\w.])%s\((dw, (?:T, )?N, (?:pfT, )?hdw, hN)\)' % f, r'%s(\1, hM)' % f, body)
+    assert '28n' not in body, [l for l in body.split('\n') if '28n' in l][:3]
+    return body
+
+
 def enc_text(k):
     X, p = KINDS[k]
     chk = {'u8': 'W.chk(T, 0n, 0, N)', 'u16': 'W.chk2(T, 0n, 0, N, c, ec)', 'bool': 'hb'}[k]
     shyp, sarg = {'u8': ('', ''), 'u16': ('  for +c: Nat\n  for +ec: {U32.to_nat(N) == Nat.double(c) : Nat}\n', ', c, ec'),
                   'bool': ('  for +hb: {W.CHKw(T, 0n, 0, N) == True{} : Bool}\n', ', hb')}[k]
-    body = ENC.replace('@X', X).replace('@p_', f'{p}_').replace('@CHK', chk).replace('@SHYP', shyp).replace('@SARG', sarg)
+    body = enc_deep(ENC).replace('@X', X).replace('@p_', f'{p}_').replace('@CHK', chk).replace('@SHYP', shyp).replace('@SARG', sarg)
     L = generic(VW.HEADX) + ['import ./big_vvlz.bend as VZG', 'import ./venc.bend as VE', 'import ./vbenc.bend as VBE', 'import ./vbspec.bend as VBS', 'import ./vbytes.bend as VYS',
                              f'import ./{win_fname(k).name} as W', '', HDR,
                              f'# The encoder of {X}: for every object O.Words{{thaw(T), N}} whose storage T is a perfect',
-                             '# tree of depth dw < 28 with room for its N bytes, the encoder returns the object and',
+                             '# tree of depth dw < 31 with room for its N bytes, N <= NMAX, the encoder returns the object and',
                              '# B.Buf{thaw(OUTP(N, T)), N} (encode_eval), and the bytes of that buffer are the spec',
                              '# encoding of the object\'s value, the list of its first N bytes (encode_spec).', '']
     return '\n'.join(L) + body

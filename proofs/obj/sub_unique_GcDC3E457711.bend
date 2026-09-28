@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_GcDC3E457711.bend as C
 
 def GcDC3E457711_spec_unique(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +v: S.Value, spec: Decoding.decodes(Spec.GcDC3E457711(), List.append(&2, U32, SF.limbs([x0, x1, x2]), [B.byte_sel(0, x3)]), v))
     -> {v == S.Sequence{S.Items{S.UnsignedValue{P.UInt{B.byte_sel(0, x0), 0, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{B.join_sel(1, x0, x1), B.join_sel(1, x1, x2), 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{B.join_sel(1, x2, x3), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}} : S.Value}:
-  E.image_unique(Spec.GcDC3E457711(), List.append(&2, U32, SF.limbs([x0, x1, x2]), [B.byte_sel(0, x3)]), v, S.Sequence{S.Items{S.UnsignedValue{P.UInt{B.byte_sel(0, x0), 0, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{B.join_sel(1, x0, x1), B.join_sel(1, x1, x2), 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{B.join_sel(1, x2, x3), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}}, VS.public_sound(Spec.GcDC3E457711(), {==}), spec, C.GcDC3E457711_spec_encode(x0, x1, x2, x3))
+  E.valid_unique(Spec.GcDC3E457711(), List.append(&2, U32, SF.limbs([x0, x1, x2]), [B.byte_sel(0, x3)]), v, S.Sequence{S.Items{S.UnsignedValue{P.UInt{B.byte_sel(0, x0), 0, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{B.join_sel(1, x0, x1), B.join_sel(1, x1, x2), 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{B.join_sel(1, x2, x3), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}}, {==}, spec, C.GcDC3E457711_spec_encode(x0, x1, x2, x3))

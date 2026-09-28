@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_GtA8100D747D.bend as C
 
 def GtA8100D747D_spec_unique(+x0: U32, +x1: U32, +v: S.Value, spec: Decoding.decodes(Spec.GtA8100D747D(), SF.limbs([x0, x1]), v))
     -> {v == S.Sequence{SP2.vu8(SF.limbs([x0, x1]))} : S.Value}:
-  E.image_unique(Spec.GtA8100D747D(), SF.limbs([x0, x1]), v, S.Sequence{SP2.vu8(SF.limbs([x0, x1]))}, VS.public_sound(Spec.GtA8100D747D(), {==}), spec, C.GtA8100D747D_spec_encode(x0, x1))
+  E.valid_unique(Spec.GtA8100D747D(), SF.limbs([x0, x1]), v, S.Sequence{SP2.vu8(SF.limbs([x0, x1]))}, {==}, spec, C.GtA8100D747D_spec_encode(x0, x1))
