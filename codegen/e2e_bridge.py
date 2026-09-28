@@ -898,7 +898,7 @@ def valid_index():
     <alias>.<view>(o) of the root file they import."""
     idx = {}
     for f in sorted(OBJ.glob('valid_*.bend')):
-        src = f.read_text()
+        src = RR.unwire(f.read_text())   # light companions read as their modules (codegen/light_split.py)
         al = {m.group(2): m.group(1) for m in re.finditer(r'import \./(\w+\.bend) as (\w+)', src)}
         for m in re.finditer(r'^def (rv_\w+)\(\+o: [\w.]+\) -> \{VD\.root_valid\((\w+)\.(\w+)\(o\), ', src, re.M):
             if m.group(2) in al:
@@ -906,7 +906,7 @@ def valid_index():
     # the per-name lemmas at the Spec schema (codegen/valid_laws.py: gvalid_*.bend):
     # <X>_root_valid(+o: R) -> {VD.root_valid(<alias>.<view>(o), Spec.<X>()) == True{} : Bool}
     for f in sorted(OBJ.glob('gvalid_*.bend')):
-        src = f.read_text()
+        src = RR.unwire(f.read_text())
         al = {m.group(2): m.group(1) for m in re.finditer(r'import \./(\w+\.bend) as (\w+)', src)}
         for m in re.finditer(r'^def ((\w+)_root_valid)\(\+o: [\w.]+\) -> \{VD\.root_valid\((\w+)\.(\w+)\(o\), Spec\.(\w+)\(\)\) == True', src, re.M):
             if m.group(3) in al and m.group(2) == m.group(5):

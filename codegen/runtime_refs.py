@@ -418,6 +418,13 @@ BARE = ('T', 'TG')
 
 
 def rewire(text, missing=None):
+    """_rewire, then codegen/light_split.py's light(): imports pointed at light definition companions,
+    unused heavy imports dropped."""
+    import light_split as LS
+    return LS.light(_rewire(text, missing))
+
+
+def _rewire(text, missing=None):
     """text with its monolith imports (import <p>fulu_obj.bend / generic_obj.bend as A) replaced by the
     imports of exactly the split files it uses (import <p><Name>_<op>_generated.bend as <alias>), every
     A.<sym> by <alias>.<sym>. Idempotent: split imports already present are recomputed the same way, and
@@ -497,7 +504,10 @@ def rewire_out(out):
 
 def unwire(text, to='T'):
     """A rewired module's text with its split qualifiers spelled as the monolith's alias again (to.<sym>),
-    for generators that parse another generated module by its T.<sym> references."""
+    for generators that parse another generated module by its T.<sym> references. The module reads as
+    before any light split (codegen/light_split.py unlight)."""
+    import light_split as LS
+    text = LS.unlight(text)
     known = _aliases()
     pat = re.compile(r'(?<![\w.])([A-Za-z_]\w*_[derh])\.([A-Za-z_]\w*)')
     return '\n'.join(_code_sub(pat, lambda m: f'{to}.{m.group(2)}' if m.group(1) in known else m.group(0), l)

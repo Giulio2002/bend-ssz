@@ -7,7 +7,6 @@ import ../proofs/compact/arith.bend as A
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/var_bytesx_LightClientFinalityUpdate.bend as W
@@ -15,7 +14,7 @@ import ./e2e_bx.bend as BX
 import ../proofs/obj/var_bytesx_LightClientHeader.bend as YW
 import ./e2e_vbx_LightClientHeader.bend as YV
 import ../proofs/obj/spec_bits.bend as FB
-import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_names_light.bend as RN
 import ./e2e_bvh.bend as BV
 import ../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
 import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d

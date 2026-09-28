@@ -20,6 +20,7 @@ import ./elems_obj.bend as EL
 import ./schema_shapes.bend as SH
 import ./dk.bend as DK
 import ./root_names.bend as RN
+import ./root_names_light.bend as RN_L
 
 # Vectors and lists of Bytes48 packed in words (12 words per element): each
 # element's root is the Bytes48 record law of phase A (proofs/obj/root_names.bend
@@ -37,12 +38,12 @@ def er48(+W: List<&2, U32>, +i: Nat, +hl: Nat) -> {EL.er(W, i, 12n, 1n, 2n, hl) 
 def eitems(k: Nat, +W: List<&2, U32>, +i: Nat) -> S.Value:
   match k:
     case 0n: S.EmptyItems{}
-    case 1n+q: S.Items{RN.v_b48(rec48(W, Nat.mul(i, 12n))), eitems(q, W, 1n+i)}
+    case 1n+q: S.Items{RN_L.v_b48(rec48(W, Nat.mul(i, 12n))), eitems(q, W, 1n+i)}
 
 def elem48(+W: List<&2, U32>, +i: Nat, +hl: Nat, +ehl: {hl == 64n : Nat})
-    -> RR.roots(RN.v_b48(rec48(W, Nat.mul(i, 12n))), S.ByteVector{48n}, [D.bytes(EL.er(W, i, 12n, 1n, 2n, hl))]):
+    -> RR.roots(RN_L.v_b48(rec48(W, Nat.mul(i, 12n))), S.ByteVector{48n}, [D.bytes(EL.er(W, i, 12n, 1n, 2n, hl))]):
   %Equal.sym(D.Digest, EL.er(W, i, 12n, 1n, 2n, hl), RN.d_b48(hl, rec48(W, Nat.mul(i, 12n))), er48(W, i, hl)) :
-    RR.roots(RN.v_b48(rec48(W, Nat.mul(i, 12n))), S.ByteVector{48n}, [D.bytes(_)])
+    RR.roots(RN_L.v_b48(rec48(W, Nat.mul(i, 12n))), S.ByteVector{48n}, [D.bytes(_)])
   RN.rs_b48(hl, ehl, rec48(W, Nat.mul(i, 12n)))
 
 law eroots:

@@ -11,7 +11,6 @@ import ./mtree_run.bend as MR
 import ./digest_facts.bend as DF
 import ./ctree.bend as CT
 import ./cidx.bend as CX
-import ./cloop.bend as CL
 import ./cloop2.bend as CL2
 
 # The root of the cached Merkle tree of BeaconState.validators

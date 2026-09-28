@@ -47,7 +47,6 @@ import ./generic_specs.bend as Spec
 import ../../proofs/integer_encoding.bend as IE
 import ./spec_fixed.bend as F
 import ./mtree_defs.bend as MD
-import ./mtree_spec.bend as MS
 import ./root_support.bend as RS
 import ./root_leaf.bend as RL
 import ./bits_leaf.bend as BL

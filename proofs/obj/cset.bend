@@ -6,7 +6,6 @@ import ../compact/found.bend as F
 import ./mtree_defs.bend as MD
 import ./mtree_run.bend as MR
 import ./ctree.bend as CT
-import ./cidx.bend as CX
 import ./cloc.bend as LC
 import ./cloop2.bend as CL2
 import ./root_names.bend as RN
