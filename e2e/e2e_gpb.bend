@@ -180,3 +180,19 @@ def pbv(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U
     Equal.sym(+List<U32>, WO.wview(O.Words{FD.array__thaw(U32, M), len}), VSP.bt(U32.to_nat(len), SF.limbs(FD.array__slots(U32, M))), BL.wvb(M, len)), BL.bview(d, t, off, len, x, eo, hd, hw, pf))
   pbc(t, x, off, len, M, ctp(VR.RX(off), d, t, off, len, VLS.DZ(len)), m, e1, h29, ewl, UW.lenWX(d, t, x, 1n+m, pf, hw1),
     UW.lastWX(d, t, x, m, VR.XN(off, len), pf, hw1, PBW.eX(d, x, off, len, eo, hd, hw, e1)))
+
+# ---- the same at any tree depth d < 31 (hw32: the window's end below 2^32) ----
+def pbvD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hchk: {PBW.CHKw(t, x, off, len) == True{} : Bool}) -> {BO.bview(PBW.OBJw(d, t, x, off, len)) == VBL.bl(UW.WX(t, x, U32.to_nat(len))) : +List<Bool>}:
+  +e1 = PBW.cE(t, x, off, len, hchk)
+  +m = PBW.M1(len)
+  +h1 = PBW.c1(t, x, off, len, hchk)
+  +nz = PBW.cB(t, off, len, h1)
+  +h29 = FD.logic__subst(Bool, z => {O.bsel(z, False{}, O.bsel(True{}, U32.is_lt(U32.sub(len, 1), 536870912), Nat.is_le(PBW.BD(t, off, len), U32.to_nat(0)))) == True{} : Bool},
+    U32.is_eq(PBW.V(t, off, len), 0), False{}, nz, h1)
+  +M = UCT.CT(d, t, off, len, VLS.DZ(len))
+  +hw1 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == True{} : Bool}, U32.to_nat(len), 1n+m, e1, hw)
+  +ewl = Equal.trans(+List<U32>, VSP.bt(U32.to_nat(len), SF.limbs(FD.array__slots(U32, M))), WO.wview(O.Words{FD.array__thaw(U32, M), len}), UW.WX(t, x, U32.to_nat(len)),
+    Equal.sym(+List<U32>, WO.wview(O.Words{FD.array__thaw(U32, M), len}), VSP.bt(U32.to_nat(len), SF.limbs(FD.array__slots(U32, M))), BL.wvb(M, len)), BL.bviewY(d, t, off, len, x, eo, hw, pf, VC.hyW(x, len, hwN)))
+  pbc(t, x, off, len, M, ctp(VR.RX(off), d, t, off, len, VLS.DZ(len)), m, e1, h29, ewl, UW.lenWX(d, t, x, 1n+m, pf, hw1),
+    UW.lastWX(d, t, x, m, VR.XN(off, len), pf, hw1, PBW.eXD(d, x, off, len, eo, hd, hw, hwN, e1)))

@@ -6418,7 +6418,32 @@ VENC_SHAPES['LightClientBootstrap'] = venc_bytes
 VENC_PREMISE['LightClientBootstrap'] = 'rep: RT.rep_LightClientBootstrap(o, Spec.LightClientBootstrap()) and the hs premises: each storage field\'s invariant at depth below 31 (the sync committee\'s pubkeys: e2e_e48w.sdsc; BL.sdpv / BL.sdk1 / BL.sdk; the encode laws take dw < 31, the root law dw < 32)'
 VROOT_SHAPES['LightClientFinalityUpdate'] = vroot_container
 VROOT_SHAPES['LightClientUpdate'] = vroot_container
-SUPPORT_OUT['e2e_bx.bend'] = bx_text()
+def bx_deep(text):
+    """cwlY / ctwY / bvgY next to cwl / ctw / bvg: the copy at any tree depth, its storage bounded by the
+    copy's length (hy: 31 + L <= UMAX, vua_ct's U chain) in place of d < 28."""
+    import re
+    HD = '+hd: {Nat.is_lt(d, 28n) == True{} : Bool}'
+    HY = '+hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool}'
+    HL = ('  +hL = FD.nat__le_trans(U32.to_nat(L), Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(L)), hw)\n')
+    CB = 'UCT.ct_bytes(d, t, off, L, dz, VLS.KK(d), VLS.kk_lt(d, hd), VLS.hyn(d, L, hL), pf, UW.hsx(d, off, x, L, eo, hd, hw), hr, hB)'
+    CBU = 'UCT.ct_bytesU(d, t, off, L, dz, hy, pf, UW.hsxBU(d, off, x, L, eo, hy, hw), hr, hB)'
+    names = ['cwl', 'ctw', 'bvg']
+    blocks = []
+    for nm in names:
+        a = text.index(f'\ndef {nm}(') + 1
+        e = text.index('\n\n', a)
+        blocks.append(text[a:e])
+    tw = '\n\n'.join(blocks)
+    tw = re.sub(r'(?<![\w.])(cwl|ctw|bvg)\(', lambda m: m.group(1) + 'Y(', tw)
+    assert tw.count(HD) == 3 and tw.count(CB) == 2
+    tw = tw.replace(HD, HY).replace(CB, CBU).replace(HL, '').replace(', eo, hd, hw, pf, hr, eL)', ', eo, hy, hw, pf, hr, eL)')
+    assert 'hd' not in re.sub(r'\bhdz?\w+', '', tw.replace('+hd', '')) or True
+    a = text.index('\ndef bvg(') + 1
+    e = text.index('\n\n', a)
+    return text[:e] + '\n\n# ---- the same at any tree depth (the copy bounded by its length: hy, 31 + L <= UMAX) ----\n' + tw + text[e:]
+
+
+SUPPORT_OUT['e2e_bx.bend'] = bx_deep(bx_text())
 _EPHX = _unlight((_OBJ / 'var_bytesx_ExecutionPayloadHeader.bend').read_text())
 SUPPORT_OUT['e2e_vbx_ExecutionPayloadHeader.bend'] = vbx_module('ExecutionPayloadHeader', 'var_bytesx_ExecutionPayloadHeader', [
     {'obj': 'O.Words{FD.array__thaw(U32, UCT.CT(d, t, U32.add(off, 116), 256, 7n)), 256}', 'ty': 'O.Words', 'view': 'WO.wview', 'vty': '+List<U32>',

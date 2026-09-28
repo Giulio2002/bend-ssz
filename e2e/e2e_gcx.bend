@@ -46,6 +46,19 @@ def vw_Gc221EC01D83(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U3
   %e3 : {RT2.v_Gc221EC01D83(WPT.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{PBF.vview1(PU8.OBJw(d, t, WPT.XJ0(t, x), WPT.FJ0(off, t, x), WPT.LJ0(t, x))), S.Items{UL.uview(PU64.OBJw(d, t, WPT.XJ1(t, x), WPT.FJ1(off, t, x), WPT.LJ1(t, x))), S.Items{RT2.xv_pl_Gc4ED9619F50(RL4.OBJw(d, t, WPT.XJ2(t, x), WPT.FJ2(off, t, x), WPT.LJ2(t, x))), S.Items{_, S.EmptyItems{}}}}}} : S.Value}
   {==}
 
+def vw_Gc221EC01D83D(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: {WPT.CHKw(t, x, off, len) == True{} : Bool})
+    -> {RT2.v_Gc221EC01D83(WPT.OBJw(d, t, x, off, len)) == WPT.VALw(t, x, len) : S.Value}:
+  +e0 = GP.pu8D(d, t, WPT.XJ0(t, x), WPT.FJ0(off, t, x), WPT.LJ0(t, x), WPT.eoJ0D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), WPT.hwJ0D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), WPT.hwJ0N(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), pf, WPT.itD0(t, x, off, len, h))
+  +e1 = GP.pu64D(d, t, WPT.XJ1(t, x), WPT.FJ1(off, t, x), WPT.LJ1(t, x), WPT.eoJ1D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), WPT.hwJ1D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), WPT.hwJ1N(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), pf, WPT.itD1(t, x, off, len, h))
+  +e2 = GRL.vl_pl_Gc4ED9619F50D(d, t, WPT.XJ2(t, x), WPT.FJ2(off, t, x), WPT.LJ2(t, x), WPT.eoJ2D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), hd, WPT.hwJ2D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), pf, WPT.itD2(t, x, off, len, h))
+  +e3 = GVL.vw_pl_pl_Gc465214E502D(d, t, WPT.XJ3(t, x), WPT.FJ3(off, t, x), WPT.LJ3(t, x, len), WPT.eoJ3D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), hd, WPT.hwJ3D(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), WPT.hwJ3_32(d, t, n, x, off, len, eo, hd, hw, hwN, pf, h), pf, WPT.itD3(t, x, off, len, h))
+  %e0 : {RT2.v_Gc221EC01D83(WPT.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{_, S.Items{PU64.VALw(t, WPT.XJ1(t, x), WPT.LJ1(t, x)), S.Items{RL4.VALw(t, WPT.XJ2(t, x), WPT.LJ2(t, x)), S.Items{TB.VALw(t, WPT.XJ3(t, x), WPT.LJ3(t, x, len)), S.EmptyItems{}}}}}} : S.Value}
+  %e1 : {RT2.v_Gc221EC01D83(WPT.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{PBF.vview1(PU8.OBJw(d, t, WPT.XJ0(t, x), WPT.FJ0(off, t, x), WPT.LJ0(t, x))), S.Items{_, S.Items{RL4.VALw(t, WPT.XJ2(t, x), WPT.LJ2(t, x)), S.Items{TB.VALw(t, WPT.XJ3(t, x), WPT.LJ3(t, x, len)), S.EmptyItems{}}}}}} : S.Value}
+  %e2 : {RT2.v_Gc221EC01D83(WPT.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{PBF.vview1(PU8.OBJw(d, t, WPT.XJ0(t, x), WPT.FJ0(off, t, x), WPT.LJ0(t, x))), S.Items{UL.uview(PU64.OBJw(d, t, WPT.XJ1(t, x), WPT.FJ1(off, t, x), WPT.LJ1(t, x))), S.Items{_, S.Items{TB.VALw(t, WPT.XJ3(t, x), WPT.LJ3(t, x, len)), S.EmptyItems{}}}}}} : S.Value}
+  %e3 : {RT2.v_Gc221EC01D83(WPT.OBJw(d, t, x, off, len)) == S.Sequence{S.Items{PBF.vview1(PU8.OBJw(d, t, WPT.XJ0(t, x), WPT.FJ0(off, t, x), WPT.LJ0(t, x))), S.Items{UL.uview(PU64.OBJw(d, t, WPT.XJ1(t, x), WPT.FJ1(off, t, x), WPT.LJ1(t, x))), S.Items{RT2.xv_pl_Gc4ED9619F50(RL4.OBJw(d, t, WPT.XJ2(t, x), WPT.FJ2(off, t, x), WPT.LJ2(t, x))), S.Items{_, S.EmptyItems{}}}}}} : S.Value}
+  {==}
+
 def vw_Gp8A7851175B(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: {WPC.CHKw(t, x, off, len) == True{} : Bool})
     -> {RT2.v_Gp8A7851175B(WPC.OBJw(d, t, x, off, len)) == WPC.VALw(t, x, len) : S.Value}:

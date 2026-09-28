@@ -2702,7 +2702,7 @@
      "BitsStruct_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "CompatibleUnionA_e2e_dec_generated.bend": [
@@ -2750,7 +2750,7 @@
      "ComplexTestStruct_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "FuluAggregateAndProof_e2e_dec_generated.bend": [
@@ -2978,7 +2978,7 @@
      "ProgressiveBitsStruct_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts whose progressive-bitlist fields are <= 2^29 bytes (hS: n <= VB.NMAX() = 2^32 - 32; hPB: PBQ, every pbits field [O, E) inside the input has E - O <= 2^29)"
    }
   ],
   "ProgressiveComplexTestStruct_e2e_dec_generated.bend": [
@@ -3002,7 +3002,7 @@
      "ProgressiveSingleListContainerTestStruct_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts whose progressive-bitlist fields are <= 2^29 bytes (hS: n <= VB.NMAX() = 2^32 - 32; hPB: PBQ, every pbits field [O, E) inside the input has E - O <= 2^29)"
    }
   ],
   "ProgressiveTestStruct_e2e_dec_generated.bend": [
@@ -3014,7 +3014,7 @@
      "ProgressiveTestStruct_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "ProgressiveVarTestStruct_e2e_dec_generated.bend": [
@@ -3026,7 +3026,7 @@
      "ProgressiveVarTestStruct_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts whose progressive-bitlist fields are <= 2^29 bytes (hS: n <= VB.NMAX() = 2^32 - 32; hPB: PBQ, every pbits field [O, E) inside the input has E - O <= 2^29)"
    }
   ],
   "VarTestStruct_e2e_dec_generated.bend": [
@@ -7242,9 +7242,9 @@
  "input_bounds": {
   "BitsStruct": {
    "generated_name": "Gc85FA758A04",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 13,
    "covered": true,
    "bridged": null
@@ -7278,9 +7278,9 @@
   },
   "ComplexTestStruct": {
    "generated_name": "Gc56D855869F",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 6756,
    "covered": true,
    "bridged": null
@@ -7476,9 +7476,9 @@
   },
   "ProgressiveBitsStruct": {
    "generated_name": "Gc60805EC295",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
@@ -7494,27 +7494,27 @@
   },
   "ProgressiveSingleListContainerTestStruct": {
    "generated_name": "Gp4B0CA2906A",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
   },
   "ProgressiveTestStruct": {
    "generated_name": "Gc221EC01D83",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
   },
   "ProgressiveVarTestStruct": {
    "generated_name": "Gp66304057C3",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": "unbounded",
    "covered": false,
    "bridged": null
@@ -7814,7 +7814,7 @@
   },
   {
    "name": "ProgressiveBitsStruct",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },
@@ -7826,19 +7826,19 @@
   },
   {
    "name": "ProgressiveSingleListContainerTestStruct",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },
   {
    "name": "ProgressiveTestStruct",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },
   {
    "name": "ProgressiveVarTestStruct",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "unbounded (progressive list)",
    "closed_at_depth_29": false
   },
