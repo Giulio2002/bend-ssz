@@ -6,7 +6,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/root_types.bend as RT
-import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/encx_l16_SignedBLSToExecutionChange.bend as RL
 import ../src/obj.bend as O
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d

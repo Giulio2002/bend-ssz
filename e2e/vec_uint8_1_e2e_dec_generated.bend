@@ -3,7 +3,6 @@ import ./e2e_fixd.bend as X
 import ./e2e_bits.bend as EBT
 import ./e2e_fixdb.bend as XB
 import ../proofs/compact/bits.bend as BT
-import ./e2e_fixd16.bend as X16
 import ../proofs/primitive_invariants.bend as V
 import ../proofs/word_facts.bend as WF
 import ../END_TO_END.bend as E2E
@@ -22,7 +21,6 @@ import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
 import ../types/vec_uint8_1_decode_ssz_generated.bend as vec_uint8_1_r
 import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/root_gtypes.bend as M0
 import ../proofs/obj/packed_bytes.bend as M0_PB
 import ../proofs/obj/sub_GtB85E1BC748.bend as M2
 import ../proofs/obj/fixrej_g0.bend as M3

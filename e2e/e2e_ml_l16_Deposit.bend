@@ -17,7 +17,7 @@ import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/encx_l16_Deposit.bend as EW
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d

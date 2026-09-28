@@ -943,7 +943,8 @@ def words_root_prog(+hl: Nat, h: B.Buf, w: Words, +seg: U32) -> B.Buf & (Words &
 type Bits is Type:
   Bits{ws: Array<U32>, nbits: U32}
 
-def bits_nbytes(+nbits: U32) -> U32: U32.shrn((nbits + 7 : U32), 3n)
+# ceil(nbits / 8), for every U32 nbits: (nbits >> 3) + ((nbits & 7) + 7 >> 3) (nbits + 7 would wrap above 2^32 - 8).
+def bits_nbytes(+nbits: U32) -> U32: (U32.shrn(nbits, 3n) + U32.shrn((U32.and(nbits, 7) + 7 : U32), 3n) : U32)
 
 # Decode from a validated window [off, off + len): the delimiter is cleared.
 def clear_at(+i: U32, +m: U32, pair: Array<U32> & U32) -> Array<U32>:

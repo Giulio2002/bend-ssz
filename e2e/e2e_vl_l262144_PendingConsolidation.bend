@@ -7,8 +7,7 @@ import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/root_types.bend as RT
-import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/big_var_winx_l262144_PendingConsolidation.bend as W
 import ../types/FuluPendingConsolidation_def_generated.bend as FuluPendingConsolidation_d
 import ../proofs/obj/root_state.bend as ST

@@ -28,8 +28,6 @@ import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/list_obj.bend as LO
-import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/big_var_bytes_LightClientBootstrap_enc.bend as EN

@@ -8,7 +8,7 @@ import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/root_types.bend as RT
-import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/var_winx_l16_Withdrawal.bend as W
 import ../types/FuluWithdrawal_def_generated.bend as FuluWithdrawal_d
 

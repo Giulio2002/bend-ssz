@@ -17,6 +17,7 @@ shaped message (see codegen/sha_laws.py):
     that hash nothing (chunking, byte views).
 """
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -1097,7 +1098,12 @@ def main():
     text, status = emit_names()
     wtext, wstatus = emit_words_names()
     status.update(wstatus)
-    outs = [(LEAF, emit_leaf()), (BITS_LEAF, emit_bits_leaf()), (ROOT / 'proofs/obj/root_names.bend', text), (ROOT / 'proofs/obj/root_words.bend', wtext),
+    # the object views (v_ / vb_ / bits_) go to a light companion: e2e files stating against them do not
+    # import the root laws (codegen/light_split.py)
+    import light_split as LS
+    text, ltext = LS.split(text, lambda n: re.match(r'(v|vb|bits|domain|blen)_', n) is not None, './root_names_light.bend', 'codegen/root_laws.py')
+    outs = [(LEAF, emit_leaf()), (BITS_LEAF, emit_bits_leaf()), (ROOT / 'proofs/obj/root_names.bend', text),
+            (ROOT / 'proofs/obj/root_names_light.bend', ltext), (ROOT / 'proofs/obj/root_words.bend', wtext),
             (ROOT / 'proofs/obj/len_bridge.bend', emit_len_bridge()), (VALID, emit_valid())]
     if '--status' in sys.argv:
         for n, st in status.items():

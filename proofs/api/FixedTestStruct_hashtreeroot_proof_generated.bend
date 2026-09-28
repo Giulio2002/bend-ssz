@@ -17,15 +17,12 @@ import ../obj/generic_specs.bend as P0_Spec
 import ../../proofs/integer_encoding.bend as P0_IE
 import ../obj/spec_fixed.bend as P0_F
 import ../obj/mtree_defs.bend as P0_MD
-import ../obj/mtree_spec.bend as P0_MS
-import ../obj/root_support.bend as P0_RS
 import ../obj/root_leaf.bend as P0_RL
 import ../obj/bits_leaf.bend as P0_BL
 import ../../spec/bit_packing.bend as P0_Bp
 import ../../spec/bit_root.bend as P0_Bits
 import ../../spec/packing.bend as P0_Pack
 import ../obj/leaf_small.bend as P0_LS
-import ../obj/pcont.bend as P0_PCN
 import ../obj/bitlist_pack.bend as P0_BLP
 import ../obj/words_spec.bend as P0_WS
 import ../obj/gleaf.bend as P0_GL
