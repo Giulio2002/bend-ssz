@@ -1994,7 +1994,49 @@ def vv2w({P_}, +h: {{V2.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{RT.xv_v2
 """
 
 
-SUPPORT_OUT['e2e_gvt.bend'] = gvt_text()
+
+def deep_twins(text, names, reps=(), callee_ok=None):
+    """Deep twins (name + 'D') of the defs `names` of text, appended after them: hd d < 31, hw32 threaded after
+    hw (the window's end below 2^32), the calls among them to the twins; reps: [(old, new)] on the twins' text."""
+    import deep
+    import var_win as VWN
+    blocks = []
+    for nm in names:
+        a = text.index(f'\ndef {nm}(') + 1
+        e = text.find('\n\n', a)
+        blocks.append(text[a:len(text) if e < 0 else e].rstrip('\n'))
+    tw = '\n\n'.join(blocks)
+    tw = re.sub(r'(?<![\w.])(' + '|'.join(sorted(names, key=len, reverse=True)) + r')\(', lambda m: m.group(1) + 'D(', tw)
+    tw = tw.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')
+    for x_, y_ in reps:
+        assert x_ in tw, x_[:80]
+        tw = tw.replace(x_, y_)
+    tw = deep.thread(tw, VWN.HWX, VWN.HW32X, callee_ok=callee_ok)
+    assert 'Nat.is_lt(d, 28n)' not in tw
+    return text.rstrip('\n') + '\n\n# ---- the same at any tree depth d < 31 (hw32: the window\'s end below 2^32) ----\n' + tw + '\n'
+
+
+def gvt_deep_text():
+    t = gvt_text()
+    t = t.replace('import ./e2e_blist.bend as BL\n', 'import ./e2e_blist.bend as BL\nimport ../proofs/obj/vcopy.bend as VC\n', 1)
+    K = int(re.search(r'^def hyB\(.*?VB\.pw\((\d+)n\)\) == True', _unlight((ROOT / 'proofs/obj/var_winx_l1024_u16.bend').read_text()), re.M).group(1))
+    t = t.rstrip('\n') + '\n' + gwin_u16list_deep_text(K)
+    reps = [('lv(d, t, YW.XJ0', 'lvD(d, t, YW.XJ0')]
+    t2 = deep_twins(t, ['vtw', 'elv', 'v2d', 'v2b', 'v2z', 'vv2w'], reps,
+                    callee_ok=lambda nm, a: (a.replace('V2.hwab(d, x, len, a, b, hab, hb, hw)', 'V2.hwab32(x, len, a, b, hab, hb, hw32)')
+                                             if a.startswith('V2.hwab(') else None))
+    head, tw = t2.split('# ---- the same at any tree depth d < 31', 1)
+    # the window's facts by its D interface, the child's view lemma lvD (no depth bound)
+    tw = re.sub(r'YW\.(eoJ0|hwJ0)\(([^()]*?), hd, hw, pf, h\)', r'YW.\1D(\2, hd, hw, hw32, pf, h)', tw)
+    tw = tw.replace('), hd, YW.hwJ0D(', '), YW.hwJ0D(')
+    assert tw.count(', hab, hb), eo, hd, hw),') == 1
+    tw = tw.replace('V2.eoc(', 'V2.eocD(').replace(', hab, hb), eo, hd, hw),', ', hab, hb), eo, hd, hw, hw32),')
+    left = [l for l in tw.split('\n') if 'V2.eoc(' in l or 'YW.eoJ0(' in l]
+    assert not left, left[:2]
+    return head + '# ---- the same at any tree depth d < 31' + tw
+
+
+SUPPORT_OUT['e2e_gvt.bend'] = gvt_deep_text()
 
 
 # ---- ComplexTestStruct (ii)/(iii): each of the seven parts' view is its codec value, rewritten in place ----
@@ -2024,8 +2066,29 @@ def complex_view(R, X):
     for i, k in enumerate(order):
         v = {q: (parts[q][0] if j < i else ('_' if j == i else parts[q][1])) for j, q in enumerate(order)}
         steps.append(f'  %{parts[k][2]} : {{RT.v_{X}(DC.OBJ(d, t, n)) == {seq(v)} : S.Value}}')
+    src = _unlight(_dc_module(R).read_text())
+    wm = re.search(r'^import \./(\S+) as W$', src, re.M).group(1)
+    wsrc = _unlight((ROOT / 'proofs/obj' / wm).read_text())
+    ch = dict((a, m) for m, a in re.findall(r'^import \./(\S+) as (CH\d+)$', wsrc, re.M))
+    deep = 'Nat.is_lt(d, 31n)' in src and re.search(r'^def eoJ0D\(', wsrc, re.M) is not None
+    lvt = gwin_u16list_text()
+    WD = 'd, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, h'
+    if deep:
+        # the laws at any depth: the window's facts by its D interface (hw32 = VB.u32_lt(n): the window at 0 is n)
+        hyk = lambda m: int(re.search(r'^def hyB\(.*?VB\.pw\((\d+)n\)\) == True', _unlight((ROOT / 'proofs/obj' / m).read_text()), re.M).group(1))
+        lvt += gwin_u16list_deep_text(hyk(ch['CH0']))
+        EL = f'lvD(d, t, {x0_}, {f0}, {l0}, W.eoJ0D({WD}), W.hwJ0D({WD}), pf, W.itD0(t, 0n, 0, n, h))'
+        EB = (f'BL.bviewY(d, t, {f1}, {l1}, {x1}, W.eoJ1D({WD}), W.hwJ1D({WD}), pf, '
+              f'VC.hyU({l1}, {hyk(ch["CH1"])}n, {{==}}, CH1.hyB({l1}, CH1.hB(t, {x1}, {f1}, {l1}, W.itD1(t, 0n, 0, n, h)))))')
+        EV = f'GV2.vtwD(d, t, n, {x2}, {f2}, {l2}, W.eoJ2D({WD}), hd, W.hwJ2D({WD}), W.hwJ2_32({WD}), pf, W.itD2(t, 0n, 0, n, h))'
+        EW = f'GV2.vv2wD(d, t, n, {x3}, {f3}, {l3}, W.eoJ3D({WD}), hd, W.hwJ3D({WD}), W.hwJ3_32({WD}), pf, W.itD3(t, 0n, 0, n, h))'
+    else:
+        EL = f'lv(d, t, {x0_}, {f0}, {l0}, W.eoJ0({WA}), hd, W.hwJ0({WA}), pf, W.itD0(t, 0n, 0, n, h))'
+        EB = f'BL.bview(d, t, {f1}, {l1}, {x1}, W.eoJ1({WA}), hd, W.hwJ1({WA}), pf)'
+        EV = f'GV2.vtw(d, t, n, {x2}, {f2}, {l2}, W.eoJ2({WA}), hd, W.hwJ2({WA}), pf, W.itD2(t, 0n, 0, n, h))'
+        EW = f'GV2.vv2w(d, t, n, {x3}, {f3}, {l3}, W.eoJ3({WA}), hd, W.hwJ3({WA}), pf, W.itD3(t, 0n, 0, n, h))'
     head = f"""# ---- the view of a decoded object is the codec law's value ----
-{gwin_u16list_text()}
+{lvt}
 # the vector of four FixedTestStructs: its view is its codec value
 def fv4(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> {{RT.xv_v4_GcDC3E457711(FXV4.OBJ(d, t, x)) == FXV4.VAL(t, x) : S.Value}}:
   {{==}}
@@ -2035,23 +2098,19 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
   +h = hchk
   +h4 = GV2.hx4(d, 0n, n, 71, {{==}}, W.hFc(t, 0n, 0, n, h), hn)
   +e16 = GW.v16w(d, t, {X0}, pf, h4)
-  +el = lv(d, t, {x0_}, {f0}, {l0}, W.eoJ0({WA}), hd, W.hwJ0({WA}), pf, W.itD0(t, 0n, 0, n, h))
-  +eb = BL.bview(d, t, {f1}, {l1}, {x1}, W.eoJ1({WA}), hd, W.hwJ1({WA}), pf)
-  +ev = GV2.vtw(d, t, n, {x2}, {f2}, {l2}, W.eoJ2({WA}), hd, W.hwJ2({WA}), pf, W.itD2(t, 0n, 0, n, h))
+  +el = {EL}
+  +eb = {EB}
+  +ev = {EV}
   +e4 = fv4(d, t, {X15})
-  +ew = GV2.vv2w(d, t, n, {x3}, {f3}, {l3}, W.eoJ3({WA}), hd, W.hwJ3({WA}), pf, W.itD3(t, 0n, 0, n, h))
+  +ew = {EW}
 """
     text = head + '\n'.join(steps) + '\n  {==}\n\n'
-    src = _unlight(_dc_module(R).read_text())
-    wm = re.search(r'^import \./(\S+) as W$', src, re.M).group(1)
-    wsrc = _unlight((ROOT / 'proofs/obj' / wm).read_text())
-    ch = dict((a, m) for m, a in re.findall(r'^import \./(\S+) as (CH\d+)$', wsrc, re.M))
     return {'view': f'RT.v_{X}',
             'imports': ['import ../proofs/obj/root_gtypes.bend as RT', 'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/packed_bytes.bend as PBF',
                         'import ../proofs/obj/pb_min.bend as PBM', 'import ../proofs/obj/vua_win.bend as UW', 'import ../proofs/obj/vua_rd.bend as UR',
                         'import ../proofs/obj/vbuf.bend as VB', 'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_gwin.bend as GW',
                         'import ./e2e_gvt.bend as GV2', f'import ../proofs/obj/{wm} as W', f'import ../proofs/obj/{ch["CH0"]} as CH0',
-                        f'import ../proofs/obj/{ch["CH2"]} as CH2', f'import ../proofs/obj/{ch["CH3"]} as CH3',
+                        f'import ../proofs/obj/{ch["CH1"]} as CH1', f'import ../proofs/obj/{ch["CH2"]} as CH2', 'import ../proofs/obj/vcopy.bend as VC', f'import ../proofs/obj/{ch["CH3"]} as CH3',
                         'import ../proofs/obj/vfx_u16.bend as FX16', 'import ../proofs/obj/vfx_u8.bend as FX8',
                         'import ../proofs/obj/vfx_v4_GcDC3E457711.bend as FXV4'],
             'text': text}
