@@ -3936,7 +3936,7 @@
     "laws": [
      "FuluHistoricalBatch_e2e_root"
     ],
-    "premise": "+rep: rep_HistoricalBatch(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc0, hc1: each field's storage at the encoder's depth 17"
    },
    {
     "name": "FuluMatrixEntry",
@@ -5675,6 +5675,28 @@
     "premise": "+e: {GtFF7C03E8A0_last(o) == U32{WSp.join(17n, 15n, WSp.take(17n, 32n, PD.bits(GtFF7C03E8A0_last(o))), Word.zero(15n))} : U32}"
    }
   ],
+  "FuluHistoricalBatch_e2e_generated.bend": [
+   {
+    "name": "FuluHistoricalBatch",
+    "generated_name": "HistoricalBatch",
+    "laws": [
+     "FuluHistoricalBatch_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc0, hc1: each field's storage at the encoder's depth 17"
+   }
+  ],
+  "FuluHistoricalBatch_e2e_dec_generated.bend": [
+   {
+    "name": "FuluHistoricalBatch",
+    "generated_name": "HistoricalBatch",
+    "laws": [
+     "FuluHistoricalBatch_e2e_decode_view",
+     "FuluHistoricalBatch_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc0, hc1: each field's storage at the encoder's depth 17"
+   }
+  ],
   "FuluMatrixEntry_e2e_generated.bend": [
    {
     "name": "FuluMatrixEntry",
@@ -5783,11 +5805,6 @@
   ]
  },
  "uncovered": {
-  "FuluHistoricalBatch": {
-   "generated_name": "HistoricalBatch",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "FuluBlob_e2e_root_generated.bend"
-  },
   "FuluAttestation": {
    "generated_name": "Attestation",
    "reason": "encode laws not over the same free words / bits"
@@ -6244,6 +6261,12 @@
    "i": "bitvector_17_e2e_generated.bend",
    "ii_iii": "bitvector_17_e2e_dec_generated.bend",
    "iv": "bitvector_1_e2e_root_generated.bend"
+  },
+  "FuluHistoricalBatch": {
+   "generated_name": "HistoricalBatch",
+   "i": "FuluHistoricalBatch_e2e_generated.bend",
+   "ii_iii": "FuluHistoricalBatch_e2e_dec_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
   },
   "FuluMatrixEntry": {
    "generated_name": "MatrixEntry",
