@@ -1210,6 +1210,21 @@ def lv(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U3
 '''
 
 
+def gwin_u16list_deep_text(K):
+    """lvD: lv at any tree depth, its copy bounded by the child's limit (hyB: 31 + len <= 2^K)."""
+    return f'''
+# the same at any tree depth (the child's copy bounded by its limit: CH0.hyB)
+def lvD(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {{U32.to_nat(off) == x : Nat}},
+    +hw: {{Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}},
+    +hc: {{CH0.CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{PBF.vview2(CH0.OBJw(d, t, x, off, len)) == CH0.VALw(t, x, len) : S.Value}}:
+  +ec = PL.c2(len, CH0.CQ(len), CH0.eLc(t, x, off, len, hc))
+  +eb = BL.bviewY(d, t, off, len, x, eo, hw, pf, VC.hyU(len, {K}n, {{==}}, CH0.hyB(len, CH0.hB(t, x, off, len, hc))))
+  %Equal.sym(Nat, U32.to_nat(U32.shrn(len, 1n)), CH0.CQ(len), ec) : {{S.Sequence{{PBF.it2(_, WO.wview(O.Words{{FD.array__thaw(U32, BL.CW(d, t, off, len)), len}}))}} == CH0.VALw(t, x, len) : S.Value}}
+  %Equal.sym(+List<U32>, WO.wview(O.Words{{FD.array__thaw(U32, BL.CW(d, t, off, len)), len}}), UW.WX(t, x, U32.to_nat(len)), eb) : {{S.Sequence{{PBF.it2(CH0.CQ(len), _)}} == CH0.VALw(t, x, len) : S.Value}}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{{z}}, PBF.it2(CH0.CQ(len), UW.WX(t, x, U32.to_nat(len))), PBM.it2(CH0.CQ(len), UW.WX(t, x, U32.to_nat(len))), PL.it2eq(CH0.CQ(len), UW.WX(t, x, U32.to_nat(len))))
+'''
+
+
 def vartest_view(R, X):
     src = _unlight(_dc_module(R).read_text())
     wm = re.search(r'^import \./(\S+) as W$', src, re.M).group(1)
@@ -1222,14 +1237,24 @@ def vartest_view(R, X):
     V16 = f'FX16.VAL(t, {x0})'
     U8 = f'FX8.VAL(t, {x6})'
     WA = 'd, t, n, 0n, 0, n, {==}, hd, hn, pf, h'
+    deep = 'Nat.is_lt(d, 31n)' in src and re.search(r'^def eoJ0D\(', wsrc, re.M) is not None
+    lvt = gwin_u16list_text()
+    WD = 'd, t, n, 0n, 0, n, {==}, hd, hn, VB.u32_lt(n), pf, h'
+    EL = f'lv(d, t, W.XJ0(t, 0n), W.FJ0(0, t, 0n), W.LJ0(t, 0n, n), W.eoJ0({WA}), hd, W.hwJ0({WA}), pf, W.itD0(t, 0n, 0, n, h))'
+    if deep:
+        # the laws at any depth: the window's facts by its D interface (hw32 = VB.u32_lt(n): the window at 0 is n)
+        csrc = _unlight((ROOT / 'proofs/obj' / ch).read_text())
+        K = int(re.search(r'^def hyB\(.*?VB\.pw\((\d+)n\)\) == True', csrc, re.M).group(1))
+        lvt += gwin_u16list_deep_text(K)
+        EL = f'lvD(d, t, W.XJ0(t, 0n), W.FJ0(0, t, 0n), W.LJ0(t, 0n, n), W.eoJ0D({WD}), W.hwJ0D({WD}), pf, W.itD0(t, 0n, 0, n, h))'
     text = f'''# ---- the view of a decoded object is the codec law's value ----
-{gwin_u16list_text()}
+{lvt}
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
   +h = hchk
   +h4 = FD.nat__le_trans(Nat.add({x0}, 4n), U32.to_nat(n), A.quad(VB.pw(d)), FD.nat__le_trans(Nat.add({x0}, 4n), U32.to_nat(7), U32.to_nat(n), {{==}}, W.hFc(t, 0n, 0, n, h)), hn)
   +e16 = GW.v16w(d, t, {x0}, pf, h4)
-  +el = lv(d, t, W.XJ0(t, 0n), W.FJ0(0, t, 0n), W.LJ0(t, 0n, n), W.eoJ0({WA}), hd, W.hwJ0({WA}), pf, W.itD0(t, 0n, 0, n, h))
+  +el = {EL}
   Equal.trans(S.Value, S.Sequence{{S.Items{{{U16}, S.Items{{PBF.vview2({CH}), S.Items{{{U8}, S.EmptyItems{{}}}}}}}}}}, S.Sequence{{S.Items{{{V16}, S.Items{{PBF.vview2({CH}), S.Items{{{U8}, S.EmptyItems{{}}}}}}}}}}, DC.VAL(t, n),
     Equal.cong(U32, S.Value, z => S.Sequence{{S.Items{{S.UnsignedValue{{P.UInt{{z, 0, 0, 0, 0, 0, 0, 0}}}}, S.Items{{PBF.vview2({CH}), S.Items{{{U8}, S.EmptyItems{{}}}}}}}}}}, O.keep(2, UR.RWN(t, {x0})), PBM.v16of(FX8.BX(t, {x0}), FX8.BX(t, 1n+{x0})), e16),
     Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{{V16}, S.Items{{z, S.Items{{{U8}, S.EmptyItems{{}}}}}}}}}}, PBF.vview2({CH}), {CV}, el))
@@ -1238,7 +1263,7 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
     return {'view': f'RT.v_{X}',
             'imports': ['import ../proofs/obj/root_gtypes.bend as RT', 'import ../proofs/obj/words_obj.bend as WO', 'import ../proofs/obj/packed_bytes.bend as PBF',
                         'import ../proofs/obj/pb_min.bend as PBM', 'import ../proofs/obj/vua_win.bend as UW', 'import ../proofs/obj/vua_rd.bend as UR',
-                        'import ../proofs/obj/vbuf.bend as VB', 'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_gwin.bend as GW',
+                        'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/vcopy.bend as VC', 'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_gwin.bend as GW',
                         f'import ../proofs/obj/{wm} as W', f'import ../proofs/obj/{ch} as CH0',
                         'import ../proofs/obj/vfx_u16.bend as FX16', 'import ../proofs/obj/vfx_u8.bend as FX8'],
             'text': text}
