@@ -28,11 +28,15 @@ import ./arr_vec.bend as AV
 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> O.U64: O.U64{UR.RWN(t, x), UR.RWN(t, 4n+x)}
 
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 8n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {uint64_r.u64_read(UA.BF(t, n), off, 8) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.U64}:
-  VTX.rdx_u64(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb)
+  VTX.rdxd_u64(d, t, n, off, x, e, hd, pf, hb)
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 8n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {uint64_r.u64_read(UA.BF(t, n), off, 8) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.U64}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.UnsignedValue{P.UInt{UR.RWN(t, x), UR.RWN(t, 4n+x), 0, 0, 0, 0, 0, 0}}
 

@@ -48,19 +48,27 @@ def ltx(+x: Nat, +S: Nat, +P: Nat, +h0: {Nat.is_lt(0n, S) == True{} : Bool}, +hb
     FD.nat__lt_add_left(0n, S, x, h0)), hb)
 
 # off + c is at byte C + x, for C < S the field size
-def offc0(+d: Nat, +off: U32, +c: U32, +C: Nat, +x: Nat, +S: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def offc0D(+d: Nat, +off: U32, +c: U32, +C: Nat, +x: Nat, +S: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +eC: {Nat.is_eq(U32.to_nat(c), C) == True{} : Bool}, +hC: {Nat.is_lt(C, S) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, S), A.quad(VB.pw(d))) == True{} : Bool})
     -> {U32.to_nat(U32.add(off, c)) == Nat.add(C, x) : Nat}:
   +ec = FD.nat__eq_from_is_eq(U32.to_nat(c), C, eC)
   +h = FD.logic__subst(Nat, z => {Nat.is_lt(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, C), Nat.add(C, x), FD.nat__add_comm(x, C),
     FD.nat__lt_le_trans(Nat.add(x, C), Nat.add(x, S), A.quad(VB.pw(d)), FD.nat__lt_add_left(C, S, x, hC), hb))
   %Equal.sym(Nat, C, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), C, ec)) : {U32.to_nat(U32.add(off, c)) == Nat.add(_, x) : Nat}
-  UR.offx(d, off, c, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, x), A.quad(VB.pw(d))) == True{} : Bool}, C, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), C, ec), h))
-def offc(+d: Nat, +off: U32, +c: U32, +C: Nat, +x: Nat, +S: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+  UR.offx31(d, off, c, x, e, hd, FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, x), A.quad(VB.pw(d))) == True{} : Bool}, C, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), C, ec), h))
+
+def offc0(+d: Nat, +off: U32, +c: U32, +C: Nat, +x: Nat, +S: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +eC: {Nat.is_eq(U32.to_nat(c), C) == True{} : Bool}, +hC: {Nat.is_lt(C, S) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, S), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {U32.to_nat(U32.add(off, c)) == Nat.add(C, x) : Nat}:
+  offc0D(d, off, c, C, x, S, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), eC, hC, hb)
+def offcD(+d: Nat, +off: U32, +c: U32, +C: Nat, +x: Nat, +S: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +eC: {Nat.is_eq(U32.to_nat(c), C) == True{} : Bool}, +hC: {Nat.is_lt(C, S) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, S), A.quad(VB.pw(d))) == True{} : Bool})
     -> {U32.to_nat(U32.add(off, c)) == Nat.add(x, C) : Nat}:
   %FD.nat__add_comm(C, x) : {U32.to_nat(U32.add(off, c)) == _ : Nat}
-  offc0(d, off, c, C, x, S, e, hd, eC, hC, hb)
+  offc0D(d, off, c, C, x, S, e, hd, eC, hC, hb)
+
+def offc(+d: Nat, +off: U32, +c: U32, +C: Nat, +x: Nat, +S: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +eC: {Nat.is_eq(U32.to_nat(c), C) == True{} : Bool}, +hC: {Nat.is_lt(C, S) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, S), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {U32.to_nat(U32.add(off, c)) == Nat.add(x, C) : Nat}:
+  offcD(d, off, c, C, x, S, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), eC, hC, hb)
 
 # room for S2 bytes at x + C inside a field of S bytes at x
 def roomc(+x: Nat, +S: Nat, +C: Nat, +S2: Nat, +P: Nat, +hb: {Nat.is_le(Nat.add(x, S), P) == True{} : Bool}, +hc: {Nat.is_le(Nat.add(C, S2), S) == True{} : Bool})
@@ -87,15 +95,19 @@ def splitC(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U3
 
 
 # copy_into of L bytes (S = L) at off (byte position x) into a zero storage of depth dz
-def rdg(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdgD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +L: U32, +S: Nat, +dz: Nat, +k: Nat, +eS: {Nat.is_eq(U32.to_nat(L), S) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool},
     +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, S), A.quad(VB.pw(d))) == True{} : Bool})
     -> {O.copy_into(UA.BF(t, n), off, L, Array.new(U32, dz, 0)) == (UA.BF(t, n), O.Words{FD.array__thaw(U32, VXB.CTN(d, t, x, L, dz)), L}) : B.Buf & O.Words}:
   +hw = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == True{} : Bool}, S, U32.to_nat(L), Equal.sym(Nat, U32.to_nat(L), S, FD.nat__eq_from_is_eq(U32.to_nat(L), S, eS)), hb)
   %VXB.ct_n(d, t, off, x, L, dz, e) : {O.copy_into(UA.BF(t, n), off, L, Array.new(U32, dz, 0)) == (UA.BF(t, n), O.Words{FD.array__thaw(U32, _), L}) : B.Buf & O.Words}
-  VBX.copy_into_at(d, t, n, off, L, dz, k, pf, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), hdz, UW.hsx(d, off, x, L, e, hd, hw), hr, hk, hy)
+  VBX.copy_into_at(d, t, n, off, L, dz, k, pf, hd, hdz, UW.hsxB(d, off, x, L, e, k, hk, hy, hw), hr, hk, hy)
+
+def rdg(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +L: U32, +S: Nat, +dz: Nat, +k: Nat, +eS: {Nat.is_eq(U32.to_nat(L), S) == True{} : Bool}, +hdz: {Nat.is_lt(dz, 31n) == True{} : Bool}, +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(L), VB.pw(k)) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, S), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {O.copy_into(UA.BF(t, n), off, L, Array.new(U32, dz, 0)) == (UA.BF(t, n), O.Words{FD.array__thaw(U32, VXB.CTN(d, t, x, L, dz)), L}) : B.Buf & O.Words}:
+  rdgD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, L, S, dz, k, eS, hdz, hr, hk, hy, hb)
 
 # the value of a vector of k elements over the M words at x: its parts are the S window bytes
 def prt0_ch8(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +s: S.Schema, +k: Nat, +M: Nat, +S: Nat,

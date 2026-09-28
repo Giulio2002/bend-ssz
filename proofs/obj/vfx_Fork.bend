@@ -40,6 +40,14 @@ def rdx_b4(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U
     {FuluBytes4_r.b4_r0(off, _) == (UA.BF(t, n), FuluBytes4_d.Bytes4{UR.RWN(t, x)}) : B.Buf & FuluBytes4_d.Bytes4}
   {==}
 
+def rdx_b4D(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(x, 4n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {FuluBytes4_r.b4_read(UA.BF(t, n), off, 4) == (UA.BF(t, n), FuluBytes4_d.Bytes4{UR.RWN(t, x)}) : B.Buf & FuluBytes4_d.Bytes4}:
+  %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), off), (UA.BF(t, n), UR.RWN(t, x)), UR.rwx(d, t, n, off, x, e, hd, pf, UR.roomw(x, 4n, 0n, A.quad(VB.pw(d)), hb, {==}))) :
+    {FuluBytes4_r.b4_r0(off, _) == (UA.BF(t, n), FuluBytes4_d.Bytes4{UR.RWN(t, x)}) : B.Buf & FuluBytes4_d.Bytes4}
+  {==}
+
 def rdx_Fork(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
     +hd: {Nat.is_lt(d, 30n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 16n), A.quad(VB.pw(d))) == True{} : Bool})
@@ -55,13 +63,32 @@ def rdx_Fork(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: 
     {FuluFork_r.Fork_rd2(off, 16, FuluBytes4_d.Bytes4{UR.RWN(t, x)}, FuluBytes4_d.Bytes4{UR.RWN(t, 4n+x)}, _) == (UA.BF(t, n), FuluFork_d.Fork{FuluBytes4_d.Bytes4{UR.RWN(t, x)}, FuluBytes4_d.Bytes4{UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}}) : B.Buf & FuluFork_d.Fork}
   {==}
 
+def rdx_ForkD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(x, 16n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {FuluFork_r.Fork_read(UA.BF(t, n), off, 16) == (UA.BF(t, n), FuluFork_d.Fork{FuluBytes4_d.Bytes4{UR.RWN(t, x)}, FuluBytes4_d.Bytes4{UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}}) : B.Buf & FuluFork_d.Fork}:
+  %Equal.sym(B.Buf & FuluBytes4_d.Bytes4, FuluBytes4_r.b4_read(UA.BF(t, n), U32.add(off, 0), 4), (UA.BF(t, n), FuluBytes4_d.Bytes4{UR.RWN(t, x)}),
+      rdx_b4D(d, t, n, U32.add(off, 0), x, UR.offx31(d, off, 0, x, e, hd, FD.nat__lt_le_trans(x, Nat.add(x, 4n), A.quad(VB.pw(d)), VTX.ltp(x, 3n), UR.roomf(x, 16n, 0n, 4n, A.quad(VB.pw(d)), hb, {==}))), hd, pf, UR.roomf(x, 16n, 0n, 4n, A.quad(VB.pw(d)), hb, {==}))) :
+    {FuluFork_r.Fork_rd0(off, 16, _) == (UA.BF(t, n), FuluFork_d.Fork{FuluBytes4_d.Bytes4{UR.RWN(t, x)}, FuluBytes4_d.Bytes4{UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}}) : B.Buf & FuluFork_d.Fork}
+  %Equal.sym(B.Buf & FuluBytes4_d.Bytes4, FuluBytes4_r.b4_read(UA.BF(t, n), U32.add(off, 4), 4), (UA.BF(t, n), FuluBytes4_d.Bytes4{UR.RWN(t, 4n+x)}),
+      rdx_b4D(d, t, n, U32.add(off, 4), 4n+x, UR.offx31(d, off, 4, x, e, hd, FD.nat__lt_le_trans(4n+x, Nat.add(4n+x, 4n), A.quad(VB.pw(d)), VTX.ltp(4n+x, 3n), UR.roomf(x, 16n, 4n, 4n, A.quad(VB.pw(d)), hb, {==}))), hd, pf, UR.roomf(x, 16n, 4n, 4n, A.quad(VB.pw(d)), hb, {==}))) :
+    {FuluFork_r.Fork_rd1(off, 16, FuluBytes4_d.Bytes4{UR.RWN(t, x)}, _) == (UA.BF(t, n), FuluFork_d.Fork{FuluBytes4_d.Bytes4{UR.RWN(t, x)}, FuluBytes4_d.Bytes4{UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}}) : B.Buf & FuluFork_d.Fork}
+  %Equal.sym(B.Buf & O.U64, uint64_r.u64_read(UA.BF(t, n), U32.add(off, 8), 8), (UA.BF(t, n), O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}),
+      VTX.rdxd_u64(d, t, n, U32.add(off, 8), 8n+x, UR.offx31(d, off, 8, x, e, hd, FD.nat__lt_le_trans(8n+x, Nat.add(8n+x, 8n), A.quad(VB.pw(d)), VTX.ltp(8n+x, 7n), UR.roomf(x, 16n, 8n, 8n, A.quad(VB.pw(d)), hb, {==}))), hd, pf, UR.roomf(x, 16n, 8n, 8n, A.quad(VB.pw(d)), hb, {==}))) :
+    {FuluFork_r.Fork_rd2(off, 16, FuluBytes4_d.Bytes4{UR.RWN(t, x)}, FuluBytes4_d.Bytes4{UR.RWN(t, 4n+x)}, _) == (UA.BF(t, n), FuluFork_d.Fork{FuluBytes4_d.Bytes4{UR.RWN(t, x)}, FuluBytes4_d.Bytes4{UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}}) : B.Buf & FuluFork_d.Fork}
+  {==}
+
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> FuluFork_d.Fork: FuluFork_d.Fork{FuluBytes4_d.Bytes4{UR.RWN(t, x)}, FuluBytes4_d.Bytes4{UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}}
 
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 16n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {FuluFork_r.Fork_read(UA.BF(t, n), off, 16) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluFork_d.Fork}:
-  rdx_Fork(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb)
+  rdx_ForkD(d, t, n, off, x, e, hd, pf, hb)
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 16n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {FuluFork_r.Fork_read(UA.BF(t, n), off, 16) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluFork_d.Fork}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.Sequence{S.Items{S.BytesValue{F.limbs([UR.RWN(t, x)])}, S.Items{S.BytesValue{F.limbs([UR.RWN(t, 4n+x)])}, S.Items{S.UnsignedValue{P.UInt{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}}
 

@@ -30,11 +30,15 @@ import ./vfxg.bend as VXG
 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> O.Words: O.Words{FD.array__thaw(U32, VXB.CTN(d, t, x, 192, 6n)), 192}
 
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 192n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {FuluCurrentSyncCommitteeBranch_r.v6_b32_read(UA.BF(t, n), off, 192) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
-  VXG.rdg(d, t, n, off, x, e, hd, pf, 192, 192n, 6n, 8n, {==}, {==}, {==}, {==}, {==}, hb)
+  VXG.rdgD(d, t, n, off, x, e, hd, pf, 192, 192n, 6n, 8n, {==}, {==}, {==}, {==}, {==}, hb)
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 192n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {FuluCurrentSyncCommitteeBranch_r.v6_b32_read(UA.BF(t, n), off, 192) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.Sequence{AV.ch8(UR.RWS(VXG.CNT(x, 48n), t, x))}
 

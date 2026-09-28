@@ -82,15 +82,19 @@ def wx2(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> U32: BX(t, x)
 
 # (reads the byte at x: x + 1 <= 4 2^d)
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {uint8_r.u8_read(UA.BF(t, n), off, 1) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}:
   %Equal.sym(B.Buf & U32, B.byte_at(UA.BF(t, n), off), (UA.BF(t, n), VR.VX(t, off)),
-      VR.byte_at_ok(d, t, n, off, FD.nat__lt_trans(d, 28n, 32n, hd, {==}), VR.hiX(d, off, x, e, VXG.ltx(x, 1n, A.quad(VB.pw(d)), {==}, hb)), pf)) :
+      VR.byte_at_ok(d, t, n, off, FD.nat__lt_trans(d, 31n, 32n, hd, {==}), VR.hiX(d, off, x, e, VXG.ltx(x, 1n, A.quad(VB.pw(d)), {==}, hb)), pf)) :
     {_ == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}
   %Equal.sym(U32, VR.VX(t, off), BX(t, x), vx_bx(t, off, x, e)) : {(UA.BF(t, n), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}
   {==}
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {uint8_r.u8_read(UA.BF(t, n), off, 1) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.UnsignedValue{P.UInt{BX(t, x), 0, 0, 0, 0, 0, 0, 0}}
 

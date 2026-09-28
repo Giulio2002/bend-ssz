@@ -31,12 +31,16 @@ import ./vbig.bend as VG
 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> O.Words: O.Words{FD.array__thaw(U32, VXB.CTN(d, t, x, 2097152, 20n)), 2097152}
 
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, U32.to_nat(2097152)), A.quad(VB.pw(d))) == True{} : Bool})
     -> {Fulu_vec_bytevec_32_65536_r.v65536_b32_read(UA.BF(t, n), off, 2097152) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
-  VXG.rdg(d, t, n, off, x, e, hd, pf, 2097152, U32.to_nat(2097152), 20n, 22n, FD.nat__is_eq_refl(U32.to_nat(2097152)), {==}, VG.nw_pow(2097152, 19n, 20n, {==}, {==}, {==}), {==},
+  VXG.rdgD(d, t, n, off, x, e, hd, pf, 2097152, U32.to_nat(2097152), 20n, 22n, FD.nat__is_eq_refl(U32.to_nat(2097152)), {==}, VG.nw_pow(2097152, 19n, 20n, {==}, {==}, {==}), {==},
     VG.yl_pow(2097152, 21n, 22n, {==}, {==}, {==}, {==}), hb)
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, U32.to_nat(2097152)), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {Fulu_vec_bytevec_32_65536_r.v65536_b32_read(UA.BF(t, n), off, 2097152) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.Sequence{AV.ch8(UR.RWS(VXG.CNT(x, AV.m8(U32.to_nat(65536))), t, x))}
 

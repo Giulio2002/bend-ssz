@@ -29,11 +29,15 @@ import ./arr_vec.bend as AV
 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> FuluBytes32_d.Bytes32: FuluBytes32_d.Bytes32{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}
 
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 32n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {FuluBytes32_r.b32_read(UA.BF(t, n), off, 32) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluBytes32_d.Bytes32}:
-  VTX.rdx_b32(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb)
+  VTX.rdxd_b32(d, t, n, off, x, e, hd, pf, hb)
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 32n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {FuluBytes32_r.b32_read(UA.BF(t, n), off, 32) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluBytes32_d.Bytes32}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.BytesValue{F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])}
 

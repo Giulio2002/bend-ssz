@@ -33,11 +33,15 @@ import ./vseq.bend as VSQ
 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> FuluBeaconBlockHeader_d.BeaconBlockHeader: FuluBeaconBlockHeader_d.BeaconBlockHeader{O.U64{UR.RWN(t, x), UR.RWN(t, 4n+x)}, O.U64{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x)}}
 
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 112n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {FuluBeaconBlockHeader_r.BeaconBlockHeader_read(UA.BF(t, n), off, 112) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluBeaconBlockHeader_d.BeaconBlockHeader}:
-  XF.rdx_BeaconBlockHeader(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb)
+  XF.rdxd_BeaconBlockHeader(d, t, n, off, x, e, hd, pf, hb)
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 112n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {FuluBeaconBlockHeader_r.BeaconBlockHeader_read(UA.BF(t, n), off, 112) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluBeaconBlockHeader_d.BeaconBlockHeader}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.Sequence{S.Items{S.UnsignedValue{P.UInt{UR.RWN(t, x), UR.RWN(t, 4n+x), 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x)])}, S.Items{S.BytesValue{F.limbs([UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x)])}, S.Items{S.BytesValue{F.limbs([UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x)])}, S.EmptyItems{}}}}}}}
 
