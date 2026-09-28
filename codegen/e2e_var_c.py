@@ -2230,7 +2230,8 @@ def lb_{tag}(-w: O.Words, +rep: LO.rep_bl(w, S.ByteList{{{LIM}n}}), +hs: BL.sdk(
     em = _obj('big_encx_Gc465214E502_iface.bend')
     FIX = int(re.search(r'^def ENDC\(.*?\) -> Nat: Nat\.add\((\d+)n,', em, re.M).group(1))
     KB = int(re.search(r'A\.quad\(VB\.pw\((\d+)n\)\)\)\)\)$', re.search(r'^def OKT\(.*$', em, re.M).group(0)).group(1))
-    M2 = 2048
+    M2 = int(re.search(r'Nat\.is_le\(U32\.to_nat\(N\), U32\.to_nat\((\d+)\)\)', _okt(_obj(ENCR_LISTS['l1024'][0]))).group(1))
+    LIM = M2 // 2
     EB = FIX + M2
     VT = 'VarTestStruct_d.Gc465214E502'
     MB = 'Xl1024.MW{LDEP(U32, tt), tt, n}'
@@ -2245,7 +2246,7 @@ def lb_{tag}(-w: O.Words, +rep: LO.rep_bl(w, S.ByteList{{{LIM}n}}), +hs: BL.sdk(
     while 4 * 2 ** PW < EB:
         PW += 1
     FP = '+h0: {U32.is_lt(a0, 65536) == True{} : Bool}, +h2: {U32.is_lt(a2, 256) == True{} : Bool}'
-    CP = '+c: Nat, +ec: {U32.to_nat(n) == Nat.double(c) : Nat}, +hk: {Nat.is_le(c, 1024n) == True{} : Bool}'
+    CP = '+c: Nat, +ec: {U32.to_nat(n) == Nat.double(c) : Nat}, +hk: {Nat.is_le(c, @LIM@n) == True{} : Bool}'.replace('@LIM@', str(LIM))
     L.append(f'''# ---- VarTestStruct: the record EM.MW{{a0, Xl1024.MW{{LDEP(tt), tt, n}}, a2}} ----
 def okp_vt(+a0: U32, +a2: U32, +mB: Xl1024.MW, +hB: {{Xl1024.OK(mB) == True{{}} : Bool}}, {FP}, +hb: {{{BND} == True{{}} : Bool}}) -> {{EM.OK(EM.MW{{a0, mB, a2}}) == True{{}} : Bool}}:
   +h8 = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(a2), U32.to_nat(255)), U32.is_le(a2, 255),
@@ -2283,12 +2284,12 @@ def vtb3(-v: {VT}, +x0: U32, +x2: U32, +tt: {TR}, +n: U32, +eo: {{v == {VT}{{x0,
   (EM.MW{{x0, Xl1024.MW{{LDEP(U32, tt), tt, n}}, x2}}, (eo, (fv, (fo, fl))))
 
 def vtb2(-v: {VT}, +x0: U32, +x2: U32, +ev: {{v == {VT}{{x0, RT.pj_Gc465214E502_1(v), x2}} : {VT}}}, +h0: {{U32.is_lt(x0, 65536) == True{{}} : Bool}}, +h2: {{U32.is_lt(x2, 256) == True{{}} : Bool}},
-    +hx: {{U32.to_nat(WO.len(RT.pj_Gc465214E502_1(v))) == Nat.double(PBF.cnt2(RT.pj_Gc465214E502_1(v))) : Nat}}, +hl: {{Nat.is_le(PBF.cnt2(RT.pj_Gc465214E502_1(v)), 1024n) == True{{}} : Bool}},
+    +hx: {{U32.to_nat(WO.len(RT.pj_Gc465214E502_1(v))) == Nat.double(PBF.cnt2(RT.pj_Gc465214E502_1(v))) : Nat}}, +hl: {{Nat.is_le(PBF.cnt2(RT.pj_Gc465214E502_1(v)), {LIM}n) == True{{}} : Bool}},
     +hs: BL.sdk(RT.pj_Gc465214E502_1(v), {encr_k('l1024')}n), +cw: DK.Ex({TR}, t => DK.Ex(U32, n => {{RT.pj_Gc465214E502_1(v) == {WL('t', 'n')} : O.Words}}))) -> VTR(v):
   (+tt, +c1) = cw
   (+n, +ew) = c1
   +hx2 = FD.logic__subst(O.Words, z => {{U32.to_nat(WO.len(z)) == Nat.double(PBF.cnt2(z)) : Nat}}, RT.pj_Gc465214E502_1(v), {WL('tt', 'n')}, ew, hx)
-  +hl2 = FD.logic__subst(O.Words, z => {{Nat.is_le(PBF.cnt2(z), 1024n) == True{{}} : Bool}}, RT.pj_Gc465214E502_1(v), {WL('tt', 'n')}, ew, hl)
+  +hl2 = FD.logic__subst(O.Words, z => {{Nat.is_le(PBF.cnt2(z), {LIM}n) == True{{}} : Bool}}, RT.pj_Gc465214E502_1(v), {WL('tt', 'n')}, ew, hl)
   +hs2 = FD.logic__subst(O.Words, z => BL.sdk(z, {encr_k('l1024')}n), RT.pj_Gc465214E502_1(v), {WL('tt', 'n')}, ew, hs)
   +eo = Equal.trans({VT}, v, {VT}{{x0, RT.pj_Gc465214E502_1(v), x2}}, {VT}{{x0, {WL('tt', 'n')}, x2}}, ev,
     Equal.cong(O.Words, {VT}, z => {VT}{{x0, z, x2}}, RT.pj_Gc465214E502_1(v), {WL('tt', 'n')}, ew))
