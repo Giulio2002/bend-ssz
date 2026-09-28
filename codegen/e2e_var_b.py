@@ -1779,7 +1779,8 @@ def vl_module(win):
     R = int(_re.search(r'VRL\.pos\(j, (\d+)n, x\)', text).group(1))
     L = _re.search(r'_d\.(l\d+_\w+)_Seq:', text).group(1)
     DEF = _re.search(r'FD\.array__trep\(' + _re.escape(E) + r', B\.words_depth\(NN\(len\)\), (.*?)\), t, x\)\), NN\(len\)\}', text).group(1)
-    xi = _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', _RT.read_text() + '\n' + _RS.read_text(), _re.M).group(0)
+    import runtime_refs as _RR   # root_types / root_state as they read before the light split (their RN_L is RN here)
+    xi = _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', _RR.unwire(_RT.read_text()) + '\n' + _RR.unwire(_RS.read_text()), _re.M).group(0)
     VIEWE = _re.search(r'S\.Items\{(\w+\.\w+)\(xat_', xi).group(1)
     body = _VL_TEXT
     for k, v in (('@E@', E), ('@R@', str(R)), ('@L@', L), ('@DEF@', DEF), ('@VIEWE@', VIEWE)):

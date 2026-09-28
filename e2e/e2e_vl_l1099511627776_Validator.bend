@@ -7,6 +7,7 @@ import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/vbuf.bend as VB
+import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/big_var_winx_l1099511627776_Validator.bend as W
 import ../types/FuluValidator_def_generated.bend as FuluValidator_d
 import ../proofs/obj/root_state.bend as ST
@@ -118,8 +119,8 @@ def xiR(m: Nat, +i: Nat, +Q: Nat, +dd: Nat, +D: FD.array__Tree<FuluValidator_d.V
           Equal.sym(Maybe<&2, FuluValidator_d.Validator>, FD.spec_common__nth(FuluValidator_d.Validator, FD.array__slots(FuluValidator_d.Validator, W.RT(Q, 0n, dd, D, t, x)), i), Some{ST.xat_l1099511627776_Validator(FD.array__slots(FuluValidator_d.Validator, W.RT(Q, 0n, dd, D, t, x)), i)}, ST.nth_l1099511627776_Validator(FD.array__slots(FuluValidator_d.Validator, W.RT(Q, 0n, dd, D, t, x)), i, hi)), en))
       +hm2 = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+Q) == True{} : Bool}, 1n+Nat.add(k, i), Nat.add(k, 1n+i), Equal.sym(Nat, Nat.add(k, 1n+i), 1n+Nat.add(k, i), FD.nat__add_succ(k, i)), hm)
       %Equal.sym(FuluValidator_d.Validator, ST.xat_l1099511627776_Validator(FD.array__slots(FuluValidator_d.Validator, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, 121n, x)), ex) :
-        {S.Items{RN_L.v_Validator(_), ST.xi_l1099511627776_Validator(k, FD.array__slots(FuluValidator_d.Validator, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, i, t, x) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{RN_L.v_Validator(W.RX(t, VRL.pos(i, 121n, x))), z}, ST.xi_l1099511627776_Validator(k, FD.array__slots(FuluValidator_d.Validator, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
+        {S.Items{RN.v_Validator(_), ST.xi_l1099511627776_Validator(k, FD.array__slots(FuluValidator_d.Validator, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, i, t, x) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{RN.v_Validator(W.RX(t, VRL.pos(i, 121n, x))), z}, ST.xi_l1099511627776_Validator(k, FD.array__slots(FuluValidator_d.Validator, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
         W.RITEMS(k, 1n+i, t, x), xiR(k, 1n+i, Q, dd, D, t, x, pf, hb, hm2))
 
 def subz(+k: Nat) -> {Nat.sub(1n+k, U32.to_nat(1)) == k : Nat}:
