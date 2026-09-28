@@ -3487,14 +3487,18 @@ VROOT_SHAPES['Gu6DDF182530'] = vroot_union_n
 def encp_text():
     okt = _okt(_obj('big_encx_pbits.bend'))
     Kd = int(re.search(r'Nat\.is_lt\(dw, (\d+)n\)', okt).group(1))
-    KB = int(re.search(r'Nat\.is_lt\(kb, (\d+)n\)', okt).group(1)) - 1
-    KY = int(re.search(r'Nat\.is_lt\(KY, (\d+)n\)', okt).group(1)) - 1
+    KB0 = int(re.search(r'Nat\.is_lt\(kb, (\d+)n\)', okt).group(1)) - 1
+    KB = min(KB0, 31)   # the bridge's width: 31 (its premise 31 + K + 1 <= 2^30 bounds K anyway)
+    # the record no longer bounds KY (vbitenc.y30); the bridge keeps its own 31 + K + 1 <= 2^30 premise for
+    # the container's output bound (PBR), with the record's KY field at 30
+    mKY = re.search(r'Nat\.is_lt\(KY, (\d+)n\)', okt)
+    KY = int(mKY.group(1)) - 1 if mKY else 30
     TR = 'FD.array__Tree<U32>'
     OBT = 'O.Bits{FD.array__thaw(U32, T), K}'
     subst = lambda t: re.sub(r'\bKY\b', f'{KY}n', re.sub(r'\bkb\b', f'{KB}n', re.sub(r'\bB\b', 'U32.to_nat(K)', t)))  # noqa: E731
     o2 = subst(okt)
     conj = {
-        'FD.array__perfect(U32, dw, T)': 'pf', f'Nat.is_lt(dw, {Kd}n)': 'hdw', f'Nat.is_lt({KB}n, {KB + 1}n)': '{==}', f'Nat.is_lt({KY}n, {KY + 1}n)': '{==}',
+        'FD.array__perfect(U32, dw, T)': 'pf', f'Nat.is_lt(dw, {Kd}n)': 'hdw', f'Nat.is_lt({KB}n, {KB0 + 1}n)': '{==}', f'Nat.is_lt({KY}n, {KY + 1}n)': '{==}',
         'Nat.is_le(U32.to_nat(K), U32.to_nat(K))': 'hN', f'Nat.is_le(Nat.add(U32.to_nat(K), 8n), O.pow2n({KB}n))': 'hK8',
         f'Nat.is_le(Nat.add(31n, Nat.add(U32.to_nat(K), 1n)), VB.pw({KY}n))': 'hKY', 'Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw))': 'hroom',
         'O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K))))': 'htz', 'DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K)))': 'hz',
