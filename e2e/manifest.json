@@ -2702,7 +2702,7 @@
      "BitsStruct_e2e_decode_reject"
     ],
     "ii": "view",
-    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+    "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
   "CompatibleUnionA_e2e_dec_generated.bend": [
@@ -7209,9 +7209,9 @@
  "input_bounds": {
   "BitsStruct": {
    "generated_name": "Gc85FA758A04",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 13,
    "covered": true,
    "bridged": null

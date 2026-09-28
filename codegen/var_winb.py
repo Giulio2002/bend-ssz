@@ -1854,7 +1854,7 @@ HNN_TERM = ('FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NM
 
 
 KEEP_PB_REJECT = True
-TOP_SHALLOW = {'Gc221EC01D83', 'Gc85FA758A04'}
+TOP_SHALLOW = {'Gc221EC01D83'}
 
 
 def top_deep(text, al, mode, ends=None):
