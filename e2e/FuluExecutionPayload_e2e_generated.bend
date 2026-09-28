@@ -29,7 +29,7 @@ import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/vconts.bend as CS
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_var_codec_ExecutionPayload_enc.bend as EN
 import ../proofs/obj/big_encx_ExecutionPayload_iface.bend as CI
 import ../proofs/obj/big_encx_ExecutionPayload_size.bend as Z
@@ -40,6 +40,7 @@ import ./e2e_support.bend as E
 import ./e2e_emit.bend as EM
 import ./e2e_cap.bend as C
 import ./e2e_blist.bend as BL
+import ./e2e_mw.bend as MW
 import ./e2e_eptx.bend as TX
 import ./e2e_rl_ExecutionPayload.bend as RLV
 import ./e2e_epr.bend as RC

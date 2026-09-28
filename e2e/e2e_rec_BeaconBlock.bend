@@ -5,7 +5,7 @@ import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/root_names_light.bend as RN_L
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/big_encx_BeaconBlock_iface.bend as CI
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
@@ -46,6 +46,7 @@ import ./e2e_dl_l16_SignedBLSToExecutionChange.bend as BC10
 import ./e2e_rl_l16_SignedBLSToExecutionChange.bend as RV10
 import ./e2e_bl48.bend as K11
 import ../proofs/obj/words_obj_light.bend as WO
+import ./e2e_rec_ExecutionRequests.bend as RQ12
 import ./e2e_dl_l8192_DepositRequest.bend as DQ0
 import ./e2e_dl_l16_WithdrawalRequest.bend as DQ1
 import ./e2e_dl_l2_ConsolidationRequest.bend as DQ2
