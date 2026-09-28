@@ -211,8 +211,63 @@ def clr(+d: Nat, +T: FD.array__Tree<U32>, +k: U32, +pf: {{FD.array__perfect(U32,
 ''' + '\n'.join(cases) + '\n'
 
 
+def wing_text():
+    return r"""
+# ---- the same for a window starting at word i0 (a bit list inside a container) ----
+
+law wdre:
+  for +k: Nat
+  for +W: List<&2, U32>
+  {VB.wdr(k, W) == VSP.wdr0(k, W) : List<&2, U32>}
+def wdre(k, W):
+  match k W:
+    case 0n _: {==}
+    case 1n+ +p Nil{}: {==}
+    case 1n+ +p Con{+h, +t}: wdre(p, t)
+
+law nwq:
+  for +k: Nat
+  for +x: Nat
+  {C.nwn(Nat.add(A.quad(k), x)) == Nat.add(k, C.nwn(x)) : Nat}
+def nwq(k, x):
+  match k:
+    case 0n: {==}
+    case 1n+ +p: Equal.cong(Nat, Nat, z => 1n+z, C.nwn(Nat.add(A.quad(p), x)), Nat.add(p, C.nwn(x)), nwq(p, x))
+
+def winG(+d: Nat, +t: FD.array__Tree<U32>, +L: U32, +i0: Nat, +m: Nat, +dz: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(A.quad(i0), U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, +e1: {U32.to_nat(L) == 1n+m : Nat},
+    +hNW: {VC.NW(L) == C.nwn(U32.to_nat(L)) : Nat}, +hr0: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool})
+    -> {VSP.bt(1n+m, SF.limbs(FD.array__slots(U32, VB.mone(VC.NW(L), i0, 0n, dz, VC.ZT(dz), t)))) == VR.WB(t, i0, 1n+m) : +List<U32>}:
+  +NW = VC.NW(L)
+  +s = FD.array__slots(U32, t)
+  +Z = FD.array__slots(U32, VC.ZT(dz))
+  +LM = VB.lm(NW, i0, 0n, Z, s)
+  +eS = VB.slots_mone(NW, i0, 0n, dz, VC.ZT(dz), t, FD.array__trep_perfect(U32, dz, 0), hr0)
+  +hz = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(NW, 0n), z) == True{} : Bool}, VB.pw(dz), VB.len(Z),
+    Equal.sym(Nat, VB.len(Z), VB.pw(dz), FD.array__slots_length(U32, dz, VC.ZT(dz), FD.array__trep_perfect(U32, dz, 0))), hr0)
+  +hq0 = C.nle(Nat.add(A.quad(i0), U32.to_nat(L)), VB.pw(d), hw)
+  +hq1 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(d)) == True{} : Bool}, C.nwn(Nat.add(A.quad(i0), U32.to_nat(L))), Nat.add(NW, i0),
+    Equal.trans(Nat, C.nwn(Nat.add(A.quad(i0), U32.to_nat(L))), Nat.add(i0, C.nwn(U32.to_nat(L))), Nat.add(NW, i0), nwq(i0, U32.to_nat(L)),
+      Equal.trans(Nat, Nat.add(i0, C.nwn(U32.to_nat(L))), Nat.add(C.nwn(U32.to_nat(L)), i0), Nat.add(NW, i0), FD.nat__add_comm(i0, C.nwn(U32.to_nat(L))),
+        Equal.cong(Nat, Nat, z => Nat.add(z, i0), C.nwn(U32.to_nat(L)), NW, Equal.sym(Nat, NW, C.nwn(U32.to_nat(L)), hNW)))), hq0)
+  +hsl = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(NW, i0), z) == True{} : Bool}, VB.pw(d), VB.len(s), Equal.sym(Nat, VB.len(s), VB.pw(d), FD.array__slots_length(U32, d, t, pf)), hq1)
+  +ewin = VB.lm_win(NW, i0, 0n, Z, s, hz, hsl)
+  +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, U32.to_nat(L), 1n+m, e1,
+    FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(L), A.quad(z)) == True{} : Bool}, C.nwn(U32.to_nat(L)), NW, Equal.sym(Nat, NW, C.nwn(U32.to_nat(L)), hNW), C.ng(U32.to_nat(L))))
+  %Equal.sym(List<&2, U32>, FD.array__slots(U32, VB.mone(NW, i0, 0n, dz, VC.ZT(dz), t)), LM, eS) : {VSP.bt(1n+m, SF.limbs(_)) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %btle(1n+m, A.quad(NW), SF.limbs(LM), hq) : {_ == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %Equal.sym(+List<U32>, VSP.bt(A.quad(NW), SF.limbs(LM)), SF.limbs(VSP.wtake(NW, LM)), VSP.bt_limbs(NW, LM)) : {VSP.bt(1n+m, _) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VSP.wtake(NW, LM), VSP.wtake(NW, VB.wdr(i0, s)), ewin) : {VSP.bt(1n+m, SF.limbs(_)) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %VSP.bt_limbs(NW, VB.wdr(i0, s)) : {VSP.bt(1n+m, _) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %Equal.sym(+List<U32>, VSP.bt(1n+m, VSP.bt(A.quad(NW), SF.limbs(VB.wdr(i0, s)))), VSP.bt(1n+m, SF.limbs(VB.wdr(i0, s))), btle(1n+m, A.quad(NW), SF.limbs(VB.wdr(i0, s)), hq)) : {_ == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VB.wdr(i0, s), VSP.wdr0(i0, s), wdre(i0, s)) : {VSP.bt(1n+m, SF.limbs(_)) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %VSP.bdr_limbs(i0, s) : {VSP.bt(1n+m, _) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  {==}
+"""
+
+
 def text():
-    return HEAD + HDR + BASE + clr_text() + MASK + bytes_text() + bl_text() + core_text() + view_text() + win_text()
+    return HEAD + HDR + BASE + clr_text() + MASK + bytes_text() + bl_text() + core_text() + view_text() + win_text() + wing_text()
 
 
 
@@ -716,3 +771,99 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
                'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vlist.bend as VL', 'import ../proofs/obj/vbrt.bend as VR',
                'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/nat_order.bend as Order', 'import ./e2e_bview.bend as BV']
     return {'view': 'bvw', 'imports': imports, 'text': text}
+
+
+def bc_params(obj_dir, mod):
+    """A bit list inside a container (var_bitc / big_var_bitc): the window's word start, the bit limit, the byte bound,
+    the storage depth bound and the view's REST (the other fields' codec values) from the codec module."""
+    s = (Path(obj_dir) / mod).read_text()
+    mv = re.search(r'^def VAL\(\+t: FD\.array__Tree<U32>, \+n: U32\) -> S\.Value: (.*)$', s, re.M).group(1)
+    mi = re.match(r'S\.Sequence\{S\.Items\{S\.BitsValue\{VBL\.bl\(VR\.WB\(t, (\d+)n, U32\.to_nat\(LL\(n\)\)\)\)\}, (.*)\}\}$', mv)
+    i0, rest = int(mi.group(1)), mi.group(2)
+    lim = int(re.search(r'def hB\(.*?\+bd: \{Nat\.is_le\(BD\(t, n\), U32\.to_nat\((\d+)\)\)', s).group(1))
+    nby = int(re.search(r'def hB\(.*?\n\s*-> \{Nat\.is_le\(U32\.to_nat\(LL\(n\)\), (\d+)n\)', s, re.S).group(1))
+    kdz = int(re.search(r'def hdzK\(.*?\n.*?-> \{Nat\.is_le\(VLS\.DZ\(LL\(n\)\), (\d+)n\)', s, re.S).group(1))
+    return i0, lim, nby, kdz, rest
+
+
+def bc_view(name, i0, lim, nby, kdz, rest):
+    kc = 0
+    while 4 * 2 ** kc < nby:
+        kc += 1
+    M = 'VB.mone(VC.NW(DC.LL(n)), ' + f'{i0}n' + ', 0n, VLS.DZ(DC.LL(n)), VC.ZT(VLS.DZ(DC.LL(n))), t)'
+    LHSB = f'BK.btk(U32.to_nat(DC.NBW(t, n)), BK.bitsof(FD.array__slots(U32, FD.array__freeze(U32, O.clear_bit(O.mask_last(DC.LL(n), FD.array__thaw(U32, {M})), DC.NBW(t, n))))))'
+    RHSB = f'VBL.bl(VR.WB(t, {i0}n, U32.to_nat(DC.LL(n))))'
+    # a bit vector field: the codec value spells its bits FB.bitsof(ws), the root view E2B.wcat(ws) (e2e_bits.bw)
+    bvs = re.findall(r'FB\.bitsof\((\[[^\]]*\])\)', rest)
+    assert len(bvs) <= 1
+    rest_mid = rest.replace('FB.bitsof(', 'E2B.wcat(')
+    head_bv, tail_bv = '', ''
+    if bvs:
+        L0 = bvs[0]
+        MID = f'S.Sequence{{S.Items{{S.BitsValue{{{RHSB}}}, {rest_mid}}}}}'
+        VALT = f'S.Sequence{{S.Items{{S.BitsValue{{{RHSB}}}, {rest}}}}}'
+        head_bv = f'Equal.trans(S.Value, RT.v_{name}(DC.OBJ(t, n)), {MID}, {VALT},\n    '
+        tail_bv = (f',\n    Equal.cong(+List<Bool>, S.Value, z => S.Sequence{{S.Items{{S.BitsValue{{{RHSB}}}, {rest.replace("FB.bitsof(" + L0 + ")", "z")}}}}}, E2B.wcat({L0}), FB.bitsof({L0}),'
+                   f' Equal.sym(+List<Bool>, FB.bitsof({L0}), E2B.wcat({L0}), E2B.bw({L0}))))')
+    text = f'''# ---- the view of a decoded {name}: its bit list's first NB bits are the value bits of its bytes (e2e_bview) ----
+
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{name}(DC.OBJ(t, n)) == DC.VAL(t, n) : S.Value}}:
+  +a = U32.is_le({4 * i0}, n)
+  +b = U32.is_eq(DC.SPO(t), {4 * i0})
+  +c = DC.CHKW(t, n)
+  +ha = DC.ch_a(a, b, c, hchk)
+  +hw = DC.ch_c(a, b, c, hchk)
+  +e1 = DC.cwE(t, n, hw)
+  +h1 = DC.cw1(t, n, hw)
+  +nz = DC.cwB(t, n, h1)
+  +bd = DC.cwC(t, n, h1, nz)
+  +L = DC.LL(n)
+  +m = DC.M1(n)
+  +hb = DC.hB(t, n, e1, bd)
+  +hL = DC.hLd(d, n, ha, hn)
+  +dz = VLS.DZ(L)
+  +M = {M}
+  +pfM = VB.mone_perfect(VC.NW(L), {i0}n, 0n, dz, VC.ZT(dz), t, FD.array__trep_perfect(U32, dz, 0))
+  +hdz = FD.nat__le_lt_trans(dz, {kdz}n, 32n, DC.hdzK(d, n, hd, hL, hb), {{==}})
+  +V = DC.VWB(t, n)
+  +h = VY.hb(V)
+  +hm8 = FD.nat__le_trans(Nat.mul(8n, m), DC.BD(t, n), U32.to_nat({lim}), FD.nat__le_add_right(Nat.mul(8n, m), h), bd)
+  +emul = VU.mul_le(8, U32.sub(L, 1), {lim}, hm8)
+  +hadd = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(z, h), U32.to_nat({lim})) == True{{}} : Bool}}, Nat.mul(8n, m), U32.to_nat(U32.mul(8, U32.sub(L, 1))), Equal.sym(Nat, U32.to_nat(U32.mul(8, U32.sub(L, 1))), Nat.mul(8n, m), emul), bd)
+  +eNB = Equal.trans(Nat, U32.to_nat(DC.NBW(t, n)), Nat.add(U32.to_nat(U32.mul(8, U32.sub(L, 1))), h), Nat.add(VSP.x8(m), h), A.add_le(U32.mul(8, U32.sub(L, 1)), O.high_bit(V), {lim}, hadd),
+    Equal.cong(Nat, Nat, z => Nat.add(z, h), U32.to_nat(U32.mul(8, U32.sub(L, 1))), VSP.x8(m), Equal.trans(Nat, U32.to_nat(U32.mul(8, U32.sub(L, 1))), Nat.mul(8n, m), VSP.x8(m), emul, VR.mul8(m))))
+  +hNW = C.nw(L, d, FD.nat__lt_trans(d, @BD@, 29n, hd, {{==}}), hL)
+  +hr0 = VLS.hrg(d, L, hd, hL)
+  +hN = FD.logic__subst(Nat, z => {{Nat.is_le(z, FD.spec_common__pow2(dz)) == True{{}} : Bool}}, Nat.add(VC.NW(L), 0n), C.nwn(U32.to_nat(L)),
+    Equal.trans(Nat, Nat.add(VC.NW(L), 0n), VC.NW(L), C.nwn(U32.to_nat(L)), FD.nat__add_zero(VC.NW(L)), hNW), hr0)
+  +hn3 = FD.nat__le_lt_trans(Nat.add(3n, U32.to_nat(L)), U32.to_nat(n), FD.spec_common__pow2(32n),
+    FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(3n, U32.to_nat(L)), z) == True{{}} : Bool}}, Nat.add({4 * i0}n, U32.to_nat(L)), U32.to_nat(n), DC.enFS(n, ha), Order.add_right(3n, {4 * i0}n, U32.to_nat(L), {{==}})),
+    VB.u32_lt(n))
+  +hh = BV.hb7(V)
+  +A1 = BV.vobj(L, dz, M, DC.NBW(t, n), m, h, pfM, hdz, hh, eNB, hN, hn3, e1)
+  +W1 = VR.WB(t, {i0}n, 1n+m)
+  +hwL = DC.hwL(d, n, ha, hn)
+  +hw1 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(A.quad({i0}n), z), A.quad(VB.pw(d))) == True{{}} : Bool}}, U32.to_nat(L), 1n+m, e1, hwL)
+  +ew = BV.winG(d, t, L, {i0}n, m, dz, pf, hwL, e1, hNW, hr0)
+  +hlM = Equal.trans(Nat, List.length(&2, U32, F.limbs(FD.array__slots(U32, M))), A.quad(VB.pw(dz)), A.quad(VB.pw(dz)), VR.lenS(dz, M, pfM), {{==}})
+  +hq4 = FD.nat__le_trans(1n+m, A.quad(C.nwn(U32.to_nat(L))), A.quad(VB.pw(dz)),
+    FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(C.nwn(U32.to_nat(L)))) == True{{}} : Bool}}, U32.to_nat(L), 1n+m, e1, C.ng(U32.to_nat(L))), C.q4(C.nwn(U32.to_nat(L)), VB.pw(dz), hN))
+  +hl = FD.logic__subst(Nat, z => {{Nat.is_lt(m, z) == True{{}} : Bool}}, A.quad(VB.pw(dz)), List.length(&2, U32, F.limbs(FD.array__slots(U32, M))), Equal.sym(Nat, List.length(&2, U32, F.limbs(FD.array__slots(U32, M))), A.quad(VB.pw(dz)), hlM),
+    FD.nat__succ_le_lt(m, A.quad(VB.pw(dz)), hq4))
+  +hlv = VR.lenWB(d, t, {i0}n, 1n+m, pf, hw1)
+  +eh = Equal.cong(U32, Nat, z => VY.hb(z), VBL.lastb(W1), V, VR.lastWB(d, t, {i0}n, m, DC.XW(n), pf, hw1, DC.eXW(d, n, hd, ha, hn, e1)))
+  +B1 = BV.vbits(M, m, h, W1, hh, ew, hl, hlv, eh)
+  +eVW = Equal.cong(Nat, +List<U32>, z => VR.WB(t, {i0}n, z), U32.to_nat(L), 1n+m, e1)
+  {head_bv}Equal.cong(+List<Bool>, S.Value, z => S.Sequence{{S.Items{{S.BitsValue{{z}}, {rest_mid}}}}}, {LHSB}, {RHSB},
+    Equal.trans(+List<Bool>, {LHSB}, BK.btk(U32.to_nat(DC.NBW(t, n)), BK.bitsof(FD.array__slots(U32, M))), {RHSB}, A1,
+      FD.logic__subst(Nat, z => {{BK.btk(z, BK.bitsof(FD.array__slots(U32, M))) == {RHSB} : +List<Bool>}}, Nat.add(VSP.x8(m), h), U32.to_nat(DC.NBW(t, n)), Equal.sym(Nat, U32.to_nat(DC.NBW(t, n)), Nat.add(VSP.x8(m), h), eNB),
+        FD.logic__subst(+List<U32>, z => {{BK.btk(Nat.add(VSP.x8(m), h), BK.bitsof(FD.array__slots(U32, M))) == VBL.bl(z) : +List<Bool>}}, W1, VR.WB(t, {i0}n, U32.to_nat(L)), Equal.sym(+List<U32>, VR.WB(t, {i0}n, U32.to_nat(L)), W1, eVW), B1)))){tail_bv}
+
+'''
+    imports = ['import ../proofs/obj/bitlist_pack.bend as BK', 'import ../proofs/obj/vbitl.bend as VBL',
+               'import ../proofs/obj/vbyte.bend as VY', 'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbuf.bend as VB',
+               'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/vbrt.bend as VR',
+               'import ../proofs/obj/vu32.bend as VU', 'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/root_types.bend as RT',
+               'import ./e2e_bview.bend as BV', 'import ../proofs/obj/spec_bits.bend as FB', 'import ./e2e_bits.bend as E2B']
+    return {'view': f'RT.v_{name}', 'imports': imports, 'text': text}

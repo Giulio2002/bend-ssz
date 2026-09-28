@@ -2927,6 +2927,10 @@ def outputs():
     for X0, N0, big0 in bit_lists(None):
         if (OBJ / f'var_bits_{X0}.bend').exists():
             VDEC_VIEWS.setdefault(X0, BVG.bl_view(X0, *BVG.bl_params(OBJ, X0)))
+    # the bit lists inside containers (var_bitc / big_var_bitc): the same view at the window's word start
+    for X0, mod0 in (('PendingAttestation', 'var_bitc_PendingAttestation.bend'), ('Attestation', 'big_var_bitc_Attestation.bend')):
+        if (OBJ / mod0).exists():
+            VDEC_VIEWS.setdefault(X0, BVG.bc_view(X0, *BVG.bc_params(OBJ, mod0)))
     import names as NM
     amap = json.loads((ROOT / 'proofs/gate/api_map.json').read_text())
     readable = NM.mapping()

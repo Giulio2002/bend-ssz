@@ -2741,6 +2741,18 @@
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
    }
   ],
+  "FuluAttestation_e2e_dec_generated.bend": [
+   {
+    "name": "FuluAttestation",
+    "generated_name": "Attestation",
+    "laws": [
+     "FuluAttestation_e2e_decode_view",
+     "FuluAttestation_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "FuluAttesterSlashing_e2e_dec_generated.bend": [
    {
     "name": "FuluAttesterSlashing",
@@ -2880,6 +2892,18 @@
     "laws": [
      "FuluLightClientUpdate_e2e_decode_view",
      "FuluLightClientUpdate_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
+  "FuluPendingAttestation_e2e_dec_generated.bend": [
+   {
+    "name": "FuluPendingAttestation",
+    "generated_name": "PendingAttestation",
+    "laws": [
+     "FuluPendingAttestation_e2e_decode_view",
+     "FuluPendingAttestation_e2e_decode_reject"
     ],
     "ii": "view",
     "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
@@ -6046,7 +6070,8 @@
   },
   "FuluAttestation": {
    "generated_name": "Attestation",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "FuluAttestation_e2e_dec_generated.bend"
   },
   "FuluAggregateAndProof": {
    "generated_name": "AggregateAndProof",
@@ -6058,7 +6083,8 @@
   },
   "FuluPendingAttestation": {
    "generated_name": "PendingAttestation",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "decode": "FuluPendingAttestation_e2e_dec_generated.bend"
   },
   "FuluSyncCommittee": {
    "generated_name": "SyncCommittee",
@@ -6829,7 +6855,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 16621,
    "covered": true,
-   "bridged": null
+   "bridged": "FuluAttestation_e2e_dec_generated.bend"
   },
   "FuluAttesterSlashing": {
    "generated_name": "AttesterSlashing",
@@ -6973,7 +6999,7 @@
    "input_bound_bytes": 536870912,
    "max_ssz_size": 405,
    "covered": true,
-   "bridged": null
+   "bridged": "FuluPendingAttestation_e2e_dec_generated.bend"
   },
   "FuluSignedAggregateAndProof": {
    "generated_name": "SignedAggregateAndProof",
