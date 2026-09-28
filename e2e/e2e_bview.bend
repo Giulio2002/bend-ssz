@@ -759,3 +759,54 @@ def win(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +m: Nat, +pf: {FD.array__perf
   %Equal.sym(List<&2, U32>, VSP.wtake(NW, LM), VSP.wtake(NW, s), ewin) : {VSP.bt(1n+m, SF.limbs(_)) == VR.WB(t, 0n, 1n+m) : +List<U32>}
   %VSP.bt_limbs(NW, s) : {VSP.bt(1n+m, _) == VR.WB(t, 0n, 1n+m) : +List<U32>}
   btle(1n+m, A.quad(NW), SF.limbs(s), hq)
+
+# ---- the same for a window starting at word i0 (a bit list inside a container) ----
+
+law wdre:
+  for +k: Nat
+  for +W: List<&2, U32>
+  {VB.wdr(k, W) == VSP.wdr0(k, W) : List<&2, U32>}
+def wdre(k, W):
+  match k W:
+    case 0n _: {==}
+    case 1n+ +p Nil{}: {==}
+    case 1n+ +p Con{+h, +t}: wdre(p, t)
+
+law nwq:
+  for +k: Nat
+  for +x: Nat
+  {C.nwn(Nat.add(A.quad(k), x)) == Nat.add(k, C.nwn(x)) : Nat}
+def nwq(k, x):
+  match k:
+    case 0n: {==}
+    case 1n+ +p: Equal.cong(Nat, Nat, z => 1n+z, C.nwn(Nat.add(A.quad(p), x)), Nat.add(p, C.nwn(x)), nwq(p, x))
+
+def winG(+d: Nat, +t: FD.array__Tree<U32>, +L: U32, +i0: Nat, +m: Nat, +dz: Nat, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(A.quad(i0), U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, +e1: {U32.to_nat(L) == 1n+m : Nat},
+    +hNW: {VC.NW(L) == C.nwn(U32.to_nat(L)) : Nat}, +hr0: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool})
+    -> {VSP.bt(1n+m, SF.limbs(FD.array__slots(U32, VB.mone(VC.NW(L), i0, 0n, dz, VC.ZT(dz), t)))) == VR.WB(t, i0, 1n+m) : +List<U32>}:
+  +NW = VC.NW(L)
+  +s = FD.array__slots(U32, t)
+  +Z = FD.array__slots(U32, VC.ZT(dz))
+  +LM = VB.lm(NW, i0, 0n, Z, s)
+  +eS = VB.slots_mone(NW, i0, 0n, dz, VC.ZT(dz), t, FD.array__trep_perfect(U32, dz, 0), hr0)
+  +hz = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(NW, 0n), z) == True{} : Bool}, VB.pw(dz), VB.len(Z),
+    Equal.sym(Nat, VB.len(Z), VB.pw(dz), FD.array__slots_length(U32, dz, VC.ZT(dz), FD.array__trep_perfect(U32, dz, 0))), hr0)
+  +hq0 = C.nle(Nat.add(A.quad(i0), U32.to_nat(L)), VB.pw(d), hw)
+  +hq1 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(d)) == True{} : Bool}, C.nwn(Nat.add(A.quad(i0), U32.to_nat(L))), Nat.add(NW, i0),
+    Equal.trans(Nat, C.nwn(Nat.add(A.quad(i0), U32.to_nat(L))), Nat.add(i0, C.nwn(U32.to_nat(L))), Nat.add(NW, i0), nwq(i0, U32.to_nat(L)),
+      Equal.trans(Nat, Nat.add(i0, C.nwn(U32.to_nat(L))), Nat.add(C.nwn(U32.to_nat(L)), i0), Nat.add(NW, i0), FD.nat__add_comm(i0, C.nwn(U32.to_nat(L))),
+        Equal.cong(Nat, Nat, z => Nat.add(z, i0), C.nwn(U32.to_nat(L)), NW, Equal.sym(Nat, NW, C.nwn(U32.to_nat(L)), hNW)))), hq0)
+  +hsl = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(NW, i0), z) == True{} : Bool}, VB.pw(d), VB.len(s), Equal.sym(Nat, VB.len(s), VB.pw(d), FD.array__slots_length(U32, d, t, pf)), hq1)
+  +ewin = VB.lm_win(NW, i0, 0n, Z, s, hz, hsl)
+  +hq = FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(NW)) == True{} : Bool}, U32.to_nat(L), 1n+m, e1,
+    FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(L), A.quad(z)) == True{} : Bool}, C.nwn(U32.to_nat(L)), NW, Equal.sym(Nat, NW, C.nwn(U32.to_nat(L)), hNW), C.ng(U32.to_nat(L))))
+  %Equal.sym(List<&2, U32>, FD.array__slots(U32, VB.mone(NW, i0, 0n, dz, VC.ZT(dz), t)), LM, eS) : {VSP.bt(1n+m, SF.limbs(_)) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %btle(1n+m, A.quad(NW), SF.limbs(LM), hq) : {_ == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %Equal.sym(+List<U32>, VSP.bt(A.quad(NW), SF.limbs(LM)), SF.limbs(VSP.wtake(NW, LM)), VSP.bt_limbs(NW, LM)) : {VSP.bt(1n+m, _) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VSP.wtake(NW, LM), VSP.wtake(NW, VB.wdr(i0, s)), ewin) : {VSP.bt(1n+m, SF.limbs(_)) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %VSP.bt_limbs(NW, VB.wdr(i0, s)) : {VSP.bt(1n+m, _) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %Equal.sym(+List<U32>, VSP.bt(1n+m, VSP.bt(A.quad(NW), SF.limbs(VB.wdr(i0, s)))), VSP.bt(1n+m, SF.limbs(VB.wdr(i0, s))), btle(1n+m, A.quad(NW), SF.limbs(VB.wdr(i0, s)), hq)) : {_ == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %Equal.sym(List<&2, U32>, VB.wdr(i0, s), VSP.wdr0(i0, s), wdre(i0, s)) : {VSP.bt(1n+m, SF.limbs(_)) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  %VSP.bdr_limbs(i0, s) : {VSP.bt(1n+m, _) == VR.WB(t, i0, 1n+m) : +List<U32>}
+  {==}
