@@ -34,20 +34,24 @@ import ./vfxg.bend as VXG
 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> FuluSyncCommittee_d.SyncCommittee: FuluSyncCommittee_d.SyncCommittee{O.Words{FD.array__thaw(U32, VXB.CTN(d, t, x, 24576, 13n)), 24576}, FuluBytes48_d.Bytes48{UR.RWN(t, Nat.add(x, 24576n)), UR.RWN(t, 4n+Nat.add(x, 24576n)), UR.RWN(t, 8n+Nat.add(x, 24576n)), UR.RWN(t, 12n+Nat.add(x, 24576n)), UR.RWN(t, 16n+Nat.add(x, 24576n)), UR.RWN(t, 20n+Nat.add(x, 24576n)), UR.RWN(t, 24n+Nat.add(x, 24576n)), UR.RWN(t, 28n+Nat.add(x, 24576n)), UR.RWN(t, 32n+Nat.add(x, 24576n)), UR.RWN(t, 36n+Nat.add(x, 24576n)), UR.RWN(t, 40n+Nat.add(x, 24576n)), UR.RWN(t, 44n+Nat.add(x, 24576n))}}
 
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 24624n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {FuluSyncCommittee_r.SyncCommittee_read(UA.BF(t, n), off, 24624) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluSyncCommittee_d.SyncCommittee}:
   %Equal.sym(B.Buf & O.Words, Fulu_vec_bytevec_48_512_r.v512_b48_read(UA.BF(t, n), U32.add(off, 0), 24576), (UA.BF(t, n), O.Words{FD.array__thaw(U32, VXB.CTN(d, t, x, 24576, 13n)), 24576}),
-      VXG.rdg(d, t, n, U32.add(off, 0), x, Equal.trans(Nat, U32.to_nat(U32.add(off, 0)), Nat.add(x, 0n), x, VXG.offc(d, off, 0, 0n, x, 24624n, e, hd, {==}, {==}, hb), FD.nat__add_zero(x)),
+      VXG.rdgD(d, t, n, U32.add(off, 0), x, Equal.trans(Nat, U32.to_nat(U32.add(off, 0)), Nat.add(x, 0n), x, VXG.offcD(d, off, 0, 0n, x, 24624n, e, hd, {==}, {==}, hb), FD.nat__add_zero(x)),
         hd, pf, 24576, 24576n, 13n, 15n, {==}, {==}, {==}, {==}, {==},
         FD.nat__le_trans(Nat.add(x, 24576n), Nat.add(x, 24624n), A.quad(VB.pw(d)), Order.add_left(x, 24576n, 24624n, {==}), hb))) :
     {FuluSyncCommittee_r.SyncCommittee_rd0(off, 24624, _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluSyncCommittee_d.SyncCommittee}
   %Equal.sym(B.Buf & FuluBytes48_d.Bytes48, FuluBytes48_r.b48_read(UA.BF(t, n), U32.add(off, 24576), 48), (UA.BF(t, n), FuluBytes48_d.Bytes48{UR.RWN(t, Nat.add(x, 24576n)), UR.RWN(t, 4n+Nat.add(x, 24576n)), UR.RWN(t, 8n+Nat.add(x, 24576n)), UR.RWN(t, 12n+Nat.add(x, 24576n)), UR.RWN(t, 16n+Nat.add(x, 24576n)), UR.RWN(t, 20n+Nat.add(x, 24576n)), UR.RWN(t, 24n+Nat.add(x, 24576n)), UR.RWN(t, 28n+Nat.add(x, 24576n)), UR.RWN(t, 32n+Nat.add(x, 24576n)), UR.RWN(t, 36n+Nat.add(x, 24576n)), UR.RWN(t, 40n+Nat.add(x, 24576n)), UR.RWN(t, 44n+Nat.add(x, 24576n))}),
-      VTX.rdx_b48(d, t, n, U32.add(off, 24576), Nat.add(x, 24576n), VXG.offc(d, off, 24576, 24576n, x, 24624n, e, hd, {==}, {==}, hb), FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf,
+      VTX.rdxd_b48(d, t, n, U32.add(off, 24576), Nat.add(x, 24576n), VXG.offcD(d, off, 24576, 24576n, x, 24624n, e, hd, {==}, {==}, hb), hd, pf,
         VXG.roomc(x, 24624n, 24576n, 48n, A.quad(VB.pw(d)), hb, {==}))) :
     {FuluSyncCommittee_r.SyncCommittee_rd1(off, 24624, O.Words{FD.array__thaw(U32, VXB.CTN(d, t, x, 24576, 13n)), 24576}, _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluSyncCommittee_d.SyncCommittee}
   {==}
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 24624n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {FuluSyncCommittee_r.SyncCommittee_read(UA.BF(t, n), off, 24624) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluSyncCommittee_d.SyncCommittee}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.Sequence{S.Items{S.Sequence{AV.ch12(UR.RWS(VXG.CNT(x, 6144n), t, x))}, S.Items{S.BytesValue{F.limbs([UR.RWN(t, Nat.add(x, 24576n)), UR.RWN(t, 4n+Nat.add(x, 24576n)), UR.RWN(t, 8n+Nat.add(x, 24576n)), UR.RWN(t, 12n+Nat.add(x, 24576n)), UR.RWN(t, 16n+Nat.add(x, 24576n)), UR.RWN(t, 20n+Nat.add(x, 24576n)), UR.RWN(t, 24n+Nat.add(x, 24576n)), UR.RWN(t, 28n+Nat.add(x, 24576n)), UR.RWN(t, 32n+Nat.add(x, 24576n)), UR.RWN(t, 36n+Nat.add(x, 24576n)), UR.RWN(t, 40n+Nat.add(x, 24576n)), UR.RWN(t, 44n+Nat.add(x, 24576n))])}, S.EmptyItems{}}}}
 

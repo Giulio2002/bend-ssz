@@ -84,18 +84,22 @@ def wx2(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> bitvector_8_d.Bitvector8: bitvector_8_d.Bitvector8{O.keep(1, UR.RWN(t, x))}
 
 # (the four-byte read keeps the byte at x: x + 1 <= 4 2^d; vedge.bend)
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {bitvector_8_r.bv8_read(UA.BF(t, n), off, 1) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_8_d.Bitvector8}:
   +hb1 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 1n), A.quad(VB.pw(d))) == True{} : Bool}, x, U32.to_nat(off), Equal.sym(Nat, U32.to_nat(off), x, e), hb)
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), off), (UA.BF(t, n), VE.RV(t, n, off)), VE.rd_same(t, n, off)) :
     {bitvector_8_r.bv8_r0(off, _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_8_d.Bitvector8}
-  %Equal.sym(U32, O.keep(1, VE.RV(t, n, off)), O.keep(1, UA.RW(t, off)), VE.kv1(d, t, n, off, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb1)) :
+  %Equal.sym(U32, O.keep(1, VE.RV(t, n, off)), O.keep(1, UA.RW(t, off)), VE.kv1(d, t, n, off, hd, pf, hb1)) :
     {(UA.BF(t, n), bitvector_8_d.Bitvector8{_}) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_8_d.Bitvector8}
   %Equal.sym(U32, UA.RW(t, off), UR.RWN(t, U32.to_nat(off)), UR.rw_n(t, off)) : {(UA.BF(t, n), bitvector_8_d.Bitvector8{O.keep(1, _)}) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_8_d.Bitvector8}
   %Equal.sym(Nat, U32.to_nat(off), x, e) : {(UA.BF(t, n), bitvector_8_d.Bitvector8{O.keep(1, UR.RWN(t, _))}) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_8_d.Bitvector8}
   {==}
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 1n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {bitvector_8_r.bv8_read(UA.BF(t, n), off, 1) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & bitvector_8_d.Bitvector8}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 # the 8 low bits
 def VBN(v: U32) -> S.Value:

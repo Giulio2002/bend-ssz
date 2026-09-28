@@ -32,11 +32,15 @@ import ./arr_vec.bend as AV
 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> FuluSyncAggregate_d.SyncAggregate: FuluSyncAggregate_d.SyncAggregate{Fulu_bitvector_512_d.Bitvector512{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x)}, FuluBytes96_d.Bytes96{UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x), UR.RWN(t, 112n+x), UR.RWN(t, 116n+x), UR.RWN(t, 120n+x), UR.RWN(t, 124n+x), UR.RWN(t, 128n+x), UR.RWN(t, 132n+x), UR.RWN(t, 136n+x), UR.RWN(t, 140n+x), UR.RWN(t, 144n+x), UR.RWN(t, 148n+x), UR.RWN(t, 152n+x), UR.RWN(t, 156n+x)}}
 
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 160n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {FuluSyncAggregate_r.SyncAggregate_read(UA.BF(t, n), off, 160) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluSyncAggregate_d.SyncAggregate}:
-  VTX.rdx_SyncAggregate(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb)
+  VTX.rdxd_SyncAggregate(d, t, n, off, x, e, hd, pf, hb)
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 160n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {FuluSyncAggregate_r.SyncAggregate_read(UA.BF(t, n), off, 160) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluSyncAggregate_d.SyncAggregate}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.Sequence{S.Items{S.BitsValue{FB.bitsof([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x), UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x)])}, S.Items{S.BytesValue{F.limbs([UR.RWN(t, 64n+x), UR.RWN(t, 68n+x), UR.RWN(t, 72n+x), UR.RWN(t, 76n+x), UR.RWN(t, 80n+x), UR.RWN(t, 84n+x), UR.RWN(t, 88n+x), UR.RWN(t, 92n+x), UR.RWN(t, 96n+x), UR.RWN(t, 100n+x), UR.RWN(t, 104n+x), UR.RWN(t, 108n+x), UR.RWN(t, 112n+x), UR.RWN(t, 116n+x), UR.RWN(t, 120n+x), UR.RWN(t, 124n+x), UR.RWN(t, 128n+x), UR.RWN(t, 132n+x), UR.RWN(t, 136n+x), UR.RWN(t, 140n+x), UR.RWN(t, 144n+x), UR.RWN(t, 148n+x), UR.RWN(t, 152n+x), UR.RWN(t, 156n+x)])}, S.EmptyItems{}}}}
 

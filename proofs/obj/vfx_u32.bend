@@ -41,11 +41,15 @@ import ../../src/primitives.bend as I
 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> U32: UR.RWN(t, x)
 
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 4n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {uint32_r.u32_read(UA.BF(t, n), off, 4) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}:
-  UR.rwx(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
+  UR.rwx(d, t, n, off, x, e, hd, pf, hb)
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 4n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {uint32_r.u32_read(UA.BF(t, n), off, 4) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.UnsignedValue{P.UInt{UR.RWN(t, x), 0, 0, 0, 0, 0, 0, 0}}
 

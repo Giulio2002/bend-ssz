@@ -339,8 +339,43 @@ def win_text(N):
     body = TEMPLATE.replace('@REP', rep16_text()).replace('@ABSURDV', absurd_v('{CHKw(t, x, off, len) == True{} : Bool}'))
     body = body.replace('@Nn', f'{N}n').replace('@N', str(N)).replace('@p_', f'{p}_')
     assert '@' not in body.replace('&2', '').replace('@+', ''), [ln for ln in body.splitlines() if '@' in ln.replace('&2', '').replace('@+', '')][:3]
-    L = generic(VW.HEADX) + IMPORTS + ['', HDR, f'# List[uint16, {N}] ({p}) at a window of any byte offset x: the interface of proofs/obj/vua_win.bend.', '']
-    return '\n'.join(L) + VW.COMMONX + body
+    L = generic(VW.HEADX) + IMPORTS + ['', HDR, f'# List[uint16, {N}] ({p}) at a window of any byte offset x: the interface of proofs/obj/vua_win.bend,',
+                                       '# at any depth d < 31 (the limit bounds the copy: var_vlist.bounded_text).', '']
+    return deep_text('\n'.join(L) + VW.COMMONX + body, N)
+
+
+RD_OLD = """  +hL = hlen(d, x, len, hw)
+  +hz = VLS.hdz29(d, len, hd, hL)
+  +ez = FD.logic__subst(Nat, z => {B.zeros(B.words_depth_u(VC.WZ(len))) == Array.new(U32, z, 0) : Array<U32>}, U32.to_nat(B.words_depth_u(VC.WZ(len))), VLS.DZ(len),
+    VD.wdu(VC.WZ(len)), VZG.zg(B.words_depth_u(VC.WZ(len))))
+  UCT.copy_in_at(d, t, n, off, len, VLS.DZ(len), VLS.KK(d), pf, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), FD.nat__le_lt_trans(VLS.DZ(len), 29n, 31n, hz, {==}), ez,
+    UW.hsx(d, off, x, len, eo, hd, hw), VLS.hrg(d, len, hd, hL), VLS.kk_lt(d, hd), VLS.hyn(d, len, hL))"""
+FIT_OLD = 'VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==}))'
+
+
+def deep_text(text, N):
+    """The window at any depth d < 31: at most 2 N bytes (eLc, hcL), so the copy's bounds are the limit's
+    (var_vlist.bounded_text, copy_in_at with UW.hsxB); fits of a U32; var_win.deep_x threads hw32."""
+    import var_vlist as VVG
+    for a in (RD_OLD, FIT_OLD):
+        assert a in text, a[:60]
+    B = 2 * N
+    KB, K, bounds = VVG.bounded_text(B)
+    hb = f"""
+# ---- the copy's bounds from the limit: at most {B} bytes ----
+def dle(+c: Nat, +h: {{Nat.is_le(c, {N}n) == True{{}} : Bool}}) -> {{Nat.is_le(Nat.double(c), {B}n) == True{{}} : Bool}}:
+  %Equal.sym(Nat, Nat.double(c), Nat.add(c, c), FD.lru_nat_algebra__double_self(c)) : {{Nat.is_le(_, {B}n) == True{{}} : Bool}}
+  FD.nat__le_trans(Nat.add(c, c), Nat.add({N}n, c), {B}n, Order.add_right(c, {N}n, c, h), FD.nat__le_add_left(c, {N}n, {N}n, h))
+
+def hB(+t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +hchk: {{CHKw(t, x, off, len) == True{{}} : Bool}}) -> {{Nat.is_le(U32.to_nat(len), {B}n) == True{{}} : Bool}}:
+  FD.logic__subst(Nat, z => {{Nat.is_le(z, {B}n) == True{{}} : Bool}}, Nat.double(CQ(len)), U32.to_nat(len), Equal.sym(Nat, U32.to_nat(len), Nat.double(CQ(len)), eLc(t, x, off, len, hchk)), dle(CQ(len), hcL(t, x, off, len, hchk)))
+""" + bounds
+    text = text.replace(RD_OLD, '  +hb = hB(t, x, off, len, hchk)\n  +hz = hdzK(len, hb)\n' + VVG.bounded_copy(KB, K))
+    text = text.replace(FIT_OLD, 'VFT.fits4lt(U32.to_nat(len), VB.u32_lt(len))')
+    a = text.index('\n# The reader on the window')
+    text = text[:a] + '\n' + hb + text[a:]
+    text = VVG._keep_sig(text, 'hlen')
+    return VW.deep_x(text)
 
 
 def outputs(no_big=False):

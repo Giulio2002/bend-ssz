@@ -285,7 +285,7 @@ def prt(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE
     VG.pos_pow({KN}, {e}n, {EK}), FD.nat__is_eq_refl(AV.{mm}({KN})), VG.{es}({S}, {KN}, {e}n, {r}n, {EK}, {{==}}, {{==}}, {{==}}),
     VG.fits_pow({S}, {r}n, {{==}}, {{==}}), hb)
 ''')
-        return '\n'.join(L) + '\n'
+        return fx_deep('\n'.join(L) + '\n')
     L.append(f'''def OBJ(+d: Nat, +t: {TR}, +x: Nat) -> O.Words: O.Words{{FD.array__thaw(U32, VXB.CTN(d, t, x, {S}, {dz}n)), {S}}}
 
 {sig('rdx', S)}
@@ -303,7 +303,7 @@ def prt(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE
     FD.logic__subst(S.Schema, z => {{Nat.is_eq(SH.Vector_length(z), {k}n) == {TRUE}}}, {sch}, s, Equal.sym(S.Schema, s, {sch}, es), {{==}}),
     {{==}}, {{==}}, {{==}}, {{==}}, hb)
 ''')
-    return '\n'.join(L) + '\n'
+    return fx_deep('\n'.join(L) + '\n')
 
 
 def sc_mod():
@@ -444,7 +444,7 @@ def prt(+d: Nat, +t: {TR}, +x: Nat, +pf: {{FD.array__perfect(U32, d, t) == {TRUE
   %UR.rws_bytes({W}n, d, t, x, pf, hb) : {{Codec.parts(VAL(t, x), {sch}) == Some{{[S.Fixed{{_}}]}} : Maybe<&2, +List<S.Part>>}}
 {xrw}  {proof}
 ''')
-    return p, '\n'.join(L) + '\n'
+    return p, fx_deep('\n'.join(L) + '\n')
 
 
 
@@ -490,8 +490,86 @@ def outputs(no_big=False):
     return out
 
 
+# ---- any tree depth d < 31 --------------------------------------------------------------------
+# A fixed field's bytes sit at x + S <= 4 2^d: with d < 31 every offset stays below 2^32 (UR.offx31,
+# VTX.rdxd_), so the readers need no other bound. Each reader with hd: d < 28 becomes nameD with
+# hd: d < 31, and the old name stays as a wrapper (callers not yet deep). The local rdx_ lemmas
+# (hd: d < 30) get a deep twin rdx_<p>D.
+
+_HDX = '+hd: {{Nat.is_lt(d, {}n) == True{{}} : Bool}}'
+_LOCAL_D = {'VXG': ('offc', 'offc0', 'rdg')}
+_VFX_D = ('rdx', 'ok')
+
+
+def _fx_blocks(text):
+    import re
+    st = [m.start() for m in re.finditer(r'^def \w+\(', text, re.M)]
+    out = []
+    for i, a in enumerate(st):
+        b = st[i + 1] if i + 1 < len(st) else len(text)
+        seg = text[a:b]
+        lines = seg.rstrip('\n').split('\n')
+        while lines and (lines[-1].startswith('#') or not lines[-1].strip()):
+            lines.pop()
+        out.append((a, a + len('\n'.join(lines))))
+    return out
+
+
+def fx_deep(text):
+    import re
+    import deep
+    ds = deep._defs(text)
+    # (idempotent: a def whose deep twin exists is done)
+    hd28 = [n for n, v in ds.items() if _HDX.format(28) in v[3] and n + 'D' not in ds]
+    hd30 = [n for n, v in ds.items() if _HDX.format(30) in v[3] and n + 'D' not in ds]
+    if not hd28 and not hd30:
+        return text
+    local = hd28 + hd30
+    vfx = re.findall(r'^import \./(?:big_)?vfx_\w+\.bend as (\w+)$', text, re.M)
+    pat = re.compile(r'(?<![\w.])(' + '|'.join(sorted(local, key=len, reverse=True)) + r')\(')
+    reps = [('VTX.rdx_', 'VTX.rdxd_'), ('XF.rdx_', 'XF.rdxd_'), ('UR.offx(', 'UR.offx31('),
+            ('UW.hsx(d, off, x, L, e, hd, hw)', 'UW.hsxB(d, off, x, L, e, k, hk, hy, hw)'),
+            ('FD.nat__lt_trans(d, 28n, 32n, hd, {==})', 'FD.nat__lt_trans(d, 31n, 32n, hd, {==})')]
+    for a, b in (('28n', '30n'), ('28n', '31n'), ('30n', '31n')):
+        reps.append((f'FD.nat__lt_trans(d, {a}, {b}, hd, {{==}})', 'hd'))
+    for q, ns in _LOCAL_D.items():
+        for nm in ns:
+            reps.append((f'{q}.{nm}(', f'{q}.{nm}D('))
+    for q in vfx:
+        for nm in _VFX_D:
+            reps.append((f'{q}.{nm}(', f'{q}.{nm}D('))
+
+    def dcopy(blk):
+        blk = pat.sub(lambda m: m.group(1) + 'D(', blk)
+        for a, b in reps:
+            blk = blk.replace(a, b)
+        blk = blk.replace(_HDX.format(28), _HDX.format(31)).replace(_HDX.format(30), _HDX.format(31))
+        bad = re.findall(r'is_lt\(d, (?!31n)\d+n\)|lt_trans\(d, (?!31n, 32n)\d+n', blk)
+        assert not bad, (bad, blk[:200])
+        return blk
+
+    out, last = [], 0
+    for a, b in _fx_blocks(text):
+        nm = re.match(r'def (\w+)\(', text[a:]).group(1)
+        out.append(text[last:a])
+        blk = text[a:b]
+        if nm in hd28:
+            _, _, _, ps, rest = ds[nm]
+            args = ['FD.nat__lt_trans(d, 28n, 31n, hd, {==})' if p == _HDX.format(28) else p.split(':')[0].strip().lstrip('+') for p in ps]
+            wrap = f'def {nm}(' + ', '.join(ps) + ')' + rest + ':\n  ' + nm + 'D(' + ', '.join(args) + ')'
+            out.append(dcopy(blk) + '\n\n' + wrap)
+        elif nm in hd30:
+            out.append(blk + '\n\n' + dcopy(blk))
+        else:
+            out.append(blk)
+        last = b
+    out.append(text[last:])
+    return ''.join(out)
+
+
 def main():
     out = outputs('--no-big' in sys.argv)
+    out = {p_: fx_deep(t_) for p_, t_ in out.items()}
     out = RR.rewire_out(out)
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
