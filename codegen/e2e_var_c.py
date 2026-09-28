@@ -3391,7 +3391,39 @@ def gprog_text():
 ''' + '\n'.join(body)
 
 
-SUPPORT_OUT['e2e_gprog.bend'] = gprog_text()
+def gprog_deep_text():
+    """e2e_gprog with pu8D / pu64D: the progressive lists of uint8 / uint64 at any tree depth, the window ending
+    by NMAX (hwN: 31 + len <= UMAX, vua_ct's U chain; their windows are hwN)."""
+    import deep
+    import var_win as VWN
+    t = gprog_text()
+    HY = 'VC.hyW(x, len, hwN)'
+    reps = [('  +eb = BL.bview(d, t, off, len, x, eo, hd, hw, pf)', f'  +eb = BL.bviewY(d, t, off, len, x, eo, hw, pf, {HY})'),
+            ('  +hL = FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw)\n', ''),
+            ('BXW.ctw(d, t, off, len, VLS.DZ(len), x, Nat.double(c), eo, hd, hw, pf, VLS.hrg(d, len, hd, hL), eL)',
+             f'BXW.ctwY(d, t, off, len, VLS.DZ(len), x, Nat.double(c), eo, {HY}, hw, pf, VC.hrgU(len, {HY}), eL)')]
+    blocks = []
+    for nm in ('pu8', 'pu64'):
+        a = t.index(f'\ndef {nm}(') + 1
+        e = t.index('\n\n', a)
+        blocks.append(t[a:e])
+    tw = '\n\n'.join(blocks)
+    tw = re.sub(r'(?<![\w.])(pu8|pu64)\(', lambda m: m.group(1) + 'D(', tw)
+    for x_, y_ in reps:
+        assert x_ in tw, x_[:70]
+        tw = tw.replace(x_, y_)
+    tw = tw.replace('+hd: {Nat.is_lt(d, 28n) == True{} : Bool},\n    ', '').replace(', +hd: {Nat.is_lt(d, 28n) == True{} : Bool}', '')
+    tw = deep.thread(tw, VWN.HWX, VWN.HWNX, hw32='hwN')
+    assert '28n' not in tw and 'hd' not in re.sub(r'\bhd\w', '', tw), [l for l in tw.split('\n') if 'hd' in l][:3]
+    a = t.index('\ndef pu64(') + 1
+    e = t.index('\n\n', a)
+    t = t[:e] + '\n\n# ---- the same at any tree depth (the window ends by NMAX: hwN) ----\n' + tw + t[e:]
+    if 'vcopy.bend as VC' not in t:
+        t = t.replace('import ./e2e_blist.bend as BL\n', 'import ./e2e_blist.bend as BL\nimport ../proofs/obj/vcopy.bend as VC\n', 1)
+    return t
+
+
+SUPPORT_OUT['e2e_gprog.bend'] = gprog_deep_text()
 UNION_CHILD['big_var_winx_Gp4B0CA2906A.bend'] = 'GP.vw_Gp4B0CA2906A'
 UNION_CHILD['big_var_winx_Gp66304057C3.bend'] = 'GP.vw_Gp66304057C3'
 
@@ -3703,7 +3735,27 @@ def grl_text():
 ''' + '\n'.join(body)
 
 
-SUPPORT_OUT['e2e_grl.bend'] = grl_text()
+def grl_deep_text():
+    """e2e_grl with a twin of the ProgressiveList[Gc4ED9619F50] view at any tree depth (its storage depth
+    2 + d <= 32 from d < 31; no other bound)."""
+    t = grl_text()
+    names = ['go_pl_Gc4ED9619F50', 'vl_pl_Gc4ED9619F50']
+    blocks = []
+    for nm in names:
+        a = t.index(f'\ndef {nm}(') + 1
+        e = t.find('\n\n', a)
+        blocks.append(t[a:len(t) if e < 0 else e].rstrip('\n'))
+    tw = '\n\n'.join(blocks)
+    tw = re.sub(r'(?<![\w.])(' + '|'.join(names) + r')\(', lambda m: m.group(1) + 'D(', tw)
+    tw = tw.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)').replace('FD.nat__lt_le(d, 30n, FD.nat__lt_trans(d, 28n, 30n, hd, {==}))', 'FD.nat__lt_succ_le(d, 30n, hd)')
+    assert '28n' not in tw, [l for l in tw.split('\n') if '28n' in l][:2]
+    a = t.index('\ndef vl_pl_Gc4ED9619F50(') + 1
+    e = t.find('\n\n', a)
+    e = len(t) if e < 0 else e
+    return t[:e] + '\n\n# ---- the same at any tree depth d < 31 ----\n' + tw + t[e:]
+
+
+SUPPORT_OUT['e2e_grl.bend'] = grl_deep_text()
 
 
 # ---- e2e_gvl: progressive lists of variable-size elements read at a byte window (var_vlist windows) ------------
@@ -4114,7 +4166,36 @@ def gvl_text():
 ''' + '\n'.join(body)
 
 
-SUPPORT_OUT['e2e_gvl.bend'] = gvl_text()
+def _hwab32(nm, a):
+    """callee_ok for deep_twins: an element window's bound TA.hwab(d, x, len, ...) becomes its twin below 2^32."""
+    m = re.match(r'(\w+)\.hwab\(d, x, len, (.*), hw\)$', a, re.S)
+    return f'{m.group(1)}.hwab32(x, len, {m.group(2)}, hw32)' if m else None
+
+
+GVL_DEEP = ['tf_Gc465214E502', 'vw_Gc465214E502',
+            'eqE_pl_Gc465214E502', 'elv_pl_Gc465214E502', 'rvF_pl_Gc465214E502', 'xiW_pl_Gc465214E502', 'vtf_pl_Gc465214E502',
+            'vtc_pl_Gc465214E502', 'vw_pl_Gc465214E502', 'tff_pl_Gc465214E502', 'tfc_pl_Gc465214E502', 'tf_pl_Gc465214E502',
+            'eqE_pl_pl_Gc465214E502', 'elv_pl_pl_Gc465214E502', 'rvF_pl_pl_Gc465214E502', 'xiW_pl_pl_Gc465214E502', 'vtf_pl_pl_Gc465214E502',
+            'vtc_pl_pl_Gc465214E502', 'vw_pl_pl_Gc465214E502']
+
+
+def gvl_deep_text():
+    """e2e_gvl with deep twins of the ProgressiveList[ProgressiveList[VarTestStruct]] chain (its elements' windows
+    below 2^32: TA/TB.eocD, hwab32; VarTestStruct through e2e_gvt.vtwD)."""
+    t = gvl_text()
+    reps = [('FD.nat__lt_trans(d, 28n, 32n, hd, {==})', 'FD.nat__lt_trans(d, 31n, 32n, hd, {==})'),
+            ('GVT.vtw(d, t, 0, x, off, len, eo, hd, hw, pf, hc)', 'GVT.vtwD(d, t, 0, x, off, len, eo, hd, hw, hw32, pf, hc)')]
+    t = deep_twins(t, GVL_DEEP, reps, callee_ok=_hwab32)
+    head, tw = t.split('# ---- the same at any tree depth d < 31', 1)
+    for al in ('TA', 'TB'):
+        n0 = tw.count(f'{al}.eoc(')
+        tw = tw.replace(f'{al}.eoc(', f'{al}.eocD(')
+        tw = tw.replace(f'), eo, hd, hw), hd, {al}.hwab(', f'), eo, hd, hw, hw32), hd, {al}.hwab(')
+        assert tw.count(f'eo, hd, hw, hw32), hd, {al}.hwab(') == n0, (al, n0)
+    return head + '# ---- the same at any tree depth d < 31' + tw
+
+
+SUPPORT_OUT['e2e_gvl.bend'] = gvl_deep_text()
 
 
 # ---- e2e_gcx: the progressive containers with list fields, read at a byte window ------------------------------
@@ -4125,6 +4206,46 @@ GCX = {
     'Gp8A7851175B': ('big_var_winx_Gp8A7851175B', 'WPC', [('u8',), ('l16', 'L123'), ('pb', 'PBW'), ('pu64', 'PU64'), ('rl', 'RL4', 'pl_Gc4ED9619F50'),
                                                           ('vl', 'TB', 'pl_pl_Gc465214E502'), ('rl', 'RL1', 'l10_GpF350A3C486'), ('vl', 'TC', 'pl_Gp66304057C3')]),
 }
+
+
+# the progressive containers whose views have deep twins (e2e_gcx.vw_XD; their laws at any depth)
+GCX_DEEP = {'Gc221EC01D83'}
+GP_WPN = GP_WP.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)').replace(
+    '+hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}',
+    '+hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}')
+
+
+def gcx_deep_view(X, W, fields):
+    """vw_XD: the progressive container's view at any tree depth over its window's D facts (an hwN window: its
+    end by NMAX); the children through their deep view twins."""
+    WD = 'd, t, n, x, off, len, eo, hd, hw, hwN, pf, h'
+    nvar = sum(1 for f in fields if f[0] != 'u8')
+    items, k = [], 0
+    for f in fields:
+        kd = f[0]
+        if kd == 'u8':
+            items.append((f'RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat(0))))', f'FX8.VAL(t, Nat.add(x, U32.to_nat(0)))', None))
+            continue
+        CH = f[1]
+        ln = (k == nvar - 1)
+        xj, fj, lj = f'{W}.XJ{k}(t, x)', f'{W}.FJ{k}(off, t, x)', f'{W}.LJ{k}(t, x' + (', len)' if ln else ')')
+        win = f'd, t, {xj}, {fj}, {lj}'
+        eo, hw_, it = f'{W}.eoJ{k}D({WD})', f'{W}.hwJ{k}D({WD})', f'{W}.itD{k}(t, x, off, len, h)'
+        rhs = f'{CH}.VALw(t, {xj}, {lj})'
+        if kd == 'pu8':
+            items.append((f'PBF.vview1({CH}.OBJw({win}))', rhs, f'GP.pu8D({win}, {eo}, {hw_}, {W}.hwJ{k}N({WD}), pf, {it})'))
+        elif kd == 'pu64':
+            items.append((f'UL.uview({CH}.OBJw({win}))', rhs, f'GP.pu64D({win}, {eo}, {hw_}, {W}.hwJ{k}N({WD}), pf, {it})'))
+        elif kd == 'rl':
+            items.append((f'RT2.xv_{f[2]}({CH}.OBJw({win}))', rhs, f'GRL.vl_{f[2]}D({win}, {eo}, hd, {hw_}, pf, {it})'))
+        elif kd == 'vl':
+            items.append((f'RT2.xv_{f[2]}({CH}.OBJw({win}))', rhs, f'GVL.vw_{f[2]}D({win}, {eo}, hd, {hw_}, {W}.hwJ{k}_32({WD}), pf, {it})'))
+        else:
+            raise SystemExit(f'gcx_deep_view: {kd}')
+        k += 1
+    v = gp_view(X, W, items)
+    assert v.startswith(f'def vw_{X}({GP_WP}')
+    return f'def vw_{X}D({GP_WPN}' + v[len(f'def vw_{X}({GP_WP}'):]
 
 
 def gcx_text():
@@ -4161,6 +4282,8 @@ def gcx_text():
                 items.append((f'RT2.xv_{f[2]}({CH}.OBJw({win}))', rhs, f'GVL.vw_{f[2]}({ja})'))
             k += 1
         body.append(gp_view(X, W, items))
+        if X in GCX_DEEP:
+            body.append(gcx_deep_view(X, W, fields))
     head = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
             'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/vbuf.bend as VB',
             'import ../proofs/obj/vua_win.bend as UW', 'import ../proofs/obj/vbitl.bend as VBL', 'import ../proofs/obj/packed_bytes.bend as PBF',
@@ -5041,8 +5164,19 @@ def encl_text():
 SUPPORT_OUT['e2e_encl.bend'] = encl_text()
 
 
+
 def prog_view(R, X, mod='e2e_gprog'):
     """(ii)/(iii) of a progressive container: its window view (<mod>.vw_X) at the whole buffer."""
+    if X in GCX_DEEP:
+        # the laws at any depth (an hwN window): the view's deep twin, n <= NMAX the laws' premise hN
+        return {'view': f'RT.v_{X}', 'imports': ['import ../proofs/obj/root_gtypes2.bend as RT', f'import ./{mod}.bend as GP', 'import ../proofs/obj/vbuf.bend as VB'],
+                'text': f'''# ---- the view of a decoded object is the codec law's value ({mod}.vw_{X}D at the window (0, 0, n)) ----
+def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
+    +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hN: {{U32.is_le(n, VB.NMAX()) == True{{}} : Bool}},
+    +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:
+  GP.vw_{X}D(d, t, n, 0n, 0, n, {{==}}, hd, hn, FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), VB.le_u32n(n, VB.NMAX()), hN), pf, hchk)
+
+'''}
     text = f'''# ---- the view of a decoded object is the codec law's value ({mod}.vw_{X} at the window (0, 0, n)) ----
 def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hd: {{Nat.is_lt(d, @BD@) == True{{}} : Bool}},
     +hn: {{Nat.is_le(U32.to_nat(n), A.quad(FD.spec_common__pow2(d))) == True{{}} : Bool}}, +hchk: {{DC.CHK(t, n) == True{{}} : Bool}}) -> {{RT.v_{X}(DC.OBJ(d, t, n)) == DC.VAL(t, n) : S.Value}}:

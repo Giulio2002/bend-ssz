@@ -94,6 +94,44 @@ def bvg(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat,
   %eo : {VS.bt(U32.to_nat(L), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) == VS.bt(U32.to_nat(L), VS.bdr(_, UA.BYT(t))) : +List<U32>}
   UCT.ct_bytes(d, t, off, L, dz, VLS.KK(d), VLS.kk_lt(d, hd), VLS.hyn(d, L, hL), pf, UW.hsx(d, off, x, L, eo, hd, hw), hr, hB)
 
+# ---- the same at any tree depth (the copy bounded by its length: hy, 31 + L <= UMAX) ----
+def cwlY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat, +K: Nat, +eo: {U32.to_nat(off) == x : Nat}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +eL: {U32.to_nat(L) == A.quad(K) : Nat})
+    -> {FX.limbs(VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}:
+  +hB = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, x, U32.to_nat(off), Equal.sym(Nat, U32.to_nat(off), x, eo), hw)
+  +cb = UCT.ct_bytesU(d, t, off, L, dz, hy, pf, UW.hsxBU(d, off, x, L, eo, hy, hw), hr, hB)
+  +hK = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == True{} : Bool}, U32.to_nat(L), A.quad(K), eL, hw)
+  %CH.bq(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))) :
+    {_ == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  %Equal.sym(+List<U32>, WS.btake(A.quad(K), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), VS.bt(A.quad(K), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))),
+      BL.btake_bt(A.quad(K), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz))))) :
+    {_ == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  %eL : {VS.bt(_, FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  %Equal.sym(+List<U32>, VS.bt(U32.to_nat(L), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), VS.bt(U32.to_nat(L), VS.bdr(U32.to_nat(off), UA.BYT(t))), cb) :
+    {_ == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  %Equal.sym(Nat, U32.to_nat(off), x, eo) : {VS.bt(U32.to_nat(L), VS.bdr(_, UA.BYT(t))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  %Equal.sym(Nat, U32.to_nat(L), A.quad(K), eL) : {VS.bt(_, VS.bdr(x, UA.BYT(t))) == FX.limbs(UR.RWS(K, t, x)) : +List<U32>}
+  Equal.sym(+List<U32>, FX.limbs(UR.RWS(K, t, x)), VS.bt(A.quad(K), VS.bdr(x, UA.BYT(t))), UR.rws_bytes(K, d, t, x, pf, hK))
+
+def ctwY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat, +K: Nat, +eo: {U32.to_nat(off) == x : Nat}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool}, +eL: {U32.to_nat(L) == A.quad(K) : Nat})
+    -> {VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))) == UR.RWS(K, t, x) : List<&2, U32>}:
+  linj(VS.wtake(K, FD.array__slots(U32, UCT.CT(d, t, off, L, dz))), UR.RWS(K, t, x), cwlY(d, t, off, L, dz, x, K, eo, hy, hw, pf, hr, eL))
+
+def bvgY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +L: U32, +dz: Nat, +x: Nat, +eo: {U32.to_nat(off) == x : Nat}, +hy: {Nat.is_le(VC.YL(L), U32.to_nat(VB.UMAX())) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hr: {Nat.is_le(Nat.add(VC.NW(L), 0n), VB.pw(dz)) == True{} : Bool})
+    -> {WO.wview(O.Words{FD.array__thaw(U32, UCT.CT(d, t, off, L, dz)), L}) == UW.WX(t, x, U32.to_nat(L)) : +List<U32>}:
+  +hB = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, U32.to_nat(L)), A.quad(VB.pw(d))) == True{} : Bool}, x, U32.to_nat(off), Equal.sym(Nat, U32.to_nat(off), x, eo), hw)
+  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, UCT.CT(d, t, off, L, dz))), UCT.CT(d, t, off, L, dz), FD.array__freeze_thaw(U32, UCT.CT(d, t, off, L, dz))) :
+    {WS.btake(U32.to_nat(L), FX.limbs(FD.array__slots(U32, _))) == UW.WX(t, x, U32.to_nat(L)) : +List<U32>}
+  %Equal.sym(+List<U32>, WS.btake(U32.to_nat(L), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), VS.bt(U32.to_nat(L), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))), BL.btake_bt(U32.to_nat(L), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz))))) :
+    {_ == UW.WX(t, x, U32.to_nat(L)) : +List<U32>}
+  %eo : {VS.bt(U32.to_nat(L), FX.limbs(FD.array__slots(U32, UCT.CT(d, t, off, L, dz)))) == VS.bt(U32.to_nat(L), VS.bdr(_, UA.BYT(t))) : +List<U32>}
+  UCT.ct_bytesU(d, t, off, L, dz, hy, pf, UW.hsxBU(d, off, x, L, eo, hy, hw), hr, hB)
+
 # the bytes of a word list's own words, before anything appended
 def btl(+A_: List<&2, U32>, +R: List<&2, U32>) -> {VS.bt(A.quad(VB.len(A_)), FX.limbs(VF.app(A_, R))) == FX.limbs(A_) : +List<U32>}:
   match A_:

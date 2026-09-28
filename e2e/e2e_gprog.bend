@@ -99,6 +99,31 @@ def pu64(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {
   %Equal.sym(List<&2, U32>, VS.wtake(Nat.double(c), FD.array__slots(U32, M)), UR.RWS(Nat.double(c), t, x), ew) : {S.Sequence{VS.uitems(c, _)} == PU64.VALw(t, x, len) : S.Value}
   {==}
 
+# ---- the same at any tree depth (the window ends by NMAX: hwN) ----
+def pu8D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hc: {PU8.CHKw(t, x, off, len) == True{} : Bool}) -> {PBF.vview1(PU8.OBJw(d, t, x, off, len)) == PU8.VALw(t, x, len) : S.Value}:
+  +eb = BL.bviewY(d, t, off, len, x, eo, hw, pf, VC.hyW(x, len, hwN))
+  %Equal.sym(+List<U32>, WO.wview(O.Words{FD.array__thaw(U32, BL.CW(d, t, off, len)), len}), UW.WX(t, x, U32.to_nat(len)), eb) : {S.Sequence{PBF.it1(U32.to_nat(len), _)} == PU8.VALw(t, x, len) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PBF.it1(U32.to_nat(len), UW.WX(t, x, U32.to_nat(len))), PBM.it1(U32.to_nat(len), UW.WX(t, x, U32.to_nat(len))), PL.it1eq(U32.to_nat(len), UW.WX(t, x, U32.to_nat(len))))
+
+def pu64D(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +hwN: {Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hc: {PU64.CHKw(t, x, off, len) == True{} : Bool}) -> {UL.uview(PU64.OBJw(d, t, x, off, len)) == PU64.VALw(t, x, len) : S.Value}:
+  +c = PU64.CQ(len)
+  +M = UCT.CT(d, t, off, len, VLS.DZ(len))
+  +el = PU64.eLc(t, x, off, len, hc)
+  +ec = Equal.trans(Nat, U32.to_nat(U32.shrn(len, 3n)), VD.s_rng(3n, U32.to_nat(len)), c, VD.shrk(3n, len),
+    Equal.trans(Nat, VD.s_rng(3n, U32.to_nat(len)), VD.s_rng(3n, EL.b2(c)), c,
+      Equal.cong(Nat, Nat, z => VD.s_rng(3n, z), U32.to_nat(len), EL.b2(c), Equal.trans(Nat, U32.to_nat(len), VS.x8(c), EL.b2(c), el, xb2(c))), PW.rb2(c)))
+  +eL = Equal.trans(Nat, U32.to_nat(len), VS.x8(c), A.quad(Nat.double(c)), el, Equal.trans(Nat, VS.x8(c), Nat.mul(c, 8n), A.quad(Nat.double(c)), Equal.sym(Nat, Nat.mul(c, 8n), VS.x8(c), VC.x8_mul(c)), VBG.mul8(c)))
+  +ew = BXW.ctwY(d, t, off, len, VLS.DZ(len), x, Nat.double(c), eo, VC.hyW(x, len, hwN), hw, pf, VC.hrgU(len, VC.hyW(x, len, hwN)), eL)
+  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, M)), M, FD.array__freeze_thaw(U32, M)) :
+    {S.Sequence{UL.uitems(U32.to_nat(U32.shrn(len, 3n)), FD.array__slots(U32, _))} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(Nat, U32.to_nat(U32.shrn(len, 3n)), c, ec) : {S.Sequence{UL.uitems(_, FD.array__slots(U32, M))} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(S.Value, UL.uitems(c, FD.array__slots(U32, M)), VS.uitems(c, FD.array__slots(U32, M)), uu(c, FD.array__slots(U32, M))) : {S.Sequence{_} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(S.Value, VS.uitems(c, FD.array__slots(U32, M)), VS.uitems(c, VS.wtake(Nat.double(c), FD.array__slots(U32, M))), ut(c, FD.array__slots(U32, M))) : {S.Sequence{_} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(List<&2, U32>, VS.wtake(Nat.double(c), FD.array__slots(U32, M)), UR.RWS(Nat.double(c), t, x), ew) : {S.Sequence{VS.uitems(c, _)} == PU64.VALw(t, x, len) : S.Value}
+  {==}
+
 # ProgressiveSingleListContainerTestStruct: one progressive bit list
 def vw_Gp4B0CA2906A(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +h: {W4B.CHKw(t, x, off, len) == True{} : Bool})
