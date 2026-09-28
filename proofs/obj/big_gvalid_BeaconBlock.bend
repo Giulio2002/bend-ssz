@@ -6,6 +6,7 @@ import ../../src/obj.bend as O
 import ../../types/FuluBeaconBlock_def_generated.bend as FuluBeaconBlock_d
 import ../../types/schema.bend as S
 import ../../types/primitive.bend as P
+import ./cform.bend as CF
 import ./amap.bend as AM
 import ../../spec/root_relation.bend as RR
 import ../../spec/fulu_schemas.bend as Spec
@@ -22,7 +23,7 @@ import ../../spec/nat_bytes.bend as Len
 import ../../spec/byte_list.bend as BL
 import ../../spec/value_domain.bend as VD
 import ./valid_names.bend as VN
-import ./root_types.bend as RT
+import ./root_types_light.bend as RT
 import ./big_root_BeaconBlock.bend as BR
 import ./gvalid_types.bend as GVT
 

@@ -10,13 +10,13 @@ import ../proofs/compact/arith.bend as A
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/root_gtypes2.bend as RT
+import ../proofs/obj/root_gtypes2_light.bend as RT
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/len_bridge.bend as LB
 import ../proofs/obj/vbitb.bend as VBB
 import ../proofs/obj/vbig.bend as VBG
 import ../proofs/obj/packed_bytes_light.bend as PBF
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/nat_order.bend as Order
 import ./e2e_blist.bend as BL
 import ./e2e_encr.bend as ER

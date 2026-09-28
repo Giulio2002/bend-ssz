@@ -17,6 +17,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
 import ../proofs/obj/spec_gcodec_GtBBF12DAB28.bend as M0
 import ../proofs/obj/root_gnames.bend as M1
+import ../proofs/obj/root_gnames_light.bend as M1_L
 import ../proofs/obj/gvalid_gnames.bend as M2
 import ../proofs/obj/spec_bits.bend as FB
 import ./e2e_bits.bend as EB
@@ -26,26 +27,26 @@ import ../proofs/obj/generic_specs.bend as GS
 # bitvector_32 and the next names (family A): the object API's encoder bytes and roots are END_TO_END's model API's.
 
 # bitvector_32 (GtBBF12DAB28)
-def bitvector_32_e2e_view(+x0: U32) -> {M1.v_bv32(bitvector_32_d.Bitvector32{x0}) == S.BitsValue{FB.bitsof([x0])} : S.Value}:
+def bitvector_32_e2e_view(+x0: U32) -> {M1_L.v_bv32(bitvector_32_d.Bitvector32{x0}) == S.BitsValue{FB.bitsof([x0])} : S.Value}:
   %Equal.sym(+List<Bool>, FB.bitsof([x0]), EB.wcat([x0]), EB.bw([x0])) :
-    {M1.v_bv32(bitvector_32_d.Bitvector32{x0}) == S.BitsValue{_} : S.Value}
+    {M1_L.v_bv32(bitvector_32_d.Bitvector32{x0}) == S.BitsValue{_} : S.Value}
   {==}
 
-def bitvector_32_e2e_enc(+x0: U32) -> {Encoding.encoding_for_legal_type(GS.GtBBF12DAB28(), M1.v_bv32(bitvector_32_d.Bitvector32{x0})) == Some{F.limbs([x0])} : Maybe<&2, +List<U32>>}:
-  Equal.trans(Maybe<&2, +List<U32>>, Encoding.encoding_for_legal_type(GS.GtBBF12DAB28(), M1.v_bv32(bitvector_32_d.Bitvector32{x0})), Encoding.encoding_for_legal_type(GS.GtBBF12DAB28(), S.BitsValue{FB.bitsof([x0])}), Some{F.limbs([x0])},
-    Equal.cong(S.Value, Maybe<&2, +List<U32>>, v => Encoding.encoding_for_legal_type(GS.GtBBF12DAB28(), v), M1.v_bv32(bitvector_32_d.Bitvector32{x0}), S.BitsValue{FB.bitsof([x0])}, bitvector_32_e2e_view(x0)),
+def bitvector_32_e2e_enc(+x0: U32) -> {Encoding.encoding_for_legal_type(GS.GtBBF12DAB28(), M1_L.v_bv32(bitvector_32_d.Bitvector32{x0})) == Some{F.limbs([x0])} : Maybe<&2, +List<U32>>}:
+  Equal.trans(Maybe<&2, +List<U32>>, Encoding.encoding_for_legal_type(GS.GtBBF12DAB28(), M1_L.v_bv32(bitvector_32_d.Bitvector32{x0})), Encoding.encoding_for_legal_type(GS.GtBBF12DAB28(), S.BitsValue{FB.bitsof([x0])}), Some{F.limbs([x0])},
+    Equal.cong(S.Value, Maybe<&2, +List<U32>>, v => Encoding.encoding_for_legal_type(GS.GtBBF12DAB28(), v), M1_L.v_bv32(bitvector_32_d.Bitvector32{x0}), S.BitsValue{FB.bitsof([x0])}, bitvector_32_e2e_view(x0)),
     M0.GtBBF12DAB28_spec_encode(x0))
 
-def bitvector_32_e2e_encode(+o: bitvector_32_d.Bitvector32) -> {Some{E.obytes(bitvector_32_e.GtBBF12DAB28_encode(o))} == API.serialize(GS.GtBBF12DAB28(), M1.v_bv32(o)) : Maybe<&2, +List<U32>>}:
+def bitvector_32_e2e_encode(+o: bitvector_32_d.Bitvector32) -> {Some{E.obytes(bitvector_32_e.GtBBF12DAB28_encode(o))} == API.serialize(GS.GtBBF12DAB28(), M1_L.v_bv32(o)) : Maybe<&2, +List<U32>>}:
   match o:
     case bitvector_32_d.Bitvector32{+x0}:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0}))}, Some{F.limbs([x0])}, API.serialize(GS.GtBBF12DAB28(), M1.v_bv32(bitvector_32_d.Bitvector32{x0})),
+      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0}))}, Some{F.limbs([x0])}, API.serialize(GS.GtBBF12DAB28(), M1_L.v_bv32(bitvector_32_d.Bitvector32{x0})),
         Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0}), 0, 1), (bitvector_32_e.GtBBF12DAB28_encode(bitvector_32_d.Bitvector32{x0}), F.limbs([x0])), M0.GtBBF12DAB28_spec_bytes(x0)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.GtBBF12DAB28(), M1.v_bv32(bitvector_32_d.Bitvector32{x0})), Some{F.limbs([x0])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.GtBBF12DAB28(), M1.v_bv32(bitvector_32_d.Bitvector32{x0})), Encoding.encoding_for_legal_type(GS.GtBBF12DAB28(), M1.v_bv32(bitvector_32_d.Bitvector32{x0})), Some{F.limbs([x0])},
-            E.serialize_legal(GS.GtBBF12DAB28(), M1.v_bv32(bitvector_32_d.Bitvector32{x0}), VS.public_sound(GS.GtBBF12DAB28(), {==})), bitvector_32_e2e_enc(x0))))
+        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.GtBBF12DAB28(), M1_L.v_bv32(bitvector_32_d.Bitvector32{x0})), Some{F.limbs([x0])},
+          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.GtBBF12DAB28(), M1_L.v_bv32(bitvector_32_d.Bitvector32{x0})), Encoding.encoding_for_legal_type(GS.GtBBF12DAB28(), M1_L.v_bv32(bitvector_32_d.Bitvector32{x0})), Some{F.limbs([x0])},
+            E.serialize_legal(GS.GtBBF12DAB28(), M1_L.v_bv32(bitvector_32_d.Bitvector32{x0}), VS.public_sound(GS.GtBBF12DAB28(), {==})), bitvector_32_e2e_enc(x0))))
 
-def bitvector_32_e2e_root(h: B.Buf, +o: bitvector_32_d.Bitvector32) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_32_h.GtBBF12DAB28_hash_tree_root(h, o)))} == API.hash_tree_root(GS.GtBBF12DAB28(), M1.v_bv32(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(GS.GtBBF12DAB28(), M1.v_bv32(o), VS.public_sound(GS.GtBBF12DAB28(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_32_h.GtBBF12DAB28_hash_tree_root(h, o))),
+def bitvector_32_e2e_root(h: B.Buf, +o: bitvector_32_d.Bitvector32) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_32_h.GtBBF12DAB28_hash_tree_root(h, o)))} == API.hash_tree_root(GS.GtBBF12DAB28(), M1_L.v_bv32(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.GtBBF12DAB28(), M1_L.v_bv32(o), VS.public_sound(GS.GtBBF12DAB28(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, bitvector_32_h.GtBBF12DAB28_hash_tree_root(h, o))),
     M2.GtBBF12DAB28_root_valid(o), M1.GtBBF12DAB28_root_correct(h, o))
 

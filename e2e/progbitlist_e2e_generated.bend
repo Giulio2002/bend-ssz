@@ -14,8 +14,8 @@ import ../spec/codec.bend as Encoding
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vbig.bend as VBG
-import ../proofs/obj/bitlist_obj.bend as BO
-import ../proofs/obj/pbits_obj.bend as PBO
+import ../proofs/obj/bitlist_obj_light.bend as BO
+import ../proofs/obj/pbits_obj_light.bend as PBO
 import ../proofs/obj/vbitcore.bend as CO
 import ../proofs/obj/var_pbits_GtF7582E0E9A_enc.bend as EN
 import ./e2e_support.bend as E

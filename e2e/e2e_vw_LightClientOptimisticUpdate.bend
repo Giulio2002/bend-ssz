@@ -6,8 +6,9 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/var_bytes_LightClientOptimisticUpdate_win.bend as W
+import ./e2e_blist.bend as BL
 import ../proofs/obj/var_bytes_LightClientHeader_win.bend as YW
 import ./e2e_vw_LightClientHeader.bend as YWV
 import ../proofs/obj/spec_bits.bend as FB

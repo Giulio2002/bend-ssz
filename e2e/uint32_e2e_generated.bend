@@ -16,6 +16,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ./e2e_support.bend as E
 import ../proofs/obj/spec_gcodec_Gt7B8507E2C2.bend as M0
 import ../proofs/obj/root_gnames.bend as M1
+import ../proofs/obj/root_gnames_light.bend as M1_L
 import ../proofs/obj/gvalid_gnames.bend as M2
 import ../proofs/obj/generic_specs.bend as GS
 
@@ -23,16 +24,16 @@ import ../proofs/obj/generic_specs.bend as GS
 # uint32 and the next names (family A): the object API's encoder bytes and roots are END_TO_END's model API's.
 
 # uint32 (Gt7B8507E2C2)
-def uint32_e2e_encode(+o: U32) -> {Some{E.obytes(uint32_e.Gt7B8507E2C2_encode(o))} == API.serialize(GS.Gt7B8507E2C2(), M1.v_u32(o)) : Maybe<&2, +List<U32>>}:
+def uint32_e2e_encode(+o: U32) -> {Some{E.obytes(uint32_e.Gt7B8507E2C2_encode(o))} == API.serialize(GS.Gt7B8507E2C2(), M1_L.v_u32(o)) : Maybe<&2, +List<U32>>}:
   match o:
     case +x0:
-      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(uint32_e.Gt7B8507E2C2_encode(x0))}, Some{F.limbs([x0])}, API.serialize(GS.Gt7B8507E2C2(), M1.v_u32(x0)),
+      Equal.trans(Maybe<&2, +List<U32>>, Some{E.obytes(uint32_e.Gt7B8507E2C2_encode(x0))}, Some{F.limbs([x0])}, API.serialize(GS.Gt7B8507E2C2(), M1_L.v_u32(x0)),
         Equal.cong(B.Buf & +List<U32>, Maybe<&2, +List<U32>>, p => Some{Pair.snd(B.Buf, +List<U32>, p)}, B.emit(uint32_e.Gt7B8507E2C2_encode(x0), 0, 1), (uint32_e.Gt7B8507E2C2_encode(x0), F.limbs([x0])), M0.Gt7B8507E2C2_spec_bytes(x0)),
-        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.Gt7B8507E2C2(), M1.v_u32(x0)), Some{F.limbs([x0])},
-          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.Gt7B8507E2C2(), M1.v_u32(x0)), Encoding.encoding_for_legal_type(GS.Gt7B8507E2C2(), M1.v_u32(x0)), Some{F.limbs([x0])},
-            E.serialize_legal(GS.Gt7B8507E2C2(), M1.v_u32(x0), VS.public_sound(GS.Gt7B8507E2C2(), {==})), M0.Gt7B8507E2C2_spec_encode(x0))))
+        Equal.sym(Maybe<&2, +List<U32>>, API.serialize(GS.Gt7B8507E2C2(), M1_L.v_u32(x0)), Some{F.limbs([x0])},
+          Equal.trans(Maybe<&2, +List<U32>>, API.serialize(GS.Gt7B8507E2C2(), M1_L.v_u32(x0)), Encoding.encoding_for_legal_type(GS.Gt7B8507E2C2(), M1_L.v_u32(x0)), Some{F.limbs([x0])},
+            E.serialize_legal(GS.Gt7B8507E2C2(), M1_L.v_u32(x0), VS.public_sound(GS.Gt7B8507E2C2(), {==})), M0.Gt7B8507E2C2_spec_encode(x0))))
 
-def uint32_e2e_root(h: B.Buf, +o: U32) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint32_h.Gt7B8507E2C2_hash_tree_root(h, o)))} == API.hash_tree_root(GS.Gt7B8507E2C2(), M1.v_u32(o)) : Maybe<&2, +List<U32>>}:
-  E.root_legal(GS.Gt7B8507E2C2(), M1.v_u32(o), VS.public_sound(GS.Gt7B8507E2C2(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, uint32_h.Gt7B8507E2C2_hash_tree_root(h, o))),
+def uint32_e2e_root(h: B.Buf, +o: U32) -> {Some{D.bytes(Pair.snd(B.Buf, D.Digest, uint32_h.Gt7B8507E2C2_hash_tree_root(h, o)))} == API.hash_tree_root(GS.Gt7B8507E2C2(), M1_L.v_u32(o)) : Maybe<&2, +List<U32>>}:
+  E.root_legal(GS.Gt7B8507E2C2(), M1_L.v_u32(o), VS.public_sound(GS.Gt7B8507E2C2(), {==}), D.bytes(Pair.snd(B.Buf, D.Digest, uint32_h.Gt7B8507E2C2_hash_tree_root(h, o))),
     M2.Gt7B8507E2C2_root_valid(o), M1.Gt7B8507E2C2_root_correct(h, o))
 

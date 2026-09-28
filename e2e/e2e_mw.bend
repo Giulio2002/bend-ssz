@@ -18,11 +18,11 @@ import ../proofs/obj/vconts.bend as CS
 import ../proofs/obj/vfixw_spec.bend as FWS
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/list_obj.bend as LO
-import ../proofs/obj/pv_obj.bend as PV
+import ../proofs/obj/list_obj_light.bend as LO
+import ../proofs/obj/pv_obj_light.bend as PV
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_encx_bl32.bend as IB
 import ../proofs/obj/big_encx_ExecutionPayloadHeader_iface.bend as IE
 import ../proofs/obj/big_encx_LightClientHeader_iface.bend as IL

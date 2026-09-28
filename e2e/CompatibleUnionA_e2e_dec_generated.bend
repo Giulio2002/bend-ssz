@@ -18,10 +18,11 @@ import ../proofs/obj/arr_copy.bend as AC
 import ./e2e_bytes.bend as E
 import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
-import ../proofs/obj/root_gtypes2.bend as RT
-import ../proofs/obj/root_gnames.bend as RN
+import ../proofs/obj/root_gtypes2_light.bend as RT
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/var_winx_GuA2212AE21F.bend as W
 import ../proofs/obj/vbuf.bend as VB
+import ./e2e_gprog.bend as GP
 import ../proofs/obj/var_winx_GpF350A3C486.bend as CH0
 import ../proofs/obj/var_codec_GuA2212AE21F.bend as DC
 import ../proofs/obj/generic_specs.bend as GS

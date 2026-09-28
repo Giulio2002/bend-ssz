@@ -14,6 +14,7 @@ run over those names:
 
     python3 codegen/root_laws_generic.py [--check | --status]
 """
+import re
 import sys
 from pathlib import Path
 
@@ -352,6 +353,26 @@ class GenB(RB.Gen):
 
 
 GB2 = ROOT / 'proofs/obj/root_gtypes2.bend'
+
+# The definitions a light companion (<X>_light.bend, codegen/light_split.py) takes from a root-law module:
+# the object views and their projections, mirrors and representation invariants (what e2e files state
+# against), not the digests or laws.
+LIGHT_SEED = re.compile(r'^(v|pj|pjb|pju|por|pc|th|fz|am|tfz|xi|xv|xlen_o|rep|ereps|rp|vb|bits|last|domain|blen)_|^xat_(?!at_)|^(M_\w+|MB|WMr|BMr)$')
+
+
+def light_outs(outs, gen):
+    """(path, text) outputs with each root-law module split into itself and its light companion."""
+    import light_split as LS
+    res = []
+    for path, text in outs:
+        if path.name.startswith(('root_', 'gbits_')) and not path.name.endswith('_light.bend'):
+            text, ltext = LS.split(text, lambda n: LIGHT_SEED.match(n) is not None or re.search(r'_(bits|last)$', n) is not None, f'./{path.stem}_light.bend', gen)
+            res.append((path, text))
+            if ltext is not None:
+                res.append((path.with_name(f'{path.stem}_light.bend'), ltext))
+        else:
+            res.append((path, text))
+    return res
 
 
 def emit_phase_b(names):
@@ -886,6 +907,7 @@ def main():
             print(f'{n}: {st}')
         return 0
     outs = [(SPECS, specs), (PCF, PCL.emit_file(pcont_patterns(names), union_selectors(names))), (GA, ta), (GB, tb), (GB2, tb2), (GL, tl)] + sorted(tbits.items())
+    outs = light_outs(outs, 'codegen/root_laws_generic.py')
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     outs = RR.rewire_out(outs)
     if '--check' in sys.argv:

@@ -21,7 +21,7 @@ import ../proofs/obj/vbitl.bend as VBL
 import ../proofs/obj/vbrt.bend as VR
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/vpb29.bend as VP
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/bitlist_pack.bend as BK
 import ../proofs/obj/big_var_winp_pbits.bend as PBW
 import ./e2e_cap.bend as C

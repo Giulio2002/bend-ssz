@@ -26,7 +26,7 @@ import ../types/bitvector_16_def_generated.bend as bitvector_16_d
 import ../types/bitvector_16_encode_ssz_generated.bend as bitvector_16_e
 import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/obj/sub_GtED805B7C93.bend as M0
-import ../proofs/obj/gbits_small.bend as M1
+import ../proofs/obj/gbits_small_light.bend as M1
 import ../proofs/obj/bitlist_pack.bend as M2
 import ../proofs/obj/spec_bits.bend as M3
 import ../proofs/word_split.bend as M1_WSp

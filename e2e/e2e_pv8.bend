@@ -11,7 +11,7 @@ import ../proofs/obj/arr_vec.bend as AV
 import ../proofs/obj/mtree_run.bend as MR
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/words_root_light.bend as WR
-import ../proofs/obj/pv_obj.bend as PV
+import ../proofs/obj/pv_obj_light.bend as PV
 import ./e2e_chunks.bend as CH
 import ./e2e_blist.bend as BL
 

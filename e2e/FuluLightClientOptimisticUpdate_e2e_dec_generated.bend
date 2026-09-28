@@ -18,7 +18,7 @@ import ../proofs/obj/arr_copy.bend as AC
 import ./e2e_bytes.bend as E
 import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ./e2e_vw_LightClientOptimisticUpdate.bend as VWX
 import ../proofs/obj/var_bytes_LightClientOptimisticUpdate.bend as DC
 import ../proofs/obj/var_bytes_LightClientOptimisticUpdate_rej.bend as DN

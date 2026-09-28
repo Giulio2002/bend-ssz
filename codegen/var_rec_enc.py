@@ -29,6 +29,13 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+def _unlit(text):
+    """a module's text as before any light split (codegen/light_split.py: unlight), for parsing"""
+    import light_split
+    t = light_split.unlight(text)
+    return t.rstrip('\n') + '\n\n'
+
 sys.path.insert(0, str(ROOT / 'codegen'))
 
 import var_laws as VL  # noqa: E402
@@ -2982,7 +2989,7 @@ def blist_box_text(g, names, parent, field):
     E = ft.elem.name
     LIM = ft.size
     etext, RS = belem_deposit_text(VL, EN, g, names) if E == 'Deposit' else belem_text(VL, EN, g, names, E)
-    bl = VV.blocks((ROOT / 'proofs/obj/root_types.bend').read_text())
+    bl = VV.blocks(_unlit((ROOT / 'proofs/obj/root_types.bend').read_text()))
     COPYB = (['WMr', 'th_w'] if E == 'Deposit' else []) + ['MB', f'M_{E}', f'th_{E}', f'th_{E}_bx', f'am_{p}', f'amsize_{p}', f'amswap_go_{p}', f'amswap_{p}', f'amset_{p}', f'amswap_back_{p}',
              f'xat_{p}', f'nth_{p}']
     cp = [re.sub(r'\bF\.', 'FD.', bl[c]) for c in COPYB]

@@ -27,8 +27,8 @@ import ../types/CompatibleUnionABCA_def_generated.bend as CompatibleUnionABCA_d
 import ../types/CompatibleUnionABCA_encode_ssz_generated.bend as CompatibleUnionABCA_e
 import ./e2e_support.bend as E
 import ./e2e_emit.bend as EM
-import ../proofs/obj/root_gtypes2.bend as RT
-import ../proofs/obj/root_gnames.bend as RN
+import ../proofs/obj/root_gtypes2_light.bend as RT
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/len_bridge.bend as LB
 import ../proofs/obj/vbitb.bend as VBB

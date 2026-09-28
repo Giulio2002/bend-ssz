@@ -7,8 +7,8 @@ import ../proofs/compact/arith.bend as A
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/pv_obj.bend as PV
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/pv_obj_light.bend as PV
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/var_bytesx_LightClientHeader.bend as W
 import ./e2e_bx.bend as BX
 import ../proofs/obj/var_bytesx_ExecutionPayloadHeader.bend as YW

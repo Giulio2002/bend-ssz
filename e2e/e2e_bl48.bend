@@ -18,7 +18,7 @@ import ../proofs/obj/vua_rd.bend as UR
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/vbytes.bend as VYS
-import ../proofs/obj/elems48.bend as E48
+import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/var_winx_l4096_b48.bend as W
 import ../proofs/obj/big_encx_l4096_b48.bend as EX

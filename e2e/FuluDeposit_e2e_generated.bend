@@ -30,9 +30,9 @@ import ../types/FuluDeposit_def_generated.bend as FuluDeposit_d
 import ../types/FuluDeposit_encode_ssz_generated.bend as FuluDeposit_e
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/spec_codec_Deposit.bend as M0
-import ../proofs/obj/root_types.bend as M1
+import ../proofs/obj/root_types_light.bend as M1
 import ../proofs/obj/schema_shapes.bend as M1_SH
-import ../proofs/obj/pv_obj.bend as M3
+import ../proofs/obj/pv_obj_light.bend as M3
 import ../proofs/obj/words_spec.bend as M3_WS
 import ../proofs/obj/words_obj_light.bend as M3_WO
 

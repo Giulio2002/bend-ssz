@@ -5,7 +5,7 @@ import ../proofs/compact/found.bend as FD
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/vrl.bend as VRL
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/root_names_light.bend as RN
 import ../proofs/obj/var_rlenc_ExecutionRequests.bend as RL
 import ../src/obj.bend as O

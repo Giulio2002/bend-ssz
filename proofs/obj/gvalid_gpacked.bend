@@ -9,9 +9,10 @@ import ./packed_obj_light.bend as PK_L
 import ./packed_bytes.bend as PB
 import ./packed_bytes_light.bend as PB_L
 import ./prog_list.bend as PG
-import ./ulist_obj.bend as UL
-import ./bitlist_obj.bend as BO
-import ./pbits_obj.bend as PBO
+import ./prog_list_light.bend as PG_L
+import ./ulist_obj_light.bend as UL
+import ./bitlist_obj_light.bend as BO
+import ./pbits_obj_light.bend as PBO
 import ./valid_obj.bend as VO
 import ./gvalid_packed.bend as VP
 
@@ -28,7 +29,7 @@ def vpbits(-o: O.Bits, +s: S.Schema, +rep: PBO.rep_pbits(o, s), +ok: {PBO.ok_pbi
 def Gt83D8B3D008_vok(+s: S.Schema, +es: {s == Spec.Gt83D8B3D008() : S.Schema}) -> {PG.ok_plb(s) == True{} : Bool}:
   %Equal.sym(S.Schema, s, Spec.Gt83D8B3D008(), es) : {PG.ok_plb(_) == True{} : Bool}
   {==}
-def Gt83D8B3D008_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt83D8B3D008() : S.Schema}, +rep: PG.rep_plb(o, s)) -> {VD.root_valid(PB_L.vviewb(o), s) == True{} : Bool}:
+def Gt83D8B3D008_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt83D8B3D008() : S.Schema}, +rep: PG_L.rep_plb(o, s)) -> {VD.root_valid(PB_L.vviewb(o), s) == True{} : Bool}:
   VP.vplb(o, s, rep, Gt83D8B3D008_vok(s, es))
 
 def Gt1D9B3E1871_vok(+s: S.Schema, +es: {s == Spec.Gt1D9B3E1871() : S.Schema}) -> {PB.ok_vb(s, 0n) == True{} : Bool}:
@@ -94,7 +95,7 @@ def Gt526892A4DC_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt526892A
 def Gt1C2FA69562_vok(+s: S.Schema, +es: {s == Spec.Gt1C2FA69562() : S.Schema}) -> {PG.ok_pl16(s) == True{} : Bool}:
   %Equal.sym(S.Schema, s, Spec.Gt1C2FA69562(), es) : {PG.ok_pl16(_) == True{} : Bool}
   {==}
-def Gt1C2FA69562_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt1C2FA69562() : S.Schema}, +rep: PG.rep_pl16(o, s)) -> {VD.root_valid(PK_L.vview16(o), s) == True{} : Bool}:
+def Gt1C2FA69562_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt1C2FA69562() : S.Schema}, +rep: PG_L.rep_pl16(o, s)) -> {VD.root_valid(PK_L.vview16(o), s) == True{} : Bool}:
   VP.vpl16(o, s, rep, Gt1C2FA69562_vok(s, es))
 
 def Gt3EC8B89B94_vok(+s: S.Schema, +es: {s == Spec.Gt3EC8B89B94() : S.Schema}) -> {PK.ok_v16(s, 3n) == True{} : Bool}:
@@ -160,7 +161,7 @@ def Gt3E2A057F33_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3E2A057
 def GtDE4B86A990_vok(+s: S.Schema, +es: {s == Spec.GtDE4B86A990() : S.Schema}) -> {PG.ok_pl1(s) == True{} : Bool}:
   %Equal.sym(S.Schema, s, Spec.GtDE4B86A990(), es) : {PG.ok_pl1(_) == True{} : Bool}
   {==}
-def GtDE4B86A990_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtDE4B86A990() : S.Schema}, +rep: PG.rep_pl1(o, s)) -> {VD.root_valid(PB_L.vview1(o), s) == True{} : Bool}:
+def GtDE4B86A990_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtDE4B86A990() : S.Schema}, +rep: PG_L.rep_pl1(o, s)) -> {VD.root_valid(PB_L.vview1(o), s) == True{} : Bool}:
   VP.vpl1(o, s, rep, GtDE4B86A990_vok(s, es))
 
 def Gt28ED72E3EF_vok(+s: S.Schema, +es: {s == Spec.Gt28ED72E3EF() : S.Schema}) -> {PB.ok_v1(s, 0n) == True{} : Bool}:
@@ -226,7 +227,7 @@ def GtA8100D747D_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtA8100D7
 def GtF23A2FB97E_vok(+s: S.Schema, +es: {s == Spec.GtF23A2FB97E() : S.Schema}) -> {PG.ok_pl2(s) == True{} : Bool}:
   %Equal.sym(S.Schema, s, Spec.GtF23A2FB97E(), es) : {PG.ok_pl2(_) == True{} : Bool}
   {==}
-def GtF23A2FB97E_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtF23A2FB97E() : S.Schema}, +rep: PG.rep_pl2(o, s)) -> {VD.root_valid(PB_L.vview2(o), s) == True{} : Bool}:
+def GtF23A2FB97E_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtF23A2FB97E() : S.Schema}, +rep: PG_L.rep_pl2(o, s)) -> {VD.root_valid(PB_L.vview2(o), s) == True{} : Bool}:
   VP.vpl2(o, s, rep, GtF23A2FB97E_vok(s, es))
 
 def GtAEB382AD1F_vok(+s: S.Schema, +es: {s == Spec.GtAEB382AD1F() : S.Schema}) -> {PB.ok_v2(s, 0n) == True{} : Bool}:
@@ -292,7 +293,7 @@ def Gt39CAD03032_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt39CAD03
 def GtA8457965E2_vok(+s: S.Schema, +es: {s == Spec.GtA8457965E2() : S.Schema}) -> {PG.ok_pl32(s) == True{} : Bool}:
   %Equal.sym(S.Schema, s, Spec.GtA8457965E2(), es) : {PG.ok_pl32(_) == True{} : Bool}
   {==}
-def GtA8457965E2_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtA8457965E2() : S.Schema}, +rep: PG.rep_pl32(o, s)) -> {VD.root_valid(PK_L.vview32(o), s) == True{} : Bool}:
+def GtA8457965E2_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtA8457965E2() : S.Schema}, +rep: PG_L.rep_pl32(o, s)) -> {VD.root_valid(PK_L.vview32(o), s) == True{} : Bool}:
   VP.vpl32(o, s, rep, GtA8457965E2_vok(s, es))
 
 def Gt3E6E18CD57_vok(+s: S.Schema, +es: {s == Spec.Gt3E6E18CD57() : S.Schema}) -> {PK.ok_v32(s, 4n) == True{} : Bool}:
@@ -358,7 +359,7 @@ def GtFAE59DA275_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtFAE59DA
 def Gt3A9420DD8E_vok(+s: S.Schema, +es: {s == Spec.Gt3A9420DD8E() : S.Schema}) -> {PG.ok_pl4(s) == True{} : Bool}:
   %Equal.sym(S.Schema, s, Spec.Gt3A9420DD8E(), es) : {PG.ok_pl4(_) == True{} : Bool}
   {==}
-def Gt3A9420DD8E_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3A9420DD8E() : S.Schema}, +rep: PG.rep_pl4(o, s)) -> {VD.root_valid(PK_L.vview4(o), s) == True{} : Bool}:
+def Gt3A9420DD8E_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.Gt3A9420DD8E() : S.Schema}, +rep: PG_L.rep_pl4(o, s)) -> {VD.root_valid(PK_L.vview4(o), s) == True{} : Bool}:
   VP.vpl4(o, s, rep, Gt3A9420DD8E_vok(s, es))
 
 def Gt3CC580499F_vok(+s: S.Schema, +es: {s == Spec.Gt3CC580499F() : S.Schema}) -> {PK.ok_v4(s, 1n) == True{} : Bool}:
@@ -424,7 +425,7 @@ def GtCCF6FFA0A0_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtCCF6FFA
 def GtE83F21B20A_vok(+s: S.Schema, +es: {s == Spec.GtE83F21B20A() : S.Schema}) -> {PG.ok_pl8(s) == True{} : Bool}:
   %Equal.sym(S.Schema, s, Spec.GtE83F21B20A(), es) : {PG.ok_pl8(_) == True{} : Bool}
   {==}
-def GtE83F21B20A_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtE83F21B20A() : S.Schema}, +rep: PG.rep_pl8(o, s)) -> {VD.root_valid(UL.uview(o), s) == True{} : Bool}:
+def GtE83F21B20A_root_valid(-o: O.Words, +s: S.Schema, +es: {s == Spec.GtE83F21B20A() : S.Schema}, +rep: PG_L.rep_pl8(o, s)) -> {VD.root_valid(UL.uview(o), s) == True{} : Bool}:
   VP.vpl8(o, s, rep, GtE83F21B20A_vok(s, es))
 
 def Gt0B4EF17D71_vok(+s: S.Schema, +es: {s == Spec.Gt0B4EF17D71() : S.Schema}) -> {PK.ok_v8(s, 2n) == True{} : Bool}:

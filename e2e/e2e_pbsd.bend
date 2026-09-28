@@ -19,10 +19,10 @@ import ../proofs/obj/vua_rd.bend as UR
 import ../proofs/obj/vua_fixb.bend as VXB
 import ../proofs/obj/spec_bits.bend as FB
 import ../proofs/obj/bitlist_pack.bend as BK
-import ../proofs/obj/bitlist_obj.bend as BO
-import ../proofs/obj/wbits_obj.bend as WBV
-import ../proofs/obj/root_gnames.bend as RN
-import ../proofs/obj/root_gtypes2.bend as RT
+import ../proofs/obj/bitlist_obj_light.bend as BO
+import ../proofs/obj/wbits_obj_light.bend as WBV
+import ../proofs/obj/root_gnames_light.bend as RN
+import ../proofs/obj/root_gtypes2_light.bend as RT
 import ../proofs/obj/vfx_bv256.bend as F56
 import ../proofs/obj/vfx_bv257.bend as F57
 import ../proofs/obj/vfx_bv1280.bend as F80

@@ -17,7 +17,7 @@ import ./e2e_bytes.bend as E
 import ../proofs/obj/spec_ginput_Gt0A390CB480.bend as M0
 import ../proofs/obj/spec_gcodec_Gt0A390CB480.bend as M1
 import ../proofs/obj/fixrej_g3.bend as M2
-import ../proofs/obj/root_gnames.bend as M3
+import ../proofs/obj/root_gnames_light.bend as M3
 import ../proofs/obj/spec_bits.bend as FB
 import ./e2e_bits.bend as EB
 import ../proofs/obj/generic_specs.bend as GS

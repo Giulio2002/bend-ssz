@@ -24,7 +24,7 @@ import ../types/VarTestStruct_def_generated.bend as VarTestStruct_d
 import ../types/VarTestStruct_encode_ssz_generated.bend as VarTestStruct_e
 import ./e2e_support.bend as E
 import ./e2e_emit.bend as EM
-import ../proofs/obj/root_gtypes.bend as RT
+import ../proofs/obj/root_gtypes_light.bend as RT
 import ./e2e_blist.bend as BL
 import ./e2e_encr.bend as ER
 

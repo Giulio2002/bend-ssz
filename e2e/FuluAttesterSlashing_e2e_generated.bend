@@ -15,8 +15,8 @@ import ../proofs/obj/spec_fixed.bend as SF
 import ../proofs/obj/vspec.bend as VSP
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/ulist_obj.bend as UL
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/ulist_obj_light.bend as UL
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_var_codec_AttesterSlashing_enc.bend as EN
 import ../proofs/obj/big_var_codec_IndexedAttestation_enc.bend as CE
 import ../proofs/obj/big_var_codec_IndexedAttestation_encw.bend as IW

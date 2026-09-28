@@ -65,7 +65,7 @@ type MB<-X: Data> is Data:
   MNone{}
   MSome{v: X}
 
-# A container or byte list schema is composite: no basic size.
+# ---- box of SyncCommitteeContribution ----
 def th_bl1073741824_bx(m: MB<WMr>) -> O.Boxed<O.Words>:
   match m:
     case MSome{+v}: O.BSome{th_w(v), O.BNone{}}
@@ -74,14 +74,13 @@ def fz_bl1073741824_bx(x: O.Boxed<O.Words>) -> MB<WMr>:
   match x:
     case O.BSome{v, rest}: MSome{fz_w(v)}
     case O.BNone{}: MNone{}
+# ---- l1048576_bl1073741824: list of bl1073741824_bx (Type-kind elements, through mirrors) ----
 def fzth_bl1073741824_bx(+m: MB<WMr>) -> {fz_bl1073741824_bx(th_bl1073741824_bx(m)) == m : MB<WMr>}:
   match m:
     case MSome{+v}:
       %Equal.sym(WMr, fz_w(th_w(v)), v, fzth_w(v)) : {MSome{_} == MSome{v} : MB<WMr>}
       {==}
     case MNone{}: {==}
-
-# ---- l1048576_bl1073741824: list of bl1073741824_bx (Type-kind elements, through mirrors) ----
 def am_l1048576_bl1073741824(t: F.array__Tree<MB<WMr>>) -> Array<O.Boxed<O.Words>>:
   match t:
     case F.TLeaf{x}: ALeaf{th_bl1073741824_bx(x)}

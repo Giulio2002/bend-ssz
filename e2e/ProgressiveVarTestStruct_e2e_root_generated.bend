@@ -9,12 +9,13 @@ import ../proofs/obj/generic_specs.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/dk.bend as DK
-import ../proofs/obj/list_obj.bend as LO
+import ../proofs/obj/list_obj_light.bend as LO
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_gtypes2.bend as RT
+import ../proofs/obj/root_gtypes2_light.bend as RT_L
 import ../proofs/obj/gvalid_gtypes2.bend as GV
 import ./e2e_support.bend as E
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../types/ProgressiveVarTestStruct_def_generated.bend as ProgressiveVarTestStruct_d
 import ../types/ProgressiveVarTestStruct_hashtreeroot_generated.bend as ProgressiveVarTestStruct_h
 
@@ -60,34 +61,34 @@ def cpb(-w: O.Bits, +wf: BO.wfb(w)) -> DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32
       (t, (N, ew))
 
 # the literal object
-def rt1(h: B.Buf, +x0: U32, +t1: FD.array__Tree<U32>, +N1: U32, +t2: FD.array__Tree<U32>, +N2: U32, +rep: RT.rep_Gp66304057C3(ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}, Spec.Gp66304057C3())) -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}))))} == API.hash_tree_root(Spec.Gp66304057C3(), RT.v_Gp66304057C3(ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}})) : Maybe<&2, +List<U32>>}:
-  E.root_legal(Spec.Gp66304057C3(), RT.v_Gp66304057C3(ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}), VS.public_sound(Spec.Gp66304057C3(), {==}), D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}})))),
+def rt1(h: B.Buf, +x0: U32, +t1: FD.array__Tree<U32>, +N1: U32, +t2: FD.array__Tree<U32>, +N2: U32, +rep: RT_L.rep_Gp66304057C3(ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}, Spec.Gp66304057C3())) -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}))))} == API.hash_tree_root(Spec.Gp66304057C3(), RT_L.v_Gp66304057C3(ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}})) : Maybe<&2, +List<U32>>}:
+  E.root_legal(Spec.Gp66304057C3(), RT_L.v_Gp66304057C3(ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}), VS.public_sound(Spec.Gp66304057C3(), {==}), D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}})))),
     GV.Gp66304057C3_root_valid(ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}, Spec.Gp66304057C3(), {==}, rep), RT.Gp66304057C3_root_correct(h, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}, Spec.Gp66304057C3(), {==}, rep))
 
 # the object as the literal
-def rt2(h: B.Buf, -o: ProgressiveVarTestStruct_d.Gp66304057C3, +rep: RT.rep_Gp66304057C3(o, Spec.Gp66304057C3()), +x0: U32, +t1: FD.array__Tree<U32>, +N1: U32, +t2: FD.array__Tree<U32>, +N2: U32, +eo: {o == ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}} : ProgressiveVarTestStruct_d.Gp66304057C3}) -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gp66304057C3(), RT.v_Gp66304057C3(o)) : Maybe<&2, +List<U32>>}:
-  %Equal.sym(ProgressiveVarTestStruct_d.Gp66304057C3, o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}, eo) : {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.Gp66304057C3(), RT.v_Gp66304057C3(_)) : Maybe<&2, +List<U32>>}
-  rt1(h, x0, t1, N1, t2, N2, FD.logic__subst(ProgressiveVarTestStruct_d.Gp66304057C3, z => RT.rep_Gp66304057C3(z, Spec.Gp66304057C3()), o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}, eo, rep))
+def rt2(h: B.Buf, -o: ProgressiveVarTestStruct_d.Gp66304057C3, +rep: RT_L.rep_Gp66304057C3(o, Spec.Gp66304057C3()), +x0: U32, +t1: FD.array__Tree<U32>, +N1: U32, +t2: FD.array__Tree<U32>, +N2: U32, +eo: {o == ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}} : ProgressiveVarTestStruct_d.Gp66304057C3}) -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gp66304057C3(), RT_L.v_Gp66304057C3(o)) : Maybe<&2, +List<U32>>}:
+  %Equal.sym(ProgressiveVarTestStruct_d.Gp66304057C3, o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}, eo) : {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, _))))} == API.hash_tree_root(Spec.Gp66304057C3(), RT_L.v_Gp66304057C3(_)) : Maybe<&2, +List<U32>>}
+  rt1(h, x0, t1, N1, t2, N2, FD.logic__subst(ProgressiveVarTestStruct_d.Gp66304057C3, z => RT_L.rep_Gp66304057C3(z, Spec.Gp66304057C3()), o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}}, eo, rep))
 
 # the copies, and the object's equation to the literal
-def g1(h: B.Buf, -o: ProgressiveVarTestStruct_d.Gp66304057C3, +rep: RT.rep_Gp66304057C3(o, Spec.Gp66304057C3()), +x0: U32, +eo: {o == ProgressiveVarTestStruct_d.Gp66304057C3{x0, RT.pj_Gp66304057C3_1(o), RT.pj_Gp66304057C3_2(o)} : ProgressiveVarTestStruct_d.Gp66304057C3}, +c1: DK.Ex(FD.array__Tree<U32>, t1 => DK.Ex(U32, N1 => {RT.pj_Gp66304057C3_1(o) == O.Words{FD.array__thaw(U32, t1), N1} : O.Words})), +c2: DK.Ex(FD.array__Tree<U32>, t2 => DK.Ex(U32, N2 => {RT.pj_Gp66304057C3_2(o) == O.Bits{FD.array__thaw(U32, t2), N2} : O.Bits}))) -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gp66304057C3(), RT.v_Gp66304057C3(o)) : Maybe<&2, +List<U32>>}:
+def g1(h: B.Buf, -o: ProgressiveVarTestStruct_d.Gp66304057C3, +rep: RT_L.rep_Gp66304057C3(o, Spec.Gp66304057C3()), +x0: U32, +eo: {o == ProgressiveVarTestStruct_d.Gp66304057C3{x0, RT_L.pj_Gp66304057C3_1(o), RT_L.pj_Gp66304057C3_2(o)} : ProgressiveVarTestStruct_d.Gp66304057C3}, +c1: DK.Ex(FD.array__Tree<U32>, t1 => DK.Ex(U32, N1 => {RT_L.pj_Gp66304057C3_1(o) == O.Words{FD.array__thaw(U32, t1), N1} : O.Words})), +c2: DK.Ex(FD.array__Tree<U32>, t2 => DK.Ex(U32, N2 => {RT_L.pj_Gp66304057C3_2(o) == O.Bits{FD.array__thaw(U32, t2), N2} : O.Bits}))) -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gp66304057C3(), RT_L.v_Gp66304057C3(o)) : Maybe<&2, +List<U32>>}:
   (+t1, +c1_0) = c1
   (+N1, +e1) = c1_0
   (+t2, +c2_0) = c2
   (+N2, +e2) = c2_0
-  rt2(h, o, rep, x0, t1, N1, t2, N2, Equal.trans(ProgressiveVarTestStruct_d.Gp66304057C3, o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, RT.pj_Gp66304057C3_2(o)}, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}},
-    Equal.trans(ProgressiveVarTestStruct_d.Gp66304057C3, o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, RT.pj_Gp66304057C3_1(o), RT.pj_Gp66304057C3_2(o)}, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, RT.pj_Gp66304057C3_2(o)},
+  rt2(h, o, rep, x0, t1, N1, t2, N2, Equal.trans(ProgressiveVarTestStruct_d.Gp66304057C3, o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, RT_L.pj_Gp66304057C3_2(o)}, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, O.Bits{FD.array__thaw(U32, t2), N2}},
+    Equal.trans(ProgressiveVarTestStruct_d.Gp66304057C3, o, ProgressiveVarTestStruct_d.Gp66304057C3{x0, RT_L.pj_Gp66304057C3_1(o), RT_L.pj_Gp66304057C3_2(o)}, ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, RT_L.pj_Gp66304057C3_2(o)},
     eo,
-    Equal.cong(O.Words, ProgressiveVarTestStruct_d.Gp66304057C3, z => ProgressiveVarTestStruct_d.Gp66304057C3{x0, z, RT.pj_Gp66304057C3_2(o)}, RT.pj_Gp66304057C3_1(o), O.Words{FD.array__thaw(U32, t1), N1}, e1)),
-    Equal.cong(O.Bits, ProgressiveVarTestStruct_d.Gp66304057C3, z => ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, z}, RT.pj_Gp66304057C3_2(o), O.Bits{FD.array__thaw(U32, t2), N2}, e2)))
+    Equal.cong(O.Words, ProgressiveVarTestStruct_d.Gp66304057C3, z => ProgressiveVarTestStruct_d.Gp66304057C3{x0, z, RT_L.pj_Gp66304057C3_2(o)}, RT_L.pj_Gp66304057C3_1(o), O.Words{FD.array__thaw(U32, t1), N1}, e1)),
+    Equal.cong(O.Bits, ProgressiveVarTestStruct_d.Gp66304057C3, z => ProgressiveVarTestStruct_d.Gp66304057C3{x0, O.Words{FD.array__thaw(U32, t1), N1}, z}, RT_L.pj_Gp66304057C3_2(o), O.Bits{FD.array__thaw(U32, t2), N2}, e2)))
 
 # (iv)
-def ProgressiveVarTestStruct_e2e_root(h: B.Buf, -o: ProgressiveVarTestStruct_d.Gp66304057C3, +rep: RT.rep_Gp66304057C3(o, Spec.Gp66304057C3())) -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gp66304057C3(), RT.v_Gp66304057C3(o)) : Maybe<&2, +List<U32>>}:
+def ProgressiveVarTestStruct_e2e_root(h: B.Buf, -o: ProgressiveVarTestStruct_d.Gp66304057C3, +rep: RT_L.rep_Gp66304057C3(o, Spec.Gp66304057C3())) -> {Some{D.bytes(Pair.snd(ProgressiveVarTestStruct_d.Gp66304057C3, D.Digest, Pair.snd(B.Buf, ProgressiveVarTestStruct_d.Gp66304057C3 & D.Digest, ProgressiveVarTestStruct_h.Gp66304057C3_hash_tree_root(h, o))))} == API.hash_tree_root(Spec.Gp66304057C3(), RT_L.v_Gp66304057C3(o)) : Maybe<&2, +List<U32>>}:
   (+x0, +r0) = rep
   (+eo, +q0) = r0
   (+p0, +q1) = q0
   (+p1, +q2) = q1
   (+wf1, +z1) = p1
   g1(h, o, rep, x0, eo,
-    cpw(RT.pj_Gp66304057C3_1(o), wf1),
-    cpb(RT.pj_Gp66304057C3_2(o), q2))
+    cpw(RT_L.pj_Gp66304057C3_1(o), wf1),
+    cpb(RT_L.pj_Gp66304057C3_2(o), q2))

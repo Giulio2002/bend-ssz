@@ -16,6 +16,7 @@ import ./mtree_defs.bend as MD
 import ./root_names.bend as RN
 import ./cached_l16_SignedBLSToExecutionChange.bend as CA
 import ./root_types.bend as RT
+import ./root_types_light.bend as RT_L
 import ./cidx.bend as CX
 import ./ctree.bend as CT
 import ./wdstage.bend as WS2
@@ -31,7 +32,7 @@ import ./wdstage.bend as WS2
 law xat_same:
   for +W: List<&2, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>
   for +i: Nat
-  {CA.xat(W, i) == RT.xat_l16_SignedBLSToExecutionChange(W, i) : FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange}
+  {CA.xat(W, i) == RT_L.xat_l16_SignedBLSToExecutionChange(W, i) : FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange}
 def xat_same(W, i):
   match W:
     case Nil{}: {==}
@@ -50,16 +51,16 @@ def xl_same(k, W, i, hl):
   match k:
     case 0n: {==}
     case 1n+ +q:
-      %Equal.sym(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, CA.xat(W, i), RT.xat_l16_SignedBLSToExecutionChange(W, i), xat_same(W, i)) :
-        {RN.d_SignedBLSToExecutionChange(hl, _) <> CA.xl(q, W, 1n+i, hl) == RN.d_SignedBLSToExecutionChange(hl, RT.xat_l16_SignedBLSToExecutionChange(W, i)) <> RT.xl_l16_SignedBLSToExecutionChange(q, W, 1n+i, hl) : List<&2, D.Digest>}
+      %Equal.sym(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, CA.xat(W, i), RT_L.xat_l16_SignedBLSToExecutionChange(W, i), xat_same(W, i)) :
+        {RN.d_SignedBLSToExecutionChange(hl, _) <> CA.xl(q, W, 1n+i, hl) == RN.d_SignedBLSToExecutionChange(hl, RT_L.xat_l16_SignedBLSToExecutionChange(W, i)) <> RT.xl_l16_SignedBLSToExecutionChange(q, W, 1n+i, hl) : List<&2, D.Digest>}
       %Equal.sym(List<&2, D.Digest>, CA.xl(q, W, 1n+i, hl), RT.xl_l16_SignedBLSToExecutionChange(q, W, 1n+i, hl), xl_same(q, W, 1n+i, hl)) :
-        {RN.d_SignedBLSToExecutionChange(hl, RT.xat_l16_SignedBLSToExecutionChange(W, i)) <> _ == RN.d_SignedBLSToExecutionChange(hl, RT.xat_l16_SignedBLSToExecutionChange(W, i)) <> RT.xl_l16_SignedBLSToExecutionChange(q, W, 1n+i, hl) : List<&2, D.Digest>}
+        {RN.d_SignedBLSToExecutionChange(hl, RT_L.xat_l16_SignedBLSToExecutionChange(W, i)) <> _ == RN.d_SignedBLSToExecutionChange(hl, RT_L.xat_l16_SignedBLSToExecutionChange(W, i)) <> RT.xl_l16_SignedBLSToExecutionChange(q, W, 1n+i, hl) : List<&2, D.Digest>}
       {==}
 
 def dig_spec(-h: B.Buf, +ta: F.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +dw: Nat, +t: F.array__Tree<D.Digest>, +n: U32, +d: Nat, +lo: U32, +hi: U32, +s: S.Schema,
     +iv: CA.inv(ta, dw, t, n, d, lo, hi), +ok: {RT.ok_l16_SignedBLSToExecutionChange(s) == True{} : Bool}, +eq: {SH.ListOf_element(s) == S.Container{["message", "signature"], S.Chain{S.Container{["validator_index", "from_bls_pubkey", "to_execution_address"], S.Chain{S.Unsigned{P.U64{}}, S.Chain{S.ByteVector{48n}, S.Chain{S.ByteVector{20n}, S.End{}}}}}, S.Chain{S.ByteVector{96n}, S.End{}}}} : S.Schema},
     +hv: {Nat.is_le(U32.to_nat(n), SH.ListOf_limit(s)) == True{} : Bool})
-    -> RR.roots(RT.xv_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta), n}), s, [D.bytes(CA.dig(n, ta))]):
+    -> RR.roots(RT_L.xv_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta), n}), s, [D.bytes(CA.dig(n, ta))]):
   (+hdw, w1) = iv
   (+pfa, w2) = w1
   (+hcap, w3) = w2
@@ -75,7 +76,7 @@ def dig_spec(-h: B.Buf, +ta: F.array__Tree<FuluSignedBLSToExecutionChange_d.Sign
       F.array__freeze(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta)), ta, F.array__freeze_thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta)),
     Equal.sym(List<&2, D.Digest>, CA.xl(U32.to_nat(n), F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta), 0n, 64n), RT.xl_l16_SignedBLSToExecutionChange(U32.to_nat(n), F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta), 0n, 64n),
       xl_same(U32.to_nat(n), F.array__slots(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta), 0n, 64n)))
-  %e1 : RR.roots(RT.xv_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta), n}), s, [D.bytes(O.mix_len(64n, MD.rtree(4n, Nat.is_lt(0n, U32.to_nat(n)), 64n, _, 0n), n))])
+  %e1 : RR.roots(RT_L.xv_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta), n}), s, [D.bytes(O.mix_len(64n, MD.rtree(4n, Nat.is_lt(0n, U32.to_nat(n)), 64n, _, 0n), n))])
   RT.rs_l16_SignedBLSToExecutionChange(64n, {==}, h, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta), n}, s, ((ta, (dw, (n, ({==}, (pfa, (hdw, hn)))))), hv), ok, eq)
 
 # For a valid cache of n elements (CA.inv) whose list value fits the schema s of
@@ -98,7 +99,7 @@ law cached_spec:
   for +hv: {Nat.is_le(U32.to_nat(n), SH.ListOf_limit(s)) == True{} : Bool}
   {Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_cached_root(64n, h, CA.cached(ta, t, n, d, lo, hi), seg)
    == (h, (CA.cached(ta, CA.tafter(ta, t, n, d, lo, hi), n, d, n, 0), CA.dig(n, ta))) : B.Buf & (Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Cached & D.Digest)}
-  & RR.roots(RT.xv_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta), n}), s, [D.bytes(CA.dig(n, ta))])
+  & RR.roots(RT_L.xv_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, ta), n}), s, [D.bytes(CA.dig(n, ta))])
 def cached_spec(h, ta, dw, t, n, d, lo, hi, seg, s, iv, ok, eq, hv):
   (CA.root_eq(h, ta, dw, t, n, d, lo, hi, seg, iv), dig_spec(h, ta, dw, t, n, d, lo, hi, s, iv, ok, eq, hv))
 
@@ -121,10 +122,10 @@ def okb(pr: Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionCh
 
 law default_rep:
   for +s: S.Schema
-  RT.rep_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_default(), s)
+  RT_L.rep_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_default(), s)
 def default_rep(s):
   %Equal.sym(Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, Array.new(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, 0n, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange_default()), F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__trep(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, 0n, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange_default())), F.array__new(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, 0n, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange_default())) :
-    RT.rep_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{_, 0}, s)
+    RT_L.rep_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{_, 0}, s)
   ((F.array__trep(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, 0n, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange_default()), (0n, (0, ({==}, (F.array__trep_perfect(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, 0n, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange_default()), ({==}, {==})))))), F.nat__zero_le(SH.ListOf_limit(s)))
 
 law uncache_rep:
@@ -138,7 +139,7 @@ law uncache_rep:
   for +s: S.Schema
   for +iv: CA.inv(ta, dw, t, n, d, lo, hi)
   for +hv: {Nat.is_le(U32.to_nat(n), SH.ListOf_limit(s)) == True{} : Bool}
-  RT.rep_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_uncache(CA.cached(ta, t, n, d, lo, hi)), s)
+  RT_L.rep_l16_SignedBLSToExecutionChange(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_uncache(CA.cached(ta, t, n, d, lo, hi)), s)
 def uncache_rep(ta, dw, t, n, d, lo, hi, s, iv, hv):
   (+hdw, w1) = iv
   (+pfa, w2) = w1
@@ -150,23 +151,23 @@ def uncache_rep(ta, dw, t, n, d, lo, hi, s, iv, hv):
 
 # The length facts of o, moved to the length N of its representation.
 def tr_lt(-o: Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, +t: F.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +i: U32, +eo: {o == Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N} : Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq},
-    +h: {Nat.is_lt(U32.to_nat(i), U32.to_nat(RT.xlen_o_l16_SignedBLSToExecutionChange(o))) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}:
-  %Equal.cong(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, U32, RT.xlen_o_l16_SignedBLSToExecutionChange, o, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, eo) : {Nat.is_lt(U32.to_nat(i), U32.to_nat(_)) == True{} : Bool}
+    +h: {Nat.is_lt(U32.to_nat(i), U32.to_nat(RT_L.xlen_o_l16_SignedBLSToExecutionChange(o))) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(i), U32.to_nat(N)) == True{} : Bool}:
+  %Equal.cong(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, U32, RT_L.xlen_o_l16_SignedBLSToExecutionChange, o, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, eo) : {Nat.is_lt(U32.to_nat(i), U32.to_nat(_)) == True{} : Bool}
   h
 
 def tr_pw(-o: Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, +t: F.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +P: Nat, +eo: {o == Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N} : Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq},
-    +h: {Nat.is_lt(U32.to_nat(RT.xlen_o_l16_SignedBLSToExecutionChange(o)), P) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(N), P) == True{} : Bool}:
-  %Equal.cong(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, U32, RT.xlen_o_l16_SignedBLSToExecutionChange, o, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, eo) : {Nat.is_lt(U32.to_nat(_), P) == True{} : Bool}
+    +h: {Nat.is_lt(U32.to_nat(RT_L.xlen_o_l16_SignedBLSToExecutionChange(o)), P) == True{} : Bool}) -> {Nat.is_lt(U32.to_nat(N), P) == True{} : Bool}:
+  %Equal.cong(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, U32, RT_L.xlen_o_l16_SignedBLSToExecutionChange, o, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, eo) : {Nat.is_lt(U32.to_nat(_), P) == True{} : Bool}
   h
 
 def tr_g(-o: Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, +t: F.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +eo: {o == Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N} : Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq},
-    +h: {U32.is_le(U32.add(RT.xlen_o_l16_SignedBLSToExecutionChange(o), 1), 16) == True{} : Bool}) -> {U32.is_le(U32.add(N, 1), 16) == True{} : Bool}:
-  %Equal.cong(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, U32, RT.xlen_o_l16_SignedBLSToExecutionChange, o, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, eo) : {U32.is_le(U32.add(_, 1), 16) == True{} : Bool}
+    +h: {U32.is_le(U32.add(RT_L.xlen_o_l16_SignedBLSToExecutionChange(o), 1), 16) == True{} : Bool}) -> {U32.is_le(U32.add(N, 1), 16) == True{} : Bool}:
+  %Equal.cong(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, U32, RT_L.xlen_o_l16_SignedBLSToExecutionChange, o, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, eo) : {U32.is_le(U32.add(_, 1), 16) == True{} : Bool}
   h
 
 def tr_fit(-o: Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, +t: F.array__Tree<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, +N: U32, +P: Nat, +eo: {o == Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N} : Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq},
-    +h: {Nat.is_le(U32.to_nat(U32.add(RT.xlen_o_l16_SignedBLSToExecutionChange(o), 1)), P) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(U32.add(N, 1)), P) == True{} : Bool}:
-  %Equal.cong(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, U32, RT.xlen_o_l16_SignedBLSToExecutionChange, o, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, eo) : {Nat.is_le(U32.to_nat(U32.add(_, 1)), P) == True{} : Bool}
+    +h: {Nat.is_le(U32.to_nat(U32.add(RT_L.xlen_o_l16_SignedBLSToExecutionChange(o), 1)), P) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(U32.add(N, 1)), P) == True{} : Bool}:
+  %Equal.cong(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, U32, RT_L.xlen_o_l16_SignedBLSToExecutionChange, o, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, eo) : {Nat.is_le(U32.to_nat(U32.add(_, 1)), P) == True{} : Bool}
   h
 
 # ---- set ----------------------------------------------------------------------------------
@@ -191,9 +192,9 @@ law set_rep:
   for +s: S.Schema
   for +i: U32
   for +v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange
-  for +rep: RT.rep_l16_SignedBLSToExecutionChange(o, s)
-  for +hin: {Nat.is_lt(U32.to_nat(i), U32.to_nat(RT.xlen_o_l16_SignedBLSToExecutionChange(o))) == True{} : Bool}
-  DK.P2({okb(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_set(o, i, v)) == True{} : Bool}, RT.rep_l16_SignedBLSToExecutionChange(sq(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_set(o, i, v)), s))
+  for +rep: RT_L.rep_l16_SignedBLSToExecutionChange(o, s)
+  for +hin: {Nat.is_lt(U32.to_nat(i), U32.to_nat(RT_L.xlen_o_l16_SignedBLSToExecutionChange(o))) == True{} : Bool}
+  DK.P2({okb(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_set(o, i, v)) == True{} : Bool}, RT_L.rep_l16_SignedBLSToExecutionChange(sq(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_set(o, i, v)), s))
 def set_rep(o, s, i, v, rep, hin):
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -205,10 +206,10 @@ def set_rep(o, s, i, v, rep, hin):
   +hin2 = tr_lt(o, t, N, i, eo, hin)
   +hv2 = RT.xhv_l16_SignedBLSToExecutionChange(o, t, N, SH.ListOf_limit(s), eo, hv)
   %Equal.sym(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, o, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, eo) :
-    DK.P2({okb(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_set(_, i, v)) == True{} : Bool}, RT.rep_l16_SignedBLSToExecutionChange(sq(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_set(_, i, v)), s))
+    DK.P2({okb(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_set(_, i, v)) == True{} : Bool}, RT_L.rep_l16_SignedBLSToExecutionChange(sq(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_set(_, i, v)), s))
   %Equal.sym(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & Bool, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_set(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, i, v), (Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, dw, t, U32.to_nat(i), v)), N}, True{}),
       set_eq(t, dw, N, i, v, hdw, pf, hin2, hn)) :
-    DK.P2({okb(_) == True{} : Bool}, RT.rep_l16_SignedBLSToExecutionChange(sq(_), s))
+    DK.P2({okb(_) == True{} : Bool}, RT_L.rep_l16_SignedBLSToExecutionChange(sq(_), s))
   ({==}, ((F.array__upd(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, dw, t, U32.to_nat(i), v), (dw, (N, ({==}, (F.array__upd_perfect(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, dw, t, U32.to_nat(i), v, pf), (hdw, hn)))))), hv2))
 
 # ---- append -------------------------------------------------------------------------------
@@ -252,11 +253,11 @@ law append_rep:
   for +v: FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange
   for +k: Nat
   for +hk: {Nat.is_le(k, 30n) == True{} : Bool}
-  for +rep: RT.rep_l16_SignedBLSToExecutionChange(o, s)
-  for +hlt: {Nat.is_lt(U32.to_nat(RT.xlen_o_l16_SignedBLSToExecutionChange(o)), O.pow2n(k)) == True{} : Bool}
-  for +hg: {U32.is_le(U32.add(RT.xlen_o_l16_SignedBLSToExecutionChange(o), 1), 16) == True{} : Bool}
-  for +hfit: {Nat.is_le(U32.to_nat(U32.add(RT.xlen_o_l16_SignedBLSToExecutionChange(o), 1)), SH.ListOf_limit(s)) == True{} : Bool}
-  DK.P2({okb(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_append(o, v)) == True{} : Bool}, RT.rep_l16_SignedBLSToExecutionChange(sq(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_append(o, v)), s))
+  for +rep: RT_L.rep_l16_SignedBLSToExecutionChange(o, s)
+  for +hlt: {Nat.is_lt(U32.to_nat(RT_L.xlen_o_l16_SignedBLSToExecutionChange(o)), O.pow2n(k)) == True{} : Bool}
+  for +hg: {U32.is_le(U32.add(RT_L.xlen_o_l16_SignedBLSToExecutionChange(o), 1), 16) == True{} : Bool}
+  for +hfit: {Nat.is_le(U32.to_nat(U32.add(RT_L.xlen_o_l16_SignedBLSToExecutionChange(o), 1)), SH.ListOf_limit(s)) == True{} : Bool}
+  DK.P2({okb(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_append(o, v)) == True{} : Bool}, RT_L.rep_l16_SignedBLSToExecutionChange(sq(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_append(o, v)), s))
 def append_rep(o, s, v, k, hk, rep, hlt, hg, hfit):
   (+wf, +hv) = rep
   (+t, w1) = wf
@@ -272,10 +273,10 @@ def append_rep(o, s, v, k, hk, rep, hlt, hg, hfit):
   +hn1 = n1_le(N, O.pow2n(k), en1, hlt2)
   +c = CA.fits(dw, N)
   %Equal.sym(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq, o, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, eo) :
-    DK.P2({okb(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_append(_, v)) == True{} : Bool}, RT.rep_l16_SignedBLSToExecutionChange(sq(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_append(_, v)), s))
+    DK.P2({okb(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_append(_, v)) == True{} : Bool}, RT_L.rep_l16_SignedBLSToExecutionChange(sq(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_append(_, v)), s))
   %Equal.sym(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq & Bool, Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_append(Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t), N}, v), (Fulu_list_SignedBLSToExecutionChange_16_d.l16_SignedBLSToExecutionChange_Seq{F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, CA.gitems(dw, N, t, v)), (N + 1 : U32)}, True{}),
       app_eq(t, dw, N, v, k, hk, hdw, pf, hn, hlt2, hg2)) :
-    DK.P2({okb(_) == True{} : Bool}, RT.rep_l16_SignedBLSToExecutionChange(sq(_), s))
+    DK.P2({okb(_) == True{} : Bool}, RT_L.rep_l16_SignedBLSToExecutionChange(sq(_), s))
   ({==}, ((CA.gitems(dw, N, t, v), (CA.rdepth(c, dw, N), ((N + 1 : U32), ({==},
     (F.array__upd_perfect(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, CA.rdepth(c, dw, N), CA.rtree(c, dw, N, t), U32.to_nat(N), v, CA.rt_perfect(c, dw, N, t, pf)),
     (CA.rt_depth(c, dw, N, k, hk, hn1, hdw), n1_le(N, F.spec_common__pow2(CA.rdepth(c, dw, N)), en1, CA.rt_room(c, dw, N, k, hk, hn1, en1, {==})))))))), hfit2))
@@ -346,10 +347,10 @@ def read_fin(+n: U32, +D: Nat, +s: S.Schema, -RD: B.Buf & Array<FuluSignedBLSToE
     +hD: {Nat.is_lt(D, 32n) == True{} : Bool},
     +hcov: {Nat.is_le(U32.to_nat(n), F.spec_common__pow2(D)) == True{} : Bool},
     +hlim: {Nat.is_le(U32.to_nat(n), SH.ListOf_limit(s)) == True{} : Bool})
-    -> RT.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd_fin(n, RD)), s):
+    -> RT_L.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd_fin(n, RD)), s):
   (+TT, w) = ex
   (+e, +pt) = w
-  %Equal.sym(B.Buf & Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, RD, (B0, F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, TT)), e) : RT.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd_fin(n, _)), s)
+  %Equal.sym(B.Buf & Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, RD, (B0, F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, TT)), e) : RT_L.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd_fin(n, _)), s)
   ((TT, (D, (n, ({==}, (pt, (hD, hcov)))))), hlim)
 
 # A nonempty list field of n = len / 172 >= 1 elements, n <= 2^k (k <= 30) and
@@ -365,16 +366,16 @@ law read_rep:
   for +h1: {Nat.is_le(1n, U32.to_nat(U32.div(len, 172))) == True{} : Bool}
   for +hn: {Nat.is_le(U32.to_nat(U32.div(len, 172)), O.pow2n(k)) == True{} : Bool}
   for +hlim: {Nat.is_le(U32.to_nat(U32.div(len, 172)), SH.ListOf_limit(s)) == True{} : Bool}
-  RT.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_read(buf, off, len)), s)
+  RT_L.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_read(buf, off, len)), s)
 def read_rep(buf, off, len, s, k, hk, hne, h1, hn, hlim):
   +n = U32.div(len, 172)
   +D = B.words_depth(n)
   +t0 = F.array__trep(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, D, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange_default())
   +hD = F.nat__le_lt_trans(D, 30n, 32n, F.nat__le_trans(D, k, 30n, WS2.wd_min(n, k, hn), hk), {==})
   +hcov = cover(n, k, hk, hn)
-  %Equal.sym(Bool, U32.is_eq(len, 0), False{}, hne) : RT.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd_start(_, off, n, buf)), s)
+  %Equal.sym(Bool, U32.is_eq(len, 0), False{}, hne) : RT_L.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd_start(_, off, n, buf)), s)
   %Equal.sym(Array<FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange>, Array.new(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, D, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange_default()), F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t0), F.array__new(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, D, FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange_default())) :
-    RT.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd_fin(n, Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd(U32.to_nat((n - 1 : U32)), 0, off, _, FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_read(buf, off, 172)))), s)
+    RT_L.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd_fin(n, Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd(U32.to_nat((n - 1 : U32)), 0, off, _, FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_read(buf, off, 172)))), s)
   read_fin(n, D, s,
     Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd(U32.to_nat((n - 1 : U32)), 0, off, F.array__thaw(FuluSignedBLSToExecutionChange_d.SignedBLSToExecutionChange, t0), FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_read(buf, off, 172)),
     rbo(U32.to_nat((n - 1 : U32)), 0, off, FuluSignedBLSToExecutionChange_r.SignedBLSToExecutionChange_read(buf, off, 172)),
@@ -388,7 +389,7 @@ law read_empty_rep:
   for +len: U32
   for +s: S.Schema
   for +heq: {U32.is_eq(len, 0) == True{} : Bool}
-  RT.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_read(buf, off, len)), s)
+  RT_L.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_read(buf, off, len)), s)
 def read_empty_rep(buf, off, len, s, heq):
-  %Equal.sym(Bool, U32.is_eq(len, 0), True{}, heq) : RT.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd_start(_, off, U32.div(len, 172), buf)), s)
+  %Equal.sym(Bool, U32.is_eq(len, 0), True{}, heq) : RT_L.rep_l16_SignedBLSToExecutionChange(sqr(Fulu_list_SignedBLSToExecutionChange_16_r.l16_SignedBLSToExecutionChange_rd_start(_, off, U32.div(len, 172), buf)), s)
   default_rep(s)

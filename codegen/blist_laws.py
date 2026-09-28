@@ -493,15 +493,26 @@ def emit():
 
 
 def main():
+    text = emit()
+    # the representation defs importers state against go to a light companion (codegen/light_split.py)
+    import re as _re
     import light_split as LS
-    text = LS.light(emit())   # imports at light definition companions (codegen/light_split.py)
+    text, ltext = LS.split(text, lambda n: _re.match(r'(rep|wf)_', n) is not None or n in {'hview', 'cnt1', 'cnt2'}, f'./{OUT.stem}_light.bend', 'codegen/blist_laws.py')
+    text = LS.light(text)
+    ltext = LS.light(ltext) if ltext is not None else None
+    LOUT = OUT.with_name(f'{OUT.stem}_light.bend')
     if '--check' in sys.argv:
+        if ltext is not None and (not LOUT.exists() or LOUT.read_text() != ltext):
+            print(f'{LOUT} is stale; run codegen/blist_laws.py')
+            return 1
         if not OUT.exists() or OUT.read_text() != text:
             print(f'{OUT} is stale; run codegen/blist_laws.py')
             return 1
         print('packed list laws are current')
         return 0
     OUT.write_text(text)
+    if ltext is not None:
+        LOUT.write_text(ltext)
     return 0
 
 

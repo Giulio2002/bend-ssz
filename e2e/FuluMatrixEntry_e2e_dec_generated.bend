@@ -24,7 +24,7 @@ import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d
 import ../types/FuluMatrixEntry_def_generated.bend as FuluMatrixEntry_d
 import ../types/FuluMatrixEntry_decode_ssz_generated.bend as FuluMatrixEntry_r
 import ../spec/fulu_schemas.bend as Spec
-import ../proofs/obj/root_types.bend as M0
+import ../proofs/obj/root_types_light.bend as M0
 import ../proofs/obj/spec_codec_MatrixEntry.bend as M1
 import ../proofs/obj/fixrej_f5.bend as M2
 

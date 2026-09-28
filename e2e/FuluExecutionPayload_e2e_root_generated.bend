@@ -16,7 +16,7 @@ import ../types/schema.bend as S
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_gvalid_ExecutionPayload.bend as GV
 import ./e2e_support.bend as E
 import ./e2e_rb.bend as RB

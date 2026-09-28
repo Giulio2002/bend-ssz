@@ -33,7 +33,7 @@ import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/root_names_light.bend as RN
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_var_codec_ExecutionPayload_enc.bend as EN
 import ../proofs/obj/big_encx_ExecutionPayload_iface.bend as CI
 import ../proofs/obj/big_encx_ExecutionPayload_size.bend as Z

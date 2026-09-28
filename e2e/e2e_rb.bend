@@ -4,12 +4,12 @@ import ../types/schema.bend as S
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/words_obj_light.bend as WO
-import ../proofs/obj/list_obj.bend as LO
-import ../proofs/obj/pv_obj.bend as PV
-import ../proofs/obj/elems48.bend as E48
-import ../proofs/obj/cells.bend as CE
+import ../proofs/obj/list_obj_light.bend as LO
+import ../proofs/obj/pv_obj_light.bend as PV
+import ../proofs/obj/elems48_light.bend as E48
+import ../proofs/obj/cells_light.bend as CE
 import ../proofs/obj/schema_shapes.bend as SH
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../types/FuluBytes20_def_generated.bend as FuluBytes20_d
 import ../types/FuluBytes32_def_generated.bend as FuluBytes32_d
 import ../types/FuluBytes48_def_generated.bend as FuluBytes48_d

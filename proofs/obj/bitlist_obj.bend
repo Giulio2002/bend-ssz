@@ -24,6 +24,7 @@ import ./root_support.bend as RS
 import ./obj_support.bend as OS
 import ./spec_fixed.bend as FX
 import ./bitlist_pack.bend as BK
+import ./bitlist_obj_light.bend as LV
 
 # Bit lists as objects (O.Bits{ws, k}: the words holding the bits, least
 # significant first, and the bit count k; no delimiter). The runtime root is the
@@ -33,75 +34,26 @@ import ./bitlist_pack.bend as BK
 # `bpack`: the first k bits pack to the first ceil(k/8) bytes when the bits of
 # the last byte past k are zero.
 
-def blen(o: O.Bits) -> U32:
-  match o:
-    case O.Bits{ws, +k}: k
-
-def bview(o: O.Bits) -> +List<Bool>:
-  match o:
-    case O.Bits{ws, +k}: BK.btk(U32.to_nat(k), BK.bitsof(F.array__slots(U32, F.array__freeze(U32, ws))))
-
 def bdig(+hl: Nat, o: O.Bits, +depth: Nat) -> D.Digest:
   match o:
     case O.Bits{ws, +k}: O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(k))), hl, MR.clist(O.chunks_of(O.bits_nbytes(k)), F.array__slots(U32, F.array__freeze(U32, ws)), 0n), 0n), k)
 
-# The representation invariant: an empty bit list, or a perfect word tree whose
-# byte view (ceil(k/8) bytes) has the byte-list facts of words_obj.bend, whose
-# bits of the last byte past k are zero, and which holds all k bits.
-def wfb0(o: O.Bits) -> Data:
-  DK.Ex(F.array__Tree<U32>, t => DK.Ex(Nat, dw => DK.Ex(U32, K =>
-    DK.P2({o == O.Bits{F.array__thaw(U32, t), K} : O.Bits},
-    DK.P2({F.array__perfect(U32, dw, t) == True{} : Bool},
-    DK.P2({Nat.is_lt(dw, 32n) == True{} : Bool},
-          {U32.to_nat(K) == 0n : Nat}))))))
-
-def wfb1(o: O.Bits) -> Data:
-  DK.Ex(F.array__Tree<U32>, t => DK.Ex(Nat, dw => DK.Ex(U32, K => DK.Ex(Nat, q => DK.Ex(Nat, r =>
-    DK.P2({o == O.Bits{F.array__thaw(U32, t), K} : O.Bits},
-    DK.P2({F.array__perfect(U32, dw, t) == True{} : Bool},
-    DK.P2({Nat.is_lt(dw, 32n) == True{} : Bool},
-    DK.P2({U32.to_nat(O.bits_nbytes(K)) == Nat.add(WS.e32(q), r) : Nat},
-    DK.P2({Nat.is_lt(0n, r) == True{} : Bool},
-    DK.P2({Nat.is_le(r, 32n) == True{} : Bool},
-    DK.P2({Nat.is_le(O.e8(1n+q), F.spec_common__pow2(dw)) == True{} : Bool},
-    DK.P2({WS.bdrop(r, WS.cb(F.array__slots(U32, t), Nat.add(q, 0n))) == SP.zero_bytes(Nat.sub(32n, r)) : +List<U32>},
-    DK.P2({BK.zt(F.array__slots(U32, t), U32.to_nat(K)) == True{} : Bool},
-    DK.P2({Bp.byte_count(U32.to_nat(K)) == U32.to_nat(O.bits_nbytes(K)) : Nat},
-          {List.length(&2, Bool, BK.btk(U32.to_nat(K), BK.bitsof(F.array__slots(U32, t)))) == U32.to_nat(K) : Nat})))))))))))))))
-
-def wfb(o: O.Bits) -> Data:
-  DK.Or2(wfb0(o), wfb1(o))
-
-# The object represents a value of the bit list schema s: its bit count, and so
-# its chunk count, are within the schema's limit.
-def rep_bits(o: O.Bits, +s: S.Schema) -> Data:
-  DK.P2(wfb(o), DK.P2({Nat.is_le(U32.to_nat(blen(o)), SH.BitList_limit(s)) == True{} : Bool},
-    {Nat.is_le(O.chunks_of(O.bits_nbytes(blen(o))), Bm.chunk_limit(SH.BitList_limit(s))) == True{} : Bool}))
-
-# The schema is a bit list whose chunk limit has minimal depth `depth`.
-def ok_bits(+s: S.Schema, +depth: Nat) -> Bool:
-  Bool.and(SH.is_BitList(s), Bm.canonical_depth(SH.BitList_limit(s), depth))
-
-def rep_wf(-o: O.Bits, +s: S.Schema, +rep: rep_bits(o, s)) -> wfb(o):
-  (+w, +z) = rep
-  w
-
-def blen_at(-o: O.Bits, +t: F.array__Tree<U32>, +K: U32, +eo: {o == O.Bits{F.array__thaw(U32, t), K} : O.Bits}) -> {blen(o) == K : U32}:
-  Equal.cong(O.Bits, U32, blen, o, O.Bits{F.array__thaw(U32, t), K}, eo)
+def blen_at(-o: O.Bits, +t: F.array__Tree<U32>, +K: U32, +eo: {o == O.Bits{F.array__thaw(U32, t), K} : O.Bits}) -> {LV.blen(o) == K : U32}:
+  Equal.cong(O.Bits, U32, LV.blen, o, O.Bits{F.array__thaw(U32, t), K}, eo)
 
 def rw_le(+a: Nat, +b: Nat, +c: Nat, +e: {a == b : Nat}, +h: {Nat.is_le(a, c) == True{} : Bool}) -> {Nat.is_le(b, c) == True{} : Bool}:
   %e : {Nat.is_le(_, c) == True{} : Bool}
   h
 
 def le_blen(-o: O.Bits, +t: F.array__Tree<U32>, +K: U32, +cap: Nat, +eo: {o == O.Bits{F.array__thaw(U32, t), K} : O.Bits},
-    +hn: {Nat.is_le(U32.to_nat(blen(o)), cap) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(K), cap) == True{} : Bool}:
+    +hn: {Nat.is_le(U32.to_nat(LV.blen(o)), cap) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(K), cap) == True{} : Bool}:
   %blen_at(o, t, K, eo) : {Nat.is_le(U32.to_nat(_), cap) == True{} : Bool}
   hn
 
 def le_chunks(-o: O.Bits, +t: F.array__Tree<U32>, +K: U32, +q: Nat, +r: Nat, +L: Nat, +eo: {o == O.Bits{F.array__thaw(U32, t), K} : O.Bits},
     +enq: {U32.to_nat(O.bits_nbytes(K)) == Nat.add(WS.e32(q), r) : Nat},
     +h1: {Nat.is_lt(0n, r) == True{} : Bool}, +h32: {Nat.is_le(r, 32n) == True{} : Bool},
-    +hc: {Nat.is_le(O.chunks_of(O.bits_nbytes(blen(o))), L) == True{} : Bool})
+    +hc: {Nat.is_le(O.chunks_of(O.bits_nbytes(LV.blen(o))), L) == True{} : Bool})
     -> {Nat.is_le(MD.dlen(MR.clist(1n+q, F.array__slots(U32, t), 0n)), L) == True{} : Bool}:
   %Equal.sym(Nat, MD.dlen(MR.clist(1n+q, F.array__slots(U32, t), 0n)), 1n+q, MR.clist_len(1n+q, F.array__slots(U32, t), 0n)) :
     {Nat.is_le(_, L) == True{} : Bool}
@@ -111,7 +63,7 @@ def le_chunks(-o: O.Bits, +t: F.array__Tree<U32>, +K: U32, +q: Nat, +r: Nat, +L:
 
 # ---- the runtime root -----------------------------------------------------------
 
-def bst(+hl: Nat, -h: B.Buf, -o: O.Bits, +dU: U32, +seg: U32, +depth: Nat, +wf: wfb(o), +edu: {U32.to_nat(dU) == depth : Nat})
+def bst(+hl: Nat, -h: B.Buf, -o: O.Bits, +dU: U32, +seg: U32, +depth: Nat, +wf: LV.wfb(o), +edu: {U32.to_nat(dU) == depth : Nat})
     -> {O.bits_root(hl, h, o, dU, seg) == (h, (o, bdig(hl, o, depth))) : B.Buf & (O.Bits & D.Digest)}:
   match wf:
     case Inl{w}:
@@ -161,11 +113,11 @@ def bst(+hl: Nat, -h: B.Buf, -o: O.Bits, +dU: U32, +seg: U32, +depth: Nat, +wf: 
 
 # ---- the specification root ---------------------------------------------------------
 
-def bgate(+hl: Nat, +ehl: {hl == 64n : Nat}, +cap: Nat, +depth: Nat, -o: O.Bits, +wf: wfb(o),
-    +hn: {Nat.is_le(U32.to_nat(blen(o)), cap) == True{} : Bool},
-    +hc: {Nat.is_le(O.chunks_of(O.bits_nbytes(blen(o))), Bm.chunk_limit(cap)) == True{} : Bool},
+def bgate(+hl: Nat, +ehl: {hl == 64n : Nat}, +cap: Nat, +depth: Nat, -o: O.Bits, +wf: LV.wfb(o),
+    +hn: {Nat.is_le(U32.to_nat(LV.blen(o)), cap) == True{} : Bool},
+    +hc: {Nat.is_le(O.chunks_of(O.bits_nbytes(LV.blen(o))), Bm.chunk_limit(cap)) == True{} : Bool},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
-    -> {Bm.bitlist_at_depth(cap, depth, bview(o)) == Some{D.bytes(bdig(hl, o, depth))} : Maybe<&2, +List<U32>>}:
+    -> {Bm.bitlist_at_depth(cap, depth, LV.bview(o)) == Some{D.bytes(bdig(hl, o, depth))} : Maybe<&2, +List<U32>>}:
   match wf:
     case Inl{w}:
       (+t, w1) = w
@@ -176,9 +128,9 @@ def bgate(+hl: Nat, +ehl: {hl == 64n : Nat}, +cap: Nat, +depth: Nat, -o: O.Bits,
       (+hd, +ek) = w5
       +kz = F.u32__injective(K, 0, ek)
       %Equal.sym(O.Bits, o, O.Bits{F.array__thaw(U32, t), K}, eo) :
-        {Bm.bitlist_at_depth(cap, depth, bview(_)) == Some{D.bytes(bdig(hl, _, depth))} : Maybe<&2, +List<U32>>}
+        {Bm.bitlist_at_depth(cap, depth, LV.bview(_)) == Some{D.bytes(bdig(hl, _, depth))} : Maybe<&2, +List<U32>>}
       %Equal.sym(U32, K, 0, kz) :
-        {Bm.bitlist_at_depth(cap, depth, bview(O.Bits{F.array__thaw(U32, t), _})) == Some{D.bytes(bdig(hl, O.Bits{F.array__thaw(U32, t), _}, depth))} : Maybe<&2, +List<U32>>}
+        {Bm.bitlist_at_depth(cap, depth, LV.bview(O.Bits{F.array__thaw(U32, t), _})) == Some{D.bytes(bdig(hl, O.Bits{F.array__thaw(U32, t), _}, depth))} : Maybe<&2, +List<U32>>}
       %Equal.sym(Bool, Nat.is_le(0n, cap), True{}, LR.zero_le(cap)) :
         {Bm.list_gate(_, cap, depth, []) == Some{D.bytes(bdig(hl, O.Bits{F.array__thaw(U32, t), 0}, depth))} : Maybe<&2, +List<U32>>}
       %Equal.sym(Maybe<&2, +List<U32>>, Lim.at_depth(Bm.chunk_limit(cap), depth, MD.bytes_list(MR.clist(0n, F.array__slots(U32, t), 0n))), Some{D.bytes(MD.rtree(depth, Nat.is_lt(0n, MD.dlen(MR.clist(0n, F.array__slots(U32, t), 0n))), hl, MR.clist(0n, F.array__slots(U32, t), 0n), 0n))},
@@ -204,7 +156,7 @@ def bgate(+hl: Nat, +ehl: {hl == 64n : Nat}, +cap: Nat, +depth: Nat, -o: O.Bits,
       +hnK = le_blen(o, t, K, cap, eo, hn)
       +hcq = le_chunks(o, t, K, q, r, Bm.chunk_limit(cap), eo, enq, h1, h32, hc)
       %Equal.sym(O.Bits, o, O.Bits{F.array__thaw(U32, t), K}, eo) :
-        {Bm.bitlist_at_depth(cap, depth, bview(_)) == Some{D.bytes(bdig(hl, _, depth))} : Maybe<&2, +List<U32>>}
+        {Bm.bitlist_at_depth(cap, depth, LV.bview(_)) == Some{D.bytes(bdig(hl, _, depth))} : Maybe<&2, +List<U32>>}
       %Equal.sym(F.array__Tree<U32>, F.array__freeze(U32, F.array__thaw(U32, t)), t, F.array__freeze_thaw(U32, t)) :
         {Bm.bitlist_at_depth(cap, depth, BK.btk(U32.to_nat(K), BK.bitsof(F.array__slots(U32, _)))) == Some{D.bytes(O.mix_len(hl, MD.rtree(depth, Nat.is_lt(0n, O.chunks_of(O.bits_nbytes(K))), hl, MR.clist(O.chunks_of(O.bits_nbytes(K)), F.array__slots(U32, _), 0n), 0n), K))} : Maybe<&2, +List<U32>>}
       %Equal.sym(Nat, O.chunks_of(O.bits_nbytes(K)), 1n+q, WO.chunks_q(O.bits_nbytes(K), q, r, enq, h1, h32)) :
@@ -233,17 +185,17 @@ def bgate(+hl: Nat, +ehl: {hl == 64n : Nat}, +cap: Nat, +depth: Nat, -o: O.Bits,
 
 # A bit list's digest is a specification root of its bits.
 def brs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Bits, +s: S.Schema, +depth: Nat, +dU: U32, +seg: U32,
-    +rep: rep_bits(o, s),
-    +ok: {ok_bits(s, depth) == True{} : Bool},
+    +rep: LV.rep_bits(o, s),
+    +ok: {LV.ok_bits(s, depth) == True{} : Bool},
     +edu: {U32.to_nat(dU) == depth : Nat},
     +hdep: {Nat.is_lt(depth, 64n) == True{} : Bool})
-    -> RR.roots(S.BitsValue{bview(o)}, s, [D.bytes(bdig(hl, o, depth))]):
+    -> RR.roots(S.BitsValue{LV.bview(o)}, s, [D.bytes(bdig(hl, o, depth))]):
   (+wf, +hs) = rep
   (+hn, +hc) = hs
   +ks = DK.and_l(SH.is_BitList(s), Bm.canonical_depth(SH.BitList_limit(s), depth), ok)
   +hmin = DK.and_r(SH.is_BitList(s), Bm.canonical_depth(SH.BitList_limit(s), depth), ok)
   %Equal.sym(S.Schema, s, S.BitList{SH.BitList_limit(s)}, SH.BitList_shape(s, ks)) :
-    RR.roots(S.BitsValue{bview(o)}, _, [D.bytes(bdig(hl, o, depth))])
+    RR.roots(S.BitsValue{LV.bview(o)}, _, [D.bytes(bdig(hl, o, depth))])
   (depth, (hmin, bgate(hl, ehl, SH.BitList_limit(s), depth, o, wf, hn, hc, hdep)))
 
 # ---- the digest as a value, from the invariant ----------------------------------------
@@ -251,7 +203,7 @@ def brs(+hl: Nat, +ehl: {hl == 64n : Nat}, -h: B.Buf, -o: O.Bits, +s: S.Schema, 
 def CFB(o: O.Bits) -> Data:
   DK.Ex(F.array__Tree<U32>, t => DK.Ex(U32, K => {o == O.Bits{F.array__thaw(U32, t), K} : O.Bits}))
 
-def bcf(-o: O.Bits, +w: wfb(o)) -> CFB(o):
+def bcf(-o: O.Bits, +w: LV.wfb(o)) -> CFB(o):
   match w:
     case Inl{+a}:
       (+t, +a1) = a
@@ -274,6 +226,6 @@ def bwdc(+hl: Nat, -o: O.Bits, +d: Nat, +c: CFB(o)) -> OS.DW(bdig(hl, o, d)):
   %Equal.sym(O.Bits, o, O.Bits{F.array__thaw(U32, t), K}, eo) : OS.DW(bdig(hl, _, d))
   (bdig(hl, O.Bits{F.array__thaw(U32, t), K}, d), {==})
 
-def bwd(+hl: Nat, -o: O.Bits, +s: S.Schema, +d: Nat, +r: rep_bits(o, s)) -> OS.DW(bdig(hl, o, d)):
+def bwd(+hl: Nat, -o: O.Bits, +s: S.Schema, +d: Nat, +r: LV.rep_bits(o, s)) -> OS.DW(bdig(hl, o, d)):
   (+w, +z) = r
   bwdc(hl, o, d, bcf(o, w))

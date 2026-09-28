@@ -9,7 +9,7 @@ import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vmul.bend as VM
 import ../proofs/obj/vfix.bend as VF
 import ../proofs/obj/arr_vec.bend as AV
-import ../proofs/obj/elems48.bend as E48
+import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/dk.bend as DK
 import ./e2e_chunks.bend as CH
 

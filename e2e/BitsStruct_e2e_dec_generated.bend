@@ -19,9 +19,9 @@ import ./e2e_bytes.bend as E
 import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
 import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/root_gtypes2.bend as RG2
-import ../proofs/obj/root_gnames.bend as RN
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/root_gtypes2_light.bend as RG2
+import ../proofs/obj/root_gnames_light.bend as RN
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/var_winx_Gc85FA758A04.bend as BW
 import ../proofs/obj/var_winx_g_bits5.bend as CB5
 import ../proofs/obj/var_winx_g_bits6.bend as CB6

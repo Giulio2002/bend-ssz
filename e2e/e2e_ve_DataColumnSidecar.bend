@@ -10,10 +10,10 @@ import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/vmul.bend as VM
 import ../proofs/obj/vu32.bend as VU
-import ../proofs/obj/cells.bend as CE
-import ../proofs/obj/elems48.bend as E48
-import ../proofs/obj/pv_obj.bend as PV
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/cells_light.bend as CE
+import ../proofs/obj/elems48_light.bend as E48
+import ../proofs/obj/pv_obj_light.bend as PV
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_var_codec_DataColumnSidecar_enc.bend as EN
 import ./e2e_chunks.bend as CH
 import ./e2e_blist.bend as BL

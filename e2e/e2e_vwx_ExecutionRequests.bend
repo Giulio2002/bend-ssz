@@ -2,7 +2,7 @@ import Base
 import ../src/obj.bend as O
 import ../types/schema.bend as S
 import ../proofs/compact/found.bend as FD
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/var_winx_ExecutionRequests.bend as EW
 import ./e2e_vl_l8192_DepositRequest.bend as V0
 import ../proofs/obj/var_winx_l8192_DepositRequest.bend as C0

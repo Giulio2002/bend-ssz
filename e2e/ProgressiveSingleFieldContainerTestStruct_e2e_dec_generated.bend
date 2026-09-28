@@ -23,7 +23,7 @@ import ./e2e_cap.bend as C
 import ../types/ProgressiveSingleFieldContainerTestStruct_def_generated.bend as ProgressiveSingleFieldContainerTestStruct_d
 import ../types/ProgressiveSingleFieldContainerTestStruct_decode_ssz_generated.bend as ProgressiveSingleFieldContainerTestStruct_r
 import ../proofs/obj/generic_specs.bend as Spec
-import ../proofs/obj/root_gnames.bend as M0
+import ../proofs/obj/root_gnames_light.bend as M0
 import ../proofs/obj/sub_GpF350A3C486.bend as M1
 import ../proofs/obj/fixrej_g0.bend as M2
 

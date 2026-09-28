@@ -11,8 +11,8 @@ import ../proofs/obj/spec_bits.bend as FB
 import ../proofs/obj/vspec.bend as VS
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vuw.bend as UW
-import ../proofs/obj/wbits_obj.bend as WBV
-import ../proofs/obj/root_gnames.bend as RN
+import ../proofs/obj/wbits_obj_light.bend as WBV
+import ../proofs/obj/root_gnames_light.bend as RN
 import ../proofs/obj/vbv257s.bend as V2S
 import ../proofs/obj/vbv128s.bend as V2S8
 import ../proofs/obj/vfx_bv1281.bend as G81
@@ -32,7 +32,7 @@ import ../proofs/obj/vbitrep.bend as VBR
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/vbv1281d.bend as V81
 import ../proofs/obj/big_encx_bits256.bend as EX_bits256

@@ -27,7 +27,7 @@ import ../types/FuluDepositData_def_generated.bend as FuluDepositData_d
 import ../types/FuluDeposit_def_generated.bend as FuluDeposit_d
 import ../types/FuluDeposit_decode_ssz_generated.bend as FuluDeposit_r
 import ../spec/fulu_schemas.bend as Spec
-import ../proofs/obj/root_types.bend as M0
+import ../proofs/obj/root_types_light.bend as M0
 import ../proofs/obj/spec_codec_Deposit.bend as M1
 import ../proofs/obj/fixrej_f3.bend as M2
 

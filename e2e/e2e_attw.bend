@@ -8,7 +8,7 @@ import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/spec_bits.bend as FB
 import ./e2e_cap.bend as C
 import ./e2e_bits.bend as E2B
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ../proofs/obj/big_var_win_Attestation.bend as CHA
 import ../proofs/obj/big_var_win_bits131072.bend as CHB
 import ../proofs/obj/bitlist_rep.bend as BR

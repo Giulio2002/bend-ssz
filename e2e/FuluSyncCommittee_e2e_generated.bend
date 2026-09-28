@@ -15,13 +15,14 @@ import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/words_spec.bend as WS
 import ../proofs/obj/arr_vec.bend as AV
-import ../proofs/obj/elems48.bend as E48
+import ../proofs/obj/elems48_light.bend as E48
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/spec_arr_SyncCommittee.bend as M
-import ../proofs/obj/root_types.bend as RT
+import ../proofs/obj/root_types_light.bend as RT
 import ./e2e_support.bend as E
 import ./e2e_tree.bend as E3
 import ./e2e_any.bend as E4
+import ./e2e_fixdw.bend as XW
 import ./e2e_fixd.bend as X
 import ./e2e_fixdw48.bend as X48
 import ../proofs/obj/dk.bend as DK

@@ -8,7 +8,7 @@ import ../types/schema.bend as S
 import ../proofs/type_validator_soundness.bend as VS
 import ../proofs/compact/found.bend as FD
 import ../proofs/obj/generic_specs.bend as GS
-import ../proofs/obj/bitlist_obj.bend as BO
+import ../proofs/obj/bitlist_obj_light.bend as BO
 import ../proofs/obj/root_gtypes.bend as RG
 import ../proofs/obj/gvalid_gpacked.bend as GV
 import ./e2e_support.bend as E

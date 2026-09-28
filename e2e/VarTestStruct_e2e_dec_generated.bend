@@ -18,7 +18,7 @@ import ../proofs/obj/arr_copy.bend as AC
 import ./e2e_bytes.bend as E
 import ./e2e_load.bend as L
 import ./e2e_cap.bend as C
-import ../proofs/obj/root_gtypes.bend as RT
+import ../proofs/obj/root_gtypes_light.bend as RT
 import ../proofs/obj/words_obj_light.bend as WO
 import ../proofs/obj/packed_bytes_light.bend as PBF
 import ../proofs/obj/pb_min.bend as PBM

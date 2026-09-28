@@ -8,6 +8,7 @@ import ../../src/obj.bend as O
 import ./obj_support.bend as OS
 import ./schema_shapes.bend as SH
 import ./ulist_obj.bend as UL
+import ./ulist_obj_light.bend as UL_L
 import ./blist_obj.bend as BLI
 import ./big_lim_sym.bend as LSY
 
@@ -81,7 +82,7 @@ def lh_okp(d): LSY.min_cap(d)
 # List[uint64, 2^(2 + d)]: 2^(5 + d) bytes, 2^d chunks, minimal at depth d.
 law ul_okp:
   for +d: Nat
-  {UL.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, TR.capacity(Nat.add(2n, d))}, d) == True{} : Bool}
+  {UL_L.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, TR.capacity(Nat.add(2n, d))}, d) == True{} : Bool}
 def ul_okp(d):
   %Equal.sym(Nat, Nat.mul(TR.capacity(Nat.add(2n, d)), 8n), O.e8(TR.capacity(Nat.add(2n, d))), Equal.sym(Nat, O.e8(TR.capacity(Nat.add(2n, d))), Nat.mul(TR.capacity(Nat.add(2n, d)), 8n), UL.e8_mul(TR.capacity(Nat.add(2n, d))))) :
     {Lim.minimal(Nat.div(Nat.add(_, 31n), 32n), d) == True{} : Bool}
@@ -114,13 +115,13 @@ def hr_ok_at(s, es):
 law bal_ok_at:
   for +s: S.Schema
   for +es: {s == Spec.Schema79() : S.Schema}
-  {UL.ok_ul(s, OS.dv_38(OS.DV0())) == True{} : Bool}
+  {UL_L.ok_ul(s, OS.dv_38(OS.DV0())) == True{} : Bool}
 def bal_ok_at(s, es):
-  %Equal.sym(S.Schema, s, Spec.Schema79(), es) : {UL.ok_ul(_, OS.dv_38(OS.DV0())) == True{} : Bool}
-  %Equal.sym(S.Schema, Spec.Schema79(), S.ListOf{S.Unsigned{P.U64{}}, Nat.mul(U32.to_nat(1073741824), 1024n)}, {==}) : {UL.ok_ul(_, OS.dv_38(OS.DV0())) == True{} : Bool}
-  %Equal.sym(Nat, Nat.mul(U32.to_nat(1073741824), 1024n), TR.capacity(40n), pow40()) : {UL.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, _}, OS.dv_38(OS.DV0())) == True{} : Bool}
-  %Equal.sym(Nat, OS.dv_38(OS.DV0()), 38n, {==}) : {UL.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, TR.capacity(40n)}, _) == True{} : Bool}
-  %Equal.sym(Nat, TR.capacity(40n), TR.capacity(Nat.add(2n, 38n)), {==}) : {UL.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, _}, 38n) == True{} : Bool}
+  %Equal.sym(S.Schema, s, Spec.Schema79(), es) : {UL_L.ok_ul(_, OS.dv_38(OS.DV0())) == True{} : Bool}
+  %Equal.sym(S.Schema, Spec.Schema79(), S.ListOf{S.Unsigned{P.U64{}}, Nat.mul(U32.to_nat(1073741824), 1024n)}, {==}) : {UL_L.ok_ul(_, OS.dv_38(OS.DV0())) == True{} : Bool}
+  %Equal.sym(Nat, Nat.mul(U32.to_nat(1073741824), 1024n), TR.capacity(40n), pow40()) : {UL_L.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, _}, OS.dv_38(OS.DV0())) == True{} : Bool}
+  %Equal.sym(Nat, OS.dv_38(OS.DV0()), 38n, {==}) : {UL_L.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, TR.capacity(40n)}, _) == True{} : Bool}
+  %Equal.sym(Nat, TR.capacity(40n), TR.capacity(Nat.add(2n, 38n)), {==}) : {UL_L.ok_ul(S.ListOf{S.Unsigned{P.U64{}}, _}, 38n) == True{} : Bool}
   ul_okp(38n)
 
 # previous/current_epoch_participation: List[uint8, 2^40] (Schema82), depth 35.
