@@ -37,13 +37,12 @@ def CR(+dd: Nat, +T: F.array__Tree<U32>, +K: U32) -> Data:
         DK.P2({Bp.pack(List.append(&2, Bool, BITS(T, K), [True{}])) == VS.bt(U32.to_nat(NK(K)), FX.limbs(F.array__slots(U32, DL.OZ(dd, T, K)))) : +List<U32>},
           {List.length(&2, Bool, BITS(T, K)) == U32.to_nat(K) : Nat}))
 
-def enc_core(+DO: Nat, +dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +N: Nat,
+def enc_core2(+DO: Nat, +dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat,
     +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
     +hDO: {Nat.is_lt(DO, 31n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
-    +hNY: {Nat.is_le(Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY)) == True{} : Bool},
     +hDq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(DO)) == True{} : Bool},
     +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool},
     +hz: {DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))) == True{} : Bool})
@@ -70,15 +69,13 @@ def enc_core(+DO: Nat, +dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +KY:
   +hns = F.nat__le_trans(Nat.add(NB, 0n), Nat.add(q, 1n), VB.pw(dw), hNW0, hWq)
   +hqd = F.nat__lt_le_trans(q, Nat.add(q, 1n), VB.pw(DO), DL.lt_add1(q), hDq)
   +hqs = F.nat__lt_le_trans(q, Nat.add(q, 1n), VB.pw(dw), DL.lt_add1(q), hWq)
-  # 31 + nb <= 2^KY
+  # 31 + nb <= 2^30
   +e3 = VBT.E3(K, kb, hkb, hK)
   +hnb = F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(VBT.AK(K), 1n)) == True{} : Bool}, Nat.add(VBT.AK(K), VD.s_rng(3n, Nat.add(b, 7n))), U32.to_nat(O.bits_nbytes(K)),
     Equal.sym(Nat, U32.to_nat(O.bits_nbytes(K)), Nat.add(VBT.AK(K), VD.s_rng(3n, Nat.add(b, 7n))), e3), Order.add_left(VBT.AK(K), VD.s_rng(3n, Nat.add(b, 7n)), 1n, cB))
-  +hnbN = F.nat__le_trans(U32.to_nat(O.bits_nbytes(K)), Nat.add(VBT.AK(K), 1n), Nat.add(N, 1n), hnb,
-    F.nat__le_trans(Nat.add(VBT.AK(K), 1n), Nat.add(U32.to_nat(K), 1n), Nat.add(N, 1n), Order.add_right(VBT.AK(K), U32.to_nat(K), 1n, VBT.lAK(K)), Order.add_right(U32.to_nat(K), N, 1n, hN)))
-  +hy = F.nat__le_trans(VC.YL(O.bits_nbytes(K)), Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY), Order.add_left(31n, U32.to_nat(O.bits_nbytes(K)), Nat.add(N, 1n), hnbN), hNY)
+  +hy = VBT.y30(K, kb, hkb, hK, hnb)
   +pfZ = F.array__trep_perfect(U32, DO, 0)
-  +pb = VBT.put_bits2(DO, dw, VC.ZT(DO), T, 0, 0n, K, q, KY, pfZ, pfT, hDO, hdw, {==}, {==}, hKY, hy, hns, hnd,
+  +pb = VBT.put_bits2(DO, dw, VC.ZT(DO), T, 0, 0n, K, q, 30n, pfZ, pfT, hDO, hdw, {==}, {==}, {==}, hy, hns, hnd,
     VBE.slot_zt(DO, Nat.add(VY.QL(O.bits_nbytes(K)), 0n)), {==}, hqd)
   +ev = Equal.cong(Array<U32> & O.Bits, Array<U32> & (O.Bits & U32), z => O.pbn(z),
     O.put_bits(F.array__thaw(U32, VC.ZT(DO)), 0, O.Bits{F.array__thaw(U32, T), K}), (F.array__thaw(U32, DL.OZ(DO, T, K)), O.Bits{F.array__thaw(U32, T), K}), pb)
@@ -109,12 +106,26 @@ def enc_core(+DO: Nat, +dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +KY:
   (ev, (wp3, VBT.len_btk(U32.to_nat(K), BK.bitsof(S), hKS)))
 
 
+def enc_core(+DO: Nat, +dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +N: Nat,
+    +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
+    +hDO: {Nat.is_lt(DO, 31n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
+    +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
+    +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
+    +hNY: {Nat.is_le(Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY)) == True{} : Bool},
+    +hDq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(DO)) == True{} : Bool},
+    +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool},
+    +hz: {DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))) == True{} : Bool})
+    -> CR(DO, T, K):
+  enc_core2(DO, dw, T, K, kb, N, pfT, hDO, hdw, hkb, hN, hNk, hDq, hWq, hz)
+
+
 # ---- the two encoder shapes ----------------------------------------------------------------------
 
 def TQ(+K: U32) -> Data: {U32.to_nat(U32.shrn(K, 5n)) == VBT.QK(K) : Nat}
 
 # K >> 5 is the word index q.
-def eq5(+K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+def eq5(+K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool}) -> TQ(K):
   +j = VBT.JK(K)
   +b = VBT.BKk(K)
@@ -128,7 +139,7 @@ def eq5(+K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
       Equal.cong(Nat, Nat, z => Nat.add(VBT.QK(K), z), VD.s_rng(2n, Nat.add(j, VD.s_rng(3n, b))), 0n, cC), F.nat__add_zero(VBT.QK(K))))
 
 # q <= N >> 5.
-def qle(+K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+def qle(+K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool})
     -> {Nat.is_le(Nat.add(VBT.QK(K), 1n), Nat.add(VD.s_rng(5n, N), 1n)) == True{} : Bool}:
   +e = Equal.trans(Nat, VBT.QK(K), U32.to_nat(U32.shrn(K, 5n)), VD.s_rng(5n, U32.to_nat(K)), Equal.sym(Nat, U32.to_nat(U32.shrn(K, 5n)), VBT.QK(K), eq5(K, kb, N, hkb, hN, hNk)), VD.shrk(5n, K))
@@ -143,7 +154,7 @@ def pw_pos(+d: Nat) -> {Nat.is_le(1n, VB.pw(d)) == True{} : Bool}:
 # A bit list of at most 31 bits: one output word (O.out_at(0n)).
 def enc_small(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +N: Nat,
     +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hNY: {Nat.is_le(Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY)) == True{} : Bool},
@@ -152,6 +163,18 @@ def enc_small(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +N:
     -> CR(0n, T, K):
   +q1 = F.nat__le_trans(Nat.add(VBT.QK(K), 1n), Nat.add(VD.s_rng(5n, N), 1n), 1n, qle(K, kb, N, hkb, hN, hNk), hN5)
   enc_core(0n, dw, T, K, kb, KY, N, pfT, {==}, hdw, hkb, hKY, hN, hNk, hNY, q1,
+    F.nat__le_trans(Nat.add(VBT.QK(K), 1n), 1n, VB.pw(dw), q1, pw_pos(dw)), hz)
+
+def enc_small2(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat,
+    +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
+    +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
+    +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
+    +hN5: {Nat.is_le(Nat.add(VD.s_rng(5n, N), 1n), 1n) == True{} : Bool},
+    +hz: {DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))) == True{} : Bool})
+    -> CR(0n, T, K):
+  +q1 = F.nat__le_trans(Nat.add(VBT.QK(K), 1n), Nat.add(VD.s_rng(5n, N), 1n), 1n, qle(K, kb, N, hkb, hN, hNk), hN5)
+  enc_core2(0n, dw, T, K, kb, N, pfT, {==}, hdw, hkb, hN, hNk, q1,
     F.nat__le_trans(Nat.add(VBT.QK(K), 1n), 1n, VB.pw(dw), q1, pw_pos(dw)), hz)
 
 # The runtime's capacity check (O.bsz_pick) passes.
@@ -170,7 +193,7 @@ def capT(+K: U32, +dw: Nat, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
 # The output depth of a sized encoding (O.out_new of K / 8 + 1 bytes).
 def DOK(+K: U32) -> Nat: B.words_depth(VC.nwu(NK(K)))
 
-def nwNK(+K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+def nwNK(+K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool})
     -> {VC.NW(NK(K)) == Nat.add(VBT.QK(K), 1n) : Nat}:
   +j = VBT.JK(K)
@@ -182,7 +205,7 @@ def nwNK(+K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}
   +cD = DL.p1(DL.TD(j), DL.CE(j, b), DL.p2(DL.TC(j, b), DL.CD(j, b), DL.p2(DL.TB(b), DL.CC(j, b), DL.p2(DL.TA(j, b), DL.CB(j, b), cf))))
   VBT.FNWn(K, kb, hkb, hK, j, {==}, cD)
 
-def hwO(+K: U32, +kb: Nat, +KO: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+def hwO(+K: U32, +kb: Nat, +KO: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hNO: {Nat.is_le(Nat.add(VD.s_rng(5n, N), 1n), O.pow2n(KO)) == True{} : Bool})
     -> {Nat.is_le(U32.to_nat(VC.nwu(NK(K))), O.pow2n(KO)) == True{} : Bool}:
@@ -190,7 +213,7 @@ def hwO(+K: U32, +kb: Nat, +KO: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{
     Equal.sym(Nat, U32.to_nat(VC.nwu(NK(K))), Nat.add(VBT.QK(K), 1n), nwNK(K, kb, N, hkb, hN, hNk)),
     F.nat__le_trans(Nat.add(VBT.QK(K), 1n), Nat.add(VD.s_rng(5n, N), 1n), O.pow2n(KO), qle(K, kb, N, hkb, hN, hNk), hNO))
 
-def hDOK(+K: U32, +kb: Nat, +KO: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+def hDOK(+K: U32, +kb: Nat, +KO: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hNO: {Nat.is_le(Nat.add(VD.s_rng(5n, N), 1n), O.pow2n(KO)) == True{} : Bool})
     -> {Nat.is_le(DOK(K), KO) == True{} : Bool}:
@@ -199,7 +222,7 @@ def hDOK(+K: U32, +kb: Nat, +KO: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True
 # A bit list of any size: the zero tree of depth DOK(K), after the capacity check.
 def enc_sized(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +KO: Nat, +N: Nat,
     +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool}, +hKO: {Nat.is_lt(KO, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool}, +hKO: {Nat.is_lt(KO, 31n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hNY: {Nat.is_le(Nat.add(31n, Nat.add(N, 1n)), VB.pw(KY)) == True{} : Bool},
@@ -215,8 +238,25 @@ def enc_sized(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +KY: Nat, +KO
   +hc2 = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 1n), VB.pw(dw)) == True{} : Bool}, U32.to_nat(U32.shrn(K, 5n)), VBT.QK(K), eq5(K, kb, N, hkb, hN, hNk), hcap)
   enc_core(DOK(K), dw, T, K, kb, KY, N, pfT, hDO, hdw, hkb, hKY, hN, hNk, hNY, hDq, hc2, hz)
 
+def enc_sized2(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +KO: Nat, +N: Nat,
+    +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hKO: {Nat.is_lt(KO, 31n) == True{} : Bool},
+    +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
+    +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
+    +hNO: {Nat.is_le(Nat.add(VD.s_rng(5n, N), 1n), O.pow2n(KO)) == True{} : Bool},
+    +hcap: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool},
+    +hz: {DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))) == True{} : Bool})
+    -> CR(DOK(K), T, K):
+  +hw = hwO(K, kb, KO, N, hkb, hN, hNk, hNO)
+  +hDO = F.nat__le_lt_trans(DOK(K), KO, 31n, VD.wd_min(VC.nwu(NK(K)), KO, hw), hKO)
+  +hcov = VD.wd_cover(VC.nwu(NK(K)), KO, F.nat__le_trans(KO, 30n, 32n, F.nat__lt_succ_le(KO, 30n, hKO), {==}), hw)
+  +hDq = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(VBT.QK(K), 1n), z) == True{} : Bool}, O.pow2n(DOK(K)), VB.pw(DOK(K)), Equal.sym(Nat, VB.pw(DOK(K)), O.pow2n(DOK(K)), VD.s_pow2_eq(DOK(K))),
+    F.logic__subst(Nat, z => {Nat.is_le(z, O.pow2n(DOK(K))) == True{} : Bool}, U32.to_nat(VC.nwu(NK(K))), Nat.add(VBT.QK(K), 1n), nwNK(K, kb, N, hkb, hN, hNk), hcov))
+  +hc2 = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 1n), VB.pw(dw)) == True{} : Bool}, U32.to_nat(U32.shrn(K, 5n)), VBT.QK(K), eq5(K, kb, N, hkb, hN, hNk), hcap)
+  enc_core2(DOK(K), dw, T, K, kb, N, pfT, hDO, hdw, hkb, hN, hNk, hDq, hc2, hz)
+
 # The size K / 8 + 1 is at most N + 1.
-def nk_le(+K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+def nk_le(+K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool})
     -> {Nat.is_le(U32.to_nat(NK(K)), Nat.add(N, 1n)) == True{} : Bool}:
   +hK = F.nat__le_trans(Nat.add(U32.to_nat(K), 8n), Nat.add(N, 8n), O.pow2n(kb), Order.add_right(U32.to_nat(K), N, 8n, hN), hNk)
@@ -235,14 +275,14 @@ def cr2(+dd: Nat, +T: F.array__Tree<U32>, +K: U32, +c: CR(dd, T, K)) -> CR2(dd, 
 def cr3(+dd: Nat, +T: F.array__Tree<U32>, +K: U32, +c: CR(dd, T, K)) -> CR3(T, K): DL.p2(CR2(dd, T, K), CR3(T, K), DL.p2(CR1(dd, T, K), DK.P2(CR2(dd, T, K), CR3(T, K)), c))
 
 # The word index K / 32 is inside the storage.
-def qs_small(+dw: Nat, +K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+def qs_small(+dw: Nat, +K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hN5: {Nat.is_le(Nat.add(VD.s_rng(5n, N), 1n), 1n) == True{} : Bool})
     -> {Nat.is_lt(VBT.QK(K), VB.pw(dw)) == True{} : Bool}:
   F.nat__lt_le_trans(VBT.QK(K), Nat.add(VBT.QK(K), 1n), VB.pw(dw), DL.lt_add1(VBT.QK(K)),
     F.nat__le_trans(Nat.add(VBT.QK(K), 1n), 1n, VB.pw(dw), F.nat__le_trans(Nat.add(VBT.QK(K), 1n), Nat.add(VD.s_rng(5n, N), 1n), 1n, qle(K, kb, N, hkb, hN, hNk), hN5), pw_pos(dw)))
 
-def qs_sized(+dw: Nat, +K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool},
+def qs_sized(+dw: Nat, +K: U32, +kb: Nat, +N: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool}, +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hcap: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool})
     -> {Nat.is_lt(VBT.QK(K), VB.pw(dw)) == True{} : Bool}:
