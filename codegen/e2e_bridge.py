@@ -3152,6 +3152,8 @@ def outputs():
     out[OUT / 'e2e_bitl.bend'] = BITL
     out[OUT / 'e2e_bview.bend'] = BVG.text()
     out[OUT / 'e2e_bvw.bend'] = BVG.BVW
+    if (OBJ / 'big_var_win_Attestation.bend').exists():
+        out[OUT / 'e2e_attw.bend'] = BVG.attw_text(OBJ)
     inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
     brows = [(inv[X], X, N, big) for X, N, big in bit_lists(amap['map']) if X in inv]
     for R0, X0, N, big in brows:

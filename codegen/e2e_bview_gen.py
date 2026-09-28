@@ -1125,3 +1125,46 @@ def {P}_bwa(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +eo
       FD.logic__subst(Nat, z => {{BK.btk(z, BK.bitsof(FD.array__slots(U32, M))) == VBL.bl(VR.WB(t, i, U32.to_nat(len))) : +List<Bool>}}, Nat.add(VSP.x8(m), h), U32.to_nat({NB}), Equal.sym(Nat, U32.to_nat({NB}), Nat.add(VSP.x8(m), h), eNB),
         FD.logic__subst(+List<U32>, z => {{BK.btk(Nat.add(VSP.x8(m), h), BK.bitsof(FD.array__slots(U32, M))) == VBL.bl(z) : +List<Bool>}}, W1, VR.WB(t, i, U32.to_nat(len)), Equal.sym(+List<U32>, VR.WB(t, i, U32.to_nat(len)), W1, eVW), B1))))
 """
+
+
+def attw_text(obj_dir, pmod='big_var_win_Attestation.bend', cmod='big_var_win_bits131072.bend', name='Attestation'):
+    """e2e_attw: the view of the Attestation a word-aligned window reader builds (its bit list via gwa_text,
+    its bit vector via e2e_bits.bw, the rest by computation)."""
+    s = (Path(obj_dir) / pmod).read_text()
+    val = re.search(r'^def VALw\(\+t: FD\.array__Tree<U32>, \+i: Nat, \+len: U32\) -> S\.Value: (.*)$', s, re.M).group(1)
+    head = 'S.Sequence{S.Items{CH.VALw(t, JW(i), LLw(len)), '
+    assert val.startswith(head) and val.endswith('}}')
+    rest = val[len(head):-2].replace('VB.slot(t', 'VB.slot(t')
+    bvs = re.findall(r'FB\.bitsof\((\[[^\]]*\])\)', rest)
+    assert len(bvs) == 1
+    L0 = bvs[0]
+    rest_mid = rest.replace('FB.bitsof(', 'E2B.wcat(')
+    CV = 'CHB.VALw(t, CHA.JW(i), CHA.LLw(len))'
+    fix = lambda x: re.sub(r'(?<![\w.])(JW|LLw|OWc)\(', r'CHA.\1(', x)
+    MID = f'S.Sequence{{S.Items{{{CV}, {rest_mid}}}}}'
+    VALT = f'S.Sequence{{S.Items{{{CV}, {rest}}}}}'
+    OB = 'CHA.OBJw(t, i, off, len)'
+    W = '+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32'
+    A = 'd, t, 0, i, off, len, eo, hd, hw, hw32, pf'
+    lim, kdz, ky = gwa_params(obj_dir, cmod)
+    imports = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../types/primitive.bend as P',
+               'import ../proofs/compact/found.bend as FD', 'import ../proofs/compact/arith.bend as A', 'import ../proofs/obj/spec_fixed.bend as F',
+               'import ../proofs/obj/spec_bits.bend as FB', 'import ./e2e_cap.bend as C', 'import ./e2e_bits.bend as E2B',
+               'import ../proofs/obj/root_types.bend as RT', f'import ../proofs/obj/{pmod} as CHA', f'import ../proofs/obj/{cmod} as CHB'] + GW_IMPORTS
+    return '\n'.join(imports) + '\n' + gwa_text('bl', 'CHB', lim, kdz, ky) + f'''
+# The {name} a word-aligned window reader builds (window at word i, off = 4 i) views as the value the codec reads there.
+def att_w({W}, +eo: {{U32.to_nat(off) == A.quad(i) : Nat}}, +hd: {{Nat.is_lt(d, 31n) == True{{}} : Bool}},
+    +hw: {{Nat.is_le(Nat.add(A.quad(i), U32.to_nat(len)), A.quad(VB.pw(d))) == True{{}} : Bool}}, +hw32: {{Nat.is_lt(Nat.add(A.quad(i), U32.to_nat(len)), FD.spec_common__pow2(32n)) == True{{}} : Bool}},
+    +pf: {{FD.array__perfect(U32, d, t) == True{{}} : Bool}}, +hchk: {{CHA.CHKw(t, i, off, len) == True{{}} : Bool}})
+    -> {{RT.v_{name}({OB}) == CHA.VALw(t, i, len) : S.Value}}:
+  +a = U32.is_le(236, len)
+  +b = U32.is_eq(CHA.SPOw(t, i), 236)
+  +c = CHB.CHKw(t, CHA.JW(i), CHA.OWc(off), CHA.LLw(len))
+  +ha = CHA.ch_a(a, b, c, hchk)
+  +hc = CHA.ch_c(a, b, c, hchk)
+  +e1 = bl_bwa(d, t, CHA.JW(i), CHA.OWc(off), CHA.LLw(len), CHA.eoF({A}, ha), hd, CHA.hwc({A}, ha), CHA.hwc32({A}, ha), pf, hc)
+  Equal.trans(S.Value, RT.v_{name}({OB}), {MID}, {VALT},
+    Equal.cong(S.Value, S.Value, z => S.Sequence{{S.Items{{z, {rest_mid}}}}}, S.BitsValue{{BR.bview(CHB.OBJw(t, CHA.JW(i), CHA.OWc(off), CHA.LLw(len)))}}, {CV}, e1),
+    Equal.cong(+List<Bool>, S.Value, z => S.Sequence{{S.Items{{{CV}, {rest.replace("FB.bitsof(" + L0 + ")", "z")}}}}}, E2B.wcat({L0}), FB.bitsof({L0}),
+      Equal.sym(+List<Bool>, FB.bitsof({L0}), E2B.wcat({L0}), E2B.bw({L0}))))
+'''
