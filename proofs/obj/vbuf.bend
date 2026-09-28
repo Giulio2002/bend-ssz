@@ -743,3 +743,11 @@ def hwNof(+d: Nat, +S: Nat, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +h: {Nat.
   F.nat__le_trans(S, pw(2n+d), U32.to_nat(NMAX()), h,
     F.nat__le_trans(pw(2n+d), pw(29n), U32.to_nat(NMAX()), F.nat__pow2_mono(2n+d, 29n, F.nat__lt_succ_le(d, 27n, hd)),
       F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(NMAX())) == True{} : Bool}, U32.to_nat(F.u32__pow2u(29n)), pw(29n), F.u32__pow2u_value(29n, {==}), h29)))
+
+# n <= m and m <= c as U32 comparisons give n <= c (a list limit m below NMAX bounds n by NMAX).
+def u32le_trans(+n: U32, +m: U32, +c: U32, +h: {U32.is_le(n, m) == True{} : Bool}, +hm: {U32.is_le(m, c) == True{} : Bool})
+    -> {U32.is_le(n, c) == True{} : Bool}:
+  +h1 = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, m), Nat.is_le(U32.to_nat(n), U32.to_nat(m)), le_u32n(n, m), h)
+  +h2 = F.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(m, c), Nat.is_le(U32.to_nat(m), U32.to_nat(c)), le_u32n(m, c), hm)
+  F.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(n), U32.to_nat(c)), U32.is_le(n, c), Equal.sym(Bool, U32.is_le(n, c), Nat.is_le(U32.to_nat(n), U32.to_nat(c)), le_u32n(n, c)),
+    F.nat__le_trans(U32.to_nat(n), U32.to_nat(m), U32.to_nat(c), h1, h2))

@@ -238,6 +238,16 @@ def okb(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.
     {O.bool_ok_pick((UA.BF(t, n), _)) == (UA.BF(t, n), U32.is_le(BX(t, x), 1)) : B.Buf & Bool}
   {==}
 
+# The same at any tree depth d < 31.
+def okbD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
+    +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hx: {Nat.is_lt(x, A.quad(VB.pw(d))) == True{} : Bool})
+    -> {O.ok_bool(UA.BF(t, n), off) == (UA.BF(t, n), U32.is_le(BX(t, x), 1)) : B.Buf & Bool}:
+  %Equal.sym(B.Buf & U32, B.byte_at(UA.BF(t, n), off), (UA.BF(t, n), VR.VX(t, off)), VR.byte_at_ok(d, t, n, off, FD.nat__lt_trans(d, 31n, 32n, hd, {==}), VR.hiX(d, off, x, e, hx), pf)) :
+    {O.bool_ok_pick(_) == (UA.BF(t, n), U32.is_le(BX(t, x), 1)) : B.Buf & Bool}
+  %Equal.sym(U32, VR.VX(t, off), BX(t, x), vx_bx(t, off, x, e)) :
+    {O.bool_ok_pick((UA.BF(t, n), _)) == (UA.BF(t, n), U32.is_le(BX(t, x), 1)) : B.Buf & Bool}
+  {==}
+
 # bdr(y, L) with y < |L| is the byte at y, then bdr(1 + y, L)
 def bdr_con(+y: Nat, +L: +List<U32>, +h: {Nat.is_lt(y, List.length(&2, U32, L)) == True{} : Bool})
     -> {VS.bdr(y, L) == Con{VBL.nthb(L, y), VS.bdr(1n+y, L)} : +List<U32>}:
