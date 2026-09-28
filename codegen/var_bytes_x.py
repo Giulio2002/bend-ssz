@@ -494,6 +494,65 @@ class XNName(VBN.NName):
         raise VBY.Skip('field kind ' + f['kind'])
 
 
+def win_deep(text, FS):
+    """The window at any depth d < 31 (hw32: the window's end below 2^32, var_win.deep_x): header offsets by
+    VB.add_lt32, the fields by rdxd_, the copies by UW.hsxB (their lengths bound the storage), the old
+    interface as wrappers."""
+    import deep
+    import var_win as VW
+    P32 = 'FD.spec_common__pow2(32n)'
+    T = 'True{} : Bool'
+    EOC = f'  VB.add_le_at(off, c, x, 2n+d, eo, FD.nat__lt_trans(d, 28n, 29n, hd, {{==}}), hcx(d, x, len, U32.to_nat(c), hc, hw, ha))'
+    HSV = ('  UW.hsx(d, U32.add(off, {FS}), Nat.add(U32.to_nat({FS}), x), LL(len), eoc(d, x, off, len, {FS}, {{==}}, eo, hd, hw, ha), hd, hwv(d, x, len, hw, ha))'
+           .format(FS=FS))
+    reps = [
+        (EOC, '  VB.add_lt32(off, c, x, eo, hcx32(x, len, U32.to_nat(c), hc, hw32, ha))'),
+        (HSV, HSV.replace('UW.hsx(', 'UW.hsxB(').replace(', hd, hwv(', ', 6n, {==}, hyL(len, hx), hwv(')),
+        ('hsv(d, x, off, len, eo, hd, hw, ha)', 'hsv(d, x, off, len, eo, hd, hw, ha, hx)'),
+        ('  +hd30 = FD.nat__lt_trans(d, 28n, 30n, hd, {==})\n', ''),
+        ('  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})\n', ''),
+        ('FD.nat__lt_trans(d, 28n, 31n, hd, {==})', 'hd'),
+    ]
+    for a, b in reps:
+        assert a in text, a[:80]
+        text = text.replace(a, b)
+    # hsv takes the byte list's check (its length bounds the storage)
+    a = text.index('\ndef hsv(')
+    b = text.index(')\n    -> ', a)
+    text = text[:b] + ', +hx: {BLW(LL(len)) == True{} : Bool}' + text[b:]
+    text = re.sub(r'(VTX|XF)\.rdx_(\w+)\(', r'\1.rdxd_\2(', text)
+    text = text.replace(', hd30, pf, ', ', hd, pf, ').replace('pf, hd31, ', 'pf, hd, ')
+    # the byte vectors' copies: their lengths bound the storage (31 + L <= 2^k)
+    while True:
+        m = re.search(r'UW\.hsx\(d, (U32\.add\(off, \d+\)), (Nat\.add\(U32\.to_nat\(\d+\), x\)), (\d+), ', text)
+        if not m:
+            break
+        L_ = int(m.group(3))
+        k = (31 + L_ - 1).bit_length()
+        p0 = text.index('(', m.start()) + 1
+        b = deep._close(text, p0)
+        args = deep._split_args(text[p0:b])
+        assert args[5].strip() == 'hd', args[5]
+        args = args[:5] + [f' {k}n', ' {==}', ' {==}'] + args[6:]
+        text = text[:m.start()] + 'UW.hsxB(' + ','.join(args) + ')' + text[b + 1:]
+    # c + x below 2^32 for a header byte c
+    a = text.index('\ndef eoc(')
+    hcx32 = (f"# c + x below 2^32 for c <= {FS}.\n"
+             f"def hcx32(+x: Nat, +len: U32, +c: Nat, +hc: {{Nat.is_le(c, {FS}n) == {T}}}, +hw32: {{Nat.is_lt(Nat.add(x, U32.to_nat(len)), {P32}) == {T}}}, +ha: {{U32.is_le({FS}, len) == {T}}})\n"
+             f"    -> {{Nat.is_lt(Nat.add(c, x), {P32}) == {T}}}:\n"
+             f"  FD.nat__le_lt_trans(Nat.add(c, x), Nat.add(U32.to_nat(len), x), {P32},\n"
+             f"    Order.add_right(c, U32.to_nat(len), x, FD.nat__le_trans(c, {FS}n, U32.to_nat(len), hc, leFS(len, ha))),\n"
+             f"    FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == {T}}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw32))\n")
+    text = text[:a + 1] + hcx32 + text[a + 1:]
+    left = [l for l in text.split('\n') if re.search(r'lt_trans\(d, 28n|UW\.hsx\(|\.rdx_\w+\(|add_le_at\(|VFT\.fits4\(|VMR\.fitsn\(', l)]
+    assert not left, left[:3]
+    # helpers other modules call keep their signatures (roomc, hwv: hw renamed hl, so not threaded; eoc: a wrapper)
+    import var_vlist as VVL
+    for nm in ('roomc', 'hwv'):
+        text = VVL._keep_sig(text, nm)
+    return VW.deep_x(text, VW.XIFACE + ['eoc'])
+
+
 def xn_inv_text(x):
     drop = (' as W', ' as DC', ' as YW', ' as YR')
     L = [ln for ln in VBN.rej_text(x, pure=True) if not (ln.startswith('import ./') and ln.endswith(drop))]
@@ -838,7 +897,7 @@ def main():
     out = {ROOT / 'proofs/obj/vbx_fix.bend': fix_module(fts)}
     for x in xs:
         out[fname(x, '_inv')] = inv_text(x)
-        out[fname(x)] = win_text(x)
+        out[fname(x)] = win_deep(win_text(x), x.FS)
     for x in ns:
         out[fname(x, '_inv')] = xn_inv_text(x)
         out[fname(x)] = xn_win_text(x)
