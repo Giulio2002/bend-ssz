@@ -8,12 +8,12 @@ import ../compact/arith.bend as A
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
 import ../../spec/fulu_schemas.bend as Spec
-import ../../proofs/fulu_legality.bend as Legal
-import ../../proofs/decode_complete.bend as DCO
+import ../../proofs/decode_unique.bend as DCO
 import ./spec_fixed.bend as F
 import ./vspec.bend as VS
 import ./vbuf.bend as VB
 import ./vua.bend as UA
+import ./vua_win.bend as UW
 import ./var_bytesx_LightClientFinalityUpdate.bend as W
 import ./var_bytesx_LightClientFinalityUpdate_inv.bend as XI
 
@@ -60,6 +60,9 @@ def decode_accept(d, t, n, pf, hd, hn, hchk):
 
 # The bytes of every buffer the validator accepts are the spec encoding of the
 # decoded object's value.
+def VALe(+t: FD.array__Tree<U32>, +n: U32) -> {W.VALw(t, 0n, n) == VAL(t, n) : S.Value}: {==}
+def VWe(+t: FD.array__Tree<U32>, +n: U32) -> {UW.WX(t, 0n, U32.to_nat(n)) == VW(t, n) : +List<U32>}: {==}
+
 law decode_spec:
   for +d: Nat
   for +t: FD.array__Tree<U32>
@@ -70,9 +73,11 @@ law decode_spec:
   for +hchk: {CHK(t, n) == True{} : Bool}
   Decoding.decodes(Spec.LightClientFinalityUpdate(), VW(t, n), VAL(t, n))
 def decode_spec(d, t, n, pf, hd, hn, hchk):
-  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.LightClientFinalityUpdate()), Some{[S.Variable{VW(t, n)}]}, W.specw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk)) :
-    {Codec.bytes(_) == Some{VW(t, n)} : Maybe<&2, +List<U32>>}
-  {==}
+  # the value and bytes in specw's own terms first (VALe, VWe), then F.encoding_of_var over
+  # them: comparing the spec encoding of VAL with that of W.VALw ran the spec encoder (3 s)
+  %VALe(t, n) : Decoding.decodes(Spec.LightClientFinalityUpdate(), VW(t, n), _)
+  %VWe(t, n) : Decoding.decodes(Spec.LightClientFinalityUpdate(), _, W.VALw(t, 0n, n))
+  F.encoding_of_var(Spec.LightClientFinalityUpdate(), W.VALw(t, 0n, n), UW.WX(t, 0n, U32.to_nat(n)), W.specw(d, t, n, 0n, 0, n, {==}, hd, hn, pf, hchk))
 
 # Every spec value of an accepted buffer's bytes is the decoded object's value.
 law decode_unique:
@@ -87,7 +92,9 @@ law decode_unique:
   for spec: Decoding.decodes(Spec.LightClientFinalityUpdate(), VW(t, n), v)
   {v == VAL(t, n) : S.Value}
 def decode_unique(d, t, n, pf, hd, hn, hchk, v, spec):
-  DCO.image_unique(Spec.LightClientFinalityUpdate(), VW(t, n), v, VAL(t, n), Legal.LightClientFinalityUpdate_normative_legal(), spec, decode_spec(d, t, n, pf, hd, hn, hchk))
+  # the validator's acceptance of the schema by evaluation (decode_unique.valid_unique): image_unique's
+  # legality form imports the compatibility_* chain and every name's legality witness
+  DCO.valid_unique(Spec.LightClientFinalityUpdate(), VW(t, n), v, VAL(t, n), {==}, spec, decode_spec(d, t, n, pf, hd, hn, hchk))
 
 # When the validator refuses, no value is related to the buffer's bytes.
 law decode_reject:

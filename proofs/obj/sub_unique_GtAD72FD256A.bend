@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_GtAD72FD256A.bend as C
 
 def GtAD72FD256A_spec_unique(+x0: U32, +hb: {U32.is_le(B.byte_sel(0, x0), 1) == True{} : Bool}, +v: S.Value, spec: Decoding.decodes(Spec.GtAD72FD256A(), [B.byte_sel(0, x0)], v))
     -> {v == S.BooleanValue{U32.is_eq(B.byte_sel(0, x0), 1)} : S.Value}:
-  E.image_unique(Spec.GtAD72FD256A(), [B.byte_sel(0, x0)], v, S.BooleanValue{U32.is_eq(B.byte_sel(0, x0), 1)}, VS.public_sound(Spec.GtAD72FD256A(), {==}), spec, C.GtAD72FD256A_spec_encode(x0, hb))
+  E.valid_unique(Spec.GtAD72FD256A(), [B.byte_sel(0, x0)], v, S.BooleanValue{U32.is_eq(B.byte_sel(0, x0), 1)}, {==}, spec, C.GtAD72FD256A_spec_encode(x0, hb))

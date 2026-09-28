@@ -46,7 +46,7 @@ import ../../src/obj.bend as P2_O
 import ../../src/buffer.bend as P2_B
 import ../../spec/decoding_relation.bend as P2_Decoding
 import ../obj/generic_specs.bend as P2_Spec
-import ../decode_complete.bend as P2_E
+import ../decode_unique.bend as P2_E
 import ../type_validator_soundness.bend as P2_VS
 import ../obj/spec_fixed.bend as P2_SF
 import ../../proofs/compact/found.bend as P2_F

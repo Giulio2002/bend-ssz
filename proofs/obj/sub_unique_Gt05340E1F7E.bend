@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,5 +20,5 @@ import ./sub_Gt05340E1F7E.bend as C
 
 def Gt05340E1F7E_spec_unique(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +x8: U32, +x9: U32, +x10: U32, +x11: U32, +x12: U32, +x13: U32, +x14: U32, +x15: U32, +hp: {U32.is_eq(U32.and(B.byte_sel(3, x15), U32.not(O.low_mask(7))), 0) == True{} : Bool}, +by: +List<U32>, +eby: {by == SF.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15]) : +List<U32>}, +v: S.Value, spec: Decoding.decodes(Spec.Gt05340E1F7E(), by, v))
     -> {v == S.BitsValue{List.append(&2, Bool, FB.bitsof([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14]), C.Gt05340E1F7E_tb(x15))} : S.Value}:
-  E.image_unique(Spec.Gt05340E1F7E(), by, v, S.BitsValue{List.append(&2, Bool, FB.bitsof([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14]), C.Gt05340E1F7E_tb(x15))}, VS.public_sound(Spec.Gt05340E1F7E(), {==}), spec,
+  E.valid_unique(Spec.Gt05340E1F7E(), by, v, S.BitsValue{List.append(&2, Bool, FB.bitsof([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14]), C.Gt05340E1F7E_tb(x15))}, {==}, spec,
     F.logic__subst(+List<U32>, z => Decoding.decodes(Spec.Gt05340E1F7E(), z, S.BitsValue{List.append(&2, Bool, FB.bitsof([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14]), C.Gt05340E1F7E_tb(x15))}), SF.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15]), by, Equal.sym(+List<U32>, by, SF.limbs([x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15]), eby), C.Gt05340E1F7E_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, hp)))

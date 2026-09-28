@@ -8,12 +8,12 @@ import ../compact/arith.bend as A
 import ../../spec/codec.bend as Codec
 import ../../spec/decoding_relation.bend as Decoding
 import ../../spec/fulu_schemas.bend as Spec
-import ../../proofs/fulu_legality.bend as Legal
-import ../../proofs/decode_complete.bend as DCO
+import ../../proofs/decode_unique.bend as DCO
 import ../obj/spec_fixed.bend as F
 import ../obj/vspec.bend as VS
 import ../obj/vbuf.bend as VB
 import ../obj/vua.bend as UA
+import ../obj/vua_win.bend as UW
 import ../obj/var_bytesx_LightClientFinalityUpdate.bend as W
 import ../obj/var_bytesx_LightClientFinalityUpdate_inv.bend as XI
 import ../obj/var_bytesx_LightClientFinalityUpdate_dec.bend as PRV

@@ -142,12 +142,11 @@ def slot_mone_hi(n, i, j, dd, D, S, k, pf, hb, h):
 # ---- the aligned bulk write of any byte length -------------------------------------------------
 
 # (q + nw - 1): the index of the last word written, P + KW.
-def e_last(+p: U32, +P: Nat, +n: U32, +dd: Nat, +k: Nat, +eP: {U32.to_nat(U32.shrn(p, 2n)) == P : Nat},
-    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool},
+def e_lastU(+p: U32, +P: Nat, +n: U32, +dd: Nat, +eP: {U32.to_nat(U32.shrn(p, 2n)) == P : Nat}, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +hb: {U32.is_eq(VY.RM(n), 0) == False{} : Bool}, +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +hdst: {Nat.is_le(Nat.add(VC.NW(n), P), VB.pw(dd)) == True{} : Bool})
     -> {U32.to_nat(U32.sub(U32.add(U32.shrn(p, 2n), VC.nwu(n)), 1)) == Nat.add(VY.QL(n), P) : Nat}:
-  +enw = VY.nw_q(n, k, hk, hy, hb)
+  +enw = VY.nw_qU(n, hy, hb)
   +hsum = F.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(F.u32__pow2u(dd))) == True{} : Bool}, Nat.add(VC.NW(n), P), Nat.add(P, VC.NW(n)), F.nat__add_comm(VC.NW(n), P),
     F.logic__subst(Nat, z => {Nat.is_le(Nat.add(VC.NW(n), P), z) == True{} : Bool}, VB.pw(dd), U32.to_nat(F.u32__pow2u(dd)), Equal.sym(Nat, U32.to_nat(F.u32__pow2u(dd)), VB.pw(dd), F.u32__pow2u_value(dd, VB.lt32(dd, hdd))), hdst))
   +ea = Equal.trans(Nat, U32.to_nat(U32.add(U32.shrn(p, 2n), VC.nwu(n))), Nat.add(U32.to_nat(U32.shrn(p, 2n)), VC.NW(n)), Nat.add(P, 1n+VY.QL(n)),
@@ -164,19 +163,25 @@ def e_last(+p: U32, +P: Nat, +n: U32, +dd: Nat, +k: Nat, +eP: {U32.to_nat(U32.sh
   %Equal.sym(Nat, U32.to_nat(U32.add(U32.shrn(p, 2n), VC.nwu(n))), 1n+Nat.add(VY.QL(n), P), ex) : {Nat.sub(_, 1n) == Nat.add(VY.QL(n), P) : Nat}
   F.nat__sub_zero(Nat.add(VY.QL(n), P))
 
-def pw_part(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +P: Nat, +n: U32, +k: Nat,
+def e_last(+p: U32, +P: Nat, +n: U32, +dd: Nat, +k: Nat, +eP: {U32.to_nat(U32.shrn(p, 2n)) == P : Nat},
+    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool},
+    +hb: {U32.is_eq(VY.RM(n), 0) == False{} : Bool}, +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hdst: {Nat.is_le(Nat.add(VC.NW(n), P), VB.pw(dd)) == True{} : Bool})
+    -> {U32.to_nat(U32.sub(U32.add(U32.shrn(p, 2n), VC.nwu(n)), 1)) == Nat.add(VY.QL(n), P) : Nat}:
+  e_lastU(p, P, n, dd, eP, VC.hyU(n, k, hk, hy), hb, hdd, hdst)
+
+def pw_partU(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +P: Nat, +n: U32,
     +pfD: {F.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
     +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +eP: {U32.to_nat(U32.shrn(p, 2n)) == P : Nat},
-    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool},
+    +eP: {U32.to_nat(U32.shrn(p, 2n)) == P : Nat}, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +hsrc: {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(dw)) == True{} : Bool},
     +hdst: {Nat.is_le(Nat.add(VC.NW(n), P), VB.pw(dd)) == True{} : Bool},
     +hz: {VB.slot(D, Nat.add(VY.QL(n), P)) == 0 : U32}, +hb: {U32.is_eq(VY.RM(n), 0) == False{} : Bool})
     -> {O.pw_al_tail(False{}, VC.nwu(n), U32.shrn(p, 2n), O.acopy(O.pick(False{}, VC.nwu(n), U32.sub(VC.nwu(n), 1)), 0, U32.shrn(p, 2n), F.array__thaw(U32, D), F.array__thaw(U32, T)))
         == (F.array__thaw(U32, VB.mone(VC.NW(n), 0n, P, dd, D, T)), F.array__thaw(U32, T)) : Array<U32> & Array<U32>}:
   +Q = VY.QL(n)
-  +ekw = VY.kw_q(n, k, hk, hy, hb)
-  +enw = VY.nw_q(n, k, hk, hy, hb)
+  +ekw = VY.kw_qU(n, hy, hb)
+  +enw = VY.nw_qU(n, hy, hb)
   +hQ1 = F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(VC.NW(n), 0n), 1n+Nat.add(Q, 0n), Equal.cong(Nat, Nat, z => Nat.add(z, 0n), VC.NW(n), 1n+Q, enw), hsrc)
   +hQ2 = F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dd)) == True{} : Bool}, Nat.add(VC.NW(n), P), 1n+Nat.add(Q, P), Equal.cong(Nat, Nat, z => Nat.add(z, P), VC.NW(n), 1n+Q, enw), hdst)
   +M1 = VB.mone(Q, 0n, P, dd, D, T)
@@ -184,7 +189,7 @@ def pw_part(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, 
   +ecp = Equal.trans(Nat, U32.to_nat(U32.sub(VC.nwu(n), 1)), VY.KW(n), Q, {==}, ekw)
   +hi0 = VY.succ_le_lt(Nat.add(Q, 0n), VB.pw(dw), hQ1)
   +hiP = VY.succ_le_lt(Nat.add(Q, P), VB.pw(dd), hQ2)
-  +eL = e_last(p, P, n, dd, k, eP, hk, hy, hb, hdd, hdst)
+  +eL = e_lastU(p, P, n, dd, eP, hy, hb, hdd, hdst)
   %Equal.sym(Array<U32> & Array<U32>, O.acopy(U32.sub(VC.nwu(n), 1), 0, U32.shrn(p, 2n), F.array__thaw(U32, D), F.array__thaw(U32, T)),
       (F.array__thaw(U32, VB.mone(U32.to_nat(U32.sub(VC.nwu(n), 1)), 0n, P, dd, D, T)), F.array__thaw(U32, T)),
       VB.acopy_ok(U32.sub(VC.nwu(n), 1), 0, U32.shrn(p, 2n), 0n, P, dd, dw, D, T, {==}, eP, hdd, hdw,
@@ -217,6 +222,31 @@ def pw_part(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, 
     {(F.array__thaw(U32, F.array__upd(U32, dd, M1, Nat.add(Q, P), VB.slot(T, Q))), F.array__thaw(U32, T)) == (F.array__thaw(U32, VB.mone(1n, _, Nat.add(Q, P), dd, M1, T)), F.array__thaw(U32, T)) : Array<U32> & Array<U32>}
   {==}
 
+def pw_part(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +P: Nat, +n: U32, +k: Nat,
+    +pfD: {F.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +eP: {U32.to_nat(U32.shrn(p, 2n)) == P : Nat},
+    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool},
+    +hsrc: {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(dw)) == True{} : Bool},
+    +hdst: {Nat.is_le(Nat.add(VC.NW(n), P), VB.pw(dd)) == True{} : Bool},
+    +hz: {VB.slot(D, Nat.add(VY.QL(n), P)) == 0 : U32}, +hb: {U32.is_eq(VY.RM(n), 0) == False{} : Bool})
+    -> {O.pw_al_tail(False{}, VC.nwu(n), U32.shrn(p, 2n), O.acopy(O.pick(False{}, VC.nwu(n), U32.sub(VC.nwu(n), 1)), 0, U32.shrn(p, 2n), F.array__thaw(U32, D), F.array__thaw(U32, T)))
+        == (F.array__thaw(U32, VB.mone(VC.NW(n), 0n, P, dd, D, T)), F.array__thaw(U32, T)) : Array<U32> & Array<U32>}:
+  pw_partU(dd, dw, D, T, p, P, n, pfD, pfT, hdd, hdw, eP, VC.hyU(n, k, hk, hy), hsrc, hdst, hz, hb)
+
+def pwa_caseU(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +P: Nat, +n: U32,
+    +pfD: {F.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hp3: {U32.and(p, 3) == 0 : U32}, +eP: {U32.to_nat(U32.shrn(p, 2n)) == P : Nat}, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB.UMAX())) == True{} : Bool},
+    +hsrc: {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(dw)) == True{} : Bool},
+    +hdst: {Nat.is_le(Nat.add(VC.NW(n), P), VB.pw(dd)) == True{} : Bool},
+    +hz: {VB.slot(D, Nat.add(VY.QL(n), P)) == 0 : U32}, +b: Bool, +eb: {U32.is_eq(VY.RM(n), 0) == b : Bool})
+    -> {O.pw_al_tail(b, VC.nwu(n), U32.shrn(p, 2n), O.acopy(O.pick(b, VC.nwu(n), U32.sub(VC.nwu(n), 1)), 0, U32.shrn(p, 2n), F.array__thaw(U32, D), F.array__thaw(U32, T)))
+        == (F.array__thaw(U32, VB.mone(VC.NW(n), 0n, P, dd, D, T)), F.array__thaw(U32, T)) : Array<U32> & Array<U32>}:
+  match b:
+    case True{}: VB.acopy_ok(VC.nwu(n), 0, U32.shrn(p, 2n), 0n, P, dd, dw, D, T, {==}, eP, hdd, hdw, hsrc, hdst, pfD, pfT)
+    case False{}: pw_partU(dd, dw, D, T, p, P, n, pfD, pfT, hdd, hdw, eP, hy, hsrc, hdst, hz, eb)
+
 def pwa_case(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +P: Nat, +n: U32, +k: Nat,
     +pfD: {F.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
     +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
@@ -227,15 +257,12 @@ def pwa_case(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>,
     +hz: {VB.slot(D, Nat.add(VY.QL(n), P)) == 0 : U32}, +b: Bool, +eb: {U32.is_eq(VY.RM(n), 0) == b : Bool})
     -> {O.pw_al_tail(b, VC.nwu(n), U32.shrn(p, 2n), O.acopy(O.pick(b, VC.nwu(n), U32.sub(VC.nwu(n), 1)), 0, U32.shrn(p, 2n), F.array__thaw(U32, D), F.array__thaw(U32, T)))
         == (F.array__thaw(U32, VB.mone(VC.NW(n), 0n, P, dd, D, T)), F.array__thaw(U32, T)) : Array<U32> & Array<U32>}:
-  match b:
-    case True{}: VB.acopy_ok(VC.nwu(n), 0, U32.shrn(p, 2n), 0n, P, dd, dw, D, T, {==}, eP, hdd, hdw, hsrc, hdst, pfD, pfT)
-    case False{}: pw_part(dd, dw, D, T, p, P, n, k, pfD, pfT, hdd, hdw, eP, hk, hy, hsrc, hdst, hz, eb)
+  pwa_caseU(dd, dw, D, T, p, P, n, pfD, pfT, hdd, hdw, hp3, eP, VC.hyU(n, k, hk, hy), hsrc, hdst, hz, b, eb)
 
-def pwn_case(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +P: Nat, +n: U32, +k: Nat,
+def pwn_caseU(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +P: Nat, +n: U32,
     +pfD: {F.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
     +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +hp3: {U32.and(p, 3) == 0 : U32}, +eP: {U32.to_nat(U32.shrn(p, 2n)) == P : Nat},
-    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool},
+    +hp3: {U32.and(p, 3) == 0 : U32}, +eP: {U32.to_nat(U32.shrn(p, 2n)) == P : Nat}, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +hsrc: {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(dw)) == True{} : Bool},
     +hdst: {Nat.is_le(Nat.add(VC.NW(n), P), VB.pw(dd)) == True{} : Bool},
     +hz: {VB.slot(D, Nat.add(VY.QL(n), P)) == 0 : U32}, +z: Bool, +ez: {U32.is_eq(n, 0) == z : Bool})
@@ -252,12 +279,46 @@ def pwn_case(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>,
           == (F.array__thaw(U32, VB.mone(VC.NW(n), 0n, P, dd, D, T)), O.Words{F.array__thaw(U32, T), n}) : Array<U32> & O.Words}
       %Equal.sym(Array<U32> & Array<U32>, O.pw_aligned(n, VC.nwu(n), U32.shrn(p, 2n), F.array__thaw(U32, D), F.array__thaw(U32, T)),
           (F.array__thaw(U32, VB.mone(VC.NW(n), 0n, P, dd, D, T)), F.array__thaw(U32, T)),
-          pwa_case(dd, dw, D, T, p, P, n, k, pfD, pfT, hdd, hdw, hp3, eP, hk, hy, hsrc, hdst, hz, U32.is_eq(VY.RM(n), 0), {==})) :
+          pwa_caseU(dd, dw, D, T, p, P, n, pfD, pfT, hdd, hdw, hp3, eP, hy, hsrc, hdst, hz, U32.is_eq(VY.RM(n), 0), {==})) :
         {O.put_fin(n, _) == (F.array__thaw(U32, VB.mone(VC.NW(n), 0n, P, dd, D, T)), O.Words{F.array__thaw(U32, T), n}) : Array<U32> & O.Words}
       {==}
 
+def pwn_case(+dd: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +P: Nat, +n: U32, +k: Nat,
+    +pfD: {F.array__perfect(U32, dd, D) == True{} : Bool}, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+    +hp3: {U32.and(p, 3) == 0 : U32}, +eP: {U32.to_nat(U32.shrn(p, 2n)) == P : Nat},
+    +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool},
+    +hsrc: {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(dw)) == True{} : Bool},
+    +hdst: {Nat.is_le(Nat.add(VC.NW(n), P), VB.pw(dd)) == True{} : Bool},
+    +hz: {VB.slot(D, Nat.add(VY.QL(n), P)) == 0 : U32}, +z: Bool, +ez: {U32.is_eq(n, 0) == z : Bool})
+    -> {O.put_fin(n, O.pw_empty(z, U32.and(p, 3), n, VC.nwu(n), U32.shrn(p, 2n), F.array__thaw(U32, D), F.array__thaw(U32, T)))
+        == (F.array__thaw(U32, VB.mone(VC.NW(n), 0n, P, dd, D, T)), O.Words{F.array__thaw(U32, T), n}) : Array<U32> & O.Words}:
+  pwn_caseU(dd, dw, D, T, p, P, n, pfD, pfT, hdd, hdw, hp3, eP, VC.hyU(n, k, hk, hy), hsrc, hdst, hz, z, ez)
+
 # O.put_words of any byte length at a word-aligned position copies the words,
 # when the destination's word under the partial last word is zero.
+law put_words_anyU:
+  for +dd: Nat
+  for +dw: Nat
+  for +D: F.array__Tree<U32>
+  for +T: F.array__Tree<U32>
+  for +p: U32
+  for +P: Nat
+  for +n: U32
+  for +pfD: {F.array__perfect(U32, dd, D) == True{} : Bool}
+  for +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool}
+  for +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}
+  for +hp3: {U32.and(p, 3) == 0 : U32}
+  for +eP: {U32.to_nat(U32.shrn(p, 2n)) == P : Nat}
+  for +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB.UMAX())) == True{} : Bool}
+  for +hsrc: {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(dw)) == True{} : Bool}
+  for +hdst: {Nat.is_le(Nat.add(VC.NW(n), P), VB.pw(dd)) == True{} : Bool}
+  for +hz: {VB.slot(D, Nat.add(VY.QL(n), P)) == 0 : U32}
+  {O.put_words(F.array__thaw(U32, D), p, O.Words{F.array__thaw(U32, T), n}) == (F.array__thaw(U32, VB.mone(VC.NW(n), 0n, P, dd, D, T)), O.Words{F.array__thaw(U32, T), n}) : Array<U32> & O.Words}
+def put_words_anyU(dd, dw, D, T, p, P, n, pfD, pfT, hdd, hdw, hp3, eP, hy, hsrc, hdst, hz):
+  pwn_caseU(dd, dw, D, T, p, P, n, pfD, pfT, hdd, hdw, hp3, eP, hy, hsrc, hdst, hz, U32.is_eq(n, 0), {==})
+
 law put_words_any:
   for +dd: Nat
   for +dw: Nat
@@ -280,12 +341,12 @@ law put_words_any:
   for +hz: {VB.slot(D, Nat.add(VY.QL(n), P)) == 0 : U32}
   {O.put_words(F.array__thaw(U32, D), p, O.Words{F.array__thaw(U32, T), n}) == (F.array__thaw(U32, VB.mone(VC.NW(n), 0n, P, dd, D, T)), O.Words{F.array__thaw(U32, T), n}) : Array<U32> & O.Words}
 def put_words_any(dd, dw, D, T, p, P, n, k, pfD, pfT, hdd, hdw, hp3, eP, hk, hy, hsrc, hdst, hz):
-  pwn_case(dd, dw, D, T, p, P, n, k, pfD, pfT, hdd, hdw, hp3, eP, hk, hy, hsrc, hdst, hz, U32.is_eq(n, 0), {==})
+  put_words_anyU(dd, dw, D, T, p, P, n, pfD, pfT, hdd, hdw, hp3, eP, VC.hyU(n, k, hk, hy), hsrc, hdst, hz)
 
 # ---- the storage check of a byte list ----------------------------------------------------------
 
-def wob_go(+dw: Nat, +T: F.array__Tree<U32>, +n: U32, +k: Nat, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
-    +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool},
+def wob_goU(+dw: Nat, +T: F.array__Tree<U32>, +n: U32, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
+    +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB.UMAX())) == True{} : Bool},
     +hroom: {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(dw)) == True{} : Bool},
     +htz: {O.tail_zero(U32.and(n, 3), VB.slot(T, VY.QL(n))) == True{} : Bool},
     +b: Bool, +eb: {U32.is_eq(VY.RM(n), 0) == b : Bool})
@@ -299,15 +360,52 @@ def wob_go(+dw: Nat, +T: F.array__Tree<U32>, +n: U32, +k: Nat, +pfT: {F.array__p
       {==}
     case False{}:
       +hr1 = F.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(VC.NW(n), 0n), VC.NW(n), F.nat__add_zero(VC.NW(n)), hroom)
-      +hq = F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dw)) == True{} : Bool}, VY.KW(n), VY.QL(n), VY.kw_q(n, k, hk, hy, eb), VY.kw_lt(n, dw, k, hk, hy, eb, hr1))
+      +hq = F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dw)) == True{} : Bool}, VY.KW(n), VY.QL(n), VY.kw_qU(n, hy, eb), VY.kw_ltU(n, dw, hy, eb, hr1))
       %Equal.sym(Array<U32> & U32, Array.get(U32, F.array__thaw(U32, T), U32.shrn(n, 2n)), (F.array__thaw(U32, T), VB.slot(T, VY.QL(n))), VB.get_n(dw, T, U32.shrn(n, 2n), VY.QL(n), {==}, VB.lt32(dw, hdw), hq, pfT)) :
         {O.wk_last(True{}, n, _) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
       %Equal.sym(Bool, O.tail_zero(U32.and(n, 3), VB.slot(T, VY.QL(n))), True{}, htz) :
         {(O.Words{F.array__thaw(U32, T), n}, _) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
       {==}
 
+def wob_go(+dw: Nat, +T: F.array__Tree<U32>, +n: U32, +k: Nat, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
+    +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}, +hk: {Nat.is_lt(k, 31n) == True{} : Bool}, +hy: {Nat.is_le(VC.YL(n), VB.pw(k)) == True{} : Bool},
+    +hroom: {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(dw)) == True{} : Bool},
+    +htz: {O.tail_zero(U32.and(n, 3), VB.slot(T, VY.QL(n))) == True{} : Bool},
+    +b: Bool, +eb: {U32.is_eq(VY.RM(n), 0) == b : Bool})
+    -> {O.wk_last(True{}, n, Array.get(U32, F.array__thaw(U32, T), U32.shrn(n, 2n))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}:
+  wob_goU(dw, T, n, pfT, hdw, VC.hyU(n, k, hk, hy), hroom, htz, b, eb)
+
 # The storage check of a byte list of lo <= n <= hi bytes whose storage has room
 # for them and no bytes past them in the last word.
+law words_ok_bU:
+  for +dw: Nat
+  for +T: F.array__Tree<U32>
+  for +n: U32
+  for +lo: U32
+  for +hi: U32
+  for +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool}
+  for +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool}
+  for +hy: {Nat.is_le(VC.YL(n), U32.to_nat(VB.UMAX())) == True{} : Bool}
+  for +hlo: {Nat.is_le(U32.to_nat(lo), U32.to_nat(n)) == True{} : Bool}
+  for +hhi: {Nat.is_le(U32.to_nat(n), U32.to_nat(hi)) == True{} : Bool}
+  for +hroom: {Nat.is_le(Nat.add(VC.NW(n), 0n), VB.pw(dw)) == True{} : Bool}
+  for +htz: {O.tail_zero(U32.and(n, 3), VB.slot(T, VY.QL(n))) == True{} : Bool}
+  for +unit: U32
+  for +hu: {O.unit_ok(unit, n) == True{} : Bool}
+  {O.words_ok(O.Words{F.array__thaw(U32, T), n}, lo, hi, False{}, unit) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+def words_ok_bU(dw, T, n, lo, hi, pfT, hdw, hy, hlo, hhi, hroom, htz, unit, hu):
+  %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, T)), (F.array__thaw(U32, T), F.u32__pow2u(dw)), F.array__size_thaw(U32, dw, T, pfT)) :
+    {O.wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(False{}, U32.is_le(n, hi))), O.unit_ok(unit, n)), n, _) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+  %Equal.sym(Bool, U32.is_le(lo, n), True{}, VE.le_hi(lo, n, hlo)) :
+    {O.wk_last(Bool.and(Bool.and(Bool.and(_, Bool.or(False{}, U32.is_le(n, hi))), O.unit_ok(unit, n)), U32.is_le(VC.nwu(n), F.u32__pow2u(dw))), n, Array.get(U32, F.array__thaw(U32, T), U32.shrn(n, 2n))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+  %Equal.sym(Bool, U32.is_le(n, hi), True{}, VE.le_hi(n, hi, hhi)) :
+    {O.wk_last(Bool.and(Bool.and(Bool.and(True{}, Bool.or(False{}, _)), O.unit_ok(unit, n)), U32.is_le(VC.nwu(n), F.u32__pow2u(dw))), n, Array.get(U32, F.array__thaw(U32, T), U32.shrn(n, 2n))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+  %Equal.sym(Bool, U32.is_le(VC.nwu(n), F.u32__pow2u(dw)), True{}, VE.le_room(n, dw, hdw, hroom)) :
+    {O.wk_last(Bool.and(Bool.and(Bool.and(True{}, Bool.or(False{}, True{})), O.unit_ok(unit, n)), _), n, Array.get(U32, F.array__thaw(U32, T), U32.shrn(n, 2n))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+  %Equal.sym(Bool, O.unit_ok(unit, n), True{}, hu) :
+    {O.wk_last(Bool.and(Bool.and(Bool.and(True{}, Bool.or(False{}, True{})), _), True{}), n, Array.get(U32, F.array__thaw(U32, T), U32.shrn(n, 2n))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
+  wob_goU(dw, T, n, pfT, hdw, hy, hroom, htz, U32.is_eq(VY.RM(n), 0), {==})
+
 law words_ok_b:
   for +dw: Nat
   for +T: F.array__Tree<U32>
@@ -327,17 +425,7 @@ law words_ok_b:
   for +hu: {O.unit_ok(unit, n) == True{} : Bool}
   {O.words_ok(O.Words{F.array__thaw(U32, T), n}, lo, hi, False{}, unit) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
 def words_ok_b(dw, T, n, lo, hi, k, pfT, hdw, hk, hy, hlo, hhi, hroom, htz, unit, hu):
-  %Equal.sym(Array<U32> & U32, Array.size(U32, F.array__thaw(U32, T)), (F.array__thaw(U32, T), F.u32__pow2u(dw)), F.array__size_thaw(U32, dw, T, pfT)) :
-    {O.wk_cap(Bool.and(Bool.and(U32.is_le(lo, n), Bool.or(False{}, U32.is_le(n, hi))), O.unit_ok(unit, n)), n, _) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
-  %Equal.sym(Bool, U32.is_le(lo, n), True{}, VE.le_hi(lo, n, hlo)) :
-    {O.wk_last(Bool.and(Bool.and(Bool.and(_, Bool.or(False{}, U32.is_le(n, hi))), O.unit_ok(unit, n)), U32.is_le(VC.nwu(n), F.u32__pow2u(dw))), n, Array.get(U32, F.array__thaw(U32, T), U32.shrn(n, 2n))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
-  %Equal.sym(Bool, U32.is_le(n, hi), True{}, VE.le_hi(n, hi, hhi)) :
-    {O.wk_last(Bool.and(Bool.and(Bool.and(True{}, Bool.or(False{}, _)), O.unit_ok(unit, n)), U32.is_le(VC.nwu(n), F.u32__pow2u(dw))), n, Array.get(U32, F.array__thaw(U32, T), U32.shrn(n, 2n))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
-  %Equal.sym(Bool, U32.is_le(VC.nwu(n), F.u32__pow2u(dw)), True{}, VE.le_room(n, dw, hdw, hroom)) :
-    {O.wk_last(Bool.and(Bool.and(Bool.and(True{}, Bool.or(False{}, True{})), O.unit_ok(unit, n)), _), n, Array.get(U32, F.array__thaw(U32, T), U32.shrn(n, 2n))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
-  %Equal.sym(Bool, O.unit_ok(unit, n), True{}, hu) :
-    {O.wk_last(Bool.and(Bool.and(Bool.and(True{}, Bool.or(False{}, True{})), _), True{}), n, Array.get(U32, F.array__thaw(U32, T), U32.shrn(n, 2n))) == (O.Words{F.array__thaw(U32, T), n}, True{}) : O.Words & Bool}
-  wob_go(dw, T, n, k, pfT, hdw, hk, hy, hroom, htz, U32.is_eq(VY.RM(n), 0), {==})
+  words_ok_bU(dw, T, n, lo, hi, pfT, hdw, VC.hyU(n, k, hk, hy), hlo, hhi, hroom, htz, unit, hu)
 
 # ---- windows of a copied run (VB.mone) -----------------------------------------------------------
 

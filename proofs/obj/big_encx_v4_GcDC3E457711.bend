@@ -362,31 +362,27 @@ def TH(m: MW) -> vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq:
   match m:
     case MW{+da, +A, +N}: vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq{FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A), N}
 
-# A valid object: a perfect tree of depth < 28 with room for the N records, whose 13 N bytes fit
-# 4 2^da, exactly 4 records, and whose records pass the runtime's check.
+# A valid object: a perfect tree of depth < 28 with room for the N records,
+# exactly 4 records, and whose records pass the runtime's check.
 def OKT(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32) -> Bool:
-  Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))))
-def ok_r1(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}:
-  and_r(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))), h)
-def ok_r2(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))) == True{} : Bool}:
-  and_r(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))), ok_r1(da, A, N, h))
-def ok_r3(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))) == True{} : Bool}:
-  and_r(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))), ok_r2(da, A, N, h))
-def ok_r4(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)) == True{} : Bool}:
-  and_r(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)), ok_r3(da, A, N, h))
-def ok_r5(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}:
-  and_r(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n), ok_r4(da, A, N, h))
-def ok_0(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Nat.is_lt(da, 28n) == True{} : Bool}:
-  and_l(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))), h)
-def ok_1(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A) == True{} : Bool}:
-  and_l(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))), ok_r1(da, A, N, h))
-def ok_2(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(da)) == True{} : Bool}:
-  and_l(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))), ok_r2(da, A, N, h))
-def ok_3(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))) == True{} : Bool}:
-  and_l(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)), ok_r3(da, A, N, h))
-def ok_4(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {U32.is_eq(N, 4) == True{} : Bool}:
-  and_l(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n), ok_r4(da, A, N, h))
-def ok_5(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(Nat.is_le(Nat.mul(U32.to_nat(N), 13n), A.quad(VB.pw(da))), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}: ok_r5(da, A, N, h)
+  Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))))
+def ok_r1(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))) == True{} : Bool}:
+  and_r(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))), h)
+def ok_r2(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))) == True{} : Bool}:
+  and_r(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))), ok_r1(da, A, N, h))
+def ok_r3(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)) == True{} : Bool}:
+  and_r(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)), ok_r2(da, A, N, h))
+def ok_r4(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}:
+  and_r(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n), ok_r3(da, A, N, h))
+def ok_0(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Nat.is_lt(da, 28n) == True{} : Bool}:
+  and_l(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)))), h)
+def ok_1(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A) == True{} : Bool}:
+  and_l(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))), ok_r1(da, A, N, h))
+def ok_2(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {Nat.is_le(U32.to_nat(N), VB.pw(da)) == True{} : Bool}:
+  and_l(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n)), ok_r2(da, A, N, h))
+def ok_3(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {U32.is_eq(N, 4) == True{} : Bool}:
+  and_l(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n), ok_r3(da, A, N, h))
+def ok_4(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {Bool.and(Nat.is_lt(da, 28n), Bool.and(FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A), Bool.and(Nat.is_le(U32.to_nat(N), VB.pw(da)), Bool.and(U32.is_eq(N, 4), VOK(U32.to_nat(N), A, 0n))))) == True{} : Bool}) -> {VOK(U32.to_nat(N), A, 0n) == True{} : Bool}: ok_r4(da, A, N, h)
 def OK(m: MW) -> Bool:
   match m:
     case MW{+da, +A, +N}: OKT(da, A, N)
@@ -435,7 +431,7 @@ def vnz(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +
       +h1 = VRL.cposu(N, c, {==}, eb)
       +k = U32.to_nat(U32.sub(N, 1))
       +e1 = Equal.trans(Nat, 1n+k, 1n+Nat.sub(c, 1n), c, Equal.cong(Nat, Nat, z => 1n+z, k, Nat.sub(c, 1n), FD.u32__sub_nat(N, 1, h1)), FD.nat__sub_add(c, 1n, h1))
-      +hv = FD.logic__subst(Nat, z => {VOK(z, A, 0n) == True{} : Bool}, c, 1n+k, Equal.sym(Nat, 1n+k, c, e1), ok_5(da, A, N, h))
+      +hv = FD.logic__subst(Nat, z => {VOK(z, A, 0n) == True{} : Bool}, c, 1n+k, Equal.sym(Nat, 1n+k, c, e1), ok_4(da, A, N, h))
       +hk = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)),
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
@@ -448,7 +444,7 @@ def vnz(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +
 def valid(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {vec_FixedTestStruct_4_e.v4_GcDC3E457711_valid(vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq{FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A), N}) == (vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq{FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A), N}, True{}) : vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq & Bool}:
   %Equal.sym(Array<FixedTestStruct_d.GcDC3E457711> & U32, Array.size(FixedTestStruct_d.GcDC3E457711, FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A)), (FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A), FD.u32__pow2u(da)), FD.array__size_thaw(FixedTestStruct_d.GcDC3E457711, da, A, ok_1(da, A, N, h))) :
     {vec_FixedTestStruct_4_e.v4_GcDC3E457711_va_cap(U32.is_eq(N, 4), N, _) == (vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq{FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A), N}, True{}) : vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq & Bool}
-  %Equal.sym(Bool, U32.is_eq(N, 4), True{}, ok_4(da, A, N, h)) :
+  %Equal.sym(Bool, U32.is_eq(N, 4), True{}, ok_3(da, A, N, h)) :
     {vec_FixedTestStruct_4_e.v4_GcDC3E457711_va_go(Bool.and(_, U32.is_le(N, FD.u32__pow2u(da))), N, FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A)) == (vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq{FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A), N}, True{}) : vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq & Bool}
   %Equal.sym(Bool, U32.is_le(N, FD.u32__pow2u(da)), True{}, le_cap(da, A, N, h)) :
     {vec_FixedTestStruct_4_e.v4_GcDC3E457711_va_go(Bool.and(True{}, _), N, FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A)) == (vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq{FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A), N}, True{}) : vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq & Bool}
@@ -522,7 +518,7 @@ def putk_rt(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U3
 
 # N = 4, and the bytes' count
 def en(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {U32.to_nat(N) == 4n : Nat}:
-  Equal.cong(U32, Nat, z => U32.to_nat(z), N, 4, FD.u32alg__eq_of(N, 4, ok_4(da, A, N, h)))
+  Equal.cong(U32, Nat, z => U32.to_nat(z), N, 4, FD.u32alg__eq_of(N, 4, ok_3(da, A, N, h)))
 def enb(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +h: {OKT(da, A, N) == True{} : Bool}) -> {Nat.mul(U32.to_nat(N), 13n) == 52n : Nat}:
   Equal.cong(Nat, Nat, z => Nat.mul(z, 13n), U32.to_nat(N), 4n, en(da, A, N, h))
 
@@ -627,8 +623,8 @@ def vspec(m, hok):
       +Y = RBS(c, A, 0n)
       +ha = bps_all(c, A, 0n)
       +cat = bps_cat(c, A, 0n)
-      +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, FS, Nat.add(FS, 0n), Equal.sym(Nat, Nat.add(FS, 0n), FS, FD.nat__add_zero(FS)),
-        VFT.fits4(2n+da, FS, ok_3(da, A, N, hok), FD.nat__lt_trans(da, 28n, 30n, ok_0(da, A, N, hok), {==})))
+      +fit = FD.logic__subst(Nat, z => {N.fits(4n, z) == True{} : Bool}, 52n, Nat.add(FS, 0n),
+        Equal.trans(Nat, 52n, FS, Nat.add(FS, 0n), Equal.sym(Nat, FS, 52n, enb(da, A, N, hok)), Equal.sym(Nat, Nat.add(FS, 0n), FS, FD.nat__add_zero(FS))), {==})
       +hs = Equal.trans(Nat, Layout.fixed_size(BPS(c, A, 0n)), List.length(&2, U32, SP2.fcat(BPS(c, A, 0n))), FS, SP2.fsz(BPS(c, A, 0n), ha),
         Equal.trans(Nat, List.length(&2, U32, SP2.fcat(BPS(c, A, 0n))), List.length(&2, U32, Y), FS, Equal.cong(+List<U32>, Nat, z => List.length(&2, U32, z), SP2.fcat(BPS(c, A, 0n)), Y, cat), len_rbs(c, A, 0n)))
       +hfp = Equal.trans(+List<U32>, Layout.fixed_parts(BPS(c, A, 0n), FS), SP2.fcat(BPS(c, A, 0n)), Y, SP2.fxp(BPS(c, A, 0n), FS, ha), cat)

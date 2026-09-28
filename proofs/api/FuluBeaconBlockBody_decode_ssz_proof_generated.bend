@@ -29,8 +29,7 @@ import ../obj/vua_win.bend as P0_UW
 import ../obj/vua_fix.bend as P0_VTX
 import ../obj/vrl.bend as P0_VRL
 import ../../spec/decoding_relation.bend as P0_Decoding
-import ../../proofs/fulu_legality.bend as P0_Legal
-import ../../proofs/decode_complete.bend as P0_DCO
+import ../../proofs/decode_unique.bend as P0_DCO
 import ../obj/big_var_winx_BeaconBlockBody.bend as P0_EW
 import ../obj/big_var_codec_BeaconBlockBody.bend as P0_PRV
 

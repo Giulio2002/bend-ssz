@@ -379,6 +379,19 @@ def encoding_of_parts(schema, value, xs, e):
     {Codec.bytes(_) == Some{xs} : Maybe<&2, +List<U32>>}
   {==}
 
+# The same for one variable part (a variable-size value): stated over variables, so a
+# caller's schema and value are never compared with the spec encoder by evaluation.
+law encoding_of_var:
+  for +schema: S.Schema
+  for +value: S.Value
+  for +xs: +List<U32>
+  for e: {Codec.parts(value, schema) == Some{[S.Variable{xs}]} : Maybe<&2, +List<S.Part>>}
+  {Codec.encoding_for_legal_type(schema, value) == Some{xs} : Maybe<&2, +List<U32>>}
+def encoding_of_var(schema, value, xs, e):
+  %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(value, schema), Some{[S.Variable{xs}]}, e) :
+    {Codec.bytes(_) == Some{xs} : Maybe<&2, +List<U32>>}
+  {==}
+
 # ---- the bytes of an encoder whose object is not duplicable ------------------
 
 # An encoder of a `Type`-kind object (one holding boxed children) hands the

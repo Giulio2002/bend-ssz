@@ -514,6 +514,8 @@ def encpw(+t: FD.array__Tree<U32>, +x: Nat, +Y: +List<U32>, +hdom: {SP.bytes_dom
 
 # The byte list's value: the window's bytes after the header.
 def VALw(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: XVw(t, x, UW.WX(t, Nat.add(A.quad(146n), x), U32.to_nat(LL(len))))
+# VALw's body, as a rewrite (a spec-parts goal over VALw compared with one over its body ran the spec encoder)
+def VALq(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> {XVw(t, x, UW.WX(t, Nat.add(A.quad(146n), x), U32.to_nat(LL(len)))) == VALw(t, x, len) : S.Value}: {==}
 
 # The window is the header's words and the byte list's bytes.
 def hwH(+d: Nat, +x: Nat, +len: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +ha: {U32.is_le(584, len) == True{} : Bool})
@@ -545,8 +547,10 @@ def bytesw(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +len: U32, +pf: {FD.array_
 def specw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +len: U32, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +ha: {U32.is_le(584, len) == True{} : Bool}, +epo: {SPOw(t, x) == 584 : U32}, +hx: {BLW(LL(len)) == True{} : Bool})
     -> {Codec.parts(VALw(t, x, len), Spec.ExecutionPayloadHeader()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}:
+  %VALq(t, x, len) :
+    {Codec.parts(_, Spec.ExecutionPayloadHeader()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
   %bytesw(d, t, x, len, pf, hw, ha, epo) :
-    {Codec.parts(VALw(t, x, len), Spec.ExecutionPayloadHeader()) == Some{[S.Variable{_}]} : Maybe<&2, +List<S.Part>>}
+    {Codec.parts(XVw(t, x, UW.WX(t, Nat.add(A.quad(146n), x), U32.to_nat(LL(len)))), Spec.ExecutionPayloadHeader()) == Some{[S.Variable{_}]} : Maybe<&2, +List<S.Part>>}
   encpw(t, x, UW.WX(t, Nat.add(A.quad(146n), x), U32.to_nat(LL(len))), UW.domWX(t, Nat.add(A.quad(146n), x), U32.to_nat(LL(len))), len_y(d, t, x, len, pf, hw, ha, hx))
 
 # When the window's checks hold, the spec parts of VALw are its bytes, as one variable part.

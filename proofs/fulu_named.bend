@@ -3,7 +3,7 @@ import ../types/fulu_model.bend as F
 import ../types/schema.bend as T
 import ../spec/type_legality.bend as Legal
 import ../spec/representation.bend as Shape
-import ./fulu_legality.bend as Named
+import ./fulu_normative.bend as Named
 import ./fulu_adapter_inverse.bend as Inverse
 import ./fulu_adapter_preservation.bend as Preservation
 import ./fulu_adapter_complete.bend as Complete

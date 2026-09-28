@@ -67,7 +67,7 @@ import ../../src/obj.bend as P6_O
 import ../../src/buffer.bend as P6_B
 import ../../spec/decoding_relation.bend as P6_Decoding
 import ../obj/generic_specs.bend as P6_Spec
-import ../decode_complete.bend as P6_E
+import ../decode_unique.bend as P6_E
 import ../type_validator_soundness.bend as P6_VS
 import ../obj/spec_fixed.bend as P6_SF
 import ../../proofs/compact/found.bend as P6_F

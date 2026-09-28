@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_GtAEB382AD1F.bend as C
 
 def GtAEB382AD1F_spec_unique(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +x4: U32, +x5: U32, +x6: U32, +x7: U32, +v: S.Value, spec: Decoding.decodes(Spec.GtAEB382AD1F(), SF.limbs([x0, x1, x2, x3, x4, x5, x6, x7]), v))
     -> {v == S.Sequence{SP2.vu16([x0, x1, x2, x3, x4, x5, x6, x7], S.EmptyItems{})} : S.Value}:
-  E.image_unique(Spec.GtAEB382AD1F(), SF.limbs([x0, x1, x2, x3, x4, x5, x6, x7]), v, S.Sequence{SP2.vu16([x0, x1, x2, x3, x4, x5, x6, x7], S.EmptyItems{})}, VS.public_sound(Spec.GtAEB382AD1F(), {==}), spec, C.GtAEB382AD1F_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7))
+  E.valid_unique(Spec.GtAEB382AD1F(), SF.limbs([x0, x1, x2, x3, x4, x5, x6, x7]), v, S.Sequence{SP2.vu16([x0, x1, x2, x3, x4, x5, x6, x7], S.EmptyItems{})}, {==}, spec, C.GtAEB382AD1F_spec_encode(x0, x1, x2, x3, x4, x5, x6, x7))

@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_Gt967E8D815F.bend as C
 
 def Gt967E8D815F_spec_unique(+x0: U32, +v: S.Value, spec: Decoding.decodes(Spec.Gt967E8D815F(), [B.byte_sel(0, x0)], v))
     -> {v == S.UnsignedValue{P.UInt{B.byte_sel(0, x0), 0, 0, 0, 0, 0, 0, 0}} : S.Value}:
-  E.image_unique(Spec.Gt967E8D815F(), [B.byte_sel(0, x0)], v, S.UnsignedValue{P.UInt{B.byte_sel(0, x0), 0, 0, 0, 0, 0, 0, 0}}, VS.public_sound(Spec.Gt967E8D815F(), {==}), spec, C.Gt967E8D815F_spec_encode(x0))
+  E.valid_unique(Spec.Gt967E8D815F(), [B.byte_sel(0, x0)], v, S.UnsignedValue{P.UInt{B.byte_sel(0, x0), 0, 0, 0, 0, 0, 0, 0}}, {==}, spec, C.Gt967E8D815F_spec_encode(x0))
