@@ -1,6 +1,13 @@
 """The shared bit-list view module (e2e/e2e_bview.bend) and the generic bit lists' view lemmas, for e2e_bridge."""
 import itertools
 
+
+def _src(p):
+    """a proving module's text as it reads before the light split (runtime_refs.unwire)"""
+    import runtime_refs as RR
+    return RR.unwire(Path(p).read_text())
+
+
 B = lambda b: 'True{}' if b else 'False{}'
 TH = 'FD.array__thaw(U32, T)'
 WS = 'FD.array__slots(U32, T)'
@@ -708,7 +715,7 @@ import re
 from pathlib import Path
 
 def bl_params(obj_dir, X):
-    s = (Path(obj_dir) / f'var_bits_{X}.bend').read_text()
+    s = _src(Path(obj_dir) / f'var_bits_{X}.bend')
     nby = int(re.search(r'def hB\(.*?\n.*?-> \{Nat\.is_le\(U32\.to_nat\(n\), (\d+)n\)', s, re.S).group(1))
     lim = int(re.search(r'\+bd: \{Nat\.is_le\(BD\(t, n\), U32\.to_nat\((\d+)\)\)', s).group(1))
     kdz = int(re.search(r'def hdzK\(.*?\n.*?-> \{Nat\.is_le\(VL\.DZ\(n\), (\d+)n\)', s, re.S).group(1))
@@ -776,7 +783,7 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
 def bc_params(obj_dir, mod):
     """A bit list inside a container (var_bitc / big_var_bitc): the window's word start, the bit limit, the byte bound,
     the storage depth bound and the view's REST (the other fields' codec values) from the codec module."""
-    s = (Path(obj_dir) / mod).read_text()
+    s = _src(Path(obj_dir) / mod)
     mv = re.search(r'^def VAL\(\+t: FD\.array__Tree<U32>, \+n: U32\) -> S\.Value: (.*)$', s, re.M).group(1)
     mi = re.match(r'S\.Sequence\{S\.Items\{S\.BitsValue\{VBL\.bl\(VR\.WB\(t, (\d+)n, U32\.to_nat\(LL\(n\)\)\)\)\}, (.*)\}\}$', mv)
     i0, rest = int(mi.group(1)), mi.group(2)
@@ -1006,7 +1013,7 @@ def hn3y(+L: U32, +k: Nat, +hk: {Nat.is_lt(k, 32n) == True{} : Bool}, +hy: {Nat.
 
 
 def gw_params(obj_dir, mod):
-    s = (Path(obj_dir) / mod).read_text()
+    s = _src(Path(obj_dir) / mod)
     lim = int(re.search(r'def cC\(.*?\n.*?-> \{Nat\.is_le\(BD\(t, off, len\), U32\.to_nat\((\d+)\)\)', s, re.S).group(1))
     kdz = int(re.search(r'def hdzK\(.*?\n.*?-> \{Nat\.is_le\(VLS\.DZ\(len\), (\d+)n\)', s, re.S).group(1))
     ky = int(re.search(r'def hyB\(.*?-> \{Nat\.is_le\(VC\.YL\(len\), VB\.pw\((\d+)n\)\)', s).group(1))
@@ -1065,7 +1072,7 @@ GW_IMPORTS = ['import ../proofs/obj/bitlist_rep.bend as BR', 'import ../proofs/o
 
 
 def gwa_params(obj_dir, mod):
-    s = (Path(obj_dir) / mod).read_text()
+    s = _src(Path(obj_dir) / mod)
     lim = int(re.search(r'def cC\(.*?\n.*?-> \{Nat\.is_le\(BD\(t, off, len\), U32\.to_nat\((\d+)\)\)', s, re.S).group(1))
     kdz = int(re.search(r'def hdzK\(.*?\n.*?-> \{Nat\.is_le\(VLS\.DZ\(len\), (\d+)n\)', s, re.S).group(1))
     ky = int(re.search(r'def hyB\(.*?-> \{Nat\.is_le\(VC\.YL\(len\), VB\.pw\((\d+)n\)\)', s).group(1))
@@ -1130,7 +1137,7 @@ def {P}_bwa(+d: Nat, +t: FD.array__Tree<U32>, +i: Nat, +off: U32, +len: U32, +eo
 def attw_text(obj_dir, pmod='big_var_win_Attestation.bend', cmod='big_var_win_bits131072.bend', name='Attestation'):
     """e2e_attw: the view of the Attestation a word-aligned window reader builds (its bit list via gwa_text,
     its bit vector via e2e_bits.bw, the rest by computation)."""
-    s = (Path(obj_dir) / pmod).read_text()
+    s = _src(Path(obj_dir) / pmod)
     val = re.search(r'^def VALw\(\+t: FD\.array__Tree<U32>, \+i: Nat, \+len: U32\) -> S\.Value: (.*)$', s, re.M).group(1)
     head = 'S.Sequence{S.Items{CH.VALw(t, JW(i), LLw(len)), '
     assert val.startswith(head) and val.endswith('}}')
@@ -1180,7 +1187,7 @@ WIN_HYP = ('+eo: {{U32.to_nat(off) == A.quad(i) : Nat}}, +hd: {{Nat.is_lt(d, 31n
 def lift_w(obj_dir, lemma, name, W, pmod, C, cname, clemma):
     """{lemma}: the view of the {name} a word-aligned window reader builds, from its one windowed child's view
     ({clemma}); every other field views as its value by computation."""
-    s = (Path(obj_dir) / pmod).read_text()
+    s = _src(Path(obj_dir) / pmod)
     val = re.search(r'^def VALw\(\+t: FD\.array__Tree<U32>, \+i: Nat, \+len: U32\) -> S\.Value: (.*)$', s, re.M).group(1)
     CV0 = 'CH.VALw(t, JW(i), LLw(len))'
     assert val.count(CV0) == 1 and not re.search(r'(?<![\w.])(JW|LLw|OWc|CH)\b', val.replace(CV0, ''))
@@ -1335,7 +1342,7 @@ def _split_top(s):
 
 
 def venc_bitc(obj_dir, R, X, pmod):
-    s = (Path(obj_dir) / pmod).read_text()
+    s = _src(Path(obj_dir) / pmod)
     obje = re.search(r'^def OBJE\((.*?)\) -> (\S+): (.*)$', s, re.M)
     params, Dt, body = obje.group(1), obje.group(2), obje.group(3)
     W = [p.split(':')[0].strip()[1:] for p in _split_top(params) if re.match(r'\+w\d+:', p.strip())]
@@ -1486,9 +1493,9 @@ def _def_body(s, name):
 
 def venc_agg(obj_dir, R, X, pmod, cR, cX):
     """(i) for an aggregate whose encode module pmod reads its child cX's words (the child's (i) module: vx)."""
-    s = (Path(obj_dir) / pmod).read_text()
-    sa = (Path(obj_dir) / 'big_var_bitc_enc_Attestation.bend').read_text()
-    sc = (Path(obj_dir) / 'big_var_codec_AggregateAndProof_enc.bend').read_text()
+    s = _src(Path(obj_dir) / pmod)
+    sa = _src(Path(obj_dir) / 'big_var_bitc_enc_Attestation.bend')
+    sc = _src(Path(obj_dir) / 'big_var_codec_AggregateAndProof_enc.bend')
     m = _def_body(s, 'OBJX')
     W = [p.split(':')[0].strip()[1:] for p in _split_top(m.group(1)) if re.match(r'\+[a-z]\d+:', p.strip())]
     WS_ = ', '.join(W)
