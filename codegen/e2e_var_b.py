@@ -131,13 +131,22 @@ def venc_bytelist(DB, LIM):
 # object's view, for every object the root law represents (rep) whose storage is at depth below {DB} (hs:
 # the encode laws take dw < {DB}, the root law's invariant dw < 32).
 
-# the output's depth DO(N) is below 29, and 4 * 2^DO(N) holds the N bytes
-def hdo(+dw: Nat, +N: U32, +hdw: {{Nat.is_lt(dw, {DB}n) == True{{}} : Bool}}, +hn: {HN}) -> {{Nat.is_lt(VL.DO(N), 29n) == True{{}} : Bool}}:
-  FD.nat__le_lt_trans(VL.DO(N), dw, 29n, VD.wd_min(VC.nwu(N), dw, EN.nwp(dw, N, hdw, hn)), FD.nat__lt_trans(dw, {DB}n, 29n, hdw, {{==}}))
+# the output's depth DO(N) is below 29 (N <= 2^30), and 4 * 2^DO(N) holds the N bytes
+# N <= 2^30 as a U32 bound gives N <= 4 * 2^28 (through the U32 power: the Nat literal 2^28 would unfold)
+def q28(+N: U32, +hN: {{U32.is_le(N, {LIM}) == True{{}} : Bool}}) -> {{Nat.is_le(U32.to_nat(N), A.quad(VB.pw(28n))) == True{{}} : Bool}}:
+  +h1 = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le(N, {LIM}), Nat.is_le(U32.to_nat(N), U32.to_nat({LIM})), VB.le_u32n(N, {LIM}), hN)
+  +h2 = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, U32.is_le({LIM}, O.pow2u(30n)), Nat.is_le(U32.to_nat({LIM}), U32.to_nat(O.pow2u(30n))), VB.le_u32n({LIM}, O.pow2u(30n)), {{==}})
+  +h3 = FD.nat__le_trans(U32.to_nat(N), U32.to_nat({LIM}), U32.to_nat(O.pow2u(30n)), h1, h2)
+  +h4 = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat(N), z) == True{{}} : Bool}}, U32.to_nat(O.pow2u(30n)), O.pow2n(30n), VD.s_pow2u_val(30n, {{==}}), h3)
+  FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat(N), A.quad(z)) == True{{}} : Bool}}, O.pow2n(28n), VB.pw(28n), Equal.sym(Nat, VB.pw(28n), O.pow2n(28n), VD.s_pow2_eq(28n)), h4)
 
-def hno(+dw: Nat, +N: U32, +hdw: {{Nat.is_lt(dw, {DB}n) == True{{}} : Bool}}, +hn: {HN}) -> {{Nat.is_le(U32.to_nat(N), A.quad(FD.spec_common__pow2(VL.DO(N)))) == True{{}} : Bool}}:
-  +h0 = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(VL.DO(N))) == True{{}} : Bool}}, Nat.add(VC.NW(N), 0n), VC.NW(N), FD.nat__add_zero(VC.NW(N)), EN.hdst(dw, N, hdw, hn))
-  FD.nat__le_trans(U32.to_nat(N), A.quad(VC.NW(N)), A.quad(FD.spec_common__pow2(VL.DO(N))), VZ.quad_nw_ge(N, VL.KK(dw), VL.kk_lt(dw, hdw), VL.hyn(dw, N, hn)),
+def hdo(+N: U32, +hN: {{U32.is_le(N, {LIM}) == True{{}} : Bool}}) -> {{Nat.is_lt(VL.DO(N), 29n) == True{{}} : Bool}}:
+  FD.nat__le_lt_trans(VL.DO(N), 28n, 29n, VD.wd_min(VC.nwu(N), 28n, EN.nwp(28n, N, {{==}}, q28(N, hN), hN)), {{==}})
+
+def hno(+dw: Nat, +N: U32, +hdw: {{Nat.is_lt(dw, {DB}n) == True{{}} : Bool}}, +hn: {HN}, +hN: {{U32.is_le(N, {LIM}) == True{{}} : Bool}})
+    -> {{Nat.is_le(U32.to_nat(N), A.quad(FD.spec_common__pow2(VL.DO(N)))) == True{{}} : Bool}}:
+  +h0 = FD.logic__subst(Nat, z => {{Nat.is_le(z, VB.pw(VL.DO(N))) == True{{}} : Bool}}, Nat.add(VC.NW(N), 0n), VC.NW(N), FD.nat__add_zero(VC.NW(N)), EN.hdst(dw, N, hdw, hn, hN))
+  FD.nat__le_trans(U32.to_nat(N), A.quad(VC.NW(N)), A.quad(FD.spec_common__pow2(VL.DO(N))), VZ.quad_nw_geU(N, VB.le_nmax(N, VB.u32le_trans(N, {LIM}, VB.NMAX(), hN, {{==}}))),
     C.q4(VC.NW(N), FD.spec_common__pow2(VL.DO(N)), h0))
 
 # (i) on storage T of depth dw < {DB} holding N bytes
@@ -146,7 +155,7 @@ def a1(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +pf: {{FD.array__perfect(U32,
   %Equal.sym(O.Words & B.Buf, {ENC(OW)}, ({OW}, B.Buf{{FD.array__thaw(U32, EN.OUT(N, T)), N}}), EN.encode_eval(dw, T, N, pf, hdw, hn, hN)) :
     {{Some{{E.obytes(Pair.snd(O.Words, B.Buf, _))}} == API.serialize(Spec.{X}(), S.BytesValue{{WO.wview({OW})}}) : Maybe<&2, +List<U32>>}}
   %Equal.sym(+List<U32>, E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUT(N, T)), N}}), {BYT},
-      EM.ob(VL.DO(N), EN.OUT(N, T), N, VB.mone_perfect(VC.NW(N), 0n, 0n, VL.DO(N), VC.ZT(VL.DO(N)), T, FD.array__trep_perfect(U32, VL.DO(N), 0)), hdo(dw, N, hdw, hn), hno(dw, N, hdw, hn))) :
+      EM.ob(VL.DO(N), EN.OUT(N, T), N, VB.mone_perfect(VC.NW(N), 0n, 0n, VL.DO(N), VC.ZT(VL.DO(N)), T, FD.array__trep_perfect(U32, VL.DO(N), 0)), hdo(N, hN), hno(dw, N, hdw, hn, hN))) :
     {{Some{{_}} == API.serialize(Spec.{X}(), S.BytesValue{{WO.wview({OW})}}) : Maybe<&2, +List<U32>>}}
   %Equal.sym(+List<U32>, WO.wview({OW}), BL.WX0(T, N), BL.wv0(T, N)) :
     {{Some{{{BYT}}} == API.serialize(Spec.{X}(), S.BytesValue{{_}}) : Maybe<&2, +List<U32>>}}
@@ -1642,13 +1651,13 @@ def venc_plist_a(R, X):
             'import ../proofs/obj/words_spec.bend as WS', 'import ../proofs/obj/prog_list.bend as PG', 'import ../proofs/obj/packed_bytes.bend as PBF',
             'import ../proofs/obj/pb_min.bend as PBM', 'import ../proofs/obj/vua_win.bend as UW', f'import ../proofs/obj/big_var_plist_{X}_enc.bend as EN',
             f'import ../proofs/obj/{win}.bend as W', 'import ./e2e_support.bend as E', 'import ./e2e_cap.bend as C', 'import ./e2e_emit.bend as EM',
-            'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL']
+            'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ../proofs/obj/vbig.bend as VBG', 'import ../proofs/obj/vdepth.bend as VD']
     return '\n'.join(imps) + f"""
 
 # GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
 # {R} (variable size, a progressive list): the object API's encoder's bytes are END_TO_END's serialize of the
 # object's view, for every object the root law represents (rep) whose storage is at depth below 28 (hs: the
-# encode laws take dw < 28, the root law's invariant dw < 32).
+# encode laws take dw < 31, the output path (e2e_emit.ob) depth below 29, the root law's invariant dw < 32).
 
 """ + body
 
@@ -1707,7 +1716,7 @@ def venc_plist_b(R, X):
 # GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
 # {R} (variable size, a progressive list): the object API's encoder's bytes are END_TO_END's serialize of the
 # object's view, for every object the root law represents (rep) whose storage is at depth below 28 (hs: the
-# encode laws take dw < 28, the root law's invariant dw < 32).
+# encode laws take dw < 31, the output path (e2e_emit.ob) depth below 29, the root law's invariant dw < 32).
 
 """ + body
 
@@ -3145,11 +3154,22 @@ _PLA_VIEW = {
   +e2 = Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PBF.it2(W.CQ(N), BL.WX0(T, N)), PBM.it2(W.CQ(N), BL.WX0(T, N)), PL.it2eq(W.CQ(N), BL.WX0(T, N)))
   +ev = Equal.trans(S.Value, @VIEW@(@OW@), S.Sequence{PBF.it2(W.CQ(N), WO.wview(@OW@))}, W.VALw(T, 0n, N), e0,
     Equal.trans(S.Value, S.Sequence{PBF.it2(W.CQ(N), WO.wview(@OW@))}, S.Sequence{PBF.it2(W.CQ(N), BL.WX0(T, N))}, W.VALw(T, 0n, N), e1, e2))"""}
-_PLA_TEXT = """# (i) over storage T of depth dw < 28 holding N bytes
+_PLA_TEXT = """# at depth below 28 the storage's N bytes are within the object API's limit (through the U32 power 2^29)
+def nmx(+dw: Nat, +N: U32, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hN: @HN@) -> {U32.is_le(N, VB.NMAX()) == True{} : Bool}:
+  +h1 = FD.nat__le_trans(U32.to_nat(N), A.quad(VB.pw(dw)), A.quad(VB.pw(27n)), hN, C.q4(VB.pw(dw), VB.pw(27n), VBG.pw_mono(dw, 27n, FD.nat__lt_succ_le(dw, 27n, hdw))))
+  +h2 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), A.quad(z)) == True{} : Bool}, VB.pw(27n), O.pow2n(27n), VD.s_pow2_eq(27n), h1)
+  +h3 = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(N), z) == True{} : Bool}, O.pow2n(29n), U32.to_nat(O.pow2u(29n)), Equal.sym(Nat, U32.to_nat(O.pow2u(29n)), O.pow2n(29n), VD.s_pow2u_val(29n, {==})), h2)
+  +h4 = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(O.pow2u(29n), VB.NMAX()), Nat.is_le(U32.to_nat(O.pow2u(29n)), U32.to_nat(VB.NMAX())), VB.le_u32n(O.pow2u(29n), VB.NMAX()), {==})
+  FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(N), U32.to_nat(VB.NMAX())), U32.is_le(N, VB.NMAX()), Equal.sym(Bool, U32.is_le(N, VB.NMAX()), Nat.is_le(U32.to_nat(N), U32.to_nat(VB.NMAX())), VB.le_u32n(N, VB.NMAX())),
+    FD.nat__le_trans(U32.to_nat(N), U32.to_nat(O.pow2u(29n)), U32.to_nat(VB.NMAX()), h3, h4))
+
+# (i) over storage T of depth dw < 28 holding N bytes (the encode laws take dw < 31)
 def core(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hN: @HN@@XP@)
     -> @G_OW@:
 @VIEWL@
-  %Equal.sym(O.Words & B.Buf, @ENC_OW@, (@OW@, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), EN.encode_eval(dw, T, N, pf, hdw, hN)) :
+  +hM = nmx(dw, N, hdw, hN)
+  +h31 = FD.nat__lt_trans(dw, 28n, 31n, hdw, {==})
+  %Equal.sym(O.Words & B.Buf, @ENC_OW@, (@OW@, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), EN.encode_eval(dw, T, N, pf, h31, hN, hM)) :
     {Some{E.obytes(Pair.snd(O.Words, B.Buf, _))} == API.serialize(Spec.@X@(), @VIEW@(@OW@)) : Maybe<&2, +List<U32>>}
   %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), @BYT@,
       EM.ob(VL.DO(N), VL.OUTP(N, T), N, BL.pfo(N, T), BL.hdo(dw, N, hdw, hN), BL.hno(dw, N, hdw, hN))) :
@@ -3157,7 +3177,7 @@ def core(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +pf: {FD.array__perfect(U32
   %Equal.sym(S.Value, @VIEW@(@OW@), W.VALw(T, 0n, N), ev) : {Some{@BYT@} == API.serialize(Spec.@X@(), _) : Maybe<&2, +List<U32>>}
   Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.@X@(), W.VALw(T, 0n, N)), Some{@BYT@},
     Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.@X@(), W.VALw(T, 0n, N)), Encoding.encoding_for_legal_type(Spec.@X@(), W.VALw(T, 0n, N)), Some{@BYT@},
-      E.serialize_legal(Spec.@X@(), W.VALw(T, 0n, N), VS.public_sound(Spec.@X@(), {==})), EN.encode_spec(dw, T, N, pf, hdw, hN@XA@)))
+      E.serialize_legal(Spec.@X@(), W.VALw(T, 0n, N), VS.public_sound(Spec.@X@(), {==})), EN.encode_spec(dw, T, N, pf, h31, hN, hM@XA@)))
 
 def e2(-o: O.Words, +T: FD.array__Tree<U32>, +dw: Nat, +N: U32, +eo: {o == @OW@ : O.Words}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool},
     +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +hN: @HN@@EXP@) -> @G_o@:
@@ -3211,7 +3231,8 @@ def core(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +c: Nat, +pf: {FD.array__pe
   +e3 = Equal.cong(S.Value, S.Value, z => S.Sequence{z}, @VW@(c, FD.array__slots(U32, T)), @CW@(c, FD.array__slots(U32, T)), PW.eq@W@(c, FD.array__slots(U32, T)))
   +ev = Equal.trans(S.Value, @VIEW@(@OW@), S.Sequence{@VW@(U32.to_nat(U32.shrn(N, @S@n)), FD.array__slots(U32, T))}, EN.XE(c, FD.array__slots(U32, T)), e1,
     Equal.trans(S.Value, S.Sequence{@VW@(U32.to_nat(U32.shrn(N, @S@n)), FD.array__slots(U32, T))}, S.Sequence{@VW@(c, FD.array__slots(U32, T))}, EN.XE(c, FD.array__slots(U32, T)), e2, e3))
-  %Equal.sym(O.Words & B.Buf, @ENC_OW@, (@OW@, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), EN.encode_eval(dw, T, N, c, pf, hdw, ec, hroom)) :
+  +h31 = FD.nat__lt_trans(dw, 28n, 31n, hdw, {==})
+  %Equal.sym(O.Words & B.Buf, @ENC_OW@, (@OW@, B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), EN.encode_eval(dw, T, N, c, pf, h31, ec, hroom)) :
     {Some{E.obytes(Pair.snd(O.Words, B.Buf, _))} == API.serialize(Spec.@X@(), @VIEW@(@OW@)) : Maybe<&2, +List<U32>>}
   %Equal.sym(+List<U32>, E.obytes(B.Buf{FD.array__thaw(U32, VL.OUTP(N, T)), N}), @BYT@,
       EM.ob(VL.DO(N), VL.OUTP(N, T), N, BL.pfo(N, T), BL.hdo(dw, N, hdw, hN), BL.hno(dw, N, hdw, hN))) :
@@ -3219,7 +3240,7 @@ def core(+dw: Nat, +T: FD.array__Tree<U32>, +N: U32, +c: Nat, +pf: {FD.array__pe
   %Equal.sym(S.Value, @VIEW@(@OW@), EN.XE(c, FD.array__slots(U32, T)), ev) : {Some{@BYT@} == API.serialize(Spec.@X@(), _) : Maybe<&2, +List<U32>>}
   Equal.sym(Maybe<&2, +List<U32>>, API.serialize(Spec.@X@(), EN.XE(c, FD.array__slots(U32, T))), Some{@BYT@},
     Equal.trans(Maybe<&2, +List<U32>>, API.serialize(Spec.@X@(), EN.XE(c, FD.array__slots(U32, T))), Encoding.encoding_for_legal_type(Spec.@X@(), EN.XE(c, FD.array__slots(U32, T))), Some{@BYT@},
-      E.serialize_legal(Spec.@X@(), EN.XE(c, FD.array__slots(U32, T)), VS.public_sound(Spec.@X@(), {==})), EN.encode_spec(dw, T, N, c, pf, hdw, ec, hroom)))
+      E.serialize_legal(Spec.@X@(), EN.XE(c, FD.array__slots(U32, T)), VS.public_sound(Spec.@X@(), {==})), EN.encode_spec(dw, T, N, c, pf, h31, ec, hroom)))
 
 def e2(-o: O.Words, +T: FD.array__Tree<U32>, +dw: Nat, +N: U32, +eo: {o == @OW@ : O.Words}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool},
     +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool}, +ec: {U32.to_nat(N) == EL.@BK@(@CNT@(@OW@)) : Nat}, +hroom: {Nat.is_le(EL.@WK@(@CNT@(@OW@)), VB.pw(dw)) == True{} : Bool}) -> @G_o@:
@@ -3579,8 +3600,8 @@ def sdpv(w: O.Words, +k: Nat) -> Data:
           {Nat.is_le(O.e8(1n+q), FD.spec_common__pow2(dw)) == True{} : Bool}))))))))
 """
 VDEC_VIEWS['Transaction'] = vdec_bytelist('Transaction', 28)
-VENC_SHAPES['Transaction'] = venc_bytelist(28, 1073741824)
-VENC_PREMISE['Transaction'] = 'rep: LO.rep_bl(o, Spec.Transaction()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)'
+VENC_SHAPES['Transaction'] = venc_bytelist(31, 1073741824)
+VENC_PREMISE['Transaction'] = 'rep: LO.rep_bl(o, Spec.Transaction()) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)'
 SUPPORT_OUT['e2e_bvh.bend'] = '\n'.join(['import Base', 'import ../types/schema.bend as S', 'import ../proofs/obj/spec_bits.bend as FB',
     'import ../proofs/obj/root_names.bend as RN', 'import ../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d', 'import ./e2e_bits.bend as EB', '',
     '# GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.', '# Bit vectors in the e2e bridges: the root view\'s bits are the codec value\'s spec bits (e2e_bits.bw).', '',

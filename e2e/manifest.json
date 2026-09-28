@@ -3510,7 +3510,7 @@
     "laws": [
      "FuluTransaction_e2e_encode"
     ],
-    "premise": "rep: LO.rep_bl(o, Spec.Transaction()) and hs: BL.sdk(o, 28n) (its storage at depth below 28: the encode laws take dw < 28, the root law dw < 32; dropped when the encode laws take dw < 32)"
+    "premise": "rep: LO.rep_bl(o, Spec.Transaction()) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)"
    }
   ],
   "VarTestStruct_e2e_generated.bend": [
