@@ -3,6 +3,7 @@ import ../src/obj.bend as O
 import ../types/schema.bend as S
 import ../spec/fulu_schemas.bend as Spec
 import ../proofs/obj/dk.bend as DK
+import ../proofs/obj/root_names_light.bend as RN_L
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/schema_shapes.bend as SH
 import ../proofs/obj/big_encx_ExecutionRequests_iface.bend as CI

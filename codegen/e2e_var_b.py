@@ -6629,14 +6629,14 @@ _LV_TY = {'b96': 'FuluBytes96_d.Bytes96', 'b32': 'FuluBytes32_d.Bytes32', 'b20':
 _LV_NW = {'b96': 24, 'b32': 8, 'b20': 5, 'u64': 2, 'u256': 8}
 
 
-def _lv_lemma(k):
+def _lv_lemma(k, RNm='RN'):
     ty = _LV_TY[k]
     if k == 'Eth1Data':
         a = ', '.join(f'+w{i}' for i in range(8)); b = ', '.join(f'+w{i}' for i in range(8, 16))
-        return (f'def lv_{k}(+o: {ty}) -> {{RN.v_{k}(o) == CI.LV_{k}(o) : S.Value}}:\n  match o:\n    case {ty}{{+a0, +a1, +a2}}:\n'
+        return (f'def lv_{k}(+o: {ty}) -> {{{RNm}.v_{k}(o) == CI.LV_{k}(o) : S.Value}}:\n  match o:\n    case {ty}{{+a0, +a1, +a2}}:\n'
                 f'      match a0 a1 a2:\n        case FuluBytes32_d.Bytes32{{{a}}} O.U64{{+u0, +u1}} FuluBytes32_d.Bytes32{{{b}}}: {{==}}\n')
     ws = ', '.join(f'+w{i}' for i in range(_LV_NW[k]))
-    return f'def lv_{k}(+o: {ty}) -> {{RN.v_{k}(o) == CI.LV_{k}(o) : S.Value}}:\n  match o:\n    case {ty}{{{ws}}}: {{==}}\n'
+    return f'def lv_{k}(+o: {ty}) -> {{{RNm}.v_{k}(o) == CI.LV_{k}(o) : S.Value}}:\n  match o:\n    case {ty}{{{ws}}}: {{==}}\n'
 
 
 def crec_text(X, parts, mod, extra_imports=(), note=''):
@@ -6684,7 +6684,7 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
     views = []
     while vit.startswith('S.Items{'):
         a = _peel(vit, 'S.Items'); views.append(a[0][:a[0].rindex('(')]); vit = a[1]
-    views = [('RN.' + w[5:]) if w.startswith('RN_L.') else (w if '.' in w else 'RT.' + w) for w in views]
+    views = [(w if '.' in w else 'RT.' + w) for w in views]
     assert len(views) == n
     pj = lambda j, o='o': f'RT.pj_{X}_{j}({o})'
     sch = lambda j: 'SH.Chain_head(' + 'SH.Chain_tail(' * j + f'SH.Container_fields({SC})' + ')' * j + ')'
@@ -6705,7 +6705,7 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
     for j in FX_:
         m_ = _re.fullmatch(r'LV_(\w+)\(' + _re.escape(POS[j]) + r'\)', items[j])
         fxk[j] = m_.group(1)
-        assert views[j] == f'RN.v_{fxk[j]}', (views[j], fxk[j])
+        assert views[j] in (f'RN.v_{fxk[j]}', f'RN_L.v_{fxk[j]}'), (views[j], fxk[j])
     # the bound: the conjuncts are the parts' facts (in order), then the byte bound
     bnd = okt[-1]
     assert bnd.startswith('Nat.is_le(') and bnd.endswith(', A.quad(VB.pw(28n)))'), bnd[-80:]
@@ -6727,6 +6727,16 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
     ll = {j: terms[1 + i] for i, j in enumerate(PT)}
     SUMT = lambda o='o': _sum_of([terms[0]] + [parts[j]['L'](po(j, o)) for j in PT])
     SZ = lambda o='o': f'{{Nat.is_le({SUMT(o)}, A.quad(VB.pw(28n))) == True{{}} : Bool}}'
+    WIT = any(parts[j].get('bound') for j in PT)
+    SZWd = ''
+    if WIT:
+        inner = f'{{Nat.is_le({_sum_of([terms[0]] + [f"n{j}" for j in PT])}, A.quad(VB.pw(28n))) == True{{}} : Bool}}'
+        for j in reversed(PT):
+            inner = f'DK.P2({{n{j} == {parts[j]["L"](po(j))} : Nat}}, {inner})'
+        for j in reversed(PT):
+            inner = f'DK.Ex(Nat, n{j} => {inner})'
+        SZWd = (f'# the (i) size premise: the encoding within 4 * 2^28 bytes, with each part\'s byte count as a witness n<j>\n'
+                f'def SZW(o: {OT}) -> Data: {inner}\n\n')
     RX = (f'def R_{X}(po: {OT}) -> Data:\n'
           f'  DK.Ex(CI.MW, m => DK.P2({{po == CI.TH(m) : {OT}}}, DK.P2({{RT.v_{X}(CI.TH(m)) == CI.VAL(m) : S.Value}},\n'
           f'    DK.P2({{CI.OK(m) == True{{}} : Bool}}, {{LY.LN(CI.ENC(m)) == {SUMT("po")} : Nat}}))))\n')
@@ -6852,7 +6862,7 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
             prem.append(f'+{nm}{j}: {ty(po(j))}')
     mk = [f'# the record of every object the root law represents, with the parts\' premises (see the parts) and its bytes within',
           f'# the encode record\'s bound (hZ)',
-          f'def mk_{X}(-o: {OT}, +rep: RT.rep_{X}(o, {SC}){"".join(", " + p for p in prem)}, +hZ: {SZ()}) -> R_{X}(o):']
+          f'def mk_{X}(-o: {OT}, +rep: RT.rep_{X}(o, {SC}){"".join(", " + p for p in prem)}, +hZ: {"SZW(o)" if WIT else SZ()}) -> R_{X}(o):']
     cur, q = 'rep', 0
     for j in FX_:
         mk.append(f'  (+{POS[j]}, q{q}) = {cur}'); cur = f'q{q}'; q += 1
@@ -6867,34 +6877,48 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
         jj = int(c[1:]) if c != 'eo' else None
         if jj is not None and parts.get(jj, {}).get('box'):
             mk.append(f'  (+eb{jj}, +ri{jj}) = r{jj}')
-    # the parts' size bounds, from hZ
-    PK = lambda k_: _sum_of([terms[0]] + [tl[j] for j in PT[:k_]])
-    for i_, j in enumerate(PT):
-        if parts[j].get('bound') is None:
-            continue
-        h = 'hZ'
-        for k_ in range(len(PT), i_ + 1, -1):
-            h = f'pre_le({PK(k_ - 1)}, {tl[PT[k_ - 1]]}, A.quad(VB.pw(28n)), {h})'
-        mk.append(f'  +hz{j} = sub_le({PK(i_)}, {tl[j]}, A.quad(VB.pw(28n)), {h})')
+    # the parts' size bounds, from hZ (its byte counts as runtime witnesses n<j>: the object is erased)
+    if WIT:
+        cur = 'hZ'
+        for i_, j in enumerate(PT):
+            mk.append(f'  (+n{j}, u{i_}) = {cur}'); cur = f'u{i_}'
+        for i_, j in enumerate(PT):
+            mk.append(f'  (+en{j}, u{len(PT) + i_}) = {cur}'); cur = f'u{len(PT) + i_}'
+        mk[-1] = mk[-1].replace(f'(+en{PT[-1]}, u{2 * len(PT) - 1}) = ', f'(+en{PT[-1]}, +hn) = ')
+        nt = {j: f'n{j}' for j in PT}
+        PK = lambda k_: _sum_of([terms[0]] + [nt[j] for j in PT[:k_]])
+        for i_, j in enumerate(PT):
+            if parts[j].get('bound') is None:
+                continue
+            h = 'hn'
+            for k_ in range(len(PT), i_ + 1, -1):
+                h = f'pre_le({PK(k_ - 1)}, {nt[PT[k_ - 1]]}, A.quad(VB.pw(28n)), {h})'
+            mk.append(f'  +hz{j} = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(28n))) == True{{}} : Bool}}, n{j}, {tl[j]}, en{j}, sub_le({PK(i_)}, n{j}, A.quad(VB.pw(28n)), {h}))')
+        mixn = lambda k_, z_: _sum_of([terms[0]] + [(tl[j] if i_ < k_ else (z_ if i_ == k_ else nt[j])) for i_, j in enumerate(PT)])
+        prev = 'hn'
+        for i_, j in enumerate(PT):
+            mk.append(f'  +hZ{i_} = FD.logic__subst(Nat, z => {{Nat.is_le({mixn(i_, "z")}, A.quad(VB.pw(28n))) == True{{}} : Bool}}, n{j}, {tl[j]}, en{j}, {prev})')
+            prev = f'hZ{i_}'
+        hZf = prev
     calls = []
     for j in PT:
         r_ = f'ri{j}' if parts[j].get('box') else f'r{j}'
         calls.append(parts[j]['mk'](po(j), sch(j), r_, f'hz{j}', j))
     if sa is not None:
-        mk.append(f'  kS({heada}, sa1({pj(sa)}, {sch(sa)}, r{sa}){boxa}, {", ".join(calls)}, hZ)')
+        mk.append(f'  kS({heada}, sa1({pj(sa)}, {sch(sa)}, r{sa}){boxa}, {", ".join(calls)}, {hZf if WIT else "hZ"})')
     else:
-        mk.append(f'  kX({heada}{boxa}, {", ".join(calls)}, hZ)')
+        mk.append(f'  kX({heada}{boxa}, {", ".join(calls)}, {hZf if WIT else "hZ"})')
     helpers = ('# a part of a sum is within the sum\'s bound\n'
                'def pre_le(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_le(Nat.add(a, b), c) == True{} : Bool}) -> {Nat.is_le(a, c) == True{} : Bool}:\n'
                '  FD.nat__le_trans(a, Nat.add(a, b), c, FD.nat__le_add_right(a, b), h)\n'
                'def sub_le(+a: Nat, +b: Nat, +c: Nat, +h: {Nat.is_le(Nat.add(a, b), c) == True{} : Bool}) -> {Nat.is_le(b, c) == True{} : Bool}:\n'
                '  FD.nat__le_trans(b, Nat.add(a, b), c, FD.logic__subst(Nat, z => {Nat.is_le(b, z) == True{} : Bool}, Nat.add(b, a), Nat.add(a, b), FD.nat__add_comm(b, a), FD.nat__le_add_right(b, a)), h)\n')
-    lvs = ''.join(_lv_lemma(k) + '\n' for k in sorted(set(fxk.values())))
+    lvs = ''.join(_lv_lemma(k, views[j].split('.')[0]) + '\n' for k, j in sorted({k_: j_ for j_, k_ in fxk.items()}.items()))
     imps = (['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../spec/fulu_schemas.bend as Spec',
-             'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/root_names.bend as RN', 'import ../proofs/obj/root_types.bend as RT',
+             'import ../proofs/obj/dk.bend as DK', 'import ../proofs/obj/root_names.bend as RN', 'import ../proofs/obj/root_names_light.bend as RN_L', 'import ../proofs/obj/root_types.bend as RT',
              'import ../proofs/obj/schema_shapes.bend as SH', 'import ../proofs/obj/elems48.bend as E48',
              f'import ../proofs/obj/big_encx_{X}_iface.bend as CI', f'import ../types/Fulu{X}_def_generated.bend as Fulu{X}_d']
-            + [i_ for i_ in _iface_imports(it) if not i_.endswith(' as CI') and not _re.search(r' as (O|S|Spec|DK|RN|RT|SH|E48)$', i_)]
+            + [i_ for i_ in _iface_imports(it) if not i_.endswith(' as CI') and not _re.search(r' as (O|S|Spec|DK|RN|RN_L|RT|SH|E48)$', i_)]
             + (['import ../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d', 'import ../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d',
                 'import ../types/FuluBytes96_def_generated.bend as FuluBytes96_d', 'import ./e2e_bvh.bend as BVH'] if sa is not None else [])
             + [f'import ../types/{t_}_def_generated.bend as {t_}_d' for t_ in sorted({_LV_TY[k].split('_d.')[0] for k in fxk.values() if '_d.' in _LV_TY[k]})]
@@ -6908,7 +6932,7 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
     return ('\n'.join(imps2) + f"\n\n# GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.\n"
             f"# {X}'s encode record (CI.MW) of an object the root law represents (mk_{X}): the object its thaw (TH), its view the\n"
             f"# record's value (VAL), the record's facts (OK), its byte count from the object alone. {note}\n\n"
-            + helpers + '\n' + lvs + RX + '\n' + "# the view of the record's object\n" + '\n'.join(vz) + '\n' + '\n'.join(kx) + '\n' + '\n'.join(out_defs) + '\n' + '\n'.join(mk) + '\n')
+            + helpers + '\n' + lvs + RX + '\n' + SZWd + "# the view of the record's object\n" + '\n'.join(vz) + '\n' + '\n'.join(kx) + '\n' + '\n'.join(out_defs) + '\n' + '\n'.join(mk) + '\n')
 
 
 def _dl_part(L, E, al, rl):
@@ -6931,3 +6955,51 @@ _ERP = {i: _dl_part(_L, _E, f'DQ{i}', f'RQ{i}') for i, (_L, _E) in enumerate(_ER
 SUPPORT_OUT['e2e_rec_ExecutionRequests.bend'] = crec_text('ExecutionRequests', _ERP, 'e2e_rec_ExecutionRequests',
     [i_ for P_ in _ERP.values() for i_ in P_['imports']],
     'Used by the containers holding one (BeaconBlockBody).')
+
+
+# ---- BeaconBlockBody's record (e2e_rec_BeaconBlockBody): its parts' record modules ----
+def _ml_part(L, al, es=False):
+    E = L.split('_', 1)[1]
+    ty = f'Fulu_list_{E}_16_d.{L}_Seq'
+    return {'R': f'{al}.R_T', 'ty': ty, 'L': lambda p_: f'{al}.LLX({p_})',
+            'mk': lambda p_, s_, r_, hb_, j_: f'{al}.mk_T({p_}, {s_}, {"{==}, " if es else ""}{{==}}, {r_}, hs{j_})',
+            'prem': [('hs', lambda p_: f'{al}.sdt({p_})')],
+            'imports': [f'import ./e2e_ml_{L}.bend as {al}', f'import ../types/Fulu_list_{E}_16_def_generated.bend as Fulu_list_{E}_16_d']}
+
+
+def _bb_parts():
+    P = {}
+    P[3] = _ml_part('l16_ProposerSlashing', 'PS3')
+    P[4] = {'R': 'AS4.R_1', 'ty': 'Fulu_list_AttesterSlashing_1_d.l1_AttesterSlashing_Seq', 'L': lambda p_: f'AS4.LN1({p_})', 'bound': True,
+            'mk': lambda p_, s_, r_, hb_, j_: f'AS4.mk_1({p_}, {s_}, {{==}}, ({{==}}, {{==}}), {r_}, hs{j_}, {hb_})',
+            'prem': [('hs', lambda p_: f'AS4.sd1({p_})')],
+            'imports': ['import ./e2e_bbsl.bend as AS4', 'import ../types/Fulu_list_AttesterSlashing_1_def_generated.bend as Fulu_list_AttesterSlashing_1_d']}
+    P[5] = {'R': 'AT5.R_8', 'ty': 'Fulu_list_Attestation_8_d.l8_Attestation_Seq', 'L': lambda p_: f'AT5.LN8({p_})', 'bound': True,
+            'mk': lambda p_, s_, r_, hb_, j_: f'AT5.mk_8({p_}, {s_}, {{==}}, {{==}}, {r_}, hs{j_}, {hb_})',
+            'prem': [('hs', lambda p_: f'AT5.sd8({p_})')],
+            'imports': ['import ./e2e_bbatt.bend as AT5', 'import ../types/Fulu_list_Attestation_8_def_generated.bend as Fulu_list_Attestation_8_d']}
+    P[6] = _ml_part('l16_Deposit', 'DP6', es=True)
+    P[7] = _dl_part('l16_SignedVoluntaryExit', 'SignedVoluntaryExit', 'VE7', 'RV7')
+    P[9] = {'R': 'RC9.R_P', 'ty': 'FuluExecutionPayload_d.ExecutionPayload', 'box': 'O.Boxed<FuluExecutionPayload_d.ExecutionPayload>', 'bx': 'ExecutionPayload',
+            'L': lambda p_: f'RC9.EPL(RT.pj_ExecutionPayload_10({p_}), RT.pj_ExecutionPayload_13({p_}), RT.pj_ExecutionPayload_14({p_}))', 'bound': True,
+            'mk': lambda p_, s_, r_, hb_, j_: f'RC9.mk_P({p_}, {r_}, hs{j_}, {hb_})',
+            'prem': [('hs', lambda p_: f'RC9.SHS_P(RT.pj_ExecutionPayload_4({p_}), RT.pj_ExecutionPayload_10({p_}), RT.pj_ExecutionPayload_13({p_}), RT.pj_ExecutionPayload_14({p_}))')],
+            'imports': ['import ./e2e_epr.bend as RC9', 'import ../types/FuluExecutionPayload_def_generated.bend as FuluExecutionPayload_d']}
+    P[10] = _dl_part('l16_SignedBLSToExecutionChange', 'SignedBLSToExecutionChange', 'BC10', 'RV10')
+    P[11] = {'R': 'K11.R_K', 'ty': 'O.Words', 'L': lambda p_: f'U32.to_nat(WO.len({p_}))',
+             'mk': lambda p_, s_, r_, hb_, j_: f'K11.mk_K({p_}, {s_}, {{==}}, {r_}, hs{j_}, hv{j_})',
+             'prem': [('hs', lambda p_: f'K11.sdk48({p_})'), ('hv', lambda p_: f'{{O.unit_ok(48, WO.len({p_})) == True{{}} : Bool}}')],
+             'imports': ['import ./e2e_bl48.bend as K11', 'import ../proofs/obj/words_obj_light.bend as WO']}
+    er = _unlight((_OBJ / 'big_encx_ExecutionRequests_iface.bend').read_text())
+    P[12] = {'R': 'RQ12.R_ExecutionRequests', 'ty': 'FuluExecutionRequests_d.ExecutionRequests', 'bound': True,
+             'L': lambda p_: f'Nat.add(Nat.add(Nat.add(12n, DQ0.WLL(RT.pj_ExecutionRequests_0({p_}))), DQ1.WLL(RT.pj_ExecutionRequests_1({p_}))), DQ2.WLL(RT.pj_ExecutionRequests_2({p_})))',
+             'mk': lambda p_, s_, r_, hb_, j_: f'RQ12.mk_ExecutionRequests({p_}, {r_}, ha{j_}, hb{j_}, hc{j_}, {hb_})',
+             'prem': [(nm, (lambda L_: (lambda p_, L_=L_, i_=i_: f'RQ{i_}.sda_{L_}(RT.pj_ExecutionRequests_{i_}({p_}), 31n)'))(L_)) for nm, (i_, (L_, E_)) in zip(('ha', 'hb', 'hc'), enumerate(_ERL))],
+             'imports': ['import ./e2e_rec_ExecutionRequests.bend as RQ12', 'import ../types/FuluExecutionRequests_def_generated.bend as FuluExecutionRequests_d']
+                        + [f'import ./e2e_dl_{L_}.bend as DQ{i_}' for i_, (L_, E_) in enumerate(_ERL)] + [f'import ./e2e_rl_{L_}.bend as RQ{i_}' for i_, (L_, E_) in enumerate(_ERL)]}
+    return P
+
+
+_BBP = _bb_parts()
+SUPPORT_OUT['e2e_rec_BeaconBlockBody.bend'] = crec_text('BeaconBlockBody', _BBP, 'e2e_rec_BeaconBlockBody',
+    [i_ for P_ in _BBP.values() for i_ in P_['imports']], 'Used by its (i) and by BeaconBlock\'s.')
