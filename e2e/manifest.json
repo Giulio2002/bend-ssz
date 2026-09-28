@@ -3869,6 +3869,26 @@
     "premise": "rep: bitlist_obj.rep_bits(o, GS.X())"
    }
   ],
+  "FuluBlob_e2e_generated.bend": [
+   {
+    "name": "FuluBlob",
+    "generated_name": "Blob",
+    "laws": [
+     "FuluBlob_e2e_encode"
+    ],
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth 16"
+   },
+   {
+    "name": "FuluBlob",
+    "generated_name": "Blob",
+    "laws": [
+     "FuluBlob_e2e_decode_view",
+     "FuluBlob_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth 16"
+   }
+  ],
   "FuluBlob_e2e_root_generated.bend": [
    {
     "name": "FuluBlob",
@@ -3876,7 +3896,7 @@
     "laws": [
      "FuluBlob_e2e_root"
     ],
-    "premise": "+rep: WO.rep_bv(o, s)"
+    "premise": "rep (the root law's representation invariant); (i) also hc: the storage at the decoder's depth 16"
    },
    {
     "name": "FuluBlobSidecar",
@@ -5817,11 +5837,6 @@
    "generated_name": "SignedBeaconBlock",
    "reason": "encode laws not over the same free words / bits"
   },
-  "FuluBlob": {
-   "generated_name": "Blob",
-   "reason": "encode laws not over the same free words / bits",
-   "iv": "FuluBlob_e2e_root_generated.bend"
-  },
   "FuluBlobSidecar": {
    "generated_name": "BlobSidecar",
    "reason": "encode laws not over the same free words / bits",
@@ -5882,6 +5897,12 @@
  },
  "root_awaiting": {},
  "fixed_size": {
+  "FuluBlob": {
+   "generated_name": "Blob",
+   "i": "FuluBlob_e2e_generated.bend",
+   "ii_iii": "FuluBlob_e2e_generated.bend",
+   "iv": "FuluBlob_e2e_root_generated.bend"
+  },
   "FuluBytes1": {
    "generated_name": "Bytes1",
    "i": "FuluBytes1_e2e_generated.bend",
