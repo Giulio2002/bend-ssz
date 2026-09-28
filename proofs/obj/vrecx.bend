@@ -320,3 +320,59 @@ def yl_pow(+e: Nat, +e1: Nat, +ee: {1n+e == e1 : Nat}, +h5: {Nat.is_le(5n, e) ==
   +h31 = F.nat__le_trans(31n, VB.pw(5n), x, {==}, F.nat__pow2_mono(5n, e, h5))
   +h = F.logic__subst(Nat, z => {Nat.is_le(Nat.add(31n, x), z) == True{} : Bool}, Nat.add(x, x), Nat.double(x), add_self_double(x), Order.add_right(31n, x, x, h31))
   F.logic__subst(Nat, z => {Nat.is_le(Nat.add(31n, x), VB.pw(z)) == True{} : Bool}, 1n+e, e1, ee, h)
+
+# ---- the region's end below 2^32 (the encoder-window twins' hl32) ---------------------------------------------
+# hl32: 4 q + (r + L) < 2^32 (the region's last byte is a U32 position), the byte-exact companion of hl.
+
+# 4 q + y <= 4 (q + NWN y).
+def yq(+q: Nat, +y: Nat) -> {Nat.is_le(Nat.add(A.quad(q), y), A.quad(Nat.add(q, WD.NWN(y)))) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_le(Nat.add(A.quad(q), y), z) == True{} : Bool}, Nat.add(A.quad(q), A.quad(WD.NWN(y))), A.quad(Nat.add(q, WD.NWN(y))),
+    VF.quad_add(q, WD.NWN(y)),
+    Order.add_left(A.quad(q), y, A.quad(WD.NWN(y)), nwn_ge(y)))
+
+# At dd < 29 (the old names): hl gives hl32.
+def hl32w(+q: Nat, +r: Nat, +L: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, L)), F.spec_common__pow2(32n)) == True{} : Bool}:
+  F.nat__le_lt_trans(Nat.add(A.quad(q), Nat.add(r, L)), A.quad(Nat.add(q, WD.NWN(Nat.add(r, L)))), F.spec_common__pow2(32n),
+    yq(q, Nat.add(r, L)), VF.r32w(Nat.add(q, WD.NWN(Nat.add(r, L))), dd, hd, hl))
+
+# The region's length and start are below 2^32.
+def yl32(+q: Nat, +r: Nat, +L: Nat, +h: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, L)), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {Nat.is_lt(L, F.spec_common__pow2(32n)) == True{} : Bool}:
+  F.nat__le_lt_trans(L, Nat.add(A.quad(q), Nat.add(r, L)), F.spec_common__pow2(32n),
+    F.nat__le_trans(L, Nat.add(r, L), Nat.add(A.quad(q), Nat.add(r, L)), Order.left_below_sum(r, L), Order.left_below_sum(A.quad(q), Nat.add(r, L))), h)
+
+# froom's field region (4 k + m <= L) ends inside U32 positions.
+def froom32(+q: Nat, +r: Nat, +dd: Nat, +k: Nat, +m: Nat, +L: Nat, +hk: {Nat.is_le(Nat.add(A.quad(k), m), L) == True{} : Bool},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, L)), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(Nat.add(k, q)), Nat.add(r, m)), F.spec_common__pow2(32n)) == True{} : Bool}:
+  +y1 = Nat.add(A.quad(Nat.add(k, q)), Nat.add(r, m))
+  +y2 = Nat.add(A.quad(q), Nat.add(r, L))
+  +e2 = Equal.trans(Nat, y1, Nat.add(Nat.add(A.quad(k), A.quad(q)), Nat.add(r, m)), Nat.add(A.quad(q), Nat.add(r, Nat.add(A.quad(k), m))),
+    Equal.cong(Nat, Nat, z => Nat.add(z, Nat.add(r, m)), A.quad(Nat.add(k, q)), Nat.add(A.quad(k), A.quad(q)), Equal.sym(Nat, Nat.add(A.quad(k), A.quad(q)), A.quad(Nat.add(k, q)), VF.quad_add(k, q))),
+    Equal.trans(Nat, Nat.add(Nat.add(A.quad(k), A.quad(q)), Nat.add(r, m)), Nat.add(A.quad(q), Nat.add(A.quad(k), Nat.add(r, m))), Nat.add(A.quad(q), Nat.add(r, Nat.add(A.quad(k), m))),
+      Equal.trans(Nat, Nat.add(Nat.add(A.quad(k), A.quad(q)), Nat.add(r, m)), Nat.add(Nat.add(A.quad(q), A.quad(k)), Nat.add(r, m)), Nat.add(A.quad(q), Nat.add(A.quad(k), Nat.add(r, m))),
+        Equal.cong(Nat, Nat, z => Nat.add(z, Nat.add(r, m)), Nat.add(A.quad(k), A.quad(q)), Nat.add(A.quad(q), A.quad(k)), F.nat__add_comm(A.quad(k), A.quad(q))),
+        F.nat__add_assoc(A.quad(q), A.quad(k), Nat.add(r, m))),
+      Equal.cong(Nat, Nat, z => Nat.add(A.quad(q), z), Nat.add(A.quad(k), Nat.add(r, m)), Nat.add(r, Nat.add(A.quad(k), m)),
+        Equal.trans(Nat, Nat.add(A.quad(k), Nat.add(r, m)), Nat.add(Nat.add(A.quad(k), r), m), Nat.add(r, Nat.add(A.quad(k), m)),
+          Equal.sym(Nat, Nat.add(Nat.add(A.quad(k), r), m), Nat.add(A.quad(k), Nat.add(r, m)), F.nat__add_assoc(A.quad(k), r, m)),
+          Equal.trans(Nat, Nat.add(Nat.add(A.quad(k), r), m), Nat.add(Nat.add(r, A.quad(k)), m), Nat.add(r, Nat.add(A.quad(k), m)),
+            Equal.cong(Nat, Nat, z => Nat.add(z, m), Nat.add(A.quad(k), r), Nat.add(r, A.quad(k)), F.nat__add_comm(A.quad(k), r)),
+            F.nat__add_assoc(r, A.quad(k), m))))))
+  +h12 = F.logic__subst(Nat, z => {Nat.is_le(z, y2) == True{} : Bool}, Nat.add(A.quad(q), Nat.add(r, Nat.add(A.quad(k), m))), y1, Equal.sym(Nat, y1, Nat.add(A.quad(q), Nat.add(r, Nat.add(A.quad(k), m))), e2),
+    Order.add_left(A.quad(q), Nat.add(r, Nat.add(A.quad(k), m)), Nat.add(r, L), Order.add_left(r, Nat.add(A.quad(k), m), L, hk)))
+  F.nat__le_lt_trans(y1, y2, F.spec_common__pow2(32n), h12, hl32)
+
+# rroom's record region (records j + 1 + k <= LT / W) ends inside U32 positions.
+def rroom32(+j: Nat, +k: Nat, +q: Nat, +r: Nat, +W: Nat, +LT: Nat, +dd: Nat,
+    +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), W)), LT) == True{} : Bool},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LT)), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(Nat.add(Nat.mul(j, W), q)), Nat.add(r, A.quad(W))), F.spec_common__pow2(32n)) == True{} : Bool}:
+  +h1 = F.nat__le_trans(A.quad(Nat.mul(1n+j, W)), A.quad(Nat.mul(Nat.add(1n+k, j), W)), LT,
+    VME.quad_mono(Nat.mul(1n+j, W), Nat.mul(Nat.add(1n+k, j), W), VRL.mul_mono(1n+j, Nat.add(1n+k, j), W, Order.left_below_sum(k, j))), hj)
+  +e1 = Equal.trans(Nat, A.quad(Nat.mul(1n+j, W)), Nat.add(A.quad(W), A.quad(Nat.mul(j, W))), Nat.add(A.quad(Nat.mul(j, W)), A.quad(W)),
+    Equal.sym(Nat, Nat.add(A.quad(W), A.quad(Nat.mul(j, W))), A.quad(Nat.add(W, Nat.mul(j, W))), VF.quad_add(W, Nat.mul(j, W))),
+    F.nat__add_comm(A.quad(W), A.quad(Nat.mul(j, W))))
+  froom32(q, r, dd, Nat.mul(j, W), A.quad(W), LT, F.logic__subst(Nat, z => {Nat.is_le(z, LT) == True{} : Bool}, A.quad(Nat.mul(1n+j, W)), Nat.add(A.quad(Nat.mul(j, W)), A.quad(W)), e1, h1), hl32)

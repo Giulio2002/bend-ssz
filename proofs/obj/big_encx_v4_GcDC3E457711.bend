@@ -84,7 +84,7 @@ def rtc_GcDC3E457711(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +f_A: 
   rt2
 
 # T.GcDC3E457711_put at X (byte P) writes the record's bytes into the 13 zero bytes there.
-def putr_GcDC3E457711(+o: FixedTestStruct_d.GcDC3E457711, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def putr_GcDC3E457711W(+o: FixedTestStruct_d.GcDC3E457711, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 13n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(13n, VS.bdr(P, UA.BYT(D))) == UW.ZB(13n) : +List<U32>})
     -> DK.P2(RTR_GcDC3E457711(o, dd, D, X, P), BYR_GcDC3E457711(o, dd, D, P)):
@@ -92,30 +92,36 @@ def putr_GcDC3E457711(+o: FixedTestStruct_d.GcDC3E457711, +dd: Nat, +D: FD.array
     case FixedTestStruct_d.GcDC3E457711{+f_A, O.U64{+f_B_lo, +f_B_hi}, +f_C}:
       +B = UA.BYT(D)
       +hX = VRB.hxb(P, 13n, dd, D, pf, hb)
-      +ep0 = VRB.fposb(dd, X, 0, P, 13n, e, hd, hb, {==})
+      +ep0 = VRB.fposbW(dd, X, 0, P, 13n, e, hd, hb, {==})
       +hb0 = VRB.froomb(P, 0n, 1n, 13n, A.quad(VB.pw(dd)), hb, {==})
       +hz0 = VRX.zhead(1n, 12n, VS.bdr(Nat.add(0n, P), B), hz)
-      +rt0 = VRB.w8p_rt(dd, D, U32.add(X, 0), Nat.add(0n, P), f_A, ep0, hd, hb0, pf)
-      +by0 = VRB.w8p_bytes(dd, D, U32.add(X, 0), Nat.add(0n, P), f_A, ep0, hd, hb0, pf, hz0)
+      +rt0 = VRB.w8p_rtW(dd, D, U32.add(X, 0), Nat.add(0n, P), f_A, ep0, hd, hb0, pf)
+      +by0 = VRB.w8p_bytesW(dd, D, U32.add(X, 0), Nat.add(0n, P), f_A, ep0, hd, hb0, pf, hz0)
       +E1 = by0
-      +ep1 = VRB.fposb(dd, X, 1, P, 13n, e, hd, hb, {==})
+      +ep1 = VRB.fposbW(dd, X, 1, P, 13n, e, hd, hb, {==})
       +hb1 = VRB.froomb(P, 1n, 8n, 13n, A.quad(VB.pw(dd)), hb, {==})
       +z1a = VRX.znext(B, P, [U32.and(f_A, 255)], Nat.add(1n, P), 1n, 12n, UA.BYT(VRB.W8P(dd, D, Nat.add(0n, P), f_A)), hX, {==}, VRB.pcx(P, 1n), E1, hz)
       +hz1 = VRX.zhead(8n, 4n, VS.bdr(Nat.add(1n, P), UA.BYT(VRB.W8P(dd, D, Nat.add(0n, P), f_A))), z1a)
-      +rt1 = VRB.w64p_rt(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), U32.add(X, 1), Nat.add(1n, P), f_B_lo, f_B_hi, ep1, hd, hb1, VRB.w8p_perfect(dd, D, Nat.add(0n, P), f_A, pf))
-      +by1 = VRB.w64p_bytes(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), U32.add(X, 1), Nat.add(1n, P), f_B_lo, f_B_hi, ep1, hd, hb1, VRB.w8p_perfect(dd, D, Nat.add(0n, P), f_A, pf), hz1)
+      +rt1 = VRB.w64p_rtW(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), U32.add(X, 1), Nat.add(1n, P), f_B_lo, f_B_hi, ep1, hd, hb1, VRB.w8p_perfect(dd, D, Nat.add(0n, P), f_A, pf))
+      +by1 = VRB.w64p_bytesW(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), U32.add(X, 1), Nat.add(1n, P), f_B_lo, f_B_hi, ep1, hd, hb1, VRB.w8p_perfect(dd, D, Nat.add(0n, P), f_A, pf), hz1)
       +E2 = Equal.trans(+List<U32>, UA.BYT(VRB.W64P(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi)), UW.SPL(UA.BYT(VRB.W8P(dd, D, Nat.add(0n, P), f_A)), Nat.add(1n, P), [U32.and(f_B_lo, 255), U32.and(U32.shrn(f_B_lo, 8n), 255), U32.and(U32.shrn(f_B_lo, 16n), 255), U32.shrn(f_B_lo, 24n), U32.and(f_B_hi, 255), U32.and(U32.shrn(f_B_hi, 8n), 255), U32.and(U32.shrn(f_B_hi, 16n), 255), U32.shrn(f_B_hi, 24n)]), UW.SPL(B, P, VRX.AP([U32.and(f_A, 255)], [U32.and(f_B_lo, 255), U32.and(U32.shrn(f_B_lo, 8n), 255), U32.and(U32.shrn(f_B_lo, 16n), 255), U32.shrn(f_B_lo, 24n), U32.and(f_B_hi, 255), U32.and(U32.shrn(f_B_hi, 8n), 255), U32.and(U32.shrn(f_B_hi, 16n), 255), U32.shrn(f_B_hi, 24n)])), by1,
         VRX.spl_catx(B, P, [U32.and(f_A, 255)], [U32.and(f_B_lo, 255), U32.and(U32.shrn(f_B_lo, 8n), 255), U32.and(U32.shrn(f_B_lo, 16n), 255), U32.shrn(f_B_lo, 24n), U32.and(f_B_hi, 255), U32.and(U32.shrn(f_B_hi, 8n), 255), U32.and(U32.shrn(f_B_hi, 16n), 255), U32.shrn(f_B_hi, 24n)], Nat.add(1n, P), UA.BYT(VRB.W8P(dd, D, Nat.add(0n, P), f_A)), hX, VRB.pcx(P, 1n), E1))
-      +ep2 = VRB.fposb(dd, X, 9, P, 13n, e, hd, hb, {==})
+      +ep2 = VRB.fposbW(dd, X, 9, P, 13n, e, hd, hb, {==})
       +hb2 = VRB.froomb(P, 9n, 4n, 13n, A.quad(VB.pw(dd)), hb, {==})
       +z2a = VRX.znext(B, P, [U32.and(f_A, 255), U32.and(f_B_lo, 255), U32.and(U32.shrn(f_B_lo, 8n), 255), U32.and(U32.shrn(f_B_lo, 16n), 255), U32.shrn(f_B_lo, 24n), U32.and(f_B_hi, 255), U32.and(U32.shrn(f_B_hi, 8n), 255), U32.and(U32.shrn(f_B_hi, 16n), 255), U32.shrn(f_B_hi, 24n)], Nat.add(9n, P), 9n, 4n, UA.BYT(VRB.W64P(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi)), hX, {==}, VRB.pcx(P, 9n), E2, hz)
       +hz2 = z2a
-      +rt2 = VRB.w32p_rt(dd, VRB.W64P(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi), U32.add(X, 9), Nat.add(9n, P), f_C, ep2, hd, hb2, VRB.w64p_perfect(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi, VRB.w8p_perfect(dd, D, Nat.add(0n, P), f_A, pf)))
-      +by2 = VRB.w32p_bytes(dd, VRB.W64P(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi), U32.add(X, 9), Nat.add(9n, P), f_C, ep2, hd, hb2, VRB.w64p_perfect(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi, VRB.w8p_perfect(dd, D, Nat.add(0n, P), f_A, pf)), hz2)
+      +rt2 = VRB.w32p_rtW(dd, VRB.W64P(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi), U32.add(X, 9), Nat.add(9n, P), f_C, ep2, hd, hb2, VRB.w64p_perfect(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi, VRB.w8p_perfect(dd, D, Nat.add(0n, P), f_A, pf)))
+      +by2 = VRB.w32p_bytesW(dd, VRB.W64P(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi), U32.add(X, 9), Nat.add(9n, P), f_C, ep2, hd, hb2, VRB.w64p_perfect(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi, VRB.w8p_perfect(dd, D, Nat.add(0n, P), f_A, pf)), hz2)
       +E3 = Equal.trans(+List<U32>, UA.BYT(VRB.W32P(dd, VRB.W64P(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi), Nat.add(9n, P), f_C)), UW.SPL(UA.BYT(VRB.W64P(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi)), Nat.add(9n, P), [U32.and(f_C, 255), U32.and(U32.shrn(f_C, 8n), 255), U32.and(U32.shrn(f_C, 16n), 255), U32.shrn(f_C, 24n)]), UW.SPL(B, P, VRX.AP([U32.and(f_A, 255), U32.and(f_B_lo, 255), U32.and(U32.shrn(f_B_lo, 8n), 255), U32.and(U32.shrn(f_B_lo, 16n), 255), U32.shrn(f_B_lo, 24n), U32.and(f_B_hi, 255), U32.and(U32.shrn(f_B_hi, 8n), 255), U32.and(U32.shrn(f_B_hi, 16n), 255), U32.shrn(f_B_hi, 24n)], [U32.and(f_C, 255), U32.and(U32.shrn(f_C, 8n), 255), U32.and(U32.shrn(f_C, 16n), 255), U32.shrn(f_C, 24n)])), by2,
         VRX.spl_catx(B, P, [U32.and(f_A, 255), U32.and(f_B_lo, 255), U32.and(U32.shrn(f_B_lo, 8n), 255), U32.and(U32.shrn(f_B_lo, 16n), 255), U32.shrn(f_B_lo, 24n), U32.and(f_B_hi, 255), U32.and(U32.shrn(f_B_hi, 8n), 255), U32.and(U32.shrn(f_B_hi, 16n), 255), U32.shrn(f_B_hi, 24n)], [U32.and(f_C, 255), U32.and(U32.shrn(f_C, 8n), 255), U32.and(U32.shrn(f_C, 16n), 255), U32.shrn(f_C, 24n)], Nat.add(9n, P), UA.BYT(VRB.W64P(dd, VRB.W8P(dd, D, Nat.add(0n, P), f_A), Nat.add(1n, P), f_B_lo, f_B_hi)), hX, VRB.pcx(P, 9n), E2))
       +rtf = rtc_GcDC3E457711(dd, D, X, P, f_A, f_B_lo, f_B_hi, f_C, rt0, rt1, rt2)
       (rtf, E3)
+
+def putr_GcDC3E457711(+o: FixedTestStruct_d.GcDC3E457711, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P, 13n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(13n, VS.bdr(P, UA.BYT(D))) == UW.ZB(13n) : +List<U32>})
+    -> DK.P2(RTR_GcDC3E457711(o, dd, D, X, P), BYR_GcDC3E457711(o, dd, D, P)):
+  putr_GcDC3E457711W(o, dd, D, X, P, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hb, pf, hz)
 
 def RV_GcDC3E457711(o: FixedTestStruct_d.GcDC3E457711) -> S.Value:
   match o:
@@ -290,8 +296,8 @@ def BYK(k: Nat, +j: Nat, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +A: FD.arr
   {UA.BYT(WX(k, j, dd, D, P0, A)) == UW.SPL(UA.BYT(D), VRL.pos(j, 13n, P0), RBS(1n+k, A, j)) : +List<U32>}
 
 # The loop from record j (index i) on, k + 1 records, into LT bytes at X (byte P0) whose last k + 1 records' bytes are zero.
-def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +LT: Nat,
-    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == P0 : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def ptxW(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == P0 : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 13n), LT) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P0, LT), A.quad(VB.pw(dd))) == True{} : Bool},
     +hz: {VS.bt(Nat.mul(1n+k, 13n), VS.bdr(VRL.pos(j, 13n, P0), UA.BYT(D))) == UW.ZB(Nat.mul(1n+k, 13n)) : +List<U32>},
@@ -303,8 +309,8 @@ def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tre
       +Pj = VRL.pos(j, 13n, P0)
       +Xj = U32.add(X, U32.mul(i, 13))
       +hbj = VRB.rroomb(j, 0n, 13n, P0, LT, A.quad(VB.pw(dd)), hj, hb)
-      +ej = VRB.posb(dd, X, i, j, 13, 13n, P0, {==}, e, ei, hd, hbj)
-      +g = putr_GcDC3E457711(o, dd, D, Xj, Pj, ej, hd, hbj, pfD, hz)
+      +ej = VRB.posbW(dd, X, i, j, 13, 13n, P0, {==}, e, ei, hd, {==}, hbj)
+      +g = putr_GcDC3E457711W(o, dd, D, Xj, Pj, ej, hd, hbj, pfD, hz)
       +rt = PA(RTR_GcDC3E457711(o, dd, D, Xj, Pj), BYR_GcDC3E457711(o, dd, D, Pj), g)
       +by = PB(RTR_GcDC3E457711(o, dd, D, Xj, Pj), BYR_GcDC3E457711(o, dd, D, Pj), g)
       +D1 = PR_GcDC3E457711(o, dd, D, Pj)
@@ -318,11 +324,11 @@ def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tre
       +Pj = VRL.pos(j, 13n, P0)
       +Xj = U32.add(X, U32.mul(i, 13))
       +hbj = VRB.rroomb(j, 1n+p, 13n, P0, LT, A.quad(VB.pw(dd)), hj, hb)
-      +ej = VRB.posb(dd, X, i, j, 13, 13n, P0, {==}, e, ei, hd, hbj)
+      +ej = VRB.posbW(dd, X, i, j, 13, 13n, P0, {==}, e, ei, hd, {==}, hbj)
       +bm = Nat.mul(1n+p, 13n)
       +B0 = UA.BYT(D)
       +hz0 = VRX.zhead(13n, bm, VS.bdr(Pj, B0), hz)
-      +g = putr_GcDC3E457711(o, dd, D, Xj, Pj, ej, hd, hbj, pfD, hz0)
+      +g = putr_GcDC3E457711W(o, dd, D, Xj, Pj, ej, hd, hbj, pfD, hz0)
       +rt = PA(RTR_GcDC3E457711(o, dd, D, Xj, Pj), BYR_GcDC3E457711(o, dd, D, Pj), g)
       +by = PB(RTR_GcDC3E457711(o, dd, D, Xj, Pj), BYR_GcDC3E457711(o, dd, D, Pj), g)
       +D1 = PR_GcDC3E457711(o, dd, D, Pj)
@@ -336,7 +342,7 @@ def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tre
       +eg = geti(i, j, da, A, ei, pfA, hda, h1)
       +hj2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.mul(1n+z, 13n), LT) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hj)
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hk)
-      +ih = ptx(p, U32.add(i, 1), 1n+j, X, P0, dd, D1, da, A, LT, ei1, e, hd, pf1, hj2, hb, z1, pfA, hda, hk2)
+      +ih = ptxW(p, U32.add(i, 1), 1n+j, X, P0, dd, D1, da, A, LT, ei1, e, hd, pf1, hj2, hb, z1, pfA, hda, hk2)
       +rt2 = PA(RTK(p, U32.add(i, 1), 1n+j, X, P0, dd, D1, A), BYK(p, 1n+j, P0, dd, D1, A), ih)
       +by2 = PB(RTK(p, U32.add(i, 1), 1n+j, X, P0, dd, D1, A), BYK(p, 1n+j, P0, dd, D1, A), ih)
       +ea = Equal.cong(Array<U32>, Array<U32> & Array<FixedTestStruct_d.GcDC3E457711>, z => vec_FixedTestStruct_4_e.v4_GcDC3E457711_pt(p, U32.add(i, 1), X, z, AG(A, U32.add(i, 1))), FixedTestStruct_e.GcDC3E457711_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
@@ -357,6 +363,15 @@ def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tre
 # The object's Data mirror: the tree A of depth da holding the N records.
 type MW is Data:
   MW{da: Nat, A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, N: U32}
+
+def ptx(k: Nat, +i: U32, +j: Nat, +X: U32, +P0: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == P0 : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(Nat.mul(Nat.add(1n+k, j), 13n), LT) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P0, LT), A.quad(VB.pw(dd))) == True{} : Bool},
+    +hz: {VS.bt(Nat.mul(1n+k, 13n), VS.bdr(VRL.pos(j, 13n, P0), UA.BYT(D))) == UW.ZB(Nat.mul(1n+k, 13n)) : +List<U32>},
+    +pfA: {FD.array__perfect(FixedTestStruct_d.GcDC3E457711, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    -> DK.P2(RTK(k, i, j, X, P0, dd, D, A), BYK(k, j, P0, dd, D, A)):
+  ptxW(k, i, j, X, P0, dd, D, da, A, LT, ei, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pfD, hj, hb, hz, pfA, hda, hk)
 
 def TH(m: MW) -> vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq:
   match m:
@@ -456,8 +471,8 @@ def BYN(+b: Bool, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +
   {UA.BYT(PUTLb(b, A, N, dd, D, P0)) == UW.SPL(UA.BYT(D), P0, RBS(U32.to_nat(N), A, 0n)) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
-    +e: {U32.to_nat(X) == P0 : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def ptnzW(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
+    +e: {U32.to_nat(X) == P0 : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P0, Nat.mul(U32.to_nat(N), 13n)), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(Nat.mul(U32.to_nat(N), 13n), VS.bdr(P0, UA.BYT(D))) == UW.ZB(Nat.mul(U32.to_nat(N), 13n)) : +List<U32>})
     -> DK.P2(RTN(b, A, N, dd, D, X, P0), BYN(b, A, N, dd, D, P0)):
@@ -482,7 +497,7 @@ def ptnz(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, 
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
       +eg0 = get0(da, A, pfA, hda, h0)
-      +g = ptx(k, 0, 0n, X, P0, dd, D, da, A, LL, {==}, e, hd, pf, hj, hb, hz2, pfA, hda, hk)
+      +g = ptxW(k, 0, 0n, X, P0, dd, D, da, A, LL, {==}, e, hd, pf, hj, hb, hz2, pfA, hda, hk)
       +rt = PA(RTK(k, 0, 0n, X, P0, dd, D, A), BYK(k, 0n, P0, dd, D, A), g)
       +by = PB(RTK(k, 0, 0n, X, P0, dd, D, A), BYK(k, 0n, P0, dd, D, A), g)
       +ea = Equal.cong(Array<FixedTestStruct_d.GcDC3E457711> & FixedTestStruct_d.GcDC3E457711, Array<U32> & vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq, z => vec_FixedTestStruct_4_e.v4_GcDC3E457711_pt_fin(N, vec_FixedTestStruct_4_e.v4_GcDC3E457711_pt(k, 0, X, FD.array__thaw(U32, D), z)), AG(A, 0), (FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A), EL(A, 0n)), eg0)
@@ -490,6 +505,13 @@ def ptnz(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, 
       (Equal.trans(Array<U32> & vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq, vec_FixedTestStruct_4_e.v4_GcDC3E457711_pt_fin(N, vec_FixedTestStruct_4_e.v4_GcDC3E457711_pt(k, 0, X, FD.array__thaw(U32, D), AG(A, 0))), vec_FixedTestStruct_4_e.v4_GcDC3E457711_pt_fin(N, vec_FixedTestStruct_4_e.v4_GcDC3E457711_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A), EL(A, 0n)))),
          vec_FixedTestStruct_4_e.v4_GcDC3E457711_pt_fin(N, (FD.array__thaw(U32, WX(k, 0n, dd, D, P0, A)), FD.array__thaw(FixedTestStruct_d.GcDC3E457711, A))), ea, eb2),
        FD.logic__subst(Nat, z => {UA.BYT(WX(k, 0n, dd, D, P0, A)) == UW.SPL(UA.BYT(D), P0, RBS(z, A, 0n)) : +List<U32>}, 1n+k, c, e1, by))
+
+def ptnz(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKT(da, A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P0: Nat,
+    +e: {U32.to_nat(X) == P0 : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P0, Nat.mul(U32.to_nat(N), 13n)), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(Nat.mul(U32.to_nat(N), 13n), VS.bdr(P0, UA.BYT(D))) == UW.ZB(Nat.mul(U32.to_nat(N), 13n)) : +List<U32>})
+    -> DK.P2(RTN(b, A, N, dd, D, X, P0), BYN(b, A, N, dd, D, P0)):
+  ptnzW(da, A, N, b, eb, h, dd, D, X, P0, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hb, pf, hz)
 
 # The hypotheses of the interface, on the mirror's pieces.
 def hbx(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +dd: Nat, +q: Nat, +r: Nat,
@@ -523,9 +545,9 @@ def enb(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +
   Equal.cong(Nat, Nat, z => Nat.mul(z, 13n), U32.to_nat(N), 4n, en(da, A, N, h))
 
 # The loop over exactly the 52 bytes at X = 4 q + r (zero there), data-only.
-def fwgo(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 52n))), VB.pw(dd)) == True{} : Bool},
+def fwgoW(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 52n))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 52n)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(52n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(52n) : +List<U32>},
     +h: {OKT(da, A, N) == True{} : Bool})
     -> DK.P2(RTN(U32.is_eq(N, 0), A, N, dd, D, X, Nat.add(A.quad(q), r)), BYN(U32.is_eq(N, 0), A, N, dd, D, Nat.add(A.quad(q), r))):
@@ -534,7 +556,15 @@ def fwgo(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, 
   +hb = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(P0, z), A.quad(VB.pw(dd))) == True{} : Bool}, 52n, Nat.mul(U32.to_nat(N), 13n), Equal.sym(Nat, Nat.mul(U32.to_nat(N), 13n), 52n, eb),
     VRX.xend(q, r, 52n, dd, hl))
   +hz2 = FD.logic__subst(Nat, z => {VS.bt(z, VS.bdr(P0, UA.BYT(D))) == UW.ZB(z) : +List<U32>}, 52n, Nat.mul(U32.to_nat(N), 13n), Equal.sym(Nat, Nat.mul(U32.to_nat(N), 13n), 52n, eb), hz)
-  ptnz(da, A, N, U32.is_eq(N, 0), {==}, h, dd, D, X, P0, e, hd, hb, pf, hz2)
+  ptnzW(da, A, N, U32.is_eq(N, 0), {==}, h, dd, D, X, P0, e, hd, hb, pf, hz2)
+
+def fwgo(+da: Nat, +A: FD.array__Tree<FixedTestStruct_d.GcDC3E457711>, +N: U32, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 52n))), VB.pw(dd)) == True{} : Bool},
+    +hz: {VS.bt(52n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(52n) : +List<U32>},
+    +h: {OKT(da, A, N) == True{} : Bool})
+    -> DK.P2(RTN(U32.is_eq(N, 0), A, N, dd, D, X, Nat.add(A.quad(q), r)), BYN(U32.is_eq(N, 0), A, N, dd, D, Nat.add(A.quad(q), r))):
+  fwgoW(da, A, N, dd, D, X, q, r, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pf, hl, VRX.hl32w(q, r, 52n, dd, hd, hl), hz, h)
 
 # ---- the vector as a fixed field (codegen/var_cont_enc.py's FixW) ---------------------------------
 
@@ -545,6 +575,29 @@ law lenv:
 def lenv(m, hok):
   match m:
     case MW{+da, +A, +N}: Equal.trans(Nat, List.length(&2, U32, RBS(U32.to_nat(N), A, 0n)), Nat.mul(U32.to_nat(N), 13n), 52n, len_rbs(U32.to_nat(N), A, 0n), enb(da, A, N, hok))
+
+law fwrtW:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +X: U32
+  for +q: Nat
+  for +r: Nat
+  for +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}
+  for +hr: {Nat.is_lt(r, 4n) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 52n))), VB.pw(dd)) == True{} : Bool}
+  for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 52n)), FD.spec_common__pow2(32n)) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hz: {VS.bt(52n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(52n) : +List<U32>}
+  for +hok: {OK(m) == True{} : Bool}
+  {vec_FixedTestStruct_4_e.v4_GcDC3E457711_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), 0)) : Array<U32> & (vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq & U32)}
+def fwrtW(m, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz, hok):
+  match m:
+    case MW{+da, +A, +N}:
+      +P0 = Nat.add(A.quad(q), r)
+      +g = fwgoW(da, A, N, dd, D, X, q, r, e, hd, pf, hl, hl32, hz, hok)
+      putk_rt(da, A, N, hok, dd, D, X, P0, PA(RTN(U32.is_eq(N, 0), A, N, dd, D, X, P0), BYN(U32.is_eq(N, 0), A, N, dd, D, P0), g))
 
 law fwrt:
   for +m: MW
@@ -562,11 +615,30 @@ law fwrt:
   for +hok: {OK(m) == True{} : Bool}
   {vec_FixedTestStruct_4_e.v4_GcDC3E457711_putk(FD.array__thaw(U32, D), X, TH(m)) == (FD.array__thaw(U32, PUTX(m, dd, D, q, r)), (TH(m), 0)) : Array<U32> & (vec_FixedTestStruct_4_d.v4_GcDC3E457711_Seq & U32)}
 def fwrt(m, dd, D, X, q, r, e, hr, hd, hl, pf, hz, hok):
+  fwrtW(m, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, 52n, dd, hd, hl), pf, hz, hok)
+
+law fwbyW:
+  for +m: MW
+  for +dd: Nat
+  for +D: FD.array__Tree<U32>
+  for +X: U32
+  for +q: Nat
+  for +r: Nat
+  for +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}
+  for +hr: {Nat.is_lt(r, 4n) == True{} : Bool}
+  for +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}
+  for +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 52n))), VB.pw(dd)) == True{} : Bool}
+  for +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 52n)), FD.spec_common__pow2(32n)) == True{} : Bool}
+  for +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool}
+  for +hz: {VS.bt(52n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(52n) : +List<U32>}
+  for +hok: {OK(m) == True{} : Bool}
+  {UA.BYT(PUTX(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENC(m)) : +List<U32>}
+def fwbyW(m, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz, hok):
   match m:
     case MW{+da, +A, +N}:
       +P0 = Nat.add(A.quad(q), r)
-      +g = fwgo(da, A, N, dd, D, X, q, r, e, hd, pf, hl, hz, hok)
-      putk_rt(da, A, N, hok, dd, D, X, P0, PA(RTN(U32.is_eq(N, 0), A, N, dd, D, X, P0), BYN(U32.is_eq(N, 0), A, N, dd, D, P0), g))
+      +g = fwgoW(da, A, N, dd, D, X, q, r, e, hd, pf, hl, hl32, hz, hok)
+      PB(RTN(U32.is_eq(N, 0), A, N, dd, D, X, P0), BYN(U32.is_eq(N, 0), A, N, dd, D, P0), g)
 
 law fwby:
   for +m: MW
@@ -584,11 +656,7 @@ law fwby:
   for +hok: {OK(m) == True{} : Bool}
   {UA.BYT(PUTX(m, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENC(m)) : +List<U32>}
 def fwby(m, dd, D, X, q, r, e, hr, hd, hl, pf, hz, hok):
-  match m:
-    case MW{+da, +A, +N}:
-      +P0 = Nat.add(A.quad(q), r)
-      +g = fwgo(da, A, N, dd, D, X, q, r, e, hd, pf, hl, hz, hok)
-      PB(RTN(U32.is_eq(N, 0), A, N, dd, D, X, P0), BYN(U32.is_eq(N, 0), A, N, dd, D, P0), g)
+  fwbyW(m, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, 52n, dd, hd, hl), pf, hz, hok)
 
 law pfx:
   for +m: MW

@@ -282,12 +282,13 @@ def e_end2(+q: Nat, +r: Nat, +L: Nat)
 # A piece at a (a <= L) of a region of L bytes at X = 4 q + r: its byte position.
 def vposW(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +ec: {U32.to_nat(c) == a : Nat},
     +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +ha: {Nat.is_le(a, L) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(Nat.add(A.quad(q), r), L), F.spec_common__pow2(32n)) == True{} : Bool})
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, L)), F.spec_common__pow2(32n)) == True{} : Bool})
     -> {U32.to_nat(U32.add(X, c)) == Nat.add(Nat.add(A.quad(q), r), a) : Nat}:
   +X0 = Nat.add(A.quad(q), r)
   +hb = F.nat__le_lt_trans(Nat.add(a, X0), Nat.add(X0, L), F.spec_common__pow2(32n),
     F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(X0, L)) == True{} : Bool}, Nat.add(X0, a), Nat.add(a, X0), F.nat__add_comm(X0, a), Order.add_left(X0, a, L, ha)),
-    hl32)
+    F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_common__pow2(32n)) == True{} : Bool}, Nat.add(A.quad(q), Nat.add(r, L)), Nat.add(X0, L),
+      Equal.sym(Nat, Nat.add(X0, L), Nat.add(A.quad(q), Nat.add(r, L)), F.nat__add_assoc(A.quad(q), r, L)), hl32))
   +e1 = VB.add_lt32(X, c, X0, e,
     F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, X0), F.spec_common__pow2(32n)) == True{} : Bool}, a, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), a, ec), hb))
   Equal.trans(Nat, U32.to_nat(U32.add(X, c)), Nat.add(U32.to_nat(c), X0), Nat.add(X0, a), e1,
@@ -715,3 +716,35 @@ def sum_region_r(+fs: List<&2, Nat>, +ks: List<&2, Nat>, +P: Nat, +F0: Nat, +eF:
 def eposv_r(+fw: +List<+List<U32>>, +ps: +List<+List<U32>>, +ks: List<&2, Nat>)
     -> {LN(CAT(LAP(fw, PCL(ks, ps)))) == Nat.add(SUM(ks), LN(CAT(fw))) : Nat}:
   Equal.trans(Nat, LN(CAT(LAP(fw, PCL(ks, ps)))), Nat.add(LN(CAT(fw)), SUM(ks)), Nat.add(SUM(ks), LN(CAT(fw))), eposv(fw, ps, ks), F.nat__add_comm(LN(CAT(fw)), SUM(ks)))
+
+# ---- the region's end below 2^32 (hl32) -----------------------------------------------------------------------
+
+# A piece at a <= L: its position from hl32 alone (4 q + (r + L) < 2^32).
+def vpos32(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +ec: {U32.to_nat(c) == a : Nat},
+    +ha: {Nat.is_le(a, L) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, L)), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(X, c)) == Nat.add(Nat.add(A.quad(q), r), a) : Nat}:
+  +X0 = Nat.add(A.quad(q), r)
+  +hb = F.nat__le_lt_trans(Nat.add(a, X0), Nat.add(X0, L), F.spec_common__pow2(32n),
+    F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(X0, L)) == True{} : Bool}, Nat.add(X0, a), Nat.add(a, X0), F.nat__add_comm(X0, a), Order.add_left(X0, a, L, ha)),
+    F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_common__pow2(32n)) == True{} : Bool}, Nat.add(A.quad(q), Nat.add(r, L)), Nat.add(X0, L),
+      Equal.sym(Nat, Nat.add(X0, L), Nat.add(A.quad(q), Nat.add(r, L)), F.nat__add_assoc(A.quad(q), r, L)), hl32))
+  +e1 = VB.add_lt32(X, c, X0, e,
+    F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, X0), F.spec_common__pow2(32n)) == True{} : Bool}, a, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), a, ec), hb))
+  Equal.trans(Nat, U32.to_nat(U32.add(X, c)), Nat.add(U32.to_nat(c), X0), Nat.add(X0, a), e1,
+    Equal.trans(Nat, Nat.add(U32.to_nat(c), X0), Nat.add(a, X0), Nat.add(X0, a), Equal.cong(Nat, Nat, z => Nat.add(z, X0), U32.to_nat(c), a, ec), F.nat__add_comm(a, X0)))
+
+# croom's piece region (a + m <= L) ends inside U32 positions.
+def croom32(+Xc: U32, +q: Nat, +r: Nat, +a: Nat, +m: Nat, +L: Nat, +dd: Nat,
+    +epos: {U32.to_nat(Xc) == Nat.add(Nat.add(A.quad(q), r), a) : Nat}, +hk: {Nat.is_le(Nat.add(a, m), L) == True{} : Bool},
+    +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, L)), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(QX(Xc)), Nat.add(RX(Xc), m)), F.spec_common__pow2(32n)) == True{} : Bool}:
+  +X0 = Nat.add(A.quad(q), r)
+  +y1 = Nat.add(A.quad(QX(Xc)), Nat.add(RX(Xc), m))
+  +e1 = Equal.trans(Nat, y1, Nat.add(Nat.add(A.quad(QX(Xc)), RX(Xc)), m), Nat.add(X0, Nat.add(a, m)),
+    Equal.sym(Nat, Nat.add(Nat.add(A.quad(QX(Xc)), RX(Xc)), m), y1, F.nat__add_assoc(A.quad(QX(Xc)), RX(Xc), m)),
+    Equal.trans(Nat, Nat.add(Nat.add(A.quad(QX(Xc)), RX(Xc)), m), Nat.add(Nat.add(X0, a), m), Nat.add(X0, Nat.add(a, m)),
+      Equal.cong(Nat, Nat, z => Nat.add(z, m), Nat.add(A.quad(QX(Xc)), RX(Xc)), Nat.add(X0, a), Equal.trans(Nat, Nat.add(A.quad(QX(Xc)), RX(Xc)), U32.to_nat(Xc), Nat.add(X0, a), Equal.sym(Nat, U32.to_nat(Xc), Nat.add(A.quad(QX(Xc)), RX(Xc)), VC.split4(Xc)), epos)),
+      F.nat__add_assoc(X0, a, m)))
+  +h1 = F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(X0, L)) == True{} : Bool}, Nat.add(X0, Nat.add(a, m)), y1, Equal.sym(Nat, y1, Nat.add(X0, Nat.add(a, m)), e1), Order.add_left(X0, Nat.add(a, m), L, hk))
+  +h2 = F.logic__subst(Nat, z => {Nat.is_le(y1, z) == True{} : Bool}, Nat.add(X0, L), Nat.add(A.quad(q), Nat.add(r, L)), F.nat__add_assoc(A.quad(q), r, L), h1)
+  F.nat__le_lt_trans(y1, Nat.add(A.quad(q), Nat.add(r, L)), F.spec_common__pow2(32n), h2, hl32)

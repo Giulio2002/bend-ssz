@@ -160,9 +160,9 @@ def RTo_PendingDeposit(+o: FuluPendingDeposit_d.PendingDeposit, +dd: Nat, +D: FD
 def BYo_PendingDeposit(+o: FuluPendingDeposit_d.PendingDeposit, +dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat) -> Data:
   {UA.BYT(PXo_PendingDeposit(o, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.limbs(RWD_PendingDeposit(o))) : +List<U32>}
 
-def putxo_PendingDeposit(+o: FuluPendingDeposit_d.PendingDeposit, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 192n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putxo_PendingDepositW(+o: FuluPendingDeposit_d.PendingDeposit, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 192n))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, 192n)), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(192n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(192n) : +List<U32>})
     -> DK.P2(RTo_PendingDeposit(o, dd, D, X, q, r), BYo_PendingDeposit(o, dd, D, q, r)):
   match o:
@@ -177,7 +177,14 @@ def putxo_PendingDeposit(+o: FuluPendingDeposit_d.PendingDeposit, +dd: Nat, +D: 
                     case FuluBytes96_d.Bytes96{+x22, +x23, +x24, +x25, +x26, +x27, +x28, +x29, +x30, +x31, +x32, +x33, +x34, +x35, +x36, +x37, +x38, +x39, +x40, +x41, +x42, +x43, +x44, +x45}:
                       match o_4:
                         case O.U64{+x46, +x47}:
-                          ERC.putx_PendingDeposit(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+                          ERC.putx_PendingDepositW(x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15, x16, x17, x18, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30, x31, x32, x33, x34, x35, x36, x37, x38, x39, x40, x41, x42, x43, x44, x45, x46, x47, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz)
+
+def putxo_PendingDeposit(+o: FuluPendingDeposit_d.PendingDeposit, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 192n))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(192n, VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(192n) : +List<U32>})
+    -> DK.P2(RTo_PendingDeposit(o, dd, D, X, q, r), BYo_PendingDeposit(o, dd, D, q, r)):
+  putxo_PendingDepositW(o, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, 192n, dd, hd, hl), pf, hz)
 
 def lenb_PendingDeposit(+o: FuluPendingDeposit_d.PendingDeposit) -> {VRX.LN(F.limbs(RWD_PendingDeposit(o))) == 192n : Nat}:
   match o:
@@ -316,10 +323,10 @@ def BYK_l134217728_PendingDeposit(k: Nat, +j: Nat, +q: Nat, +r: Nat, +dd: Nat, +
   {UA.BYT(WX_l134217728_PendingDeposit(k, j, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), VRX.YP(j, 48n, q, r), F.flat(CHW_l134217728_PendingDeposit(1n+k, A, j))) : +List<U32>}
 
 # The loop from record j (index i) on, k + 1 records, into LT bytes at X whose last k + 1 records' bytes are zero.
-def ptx_l134217728_PendingDeposit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +LT: Nat,
-    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+def ptx_l134217728_PendingDepositW(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), 48n)), LT) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LT)), FD.spec_common__pow2(32n)) == True{} : Bool},
     +hz: {VS.bt(A.quad(Nat.mul(1n+k, 48n)), VS.bdr(VRX.YP(j, 48n, q, r), UA.BYT(D))) == UW.ZB(A.quad(Nat.mul(1n+k, 48n))) : +List<U32>},
     +pfA: {FD.array__perfect(FuluPendingDeposit_d.PendingDeposit, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
     -> DK.P2(RTK_l134217728_PendingDeposit(k, i, j, X, q, r, dd, D, A), BYK_l134217728_PendingDeposit(k, j, q, r, dd, D, A)):
@@ -328,9 +335,9 @@ def ptx_l134217728_PendingDeposit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r
       +o = EL_l134217728_PendingDeposit(A, j)
       +qj = Nat.add(Nat.mul(j, 48n), q)
       +Xj = U32.add(X, U32.mul(i, 192))
-      +ej = VRX.rpos(X, i, j, 0n, q, r, 48n, 192, LT, dd, e, {==}, ei, hd, hj, hl)
+      +ej = VRX.rposW(X, i, j, 0n, q, r, 48n, 192, LT, dd, e, {==}, ei, hd, {==}, hj, hl)
       +hlj = VRX.rroom(j, 0n, q, r, 48n, LT, dd, hj, hl)
-      +g = putxo_PendingDeposit(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, pfD, hz)
+      +g = putxo_PendingDepositW(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, VRX.rroom32(j, 0n, q, r, 48n, LT, dd, hj, hl32), pfD, hz)
       +rt = PA(RTo_PendingDeposit(o, dd, D, Xj, qj, r), BYo_PendingDeposit(o, dd, D, qj, r), g)
       +by = PB(RTo_PendingDeposit(o, dd, D, Xj, qj, r), BYo_PendingDeposit(o, dd, D, qj, r), g)
       +D1 = PXo_PendingDeposit(o, dd, D, qj, r)
@@ -343,13 +350,13 @@ def ptx_l134217728_PendingDeposit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r
       +o = EL_l134217728_PendingDeposit(A, j)
       +qj = Nat.add(Nat.mul(j, 48n), q)
       +Xj = U32.add(X, U32.mul(i, 192))
-      +ej = VRX.rpos(X, i, j, 1n+p, q, r, 48n, 192, LT, dd, e, {==}, ei, hd, hj, hl)
+      +ej = VRX.rposW(X, i, j, 1n+p, q, r, 48n, 192, LT, dd, e, {==}, ei, hd, {==}, hj, hl)
       +hlj = VRX.rroom(j, 1n+p, q, r, 48n, LT, dd, hj, hl)
       +bm = A.quad(Nat.mul(1n+p, 48n))
       +B0 = UA.BYT(D)
       +Yj = VRX.YP(j, 48n, q, r)
       +hz0 = VRX.zhead(192n, bm, VS.bdr(Yj, B0), hz)
-      +g = putxo_PendingDeposit(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, pfD, hz0)
+      +g = putxo_PendingDepositW(o, dd, D, Xj, qj, r, ej, hr, hd, hlj, VRX.rroom32(j, 1n+p, q, r, 48n, LT, dd, hj, hl32), pfD, hz0)
       +rt = PA(RTo_PendingDeposit(o, dd, D, Xj, qj, r), BYo_PendingDeposit(o, dd, D, qj, r), g)
       +by = PB(RTo_PendingDeposit(o, dd, D, Xj, qj, r), BYo_PendingDeposit(o, dd, D, qj, r), g)
       +D1 = PXo_PendingDeposit(o, dd, D, qj, r)
@@ -366,7 +373,7 @@ def ptx_l134217728_PendingDeposit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r
       +eg = FD.array__get(FuluPendingDeposit_d.PendingDeposit, da, A, U32.add(i, 1), EL_l134217728_PendingDeposit(A, 1n+j), VB.lt32(da, hda), hi1, hx, pfA)
       +hj2 = FD.logic__subst(Nat, z => {Nat.is_le(A.quad(Nat.mul(1n+z, 48n)), LT) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hj)
       +hk2 = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(da)) == True{} : Bool}, 1n+Nat.add(p, j), Nat.add(p, 1n+j), Equal.sym(Nat, Nat.add(p, 1n+j), 1n+Nat.add(p, j), FD.nat__add_succ(p, j)), hk)
-      +ih = ptx_l134217728_PendingDeposit(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hr, hd, pf1, hj2, hl, z1, pfA, hda, hk2)
+      +ih = ptx_l134217728_PendingDepositW(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, da, A, LT, ei1, e, hr, hd, pf1, hj2, hl, hl32, z1, pfA, hda, hk2)
       +rt2 = PA(RTK_l134217728_PendingDeposit(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l134217728_PendingDeposit(p, 1n+j, q, r, dd, D1, A), ih)
       +by2 = PB(RTK_l134217728_PendingDeposit(p, U32.add(i, 1), 1n+j, X, q, r, dd, D1, A), BYK_l134217728_PendingDeposit(p, 1n+j, q, r, dd, D1, A), ih)
       +ea = Equal.cong(Array<U32>, Array<U32> & Array<FuluPendingDeposit_d.PendingDeposit>, z => Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_pt(p, U32.add(i, 1), X, z, AG_l134217728_PendingDeposit(A, U32.add(i, 1))), FuluPendingDeposit_e.PendingDeposit_put(FD.array__thaw(U32, D), Xj, o), FD.array__thaw(U32, D1), rt)
@@ -381,6 +388,15 @@ def ptx_l134217728_PendingDeposit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r
       +by3 = Equal.trans(+List<U32>, UA.BYT(WX_l134217728_PendingDeposit(p, 1n+j, dd, D1, q, r, A)), UW.SPL(UA.BYT(D1), VRX.YP(1n+j, 48n, q, r), rest), UW.SPL(B0, Yj, VRX.AP(Y, rest)), by2,
         VRX.spl_catx(B0, Yj, Y, rest, VRX.YP(1n+j, 48n, q, r), UA.BYT(D1), hX, eXn, by))
       (rt3, by3)
+
+def ptx_l134217728_PendingDeposit(k: Nat, +i: U32, +j: Nat, +X: U32, +q: Nat, +r: Nat, +dd: Nat, +D: FD.array__Tree<U32>, +da: Nat, +A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +LT: Nat,
+    +ei: {U32.to_nat(i) == j : Nat}, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +pfD: {FD.array__perfect(U32, dd, D) == True{} : Bool}, +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), 48n)), LT) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LT))), VB.pw(dd)) == True{} : Bool},
+    +hz: {VS.bt(A.quad(Nat.mul(1n+k, 48n)), VS.bdr(VRX.YP(j, 48n, q, r), UA.BYT(D))) == UW.ZB(A.quad(Nat.mul(1n+k, 48n))) : +List<U32>},
+    +pfA: {FD.array__perfect(FuluPendingDeposit_d.PendingDeposit, da, A) == True{} : Bool}, +hda: {Nat.is_lt(da, 31n) == True{} : Bool}, +hk: {Nat.is_lt(Nat.add(k, j), VB.pw(da)) == True{} : Bool})
+    -> DK.P2(RTK_l134217728_PendingDeposit(k, i, j, X, q, r, dd, D, A), BYK_l134217728_PendingDeposit(k, j, q, r, dd, D, A)):
+  ptx_l134217728_PendingDepositW(k, i, j, X, q, r, dd, D, da, A, LT, ei, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), pfD, hj, hl, VRX.hl32w(q, r, LT, dd, hd, hl), hz, pfA, hda, hk)
 
 # ---- l134217728_PendingDeposit: the list's encoder window ----
 
@@ -434,9 +450,9 @@ def BYN_l134217728_PendingDeposit(+b: Bool, +A: FD.array__Tree<FuluPendingDeposi
   {UA.BYT(PUTLb_l134217728_PendingDeposit(b, A, N, dd, D, q, r)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l134217728_PendingDeposit(U32.to_nat(N), A, 0n))) : +List<U32>}
 
 # The writer's non-empty test, and its loop.
-def ptnz_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l134217728_PendingDeposit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l134217728_PendingDeposit(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def ptnz_l134217728_PendingDepositW(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l134217728_PendingDeposit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l134217728_PendingDeposit(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l134217728_PendingDeposit(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l134217728_PendingDeposit(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l134217728_PendingDeposit(A, N)) : +List<U32>})
     -> DK.P2(RTN_l134217728_PendingDeposit(b, A, N, dd, D, X, q, r), BYN_l134217728_PendingDeposit(b, A, N, dd, D, q, r)):
   match b:
@@ -460,7 +476,7 @@ def ptnz_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.Pendi
         FD.nat__lt_le_trans(k, c, VB.pw(da), FD.logic__subst(Nat, z => {Nat.is_lt(k, z) == True{} : Bool}, 1n+k, c, e1, FD.nat__lt_succ(k)), hca))
       +h0 = FD.nat__lt_le_trans(0n, c, VB.pw(da), FD.nat__succ_le_lt(0n, c, h1), hca)
       +eg0 = FD.array__get(FuluPendingDeposit_d.PendingDeposit, da, A, 0, EL_l134217728_PendingDeposit(A, 0n), VB.lt32(da, hda), h0, VRL.nth_get(FuluPendingDeposit_d.PendingDeposit, FD.array__slots(FuluPendingDeposit_d.PendingDeposit, A), 0n, FuluPendingDeposit_d.PendingDeposit_default(), FD.array__len_lt(FuluPendingDeposit_d.PendingDeposit, da, A, 0n, pfA, h0)), pfA)
-      +g = ptx_l134217728_PendingDeposit(k, 0, 0n, X, q, r, dd, D, da, A, LL_l134217728_PendingDeposit(A, N), {==}, e, hr, hd, pf, hj, hl, hz2, pfA, hda, hk)
+      +g = ptx_l134217728_PendingDepositW(k, 0, 0n, X, q, r, dd, D, da, A, LL_l134217728_PendingDeposit(A, N), {==}, e, hr, hd, pf, hj, hl, hl32, hz2, pfA, hda, hk)
       +rt = PA(RTK_l134217728_PendingDeposit(k, 0, 0n, X, q, r, dd, D, A), BYK_l134217728_PendingDeposit(k, 0n, q, r, dd, D, A), g)
       +by = PB(RTK_l134217728_PendingDeposit(k, 0, 0n, X, q, r, dd, D, A), BYK_l134217728_PendingDeposit(k, 0n, q, r, dd, D, A), g)
       +ea = Equal.cong(Array<FuluPendingDeposit_d.PendingDeposit> & FuluPendingDeposit_d.PendingDeposit, Array<U32> & Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, z => Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_pt_fin(N, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_pt(k, 0, X, FD.array__thaw(U32, D), z)), Array.get(FuluPendingDeposit_d.PendingDeposit, FD.array__thaw(FuluPendingDeposit_d.PendingDeposit, A), 0), (FD.array__thaw(FuluPendingDeposit_d.PendingDeposit, A), EL_l134217728_PendingDeposit(A, 0n)), eg0)
@@ -468,6 +484,13 @@ def ptnz_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.Pendi
       (Equal.trans(Array<U32> & Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_pt_fin(N, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_pt(k, 0, X, FD.array__thaw(U32, D), Array.get(FuluPendingDeposit_d.PendingDeposit, FD.array__thaw(FuluPendingDeposit_d.PendingDeposit, A), 0))), Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_pt_fin(N, Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_pt(k, 0, X, FD.array__thaw(U32, D), (FD.array__thaw(FuluPendingDeposit_d.PendingDeposit, A), EL_l134217728_PendingDeposit(A, 0n)))),
          Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_pt_fin(N, (FD.array__thaw(U32, WX_l134217728_PendingDeposit(k, 0n, dd, D, q, r, A)), FD.array__thaw(FuluPendingDeposit_d.PendingDeposit, A))), ea, eb2),
        FD.logic__subst(Nat, z => {UA.BYT(WX_l134217728_PendingDeposit(k, 0n, dd, D, q, r, A)) == UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l134217728_PendingDeposit(z, A, 0n))) : +List<U32>}, 1n+k, c, e1, by))
+
+def ptnz_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +b: Bool, +eb: {U32.is_eq(N, 0) == b : Bool}, +h: {OKL_l134217728_PendingDeposit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l134217728_PendingDeposit(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l134217728_PendingDeposit(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l134217728_PendingDeposit(A, N)) : +List<U32>})
+    -> DK.P2(RTN_l134217728_PendingDeposit(b, A, N, dd, D, X, q, r), BYN_l134217728_PendingDeposit(b, A, N, dd, D, q, r)):
+  ptnz_l134217728_PendingDepositW(A, N, b, eb, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l134217728_PendingDeposit(A, N), dd, hd, hl), pf, hz)
 
 # The runtime's validity check of the list.
 def valid_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +h: {OKL_l134217728_PendingDeposit(A, N) == True{} : Bool}) -> {Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_valid(THL_l134217728_PendingDeposit(A, N)) == (THL_l134217728_PendingDeposit(A, N), True{}) : Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & Bool}:
@@ -498,13 +521,13 @@ def putk_rt_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.Pe
 
 # putx: the runtime writer at X = 4 q + r is the model PUTL, whose bytes splice the list's bytes
 # into D's (its records write their data bytes only), and whose tree is perfect.
-def putx_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +h: {OKL_l134217728_PendingDeposit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
-    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l134217728_PendingDeposit(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+def putx_l134217728_PendingDepositW(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +h: {OKL_l134217728_PendingDeposit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l134217728_PendingDeposit(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l134217728_PendingDeposit(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(LL_l134217728_PendingDeposit(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l134217728_PendingDeposit(A, N)) : +List<U32>})
     -> DK.P2(RTL_l134217728_PendingDeposit(A, N, dd, D, X, q, r), DK.P2(BYL_l134217728_PendingDeposit(A, N, dd, D, q, r), PFL_l134217728_PendingDeposit(A, N, dd, D, q, r))):
   +b = U32.is_eq(N, 0)
-  +g = ptnz_l134217728_PendingDeposit(A, N, b, {==}, h, dd, D, X, q, r, e, hr, hd, hl, pf, hz)
+  +g = ptnz_l134217728_PendingDepositW(A, N, b, {==}, h, dd, D, X, q, r, e, hr, hd, hl, hl32, pf, hz)
   +rtb = PA(RTN_l134217728_PendingDeposit(b, A, N, dd, D, X, q, r), BYN_l134217728_PendingDeposit(b, A, N, dd, D, q, r), g)
   +byb = PB(RTN_l134217728_PendingDeposit(b, A, N, dd, D, X, q, r), BYN_l134217728_PendingDeposit(b, A, N, dd, D, q, r), g)
   +by = Equal.trans(+List<U32>, UA.BYT(PUTL_l134217728_PendingDeposit(A, N, dd, D, q, r)), UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), F.flat(CHW_l134217728_PendingDeposit(U32.to_nat(N), A, 0n))), UW.SPL(UA.BYT(D), Nat.add(A.quad(q), r), ENCL_l134217728_PendingDeposit(A, N)), byb,
@@ -512,6 +535,13 @@ def putx_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.Pendi
   (putk_rt_l134217728_PendingDeposit(A, N, h, dd, D, X, q, r, rtb), (by, pfLb_l134217728_PendingDeposit(b, A, N, dd, D, q, r, pf)))
 
 # ---- sizes ----
+
+def putx_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +h: {OKL_l134217728_PendingDeposit(A, N) == True{} : Bool}, +dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat,
+    +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l134217728_PendingDeposit(A, N)))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(LL_l134217728_PendingDeposit(A, N), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(LL_l134217728_PendingDeposit(A, N)) : +List<U32>})
+    -> DK.P2(RTL_l134217728_PendingDeposit(A, N, dd, D, X, q, r), DK.P2(BYL_l134217728_PendingDeposit(A, N, dd, D, q, r), PFL_l134217728_PendingDeposit(A, N, dd, D, q, r))):
+  putx_l134217728_PendingDepositW(A, N, h, dd, D, X, q, r, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l134217728_PendingDeposit(A, N), dd, hd, hl), pf, hz)
 
 # The runtime's size pass.
 def sizex_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +h: {OKL_l134217728_PendingDeposit(A, N) == True{} : Bool}) -> {Fulu_list_PendingDeposit_134217728_e.l134217728_PendingDeposit_size(THL_l134217728_PendingDeposit(A, N)) == (THL_l134217728_PendingDeposit(A, N), U32.mul(N, 192)) : Fulu_list_PendingDeposit_134217728_d.l134217728_PendingDeposit_Seq & U32}:
@@ -523,13 +553,16 @@ def sizex_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.Pend
   {==}
 
 # szx: the size the writer returns is the list's byte count, when the list lies in the tree.
-def szx_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
-    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l134217728_PendingDeposit(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 192)) == LL_l134217728_PendingDeposit(A, N) : Nat}:
-  VRX.mulq(dd, N, U32.to_nat(N), 192, 48n, {==}, {==}, hd,
-    FD.nat__le_trans(LL_l134217728_PendingDeposit(A, N), Nat.add(Nat.add(A.quad(q), r), LL_l134217728_PendingDeposit(A, N)), VB.pw(2n+dd), Order.left_below_sum(Nat.add(A.quad(q), r), LL_l134217728_PendingDeposit(A, N)), VRX.xend(q, r, LL_l134217728_PendingDeposit(A, N), dd, hl)))
+def szx_l134217728_PendingDepositW(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l134217728_PendingDeposit(A, N)))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL_l134217728_PendingDeposit(A, N))), FD.spec_common__pow2(32n)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 192)) == LL_l134217728_PendingDeposit(A, N) : Nat}:
+  VRX.mulqW(N, U32.to_nat(N), 192, 48n, {==}, {==}, FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, LL_l134217728_PendingDeposit(A, N), A.quad(Nat.mul(U32.to_nat(N), 48n)), {==}, VRX.yl32(q, r, LL_l134217728_PendingDeposit(A, N), hl32)))
 
 
 # ---- l134217728_PendingDeposit: the spec side ----
+
+def szx_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL_l134217728_PendingDeposit(A, N)))), VB.pw(dd)) == True{} : Bool}) -> {U32.to_nat(U32.mul(N, 192)) == LL_l134217728_PendingDeposit(A, N) : Nat}:
+  szx_l134217728_PendingDepositW(A, N, q, r, dd, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, VRX.hl32w(q, r, LL_l134217728_PendingDeposit(A, N), dd, hd, hl))
 
 # The value of the list: the records' values.
 def VALL_l134217728_PendingDeposit(+A: FD.array__Tree<FuluPendingDeposit_d.PendingDeposit>, +N: U32) -> S.Value: S.Sequence{ITW_l134217728_PendingDeposit(U32.to_nat(N), A, 0n)}
