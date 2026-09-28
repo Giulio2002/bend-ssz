@@ -6639,6 +6639,10 @@ def _lv_lemma(k, RNm='RN'):
     return f'def lv_{k}(+o: {ty}) -> {{{RNm}.v_{k}(o) == CI.LV_{k}(o) : S.Value}}:\n  match o:\n    case {ty}{{{ws}}}: {{==}}\n'
 
 
+CREC_PREM = {}
+CREC_INFO = {}
+
+
 def crec_text(X, parts, mod, extra_imports=(), note=''):
     """e2e/<mod>.bend: R_X / SZ / mk_X for X. parts: {field index: part entry} for the fields that are parts; the
     others are fixed values (their view RN.v_<kind>) or the sync aggregate's words (kind 'sa').
@@ -6727,14 +6731,26 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
     ll = {j: terms[1 + i] for i, j in enumerate(PT)}
     SUMT = lambda o='o': _sum_of([terms[0]] + [parts[j]['L'](po(j, o)) for j in PT])
     SZ = lambda o='o': f'{{Nat.is_le({SUMT(o)}, A.quad(VB.pw(28n))) == True{{}} : Bool}}'
-    WIT = any(parts[j].get('bound') for j in PT)
+    NEST = [j for j in PT if parts[j].get('crec')]
+    assert not NEST or PT == NEST and len(NEST) == 1
+    if NEST:
+        CH_ = CREC_INFO[parts[NEST[0]]['crec']]
+        WN = CH_['names']
+        leaf = [(lambda o, f_=f_: f_(po(NEST[0], o))) for f_ in CH_['leaves']]
+        sumf = lambda ns: _sum_of([terms[0], CH_['sumf'](ns)])
+    else:
+        WN = [f'n{j}' for j in PT]
+        leaf = [(lambda o, j=j: parts[j]['L'](po(j, o))) for j in PT]
+        sumf = lambda ns: _sum_of([terms[0]] + list(ns))
+    CREC_INFO[X] = {'names': WN, 'leaves': leaf, 'sumf': sumf}
+    WIT = any(parts[j].get('bound') for j in PT) or bool(NEST)
     SZWd = ''
     if WIT:
-        inner = f'{{Nat.is_le({_sum_of([terms[0]] + [f"n{j}" for j in PT])}, A.quad(VB.pw(28n))) == True{{}} : Bool}}'
-        for j in reversed(PT):
-            inner = f'DK.P2({{n{j} == {parts[j]["L"](po(j))} : Nat}}, {inner})'
-        for j in reversed(PT):
-            inner = f'DK.Ex(Nat, n{j} => {inner})'
+        inner = f'{{Nat.is_le({sumf(WN)}, A.quad(VB.pw(28n))) == True{{}} : Bool}}'
+        for nm, lf in reversed(list(zip(WN, leaf))):
+            inner = f'DK.P2({{{nm} == {lf("o")} : Nat}}, {inner})'
+        for nm in reversed(WN):
+            inner = f'DK.Ex(Nat, {nm} => {inner})'
         SZWd = (f'# the (i) size premise: the encoding within 4 * 2^28 bytes, with each part\'s byte count as a witness n<j>\n'
                 f'def SZW(o: {OT}) -> Data: {inner}\n\n')
     RX = (f'def R_{X}(po: {OT}) -> Data:\n'
@@ -6860,6 +6876,7 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
     for j in PT:
         for nm, ty in parts[j].get('prem', []):
             prem.append(f'+{nm}{j}: {ty(po(j))}')
+    CREC_PREM[X] = [p_[1:].split(': ', 1) for p_ in prem] + [['hZ', 'SZW(o)' if WIT else SZ()]]
     mk = [f'# the record of every object the root law represents, with the parts\' premises (see the parts) and its bytes within',
           f'# the encode record\'s bound (hZ)',
           f'def mk_{X}(-o: {OT}, +rep: RT.rep_{X}(o, {SC}){"".join(", " + p for p in prem)}, +hZ: {"SZW(o)" if WIT else SZ()}) -> R_{X}(o):']
@@ -6880,12 +6897,21 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
     # the parts' size bounds, from hZ (its byte counts as runtime witnesses n<j>: the object is erased)
     if WIT:
         cur = 'hZ'
-        for i_, j in enumerate(PT):
-            mk.append(f'  (+n{j}, u{i_}) = {cur}'); cur = f'u{i_}'
-        for i_, j in enumerate(PT):
-            mk.append(f'  (+en{j}, u{len(PT) + i_}) = {cur}'); cur = f'u{len(PT) + i_}'
-        mk[-1] = mk[-1].replace(f'(+en{PT[-1]}, u{2 * len(PT) - 1}) = ', f'(+en{PT[-1]}, +hn) = ')
+        for i_, nm in enumerate(WN):
+            mk.append(f'  (+{nm}, u{i_}) = {cur}'); cur = f'u{i_}'
+        for i_, nm in enumerate(WN):
+            mk.append(f'  (+e{nm}, u{len(WN) + i_}) = {cur}'); cur = f'u{len(WN) + i_}'
+        mk[-1] = mk[-1].replace(f'(+e{WN[-1]}, u{2 * len(WN) - 1}) = ', f'(+e{WN[-1]}, +hn) = ')
         nt = {j: f'n{j}' for j in PT}
+    if NEST:
+        hsub = f'sub_le({terms[0]}, {CH_["sumf"](WN)}, A.quad(VB.pw(28n)), hn)'
+        tup = hsub
+        for nm in reversed(WN):
+            tup = f'(e{nm}, {tup})'
+        for nm in reversed(WN):
+            tup = f'({nm}, {tup})'
+        HZN = {NEST[0]: tup}
+    if WIT and not NEST:
         PK = lambda k_: _sum_of([terms[0]] + [nt[j] for j in PT[:k_]])
         for i_, j in enumerate(PT):
             if parts[j].get('bound') is None:
@@ -6894,16 +6920,18 @@ def crec_text(X, parts, mod, extra_imports=(), note=''):
             for k_ in range(len(PT), i_ + 1, -1):
                 h = f'pre_le({PK(k_ - 1)}, {nt[PT[k_ - 1]]}, A.quad(VB.pw(28n)), {h})'
             mk.append(f'  +hz{j} = FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(28n))) == True{{}} : Bool}}, n{j}, {tl[j]}, en{j}, sub_le({PK(i_)}, n{j}, A.quad(VB.pw(28n)), {h}))')
-        mixn = lambda k_, z_: _sum_of([terms[0]] + [(tl[j] if i_ < k_ else (z_ if i_ == k_ else nt[j])) for i_, j in enumerate(PT)])
+    if WIT:
+        lv_ = [lf('o') for lf in leaf]
+        mixn = lambda k_, z_: sumf([(lv_[i_] if i_ < k_ else (z_ if i_ == k_ else WN[i_])) for i_ in range(len(WN))])
         prev = 'hn'
-        for i_, j in enumerate(PT):
-            mk.append(f'  +hZ{i_} = FD.logic__subst(Nat, z => {{Nat.is_le({mixn(i_, "z")}, A.quad(VB.pw(28n))) == True{{}} : Bool}}, n{j}, {tl[j]}, en{j}, {prev})')
+        for i_, nm in enumerate(WN):
+            mk.append(f'  +hZ{i_} = FD.logic__subst(Nat, z => {{Nat.is_le({mixn(i_, "z")}, A.quad(VB.pw(28n))) == True{{}} : Bool}}, {nm}, {lv_[i_]}, e{nm}, {prev})')
             prev = f'hZ{i_}'
         hZf = prev
     calls = []
     for j in PT:
         r_ = f'ri{j}' if parts[j].get('box') else f'r{j}'
-        calls.append(parts[j]['mk'](po(j), sch(j), r_, f'hz{j}', j))
+        calls.append(parts[j]['mk'](po(j), sch(j), r_, HZN[j] if NEST else f'hz{j}', j))
     if sa is not None:
         mk.append(f'  kS({heada}, sa1({pj(sa)}, {sch(sa)}, r{sa}){boxa}, {", ".join(calls)}, {hZf if WIT else "hZ"})')
     else:
@@ -7003,3 +7031,139 @@ def _bb_parts():
 _BBP = _bb_parts()
 SUPPORT_OUT['e2e_rec_BeaconBlockBody.bend'] = crec_text('BeaconBlockBody', _BBP, 'e2e_rec_BeaconBlockBody',
     [i_ for P_ in _BBP.values() for i_ in P_['imports']], 'Used by its (i) and by BeaconBlock\'s.')
+
+
+# ---- (i) of a container through its record module (e2e_rec_<X>): the encoder's buffer's bytes (obC: the output tree
+# perfect at depth DO(size), from the encode law's own putx0 steps), then via the record ----
+def venc_crec(R, X, rmod, al, extra_imports=(), premise_note=''):
+    OT = f'Fulu{X}_d.{X}'
+    SC = f'Spec.{X}()'
+    it = _unlight((_OBJ / f'big_encx_{X}_iface.bend').read_text())
+    en = _unlight((_OBJ / f'big_var_codec_{X}_enc.bend').read_text())
+    mw = _re.search(r'^type MW is Data:\n  MW\{(.*)\}$', it, _re.M).group(1)
+    F = [tuple(x.strip().split(': ', 1)) for x in split_args(mw)]
+    fn = [n_ for n_, _ in F]
+    PP = ', '.join(f'+{n_}: {t_}' for n_, t_ in F)
+    AA = ', '.join(fn)
+    if 'def putx0(' not in en:
+        return _venc_crec_top(R, X, rmod, al, extra_imports, premise_note, it, fn, AA)
+    i0 = en.index('def putx0('); j0 = en.index('\n  K.putx(', i0)
+    lets = []
+    for l in en[i0:j0].split('\n')[2:]:
+        mm = _re.match(r'  \+(\w+) = ', l)
+        if mm and lets and mm.group(1) in ('hl', 'pf0', 'm', 'hm', 'hz'):
+            break
+        lets.append(l)
+    SZ = f'Z.SZS({AA})'
+    DO = f'VL.DO({SZ})'
+    OUT = f'EN.OUTC({AA})'
+    obc = (f"# the encoder's buffer's bytes: the output tree is perfect at depth DO(size) < 29, the size within it\n"
+           f"def obC({PP}, +h: {{CI.OKT({AA}) == True{{}} : Bool}}, +k: Nat, +ek: {{k == 28n : Nat}})\n"
+           f"    -> {{E.obytes(B.Buf{{FD.array__thaw(U32, {OUT}), {SZ}}}) == VSP.bt(U32.to_nat({SZ}), SF.limbs(FD.array__slots(U32, {OUT}))) : +List<U32>}}:\n"
+           + '\n'.join(lets) + '\n' +
+           f"  +ep = VCN.padb_id(0n, U32.to_nat({SZ}))\n"
+           f"  +hq = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat({SZ}), z) == True{{}} : Bool}}, Nat.add(U32.to_nat({SZ}), WD.PADB(0n, U32.to_nat({SZ}))), A.quad(WD.NWN(U32.to_nat({SZ}))), ep,\n"
+           f"    FD.nat__le_add_right(U32.to_nat({SZ}), WD.PADB(0n, U32.to_nat({SZ}))))\n"
+           f"  +hn = FD.nat__le_trans(U32.to_nat({SZ}), A.quad(WD.NWN(U32.to_nat({SZ}))), A.quad(FD.spec_common__pow2({DO})), hq, C.q4(WD.NWN(U32.to_nat({SZ})), FD.spec_common__pow2({DO}), hl0))\n"
+           f"  EM.ob({DO}, {OUT}, {SZ}, CI.pfx(CI.MW{{{AA}}}, {DO}, VC.ZT({DO}), 0n, 0n, FD.array__trep_perfect(U32, {DO}, 0)), hd, hn)\n\n"
+           f"def obM(+m: CI.MW, +hok: {{CI.OK(m) == True{{}} : Bool}}) -> {{E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}}:\n"
+           f"  match m:\n    case CI.MW{{{', '.join('+' + n_ for n_ in fn)}}}: obC({AA}, hok, 28n, {{==}})\n")
+    return _venc_crec_tail(R, X, rmod, al, extra_imports, premise_note, it, obc)
+
+
+def _venc_crec_top(R, X, rmod, al, extra_imports, premise_note, it, fn, AA):
+    """venc_crec for a container whose encode law is at X = 0 of the size's depth (var_cont_top: EN.room / OUTE)."""
+    SZ = 'CI.SZ(m)'
+    DO = f'VL.DO({SZ})'
+    H3 = 'DK.P2(EN.HL(m), EN.HZ(m))'
+    obc = (f"# the encoder's buffer's bytes: the output tree is perfect at depth DO(size) < 29 (EN.room), the size within it\n"
+           f"def obM(+m: CI.MW, +hok: {{CI.OK(m) == True{{}} : Bool}}) -> {{E.obytes(B.Buf{{FD.array__thaw(U32, EN.OUTE(m)), EN.SZSM(m)}}) == VSP.bt(U32.to_nat(EN.SZSM(m)), SF.limbs(FD.array__slots(U32, EN.OUTE(m)))) : +List<U32>}}:\n"
+           f"  +g = EN.room(m, hok, 28n, {{==}})\n"
+           f"  +hd = CI.PA(EN.HD(m), {H3}, g)\n"
+           f"  +hl = CI.PA(EN.HL(m), EN.HZ(m), CI.PB(EN.HD(m), {H3}, g))\n"
+           f"  +hl0 = FD.logic__subst(Nat, z => {{Nat.is_le(WD.NWN(z), VB.pw({DO})) == True{{}} : Bool}}, List.length(&2, U32, CI.ENC(m)), U32.to_nat({SZ}),\n"
+           f"    Equal.sym(Nat, U32.to_nat({SZ}), List.length(&2, U32, CI.ENC(m)), CI.szx(m, hok)), hl)\n"
+           f"  +ep = VCN.padb_id(0n, U32.to_nat({SZ}))\n"
+           f"  +hq = FD.logic__subst(Nat, z => {{Nat.is_le(U32.to_nat({SZ}), z) == True{{}} : Bool}}, Nat.add(U32.to_nat({SZ}), WD.PADB(0n, U32.to_nat({SZ}))), A.quad(WD.NWN(U32.to_nat({SZ}))), ep,\n"
+           f"    FD.nat__le_add_right(U32.to_nat({SZ}), WD.PADB(0n, U32.to_nat({SZ}))))\n"
+           f"  +hn = FD.nat__le_trans(U32.to_nat({SZ}), A.quad(WD.NWN(U32.to_nat({SZ}))), A.quad(FD.spec_common__pow2({DO})), hq, C.q4(WD.NWN(U32.to_nat({SZ})), FD.spec_common__pow2({DO}), hl0))\n"
+           f"  EM.ob({DO}, EN.OUTE(m), {SZ}, CI.pfx(m, {DO}, VC.ZT({DO}), 0n, 0n, FD.array__trep_perfect(U32, {DO}, 0)), hd, hn)\n")
+    return _venc_crec_tail(R, X, rmod, al, extra_imports, premise_note, it, obc)
+
+
+def _venc_crec_tail(R, X, rmod, al, extra_imports, premise_note, it, obc):
+    OT = f'Fulu{X}_d.{X}'
+    SC = f'Spec.{X}()'
+    G, common = _encx_common(R, X, OT, 0, 10)
+    a = common.index("# the encoder's buffer"); b = common.index('# (i) on a record')
+    common = common[:a] + obc + '\n' + common[b:]
+    prem = CREC_PREM[X]
+    top = (f"\n# (i) from the object's record\n"
+           f"def fin(-o: {OT}, +w: {al}.R_{X}(o)) -> {G('o')}:\n"
+           "  (+m, r1) = w\n  (+eo, r2) = r1\n  (+ev, r3) = r2\n  (+ok, +eL) = r3\n  via(o, m, eo, ev, ok)\n\n"
+           f"# (i): for every object the root law represents, with its parts' premises ({premise_note})\n"
+           f"def {R}_e2e_encode(-o: {OT}, +rep: RT.rep_{X}(o, {SC}), "
+           + ', '.join(f'+{n_}: {_qual_rec(t_, al)}' for n_, t_ in prem) + f") -> {G('o')}:\n"
+           f"  fin(o, {al}.mk_{X}(o, rep, {', '.join(n_ for n_, _ in prem)}))\n")
+    imps = ['import Base', 'import ../END_TO_END.bend as E2E', 'import ../src/model.bend as API', 'import ../src/buffer.bend as B', 'import ../src/obj.bend as O',
+            f'import ../types/{R}_encode_ssz_generated.bend as {R}_e', f'import ../types/{R}_def_generated.bend as {R}_d', 'import ../types/schema.bend as S',
+            'import ../spec/fulu_schemas.bend as Spec', 'import ../proofs/type_validator_soundness.bend as VS', 'import ../proofs/compact/found.bend as FD',
+            'import ../proofs/compact/arith.bend as A', 'import ../proofs/nat_order.bend as Order', 'import ../spec/codec.bend as Encoding',
+            'import ../proofs/obj/spec_fixed.bend as SF', 'import ../proofs/obj/vspec.bend as VSP', 'import ../proofs/obj/vbuf.bend as VB',
+            'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vcont.bend as VCN', 'import ../proofs/obj/vrecx.bend as VRX',
+            'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vlist.bend as VL', 'import ../proofs/obj/vuwd.bend as WD',
+            'import ../proofs/obj/vua_lay.bend as LY', 'import ../proofs/obj/root_types.bend as RT',
+            f'import ../proofs/obj/big_var_codec_{X}_enc.bend as EN', f'import ../proofs/obj/big_encx_{X}_iface.bend as CI',
+            f'import ../proofs/obj/big_encx_{X}.bend as K', 'import ../proofs/obj/dk.bend as DK'] + ([f'import ../proofs/obj/big_encx_{X}_size.bend as Z'] if (_OBJ / f'big_encx_{X}_size.bend').exists() else []) + [
+            'import ./e2e_support.bend as E', 'import ./e2e_emit.bend as EM', 'import ./e2e_cap.bend as C', f'import ./{rmod}.bend as {al}'] + list(extra_imports)
+    seen, out = set(), []
+    for i_ in imps + [i_ for i_ in _iface_imports(it) if not i_.endswith(' as CI')]:
+        a_ = i_.rsplit(' as ', 1)[-1] if ' as ' in i_ else i_
+        if a_ not in seen:
+            seen.add(a_); out.append(i_)
+    return '\n'.join(out) + (f"\n\n# GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.\n"
+                             f"# {R} (variable size): the object API's encoder's bytes are END_TO_END's serialize of the object's view, for every\n"
+                             f"# object the root law represents (rep) whose parts' storage is as their encode records ask, through its record\n"
+                             f"# ({rmod}: mk_{X}).\n\n") + common + top
+
+
+def _qual_rec(t, al):
+    """a record module's premise type as seen from outside it: its own defs qualified by al."""
+    return _re.sub(r'(?<![\w.])(SZW|SZ|SHS_P|EPL|SZOK)\(', al + r'.\1(', t)
+
+VENC_SHAPES['BeaconBlockBody'] = lambda R, X: venc_crec(R, X, 'e2e_rec_BeaconBlockBody', 'RB', [i_ for P_ in _BBP.values() for i_ in P_['imports']],
+    'hs3/hs6 the slashings\' and deposits\' storage (e2e_ml sdt), hs4/hs5 the attester slashings\' and attestations\' (e2e_bbsl sd1 / e2e_bbatt sd8), '
+    'hs7/hs10 the lists\' trees (sda), hs9 the execution payload\'s (e2e_epr SHS_P), hs11/hv11 the blob commitments\' words and '
+    'their whole-48-byte count (object API validity), ha12..hc12 the requests\' lists, hZ the encoding within 4 * 2^28 bytes')
+VENC_PREMISE['BeaconBlockBody'] = ('rep: RT.rep_BeaconBlockBody(o, Spec.BeaconBlockBody()) and its parts\' encode records\' own bounds as premises, each a decoded-object gap '
+    'the root law\'s invariant does not give: hs3/hs6 the proposer slashings\' and deposits\' storage (e2e_ml sdt), hs4 the attester slashings\' (e2e_bbsl.sd1), hs5 the attestations\' '
+    '(e2e_bbatt.sd8), hs7/hs10 the voluntary exits\' and BLS changes\' trees at depth below 31 (sda), hs9 the execution payload\'s (e2e_epr.SHS_P, as its own (i)), '
+    'hs11 the blob commitments\' words at depth below 28 (e2e_bl48.sdk48), ha12..hc12 the execution requests\' lists at depth below 31 (sda), and hZ the encoding within '
+    '4 * 2^28 = 2^30 bytes (e2e_rec_BeaconBlockBody.SZW, each part\'s byte count a witness; the parts\' own size bounds are derived from it); '
+    'hv11: the blob commitments\' byte count a whole number of 48-byte commitments (object API validity, O.unit_ok)')
+
+
+def _nest_part(Xc, al, rmod, box):
+    I = CREC_INFO[Xc]
+    ps = [(n_, t_) for n_, t_ in CREC_PREM[Xc] if n_ != 'hZ']
+    sub = lambda t_, p_: _re.sub(r'(?<![\w.])o(?![\w])', lambda _m: p_, t_)
+    P = {'crec': Xc, 'R': f'{al}.R_{Xc}', 'ty': f'Fulu{Xc}_d.{Xc}', 'bound': None,
+         'L': lambda p_: I['sumf']([lf(p_) for lf in I['leaves']]),
+         'mk': lambda p_, s_, r_, hb_, j_: f'{al}.mk_{Xc}({p_}, {r_}, {", ".join(n_ + str(j_) for n_, _ in ps)}, {hb_})',
+         'prem': [(n_, (lambda p_, t_=t_: sub(t_, p_))) for n_, t_ in ps],
+         'imports': [f'import ./{rmod}.bend as {al}', f'import ../types/Fulu{Xc}_def_generated.bend as Fulu{Xc}_d']}
+    if box:
+        P['box'] = f'O.Boxed<Fulu{Xc}_d.{Xc}>'; P['bx'] = Xc
+    return P
+
+
+_BBI = [i_ for P_ in _BBP.values() for i_ in P_['imports']]
+_BKP = {4: _nest_part('BeaconBlockBody', 'RB', 'e2e_rec_BeaconBlockBody', True)}
+SUPPORT_OUT['e2e_rec_BeaconBlock.bend'] = crec_text('BeaconBlock', _BKP, 'e2e_rec_BeaconBlock', _BBI + _BKP[4]['imports'], 'Used by its (i) and by SignedBeaconBlock\'s.')
+_SBP = {0: _nest_part('BeaconBlock', 'RK', 'e2e_rec_BeaconBlock', False)}
+SUPPORT_OUT['e2e_rec_SignedBeaconBlock.bend'] = crec_text('SignedBeaconBlock', _SBP, 'e2e_rec_SignedBeaconBlock', _BBI + _BKP[4]['imports'] + _SBP[0]['imports'], 'Used by its (i).')
+VENC_SHAPES['BeaconBlock'] = lambda R, X: venc_crec(R, X, 'e2e_rec_BeaconBlock', 'RK', _BBI + _BKP[4]['imports'], 'the body\'s, as BeaconBlockBody\'s (i)')
+VENC_SHAPES['SignedBeaconBlock'] = lambda R, X: venc_crec(R, X, 'e2e_rec_SignedBeaconBlock', 'RS', _BBI + _BKP[4]['imports'] + _SBP[0]['imports'], 'the body\'s, as BeaconBlockBody\'s (i)')
+VENC_PREMISE['BeaconBlock'] = ('rep: RT.rep_BeaconBlock(o, Spec.BeaconBlock()) and its body\'s premises as BeaconBlockBody\'s (i) (hs34..hc124, hv114: the body\'s parts\' decoded-object gaps and '
+    'object API validity) with hZ the encoding within 4 * 2^28 = 2^30 bytes (e2e_rec_BeaconBlock.SZW, each body part\'s byte count a witness; the body\'s and its parts\' bounds derived from it)')
+VENC_PREMISE['SignedBeaconBlock'] = VENC_PREMISE['BeaconBlock'].replace('RT.rep_BeaconBlock(o, Spec.BeaconBlock())', 'RT.rep_SignedBeaconBlock(o, Spec.SignedBeaconBlock())').replace('hs34..hc124, hv114', 'hs340..hc1240, hv1140').replace('e2e_rec_BeaconBlock.SZW', 'e2e_rec_SignedBeaconBlock.SZW')

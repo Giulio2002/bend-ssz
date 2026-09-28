@@ -3823,6 +3823,26 @@
     "premise": "rep: RT.rep_AttesterSlashing(o, Spec.AttesterSlashing()) and hs1, hs2: U.sd(each child's list field) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32)"
    }
   ],
+  "FuluBeaconBlock_e2e_generated.bend": [
+   {
+    "name": "FuluBeaconBlock",
+    "generated_name": "BeaconBlock",
+    "laws": [
+     "FuluBeaconBlock_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_BeaconBlock(o, Spec.BeaconBlock()) and its body's premises as BeaconBlockBody's (i) (hs34..hc124, hv114: the body's parts' decoded-object gaps and object API validity) with hZ the encoding within 4 * 2^28 = 2^30 bytes (e2e_rec_BeaconBlock.SZW, each body part's byte count a witness; the body's and its parts' bounds derived from it)"
+   }
+  ],
+  "FuluBeaconBlockBody_e2e_generated.bend": [
+   {
+    "name": "FuluBeaconBlockBody",
+    "generated_name": "BeaconBlockBody",
+    "laws": [
+     "FuluBeaconBlockBody_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_BeaconBlockBody(o, Spec.BeaconBlockBody()) and its parts' encode records' own bounds as premises, each a decoded-object gap the root law's invariant does not give: hs3/hs6 the proposer slashings' and deposits' storage (e2e_ml sdt), hs4 the attester slashings' (e2e_bbsl.sd1), hs5 the attestations' (e2e_bbatt.sd8), hs7/hs10 the voluntary exits' and BLS changes' trees at depth below 31 (sda), hs9 the execution payload's (e2e_epr.SHS_P, as its own (i)), hs11 the blob commitments' words at depth below 28 (e2e_bl48.sdk48), ha12..hc12 the execution requests' lists at depth below 31 (sda), and hZ the encoding within 4 * 2^28 = 2^30 bytes (e2e_rec_BeaconBlockBody.SZW, each part's byte count a witness; the parts' own size bounds are derived from it); hv11: the blob commitments' byte count a whole number of 48-byte commitments (object API validity, O.unit_ok)"
+   }
+  ],
   "FuluDataColumnSidecar_e2e_generated.bend": [
    {
     "name": "FuluDataColumnSidecar",
@@ -3951,6 +3971,16 @@
      "FuluSignedAggregateAndProof_e2e_encode"
     ],
     "premise": "rep: RT.rep_SignedAggregateAndProof(o, Spec.SignedAggregateAndProof()) and hs: BTV.sdbv(its bit list) (the list's words at depth below 31 with room for (K >> 5) + 1 words, and hv: the last word's bits above K zero, the encode laws' premise, carried until a lemma derives it)"
+   }
+  ],
+  "FuluSignedBeaconBlock_e2e_generated.bend": [
+   {
+    "name": "FuluSignedBeaconBlock",
+    "generated_name": "SignedBeaconBlock",
+    "laws": [
+     "FuluSignedBeaconBlock_e2e_encode"
+    ],
+    "premise": "rep: RT.rep_SignedBeaconBlock(o, Spec.SignedBeaconBlock()) and its body's premises as BeaconBlockBody's (i) (hs340..hc1240, hv1140: the body's parts' decoded-object gaps and object API validity) with hZ the encoding within 4 * 2^28 = 2^30 bytes (e2e_rec_SignedBeaconBlock.SZW, each body part's byte count a witness; the body's and its parts' bounds derived from it)"
    }
   ],
   "FuluTransaction_e2e_generated.bend": [
@@ -6462,17 +6492,20 @@
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",
    "reason": "encode laws not over the same free words / bits",
-   "root": "FuluBeaconBlockBody_e2e_root_generated.bend"
+   "root": "FuluBeaconBlockBody_e2e_root_generated.bend",
+   "encode": "FuluBeaconBlockBody_e2e_generated.bend"
   },
   "FuluBeaconBlock": {
    "generated_name": "BeaconBlock",
    "reason": "encode laws not over the same free words / bits",
-   "root": "FuluBeaconBlock_e2e_root_generated.bend"
+   "root": "FuluBeaconBlock_e2e_root_generated.bend",
+   "encode": "FuluBeaconBlock_e2e_generated.bend"
   },
   "FuluSignedBeaconBlock": {
    "generated_name": "SignedBeaconBlock",
    "reason": "encode laws not over the same free words / bits",
-   "root": "FuluSignedBeaconBlock_e2e_root_generated.bend"
+   "root": "FuluSignedBeaconBlock_e2e_root_generated.bend",
+   "encode": "FuluSignedBeaconBlock_e2e_generated.bend"
   }
  },
  "decode_uncovered": {
