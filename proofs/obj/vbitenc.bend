@@ -349,15 +349,35 @@ def E2(+K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hK: HK(K
   %Epd(K, kb, hkb, hK) : {_ == Nat.add(A.quad(QK(K)), JK(K)) : Nat}
   VC.split4(PDK(K))
 
-# The byte count ceil(K / 8).
+# (b + 7) >> 3 <= 1 for b <= 7.
+def rs7(+b: Nat, +hb: {Nat.is_le(b, 7n) == True{} : Bool}) -> {Nat.is_le(VD.s_rng(3n, Nat.add(b, 7n)), 1n) == True{} : Bool}:
+  match b:
+    case 0n: {==}
+    case 1n: {==}
+    case 2n: {==}
+    case 3n: {==}
+    case 4n: {==}
+    case 5n: {==}
+    case 6n: {==}
+    case 7n: {==}
+    case 8n+ +p: Empty.absurd({Nat.is_le(VD.s_rng(3n, Nat.add(8n+p, 7n)), 1n) == True{} : Bool}, F.logic__false_true(hb))
+
+# The byte count ceil(K / 8) = (K >> 3) + ((K & 7) + 7 >> 3) (the runtime's O.bits_nbytes: no U32 sum wraps).
 def E3(+K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hK: HK(K, kb))
     -> {U32.to_nat(O.bits_nbytes(K)) == Nat.add(AK(K), VD.s_rng(3n, Nat.add(BKk(K), 7n))) : Nat}:
-  %Equal.sym(Nat, U32.to_nat(U32.shrn(U32.add(K, 7), 3n)), VD.s_rng(3n, U32.to_nat(U32.add(K, 7))), VD.shrk(3n, U32.add(K, 7))) : {_ == Nat.add(AK(K), VD.s_rng(3n, Nat.add(BKk(K), 7n))) : Nat}
-  %Equal.sym(Nat, U32.to_nat(U32.add(K, 7)), Nat.add(U32.to_nat(K), 7n), sadd33(K, 7, K, kb, hkb, hK, F.nat__le_refl(Nat.add(U32.to_nat(K), 7n)))) :
-    {VD.s_rng(3n, _) == Nat.add(AK(K), VD.s_rng(3n, Nat.add(BKk(K), 7n))) : Nat}
-  %Equal.sym(Nat, U32.to_nat(K), Nat.add(VS.x8(AK(K)), BKk(K)), E1(K)) : {VD.s_rng(3n, Nat.add(_, 7n)) == Nat.add(AK(K), VD.s_rng(3n, Nat.add(BKk(K), 7n))) : Nat}
-  %Equal.sym(Nat, Nat.add(Nat.add(VS.x8(AK(K)), BKk(K)), 7n), Nat.add(VS.x8(AK(K)), Nat.add(BKk(K), 7n)), F.nat__add_assoc(VS.x8(AK(K)), BKk(K), 7n)) : {VD.s_rng(3n, _) == Nat.add(AK(K), VD.s_rng(3n, Nat.add(BKk(K), 7n))) : Nat}
-  r3a(AK(K), Nat.add(BKk(K), 7n))
+  +X = U32.shrn(U32.add(U32.and(K, 7), 7), 3n)
+  +hBK = F.logic__subst(Nat, z => {Nat.is_le(BKk(K), z) == True{} : Bool}, Nat.add(VS.x8(AK(K)), BKk(K)), U32.to_nat(K), Equal.sym(Nat, U32.to_nat(K), Nat.add(VS.x8(AK(K)), BKk(K)), E1(K)),
+    Order.left_below_sum(VS.x8(AK(K)), BKk(K)))
+  +e1 = sadd33(U32.and(K, 7), 7, K, kb, hkb, hK, Order.add_right(BKk(K), U32.to_nat(K), 7n, hBK))
+  +eX = Equal.trans(Nat, U32.to_nat(X), VD.s_rng(3n, U32.to_nat(U32.add(U32.and(K, 7), 7))), VD.s_rng(3n, Nat.add(BKk(K), 7n)), VD.shrk(3n, U32.add(U32.and(K, 7), 7)),
+    Equal.cong(Nat, Nat, z => VD.s_rng(3n, z), U32.to_nat(U32.add(U32.and(K, 7), 7)), Nat.add(BKk(K), 7n), e1))
+  +hX = F.logic__subst(Nat, z => {Nat.is_le(z, 1n) == True{} : Bool}, VD.s_rng(3n, Nat.add(BKk(K), 7n)), U32.to_nat(X), Equal.sym(Nat, U32.to_nat(X), VD.s_rng(3n, Nat.add(BKk(K), 7n)), eX),
+    rs7(BKk(K), RD.and_le(K, 7)))
+  +h2 = F.nat__le_trans(Nat.add(AK(K), U32.to_nat(X)), Nat.add(U32.to_nat(K), U32.to_nat(X)), Nat.add(U32.to_nat(K), 7n), Order.add_right(AK(K), U32.to_nat(K), U32.to_nat(X), lAK(K)),
+    Order.add_left(U32.to_nat(K), U32.to_nat(X), 7n, F.nat__le_trans(U32.to_nat(X), 1n, 7n, hX, {==})))
+  Equal.trans(Nat, U32.to_nat(U32.add(U32.shrn(K, 3n), X)), Nat.add(AK(K), U32.to_nat(X)), Nat.add(AK(K), VD.s_rng(3n, Nat.add(BKk(K), 7n))),
+    sadd33(U32.shrn(K, 3n), X, K, kb, hkb, hK, h2),
+    Equal.cong(Nat, Nat, z => Nat.add(AK(K), z), U32.to_nat(X), VD.s_rng(3n, Nat.add(BKk(K), 7n)), eX))
 
 # The output size K / 8 + 1.
 def E4(+K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hK: HK(K, kb))
