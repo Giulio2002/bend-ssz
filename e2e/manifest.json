@@ -4681,7 +4681,7 @@
     "laws": [
      "ProgressiveBitsStruct_e2e_encode"
     ],
-    "premise": "rep (the root law's representation invariant); (i) also PREM (e2e_pbs: each bit list's tree below depth 28 with room and zero bits above its last, SDB / e2e_encp.SDPB; each bit vector's tree depth and room, SDW, and the 1281-bit vector's zero bits above bit 1281)"
+    "premise": "rep (the root law's representation invariant); (i) also PREM (e2e_pbs: each bit list's tree below depth 28 (SDB) or 31 (e2e_encp.SDPB, the progressive ones) with room and zero bits above its last; each bit vector's tree depth and room, SDW, and the 1281-bit vector's zero bits above bit 1281)"
    }
   ],
   "ProgressiveBitsStruct_e2e_root_generated.bend": [
@@ -4691,7 +4691,7 @@
     "laws": [
      "ProgressiveBitsStruct_e2e_root"
     ],
-    "premise": "rep (the root law's representation invariant); (i) also PREM (e2e_pbs: each bit list's tree below depth 28 with room and zero bits above its last, SDB / e2e_encp.SDPB; each bit vector's tree depth and room, SDW, and the 1281-bit vector's zero bits above bit 1281)"
+    "premise": "rep (the root law's representation invariant); (i) also PREM (e2e_pbs: each bit list's tree below depth 28 (SDB) or 31 (e2e_encp.SDPB, the progressive ones) with room and zero bits above its last; each bit vector's tree depth and room, SDW, and the 1281-bit vector's zero bits above bit 1281)"
    }
   ],
   "SingleFieldTestStruct_e2e_generated.bend": [
