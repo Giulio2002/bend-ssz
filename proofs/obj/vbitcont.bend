@@ -45,7 +45,7 @@ def VOK(+T: F.array__Tree<U32>, +K: U32, +Nu: U32) -> Data:
 
 def valid_eval(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat, +Nu: U32,
     +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +eN: {U32.to_nat(Nu) == N : Nat},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +eN: {U32.to_nat(Nu) == N : Nat},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hcap: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool},
@@ -72,7 +72,7 @@ def valid_eval(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat, +Nu
 # ---- the writer at 4 H ----
 
 # The bound of p + K / 8 for U32.add.
-def pdb(+DO: Nat, +p: U32, +H: Nat, +K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hK: VBT.HK(K, kb),
+def pdb(+DO: Nat, +p: U32, +H: Nat, +K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hK: VBT.HK(K, kb),
     +ep: {U32.to_nat(p) == A.quad(H) : Nat},
     +hDq: {Nat.is_le(Nat.add(H, Nat.add(VBT.QK(K), 1n)), VB.pw(DO)) == True{} : Bool})
     -> {Nat.is_le(Nat.add(U32.to_nat(p), U32.to_nat(U32.shrn(K, 3n))), O.pow2n(2n+DO)) == True{} : Bool}:
@@ -94,7 +94,7 @@ def pdb(+DO: Nat, +p: U32, +H: Nat, +K: U32, +kb: Nat, +hkb: {Nat.is_lt(kb, 32n)
 # All K bits are in the storage: K = 32 q + r <= 32 (q + 1) <= 32 2^dw.
 def lenK(+dw: Nat, +T: F.array__Tree<U32>, +K: U32, +kb: Nat, +N: Nat,
     +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},
     +hWq: {Nat.is_le(Nat.add(VBT.QK(K), 1n), VB.pw(dw)) == True{} : Bool})
     -> CO.CR3(T, K):
@@ -143,7 +143,7 @@ def cra3(+dd: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +H: 
 def enc_at(+DO: Nat, +dw: Nat, +D: F.array__Tree<U32>, +T: F.array__Tree<U32>, +p: U32, +H: Nat, +K: U32, +kb: Nat, +KY: Nat, +N: Nat,
     +pfD: {F.array__perfect(U32, DO, D) == True{} : Bool}, +pfT: {F.array__perfect(U32, dw, T) == True{} : Bool},
     +hDO: {Nat.is_lt(DO, 29n) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
-    +hkb: {Nat.is_lt(kb, 32n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
+    +hkb: {Nat.is_lt(kb, 33n) == True{} : Bool}, +hKY: {Nat.is_lt(KY, 31n) == True{} : Bool},
     +ep: {U32.to_nat(p) == A.quad(H) : Nat}, +hp3: {U32.and(p, 3) == 0 : U32}, +eP: {U32.to_nat(U32.shrn(p, 2n)) == H : Nat},
     +hN: {Nat.is_le(U32.to_nat(K), N) == True{} : Bool},
     +hNk: {Nat.is_le(Nat.add(N, 8n), O.pow2n(kb)) == True{} : Bool},

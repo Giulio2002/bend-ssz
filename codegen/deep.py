@@ -251,7 +251,21 @@ def _u_calls(body, calls):
             allc[p + n] = ix
     pat = re.compile(r'(?<![\w.])(' + '|'.join(re.escape(x) for x in sorted(allc, key=len, reverse=True)) + r')\(')
 
+    ale = re.compile(r'(?<![\w.])VB\.add_le_at\(')
+
     def go(t):
+        # VB.add_le_at(a, c, i, k, ea, hk, h: c + i <= 2^k): the UMAX form VB.add_nw(a, c, i, ea, h: c + i <= UMAX)
+        while True:
+            m = ale.search(t)
+            if not m:
+                break
+            a = m.end()
+            b = _close(t, a)
+            args = _split_args(t[a:b])
+            if len(args) != 7 or args[3].strip() != 'k' or args[5].strip() != 'hk':
+                break
+            h = args[6].replace('VB.pw(k)', 'U32.to_nat(VB.UMAX())')
+            t = t[:m.start()] + 'VB.add_nw(' + ','.join(args[:3] + [args[4], h]).lstrip() + ')' + t[b + 1:]
         res, i = [], 0
         while True:
             m = pat.search(t, i)
@@ -356,6 +370,6 @@ def uify_file(text, obj_dir):
     al = {}
     for m in re.finditer(r'^import \./(\w+)\.bend as (\w+)', text, re.M):
         p = obj_dir / f'{m.group(1)}.bend'
-        if m.group(1) in ('vbytes', 'vbspec', 'vua_copy', 'vua_sc', 'vua_ct', 'vbx') and p.exists():
+        if m.group(1) in ('vbytes', 'vbspec', 'vua_copy', 'vua_sc', 'vua_ct', 'vbx', 'vbenc', 'vuw', 'vputwd', 'vuwd') and p.exists():
             al[m.group(2) + '.'] = chain_names(p.read_text())
     return uify(text, al)[0]

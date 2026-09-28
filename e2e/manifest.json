@@ -3802,7 +3802,7 @@
     "laws": [
      "ProgressiveSingleListContainerTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()) and hs: EQ.PREM_Gp4B0CA2906A(o), its storage fields' premises at their encode laws' bounds (read from the laws): hs0: EP.SDPB(pj_0(o), 28n) (field 0's bit list: its words below depth 28, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
+    "premise": "rep: RT.rep_Gp4B0CA2906A(o, Spec.Gp4B0CA2906A()) and hs: EQ.PREM_Gp4B0CA2906A(o), its storage fields' premises at their encode laws' bounds (read from the laws): hs0: EP.SDPB(pj_0(o), 31n) (field 0's bit list: its words below depth 31, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
    }
   ],
   "ProgressiveVarTestStruct_e2e_generated.bend": [
@@ -3812,7 +3812,7 @@
     "laws": [
      "ProgressiveVarTestStruct_e2e_encode"
     ],
-    "premise": "rep: RT.rep_Gp66304057C3(o, Spec.Gp66304057C3()) and hs: EQ.PREM_Gp66304057C3(o), its storage fields' premises at their encode laws' bounds (read from the laws): hs1: BL.sdk(pj_1(o), 28n) (field 1's words below depth 28); hs2: EP.SDPB(pj_2(o), 28n) (field 2's bit list: its words below depth 28, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
+    "premise": "rep: RT.rep_Gp66304057C3(o, Spec.Gp66304057C3()) and hs: EQ.PREM_Gp66304057C3(o), its storage fields' premises at their encode laws' bounds (read from the laws): hs1: BL.sdk(pj_1(o), 28n) (field 1's words below depth 28); hs2: EP.SDPB(pj_2(o), 31n) (field 2's bit list: its words below depth 31, the widths at B = K, (K >> 5) + 1 words, the bits above K zero)"
    }
   ],
   "VarTestStruct_e2e_generated.bend": [
