@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_Gt39CAD03032.bend as C
 
 def Gt39CAD03032_spec_unique(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +v: S.Value, spec: Decoding.decodes(Spec.Gt39CAD03032(), SF.limbs([x0, x1, x2, x3]), v))
     -> {v == S.Sequence{SP2.vu16([x0, x1, x2, x3], S.EmptyItems{})} : S.Value}:
-  E.image_unique(Spec.Gt39CAD03032(), SF.limbs([x0, x1, x2, x3]), v, S.Sequence{SP2.vu16([x0, x1, x2, x3], S.EmptyItems{})}, VS.public_sound(Spec.Gt39CAD03032(), {==}), spec, C.Gt39CAD03032_spec_encode(x0, x1, x2, x3))
+  E.valid_unique(Spec.Gt39CAD03032(), SF.limbs([x0, x1, x2, x3]), v, S.Sequence{SP2.vu16([x0, x1, x2, x3], S.EmptyItems{})}, {==}, spec, C.Gt39CAD03032_spec_encode(x0, x1, x2, x3))

@@ -29,12 +29,11 @@ import ../obj/big_var_bytes_LightClientBootstrap.bend as P0_PRV
 import ../../types/schema.bend as P1_S
 import ../../spec/decoding_relation.bend as P1_Decoding
 import ../../spec/fulu_schemas.bend as P1_Spec
-import ../../proofs/fulu_legality.bend as P1_Legal
 import ../compact/found.bend as P1_F
 import ../compact/arith.bend as P1_A
 import ../obj/vbuf.bend as P1_VB
 import ../obj/big_var_bytes_LightClientBootstrap.bend as P1_DC
-import ../../proofs/decode_complete.bend as P1_DCO
+import ../../proofs/decode_unique.bend as P1_DCO
 import ../obj/big_var_bytes_LightClientBootstrap_unique.bend as P1_PRV
 import ../../src/buffer.bend as P2_B
 import ../../src/obj.bend as P2_O

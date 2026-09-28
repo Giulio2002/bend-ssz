@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_Gt89824BEACE.bend as C
 
 def Gt89824BEACE_spec_unique(+x0: U32, +x1: U32, +x2: U32, +v: S.Value, spec: Decoding.decodes(Spec.Gt89824BEACE(), List.append(&2, U32, SF.limbs([x0, x1]), [B.byte_sel(0, x2), B.byte_sel(1, x2)]), v))
     -> {v == S.Sequence{SP2.vu16([x0, x1], S.Items{S.UnsignedValue{P.UInt{SP2.lo16(x2), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}})} : S.Value}:
-  E.image_unique(Spec.Gt89824BEACE(), List.append(&2, U32, SF.limbs([x0, x1]), [B.byte_sel(0, x2), B.byte_sel(1, x2)]), v, S.Sequence{SP2.vu16([x0, x1], S.Items{S.UnsignedValue{P.UInt{SP2.lo16(x2), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}})}, VS.public_sound(Spec.Gt89824BEACE(), {==}), spec, C.Gt89824BEACE_spec_encode(x0, x1, x2))
+  E.valid_unique(Spec.Gt89824BEACE(), List.append(&2, U32, SF.limbs([x0, x1]), [B.byte_sel(0, x2), B.byte_sel(1, x2)]), v, S.Sequence{SP2.vu16([x0, x1], S.Items{S.UnsignedValue{P.UInt{SP2.lo16(x2), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}})}, {==}, spec, C.Gt89824BEACE_spec_encode(x0, x1, x2))

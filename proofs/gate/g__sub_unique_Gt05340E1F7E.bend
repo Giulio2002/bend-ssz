@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ../obj/generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ../obj/spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F

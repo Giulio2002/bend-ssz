@@ -566,7 +566,7 @@ def unique_text(k):
     D = top_fname(X, '_top').name
     return '\n'.join(['import Base', 'import ../../types/schema.bend as S', 'import ../../spec/decoding_relation.bend as Decoding',
                       'import ../compact/found.bend as FD', 'import ../compact/arith.bend as A', 'import ./vbuf.bend as VB',
-                      'import ./generic_specs.bend as GS', f'import ./{D} as DC', 'import ../../proofs/decode_complete.bend as DCO', '',
+                      'import ./generic_specs.bend as GS', f'import ./{D} as DC', 'import ../../proofs/decode_unique.bend as DCO', '',
                       HDR, '# Every spec value of an accepted buffer\'s bytes is the decoded value.',
                       'law decode_unique:', '  for +d: Nat', '  for +t: FD.array__Tree<U32>', '  for +n: U32',
                       '  for +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}', '  for +hd: {Nat.is_lt(d, 28n) == True{} : Bool}',

@@ -257,6 +257,8 @@ def encpw(+t: FD.array__Tree<U32>, +x: Nat, +V: S.Value, +Yb: +List<U32>,
   {==}
 
 def VALw(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> S.Value: XVw(t, x, YW.VALw(t, 244n+x, LL(len)))
+# VALw's body, as a rewrite (a spec-parts goal over VALw compared with one over its body ran the spec encoder)
+def VALq(+t: FD.array__Tree<U32>, +x: Nat, +len: U32) -> {XVw(t, x, YW.VALw(t, 244n+x, LL(len))) == VALw(t, x, len) : S.Value}: {==}
 
 def hwH(+d: Nat, +x: Nat, +len: U32, +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +ha: {U32.is_le(244, len) == True{} : Bool})
     -> {Nat.is_le(Nat.add(x, Nat.add(A.quad(61n), U32.to_nat(LL(len)))), A.quad(VB.pw(d))) == True{} : Bool}:
@@ -288,8 +290,10 @@ def specw_go(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +x: Nat, +off: U32, +len
     +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +ha: {U32.is_le(244, len) == True{} : Bool}, +epo: {SPOw(t, x) == 244 : U32},
     +hY: {YW.CHKw(t, 244n+x, U32.add(off, 244), LL(len)) == True{} : Bool})
     -> {Codec.parts(VALw(t, x, len), Spec.LightClientHeader()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}:
+  %VALq(t, x, len) :
+    {Codec.parts(_, Spec.LightClientHeader()) == Some{[S.Variable{UW.WX(t, x, U32.to_nat(len))}]} : Maybe<&2, +List<S.Part>>}
   %bytesw(d, t, x, len, pf, hw, ha, epo) :
-    {Codec.parts(VALw(t, x, len), Spec.LightClientHeader()) == Some{[S.Variable{_}]} : Maybe<&2, +List<S.Part>>}
+    {Codec.parts(XVw(t, x, YW.VALw(t, 244n+x, LL(len))), Spec.LightClientHeader()) == Some{[S.Variable{_}]} : Maybe<&2, +List<S.Part>>}
   encpw(t, x, YW.VALw(t, 244n+x, LL(len)), UW.WX(t, 244n+x, U32.to_nat(LL(len))), YW.specw(d, t, n, 244n+x, U32.add(off, 244), LL(len), ecY(d, x, off, len, eo, hd, hw, ha), hd, hwY(d, x, len, hw, ha), pf, hY),
     UW.domWX(t, 244n+x, U32.to_nat(LL(len))), fitw(d, t, x, len, pf, hd, hw, ha))
 

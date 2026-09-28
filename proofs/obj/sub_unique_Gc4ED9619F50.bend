@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_Gc4ED9619F50.bend as C
 
 def Gc4ED9619F50_spec_unique(+x0: U32, +v: S.Value, spec: Decoding.decodes(Spec.Gc4ED9619F50(), SF.limbs([x0]), v))
     -> {v == S.Sequence{S.Items{S.UnsignedValue{P.UInt{U32.and(x0, 65535), 0, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{U32.and(B.join_sel(2, x0, x0), 65535), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}} : S.Value}:
-  E.image_unique(Spec.Gc4ED9619F50(), SF.limbs([x0]), v, S.Sequence{S.Items{S.UnsignedValue{P.UInt{U32.and(x0, 65535), 0, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{U32.and(B.join_sel(2, x0, x0), 65535), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}, VS.public_sound(Spec.Gc4ED9619F50(), {==}), spec, C.Gc4ED9619F50_spec_encode(x0))
+  E.valid_unique(Spec.Gc4ED9619F50(), SF.limbs([x0]), v, S.Sequence{S.Items{S.UnsignedValue{P.UInt{U32.and(x0, 65535), 0, 0, 0, 0, 0, 0, 0}}, S.Items{S.UnsignedValue{P.UInt{U32.and(B.join_sel(2, x0, x0), 65535), 0, 0, 0, 0, 0, 0, 0}}, S.EmptyItems{}}}}, {==}, spec, C.Gc4ED9619F50_spec_encode(x0))

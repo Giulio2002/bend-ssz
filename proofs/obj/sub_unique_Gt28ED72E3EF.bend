@@ -5,7 +5,7 @@ import ../../src/obj.bend as O
 import ../../src/buffer.bend as B
 import ../../spec/decoding_relation.bend as Decoding
 import ./generic_specs.bend as Spec
-import ../decode_complete.bend as E
+import ../decode_unique.bend as E
 import ../type_validator_soundness.bend as VS
 import ./spec_fixed.bend as SF
 import ../../proofs/compact/found.bend as F
@@ -20,4 +20,4 @@ import ./sub_Gt28ED72E3EF.bend as C
 
 def Gt28ED72E3EF_spec_unique(+x0: U32, +x1: U32, +x2: U32, +x3: U32, +v: S.Value, spec: Decoding.decodes(Spec.Gt28ED72E3EF(), SF.limbs([x0, x1, x2, x3]), v))
     -> {v == S.Sequence{SP2.vu8(SF.limbs([x0, x1, x2, x3]))} : S.Value}:
-  E.image_unique(Spec.Gt28ED72E3EF(), SF.limbs([x0, x1, x2, x3]), v, S.Sequence{SP2.vu8(SF.limbs([x0, x1, x2, x3]))}, VS.public_sound(Spec.Gt28ED72E3EF(), {==}), spec, C.Gt28ED72E3EF_spec_encode(x0, x1, x2, x3))
+  E.valid_unique(Spec.Gt28ED72E3EF(), SF.limbs([x0, x1, x2, x3]), v, S.Sequence{SP2.vu8(SF.limbs([x0, x1, x2, x3]))}, {==}, spec, C.Gt28ED72E3EF_spec_encode(x0, x1, x2, x3))

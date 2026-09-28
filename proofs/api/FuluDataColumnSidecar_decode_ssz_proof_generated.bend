@@ -55,12 +55,11 @@ import ../obj/var_codec_DataColumnSidecar_acc.bend as P1_PRV
 import ../../types/schema.bend as P2_S
 import ../../spec/decoding_relation.bend as P2_Decoding
 import ../../spec/fulu_schemas.bend as P2_Spec
-import ../../proofs/fulu_legality.bend as P2_Legal
 import ../compact/found.bend as P2_F
 import ../compact/arith.bend as P2_A
 import ../obj/vbuf.bend as P2_VB
 import ../obj/var_codec_DataColumnSidecar.bend as P2_DC
-import ../../proofs/decode_complete.bend as P2_DCO
+import ../../proofs/decode_unique.bend as P2_DCO
 import ../obj/var_codec_DataColumnSidecar_unique.bend as P2_PRV
 import ../../src/buffer.bend as P3_B
 import ../../src/obj.bend as P3_O
