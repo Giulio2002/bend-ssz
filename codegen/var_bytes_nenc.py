@@ -521,6 +521,9 @@ law encode_spec:
 ''' + '\n'.join(f'  for {q}' for q in E.params + E.hyps) + f'''
   Decoding.decodes(Spec.{n}(), {BY0}, XE({E.A}))
 def encode_spec({E.AH}):
+  # the encoding opened over variables first (F.efl_bytes): the parts rewrite's motive over
+  # Codec.bytes was compared with the spec encoding by running the encoder
+  %F.efl_bytes(Spec.{n}(), XE({E.A})) : {{_ == Some{{{BY0}}} : {M}}}
   %Equal.sym({MP}, Codec.parts(XE({E.A}), Spec.{n}()), Some{{[S.Variable{{{BY0}}}]}},
       partsw({A0}, {", ".join(E.hargs)}, FD.array__trep_perfect(U32, {DO}n, 0), {HD0}, {{==}})) :
     {{Codec.bytes(_) == Some{{{BY0}}} : {M}}}

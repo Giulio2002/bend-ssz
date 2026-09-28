@@ -919,6 +919,7 @@ def top_text(n, Tn, ws, WA, HX, FSX, SRC, SRCa, OBJa, HDRL, RHS, RHSp, Y, TP, HN
     w(f'  Decoding.decodes(Spec.{n}(), {BY}, VALX({WA}, T, K))')
     w(f'def encE({SRC})')
     w(f'    -> {{Codec.encoding_for_legal_type(Spec.{n}(), VALX({WA}, T, K)) == Some{{{RHS}}} : {M}}}:')
+    w(f'  %F.efl_bytes(Spec.{n}(), VALX({WA}, T, K)) : {{_ == Some{{{RHS}}} : {M}}}')
     w(f'  %Equal.sym({MP}, Codec.parts(VALX({WA}, T, K), Spec.{n}()), {RHSp}, partsE({SRCa})) : {{Codec.bytes(_) == Some{{{RHS}}} : {M}}}')
     w('  {==}')
     w(f'def encode_spec({SRCa}):')

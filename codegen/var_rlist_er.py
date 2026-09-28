@@ -509,6 +509,9 @@ law decode_spec:
 {LH}  for +hchk: {{CHK(t, n) == True{{}} : Bool}}
   Decoding.decodes(Spec.{X}(), VW(t, n), VAL(t, n))
 def decode_spec(d, t, n, pf, hd, hn, hchk):
+  # the encoding opened over variables first (F.efl_bytes): the parts rewrite's motive over
+  # Codec.bytes was compared with the spec encoding by running the encoder
+  %F.efl_bytes(Spec.{X}(), VAL(t, n)) : {{_ == Some{{VW(t, n)}} : Maybe<&2, +List<U32>>}}
   %Equal.sym(Maybe<&2, +List<S.Part>>, Codec.parts(VAL(t, n), Spec.{X}()), Some{{[S.Variable{{UW.WX(t, 0n, U32.to_nat(n))}}]}}, EW.specw({WA}, hchk)) :
     {{Codec.bytes(_) == Some{{VW(t, n)}} : Maybe<&2, +List<U32>>}}
   {{==}}
