@@ -76,31 +76,53 @@ def w16p_perfect(+dd: Nat, +D: FD.array__Tree<U32>, +P: Nat, +x: U32, +pf: {FD.a
     -> {FD.array__perfect(U32, dd, W16P(dd, D, P, x)) == True{} : Bool}:
   W16.w16x_perfect(RP(P), dd, D, QP(P), x, pf)
 
+def w8p_rtW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P, 1n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {uint8_e.u8_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W8P(dd, D, P, x)) : Array<U32>}:
+  W8.w8_anyW(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
+    VWB.m4lt(P), hd, roomp(P, 1n, dd, hb), pf)
+
 def w8p_rt(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 1n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {uint8_e.u8_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W8P(dd, D, P, x)) : Array<U32>}:
-  W8.w8_any(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
-    VWB.m4lt(P), hd, roomp(P, 1n, dd, hb), pf)
+  w8p_rtW(dd, D, X, P, x, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hb, pf)
+def w16p_rtW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P, 2n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {uint16_e.u16_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W16P(dd, D, P, x)) : Array<U32>}:
+  W16.w16_anyW(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
+    VWB.m4lt(P), hd, roomp(P, 2n, dd, hb), pf)
+
 def w16p_rt(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 2n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {uint16_e.u16_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W16P(dd, D, P, x)) : Array<U32>}:
-  W16.w16_any(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
-    VWB.m4lt(P), hd, roomp(P, 2n, dd, hb), pf)
+  w16p_rtW(dd, D, X, P, x, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hb, pf)
+
+def w8p_bytesW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P, 1n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(1n, VS.bdr(P, UA.BYT(D))) == UW.ZB(1n) : +List<U32>})
+    -> {UA.BYT(W8P(dd, D, P, x)) == UW.SPL(UA.BYT(D), P, [U32.and(x, 255)]) : +List<U32>}:
+  FD.logic__subst(Nat, z => {UA.BYT(W8P(dd, D, P, x)) == UW.SPL(UA.BYT(D), z, [U32.and(x, 255)]) : +List<U32>}, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P),
+    W8.w8_any_bytesW(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
+      VWB.m4lt(P), hd, roomp(P, 1n, dd, hb), pf, zmove(P, 1n, D, hz)))
 
 def w8p_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 1n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(1n, VS.bdr(P, UA.BYT(D))) == UW.ZB(1n) : +List<U32>})
     -> {UA.BYT(W8P(dd, D, P, x)) == UW.SPL(UA.BYT(D), P, [U32.and(x, 255)]) : +List<U32>}:
-  FD.logic__subst(Nat, z => {UA.BYT(W8P(dd, D, P, x)) == UW.SPL(UA.BYT(D), z, [U32.and(x, 255)]) : +List<U32>}, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P),
-    W8.w8_any_bytes(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
-      VWB.m4lt(P), hd, roomp(P, 1n, dd, hb), pf, zmove(P, 1n, D, hz)))
-def w16p_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+  w8p_bytesW(dd, D, X, P, x, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hb, pf, hz)
+def w16p_bytesW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 2n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(2n, VS.bdr(P, UA.BYT(D))) == UW.ZB(2n) : +List<U32>})
     -> {UA.BYT(W16P(dd, D, P, x)) == UW.SPL(UA.BYT(D), P, [U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255)]) : +List<U32>}:
   FD.logic__subst(Nat, z => {UA.BYT(W16P(dd, D, P, x)) == UW.SPL(UA.BYT(D), z, [U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255)]) : +List<U32>}, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P),
-    W16.w16_any_bytes(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
+    W16.w16_any_bytesW(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
       VWB.m4lt(P), hd, roomp(P, 2n, dd, hb), pf, zmove(P, 2n, D, hz)))
+
+def w16p_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P, 2n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(2n, VS.bdr(P, UA.BYT(D))) == UW.ZB(2n) : +List<U32>})
+    -> {UA.BYT(W16P(dd, D, P, x)) == UW.SPL(UA.BYT(D), P, [U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255)]) : +List<U32>}:
+  w16p_bytesW(dd, D, X, P, x, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hb, pf, hz)
 
 # ---- uint32 / uint64 leaves at a byte position P (vuwd.W32X / W64X) ----
 def W32P(+dd: Nat, +D: FD.array__Tree<U32>, +P: Nat, +x: U32) -> FD.array__Tree<U32>: UWD.W32X(RP(P), dd, D, QP(P), x)
@@ -111,30 +133,52 @@ def w32p_perfect(+dd: Nat, +D: FD.array__Tree<U32>, +P: Nat, +x: U32, +pf: {FD.a
 def w64p_perfect(+dd: Nat, +D: FD.array__Tree<U32>, +P: Nat, +lo: U32, +hi: U32, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, W64P(dd, D, P, lo, hi)) == True{} : Bool}:
   UWD.w64x_perfect(RP(P), dd, D, QP(P), lo, hi, pf)
+def w32p_rtW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P, 4n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {uint32_e.u32_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W32P(dd, D, P, x)) : Array<U32>}:
+  UWD.w32_anyW(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))), VWB.m4lt(P), hd, roomp(P, 4n, dd, hb), pf)
+
 def w32p_rt(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 4n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {uint32_e.u32_put(FD.array__thaw(U32, D), X, x) == FD.array__thaw(U32, W32P(dd, D, P, x)) : Array<U32>}:
-  UWD.w32_any(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))), VWB.m4lt(P), hd, roomp(P, 4n, dd, hb), pf)
+  w32p_rtW(dd, D, X, P, x, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hb, pf)
+def w64p_rtW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +lo: U32, +hi: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P, 8n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {uint64_e.u64_put(FD.array__thaw(U32, D), X, O.U64{lo, hi}) == FD.array__thaw(U32, W64P(dd, D, P, lo, hi)) : Array<U32>}:
+  UWD.w64_anyW(dd, D, X, QP(P), RP(P), lo, hi, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))), VWB.m4lt(P), hd, roomp(P, 8n, dd, hb), pf)
+
 def w64p_rt(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +lo: U32, +hi: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 8n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {uint64_e.u64_put(FD.array__thaw(U32, D), X, O.U64{lo, hi}) == FD.array__thaw(U32, W64P(dd, D, P, lo, hi)) : Array<U32>}:
-  UWD.w64_any(dd, D, X, QP(P), RP(P), lo, hi, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))), VWB.m4lt(P), hd, roomp(P, 8n, dd, hb), pf)
-def w32p_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+  w64p_rtW(dd, D, X, P, lo, hi, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hb, pf)
+def w32p_bytesW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 4n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(4n, VS.bdr(P, UA.BYT(D))) == UW.ZB(4n) : +List<U32>})
     -> {UA.BYT(W32P(dd, D, P, x)) == UW.SPL(UA.BYT(D), P, [U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255), U32.and(U32.shrn(x, 16n), 255), U32.shrn(x, 24n)]) : +List<U32>}:
   FD.logic__subst(Nat, z => {UA.BYT(W32P(dd, D, P, x)) == UW.SPL(UA.BYT(D), z, [U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255), U32.and(U32.shrn(x, 16n), 255), U32.shrn(x, 24n)]) : +List<U32>}, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P),
-    UWD.w32_any_bytes(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
+    UWD.w32_any_bytesW(dd, D, X, QP(P), RP(P), x, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
       VWB.m4lt(P), hd, roomp(P, 4n, dd, hb), pf, zmove(P, 4n, D, hz)))
-def w64p_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +lo: U32, +hi: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+
+def w32p_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +x: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P, 4n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(4n, VS.bdr(P, UA.BYT(D))) == UW.ZB(4n) : +List<U32>})
+    -> {UA.BYT(W32P(dd, D, P, x)) == UW.SPL(UA.BYT(D), P, [U32.and(x, 255), U32.and(U32.shrn(x, 8n), 255), U32.and(U32.shrn(x, 16n), 255), U32.shrn(x, 24n)]) : +List<U32>}:
+  w32p_bytesW(dd, D, X, P, x, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hb, pf, hz)
+def w64p_bytesW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +lo: U32, +hi: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, 8n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(8n, VS.bdr(P, UA.BYT(D))) == UW.ZB(8n) : +List<U32>})
     -> {UA.BYT(W64P(dd, D, P, lo, hi)) == UW.SPL(UA.BYT(D), P, [U32.and(lo, 255), U32.and(U32.shrn(lo, 8n), 255), U32.and(U32.shrn(lo, 16n), 255), U32.shrn(lo, 24n), U32.and(hi, 255), U32.and(U32.shrn(hi, 8n), 255), U32.and(U32.shrn(hi, 16n), 255), U32.shrn(hi, 24n)]) : +List<U32>}:
   FD.logic__subst(Nat, z => {UA.BYT(W64P(dd, D, P, lo, hi)) == UW.SPL(UA.BYT(D), z, [U32.and(lo, 255), U32.and(U32.shrn(lo, 8n), 255), U32.and(U32.shrn(lo, 16n), 255), U32.shrn(lo, 24n), U32.and(hi, 255), U32.and(U32.shrn(hi, 8n), 255), U32.and(U32.shrn(hi, 16n), 255), U32.shrn(hi, 24n)]) : +List<U32>}, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P),
-    UWD.w64_any_bytes(dd, D, X, QP(P), RP(P), lo, hi, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
+    UWD.w64_any_bytesW(dd, D, X, QP(P), RP(P), lo, hi, Equal.trans(Nat, U32.to_nat(X), P, Nat.add(A.quad(QP(P)), RP(P)), e, Equal.sym(Nat, Nat.add(A.quad(QP(P)), RP(P)), P, eqp(P))),
       VWB.m4lt(P), hd, roomp(P, 8n, dd, hb), pf, zmove(P, 8n, D, hz)))
 
 # ---- fields of a record at P ----------------------------------------------------------------------
+
+def w64p_bytes(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +P: Nat, +lo: U32, +hi: U32, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P, 8n), A.quad(VB.pw(dd))) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(8n, VS.bdr(P, UA.BYT(D))) == UW.ZB(8n) : +List<U32>})
+    -> {UA.BYT(W64P(dd, D, P, lo, hi)) == UW.SPL(UA.BYT(D), P, [U32.and(lo, 255), U32.and(U32.shrn(lo, 8n), 255), U32.and(U32.shrn(lo, 16n), 255), U32.shrn(lo, 24n), U32.and(hi, 255), U32.and(U32.shrn(hi, 8n), 255), U32.and(U32.shrn(hi, 16n), 255), U32.shrn(hi, 24n)]) : +List<U32>}:
+  w64p_bytesW(dd, D, X, P, lo, hi, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hb, pf, hz)
 
 # A field of m bytes at byte c of a record of L bytes at P (c + m <= L): its end, and its start, in the tree.
 def froomb(+P: Nat, +c: Nat, +m: Nat, +L: Nat, +Q: Nat, +hb: {Nat.is_le(Nat.add(P, L), Q) == True{} : Bool}, +hc: {Nat.is_le(Nat.add(c, m), L) == True{} : Bool})
@@ -150,10 +194,15 @@ def fltb(+P: Nat, +c: Nat, +L: Nat, +Q: Nat, +hb: {Nat.is_le(Nat.add(P, L), Q) =
     froomb(P, c, 1n, L, Q, hb, hc))
 
 # The field's position in the tree, from the record's: U32.add(X, c) is at c + P.
+def fposbW(+dd: Nat, +X: U32, +c: U32, +P: Nat, +L: Nat, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(P, L), A.quad(VB.pw(dd))) == True{} : Bool}, +hc: {Nat.is_le(Nat.add(U32.to_nat(c), 1n), L) == True{} : Bool})
+    -> {U32.to_nat(U32.add(X, c)) == Nat.add(U32.to_nat(c), P) : Nat}:
+  VB.add_lt32(X, c, P, e, FD.nat__lt_le_trans(Nat.add(U32.to_nat(c), P), A.quad(VB.pw(dd)), FD.spec_common__pow2(32n), fltb(P, U32.to_nat(c), L, A.quad(VB.pw(dd)), hb, hc), UW.q32(dd, hd)))
+
 def fposb(+dd: Nat, +X: U32, +c: U32, +P: Nat, +L: Nat, +e: {U32.to_nat(X) == P : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(P, L), A.quad(VB.pw(dd))) == True{} : Bool}, +hc: {Nat.is_le(Nat.add(U32.to_nat(c), 1n), L) == True{} : Bool})
     -> {U32.to_nat(U32.add(X, c)) == Nat.add(U32.to_nat(c), P) : Nat}:
-  VB.add_at(X, c, P, 2n+dd, e, FD.nat__lt_trans(2n+dd, 31n, 32n, hd, {==}), fltb(P, U32.to_nat(c), L, A.quad(VB.pw(dd)), hb, hc))
+  fposbW(dd, X, c, P, L, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hb, hc)
 
 # c + P = P + c (the region invariant's position)
 def pcx(+P: Nat, +c: Nat) -> {Nat.add(c, P) == Nat.add(P, c) : Nat}: FD.nat__add_comm(c, P)
@@ -178,6 +227,28 @@ def rroomb(+j: Nat, +k: Nat, +R: Nat, +P0: Nat, +LT: Nat, +Q: Nat, +hj: {Nat.is_
     FD.nat__le_trans(Nat.add(P0, Nat.add(R, M)), Nat.add(P0, LT), Q, Order.add_left(P0, Nat.add(R, M), LT, h1), hb))
 
 # The runtime's position of record j (index i), X + i R, is pos(j, R, P0).
+def posbW(+dd: Nat, +X: U32, +i: U32, +j: Nat, +Ru: U32, +R: Nat, +P0: Nat, +eR: {U32.to_nat(Ru) == R : Nat}, +e: {U32.to_nat(X) == P0 : Nat},
+    +ei: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hR: {Nat.is_le(1n, R) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(VRL.pos(j, R, P0), R), A.quad(VB.pw(dd))) == True{} : Bool})
+    -> {U32.to_nat(U32.add(X, U32.mul(i, Ru))) == VRL.pos(j, R, P0) : Nat}:
+  +Q = A.quad(VB.pw(dd))
+  +P32 = FD.spec_common__pow2(32n)
+  +ps = VRL.pos(j, R, P0)
+  +h0 = FD.nat__lt_le_trans(ps, 1n+ps, Nat.add(R, ps), FD.nat__lt_succ(ps), Order.add_right(1n, R, ps, hR))
+  +h1 = FD.logic__subst(Nat, z => {Nat.is_lt(ps, z) == True{} : Bool}, Nat.add(R, ps), Nat.add(ps, R), FD.nat__add_comm(R, ps), h0)
+  +hp = FD.nat__lt_le_trans(ps, Q, P32, FD.nat__lt_le_trans(ps, Nat.add(ps, R), Q, h1, hb), UW.q32(dd, hd))
+  +hm = FD.nat__le_lt_trans(Nat.mul(j, R), ps, P32, FD.nat__le_add_right(Nat.mul(j, R), P0), hp)
+  +em = Equal.trans(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Nat.mul(j, U32.to_nat(Ru)), Nat.mul(j, R),
+    Equal.cong(Nat, Nat, z => Nat.mul(z, U32.to_nat(Ru)), U32.to_nat(i), j, ei),
+    Equal.cong(Nat, Nat, z => Nat.mul(j, z), U32.to_nat(Ru), R, eR))
+  +e2 = Equal.trans(Nat, U32.to_nat(U32.mul(i, Ru)), Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Nat.mul(j, R),
+    VU.mul_lt32(i, Ru, FD.logic__subst(Nat, z => {Nat.is_lt(z, P32) == True{} : Bool}, Nat.mul(j, R), Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Equal.sym(Nat, Nat.mul(U32.to_nat(i), U32.to_nat(Ru)), Nat.mul(j, R), em), hm)),
+    em)
+  +e3 = VB.add_lt32(X, U32.mul(i, Ru), P0, e,
+    FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, P0), P32) == True{} : Bool}, Nat.mul(j, R), U32.to_nat(U32.mul(i, Ru)), Equal.sym(Nat, U32.to_nat(U32.mul(i, Ru)), Nat.mul(j, R), e2), hp))
+  Equal.trans(Nat, U32.to_nat(U32.add(X, U32.mul(i, Ru))), Nat.add(U32.to_nat(U32.mul(i, Ru)), P0), VRL.pos(j, R, P0), e3,
+    Equal.cong(Nat, Nat, z => Nat.add(z, P0), U32.to_nat(U32.mul(i, Ru)), Nat.mul(j, R), e2))
+
 def posb(+dd: Nat, +X: U32, +i: U32, +j: Nat, +Ru: U32, +R: Nat, +P0: Nat, +eR: {U32.to_nat(Ru) == R : Nat}, +e: {U32.to_nat(X) == P0 : Nat},
     +ei: {U32.to_nat(i) == j : Nat}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(VRL.pos(j, R, P0), R), A.quad(VB.pw(dd))) == True{} : Bool})
     -> {U32.to_nat(U32.add(X, U32.mul(i, Ru))) == VRL.pos(j, R, P0) : Nat}:

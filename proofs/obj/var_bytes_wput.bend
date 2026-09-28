@@ -82,13 +82,13 @@ def WP62_b256(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB.sl
 def WP63_b256(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB.slot(TB, 1n), VB.slot(TB, 2n), VB.slot(TB, 3n), VB.slot(TB, 4n), VB.slot(TB, 5n), VB.slot(TB, 6n), VB.slot(TB, 7n), VB.slot(TB, 8n), VB.slot(TB, 9n), VB.slot(TB, 10n), VB.slot(TB, 11n), VB.slot(TB, 12n), VB.slot(TB, 13n), VB.slot(TB, 14n), VB.slot(TB, 15n), VB.slot(TB, 16n), VB.slot(TB, 17n), VB.slot(TB, 18n), VB.slot(TB, 19n), VB.slot(TB, 20n), VB.slot(TB, 21n), VB.slot(TB, 22n), VB.slot(TB, 23n), VB.slot(TB, 24n), VB.slot(TB, 25n), VB.slot(TB, 26n), VB.slot(TB, 27n), VB.slot(TB, 28n), VB.slot(TB, 29n), VB.slot(TB, 30n), VB.slot(TB, 31n), VB.slot(TB, 32n), VB.slot(TB, 33n), VB.slot(TB, 34n), VB.slot(TB, 35n), VB.slot(TB, 36n), VB.slot(TB, 37n), VB.slot(TB, 38n), VB.slot(TB, 39n), VB.slot(TB, 40n), VB.slot(TB, 41n), VB.slot(TB, 42n), VB.slot(TB, 43n), VB.slot(TB, 44n), VB.slot(TB, 45n), VB.slot(TB, 46n), VB.slot(TB, 47n), VB.slot(TB, 48n), VB.slot(TB, 49n), VB.slot(TB, 50n), VB.slot(TB, 51n), VB.slot(TB, 52n), VB.slot(TB, 53n), VB.slot(TB, 54n), VB.slot(TB, 55n), VB.slot(TB, 56n), VB.slot(TB, 57n), VB.slot(TB, 58n), VB.slot(TB, 59n), VB.slot(TB, 60n), VB.slot(TB, 61n), VB.slot(TB, 62n)]
 def WP64_b256(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB.slot(TB, 1n), VB.slot(TB, 2n), VB.slot(TB, 3n), VB.slot(TB, 4n), VB.slot(TB, 5n), VB.slot(TB, 6n), VB.slot(TB, 7n), VB.slot(TB, 8n), VB.slot(TB, 9n), VB.slot(TB, 10n), VB.slot(TB, 11n), VB.slot(TB, 12n), VB.slot(TB, 13n), VB.slot(TB, 14n), VB.slot(TB, 15n), VB.slot(TB, 16n), VB.slot(TB, 17n), VB.slot(TB, 18n), VB.slot(TB, 19n), VB.slot(TB, 20n), VB.slot(TB, 21n), VB.slot(TB, 22n), VB.slot(TB, 23n), VB.slot(TB, 24n), VB.slot(TB, 25n), VB.slot(TB, 26n), VB.slot(TB, 27n), VB.slot(TB, 28n), VB.slot(TB, 29n), VB.slot(TB, 30n), VB.slot(TB, 31n), VB.slot(TB, 32n), VB.slot(TB, 33n), VB.slot(TB, 34n), VB.slot(TB, 35n), VB.slot(TB, 36n), VB.slot(TB, 37n), VB.slot(TB, 38n), VB.slot(TB, 39n), VB.slot(TB, 40n), VB.slot(TB, 41n), VB.slot(TB, 42n), VB.slot(TB, 43n), VB.slot(TB, 44n), VB.slot(TB, 45n), VB.slot(TB, 46n), VB.slot(TB, 47n), VB.slot(TB, 48n), VB.slot(TB, 49n), VB.slot(TB, 50n), VB.slot(TB, 51n), VB.slot(TB, 52n), VB.slot(TB, 53n), VB.slot(TB, 54n), VB.slot(TB, 55n), VB.slot(TB, 56n), VB.slot(TB, 57n), VB.slot(TB, 58n), VB.slot(TB, 59n), VB.slot(TB, 60n), VB.slot(TB, 61n), VB.slot(TB, 62n), VB.slot(TB, 63n)]
 
-def wput_b256(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {F.array__perfect(U32, dd, D) == True{} : Bool},
+def wput_b256W(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {F.array__perfect(U32, dd, D) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(64n, P), VB.pw(dd)) == True{} : Bool}, +dB: Nat, +TB: F.array__Tree<U32>,
     +pfB: {F.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool},
     +hrB: {Nat.is_le(64n, VB.pw(dB)) == True{} : Bool})
     -> {Fulu_bytevec_256_e.b256_putk(F.array__thaw(U32, D), pos, O.Words{F.array__thaw(U32, TB), 256}) == (F.array__thaw(U32, VF.updv(WL_b256(TB), dd, D, P)), (O.Words{F.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}:
-  +hd32 = VB.lt32(dd, F.nat__lt_trans(dd, 29n, 31n, hdd, {==}))
+  +hd32 = VB.lt32(dd, hdd)
   +hB32 = VB.lt32(dB, hdB)
   %Equal.sym(O.Words & Bool, Fulu_bytevec_256_e.b256_valid(O.Words{F.array__thaw(U32, TB), 256}), (O.Words{F.array__thaw(U32, TB), 256}, True{}),
       VBE.words_ok_b(dB, TB, 256, 256, 256, 9n, pfB, hdB, {==}, {==}, {==}, {==}, hrB, {==}, 1, {==})) :
@@ -481,6 +481,14 @@ def wput_b256(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_
     {Fulu_bytevec_256_e.b256_pk_ok(Fulu_bytevec_256_e.b256_pal(256, (_, F.array__thaw(U32, TB)))) == (F.array__thaw(U32, VF.updv(WL_b256(TB), dd, D, P)), (O.Words{F.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}
   {==}
 
+def wput_b256(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {F.array__perfect(U32, dd, D) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(64n, P), VB.pw(dd)) == True{} : Bool}, +dB: Nat, +TB: F.array__Tree<U32>,
+    +pfB: {F.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool},
+    +hrB: {Nat.is_le(64n, VB.pw(dB)) == True{} : Bool})
+    -> {Fulu_bytevec_256_e.b256_putk(F.array__thaw(U32, D), pos, O.Words{F.array__thaw(U32, TB), 256}) == (F.array__thaw(U32, VF.updv(WL_b256(TB), dd, D, P)), (O.Words{F.array__thaw(U32, TB), 256}, 0)) : Array<U32> & (O.Words & U32)}:
+  wput_b256W(dd, D, pos, P, e, F.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pf, hb, dB, TB, pfB, hdB, hrB)
+
 def WL_v4_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB.slot(TB, 1n), VB.slot(TB, 2n), VB.slot(TB, 3n), VB.slot(TB, 4n), VB.slot(TB, 5n), VB.slot(TB, 6n), VB.slot(TB, 7n), VB.slot(TB, 8n), VB.slot(TB, 9n), VB.slot(TB, 10n), VB.slot(TB, 11n), VB.slot(TB, 12n), VB.slot(TB, 13n), VB.slot(TB, 14n), VB.slot(TB, 15n), VB.slot(TB, 16n), VB.slot(TB, 17n), VB.slot(TB, 18n), VB.slot(TB, 19n), VB.slot(TB, 20n), VB.slot(TB, 21n), VB.slot(TB, 22n), VB.slot(TB, 23n), VB.slot(TB, 24n), VB.slot(TB, 25n), VB.slot(TB, 26n), VB.slot(TB, 27n), VB.slot(TB, 28n), VB.slot(TB, 29n), VB.slot(TB, 30n), VB.slot(TB, 31n)]
 def WP0_v4_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: []
 def WP1_v4_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n)]
@@ -516,13 +524,13 @@ def WP30_v4_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB.
 def WP31_v4_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB.slot(TB, 1n), VB.slot(TB, 2n), VB.slot(TB, 3n), VB.slot(TB, 4n), VB.slot(TB, 5n), VB.slot(TB, 6n), VB.slot(TB, 7n), VB.slot(TB, 8n), VB.slot(TB, 9n), VB.slot(TB, 10n), VB.slot(TB, 11n), VB.slot(TB, 12n), VB.slot(TB, 13n), VB.slot(TB, 14n), VB.slot(TB, 15n), VB.slot(TB, 16n), VB.slot(TB, 17n), VB.slot(TB, 18n), VB.slot(TB, 19n), VB.slot(TB, 20n), VB.slot(TB, 21n), VB.slot(TB, 22n), VB.slot(TB, 23n), VB.slot(TB, 24n), VB.slot(TB, 25n), VB.slot(TB, 26n), VB.slot(TB, 27n), VB.slot(TB, 28n), VB.slot(TB, 29n), VB.slot(TB, 30n)]
 def WP32_v4_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB.slot(TB, 1n), VB.slot(TB, 2n), VB.slot(TB, 3n), VB.slot(TB, 4n), VB.slot(TB, 5n), VB.slot(TB, 6n), VB.slot(TB, 7n), VB.slot(TB, 8n), VB.slot(TB, 9n), VB.slot(TB, 10n), VB.slot(TB, 11n), VB.slot(TB, 12n), VB.slot(TB, 13n), VB.slot(TB, 14n), VB.slot(TB, 15n), VB.slot(TB, 16n), VB.slot(TB, 17n), VB.slot(TB, 18n), VB.slot(TB, 19n), VB.slot(TB, 20n), VB.slot(TB, 21n), VB.slot(TB, 22n), VB.slot(TB, 23n), VB.slot(TB, 24n), VB.slot(TB, 25n), VB.slot(TB, 26n), VB.slot(TB, 27n), VB.slot(TB, 28n), VB.slot(TB, 29n), VB.slot(TB, 30n), VB.slot(TB, 31n)]
 
-def wput_v4_b32(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {F.array__perfect(U32, dd, D) == True{} : Bool},
+def wput_v4_b32W(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {F.array__perfect(U32, dd, D) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(32n, P), VB.pw(dd)) == True{} : Bool}, +dB: Nat, +TB: F.array__Tree<U32>,
     +pfB: {F.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool},
     +hrB: {Nat.is_le(32n, VB.pw(dB)) == True{} : Bool})
     -> {FuluExecutionBranch_e.v4_b32_putk(F.array__thaw(U32, D), pos, O.Words{F.array__thaw(U32, TB), 128}) == (F.array__thaw(U32, VF.updv(WL_v4_b32(TB), dd, D, P)), (O.Words{F.array__thaw(U32, TB), 128}, 0)) : Array<U32> & (O.Words & U32)}:
-  +hd32 = VB.lt32(dd, F.nat__lt_trans(dd, 29n, 31n, hdd, {==}))
+  +hd32 = VB.lt32(dd, hdd)
   +hB32 = VB.lt32(dB, hdB)
   %Equal.sym(O.Words & Bool, FuluExecutionBranch_e.v4_b32_valid(O.Words{F.array__thaw(U32, TB), 128}), (O.Words{F.array__thaw(U32, TB), 128}, True{}),
       VBE.words_ok_b(dB, TB, 128, 128, 128, 8n, pfB, hdB, {==}, {==}, {==}, {==}, hrB, {==}, 32, {==})) :
@@ -723,6 +731,14 @@ def wput_v4_b32(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.t
     {FuluExecutionBranch_e.v4_b32_pk_ok(FuluExecutionBranch_e.v4_b32_pal(128, (_, F.array__thaw(U32, TB)))) == (F.array__thaw(U32, VF.updv(WL_v4_b32(TB), dd, D, P)), (O.Words{F.array__thaw(U32, TB), 128}, 0)) : Array<U32> & (O.Words & U32)}
   {==}
 
+def wput_v4_b32(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {F.array__perfect(U32, dd, D) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(32n, P), VB.pw(dd)) == True{} : Bool}, +dB: Nat, +TB: F.array__Tree<U32>,
+    +pfB: {F.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool},
+    +hrB: {Nat.is_le(32n, VB.pw(dB)) == True{} : Bool})
+    -> {FuluExecutionBranch_e.v4_b32_putk(F.array__thaw(U32, D), pos, O.Words{F.array__thaw(U32, TB), 128}) == (F.array__thaw(U32, VF.updv(WL_v4_b32(TB), dd, D, P)), (O.Words{F.array__thaw(U32, TB), 128}, 0)) : Array<U32> & (O.Words & U32)}:
+  wput_v4_b32W(dd, D, pos, P, e, F.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pf, hb, dB, TB, pfB, hdB, hrB)
+
 def WL_v6_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB.slot(TB, 1n), VB.slot(TB, 2n), VB.slot(TB, 3n), VB.slot(TB, 4n), VB.slot(TB, 5n), VB.slot(TB, 6n), VB.slot(TB, 7n), VB.slot(TB, 8n), VB.slot(TB, 9n), VB.slot(TB, 10n), VB.slot(TB, 11n), VB.slot(TB, 12n), VB.slot(TB, 13n), VB.slot(TB, 14n), VB.slot(TB, 15n), VB.slot(TB, 16n), VB.slot(TB, 17n), VB.slot(TB, 18n), VB.slot(TB, 19n), VB.slot(TB, 20n), VB.slot(TB, 21n), VB.slot(TB, 22n), VB.slot(TB, 23n), VB.slot(TB, 24n), VB.slot(TB, 25n), VB.slot(TB, 26n), VB.slot(TB, 27n), VB.slot(TB, 28n), VB.slot(TB, 29n), VB.slot(TB, 30n), VB.slot(TB, 31n), VB.slot(TB, 32n), VB.slot(TB, 33n), VB.slot(TB, 34n), VB.slot(TB, 35n), VB.slot(TB, 36n), VB.slot(TB, 37n), VB.slot(TB, 38n), VB.slot(TB, 39n), VB.slot(TB, 40n), VB.slot(TB, 41n), VB.slot(TB, 42n), VB.slot(TB, 43n), VB.slot(TB, 44n), VB.slot(TB, 45n), VB.slot(TB, 46n), VB.slot(TB, 47n)]
 def WP0_v6_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: []
 def WP1_v6_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n)]
@@ -774,13 +790,13 @@ def WP46_v6_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB.
 def WP47_v6_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB.slot(TB, 1n), VB.slot(TB, 2n), VB.slot(TB, 3n), VB.slot(TB, 4n), VB.slot(TB, 5n), VB.slot(TB, 6n), VB.slot(TB, 7n), VB.slot(TB, 8n), VB.slot(TB, 9n), VB.slot(TB, 10n), VB.slot(TB, 11n), VB.slot(TB, 12n), VB.slot(TB, 13n), VB.slot(TB, 14n), VB.slot(TB, 15n), VB.slot(TB, 16n), VB.slot(TB, 17n), VB.slot(TB, 18n), VB.slot(TB, 19n), VB.slot(TB, 20n), VB.slot(TB, 21n), VB.slot(TB, 22n), VB.slot(TB, 23n), VB.slot(TB, 24n), VB.slot(TB, 25n), VB.slot(TB, 26n), VB.slot(TB, 27n), VB.slot(TB, 28n), VB.slot(TB, 29n), VB.slot(TB, 30n), VB.slot(TB, 31n), VB.slot(TB, 32n), VB.slot(TB, 33n), VB.slot(TB, 34n), VB.slot(TB, 35n), VB.slot(TB, 36n), VB.slot(TB, 37n), VB.slot(TB, 38n), VB.slot(TB, 39n), VB.slot(TB, 40n), VB.slot(TB, 41n), VB.slot(TB, 42n), VB.slot(TB, 43n), VB.slot(TB, 44n), VB.slot(TB, 45n), VB.slot(TB, 46n)]
 def WP48_v6_b32(+TB: F.array__Tree<U32>) -> List<&2, U32>: [VB.slot(TB, 0n), VB.slot(TB, 1n), VB.slot(TB, 2n), VB.slot(TB, 3n), VB.slot(TB, 4n), VB.slot(TB, 5n), VB.slot(TB, 6n), VB.slot(TB, 7n), VB.slot(TB, 8n), VB.slot(TB, 9n), VB.slot(TB, 10n), VB.slot(TB, 11n), VB.slot(TB, 12n), VB.slot(TB, 13n), VB.slot(TB, 14n), VB.slot(TB, 15n), VB.slot(TB, 16n), VB.slot(TB, 17n), VB.slot(TB, 18n), VB.slot(TB, 19n), VB.slot(TB, 20n), VB.slot(TB, 21n), VB.slot(TB, 22n), VB.slot(TB, 23n), VB.slot(TB, 24n), VB.slot(TB, 25n), VB.slot(TB, 26n), VB.slot(TB, 27n), VB.slot(TB, 28n), VB.slot(TB, 29n), VB.slot(TB, 30n), VB.slot(TB, 31n), VB.slot(TB, 32n), VB.slot(TB, 33n), VB.slot(TB, 34n), VB.slot(TB, 35n), VB.slot(TB, 36n), VB.slot(TB, 37n), VB.slot(TB, 38n), VB.slot(TB, 39n), VB.slot(TB, 40n), VB.slot(TB, 41n), VB.slot(TB, 42n), VB.slot(TB, 43n), VB.slot(TB, 44n), VB.slot(TB, 45n), VB.slot(TB, 46n), VB.slot(TB, 47n)]
 
-def wput_v6_b32(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
-    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {F.array__perfect(U32, dd, D) == True{} : Bool},
+def wput_v6_b32W(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +pf: {F.array__perfect(U32, dd, D) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(48n, P), VB.pw(dd)) == True{} : Bool}, +dB: Nat, +TB: F.array__Tree<U32>,
     +pfB: {F.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool},
     +hrB: {Nat.is_le(48n, VB.pw(dB)) == True{} : Bool})
     -> {FuluCurrentSyncCommitteeBranch_e.v6_b32_putk(F.array__thaw(U32, D), pos, O.Words{F.array__thaw(U32, TB), 192}) == (F.array__thaw(U32, VF.updv(WL_v6_b32(TB), dd, D, P)), (O.Words{F.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}:
-  +hd32 = VB.lt32(dd, F.nat__lt_trans(dd, 29n, 31n, hdd, {==}))
+  +hd32 = VB.lt32(dd, hdd)
   +hB32 = VB.lt32(dB, hdB)
   %Equal.sym(O.Words & Bool, FuluCurrentSyncCommitteeBranch_e.v6_b32_valid(O.Words{F.array__thaw(U32, TB), 192}), (O.Words{F.array__thaw(U32, TB), 192}, True{}),
       VBE.words_ok_b(dB, TB, 192, 192, 192, 8n, pfB, hdB, {==}, {==}, {==}, {==}, hrB, {==}, 32, {==})) :
@@ -1076,4 +1092,12 @@ def wput_v6_b32(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.t
         VF.in_lt(47n, 48n, P, VB.pw(dd), {==}, hb), VF.updv_perfect(WP47_v6_b32(TB), dd, D, P, pf))) :
     {FuluCurrentSyncCommitteeBranch_e.v6_b32_pk_ok(FuluCurrentSyncCommitteeBranch_e.v6_b32_pal(192, (_, F.array__thaw(U32, TB)))) == (F.array__thaw(U32, VF.updv(WL_v6_b32(TB), dd, D, P)), (O.Words{F.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}
   {==}
+
+def wput_v6_b32(+dd: Nat, +D: F.array__Tree<U32>, +pos: U32, +P: Nat, +e: {U32.to_nat(pos) == A.quad(P) : Nat},
+    +hdd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +pf: {F.array__perfect(U32, dd, D) == True{} : Bool},
+    +hb: {Nat.is_le(Nat.add(48n, P), VB.pw(dd)) == True{} : Bool}, +dB: Nat, +TB: F.array__Tree<U32>,
+    +pfB: {F.array__perfect(U32, dB, TB) == True{} : Bool}, +hdB: {Nat.is_lt(dB, 31n) == True{} : Bool},
+    +hrB: {Nat.is_le(48n, VB.pw(dB)) == True{} : Bool})
+    -> {FuluCurrentSyncCommitteeBranch_e.v6_b32_putk(F.array__thaw(U32, D), pos, O.Words{F.array__thaw(U32, TB), 192}) == (F.array__thaw(U32, VF.updv(WL_v6_b32(TB), dd, D, P)), (O.Words{F.array__thaw(U32, TB), 192}, 0)) : Array<U32> & (O.Words & U32)}:
+  wput_v6_b32W(dd, D, pos, P, e, F.nat__lt_trans(dd, 29n, 31n, hdd, {==}), pf, hb, dB, TB, pfB, hdB, hrB)
 

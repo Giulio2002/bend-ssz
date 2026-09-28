@@ -1169,6 +1169,8 @@ def main():
     out = outputs()
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
+    import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
+    out = deep.dify_out(out, handled={'fposW'})  # its fields' offsets are literals: the strict 4 k < L is {==}
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

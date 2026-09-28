@@ -492,6 +492,23 @@ def ua_3(+off: U32, +i: Nat, +s: Nat, +S: U32, +eS: {U32.to_nat(S) == s : Nat}, 
     Pair.snd({U32.to_nat(U32.shrn(off, 2n)) == i : Nat}, {U32.to_nat(U32.and(off, 3)) == s : Nat}, ua_pair(off, i, s, e, hs)), Equal.sym(Nat, U32.to_nat(S), s, eS)))
 
 # pos + 4 k at 4 (k + i) + s (no wrap: pos + 4 k + ... fits the index bound).
+def qpw(+d: Nat) -> {A.quad(VB.pw(d)) == VB.pw(2n+d) : Nat}: {==}
+
+# 4 2^d <= 2^32 for d < 31.
+def q32(+d: Nat, +hd: {Nat.is_lt(d, 31n) == True{} : Bool}) -> {Nat.is_le(A.quad(VB.pw(d)), FD.spec_common__pow2(32n)) == True{} : Bool}:
+  FD.logic__subst(Nat, z => {Nat.is_le(z, FD.spec_common__pow2(32n)) == True{} : Bool}, VB.pw(2n+d), A.quad(VB.pw(d)), Equal.sym(Nat, A.quad(VB.pw(d)), VB.pw(2n+d), qpw(d)), VB.pw2d32(d, hd))
+
+# ua_add with its sum below 2^32 (any output depth).
+def ua_addS(+pos: U32, +c: U32, +i: Nat, +k: Nat, +s: Nat, +e: {U32.to_nat(pos) == Nat.add(A.quad(i), s) : Nat}, +ec: {U32.to_nat(c) == A.quad(k) : Nat},
+    +hb: {Nat.is_lt(Nat.add(A.quad(k), Nat.add(A.quad(i), s)), FD.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(pos, c)) == Nat.add(A.quad(Nat.add(k, i)), s) : Nat}:
+  +h1 = FD.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, Nat.add(A.quad(i), s)), FD.spec_common__pow2(32n)) == True{} : Bool}, A.quad(k), U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), A.quad(k), ec), hb)
+  %Equal.sym(Nat, U32.to_nat(U32.add(pos, c)), Nat.add(U32.to_nat(c), Nat.add(A.quad(i), s)), VB.add_lt32(pos, c, Nat.add(A.quad(i), s), e, h1)) :
+    {_ == Nat.add(A.quad(Nat.add(k, i)), s) : Nat}
+  %Equal.sym(Nat, U32.to_nat(c), A.quad(k), ec) : {Nat.add(_, Nat.add(A.quad(i), s)) == Nat.add(A.quad(Nat.add(k, i)), s) : Nat}
+  %VF.quad_add(k, i) : {Nat.add(A.quad(k), Nat.add(A.quad(i), s)) == Nat.add(_, s) : Nat}
+  Equal.sym(Nat, Nat.add(Nat.add(A.quad(k), A.quad(i)), s), Nat.add(A.quad(k), Nat.add(A.quad(i), s)), FD.nat__add_assoc(A.quad(k), A.quad(i), s))
+
 def ua_add(+pos: U32, +c: U32, +i: Nat, +k: Nat, +s: Nat, +d: Nat, +e: {U32.to_nat(pos) == Nat.add(A.quad(i), s) : Nat}, +ec: {U32.to_nat(c) == A.quad(k) : Nat},
     +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(A.quad(k), Nat.add(A.quad(i), s)), VB.pw(d)) == True{} : Bool})
     -> {U32.to_nat(U32.add(pos, c)) == Nat.add(A.quad(Nat.add(k, i)), s) : Nat}:
@@ -1007,23 +1024,32 @@ def swo_perfect(S, ws, dd, D, i, c, pf):
 
 # The runtime's eight-byte write at an unaligned byte position p = 4 i + s: two
 # four-byte writes.
-def w64u_rt(+S: U32, +s: Nat, +eS: {U32.to_nat(S) == s : Nat}, +hs: {Nat.is_lt(s, 4n) == True{} : Bool}, +hS: {U32.is_eq(S, 0) == False{} : Bool},
+def w64u_rtW(+S: U32, +s: Nat, +eS: {U32.to_nat(S) == s : Nat}, +hs: {Nat.is_lt(s, 4n) == True{} : Bool}, +hS: {U32.is_eq(S, 0) == False{} : Bool},
     +dd: Nat, +D: FD.array__Tree<U32>, +p: U32, +i: Nat, +lo: U32, +hi: U32, +e: {U32.to_nat(p) == Nat.add(A.quad(i), s) : Nat},
-    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_lt(2n+i, VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hl: {Nat.is_lt(2n+i, VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {O.w64(FD.array__thaw(U32, D), p, O.U64{lo, hi}) == FD.array__thaw(U32, W32M(S, dd, W32M(S, dd, D, i, lo), 1n+i, hi)) : Array<U32>}:
   +e3 = ua_3(p, i, s, S, eS, e, hs)
-  +hd31 = FD.nat__lt_trans(dd, 29n, 31n, hd, {==})
+  +hd31 = hd
   +hl1 = FD.nat__lt_trans(1n+i, 2n+i, VB.pw(dd), FD.nat__lt_succ(1n+i), hl)
   +h8 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(4n, z), A.quad(VB.pw(dd))) == True{} : Bool}, 4n+A.quad(i), Nat.add(A.quad(i), 4n), FD.nat__add_comm(4n, A.quad(i)),
     quad_le(2n+i, VB.pw(dd), FD.nat__lt_le(2n+i, VB.pw(dd), hl)))
   +hb = FD.nat__le_trans(Nat.add(4n, Nat.add(A.quad(i), s)), Nat.add(4n, Nat.add(A.quad(i), 4n)), A.quad(VB.pw(dd)),
     Order.add_left(4n, Nat.add(A.quad(i), s), Nat.add(A.quad(i), 4n), Order.add_left(A.quad(i), s, 4n, FD.nat__lt_le(s, 4n, hs))), h8)
-  +e4 = ua_add(p, 4, i, 1n, s, 2n+dd, e, {==}, hd, hb)
+  +hbS = FD.nat__lt_le_trans(Nat.add(4n, Nat.add(A.quad(i), s)), Nat.add(4n, Nat.add(A.quad(i), 4n)), FD.spec_common__pow2(32n),
+    FD.nat__lt_add_left(Nat.add(A.quad(i), s), Nat.add(A.quad(i), 4n), 4n, FD.nat__lt_add_left(s, 4n, A.quad(i), hs)),
+    FD.nat__le_trans(Nat.add(4n, Nat.add(A.quad(i), 4n)), A.quad(VB.pw(dd)), FD.spec_common__pow2(32n), h8, q32(dd, hd)))
+  +e4 = ua_addS(p, 4, i, 1n, s, e, {==}, hbS)
   %Equal.sym(U32, U32.and(p, 3), S, e3) : {O.w64_at(U32.is_eq(_, 0), FD.array__thaw(U32, D), p, lo, hi) == FD.array__thaw(U32, W32M(S, dd, W32M(S, dd, D, i, lo), 1n+i, hi)) : Array<U32>}
   %Equal.sym(Bool, U32.is_eq(S, 0), False{}, hS) : {O.w64_at(_, FD.array__thaw(U32, D), p, lo, hi) == FD.array__thaw(U32, W32M(S, dd, W32M(S, dd, D, i, lo), 1n+i, hi)) : Array<U32>}
   %Equal.sym(Array<U32>, O.w32(FD.array__thaw(U32, D), p, lo), FD.array__thaw(U32, W32M(S, dd, D, i, lo)), w32u_rt(S, s, eS, hs, hS, dd, D, p, i, lo, e, hd31, hl1, pf)) :
     {O.w32(_, U32.add(p, 4), hi) == FD.array__thaw(U32, W32M(S, dd, W32M(S, dd, D, i, lo), 1n+i, hi)) : Array<U32>}
   w32u_rt(S, s, eS, hs, hS, dd, W32M(S, dd, D, i, lo), U32.add(p, 4), 1n+i, hi, e4, hd31, hl, w32m_perfect(S, dd, D, i, lo, pf))
+
+def w64u_rt(+S: U32, +s: Nat, +eS: {U32.to_nat(S) == s : Nat}, +hs: {Nat.is_lt(s, 4n) == True{} : Bool}, +hS: {U32.is_eq(S, 0) == False{} : Bool},
+    +dd: Nat, +D: FD.array__Tree<U32>, +p: U32, +i: Nat, +lo: U32, +hi: U32, +e: {U32.to_nat(p) == Nat.add(A.quad(i), s) : Nat},
+    +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_lt(2n+i, VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {O.w64(FD.array__thaw(U32, D), p, O.U64{lo, hi}) == FD.array__thaw(U32, W32M(S, dd, W32M(S, dd, D, i, lo), 1n+i, hi)) : Array<U32>}:
+  w64u_rtW(S, s, eS, hs, hS, dd, D, p, i, lo, hi, e, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, pf)
 
 # ---- splices within splices ------------------------------------------------------------------
 

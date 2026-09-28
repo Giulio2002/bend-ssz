@@ -93,26 +93,47 @@ def padsh(+r: Nat, +E: Nat, +hr: {Nat.is_lt(r, 4n) == True{} : Bool}) -> {WD.PAD
 
 def DS(+dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +s: U32) -> FD.array__Tree<U32>: W8.W8X(r, dd, D, q, s)
 
+def sel_rtW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +s: U32, +E: Nat, +e: {U32.to_nat(X) == X0(q, r) : Nat},
+    +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1n+E))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
+    -> {O.w8(FD.array__thaw(U32, D), X, s) == FD.array__thaw(U32, DS(dd, D, q, r, s)) : Array<U32>}:
+  W8.w8_anyW(dd, D, X, q, r, s, e, hr, hd, sroom(q, r, E, dd, hl), pf)
+
 def sel_rt(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +s: U32, +E: Nat, +e: {U32.to_nat(X) == X0(q, r) : Nat},
     +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1n+E))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {O.w8(FD.array__thaw(U32, D), X, s) == FD.array__thaw(U32, DS(dd, D, q, r, s)) : Array<U32>}:
-  W8.w8_any(dd, D, X, q, r, s, e, hr, hd, sroom(q, r, E, dd, hl), pf)
+  sel_rtW(dd, D, X, q, r, s, E, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, pf)
 
 def sel_pf(+dd: Nat, +D: FD.array__Tree<U32>, +q: Nat, +r: Nat, +s: U32, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool})
     -> {FD.array__perfect(U32, dd, DS(dd, D, q, r, s)) == True{} : Bool}:
   W8.w8x_perfect(r, dd, D, q, s, pf)
+
+def sel_byW(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +s: U32, +E: Nat, +p: Nat, +e: {U32.to_nat(X) == X0(q, r) : Nat},
+    +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1n+E))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
+    +hz: {VS.bt(1n+Nat.add(E, p), VS.bdr(X0(q, r), UA.BYT(D))) == UW.ZB(1n+Nat.add(E, p)) : +List<U32>})
+    -> {UA.BYT(DS(dd, D, q, r, s)) == UW.SPL(UA.BYT(D), X0(q, r), [U32.and(s, 255)]) : +List<U32>}:
+  W8.w8_any_bytesW(dd, D, X, q, r, s, e, hr, hd, sroom(q, r, E, dd, hl), pf, VRX.zhead(1n, Nat.add(E, p), VS.bdr(X0(q, r), UA.BYT(D)), hz))
+
+# ---- the arm's hypotheses -----------------------------------------------------------------------------
 
 def sel_by(+dd: Nat, +D: FD.array__Tree<U32>, +X: U32, +q: Nat, +r: Nat, +s: U32, +E: Nat, +p: Nat, +e: {U32.to_nat(X) == X0(q, r) : Nat},
     +hr: {Nat.is_lt(r, 4n) == True{} : Bool}, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1n+E))), VB.pw(dd)) == True{} : Bool}, +pf: {FD.array__perfect(U32, dd, D) == True{} : Bool},
     +hz: {VS.bt(1n+Nat.add(E, p), VS.bdr(X0(q, r), UA.BYT(D))) == UW.ZB(1n+Nat.add(E, p)) : +List<U32>})
     -> {UA.BYT(DS(dd, D, q, r, s)) == UW.SPL(UA.BYT(D), X0(q, r), [U32.and(s, 255)]) : +List<U32>}:
-  W8.w8_any_bytes(dd, D, X, q, r, s, e, hr, hd, sroom(q, r, E, dd, hl), pf, VRX.zhead(1n, Nat.add(E, p), VS.bdr(X0(q, r), UA.BYT(D)), hz))
-
-# ---- the arm's hypotheses -----------------------------------------------------------------------------
+  sel_byW(dd, D, X, q, r, s, E, p, e, hr, FD.nat__lt_trans(dd, 29n, 31n, hd, {==}), hl, pf, hz)
 
 # Its position: X + 1 is at 4 AQ + AR.
+def arm_eW(+dd: Nat, +X: U32, +q: Nat, +r: Nat, +E: Nat, +e: {U32.to_nat(X) == X0(q, r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(X0(q, r), 1n+E), FD.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(X, 1)) == Nat.add(A.quad(AQ(q, r)), AR(r)) : Nat}:
+  +hb = FD.nat__le_lt_trans(1n+X0(q, r), 1n+Nat.add(X0(q, r), E), FD.spec_common__pow2(32n), FD.nat__le_add_right(X0(q, r), E),
+    FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(32n)) == True{} : Bool}, Nat.add(X0(q, r), 1n+E), 1n+Nat.add(X0(q, r), E), FD.nat__add_succ(X0(q, r), E), hl32))
+  Equal.trans(Nat, U32.to_nat(U32.add(X, 1)), 1n+X0(q, r), Nat.add(A.quad(AQ(q, r)), AR(r)), VB.add_lt32(X, 1, X0(q, r), e, hb),
+    Equal.sym(Nat, Nat.add(A.quad(AQ(q, r)), AR(r)), 1n+X0(q, r), apos(q, r, hr)))
+
 def arm_e(+dd: Nat, +X: U32, +q: Nat, +r: Nat, +E: Nat, +e: {U32.to_nat(X) == X0(q, r) : Nat}, +hr: {Nat.is_lt(r, 4n) == True{} : Bool},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, 1n+E))), VB.pw(dd)) == True{} : Bool})
     -> {U32.to_nat(U32.add(X, 1)) == Nat.add(A.quad(AQ(q, r)), AR(r)) : Nat}:

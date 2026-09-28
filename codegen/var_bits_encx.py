@@ -345,6 +345,8 @@ def main():
     out = {fname(p): text(p) for p in KINDS}
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
+    import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29)
+    out = deep.dify_out(out)
     if '--check' in sys.argv:
         stale = [str(q.relative_to(ROOT)) for q, t in out.items() if not q.exists() or q.read_text() != t]
         if stale:

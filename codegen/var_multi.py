@@ -663,7 +663,7 @@ def outputs():
            ROOT / 'proofs/obj/vmv.bend': (ROOT / 'codegen/vmv.bend.in').read_text(),
            ROOT / 'proofs/obj/vmr.bend': (ROOT / 'codegen/vmr.bend.in').read_text(),
            ROOT / 'proofs/obj/vme.bend': (ROOT / 'codegen/vme.bend.in').read_text(),
-           ROOT / 'proofs/obj/var_fix_types_m.bend': fix_types(g, names),
+           ROOT / 'proofs/obj/var_fix_types_m.bend': __import__('deep').dify_fix(fix_types(g, names)),
            ROOT / 'proofs/obj/vzeros.bend': zeros_text(),
            ROOT / f'proofs/obj/var_codec_{X}.bend': dec_text(g, names),
            ROOT / f'proofs/obj/var_codec_{X}_acc.bend': acc_file(g, names),

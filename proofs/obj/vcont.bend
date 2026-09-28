@@ -280,6 +280,33 @@ def e_end2(+q: Nat, +r: Nat, +L: Nat)
         Equal.cong(Nat, Nat, z => WD.NWN(z), Nat.add(A.quad(q), Nat.add(r, L)), Nat.add(Nat.add(A.quad(q), r), L), Equal.sym(Nat, Nat.add(Nat.add(A.quad(q), r), L), Nat.add(A.quad(q), Nat.add(r, L)), F.nat__add_assoc(A.quad(q), r, L))))))
 
 # A piece at a (a <= L) of a region of L bytes at X = 4 q + r: its byte position.
+def vposW(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +ec: {U32.to_nat(c) == a : Nat},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +ha: {Nat.is_le(a, L) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool}, +hl32: {Nat.is_lt(Nat.add(Nat.add(A.quad(q), r), L), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(X, c)) == Nat.add(Nat.add(A.quad(q), r), a) : Nat}:
+  +X0 = Nat.add(A.quad(q), r)
+  +hb = F.nat__le_lt_trans(Nat.add(a, X0), Nat.add(X0, L), F.spec_common__pow2(32n),
+    F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(X0, L)) == True{} : Bool}, Nat.add(X0, a), Nat.add(a, X0), F.nat__add_comm(X0, a), Order.add_left(X0, a, L, ha)),
+    hl32)
+  +e1 = VB.add_lt32(X, c, X0, e,
+    F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, X0), F.spec_common__pow2(32n)) == True{} : Bool}, a, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), a, ec), hb))
+  Equal.trans(Nat, U32.to_nat(U32.add(X, c)), Nat.add(U32.to_nat(c), X0), Nat.add(X0, a), e1,
+    Equal.trans(Nat, Nat.add(U32.to_nat(c), X0), Nat.add(a, X0), Nat.add(X0, a), Equal.cong(Nat, Nat, z => Nat.add(z, X0), U32.to_nat(c), a, ec), F.nat__add_comm(a, X0)))
+
+# vposW for a piece strictly inside its region (a < L): no bound on the region's end needed.
+def vposS(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +ec: {U32.to_nat(c) == a : Nat},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +ha: {Nat.is_lt(a, L) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool})
+    -> {U32.to_nat(U32.add(X, c)) == Nat.add(Nat.add(A.quad(q), r), a) : Nat}:
+  +X0 = Nat.add(A.quad(q), r)
+  +hb = F.nat__lt_le_trans(Nat.add(a, X0), Nat.add(X0, L), F.spec_common__pow2(32n),
+    F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(a, X0), z) == True{} : Bool}, Nat.add(L, X0), Nat.add(X0, L), F.nat__add_comm(L, X0), VB.lt_kk(a, L, X0, ha)),
+    F.nat__le_trans(Nat.add(X0, L), A.quad(VB.pw(dd)), F.spec_common__pow2(32n), VRX.xend(q, r, L, dd, hl), UW.q32(dd, hd)))
+  +e1 = VB.add_lt32(X, c, X0, e,
+    F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(z, X0), F.spec_common__pow2(32n)) == True{} : Bool}, a, U32.to_nat(c), Equal.sym(Nat, U32.to_nat(c), a, ec), hb))
+  Equal.trans(Nat, U32.to_nat(U32.add(X, c)), Nat.add(U32.to_nat(c), X0), Nat.add(X0, a), e1,
+    Equal.trans(Nat, Nat.add(U32.to_nat(c), X0), Nat.add(a, X0), Nat.add(X0, a), Equal.cong(Nat, Nat, z => Nat.add(z, X0), U32.to_nat(c), a, ec), F.nat__add_comm(a, X0)))
+
 def vpos(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +ec: {U32.to_nat(c) == a : Nat},
     +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}, +ha: {Nat.is_le(a, L) == True{} : Bool},
     +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool})
@@ -500,7 +527,17 @@ def len_wtk(k, W, h):
 
 # ---- the running cursor ------------------------------------------------------------------------------
 
-# O.padd adds when the sum fits a tree of depth dd < 29's bytes.
+# O.padd adds when the sum is below 2^31 (a valid encoding's length, any output depth).
+def padd_ddW(+a: U32, +b: U32, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +h: {Nat.is_lt(Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(31n)) == True{} : Bool})
+    -> {U32.to_nat(O.padd(a, b)) == Nat.add(U32.to_nat(a), U32.to_nat(b)) : Nat}:
+  +ha = F.nat__le_lt_trans(U32.to_nat(a), Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(31n), Order.below_sum(U32.to_nat(a), U32.to_nat(b)), h)
+  +hb = F.nat__le_lt_trans(U32.to_nat(b), Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(31n), Order.left_below_sum(U32.to_nat(a), U32.to_nat(b)), h)
+  %Equal.sym(U32, O.padd(a, b), U32.add(a, b), VE.padd_ok(a, b, VE.winit(31n, VE.bits32(a)), VE.winit(31n, VE.bits32(b)), VE.small_pad(a, 31n, {==}, ha), VE.small_pad(b, 31n, {==}, hb))) :
+    {U32.to_nat(_) == Nat.add(U32.to_nat(a), U32.to_nat(b)) : Nat}
+  A.add_le(a, b, F.u32__pow2u(31n), F.logic__subst(Nat, z => {Nat.is_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), z) == True{} : Bool}, VB.pw(31n), U32.to_nat(F.u32__pow2u(31n)),
+    Equal.sym(Nat, U32.to_nat(F.u32__pow2u(31n)), VB.pw(31n), F.u32__pow2u_value(31n, {==})), F.nat__lt_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(31n), h)))
+
 def padd_dd(+a: U32, +b: U32, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +h: {Nat.is_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), A.quad(VB.pw(dd))) == True{} : Bool})
     -> {U32.to_nat(O.padd(a, b)) == Nat.add(U32.to_nat(a), U32.to_nat(b)) : Nat}:
@@ -516,6 +553,18 @@ def padd_dd(+a: U32, +b: U32, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Boo
     Equal.sym(Nat, U32.to_nat(F.u32__pow2u(k)), VB.pw(k), F.u32__pow2u_value(k, F.nat__le_lt_trans(k, 31n, 32n, hk, {==}))), F.nat__lt_le(Nat.add(U32.to_nat(a), U32.to_nat(b)), VB.pw(k), hs)))
 
 # The cursor after a variable piece of k bytes: F + SUM(ks ++ [k]).
+def cnextW(+cur: U32, +sz: U32, +F0: Nat, +ks: List<&2, Nat>, +k: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +ec: {U32.to_nat(cur) == Nat.add(F0, SUM(ks)) : Nat}, +es: {U32.to_nat(sz) == k : Nat},
+    +hb: {Nat.is_lt(Nat.add(Nat.add(F0, SUM(ks)), k), VB.pw(31n)) == True{} : Bool})
+    -> {U32.to_nat(O.padd(cur, sz)) == Nat.add(F0, SUM(APPN(ks, [k]))) : Nat}:
+  +e1 = Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), k),
+    Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(sz)), U32.to_nat(cur), Nat.add(F0, SUM(ks)), ec),
+    Equal.cong(Nat, Nat, z => Nat.add(Nat.add(F0, SUM(ks)), z), U32.to_nat(sz), k, es))
+  +hb2 = F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, Nat.add(Nat.add(F0, SUM(ks)), k), Nat.add(U32.to_nat(cur), U32.to_nat(sz)),
+    Equal.sym(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), k), e1), hb)
+  Equal.trans(Nat, U32.to_nat(O.padd(cur, sz)), Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(F0, SUM(APPN(ks, [k]))), padd_ddW(cur, sz, dd, hd, hb2),
+    Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(F0, SUM(ks)), k), Nat.add(F0, SUM(APPN(ks, [k]))), e1, sum_snoc(F0, ks, k)))
+
 def cnext(+cur: U32, +sz: U32, +F0: Nat, +ks: List<&2, Nat>, +k: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +ec: {U32.to_nat(cur) == Nat.add(F0, SUM(ks)) : Nat}, +es: {U32.to_nat(sz) == k : Nat},
     +hb: {Nat.is_le(Nat.add(Nat.add(F0, SUM(ks)), k), A.quad(VB.pw(dd))) == True{} : Bool})
@@ -630,6 +679,18 @@ def pc_after_r(+F0: Nat, +pre: List<&2, Nat>, +m: Nat, +rest: List<&2, Nat>, +P:
     pc_after_r0(F0, pre, m, rest, P))
 
 # cnext, F0 last.
+def cnext_rW(+cur: U32, +sz: U32, +F0: Nat, +ks: List<&2, Nat>, +k: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +ec: {U32.to_nat(cur) == Nat.add(SUM(ks), F0) : Nat}, +es: {U32.to_nat(sz) == k : Nat},
+    +hb: {Nat.is_lt(Nat.add(Nat.add(SUM(ks), F0), k), VB.pw(31n)) == True{} : Bool})
+    -> {U32.to_nat(O.padd(cur, sz)) == Nat.add(SUM(APPN(ks, [k])), F0) : Nat}:
+  +e1 = Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), k),
+    Equal.cong(Nat, Nat, z => Nat.add(z, U32.to_nat(sz)), U32.to_nat(cur), Nat.add(SUM(ks), F0), ec),
+    Equal.cong(Nat, Nat, z => Nat.add(Nat.add(SUM(ks), F0), z), U32.to_nat(sz), k, es))
+  +hb2 = F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, Nat.add(Nat.add(SUM(ks), F0), k), Nat.add(U32.to_nat(cur), U32.to_nat(sz)),
+    Equal.sym(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), k), e1), hb)
+  Equal.trans(Nat, U32.to_nat(O.padd(cur, sz)), Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(SUM(APPN(ks, [k])), F0), padd_ddW(cur, sz, dd, hd, hb2),
+    Equal.trans(Nat, Nat.add(U32.to_nat(cur), U32.to_nat(sz)), Nat.add(Nat.add(SUM(ks), F0), k), Nat.add(SUM(APPN(ks, [k])), F0), e1, sum_snoc_r(F0, ks, k)))
+
 def cnext_r(+cur: U32, +sz: U32, +F0: Nat, +ks: List<&2, Nat>, +k: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
     +ec: {U32.to_nat(cur) == Nat.add(SUM(ks), F0) : Nat}, +es: {U32.to_nat(sz) == k : Nat},
     +hb: {Nat.is_le(Nat.add(Nat.add(SUM(ks), F0), k), A.quad(VB.pw(dd))) == True{} : Bool})
