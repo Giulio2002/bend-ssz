@@ -4737,6 +4737,19 @@ def bview(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +len: U32, +x: Nat, +eo: 
   %eo : {VS.bt(U32.to_nat(len), FX.limbs(FD.array__slots(U32, CW(d, t, off, len)))) == VS.bt(U32.to_nat(len), VS.bdr(_, UA.BYT(t))) : +List<U32>}
   UCT.ct_bytes(d, t, off, len, VLS.DZ(len), VLS.KK(d), VLS.kk_lt(d, hd), VLS.hyn(d, len, hL), pf, UW.hsx(d, off, x, len, eo, hd, hw), VLS.hrg(d, len, hd, hL), hB)
 
+# The same at any tree depth: the storage's bound from the copy's length (hy: 31 + len <= UMAX, vua_ct's U chain).
+def bviewY(+d: Nat, +t: FD.array__Tree<U32>, +off: U32, +len: U32, +x: Nat, +eo: {U32.to_nat(off) == x : Nat},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hy: {Nat.is_le(VC.YL(len), U32.to_nat(VB.UMAX())) == True{} : Bool})
+    -> {WO.wview(O.Words{FD.array__thaw(U32, CW(d, t, off, len)), len}) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>}:
+  +hB = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, x, U32.to_nat(off), Equal.sym(Nat, U32.to_nat(off), x, eo), hw)
+  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, CW(d, t, off, len))), CW(d, t, off, len), FD.array__freeze_thaw(U32, CW(d, t, off, len))) :
+    {WS.btake(U32.to_nat(len), FX.limbs(FD.array__slots(U32, _))) == UW.WX(t, x, U32.to_nat(len)) : +List<U32>}
+  %Equal.sym(+List<U32>, WS.btake(U32.to_nat(len), FX.limbs(FD.array__slots(U32, CW(d, t, off, len)))), VS.bt(U32.to_nat(len), FX.limbs(FD.array__slots(U32, CW(d, t, off, len)))), btake_bt(U32.to_nat(len), FX.limbs(FD.array__slots(U32, CW(d, t, off, len))))) :
+    {_ == UW.WX(t, x, U32.to_nat(len)) : +List<U32>}
+  %eo : {VS.bt(U32.to_nat(len), FX.limbs(FD.array__slots(U32, CW(d, t, off, len)))) == VS.bt(U32.to_nat(len), VS.bdr(_, UA.BYT(t))) : +List<U32>}
+  UCT.ct_bytesU(d, t, off, len, VLS.DZ(len), hy, pf, UW.hsxBU(d, off, x, len, eo, hy, hw), VC.hrgU(len, hy), hB)
+
 # The view of byte storage O.Words{thaw(T), N} is its first N bytes, as the encode laws' WX(T, 0, N).
 def wvb(+M: FD.array__Tree<U32>, +L: U32) -> {WO.wview(O.Words{FD.array__thaw(U32, M), L}) == VS.bt(U32.to_nat(L), FX.limbs(FD.array__slots(U32, M))) : +List<U32>}:
   %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, M)), M, FD.array__freeze_thaw(U32, M)) :
