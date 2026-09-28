@@ -414,10 +414,10 @@ def spec_text(g, names):
             return '{==}'
         rest = '[' + ', '.join(parts[i + 1:]) + ']'
         if i in fixed:
-            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs({wl(fixed[i]["words"])}), '
-                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {fixed[i]["proof"]}, {cat(i + 1)})')
+            return (f'VS.chain_fixed({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, F.limbs({wl(fixed[i]["words"])}), '
+                    f'{rest}, {fixed[i]["proof"]}, {cat(i + 1)})')
         j = i - 1
-        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), F.limbs({YN[j]}), Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
+        return (f'VS.chain_var({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, F.limbs({YN[j]}), {rest}, '
                 f'VM.list_bv({CN[j]}, {EB[j][0]}n, {EB[j][1]}n, {WLN[j]}, U32.to_nat(4096), {{==}}, {{==}}, {{==}}, hk{j}, hl{j}, ft{j}), {cat(i + 1)})')
     HK = ', '.join(
         f'Pair.snd({{U32.to_nat({LN[j]}) == Nat.mul({CN[j]}, U32.to_nat({EB[j][1]})) : Nat}}, {{Nat.is_le({CN[j]}, U32.to_nat(4096)) == True{{}} : Bool}}, '
@@ -631,7 +631,7 @@ def decode_none(d, t, n, pf, hd, hn, hchk):
 
 
 ENC_HEAD = ['import ./vadd.bend as VA', 'import ./venc.bend as VE', 'import ./venc2.bend as V2', 'import ./vme.bend as VME', 'import ./vzeros.bend as VZ',
-            'import ./var_fix_types_m.bend as VT', 'import ./vfits.bend as VFT', f'import ./var_codec_{X}.bend as DC']
+            'import ./var_fix_types_m.bend as VT', 'import ./vfits.bend as VFT', 'import ./xmul.bend as XM', 'import ../../spec/schema.bend as SC', 'import ./vseq.bend as VSQ', f'import ./var_codec_{X}.bend as DC']
 
 
 def enc_file(g, names):
@@ -654,6 +654,7 @@ def enc_file(g, names):
 
 
 def outputs():
+    VLW.SL.EXACT = True   # spec_laws' exact spec-parts proofs (F.items_fixed / container_fixed): no parts run to compare forms
     names = schema.load(ROOT / 'codegen/fulu.yaml')
     g = G.Gen()
     for n, t in names.items():

@@ -412,9 +412,9 @@ def payw({CW}, {HW})
             return '{==}'
         rest = '[' + ', '.join(parts[i + 1:]) + ']'
         if x.fields[i]['kind'] == 'fix':
-            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs([{", ".join(nodes[i]["words"])}]), '
-                    f'Codec.parts({items(i + 1)}, {chn(i + 1)}), {rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
-        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), {Y}, Codec.parts({items(i + 1)}, {chn(i + 1)}), {rest}, '
+            return (f'VS.chain_fixed({vals[i]}, {items(i + 1)}, {schs[i]}, {chn(i + 1)}, F.limbs([{", ".join(nodes[i]["words"])}]), '
+                    f'{rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
+        return (f'VS.chain_var({vals[i]}, {items(i + 1)}, {schs[i]}, {chn(i + 1)}, {Y}, {rest}, '
                 f'E.bparts({SRCa}), {cat(i + 1)})')
     PRE = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[:vi]) + ']'
     POST = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[vi + 1:]) + ']'
@@ -778,9 +778,9 @@ def parent_text(n, pre, ch, doc):
             return '{==}'
         rest = '[' + ', '.join(parts[i + 1:]) + ']'
         if fields[i]['kind'] == 'fix':
-            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), F.limbs([{", ".join(nodes[i]["words"])}]), '
-                    f'Codec.parts({items(i + 1)}, {chn(i + 1)}), {rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
-        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), {XC_}, Codec.parts({items(i + 1)}, {chn(i + 1)}), {rest}, '
+            return (f'VS.chain_fixed({vals[i]}, {items(i + 1)}, {schs[i]}, {chn(i + 1)}, F.limbs([{", ".join(nodes[i]["words"])}]), '
+                    f'{rest}, {nodes[i]["proof"]}, {cat(i + 1)})')
+        return (f'VS.chain_var({vals[i]}, {items(i + 1)}, {schs[i]}, {chn(i + 1)}, {XC_}, {rest}, '
                 f'{ca}.partsE({CSRCa}), {cat(i + 1)})')
     PRE = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[:vi]) + ']'
     POST = '[' + ', '.join('[' + ', '.join(nd['words']) + ']' for nd in nodes[vi + 1:]) + ']'

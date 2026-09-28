@@ -392,6 +392,15 @@ def encoding_of_var(schema, value, xs, e):
     {Codec.bytes(_) == Some{xs} : Maybe<&2, +List<U32>>}
   {==}
 
+# The spec encoding is the bytes of the parts, over variables (an instance at a large value
+# is then a substitution: the checker compares no encoder runs).
+law efl_bytes:
+  for +schema: S.Schema
+  for +value: S.Value
+  {Codec.bytes(Codec.parts(value, schema)) == Codec.encoding_for_legal_type(schema, value) : Maybe<&2, +List<U32>>}
+def efl_bytes(schema, value):
+  {==}
+
 # ---- the bytes of an encoder whose object is not duplicable ------------------
 
 # An encoder of a `Type`-kind object (one holding boxed children) hands the

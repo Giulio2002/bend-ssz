@@ -182,9 +182,9 @@ def spec_items_seg(x, V, Yb, hv, S, word):
             return '{==}'
         rest = '[' + ', '.join(parts[i + 1:]) + ']'
         if proofs[i] is not None:
-            return (f'F.cat_fixed(Codec.parts({vals[i]}, {schs[i]}), {proofs[i][0]}, '
-                    f'Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, {proofs[i][1]}, {cat(i + 1)})')
-        return (f'VS.cat_var(Codec.parts({vals[i]}, {schs[i]}), {Yb}, Codec.parts({items(i + 1)}, {chain(i + 1)}), {rest}, '
+            return (f'VS.chain_fixed({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, {proofs[i][0]}, '
+                    f'{rest}, {proofs[i][1]}, {cat(i + 1)})')
+        return (f'VS.chain_var({vals[i]}, {items(i + 1)}, {schs[i]}, {chain(i + 1)}, {Yb}, {rest}, '
                 f'{hv}, {cat(i + 1)})')
     return items(0), chain(0), '[' + ', '.join(parts) + ']', cat(0)
 
