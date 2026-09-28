@@ -1867,7 +1867,7 @@ def sd(w: O.Words) -> Data: DK.Or2(sd0(w), sd1(w))
 
 
 # ---- the object API's output path (B.emit) on a perfect word tree ----
-def emit_text():
+def _emit_text0():
     L = []
     w = L.append
     w('''import Base
@@ -2110,6 +2110,58 @@ def ob(+d: Nat, +T: FD.array__Tree<U32>, +n: U32, {PF}, {HD}, {HN})
   dsp(U32.to_nat(n), 0n, d, T, n, pf, hd, hn, Equal.sym(Nat, Nat.add(U32.to_nat(n), 0n), U32.to_nat(n), FD.nat__add_zero(U32.to_nat(n))))
 ''')
     return ''.join(L)
+
+
+def _emit_nmax(base):
+    """The same output-path lemma for depth d < 31 and n <= VB.NMAX() (obN): n + 3 does not wrap by the
+    object API's limit rather than by 4 * 2^d with d < 29."""
+    import re as _re
+    names = ['bi_1', 'bi_2', 'bi_3', 'bi_4', 'core_1', 'core_2', 'core_3', 'core_4', 'z0']
+    blocks = []
+    for nm in names:
+        i = base.index(f'\ndef {nm}(')
+        j = base.index('\ndef ', i + 1)
+        k = base.find('\nlaw ', i + 1)
+        if k != -1 and k < j:
+            j = k
+        j2 = base.rfind('\n# ', i, j)
+        blocks.append(base[i:j2 if j2 > i else j])
+    i = base.index('\nlaw dsp:')
+    j = base.index('\n# The output path', i)
+    blocks.append(base[i:j])
+    i = base.index('\ndef ob(')
+    blocks.append(base[i:])
+    txt = '\n'.join(blocks)
+    for nm in names:
+        new = nm.replace('bi_', 'biM_').replace('core_', 'coreM_').replace('z0', 'z0M')
+        txt = _re.sub(r'\b' + nm + r'\(', new + '(', txt)
+    txt = txt.replace('law dsp:', 'law dspM:').replace('dsp(', 'dspM(').replace('def ob(', 'def obN(')
+    txt = txt.replace('C.nw(n, d, hd, hn)', 'C.nwM(n, hM)')
+    txt = txt.replace('+hd31 = FD.nat__lt_trans(d, 29n, 31n, hd, {==})', '+hd31 = hd')
+    txt = txt.replace('FD.nat__lt_trans(d, 29n, 31n, hd, {==})', 'hd')
+    txt = txt.replace('  for +hd: {Nat.is_lt(d, 29n) == True{} : Bool}', '  for +hd: {Nat.is_lt(d, 31n) == True{} : Bool}\n  for +hM: {U32.is_le(n, VB.NMAX()) == True{} : Bool}')
+    txt = txt.replace('  for hd: {Nat.is_lt(d, 29n) == True{} : Bool}', '  for hd: {Nat.is_lt(d, 31n) == True{} : Bool}\n  for +hM: {U32.is_le(n, VB.NMAX()) == True{} : Bool}')
+    txt = txt.replace('+hd: {Nat.is_lt(d, 29n) == True{} : Bool}', '+hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +hM: {U32.is_le(n, VB.NMAX()) == True{} : Bool}')
+    txt = txt.replace(', hd, hn', ', hd, hM, hn').replace(', ej, hd, hK, eN)', ', ej, hd, hM, hK, eN)')
+    txt = txt.replace('def dspM(M, K, d, T, n, pf, hd, hn, eN):', 'def dspM(M, K, d, T, n, pf, hd, hM, hn, eN):')
+    for r in (1, 2, 3):
+        old = f'  +e4 = VD.s_add_nat((4 * j : U32), 4, 2n+d, FD.nat__lt_trans(d, 29n, 30n, hd, {{==}}), hb)'
+        new = (f'  +hq4 = FD.nat__le_trans(Nat.add(4n, A.quad(K)), Nat.add(31n, A.quad(K)), Nat.add(31n, Nat.add({r}n, A.quad(K))), Order.add_right(4n, 31n, A.quad(K), {{==}}),\n'
+               f'    Order.add_left(31n, A.quad(K), Nat.add({r}n, A.quad(K)), AC.le_addl({r}n, A.quad(K))))\n'
+               f'  +hq5 = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(4n, z), Nat.add(31n, U32.to_nat(n))) == True{{}} : Bool}}, A.quad(K), U32.to_nat((4 * j : U32)), Equal.sym(Nat, U32.to_nat((4 * j : U32)), A.quad(K), q4),\n'
+               f'    FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(4n, A.quad(K)), Nat.add(31n, z)) == True{{}} : Bool}}, Nat.add({r}n, A.quad(K)), U32.to_nat(n), Equal.sym(Nat, U32.to_nat(n), Nat.add({r}n, A.quad(K)), eN), hq4))\n'
+               f'  +e4 = Equal.trans(Nat, U32.to_nat(((4 * j : U32) + 4 : U32)), Nat.add(4n, U32.to_nat((4 * j : U32))), Nat.add(U32.to_nat((4 * j : U32)), 4n),\n'
+               f'    VB.add_lt32((4 * j : U32), 4, U32.to_nat((4 * j : U32)), {{==}}, FD.nat__le_lt_trans(Nat.add(4n, U32.to_nat((4 * j : U32))), Nat.add(31n, U32.to_nat(n)), FD.spec_common__pow2(32n), hq5, VB.nmax_lt(n, hM))),\n'
+               f'    FD.nat__add_comm(4n, U32.to_nat((4 * j : U32))))')
+        assert txt.count(old) >= 1, (r, txt.count(old))
+        txt = txt.replace(old, new, 1)
+    return ('\n\n# ---- the same at the object API\'s own limit: depth d < 31, n <= VB.NMAX() (obN) ----\n' + txt)
+
+
+def emit_text():
+    base = _emit_text0()
+    base = base.replace('import ./e2e_cap.bend as C\n', 'import ./e2e_cap.bend as C\nimport ../proofs/obj/vbuf.bend as VB\nimport ../proofs/obj/arr_copy.bend as AC\nimport ../proofs/nat_order.bend as Order\n', 1)
+    return base + _emit_nmax(base)
 
 
 ANYSUP = """import Base
