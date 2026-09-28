@@ -2727,7 +2727,7 @@ import e2e_var_b as EVB  # noqa: E402  (the second variable-size worker's entrie
 import e2e_var_c as EVC  # noqa: E402  (the third's: u-lists and unions)
 import e2e_fix_d as EFD  # noqa: E402  (the fourth's: fixed-size leftovers)
 import e2e_bview_gen as BVG  # noqa: E402  (the bit-list view module and the bit lists' view lemmas)
-for _m in (EVB, EVC):
+for _m in (EVB, EVC, EFD):
     for _k, _v in _m.VDEC_VIEWS.items():
         VDEC_VIEWS.setdefault(_k, _v)
     for _k, _v in _m.VROOT_SHAPES.items():
