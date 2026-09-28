@@ -4382,6 +4382,16 @@
     "premise": "+rp: rp_u16(o)"
    }
   ],
+  "ProgressiveBitsStruct_e2e_root_generated.bend": [
+   {
+    "name": "ProgressiveBitsStruct",
+    "generated_name": "Gc60805EC295",
+    "laws": [
+     "ProgressiveBitsStruct_e2e_root"
+    ],
+    "premise": "rep (the root law's representation invariant)"
+   }
+  ],
   "SingleFieldTestStruct_e2e_generated.bend": [
    {
     "name": "SingleFieldTestStruct",
@@ -6156,7 +6166,8 @@
   },
   "ProgressiveBitsStruct": {
    "generated_name": "Gc60805EC295",
-   "reason": "encode laws not over the same free words / bits"
+   "reason": "encode laws not over the same free words / bits",
+   "iv": "ProgressiveBitsStruct_e2e_root_generated.bend"
   },
   "progbitlist": {
    "generated_name": "GtF7582E0E9A",
