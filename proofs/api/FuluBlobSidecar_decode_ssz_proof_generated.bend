@@ -33,6 +33,8 @@ import ../obj/arr_spec.bend as P1_AS
 import ../obj/arr_vec.bend as P1_AV
 import ../obj/arr_shift.bend as P1_AH
 import ../obj/arr_enc.bend as P1_AN
+import ../obj/vseq.bend as P1_VSQ
+import ../obj/vspec.bend as P1_VS
 import ../obj/spec_arr_BlobSidecar.bend as P1_PRV
 import ../../types/schema.bend as P2_S
 import ../../spec/decoding_relation.bend as P2_Decoding
