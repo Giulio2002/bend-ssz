@@ -348,10 +348,13 @@ def vv(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +pf: {{FD.array__perfect(U32, 
 # container's own witnesses) and o == BUILD_Y(witnesses), so a law about o can be restated over a
 # copyable object (the laws of END_TO_END take the value as a + parameter).
 _RT = (_OBJ / 'root_types.bend')
+_RS = (_OBJ / 'root_state.bend')   # BeaconState's root law (its own module, ST)
+STATE_RB = {'BeaconState': 'e2e_rbs'}   # names whose rebuild module is separate (it imports root_state)
 
 WORDS_KINDS = {  # storage invariant: (its wf's Ex binders before the equation, a wfl-like Or2?)
     'WO.rep_bv': (['t', 'dw', 'N', 'q', 'rr'], False), 'LO.rep_bl': (None, True), 'PV.rep_pv': (['t', 'dw', 'N', 'q'], False),
-    'E48.rep_ev': (['t', 'dw', 'N'], False), 'E48.rep_el': (['t', 'dw', 'N'], False), 'CE.rep_el': (['t', 'dw', 'N'], False)}
+    'E48.rep_ev': (['t', 'dw', 'N'], False), 'E48.rep_el': (['t', 'dw', 'N'], False), 'CE.rep_el': (['t', 'dw', 'N'], False),
+    'BLI.rep_l1': (None, True), 'BLI.rep_lh': (None, True), 'UL.rep_ul': (None, True), 'PK.rep_v8': (['t', 'dw', 'N', 'q', 'rr'], False)}
 
 
 def split_args(s):
@@ -382,13 +385,35 @@ _rt_cache = {}
 
 def rt_def(name):
     if 'text' not in _rt_cache:
-        _rt_cache['text'] = _RT.read_text()
+        _rt_cache['text'] = _RT.read_text() + '\n' + _RS.read_text()
     t = _rt_cache['text']
     m = _re.search(r'^def ' + name + r'\((.*?)\) -> (.*?):\n((?:  .*\n?)+)', t, _re.M)
     if m:
         return m.group(1), m.group(2), ' '.join(m.group(3).split())
     m = _re.search(r'^def ' + name + r'\((.*?)\) -> (.*?): (.*)$', t, _re.M)
     return (m.group(1), m.group(2), m.group(3)) if m else None
+
+
+# names of root_state (BeaconState's root law, imported as ST): the generators write RT.<name>; for those
+# names the text is requalified, and root_state's type imports added
+def _st_names():
+    if 'st' not in _rt_cache:
+        _rt_cache['st'] = set(_re.findall(r'^(?:def|law|type) (\w+)', _RS.read_text(), _re.M))
+    return _rt_cache['st']
+
+
+def st_qualify(text):
+    st = _st_names()
+    text = _re.sub(r'(?<![\w.])RT\.(\w+)', lambda m: ('ST.' if m.group(1) in st else 'RT.') + m.group(1), text)
+    if 'ST.' not in text:
+        return text
+    head, _, rest = text.partition('\n\n')
+    imps = head.splitlines()
+    add = ['import ../proofs/obj/root_state.bend as ST']
+    add += [l.replace('import ../../', 'import ../').replace('import ./', 'import ../proofs/obj/') for l in _RS.read_text().splitlines()
+            if _re.match(r'import (\.\./\.\./types/\S+ as \w+_d|\./\w+\.bend as (BLI|UL|PK|PV))$', l) and (l.split()[-1] + '.') in rest]
+    imps += [a for a in add if a not in imps]
+    return '\n'.join(imps) + '\n\n' + rest
 
 
 def rep_info(Y):
@@ -412,8 +437,12 @@ def rep_info(Y):
         else:
             f, rest = rest, None
         fn, fa = call(f)
+        fn = fn[3:] if fn.startswith('RT.') else fn   # root_state's own reps name root_types' as RT.rep_Y
         pj = fa[0]
         pjn = call(pj)[0]
+        if pjn is None or not pjn.startswith('pj'):   # a fact about a binder (e.g. rp_bv4(x)): no witnesses
+            fields.append((pj, fn, None, None))
+            continue
         fty = rt_def(pjn)[1]
         fields.append((pj, fn, fa[1], fty))
     return binders, cons, otype, fields
@@ -452,7 +481,7 @@ class Wit:
         self.tys = [ty for _, ty in binders]
         self.parts = []  # per field: (kind, info, slice of witness indices)
         for pj, fn, sch, fty in fields:
-            k, info = field_kind(fn)
+            k, info = field_kind(fn) if fty is not None else ('fact', None)
             i0 = len(self.tys)
             if k == 'words':
                 self.tys += ['FD.array__Tree<U32>', 'U32']
@@ -460,6 +489,8 @@ class Wit:
                 self.tys += [f'FD.array__Tree<{info[0]}>', 'U32']
             elif k == 'dbox':
                 self.tys += [info]
+            elif k == 'fact':
+                pass
             else:
                 sub = wit(info)
                 self.tys += sub.tys
@@ -484,7 +515,8 @@ class Wit:
         for (x, _), nm in zip(self.binders, names):
             c = _re.sub(r'(?<![\w.])' + x + r'(?![\w])', nm, c)
         for j in range(upto):
-            c = c.replace(self.fields[j][0], self.field_term(j, names), 1)
+            if self.parts[j][0] != 'fact':
+                c = c.replace(self.fields[j][0], self.field_term(j, names), 1)
         if o != 'o':
             c = c.replace('(o)', f'({o})')
         return c
@@ -548,14 +580,14 @@ def vroot_container(R, X):
             'import ../src/digest.bend as D', 'import ../src/obj.bend as O', f'import ../types/{R}_hashtreeroot_generated.bend as {R}_h',
             'import ../types/schema.bend as S', 'import ../spec/fulu_schemas.bend as Spec', 'import ../proofs/type_validator_soundness.bend as VS',
             'import ../proofs/compact/found.bend as FD', 'import ../proofs/obj/root_types.bend as RT', f'import ../proofs/obj/{gvm}.bend as GV',
-            'import ./e2e_support.bend as E', 'import ./e2e_rb.bend as RB'] + ([f'import ../proofs/obj/{rcm}.bend as RC'] if rcm else []) + dimps
-    return '\n'.join(dict.fromkeys(imps)) + f"""
+            'import ./e2e_support.bend as E', f'import ./{STATE_RB.get(X, "e2e_rb")}.bend as RB'] + ([f'import ../proofs/obj/{rcm}.bend as RC'] if rcm else []) + dimps
+    return (st_qualify if X in STATE_RB else (lambda t_: t_))('\n'.join(dict.fromkeys(imps)) + f"""
 
 # GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
 # {R} (variable size): the object API's root is END_TO_END's hash_tree_root, for every object the root
 # law represents (rep_{X}); the object is rebuilt from rep's witnesses (e2e_rb.nw_{X}).
 
-""" + body + '\n'
+""" + body + '\n')
 
 
 
@@ -1346,6 +1378,8 @@ class RBFlat:
                     q = self.fresh('q')
                     self.lines.append(f'  (+{rs[j]}, {q}) = {rest}')
                     rest = q
+            if fty is None:   # a fact about a binder: nothing to rebuild
+                continue
             k, info = field_kind(fn)
             pjt = f'RT.{pj}'.replace('(o)', f'({PO})')
             scht = _re.sub(r'(?<![\w.])s(?![\w])', SC, sch)
@@ -1435,7 +1469,7 @@ def rb_flat_defs(X, al=None):
     return L
 
 
-def rb_text(names):
+def rb_text(names, state=False):
     L = []
     al = {}
     for Y in names:
@@ -1467,6 +1501,8 @@ def rb_text(names):
           'def WW(w: O.Words) -> Data: DK.Ex(FD.array__Tree<U32>, t => DK.Ex(U32, N => {w == O.Words{FD.array__thaw(U32, t), N} : O.Words}))', '',
           'def mkw(-w: O.Words, +t: FD.array__Tree<U32>, +N: U32, +e: {w == O.Words{FD.array__thaw(U32, t), N} : O.Words}) -> WW(w): (t, (N, e))', '']
     for fn, (bs, orr) in WORDS_KINDS.items():
+        if fn.split('.')[0] in ('BLI', 'UL', 'PK') and not state:   # root_state's kinds: only in its own module
+            continue
         nm = fn.replace('.', '_')
         ww.append(f'def ww_{nm}(-w: O.Words, +s: S.Schema, +r: {fn}(w, s)) -> WW(w):')
         ww.append('  (+f, +n) = r')
@@ -1742,26 +1778,30 @@ def vl_module(win):
     E = _re.search(r'^def RT\(k: Nat, \+j: Nat, \+dd: Nat, D: FD\.array__Tree<(.*?)>, ', text, _re.M).group(1)
     R = int(_re.search(r'VRL\.pos\(j, (\d+)n, x\)', text).group(1))
     L = _re.search(r'_d\.(l\d+_\w+)_Seq:', text).group(1)
-    LIM = int(_re.search(r'U32\.is_le\(U32\.div\(len, \d+\), (\d+)\)', text).group(1))
-    KB = max(1, (LIM - 1).bit_length()) if LIM > 1 else 1
     DEF = _re.search(r'FD\.array__trep\(' + _re.escape(E) + r', B\.words_depth\(NN\(len\)\), (.*?)\), t, x\)\), NN\(len\)\}', text).group(1)
-    xi = _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', _RT.read_text(), _re.M).group(0)
+    import runtime_refs as _RR   # root_types / root_state as they read before the light split (their RN_L is RN here)
+    xi = _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', _RR.unwire(_RT.read_text()) + '\n' + _RR.unwire(_RS.read_text()), _re.M).group(0)
     VIEWE = _re.search(r'S\.Items\{(\w+\.\w+)\(xat_', xi).group(1)
     body = _VL_TEXT
-    for k, v in (('@E@', E), ('@R@', str(R)), ('@L@', L), ('@LIM@', str(LIM)), ('@KB@', str(KB)), ('@DEF@', DEF), ('@VIEWE@', VIEWE)):
+    for k, v in (('@E@', E), ('@R@', str(R)), ('@L@', L), ('@DEF@', DEF), ('@VIEWE@', VIEWE)):
         body = body.replace(k, v)
+    if _re.search(r'^def RITEMS\(c: Nat, \+j: Nat, ', text, _re.M):   # the items walk by record index (big windows)
+        body = _re.sub(r'W\.RITEMS\(([^,()]+), t, VRL\.pos\(([^,()]+), \d+n, x\)\)', r'W.RITEMS(\1, \2, t, x)', body)
+        body = _re.sub(r'W\.RITEMS\(([^,()]+), t, x\)', r'W.RITEMS(\1, 0n, t, x)', body)
+    if not _re.search(r'^def ecw\(\+len: U32, \+h: \{Bool\.and', text, _re.M):   # the length check alone (hwh from CHKw)
+        body = body.replace('W.ecw(len, hchk)', 'W.ecw(len, W.hwh(t, x, 0, len, hchk))')
     imps = ['import Base', 'import ../src/buffer.bend as B', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S',
             'import ../proofs/compact/found.bend as FD', 'import ../proofs/nat_order.bend as Order', 'import ../proofs/obj/vdepth.bend as VD',
-            'import ../proofs/obj/vrl.bend as VRL', 'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names.bend as RN',
+            'import ../proofs/obj/vrl.bend as VRL', 'import ../proofs/obj/vbuf.bend as VB', 'import ../proofs/obj/root_types.bend as RT', 'import ../proofs/obj/root_names.bend as RN',
             f'import ../proofs/obj/{win}.bend as W']
     imps += [_rel(l) for l in text.splitlines() if _re.match(r'import \.\./\.\./types/\S+ as (\w+_d)$', l) and (l.split()[-1] + '.') in body]
-    return '\n'.join(dict.fromkeys(imps)) + f"""
+    return st_qualify('\n'.join(dict.fromkeys(imps)) + f"""
 
 # GENERATED by codegen/e2e_bridge.py (codegen/e2e_var_b.py). Do not edit.
 # The {L} window ({win}): the list object it reads (the record tree RT over the window's records)
 # views as the window's value (vl), for any window whose check holds.
 
-""" + body
+""" + body)
 
 
 # ---- container windows over child windows (var_winx_X: OBJw = X{Cj.OBJw(d, t, Xj, Fj, Lj)}, VALw its value) ----
@@ -1893,7 +1933,7 @@ def rl_module(X, rlmod, lists):
         fas_sp = ' '.join(f'f{i}' for i in range(nfl))
         fbs = ', '.join(f'+f{i}' for i in range(nfl))
         fpats = ' '.join(f'{c}{{{a}}}' for c, a in cases_[1:1 + nfl])
-        view = _re.search(r'S\.Items\{(\w+\.\w+)\(xat_' + L, _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', _RT.read_text(), _re.M).group(0)).group(1)
+        view = _re.search(r'S\.Items\{(\w+\.\w+)\(xat_' + L, _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', __import__('runtime_refs').unwire(_RT.read_text()), _re.M).group(0)).group(1)
         dflt = _re.search(r'VRL\.mget\(' + _re.escape(ET) + r', FD\.spec_common__nth\(.*?\), j\), (.*?)\)$', _re.search(r'^def EL_' + L + r'\(.*$', text, _re.M).group(0)).group(1)
         L_.append(f'''# ---- {L} ----
 
@@ -4152,7 +4192,7 @@ def vtx_text():
 
 
 # ---- registrations (after every helper is defined) ----
-ROOT_MODS = {'ExecutionPayload': ('big_root_ExecutionPayload', 'big_gvalid_ExecutionPayload')}
+ROOT_MODS = {'ExecutionPayload': ('big_root_ExecutionPayload', 'big_gvalid_ExecutionPayload'), 'BeaconState': ('big_root_BeaconState', 'big_gvalid_BeaconState')}
 _OUTPF = {'LightClientBootstrap': (13, 'EN.pfL4({ps}, 13n, VC.ZT(13n), 0n, FD.array__trep_perfect(U32, 13n, 0))')}
 RB_NAMES = ['ExecutionPayloadHeader', 'LightClientHeader']
 PLIST = r"""import Base
@@ -4507,9 +4547,9 @@ def vlf(+t: FD.array__Tree<U32>, +x: Nat, +len: U32, +hchk: {W.CHKw(t, x, 0, len
     case 1n+ +k:
       +hN = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(1), z) == True{} : Bool}, 1n+k, U32.to_nat(W.NN(len)), Equal.sym(Nat, W.CC(len), 1n+k, ecc), FD.nat__zero_le(k))
       +eQ = FD.u32__sub_nat(W.NN(len), 1, hN)
-      +hc = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(@LIM@)) == True{} : Bool}, W.CC(len), 1n+k, ecc, W.hcw(len, hchk))
-      +hNk = FD.logic__subst(Nat, z => {Nat.is_le(z, O.pow2n(@KB@n)) == True{} : Bool}, 1n+k, U32.to_nat(W.NN(len)), Equal.sym(Nat, W.CC(len), 1n+k, ecc), FD.nat__le_trans(1n+k, U32.to_nat(@LIM@), O.pow2n(@KB@n), hc, {==}))
-      +hcov = VD.wd_cover(W.NN(len), @KB@n, {==}, hNk)
+      +hNk = FD.logic__subst(Nat, z => {Nat.is_le(U32.to_nat(W.NN(len)), z) == True{} : Bool}, FD.spec_common__pow2(32n), O.pow2n(32n), VD.s_pow2_eq(32n),
+        FD.nat__lt_le(U32.to_nat(W.NN(len)), FD.spec_common__pow2(32n), VB.u32_lt(W.NN(len))))
+      +hcov = VD.wd_cover(W.NN(len), 32n, {==}, hNk)
       +hcv = FD.logic__subst(Nat, z => {Nat.is_le(z, O.pow2n(B.words_depth(W.NN(len)))) == True{} : Bool}, U32.to_nat(W.NN(len)), 1n+k, ecc, hcov)
       +hb0 = FD.logic__subst(Nat, z => {Nat.is_le(1n+k, z) == True{} : Bool}, O.pow2n(B.words_depth(W.NN(len))), FD.spec_common__pow2(B.words_depth(W.NN(len))), Equal.sym(Nat, FD.spec_common__pow2(B.words_depth(W.NN(len))), O.pow2n(B.words_depth(W.NN(len))), VD.s_pow2_eq(B.words_depth(W.NN(len)))), hcv)
       +hb = FD.logic__subst(Nat, z => {Nat.is_lt(z, FD.spec_common__pow2(B.words_depth(W.NN(len)))) == True{} : Bool}, k, Nat.add(k, 0n), Equal.sym(Nat, Nat.add(k, 0n), k, FD.nat__add_zero(k)), FD.nat__succ_le_lt(k, FD.spec_common__pow2(B.words_depth(W.NN(len))), hb0))
@@ -4760,14 +4800,18 @@ for _X in PLA:
 for _X in PLB:
     VENC_SHAPES[_X] = venc_plist_b
     VENC_PREMISE[_X] = f'rep: {PL_ROOT[_X][0]}(o, Spec.{_X}()), hM: WO.len(o) <= VB.NMAX() (the object API\'s limit) and hs: BL.sdk(o, 31n) (its storage at depth below 31: the encode laws take dw < 31, the root law dw < 32; dropped when the encode laws take dw < 32)'
-for _w in ('var_winx_l16_WithdrawalRequest', 'var_winx_l8192_DepositRequest', 'var_winx_l2_ConsolidationRequest', 'var_winx_l16_Withdrawal'):
-    SUPPORT_OUT[f'e2e_vl_{_w[9:]}.bend'] = vl_module(_w)
+for _w in ('var_winx_l16_WithdrawalRequest', 'var_winx_l8192_DepositRequest', 'var_winx_l2_ConsolidationRequest', 'var_winx_l16_Withdrawal',
+           'var_winx_l2048_Eth1Data', 'big_var_winx_l1099511627776_Validator', 'big_var_winx_l16777216_HistoricalSummary',
+           'big_var_winx_l134217728_PendingDeposit', 'big_var_winx_l134217728_PendingPartialWithdrawal', 'big_var_winx_l262144_PendingConsolidation'):
+    SUPPORT_OUT[f'e2e_vl_{_re.sub(r'^(big_)?var_winx_', '', _w)}.bend'] = vl_module(_w)
 for _w in ('var_winx_l16_WithdrawalRequest', 'var_winx_l8192_DepositRequest', 'var_winx_l2_ConsolidationRequest'):
-    CHILD_VIEW[_w] = (f'e2e_vl_{_w[9:]}', 'vl')
+    CHILD_VIEW[_w] = (f'e2e_vl_{_re.sub(r'^(big_)?var_winx_', '', _w)}', 'vl')
 SUPPORT_OUT['e2e_vwx_ExecutionRequests.bend'] = vwx_module('ExecutionRequests', 'var_winx_ExecutionRequests')
 VDEC_VIEWS['ExecutionRequests'] = vdec_winx('ExecutionRequests', None, 'e2e_vwx_ExecutionRequests')
 VROOT_SHAPES['ExecutionRequests'] = vroot_container
 SUPPORT_OUT['e2e_rb.bend'] = rb_text(RB_NAMES)
+SUPPORT_OUT['e2e_rbs.bend'] = st_qualify(rb_text(['BeaconState'], state=True))
+VROOT_SHAPES['BeaconState'] = vroot_container
 # ---- ExecutionPayload (i) through its encode record (CI.MW): the premises are the record's own bounds (OKT, and
 # the lists' OKL / WOK), each a decoded-object gap the root law's invariant does not give: the logs bloom and the
 # lists' trees at depth below 31, the extra data and each transaction's bytes below 28, the whole encoding within
@@ -5442,7 +5486,7 @@ for _X, (_m, _ls) in RL_LISTS.items():
 VENC_SHAPES['ExecutionRequests'] = venc_rlist
 SUPPORT_OUT['e2e_eptx.bend'] = eptx_text()
 VENC_SHAPES['ExecutionPayload'] = venc_ep
-VENC_PREMISE['ExecutionPayload'] = ('rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) and the encode record\'s own bounds as premises, each a decoded-object gap (the root law\'s invariant gives depth below 32 and no size bound; dropped when the encode records take the object API\'s limit): hL the logs bloom (BL.sdk1) and hW the withdrawals\' tree (RLV.sda) at depth below 31, hB the extra data (BL.sdk) below 28, hT the transactions\' tree below 31 and each transaction\'s bytes below 28 (e2e_eptx.sdt), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZOK)')
+VENC_PREMISE['ExecutionPayload'] = ('rep: RT.rep_ExecutionPayload(o, Spec.ExecutionPayload()) and the encode record\'s own bounds as premises, each a decoded-object gap (the root law\'s invariant gives depth below 32 and no size bound; dropped when the encode records take the object API\'s limit): hL the logs bloom (BL.sdk1) and hW the withdrawals\' tree (RLV.sda) at depth below 31, hB the extra data (BL.sdk) below 28, hT the transactions\' tree below ' + _ep_bounds()['KL'] + ' and each transaction\'s bytes below ' + _ep_bounds()['KE'] + ' (e2e_eptx.sdt), hZ the encoding within 4 * 2^28 = 2^30 bytes (SZOK)')
 VENC_PREMISE['ExecutionRequests'] = 'rep: RT.rep_ExecutionRequests(o, Spec.ExecutionRequests()) and the hs premises: each list\'s array invariant at depth below 31 (RLV.sda_L; the encode laws take depth below 31, the root law below 32; dropped when the encode laws take depth below 32)'
 SUPPORT_OUT['e2e_chunks.bend'] = chunks_text()
 VDEC_VIEWS['DataColumnSidecar'] = vdec_dcs('DataColumnSidecar')

@@ -31,15 +31,12 @@ import ../obj/generic_specs.bend as P1_Spec
 import ../../proofs/integer_encoding.bend as P1_IE
 import ../obj/spec_fixed.bend as P1_F
 import ../obj/mtree_defs.bend as P1_MD
-import ../obj/mtree_spec.bend as P1_MS
-import ../obj/root_support.bend as P1_RS
 import ../obj/root_leaf.bend as P1_RL
 import ../obj/bits_leaf.bend as P1_BL
 import ../../spec/bit_packing.bend as P1_Bp
 import ../../spec/bit_root.bend as P1_Bits
 import ../../spec/packing.bend as P1_Pack
 import ../obj/leaf_small.bend as P1_LS
-import ../obj/pcont.bend as P1_PCN
 import ../obj/bitlist_pack.bend as P1_BLP
 import ../obj/words_spec.bend as P1_WS
 import ../obj/gleaf.bend as P1_GL

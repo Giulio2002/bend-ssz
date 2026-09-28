@@ -7,14 +7,12 @@ import ../proofs/compact/arith.bend as A
 import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
-import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/var_winx_LightClientUpdate.bend as W
-import ./e2e_bx.bend as BX
 import ./e2e_vbx_LightClientHeader.bend as YV
 import ./e2e_fx.bend as FXV
-import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_names_light.bend as RN
 import ../types/FuluSyncAggregate_def_generated.bend as FuluSyncAggregate_d
 import ../types/FuluSyncCommittee_def_generated.bend as FuluSyncCommittee_d
 import ../types/FuluLightClientHeader_def_generated.bend as FuluLightClientHeader_d

@@ -36,15 +36,12 @@ import ../obj/generic_specs.bend as Spec
 import ../../proofs/integer_encoding.bend as IE
 import ../obj/spec_fixed.bend as F
 import ../obj/mtree_defs.bend as MD
-import ../obj/mtree_spec.bend as MS
-import ../obj/root_support.bend as RS
 import ../obj/root_leaf.bend as RL
 import ../obj/bits_leaf.bend as BL
 import ../../spec/bit_packing.bend as Bp
 import ../../spec/bit_root.bend as Bits
 import ../../spec/packing.bend as Pack
 import ../obj/leaf_small.bend as LS
-import ../obj/pcont.bend as PCN
 import ../obj/bitlist_pack.bend as BLP
 import ../obj/words_spec.bend as WS
 import ../obj/gleaf.bend as GL

@@ -20,7 +20,7 @@ import ./e2e_bytes.bend as E
 import ../proofs/obj/spec_input_SyncCommitteeContribution.bend as M0
 import ../proofs/obj/spec_codec_SyncCommitteeContribution.bend as M1
 import ../proofs/obj/fixrej_f2.bend as M2
-import ../proofs/obj/root_names.bend as M3
+import ../proofs/obj/root_names_light.bend as M3
 import ../proofs/obj/spec_bits.bend as FB
 import ./e2e_bits.bend as EB
 

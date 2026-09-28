@@ -28,7 +28,7 @@ import ./e2e_fixdw.bend as XW
 import ./e2e_fixd.bend as X
 import ../proofs/obj/spec_arr_BlobSidecar.bend as M0
 import ../proofs/obj/root_types.bend as M1
-import ../proofs/obj/root_names.bend as M1_RN
+import ../proofs/obj/root_names_light.bend as M1_RN
 import ../proofs/obj/pv_obj.bend as M1_PV
 import ../proofs/obj/schema_shapes.bend as M1_SH
 import ../proofs/obj/words_obj.bend as M5

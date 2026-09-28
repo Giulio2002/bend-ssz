@@ -1,7 +1,7 @@
 import Base
 import ../types/schema.bend as S
 import ../proofs/obj/spec_bits.bend as FB
-import ../proofs/obj/root_names.bend as RN
+import ../proofs/obj/root_names_light.bend as RN
 import ../types/Fulu_bitvector_512_def_generated.bend as Fulu_bitvector_512_d
 import ./e2e_bits.bend as EB
 

@@ -8,7 +8,6 @@ import ../proofs/obj/spec_fixed.bend as F
 import ../proofs/obj/vbuf.bend as VB
 import ../proofs/obj/vcopy.bend as VC
 import ../proofs/obj/words_obj.bend as WO
-import ../proofs/obj/pv_obj.bend as PV
 import ../proofs/obj/root_types.bend as RT
 import ../proofs/obj/var_winx_ExecutionPayload.bend as W
 import ./e2e_bx.bend as BX

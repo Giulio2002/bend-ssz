@@ -32,7 +32,6 @@ import ../proofs/obj/vbitrep.bend as VBR
 import ../proofs/obj/vua_lay.bend as LY
 import ../proofs/obj/vu32.bend as VU
 import ../proofs/obj/words_spec.bend as WS
-import ../proofs/obj/words_obj.bend as WO
 import ../proofs/obj/bitlist_obj.bend as BO
 import ../proofs/obj/dk.bend as DK
 import ../proofs/obj/vbv1281d.bend as V81
@@ -212,7 +211,7 @@ def bv256(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32) -> {S.BitsValue{BO.bview(O
     {S.BitsValue{BK.btk(U32.to_nat(K), BK.bitsof(FD.array__slots(U32, _)))} == EX_bits256.VAL(EX_bits256.MB{dw, T, K, 256n, 9n, 9n}) : S.Value}
   {==}
 
-def bb256b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bits{FD.array__thaw(U32, T), K} : O.Bits}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+def bb256b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bits{FD.array__thaw(U32, T), K} : O.Bits}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool},
     +hroom: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}, +hbz: {O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), 256n) == True{} : Bool}, +wf: BO.wfb(O.Bits{FD.array__thaw(U32, T), K})) -> BR256(w):
   +hK8 = k8_256()
@@ -223,7 +222,7 @@ def bb256b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.
   +htz = EP.pbtz(T, K, wf)
   +hle = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(K), U32.to_nat(256)), U32.is_le(K, 256), Equal.sym(Bool, U32.is_le(K, 256), Nat.is_le(U32.to_nat(K), U32.to_nat(256)), VU.le_u32(K, 256)), hN)
   +hok = FD.logic__and_intro(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(9n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 256n), Bool.and(Nat.is_le(Nat.add(256n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 256))))))))), pf,
-    FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(9n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 256n), Bool.and(Nat.is_le(Nat.add(256n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 256)))))))), hdw,
+    FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(9n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 256n), Bool.and(Nat.is_le(Nat.add(256n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 256)))))))), FD.nat__lt_trans(dw, 28n, 31n, hdw, {==}),
     FD.logic__and_intro(Nat.is_lt(9n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 256n), Bool.and(Nat.is_le(Nat.add(256n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 256))))))), {==},
     FD.logic__and_intro(Nat.is_le(U32.to_nat(K), 256n), Bool.and(Nat.is_le(Nat.add(256n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 256)))))), hN,
     FD.logic__and_intro(Nat.is_le(Nat.add(256n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 256))))), hK8,
@@ -237,7 +236,7 @@ def bb256b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.
     Equal.sym(Nat, List.length(&2, U32, EX_bits256.ENC(EX_bits256.MB{dw, T, K, 256n, 9n, 9n})), U32.to_nat(CO.NK(K)), EX_bits256.eL(dw, T, K, 256n, 9n, 9n, hok)), hnk)
   (EX_bits256.MB{dw, T, K, 256n, 9n, 9n}, (eo, (bv256(dw, T, K), (hok, hl))))
 
-def bb256(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{256n}), +hs: SDB(w, 31n)) -> BR256(w):
+def bb256(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{256n}), +hs: SDB(w, 28n)) -> BR256(w):
   (+wf, +rq) = rp
   (+hlim, +hch) = rq
   (+T, +s1) = hs
@@ -261,7 +260,7 @@ def bv257(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32) -> {S.BitsValue{BO.bview(O
     {S.BitsValue{BK.btk(U32.to_nat(K), BK.bitsof(FD.array__slots(U32, _)))} == EX_bits257.VAL(EX_bits257.MB{dw, T, K, 257n, 9n, 9n}) : S.Value}
   {==}
 
-def bb257b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bits{FD.array__thaw(U32, T), K} : O.Bits}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+def bb257b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bits{FD.array__thaw(U32, T), K} : O.Bits}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool},
     +hroom: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}, +hbz: {O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), 257n) == True{} : Bool}, +wf: BO.wfb(O.Bits{FD.array__thaw(U32, T), K})) -> BR257(w):
   +hK8 = k8_257()
@@ -272,7 +271,7 @@ def bb257b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.
   +htz = EP.pbtz(T, K, wf)
   +hle = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(K), U32.to_nat(257)), U32.is_le(K, 257), Equal.sym(Bool, U32.is_le(K, 257), Nat.is_le(U32.to_nat(K), U32.to_nat(257)), VU.le_u32(K, 257)), hN)
   +hok = FD.logic__and_intro(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(9n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 257n), Bool.and(Nat.is_le(Nat.add(257n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 257))))))))), pf,
-    FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(9n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 257n), Bool.and(Nat.is_le(Nat.add(257n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 257)))))))), hdw,
+    FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(9n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 257n), Bool.and(Nat.is_le(Nat.add(257n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 257)))))))), FD.nat__lt_trans(dw, 28n, 31n, hdw, {==}),
     FD.logic__and_intro(Nat.is_lt(9n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 257n), Bool.and(Nat.is_le(Nat.add(257n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 257))))))), {==},
     FD.logic__and_intro(Nat.is_le(U32.to_nat(K), 257n), Bool.and(Nat.is_le(Nat.add(257n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 257)))))), hN,
     FD.logic__and_intro(Nat.is_le(Nat.add(257n, 8n), O.pow2n(9n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 257))))), hK8,
@@ -286,7 +285,7 @@ def bb257b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.
     Equal.sym(Nat, List.length(&2, U32, EX_bits257.ENC(EX_bits257.MB{dw, T, K, 257n, 9n, 9n})), U32.to_nat(CO.NK(K)), EX_bits257.eL(dw, T, K, 257n, 9n, 9n, hok)), hnk)
   (EX_bits257.MB{dw, T, K, 257n, 9n, 9n}, (eo, (bv257(dw, T, K), (hok, hl))))
 
-def bb257(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{257n}), +hs: SDB(w, 31n)) -> BR257(w):
+def bb257(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{257n}), +hs: SDB(w, 28n)) -> BR257(w):
   (+wf, +rq) = rp
   (+hlim, +hch) = rq
   (+T, +s1) = hs
@@ -310,7 +309,7 @@ def bv1280(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32) -> {S.BitsValue{BO.bview(
     {S.BitsValue{BK.btk(U32.to_nat(K), BK.bitsof(FD.array__slots(U32, _)))} == EX_bits1280.VAL(EX_bits1280.MB{dw, T, K, 1280n, 11n, 11n}) : S.Value}
   {==}
 
-def bb1280b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bits{FD.array__thaw(U32, T), K} : O.Bits}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+def bb1280b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bits{FD.array__thaw(U32, T), K} : O.Bits}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool},
     +hroom: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}, +hbz: {O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), 1280n) == True{} : Bool}, +wf: BO.wfb(O.Bits{FD.array__thaw(U32, T), K})) -> BR1280(w):
   +hK8 = k8_1280()
@@ -321,7 +320,7 @@ def bb1280b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O
   +htz = EP.pbtz(T, K, wf)
   +hle = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(K), U32.to_nat(1280)), U32.is_le(K, 1280), Equal.sym(Bool, U32.is_le(K, 1280), Nat.is_le(U32.to_nat(K), U32.to_nat(1280)), VU.le_u32(K, 1280)), hN)
   +hok = FD.logic__and_intro(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(11n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 1280n), Bool.and(Nat.is_le(Nat.add(1280n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1280))))))))), pf,
-    FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(11n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 1280n), Bool.and(Nat.is_le(Nat.add(1280n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1280)))))))), hdw,
+    FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(11n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 1280n), Bool.and(Nat.is_le(Nat.add(1280n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1280)))))))), FD.nat__lt_trans(dw, 28n, 31n, hdw, {==}),
     FD.logic__and_intro(Nat.is_lt(11n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 1280n), Bool.and(Nat.is_le(Nat.add(1280n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1280))))))), {==},
     FD.logic__and_intro(Nat.is_le(U32.to_nat(K), 1280n), Bool.and(Nat.is_le(Nat.add(1280n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1280)))))), hN,
     FD.logic__and_intro(Nat.is_le(Nat.add(1280n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1280))))), hK8,
@@ -335,7 +334,7 @@ def bb1280b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O
     Equal.sym(Nat, List.length(&2, U32, EX_bits1280.ENC(EX_bits1280.MB{dw, T, K, 1280n, 11n, 11n})), U32.to_nat(CO.NK(K)), EX_bits1280.eL(dw, T, K, 1280n, 11n, 11n, hok)), hnk)
   (EX_bits1280.MB{dw, T, K, 1280n, 11n, 11n}, (eo, (bv1280(dw, T, K), (hok, hl))))
 
-def bb1280(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{1280n}), +hs: SDB(w, 31n)) -> BR1280(w):
+def bb1280(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{1280n}), +hs: SDB(w, 28n)) -> BR1280(w):
   (+wf, +rq) = rp
   (+hlim, +hch) = rq
   (+T, +s1) = hs
@@ -359,7 +358,7 @@ def bv1281(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32) -> {S.BitsValue{BO.bview(
     {S.BitsValue{BK.btk(U32.to_nat(K), BK.bitsof(FD.array__slots(U32, _)))} == EX_bits1281.VAL(EX_bits1281.MB{dw, T, K, 1281n, 11n, 11n}) : S.Value}
   {==}
 
-def bb1281b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bits{FD.array__thaw(U32, T), K} : O.Bits}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 31n) == True{} : Bool},
+def bb1281b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O.Bits{FD.array__thaw(U32, T), K} : O.Bits}, +pf: {FD.array__perfect(U32, dw, T) == True{} : Bool}, +hdw: {Nat.is_lt(dw, 28n) == True{} : Bool},
     +hroom: {Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{} : Bool}, +hbz: {O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{} : Bool},
     +hN: {Nat.is_le(U32.to_nat(K), 1281n) == True{} : Bool}, +wf: BO.wfb(O.Bits{FD.array__thaw(U32, T), K})) -> BR1281(w):
   +hK8 = k8_1281()
@@ -370,7 +369,7 @@ def bb1281b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O
   +htz = EP.pbtz(T, K, wf)
   +hle = FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(K), U32.to_nat(1281)), U32.is_le(K, 1281), Equal.sym(Bool, U32.is_le(K, 1281), Nat.is_le(U32.to_nat(K), U32.to_nat(1281)), VU.le_u32(K, 1281)), hN)
   +hok = FD.logic__and_intro(FD.array__perfect(U32, dw, T), Bool.and(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(11n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 1281n), Bool.and(Nat.is_le(Nat.add(1281n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1281))))))))), pf,
-    FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(11n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 1281n), Bool.and(Nat.is_le(Nat.add(1281n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1281)))))))), hdw,
+    FD.logic__and_intro(Nat.is_lt(dw, 31n), Bool.and(Nat.is_lt(11n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 1281n), Bool.and(Nat.is_le(Nat.add(1281n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1281)))))))), FD.nat__lt_trans(dw, 28n, 31n, hdw, {==}),
     FD.logic__and_intro(Nat.is_lt(11n, 33n), Bool.and(Nat.is_le(U32.to_nat(K), 1281n), Bool.and(Nat.is_le(Nat.add(1281n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1281))))))), {==},
     FD.logic__and_intro(Nat.is_le(U32.to_nat(K), 1281n), Bool.and(Nat.is_le(Nat.add(1281n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1281)))))), hN,
     FD.logic__and_intro(Nat.is_le(Nat.add(1281n, 8n), O.pow2n(11n)), Bool.and(Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)), Bool.and(O.tail_zero(U32.and(O.bits_nbytes(K), 3), VB.slot(T, VY.QL(O.bits_nbytes(K)))), Bool.and(DL.HZ(DL.RK(K), VB.slot(T, VBT.QK(K))), Bool.and(O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))), U32.is_le(K, 1281))))), hK8,
@@ -384,7 +383,7 @@ def bb1281b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {w == O
     Equal.sym(Nat, List.length(&2, U32, EX_bits1281.ENC(EX_bits1281.MB{dw, T, K, 1281n, 11n, 11n})), U32.to_nat(CO.NK(K)), EX_bits1281.eL(dw, T, K, 1281n, 11n, 11n, hok)), hnk)
   (EX_bits1281.MB{dw, T, K, 1281n, 11n, 11n}, (eo, (bv1281(dw, T, K), (hok, hl))))
 
-def bb1281(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{1281n}), +hs: SDB(w, 31n)) -> BR1281(w):
+def bb1281(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{1281n}), +hs: SDB(w, 28n)) -> BR1281(w):
   (+wf, +rq) = rp
   (+hlim, +hch) = rq
   (+T, +s1) = hs
