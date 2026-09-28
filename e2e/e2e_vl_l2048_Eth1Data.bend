@@ -7,8 +7,6 @@ import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/root_types.bend as RT
-import ../proofs/obj/root_names.bend as RN
 import ../proofs/obj/var_winx_l2048_Eth1Data.bend as W
 import ../types/FuluEth1Data_def_generated.bend as FuluEth1Data_d
 import ../proofs/obj/root_state.bend as ST
@@ -120,8 +118,8 @@ def xiR(m: Nat, +i: Nat, +Q: Nat, +dd: Nat, +D: FD.array__Tree<FuluEth1Data_d.Et
           Equal.sym(Maybe<&2, FuluEth1Data_d.Eth1Data>, FD.spec_common__nth(FuluEth1Data_d.Eth1Data, FD.array__slots(FuluEth1Data_d.Eth1Data, W.RT(Q, 0n, dd, D, t, x)), i), Some{ST.xat_l2048_Eth1Data(FD.array__slots(FuluEth1Data_d.Eth1Data, W.RT(Q, 0n, dd, D, t, x)), i)}, ST.nth_l2048_Eth1Data(FD.array__slots(FuluEth1Data_d.Eth1Data, W.RT(Q, 0n, dd, D, t, x)), i, hi)), en))
       +hm2 = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+Q) == True{} : Bool}, 1n+Nat.add(k, i), Nat.add(k, 1n+i), Equal.sym(Nat, Nat.add(k, 1n+i), 1n+Nat.add(k, i), FD.nat__add_succ(k, i)), hm)
       %Equal.sym(FuluEth1Data_d.Eth1Data, ST.xat_l2048_Eth1Data(FD.array__slots(FuluEth1Data_d.Eth1Data, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, 72n, x)), ex) :
-        {S.Items{RN.v_Eth1Data(_), ST.xi_l2048_Eth1Data(k, FD.array__slots(FuluEth1Data_d.Eth1Data, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 72n, x)) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{RN.v_Eth1Data(W.RX(t, VRL.pos(i, 72n, x))), z}, ST.xi_l2048_Eth1Data(k, FD.array__slots(FuluEth1Data_d.Eth1Data, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
+        {S.Items{RN_L.v_Eth1Data(_), ST.xi_l2048_Eth1Data(k, FD.array__slots(FuluEth1Data_d.Eth1Data, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 72n, x)) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{RN_L.v_Eth1Data(W.RX(t, VRL.pos(i, 72n, x))), z}, ST.xi_l2048_Eth1Data(k, FD.array__slots(FuluEth1Data_d.Eth1Data, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
         W.RITEMS(k, t, VRL.pos(1n+i, 72n, x)), xiR(k, 1n+i, Q, dd, D, t, x, pf, hb, hm2))
 
 def subz(+k: Nat) -> {Nat.sub(1n+k, U32.to_nat(1)) == k : Nat}:

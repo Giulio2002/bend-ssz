@@ -7,8 +7,6 @@ import ../proofs/nat_order.bend as Order
 import ../proofs/obj/vdepth.bend as VD
 import ../proofs/obj/vrl.bend as VRL
 import ../proofs/obj/vbuf.bend as VB
-import ../proofs/obj/root_types.bend as RT
-import ../proofs/obj/root_names.bend as RN
 import ../proofs/obj/big_var_winx_l134217728_PendingPartialWithdrawal.bend as W
 import ../types/FuluPendingPartialWithdrawal_def_generated.bend as FuluPendingPartialWithdrawal_d
 import ../proofs/obj/root_state.bend as ST
@@ -120,8 +118,8 @@ def xiR(m: Nat, +i: Nat, +Q: Nat, +dd: Nat, +D: FD.array__Tree<FuluPendingPartia
           Equal.sym(Maybe<&2, FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal>, FD.spec_common__nth(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W.RT(Q, 0n, dd, D, t, x)), i), Some{ST.xat_l134217728_PendingPartialWithdrawal(FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W.RT(Q, 0n, dd, D, t, x)), i)}, ST.nth_l134217728_PendingPartialWithdrawal(FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W.RT(Q, 0n, dd, D, t, x)), i, hi)), en))
       +hm2 = FD.logic__subst(Nat, z => {Nat.is_le(z, 1n+Q) == True{} : Bool}, 1n+Nat.add(k, i), Nat.add(k, 1n+i), Equal.sym(Nat, Nat.add(k, 1n+i), 1n+Nat.add(k, i), FD.nat__add_succ(k, i)), hm)
       %Equal.sym(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, ST.xat_l134217728_PendingPartialWithdrawal(FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W.RT(Q, 0n, dd, D, t, x)), i), W.RX(t, VRL.pos(i, 24n, x)), ex) :
-        {S.Items{RN.v_PendingPartialWithdrawal(_), ST.xi_l134217728_PendingPartialWithdrawal(k, FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 24n, x)) : S.Value}
-      Equal.cong(S.Value, S.Value, z => S.Items{RN.v_PendingPartialWithdrawal(W.RX(t, VRL.pos(i, 24n, x))), z}, ST.xi_l134217728_PendingPartialWithdrawal(k, FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
+        {S.Items{RN_L.v_PendingPartialWithdrawal(_), ST.xi_l134217728_PendingPartialWithdrawal(k, FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W.RT(Q, 0n, dd, D, t, x)), 1n+i)} == W.RITEMS(1n+k, t, VRL.pos(i, 24n, x)) : S.Value}
+      Equal.cong(S.Value, S.Value, z => S.Items{RN_L.v_PendingPartialWithdrawal(W.RX(t, VRL.pos(i, 24n, x))), z}, ST.xi_l134217728_PendingPartialWithdrawal(k, FD.array__slots(FuluPendingPartialWithdrawal_d.PendingPartialWithdrawal, W.RT(Q, 0n, dd, D, t, x)), 1n+i),
         W.RITEMS(k, t, VRL.pos(1n+i, 24n, x)), xiR(k, 1n+i, Q, dd, D, t, x, pf, hb, hm2))
 
 def subz(+k: Nat) -> {Nat.sub(1n+k, U32.to_nat(1)) == k : Nat}:
