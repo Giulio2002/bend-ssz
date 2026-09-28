@@ -175,3 +175,9 @@ def proom32(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +m: Nat, +dd: 
     -> {Nat.is_lt(Nat.add(A.quad(QC(X, c)), Nat.add(RC(X, c), m)), FD.spec_common__pow2(32n)) == True{} : Bool}:
   VCN.croom32(U32.add(X, c), q, r, a, m, L, dd,
     VCN.vpos32(X, c, a, q, r, L, e, ec, FD.nat__le_trans(a, Nat.add(a, m), L, FD.nat__le_add_right(a, m), hk), hl32), hk, hl32)
+
+# proom's piece of m bytes (a + m <= L): m < 2^31.
+def proom31(+X: U32, +c: U32, +a: Nat, +q: Nat, +r: Nat, +L: Nat, +m: Nat, +dd: Nat, +e: {U32.to_nat(X) == X0(q, r) : Nat}, +ec: {U32.to_nat(c) == a : Nat},
+    +hd: {Nat.is_lt(dd, 31n) == True{} : Bool}, +hk: {Nat.is_le(Nat.add(a, m), L) == True{} : Bool}, +hm: {Nat.is_le(1n, m) == True{} : Bool},
+    +hs31: {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(m, VB.pw(31n)) == True{} : Bool}:
+  FD.nat__le_lt_trans(m, L, VB.pw(31n), FD.nat__le_trans(m, Nat.add(a, m), L, Order.left_below_sum(a, m), hk), hs31)

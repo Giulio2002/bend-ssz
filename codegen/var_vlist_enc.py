@@ -332,9 +332,22 @@ def exq(+X: U32, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.
   +h2 = F.nat__le_trans(X0, E, VB.pw(30n), h1, F.nat__le_trans(E, A.quad(VB.pw(dd)), VB.pw(30n), UW.quad_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd), hl), q30(dd, hd)))
   F.u32__injective(X, XQ(q, r), Equal.trans(Nat, U32.to_nat(X), X0, U32.to_nat(XQ(q, r)), e, Equal.sym(Nat, U32.to_nat(XQ(q, r)), X0, F.u32__to_nat_from_nat(X0, 31n, {==}, b31n(X0, h2)))))
 
+# exq at any output depth dd < 31: X0 = to_nat X is below 2^32 anyway.
+def exqW(+X: U32, +q: Nat, +r: Nat, +L: Nat, +dd: Nat, +e: {U32.to_nat(X) == Nat.add(A.quad(q), r) : Nat}, +hd: {Nat.is_lt(dd, 31n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool}) -> {X == XQ(q, r) : U32}:
+  +X0 = Nat.add(A.quad(q), r)
+  +hx = F.logic__subst(Nat, z => {Nat.is_lt(z, F.spec_common__pow2(32n)) == True{} : Bool}, U32.to_nat(X), X0, e, VB.u32_lt(X))
+  F.u32__injective(X, XQ(q, r), Equal.trans(Nat, U32.to_nat(X), X0, U32.to_nat(XQ(q, r)), e, Equal.sym(Nat, U32.to_nat(XQ(q, r)), X0, F.u32__to_nat_from_nat(X0, 32n, {==}, hx))))
+
 def hlx(+t: F.array__Tree<MB<@EW>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, VE2.LEN(ENCL(t, N))))), VB.pw(dd)) == True{} : Bool})
     -> {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, LL(t, N)))), VB.pw(dd)) == True{} : Bool}:
   F.logic__subst(Nat, z => {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, z))), VB.pw(dd)) == True{} : Bool}, VE2.LEN(ENCL(t, N)), LL(t, N), len_encl(t, N), hl)
+def hlx32(+t: F.array__Tree<MB<@EW>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hl32: {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, VE2.LEN(ENCL(t, N)))), F.spec_common__pow2(32n)) == True{} : Bool})
+    -> {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, LL(t, N))), F.spec_common__pow2(32n)) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_lt(Nat.add(A.quad(q), Nat.add(r, z)), F.spec_common__pow2(32n)) == True{} : Bool}, VE2.LEN(ENCL(t, N)), LL(t, N), len_encl(t, N), hl32)
+def hlx31(+t: F.array__Tree<MB<@EW>>, +N: U32, +q: Nat, +r: Nat, +dd: Nat, +hs31: {Nat.is_lt(VE2.LEN(ENCL(t, N)), VB.pw(31n)) == True{} : Bool})
+    -> {Nat.is_lt(LL(t, N), VB.pw(31n)) == True{} : Bool}:
+  F.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(31n)) == True{} : Bool}, VE2.LEN(ENCL(t, N)), LL(t, N), len_encl(t, N), hs31)
 def hzx(+t: F.array__Tree<MB<@EW>>, +N: U32, +q: Nat, +r: Nat, +D: F.array__Tree<U32>,
     +hz: {VS.bt(Nat.add(VE2.LEN(ENCL(t, N)), WD.PADB(r, VE2.LEN(ENCL(t, N)))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(VE2.LEN(ENCL(t, N)), WD.PADB(r, VE2.LEN(ENCL(t, N))))) : +List<U32>})
     -> {VS.bt(Nat.add(LL(t, N), WD.PADB(r, LL(t, N))), VS.bdr(Nat.add(A.quad(q), r), UA.BYT(D))) == UW.ZB(Nat.add(LL(t, N), WD.PADB(r, LL(t, N)))) : +List<U32>}:
@@ -481,7 +494,7 @@ def glist_text(p, E, mode, cnt, emod, esch, src, sp, se, lsch=None, fulu=False):
     t = t.replace('Spec.Schema60()', '@ESCH')
     t = t.replace('valid_go(n, W, 0n)', 'valid_go(n, W, 0n, okl_e(t, N, h))')
     # the interface-level lemmas keep their names free for the interface
-    for a, b in [('def putx(', 'def putl('), ('def szx(', 'def szl('), ('def sizex(', 'def sizel('), ('def encx_spec(', 'def specl(')]:
+    for a, b in [('def putx(', 'def putl('), ('def putxW(', 'def putlW('), ('def szx(', 'def szl('), ('def szxS(', 'def szlS('), ('def sizex(', 'def sizel('), ('def encx_spec(', 'def specl(')]:
         assert t.count(a) == 1, a
         t = t.replace(a, b)
     # the count check
@@ -576,6 +589,8 @@ def main():
                 out[gfile(gl[0])] = glist_text(*gl)
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
+    import deep  # the dd < 31 twins (name+W; the old names wrap them at dd < 29); the list writer's own W: vvle_list.bend.in
+    out = deep.dify_out(out, strict='--loose' not in sys.argv, skip={'q30', 'qk'}, post=deep.chain_posts(deep.hl32_pass(needed_only=True, derive={'hlx': 'hlx32'}), deep.hs31_pass(derive={'hlx': 'hlx31'})))
     if '--check' in sys.argv:
         stale = [str(p.relative_to(ROOT)) for p, t in out.items() if not p.exists() or p.read_text() != t]
         if stale:

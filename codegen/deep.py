@@ -431,24 +431,28 @@ def _hdr(blk):
         i += 1
 
 
-def dify(text, aliases, fd='FD'):
+def dify(text, aliases, fd='FD', skip=()):
     """text with the dd < 29 definitions doubled (name+'W' at dd < 31) and the old names as wrappers.
-    aliases: {prefix ('X.'): set of that module's twinned names}; fd: the alias of proofs/compact/found.bend."""
+    aliases: {prefix ('X.'): set of that module's twinned names}; fd: the alias of proofs/compact/found.bend.
+    A name whose W is written by hand already (in the text) keeps its own proof and is not twinned, but the
+    twins call its W; the names in skip are neither twinned nor renamed (dd < 29 helpers no twin needs)."""
     blocks = _blocks(text)
     mine = {}
     for name, kind, a, b in blocks:
+        if name in skip:
+            continue
         try:
             s = _dd_sig(text[a:b], kind)
         except (ValueError, AssertionError):
             s = None
         if s:
             mine[name] = (kind, s)
-    local = set(mine)
     defined = {n for n, _, _, _ in blocks}
-    clash = [n for n in local if n + 'W' in defined]
-    if clash:
-        raise SystemExit('deep.dify: twin names already defined: ' + repr(clash[:5]))
-    allc = {('' + n) for n in local}
+    hand = {n for n in mine if n + 'W' in defined}
+    for n in hand:
+        del mine[n]
+    local = set(mine)
+    allc = {('' + n) for n in local | hand}
     for p, ns in aliases.items():
         allc |= {p + n for n in ns}
     pat = re.compile(r'(?<![\w.])(' + '|'.join(re.escape(x) for x in sorted(allc, key=len, reverse=True)) + r')\(') if allc else None
@@ -496,7 +500,7 @@ def dify(text, aliases, fd='FD'):
         out.append(text[pos:a] + tw.rstrip('\n') + '\n\n' + wrap)
         pos = b
     out.append(text[pos:])
-    return ''.join(out), set(local), bad
+    return ''.join(out), set(local) | hand, bad
 
 
 _OFFADD = re.compile(r'VF\.off_add\((\w+), (\w+), P, (\w+), 2n\+dd, e, \{==\}, (\w+), VF\.in_q\(\3, P, dd, VF\.in_le\(0n, \3, (\w+), P, VB\.pw\(dd\), \{==\}, hb\)\)\)')
@@ -566,7 +570,7 @@ CHANGED = {
 }
 
 
-def dify_out(out, strict=True, handled=(), post=None):
+def dify_out(out, strict=True, handled=(), post=None, skip=()):
     """dify every generated module of out ({path: text}, in dependency order): each call into an imported module's
     twinned name (from out itself or from proofs/obj on disk) goes to its W version. Returns the new out; with strict,
     leftover dd < 29 steps (the spots that need a strict bound by hand) and calls of a CHANGED twin raise, except the
@@ -575,7 +579,7 @@ def dify_out(out, strict=True, handled=(), post=None):
     res, reg, allbad = {}, {}, []
     for q, t in out.items():
         q = Path(q)
-        if '{Nat.is_lt(dd, 29n) == True{} : Bool}' not in t or w_names(t):
+        if '{Nat.is_lt(dd, 29n) == True{} : Bool}' not in t or not (set(dd_names(t)) - w_names(t) - set(skip)):
             res[q] = t  # nothing at dd < 29, or twinned already (dify_fix)
             reg[q.stem] = w_names(t) if '{Nat.is_lt(dd, 29n) == True{} : Bool}' in t else set()
             continue
@@ -589,7 +593,7 @@ def dify_out(out, strict=True, handled=(), post=None):
                 reg[stem] = w_names(src.read_text()) if src.exists() else set()
             if reg[stem]:
                 al[a + '.'] = reg[stem]
-        t2, mine, bad = dify(t, al, fd)
+        t2, mine, bad = dify(t, al, fd, skip)
         nar = {}
         for m in re.finditer(r'^import \./(\w+)\.bend as (\w+)', t, re.M):
             src = out.get(q.parent / f'{m.group(1)}.bend') or (res.get(q.parent / f'{m.group(1)}.bend'))
@@ -689,19 +693,40 @@ def derive32(ex, anchor, new, decl, derive):
     return (fn.rsplit('.', 1)[0] + '.' + f if '.' in fn else f) + '(' + ', '.join(args[:-1] + [new]) + ')'
 
 
-def add_premise(text, anchor, new, decl, imported, wrap=None, wrap_needs=(), derive=None):
+def add_premise(text, anchor, new, decl, imported, wrap=None, wrap_needs=(), derive=None, needed_only=False, seeds=()):
     """The W twins of text that take premise anchor also take new (right after it, of type decl(anchor's type)), and
     every call in a twin to a twin taking new (local, or imported: {'X.': {name: index of new}}) passes new right
     after the argument at anchor's place. Returns (text, bad): bad lists the calls whose anchor argument is not
     the caller's own anchor (a derived region: its new bound must be supplied by hand)."""
-    # 1. the headers
+    # 1. the headers (with needed_only: just the twins that call a twin taking new, and so on up)
     tb = _twin_blocks(text)
+    need = None
+    if needed_only:
+        have = {n for n, k, a, b in tb if re.search(r'[+ ]' + re.escape(new) + r':', text[a:b][:len(_hdr(text[a:b])) if k == 'def' else text[a:b].index('def ')])}
+        calls = {}
+        for n, k, a, b in tb:
+            calls[n] = set(re.findall(r'(?<![\w.])([\w]+(?:\.\w+)?)\(', text[a:b]))
+        ext = {p + n for p, d in imported.items() for n in d} | set(seeds)
+        need = set(have)
+        changed = True
+        while changed:
+            changed = False
+            for n in calls:
+                if n not in need and (calls[n] & (need | ext)):
+                    need.add(n)
+                    changed = True
     out, pos = [], 0
     for name, kind, a, b in tb:
         blk = text[a:b]
+        if need is not None and name not in need:
+            out.append(text[pos:a] + blk)
+            pos = b
+            continue
         if kind == 'def':
             i, ps = _params(blk, kind, name)
             hit = [p for p in ps if p.lstrip('+').split(':')[0].strip() == anchor and ':' in p]
+            if any(p.lstrip('+').split(':')[0].strip() == new for p in ps):
+                hit = []   # written by hand with it already
             if hit:
                 p = hit[0]
                 ty = p.split(':', 1)[1].strip()
@@ -709,6 +734,8 @@ def add_premise(text, anchor, new, decl, imported, wrap=None, wrap_needs=(), der
                 blk = blk[:j + len(p)] + f', +{new}: {decl(ty)}' + blk[j + len(p):]
         else:
             m = re.search(r'^  for \+' + re.escape(anchor) + r': (.*)$', blk, re.M)
+            if m and re.search(r'^  for \+' + re.escape(new) + r': ', blk, re.M):
+                m = None
             if m:
                 blk = blk[:m.end()] + f'\n  for +{new}: {decl(m.group(1))}' + blk[m.end():]
                 i, ps = _params(blk, kind, name)
@@ -741,11 +768,14 @@ def add_premise(text, anchor, new, decl, imported, wrap=None, wrap_needs=(), der
                 continue
             args, _ = _args(blk, m.end())
             k = callee[m.group(1)]
-            if not has:
+            ins = new
+            comp = args[k] + new[2:] if re.fullmatch(r'\w+', args[k]) else None   # a companion premise: hle -> hle32 / hle31
+            if args[k] != anchor and comp and re.search(r'[+ ]' + re.escape(comp) + r':', blk[:hdr_end]):
+                ins = comp
+            elif not has:
                 bad.append((name, f'calls {m.group(1)} (takes {new}) without {new} in scope'))
                 continue
-            ins = new
-            if args[k] != anchor:
+            elif args[k] != anchor:
                 ex = args[k]
                 lm = None
                 if re.fullmatch(r'\w+', ex):   # the nearest let binding before the call
@@ -761,6 +791,8 @@ def add_premise(text, anchor, new, decl, imported, wrap=None, wrap_needs=(), der
                 if not f:
                     bad.append((name, f'{m.group(1)}: the {anchor} argument is derived ({args[k][:60]}): supply its {new} by hand'))
                     continue
+            if ins in args[k + 1:]:
+                continue   # passed by hand already
             # the end of argument k
             j, d, cnt = m.end(), 0, 0
             while True:
@@ -938,7 +970,7 @@ def hl32_wrap(vrx='VRX'):
     return wrap
 
 
-def hl32_pass(vrx='VRX', derive=None):
+def hl32_pass(vrx='VRX', derive=None, needed_only=False):
     """A dify_out post pass: every twin taking hl (q + NWN(r + L) <= 2^dd) also takes hl32 (4 q + (r + L) < 2^32);
     the calls pass it on (through the room lemmas' 32 variants, derive: {name: name32}); the old names derive it."""
     der = {'froom': 'froom32', 'rroom': 'rroom32'}
@@ -963,14 +995,14 @@ def hl32_pass(vrx='VRX', derive=None):
         else:
             va = vrx
             t = re.sub(r'^(import \./\w+\.bend as \w+\n)(?!import)', lambda m: m.group(1) + f'import ./vrecx.bend as {va}\n', t, count=1, flags=re.M)
-        t, bad = add_premise(t, 'hl', 'hl32', hl32_decl(fd), imp, wrap=hl32_wrap(va), wrap_needs=('dd', 'hl'), derive=der)
+        t, bad = add_premise(t, 'hl', 'hl32', hl32_decl(fd), imp, wrap=hl32_wrap(va), wrap_needs=('dd', 'hl'), derive=der, needed_only=needed_only)
         if 'hl32w(' not in t and not vm:
             t = t.replace(f'import ./vrecx.bend as {va}\n', '', 1)
         return t, bad
     return post
 
 
-def edit_calls(text, name, fn):
+def edit_calls(text, name, fn, rename=None):
     """In the W twins, every call name(args) becomes name(fn(args, blk)) (fn returns the new argument list, or None
     to leave it); blk is the enclosing twin's text (for its premises). name may be qualified (X.f) or local."""
     out, pos = [], 0
@@ -986,7 +1018,7 @@ def edit_calls(text, name, fn):
             new = fn(args, blk)
             if new is None:
                 continue
-            o.append(blk[p:m.start()] + name + '(' + ', '.join(new) + ')')
+            o.append(blk[p:m.start()] + (rename or name) + '(' + ', '.join(new) + ')')
             p = end
         o.append(blk[p:])
         out.append(text[pos:a] + blk[:start] + ''.join(o))
@@ -1034,3 +1066,55 @@ def restore_old(t, name):
         if n == name:
             return t[:a] + orig + t[b:]
     return t
+
+
+def hs31_decl(ty):
+    """hs31's type from hl's: {q + NWN(r + L) <= 2^dd} gives {L < 2^31}."""
+    ty = ty.strip()
+    inner = ty[len('{Nat.is_le(Nat.add('):-len(', VB.pw(dd)) == True{} : Bool}')]
+    a, _ = _args(inner + ')', 0)
+    m = re.match(r'(\w+)\.NWN\(Nat\.add\(', a[1])
+    b, _ = _args(a[1], m.end())
+    return '{Nat.is_lt(' + b[1] + ', VB.pw(31n)) == True{} : Bool}'
+
+
+def hs31_pass(vrx='VRX', derive=None, needed_only=True, seeds=()):
+    """A dify_out post pass for the fused-check writers (containers, variable lists): every twin taking hl also
+    takes hs31 (the region's length L < 2^31, O.padd's poison bit), right after hl; the calls pass it on
+    (the room lemmas' 31 variants, derive); the old names derive it at dd < 29 (VRX.hs31w)."""
+    der = {'froom': 'froom31', 'rroom': 'rroom31', 'croom': 'croom31', 'proomW': 'proom31'}
+    der.update(derive or {})
+
+    def wrap(ty, ps):
+        ty = ty.strip()
+        inner = ty[len('{Nat.is_le(Nat.add('):-len(', VB.pw(dd)) == True{} : Bool}')]
+        a, _ = _args(inner + ')', 0)
+        m = re.match(r'(\w+)\.NWN\(Nat\.add\(', a[1])
+        b, _ = _args(a[1], m.end())
+        hd = [p.lstrip('+').split(':')[0].strip() for p in ps if '{Nat.is_lt(dd, 29n) == True{} : Bool}' in p][0]
+        return f'{va}.hs31w({a[0]}, {b[0]}, {b[1]}, dd, {hd}, hl)'
+
+    def post(q, t, res):
+        nonlocal va
+        imp = {}
+        for mi in re.finditer(r'^import \./(\w+)\.bend as (\w+)', t, re.M):
+            src = res.get(q.parent / f'{mi.group(1)}.bend')
+            if src is None and (q.parent / f'{mi.group(1)}.bend').exists():
+                src = (q.parent / f'{mi.group(1)}.bend').read_text()
+            if src:
+                h = premise_sigs(src, 'hl')
+                d = {n: h[n] for n in premise_sigs(src, 'hs31') if n in h}
+                if d:
+                    imp[mi.group(2) + '.'] = d
+        vm = re.search(r'^import \./vrecx\.bend as (\w+)$', t, re.M)
+        if vm:
+            va = vm.group(1)
+        else:
+            va = vrx
+            t = re.sub(r'^(import \./\w+\.bend as \w+\n)(?!import)', lambda m: m.group(1) + f'import ./vrecx.bend as {va}\n', t, count=1, flags=re.M)
+        t, bad = add_premise(t, 'hl', 'hs31', hs31_decl, imp, wrap=wrap, wrap_needs=('dd', 'hl'), derive=der, needed_only=needed_only, seeds=seeds)
+        if 'hs31w(' not in t and not vm:
+            t = t.replace(f'import ./vrecx.bend as {va}\n', '', 1)
+        return t, bad
+    va = vrx
+    return post

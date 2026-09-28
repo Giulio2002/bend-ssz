@@ -376,3 +376,35 @@ def rroom32(+j: Nat, +k: Nat, +q: Nat, +r: Nat, +W: Nat, +LT: Nat, +dd: Nat,
     Equal.sym(Nat, Nat.add(A.quad(W), A.quad(Nat.mul(j, W))), A.quad(Nat.add(W, Nat.mul(j, W))), VF.quad_add(W, Nat.mul(j, W))),
     F.nat__add_comm(A.quad(W), A.quad(Nat.mul(j, W))))
   froom32(q, r, dd, Nat.mul(j, W), A.quad(W), LT, F.logic__subst(Nat, z => {Nat.is_le(z, LT) == True{} : Bool}, A.quad(Nat.mul(1n+j, W)), Nat.add(A.quad(Nat.mul(j, W)), A.quad(W)), e1, h1), hl32)
+
+# ---- the region's length below 2^31 (hs31: the padd cursors of the fused-check writers) ---------------------
+# O.padd keeps bit 31 as the poison flag: a container or list written through its cursors is valid below 2^31
+# bytes, at any output depth.
+
+# At dd < 29 (the old names): L <= 4 2^dd <= 2^30 < 2^31 (by a symbolic exponent: no closed 2^30 is compared).
+def q30x(+dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool}) -> {Nat.is_le(A.quad(VB.pw(dd)), VB.pw(30n)) == True{} : Bool}:
+  F.nat__pow2_mono(2n+dd, 30n, F.nat__lt_succ_le(dd, 28n, hd))
+def bsucx(+x: Nat, +k: Nat, +h: {Nat.is_le(x, VB.pw(k)) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(1n+k)) == True{} : Bool}:
+  F.nat__le_lt_trans(x, VB.pw(k), VB.pw(1n+k), h, F.nat__pow2_lt_succ(k))
+def b31x(+x: Nat, +h: {Nat.is_le(x, VB.pw(30n)) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(31n)) == True{} : Bool}: bsucx(x, 30n, h)
+def hs31w(+q: Nat, +r: Nat, +L: Nat, +dd: Nat, +hd: {Nat.is_lt(dd, 29n) == True{} : Bool},
+    +hl: {Nat.is_le(Nat.add(q, WD.NWN(Nat.add(r, L))), VB.pw(dd)) == True{} : Bool})
+    -> {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool}:
+  +h1 = F.nat__le_trans(L, Nat.add(Nat.add(A.quad(q), r), L), A.quad(VB.pw(dd)), Order.left_below_sum(Nat.add(A.quad(q), r), L), xend(q, r, L, dd, hl))
+  b31x(L, F.nat__le_trans(L, A.quad(VB.pw(dd)), VB.pw(30n), h1, q30x(dd, hd)))
+
+# A field of m bytes at 4 k (4 k + m <= L): m < 2^31.
+def froom31(+q: Nat, +r: Nat, +dd: Nat, +k: Nat, +m: Nat, +L: Nat, +hk: {Nat.is_le(Nat.add(A.quad(k), m), L) == True{} : Bool},
+    +hs31: {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(m, VB.pw(31n)) == True{} : Bool}:
+  F.nat__le_lt_trans(m, L, VB.pw(31n), F.nat__le_trans(m, Nat.add(A.quad(k), m), L, Order.left_below_sum(A.quad(k), m), hk), hs31)
+
+# A record of W words (records j + 1 + k <= LT / W): 4 W < 2^31.
+def rroom31(+j: Nat, +k: Nat, +q: Nat, +r: Nat, +W: Nat, +LT: Nat, +dd: Nat,
+    +hj: {Nat.is_le(A.quad(Nat.mul(Nat.add(1n+k, j), W)), LT) == True{} : Bool},
+    +hs31: {Nat.is_lt(LT, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(A.quad(W), VB.pw(31n)) == True{} : Bool}:
+  +h1 = F.nat__le_trans(A.quad(Nat.mul(1n+j, W)), A.quad(Nat.mul(Nat.add(1n+k, j), W)), LT,
+    VME.quad_mono(Nat.mul(1n+j, W), Nat.mul(Nat.add(1n+k, j), W), VRL.mul_mono(1n+j, Nat.add(1n+k, j), W, Order.left_below_sum(k, j))), hj)
+  +e1 = Equal.trans(Nat, A.quad(Nat.mul(1n+j, W)), Nat.add(A.quad(W), A.quad(Nat.mul(j, W))), Nat.add(A.quad(Nat.mul(j, W)), A.quad(W)),
+    Equal.sym(Nat, Nat.add(A.quad(W), A.quad(Nat.mul(j, W))), A.quad(Nat.add(W, Nat.mul(j, W))), VF.quad_add(W, Nat.mul(j, W))),
+    F.nat__add_comm(A.quad(W), A.quad(Nat.mul(j, W))))
+  froom31(q, r, dd, Nat.mul(j, W), A.quad(W), LT, F.logic__subst(Nat, z => {Nat.is_le(z, LT) == True{} : Bool}, A.quad(Nat.mul(1n+j, W)), Nat.add(A.quad(Nat.mul(j, W)), A.quad(W)), e1, h1), hs31)

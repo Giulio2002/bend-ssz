@@ -748,3 +748,14 @@ def croom32(+Xc: U32, +q: Nat, +r: Nat, +a: Nat, +m: Nat, +L: Nat, +dd: Nat,
   +h1 = F.logic__subst(Nat, z => {Nat.is_le(z, Nat.add(X0, L)) == True{} : Bool}, Nat.add(X0, Nat.add(a, m)), y1, Equal.sym(Nat, y1, Nat.add(X0, Nat.add(a, m)), e1), Order.add_left(X0, Nat.add(a, m), L, hk))
   +h2 = F.logic__subst(Nat, z => {Nat.is_le(y1, z) == True{} : Bool}, Nat.add(X0, L), Nat.add(A.quad(q), Nat.add(r, L)), F.nat__add_assoc(A.quad(q), r, L), h1)
   F.nat__le_lt_trans(y1, Nat.add(A.quad(q), Nat.add(r, L)), F.spec_common__pow2(32n), h2, hl32)
+
+# croom's piece of m bytes (a + m <= L): m < 2^31.
+def croom31(+Xc: U32, +q: Nat, +r: Nat, +a: Nat, +m: Nat, +L: Nat, +dd: Nat,
+    +epos: {U32.to_nat(Xc) == Nat.add(Nat.add(A.quad(q), r), a) : Nat}, +hk: {Nat.is_le(Nat.add(a, m), L) == True{} : Bool},
+    +hs31: {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(m, VB.pw(31n)) == True{} : Bool}:
+  F.nat__le_lt_trans(m, L, VB.pw(31n), F.nat__le_trans(m, Nat.add(a, m), L, Order.left_below_sum(a, m), hk), hs31)
+
+# pc_end below 2^31 (a cursor within the region, the region below 2^31: O.padd's poison bit).
+def pc_end31(+q: Nat, +r: Nat, +L: Nat, +dd: Nat, +x: Nat, +h: {Nat.is_le(x, L) == True{} : Bool},
+    +hs31: {Nat.is_lt(L, VB.pw(31n)) == True{} : Bool}) -> {Nat.is_lt(x, VB.pw(31n)) == True{} : Bool}:
+  F.nat__le_lt_trans(x, L, VB.pw(31n), h, hs31)
