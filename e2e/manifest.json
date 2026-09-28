@@ -2789,6 +2789,18 @@
     "premise": "any input the object API accepts (hS: n <= VB.NMAX() = 2^32 - 32)"
    }
   ],
+  "FuluBeaconState_e2e_dec_generated.bend": [
+   {
+    "name": "FuluBeaconState",
+    "generated_name": "BeaconState",
+    "laws": [
+     "FuluBeaconState_e2e_decode_view",
+     "FuluBeaconState_e2e_decode_reject"
+    ],
+    "ii": "view",
+    "premise": "n <= 2^29 bytes (512 MiB) (hS: n <= 4 * 2^K with K = 27, a parameter; the codec laws take buffers of depth below 28)"
+   }
+  ],
   "FuluDataColumnSidecar_e2e_dec_generated.bend": [
    {
     "name": "FuluDataColumnSidecar",
@@ -6444,6 +6456,7 @@
   "FuluBeaconState": {
    "generated_name": "BeaconState",
    "reason": "encode laws not over the same free words / bits",
+   "decode": "FuluBeaconState_e2e_dec_generated.bend",
    "root": "FuluBeaconState_e2e_root_generated.bend"
   },
   "FuluBeaconBlockBody": {
@@ -7291,7 +7304,7 @@
    "input_bound_bytes": 4294967264,
    "max_ssz_size": 152862724982449,
    "covered": false,
-   "bridged": null
+   "bridged": "FuluBeaconState_e2e_dec_generated.bend"
   },
   "FuluDataColumnSidecar": {
    "generated_name": "DataColumnSidecar",

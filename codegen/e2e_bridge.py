@@ -2952,6 +2952,10 @@ def outputs():
         EVC.MWP.setdefault('Gc85FA758A04', BVG.mwp_bs)
         VENC_SHAPES.setdefault('Gc85FA758A04', EVC.venc_mw)
         VENC_PREMISE.setdefault('Gc85FA758A04', BVG.BS_PREMISE)
+    # BeaconState (ii)/(iii): its window through e2e_var_b's vbx_module with the field views of e2e_stv (e2e_state_gen)
+    import e2e_state_gen as ESG
+    if (OBJ / 'big_var_winx_BeaconState.bend').exists():
+        VDEC_VIEWS.setdefault('BeaconState', ESG.vdec_state())
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
     for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
         VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
@@ -3177,6 +3181,17 @@ def outputs():
     out[OUT / 'e2e_bvw.bend'] = BVG.BVW
     out[OUT / 'e2e_bitv.bend'] = BVG.BITV
     out[OUT / 'e2e_bvsub.bend'] = BVG.bvsub_text()
+    if (OBJ / 'big_encx_l8_Attestation.bend').exists():
+        import e2e_bbatt_gen as EBB
+        out[OUT / 'e2e_bbatt.bend'] = EBB.text()
+    if (OBJ / 'big_encx_l1_AttesterSlashing.bend').exists():
+        import e2e_bbatt_gen as EBB
+        out[OUT / 'e2e_bbsl.bend'] = EBB.text1()
+        out[OUT / 'e2e_u64l.bend'] = EBB.u64l_text()
+    if (OBJ / 'big_var_winx_BeaconState.bend').exists():
+        import e2e_state_gen as ESG
+        out[OUT / 'e2e_stv.bend'] = ESG.text()
+        out[OUT / 'e2e_vbx_BeaconState.bend'] = ESG.vbx_state()
     if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
         out[OUT / 'e2e_bsw.bend'] = BVG.bsw_text(OBJ)
         out[OUT / 'e2e_bsenc.bend'] = BVG.bsenc_text()
