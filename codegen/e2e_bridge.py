@@ -2932,7 +2932,30 @@ def outputs():
     for X0, mod0 in (('PendingAttestation', 'var_bitc_PendingAttestation.bend'), ('Attestation', 'big_var_bitc_Attestation.bend')):
         if (OBJ / mod0).exists():
             VDEC_VIEWS.setdefault(X0, BVG.bc_view(X0, *BVG.bc_params(OBJ, mod0)))
+    # the aggregates: one windowed Attestation (e2e_attw) lifted through each window (e2e_aapw)
+    for X0, lem0 in (('AggregateAndProof', 'aap_w'), ('SignedAggregateAndProof', 'saap_w')):
+        if (OBJ / f'big_var_win_{X0}.bend').exists():
+            VDEC_VIEWS.setdefault(X0, BVG.top_view(X0, lem0))
+    # (i) for the bit list containers: their encode laws' storage premises and hv as the named premise hs (e2e_bitv)
+    for X0, mod0 in (('PendingAttestation', 'var_bitc_enc_PendingAttestation.bend'), ('Attestation', 'big_var_bitc_enc_Attestation.bend')):
+        if (OBJ / mod0).exists():
+            VENC_SHAPES.setdefault(X0, lambda R, X, m=mod0: BVG.venc_bitc(OBJ, R, X, m))
+            VENC_PREMISE.setdefault(X0, BVG.SDBV_PREMISE.format(X=X0))
+    for X0, mod0, cR0, cX0 in (('AggregateAndProof', 'big_var_codec_AggregateAndProof_enc.bend', 'FuluAttestation', 'Attestation'),
+                               ('SignedAggregateAndProof', 'big_var_codec_SignedAggregateAndProof_enc.bend', 'FuluAggregateAndProof', 'AggregateAndProof')):
+        if (OBJ / mod0).exists():
+            VENC_SHAPES.setdefault(X0, lambda R, X, m=mod0, c=cR0, cx=cX0: BVG.venc_agg(OBJ, R, X, m, c, cx))
+            VENC_PREMISE.setdefault(X0, BVG.SDBV_PREMISE.format(X=X0))
+    # BitsStruct: two windowed bit lists (e2e_bsw) and three sub-word bit vectors (e2e_bvsub)
+    if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
+        VDEC_VIEWS.setdefault('Gc85FA758A04', BVG.bs_view())
+        VROOT_SHAPES.setdefault('Gc85FA758A04', BVG.vroot_bs_text)
+        EVC.MWP.setdefault('Gc85FA758A04', BVG.mwp_bs)
+        VENC_SHAPES.setdefault('Gc85FA758A04', EVC.venc_mw)
+        VENC_PREMISE.setdefault('Gc85FA758A04', BVG.BS_PREMISE)
     VROOT_SHAPES.setdefault('PendingAttestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'O.U64', 'O.U64']))
+    for X0 in ('AggregateAndProof', 'SignedAggregateAndProof'):
+        VROOT_SHAPES.setdefault(X0, BVG.vroot_agg_text)
     VROOT_SHAPES.setdefault('Attestation', lambda R, X: BVG.vroot_bitc_text(R, X, ['T.AttestationData', 'T.Bytes96', 'T.Bitvector64']))
     import names as NM
     amap = json.loads((ROOT / 'proofs/gate/api_map.json').read_text())
@@ -3152,6 +3175,16 @@ def outputs():
         u['encode'] = fn
     out[OUT / 'e2e_bitl.bend'] = BITL
     out[OUT / 'e2e_bview.bend'] = BVG.text()
+    out[OUT / 'e2e_bvw.bend'] = BVG.BVW
+    out[OUT / 'e2e_bitv.bend'] = BVG.BITV
+    out[OUT / 'e2e_bvsub.bend'] = BVG.bvsub_text()
+    if (OBJ / 'var_winx_Gc85FA758A04.bend').exists():
+        out[OUT / 'e2e_bsw.bend'] = BVG.bsw_text(OBJ)
+        out[OUT / 'e2e_bsenc.bend'] = BVG.bsenc_text()
+    if (OBJ / 'big_var_win_Attestation.bend').exists():
+        out[OUT / 'e2e_attw.bend'] = BVG.attw_text(OBJ)
+    if (OBJ / 'big_var_win_SignedAggregateAndProof.bend').exists():
+        out[OUT / 'e2e_aapw.bend'] = BVG.aapw_text(OBJ)
     inv = {u['generated_name']: R0 for R0, u in uncovered.items()}
     brows = [(inv[X], X, N, big) for X, N, big in bit_lists(amap['map']) if X in inv]
     for R0, X0, N, big in brows:

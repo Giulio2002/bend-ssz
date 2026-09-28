@@ -1746,7 +1746,7 @@ def vl_module(win):
     LIM = int(_re.search(r'U32\.is_le\(U32\.div\(len, \d+\), (\d+)\)', text).group(1))
     KB = max(1, (LIM - 1).bit_length()) if LIM > 1 else 1
     DEF = _re.search(r'FD\.array__trep\(' + _re.escape(E) + r', B\.words_depth\(NN\(len\)\), (.*?)\), t, x\)\), NN\(len\)\}', text).group(1)
-    xi = _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', _unlight(_RT.read_text()), _re.M).group(0)
+    xi = _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', __import__('runtime_refs').unwire(_RT.read_text()), _re.M).group(0)
     VIEWE = _re.search(r'S\.Items\{(\w+\.\w+)\(xat_', xi).group(1)
     body = _VL_TEXT
     for k, v in (('@E@', E), ('@R@', str(R)), ('@L@', L), ('@LIM@', str(LIM)), ('@KB@', str(KB)), ('@DEF@', DEF), ('@VIEWE@', VIEWE)):
@@ -1894,7 +1894,7 @@ def rl_module(X, rlmod, lists):
         fas_sp = ' '.join(f'f{i}' for i in range(nfl))
         fbs = ', '.join(f'+f{i}' for i in range(nfl))
         fpats = ' '.join(f'{c}{{{a}}}' for c, a in cases_[1:1 + nfl])
-        view = _re.search(r'S\.Items\{(\w+\.\w+)\(xat_' + L, _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', _unlight(_RT.read_text()), _re.M).group(0)).group(1)
+        view = _re.search(r'S\.Items\{(\w+\.\w+)\(xat_' + L, _re.search(r'^def xi_' + L + r'\(.*\n(?:  .*\n)+', __import__('runtime_refs').unwire(_RT.read_text()), _re.M).group(0)).group(1)
         dflt = _re.search(r'VRL\.mget\(' + _re.escape(ET) + r', FD\.spec_common__nth\(.*?\), j\), (.*?)\)$', _re.search(r'^def EL_' + L + r'\(.*$', text, _re.M).group(0)).group(1)
         L_.append(f'''# ---- {L} ----
 
