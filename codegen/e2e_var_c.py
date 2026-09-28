@@ -3217,6 +3217,56 @@ def gp_view(X, W, fields):
             f'    -> {{RT2.v_{X}({W}.OBJw(d, t, x, off, len)) == {W}.VALw(t, x, len) : S.Value}}:\n' + '\n'.join(lets + steps) + '\n  {==}\n')
 
 
+GP_PL = r"""# ---- a progressive list of uint8 at a byte window ----
+def pu8(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hc: {PU8.CHKw(t, x, off, len) == True{} : Bool}) -> {PBF.vview1(PU8.OBJw(d, t, x, off, len)) == PU8.VALw(t, x, len) : S.Value}:
+  +eb = BL.bview(d, t, off, len, x, eo, hd, hw, pf)
+  %Equal.sym(+List<U32>, WO.wview(O.Words{FD.array__thaw(U32, BL.CW(d, t, off, len)), len}), UW.WX(t, x, U32.to_nat(len)), eb) : {S.Sequence{PBF.it1(U32.to_nat(len), _)} == PU8.VALw(t, x, len) : S.Value}
+  Equal.cong(S.Value, S.Value, z => S.Sequence{z}, PBF.it1(U32.to_nat(len), UW.WX(t, x, U32.to_nat(len))), PBM.it1(U32.to_nat(len), UW.WX(t, x, U32.to_nat(len))), PL.it1eq(U32.to_nat(len), UW.WX(t, x, U32.to_nat(len))))
+
+# ---- a progressive list of uint64 at a byte window: its first 2 c words are the window's ----
+# the two uitems (ulist_obj, vspec) agree
+def uu(+k: Nat, +W: List<&2, U32>) -> {UL.uitems(k, W) == VS.uitems(k, W) : S.Value}:
+  match k W:
+    case 0n _: {==}
+    case 1n+ +c Nil{}: {==}
+    case 1n+ +c Con{+a, Nil{}}: {==}
+    case 1n+ +c Con{+a, Con{+b, +rest}}: Equal.cong(S.Value, S.Value, z => S.Items{S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, z}, UL.uitems(c, rest), VS.uitems(c, rest), uu(c, rest))
+# ... and read only the first 2 k words
+def ut(+k: Nat, +W: List<&2, U32>) -> {VS.uitems(k, W) == VS.uitems(k, VS.wtake(Nat.double(k), W)) : S.Value}:
+  match k W:
+    case 0n _: {==}
+    case 1n+ +c Nil{}: {==}
+    case 1n+ +c Con{+a, Nil{}}: {==}
+    case 1n+ +c Con{+a, Con{+b, +rest}}: Equal.cong(S.Value, S.Value, z => S.Items{S.UnsignedValue{P.UInt{a, b, 0, 0, 0, 0, 0, 0}}, z}, VS.uitems(c, rest), VS.uitems(c, VS.wtake(Nat.double(c), rest)), ut(c, rest))
+def xb2(+c: Nat) -> {VS.x8(c) == EL.b2(c) : Nat}:
+  match c:
+    case 0n: {==}
+    case 1n+ +q: Equal.cong(Nat, Nat, z => 8n+z, VS.x8(q), EL.b2(q), xb2(q))
+
+def pu64(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +off: U32, +len: U32, +eo: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+    +hw: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+    +hc: {PU64.CHKw(t, x, off, len) == True{} : Bool}) -> {UL.uview(PU64.OBJw(d, t, x, off, len)) == PU64.VALw(t, x, len) : S.Value}:
+  +c = PU64.CQ(len)
+  +M = UCT.CT(d, t, off, len, VLS.DZ(len))
+  +el = PU64.eLc(t, x, off, len, hc)
+  +ec = Equal.trans(Nat, U32.to_nat(U32.shrn(len, 3n)), VD.s_rng(3n, U32.to_nat(len)), c, VD.shrk(3n, len),
+    Equal.trans(Nat, VD.s_rng(3n, U32.to_nat(len)), VD.s_rng(3n, EL.b2(c)), c,
+      Equal.cong(Nat, Nat, z => VD.s_rng(3n, z), U32.to_nat(len), EL.b2(c), Equal.trans(Nat, U32.to_nat(len), VS.x8(c), EL.b2(c), el, xb2(c))), PW.rb2(c)))
+  +hL = FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw)
+  +eL = Equal.trans(Nat, U32.to_nat(len), VS.x8(c), A.quad(Nat.double(c)), el, Equal.trans(Nat, VS.x8(c), Nat.mul(c, 8n), A.quad(Nat.double(c)), Equal.sym(Nat, Nat.mul(c, 8n), VS.x8(c), VC.x8_mul(c)), VBG.mul8(c)))
+  +ew = BXW.ctw(d, t, off, len, VLS.DZ(len), x, Nat.double(c), eo, hd, hw, pf, VLS.hrg(d, len, hd, hL), eL)
+  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, M)), M, FD.array__freeze_thaw(U32, M)) :
+    {S.Sequence{UL.uitems(U32.to_nat(U32.shrn(len, 3n)), FD.array__slots(U32, _))} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(Nat, U32.to_nat(U32.shrn(len, 3n)), c, ec) : {S.Sequence{UL.uitems(_, FD.array__slots(U32, M))} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(S.Value, UL.uitems(c, FD.array__slots(U32, M)), VS.uitems(c, FD.array__slots(U32, M)), uu(c, FD.array__slots(U32, M))) : {S.Sequence{_} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(S.Value, VS.uitems(c, FD.array__slots(U32, M)), VS.uitems(c, VS.wtake(Nat.double(c), FD.array__slots(U32, M))), ut(c, FD.array__slots(U32, M))) : {S.Sequence{_} == PU64.VALw(t, x, len) : S.Value}
+  %Equal.sym(List<&2, U32>, VS.wtake(Nat.double(c), FD.array__slots(U32, M)), UR.RWS(Nat.double(c), t, x), ew) : {S.Sequence{VS.uitems(c, _)} == PU64.VALw(t, x, len) : S.Value}
+  {==}
+"""
+
+
 def gprog_text():
     J = lambda W, k, ln=False: (f'{W}.XJ{k}(t, x)', f'{W}.FJ{k}(off, t, x)', f'{W}.LJ{k}(t, x' + (', len)' if ln else ')'))  # noqa: E731
     def jargs(W, k, ln=False):
@@ -3228,7 +3278,7 @@ def gprog_text():
     L16 = lambda W, k, CH, tag, ln: (f'PBF.vview2({CH}.OBJw({", ".join(("d", "t") + J(W, k, ln))}))', f'{CH}.VALw(t, {J(W, k, ln)[0]}, {J(W, k, ln)[2]})',  # noqa: E731
                                      f'lv_{tag}({jargs(W, k, ln)})')
     U8 = lambda W, o: (f'RN.v_u8(FX8.OBJ(d, t, Nat.add(x, U32.to_nat({o}))))', f'FX8.VAL(t, Nat.add(x, U32.to_nat({o})))', None)  # noqa: E731
-    body = [gp_lv('l123', 'L123'),
+    body = [gp_lv('l123', 'L123'), GP_PL,
             '# ProgressiveSingleListContainerTestStruct: one progressive bit list',
             gp_view('Gp4B0CA2906A', 'W4B', [PBJ('W4B', 0, 'W4B_CH0', True)]),
             '# ProgressiveVarTestStruct: a uint8, a List[uint16, 123], a progressive bit list',
@@ -3241,7 +3291,11 @@ def gprog_text():
             'import ../proofs/obj/big_var_winp_pbits.bend as PBW', 'import ../proofs/obj/var_winx_l123_u16.bend as L123',
             'import ../proofs/obj/big_var_winx_Gp4B0CA2906A.bend as W4B', 'import ../proofs/obj/big_var_winp_pbits.bend as W4B_CH0',
             'import ../proofs/obj/big_var_winx_Gp66304057C3.bend as W663',
-            'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_gpb.bend as GPB']
+            'import ./e2e_blist.bend as BL', 'import ./e2e_plist.bend as PL', 'import ./e2e_gpb.bend as GPB',
+            'import ../proofs/obj/big_var_winp_u8.bend as PU8', 'import ../proofs/obj/big_var_winp_pl_u64.bend as PU64', 'import ../proofs/obj/ulist_obj.bend as UL',
+            'import ../proofs/obj/vspec.bend as VS', 'import ../proofs/obj/vdepth.bend as VD', 'import ../proofs/obj/vcopy.bend as VC', 'import ../proofs/obj/vbig.bend as VBG',
+            'import ../proofs/obj/vlist.bend as VLS', 'import ../proofs/obj/vua_ct.bend as UCT', 'import ../proofs/obj/vua_rd.bend as UR', 'import ../proofs/obj/var_elems.bend as EL',
+            'import ./e2e_plw.bend as PW', 'import ./e2e_bx.bend as BXW', 'import ../proofs/nat_order.bend as Order']
     return '\n'.join(head) + '''
 
 # GENERATED by codegen/e2e_bridge.py (entries: codegen/e2e_var_c.py). Do not edit.
