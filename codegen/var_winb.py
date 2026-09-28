@@ -1524,7 +1524,305 @@ def module_text(L):
     body = (defs_text(L) + common_text(L) + OFFW.replace('@CWA', CWA).replace('@CW', CW)
             + (SYMX.replace('@CWA', CWA).replace('@CW', CW).replace('@FSn', L.FSN) + EUDEFS(L) if L.sym else '') + facts_text(L) + validator_text(L) + reader_text(L)
             + spec_text(L) + inv_text(L))
-    return '\n'.join(head) + W.COMMONX + '\n' + body
+    text = '\n'.join(head) + W.COMMONX + '\n' + body
+    dm = deep_modes(L)
+    if dm is None:
+        return text
+    pb = sorted(f['j'] for f in L.vars if f['mod'] == PBITS_MOD)
+    if pb:
+        text = text.replace('import ./vua_rd.bend as UR\n', 'import ./vua_rd.bend as UR\nimport ./vpb29.bend as VP\n', 1)
+    return winb_deep(text, *dm, pb=pb)
+
+
+# ---- any tree depth d < 31 (the children's D interface) -------------------------------------------
+
+NM = 'U32.to_nat(VB.NMAX())'
+P32 = 'FD.spec_common__pow2(32n)'
+EOJ_OLD = """  +hl = FD.nat__le_trans(Nat.add(U32.to_nat(o), x), Nat.add(U32.to_nat(len), x), A.quad(VB.pw(d)), Order.add_right(U32.to_nat(o), U32.to_nat(len), x, h),
+    FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw))
+  VB.add_at(off, o, x, 3n+d, eo, FD.nat__lt_trans(3n+d, 31n, 32n, hd, {==}), VB.le_pw_lt(Nat.add(U32.to_nat(o), x), 2n+d, hl))"""
+EOJ_32 = f"""  +hl = FD.nat__le_lt_trans(Nat.add(U32.to_nat(o), x), Nat.add(U32.to_nat(len), x), {P32}, Order.add_right(U32.to_nat(o), U32.to_nat(len), x, h),
+    FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == True{{}} : Bool}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw32))
+  VB.add_lt32(off, o, x, eo, hl)"""
+EOJ_N = f"""  +hl = FD.nat__le_trans(Nat.add(U32.to_nat(o), x), Nat.add(U32.to_nat(len), x), {NM}, Order.add_right(U32.to_nat(o), U32.to_nat(len), x, h),
+    FD.logic__subst(Nat, z => {{Nat.is_le(z, {NM}) == True{{}} : Bool}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hwN))
+  VB.add_lt32(off, o, x, eo, VB.le_n_lt32(Nat.add(U32.to_nat(o), x), VB.NMAX(), hl))"""
+FIT4_OLD = 'VFT.fits4(2n+d, U32.to_nat(len), hlen(d, x, len, hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==}))'
+
+
+_OUT = {}
+
+
+def child_mode(mod):
+    """'hwN' / 'hw32' for a child window module with the deep interface, None otherwise."""
+    q = ROOT / 'proofs/obj' / mod
+    t = _OUT[q] if q in _OUT else q.read_text()   # a container generated in this run
+    m = re.search(r'^def readwD\((.*?)\n    ->', t, re.M | re.S)
+    if not m:
+        return None
+    return 'hwN' if '+hwN:' in m.group(1) else 'hw32'
+
+
+def deep_modes(L):
+    """The container's mode (hwN when a child's is) and its children's, or None when a child is not deep."""
+    kids = {f['j']: child_mode(f['mod']) for f in L.vars}
+    if any(v is None for v in kids.values()):
+        return None
+    return ('hwN' if 'hwN' in kids.values() else 'hw32'), kids
+
+
+def _twin(text, name, new, reps, lead=None):
+    """A copy of def `name` as `new`, the replacements applied after its parameters."""
+    import deep
+    a = text.index(f'\ndef {name}(') + 1
+    b = text.index('\n\n', a)
+    h = text[a:b]
+    pe = deep._close(h, h.index('(') + 1)
+    body = h[pe:]
+    for x_, y_ in reps:
+        assert x_ in body, (name, x_[:80])
+        body = body.replace(x_, y_)
+    return text[:b] + '\n\n' + h[:pe].replace(f'def {name}(', f'def {new}(') + body + text[b:]
+
+
+def winb_deep(text, mode, kids, pb=()):
+    """The container window at any depth d < 31: offsets below 2^32 from the window's end (hw32, or hwN: by
+    NMAX), the fixed fields by vua_fix rdxd_ / the vfx modules' rdxD, fits of U32 values, the children
+    through their D interface (hwj32 / hwjN twins of their window bounds)."""
+    import deep
+    PW = 'A.quad(VB.pw(d))'
+    assert EOJ_OLD in text, 'eoj'
+    text = text.replace(EOJ_OLD, EOJ_N if mode == 'hwN' else EOJ_32)
+    assert FIT4_OLD in text, 'fits4'
+    text = text.replace(FIT4_OLD, 'VFT.fits4lt(U32.to_nat(len), VB.u32_lt(len))')
+    # fits of an offset word v <= len
+    while True:
+        m = re.search(r'VMR\.fitsn\(d, len, v, FD\.nat__lt_trans\(d, 28n, 29n, hd, \{==\}\),', text)
+        if not m:
+            break
+        p0 = text.index('(', m.start()) + 1
+        b = deep._close(text, p0)
+        args = deep._split_args(text[p0:b])
+        text = text[:m.start()] + f'VFT.fits4lt(v, VB.le_n_lt32(v, len, {args[5].strip()}))' + text[b + 1:]
+    # the fixed fields' readers at any depth
+    text = re.sub(r'(VTX|XF)\.rdx_(\w+)\(', r'\1.rdxd_\2(', text)
+    text = re.sub(r'(?<![\w.])(FX_\w+)\.(rdx|ok)\(', r'\1.\2D(', text)
+    text = text.replace('FD.nat__lt_trans(d, 28n, 30n, hd, {==})', 'hd').replace('FD.nat__lt_trans(d, 28n, 31n, hd, {==})', 'hd')
+    # the children's window bounds: below 2^32 / by NMAX
+    HWJ_T = 'Nat.is_le(Nat.add(Nat.add(U32.to_nat(o), x), U32.to_nat(U32.sub(e, o))), A.quad(VB.pw(d)))'
+    HWJ_S = '{Nat.is_le(Nat.add(Nat.add(U32.to_nat(o), x), _), A.quad(VB.pw(d))) == True{} : Bool}'
+    HWJ_E = 'FD.nat__le_trans(Nat.add(x, U32.to_nat(e)), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.add_left(x, U32.to_nat(e), U32.to_nat(len), h2), hw)'
+    if mode == 'hw32':
+        text = _twin(text, 'hwj', 'hwj32', [
+            (HWJ_T, HWJ_T.replace('Nat.is_le(', 'Nat.is_lt(', 1).replace(PW, P32)),
+            (HWJ_S, HWJ_S.replace('Nat.is_le(', 'Nat.is_lt(', 1).replace(PW, P32)),
+            ('{Nat.is_le(_, A.quad(VB.pw(d))) == True{} : Bool}', f'{{Nat.is_lt(_, {P32}) == True{{}} : Bool}}'),
+            (HWJ_E, HWJ_E.replace('FD.nat__le_trans(', 'FD.nat__le_lt_trans(', 1).replace(PW, P32).replace(', hw)', ', hw32)'))])
+    else:
+        text = _twin(text, 'hwj', 'hwjN', [
+            (HWJ_T, HWJ_T.replace(PW, NM)), (HWJ_S, HWJ_S.replace(PW, NM)),
+            ('{Nat.is_le(_, A.quad(VB.pw(d))) == True{} : Bool}', f'{{Nat.is_le(_, {NM}) == True{{}} : Bool}}'),
+            (HWJ_E, HWJ_E.replace(PW, NM).replace(', hw)', ', hwN)'))])
+        a = text.index('\ndef hwjN(') + 1
+        b = text.index('\n\n', a)
+        h = text[a:b]
+        p0 = h.index('(') + 1
+        ps = h[p0:deep._close(h, p0)]
+        pn = ', '.join(x_.split(':')[0].strip().lstrip('+') for x_ in deep._split_args(ps))
+        text = text[:b] + (f'\n\ndef hwj32({ps})\n    -> {{Nat.is_lt(Nat.add(Nat.add(U32.to_nat(o), x), U32.to_nat(U32.sub(e, o))), {P32}) == True{{}} : Bool}}:\n'
+                           f'  VB.le_n_lt32(Nat.add(Nat.add(U32.to_nat(o), x), U32.to_nat(U32.sub(e, o))), VB.NMAX(), hwjN({pn}))') + text[b:]
+    # hwJj: the j-th child's bound (one line: hwj of its offsets)
+    for j in sorted(int(x_) for x_ in re.findall(r'^def hwJ(\d+)\(', text, re.M)):
+        a = text.index(f'\ndef hwJ{j}(') + 1
+        e = text.index('\n', text.index(': hwj(', a))
+        m = re.fullmatch(rf'def hwJ{j}\((.*)\) -> \{{Nat\.is_le\((.*), A\.quad\(VB\.pw\(d\)\)\) == True\{{\}} : Bool\}}: hwj\((.*)\)', text[a:e], re.S)
+        assert m, j
+        ext = []
+        if mode == 'hwN':
+            ext.append(f'def hwJ{j}N({m.group(1)}) -> {{Nat.is_le({m.group(2)}, {NM}) == True{{}} : Bool}}: hwjN({m.group(3)})')
+        ext.append(f'def hwJ{j}_32({m.group(1)}) -> {{Nat.is_lt({m.group(2)}, {P32}) == True{{}} : Bool}}: hwj32({m.group(3)})')
+        text = text[:e] + '\n' + '\n'.join(ext) + text[e:]
+    # the children's D interface
+    pat = re.compile(r'(?<![\w.])CH(\d+)\.(ok_evalw|readw|specw|invw)\(')
+    out, i = [], 0
+    while True:
+        m = pat.search(text, i)
+        if not m:
+            out.append(text[i:])
+            break
+        a = m.end()
+        b = deep._close(text, a)
+        args = deep._split_args(text[a:b])
+        h = args[8]
+        cm = kids[int(m.group(1))]
+        if re.match(r'\s*hwj\(', h):
+            tw = h.replace('hwj(', 'hwjN(' if cm == 'hwN' else 'hwj32(', 1)
+        else:
+            mm = re.match(r'\s*hwJ(\d+)\(', h)
+            assert mm, h[:80]
+            tw = h.replace(f'hwJ{mm.group(1)}(', f'hwJ{mm.group(1)}N(' if cm == 'hwN' else f'hwJ{mm.group(1)}_32(', 1)
+        args.insert(9, tw)
+        out.append(text[i:m.start()] + f'CH{m.group(1)}.{m.group(2)}D(' + ','.join(args) + ')')
+        i = b + 1
+    text = ''.join(out)
+    ends = {}
+    if pb:
+        text, ends = pb_premise(text, pb)
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')
+    left = [m.start() for m in re.finditer(r'lt_trans\(d, 28n|is_lt\(d, 28n|VMR\.fitsn\(|VFT\.fits4\(|\.rdx_\w+\(|add_at\(', text)]
+    assert not left, text[left[0] - 200:left[0] + 80]
+    HX = W.HWNX if mode == 'hwN' else W.HW32X
+    hn = 'hwN' if mode == 'hwN' else 'hw32'
+    text = deep.thread(text, W.HWX, HX, hw32=hn)
+    kw = dict(hw32='hwN', hw32_term='VB.hwNof(d, Nat.add(x, U32.to_nat(len)), hd, hw)') if mode == 'hwN' else {}
+    # the old interface, and the window facts other modules use (e2e: eoJj / hwJj / eocX / roomFX ..)
+    ds = deep._defs(text)
+    helpers = sorted(n for n, v in ds.items() if re.fullmatch(r'eoJ\d+|hwJ\d+|eocX|roomFX|eoc|roomF|rdF|rdFX|eoW|eoj|hwj', n)
+                     and f'+hw: {W.HWX}' in v[3])
+    import var_winx_c as WXC
+    text = WXC._body_newline(text, W.XIFACE + helpers)
+    text = deep.compat(text, W.XIFACE + helpers, W.HWX, HX, 'Nat.add(x, U32.to_nat(len))', **kw)
+    if pb:
+        # the old invw: each pbits child's premise from d < 28 (hPw: E <= len <= 4 2^d <= PMAX, else vacuous)
+        a = text.index('\ndef invw(')
+        b = text.find('\n\n', a)
+        b = len(text) if b < 0 else b
+        w = text[a:b]
+        for j in pb:
+            o, e = ends[j]
+            assert w.count(f', +hP{j}: {pb_prem(o, e)}') == 1, w[:300]
+            w = w.replace(f', +hP{j}: {pb_prem(o, e)}', '')
+            w = re.sub(rf', hP{j}(?=[,)])', f', hPw(len, {o}, {e}, CH{j}.hPof(d, len, hd, CH{j}.hlen(d, x, len, hw)), Nat.is_lt(U32.to_nat(len), U32.to_nat({e})), {{==}})', w)
+        text = text[:a] + w + text[b:]
+    return text
+
+
+PBITS_MOD = 'big_var_winp_pbits.bend'
+PB_LEMMAS = """
+# ---- the progressive bit lists' representation bound (proofs/obj/vpb29.bend): each pbits child's window
+# [O, E) takes the premise "E <= len implies E - O <= PMAX" (Nat.sub: nothing wraps) ----
+
+def orR(+a: Bool, +b: Bool, +ha: {a == False{} : Bool}, +h: {Bool.or(a, b) == True{} : Bool}) -> {b == True{} : Bool}:
+  match a:
+    case False{}: h
+    case True{}: Empty.absurd({b == True{} : Bool}, FD.logic__false_true(Equal.sym(Bool, True{}, False{}, ha)))
+
+# inside the window (O <= E <= len): the child's length is at most PMAX
+def hPc(+len: U32, +o: U32, +e: U32, +h1: {Nat.is_le(U32.to_nat(o), U32.to_nat(e)) == True{} : Bool}, +h2: {Nat.is_le(U32.to_nat(e), U32.to_nat(len)) == True{} : Bool},
+    +hP: {Bool.or(Nat.is_lt(U32.to_nat(len), U32.to_nat(e)), Nat.is_le(Nat.sub(U32.to_nat(e), U32.to_nat(o)), U32.to_nat(VP.PMAX()))) == True{} : Bool})
+    -> {U32.is_le(U32.sub(e, o), VP.PMAX()) == True{} : Bool}:
+  +hs = orR(Nat.is_lt(U32.to_nat(len), U32.to_nat(e)), Nat.is_le(Nat.sub(U32.to_nat(e), U32.to_nat(o)), U32.to_nat(VP.PMAX())), FD.nat__le_not_lt(U32.to_nat(len), U32.to_nat(e), h2), hP)
+  +hn = FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VP.PMAX())) == True{} : Bool}, Nat.sub(U32.to_nat(e), U32.to_nat(o)), U32.to_nat(U32.sub(e, o)),
+    Equal.sym(Nat, U32.to_nat(U32.sub(e, o)), Nat.sub(U32.to_nat(e), U32.to_nat(o)), FD.u32__sub_nat(e, o, h1)), hs)
+  FD.logic__subst(Bool, z => {z == True{} : Bool}, Nat.is_le(U32.to_nat(U32.sub(e, o)), U32.to_nat(VP.PMAX())), U32.is_le(U32.sub(e, o), VP.PMAX()),
+    Equal.sym(Bool, U32.is_le(U32.sub(e, o), VP.PMAX()), Nat.is_le(U32.to_nat(U32.sub(e, o)), U32.to_nat(VP.PMAX())), VB.le_u32n(U32.sub(e, o), VP.PMAX())), hn)
+
+# the premise from a window of at most PMAX bytes (len <= PMAX): E <= len gives E - O <= E <= len
+def hPw(+len: U32, +o: U32, +e: U32, +hl: {U32.is_le(len, VP.PMAX()) == True{} : Bool}, +c: Bool, +ec: {Nat.is_lt(U32.to_nat(len), U32.to_nat(e)) == c : Bool})
+    -> {Bool.or(c, Nat.is_le(Nat.sub(U32.to_nat(e), U32.to_nat(o)), U32.to_nat(VP.PMAX()))) == True{} : Bool}:
+  match c:
+    case True{}: {==}
+    case False{}:
+      +hn = FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(len, VP.PMAX()), Nat.is_le(U32.to_nat(len), U32.to_nat(VP.PMAX())), VB.le_u32n(len, VP.PMAX()), hl)
+      FD.nat__le_trans(Nat.sub(U32.to_nat(e), U32.to_nat(o)), U32.to_nat(len), U32.to_nat(VP.PMAX()),
+        FD.nat__le_trans(Nat.sub(U32.to_nat(e), U32.to_nat(o)), U32.to_nat(e), U32.to_nat(len), FD.u32half__sub_le(U32.to_nat(e), U32.to_nat(o)),
+          FD.nat__not_lt_le(U32.to_nat(len), U32.to_nat(e), ec)), hn)
+"""
+
+
+def pb_prem(o, e):
+    return (f'{{Bool.or(Nat.is_lt(U32.to_nat(len), U32.to_nat({e})), Nat.is_le(Nat.sub(U32.to_nat({e}), U32.to_nat({o})), U32.to_nat(VP.PMAX()))) '
+            f'== True{{}} : Bool}}')
+
+
+def pb_premise(text, pb):
+    """The pbits children's invwD take hP (pbits_deep): hPc of the premise hP<j> on the child's window, threaded
+    from the container's invw through every definition on the way."""
+    import deep
+    a = text.index('\ndef hwj(') + 1
+    text = text[:a] + PB_LEMMAS.lstrip('\n') + '\n' + text[a:]
+    ends, need = {}, {}
+    for j in pb:
+        pat = re.compile(rf'(?<![\w.])CH{j}\.invwD\(')
+        out, i = [], 0
+        while True:
+            m = pat.search(text, i)
+            if not m:
+                out.append(text[i:])
+                break
+            p0 = m.end()
+            b = deep._close(text, p0)
+            args = deep._split_args(text[p0:b])
+            h = args[8].strip()
+            assert h.startswith('hwj('), h[:60]
+            ha = deep._split_args(h[len('hwj('):deep._close(h, len('hwj('))])
+            o, e, h1, h2 = (x_.strip() for x_ in ha[10:14])
+            assert ends.setdefault(j, (o, e)) == (o, e)
+            assert args[10].strip() == 'pf', args[10]
+            args.insert(11, f' hPc(len, {o}, {e}, {h1}, {h2}, hP{j})')
+            out.append(text[i:m.start()] + f'CH{j}.invwD(' + ','.join(args) + ')')
+            d0 = text.rindex('\ndef ', 0, m.start()) + 1
+            need.setdefault(re.match(r'def (\w+)\(', text[d0:]).group(1), set()).add(j)
+            i = b + 1
+        text = ''.join(out)
+    # up the call graph to invw
+    changed = True
+    while changed:
+        changed = False
+        for nm in list(need):
+            for m in re.finditer(rf'(?<![\w.])(?<!def ){nm}\(', text):
+                d0 = text.rindex('\ndef ', 0, m.start()) + 1
+                caller = re.match(r'def (\w+)\(', text[d0:]).group(1)
+                if not need.get(caller, set()) >= need[nm]:
+                    need.setdefault(caller, set()).update(need[nm])
+                    changed = True
+    assert 'invw' in need, need
+    # parameters (at the end) and arguments
+    for nm, js in need.items():
+        js = sorted(js)
+        a = text.index(f'\ndef {nm}(') + len(f'\ndef {nm}(')
+        b = deep._close(text, a)
+        ps = text[a:b]
+        assert all(re.search(rf'\+{v}:', ps) for v in ('t', 'x', 'len')), nm
+        text = text[:b] + ''.join(f', +hP{j}: {pb_prem(*ends[j])}' for j in js) + text[b:]
+        pat = re.compile(rf'(?<![\w.])(?<!def ){nm}\(')
+        out, i = [], 0
+        while True:
+            m = pat.search(text, i)
+            if not m:
+                out.append(text[i:])
+                break
+            p0 = m.end()
+            b = deep._close(text, p0)
+            out.append(text[i:b] + ''.join(f', hP{j}' for j in js))
+            i = b
+        text = ''.join(out)
+    return text, ends
+
+
+def top_of(L, fn, al):
+    """The container's whole-buffer laws, at any depth when its window is deep."""
+    txt = top_text(L, fn)
+    dm = deep_modes(L)
+    if dm is None:
+        return txt
+    ends = None
+    pb = [f['j'] for f in L.vars if f['mod'] == PBITS_MOD]
+    if L.name in TOP_SHALLOW:
+        # the e2e bridge's view (ii) of this container reads its children's copies through view lemmas at
+        # d < 28 (e2e_blist.bview ..): its whole-buffer laws stay there until those lemmas are deep
+        return txt
+    if pb and KEEP_PB_REJECT:
+        # the rejection law needs the pbits representation premise, for which the api gate and the e2e bridge
+        # have no pattern yet: the whole-buffer laws stay at d < 28 (over the window's old interface)
+        return txt
+    if pb:
+        w = _OUT[ROOT / 'proofs/obj' / fn]
+        ends = {}
+        for j in pb:
+            m = re.search(rf'\+hP{j}: \{{Bool\.or\(Nat\.is_lt\(U32\.to_nat\(len\), U32\.to_nat\((.*?)\)\), Nat\.is_le\(Nat\.sub\(U32\.to_nat\(\1\), U32\.to_nat\((.*?)\)\)', w)
+            ends[j] = (m.group(2), m.group(1))
+    return top_deep(txt, al, dm[0], ends)
 
 
 def top_text(L, wmod):
@@ -1548,6 +1846,62 @@ def top_text(L, wmod):
     txt = txt.replace(old, f'UW.vsingle(v, {mc.group(1)}, {flds}, {{==}})')
     return txt
 
+
+HN_T = '{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}'
+HNN_T = '{U32.is_le(n, VB.NMAX()) == True{} : Bool}'
+HNN_TERM = ('FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), '
+            'VB.le_u32n(n, VB.NMAX()), hN)')
+
+
+KEEP_PB_REJECT = True
+TOP_SHALLOW = {'Gc465214E502', 'Gc56D855869F', 'Gc221EC01D83', 'Gc85FA758A04'}
+
+
+def top_deep(text, al, mode, ends=None):
+    """The whole-buffer laws at any depth d < 31 over the window's D interface (var_rlist.deep_er_top): the
+    window at 0 ends at n, below 2^32 (hw32: VB.u32_lt(n)); an hwN window takes n <= NMAX (the object API's
+    bound) as the laws' premise hN. A pbits child's representation premise (pbits_deep / pb_premise) is the
+    rejection law's premise at the window 0 .. n."""
+    import deep
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')
+    if mode == 'hwN':
+        text = deep.thread(text, HN_T, HNN_T, hw='hn', hw32='hN')
+        term = HNN_TERM
+    else:
+        term = 'VB.u32_lt(n)'
+    n0 = len(re.findall(rf'(?<![\w.]){al}\.(?:ok_evalw|readw|specw|invw)\(', text))
+    text = re.sub(rf'(?<![\w.]){al}\.(ok_evalw|readw|specw|invw)\(d, t, n, 0n, 0, n, \{{==\}}, hd, hn, pf',
+                  lambda m: f'{al}.{m.group(1)}D(d, t, n, 0n, 0, n, {{==}}, hd, hn, {term}, pf', text)
+    assert n0 == len(re.findall(rf'(?<![\w.]){al}\.(?:ok_evalw|readw|specw|invw)D\(', text)), al
+    if ends:
+        js = sorted(ends)
+        prem = {j: pb_prem(*ends[j]).replace('len', 'n') for j in js}
+        for j in js:
+            prem[j] = re.sub(r'(?<![\w.])(O\d+)\(t, x\)', rf'{al}.\1(t, 0n)', prem[j])
+        # the inversion's call: its premises last
+        m = re.search(rf'{al}\.invwD\(', text)
+        b = deep._close(text, m.end())
+        text = text[:b] + ''.join(f', hP{j}' for j in js) + text[b:]
+        # rej_v: parameters last
+        a = text.index('\ndef rej_v(') + len('\ndef rej_v(')
+        b = deep._close(text, a)
+        text = text[:b] + ''.join(f', +hP{j}: {prem[j]}' for j in js) + text[b:]
+        # decode_reject: its law's premises last
+        m = re.search(r'^law decode_reject:\n((?:  for .*\n)+)', text, re.M)
+        text = text[:m.end()] + ''.join(f'  for +hP{j}: {prem[j]}\n' for j in js) + text[m.end():]
+        m = re.search(r'^def decode_reject\(([^)]*)\):\n  v => e => rej_v\(([^)]*)\)', text, re.M)
+        assert m, 'decode_reject'
+        extra = ''.join(f', hP{j}' for j in js)
+        text = text[:m.start(1)] + m.group(1) + extra + text[m.end(1):m.start(2)] + m.group(2) + extra + text[m.end(2):]
+    return text
+
+
+def unique_deep(text, mode):
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')
+    if mode == 'hwN':
+        text = text.replace(f'  for +hn: {HN_T}\n', f'  for +hn: {HN_T}\n  for +hN: {HNN_T}\n')
+        text = text.replace('(d, t, n, pf, hd, hn, hchk', '(d, t, n, pf, hd, hn, hN, hchk')
+    return text
 
 def generic_unique_text(X, top):
     """decode_unique of a generic container: the spec relation's validity, from decode_spec."""
@@ -1613,8 +1967,8 @@ def main():
         if missing:
             print(f'{fn}: waits for ' + ', '.join(missing))
             continue
-        out[ROOT / 'proofs/obj' / fn] = module_text(L)
-        out[ROOT / 'proofs/obj' / f'big_var_codec_{name}.bend'] = top_text(L, fn)
+        out[ROOT / 'proofs/obj' / fn] = _OUT[ROOT / 'proofs/obj' / fn] = module_text(L)
+        out[ROOT / 'proofs/obj' / f'big_var_codec_{name}.bend'] = top_of(L, fn, 'EW')
     for name, kids, big in [(n, k, '') for n, k in GENERIC] + ([] if no_big else [(n, k, 'big_') for n, k in GENERIC_BIG]):
         CHILD_MOD.update(kids)
         L = layout(name, True, FIXMOD, generic=True)
@@ -1624,9 +1978,12 @@ def main():
         if missing:
             print(f'{fn}: waits for ' + ', '.join(missing))
             continue
-        out[ROOT / 'proofs/obj' / fn] = module_text(L)
-        out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}.bend'] = top_text(L, fn)
-        out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}_unique.bend'] = generic_unique_text(name, f'{big}var_codec_{name}.bend')
+        out[ROOT / 'proofs/obj' / fn] = _OUT[ROOT / 'proofs/obj' / fn] = module_text(L)
+        out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}.bend'] = top_of(L, fn, 'W')
+        uq = generic_unique_text(name, f'{big}var_codec_{name}.bend')
+        dm = deep_modes(L)
+        shallow = dm is None or name in TOP_SHALLOW or (KEEP_PB_REJECT and any(f['mod'] == PBITS_MOD for f in L.vars))
+        out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}_unique.bend'] = uq if shallow else unique_deep(uq, dm[0])
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

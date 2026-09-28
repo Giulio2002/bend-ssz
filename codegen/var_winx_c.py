@@ -1054,6 +1054,164 @@ def invw({CW}, +v: S.Value,
     return L_
 
 
+# ---- the deep window (any tree depth d < 31, its end by NMAX: the transactions' byte lists are unbounded) ----
+NM = 'U32.to_nat(VB.NMAX())'
+HWN = '{Nat.is_le(Nat.add(x, U32.to_nat(len)), U32.to_nat(VB.NMAX())) == True{} : Bool}'
+# the children's deep hypothesis: hwN (unbounded windows) or hw32
+CHILD_DEEP = {'big_vvlb_bl32': 'hw32', 'big_vvl_l1048576_bl1073741824': 'hwN', 'var_winx_l16_Withdrawal': 'hw32'}
+EOC_OLD = """  VB.add_le_at(off, c, x, 2n+d, eo, FD.nat__lt_trans(2n+d, 30n, 31n, hd, {==}),
+    FD.logic__subst(Nat, z => {Nat.is_le(z, A.quad(VB.pw(d))) == True{} : Bool}, Nat.add(x, U32.to_nat(c)), Nat.add(U32.to_nat(c), x), FD.nat__add_comm(x, U32.to_nat(c)), xle(d, t, n, x, off, len, eo, hd, hw, pf, c, hc)))"""
+EOC_NEW = """  VB.add_lt32(off, c, x, eo, VB.le_n_lt32(Nat.add(U32.to_nat(c), x), VB.NMAX(),
+    FD.logic__subst(Nat, z => {Nat.is_le(z, U32.to_nat(VB.NMAX())) == True{} : Bool}, Nat.add(x, U32.to_nat(c)), Nat.add(U32.to_nat(c), x), FD.nat__add_comm(x, U32.to_nat(c)), xleN(x, len, c, hc, hwN))))"""
+FIT_OLD = 'VFT.fits4(2n+d, U32.to_nat(len), FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw), FD.nat__lt_trans(d, 28n, 30n, hd, {==}))'
+
+
+def _body_newline(text, names):
+    """deep.compat reads a def's header up to ':\n': a one-line def gets its body on the next line."""
+    for nm in names:
+        a = text.index(f'\ndef {nm}(') + 1
+        r = text.index(') -> ', a)
+        i = text.index('{', r)
+        dpt = 0
+        while True:
+            c = text[i]
+            if c == '{':
+                dpt += 1
+            elif c == '}':
+                dpt -= 1
+                if dpt == 0:
+                    break
+            i += 1
+        if text[i + 1:i + 3] == ': ':
+            text = text[:i + 2] + '\n  ' + text[i + 3:]
+    return text
+
+
+def _blk(text, name):
+    a = text.index(f'\ndef {name}(') + 1
+    ends = [e for e in (text.find('\ndef ', a + 1), text.find('\n# ', a + 1), text.find('\n\n', a + 1)) if e != -1]
+    return a, min(ends)
+
+
+def _keep(text, name):
+    a, b = _blk(text, name)
+    return text[:a] + re.sub(r'(?<![\w.])hw(?![\w])', 'hl', text[a:b]) + text[b:]
+
+
+def win_deep(text, kids):
+    """The container window at any depth d < 31 with hwN (var_win.deep_N): offsets by VB.add_lt32 / UR.offx31 (the
+    window's end by NMAX, below 2^32), the fixed fields by vua_fix / vbx_fix rdxd_*, the byte vector's copy by hsxB
+    (its length bounds the storage), fits of U32 values, the children through their D interface (hwcKN / hwcK_32)."""
+    import deep
+    import var_win as VW
+    assert EOC_OLD in text, 'eoc'
+    text = text.replace(EOC_OLD, EOC_NEW)
+    for nm in ('hcx', 'roomc', 'xle'):
+        text = _keep(text, nm)
+    reps = [
+        ('UR.offx(d, off, c, x, eo, FD.nat__lt_trans(d, 28n, 30n, hd, {==}),', 'UR.offx31(d, off, c, x, eo, hd,'),
+        ('  +hd30 = FD.nat__lt_trans(d, 28n, 30n, hd, {==})\n', ''),
+        ('  +hd31 = FD.nat__lt_trans(d, 28n, 31n, hd, {==})\n', ''),
+        (FIT_OLD, 'VFT.fits4lt(U32.to_nat(len), VB.u32_lt(len))'),
+    ]
+    for a, b in reps:
+        assert a in text, a[:80]
+        text = text.replace(a, b)
+    # eocf: the header byte's offset below 2^32
+    m = re.search(r'  VB\.add_le_at\(off, c, x, 2n\+d, eo, FD\.nat__lt_trans\(d, 28n, 29n, hd, \{==\}\), hcx\(d, x, len, U32\.to_nat\(c\), hc, hw, ha\)\)', text)
+    assert m, 'eocf'
+    text = text[:m.start()] + '  VB.add_lt32(off, c, x, eo, VB.le_n_lt32(Nat.add(U32.to_nat(c), x), VB.NMAX(), hcxN(x, len, U32.to_nat(c), hc, ha, hwN)))' + text[m.end():]
+    # the fixed fields' readers at any depth
+    n0 = text.count(', hd30, pf, ')
+    text = re.sub(r'(VTX|XF)\.rdx_(\w+)\(', r'\1.rdxd_\2(', text).replace(', hd30, pf, ', ', hd, pf, ')
+    assert n0 and 'hd30' not in text
+    text = text.replace('pf, hd31, ', 'pf, hd, ')
+    assert 'hd31' not in text
+    # the byte vector's copy: its length bounds the storage (31 + L <= 2^k)
+    m = re.search(r'UW\.hsx\(d, (U32\.add\(off, \d+\)), (Nat\.add\(U32\.to_nat\(\d+\), x\)), (\d+), ', text)
+    assert m, 'hsx'
+    L = int(m.group(3))
+    k = (31 + L - 1).bit_length()
+    p0 = text.index('(', m.start()) + 1
+    b = deep._close(text, p0)
+    args = deep._split_args(text[p0:b])
+    assert args[5].strip() == 'hd', args[5]
+    args = args[:5] + [f' {k}n', ' {==}', ' {==}'] + args[6:]
+    text = text[:m.start()] + 'UW.hsxB(' + ','.join(args) + ')' + text[b + 1:]
+    # fits of an offset word v <= len
+    m = re.search(r'VMR\.fitsn\(d, len, v, FD\.nat__lt_trans\(d, 28n, 29n, hd, \{==\}\),', text)
+    assert m, 'fitsn'
+    p0 = text.index('(', m.start()) + 1
+    b = deep._close(text, p0)
+    args = deep._split_args(text[p0:b])
+    text = text[:m.start()] + f'VFT.fits4lt(v, VB.le_n_lt32(v, len, {args[5].strip()}))' + text[b + 1:]
+    # the helpers at NMAX
+    hlp = f"""
+# x + c at most NMAX, c <= len
+def xleN(+x: Nat, +len: U32, +c: U32, +hc: {{Nat.is_le(U32.to_nat(c), U32.to_nat(len)) == True{{}} : Bool}}, +hwN: {HWN})
+    -> {{Nat.is_le(Nat.add(x, U32.to_nat(c)), {NM}) == True{{}} : Bool}}:
+  FD.nat__le_trans(Nat.add(x, U32.to_nat(c)), Nat.add(x, U32.to_nat(len)), {NM}, Order.add_left(x, U32.to_nat(c), U32.to_nat(len), hc), hwN)
+"""
+    a, b = _blk(text, 'hcx')
+    hcx = text[a:b]
+    hcxN = hcx.replace('def hcx(+d: Nat, ', 'def hcxN(').replace('+hl: {Nat.is_le(Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d))) == True{} : Bool}, ', '')
+    hcxN = hcxN.replace('A.quad(VB.pw(d))', NM).replace(', hl))', ', hwN))')
+    hcxN = re.sub(r'(\+ha: \{U32\.is_le\([^}]*\} : Bool\})\)', lambda mm: mm.group(1) + ', +hwN: ' + HWN + ')', hcxN, count=1)
+    assert 'hwN' in hcxN and 'VB.pw' not in hcxN, hcxN
+    text = text[:b] + '\n' + hcxN + text[b:]
+    a = text.index('\ndef hFSof(') + 1
+    text = text[:a] + hlp.lstrip('\n') + '\n' + text[a:]
+    # the children's hypotheses at NMAX / below 2^32
+    for kk in sorted(set(re.findall(r'^def (hwc\d+)\(', text, re.M))):
+        a, b = _blk(text, kk)
+        h = text[a:b]
+        pe = deep._close(h, h.index('(') + 1)   # the parameters keep the tree's bound hw (thread adds hwN)
+        hN = h[:pe].replace(f'def {kk}(', f'def {kk}N(') + h[pe:].replace('A.quad(VB.pw(d))', NM)
+        mm = re.search(r'xle\(d, t, n, x, off, len, eo, hd, hw, pf, ', hN)
+        assert mm, kk
+        p0 = hN.index('(', mm.start()) + 1
+        e = deep._close(hN, p0)
+        xa = deep._split_args(hN[p0:e])
+        hN = hN[:mm.start()] + f'xleN(x, len, {xa[10].strip()}, {xa[11].strip()}, hwN)' + hN[e + 1:]
+        sig_end = re.search(r'-> \{Nat\.is_le\((.*), ' + re.escape(NM) + r'\) == True\{\} : Bool\}:', hN)
+        assert sig_end, kk
+        p0 = h.index('(') + 1
+        ps = h[p0:deep._close(h, p0)]
+        pnames = [p.split(':')[0].strip().lstrip('+') for p in deep._split_args(ps)]
+        h32 = (f'def {kk}_32({ps})\n    -> {{Nat.is_lt({sig_end.group(1)}, FD.spec_common__pow2(32n)) == True{{}} : Bool}}:\n'
+               f'  VB.le_n_lt32({sig_end.group(1)}, VB.NMAX(), {kk}N({", ".join(pnames)}))\n')
+        text = text[:b] + '\n' + hN.rstrip('\n') + '\n' + h32 + text[b:]
+    # the children's D interface
+    mods = dict((al, m_) for m_, al in re.findall(r'^import \./(\S+)\.bend as (C\d+)$', text, re.M))
+    out, i = [], 0
+    pat = re.compile(r'(C\d+)\.(ok_evalw|readw|specw|invw)\(')
+    while True:
+        m = pat.search(text, i)
+        if not m:
+            out.append(text[i:])
+            break
+        a = m.end()
+        b = deep._close(text, a)
+        args = deep._split_args(text[a:b])
+        kk = [j for j, x_ in enumerate(args) if re.match(r'\s*hwc\d+\(', x_)]
+        assert len(kk) == 1, text[a:a + 200]
+        h = args[kk[0]]
+        tw = re.sub(r'(hwc\d+)\(', (r'\1N(' if CHILD_DEEP[mods[m.group(1)]] == 'hwN' else r'\1_32('), h, count=1)
+        args.insert(kk[0] + 1, tw if tw.startswith(' ') else ' ' + tw)
+        out.append(text[i:m.start()] + f'{m.group(1)}.{m.group(2)}D(' + ','.join(args) + ')')
+        i = b + 1
+    text = ''.join(out)
+    names = VW.XIFACE + sorted(set(re.findall(r'^def (eoc\d*|eocf|hwc\d+)\(', text, re.M)))
+    # var_win.deep_N, whose leftover check would also flag the literal 528n
+    text = text.replace('FD.nat__lt_trans(d, 28n, 31n, hd, {==})', 'hd').replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')
+    left = [m.start() for m in re.finditer(r'(?<!\d)28n(?!\+x)', text)] + [m.start() for m in re.finditer(r'VLS\.KK\(|VLS\.hrg\(|UW\.hsx\(', text)]
+    assert not left, text[left[0] - 150:left[0] + 60]
+    text = deep.thread(text, VW.HWX, VW.HWNX, hw32='hwN')
+    text = _body_newline(text, names)
+    return deep.compat(text, names, VW.HWX, VW.HWNX, 'Nat.add(x, U32.to_nat(len))', hw32='hwN',
+                       hw32_term='VB.hwNof(d, Nat.add(x, U32.to_nat(len)), hd, hw)')
+
+
 def main():
     SL.EXACT = True   # the exact spec-parts proofs (codegen/spec_laws.py), before any walk
     nb = '--no-big' in sys.argv
@@ -1064,7 +1222,7 @@ def main():
         for nm, t in names.items():
             g.shape(t)
         for nm, kids in CONTAINERS.items():
-            out[fname(nm)] = win_text(CName(g, nm, names[nm], kids))
+            out[fname(nm)] = win_deep(win_text(CName(g, nm, names[nm], kids)), kids)
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:

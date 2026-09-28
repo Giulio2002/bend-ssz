@@ -82,18 +82,22 @@ def wx2(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat, +pf: {FD.array__perfect(U32, 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> U32: O.keep(2, UR.RWN(t, x))
 
 # (the four-byte read keeps the two bytes at x: x + 2 <= 4 2^d; vedge.bend)
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {uint16_r.u16_read(UA.BF(t, n), off, 2) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}:
   +hb2 = FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, 2n), A.quad(VB.pw(d))) == True{} : Bool}, x, U32.to_nat(off), Equal.sym(Nat, U32.to_nat(off), x, e), hb)
   %Equal.sym(B.Buf & U32, B.read32(UA.BF(t, n), off), (UA.BF(t, n), VE.RV(t, n, off)), VE.rd_same(t, n, off)) :
     {O.keep2(_) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}
-  %Equal.sym(U32, O.keep(2, VE.RV(t, n, off)), O.keep(2, UA.RW(t, off)), VE.kv2(d, t, n, off, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb2)) :
+  %Equal.sym(U32, O.keep(2, VE.RV(t, n, off)), O.keep(2, UA.RW(t, off)), VE.kv2(d, t, n, off, hd, pf, hb2)) :
     {(UA.BF(t, n), _) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}
   %Equal.sym(U32, UA.RW(t, off), UR.RWN(t, U32.to_nat(off)), UR.rw_n(t, off)) : {(UA.BF(t, n), O.keep(2, _)) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}
   %Equal.sym(Nat, U32.to_nat(off), x, e) : {(UA.BF(t, n), O.keep(2, UR.RWN(t, _))) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}
   {==}
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 2n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {uint16_r.u16_read(UA.BF(t, n), off, 2) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & U32}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.UnsignedValue{P.UInt{PB.v16of(BX(t, x), BX(t, 1n+x)), 0, 0, 0, 0, 0, 0, 0}}
 

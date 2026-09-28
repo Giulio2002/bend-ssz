@@ -24,13 +24,18 @@ def xm_l16_Withdrawal(+W: List<&2, FuluWithdrawal_d.Withdrawal>, +i: Nat) -> {RT
     case Con{+x, +t} 0n: {==}
     case Con{+x, +t} 1n+ +p: xm_l16_Withdrawal(t, p)
 
-def rvf_l16_Withdrawal(+f0: O.U64, +f1: O.U64, +f2: FuluBytes20_d.Bytes20, +f3: O.U64) -> {RL.RVW_Withdrawal(FuluWithdrawal_d.Withdrawal{f0, f1, f2, f3}) == RN.v_Withdrawal(FuluWithdrawal_d.Withdrawal{f0, f1, f2, f3}) : S.Value}:
-  match f0 f1 f2 f3:
-    case O.U64{+x0, +x1} O.U64{+x2, +x3} FuluBytes20_d.Bytes20{+x4, +x5, +x6, +x7, +x8} O.U64{+x9, +x10}: {==}
-
 def rv_l16_Withdrawal(+r: FuluWithdrawal_d.Withdrawal) -> {RL.RVW_Withdrawal(r) == RN.v_Withdrawal(r) : S.Value}:
   match r:
-    case FuluWithdrawal_d.Withdrawal{+f0, +f1, +f2, +f3}: rvf_l16_Withdrawal(f0, f1, f2, f3)
+    case FuluWithdrawal_d.Withdrawal{+r_0, +r_1, +r_2, +r_3}:
+      match r_0:
+        case O.U64{+x0, +x1}:
+          match r_1:
+            case O.U64{+x2, +x3}:
+              match r_2:
+                case FuluBytes20_d.Bytes20{+x4, +x5, +x6, +x7, +x8}:
+                  match r_3:
+                    case O.U64{+x9, +x10}:
+                      {==}
 
 def itw_l16_Withdrawal(c: Nat, +A: FD.array__Tree<FuluWithdrawal_d.Withdrawal>, +j: Nat) -> {RT.xi_l16_Withdrawal(c, FD.array__slots(FuluWithdrawal_d.Withdrawal, A), j) == RL.ITW_l16_Withdrawal(c, A, j) : S.Value}:
   match c:

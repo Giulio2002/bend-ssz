@@ -90,33 +90,45 @@ def LB(v: U32) -> Bool:
 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> O.Words: O.Words{FD.array__thaw(U32, VXB.CTN(d, t, x, 161, 6n)), 161}
 
-def ec(+d: Nat, +off: U32, +x: Nat, +c: U32, +C: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool},
+def ecD(+d: Nat, +off: U32, +x: Nat, +c: U32, +C: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 31n) == True{} : Bool},
     +eC: {Nat.is_eq(U32.to_nat(c), C) == True{} : Bool}, +hC: {Nat.is_lt(C, 161n) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 161n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {U32.to_nat(U32.add(off, c)) == Nat.add(C, x) : Nat}:
-  VXG.offc0(d, off, c, C, x, 161n, e, hd, eC, hC, hb)
+  VXG.offc0D(d, off, c, C, x, 161n, e, hd, eC, hC, hb)
+
+def ec(+d: Nat, +off: U32, +x: Nat, +c: U32, +C: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +eC: {Nat.is_eq(U32.to_nat(c), C) == True{} : Bool}, +hC: {Nat.is_lt(C, 161n) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 161n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {U32.to_nat(U32.add(off, c)) == Nat.add(C, x) : Nat}:
+  ecD(d, off, x, c, C, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), eC, hC, hb)
 
 def rm(+x: Nat, +C: Nat, +s: Nat, +hc: {Nat.is_le(Nat.add(C, s), 161n) == True{} : Bool}, +P: Nat, +hb: {Nat.is_le(Nat.add(x, 161n), P) == True{} : Bool})
     -> {Nat.is_le(Nat.add(Nat.add(C, x), s), P) == True{} : Bool}:
   FD.logic__subst(Nat, z => {Nat.is_le(Nat.add(z, s), P) == True{} : Bool}, Nat.add(x, C), Nat.add(C, x), FD.nat__add_comm(x, C), VXG.roomc(x, 161n, C, s, P, hb, hc))
 
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 161n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {bitvector_1281_r.bv1281_read(UA.BF(t, n), off, 161) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
-  VXG.rdg(d, t, n, off, x, e, hd, pf, 161, 161n, 6n, 8n, {==}, {==}, {==}, {==}, {==}, hb)
+  VXG.rdgD(d, t, n, off, x, e, hd, pf, 161, 161n, 6n, 8n, {==}, {==}, {==}, {==}, {==}, hb)
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 161n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {bitvector_1281_r.bv1281_read(UA.BF(t, n), off, 161) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & O.Words}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 # the validator on the last byte returns CHK
-def ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def okD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 161n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {bitvector_1281_r.bv1281_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), CHK(t, x)) : B.Buf & Bool}:
-  +e32 = ec(d, off, x, 160, 160n, e, hd, {==}, {==}, hb)
+  +e32 = ecD(d, off, x, 160, 160n, e, hd, {==}, {==}, hb)
   +hi = VR.hiX(d, U32.add(off, 160), Nat.add(160n, x), e32, VXG.ltx(Nat.add(160n, x), 1n, A.quad(VB.pw(d)), {==}, rm(x, 160n, 1n, {==}, A.quad(VB.pw(d)), hb)))
-  %Equal.sym(B.Buf & U32, B.byte_at(UA.BF(t, n), U32.add(off, 160)), (UA.BF(t, n), VR.VX(t, U32.add(off, 160))), VR.byte_at_ok(d, t, n, U32.add(off, 160), FD.nat__lt_trans(d, 28n, 32n, hd, {==}), hi, pf)) :
+  %Equal.sym(B.Buf & U32, B.byte_at(UA.BF(t, n), U32.add(off, 160)), (UA.BF(t, n), VR.VX(t, U32.add(off, 160))), VR.byte_at_ok(d, t, n, U32.add(off, 160), FD.nat__lt_trans(d, 31n, 32n, hd, {==}), hi, pf)) :
     {O.pad_pick(1, _) == (UA.BF(t, n), CHK(t, x)) : B.Buf & Bool}
   %Equal.sym(U32, VR.VX(t, U32.add(off, 160)), BX(t, Nat.add(160n, x)), vx_bx(t, U32.add(off, 160), Nat.add(160n, x), e32)) :
     {O.pad_pick(1, (UA.BF(t, n), _)) == (UA.BF(t, n), CHK(t, x)) : B.Buf & Bool}
   {==}
+
+def ok(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 161n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {bitvector_1281_r.bv1281_ok_at(UA.BF(t, n), off) == (UA.BF(t, n), CHK(t, x)) : B.Buf & Bool}:
+  okD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.BitsValue{List.append(&2, Bool, FB.bitsof(UR.RWS(40n, t, x)), [LB(BX(t, Nat.add(160n, x)))])}
 

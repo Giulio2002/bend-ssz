@@ -32,11 +32,15 @@ import ./vseq.bend as VSQ
 
 def OBJ(+d: Nat, +t: FD.array__Tree<U32>, +x: Nat) -> FuluEth1Data_d.Eth1Data: FuluEth1Data_d.Eth1Data{FuluBytes32_d.Bytes32{UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)}, O.U64{UR.RWN(t, 32n+x), UR.RWN(t, 36n+x)}, FuluBytes32_d.Bytes32{UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x)}}
 
-def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
-    +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
+def rdxD(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat},
+    +hd: {Nat.is_lt(d, 31n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool},
     +hb: {Nat.is_le(Nat.add(x, 72n), A.quad(VB.pw(d))) == True{} : Bool})
     -> {FuluEth1Data_r.Eth1Data_read(UA.BF(t, n), off, 72) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluEth1Data_d.Eth1Data}:
-  VTX.rdx_Eth1Data(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 30n, hd, {==}), pf, hb)
+  VTX.rdxd_Eth1Data(d, t, n, off, x, e, hd, pf, hb)
+
+def rdx(+d: Nat, +t: FD.array__Tree<U32>, +n: U32, +off: U32, +x: Nat, +e: {U32.to_nat(off) == x : Nat}, +hd: {Nat.is_lt(d, 28n) == True{} : Bool}, +pf: {FD.array__perfect(U32, d, t) == True{} : Bool}, +hb: {Nat.is_le(Nat.add(x, 72n), A.quad(VB.pw(d))) == True{} : Bool})
+    -> {FuluEth1Data_r.Eth1Data_read(UA.BF(t, n), off, 72) == (UA.BF(t, n), OBJ(d, t, x)) : B.Buf & FuluEth1Data_d.Eth1Data}:
+  rdxD(d, t, n, off, x, e, FD.nat__lt_trans(d, 28n, 31n, hd, {==}), pf, hb)
 
 def VAL(+t: FD.array__Tree<U32>, +x: Nat) -> S.Value: S.Sequence{S.Items{S.BytesValue{F.limbs([UR.RWN(t, x), UR.RWN(t, 4n+x), UR.RWN(t, 8n+x), UR.RWN(t, 12n+x), UR.RWN(t, 16n+x), UR.RWN(t, 20n+x), UR.RWN(t, 24n+x), UR.RWN(t, 28n+x)])}, S.Items{S.UnsignedValue{P.UInt{UR.RWN(t, 32n+x), UR.RWN(t, 36n+x), 0, 0, 0, 0, 0, 0}}, S.Items{S.BytesValue{F.limbs([UR.RWN(t, 40n+x), UR.RWN(t, 44n+x), UR.RWN(t, 48n+x), UR.RWN(t, 52n+x), UR.RWN(t, 56n+x), UR.RWN(t, 60n+x), UR.RWN(t, 64n+x), UR.RWN(t, 68n+x)])}, S.EmptyItems{}}}}}
 

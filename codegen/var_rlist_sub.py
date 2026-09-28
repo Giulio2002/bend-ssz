@@ -15,6 +15,7 @@ the fixed parts BP of consecutive RS-byte windows, whose encoding is the window'
 The storage depth is bounded from the window (var_rlist.sym_depth). The inversion is
 var_rlist's inv_text for a bounded list, and its unbounded variant (PINV) otherwise.
 """
+import re
 import sys
 from pathlib import Path
 
@@ -492,7 +493,64 @@ def CC(+len: U32) -> Nat: U32.to_nat(NN(len))
                       '      +hdd = FD.nat__le_lt_trans(B.words_depth(NN(len)), 99n, \n')
     txt = txt.replace('      +hcp = VD.wd_cover(NN(len), 99n, {==}, FD.nat__le_trans(c, U32.to_nat(0), O.pow2n(99n), hcl, {==}))\n',
                       '      +hcp = VD.wd_cover(NN(len), 99n, {==}, FD.nat__le_trans(c, U32.to_nat(\n')
-    return RL.sym_depth(txt, RS, 99)
+    return rs_deep(RL.sym_depth(txt, RS, 99), RS, LIM)
+
+
+def rs_deep(text, RS, LIM):
+    """The record list's decode window at any depth d < 31 (var_rlist.deep_rlist's pattern): the read loop
+    carries the records' end below 2^32 (hb32: VRL.posU32 / succU32), the fields by their vfx modules' rdxD
+    (UR.offx31), the storage depth from the limit (LIM: c <= LIM) or from records of four bytes (c <= 2^d)."""
+    import var_win as VWN
+    T = 'True{} : Bool'
+    P32 = 'FD.spec_common__pow2(32n)'
+    POS = lambda j: f'VRL.pos({j}, {RS}n, x)'
+    a = text.index('      +hcN = ')
+    b = text.index('      +hcP = ')
+    if LIM:
+        K = max(LIM - 1, 1).bit_length()
+        hc = (f'      +hcN = FD.nat__le_trans(c, U32.to_nat({LIM}), O.pow2n({K}n), hcw(len, hchk), {{==}})\n'
+              f'      +hcp = VD.wd_cover(NN(len), {K}n, {{==}}, hcN)\n')
+        hdd = f'      +hdd = FD.nat__le_lt_trans(B.words_depth(NN(len)), {K}n, 32n, VD.wd_min(NN(len), {K}n, hcN), {{==}})\n'
+    else:
+        assert RS >= 4, RS
+        hc = (f'      +hcN = FD.logic__subst(Nat, z => {{Nat.is_le(c, z) == {T}}}, VB.pw(d), O.pow2n(d), VD.s_pow2_eq(d),\n'
+              f'        VC.quad_inv(c, VB.pw(d), FD.nat__le_trans(A.quad(c), Nat.mul(c, {RS}n), A.quad(VB.pw(d)), VRL.quad_le_mul(c, {RS - 4}n),\n'
+              f'          FD.logic__subst(Nat, z => {{Nat.is_le(z, A.quad(VB.pw(d))) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec,\n'
+              f'            FD.nat__le_trans(U32.to_nat(len), Nat.add(x, U32.to_nat(len)), A.quad(VB.pw(d)), Order.left_below_sum(x, U32.to_nat(len)), hw)))))\n'
+              f'      +hcp = VD.wd_cover(NN(len), d, FD.nat__lt_le(d, 32n, FD.nat__lt_trans(d, 31n, 32n, hd, {{==}})), hcN)\n')
+        hdd = '      +hdd = FD.nat__le_lt_trans(B.words_depth(NN(len)), d, 32n, VD.wd_min(NN(len), d, hcN), FD.nat__lt_trans(d, 31n, 32n, hd, {==}))\n'
+    hb32 = (f"      +hL32 = FD.logic__subst(Nat, z => {{Nat.is_lt(z, {P32}) == {T}}}, Nat.add(x, U32.to_nat(len)), Nat.add(U32.to_nat(len), x), FD.nat__add_comm(x, U32.to_nat(len)), hw32)\n"
+            f"      +hLc32 = FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add(z, x), {P32}) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hL32)\n"
+            f"      +hb32 = FD.logic__subst(Nat, z => {{Nat.is_lt({POS('z')}, {P32}) == {T}}}, c, Nat.add(1n+k, 0n),\n"
+            f"        Equal.trans(Nat, c, 1n+k, Nat.add(1n+k, 0n), Equal.sym(Nat, 1n+k, c, e1), Equal.sym(Nat, Nat.add(1n+k, 0n), 1n+k, FD.nat__add_zero(1n+k))), hLc32)\n")
+    text = text[:a] + hb32 + hc + text[b:]
+    a = text.index('      +hdd = ')
+    text = text[:a] + hdd + text[text.index('\n', a) + 1:]
+    reps = [
+        (f"+hb: {{Nat.is_le({POS('Nat.add(1n+k, j)')}, A.quad(VB.pw(d))) == {T}}},\n",
+         f"+hb: {{Nat.is_le({POS('Nat.add(1n+k, j)')}, A.quad(VB.pw(d))) == {T}}}, +hb32: {{Nat.is_lt({POS('Nat.add(1n+k, j)')}, {P32}) == {T}}},\n"),
+        (f"      +hx = VRL.nextfit(j, q, {RS}n, x, A.quad(VB.pw(d)), hb)\n",
+         f"      +hx = VRL.nextfit(j, q, {RS}n, x, A.quad(VB.pw(d)), hb)\n"
+         f"      +hx32 = FD.nat__le_lt_trans(Nat.add({POS('1n+j')}, {RS}n), {POS('Nat.add(2n+q, j)')}, {P32},\n"
+         f"        VRL.nextfit(j, q, {RS}n, x, {POS('Nat.add(2n+q, j)')}, FD.nat__le_refl({POS('Nat.add(2n+q, j)')})), hb32)\n"
+         f"      +hb232 = FD.logic__subst(Nat, z => {{Nat.is_lt(VRL.pos(1n+z, {RS}n, x), {P32}) == {T}}}, 1n+Nat.add(q, j), Nat.add(q, 1n+j), Equal.sym(Nat, Nat.add(q, 1n+j), 1n+Nat.add(q, j), FD.nat__add_succ(q, j)), hb32)\n"),
+        (f"      +ex = VRL.posU(d, off, x, i, j, {RS}, {RS - 1}n, {{==}}, eo, ej, hd, hx)", f"      +ex = VRL.posU32(off, x, i, j, {RS}, {RS - 1}n, {{==}}, eo, ej, hx32)"),
+        (f"VRL.succU(d, i, j, {RS - 1}n, x, ej, hd, hx), hd, pf, hb2, hdd, hk2,", f"VRL.succU32(i, j, {RS - 1}n, x, ej, hx32), hd, pf, hb2, hb232, hdd, hk2,"),
+        ("eo, {==}, hd, pf, hb, hdd, hk,", "eo, {==}, hd, pf, hb, hb32, hdd, hk,"),
+        ("FD.nat__lt_trans(d, 28n, 30n, hd, {==}), FD.nat__lt_le_trans(", "hd, FD.nat__lt_le_trans("),
+        (f"  +hf = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hw)\n",
+         f"  +hf = FD.logic__subst(Nat, z => {{Nat.is_le(Nat.add(x, z), A.quad(VB.pw(d))) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hw)\n"
+         f"  +hf32 = FD.logic__subst(Nat, z => {{Nat.is_lt(Nat.add(x, z), {P32}) == {T}}}, U32.to_nat(len), Nat.mul(c, {RS}n), ec, hw32)\n"),
+        (f"VFT.fits4(2n+d, Nat.mul(c, {RS}n), FD.nat__le_trans(Nat.mul(c, {RS}n), Nat.add(x, Nat.mul(c, {RS}n)), A.quad(VB.pw(d)), Order.left_below_sum(x, Nat.mul(c, {RS}n)), hf), FD.nat__lt_trans(d, 28n, 30n, hd, {{==}}))",
+         f"VFT.fits4lt(Nat.mul(c, {RS}n), FD.nat__le_lt_trans(Nat.mul(c, {RS}n), Nat.add(x, Nat.mul(c, {RS}n)), {P32}, Order.left_below_sum(x, Nat.mul(c, {RS}n)), hf32))"),
+    ]
+    for x_, y_ in reps:
+        assert text.count(x_) >= 1, (text.count(x_), x_[:90])
+        text = text.replace(x_, y_)
+    text = text.replace('UR.offx(', 'UR.offx31(')
+    text = re.sub(r'(?<![\w.])(FX[AB])\.rdx\(', r'\1.rdxD(', text)
+    assert 'nat__lt_trans(d, 28n' not in text, [l for l in text.split('\n') if 'nat__lt_trans(d, 28n' in l][:2]
+    return VWN.deep_x(text)
 
 
 def outputs():
