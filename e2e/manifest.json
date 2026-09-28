@@ -7082,27 +7082,27 @@
   },
   "FuluBeaconBlockBody": {
    "generated_name": "BeaconBlockBody",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1125899915071180,
    "covered": false,
    "bridged": null
   },
   "FuluBeaconBlock": {
    "generated_name": "BeaconBlock",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1125899915071264,
    "covered": false,
    "bridged": null
   },
   "FuluBeaconState": {
    "generated_name": "BeaconState",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 152862724982449,
    "covered": false,
    "bridged": null
@@ -7226,9 +7226,9 @@
   },
   "FuluSignedBeaconBlock": {
    "generated_name": "SignedBeaconBlock",
-   "depth_bound": 28,
-   "input_bound": "2^29",
-   "input_bound_bytes": 536870912,
+   "depth_bound": 31,
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
+   "input_bound_bytes": 4294967264,
    "max_ssz_size": 1125899915071364,
    "covered": false,
    "bridged": null
@@ -7546,19 +7546,19 @@
   },
   {
    "name": "FuluBeaconBlockBody",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899915071180 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },
   {
    "name": "FuluBeaconBlock",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899915071264 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },
   {
    "name": "FuluBeaconState",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "152862724982449 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },
@@ -7570,7 +7570,7 @@
   },
   {
    "name": "FuluSignedBeaconBlock",
-   "input_bound": "2^29",
+   "input_bound": "NMAX = 2^32 - 32 (the object API's limit)",
    "max_ssz_size": "1125899915071364 bytes, beyond the U32 byte length the API takes",
    "closed_at_depth_29": false
   },

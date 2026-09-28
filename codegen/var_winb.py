@@ -1800,6 +1800,31 @@ def pb_premise(text, pb):
     return text, ends
 
 
+def top_of(L, fn, al):
+    """The container's whole-buffer laws, at any depth when its window is deep."""
+    txt = top_text(L, fn)
+    dm = deep_modes(L)
+    if dm is None:
+        return txt
+    ends = None
+    pb = [f['j'] for f in L.vars if f['mod'] == PBITS_MOD]
+    if L.name in TOP_SHALLOW:
+        # the e2e bridge's view (ii) of this container reads its children's copies through view lemmas at
+        # d < 28 (e2e_blist.bview ..): its whole-buffer laws stay there until those lemmas are deep
+        return txt
+    if pb and KEEP_PB_REJECT:
+        # the rejection law needs the pbits representation premise, for which the api gate and the e2e bridge
+        # have no pattern yet: the whole-buffer laws stay at d < 28 (over the window's old interface)
+        return txt
+    if pb:
+        w = _OUT[ROOT / 'proofs/obj' / fn]
+        ends = {}
+        for j in pb:
+            m = re.search(rf'\+hP{j}: \{{Bool\.or\(Nat\.is_lt\(U32\.to_nat\(len\), U32\.to_nat\((.*?)\)\), Nat\.is_le\(Nat\.sub\(U32\.to_nat\(\1\), U32\.to_nat\((.*?)\)\)', w)
+            ends[j] = (m.group(2), m.group(1))
+    return top_deep(txt, al, dm[0], ends)
+
+
 def top_text(L, wmod):
     """The whole-buffer decoder laws of the container: its window at x = 0, off = 0, len = n
     (after codegen/var_rlist_er.py's top_text)."""
@@ -1821,6 +1846,62 @@ def top_text(L, wmod):
     txt = txt.replace(old, f'UW.vsingle(v, {mc.group(1)}, {flds}, {{==}})')
     return txt
 
+
+HN_T = '{Nat.is_le(U32.to_nat(n), A.quad(VB.pw(d))) == True{} : Bool}'
+HNN_T = '{U32.is_le(n, VB.NMAX()) == True{} : Bool}'
+HNN_TERM = ('FD.logic__subst(Bool, z => {z == True{} : Bool}, U32.is_le(n, VB.NMAX()), Nat.is_le(U32.to_nat(n), U32.to_nat(VB.NMAX())), '
+            'VB.le_u32n(n, VB.NMAX()), hN)')
+
+
+KEEP_PB_REJECT = True
+TOP_SHALLOW = {'Gc465214E502', 'Gc56D855869F', 'Gc221EC01D83', 'Gc85FA758A04'}
+
+
+def top_deep(text, al, mode, ends=None):
+    """The whole-buffer laws at any depth d < 31 over the window's D interface (var_rlist.deep_er_top): the
+    window at 0 ends at n, below 2^32 (hw32: VB.u32_lt(n)); an hwN window takes n <= NMAX (the object API's
+    bound) as the laws' premise hN. A pbits child's representation premise (pbits_deep / pb_premise) is the
+    rejection law's premise at the window 0 .. n."""
+    import deep
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')
+    if mode == 'hwN':
+        text = deep.thread(text, HN_T, HNN_T, hw='hn', hw32='hN')
+        term = HNN_TERM
+    else:
+        term = 'VB.u32_lt(n)'
+    n0 = len(re.findall(rf'(?<![\w.]){al}\.(?:ok_evalw|readw|specw|invw)\(', text))
+    text = re.sub(rf'(?<![\w.]){al}\.(ok_evalw|readw|specw|invw)\(d, t, n, 0n, 0, n, \{{==\}}, hd, hn, pf',
+                  lambda m: f'{al}.{m.group(1)}D(d, t, n, 0n, 0, n, {{==}}, hd, hn, {term}, pf', text)
+    assert n0 == len(re.findall(rf'(?<![\w.]){al}\.(?:ok_evalw|readw|specw|invw)D\(', text)), al
+    if ends:
+        js = sorted(ends)
+        prem = {j: pb_prem(*ends[j]).replace('len', 'n') for j in js}
+        for j in js:
+            prem[j] = re.sub(r'(?<![\w.])(O\d+)\(t, x\)', rf'{al}.\1(t, 0n)', prem[j])
+        # the inversion's call: its premises last
+        m = re.search(rf'{al}\.invwD\(', text)
+        b = deep._close(text, m.end())
+        text = text[:b] + ''.join(f', hP{j}' for j in js) + text[b:]
+        # rej_v: parameters last
+        a = text.index('\ndef rej_v(') + len('\ndef rej_v(')
+        b = deep._close(text, a)
+        text = text[:b] + ''.join(f', +hP{j}: {prem[j]}' for j in js) + text[b:]
+        # decode_reject: its law's premises last
+        m = re.search(r'^law decode_reject:\n((?:  for .*\n)+)', text, re.M)
+        text = text[:m.end()] + ''.join(f'  for +hP{j}: {prem[j]}\n' for j in js) + text[m.end():]
+        m = re.search(r'^def decode_reject\(([^)]*)\):\n  v => e => rej_v\(([^)]*)\)', text, re.M)
+        assert m, 'decode_reject'
+        extra = ''.join(f', hP{j}' for j in js)
+        text = text[:m.start(1)] + m.group(1) + extra + text[m.end(1):m.start(2)] + m.group(2) + extra + text[m.end(2):]
+    return text
+
+
+def unique_deep(text, mode):
+    text = text.replace('Nat.is_lt(d, 28n)', 'Nat.is_lt(d, 31n)')
+    if mode == 'hwN':
+        text = text.replace(f'  for +hn: {HN_T}\n', f'  for +hn: {HN_T}\n  for +hN: {HNN_T}\n')
+        text = text.replace('(d, t, n, pf, hd, hn, hchk', '(d, t, n, pf, hd, hn, hN, hchk')
+    return text
 
 def generic_unique_text(X, top):
     """decode_unique of a generic container: the spec relation's validity, from decode_spec."""
@@ -1887,7 +1968,7 @@ def main():
             print(f'{fn}: waits for ' + ', '.join(missing))
             continue
         out[ROOT / 'proofs/obj' / fn] = _OUT[ROOT / 'proofs/obj' / fn] = module_text(L)
-        out[ROOT / 'proofs/obj' / f'big_var_codec_{name}.bend'] = top_text(L, fn)
+        out[ROOT / 'proofs/obj' / f'big_var_codec_{name}.bend'] = top_of(L, fn, 'EW')
     for name, kids, big in [(n, k, '') for n, k in GENERIC] + ([] if no_big else [(n, k, 'big_') for n, k in GENERIC_BIG]):
         CHILD_MOD.update(kids)
         L = layout(name, True, FIXMOD, generic=True)
@@ -1897,9 +1978,12 @@ def main():
         if missing:
             print(f'{fn}: waits for ' + ', '.join(missing))
             continue
-        out[ROOT / 'proofs/obj' / fn] = module_text(L)
-        out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}.bend'] = top_text(L, fn)
-        out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}_unique.bend'] = generic_unique_text(name, f'{big}var_codec_{name}.bend')
+        out[ROOT / 'proofs/obj' / fn] = _OUT[ROOT / 'proofs/obj' / fn] = module_text(L)
+        out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}.bend'] = top_of(L, fn, 'W')
+        uq = generic_unique_text(name, f'{big}var_codec_{name}.bend')
+        dm = deep_modes(L)
+        shallow = dm is None or name in TOP_SHALLOW or (KEEP_PB_REJECT and any(f['mod'] == PBITS_MOD for f in L.vars))
+        out[ROOT / 'proofs/obj' / f'{big}var_codec_{name}_unique.bend'] = uq if shallow else unique_deep(uq, dm[0])
     import runtime_refs as RR  # the runtime split: the modules import the per-name files they use
     out = RR.rewire_out(out)
     if '--check' in sys.argv:
