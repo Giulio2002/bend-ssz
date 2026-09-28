@@ -1876,6 +1876,42 @@ def okt_proof(c):
     raise AssertionError('okt_proof: ' + c)
 
 
+def bits_part(N, kb, KY, NB=None, k8=None, EX=None):
+    """a bit list's encode record (big_encx_bits<N>) from rep_bits (limit NB) and the premise SDB (see bsenc_text)."""
+    import e2e_fix_d as EFD
+    NB = NB or f'{N}n'
+    EX = EX or f'EX_bits{N}'
+    MB = f'{EX}.MB{{dw, T, K, {NB}, {kb}n, {KY}n}}'
+    cs = EFD.pbs_okt(f'proofs/obj/big_encx_bits{N}.bend', EFD.PBS_MBP, ['dw', 'T', 'K', NB, f'{kb}n', f'{KY}n'])
+    ps = [okt_proof(c) for c in cs]
+    BR = f'BR{N}'
+    B = [f'def k8_{N}() -> {{Nat.is_le(Nat.add({NB}, 8n), O.pow2n({kb}n)) == True{{}} : Bool}}: {k8 or "{==}"}', '',
+         f'def {BR}(w: O.Bits) -> Data:',
+         f'  DK.Ex({EX}.MB, m => DK.P2({{w == {EX}.TH(m) : O.Bits}}, DK.P2({{S.BitsValue{{BO.bview({EX}.TH(m))}} == {EX}.VAL(m) : S.Value}},',
+         f'    DK.P2({{{EX}.OK(m) == True{{}} : Bool}}, {{Nat.is_le(LY.LN({EX}.ENC(m)), Nat.add(VD.s_rng(3n, {NB}), 1n)) == True{{}} : Bool}}))))', '',
+         f'def bv{N}(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32) -> {{S.BitsValue{{BO.bview(O.Bits{{FD.array__thaw(U32, T), K}})}} == {EX}.VAL({MB}) : S.Value}}:',
+         '  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, T)), T, FD.array__freeze_thaw(U32, T)) :',
+         f'    {{S.BitsValue{{BK.btk(U32.to_nat(K), BK.bitsof(FD.array__slots(U32, _)))}} == {EX}.VAL({MB}) : S.Value}}',
+         '  {==}', '',
+         f'def bb{N}b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {{w == O.Bits{{FD.array__thaw(U32, T), K}} : O.Bits}}, +pf: {{FD.array__perfect(U32, dw, T) == True{{}} : Bool}}, +hdw: {{Nat.is_lt(dw, 31n) == True{{}} : Bool}},',
+         f'    +hroom: {{Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{{}} : Bool}}, +hbz: {{O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{{}} : Bool}},',
+         f'    +hN: {{Nat.is_le(U32.to_nat(K), {NB}) == True{{}} : Bool}}, +wf: BO.wfb(O.Bits{{FD.array__thaw(U32, T), K}})) -> {BR}(w):',
+         f'  +hK8 = k8_{N}()',
+         f'  +tq = CO.eq5(K, {kb}n, {NB}, {{==}}, hN, hK8)',
+         '  +hr1 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), 1n+U32.to_nat(U32.shrn(K, 5n)), FD.nat__add_comm(U32.to_nat(U32.shrn(K, 5n)), 1n), hroom)',
+         '  +hqs = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dw)) == True{} : Bool}, U32.to_nat(U32.shrn(K, 5n)), VBT.QK(K), tq, FD.nat__succ_le_lt(U32.to_nat(U32.shrn(K, 5n)), VB.pw(dw), hr1))',
+         f'  +hz = VBR.rep_hz(dw, T, K, {kb}n, {NB}, pf, {{==}}, hN, hK8, hqs, wf)',
+         '  +htz = EP.pbtz(T, K, wf)',
+         f'  +hle = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(K), U32.to_nat({N})), U32.is_le(K, {N}), Equal.sym(Bool, U32.is_le(K, {N}), Nat.is_le(U32.to_nat(K), U32.to_nat({N})), VU.le_u32(K, {N})), '
+         + ('hN)' if NB in (f'U32.to_nat({N})', f'{N}n') else f'FD.nat__le_trans(U32.to_nat(K), {NB}, U32.to_nat({N}), hN, {{==}}))'),
+         '  +hok = ' + EFD.pbs_and_intro(cs, ps),
+         f'  +hnk = BLB.nkb(K, {NB}, {kb}n, {{==}}, hN, hK8)',
+         f'  +hl = FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add(VD.s_rng(3n, {NB}), 1n)) == True{{}} : Bool}}, U32.to_nat(CO.NK(K)), List.length(&2, U32, {EX}.ENC({MB})),',
+         f'    Equal.sym(Nat, List.length(&2, U32, {EX}.ENC({MB})), U32.to_nat(CO.NK(K)), {EX}.eL(dw, T, K, {NB}, {kb}n, {KY}n, hok)), hnk)',
+         f'  ({MB}, (eo, (bv{N}(dw, T, K), (hok, hl))))', '']
+    return B
+
+
 def bsenc_text():
     import e2e_fix_d as EFD
     imps = ['import Base', 'import ../src/obj.bend as O', 'import ../types/schema.bend as S', 'import ../proofs/compact/found.bend as FD',
@@ -1904,35 +1940,9 @@ def bsenc_text():
               f'  %Equal.sym(U32, w, U32{{WSp.join({k}n, {32 - k}n, WSp.take({k}n, 32n, PD.bits(w)), Word.zero({32 - k}n))}}, rp) : {{U32.is_lt(_, {lim}) == True{{}} : Bool}}',
               f'  lt{k}w(WSp.take({k}n, 32n, PD.bits(w)))', '']
     for N, (kb, KY) in BS_BITS.items():
-        EX = f'EX_bits{N}'
-        MB = f'{EX}.MB{{dw, T, K, {N}n, {kb}n, {KY}n}}'
-        cs = EFD.pbs_okt(f'proofs/obj/big_encx_bits{N}.bend', EFD.PBS_MBP, ['dw', 'T', 'K', f'{N}n', f'{kb}n', f'{KY}n'])
-        ps = [okt_proof(c) for c in cs]
+        B += bits_part(N, kb, KY)
         BR = f'BR{N}'
-        B += [f'def k8_{N}() -> {{Nat.is_le(Nat.add({N}n, 8n), O.pow2n({kb}n)) == True{{}} : Bool}}: {{==}}', '',
-              f'def {BR}(w: O.Bits) -> Data:',
-              f'  DK.Ex({EX}.MB, m => DK.P2({{w == {EX}.TH(m) : O.Bits}}, DK.P2({{S.BitsValue{{BO.bview({EX}.TH(m))}} == {EX}.VAL(m) : S.Value}},',
-              f'    DK.P2({{{EX}.OK(m) == True{{}} : Bool}}, {{Nat.is_le(LY.LN({EX}.ENC(m)), Nat.add(VD.s_rng(3n, {N}n), 1n)) == True{{}} : Bool}}))))', '',
-              f'def bv{N}(+dw: Nat, +T: FD.array__Tree<U32>, +K: U32) -> {{S.BitsValue{{BO.bview(O.Bits{{FD.array__thaw(U32, T), K}})}} == {EX}.VAL({MB}) : S.Value}}:',
-              '  %Equal.sym(FD.array__Tree<U32>, FD.array__freeze(U32, FD.array__thaw(U32, T)), T, FD.array__freeze_thaw(U32, T)) :',
-              f'    {{S.BitsValue{{BK.btk(U32.to_nat(K), BK.bitsof(FD.array__slots(U32, _)))}} == {EX}.VAL({MB}) : S.Value}}',
-              '  {==}', '',
-              f'def bb{N}b(-w: O.Bits, +T: FD.array__Tree<U32>, +dw: Nat, +K: U32, +eo: {{w == O.Bits{{FD.array__thaw(U32, T), K}} : O.Bits}}, +pf: {{FD.array__perfect(U32, dw, T) == True{{}} : Bool}}, +hdw: {{Nat.is_lt(dw, 31n) == True{{}} : Bool}},',
-              f'    +hroom: {{Nat.is_le(Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), VB.pw(dw)) == True{{}} : Bool}}, +hbz: {{O.bits_above_zero(U32.and(K, 31), RD.wd(T, dw, U32.shrn(K, 5n))) == True{{}} : Bool}},',
-              f'    +hN: {{Nat.is_le(U32.to_nat(K), {N}n) == True{{}} : Bool}}, +wf: BO.wfb(O.Bits{{FD.array__thaw(U32, T), K}})) -> {BR}(w):',
-              f'  +hK8 = k8_{N}()',
-              f'  +tq = CO.eq5(K, {kb}n, {N}n, {{==}}, hN, hK8)',
-              '  +hr1 = FD.logic__subst(Nat, z => {Nat.is_le(z, VB.pw(dw)) == True{} : Bool}, Nat.add(U32.to_nat(U32.shrn(K, 5n)), 1n), 1n+U32.to_nat(U32.shrn(K, 5n)), FD.nat__add_comm(U32.to_nat(U32.shrn(K, 5n)), 1n), hroom)',
-              '  +hqs = FD.logic__subst(Nat, z => {Nat.is_lt(z, VB.pw(dw)) == True{} : Bool}, U32.to_nat(U32.shrn(K, 5n)), VBT.QK(K), tq, FD.nat__succ_le_lt(U32.to_nat(U32.shrn(K, 5n)), VB.pw(dw), hr1))',
-              f'  +hz = VBR.rep_hz(dw, T, K, {kb}n, {N}n, pf, {{==}}, hN, hK8, hqs, wf)',
-              '  +htz = EP.pbtz(T, K, wf)',
-              f'  +hle = FD.logic__subst(Bool, z => {{z == True{{}} : Bool}}, Nat.is_le(U32.to_nat(K), U32.to_nat({N})), U32.is_le(K, {N}), Equal.sym(Bool, U32.is_le(K, {N}), Nat.is_le(U32.to_nat(K), U32.to_nat({N})), VU.le_u32(K, {N})), hN)',
-              '  +hok = ' + EFD.pbs_and_intro(cs, ps),
-              f'  +hnk = BLB.nkb(K, {N}n, {kb}n, {{==}}, hN, hK8)',
-              f'  +hl = FD.logic__subst(Nat, z => {{Nat.is_le(z, Nat.add(VD.s_rng(3n, {N}n), 1n)) == True{{}} : Bool}}, U32.to_nat(CO.NK(K)), List.length(&2, U32, {EX}.ENC({MB})),',
-              f'    Equal.sym(Nat, List.length(&2, U32, {EX}.ENC({MB})), U32.to_nat(CO.NK(K)), {EX}.eL(dw, T, K, {N}n, {kb}n, {KY}n, hok)), hnk)',
-              f'  ({MB}, (eo, (bv{N}(dw, T, K), (hok, hl))))', '',
-              f'def bb{N}(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{{{N}n}}), +hs: SDB(w, 31n)) -> {BR}(w):',
+        B += [f'def bb{N}(-w: O.Bits, +rp: BO.rep_bits(w, S.BitList{{{N}n}}), +hs: SDB(w, 31n)) -> {BR}(w):',
               '  (+wf, +rq) = rp', '  (+hlim, +hch) = rq',
               '  (+T, +s1) = hs', '  (+dw, +s2) = s1', '  (+K, +s3) = s2', '  (+eo, +s4) = s3', '  (+pf, +s5) = s4', '  (+hdw, +s6) = s5', '  (+hroom, +hbz) = s6',
               f'  +hN = FD.logic__subst(O.Bits, z => {{Nat.is_le(U32.to_nat(BO.blen(z)), {N}n) == True{{}} : Bool}}, w, O.Bits{{FD.array__thaw(U32, T), K}}, eo, hlim)',
